@@ -4019,34 +4019,33 @@ async function submitProof() {
 }
 function renderPainelLoyalty(){
   const el = document.getElementById('painel-loyalty-body');
-  if(!el) return;
-  const member = getLoyaltyMember();
+  if(!el || !currentUser) return;
+
+  // Auto-register in loyalty if not yet (using existing profile data)
+  if(!getLoyaltyMember()){
+    const name = currentProfile?.full_name || currentUser.email.split('@')[0];
+    const email = currentUser.email;
+    localStorage.setItem('mc_loyalty_member', JSON.stringify({name, email, registered_at: new Date().toISOString()}));
+  }
+
   const history = getLoyaltyHistory();
   const approved = history.filter(h=>h.status==='approved').length;
   const faltam = Math.max(0, 3 - approved);
   const liveUnlocked = approved >= 3;
   const progressPct = Math.min(100, Math.round(approved/3*100));
 
-  if(!member){
-    el.innerHTML=`
-      <p style="font-size:13px;color:var(--t2);margin-bottom:16px;">Ative o programa para registrar suas compras e desbloquear o <strong style="color:var(--gold);">Live Room VIP</strong>, sorteios e indicadores exclusivos.</p>
-      <div class="lrf-grid">
-        <div class="lrf-field"><label>Nome</label><input type="text" id="ly-name" placeholder="Seu nome" value="${currentProfile?.full_name||''}"></div>
-        <div class="lrf-field"><label>E-mail</label><input type="email" id="ly-email" placeholder="seu@email.com" value="${currentUser?.email||''}"></div>
-      </div>
-      <button class="lrf-btn" style="margin-top:12px;" onclick="registerLoyalty()">Ativar programa →</button>`;
-    return;
-  }
-
   el.innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
-      <div style="font-size:13px;color:var(--t2);">${liveUnlocked?'<span style="color:var(--green);font-weight:700;">✓ Live Room Desbloqueado!</span>':'<span style="color:var(--gold);font-weight:700;">'+faltam+' compra'+(faltam===1?'':'s')+' para desbloquear o Live Room</span>'}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+      <div style="font-size:13px;">${liveUnlocked
+        ? '<span style="color:var(--green);font-weight:700;">✓ Live Room Desbloqueado!</span>'
+        : '<span style="color:var(--gold);font-weight:700;">' + faltam + ' compra' + (faltam===1?'':'s') + ' para desbloquear o Live Room</span>'}</div>
       <div style="font-size:12px;color:var(--t3);">${approved}/3 compras validadas</div>
     </div>
     <div style="background:var(--card2);border-radius:6px;height:8px;overflow:hidden;margin-bottom:16px;">
       <div style="height:100%;width:${progressPct}%;background:var(--gold);border-radius:6px;transition:.4s;"></div>
     </div>
-    <button class="lrf-btn" onclick="go('loyalty')" style="font-size:12px;padding:9px 20px;">Ver histórico completo →</button>`;
+    <p style="font-size:12px;color:var(--t2);margin-bottom:12px;">Comprou usando nosso cupom ou link? Envie o comprovante para validar e acumular compras.</p>
+    <button class="lrf-btn" onclick="go('loyalty')" style="font-size:12px;padding:9px 20px;">Enviar comprovante →</button>`;
 }
 
 function renderLoyaltyPage(){
