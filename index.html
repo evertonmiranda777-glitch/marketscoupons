@@ -7130,6 +7130,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderFaq();
   autoDetectDDI();
 
+  // Navegar para o hash da URL ANTES dos awaits — garante que Ctrl+F5 preserve a página
+  const initHash = location.hash.replace('#','');
+  if(initHash && document.getElementById('page-'+initHash)){
+    go(initHash, true);
+  } else {
+    track('page_view', { page_name: 'home', language: navigator.language });
+  }
+
   // Carregar firmas do Supabase (sobrescreve hardcoded se disponível)
   await loadFirmsFromSupabase();
 
@@ -7142,14 +7150,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   await checkAuthSession();
   renderLoyaltyPage();
   await initFavs();
-
-  // Navegar para a página do hash na URL (ex: #firms)
-  const initHash = location.hash.replace('#','');
-  if(initHash && document.getElementById('page-'+initHash)){
-    go(initHash, true);
-  } else {
-    track('page_view', { page_name: 'home', language: navigator.language });
-  }
 });
 </script>
 </body>
