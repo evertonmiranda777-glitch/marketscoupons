@@ -449,12 +449,18 @@ img{max-width:100%;}
 .cpill:hover{background:rgba(240,180,41,.2);}
 .det-btn{padding:5px 10px;border-radius:6px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:500;transition:.2s;}
 .det-btn:hover{border-color:var(--gold);color:var(--gold);}
+.tp-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(0,182,122,0.08);border:1px solid rgba(0,182,122,0.25);border-radius:6px;font-size:10px;color:var(--t2);text-decoration:none;transition:.2s;margin-bottom:4px;}
+.tp-badge:hover{border-color:rgba(0,182,122,0.5);}
+.tp-label{font-weight:700;color:#00b67a;}
+.tp-stars{color:#00b67a;font-size:11px;letter-spacing:1px;}
+.tp-info{font-size:9px;color:var(--t3);}
+.tp-info b{color:#00b67a;}
 
 /* DRAWER */
-.ov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.3s;}
+.ov{position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.3s;}
 .ov.open{opacity:1;pointer-events:all;}
 .drw{
- position:fixed;right:0;top:0;bottom:0;z-index:801;
+ position:fixed;right:0;top:0;bottom:0;z-index:9991;
  width:min(520px,96vw);background:var(--sur);border-left:1px solid var(--b1);
  overflow-y:auto;transform:translateX(100%);transition:transform .33s cubic-bezier(.4,0,.2,1);
 }
@@ -478,6 +484,14 @@ img{max-width:100%;}
 .rb-stars{display:flex;gap:2px;margin-bottom:2px;}
 .rb-stars span{color:var(--gold);font-size:13px;}
 .rb-cnt{font-size:11px;color:var(--t2);}
+.drw-tp-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(0,182,122,0.06);border:1px solid rgba(0,182,122,0.2);border-radius:9px;margin-bottom:12px;text-decoration:none;transition:.2s;}
+.drw-tp-badge:hover{border-color:rgba(0,182,122,0.5);background:rgba(0,182,122,0.1);}
+.drw-tp-label{font-size:12px;font-weight:700;color:#00b67a;}
+.drw-tp-stars-row{display:flex;gap:2px;}
+.drw-tp-star{font-size:14px;color:var(--b2);}
+.drw-tp-star.filled{color:#00b67a;}
+.drw-tp-info{font-size:11px;color:var(--t2);}
+.drw-tp-info b{color:#00b67a;}
 .cpn-blk{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:9px;margin-bottom:12px;}
 .cpn-lbl{font-size:10px;color:var(--t2);margin-bottom:3px;}
 .cpn-code{font-size:15px;font-weight:800;letter-spacing:2px;color:var(--gold);}
@@ -1214,19 +1228,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <nav id="nav">
  <div class="nav-logo" onclick="go('home')">Markets<em>Coupons</em><div class="live-dot"></div></div>
  <div class="nav-tabs" id="nav-tabs">
- <button class="nt active" data-p="home" onclick="go('home')">Ofertas</button>
- <button class="nt" data-p="firms" onclick="go('firms')">Firmas</button>
- <button class="nt" data-p="plataformas" onclick="go('plataformas')">Plataformas</button>
- <button class="nt" data-p="indicators" onclick="go('indicators')">Indicadores</button>
- <button class="nt" data-p="compare" onclick="go('compare')">Comparar</button>
- <button class="nt" data-p="calendar" onclick="go('calendar')">Calendário</button>
- <button class="nt" data-p="heatmap" onclick="go('heatmap')">Mapa de Calor</button>
- <button class="nt" data-p="analise" onclick="go('analise')">Análise IA</button>
- <button class="nt" data-p="guides" onclick="go('guides')">Guias</button>
- <button class="nt" data-p="blog" onclick="go('blog')">Blog</button>
- <button class="nt" data-p="calc" onclick="go('calc')">Position Size</button>
- <button class="nt" data-p="quiz" onclick="go('quiz')">Quiz</button>
- <button class="nt nt-live" data-p="live" onclick="go('live')"> Live</button>
+ <button class="nt active" data-p="home" data-i18n="nav_ofertas" onclick="go('home')">Ofertas</button>
+ <button class="nt" data-p="firms" data-i18n="nav_firmas" onclick="go('firms')">Firmas</button>
+ <button class="nt" data-p="plataformas" data-i18n="nav_plataformas" onclick="go('plataformas')">Plataformas</button>
+ <button class="nt" data-p="indicators" data-i18n="nav_indicadores" onclick="go('indicators')">Indicadores</button>
+ <button class="nt" data-p="compare" data-i18n="nav_comparar" onclick="go('compare')">Comparar</button>
+ <button class="nt" data-p="calendar" data-i18n="nav_calendario" onclick="go('calendar')">Calendário</button>
+ <button class="nt" data-p="heatmap" data-i18n="nav_heatmap" onclick="go('heatmap')">Mapa de Calor</button>
+ <button class="nt" data-p="analise" data-i18n="nav_analise" onclick="go('analise')">Análise IA</button>
+ <button class="nt" data-p="guides" data-i18n="nav_guias" onclick="go('guides')">Guias</button>
+ <button class="nt" data-p="blog" data-i18n="nav_blog" onclick="go('blog')">Blog</button>
+ <button class="nt" data-p="calc" data-i18n="nav_calc" onclick="go('calc')">Position Size</button>
+ <button class="nt" data-p="quiz" data-i18n="nav_quiz" onclick="go('quiz')">Quiz</button>
+ <button class="nt nt-live" data-p="live" data-i18n="nav_live" onclick="go('live')">Live</button>
  </div>
  <div class="nav-r">
  <div class="lang-btn">
@@ -1242,8 +1256,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  <!-- Auth buttons (logged out) -->
  <div id="auth-btns-out">
-  <button class="enter-btn" onclick="openAuthModal('login')">Entrar</button>
-  <button class="signup-btn" onclick="openAuthModal('signup')">Cadastrar-se</button>
+  <button class="enter-btn" data-i18n="btn_entrar" onclick="openAuthModal('login')">Entrar</button>
+  <button class="signup-btn" data-i18n="btn_cadastrar" onclick="openAuthModal('signup')">Cadastrar-se</button>
  </div>
  <!-- User menu (logged in) -->
  <div id="auth-btns-in" style="display:none;">
@@ -1251,8 +1265,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <div class="user-avatar-sm" id="nav-avatar">U</div>
    <span id="nav-user-name">Usuário</span>
    <div class="user-dd"><div class="user-dd-inner">
-    <button class="user-dd-item" onclick="go('painel')">Meu Painel</button>
-    <button class="user-dd-item" onclick="doLogout()">Sair</button>
+    <button class="user-dd-item" data-i18n="btn_meu_painel" onclick="go('painel')">Meu Painel</button>
+    <button class="user-dd-item" data-i18n="btn_sair" onclick="doLogout()">Sair</button>
    </div></div>
   </div>
  </div>
@@ -2195,12 +2209,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 /* DATA */
 const FIRMS=[
-  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$17.70',o:'$118'},{a:'50K',n:'$19.70',o:'$131'},{a:'100K',n:'$29.70',o:'$198'},{a:'150K',n:'$39.70',o:'$264'}],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.'},
-  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',rating:4.8,reviews:1466,discount:89,dtype:'lifetime',coupon:'MARKET89',link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Por conta',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$19.25',o:'$175'},{a:'100K',n:'$23.65',o:'$215'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$48.15',o:'$535'}],perks:['Passa em 1 dia','Sem consistencia','Trade noticias','Payouts semanais'],proibido:['Latency arbitrage'],desc:'Bulenox e uma prop firm de futuros com regras simplificadas. Possivel passar em 1 dia, sem regra de consistencia.'},
-  {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',rating:4.8,reviews:39754,discount:19,dtype:'especial',coupon:null,link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader','DXtrade'],minDays:4,evalDays:30,drawdown:'Trailing/Fixed',split:'90%',ddPct:'-5%/-10%',target:'8%/5%',scaling:'Ate $2M',prices:[{a:'10K',n:'89',o:'—'},{a:'25K',n:'250',o:'—'},{a:'50K',n:'345',o:'—'},{a:'100K',n:'439',o:'540'},{a:'200K',n:'1.080',o:'—'}],perks:['Free Trial ilimitado','90% split','Suporte 20 idiomas','$500M+ pagos'],proibido:['Latency arbitrage','Manipulacao spread'],desc:'FTMO e a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.'},
-  {id:'tpt',name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'rgba(168,85,247,0.12)',icon:'T',rating:4.4,reviews:8550,discount:40,dtype:'lifetime',coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',tags:['Futuros','Lifetime','Saque dia 1'],platforms:['Tradovate','TradingView','Rithmic','NinjaTrader'],minDays:4,evalDays:null,drawdown:'End-of-Day',split:'80%',ddPct:'EOD',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$90',o:'$150'},{a:'50K',n:'$102',o:'$170'},{a:'75K',n:'$147',o:'$245'},{a:'100K',n:'$198',o:'$330'},{a:'150K',n:'$216',o:'$360'}],perks:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario'],proibido:['Manipulacao spread'],desc:'Take Profit Trader destaca-se pelo saque desde o primeiro dia e sem taxa de ativacao.'},
-  {id:'fn',name:'FundedNext',type:'Futuros',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',icon:'N',rating:4.5,reviews:60850,discount:30,dtype:'1 desafio',coupon:'FNF30',link:'https://fundednext.com/?fpr=everton33',tags:['Futuros','Payout 24h','Sem limite'],platforms:['Tradovate','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Fixed',split:'95%',ddPct:'Fixo',target:'Variavel',scaling:'Ate $300K',prices:[{a:'25K Legacy',n:'$79.99',o:'—'},{a:'50K Legacy',n:'$149.99',o:'—'},{a:'100K Legacy',n:'$249.99',o:'—'},{a:'50K Bolt',n:'$99.99',o:'—'},{a:'25K Rapid',n:'$109',o:'—'}],perks:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso'],proibido:['Latency arbitrage'],desc:'FundedNext com 400K+ contas e $274M+ pagos. Destaque para payout garantido em 24h.'},
-  {id:'e2t',name:'Earn2Trade',type:'Futuros',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',icon:'E',rating:4.7,reviews:4647,discount:50,dtype:'career path',coupon:'MARKETSCOUPONS',link:'https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14',tags:['Futuros','Journalytix','Scaling $400K'],platforms:['Rithmic','NinjaTrader'],minDays:15,evalDays:null,drawdown:'EOD Fixed',split:'80%',ddPct:'TCP100: $3.500',target:'TCP100: $6.000',scaling:'Ate $400K',prices:[{a:'TCP25',n:'$75',o:'$150'},{a:'TCP50',n:'$95',o:'$190'},{a:'TCP100',n:'$175',o:'$350'},{a:'Gauntlet 50K',n:'$85',o:'$170'},{a:'Gauntlet 100K',n:'$157.50',o:'$315'}],perks:['Journalytix gratis','Reset gratis','Scaling ate $400K'],proibido:['HFT','Latency arbitrage'],desc:'Earn2Trade foca em educacao e desenvolvimento com escalamento ate $400K.'},
+  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$17.70',o:'$118'},{a:'50K',n:'$19.70',o:'$131'},{a:'100K',n:'$29.70',o:'$198'},{a:'150K',n:'$39.70',o:'$264'}],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
+  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',rating:4.8,reviews:1466,discount:89,dtype:'lifetime',coupon:'MARKET89',link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Por conta',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$19.25',o:'$175'},{a:'100K',n:'$23.65',o:'$215'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$48.15',o:'$535'}],perks:['Passa em 1 dia','Sem consistencia','Trade noticias','Payouts semanais'],proibido:['Latency arbitrage'],desc:'Bulenox e uma prop firm de futuros com regras simplificadas. Possivel passar em 1 dia, sem regra de consistencia.',trustpilot:{score:4.8,reviews:1466,url:'https://www.trustpilot.com/review/bulenox.com'}},
+  {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',rating:4.8,reviews:39754,discount:19,dtype:'especial',coupon:null,link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader','DXtrade'],minDays:4,evalDays:30,drawdown:'Trailing/Fixed',split:'90%',ddPct:'-5%/-10%',target:'8%/5%',scaling:'Ate $2M',prices:[{a:'10K',n:'89',o:'—'},{a:'25K',n:'250',o:'—'},{a:'50K',n:'345',o:'—'},{a:'100K',n:'439',o:'540'},{a:'200K',n:'1.080',o:'—'}],perks:['Free Trial ilimitado','90% split','Suporte 20 idiomas','$500M+ pagos'],proibido:['Latency arbitrage','Manipulacao spread'],desc:'FTMO e a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',trustpilot:{score:4.8,reviews:39754,url:'https://www.trustpilot.com/review/ftmo.com'}},
+  {id:'tpt',name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'rgba(168,85,247,0.12)',icon:'T',rating:4.4,reviews:8550,discount:40,dtype:'lifetime',coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',tags:['Futuros','Lifetime','Saque dia 1'],platforms:['Tradovate','TradingView','Rithmic','NinjaTrader'],minDays:4,evalDays:null,drawdown:'End-of-Day',split:'80%',ddPct:'EOD',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$90',o:'$150'},{a:'50K',n:'$102',o:'$170'},{a:'75K',n:'$147',o:'$245'},{a:'100K',n:'$198',o:'$330'},{a:'150K',n:'$216',o:'$360'}],perks:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario'],proibido:['Manipulacao spread'],desc:'Take Profit Trader destaca-se pelo saque desde o primeiro dia e sem taxa de ativacao.',trustpilot:{score:4.4,reviews:8550,url:'https://www.trustpilot.com/review/takeprofittrader.com'}},
+  {id:'fn',name:'FundedNext',type:'Futuros',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',icon:'N',rating:4.5,reviews:60850,discount:30,dtype:'1 desafio',coupon:'FNF30',link:'https://fundednext.com/?fpr=everton33',tags:['Futuros','Payout 24h','Sem limite'],platforms:['Tradovate','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Fixed',split:'95%',ddPct:'Fixo',target:'Variavel',scaling:'Ate $300K',prices:[{a:'25K Legacy',n:'$79.99',o:'—'},{a:'50K Legacy',n:'$149.99',o:'—'},{a:'100K Legacy',n:'$249.99',o:'—'},{a:'50K Bolt',n:'$99.99',o:'—'},{a:'25K Rapid',n:'$109',o:'—'}],perks:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso'],proibido:['Latency arbitrage'],desc:'FundedNext com 400K+ contas e $274M+ pagos. Destaque para payout garantido em 24h.',trustpilot:{score:4.5,reviews:60850,url:'https://www.trustpilot.com/review/fundednext.com'}},
+  {id:'e2t',name:'Earn2Trade',type:'Futuros',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',icon:'E',rating:4.7,reviews:4647,discount:50,dtype:'career path',coupon:'MARKETSCOUPONS',link:'https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14',tags:['Futuros','Journalytix','Scaling $400K'],platforms:['Rithmic','NinjaTrader'],minDays:15,evalDays:null,drawdown:'EOD Fixed',split:'80%',ddPct:'TCP100: $3.500',target:'TCP100: $6.000',scaling:'Ate $400K',prices:[{a:'TCP25',n:'$75',o:'$150'},{a:'TCP50',n:'$95',o:'$190'},{a:'TCP100',n:'$175',o:'$350'},{a:'Gauntlet 50K',n:'$85',o:'$170'},{a:'Gauntlet 100K',n:'$157.50',o:'$315'}],perks:['Journalytix gratis','Reset gratis','Scaling ate $400K'],proibido:['HFT','Latency arbitrage'],desc:'Earn2Trade foca em educacao e desenvolvimento com escalamento ate $400K.',trustpilot:{score:4.7,reviews:4647,url:'https://www.trustpilot.com/review/www.earn2trade.com'}},
 ];
 
 /* NAV */
@@ -2217,7 +2231,160 @@ function go(page){
 function toggleMM(){const open=document.getElementById('mm').classList.toggle('open');document.getElementById('mm-ov').classList.toggle('open',open);document.getElementById('hbg').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
 function closeMM(){['mm','mm-ov','hbg'].forEach(id=>document.getElementById(id)?.classList.remove('open'));document.body.style.overflow='';}
 function mgo(p){closeMM();go(p);}
-function setL(lang,flag,code){document.getElementById('l-flag').textContent=flag;document.getElementById('l-code').textContent=' '+code;document.body.dir=lang==='ar'?'rtl':'ltr';track('language_change',{language:lang});}
+/* ─── TRANSLATION ENGINE ─── */
+const I18N = {
+  pt: {
+    // Nav
+    nav_ofertas:'Ofertas', nav_firmas:'Firmas', nav_plataformas:'Plataformas', nav_indicadores:'Indicadores',
+    nav_comparar:'Comparar', nav_calendario:'Calendário', nav_heatmap:'Mapa de Calor', nav_analise:'Análise IA',
+    nav_guias:'Guias', nav_blog:'Blog', nav_calc:'Position Size', nav_quiz:'Quiz', nav_live:'Live',
+    // Auth
+    btn_entrar:'Entrar', btn_cadastrar:'Cadastrar-se', btn_meu_painel:'Meu Painel', btn_sair:'Sair',
+    // Firms
+    firms_detalhes:'Detalhes', firms_ver_planos:'Ver Planos', firms_buscar:'Buscar firma...',
+    firms_ordenar_rating:'Maior rating', firms_ordenar_desc:'Maior desconto', firms_ordenar_reviews:'Mais reviews',
+    firms_ordenar_nome:'Nome A-Z', firms_sobre:'Sobre a firma', firms_condicoes:'Condições',
+    firms_plataformas:'Plataformas', firms_precos:'Preços com desconto', firms_beneficios:'Benefícios',
+    firms_proibido:'Proibido', firms_comecar:'Começar Agora', firms_copiar:'Copiar',
+    firms_hint_cupom:'use o cupom no checkout', firms_sel_tipo:'Selecione o Tipo',
+    firms_sel_plat:'Selecione a Plataforma', firms_sel_tam:'Selecione o Tamanho',
+    // Drawer
+    drw_avaliacoes:'avaliações', drw_drawdown:'Drawdown', drw_split:'Split', drw_dias_min:'Dias mínimos',
+    drw_prazo:'Prazo avaliação', drw_dd_max:'DD máximo', drw_meta:'Meta de lucro', drw_scaling:'Scaling',
+    drw_desconto:'Desconto', drw_conta:'Conta', drw_com_cupom:'Com cupom', drw_original:'Original',
+    drw_sem_limite:'Sem limite',
+    // Home
+    home_titulo:'Melhores Cupons de Prop Firms', home_sub:'Compare preços, copie cupons exclusivos e economize até 90% nas maiores prop firms do mundo.',
+    home_ver_planos:'Ver planos →',
+    // Heatmap
+    heatmap_titulo:'Mapa de Calor',
+    // General
+    geral_firmas_encontradas:'firmas encontradas', geral_copiar:'Copiar', geral_copiado:'Copiado!',
+  },
+  en: {
+    nav_ofertas:'Offers', nav_firmas:'Firms', nav_plataformas:'Platforms', nav_indicadores:'Indicators',
+    nav_comparar:'Compare', nav_calendario:'Calendar', nav_heatmap:'Heatmap', nav_analise:'AI Analysis',
+    nav_guias:'Guides', nav_blog:'Blog', nav_calc:'Position Size', nav_quiz:'Quiz', nav_live:'Live',
+    btn_entrar:'Log In', btn_cadastrar:'Sign Up', btn_meu_painel:'My Panel', btn_sair:'Log Out',
+    firms_detalhes:'Details', firms_ver_planos:'View Plans', firms_buscar:'Search firm...',
+    firms_ordenar_rating:'Highest rating', firms_ordenar_desc:'Highest discount', firms_ordenar_reviews:'Most reviews',
+    firms_ordenar_nome:'Name A-Z', firms_sobre:'About the firm', firms_condicoes:'Conditions',
+    firms_plataformas:'Platforms', firms_precos:'Discounted prices', firms_beneficios:'Benefits',
+    firms_proibido:'Prohibited', firms_comecar:'Start Now', firms_copiar:'Copy',
+    firms_hint_cupom:'use the coupon at checkout', firms_sel_tipo:'Select Type',
+    firms_sel_plat:'Select Platform', firms_sel_tam:'Select Account Size',
+    drw_avaliacoes:'reviews', drw_drawdown:'Drawdown', drw_split:'Split', drw_dias_min:'Min days',
+    drw_prazo:'Eval period', drw_dd_max:'Max DD', drw_meta:'Profit target', drw_scaling:'Scaling',
+    drw_desconto:'Discount', drw_conta:'Account', drw_com_cupom:'With coupon', drw_original:'Original',
+    drw_sem_limite:'Unlimited',
+    home_titulo:'Best Prop Firm Coupons', home_sub:'Compare prices, copy exclusive coupons and save up to 90% at the world\'s top prop firms.',
+    home_ver_planos:'View plans →',
+    heatmap_titulo:'Heatmap',
+    geral_firmas_encontradas:'firms found', geral_copiar:'Copy', geral_copiado:'Copied!',
+  },
+  es: {
+    nav_ofertas:'Ofertas', nav_firmas:'Firmas', nav_plataformas:'Plataformas', nav_indicadores:'Indicadores',
+    nav_comparar:'Comparar', nav_calendario:'Calendario', nav_heatmap:'Mapa de Calor', nav_analise:'Análisis IA',
+    nav_guias:'Guías', nav_blog:'Blog', nav_calc:'Position Size', nav_quiz:'Quiz', nav_live:'Live',
+    btn_entrar:'Iniciar sesión', btn_cadastrar:'Registrarse', btn_meu_painel:'Mi Panel', btn_sair:'Salir',
+    firms_detalhes:'Detalles', firms_ver_planos:'Ver Planes', firms_buscar:'Buscar firma...',
+    firms_ordenar_rating:'Mayor rating', firms_ordenar_desc:'Mayor descuento', firms_ordenar_reviews:'Más reviews',
+    firms_ordenar_nome:'Nombre A-Z', firms_sobre:'Sobre la firma', firms_condicoes:'Condiciones',
+    firms_plataformas:'Plataformas', firms_precos:'Precios con descuento', firms_beneficios:'Beneficios',
+    firms_proibido:'Prohibido', firms_comecar:'Empezar Ahora', firms_copiar:'Copiar',
+    firms_hint_cupom:'usa el cupón en el checkout', firms_sel_tipo:'Seleccione el Tipo',
+    firms_sel_plat:'Seleccione la Plataforma', firms_sel_tam:'Seleccione el Tamaño',
+    drw_avaliacoes:'evaluaciones', drw_drawdown:'Drawdown', drw_split:'Split', drw_dias_min:'Días mín.',
+    drw_prazo:'Plazo evaluación', drw_dd_max:'DD máximo', drw_meta:'Meta de lucro', drw_scaling:'Scaling',
+    drw_desconto:'Descuento', drw_conta:'Cuenta', drw_com_cupom:'Con cupón', drw_original:'Original',
+    drw_sem_limite:'Sin límite',
+    home_titulo:'Mejores Cupones de Prop Firms', home_sub:'Compara precios, copia cupones exclusivos y ahorra hasta 90% en las mayores prop firms del mundo.',
+    home_ver_planos:'Ver planes →',
+    heatmap_titulo:'Mapa de Calor',
+    geral_firmas_encontradas:'firmas encontradas', geral_copiar:'Copiar', geral_copiado:'¡Copiado!',
+  },
+  fr: {
+    nav_ofertas:'Offres', nav_firmas:'Firmes', nav_plataformas:'Plateformes', nav_indicadores:'Indicateurs',
+    nav_comparar:'Comparer', nav_calendario:'Calendrier', nav_heatmap:'Carte thermique', nav_analise:'Analyse IA',
+    nav_guias:'Guides', nav_blog:'Blog', nav_calc:'Position Size', nav_quiz:'Quiz', nav_live:'Live',
+    btn_entrar:'Connexion', btn_cadastrar:'S\'inscrire', btn_meu_painel:'Mon Panneau', btn_sair:'Déconnexion',
+    firms_ver_planos:'Voir les plans', firms_buscar:'Rechercher une firme...',
+    firms_comecar:'Commencer', firms_copiar:'Copier',
+    firms_hint_cupom:'utilisez le coupon au checkout',
+    firms_sel_tipo:'Sélectionner le type', firms_sel_plat:'Sélectionner la plateforme', firms_sel_tam:'Sélectionner la taille',
+    drw_avaliacoes:'avis',
+    home_titulo:'Meilleurs Coupons Prop Firms', home_sub:'Comparez les prix, copiez des coupons exclusifs et économisez jusqu\'à 90%.',
+    home_ver_planos:'Voir les plans →',
+    heatmap_titulo:'Carte thermique',
+    geral_firmas_encontradas:'firmes trouvées', geral_copiar:'Copier', geral_copiado:'Copié!',
+  },
+  de: {
+    nav_ofertas:'Angebote', nav_firmas:'Firmen', nav_plataformas:'Plattformen', nav_indicadores:'Indikatoren',
+    nav_comparar:'Vergleichen', nav_calendario:'Kalender', nav_heatmap:'Heatmap', nav_analise:'KI-Analyse',
+    nav_guias:'Leitfäden', nav_blog:'Blog', nav_calc:'Position Size', nav_quiz:'Quiz', nav_live:'Live',
+    btn_entrar:'Anmelden', btn_cadastrar:'Registrieren', btn_meu_painel:'Mein Panel', btn_sair:'Abmelden',
+    firms_ver_planos:'Pläne ansehen', firms_buscar:'Firma suchen...',
+    firms_comecar:'Jetzt starten', firms_copiar:'Kopieren',
+    firms_hint_cupom:'Gutschein beim Checkout verwenden',
+    drw_avaliacoes:'Bewertungen',
+    home_titulo:'Beste Prop-Firm-Gutscheine', home_sub:'Preise vergleichen, exklusive Gutscheine kopieren und bis zu 90% sparen.',
+    home_ver_planos:'Pläne ansehen →',
+    heatmap_titulo:'Heatmap',
+    geral_firmas_encontradas:'Firmen gefunden', geral_copiar:'Kopieren', geral_copiado:'Kopiert!',
+  },
+  ar: {
+    nav_ofertas:'عروض', nav_firmas:'شركات', nav_plataformas:'منصات', nav_indicadores:'مؤشرات',
+    nav_comparar:'مقارنة', nav_calendario:'التقويم', nav_heatmap:'خريطة حرارية', nav_analise:'تحليل AI',
+    nav_guias:'أدلة', nav_blog:'مدونة', nav_calc:'Position Size', nav_quiz:'اختبار', nav_live:'مباشر',
+    btn_entrar:'تسجيل الدخول', btn_cadastrar:'إنشاء حساب', btn_meu_painel:'لوحتي', btn_sair:'خروج',
+    firms_ver_planos:'عرض الخطط', firms_buscar:'بحث عن شركة...',
+    firms_comecar:'ابدأ الآن', firms_copiar:'نسخ',
+    drw_avaliacoes:'تقييمات',
+    home_titulo:'أفضل كوبونات شركات التداول', home_sub:'قارن الأسعار وانسخ الكوبونات الحصرية ووفر حتى 90%.',
+    home_ver_planos:'عرض الخطط →',
+    heatmap_titulo:'خريطة حرارية',
+    geral_firmas_encontradas:'شركات', geral_copiar:'نسخ', geral_copiado:'تم النسخ!',
+  }
+};
+let _currentLang = 'pt';
+function t(key) { return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.pt[key]) || key; }
+function detectLang() {
+  const saved = localStorage.getItem('mc_lang');
+  if (saved && I18N[saved]) return saved;
+  const nav = (navigator.language || navigator.userLanguage || 'pt').toLowerCase();
+  if (nav.startsWith('pt')) return 'pt';
+  if (nav.startsWith('en')) return 'en';
+  if (nav.startsWith('es')) return 'es';
+  if (nav.startsWith('fr')) return 'fr';
+  if (nav.startsWith('de')) return 'de';
+  if (nav.startsWith('ar')) return 'ar';
+  return 'pt';
+}
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+    else el.textContent = val;
+  });
+}
+function setL(lang,flag,code){
+  _currentLang = lang;
+  localStorage.setItem('mc_lang', lang);
+  document.getElementById('l-flag').textContent=flag;
+  document.getElementById('l-code').textContent=' '+code;
+  document.body.dir=lang==='ar'?'rtl':'ltr';
+  applyTranslations();
+  renderHome(); applyF();
+  track('language_change',{language:lang});
+}
+function initLang() {
+  _currentLang = detectLang();
+  const codes = {pt:'BR',en:'EN',es:'ES',fr:'FR',de:'DE',ar:'AR'};
+  document.getElementById('l-code').textContent = ' ' + (codes[_currentLang]||'BR');
+  document.body.dir = _currentLang==='ar'?'rtl':'ltr';
+  applyTranslations();
+}
 function strs(r){return'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));}
 
 /* HOME */
@@ -2229,8 +2396,8 @@ function renderHome(){
         <div class="oc-left"><div class="oc-ico" style="background:${f.bg};color:${f.color};">${f.icon}</div><div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};">${f.discount}%</div><div class="oc-off">off ${f.dtype}</div></div>
       </div>
-      ${f.coupon?`<div class="oc-coupon"><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">Copiar</button></div>`:'<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);"><span style="font-size:11px;color:var(--green);font-weight:600;">Desconto aplicado no link</span></div>'}
-      <button style="width:100%;padding:9px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;" onmouseover="this.style.background='#F7C948'" onmouseout="this.style.background='var(--gold)'" onclick="go('firms');setTimeout(()=>openD('${f.id}'),120);track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">Ver planos →</button>
+      ${f.coupon?`<div class="oc-coupon"><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>`:'<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);"><span style="font-size:11px;color:var(--green);font-weight:600;">Desconto aplicado no link</span></div>'}
+      <button style="width:100%;padding:9px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;" onmouseover="this.style.background='#F7C948'" onmouseout="this.style.background='var(--gold)'" onclick="go('firms');setTimeout(()=>openD('${f.id}'),120);track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">${t('home_ver_planos')}</button>
     </div>`).join('');
 }
 
@@ -2243,7 +2410,7 @@ function renderFirms(list){
       <div class="fr-ico" style="background:${f.bg};color:${f.color};">${f.icon}</div>
       <div><div class="fr-name">${f.name}</div><div class="fr-tags"><span class="fr-tag" style="background:${f.bg};color:${f.color};">${f.type}</span><span class="fr-tag" style="background:var(--gbg);color:var(--gold);">${f.discount}% OFF</span>${f.platforms.slice(0,2).map(p=>`<span class="fr-tag" style="background:rgba(74,85,104,.12);color:var(--t3);">${p}</span>`).join('')}</div></div>
       <div class="fr-mets"><div class="fmet"><div class="mv" style="color:var(--gold);">${f.discount}%</div><div class="ml">Desc.</div></div><div class="fmet"><div class="mv" style="color:var(--green);">${f.split}</div><div class="ml">Split</div></div><div class="fmet"><div class="mv">${f.rating}</div><div class="ml">Rating</div></div><div class="fmet"><div class="mv">${(f.reviews/1000).toFixed(1)}K</div><div class="ml">Reviews</div></div></div>
-      <div class="fr-acts"><div class="stars-r">${[...strs(f.rating)].map(s=>`<span>${s}</span>`).join('')}<span class="rv">${f.reviews.toLocaleString()}</span></div><div class="fr-btns">${f.coupon?`<button class="cpill" onclick="event.stopPropagation();cpCoupon('${f.coupon}','${f.id}','firms')">${f.coupon}</button>`:''}<button class="det-btn" onclick="event.stopPropagation();openD('${f.id}')">Detalhes</button><button class="det-btn" style="background:var(--gold);color:#07090D;border-color:var(--gold);font-weight:700;" onclick="event.stopPropagation();achSelectFirm('${f.id}');go('checkout')">Planos</button></div></div>
+      <div class="fr-acts">${f.trustpilot?`<a class="tp-badge" href="${f.trustpilot.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="tp-label">Excellent</span><span class="tp-stars">${'★'.repeat(Math.round(f.trustpilot.score))}</span><span class="tp-info">${f.trustpilot.reviews.toLocaleString()} reviews on <b>Trustpilot</b></span></a>`:''}<div class="fr-btns">${f.coupon?`<button class="cpill" onclick="event.stopPropagation();cpCoupon('${f.coupon}','${f.id}','firms')">${f.coupon}</button>`:''}<button class="det-btn" style="background:var(--gold);color:#07090D;border-color:var(--gold);font-weight:700;" onclick="event.stopPropagation();openD('${f.id}')">${t('firms_ver_planos')}</button></div></div>
     </div>`).join('');
 }
 function applyF(){
@@ -2280,45 +2447,53 @@ function openD(id){
 
   const s=strs(f.rating);
 
-  // Rating only at top - no duplicate coupon here
+  // Rating + Trustpilot at top
   let html = `
-    <div class="rating-blk"><div class="rb-score">${f.rating}</div><div><div class="rb-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div><div class="rb-cnt">${(f.reviews||0).toLocaleString()} avaliações</div></div></div>`;
+    <div class="rating-blk"><div class="rb-score">${f.rating}</div><div><div class="rb-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div><div class="rb-cnt">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div></div></div>`;
+  if (f.trustpilot) {
+    const tpStars = Math.round(f.trustpilot.score);
+    html += `<a class="drw-tp-badge" href="${f.trustpilot.url}" target="_blank" rel="noopener">
+      <span class="drw-tp-label">Excellent</span>
+      <span class="drw-tp-stars-row">${Array(5).fill(0).map((_,i)=>`<span class="drw-tp-star${i<tpStars?' filled':''}">★</span>`).join('')}</span>
+      <span class="drw-tp-info">${f.trustpilot.reviews.toLocaleString()} reviews on <b>Trustpilot</b></span>
+    </a>`
+  }
 
   // Accordion: Sobre a firma (closed by default)
   html += `
     <div class="drw-section" id="drw-sec-sobre-${id}">
       <div class="drw-section-hd" onclick="toggleDrwSection('drw-sec-sobre-${id}')">
-        <span class="drw-section-title">Sobre a firma</span>
+        <span class="drw-section-title">${t('firms_sobre')}</span>
         <span class="drw-section-arrow">▼</span>
       </div>
       <div class="drw-section-body">
         <p class="desc-p">${f.desc||'—'}</p>
         <div style="height:12px;"></div>
-        <div class="drw-section-title" style="margin-bottom:8px;">Condições</div>
+        <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_condicoes')}</div>
         <div class="dg2">
-          <div class="dc"><div class="dc-l">Drawdown</div><div class="dc-v">${f.drawdown||'—'}</div></div>
-          <div class="dc"><div class="dc-l">Split</div><div class="dc-v g">${f.split||'—'}</div></div>
-          <div class="dc"><div class="dc-l">Dias mínimos</div><div class="dc-v">${f.minDays?f.minDays+'d':'—'}</div></div>
-          <div class="dc"><div class="dc-l">Prazo avaliação</div><div class="dc-v">${f.evalDays?f.evalDays+'d':'Sem limite'}</div></div>
-          <div class="dc"><div class="dc-l">DD máximo</div><div class="dc-v r">${f.ddPct||'—'}</div></div>
-          <div class="dc"><div class="dc-l">Meta de lucro</div><div class="dc-v y">${f.target||'—'}</div></div>
-          <div class="dc"><div class="dc-l">Scaling</div><div class="dc-v">${f.scaling||'—'}</div></div>
-          <div class="dc"><div class="dc-l">Desconto</div><div class="dc-v y">${f.discount}% ${f.dtype||''}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_drawdown')}</div><div class="dc-v">${f.drawdown||'—'}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_split')}</div><div class="dc-v g">${f.split||'—'}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_dias_min')}</div><div class="dc-v">${f.minDays?f.minDays+'d':'—'}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_prazo')}</div><div class="dc-v">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_dd_max')}</div><div class="dc-v r">${f.ddPct||'—'}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_meta')}</div><div class="dc-v y">${f.target||'—'}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_scaling')}</div><div class="dc-v">${f.scaling||'—'}</div></div>
+          <div class="dc"><div class="dc-l">${t('drw_desconto')}</div><div class="dc-v y">${f.discount}% ${f.dtype||''}</div></div>
         </div>
         <div style="height:12px;"></div>
-        <div class="drw-section-title" style="margin-bottom:8px;">Plataformas</div>
+        <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_plataformas')}</div>
         <div class="plats-flex">${(f.platforms||[]).map(p=>`<span class="plat">${p}</span>`).join('')}</div>
         ${f.prices?.length ? `
         <div style="height:12px;"></div>
-        <div class="drw-section-title" style="margin-bottom:8px;">Preços com desconto</div>
-        <table class="ptbl"><thead><tr><th>Conta</th><th>Com cupom</th><th>Original</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>` : ''}
+        <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_precos')}</div>
+        <table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>` : ''}
         ${f.perks?.length ? `
         <div style="height:12px;"></div>
-        <div class="drw-section-title" style="margin-bottom:8px;">Benefícios</div>
+        <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_beneficios')}</div>
         <div class="tags-flex">${f.perks.map(p=>`<span class="tag g">+ ${p}</span>`).join('')}</div>` : ''}
         ${f.proibido?.length ? `
         <div style="height:8px;"></div>
-        <div class="drw-section-title" style="margin-bottom:8px;">Proibido</div>
+        <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_proibido')}</div>
         <div class="tags-flex">${f.proibido.map(p=>`<span class="tag r">✕ ${p}</span>`).join('')}</div>` : ''}
       </div>
     </div>`;
@@ -2329,21 +2504,21 @@ function openD(id){
     html += `<div class="drw-checkout">`;
 
     if (cf.types?.length > 1) {
-      html += `<div class="drw-sel-label">Select Type</div>
+      html += `<div class="drw-sel-label">${t('firms_sel_tipo')}</div>
         <div class="drw-btn-row" id="drw-types-${id}">
           ${cf.types.map(t=>`<button class="drw-btn${t===st.type?' sel':''}" onclick="drwSelType('${id}','${t}')">${t}</button>`).join('')}
         </div>`;
     }
 
     if (cf.platforms?.length) {
-      html += `<div class="drw-sel-label">Select Vendor</div>
+      html += `<div class="drw-sel-label">${t('firms_sel_plat')}</div>
         <div class="drw-btn-row" id="drw-plats-${id}">
           ${cf.platforms.map(p=>`<button class="drw-btn${p===st.plat?' sel':''}" onclick="drwSelPlat('${id}','${p}')">${p}</button>`).join('')}
         </div>`;
     }
 
     if (cf.plans?.length) {
-      html += `<div class="drw-sel-label">Select Account Size</div>
+      html += `<div class="drw-sel-label">${t('firms_sel_tam')}</div>
         <div class="drw-btn-row" id="drw-sizes-${id}">
           ${cf.plans.map(p=>`<button class="drw-btn${p.size===st.size?' sel':''}" onclick="drwSelSize('${id}','${p.size}')">${p.size}</button>`).join('')}
         </div>`;
@@ -2352,12 +2527,12 @@ function openD(id){
     if (f.coupon) {
       html += `<div class="drw-coupon-bar">
         <span class="drw-coupon-code">${f.coupon}</span>
-        <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">Copiar Cupom</button>
+        <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
       </div>
-      <div class="drw-coupon-hint">Use the coupon at checkout.</div>`;
+      <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
     }
 
-    html += `<button class="go-btn" onclick="drwGoCheckout('${id}')">Começar Agora</button>
+    html += `<button class="go-btn" onclick="drwGoCheckout('${id}')">${t('firms_comecar')}</button>
     </div>`;
   } else {
     html += `<div style="margin-top:10px;">
@@ -2804,15 +2979,23 @@ function renderPlatforms() {
 function loadHeatmap(source, btn) {
   document.querySelectorAll('#page-heatmap .cal-f').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const configs = {
-    SPX500:    '%7B%22dataSource%22%3A%22SPX500%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%2C%22locale%22%3A%22br%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D',
-    NASDAQ100: '%7B%22dataSource%22%3A%22NASDAQ100%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%2C%22locale%22%3A%22br%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D',
-    WORLD:     '%7B%22dataSource%22%3A%22WORLD%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22country%22%2C%22locale%22%3A%22br%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D',
-    CRYPTO:    '%7B%22dataSource%22%3A%22CRYPTO%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22no_group%22%2C%22locale%22%3A%22br%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D',
-  };
+  const titles = {SPX500:'S&P 500',NASDAQ100:'Nasdaq 100',WORLD:'Global',CRYPTO:'Cripto'};
+  const titleEl = document.querySelector('.heatmap-title');
+  if (titleEl) titleEl.textContent = ' Mapa de Calor — ' + (titles[source]||source);
+  const base = source === 'CRYPTO'
+    ? 'https://www.tradingview.com/embed-widget/crypto-coins-heatmap/?locale=br#'
+    : 'https://www.tradingview.com/embed-widget/stock-heatmap/?locale=br#';
+  const grouping = source === 'WORLD' ? 'country' : source === 'CRYPTO' ? 'no_group' : 'sector';
+  const cfg = encodeURIComponent(JSON.stringify({
+    dataSource: source, blockColor:'change', blockSize:'market_cap_basic',
+    grouping, locale:'br', colorTheme:'dark', hasTopBar:true,
+    isDataSetEnabled:true, isZoomEnabled:true, hasSymbolTooltip:true,
+    width:'100%', height:'100%'
+  }));
   const frame = document.getElementById('heatmap-frame');
-  if (frame && configs[source]) {
-    frame.src = 'https://www.tradingview.com/embed-widget/stock-heatmap/?locale=br#' + configs[source];
+  if (frame) {
+    frame.src = 'about:blank';
+    setTimeout(() => { frame.src = base + cfg; }, 50);
   }
 }
 
@@ -3637,6 +3820,8 @@ async function checkAuthSession() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Detectar idioma e aplicar traduções
+  initLang();
   // Render com dados hardcoded primeiro (UI imediata)
   renderHome();
   applyF();
