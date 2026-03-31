@@ -503,20 +503,20 @@ img{max-width:100%;}
 .aw-stat{text-align:center;}
 .aw-stat-n{font-size:28px;font-weight:800;color:var(--gold);}
 .aw-stat-l{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
-.awards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
-.award-card{background:var(--card);border:1px solid var(--b1);border-radius:16px;overflow:hidden;transition:all .25s;position:relative;}
+.awards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+.award-card{background:var(--card);border:1px solid var(--b1);border-radius:16px;overflow:hidden;transition:all .25s;position:relative;display:flex;flex-direction:column;}
 .award-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,180,41,.1);}
-.award-card-top{padding:20px 20px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
-.award-trophy{font-size:32px;line-height:1;}
-.award-cat{flex:1;}
-.award-cat-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:4px;}
-.award-cat-name{font-size:15px;font-weight:800;color:var(--t1);}
-.award-winner{display:flex;align-items:center;gap:12px;padding:16px 20px;border-top:1px solid var(--b1);margin-top:16px;background:var(--card2);}
-.award-winner-info{flex:1;}
-.award-winner-name{font-size:14px;font-weight:700;color:var(--t1);}
-.award-winner-reason{font-size:11px;color:var(--t3);margin-top:2px;}
-.award-winner-value{font-size:18px;font-weight:800;color:var(--gold);}
-.award-ribbon{position:absolute;top:12px;right:-1px;background:var(--gold);color:#07090D;font-size:8px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:4px 0 0 4px;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.award-card-top{padding:16px 16px 0;display:flex;align-items:center;gap:10px;min-height:56px;}
+.award-trophy{font-size:28px;line-height:1;flex-shrink:0;}
+.award-cat{flex:1;min-width:0;}
+.award-cat-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:2px;}
+.award-cat-name{font-size:14px;font-weight:800;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.award-winner{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--b1);margin-top:auto;background:var(--card2);}
+.award-winner-info{flex:1;min-width:0;}
+.award-winner-name{font-size:13px;font-weight:700;color:var(--t1);}
+.award-winner-reason{font-size:11px;color:var(--t3);margin-top:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.award-winner-value{font-size:17px;font-weight:800;color:var(--gold);white-space:nowrap;flex-shrink:0;}
+.award-ribbon{position:absolute;top:12px;right:-1px;background:var(--gold);color:#07090D;font-size:8px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:4px 0 0 4px;max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 @media(max-width:600px){.awards-title{font-size:28px;}.awards-stats{gap:20px;}.awards-grid{grid-template-columns:1fr;}}
 
 /* OFFERS PAGE */
@@ -3026,7 +3026,7 @@ const I18N = {
     aw_cat_maior_desconto:'Biggest Discount',
     aw_cat_melhor_split:'Best Profit Split',
     aw_cat_aprovacao_rapida:'Faster Approval',
-    aw_cat_maior_confianca:'Greater Confidence Among Traders',
+    aw_cat_maior_confianca:'Most Trusted',
     aw_cat_melhor_iniciante:'Best for Beginners',
     aw_cat_melhor_custo:'Best Value for Money',
     aw_cat_melhor_rating:'Best Overall Rating',
@@ -3515,13 +3515,13 @@ const I18N = {
     aw_stat_categorias:'Categorías premiadas',
     aw_categoria:'CATEGORÍA',
     aw_vencedor:'GANADOR',
-    aw_cat_melhor_forex:'La mejor empresa de trading de divisas',
+    aw_cat_melhor_forex:'Mejor Prop Firm Forex',
     aw_cat_maior_desconto:'Mayor descuento',
-    aw_cat_melhor_split:'Mejor reparto de beneficios',
+    aw_cat_melhor_split:'Mejor Split de Beneficios',
     aw_cat_aprovacao_rapida:'Aprobación más rápida',
-    aw_cat_maior_confianca:'Mayor confianza de los operadores',
+    aw_cat_maior_confianca:'Mayor Confianza',
     aw_cat_melhor_iniciante:'Ideal para principiantes',
-    aw_cat_melhor_custo:'La mejor relación calidad-precio',
+    aw_cat_melhor_custo:'Mejor Costo-Beneficio',
     aw_cat_melhor_rating:'Mejor valoración general',
     aw_ribbon_forex:'EL MEJOR FOREX',
     aw_ribbon_desconto:'MEJORES OFERTAS',
@@ -4008,13 +4008,13 @@ const I18N = {
     aw_stat_categorias:'Categorie premiate',
     aw_categoria:'CATEGORIA',
     aw_vencedor:'VINCITORE',
-    aw_cat_melhor_forex:'La migliore società di trading Forex',
+    aw_cat_melhor_forex:'Miglior Prop Firm Forex',
     aw_cat_maior_desconto:'Sconto maggiore',
-    aw_cat_melhor_split:'Migliore ripartizione degli utili',
+    aw_cat_melhor_split:'Miglior Profit Split',
     aw_cat_aprovacao_rapida:'Approvazione più rapida',
-    aw_cat_maior_confianca:'Maggiore fiducia dei trader',
-    aw_cat_melhor_iniciante:'Ideale per i principianti',
-    aw_cat_melhor_custo:'Miglior rapporto qualità-prezzo',
+    aw_cat_maior_confianca:'Più Affidabile',
+    aw_cat_melhor_iniciante:'Ideale per Principianti',
+    aw_cat_melhor_custo:'Miglior Costo-Beneficio',
     aw_cat_melhor_rating:'Migliore valutazione complessiva',
     aw_ribbon_forex:'IL MIGLIOR FOREX',
     aw_ribbon_desconto:'MIGLIORI SCONTI',
@@ -4501,13 +4501,13 @@ const I18N = {
     aw_stat_categorias:'Catégories récompensées',
     aw_categoria:'CATÉGORIE',
     aw_vencedor:'VAINQUEUR',
-    aw_cat_melhor_forex:'Meilleure société de trading sur le Forex',
+    aw_cat_melhor_forex:'Meilleure Prop Firm Forex',
     aw_cat_maior_desconto:'Meilleure réduction',
-    aw_cat_melhor_split:'Meilleur partage des bénéfices',
+    aw_cat_melhor_split:'Meilleur Profit Split',
     aw_cat_aprovacao_rapida:'Approbation plus rapide',
-    aw_cat_maior_confianca:'Une confiance accrue chez les traders',
-    aw_cat_melhor_iniciante:'Idéal pour les débutants',
-    aw_cat_melhor_custo:'Meilleur rapport qualité-prix',
+    aw_cat_maior_confianca:'Plus de Confiance',
+    aw_cat_melhor_iniciante:'Idéal Débutants',
+    aw_cat_melhor_custo:'Meilleur Coût-Bénéfice',
     aw_cat_melhor_rating:'Meilleure note globale',
     aw_ribbon_forex:'MEILLEUR FOREX',
     aw_ribbon_desconto:'MEILLEURES RÉDUCTIONS',
@@ -4994,13 +4994,13 @@ const I18N = {
     aw_stat_categorias:'Ausgezeichnete Kategorien',
     aw_categoria:'KATEGORIE',
     aw_vencedor:'GEWINNER',
-    aw_cat_melhor_forex:'Beste Forex-Handelsfirma',
+    aw_cat_melhor_forex:'Beste Forex Prop Firm',
     aw_cat_maior_desconto:'Größter Rabatt',
-    aw_cat_melhor_split:'Beste Gewinnbeteiligung',
+    aw_cat_melhor_split:'Bester Profit Split',
     aw_cat_aprovacao_rapida:'Schnellere Genehmigung',
-    aw_cat_maior_confianca:'Größeres Vertrauen der Händler',
-    aw_cat_melhor_iniciante:'Am besten für Anfänger geeignet',
-    aw_cat_melhor_custo:'Bestes Preis-Leistungs-Verhältnis',
+    aw_cat_maior_confianca:'Größtes Vertrauen',
+    aw_cat_melhor_iniciante:'Ideal für Anfänger',
+    aw_cat_melhor_custo:'Bestes Preis-Leistung',
     aw_cat_melhor_rating:'Beste Gesamtbewertung',
     aw_ribbon_forex:'BESTER FOREX',
     aw_ribbon_desconto:'TOP-RABATT',
