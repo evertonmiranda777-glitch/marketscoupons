@@ -1279,7 +1279,8 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 .lrf-field input:focus{border-color:var(--gold);}
 .lrf-btn{padding:11px 28px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-family:var(--f);font-size:14px;font-weight:700;cursor:pointer;transition:.2s;}
 .lrf-btn:hover{background:#F7C948;}
-@media(max-width:700px){.loyalty-tiers{grid-template-columns:1fr 1fr;}.lmc-stats{grid-template-columns:1fr 1fr;}.lrf-grid{grid-template-columns:1fr;}}
+@media(max-width:700px){.loyalty-tiers{grid-template-columns:1fr 1fr;}.lmc-stats{grid-template-columns:1fr 1fr;}.lrf-grid{grid-template-columns:1fr;}.loyalty-benefits-grid{grid-template-columns:1fr 1fr!important;}}
+@media(max-width:400px){.loyalty-benefits-grid{grid-template-columns:1fr!important;}}
 @media(max-width:400px){.loyalty-tiers{grid-template-columns:1fr;}}
 
 /* ═══ FIRM TABS ═══ */
@@ -2205,7 +2206,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- BENEFITS CARDS -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:28px;">
+    <div class="loyalty-benefits-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
       <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
         <div style="font-size:28px;margin-bottom:8px;"></div>
         <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Live Room VIP</div>
