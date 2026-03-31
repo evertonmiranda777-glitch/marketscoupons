@@ -1689,7 +1689,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- COMPARE -->
 <div class="page" id="page-compare">
  <div class="cmp-wrap">
- <div class="cmp-h"> Comparar Prop Firms</div>
+ <div class="cmp-h" data-i18n="cmp_titulo"> Comparar Prop Firms</div>
  <div class="cmp-sub">Selecione até 3 firmas para comparar lado a lado</div>
  <div class="cmp-sels">
  <select class="cmp-sel" id="c1" onchange="renderCmp()"><option value="">-- Firma 1 --</option></select>
@@ -1801,8 +1801,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page" id="page-plataformas">
   <div class="plat-page">
     <div class="plat-hero">
-      <h2>Plataformas de Trading</h2>
-      <p>Ferramentas profissionais usadas pelos melhores traders de prop firms. Compare e escolha a ideal para seu estilo.</p>
+      <h2 data-i18n="plat_titulo">Plataformas de Trading</h2>
+      <p data-i18n="plat_sub">Ferramentas profissionais usadas pelos melhores traders de prop firms. Compare e escolha a ideal para seu estilo.</p>
     </div>
     <div class="plat-grid" id="plat-grid"></div>
   </div>
@@ -1812,12 +1812,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page" id="page-heatmap">
   <div class="heatmap-wrap">
     <div class="heatmap-hd">
-      <div class="heatmap-title"> Mapa de Calor — S&P 500</div>
+      <div class="heatmap-title" data-i18n="heatmap_full_titulo"> Mapa de Calor — S&P 500</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="cal-f active" id="hm-btn-spx" onclick="loadHeatmap('SPX500',this)">S&P 500</button>
         <button class="cal-f" id="hm-btn-ndx" onclick="loadHeatmap('NASDAQ100',this)">Nasdaq 100</button>
         <button class="cal-f" id="hm-btn-world" onclick="loadHeatmap('WORLD',this)">Global</button>
-        <button class="cal-f" id="hm-btn-crypto" onclick="loadHeatmap('CRYPTO',this)">Cripto</button>
+        <button class="cal-f" id="hm-btn-crypto" data-i18n="hm_cripto" onclick="loadHeatmap('CRYPTO',this)">Cripto</button>
       </div>
     </div>
     <iframe id="heatmap-frame" class="heatmap-frame" src="https://www.tradingview.com/embed-widget/stock-heatmap/?locale=br#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%2C%22locale%22%3A%22br%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
@@ -1826,7 +1826,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- GUIDES -->
 <div class="page" id="page-guides">
- <div class="sec"><div class="sec-hd"> Guias & Educação</div></div>
+ <div class="sec"><div class="sec-hd" data-i18n="guides_titulo"> Guias & Educação</div></div>
  <div class="guides-grid">
  <div class="gc"><div class="gc-cat" style="color:var(--blue);">Iniciante</div><div class="gc-ico"></div><div class="gc-title">O que é uma Prop Firm?</div><div class="gc-desc">Entenda como funcionam, como passar no desafio e receber sua conta financiada.</div><div class="gc-read">Ler guia →</div></div>
  <div class="gc"><div class="gc-cat" style="color:var(--gold);">Intermediário</div><div class="gc-ico"></div><div class="gc-title">Gerenciamento de Drawdown</div><div class="gc-desc">Como calcular, monitorar e evitar violar os limites das principais prop firms.</div><div class="gc-read">Ler guia →</div></div>
@@ -2479,6 +2479,15 @@ const I18N = {
     ft_desc:'Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.',
     ft_col_ferramentas:'Ferramentas', ft_col_links:'Links',
     ft_quiz:'Quiz de Firma', ft_comparador:'Comparador', ft_calendario:'Calendário', ft_indicadores:'Indicadores', ft_guias:'Guias',
+    // Pages titles
+    plat_titulo:'Plataformas de Trading',
+    plat_sub:'Ferramentas profissionais usadas pelos melhores traders de prop firms. Compare e escolha a ideal para seu estilo.',
+    cmp_titulo:'🔍 Comparar Prop Firms',
+    heatmap_full_titulo:'🌡️ Mapa de Calor — S&P 500',
+    hm_cripto:'Cripto',
+    guides_titulo:'📚 Guias & Educação',
+    // Firm types
+    firm_type_futuros:'Futuros', firm_type_forex:'Forex',
   },
   en: {
     nav_ofertas:'Offers', nav_firmas:'Firms', nav_plataformas:'Platforms', nav_indicadores:'Indicators',
@@ -2514,6 +2523,15 @@ const I18N = {
     ft_desc:'Verified coupons for the best prop firms. Professional tools for futures and forex traders.',
     ft_col_ferramentas:'Tools', ft_col_links:'Links',
     ft_quiz:'Firm Quiz', ft_comparador:'Comparator', ft_calendario:'Calendar', ft_indicadores:'Indicators', ft_guias:'Guides',
+    // Pages titles
+    plat_titulo:'Trading Platforms',
+    plat_sub:'Professional tools used by the best prop firm traders. Compare and choose the ideal one for your style.',
+    cmp_titulo:'🔍 Compare Prop Firms',
+    heatmap_full_titulo:'🌡️ Heatmap — S&P 500',
+    hm_cripto:'Crypto',
+    guides_titulo:'📚 Guides & Education',
+    // Firm types
+    firm_type_futuros:'Futures', firm_type_forex:'Forex',
   },
   es: {
     nav_ofertas:'Ofertas', nav_firmas:'Firmas', nav_plataformas:'Plataformas', nav_indicadores:'Indicadores',
@@ -2549,6 +2567,15 @@ const I18N = {
     ft_desc:'Cupones verificados para las mejores prop firms. Herramientas profesionales para traders de futuros y forex.',
     ft_col_ferramentas:'Herramientas', ft_col_links:'Enlaces',
     ft_quiz:'Quiz de Firma', ft_comparador:'Comparador', ft_calendario:'Calendario', ft_indicadores:'Indicadores', ft_guias:'Guías',
+    // Pages titles
+    plat_titulo:'Plataformas de Trading',
+    plat_sub:'Herramientas profesionales usadas por los mejores traders de prop firms. Compara y elige la ideal para tu estilo.',
+    cmp_titulo:'🔍 Comparar Prop Firms',
+    heatmap_full_titulo:'🌡️ Mapa de Calor — S&P 500',
+    hm_cripto:'Cripto',
+    guides_titulo:'📚 Guías & Educación',
+    // Firm types
+    firm_type_futuros:'Futuros', firm_type_forex:'Forex',
   },
   fr: {
     nav_ofertas:'Offres', nav_firmas:'Firmes', nav_plataformas:'Plateformes', nav_indicadores:'Indicateurs',
@@ -2577,6 +2604,15 @@ const I18N = {
     ft_desc:'Coupons vérifiés pour les meilleures prop firms. Outils professionnels pour les traders de futures et forex.',
     ft_col_ferramentas:'Outils', ft_col_links:'Liens',
     ft_quiz:'Quiz Firme', ft_comparador:'Comparateur', ft_calendario:'Calendrier', ft_indicadores:'Indicateurs', ft_guias:'Guides',
+    // Pages titles
+    plat_titulo:'Plateformes de Trading',
+    plat_sub:'Outils professionnels utilisés par les meilleurs traders de prop firms. Comparez et choisissez le meilleur pour votre style.',
+    cmp_titulo:'🔍 Comparer les Prop Firms',
+    heatmap_full_titulo:'🌡️ Carte Thermique — S&P 500',
+    hm_cripto:'Crypto',
+    guides_titulo:'📚 Guides & Éducation',
+    // Firm types
+    firm_type_futuros:'Futures', firm_type_forex:'Forex',
   },
   de: {
     nav_ofertas:'Angebote', nav_firmas:'Firmen', nav_plataformas:'Plattformen', nav_indicadores:'Indikatoren',
@@ -2604,6 +2640,15 @@ const I18N = {
     ft_desc:'Geprüfte Gutscheine für die besten Prop Firms. Professionelle Tools für Futures- und Forex-Trader.',
     ft_col_ferramentas:'Tools', ft_col_links:'Links',
     ft_quiz:'Firmen-Quiz', ft_comparador:'Vergleicher', ft_calendario:'Kalender', ft_indicadores:'Indikatoren', ft_guias:'Leitfäden',
+    // Pages titles
+    plat_titulo:'Trading-Plattformen',
+    plat_sub:'Professionelle Tools der besten Prop-Firm-Trader. Vergleiche und wähle das Ideale für deinen Stil.',
+    cmp_titulo:'🔍 Prop Firms vergleichen',
+    heatmap_full_titulo:'🌡️ Heatmap — S&P 500',
+    hm_cripto:'Krypto',
+    guides_titulo:'📚 Leitfäden & Bildung',
+    // Firm types
+    firm_type_futuros:'Futures', firm_type_forex:'Forex',
   },
   it: {
     nav_ofertas:'Offerte', nav_firmas:'Aziende', nav_plataformas:'Piattaforme', nav_indicadores:'Indicatori',
@@ -2640,6 +2685,15 @@ const I18N = {
     ft_desc:'Coupon verificati per le migliori prop firm. Strumenti professionali per trader di futures e forex.',
     ft_col_ferramentas:'Strumenti', ft_col_links:'Link',
     ft_quiz:'Quiz Azienda', ft_comparador:'Comparatore', ft_calendario:'Calendario', ft_indicadores:'Indicatori', ft_guias:'Guide',
+    // Pages titles
+    plat_titulo:'Piattaforme di Trading',
+    plat_sub:'Strumenti professionali usati dai migliori trader di prop firm. Confronta e scegli quello ideale per il tuo stile.',
+    cmp_titulo:'🔍 Confronta Prop Firms',
+    heatmap_full_titulo:'🌡️ Mappa di Calore — S&P 500',
+    hm_cripto:'Cripto',
+    guides_titulo:'📚 Guide & Formazione',
+    // Firm types
+    firm_type_futuros:'Futures', firm_type_forex:'Forex',
   },
   ar: {
     nav_ofertas:'عروض', nav_firmas:'شركات', nav_plataformas:'منصات', nav_indicadores:'مؤشرات',
@@ -2666,6 +2720,15 @@ const I18N = {
     ft_desc:'كوبونات موثقة لأفضل شركات Prop. أدوات احترافية لمتداولي العقود الآجلة والفوركس.',
     ft_col_ferramentas:'أدوات', ft_col_links:'روابط',
     ft_quiz:'اختبار الشركة', ft_comparador:'مقارنة', ft_calendario:'التقويم', ft_indicadores:'مؤشرات', ft_guias:'أدلة',
+    // Pages titles
+    plat_titulo:'منصات التداول',
+    plat_sub:'أدوات احترافية يستخدمها أفضل متداولي Prop Firms. قارن واختر المثالي لأسلوبك.',
+    cmp_titulo:'🔍 مقارنة Prop Firms',
+    heatmap_full_titulo:'🌡️ خريطة حرارية — S&P 500',
+    hm_cripto:'كريبتو',
+    guides_titulo:'📚 الأدلة والتعليم',
+    // Firm types
+    firm_type_futuros:'عقود آجلة', firm_type_forex:'فوركس',
   }
 };
 let _currentLang = 'pt';
@@ -2698,7 +2761,7 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); renderOffers(); renderAwards(); renderFaq(); applyF();
+  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); applyF();
   track('language_change',{language:lang});
 }
 function initLang() {
@@ -2722,7 +2785,7 @@ function renderHome(){
   g.innerHTML=[...FIRMS].sort((a,b)=>b.discount-a.discount).map(f=>`
     <div class="oc">
       <div class="oc-top" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="cursor:pointer;">
-        <div class="oc-left">${firmIco(f,'36px','13px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type}</div></div></div>
+        <div class="oc-left">${firmIco(f,'36px','13px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};">${f.discount}%</div><div class="oc-off">off ${f.dtype}</div></div>
       </div>
       ${f.coupon?`<div class="oc-coupon"><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>`:'<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);"><span style="font-size:11px;color:var(--green);font-weight:600;">Desconto aplicado no link</span></div>'}
@@ -2745,7 +2808,7 @@ function renderFirms(list){
         <div class="fr-info">
           <div class="fr-name">${f.name}</div>
           <div class="fr-tags">
-            <span class="fr-tag" style="background:${f.bg};color:${f.color};">${f.type}</span>
+            <span class="fr-tag" style="background:${f.bg};color:${f.color};">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</span>
             <span class="fr-tag" style="background:var(--gbg);color:var(--gold);">${f.discount}% OFF</span>
             ${f.platforms.slice(0,2).map(p=>`<span class="fr-tag" style="background:rgba(74,85,104,.12);color:var(--t3);">${p}</span>`).join('')}
           </div>
@@ -2882,7 +2945,7 @@ function renderOffers(){
         <div class="offer-card-info">
           ${f.badge?`<div class="offer-badge" style="color:${f.badge.color};background:${f.badge.bg};border:1px solid ${f.badge.color}40;">⭐ ${f.badge.label}</div>`:''}
           <div class="offer-card-name">${f.name}</div>
-          <div class="offer-card-type">${f.type} · ${f.platforms.slice(0,2).join(', ')}</div>
+          <div class="offer-card-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.platforms.slice(0,2).join(', ')}</div>
         </div>
         <div style="text-align:right;flex-shrink:0;">
           <div class="offer-disc-big">${f.discount}%</div>
@@ -2937,7 +3000,7 @@ function openD(id){
     icoEl.textContent=f.icon;
   }
   document.getElementById('d-name').textContent=f.name;
-  document.getElementById('d-sub').textContent=`${f.type} · ${f.discount}% OFF · Split ${f.split}`;
+  document.getElementById('d-sub').textContent=`${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.discount}% OFF · Split ${f.split}`;
 
   // Find matching CHECKOUT_FIRM for inline selectors
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
@@ -3476,109 +3539,371 @@ function qfinish(){
 function qreset(){qA={};qStep=0;document.querySelectorAll('.qstep').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('sel'));document.getElementById('qs0').classList.add('active');}
 
 /* PLATAFORMAS DE TRADING */
-const PLATFORMS = [
-  {
-    id: 'tradingview',
-    name: 'TradingView',
-    type: 'Gráficos & Análise',
-    color: '#2962FF',
-    bg: 'rgba(41,98,255,0.12)',
-    icon: 'TV',
-    discount: 17,
-    dtype: 'plano anual',
-    coupon: null,
-    link: 'https://tradingview.com/?aff_id=164855',
-    desc: 'A plataforma de gráficos mais usada do mundo. Acesso a dados de futuros, forex, ações e cripto. Indicadores profissionais, alertas e comunidade de traders. <strong style="color:var(--gold);">Receba $15 assim que você adquirir sua primeira assinatura.</strong>',
-    features: ['Gráficos avançados','Indicadores personalizados','Alertas em tempo real','Scripts Pine','Screener de ativos','Dados de múltiplos mercados'],
-    highlight: true,
-    badge: '17% OFF Anual',
-  },
-  {
-    id: 'rithmic',
-    name: 'Rithmic',
-    type: 'Execução de Ordens',
-    color: '#F97316',
-    bg: 'rgba(249,115,22,0.12)',
-    icon: 'R',
-    discount: 0,
-    dtype: '',
-    coupon: null,
-    link: 'https://rithmic.com',
-    desc: 'Feed de dados e execução de ordens de baixa latência para futuros. Padrão da indústria de prop firms (Apex, Bulenox, E2T).',
-    features: ['Ultra baixa latência','Dados CME/CBOT/NYMEX','Order Routing','API para automação','Suporte 24/7'],
-    highlight: false,
-    badge: 'Padrão Prop Firms',
-  },
-  {
-    id: 'ninjatrader',
-    name: 'NinjaTrader',
-    type: 'Plataforma de Trading',
-    color: '#8B5CF6',
-    bg: 'rgba(139,92,246,0.12)',
-    icon: 'NT',
-    discount: 0,
-    dtype: '',
-    coupon: null,
-    link: 'https://ninjatrader.com',
-    desc: 'Plataforma gratuita para futuros com backtesting avançado, automação e marketplace de indicadores. Aceita pela maioria das prop firms.',
-    features: ['Grátis para dados EOD','Backtesting avançado','Automação (NinjaScript)','Marketplace indicadores','Multi-broker'],
-    highlight: false,
-    badge: 'Grátis disponível',
-  },
-  {
-    id: 'tradovate',
-    name: 'Tradovate',
-    type: 'Plataforma de Trading',
-    color: '#06B6D4',
-    bg: 'rgba(6,182,212,0.12)',
-    icon: 'TV',
-    discount: 0,
-    dtype: '',
-    coupon: null,
-    link: 'https://tradovate.com',
-    desc: 'Plataforma baseada em nuvem para futuros. Excelente interface, dados integrados e suporte a múltiplos dispositivos.',
-    features: ['Baseado em nuvem','Interface moderna','Dados integrados','Mobile app','DOM avançado'],
-    highlight: false,
-    badge: 'Cloud-based',
-  },
-  {
-    id: 'mt5',
-    name: 'MetaTrader 5',
-    type: 'Forex & CFDs',
-    color: '#22C55E',
-    bg: 'rgba(34,197,94,0.12)',
-    icon: 'M5',
-    discount: 0,
-    dtype: '',
-    coupon: null,
-    link: 'https://metatrader5.com',
-    desc: 'Plataforma padrão do mercado Forex. Indicadores técnicos, EAs, backtesting e suporte à maioria das prop firms de Forex.',
-    features: ['100+ indicadores','Expert Advisors (EAs)','Strategy Tester','Múltiplos brokers','Mobile app'],
-    highlight: false,
-    badge: 'Padrão Forex',
-  },
-  {
-    id: 'wealthcharts',
-    name: 'WealthCharts',
-    type: 'Gráficos & Análise',
-    color: '#F59E0B',
-    bg: 'rgba(245,158,11,0.12)',
-    icon: 'WC',
-    discount: 0,
-    dtype: '',
-    coupon: null,
-    link: 'https://wealthcharts.com',
-    desc: 'Plataforma de gráficos e análise usada pela Apex Trader Funding. Copy trading, indicadores de order flow e análise de mercado.',
-    features: ['Copy Trading Apex','Order Flow','Market Analysis','Indicadores premium','Integração Apex'],
-    highlight: false,
-    badge: 'Parceira Apex',
-  },
-];
+const PLATFORMS_LANGS = {
+  pt: [
+    {
+      id: 'tradingview', name: 'TradingView', type: 'Gráficos & Análise',
+      color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
+      discount: 17, dtype: 'plano anual', coupon: null,
+      link: 'https://tradingview.com/?aff_id=164855',
+      desc: 'A plataforma de gráficos mais usada do mundo. Acesso a dados de futuros, forex, ações e cripto. Indicadores profissionais, alertas e comunidade de traders. <strong style="color:var(--gold);">Receba $15 assim que você adquirir sua primeira assinatura.</strong>',
+      features: ['Gráficos avançados','Indicadores personalizados','Alertas em tempo real','Scripts Pine','Screener de ativos','Dados de múltiplos mercados'],
+      highlight: true, badge: '17% OFF Anual',
+    },
+    {
+      id: 'rithmic', name: 'Rithmic', type: 'Execução de Ordens',
+      color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
+      discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
+      desc: 'Feed de dados e execução de ordens de baixa latência para futuros. Padrão da indústria de prop firms (Apex, Bulenox, E2T).',
+      features: ['Ultra baixa latência','Dados CME/CBOT/NYMEX','Order Routing','API para automação','Suporte 24/7'],
+      highlight: false, badge: 'Padrão Prop Firms',
+    },
+    {
+      id: 'ninjatrader', name: 'NinjaTrader', type: 'Plataforma de Trading',
+      color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
+      discount: 0, dtype: '', coupon: null, link: 'https://ninjatrader.com',
+      desc: 'Plataforma gratuita para futuros com backtesting avançado, automação e marketplace de indicadores. Aceita pela maioria das prop firms.',
+      features: ['Grátis para dados EOD','Backtesting avançado','Automação (NinjaScript)','Marketplace indicadores','Multi-broker'],
+      highlight: false, badge: 'Grátis disponível',
+    },
+    {
+      id: 'tradovate', name: 'Tradovate', type: 'Plataforma de Trading',
+      color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
+      discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
+      desc: 'Plataforma baseada em nuvem para futuros. Excelente interface, dados integrados e suporte a múltiplos dispositivos.',
+      features: ['Baseado em nuvem','Interface moderna','Dados integrados','Mobile app','DOM avançado'],
+      highlight: false, badge: 'Cloud-based',
+    },
+    {
+      id: 'mt5', name: 'MetaTrader 5', type: 'Forex & CFDs',
+      color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
+      discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
+      desc: 'Plataforma padrão do mercado Forex. Indicadores técnicos, EAs, backtesting e suporte à maioria das prop firms de Forex.',
+      features: ['100+ indicadores','Expert Advisors (EAs)','Strategy Tester','Múltiplos brokers','Mobile app'],
+      highlight: false, badge: 'Padrão Forex',
+    },
+    {
+      id: 'wealthcharts', name: 'WealthCharts', type: 'Gráficos & Análise',
+      color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
+      discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
+      desc: 'Plataforma de gráficos e análise usada pela Apex Trader Funding. Copy trading, indicadores de order flow e análise de mercado.',
+      features: ['Copy Trading Apex','Order Flow','Market Analysis','Indicadores premium','Integração Apex'],
+      highlight: false, badge: 'Parceira Apex',
+    },
+  ],
+  en: [
+    {
+      id: 'tradingview', name: 'TradingView', type: 'Charts & Analysis',
+      color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
+      discount: 17, dtype: 'annual plan', coupon: null,
+      link: 'https://tradingview.com/?aff_id=164855',
+      desc: 'The world\'s most used charting platform. Access to futures, forex, stocks and crypto data. Professional indicators, alerts and trader community. <strong style="color:var(--gold);">Receive $15 when you get your first subscription.</strong>',
+      features: ['Advanced charts','Custom indicators','Real-time alerts','Pine Scripts','Asset screener','Multi-market data'],
+      highlight: true, badge: '17% OFF Annual',
+    },
+    {
+      id: 'rithmic', name: 'Rithmic', type: 'Order Execution',
+      color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
+      discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
+      desc: 'Low-latency data feed and order execution for futures. Industry standard for prop firms (Apex, Bulenox, E2T).',
+      features: ['Ultra-low latency','CME/CBOT/NYMEX data','Order Routing','Automation API','24/7 support'],
+      highlight: false, badge: 'Prop Firms Standard',
+    },
+    {
+      id: 'ninjatrader', name: 'NinjaTrader', type: 'Trading Platform',
+      color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
+      discount: 0, dtype: '', coupon: null, link: 'https://ninjatrader.com',
+      desc: 'Free futures platform with advanced backtesting, automation and indicators marketplace. Accepted by most prop firms.',
+      features: ['Free for EOD data','Advanced backtesting','Automation (NinjaScript)','Indicators marketplace','Multi-broker'],
+      highlight: false, badge: 'Free available',
+    },
+    {
+      id: 'tradovate', name: 'Tradovate', type: 'Trading Platform',
+      color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
+      discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
+      desc: 'Cloud-based futures platform. Excellent interface, integrated data and multi-device support.',
+      features: ['Cloud-based','Modern interface','Integrated data','Mobile app','Advanced DOM'],
+      highlight: false, badge: 'Cloud-based',
+    },
+    {
+      id: 'mt5', name: 'MetaTrader 5', type: 'Forex & CFDs',
+      color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
+      discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
+      desc: 'Standard Forex market platform. Technical indicators, EAs, backtesting and support for most Forex prop firms.',
+      features: ['100+ indicators','Expert Advisors (EAs)','Strategy Tester','Multiple brokers','Mobile app'],
+      highlight: false, badge: 'Forex Standard',
+    },
+    {
+      id: 'wealthcharts', name: 'WealthCharts', type: 'Charts & Analysis',
+      color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
+      discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
+      desc: 'Charting and analysis platform used by Apex Trader Funding. Copy trading, order flow indicators and market analysis.',
+      features: ['Copy Trading Apex','Order Flow','Market Analysis','Premium indicators','Apex integration'],
+      highlight: false, badge: 'Apex Partner',
+    },
+  ],
+  es: [
+    {
+      id: 'tradingview', name: 'TradingView', type: 'Gráficos & Análisis',
+      color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
+      discount: 17, dtype: 'plan anual', coupon: null,
+      link: 'https://tradingview.com/?aff_id=164855',
+      desc: 'La plataforma de gráficos más usada del mundo. Acceso a datos de futuros, forex, acciones y cripto. <strong style="color:var(--gold);">Recibe $15 al contratar tu primera suscripción.</strong>',
+      features: ['Gráficos avanzados','Indicadores personalizados','Alertas en tiempo real','Scripts Pine','Screener de activos','Datos multi-mercado'],
+      highlight: true, badge: '17% OFF Anual',
+    },
+    {
+      id: 'rithmic', name: 'Rithmic', type: 'Ejecución de Órdenes',
+      color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
+      discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
+      desc: 'Feed de datos y ejecución de órdenes de baja latencia para futuros. Estándar de la industria de prop firms.',
+      features: ['Ultra baja latencia','Datos CME/CBOT/NYMEX','Order Routing','API para automatización','Soporte 24/7'],
+      highlight: false, badge: 'Estándar Prop Firms',
+    },
+    {
+      id: 'ninjatrader', name: 'NinjaTrader', type: 'Plataforma de Trading',
+      color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
+      discount: 0, dtype: '', coupon: null, link: 'https://ninjatrader.com',
+      desc: 'Plataforma gratuita para futuros con backtesting avanzado, automatización y marketplace de indicadores.',
+      features: ['Gratis para datos EOD','Backtesting avanzado','Automatización (NinjaScript)','Marketplace indicadores','Multi-broker'],
+      highlight: false, badge: 'Gratis disponible',
+    },
+    {
+      id: 'tradovate', name: 'Tradovate', type: 'Plataforma de Trading',
+      color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
+      discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
+      desc: 'Plataforma en la nube para futuros. Excelente interfaz, datos integrados y soporte multi-dispositivo.',
+      features: ['Basado en la nube','Interfaz moderna','Datos integrados','App móvil','DOM avanzado'],
+      highlight: false, badge: 'Cloud-based',
+    },
+    {
+      id: 'mt5', name: 'MetaTrader 5', type: 'Forex & CFDs',
+      color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
+      discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
+      desc: 'Plataforma estándar del mercado Forex. Indicadores técnicos, EAs, backtesting y soporte para prop firms de Forex.',
+      features: ['100+ indicadores','Expert Advisors (EAs)','Strategy Tester','Múltiples brokers','App móvil'],
+      highlight: false, badge: 'Estándar Forex',
+    },
+    {
+      id: 'wealthcharts', name: 'WealthCharts', type: 'Gráficos & Análisis',
+      color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
+      discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
+      desc: 'Plataforma de gráficos y análisis usada por Apex. Copy trading, indicadores de order flow y análisis de mercado.',
+      features: ['Copy Trading Apex','Order Flow','Análisis de mercado','Indicadores premium','Integración Apex'],
+      highlight: false, badge: 'Socia de Apex',
+    },
+  ],
+  it: [
+    {
+      id: 'tradingview', name: 'TradingView', type: 'Grafici & Analisi',
+      color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
+      discount: 17, dtype: 'piano annuale', coupon: null,
+      link: 'https://tradingview.com/?aff_id=164855',
+      desc: 'La piattaforma di grafici più usata al mondo. Accesso a dati futures, forex, azioni e cripto. <strong style="color:var(--gold);">Ricevi $15 con il tuo primo abbonamento.</strong>',
+      features: ['Grafici avanzati','Indicatori personalizzati','Avvisi in tempo reale','Script Pine','Screener di attivi','Dati multi-mercato'],
+      highlight: true, badge: '17% OFF Annuale',
+    },
+    {
+      id: 'rithmic', name: 'Rithmic', type: 'Esecuzione Ordini',
+      color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
+      discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
+      desc: 'Feed dati ed esecuzione ordini a bassa latenza per futures. Standard del settore prop firm.',
+      features: ['Latenza ultra-bassa','Dati CME/CBOT/NYMEX','Order Routing','API automazione','Supporto 24/7'],
+      highlight: false, badge: 'Standard Prop Firms',
+    },
+    {
+      id: 'ninjatrader', name: 'NinjaTrader', type: 'Piattaforma di Trading',
+      color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
+      discount: 0, dtype: '', coupon: null, link: 'https://ninjatrader.com',
+      desc: 'Piattaforma gratuita per futures con backtesting avanzato, automazione e marketplace di indicatori.',
+      features: ['Gratis per dati EOD','Backtesting avanzato','Automazione (NinjaScript)','Marketplace indicatori','Multi-broker'],
+      highlight: false, badge: 'Gratis disponibile',
+    },
+    {
+      id: 'tradovate', name: 'Tradovate', type: 'Piattaforma di Trading',
+      color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
+      discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
+      desc: 'Piattaforma cloud per futures. Eccellente interfaccia, dati integrati e supporto multi-dispositivo.',
+      features: ['Basato su cloud','Interfaccia moderna','Dati integrati','App mobile','DOM avanzato'],
+      highlight: false, badge: 'Cloud-based',
+    },
+    {
+      id: 'mt5', name: 'MetaTrader 5', type: 'Forex & CFDs',
+      color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
+      discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
+      desc: 'Piattaforma standard del mercato Forex. Indicatori tecnici, EA, backtesting e supporto per prop firm Forex.',
+      features: ['100+ indicatori','Expert Advisors (EAs)','Strategy Tester','Più broker','App mobile'],
+      highlight: false, badge: 'Standard Forex',
+    },
+    {
+      id: 'wealthcharts', name: 'WealthCharts', type: 'Grafici & Analisi',
+      color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
+      discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
+      desc: 'Piattaforma di grafici e analisi usata da Apex. Copy trading, indicatori di order flow e analisi di mercato.',
+      features: ['Copy Trading Apex','Order Flow','Analisi di mercato','Indicatori premium','Integrazione Apex'],
+      highlight: false, badge: 'Partner Apex',
+    },
+  ],
+  fr: [
+    {
+      id: 'tradingview', name: 'TradingView', type: 'Graphiques & Analyse',
+      color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
+      discount: 17, dtype: 'plan annuel', coupon: null,
+      link: 'https://tradingview.com/?aff_id=164855',
+      desc: 'La plateforme de graphiques la plus utilisée au monde. Accès aux données futures, forex, actions et crypto. <strong style="color:var(--gold);">Recevez 15$ avec votre premier abonnement.</strong>',
+      features: ['Graphiques avancés','Indicateurs personnalisés','Alertes en temps réel','Scripts Pine','Screener d\'actifs','Données multi-marchés'],
+      highlight: true, badge: '17% OFF Annuel',
+    },
+    {
+      id: 'rithmic', name: 'Rithmic', type: 'Exécution d\'Ordres',
+      color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
+      discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
+      desc: 'Flux de données et exécution d\'ordres à faible latence pour les futures. Standard de l\'industrie des prop firms.',
+      features: ['Ultra faible latence','Données CME/CBOT/NYMEX','Order Routing','API d\'automatisation','Support 24/7'],
+      highlight: false, badge: 'Standard Prop Firms',
+    },
+    {
+      id: 'ninjatrader', name: 'NinjaTrader', type: 'Plateforme de Trading',
+      color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
+      discount: 0, dtype: '', coupon: null, link: 'https://ninjatrader.com',
+      desc: 'Plateforme gratuite pour les futures avec backtesting avancé, automatisation et marketplace d\'indicateurs.',
+      features: ['Gratuit pour données EOD','Backtesting avancé','Automatisation (NinjaScript)','Marketplace indicateurs','Multi-broker'],
+      highlight: false, badge: 'Gratuit disponible',
+    },
+    {
+      id: 'tradovate', name: 'Tradovate', type: 'Plateforme de Trading',
+      color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
+      discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
+      desc: 'Plateforme cloud pour les futures. Excellente interface, données intégrées et support multi-appareils.',
+      features: ['Basé sur le cloud','Interface moderne','Données intégrées','App mobile','DOM avancé'],
+      highlight: false, badge: 'Cloud-based',
+    },
+    {
+      id: 'mt5', name: 'MetaTrader 5', type: 'Forex & CFDs',
+      color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
+      discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
+      desc: 'Plateforme standard du marché Forex. Indicateurs techniques, EAs, backtesting et support pour les prop firms Forex.',
+      features: ['100+ indicateurs','Expert Advisors (EAs)','Strategy Tester','Plusieurs courtiers','App mobile'],
+      highlight: false, badge: 'Standard Forex',
+    },
+    {
+      id: 'wealthcharts', name: 'WealthCharts', type: 'Graphiques & Analyse',
+      color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
+      discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
+      desc: 'Plateforme de graphiques et d\'analyse utilisée par Apex. Copy trading, indicateurs de flux d\'ordres et analyse de marché.',
+      features: ['Copy Trading Apex','Order Flow','Analyse de marché','Indicateurs premium','Intégration Apex'],
+      highlight: false, badge: 'Partenaire Apex',
+    },
+  ],
+  de: [
+    {
+      id: 'tradingview', name: 'TradingView', type: 'Charts & Analyse',
+      color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
+      discount: 17, dtype: 'Jahresplan', coupon: null,
+      link: 'https://tradingview.com/?aff_id=164855',
+      desc: 'Die weltweit meistgenutzte Charting-Plattform. Zugang zu Futures-, Forex-, Aktien- und Krypto-Daten. <strong style="color:var(--gold);">Erhalte $15 mit deinem ersten Abonnement.</strong>',
+      features: ['Erweiterte Charts','Benutzerdefinierte Indikatoren','Echtzeit-Benachrichtigungen','Pine Scripts','Asset Screener','Multi-Markt-Daten'],
+      highlight: true, badge: '17% RABATT Jährlich',
+    },
+    {
+      id: 'rithmic', name: 'Rithmic', type: 'Orderausführung',
+      color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
+      discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
+      desc: 'Niedriglatenz-Datenfeed und Orderausführung für Futures. Branchenstandard für Prop Firms.',
+      features: ['Ultra-niedrige Latenz','CME/CBOT/NYMEX-Daten','Order Routing','Automatisierungs-API','24/7 Support'],
+      highlight: false, badge: 'Prop Firms Standard',
+    },
+    {
+      id: 'ninjatrader', name: 'NinjaTrader', type: 'Trading-Plattform',
+      color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
+      discount: 0, dtype: '', coupon: null, link: 'https://ninjatrader.com',
+      desc: 'Kostenlose Futures-Plattform mit erweitertem Backtesting, Automatisierung und Indikator-Marktplatz.',
+      features: ['Kostenlos für EOD-Daten','Erweitertes Backtesting','Automatisierung (NinjaScript)','Indikator-Marktplatz','Multi-broker'],
+      highlight: false, badge: 'Kostenlos verfügbar',
+    },
+    {
+      id: 'tradovate', name: 'Tradovate', type: 'Trading-Plattform',
+      color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
+      discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
+      desc: 'Cloud-basierte Futures-Plattform. Exzellente Benutzeroberfläche, integrierte Daten und Multi-Device-Support.',
+      features: ['Cloud-basiert','Moderne Oberfläche','Integrierte Daten','Mobile App','Erweitertes DOM'],
+      highlight: false, badge: 'Cloud-based',
+    },
+    {
+      id: 'mt5', name: 'MetaTrader 5', type: 'Forex & CFDs',
+      color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
+      discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
+      desc: 'Standard-Forex-Marktplattform. Technische Indikatoren, EAs, Backtesting und Unterstützung für Forex-Prop-Firms.',
+      features: ['100+ Indikatoren','Expert Advisors (EAs)','Strategy Tester','Mehrere Broker','Mobile App'],
+      highlight: false, badge: 'Forex-Standard',
+    },
+    {
+      id: 'wealthcharts', name: 'WealthCharts', type: 'Charts & Analyse',
+      color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
+      discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
+      desc: 'Chart- und Analyseplattform von Apex Trader Funding. Copy Trading, Order-Flow-Indikatoren und Marktanalyse.',
+      features: ['Copy Trading Apex','Order Flow','Marktanalyse','Premium-Indikatoren','Apex-Integration'],
+      highlight: false, badge: 'Apex-Partner',
+    },
+  ],
+  ar: [
+    {
+      id: 'tradingview', name: 'TradingView', type: 'الرسوم البيانية والتحليل',
+      color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
+      discount: 17, dtype: 'خطة سنوية', coupon: null,
+      link: 'https://tradingview.com/?aff_id=164855',
+      desc: 'منصة الرسوم البيانية الأكثر استخداماً في العالم. وصول لبيانات العقود الآجلة والفوركس والأسهم والكريبتو. <strong style="color:var(--gold);">احصل على $15 مع أول اشتراك.</strong>',
+      features: ['رسوم بيانية متقدمة','مؤشرات مخصصة','تنبيهات فورية','نصوص Pine','فاحص الأصول','بيانات متعددة الأسواق'],
+      highlight: true, badge: '17% خصم سنوي',
+    },
+    {
+      id: 'rithmic', name: 'Rithmic', type: 'تنفيذ الأوامر',
+      color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
+      discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
+      desc: 'تغذية بيانات وتنفيذ أوامر منخفض الكمون للعقود الآجلة. معيار صناعة شركات Prop.',
+      features: ['كمون منخفض جداً','بيانات CME/CBOT/NYMEX','توجيه الأوامر','واجهة برمجية للأتمتة','دعم 24/7'],
+      highlight: false, badge: 'معيار Prop Firms',
+    },
+    {
+      id: 'ninjatrader', name: 'NinjaTrader', type: 'منصة تداول',
+      color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
+      discount: 0, dtype: '', coupon: null, link: 'https://ninjatrader.com',
+      desc: 'منصة مجانية للعقود الآجلة مع اختبار متقدم وأتمتة وسوق مؤشرات.',
+      features: ['مجاني لبيانات EOD','اختبار متقدم','أتمتة (NinjaScript)','سوق المؤشرات','متعدد الوسطاء'],
+      highlight: false, badge: 'متاح مجاناً',
+    },
+    {
+      id: 'tradovate', name: 'Tradovate', type: 'منصة تداول',
+      color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
+      discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
+      desc: 'منصة سحابية للعقود الآجلة. واجهة ممتازة وبيانات متكاملة ودعم متعدد الأجهزة.',
+      features: ['قائم على السحابة','واجهة حديثة','بيانات متكاملة','تطبيق موبايل','DOM متقدم'],
+      highlight: false, badge: 'Cloud-based',
+    },
+    {
+      id: 'mt5', name: 'MetaTrader 5', type: 'Forex & CFDs',
+      color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
+      discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
+      desc: 'منصة السوق الفوركسي القياسية. مؤشرات تقنية وEAs واختبار وسطاء Prop Forex.',
+      features: ['100+ مؤشر','مستشارو الخبراء (EAs)','Strategy Tester','وسطاء متعددون','تطبيق موبايل'],
+      highlight: false, badge: 'معيار فوركس',
+    },
+    {
+      id: 'wealthcharts', name: 'WealthCharts', type: 'الرسوم البيانية والتحليل',
+      color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
+      discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
+      desc: 'منصة رسوم بيانية وتحليل تستخدمها Apex. تداول نسخ ومؤشرات تدفق الأوامر وتحليل السوق.',
+      features: ['Copy Trading Apex','تدفق الأوامر','تحليل السوق','مؤشرات متميزة','تكامل Apex'],
+      highlight: false, badge: 'شريك Apex',
+    },
+  ],
+};
+function getPlatforms() { return PLATFORMS_LANGS[_currentLang] || PLATFORMS_LANGS.pt; }
 
 function renderPlatforms() {
   const g = document.getElementById('plat-grid');
   if (!g) return;
-  g.innerHTML = PLATFORMS.map(p => `
+  g.innerHTML = getPlatforms().map(p => `
     <div class="plat-card${p.highlight?' plat-card-featured':''}">
       ${p.highlight ? `<div style="background:var(--gold);color:#07090D;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:5px 12px;text-align:center;">⭐ Oferta Exclusiva — ${p.discount}% OFF no Plano Anual</div>` : ''}
       <div class="plat-card-top">
