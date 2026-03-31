@@ -425,26 +425,25 @@ img{max-width:100%;}
 .cnt{font-size:12px;color:var(--t2);}
 .cnt strong{color:var(--t1);}
 .sort-sel{padding:5px 9px;background:var(--card);border:1px solid var(--b2);border-radius:6px;color:var(--t2);font-family:var(--f);font-size:12px;outline:none;}
-.firms-list{display:flex;flex-direction:column;gap:8px;}
+.firms-list{display:flex;flex-direction:column;gap:10px;}
 .fr{
- background:var(--card);border:1px solid var(--b1);border-radius:9px;
- padding:12px 16px;cursor:pointer;transition:all .2s;
- display:grid;grid-template-columns:40px 1fr auto auto;align-items:center;gap:12px;
+ background:var(--card);border:1px solid var(--b1);border-radius:12px;
+ padding:16px;cursor:pointer;transition:all .2s;
+ display:flex;flex-direction:column;gap:10px;
 }
-.fr:hover{border-color:var(--b2);background:var(--card2);transform:translateX(2px);}
+.fr:hover{border-color:var(--b2);background:var(--card2);}
 .fr.active{border-color:var(--gold);}
-.fr-ico{width:38px;height:38px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;}
-.fr-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.fr-header{display:flex;align-items:center;gap:12px;}
+.fr-info{flex:1;min-width:0;}
+.fr-name{font-size:14px;font-weight:700;margin-bottom:3px;}
 .fr-tags{display:flex;gap:4px;flex-wrap:wrap;}
-.fr-tag{font-size:9px;font-weight:600;padding:1px 6px;border-radius:3px;}
-.fr-mets{display:flex;gap:14px;}
+.fr-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;}
+.fr-disc-badge{font-size:22px;font-weight:800;text-align:right;line-height:1;flex-shrink:0;}
+.fr-disc-badge span{display:block;font-size:9px;font-weight:600;text-transform:uppercase;opacity:.7;margin-top:2px;}
+.fr-mets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px;}
 .fmet .mv{font-size:13px;font-weight:700;text-align:center;}
-.fmet .ml{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;text-align:center;margin-top:1px;}
-.fr-acts{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.stars-r{display:flex;gap:1px;}
-.stars-r span{color:var(--gold);font-size:10px;}
-.rv{font-size:10px;color:var(--t3);margin-left:3px;}
-.fr-btns{display:flex;gap:5px;}
+.fmet .ml{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;text-align:center;margin-top:2px;}
+.fr-btns{display:flex;gap:6px;}
 .cpill{padding:3px 8px;border-radius:4px;background:var(--gbg);border:1px solid var(--gbr);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.4px;transition:.15s;}
 .cpill:hover{background:rgba(240,180,41,.2);}
 .det-btn{padding:5px 10px;border-radius:6px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:500;transition:.2s;}
@@ -476,8 +475,8 @@ img{max-width:100%;}
 .drw-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;}
 .drw-name{font-size:15px;font-weight:700;}
 .drw-sub{font-size:11px;color:var(--t2);margin-top:2px;}
-.x-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:15px;display:flex;align-items:center;justify-content:center;transition:.2s;}
-.x-btn:hover{border-color:var(--red);color:var(--red);}
+.x-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--b2);background:var(--card);color:var(--t1);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;}
+.x-btn:hover{border-color:var(--red);color:var(--red);background:var(--rbg);}
 .drw-body{padding:18px 20px;}
 .rating-blk{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--b1);border-radius:9px;margin-bottom:12px;}
 .rb-score{font-size:30px;font-weight:800;letter-spacing:-1px;}
@@ -492,6 +491,13 @@ img{max-width:100%;}
 .drw-tp-star.filled{color:#00b67a;}
 .drw-tp-info{font-size:11px;color:var(--t2);}
 .drw-tp-info b{color:#00b67a;}
+/* Trustpilot popup */
+.tp-popup-ov{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;}
+.tp-popup-ov.open{display:flex;}
+.tp-popup{width:min(680px,94vw);height:min(520px,80vh);background:var(--sur);border:1px solid var(--b2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+.tp-popup-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--b1);}
+.tp-popup-title{font-size:14px;font-weight:700;color:#00b67a;}
+.tp-popup iframe{flex:1;border:none;width:100%;background:#fff;}
 .cpn-blk{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:9px;margin-bottom:12px;}
 .cpn-lbl{font-size:10px;color:var(--t2);margin-bottom:3px;}
 .cpn-code{font-size:15px;font-weight:800;letter-spacing:2px;color:var(--gold);}
@@ -704,10 +710,12 @@ img{max-width:100%;}
 .drw-btn{padding:7px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;font-family:var(--f);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;white-space:nowrap;}
 .drw-btn:hover{border-color:var(--b2);color:var(--t1);}
 .drw-btn.sel{background:var(--gbg);border-color:var(--gbr);color:var(--gold);}
-.drw-coupon-bar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--b1);border-radius:7px;padding:8px 12px;margin-bottom:10px;}
-.drw-coupon-code{font-size:15px;font-weight:800;letter-spacing:2px;color:var(--gold);}
-.drw-coupon-copy{font-size:10px;font-weight:700;color:var(--t3);background:none;border:none;cursor:pointer;transition:.15s;}
-.drw-coupon-copy:hover{color:var(--gold);}
+.drw-coupon-bar{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:14px 16px;margin-bottom:6px;}
+.drw-coupon-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:6px;}
+.drw-coupon-row{display:flex;align-items:center;justify-content:space-between;}
+.drw-coupon-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);}
+.drw-coupon-copy{padding:8px 18px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
+.drw-coupon-copy:hover{background:#F7C948;}
 .drw-coupon-hint{font-size:10px;color:var(--t3);text-align:center;margin-bottom:8px;}
 
 /* ═══ PLATAFORMAS PAGE ═══ */
@@ -923,6 +931,16 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 .bot-snd:hover{background:#F7C948;}
 .bot-snd:disabled{opacity:.35;cursor:default;}
 
+/* FAQ */
+.faq-item{background:var(--card);border:1px solid var(--b1);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:.2s;}
+.faq-item:hover{border-color:var(--b2);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;font-size:13px;font-weight:600;color:var(--t1);gap:12px;}
+.faq-q span:last-child{font-size:16px;color:var(--t3);transition:transform .2s;flex-shrink:0;}
+.faq-item.open .faq-q span:last-child{transform:rotate(180deg);color:var(--gold);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 18px;}
+.faq-item.open .faq-a{max-height:300px;padding:0 18px 14px;}
+.faq-a p{font-size:12.5px;color:var(--t2);line-height:1.7;}
+
 /* TOAST */
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(10px);z-index:1000;background:var(--card);border:1px solid var(--green);color:var(--green);padding:9px 20px;border-radius:8px;font-size:12.5px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -930,8 +948,10 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 /* RESPONSIVE */
 @media(max-width:960px){
   .firms-sb{display:none;}
-  .fr{grid-template-columns:38px 1fr auto;}
-  .fr-mets{display:none;}
+  .fr-btns{flex-wrap:wrap;}
+  .fr-btns .det-btn{flex:1;text-align:center;padding:10px;font-size:13px;border-radius:8px;}
+  .fr-btns .cpill{flex:1;text-align:center;padding:8px;font-size:12px;}
+  .tp-badge{width:100%;}
   .ft-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:768px){
@@ -1240,6 +1260,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="nt" data-p="blog" data-i18n="nav_blog" onclick="go('blog')">Blog</button>
  <button class="nt" data-p="calc" data-i18n="nav_calc" onclick="go('calc')">Position Size</button>
  <button class="nt" data-p="quiz" data-i18n="nav_quiz" onclick="go('quiz')">Quiz</button>
+ <button class="nt" data-p="faq" data-i18n="nav_faq" onclick="go('faq')">FAQ</button>
  <button class="nt nt-live" data-p="live" data-i18n="nav_live" onclick="go('live')">Live</button>
  </div>
  <div class="nav-r">
@@ -1988,12 +2009,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
 </div>
 
+<!-- FAQ -->
+<div class="page" id="page-faq">
+ <div style="max-width:720px;margin:0 auto;padding:20px;">
+  <h2 style="font-size:22px;font-weight:800;margin-bottom:6px;" data-i18n="faq_titulo">Perguntas Frequentes</h2>
+  <p style="font-size:13px;color:var(--t2);margin-bottom:24px;" data-i18n="faq_sub">Tire suas dúvidas sobre cupons, prop firms e como usar o MarketsCoupons.</p>
+  <div id="faq-list"></div>
+ </div>
+</div>
+
+<!-- TRUSTPILOT POPUP -->
+<div class="tp-popup-ov" id="tp-popup-ov" onclick="if(event.target===this)closeTpPopup()">
+ <div class="tp-popup">
+  <div class="tp-popup-hd">
+   <span class="tp-popup-title">Trustpilot Reviews</span>
+   <button class="x-btn" onclick="closeTpPopup()">✕</button>
+  </div>
+  <iframe id="tp-popup-frame" src="about:blank"></iframe>
+ </div>
+</div>
+
 <!-- OVERLAY + DRAWER -->
 <div class="ov" id="ov" onclick="closeD()"></div>
 <div class="drw" id="drw">
  <div class="drw-hd">
  <div class="drw-left"><div class="drw-ico" id="d-ico"></div><div><div class="drw-name" id="d-name"></div><div class="drw-sub" id="d-sub"></div></div></div>
- <button class="x-btn" onclick="closeD()"></button>
+ <button class="x-btn" onclick="closeD()">✕</button>
  </div>
  <div class="drw-body" id="d-body"></div>
 </div>
@@ -2209,12 +2250,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 /* DATA */
 const FIRMS=[
-  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$17.70',o:'$118'},{a:'50K',n:'$19.70',o:'$131'},{a:'100K',n:'$29.70',o:'$198'},{a:'150K',n:'$39.70',o:'$264'}],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
-  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',rating:4.8,reviews:1466,discount:89,dtype:'lifetime',coupon:'MARKET89',link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Por conta',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$19.25',o:'$175'},{a:'100K',n:'$23.65',o:'$215'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$48.15',o:'$535'}],perks:['Passa em 1 dia','Sem consistencia','Trade noticias','Payouts semanais'],proibido:['Latency arbitrage'],desc:'Bulenox e uma prop firm de futuros com regras simplificadas. Possivel passar em 1 dia, sem regra de consistencia.',trustpilot:{score:4.8,reviews:1466,url:'https://www.trustpilot.com/review/bulenox.com'}},
-  {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',rating:4.8,reviews:39754,discount:19,dtype:'especial',coupon:null,link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader','DXtrade'],minDays:4,evalDays:30,drawdown:'Trailing/Fixed',split:'90%',ddPct:'-5%/-10%',target:'8%/5%',scaling:'Ate $2M',prices:[{a:'10K',n:'89',o:'—'},{a:'25K',n:'250',o:'—'},{a:'50K',n:'345',o:'—'},{a:'100K',n:'439',o:'540'},{a:'200K',n:'1.080',o:'—'}],perks:['Free Trial ilimitado','90% split','Suporte 20 idiomas','$500M+ pagos'],proibido:['Latency arbitrage','Manipulacao spread'],desc:'FTMO e a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',trustpilot:{score:4.8,reviews:39754,url:'https://www.trustpilot.com/review/ftmo.com'}},
-  {id:'tpt',name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'rgba(168,85,247,0.12)',icon:'T',rating:4.4,reviews:8550,discount:40,dtype:'lifetime',coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',tags:['Futuros','Lifetime','Saque dia 1'],platforms:['Tradovate','TradingView','Rithmic','NinjaTrader'],minDays:4,evalDays:null,drawdown:'End-of-Day',split:'80%',ddPct:'EOD',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$90',o:'$150'},{a:'50K',n:'$102',o:'$170'},{a:'75K',n:'$147',o:'$245'},{a:'100K',n:'$198',o:'$330'},{a:'150K',n:'$216',o:'$360'}],perks:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario'],proibido:['Manipulacao spread'],desc:'Take Profit Trader destaca-se pelo saque desde o primeiro dia e sem taxa de ativacao.',trustpilot:{score:4.4,reviews:8550,url:'https://www.trustpilot.com/review/takeprofittrader.com'}},
-  {id:'fn',name:'FundedNext',type:'Futuros',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',icon:'N',rating:4.5,reviews:60850,discount:30,dtype:'1 desafio',coupon:'FNF30',link:'https://fundednext.com/?fpr=everton33',tags:['Futuros','Payout 24h','Sem limite'],platforms:['Tradovate','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Fixed',split:'95%',ddPct:'Fixo',target:'Variavel',scaling:'Ate $300K',prices:[{a:'25K Legacy',n:'$79.99',o:'—'},{a:'50K Legacy',n:'$149.99',o:'—'},{a:'100K Legacy',n:'$249.99',o:'—'},{a:'50K Bolt',n:'$99.99',o:'—'},{a:'25K Rapid',n:'$109',o:'—'}],perks:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso'],proibido:['Latency arbitrage'],desc:'FundedNext com 400K+ contas e $274M+ pagos. Destaque para payout garantido em 24h.',trustpilot:{score:4.5,reviews:60850,url:'https://www.trustpilot.com/review/fundednext.com'}},
-  {id:'e2t',name:'Earn2Trade',type:'Futuros',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',icon:'E',rating:4.7,reviews:4647,discount:50,dtype:'career path',coupon:'MARKETSCOUPONS',link:'https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14',tags:['Futuros','Journalytix','Scaling $400K'],platforms:['Rithmic','NinjaTrader'],minDays:15,evalDays:null,drawdown:'EOD Fixed',split:'80%',ddPct:'TCP100: $3.500',target:'TCP100: $6.000',scaling:'Ate $400K',prices:[{a:'TCP25',n:'$75',o:'$150'},{a:'TCP50',n:'$95',o:'$190'},{a:'TCP100',n:'$175',o:'$350'},{a:'Gauntlet 50K',n:'$85',o:'$170'},{a:'Gauntlet 100K',n:'$157.50',o:'$315'}],perks:['Journalytix gratis','Reset gratis','Scaling ate $400K'],proibido:['HFT','Latency arbitrage'],desc:'Earn2Trade foca em educacao e desenvolvimento com escalamento ate $400K.',trustpilot:{score:4.7,reviews:4647,url:'https://www.trustpilot.com/review/www.earn2trade.com'}},
+  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',icon_url:'',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$17.70',o:'$118'},{a:'50K',n:'$19.70',o:'$131'},{a:'100K',n:'$29.70',o:'$198'},{a:'150K',n:'$39.70',o:'$264'}],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
+  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',icon_url:'',rating:4.8,reviews:1466,discount:89,dtype:'lifetime',coupon:'MARKET89',link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Por conta',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$19.25',o:'$175'},{a:'100K',n:'$23.65',o:'$215'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$48.15',o:'$535'}],perks:['Passa em 1 dia','Sem consistencia','Trade noticias','Payouts semanais'],proibido:['Latency arbitrage'],desc:'Bulenox e uma prop firm de futuros com regras simplificadas. Possivel passar em 1 dia, sem regra de consistencia.',trustpilot:{score:4.8,reviews:1466,url:'https://www.trustpilot.com/review/bulenox.com'}},
+  {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',icon_url:'',rating:4.8,reviews:39754,discount:19,dtype:'especial',coupon:null,link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader','DXtrade'],minDays:4,evalDays:30,drawdown:'Trailing/Fixed',split:'90%',ddPct:'-5%/-10%',target:'8%/5%',scaling:'Ate $2M',prices:[{a:'10K',n:'89',o:'—'},{a:'25K',n:'250',o:'—'},{a:'50K',n:'345',o:'—'},{a:'100K',n:'439',o:'540'},{a:'200K',n:'1.080',o:'—'}],perks:['Free Trial ilimitado','90% split','Suporte 20 idiomas','$500M+ pagos'],proibido:['Latency arbitrage','Manipulacao spread'],desc:'FTMO e a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',trustpilot:{score:4.8,reviews:39754,url:'https://www.trustpilot.com/review/ftmo.com'}},
+  {id:'tpt',name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'rgba(168,85,247,0.12)',icon:'T',icon_url:'',rating:4.4,reviews:8550,discount:40,dtype:'lifetime',coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',tags:['Futuros','Lifetime','Saque dia 1'],platforms:['Tradovate','TradingView','Rithmic','NinjaTrader'],minDays:4,evalDays:null,drawdown:'End-of-Day',split:'80%',ddPct:'EOD',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$90',o:'$150'},{a:'50K',n:'$102',o:'$170'},{a:'75K',n:'$147',o:'$245'},{a:'100K',n:'$198',o:'$330'},{a:'150K',n:'$216',o:'$360'}],perks:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario'],proibido:['Manipulacao spread'],desc:'Take Profit Trader destaca-se pelo saque desde o primeiro dia e sem taxa de ativacao.',trustpilot:{score:4.4,reviews:8550,url:'https://www.trustpilot.com/review/takeprofittrader.com'}},
+  {id:'fn',name:'FundedNext',type:'Futuros',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',icon:'N',icon_url:'',rating:4.5,reviews:60850,discount:30,dtype:'1 desafio',coupon:'FNF30',link:'https://fundednext.com/?fpr=everton33',tags:['Futuros','Payout 24h','Sem limite'],platforms:['Tradovate','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Fixed',split:'95%',ddPct:'Fixo',target:'Variavel',scaling:'Ate $300K',prices:[{a:'25K Legacy',n:'$79.99',o:'—'},{a:'50K Legacy',n:'$149.99',o:'—'},{a:'100K Legacy',n:'$249.99',o:'—'},{a:'50K Bolt',n:'$99.99',o:'—'},{a:'25K Rapid',n:'$109',o:'—'}],perks:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso'],proibido:['Latency arbitrage'],desc:'FundedNext com 400K+ contas e $274M+ pagos. Destaque para payout garantido em 24h.',trustpilot:{score:4.5,reviews:60850,url:'https://www.trustpilot.com/review/fundednext.com'}},
+  {id:'e2t',name:'Earn2Trade',type:'Futuros',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',icon:'E',icon_url:'',rating:4.7,reviews:4647,discount:50,dtype:'career path',coupon:'MARKETSCOUPONS',link:'https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14',tags:['Futuros','Journalytix','Scaling $400K'],platforms:['Rithmic','NinjaTrader'],minDays:15,evalDays:null,drawdown:'EOD Fixed',split:'80%',ddPct:'TCP100: $3.500',target:'TCP100: $6.000',scaling:'Ate $400K',prices:[{a:'TCP25',n:'$75',o:'$150'},{a:'TCP50',n:'$95',o:'$190'},{a:'TCP100',n:'$175',o:'$350'},{a:'Gauntlet 50K',n:'$85',o:'$170'},{a:'Gauntlet 100K',n:'$157.50',o:'$315'}],perks:['Journalytix gratis','Reset gratis','Scaling ate $400K'],proibido:['HFT','Latency arbitrage'],desc:'Earn2Trade foca em educacao e desenvolvimento com escalamento ate $400K.',trustpilot:{score:4.7,reviews:4647,url:'https://www.trustpilot.com/review/www.earn2trade.com'}},
 ];
 
 /* NAV */
@@ -2259,6 +2300,7 @@ const I18N = {
     // Heatmap
     heatmap_titulo:'Mapa de Calor',
     // General
+    nav_faq:'FAQ', faq_titulo:'Perguntas Frequentes', faq_sub:'Tire suas dúvidas sobre cupons, prop firms e como usar o MarketsCoupons.',
     geral_firmas_encontradas:'firmas encontradas', geral_copiar:'Copiar', geral_copiado:'Copiado!',
   },
   en: {
@@ -2280,6 +2322,7 @@ const I18N = {
     home_titulo:'Best Prop Firm Coupons', home_sub:'Compare prices, copy exclusive coupons and save up to 90% at the world\'s top prop firms.',
     home_ver_planos:'View plans →',
     heatmap_titulo:'Heatmap',
+    nav_faq:'FAQ', faq_titulo:'Frequently Asked Questions', faq_sub:'Get answers about coupons, prop firms and how to use MarketsCoupons.',
     geral_firmas_encontradas:'firms found', geral_copiar:'Copy', geral_copiado:'Copied!',
   },
   es: {
@@ -2301,6 +2344,7 @@ const I18N = {
     home_titulo:'Mejores Cupones de Prop Firms', home_sub:'Compara precios, copia cupones exclusivos y ahorra hasta 90% en las mayores prop firms del mundo.',
     home_ver_planos:'Ver planes →',
     heatmap_titulo:'Mapa de Calor',
+    nav_faq:'FAQ', faq_titulo:'Preguntas Frecuentes', faq_sub:'Resuelve tus dudas sobre cupones, prop firms y cómo usar MarketsCoupons.',
     geral_firmas_encontradas:'firmas encontradas', geral_copiar:'Copiar', geral_copiado:'¡Copiado!',
   },
   fr: {
@@ -2386,6 +2430,10 @@ function initLang() {
   applyTranslations();
 }
 function strs(r){return'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));}
+function firmIco(f,size='38px',fontSize='14px'){
+  if(f.icon_url) return `<div style="width:${size};height:${size};border-radius:8px;overflow:hidden;flex-shrink:0;background:${f.bg};display:flex;align-items:center;justify-content:center;"><img src="${f.icon_url}" alt="${f.name}" style="width:100%;height:100%;object-fit:contain;"></div>`;
+  return `<div style="width:${size};height:${size};border-radius:8px;background:${f.bg};color:${f.color};display:flex;align-items:center;justify-content:center;font-size:${fontSize};font-weight:800;flex-shrink:0;">${f.icon}</div>`;
+}
 
 /* HOME */
 function renderHome(){
@@ -2393,7 +2441,7 @@ function renderHome(){
   g.innerHTML=[...FIRMS].sort((a,b)=>b.discount-a.discount).map(f=>`
     <div class="oc">
       <div class="oc-top" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="cursor:pointer;">
-        <div class="oc-left"><div class="oc-ico" style="background:${f.bg};color:${f.color};">${f.icon}</div><div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type}</div></div></div>
+        <div class="oc-left">${firmIco(f,'36px','13px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};">${f.discount}%</div><div class="oc-off">off ${f.dtype}</div></div>
       </div>
       ${f.coupon?`<div class="oc-coupon"><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>`:'<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);"><span style="font-size:11px;color:var(--green);font-weight:600;">Desconto aplicado no link</span></div>'}
@@ -2407,10 +2455,17 @@ function renderFirms(list){
   if(!list.length){el.innerHTML='<div style="padding:60px;text-align:center;color:var(--t2);">Nenhuma firma encontrada.</div>';return;}
   el.innerHTML=list.map(f=>`
     <div class="fr" data-id="${f.id}" onclick="openD('${f.id}')">
-      <div class="fr-ico" style="background:${f.bg};color:${f.color};">${f.icon}</div>
-      <div><div class="fr-name">${f.name}</div><div class="fr-tags"><span class="fr-tag" style="background:${f.bg};color:${f.color};">${f.type}</span><span class="fr-tag" style="background:var(--gbg);color:var(--gold);">${f.discount}% OFF</span>${f.platforms.slice(0,2).map(p=>`<span class="fr-tag" style="background:rgba(74,85,104,.12);color:var(--t3);">${p}</span>`).join('')}</div></div>
-      <div class="fr-mets"><div class="fmet"><div class="mv" style="color:var(--gold);">${f.discount}%</div><div class="ml">Desc.</div></div><div class="fmet"><div class="mv" style="color:var(--green);">${f.split}</div><div class="ml">Split</div></div><div class="fmet"><div class="mv">${f.rating}</div><div class="ml">Rating</div></div><div class="fmet"><div class="mv">${(f.reviews/1000).toFixed(1)}K</div><div class="ml">Reviews</div></div></div>
-      <div class="fr-acts">${f.trustpilot?`<a class="tp-badge" href="${f.trustpilot.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="tp-label">Excellent</span><span class="tp-stars">${'★'.repeat(Math.round(f.trustpilot.score))}</span><span class="tp-info">${f.trustpilot.reviews.toLocaleString()} reviews on <b>Trustpilot</b></span></a>`:''}<div class="fr-btns">${f.coupon?`<button class="cpill" onclick="event.stopPropagation();cpCoupon('${f.coupon}','${f.id}','firms')">${f.coupon}</button>`:''}<button class="det-btn" style="background:var(--gold);color:#07090D;border-color:var(--gold);font-weight:700;" onclick="event.stopPropagation();openD('${f.id}')">${t('firms_ver_planos')}</button></div></div>
+      <div class="fr-header">
+        ${firmIco(f,'42px','15px')}
+        <div class="fr-info">
+          <div class="fr-name">${f.name}</div>
+          <div class="fr-tags"><span class="fr-tag" style="background:${f.bg};color:${f.color};">${f.type}</span><span class="fr-tag" style="background:var(--gbg);color:var(--gold);">${f.discount}% OFF</span>${f.platforms.slice(0,2).map(p=>`<span class="fr-tag" style="background:rgba(74,85,104,.12);color:var(--t3);">${p}</span>`).join('')}</div>
+        </div>
+        <div class="fr-disc-badge" style="color:${f.color};">${f.discount}%<span>OFF ${f.dtype}</span></div>
+      </div>
+      <div class="fr-mets"><div class="fmet"><div class="mv" style="color:var(--green);">${f.split}</div><div class="ml">SPLIT</div></div><div class="fmet"><div class="mv">${f.drawdown||'—'}</div><div class="ml">DRAWDOWN</div></div><div class="fmet"><div class="mv">${f.rating}</div><div class="ml">RATING</div></div></div>
+      ${f.trustpilot?`<a class="tp-badge" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="tp-label">Excellent</span><span class="tp-stars">${'★'.repeat(Math.round(f.trustpilot.score))}</span><span class="tp-info">${f.trustpilot.reviews.toLocaleString()} reviews on <b>Trustpilot</b></span></a>`:''}
+      <div class="fr-btns">${f.coupon?`<button class="cpill" onclick="event.stopPropagation();cpCoupon('${f.coupon}','${f.id}','firms')">${f.coupon}</button>`:''}<button class="det-btn" style="background:var(--gold);color:#07090D;border-color:var(--gold);font-weight:700;" onclick="event.stopPropagation();openD('${f.id}')">${t('firms_ver_planos')}</button></div>
     </div>`).join('');
 }
 function applyF(){
@@ -2432,8 +2487,14 @@ const _drwState = {};
 function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
-  document.getElementById('d-ico').style.cssText=`background:${f.bg};color:${f.color};`;
-  document.getElementById('d-ico').textContent=f.icon;
+  const icoEl = document.getElementById('d-ico');
+  if(f.icon_url) {
+    icoEl.style.cssText=`background:${f.bg};`;
+    icoEl.innerHTML=`<img src="${f.icon_url}" alt="${f.name}" style="width:100%;height:100%;object-fit:contain;">`;
+  } else {
+    icoEl.style.cssText=`background:${f.bg};color:${f.color};`;
+    icoEl.textContent=f.icon;
+  }
   document.getElementById('d-name').textContent=f.name;
   document.getElementById('d-sub').textContent=`${f.type} · ${f.discount}% OFF · Split ${f.split}`;
 
@@ -2452,7 +2513,7 @@ function openD(id){
     <div class="rating-blk"><div class="rb-score">${f.rating}</div><div><div class="rb-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div><div class="rb-cnt">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div></div></div>`;
   if (f.trustpilot) {
     const tpStars = Math.round(f.trustpilot.score);
-    html += `<a class="drw-tp-badge" href="${f.trustpilot.url}" target="_blank" rel="noopener">
+    html += `<a class="drw-tp-badge" href="javascript:void(0)" onclick="openTpPopup('${f.trustpilot.url}')">
       <span class="drw-tp-label">Excellent</span>
       <span class="drw-tp-stars-row">${Array(5).fill(0).map((_,i)=>`<span class="drw-tp-star${i<tpStars?' filled':''}">★</span>`).join('')}</span>
       <span class="drw-tp-info">${f.trustpilot.reviews.toLocaleString()} reviews on <b>Trustpilot</b></span>
@@ -2526,8 +2587,11 @@ function openD(id){
 
     if (f.coupon) {
       html += `<div class="drw-coupon-bar">
-        <span class="drw-coupon-code">${f.coupon}</span>
-        <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
+        <div class="drw-coupon-label">CUPOM EXCLUSIVO</div>
+        <div class="drw-coupon-row">
+          <span class="drw-coupon-code">${f.coupon}</span>
+          <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
+        </div>
       </div>
       <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
     }
@@ -2580,6 +2644,41 @@ function drwGoCheckout(firmId) {
 }
 
 function closeD(){document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';}
+
+/* TRUSTPILOT POPUP */
+function openTpPopup(url) {
+  document.getElementById('tp-popup-frame').src = url;
+  document.getElementById('tp-popup-ov').classList.add('open');
+}
+function closeTpPopup() {
+  document.getElementById('tp-popup-ov').classList.remove('open');
+  document.getElementById('tp-popup-frame').src = 'about:blank';
+}
+
+/* FAQ */
+const FAQ_DATA = [
+  {q:'O que é uma prop firm?', a:'Uma prop firm (proprietary trading firm) é uma empresa que fornece capital para traders operarem. O trader faz uma avaliação, e se aprovado, opera com o dinheiro da firma e recebe parte dos lucros.'},
+  {q:'Como funcionam os cupons do MarketsCoupons?', a:'Nossos cupons são códigos exclusivos negociados diretamente com as prop firms. Basta copiar o código e colar no checkout da firma para receber o desconto automaticamente. Alguns descontos são aplicados diretamente pelo link de parceiro.'},
+  {q:'Os cupons são realmente gratuitos?', a:'Sim, todos os cupons são 100% gratuitos para usar. O MarketsCoupons é remunerado pelas prop firms através de parcerias de afiliados, sem nenhum custo extra para você.'},
+  {q:'Qual a melhor prop firm para iniciantes?', a:'Depende do seu perfil. A Apex Trader Funding oferece até 90% de desconto e regras flexíveis. A Bulenox permite passar em 1 dia. A FTMO tem Free Trial ilimitado. Use nosso Quiz para descobrir a melhor para você.'},
+  {q:'Posso usar mais de um cupom ao mesmo tempo?', a:'Geralmente não. Cada prop firm aceita apenas um código de desconto por compra. Nossos cupons já são os maiores disponíveis no mercado.'},
+  {q:'O que é Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se move conforme o lucro, podendo voltar ao breakeven. EOD (End of Day) Drawdown só é calculado no fechamento do dia, dando mais flexibilidade durante a operação.'},
+  {q:'Quanto tempo leva para receber o payout?', a:'Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h. Take Profit Trader permite saque desde o dia 1.'},
+  {q:'O que é o programa de fidelidade?', a:'Nosso programa de fidelidade recompensa membros com pontos por interações, compras e indicações. Os pontos podem ser trocados por benefícios exclusivos.'},
+  {q:'Os cupons têm data de validade?', a:'Alguns cupons são por tempo limitado e outros são permanentes. As promoções de cada firma são atualizadas diariamente. Recomendamos usar o cupom assim que possível.'},
+  {q:'Como faço para comparar prop firms?', a:'Use nossa ferramenta de comparação na aba "Comparar" ou acesse a aba "Firmas" para ver todas as opções lado a lado com ratings, preços, plataformas e avaliações do Trustpilot.'},
+];
+function renderFaq() {
+  const el = document.getElementById('faq-list');
+  if(!el) return;
+  el.innerHTML = FAQ_DATA.map((item,i) => `
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-q" onclick="document.getElementById('faq-${i}').classList.toggle('open')">
+        <span>${item.q}</span><span>▼</span>
+      </div>
+      <div class="faq-a"><p>${item.a}</p></div>
+    </div>`).join('');
+}
 
 /* COUPON */
 function cpCoupon(code,firmId,location){
@@ -2641,16 +2740,25 @@ async function loadFirmsFromSupabase() {
     FIRMS.length = 0;
     data.forEach(f => {
       const meta = f.metadata || {};
-      FIRMS.push({
+      const firm = {
         id: f.id, name: f.name, type: f.type,
-        color: f.color, bg: f.color + '1F',
-        icon: f.icon, discount: f.discount, dtype: f.discount_type || 'lifetime',
+        color: f.color, bg: f.bg || f.color + '1F',
+        icon: f.icon, icon_url: f.icon_url || '',
+        discount: f.discount, dtype: f.discount_type || 'lifetime',
         coupon: f.coupon || null, link: f.link, split: f.split || '80%',
         rating: parseFloat(f.rating) || 4.5,
         reviews: parseInt(f.reviews) || 0,
         platforms: Array.isArray(f.platforms) ? f.platforms : (f.platforms||'').split(',').map(s=>s.trim()),
+        tags: f.tags || [], drawdown: f.drawdown, minDays: f.min_days,
+        evalDays: f.eval_days, ddPct: f.dd_pct, target: f.target, scaling: f.scaling,
+        prices: f.prices || [], perks: f.perks || [], proibido: f.proibido || [],
+        desc: f.description || '',
         ...meta,
-      });
+      };
+      if (f.trustpilot_url) {
+        firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };
+      }
+      FIRMS.push(firm);
     });
 
     // Map → CHECKOUT_FIRMS format
@@ -3832,6 +3940,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderPlatforms();
   renderAchFirmTabs();
   achSelectFirm(CHECKOUT_FIRMS[0]?.id || 'apex');
+  renderFaq();
   autoDetectDDI();
 
   // Carregar firmas do Supabase (sobrescreve hardcoded se disponível)
