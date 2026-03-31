@@ -4016,15 +4016,30 @@ function renderLoyaltyPage(){
   const approved=history.filter(h=>h.status==='approved').length;
   const ms=document.getElementById('loyalty-my-section'); if(!ms) return;
 
+  if(!currentUser){
+    ms.innerHTML=`<div class="loyalty-register-form">
+      <div style="font-size:36px;margin-bottom:12px;">🔐</div>
+      <div class="lrf-title">Crie sua conta para participar</div>
+      <div class="lrf-sub">O cadastro é gratuito. Após criar sua conta você poderá enviar comprovantes de compra e acompanhar seu progresso no programa.</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+        <button class="lrf-btn" onclick="openAuthModal('signup')">Cadastrar grátis →</button>
+        <button class="lrf-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);" onclick="openAuthModal('login')">Já tenho conta</button>
+      </div>
+    </div>`;
+    document.getElementById('loyalty-proof-section').style.display='none';
+    document.getElementById('loyalty-history-wrap').style.display='none';
+    return;
+  }
   if(!member){
     ms.innerHTML=`<div class="loyalty-register-form">
-      <div class="lrf-title">Cadastre-se para participar</div>
-      <div class="lrf-sub">Crie sua conta gratuita para enviar comprovantes e acompanhar seu progresso.</div>
+      <div style="font-size:36px;margin-bottom:12px;">🎁</div>
+      <div class="lrf-title">Ativar programa de fidelidade</div>
+      <div class="lrf-sub">Confirme seus dados para começar a registrar compras e acumular benefícios VIP.</div>
       <div class="lrf-grid">
-        <div class="lrf-field"><label>Nome</label><input type="text" id="ly-name" placeholder="Seu nome"></div>
-        <div class="lrf-field"><label>E-mail</label><input type="email" id="ly-email" placeholder="seu@email.com"></div>
+        <div class="lrf-field"><label>Nome</label><input type="text" id="ly-name" placeholder="Seu nome" value="${currentProfile?.full_name||''}"></div>
+        <div class="lrf-field"><label>E-mail</label><input type="email" id="ly-email" placeholder="seu@email.com" value="${currentUser.email||''}"></div>
       </div>
-      <button class="lrf-btn" onclick="registerLoyalty()">Entrar no programa</button>
+      <button class="lrf-btn" onclick="registerLoyalty()">Ativar meu programa →</button>
     </div>`;
     document.getElementById('loyalty-proof-section').style.display='none';
     document.getElementById('loyalty-history-wrap').style.display='none';
