@@ -1550,24 +1550,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- HOME -->
 <div class="page active" id="page-home">
  <div class="hero">
- <div class="hero-badge">Cupons Verificados — Atualizados Diariamente</div>
- <h1>Economize até <em>90% OFF</em><br>nas melhores Prop Firms</h1>
- <p>Compare firmas, use cupons exclusivos e acesse ferramentas profissionais — tudo em um só lugar.</p>
+ <div class="hero-badge" data-i18n="hero_badge">Cupons Verificados — Atualizados Diariamente</div>
+ <h1 id="hero-h1">Economize até <em>90% OFF</em><br>nas melhores Prop Firms</h1>
+ <p data-i18n="hero_sub">Compare firmas, use cupons exclusivos e acesse ferramentas profissionais — tudo em um só lugar.</p>
  <div class="hero-btns">
- <button class="btn-gold" onclick="go('firms')"> Ver Prop Firms</button>
+ <button class="btn-gold" data-i18n="hero_btn_firms" onclick="go('firms')">Ver Prop Firms</button>
  <a href="https://t.me/marketcouponss" target="_blank" onclick="track('telegram_click',{location:'hero'})">
-   <button class="btn-tg"><svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg> Entrar no Grupo do Telegram</button>
+   <button class="btn-tg"><svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg> <span data-i18n="hero_btn_tg">Entrar no Grupo do Telegram</span></button>
  </a>
  </div>
  <div class="hero-stats">
- <div class="hst"><div class="v"><em>6</em>+ Firmas</div><div class="l">Listadas</div></div>
- <div class="hst"><div class="v">Até <em>90%</em></div><div class="l">De desconto</div></div>
- <div class="hst"><div class="v"><em>100%</em></div><div class="l">Verificado</div></div>
- <div class="hst"><div class="v"><em>Grátis</em></div><div class="l">Para usar</div></div>
+ <div class="hst"><div class="v"><em>6</em>+ <span data-i18n="hst_firms">Firmas</span></div><div class="l" data-i18n="hst_listadas">Listadas</div></div>
+ <div class="hst"><div class="v">Até <em>90%</em></div><div class="l" data-i18n="hst_desconto">De desconto</div></div>
+ <div class="hst"><div class="v"><em>100%</em></div><div class="l" data-i18n="hst_verificado">Verificado</div></div>
+ <div class="hst"><div class="v"><em data-i18n="hst_gratis">Grátis</em></div><div class="l" data-i18n="hst_para_usar">Para usar</div></div>
  </div>
  </div>
  <div class="sec">
- <div class="sec-hd"> Melhores ofertas agora</div>
+ <div class="sec-hd" id="home-sec-hd">🏷️ Melhores ofertas agora</div>
  <div class="offers-grid" id="home-offers"></div>
  </div>
 
@@ -2456,6 +2456,13 @@ const I18N = {
     // Home
     home_titulo:'Melhores Cupons de Prop Firms', home_sub:'Compare preços, copie cupons exclusivos e economize até 90% nas maiores prop firms do mundo.',
     home_ver_planos:'Ver planos →',
+    hero_badge:'Cupons Verificados — Atualizados Diariamente',
+    hero_titulo:'Economize até <em>90% OFF</em><br>nas melhores Prop Firms',
+    hero_sub:'Compare firmas, use cupons exclusivos e acesse ferramentas profissionais — tudo em um só lugar.',
+    hero_btn_firms:'Ver Prop Firms', hero_btn_tg:'Entrar no Grupo do Telegram',
+    home_melhores_ofertas:'Melhores ofertas agora',
+    hst_firms:'Firmas', hst_listadas:'Listadas', hst_desconto:'De desconto',
+    hst_verificado:'Verificado', hst_gratis:'Grátis', hst_para_usar:'Para usar',
     // Heatmap
     heatmap_titulo:'Mapa de Calor',
     // General
@@ -2480,6 +2487,13 @@ const I18N = {
     drw_sem_limite:'Unlimited',
     home_titulo:'Best Prop Firm Coupons', home_sub:'Compare prices, copy exclusive coupons and save up to 90% at the world\'s top prop firms.',
     home_ver_planos:'View plans →',
+    hero_badge:'Verified Coupons — Updated Daily',
+    hero_titulo:'Save up to <em>90% OFF</em><br>on the best Prop Firms',
+    hero_sub:'Compare firms, use exclusive coupons and access professional tools — all in one place.',
+    hero_btn_firms:'View Prop Firms', hero_btn_tg:'Join Telegram Group',
+    home_melhores_ofertas:'Best offers now',
+    hst_firms:'Firms', hst_listadas:'Listed', hst_desconto:'Discount',
+    hst_verificado:'Verified', hst_gratis:'Free', hst_para_usar:'To use',
     heatmap_titulo:'Heatmap',
     nav_faq:'FAQ', faq_titulo:'Frequently Asked Questions', faq_sub:'Get answers about coupons, prop firms and how to use MarketsCoupons.',
     geral_firmas_encontradas:'firms found', geral_copiar:'Copy', geral_copiado:'Copied!',
@@ -2502,6 +2516,13 @@ const I18N = {
     drw_sem_limite:'Sin límite',
     home_titulo:'Mejores Cupones de Prop Firms', home_sub:'Compara precios, copia cupones exclusivos y ahorra hasta 90% en las mayores prop firms del mundo.',
     home_ver_planos:'Ver planes →',
+    hero_badge:'Cupones Verificados — Actualizados Diariamente',
+    hero_titulo:'Ahorra hasta <em>90% OFF</em><br>en las mejores Prop Firms',
+    hero_sub:'Compara firmas, usa cupones exclusivos y accede a herramientas profesionales — todo en un lugar.',
+    hero_btn_firms:'Ver Prop Firms', hero_btn_tg:'Unirse al Grupo de Telegram',
+    home_melhores_ofertas:'Mejores ofertas ahora',
+    hst_firms:'Firmas', hst_listadas:'Listadas', hst_desconto:'De descuento',
+    hst_verificado:'Verificado', hst_gratis:'Gratis', hst_para_usar:'Para usar',
     heatmap_titulo:'Mapa de Calor',
     nav_faq:'FAQ', faq_titulo:'Preguntas Frecuentes', faq_sub:'Resuelve tus dudas sobre cupones, prop firms y cómo usar MarketsCoupons.',
     geral_firmas_encontradas:'firmas encontradas', geral_copiar:'Copiar', geral_copiado:'¡Copiado!',
@@ -2518,6 +2539,13 @@ const I18N = {
     drw_avaliacoes:'avis',
     home_titulo:'Meilleurs Coupons Prop Firms', home_sub:'Comparez les prix, copiez des coupons exclusifs et économisez jusqu\'à 90%.',
     home_ver_planos:'Voir les plans →',
+    hero_badge:'Coupons Vérifiés — Mis à jour quotidiennement',
+    hero_titulo:'Économisez jusqu\'à <em>90% OFF</em><br>sur les meilleures Prop Firms',
+    hero_sub:'Comparez les firmes, utilisez des coupons exclusifs et accédez à des outils professionnels.',
+    hero_btn_firms:'Voir les Prop Firms', hero_btn_tg:'Rejoindre le Groupe Telegram',
+    home_melhores_ofertas:'Meilleures offres maintenant',
+    hst_firms:'Firmes', hst_listadas:'Listées', hst_desconto:'De réduction',
+    hst_verificado:'Vérifié', hst_gratis:'Gratuit', hst_para_usar:'À utiliser',
     heatmap_titulo:'Carte thermique',
     geral_firmas_encontradas:'firmes trouvées', geral_copiar:'Copier', geral_copiado:'Copié!',
   },
@@ -2532,6 +2560,13 @@ const I18N = {
     drw_avaliacoes:'Bewertungen',
     home_titulo:'Beste Prop-Firm-Gutscheine', home_sub:'Preise vergleichen, exklusive Gutscheine kopieren und bis zu 90% sparen.',
     home_ver_planos:'Pläne ansehen →',
+    hero_badge:'Geprüfte Gutscheine — Täglich aktualisiert',
+    hero_titulo:'Spare bis zu <em>90% OFF</em><br>bei den besten Prop Firms',
+    hero_sub:'Vergleiche Firmen, nutze exklusive Gutscheine und greife auf professionelle Tools zu.',
+    hero_btn_firms:'Prop Firms ansehen', hero_btn_tg:'Telegram-Gruppe beitreten',
+    home_melhores_ofertas:'Beste Angebote jetzt',
+    hst_firms:'Firmen', hst_listadas:'Gelistet', hst_desconto:'Rabatt',
+    hst_verificado:'Verifiziert', hst_gratis:'Kostenlos', hst_para_usar:'Zu nutzen',
     heatmap_titulo:'Heatmap',
     geral_firmas_encontradas:'Firmen gefunden', geral_copiar:'Kopieren', geral_copiado:'Kopiert!',
   },
@@ -2545,6 +2580,13 @@ const I18N = {
     drw_avaliacoes:'تقييمات',
     home_titulo:'أفضل كوبونات شركات التداول', home_sub:'قارن الأسعار وانسخ الكوبونات الحصرية ووفر حتى 90%.',
     home_ver_planos:'عرض الخطط →',
+    hero_badge:'كوبونات موثقة — تُحدَّث يومياً',
+    hero_titulo:'وفّر حتى <em>90% OFF</em><br>على أفضل شركات Prop',
+    hero_sub:'قارن الشركات، استخدم كوبونات حصرية وصل إلى أدوات احترافية — كل شيء في مكان واحد.',
+    hero_btn_firms:'عرض Prop Firms', hero_btn_tg:'انضم لمجموعة Telegram',
+    home_melhores_ofertas:'أفضل العروض الآن',
+    hst_firms:'شركات', hst_listadas:'مدرجة', hst_desconto:'خصم',
+    hst_verificado:'موثق', hst_gratis:'مجاني', hst_para_usar:'للاستخدام',
     heatmap_titulo:'خريطة حرارية',
     geral_firmas_encontradas:'شركات', geral_copiar:'نسخ', geral_copiado:'تم النسخ!',
   }
@@ -2597,6 +2639,8 @@ function firmIco(f,size='38px',fontSize='14px'){
 /* HOME */
 function renderHome(){
   const g=document.getElementById('home-offers');if(!g)return;
+  const h1=document.getElementById('hero-h1');if(h1)h1.innerHTML=t('hero_titulo');
+  const shd=document.getElementById('home-sec-hd');if(shd)shd.innerHTML='🏷️ '+t('home_melhores_ofertas');
   g.innerHTML=[...FIRMS].sort((a,b)=>b.discount-a.discount).map(f=>`
     <div class="oc">
       <div class="oc-top" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="cursor:pointer;">
