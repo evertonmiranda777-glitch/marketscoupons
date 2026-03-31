@@ -1379,6 +1379,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="lang-opt" onclick="setL('pt','','BR')"> Português</div>
  <div class="lang-opt" onclick="setL('en','','EN')"> English</div>
  <div class="lang-opt" onclick="setL('es','','ES')"> Español</div>
+ <div class="lang-opt" onclick="setL('it','','IT')"> Italiano</div>
  <div class="lang-opt" onclick="setL('fr','','FR')"> Français</div>
  <div class="lang-opt" onclick="setL('de','','DE')"> Deutsch</div>
  <div class="lang-opt" onclick="setL('ar','','AR')"> عربي</div>
@@ -1437,6 +1438,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="mm-flag" onclick="setL('pt','','BR');closeMM()"></button>
  <button class="mm-flag" onclick="setL('en','','EN');closeMM()"></button>
  <button class="mm-flag" onclick="setL('es','','ES');closeMM()"></button>
+ <button class="mm-flag" onclick="setL('it','','IT');closeMM()"></button>
  <button class="mm-flag" onclick="setL('fr','','FR');closeMM()"></button>
  <button class="mm-flag" onclick="setL('de','','DE');closeMM()"></button>
  <button class="mm-flag" onclick="setL('ar','','AR');closeMM()"></button>
@@ -2573,6 +2575,36 @@ const I18N = {
     heatmap_titulo:'Heatmap',
     geral_firmas_encontradas:'Firmen gefunden', geral_copiar:'Kopieren', geral_copiado:'Kopiert!',
   },
+  it: {
+    nav_ofertas:'Offerte', nav_firmas:'Aziende', nav_plataformas:'Piattaforme', nav_indicadores:'Indicatori',
+    nav_comparar:'Confronta', nav_calendario:'Calendario', nav_heatmap:'Mappa di Calore', nav_analise:'Analisi IA',
+    nav_guias:'Guide', nav_blog:'Blog', nav_calc:'Position Size', nav_quiz:'Quiz', nav_live:'Live',
+    nav_faq:'FAQ',
+    btn_entrar:'Accedi', btn_cadastrar:'Registrati', btn_meu_painel:'Il Mio Pannello', btn_sair:'Esci',
+    firms_detalhes:'Dettagli', firms_ver_planos:'Vedi Piani', firms_buscar:'Cerca azienda...',
+    firms_ordenar_rating:'Rating più alto', firms_ordenar_desc:'Sconto più alto', firms_ordenar_reviews:'Più recensioni',
+    firms_ordenar_nome:'Nome A-Z', firms_sobre:'Sull\'azienda', firms_condicoes:'Condizioni',
+    firms_plataformas:'Piattaforme', firms_precos:'Prezzi scontati', firms_beneficios:'Benefici',
+    firms_proibido:'Vietato', firms_comecar:'Inizia Ora', firms_copiar:'Copia',
+    firms_hint_cupom:'usa il coupon al checkout', firms_sel_tipo:'Seleziona Tipo',
+    firms_sel_plat:'Seleziona Piattaforma', firms_sel_tam:'Seleziona Dimensione',
+    drw_avaliacoes:'recensioni', drw_drawdown:'Drawdown', drw_split:'Split', drw_dias_min:'Giorni minimi',
+    drw_prazo:'Periodo valutazione', drw_dd_max:'DD massimo', drw_meta:'Obiettivo profitto', drw_scaling:'Scaling',
+    drw_desconto:'Sconto', drw_conta:'Conto', drw_com_cupom:'Con coupon', drw_original:'Originale',
+    drw_sem_limite:'Illimitato',
+    home_titulo:'Migliori Coupon Prop Firms', home_sub:'Confronta prezzi, copia coupon esclusivi e risparmia fino al 90% sulle migliori prop firm.',
+    home_ver_planos:'Vedi piani →',
+    hero_badge:'Coupon Verificati — Aggiornati Ogni Giorno',
+    hero_titulo:'Risparmia fino a <em>90% OFF</em><br>sulle migliori Prop Firms',
+    hero_sub:'Confronta le aziende, usa coupon esclusivi e accedi a strumenti professionali — tutto in un posto.',
+    hero_btn_firms:'Vedi Prop Firms', hero_btn_tg:'Unisciti al Gruppo Telegram',
+    home_melhores_ofertas:'Migliori offerte ora',
+    hst_firms:'Aziende', hst_listadas:'Elencate', hst_desconto:'Di sconto',
+    hst_verificado:'Verificato', hst_gratis:'Gratis', hst_para_usar:'Da usare',
+    heatmap_titulo:'Mappa di Calore',
+    faq_titulo:'Domande Frequenti', faq_sub:'Trova risposte su coupon, prop firms e come usare MarketsCoupons.',
+    geral_firmas_encontradas:'aziende trovate', geral_copiar:'Copia', geral_copiado:'Copiato!',
+  },
   ar: {
     nav_ofertas:'عروض', nav_firmas:'شركات', nav_plataformas:'منصات', nav_indicadores:'مؤشرات',
     nav_comparar:'مقارنة', nav_calendario:'التقويم', nav_heatmap:'خريطة حرارية', nav_analise:'تحليل AI',
@@ -2603,6 +2635,7 @@ function detectLang() {
   if (nav.startsWith('pt')) return 'pt';
   if (nav.startsWith('en')) return 'en';
   if (nav.startsWith('es')) return 'es';
+  if (nav.startsWith('it')) return 'it';
   if (nav.startsWith('fr')) return 'fr';
   if (nav.startsWith('de')) return 'de';
   if (nav.startsWith('ar')) return 'ar';
@@ -2628,7 +2661,7 @@ function setL(lang,flag,code){
 }
 function initLang() {
   _currentLang = detectLang();
-  const codes = {pt:'BR',en:'EN',es:'ES',fr:'FR',de:'DE',ar:'AR'};
+  const codes = {pt:'BR',en:'EN',es:'ES',it:'IT',fr:'FR',de:'DE',ar:'AR'};
   document.getElementById('l-code').textContent = ' ' + (codes[_currentLang]||'BR');
   document.body.dir = _currentLang==='ar'?'rtl':'ltr';
   applyTranslations();
