@@ -4211,6 +4211,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Render com dados hardcoded primeiro (UI imediata)
   renderHome();
   applyF();
+  renderOffers();
+  renderAwards();
   initCmp();
   renderCal();
   calcPS();
@@ -4233,6 +4235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Auth session check
   await checkAuthSession();
+  await initFavs();
 
   // Navegar para a página do hash na URL (ex: #firms)
   const initHash = location.hash.replace('#','');
