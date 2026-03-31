@@ -2247,16 +2247,18 @@ const FIRMS=[
 ];
 
 /* NAV */
-function go(page){
+function go(page, skipHash){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
   document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p===page));
   window.scrollTo({top:0,behavior:'smooth'});
+  if(!skipHash) location.hash=page==='home'?'':page;
   track('page_view',{page_name:page});
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='indicators') checkIndicatorsGate();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
 }
+window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(h)go(h,true);else go('home',true);});
 function toggleMM(){const open=document.getElementById('mm').classList.toggle('open');document.getElementById('mm-ov').classList.toggle('open',open);document.getElementById('hbg').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
 function closeMM(){['mm','mm-ov','hbg'].forEach(id=>document.getElementById(id)?.classList.remove('open'));document.body.style.overflow='';}
 function mgo(p){closeMM();go(p);}
@@ -3955,7 +3957,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Auth session check
   await checkAuthSession();
 
-  track('page_view', { page_name: 'home', language: navigator.language });
+  // Navegar para a página do hash na URL (ex: #firms)
+  const initHash = location.hash.replace('#','');
+  if(initHash && document.getElementById('page-'+initHash)){
+    go(initHash, true);
+  } else {
+    track('page_view', { page_name: 'home', language: navigator.language });
+  }
 });
 </script>
 </body>
