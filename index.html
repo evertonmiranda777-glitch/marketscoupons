@@ -444,8 +444,9 @@ img{max-width:100%;}
 .fmet .mv{font-size:13px;font-weight:700;text-align:center;}
 .fmet .ml{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;text-align:center;margin-top:2px;}
 .fr-btns{display:flex;gap:6px;}
-.cpill{padding:3px 8px;border-radius:4px;background:var(--gbg);border:1px solid var(--gbr);font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.4px;transition:.15s;}
+.cpill{padding:6px 12px;border-radius:6px;background:var(--gbg);border:1px dashed var(--gbr);font-size:11px;font-weight:800;color:var(--gold);letter-spacing:1px;transition:.15s;position:relative;}
 .cpill:hover{background:rgba(240,180,41,.2);}
+.cpill::before{content:'CUPOM';display:block;font-size:7px;font-weight:700;letter-spacing:1px;color:var(--t3);margin-bottom:1px;}
 .det-btn{padding:5px 10px;border-radius:6px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:500;transition:.2s;}
 .det-btn:hover{border-color:var(--gold);color:var(--gold);}
 .tp-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(0,182,122,0.08);border:1px solid rgba(0,182,122,0.25);border-radius:6px;font-size:10px;color:var(--t2);text-decoration:none;transition:.2s;margin-bottom:4px;}
@@ -491,13 +492,7 @@ img{max-width:100%;}
 .drw-tp-star.filled{color:#00b67a;}
 .drw-tp-info{font-size:11px;color:var(--t2);}
 .drw-tp-info b{color:#00b67a;}
-/* Trustpilot popup */
-.tp-popup-ov{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;}
-.tp-popup-ov.open{display:flex;}
-.tp-popup{width:min(680px,94vw);height:min(520px,80vh);background:var(--sur);border:1px solid var(--b2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
-.tp-popup-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--b1);}
-.tp-popup-title{font-size:14px;font-weight:700;color:#00b67a;}
-.tp-popup iframe{flex:1;border:none;width:100%;background:#fff;}
+/* Trustpilot badge (kept) */
 .cpn-blk{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:9px;margin-bottom:12px;}
 .cpn-lbl{font-size:10px;color:var(--t2);margin-bottom:3px;}
 .cpn-code{font-size:15px;font-weight:800;letter-spacing:2px;color:var(--gold);}
@@ -948,10 +943,11 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 /* RESPONSIVE */
 @media(max-width:960px){
   .firms-sb{display:none;}
-  .fr-btns{flex-wrap:wrap;}
-  .fr-btns .det-btn{flex:1;text-align:center;padding:10px;font-size:13px;border-radius:8px;}
-  .fr-btns .cpill{flex:1;text-align:center;padding:8px;font-size:12px;}
-  .tp-badge{width:100%;}
+  .fr-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;}
+  .fr-btns .det-btn{text-align:center;padding:12px;font-size:13px;border-radius:8px;}
+  .fr-btns .cpill{text-align:center;padding:10px 12px;font-size:13px;border-radius:8px;}
+  .tp-badge{width:100%;justify-content:center;}
+  .fr-disc-badge{font-size:18px;}
   .ft-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:768px){
@@ -2018,17 +2014,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
 </div>
 
-<!-- TRUSTPILOT POPUP -->
-<div class="tp-popup-ov" id="tp-popup-ov" onclick="if(event.target===this)closeTpPopup()">
- <div class="tp-popup">
-  <div class="tp-popup-hd">
-   <span class="tp-popup-title">Trustpilot Reviews</span>
-   <button class="x-btn" onclick="closeTpPopup()">✕</button>
-  </div>
-  <iframe id="tp-popup-frame" src="about:blank"></iframe>
- </div>
-</div>
-
 <!-- OVERLAY + DRAWER -->
 <div class="ov" id="ov" onclick="closeD()"></div>
 <div class="drw" id="drw">
@@ -2645,14 +2630,18 @@ function drwGoCheckout(firmId) {
 
 function closeD(){document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';}
 
-/* TRUSTPILOT POPUP */
+/* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
-  document.getElementById('tp-popup-frame').src = url;
-  document.getElementById('tp-popup-ov').classList.add('open');
-}
-function closeTpPopup() {
-  document.getElementById('tp-popup-ov').classList.remove('open');
-  document.getElementById('tp-popup-frame').src = 'about:blank';
+  var isMobile = window.innerWidth <= 767;
+  if (isMobile) { window.open(url, '_blank'); return; }
+  var w = Math.min(1100, Math.floor(screen.width * 0.9));
+  var h = Math.min(850, Math.floor(screen.height * 0.85));
+  var left = Math.floor((screen.width - w) / 2);
+  var top = Math.floor((screen.height - h) / 2);
+  var popup = window.open(url, 'trustpilotReviews',
+    'width='+w+',height='+h+',left='+left+',top='+top+',resizable=yes,scrollbars=yes');
+  if (!popup || popup.closed) window.open(url, '_blank');
+  else popup.focus();
 }
 
 /* FAQ */
