@@ -442,6 +442,10 @@ img{max-width:100%;}
 .fr-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;}
 .fr-spacer{flex:1;min-width:12px;}
 .fr-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;letter-spacing:.3px;}
+.fr-fav{background:transparent;border:none;cursor:pointer;font-size:18px;padding:4px 6px;border-radius:8px;transition:.2s;flex-shrink:0;line-height:1;display:flex;align-items:center;gap:4px;color:var(--t3);}
+.fr-fav:hover{background:rgba(255,80,80,.1);}
+.fr-fav.active{color:#ff4d4d;}
+.fr-fav-count{font-size:10px;font-weight:600;}
 .fr-mets-row{display:flex;align-items:center;gap:16px;flex-shrink:0;}
 .fmet{text-align:center;min-width:48px;}
 .fmet .mv{font-size:13px;font-weight:700;}
@@ -1576,6 +1580,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="sb-chk"><input type="checkbox" id="fNews" onchange="applyF()"><label for="fNews">Trade notícias</label></div>
  <div class="sb-chk"><input type="checkbox" id="fD1" onchange="applyF()"><label for="fD1">Saque dia 1</label></div>
  </div>
+ <hr class="sb-sep">
+ <div class="sb-grp">
+ <div class="sb-title">Meus Favoritos</div>
+ <div class="sb-chk"><input type="checkbox" id="fFavOnly" onchange="applyF()"><label for="fFavOnly">❤️ Só favoritas</label></div>
+ </div>
  <button class="sb-clear" onclick="clearF()">Limpar filtros</button>
  </aside>
  <main class="firms-main">
@@ -2520,7 +2529,8 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); applyF(); renderOffers(); renderAwards();
+  renderHome(); renderOffers(); renderAwards();
+  await initFavs();
   track('language_change',{language:lang});
 }
 function initLang() {
@@ -2583,6 +2593,9 @@ function renderFirms(list){
       ${f.trustpilot?`<a class="fr-tp-mini" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="fr-tp-stars">${'★'.repeat(tpStars)}</span><span class="fr-tp-count">${f.trustpilot.reviews.toLocaleString()}</span></a>`:''}
       <div class="fr-actions" onclick="event.stopPropagation()">
         ${f.coupon?`<button class="fr-coupon-pill" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${f.coupon}</button>`:''}
+        <button class="fr-fav ${_favs.has(f.id)?'active':''}" id="fav-btn-${f.id}" onclick="toggleFav('${f.id}')" title="${_favs.has(f.id)?'Remover dos favoritos':'Adicionar aos favoritos'}">
+          ${_favs.has(f.id)?'❤️':'🤍'}<span class="fr-fav-count" id="fav-cnt-${f.id}">${_favCounts[f.id]||0}</span>
+        </button>
         <button class="det-btn primary" onclick="openD('${f.id}')">${t('firms_ver_planos')}</button>
       </div>
       <!-- Mobile: card layout (hidden on desktop, shown on <=960px) -->
@@ -2610,6 +2623,49 @@ function renderFirms(list){
       </div>
     </div>`}).join('');
 }
+/* FAVORITES */
+const _favs = new Set();
+let _favCounts = {};
+
+async function loadFavCounts() {
+  try {
+    const { data } = await db.from('firm_favorite_counts').select('firm_id,count');
+    if (data) data.forEach(r => { _favCounts[r.firm_id] = r.count; });
+  } catch(e) {}
+}
+
+async function loadUserFavs() {
+  if (!currentUser) return;
+  try {
+    const { data } = await db.from('favorites').select('firm_id').eq('user_id', currentUser.id);
+    if (data) data.forEach(r => _favs.add(r.firm_id));
+  } catch(e) {}
+}
+
+async function toggleFav(firmId) {
+  if (!currentUser) { openAuthModal('login'); return; }
+  const isFav = _favs.has(firmId);
+  const btn = document.getElementById('fav-btn-'+firmId);
+  const cnt = document.getElementById('fav-cnt-'+firmId);
+  if (isFav) {
+    _favs.delete(firmId);
+    _favCounts[firmId] = Math.max(0, (_favCounts[firmId]||1) - 1);
+    await db.from('favorites').delete().eq('user_id', currentUser.id).eq('firm_id', firmId);
+  } else {
+    _favs.add(firmId);
+    _favCounts[firmId] = (_favCounts[firmId]||0) + 1;
+    await db.from('favorites').insert({ user_id: currentUser.id, firm_id: firmId });
+    track('firm_favorite', { firm_id: firmId });
+  }
+  if (btn) { btn.classList.toggle('active', !isFav); btn.innerHTML = (!isFav?'❤️':'🤍')+`<span class="fr-fav-count" id="fav-cnt-${firmId}">${_favCounts[firmId]||0}</span>`; }
+}
+
+async function initFavs() {
+  await loadFavCounts();
+  await loadUserFavs();
+  applyF();
+}
+
 function renderAwards(){
   const el=document.getElementById('awards-grid');
   if(!el)return;
@@ -2682,7 +2738,11 @@ function renderOffers(){
 function applyF(){
   const q=document.getElementById('search').value.toLowerCase();
   const sort=document.querySelector('.sort-sel').value;
-  let list=FIRMS.filter(f=>f.name.toLowerCase().includes(q)||f.type.toLowerCase().includes(q));
+  const favOnly=document.getElementById('fFavOnly')?.checked;
+  let list=FIRMS.filter(f=>{
+    if(favOnly && !_favs.has(f.id)) return false;
+    return f.name.toLowerCase().includes(q)||f.type.toLowerCase().includes(q);
+  });
   if(sort==='discount')list.sort((a,b)=>b.discount-a.discount);
   else if(sort==='reviews')list.sort((a,b)=>b.reviews-a.reviews);
   else if(sort==='name')list.sort((a,b)=>a.name.localeCompare(b.name));
@@ -4075,10 +4135,11 @@ async function doLogout() {
 
 async function loadUserSession(user) {
   currentUser = user;
-  // Load profile
   const { data } = await db.from('profiles').select('*').eq('id', user.id).single();
   currentProfile = data;
   updateAuthUI(true);
+  await loadUserFavs();
+  applyF();
 }
 
 function updateAuthUI(loggedIn) {
