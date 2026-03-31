@@ -4035,17 +4035,63 @@ function renderPainelLoyalty(){
   const progressPct = Math.min(100, Math.round(approved/3*100));
 
   el.innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
-      <div style="font-size:13px;">${liveUnlocked
-        ? '<span style="color:var(--green);font-weight:700;">✓ Live Room Desbloqueado!</span>'
-        : '<span style="color:var(--gold);font-weight:700;">' + faltam + ' compra' + (faltam===1?'':'s') + ' para desbloquear o Live Room</span>'}</div>
-      <div style="font-size:12px;color:var(--t3);">${approved}/3 compras validadas</div>
+    <!-- Progresso -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:700;">${liveUnlocked
+        ? '<span style="color:var(--green);">✓ Live Room Desbloqueado!</span>'
+        : '<span style="color:var(--gold);">' + faltam + ' compra' + (faltam===1?'':'s') + ' para desbloquear o Live Room VIP</span>'}</div>
+      <div style="font-size:12px;color:var(--t3);font-weight:600;">${approved} de 3 compras validadas</div>
     </div>
-    <div style="background:var(--card2);border-radius:6px;height:8px;overflow:hidden;margin-bottom:16px;">
-      <div style="height:100%;width:${progressPct}%;background:var(--gold);border-radius:6px;transition:.4s;"></div>
+    <div style="background:var(--card2);border-radius:6px;height:10px;overflow:hidden;margin-bottom:20px;">
+      <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,var(--gold),#F7C948);border-radius:6px;transition:.4s;"></div>
     </div>
-    <p style="font-size:12px;color:var(--t2);margin-bottom:12px;">Comprou usando nosso cupom ou link? Envie o comprovante para validar e acumular compras.</p>
-    <button class="lrf-btn" onclick="go('loyalty')" style="font-size:12px;padding:9px 20px;">Enviar comprovante →</button>`;
+
+    <!-- Benefícios -->
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;">O que você desbloqueia</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:20px;">
+      <div style="background:var(--card2);border:1px solid ${liveUnlocked?'rgba(34,197,94,.3)':'var(--b1)'};border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:4px;">📺</div>
+        <div style="font-size:12px;font-weight:700;color:${liveUnlocked?'var(--green)':'var(--t1)'};">${liveUnlocked?'✓ ':''} Live Room VIP</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Operações ao vivo</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid ${liveUnlocked?'rgba(34,197,94,.3)':'var(--b1)'};border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:4px;">🎁</div>
+        <div style="font-size:12px;font-weight:700;color:${liveUnlocked?'var(--green)':'var(--t1)'};">${liveUnlocked?'✓ ':''} Sorteios</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Contas financiadas</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid ${liveUnlocked?'rgba(34,197,94,.3)':'var(--b1)'};border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:4px;">📊</div>
+        <div style="font-size:12px;font-weight:700;color:${liveUnlocked?'var(--green)':'var(--t1)'};">${liveUnlocked?'✓ ':''} Indicadores</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Ferramentas premium</div>
+      </div>
+    </div>
+
+    <!-- Como funciona -->
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;">Como funciona</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
+        <span style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</span>
+        Compre qualquer prop firm usando nosso <strong style="color:var(--t1);">link ou cupom exclusivo</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
+        <span style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</span>
+        Envie o comprovante (print do email ou PDF de confirmação)
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
+        <span style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</span>
+        Nossa equipe valida em até <strong style="color:var(--t1);">48 horas</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
+        <span style="width:22px;height:22px;border-radius:50%;background:${liveUnlocked?'var(--green)':'var(--b2)'};color:${liveUnlocked?'#07090D':'var(--t3)'};font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</span>
+        Com <strong style="color:var(--t1);">3 compras validadas</strong> → acesso ao Live Room VIP e benefícios
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <button class="lrf-btn" onclick="go('loyalty')" style="width:100%;padding:13px;">
+      ${approved>0?'Enviar novo comprovante →':'Enviar meu primeiro comprovante →'}
+    </button>
+    ${approved>0?`<button onclick="go('loyalty')" style="width:100%;margin-top:8px;background:transparent;border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);">Ver histórico de compras</button>`:''}`;
 }
 
 function renderLoyaltyPage(){
