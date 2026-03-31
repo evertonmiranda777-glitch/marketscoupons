@@ -33,12 +33,12 @@ src="https://www.facebook.com/tr?id=813048241061812&ev=PageView&noscript=1"/></n
 <!-- 
  GOOGLE ANALYTICS 4 (via GTM mas também direto)
  -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-369117816"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CZ3L00NY77"></script>
 <script>
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
-gtag('config','G-369117816',{send_page_view:true});
+gtag('config','G-CZ3L00NY77',{send_page_view:true});
 </script>
 
 <!-- SUPABASE CLIENT -->
@@ -357,7 +357,7 @@ img{max-width:100%;}
 .hero h1{font-size:clamp(26px,4vw,48px);font-weight:700;letter-spacing:-1px;margin-bottom:12px;line-height:1.1;}
 .hero h1 em{color:var(--gold);font-style:normal;}
 .hero p{font-size:14px;color:var(--t2);max-width:460px;margin:0 auto 26px;line-height:1.7;}
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}.hero-btns .btn-gold,.hero-btns .btn-tg{min-width:200px;justify-content:center;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}.hero-btns .btn-gold,.hero-btns a{flex:1;max-width:260px;}.hero-btns .btn-gold,.hero-btns .btn-tg{width:100%;justify-content:center;box-sizing:border-box;}
 .btn-gold{padding:10px 24px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;transition:.2s;cursor:pointer;}
 .btn-gold:hover{background:#F7C948;}
 .btn-out{padding:10px 24px;background:transparent;color:var(--t1);border:1px solid var(--b2);border-radius:8px;font-size:13px;font-weight:500;transition:.2s;}
@@ -1845,7 +1845,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <div class="calc-gate-sub">Calcule o tamanho ideal da sua posição. Ferramenta exclusiva para membros cadastrados — gratuito.</div>
    <div class="calc-gate-form">
      <div class="calc-gate-field"><label data-i18n="calc_gate_label_nome">Nome</label><input type="text" id="cg-name" data-i18n-placeholder="calc_gate_placeholder_nome" placeholder="Seu nome"></div>
-     <div class="calc-gate-field"><label data-i18n="calc_gate_label_email">E-mail</label><input type="email" id="cg-email" data-i18n-placeholder="calc_gate_placeholder_email" placeholder="seu@email.com"></div>
+     <div class="calc-gate-field"><label data-i18n="calc_gate_label_email">E-mail</label><input type="email" id="cg-email" data-i18n-placeholder="calc_gate_placeholder_email" placeholder="email@example.com"></div>
    </div>
    <button class="calc-gate-btn" onclick="unlockCalc()" data-i18n="calc_gate_btn">Desbloquear gratuitamente →</button>
    <div style="font-size:11px;color:var(--t3);margin-top:10px;" data-i18n="calc_gate_privacidade">Seus dados são privados. Nenhum cartão necessário.</div>
@@ -2643,7 +2643,7 @@ const I18N = {
     calc_gate_label_nome:'Nome',
     calc_gate_placeholder_nome:'Seu nome',
     calc_gate_label_email:'E-mail',
-    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_placeholder_email:'email@example.com',
     calc_gate_btn:'Desbloquear gratuitamente →',
     calc_gate_privacidade:'Seus dados são privados. Nenhum cartão necessário.',
     quiz_pergunta:'PERGUNTA',
@@ -3002,7 +3002,7 @@ const I18N = {
     calc_gate_label_nome:'Name',
     calc_gate_placeholder_nome:'Your name',
     calc_gate_label_email:'Email',
-    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_placeholder_email:'email@example.com',
     calc_gate_btn:'Unlock for free →',
     calc_gate_privacidade:'Your information is private. No credit card required.',
     quiz_pergunta:'QUESTION',
@@ -3361,7 +3361,7 @@ const I18N = {
     calc_gate_label_nome:'Nombre',
     calc_gate_placeholder_nome:'Tu nombre',
     calc_gate_label_email:'Correo electrónico',
-    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_placeholder_email:'email@example.com',
     calc_gate_btn:'Desbloquear gratis →',
     calc_gate_privacidade:'Tus datos son confidenciales. No es necesario introducir ningún dato de tarjeta.',
     quiz_pergunta:'PREGUNTA',
@@ -3720,7 +3720,7 @@ const I18N = {
     calc_gate_label_nome:'Nome',
     calc_gate_placeholder_nome:'Il tuo nome',
     calc_gate_label_email:'E-mail',
-    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_placeholder_email:'email@example.com',
     calc_gate_btn:'Sblocca gratuitamente →',
     calc_gate_privacidade:'I tuoi dati sono riservati. Non è richiesta alcuna carta di credito.',
     quiz_pergunta:'DOMANDA',
@@ -4079,7 +4079,7 @@ const I18N = {
     calc_gate_label_nome:'Nom',
     calc_gate_placeholder_nome:'Votre nom',
     calc_gate_label_email:'E-mail',
-    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_placeholder_email:'email@example.com',
     calc_gate_btn:'Débloquer gratuitement →',
     calc_gate_privacidade:'Vos données sont confidentielles. Aucune carte bancaire n&#x27;est requise.',
     quiz_pergunta:'QUESTION',
@@ -4438,7 +4438,7 @@ const I18N = {
     calc_gate_label_nome:'Name',
     calc_gate_placeholder_nome:'Ihr Name',
     calc_gate_label_email:'E-Mail',
-    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_placeholder_email:'email@example.com',
     calc_gate_btn:'Kostenlos freischalten →',
     calc_gate_privacidade:'Ihre Daten bleiben vertraulich. Keine Kreditkarte erforderlich.',
     quiz_pergunta:'FRAGE',
@@ -4797,7 +4797,7 @@ const I18N = {
     calc_gate_label_nome:'الاسم',
     calc_gate_placeholder_nome:'اسمك',
     calc_gate_label_email:'البريد الإلكتروني',
-    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_placeholder_email:'email@example.com',
     calc_gate_btn:'إلغاء الحظر مجانًا →',
     calc_gate_privacidade:'بياناتك سرية. لا حاجة إلى بطاقة.',
     quiz_pergunta:'السؤال',
