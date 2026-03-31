@@ -516,7 +516,7 @@ img{max-width:100%;}
 .award-winner-name{font-size:14px;font-weight:700;color:var(--t1);}
 .award-winner-reason{font-size:11px;color:var(--t3);margin-top:2px;}
 .award-winner-value{font-size:18px;font-weight:800;color:var(--gold);}
-.award-ribbon{position:absolute;top:12px;right:-1px;background:var(--gold);color:#07090D;font-size:8px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:4px 0 0 4px;}
+.award-ribbon{position:absolute;top:12px;right:-1px;background:var(--gold);color:#07090D;font-size:8px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:4px 0 0 4px;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 @media(max-width:600px){.awards-title{font-size:28px;}.awards-stats{gap:20px;}.awards-grid{grid-template-columns:1fr;}}
 
 /* OFFERS PAGE */
@@ -1853,18 +1853,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <!-- Calculator: shown after registration -->
  <div class="calc-wrap" id="calc-content">
  <div class="calc-h"> Position Size Calculator</div>
- <div class="calc-sub">Calcule o tamanho ideal da posição baseado no risco da sua conta</div>
+ <div class="calc-sub" data-i18n="calc_sub_ps">Calcule o tamanho ideal da posição baseado no risco da sua conta</div>
  <div class="calc-tabs">
- <button class="calc-tab active" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Futuros</button>
+ <button class="calc-tab active" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')" data-i18n="firm_type_futuros">Futuros</button>
  <button class="calc-tab" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Forex</button>
- <button class="calc-tab" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Ações</button>
+ <button class="calc-tab" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')" data-i18n="calc_tab_acoes">Ações</button>
  </div>
  <div class="calc-form">
- <div class="cf"><label>Saldo ($)</label><input type="number" id="ps-bal" value="100000" oninput="calcPS()"></div>
- <div class="cf"><label>Risco (%)</label><input type="number" id="ps-risk" value="1" step="0.1" oninput="calcPS()"></div>
- <div class="cf"><label>Entrada</label><input type="number" id="ps-ent" value="4500" step="0.25" oninput="calcPS()"></div>
+ <div class="cf"><label data-i18n="calc_saldo">Saldo ($)</label><input type="number" id="ps-bal" value="100000" oninput="calcPS()"></div>
+ <div class="cf"><label data-i18n="calc_risco">Risco (%)</label><input type="number" id="ps-risk" value="1" step="0.1" oninput="calcPS()"></div>
+ <div class="cf"><label data-i18n="calc_entrada">Entrada</label><input type="number" id="ps-ent" value="4500" step="0.25" oninput="calcPS()"></div>
  <div class="cf"><label>Stop Loss</label><input type="number" id="ps-sl" value="4490" step="0.25" oninput="calcPS()"></div>
- <div class="cf"><label>Instrumento</label>
+ <div class="cf"><label data-i18n="calc_instr">Instrumento</label>
  <select id="ps-instr" onchange="calcPS()">
  <option value="50">ES (S&P 500) — $50/pt</option>
  <option value="20">NQ (Nasdaq) — $20/pt</option>
@@ -1879,10 +1879,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  <div class="calc-res">
  <div class="res-grid">
- <div class="ri"><div class="rl">Contratos</div><div class="rv2" id="r-ct">—</div></div>
- <div class="ri"><div class="rl">Risco ($)</div><div class="rv2" id="r-rs" style="color:var(--red)">—</div></div>
+ <div class="ri"><div class="rl" data-i18n="calc_contratos">Contratos</div><div class="rv2" id="r-ct">—</div></div>
+ <div class="ri"><div class="rl" data-i18n="calc_risco_res">Risco ($)</div><div class="rv2" id="r-rs" style="color:var(--red)">—</div></div>
  <div class="ri"><div class="rl">R:R</div><div class="rv2" id="r-rr">—</div></div>
- <div class="ri"><div class="rl">Lucro Pot.</div><div class="rv2" id="r-lp" style="color:var(--green)">—</div></div>
+ <div class="ri"><div class="rl" data-i18n="calc_lucro_pot">Lucro Pot.</div><div class="rv2" id="r-lp" style="color:var(--green)">—</div></div>
  </div>
  </div>
  </div>
@@ -1912,26 +1912,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="lg-hero">
  <div class="lg-hero-ico"></div>
  <h2>Live Trading Room</h2>
- <p>Assista ao espelhamento do NinjaTrader em tempo real. Nosso indicador exclusivo marca as entradas ao vivo. Cadastre-se gratuitamente para acessar.</p>
+ <p data-i18n="live_hero_desc">Assista ao espelhamento do NinjaTrader em tempo real. Nosso indicador exclusivo marca as entradas ao vivo. Cadastre-se gratuitamente para acessar.</p>
  </div>
 
  <!-- PROGRESS STEPS -->
  <div class="live-progress">
- <div class="lp-step active" id="lp1"><div class="lp-dot">1</div><span>Dados pessoais</span></div>
+ <div class="lp-step active" id="lp1"><div class="lp-dot">1</div><span data-i18n="live_step1_label">Dados pessoais</span></div>
  <div class="lp-line"></div>
- <div class="lp-step" id="lp2"><div class="lp-dot">2</div><span>Localização</span></div>
+ <div class="lp-step" id="lp2"><div class="lp-dot">2</div><span data-i18n="live_step2_label">Localização</span></div>
  <div class="lp-line"></div>
- <div class="lp-step" id="lp3"><div class="lp-dot">3</div><span>Perfil trader</span></div>
+ <div class="lp-step" id="lp3"><div class="lp-dot">3</div><span data-i18n="live_step3_label">Perfil trader</span></div>
  </div>
 
  <!-- STEP 1: Dados pessoais -->
  <div id="live-step1">
  <div class="lg-section">
- <div class="lg-section-title"> Dados Pessoais <span style="color:var(--red);font-size:10px;">(* obrigatório)</span></div>
+ <div class="lg-section-title"><span data-i18n="live_step1_titulo"> Dados Pessoais</span> <span style="color:var(--red);font-size:10px;" data-i18n="live_step1_obr">(* obrigatório)</span></div>
  <div class="lg-grid">
- <div class="lff-field lg-full"><label>Nome completo <span class="required-star">*</span></label><input type="text" id="lv-name" placeholder="Seu nome completo"></div>
- <div class="lff-field"><label>E-mail <span class="required-star">*</span></label><input type="email" id="lv-email" placeholder="seu@email.com"></div>
- <div class="lff-field"><label>WhatsApp / Celular <span class="required-star">*</span></label>
+ <div class="lff-field lg-full"><label data-i18n="live_label_nome">Nome completo</label> <span class="required-star">*</span><input type="text" id="lv-name" placeholder="—"></div>
+ <div class="lff-field"><label data-i18n="live_label_email">E-mail</label> <span class="required-star">*</span><input type="email" id="lv-email" placeholder="email@example.com"></div>
+ <div class="lff-field"><label data-i18n="live_label_whatsapp">WhatsApp / Celular</label> <span class="required-star">*</span>
  <div style="display:flex;gap:6px;">
    <select id="lv-ddi" style="width:110px;flex-shrink:0;padding:9px 8px;background:var(--card);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;" onchange="updateWaPlaceholder()">
      <option value="+55">🇧🇷 +55</option>
@@ -1953,15 +1953,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <input type="tel" id="lv-whatsapp" placeholder="(11) 99999-9999" style="flex:1;">
  </div>
  </div>
- <div class="lff-field"><label>Sexo</label>
+ <div class="lff-field"><label data-i18n="live_label_sexo">Sexo</label>
  <select id="lv-sexo">
- <option value="">Prefiro não informar</option>
- <option>Masculino</option>
- <option>Feminino</option>
- <option>Outro</option>
+ <option value="" data-i18n="live_opt_prefiro_nao">Prefiro não informar</option>
+ <option data-i18n="live_opt_masculino">Masculino</option>
+ <option data-i18n="live_opt_feminino">Feminino</option>
+ <option data-i18n="live_opt_outro">Outro</option>
  </select>
  </div>
- <div class="lff-field"><label>Data de nascimento</label><input type="date" id="lv-nascimento" max="2006-01-01"></div>
+ <div class="lff-field"><label data-i18n="live_label_nasc">Data de nascimento</label><input type="date" id="lv-nascimento" max="2006-01-01"></div>
  </div>
  </div>
  <button class="live-submit-btn" onclick="liveStep(2)" data-i18n="live_proximo_localizacao">Próximo — Localização →</button>
@@ -1970,9 +1970,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <!-- STEP 2: Localização -->
  <div id="live-step2" class="hide">
  <div class="lg-section">
- <div class="lg-section-title"> Localização</div>
+ <div class="lg-section-title" data-i18n="live_step2_titulo"> Localização</div>
  <div class="lg-grid cols3">
- <div class="lff-field"><label>País <span class="required-star">*</span></label>
+ <div class="lff-field"><label data-i18n="live_label_pais">País</label> <span class="required-star">*</span>
  <select id="lv-pais">
  <option value="">Selecionar...</option>
  <option selected>Brasil</option>
@@ -1988,8 +1988,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <option>Outro</option>
  </select>
  </div>
- <div class="lff-field"><label>Estado / Província</label><input type="text" id="lv-estado" placeholder="Ex: São Paulo"></div>
- <div class="lff-field"><label>Cidade</label><input type="text" id="lv-cidade" placeholder="Ex: São Paulo"></div>
+ <div class="lff-field"><label data-i18n="live_label_estado">Estado / Província</label><input type="text" id="lv-estado" placeholder="—"></div>
+ <div class="lff-field"><label data-i18n="live_label_cidade">Cidade</label><input type="text" id="lv-cidade" placeholder="—"></div>
  </div>
  </div>
  <div style="display:flex;gap:10px;">
@@ -2001,9 +2001,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <!-- STEP 3: Perfil trader -->
  <div id="live-step3" class="hide">
  <div class="lg-section">
- <div class="lg-section-title"> Perfil de Trading</div>
+ <div class="lg-section-title" data-i18n="live_step3_titulo"> Perfil de Trading</div>
  <div class="lg-grid">
- <div class="lff-field"><label>Estilo de trading</label>
+ <div class="lff-field"><label data-i18n="live_label_estilo">Estilo de trading</label>
  <select id="lv-estilo">
  <option value="">Selecionar...</option>
  <option>Scalper</option>
@@ -2013,7 +2013,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <option>Iniciante</option>
  </select>
  </div>
- <div class="lff-field"><label>Plataforma que usa</label>
+ <div class="lff-field"><label data-i18n="live_label_plataforma">Plataforma que usa</label>
  <select id="lv-plataforma">
  <option value="">Selecionar...</option>
  <option>NinjaTrader 8</option>
@@ -2028,7 +2028,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <option>Outra</option>
  </select>
  </div>
- <div class="lff-field"><label>Qual prop firm opera</label>
+ <div class="lff-field"><label data-i18n="live_label_firma">Qual prop firm opera</label>
  <select id="lv-firma">
  <option value="">Selecionar...</option>
  <option>Apex Trader Funding</option>
@@ -2041,7 +2041,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <option>Nenhuma ainda</option>
  </select>
  </div>
- <div class="lff-field"><label>Capital disponível para trading</label>
+ <div class="lff-field"><label data-i18n="live_label_capital">Capital disponível para trading</label>
  <select id="lv-capital">
  <option value="">Selecionar...</option>
  <option>Menos de $1.000</option>
@@ -2052,13 +2052,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <option>Acima de $50.000</option>
  </select>
  </div>
- <div class="lff-field lg-full"><label>Já passou em algum desafio de prop firm?</label>
+ <div class="lff-field lg-full"><label data-i18n="live_label_desafio">Já passou em algum desafio de prop firm?</label>
  <select id="lv-desafio">
- <option value="">Selecionar...</option>
- <option>Sim, já tenho conta financiada</option>
- <option>Sim, mas ainda não recebi capital</option>
- <option>Não, ainda estou tentando</option>
- <option>Nunca tentei ainda</option>
+ <option value="" data-i18n="live_opt_selecionar">Selecionar...</option>
+ <option data-i18n="live_opt_sim_financiada">Sim, já tenho conta financiada</option>
+ <option data-i18n="live_opt_sim_ainda_nao">Sim, mas ainda não recebi capital</option>
+ <option data-i18n="live_opt_nao_tentando">Não, ainda estou tentando</option>
+ <option data-i18n="live_opt_nunca">Nunca tentei ainda</option>
  </select>
  </div>
  </div>
@@ -2075,17 +2075,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  <div id="live-room" class="hide">
  <div class="live-room-wrap">
- <div class="live-badge"><div class="live-dot"></div> AO VIVO</div>
+ <div class="live-badge"><div class="live-dot"></div> <span data-i18n="live_ao_vivo">AO VIVO</span></div>
  <div class="live-player">
  <div class="live-pp">
  <div class="pp-ico"></div>
- <p>O stream começa quando o trader está ao vivo.<br><strong style="color:var(--gold);">Configure: OBS + RTMP → YouTube Live embed</strong></p>
+ <p><span data-i18n="live_stream_desc">O stream começa quando o trader está ao vivo.</span><br><strong style="color:var(--gold);">Configure: OBS + RTMP → YouTube Live embed</strong></p>
  </div>
  </div>
  <div class="live-stats">
- <div class="ls-card"><div class="ls-lbl">Assistindo</div><div class="ls-val" id="lv-viewers">—</div></div>
- <div class="ls-card"><div class="ls-lbl">Sinais hoje</div><div class="ls-val" style="color:var(--green)">3</div></div>
- <div class="ls-card"><div class="ls-lbl">Status</div><div class="ls-val" style="color:var(--red)"> Aguardando</div></div>
+ <div class="ls-card"><div class="ls-lbl" data-i18n="live_assistindo">Assistindo</div><div class="ls-val" id="lv-viewers">—</div></div>
+ <div class="ls-card"><div class="ls-lbl" data-i18n="live_sinais">Sinais hoje</div><div class="ls-val" style="color:var(--green)">3</div></div>
+ <div class="ls-card"><div class="ls-lbl" data-i18n="live_status">Status</div><div class="ls-val" style="color:var(--red)"><span data-i18n="live_aguardando">Aguardando</span></div></div>
  </div>
  </div>
  </div>
@@ -2134,31 +2134,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="loyalty-page">
 
     <div class="loyalty-hero">
-      <h2>Programa de Fidelidade</h2>
-      <p>Compre pela MarketsCoupons usando nosso cupom, envie o comprovante e desbloqueie acesso ao <strong style="color:var(--gold);">Live Room VIP</strong> com operações ao vivo, sorteios de avaliações, indicadores e muito mais.</p>
+      <h2 data-i18n="loyalty_hero_titulo">Programa de Fidelidade</h2>
+      <p data-i18n="loyalty_hero_desc">Compre pela MarketsCoupons usando nosso cupom, envie o comprovante e desbloqueie acesso ao Live Room VIP com operações ao vivo, sorteios de avaliações, indicadores e muito mais.</p>
     </div>
 
     <!-- BENEFITS CARDS -->
     <div class="loyalty-benefits-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
       <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
         <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Live Room VIP</div>
-        <div style="font-size:11px;color:var(--t2);">Operações ao vivo com o trader</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit1_titulo">Live Room VIP</div>
+        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit1_sub">Operações ao vivo com o trader</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
         <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Sorteios de Avaliações</div>
-        <div style="font-size:11px;color:var(--t2);">Contas financiadas sorteadas</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit2_titulo">Sorteios de Avaliações</div>
+        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit2_sub">Contas financiadas sorteadas</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
         <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Indicadores Exclusivos</div>
-        <div style="font-size:11px;color:var(--t2);">Ferramentas premium desbloqueadas</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit3_titulo">Indicadores Exclusivos</div>
+        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit3_sub">Ferramentas premium desbloqueadas</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
         <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Mais benefícios em breve</div>
-        <div style="font-size:11px;color:var(--t2);">Programa em expansão contínua</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit4_titulo">Mais benefícios em breve</div>
+        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit4_sub">Programa em expansão contínua</div>
       </div>
     </div>
 
@@ -2166,8 +2166,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div style="background:var(--gbg);border:1px solid var(--gbr);border-radius:10px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <div style="font-size:24px;"></div>
       <div>
-        <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:2px;">Como participar</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.6;">Compre qualquer prop firm pelo nosso link ou cupom → envie o comprovante abaixo → nossa equipe valida em até 48h → acesso ao Live Room VIP liberado com <strong style="color:var(--t1);">3 compras validadas</strong>.</div>
+        <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:2px;" data-i18n="loyalty_como_titulo">Como participar</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6;" data-i18n="loyalty_como_desc">Compre qualquer prop firm pelo nosso link ou cupom → envie o comprovante → nossa equipe valida em até 48h → acesso ao Live Room VIP liberado com 3 compras validadas.</div>
       </div>
     </div>
 
@@ -2177,8 +2177,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- SUBMIT PROOF FORM (shown after register) -->
     <div id="loyalty-proof-section" style="display:none;">
       <div class="proof-card">
-        <div class="proof-card-title">Registrar Compra</div>
-        <div class="proof-card-sub">Comprou usando nosso cupom ou link? Envie o comprovante abaixo. Nossa equipe valida em ate 48 horas e credita os pontos automaticamente.</div>
+        <div class="proof-card-title" data-i18n="proof_titulo">Registrar Compra</div>
+        <div class="proof-card-sub" data-i18n="proof_sub">Comprou usando nosso cupom ou link? Envie o comprovante abaixo. Nossa equipe valida em até 48 horas e credita os pontos automaticamente.</div>
         <div class="proof-form">
           <div class="proof-grid">
             <div class="proof-field">
@@ -2194,7 +2194,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </select>
             </div>
             <div class="proof-field">
-              <label>Tamanho da Conta</label>
+              <label data-i18n="proof_label_size">Tamanho da Conta</label>
               <select id="pf-size">
                 <option value="">Selecionar...</option>
                 <option>25K</option><option>50K</option><option>75K</option>
@@ -2202,19 +2202,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </select>
             </div>
             <div class="proof-field">
-              <label>Numero do Pedido</label>
+              <label data-i18n="proof_label_order">Número do Pedido</label>
               <input type="text" id="pf-order" placeholder="Ex: ATF-2025-123456">
             </div>
             <div class="proof-field">
-              <label>Data da Compra</label>
+              <label data-i18n="proof_label_date">Data da Compra</label>
               <input type="date" id="pf-date">
             </div>
             <div class="proof-field">
-              <label>Cupom Utilizado</label>
+              <label data-i18n="proof_label_coupon">Cupom Utilizado</label>
               <input type="text" id="pf-coupon" placeholder="Ex: MARKET89">
             </div>
             <div class="proof-field">
-              <label>Valor Pago</label>
+              <label data-i18n="proof_label_value">Valor Pago</label>
               <input type="text" id="pf-value" placeholder="Ex: $19.25">
             </div>
           </div>
@@ -2222,14 +2222,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <!-- PROOF UPLOAD -->
           <div class="proof-upload-area" id="proof-upload-area" onclick="document.getElementById('pf-file').click()">
             <div class="pua-icon">+</div>
-            <div class="pua-title">Clique para anexar o comprovante</div>
-            <div class="pua-sub">Print da confirmacao, PDF do recibo ou screenshot do email — JPG, PNG ou PDF ate 5MB</div>
+            <div class="pua-title" data-i18n="proof_upload_titulo">Clique para anexar o comprovante</div>
+            <div class="pua-sub" data-i18n="proof_upload_sub">Print da confirmação, PDF do recibo ou screenshot do email — JPG, PNG ou PDF até 5MB</div>
             <input type="file" id="pf-file" accept="image/*,.pdf" style="display:none;" onchange="handleProofFile(this)">
             <div id="pf-file-preview" style="display:none;"></div>
           </div>
 
           <div class="proof-methods">
-            <div class="pm-title">Como obter o comprovante em cada firma:</div>
+            <div class="pm-title" data-i18n="proof_como_titulo">Como obter o comprovante em cada firma:</div>
             <div class="pm-grid">
               <div class="pm-item"><strong>Apex:</strong> Email de confirmacao com numero do pedido "ATF-..."</div>
               <div class="pm-item"><strong>Bulenox:</strong> Email "Order Confirmation" com ID do plano</div>
@@ -2240,8 +2240,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
           </div>
 
-          <button class="proof-submit-btn" onclick="submitProof()">Enviar comprovante para validacao</button>
-          <div class="proof-note">A pontuacao sera creditada em ate 48 horas apos validacao da nossa equipe. Comprovantes invalidos ou duplicados serao recusados.</div>
+          <button class="proof-submit-btn" onclick="submitProof()" data-i18n="proof_btn_enviar">Enviar comprovante para validação</button>
+          <div class="proof-note" data-i18n="proof_nota">A pontuação será creditada em até 48 horas após validação da nossa equipe.</div>
         </div>
       </div>
     </div>
@@ -2249,8 +2249,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- HISTORY TABLE -->
     <div class="loyalty-history" id="loyalty-history-wrap" style="display:none;">
       <div class="lh-hd">
-        <div class="lh-title">Historico de compras</div>
-        <div style="font-size:11px;color:var(--t3);">Apenas compras validadas contam para o seu nivel</div>
+        <div class="lh-title" data-i18n="loyalty_hist_titulo">Histórico de compras</div>
+        <div style="font-size:11px;color:var(--t3);" data-i18n="loyalty_hist_sub">Apenas compras validadas contam para o seu nível</div>
       </div>
       <table class="data-table" id="loyalty-history-tbl" style="font-size:12px;"></table>
     </div>
@@ -2786,6 +2786,78 @@ const I18N = {
     painel_cupons:'Cupons',
     painel_fidelidade:'Programa de Fidelidade',
     painel_usuario:'Usuário',
+    calc_sub_ps:'Calcule o tamanho ideal da posição baseado no risco da sua conta',
+    calc_tab_acoes:'Ações',
+    calc_saldo:'Saldo ($)',
+    calc_risco:'Risco (%)',
+    calc_entrada:'Entrada',
+    calc_instr:'Instrumento',
+    calc_contratos:'Contratos',
+    calc_risco_res:'Risco ($)',
+    calc_lucro_pot:'Lucro Pot.',
+    live_step1_label:'Dados pessoais',
+    live_step2_label:'Localização',
+    live_step3_label:'Perfil trader',
+    live_step1_titulo:'Dados Pessoais',
+    live_step1_obr:'(* obrigatório)',
+    live_step2_titulo:'Localização',
+    live_step3_titulo:'Perfil de Trading',
+    live_hero_desc:'Assista ao espelhamento do NinjaTrader em tempo real. Nosso indicador exclusivo marca as entradas ao vivo. Cadastre-se gratuitamente para acessar.',
+    live_label_nome:'Nome completo',
+    live_label_email:'E-mail',
+    live_label_whatsapp:'WhatsApp / Celular',
+    live_label_sexo:'Sexo',
+    live_label_nasc:'Data de nascimento',
+    live_label_pais:'País',
+    live_label_estado:'Estado / Província',
+    live_label_cidade:'Cidade',
+    live_label_estilo:'Estilo de trading',
+    live_label_plataforma:'Plataforma que usa',
+    live_label_firma:'Qual prop firm opera',
+    live_label_capital:'Capital disponível para trading',
+    live_label_desafio:'Já passou em algum desafio de prop firm?',
+    live_opt_selecionar:'Selecionar...',
+    live_opt_prefiro_nao:'Prefiro não informar',
+    live_opt_masculino:'Masculino',
+    live_opt_feminino:'Feminino',
+    live_opt_outro:'Outro',
+    live_opt_sim_financiada:'Sim, já tenho conta financiada',
+    live_opt_sim_ainda_nao:'Sim, mas ainda não recebi capital',
+    live_opt_nao_tentando:'Não, ainda estou tentando',
+    live_opt_nunca:'Nunca tentei ainda',
+    live_ao_vivo:'AO VIVO',
+    live_assistindo:'Assistindo',
+    live_sinais:'Sinais hoje',
+    live_status:'Status',
+    live_aguardando:'Aguardando',
+    live_stream_desc:'O stream começa quando o trader está ao vivo.',
+    loyalty_hero_titulo:'Programa de Fidelidade',
+    loyalty_hero_desc:'Compre pela MarketsCoupons usando nosso cupom, envie o comprovante e desbloqueie acesso ao Live Room VIP com operações ao vivo, sorteios de avaliações, indicadores e muito mais.',
+    loyalty_benefit1_titulo:'Live Room VIP',
+    loyalty_benefit1_sub:'Operações ao vivo com o trader',
+    loyalty_benefit2_titulo:'Sorteios de Avaliações',
+    loyalty_benefit2_sub:'Contas financiadas sorteadas',
+    loyalty_benefit3_titulo:'Indicadores Exclusivos',
+    loyalty_benefit3_sub:'Ferramentas premium desbloqueadas',
+    loyalty_benefit4_titulo:'Mais benefícios em breve',
+    loyalty_benefit4_sub:'Programa em expansão contínua',
+    loyalty_como_titulo:'Como participar',
+    loyalty_como_desc:'Compre qualquer prop firm pelo nosso link ou cupom → envie o comprovante → nossa equipe valida em até 48h → acesso ao Live Room VIP liberado com 3 compras validadas.',
+    proof_titulo:'Registrar Compra',
+    proof_sub:'Comprou usando nosso cupom ou link? Envie o comprovante abaixo. Nossa equipe valida em até 48 horas e credita os pontos automaticamente.',
+    proof_label_firma:'Prop Firm',
+    proof_label_size:'Tamanho da Conta',
+    proof_label_order:'Número do Pedido',
+    proof_label_date:'Data da Compra',
+    proof_label_coupon:'Cupom Utilizado',
+    proof_label_value:'Valor Pago',
+    proof_upload_titulo:'Clique para anexar o comprovante',
+    proof_upload_sub:'Print da confirmação, PDF do recibo ou screenshot do email — JPG, PNG ou PDF até 5MB',
+    proof_como_titulo:'Como obter o comprovante em cada firma:',
+    proof_btn_enviar:'Enviar comprovante para validação',
+    proof_nota:'A pontuação será creditada em até 48 horas após validação da nossa equipe.',
+    loyalty_hist_titulo:'Histórico de compras',
+    loyalty_hist_sub:'Apenas compras validadas contam para o seu nível',
   },
   en: {
     nav_ofertas:'Specials',
@@ -3044,7 +3116,7 @@ const I18N = {
     blog_cat_payouts:'Payouts',
     blog_cat_ferramentas:'Tools',
     blog1_titulo:'Apex launches a historic 90% OFF sale',
-    blog1_excerpt:'The largest futures prop firm in the U.S. is offering a promotion with an exclusive code.',
+    blog1_excerpt:'The largest futures prop firm in the U.S. announces a promotion with an exclusive code.',
     blog1_data:'March 2025',
     blog2_titulo:'How to Pass the FTMO Challenge in 2025',
     blog2_excerpt:'A comprehensive guide with strategies for passing the assessment at the world’s largest prop firm.',
@@ -3072,7 +3144,7 @@ const I18N = {
     quiz_proxima:'Next →',
     quiz_recomecar:'↺ Start Over',
     quiz_q1_titulo:'Which market do you prefer to trade in?',
-    quiz_q1_sub:'Your response will help us find the right prop firm.',
+    quiz_q1_sub:'Your response will help us find the ideal prop firm.',
     quiz_q1_a1:'Futures (ES, NQ, CL...)',
     quiz_q1_a2:'Forex (EUR/USD, Gold...)',
     quiz_q1_a3:'Both',
@@ -3207,6 +3279,78 @@ const I18N = {
     painel_cupons:'Coupons',
     painel_fidelidade:'Loyalty Program',
     painel_usuario:'User',
+    calc_sub_ps:'Calculate the optimal position size based on your account&#x27;s risk tolerance',
+    calc_tab_acoes:'Stocks',
+    calc_saldo:'Balance ($)',
+    calc_risco:'Risk (%)',
+    calc_entrada:'Home',
+    calc_instr:'Instrument',
+    calc_contratos:'Contracts',
+    calc_risco_res:'Risk ($)',
+    calc_lucro_pot:'Potential Profit',
+    live_step1_label:'Personal information',
+    live_step2_label:'Location',
+    live_step3_label:'Trader Profile',
+    live_step1_titulo:'Personal Information',
+    live_step1_obr:'(* required)',
+    live_step2_titulo:'Location',
+    live_step3_titulo:'Trading Profile',
+    live_hero_desc:'Watch NinjaTrader&#x27;s real-time mirroring. Our exclusive indicator highlights entry points live. Sign up for free to access it.',
+    live_label_nome:'Full name',
+    live_label_email:'Email',
+    live_label_whatsapp:'WhatsApp / Cell Phone',
+    live_label_sexo:'Sex',
+    live_label_nasc:'Date of birth',
+    live_label_pais:'Country',
+    live_label_estado:'State / Province',
+    live_label_cidade:'City',
+    live_label_estilo:'Trading style',
+    live_label_plataforma:'Platform that uses',
+    live_label_firma:'Which prop firm operates',
+    live_label_capital:'Available trading capital',
+    live_label_desafio:'Have you ever passed a prop firm challenge?',
+    live_opt_selecionar:'Select...',
+    live_opt_prefiro_nao:'I&#x27;d rather not say',
+    live_opt_masculino:'Men&#x27;s',
+    live_opt_feminino:'Women&#x27;s',
+    live_opt_outro:'Another',
+    live_opt_sim_financiada:'Yes, I already have a funded account',
+    live_opt_sim_ainda_nao:'Yes, but I haven&#x27;t received the funds yet',
+    live_opt_nao_tentando:'No, I&#x27;m still trying',
+    live_opt_nunca:'I haven&#x27;t tried it yet',
+    live_ao_vivo:'LIVE',
+    live_assistindo:'Watching',
+    live_sinais:'Signs today',
+    live_status:'Status',
+    live_aguardando:'Pending',
+    live_stream_desc:'The stream starts when the trader goes live.',
+    loyalty_hero_titulo:'Loyalty Program',
+    loyalty_hero_desc:'Shop at MarketsCoupons using our coupon, submit your receipt, and unlock access to the VIP Live Room, featuring live trades, review giveaways, indicators, and much more.',
+    loyalty_benefit1_titulo:'VIP Live Room',
+    loyalty_benefit1_sub:'Live trading with the trader',
+    loyalty_benefit2_titulo:'Review Giveaways',
+    loyalty_benefit2_sub:'Winning funded accounts',
+    loyalty_benefit3_titulo:'Exclusive Indicators',
+    loyalty_benefit3_sub:'Premium tools unlocked',
+    loyalty_benefit4_titulo:'More benefits coming soon',
+    loyalty_benefit4_sub:'A program that is constantly expanding',
+    loyalty_como_titulo:'How to participate',
+    loyalty_como_desc:'Buy any prop firm through our link or coupon → send us your proof of purchase → our team will verify it within 48 hours → access to the VIP Live Room is granted after 3 verified purchases.',
+    proof_titulo:'Register Purchase',
+    proof_sub:'Did you make a purchase using our coupon or link? Please submit your receipt below. Our team will verify it within 48 hours and automatically credit your points.',
+    proof_label_firma:'Prop Firm',
+    proof_label_size:'Account Size',
+    proof_label_order:'Order Number',
+    proof_label_date:'Date of Purchase',
+    proof_label_coupon:'Coupon Redeemed',
+    proof_label_value:'Amount Paid',
+    proof_upload_titulo:'Click to attach the receipt',
+    proof_upload_sub:'Confirmation printout, receipt PDF, or email screenshot — JPG, PNG, or PDF up to 5MB',
+    proof_como_titulo:'How to obtain the receipt at each store:',
+    proof_btn_enviar:'Submit proof for verification',
+    proof_nota:'Points will be credited within 48 hours after validation by our team.',
+    loyalty_hist_titulo:'Purchase history',
+    loyalty_hist_sub:'Only verified purchases count toward your level',
   },
   es: {
     nav_ofertas:'Ofertas',
@@ -3321,7 +3465,7 @@ const I18N = {
     badge_melhor_split:'Mejor Split 90 %',
     badge_lider_forex:'Líder en Forex',
     badge_mais_avaliacoes:'Más opiniones',
-    badge_scaling:'Ampliar a 400 000 dólares',
+    badge_scaling:'Ampliación de 400 000 dólares',
     plat_acessar_off:'Iniciar sesión con',
     plat_acessar:'Iniciar sesión',
     plat_oferta_exclusiva:'OFERTA EXCLUSIVA',
@@ -3402,7 +3546,7 @@ const I18N = {
     cal_esta_semana:'Esta semana',
     cal_anterior:'Anterior',
     cal_previsao:'Previsión',
-    cal_alto_impacto:'De gran repercusión',
+    cal_alto_impacto:'De gran impacto',
     cal_medio_impacto:'Impacto moderado',
     cal_baixo_impacto:'De bajo impacto',
     hm_sp500:'S&amp;P 500',
@@ -3480,7 +3624,7 @@ const I18N = {
     blog5_excerpt:'Guía paso a paso para Apex, Bulenox, FTMO y FundedNext.',
     blog5_data:'Enero de 2025',
     blog6_titulo:'Los mejores indicadores para NinjaTrader 8',
-    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las empresas de inversión.',
+    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las empresas de gestión de capital.',
     blog6_data:'Diciembre de 2024',
     calc_gate_label_nome:'Nombre',
     calc_gate_placeholder_nome:'Tu nombre',
@@ -3555,7 +3699,7 @@ const I18N = {
     offers_hero_sub:'Cupones verificados y actualizados. Cópialos, aplícalos al finalizar la compra y empieza a operar con descuento.',
     painel_em_breve:'Próximamente: historial de cupones utilizados, tiendas favoritas y mucho más.',
     live_acessar:'Acceder a Live Room →',
-    live_voltar:'← Atrás',
+    live_voltar:'← Volver',
     live_proximo_localizacao:'Siguiente — Ubicación →',
     live_proximo_perfil:'Siguiente — Perfil del operador →',
     live_privacidade:'Tus datos están protegidos. Recibirás un correo electrónico de bienvenida con el acceso a Live Room.',
@@ -3628,6 +3772,78 @@ const I18N = {
     painel_cupons:'Cupones',
     painel_fidelidade:'Programa de fidelización',
     painel_usuario:'Usuario',
+    calc_sub_ps:'Calcula el tamaño ideal de la posición en función del riesgo de tu cuenta',
+    calc_tab_acoes:'Acciones',
+    calc_saldo:'Saldo ($)',
+    calc_risco:'Riesgo (%)',
+    calc_entrada:'Entrada',
+    calc_instr:'Instrumento',
+    calc_contratos:'Contratos',
+    calc_risco_res:'Riesgo ($)',
+    calc_lucro_pot:'Beneficio potencial',
+    live_step1_label:'Datos personales',
+    live_step2_label:'Ubicación',
+    live_step3_label:'Perfil del operador',
+    live_step1_titulo:'Datos personales',
+    live_step1_obr:'(* obligatorio)',
+    live_step2_titulo:'Ubicación',
+    live_step3_titulo:'Perfil de trading',
+    live_hero_desc:'Vea el mirroring de NinjaTrader en tiempo real. Nuestro indicador exclusivo señala las entradas en directo. Regístrese gratis para acceder.',
+    live_label_nome:'Nombre completo',
+    live_label_email:'Correo electrónico',
+    live_label_whatsapp:'WhatsApp / Móvil',
+    live_label_sexo:'Sexo',
+    live_label_nasc:'Fecha de nacimiento',
+    live_label_pais:'País',
+    live_label_estado:'Estado / Provincia',
+    live_label_cidade:'Ciudad',
+    live_label_estilo:'Estilo de trading',
+    live_label_plataforma:'Plataforma que utiliza',
+    live_label_firma:'¿Qué empresa de inversión opera?',
+    live_label_capital:'Capital disponible para operar',
+    live_label_desafio:'¿Has superado alguna vez una prueba de selección de una firma de inversión?',
+    live_opt_selecionar:'Seleccionar...',
+    live_opt_prefiro_nao:'Prefiero no decirlo',
+    live_opt_masculino:'Masculino',
+    live_opt_feminino:'Femenino',
+    live_opt_outro:'Otro',
+    live_opt_sim_financiada:'Sí, ya tengo una cuenta financiada',
+    live_opt_sim_ainda_nao:'Sí, pero aún no he recibido el capital',
+    live_opt_nao_tentando:'No, todavía lo estoy intentando',
+    live_opt_nunca:'Todavía no lo he intentado',
+    live_ao_vivo:'EN DIRECTO',
+    live_assistindo:'Viendo',
+    live_sinais:'Señales de hoy',
+    live_status:'Estado',
+    live_aguardando:'En espera',
+    live_stream_desc:'La retransmisión comienza cuando el trader está en directo.',
+    loyalty_hero_titulo:'Programa de fidelización',
+    loyalty_hero_desc:'Compra en MarketsCoupons utilizando nuestro cupón, envía el comprobante y desbloquea el acceso a la Sala VIP en directo con operaciones en vivo, sorteos de análisis, indicadores y mucho más.',
+    loyalty_benefit1_titulo:'Sala VIP en directo',
+    loyalty_benefit1_sub:'Operaciones en directo con el operador',
+    loyalty_benefit2_titulo:'Sorteos por reseñas',
+    loyalty_benefit2_sub:'Cuentas financiadas seleccionadas al azar',
+    loyalty_benefit3_titulo:'Indicadores exclusivos',
+    loyalty_benefit3_sub:'Herramientas premium desbloqueadas',
+    loyalty_benefit4_titulo:'Más ventajas próximamente',
+    loyalty_benefit4_sub:'Programa en constante expansión',
+    loyalty_como_titulo:'Cómo participar',
+    loyalty_como_desc:'Compra cualquier prop firm a través de nuestro enlace o cupón → envía el comprobante → nuestro equipo lo validará en un plazo máximo de 48 horas → acceso al Live Room VIP desbloqueado tras 3 compras validadas.',
+    proof_titulo:'Registrar compra',
+    proof_sub:'¿Has comprado utilizando nuestro cupón o enlace? Envía el comprobante a continuación. Nuestro equipo lo validará en un plazo máximo de 48 horas y te abonará los puntos automáticamente.',
+    proof_label_firma:'Firma de inversión',
+    proof_label_size:'Tamaño de la cuenta',
+    proof_label_order:'Número de pedido',
+    proof_label_date:'Fecha de compra',
+    proof_label_coupon:'Cupón canjeado',
+    proof_label_value:'Importe pagado',
+    proof_upload_titulo:'Haz clic para adjuntar el comprobante',
+    proof_upload_sub:'Impresión de la confirmación, PDF del recibo o captura de pantalla del correo electrónico — JPG, PNG o PDF de hasta 5 MB',
+    proof_como_titulo:'Cómo obtener el recibo en cada establecimiento:',
+    proof_btn_enviar:'Enviar el comprobante para su validación',
+    proof_nota:'Los puntos se abonarán en un plazo máximo de 48 horas tras su validación por parte de nuestro equipo.',
+    loyalty_hist_titulo:'Historial de compras',
+    loyalty_hist_sub:'Solo las compras validadas cuentan para tu nivel',
   },
   it: {
     nav_ofertas:'Offerte',
@@ -3668,7 +3884,7 @@ const I18N = {
     firms_sel_tam:'Seleziona la taglia',
     drw_avaliacoes:'recensioni',
     drw_drawdown:'Drawdown',
-    drw_split:'Spalato',
+    drw_split:'Spaccato',
     drw_dias_min:'Giorni minimi',
     drw_prazo:'Termine per la valutazione',
     drw_dd_max:'DD massimo',
@@ -3720,8 +3936,8 @@ const I18N = {
     ft_guias:'Guide',
     plat_titulo:'Piattaforme di trading',
     plat_sub:'Strumenti professionali utilizzati dai migliori trader delle società di trading. Confronta e scegli quello più adatto al tuo stile.',
-    cmp_titulo:'😎 Confronta le società di prop trading',
-    heatmap_full_titulo:'🌡️ Mappa termica — S&amp;P 500',
+    cmp_titulo:'🟔 Confronta le società di prop trading',
+    heatmap_full_titulo:'🟌️ Mappa termica — S&amp;P 500',
     hm_cripto:'Criptovaluta',
     guides_titulo:'🚀 Guide e formazione',
     firm_type_futuros:'Futuri',
@@ -3731,7 +3947,7 @@ const I18N = {
     sb_caracteristicas:'Caratteristiche',
     sb_meus_favoritos:'I miei preferiti',
     sb_so_favoritas:'Solo le preferite',
-    sb_limpar:'Svuota filtri',
+    sb_limpar:'Svuota i filtri',
     sb_abaixo50:'Meno del 50%',
     sb_lifetime:'Durata',
     sb_trade_noticias:'Notizie sul commercio',
@@ -3772,7 +3988,7 @@ const I18N = {
     cmp_vencedor:'VINCITORE',
     cmp_row_tipo:'Tipo',
     cmp_row_desconto:'Sconto',
-    cmp_row_split:'Spalato',
+    cmp_row_split:'Spaccato',
     cmp_row_drawdown:'Drawdown',
     cmp_row_ddmax:'DD max',
     cmp_row_meta:'Obiettivo',
@@ -3786,7 +4002,7 @@ const I18N = {
     cmp_sem_limite:'Senza limiti',
     cmp_desconto_especial:'Sconto speciale',
     cmp_selecione_firma:'Seleziona almeno un&#x27;azienda',
-    aw_sub:'Una selezione delle migliori società di trading basata su dati reali relativi a valutazioni, sconti, condizioni e soddisfazione dei trader.',
+    aw_sub:'Una selezione delle migliori società di trading basata su dati reali relativi a valutazioni, commissioni, condizioni e soddisfazione dei trader.',
     aw_stat_firmas:'Aziende analizzate',
     aw_stat_avaliacoes:'Valutazioni prese in considerazione',
     aw_stat_categorias:'Categorie premiate',
@@ -3811,7 +4027,7 @@ const I18N = {
     aw_reason_ftmo_forex:'Leader mondiale con oltre 39.000 recensioni e una percentuale di commissioni del 90%',
     aw_reason_apex_desconto:'Fino al 90% di sconto a vita con un codice promozionale esclusivo',
     aw_reason_fn_split:'95% di ripartizione con pagamento garantito entro 24 ore',
-    aw_reason_bulenox_rapido:'È possibile completarlo in un giorno, senza regole di coerenza',
+    aw_reason_bulenox_rapido:'È possibile completarlo in un giorno, senza regole di regolarità',
     aw_reason_fn_confianca:'Oltre 60.850 recensioni verificate',
     aw_reason_ftmo_iniciante:'Prova gratuita illimitata e assistenza in 20 lingue',
     aw_reason_e2t_custo:'50% di sconto + finanziamento fino a 400.000 $ di capitale',
@@ -3869,7 +4085,7 @@ const I18N = {
     guia1_titulo:'Che cos&#x27;è una Prop Firm?',
     guia1_desc:'Scopri come funzionano, come superare la sfida e ottenere il finanziamento del tuo conto.',
     guia2_titulo:'Gestione del drawdown',
-    guia2_desc:'Come calcolare, monitorare ed evitare di superare i limiti imposti dalle principali società di prop trading.',
+    guia2_desc:'Come calcolare, monitorare ed evitare di superare i limiti imposti dalle principali società di trading.',
     guia3_titulo:'Come superare la sfida',
     guia3_desc:'Strategie collaudate per superare la fase di valutazione.',
     guia4_titulo:'Determinazione delle dimensioni delle posizioni nelle società di gestione patrimoniale',
@@ -3914,13 +4130,13 @@ const I18N = {
     quiz_proxima:'Avanti →',
     quiz_recomecar:'↺ Ricominciare',
     quiz_q1_titulo:'Su quale mercato preferisci operare?',
-    quiz_q1_sub:'La tua risposta ci aiuta a trovare la prop firm ideale.',
+    quiz_q1_sub:'La tua risposta aiuta a trovare la prop firm ideale.',
     quiz_q1_a1:'Futures (ES, NQ, CL...)',
     quiz_q1_a2:'Forex (EUR/USD, oro...)',
     quiz_q1_a3:'Entrambi',
     quiz_q1_a4:'Non lo so ancora',
     quiz_q2_titulo:'Qual è il tuo livello di esperienza?',
-    quiz_q2_sub:'Questo ci aiuta a consigliarvi studi legali con criteri adeguati al vostro profilo.',
+    quiz_q2_sub:'Questo ci aiuta a consigliarti studi con criteri adeguati al tuo profilo.',
     quiz_q2_a1:'Principiante (&lt;1 anno)',
     quiz_q2_a2:'Livello intermedio (1–3 anni)',
     quiz_q2_a3:'Avanzato (+3 anni)',
@@ -3930,7 +4146,7 @@ const I18N = {
     quiz_q3_a1:'Fino a 25.000 dollari',
     quiz_q3_a2:'da 25.000 a 100.000 dollari',
     quiz_q3_a3:'100.000–200.000 dollari',
-    quiz_q3_a4:'+200.000 dollari',
+    quiz_q3_a4:'+200.000 $',
     quiz_q4_titulo:'Qual è il tuo stile di trading?',
     quiz_q4_sub:'',
     quiz_q4_a1:'Scalper',
@@ -3960,7 +4176,7 @@ const I18N = {
     live_gate_cadastre:'Iscriviti gratuitamente →',
     live_gate_validadas_bar:'convalidate',
     plat_acessar_com:'Accedi con',
-    plat_off_anual:'OFF nel piano annuale',
+    plat_off_anual:'OFF nel Piano annuale',
     plat_oferta_excl:'Offerta esclusiva',
     offers_cupom_label:'Buono sconto esclusivo MarketsCoupons',
     offers_desconto_link:'Sconto applicato automaticamente tramite link',
@@ -3969,10 +4185,10 @@ const I18N = {
     checkout_selecione_firma:'Seleziona la società di trading',
     checkout_sub:'Scegli la società, il tipo di drawdown e la piattaforma: vai direttamente alla cassa con il tuo sconto.',
     checkout_cupom_ativo:'Buono attivo',
-    checkout_copiar_codigo:'Copia il codice',
+    checkout_copiar_codigo:'Copia codice',
     checkout_todos_planos:'Tutti i piani includono',
     offers_hero_label:'🟏️ Buoni sconto esclusivi',
-    offers_hero_titulo:'Risparmia con le migliori prop firm',
+    offers_hero_titulo:'Risparmia con le migliori società di trading',
     offers_hero_sub:'Buoni sconto verificati e aggiornati. Copiali, inseriscili al momento del pagamento e inizia a fare trading con uno sconto.',
     painel_em_breve:'Prossimamente: cronologia dei buoni utilizzati, aziende preferite e altro ancora.',
     live_acessar:'Accedi alla Live Room →',
@@ -4049,6 +4265,78 @@ const I18N = {
     painel_cupons:'Buoni sconto',
     painel_fidelidade:'Programma fedeltà',
     painel_usuario:'Utente',
+    calc_sub_ps:'Calcola la dimensione ottimale della posizione in base al rischio del tuo conto',
+    calc_tab_acoes:'Azioni',
+    calc_saldo:'Saldo ($)',
+    calc_risco:'Rischio (%)',
+    calc_entrada:'Ingresso',
+    calc_instr:'Strumento',
+    calc_contratos:'Contratti',
+    calc_risco_res:'Rischio ($)',
+    calc_lucro_pot:'Utile potenziale',
+    live_step1_label:'Dati personali',
+    live_step2_label:'Ubicazione',
+    live_step3_label:'Profilo del trader',
+    live_step1_titulo:'Dati personali',
+    live_step1_obr:'(* obbligatorio)',
+    live_step2_titulo:'Ubicazione',
+    live_step3_titulo:'Profilo di trading',
+    live_hero_desc:'Guarda il mirroring di NinjaTrader in tempo reale. Il nostro indicatore esclusivo segnala gli ingressi in tempo reale. Registrati gratuitamente per accedervi.',
+    live_label_nome:'Nome completo',
+    live_label_email:'E-mail',
+    live_label_whatsapp:'WhatsApp / Cellulare',
+    live_label_sexo:'Sesso',
+    live_label_nasc:'Data di nascita',
+    live_label_pais:'Paese',
+    live_label_estado:'Stato / Provincia',
+    live_label_cidade:'Città',
+    live_label_estilo:'Stile di trading',
+    live_label_plataforma:'Piattaforma che utilizza',
+    live_label_firma:'Quale società di trading opera',
+    live_label_capital:'Capitale disponibile per il trading',
+    live_label_desafio:'Hai già superato qualche prova di selezione presso una prop firm?',
+    live_opt_selecionar:'Seleziona...',
+    live_opt_prefiro_nao:'Preferisco non dirlo',
+    live_opt_masculino:'Maschile',
+    live_opt_feminino:'Femminile',
+    live_opt_outro:'Altro',
+    live_opt_sim_financiada:'Sì, ho già un conto finanziato',
+    live_opt_sim_ainda_nao:'Sì, ma non ho ancora ricevuto il capitale',
+    live_opt_nao_tentando:'No, ci sto ancora provando',
+    live_opt_nunca:'Non ci ho mai provato',
+    live_ao_vivo:'IN DIRETTA',
+    live_assistindo:'Guardando',
+    live_sinais:'Segnali di oggi',
+    live_status:'Stato',
+    live_aguardando:'In attesa',
+    live_stream_desc:'Lo streaming inizia quando il trader è in diretta.',
+    loyalty_hero_titulo:'Programma fedeltà',
+    loyalty_hero_desc:'Acquista su MarketsCoupons utilizzando il nostro buono sconto, invia la ricevuta e sblocca l&#x27;accesso alla Live Room VIP con operazioni in diretta, estrazioni a sorte, indicatori e molto altro ancora.',
+    loyalty_benefit1_titulo:'Sala VIP',
+    loyalty_benefit1_sub:'Operazioni in tempo reale con il trader',
+    loyalty_benefit2_titulo:'Estrazioni a sorte tra le recensioni',
+    loyalty_benefit2_sub:'Conti finanziati estratti a sorte',
+    loyalty_benefit3_titulo:'Indicatori esclusivi',
+    loyalty_benefit3_sub:'Funzionalità premium sbloccate',
+    loyalty_benefit4_titulo:'Altri vantaggi in arrivo',
+    loyalty_benefit4_sub:'Programma in continua espansione',
+    loyalty_como_titulo:'Come partecipare',
+    loyalty_como_desc:'Acquista qualsiasi prop firm tramite il nostro link o coupon → invia la ricevuta → il nostro team la verificherà entro 48 ore → l&#x27;accesso alla Live Room VIP sarà sbloccato dopo 3 acquisti verificati.',
+    proof_titulo:'Registra l&#x27;acquisto',
+    proof_sub:'Hai effettuato l&#x27;acquisto utilizzando il nostro buono sconto o il nostro link? Invia la ricevuta qui sotto. Il nostro team la verificherà entro 48 ore e accrediterà automaticamente i punti.',
+    proof_label_firma:'Società di gestione',
+    proof_label_size:'Dimensione del conto',
+    proof_label_order:'Numero d&#x27;ordine',
+    proof_label_date:'Data di acquisto',
+    proof_label_coupon:'Buono utilizzato',
+    proof_label_value:'Importo pagato',
+    proof_upload_titulo:'Clicca qui per allegare la ricevuta',
+    proof_upload_sub:'Stampa della conferma, PDF della ricevuta o screenshot dell&#x27;e-mail — JPG, PNG o PDF fino a 5 MB',
+    proof_como_titulo:'Come ottenere la ricevuta presso ciascuna azienda:',
+    proof_btn_enviar:'Inviare la ricevuta per la convalida',
+    proof_nota:'I punti saranno accreditati entro 48 ore dalla convalida da parte del nostro team.',
+    loyalty_hist_titulo:'Cronologia degli acquisti',
+    loyalty_hist_sub:'Solo gli acquisti confermati contano ai fini del tuo livello',
   },
   fr: {
     nav_ofertas:'Offres',
@@ -4229,10 +4517,10 @@ const I18N = {
     aw_ribbon_iniciante:'IDÉAL POUR LES DÉBUTANTS',
     aw_ribbon_custo:'RAPPORT COÛT-EFFICACITÉ',
     aw_ribbon_rating:'MEILLEURE NOTE',
-    aw_reason_ftmo_forex:'Leader mondial avec plus de 39 000 avis et un taux de satisfaction de 90 %',
+    aw_reason_ftmo_forex:'Leader mondial avec plus de 39 000 avis et une répartition de 90 %',
     aw_reason_apex_desconto:'Jusqu&#x27;à 90 % de réduction à vie avec un code promo exclusif',
     aw_reason_fn_split:'Répartition à 95 % avec paiement garanti sous 24 heures',
-    aw_reason_bulenox_rapido:'On peut le terminer en une journée, sans obligation de régularité',
+    aw_reason_bulenox_rapido:'On peut le faire en une journée, sans obligation de régularité',
     aw_reason_fn_confianca:'Plus de 60 850 avis vérifiés',
     aw_reason_ftmo_iniciante:'Essai gratuit illimité et assistance en 20 langues',
     aw_reason_e2t_custo:'50 % de réduction + financement pouvant atteindre 400 000 $',
@@ -4268,14 +4556,14 @@ const I18N = {
     analise_sentimento:'Sentiment',
     analise_forca:'Courage',
     analise_timeframe:'Période',
-    analise_contexto_mercado:'Contexte de marché',
+    analise_contexto_mercado:'Contexte du marché',
     analise_tendencia:'Tendance et structure',
     analise_suporte:'Support principal',
     analise_resistencia:'Résistance principale',
     analise_cenarios:'Scénarios',
     analise_cenario_favoravel:'Contexte favorable',
     analise_cenario_alternativo:'Scénario alternatif',
-    analise_nivel_invalidacao:'Niveau d&#x27;invalidité',
+    analise_nivel_invalidacao:'Niveau d&#x27;invalidation',
     analise_noticias:'Actualités importantes',
     analise_pontos_atencao:'Points à retenir',
     analise_conclusao:'Conclusion',
@@ -4307,10 +4595,10 @@ const I18N = {
     blog_cat_payouts:'Gains',
     blog_cat_ferramentas:'Outils',
     blog1_titulo:'Apex lance une promotion historique avec 90 % de réduction',
-    blog1_excerpt:'La plus grande société de courtage spécialisée dans les contrats à terme aux États-Unis annonce une promotion avec un code exclusif.',
+    blog1_excerpt:'La plus grande société de trading de contrats à terme aux États-Unis annonce une promotion avec un code exclusif.',
     blog1_data:'Mars 2025',
     blog2_titulo:'Comment réussir le FTMO Challenge en 2025',
-    blog2_excerpt:'Guide complet proposant des stratégies pour réussir l&#x27;évaluation de la plus grande société de trading au monde.',
+    blog2_excerpt:'Guide complet proposant des stratégies pour réussir l&#x27;évaluation de la plus grande société de courtage au monde.',
     blog2_data:'Février 2025',
     blog3_titulo:'Bulenox à 89 % de réduction : ça vaut le coup ?',
     blog3_excerpt:'Analyse complète avec un bon de réduction de 89 % à vie. Découvrez si cette entreprise vous convient.',
@@ -4346,7 +4634,7 @@ const I18N = {
     quiz_q2_a2:'Niveau intermédiaire (1 à 3 ans)',
     quiz_q2_a3:'Avancé (+3 ans)',
     quiz_q2_a4:'Professionnel',
-    quiz_q3_titulo:'Sur quelle devise souhaitez-vous effectuer des opérations ?',
+    quiz_q3_titulo:'Sur quelle devise souhaitez-vous trader ?',
     quiz_q3_sub:'',
     quiz_q3_a1:'Jusqu&#x27;à 25 000 $',
     quiz_q3_a2:'25 000 $ – 100 000 $',
@@ -4470,6 +4758,78 @@ const I18N = {
     painel_cupons:'Bons de réduction',
     painel_fidelidade:'Programme de fidélité',
     painel_usuario:'Utilisateur',
+    calc_sub_ps:'Calculez la taille optimale de votre position en fonction du niveau de risque de votre compte',
+    calc_tab_acoes:'Actions',
+    calc_saldo:'Solde ($)',
+    calc_risco:'Risque (%)',
+    calc_entrada:'Entrée',
+    calc_instr:'Instrument',
+    calc_contratos:'Contrats',
+    calc_risco_res:'Risque ($)',
+    calc_lucro_pot:'Bénéfice potentiel',
+    live_step1_label:'Données personnelles',
+    live_step2_label:'Localisation',
+    live_step3_label:'Profil du trader',
+    live_step1_titulo:'Données personnelles',
+    live_step1_obr:'(* obligatoire)',
+    live_step2_titulo:'Localisation',
+    live_step3_titulo:'Profil de trading',
+    live_hero_desc:'Regardez le mirroring de NinjaTrader en temps réel. Notre indicateur exclusif signale les points d&#x27;entrée en direct. Inscrivez-vous gratuitement pour y accéder.',
+    live_label_nome:'Nom complet',
+    live_label_email:'E-mail',
+    live_label_whatsapp:'WhatsApp / Téléphone portable',
+    live_label_sexo:'Sexe',
+    live_label_nasc:'Date de naissance',
+    live_label_pais:'Pays',
+    live_label_estado:'État / Province',
+    live_label_cidade:'Ville',
+    live_label_estilo:'Style de trading',
+    live_label_plataforma:'Plateforme qui utilise',
+    live_label_firma:'Quelle société de trading opère',
+    live_label_capital:'Capital disponible pour le trading',
+    live_label_desafio:'Avez-vous déjà réussi un test de sélection organisé par une société de trading ?',
+    live_opt_selecionar:'Sélectionner...',
+    live_opt_prefiro_nao:'Je préfère ne pas le dire',
+    live_opt_masculino:'Homme',
+    live_opt_feminino:'Féminin',
+    live_opt_outro:'Autre',
+    live_opt_sim_financiada:'Oui, j&#x27;ai déjà un compte approvisionné',
+    live_opt_sim_ainda_nao:'Oui, mais je n&#x27;ai pas encore reçu de fonds',
+    live_opt_nao_tentando:'Non, j&#x27;essaie toujours',
+    live_opt_nunca:'Je n&#x27;ai encore jamais essayé',
+    live_ao_vivo:'EN DIRECT',
+    live_assistindo:'En train de regarder',
+    live_sinais:'Signaux aujourd&#x27;hui',
+    live_status:'Statut',
+    live_aguardando:'En attente',
+    live_stream_desc:'Le streaming commence dès que le trader est en direct.',
+    loyalty_hero_titulo:'Programme de fidélité',
+    loyalty_hero_desc:'Faites vos achats sur MarketsCoupons en utilisant notre bon de réduction, envoyez votre justificatif d&#x27;achat et débloquez l&#x27;accès à la Live Room VIP avec des opérations en direct, des tirages au sort, des analyses, des indicateurs et bien plus encore.',
+    loyalty_benefit1_titulo:'Salle VIP',
+    loyalty_benefit1_sub:'Opérations en direct avec le trader',
+    loyalty_benefit2_titulo:'Tirages au sort liés aux avis',
+    loyalty_benefit2_sub:'Comptes financés tirés au sort',
+    loyalty_benefit3_titulo:'Indicateurs exclusifs',
+    loyalty_benefit3_sub:'Outils premium débloqués',
+    loyalty_benefit4_titulo:'D&#x27;autres avantages à venir',
+    loyalty_benefit4_sub:'Programme en constante expansion',
+    loyalty_como_titulo:'Comment participer',
+    loyalty_como_desc:'Achetez n&#x27;importe quel produit de notre gamme via notre lien ou notre code promo → envoyez-nous votre justificatif d&#x27;achat → notre équipe le validera dans les 48 heures → l&#x27;accès à la Live Room VIP vous sera accordé dès que 3 achats auront été validés.',
+    proof_titulo:'Enregistrer un achat',
+    proof_sub:'Avez-vous effectué votre achat en utilisant notre code promo ou notre lien ? Envoyez votre justificatif ci-dessous. Notre équipe le validera dans les 48 heures et créditera automatiquement vos points.',
+    proof_label_firma:'Société de trading',
+    proof_label_size:'Taille du compte',
+    proof_label_order:'Numéro de commande',
+    proof_label_date:'Date d&#x27;achat',
+    proof_label_coupon:'Coupon utilisé',
+    proof_label_value:'Montant payé',
+    proof_upload_titulo:'Cliquez ici pour joindre le justificatif',
+    proof_upload_sub:'Impression de la confirmation, PDF du reçu ou capture d&#x27;écran de l&#x27;e-mail — JPG, PNG ou PDF jusqu&#x27;à 5 Mo',
+    proof_como_titulo:'Comment obtenir le justificatif auprès de chaque entreprise :',
+    proof_btn_enviar:'Envoyer le justificatif pour validation',
+    proof_nota:'Les points seront crédités dans les 48 heures suivant la validation par notre équipe.',
+    loyalty_hist_titulo:'Historique des achats',
+    loyalty_hist_sub:'Seuls les achats validés comptent pour votre niveau',
   },
   de: {
     nav_ofertas:'Angebote',
@@ -4525,14 +4885,14 @@ const I18N = {
     home_sub:'Vergleichen Sie Preise, kopieren Sie exklusive Gutscheine und sparen Sie bis zu 90 % bei den weltweit größten Prop-Firmen.',
     home_ver_planos:'Tarife anzeigen →',
     hero_badge:'Geprüfte Gutscheine – Täglich aktualisiert',
-    hero_titulo:'Sparen Sie bis zu <em>90 %</em> bei<br>den besten Prop-Firmen',
+    hero_titulo:'Sparen Sie bis zu <em>90 %</em> bei<br>den besten Prop-Firms',
     hero_sub:'Vergleichen Sie Anbieter, nutzen Sie exklusive Gutscheine und greifen Sie auf professionelle Tools zu – alles an einem Ort.',
     hero_btn_firms:'Prop-Firmen anzeigen',
     hero_btn_tg:'Der Telegram-Gruppe beitreten',
     home_melhores_ofertas:'Die besten Angebote jetzt',
     hst_ate:'bis',
     hst_firms:'Firmen',
-    hst_listadas:'Aufgeführt',
+    hst_listadas:'Aufgelistet',
     hst_desconto:'Rabatt',
     hst_verificado:'Verifiziert',
     hst_gratis:'Kostenlos',
@@ -4817,7 +5177,7 @@ const I18N = {
     offers_hero_titulo:'Sparen Sie bei den besten Prop-Firmen',
     offers_hero_sub:'Gültige und aktualisierte Gutscheincodes. Kopieren Sie den Code, geben Sie ihn an der Kasse ein und profitieren Sie vom Rabatt.',
     painel_em_breve:'Demnächst: Übersicht über eingelöste Gutscheine, Lieblingsgeschäfte und mehr.',
-    live_acessar:'Zum Live Room gehen →',
+    live_acessar:'Zum Live-Raum gehen →',
     live_voltar:'← Zurück',
     live_proximo_localizacao:'Weiter — Standort →',
     live_proximo_perfil:'Weiter — Händlerprofil →',
@@ -4891,6 +5251,78 @@ const I18N = {
     painel_cupons:'Gutscheine',
     painel_fidelidade:'Treueprogramm',
     painel_usuario:'Benutzer',
+    calc_sub_ps:'Berechnen Sie die optimale Positionsgröße auf der Grundlage des Risikos Ihres Kontos',
+    calc_tab_acoes:'Aktien',
+    calc_saldo:'Saldo ($)',
+    calc_risco:'Risiko (%)',
+    calc_entrada:'Eingang',
+    calc_instr:'Instrument',
+    calc_contratos:'Verträge',
+    calc_risco_res:'Risiko ($)',
+    calc_lucro_pot:'Potenzgewinn',
+    live_step1_label:'Persönliche Daten',
+    live_step2_label:'Standort',
+    live_step3_label:'Trader-Profil',
+    live_step1_titulo:'Persönliche Daten',
+    live_step1_obr:'(* Pflichtfeld)',
+    live_step2_titulo:'Standort',
+    live_step3_titulo:'Handelsprofil',
+    live_hero_desc:'Sehen Sie sich die NinjaTrader-Spiegelung in Echtzeit an. Unser exklusiver Indikator markiert die Einstiegspunkte live. Registrieren Sie sich kostenlos, um Zugriff zu erhalten.',
+    live_label_nome:'Vollständiger Name',
+    live_label_email:'E-Mail',
+    live_label_whatsapp:'WhatsApp / Handy',
+    live_label_sexo:'Geschlecht',
+    live_label_nasc:'Geburtsdatum',
+    live_label_pais:'Land',
+    live_label_estado:'Bundesland / Provinz',
+    live_label_cidade:'Stadt',
+    live_label_estilo:'Handelsstil',
+    live_label_plataforma:'Plattform, die verwendet',
+    live_label_firma:'Welche Prop-Firma ist tätig?',
+    live_label_capital:'Für den Handel verfügbares Kapital',
+    live_label_desafio:'Hast du schon einmal eine Auswahlrunde bei einer Prop-Firm bestanden?',
+    live_opt_selecionar:'Auswählen...',
+    live_opt_prefiro_nao:'Ich möchte dazu keine Angaben machen',
+    live_opt_masculino:'Herren',
+    live_opt_feminino:'Damen',
+    live_opt_outro:'Sonstiges',
+    live_opt_sim_financiada:'Ja, ich habe bereits ein finanziertes Konto',
+    live_opt_sim_ainda_nao:'Ja, aber ich habe noch kein Kapital erhalten',
+    live_opt_nao_tentando:'Nein, ich versuche es noch',
+    live_opt_nunca:'Das habe ich noch nie versucht',
+    live_ao_vivo:'LIVE',
+    live_assistindo:'Ansehen',
+    live_sinais:'Die Zeichen heute',
+    live_status:'Status',
+    live_aguardando:'Warten',
+    live_stream_desc:'Der Stream beginnt, sobald der Trader live ist.',
+    loyalty_hero_titulo:'Treueprogramm',
+    loyalty_hero_desc:'Kaufen Sie bei MarketsCoupons mit unserem Gutschein ein, senden Sie den Kaufbeleg ein und erhalten Sie Zugang zum VIP-Live-Raum mit Live-Trades, Gewinnspielen, Analysen, Indikatoren und vielem mehr.',
+    loyalty_benefit1_titulo:'VIP-Live-Raum',
+    loyalty_benefit1_sub:'Live-Trading mit dem Trader',
+    loyalty_benefit2_titulo:'Gewinnspiele für Bewertungen',
+    loyalty_benefit2_sub:'Ausgeloste gesponserte Konten',
+    loyalty_benefit3_titulo:'Exklusive Indikatoren',
+    loyalty_benefit3_sub:'Premium-Tools freigeschaltet',
+    loyalty_benefit4_titulo:'Weitere Vorteile folgen in Kürze',
+    loyalty_benefit4_sub:'Ein Programm, das ständig erweitert wird',
+    loyalty_como_titulo:'So nehmen Sie teil',
+    loyalty_como_desc:'Kaufen Sie eine beliebige Prop-Firm über unseren Link oder Gutschein → senden Sie den Kaufbeleg → unser Team prüft diesen innerhalb von 48 Stunden → Zugang zum VIP-Live-Room wird nach 3 bestätigten Käufen freigeschaltet.',
+    proof_titulo:'Kauf registrieren',
+    proof_sub:'Haben Sie über unseren Gutschein oder Link gekauft? Laden Sie den Kaufbeleg unten hoch. Unser Team prüft ihn innerhalb von 48 Stunden und schreibt die Punkte automatisch gut.',
+    proof_label_firma:'Prop-Firma',
+    proof_label_size:'Kontogröße',
+    proof_label_order:'Auftragsnummer',
+    proof_label_date:'Kaufdatum',
+    proof_label_coupon:'Gutschein eingelöst',
+    proof_label_value:'Bezahlter Betrag',
+    proof_upload_titulo:'Klicken Sie hier, um den Nachweis anzuhängen',
+    proof_upload_sub:'Ausdruck der Bestätigung, PDF der Quittung oder Screenshot der E-Mail – JPG, PNG oder PDF bis zu 5 MB',
+    proof_como_titulo:'So erhalten Sie die Bescheinigung bei jedem Unternehmen:',
+    proof_btn_enviar:'Beleg zur Überprüfung senden',
+    proof_nota:'Die Punkte werden innerhalb von 48 Stunden nach Überprüfung durch unser Team gutgeschrieben.',
+    loyalty_hist_titulo:'Einkaufsverlauf',
+    loyalty_hist_sub:'Nur bestätigte Einkäufe zählen für Ihre Stufe',
   },
   ar: {
     nav_ofertas:'العروض',
@@ -4936,7 +5368,7 @@ const I18N = {
     drw_prazo:'الموعد النهائي للتقييم',
     drw_dd_max:'الحد الأقصى لـ DD',
     drw_meta:'هدف الربح',
-    drw_scaling:'التحجيم',
+    drw_scaling:'التوسع',
     drw_desconto:'خصم',
     drw_conta:'حساب',
     drw_com_cupom:'مع قسيمة',
@@ -4961,7 +5393,7 @@ const I18N = {
     heatmap_titulo:'خريطة الحرارة',
     nav_faq:'الأسئلة الشائعة',
     faq_titulo:'الأسئلة الشائعة',
-    faq_sub:'تخلص من تساؤلاتك حول القسائم وشركات التداول الاحترافية وكيفية استخدام MarketsCoupons.',
+    faq_sub:'تخلص من تساؤلاتك حول القسائم والشركات الاستثمارية وكيفية استخدام MarketsCoupons.',
     geral_firmas_encontradas:'الشركات التي تم العثور عليها',
     geral_copiar:'نسخ',
     geral_copiado:'تم نسخه!',
@@ -4983,7 +5415,7 @@ const I18N = {
     ft_guias:'الأدلة',
     plat_titulo:'منصات التداول',
     plat_sub:'أدوات احترافية يستخدمها أفضل المتداولين في شركات التداول الخاصة. قارن بينها واختر الأنسب لأسلوبك.',
-    cmp_titulo:'🔍 مقارنة شركات التداول',
+    cmp_titulo:'🔍 مقارنة شركات الاستثمار',
     heatmap_full_titulo:'🌡️ خريطة الحرارة — مؤشر S&amp;P 500',
     hm_cripto:'العملات المشفرة',
     guides_titulo:'📚 أدلة وتعليم',
@@ -5152,10 +5584,10 @@ const I18N = {
     blog1_excerpt:'أكبر شركة تداول احترافي للعقود الآجلة في الولايات المتحدة تعلن عن عرض ترويجي برمز حصري.',
     blog1_data:'مارس 2025',
     blog2_titulo:'كيفية النجاح في تحدي FTMO لعام 2025',
-    blog2_excerpt:'دليل شامل يتضمن استراتيجيات للنجاح في اختبار التقييم الخاص بأكبر شركة تداول في العالم.',
+    blog2_excerpt:'دليل شامل يتضمن استراتيجيات للنجاح في اختبار أكبر شركة تداول في العالم.',
     blog2_data:'فبراير 2025',
     blog3_titulo:'Bulenox بخصم 89%: هل يستحق الأمر؟',
-    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89% مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الأنسب لك.',
+    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89٪ مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الخيار المناسب لك.',
     blog3_data:'فبراير 2025',
     blog4_titulo:'الانخفاض المتتابع مقابل الانخفاض الثابت',
     blog4_excerpt:'افهم الفروق وكيفية اختيار شركة التداول المناسبة لأسلوبك.',
@@ -5211,7 +5643,7 @@ const I18N = {
     quiz_ir_para:'الانتقال إلى',
     quiz_ver_detalhes:'عرض التفاصيل',
     live_gate_titulo:'Live Room — دخول حصري',
-    live_gate_desc:'تُتاح خدمة Live Room حصريًّا لأعضاء برنامج الولاء الذين اشتروا ما لا يقل عن 3 قسائم وتم التحقق من صحتها من قِبل فريقنا.',
+    live_gate_desc:'تُتاح غرفة البث المباشر حصريًّا لأعضاء برنامج الولاء الذين اشتروا ما لا يقل عن 3 قسائم وتم التحقق من صحتها من قِبل فريقنا.',
     live_gate_seu_progresso:'تقدمك',
     live_gate_validadas:'تم التحقق من صحتها',
     live_gate_em_analise:'قيد الدراسة',
@@ -5234,7 +5666,7 @@ const I18N = {
     checkout_cupom_ativo:'القسيمة سارية',
     checkout_copiar_codigo:'نسخ الرمز',
     checkout_todos_planos:'تشمل جميع الباقات',
-    offers_hero_label:'🏷️ قسائم حصرية',
+    offers_hero_label:'🏷️ كوبونات حصرية',
     offers_hero_titulo:'وفر المال مع أفضل شركات التداول',
     offers_hero_sub:'كوبونات تم التحقق منها وتحديثها. انسخها، واستخدمها عند الدفع وابدأ التداول بخصم.',
     painel_em_breve:'قريبًا: سجل القسائم المستخدمة، والشركات المفضلة، والمزيد.',
@@ -5312,6 +5744,78 @@ const I18N = {
     painel_cupons:'كوبونات',
     painel_fidelidade:'برنامج الولاء',
     painel_usuario:'المستخدم',
+    calc_sub_ps:'احسب الحجم الأمثل للصفقة بناءً على مستوى المخاطرة لحسابك',
+    calc_tab_acoes:'الأسهم',
+    calc_saldo:'الرصيد ($)',
+    calc_risco:'النسبة المئوية للمخاطر',
+    calc_entrada:'المدخل',
+    calc_instr:'أداة',
+    calc_contratos:'العقود',
+    calc_risco_res:'المخاطر ($)',
+    calc_lucro_pot:'الربح المحتمل',
+    live_step1_label:'البيانات الشخصية',
+    live_step2_label:'الموقع',
+    live_step3_label:'ملف تعريف المتداول',
+    live_step1_titulo:'البيانات الشخصية',
+    live_step1_obr:'(* إلزامي)',
+    live_step2_titulo:'الموقع',
+    live_step3_titulo:'ملف تعريف التداول',
+    live_hero_desc:'شاهد تداول NinjaTrader في الوقت الفعلي. يحدد مؤشرنا الحصري نقاط الدخول مباشرةً. سجل مجانًا للوصول إلى الخدمة.',
+    live_label_nome:'الاسم الكامل',
+    live_label_email:'البريد الإلكتروني',
+    live_label_whatsapp:'واتساب / الهاتف المحمول',
+    live_label_sexo:'الجنس',
+    live_label_nasc:'تاريخ الميلاد',
+    live_label_pais:'البلد',
+    live_label_estado:'الولاية / المقاطعة',
+    live_label_cidade:'المدينة',
+    live_label_estilo:'أسلوب التداول',
+    live_label_plataforma:'منصة تستخدم',
+    live_label_firma:'ما هي شركة التداول التي تعمل',
+    live_label_capital:'رأس المال المتاح للتداول',
+    live_label_desafio:'هل نجحت في اجتياز أي اختبار لشركة تداول احترافية من قبل؟',
+    live_opt_selecionar:'اختر...',
+    live_opt_prefiro_nao:'أفضل عدم الإفصاح عن ذلك',
+    live_opt_masculino:'رجالي',
+    live_opt_feminino:'نسائي',
+    live_opt_outro:'آخر',
+    live_opt_sim_financiada:'نعم، لدي حساب ممول بالفعل',
+    live_opt_sim_ainda_nao:'نعم، لكنني لم أتلقَ رأس المال بعد',
+    live_opt_nao_tentando:'لا، ما زلت أحاول',
+    live_opt_nunca:'لم أحاول ذلك من قبل',
+    live_ao_vivo:'بث مباشر',
+    live_assistindo:'أشاهد',
+    live_sinais:'إشارات اليوم',
+    live_status:'الحالة',
+    live_aguardando:'في انتظار',
+    live_stream_desc:'يبدأ البث المباشر عندما يكون المتداول على الهواء.',
+    loyalty_hero_titulo:'برنامج الولاء',
+    loyalty_hero_desc:'تسوق عبر MarketsCoupons باستخدام قسيمتنا، وأرسل إيصال الشراء، واحصل على حق الوصول إلى غرفة Live Room VIP التي تضم عمليات تداول مباشرة، وسحوبات على التقييمات، ومؤشرات، وغير ذلك الكثير.',
+    loyalty_benefit1_titulo:'غرفة البث المباشر VIP',
+    loyalty_benefit1_sub:'تداول مباشر مع المتداول',
+    loyalty_benefit2_titulo:'سحوبات على التقييمات',
+    loyalty_benefit2_sub:'الحسابات الممولة التي تم اختيارها',
+    loyalty_benefit3_titulo:'مؤشرات حصرية',
+    loyalty_benefit3_sub:'أدوات مميزة غير مقفلة',
+    loyalty_benefit4_titulo:'المزيد من المزايا قريبًا',
+    loyalty_benefit4_sub:'برنامج في توسع مستمر',
+    loyalty_como_titulo:'كيفية المشاركة',
+    loyalty_como_desc:'اشترِ أي شركة تداول من خلال الرابط أو القسيمة الخاصة بنا → أرسل إيصال الشراء → سيقوم فريقنا بالتحقق منه في غضون 48 ساعة → سيتم تفعيل وصولك إلى غرفة البث المباشر VIP بعد التحقق من 3 عمليات شراء.',
+    proof_titulo:'تسجيل عملية الشراء',
+    proof_sub:'هل اشتريت باستخدام قسيمتنا أو الرابط الخاص بنا؟ أرسل إيصال الشراء أدناه. سيقوم فريقنا بالتحقق منه في غضون 48 ساعة وإضافة النقاط تلقائيًا.',
+    proof_label_firma:'شركة تداول',
+    proof_label_size:'حجم الحساب',
+    proof_label_order:'رقم الطلب',
+    proof_label_date:'تاريخ الشراء',
+    proof_label_coupon:'تم استخدام القسيمة',
+    proof_label_value:'المبلغ المدفوع',
+    proof_upload_titulo:'انقر لإرفاق الإيصال',
+    proof_upload_sub:'نسخة مطبوعة من رسالة التأكيد، أو ملف PDF للإيصال، أو لقطة شاشة للبريد الإلكتروني — بصيغة JPG أو PNG أو PDF بحد أقصى 5 ميغابايت',
+    proof_como_titulo:'كيفية الحصول على الإيصال من كل شركة:',
+    proof_btn_enviar:'إرسال إيصال للتحقق',
+    proof_nota:'سيتم إضافة النقاط في غضون 48 ساعة بعد اعتمادها من قبل فريقنا.',
+    loyalty_hist_titulo:'سجل المشتريات',
+    loyalty_hist_sub:'لا يُحتسب في مستواك سوى عمليات الشراء التي تمت المصادقة عليها',
   }
 };
 let _currentLang = 'pt';
@@ -5334,11 +5838,19 @@ function applyTranslations() {
     const key = el.getAttribute('data-i18n');
     const val = t(key);
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+    else if (el.tagName === 'OPTION') el.textContent = val;
     else el.innerHTML = val;
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
   });
+}
+function updateTVWidgets(lang) {
+  const tvL = {pt:'br',en:'en',es:'es',it:'it',fr:'fr',de:'de',ar:'en'}[lang]||'en';
+  const calF = document.getElementById('cal-frame');
+  if(calF) calF.src = `https://www.tradingview-widget.com/embed-widget/events/?locale=${tvL}#%7B%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22countryFilter%22%3A%22us%2Ceu%2Cgb%2Cbr%2Cca%2Cau%2Cjp%2Ccn%22%7D`;
+  const hmF = document.getElementById('heatmap-frame');
+  if(hmF) loadHeatmap(hmF.dataset.source||'SPX500');
 }
 function setL(lang,flag,code){
   _currentLang = lang;
@@ -5348,11 +5860,7 @@ function setL(lang,flag,code){
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF();
-  const tvL = {pt:'br',en:'en',es:'es',it:'it',fr:'fr',de:'de',ar:'en'}[lang]||'en';
-  const calF = document.getElementById('cal-frame');
-  if(calF) calF.src = `https://www.tradingview-widget.com/embed-widget/events/?locale=${tvL}#%7B%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22countryFilter%22%3A%22us%2Ceu%2Cgb%2Cbr%2Cca%2Cau%2Cjp%2Ccn%22%7D`;
-  const hmF = document.getElementById('heatmap-frame');
-  if(hmF && hmF.src && !hmF.src.includes('about:blank')) loadHeatmap(hmF.dataset.source||'SPX500');
+  updateTVWidgets(lang);
   track('language_change',{language:lang});
 }
 function initLang() {
@@ -5361,6 +5869,7 @@ function initLang() {
   document.getElementById('l-code').textContent = ' ' + (codes[_currentLang]||'BR');
   document.body.dir = _currentLang==='ar'?'rtl':'ltr';
   applyTranslations();
+  updateTVWidgets(_currentLang);
 }
 function strs(r){return'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));}
 function firmIco(f,size='38px',fontSize='14px'){
