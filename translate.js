@@ -106,7 +106,7 @@ async function main() {
   let html = fs.readFileSync(FILE, 'utf-8');
 
   // Extrair objeto I18N
-  const match = html.match(/const I18N = (\{[\s\S]*?\});\nlet _currentLang/);
+  const match = html.match(/const I18N = (\{[\s\S]*?\});\r?\nlet _currentLang/);
   if (!match) throw new Error('❌ Objeto I18N não encontrado no index.html');
 
   let I18N;
@@ -158,9 +158,11 @@ async function main() {
   const langOrder = ['pt', 'en', 'es', 'it', 'fr', 'de', 'ar'];
   const newI18N = `const I18N = {\n${langOrder.map(c => buildLangBlock(c, allTranslations[c])).join(',\n')}\n}`;
 
+  // IMPORTANTE: usar função como replacer para evitar interpretação especial de $ nas strings
+  const replacement = `${newI18N};\nlet _currentLang`;
   const newHtml = html.replace(
-    /const I18N = \{[\s\S]*?\};\nlet _currentLang/,
-    `${newI18N};\nlet _currentLang`
+    /const I18N = \{[\s\S]*?\};\r?\nlet _currentLang/,
+    () => replacement
   );
 
   if (newHtml === html) throw new Error('❌ Substituição falhou — bloco I18N não foi atualizado');
