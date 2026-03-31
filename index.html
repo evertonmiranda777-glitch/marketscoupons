@@ -357,7 +357,7 @@ img{max-width:100%;}
 .hero h1{font-size:clamp(26px,4vw,48px);font-weight:700;letter-spacing:-1px;margin-bottom:12px;line-height:1.1;}
 .hero h1 em{color:var(--gold);font-style:normal;}
 .hero p{font-size:14px;color:var(--t2);max-width:460px;margin:0 auto 26px;line-height:1.7;}
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}.hero-btns .btn-gold,.hero-btns .btn-tg{min-width:200px;justify-content:center;}
 .btn-gold{padding:10px 24px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;transition:.2s;cursor:pointer;}
 .btn-gold:hover{background:#F7C948;}
 .btn-out{padding:10px 24px;background:transparent;color:var(--t1);border:1px solid var(--b2);border-radius:8px;font-size:13px;font-weight:500;transition:.2s;}
@@ -1639,7 +1639,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="sb-clear" onclick="clearF()" data-i18n="sb_limpar">Limpar filtros</button>
  </aside>
  <main class="firms-main">
- <div class="search-wrap"><span class="search-ico"></span><input type="text" id="search" placeholder="Buscar prop firm..." oninput="applyF()"></div>
+ <div class="search-wrap"><span class="search-ico"></span><input type="text" id="search" data-i18n-placeholder="search_placeholder" placeholder="Buscar prop firm..." oninput="applyF()"></div>
  <div class="sort-row">
  <div class="cnt"><span data-i18n="sb_mostrando">Mostrando</span> <strong id="cnt">6</strong> <span data-i18n="sb_firmas">firmas</span></div>
  <select class="sort-sel" onchange="applyF()">
@@ -1733,6 +1733,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div style="flex:1;position:relative;">
       <iframe
+        id="cal-frame"
         src="https://www.tradingview-widget.com/embed-widget/events/?locale=br#%7B%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22countryFilter%22%3A%22us%2Ceu%2Cgb%2Cbr%2Cca%2Cau%2Cjp%2Ccn%22%7D"
         style="width:100%;height:100%;border:none;display:block;"
         frameborder="0"
@@ -2301,7 +2302,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <a onclick="go('faq')">FAQ</a>
  </div>
  </div>
- <div class="ft-bot">Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. © 2025 MarketsCoupons.</div>
+ <div class="ft-bot" data-i18n="ft_legal">Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. © 2025 MarketsCoupons.</div>
 </footer>
 
 <!-- BOT -->
@@ -2716,6 +2717,13 @@ const I18N = {
     live_proximo_localizacao:'Próximo — Localização →',
     live_proximo_perfil:'Próximo — Perfil Trader →',
     live_privacidade:'Seus dados são protegidos. Você receberá um e-mail de boas-vindas com o acesso ao Live Room.',
+    ft_legal:'Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. © 2025 MarketsCoupons.',
+    search_placeholder:'Buscar prop firm...',
+    firm_desc_apex:'Apex Trader Funding é uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',
+    firm_desc_bulenox:'Bulenox é uma prop firm de futuros com regras simplificadas. Possível passar em 1 dia, sem regra de consistência.',
+    firm_desc_ftmo:'FTMO é a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',
+    firm_desc_tpt:'Take Profit Trader se destaca pelo saque desde o primeiro dia e sem taxa de ativação.',
+    firm_desc_e2t:'Earn2Trade foca em educação e desenvolvimento com escalamento até $400K.',
   },
   en: {
     nav_ofertas:'Specials',
@@ -2807,7 +2815,7 @@ const I18N = {
     ft_indicadores:'Indicators',
     ft_guias:'Guides',
     plat_titulo:'Trading Platforms',
-    plat_sub:'Professional tools used by the best traders at prop firms. Compare them and choose the one that best suits your trading style.',
+    plat_sub:'Professional tools used by top traders at prop firms. Compare them and choose the one that best suits your trading style.',
     cmp_titulo:'🔍 Compare Prop Firms',
     heatmap_full_titulo:'🌡️ Heat Map — S&amp;P 500',
     hm_cripto:'Crypto',
@@ -2924,7 +2932,7 @@ const I18N = {
     analise_contexto_adicional:'ADDITIONAL CONTEXT',
     analise_clique_aqui:'Click or drag the screenshot here',
     analise_formatos:'PNG, JPG, WebP — any format',
-    analise_placeholder:'Describe the asset, the timeframe, what you&#x27;re seeing, or any specific questions you have...',
+    analise_placeholder:'Describe the asset, the timeframe, what you&#x27;re seeing, or any specific questions you may have...',
     analise_btn:'Analyze using AI',
     analise_analisando:'Analyzing...',
     analise_gerada:'Generated analysis',
@@ -2964,7 +2972,7 @@ const I18N = {
     guia4_desc:'How to calculate the correct size to maximize profit without breaking the rules.',
     guia5_titulo:'Apex vs FTMO vs Bulenox',
     guia5_desc:'Detailed comparison: rules, prices, platforms, and payouts.',
-    guia6_titulo:'How to Withdraw Your Profits',
+    guia6_titulo:'How to Withdraw Your Winnings',
     guia6_desc:'Step-by-step guide to requesting payouts from each company.',
     blog_ler:'Read →',
     blog_cat_noticias:'News',
@@ -3002,7 +3010,7 @@ const I18N = {
     quiz_proxima:'Next →',
     quiz_recomecar:'↺ Start Over',
     quiz_q1_titulo:'Which market do you prefer to trade in?',
-    quiz_q1_sub:'Your response will help us find the right prop firm.',
+    quiz_q1_sub:'Your response will help us find the ideal prop firm.',
     quiz_q1_a1:'Futures (ES, NQ, CL...)',
     quiz_q1_a2:'Forex (EUR/USD, Gold...)',
     quiz_q1_a3:'Both',
@@ -3068,6 +3076,13 @@ const I18N = {
     live_proximo_localizacao:'Next — Location →',
     live_proximo_perfil:'Next — Trader Profile →',
     live_privacidade:'Your data is secure. You will receive a welcome email with access to the Live Room.',
+    ft_legal:'All information is provided for educational purposes only. Coupons are subject to change. Trading involves risk. © 2025 MarketsCoupons.',
+    search_placeholder:'Search for prop firms...',
+    firm_desc_apex:'Apex Trader Funding is one of the largest futures prop firms in the U.S. It is known for its aggressive rebates and flexible rules.',
+    firm_desc_bulenox:'Bulenox is a futures prop firm with simplified rules. You can qualify in just one day, with no consistency rule.',
+    firm_desc_ftmo:'FTMO is the world&#x27;s largest Forex prop firm, founded in 2015. It has over 3.5 million clients and has paid out more than $500 million.',
+    firm_desc_tpt:'Take Profit Trader stands out for allowing withdrawals from day one and having no activation fee.',
+    firm_desc_e2t:'Earn2Trade focuses on education and development, with funding of up to $400,000.',
   },
   es: {
     nav_ofertas:'Ofertas',
@@ -3143,7 +3158,7 @@ const I18N = {
     geral_copiar:'Copiar',
     geral_copiado:'¡Copiado!',
     lb_title:'Programa de fidelización',
-    lb_sub:'Compra a través de nuestro enlace o cupón, envía el comprobante y desbloquea la sala VIP, sorteos de cuentas e indicadores exclusivos.',
+    lb_sub:'Compra a través de nuestro enlace o cupón, envía el comprobante y desbloquea la Sala VIP, sorteos de cuentas e indicadores exclusivos.',
     lb_step1:'Regístrate gratis',
     lb_step2:'Compra con un cupón',
     lb_step3:'Envía el comprobante',
@@ -3181,7 +3196,7 @@ const I18N = {
     badge_maior_desconto:'Mayor descuento',
     badge_melhor_split:'Mejor Split 90 %',
     badge_lider_forex:'Líder en Forex',
-    badge_mais_avaliacoes:'Más reseñas',
+    badge_mais_avaliacoes:'Más opiniones',
     badge_scaling:'Ampliación de 400 000 dólares',
     plat_acessar_off:'Iniciar sesión con',
     plat_acessar:'Iniciar sesión',
@@ -3337,18 +3352,18 @@ const I18N = {
     blog4_titulo:'Drawdown acumulado frente a drawdown fijo',
     blog4_excerpt:'Conoce las diferencias y cómo elegir la firma de inversión adecuada para tu estilo.',
     blog4_data:'Enero de 2025',
-    blog5_titulo:'Cómo retirar tus ganancias en las empresas de gestión de capital',
+    blog5_titulo:'Cómo retirar tus ganancias en las prop firms',
     blog5_excerpt:'Guía paso a paso para Apex, Bulenox, FTMO y FundedNext.',
     blog5_data:'Enero de 2025',
     blog6_titulo:'Los mejores indicadores para NinjaTrader 8',
-    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las empresas de inversión.',
+    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las empresas de gestión de capital.',
     blog6_data:'Diciembre de 2024',
     calc_gate_label_nome:'Nombre',
     calc_gate_placeholder_nome:'Tu nombre',
     calc_gate_label_email:'Correo electrónico',
     calc_gate_placeholder_email:'seu@email.com',
     calc_gate_btn:'Desbloquear gratis →',
-    calc_gate_privacidade:'Tus datos son confidenciales. No es necesario utilizar ninguna tarjeta.',
+    calc_gate_privacidade:'Tus datos son confidenciales. No es necesario introducir ningún dato de tarjeta.',
     quiz_pergunta:'PREGUNTA',
     quiz_de:'DE',
     quiz_proxima:'Siguiente →',
@@ -3367,7 +3382,7 @@ const I18N = {
     quiz_q2_a4:'Profesional',
     quiz_q3_titulo:'¿En qué capital desea operar?',
     quiz_q3_sub:'',
-    quiz_q3_a1:'Hasta 25 000 $',
+    quiz_q3_a1:'Hasta 25 000 dólares',
     quiz_q3_a2:'25 000 $ – 100 000 $',
     quiz_q3_a3:'100 000 $ – 200 000 $',
     quiz_q3_a4:'+200 000 $',
@@ -3420,6 +3435,13 @@ const I18N = {
     live_proximo_localizacao:'Siguiente — Ubicación →',
     live_proximo_perfil:'Siguiente — Perfil del operador →',
     live_privacidade:'Tus datos están protegidos. Recibirás un correo electrónico de bienvenida con el acceso a Live Room.',
+    ft_legal:'Toda la información tiene fines educativos. Los cupones están sujetos a cambios. Operar conlleva riesgos. © 2025 MarketsCoupons.',
+    search_placeholder:'Buscar una firma de inversión...',
+    firm_desc_apex:'Apex Trader Funding es una de las mayores empresas de financiación de operaciones con futuros de EE. UU. Destaca por sus agresivos descuentos y la flexibilidad de sus normas.',
+    firm_desc_bulenox:'Bulenox es una empresa de futuros con normas simplificadas. Es posible aprobar en un solo día, sin necesidad de cumplir requisitos de consistencia.',
+    firm_desc_ftmo:'FTMO es la mayor empresa de gestión de capital de Forex del mundo, fundada en 2015. Cuenta con más de 3,5 millones de clientes y ha pagado más de 500 millones de dólares.',
+    firm_desc_tpt:'Take Profit Trader destaca por permitir retirar fondos desde el primer día y sin comisión de activación.',
+    firm_desc_e2t:'Earn2Trade se centra en la formación y el desarrollo, con una financiación de hasta 400 000 dólares.',
   },
   it: {
     nav_ofertas:'Offerte',
@@ -3512,7 +3534,7 @@ const I18N = {
     ft_guias:'Guide',
     plat_titulo:'Piattaforme di trading',
     plat_sub:'Strumenti professionali utilizzati dai migliori trader delle società di trading. Confronta e scegli quello più adatto al tuo stile.',
-    cmp_titulo:'😎 Confronta le società di prop trading',
+    cmp_titulo:'🟔 Confronta le società di prop trading',
     heatmap_full_titulo:'🌡️ Mappa termica — S&amp;P 500',
     hm_cripto:'Criptovaluta',
     guides_titulo:'🚀 Guide e formazione',
@@ -3558,7 +3580,7 @@ const I18N = {
     cmp_melhor_mesa:'Il miglior tavolo tra quelli selezionati',
     cmp_melhor_em:'Il migliore in',
     cmp_de:'di',
-    cmp_criterios:'criteri valutati — maggiore sconto, ripartizione e rating combinati',
+    cmp_criterios:'criteri valutati — sconto maggiore, ripartizione e rating combinati',
     cmp_ver_firma:'Vedi',
     cmp_criterio:'Criterio',
     cmp_vencedor:'VINCITORE',
@@ -3712,7 +3734,7 @@ const I18N = {
     quiz_q1_a3:'Entrambi',
     quiz_q1_a4:'Non lo so ancora',
     quiz_q2_titulo:'Qual è il tuo livello di esperienza?',
-    quiz_q2_sub:'Questo ci aiuta a consigliarvi studi legali con criteri adeguati al vostro profilo.',
+    quiz_q2_sub:'Questo ci aiuta a consigliarti studi con criteri adeguati al tuo profilo.',
     quiz_q2_a1:'Principiante (&lt;1 anno)',
     quiz_q2_a2:'Livello intermedio (1–3 anni)',
     quiz_q2_a3:'Avanzato (+3 anni)',
@@ -3772,6 +3794,13 @@ const I18N = {
     live_proximo_localizacao:'Avanti — Posizione →',
     live_proximo_perfil:'Avanti — Profilo del trader →',
     live_privacidade:'I tuoi dati sono al sicuro. Riceverai un&#x27;e-mail di benvenuto con le credenziali di accesso alla Live Room.',
+    ft_legal:'Tutte le informazioni sono fornite a scopo didattico. I coupon sono soggetti a modifiche. Il trading comporta dei rischi. © 2025 MarketsCoupons.',
+    search_placeholder:'Cerca una prop firm...',
+    firm_desc_apex:'Apex Trader Funding è una delle maggiori società di trading in proprio nel settore dei futures degli Stati Uniti. È nota per gli sconti vantaggiosi e la flessibilità delle regole.',
+    firm_desc_bulenox:'Bulenox è una società di trading su futures con regole semplificate. È possibile superare il test in un solo giorno, senza requisiti di costanza.',
+    firm_desc_ftmo:'FTMO è la più grande società di trading in proprio (prop firm) nel settore Forex al mondo, fondata nel 2015. Conta oltre 3,5 milioni di clienti e ha versato più di 500 milioni di dollari.',
+    firm_desc_tpt:'Take Profit Trader si distingue per la possibilità di prelevare fin dal primo giorno e senza costi di attivazione.',
+    firm_desc_e2t:'Earn2Trade punta sulla formazione e sullo sviluppo, con un finanziamento fino a 400.000 dollari.',
   },
   fr: {
     nav_ofertas:'Offres',
@@ -3955,7 +3984,7 @@ const I18N = {
     aw_reason_ftmo_forex:'Leader mondial avec plus de 39 000 avis et un taux de satisfaction de 90 %',
     aw_reason_apex_desconto:'Jusqu&#x27;à 90 % de réduction à vie avec un code promo exclusif',
     aw_reason_fn_split:'Répartition à 95 % avec paiement garanti sous 24 heures',
-    aw_reason_bulenox_rapido:'On peut le faire en une journée, sans obligation de régularité',
+    aw_reason_bulenox_rapido:'On peut le terminer en une journée, sans obligation de régularité',
     aw_reason_fn_confianca:'Plus de 60 850 avis vérifiés',
     aw_reason_ftmo_iniciante:'Essai gratuit illimité et assistance en 20 langues',
     aw_reason_e2t_custo:'50 % de réduction + financement pouvant atteindre 400 000 $',
@@ -3991,14 +4020,14 @@ const I18N = {
     analise_sentimento:'Sentiment',
     analise_forca:'Courage',
     analise_timeframe:'Période',
-    analise_contexto_mercado:'Contexte du marché',
+    analise_contexto_mercado:'Contexte de marché',
     analise_tendencia:'Tendance et structure',
     analise_suporte:'Support principal',
     analise_resistencia:'Résistance principale',
     analise_cenarios:'Scénarios',
     analise_cenario_favoravel:'Contexte favorable',
     analise_cenario_alternativo:'Scénario alternatif',
-    analise_nivel_invalidacao:'Niveau d&#x27;invalidité',
+    analise_nivel_invalidacao:'Niveau d&#x27;invalidation',
     analise_noticias:'Actualités importantes',
     analise_pontos_atencao:'Points à retenir',
     analise_conclusao:'Conclusion',
@@ -4033,7 +4062,7 @@ const I18N = {
     blog1_excerpt:'La plus grande société de courtage spécialisée dans les contrats à terme aux États-Unis annonce une promotion avec un code exclusif.',
     blog1_data:'Mars 2025',
     blog2_titulo:'Comment réussir le FTMO Challenge en 2025',
-    blog2_excerpt:'Guide complet proposant des stratégies pour réussir l&#x27;évaluation de la plus grande société de trading au monde.',
+    blog2_excerpt:'Guide complet proposant des stratégies pour réussir l&#x27;évaluation de la plus grande société de courtage au monde.',
     blog2_data:'Février 2025',
     blog3_titulo:'Bulenox à 89 % de réduction : ça vaut le coup ?',
     blog3_excerpt:'Analyse complète avec un bon de réduction de 89 % à vie. Découvrez si cette entreprise vous convient.',
@@ -4118,12 +4147,19 @@ const I18N = {
     offers_hero_label:'🏷️ Coupons exclusifs',
     offers_hero_titulo:'Faites des économies chez les meilleures sociétés de trading',
     offers_hero_sub:'Codes promo vérifiés et mis à jour. Copiez-les, utilisez-les lors du paiement et commencez à trader en bénéficiant d&#x27;une réduction.',
-    painel_em_breve:'À venir : historique des coupons utilisés, entreprises favorites et plus encore.',
+    painel_em_breve:'À venir : historique des coupons utilisés, entreprises favorites et bien plus encore.',
     live_acessar:'Accéder à la Live Room →',
     live_voltar:'← Retour',
     live_proximo_localizacao:'Suivant — Localisation →',
     live_proximo_perfil:'Suivant — Profil du trader →',
-    live_privacidade:'Vos données sont protégées. Vous recevrez un e-mail de bienvenue contenant les informations d&#x27;accès à la Live Room.',
+    live_privacidade:'Vos données sont protégées. Vous recevrez un e-mail de bienvenue contenant vos identifiants d&#x27;accès à la Live Room.',
+    ft_legal:'Toutes ces informations sont fournies à titre informatif. Les coupons sont susceptibles d&#x27;être modifiés. Le trading comporte des risques. © 2025 MarketsCoupons.',
+    search_placeholder:'Rechercher une société de trading...',
+    firm_desc_apex:'Apex Trader Funding est l&#x27;une des plus grandes sociétés de trading pour compte propre spécialisées dans les contrats à terme aux États-Unis. Elle est réputée pour ses remises très avantageuses et la souplesse de ses règles.',
+    firm_desc_bulenox:'Bulenox est une société de trading de contrats à terme dont les règles sont simplifiées. Il est possible d&#x27;être accepté en un jour, sans critère de régularité.',
+    firm_desc_ftmo:'FTMO est la plus grande société de trading pour compte propre (prop firm) au monde dans le domaine du Forex, fondée en 2015. Elle compte plus de 3,5 millions de clients et a versé plus de 500 millions de dollars.',
+    firm_desc_tpt:'Take Profit Trader se distingue par la possibilité d&#x27;effectuer des retraits dès le premier jour et l&#x27;absence de frais d&#x27;activation.',
+    firm_desc_e2t:'Earn2Trade met l&#x27;accent sur la formation et le développement, avec un financement pouvant atteindre 400 000 $.',
   },
   de: {
     nav_ofertas:'Angebote',
@@ -4179,14 +4215,14 @@ const I18N = {
     home_sub:'Vergleichen Sie Preise, kopieren Sie exklusive Gutscheine und sparen Sie bis zu 90 % bei den weltweit größten Prop-Firmen.',
     home_ver_planos:'Tarife anzeigen →',
     hero_badge:'Geprüfte Gutscheine – Täglich aktualisiert',
-    hero_titulo:'Sparen Sie bis zu <em>90 %</em> bei<br>den besten Prop-Firmen',
+    hero_titulo:'Sparen Sie bis zu <em>90 %</em> bei<br>den besten Prop-Firms',
     hero_sub:'Vergleichen Sie Anbieter, nutzen Sie exklusive Gutscheine und greifen Sie auf professionelle Tools zu – alles an einem Ort.',
     hero_btn_firms:'Prop-Firmen anzeigen',
     hero_btn_tg:'Der Telegram-Gruppe beitreten',
     home_melhores_ofertas:'Die besten Angebote jetzt',
     hst_ate:'bis',
     hst_firms:'Firmen',
-    hst_listadas:'Aufgeführt',
+    hst_listadas:'Aufgelistet',
     hst_desconto:'Rabatt',
     hst_verificado:'Verifiziert',
     hst_gratis:'Kostenlos',
@@ -4199,7 +4235,7 @@ const I18N = {
     geral_copiar:'Kopieren',
     geral_copiado:'Kopiert!',
     lb_title:'Treueprogramm',
-    lb_sub:'Kaufen Sie über unseren Link oder Gutschein, senden Sie den Kaufbeleg und schalten Sie den Live Room VIP, Gewinnspiele für Konten und exklusive Indikatoren frei.',
+    lb_sub:'Kaufen Sie über unseren Link oder Gutschein, senden Sie uns den Kaufbeleg und schalten Sie den VIP-Live-Room, Gewinnspiele für Konten und exklusive Indikatoren frei.',
     lb_step1:'Registrieren Sie sich kostenlos',
     lb_step2:'Mit Gutschein einkaufen',
     lb_step3:'Bitte senden Sie einen Nachweis',
@@ -4463,7 +4499,7 @@ const I18N = {
     offers_ver_planos:'Rabattangebote anzeigen →',
     firms_nenhuma_encontrada:'Es wurde kein Unternehmen gefunden.',
     checkout_selecione_firma:'Wählen Sie die Prop-Firma aus',
-    checkout_sub:'Wählen Sie das Unternehmen, die Art des Drawdowns und die Plattform – gehen Sie direkt zur Kasse und nutzen Sie Ihren Rabatt.',
+    checkout_sub:'Wählen Sie das Unternehmen, die Art des Drawdowns und die Plattform aus – gehen Sie direkt zur Kasse, um Ihren Rabatt einzulösen.',
     checkout_cupom_ativo:'Gutschein ist gültig',
     checkout_copiar_codigo:'Code kopieren',
     checkout_todos_planos:'Alle Tarife beinhalten',
@@ -4471,11 +4507,18 @@ const I18N = {
     offers_hero_titulo:'Sparen Sie bei den besten Prop-Firmen',
     offers_hero_sub:'Gültige und aktualisierte Gutscheincodes. Kopieren Sie den Code, geben Sie ihn an der Kasse ein und profitieren Sie vom Rabatt.',
     painel_em_breve:'Demnächst: Übersicht über eingelöste Gutscheine, Lieblingsgeschäfte und mehr.',
-    live_acessar:'Zum Live-Raum gehen →',
+    live_acessar:'Zum Live Room gehen →',
     live_voltar:'← Zurück',
     live_proximo_localizacao:'Weiter — Standort →',
     live_proximo_perfil:'Weiter — Trader-Profil →',
     live_privacidade:'Ihre Daten sind geschützt. Sie erhalten eine Willkommens-E-Mail mit dem Zugang zum Live Room.',
+    ft_legal:'Alle Informationen dienen ausschließlich zu Bildungszwecken. Gutscheine können sich ändern. Der Handel ist mit Risiken verbunden. © 2025 MarketsCoupons.',
+    search_placeholder:'Prop-Firm suchen...',
+    firm_desc_apex:'Apex Trader Funding ist eine der größten Futures-Prop-Firmen in den USA. Sie ist bekannt für ihre aggressiven Rabatte und ihre flexiblen Regeln.',
+    firm_desc_bulenox:'Bulenox ist eine Prop-Firm für Terminkontrakte mit vereinfachten Regeln. Eine Zulassung ist innerhalb eines Tages möglich, ohne dass eine Konsistenzregel gilt.',
+    firm_desc_ftmo:'FTMO ist die weltweit größte Forex-Prop-Firm, die 2015 gegründet wurde. Über 3,5 Millionen Kunden und mehr als 500 Millionen Dollar an Auszahlungen.',
+    firm_desc_tpt:'Take Profit Trader zeichnet sich dadurch aus, dass Auszahlungen bereits ab dem ersten Tag möglich sind und keine Aktivierungsgebühr anfällt.',
+    firm_desc_e2t:'Earn2Trade konzentriert sich auf Weiterbildung und Entwicklung mit einer Skalierung bis zu 400.000 $.',
   },
   ar: {
     nav_ofertas:'العروض',
@@ -4546,12 +4589,12 @@ const I18N = {
     heatmap_titulo:'خريطة الحرارة',
     nav_faq:'الأسئلة الشائعة',
     faq_titulo:'الأسئلة الشائعة',
-    faq_sub:'تخلص من تساؤلاتك حول القسائم والشركات الاستثمارية وكيفية استخدام MarketsCoupons.',
+    faq_sub:'تخلص من تساؤلاتك حول القسائم وشركات التداول الاحترافية وكيفية استخدام MarketsCoupons.',
     geral_firmas_encontradas:'الشركات التي تم العثور عليها',
     geral_copiar:'نسخ',
     geral_copiado:'تم نسخه!',
     lb_title:'برنامج الولاء',
-    lb_sub:'اشترِ عبر الرابط أو القسيمة الخاصة بنا، وأرسل إيصال الشراء لتتمكن من فتح غرفة البث المباشر VIP، والمشاركة في سحوبات الحسابات، والحصول على المؤشرات الحصرية.',
+    lb_sub:'اشترِ عبر الرابط أو القسيمة الخاصة بنا، وأرسل إيصال الشراء لتتمكن من فتح Live Room VIP، والمشاركة في سحوبات الحسابات، والحصول على المؤشرات الحصرية.',
     lb_step1:'سجل مجانًا',
     lb_step2:'تسوق باستخدام قسيمة',
     lb_step3:'أرسل إثباتًا',
@@ -4568,7 +4611,7 @@ const I18N = {
     ft_guias:'الأدلة',
     plat_titulo:'منصات التداول',
     plat_sub:'أدوات احترافية يستخدمها أفضل المتداولين في شركات التداول الخاصة. قارن بينها واختر الأنسب لأسلوبك.',
-    cmp_titulo:'🔍 مقارنة شركات التداول',
+    cmp_titulo:'🔍 مقارنة شركات الاستثمار',
     heatmap_full_titulo:'🌡️ خريطة الحرارة — مؤشر S&amp;P 500',
     hm_cripto:'العملات المشفرة',
     guides_titulo:'📚 أدلة وتعليم',
@@ -4657,7 +4700,7 @@ const I18N = {
     aw_ribbon_custo:'التكلفة مقابل الفائدة',
     aw_ribbon_rating:'أفضل تقييم',
     aw_reason_ftmo_forex:'رائد عالمي مع أكثر من 39 ألف تقييم ونسبة توزيع تبلغ 90%',
-    aw_reason_apex_desconto:'خصم يصل إلى 90% مدى الحياة مع قسيمة حصرية',
+    aw_reason_apex_desconto:'خصم يصل إلى 90٪ مدى الحياة مع قسيمة حصرية',
     aw_reason_fn_split:'توزيع أرباح بنسبة 95% مع دفع مضمون خلال 24 ساعة',
     aw_reason_bulenox_rapido:'يمكن إنجازه في يوم واحد، دون الحاجة إلى الالتزام بجدول زمني محدد',
     aw_reason_fn_confianca:'أكثر من 60,850 تقييمًا تم التحقق منه',
@@ -4737,10 +4780,10 @@ const I18N = {
     blog1_excerpt:'أكبر شركة تداول احترافي للعقود الآجلة في الولايات المتحدة تعلن عن عرض ترويجي برمز حصري.',
     blog1_data:'مارس 2025',
     blog2_titulo:'كيفية النجاح في تحدي FTMO لعام 2025',
-    blog2_excerpt:'دليل شامل يتضمن استراتيجيات للنجاح في اختبار أكبر شركة تداول في العالم.',
+    blog2_excerpt:'دليل شامل يتضمن استراتيجيات للنجاح في اختبار التقييم الخاص بأكبر شركة تداول في العالم.',
     blog2_data:'فبراير 2025',
     blog3_titulo:'Bulenox بخصم 89%: هل يستحق الأمر؟',
-    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89٪ مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الخيار المناسب لك.',
+    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89٪ مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الأنسب لك.',
     blog3_data:'فبراير 2025',
     blog4_titulo:'الانخفاض المتتابع مقابل الانخفاض الثابت',
     blog4_excerpt:'افهم الفروق وكيفية اختيار شركة التداول المناسبة لأسلوبك.',
@@ -4812,7 +4855,7 @@ const I18N = {
     plat_oferta_excl:'عرض حصري',
     offers_cupom_label:'قسيمة حصرية من MarketsCoupons',
     offers_desconto_link:'يتم تطبيق الخصم تلقائيًا عبر الرابط',
-    offers_ver_planos:'عرض العروض المخفضة →',
+    offers_ver_planos:'عرض الباقات المخفضة →',
     firms_nenhuma_encontrada:'لم يتم العثور على أي شركة.',
     checkout_selecione_firma:'اختر شركة التداول',
     checkout_sub:'اختر الشركة ونوع الخصم والمنصة — انتقل مباشرة إلى صفحة الدفع مع خصمك.',
@@ -4828,6 +4871,13 @@ const I18N = {
     live_proximo_localizacao:'التالي — الموقع →',
     live_proximo_perfil:'التالي — ملف تعريف المتداول →',
     live_privacidade:'بياناتك محمية. ستتلقى رسالة بريد إلكتروني ترحيبية تحتوي على رابط الدخول إلى Live Room.',
+    ft_legal:'جميع المعلومات مقدمة لأغراض تعليمية. القسائم قابلة للتغيير. التداول ينطوي على مخاطر. © 2025 MarketsCoupons.',
+    search_placeholder:'البحث عن شركة تداول...',
+    firm_desc_apex:'تعد Apex Trader Funding واحدة من أكبر شركات التمويل الخاصة في سوق العقود الآجلة بالولايات المتحدة. وتشتهر بتقديمها خصومات كبيرة ومرونة في القواعد.',
+    firm_desc_bulenox:'Bulenox هي شركة تداول احترافي في العقود الآجلة ذات قواعد مبسطة. يمكن اجتياز الاختبار في يوم واحد، دون وجود قاعدة تتعلق بالثبات في الأداء.',
+    firm_desc_ftmo:'FTMO هي أكبر شركة تداول فوركس ذات رأس مال خاص في العالم، وقد تأسست في عام 2015. لديها أكثر من 3.5 مليون عميل وقد دفعت أكثر من 500 مليون دولار.',
+    firm_desc_tpt:'يتميز تطبيق Take Profit Trader بإمكانية السحب من اليوم الأول وبدون رسوم تفعيل.',
+    firm_desc_e2t:'تركز Earn2Trade على التعليم والتطوير مع إمكانية التوسع حتى 400 ألف دولار.',
   }
 };
 let _currentLang = 'pt';
@@ -4850,7 +4900,7 @@ function applyTranslations() {
     const key = el.getAttribute('data-i18n');
     const val = t(key);
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
-    else el.textContent = val;
+    else el.innerHTML = val;
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
@@ -4864,6 +4914,11 @@ function setL(lang,flag,code){
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF();
+  const tvL = {pt:'br',en:'en',es:'es',it:'it',fr:'fr',de:'de',ar:'en'}[lang]||'en';
+  const calF = document.getElementById('cal-frame');
+  if(calF) calF.src = `https://www.tradingview-widget.com/embed-widget/events/?locale=${tvL}#%7B%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22countryFilter%22%3A%22us%2Ceu%2Cgb%2Cbr%2Cca%2Cau%2Cjp%2Ccn%22%7D`;
+  const hmF = document.getElementById('heatmap-frame');
+  if(hmF && hmF.src && !hmF.src.includes('about:blank')) loadHeatmap(hmF.dataset.source||'SPX500');
   track('language_change',{language:lang});
 }
 function initLang() {
@@ -5706,7 +5761,7 @@ function qfinish(){
     else if(priority==='discount'||priority==='speed')rec=FIRMS.find(f=>f.id==='bulenox');
     else if(priority==='split')rec=FIRMS.find(f=>f.id==='fn');
     else rec=FIRMS.find(f=>f.id==='tpt');
-    document.getElementById('q-res-content').innerHTML=`<div class="qr-ico" style="background:${rec.bg};color:${rec.color};">${rec.icon}</div><div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="color:${rec.color};">${rec.name}</span></div><div class="qr-desc">${rec.desc}</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">${rec.coupon?`<button onclick="cpCoupon('${rec.coupon}','${rec.id}','quiz')" style="padding:9px 18px;background:var(--gbg);border:1px solid var(--gbr);border-radius:7px;color:var(--gold);font-size:12px;font-weight:700;">${t('quiz_copiar_cupom')} ${rec.coupon}</button>`:''}<a href="${rec.link}" target="_blank"><button class="btn-gold">${t('quiz_ir_para')} ${rec.name}</button></a><button onclick="go('firms');setTimeout(()=>openD('${rec.id}'),150)" class="btn-out">${t('quiz_ver_detalhes')}</button></div>`;
+    document.getElementById('q-res-content').innerHTML=`<div class="qr-ico" style="background:${rec.bg};color:${rec.color};">${rec.icon}</div><div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="color:${rec.color};">${rec.name}</span></div><div class="qr-desc">${t('firm_desc_'+rec.id)||rec.desc}</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">${rec.coupon?`<button onclick="cpCoupon('${rec.coupon}','${rec.id}','quiz')" style="padding:9px 18px;background:var(--gbg);border:1px solid var(--gbr);border-radius:7px;color:var(--gold);font-size:12px;font-weight:700;">${t('quiz_copiar_cupom')} ${rec.coupon}</button>`:''}<a href="${rec.link}" target="_blank"><button class="btn-gold">${t('quiz_ir_para')} ${rec.name}</button></a><button onclick="go('firms');setTimeout(()=>openD('${rec.id}'),150)" class="btn-out">${t('quiz_ver_detalhes')}</button></div>`;
     track('quiz_complete',{recommended_firm:rec.id,market_pref:market,priority});
   },300);
 }
@@ -6114,18 +6169,20 @@ function loadHeatmap(source, btn) {
   const titles = {SPX500:t('hm_sp500'),NASDAQ100:t('hm_nasdaq100'),WORLD:t('hm_global'),CRYPTO:t('hm_cripto')};
   const titleEl = document.querySelector('.heatmap-title');
   if (titleEl) titleEl.textContent = '🌡️ ' + t('hm_mapa_calor') + (titles[source]||source);
+  const tvLocale = {pt:'br',en:'en',es:'es',it:'it',fr:'fr',de:'de',ar:'en'}[_currentLang]||'en';
   const base = source === 'CRYPTO'
-    ? 'https://www.tradingview.com/embed-widget/crypto-coins-heatmap/?locale=br#'
-    : 'https://www.tradingview.com/embed-widget/stock-heatmap/?locale=br#';
+    ? `https://www.tradingview.com/embed-widget/crypto-coins-heatmap/?locale=${tvLocale}#`
+    : `https://www.tradingview.com/embed-widget/stock-heatmap/?locale=${tvLocale}#`;
   const grouping = source === 'WORLD' ? 'country' : source === 'CRYPTO' ? 'no_group' : 'sector';
   const cfg = encodeURIComponent(JSON.stringify({
     dataSource: source, blockColor:'change', blockSize:'market_cap_basic',
-    grouping, locale:'br', colorTheme:'dark', hasTopBar:true,
+    grouping, locale:tvLocale, colorTheme:'dark', hasTopBar:true,
     isDataSetEnabled:true, isZoomEnabled:true, hasSymbolTooltip:true,
     width:'100%', height:'100%'
   }));
   const frame = document.getElementById('heatmap-frame');
   if (frame) {
+    frame.dataset.source = source;
     frame.src = 'about:blank';
     setTimeout(() => { frame.src = base + cfg; }, 50);
   }
