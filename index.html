@@ -1412,27 +1412,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="mm-close" onclick="closeMM()"></button>
  </div>
  <div class="mm-body">
- <div class="mm-sec">Principal</div>
- <button class="mm-item" onclick="mgo('home')"> Ofertas & Cupons</button>
- <div class="mm-sec">Firmas</div>
- <button class="mm-item" onclick="mgo('firms')"> Ver todas as firmas</button>
- <button class="mm-item" onclick="mgo('compare')"> Comparar firmas</button>
- <button class="mm-item" onclick="mgo('quiz')"> Quiz — qual firma?</button>
- <div class="mm-sec">Ferramentas</div>
- <button class="mm-item" onclick="mgo('calc')"> Position Size</button>
- <button class="mm-item" onclick="mgo('calendar')"> Calendário Econômico</button>
- <button class="mm-item" onclick="mgo('heatmap')"> Mapa de Calor</button>
- <button class="mm-item" onclick="mgo('analise')"> Análise de Mercado IA</button>
- <button class="mm-item" onclick="mgo('indicators')"> Indicadores</button>
- <div class="mm-sec">Plataformas</div>
- <button class="mm-item" onclick="mgo('plataformas')"> Plataformas de Trading</button>
- <div class="mm-sec">Aprender</div>
- <button class="mm-item" onclick="mgo('guides')"> Guias & Educação</button>
- <button class="mm-item" onclick="mgo('blog')"> Blog</button>
- <div class="mm-sec">Live & IA</div>
- <button class="mm-item" onclick="mgo('live')"> Live Trading Room</button>
- <button class="mm-item" onclick="closeMM();openBot()"> Assistente IA</button>
- <div class="mm-sec">Idioma</div>
+ <div class="mm-sec" data-i18n="mm_principal">Principal</div>
+ <button class="mm-item" onclick="mgo('home')" data-i18n="mm_ofertas"> Ofertas & Cupons</button>
+ <div class="mm-sec" data-i18n="mm_sec_firmas">Firmas</div>
+ <button class="mm-item" onclick="mgo('firms')" data-i18n="mm_firmas"> Ver todas as firmas</button>
+ <button class="mm-item" onclick="mgo('compare')" data-i18n="mm_comparar"> Comparar firmas</button>
+ <button class="mm-item" onclick="mgo('quiz')" data-i18n="mm_quiz"> Quiz — qual firma?</button>
+ <div class="mm-sec" data-i18n="mm_sec_ferramentas">Ferramentas</div>
+ <button class="mm-item" onclick="mgo('calc')" data-i18n="mm_calc"> Position Size</button>
+ <button class="mm-item" onclick="mgo('calendar')" data-i18n="mm_calendario"> Calendário Econômico</button>
+ <button class="mm-item" onclick="mgo('heatmap')" data-i18n="mm_heatmap"> Mapa de Calor</button>
+ <button class="mm-item" onclick="mgo('analise')" data-i18n="mm_analise"> Análise de Mercado IA</button>
+ <button class="mm-item" onclick="mgo('indicators')" data-i18n="mm_indicadores"> Indicadores</button>
+ <div class="mm-sec" data-i18n="mm_sec_plataformas">Plataformas</div>
+ <button class="mm-item" onclick="mgo('plataformas')" data-i18n="mm_plataformas"> Plataformas de Trading</button>
+ <div class="mm-sec" data-i18n="mm_sec_aprender">Aprender</div>
+ <button class="mm-item" onclick="mgo('guides')" data-i18n="mm_guias"> Guias & Educação</button>
+ <button class="mm-item" onclick="mgo('blog')">Blog</button>
+ <div class="mm-sec" data-i18n="mm_sec_live">Live & IA</div>
+ <button class="mm-item" onclick="mgo('live')" data-i18n="mm_live"> Live Trading Room</button>
+ <button class="mm-item" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente IA</button>
+ <div class="mm-sec" data-i18n="mm_sec_idioma">Idioma</div>
  <div class="mm-langs">
  <button class="mm-flag" onclick="setL('pt','','BR');closeMM()"></button>
  <button class="mm-flag" onclick="setL('en','','EN');closeMM()"></button>
@@ -1442,15 +1442,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="mm-flag" onclick="setL('de','','DE');closeMM()"></button>
  <button class="mm-flag" onclick="setL('ar','','AR');closeMM()"></button>
  </div>
- <a href="https://t.me/marketcouponss" target="_blank"><div class="mm-tg"> Entrar no Telegram</div></a>
- <div class="mm-sec">Conta</div>
+ <a href="https://t.me/marketcouponss" target="_blank"><div class="mm-tg" data-i18n="mm_telegram"> Entrar no Telegram</div></a>
+ <div class="mm-sec" data-i18n="mm_sec_conta">Conta</div>
  <div id="mm-auth-out">
-  <button class="mm-item" onclick="closeMM();openAuthModal('login')">Entrar na Conta</button>
-  <button class="mm-item" onclick="closeMM();openAuthModal('signup')">Criar Conta</button>
+  <button class="mm-item" onclick="closeMM();openAuthModal('login')" data-i18n="mm_entrar">Entrar na Conta</button>
+  <button class="mm-item" onclick="closeMM();openAuthModal('signup')" data-i18n="mm_criar_conta">Criar Conta</button>
  </div>
  <div id="mm-auth-in" style="display:none;">
-  <button class="mm-item" onclick="mgo('painel')">Meu Painel</button>
-  <button class="mm-item" onclick="closeMM();doLogout()">Sair da Conta</button>
+  <button class="mm-item" onclick="mgo('painel')" data-i18n="mm_painel">Meu Painel</button>
+  <button class="mm-item" onclick="closeMM();doLogout()" data-i18n="mm_sair">Sair da Conta</button>
  </div>
  </div>
 </div>
@@ -1460,12 +1460,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="auth-box">
   <button class="auth-close" onclick="closeAuthModals()">&times;</button>
   <div class="auth-title">Markets<em>Coupons</em></div>
-  <div class="auth-sub">Entre na sua conta</div>
+  <div class="auth-sub" data-i18n="login_titulo">Entre na sua conta</div>
   <div class="auth-error" id="login-error"></div>
-  <div class="auth-field"><label>E-mail</label><input type="email" id="auth-login-email" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
-  <div class="auth-field"><label>Senha</label><input type="password" id="auth-login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
-  <button class="auth-btn" id="login-btn" onclick="doAuthLogin()">Entrar</button>
-  <div class="auth-switch">Não tem conta? <a onclick="openAuthModal('signup')">Cadastrar-se</a></div>
+  <div class="auth-field"><label data-i18n="login_email">E-mail</label><input type="email" id="auth-login-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
+  <div class="auth-field"><label data-i18n="login_senha">Senha</label><input type="password" id="auth-login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
+  <button class="auth-btn" id="login-btn" onclick="doAuthLogin()" data-i18n="login_entrar">Entrar</button>
+  <div class="auth-switch"><span data-i18n="login_nao_tem">Não tem conta?</span> <a onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</a></div>
  </div>
 </div>
 
@@ -1474,18 +1474,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="auth-box">
   <button class="auth-close" onclick="closeAuthModals()">&times;</button>
   <div class="auth-title">Markets<em>Coupons</em></div>
-  <div class="auth-sub">Crie sua conta gratuita</div>
+  <div class="auth-sub" data-i18n="signup_titulo">Crie sua conta gratuita</div>
   <div class="auth-error" id="signup-error"></div>
   <div class="auth-success" id="signup-success"></div>
-  <div class="auth-field"><label>Nome completo</label><input type="text" id="auth-signup-name" placeholder="Seu nome"></div>
-  <div class="auth-field"><label>E-mail</label><input type="email" id="auth-signup-email" placeholder="seu@email.com"></div>
-  <div class="auth-field"><label>Senha (mín. 6 caracteres)</label><input type="password" id="auth-signup-pass" placeholder="••••••••"></div>
-  <div class="auth-field"><label>Telefone</label><input type="tel" id="auth-signup-phone" placeholder="+55 11 99999-9999"></div>
+  <div class="auth-field"><label data-i18n="signup_nome">Nome completo</label><input type="text" id="auth-signup-name" placeholder="—"></div>
+  <div class="auth-field"><label data-i18n="signup_email">E-mail</label><input type="email" id="auth-signup-email" placeholder="email@example.com"></div>
+  <div class="auth-field"><label data-i18n="signup_senha">Senha (mín. 6 caracteres)</label><input type="password" id="auth-signup-pass" placeholder="••••••••"></div>
+  <div class="auth-field"><label data-i18n="signup_telefone">Telefone</label><input type="tel" id="auth-signup-phone" placeholder="+55 11 99999-9999"></div>
   <div class="auth-row">
-   <div class="auth-field"><label>Cidade</label><input type="text" id="auth-signup-city" placeholder="São Paulo"></div>
-   <div class="auth-field"><label>Estado</label><input type="text" id="auth-signup-state" placeholder="SP"></div>
+   <div class="auth-field"><label data-i18n="signup_cidade">Cidade</label><input type="text" id="auth-signup-city" placeholder="—"></div>
+   <div class="auth-field"><label data-i18n="signup_estado">Estado</label><input type="text" id="auth-signup-state" placeholder="—"></div>
   </div>
-  <div class="auth-field"><label>País</label>
+  <div class="auth-field"><label data-i18n="signup_pais">País</label>
    <select id="auth-signup-country">
     <option value="Brasil">Brasil</option>
     <option value="Portugal">Portugal</option>
@@ -1497,8 +1497,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <option value="Outro">Outro</option>
    </select>
   </div>
-  <button class="auth-btn" id="signup-btn" onclick="doAuthSignup()">Criar Conta</button>
-  <div class="auth-switch">Já tem conta? <a onclick="openAuthModal('login')">Entrar</a></div>
+  <button class="auth-btn" id="signup-btn" onclick="doAuthSignup()" data-i18n="signup_criar">Criar Conta</button>
+  <div class="auth-switch"><span data-i18n="signup_ja_tem">Já tem conta?</span> <a onclick="openAuthModal('login')" data-i18n="signup_entrar">Entrar</a></div>
  </div>
 </div>
 
@@ -1506,19 +1506,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page" id="page-painel">
  <div class="up-header">
   <div class="up-avatar" id="up-avatar">U</div>
-  <div class="up-name" id="up-name">Usuário</div>
+  <div class="up-name" id="up-name" data-i18n="painel_usuario">Usuário</div>
   <div class="up-email" id="up-email">email@example.com</div>
  </div>
  <div class="up-grid">
   <div class="up-card">
-   <h3>Dados Pessoais</h3>
-   <div class="auth-field"><label>Nome</label><input type="text" id="up-edit-name"></div>
-   <div class="auth-field"><label>Telefone</label><input type="tel" id="up-edit-phone"></div>
+   <h3 data-i18n="painel_dados_pessoais">Dados Pessoais</h3>
+   <div class="auth-field"><label data-i18n="painel_nome">Nome</label><input type="text" id="up-edit-name"></div>
+   <div class="auth-field"><label data-i18n="painel_telefone">Telefone</label><input type="tel" id="up-edit-phone"></div>
    <div class="auth-row">
-    <div class="auth-field"><label>Cidade</label><input type="text" id="up-edit-city"></div>
-    <div class="auth-field"><label>Estado</label><input type="text" id="up-edit-state"></div>
+    <div class="auth-field"><label data-i18n="painel_cidade">Cidade</label><input type="text" id="up-edit-city"></div>
+    <div class="auth-field"><label data-i18n="painel_estado">Estado</label><input type="text" id="up-edit-state"></div>
    </div>
-   <div class="auth-field"><label>País</label>
+   <div class="auth-field"><label data-i18n="painel_pais">País</label>
     <select id="up-edit-country">
      <option value="Brasil">Brasil</option>
      <option value="Portugal">Portugal</option>
@@ -1530,15 +1530,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      <option value="Outro">Outro</option>
     </select>
    </div>
-   <button class="auth-btn" onclick="saveProfile()">Salvar Alterações</button>
-   <div class="auth-success" id="up-save-ok" style="margin-top:12px;">Dados salvos com sucesso!</div>
+   <button class="auth-btn" onclick="saveProfile()" data-i18n="painel_salvar">Salvar Alterações</button>
+   <div class="auth-success" id="up-save-ok" style="margin-top:12px;" data-i18n="painel_salvos">Dados salvos com sucesso!</div>
   </div>
   <div class="up-card">
-   <h3>Resumo</h3>
+   <h3 data-i18n="painel_resumo">Resumo</h3>
    <div class="up-stats">
-    <div class="up-stat"><div class="v" id="up-st-visits">0</div><div class="l">Visitas</div></div>
-    <div class="up-stat"><div class="v" id="up-st-clicks">0</div><div class="l">Cliques</div></div>
-    <div class="up-stat"><div class="v" id="up-st-coupons">0</div><div class="l">Cupons</div></div>
+    <div class="up-stat"><div class="v" id="up-st-visits">0</div><div class="l" data-i18n="painel_visitas">Visitas</div></div>
+    <div class="up-stat"><div class="v" id="up-st-clicks">0</div><div class="l" data-i18n="painel_cliques">Cliques</div></div>
+    <div class="up-stat"><div class="v" id="up-st-coupons">0</div><div class="l" data-i18n="painel_cupons">Cupons</div></div>
    </div>
    <p style="font-size:12px;color:var(--t3);text-align:center;" data-i18n="painel_em_breve">Em breve: histórico de cupons usados, firmas favoritas e mais.</p>
   </div>
@@ -1546,7 +1546,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
  <!-- FIDELIDADE NO PAINEL -->
  <div class="up-card" style="margin:0 auto;max-width:860px;width:100%;" id="painel-loyalty-card">
-   <h3>🎁 Programa de Fidelidade</h3>
+   <h3>🎁 <span data-i18n="painel_fidelidade">Programa de Fidelidade</span></h3>
    <div id="painel-loyalty-body"></div>
  </div>
 </div>
@@ -2728,6 +2728,64 @@ const I18N = {
     firm_desc_ftmo:'FTMO é a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',
     firm_desc_tpt:'Take Profit Trader se destaca pelo saque desde o primeiro dia e sem taxa de ativação.',
     firm_desc_e2t:'Earn2Trade foca em educação e desenvolvimento com escalamento até $400K.',
+    mm_principal:'Principal',
+    mm_ofertas:'Ofertas & Cupons',
+    mm_sec_firmas:'Firmas',
+    mm_firmas:'Ver todas as firmas',
+    mm_comparar:'Comparar firmas',
+    mm_quiz:'Quiz — qual firma?',
+    mm_sec_ferramentas:'Ferramentas',
+    mm_calc:'Position Size',
+    mm_calendario:'Calendário Econômico',
+    mm_heatmap:'Mapa de Calor',
+    mm_analise:'Análise de Mercado IA',
+    mm_indicadores:'Indicadores',
+    mm_sec_plataformas:'Plataformas',
+    mm_plataformas:'Plataformas de Trading',
+    mm_sec_aprender:'Aprender',
+    mm_guias:'Guias & Educação',
+    mm_blog:'Blog',
+    mm_sec_live:'Live & IA',
+    mm_live:'Live Trading Room',
+    mm_assistente:'Assistente IA',
+    mm_sec_idioma:'Idioma',
+    mm_telegram:'Entrar no Telegram',
+    mm_sec_conta:'Conta',
+    mm_entrar:'Entrar na Conta',
+    mm_criar_conta:'Criar Conta',
+    mm_painel:'Meu Painel',
+    mm_sair:'Sair da Conta',
+    login_titulo:'Entre na sua conta',
+    login_email:'E-mail',
+    login_senha:'Senha',
+    login_entrar:'Entrar',
+    login_nao_tem:'Não tem conta?',
+    login_cadastrar:'Cadastrar-se',
+    signup_titulo:'Crie sua conta gratuita',
+    signup_nome:'Nome completo',
+    signup_email:'E-mail',
+    signup_senha:'Senha (mín. 6 caracteres)',
+    signup_telefone:'Telefone',
+    signup_cidade:'Cidade',
+    signup_estado:'Estado',
+    signup_pais:'País',
+    signup_criar:'Criar Conta',
+    signup_ja_tem:'Já tem conta?',
+    signup_entrar:'Entrar',
+    painel_dados_pessoais:'Dados Pessoais',
+    painel_nome:'Nome',
+    painel_telefone:'Telefone',
+    painel_cidade:'Cidade',
+    painel_estado:'Estado',
+    painel_pais:'País',
+    painel_salvar:'Salvar Alterações',
+    painel_salvos:'Dados salvos com sucesso!',
+    painel_resumo:'Resumo',
+    painel_visitas:'Visitas',
+    painel_cliques:'Cliques',
+    painel_cupons:'Cupons',
+    painel_fidelidade:'Programa de Fidelidade',
+    painel_usuario:'Usuário',
   },
   en: {
     nav_ofertas:'Specials',
@@ -2819,7 +2877,7 @@ const I18N = {
     ft_indicadores:'Indicators',
     ft_guias:'Guides',
     plat_titulo:'Trading Platforms',
-    plat_sub:'Professional tools used by the best traders at prop firms. Compare them and choose the one that best suits your trading style.',
+    plat_sub:'Professional tools used by top traders at prop firms. Compare them and choose the one that best suits your trading style.',
     cmp_titulo:'🔍 Compare Prop Firms',
     heatmap_full_titulo:'🌡️ Heat Map — S&amp;P 500',
     hm_cripto:'Crypto',
@@ -2986,7 +3044,7 @@ const I18N = {
     blog_cat_payouts:'Payouts',
     blog_cat_ferramentas:'Tools',
     blog1_titulo:'Apex launches a historic 90% OFF sale',
-    blog1_excerpt:'The largest futures prop firm in the U.S. announces a promotion with an exclusive code.',
+    blog1_excerpt:'The largest futures prop firm in the U.S. is offering a promotion with an exclusive code.',
     blog1_data:'March 2025',
     blog2_titulo:'How to Pass the FTMO Challenge in 2025',
     blog2_excerpt:'A comprehensive guide with strategies for passing the assessment at the world’s largest prop firm.',
@@ -3014,7 +3072,7 @@ const I18N = {
     quiz_proxima:'Next →',
     quiz_recomecar:'↺ Start Over',
     quiz_q1_titulo:'Which market do you prefer to trade in?',
-    quiz_q1_sub:'Your response will help us find the ideal prop firm.',
+    quiz_q1_sub:'Your response will help us find the right prop firm.',
     quiz_q1_a1:'Futures (ES, NQ, CL...)',
     quiz_q1_a2:'Forex (EUR/USD, Gold...)',
     quiz_q1_a3:'Both',
@@ -3091,6 +3149,64 @@ const I18N = {
     firm_desc_ftmo:'FTMO is the world&#x27;s largest Forex prop firm, founded in 2015. It has over 3.5 million clients and has paid out more than $500 million.',
     firm_desc_tpt:'Take Profit Trader stands out for allowing withdrawals from day one and having no activation fee.',
     firm_desc_e2t:'Earn2Trade focuses on education and development, with funding of up to $400,000.',
+    mm_principal:'Home',
+    mm_ofertas:'Deals &amp; Coupons',
+    mm_sec_firmas:'Firms',
+    mm_firmas:'View all companies',
+    mm_comparar:'Compare companies',
+    mm_quiz:'Quiz — Which company?',
+    mm_sec_ferramentas:'Tools',
+    mm_calc:'Position Size',
+    mm_calendario:'Economic Calendar',
+    mm_heatmap:'Heat Map',
+    mm_analise:'AI Market Analysis',
+    mm_indicadores:'Indicators',
+    mm_sec_plataformas:'Platforms',
+    mm_plataformas:'Trading Platforms',
+    mm_sec_aprender:'Learn',
+    mm_guias:'Guides &amp; Education',
+    mm_blog:'Blog',
+    mm_sec_live:'Live &amp; AI',
+    mm_live:'Live Trading Room',
+    mm_assistente:'AI Assistant',
+    mm_sec_idioma:'Language',
+    mm_telegram:'Sign in to Telegram',
+    mm_sec_conta:'Account',
+    mm_entrar:'Sign In',
+    mm_criar_conta:'Create Account',
+    mm_painel:'My Dashboard',
+    mm_sair:'Log Out',
+    login_titulo:'Sign in to your account',
+    login_email:'Email',
+    login_senha:'Password',
+    login_entrar:'Log in',
+    login_nao_tem:'Don&#x27;t have an account?',
+    login_cadastrar:'Sign up',
+    signup_titulo:'Create your free account',
+    signup_nome:'Full name',
+    signup_email:'Email',
+    signup_senha:'Password (min. 6 characters)',
+    signup_telefone:'Phone',
+    signup_cidade:'City',
+    signup_estado:'State',
+    signup_pais:'Country',
+    signup_criar:'Create Account',
+    signup_ja_tem:'Do you already have an account?',
+    signup_entrar:'Log in',
+    painel_dados_pessoais:'Personal Information',
+    painel_nome:'Name',
+    painel_telefone:'Phone',
+    painel_cidade:'City',
+    painel_estado:'State',
+    painel_pais:'Country',
+    painel_salvar:'Save Changes',
+    painel_salvos:'Data saved successfully!',
+    painel_resumo:'Summary',
+    painel_visitas:'Visits',
+    painel_cliques:'Clicks',
+    painel_cupons:'Coupons',
+    painel_fidelidade:'Loyalty Program',
+    painel_usuario:'User',
   },
   es: {
     nav_ofertas:'Ofertas',
@@ -3146,7 +3262,7 @@ const I18N = {
     home_sub:'Compara precios, copia cupones exclusivos y ahorra hasta un 90 % en las mayores empresas de inversión del mundo.',
     home_ver_planos:'Ver planes →',
     hero_badge:'Cupones verificados — Actualizados a diario',
-    hero_titulo:'Ahorra hasta <em>un 90 %</em><br>en las mejores empresas de gestión de carteras',
+    hero_titulo:'Ahorra hasta <em>un 90</em><br><em>%</em> en las mejores empresas de gestión de fondos',
     hero_sub:'Compara empresas, utiliza cupones exclusivos y accede a herramientas profesionales: todo en un solo lugar.',
     hero_btn_firms:'Ver empresas de gestión de capital',
     hero_btn_tg:'Unirse al grupo de Telegram',
@@ -3166,7 +3282,7 @@ const I18N = {
     geral_copiar:'Copiar',
     geral_copiado:'¡Copiado!',
     lb_title:'Programa de fidelización',
-    lb_sub:'Compra a través de nuestro enlace o cupón, envía el comprobante y desbloquea la Sala VIP, sorteos de cuentas e indicadores exclusivos.',
+    lb_sub:'Compra a través de nuestro enlace o cupón, envía el comprobante y desbloquea la Live Room VIP, sorteos de cuentas e indicadores exclusivos.',
     lb_step1:'Regístrate gratis',
     lb_step2:'Compra con un cupón',
     lb_step3:'Envía el comprobante',
@@ -3205,14 +3321,14 @@ const I18N = {
     badge_melhor_split:'Mejor Split 90 %',
     badge_lider_forex:'Líder en Forex',
     badge_mais_avaliacoes:'Más opiniones',
-    badge_scaling:'Ampliación de 400 000 dólares',
+    badge_scaling:'Ampliar a 400 000 dólares',
     plat_acessar_off:'Iniciar sesión con',
     plat_acessar:'Iniciar sesión',
     plat_oferta_exclusiva:'OFERTA EXCLUSIVA',
     ind_titulo:'Indicadores — Solo para miembros',
     ind_sub:'Los indicadores y las herramientas son exclusivos para los participantes del Programa de Fidelidad que hayan realizado tres compras validadas.',
     ind_ver_fidelidade:'Ver el programa de fidelidad →',
-    cmp_sub:'Selecciona hasta 3 empresas para compararlas entre sí',
+    cmp_sub:'Selecciona hasta 3 empresas para compararlas una al lado de otra',
     cmp_firma1:'-- Firma 1 --',
     cmp_firma2:'-- Firma 2 --',
     cmp_firma3:'-- Firma 3 --',
@@ -3286,7 +3402,7 @@ const I18N = {
     cal_esta_semana:'Esta semana',
     cal_anterior:'Anterior',
     cal_previsao:'Previsión',
-    cal_alto_impacto:'De gran impacto',
+    cal_alto_impacto:'De gran repercusión',
     cal_medio_impacto:'Impacto moderado',
     cal_baixo_impacto:'De bajo impacto',
     hm_sp500:'S&amp;P 500',
@@ -3360,11 +3476,11 @@ const I18N = {
     blog4_titulo:'Drawdown acumulado frente a drawdown fijo',
     blog4_excerpt:'Conoce las diferencias y cómo elegir la firma de inversión adecuada para tu estilo.',
     blog4_data:'Enero de 2025',
-    blog5_titulo:'Cómo retirar tus ganancias en las empresas de gestión de capital',
+    blog5_titulo:'Cómo retirar tus ganancias en las prop firms',
     blog5_excerpt:'Guía paso a paso para Apex, Bulenox, FTMO y FundedNext.',
     blog5_data:'Enero de 2025',
     blog6_titulo:'Los mejores indicadores para NinjaTrader 8',
-    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las empresas de gestión de capital.',
+    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las empresas de inversión.',
     blog6_data:'Diciembre de 2024',
     calc_gate_label_nome:'Nombre',
     calc_gate_placeholder_nome:'Tu nombre',
@@ -3454,6 +3570,64 @@ const I18N = {
     firm_desc_ftmo:'FTMO es la mayor empresa de gestión de capital de Forex del mundo, fundada en 2015. Cuenta con más de 3,5 millones de clientes y ha pagado más de 500 millones de dólares.',
     firm_desc_tpt:'Take Profit Trader destaca por permitir retirar fondos desde el primer día y sin comisión de activación.',
     firm_desc_e2t:'Earn2Trade se centra en la formación y el desarrollo, con una financiación de hasta 400 000 dólares.',
+    mm_principal:'Inicio',
+    mm_ofertas:'Ofertas y cupones',
+    mm_sec_firmas:'Empresas',
+    mm_firmas:'Ver todas las empresas',
+    mm_comparar:'Comparar empresas',
+    mm_quiz:'Prueba: ¿qué empresa?',
+    mm_sec_ferramentas:'Herramientas',
+    mm_calc:'Tamaño de la posición',
+    mm_calendario:'Calendario económico',
+    mm_heatmap:'Mapa de calor',
+    mm_analise:'Análisis de mercado con IA',
+    mm_indicadores:'Indicadores',
+    mm_sec_plataformas:'Plataformas',
+    mm_plataformas:'Plataformas de negociación',
+    mm_sec_aprender:'Aprender',
+    mm_guias:'Guías y educación',
+    mm_blog:'Blog',
+    mm_sec_live:'En directo e IA',
+    mm_live:'Sala de operaciones en directo',
+    mm_assistente:'Asistente de IA',
+    mm_sec_idioma:'Idioma',
+    mm_telegram:'Iniciar sesión en Telegram',
+    mm_sec_conta:'Cuenta',
+    mm_entrar:'Iniciar sesión',
+    mm_criar_conta:'Crear cuenta',
+    mm_painel:'Mi panel',
+    mm_sair:'Salir de la cuenta',
+    login_titulo:'Inicie sesión en su cuenta',
+    login_email:'Correo electrónico',
+    login_senha:'Contraseña',
+    login_entrar:'Entrar',
+    login_nao_tem:'¿No tienes cuenta?',
+    login_cadastrar:'Registrarse',
+    signup_titulo:'Crea tu cuenta gratuita',
+    signup_nome:'Nombre completo',
+    signup_email:'Correo electrónico',
+    signup_senha:'Contraseña (mín. 6 caracteres)',
+    signup_telefone:'Teléfono',
+    signup_cidade:'Ciudad',
+    signup_estado:'Estado',
+    signup_pais:'País',
+    signup_criar:'Crear cuenta',
+    signup_ja_tem:'¿Ya tienes una cuenta?',
+    signup_entrar:'Entrar',
+    painel_dados_pessoais:'Datos personales',
+    painel_nome:'Nombre',
+    painel_telefone:'Teléfono',
+    painel_cidade:'Ciudad',
+    painel_estado:'Estado',
+    painel_pais:'País',
+    painel_salvar:'Guardar cambios',
+    painel_salvos:'¡Datos guardados correctamente!',
+    painel_resumo:'Resumen',
+    painel_visitas:'Visitas',
+    painel_cliques:'Clics',
+    painel_cupons:'Cupones',
+    painel_fidelidade:'Programa de fidelización',
+    painel_usuario:'Usuario',
   },
   it: {
     nav_ofertas:'Offerte',
@@ -3546,7 +3720,7 @@ const I18N = {
     ft_guias:'Guide',
     plat_titulo:'Piattaforme di trading',
     plat_sub:'Strumenti professionali utilizzati dai migliori trader delle società di trading. Confronta e scegli quello più adatto al tuo stile.',
-    cmp_titulo:'🟔 Confronta le società di prop trading',
+    cmp_titulo:'😎 Confronta le società di prop trading',
     heatmap_full_titulo:'🌡️ Mappa termica — S&amp;P 500',
     hm_cripto:'Criptovaluta',
     guides_titulo:'🚀 Guide e formazione',
@@ -3612,7 +3786,7 @@ const I18N = {
     cmp_sem_limite:'Senza limiti',
     cmp_desconto_especial:'Sconto speciale',
     cmp_selecione_firma:'Seleziona almeno un&#x27;azienda',
-    aw_sub:'Una selezione delle migliori società di trading basata su dati reali relativi a valutazioni, commissioni, condizioni e soddisfazione dei trader.',
+    aw_sub:'Una selezione delle migliori società di trading basata su dati reali relativi a valutazioni, sconti, condizioni e soddisfazione dei trader.',
     aw_stat_firmas:'Aziende analizzate',
     aw_stat_avaliacoes:'Valutazioni prese in considerazione',
     aw_stat_categorias:'Categorie premiate',
@@ -3627,7 +3801,7 @@ const I18N = {
     aw_cat_melhor_custo:'Miglior rapporto qualità-prezzo',
     aw_cat_melhor_rating:'Migliore valutazione complessiva',
     aw_ribbon_forex:'IL MIGLIOR FOREX',
-    aw_ribbon_desconto:'MIGLIORI OFFERTE',
+    aw_ribbon_desconto:'MIGLIORI SCONTI',
     aw_ribbon_split:'ALTRO SPLIT',
     aw_ribbon_rapido:'PIÙ VELOCE',
     aw_ribbon_confiavel:'PIÙ AFFIDABILE',
@@ -3740,7 +3914,7 @@ const I18N = {
     quiz_proxima:'Avanti →',
     quiz_recomecar:'↺ Ricominciare',
     quiz_q1_titulo:'Su quale mercato preferisci operare?',
-    quiz_q1_sub:'La tua risposta aiuta a trovare la prop firm ideale.',
+    quiz_q1_sub:'La tua risposta ci aiuta a trovare la prop firm ideale.',
     quiz_q1_a1:'Futures (ES, NQ, CL...)',
     quiz_q1_a2:'Forex (EUR/USD, oro...)',
     quiz_q1_a3:'Entrambi',
@@ -3756,7 +3930,7 @@ const I18N = {
     quiz_q3_a1:'Fino a 25.000 dollari',
     quiz_q3_a2:'da 25.000 a 100.000 dollari',
     quiz_q3_a3:'100.000–200.000 dollari',
-    quiz_q3_a4:'+200.000 $',
+    quiz_q3_a4:'+200.000 dollari',
     quiz_q4_titulo:'Qual è il tuo stile di trading?',
     quiz_q4_sub:'',
     quiz_q4_a1:'Scalper',
@@ -3795,10 +3969,10 @@ const I18N = {
     checkout_selecione_firma:'Seleziona la società di trading',
     checkout_sub:'Scegli la società, il tipo di drawdown e la piattaforma: vai direttamente alla cassa con il tuo sconto.',
     checkout_cupom_ativo:'Buono attivo',
-    checkout_copiar_codigo:'Copia codice',
+    checkout_copiar_codigo:'Copia il codice',
     checkout_todos_planos:'Tutti i piani includono',
     offers_hero_label:'🟏️ Buoni sconto esclusivi',
-    offers_hero_titulo:'Risparmia con le migliori società di trading',
+    offers_hero_titulo:'Risparmia con le migliori prop firm',
     offers_hero_sub:'Buoni sconto verificati e aggiornati. Copiali, inseriscili al momento del pagamento e inizia a fare trading con uno sconto.',
     painel_em_breve:'Prossimamente: cronologia dei buoni utilizzati, aziende preferite e altro ancora.',
     live_acessar:'Accedi alla Live Room →',
@@ -3817,6 +3991,64 @@ const I18N = {
     firm_desc_ftmo:'FTMO è la più grande società di trading in proprio (prop firm) nel settore Forex al mondo, fondata nel 2015. Conta oltre 3,5 milioni di clienti e ha versato più di 500 milioni di dollari.',
     firm_desc_tpt:'Take Profit Trader si distingue per la possibilità di prelevare fin dal primo giorno e senza costi di attivazione.',
     firm_desc_e2t:'Earn2Trade punta sulla formazione e sullo sviluppo, con un finanziamento fino a 400.000 dollari.',
+    mm_principal:'Home',
+    mm_ofertas:'Offerte e buoni sconto',
+    mm_sec_firmas:'Aziende',
+    mm_firmas:'Visualizza tutte le aziende',
+    mm_comparar:'Confronta le aziende',
+    mm_quiz:'Quiz — Quale azienda?',
+    mm_sec_ferramentas:'Strumenti',
+    mm_calc:'Dimensione della posizione',
+    mm_calendario:'Calendario economico',
+    mm_heatmap:'Mappa termica',
+    mm_analise:'Analisi di mercato basata sull&#x27;intelligenza artificiale',
+    mm_indicadores:'Indicatori',
+    mm_sec_plataformas:'Piattaforme',
+    mm_plataformas:'Piattaforme di trading',
+    mm_sec_aprender:'Imparare',
+    mm_guias:'Guide e formazione',
+    mm_blog:'Blog',
+    mm_sec_live:'Live e IA',
+    mm_live:'Sala di trading in tempo reale',
+    mm_assistente:'Assistente IA',
+    mm_sec_idioma:'Lingua',
+    mm_telegram:'Accedi a Telegram',
+    mm_sec_conta:'Account',
+    mm_entrar:'Accedi all&#x27;account',
+    mm_criar_conta:'Crea un account',
+    mm_painel:'Il mio pannello',
+    mm_sair:'Esci dall&#x27;account',
+    login_titulo:'Accedi al tuo account',
+    login_email:'E-mail',
+    login_senha:'Password',
+    login_entrar:'Accedi',
+    login_nao_tem:'Non hai un account?',
+    login_cadastrar:'Registrati',
+    signup_titulo:'Crea il tuo account gratuito',
+    signup_nome:'Nome completo',
+    signup_email:'E-mail',
+    signup_senha:'Password (min. 6 caratteri)',
+    signup_telefone:'Telefono',
+    signup_cidade:'Città',
+    signup_estado:'Stato',
+    signup_pais:'Paese',
+    signup_criar:'Crea un account',
+    signup_ja_tem:'Hai già un account?',
+    signup_entrar:'Accedi',
+    painel_dados_pessoais:'Dati personali',
+    painel_nome:'Nome',
+    painel_telefone:'Telefono',
+    painel_cidade:'Città',
+    painel_estado:'Stato',
+    painel_pais:'Paese',
+    painel_salvar:'Salva modifiche',
+    painel_salvos:'Dati salvati con successo!',
+    painel_resumo:'Sommario',
+    painel_visitas:'Visite',
+    painel_cliques:'Visualizzazioni',
+    painel_cupons:'Buoni sconto',
+    painel_fidelidade:'Programma fedeltà',
+    painel_usuario:'Utente',
   },
   fr: {
     nav_ofertas:'Offres',
@@ -4043,7 +4275,7 @@ const I18N = {
     analise_cenarios:'Scénarios',
     analise_cenario_favoravel:'Contexte favorable',
     analise_cenario_alternativo:'Scénario alternatif',
-    analise_nivel_invalidacao:'Niveau d&#x27;invalidation',
+    analise_nivel_invalidacao:'Niveau d&#x27;invalidité',
     analise_noticias:'Actualités importantes',
     analise_pontos_atencao:'Points à retenir',
     analise_conclusao:'Conclusion',
@@ -4114,7 +4346,7 @@ const I18N = {
     quiz_q2_a2:'Niveau intermédiaire (1 à 3 ans)',
     quiz_q2_a3:'Avancé (+3 ans)',
     quiz_q2_a4:'Professionnel',
-    quiz_q3_titulo:'Sur quelle devise souhaitez-vous effectuer vos opérations ?',
+    quiz_q3_titulo:'Sur quelle devise souhaitez-vous effectuer des opérations ?',
     quiz_q3_sub:'',
     quiz_q3_a1:'Jusqu&#x27;à 25 000 $',
     quiz_q3_a2:'25 000 $ – 100 000 $',
@@ -4180,6 +4412,64 @@ const I18N = {
     firm_desc_ftmo:'FTMO est la plus grande société de trading pour compte propre (prop firm) au monde dans le domaine du Forex, fondée en 2015. Elle compte plus de 3,5 millions de clients et a versé plus de 500 millions de dollars.',
     firm_desc_tpt:'Take Profit Trader se distingue par la possibilité d&#x27;effectuer des retraits dès le premier jour et l&#x27;absence de frais d&#x27;activation.',
     firm_desc_e2t:'Earn2Trade met l&#x27;accent sur la formation et le développement, avec un financement pouvant atteindre 400 000 $.',
+    mm_principal:'Accueil',
+    mm_ofertas:'Offres &amp; bons de réduction',
+    mm_sec_firmas:'Entreprises',
+    mm_firmas:'Voir toutes les entreprises',
+    mm_comparar:'Comparer les entreprises',
+    mm_quiz:'Quiz — quelle entreprise ?',
+    mm_sec_ferramentas:'Outils',
+    mm_calc:'Taille de la position',
+    mm_calendario:'Calendrier économique',
+    mm_heatmap:'Carte thermique',
+    mm_analise:'Analyse de marché par l&#x27;IA',
+    mm_indicadores:'Indicateurs',
+    mm_sec_plataformas:'Plateformes',
+    mm_plataformas:'Plates-formes de trading',
+    mm_sec_aprender:'Apprendre',
+    mm_guias:'Guides &amp; Éducation',
+    mm_blog:'Blog',
+    mm_sec_live:'En direct &amp; IA',
+    mm_live:'Salle de trading en direct',
+    mm_assistente:'Assistant IA',
+    mm_sec_idioma:'Langue',
+    mm_telegram:'Se connecter à Telegram',
+    mm_sec_conta:'Compte',
+    mm_entrar:'Se connecter',
+    mm_criar_conta:'Créer un compte',
+    mm_painel:'Mon tableau de bord',
+    mm_sair:'Se déconnecter',
+    login_titulo:'Connectez-vous à votre compte',
+    login_email:'E-mail',
+    login_senha:'Mot de passe',
+    login_entrar:'Se connecter',
+    login_nao_tem:'Vous n&#x27;avez pas de compte ?',
+    login_cadastrar:'S&#x27;inscrire',
+    signup_titulo:'Créez votre compte gratuit',
+    signup_nome:'Nom complet',
+    signup_email:'E-mail',
+    signup_senha:'Mot de passe (min. 6 caractères)',
+    signup_telefone:'Téléphone',
+    signup_cidade:'Ville',
+    signup_estado:'État',
+    signup_pais:'Pays',
+    signup_criar:'Créer un compte',
+    signup_ja_tem:'Vous avez déjà un compte ?',
+    signup_entrar:'Se connecter',
+    painel_dados_pessoais:'Données personnelles',
+    painel_nome:'Nom',
+    painel_telefone:'Téléphone',
+    painel_cidade:'Ville',
+    painel_estado:'État',
+    painel_pais:'Pays',
+    painel_salvar:'Enregistrer les modifications',
+    painel_salvos:'Les données ont été enregistrées avec succès !',
+    painel_resumo:'Résumé',
+    painel_visitas:'Visites',
+    painel_cliques:'Clics',
+    painel_cupons:'Bons de réduction',
+    painel_fidelidade:'Programme de fidélité',
+    painel_usuario:'Utilisateur',
   },
   de: {
     nav_ofertas:'Angebote',
@@ -4519,18 +4809,18 @@ const I18N = {
     offers_ver_planos:'Rabattangebote anzeigen →',
     firms_nenhuma_encontrada:'Es wurde kein Unternehmen gefunden.',
     checkout_selecione_firma:'Wählen Sie die Prop-Firma aus',
-    checkout_sub:'Wählen Sie das Unternehmen, die Art des Drawdowns und die Plattform – gehen Sie direkt zur Kasse, um Ihren Rabatt einzulösen.',
+    checkout_sub:'Wählen Sie das Unternehmen, die Art des Drawdowns und die Plattform aus – gehen Sie direkt zur Kasse, um Ihren Rabatt einzulösen.',
     checkout_cupom_ativo:'Gutschein ist gültig',
     checkout_copiar_codigo:'Code kopieren',
     checkout_todos_planos:'Alle Tarife beinhalten',
     offers_hero_label:'🏷️ Exklusive Gutscheine',
     offers_hero_titulo:'Sparen Sie bei den besten Prop-Firmen',
-    offers_hero_sub:'Gültige und aktuelle Gutscheincodes. Kopieren Sie den Code, geben Sie ihn an der Kasse ein und profitieren Sie vom Rabatt.',
+    offers_hero_sub:'Gültige und aktualisierte Gutscheincodes. Kopieren Sie den Code, geben Sie ihn an der Kasse ein und profitieren Sie vom Rabatt.',
     painel_em_breve:'Demnächst: Übersicht über eingelöste Gutscheine, Lieblingsgeschäfte und mehr.',
-    live_acessar:'Zum Live-Raum gehen →',
+    live_acessar:'Zum Live Room gehen →',
     live_voltar:'← Zurück',
     live_proximo_localizacao:'Weiter — Standort →',
-    live_proximo_perfil:'Weiter — Trader-Profil →',
+    live_proximo_perfil:'Weiter — Händlerprofil →',
     live_privacidade:'Ihre Daten sind geschützt. Sie erhalten eine Willkommens-E-Mail mit dem Zugang zum Live Room.',
     ft_legal:'Alle Informationen dienen ausschließlich zu Bildungszwecken. Gutscheine können sich ändern. Der Handel ist mit Risiken verbunden. © 2025 MarketsCoupons.',
     calc_gate_sub:'Berechnen Sie die optimale Größe Ihrer Position. Exklusives Tool für registrierte Mitglieder – kostenlos.',
@@ -4543,6 +4833,64 @@ const I18N = {
     firm_desc_ftmo:'FTMO ist die weltweit größte Forex-Prop-Firm, die 2015 gegründet wurde. Über 3,5 Millionen Kunden und mehr als 500 Millionen Dollar an Auszahlungen.',
     firm_desc_tpt:'Take Profit Trader zeichnet sich dadurch aus, dass Auszahlungen bereits ab dem ersten Tag möglich sind und keine Aktivierungsgebühr anfällt.',
     firm_desc_e2t:'Earn2Trade konzentriert sich auf Weiterbildung und Entwicklung mit einer Skalierung bis zu 400.000 $.',
+    mm_principal:'Startseite',
+    mm_ofertas:'Angebote &amp; Gutscheine',
+    mm_sec_firmas:'Firmen',
+    mm_firmas:'Alle Firmen anzeigen',
+    mm_comparar:'Unternehmen vergleichen',
+    mm_quiz:'Quiz – welche Firma?',
+    mm_sec_ferramentas:'Werkzeuge',
+    mm_calc:'Positionsgröße',
+    mm_calendario:'Wirtschaftskalender',
+    mm_heatmap:'Heatmap',
+    mm_analise:'KI-Marktanalyse',
+    mm_indicadores:'Indikatoren',
+    mm_sec_plataformas:'Plattformen',
+    mm_plataformas:'Handelsplattformen',
+    mm_sec_aprender:'Lernen',
+    mm_guias:'Reiseführer &amp; Bildung',
+    mm_blog:'Blog',
+    mm_sec_live:'Live &amp; KI',
+    mm_live:'Live-Handelsraum',
+    mm_assistente:'KI-Assistent',
+    mm_sec_idioma:'Sprache',
+    mm_telegram:'Bei Telegram anmelden',
+    mm_sec_conta:'Konto',
+    mm_entrar:'Bei Konto anmelden',
+    mm_criar_conta:'Konto erstellen',
+    mm_painel:'Mein Dashboard',
+    mm_sair:'Vom Konto abmelden',
+    login_titulo:'Melden Sie sich bei Ihrem Konto an',
+    login_email:'E-Mail',
+    login_senha:'Passwort',
+    login_entrar:'Anmelden',
+    login_nao_tem:'Hast du noch kein Konto?',
+    login_cadastrar:'Registrieren',
+    signup_titulo:'Erstellen Sie Ihr kostenloses Konto',
+    signup_nome:'Vollständiger Name',
+    signup_email:'E-Mail',
+    signup_senha:'Passwort (mind. 6 Zeichen)',
+    signup_telefone:'Telefon',
+    signup_cidade:'Stadt',
+    signup_estado:'Status',
+    signup_pais:'Land',
+    signup_criar:'Konto erstellen',
+    signup_ja_tem:'Hast du schon ein Konto?',
+    signup_entrar:'Anmelden',
+    painel_dados_pessoais:'Persönliche Daten',
+    painel_nome:'Name',
+    painel_telefone:'Telefon',
+    painel_cidade:'Stadt',
+    painel_estado:'Status',
+    painel_pais:'Land',
+    painel_salvar:'Änderungen speichern',
+    painel_salvos:'Daten erfolgreich gespeichert!',
+    painel_resumo:'Zusammenfassung',
+    painel_visitas:'Besuche',
+    painel_cliques:'Klicks',
+    painel_cupons:'Gutscheine',
+    painel_fidelidade:'Treueprogramm',
+    painel_usuario:'Benutzer',
   },
   ar: {
     nav_ofertas:'العروض',
@@ -4588,7 +4936,7 @@ const I18N = {
     drw_prazo:'الموعد النهائي للتقييم',
     drw_dd_max:'الحد الأقصى لـ DD',
     drw_meta:'هدف الربح',
-    drw_scaling:'التوسع',
+    drw_scaling:'التحجيم',
     drw_desconto:'خصم',
     drw_conta:'حساب',
     drw_com_cupom:'مع قسيمة',
@@ -4613,12 +4961,12 @@ const I18N = {
     heatmap_titulo:'خريطة الحرارة',
     nav_faq:'الأسئلة الشائعة',
     faq_titulo:'الأسئلة الشائعة',
-    faq_sub:'تخلص من تساؤلاتك حول القسائم والشركات الاستثمارية وكيفية استخدام MarketsCoupons.',
+    faq_sub:'تخلص من تساؤلاتك حول القسائم وشركات التداول الاحترافية وكيفية استخدام MarketsCoupons.',
     geral_firmas_encontradas:'الشركات التي تم العثور عليها',
     geral_copiar:'نسخ',
     geral_copiado:'تم نسخه!',
     lb_title:'برنامج الولاء',
-    lb_sub:'اشترِ عبر الرابط أو القسيمة الخاصة بنا، وأرسل إيصال الشراء لتتمكن من فتح غرفة البث المباشر VIP، والمشاركة في سحوبات الحسابات، والحصول على المؤشرات الحصرية.',
+    lb_sub:'اشترِ عبر الرابط أو القسيمة الخاصة بنا، وأرسل إيصال الشراء لتتمكن من فتح Live Room VIP، والمشاركة في سحوبات الحسابات، والحصول على المؤشرات الحصرية.',
     lb_step1:'سجل مجانًا',
     lb_step2:'تسوق باستخدام قسيمة',
     lb_step3:'أرسل إثباتًا',
@@ -4807,7 +5155,7 @@ const I18N = {
     blog2_excerpt:'دليل شامل يتضمن استراتيجيات للنجاح في اختبار التقييم الخاص بأكبر شركة تداول في العالم.',
     blog2_data:'فبراير 2025',
     blog3_titulo:'Bulenox بخصم 89%: هل يستحق الأمر؟',
-    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89٪ مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الأنسب لك.',
+    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89% مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الأنسب لك.',
     blog3_data:'فبراير 2025',
     blog4_titulo:'الانخفاض المتتابع مقابل الانخفاض الثابت',
     blog4_excerpt:'افهم الفروق وكيفية اختيار شركة التداول المناسبة لأسلوبك.',
@@ -4863,7 +5211,7 @@ const I18N = {
     quiz_ir_para:'الانتقال إلى',
     quiz_ver_detalhes:'عرض التفاصيل',
     live_gate_titulo:'Live Room — دخول حصري',
-    live_gate_desc:'تُتاح غرفة البث المباشر حصريًّا لأعضاء برنامج الولاء الذين اشتروا ما لا يقل عن 3 قسائم وتم التحقق من صحتها من قِبل فريقنا.',
+    live_gate_desc:'تُتاح خدمة Live Room حصريًّا لأعضاء برنامج الولاء الذين اشتروا ما لا يقل عن 3 قسائم وتم التحقق من صحتها من قِبل فريقنا.',
     live_gate_seu_progresso:'تقدمك',
     live_gate_validadas:'تم التحقق من صحتها',
     live_gate_em_analise:'قيد الدراسة',
@@ -4879,14 +5227,14 @@ const I18N = {
     plat_oferta_excl:'عرض حصري',
     offers_cupom_label:'قسيمة حصرية من MarketsCoupons',
     offers_desconto_link:'يتم تطبيق الخصم تلقائيًا عبر الرابط',
-    offers_ver_planos:'عرض الباقات المخفضة →',
+    offers_ver_planos:'عرض العروض المخفضة →',
     firms_nenhuma_encontrada:'لم يتم العثور على أي شركة.',
     checkout_selecione_firma:'اختر شركة التداول',
     checkout_sub:'اختر الشركة ونوع الخصم والمنصة — انتقل مباشرة إلى صفحة الدفع مع خصمك.',
     checkout_cupom_ativo:'القسيمة سارية',
     checkout_copiar_codigo:'نسخ الرمز',
     checkout_todos_planos:'تشمل جميع الباقات',
-    offers_hero_label:'🏷️ كوبونات حصرية',
+    offers_hero_label:'🏷️ قسائم حصرية',
     offers_hero_titulo:'وفر المال مع أفضل شركات التداول',
     offers_hero_sub:'كوبونات تم التحقق منها وتحديثها. انسخها، واستخدمها عند الدفع وابدأ التداول بخصم.',
     painel_em_breve:'قريبًا: سجل القسائم المستخدمة، والشركات المفضلة، والمزيد.',
@@ -4906,6 +5254,64 @@ const I18N = {
     firm_desc_ftmo:'FTMO هي أكبر شركة تداول فوركس ذات رأس مال خاص في العالم، وقد تأسست في عام 2015. لديها أكثر من 3.5 مليون عميل وقد دفعت أكثر من 500 مليون دولار.',
     firm_desc_tpt:'يتميز تطبيق Take Profit Trader بإمكانية السحب من اليوم الأول وبدون رسوم تفعيل.',
     firm_desc_e2t:'تركز Earn2Trade على التعليم والتطوير مع إمكانية التوسع حتى 400 ألف دولار.',
+    mm_principal:'الرئيسية',
+    mm_ofertas:'العروض والكوبونات',
+    mm_sec_firmas:'الشركات',
+    mm_firmas:'عرض جميع الشركات',
+    mm_comparar:'مقارنة الشركات',
+    mm_quiz:'اختبار — أي شركة؟',
+    mm_sec_ferramentas:'الأدوات',
+    mm_calc:'حجم المركز',
+    mm_calendario:'التقويم الاقتصادي',
+    mm_heatmap:'خريطة الحرارة',
+    mm_analise:'تحليل السوق باستخدام الذكاء الاصطناعي',
+    mm_indicadores:'المؤشرات',
+    mm_sec_plataformas:'المنصات',
+    mm_plataformas:'منصات التداول',
+    mm_sec_aprender:'التعلم',
+    mm_guias:'الأدلة والتعليم',
+    mm_blog:'مدونة',
+    mm_sec_live:'البث المباشر والذكاء الاصطناعي',
+    mm_live:'غرفة التداول المباشر',
+    mm_assistente:'مساعد الذكاء الاصطناعي',
+    mm_sec_idioma:'اللغة',
+    mm_telegram:'تسجيل الدخول إلى Telegram',
+    mm_sec_conta:'حساب',
+    mm_entrar:'تسجيل الدخول إلى الحساب',
+    mm_criar_conta:'إنشاء حساب',
+    mm_painel:'لوحتي',
+    mm_sair:'تسجيل الخروج من الحساب',
+    login_titulo:'سجّل الدخول إلى حسابك',
+    login_email:'البريد الإلكتروني',
+    login_senha:'كلمة المرور',
+    login_entrar:'دخول',
+    login_nao_tem:'ليس لديك حساب؟',
+    login_cadastrar:'التسجيل',
+    signup_titulo:'أنشئ حسابك المجاني',
+    signup_nome:'الاسم الكامل',
+    signup_email:'البريد الإلكتروني',
+    signup_senha:'كلمة المرور (6 أحرف على الأقل)',
+    signup_telefone:'الهاتف',
+    signup_cidade:'المدينة',
+    signup_estado:'الحالة',
+    signup_pais:'البلد',
+    signup_criar:'إنشاء حساب',
+    signup_ja_tem:'هل لديك حساب بالفعل؟',
+    signup_entrar:'دخول',
+    painel_dados_pessoais:'البيانات الشخصية',
+    painel_nome:'الاسم',
+    painel_telefone:'الهاتف',
+    painel_cidade:'المدينة',
+    painel_estado:'الحالة',
+    painel_pais:'البلد',
+    painel_salvar:'حفظ التغييرات',
+    painel_salvos:'تم حفظ البيانات بنجاح!',
+    painel_resumo:'ملخص',
+    painel_visitas:'الزيارات',
+    painel_cliques:'عدد الزيارات',
+    painel_cupons:'كوبونات',
+    painel_fidelidade:'برنامج الولاء',
+    painel_usuario:'المستخدم',
   }
 };
 let _currentLang = 'pt';
@@ -5051,6 +5457,15 @@ function renderHome(){
 }
 
 /* FIRMS */
+const BADGE_KEY_MAP = {
+  'Maior Desconto':  'badge_maior_desconto',
+  'Melhor Split 90%':'badge_melhor_split',
+  'Líder Forex':     'badge_lider_forex',
+  'Mais Avaliações': 'badge_mais_avaliacoes',
+  'Scaling $400K':   'badge_scaling',
+};
+function getBadgeLabel(label){ return t(BADGE_KEY_MAP[label]) || label; }
+
 function renderFirms(list){
   const el=document.getElementById('firms-list');document.getElementById('cnt').textContent=list.length;
   if(!list.length){el.innerHTML=`<div style="padding:60px;text-align:center;color:var(--t2);">${t('firms_nenhuma_encontrada')}</div>`;return;}
