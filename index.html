@@ -1333,7 +1333,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="nav-logo" onclick="go('home')">Markets<em>Coupons</em><div class="live-dot"></div></div>
  <div class="nav-tabs" id="nav-tabs">
  <button class="nt active" data-p="home" data-i18n="nav_ofertas" onclick="go('home')">Ofertas</button>
- <button class="nt" data-p="offers" onclick="go('offers')">🏷️ Cupons</button>
  <button class="nt" data-p="firms" data-i18n="nav_firmas" onclick="go('firms')">Firmas</button>
  <button class="nt" data-p="plataformas" data-i18n="nav_plataformas" onclick="go('plataformas')">Plataformas</button>
  <button class="nt" data-p="indicators" data-i18n="nav_indicadores" onclick="go('indicators')">Indicadores</button>
@@ -2125,7 +2124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="awards-wrap">
     <div class="awards-hero">
       <div class="awards-year-tag">🏆 2025</div>
-      <h1 class="awards-title">MarketsCoupons Awards</h1>
+      <h1 class="awards-title"><span style="-webkit-text-fill-color:initial;background:none;">Markets</span><em style="-webkit-text-fill-color:var(--gold);background:none;font-style:normal;">Coupons</em> Awards</h1>
       <p class="awards-sub">As melhores prop firms do ano, escolhidas com base em dados reais de avaliações, condições e feedback de traders brasileiros.</p>
       <div class="awards-stats">
         <div class="aw-stat"><div class="aw-stat-n">6</div><div class="aw-stat-l">Firmas analisadas</div></div>
@@ -2326,7 +2325,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- BOT -->
 <button class="bot-fab" id="bot-fab" onclick="toggleBot()">
- <span style="font-size:22px;"></span>
+ <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#07090D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
  <span class="bot-badge" id="bot-badge">1</span>
 </button>
 <div class="bot-win" id="bot-win">
@@ -3065,6 +3064,8 @@ async function loadFirmsFromSupabase() {
     // Re-render with live data
     renderHome();
     applyF();
+    renderOffers();
+    renderAwards();
     renderAchFirmTabs();
     achSelectFirm(CHECKOUT_FIRMS[0]?.id || 'apex');
     initCmp();
