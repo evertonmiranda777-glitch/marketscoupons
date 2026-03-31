@@ -1540,7 +1540,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="up-stat"><div class="v" id="up-st-clicks">0</div><div class="l">Cliques</div></div>
     <div class="up-stat"><div class="v" id="up-st-coupons">0</div><div class="l">Cupons</div></div>
    </div>
-   <p style="font-size:12px;color:var(--t3);text-align:center;">Em breve: histórico de cupons usados, firmas favoritas e mais.</p>
+   <p style="font-size:12px;color:var(--t3);text-align:center;" data-i18n="painel_em_breve">Em breve: histórico de cupons usados, firmas favoritas e mais.</p>
   </div>
  </div>
 
@@ -1601,9 +1601,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page" id="page-offers">
   <div class="offers-wrap">
     <div class="offers-hero">
-      <div class="offers-hero-label">🏷️ Cupons Exclusivos</div>
-      <h1 class="offers-hero-title">Economize nas melhores prop firms</h1>
-      <p class="offers-hero-sub">Cupons verificados e atualizados. Copie, aplique no checkout e comece a operar com desconto.</p>
+      <div class="offers-hero-label" data-i18n="offers_hero_label">🏷️ Cupons Exclusivos</div>
+      <h1 class="offers-hero-title" data-i18n="offers_hero_titulo">Economize nas melhores prop firms</h1>
+      <p class="offers-hero-sub" data-i18n="offers_hero_sub">Cupons verificados e atualizados. Copie, aplique no checkout e comece a operar com desconto.</p>
     </div>
     <div class="offers-grid" id="offers-grid"></div>
   </div>
@@ -1660,13 +1660,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="ach-header">
       <div class="ach-header-inner">
         <div>
-          <div class="ach-title" id="ach-firm-title">Selecione a Prop Firm</div>
-          <div class="ach-sub">Escolha a firma, o tipo de drawdown e a plataforma — acesse o checkout direto com o seu desconto.</div>
+          <div class="ach-title" id="ach-firm-title" data-i18n="checkout_selecione_firma">Selecione a Prop Firm</div>
+          <div class="ach-sub" data-i18n="checkout_sub">Escolha a firma, o tipo de drawdown e a plataforma — acesse o checkout direto com o seu desconto.</div>
         </div>
         <div class="ach-coupon-strip" id="ach-coupon-strip" style="display:none;">
-          <div class="ach-coupon-label">Cupom ativo</div>
+          <div class="ach-coupon-label" data-i18n="checkout_cupom_ativo">Cupom ativo</div>
           <div class="ach-coupon-code" id="ach-code-display">—</div>
-          <button class="ach-copy-btn" onclick="achCopyCoupon()">Copiar codigo</button>
+          <button class="ach-copy-btn" onclick="achCopyCoupon()" data-i18n="checkout_copiar_codigo">Copiar código</button>
         </div>
       </div>
     </div>
@@ -1679,7 +1679,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- INCLUDES per firm -->
     <div class="ach-includes" id="ach-includes" style="display:none;">
-      <div class="ach-inc-title">Todos os planos incluem</div>
+      <div class="ach-inc-title" data-i18n="checkout_todos_planos">Todos os planos incluem</div>
       <div class="ach-inc-grid" id="ach-inc-grid"></div>
     </div>
   </div>
@@ -1728,7 +1728,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div style="display:flex;flex-direction:column;height:calc(100vh - var(--nav-h));">
     <div style="padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--b1);">
       <div>
-        <div style="font-size:18px;font-weight:700;letter-spacing:-.3px;"> Calendário Econômico</div>
+        <div style="font-size:18px;font-weight:700;letter-spacing:-.3px;" data-i18n="cal_titulo"> Calendário Econômico</div>
       </div>
     </div>
     <div style="flex:1;position:relative;">
@@ -1747,27 +1747,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page" id="page-analise">
   <div class="analise-wrap">
     <div class="analise-hd">
-      <div class="analise-title"> Análise de Mercado com IA</div>
-      <div class="analise-sub">Cole um print do seu gráfico e receba análise de contexto, estrutura de mercado, notícias do dia e possíveis movimentos — gerado por IA especializada em trading.</div>
+      <div class="analise-title" data-i18n="analise_titulo"> Análise de Mercado com IA</div>
+      <div class="analise-sub" data-i18n="analise_sub">Cole um print do seu gráfico e receba análise de contexto, estrutura de mercado, notícias do dia e possíveis movimentos — gerado por IA especializada em trading.</div>
     </div>
 
     <div class="analise-grid">
       <!-- Upload do gráfico -->
       <div class="analise-card">
-        <div class="analise-card-title"><span></span>Seu Gráfico</div>
+        <div class="analise-card-title"><span></span><span data-i18n="analise_seu_grafico">SEU GRÁFICO</span></div>
         <div class="upload-zone" id="upload-zone" onclick="document.getElementById('chart-upload').click()">
           <input type="file" id="chart-upload" accept="image/*" style="display:none" onchange="handleChartUpload(this)">
           <div id="uz-content">
             <div class="uz-icon"></div>
-            <div class="uz-title">Clique ou arraste o print aqui</div>
-            <div class="uz-sub">PNG, JPG, WebP — qualquer timeframe</div>
+            <div class="uz-title" data-i18n="analise_clique_aqui">Clique ou arraste o print aqui</div>
+            <div class="uz-sub" data-i18n="analise_formatos">PNG, JPG, WebP — qualquer timeframe</div>
           </div>
         </div>
       </div>
 
       <!-- Contexto adicional -->
       <div class="analise-card">
-        <div class="analise-card-title"><span></span>Contexto Adicional</div>
+        <div class="analise-card-title"><span></span><span data-i18n="analise_contexto_adicional">CONTEXTO ADICIONAL</span></div>
         <div class="analise-chips" id="analise-chips">
           <button class="achip" onclick="addChip('ES - S&P 500 Futuros')">ES</button>
           <button class="achip" onclick="addChip('NQ - Nasdaq Futuros')">NQ</button>
@@ -1776,19 +1776,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <button class="achip" onclick="addChip('CL - Crude Oil')">CL Oil</button>
           <button class="achip" onclick="addChip('BTC/USD')">BTC</button>
         </div>
-        <textarea class="analise-context-inp" id="analise-context" placeholder="Descreva o ativo, timeframe, o que você está vendo ou qualquer dúvida específica... Ex: 'ES 15min, procurando entrada long acima do VWAP após pullback na zona de demanda'"rows="5"></textarea>
+        <textarea class="analise-context-inp" id="analise-context" data-i18n-placeholder="analise_placeholder" placeholder="Descreva o ativo, timeframe, o que você está vendo ou qualquer dúvida específica..."rows="5"></textarea>
       </div>
     </div>
 
     <button class="analise-run-btn" id="analise-run-btn" onclick="runAnalise()">
-      <span></span> Analisar com IA
+      <span></span> <span data-i18n="analise_btn">Analisar com IA</span>
     </button>
 
     <!-- Resultado -->
     <div class="analise-result" id="analise-result">
       <div class="ar-header">
-        <div class="ar-title"> Análise gerada <span class="ar-badge">IA</span></div>
-        <button class="ar-copy-btn" onclick="copyAnalise()">Copiar</button>
+        <div class="ar-title"> <span data-i18n="analise_gerada">Análise gerada</span> <span class="ar-badge">IA</span></div>
+        <button class="ar-copy-btn" onclick="copyAnalise()" data-i18n="analise_copiar">Copiar</button>
       </div>
       <div id="ar-sentiment" class="ar-sentiment"></div>
       <div class="ar-body" id="ar-body"></div>
@@ -1826,27 +1826,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- GUIDES -->
 <div class="page" id="page-guides">
  <div class="sec"><div class="sec-hd" data-i18n="guides_titulo"> Guias & Educação</div></div>
- <div class="guides-grid">
- <div class="gc"><div class="gc-cat" style="color:var(--blue);">Iniciante</div><div class="gc-ico"></div><div class="gc-title">O que é uma Prop Firm?</div><div class="gc-desc">Entenda como funcionam, como passar no desafio e receber sua conta financiada.</div><div class="gc-read">Ler guia →</div></div>
- <div class="gc"><div class="gc-cat" style="color:var(--gold);">Intermediário</div><div class="gc-ico"></div><div class="gc-title">Gerenciamento de Drawdown</div><div class="gc-desc">Como calcular, monitorar e evitar violar os limites das principais prop firms.</div><div class="gc-read">Ler guia →</div></div>
- <div class="gc"><div class="gc-cat" style="color:var(--green);">Prático</div><div class="gc-ico"></div><div class="gc-title">Como Passar no Desafio</div><div class="gc-desc">Estratégias comprovadas para passar na fase de avaliação.</div><div class="gc-read">Ler guia →</div></div>
- <div class="gc"><div class="gc-cat" style="color:var(--purple);">Técnico</div><div class="gc-ico"></div><div class="gc-title">Position Sizing em Prop Firms</div><div class="gc-desc">Como calcular o tamanho correto para maximizar lucro sem violar regras.</div><div class="gc-read">Ler guia →</div></div>
- <div class="gc"><div class="gc-cat" style="color:var(--orange);">Comparativo</div><div class="gc-ico"></div><div class="gc-title">Apex vs FTMO vs Bulenox</div><div class="gc-desc">Comparação detalhada: regras, preços, plataformas e payouts.</div><div class="gc-read">Ler guia →</div></div>
- <div class="gc"><div class="gc-cat" style="color:var(--cyan);">Financeiro</div><div class="gc-ico"></div><div class="gc-title">Como Sacar seus Lucros</div><div class="gc-desc">Passo a passo para solicitar payouts em cada firma.</div><div class="gc-read">Ler guia →</div></div>
- </div>
+ <div class="guides-grid" id="guides-grid"></div>
 </div>
 
 <!-- BLOG -->
 <div class="page" id="page-blog">
  <div class="sec"><div class="sec-hd"> Blog</div></div>
- <div class="blog-grid">
- <div class="bc"><div class="bc-img" style="background:var(--obg);"></div><div class="bc-body"><div class="bc-cat" style="color:var(--orange);">Notícias</div><div class="bc-title">Apex lança promoção histórica de 90% OFF</div><div class="bc-excerpt">A maior prop firm de futuros dos EUA anuncia promoção com código exclusivo.</div><div class="bc-meta"><span class="bc-date">Mar 2025</span><span class="bc-read">Ler →</span></div></div></div>
- <div class="bc"><div class="bc-img" style="background:var(--gnbg);"></div><div class="bc-body"><div class="bc-cat" style="color:var(--green);">Estratégia</div><div class="bc-title">Como passar no FTMO Challenge em 2025</div><div class="bc-excerpt">Guia completo com estratégias para passar na avaliação da maior prop firm do mundo.</div><div class="bc-meta"><span class="bc-date">Fev 2025</span><span class="bc-read">Ler →</span></div></div></div>
- <div class="bc"><div class="bc-img" style="background:var(--bbg);"></div><div class="bc-body"><div class="bc-cat" style="color:var(--blue);">Análise</div><div class="bc-title">Bulenox 89% OFF: vale a pena?</div><div class="bc-excerpt">Análise completa com cupom de 89% lifetime. Descubra se é a firma certa para você.</div><div class="bc-meta"><span class="bc-date">Fev 2025</span><span class="bc-read">Ler →</span></div></div></div>
- <div class="bc"><div class="bc-img" style="background:var(--pbg);"></div><div class="bc-body"><div class="bc-cat" style="color:var(--purple);">Educação</div><div class="bc-title">Trailing vs Fixed Drawdown</div><div class="bc-excerpt">Entenda as diferenças e como escolher a prop firm certa para seu estilo.</div><div class="bc-meta"><span class="bc-date">Jan 2025</span><span class="bc-read">Ler →</span></div></div></div>
- <div class="bc"><div class="bc-img" style="background:var(--gbg);"></div><div class="bc-body"><div class="bc-cat" style="color:var(--gold);">Payouts</div><div class="bc-title">Como sacar seus lucros nas prop firms</div><div class="bc-excerpt">Passo a passo para Apex, Bulenox, FTMO e FundedNext.</div><div class="bc-meta"><span class="bc-date">Jan 2025</span><span class="bc-read">Ler →</span></div></div></div>
- <div class="bc"><div class="bc-img" style="background:var(--cbg);"></div><div class="bc-body"><div class="bc-cat" style="color:var(--cyan);">Ferramentas</div><div class="bc-title">Melhores indicadores para NinjaTrader 8</div><div class="bc-excerpt">Lista com os indicadores mais usados por traders aprovados em prop firms.</div><div class="bc-meta"><span class="bc-date">Dez 2024</span><span class="bc-read">Ler →</span></div></div></div>
- </div>
+ <div class="blog-grid" id="blog-grid"></div>
 </div>
 
 <!-- CALC -->
@@ -1857,11 +1843,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <div class="calc-gate-title">Position Size Calculator</div>
    <div class="calc-gate-sub">Calcule o tamanho ideal da sua posição. Ferramenta exclusiva para membros cadastrados — gratuito.</div>
    <div class="calc-gate-form">
-     <div class="calc-gate-field"><label>Nome</label><input type="text" id="cg-name" placeholder="Seu nome"></div>
-     <div class="calc-gate-field"><label>E-mail</label><input type="email" id="cg-email" placeholder="seu@email.com"></div>
+     <div class="calc-gate-field"><label data-i18n="calc_gate_label_nome">Nome</label><input type="text" id="cg-name" data-i18n-placeholder="calc_gate_placeholder_nome" placeholder="Seu nome"></div>
+     <div class="calc-gate-field"><label data-i18n="calc_gate_label_email">E-mail</label><input type="email" id="cg-email" data-i18n-placeholder="calc_gate_placeholder_email" placeholder="seu@email.com"></div>
    </div>
-   <button class="calc-gate-btn" onclick="unlockCalc()">Desbloquear gratuitamente →</button>
-   <div style="font-size:11px;color:var(--t3);margin-top:10px;">Seus dados são privados. Nenhum cartão necessário.</div>
+   <button class="calc-gate-btn" onclick="unlockCalc()" data-i18n="calc_gate_btn">Desbloquear gratuitamente →</button>
+   <div style="font-size:11px;color:var(--t3);margin-top:10px;" data-i18n="calc_gate_privacidade">Seus dados são privados. Nenhum cartão necessário.</div>
  </div>
  <!-- Calculator: shown after registration -->
  <div class="calc-wrap" id="calc-content">
@@ -1903,65 +1889,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- QUIZ -->
 <div class="page" id="page-quiz">
- <div class="quiz-wrap">
- <div class="qstep active" id="qs0">
- <div class="q-num">Pergunta 1 de 5</div>
- <div class="q-q">Qual mercado você prefere operar?</div>
- <div class="q-sub">Sua resposta ajuda a encontrar a prop firm ideal.</div>
- <div class="q-opts">
- <button class="q-opt" onclick="qa(this,'futures')"> Futuros (ES, NQ, CL...)</button>
- <button class="q-opt" onclick="qa(this,'forex')"> Forex (EUR/USD, Gold...)</button>
- <button class="q-opt" onclick="qa(this,'both')"> Ambos</button>
- <button class="q-opt" onclick="qa(this,'unsure')"> Ainda não sei</button>
- </div>
- <button class="q-next" onclick="qnext(1)">Próxima →</button>
- </div>
- <div class="qstep" id="qs1">
- <div class="q-num">Pergunta 2 de 5</div>
- <div class="q-q">Qual é seu nível de experiência?</div>
- <div class="q-sub">Isso nos ajuda a recomendar firmas com regras adequadas ao seu perfil.</div>
- <div class="q-opts">
- <button class="q-opt" onclick="qa(this,'beginner')"> Iniciante (&lt;1 ano)</button>
- <button class="q-opt" onclick="qa(this,'intermediate')"> Intermediário (1–3 anos)</button>
- <button class="q-opt" onclick="qa(this,'advanced')"> Avançado (+3 anos)</button>
- <button class="q-opt" onclick="qa(this,'pro')"> Profissional</button>
- </div>
- <button class="q-next" onclick="qnext(2)">Próxima →</button>
- </div>
- <div class="qstep" id="qs2">
- <div class="q-num">Pergunta 3 de 5</div>
- <div class="q-q">Qual capital deseja operar?</div>
- <div class="q-opts">
- <button class="q-opt" onclick="qa(this,'small')"> Até $25K</button>
- <button class="q-opt" onclick="qa(this,'mid')"> $25K – $100K</button>
- <button class="q-opt" onclick="qa(this,'large')"> $100K – $200K</button>
- <button class="q-opt" onclick="qa(this,'xlarge')"> +$200K</button>
- </div>
- <button class="q-next" onclick="qnext(3)">Próxima →</button>
- </div>
- <div class="qstep" id="qs3">
- <div class="q-num">Pergunta 4 de 5</div>
- <div class="q-q">Qual seu estilo de trading?</div>
- <div class="q-opts">
- <button class="q-opt" onclick="qa(this,'scalp')"> Scalper</button>
- <button class="q-opt" onclick="qa(this,'day')"> Day Trader</button>
- <button class="q-opt" onclick="qa(this,'swing')"> Swing Trader</button>
- <button class="q-opt" onclick="qa(this,'algo')"> Algorítmico (EAs/Bots)</button>
- </div>
- <button class="q-next" onclick="qnext(4)">Próxima →</button>
- </div>
- <div class="qstep" id="qs4">
- <div class="q-num">Pergunta 5 de 5</div>
- <div class="q-q">O que é mais importante para você?</div>
- <div class="q-opts">
- <button class="q-opt" onclick="qa(this,'discount');qfinish()"> Máximo desconto</button>
- <button class="q-opt" onclick="qa(this,'speed');qfinish()"> Passar rápido</button>
- <button class="q-opt" onclick="qa(this,'split');qfinish()"> Maior split</button>
- <button class="q-opt" onclick="qa(this,'rules');qfinish()"> Regras flexíveis</button>
- </div>
- </div>
- <div class="qstep" id="qs-res"><div class="q-res" id="q-res-content"></div><button class="q-restart" onclick="qreset()">↺ Recomeçar</button></div>
- </div>
+ <div class="quiz-wrap" id="quiz-wrap"></div>
 </div>
 
 <!-- LIVE -->
@@ -1971,11 +1899,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div id="live-loyalty-gate" class="hide">
   <div style="max-width:520px;margin:0 auto;padding:60px 20px;text-align:center;">
     <div style="font-size:52px;margin-bottom:16px;"></div>
-    <h2 style="font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;">Live Room — Acesso Exclusivo</h2>
-    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:28px;">O Live Room é exclusivo para membros do programa de fidelidade com <strong style="color:var(--gold);">pelo menos 3 cupons comprados</strong> e validados pela nossa equipe.</p>
+    <h2 style="font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;" data-i18n="live_gate_titulo">Live Room — Acesso Exclusivo</h2>
+    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:28px;" data-i18n="live_gate_desc">O Live Room é exclusivo para membros do programa de fidelidade com <strong style="color:var(--gold);">pelo menos 3 cupons comprados</strong> e validados pela nossa equipe.</p>
     <div id="live-gate-status" style="background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:20px;margin-bottom:24px;text-align:left;"></div>
-    <button class="live-submit-btn" onclick="go('loyalty')" style="margin-bottom:10px;">Ver meu programa de fidelidade →</button>
-    <div style="font-size:12px;color:var(--t3);">Já tem 3+ compras validadas? <button onclick="checkLoyaltyAndShowLive(true)" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">Verificar novamente</button></div>
+    <button class="live-submit-btn" onclick="go('loyalty')" style="margin-bottom:10px;" data-i18n="live_gate_ver_fidelidade">Ver meu programa de fidelidade →</button>
+    <div style="font-size:12px;color:var(--t3);"><span data-i18n="live_gate_ja_tem">Já tem 3+ compras validadas?</span> <button onclick="checkLoyaltyAndShowLive(true)" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;" data-i18n="live_gate_verificar">Verificar novamente</button></div>
   </div>
  </div>
  <div id="live-gate">
@@ -2035,7 +1963,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="lff-field"><label>Data de nascimento</label><input type="date" id="lv-nascimento" max="2006-01-01"></div>
  </div>
  </div>
- <button class="live-submit-btn" onclick="liveStep(2)">Próximo — Localização →</button>
+ <button class="live-submit-btn" onclick="liveStep(2)" data-i18n="live_proximo_localizacao">Próximo — Localização →</button>
  </div>
 
  <!-- STEP 2: Localização -->
@@ -2064,8 +1992,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  </div>
  <div style="display:flex;gap:10px;">
- <button class="live-submit-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);flex:0 0 auto;width:auto;padding:14px 20px;" onclick="liveStep(1)">← Voltar</button>
- <button class="live-submit-btn" onclick="liveStep(3)">Próximo — Perfil Trader →</button>
+ <button class="live-submit-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);flex:0 0 auto;width:auto;padding:14px 20px;" onclick="liveStep(1)" data-i18n="live_voltar">← Voltar</button>
+ <button class="live-submit-btn" onclick="liveStep(3)" data-i18n="live_proximo_perfil">Próximo — Perfil Trader →</button>
  </div>
  </div>
 
@@ -2135,10 +2063,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  </div>
  <div style="display:flex;gap:10px;">
- <button class="live-submit-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);flex:0 0 auto;width:auto;padding:14px 20px;" onclick="liveStep(2)">← Voltar</button>
- <button class="live-submit-btn" id="live-final-btn" onclick="joinLive()"> Acessar o Live Room →</button>
+ <button class="live-submit-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);flex:0 0 auto;width:auto;padding:14px 20px;" onclick="liveStep(2)" data-i18n="live_voltar">← Voltar</button>
+ <button class="live-submit-btn" id="live-final-btn" onclick="joinLive()" data-i18n="live_acessar"> Acessar o Live Room →</button>
  </div>
- <div class="live-privacy"> Seus dados são protegidos. Você receberá um e-mail de boas-vindas com o acesso ao Live Room.<br>
+ <div class="live-privacy"> <span data-i18n="live_privacidade">Seus dados são protegidos. Você receberá um e-mail de boas-vindas com o acesso ao Live Room.</span><br>
  <span class="resend-badge"> Powered by Resend.com</span>
  </div>
  </div>
@@ -2177,11 +2105,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="awards-hero">
       <div class="awards-year-tag">🏆 2025</div>
       <h1 class="awards-title"><span style="-webkit-text-fill-color:initial;background:none;">Markets</span><em style="-webkit-text-fill-color:var(--gold);background:none;font-style:normal;">Coupons</em> Awards</h1>
-      <p class="awards-sub">As melhores prop firms do ano, escolhidas com base em dados reais de avaliações, condições e feedback de traders brasileiros.</p>
+      <p class="awards-sub" data-i18n="aw_sub">As melhores prop firms do ano, escolhidas com base em dados reais de avaliações, condições e feedback de traders brasileiros.</p>
       <div class="awards-stats">
-        <div class="aw-stat"><div class="aw-stat-n">6</div><div class="aw-stat-l">Firmas analisadas</div></div>
-        <div class="aw-stat"><div class="aw-stat-n">130K+</div><div class="aw-stat-l">Avaliações consideradas</div></div>
-        <div class="aw-stat"><div class="aw-stat-n">8</div><div class="aw-stat-l">Categorias premiadas</div></div>
+        <div class="aw-stat"><div class="aw-stat-n">6</div><div class="aw-stat-l" data-i18n="aw_stat_firmas">Firmas analisadas</div></div>
+        <div class="aw-stat"><div class="aw-stat-n">130K+</div><div class="aw-stat-l" data-i18n="aw_stat_avaliacoes">Avaliações consideradas</div></div>
+        <div class="aw-stat"><div class="aw-stat-n">8</div><div class="aw-stat-l" data-i18n="aw_stat_categorias">Categorias premiadas</div></div>
       </div>
     </div>
     <div class="awards-grid" id="awards-grid"></div>
@@ -2571,6 +2499,223 @@ const I18N = {
     prog_bem_vindo:'Bem-vindo',
     prog_para_desbloquear:'compras para desbloquear',
     prog_desbloqueado:'Desbloqueado!',
+    cmp_melhor_mesa:'Melhor mesa entre as selecionadas',
+    cmp_melhor_em:'Melhor em',
+    cmp_de:'de',
+    cmp_criterios:'critérios avaliados — maior desconto, split e rating combinados',
+    cmp_ver_firma:'Ver',
+    cmp_criterio:'Critério',
+    cmp_vencedor:'VENCEDOR',
+    cmp_row_tipo:'Tipo',
+    cmp_row_desconto:'Desconto',
+    cmp_row_split:'Split',
+    cmp_row_drawdown:'Drawdown',
+    cmp_row_ddmax:'DD max',
+    cmp_row_meta:'Meta',
+    cmp_row_dias_min:'Dias mín.',
+    cmp_row_prazo:'Prazo',
+    cmp_row_plataformas:'Plataformas',
+    cmp_row_rating:'Rating',
+    cmp_row_reviews:'Reviews',
+    cmp_row_cupom:'Cupom',
+    cmp_variavel:'Variável',
+    cmp_sem_limite:'Sem limite',
+    cmp_desconto_especial:'Desconto especial',
+    cmp_selecione_firma:'Selecione pelo menos uma firma',
+    aw_sub:'Reconhecendo as melhores prop firms com base em dados reais de avaliações, descontos, condições e satisfação dos traders.',
+    aw_stat_firmas:'Firmas analisadas',
+    aw_stat_avaliacoes:'Avaliações consideradas',
+    aw_stat_categorias:'Categorias premiadas',
+    aw_categoria:'CATEGORIA',
+    aw_vencedor:'VENCEDOR',
+    aw_cat_melhor_forex:'Melhor Prop Firm Forex',
+    aw_cat_maior_desconto:'Maior Desconto',
+    aw_cat_melhor_split:'Melhor Split de Lucros',
+    aw_cat_aprovacao_rapida:'Aprovação mais Rápida',
+    aw_cat_maior_confianca:'Maior Confiança dos Traders',
+    aw_cat_melhor_iniciante:'Melhor para Iniciantes',
+    aw_cat_melhor_custo:'Melhor Custo-Benefício',
+    aw_cat_melhor_rating:'Melhor Avaliação Geral',
+    aw_ribbon_forex:'MELHOR FOREX',
+    aw_ribbon_desconto:'TOP DESCONTO',
+    aw_ribbon_split:'MAIS SPLIT',
+    aw_ribbon_rapido:'MAIS RÁPIDO',
+    aw_ribbon_confiavel:'MAIS CONFIÁVEL',
+    aw_ribbon_iniciante:'IDEAL INICIANTE',
+    aw_ribbon_custo:'CUSTO-BENEFÍCIO',
+    aw_ribbon_rating:'MELHOR RATING',
+    aw_reason_ftmo_forex:'Líder global com +39K avaliações e 90% split',
+    aw_reason_apex_desconto:'Até 90% OFF vitalício com cupom exclusivo',
+    aw_reason_fn_split:'95% de split com payout garantido em 24h',
+    aw_reason_bulenox_rapido:'Possível passar em 1 dia, sem regra de consistência',
+    aw_reason_fn_confianca:'Mais de 60.850 avaliações verificadas',
+    aw_reason_ftmo_iniciante:'Free Trial ilimitado e suporte em 20 idiomas',
+    aw_reason_e2t_custo:'50% OFF + escalamento até $400K de capital',
+    aw_reason_bulenox_rating:'Rating 4.8 com payout semanal e regras simples',
+    cal_titulo:'Calendário Econômico',
+    cal_mais_eventos:'Mais Eventos',
+    cal_hoje:'Hoje',
+    cal_amanha:'Amanhã',
+    cal_esta_semana:'Esta Semana',
+    cal_anterior:'Anterior',
+    cal_previsao:'Previsão',
+    cal_alto_impacto:'Alto impacto',
+    cal_medio_impacto:'Médio impacto',
+    cal_baixo_impacto:'Baixo impacto',
+    hm_sp500:'S&P 500',
+    hm_nasdaq100:'Nasdaq 100',
+    hm_global:'Global',
+    hm_mapa_calor:'Mapa de Calor — ',
+    analise_titulo:'Análise de Mercado com IA',
+    analise_sub:'Cole um print do seu gráfico e receba análise de contexto, estrutura de mercado, notícias do dia e possíveis movimentos — gerado por IA especializada em trading.',
+    analise_seu_grafico:'SEU GRÁFICO',
+    analise_contexto_adicional:'CONTEXTO ADICIONAL',
+    analise_clique_aqui:'Clique ou arraste o print aqui',
+    analise_formatos:'PNG, JPG, WebP — qualquer timeframe',
+    analise_placeholder:'Descreva o ativo, timeframe, o que você está vendo ou qualquer dúvida específica...',
+    analise_btn:'Analisar com IA',
+    analise_analisando:'Analisando...',
+    analise_gerada:'Análise gerada',
+    analise_copiar:'Copiar',
+    analise_remover:'Remover',
+    analise_erro_sem_dados:'Adicione um gráfico ou descreva o ativo para análise!',
+    analise_ia_processando:'A IA está analisando o gráfico e as condições de mercado...',
+    analise_sentimento:'Sentimento',
+    analise_forca:'Força',
+    analise_timeframe:'Timeframe',
+    analise_contexto_mercado:'Contexto de Mercado',
+    analise_tendencia:'Tendência & Estrutura',
+    analise_suporte:'Suporte principal',
+    analise_resistencia:'Resistência principal',
+    analise_cenarios:'Cenários',
+    analise_cenario_favoravel:'Cenário favorável',
+    analise_cenario_alternativo:'Cenário alternativo',
+    analise_nivel_invalidacao:'Nível de invalidação',
+    analise_noticias:'Notícias Relevantes',
+    analise_pontos_atencao:'Pontos de Atenção',
+    analise_conclusao:'Conclusão',
+    analise_copiado:'Análise copiada!',
+    guia_ler:'Ler guia →',
+    guia_cat_iniciante:'Iniciante',
+    guia_cat_intermediario:'Intermediário',
+    guia_cat_pratico:'Prático',
+    guia_cat_tecnico:'Técnico',
+    guia_cat_comparativo:'Comparativo',
+    guia_cat_financeiro:'Financeiro',
+    guia1_titulo:'O que é uma Prop Firm?',
+    guia1_desc:'Entenda como funcionam, como passar no desafio e receber sua conta financiada.',
+    guia2_titulo:'Gerenciamento de Drawdown',
+    guia2_desc:'Como calcular, monitorar e evitar violar os limites das principais prop firms.',
+    guia3_titulo:'Como Passar no Desafio',
+    guia3_desc:'Estratégias comprovadas para passar na fase de avaliação.',
+    guia4_titulo:'Position Sizing em Prop Firms',
+    guia4_desc:'Como calcular o tamanho correto para maximizar lucro sem violar regras.',
+    guia5_titulo:'Apex vs FTMO vs Bulenox',
+    guia5_desc:'Comparação detalhada: regras, preços, plataformas e payouts.',
+    guia6_titulo:'Como Sacar seus Lucros',
+    guia6_desc:'Passo a passo para solicitar payouts em cada firma.',
+    blog_ler:'Ler →',
+    blog_cat_noticias:'Notícias',
+    blog_cat_estrategia:'Estratégia',
+    blog_cat_analise:'Análise',
+    blog_cat_educacao:'Educação',
+    blog_cat_payouts:'Payouts',
+    blog_cat_ferramentas:'Ferramentas',
+    blog1_titulo:'Apex lança promoção histórica de 90% OFF',
+    blog1_excerpt:'A maior prop firm de futuros dos EUA anuncia promoção com código exclusivo.',
+    blog1_data:'Mar 2025',
+    blog2_titulo:'Como passar no FTMO Challenge em 2025',
+    blog2_excerpt:'Guia completo com estratégias para passar na avaliação da maior prop firm do mundo.',
+    blog2_data:'Fev 2025',
+    blog3_titulo:'Bulenox 89% OFF: vale a pena?',
+    blog3_excerpt:'Análise completa com cupom de 89% lifetime. Descubra se é a firma certa para você.',
+    blog3_data:'Fev 2025',
+    blog4_titulo:'Trailing vs Fixed Drawdown',
+    blog4_excerpt:'Entenda as diferenças e como escolher a prop firm certa para seu estilo.',
+    blog4_data:'Jan 2025',
+    blog5_titulo:'Como sacar seus lucros nas prop firms',
+    blog5_excerpt:'Passo a passo para Apex, Bulenox, FTMO e FundedNext.',
+    blog5_data:'Jan 2025',
+    blog6_titulo:'Melhores indicadores para NinjaTrader 8',
+    blog6_excerpt:'Lista com os indicadores mais usados por traders aprovados em prop firms.',
+    blog6_data:'Dez 2024',
+    calc_gate_label_nome:'Nome',
+    calc_gate_placeholder_nome:'Seu nome',
+    calc_gate_label_email:'E-mail',
+    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_btn:'Desbloquear gratuitamente →',
+    calc_gate_privacidade:'Seus dados são privados. Nenhum cartão necessário.',
+    quiz_pergunta:'PERGUNTA',
+    quiz_de:'DE',
+    quiz_proxima:'Próxima →',
+    quiz_recomecar:'↺ Recomeçar',
+    quiz_q1_titulo:'Qual mercado você prefere operar?',
+    quiz_q1_sub:'Sua resposta ajuda a encontrar a prop firm ideal.',
+    quiz_q1_a1:'Futuros (ES, NQ, CL...)',
+    quiz_q1_a2:'Forex (EUR/USD, Gold...)',
+    quiz_q1_a3:'Ambos',
+    quiz_q1_a4:'Ainda não sei',
+    quiz_q2_titulo:'Qual é seu nível de experiência?',
+    quiz_q2_sub:'Isso nos ajuda a recomendar firmas com regras adequadas ao seu perfil.',
+    quiz_q2_a1:'Iniciante (<1 ano)',
+    quiz_q2_a2:'Intermediário (1–3 anos)',
+    quiz_q2_a3:'Avançado (+3 anos)',
+    quiz_q2_a4:'Profissional',
+    quiz_q3_titulo:'Qual capital deseja operar?',
+    quiz_q3_sub:'',
+    quiz_q3_a1:'Até $25K',
+    quiz_q3_a2:'$25K – $100K',
+    quiz_q3_a3:'$100K – $200K',
+    quiz_q3_a4:'+$200K',
+    quiz_q4_titulo:'Qual seu estilo de trading?',
+    quiz_q4_sub:'',
+    quiz_q4_a1:'Scalper',
+    quiz_q4_a2:'Day Trader',
+    quiz_q4_a3:'Swing Trader',
+    quiz_q4_a4:'Algorítmico (EAs/Bots)',
+    quiz_q5_titulo:'O que é mais importante para você?',
+    quiz_q5_sub:'',
+    quiz_q5_a1:'Máximo desconto',
+    quiz_q5_a2:'Passar rápido',
+    quiz_q5_a3:'Maior split',
+    quiz_q5_a4:'Regras flexíveis',
+    quiz_resultado_firma_ideal:'Sua firma ideal:',
+    quiz_copiar_cupom:'Copiar:',
+    quiz_ir_para:'Ir para',
+    quiz_ver_detalhes:'Ver detalhes',
+    live_gate_titulo:'Live Room — Acesso Exclusivo',
+    live_gate_desc:'O Live Room é exclusivo para membros do programa de fidelidade com pelo menos 3 cupons comprados e validados pela nossa equipe.',
+    live_gate_seu_progresso:'SEU PROGRESSO',
+    live_gate_validadas:'Validadas',
+    live_gate_em_analise:'Em análise',
+    live_gate_faltam:'Faltam',
+    live_gate_ver_fidelidade:'Ver meu programa de fidelidade →',
+    live_gate_verificar:'Verificar novamente',
+    live_gate_ja_tem:'Já tem 3+ compras validadas?',
+    live_gate_nao_membro:'Não é membro ainda?',
+    live_gate_cadastre:'Cadastre-se grátis →',
+    live_gate_validadas_bar:'validadas',
+    plat_acessar_com:'Acessar com',
+    plat_off_anual:'OFF no Plano Anual',
+    plat_oferta_excl:'Oferta Exclusiva',
+    offers_cupom_label:'Cupom Exclusivo MarketsCoupons',
+    offers_desconto_link:'Desconto aplicado automaticamente via link',
+    offers_ver_planos:'Ver planos com desconto →',
+    firms_nenhuma_encontrada:'Nenhuma firma encontrada.',
+    checkout_selecione_firma:'Selecione a Prop Firm',
+    checkout_sub:'Escolha a firma, o tipo de drawdown e a plataforma — acesse o checkout direto com o seu desconto.',
+    checkout_cupom_ativo:'Cupom ativo',
+    checkout_copiar_codigo:'Copiar código',
+    checkout_todos_planos:'Todos os planos incluem',
+    offers_hero_label:'🏷️ Cupons Exclusivos',
+    offers_hero_titulo:'Economize nas melhores prop firms',
+    offers_hero_sub:'Cupons verificados e atualizados. Copie, aplique no checkout e comece a operar com desconto.',
+    painel_em_breve:'Em breve: histórico de cupons usados, firmas favoritas e mais.',
+    live_acessar:'Acessar o Live Room →',
+    live_voltar:'← Voltar',
+    live_proximo_localizacao:'Próximo — Localização →',
+    live_proximo_perfil:'Próximo — Perfil Trader →',
+    live_privacidade:'Seus dados são protegidos. Você receberá um e-mail de boas-vindas com o acesso ao Live Room.',
   },
   en: {
     nav_ofertas:'Specials',
@@ -2706,6 +2851,223 @@ const I18N = {
     prog_bem_vindo:'Welcome',
     prog_para_desbloquear:'in-app purchases',
     prog_desbloqueado:'Unlocked!',
+    cmp_melhor_mesa:'Best table among the nominees',
+    cmp_melhor_em:'Best at',
+    cmp_de:'from',
+    cmp_criterios:'evaluation criteria — highest combined discount, split, and rating',
+    cmp_ver_firma:'See',
+    cmp_criterio:'Criterion',
+    cmp_vencedor:'WINNER',
+    cmp_row_tipo:'Type',
+    cmp_row_desconto:'Discount',
+    cmp_row_split:'Split',
+    cmp_row_drawdown:'Drawdown',
+    cmp_row_ddmax:'Max DD',
+    cmp_row_meta:'Goal',
+    cmp_row_dias_min:'Min. days',
+    cmp_row_prazo:'Deadline',
+    cmp_row_plataformas:'Platforms',
+    cmp_row_rating:'Rating',
+    cmp_row_reviews:'Reviews',
+    cmp_row_cupom:'Coupon',
+    cmp_variavel:'Variable',
+    cmp_sem_limite:'No limit',
+    cmp_desconto_especial:'Special discount',
+    cmp_selecione_firma:'Select at least one firm',
+    aw_sub:'Recognizing the best prop firms based on real data regarding ratings, rebates, trading conditions, and trader satisfaction.',
+    aw_stat_firmas:'Companies analyzed',
+    aw_stat_avaliacoes:'Reviews taken into account',
+    aw_stat_categorias:'Award-winning categories',
+    aw_categoria:'CATEGORY',
+    aw_vencedor:'WINNER',
+    aw_cat_melhor_forex:'Best Forex Prop Firm',
+    aw_cat_maior_desconto:'Biggest Discount',
+    aw_cat_melhor_split:'Best Profit Split',
+    aw_cat_aprovacao_rapida:'Faster Approval',
+    aw_cat_maior_confianca:'Greater Confidence Among Traders',
+    aw_cat_melhor_iniciante:'Best for Beginners',
+    aw_cat_melhor_custo:'Best Value for Money',
+    aw_cat_melhor_rating:'Best Overall Rating',
+    aw_ribbon_forex:'BEST FOREX',
+    aw_ribbon_desconto:'TOP DISCOUNTS',
+    aw_ribbon_split:'MORE SPLIT',
+    aw_ribbon_rapido:'FASTER',
+    aw_ribbon_confiavel:'MORE RELIABLE',
+    aw_ribbon_iniciante:'IDEAL FOR BEGINNERS',
+    aw_ribbon_custo:'COST-EFFECTIVENESS',
+    aw_ribbon_rating:'HIGHEST RATING',
+    aw_reason_ftmo_forex:'Global leader with over 39,000 reviews and a 90% split',
+    aw_reason_apex_desconto:'Up to 90% OFF for life with an exclusive coupon',
+    aw_reason_fn_split:'95% revenue share with guaranteed payout within 24 hours',
+    aw_reason_bulenox_rapido:'It&#x27;s possible to finish it in one day, without any consistency requirements',
+    aw_reason_fn_confianca:'Over 60,850 verified reviews',
+    aw_reason_ftmo_iniciante:'Unlimited free trial and support in 20 languages',
+    aw_reason_e2t_custo:'50% OFF + funding up to $400,000',
+    aw_reason_bulenox_rating:'Rating 4.8 with weekly payouts and simple rules',
+    cal_titulo:'Economic Calendar',
+    cal_mais_eventos:'More Events',
+    cal_hoje:'Today',
+    cal_amanha:'Tomorrow',
+    cal_esta_semana:'This Week',
+    cal_anterior:'Previous',
+    cal_previsao:'Forecast',
+    cal_alto_impacto:'High impact',
+    cal_medio_impacto:'Moderate impact',
+    cal_baixo_impacto:'Low impact',
+    hm_sp500:'S&amp;P 500',
+    hm_nasdaq100:'Nasdaq 100',
+    hm_global:'Global',
+    hm_mapa_calor:'Heat Map — ',
+    analise_titulo:'Market Analysis with AI',
+    analise_sub:'Upload a screenshot of your chart and receive an analysis of the market context, market structure, today’s news, and potential price movements—generated by AI specialized in trading.',
+    analise_seu_grafico:'YOUR CHART',
+    analise_contexto_adicional:'ADDITIONAL CONTEXT',
+    analise_clique_aqui:'Click or drag the screenshot here',
+    analise_formatos:'PNG, JPG, WebP — any format',
+    analise_placeholder:'Describe the asset, the timeframe, what you&#x27;re seeing, or any specific questions you have...',
+    analise_btn:'Analyze using AI',
+    analise_analisando:'Analyzing...',
+    analise_gerada:'Generated analysis',
+    analise_copiar:'Copy',
+    analise_remover:'Remove',
+    analise_erro_sem_dados:'Add a chart or describe the asset for analysis!',
+    analise_ia_processando:'The AI is analyzing the chart and market conditions...',
+    analise_sentimento:'Feeling',
+    analise_forca:'Strength',
+    analise_timeframe:'Timeframe',
+    analise_contexto_mercado:'Market Context',
+    analise_tendencia:'Trends &amp; Structure',
+    analise_suporte:'Main support',
+    analise_resistencia:'Main resistor',
+    analise_cenarios:'Scenarios',
+    analise_cenario_favoravel:'Favorable scenario',
+    analise_cenario_alternativo:'Alternative scenario',
+    analise_nivel_invalidacao:'Disability level',
+    analise_noticias:'Related News',
+    analise_pontos_atencao:'Points to Note',
+    analise_conclusao:'Conclusion',
+    analise_copiado:'Review copied!',
+    guia_ler:'Read the guide →',
+    guia_cat_iniciante:'Beginner',
+    guia_cat_intermediario:'Intermediary',
+    guia_cat_pratico:'Practical',
+    guia_cat_tecnico:'Coach',
+    guia_cat_comparativo:'Comparison',
+    guia_cat_financeiro:'Financial',
+    guia1_titulo:'What is a prop firm?',
+    guia1_desc:'Learn how it works, how to pass the challenge, and how to get your account funded.',
+    guia2_titulo:'Drawdown Management',
+    guia2_desc:'How to calculate, monitor, and avoid breaching the limits set by major prop firms.',
+    guia3_titulo:'How to Pass the Challenge',
+    guia3_desc:'Proven strategies for passing the assessment phase.',
+    guia4_titulo:'Position Sizing at Prop Firms',
+    guia4_desc:'How to calculate the correct size to maximize profit without breaking the rules.',
+    guia5_titulo:'Apex vs FTMO vs Bulenox',
+    guia5_desc:'Detailed comparison: rules, prices, platforms, and payouts.',
+    guia6_titulo:'How to Withdraw Your Profits',
+    guia6_desc:'Step-by-step guide to requesting payouts from each company.',
+    blog_ler:'Read →',
+    blog_cat_noticias:'News',
+    blog_cat_estrategia:'Strategy',
+    blog_cat_analise:'Analysis',
+    blog_cat_educacao:'Education',
+    blog_cat_payouts:'Payouts',
+    blog_cat_ferramentas:'Tools',
+    blog1_titulo:'Apex launches a historic 90% OFF sale',
+    blog1_excerpt:'The largest futures prop firm in the U.S. announces a promotion with an exclusive code.',
+    blog1_data:'March 2025',
+    blog2_titulo:'How to Pass the FTMO Challenge in 2025',
+    blog2_excerpt:'A comprehensive guide with strategies for passing the assessment at the world’s largest prop firm.',
+    blog2_data:'Feb 2025',
+    blog3_titulo:'Bulenox 89% OFF: Is it worth it?',
+    blog3_excerpt:'A comprehensive review with an 89% lifetime discount code. Find out if this is the right company for you.',
+    blog3_data:'Feb 2025',
+    blog4_titulo:'Trailing vs. Fixed Drawdown',
+    blog4_excerpt:'Understand the differences and how to choose the right prop firm for your trading style.',
+    blog4_data:'Jan 2025',
+    blog5_titulo:'How to withdraw your profits from prop firms',
+    blog5_excerpt:'Step-by-step guide to Apex, Bulenox, FTMO, and FundedNext.',
+    blog5_data:'Jan 2025',
+    blog6_titulo:'Best Indicators for NinjaTrader 8',
+    blog6_excerpt:'List of the most commonly used indicators by traders hired by prop firms.',
+    blog6_data:'December 2024',
+    calc_gate_label_nome:'Name',
+    calc_gate_placeholder_nome:'Your name',
+    calc_gate_label_email:'Email',
+    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_btn:'Unlock for free →',
+    calc_gate_privacidade:'Your information is private. No credit card required.',
+    quiz_pergunta:'QUESTION',
+    quiz_de:'FROM',
+    quiz_proxima:'Next →',
+    quiz_recomecar:'↺ Start Over',
+    quiz_q1_titulo:'Which market do you prefer to trade in?',
+    quiz_q1_sub:'Your response will help us find the right prop firm.',
+    quiz_q1_a1:'Futures (ES, NQ, CL...)',
+    quiz_q1_a2:'Forex (EUR/USD, Gold...)',
+    quiz_q1_a3:'Both',
+    quiz_q1_a4:'I don&#x27;t know yet',
+    quiz_q2_titulo:'What is your level of experience?',
+    quiz_q2_sub:'This helps us recommend firms with policies that match your profile.',
+    quiz_q2_a1:'Beginner (&lt;1 year)',
+    quiz_q2_a2:'Intermediate (1–3 years)',
+    quiz_q2_a3:'Advanced (3+ years)',
+    quiz_q2_a4:'Professional',
+    quiz_q3_titulo:'Which capital city would you like to operate in?',
+    quiz_q3_sub:'',
+    quiz_q3_a1:'Up to $25,000',
+    quiz_q3_a2:'$25,000 – $100,000',
+    quiz_q3_a3:'$100,000 – $200,000',
+    quiz_q3_a4:'+$200,000',
+    quiz_q4_titulo:'What is your trading style?',
+    quiz_q4_sub:'',
+    quiz_q4_a1:'Scalper',
+    quiz_q4_a2:'Day Trader',
+    quiz_q4_a3:'Swing Trader',
+    quiz_q4_a4:'Algorithmic (EAs/Bots)',
+    quiz_q5_titulo:'What matters most to you?',
+    quiz_q5_sub:'',
+    quiz_q5_a1:'Maximum discount',
+    quiz_q5_a2:'Skip ahead',
+    quiz_q5_a3:'Largest split',
+    quiz_q5_a4:'Flexible rules',
+    quiz_resultado_firma_ideal:'Your ideal firm:',
+    quiz_copiar_cupom:'Copy:',
+    quiz_ir_para:'Go to',
+    quiz_ver_detalhes:'View details',
+    live_gate_titulo:'Live Room — Exclusive Access',
+    live_gate_desc:'The Live Room is exclusively for loyalty program members who have purchased and had at least 3 coupons validated by our team.',
+    live_gate_seu_progresso:'YOUR PROGRESS',
+    live_gate_validadas:'Validated',
+    live_gate_em_analise:'Under review',
+    live_gate_faltam:'There are',
+    live_gate_ver_fidelidade:'View my loyalty program →',
+    live_gate_verificar:'Check again',
+    live_gate_ja_tem:'Do you already have 3 or more verified purchases?',
+    live_gate_nao_membro:'Not a member yet?',
+    live_gate_cadastre:'Sign up for free →',
+    live_gate_validadas_bar:'validated',
+    plat_acessar_com:'Sign in with',
+    plat_off_anual:'OFF on the Annual Plan',
+    plat_oferta_excl:'Exclusive Offer',
+    offers_cupom_label:'Exclusive Coupon from MarketsCoupons',
+    offers_desconto_link:'Discount applied automatically via the link',
+    offers_ver_planos:'See discounted plans →',
+    firms_nenhuma_encontrada:'No companies found.',
+    checkout_selecione_firma:'Select the Prop Firm',
+    checkout_sub:'Choose the broker, the type of drawdown, and the platform—proceed directly to checkout with your discount.',
+    checkout_cupom_ativo:'Active coupon',
+    checkout_copiar_codigo:'Copy code',
+    checkout_todos_planos:'All plans include',
+    offers_hero_label:'🏷️ Exclusive Coupons',
+    offers_hero_titulo:'Save money with the best prop firms',
+    offers_hero_sub:'Verified and updated coupons. Copy them, apply them at checkout, and start trading at a discount.',
+    painel_em_breve:'Coming soon: a history of redeemed coupons, favorite stores, and more.',
+    live_acessar:'Go to the Live Room →',
+    live_voltar:'← Back',
+    live_proximo_localizacao:'Next — Location →',
+    live_proximo_perfil:'Next — Trader Profile →',
+    live_privacidade:'Your data is secure. You will receive a welcome email with access to the Live Room.',
   },
   es: {
     nav_ofertas:'Ofertas',
@@ -2761,7 +3123,7 @@ const I18N = {
     home_sub:'Compara precios, copia cupones exclusivos y ahorra hasta un 90 % en las mayores empresas de inversión del mundo.',
     home_ver_planos:'Ver planes →',
     hero_badge:'Cupones verificados — Actualizados a diario',
-    hero_titulo:'Ahorra hasta <em>un 90</em><br><em>%</em> en las mejores empresas de gestión de fondos',
+    hero_titulo:'Ahorra hasta <em>un 90 %</em><br>en las mejores empresas de gestión de carteras',
     hero_sub:'Compara empresas, utiliza cupones exclusivos y accede a herramientas profesionales: todo en un solo lugar.',
     hero_btn_firms:'Ver empresas de gestión de capital',
     hero_btn_tg:'Unirse al grupo de Telegram',
@@ -2781,7 +3143,7 @@ const I18N = {
     geral_copiar:'Copiar',
     geral_copiado:'¡Copiado!',
     lb_title:'Programa de fidelización',
-    lb_sub:'Compra a través de nuestro enlace o cupón, envía el comprobante y desbloquea la Sala VIP, sorteos de cuentas e indicadores exclusivos.',
+    lb_sub:'Compra a través de nuestro enlace o cupón, envía el comprobante y desbloquea la sala VIP, sorteos de cuentas e indicadores exclusivos.',
     lb_step1:'Regístrate gratis',
     lb_step2:'Compra con un cupón',
     lb_step3:'Envía el comprobante',
@@ -2841,6 +3203,223 @@ const I18N = {
     prog_bem_vindo:'Bienvenido',
     prog_para_desbloquear:'compras para desbloquear',
     prog_desbloqueado:'¡Desbloqueado!',
+    cmp_melhor_mesa:'La mejor mesa de entre las seleccionadas',
+    cmp_melhor_em:'Mejor en',
+    cmp_de:'de',
+    cmp_criterios:'criterios evaluados: mayor descuento, reparto y calificación combinados',
+    cmp_ver_firma:'Ver',
+    cmp_criterio:'Criterio',
+    cmp_vencedor:'GANADOR',
+    cmp_row_tipo:'Tipo',
+    cmp_row_desconto:'Descuento',
+    cmp_row_split:'Split',
+    cmp_row_drawdown:'Caída',
+    cmp_row_ddmax:'DD máx.',
+    cmp_row_meta:'Objetivo',
+    cmp_row_dias_min:'Días mín.',
+    cmp_row_prazo:'Plazo',
+    cmp_row_plataformas:'Plataformas',
+    cmp_row_rating:'Calificación',
+    cmp_row_reviews:'Opiniones',
+    cmp_row_cupom:'Cupón',
+    cmp_variavel:'Variable',
+    cmp_sem_limite:'Sin límite',
+    cmp_desconto_especial:'Descuento especial',
+    cmp_selecione_firma:'Selecciona al menos una empresa',
+    aw_sub:'Selección de las mejores empresas de prop trading basada en datos reales sobre valoraciones, descuentos, condiciones y satisfacción de los operadores.',
+    aw_stat_firmas:'Empresas analizadas',
+    aw_stat_avaliacoes:'Valoraciones tenidas en cuenta',
+    aw_stat_categorias:'Categorías premiadas',
+    aw_categoria:'CATEGORÍA',
+    aw_vencedor:'GANADOR',
+    aw_cat_melhor_forex:'La mejor empresa de trading de divisas',
+    aw_cat_maior_desconto:'Mayor descuento',
+    aw_cat_melhor_split:'Mejor reparto de beneficios',
+    aw_cat_aprovacao_rapida:'Aprobación más rápida',
+    aw_cat_maior_confianca:'Mayor confianza de los operadores',
+    aw_cat_melhor_iniciante:'Ideal para principiantes',
+    aw_cat_melhor_custo:'La mejor relación calidad-precio',
+    aw_cat_melhor_rating:'Mejor valoración general',
+    aw_ribbon_forex:'EL MEJOR FOREX',
+    aw_ribbon_desconto:'MEJORES OFERTAS',
+    aw_ribbon_split:'MÁS SPLIT',
+    aw_ribbon_rapido:'MÁS RÁPIDO',
+    aw_ribbon_confiavel:'MÁS FIABLE',
+    aw_ribbon_iniciante:'IDEAL PARA PRINCIPIANTES',
+    aw_ribbon_custo:'RELACIÓN COSTE-BENEFICIO',
+    aw_ribbon_rating:'MEJOR VALORACIÓN',
+    aw_reason_ftmo_forex:'Líder mundial con más de 39 000 valoraciones y un 90 % de reparto',
+    aw_reason_apex_desconto:'Hasta un 90 % de descuento de por vida con un cupón exclusivo',
+    aw_reason_fn_split:'Reparto del 95 % con pago garantizado en 24 horas',
+    aw_reason_bulenox_rapido:'Se puede completar en un día, sin necesidad de seguir una rutina fija',
+    aw_reason_fn_confianca:'Más de 60 850 opiniones verificadas',
+    aw_reason_ftmo_iniciante:'Prueba gratuita ilimitada y asistencia en 20 idiomas',
+    aw_reason_e2t_custo:'50 % de descuento + ampliación de capital hasta 400 000 $',
+    aw_reason_bulenox_rating:'Valoración de 4,8 con pagos semanales y reglas sencillas',
+    cal_titulo:'Calendario económico',
+    cal_mais_eventos:'Más eventos',
+    cal_hoje:'Hoy',
+    cal_amanha:'Mañana',
+    cal_esta_semana:'Esta semana',
+    cal_anterior:'Anterior',
+    cal_previsao:'Previsión',
+    cal_alto_impacto:'De gran impacto',
+    cal_medio_impacto:'Impacto moderado',
+    cal_baixo_impacto:'De bajo impacto',
+    hm_sp500:'S&amp;P 500',
+    hm_nasdaq100:'Nasdaq 100',
+    hm_global:'Global',
+    hm_mapa_calor:'Mapa de calor — ',
+    analise_titulo:'Análisis de mercado con IA',
+    analise_sub:'Adjunta una captura de pantalla de tu gráfico y recibe un análisis del contexto, la estructura del mercado, las noticias del día y los posibles movimientos, todo ello generado por una IA especializada en trading.',
+    analise_seu_grafico:'TU GRÁFICO',
+    analise_contexto_adicional:'CONTEXTO ADICIONAL',
+    analise_clique_aqui:'Haz clic o arrastra la captura de pantalla aquí',
+    analise_formatos:'PNG, JPG, WebP — cualquier formato',
+    analise_placeholder:'Describe el activo, el marco temporal, lo que estás viendo o cualquier duda concreta...',
+    analise_btn:'Analizar con IA',
+    analise_analisando:'Analizando...',
+    analise_gerada:'Análisis generado',
+    analise_copiar:'Copiar',
+    analise_remover:'Eliminar',
+    analise_erro_sem_dados:'¡Añade un gráfico o describe el activo para su análisis!',
+    analise_ia_processando:'La IA está analizando el gráfico y las condiciones del mercado...',
+    analise_sentimento:'Sentimiento',
+    analise_forca:'Ánimo',
+    analise_timeframe:'Plazo',
+    analise_contexto_mercado:'Contexto del mercado',
+    analise_tendencia:'Tendencia y estructura',
+    analise_suporte:'Soporte principal',
+    analise_resistencia:'Resistencia principal',
+    analise_cenarios:'Escenarios',
+    analise_cenario_favoravel:'Un panorama favorable',
+    analise_cenario_alternativo:'Escenario alternativo',
+    analise_nivel_invalidacao:'Nivel de invalidación',
+    analise_noticias:'Noticias destacadas',
+    analise_pontos_atencao:'Aspectos a tener en cuenta',
+    analise_conclusao:'Conclusión',
+    analise_copiado:'¡Análisis copiado!',
+    guia_ler:'Leer la guía →',
+    guia_cat_iniciante:'Principiante',
+    guia_cat_intermediario:'Intermediario',
+    guia_cat_pratico:'Práctico',
+    guia_cat_tecnico:'Técnico',
+    guia_cat_comparativo:'Comparativa',
+    guia_cat_financeiro:'Finanzas',
+    guia1_titulo:'¿Qué es una «prop firm»?',
+    guia1_desc:'Descubre cómo funcionan, cómo superar el reto y conseguir que te financien tu cuenta.',
+    guia2_titulo:'Gestión de la reducción',
+    guia2_desc:'Cómo calcular, supervisar y evitar sobrepasar los límites de las principales empresas de inversión.',
+    guia3_titulo:'Cómo superar el reto',
+    guia3_desc:'Estrategias probadas para superar la fase de evaluación.',
+    guia4_titulo:'Dimensionamiento de posiciones en las empresas de gestión de capital',
+    guia4_desc:'Cómo calcular el tamaño adecuado para maximizar los beneficios sin infringir las normas.',
+    guia5_titulo:'Apex vs FTMO vs Bulenox',
+    guia5_desc:'Comparación detallada: reglas, precios, plataformas y pagos.',
+    guia6_titulo:'Cómo retirar tus ganancias',
+    guia6_desc:'Guía paso a paso para solicitar pagos en cada empresa.',
+    blog_ler:'Leer →',
+    blog_cat_noticias:'Noticias',
+    blog_cat_estrategia:'Estrategia',
+    blog_cat_analise:'Análisis',
+    blog_cat_educacao:'Educación',
+    blog_cat_payouts:'Pagos',
+    blog_cat_ferramentas:'Herramientas',
+    blog1_titulo:'Apex lanza una promoción histórica con un 90 % de descuento',
+    blog1_excerpt:'La mayor empresa de inversión en futuros de EE. UU. anuncia una promoción con un código exclusivo.',
+    blog1_data:'Marzo de 2025',
+    blog2_titulo:'Cómo superar el FTMO Challenge en 2025',
+    blog2_excerpt:'Guía completa con estrategias para superar la prueba de selección de la mayor empresa de inversión del mundo.',
+    blog2_data:'Febrero de 2025',
+    blog3_titulo:'Bulenox con un 89 % de descuento: ¿merece la pena?',
+    blog3_excerpt:'Análisis completo con un cupón del 89 % de por vida. Descubre si es la empresa adecuada para ti.',
+    blog3_data:'Febrero de 2025',
+    blog4_titulo:'Drawdown acumulado frente a drawdown fijo',
+    blog4_excerpt:'Conoce las diferencias y cómo elegir la firma de inversión adecuada para tu estilo.',
+    blog4_data:'Enero de 2025',
+    blog5_titulo:'Cómo retirar tus ganancias en las empresas de gestión de capital',
+    blog5_excerpt:'Guía paso a paso para Apex, Bulenox, FTMO y FundedNext.',
+    blog5_data:'Enero de 2025',
+    blog6_titulo:'Los mejores indicadores para NinjaTrader 8',
+    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las empresas de inversión.',
+    blog6_data:'Diciembre de 2024',
+    calc_gate_label_nome:'Nombre',
+    calc_gate_placeholder_nome:'Tu nombre',
+    calc_gate_label_email:'Correo electrónico',
+    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_btn:'Desbloquear gratis →',
+    calc_gate_privacidade:'Tus datos son confidenciales. No es necesario utilizar ninguna tarjeta.',
+    quiz_pergunta:'PREGUNTA',
+    quiz_de:'DE',
+    quiz_proxima:'Siguiente →',
+    quiz_recomecar:'↺ Empezar de nuevo',
+    quiz_q1_titulo:'¿En qué mercado prefieres operar?',
+    quiz_q1_sub:'Tu respuesta nos ayuda a encontrar la empresa de inversión ideal.',
+    quiz_q1_a1:'Futuros (ES, NQ, CL...)',
+    quiz_q1_a2:'Forex (EUR/USD, oro...)',
+    quiz_q1_a3:'Ambos',
+    quiz_q1_a4:'Todavía no lo sé',
+    quiz_q2_titulo:'¿Cuál es tu nivel de experiencia?',
+    quiz_q2_sub:'Esto nos ayuda a recomendarle empresas con políticas que se ajusten a su perfil.',
+    quiz_q2_a1:'Principiante (&lt;1 año)',
+    quiz_q2_a2:'Nivel intermedio (1–3 años)',
+    quiz_q2_a3:'Avanzado (a partir de 3 años)',
+    quiz_q2_a4:'Profesional',
+    quiz_q3_titulo:'¿En qué capital desea operar?',
+    quiz_q3_sub:'',
+    quiz_q3_a1:'Hasta 25 000 $',
+    quiz_q3_a2:'25 000 $ – 100 000 $',
+    quiz_q3_a3:'100 000 $ – 200 000 $',
+    quiz_q3_a4:'+200 000 $',
+    quiz_q4_titulo:'¿Cuál es tu estilo de trading?',
+    quiz_q4_sub:'',
+    quiz_q4_a1:'Scalper',
+    quiz_q4_a2:'Operador intradía',
+    quiz_q4_a3:'Operador de swing',
+    quiz_q4_a4:'Algorítmico (EA/bots)',
+    quiz_q5_titulo:'¿Qué es lo más importante para ti?',
+    quiz_q5_sub:'',
+    quiz_q5_a1:'Descuento máximo',
+    quiz_q5_a2:'Pasar rápido',
+    quiz_q5_a3:'Mayor división',
+    quiz_q5_a4:'Normas flexibles',
+    quiz_resultado_firma_ideal:'Tu firma ideal:',
+    quiz_copiar_cupom:'Copiar:',
+    quiz_ir_para:'Ir a',
+    quiz_ver_detalhes:'Ver detalles',
+    live_gate_titulo:'Live Room — Acceso exclusivo',
+    live_gate_desc:'Live Room es exclusivo para los miembros del programa de fidelidad que hayan comprado al menos 3 cupones y estos hayan sido validados por nuestro equipo.',
+    live_gate_seu_progresso:'TU PROGRESO',
+    live_gate_validadas:'Validadas',
+    live_gate_em_analise:'En proceso de análisis',
+    live_gate_faltam:'Faltan',
+    live_gate_ver_fidelidade:'Ver mi programa de fidelidad →',
+    live_gate_verificar:'Compruébalo de nuevo',
+    live_gate_ja_tem:'¿Ya tienes más de tres compras validadas?',
+    live_gate_nao_membro:'¿Aún no eres miembro?',
+    live_gate_cadastre:'Regístrate gratis →',
+    live_gate_validadas_bar:'validadas',
+    plat_acessar_com:'Iniciar sesión con',
+    plat_off_anual:'Desactivado en el plan anual',
+    plat_oferta_excl:'Oferta exclusiva',
+    offers_cupom_label:'Cupón exclusivo de MarketsCoupons',
+    offers_desconto_link:'Descuento aplicado automáticamente al hacer clic en el enlace',
+    offers_ver_planos:'Ver planes con descuento →',
+    firms_nenhuma_encontrada:'No se ha encontrado ninguna empresa.',
+    checkout_selecione_firma:'Selecciona la empresa de inversión',
+    checkout_sub:'Elige la empresa, el tipo de drawdown y la plataforma; accede directamente a la caja con tu descuento.',
+    checkout_cupom_ativo:'Cupón activo',
+    checkout_copiar_codigo:'Copiar código',
+    checkout_todos_planos:'Todos los planes incluyen',
+    offers_hero_label:'🏷️ Cupones exclusivos',
+    offers_hero_titulo:'Ahorra con las mejores empresas de gestión de carteras',
+    offers_hero_sub:'Cupones verificados y actualizados. Cópialos, aplícalos al finalizar la compra y empieza a operar con descuento.',
+    painel_em_breve:'Próximamente: historial de cupones utilizados, tiendas favoritas y mucho más.',
+    live_acessar:'Acceder a Live Room →',
+    live_voltar:'← Atrás',
+    live_proximo_localizacao:'Siguiente — Ubicación →',
+    live_proximo_perfil:'Siguiente — Perfil del operador →',
+    live_privacidade:'Tus datos están protegidos. Recibirás un correo electrónico de bienvenida con el acceso a Live Room.',
   },
   it: {
     nav_ofertas:'Offerte',
@@ -2881,7 +3460,7 @@ const I18N = {
     firms_sel_tam:'Seleziona la taglia',
     drw_avaliacoes:'recensioni',
     drw_drawdown:'Drawdown',
-    drw_split:'Spaccato',
+    drw_split:'Spalato',
     drw_dias_min:'Giorni minimi',
     drw_prazo:'Termine per la valutazione',
     drw_dd_max:'DD massimo',
@@ -2898,7 +3477,7 @@ const I18N = {
     hero_badge:'Buoni sconto verificati — Aggiornati quotidianamente',
     hero_titulo:'Risparmia fino al <em>90%</em><br>sulle migliori società di trading',
     hero_sub:'Confronta le aziende, usa coupon esclusivi e accedi a strumenti professionali: tutto in un unico posto.',
-    hero_btn_firms:'Vedi le società di gestione speculativa',
+    hero_btn_firms:'Vedi le società di gestione di portafogli',
     hero_btn_tg:'Entra nel gruppo Telegram',
     home_melhores_ofertas:'Le migliori offerte del momento',
     hst_ate:'fino a',
@@ -2934,7 +3513,7 @@ const I18N = {
     plat_titulo:'Piattaforme di trading',
     plat_sub:'Strumenti professionali utilizzati dai migliori trader delle società di trading. Confronta e scegli quello più adatto al tuo stile.',
     cmp_titulo:'😎 Confronta le società di prop trading',
-    heatmap_full_titulo:'🟌️ Mappa termica — S&amp;P 500',
+    heatmap_full_titulo:'🌡️ Mappa termica — S&amp;P 500',
     hm_cripto:'Criptovaluta',
     guides_titulo:'🚀 Guide e formazione',
     firm_type_futuros:'Futuri',
@@ -2976,6 +3555,223 @@ const I18N = {
     prog_bem_vindo:'Benvenuto',
     prog_para_desbloquear:'acquisti per sbloccare',
     prog_desbloqueado:'Sbloccato!',
+    cmp_melhor_mesa:'Il miglior tavolo tra quelli selezionati',
+    cmp_melhor_em:'Il migliore in',
+    cmp_de:'di',
+    cmp_criterios:'criteri valutati — maggiore sconto, ripartizione e rating combinati',
+    cmp_ver_firma:'Vedi',
+    cmp_criterio:'Criterio',
+    cmp_vencedor:'VINCITORE',
+    cmp_row_tipo:'Tipo',
+    cmp_row_desconto:'Sconto',
+    cmp_row_split:'Spalato',
+    cmp_row_drawdown:'Drawdown',
+    cmp_row_ddmax:'DD max',
+    cmp_row_meta:'Obiettivo',
+    cmp_row_dias_min:'Giorni min.',
+    cmp_row_prazo:'Scadenza',
+    cmp_row_plataformas:'Piattaforme',
+    cmp_row_rating:'Valutazione',
+    cmp_row_reviews:'Recensioni',
+    cmp_row_cupom:'Buono sconto',
+    cmp_variavel:'Variabile',
+    cmp_sem_limite:'Senza limiti',
+    cmp_desconto_especial:'Sconto speciale',
+    cmp_selecione_firma:'Seleziona almeno un&#x27;azienda',
+    aw_sub:'Una selezione delle migliori società di trading basata su dati reali relativi a valutazioni, commissioni, condizioni e soddisfazione dei trader.',
+    aw_stat_firmas:'Aziende analizzate',
+    aw_stat_avaliacoes:'Valutazioni prese in considerazione',
+    aw_stat_categorias:'Categorie premiate',
+    aw_categoria:'CATEGORIA',
+    aw_vencedor:'VINCITORE',
+    aw_cat_melhor_forex:'La migliore società di trading Forex',
+    aw_cat_maior_desconto:'Sconto maggiore',
+    aw_cat_melhor_split:'Migliore ripartizione degli utili',
+    aw_cat_aprovacao_rapida:'Approvazione più rapida',
+    aw_cat_maior_confianca:'Maggiore fiducia dei trader',
+    aw_cat_melhor_iniciante:'Ideale per i principianti',
+    aw_cat_melhor_custo:'Miglior rapporto qualità-prezzo',
+    aw_cat_melhor_rating:'Migliore valutazione complessiva',
+    aw_ribbon_forex:'IL MIGLIOR FOREX',
+    aw_ribbon_desconto:'MIGLIORI OFFERTE',
+    aw_ribbon_split:'ALTRO SPLIT',
+    aw_ribbon_rapido:'PIÙ VELOCE',
+    aw_ribbon_confiavel:'PIÙ AFFIDABILE',
+    aw_ribbon_iniciante:'IDEALE PER I PRINCIPIANTI',
+    aw_ribbon_custo:'RAPPORTO COSTI-BENEFICI',
+    aw_ribbon_rating:'MIGLIOR VALUTAZIONE',
+    aw_reason_ftmo_forex:'Leader mondiale con oltre 39.000 recensioni e una percentuale di commissioni del 90%',
+    aw_reason_apex_desconto:'Fino al 90% di sconto a vita con un codice promozionale esclusivo',
+    aw_reason_fn_split:'95% di ripartizione con pagamento garantito entro 24 ore',
+    aw_reason_bulenox_rapido:'È possibile completarlo in un giorno, senza regole di coerenza',
+    aw_reason_fn_confianca:'Oltre 60.850 recensioni verificate',
+    aw_reason_ftmo_iniciante:'Prova gratuita illimitata e assistenza in 20 lingue',
+    aw_reason_e2t_custo:'50% di sconto + finanziamento fino a 400.000 $ di capitale',
+    aw_reason_bulenox_rating:'Valutazione 4,8 con pagamenti settimanali e regole semplici',
+    cal_titulo:'Calendario economico',
+    cal_mais_eventos:'Altri eventi',
+    cal_hoje:'Oggi',
+    cal_amanha:'Domani',
+    cal_esta_semana:'Questa settimana',
+    cal_anterior:'Precedente',
+    cal_previsao:'Previsione',
+    cal_alto_impacto:'Ad alto impatto',
+    cal_medio_impacto:'Impatto medio',
+    cal_baixo_impacto:'A basso impatto',
+    hm_sp500:'S&amp;P 500',
+    hm_nasdaq100:'Nasdaq 100',
+    hm_global:'Globale',
+    hm_mapa_calor:'Mappa termica — ',
+    analise_titulo:'Analisi di mercato con l&#x27;IA',
+    analise_sub:'Invia uno screenshot del tuo grafico e ricevi un&#x27;analisi del contesto, della struttura di mercato, delle notizie del giorno e dei possibili movimenti — generata da un&#x27;intelligenza artificiale specializzata nel trading.',
+    analise_seu_grafico:'IL TUO GRAFICO',
+    analise_contexto_adicional:'ULTERIORI INFORMAZIONI',
+    analise_clique_aqui:'Clicca o trascina l&#x27;immagine qui',
+    analise_formatos:'PNG, JPG, WebP — qualsiasi formato',
+    analise_placeholder:'Descrivi l&#x27;asset, il timeframe, ciò che stai osservando o qualsiasi domanda specifica...',
+    analise_btn:'Analizzare con l&#x27;IA',
+    analise_analisando:'Analisi in corso...',
+    analise_gerada:'Analisi generata',
+    analise_copiar:'Copia',
+    analise_remover:'Rimuovi',
+    analise_erro_sem_dados:'Aggiungi un grafico o descrivi l&#x27;asset da analizzare!',
+    analise_ia_processando:'L&#x27;IA sta analizzando il grafico e le condizioni di mercato...',
+    analise_sentimento:'Sentimento',
+    analise_forca:'Forza',
+    analise_timeframe:'Intervallo di tempo',
+    analise_contexto_mercado:'Contesto di mercato',
+    analise_tendencia:'Tendenze e struttura',
+    analise_suporte:'Supporto principale',
+    analise_resistencia:'Resistenza principale',
+    analise_cenarios:'Scenari',
+    analise_cenario_favoravel:'Contesto favorevole',
+    analise_cenario_alternativo:'Scenario alternativo',
+    analise_nivel_invalidacao:'Livello di invalidazione',
+    analise_noticias:'Notizie rilevanti',
+    analise_pontos_atencao:'Punti da tenere presenti',
+    analise_conclusao:'Conclusione',
+    analise_copiado:'Analisi copiata!',
+    guia_ler:'Leggi la guida →',
+    guia_cat_iniciante:'Principiante',
+    guia_cat_intermediario:'Intermediario',
+    guia_cat_pratico:'Pratico',
+    guia_cat_tecnico:'Tecnico',
+    guia_cat_comparativo:'Confronto',
+    guia_cat_financeiro:'Finanziario',
+    guia1_titulo:'Che cos&#x27;è una Prop Firm?',
+    guia1_desc:'Scopri come funzionano, come superare la sfida e ottenere il finanziamento del tuo conto.',
+    guia2_titulo:'Gestione del drawdown',
+    guia2_desc:'Come calcolare, monitorare ed evitare di superare i limiti imposti dalle principali società di prop trading.',
+    guia3_titulo:'Come superare la sfida',
+    guia3_desc:'Strategie collaudate per superare la fase di valutazione.',
+    guia4_titulo:'Determinazione delle dimensioni delle posizioni nelle società di gestione patrimoniale',
+    guia4_desc:'Come calcolare la taglia giusta per massimizzare i profitti senza infrangere le regole.',
+    guia5_titulo:'Apex vs FTMO vs Bulenox',
+    guia5_desc:'Confronto dettagliato: regole, prezzi, piattaforme e pagamenti.',
+    guia6_titulo:'Come prelevare i tuoi profitti',
+    guia6_desc:'Guida passo passo per richiedere i pagamenti presso ciascuna azienda.',
+    blog_ler:'Leggi →',
+    blog_cat_noticias:'Notizie',
+    blog_cat_estrategia:'Strategia',
+    blog_cat_analise:'Analisi',
+    blog_cat_educacao:'Istruzione',
+    blog_cat_payouts:'Pagamenti',
+    blog_cat_ferramentas:'Strumenti',
+    blog1_titulo:'Apex lancia una promozione storica con uno sconto del 90%',
+    blog1_excerpt:'La più grande società di trading di futures degli Stati Uniti annuncia una promozione con un codice esclusivo.',
+    blog1_data:'Marzo 2025',
+    blog2_titulo:'Come superare la FTMO Challenge nel 2025',
+    blog2_excerpt:'Guida completa con strategie per superare il test di selezione della più grande prop firm al mondo.',
+    blog2_data:'Febbraio 2025',
+    blog3_titulo:'Bulenox con uno sconto dell&#x27;89%: ne vale la pena?',
+    blog3_excerpt:'Analisi completa con un buono sconto dell&#x27;89% a vita. Scopri se è l&#x27;azienda giusta per te.',
+    blog3_data:'Febbraio 2025',
+    blog4_titulo:'Drawdown progressivo vs drawdown fisso',
+    blog4_excerpt:'Scopri le differenze e come scegliere la prop firm più adatta al tuo stile.',
+    blog4_data:'Gennaio 2025',
+    blog5_titulo:'Come prelevare i propri profitti nelle prop firm',
+    blog5_excerpt:'Guida passo passo per Apex, Bulenox, FTMO e FundedNext.',
+    blog5_data:'Gennaio 2025',
+    blog6_titulo:'I migliori indicatori per NinjaTrader 8',
+    blog6_excerpt:'Elenco degli indicatori più utilizzati dai trader ammessi nelle prop firm.',
+    blog6_data:'Dicembre 2024',
+    calc_gate_label_nome:'Nome',
+    calc_gate_placeholder_nome:'Il tuo nome',
+    calc_gate_label_email:'E-mail',
+    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_btn:'Sblocca gratuitamente →',
+    calc_gate_privacidade:'I tuoi dati sono riservati. Non è richiesta alcuna carta di credito.',
+    quiz_pergunta:'DOMANDA',
+    quiz_de:'DI',
+    quiz_proxima:'Avanti →',
+    quiz_recomecar:'↺ Ricominciare',
+    quiz_q1_titulo:'Su quale mercato preferisci operare?',
+    quiz_q1_sub:'La tua risposta aiuta a trovare la prop firm ideale.',
+    quiz_q1_a1:'Futures (ES, NQ, CL...)',
+    quiz_q1_a2:'Forex (EUR/USD, oro...)',
+    quiz_q1_a3:'Entrambi',
+    quiz_q1_a4:'Non lo so ancora',
+    quiz_q2_titulo:'Qual è il tuo livello di esperienza?',
+    quiz_q2_sub:'Questo ci aiuta a consigliarvi studi legali con criteri adeguati al vostro profilo.',
+    quiz_q2_a1:'Principiante (&lt;1 anno)',
+    quiz_q2_a2:'Livello intermedio (1–3 anni)',
+    quiz_q2_a3:'Avanzato (+3 anni)',
+    quiz_q2_a4:'Professionista',
+    quiz_q3_titulo:'In quale capitale desideri operare?',
+    quiz_q3_sub:'',
+    quiz_q3_a1:'Fino a 25.000 dollari',
+    quiz_q3_a2:'da 25.000 a 100.000 dollari',
+    quiz_q3_a3:'100.000–200.000 dollari',
+    quiz_q3_a4:'+200.000 $',
+    quiz_q4_titulo:'Qual è il tuo stile di trading?',
+    quiz_q4_sub:'',
+    quiz_q4_a1:'Scalper',
+    quiz_q4_a2:'Day trader',
+    quiz_q4_a3:'Swing trader',
+    quiz_q4_a4:'Algoritmico (EA/bot)',
+    quiz_q5_titulo:'Cosa è più importante per te?',
+    quiz_q5_sub:'',
+    quiz_q5_a1:'Sconto massimo',
+    quiz_q5_a2:'Scorrere velocemente',
+    quiz_q5_a3:'Split più ampio',
+    quiz_q5_a4:'Regole flessibili',
+    quiz_resultado_firma_ideal:'La tua azienda ideale:',
+    quiz_copiar_cupom:'Copia:',
+    quiz_ir_para:'Vai a',
+    quiz_ver_detalhes:'Vedi dettagli',
+    live_gate_titulo:'Live Room — Accesso esclusivo',
+    live_gate_desc:'La Live Room è riservata esclusivamente ai membri del programma fedeltà che abbiano acquistato e fatto convalidare dal nostro team almeno 3 buoni.',
+    live_gate_seu_progresso:'I TUOI PROGRESSI',
+    live_gate_validadas:'Convalidate',
+    live_gate_em_analise:'In fase di analisi',
+    live_gate_faltam:'Mancano',
+    live_gate_ver_fidelidade:'Vedi il mio programma fedeltà →',
+    live_gate_verificar:'Ricontrollare',
+    live_gate_ja_tem:'Hai già effettuato almeno 3 acquisti confermati?',
+    live_gate_nao_membro:'Non sei ancora iscritto?',
+    live_gate_cadastre:'Iscriviti gratuitamente →',
+    live_gate_validadas_bar:'convalidate',
+    plat_acessar_com:'Accedi con',
+    plat_off_anual:'OFF nel Piano annuale',
+    plat_oferta_excl:'Offerta esclusiva',
+    offers_cupom_label:'Buono sconto esclusivo MarketsCoupons',
+    offers_desconto_link:'Sconto applicato automaticamente tramite link',
+    offers_ver_planos:'Vedi le offerte scontate →',
+    firms_nenhuma_encontrada:'Nessuna azienda trovata.',
+    checkout_selecione_firma:'Seleziona la società di trading',
+    checkout_sub:'Scegli la società, il tipo di drawdown e la piattaforma: vai direttamente alla cassa con il tuo sconto.',
+    checkout_cupom_ativo:'Buono attivo',
+    checkout_copiar_codigo:'Copia codice',
+    checkout_todos_planos:'Tutti i piani includono',
+    offers_hero_label:'🟏️ Buoni sconto esclusivi',
+    offers_hero_titulo:'Risparmia con le migliori società di trading',
+    offers_hero_sub:'Buoni sconto verificati e aggiornati. Copiali, inseriscili al momento del pagamento e inizia a fare trading con uno sconto.',
+    painel_em_breve:'Prossimamente: cronologia dei buoni utilizzati, aziende preferite e altro ancora.',
+    live_acessar:'Accedi alla Live Room →',
+    live_voltar:'← Indietro',
+    live_proximo_localizacao:'Avanti — Posizione →',
+    live_proximo_perfil:'Avanti — Profilo del trader →',
+    live_privacidade:'I tuoi dati sono al sicuro. Riceverai un&#x27;e-mail di benvenuto con le credenziali di accesso alla Live Room.',
   },
   fr: {
     nav_ofertas:'Offres',
@@ -3033,7 +3829,7 @@ const I18N = {
     hero_badge:'Coupons vérifiés — Mis à jour quotidiennement',
     hero_titulo:'Économisez jusqu&#x27;à <em>90 % sur</em><br>les meilleures sociétés de trading',
     hero_sub:'Comparez les entreprises, utilisez des bons de réduction exclusifs et accédez à des outils professionnels — le tout en un seul endroit.',
-    hero_btn_firms:'Voir les sociétés de gestion de portefeuille',
+    hero_btn_firms:'Voir les sociétés de capital-risque',
     hero_btn_tg:'Rejoindre le groupe Telegram',
     home_melhores_ofertas:'Les meilleures offres du moment',
     hst_ate:'Jusqu&#x27;à',
@@ -3111,6 +3907,223 @@ const I18N = {
     prog_bem_vindo:'Bienvenue',
     prog_para_desbloquear:'achats pour débloquer',
     prog_desbloqueado:'Débloqué !',
+    cmp_melhor_mesa:'Meilleure table parmi celles sélectionnées',
+    cmp_melhor_em:'Meilleur dans',
+    cmp_de:'de',
+    cmp_criterios:'critères évalués — remise la plus élevée, répartition et notation combinées',
+    cmp_ver_firma:'Voir',
+    cmp_criterio:'Critère',
+    cmp_vencedor:'VAINQUEUR',
+    cmp_row_tipo:'Type',
+    cmp_row_desconto:'Réduction',
+    cmp_row_split:'Split',
+    cmp_row_drawdown:'Drawdown',
+    cmp_row_ddmax:'DD max',
+    cmp_row_meta:'Objectif',
+    cmp_row_dias_min:'Jours min.',
+    cmp_row_prazo:'Délai',
+    cmp_row_plataformas:'Plateformes',
+    cmp_row_rating:'Note',
+    cmp_row_reviews:'Avis',
+    cmp_row_cupom:'Bon de réduction',
+    cmp_variavel:'Variable',
+    cmp_sem_limite:'Sans limite',
+    cmp_desconto_especial:'Remise spéciale',
+    cmp_selecione_firma:'Sélectionnez au moins une entreprise',
+    aw_sub:'Nous sélectionnons les meilleures sociétés de trading en nous appuyant sur des données réelles concernant les évaluations, les remises, les conditions et la satisfaction des traders.',
+    aw_stat_firmas:'Entreprises analysées',
+    aw_stat_avaliacoes:'Avis pris en compte',
+    aw_stat_categorias:'Catégories récompensées',
+    aw_categoria:'CATÉGORIE',
+    aw_vencedor:'VAINQUEUR',
+    aw_cat_melhor_forex:'Meilleure société de trading sur le Forex',
+    aw_cat_maior_desconto:'Meilleure réduction',
+    aw_cat_melhor_split:'Meilleur partage des bénéfices',
+    aw_cat_aprovacao_rapida:'Approbation plus rapide',
+    aw_cat_maior_confianca:'Une confiance accrue chez les traders',
+    aw_cat_melhor_iniciante:'Idéal pour les débutants',
+    aw_cat_melhor_custo:'Meilleur rapport qualité-prix',
+    aw_cat_melhor_rating:'Meilleure note globale',
+    aw_ribbon_forex:'MEILLEUR FOREX',
+    aw_ribbon_desconto:'MEILLEURES RÉDUCTIONS',
+    aw_ribbon_split:'PLUS DE SPLIT',
+    aw_ribbon_rapido:'PLUS RAPIDE',
+    aw_ribbon_confiavel:'PLUS FIABLE',
+    aw_ribbon_iniciante:'IDÉAL POUR LES DÉBUTANTS',
+    aw_ribbon_custo:'RAPPORT COÛT-EFFICACITÉ',
+    aw_ribbon_rating:'MEILLEURE NOTE',
+    aw_reason_ftmo_forex:'Leader mondial avec plus de 39 000 avis et un taux de satisfaction de 90 %',
+    aw_reason_apex_desconto:'Jusqu&#x27;à 90 % de réduction à vie avec un code promo exclusif',
+    aw_reason_fn_split:'Répartition à 95 % avec paiement garanti sous 24 heures',
+    aw_reason_bulenox_rapido:'On peut le faire en une journée, sans obligation de régularité',
+    aw_reason_fn_confianca:'Plus de 60 850 avis vérifiés',
+    aw_reason_ftmo_iniciante:'Essai gratuit illimité et assistance en 20 langues',
+    aw_reason_e2t_custo:'50 % de réduction + financement pouvant atteindre 400 000 $',
+    aw_reason_bulenox_rating:'Note de 4,8 avec des gains hebdomadaires et des règles simples',
+    cal_titulo:'Calendrier économique',
+    cal_mais_eventos:'Plus d&#x27;événements',
+    cal_hoje:'Aujourd&#x27;hui',
+    cal_amanha:'Demain',
+    cal_esta_semana:'Cette semaine',
+    cal_anterior:'Précédent',
+    cal_previsao:'Prévisions',
+    cal_alto_impacto:'Fort impact',
+    cal_medio_impacto:'Impact moyen',
+    cal_baixo_impacto:'Faible impact',
+    hm_sp500:'S&amp;P 500',
+    hm_nasdaq100:'Nasdaq 100',
+    hm_global:'Mondial',
+    hm_mapa_calor:'Carte thermique — ',
+    analise_titulo:'Analyse de marché avec l&#x27;IA',
+    analise_sub:'Joignez une capture d&#x27;écran de votre graphique et recevez une analyse du contexte, de la structure du marché, des actualités du jour et des mouvements potentiels — générée par une IA spécialisée dans le trading.',
+    analise_seu_grafico:'VOTRE GRAPHIQUE',
+    analise_contexto_adicional:'CONTEXTE SUPPLÉMENTAIRE',
+    analise_clique_aqui:'Cliquez ou faites glisser l&#x27;image ici',
+    analise_formatos:'PNG, JPG, WebP — n&#x27;importe quelle durée',
+    analise_placeholder:'Décrivez l&#x27;actif, la période, ce que vous observez ou toute question spécifique...',
+    analise_btn:'Analyser à l&#x27;aide de l&#x27;IA',
+    analise_analisando:'Analyse en cours...',
+    analise_gerada:'Analyse générée',
+    analise_copiar:'Copier',
+    analise_remover:'Supprimer',
+    analise_erro_sem_dados:'Ajoutez un graphique ou décrivez l&#x27;actif à analyser !',
+    analise_ia_processando:'L&#x27;IA analyse le graphique et les conditions du marché...',
+    analise_sentimento:'Sentiment',
+    analise_forca:'Courage',
+    analise_timeframe:'Période',
+    analise_contexto_mercado:'Contexte du marché',
+    analise_tendencia:'Tendance et structure',
+    analise_suporte:'Support principal',
+    analise_resistencia:'Résistance principale',
+    analise_cenarios:'Scénarios',
+    analise_cenario_favoravel:'Contexte favorable',
+    analise_cenario_alternativo:'Scénario alternatif',
+    analise_nivel_invalidacao:'Niveau d&#x27;invalidité',
+    analise_noticias:'Actualités importantes',
+    analise_pontos_atencao:'Points à retenir',
+    analise_conclusao:'Conclusion',
+    analise_copiado:'Analyse copiée !',
+    guia_ler:'Lire le guide →',
+    guia_cat_iniciante:'Débutant',
+    guia_cat_intermediario:'Intermédiaire',
+    guia_cat_pratico:'Pratique',
+    guia_cat_tecnico:'Entraîneur',
+    guia_cat_comparativo:'Comparatif',
+    guia_cat_financeiro:'Finances',
+    guia1_titulo:'Qu&#x27;est-ce qu&#x27;une société de trading ?',
+    guia1_desc:'Découvrez comment cela fonctionne, comment relever le défi et obtenir votre compte financé.',
+    guia2_titulo:'Gestion des baisses de valeur',
+    guia2_desc:'Comment calculer, surveiller et éviter de dépasser les limites fixées par les principales sociétés de trading.',
+    guia3_titulo:'Comment réussir le défi',
+    guia3_desc:'Des stratégies éprouvées pour réussir la phase d&#x27;évaluation.',
+    guia4_titulo:'Dimensionnement des positions dans les sociétés de gestion de portefeuille',
+    guia4_desc:'Comment calculer la taille adéquate pour maximiser les bénéfices sans enfreindre les règles.',
+    guia5_titulo:'Apex vs FTMO vs Bulenox',
+    guia5_desc:'Comparaison détaillée : règles, tarifs, plateformes et gains.',
+    guia6_titulo:'Comment retirer vos gains',
+    guia6_desc:'Étapes à suivre pour demander un paiement auprès de chaque entreprise.',
+    blog_ler:'Lire →',
+    blog_cat_noticias:'Actualités',
+    blog_cat_estrategia:'Stratégie',
+    blog_cat_analise:'Analyse',
+    blog_cat_educacao:'Éducation',
+    blog_cat_payouts:'Gains',
+    blog_cat_ferramentas:'Outils',
+    blog1_titulo:'Apex lance une promotion historique avec 90 % de réduction',
+    blog1_excerpt:'La plus grande société de courtage spécialisée dans les contrats à terme aux États-Unis annonce une promotion avec un code exclusif.',
+    blog1_data:'Mars 2025',
+    blog2_titulo:'Comment réussir le FTMO Challenge en 2025',
+    blog2_excerpt:'Guide complet proposant des stratégies pour réussir l&#x27;évaluation de la plus grande société de trading au monde.',
+    blog2_data:'Février 2025',
+    blog3_titulo:'Bulenox à 89 % de réduction : ça vaut le coup ?',
+    blog3_excerpt:'Analyse complète avec un bon de réduction de 89 % à vie. Découvrez si cette entreprise vous convient.',
+    blog3_data:'Février 2025',
+    blog4_titulo:'Drawdown glissant vs drawdown fixe',
+    blog4_excerpt:'Découvrez les différences et comment choisir la société de trading qui correspond à votre style.',
+    blog4_data:'Janvier 2025',
+    blog5_titulo:'Comment retirer vos bénéfices dans les prop firms',
+    blog5_excerpt:'Guide étape par étape pour Apex, Bulenox, FTMO et FundedNext.',
+    blog5_data:'Janvier 2025',
+    blog6_titulo:'Les meilleurs indicateurs pour NinjaTrader 8',
+    blog6_excerpt:'Liste des indicateurs les plus utilisés par les traders agréés dans les sociétés de prop trading.',
+    blog6_data:'Décembre 2024',
+    calc_gate_label_nome:'Nom',
+    calc_gate_placeholder_nome:'Votre nom',
+    calc_gate_label_email:'E-mail',
+    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_btn:'Débloquer gratuitement →',
+    calc_gate_privacidade:'Vos données sont confidentielles. Aucune carte bancaire n&#x27;est requise.',
+    quiz_pergunta:'QUESTION',
+    quiz_de:'DE',
+    quiz_proxima:'Suivant →',
+    quiz_recomecar:'↺ Recommencer',
+    quiz_q1_titulo:'Sur quel marché préférez-vous trader ?',
+    quiz_q1_sub:'Votre réponse nous aide à trouver la société de trading idéale.',
+    quiz_q1_a1:'Contrats à terme (ES, NQ, CL...)',
+    quiz_q1_a2:'Forex (EUR/USD, or...)',
+    quiz_q1_a3:'Les deux',
+    quiz_q1_a4:'Je ne sais pas encore',
+    quiz_q2_titulo:'Quel est votre niveau d&#x27;expérience ?',
+    quiz_q2_sub:'Cela nous aide à vous recommander des cabinets dont les règles correspondent à votre profil.',
+    quiz_q2_a1:'Débutant (&lt; 1 an)',
+    quiz_q2_a2:'Niveau intermédiaire (1 à 3 ans)',
+    quiz_q2_a3:'Avancé (+3 ans)',
+    quiz_q2_a4:'Professionnel',
+    quiz_q3_titulo:'Sur quelle devise souhaitez-vous effectuer vos opérations ?',
+    quiz_q3_sub:'',
+    quiz_q3_a1:'Jusqu&#x27;à 25 000 $',
+    quiz_q3_a2:'25 000 $ – 100 000 $',
+    quiz_q3_a3:'100 000 $ – 200 000 $',
+    quiz_q3_a4:'+200 000 $',
+    quiz_q4_titulo:'Quel est votre style de trading ?',
+    quiz_q4_sub:'',
+    quiz_q4_a1:'Scalper',
+    quiz_q4_a2:'Day trader',
+    quiz_q4_a3:'Trader swing',
+    quiz_q4_a4:'Algorithmique (EA/bots)',
+    quiz_q5_titulo:'Qu&#x27;est-ce qui est le plus important pour vous ?',
+    quiz_q5_sub:'',
+    quiz_q5_a1:'Remise maximale',
+    quiz_q5_a2:'Passer rapidement',
+    quiz_q5_a3:'Split plus important',
+    quiz_q5_a4:'Règles souples',
+    quiz_resultado_firma_ideal:'Votre entreprise idéale :',
+    quiz_copiar_cupom:'Copier :',
+    quiz_ir_para:'Aller à',
+    quiz_ver_detalhes:'Voir les détails',
+    live_gate_titulo:'Live Room — Accès exclusif',
+    live_gate_desc:'Le Live Room est réservé aux membres du programme de fidélité ayant acheté et fait valider au moins 3 coupons par notre équipe.',
+    live_gate_seu_progresso:'VOS PROGRÈS',
+    live_gate_validadas:'Validées',
+    live_gate_em_analise:'En cours d&#x27;examen',
+    live_gate_faltam:'Il manque',
+    live_gate_ver_fidelidade:'Voir mon programme de fidélité →',
+    live_gate_verificar:'Vérifier à nouveau',
+    live_gate_ja_tem:'Avez-vous déjà effectué au moins trois achats validés ?',
+    live_gate_nao_membro:'Vous n&#x27;êtes pas encore membre ?',
+    live_gate_cadastre:'Inscrivez-vous gratuitement →',
+    live_gate_validadas_bar:'validées',
+    plat_acessar_com:'Se connecter avec',
+    plat_off_anual:'OFF dans le plan annuel',
+    plat_oferta_excl:'Offre exclusive',
+    offers_cupom_label:'Bon de réduction exclusif MarketsCoupons',
+    offers_desconto_link:'Réduction appliquée automatiquement via le lien',
+    offers_ver_planos:'Voir les offres promotionnelles →',
+    firms_nenhuma_encontrada:'Aucune entreprise trouvée.',
+    checkout_selecione_firma:'Sélectionnez la société de trading',
+    checkout_sub:'Choisissez la société, le type de drawdown et la plateforme — accédez directement à la page de paiement avec votre réduction.',
+    checkout_cupom_ativo:'Coupon actif',
+    checkout_copiar_codigo:'Copier le code',
+    checkout_todos_planos:'Toutes les formules comprennent',
+    offers_hero_label:'🏷️ Coupons exclusifs',
+    offers_hero_titulo:'Faites des économies chez les meilleures sociétés de trading',
+    offers_hero_sub:'Codes promo vérifiés et mis à jour. Copiez-les, utilisez-les lors du paiement et commencez à trader en bénéficiant d&#x27;une réduction.',
+    painel_em_breve:'À venir : historique des coupons utilisés, entreprises favorites et plus encore.',
+    live_acessar:'Accéder à la Live Room →',
+    live_voltar:'← Retour',
+    live_proximo_localizacao:'Suivant — Localisation →',
+    live_proximo_perfil:'Suivant — Profil du trader →',
+    live_privacidade:'Vos données sont protégées. Vous recevrez un e-mail de bienvenue contenant les informations d&#x27;accès à la Live Room.',
   },
   de: {
     nav_ofertas:'Angebote',
@@ -3166,7 +4179,7 @@ const I18N = {
     home_sub:'Vergleichen Sie Preise, kopieren Sie exklusive Gutscheine und sparen Sie bis zu 90 % bei den weltweit größten Prop-Firmen.',
     home_ver_planos:'Tarife anzeigen →',
     hero_badge:'Geprüfte Gutscheine – Täglich aktualisiert',
-    hero_titulo:'Sparen Sie bis zu <em>90 %</em> bei<br>den besten Prop-Firms',
+    hero_titulo:'Sparen Sie bis zu <em>90 %</em> bei<br>den besten Prop-Firmen',
     hero_sub:'Vergleichen Sie Anbieter, nutzen Sie exklusive Gutscheine und greifen Sie auf professionelle Tools zu – alles an einem Ort.',
     hero_btn_firms:'Prop-Firmen anzeigen',
     hero_btn_tg:'Der Telegram-Gruppe beitreten',
@@ -3186,9 +4199,9 @@ const I18N = {
     geral_copiar:'Kopieren',
     geral_copiado:'Kopiert!',
     lb_title:'Treueprogramm',
-    lb_sub:'Kaufen Sie über unseren Link oder Gutschein, senden Sie uns den Kaufbeleg und schalten Sie den Live Room VIP, Gewinnspiele für Konten sowie exklusive Indikatoren frei.',
+    lb_sub:'Kaufen Sie über unseren Link oder Gutschein, senden Sie den Kaufbeleg und schalten Sie den Live Room VIP, Gewinnspiele für Konten und exklusive Indikatoren frei.',
     lb_step1:'Registrieren Sie sich kostenlos',
-    lb_step2:'Mit Gutschein kaufen',
+    lb_step2:'Mit Gutschein einkaufen',
     lb_step3:'Bitte senden Sie einen Nachweis',
     lb_step4:'Zum VIP-Bereich',
     lb_btn_cadastrar:'Kostenlos registrieren →',
@@ -3246,6 +4259,223 @@ const I18N = {
     prog_bem_vindo:'Willkommen',
     prog_para_desbloquear:'Käufe zum Freischalten',
     prog_desbloqueado:'Freigeschaltet!',
+    cmp_melhor_mesa:'Beste Mannschaft unter den Qualifikanten',
+    cmp_melhor_em:'Am besten in',
+    cmp_de:'von',
+    cmp_criterios:'Bewertungskriterien – größter Rabatt, Split und Rating in Kombination',
+    cmp_ver_firma:'Anzeigen',
+    cmp_criterio:'Kriterium',
+    cmp_vencedor:'GEWINNER',
+    cmp_row_tipo:'Typ',
+    cmp_row_desconto:'Rabatt',
+    cmp_row_split:'Split',
+    cmp_row_drawdown:'Drawdown',
+    cmp_row_ddmax:'DD max',
+    cmp_row_meta:'Ziel',
+    cmp_row_dias_min:'Mindestens Tage',
+    cmp_row_prazo:'Frist',
+    cmp_row_plataformas:'Plattformen',
+    cmp_row_rating:'Bewertung',
+    cmp_row_reviews:'Bewertungen',
+    cmp_row_cupom:'Gutschein',
+    cmp_variavel:'Variable',
+    cmp_sem_limite:'Ohne Begrenzung',
+    cmp_desconto_especial:'Sonderrabatt',
+    cmp_selecione_firma:'Wählen Sie mindestens eine Firma aus',
+    aw_sub:'Auszeichnung der besten Prop-Firmen auf der Grundlage realer Daten zu Bewertungen, Rabatten, Konditionen und der Zufriedenheit der Trader.',
+    aw_stat_firmas:'Untersuchte Unternehmen',
+    aw_stat_avaliacoes:'Berücksichtigte Bewertungen',
+    aw_stat_categorias:'Ausgezeichnete Kategorien',
+    aw_categoria:'KATEGORIE',
+    aw_vencedor:'GEWINNER',
+    aw_cat_melhor_forex:'Beste Forex-Handelsfirma',
+    aw_cat_maior_desconto:'Größter Rabatt',
+    aw_cat_melhor_split:'Beste Gewinnbeteiligung',
+    aw_cat_aprovacao_rapida:'Schnellere Genehmigung',
+    aw_cat_maior_confianca:'Größeres Vertrauen der Händler',
+    aw_cat_melhor_iniciante:'Am besten für Anfänger geeignet',
+    aw_cat_melhor_custo:'Bestes Preis-Leistungs-Verhältnis',
+    aw_cat_melhor_rating:'Beste Gesamtbewertung',
+    aw_ribbon_forex:'BESTER FOREX',
+    aw_ribbon_desconto:'TOP-RABATT',
+    aw_ribbon_split:'MEHR SPLIT',
+    aw_ribbon_rapido:'SCHNELLER',
+    aw_ribbon_confiavel:'ZUVERLÄSSIGER',
+    aw_ribbon_iniciante:'IDEAL FÜR ANFÄNGER',
+    aw_ribbon_custo:'KOSTEN-NUTZEN',
+    aw_ribbon_rating:'BESTE BEWERTUNG',
+    aw_reason_ftmo_forex:'Weltweit führend mit über 39.000 Bewertungen und einer 90-prozentigen Erfolgsquote',
+    aw_reason_apex_desconto:'Bis zu 90 % lebenslanger Rabatt mit exklusivem Gutschein',
+    aw_reason_fn_split:'95 % Umsatzbeteiligung mit garantierter Auszahlung innerhalb von 24 Stunden',
+    aw_reason_bulenox_rapido:'Man kann es an einem Tag schaffen, ohne dass man sich strikt daran halten muss',
+    aw_reason_fn_confianca:'Über 60.850 verifizierte Bewertungen',
+    aw_reason_ftmo_iniciante:'Unbegrenzte kostenlose Testversion und Support in 20 Sprachen',
+    aw_reason_e2t_custo:'50 % Rabatt + Kapitalerhöhung bis zu 400.000 $',
+    aw_reason_bulenox_rating:'Bewertung 4,8 mit wöchentlicher Auszahlung und einfachen Regeln',
+    cal_titulo:'Wirtschaftskalender',
+    cal_mais_eventos:'Weitere Veranstaltungen',
+    cal_hoje:'Heute',
+    cal_amanha:'Morgen',
+    cal_esta_semana:'Diese Woche',
+    cal_anterior:'Zurück',
+    cal_previsao:'Vorhersage',
+    cal_alto_impacto:'Hohe Wirkung',
+    cal_medio_impacto:'Mittlere Auswirkung',
+    cal_baixo_impacto:'Geringe Belastung',
+    hm_sp500:'S&amp;P 500',
+    hm_nasdaq100:'Nasdaq 100',
+    hm_global:'Global',
+    hm_mapa_calor:'Heatmap — ',
+    analise_titulo:'Marktanalyse mit KI',
+    analise_sub:'Fügen Sie einen Screenshot Ihres Charts ein und erhalten Sie eine Analyse des Marktkontexts, der Marktstruktur, der aktuellen Nachrichten und möglicher Kursbewegungen – erstellt von einer auf den Handel spezialisierten KI.',
+    analise_seu_grafico:'IHR DIAGRAMM',
+    analise_contexto_adicional:'WEITERE HINTERGRUNDINFORMATIONEN',
+    analise_clique_aqui:'Klicken Sie hier oder ziehen Sie den Screenshot hierher',
+    analise_formatos:'PNG, JPG, WebP – beliebige Dateiformate',
+    analise_placeholder:'Beschreiben Sie den Vermögenswert, den Zeitrahmen, was Sie sehen oder geben Sie konkrete Fragen an...',
+    analise_btn:'Mit KI analysieren',
+    analise_analisando:'Wird analysiert...',
+    analise_gerada:'Automatisch generierte Analyse',
+    analise_copiar:'Kopieren',
+    analise_remover:'Entfernen',
+    analise_erro_sem_dados:'Fügen Sie ein Diagramm hinzu oder beschreiben Sie den Vermögenswert zur Analyse!',
+    analise_ia_processando:'Die KI analysiert gerade das Chart und die Marktbedingungen...',
+    analise_sentimento:'Gefühl',
+    analise_forca:'Kraft',
+    analise_timeframe:'Zeitrahmen',
+    analise_contexto_mercado:'Marktumfeld',
+    analise_tendencia:'Trend &amp; Struktur',
+    analise_suporte:'Hauptstütze',
+    analise_resistencia:'Hauptwiderstand',
+    analise_cenarios:'Szenarien',
+    analise_cenario_favoravel:'Günstiges Szenario',
+    analise_cenario_alternativo:'Alternatives Szenario',
+    analise_nivel_invalidacao:'Grad der Erwerbsunfähigkeit',
+    analise_noticias:'Wichtige Nachrichten',
+    analise_pontos_atencao:'Wichtige Hinweise',
+    analise_conclusao:'Fazit',
+    analise_copiado:'Analyse kopiert!',
+    guia_ler:'Anleitung lesen →',
+    guia_cat_iniciante:'Anfänger',
+    guia_cat_intermediario:'Zwischenstufe',
+    guia_cat_pratico:'Praktisch',
+    guia_cat_tecnico:'Techniker',
+    guia_cat_comparativo:'Vergleich',
+    guia_cat_financeiro:'Finanzen',
+    guia1_titulo:'Was ist eine Prop-Firm?',
+    guia1_desc:'Erfahren Sie, wie das funktioniert, wie Sie die Herausforderung meistern und Ihr finanziertes Konto erhalten.',
+    guia2_titulo:'Drawdown-Management',
+    guia2_desc:'Wie man die Limits der wichtigsten Prop-Firmen berechnet, überwacht und deren Überschreitung vermeidet.',
+    guia3_titulo:'So meistern Sie die Herausforderung',
+    guia3_desc:'Bewährte Strategien, um die Bewertungsphase zu bestehen.',
+    guia4_titulo:'Positionsgrößenbestimmung bei Prop-Firmen',
+    guia4_desc:'Wie berechnet man die richtige Größe, um den Gewinn zu maximieren, ohne gegen Vorschriften zu verstoßen?',
+    guia5_titulo:'Apex vs. FTMO vs. Bulenox',
+    guia5_desc:'Detaillierter Vergleich: Regeln, Preise, Plattformen und Auszahlungen.',
+    guia6_titulo:'So lassen Sie sich Ihre Gewinne auszahlen',
+    guia6_desc:'Schritt-für-Schritt-Anleitung zur Beantragung von Auszahlungen bei den einzelnen Unternehmen.',
+    blog_ler:'Weiterlesen →',
+    blog_cat_noticias:'Nachrichten',
+    blog_cat_estrategia:'Strategie',
+    blog_cat_analise:'Analyse',
+    blog_cat_educacao:'Bildung',
+    blog_cat_payouts:'Auszahlungen',
+    blog_cat_ferramentas:'Werkzeuge',
+    blog1_titulo:'Apex startet eine historische Aktion mit 90 % Rabatt',
+    blog1_excerpt:'Die größte US-amerikanische Prop-Firm für Terminkontrakte kündigt eine Aktion mit einem exklusiven Code an.',
+    blog1_data:'März 2025',
+    blog2_titulo:'Wie man die FTMO Challenge 2025 besteht',
+    blog2_excerpt:'Ein umfassender Leitfaden mit Strategien zum Bestehen des Auswahlverfahrens bei der weltweit größten Prop-Firm.',
+    blog2_data:'Februar 2025',
+    blog3_titulo:'Bulenox 89 % Rabatt: Lohnt es sich?',
+    blog3_excerpt:'Ausführliche Bewertung mit einem lebenslangen Rabattgutschein von 89 %. Finden Sie heraus, ob dies das richtige Unternehmen für Sie ist.',
+    blog3_data:'Februar 2025',
+    blog4_titulo:'Trailing Drawdown vs. Fixed Drawdown',
+    blog4_excerpt:'Verstehen Sie die Unterschiede und erfahren Sie, wie Sie die richtige Prop-Firm für Ihren Handelsstil auswählen.',
+    blog4_data:'Januar 2025',
+    blog5_titulo:'So lassen Sie sich Ihre Gewinne bei Prop-Firmen auszahlen',
+    blog5_excerpt:'Schritt-für-Schritt-Anleitung für Apex, Bulenox, FTMO und FundedNext.',
+    blog5_data:'Januar 2025',
+    blog6_titulo:'Die besten Indikatoren für NinjaTrader 8',
+    blog6_excerpt:'Liste der Indikatoren, die von zugelassenen Tradern in Prop-Firmen am häufigsten verwendet werden.',
+    blog6_data:'Dezember 2024',
+    calc_gate_label_nome:'Name',
+    calc_gate_placeholder_nome:'Ihr Name',
+    calc_gate_label_email:'E-Mail',
+    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_btn:'Kostenlos freischalten →',
+    calc_gate_privacidade:'Ihre Daten bleiben vertraulich. Keine Kreditkarte erforderlich.',
+    quiz_pergunta:'FRAGE',
+    quiz_de:'VON',
+    quiz_proxima:'Weiter →',
+    quiz_recomecar:'↺ Neu beginnen',
+    quiz_q1_titulo:'Auf welchem Markt handeln Sie am liebsten?',
+    quiz_q1_sub:'Ihre Antwort hilft dabei, die ideale Prop-Firm zu finden.',
+    quiz_q1_a1:'Futures (ES, NQ, CL...)',
+    quiz_q1_a2:'Devisen (EUR/USD, Gold...)',
+    quiz_q1_a3:'Beide',
+    quiz_q1_a4:'Ich weiß es noch nicht',
+    quiz_q2_titulo:'Wie viel Erfahrung haben Sie?',
+    quiz_q2_sub:'Das hilft uns dabei, Ihnen Unternehmen zu empfehlen, deren Richtlinien zu Ihrem Profil passen.',
+    quiz_q2_a1:'Anfänger (&lt;1 Jahr)',
+    quiz_q2_a2:'Mittelstufe (1–3 Jahre)',
+    quiz_q2_a3:'Fortgeschritten (ab 3 Jahren)',
+    quiz_q2_a4:'Fachkraft',
+    quiz_q3_titulo:'In welcher Währung möchten Sie handeln?',
+    quiz_q3_sub:'',
+    quiz_q3_a1:'Bis zu 25.000 $',
+    quiz_q3_a2:'25.000 $ – 100.000 $',
+    quiz_q3_a3:'100.000 $ – 200.000 $',
+    quiz_q3_a4:'+200.000 $',
+    quiz_q4_titulo:'Welchen Handelsstil verfolgen Sie?',
+    quiz_q4_sub:'',
+    quiz_q4_a1:'Scalper',
+    quiz_q4_a2:'Daytrader',
+    quiz_q4_a3:'Swing-Trader',
+    quiz_q4_a4:'Algorithmisch (EAs/Bots)',
+    quiz_q5_titulo:'Was ist dir am wichtigsten?',
+    quiz_q5_sub:'',
+    quiz_q5_a1:'Höchster Rabatt',
+    quiz_q5_a2:'Schnell weiter',
+    quiz_q5_a3:'Größter Split',
+    quiz_q5_a4:'Flexible Regeln',
+    quiz_resultado_firma_ideal:'Ihr idealer Arbeitgeber:',
+    quiz_copiar_cupom:'Kopieren:',
+    quiz_ir_para:'Weiter zu',
+    quiz_ver_detalhes:'Details anzeigen',
+    live_gate_titulo:'Live Room – Exklusiver Zugang',
+    live_gate_desc:'Der Live Room ist ausschließlich für Mitglieder des Treueprogramms zugänglich, die mindestens 3 Gutscheine gekauft haben, die von unserem Team validiert wurden.',
+    live_gate_seu_progresso:'IHR FORTSCHRITT',
+    live_gate_validadas:'Validiert',
+    live_gate_em_analise:'In Bearbeitung',
+    live_gate_faltam:'Es fehlen',
+    live_gate_ver_fidelidade:'Mein Treueprogramm anzeigen →',
+    live_gate_verificar:'Noch einmal überprüfen',
+    live_gate_ja_tem:'Hast du bereits 3 oder mehr bestätigte Einkäufe?',
+    live_gate_nao_membro:'Noch kein Mitglied?',
+    live_gate_cadastre:'Kostenlos registrieren →',
+    live_gate_validadas_bar:'validiert',
+    plat_acessar_com:'Anmelden mit',
+    plat_off_anual:'Im Jahresplan deaktiviert',
+    plat_oferta_excl:'Exklusives Angebot',
+    offers_cupom_label:'Exklusiver Gutschein von MarketsCoupons',
+    offers_desconto_link:'Der Rabatt wird automatisch über den Link abgezogen',
+    offers_ver_planos:'Rabattangebote anzeigen →',
+    firms_nenhuma_encontrada:'Es wurde kein Unternehmen gefunden.',
+    checkout_selecione_firma:'Wählen Sie die Prop-Firma aus',
+    checkout_sub:'Wählen Sie das Unternehmen, die Art des Drawdowns und die Plattform – gehen Sie direkt zur Kasse und nutzen Sie Ihren Rabatt.',
+    checkout_cupom_ativo:'Gutschein ist gültig',
+    checkout_copiar_codigo:'Code kopieren',
+    checkout_todos_planos:'Alle Tarife beinhalten',
+    offers_hero_label:'🏷️ Exklusive Gutscheine',
+    offers_hero_titulo:'Sparen Sie bei den besten Prop-Firmen',
+    offers_hero_sub:'Gültige und aktualisierte Gutscheincodes. Kopieren Sie den Code, geben Sie ihn an der Kasse ein und profitieren Sie vom Rabatt.',
+    painel_em_breve:'Demnächst: Übersicht über eingelöste Gutscheine, Lieblingsgeschäfte und mehr.',
+    live_acessar:'Zum Live-Raum gehen →',
+    live_voltar:'← Zurück',
+    live_proximo_localizacao:'Weiter — Standort →',
+    live_proximo_perfil:'Weiter — Trader-Profil →',
+    live_privacidade:'Ihre Daten sind geschützt. Sie erhalten eine Willkommens-E-Mail mit dem Zugang zum Live Room.',
   },
   ar: {
     nav_ofertas:'العروض',
@@ -3316,12 +4546,12 @@ const I18N = {
     heatmap_titulo:'خريطة الحرارة',
     nav_faq:'الأسئلة الشائعة',
     faq_titulo:'الأسئلة الشائعة',
-    faq_sub:'تخلص من تساؤلاتك حول القسائم وشركات التداول الاحترافية وكيفية استخدام MarketsCoupons.',
+    faq_sub:'تخلص من تساؤلاتك حول القسائم والشركات الاستثمارية وكيفية استخدام MarketsCoupons.',
     geral_firmas_encontradas:'الشركات التي تم العثور عليها',
     geral_copiar:'نسخ',
     geral_copiado:'تم نسخه!',
     lb_title:'برنامج الولاء',
-    lb_sub:'اشترِ عبر الرابط أو القسيمة الخاصة بنا، وأرسل إيصال الشراء لتتمكن من فتح Live Room VIP، والمشاركة في سحوبات الحسابات، والحصول على المؤشرات الحصرية.',
+    lb_sub:'اشترِ عبر الرابط أو القسيمة الخاصة بنا، وأرسل إيصال الشراء لتتمكن من فتح غرفة البث المباشر VIP، والمشاركة في سحوبات الحسابات، والحصول على المؤشرات الحصرية.',
     lb_step1:'سجل مجانًا',
     lb_step2:'تسوق باستخدام قسيمة',
     lb_step3:'أرسل إثباتًا',
@@ -3338,7 +4568,7 @@ const I18N = {
     ft_guias:'الأدلة',
     plat_titulo:'منصات التداول',
     plat_sub:'أدوات احترافية يستخدمها أفضل المتداولين في شركات التداول الخاصة. قارن بينها واختر الأنسب لأسلوبك.',
-    cmp_titulo:'🔍 مقارنة شركات الاستثمار',
+    cmp_titulo:'🔍 مقارنة شركات التداول',
     heatmap_full_titulo:'🌡️ خريطة الحرارة — مؤشر S&amp;P 500',
     hm_cripto:'العملات المشفرة',
     guides_titulo:'📚 أدلة وتعليم',
@@ -3365,7 +4595,7 @@ const I18N = {
     plat_acessar:'الدخول',
     plat_oferta_exclusiva:'عرض حصري',
     ind_titulo:'المؤشرات — حصريًا للأعضاء',
-    ind_sub:'هذه المؤشرات والأدوات متاحة حصريًّا للمشاركين في برنامج الولاء الذين أتموا 3 عمليات شراء تم التحقق منها.',
+    ind_sub:'هذه المؤشرات والأدوات متاحة حصريًّا للمشاركين في برنامج الولاء الذين أجروا 3 عمليات شراء تم التحقق منها.',
     ind_ver_fidelidade:'عرض برنامج الولاء →',
     cmp_sub:'اختر ما يصل إلى 3 شركات لمقارنتها جنبًا إلى جنب',
     cmp_firma1:'-- الشركة 1 --',
@@ -3381,6 +4611,223 @@ const I18N = {
     prog_bem_vindo:'مرحبًا',
     prog_para_desbloquear:'المشتريات اللازمة لإلغاء الحظر',
     prog_desbloqueado:'تم فتحه!',
+    cmp_melhor_mesa:'أفضل طاولة من بين الطاولات المختارة',
+    cmp_melhor_em:'الأفضل في',
+    cmp_de:'من',
+    cmp_criterios:'المعايير التي تم تقييمها — أكبر خصم، وتقسيم، وتصنيف مجتمعة',
+    cmp_ver_firma:'عرض',
+    cmp_criterio:'معيار',
+    cmp_vencedor:'الفائز',
+    cmp_row_tipo:'النوع',
+    cmp_row_desconto:'خصم',
+    cmp_row_split:'سبليت',
+    cmp_row_drawdown:'انخفاض',
+    cmp_row_ddmax:'القيمة القصوى لـ DD',
+    cmp_row_meta:'الهدف',
+    cmp_row_dias_min:'الحد الأدنى لعدد الأيام',
+    cmp_row_prazo:'الموعد النهائي',
+    cmp_row_plataformas:'المنصات',
+    cmp_row_rating:'التقييم',
+    cmp_row_reviews:'التعليقات',
+    cmp_row_cupom:'قسيمة',
+    cmp_variavel:'متغير',
+    cmp_sem_limite:'بلا حدود',
+    cmp_desconto_especial:'خصم خاص',
+    cmp_selecione_firma:'حدد شركة واحدة على الأقل',
+    aw_sub:'تحديد أفضل شركات التداول بالنيابة استنادًا إلى بيانات حقيقية تتعلق بالتقييمات والخصومات والشروط ورضا المتداولين.',
+    aw_stat_firmas:'الشركات التي تم تحليلها',
+    aw_stat_avaliacoes:'التقييمات التي تم أخذها في الاعتبار',
+    aw_stat_categorias:'الفئات الفائزة',
+    aw_categoria:'الفئة',
+    aw_vencedor:'الفائز',
+    aw_cat_melhor_forex:'أفضل شركة تداول احترافية في سوق الفوركس',
+    aw_cat_maior_desconto:'أكبر خصم',
+    aw_cat_melhor_split:'أفضل توزيع للأرباح',
+    aw_cat_aprovacao_rapida:'موافقة أسرع',
+    aw_cat_maior_confianca:'زيادة ثقة المتداولين',
+    aw_cat_melhor_iniciante:'الأفضل للمبتدئين',
+    aw_cat_melhor_custo:'أفضل قيمة مقابل المال',
+    aw_cat_melhor_rating:'أفضل تقييم عام',
+    aw_ribbon_forex:'أفضل فوركس',
+    aw_ribbon_desconto:'أفضل العروض',
+    aw_ribbon_split:'المزيد من SPLIT',
+    aw_ribbon_rapido:'أسرع',
+    aw_ribbon_confiavel:'أكثر موثوقية',
+    aw_ribbon_iniciante:'مثالي للمبتدئين',
+    aw_ribbon_custo:'التكلفة مقابل الفائدة',
+    aw_ribbon_rating:'أفضل تقييم',
+    aw_reason_ftmo_forex:'رائد عالمي مع أكثر من 39 ألف تقييم ونسبة توزيع تبلغ 90%',
+    aw_reason_apex_desconto:'خصم يصل إلى 90% مدى الحياة مع قسيمة حصرية',
+    aw_reason_fn_split:'توزيع أرباح بنسبة 95% مع دفع مضمون خلال 24 ساعة',
+    aw_reason_bulenox_rapido:'يمكن إنجازه في يوم واحد، دون الحاجة إلى الالتزام بجدول زمني محدد',
+    aw_reason_fn_confianca:'أكثر من 60,850 تقييمًا تم التحقق منه',
+    aw_reason_ftmo_iniciante:'تجربة مجانية غير محدودة ودعم باللغات العشرين',
+    aw_reason_e2t_custo:'خصم 50٪ + تمويل يصل إلى 400 ألف دولار',
+    aw_reason_bulenox_rating:'تقييم 4.8 مع دفعات أسبوعية وقواعد بسيطة',
+    cal_titulo:'التقويم الاقتصادي',
+    cal_mais_eventos:'المزيد من الفعاليات',
+    cal_hoje:'اليوم',
+    cal_amanha:'غدًا',
+    cal_esta_semana:'هذا الأسبوع',
+    cal_anterior:'السابق',
+    cal_previsao:'التوقعات',
+    cal_alto_impacto:'تأثير كبير',
+    cal_medio_impacto:'تأثير متوسط',
+    cal_baixo_impacto:'تأثير ضئيل',
+    hm_sp500:'مؤشر S&amp;P 500',
+    hm_nasdaq100:'ناسداك 100',
+    hm_global:'عالمي',
+    hm_mapa_calor:'خريطة الحرارة — ',
+    analise_titulo:'تحليل السوق باستخدام الذكاء الاصطناعي',
+    analise_sub:'أرسل صورة من الرسم البياني الخاص بك واحصل على تحليل للسياق، وهيكل السوق، وأخبار اليوم، والتحركات المحتملة — كل ذلك بفضل الذكاء الاصطناعي المتخصص في التداول.',
+    analise_seu_grafico:'الرسم البياني الخاص بك',
+    analise_contexto_adicional:'معلومات إضافية',
+    analise_clique_aqui:'انقر هنا أو اسحب الصورة',
+    analise_formatos:'PNG، JPG، WebP — أي إطار زمني',
+    analise_placeholder:'صف الأصل المالي، والإطار الزمني، وما تراه، أو أي استفسار محدد...',
+    analise_btn:'التحليل باستخدام الذكاء الاصطناعي',
+    analise_analisando:'جاري التحليل...',
+    analise_gerada:'تحليل تم إنشاؤه',
+    analise_copiar:'نسخ',
+    analise_remover:'إزالة',
+    analise_erro_sem_dados:'أضف رسمًا بيانيًا أو صف الأصل المراد تحليله!',
+    analise_ia_processando:'تقوم الذكاء الاصطناعي بتحليل الرسم البياني وظروف السوق...',
+    analise_sentimento:'الشعور',
+    analise_forca:'قوة',
+    analise_timeframe:'الإطار الزمني',
+    analise_contexto_mercado:'سياق السوق',
+    analise_tendencia:'الاتجاهات والهيكل',
+    analise_suporte:'الدعامة الرئيسية',
+    analise_resistencia:'المقاومة الرئيسية',
+    analise_cenarios:'السيناريوهات',
+    analise_cenario_favoravel:'سيناريو إيجابي',
+    analise_cenario_alternativo:'سيناريو بديل',
+    analise_nivel_invalidacao:'مستوى الإبطال',
+    analise_noticias:'أخبار مهمة',
+    analise_pontos_atencao:'نقاط يجب الانتباه إليها',
+    analise_conclusao:'خاتمة',
+    analise_copiado:'تم نسخ التحليل!',
+    guia_ler:'قراءة الدليل →',
+    guia_cat_iniciante:'مبتدئ',
+    guia_cat_intermediario:'وسيط',
+    guia_cat_pratico:'عملي',
+    guia_cat_tecnico:'فني',
+    guia_cat_comparativo:'مقارنة',
+    guia_cat_financeiro:'المالية',
+    guia1_titulo:'ما هي شركة التداول الاحترافي؟',
+    guia1_desc:'تعرف على كيفية عملها، وكيفية اجتياز التحدي والحصول على حسابك الممول.',
+    guia2_titulo:'إدارة الانخفاض',
+    guia2_desc:'كيفية حساب ومراقبة وتجنب تجاوز حدود شركات التداول الرئيسية.',
+    guia3_titulo:'كيف تنجح في التحدي',
+    guia3_desc:'استراتيجيات مجربة للنجاح في مرحلة التقييم.',
+    guia4_titulo:'تحديد حجم المراكز في شركات التداول بالعمولة',
+    guia4_desc:'كيفية حساب الحجم الصحيح لتحقيق أقصى ربح دون مخالفة القواعد.',
+    guia5_titulo:'Apex مقابل FTMO مقابل Bulenox',
+    guia5_desc:'مقارنة تفصيلية: القواعد والأسعار والمنصات والعوائد.',
+    guia6_titulo:'كيفية سحب أرباحك',
+    guia6_desc:'خطوة بخطوة لطلب سحب الأموال من كل شركة.',
+    blog_ler:'قراءة →',
+    blog_cat_noticias:'الأخبار',
+    blog_cat_estrategia:'الاستراتيجية',
+    blog_cat_analise:'تحليل',
+    blog_cat_educacao:'التعليم',
+    blog_cat_payouts:'المدفوعات',
+    blog_cat_ferramentas:'الأدوات',
+    blog1_titulo:'تطلق Apex عرضًا ترويجيًا تاريخيًا بخصم 90%',
+    blog1_excerpt:'أكبر شركة تداول احترافي للعقود الآجلة في الولايات المتحدة تعلن عن عرض ترويجي برمز حصري.',
+    blog1_data:'مارس 2025',
+    blog2_titulo:'كيفية النجاح في تحدي FTMO لعام 2025',
+    blog2_excerpt:'دليل شامل يتضمن استراتيجيات للنجاح في اختبار أكبر شركة تداول في العالم.',
+    blog2_data:'فبراير 2025',
+    blog3_titulo:'Bulenox بخصم 89%: هل يستحق الأمر؟',
+    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89٪ مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الخيار المناسب لك.',
+    blog3_data:'فبراير 2025',
+    blog4_titulo:'الانخفاض المتتابع مقابل الانخفاض الثابت',
+    blog4_excerpt:'افهم الفروق وكيفية اختيار شركة التداول المناسبة لأسلوبك.',
+    blog4_data:'يناير 2025',
+    blog5_titulo:'كيفية سحب أرباحك في شركات التداول',
+    blog5_excerpt:'خطوة بخطوة مع Apex وBulenox وFTMO وFundedNext.',
+    blog5_data:'يناير 2025',
+    blog6_titulo:'أفضل المؤشرات لـ NinjaTrader 8',
+    blog6_excerpt:'قائمة بالمؤشرات الأكثر استخدامًا من قبل المتداولين المعتمدين في شركات التداول.',
+    blog6_data:'ديسمبر 2024',
+    calc_gate_label_nome:'الاسم',
+    calc_gate_placeholder_nome:'اسمك',
+    calc_gate_label_email:'البريد الإلكتروني',
+    calc_gate_placeholder_email:'seu@email.com',
+    calc_gate_btn:'إلغاء الحظر مجانًا →',
+    calc_gate_privacidade:'بياناتك سرية. لا حاجة إلى بطاقة.',
+    quiz_pergunta:'السؤال',
+    quiz_de:'من',
+    quiz_proxima:'التالي →',
+    quiz_recomecar:'↺ البدء من جديد',
+    quiz_q1_titulo:'ما هو السوق الذي تفضل التداول فيه؟',
+    quiz_q1_sub:'تساعد إجابتك في العثور على شركة التداول المثالية.',
+    quiz_q1_a1:'العقود الآجلة (ES، NQ، CL...)',
+    quiz_q1_a2:'الفوركس (اليورو/الدولار الأمريكي، الذهب...)',
+    quiz_q1_a3:'كلاهما',
+    quiz_q1_a4:'لا أعرف بعد',
+    quiz_q2_titulo:'ما هو مستوى خبرتك؟',
+    quiz_q2_sub:'وهذا يساعدنا على اقتراح شركات ذات سياسات تتناسب مع ملفك الشخصي.',
+    quiz_q2_a1:'مبتدئ (&lt;1 سنة)',
+    quiz_q2_a2:'المستوى المتوسط (1–3 سنوات)',
+    quiz_q2_a3:'متقدم (3 سنوات فما فوق)',
+    quiz_q2_a4:'محترف',
+    quiz_q3_titulo:'ما هي العملة التي ترغب في التداول بها؟',
+    quiz_q3_sub:'',
+    quiz_q3_a1:'حتى 25 ألف دولار',
+    quiz_q3_a2:'25 ألف دولار – 100 ألف دولار',
+    quiz_q3_a3:'100 ألف دولار – 200 ألف دولار',
+    quiz_q3_a4:'+200 ألف دولار',
+    quiz_q4_titulo:'ما هو أسلوبك في التداول؟',
+    quiz_q4_sub:'',
+    quiz_q4_a1:'المضارب',
+    quiz_q4_a2:'متداول يومي',
+    quiz_q4_a3:'متداول على المدى المتوسط',
+    quiz_q4_a4:'الخوارزمي (الأنظمة الخوارزمية/الروبوتات)',
+    quiz_q5_titulo:'ما هو الأهم بالنسبة لك؟',
+    quiz_q5_sub:'',
+    quiz_q5_a1:'أقصى خصم',
+    quiz_q5_a2:'تخطي سريعًا',
+    quiz_q5_a3:'أكبر انقسام',
+    quiz_q5_a4:'قواعد مرنة',
+    quiz_resultado_firma_ideal:'شركتك المثالية:',
+    quiz_copiar_cupom:'نسخ:',
+    quiz_ir_para:'الانتقال إلى',
+    quiz_ver_detalhes:'عرض التفاصيل',
+    live_gate_titulo:'Live Room — دخول حصري',
+    live_gate_desc:'تُتاح خدمة Live Room حصريًّا لأعضاء برنامج الولاء الذين اشتروا ما لا يقل عن 3 قسائم وتم التحقق من صحتها من قِبل فريقنا.',
+    live_gate_seu_progresso:'تقدمك',
+    live_gate_validadas:'تم التحقق من صحتها',
+    live_gate_em_analise:'قيد الدراسة',
+    live_gate_faltam:'تبقى',
+    live_gate_ver_fidelidade:'الاطلاع على برنامج الولاء الخاص بي →',
+    live_gate_verificar:'التحقق مرة أخرى',
+    live_gate_ja_tem:'هل لديك بالفعل 3 عمليات شراء معتمدة أو أكثر؟',
+    live_gate_nao_membro:'ألم تصبح عضوًا بعد؟',
+    live_gate_cadastre:'سجل مجانًا →',
+    live_gate_validadas_bar:'تم التحقق من صحتها',
+    plat_acessar_com:'تسجيل الدخول باستخدام',
+    plat_off_anual:'&quot;OFF&quot; في الخطة السنوية',
+    plat_oferta_excl:'عرض حصري',
+    offers_cupom_label:'قسيمة حصرية من MarketsCoupons',
+    offers_desconto_link:'يتم تطبيق الخصم تلقائيًا عبر الرابط',
+    offers_ver_planos:'عرض العروض المخفضة →',
+    firms_nenhuma_encontrada:'لم يتم العثور على أي شركة.',
+    checkout_selecione_firma:'اختر شركة التداول',
+    checkout_sub:'اختر الشركة ونوع الخصم والمنصة — انتقل مباشرة إلى صفحة الدفع مع خصمك.',
+    checkout_cupom_ativo:'القسيمة سارية',
+    checkout_copiar_codigo:'نسخ الرمز',
+    checkout_todos_planos:'تشمل جميع الباقات',
+    offers_hero_label:'🏷️ قسائم حصرية',
+    offers_hero_titulo:'وفر المال مع أفضل شركات التداول',
+    offers_hero_sub:'كوبونات تم التحقق منها وتحديثها. انسخها، واستخدمها عند الدفع وابدأ التداول بخصم.',
+    painel_em_breve:'قريبًا: سجل القسائم المستخدمة، والشركات المفضلة، والمزيد.',
+    live_acessar:'الدخول إلى Live Room →',
+    live_voltar:'← رجوع',
+    live_proximo_localizacao:'التالي — الموقع →',
+    live_proximo_perfil:'التالي — ملف تعريف المتداول →',
+    live_privacidade:'بياناتك محمية. ستتلقى رسالة بريد إلكتروني ترحيبية تحتوي على رابط الدخول إلى Live Room.',
   }
 };
 let _currentLang = 'pt';
@@ -3405,6 +4852,9 @@ function applyTranslations() {
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
     else el.textContent = val;
   });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+  });
 }
 function setL(lang,flag,code){
   _currentLang = lang;
@@ -3413,7 +4863,7 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); applyF();
+  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF();
   track('language_change',{language:lang});
 }
 function initLang() {
@@ -3427,6 +4877,78 @@ function strs(r){return'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r))
 function firmIco(f,size='38px',fontSize='14px'){
   if(f.icon_url) return `<div style="width:${size};height:${size};border-radius:8px;overflow:hidden;flex-shrink:0;background:${f.bg};display:flex;align-items:center;justify-content:center;"><img src="${f.icon_url}" alt="${f.name}" style="width:100%;height:100%;object-fit:contain;"></div>`;
   return `<div style="width:${size};height:${size};border-radius:8px;background:${f.bg};color:${f.color};display:flex;align-items:center;justify-content:center;font-size:${fontSize};font-weight:800;flex-shrink:0;">${f.icon}</div>`;
+}
+
+/* GUIDES */
+const GUIDES_DATA = [
+  {catKey:'guia_cat_iniciante',catColor:'var(--blue)',ico:'📖',titleKey:'guia1_titulo',descKey:'guia1_desc'},
+  {catKey:'guia_cat_intermediario',catColor:'var(--gold)',ico:'📉',titleKey:'guia2_titulo',descKey:'guia2_desc'},
+  {catKey:'guia_cat_pratico',catColor:'var(--green)',ico:'✅',titleKey:'guia3_titulo',descKey:'guia3_desc'},
+  {catKey:'guia_cat_tecnico',catColor:'var(--purple)',ico:'📐',titleKey:'guia4_titulo',descKey:'guia4_desc'},
+  {catKey:'guia_cat_comparativo',catColor:'var(--orange)',ico:'⚖️',titleKey:'guia5_titulo',descKey:'guia5_desc'},
+  {catKey:'guia_cat_financeiro',catColor:'var(--cyan)',ico:'💰',titleKey:'guia6_titulo',descKey:'guia6_desc'},
+];
+function renderGuides(){
+  const g=document.getElementById('guides-grid');if(!g)return;
+  g.innerHTML=GUIDES_DATA.map(guide=>`
+    <div class="gc">
+      <div class="gc-cat" style="color:${guide.catColor};">${t(guide.catKey)}</div>
+      <div class="gc-ico">${guide.ico}</div>
+      <div class="gc-title">${t(guide.titleKey)}</div>
+      <div class="gc-desc">${t(guide.descKey)}</div>
+      <div class="gc-read">${t('guia_ler')}</div>
+    </div>`).join('');
+}
+
+/* BLOG */
+const BLOG_DATA = [
+  {catKey:'blog_cat_noticias',catColor:'var(--orange)',bg:'var(--obg)',titleKey:'blog1_titulo',excerptKey:'blog1_excerpt',dataKey:'blog1_data'},
+  {catKey:'blog_cat_estrategia',catColor:'var(--green)',bg:'var(--gnbg)',titleKey:'blog2_titulo',excerptKey:'blog2_excerpt',dataKey:'blog2_data'},
+  {catKey:'blog_cat_analise',catColor:'var(--blue)',bg:'var(--bbg)',titleKey:'blog3_titulo',excerptKey:'blog3_excerpt',dataKey:'blog3_data'},
+  {catKey:'blog_cat_educacao',catColor:'var(--purple)',bg:'var(--pbg)',titleKey:'blog4_titulo',excerptKey:'blog4_excerpt',dataKey:'blog4_data'},
+  {catKey:'blog_cat_payouts',catColor:'var(--gold)',bg:'var(--gbg)',titleKey:'blog5_titulo',excerptKey:'blog5_excerpt',dataKey:'blog5_data'},
+  {catKey:'blog_cat_ferramentas',catColor:'var(--cyan)',bg:'var(--cbg)',titleKey:'blog6_titulo',excerptKey:'blog6_excerpt',dataKey:'blog6_data'},
+];
+function renderBlog(){
+  const g=document.getElementById('blog-grid');if(!g)return;
+  g.innerHTML=BLOG_DATA.map(post=>`
+    <div class="bc">
+      <div class="bc-img" style="background:${post.bg};"></div>
+      <div class="bc-body">
+        <div class="bc-cat" style="color:${post.catColor};">${t(post.catKey)}</div>
+        <div class="bc-title">${t(post.titleKey)}</div>
+        <div class="bc-excerpt">${t(post.excerptKey)}</div>
+        <div class="bc-meta">
+          <span class="bc-date">${t(post.dataKey)}</span>
+          <span class="bc-read">${t('blog_ler')}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+/* QUIZ */
+function renderQuiz(){
+  const wrap=document.getElementById('quiz-wrap');if(!wrap)return;
+  const questions=[
+    {titleKey:'quiz_q1_titulo',subKey:'quiz_q1_sub',opts:[{key:'quiz_q1_a1',val:'futures'},{key:'quiz_q1_a2',val:'forex'},{key:'quiz_q1_a3',val:'both'},{key:'quiz_q1_a4',val:'unsure'}],next:1},
+    {titleKey:'quiz_q2_titulo',subKey:'quiz_q2_sub',opts:[{key:'quiz_q2_a1',val:'beginner'},{key:'quiz_q2_a2',val:'intermediate'},{key:'quiz_q2_a3',val:'advanced'},{key:'quiz_q2_a4',val:'pro'}],next:2},
+    {titleKey:'quiz_q3_titulo',subKey:'quiz_q3_sub',opts:[{key:'quiz_q3_a1',val:'small'},{key:'quiz_q3_a2',val:'mid'},{key:'quiz_q3_a3',val:'large'},{key:'quiz_q3_a4',val:'xlarge'}],next:3},
+    {titleKey:'quiz_q4_titulo',subKey:'quiz_q4_sub',opts:[{key:'quiz_q4_a1',val:'scalp'},{key:'quiz_q4_a2',val:'day'},{key:'quiz_q4_a3',val:'swing'},{key:'quiz_q4_a4',val:'algo'}],next:4},
+    {titleKey:'quiz_q5_titulo',subKey:'quiz_q5_sub',opts:[{key:'quiz_q5_a1',val:'discount',finish:true},{key:'quiz_q5_a2',val:'speed',finish:true},{key:'quiz_q5_a3',val:'split',finish:true},{key:'quiz_q5_a4',val:'rules',finish:true}],next:null},
+  ];
+  const total=questions.length;
+  let html=questions.map((q,i)=>`
+    <div class="qstep${i===0?' active':''}" id="qs${i}">
+      <div class="q-num">${t('quiz_pergunta')} ${i+1} ${t('quiz_de')} ${total}</div>
+      <div class="q-q">${t(q.titleKey)}</div>
+      ${q.subKey&&t(q.subKey)?`<div class="q-sub">${t(q.subKey)}</div>`:''}
+      <div class="q-opts">
+        ${q.opts.map(o=>`<button class="q-opt" onclick="${o.finish?`qa(this,'${o.val}');qfinish()`:`qa(this,'${o.val}')`}">${t(o.key)}</button>`).join('')}
+      </div>
+      ${q.next!==null?`<button class="q-next" onclick="qnext(${q.next})">${t('quiz_proxima')}</button>`:''}
+    </div>`).join('');
+  html+=`<div class="qstep" id="qs-res"><div class="q-res" id="q-res-content"></div><button class="q-restart" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
+  wrap.innerHTML=html;
 }
 
 /* HOME */
@@ -3448,7 +4970,7 @@ function renderHome(){
 /* FIRMS */
 function renderFirms(list){
   const el=document.getElementById('firms-list');document.getElementById('cnt').textContent=list.length;
-  if(!list.length){el.innerHTML='<div style="padding:60px;text-align:center;color:var(--t2);">Nenhuma firma encontrada.</div>';return;}
+  if(!list.length){el.innerHTML=`<div style="padding:60px;text-align:center;color:var(--t2);">${t('firms_nenhuma_encontrada')}</div>`;return;}
   el.innerHTML=list.map(f=>{
     const tpStars=f.trustpilot?Math.round(f.trustpilot.score):0;
     const tpCount=f.trustpilot?(f.trustpilot.reviews>=1000?(f.trustpilot.reviews/1000).toFixed(1)+'K':f.trustpilot.reviews.toLocaleString()):'';
@@ -3555,32 +5077,32 @@ function renderAwards(){
   const el=document.getElementById('awards-grid');
   if(!el)return;
   const categories=[
-    {trophy:'🥇',cat:'Melhor Prop Firm Forex',firmId:'ftmo',reason:'Líder global com +39K avaliações e 90% split',value:'4.8★',ribbon:'MELHOR FOREX'},
-    {trophy:'🚀',cat:'Maior Desconto',firmId:'apex',reason:'Até 90% OFF vitalício com cupom exclusivo',value:'90% OFF',ribbon:'TOP DESCONTO'},
-    {trophy:'💸',cat:'Melhor Split de Lucros',firmId:'fn',reason:'95% de split com payout garantido em 24h',value:'95% Split',ribbon:'MAIS SPLIT'},
-    {trophy:'⚡',cat:'Aprovação mais Rápida',firmId:'bulenox',reason:'Possível passar em 1 dia, sem regra de consistência',value:'1 dia',ribbon:'MAIS RÁPIDO'},
-    {trophy:'📈',cat:'Maior Confiança dos Traders',firmId:'fn',reason:'Mais de 60.850 avaliações verificadas',value:'60K+ reviews',ribbon:'MAIS CONFIÁVEL'},
-    {trophy:'🎓',cat:'Melhor para Iniciantes',firmId:'ftmo',reason:'Free Trial ilimitado e suporte em 20 idiomas',value:'Free Trial',ribbon:'IDEAL INICIANTE'},
-    {trophy:'💰',cat:'Melhor Custo-Benefício',firmId:'e2t',reason:'50% OFF + escalamento até $400K de capital',value:'$400K',ribbon:'CUSTO-BENEFÍCIO'},
-    {trophy:'🏅',cat:'Melhor Avaliação Geral',firmId:'bulenox',reason:'Rating 4.8 com payout semanal e regras simples',value:'4.8 ★',ribbon:'MELHOR RATING'},
+    {trophy:'🥇',catKey:'aw_cat_melhor_forex',firmId:'ftmo',reasonKey:'aw_reason_ftmo_forex',value:'4.8★',ribbonKey:'aw_ribbon_forex'},
+    {trophy:'🚀',catKey:'aw_cat_maior_desconto',firmId:'apex',reasonKey:'aw_reason_apex_desconto',value:'90% OFF',ribbonKey:'aw_ribbon_desconto'},
+    {trophy:'💸',catKey:'aw_cat_melhor_split',firmId:'fn',reasonKey:'aw_reason_fn_split',value:'95% Split',ribbonKey:'aw_ribbon_split'},
+    {trophy:'⚡',catKey:'aw_cat_aprovacao_rapida',firmId:'bulenox',reasonKey:'aw_reason_bulenox_rapido',value:'1 dia',ribbonKey:'aw_ribbon_rapido'},
+    {trophy:'📈',catKey:'aw_cat_maior_confianca',firmId:'fn',reasonKey:'aw_reason_fn_confianca',value:'60K+ reviews',ribbonKey:'aw_ribbon_confiavel'},
+    {trophy:'🎓',catKey:'aw_cat_melhor_iniciante',firmId:'ftmo',reasonKey:'aw_reason_ftmo_iniciante',value:'Free Trial',ribbonKey:'aw_ribbon_iniciante'},
+    {trophy:'💰',catKey:'aw_cat_melhor_custo',firmId:'e2t',reasonKey:'aw_reason_e2t_custo',value:'$400K',ribbonKey:'aw_ribbon_custo'},
+    {trophy:'🏅',catKey:'aw_cat_melhor_rating',firmId:'bulenox',reasonKey:'aw_reason_bulenox_rating',value:'4.8 ★',ribbonKey:'aw_ribbon_rating'},
   ];
   el.innerHTML=categories.map(c=>{
     const f=FIRMS.find(x=>x.id===c.firmId);
     if(!f)return'';
     return`<div class="award-card" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="cursor:pointer;">
-      <span class="award-ribbon">${c.ribbon}</span>
+      <span class="award-ribbon">${t(c.ribbonKey)}</span>
       <div class="award-card-top">
         <div class="award-trophy">${c.trophy}</div>
         <div class="award-cat">
-          <div class="award-cat-label">Categoria</div>
-          <div class="award-cat-name">${c.cat}</div>
+          <div class="award-cat-label">${t('aw_categoria')}</div>
+          <div class="award-cat-name">${t(c.catKey)}</div>
         </div>
       </div>
       <div class="award-winner">
         ${firmIco(f,'40px','14px')}
         <div class="award-winner-info">
           <div class="award-winner-name">${f.name}</div>
-          <div class="award-winner-reason">${c.reason}</div>
+          <div class="award-winner-reason">${t(c.reasonKey)}</div>
         </div>
         <div class="award-winner-value">${c.value}</div>
       </div>
@@ -3608,15 +5130,15 @@ function renderOffers(){
         <p class="offer-desc">${f.desc||''}</p>
         ${f.coupon?`
         <div class="offer-coupon-box">
-          <div class="offer-coupon-label">Cupom Exclusivo MarketsCoupons</div>
+          <div class="offer-coupon-label">${t('offers_cupom_label')}</div>
           <div class="offer-coupon-row">
             <span class="offer-coupon-code">${f.coupon}</span>
-            <button class="offer-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','offers')">Copiar</button>
+            <button class="offer-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','offers')">${t('geral_copiar')}</button>
           </div>
         </div>`:`<div class="offer-coupon-box" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);">
-          <div class="offer-coupon-row"><span class="offer-no-coupon">✓ Desconto aplicado automaticamente via link</span></div>
+          <div class="offer-coupon-row"><span class="offer-no-coupon">✓ ${t('offers_desconto_link')}</span></div>
         </div>`}
-        <button class="offer-cta" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)">Ver planos com desconto →</button>
+        <button class="offer-cta" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)">${t('offers_ver_planos')}</button>
       </div>
     </div>`).join('');
 }
@@ -4117,9 +5639,9 @@ function renderCmp(){
   const bannerEl=document.getElementById('cmp-winner-banner');
   if(!tbl)return;
   if(bannerEl) bannerEl.style.display='none';
-  if(!sel.length){tbl.innerHTML='<tr><td style="padding:40px;color:var(--t2);text-align:center;" colspan="4">Selecione pelo menos uma firma</td></tr>';return;}
+  if(!sel.length){tbl.innerHTML=`<tr><td style="padding:40px;color:var(--t2);text-align:center;" colspan="4">${t('cmp_selecione_firma')}</td></tr>`;return;}
 
-  const rows=[{l:'Tipo',k:'type'},{l:'Desconto',k:'discount',f:v=>v+'%',higher:true},{l:'Split',k:'split',f:v=>v,higher:true},{l:'Drawdown',k:'drawdown'},{l:'DD max',k:'ddPct'},{l:'Meta',k:'target'},{l:'Dias mín.',k:'minDays',f:v=>v+'d'},{l:'Prazo',k:'evalDays',f:v=>v?v+'d':'Sem limite'},{l:'Plataformas',k:'platforms',f:v=>Array.isArray(v)?v.join(', '):(v||'—')},{l:'Rating',k:'rating',higher:true},{l:'Reviews',k:'reviews',f:v=>(v||0).toLocaleString(),higher:true},{l:'Cupom',k:'coupon',f:v=>v||'Desconto especial'}];
+  const rows=[{l:t('cmp_row_tipo'),k:'type'},{l:t('cmp_row_desconto'),k:'discount',f:v=>v+'%',higher:true},{l:t('cmp_row_split'),k:'split',f:v=>v,higher:true},{l:t('cmp_row_drawdown'),k:'drawdown'},{l:t('cmp_row_ddmax'),k:'ddPct'},{l:t('cmp_row_meta'),k:'target'},{l:t('cmp_row_dias_min'),k:'minDays',f:v=>v+'d'},{l:t('cmp_row_prazo'),k:'evalDays',f:v=>v?v+'d':t('cmp_sem_limite')},{l:t('cmp_row_plataformas'),k:'platforms',f:v=>Array.isArray(v)?v.join(', '):(v||'—')},{l:t('cmp_row_rating'),k:'rating',higher:true},{l:t('cmp_row_reviews'),k:'reviews',f:v=>(v||0).toLocaleString(),higher:true},{l:t('cmp_row_cupom'),k:'coupon',f:v=>v||t('cmp_desconto_especial')}];
 
   // Determine winner: firm with most "best" values
   const scores = sel.map(()=>0);
@@ -4139,16 +5661,16 @@ function renderCmp(){
     bannerEl.innerHTML=`
       <div class="cmp-winner-ico">🏆</div>
       <div>
-        <div class="cmp-winner-label">Melhor mesa entre as selecionadas</div>
+        <div class="cmp-winner-label">${t('cmp_melhor_mesa')}</div>
         <div class="cmp-winner-name" style="color:${winner.color};">${winner.name}</div>
-        <div class="cmp-winner-reason">Melhor em ${maxScore} de ${rows.filter(r=>r.higher).length} critérios avaliados — maior desconto, split e rating combinados</div>
+        <div class="cmp-winner-reason">${t('cmp_melhor_em')} ${maxScore} ${t('cmp_de')} ${rows.filter(r=>r.higher).length} ${t('cmp_criterios')}</div>
       </div>
       <div style="margin-left:auto;flex-shrink:0;">
-        <button style="padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openD('${winner.id}')">Ver ${winner.icon} →</button>
+        <button style="padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openD('${winner.id}')">${t('cmp_ver_firma')} ${winner.icon} →</button>
       </div>`;
   }
 
-  let html=`<thead><tr><th style="min-width:110px;">Critério</th>${sel.map((f,i)=>`<th class="${i===winnerIdx&&sel.length>=2?'winner-col':''}" style="text-align:center;"><div style="display:flex;align-items:center;gap:7px;justify-content:center;"><div style="width:26px;height:26px;border-radius:5px;background:${f.bg};color:${f.color};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;">${f.icon}</div>${f.name}</div>${i===winnerIdx&&sel.length>=2?'<div style="font-size:9px;color:var(--gold);margin-top:3px;font-weight:700;">🏆 VENCEDOR</div>':''}</th>`).join('')}</tr></thead><tbody>`;
+  let html=`<thead><tr><th style="min-width:110px;">${t('cmp_criterio')}</th>${sel.map((f,i)=>`<th class="${i===winnerIdx&&sel.length>=2?'winner-col':''}" style="text-align:center;"><div style="display:flex;align-items:center;gap:7px;justify-content:center;"><div style="width:26px;height:26px;border-radius:5px;background:${f.bg};color:${f.color};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;">${f.icon}</div>${f.name}</div>${i===winnerIdx&&sel.length>=2?`<div style="font-size:9px;color:var(--gold);margin-top:3px;font-weight:700;">🏆 ${t('cmp_vencedor')}</div>`:''}</th>`).join('')}</tr></thead><tbody>`;
   rows.forEach(r=>{
     const vals=sel.map(f=>f[r.k]);
     const nums=vals.map(v=>parseFloat(String(v||'0').replace('%',''))).filter(v=>!isNaN(v));
@@ -4184,11 +5706,11 @@ function qfinish(){
     else if(priority==='discount'||priority==='speed')rec=FIRMS.find(f=>f.id==='bulenox');
     else if(priority==='split')rec=FIRMS.find(f=>f.id==='fn');
     else rec=FIRMS.find(f=>f.id==='tpt');
-    document.getElementById('q-res-content').innerHTML=`<div class="qr-ico" style="background:${rec.bg};color:${rec.color};">${rec.icon}</div><div class="qr-title">Sua firma ideal: <span style="color:${rec.color};">${rec.name}</span></div><div class="qr-desc">${rec.desc}</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">${rec.coupon?`<button onclick="cpCoupon('${rec.coupon}','${rec.id}','quiz')" style="padding:9px 18px;background:var(--gbg);border:1px solid var(--gbr);border-radius:7px;color:var(--gold);font-size:12px;font-weight:700;">Copiar: ${rec.coupon}</button>`:''}<a href="${rec.link}" target="_blank"><button class="btn-gold">Ir para ${rec.name}</button></a><button onclick="go('firms');setTimeout(()=>openD('${rec.id}'),150)" class="btn-out">Ver detalhes</button></div>`;
+    document.getElementById('q-res-content').innerHTML=`<div class="qr-ico" style="background:${rec.bg};color:${rec.color};">${rec.icon}</div><div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="color:${rec.color};">${rec.name}</span></div><div class="qr-desc">${rec.desc}</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">${rec.coupon?`<button onclick="cpCoupon('${rec.coupon}','${rec.id}','quiz')" style="padding:9px 18px;background:var(--gbg);border:1px solid var(--gbr);border-radius:7px;color:var(--gold);font-size:12px;font-weight:700;">${t('quiz_copiar_cupom')} ${rec.coupon}</button>`:''}<a href="${rec.link}" target="_blank"><button class="btn-gold">${t('quiz_ir_para')} ${rec.name}</button></a><button onclick="go('firms');setTimeout(()=>openD('${rec.id}'),150)" class="btn-out">${t('quiz_ver_detalhes')}</button></div>`;
     track('quiz_complete',{recommended_firm:rec.id,market_pref:market,priority});
   },300);
 }
-function qreset(){qA={};qStep=0;document.querySelectorAll('.qstep').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('sel'));document.getElementById('qs0').classList.add('active');}
+function qreset(){qA={};qStep=0;renderQuiz();}
 
 /* PLATAFORMAS DE TRADING */
 const PLATFORMS_LANGS = {
@@ -4557,7 +6079,7 @@ function renderPlatforms() {
   if (!g) return;
   g.innerHTML = getPlatforms().map(p => `
     <div class="plat-card${p.highlight?' plat-card-featured':''}">
-      ${p.highlight ? `<div style="background:var(--gold);color:#07090D;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:5px 12px;text-align:center;">⭐ Oferta Exclusiva — ${p.discount}% OFF no Plano Anual</div>` : ''}
+      ${p.highlight ? `<div style="background:var(--gold);color:#07090D;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:5px 12px;text-align:center;">⭐ ${t('plat_oferta_excl')} — ${p.discount}% ${t('plat_off_anual')}</div>` : ''}
       <div class="plat-card-top">
         <div class="plat-logo" style="background:${p.bg};color:${p.color};">${p.icon}</div>
         <div>
@@ -4578,7 +6100,7 @@ function renderPlatforms() {
         </div>
         <div class="plat-cta">
           <a href="${p.link}" target="_blank" style="flex:1;text-decoration:none;" onclick="track('platform_click',{platform:'${p.id}',discount:${p.discount}})">
-            <button class="plat-go">${p.discount > 0 ? `Acessar com ${p.discount}% OFF →` : `Acessar ${p.name} →`}</button>
+            <button class="plat-go">${p.discount > 0 ? `${t('plat_acessar_com')} ${p.discount}% OFF →` : `${t('plat_acessar')} ${p.name} →`}</button>
           </a>
         </div>
       </div>
@@ -4589,9 +6111,9 @@ function renderPlatforms() {
 function loadHeatmap(source, btn) {
   document.querySelectorAll('#page-heatmap .cal-f').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const titles = {SPX500:'S&P 500',NASDAQ100:'Nasdaq 100',WORLD:'Global',CRYPTO:'Cripto'};
+  const titles = {SPX500:t('hm_sp500'),NASDAQ100:t('hm_nasdaq100'),WORLD:t('hm_global'),CRYPTO:t('hm_cripto')};
   const titleEl = document.querySelector('.heatmap-title');
-  if (titleEl) titleEl.textContent = ' Mapa de Calor — ' + (titles[source]||source);
+  if (titleEl) titleEl.textContent = '🌡️ ' + t('hm_mapa_calor') + (titles[source]||source);
   const base = source === 'CRYPTO'
     ? 'https://www.tradingview.com/embed-widget/crypto-coins-heatmap/?locale=br#'
     : 'https://www.tradingview.com/embed-widget/stock-heatmap/?locale=br#';
@@ -4664,16 +6186,16 @@ function renderCal() {
 
   el.innerHTML = order.filter(d => groups[d]?.length).map(day => `
     <div class="cal-date-group">
-      <div class="cal-date-label">${day === 'Hoje' ? '📅 Hoje' : day === 'Amanhã' ? '📆 Amanhã' : '🗓 Esta Semana'}</div>
+      <div class="cal-date-label">${day === 'Hoje' ? '📅 ' + t('cal_hoje') : day === 'Amanhã' ? '📆 ' + t('cal_amanha') : '🗓 ' + t('cal_esta_semana')}</div>
       ${groups[day].map(e => {
         const cc = CUR_COLORS[e.cur] || {bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
         return `<div class="cal-item">
           <div class="cal-time">${e.t} <span style="font-size:10px;color:var(--t3);">ET</span></div>
           <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${e.fl} ${e.cur}</span></div>
           <div><div class="cal-ev-name">${e.ev}</div></div>
-          <div class="cal-prev-wrap"><div class="cal-val-lbl">Anterior</div><div class="cal-val">${e.prev}</div></div>
-          <div class="cal-fore-wrap"><div class="cal-val-lbl">Previsão</div><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
-          <div class="imp ${e.imp}" title="${e.imp==='h'?'Alto impacto':e.imp==='m'?'Médio impacto':'Baixo impacto'}"></div>
+          <div class="cal-prev-wrap"><div class="cal-val-lbl">${t('cal_anterior')}</div><div class="cal-val">${e.prev}</div></div>
+          <div class="cal-fore-wrap"><div class="cal-val-lbl">${t('cal_previsao')}</div><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
+          <div class="imp ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}"></div>
         </div>`;
       }).join('')}
     </div>`).join('');
@@ -4691,7 +6213,7 @@ function handleChartUpload(input) {
     const zone = document.getElementById('upload-zone');
     document.getElementById('uz-content').innerHTML = `
       <img src="${chartImageData}" class="uz-preview" alt="Gráfico">
-      <button class="uz-remove" onclick="event.stopPropagation();removeChart()">Remover</button>`;
+      <button class="uz-remove" onclick="event.stopPropagation();removeChart()">${t('analise_remover')}</button>`;
     zone.classList.add('has-img');
   };
   reader.readAsDataURL(file);
@@ -4702,8 +6224,8 @@ function removeChart() {
   document.getElementById('chart-upload').value = '';
   document.getElementById('uz-content').innerHTML = `
     <div class="uz-icon"></div>
-    <div class="uz-title">Clique ou arraste o print aqui</div>
-    <div class="uz-sub">PNG, JPG, WebP — qualquer timeframe</div>`;
+    <div class="uz-title">${t('analise_clique_aqui')}</div>
+    <div class="uz-sub">${t('analise_formatos')}</div>`;
   document.getElementById('upload-zone').classList.remove('has-img');
 }
 
@@ -4716,7 +6238,7 @@ function addChip(text) {
 async function runAnalise() {
   const ctx = document.getElementById('analise-context').value.trim();
   if (!chartImageData && !ctx) {
-    showToast('Adicione um gráfico ou descreva o ativo para análise!');
+    showToast(t('analise_erro_sem_dados'));
     return;
   }
   const btn = document.getElementById('analise-run-btn');
@@ -4724,9 +6246,9 @@ async function runAnalise() {
   const bodyEl = document.getElementById('ar-body');
   const sentEl = document.getElementById('ar-sent-card');
   btn.disabled = true;
-  btn.innerHTML = '<div class="ar-spinner"></div> Analisando...';
+  btn.innerHTML = `<div class="ar-spinner"></div> ${t('analise_analisando')}`;
   resultEl.style.display = 'block';
-  bodyEl.innerHTML = '<div class="ar-loading"><div class="ar-spinner"></div> A IA está analisando o gráfico e as condições de mercado...</div>';
+  bodyEl.innerHTML = `<div class="ar-loading"><div class="ar-spinner"></div> ${t('analise_ia_processando')}</div>`;
   document.getElementById('ar-sentiment').innerHTML = '';
   resultEl.scrollIntoView({behavior:'smooth', block:'start'});
 
@@ -4783,31 +6305,31 @@ Forneça EXATAMENTE neste formato JSON (sem markdown, sem explicações antes ou
       // Fallback: render raw text
       bodyEl.innerHTML = `<p>${raw.replace(/\n/g,'<br>')}</p>`;
       btn.disabled = false;
-      btn.innerHTML = '<span></span> Analisar com IA';
+      btn.innerHTML = `<span></span> ${t('analise_btn')}`;
       return;
     }
 
     // Sentiment cards
     const sentColor = analysis.sentimento === 'BULLISH' ? 'bull' : analysis.sentimento === 'BEARISH' ? 'bear' : 'neut';
     document.getElementById('ar-sentiment').innerHTML = `
-      <div class="ar-sent-card"><div class="ar-sent-lbl">Sentimento</div><div class="ar-sent-val ${sentColor}">${analysis.sentimento}</div></div>
-      <div class="ar-sent-card"><div class="ar-sent-lbl">Força</div><div class="ar-sent-val neut">${analysis.forca}</div></div>
-      <div class="ar-sent-card"><div class="ar-sent-lbl">Timeframe</div><div class="ar-sent-val" style="font-size:13px;">${analysis.timeframe_analisado||'—'}</div></div>`;
+      <div class="ar-sent-card"><div class="ar-sent-lbl">${t('analise_sentimento')}</div><div class="ar-sent-val ${sentColor}">${analysis.sentimento}</div></div>
+      <div class="ar-sent-card"><div class="ar-sent-lbl">${t('analise_forca')}</div><div class="ar-sent-val neut">${analysis.forca}</div></div>
+      <div class="ar-sent-card"><div class="ar-sent-lbl">${t('analise_timeframe')}</div><div class="ar-sent-val" style="font-size:13px;">${analysis.timeframe_analisado||'—'}</div></div>`;
 
     // Full analysis HTML
     bodyEl.innerHTML = `
-      <h3>📊 Contexto de Mercado</h3>
+      <h3>📊 ${t('analise_contexto_mercado')}</h3>
       <p>${analysis.contexto}</p>
-      <h3>📈 Tendência & Estrutura</h3>
+      <h3>📈 ${t('analise_tendencia')}</h3>
       <p>${analysis.tendencia}</p>
-      <p><strong>Suporte principal:</strong> ${analysis.suporte_principal} &nbsp;|&nbsp; <strong>Resistência principal:</strong> ${analysis.resistencia_principal}</p>
-      <h3>🎯 Cenários</h3>
-      <p><strong>Cenário favorável:</strong> ${analysis.cenario_favoravel}</p>
-      <p><strong>Cenário alternativo:</strong> ${analysis.cenario_alternativo}</p>
-      <p><strong>Nível de invalidação:</strong> <span style="color:var(--red)">${analysis.nivel_invalidacao}</span></p>
-      ${analysis.noticias_relevantes?.length ? `<h3>📰 Notícias Relevantes</h3><ul>${analysis.noticias_relevantes.map(n=>`<li>${n}</li>`).join('')}</ul>` : ''}
-      ${analysis.pontos_atencao?.length ? `<h3>⚠️ Pontos de Atenção</h3><ul>${analysis.pontos_atencao.map(p=>`<li>${p}</li>`).join('')}</ul>` : ''}
-      <h3>✅ Conclusão</h3>
+      <p><strong>${t('analise_suporte')}:</strong> ${analysis.suporte_principal} &nbsp;|&nbsp; <strong>${t('analise_resistencia')}:</strong> ${analysis.resistencia_principal}</p>
+      <h3>🎯 ${t('analise_cenarios')}</h3>
+      <p><strong>${t('analise_cenario_favoravel')}:</strong> ${analysis.cenario_favoravel}</p>
+      <p><strong>${t('analise_cenario_alternativo')}:</strong> ${analysis.cenario_alternativo}</p>
+      <p><strong>${t('analise_nivel_invalidacao')}:</strong> <span style="color:var(--red)">${analysis.nivel_invalidacao}</span></p>
+      ${analysis.noticias_relevantes?.length ? `<h3>📰 ${t('analise_noticias')}</h3><ul>${analysis.noticias_relevantes.map(n=>`<li>${n}</li>`).join('')}</ul>` : ''}
+      ${analysis.pontos_atencao?.length ? `<h3>⚠️ ${t('analise_pontos_atencao')}</h3><ul>${analysis.pontos_atencao.map(p=>`<li>${p}</li>`).join('')}</ul>` : ''}
+      <h3>✅ ${t('analise_conclusao')}</h3>
       <p style="background:var(--card2);border:1px solid var(--b2);border-radius:8px;padding:12px 16px;">${analysis.conclusao}</p>`;
 
     track('analise_mercado',{has_chart:!!chartImageData, ctx_length:ctx.length});
@@ -4815,12 +6337,12 @@ Forneça EXATAMENTE neste formato JSON (sem markdown, sem explicações antes ou
     bodyEl.innerHTML = '<p style="color:var(--red);">Erro ao conectar com a IA. Verifique sua conexão e tente novamente.</p>';
   }
   btn.disabled = false;
-  btn.innerHTML = '<span></span> Analisar com IA';
+  btn.innerHTML = `<span></span> ${t('analise_btn')}`;
 }
 
 function copyAnalise() {
   const text = document.getElementById('ar-body')?.innerText || '';
-  navigator.clipboard.writeText(text).then(() => showToast('Análise copiada!'));
+  navigator.clipboard.writeText(text).then(() => showToast(t('analise_copiado')));
 }
 
 /* LEAD / UNLOCK */
@@ -4925,12 +6447,12 @@ function checkIndicatorsGate() {
   const member = getLoyaltyMember();
   if (progressEl) progressEl.innerHTML = `
     <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:8px;">
-      <span>${approved}/3 compras validadas</span><span>${faltam} faltam</span>
+      <span>${approved}/3 ${t('prog_compras_validadas')}</span><span>${faltam} ${t('prog_faltam')}</span>
     </div>
     <div style="background:var(--b1);border-radius:4px;height:7px;overflow:hidden;margin-bottom:14px;">
       <div style="height:100%;width:${pct}%;background:var(--gold);border-radius:4px;transition:width 1s;"></div>
     </div>
-    ${!member ? `<div style="font-size:12px;color:var(--t3);">Não é membro ainda? <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">Cadastre-se grátis →</button></div>` : `<div style="font-size:12px;color:var(--t3);">Bem-vindo, <strong style="color:var(--t1);">${member.name}</strong>! ${faltam} compra${faltam===1?'':'s'} para desbloquear.</div>`}`;
+    ${!member ? `<div style="font-size:12px;color:var(--t3);">${t('live_gate_nao_membro')} <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">${t('live_gate_cadastre')}</button></div>` : `<div style="font-size:12px;color:var(--t3);">${t('prog_bem_vindo')}, <strong style="color:var(--t1);">${member.name}</strong>! ${faltam} ${t('prog_para_desbloquear')}.</div>`}`;
 }
 
 function checkLoyaltyAndShowLive(forceCheck = false) {
@@ -4966,27 +6488,27 @@ function checkLoyaltyAndShowLive(forceCheck = false) {
     const faltam  = Math.max(0, 3 - approved);
     statusEl.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">Seu progresso</div>
-        <div style="font-size:11px;color:var(--t3);">${approved}/3 validadas</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">${t('live_gate_seu_progresso')}</div>
+        <div style="font-size:11px;color:var(--t3);">${approved}/3 ${t('live_gate_validadas_bar')}</div>
       </div>
       <div style="background:var(--b1);border-radius:4px;height:7px;overflow:hidden;margin-bottom:14px;">
         <div style="height:100%;width:${Math.min(100,Math.round(approved/3*100))}%;background:var(--gold);border-radius:4px;transition:width 1s;"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:${member?'14px':'0'};">
         <div style="background:var(--card2);border-radius:7px;padding:10px;text-align:center;border:1px solid var(--b1);">
-          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">Validadas</div>
+          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">${t('live_gate_validadas')}</div>
           <div style="font-size:18px;font-weight:800;color:var(--green);">${approved}</div>
         </div>
         <div style="background:var(--card2);border-radius:7px;padding:10px;text-align:center;border:1px solid var(--b1);">
-          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">Em análise</div>
+          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">${t('live_gate_em_analise')}</div>
           <div style="font-size:18px;font-weight:800;color:var(--gold);">${pending}</div>
         </div>
         <div style="background:var(--card2);border-radius:7px;padding:10px;text-align:center;border:1px solid var(--b1);">
-          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">Faltam</div>
+          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">${t('live_gate_faltam')}</div>
           <div style="font-size:18px;font-weight:800;color:var(--red);">${faltam}</div>
         </div>
       </div>
-      ${member ? '' : `<div style="font-size:12px;color:var(--t3);padding-top:12px;border-top:1px solid var(--b1);">Não é membro ainda? <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">Cadastre-se grátis →</button></div>`}`;
+      ${member ? '' : `<div style="font-size:12px;color:var(--t3);padding-top:12px;border-top:1px solid var(--b1);">${t('live_gate_nao_membro')} <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">${t('live_gate_cadastre')}</button></div>`}`;
   }
 }
 
@@ -5009,14 +6531,14 @@ async function joinLive(){
   const ddi=(document.getElementById('lv-ddi')?.value||'+55').replace('-CA','');
   const waNum=document.getElementById('lv-whatsapp')?.value.trim().replace(/\D/g,'');
   const whatsapp= waNum ? ddi+' '+waNum : '';
-  if(!name||!email||!whatsapp){showToast('Preencha os campos obrigatorios!');if(btn){btn.disabled=false;btn.textContent='Acessar o Live Room';}return;}
+  if(!name||!email||!whatsapp){showToast('Preencha os campos obrigatorios!');if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
   const nasc=document.getElementById('lv-nascimento')?.value;
   const lead={name,email,whatsapp,sexo:document.getElementById('lv-sexo')?.value||null,nascimento:nasc||null,idade:nasc?Math.floor((Date.now()-new Date(nasc))/31557600000):null,pais:document.getElementById('lv-pais')?.value||null,estado:document.getElementById('lv-estado')?.value.trim()||null,cidade:document.getElementById('lv-cidade')?.value.trim()||null,estilo_trading:document.getElementById('lv-estilo')?.value||null,plataforma:document.getElementById('lv-plataforma')?.value||null,firma:document.getElementById('lv-firma')?.value||null,capital_disponivel:document.getElementById('lv-capital')?.value||null,passou_desafio:document.getElementById('lv-desafio')?.value||null,tool:'live',ts:new Date().toISOString()};
   saveLead(lead);
   document.getElementById('live-gate').classList.add('hide');document.getElementById('live-room').classList.remove('hide');document.getElementById('lv-viewers').textContent=Math.floor(Math.random()*40+10);
   track('live_signup',{name,email,pais:lead.pais,estilo:lead.estilo_trading});
   if(typeof fbq!=='undefined')fbq('track','Lead',{content_name:'Live Room Signup',value:1,currency:'USD'});
-  if(btn){btn.disabled=false;btn.textContent='Acessar o Live Room';}
+  if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}
 }
 
 /* BOT */
@@ -5040,7 +6562,7 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 
 /* TOOLS */
 const TOOLS=[{id:'orderflow',name:'Order Flow Analyzer',badge:'Gratis',badgeColor:'var(--green)',badgeBg:'var(--gnbg)',desc:'Analise o fluxo de ordens. Identifique acumulacao e distribuicao institucional.'},{id:'dashboard',name:'Prop Firm Dashboard',badge:'Premium',badgeColor:'var(--gold)',badgeBg:'var(--gbg)',desc:'Monitore drawdown, lucro e dias de operacao em tempo real.'},{id:'journal',name:'Trade Journal',badge:'Gratis',badgeColor:'var(--green)',badgeBg:'var(--gnbg)',desc:'Registre e analise cada operacao. Identifique padroes e melhore sua performance.'},{id:'backtester',name:'Backtester Pro',badge:'Premium',badgeColor:'var(--gold)',badgeBg:'var(--gbg)',desc:'Simule estrategias. Calcule win rate, profit factor e max drawdown.'},{id:'alerts',name:'Alert Manager',badge:'Gratis',badgeColor:'var(--green)',badgeBg:'var(--gnbg)',desc:'Configure alertas de preco e drawdown via Telegram ou e-mail.'},{id:'ninjapack',name:'NinjaTrader Pack',badge:'VIP',badgeColor:'#A855F7',badgeBg:'rgba(168,85,247,.1)',desc:'Pack com 15 indicadores otimizados para prop firms. NinjaTrader 8.'}];
-function renderIndHub(){const g=document.getElementById('ind-hub-grid');if(!g)return;g.innerHTML=TOOLS.map(t=>`<div class="ic" onclick="openTool('${t.id}')"><div class="ic-top"><div class="ic-ico"></div><span class="ic-badge" style="background:${t.badgeBg};color:${t.badgeColor};">${t.badge}</span></div><div class="ic-name">${t.name}</div><div class="ic-desc">${t.desc}</div><button class="ic-btn">Acessar</button></div>`).join('');}
+function renderIndHub(){const g=document.getElementById('ind-hub-grid');if(!g)return;g.innerHTML=TOOLS.map(tool=>`<div class="ic" onclick="openTool('${tool.id}')"><div class="ic-top"><div class="ic-ico"></div><span class="ic-badge" style="background:${tool.badgeBg};color:${tool.badgeColor};">${tool.badge}</span></div><div class="ic-name">${tool.name}</div><div class="ic-desc">${tool.desc}</div><button class="ic-btn">${t('plat_acessar')}</button></div>`).join('');}
 function openTool(id){const t=TOOLS.find(x=>x.id===id);if(!t)return;const unlocked=isUnlocked(id);const inner=document.getElementById('tool-modal-inner');inner.innerHTML=`<div class="tm-hd"><div class="tm-title">${t.name} <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${t.badgeBg};color:${t.badgeColor};font-weight:700;">${t.badge}</span></div><button class="tm-x" onclick="closeTool()">x</button></div><div class="tm-body" id="tm-body">${unlocked?renderToolContent(id):renderLeadGate(id,t)}</div>`;document.getElementById('tool-ov').classList.add('open');document.getElementById('tool-modal').classList.add('open');document.body.style.overflow='hidden';track('tool_open',{tool_id:id,tool_name:t.name,unlocked});}
 function closeTool(){document.getElementById('tool-ov').classList.remove('open');document.getElementById('tool-modal').classList.remove('open');document.body.style.overflow='';}
 function renderLeadGate(toolId,t){return`<div class="lead-gate"><div class="lg-ico"></div><div class="lg-title">Acesse o ${t.name}</div><div class="lg-desc">${t.desc}<br><br><strong style="color:var(--t1);">Cadastre-se gratuitamente para desbloquear.</strong></div><div class="lg-form"><div class="lg-field"><label>Nome</label><input type="text" id="lg-name-${toolId}" placeholder="Seu nome"></div><div class="lg-field"><label>E-mail</label><input type="email" id="lg-email-${toolId}" placeholder="seu@email.com"></div><div class="lg-field"><label>WhatsApp</label><input type="tel" id="lg-wa-${toolId}" placeholder="+55 11 99999-9999"></div><button class="lg-sub" onclick="submitLead('${toolId}')">Desbloquear</button><div class="lg-note">Seus dados sao privados.</div></div></div>`;}
@@ -5536,6 +7058,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   calcPS();
   renderIndHub();
   renderPlatforms();
+  renderGuides();
+  renderBlog();
+  renderQuiz();
   renderAchFirmTabs();
   achSelectFirm(CHECKOUT_FIRMS[0]?.id || 'apex');
   renderFaq();
