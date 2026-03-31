@@ -2529,8 +2529,7 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); renderOffers(); renderAwards();
-  await initFavs();
+  renderHome(); renderOffers(); renderAwards(); applyF();
   track('language_change',{language:lang});
 }
 function initLang() {
