@@ -164,6 +164,7 @@ img{max-width:100%;}
  background:rgba(7,9,13,0.97);
  backdrop-filter:blur(16px);
  border-bottom:1px solid var(--b1);
+ overflow:visible;
 }
 .nav-logo{
  font-size:15px;font-weight:700;letter-spacing:-.3px;cursor:pointer;
@@ -198,16 +199,19 @@ img{max-width:100%;}
 .nt-cta:hover{background:#F7C948!important;}
 
 /* nav right */
-.nav-r{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px;}
+.nav-r{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px;overflow:visible;}
 .lang-btn{
  display:flex;align-items:center;gap:4px;padding:5px 9px;
  background:var(--card);border:1px solid var(--b2);border-radius:7px;
  font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;position:relative;
 }
 .lang-dd{
- position:absolute;top:calc(100%+6px);right:0;width:156px;
+ position:absolute;top:100%;right:0;width:156px;padding-top:6px;
+ z-index:9999;display:none;
+}
+.lang-dd-inner{
  background:var(--card2);border:1px solid var(--b2);border-radius:10px;
- padding:5px;z-index:200;display:none;box-shadow:0 12px 40px rgba(0,0,0,.6);
+ padding:5px;box-shadow:0 12px 40px rgba(0,0,0,.6);
 }
 .lang-btn:hover .lang-dd{display:block;}
 .lang-opt{padding:7px 10px;border-radius:6px;font-size:12px;color:var(--t2);cursor:pointer;transition:.15s;}
@@ -231,7 +235,8 @@ img{max-width:100%;}
 }
 .user-menu-btn:hover{border-color:var(--gold);}
 .user-avatar-sm{width:24px;height:24px;border-radius:50%;background:var(--gold);color:#07090D;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
-.user-dd{position:fixed;top:var(--nav-h);right:12px;width:180px;background:var(--card2);border:1px solid var(--b2);border-radius:10px;padding:5px;z-index:9999;display:none;box-shadow:0 12px 40px rgba(0,0,0,.6);}
+.user-dd{position:absolute;top:100%;right:0;width:180px;padding-top:6px;z-index:9999;display:none;}
+.user-dd-inner{background:var(--card2);border:1px solid var(--b2);border-radius:10px;padding:5px;box-shadow:0 12px 40px rgba(0,0,0,.6);}
 .user-menu-btn:hover .user-dd{display:block;}
 .user-dd-item{padding:8px 12px;border-radius:6px;font-size:12px;color:var(--t2);cursor:pointer;transition:.15s;display:block;width:100%;background:none;border:none;text-align:left;font-family:var(--f);}
 .user-dd-item:hover{background:rgba(255,255,255,.05);color:var(--t1);}
@@ -1226,14 +1231,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="nav-r">
  <div class="lang-btn">
  <span id="l-flag"></span><span id="l-code"> BR</span>
- <div class="lang-dd">
+ <div class="lang-dd"><div class="lang-dd-inner">
  <div class="lang-opt" onclick="setL('pt','','BR')"> Português</div>
  <div class="lang-opt" onclick="setL('en','','EN')"> English</div>
  <div class="lang-opt" onclick="setL('es','','ES')"> Español</div>
  <div class="lang-opt" onclick="setL('fr','','FR')"> Français</div>
  <div class="lang-opt" onclick="setL('de','','DE')"> Deutsch</div>
  <div class="lang-opt" onclick="setL('ar','','AR')"> عربي</div>
- </div>
+ </div></div>
  </div>
  <!-- Auth buttons (logged out) -->
  <div id="auth-btns-out">
@@ -1245,10 +1250,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="user-menu-btn">
    <div class="user-avatar-sm" id="nav-avatar">U</div>
    <span id="nav-user-name">Usuário</span>
-   <div class="user-dd">
+   <div class="user-dd"><div class="user-dd-inner">
     <button class="user-dd-item" onclick="go('painel')">Meu Painel</button>
     <button class="user-dd-item" onclick="doLogout()">Sair</button>
-   </div>
+   </div></div>
   </div>
  </div>
  <button class="hbg" id="hbg" onclick="toggleMM()"><span></span><span></span><span></span></button>
