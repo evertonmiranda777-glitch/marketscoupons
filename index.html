@@ -441,6 +441,7 @@ img{max-width:100%;}
 .fr-tags{display:flex;gap:4px;flex-wrap:nowrap;margin-top:3px;}
 .fr-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;}
 .fr-spacer{flex:1;min-width:12px;}
+.fr-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;letter-spacing:.3px;}
 .fr-mets-row{display:flex;align-items:center;gap:16px;flex-shrink:0;}
 .fmet{text-align:center;min-width:48px;}
 .fmet .mv{font-size:13px;font-weight:700;}
@@ -468,6 +469,35 @@ img{max-width:100%;}
 .tp-stars{color:#00b67a;font-size:11px;letter-spacing:1px;}
 .tp-info{font-size:9px;color:var(--t3);}
 .tp-info b{color:#00b67a;}
+
+/* OFFERS PAGE */
+.offers-wrap{max-width:1100px;margin:0 auto;padding:40px 24px;}
+.offers-hero{text-align:center;margin-bottom:40px;}
+.offers-hero-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);background:var(--gbg);border:1px solid var(--gbr);border-radius:20px;padding:4px 14px;margin-bottom:14px;}
+.offers-hero-title{font-size:32px;font-weight:800;margin:0 0 10px;color:var(--t1);}
+.offers-hero-sub{font-size:14px;color:var(--t2);margin:0;}
+.offers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.offer-card{background:var(--card);border:1px solid var(--b1);border-radius:14px;overflow:hidden;transition:border-color .2s;}
+.offer-card:hover{border-color:var(--gold);}
+.offer-card-top{padding:20px 20px 14px;display:flex;align-items:center;gap:12px;}
+.offer-card-info{flex:1;}
+.offer-card-name{font-size:15px;font-weight:700;color:var(--t1);}
+.offer-card-type{font-size:11px;color:var(--t3);margin-top:2px;}
+.offer-disc-big{font-size:28px;font-weight:800;color:var(--gold);line-height:1;}
+.offer-disc-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
+.offer-card-body{padding:0 20px 20px;}
+.offer-desc{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5;}
+.offer-coupon-box{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+.offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:6px;}
+.offer-coupon-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.offer-coupon-code{font-size:18px;font-weight:800;letter-spacing:3px;color:var(--gold);}
+.offer-copy-btn{padding:7px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
+.offer-copy-btn:hover{background:#d9a020;}
+.offer-no-coupon{font-size:12px;color:var(--green);font-weight:600;}
+.offer-cta{width:100%;padding:11px;background:var(--card2);border:1px solid var(--b2);border-radius:8px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;font-family:var(--f);}
+.offer-cta:hover{border-color:var(--gold);color:var(--gold);}
+.offer-badge{display:inline-flex;align-items:center;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:8px;letter-spacing:.3px;}
+@media(max-width:600px){.offers-grid{grid-template-columns:1fr;}.offers-hero-title{font-size:22px;}}
 
 /* DRAWER */
 .ov{position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.3s;}
@@ -521,13 +551,15 @@ img{max-width:100%;}
 .dc-v.y{color:var(--gold);}
 .dc-v.r{color:var(--red);}
 .ptbl{width:100%;border-collapse:collapse;font-size:12px;}
-.ptbl th{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;padding:0 0 6px;text-align:left;font-weight:500;}
+.ptbl thead{background:var(--card2);border-radius:6px;}
+.ptbl th{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;padding:7px 10px;text-align:left;font-weight:600;}
 .ptbl th:not(:first-child){text-align:right;}
-.ptbl td{padding:6px 0;border-top:1px solid var(--b1);}
+.ptbl td{padding:8px 10px;border-top:1px solid var(--b1);}
 .ptbl td:not(:first-child){text-align:right;}
-.ptbl td.ta{font-weight:600;color:var(--t2);}
-.ptbl td.tn{color:var(--green);font-weight:700;}
+.ptbl td.ta{font-weight:600;color:var(--t1);font-size:13px;}
+.ptbl td.tn{color:var(--green);font-weight:800;font-size:14px;}
 .ptbl td.to{color:var(--t3);text-decoration:line-through;font-size:11px;}
+.ptbl tr:hover td{background:rgba(255,255,255,.02);}
 .tags-flex{display:flex;gap:4px;flex-wrap:wrap;}
 .tag{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;}
 .tag.g{background:var(--gnbg);color:var(--green);}
@@ -1271,6 +1303,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="nav-logo" onclick="go('home')">Markets<em>Coupons</em><div class="live-dot"></div></div>
  <div class="nav-tabs" id="nav-tabs">
  <button class="nt active" data-p="home" data-i18n="nav_ofertas" onclick="go('home')">Ofertas</button>
+ <button class="nt" data-p="offers" onclick="go('offers')">🏷️ Cupons</button>
  <button class="nt" data-p="firms" data-i18n="nav_firmas" onclick="go('firms')">Firmas</button>
  <button class="nt" data-p="plataformas" data-i18n="nav_plataformas" onclick="go('plataformas')">Plataformas</button>
  <button class="nt" data-p="indicators" data-i18n="nav_indicadores" onclick="go('indicators')">Indicadores</button>
@@ -1483,6 +1516,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <!-- FIRMS -->
+<div class="page" id="page-offers">
+  <div class="offers-wrap">
+    <div class="offers-hero">
+      <div class="offers-hero-label">🏷️ Cupons Exclusivos</div>
+      <h1 class="offers-hero-title">Economize nas melhores prop firms</h1>
+      <p class="offers-hero-sub">Cupons verificados e atualizados. Copie, aplique no checkout e comece a operar com desconto.</p>
+    </div>
+    <div class="offers-grid" id="offers-grid"></div>
+  </div>
+</div>
+
 <div class="page" id="page-firms">
  <div class="firms-layout">
  <aside class="firms-sb">
@@ -2261,12 +2305,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 /* DATA */
 const FIRMS=[
-  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',icon_url:'',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$17.70',o:'$118'},{a:'50K',n:'$19.70',o:'$131'},{a:'100K',n:'$29.70',o:'$198'},{a:'150K',n:'$39.70',o:'$264'}],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
-  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',icon_url:'',rating:4.8,reviews:1466,discount:89,dtype:'lifetime',coupon:'MARKET89',link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Por conta',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$19.25',o:'$175'},{a:'100K',n:'$23.65',o:'$215'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$48.15',o:'$535'}],perks:['Passa em 1 dia','Sem consistencia','Trade noticias','Payouts semanais'],proibido:['Latency arbitrage'],desc:'Bulenox e uma prop firm de futuros com regras simplificadas. Possivel passar em 1 dia, sem regra de consistencia.',trustpilot:{score:4.8,reviews:1466,url:'https://www.trustpilot.com/review/bulenox.com'}},
-  {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',icon_url:'',rating:4.8,reviews:39754,discount:19,dtype:'especial',coupon:null,link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader','DXtrade'],minDays:4,evalDays:30,drawdown:'Trailing/Fixed',split:'90%',ddPct:'-5%/-10%',target:'8%/5%',scaling:'Ate $2M',prices:[{a:'10K',n:'89',o:'—'},{a:'25K',n:'250',o:'—'},{a:'50K',n:'345',o:'—'},{a:'100K',n:'439',o:'540'},{a:'200K',n:'1.080',o:'—'}],perks:['Free Trial ilimitado','90% split','Suporte 20 idiomas','$500M+ pagos'],proibido:['Latency arbitrage','Manipulacao spread'],desc:'FTMO e a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',trustpilot:{score:4.8,reviews:39754,url:'https://www.trustpilot.com/review/ftmo.com'}},
+  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',icon_url:'',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',badge:{label:'Maior Desconto',color:'#F97316',bg:'rgba(249,115,22,0.15)'},link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$17.70',o:'$118'},{a:'50K',n:'$19.70',o:'$131'},{a:'100K',n:'$29.70',o:'$198'},{a:'150K',n:'$39.70',o:'$264'}],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
+  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',icon_url:'',rating:4.8,reviews:1466,discount:89,dtype:'lifetime',coupon:'MARKET89',badge:{label:'Melhor Split 90%',color:'#3B82F6',bg:'rgba(59,130,246,0.15)'},link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Por conta',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$19.25',o:'$175'},{a:'100K',n:'$23.65',o:'$215'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$48.15',o:'$535'}],perks:['Passa em 1 dia','Sem consistencia','Trade noticias','Payouts semanais'],proibido:['Latency arbitrage'],desc:'Bulenox e uma prop firm de futuros com regras simplificadas. Possivel passar em 1 dia, sem regra de consistencia.',trustpilot:{score:4.8,reviews:1466,url:'https://www.trustpilot.com/review/bulenox.com'}},
+  {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',icon_url:'',rating:4.8,reviews:39754,discount:19,dtype:'especial',coupon:null,badge:{label:'Líder Forex',color:'#22C55E',bg:'rgba(34,197,94,0.15)'},link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader','DXtrade'],minDays:4,evalDays:30,drawdown:'Trailing/Fixed',split:'90%',ddPct:'-5%/-10%',target:'8%/5%',scaling:'Ate $2M',prices:[{a:'10K',n:'89',o:'—'},{a:'25K',n:'250',o:'—'},{a:'50K',n:'345',o:'—'},{a:'100K',n:'439',o:'540'},{a:'200K',n:'1.080',o:'—'}],perks:['Free Trial ilimitado','90% split','Suporte 20 idiomas','$500M+ pagos'],proibido:['Latency arbitrage','Manipulacao spread'],desc:'FTMO e a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',trustpilot:{score:4.8,reviews:39754,url:'https://www.trustpilot.com/review/ftmo.com'}},
   {id:'tpt',name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'rgba(168,85,247,0.12)',icon:'T',icon_url:'',rating:4.4,reviews:8550,discount:40,dtype:'lifetime',coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',tags:['Futuros','Lifetime','Saque dia 1'],platforms:['Tradovate','TradingView','Rithmic','NinjaTrader'],minDays:4,evalDays:null,drawdown:'End-of-Day',split:'80%',ddPct:'EOD',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$90',o:'$150'},{a:'50K',n:'$102',o:'$170'},{a:'75K',n:'$147',o:'$245'},{a:'100K',n:'$198',o:'$330'},{a:'150K',n:'$216',o:'$360'}],perks:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario'],proibido:['Manipulacao spread'],desc:'Take Profit Trader destaca-se pelo saque desde o primeiro dia e sem taxa de ativacao.',trustpilot:{score:4.4,reviews:8550,url:'https://www.trustpilot.com/review/takeprofittrader.com'}},
-  {id:'fn',name:'FundedNext',type:'Futuros',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',icon:'N',icon_url:'',rating:4.5,reviews:60850,discount:30,dtype:'1 desafio',coupon:'FNF30',link:'https://fundednext.com/?fpr=everton33',tags:['Futuros','Payout 24h','Sem limite'],platforms:['Tradovate','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Fixed',split:'95%',ddPct:'Fixo',target:'Variavel',scaling:'Ate $300K',prices:[{a:'25K Legacy',n:'$79.99',o:'—'},{a:'50K Legacy',n:'$149.99',o:'—'},{a:'100K Legacy',n:'$249.99',o:'—'},{a:'50K Bolt',n:'$99.99',o:'—'},{a:'25K Rapid',n:'$109',o:'—'}],perks:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso'],proibido:['Latency arbitrage'],desc:'FundedNext com 400K+ contas e $274M+ pagos. Destaque para payout garantido em 24h.',trustpilot:{score:4.5,reviews:60850,url:'https://www.trustpilot.com/review/fundednext.com'}},
-  {id:'e2t',name:'Earn2Trade',type:'Futuros',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',icon:'E',icon_url:'',rating:4.7,reviews:4647,discount:50,dtype:'career path',coupon:'MARKETSCOUPONS',link:'https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14',tags:['Futuros','Journalytix','Scaling $400K'],platforms:['Rithmic','NinjaTrader'],minDays:15,evalDays:null,drawdown:'EOD Fixed',split:'80%',ddPct:'TCP100: $3.500',target:'TCP100: $6.000',scaling:'Ate $400K',prices:[{a:'TCP25',n:'$75',o:'$150'},{a:'TCP50',n:'$95',o:'$190'},{a:'TCP100',n:'$175',o:'$350'},{a:'Gauntlet 50K',n:'$85',o:'$170'},{a:'Gauntlet 100K',n:'$157.50',o:'$315'}],perks:['Journalytix gratis','Reset gratis','Scaling ate $400K'],proibido:['HFT','Latency arbitrage'],desc:'Earn2Trade foca em educacao e desenvolvimento com escalamento ate $400K.',trustpilot:{score:4.7,reviews:4647,url:'https://www.trustpilot.com/review/www.earn2trade.com'}},
+  {id:'fn',name:'FundedNext',type:'Futuros',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',icon:'N',icon_url:'',rating:4.5,reviews:60850,discount:30,dtype:'1 desafio',coupon:'FNF30',badge:{label:'Mais Avaliações',color:'#06B6D4',bg:'rgba(6,182,212,0.15)'},link:'https://fundednext.com/?fpr=everton33',tags:['Futuros','Payout 24h','Sem limite'],platforms:['Tradovate','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Fixed',split:'95%',ddPct:'Fixo',target:'Variavel',scaling:'Ate $300K',prices:[{a:'25K Legacy',n:'$79.99',o:'—'},{a:'50K Legacy',n:'$149.99',o:'—'},{a:'100K Legacy',n:'$249.99',o:'—'},{a:'50K Bolt',n:'$99.99',o:'—'},{a:'25K Rapid',n:'$109',o:'—'}],perks:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso'],proibido:['Latency arbitrage'],desc:'FundedNext com 400K+ contas e $274M+ pagos. Destaque para payout garantido em 24h.',trustpilot:{score:4.5,reviews:60850,url:'https://www.trustpilot.com/review/fundednext.com'}},
+  {id:'e2t',name:'Earn2Trade',type:'Futuros',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',icon:'E',icon_url:'',rating:4.7,reviews:4647,discount:50,dtype:'career path',coupon:'MARKETSCOUPONS',badge:{label:'Scaling $400K',color:'#F59E0B',bg:'rgba(245,158,11,0.15)'},link:'https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14',tags:['Futuros','Journalytix','Scaling $400K'],platforms:['Rithmic','NinjaTrader'],minDays:15,evalDays:null,drawdown:'EOD Fixed',split:'80%',ddPct:'TCP100: $3.500',target:'TCP100: $6.000',scaling:'Ate $400K',prices:[{a:'TCP25',n:'$75',o:'$150'},{a:'TCP50',n:'$95',o:'$190'},{a:'TCP100',n:'$175',o:'$350'},{a:'Gauntlet 50K',n:'$85',o:'$170'},{a:'Gauntlet 100K',n:'$157.50',o:'$315'}],perks:['Journalytix gratis','Reset gratis','Scaling ate $400K'],proibido:['HFT','Latency arbitrage'],desc:'Earn2Trade foca em educacao e desenvolvimento com escalamento ate $400K.',trustpilot:{score:4.7,reviews:4647,url:'https://www.trustpilot.com/review/www.earn2trade.com'}},
 ];
 
 /* NAV */
@@ -2432,7 +2476,7 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); applyF();
+  renderHome(); applyF(); renderOffers();
   track('language_change',{language:lang});
 }
 function initLang() {
@@ -2485,6 +2529,7 @@ function renderFirms(list){
         <div class="fr-disc-badge" style="color:${f.color};">${f.discount}%<span>OFF ${f.dtype}</span></div>
       </div>
       <div class="fr-spacer"></div>
+      ${f.badge?`<span class="fr-badge" style="color:${f.badge.color};background:${f.badge.bg};border:1px solid ${f.badge.color}40;">⭐ ${f.badge.label}</span>`:''}
       <div class="fr-mets-row">
         <div class="fmet"><div class="mv" style="color:var(--green);">${f.discount}%</div><div class="ml">DESC.</div></div>
         <div class="fmet"><div class="mv" style="color:var(--green);">${f.split}</div><div class="ml">SPLIT</div></div>
@@ -2520,6 +2565,39 @@ function renderFirms(list){
         </div>
       </div>
     </div>`}).join('');
+}
+function renderOffers(){
+  const el=document.getElementById('offers-grid');
+  if(!el)return;
+  el.innerHTML=FIRMS.map(f=>`
+    <div class="offer-card">
+      <div class="offer-card-top">
+        ${firmIco(f,'44px','16px')}
+        <div class="offer-card-info">
+          ${f.badge?`<div class="offer-badge" style="color:${f.badge.color};background:${f.badge.bg};border:1px solid ${f.badge.color}40;">⭐ ${f.badge.label}</div>`:''}
+          <div class="offer-card-name">${f.name}</div>
+          <div class="offer-card-type">${f.type} · ${f.platforms.slice(0,2).join(', ')}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div class="offer-disc-big">${f.discount}%</div>
+          <div class="offer-disc-label">OFF ${f.dtype}</div>
+        </div>
+      </div>
+      <div class="offer-card-body">
+        <p class="offer-desc">${f.desc||''}</p>
+        ${f.coupon?`
+        <div class="offer-coupon-box">
+          <div class="offer-coupon-label">Cupom Exclusivo MarketsCoupons</div>
+          <div class="offer-coupon-row">
+            <span class="offer-coupon-code">${f.coupon}</span>
+            <button class="offer-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','offers')">Copiar</button>
+          </div>
+        </div>`:`<div class="offer-coupon-box" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);">
+          <div class="offer-coupon-row"><span class="offer-no-coupon">✓ Desconto aplicado automaticamente via link</span></div>
+        </div>`}
+        <button class="offer-cta" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)">Ver planos com desconto →</button>
+      </div>
+    </div>`).join('');
 }
 function applyF(){
   const q=document.getElementById('search').value.toLowerCase();
