@@ -475,20 +475,24 @@ img{max-width:100%;}
 .tp-info b{color:#00b67a;}
 
 /* LOYALTY BANNER */
-.loyalty-banner{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:32px auto;max-width:900px;background:linear-gradient(135deg,rgba(240,180,41,.08) 0%,rgba(240,180,41,.03) 100%);border:1px solid var(--gbr);border-radius:16px;padding:28px 32px;flex-wrap:wrap;}
+.loyalty-banner{display:flex;align-items:center;gap:28px;margin:32px auto;max-width:900px;background:linear-gradient(135deg,rgba(240,180,41,.08) 0%,rgba(240,180,41,.03) 100%);border:1px solid var(--gbr);border-radius:16px;padding:28px 32px;}
 .lb-left{display:flex;align-items:flex-start;gap:16px;flex:1;min-width:0;}
-.lb-icon{font-size:36px;flex-shrink:0;margin-top:2px;}
+.lb-icon{font-size:36px;flex-shrink:0;line-height:1;}
 .lb-title{font-size:17px;font-weight:800;color:var(--t1);margin-bottom:6px;}
 .lb-sub{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:14px;}
 .lb-steps{display:flex;gap:10px;flex-wrap:wrap;}
 .lb-step{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--t2);}
 .lb-num{width:18px;height:18px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.lb-right{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
-.lb-cta{padding:12px 24px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;}
+.lb-right{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:160px;}
+.lb-cta{padding:12px 20px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;text-align:center;}
 .lb-cta:hover{background:#d9a020;}
-.lb-cta-sec{padding:10px 24px;background:transparent;color:var(--gold);border:1px solid var(--gbr);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;}
+.lb-cta-sec{padding:10px 20px;background:transparent;color:var(--gold);border:1px solid var(--gbr);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;text-align:center;}
 .lb-cta-sec:hover{background:var(--gbg);}
-@media(max-width:700px){.loyalty-banner{padding:20px;}.lb-right{flex-direction:row;}.lb-cta,.lb-cta-sec{padding:10px 16px;font-size:12px;}}
+@media(max-width:700px){
+  .loyalty-banner{flex-direction:column;padding:20px;gap:16px;align-items:stretch;}
+  .lb-right{flex-direction:row;min-width:0;}
+  .lb-cta,.lb-cta-sec{flex:1;padding:11px 10px;font-size:12px;}
+}
 
 /* AWARDS PAGE */
 .awards-wrap{max-width:1100px;margin:0 auto;padding:40px 24px;}
@@ -1564,14 +1568,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="loyalty-banner">
    <div class="lb-left">
      <div class="lb-icon">🎁</div>
-     <div>
-       <div class="lb-title">Programa de Fidelidade MarketsCoupons</div>
+     <div style="min-width:0;">
+       <div class="lb-title">Programa de Fidelidade</div>
        <div class="lb-sub">Compre via nosso link ou cupom, envie o comprovante e desbloqueie <strong>Live Room VIP</strong>, sorteios de contas e indicadores exclusivos.</div>
        <div class="lb-steps">
-         <div class="lb-step"><span class="lb-num">1</span> Cadastre-se gratuitamente</div>
-         <div class="lb-step"><span class="lb-num">2</span> Compre com nosso cupom</div>
-         <div class="lb-step"><span class="lb-num">3</span> Envie o comprovante</div>
-         <div class="lb-step"><span class="lb-num">4</span> Acesse benefícios VIP</div>
+         <div class="lb-step"><span class="lb-num">1</span> Cadastre-se grátis</div>
+         <div class="lb-step"><span class="lb-num">2</span> Compre com cupom</div>
+         <div class="lb-step"><span class="lb-num">3</span> Envie comprovante</div>
+         <div class="lb-step"><span class="lb-num">4</span> Acesse VIP</div>
        </div>
      </div>
    </div>
