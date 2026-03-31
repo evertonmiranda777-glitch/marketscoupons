@@ -483,15 +483,15 @@ img{max-width:100%;}
 .lb-steps{display:flex;gap:10px;flex-wrap:wrap;}
 .lb-step{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--t2);}
 .lb-num{width:18px;height:18px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.lb-right{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:160px;}
-.lb-cta{padding:12px 20px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;text-align:center;}
-.lb-cta:hover{background:#d9a020;}
-.lb-cta-sec{padding:10px 20px;background:transparent;color:var(--gold);border:1px solid var(--gbr);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;text-align:center;}
-.lb-cta-sec:hover{background:var(--gbg);}
+.lb-right{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:170px;}
+.lb-cta{padding:10px 24px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;text-align:center;}
+.lb-cta:hover{background:#F7C948;}
+.lb-cta-sec{padding:10px 24px;background:transparent;color:var(--t1);border:1px solid var(--b2);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--f);transition:.2s;white-space:nowrap;text-align:center;}
+.lb-cta-sec:hover{border-color:var(--gold);color:var(--gold);}
 @media(max-width:700px){
   .loyalty-banner{flex-direction:column;padding:20px;gap:16px;align-items:stretch;}
   .lb-right{flex-direction:row;min-width:0;}
-  .lb-cta,.lb-cta-sec{flex:1;padding:11px 10px;font-size:12px;}
+  .lb-cta,.lb-cta-sec{flex:1;padding:10px 8px;font-size:12px;}
 }
 
 /* AWARDS PAGE */
@@ -1566,7 +1566,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  <div class="hero-stats">
  <div class="hst"><div class="v"><em>6</em>+ <span data-i18n="hst_firms">Firmas</span></div><div class="l" data-i18n="hst_listadas">Listadas</div></div>
- <div class="hst"><div class="v">Até <em>90%</em></div><div class="l" data-i18n="hst_desconto">De desconto</div></div>
+ <div class="hst"><div class="v"><span data-i18n="hst_ate">Até</span> <em>90%</em></div><div class="l" data-i18n="hst_desconto">De desconto</div></div>
  <div class="hst"><div class="v"><em>100%</em></div><div class="l" data-i18n="hst_verificado">Verificado</div></div>
  <div class="hst"><div class="v"><em data-i18n="hst_gratis">Grátis</em></div><div class="l" data-i18n="hst_para_usar">Para usar</div></div>
  </div>
@@ -2466,7 +2466,7 @@ const I18N = {
     hero_sub:'Compare firmas, use cupons exclusivos e acesse ferramentas profissionais — tudo em um só lugar.',
     hero_btn_firms:'Ver Prop Firms', hero_btn_tg:'Entrar no Grupo do Telegram',
     home_melhores_ofertas:'Melhores ofertas agora',
-    hst_firms:'Firmas', hst_listadas:'Listadas', hst_desconto:'De desconto',
+    hst_ate:'Até', hst_firms:'Firmas', hst_listadas:'Listadas', hst_desconto:'De desconto',
     hst_verificado:'Verificado', hst_gratis:'Grátis', hst_para_usar:'Para usar',
     // Heatmap
     heatmap_titulo:'Mapa de Calor',
@@ -2503,7 +2503,7 @@ const I18N = {
     hero_sub:'Compare firms, use exclusive coupons and access professional tools — all in one place.',
     hero_btn_firms:'View Prop Firms', hero_btn_tg:'Join Telegram Group',
     home_melhores_ofertas:'Best offers now',
-    hst_firms:'Firms', hst_listadas:'Listed', hst_desconto:'Discount',
+    hst_ate:'Up to', hst_firms:'Firms', hst_listadas:'Listed', hst_desconto:'Discount',
     hst_verificado:'Verified', hst_gratis:'Free', hst_para_usar:'To use',
     heatmap_titulo:'Heatmap',
     nav_faq:'FAQ', faq_titulo:'Frequently Asked Questions', faq_sub:'Get answers about coupons, prop firms and how to use MarketsCoupons.',
@@ -2538,7 +2538,7 @@ const I18N = {
     hero_sub:'Compara firmas, usa cupones exclusivos y accede a herramientas profesionales — todo en un lugar.',
     hero_btn_firms:'Ver Prop Firms', hero_btn_tg:'Unirse al Grupo de Telegram',
     home_melhores_ofertas:'Mejores ofertas ahora',
-    hst_firms:'Firmas', hst_listadas:'Listadas', hst_desconto:'De descuento',
+    hst_ate:'Hasta', hst_firms:'Firmas', hst_listadas:'Listadas', hst_desconto:'De descuento',
     hst_verificado:'Verificado', hst_gratis:'Gratis', hst_para_usar:'Para usar',
     heatmap_titulo:'Mapa de Calor',
     nav_faq:'FAQ', faq_titulo:'Preguntas Frecuentes', faq_sub:'Resuelve tus dudas sobre cupones, prop firms y cómo usar MarketsCoupons.',
@@ -2567,7 +2567,7 @@ const I18N = {
     hero_sub:'Comparez les firmes, utilisez des coupons exclusifs et accédez à des outils professionnels.',
     hero_btn_firms:'Voir les Prop Firms', hero_btn_tg:'Rejoindre le Groupe Telegram',
     home_melhores_ofertas:'Meilleures offres maintenant',
-    hst_firms:'Firmes', hst_listadas:'Listées', hst_desconto:'De réduction',
+    hst_ate:"Jusqu'à", hst_firms:'Firmes', hst_listadas:'Listées', hst_desconto:'De réduction',
     hst_verificado:'Vérifié', hst_gratis:'Gratuit', hst_para_usar:'À utiliser',
     heatmap_titulo:'Carte thermique',
     geral_firmas_encontradas:'firmes trouvées', geral_copiar:'Copier', geral_copiado:'Copié!',
@@ -2594,7 +2594,7 @@ const I18N = {
     hero_sub:'Vergleiche Firmen, nutze exklusive Gutscheine und greife auf professionelle Tools zu.',
     hero_btn_firms:'Prop Firms ansehen', hero_btn_tg:'Telegram-Gruppe beitreten',
     home_melhores_ofertas:'Beste Angebote jetzt',
-    hst_firms:'Firmen', hst_listadas:'Gelistet', hst_desconto:'Rabatt',
+    hst_ate:'Bis zu', hst_firms:'Firmen', hst_listadas:'Gelistet', hst_desconto:'Rabatt',
     hst_verificado:'Verifiziert', hst_gratis:'Kostenlos', hst_para_usar:'Zu nutzen',
     heatmap_titulo:'Heatmap',
     geral_firmas_encontradas:'Firmen gefunden', geral_copiar:'Kopieren', geral_copiado:'Kopiert!',
@@ -2629,7 +2629,7 @@ const I18N = {
     hero_sub:'Confronta le aziende, usa coupon esclusivi e accedi a strumenti professionali — tutto in un posto.',
     hero_btn_firms:'Vedi Prop Firms', hero_btn_tg:'Unisciti al Gruppo Telegram',
     home_melhores_ofertas:'Migliori offerte ora',
-    hst_firms:'Aziende', hst_listadas:'Elencate', hst_desconto:'Di sconto',
+    hst_ate:'Fino al', hst_firms:'Aziende', hst_listadas:'Elencate', hst_desconto:'Di sconto',
     hst_verificado:'Verificato', hst_gratis:'Gratis', hst_para_usar:'Da usare',
     heatmap_titulo:'Mappa di Calore',
     faq_titulo:'Domande Frequenti', faq_sub:'Trova risposte su coupon, prop firms e come usare MarketsCoupons.',
@@ -2656,7 +2656,7 @@ const I18N = {
     hero_sub:'قارن الشركات، استخدم كوبونات حصرية وصل إلى أدوات احترافية — كل شيء في مكان واحد.',
     hero_btn_firms:'عرض Prop Firms', hero_btn_tg:'انضم لمجموعة Telegram',
     home_melhores_ofertas:'أفضل العروض الآن',
-    hst_firms:'شركات', hst_listadas:'مدرجة', hst_desconto:'خصم',
+    hst_ate:'حتى', hst_firms:'شركات', hst_listadas:'مدرجة', hst_desconto:'خصم',
     hst_verificado:'موثق', hst_gratis:'مجاني', hst_para_usar:'للاستخدام',
     heatmap_titulo:'خريطة حرارية',
     geral_firmas_encontradas:'شركات', geral_copiar:'نسخ', geral_copiado:'تم النسخ!',
