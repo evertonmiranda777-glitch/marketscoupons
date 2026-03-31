@@ -2422,6 +2422,7 @@ function go(page, skipHash){
   track('page_view',{page_name:page});
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='indicators') checkIndicatorsGate();
+  if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
 }
 window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(h)go(h,true);else go('home',true);});
@@ -4372,10 +4373,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (cachedMember?.email) {
     await loadLoyaltyFromSupabase(cachedMember.email);
   }
-  renderLoyaltyPage();
-
   // Auth session check
   await checkAuthSession();
+  renderLoyaltyPage();
   await initFavs();
 
   // Navegar para a página do hash na URL (ex: #firms)
