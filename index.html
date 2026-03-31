@@ -2494,7 +2494,6 @@ function renderFirms(list){
       ${f.trustpilot?`<a class="fr-tp-mini" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="fr-tp-stars">${'★'.repeat(tpStars)}</span><span class="fr-tp-count">${f.trustpilot.reviews.toLocaleString()}</span></a>`:''}
       <div class="fr-actions" onclick="event.stopPropagation()">
         ${f.coupon?`<button class="fr-coupon-pill" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${f.coupon}</button>`:''}
-        <button class="det-btn" onclick="openD('${f.id}')">${t('firms_detalhes')}</button>
         <button class="det-btn primary" onclick="openD('${f.id}')">${t('firms_ver_planos')}</button>
       </div>
       <!-- Mobile: card layout (hidden on desktop, shown on <=960px) -->
