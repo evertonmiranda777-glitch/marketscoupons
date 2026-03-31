@@ -218,6 +218,64 @@ img{max-width:100%;}
  font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;
 }
 .enter-btn:hover{border-color:var(--gold);color:var(--gold);}
+.signup-btn{
+ padding:6px 13px;background:var(--gold);border:none;
+ border-radius:7px;color:#07090D;font-family:var(--f);font-size:12px;
+ font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap;
+}
+.signup-btn:hover{background:#F7C948;}
+.user-menu-btn{
+ display:flex;align-items:center;gap:6px;padding:5px 10px;
+ background:var(--card);border:1px solid var(--b2);border-radius:7px;
+ color:var(--t1);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;position:relative;
+}
+.user-menu-btn:hover{border-color:var(--gold);}
+.user-avatar-sm{width:24px;height:24px;border-radius:50%;background:var(--gold);color:#07090D;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+.user-dd{position:absolute;top:calc(100%+6px);right:0;width:180px;background:var(--card2);border:1px solid var(--b2);border-radius:10px;padding:5px;z-index:200;display:none;box-shadow:0 12px 40px rgba(0,0,0,.6);}
+.user-menu-btn:hover .user-dd{display:block;}
+.user-dd-item{padding:8px 12px;border-radius:6px;font-size:12px;color:var(--t2);cursor:pointer;transition:.15s;display:block;width:100%;background:none;border:none;text-align:left;font-family:var(--f);}
+.user-dd-item:hover{background:rgba(255,255,255,.05);color:var(--t1);}
+
+/* AUTH MODALS */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;display:none;backdrop-filter:blur(4px);}
+.auth-overlay.show{display:flex;align-items:center;justify-content:center;}
+.auth-box{width:100%;max-width:420px;padding:36px;background:var(--sur);border:1px solid var(--b2);border-radius:16px;position:relative;max-height:90vh;overflow-y:auto;}
+.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;transition:.2s;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;}
+.auth-close:hover{color:var(--t1);background:rgba(255,255,255,.05);}
+.auth-title{font-size:20px;font-weight:800;margin-bottom:4px;}
+.auth-title em{color:var(--gold);font-style:normal;}
+.auth-sub{font-size:12px;color:var(--t3);margin-bottom:24px;}
+.auth-field{margin-bottom:14px;}
+.auth-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
+.auth-field input,.auth-field select{width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;outline:none;transition:.2s;font-family:var(--f);}
+.auth-field input:focus,.auth-field select:focus{border-color:var(--gold);}
+.auth-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237A8FA6'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.auth-field select option{background:var(--card);color:var(--t1);}
+.auth-row{display:flex;gap:10px;}
+.auth-row .auth-field{flex:1;}
+.auth-btn{width:100%;padding:12px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;margin-top:4px;font-family:var(--f);}
+.auth-btn:hover{background:#F7C948;}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed;}
+.auth-switch{margin-top:16px;text-align:center;font-size:12px;color:var(--t3);}
+.auth-switch a{color:var(--gold);cursor:pointer;font-weight:600;}
+.auth-switch a:hover{text-decoration:underline;}
+.auth-error{background:var(--rbg);color:var(--red);padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px;display:none;}
+.auth-success{background:var(--gnbg);color:var(--green);padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px;display:none;}
+
+/* USER PANEL PAGE */
+.up-header{text-align:center;padding:40px 20px 20px;}
+.up-avatar{width:72px;height:72px;border-radius:50%;background:var(--gold);color:#07090D;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 12px;}
+.up-name{font-size:20px;font-weight:700;}
+.up-email{font-size:13px;color:var(--t3);margin-top:2px;}
+.up-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;max-width:900px;margin:24px auto;padding:0 20px;}
+.up-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:24px;}
+.up-card h3{font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold);}
+.up-card .auth-field{margin-bottom:12px;}
+.up-card .auth-btn{margin-top:12px;}
+.up-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.up-stat{background:var(--card2);border-radius:8px;padding:14px;text-align:center;}
+.up-stat .v{font-size:22px;font-weight:800;color:var(--gold);}
+.up-stat .l{font-size:10px;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
 .hbg{
  display:none;flex-direction:column;gap:5px;
  background:none;border:none;padding:5px;
@@ -860,7 +918,8 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 @media(max-width:768px){
   .hbg{display:flex!important;}
   .nav-tabs{display:none!important;}
-  .enter-btn{display:none;}
+  .enter-btn,.signup-btn{display:none;}
+  .user-menu-btn span{display:none;}
   .lang-btn span:last-child{display:none;}
 }
 @media(max-width:600px){
@@ -1176,7 +1235,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="lang-opt" onclick="setL('ar','','AR')"> عربي</div>
  </div>
  </div>
- <button class="enter-btn" onclick="go('live')"> Entrar</button>
+ <!-- Auth buttons (logged out) -->
+ <div id="auth-btns-out">
+  <button class="enter-btn" onclick="openAuthModal('login')">Entrar</button>
+  <button class="signup-btn" onclick="openAuthModal('signup')">Cadastrar-se</button>
+ </div>
+ <!-- User menu (logged in) -->
+ <div id="auth-btns-in" style="display:none;">
+  <div class="user-menu-btn">
+   <div class="user-avatar-sm" id="nav-avatar">U</div>
+   <span id="nav-user-name">Usuário</span>
+   <div class="user-dd">
+    <button class="user-dd-item" onclick="go('painel')">Meu Painel</button>
+    <button class="user-dd-item" onclick="doLogout()">Sair</button>
+   </div>
+  </div>
+ </div>
  <button class="hbg" id="hbg" onclick="toggleMM()"><span></span><span></span><span></span></button>
  </div>
 </nav>
@@ -1219,6 +1293,105 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="mm-flag" onclick="setL('ar','','AR');closeMM()"></button>
  </div>
  <a href="https://t.me/marketcouponss" target="_blank"><div class="mm-tg"> Entrar no Telegram</div></a>
+ <div class="mm-sec">Conta</div>
+ <div id="mm-auth-out">
+  <button class="mm-item" onclick="closeMM();openAuthModal('login')">Entrar na Conta</button>
+  <button class="mm-item" onclick="closeMM();openAuthModal('signup')">Criar Conta</button>
+ </div>
+ <div id="mm-auth-in" style="display:none;">
+  <button class="mm-item" onclick="mgo('painel')">Meu Painel</button>
+  <button class="mm-item" onclick="closeMM();doLogout()">Sair da Conta</button>
+ </div>
+ </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="auth-overlay" id="login-overlay" onclick="if(event.target===this)closeAuthModals()">
+ <div class="auth-box">
+  <button class="auth-close" onclick="closeAuthModals()">&times;</button>
+  <div class="auth-title">Markets<em>Coupons</em></div>
+  <div class="auth-sub">Entre na sua conta</div>
+  <div class="auth-error" id="login-error"></div>
+  <div class="auth-field"><label>E-mail</label><input type="email" id="auth-login-email" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
+  <div class="auth-field"><label>Senha</label><input type="password" id="auth-login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
+  <button class="auth-btn" id="login-btn" onclick="doAuthLogin()">Entrar</button>
+  <div class="auth-switch">Não tem conta? <a onclick="openAuthModal('signup')">Cadastrar-se</a></div>
+ </div>
+</div>
+
+<!-- SIGNUP MODAL -->
+<div class="auth-overlay" id="signup-overlay" onclick="if(event.target===this)closeAuthModals()">
+ <div class="auth-box">
+  <button class="auth-close" onclick="closeAuthModals()">&times;</button>
+  <div class="auth-title">Markets<em>Coupons</em></div>
+  <div class="auth-sub">Crie sua conta gratuita</div>
+  <div class="auth-error" id="signup-error"></div>
+  <div class="auth-success" id="signup-success"></div>
+  <div class="auth-field"><label>Nome completo</label><input type="text" id="auth-signup-name" placeholder="Seu nome"></div>
+  <div class="auth-field"><label>E-mail</label><input type="email" id="auth-signup-email" placeholder="seu@email.com"></div>
+  <div class="auth-field"><label>Senha (mín. 6 caracteres)</label><input type="password" id="auth-signup-pass" placeholder="••••••••"></div>
+  <div class="auth-field"><label>Telefone</label><input type="tel" id="auth-signup-phone" placeholder="+55 11 99999-9999"></div>
+  <div class="auth-row">
+   <div class="auth-field"><label>Cidade</label><input type="text" id="auth-signup-city" placeholder="São Paulo"></div>
+   <div class="auth-field"><label>Estado</label><input type="text" id="auth-signup-state" placeholder="SP"></div>
+  </div>
+  <div class="auth-field"><label>País</label>
+   <select id="auth-signup-country">
+    <option value="Brasil">Brasil</option>
+    <option value="Portugal">Portugal</option>
+    <option value="Estados Unidos">Estados Unidos</option>
+    <option value="Argentina">Argentina</option>
+    <option value="Colômbia">Colômbia</option>
+    <option value="México">México</option>
+    <option value="Chile">Chile</option>
+    <option value="Outro">Outro</option>
+   </select>
+  </div>
+  <button class="auth-btn" id="signup-btn" onclick="doAuthSignup()">Criar Conta</button>
+  <div class="auth-switch">Já tem conta? <a onclick="openAuthModal('login')">Entrar</a></div>
+ </div>
+</div>
+
+<!-- USER PANEL PAGE -->
+<div class="page" id="page-painel">
+ <div class="up-header">
+  <div class="up-avatar" id="up-avatar">U</div>
+  <div class="up-name" id="up-name">Usuário</div>
+  <div class="up-email" id="up-email">email@example.com</div>
+ </div>
+ <div class="up-grid">
+  <div class="up-card">
+   <h3>Dados Pessoais</h3>
+   <div class="auth-field"><label>Nome</label><input type="text" id="up-edit-name"></div>
+   <div class="auth-field"><label>Telefone</label><input type="tel" id="up-edit-phone"></div>
+   <div class="auth-row">
+    <div class="auth-field"><label>Cidade</label><input type="text" id="up-edit-city"></div>
+    <div class="auth-field"><label>Estado</label><input type="text" id="up-edit-state"></div>
+   </div>
+   <div class="auth-field"><label>País</label>
+    <select id="up-edit-country">
+     <option value="Brasil">Brasil</option>
+     <option value="Portugal">Portugal</option>
+     <option value="Estados Unidos">Estados Unidos</option>
+     <option value="Argentina">Argentina</option>
+     <option value="Colômbia">Colômbia</option>
+     <option value="México">México</option>
+     <option value="Chile">Chile</option>
+     <option value="Outro">Outro</option>
+    </select>
+   </div>
+   <button class="auth-btn" onclick="saveProfile()">Salvar Alterações</button>
+   <div class="auth-success" id="up-save-ok" style="margin-top:12px;">Dados salvos com sucesso!</div>
+  </div>
+  <div class="up-card">
+   <h3>Resumo</h3>
+   <div class="up-stats">
+    <div class="up-stat"><div class="v" id="up-st-visits">0</div><div class="l">Visitas</div></div>
+    <div class="up-stat"><div class="v" id="up-st-clicks">0</div><div class="l">Cliques</div></div>
+    <div class="up-stat"><div class="v" id="up-st-coupons">0</div><div class="l">Cupons</div></div>
+   </div>
+   <p style="font-size:12px;color:var(--t3);text-align:center;">Em breve: histórico de cupons usados, firmas favoritas e mais.</p>
+  </div>
  </div>
 </div>
 
@@ -2034,6 +2207,7 @@ function go(page){
   track('page_view',{page_name:page});
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='indicators') checkIndicatorsGate();
+  if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
 }
 function toggleMM(){const open=document.getElementById('mm').classList.toggle('open');document.getElementById('mm-ov').classList.toggle('open',open);document.getElementById('hbg').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
 function closeMM(){['mm','mm-ov','hbg'].forEach(id=>document.getElementById(id)?.classList.remove('open'));document.body.style.overflow='';}
@@ -3287,6 +3461,171 @@ function removeProofFile(){proofFileData=null;const fi=document.getElementById('
 function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click',{size,plat,type,firm});}
 
 /* INIT */
+/* ══════════════════════════════════════════════════════════════════════════
+   AUTH SYSTEM — Supabase Auth + profiles
+   ══════════════════════════════════════════════════════════════════════════ */
+let currentUser = null;
+let currentProfile = null;
+
+function openAuthModal(type) {
+  closeAuthModals();
+  document.getElementById(type === 'login' ? 'login-overlay' : 'signup-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeAuthModals() {
+  document.getElementById('login-overlay').classList.remove('show');
+  document.getElementById('signup-overlay').classList.remove('show');
+  document.body.style.overflow = '';
+  // Clear errors
+  ['login-error','signup-error','signup-success'].forEach(id => {
+    const el = document.getElementById(id); if(el){el.style.display='none';el.textContent='';}
+  });
+}
+
+function showAuthError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg; el.style.display = 'block';
+}
+
+async function doAuthLogin() {
+  const email = document.getElementById('auth-login-email').value.trim();
+  const pass  = document.getElementById('auth-login-pass').value;
+  if (!email || !pass) return showAuthError('login-error', 'Preencha e-mail e senha.');
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = 'Entrando...';
+
+  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+  btn.disabled = false; btn.textContent = 'Entrar';
+
+  if (error) return showAuthError('login-error', error.message === 'Invalid login credentials' ? 'E-mail ou senha incorretos.' : error.message);
+
+  closeAuthModals();
+  await loadUserSession(data.user);
+  track('user_login', { method: 'email' });
+}
+
+async function doAuthSignup() {
+  const name    = document.getElementById('auth-signup-name').value.trim();
+  const email   = document.getElementById('auth-signup-email').value.trim();
+  const pass    = document.getElementById('auth-signup-pass').value;
+  const phone   = document.getElementById('auth-signup-phone').value.trim();
+  const city    = document.getElementById('auth-signup-city').value.trim();
+  const state   = document.getElementById('auth-signup-state').value.trim();
+  const country = document.getElementById('auth-signup-country').value;
+
+  if (!name || !email || !pass) return showAuthError('signup-error', 'Nome, e-mail e senha são obrigatórios.');
+  if (pass.length < 6) return showAuthError('signup-error', 'A senha deve ter no mínimo 6 caracteres.');
+
+  const btn = document.getElementById('signup-btn');
+  btn.disabled = true; btn.textContent = 'Criando conta...';
+
+  const { data, error } = await db.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      data: { full_name: name, phone, city, state, country }
+    }
+  });
+  btn.disabled = false; btn.textContent = 'Criar Conta';
+
+  if (error) return showAuthError('signup-error', error.message);
+
+  // Check if email confirmation is required
+  if (data.user && !data.session) {
+    const ok = document.getElementById('signup-success');
+    ok.textContent = 'Conta criada! Verifique seu e-mail para confirmar.';
+    ok.style.display = 'block';
+    track('user_signup', { method: 'email' });
+    return;
+  }
+
+  closeAuthModals();
+  await loadUserSession(data.user);
+  track('user_signup', { method: 'email' });
+}
+
+async function doLogout() {
+  await db.auth.signOut();
+  currentUser = null;
+  currentProfile = null;
+  updateAuthUI(false);
+  go('home');
+  track('user_logout');
+}
+
+async function loadUserSession(user) {
+  currentUser = user;
+  // Load profile
+  const { data } = await db.from('profiles').select('*').eq('id', user.id).single();
+  currentProfile = data;
+  updateAuthUI(true);
+}
+
+function updateAuthUI(loggedIn) {
+  document.getElementById('auth-btns-out').style.display = loggedIn ? 'none' : 'flex';
+  document.getElementById('auth-btns-in').style.display  = loggedIn ? '' : 'none';
+  // Mobile menu
+  const mmOut = document.getElementById('mm-auth-out');
+  const mmIn  = document.getElementById('mm-auth-in');
+  if (mmOut) mmOut.style.display = loggedIn ? 'none' : '';
+  if (mmIn)  mmIn.style.display  = loggedIn ? '' : 'none';
+
+  if (loggedIn && currentProfile) {
+    const initial = (currentProfile.full_name || currentProfile.email || 'U').charAt(0).toUpperCase();
+    document.getElementById('nav-avatar').textContent = initial;
+    document.getElementById('nav-user-name').textContent = (currentProfile.full_name || currentProfile.email).split(' ')[0];
+
+    // Update panel
+    document.getElementById('up-avatar').textContent = initial;
+    document.getElementById('up-name').textContent = currentProfile.full_name || 'Usuário';
+    document.getElementById('up-email').textContent = currentProfile.email;
+    document.getElementById('up-edit-name').value = currentProfile.full_name || '';
+    document.getElementById('up-edit-phone').value = currentProfile.phone || '';
+    document.getElementById('up-edit-city').value = currentProfile.city || '';
+    document.getElementById('up-edit-state').value = currentProfile.state || '';
+    document.getElementById('up-edit-country').value = currentProfile.country || 'Brasil';
+  }
+}
+
+async function saveProfile() {
+  if (!currentUser) return;
+  const updates = {
+    full_name: document.getElementById('up-edit-name').value.trim(),
+    phone:     document.getElementById('up-edit-phone').value.trim(),
+    city:      document.getElementById('up-edit-city').value.trim(),
+    state:     document.getElementById('up-edit-state').value.trim(),
+    country:   document.getElementById('up-edit-country').value,
+  };
+  const { error } = await db.from('profiles').update(updates).eq('id', currentUser.id);
+  if (!error) {
+    Object.assign(currentProfile, updates);
+    updateAuthUI(true);
+    const ok = document.getElementById('up-save-ok');
+    ok.style.display = 'block';
+    setTimeout(() => ok.style.display = 'none', 3000);
+    track('profile_updated');
+  }
+}
+
+// Check existing session on load
+async function checkAuthSession() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session?.user) {
+    await loadUserSession(session.user);
+  }
+  // Listen for auth changes
+  db.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session?.user) {
+      await loadUserSession(session.user);
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      currentProfile = null;
+      updateAuthUI(false);
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   // Render com dados hardcoded primeiro (UI imediata)
   renderHome();
@@ -3309,6 +3648,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadLoyaltyFromSupabase(cachedMember.email);
   }
   renderLoyaltyPage();
+
+  // Auth session check
+  await checkAuthSession();
 
   track('page_view', { page_name: 'home', language: navigator.language });
 });
