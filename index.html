@@ -1581,19 +1581,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <div class="lb-left">
      <div class="lb-icon">🎁</div>
      <div style="min-width:0;">
-       <div class="lb-title">Programa de Fidelidade</div>
-       <div class="lb-sub">Compre via nosso link ou cupom, envie o comprovante e desbloqueie <strong>Live Room VIP</strong>, sorteios de contas e indicadores exclusivos.</div>
+       <div class="lb-title" data-i18n="lb_title">Programa de Fidelidade</div>
+       <div class="lb-sub" data-i18n="lb_sub">Compre via nosso link ou cupom, envie o comprovante e desbloqueie <strong>Live Room VIP</strong>, sorteios de contas e indicadores exclusivos.</div>
        <div class="lb-steps">
-         <div class="lb-step"><span class="lb-num">1</span> Cadastre-se grátis</div>
-         <div class="lb-step"><span class="lb-num">2</span> Compre com cupom</div>
-         <div class="lb-step"><span class="lb-num">3</span> Envie comprovante</div>
-         <div class="lb-step"><span class="lb-num">4</span> Acesse VIP</div>
+         <div class="lb-step"><span class="lb-num">1</span> <span data-i18n="lb_step1">Cadastre-se grátis</span></div>
+         <div class="lb-step"><span class="lb-num">2</span> <span data-i18n="lb_step2">Compre com cupom</span></div>
+         <div class="lb-step"><span class="lb-num">3</span> <span data-i18n="lb_step3">Envie comprovante</span></div>
+         <div class="lb-step"><span class="lb-num">4</span> <span data-i18n="lb_step4">Acesse VIP</span></div>
        </div>
      </div>
    </div>
    <div class="lb-right">
-     <button class="lb-cta" onclick="openAuthModal('signup')">Cadastrar grátis →</button>
-     <button class="lb-cta-sec" onclick="currentUser?go('painel'):go('loyalty')">Ver benefícios</button>
+     <button class="lb-cta" data-i18n="lb_btn_cadastrar" onclick="openAuthModal('signup')">Cadastrar grátis →</button>
+     <button class="lb-cta-sec" data-i18n="lb_btn_beneficios" onclick="currentUser?go('painel'):go('loyalty')">Ver benefícios</button>
    </div>
  </div>
 </div>
@@ -2334,7 +2334,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="ft-grid">
  <div>
  <div class="ft-logo">Markets<em>Coupons</em></div>
- <p class="ft-desc">Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.</p>
+ <p class="ft-desc" data-i18n="ft_desc">Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.</p>
  <div class="ft-soc">
  <a href="https://t.me/marketcouponss" target="_blank" title="Telegram" onclick="track('social_click',{network:'telegram'})">
    <button class="ft-s ft-s-tg"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg> Telegram</button>
@@ -2357,18 +2357,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <a href="https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14" target="_blank">Earn2Trade</a>
  </div>
  <div class="fc-col">
- <h4>Ferramentas</h4>
+ <h4 data-i18n="ft_col_ferramentas">Ferramentas</h4>
  <a onclick="go('calc')">Position Size</a>
- <a onclick="go('quiz')">Quiz de Firma</a>
- <a onclick="go('compare')">Comparador</a>
- <a onclick="go('calendar')">Calendário</a>
- <a onclick="go('indicators')">Indicadores</a>
+ <a onclick="go('quiz')" data-i18n="ft_quiz">Quiz de Firma</a>
+ <a onclick="go('compare')" data-i18n="ft_comparador">Comparador</a>
+ <a onclick="go('calendar')" data-i18n="ft_calendario">Calendário</a>
+ <a onclick="go('indicators')" data-i18n="ft_indicadores">Indicadores</a>
  </div>
  <div class="fc-col">
- <h4>Links</h4>
+ <h4 data-i18n="ft_col_links">Links</h4>
  <a href="https://t.me/marketcouponss" target="_blank">Telegram</a>
  <a href="https://www.instagram.com/marketscoupons" target="_blank">Instagram</a>
- <a onclick="go('guides')">Guias</a>
+ <a onclick="go('guides')" data-i18n="ft_guias">Guias</a>
  <a onclick="go('blog')">Blog</a>
  <a onclick="go('live')">Live Room</a>
  <a onclick="go('faq')">FAQ</a>
@@ -2473,6 +2473,12 @@ const I18N = {
     // General
     nav_faq:'FAQ', faq_titulo:'Perguntas Frequentes', faq_sub:'Tire suas dúvidas sobre cupons, prop firms e como usar o MarketsCoupons.',
     geral_firmas_encontradas:'firmas encontradas', geral_copiar:'Copiar', geral_copiado:'Copiado!',
+    lb_title:'Programa de Fidelidade', lb_sub:'Compre via nosso link ou cupom, envie o comprovante e desbloqueie Live Room VIP, sorteios de contas e indicadores exclusivos.',
+    lb_step1:'Cadastre-se grátis', lb_step2:'Compre com cupom', lb_step3:'Envie comprovante', lb_step4:'Acesse VIP',
+    lb_btn_cadastrar:'Cadastrar grátis →', lb_btn_beneficios:'Ver benefícios',
+    ft_desc:'Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.',
+    ft_col_ferramentas:'Ferramentas', ft_col_links:'Links',
+    ft_quiz:'Quiz de Firma', ft_comparador:'Comparador', ft_calendario:'Calendário', ft_indicadores:'Indicadores', ft_guias:'Guias',
   },
   en: {
     nav_ofertas:'Offers', nav_firmas:'Firms', nav_plataformas:'Platforms', nav_indicadores:'Indicators',
@@ -2502,6 +2508,12 @@ const I18N = {
     heatmap_titulo:'Heatmap',
     nav_faq:'FAQ', faq_titulo:'Frequently Asked Questions', faq_sub:'Get answers about coupons, prop firms and how to use MarketsCoupons.',
     geral_firmas_encontradas:'firms found', geral_copiar:'Copy', geral_copiado:'Copied!',
+    lb_title:'Loyalty Program', lb_sub:'Buy via our link or coupon, send the proof and unlock Live Room VIP, account giveaways and exclusive indicators.',
+    lb_step1:'Sign up free', lb_step2:'Buy with coupon', lb_step3:'Send proof', lb_step4:'Access VIP',
+    lb_btn_cadastrar:'Sign up free →', lb_btn_beneficios:'View benefits',
+    ft_desc:'Verified coupons for the best prop firms. Professional tools for futures and forex traders.',
+    ft_col_ferramentas:'Tools', ft_col_links:'Links',
+    ft_quiz:'Firm Quiz', ft_comparador:'Comparator', ft_calendario:'Calendar', ft_indicadores:'Indicators', ft_guias:'Guides',
   },
   es: {
     nav_ofertas:'Ofertas', nav_firmas:'Firmas', nav_plataformas:'Plataformas', nav_indicadores:'Indicadores',
@@ -2531,6 +2543,12 @@ const I18N = {
     heatmap_titulo:'Mapa de Calor',
     nav_faq:'FAQ', faq_titulo:'Preguntas Frecuentes', faq_sub:'Resuelve tus dudas sobre cupones, prop firms y cómo usar MarketsCoupons.',
     geral_firmas_encontradas:'firmas encontradas', geral_copiar:'Copiar', geral_copiado:'¡Copiado!',
+    lb_title:'Programa de Fidelidad', lb_sub:'Compra vía nuestro link o cupón, envía el comprobante y desbloquea Live Room VIP, sorteos de cuentas e indicadores exclusivos.',
+    lb_step1:'Regístrate gratis', lb_step2:'Compra con cupón', lb_step3:'Envía comprobante', lb_step4:'Accede VIP',
+    lb_btn_cadastrar:'Registrarse gratis →', lb_btn_beneficios:'Ver beneficios',
+    ft_desc:'Cupones verificados para las mejores prop firms. Herramientas profesionales para traders de futuros y forex.',
+    ft_col_ferramentas:'Herramientas', ft_col_links:'Enlaces',
+    ft_quiz:'Quiz de Firma', ft_comparador:'Comparador', ft_calendario:'Calendario', ft_indicadores:'Indicadores', ft_guias:'Guías',
   },
   fr: {
     nav_ofertas:'Offres', nav_firmas:'Firmes', nav_plataformas:'Plateformes', nav_indicadores:'Indicateurs',
@@ -2553,6 +2571,12 @@ const I18N = {
     hst_verificado:'Vérifié', hst_gratis:'Gratuit', hst_para_usar:'À utiliser',
     heatmap_titulo:'Carte thermique',
     geral_firmas_encontradas:'firmes trouvées', geral_copiar:'Copier', geral_copiado:'Copié!',
+    lb_title:'Programme de Fidélité', lb_sub:'Achetez via notre lien ou coupon, envoyez la preuve et débloquez Live Room VIP, tirages de comptes et indicateurs exclusifs.',
+    lb_step1:'Inscrivez-vous gratuitement', lb_step2:'Achetez avec coupon', lb_step3:'Envoyez la preuve', lb_step4:'Accédez VIP',
+    lb_btn_cadastrar:'S\'inscrire gratuitement →', lb_btn_beneficios:'Voir les avantages',
+    ft_desc:'Coupons vérifiés pour les meilleures prop firms. Outils professionnels pour les traders de futures et forex.',
+    ft_col_ferramentas:'Outils', ft_col_links:'Liens',
+    ft_quiz:'Quiz Firme', ft_comparador:'Comparateur', ft_calendario:'Calendrier', ft_indicadores:'Indicateurs', ft_guias:'Guides',
   },
   de: {
     nav_ofertas:'Angebote', nav_firmas:'Firmen', nav_plataformas:'Plattformen', nav_indicadores:'Indikatoren',
@@ -2574,6 +2598,12 @@ const I18N = {
     hst_verificado:'Verifiziert', hst_gratis:'Kostenlos', hst_para_usar:'Zu nutzen',
     heatmap_titulo:'Heatmap',
     geral_firmas_encontradas:'Firmen gefunden', geral_copiar:'Kopieren', geral_copiado:'Kopiert!',
+    lb_title:'Treueprogramm', lb_sub:'Kaufe über unseren Link oder Gutschein, sende den Nachweis und schalte Live Room VIP, Konto-Verlosungen und exklusive Indikatoren frei.',
+    lb_step1:'Kostenlos registrieren', lb_step2:'Mit Gutschein kaufen', lb_step3:'Nachweis senden', lb_step4:'VIP freischalten',
+    lb_btn_cadastrar:'Kostenlos registrieren →', lb_btn_beneficios:'Vorteile anzeigen',
+    ft_desc:'Geprüfte Gutscheine für die besten Prop Firms. Professionelle Tools für Futures- und Forex-Trader.',
+    ft_col_ferramentas:'Tools', ft_col_links:'Links',
+    ft_quiz:'Firmen-Quiz', ft_comparador:'Vergleicher', ft_calendario:'Kalender', ft_indicadores:'Indikatoren', ft_guias:'Leitfäden',
   },
   it: {
     nav_ofertas:'Offerte', nav_firmas:'Aziende', nav_plataformas:'Piattaforme', nav_indicadores:'Indicatori',
@@ -2604,6 +2634,12 @@ const I18N = {
     heatmap_titulo:'Mappa di Calore',
     faq_titulo:'Domande Frequenti', faq_sub:'Trova risposte su coupon, prop firms e come usare MarketsCoupons.',
     geral_firmas_encontradas:'aziende trovate', geral_copiar:'Copia', geral_copiado:'Copiato!',
+    lb_title:'Programma Fedeltà', lb_sub:'Acquista tramite il nostro link o coupon, invia la prova e sblocca Live Room VIP, sorteggi di conti e indicatori esclusivi.',
+    lb_step1:'Registrati gratis', lb_step2:'Acquista con coupon', lb_step3:'Invia prova', lb_step4:'Accedi VIP',
+    lb_btn_cadastrar:'Registrati gratis →', lb_btn_beneficios:'Vedi benefici',
+    ft_desc:'Coupon verificati per le migliori prop firm. Strumenti professionali per trader di futures e forex.',
+    ft_col_ferramentas:'Strumenti', ft_col_links:'Link',
+    ft_quiz:'Quiz Azienda', ft_comparador:'Comparatore', ft_calendario:'Calendario', ft_indicadores:'Indicatori', ft_guias:'Guide',
   },
   ar: {
     nav_ofertas:'عروض', nav_firmas:'شركات', nav_plataformas:'منصات', nav_indicadores:'مؤشرات',
@@ -2624,6 +2660,12 @@ const I18N = {
     hst_verificado:'موثق', hst_gratis:'مجاني', hst_para_usar:'للاستخدام',
     heatmap_titulo:'خريطة حرارية',
     geral_firmas_encontradas:'شركات', geral_copiar:'نسخ', geral_copiado:'تم النسخ!',
+    lb_title:'برنامج الولاء', lb_sub:'اشتر عبر رابطنا أو كوبوننا، أرسل الإيصال وافتح Live Room VIP وسحوبات على الحسابات ومؤشرات حصرية.',
+    lb_step1:'سجل مجاناً', lb_step2:'اشتر بكوبون', lb_step3:'أرسل الإيصال', lb_step4:'ادخل VIP',
+    lb_btn_cadastrar:'سجل مجاناً →', lb_btn_beneficios:'عرض المزايا',
+    ft_desc:'كوبونات موثقة لأفضل شركات Prop. أدوات احترافية لمتداولي العقود الآجلة والفوركس.',
+    ft_col_ferramentas:'أدوات', ft_col_links:'روابط',
+    ft_quiz:'اختبار الشركة', ft_comparador:'مقارنة', ft_calendario:'التقويم', ft_indicadores:'مؤشرات', ft_guias:'أدلة',
   }
 };
 let _currentLang = 'pt';
@@ -2656,7 +2698,7 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); renderOffers(); renderAwards(); applyF();
+  renderHome(); renderOffers(); renderAwards(); renderFaq(); applyF();
   track('language_change',{language:lang});
 }
 function initLang() {
@@ -3062,22 +3104,97 @@ function openTpPopup(url) {
 }
 
 /* FAQ */
-const FAQ_DATA = [
-  {q:'O que é uma prop firm?', a:'Uma prop firm (proprietary trading firm) é uma empresa que fornece capital para traders operarem. O trader faz uma avaliação, e se aprovado, opera com o dinheiro da firma e recebe parte dos lucros.'},
-  {q:'Como funcionam os cupons do MarketsCoupons?', a:'Nossos cupons são códigos exclusivos negociados diretamente com as prop firms. Basta copiar o código e colar no checkout da firma para receber o desconto automaticamente. Alguns descontos são aplicados diretamente pelo link de parceiro.'},
-  {q:'Os cupons são realmente gratuitos?', a:'Sim, todos os cupons são 100% gratuitos para usar. O MarketsCoupons é remunerado pelas prop firms através de parcerias de afiliados, sem nenhum custo extra para você.'},
-  {q:'Qual a melhor prop firm para iniciantes?', a:'Depende do seu perfil. A Apex Trader Funding oferece até 90% de desconto e regras flexíveis. A Bulenox permite passar em 1 dia. A FTMO tem Free Trial ilimitado. Use nosso Quiz para descobrir a melhor para você.'},
-  {q:'Posso usar mais de um cupom ao mesmo tempo?', a:'Geralmente não. Cada prop firm aceita apenas um código de desconto por compra. Nossos cupons já são os maiores disponíveis no mercado.'},
-  {q:'O que é Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se move conforme o lucro, podendo voltar ao breakeven. EOD (End of Day) Drawdown só é calculado no fechamento do dia, dando mais flexibilidade durante a operação.'},
-  {q:'Quanto tempo leva para receber o payout?', a:'Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h. Take Profit Trader permite saque desde o dia 1.'},
-  {q:'O que é o programa de fidelidade?', a:'Nosso programa de fidelidade recompensa membros com pontos por interações, compras e indicações. Os pontos podem ser trocados por benefícios exclusivos.'},
-  {q:'Os cupons têm data de validade?', a:'Alguns cupons são por tempo limitado e outros são permanentes. As promoções de cada firma são atualizadas diariamente. Recomendamos usar o cupom assim que possível.'},
-  {q:'Como faço para comparar prop firms?', a:'Use nossa ferramenta de comparação na aba "Comparar" ou acesse a aba "Firmas" para ver todas as opções lado a lado com ratings, preços, plataformas e avaliações do Trustpilot.'},
-];
+const FAQ_LANGS = {
+  pt: [
+    {q:'O que é uma prop firm?', a:'Uma prop firm (proprietary trading firm) é uma empresa que fornece capital para traders operarem. O trader faz uma avaliação, e se aprovado, opera com o dinheiro da firma e recebe parte dos lucros.'},
+    {q:'Como funcionam os cupons do MarketsCoupons?', a:'Nossos cupons são códigos exclusivos negociados diretamente com as prop firms. Basta copiar o código e colar no checkout da firma para receber o desconto automaticamente. Alguns descontos são aplicados diretamente pelo link de parceiro.'},
+    {q:'Os cupons são realmente gratuitos?', a:'Sim, todos os cupons são 100% gratuitos para usar. O MarketsCoupons é remunerado pelas prop firms através de parcerias de afiliados, sem nenhum custo extra para você.'},
+    {q:'Qual a melhor prop firm para iniciantes?', a:'Depende do seu perfil. A Apex Trader Funding oferece até 90% de desconto e regras flexíveis. A Bulenox permite passar em 1 dia. A FTMO tem Free Trial ilimitado. Use nosso Quiz para descobrir a melhor para você.'},
+    {q:'Posso usar mais de um cupom ao mesmo tempo?', a:'Geralmente não. Cada prop firm aceita apenas um código de desconto por compra. Nossos cupons já são os maiores disponíveis no mercado.'},
+    {q:'O que é Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se move conforme o lucro, podendo voltar ao breakeven. EOD (End of Day) Drawdown só é calculado no fechamento do dia, dando mais flexibilidade durante a operação.'},
+    {q:'Quanto tempo leva para receber o payout?', a:'Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h. Take Profit Trader permite saque desde o dia 1.'},
+    {q:'O que é o programa de fidelidade?', a:'Nosso programa de fidelidade recompensa membros com benefícios exclusivos por compras validadas. Com 3 compras aprovadas você desbloqueia o Live Room VIP.'},
+    {q:'Os cupons têm data de validade?', a:'Alguns cupons são por tempo limitado e outros são permanentes. As promoções de cada firma são atualizadas diariamente. Recomendamos usar o cupom assim que possível.'},
+    {q:'Como faço para comparar prop firms?', a:'Use nossa ferramenta de comparação na aba "Comparar" ou acesse a aba "Firmas" para ver todas as opções lado a lado com ratings, preços, plataformas e avaliações do Trustpilot.'},
+  ],
+  en: [
+    {q:'What is a prop firm?', a:'A prop firm (proprietary trading firm) is a company that provides capital for traders to operate. The trader takes an evaluation, and if approved, trades with the firm\'s money and receives a share of the profits.'},
+    {q:'How do MarketsCoupons coupons work?', a:'Our coupons are exclusive codes negotiated directly with prop firms. Just copy the code and paste it at the firm\'s checkout to receive the discount automatically. Some discounts are applied directly through the affiliate link.'},
+    {q:'Are the coupons really free?', a:'Yes, all coupons are 100% free to use. MarketsCoupons is paid by prop firms through affiliate partnerships, at no extra cost to you.'},
+    {q:'What is the best prop firm for beginners?', a:'It depends on your profile. Apex Trader Funding offers up to 90% off and flexible rules. Bulenox lets you pass in 1 day. FTMO has an unlimited Free Trial. Use our Quiz to find the best one for you.'},
+    {q:'Can I use more than one coupon at the same time?', a:'Generally no. Each prop firm accepts only one discount code per purchase. Our coupons are already the largest available in the market.'},
+    {q:'What is Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown moves with profit, potentially returning to breakeven. EOD (End of Day) Drawdown is only calculated at market close, giving more flexibility during the trading session.'},
+    {q:'How long does it take to receive a payout?', a:'Varies by firm. Apex and Bulenox process in 5 business days. FundedNext guarantees payout in 24h. Take Profit Trader allows withdrawal from day 1.'},
+    {q:'What is the loyalty program?', a:'Our loyalty program rewards members with exclusive benefits for validated purchases. With 3 approved purchases you unlock the VIP Live Room.'},
+    {q:'Do coupons have an expiration date?', a:'Some coupons are time-limited and others are permanent. Each firm\'s promotions are updated daily. We recommend using the coupon as soon as possible.'},
+    {q:'How do I compare prop firms?', a:'Use our comparison tool in the "Compare" tab or access the "Firms" tab to see all options side by side with ratings, prices, platforms and Trustpilot reviews.'},
+  ],
+  es: [
+    {q:'¿Qué es una prop firm?', a:'Una prop firm es una empresa que proporciona capital para que los traders operen. El trader realiza una evaluación y, si es aprobado, opera con el dinero de la empresa y recibe parte de las ganancias.'},
+    {q:'¿Cómo funcionan los cupones de MarketsCoupons?', a:'Nuestros cupones son códigos exclusivos negociados directamente con las prop firms. Solo copia el código y pégalo en el checkout de la firma para recibir el descuento automáticamente.'},
+    {q:'¿Los cupones son realmente gratuitos?', a:'Sí, todos los cupones son 100% gratuitos. MarketsCoupons es remunerado por las prop firms a través de asociaciones de afiliados, sin ningún costo extra para ti.'},
+    {q:'¿Cuál es la mejor prop firm para principiantes?', a:'Apex ofrece hasta 90% de descuento. Bulenox permite pasar en 1 día. FTMO tiene Free Trial ilimitado. Usa nuestro Quiz para encontrar la mejor para ti.'},
+    {q:'¿Puedo usar más de un cupón al mismo tiempo?', a:'Generalmente no. Cada prop firm acepta solo un código de descuento por compra.'},
+    {q:'¿Qué es Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se mueve con el beneficio. EOD Drawdown solo se calcula al cierre del mercado, dando más flexibilidad.'},
+    {q:'¿Cuánto tiempo lleva recibir el payout?', a:'Varía por firma. Apex y Bulenox procesan en 5 días hábiles. FundedNext garantiza payout en 24h. Take Profit Trader permite retiro desde el día 1.'},
+    {q:'¿Qué es el programa de fidelidad?', a:'Nuestro programa de fidelidad recompensa a los miembros con beneficios exclusivos por sus compras validadas. Con 3 compras aprobadas desbloqueas el Live Room VIP.'},
+    {q:'¿Los cupones tienen fecha de vencimiento?', a:'Algunos son por tiempo limitado y otros son permanentes. Recomendamos usar el cupón lo antes posible.'},
+    {q:'¿Cómo comparo prop firms?', a:'Usa nuestra herramienta de comparación en la pestaña "Comparar" o accede a "Firmas" para ver todas las opciones lado a lado.'},
+  ],
+  it: [
+    {q:'Cos\'è una prop firm?', a:'Una prop firm è un\'azienda che fornisce capitale ai trader per operare. Il trader supera una valutazione e, se approvato, opera con il denaro dell\'azienda ricevendo una parte dei profitti.'},
+    {q:'Come funzionano i coupon di MarketsCoupons?', a:'I nostri coupon sono codici esclusivi negoziati direttamente con le prop firm. Basta copiare il codice e incollarlo al checkout per ricevere lo sconto automaticamente.'},
+    {q:'I coupon sono davvero gratuiti?', a:'Sì, tutti i coupon sono 100% gratuiti. MarketsCoupons è remunerata dalle prop firm tramite partnership di affiliazione, senza costi aggiuntivi per te.'},
+    {q:'Qual è la migliore prop firm per i principianti?', a:'Apex offre fino al 90% di sconto. Bulenox permette di superare la valutazione in 1 giorno. FTMO ha un Free Trial illimitato. Usa il nostro Quiz per trovare quella giusta per te.'},
+    {q:'Posso usare più di un coupon contemporaneamente?', a:'In generale no. Ogni prop firm accetta solo un codice sconto per acquisto.'},
+    {q:'Cos\'è il Trailing Drawdown vs EOD Drawdown?', a:'Il Trailing Drawdown si muove con il profitto. L\'EOD Drawdown viene calcolato solo alla chiusura del mercato, offrendo maggiore flessibilità.'},
+    {q:'Quanto tempo ci vuole per ricevere il payout?', a:'Varia per firma. Apex e Bulenox processano in 5 giorni lavorativi. FundedNext garantisce il payout in 24h. Take Profit Trader permette il prelievo dal giorno 1.'},
+    {q:'Cos\'è il programma fedeltà?', a:'Il nostro programma fedeltà premia i membri con benefici esclusivi per gli acquisti validati. Con 3 acquisti approvati sblocchi il Live Room VIP.'},
+    {q:'I coupon hanno una data di scadenza?', a:'Alcuni sono a tempo limitato e altri sono permanenti. Consigliamo di usare il coupon il prima possibile.'},
+    {q:'Come confronto le prop firm?', a:'Usa il nostro strumento di confronto nella scheda "Confronta" o accedi ad "Aziende" per vedere tutte le opzioni fianco a fianco.'},
+  ],
+  fr: [
+    {q:'Qu\'est-ce qu\'une prop firm ?', a:'Une prop firm est une société qui fournit des capitaux aux traders pour opérer. Le trader passe une évaluation et, s\'il est accepté, opère avec l\'argent de l\'entreprise et reçoit une partie des bénéfices.'},
+    {q:'Comment fonctionnent les coupons de MarketsCoupons ?', a:'Nos coupons sont des codes exclusifs négociés directement avec les prop firms. Il suffit de copier le code et de le coller lors du paiement pour obtenir la réduction automatiquement.'},
+    {q:'Les coupons sont-ils vraiment gratuits ?', a:'Oui, tous les coupons sont 100% gratuits. MarketsCoupons est rémunéré par les prop firms via des partenariats d\'affiliation.'},
+    {q:'Quelle est la meilleure prop firm pour les débutants ?', a:'Apex offre jusqu\'à 90% de réduction. Bulenox permet de réussir en 1 jour. FTMO a un Free Trial illimité. Utilisez notre Quiz pour trouver la meilleure pour vous.'},
+    {q:'Puis-je utiliser plusieurs coupons en même temps ?', a:'En général non. Chaque prop firm accepte seulement un code de réduction par achat.'},
+    {q:'Qu\'est-ce que le Trailing Drawdown vs EOD Drawdown ?', a:'Le Trailing Drawdown suit le profit. L\'EOD Drawdown n\'est calculé qu\'à la clôture du marché, offrant plus de flexibilité.'},
+    {q:'Combien de temps faut-il pour recevoir le payout ?', a:'Varie selon la firme. Apex et Bulenox traitent en 5 jours ouvrables. FundedNext garantit le payout en 24h. Take Profit Trader permet les retraits dès le jour 1.'},
+    {q:'Qu\'est-ce que le programme de fidélité ?', a:'Notre programme de fidélité récompense les membres avec des avantages exclusifs pour leurs achats validés. Avec 3 achats approuvés vous débloquez le Live Room VIP.'},
+    {q:'Les coupons ont-ils une date d\'expiration ?', a:'Certains sont limités dans le temps et d\'autres sont permanents. Nous recommandons d\'utiliser le coupon le plus tôt possible.'},
+    {q:'Comment comparer les prop firms ?', a:'Utilisez notre outil de comparaison dans l\'onglet "Comparer" ou accédez à "Firmes" pour voir toutes les options côte à côte.'},
+  ],
+  de: [
+    {q:'Was ist eine Prop Firm?', a:'Eine Prop Firm ist ein Unternehmen, das Trader mit Kapital versorgt. Der Trader absolviert eine Bewertung und handelt bei Zulassung mit dem Geld der Firma und erhält einen Teil der Gewinne.'},
+    {q:'Wie funktionieren die Gutscheine von MarketsCoupons?', a:'Unsere Gutscheine sind exklusive Codes, die direkt mit den Prop Firms ausgehandelt wurden. Kopiere den Code und füge ihn beim Checkout ein, um den Rabatt automatisch zu erhalten.'},
+    {q:'Sind die Gutscheine wirklich kostenlos?', a:'Ja, alle Gutscheine sind 100% kostenlos. MarketsCoupons wird von den Prop Firms über Affiliate-Partnerschaften vergütet.'},
+    {q:'Was ist die beste Prop Firm für Anfänger?', a:'Apex bietet bis zu 90% Rabatt. Bulenox ermöglicht das Bestehen in 1 Tag. FTMO hat eine unbegrenzte Free Trial. Nutze unser Quiz, um die Beste für dich zu finden.'},
+    {q:'Kann ich mehr als einen Gutschein gleichzeitig verwenden?', a:'Im Allgemeinen nein. Jede Prop Firm akzeptiert nur einen Rabattcode pro Kauf.'},
+    {q:'Was ist Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown bewegt sich mit dem Gewinn. EOD Drawdown wird nur bei Marktschluss berechnet und bietet mehr Flexibilität.'},
+    {q:'Wie lange dauert es, eine Auszahlung zu erhalten?', a:'Variiert je nach Firma. Apex und Bulenox verarbeiten in 5 Werktagen. FundedNext garantiert Auszahlung in 24h. Take Profit Trader erlaubt Abhebungen ab Tag 1.'},
+    {q:'Was ist das Treueprogramm?', a:'Unser Treueprogramm belohnt Mitglieder mit exklusiven Vorteilen für validierte Einkäufe. Mit 3 genehmigten Käufen schaltest du den Live Room VIP frei.'},
+    {q:'Haben Gutscheine ein Ablaufdatum?', a:'Einige sind zeitlich begrenzt und andere sind dauerhaft. Wir empfehlen, den Gutschein so bald wie möglich zu verwenden.'},
+    {q:'Wie vergleiche ich Prop Firms?', a:'Nutze unser Vergleichstool im Tab "Vergleichen" oder gehe zu "Firmen", um alle Optionen nebeneinander zu sehen.'},
+  ],
+  ar: [
+    {q:'ما هي شركة Prop Firm؟', a:'شركة Prop Firm هي شركة تزود المتداولين برأس المال للتداول. يجتاز المتداول تقييماً وإذا نجح يتداول بأموال الشركة ويحصل على جزء من الأرباح.'},
+    {q:'كيف تعمل كوبونات MarketsCoupons؟', a:'كوبوناتنا هي رموز حصرية متفاوض عليها مع شركات Prop. انسخ الرمز وألصقه عند الدفع للحصول على الخصم تلقائياً.'},
+    {q:'هل الكوبونات مجانية حقاً؟', a:'نعم، جميع الكوبونات مجانية 100%. تحصل MarketsCoupons على عمولة من شركات Prop عبر شراكات التسويق.'},
+    {q:'ما هي أفضل Prop Firm للمبتدئين؟', a:'Apex تقدم خصماً حتى 90%. Bulenox يتيح الاجتياز في يوم واحد. FTMO لديها تجربة مجانية غير محدودة. استخدم اختبارنا للعثور على الأفضل لك.'},
+    {q:'هل يمكنني استخدام أكثر من كوبون في نفس الوقت؟', a:'عموماً لا. تقبل كل شركة كوداً واحداً فقط للخصم لكل عملية شراء.'},
+    {q:'ما الفرق بين Trailing Drawdown و EOD Drawdown؟', a:'Trailing Drawdown يتحرك مع الربح. EOD Drawdown يُحسب فقط عند إغلاق السوق مما يمنح مرونة أكبر.'},
+    {q:'كم من الوقت يستغرق استلام الدفعة؟', a:'يختلف حسب الشركة. Apex وBulenox تعالج خلال 5 أيام عمل. FundedNext تضمن الدفع خلال 24 ساعة. Take Profit Trader يتيح السحب من اليوم الأول.'},
+    {q:'ما هو برنامج الولاء؟', a:'برنامج الولاء يكافئ الأعضاء بمزايا حصرية على المشتريات المعتمدة. مع 3 مشتريات موافق عليها تفتح Live Room VIP.'},
+    {q:'هل للكوبونات تاريخ انتهاء؟', a:'بعضها محدود بوقت وآخر دائم. نوصي باستخدام الكوبون في أقرب وقت ممكن.'},
+    {q:'كيف أقارن بين شركات Prop؟', a:'استخدم أداة المقارنة في تبويب "مقارنة" أو انتقل إلى "شركات" لرؤية جميع الخيارات جنباً إلى جنب.'},
+  ],
+};
+function getFaqData() { return FAQ_LANGS[_currentLang] || FAQ_LANGS.pt; }
 function renderFaq() {
   const el = document.getElementById('faq-list');
   if(!el) return;
-  el.innerHTML = FAQ_DATA.map((item,i) => `
+  el.innerHTML = getFaqData().map((item,i) => `
     <div class="faq-item" id="faq-${i}">
       <div class="faq-q" onclick="document.getElementById('faq-${i}').classList.toggle('open')">
         <span>${item.q}</span><span>▼</span>
