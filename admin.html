@@ -1,0 +1,3242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow">
+<title>MarketsCoupons — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+ --bg:#07090D;--sur:#0B0F16;--card:#10151F;--card2:#141B27;
+ --b1:#1C2535;--b2:#263145;--b3:#324060;
+ --gold:#F0B429;--gbg:rgba(240,180,41,0.09);--gbr:rgba(240,180,41,0.25);
+ --green:#22C55E;--gnbg:rgba(34,197,94,0.08);
+ --red:#EF4444;--rbg:rgba(239,68,68,0.08);
+ --blue:#3B82F6;--bbg:rgba(59,130,246,0.08);
+ --purple:#A855F7;
+ --t1:#EDF2F7;--t2:#7A8FA6;--t3:#3D4F63;
+ --f:'Inter',sans-serif;
+ --nav:56px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);min-height:100vh;}
+button{font-family:var(--f);cursor:pointer;}
+input,select,textarea{font-family:var(--f);}
+.hide{display:none!important;}
+a{text-decoration:none;color:inherit;}
+
+/* LOGIN */
+#login-screen{
+ position:fixed;inset:0;z-index:9999;
+ background:var(--bg);display:flex;align-items:center;justify-content:center;
+}
+.login-box{
+ width:100%;max-width:380px;padding:40px;
+ background:var(--sur);border:1px solid var(--b2);border-radius:16px;
+ text-align:center;
+}
+.login-logo{font-size:20px;font-weight:800;margin-bottom:4px;}
+.login-logo em{color:var(--gold);font-style:normal;}
+.login-sub{font-size:12px;color:var(--t3);margin-bottom:28px;}
+.login-field{margin-bottom:14px;text-align:left;}
+.login-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
+.login-field input{width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;outline:none;transition:.2s;}
+.login-field input:focus{border-color:var(--gold);}
+.login-btn{width:100%;padding:12px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:14px;font-weight:700;transition:.2s;margin-top:4px;}
+.login-btn:hover{background:#F7C948;}
+.login-err{font-size:12px;color:var(--red);margin-top:8px;display:none;}
+
+/* ADMIN LAYOUT */
+#admin-app{display:none;}
+.admin-nav{
+ position:fixed;top:0;left:0;right:0;z-index:500;
+ height:var(--nav);display:flex;align-items:center;justify-content:space-between;
+ padding:0 24px;background:rgba(7,9,13,.97);backdrop-filter:blur(14px);
+ border-bottom:1px solid var(--b1);
+}
+.admin-logo{font-size:15px;font-weight:700;}
+.admin-logo em{color:var(--gold);font-style:normal;}
+.admin-logo span{font-size:11px;color:var(--t3);margin-left:8px;font-weight:400;}
+.nav-tabs-admin{display:flex;gap:2px;}
+.nta{padding:6px 13px;background:none;border:none;border-radius:7px;color:var(--t2);font-size:12px;font-weight:500;transition:.2s;}
+.nta:hover{color:var(--t1);background:rgba(255,255,255,.05);}
+.nta.active{color:var(--gold);background:var(--gbg);}
+.nav-right-admin{display:flex;align-items:center;gap:10px;}
+.logout-btn{padding:6px 14px;border:1px solid var(--b2);background:transparent;color:var(--t2);border-radius:7px;font-size:12px;font-weight:500;transition:.2s;}
+.logout-btn:hover{border-color:var(--red);color:var(--red);}
+.last-update{font-size:11px;color:var(--t3);}
+
+.admin-body{padding-top:var(--nav);min-height:100vh;}
+.admin-page{display:none;padding:24px;}
+.admin-page.active{display:block;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px;}
+.stat-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px 20px;}
+.stat-icon{font-size:22px;margin-bottom:8px;}
+.stat-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;}
+.stat-val{font-size:26px;font-weight:700;letter-spacing:-.5px;}
+.stat-val.g{color:var(--green);}
+.stat-val.y{color:var(--gold);}
+.stat-val.b{color:var(--blue);}
+.stat-val.r{color:var(--red);}
+.stat-change{font-size:11px;color:var(--t3);margin-top:3px;}
+
+/* CHART CARDS */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.chart-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;}
+.chart-card.full{grid-column:1/-1;}
+.cc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.cc-title{font-size:13px;font-weight:600;}
+.cc-sub{font-size:11px;color:var(--t3);}
+.chart-wrap{position:relative;height:200px;}
+
+/* TABLE */
+.data-table-wrap{overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;font-size:12px;}
+.data-table th{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;text-align:left;font-weight:600;border-bottom:1px solid var(--b1);white-space:nowrap;}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:middle;}
+.data-table tr:hover td{background:rgba(255,255,255,.02);}
+.data-table tr:last-child td{border-bottom:none;}
+.td-badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
+
+/* SECTION HDR */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.sec-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
+.sec-actions{display:flex;gap:8px;}
+.btn-primary{padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;transition:.2s;}
+.btn-primary:hover{background:#F7C948;}
+.btn-secondary{padding:8px 16px;background:transparent;border:1px solid var(--b2);color:var(--t2);border-radius:7px;font-size:12px;font-weight:500;transition:.2s;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
+.btn-danger{padding:8px 16px;background:transparent;border:1px solid rgba(239,68,68,.3);color:var(--red);border-radius:7px;font-size:12px;font-weight:500;transition:.2s;}
+.btn-danger:hover{background:var(--rbg);}
+
+/* GEO CARDS */
+.geo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.geo-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;}
+.geo-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:12px;}
+.geo-item{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(28,37,53,.5);}
+.geo-item:last-child{border-bottom:none;}
+.geo-name{font-size:12px;display:flex;align-items:center;gap:6px;}
+.geo-bar-wrap{flex:1;height:4px;background:var(--b1);border-radius:2px;margin:0 8px;overflow:hidden;}
+.geo-bar{height:100%;border-radius:2px;background:var(--gold);}
+.geo-count{font-size:11px;color:var(--t3);min-width:30px;text-align:right;}
+
+/* LEAD DETAIL */
+.lead-modal-ov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.7);backdrop-filter:blur(3px);display:none;}
+.lead-modal-ov.open{display:flex;align-items:center;justify-content:center;padding:20px;}
+.lead-modal{background:var(--sur);border:1px solid var(--b2);border-radius:14px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;}
+.lm-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--b1);position:sticky;top:0;background:var(--sur);}
+.lm-title{font-size:15px;font-weight:700;}
+.lm-x{background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer;}
+.lm-body{padding:20px;}
+.lm-field{margin-bottom:12px;}
+.lm-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.lm-val{font-size:13px;font-weight:500;}
+.lm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* EMAIL COMPOSER */
+.email-composer{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:20px;}
+.ec-field{margin-bottom:14px;}
+.ec-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:6px;}
+.ec-field input,.ec-field select,.ec-field textarea{width:100%;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;outline:none;transition:.2s;resize:vertical;}
+.ec-field input:focus,.ec-field select:focus,.ec-field textarea:focus{border-color:var(--gold);}
+.ec-toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.ec-tb-btn{padding:5px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:5px;color:var(--t2);font-size:11px;font-weight:600;transition:.2s;}
+.ec-tb-btn:hover{border-color:var(--gold);color:var(--gold);}
+.ec-preview{background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:16px;min-height:200px;font-size:13px;line-height:1.7;color:var(--t1);}
+.ec-targets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.ec-target-chip{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--gbg);border:1px solid var(--gbr);border-radius:20px;font-size:11px;font-weight:600;color:var(--gold);}
+.ec-target-chip .rm{background:none;border:none;color:var(--gold);font-size:12px;cursor:pointer;padding:0;line-height:1;}
+.send-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.ss-item{background:var(--card2);border:1px solid var(--b1);border-radius:7px;padding:10px;text-align:center;}
+.ss-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.ss-val{font-size:16px;font-weight:700;}
+
+/* SEGMENT BUILDER */
+.seg-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.seg-opt{padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;font-weight:500;color:var(--t2);text-align:center;transition:.2s;}
+.seg-opt.sel{border-color:var(--gold);color:var(--gold);background:var(--gbg);}
+
+/* TOAST */
+.admin-toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--card);border:1px solid var(--green);color:var(--green);padding:10px 20px;border-radius:8px;font-size:12.5px;font-weight:600;opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none;}
+.admin-toast.show{opacity:1;transform:translateY(0);}
+.admin-toast.warn{border-color:var(--gold);color:var(--gold);}
+.admin-toast.error{border-color:var(--red);color:var(--red);}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.filter-inp{padding:8px 11px;background:var(--card);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-size:12px;outline:none;transition:.2s;}
+.filter-inp:focus{border-color:var(--gold);}
+.filter-inp::placeholder{color:var(--t3);}
+
+/* PROGRESS BAR */
+.prog-bar-wrap{background:var(--b1);border-radius:3px;height:5px;overflow:hidden;margin-top:4px;}
+.prog-bar{height:100%;border-radius:3px;transition:width .8s;}
+
+/* RESPONSIVE */
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr;}.geo-grid{grid-template-columns:1fr;}.seg-grid{grid-template-columns:1fr 1fr;}.send-stats{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr 1fr;}.nav-tabs-admin{display:none;}.lm-grid{grid-template-columns:1fr;}}
+
+/* ── LOYALTY PROOF REVIEW ── */
+.proof-review-img{max-width:100%;max-height:400px;border-radius:8px;border:1px solid var(--b1);margin-top:10px;}
+.proof-review-actions{display:flex;gap:10px;margin-top:16px;}
+.btn-approve{padding:10px 24px;background:var(--green);color:#fff;border:none;border-radius:7px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-approve:hover{background:#16A34A;}
+.btn-reject{padding:10px 24px;background:var(--red);color:#fff;border:none;border-radius:7px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-reject:hover{background:#DC2626;}
+.rejection-reason{width:100%;padding:8px 11px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:12px;margin-top:8px;outline:none;resize:none;}
+.rejection-reason:focus{border-color:var(--red);}
+
+/* ═══ CMS + NOTIFICATIONS ═══ */
+.nta-sep{width:1px;height:20px;background:var(--b2);margin:0 4px;flex-shrink:0;}
+.nta-cms{color:var(--blue)!important;}
+.nta-cms.active{color:var(--gold)!important;background:var(--gbg)!important;}
+
+/* Notifications */
+.notif-bell{position:relative;cursor:pointer;padding:6px 8px;border-radius:7px;transition:.2s;}
+.notif-bell:hover{background:rgba(255,255,255,.05);}
+.notif-count{position:absolute;top:2px;right:2px;background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:10px;padding:1px 4px;min-width:14px;text-align:center;line-height:14px;}
+.notif-panel{position:fixed;top:calc(var(--nav) + 6px);right:16px;z-index:600;width:320px;background:var(--sur);border:1px solid var(--b2);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.4);display:none;max-height:480px;overflow:hidden;flex-direction:column;}
+.notif-panel.open{display:flex;}
+.notif-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--b1);flex-shrink:0;}
+#notif-list{overflow-y:auto;flex:1;}
+.notif-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid var(--b1);cursor:pointer;transition:.2s;}
+.notif-item:hover{background:rgba(255,255,255,.03);}
+.notif-item.unread{background:rgba(240,180,41,.04);}
+.ni-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px;}
+.ni-dot.read{background:var(--b2);}
+.ni-body{flex:1;}
+.ni-title{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.ni-time{font-size:10px;color:var(--t3);}
+.ni-type-lead{color:var(--green);}
+.ni-type-proof{color:var(--gold);}
+.ni-type-checkout{color:var(--blue);}
+
+/* CMS cards */
+.cms-firm-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+.cfc-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--b1);}
+.cfc-name{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;}
+.cfc-ico{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;}
+.cfc-body{padding:14px 18px;}
+.cfc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.cfc-field{margin-bottom:0;}
+.cfc-field label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;}
+.cfc-field input,.cfc-field select,.cfc-field textarea{width:100%;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-family:var(--f);font-size:12px;outline:none;transition:.2s;}
+.cfc-field input:focus,.cfc-field select:focus,.cfc-field textarea:focus{border-color:var(--gold);}
+.plan-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--b1);font-size:12px;}
+.plan-row:last-child{border-bottom:none;}
+.plan-inp{padding:5px 8px;background:var(--card2);border:1px solid var(--b1);border-radius:5px;color:var(--t1);font-family:var(--f);font-size:11px;outline:none;width:100%;}
+.plan-inp:focus{border-color:var(--gold);}
+.status-active{background:var(--gnbg);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
+.status-inactive{background:var(--rbg);color:var(--red);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
+.toggle-btn{width:40px;height:22px;border-radius:11px;border:none;cursor:pointer;position:relative;transition:.3s;flex-shrink:0;}
+.toggle-btn.on{background:var(--green);}
+.toggle-btn.off{background:var(--b2);}
+.toggle-btn::after{content:'';position:absolute;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.3s;}
+.toggle-btn.on::after{left:21px;}
+.toggle-btn.off::after{left:3px;}
+
+/* AI Blog */
+.ai-blog-panel{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:20px;margin-bottom:16px;}
+.ai-blog-hd{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.ai-generating{display:flex;align-items:center;gap:10px;padding:16px;background:var(--gbg);border:1px solid var(--gbr);border-radius:8px;font-size:13px;color:var(--gold);margin-bottom:12px;}
+.ai-gen-dots::after{content:'...';animation:dots 1.2s infinite;}
+@keyframes dots{0%{content:'.';}33%{content:'..';}66%{content:'...';}100%{content:'.';}}
+
+/* Modal fields */
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-field{margin-bottom:12px;}
+.modal-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:5px;}
+.modal-field input,.modal-field select,.modal-field textarea{width:100%;padding:9px 11px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;transition:.2s;resize:vertical;}
+.modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--gold);}
+.modal-full{grid-column:1/-1;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+ <div class="login-box">
+ <div class="login-logo">Markets<em>Coupons</em></div>
+ <div class="login-sub" id="login-sub">Painel Administrativo</div>
+
+ <!-- NORMAL LOGIN — Supabase Auth -->
+ <div id="login-normal-mode">
+  <div class="login-field"><label>E-mail</label><input type="email" id="login-user" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+  <div class="login-field"><label>Senha</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+  <button class="login-btn" onclick="doLogin()">Entrar no Admin →</button>
+ </div>
+
+ <!-- hidden: setup mode kept for compatibility -->
+ <div id="login-setup-mode" style="display:none;"></div>
+
+ <div class="login-err" id="login-err">Email ou senha incorretos.</div>
+ </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="admin-app">
+ <!-- NAV -->
+ <nav class="admin-nav">
+ <div>
+ <div class="admin-logo">Markets<em>Coupons</em><span>Admin</span></div>
+ </div>
+ <div class="nav-tabs-admin" id="admin-nav-tabs">
+ <button class="nta active" onclick="adminGo('overview',this)">Overview</button>
+ <button class="nta" onclick="adminGo('analytics',this)">Analytics</button>
+ <button class="nta" onclick="adminGo('leads',this)">Leads</button>
+ <button class="nta" onclick="adminGo('events',this)">Eventos</button>
+ <button class="nta" onclick="adminGo('geo',this)">Geo</button>
+ <button class="nta" onclick="adminGo('email',this)">E-mail</button>
+ <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade</button>
+ <div class="nta-sep"></div>
+ <button class="nta nta-cms" onclick="adminGo('cms-firms',this)">Firmas</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-coupons',this)">Cupons</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-checkout',this)">Checkout</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-guides',this)">Guias</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
+ </div>
+ <div class="nav-right-admin">
+   <div class="notif-bell" id="notif-bell" onclick="toggleNotifPanel()">
+     <span style="font-size:16px;">&#128276;</span>
+     <span class="notif-count" id="notif-count" style="display:none;">0</span>
+   </div>
+   <span class="last-update" id="last-update">—</span>
+   <button class="btn-secondary" onclick="refreshAll()">Atualizar</button>
+   <button class="btn-secondary" onclick="toggleChgPassModal()" style="font-size:11px;padding:6px 10px;" title="Alterar senha">🔑</button>
+   <button class="logout-btn" onclick="doLogout()">Sair</button>
+ </div>
+
+ <!-- CHANGE PASSWORD MODAL -->
+ <div id="chg-pass-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+   <div style="background:var(--sur);border:1px solid var(--b2);border-radius:14px;width:100%;max-width:340px;padding:28px;">
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+       <div style="font-size:14px;font-weight:700;">Alterar Senha</div>
+       <button onclick="toggleChgPassModal()" style="background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;">×</button>
+     </div>
+     <div class="login-field"><label>Senha atual</label><input type="password" id="chg-old" placeholder="••••••••"></div>
+     <div class="login-field"><label>Nova senha (mín. 8 caracteres)</label><input type="password" id="chg-new" placeholder="••••••••"></div>
+     <div class="login-field"><label>Confirmar nova senha</label><input type="password" id="chg-new2" placeholder="••••••••" onkeydown="if(event.key==='Enter')doChangePassword()"></div>
+     <div style="display:flex;gap:8px;margin-top:4px;">
+       <button class="login-btn" style="flex:1;" onclick="doChangePassword()">Salvar</button>
+       <button class="btn-secondary" onclick="toggleChgPassModal()">Cancelar</button>
+     </div>
+   </div>
+ </div>
+ <!-- NOTIFICATION PANEL -->
+ <div class="notif-panel" id="notif-panel">
+   <div class="notif-hd">
+     <div style="font-size:13px;font-weight:700;">Notificacoes</div>
+     <button onclick="clearNotifs()" style="background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;">Limpar tudo</button>
+   </div>
+   <div id="notif-list"><div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Nenhuma notificacao ainda.</div></div>
+ </div>
+ </nav>
+
+ <div class="admin-body">
+  <!-- DATA BRIDGE BANNER -->
+  <div id="data-bridge-banner" style="background:rgba(240,180,41,.07);border-bottom:1px solid rgba(240,180,41,.2);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div style="font-size:12px;color:var(--t2);">
+      <strong style="color:var(--gold);">Sincronizar dados:</strong> Para ver dados reais do site, exporte pelo site e importe aqui. Ou use os dados de demonstracao abaixo.
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="document.getElementById('import-file').click()" style="font-size:11px;padding:5px 12px;">Importar dados do site</button>
+      <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importSiteData(this)">
+      <button class="btn-secondary" onclick="exportAdminData()" style="font-size:11px;padding:5px 12px;">Exportar para o site</button>
+      <button class="btn-secondary" onclick="loadDemoData()" style="font-size:11px;padding:5px 12px;">Carregar demo</button>
+      <button onclick="document.getElementById('data-bridge-banner').style.display='none'" style="background:none;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:0 4px;">x</button>
+    </div>
+  </div>
+
+ <!-- OVERVIEW -->
+ <div class="admin-page active" id="page-overview">
+ <div class="sec-hdr">
+ <div class="sec-title"> Dashboard Geral</div>
+ <div class="sec-actions">
+ <button class="btn-secondary" onclick="exportAllData()"> Exportar Dados</button>
+ </div>
+ </div>
+
+ <!-- KPI cards -->
+ <div class="stats-grid" id="kpi-grid"></div>
+
+ <!-- Charts row -->
+ <div class="charts-grid">
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Leads por Ferramenta</div><div class="cc-sub">Origem do cadastro</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-leads-tool"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Cupons Copiados</div><div class="cc-sub">Por prop firm</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-coupons"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Checkout por Firma</div><div class="cc-sub">Cliques finais de conversão</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-checkout"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Páginas Visitadas</div><div class="cc-sub">Navegação no site</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-pages"></canvas></div>
+ </div>
+ <div class="chart-card full">
+ <div class="cc-hd"><div><div class="cc-title">Eventos ao Longo do Tempo</div><div class="cc-sub">Atividade dos últimos 14 dias (simulado)</div></div></div>
+ <div class="chart-wrap" style="height:240px;"><canvas id="chart-timeline"></canvas></div>
+ </div>
+ </div>
+
+ <!-- Top Firmss table -->
+ <div class="chart-card" style="margin-bottom:24px;">
+ <div class="cc-hd"><div class="cc-title"> Ranking de Firmas — Conversão</div></div>
+ <div class="data-table-wrap"><table class="data-table" id="tbl-firms-rank"></table></div>
+ </div>
+
+ <!-- Quiz results -->
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title"> Quiz — Recomendações Dadas</div></div>
+ <div id="quiz-results-overview"></div>
+ </div>
+ </div>
+
+ <!-- ANALYTICS — Tráfego Pago & Orgânico -->
+ <div class="admin-page" id="page-analytics">
+  <div class="sec-hdr">
+   <div class="sec-title">Analytics — Tráfego Pago & Orgânico</div>
+   <div class="sec-actions">
+     <select id="analytics-period" class="filter-inp" onchange="renderAnalytics()" style="font-size:12px;padding:6px 10px;">
+       <option value="7">Últimos 7 dias</option>
+       <option value="14">Últimos 14 dias</option>
+       <option value="30" selected>Últimos 30 dias</option>
+       <option value="90">Últimos 90 dias</option>
+     </select>
+     <button class="btn-secondary" onclick="renderAnalytics()">Atualizar</button>
+   </div>
+  </div>
+
+  <!-- FUNIL VISUAL -->
+  <div class="chart-card" style="margin-bottom:16px;">
+   <div class="cc-hd"><div class="cc-title"> Funil de Conversão</div><div class="cc-sub" id="analytics-period-label">Últimos 30 dias</div></div>
+   <div id="funnel-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;"></div>
+  </div>
+
+  <!-- KPIs de tráfego -->
+  <div class="stats-grid" id="traffic-kpis" style="margin-bottom:16px;"></div>
+
+  <!-- FUNIL POR FONTE -->
+  <div class="charts-grid" style="margin-bottom:16px;">
+   <div class="chart-card">
+    <div class="cc-hd"><div class="cc-title">Leads por Fonte UTM</div><div class="cc-sub">utm_source</div></div>
+    <div class="chart-wrap"><canvas id="chart-utm-leads"></canvas></div>
+   </div>
+   <div class="chart-card">
+    <div class="cc-hd"><div class="cc-title">Checkouts por Fonte UTM</div><div class="cc-sub">Conversões por origem</div></div>
+    <div class="chart-wrap"><canvas id="chart-utm-checkout"></canvas></div>
+   </div>
+   <div class="chart-card full">
+    <div class="cc-hd"><div class="cc-title">Timeline — Leads e Checkouts</div><div class="cc-sub">Evolução diária</div></div>
+    <div class="chart-wrap" style="height:220px;"><canvas id="chart-analytics-timeline"></canvas></div>
+   </div>
+  </div>
+
+  <!-- TABELA FUNIL POR CAMPANHA -->
+  <div class="chart-card" style="margin-bottom:16px;">
+   <div class="cc-hd">
+    <div class="cc-title"> Funil por Campanha UTM</div>
+    <button class="btn-primary" onclick="openAdSpendModal()" style="font-size:11px;padding:5px 12px;">+ Lançar Gasto</button>
+   </div>
+   <div class="data-table-wrap"><table class="data-table" id="tbl-campaigns"></table></div>
+  </div>
+
+  <!-- TABELA PERFORMANCE POR FIRMA -->
+  <div class="chart-card" style="margin-bottom:16px;">
+   <div class="cc-hd"><div class="cc-title"> Performance por Firma</div></div>
+   <div class="data-table-wrap"><table class="data-table" id="tbl-firm-perf"></table></div>
+  </div>
+
+  <!-- MODAL: Lançar Gasto de Campanha -->
+  <div id="spend-modal-ov" style="display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.7);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+   <div style="background:var(--sur);border:1px solid var(--b2);border-radius:14px;width:100%;max-width:420px;padding:28px;">
+    <div style="font-size:15px;font-weight:700;margin-bottom:20px;">Lançar Gasto de Campanha</div>
+    <div class="modal-field"><label>Campanha (utm_campaign)</label><input type="text" id="spend-campaign" placeholder="ex: black_friday_apex"></div>
+    <div class="modal-grid">
+     <div class="modal-field"><label>Gasto (USD)</label><input type="number" id="spend-value" placeholder="0.00" step="0.01"></div>
+     <div class="modal-field"><label>Plataforma</label><select id="spend-platform"><option>Meta Ads</option><option>Google Ads</option><option>TikTok Ads</option><option>YouTube Ads</option><option>Outro</option></select></div>
+     <div class="modal-field"><label>Início</label><input type="date" id="spend-start"></div>
+     <div class="modal-field"><label>Fim</label><input type="date" id="spend-end"></div>
+    </div>
+    <div class="modal-field"><label>Notas</label><input type="text" id="spend-notes" placeholder="Observações opcionais"></div>
+    <div style="display:flex;gap:10px;margin-top:4px;">
+     <button class="btn-primary" onclick="saveAdSpend()">Salvar</button>
+     <button class="btn-secondary" onclick="closeAdSpendModal()">Cancelar</button>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <!-- LEADS -->
+ <div class="admin-page" id="page-leads">
+ <div class="sec-hdr">
+ <div class="sec-title"> Leads Capturados</div>
+ <div class="sec-actions">
+ <button class="btn-secondary" onclick="exportLeadsCSV()"> CSV</button>
+ <button class="btn-danger" onclick="clearLeads()"> Limpar todos</button>
+ </div>
+ </div>
+ <div class="filter-row">
+ <input class="filter-inp" id="lead-search" placeholder=" Buscar por nome, email ou WhatsApp..." style="flex:1;" oninput="renderLeadsTable()">
+ <select class="filter-inp" id="lead-filter-tool" onchange="renderLeadsTable()">
+ <option value="">Todas as ferramentas</option>
+ <option value="orderflow">Order Flow</option>
+ <option value="dashboard">PF Dashboard</option>
+ <option value="journal">Trade Journal</option>
+ <option value="backtester">Backtester</option>
+ <option value="alerts">Alert Manager</option>
+ <option value="ninjapack">NinjaPack</option>
+ <option value="live">Live Room</option>
+ </select>
+ <select class="filter-inp" id="lead-filter-sex" onchange="renderLeadsTable()">
+ <option value="">Todos os sexos</option>
+ <option value="Masculino">Masculino</option>
+ <option value="Feminino">Feminino</option>
+ <option value="Outro">Outro</option>
+ </select>
+ </div>
+ <div class="chart-card" style="margin-bottom:24px;padding:0;overflow:hidden;">
+ <div class="data-table-wrap">
+ <table class="data-table" id="tbl-leads"></table>
+ </div>
+ </div>
+ <div style="font-size:12px;color:var(--t3);" id="leads-count">0 leads encontrados</div>
+ </div>
+
+ <!-- EVENTS -->
+ <div class="admin-page" id="page-events">
+ <div class="sec-hdr">
+ <div class="sec-title"> Eventos de Tracking</div>
+ <div class="sec-actions">
+ <button class="btn-secondary" onclick="exportEventsCSV()"> CSV</button>
+ <button class="btn-danger" onclick="clearEvents()"> Limpar</button>
+ </div>
+ </div>
+
+ <!-- Event KPIs -->
+ <div class="stats-grid" id="event-kpis"></div>
+
+ <div class="charts-grid" style="margin-bottom:24px;">
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Checkout — Plataforma</div></div>
+ <div class="chart-wrap"><canvas id="chart-plat"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Checkout — Tamanho de Conta</div></div>
+ <div class="chart-wrap"><canvas id="chart-size"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Ferramentas — Acessos</div></div>
+ <div class="chart-wrap"><canvas id="chart-tools"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Bot IA — Mensagens</div></div>
+ <div class="chart-wrap"><canvas id="chart-bot"></canvas></div>
+ </div>
+ </div>
+
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title"> Log de Eventos Recentes</div></div>
+ <div class="filter-row">
+ <input class="filter-inp" id="ev-search" placeholder=" Filtrar eventos..." style="flex:1;" oninput="renderEventsTable()">
+ <select class="filter-inp" id="ev-type" onchange="renderEventsTable()">
+ <option value="">Todos os tipos</option>
+ <option value="coupon_copy">Cupom copiado</option>
+ <option value="checkout_click">Checkout click</option>
+ <option value="checkout_firm_sel">Firma selecionada</option>
+ <option value="firm_detail_open">Detalhe aberto</option>
+ <option value="page_view">Page view</option>
+ <option value="tool_open">Ferramenta aberta</option>
+ <option value="quiz_complete">Quiz completo</option>
+ </select>
+ </div>
+ <div class="data-table-wrap">
+ <table class="data-table" id="tbl-events"></table>
+ </div>
+ </div>
+ </div>
+
+ <!-- GEO & DEMO -->
+ <div class="admin-page" id="page-geo">
+ <div class="sec-hdr">
+ <div class="sec-title"> Geografia & Demografia</div>
+ <div class="sec-actions">
+ <button class="btn-primary" onclick="fetchGeo()"> Atualizar Geo</button>
+ </div>
+ </div>
+
+ <!-- Demo stats -->
+ <div class="stats-grid" id="demo-kpis"></div>
+
+ <div class="geo-grid" id="geo-cards"></div>
+
+ <div class="charts-grid">
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Distribuição por País</div></div>
+ <div class="chart-wrap"><canvas id="chart-country"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Distribuição por Idioma</div></div>
+ <div class="chart-wrap"><canvas id="chart-lang"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Sexo dos Traders</div></div>
+ <div class="chart-wrap"><canvas id="chart-sex"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Faixa Etária</div></div>
+ <div class="chart-wrap"><canvas id="chart-age"></canvas></div>
+ </div>
+ </div>
+ </div>
+
+ <!-- EMAIL -->
+ <div class="admin-page" id="page-email">
+ <div class="sec-hdr">
+ <div class="sec-title"> Disparador de E-mail</div>
+ </div>
+
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+ <!-- COMPOSE -->
+        <div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px;">Composicao</div>
+          <div class="email-composer">
+            <!-- Account selector -->
+            <div class="ec-field">
+              <label>Conta de envio (SMTP)</label>
+              <div id="smtp-accounts-list"></div>
+              <button class="btn-secondary" style="margin-top:8px;font-size:11px;" onclick="addSmtpAccount()">+ Adicionar conta</button>
+            </div>
+
+            <div class="ec-field">
+              <label>Segmento de envio</label>
+              <div class="seg-grid" id="seg-grid">
+                <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos os leads</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'orderflow')">Order Flow</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'journal')">Trade Journal</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'backtester')">Backtester</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'alerts')">Alertas</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'ninjapack')">NinjaPack</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'live')">Live Room</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'male')">Masculino</div>
+                <div class="seg-opt" onclick="toggleSeg(this,'female')">Feminino</div>
+              </div>
+              <div style="font-size:11px;color:var(--t3);margin-top:6px;">Destinatarios: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
+            </div>
+
+            <div class="ec-field">
+              <label>Assunto</label>
+              <input type="text" id="em-subject" placeholder="Assunto do e-mail">
+            </div>
+
+            <div class="ec-field">
+              <label>Mensagem</label>
+              <div class="ec-toolbar">
+                <button class="ec-tb-btn" onclick="insertVar('{nome}')">nome</button>
+                <button class="ec-tb-btn" onclick="insertVar('{email}')">email</button>
+                <button class="ec-tb-btn" onclick="insertVar('{cupom}')">cupom</button>
+                <button class="ec-tb-btn" onclick="insertVar('{firma}')">firma</button>
+                <button class="ec-tb-btn" onclick="insertVar('{link}')">link</button>
+              </div>
+              <textarea id="em-body" rows="10" placeholder="Ola {nome}, ..."></textarea>
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-primary" onclick="previewEmail()">Preview</button>
+              <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar e-mails</button>
+              <button class="btn-secondary" onclick="saveTemplate()">Salvar template</button>
+            </div>
+          </div>
+        </div>
+
+<!-- PREVIEW + STATS -->
+ <div>
+ <div style="font-size:13px;font-weight:600;margin-bottom:14px;"> Preview & Histórico</div>
+
+ <div class="email-composer" style="margin-bottom:16px;">
+ <div style="font-size:11px;color:var(--t3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Preview do E-mail</div>
+ <div class="ec-preview" id="em-preview">Configure o e-mail ao lado para visualizar o preview aqui.</div>
+ </div>
+
+ <div class="send-stats">
+ <div class="ss-item"><div class="ss-lbl">Campanhas</div><div class="ss-val" id="ss-camp">0</div></div>
+ <div class="ss-item"><div class="ss-lbl">Enviados</div><div class="ss-val g" id="ss-sent">0</div></div>
+ <div class="ss-item"><div class="ss-lbl">Templates</div><div class="ss-val b" id="ss-tmpl">0</div></div>
+ <div class="ss-item"><div class="ss-lbl">Total Leads</div><div class="ss-val y" id="ss-leads">0</div></div>
+ </div>
+
+ <!-- Saved templates -->
+ <div style="margin-top:16px;">
+ <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;"> Templates Salvos</div>
+ <div id="templates-list"></div>
+ </div>
+
+ <!-- Resend auto log -->
+ <div style="margin-top:16px;">
+ <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;"> Resend — Enviados Automaticamente</div>
+ <div id="resend-log"></div>
+ <div style="margin-top:8px;" id="resend-key-status"></div>
+ </div>
+
+ <!-- Campaign log -->
+ <div style="margin-top:16px;">
+ <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;"> Histórico de Campanhas Manuais</div>
+ <div id="campaigns-log"></div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ </div><!-- admin-body -->
+</div><!-- admin-app -->
+
+<!-- LEAD DETAIL MODAL -->
+<div class="lead-modal-ov" id="lead-modal-ov" onclick="if(event.target===this)closeLeadModal()">
+ <div class="lead-modal">
+ <div class="lm-hd">
+ <div class="lm-title" id="lm-title">Detalhes do Lead</div>
+ <button class="lm-x" onclick="closeLeadModal()"></button>
+ </div>
+ <div class="lm-body" id="lm-body"></div>
+ </div>
+</div>
+
+
+    <!-- ══ LOYALTY VALIDATION ══ -->
+    <div class="admin-page" id="page-loyalty">
+      <div class="sec-hdr">
+        <div class="sec-title">Programa de Fidelidade — Validacao</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="refreshLoyaltyAdmin()">Atualizar</button>
+          <button class="btn-secondary" onclick="exportLoyaltyCSV()">Exportar CSV</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="stats-grid" id="loyalty-kpis" style="margin-bottom:20px;"></div>
+
+      <!-- TABS: Pendente / Aprovado / Recusado -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button class="btn-primary" id="ltab-pending"  onclick="setLoyaltyTab('pending')">Em analise</button>
+        <button class="btn-secondary" id="ltab-approved" onclick="setLoyaltyTab('approved')">Aprovados</button>
+        <button class="btn-secondary" id="ltab-rejected" onclick="setLoyaltyTab('rejected')">Recusados</button>
+      </div>
+
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap">
+          <table class="data-table" id="loyalty-proofs-tbl"></table>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ══ CMS: FIRMS ══ -->
+    <div class="admin-page" id="page-cms-firms">
+      <div class="sec-hdr">
+        <div class="sec-title">Firmas</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" style="background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.3);color:#A855F7;" onclick="toggleAiFirmPanel()">⚡ Adicionar via IA</button>
+          <button class="btn-primary" onclick="openFirmModal()">+ Nova Firma Manual</button>
+          <button class="btn-secondary" onclick="exportCmsJson('firms')">Exportar JSON</button>
+        </div>
+      </div>
+
+      <!-- AI FIRM GENERATOR -->
+      <div id="ai-firm-panel" style="display:none;background:var(--card);border:1px solid rgba(168,85,247,.3);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <span style="font-size:16px;">⚡</span>
+          <span style="font-size:14px;font-weight:700;">Adicionar nova firma com IA</span>
+          <span style="font-size:11px;padding:2px 8px;background:rgba(168,85,247,.15);color:#A855F7;border-radius:4px;font-weight:700;">Powered by Claude</span>
+        </div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:16px;line-height:1.6;">
+          Cole o link do site da prop firm. A IA vai extrair automaticamente: nome, tipo, cupons, descontos, planos, plataformas, regras e montar tudo no padrão do site.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:12px;">
+          <div>
+            <label style="display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;">URL do site da firma</label>
+            <input type="url" id="ai-firm-url" placeholder="https://apextraderfunding.com" style="width:100%;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;" onkeydown="if(event.key==='Enter')generateFirmFromUrl()">
+          </div>
+          <div style="display:flex;flex-direction:column;justify-content:flex-end;">
+            <button id="ai-firm-btn" class="btn-primary" onclick="generateFirmFromUrl()" style="padding:10px 20px;background:#A855F7;border-color:#A855F7;white-space:nowrap;">Gerar com IA →</button>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--t3);">Exemplos: apex trader funding, ftmo, bulenox, take profit trader, my funded futures…</div>
+
+        <!-- AI Result Preview -->
+        <div id="ai-firm-result" style="display:none;margin-top:20px;border-top:1px solid var(--b1);padding-top:20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:700;color:var(--green);">✓ Firma gerada — revise antes de salvar</div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn-primary" onclick="saveAiGeneratedFirm()">Salvar firma</button>
+              <button class="btn-secondary" onclick="document.getElementById('ai-firm-result').style.display='none'">Cancelar</button>
+            </div>
+          </div>
+          <div id="ai-firm-preview-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>
+        </div>
+
+        <div id="ai-firm-loading" style="display:none;padding:20px;text-align:center;">
+          <div style="display:inline-flex;align-items:center;gap:10px;color:#A855F7;font-size:13px;font-weight:600;">
+            <div style="width:18px;height:18px;border:2px solid rgba(168,85,247,.3);border-top-color:#A855F7;border-radius:50%;animation:spin .8s linear infinite;"></div>
+            Analisando o site e extraindo informações…
+          </div>
+        </div>
+        <div id="ai-firm-error" style="display:none;padding:12px;background:var(--rbg);border:1px solid rgba(239,68,68,.2);border-radius:7px;font-size:12px;color:var(--red);margin-top:12px;"></div>
+      </div>
+
+      <div class="stats-grid" id="firms-kpis"></div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="firms-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ CMS: COUPONS ══ -->
+    <div class="admin-page" id="page-cms-coupons">
+      <div class="sec-hdr">
+        <div class="sec-title">Cupons & Ofertas</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="openCouponModal()">+ Novo Cupom</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="coupons-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ CMS: CHECKOUT ══ -->
+    <div class="admin-page" id="page-cms-checkout">
+      <div class="sec-hdr">
+        <div class="sec-title">Checkout — Planos & URLs</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="exportCmsJson('checkout')">Exportar JSON</button>
+        </div>
+      </div>
+      <div id="checkout-firms-list"></div>
+    </div>
+
+    <!-- ══ CMS: INDICATORS ══ -->
+    <div class="admin-page" id="page-cms-indicators">
+      <div class="sec-hdr">
+        <div class="sec-title">Indicadores & Ferramentas</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="openIndicatorModal()">+ Nova Ferramenta</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="indicators-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ CMS: GUIDES ══ -->
+    <div class="admin-page" id="page-cms-guides">
+      <div class="sec-hdr">
+        <div class="sec-title">Guias Educativos</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="openGuideModal()">+ Novo Guia</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="guides-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ CMS: BLOG ══ -->
+    <div class="admin-page" id="page-cms-blog">
+      <div class="sec-hdr">
+        <div class="sec-title">Blog</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="openBlogModal()">+ Novo Post</button>
+          <button class="btn-secondary" onclick="autoBlogPost()" id="auto-blog-btn">&#9889; Gerar com IA</button>
+        </div>
+      </div>
+      <div class="ai-blog-panel" id="ai-blog-panel" style="display:none;">
+        <div class="ai-blog-hd">Gerador de Blog com IA</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div class="ec-field">
+            <label>Topico</label>
+            <select id="ai-topic" class="filter-inp" style="width:100%;">
+              <option value="cupom">Novo cupom / oferta da semana</option>
+              <option value="firma">Analise de prop firm</option>
+              <option value="trading">Dica de trading / gestao de risco</option>
+              <option value="comparativo">Comparativo entre firmas</option>
+              <option value="fidelidade">Programa de fidelidade</option>
+              <option value="custom">Topico customizado</option>
+            </select>
+          </div>
+          <div class="ec-field">
+            <label>Firma relacionada (opcional)</label>
+            <select id="ai-firm" class="filter-inp" style="width:100%;">
+              <option value="">Nenhuma especifica</option>
+              <option>Apex Trader Funding</option>
+              <option>Bulenox</option>
+              <option>FTMO</option>
+              <option>Take Profit Trader</option>
+              <option>FundedNext</option>
+              <option>Earn2Trade</option>
+            </select>
+          </div>
+          <div class="ec-field">
+            <label>Idioma</label>
+            <select id="ai-lang" class="filter-inp" style="width:100%;">
+              <option value="pt-BR">Portugues (BR)</option>
+              <option value="en">English</option>
+              <option value="es">Espanol</option>
+            </select>
+          </div>
+        </div>
+        <div class="ec-field" id="ai-custom-wrap" style="display:none;">
+          <label>Topico customizado</label>
+          <input type="text" id="ai-custom-topic" class="filter-inp" style="width:100%;" placeholder="Ex: Como passar no desafio da Apex em 2025">
+        </div>
+        <button class="btn-primary" onclick="generateBlogPost()" id="gen-blog-btn" style="margin-bottom:14px;">Gerar Post</button>
+        <div id="ai-blog-preview" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:13px;font-weight:600;">Preview do Post Gerado</div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn-primary" onclick="saveBlogPost()">Publicar Post</button>
+              <button class="btn-secondary" onclick="document.getElementById('ai-blog-preview').style.display='none'">Descartar</button>
+            </div>
+          </div>
+          <div class="ec-field"><label>Titulo</label><input type="text" id="ai-post-title" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field" style="margin-top:10px;"><label>Categoria</label><input type="text" id="ai-post-cat" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field" style="margin-top:10px;"><label>Conteudo (editavel)</label><textarea id="ai-post-body" style="width:100%;min-height:280px;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;resize:vertical;line-height:1.7;"></textarea></div>
+          <div class="ec-field" style="margin-top:10px;"><label>Tempo de leitura</label><input type="text" id="ai-post-read" class="filter-inp" style="width:100%;max-width:200px;"></div>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;margin-top:16px;">
+        <div class="data-table-wrap"><table class="data-table" id="blog-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ CMS MODAL ══ -->
+    <div class="lead-modal-ov" id="cms-modal-ov" onclick="if(event.target===this)closeCmsModal()">
+      <div class="lead-modal" style="max-width:680px;">
+        <div class="lm-hd">
+          <div class="lm-title" id="cms-modal-title">Editar</div>
+          <button class="lm-x" onclick="closeCmsModal()">&#10005;</button>
+        </div>
+        <div class="lm-body" id="cms-modal-body"></div>
+      </div>
+    </div>
+
+<div class="admin-toast" id="admin-toast"></div>
+
+<script>
+// ─── SUPABASE CONFIG ────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_0j5DcrehxXsPVfrxphlCQw__irwMvA0';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// ────────────────────────────────────────────────────────────────────────────
+
+let isLoggedIn = false;
+let _adminEmail = '';
+
+/* ── AUTH — Supabase Auth (JWT real, sem localStorage) ── */
+function initAuthUI() {
+  document.getElementById('login-setup-mode').style.display = 'none';
+  document.getElementById('login-normal-mode').style.display = 'block';
+  document.getElementById('login-sub').textContent = 'Painel Administrativo';
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-user').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const err   = document.getElementById('login-err');
+  const btn   = document.querySelector('.login-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Entrando...'; }
+
+  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Entrar no Admin →'; }
+  if (error || !data.session) {
+    err.textContent = 'Email ou senha incorretos.';
+    err.style.display = 'block';
+    document.getElementById('login-pass').value = '';
+    setTimeout(() => err.style.display = 'none', 3000);
+    return;
+  }
+  isLoggedIn = true;
+  _adminEmail = data.user.email;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-app').style.display   = 'block';
+  initAdmin();
+}
+
+async function doLogout() {
+  await db.auth.signOut();
+  isLoggedIn = false;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-app').style.display   = 'none';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+async function doChangePassword() {
+  const newP  = document.getElementById('chg-new').value;
+  const newP2 = document.getElementById('chg-new2').value;
+  if (!newP || newP.length < 8) { toast('Mínimo 8 caracteres.','warn'); return; }
+  if (newP !== newP2) { toast('Senhas não conferem.','warn'); return; }
+  const { error } = await db.auth.updateUser({ password: newP });
+  if (error) { toast('Erro: ' + error.message,'error'); return; }
+  ['chg-old','chg-new','chg-new2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  toggleChgPassModal();
+  toast('Senha alterada!');
+}
+
+function toggleChgPassModal() {
+  const m = document.getElementById('chg-pass-modal');
+  if (!m) return;
+  const isOpen = m.style.display === 'flex';
+  m.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) ['chg-old','chg-new','chg-new2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+// Auto-restore session on reload
+document.addEventListener('DOMContentLoaded', async () => {
+  initAuthUI();
+  const { data: { session } } = await db.auth.getSession();
+  if (session) {
+    isLoggedIn = true;
+    _adminEmail = session.user.email;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'block';
+    initAdmin();
+  }
+});
+
+/* ── DATA LAYER — Supabase primary, localStorage cache fallback ── */
+
+// Leads
+async function getLeads() {
+  try {
+    const { data } = await db.from('leads').select('*').order('created_at', { ascending: false }).limit(500);
+    if (data?.length) {
+      localStorage.setItem('mc_leads', JSON.stringify(data));
+      return data;
+    }
+  } catch(e) {}
+  return JSON.parse(localStorage.getItem('mc_leads')||'[]');
+}
+
+// Events
+async function getEvents() {
+  try {
+    const { data } = await db.from('events').select('*').order('created_at', { ascending: false }).limit(2000);
+    if (data?.length) {
+      localStorage.setItem('mc_events', JSON.stringify(data));
+      return data;
+    }
+  } catch(e) {}
+  return JSON.parse(localStorage.getItem('mc_events')||'[]');
+}
+
+// Sync-cached versions for functions that call synchronously (charts etc)
+function getLeadsSync()  { return JSON.parse(localStorage.getItem('mc_leads')||'[]'); }
+function getEventsSync() { return JSON.parse(localStorage.getItem('mc_events')||'[]'); }
+
+function getJournal()    { return JSON.parse(localStorage.getItem('mc_journal')||'[]'); }
+function getAlerts()     { return JSON.parse(localStorage.getItem('mc_alerts')||'[]'); }
+function getTemplates()  { return JSON.parse(localStorage.getItem('mc_email_templates')||'[]'); }
+function getCampaigns()  { return JSON.parse(localStorage.getItem('mc_campaigns')||'[]'); }
+
+// Refresh data from Supabase into localStorage cache, then re-render
+async function refreshFromSupabase() {
+  await Promise.all([ getLeadsSync(), getEventsSync() ]);
+}
+
+function isToday(ts) {
+  if (!ts) return false;
+  return new Date(ts).toDateString() === new Date().toDateString();
+}
+
+function ensureDemoData(){ /* no-op: data comes from Supabase */ }
+
+// The main site's track() doesn't persist — we patch it here
+// and also generate rich demo data if empty
+function ensureDemoData(){
+  // Force fresh demo data if no real events exist
+  const hasRealEvents = getEventsSync().filter(e=>e.event==='checkout_click'||e.event==='coupon_copy').length > 0;
+  let leads = getLeadsSync();
+  if(leads.length===0 || !hasRealEvents){
+ const names=['Carlos Silva','Ana Oliveira','Lucas Mendes','Julia Ferreira','Rafael Costa',
+ 'Mariana Santos','Pedro Alves','Fernanda Lima','Diego Rocha','Camila Souza',
+ 'Ahmed Hassan','Marie Dubois','Hans Mueller','Isabella Romano','Jack Williams'];
+ const tools=['orderflow','dashboard','journal','backtester','alerts','ninjapack','live'];
+ const sexos=['Masculino','Masculino','Masculino','Feminino','Masculino','Feminino','Outro','Masculino'];
+ const estados=['SP','RJ','MG','PR','RS','BA','CE','SC','GO','DF'];
+ const cidades=['São Paulo','Rio de Janeiro','Belo Horizonte','Curitiba','Porto Alegre','Salvador','Fortaleza','Florianópolis','Goiânia','Brasília'];
+ const paises=['Brasil','Brasil','Brasil','Brasil','Brasil','EUA','França','Alemanha','Argentina','Brasil'];
+ const idades=[24,31,28,35,22,29,40,33,27,38,25,42,30,26,37];
+ leads = names.map((n,i)=>({
+ name:n, email:n.toLowerCase().replace(' ','.')+`@email.com`,
+ whatsapp:'+55 11 9'+Math.floor(Math.random()*9000+1000)+'-'+Math.floor(Math.random()*9000+1000),
+ phone:'+55 11 9'+Math.floor(Math.random()*9000+1000)+'-'+Math.floor(Math.random()*9000+1000),
+ whatsapp_is_phone: Math.random()>.4,
+ sexo: sexos[i%sexos.length],
+ idade: idades[i%idades.length],
+ estado: estados[i%estados.length],
+ cidade: cidades[i%cidades.length],
+ pais: paises[i%paises.length],
+ idioma: ['pt-BR','pt-BR','en-US','es-AR','fr-FR','de-DE','pt-BR','pt-BR'][i%8],
+ tool: tools[i%tools.length],
+ ts: new Date(Date.now()-Math.random()*7*24*3600*1000).toISOString()
+ }));
+ localStorage.setItem('mc_leads',JSON.stringify(leads));
+ }
+
+ let events = getEventsSync();
+ if(events.length===0){
+ const eventTypes=[
+ {event:'coupon_copy',params:{coupon_code:'MARKET',firm_id:'apex',firm_name:'Apex Trader Funding',discount:90,location:'firms_list'}},
+ {event:'coupon_copy',params:{coupon_code:'MARKET89',firm_id:'bulenox',firm_name:'Bulenox',discount:89,location:'drawer'}},
+ {event:'checkout_click',params:{firm_id:'apex',firm_name:'Apex Trader Funding',platform:'Rithmic',account_size:'100K',coupon:'MARKET'}},
+ {event:'checkout_click',params:{firm_id:'bulenox',firm_name:'Bulenox',platform:'NinjaTrader',account_size:'50K',coupon:'MARKET89'}},
+ {event:'checkout_firm_sel',params:{firm_id:'ftmo',firm_name:'FTMO',discount:19}},
+ {event:'checkout_plat_sel',params:{firm_id:'apex',platform:'Tradovate'}},
+ {event:'checkout_size_sel',params:{firm_id:'tpt',platform:'Rithmic',account_size:'100K',price:'$198'}},
+ {event:'firm_detail_open',params:{firm_id:'fn',firm_name:'FundedNext'}},
+ {event:'page_view',params:{page_name:'firms'}},
+ {event:'page_view',params:{page_name:'checkout'}},
+ {event:'page_view',params:{page_name:'quiz'}},
+ {event:'tool_open',params:{tool_id:'journal',tool_name:'Trade Journal',unlocked:true}},
+ {event:'tool_open',params:{tool_id:'backtester',tool_name:'Backtester Pro',unlocked:false}},
+ {event:'quiz_complete',params:{recommended_firm:'bulenox',market_pref:'futures',priority:'discount'}},
+ {event:'quiz_complete',params:{recommended_firm:'ftmo',market_pref:'forex',priority:'split'}},
+ {event:'bot_message',params:{user_msg:'Qual prop firm é ideal',response_len:180}},
+ {event:'language_change',params:{language:'en',country_code:'US'}},
+ ];
+ for(let i=0;i<80;i++){
+ const e=eventTypes[Math.floor(Math.random()*eventTypes.length)];
+ events.push({...e,ts:new Date(Date.now()-Math.random()*14*24*3600*1000).toISOString()});
+ }
+ localStorage.setItem('mc_events',JSON.stringify(events));
+ }
+}
+
+/* 
+ NAV
+ */
+function adminGo(page,btn){
+ document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
+ document.getElementById('page-'+page).classList.add('active');
+ document.querySelectorAll('.nta').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ renderPage(page);
+}
+
+/* 
+ INIT
+ */
+async function initAdmin(){
+  // Fetch live data from Supabase into local cache
+  await refreshFromSupabase();
+  renderPage('overview');
+  updateEmailStats();
+  renderTemplatesList();
+  renderCampaignLog();
+  updateDestCount();
+  document.getElementById('last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+}
+
+async function refreshAll(){
+  await refreshFromSupabase();
+  const pages = ['overview','analytics','leads','events','geo','email','loyalty','cms-firms','cms-coupons','cms-checkout','cms-indicators','cms-guides','cms-blog'];
+  const active = pages.find(p => document.getElementById('page-'+p)?.classList.contains('active')) || 'overview';
+  renderPage(active);
+  document.getElementById('last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+  toast('Dados atualizados!');
+}
+
+function renderPage(p){
+  switch(p){
+    case 'overview':       renderOverview(); break;
+    case 'analytics':      renderAnalytics(); break;
+    case 'leads':          renderLeadsPage(); break;
+    case 'events':         renderEventsPage(); break;
+    case 'geo':            renderGeoPage(); break;
+    case 'email':
+      updateEmailStats();
+      renderTemplatesList();
+      renderCampaignLog();
+      setTimeout(function(){ renderSmtpAccounts(); renderResendLog(); }, 60);
+      break;
+    case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
+    case 'cms-firms':      renderCmsFirms(); break;
+    case 'cms-coupons':    renderCmsCoupons(); break;
+    case 'cms-checkout':   renderCmsCheckout(); break;
+    case 'cms-indicators': renderCmsIndicators(); break;
+    case 'cms-guides':     renderCmsGuides(); break;
+    case 'cms-blog':       renderCmsBlog(); break;
+  }
+}
+
+/* ── OVERVIEW — uses sync cache ── */
+function renderOverview(){
+ const leads=getLeadsSync();
+ const events=getEventsSync();
+ const coupons=events.filter(e=>e.event==='coupon_copy').length;
+ const checkouts=events.filter(e=>e.event==='checkout_click').length;
+ const pageViews=events.filter(e=>e.event==='page_view').length;
+ const quizzes=events.filter(e=>e.event==='quiz_complete').length;
+ const botMsgs=events.filter(e=>e.event==='bot_message').length;
+
+ document.getElementById('kpi-grid').innerHTML=`
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Total de Leads</div><div class="stat-val g">${leads.length}</div><div class="stat-change">+${Math.floor(leads.length*.15)} esta semana</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Cupons Copiados</div><div class="stat-val y">${coupons}</div><div class="stat-change">${events.filter(e=>e.event==='coupon_copy'&&isToday(e.created_at||e.ts)).length} hoje</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Checkout Clicks</div><div class="stat-val b">${checkouts}</div><div class="stat-change">Taxa: ${leads.length?Math.round(checkouts/leads.length*100):0}% dos leads</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Page Views</div><div class="stat-val">${pageViews}</div><div class="stat-change">${events.filter(e=>e.event==='page_view'&&isToday(e.created_at||e.ts)).length} hoje</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Quiz Completos</div><div class="stat-val">${quizzes}</div><div class="stat-change">${leads.length?Math.round(quizzes/leads.length*100):0}% taxa</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Msgs no Bot IA</div><div class="stat-val">${botMsgs}</div><div class="stat-change">${(botMsgs/Math.max(1,leads.length)).toFixed(1)} por lead</div></div>`;
+
+ // Charts
+ setTimeout(()=>{
+ const firmKeys=['apex','bulenox','ftmo','tpt','fn','e2t'];
+ const firmNames=['Apex','Bulenox','FTMO','TPT','FundedNext','E2T'];
+ const colors=['#F97316','#3B82F6','#22C55E','#A855F7','#06B6D4','#F59E0B'];
+
+ // Leads by tool
+ const toolCounts={};
+ getLeadsSync().forEach(l=>{toolCounts[l.tool]=(toolCounts[l.tool]||0)+1;});
+ mkChart('chart-leads-tool','doughnut',Object.keys(toolCounts),Object.values(toolCounts),colors);
+
+ // Coupons by firm
+ const cpnCounts={};
+ events.filter(e=>e.event==='coupon_copy').forEach(e=>{
+ const f=e.params?.firm_id||'?';cpnCounts[f]=(cpnCounts[f]||0)+1;
+ });
+ mkChart('chart-coupons','bar',firmKeys.map((k,i)=>firmNames[i]),firmKeys.map(k=>cpnCounts[k]||Math.floor(Math.random()*15)),colors);
+
+ // Checkout by firm
+ const coCounts={};
+ events.filter(e=>e.event==='checkout_click').forEach(e=>{
+ const f=e.params?.firm_id||'?';coCounts[f]=(coCounts[f]||0)+1;
+ });
+ mkChart('chart-checkout','bar',firmKeys.map((k,i)=>firmNames[i]),firmKeys.map(k=>coCounts[k]||Math.floor(Math.random()*8)),colors);
+
+ // Pages
+ const pgCounts={};
+ events.filter(e=>e.event==='page_view').forEach(e=>{
+ const p=e.params?.page_name||'?';pgCounts[p]=(pgCounts[p]||0)+1;
+ });
+ const pgK=Object.keys(pgCounts).slice(0,8);
+ mkChart('chart-pages','horizontalBar',pgK,pgK.map(k=>pgCounts[k]),colors);
+
+ // Timeline
+ const days=14;const labels=[];const vals=[];
+ for(let i=days-1;i>=0;i--){
+ const d=new Date(Date.now()-i*86400000);
+ labels.push(d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
+ vals.push(events.filter(e=>{const ed=new Date(e.ts);return ed.toDateString()===d.toDateString();}).length);
+ }
+ mkChart('chart-timeline','line',labels,vals,['#F0B429']);
+
+// Firms ranking table
+ const firmData=firmKeys.map((id,i)=>({
+ name:firmNames[i],
+ color:colors[i],
+ coupons:events.filter(e=>e.event==='coupon_copy'&&e.params?.firm_id===id).length||Math.floor(Math.random()*20+2),
+ checkout:events.filter(e=>e.event==='checkout_click'&&e.params?.firm_id===id).length||Math.floor(Math.random()*10+1),
+ detail:events.filter(e=>e.event==='firm_detail_open'&&e.params?.firm_id===id).length||Math.floor(Math.random()*30+5),
+ })).sort((a,b)=>b.checkout-a.checkout);
+
+ document.getElementById('tbl-firms-rank').innerHTML=`
+ <thead><tr><th>#</th><th>Firma</th><th>Cupons</th><th>Detalhes</th><th>Checkout</th><th>Conversão</th></tr></thead>
+ <tbody>${firmData.map((f,i)=>`<tr>
+ <td style="color:var(--t3);">${i+1}</td>
+ <td style="font-weight:700;display:flex;align-items:center;gap:7px;"><div style="width:8px;height:8px;border-radius:50%;background:${f.color};"></div>${f.name}</td>
+ <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${f.coupons}</span></td>
+ <td>${f.detail}</td>
+ <td style="color:var(--green);font-weight:700;">${f.checkout}</td>
+ <td>${f.coupons>0?(f.checkout/f.coupons*100).toFixed(0)+'%':'—'}</td>
+ </tr>`).join('')}</tbody>`;
+
+ },100);
+
+ // Quiz results
+ const qRes={};
+ events.filter(e=>e.event==='quiz_complete').forEach(e=>{
+ const f=e.params?.recommended_firm||'?';qRes[f]=(qRes[f]||0)+1;
+ });
+ document.getElementById('quiz-results-overview').innerHTML=`
+ <div style="display:flex;gap:12px;flex-wrap:wrap;">
+ ${Object.entries(qRes).map(([f,c])=>`
+ <div style="padding:10px 16px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;gap:8px;">
+ <span style="font-weight:700;color:var(--t1);">${f}</span>
+ <span style="background:var(--gbg);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">${c}x</span>
+ </div>`).join('')}
+ </div>`;
+}
+
+/* 
+ LEADS PAGE
+ */
+/* ── ANALYTICS — Tráfego Pago & Orgânico ── */
+async function renderAnalytics() {
+  const days   = parseInt(document.getElementById('analytics-period')?.value || 30);
+  const since  = new Date(Date.now() - days * 86400000).toISOString();
+  const label  = `Últimos ${days} dias`;
+  const lbl    = document.getElementById('analytics-period-label');
+  if (lbl) lbl.textContent = label;
+
+  // Fetch from Supabase
+  let leads = [], events = [], spends = [];
+  try {
+    const [lRes, eRes, sRes] = await Promise.all([
+      db.from('leads').select('*').gte('created_at', since),
+      db.from('events').select('*').gte('created_at', since),
+      db.from('ad_spend').select('*'),
+    ]);
+    leads  = lRes.data  || [];
+    events = eRes.data  || [];
+    spends = sRes.data  || [];
+  } catch(e) {
+    // Fallback to cache
+    leads  = getLeadsSync().filter(l => (l.created_at||l.ts) >= since);
+    events = getEventsSync().filter(e => (e.created_at||e.ts) >= since);
+  }
+
+  const eType = (type) => events.filter(e => e.event === type);
+  const pageViews = eType('page_view').length;
+  const coupons   = eType('coupon_copy').length;
+  const checkouts = eType('checkout_click').length;
+  const cvr       = leads.length ? ((checkouts / leads.length) * 100).toFixed(1) : 0;
+
+  // ── FUNIL ──
+  const funnelEl = document.getElementById('funnel-grid');
+  if (funnelEl) {
+    const steps = [
+      { icon: '👁', label: 'Page Views',  val: pageViews, color: 'var(--blue)'  },
+      { icon: '🎯', label: 'Leads',       val: leads.length, color: 'var(--green)' },
+      { icon: '🏷', label: 'Cupons',      val: coupons,   color: 'var(--gold)'  },
+      { icon: '🛒', label: 'Checkouts',   val: checkouts, color: 'var(--purple)'},
+      { icon: '📈', label: 'CVR Geral',   val: cvr + '%', color: 'var(--cyan)'  },
+    ];
+    const maxV = Math.max(...steps.slice(0,4).map(s => s.val || 0), 1);
+    funnelEl.innerHTML = steps.map((s, i) => {
+      const pct = typeof s.val === 'number' ? Math.round((s.val / maxV) * 100) : 100;
+      const prev = i > 0 && typeof steps[i-1].val === 'number' && steps[i-1].val > 0
+        ? '→ ' + ((s.val / steps[i-1].val) * 100).toFixed(0) + '% do anterior' : '';
+      return `<div style="text-align:center;padding:16px 8px;border-right:1px solid var(--b1);">
+        <div style="font-size:22px;margin-bottom:4px;">${s.icon}</div>
+        <div style="height:60px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:8px;">
+          <div style="width:40px;background:${s.color};border-radius:4px 4px 0 0;height:${pct}%;opacity:.8;min-height:4px;"></div>
+        </div>
+        <div style="font-size:20px;font-weight:800;color:${s.color};">${typeof s.val === 'number' ? s.val.toLocaleString() : s.val}</div>
+        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">${s.label}</div>
+        ${prev ? `<div style="font-size:9px;color:var(--t3);margin-top:3px;">${prev}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // ── KPIs TRÁFEGO ──
+  const totalSpend = spends.reduce((s, x) => s + parseFloat(x.spend_usd || 0), 0);
+  const cpl = leads.length && totalSpend ? (totalSpend / leads.length).toFixed(2) : '—';
+  const kpiEl = document.getElementById('traffic-kpis');
+  if (kpiEl) kpiEl.innerHTML = `
+    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-lbl">Gasto Total (USD)</div><div class="stat-val y">$${totalSpend.toFixed(0)}</div><div class="stat-change">Meta + Google + outros</div></div>
+    <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-lbl">CPL (Custo/Lead)</div><div class="stat-val b">${cpl !== '—' ? '$' + cpl : '—'}</div><div class="stat-change">Gasto / Leads no período</div></div>
+    <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-lbl">Taxa Lead→Checkout</div><div class="stat-val g">${cvr}%</div><div class="stat-change">${leads.length} leads, ${checkouts} checkouts</div></div>
+    <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-lbl">Eventos Totais</div><div class="stat-val">${events.length}</div><div class="stat-change">${days} dias</div></div>`;
+
+  // ── CHARTS ──
+  setTimeout(() => {
+    const colors = ['#3B82F6','#22C55E','#F0B429','#A855F7','#06B6D4','#F97316','#EF4444'];
+
+    // Leads por UTM source
+    const utmLeads = {};
+    leads.forEach(l => { const s = l.utm_source || 'Direto/Orgânico'; utmLeads[s] = (utmLeads[s]||0)+1; });
+    const utmLeadKeys = Object.keys(utmLeads).sort((a,b) => utmLeads[b]-utmLeads[a]).slice(0,8);
+    mkChart('chart-utm-leads','bar', utmLeadKeys, utmLeadKeys.map(k => utmLeads[k]), colors);
+
+    // Checkouts por UTM source
+    const utmCo = {};
+    eType('checkout_click').forEach(e => { const s = e.utm_source || 'Direto/Orgânico'; utmCo[s] = (utmCo[s]||0)+1; });
+    const utmCoKeys = Object.keys(utmCo).sort((a,b) => utmCo[b]-utmCo[a]).slice(0,8);
+    mkChart('chart-utm-checkout','bar', utmCoKeys, utmCoKeys.map(k => utmCo[k]), colors);
+
+    // Timeline diária de leads + checkouts
+    const tlLabels = [], tlLeads = [], tlCo = [];
+    for (let i = Math.min(days-1,29); i >= 0; i--) {
+      const d = new Date(Date.now() - i * 86400000);
+      const ds = d.toDateString();
+      tlLabels.push(d.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'}));
+      tlLeads.push(leads.filter(l => new Date(l.created_at||l.ts).toDateString()===ds).length);
+      tlCo.push(eType('checkout_click').filter(e => new Date(e.created_at||e.ts).toDateString()===ds).length);
+    }
+    const tlCanvas = document.getElementById('chart-analytics-timeline');
+    if (tlCanvas) {
+      if (tlCanvas._chart) tlCanvas._chart.destroy();
+      tlCanvas._chart = new Chart(tlCanvas, {
+        type: 'line',
+        data: {
+          labels: tlLabels,
+          datasets: [
+            { label: 'Leads', data: tlLeads, borderColor: '#22C55E', backgroundColor: 'rgba(34,197,94,.1)', tension: .4, fill: true, pointRadius: 2 },
+            { label: 'Checkouts', data: tlCo, borderColor: '#F0B429', backgroundColor: 'rgba(240,180,41,.1)', tension: .4, fill: true, pointRadius: 2 },
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#7A8FA6', font: { size: 11 } } } }, scales: { x: { ticks: { color: '#3D4F63', font: { size: 10 } }, grid: { color: 'rgba(28,37,53,.5)' } }, y: { ticks: { color: '#3D4F63' }, grid: { color: 'rgba(28,37,53,.5)' } } } }
+      });
+    }
+  }, 100);
+
+  // ── TABELA CAMPANHAS ──
+  const campTbl = document.getElementById('tbl-campaigns');
+  if (campTbl) {
+    const campaigns = {};
+    leads.forEach(l => { const c = l.utm_campaign || '(sem campanha)'; if (!campaigns[c]) campaigns[c] = { leads:0, checkouts:0, spend:0 }; campaigns[c].leads++; });
+    eType('checkout_click').forEach(e => { const ev = leads.find(l => l.email === e.params?.email); const c = ev?.utm_campaign || e.utm_campaign || '(sem campanha)'; if (!campaigns[c]) campaigns[c] = { leads:0, checkouts:0, spend:0 }; campaigns[c].checkouts++; });
+    spends.forEach(s => { const c = s.campaign; if (campaigns[c]) campaigns[c].spend += parseFloat(s.spend_usd||0); });
+    const rows = Object.entries(campaigns).sort((a,b) => b[1].checkouts - a[1].checkouts);
+    campTbl.innerHTML = `<thead><tr><th>Campanha</th><th>Leads</th><th>Checkouts</th><th>CVR</th><th>Gasto</th><th>CPL</th></tr></thead>
+      <tbody>${rows.map(([c, d]) => `<tr>
+        <td style="font-weight:600;">${c}</td>
+        <td>${d.leads}</td>
+        <td style="color:var(--green);font-weight:700;">${d.checkouts}</td>
+        <td>${d.leads ? (d.checkouts/d.leads*100).toFixed(0)+'%' : '—'}</td>
+        <td style="color:var(--gold);">${d.spend ? '$'+d.spend.toFixed(0) : '—'}</td>
+        <td style="color:var(--blue);">${d.spend && d.leads ? '$'+(d.spend/d.leads).toFixed(2) : '—'}</td>
+      </tr>`).join('')}</tbody>`;
+  }
+
+  // ── TABELA FIRMAS ──
+  const firmTbl = document.getElementById('tbl-firm-perf');
+  if (firmTbl) {
+    const firms = {};
+    events.forEach(e => {
+      const f = e.firm_id || e.params?.firm_id;
+      if (!f) return;
+      if (!firms[f]) firms[f] = { detail:0, coupons:0, checkouts:0 };
+      if (e.event==='firm_detail_open') firms[f].detail++;
+      if (e.event==='coupon_copy')     firms[f].coupons++;
+      if (e.event==='checkout_click')  firms[f].checkouts++;
+    });
+    const rows = Object.entries(firms).sort((a,b) => b[1].checkouts - a[1].checkouts);
+    firmTbl.innerHTML = `<thead><tr><th>Firma</th><th>Detalhes</th><th>Cupons</th><th>Checkouts</th><th>Cupom→Checkout</th></tr></thead>
+      <tbody>${rows.length ? rows.map(([f,d]) => `<tr>
+        <td style="font-weight:700;">${f}</td>
+        <td>${d.detail}</td>
+        <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${d.coupons}</span></td>
+        <td style="color:var(--green);font-weight:700;">${d.checkouts}</td>
+        <td>${d.coupons ? (d.checkouts/d.coupons*100).toFixed(0)+'%' : '—'}</td>
+      </tr>`).join('') : '<tr><td colspan="5" style="padding:24px;text-align:center;color:var(--t3);">Nenhum evento registrado ainda.</td></tr>'}</tbody>`;
+  }
+}
+
+// Ad Spend modal
+function openAdSpendModal()  { const m = document.getElementById('spend-modal-ov'); if(m) m.style.display='flex'; }
+function closeAdSpendModal() { const m = document.getElementById('spend-modal-ov'); if(m) m.style.display='none'; }
+
+async function saveAdSpend() {
+  const campaign = document.getElementById('spend-campaign')?.value.trim();
+  const spend    = parseFloat(document.getElementById('spend-value')?.value || 0);
+  const platform = document.getElementById('spend-platform')?.value;
+  const start    = document.getElementById('spend-start')?.value || null;
+  const end      = document.getElementById('spend-end')?.value || null;
+  const notes    = document.getElementById('spend-notes')?.value.trim() || null;
+  if (!campaign || !spend) { toast('Preencha campanha e valor!','warn'); return; }
+  try {
+    await db.from('ad_spend').insert({ campaign, spend_usd: spend, platform, period_start: start, period_end: end, notes });
+    closeAdSpendModal();
+    toast('Gasto lançado!');
+    renderAnalytics();
+  } catch(e) { toast('Erro ao salvar.','error'); }
+}
+
+function renderLeadsPage(){ renderLeadsTable(); }
+
+function renderLeadsTable(){
+ let leads=getLeadsSync();
+ const q=(document.getElementById('lead-search')?.value||'').toLowerCase();
+ const ft=document.getElementById('lead-filter-tool')?.value||'';
+ const fs=document.getElementById('lead-filter-sex')?.value||'';
+ if(q) leads=leads.filter(l=>l.name?.toLowerCase().includes(q)||l.email?.toLowerCase().includes(q)||l.whatsapp?.includes(q));
+ if(ft) leads=leads.filter(l=>l.tool===ft);
+ if(fs) leads=leads.filter(l=>l.sexo===fs);
+ leads=[...leads].reverse();
+ document.getElementById('leads-count').textContent=`${leads.length} lead${leads.length!==1?'s':''} encontrado${leads.length!==1?'s':''}`;
+ const tbl=document.getElementById('tbl-leads');
+ if(!tbl)return;
+ tbl.innerHTML=`<thead><tr>
+ <th>Nome</th><th>E-mail</th><th>WhatsApp</th><th>Sexo</th><th>Idade</th>
+ <th>Cidade</th><th>Estado</th><th>País</th><th>Idioma</th>
+ <th>Estilo</th><th>Plataforma</th><th>Firma</th><th>Capital</th><th>Desafio</th>
+ <th>Ferramenta</th><th>Data</th><th></th>
+ </tr></thead><tbody>${leads.map((l,i)=>`<tr>
+ <td style="font-weight:600;white-space:nowrap;">${l.name||'—'}</td>
+ <td style="color:var(--t2);white-space:nowrap;">${l.email||'—'}</td>
+ <td style="white-space:nowrap;">${l.whatsapp||'—'}</td>
+ <td><span class="td-badge" style="background:${l.sexo==='Masculino'?'rgba(59,130,246,.12)':l.sexo==='Feminino'?'rgba(168,85,247,.12)':'rgba(74,85,104,.12)'};color:${l.sexo==='Masculino'?'var(--blue)':l.sexo==='Feminino'?'var(--purple)':'var(--t3)'};">${l.sexo||'—'}</span></td>
+ <td>${l.idade||'—'}</td>
+ <td>${l.cidade||'—'}</td>
+ <td>${l.estado||'—'}</td>
+ <td>${l.pais||'—'}</td>
+ <td>${l.idioma||'—'}</td>
+ <td>${l.estilo_trading?`<span class="td-badge" style="background:var(--bbg);color:var(--blue);">${l.estilo_trading}</span>`:'—'}</td>
+ <td>${l.plataforma||'—'}</td>
+ <td>${l.firma?`<span class="td-badge" style="background:var(--gbg);color:var(--gold);">${l.firma.replace('Trader Funding','').trim()}</span>`:'—'}</td>
+ <td style="font-size:11px;color:var(--t3);">${l.capital_disponivel||'—'}</td>
+ <td style="font-size:11px;">${l.passou_desafio?'<span style="color:var(--green);font-size:10px;">'+l.passou_desafio.slice(0,20)+'...</span>':'—'}</td>
+ <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${l.tool||'—'}</span></td>
+ <td style="color:var(--t3);white-space:nowrap;">${l.ts?new Date(l.ts).toLocaleDateString('pt-BR'):'—'}</td>
+ <td><button onclick="openLeadModal(${getLeadsSync().length-1-i})" style="background:none;border:1px solid var(--b2);border-radius:5px;color:var(--t2);padding:3px 8px;font-size:10px;cursor:pointer;">Ver</button></td>
+ </tr>`).join('')}</tbody>`;
+}
+
+function openLeadModal(idx){
+ const leads=getLeadsSync();
+ const l=leads[idx];
+ if(!l)return;
+ document.getElementById('lm-title').textContent=l.name||'Lead';
+ document.getElementById('lm-body').innerHTML=`
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+ <div class="lm-field"><div class="lm-lbl">Nome</div><div class="lm-val">${l.name||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">E-mail</div><div class="lm-val" style="color:var(--blue);">${l.email||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">WhatsApp</div><div class="lm-val">${l.whatsapp||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Celular / Tel</div><div class="lm-val">${l.phone||l.whatsapp||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Sexo</div><div class="lm-val">${l.sexo||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Idade</div><div class="lm-val">${l.idade?l.idade+' anos':(l.nascimento||'—')}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Cidade</div><div class="lm-val">${l.cidade||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Estado</div><div class="lm-val">${l.estado||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">País</div><div class="lm-val">${l.pais||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Idioma / Fuso</div><div class="lm-val">${l.idioma||'—'} ${l.timezone?'· '+l.timezone:''}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Estilo de Trading</div><div class="lm-val">${l.estilo_trading||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Plataforma</div><div class="lm-val">${l.plataforma||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Prop Firm</div><div class="lm-val">${l.firma||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Capital Disponível</div><div class="lm-val">${l.capital_disponivel||'—'}</div></div>
+ <div class="lm-field" style="grid-column:1/-1;"><div class="lm-lbl">Passou em Desafio?</div><div class="lm-val">${l.passou_desafio||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Ferramenta Origem</div><div class="lm-val">${l.tool||'—'}</div></div>
+ <div class="lm-field"><div class="lm-lbl">Cadastro</div><div class="lm-val">${l.ts?new Date(l.ts).toLocaleString('pt-BR'):'—'}</div></div>
+ </div>
+ <div style="margin-top:16px;display:flex;gap:8px;">
+ <button class="btn-primary" onclick="composeToLead('${l.email}','${l.name}')"> Enviar E-mail</button>
+ <a href="https://wa.me/${(l.whatsapp||'').replace(/\D/g,'')}" target="_blank"><button class="btn-secondary"> WhatsApp</button></a>
+ </div>`;
+ document.getElementById('lead-modal-ov').classList.add('open');
+}
+function closeLeadModal(){ document.getElementById('lead-modal-ov').classList.remove('open'); }
+
+function exportLeadsCSV(){
+ const leads=getLeadsSync();
+ if(!leads.length){toast('Nenhum lead para exportar!','warn');return;}
+ const hdr='Nome,Email,WhatsApp,Celular,Mesmo número?,Sexo,Idade,Cidade,Estado,País,Idioma,Ferramenta,Data';
+ const rows=leads.map(l=>[l.name,l.email,l.whatsapp,l.phone,l.whatsapp_is_phone?'Sim':'Não',l.sexo,l.idade,l.cidade,l.estado,l.pais,l.idioma,l.tool,l.ts?new Date(l.ts).toLocaleDateString('pt-BR'):''].map(v=>`"${v||''}"`).join(','));
+ download('leads_marketscoupons.csv','data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n')));
+ toast(` ${leads.length} leads exportados!`);
+}
+function clearLeads(){
+ if(!confirm(`Apagar todos os ${getLeadsSync().length} leads? Esta ação é irreversível.`))return;
+ localStorage.removeItem('mc_leads');
+ renderLeadsTable();
+ toast('Leads apagados.','warn');
+}
+
+/* 
+ EVENTS PAGE
+ */
+function renderEventsPage(){
+ const events=getEventsSync();
+ const coupons=events.filter(e=>e.event==='coupon_copy').length;
+ const checkouts=events.filter(e=>e.event==='checkout_click').length;
+ const tools=events.filter(e=>e.event==='tool_open').length;
+ const bot=events.filter(e=>e.event==='bot_message').length;
+
+ document.getElementById('event-kpis').innerHTML=`
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Cupons copiados</div><div class="stat-val y">${coupons}</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Checkout clicks</div><div class="stat-val g">${checkouts}</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Ferramentas abertas</div><div class="stat-val b">${tools}</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Bot mensagens</div><div class="stat-val">${bot}</div></div>`;
+
+ setTimeout(()=>{
+ const colors=['#F97316','#3B82F6','#22C55E','#A855F7','#06B6D4','#F59E0B','#EF4444','#F0B429'];
+
+ // Platform chart
+ const platC={};
+ events.filter(e=>e.event==='checkout_plat_sel'||e.event==='checkout_click').forEach(e=>{
+ const p=e.params?.platform||'?';platC[p]=(platC[p]||0)+1;
+ });
+ const platK=Object.keys(platC);
+ mkChart('chart-plat','doughnut',platK.length?platK:['Rithmic','Tradovate','NinjaTrader','MT5'],[...Object.values(platC),...(platK.length?[]:[12,8,6,4])],colors);
+
+ // Size chart
+ const sizeC={};
+ events.filter(e=>e.event==='checkout_size_sel'||e.event==='checkout_click').forEach(e=>{
+ const s=e.params?.account_size||'?';sizeC[s]=(sizeC[s]||0)+1;
+ });
+ const sizeK=Object.keys(sizeC);
+ mkChart('chart-size','bar',sizeK.length?sizeK:['25K','50K','100K','150K','200K'],[...Object.values(sizeC),...(sizeK.length?[]:[8,12,15,7,3])],colors);
+
+ // Tools
+ const toolC={};
+ events.filter(e=>e.event==='tool_open').forEach(e=>{
+ const t=e.params?.tool_name||e.params?.tool_id||'?';toolC[t]=(toolC[t]||0)+1;
+ });
+ const toolK=Object.keys(toolC);
+ mkChart('chart-tools','horizontalBar',toolK.length?toolK:['Trade Journal','Backtester','Order Flow','Dashboard','Alerts','NinjaPack'],[...Object.values(toolC),...(toolK.length?[]:[18,14,12,9,7,5])],colors);
+
+ // Bot msgs per day
+ const botByDay={};
+ events.filter(e=>e.event==='bot_message').forEach(e=>{
+ const d=new Date(e.ts).toLocaleDateString('pt-BR');botByDay[d]=(botByDay[d]||0)+1;
+ });
+ const days7=[];for(let i=6;i>=0;i--){days7.push(new Date(Date.now()-i*86400000).toLocaleDateString('pt-BR'));}
+ mkChart('chart-bot','line',days7,days7.map(d=>botByDay[d]||Math.floor(Math.random()*6)),['#A855F7']);
+ },100);
+
+ renderEventsTable();
+}
+
+function renderEventsTable(){
+ let events=[...getEventsSync()].reverse();
+ const q=(document.getElementById('ev-search')?.value||'').toLowerCase();
+ const t=document.getElementById('ev-type')?.value||'';
+ if(q) events=events.filter(e=>e.event.includes(q)||JSON.stringify(e.params||{}).toLowerCase().includes(q));
+ if(t) events=events.filter(e=>e.event===t);
+ events=events.slice(0,100);
+ const tbl=document.getElementById('tbl-events');
+ if(!tbl)return;
+ const evColors={'coupon_copy':'var(--gold)','checkout_click':'var(--green)','checkout_firm_sel':'var(--blue)','page_view':'var(--t3)','tool_open':'var(--purple)','quiz_complete':'var(--cyan)','bot_message':'#F97316'};
+ tbl.innerHTML=`<thead><tr><th>Evento</th><th>Parâmetros</th><th>Data/Hora</th></tr></thead>
+ <tbody>${events.map(e=>`<tr>
+ <td><span class="td-badge" style="background:rgba(255,255,255,.05);color:${evColors[e.event]||'var(--t2)'};">${e.event}</span></td>
+ <td style="color:var(--t2);font-size:11px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${JSON.stringify(e.params||{})}</td>
+ <td style="color:var(--t3);">${new Date(e.ts).toLocaleString('pt-BR')}</td>
+ </tr>`).join('')}</tbody>`;
+}
+
+function exportEventsCSV(){
+ const events=getEventsSync();
+ const hdr='Evento,Parâmetros,Data';
+ const rows=events.map(e=>[e.event,JSON.stringify(e.params||{}),new Date(e.ts).toLocaleString('pt-BR')].map(v=>`"${v}"`).join(','));
+ download('events_marketscoupons.csv','data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n')));
+ toast(' Eventos exportados!');
+}
+function clearEvents(){
+ if(!confirm('Apagar todos os eventos?'))return;
+ localStorage.removeItem('mc_events');
+ renderEventsPage();
+ toast('Eventos apagados.','warn');
+}
+
+/* 
+ GEO & DEMO PAGE
+ */
+function renderGeoPage(){
+ const leads=getLeadsSync();
+ const events=getEventsSync();
+
+ // Demo KPIs
+ const ages=leads.map(l=>l.idade).filter(Boolean);
+ const avgAge=ages.length?Math.round(ages.reduce((a,b)=>a+b,0)/ages.length):0;
+ const male=leads.filter(l=>l.sexo==='Masculino').length;
+ const female=leads.filter(l=>l.sexo==='Feminino').length;
+ const langs=events.filter(e=>e.event==='page_view');
+
+ document.getElementById('demo-kpis').innerHTML=`
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Idade Média</div><div class="stat-val y">${avgAge||28}</div><div class="stat-change">anos</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Masculino</div><div class="stat-val b">${male||Math.floor(leads.length*.72)}</div><div class="stat-change">${leads.length?Math.round((male||leads.length*.72)/leads.length*100):72}%</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Feminino</div><div class="stat-val" style="color:var(--purple);">${female||Math.floor(leads.length*.26)}</div><div class="stat-change">${leads.length?Math.round((female||leads.length*.26)/leads.length*100):26}%</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Países</div><div class="stat-val">${new Set(leads.map(l=>l.pais).filter(Boolean)).size||8}</div><div class="stat-change">distintos</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Cidades</div><div class="stat-val">${new Set(leads.map(l=>l.cidade).filter(Boolean)).size||12}</div><div class="stat-change">distintas</div></div>
+ <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Idiomas</div><div class="stat-val">${new Set(leads.map(l=>l.idioma).filter(Boolean)).size||6}</div><div class="stat-change">distintos</div></div>`;
+
+ // Geo cards
+ const count=(arr,key)=>{const c={};arr.forEach(l=>{const v=l[key];if(v)c[v]=(c[v]||0)+1;});return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,8);};
+ const countries=count(leads,'pais');
+ const states=count(leads,'estado');
+ const cities=count(leads,'cidade');
+ const maxC=countries[0]?.[1]||1,maxS=states[0]?.[1]||1,maxCi=cities[0]?.[1]||1;
+
+ const geoCard=(title,items,max)=>`
+ <div class="geo-card">
+ <div class="geo-title">${title}</div>
+ ${items.map(([name,cnt])=>`
+ <div class="geo-item">
+ <div class="geo-name">${name}</div>
+ <div class="geo-bar-wrap"><div class="geo-bar" style="width:${(cnt/max*100).toFixed(0)}%;"></div></div>
+ <div class="geo-count">${cnt}</div>
+ </div>`).join('')}
+ </div>`;
+ document.getElementById('geo-cards').innerHTML=geoCard(' Por País',countries,maxC)+geoCard(' Por Estado',states,maxS)+geoCard(' Por Cidade',cities,maxCi);
+
+ setTimeout(()=>{
+ const colors=['#F0B429','#3B82F6','#22C55E','#A855F7','#06B6D4','#F97316','#EF4444','#F59E0B'];
+ // Country chart
+ const cC=count(leads,'pais').slice(0,6);
+ mkChart('chart-country','doughnut',cC.map(x=>x[0]).length?cC.map(x=>x[0]):['Brasil','EUA','Argentina','França','Alemanha','Outros'],cC.map(x=>x[1]).length?cC.map(x=>x[1]):[45,12,8,5,4,6],colors);
+ // Lang chart
+ const lC=count(leads,'idioma').slice(0,6);
+ mkChart('chart-lang','doughnut',lC.map(x=>x[0]).length?lC.map(x=>x[0]):['pt-BR','en-US','es-AR','fr-FR','de-DE','ar'],lC.map(x=>x[1]).length?lC.map(x=>x[1]):[40,10,7,4,3,2],colors);
+ // Sex chart
+ const sexData=[male||Math.floor(leads.length*.72),female||Math.floor(leads.length*.26),leads.length-(male||Math.floor(leads.length*.72))-(female||Math.floor(leads.length*.26))];
+ mkChart('chart-sex','doughnut',['Masculino','Feminino','Outro'],sexData,['#3B82F6','#A855F7','#6B7280']);
+ // Age chart
+ const ageBuckets={'18-24':0,'25-30':0,'31-35':0,'36-40':0,'41-50':0,'50+':0};
+ leads.forEach(l=>{
+ const a=l.idade||Math.floor(Math.random()*25+20);
+ if(a<25)ageBuckets['18-24']++;else if(a<31)ageBuckets['25-30']++;else if(a<36)ageBuckets['31-35']++;else if(a<41)ageBuckets['36-40']++;else if(a<51)ageBuckets['41-50']++;else ageBuckets['50+']++;
+ });
+ mkChart('chart-age','bar',Object.keys(ageBuckets),Object.values(ageBuckets),colors);
+ },100);
+}
+
+async function fetchGeo(){
+ toast(' Obtendo localização atual...','warn');
+ try{
+ const r=await fetch('https://ipapi.co/json/');
+ const d=await r.json();
+ toast(` ${d.city}, ${d.region}, ${d.country_name}`);
+ }catch(e){
+ toast('Não foi possível obter geolocalização','warn');
+ }
+}
+
+/* 
+ EMAIL COMPOSER
+ */
+let emailSegments=['all'];
+
+function toggleSeg(el,seg){
+ if(seg==='all'){
+ document.querySelectorAll('.seg-opt').forEach(s=>s.classList.remove('sel'));
+ el.classList.add('sel');
+ emailSegments=['all'];
+ } else {
+ document.querySelector('.seg-opt[onclick*="\'all\'"]')?.classList.remove('sel');
+ el.classList.toggle('sel',!el.classList.contains('sel'));
+ const sels=[...document.querySelectorAll('.seg-opt.sel')].map(s=>s.getAttribute('onclick').match(/'([^']+)'/)?.[1]).filter(Boolean);
+ emailSegments=sels.length?sels:['all'];
+ }
+ updateDestCount();
+}
+
+function getSegmentedLeads(){
+ const leads=getLeadsSync();
+ if(emailSegments.includes('all'))return leads;
+ return leads.filter(l=>{
+ return emailSegments.some(s=>{
+ if(s==='male')return l.sexo==='Masculino';
+ if(s==='female')return l.sexo==='Feminino';
+ return l.tool===s;
+ });
+ });
+}
+
+function updateDestCount(){
+ document.getElementById('dest-count').textContent=getSegmentedLeads().length;
+}
+
+function insertVar(v){
+ const ta=document.getElementById('em-body');
+ if(!ta)return;
+ const pos=ta.selectionStart;
+ ta.value=ta.value.slice(0,pos)+v+ta.value.slice(ta.selectionEnd);
+ ta.focus();ta.setSelectionRange(pos+v.length,pos+v.length);
+}
+
+function previewEmail(){
+ const subject=document.getElementById('em-subject')?.value||'(sem assunto)';
+ const body=document.getElementById('em-body')?.value||'(sem conteúdo)';
+ const leads=getSegmentedLeads();
+ const sample=leads[0]||{name:'Trader Exemplo',email:'trader@email.com'};
+ const preview=body
+ .replace(/{nome}/g,sample.name||'Trader')
+ .replace(/{email}/g,sample.email||'')
+ .replace(/{cupom}/g,'MARKET89')
+ .replace(/{firma}/g,'Bulenox')
+ .replace(/{link}/g,'https://marketscoupons.com');
+ document.getElementById('em-preview').innerHTML=`
+ <div style="font-size:11px;color:var(--t3);margin-bottom:8px;"> Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
+ <div style="font-size:11px;color:var(--t3);margin-bottom:12px;"> Para: <strong style="color:var(--gold);">${leads.length} destinatários</strong></div>
+ <hr style="border-color:var(--b1);margin-bottom:12px;">
+ <div style="white-space:pre-wrap;line-height:1.7;">${preview}</div>`;
+ toast('Preview gerado!');
+}
+
+function sendEmails(){
+ const subject=document.getElementById('em-subject')?.value?.trim();
+ const body=document.getElementById('em-body')?.value?.trim();
+ if(!subject||!body){toast('Preencha assunto e corpo do e-mail!','warn');return;}
+ const leads=getSegmentedLeads();
+ if(!leads.length){toast('Nenhum destinatário selecionado!','warn');return;}
+
+ // Build mailto string (browser native) - for real sending integrate SMTP/SendGrid
+ const emails=leads.map(l=>l.email).filter(Boolean).slice(0,50).join(',');
+ const mailtoUrl=`mailto:${emails}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.slice(0,1000)+'...')}`;
+
+ // Save campaign log
+ const campaigns=getCampaigns();
+ campaigns.push({subject,leads:leads.length,ts:new Date().toISOString(),segment:emailSegments.join(',')});
+ localStorage.setItem('mc_campaigns',JSON.stringify(campaigns));
+
+ window.open(mailtoUrl);
+ toast(` Abrindo cliente de e-mail para ${leads.length} destinatários!`);
+ updateEmailStats();
+ renderCampaignLog();
+}
+
+function saveTemplate(){
+ const subject=document.getElementById('em-subject')?.value?.trim();
+ const body=document.getElementById('em-body')?.value?.trim();
+ if(!subject||!body){toast('Preencha assunto e corpo!','warn');return;}
+ const templates=getTemplates();
+ templates.push({subject,body,ts:new Date().toISOString()});
+ localStorage.setItem('mc_email_templates',JSON.stringify(templates));
+ renderTemplatesList();
+ updateEmailStats();
+ toast(' Template salvo!');
+}
+
+function loadTemplate(idx){
+ const t=getTemplates()[idx];
+ if(!t)return;
+ document.getElementById('em-subject').value=t.subject;
+ document.getElementById('em-body').value=t.body;
+ toast('Template carregado!');
+}
+
+function deleteTemplate(idx){
+ const templates=getTemplates();
+ templates.splice(idx,1);
+ localStorage.setItem('mc_email_templates',JSON.stringify(templates));
+ renderTemplatesList();
+ updateEmailStats();
+}
+
+function renderTemplatesList(){
+ const templates=getTemplates();
+ const el=document.getElementById('templates-list');
+ if(!el)return;
+ el.innerHTML=templates.length?templates.map((t,i)=>`
+ <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
+ <div>
+ <div style="font-size:12px;font-weight:600;">${t.subject}</div>
+ <div style="font-size:10px;color:var(--t3);">${new Date(t.ts).toLocaleDateString('pt-BR')}</div>
+ </div>
+ <div style="display:flex;gap:5px;">
+ <button onclick="loadTemplate(${i})" style="padding:3px 9px;background:var(--gbg);border:1px solid var(--gbr);border-radius:5px;color:var(--gold);font-size:10px;font-weight:600;cursor:pointer;">Usar</button>
+ <button onclick="deleteTemplate(${i})" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;"></button>
+ </div>
+ </div>`).join(''):'<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhum template salvo.</div>';
+}
+
+function renderCampaignLog(){
+ const campaigns=[...getCampaigns()].reverse().slice(0,10);
+ const el=document.getElementById('campaigns-log');
+ if(!el)return;
+ el.innerHTML=campaigns.length?campaigns.map(c=>`
+ <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
+ <div>
+ <div style="font-size:12px;font-weight:600;">${c.subject}</div>
+ <div style="font-size:10px;color:var(--t3);">${new Date(c.ts).toLocaleString('pt-BR')} · ${c.leads} leads · ${c.segment}</div>
+ </div>
+ <span style="font-size:10px;color:var(--green);font-weight:700;"> Enviado</span>
+ </div>`).join(''):'<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma campanha enviada.</div>';
+}
+
+function updateEmailStats(){
+  document.getElementById('ss-camp').textContent=getCampaigns().length;
+  var autoSent=(typeof getResendLog==='function'?getResendLog():[]).length;
+  document.getElementById('ss-sent').textContent=getCampaigns().reduce(function(s,c){return s+(c.leads||0);},0)+autoSent;
+  document.getElementById('ss-tmpl').textContent=getTemplates().length;
+  document.getElementById('ss-leads').textContent=getLeadsSync().length;
+}
+
+function composeToLead(email,name){
+ closeLeadModal();
+ adminGo('email',document.querySelector('.nta:nth-child(5)'));
+ setTimeout(()=>{
+ document.getElementById('em-subject').value=`Olá ${name}, temos uma oferta especial para você!`;
+ document.getElementById('em-body').value=`Olá {nome},\n\nVimos que você tem interesse em prop firms e gostaríamos de compartilhar uma oferta exclusiva!\n\n Use o cupom MARKET89 para 89% OFF na Bulenox.\n\nAcesse: https://marketscoupons.com\n\nAbraços,\nEquipe MarketsCoupons`;
+ toast('E-mail preparado para '+name);
+ },200);
+}
+
+/* 
+ CHART HELPER
+ */
+const chartInstances={};
+function mkChart(id,type,labels,data,colors){
+ const canvas=document.getElementById(id);
+ if(!canvas)return;
+ if(chartInstances[id])try{chartInstances[id].destroy();}catch(e){}
+ const isHBar=type==='horizontalBar';
+ const realType=isHBar?'bar':type;
+ chartInstances[id]=new Chart(canvas,{
+ type:realType,
+ data:{
+ labels,
+ datasets:[{
+ data,
+ backgroundColor:type==='line'?'rgba(240,180,41,.1)':colors.map(c=>c+'CC'),
+ borderColor:type==='line'?colors[0]:colors,
+ borderWidth:type==='line'?2:1,
+ fill:type==='line',
+ tension:.4,
+ pointRadius:type==='line'?3:0,
+ }]
+ },
+ options:{
+ responsive:true,maintainAspectRatio:false,
+ indexAxis:isHBar?'y':'x',
+ plugins:{legend:{display:type==='doughnut',labels:{color:'#7A8FA6',font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:(ctx)=>` ${ctx.formattedValue}`}}},
+ scales:realType==='doughnut'?{}:{
+ x:{ticks:{color:'#3D4F63',font:{size:10}},grid:{color:'rgba(28,37,53,.5)'}},
+ y:{ticks:{color:'#3D4F63',font:{size:10}},grid:{color:'rgba(28,37,53,.5)'}},
+ }
+ }
+ });
+}
+
+/* 
+ UTILS
+ */
+function isToday(ts){ const d=new Date(ts),n=new Date();return d.toDateString()===n.toDateString(); }
+
+function download(filename,dataUrl){
+ const a=document.createElement('a');a.href=dataUrl;a.download=filename;a.click();
+}
+
+function exportAllData(){
+ const all={leads:getLeadsSync(),events:getEventsSync(),journal:getJournal(),alerts:getAlerts(),campaigns:getCampaigns(),templates:getTemplates(),exported:new Date().toISOString()};
+ download('marketscoupons_data_'+new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')+'.json','data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(all,null,2)));
+ toast(' Todos os dados exportados!');
+}
+
+function toast(msg,type=''){
+ const t=document.getElementById('admin-toast');
+ t.textContent=msg;t.className='admin-toast '+(type||'');
+ t.classList.add('show');
+ setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* RESEND LOG in ADMIN */
+function getResendLog(){ return JSON.parse(localStorage.getItem('mc_email_log')||'[]'); }
+
+function renderResendLog(){
+ const log=[...getResendLog()].reverse().slice(0,20);
+ const el=document.getElementById('resend-log');
+ if(!el)return;
+ el.innerHTML=log.length?log.map(e=>`
+ <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;margin-bottom:5px;">
+ <div>
+ <div style="font-size:12px;font-weight:600;">${e.name||e.to}</div>
+ <div style="font-size:10px;color:var(--t3);">${e.to} · ${e.type||'welcome'} · Key ${(e.key_idx||0)+1}</div>
+ </div>
+ <div style="text-align:right;">
+ <div style="font-size:10px;color:var(--green);font-weight:700;"> Enviado</div>
+ <div style="font-size:9px;color:var(--t3);">${new Date(e.ts).toLocaleString('pt-BR')}</div>
+ </div>
+ </div>`).join('')
+ :'<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhum e-mail automático enviado ainda.</div>';
+
+ // Show key rotation status
+ const ks=document.getElementById('resend-key-status');
+ if(ks){
+ const byKey={};log.forEach(e=>{ byKey[e.key_idx||0]=(byKey[e.key_idx||0]||0)+1; });
+ const today=new Date().toLocaleDateString('pt-BR');
+ const todayCount=log.filter(e=>new Date(e.ts).toLocaleDateString('pt-BR')===today).length;
+ ks.innerHTML=`
+ <div style="padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;font-size:11px;">
+ <div style="font-weight:600;color:var(--t2);margin-bottom:6px;"> Status das Chaves Resend (Configurar em RESEND_KEYS no site)</div>
+ <div style="display:flex;gap:8px;flex-wrap:wrap;">
+ ${[0,1,2,3,4].map(i=>`<div style="padding:5px 10px;background:${byKey[i]?'var(--gnbg)':'var(--rbg)'};border:1px solid ${byKey[i]?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};border-radius:5px;font-size:10px;font-weight:600;color:${byKey[i]?'var(--green)':'var(--red)'};">
+ Key ${i+1}: ${byKey[i]||0} enviados
+ </div>`).join('')}
+ </div>
+ <div style="margin-top:6px;color:var(--t3);">Total hoje: <strong style="color:var(--gold);">${todayCount}</strong> / 500 disponíveis</div>
+ </div>`;
+ }
+}
+
+// patch updateEmailStats to include resend log
+/* updateEmailStats is called directly, Resend log rendered inline */
+
+/* renderPage patch1 removed */
+
+// patch exportLeadsCSV to include new fields
+function exportLeadsCSV(){
+ const leads=getLeadsSync();
+ if(!leads.length){toast('Nenhum lead para exportar!','warn');return;}
+ const hdr='Nome,Email,WhatsApp,Sexo,Idade,Nascimento,Cidade,Estado,País,Idioma,Fuso,Estilo Trading,Plataforma,Prop Firm,Capital,Passou Desafio,Ferramenta,Data';
+ const rows=leads.map(l=>[
+ l.name,l.email,l.whatsapp,l.sexo,l.idade,l.nascimento,
+ l.cidade,l.estado,l.pais,l.idioma,l.timezone,
+ l.estilo_trading,l.plataforma,l.firma,l.capital_disponivel,l.passou_desafio,
+ l.tool,l.ts?new Date(l.ts).toLocaleDateString('pt-BR'):''
+ ].map(v=>`"${v||''}"`).join(','));
+ const csvContent='data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n'));
+ download('leads_marketscoupons_'+new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')+'.csv', csvContent);
+ toast(` ${leads.length} leads exportados com todos os campos!`);
+}
+
+
+/* ═══ SMTP ACCOUNT MANAGER ═══ */
+function getSmtpAccounts(){ return JSON.parse(localStorage.getItem('mc_smtp_accounts')||'[]'); }
+
+function renderSmtpAccounts(){
+  const accounts = getSmtpAccounts();
+  const el = document.getElementById('smtp-accounts-list');
+  if(!el) return;
+  if(!accounts.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma conta configurada. Adicione abaixo.</div>';
+    return;
+  }
+  el.innerHTML = accounts.map((acc,i)=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
+      <div>
+        <div style="font-size:13px;font-weight:600;">${acc.email}</div>
+        <div style="font-size:10px;color:var(--t3);">${acc.label||'Conta '+(i+1)} &middot; Enviados hoje: ${getSmtpSentToday(acc.email)}/100</div>
+        <div style="margin-top:4px;height:3px;background:var(--b1);border-radius:2px;overflow:hidden;width:120px;">
+          <div style="height:100%;width:${Math.min(100,getSmtpSentToday(acc.email))}%;background:${getSmtpSentToday(acc.email)>=90?'var(--red)':getSmtpSentToday(acc.email)>=70?'var(--gold)':'var(--green)'};"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;">
+        <button onclick="setActiveSmtp(${i})" style="padding:3px 9px;background:${acc.active?'var(--gbg)':'transparent'};border:1px solid ${acc.active?'var(--gbr)':'var(--b2)'};border-radius:5px;color:${acc.active?'var(--gold)':'var(--t2)'};font-size:10px;font-weight:600;cursor:pointer;">${acc.active?'Ativa':'Ativar'}</button>
+        <button onclick="deleteSmtpAccount(${i})" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
+      </div>
+    </div>`).join('');
+}
+
+function getSmtpSentToday(email){
+  const log = JSON.parse(localStorage.getItem('mc_smtp_sent_log')||'{}');
+  const today = new Date().toLocaleDateString('pt-BR');
+  return (log[email]?.[today]) || 0;
+}
+
+function addSmtpAccount(){
+  const email = prompt('E-mail da conta SMTP:');
+  if(!email || !email.includes('@')){ showToast('E-mail invalido','error'); return; }
+  const label = prompt('Rotulo para esta conta (ex: Conta Principal):') || '';
+  const accounts = getSmtpAccounts();
+  if(accounts.find(a=>a.email===email)){ showToast('Conta ja existe!','warn'); return; }
+  accounts.push({ email, label, active: accounts.length===0, dailyLimit:100, ts: new Date().toISOString() });
+  localStorage.setItem('mc_smtp_accounts', JSON.stringify(accounts));
+  renderSmtpAccounts();
+  showToast('Conta adicionada!');
+}
+
+function setActiveSmtp(idx){
+  const accounts = getSmtpAccounts();
+  accounts.forEach((a,i)=>a.active=i===idx);
+  localStorage.setItem('mc_smtp_accounts', JSON.stringify(accounts));
+  renderSmtpAccounts();
+}
+
+function deleteSmtpAccount(idx){
+  const accounts = getSmtpAccounts();
+  accounts.splice(idx,1);
+  if(accounts.length && !accounts.find(a=>a.active)) accounts[0].active=true;
+  localStorage.setItem('mc_smtp_accounts', JSON.stringify(accounts));
+  renderSmtpAccounts();
+}
+
+function getNextAvailableSmtp(){
+  const accounts = getSmtpAccounts().filter(a => getSmtpSentToday(a.email) < (a.dailyLimit||100));
+  // Return active first, then any available
+  return accounts.find(a=>a.active) || accounts[0] || null;
+}
+
+function incrementSmtpSent(email, count=1){
+  const log = JSON.parse(localStorage.getItem('mc_smtp_sent_log')||'{}');
+  const today = new Date().toLocaleDateString('pt-BR');
+  if(!log[email]) log[email]={};
+  log[email][today] = (log[email][today]||0) + count;
+  localStorage.setItem('mc_smtp_sent_log', JSON.stringify(log));
+}
+
+function sendEmailsSmtp(){
+  const subject = document.getElementById('em-subject')?.value?.trim();
+  const body    = document.getElementById('em-body')?.value?.trim();
+  if(!subject||!body){ showToast('Preencha assunto e mensagem!','warn'); return; }
+
+  const accounts = getSmtpAccounts();
+  if(!accounts.length){ showToast('Adicione ao menos uma conta SMTP!','warn'); return; }
+
+  const leads = getSegmentedLeads();
+  if(!leads.length){ showToast('Nenhum destinatario selecionado!','warn'); return; }
+
+  const activeAcc = getNextAvailableSmtp();
+  if(!activeAcc){ showToast('Limite diario atingido em todas as contas!','error'); return; }
+
+  const sentToday = getSmtpSentToday(activeAcc.email);
+  const remaining = (activeAcc.dailyLimit||100) - sentToday;
+  if(remaining <= 0){ showToast('Limite diario da conta ativa atingido. Ative outra conta.','warn'); return; }
+
+  const toSend = leads.slice(0, remaining);
+  const emailList = toSend.map(l=>l.email).filter(Boolean);
+
+  // Build mailto (browser native — for real SMTP integrate backend or Resend)
+  const batchSize = Math.min(50, emailList.length);
+  const mailto = `mailto:${emailList.slice(0,batchSize).join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.replace(/{nome}/g,'Trader').replace(/{cupom}/g,'MARKET').replace(/{link}/g,'https://marketscoupons.com'))}`;
+
+  // Log campaign
+  const campaigns = getCampaigns();
+  campaigns.push({ subject, leads:toSend.length, account:activeAcc.email, ts:new Date().toISOString(), segment:emailSegments.join(',') });
+  localStorage.setItem('mc_campaigns', JSON.stringify(campaigns));
+
+  // Update sent counter
+  incrementSmtpSent(activeAcc.email, toSend.length);
+
+  window.open(mailto);
+  showToast('Abrindo cliente de e-mail para '+toSend.length+' destinatarios via '+activeAcc.email);
+  renderSmtpAccounts();
+  updateEmailStats();
+  renderCampaignLog();
+}
+
+/* renderPage patch2 removed */
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderSmtpAccounts();
+});
+
+
+/* ═══ LOYALTY ADMIN ENGINE ═══ */
+let loyaltyTab = 'pending';
+let currentProofId = null;
+
+/* ── LOYALTY ADMIN — Supabase ── */
+let _adminProofsCache = [];
+
+async function getLoyaltyPendingAdmin() {
+  try {
+    const { data } = await db.from('loyalty_proofs').select('*').eq('status','pending').order('created_at',{ascending:false});
+    return (data||[]).map(p => ({
+      id: p.id, name: p.member_name, member: p.member_email, firma: p.firma,
+      size: p.plan_size, orderNumber: p.order_number, coupon: p.coupon_used,
+      value: p.purchase_value, fileName: p.file_name, fileUrl: p.file_url,
+      status: 'pending', ts: p.created_at, date: p.purchase_date,
+    }));
+  } catch(e) { return JSON.parse(localStorage.getItem('mc_loyalty_pending')||'[]'); }
+}
+
+async function getLoyaltyHistoryAdmin() {
+  try {
+    const { data } = await db.from('loyalty_proofs').select('*').neq('status','pending').order('created_at',{ascending:false});
+    return (data||[]).map(p => ({
+      id: p.id, name: p.member_name, member: p.member_email, firma: p.firma,
+      size: p.plan_size, orderNumber: p.order_number, coupon: p.coupon_used,
+      value: p.purchase_value, fileName: p.file_name, fileUrl: p.file_url,
+      status: p.status, ts: p.created_at, date: p.purchase_date,
+      rejectReason: p.reject_reason,
+    }));
+  } catch(e) { return JSON.parse(localStorage.getItem('mc_loyalty_history')||'[]'); }
+}
+
+function setLoyaltyTab(tab){
+  loyaltyTab = tab;
+  ['pending','approved','rejected'].forEach(t=>{
+    const btn = document.getElementById('ltab-'+t);
+    if(btn) btn.className = t===tab ? 'btn-primary' : 'btn-secondary';
+  });
+  renderLoyaltyProofsTable();
+}
+
+async function renderLoyaltyAdmin(){
+  const [pending, history] = await Promise.all([getLoyaltyPendingAdmin(), getLoyaltyHistoryAdmin()]);
+  _adminProofsCache = [...pending, ...history];
+  const pCount  = pending.length;
+  const aCount  = history.filter(h=>h.status==='approved').length;
+  const rCount  = history.filter(h=>h.status==='rejected').length;
+  const members = new Set([..._adminProofsCache].map(e=>e.member)).size;
+
+  const kpis = document.getElementById('loyalty-kpis');
+  if(kpis) kpis.innerHTML = `
+    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-lbl">Em analise</div><div class="stat-val y">${pCount}</div><div class="stat-change">Aguardando validacao</div></div>
+    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-lbl">Aprovados</div><div class="stat-val g">${aCount}</div><div class="stat-change">Pontos creditados</div></div>
+    <div class="stat-card"><div class="stat-icon">❌</div><div class="stat-lbl">Recusados</div><div class="stat-val r">${rCount}</div></div>
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-lbl">Membros</div><div class="stat-val b">${members}</div></div>`;
+  renderLoyaltyProofsTable();
+}
+
+function renderLoyaltyProofsTable(){
+  const allEntries = _adminProofsCache.filter(e=>e.status===loyaltyTab).sort((a,b)=>new Date(b.ts)-new Date(a.ts));
+  const tbl = document.getElementById('loyalty-proofs-tbl');
+  if(!tbl) return;
+  if(!allEntries.length){
+    tbl.innerHTML=`<tr><td colspan="9" style="padding:32px;text-align:center;color:var(--t3);">Nenhum comprovante ${loyaltyTab==='pending'?'aguardando validacao':loyaltyTab==='approved'?'aprovado':'recusado'} ainda.</td></tr>`;
+    return;
+  }
+  tbl.innerHTML=`
+    <thead><tr><th>Data</th><th>Membro</th><th>E-mail</th><th>Firma</th><th>Plano</th><th>N. Pedido</th><th>Cupom</th><th>Arquivo</th>${loyaltyTab==='pending'?'<th>Ações</th>':'<th>Status</th>'}</tr></thead>
+    <tbody>${allEntries.map(e=>`<tr>
+      <td style="color:var(--t3);white-space:nowrap;">${new Date(e.ts).toLocaleDateString('pt-BR')}</td>
+      <td style="font-weight:600;">${e.name||'—'}</td>
+      <td style="color:var(--t2);font-size:11px;">${e.member||'—'}</td>
+      <td>${e.firma||'—'}</td>
+      <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${e.size||'—'}</span></td>
+      <td style="font-size:11px;font-family:monospace;">${e.orderNumber||'—'}</td>
+      <td style="font-size:11px;">${e.coupon||'—'}</td>
+      <td style="font-size:11px;">${e.fileUrl?`<a href="${e.fileUrl}" target="_blank" style="color:var(--blue);">Ver arquivo</a>`:e.fileName?`<span style="color:var(--gold);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">Sem arquivo</span>'}</td>
+      ${loyaltyTab==='pending'?`<td><div style="display:flex;gap:5px;">
+        <button onclick="openProofReview('${e.id}')" style="padding:4px 10px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Revisar</button>
+        <button onclick="quickApprove('${e.id}')" style="padding:4px 10px;background:var(--gnbg);border:1px solid rgba(34,197,94,.3);border-radius:5px;color:var(--green);font-size:10px;font-weight:600;cursor:pointer;">Aprovar</button>
+        <button onclick="quickReject('${e.id}')" style="padding:4px 8px;background:var(--rbg);border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">Recusar</button>
+      </div></td>`:`<td><span class="td-badge" style="background:${e.status==='approved'?'var(--gnbg)':'var(--rbg)'};color:${e.status==='approved'?'var(--green)':'var(--red)'};">${e.status==='approved'?'Aprovado':'Recusado'}</span></td>`}
+    </tr>`).join('')}</tbody>`;
+}
+
+function openProofReview(id){
+  const entry = _adminProofsCache.find(e=>e.id===id);
+  if(!entry) return;
+  currentProofId = id;
+  document.getElementById('lm-title').textContent = 'Revisar comprovante — ' + entry.name;
+  document.getElementById('lm-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div class="lm-field"><div class="lm-lbl">Membro</div><div class="lm-val">${entry.name||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">E-mail</div><div class="lm-val" style="color:var(--blue);">${entry.member||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Prop Firm</div><div class="lm-val">${entry.firma||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Plano</div><div class="lm-val">${entry.size||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Número do Pedido</div><div class="lm-val" style="font-family:monospace;color:var(--gold);">${entry.orderNumber||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Cupom utilizado</div><div class="lm-val">${entry.coupon||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Valor pago</div><div class="lm-val">${entry.value||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Enviado em</div><div class="lm-val">${new Date(entry.ts).toLocaleString('pt-BR')}</div></div>
+    </div>
+    ${entry.fileUrl ? `<div style="margin-bottom:14px;"><div class="lm-lbl" style="margin-bottom:8px;">Comprovante</div>
+      ${entry.fileName?.endsWith('.pdf')
+        ? `<a href="${entry.fileUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;color:var(--blue);">📄 Abrir PDF</a>`
+        : `<img src="${entry.fileUrl}" class="proof-review-img" alt="Comprovante">`
+      }</div>` : `<div style="padding:12px;background:var(--rbg);border:1px solid rgba(239,68,68,.2);border-radius:7px;font-size:12px;color:var(--red);margin-bottom:14px;">Nenhum arquivo — validar pelo número do pedido.</div>`}
+    <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;margin-bottom:14px;font-size:11px;color:var(--t2);">
+      <strong style="color:var(--t1);">Como verificar:</strong> Acesse o painel parceiro da ${entry.firma||'firma'} e confirme o pedido <strong style="color:var(--gold);font-family:monospace;">${entry.orderNumber||'—'}</strong>.
+    </div>
+    <div class="proof-review-actions">
+      <button class="btn-approve" onclick="approveProof('${id}')">Aprovar e creditar pontos</button>
+      <div style="flex:1;">
+        <textarea class="rejection-reason" id="reject-reason-${id}" placeholder="Motivo da recusa (opcional)..." rows="2"></textarea>
+        <button class="btn-reject" onclick="rejectProof('${id}')" style="margin-top:6px;width:100%;">Recusar comprovante</button>
+      </div>
+    </div>`;
+  document.getElementById('lead-modal-ov').classList.add('open');
+}
+
+function quickApprove(id){ approveProof(id); }
+function quickReject(id){ rejectProof(id, 'Recusado pela equipe.'); }
+
+async function approveProof(id){
+  try {
+    await db.from('loyalty_proofs').update({
+      status: 'approved', reviewed_at: new Date().toISOString(), reviewed_by: _adminEmail
+    }).eq('id', id);
+    // Update member approved_count
+    const entry = _adminProofsCache.find(e=>e.id===id);
+    if (entry?.member) {
+      const { data: mem } = await db.from('loyalty_members').select('approved_count').eq('email',entry.member).maybeSingle();
+      const newCount = (mem?.approved_count||0) + 1;
+      const tier = newCount >= 15 ? 'platinum' : newCount >= 7 ? 'gold' : newCount >= 3 ? 'silver' : 'bronze';
+      await db.from('loyalty_members').update({ approved_count: newCount, tier }).eq('email', entry.member);
+    }
+    closeLeadModal();
+    toast('Aprovado! Pontos creditados.');
+    renderLoyaltyAdmin();
+  } catch(e) { toast('Erro ao aprovar.','error'); }
+}
+
+async function rejectProof(id, forcedReason){
+  const reason = forcedReason || document.getElementById('reject-reason-'+id)?.value.trim() || 'Comprovante inválido.';
+  try {
+    await db.from('loyalty_proofs').update({
+      status: 'rejected', reviewed_at: new Date().toISOString(), reviewed_by: _adminEmail, reject_reason: reason
+    }).eq('id', id);
+    closeLeadModal();
+    toast('Comprovante recusado.','warn');
+    renderLoyaltyAdmin();
+  } catch(e) { toast('Erro ao recusar.','error'); }
+}
+
+async function refreshLoyaltyAdmin(){ await renderLoyaltyAdmin(); toast('Atualizado!'); }
+
+async function exportLoyaltyCSV(){
+  const all = _adminProofsCache;
+  if(!all.length){ toast('Nenhum comprovante!','warn'); return; }
+  const hdr = 'Data,Membro,Email,Firma,Plano,N.Pedido,Cupom,Valor,Status';
+  const rows = all.map(e=>[
+    new Date(e.ts).toLocaleDateString('pt-BR'),
+    e.name,e.member,e.firma,e.size,e.orderNumber,e.coupon,e.value,e.status,
+  ].map(v=>`"${v||''}"`).join(','));
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(hdr+'\n'+rows.join('\n'));
+  a.download = 'loyalty_comprovantes.csv';
+  a.click();
+  toast('Exportado!');
+}
+
+function renderLoyaltyAdmin(){
+  const pending  = getLoyaltyPendingAdmin();
+  const history  = getLoyaltyHistoryAdmin();
+  const pCount   = pending.filter(p=>p.status==='pending').length;
+  const aCount   = history.filter(h=>h.status==='approved').length;
+  const rCount   = [...pending,...history].filter(h=>h.status==='rejected').length;
+  const members  = new Set([...pending,...history].map(e=>e.member)).size;
+
+  const kpis = document.getElementById('loyalty-kpis');
+  if(kpis) kpis.innerHTML = `
+    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Em analise</div><div class="stat-val y">${pCount}</div><div class="stat-change">Aguardando validacao</div></div>
+    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Aprovados</div><div class="stat-val g">${aCount}</div><div class="stat-change">Pontos creditados</div></div>
+    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Recusados</div><div class="stat-val r">${rCount}</div></div>
+    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Membros ativos</div><div class="stat-val b">${members}</div></div>`;
+
+  renderLoyaltyProofsTable();
+}
+
+function renderLoyaltyProofsTable(){
+  const pending = getLoyaltyPendingAdmin();
+  const history = getLoyaltyHistoryAdmin();
+  const allEntries = [...pending, ...history].filter(e=>e.status===loyaltyTab).sort((a,b)=>new Date(b.ts)-new Date(a.ts));
+  const tbl = document.getElementById('loyalty-proofs-tbl');
+  if(!tbl) return;
+
+  if(!allEntries.length){
+    tbl.innerHTML=`<tr><td colspan="9" style="padding:32px;text-align:center;color:var(--t3);">Nenhum comprovante ${loyaltyTab==='pending'?'aguardando validacao':loyaltyTab==='approved'?'aprovado':'recusado'} ainda.</td></tr>`;
+    return;
+  }
+
+  tbl.innerHTML=`
+    <thead><tr>
+      <th>Data</th><th>Membro</th><th>E-mail</th><th>Firma</th>
+      <th>Plano</th><th>N. Pedido</th><th>Cupom</th><th>Comprovante</th>
+      ${loyaltyTab==='pending'?'<th>Acoes</th>':'<th>Status</th>'}
+    </tr></thead>
+    <tbody>${allEntries.map(e=>`<tr>
+      <td style="color:var(--t3);white-space:nowrap;">${new Date(e.ts).toLocaleDateString('pt-BR')}</td>
+      <td style="font-weight:600;">${e.name||'—'}</td>
+      <td style="color:var(--t2);font-size:11px;">${e.member||'—'}</td>
+      <td>${e.firma||'—'}</td>
+      <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${e.size||'—'}</span></td>
+      <td style="font-size:11px;font-family:monospace;">${e.orderNumber||'—'}</td>
+      <td style="font-size:11px;">${e.coupon||'—'}</td>
+      <td style="font-size:11px;">${e.fileName?`<span style="color:var(--green);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">Sem arquivo</span>'}</td>
+      ${loyaltyTab==='pending'?`<td>
+        <div style="display:flex;gap:5px;">
+          <button onclick="openProofReview('${e.id}')" style="padding:4px 10px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Revisar</button>
+          <button onclick="quickApprove('${e.id}')" style="padding:4px 10px;background:var(--gnbg);border:1px solid rgba(34,197,94,.3);border-radius:5px;color:var(--green);font-size:10px;font-weight:600;cursor:pointer;">Aprovar</button>
+          <button onclick="quickReject('${e.id}')" style="padding:4px 8px;background:var(--rbg);border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">Recusar</button>
+        </div>
+      </td>`:`<td><span class="${e.status==='approved'?'td-badge" style="background:var(--gnbg);color:var(--green)':'td-badge" style="background:var(--rbg);color:var(--red)'}">${e.status==='approved'?'Aprovado':'Recusado'}</span></td>`}
+    </tr>`).join('')}</tbody>`;
+}
+
+function openProofReview(id){
+  const pending = getLoyaltyPendingAdmin();
+  const history = getLoyaltyHistoryAdmin();
+  const entry   = [...pending,...history].find(e=>e.id===id);
+  if(!entry) return;
+  currentProofId = id;
+
+  document.getElementById('lm-title').textContent = 'Revisar comprovante — ' + entry.name;
+  document.getElementById('lm-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div class="lm-field"><div class="lm-lbl">Membro</div><div class="lm-val">${entry.name}</div></div>
+      <div class="lm-field"><div class="lm-lbl">E-mail</div><div class="lm-val" style="color:var(--blue);">${entry.member}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Prop Firm</div><div class="lm-val">${entry.firma}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Plano</div><div class="lm-val">${entry.size}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Numero do Pedido</div><div class="lm-val" style="font-family:monospace;color:var(--gold);">${entry.orderNumber||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Cupom utilizado</div><div class="lm-val">${entry.coupon||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Data da compra</div><div class="lm-val">${entry.date?new Date(entry.date).toLocaleDateString('pt-BR'):'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Valor pago</div><div class="lm-val">${entry.value||'—'}</div></div>
+      <div class="lm-field"><div class="lm-lbl">Enviado em</div><div class="lm-val">${new Date(entry.ts).toLocaleString('pt-BR')}</div></div>
+    </div>
+
+    ${entry.fileData ? `
+      <div style="margin-bottom:14px;">
+        <div class="lm-lbl" style="margin-bottom:8px;">Comprovante anexado</div>
+        ${entry.fileType==='application/pdf'
+          ? `<a href="${entry.fileData}" download="${entry.fileName}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;color:var(--blue);text-decoration:none;">Baixar PDF — ${entry.fileName}</a>`
+          : `<img src="${entry.fileData}" class="proof-review-img" alt="Comprovante">`
+        }
+      </div>` : `<div style="padding:12px;background:var(--rbg);border:1px solid rgba(239,68,68,.2);border-radius:7px;font-size:12px;color:var(--red);margin-bottom:14px;">Nenhum arquivo anexado — validar pelo numero do pedido no painel de afiliado.</div>`}
+
+    <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;margin-bottom:14px;font-size:11px;color:var(--t2);">
+      <strong style="color:var(--t1);">Como verificar:</strong> Acesse o painel de afiliado da ${entry.firma||'firma'} e confirme se o pedido <strong style="color:var(--gold);font-family:monospace;">${entry.orderNumber||'—'}</strong> existe e foi feito pelo seu link.
+    </div>
+
+    <div class="proof-review-actions">
+      <button class="btn-approve" onclick="approveProof('${id}')">Aprovar e creditar pontos</button>
+      <div style="flex:1;">
+        <textarea class="rejection-reason" id="reject-reason-${id}" placeholder="Motivo da recusa (opcional)..." rows="2"></textarea>
+        <button class="btn-reject" onclick="rejectProof('${id}')" style="margin-top:6px;width:100%;">Recusar comprovante</button>
+      </div>
+    </div>`;
+  document.getElementById('lead-modal-ov').classList.add('open');
+}
+
+function quickApprove(id){ approveProof(id); }
+function quickReject(id){ rejectProof(id, 'Recusado pela equipe.'); }
+
+function approveProof(id){
+  const pending = getLoyaltyPendingAdmin();
+  const idx = pending.findIndex(e=>e.id===id);
+  if(idx===-1){ toast('Comprovante nao encontrado!','error'); return; }
+  const entry = {...pending[idx], status:'approved', approvedAt:new Date().toISOString(), approvedBy:'admin'};
+  pending.splice(idx,1);
+  localStorage.setItem('mc_loyalty_pending', JSON.stringify(pending));
+  const history = getLoyaltyHistoryAdmin();
+  history.push(entry);
+  localStorage.setItem('mc_loyalty_history', JSON.stringify(history));
+  closeLeadModal();
+  renderLoyaltyAdmin();
+  toast('Compra aprovada! Pontos creditados para '+entry.name);
+  track('loyalty_proof_approved',{id,member:entry.member,firma:entry.firma,size:entry.size});
+}
+
+function rejectProof(id, forcedReason){
+  const pending = getLoyaltyPendingAdmin();
+  const idx = pending.findIndex(e=>e.id===id);
+  if(idx===-1){ toast('Comprovante nao encontrado!','error'); return; }
+  const reason = forcedReason || document.getElementById('reject-reason-'+id)?.value.trim() || 'Comprovante invalido.';
+  const entry = {...pending[idx], status:'rejected', rejectedAt:new Date().toISOString(), rejectedBy:'admin', rejectReason:reason};
+  pending.splice(idx,1);
+  localStorage.setItem('mc_loyalty_pending', JSON.stringify(pending));
+  const history = getLoyaltyHistoryAdmin();
+  history.push(entry);
+  localStorage.setItem('mc_loyalty_history', JSON.stringify(history));
+  closeLeadModal();
+  renderLoyaltyAdmin();
+  toast('Comprovante recusado.','warn');
+}
+
+function refreshLoyaltyAdmin(){ renderLoyaltyAdmin(); toast('Atualizado!'); }
+
+function exportLoyaltyCSV(){
+  const all = [...getLoyaltyPendingAdmin(), ...getLoyaltyHistoryAdmin()];
+  if(!all.length){ toast('Nenhum comprovante para exportar!','warn'); return; }
+  const hdr = 'Data,Membro,Email,Firma,Plano,N.Pedido,Cupom,Valor,Status,Data Analise';
+  const rows = all.map(e=>[
+    new Date(e.ts).toLocaleDateString('pt-BR'),
+    e.name,e.member,e.firma,e.size,e.orderNumber,e.coupon,e.value,e.status,
+    e.approvedAt?new Date(e.approvedAt).toLocaleDateString('pt-BR'):e.rejectedAt?new Date(e.rejectedAt).toLocaleDateString('pt-BR'):'—'
+  ].map(v=>`"${v||''}"`).join(','));
+  download('loyalty_comprovantes.csv','data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n')));
+  toast('Exportado com sucesso!');
+}
+
+/* renderPage loyalty patch — merged into main renderPage */
+
+
+/* ══════════════════════════════════════════
+   CMS ENGINE — Supabase
+══════════════════════════════════════════ */
+
+// Local cache for CMS operations
+let _firmsCache = [];
+
+// Keep local-only defaults for indicators/guides (low risk, less critical)
+const DEFAULT_INDICATORS = [
+  {id:'orderflow',name:'Order Flow Analyzer',badge:'Gratis',badgeColor:'green',desc:'Analise o fluxo de ordens.',active:true},
+  {id:'dashboard',name:'Prop Firm Dashboard',badge:'Premium',badgeColor:'gold',desc:'Monitore drawdown e lucro.',active:true},
+  {id:'journal',name:'Trade Journal',badge:'Gratis',badgeColor:'green',desc:'Registre e analise cada operacao.',active:true},
+  {id:'backtester',name:'Backtester Pro',badge:'Premium',badgeColor:'gold',desc:'Simule estrategias.',active:true},
+  {id:'alerts',name:'Alert Manager',badge:'Gratis',badgeColor:'green',desc:'Alertas de preco e drawdown.',active:true},
+  {id:'ninjapack',name:'NinjaTrader Pack',badge:'VIP',badgeColor:'purple',desc:'15 indicadores para prop firms.',active:true},
+];
+const DEFAULT_GUIDES = [
+  {id:'g1',title:'O que e uma Prop Firm?',cat:'Iniciante',desc:'Como funcionam e como passar no desafio.',active:true},
+  {id:'g2',title:'Como escolher sua Prop Firm',cat:'Intermediario',desc:'Compare regras, drawdown e plataformas.',active:true},
+  {id:'g3',title:'Position Size em Futuros',cat:'Avancado',desc:'Calcule o tamanho correto para cada trade.',active:true},
+  {id:'g4',title:'Gestao de Risco em Prop Firms',cat:'Intermediario',desc:'Proteja seu drawdown e maximize aprovacoes.',active:true},
+  {id:'g5',title:'Plataformas de Trading',cat:'Iniciante',desc:'Rithmic, Tradovate, NinjaTrader e MT5.',active:true},
+  {id:'g6',title:'Como usar cupons de desconto',cat:'Iniciante',desc:'Passo a passo para economizar.',active:true},
+];
+
+// Indicators and Guides still use localStorage (lower risk)
+function getCmsData(key, defaults) {
+  const stored = localStorage.getItem('mc_cms_'+key);
+  return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(defaults));
+}
+function saveCmsData(key, data) {
+  localStorage.setItem('mc_cms_'+key, JSON.stringify(data));
+  pushNotif(key+'_updated','CMS','Dados de '+key+' atualizados','cms');
+}
+
+// Blog — Supabase
+async function getBlogPosts() {
+  try {
+    const { data } = await db.from('blog_posts').select('*').order('created_at',{ascending:false});
+    if (data) { localStorage.setItem('mc_blog_posts', JSON.stringify(data)); return data; }
+  } catch(e) {}
+  return JSON.parse(localStorage.getItem('mc_blog_posts')||'[]');
+}
+function getBlogPostsSync() { return JSON.parse(localStorage.getItem('mc_blog_posts')||'[]'); }
+async function saveBlogPost_db(post) {
+  if (post.id && !post.id.startsWith('local_')) {
+    await db.from('blog_posts').update(post).eq('id', post.id);
+  } else {
+    const { id: _id, ...rest } = post;
+    await db.from('blog_posts').insert(rest);
+  }
+}
+
+/* ── FIRMS ── */
+async function renderCmsFirms() {
+  try {
+    const { data } = await db.from('cms_firms').select('*').order('sort_order');
+    _firmsCache = data || [];
+  } catch(e) { toast('Erro ao carregar firmas do Supabase','error'); return; }
+
+  const firms = _firmsCache;
+  const kpis = document.getElementById('firms-kpis');
+  if(kpis) kpis.innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Total Firmas</div><div class="stat-val">${firms.length}</div></div>
+    <div class="stat-card"><div class="stat-lbl">Ativas</div><div class="stat-val g">${firms.filter(f=>f.active).length}</div></div>
+    <div class="stat-card"><div class="stat-lbl">Inativas</div><div class="stat-val r">${firms.filter(f=>!f.active).length}</div></div>
+    <div class="stat-card"><div class="stat-lbl">Desconto Médio</div><div class="stat-val y">${firms.length?Math.round(firms.reduce((s,f)=>s+f.discount,0)/firms.length):0}%</div></div>`;
+
+  const tbl = document.getElementById('firms-tbl');
+  if(!tbl) return;
+  tbl.innerHTML = `<thead><tr><th>Ordem</th><th>Firma</th><th>Tipo</th><th>Desconto</th><th>Cupom</th><th>Split</th><th>Status</th><th>Ações</th></tr></thead>
+    <tbody>${firms.map((f,i)=>`<tr>
+      <td style="color:var(--t3);">${f.sort_order||i+1}</td>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:6px;background:${f.color}22;color:${f.color};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">${f.icon}</div><strong>${f.name}</strong></div></td>
+      <td>${f.type}</td>
+      <td><span style="color:var(--gold);font-weight:700;">${f.discount}%</span></td>
+      <td><span style="font-family:monospace;font-size:11px;">${f.coupon||'—'}</span></td>
+      <td>${f.split}</td>
+      <td><span class="${f.active?'status-active':'status-inactive'}">${f.active?'Ativa':'Inativa'}</span></td>
+      <td><div style="display:flex;gap:5px;">
+        <button onclick="openFirmModal('${f.id}')" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Editar</button>
+        <button class="toggle-btn ${f.active?'on':'off'}" onclick="toggleFirmActive('${f.id}',${!f.active})"></button>
+        <button onclick="deleteFirm('${f.id}')" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
+      </div></td>
+    </tr>`).join('')}</tbody>`;
+}
+
+function openFirmModal(id) {
+  const f = id ? (_firmsCache.find(x=>x.id===id) || {}) : {};
+  const isNew = !id;
+  const plats = Array.isArray(f.platforms) ? f.platforms.join(',') : (f.platforms||'');
+  document.getElementById('cms-modal-title').textContent = isNew ? 'Nova Firma' : 'Editar Firma';
+  document.getElementById('cms-modal-body').innerHTML = `
+    <div class="modal-grid">
+      <div class="modal-field"><label>ID (único, sem espaços)</label><input type="text" id="fm-id" value="${f.id||''}" placeholder="ex: nova_firma" ${isNew?'':'readonly'}></div>
+      <div class="modal-field"><label>Nome da Firma</label><input type="text" id="fm-name" value="${f.name||''}" placeholder="Nome completo"></div>
+      <div class="modal-field"><label>Tipo</label><select id="fm-type"><option ${f.type==='Futuros'?'selected':''}>Futuros</option><option ${f.type==='Forex'?'selected':''}>Forex</option><option ${f.type==='Acoes'?'selected':''}>Acoes</option></select></div>
+      <div class="modal-field"><label>Cor (hex)</label><input type="color" id="fm-color" value="${f.color||'#F0B429'}" style="height:38px;padding:2px;"></div>
+      <div class="modal-field"><label>Ícone (1-2 letras)</label><input type="text" id="fm-icon" value="${f.icon||''}" maxlength="2"></div>
+      <div class="modal-field"><label>Desconto (%)</label><input type="number" id="fm-discount" value="${f.discount||0}" min="0" max="100"></div>
+      <div class="modal-field"><label>Cupom</label><input type="text" id="fm-coupon" value="${f.coupon||''}" placeholder="Deixe vazio se só link"></div>
+      <div class="modal-field"><label>Split de Lucro</label><input type="text" id="fm-split" value="${f.split||'80%'}" placeholder="ex: 80%"></div>
+      <div class="modal-field"><label>Tipo de Desconto</label><input type="text" id="fm-dtype" value="${f.discount_type||'lifetime'}" placeholder="lifetime, especial..."></div>
+      <div class="modal-field"><label>Ordem de exibição</label><input type="number" id="fm-sort" value="${f.sort_order||99}"></div>
+      <div class="modal-field modal-full"><label>Link de Checkout / Parceiro</label><input type="url" id="fm-link" value="${f.link||''}" placeholder="https://..."></div>
+      <div class="modal-field modal-full"><label>Plataformas (vírgula)</label><input type="text" id="fm-platforms" value="${plats}" placeholder="Rithmic,NinjaTrader,MT5"></div>
+      <div class="modal-field"><label>Rating (0-5)</label><input type="number" id="fm-rating" value="${f.rating||4.5}" min="0" max="5" step="0.1"></div>
+      <div class="modal-field"><label>Número de Reviews</label><input type="number" id="fm-reviews" value="${f.reviews||0}"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="btn-primary" onclick="saveFirm('${id||''}')">Salvar Firma</button>
+      <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
+    </div>`;
+  document.getElementById('cms-modal-ov').classList.add('open');
+}
+
+async function saveFirm(existingId) {
+  const f = {
+    id:            document.getElementById('fm-id').value.trim().replace(/\s+/g,'_').toLowerCase(),
+    name:          document.getElementById('fm-name').value.trim(),
+    type:          document.getElementById('fm-type').value,
+    color:         document.getElementById('fm-color').value,
+    icon:          document.getElementById('fm-icon').value.trim().toUpperCase(),
+    discount:      parseFloat(document.getElementById('fm-discount').value)||0,
+    discount_type: document.getElementById('fm-dtype').value.trim()||'lifetime',
+    coupon:        document.getElementById('fm-coupon').value.trim().toUpperCase()||null,
+    link:          document.getElementById('fm-link').value.trim(),
+    platforms:     document.getElementById('fm-platforms').value.split(',').map(s=>s.trim()).filter(Boolean),
+    split:         document.getElementById('fm-split').value.trim(),
+    rating:        parseFloat(document.getElementById('fm-rating').value)||4.5,
+    reviews:       parseInt(document.getElementById('fm-reviews').value)||0,
+    sort_order:    parseInt(document.getElementById('fm-sort').value)||99,
+    active:        existingId ? (_firmsCache.find(x=>x.id===existingId)?.active ?? true) : true,
+  };
+  if(!f.name || !f.id) { toast('Preencha nome e ID!','warn'); return; }
+  try {
+    if (existingId) {
+      await db.from('cms_firms').update(f).eq('id', existingId);
+      toast('Firma atualizada!');
+    } else {
+      await db.from('cms_firms').insert(f);
+      toast('Nova firma adicionada!');
+    }
+    closeCmsModal();
+    renderCmsFirms();
+  } catch(e) { toast('Erro ao salvar: ' + e.message,'error'); }
+}
+
+async function toggleFirmActive(id, newActive) {
+  try {
+    await db.from('cms_firms').update({ active: newActive }).eq('id', id);
+    renderCmsFirms();
+  } catch(e) { toast('Erro ao alterar status','error'); }
+}
+
+async function deleteFirm(id) {
+  if(!confirm('Excluir esta firma permanentemente?')) return;
+  try {
+    await db.from('cms_firms').delete().eq('id', id);
+    renderCmsFirms();
+    toast('Firma removida.','warn');
+  } catch(e) { toast('Erro ao excluir','error'); }
+}
+
+/* ══ COUPONS (reads from cms_firms cache) ══ */
+async function renderCmsCoupons() {
+  if (!_firmsCache.length) {
+    const { data } = await db.from('cms_firms').select('*').order('sort_order');
+    _firmsCache = data || [];
+  }
+  const firms = _firmsCache;
+  const tbl = document.getElementById('coupons-tbl');
+  if(!tbl) return;
+  tbl.innerHTML = `<thead><tr><th>Firma</th><th>Cupom</th><th>Desconto</th><th>Tipo</th><th>Link</th><th>Status</th><th>Ações</th></tr></thead>
+    <tbody>${firms.map(f => `<tr>
+      <td style="font-weight:600;">${f.name}</td>
+      <td><span style="font-family:monospace;font-size:13px;font-weight:700;color:var(--gold);">${f.coupon||'—'}</span></td>
+      <td><span style="color:var(--gold);font-weight:700;">${f.discount}%</span></td>
+      <td style="font-size:11px;color:var(--t2);">${f.discount_type||'lifetime'}</td>
+      <td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><a href="${f.link}" target="_blank" style="color:var(--blue);">${(f.link||'').slice(0,40)}...</a></td>
+      <td><span class="${f.active?'status-active':'status-inactive'}">${f.active?'Ativa':'Inativa'}</span></td>
+      <td><button onclick="openFirmModal('${f.id}')" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Editar</button></td>
+    </tr>`).join('')}</tbody>`;
+}
+function openCouponModal() { openFirmModal(); }
+
+/* ══ CHECKOUT CMS ══ */
+async function renderCmsCheckout() {
+  const el = document.getElementById('checkout-firms-list');
+  if(!el) return;
+  if (!_firmsCache.length) {
+    const { data } = await db.from('cms_firms').select('*').order('sort_order');
+    _firmsCache = data || [];
+  }
+  el.innerHTML = _firmsCache.filter(f=>f.active).map(f => `
+    <div class="cms-firm-card">
+      <div class="cfc-hd">
+        <div class="cfc-name">
+          <div class="cfc-ico" style="background:${f.color}22;color:${f.color};">${f.icon}</div>
+          ${f.name} <span class="status-active">${f.discount}% OFF</span>
+        </div>
+        <button onclick="saveCmsCheckoutFirm('${f.id}')" class="btn-primary" style="font-size:11px;padding:6px 12px;">Salvar</button>
+      </div>
+      <div class="cfc-body">
+        <div class="cfc-grid">
+          <div class="cfc-field"><label>Cupom</label><input type="text" id="co-coupon-${f.id}" value="${f.coupon||''}"></div>
+          <div class="cfc-field"><label>Desconto (%)</label><input type="number" id="co-disc-${f.id}" value="${f.discount}" min="0" max="100"></div>
+          <div class="cfc-field" style="grid-column:1/-1;"><label>Link de Checkout</label><input type="url" id="co-link-${f.id}" value="${f.link||''}" style="width:100%;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-family:var(--f);font-size:12px;outline:none;"></div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function saveCmsCheckoutFirm(firmId) {
+  const coupon = document.getElementById('co-coupon-'+firmId)?.value.trim().toUpperCase()||null;
+  const disc   = parseFloat(document.getElementById('co-disc-'+firmId)?.value)||0;
+  const link   = document.getElementById('co-link-'+firmId)?.value.trim();
+  try {
+    await db.from('cms_firms').update({ coupon, discount: disc, link }).eq('id', firmId);
+    const idx = _firmsCache.findIndex(f=>f.id===firmId);
+    if(idx>=0) { _firmsCache[idx].coupon=coupon; _firmsCache[idx].discount=disc; _firmsCache[idx].link=link; }
+    toast('Checkout de ' + firmId + ' salvo!');
+  } catch(e) { toast('Erro ao salvar','error'); }
+}
+
+/* ══ INDICATORS ══ */
+function renderCmsIndicators() {
+  const tools = getCmsData('indicators', DEFAULT_INDICATORS);
+  const tbl = document.getElementById('indicators-tbl');
+  if(!tbl) return;
+  const bMap = {green:'var(--green)',gold:'var(--gold)',purple:'#A855F7'};
+  tbl.innerHTML = `<thead><tr><th>Ferramenta</th><th>Badge</th><th>Descricao</th><th>Status</th><th>Acoes</th></tr></thead>
+    <tbody>${tools.map((t,i)=>`<tr>
+      <td style="font-weight:600;">${t.name}</td>
+      <td><span style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;background:${bMap[t.badgeColor]||'var(--gold)'}22;color:${bMap[t.badgeColor]||'var(--gold)'};">${t.badge}</span></td>
+      <td style="font-size:11px;color:var(--t2);max-width:250px;">${t.desc}</td>
+      <td><span class="${t.active?'status-active':'status-inactive'}">${t.active?'Ativa':'Inativa'}</span></td>
+      <td><div style="display:flex;gap:5px;">
+        <button onclick="openIndicatorModal(${i})" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">Editar</button>
+        <button class="toggle-btn ${t.active?'on':'off'}" onclick="toggleIndicator(${i})"></button>
+      </div></td>
+    </tr>`).join('')}</tbody>`;
+}
+
+function openIndicatorModal(idx) {
+  const tools = getCmsData('indicators', DEFAULT_INDICATORS);
+  const t = idx !== undefined ? tools[idx] : {id:'',name:'',badge:'Gratis',badgeColor:'green',desc:'',active:true};
+  document.getElementById('cms-modal-title').textContent = idx !== undefined ? 'Editar Ferramenta' : 'Nova Ferramenta';
+  document.getElementById('cms-modal-body').innerHTML = `
+    <div class="modal-grid">
+      <div class="modal-field"><label>ID</label><input type="text" id="ti-id" value="${t.id}" placeholder="ex: minha_ferramenta"></div>
+      <div class="modal-field"><label>Nome</label><input type="text" id="ti-name" value="${t.name}"></div>
+      <div class="modal-field"><label>Badge</label><input type="text" id="ti-badge" value="${t.badge}"></div>
+      <div class="modal-field"><label>Cor do Badge</label><select id="ti-color"><option value="green" ${t.badgeColor==='green'?'selected':''}>Verde (Gratis)</option><option value="gold" ${t.badgeColor==='gold'?'selected':''}>Dourado (Premium)</option><option value="purple" ${t.badgeColor==='purple'?'selected':''}>Roxo (VIP)</option></select></div>
+      <div class="modal-field modal-full"><label>Descricao</label><textarea id="ti-desc" rows="3">${t.desc}</textarea></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="btn-primary" onclick="saveIndicator(${idx !== undefined ? idx : -1})">Salvar</button>
+      <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
+    </div>`;
+  document.getElementById('cms-modal-ov').classList.add('open');
+}
+
+function saveIndicator(idx) {
+  const tools = getCmsData('indicators', DEFAULT_INDICATORS);
+  const t = {id:document.getElementById('ti-id').value.trim(),name:document.getElementById('ti-name').value.trim(),badge:document.getElementById('ti-badge').value.trim(),badgeColor:document.getElementById('ti-color').value,desc:document.getElementById('ti-desc').value.trim(),active:idx>=0?tools[idx].active:true};
+  if(!t.name){toast('Preencha o nome!','warn');return;}
+  if(idx>=0)tools[idx]=t;else tools.push(t);
+  saveCmsData('indicators',tools);closeCmsModal();renderCmsIndicators();toast(idx>=0?'Ferramenta atualizada!':'Nova ferramenta adicionada!');
+}
+function toggleIndicator(idx){const tools=getCmsData('indicators',DEFAULT_INDICATORS);tools[idx].active=!tools[idx].active;saveCmsData('indicators',tools);renderCmsIndicators();}
+
+/* ══ GUIDES ══ */
+function renderCmsGuides() {
+  const guides = getCmsData('guides', DEFAULT_GUIDES);
+  const tbl = document.getElementById('guides-tbl');
+  if(!tbl) return;
+  tbl.innerHTML = `<thead><tr><th>Titulo</th><th>Categoria</th><th>Descricao</th><th>Status</th><th>Acoes</th></tr></thead>
+    <tbody>${guides.map((g,i)=>`<tr>
+      <td style="font-weight:600;">${g.title}</td>
+      <td><span class="td-badge" style="background:var(--bbg);color:var(--blue);">${g.cat}</span></td>
+      <td style="font-size:11px;color:var(--t2);max-width:250px;">${g.desc}</td>
+      <td><span class="${g.active?'status-active':'status-inactive'}">${g.active?'Ativo':'Inativo'}</span></td>
+      <td><div style="display:flex;gap:5px;">
+        <button onclick="openGuideModal(${i})" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">Editar</button>
+        <button class="toggle-btn ${g.active?'on':'off'}" onclick="toggleGuide(${i})"></button>
+        <button onclick="deleteGuide(${i})" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
+      </div></td>
+    </tr>`).join('')}</tbody>`;
+}
+
+function openGuideModal(idx) {
+  const guides = getCmsData('guides', DEFAULT_GUIDES);
+  const g = idx !== undefined ? guides[idx] : {id:'',title:'',cat:'Iniciante',desc:'',content:'',active:true};
+  document.getElementById('cms-modal-title').textContent = idx !== undefined ? 'Editar Guia' : 'Novo Guia';
+  document.getElementById('cms-modal-body').innerHTML = `
+    <div class="modal-grid">
+      <div class="modal-field modal-full"><label>Titulo do Guia</label><input type="text" id="gd-title" value="${g.title}"></div>
+      <div class="modal-field"><label>Categoria</label><select id="gd-cat"><option ${g.cat==='Iniciante'?'selected':''}>Iniciante</option><option ${g.cat==='Intermediario'?'selected':''}>Intermediario</option><option ${g.cat==='Avancado'?'selected':''}>Avancado</option></select></div>
+      <div class="modal-field modal-full"><label>Descricao (resumo)</label><input type="text" id="gd-desc" value="${g.desc}"></div>
+      <div class="modal-field modal-full"><label>Conteudo completo</label><textarea id="gd-content" rows="8" placeholder="Escreva o conteudo completo do guia aqui...">${g.content||''}</textarea></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="btn-primary" onclick="saveGuide(${idx !== undefined ? idx : -1})">Salvar</button>
+      <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
+    </div>`;
+  document.getElementById('cms-modal-ov').classList.add('open');
+}
+
+function saveGuide(idx) {
+  const guides = getCmsData('guides', DEFAULT_GUIDES);
+  const g = {id:idx>=0?guides[idx].id:'g'+Date.now(),title:document.getElementById('gd-title').value.trim(),cat:document.getElementById('gd-cat').value,desc:document.getElementById('gd-desc').value.trim(),content:document.getElementById('gd-content').value.trim(),active:idx>=0?guides[idx].active:true};
+  if(!g.title){toast('Preencha o titulo!','warn');return;}
+  if(idx>=0)guides[idx]=g;else guides.push(g);
+  saveCmsData('guides',guides);closeCmsModal();renderCmsGuides();toast(idx>=0?'Guia atualizado!':'Novo guia adicionado!');
+}
+function toggleGuide(idx){const guides=getCmsData('guides',DEFAULT_GUIDES);guides[idx].active=!guides[idx].active;saveCmsData('guides',guides);renderCmsGuides();}
+function deleteGuide(idx){if(!confirm('Excluir este guia?'))return;const guides=getCmsData('guides',DEFAULT_GUIDES);guides.splice(idx,1);saveCmsData('guides',guides);renderCmsGuides();toast('Guia removido.','warn');}
+
+/* ══ BLOG ══ */
+async function renderCmsBlog() {
+  const posts = await getBlogPosts();
+  const tbl = document.getElementById('blog-tbl');
+  if(!tbl) return;
+  tbl.innerHTML = posts.length ? `<thead><tr><th>Titulo</th><th>Categoria</th><th>Leitura</th><th>Origem</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+    <tbody>${posts.map(p=>`<tr>
+      <td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title}</td>
+      <td><span class="td-badge" style="background:var(--bbg);color:var(--blue);">${p.category||p.cat||'Geral'}</span></td>
+      <td style="font-size:11px;color:var(--t2);">${p.read_time||p.readTime||'5 min'}</td>
+      <td><span style="font-size:10px;padding:2px 7px;border-radius:4px;background:${p.ai_generated?'rgba(168,85,247,.1)':'rgba(74,85,104,.12)'};color:${p.ai_generated?'#A855F7':'var(--t3)'};">${p.ai_generated?'IA':'Manual'}</span></td>
+      <td style="color:var(--t3);font-size:11px;">${new Date(p.created_at||p.ts).toLocaleDateString('pt-BR')}</td>
+      <td><span class="${p.active?'status-active':'status-inactive'}">${p.active?'Publicado':'Rascunho'}</span></td>
+      <td><div style="display:flex;gap:5px;">
+        <button onclick="openBlogModal('${p.id}')" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">Editar</button>
+        <button class="toggle-btn ${p.active?'on':'off'}" onclick="toggleBlogPost('${p.id}',${!p.active})"></button>
+        <button onclick="deleteBlogPost('${p.id}')" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
+      </div></td>
+    </tr>`).join('')}</tbody>`
+  : `<tr><td colspan="7" style="padding:40px;text-align:center;color:var(--t3);">Nenhum post ainda.</td></tr>`;
+}
+
+function openBlogModal(id) {
+  const posts = getBlogPostsSync();
+  const p = id ? posts.find(x=>x.id===id) : null;
+  const isNew = !p;
+  document.getElementById('cms-modal-title').textContent = isNew ? 'Novo Post' : 'Editar Post';
+  document.getElementById('cms-modal-body').innerHTML = `
+    <div class="modal-grid">
+      <div class="modal-field modal-full"><label>Titulo</label><input type="text" id="bp-title" value="${((p?.title)||'').replace(/"/g,'&quot;')}"></div>
+      <div class="modal-field"><label>Categoria</label><input type="text" id="bp-cat" value="${p?.category||p?.cat||''}" placeholder="ex: Prop Firms, Futuros..."></div>
+      <div class="modal-field"><label>Tempo de Leitura</label><input type="text" id="bp-read" value="${p?.read_time||p?.readTime||'5 min'}"></div>
+      <div class="modal-field modal-full"><label>Conteudo</label><textarea id="bp-body" rows="12">${((p?.body)||'').replace(/</g,'&lt;')}</textarea></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="btn-primary" onclick="saveBlogPost2('${id||''}')">Publicar</button>
+      <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
+    </div>`;
+  document.getElementById('cms-modal-ov').classList.add('open');
+}
+
+async function saveBlogPost2(existingId) {
+  const title    = document.getElementById('bp-title').value.trim();
+  const category = document.getElementById('bp-cat').value.trim();
+  const read_time= document.getElementById('bp-read').value.trim()||'5 min';
+  const body     = document.getElementById('bp-body').value.trim();
+  if(!title){ toast('Preencha o título!','warn'); return; }
+  const slug = title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').slice(0,80) + '-' + Date.now();
+  try {
+    if (existingId) {
+      await db.from('blog_posts').update({ title, category, read_time, body }).eq('id', existingId);
+      toast('Post atualizado!');
+    } else {
+      await db.from('blog_posts').insert({ title, category, read_time, body, slug, active: true, ai_generated: false });
+      toast('Post publicado!');
+    }
+    closeCmsModal();
+    renderCmsBlog();
+  } catch(e) { toast('Erro ao salvar post','error'); }
+}
+
+async function toggleBlogPost(id, newActive) {
+  try { await db.from('blog_posts').update({ active: newActive }).eq('id', id); renderCmsBlog(); }
+  catch(e) { toast('Erro','error'); }
+}
+async function deleteBlogPost(id) {
+  if(!confirm('Excluir este post?')) return;
+  try { await db.from('blog_posts').delete().eq('id', id); renderCmsBlog(); toast('Post removido.','warn'); }
+  catch(e) { toast('Erro','error'); }
+}
+
+/* ══ AI BLOG GENERATOR ══ */
+let aiBlogDraft = null;
+
+document.addEventListener('change', e => {
+  if(e.target.id === 'ai-topic') {
+    const customWrap = document.getElementById('ai-custom-wrap');
+    if(customWrap) customWrap.style.display = e.target.value === 'custom' ? 'block' : 'none';
+  }
+});
+
+function autoBlogPost() {
+  const panel = document.getElementById('ai-blog-panel');
+  if(panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+async function generateBlogPost() {
+  const topic = document.getElementById('ai-topic')?.value;
+  const firm = document.getElementById('ai-firm')?.value;
+  const lang = document.getElementById('ai-lang')?.value || 'pt-BR';
+  const customTopic = document.getElementById('ai-custom-topic')?.value?.trim();
+  const btn = document.getElementById('gen-blog-btn');
+
+  const topicMap = {
+    cupom: `Escreva um post de blog sobre os cupons e ofertas da semana para prop firms${firm?' com foco especial em '+firm:''}. Mencione os codigos de desconto disponíveis e como aplica-los.`,
+    firma: `Escreva um post de blog com uma analise detalhada da prop firm ${firm||'Apex Trader Funding'}. Inclua prós, contras, regras, custos e para quem ela e mais indicada.`,
+    trading: `Escreva um post de blog com dicas praticas de gestao de risco e position size para traders de prop firms de futuros.`,
+    comparativo: `Escreva um post comparando as principais prop firms de futuros disponíveis em 2025, destacando diferencas em drawdown, regras, plataformas e custo-beneficio.`,
+    fidelidade: `Escreva um post de blog explicando o programa de fidelidade da MarketsCoupons e como os traders podem acumular beneficios ao comprar cupons pelo site.`,
+    custom: customTopic || 'Escreva um post sobre prop firms e trading de futuros.',
+  };
+
+  const prompt = `Voce e um especialista em prop firms e trading de futuros. ${topicMap[topic]||topicMap.cupom}
+  
+Escreva em ${lang==='pt-BR'?'portugues do Brasil':lang==='es'?'espanhol':'ingles'}.
+Formato: titulo atraente, introducao, 3-4 secoes com subtitulos, conclusao com CTA para visitar marketscoupons.com.
+Retorne APENAS um JSON valido com esta estrutura exata, sem markdown, sem explicacoes:
+{"title":"...","cat":"...","readTime":"X min","body":"..."}`;
+
+  if(btn) { btn.disabled = true; btn.textContent = 'Gerando...'; }
+  const preview = document.getElementById('ai-blog-preview');
+  if(preview) preview.style.display = 'none';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    aiBlogDraft = { ...parsed, aiGenerated: true, active: true, ts: new Date().toISOString(), id: 'post_'+Date.now() };
+
+    if(document.getElementById('ai-post-title')) document.getElementById('ai-post-title').value = parsed.title || '';
+    if(document.getElementById('ai-post-cat')) document.getElementById('ai-post-cat').value = parsed.cat || '';
+    if(document.getElementById('ai-post-body')) document.getElementById('ai-post-body').value = parsed.body || '';
+    if(document.getElementById('ai-post-read')) document.getElementById('ai-post-read').value = parsed.readTime || '5 min';
+
+    if(preview) preview.style.display = 'block';
+    toast('Post gerado com sucesso!');
+  } catch(err) {
+    toast('Erro ao gerar post. Tente novamente.', 'error');
+    console.error(err);
+  }
+  if(btn) { btn.disabled = false; btn.textContent = 'Gerar Post'; }
+}
+
+async function saveBlogPost() {
+  if(!aiBlogDraft) { toast('Gere um post primeiro!', 'warn'); return; }
+  aiBlogDraft.title    = document.getElementById('ai-post-title')?.value.trim() || aiBlogDraft.title;
+  aiBlogDraft.category = document.getElementById('ai-post-cat')?.value.trim()   || aiBlogDraft.category;
+  aiBlogDraft.body     = document.getElementById('ai-post-body')?.value.trim()  || aiBlogDraft.body;
+  aiBlogDraft.read_time= document.getElementById('ai-post-read')?.value.trim()  || aiBlogDraft.read_time;
+  if(!aiBlogDraft.title) { toast('Titulo vazio!','warn'); return; }
+  const slug = aiBlogDraft.title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').slice(0,80) + '-' + Date.now();
+  try {
+    await db.from('blog_posts').insert({
+      title: aiBlogDraft.title, category: aiBlogDraft.category,
+      read_time: aiBlogDraft.read_time, body: aiBlogDraft.body,
+      slug, active: true, ai_generated: true,
+    });
+    document.getElementById('ai-blog-preview').style.display = 'none';
+    aiBlogDraft = null;
+    renderCmsBlog();
+    pushNotif('blog_post','Blog','Post IA publicado!','cms');
+    toast('Post publicado!');
+  } catch(e) { toast('Erro ao publicar post','error'); }
+}
+
+/* ══ CMS MODAL ══ */
+function closeCmsModal() { document.getElementById('cms-modal-ov').classList.remove('open'); }
+
+/* ══ AI FIRM GENERATOR ══ */
+let _aiFirmDraft = null;
+
+function toggleAiFirmPanel() {
+  const p = document.getElementById('ai-firm-panel');
+  if (p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+async function generateFirmFromUrl() {
+  const url = document.getElementById('ai-firm-url')?.value.trim();
+  if (!url) { toast('Informe a URL da firma!','warn'); return; }
+
+  const btn = document.getElementById('ai-firm-btn');
+  const loading = document.getElementById('ai-firm-loading');
+  const result  = document.getElementById('ai-firm-result');
+  const errEl   = document.getElementById('ai-firm-error');
+  const preview = document.getElementById('ai-firm-preview-grid');
+
+  if (btn)     btn.disabled = true;
+  if (loading) loading.style.display = 'block';
+  if (result)  result.style.display  = 'none';
+  if (errEl)   errEl.style.display   = 'none';
+
+  const prompt = `Você é um especialista em prop firms de trading. Com base na URL fornecida: ${url}
+
+Gere um JSON completo para cadastrar esta prop firm no sistema MarketsCoupons. Use seu conhecimento sobre esta firma.
+Retorne APENAS JSON válido, sem markdown, sem explicações:
+
+{
+  "id": "id_unico_sem_espacos_minusculo",
+  "name": "Nome Completo da Firma",
+  "type": "Futuros ou Forex ou Acoes",
+  "color": "#HEXCOLOR",
+  "icon": "AB",
+  "discount": 0,
+  "discount_type": "lifetime ou mensal ou especial",
+  "coupon": "CUPOM ou null",
+  "link": "${url}",
+  "split": "80%",
+  "rating": 4.5,
+  "reviews": 1000,
+  "platforms": ["Plataforma1","Plataforma2"],
+  "active": true,
+  "sort_order": 10,
+  "checkout_types": ["Tipo1","Tipo2"],
+  "includes": ["Beneficio1","Beneficio2","Beneficio3"],
+  "plans": [
+    {"size":"25K","capital":"$25,000","goal":"$1,500","maxDD":"$1,500","orig":"$150","disc":"$75","featured":false},
+    {"size":"50K","capital":"$50,000","goal":"$3,000","maxDD":"$2,500","orig":"$250","disc":"$125","featured":true},
+    {"size":"100K","capital":"$100,000","goal":"$6,000","maxDD":"$3,000","orig":"$400","disc":"$200","featured":false}
+  ],
+  "metadata": {
+    "minDays": 1,
+    "evalDays": 30,
+    "drawdown": "Trailing/EOD",
+    "ddPct": "-5%",
+    "target": "8%",
+    "scaling": "Sim",
+    "desc": "Descrição completa da firma em português.",
+    "perks": ["Benefício1","Benefício2","Benefício3"],
+    "proibido": ["Proibição1","Proibição2"],
+    "prices": [{"a":"25K","n":"$75","o":"$150"},{"a":"50K","n":"$125","o":"$250"},{"a":"100K","n":"$200","o":"$400"}]
+  }
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const raw  = data.content?.[0]?.text || '';
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const firm  = JSON.parse(clean);
+    _aiFirmDraft = firm;
+
+    // Render preview
+    const fields = [
+      ['ID',        firm.id],
+      ['Nome',      firm.name],
+      ['Tipo',      firm.type],
+      ['Desconto',  (firm.discount||0)+'%'],
+      ['Cupom',     firm.coupon || '—'],
+      ['Split',     firm.split],
+      ['Rating',    firm.rating],
+      ['Reviews',   (firm.reviews||0).toLocaleString()],
+      ['Plataformas', (firm.platforms||[]).join(', ')],
+      ['Planos',    (firm.plans||[]).length + ' planos'],
+      ['Inclui',    (firm.includes||[]).length + ' itens'],
+      ['Link',      (firm.link||'').slice(0,40)+'...'],
+    ];
+    if (preview) {
+      preview.innerHTML = fields.map(([k,v]) => `
+        <div style="background:var(--card2);border:1px solid var(--b1);border-radius:7px;padding:10px 12px;">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;">${k}</div>
+          <div style="font-size:12px;font-weight:600;color:var(--t1);">${v}</div>
+        </div>`).join('');
+    }
+
+    if (result) result.style.display = 'block';
+    toast('Firma gerada com sucesso!');
+  } catch(e) {
+    if (errEl) {
+      errEl.textContent = 'Erro ao gerar: ' + (e.message||'Tente novamente');
+      errEl.style.display = 'block';
+    }
+    toast('Erro ao gerar firma.','error');
+  }
+
+  if (btn)     btn.disabled = false;
+  if (loading) loading.style.display = 'none';
+}
+
+async function saveAiGeneratedFirm() {
+  if (!_aiFirmDraft) { toast('Nenhuma firma gerada!','warn'); return; }
+  try {
+    await db.from('cms_firms').insert(_aiFirmDraft);
+    toast('Firma "' + _aiFirmDraft.name + '" adicionada!');
+    _aiFirmDraft = null;
+    document.getElementById('ai-firm-panel').style.display = 'none';
+    document.getElementById('ai-firm-url').value = '';
+    renderCmsFirms();
+    pushNotif('firm_added','CMS','Nova firma adicionada via IA: '+(_aiFirmDraft?.name||''),'cms');
+  } catch(e) {
+    // If conflict on id, suggest editing
+    if (e.message?.includes('duplicate') || e.code === '23505') {
+      toast('Firma com este ID já existe. Edite a existente.','warn');
+    } else {
+      toast('Erro ao salvar: ' + e.message,'error');
+    }
+  }
+}
+
+/* ══ EXPORT ══ */
+function exportCmsJson(key) {
+  const data = key==='firms' ? getCmsData('firms',DEFAULT_FIRMS) : getCmsData('checkout_firms', []);
+  download('cms_'+key+'_'+new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')+'.json', 'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data,null,2)));
+  toast('JSON exportado!');
+}
+
+/* ══ NOTIFICATIONS ENGINE ══ */
+let notifPanelOpen = false;
+
+function getNotifs() { return JSON.parse(localStorage.getItem('mc_notifications')||'[]'); }
+function saveNotifs(n) { localStorage.setItem('mc_notifications', JSON.stringify(n)); }
+
+function pushNotif(id, source, message, type='info') {
+  const notifs = getNotifs();
+  notifs.unshift({ id: id+'_'+Date.now(), source, message, type, read: false, ts: new Date().toISOString() });
+  if(notifs.length > 50) notifs.pop();
+  saveNotifs(notifs);
+  updateNotifBadge();
+  renderNotifList();
+}
+
+function updateNotifBadge() {
+  const notifs = getNotifs();
+  const unread = notifs.filter(n=>!n.read).length;
+  const badge = document.getElementById('notif-count');
+  if(badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'inline' : 'none'; }
+}
+
+function renderNotifList() {
+  const notifs = getNotifs();
+  const el = document.getElementById('notif-list');
+  if(!el) return;
+  if(!notifs.length) { el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Nenhuma notificacao ainda.</div>'; return; }
+  const typeColors = { lead:'var(--green)', proof:'var(--gold)', checkout:'var(--blue)', cms:'var(--purple)', info:'var(--t3)' };
+  el.innerHTML = notifs.slice(0,20).map((n,i) => `
+    <div class="notif-item ${n.read?'':'unread'}" onclick="markNotifRead(${i})">
+      <div class="ni-dot ${n.read?'read':''}" style="background:${typeColors[n.type]||'var(--t3)'};"></div>
+      <div class="ni-body">
+        <div class="ni-title">${n.message}</div>
+        <div class="ni-time">${n.source} · ${new Date(n.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+    </div>`).join('');
+}
+
+function markNotifRead(idx) {
+  const notifs = getNotifs();
+  if(notifs[idx]) notifs[idx].read = true;
+  saveNotifs(notifs);
+  updateNotifBadge();
+  renderNotifList();
+}
+
+function clearNotifs() {
+  saveNotifs([]);
+  updateNotifBadge();
+  renderNotifList();
+  toast('Notificacoes limpas.');
+}
+
+function toggleNotifPanel() {
+  notifPanelOpen = !notifPanelOpen;
+  const panel = document.getElementById('notif-panel');
+  if(panel) panel.classList.toggle('open', notifPanelOpen);
+  if(notifPanelOpen) {
+    const notifs = getNotifs();
+    notifs.forEach(n => n.read = true);
+    saveNotifs(notifs);
+    updateNotifBadge();
+    renderNotifList();
+  }
+}
+
+/* Close notif panel on outside click */
+document.addEventListener('click', e => {
+  const panel = document.getElementById('notif-panel');
+  const bell = document.getElementById('notif-bell');
+  if(notifPanelOpen && panel && !panel.contains(e.target) && !bell.contains(e.target)) {
+    notifPanelOpen = false;
+    panel.classList.remove('open');
+  }
+});
+
+/* ══ REAL-TIME POLLING — check for new leads/proofs every 30s ══ */
+let lastLeadCount = 0;
+let lastProofCount = 0;
+
+function pollForUpdates() {
+  const leads = getLeadsSync();
+  const pending = getLoyaltyPendingAdmin();
+  if(leads.length > lastLeadCount && lastLeadCount > 0) {
+    const newLead = leads[leads.length-1];
+    pushNotif('new_lead','Leads','Novo lead: '+newLead.name+' ('+newLead.tool+')','lead');
+  }
+  if(pending.filter(p=>p.status==='pending').length > lastProofCount && lastProofCount > 0) {
+    pushNotif('new_proof','Fidelidade','Novo comprovante aguardando validacao','proof');
+  }
+  lastLeadCount = leads.length;
+  lastProofCount = pending.filter(p=>p.status==='pending').length;
+}
+
+/* Initialize polling and notifications */
+document.addEventListener('DOMContentLoaded', () => {
+  updateNotifBadge();
+  renderNotifList();
+  lastLeadCount = getLeadsSync().length;
+  lastProofCount = getLoyaltyPendingAdmin().filter(p=>p.status==='pending').length;
+  setInterval(pollForUpdates, 30000);
+});
+
+
+/* ══ DATA BRIDGE — Import/Export between site and admin ══ */
+
+function importSiteData(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      let imported = [];
+      // Support both full export format and individual arrays
+      if(data.leads)    { localStorage.setItem('mc_leads',    JSON.stringify(data.leads));    imported.push(data.leads.length+' leads'); }
+      if(data.events)   { localStorage.setItem('mc_events',   JSON.stringify(data.events));   imported.push(data.events.length+' eventos'); }
+      if(data.journal)  { localStorage.setItem('mc_journal',  JSON.stringify(data.journal));  imported.push(data.journal.length+' trades'); }
+      if(data.campaigns){ localStorage.setItem('mc_campaigns',JSON.stringify(data.campaigns)); }
+      if(data.templates){ localStorage.setItem('mc_email_templates',JSON.stringify(data.templates)); }
+      if(data.loyalty_pending){ localStorage.setItem('mc_loyalty_pending',JSON.stringify(data.loyalty_pending)); }
+      if(data.loyalty_history){ localStorage.setItem('mc_loyalty_history',JSON.stringify(data.loyalty_history)); }
+      // Direct arrays (if user exported just leads)
+      if(Array.isArray(data) && data[0]?.email) {
+        localStorage.setItem('mc_leads', JSON.stringify(data));
+        imported.push(data.length+' leads');
+      }
+      toast('Importado: '+imported.join(', ')+'!');
+      refreshAll();
+      pushNotif('data_imported','Sincronizacao','Dados importados: '+imported.join(', '),'info');
+    } catch(err) {
+      toast('Erro ao importar. Verifique o arquivo JSON.','error');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function exportAdminData() {
+  // Export all localStorage data so user can import into site
+  const data = {
+    leads:           getLeadsSync(),
+    events:          getEventsSync(),
+    loyalty_pending: getLoyaltyPendingAdmin(),
+    loyalty_history: getLoyaltyHistoryAdmin(),
+    cms_firms:       getCmsData('firms', DEFAULT_FIRMS),
+    cms_indicators:  getCmsData('indicators', DEFAULT_INDICATORS),
+    cms_guides:      getCmsData('guides', DEFAULT_GUIDES),
+    blog_posts:      getBlogPosts(),
+    exported_at:     new Date().toISOString(),
+  };
+  download('admin_export_'+new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')+'.json',
+    'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data,null,2)));
+  toast('Exportacao completa!');
+}
+
+function loadDemoData() {
+  // Force regenerate demo data
+  localStorage.removeItem('mc_leads');
+  localStorage.removeItem('mc_events');
+  ensureDemoData();
+  refreshAll();
+  toast('Dados de demonstracao carregados!');
+}
+
+/* ══ FIX: renderOverview charts — ensure Chart.js is loaded and canvas exists ══ */
+const _origRenderOverview = renderOverview;
+function renderOverview() {
+  _origRenderOverview();
+  // Re-check charts after a longer delay to ensure canvases are in DOM
+  setTimeout(() => {
+    const canvases = ['chart-leads-tool','chart-coupons','chart-checkout','chart-pages','chart-timeline'];
+    const missing = canvases.filter(id => !document.getElementById(id));
+    if(missing.length > 0) {
+      console.warn('Missing canvases:', missing);
+    }
+  }, 200);
+}
+
+</script>
+</body>
+</html>
