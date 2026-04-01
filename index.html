@@ -1904,6 +1904,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
         <div class="da-loading"><div class="ar-spinner"></div><div data-i18n="da_carregando">Carregando análises...</div></div>
       </div>
       <div class="da-disclaimer" data-i18n="da_disclaimer">Conteúdo exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.</div>
+      <div class="da-disclaimer" style="margin-top:4px;font-size:10px;opacity:.55;" data-i18n="da_realtime_note">Os gráficos exibem índices e cotações spot em tempo real (NDX, SPX, GOLD, USOIL), que acompanham fielmente os contratos futuros correspondentes (NQ, ES, CL, GC).</div>
       <div class="da-gate" id="da-gate"></div>
     </div>
   </div>
@@ -2768,6 +2769,7 @@ const I18N = {
     da_gate_btn_loyalty:'Ver programa de fidelidade',
     da_gate_trial:'Teste grátis — restam {days} dia(s)',
     da_disclaimer:'Conteúdo exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.',
+    da_realtime_note:'Os gráficos exibem índices e cotações spot em tempo real (NDX, SPX, GOLD, USOIL), que acompanham fielmente os contratos futuros correspondentes (NQ, ES, CL, GC).',
     analise_seu_grafico:'SEU GRÁFICO',
     analise_contexto_adicional:'CONTEXTO ADICIONAL',
     analise_clique_aqui:'Clique ou arraste o print aqui',
@@ -3326,6 +3328,7 @@ const I18N = {
     da_gate_btn_loyalty:'View loyalty program',
     da_gate_trial:'Free trial — {days} day(s) left',
     da_disclaimer:'Educational and informational content only. This does not constitute investment advice, financial consulting, or trading signals. Trading involves risk of loss. Consult a professional before trading.',
+    da_realtime_note:'Charts display real-time spot indices and prices (NDX, SPX, GOLD, USOIL), which closely track the corresponding futures contracts (NQ, ES, CL, GC).',
     analise_seu_grafico:'YOUR CHART',
     analise_contexto_adicional:'ADDITIONAL CONTEXT',
     analise_clique_aqui:'Click or drag the screenshot here',
@@ -3884,6 +3887,7 @@ const I18N = {
     da_gate_btn_loyalty:'Ver programa de fidelidad',
     da_gate_trial:'Prueba gratis — quedan {days} día(s)',
     da_disclaimer:'Contenido exclusivamente educativo e informativo. No constituye recomendación de inversión, asesoría financiera ni señal de operación. El trading implica riesgo de pérdida. Consulte a un profesional antes de operar.',
+    da_realtime_note:'Los gráficos muestran índices y cotizaciones spot en tiempo real (NDX, SPX, GOLD, USOIL), que siguen fielmente los contratos de futuros correspondientes (NQ, ES, CL, GC).',
     analise_seu_grafico:'TU GRÁFICO',
     analise_contexto_adicional:'CONTEXTO ADICIONAL',
     analise_clique_aqui:'Haz clic o arrastra la captura de pantalla aquí',
@@ -4442,6 +4446,7 @@ const I18N = {
     da_gate_btn_loyalty:'Vedi programma fedeltà',
     da_gate_trial:'Prova gratuita — {days} giorno/i rimasti',
     da_disclaimer:'Contenuto esclusivamente educativo e informativo. Non costituisce raccomandazione di investimento, consulenza finanziaria o segnale di trading. Il trading comporta rischi di perdita. Consultare un professionista prima di operare.',
+    da_realtime_note:'I grafici mostrano indici e quotazioni spot in tempo reale (NDX, SPX, GOLD, USOIL), che seguono fedelmente i corrispondenti contratti futures (NQ, ES, CL, GC).',
     analise_seu_grafico:'IL TUO GRAFICO',
     analise_contexto_adicional:'ULTERIORI INFORMAZIONI',
     analise_clique_aqui:'Clicca o trascina l\'immagine qui',
@@ -5000,6 +5005,7 @@ const I18N = {
     da_gate_btn_loyalty:'Voir le programme de fidélité',
     da_gate_trial:'Essai gratuit — {days} jour(s) restant(s)',
     da_disclaimer:'Contenu exclusivement éducatif et informatif. Ne constitue pas une recommandation d\'investissement, un conseil financier ou un signal de trading. Le trading comporte un risque de perte. Consultez un professionnel avant d\'opérer.',
+    da_realtime_note:'Les graphiques affichent des indices et cotations spot en temps réel (NDX, SPX, GOLD, USOIL), qui suivent fidèlement les contrats à terme correspondants (NQ, ES, CL, GC).',
     analise_seu_grafico:'VOTRE GRAPHIQUE',
     analise_contexto_adicional:'CONTEXTE SUPPLÉMENTAIRE',
     analise_clique_aqui:'Cliquez ou faites glisser l\'image ici',
@@ -5558,6 +5564,7 @@ const I18N = {
     da_gate_btn_loyalty:'Treueprogramm ansehen',
     da_gate_trial:'Kostenlose Testphase — noch {days} Tag(e)',
     da_disclaimer:'Ausschließlich Bildungs- und Informationsinhalte. Stellt keine Anlageberatung, Finanzberatung oder Handelssignale dar. Trading birgt das Risiko von Verlusten. Konsultieren Sie einen Fachmann, bevor Sie handeln.',
+    da_realtime_note:'Die Diagramme zeigen Echtzeit-Spot-Indizes und -Kurse (NDX, SPX, GOLD, USOIL), die den entsprechenden Futures-Kontrakten (NQ, ES, CL, GC) genau folgen.',
     analise_seu_grafico:'IHR DIAGRAMM',
     analise_contexto_adicional:'WEITERE HINTERGRUNDINFORMATIONEN',
     analise_clique_aqui:'Klicken Sie hier oder ziehen Sie den Screenshot hierher',
@@ -6116,6 +6123,7 @@ const I18N = {
     da_gate_btn_loyalty:'عرض برنامج الولاء',
     da_gate_trial:'تجربة مجانية — {days} يوم(أيام) متبقية',
     da_disclaimer:'محتوى تعليمي ومعلوماتي حصريًا. لا يشكل توصية استثمارية أو استشارة مالية أو إشارة تداول. التداول ينطوي على مخاطر خسارة. استشر متخصصًا قبل التداول.',
+    da_realtime_note:'تعرض الرسوم البيانية مؤشرات وأسعار فورية في الوقت الحقيقي (NDX, SPX, GOLD, USOIL)، والتي تتبع بدقة العقود الآجلة المقابلة (NQ, ES, CL, GC).',
     analise_seu_grafico:'الرسم البياني الخاص بك',
     analise_contexto_adicional:'معلومات إضافية',
     analise_clique_aqui:'انقر هنا أو اسحب الصورة',
@@ -8919,7 +8927,7 @@ function renderCal() {
 /* ANÁLISE DE MERCADO IA */
 
 /* ─── DAILY ANALYSIS ─── */
-const DA_ASSETS={NQ:{name:'Nasdaq 100',tv:'NASDAQ:QQQ'},ES:{name:'S&P 500',tv:'AMEX:SPY'},CL:{name:'Petróleo WTI',tv:'AMEX:USO'},GC:{name:'Ouro',tv:'AMEX:GLD'}};
+const DA_ASSETS={NQ:{name:'Nasdaq 100',tv:'NASDAQ:NDX'},ES:{name:'S&P 500',tv:'SP:SPX'},CL:{name:'Petróleo WTI',tv:'TVC:USOIL'},GC:{name:'Ouro',tv:'TVC:GOLD'}};
 
 async function loadDailyAnalysis(){
   const grid=document.getElementById('da-grid');if(!grid)return;
