@@ -8927,7 +8927,7 @@ function renderCal() {
 /* ANÁLISE DE MERCADO IA */
 
 /* ─── DAILY ANALYSIS ─── */
-const DA_ASSETS={NQ:{name:'Nasdaq 100',tv:'NASDAQ:NDX'},ES:{name:'S&P 500',tv:'SP:SPX'},CL:{name:'Petróleo WTI',tv:'TVC:USOIL'},GC:{name:'Ouro',tv:'TVC:GOLD'}};
+const DA_ASSETS={NQ:{name:'Nasdaq 100',tv:'OANDA:NAS100USD'},ES:{name:'S&P 500',tv:'OANDA:SPX500USD'},CL:{name:'Petróleo WTI',tv:'TVC:USOIL'},GC:{name:'Ouro',tv:'TVC:GOLD'}};
 
 async function loadDailyAnalysis(){
   const grid=document.getElementById('da-grid');if(!grid)return;
