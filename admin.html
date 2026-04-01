@@ -290,8 +290,8 @@ a{text-decoration:none;color:inherit;}
  <nav class="admin-nav">
  <div class="admin-logo">Markets<em>Coupons</em><span>Admin</span></div>
  <div class="nav-tabs-admin" id="admin-nav-tabs">
- <button class="nta active" onclick="adminGo('overview',this)">Overview</button>
- <button class="nta" onclick="adminGo('analytics',this)">Analytics</button>
+ <button class="nta active" onclick="adminGo('overview',this)">Visão Geral</button>
+ <button class="nta" onclick="adminGo('analytics',this)">Análises</button>
  <button class="nta" onclick="adminGo('leads',this)">Leads</button>
  <button class="nta" onclick="adminGo('events',this)">Eventos</button>
  <button class="nta" onclick="adminGo('geo',this)">Geo</button>
@@ -348,8 +348,8 @@ a{text-decoration:none;color:inherit;}
 
  <!-- Mobile dropdown menu -->
  <div class="admin-mobile-dd" id="admin-mobile-dd">
-  <button class="nta active" onclick="adminGoMobile('overview',this)">Overview</button>
-  <button class="nta" onclick="adminGoMobile('analytics',this)">Analytics</button>
+  <button class="nta active" onclick="adminGoMobile('overview',this)">Visão Geral</button>
+  <button class="nta" onclick="adminGoMobile('analytics',this)">Análises</button>
   <button class="nta" onclick="adminGoMobile('leads',this)">Leads</button>
   <button class="nta" onclick="adminGoMobile('events',this)">Eventos</button>
   <button class="nta" onclick="adminGoMobile('geo',this)">Geo</button>
@@ -368,7 +368,7 @@ a{text-decoration:none;color:inherit;}
  <!-- OVERVIEW -->
  <div class="admin-page active" id="page-overview">
  <div class="sec-hdr">
- <div class="sec-title"> Dashboard Geral</div>
+ <div class="sec-title"> Painel Geral</div>
  <div class="sec-actions">
  <button class="btn-secondary" onclick="exportAllData()"> Exportar Dados</button>
  </div>
@@ -404,7 +404,7 @@ a{text-decoration:none;color:inherit;}
  <div class="chart-wrap"><canvas id="chart-content"></canvas></div>
  </div>
  <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Fidelidade & Usuários</div><div class="cc-sub">Cadastros, logins e ações</div></div></div>
+ <div class="cc-hd"><div><div class="cc-title">Fidelidade & Usuários</div><div class="cc-sub">Cadastros, acessos e ações</div></div></div>
  <div class="chart-wrap"><canvas id="chart-users"></canvas></div>
  </div>
  <div class="chart-card">
@@ -412,7 +412,7 @@ a{text-decoration:none;color:inherit;}
  <div class="chart-wrap"><canvas id="chart-langs"></canvas></div>
  </div>
  <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Social & Telegram</div><div class="cc-sub">Cliques em redes sociais</div></div></div>
+ <div class="cc-hd"><div><div class="cc-title">Redes Sociais</div><div class="cc-sub">Cliques em redes sociais</div></div></div>
  <div class="chart-wrap"><canvas id="chart-social"></canvas></div>
  </div>
  </div>
@@ -441,7 +441,7 @@ a{text-decoration:none;color:inherit;}
  <!-- ANALYTICS — Tráfego Pago & Orgânico -->
  <div class="admin-page" id="page-analytics">
   <div class="sec-hdr">
-   <div class="sec-title">Analytics — Tráfego Pago & Orgânico</div>
+   <div class="sec-title">Análises — Tráfego Pago & Orgânico</div>
    <div class="sec-actions">
      <select id="analytics-period" class="filter-inp" onchange="renderAnalytics()" style="font-size:12px;padding:6px 10px;">
        <option value="7">Últimos 7 dias</option>
@@ -469,11 +469,11 @@ a{text-decoration:none;color:inherit;}
     <div class="chart-wrap"><canvas id="chart-utm-leads"></canvas></div>
    </div>
    <div class="chart-card">
-    <div class="cc-hd"><div class="cc-title">Checkouts por Fonte UTM</div><div class="cc-sub">Conversões por origem</div></div>
+    <div class="cc-hd"><div class="cc-title">Checkouts por Fonte UTM</div><div class="cc-sub">Conversões por origem de tráfego</div></div>
     <div class="chart-wrap"><canvas id="chart-utm-checkout"></canvas></div>
    </div>
    <div class="chart-card full">
-    <div class="cc-hd"><div class="cc-title">Timeline — Leads e Checkouts</div><div class="cc-sub">Evolução diária</div></div>
+    <div class="cc-hd"><div class="cc-title">Evolução — Leads e Checkouts</div><div class="cc-sub">Evolução diária</div></div>
     <div class="chart-wrap" style="height:220px;"><canvas id="chart-analytics-timeline"></canvas></div>
    </div>
   </div>
@@ -489,7 +489,7 @@ a{text-decoration:none;color:inherit;}
 
   <!-- TABELA PERFORMANCE POR FIRMA -->
   <div class="chart-card" style="margin-bottom:16px;">
-   <div class="cc-hd"><div class="cc-title"> Performance por Firma</div></div>
+   <div class="cc-hd"><div class="cc-title"> Desempenho por Firma</div></div>
    <div class="data-table-wrap"><table class="data-table" id="tbl-firm-perf"></table></div>
   </div>
 
@@ -552,7 +552,7 @@ a{text-decoration:none;color:inherit;}
  <!-- EVENTS -->
  <div class="admin-page" id="page-events">
  <div class="sec-hdr">
- <div class="sec-title"> Eventos de Tracking</div>
+ <div class="sec-title"> Eventos de Rastreamento</div>
  <div class="sec-actions">
  <button class="btn-secondary" onclick="exportEventsCSV()"> CSV</button>
  <button class="btn-danger" onclick="clearEvents()"> Limpar</button>
@@ -564,7 +564,7 @@ a{text-decoration:none;color:inherit;}
 
  <div class="charts-grid" style="margin-bottom:24px;">
  <div class="chart-card">
- <div class="cc-hd"><div class="cc-title">Checkout — Plataforma</div></div>
+ <div class="cc-hd"><div class="cc-title">Checkout — Por Plataforma</div></div>
  <div class="chart-wrap"><canvas id="chart-plat"></canvas></div>
  </div>
  <div class="chart-card">
@@ -579,41 +579,51 @@ a{text-decoration:none;color:inherit;}
  <div class="cc-hd"><div class="cc-title">Bot IA — Mensagens</div></div>
  <div class="chart-wrap"><canvas id="chart-bot"></canvas></div>
  </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Abas Mais Acessadas</div></div>
+ <div class="chart-wrap"><canvas id="chart-tabs"></canvas></div>
+ </div>
+ </div>
+
+ <!-- Ranking Abas -->
+ <div class="chart-card" style="margin-bottom:24px;">
+ <div class="cc-hd"><div class="cc-title">Ranking de Abas / Seções</div></div>
+ <div style="overflow-x:auto;"><table class="ev-tbl" id="tbl-tabs-ranking"></table></div>
  </div>
 
  <div class="chart-card">
- <div class="cc-hd"><div class="cc-title"> Log de Eventos Recentes</div></div>
+ <div class="cc-hd"><div class="cc-title"> Histórico de Eventos Recentes</div></div>
  <div class="filter-row">
  <input class="filter-inp" id="ev-search" placeholder=" Filtrar eventos..." style="flex:1;" oninput="renderEventsTable()">
  <select class="filter-inp" id="ev-type" onchange="renderEventsTable()">
  <option value="">Todos os tipos</option>
- <option value="page_view">Page view</option>
+ <option value="page_view">Visualização de página</option>
  <option value="coupon_copy">Cupom copiado</option>
- <option value="checkout_click">Checkout click</option>
+ <option value="checkout_click">Clique no checkout</option>
  <option value="firm_detail_open">Detalhe firma</option>
  <option value="firm_favorite">Favorito firma</option>
- <option value="offer_card_click">Card oferta</option>
+ <option value="offer_card_click">Clique em oferta</option>
  <option value="quiz_complete">Quiz completo</option>
  <option value="blog_read">Blog lido</option>
  <option value="guide_read">Guia lido</option>
- <option value="platform_click">Plataforma click</option>
+ <option value="platform_click">Clique em plataforma</option>
  <option value="tool_open">Ferramenta aberta</option>
- <option value="tool_lead_capture">Lead ferramenta</option>
+ <option value="tool_lead_capture">Lead de ferramenta</option>
  <option value="calc_unlocked">Calculadora</option>
- <option value="bot_message">Bot mensagem</option>
+ <option value="bot_message">Mensagem do bot</option>
  <option value="user_signup">Cadastro</option>
  <option value="user_login">Login</option>
  <option value="profile_updated">Perfil atualizado</option>
- <option value="loyalty_register">Fidelidade cadastro</option>
+ <option value="loyalty_register">Cadastro fidelidade</option>
  <option value="loyalty_proof_submitted">Comprovante enviado</option>
  <option value="loyalty_checkout_click">Checkout fidelidade</option>
- <option value="trustpilot_click">Trustpilot click</option>
- <option value="telegram_click">Telegram click</option>
- <option value="social_click">Social click</option>
+ <option value="trustpilot_click">Clique Trustpilot</option>
+ <option value="telegram_click">Clique Telegram</option>
+ <option value="social_click">Clique social</option>
  <option value="language_change">Idioma alterado</option>
  <option value="cookie_consent">Cookies aceitos</option>
  <option value="geo_detected">Geo detectado</option>
- <option value="live_signup">Live signup</option>
+ <option value="live_signup">Cadastro Live</option>
  </select>
  </div>
  <div class="data-table-wrap">
@@ -1299,10 +1309,10 @@ function renderOverview(){
  document.getElementById('kpi-grid').innerHTML=`
  <div class="stat-card"><div class="stat-lbl">Total de Leads</div><div class="stat-val g">${leads.length}</div><div class="stat-change">+${ecToday('tool_lead_capture')||ecToday('calc_unlocked')} hoje</div></div>
  <div class="stat-card"><div class="stat-lbl">Cupons Copiados</div><div class="stat-val y">${coupons}</div><div class="stat-change">${ecToday('coupon_copy')} hoje</div></div>
- <div class="stat-card"><div class="stat-lbl">Checkout Clicks</div><div class="stat-val b">${checkouts}</div><div class="stat-change">Taxa: ${leads.length?Math.round(checkouts/leads.length*100):0}%</div></div>
- <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val">${pageViews}</div><div class="stat-change">${ecToday('page_view')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cliques no Checkout</div><div class="stat-val b">${checkouts}</div><div class="stat-change">Taxa: ${leads.length?Math.round(checkouts/leads.length*100):0}%</div></div>
+ <div class="stat-card"><div class="stat-lbl">Visualizações</div><div class="stat-val">${pageViews}</div><div class="stat-change">${ecToday('page_view')} hoje</div></div>
  <div class="stat-card"><div class="stat-lbl">Cadastros</div><div class="stat-val" style="color:var(--cyan);">${signups}</div><div class="stat-change">${ecToday('user_signup')} hoje</div></div>
- <div class="stat-card"><div class="stat-lbl">Logins</div><div class="stat-val" style="color:var(--purple);">${logins}</div><div class="stat-change">${ecToday('user_login')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Acessos</div><div class="stat-val" style="color:var(--purple);">${logins}</div><div class="stat-change">${ecToday('user_login')} hoje</div></div>
  <div class="stat-card"><div class="stat-lbl">Blog Lidos</div><div class="stat-val" style="color:#F97316;">${blogReads}</div><div class="stat-change">${ecToday('blog_read')} hoje</div></div>
  <div class="stat-card"><div class="stat-lbl">Guias Lidos</div><div class="stat-val" style="color:#3B82F6;">${guideReads}</div><div class="stat-change">${ecToday('guide_read')} hoje</div></div>
  <div class="stat-card"><div class="stat-lbl">Quiz Completos</div><div class="stat-val">${quizzes}</div><div class="stat-change">${leads.length?Math.round(quizzes/leads.length*100):0}% taxa</div></div>
@@ -1348,7 +1358,7 @@ function renderOverview(){
  mkChart('chart-content','doughnut',Object.keys(contentData),Object.values(contentData),['#F97316','#3B82F6','#A855F7','#06B6D4']);
 
  // Users: signup, login, loyalty, favorites
- const userData={'Cadastros':signups,'Logins':logins,'Fidelidade':loyaltyRegs,'Favoritos':favs,'Perfil atualizado':ec('profile_updated')};
+ const userData={'Cadastros':signups,'Acessos':logins,'Fidelidade':loyaltyRegs,'Favoritos':favs,'Perfil atualizado':ec('profile_updated')};
  mkChart('chart-users','bar',Object.keys(userData),Object.values(userData),['#22C55E','#3B82F6','#F0B429','#EC4899','#A855F7']);
 
  // Languages
@@ -1456,11 +1466,11 @@ async function renderAnalytics() {
   const funnelEl = document.getElementById('funnel-grid');
   if (funnelEl) {
     const steps = [
-      { icon: '👁', label: 'Page Views',  val: pageViews, color: 'var(--blue)'  },
+      { icon: '👁', label: 'Visualizações',  val: pageViews, color: 'var(--blue)'  },
       { icon: '🎯', label: 'Leads',       val: leads.length, color: 'var(--green)' },
       { icon: '🏷', label: 'Cupons',      val: coupons,   color: 'var(--gold)'  },
       { icon: '🛒', label: 'Checkouts',   val: checkouts, color: 'var(--purple)'},
-      { icon: '📈', label: 'CVR Geral',   val: cvr + '%', color: 'var(--cyan)'  },
+      { icon: '📈', label: 'Conversão',   val: cvr + '%', color: 'var(--cyan)'  },
     ];
     const maxV = Math.max(...steps.slice(0,4).map(s => s.val || 0), 1);
     funnelEl.innerHTML = steps.map((s, i) => {
@@ -1523,7 +1533,7 @@ async function renderAnalytics() {
           labels: tlLabels,
           datasets: [
             { label: 'Leads', data: tlLeads, borderColor: '#22C55E', backgroundColor: 'rgba(34,197,94,.1)', tension: .4, fill: true, pointRadius: 2 },
-            { label: 'Checkouts', data: tlCo, borderColor: '#F0B429', backgroundColor: 'rgba(240,180,41,.1)', tension: .4, fill: true, pointRadius: 2 },
+            { label: 'Cliques Checkout', data: tlCo, borderColor: '#F0B429', backgroundColor: 'rgba(240,180,41,.1)', tension: .4, fill: true, pointRadius: 2 },
           ]
         },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#7A8FA6', font: { size: 11 } } } }, scales: { x: { ticks: { color: '#3D4F63', font: { size: 10 } }, grid: { color: 'rgba(28,37,53,.5)' } }, y: { ticks: { color: '#3D4F63' }, grid: { color: 'rgba(28,37,53,.5)' } } } }
@@ -1539,7 +1549,7 @@ async function renderAnalytics() {
     eType('checkout_click').forEach(e => { const ev = leads.find(l => l.email === e.params?.email); const c = ev?.utm_campaign || e.utm_campaign || '(sem campanha)'; if (!campaigns[c]) campaigns[c] = { leads:0, checkouts:0, spend:0 }; campaigns[c].checkouts++; });
     spends.forEach(s => { const c = s.campaign; if (campaigns[c]) campaigns[c].spend += parseFloat(s.spend_usd||0); });
     const rows = Object.entries(campaigns).sort((a,b) => b[1].checkouts - a[1].checkouts);
-    campTbl.innerHTML = `<thead><tr><th>Campanha</th><th>Leads</th><th>Checkouts</th><th>CVR</th><th>Gasto</th><th>CPL</th></tr></thead>
+    campTbl.innerHTML = `<thead><tr><th>Campanha</th><th>Leads</th><th>Checkouts</th><th>Conversão</th><th>Gasto</th><th>Custo/Lead</th></tr></thead>
       <tbody>${rows.map(([c, d]) => `<tr>
         <td style="font-weight:600;">${c}</td>
         <td>${d.leads}</td>
@@ -1563,7 +1573,7 @@ async function renderAnalytics() {
       if (e.event==='checkout_click')  firms[f].checkouts++;
     });
     const rows = Object.entries(firms).sort((a,b) => b[1].checkouts - a[1].checkouts);
-    firmTbl.innerHTML = `<thead><tr><th>Firma</th><th>Detalhes</th><th>Cupons</th><th>Checkouts</th><th>Cupom→Checkout</th></tr></thead>
+    firmTbl.innerHTML = `<thead><tr><th>Firma</th><th>Detalhes</th><th>Cupons</th><th>Checkouts</th><th>Cupom→Check.</th></tr></thead>
       <tbody>${rows.length ? rows.map(([f,d]) => `<tr>
         <td style="font-weight:700;">${f}</td>
         <td>${d.detail}</td>
@@ -1684,10 +1694,13 @@ function renderEventsPage(){
  const events=getEventsSync();
  const ec=(ev)=>events.filter(e=>e.event===ev).length;
 
+ const pvEvents=events.filter(e=>e.event==='page_view'&&e.params?.page_name);
+ const uniqueTabs=new Set(pvEvents.map(e=>e.params.page_name));
  document.getElementById('event-kpis').innerHTML=`
  <div class="stat-card"><div class="stat-lbl">Total Eventos</div><div class="stat-val">${events.length}</div></div>
- <div class="stat-card"><div class="stat-lbl">Cupons copiados</div><div class="stat-val y">${ec('coupon_copy')}</div></div>
- <div class="stat-card"><div class="stat-lbl">Checkout clicks</div><div class="stat-val g">${ec('checkout_click')}</div></div>
+ <div class="stat-card"><div class="stat-lbl">Visualizações</div><div class="stat-val" style="color:var(--purple);">${pvEvents.length}</div><div class="stat-change">${uniqueTabs.size} abas distintas</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cupons Copiados</div><div class="stat-val y">${ec('coupon_copy')}</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cliques no Checkout</div><div class="stat-val g">${ec('checkout_click')}</div></div>
  <div class="stat-card"><div class="stat-lbl">Cadastros + Logins</div><div class="stat-val b">${ec('user_signup')+ec('user_login')}</div></div>`;
 
  setTimeout(()=>{
@@ -1724,7 +1737,26 @@ function renderEventsPage(){
  });
  const days7=[];for(let i=6;i>=0;i--){days7.push(new Date(Date.now()-i*86400000).toLocaleDateString('pt-BR'));}
  mkChart('chart-bot','line',days7,days7.map(d=>botByDay[d]||0),['#A855F7']);
+
+ // Tabs/pages most accessed
+ const tabC={};
+ events.filter(e=>e.event==='page_view'&&e.params?.page_name).forEach(e=>{
+ const p=e.params.page_name;tabC[p]=(tabC[p]||0)+1;
+ });
+ const tabEntries=Object.entries(tabC).sort((a,b)=>b[1]-a[1]);
+ if(tabEntries.length) mkChart('chart-tabs','horizontalBar',tabEntries.map(x=>x[0]),tabEntries.map(x=>x[1]),colors);
  },100);
+
+ // Tabs ranking table
+ const tabCount={};
+ events.filter(e=>e.event==='page_view'&&e.params?.page_name).forEach(e=>{
+ const p=e.params.page_name;tabCount[p]=(tabCount[p]||0)+1;
+ });
+ const tabRank=Object.entries(tabCount).sort((a,b)=>b[1]-a[1]);
+ const totalPV=tabRank.reduce((s,x)=>s+x[1],0)||1;
+ const TAB_NAMES={home:'Ofertas',firms:'Firmas',plataformas:'Plataformas',indicators:'Indicadores',compare:'Comparar',calendar:'Calendário Econômico',heatmap:'Mapa de Calor',analise:'Análise Diária',guides:'Guias',blog:'Blog',calc:'Position Size',quiz:'Quiz',faq:'FAQ',live:'Live',loyalty:'Fidelidade',painel:'Meu Painel'};
+ const tblTabs=document.getElementById('tbl-tabs-ranking');
+ if(tblTabs) tblTabs.innerHTML=`<thead><tr><th>#</th><th>Aba</th><th>Acessos</th><th>%</th></tr></thead><tbody>${tabRank.map(([name,cnt],i)=>`<tr><td style="color:var(--t3);">${i+1}</td><td><strong>${TAB_NAMES[name]||name}</strong> <span style="color:var(--t3);font-size:10px;">(${name})</span></td><td style="color:var(--gold);">${cnt}</td><td style="color:var(--t3);">${(cnt/totalPV*100).toFixed(1)}%</td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--t3);">Sem dados de navegação ainda</td></tr>'}</tbody>`;
 
  renderEventsTable();
 }
@@ -1793,7 +1825,7 @@ function renderGeoPage(){
  <div class="stat-card"><div class="stat-lbl">Cidades</div><div class="stat-val" style="color:var(--purple);">${uniqueCities.size}</div><div class="stat-change">distintas</div></div>
  <div class="stat-card"><div class="stat-lbl">Idiomas</div><div class="stat-val">${uniqueLangs.size}</div><div class="stat-change">distintos</div></div>
  <div class="stat-card"><div class="stat-lbl">Fusos</div><div class="stat-val">${uniqueTimezones.size}</div><div class="stat-change">distintos</div></div>
- <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val" style="color:var(--green);">${events.filter(e=>e.event==='page_view').length}</div><div class="stat-change">total</div></div>`;
+ <div class="stat-card"><div class="stat-lbl">Visualizações</div><div class="stat-val" style="color:var(--green);">${events.filter(e=>e.event==='page_view').length}</div><div class="stat-change">total</div></div>`;
 
  // Count helper (no limit for tables, limit for charts)
  const countAll=(arr,fn)=>{const c={};arr.forEach(x=>{const v=fn(x);if(v)c[v]=(c[v]||0)+1;});return Object.entries(c).sort((a,b)=>b[1]-a[1]);};
