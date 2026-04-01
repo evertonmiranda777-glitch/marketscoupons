@@ -1550,7 +1550,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="mm-item" onclick="mgo('blog')">Blog</button>
  <div class="mm-sec" data-i18n="mm_sec_live">Live & IA</div>
  <button class="mm-item" onclick="mgo('live')" data-i18n="mm_live"> Live Trading Room</button>
- <button class="mm-item" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente IA</button>
+ <button class="mm-item" id="mm-bot-item" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente IA</button>
  <div class="mm-sec" data-i18n="mm_sec_idioma">Idioma</div>
  <div class="mm-langs">
  <button class="mm-flag" onclick="setL('pt','','BR');closeMM()">&#x1F1E7;&#x1F1F7; PT</button>
@@ -9429,6 +9429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(data&&data.value==='false'){
       const fab=document.getElementById('bot-fab');if(fab)fab.style.display='none';
       const win=document.getElementById('bot-win');if(win)win.style.display='none';
+      const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='none';
     }
   }catch(e){}
 
