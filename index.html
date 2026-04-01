@@ -749,10 +749,12 @@ img{max-width:100%;}
 
 /* GUIDES */
 .guides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px;padding:0 20px 40px;}
-.gc{background:var(--card);border:1px solid var(--b1);border-radius:9px;padding:16px;transition:.2s;cursor:pointer;}
+.gc{background:var(--card);border:1px solid var(--b1);border-radius:9px;overflow:hidden;transition:.2s;cursor:pointer;}
 .gc:hover{border-color:var(--b2);transform:translateY(-2px);}
+.gc-img{height:120px;background-size:cover;background-position:center;position:relative;}
+.gc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,13,0) 30%,rgba(7,9,13,.65) 100%);}
+.gc-body{padding:14px;}
 .gc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;}
-.gc-ico{font-size:26px;margin-bottom:10px;}
 .gc-title{font-size:13px;font-weight:700;margin-bottom:5px;letter-spacing:-.2px;}
 .gc-desc{font-size:12px;color:var(--t2);line-height:1.6;}
 .gc-read{font-size:11px;color:var(--gold);margin-top:10px;font-weight:600;}
@@ -800,9 +802,9 @@ img{max-width:100%;}
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px;padding:0 20px 40px;}
 .bc{background:var(--card);border:1px solid var(--b1);border-radius:9px;overflow:hidden;transition:.2s;cursor:pointer;}
 .bc:hover{border-color:var(--b2);transform:translateY(-2px);}
-.bc-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:38px;}
-.bc-level{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;}
-.bc-img{position:relative;}
+.bc-img{height:140px;position:relative;background-size:cover;background-position:center;overflow:hidden;}
+.bc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,13,0) 40%,rgba(7,9,13,.7) 100%);}
+.bc-level{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;z-index:1;}
 .bc-body{padding:14px;}
 .bc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;}
 .bc-title{font-size:13px;font-weight:700;margin-bottom:5px;letter-spacing:-.2px;line-height:1.4;}
@@ -6144,12 +6146,12 @@ function firmIco(f,size='38px',fontSize='14px'){
 /* GUIDES — Supabase-powered */
 let _guidesCache=[];
 const GUIDES_FALLBACK = [
-  {id:'g1',title:'O que é uma Prop Firm?',slug:'o-que-e-uma-prop-firm',category:'Iniciante',cat_color:'var(--blue)',icon:'📖',description:'Entenda como funcionam as prop firms, como passar no desafio e receber sua conta financiada.'},
-  {id:'g2',title:'Gerenciamento de Drawdown',slug:'gerenciamento-de-drawdown',category:'Intermediário',cat_color:'var(--gold)',icon:'📉',description:'Como calcular, monitorar e evitar violar os limites de drawdown.'},
-  {id:'g3',title:'Como Passar no Desafio',slug:'como-passar-no-desafio',category:'Prático',cat_color:'var(--green)',icon:'✅',description:'Estratégias comprovadas para passar na fase de avaliação.'},
-  {id:'g4',title:'Position Sizing em Prop Firms',slug:'position-sizing-prop-firms',category:'Técnico',cat_color:'var(--purple)',icon:'📐',description:'Como calcular o tamanho correto para maximizar lucro sem violar regras.'},
-  {id:'g5',title:'Apex vs FTMO vs Bulenox',slug:'apex-vs-ftmo-vs-bulenox',category:'Comparativo',cat_color:'var(--orange)',icon:'⚖️',description:'Comparação detalhada: regras, preços, plataformas e payouts.'},
-  {id:'g6',title:'Como Sacar seus Lucros',slug:'como-sacar-seus-lucros',category:'Financeiro',cat_color:'var(--cyan)',icon:'💰',description:'Passo a passo para solicitar payouts em cada firma.'},
+  {id:'g1',title:'O que é uma Prop Firm?',slug:'o-que-e-uma-prop-firm',category:'Iniciante',cat_color:'var(--blue)',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&h=250&fit=crop',description:'Entenda como funcionam as prop firms, como passar no desafio e receber sua conta financiada.'},
+  {id:'g2',title:'Gerenciamento de Drawdown',slug:'gerenciamento-de-drawdown',category:'Intermediário',cat_color:'var(--gold)',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=500&h=250&fit=crop',description:'Como calcular, monitorar e evitar violar os limites de drawdown.'},
+  {id:'g3',title:'Como Passar no Desafio',slug:'como-passar-no-desafio',category:'Prático',cat_color:'var(--green)',img:'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=500&h=250&fit=crop',description:'Estratégias comprovadas para passar na fase de avaliação.'},
+  {id:'g4',title:'Position Sizing em Prop Firms',slug:'position-sizing-prop-firms',category:'Técnico',cat_color:'var(--purple)',img:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=250&fit=crop',description:'Como calcular o tamanho correto para maximizar lucro sem violar regras.'},
+  {id:'g5',title:'Apex vs FTMO vs Bulenox',slug:'apex-vs-ftmo-vs-bulenox',category:'Comparativo',cat_color:'var(--orange)',img:'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=500&h=250&fit=crop',description:'Comparação detalhada: regras, preços, plataformas e payouts.'},
+  {id:'g6',title:'Como Sacar seus Lucros',slug:'como-sacar-seus-lucros',category:'Financeiro',cat_color:'var(--cyan)',img:'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=500&h=250&fit=crop',description:'Passo a passo para solicitar payouts em cada firma.'},
 ];
 async function loadGuidesFromSupabase(){
   try{
@@ -6163,11 +6165,13 @@ function renderGuides(){
   const guides=_guidesCache.length?_guidesCache:GUIDES_FALLBACK;
   g.innerHTML=guides.map(guide=>`
     <div class="gc" onclick="openGuideArticle('${guide.slug}')">
-      <div class="gc-cat" style="color:${guide.cat_color};">${guide.category}</div>
-      <div class="gc-ico">${guide.icon}</div>
-      <div class="gc-title">${guide.title}</div>
-      <div class="gc-desc">${guide.description}</div>
-      <div class="gc-read">${t('guia_ler')}</div>
+      <div class="gc-img" style="background-image:url('${guide.img||''}');background-color:var(--card2);"></div>
+      <div class="gc-body">
+        <div class="gc-cat" style="color:${guide.cat_color};">${guide.category}</div>
+        <div class="gc-title">${guide.title}</div>
+        <div class="gc-desc">${guide.description}</div>
+        <div class="gc-read">${t('guia_ler')}</div>
+      </div>
     </div>`).join('');
 }
 async function openGuideArticle(slug){
@@ -6219,7 +6223,8 @@ const BLOG_POSTS = [
     id:'bp1', slug:'sua-primeira-prop-firm',
     level:'iniciante', levelColor:'#22C55E', levelBg:'rgba(34,197,94,.1)',
     catKey:'blog_cat_educacao', catColor:'var(--green)', bg:'var(--gnbg)',
-    icon:'🟢', titleKey:'blog1_titulo', excerptKey:'blog1_excerpt', dataKey:'blog1_data', readMin:12,
+    img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=300&fit=crop',
+    titleKey:'blog1_titulo', excerptKey:'blog1_excerpt', dataKey:'blog1_data', readMin:12,
     content:`
 <h2>O Que é Uma Prop Firm e Por Que Você Deveria Considerar</h2>
 <p>Uma prop firm (proprietary trading firm) é uma empresa que <strong>empresta capital para traders operarem</strong>. Você não precisa arriscar seu próprio dinheiro — paga uma taxa de avaliação, passa no desafio, e recebe uma conta financiada que pode chegar a <strong>$300.000 ou mais</strong>.</p>
@@ -6290,7 +6295,8 @@ const BLOG_POSTS = [
     id:'bp2', slug:'drawdown-explicado-numeros-reais',
     level:'iniciante', levelColor:'#22C55E', levelBg:'rgba(34,197,94,.1)',
     catKey:'blog_cat_educacao', catColor:'var(--blue)', bg:'var(--bbg)',
-    icon:'📉', titleKey:'blog2_titulo', excerptKey:'blog2_excerpt', dataKey:'blog2_data', readMin:10,
+    img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=300&fit=crop',
+    titleKey:'blog2_titulo', excerptKey:'blog2_excerpt', dataKey:'blog2_data', readMin:10,
     content:`
 <h2>O Que é Drawdown e Por Que Ele Define Seu Sucesso</h2>
 <p>Drawdown é o <strong>limite máximo de perda permitido</strong> na sua conta. Violou? Conta encerrada. Simples assim. É a regra mais importante de qualquer prop firm e a razão #1 de reprovação.</p>
@@ -6371,7 +6377,8 @@ Com 1 mini ES (ES): stop de 0.5 ponto ($25)</pre>
     id:'bp3', slug:'gerenciamento-risco-unico-que-funciona',
     level:'iniciante', levelColor:'#22C55E', levelBg:'rgba(34,197,94,.1)',
     catKey:'blog_cat_estrategia', catColor:'var(--purple)', bg:'var(--pbg)',
-    icon:'🛡️', titleKey:'blog3_titulo', excerptKey:'blog3_excerpt', dataKey:'blog3_data', readMin:11,
+    img:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=300&fit=crop',
+    titleKey:'blog3_titulo', excerptKey:'blog3_excerpt', dataKey:'blog3_data', readMin:11,
     content:`
 <h2>Por Que 80% dos Traders Falham no Desafio</h2>
 <p>Não é por falta de estratégia. É por falta de <strong>gerenciamento de risco</strong>. O desafio de uma prop firm não testa se você é um gênio do mercado — testa se você consegue <strong>proteger capital enquanto lucra de forma consistente</strong>.</p>
@@ -6458,7 +6465,8 @@ $25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
     id:'bp4', slug:'como-passar-desafio-10-dias',
     level:'intermediario', levelColor:'#EAB308', levelBg:'rgba(234,179,8,.1)',
     catKey:'blog_cat_estrategia', catColor:'var(--gold)', bg:'var(--gbg)',
-    icon:'⚡', titleKey:'blog4_titulo', excerptKey:'blog4_excerpt', dataKey:'blog4_data', readMin:14,
+    img:'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=600&h=300&fit=crop',
+    titleKey:'blog4_titulo', excerptKey:'blog4_excerpt', dataKey:'blog4_data', readMin:14,
     content:`
 <h2>A Mentalidade de 10 Dias</h2>
 <p>Passar no desafio de uma prop firm não é sobre velocidade — é sobre <strong>eficiência calculada</strong>. Mas se você tem uma estratégia testada e disciplina, 10 dias úteis é totalmente possível. Veja o plano.</p>
@@ -6570,7 +6578,8 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
     id:'bp5', slug:'trailing-vs-static-drawdown-profundo',
     level:'intermediario', levelColor:'#EAB308', levelBg:'rgba(234,179,8,.1)',
     catKey:'blog_cat_analise', catColor:'var(--orange)', bg:'var(--obg)',
-    icon:'📊', titleKey:'blog5_titulo', excerptKey:'blog5_excerpt', dataKey:'blog5_data', readMin:13,
+    img:'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=600&h=300&fit=crop',
+    titleKey:'blog5_titulo', excerptKey:'blog5_excerpt', dataKey:'blog5_data', readMin:13,
     content:`
 <h2>A Decisão Que Define Qual Firma Você Deveria Escolher</h2>
 <p>Trailing ou static? Essa é a pergunta mais importante que um trader intermediário precisa responder antes de escolher sua prop firm. A resposta depende do seu <strong>estilo de operação, frequência e gerenciamento</strong>.</p>
@@ -6653,7 +6662,8 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
     id:'bp6', slug:'multi-accounting-vale-o-risco',
     level:'intermediario', levelColor:'#EAB308', levelBg:'rgba(234,179,8,.1)',
     catKey:'blog_cat_analise', catColor:'var(--cyan)', bg:'var(--cbg)',
-    icon:'🔄', titleKey:'blog6_titulo', excerptKey:'blog6_excerpt', dataKey:'blog6_data', readMin:11,
+    img:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=300&fit=crop',
+    titleKey:'blog6_titulo', excerptKey:'blog6_excerpt', dataKey:'blog6_data', readMin:11,
     content:`
 <h2>O Que é Multi-Accounting e Por Que Todo Mundo Faz</h2>
 <p>Multi-accounting é ter <strong>múltiplas contas financiadas simultaneamente</strong>. Um trader com 5 contas de $50K na Apex efetivamente opera com $250K de poder de compra e pode lucrar 5x mais.</p>
@@ -6759,7 +6769,8 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
     id:'bp7', slug:'operando-3-mesas-simultaneamente',
     level:'profissional', levelColor:'#EF4444', levelBg:'rgba(239,68,68,.1)',
     catKey:'blog_cat_estrategia', catColor:'var(--orange)', bg:'var(--obg)',
-    icon:'🏢', titleKey:'blog7_titulo', excerptKey:'blog7_excerpt', dataKey:'blog7_data', readMin:12,
+    img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=300&fit=crop',
+    titleKey:'blog7_titulo', excerptKey:'blog7_excerpt', dataKey:'blog7_data', readMin:12,
     content:`
 <h2>A Realidade de Operar em Múltiplas Prop Firms</h2>
 <p>Operar em 3+ prop firms simultaneamente é o caminho que muitos traders profissionais seguem para <strong>maximizar capital, diversificar risco de contraparte e aumentar payouts</strong>. Mas exige organização militar.</p>
@@ -6838,7 +6849,8 @@ Monitor 3: Plataforma Firma 3 (FTMO/MT5) + Calendário econômico</pre>
     id:'bp8', slug:'gestao-fiscal-traders-financiados-brasil',
     level:'profissional', levelColor:'#EF4444', levelBg:'rgba(239,68,68,.1)',
     catKey:'blog_cat_educacao', catColor:'var(--purple)', bg:'var(--pbg)',
-    icon:'📋', titleKey:'blog8_titulo', excerptKey:'blog8_excerpt', dataKey:'blog8_data', readMin:15,
+    img:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=300&fit=crop',
+    titleKey:'blog8_titulo', excerptKey:'blog8_excerpt', dataKey:'blog8_data', readMin:15,
     content:`
 <h2>Disclaimer Importante</h2>
 <div class="callout callout-warn"><strong>⚠️ Este artigo é educativo.</strong> Não é aconselhamento fiscal ou jurídico. Consulte um contador especializado em renda variável ou tributação internacional para sua situação específica. As regras fiscais podem mudar.</div>
@@ -6945,7 +6957,8 @@ Líquido: R$10.400 - R$1.964 = R$8.436</pre>
     id:'bp9', slug:'de-50k-para-300k-scaling-plans',
     level:'profissional', levelColor:'#EF4444', levelBg:'rgba(239,68,68,.1)',
     catKey:'blog_cat_analise', catColor:'var(--gold)', bg:'var(--gbg)',
-    icon:'📈', titleKey:'blog9_titulo', excerptKey:'blog9_excerpt', dataKey:'blog9_data', readMin:13,
+    img:'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=600&h=300&fit=crop',
+    titleKey:'blog9_titulo', excerptKey:'blog9_excerpt', dataKey:'blog9_data', readMin:13,
     content:`
 <h2>O Que São Scaling Plans</h2>
 <p>Scaling plans são programas onde a prop firm <strong>aumenta o tamanho da sua conta</strong> baseado no seu desempenho consistente. Começou com $50K, pode chegar a $150K, $300K ou até mais — sem pagar novas avaliações.</p>
@@ -7074,9 +7087,8 @@ function renderBlog(){
   const posts = _blogFilter==='all' ? BLOG_POSTS : BLOG_POSTS.filter(p=>p.level===_blogFilter);
   g.innerHTML=posts.map(post=>`
     <div class="bc" onclick="openBlogArticle('${post.slug}')">
-      <div class="bc-img" style="background:${post.bg};">
-        <span style="font-size:38px;">${post.icon}</span>
-        <div class="bc-level" style="background:${post.levelBg};color:${post.levelColor};">${post.level==='iniciante'?'🟢 Iniciante':post.level==='intermediario'?'🟡 Intermediário':'🔴 Profissional'}</div>
+      <div class="bc-img" style="background-image:url('${post.img}');background-color:${post.bg};">
+        <div class="bc-level" style="background:${post.levelBg};color:${post.levelColor};">${post.level==='iniciante'?'Iniciante':post.level==='intermediario'?'Intermediário':'Profissional'}</div>
       </div>
       <div class="bc-body">
         <div class="bc-cat" style="color:${post.catColor};">${t(post.catKey)}</div>
@@ -9371,6 +9383,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     track('page_view', { page_name: 'home', language: navigator.language });
   }
+
+  // Checar se bot está ativado
+  try{
+    const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').single();
+    if(data&&data.value==='false'){
+      const fab=document.getElementById('bot-fab');if(fab)fab.style.display='none';
+      const win=document.getElementById('bot-win');if(win)win.style.display='none';
+    }
+  }catch(e){}
 
   // Carregar firmas e guias do Supabase
   await loadFirmsFromSupabase();

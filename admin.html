@@ -301,6 +301,10 @@ a{text-decoration:none;color:inherit;}
  <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
  </div>
  <div class="nav-right-admin">
+   <div style="display:flex;align-items:center;gap:6px;margin-right:10px;padding:4px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;">
+     <span style="font-size:11px;color:var(--t2);">Bot</span>
+     <button class="toggle-btn" id="bot-toggle" onclick="toggleBotSetting()" style="width:36px;height:20px;"></button>
+   </div>
    <div class="notif-bell" id="notif-bell" onclick="toggleNotifPanel()">
      <span style="font-size:16px;">&#128276;</span>
      <span class="notif-count" id="notif-count" style="display:none;">0</span>
@@ -1123,10 +1127,32 @@ async function initAdmin(){
   renderCampaignLog();
   updateDestCount();
   document.getElementById('last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+  loadBotSetting();
+}
+
+/* ══ BOT TOGGLE ══ */
+async function loadBotSetting(){
+  try{
+    const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').single();
+    const on = data?.value==='true';
+    const btn=document.getElementById('bot-toggle');
+    if(btn){btn.classList.toggle('on',on);btn.classList.toggle('off',!on);}
+  }catch(e){}
+}
+async function toggleBotSetting(){
+  const btn=document.getElementById('bot-toggle');
+  const isOn=btn.classList.contains('on');
+  const newVal=isOn?'false':'true';
+  try{
+    await db.from('site_settings').update({value:newVal,updated_at:new Date().toISOString()}).eq('key','bot_enabled');
+    btn.classList.toggle('on',!isOn);btn.classList.toggle('off',isOn);
+    toast(newVal==='true'?'Bot ativado!':'Bot desativado!');
+  }catch(e){toast('Erro ao alterar bot','error');}
 }
 
 async function refreshAll(){
   await refreshFromSupabase();
+  loadBotSetting();
   const pages = ['overview','analytics','leads','events','geo','email','loyalty','cms-firms','cms-indicators','cms-guides','cms-blog'];
   const active = pages.find(p => document.getElementById('page-'+p)?.classList.contains('active')) || 'overview';
   renderPage(active);
@@ -2461,9 +2487,12 @@ function rebuildPriceHeaders() {
   const hdr = document.getElementById('fm-prices-header');
   if(!hdr) return;
   if(types.length>=2) {
-    hdr.innerHTML=`<div style="display:grid;grid-template-columns:1fr ${types.map(()=>'1fr 1fr').join(' ')} 30px;gap:6px;margin-bottom:6px;align-items:center;">
+    hdr.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 30px;gap:6px;margin-bottom:6px;align-items:center;">
       <span style="font-size:10px;color:var(--t3);font-weight:700;">Conta</span>
-      ${types.map(tp=>`<span style="font-size:10px;color:var(--blue);font-weight:700;">${tp} ↓</span><span style="font-size:10px;color:var(--t3);font-weight:700;">${tp} orig.</span>`).join('')}
+      <span style="font-size:10px;color:var(--gold);font-weight:700;">Desconto ${types[0]}</span>
+      <span style="font-size:10px;color:var(--gold);font-weight:700;">Desconto ${types[1]}</span>
+      <span style="font-size:10px;color:var(--t3);font-weight:700;">Preço ${types[0]}</span>
+      <span style="font-size:10px;color:var(--t3);font-weight:700;">Preço ${types[1]}</span>
       <span></span></div>`;
   } else {
     hdr.innerHTML=`<div style="font-size:10px;color:var(--t3);margin-bottom:6px;">Conta | Com desconto | Original</div>`;
@@ -2471,12 +2500,12 @@ function rebuildPriceHeaders() {
 }
 function buildPriceRowHtml(p, types) {
   if(types.length>=2) {
-    return `<div style="display:grid;grid-template-columns:1fr ${types.map(()=>'1fr 1fr').join(' ')} 30px;gap:6px;margin-bottom:4px;align-items:center;">
+    return `<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
       <input type="text" value="${p.a||''}" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
-      <input type="text" value="${p.n||''}" placeholder="Desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
-      <input type="text" value="${p.o||''}" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
-      <input type="text" value="${p.n2||''}" placeholder="Desconto" class="fm-price-n2" style="font-size:11px;color:var(--gold);font-weight:700;">
-      <input type="text" value="${p.o2||''}" placeholder="Original" class="fm-price-o2" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
+      <input type="text" value="${p.n||''}" placeholder="Desc. ${types[0]}" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
+      <input type="text" value="${p.n2||''}" placeholder="Desc. ${types[1]}" class="fm-price-n2" style="font-size:11px;color:var(--gold);font-weight:700;">
+      <input type="text" value="${p.o||''}" placeholder="Preço ${types[0]}" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
+      <input type="text" value="${p.o2||''}" placeholder="Preço ${types[1]}" class="fm-price-o2" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
       <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
     </div>`;
   }
