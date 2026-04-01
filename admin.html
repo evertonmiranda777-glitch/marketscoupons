@@ -1350,8 +1350,9 @@ function renderOverview(){
  events.filter(e=>e.event==='page_view').forEach(e=>{
  const p=e.params?.page_name||'?';pgCounts[p]=(pgCounts[p]||0)+1;
  });
+ const PG_NAMES={home:'Ofertas',firms:'Firmas',plataformas:'Plataformas',indicators:'Indicadores',compare:'Comparar',calendar:'Calendário Econômico',heatmap:'Mapa de Calor',analise:'Análise Diária',guides:'Guias',blog:'Blog',calc:'Position Size',quiz:'Quiz',faq:'FAQ',live:'Live',loyalty:'Fidelidade',painel:'Meu Painel'};
  const pgK=Object.keys(pgCounts).sort((a,b)=>pgCounts[b]-pgCounts[a]).slice(0,10);
- mkChart('chart-pages','horizontalBar',pgK,pgK.map(k=>pgCounts[k]),colors);
+ mkChart('chart-pages','horizontalBar',pgK.map(k=>PG_NAMES[k]||k),pgK.map(k=>pgCounts[k]),colors);
 
  // Content: blog_read, guide_read, platform_click
  const contentData={'Blog':blogReads,'Guias':guideReads,'Plataformas':ec('platform_click'),'Ofertas':ec('offer_card_click')};
