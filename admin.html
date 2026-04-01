@@ -2857,12 +2857,14 @@ async function renderCmsBlog() {
   const posts = await getBlogPosts();
   const tbl = document.getElementById('blog-tbl');
   if(!tbl) return;
-  tbl.innerHTML = posts.length ? `<thead><tr><th>Titulo</th><th>Categoria</th><th>Leitura</th><th>Origem</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+  const levelColors = {iniciante:'rgba(34,197,94,.15);color:#22C55E',intermediario:'rgba(234,179,8,.15);color:#EAB308',profissional:'rgba(239,68,68,.15);color:#EF4444'};
+  const levelLabels = {iniciante:'🟢 Iniciante',intermediario:'🟡 Intermediário',profissional:'🔴 Profissional'};
+  tbl.innerHTML = posts.length ? `<thead><tr><th>Titulo</th><th>Nível</th><th>Categoria</th><th>Leitura</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
     <tbody>${posts.map(p=>`<tr>
       <td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title}</td>
+      <td><span style="font-size:10px;padding:3px 8px;border-radius:4px;background:${levelColors[p.level]||'rgba(74,85,104,.12);color:var(--t3)'};">${levelLabels[p.level]||p.level||'—'}</span></td>
       <td><span class="td-badge" style="background:var(--bbg);color:var(--blue);">${p.category||p.cat||'Geral'}</span></td>
       <td style="font-size:11px;color:var(--t2);">${p.read_time||p.readTime||'5 min'}</td>
-      <td><span style="font-size:10px;padding:2px 7px;border-radius:4px;background:${p.ai_generated?'rgba(168,85,247,.1)':'rgba(74,85,104,.12)'};color:${p.ai_generated?'#A855F7':'var(--t3)'};">${p.ai_generated?'IA':'Manual'}</span></td>
       <td style="color:var(--t3);font-size:11px;">${new Date(p.created_at||p.ts).toLocaleDateString('pt-BR')}</td>
       <td><span class="${p.active?'status-active':'status-inactive'}">${p.active?'Publicado':'Rascunho'}</span></td>
       <td><div style="display:flex;gap:5px;">
@@ -2882,9 +2884,11 @@ function openBlogModal(id) {
   document.getElementById('cms-modal-body').innerHTML = `
     <div class="modal-grid">
       <div class="modal-field modal-full"><label>Titulo</label><input type="text" id="bp-title" value="${((p?.title)||'').replace(/"/g,'&quot;')}"></div>
-      <div class="modal-field"><label>Categoria</label><input type="text" id="bp-cat" value="${p?.category||p?.cat||''}" placeholder="ex: Prop Firms, Futuros..."></div>
+      <div class="modal-field"><label>Nível</label><select id="bp-level"><option value="iniciante" ${p?.level==='iniciante'?'selected':''}>🟢 Iniciante</option><option value="intermediario" ${p?.level==='intermediario'?'selected':''}>🟡 Intermediário</option><option value="profissional" ${p?.level==='profissional'?'selected':''}>🔴 Profissional</option></select></div>
+      <div class="modal-field"><label>Categoria</label><input type="text" id="bp-cat" value="${p?.category||p?.cat||''}" placeholder="ex: Estratégia, Análise, Educação..."></div>
       <div class="modal-field"><label>Tempo de Leitura</label><input type="text" id="bp-read" value="${p?.read_time||p?.readTime||'5 min'}"></div>
-      <div class="modal-field modal-full"><label>Conteudo</label><textarea id="bp-body" rows="12">${((p?.body)||'').replace(/</g,'&lt;')}</textarea></div>
+      <div class="modal-field modal-full"><label>Excerpt (resumo curto)</label><input type="text" id="bp-excerpt" value="${((p?.excerpt)||'').replace(/"/g,'&quot;')}" placeholder="Resumo de 1-2 linhas para o card"></div>
+      <div class="modal-field modal-full"><label>Conteudo (HTML)</label><textarea id="bp-body" rows="12">${((p?.body)||'').replace(/</g,'&lt;')}</textarea></div>
     </div>
     <div style="display:flex;gap:10px;margin-top:4px;">
       <button class="btn-primary" onclick="saveBlogPost2('${id||''}')">Publicar</button>
@@ -2895,17 +2899,19 @@ function openBlogModal(id) {
 
 async function saveBlogPost2(existingId) {
   const title    = document.getElementById('bp-title').value.trim();
+  const level    = document.getElementById('bp-level').value;
   const category = document.getElementById('bp-cat').value.trim();
   const read_time= document.getElementById('bp-read').value.trim()||'5 min';
+  const excerpt  = document.getElementById('bp-excerpt').value.trim();
   const body     = document.getElementById('bp-body').value.trim();
   if(!title){ toast('Preencha o título!','warn'); return; }
   const slug = title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').slice(0,80) + '-' + Date.now();
   try {
     if (existingId) {
-      await db.from('blog_posts').update({ title, category, read_time, body }).eq('id', existingId);
+      await db.from('blog_posts').update({ title, level, category, read_time, excerpt, body }).eq('id', existingId);
       toast('Post atualizado!');
     } else {
-      await db.from('blog_posts').insert({ title, category, read_time, body, slug, active: true, ai_generated: false });
+      await db.from('blog_posts').insert({ title, level, category, read_time, excerpt, body, slug, active: true, ai_generated: false });
       toast('Post publicado!');
     }
     closeCmsModal();
