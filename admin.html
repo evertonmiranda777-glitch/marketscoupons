@@ -2967,9 +2967,10 @@ async function renderCmsBlog() {
   if(!tbl) return;
   const levelColors = {iniciante:'rgba(34,197,94,.15);color:#22C55E',intermediario:'rgba(234,179,8,.15);color:#EAB308',profissional:'rgba(239,68,68,.15);color:#EF4444'};
   const levelLabels = {iniciante:'🟢 Iniciante',intermediario:'🟡 Intermediário',profissional:'🔴 Profissional'};
-  tbl.innerHTML = posts.length ? `<thead><tr><th>Titulo</th><th>Nível</th><th>Categoria</th><th>Leitura</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+  tbl.innerHTML = posts.length ? `<thead><tr><th>Titulo</th><th>Link</th><th>Nível</th><th>Categoria</th><th>Leitura</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
     <tbody>${posts.map(p=>`<tr>
-      <td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title}</td>
+      <td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title}</td>
+      <td>${p.slug?`<a href="/blog/${p.slug}" target="_blank" style="color:var(--blue);font-size:10px;word-break:break-all;">/blog/${p.slug}</a>`:'—'}</td>
       <td><span style="font-size:10px;padding:3px 8px;border-radius:4px;background:${levelColors[p.level]||'rgba(74,85,104,.12);color:var(--t3)'};">${levelLabels[p.level]||p.level||'—'}</span></td>
       <td><span class="td-badge" style="background:var(--bbg);color:var(--blue);">${p.category||p.cat||'Geral'}</span></td>
       <td style="font-size:11px;color:var(--t2);">${p.read_time||p.readTime||'5 min'}</td>

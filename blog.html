@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Carregando... — Markets Coupons</title>
+<meta name="description" content="">
+<meta name="robots" content="index,follow">
+<link rel="canonical" id="meta-canonical" href="https://www.marketscoupons.com/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230D1117'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='18' font-weight='bold' fill='%23F0B429'>MC</text></svg>">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Markets Coupons">
+<meta property="og:url" id="meta-og-url" content="">
+<meta property="og:title" id="meta-og-title" content="">
+<meta property="og:description" id="meta-og-desc" content="">
+<meta property="og:image" id="meta-og-img" content="https://www.marketscoupons.com/img/og-cover.png">
+<meta property="og:locale" content="pt_BR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" id="meta-tw-title" content="">
+<meta name="twitter:description" id="meta-tw-desc" content="">
+<meta name="twitter:image" id="meta-tw-img" content="https://www.marketscoupons.com/img/og-cover.png">
+
+<!-- JSON-LD Article -->
+<script type="application/ld+json" id="jsonld-article">{}</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#F0B429;--card:#0D1117;--gbg:#111318;--gbr:rgba(255,255,255,.08);
+  --b1:rgba(255,255,255,.1);--b2:rgba(255,255,255,.2);
+  --t1:#F0F4F8;--t2:#A0AEC0;--t3:#5A6478;
+  --green:#22C55E;--red:#EF4444;--blue:#3B82F6;
+  --f:'Inter',system-ui,sans-serif;
+}
+body{background:#07090D;color:var(--t1);font-family:var(--f);line-height:1.6;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:#07090D;border-bottom:1px solid var(--b1);position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;color:var(--gold);letter-spacing:-.3px;}
+.nav-logo span{font-size:20px;font-weight:900;}
+.nav-back{background:none;border:1px solid var(--b1);border-radius:8px;padding:7px 14px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:.2s;}
+.nav-back:hover{border-color:var(--gold);color:var(--gold);}
+.nav-cta{display:flex;align-items:center;gap:10px;}
+.nav-cta-btn{background:var(--gold);border:none;border-radius:8px;padding:8px 16px;color:#07090D;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--f);transition:.2s;}
+.nav-cta-btn:hover{background:#F7C948;}
+
+.state-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;padding:40px 20px;text-align:center;}
+.state-icon{font-size:48px;}
+.state-title{font-size:22px;font-weight:800;color:var(--t1);}
+.state-desc{font-size:14px;color:var(--t2);max-width:420px;line-height:1.7;}
+.state-btn{display:inline-block;margin-top:8px;padding:12px 28px;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:.2s;}
+.state-btn:hover{background:#F7C948;transform:translateY(-1px);}
+
+.art-wrap{max-width:780px;margin:0 auto;padding:32px 20px 80px;}
+.art-breadcrumb{font-size:11px;color:var(--t3);margin-bottom:20px;}
+.art-breadcrumb a{color:var(--t3);}
+.art-breadcrumb a:hover{color:var(--gold);}
+.art-breadcrumb span{margin:0 6px;}
+
+.blog-art-level{display:inline-block;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.blog-art-title{font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1.3;margin-bottom:10px;}
+.blog-art-meta{font-size:11px;color:var(--t3);margin-bottom:28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.art-cat-badge{font-size:10px;font-weight:700;padding:3px 9px;background:rgba(59,130,246,.15);color:var(--blue);border-radius:4px;}
+
+.blog-art-body{font-size:14px;line-height:1.85;color:var(--t2);}
+.blog-art-body h2{font-size:22px;font-weight:800;color:var(--t1);margin:32px 0 14px;letter-spacing:-.3px;}
+.blog-art-body h3{font-size:17px;font-weight:700;color:var(--t1);margin:26px 0 10px;}
+.blog-art-body h4{font-size:14px;font-weight:700;color:var(--gold);margin:20px 0 8px;}
+.blog-art-body p{margin-bottom:14px;}
+.blog-art-body ul,.blog-art-body ol{margin:10px 0 16px 20px;}
+.blog-art-body li{margin-bottom:6px;}
+.blog-art-body strong{color:var(--t1);}
+.blog-art-body a{color:var(--gold);text-decoration:underline;}
+.blog-art-body pre{background:var(--card);border:1px solid var(--b1);border-radius:8px;padding:14px 18px;font-size:13px;color:var(--gold);overflow-x:auto;margin:12px 0 16px;}
+.blog-art-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px;}
+.blog-art-body th{background:var(--card);color:var(--gold);font-weight:700;text-align:left;padding:10px 12px;border:1px solid var(--b1);}
+.blog-art-body td{padding:9px 12px;border:1px solid var(--b1);color:var(--t2);}
+.blog-art-body tr:hover td{background:rgba(240,180,41,.04);}
+
+.blog-art-cta{margin-top:40px;padding:24px;background:var(--gbg);border:1px solid var(--gbr);border-radius:12px;text-align:center;}
+.blog-art-cta-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.blog-art-cta-desc{font-size:12px;color:var(--t2);margin-bottom:14px;}
+.blog-art-cta-btn{display:inline-block;padding:11px 28px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
+.blog-art-cta-btn:hover{background:#F7C948;transform:translateY(-1px);}
+
+.share-bar{display:flex;align-items:center;gap:10px;margin-top:32px;padding-top:20px;border-top:1px solid var(--b1);flex-wrap:wrap;}
+.share-label{font-size:12px;color:var(--t3);font-weight:600;}
+.share-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--b1);background:none;color:var(--t2);font-family:var(--f);transition:.2s;}
+.share-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+.ft{background:#07090D;border-top:1px solid var(--b1);padding:28px 24px;margin-top:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.ft-copy{font-size:11px;color:var(--t3);}
+.ft-links{display:flex;gap:16px;}
+.ft-links a{font-size:11px;color:var(--t3);transition:.2s;}
+.ft-links a:hover{color:var(--gold);}
+
+@media(max-width:600px){
+  .blog-art-title{font-size:22px;}
+  .blog-art-body{font-size:13px;}
+  .blog-art-body h2{font-size:18px;}
+  .art-wrap{padding:20px 16px 60px;}
+  .nav{padding:0 16px;}
+  .nav-back span{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo"><span>MC</span> Markets Coupons</a>
+  <div class="nav-cta">
+    <button class="nav-back" onclick="window.location.href='/#blog'">← <span>Blog</span></button>
+    <button class="nav-cta-btn" onclick="window.location.href='/'">Ver Cupons</button>
+  </div>
+</nav>
+
+<main id="main-content">
+  <div class="state-wrap" id="state-loading">
+    <div class="state-icon">⏳</div>
+    <div class="state-title">Carregando artigo...</div>
+  </div>
+</main>
+
+<noscript>
+  <div style="max-width:780px;margin:40px auto;padding:0 20px;">
+    <p style="color:#A0AEC0;">Este artigo requer JavaScript. <a href="/" style="color:#F0B429;">Voltar ao site</a></p>
+  </div>
+</noscript>
+
+<footer class="ft">
+  <div class="ft-copy">&copy; 2025 Markets Coupons. Todos os direitos reservados.</div>
+  <div class="ft-links">
+    <a href="/">Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#firms">Firmas</a>
+    <a href="/#faq">FAQ</a>
+  </div>
+</footer>
+
+<script>
+const SUPABASE_URL  = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const SITE = 'https://www.marketscoupons.com';
+
+const LEVELS = {
+  iniciante:    {label:'Iniciante',     color:'#22C55E', bg:'rgba(34,197,94,.1)'},
+  intermediario:{label:'Intermediário', color:'#EAB308', bg:'rgba(234,179,8,.1)'},
+  profissional: {label:'Profissional',  color:'#EF4444', bg:'rgba(239,68,68,.1)'},
+};
+
+function setMeta(sel, attr, val){ const el=document.querySelector(sel); if(el) el.setAttribute(attr, val); }
+
+function updateSEO(post, slug){
+  const url   = SITE+'/blog/'+slug;
+  const title = post.title+' — Markets Coupons';
+  const desc  = post.excerpt||post.title;
+  const img   = post.cover_image||SITE+'/img/og-cover.png';
+  const pub   = post.created_at ? new Date(post.created_at).toISOString() : new Date().toISOString();
+
+  document.title = title;
+  setMeta('meta[name="description"]','content',desc);
+  setMeta('#meta-canonical','href',url);
+  setMeta('#meta-og-url','content',url);
+  setMeta('#meta-og-title','content',title);
+  setMeta('#meta-og-desc','content',desc);
+  setMeta('#meta-og-img','content',img);
+  setMeta('#meta-tw-title','content',title);
+  setMeta('#meta-tw-desc','content',desc);
+  setMeta('#meta-tw-img','content',img);
+
+  document.getElementById('jsonld-article').textContent = JSON.stringify({
+    '@context':'https://schema.org','@type':'Article',
+    headline:post.title, description:desc, image:img, url:url,
+    datePublished:pub,
+    dateModified:post.updated_at?new Date(post.updated_at).toISOString():pub,
+    author:{'@type':'Organization',name:'Markets Coupons',url:SITE},
+    publisher:{'@type':'Organization',name:'Markets Coupons',url:SITE,logo:{'@type':'ImageObject',url:SITE+'/img/og-cover.png'}},
+    mainEntityOfPage:{'@type':'WebPage','@id':url}
+  });
+}
+
+function renderPost(post, slug){
+  const url = SITE+'/blog/'+slug;
+  const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}) : '';
+  const lvl = LEVELS[post.level]||{label:post.level||'Geral',color:'#A0AEC0',bg:'rgba(160,174,192,.1)'};
+  const safeTitle = post.title.replace(/'/g,"\\'");
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="art-wrap">
+      <div class="art-breadcrumb"><a href="/">Home</a><span>›</span><a href="/#blog">Blog</a><span>›</span>${post.title}</div>
+      <span class="blog-art-level" style="background:${lvl.bg};color:${lvl.color};">${lvl.label}</span>
+      <h1 class="blog-art-title">${post.title}</h1>
+      <div class="blog-art-meta">
+        <span>~${post.read_time||'5 min'} de leitura</span>
+        ${dateStr?'<span>'+dateStr+'</span>':''}
+        ${post.category?'<span class="art-cat-badge">'+post.category+'</span>':''}
+      </div>
+      <div class="blog-art-body">${post.body||''}</div>
+      <div class="share-bar">
+        <span class="share-label">Compartilhar:</span>
+        <button class="share-btn" onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('${safeTitle}')+'&url='+encodeURIComponent('${url}'),'_blank','width=600,height=400')">Twitter / X</button>
+        <button class="share-btn" onclick="window.open('https://wa.me/?text='+encodeURIComponent('${safeTitle}\\n${url}'),'_blank')">WhatsApp</button>
+        <button class="share-btn" id="btn-copy" onclick="navigator.clipboard.writeText('${url}').then(()=>{this.textContent='Copiado!';setTimeout(()=>{this.textContent='Copiar link'},2000)})">Copiar link</button>
+      </div>
+      <div class="blog-art-cta">
+        <div class="blog-art-cta-title">Economize na Sua Próxima Avaliação</div>
+        <div class="blog-art-cta-desc">Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.</div>
+        <button class="blog-art-cta-btn" onclick="window.location.href='/'">Ver Cupons →</button>
+      </div>
+    </div>`;
+}
+
+async function init(){
+  const parts = window.location.pathname.split('/');
+  const slug  = parts[parts.length-1] || '';
+
+  if(!slug || slug==='blog'){ window.location.replace('/#blog'); return; }
+
+  try {
+    const {data, error} = await db.from('blog_posts').select('*').eq('slug',slug).eq('active',true).maybeSingle();
+
+    if(error){
+      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">Erro ao carregar</div><div class="state-desc">Verifique sua conexão e tente novamente.</div><button class="state-btn" onclick="location.reload()">Tentar novamente</button></div>`;
+      return;
+    }
+    if(data===null){
+      document.title = 'Post não encontrado — Markets Coupons';
+      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">📭</div><div class="state-title">Post não encontrado</div><div class="state-desc">O artigo não existe ou foi removido.</div><button class="state-btn" onclick="window.location.href='/#blog'">Ver todos os artigos</button></div>`;
+      return;
+    }
+
+    updateSEO(data, slug);
+    renderPost(data, slug);
+  } catch(e) {
+    document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">Erro inesperado</div><button class="state-btn" onclick="location.reload()">Tentar novamente</button></div>`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

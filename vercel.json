@@ -1,5 +1,6 @@
 {
   "routes": [
+    { "src": "/blog/([^/]+)", "dest": "/blog.html" },
     { "src": "/admin", "dest": "/admin.html" }
   ],
   "headers": [
@@ -11,6 +12,12 @@
     },
     {
       "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/blog/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
