@@ -107,10 +107,10 @@ function track(event, params={}) {
     const fbMap = {
       'coupon_copy':      () => fbq('trackCustom','CouponCopy', params),
       'checkout_start':   () => fbq('trackCustom','CheckoutStart', params),
-      'checkout_click':   () => fbq('track','InitiateCheckout', params),
+      'checkout_click':   () => { fbq('track','Lead', params); fbq('track','InitiateCheckout', params); },
       'firm_detail_open': () => fbq('trackCustom','FirmDetailOpen', params),
       'quiz_complete':    () => fbq('trackCustom','QuizComplete', params),
-      'live_signup':      () => fbq('track','Lead', params),
+      'user_signup':      () => fbq('track','CompleteRegistration', params),
       'page_view':        () => fbq('trackCustom','PageView', params),
       'bot_message':      () => fbq('trackCustom','BotInteraction', params),
     };
