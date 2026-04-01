@@ -157,11 +157,12 @@ const LEVELS = {
 
 function setMeta(sel, attr, val){ const el=document.querySelector(sel); if(el) el.setAttribute(attr, val); }
 
-function updateSEO(post, slug){
-  const url   = SITE+'/blog/'+slug;
+function updateSEO(post, slug, blogUrl, lang){
+  const url   = blogUrl || SITE+'/blog/'+slug;
   const title = post.title+' — Markets Coupons';
   const desc  = post.excerpt||post.title;
-  const img   = post.cover_image||SITE+'/img/og-cover.png';
+  const ogLang = lang && lang !== 'pt' ? '-'+lang : '';
+  const img   = post.cover_image||SITE+'/img/og-cover'+ogLang+'.png';
   const pub   = post.created_at ? new Date(post.created_at).toISOString() : new Date().toISOString();
 
   document.title = title;
@@ -186,8 +187,8 @@ function updateSEO(post, slug){
   });
 }
 
-function renderPost(post, slug){
-  const url = SITE+'/blog/'+slug;
+function renderPost(post, slug, blogUrl, T){
+  const url = blogUrl || SITE+'/blog/'+slug;
   const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}) : '';
   const lvl = LEVELS[post.level]||{label:post.level||'Geral',color:'#A0AEC0',bg:'rgba(160,174,192,.1)'};
   const safeTitle = post.title.replace(/'/g,"\\'");
@@ -198,46 +199,73 @@ function renderPost(post, slug){
       <span class="blog-art-level" style="background:${lvl.bg};color:${lvl.color};">${lvl.label}</span>
       <h1 class="blog-art-title">${post.title}</h1>
       <div class="blog-art-meta">
-        <span>~${post.read_time||'5 min'} de leitura</span>
+        <span>~${post.read_time||'5 min'} ${T.read}</span>
         ${dateStr?'<span>'+dateStr+'</span>':''}
         ${post.category?'<span class="art-cat-badge">'+post.category+'</span>':''}
       </div>
       <div class="blog-art-body">${post.body||''}</div>
       <div class="share-bar">
-        <span class="share-label">Compartilhar:</span>
+        <span class="share-label">${T.share}</span>
         <button class="share-btn" onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('${safeTitle}')+'&url='+encodeURIComponent('${url}'),'_blank','width=600,height=400')">Twitter / X</button>
         <button class="share-btn" onclick="window.open('https://wa.me/?text='+encodeURIComponent('${safeTitle}\\n${url}'),'_blank')">WhatsApp</button>
-        <button class="share-btn" id="btn-copy" onclick="navigator.clipboard.writeText('${url}').then(()=>{this.textContent='Copiado!';setTimeout(()=>{this.textContent='Copiar link'},2000)})">Copiar link</button>
+        <button class="share-btn" id="btn-copy" onclick="navigator.clipboard.writeText('${url}').then(()=>{this.textContent='${T.copied}';setTimeout(()=>{this.textContent='${T.copy}'},2000)})">${T.copy}</button>
       </div>
       <div class="blog-art-cta">
-        <div class="blog-art-cta-title">Economize na Sua Próxima Avaliação</div>
-        <div class="blog-art-cta-desc">Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.</div>
-        <button class="blog-art-cta-btn" onclick="window.location.href='/'">Ver Cupons →</button>
+        <div class="blog-art-cta-title">${T.title}</div>
+        <div class="blog-art-cta-desc">${T.desc}</div>
+        <button class="blog-art-cta-btn" onclick="window.location.href='/'">${T.btn}</button>
       </div>
     </div>`;
 }
 
+const LANGS_VALID = ['pt','en','es','fr','de','it','ar'];
+const CTA_I18N = {
+  pt:{title:'Economize na Sua Próxima Avaliação',desc:'Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.',btn:'Ver Cupons →',back:'Blog',coupons:'Ver Cupons',share:'Compartilhar:',copy:'Copiar link',copied:'Copiado!',loading:'Carregando artigo...',notfound:'Post não encontrado',notfounddesc:'O artigo não existe ou foi removido.',all:'Ver todos os artigos',error:'Erro ao carregar',retry:'Tentar novamente',read:'de leitura'},
+  en:{title:'Save on Your Next Evaluation',desc:'Exclusive coupons up to 90% OFF on the best prop firms.',btn:'View Coupons →',back:'Blog',coupons:'View Coupons',share:'Share:',copy:'Copy link',copied:'Copied!',loading:'Loading article...',notfound:'Post not found',notfounddesc:'This article does not exist or was removed.',all:'See all articles',error:'Error loading',retry:'Try again',read:'read'},
+  es:{title:'Ahorra en Tu Próxima Evaluación',desc:'Cupones exclusivos de hasta 90% OFF en las mejores prop firms.',btn:'Ver Cupones →',back:'Blog',coupons:'Ver Cupones',share:'Compartir:',copy:'Copiar enlace',copied:'¡Copiado!',loading:'Cargando artículo...',notfound:'Post no encontrado',notfounddesc:'El artículo no existe o fue eliminado.',all:'Ver todos los artículos',error:'Error al cargar',retry:'Reintentar',read:'de lectura'},
+  fr:{title:'Économisez sur Votre Prochaine Évaluation',desc:'Coupons exclusifs jusqu\'à 90% de réduction.',btn:'Voir Coupons →',back:'Blog',coupons:'Voir Coupons',share:'Partager :',copy:'Copier le lien',copied:'Copié !',loading:'Chargement...',notfound:'Article introuvable',notfounddesc:'Cet article n\'existe pas ou a été supprimé.',all:'Voir tous les articles',error:'Erreur de chargement',retry:'Réessayer',read:'de lecture'},
+  de:{title:'Sparen Sie bei Ihrer Nächsten Bewertung',desc:'Exklusive Gutscheine bis zu 90% Rabatt.',btn:'Gutscheine Ansehen →',back:'Blog',coupons:'Gutscheine',share:'Teilen:',copy:'Link kopieren',copied:'Kopiert!',loading:'Artikel wird geladen...',notfound:'Beitrag nicht gefunden',notfounddesc:'Dieser Artikel existiert nicht.',all:'Alle Artikel',error:'Ladefehler',retry:'Erneut versuchen',read:'Lesezeit'},
+  it:{title:'Risparmia sulla Tua Prossima Valutazione',desc:'Coupon esclusivi fino al 90% di sconto.',btn:'Vedi Coupon →',back:'Blog',coupons:'Vedi Coupon',share:'Condividi:',copy:'Copia link',copied:'Copiato!',loading:'Caricamento...',notfound:'Articolo non trovato',notfounddesc:'Questo articolo non esiste.',all:'Tutti gli articoli',error:'Errore di caricamento',retry:'Riprova',read:'di lettura'},
+  ar:{title:'وفّر في تقييمك القادم',desc:'كوبونات حصرية حتى 90% خصم.',btn:'← عرض الكوبونات',back:'المدونة',coupons:'الكوبونات',share:':مشاركة',copy:'نسخ الرابط',copied:'!تم النسخ',loading:'...جاري التحميل',notfound:'المقال غير موجود',notfounddesc:'هذا المقال غير موجود أو تم حذفه.',all:'جميع المقالات',error:'خطأ في التحميل',retry:'إعادة المحاولة',read:'قراءة'}
+};
+
 async function init(){
-  const parts = window.location.pathname.split('/');
-  const slug  = parts[parts.length-1] || '';
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  // Detect /blog/en/slug or /blog/slug
+  let lang = 'pt', slug = '';
+  if(parts.length >= 3 && LANGS_VALID.includes(parts[1])){
+    lang = parts[1]; slug = parts[2];
+  } else {
+    slug = parts[parts.length-1] || '';
+  }
+  const T = CTA_I18N[lang]||CTA_I18N.pt;
+  document.documentElement.lang = lang === 'ar' ? 'ar' : lang;
+  if(lang==='ar') document.documentElement.dir = 'rtl';
+
+  // Update static UI text
+  document.getElementById('state-loading').querySelector('.state-title').textContent = T.loading;
+  document.querySelector('.nav-back span').textContent = T.back;
+  document.querySelector('.nav-cta-btn').textContent = T.coupons;
 
   if(!slug || slug==='blog'){ window.location.replace('/#blog'); return; }
 
+  const blogUrl = lang==='pt' ? SITE+'/blog/'+slug : SITE+'/blog/'+lang+'/'+slug;
+
   try {
-    const {data, error} = await db.from('blog_posts').select('*').eq('slug',slug).eq('active',true).maybeSingle();
+    const {data, error} = await db.from('blog_posts').select('*').eq('slug',slug).eq('lang',lang).eq('active',true).maybeSingle();
 
     if(error){
-      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">Erro ao carregar</div><div class="state-desc">Verifique sua conexão e tente novamente.</div><button class="state-btn" onclick="location.reload()">Tentar novamente</button></div>`;
+      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">${T.error}</div><button class="state-btn" onclick="location.reload()">${T.retry}</button></div>`;
       return;
     }
     if(data===null){
-      document.title = 'Post não encontrado — Markets Coupons';
-      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">📭</div><div class="state-title">Post não encontrado</div><div class="state-desc">O artigo não existe ou foi removido.</div><button class="state-btn" onclick="window.location.href='/#blog'">Ver todos os artigos</button></div>`;
+      document.title = T.notfound+' — Markets Coupons';
+      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">📭</div><div class="state-title">${T.notfound}</div><div class="state-desc">${T.notfounddesc}</div><button class="state-btn" onclick="window.location.href='/#blog'">${T.all}</button></div>`;
       return;
     }
 
-    updateSEO(data, slug);
-    renderPost(data, slug);
+    updateSEO(data, slug, blogUrl, lang);
+    renderPost(data, slug, blogUrl, T);
   } catch(e) {
     document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">Erro inesperado</div><button class="state-btn" onclick="location.reload()">Tentar novamente</button></div>`;
   }

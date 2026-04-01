@@ -1,5 +1,6 @@
 {
   "routes": [
+    { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
     { "src": "/blog/([^/]+)", "dest": "/blog.html" },
     { "src": "/admin", "dest": "/admin.html" }
   ],
