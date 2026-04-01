@@ -285,7 +285,7 @@ img{max-width:100%;}
 .up-stat .l{font-size:10px;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
 .hbg{
  display:none;flex-direction:column;gap:5px;
- background:none;border:none;padding:5px;
+ background:none;border:none;padding:5px;cursor:pointer;
 }
 .hbg span{display:block;width:20px;height:2px;background:var(--t2);border-radius:2px;transition:.3s;}
 .hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
@@ -302,6 +302,8 @@ img{max-width:100%;}
  overflow-y:auto;
 }
 .mm.open{transform:translateX(0);}
+[dir="rtl"] .mm{left:auto;right:0;border-right:none;border-left:1px solid var(--b1);transform:translateX(100%);}
+[dir="rtl"] .mm.open{transform:translateX(0);}
 .mm::-webkit-scrollbar{width:3px;}
 .mm::-webkit-scrollbar-thumb{background:var(--b2);}
 .mm-top{
@@ -853,7 +855,7 @@ img{max-width:100%;}
 
 /* INDICATORS */
 .ind-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px;padding:0 20px 40px;}
-.ic{background:var(--card);border:1px solid var(--b1);border-radius:9px;padding:16px;transition:.2s;}
+.ic{background:var(--card);border:1px solid var(--b1);border-radius:9px;padding:16px;transition:.2s;cursor:pointer;}
 .ic:hover{border-color:var(--b2);transform:translateY(-2px);}
 .ic-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .ic-ico{font-size:26px;}
@@ -933,7 +935,7 @@ img{max-width:100%;}
 .plat-go:hover{background:#F7C948;}
 
 /* ═══ HEATMAP PAGE ═══ */
-.heatmap-wrap{height:calc(100vh - 60px);display:flex;flex-direction:column;}
+.heatmap-wrap{height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;}
 .heatmap-hd{padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);flex-shrink:0;}
 .heatmap-title{font-size:16px;font-weight:700;}
 .heatmap-frame{flex:1;border:none;width:100%;background:var(--bg);}
@@ -997,7 +999,7 @@ img{max-width:100%;}
 .ar-copy-btn{padding:6px 12px;background:transparent;border:1px solid var(--b2);color:var(--t2);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;font-family:var(--f);}
 .ar-copy-btn:hover{border-color:var(--gold);color:var(--gold);}
 .ar-body{font-size:13px;line-height:1.8;color:var(--t1);}
-.ar-body h3{font-size:13px;font-weight:700;color:var(--gold);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.4px;font-size:11px;}
+.ar-body h3{font-size:13px;font-weight:700;color:var(--gold);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.4px;}
 .ar-body p{margin-bottom:10px;color:var(--t2);}
 .ar-body strong{color:var(--t1);}
 .ar-body ul{padding-left:16px;margin-bottom:10px;}
@@ -7854,7 +7856,7 @@ async function loadFirmsFromSupabase() {
     renderOffers();
     renderAwards();
     renderAchFirmTabs();
-    achSelectFirm(CHECKOUT_FIRMS[0]?.id || 'apex');
+    if(CHECKOUT_FIRMS.length)achSelectFirm(CHECKOUT_FIRMS[0].id);
     initCmp();
   } catch(e) {
     // Supabase unavailable — hardcoded data still works
@@ -7869,7 +7871,7 @@ function renderAchFirmTabs(){
 function achSelectFirm(id){
   // Fallback: se a firma não existe no CHECKOUT_FIRMS, usa a primeira disponível
   const firmExists = CHECKOUT_FIRMS.find(f=>f.id===id);
-  achActiveFirm = firmExists ? id : CHECKOUT_FIRMS[0].id;
+  achActiveFirm = firmExists ? id : (CHECKOUT_FIRMS[0]?.id || id);
   renderAchFirmTabs();
   renderAchPlans();
   const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm)return;
@@ -8043,6 +8045,8 @@ function qfinish(){
     else if(priority==='discount'||priority==='speed')rec=FIRMS.find(f=>f.id==='bulenox');
     else if(priority==='split')rec=FIRMS.find(f=>f.id==='fn');
     else rec=FIRMS.find(f=>f.id==='tpt');
+    if(!rec)rec=FIRMS[0];
+    if(!rec)return;
     document.getElementById('q-res-content').innerHTML=`<div class="qr-ico" style="background:${rec.bg};color:${rec.color};">${rec.icon}</div><div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="color:${rec.color};">${rec.name}</span></div><div class="qr-desc">${t('firm_desc_'+rec.id)||rec.desc}</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">${rec.coupon?`<button onclick="cpCoupon('${rec.coupon}','${rec.id}','quiz')" style="padding:9px 18px;background:var(--gbg);border:1px solid var(--gbr);border-radius:7px;color:var(--gold);font-size:12px;font-weight:700;">${t('quiz_copiar_cupom')} ${rec.coupon}</button>`:''}<a href="${rec.link}" target="_blank"><button class="btn-gold">${t('quiz_ir_para')} ${rec.name}</button></a><button onclick="openD('${rec.id}')" class="btn-out">${t('quiz_ver_detalhes')}</button></div>`;
     track('quiz_complete',{recommended_firm:rec.id,market_pref:market,priority});
   },300);
@@ -8881,7 +8885,7 @@ const botHist=[{role:'user',content:'Voce e o TradeBot, assistente especialista 
 function toggleBot(){botOpen=!botOpen;document.getElementById('bot-win').classList.toggle('open',botOpen);if(botOpen){document.getElementById('bot-badge').style.display='none';document.getElementById('bot-inp').focus();}}
 function openBot(){botOpen=false;toggleBot();}
 function qmsg(t){document.getElementById('bot-inp').value=t;sendBot();}
-function addBMsg(role,text){const c=document.getElementById('bot-msgs');const t=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='bmsg '+role;d.innerHTML=`<div class="bbbl">${text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div><span class="btime">${t}</span>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function addBMsg(role,text){const c=document.getElementById('bot-msgs');const tm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='bmsg '+role;const safe=role==='usr'?text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):text;d.innerHTML=`<div class="bbbl">${safe.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div><span class="btime">${tm}</span>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
 async function sendBot(){
   const inp=document.getElementById('bot-inp');const txt=inp.value.trim();if(!txt)return;
   inp.value='';document.getElementById('bot-snd').disabled=true;document.getElementById('bot-quick').style.display='none';
@@ -9285,10 +9289,17 @@ async function doAuthSignup() {
     return;
   }
 
-  // If no session (email confirmation enabled), auto-sign-in
+  // If no session (email confirmation enabled), try auto-sign-in
   if (data.user && !data.session) {
     const { data: loginData, error: loginError } = await db.auth.signInWithPassword({ email, password: pass });
-    if (loginError) return showAuthError('signup-error', 'Conta criada, mas não foi possível entrar automaticamente. Tente fazer login.');
+    if (loginError) {
+      if (loginError.message && (loginError.message.includes('not confirmed') || loginError.message.includes('Email not confirmed'))) {
+        const s = document.getElementById('signup-success');
+        if(s){s.textContent = t('auth_confirme_email')||'Conta criada! Verifique seu e-mail para confirmar o cadastro.';s.style.display='block';}
+        return;
+      }
+      return showAuthError('signup-error', t('auth_signup_erro_login')||'Conta criada, mas não foi possível entrar automaticamente. Tente fazer login.');
+    }
     closeAuthModals();
     await loadUserSession(loginData.user);
     track('user_signup', { method: 'email' });
