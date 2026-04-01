@@ -1001,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function getLeads() {
   try {
     const { data } = await db.from('leads').select('*').order('created_at', { ascending: false }).limit(500);
-    if (data?.length) {
+    if (data !== null && data !== undefined) {
       localStorage.setItem('mc_leads', JSON.stringify(data));
       return data;
     }
@@ -1013,7 +1013,7 @@ async function getLeads() {
 async function getEvents() {
   try {
     const { data } = await db.from('events').select('*').order('created_at', { ascending: false }).limit(2000);
-    if (data?.length) {
+    if (data !== null && data !== undefined) {
       localStorage.setItem('mc_events', JSON.stringify(data));
       return data;
     }
@@ -1035,15 +1035,7 @@ async function refreshFromSupabase() {
   await Promise.all([ getLeads(), getEvents() ]);
 }
 
-function isToday(ts) {
-  if (!ts) return false;
-  return new Date(ts).toDateString() === new Date().toDateString();
-}
-
-function ensureDemoData(){ /* no-op: data comes from Supabase */ }
-
-// The main site's track() doesn't persist — we patch it here
-// and also generate rich demo data if empty
+// Generate rich demo data if empty
 function ensureDemoData(){
   // Force fresh demo data if no real events exist
   const hasRealEvents = getEventsSync().filter(e=>e.event==='checkout_click'||e.event==='coupon_copy').length > 0;
@@ -1144,7 +1136,7 @@ async function toggleBotSetting(){
   const isOn=btn.classList.contains('on');
   const newVal=isOn?'false':'true';
   try{
-    await db.from('site_settings').update({value:newVal,updated_at:new Date().toISOString()}).eq('key','bot_enabled');
+    await db.from('site_settings').upsert({key:'bot_enabled',value:newVal,updated_at:new Date().toISOString()},{onConflict:'key'});
     btn.classList.toggle('on',!isOn);btn.classList.toggle('off',isOn);
     toast(newVal==='true'?'Bot ativado!':'Bot desativado!');
   }catch(e){toast('Erro ao alterar bot','error');}
@@ -1527,14 +1519,6 @@ function openLeadModal(idx){
 }
 function closeLeadModal(){ document.getElementById('lead-modal-ov').classList.remove('open'); }
 
-function exportLeadsCSV(){
- const leads=getLeadsSync();
- if(!leads.length){toast('Nenhum lead para exportar!','warn');return;}
- const hdr='Nome,Email,WhatsApp,Celular,Mesmo número?,Sexo,Idade,Cidade,Estado,País,Idioma,Ferramenta,Data';
- const rows=leads.map(l=>[l.name,l.email,l.whatsapp,l.phone,l.whatsapp_is_phone?'Sim':'Não',l.sexo,l.idade,l.cidade,l.estado,l.pais,l.idioma,l.tool,l.ts?new Date(l.ts).toLocaleDateString('pt-BR'):''].map(v=>`"${v||''}"`).join(','));
- download('leads_marketscoupons.csv','data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n')));
- toast(` ${leads.length} leads exportados!`);
-}
 function clearLeads(){
  if(!confirm(`Apagar todos os ${getLeadsSync().length} leads? Esta ação é irreversível.`))return;
  localStorage.removeItem('mc_leads');
@@ -2017,14 +2001,14 @@ function getSmtpSentToday(email){
 
 function addSmtpAccount(){
   const email = prompt('E-mail da conta SMTP:');
-  if(!email || !email.includes('@')){ showToast('E-mail invalido','error'); return; }
+  if(!email || !email.includes('@')){ toast('E-mail invalido','error'); return; }
   const label = prompt('Rotulo para esta conta (ex: Conta Principal):') || '';
   const accounts = getSmtpAccounts();
-  if(accounts.find(a=>a.email===email)){ showToast('Conta ja existe!','warn'); return; }
+  if(accounts.find(a=>a.email===email)){ toast('Conta ja existe!','warn'); return; }
   accounts.push({ email, label, active: accounts.length===0, dailyLimit:100, ts: new Date().toISOString() });
   localStorage.setItem('mc_smtp_accounts', JSON.stringify(accounts));
   renderSmtpAccounts();
-  showToast('Conta adicionada!');
+  toast('Conta adicionada!');
 }
 
 function setActiveSmtp(idx){
@@ -2059,20 +2043,20 @@ function incrementSmtpSent(email, count=1){
 function sendEmailsSmtp(){
   const subject = document.getElementById('em-subject')?.value?.trim();
   const body    = document.getElementById('em-body')?.value?.trim();
-  if(!subject||!body){ showToast('Preencha assunto e mensagem!','warn'); return; }
+  if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
 
   const accounts = getSmtpAccounts();
-  if(!accounts.length){ showToast('Adicione ao menos uma conta SMTP!','warn'); return; }
+  if(!accounts.length){ toast('Adicione ao menos uma conta SMTP!','warn'); return; }
 
   const leads = getSegmentedLeads();
-  if(!leads.length){ showToast('Nenhum destinatario selecionado!','warn'); return; }
+  if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
 
   const activeAcc = getNextAvailableSmtp();
-  if(!activeAcc){ showToast('Limite diario atingido em todas as contas!','error'); return; }
+  if(!activeAcc){ toast('Limite diario atingido em todas as contas!','error'); return; }
 
   const sentToday = getSmtpSentToday(activeAcc.email);
   const remaining = (activeAcc.dailyLimit||100) - sentToday;
-  if(remaining <= 0){ showToast('Limite diario da conta ativa atingido. Ative outra conta.','warn'); return; }
+  if(remaining <= 0){ toast('Limite diario da conta ativa atingido. Ative outra conta.','warn'); return; }
 
   const toSend = leads.slice(0, remaining);
   const emailList = toSend.map(l=>l.email).filter(Boolean);
@@ -2090,7 +2074,7 @@ function sendEmailsSmtp(){
   incrementSmtpSent(activeAcc.email, toSend.length);
 
   window.open(mailto);
-  showToast('Abrindo cliente de e-mail para '+toSend.length+' destinatarios via '+activeAcc.email);
+  toast('Abrindo cliente de e-mail para '+toSend.length+' destinatarios via '+activeAcc.email);
   renderSmtpAccounts();
   updateEmailStats();
   renderCampaignLog();
@@ -2861,7 +2845,6 @@ async function saveGuide(id) {
       if(error)throw error;
       toast('Guia atualizado!');
     }else{
-      g.id='g'+Date.now();
       g.active=true;
       const{error}=await db.from('cms_guides').insert(g);
       if(error)throw error;
@@ -2917,7 +2900,7 @@ function openBlogModal(id) {
       <div class="modal-field"><label>Categoria</label><input type="text" id="bp-cat" value="${p?.category||p?.cat||''}" placeholder="ex: Estratégia, Análise, Educação..."></div>
       <div class="modal-field"><label>Tempo de Leitura</label><input type="text" id="bp-read" value="${p?.read_time||p?.readTime||'5 min'}"></div>
       <div class="modal-field modal-full"><label>Excerpt (resumo curto)</label><input type="text" id="bp-excerpt" value="${((p?.excerpt)||'').replace(/"/g,'&quot;')}" placeholder="Resumo de 1-2 linhas para o card"></div>
-      <div class="modal-field modal-full"><label>Conteudo (HTML)</label><textarea id="bp-body" rows="12">${((p?.body)||'').replace(/</g,'&lt;')}</textarea></div>
+      <div class="modal-field modal-full"><label>Conteudo (HTML)</label><textarea id="bp-body" rows="12">${p?.body||''}</textarea></div>
     </div>
     <div style="display:flex;gap:10px;margin-top:4px;">
       <button class="btn-primary" onclick="saveBlogPost2('${id||''}')">Publicar</button>
@@ -3178,12 +3161,13 @@ async function saveAiGeneratedFirm() {
   if (!_aiFirmDraft) { toast('Nenhuma firma gerada!','warn'); return; }
   try {
     await db.from('cms_firms').insert(_aiFirmDraft);
-    toast('Firma "' + _aiFirmDraft.name + '" adicionada!');
+    const firmName = _aiFirmDraft.name;
     _aiFirmDraft = null;
+    toast('Firma "' + firmName + '" adicionada!');
     document.getElementById('ai-firm-panel').style.display = 'none';
     document.getElementById('ai-firm-url').value = '';
     renderCmsFirms();
-    pushNotif('firm_added','CMS','Nova firma adicionada via IA: '+(_aiFirmDraft?.name||''),'cms');
+    pushNotif('firm_added','CMS','Nova firma adicionada via IA: '+firmName,'cms');
   } catch(e) {
     // If conflict on id, suggest editing
     if (e.message?.includes('duplicate') || e.code === '23505') {
@@ -3345,7 +3329,7 @@ function importSiteData(input) {
 }
 
 async function exportAdminData() {
-  const [loyaltyPending, loyaltyHistory] = await Promise.all([getLoyaltyPendingAdmin(), getLoyaltyHistoryAdmin()]);
+  const [loyaltyPending, loyaltyHistory, blogPosts] = await Promise.all([getLoyaltyPendingAdmin(), getLoyaltyHistoryAdmin(), getBlogPosts()]);
   const data = {
     leads:           getLeadsSync(),
     events:          getEventsSync(),
@@ -3354,7 +3338,7 @@ async function exportAdminData() {
     cms_firms:       _firmsCache,
     cms_indicators:  getCmsData('indicators', DEFAULT_INDICATORS),
     cms_guides:      _adminGuides,
-    blog_posts:      getBlogPosts(),
+    blog_posts:      blogPosts,
     exported_at:     new Date().toISOString(),
   };
   download('admin_export_'+new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')+'.json',

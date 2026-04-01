@@ -2347,7 +2347,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
           <!-- PROOF UPLOAD -->
           <div class="proof-upload-area" id="proof-upload-area" onclick="document.getElementById('pf-file').click()">
-            <div class="pua-icon">+</div>
+            <div class="pua-icon" id="pua-icon">+</div>
             <div class="pua-title" data-i18n="proof_upload_titulo">Clique para anexar o comprovante</div>
             <div class="pua-sub" data-i18n="proof_upload_sub">Print da confirmação, PDF do recibo ou screenshot do email — JPG, PNG ou PDF até 5MB</div>
             <input type="file" id="pf-file" accept="image/*,.pdf" style="display:none;" onchange="handleProofFile(this)">
@@ -8000,6 +8000,15 @@ function renderCmp(){
 }
 
 /* CALC */
+async function unlockCalc(){
+  const name=document.getElementById('cg-name').value.trim();
+  const email=document.getElementById('cg-email').value.trim();
+  if(!name||!email){showToast(t('calc_gate_preencha')||'Preencha nome e e-mail!');return;}
+  try{await saveLead({name,email,tool:'calc'});}catch(e){}
+  document.getElementById('calc-gate').style.display='none';
+  document.getElementById('calc-content').style.display='block';
+  track('calc_unlocked',{name,email});
+}
 function calcPS(){
   const bal=parseFloat(document.getElementById('ps-bal')?.value)||0;const risk=parseFloat(document.getElementById('ps-risk')?.value)||0;const ent=parseFloat(document.getElementById('ps-ent')?.value)||0;const sl=parseFloat(document.getElementById('ps-sl')?.value)||0;const tp=parseFloat(document.getElementById('ps-tp')?.value)||0;const mult=parseFloat(document.getElementById('ps-instr')?.value)||50;
   const riskD=bal*(risk/100);const slPts=Math.abs(ent-sl);const contracts=slPts>0?Math.floor(riskD/(slPts*mult)):0;const actRisk=contracts*slPts*mult;const tpPts=tp>0?Math.abs(tp-ent):0;const profit=contracts*tpPts*mult;const rr=tpPts>0&&slPts>0?(tpPts/slPts).toFixed(2):'—';
@@ -9386,6 +9395,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   achSelectFirm(CHECKOUT_FIRMS[0]?.id || 'apex');
   renderFaq();
   autoDetectDDI();
+
+  // Mostrar botões de login imediatamente (checkAuthSession vai sobrescrever se logado)
+  updateAuthUI(false);
 
   // Navegar para o hash da URL ANTES dos awaits — garante que Ctrl+F5 preserve a página
   const initHash = location.hash.replace('#','');
