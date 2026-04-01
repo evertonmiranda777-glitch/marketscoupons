@@ -2480,20 +2480,21 @@ async function saveBlogPost_db(post) {
 
 /* ── FIRMS ── */
 async function renderCmsFirms() {
+  const tbl = document.getElementById('firms-tbl');
+  const kpis = document.getElementById('firms-kpis');
+  if(tbl) tbl.innerHTML = '<tbody><tr><td style="padding:20px;color:var(--t2);">Carregando firmas do Supabase...</td></tr></tbody>';
   try {
-    const { data } = await db.from('cms_firms').select('*').order('sort_order');
+    const { data, error } = await db.from('cms_firms').select('*').order('sort_order');
+    if(error) { if(tbl) tbl.innerHTML = '<tbody><tr><td style="padding:20px;color:var(--red);">Erro: '+error.message+'</td></tr></tbody>'; return; }
     _firmsCache = data || [];
-  } catch(e) { toast('Erro ao carregar firmas do Supabase','error'); return; }
+  } catch(e) { if(tbl) tbl.innerHTML = '<tbody><tr><td style="padding:20px;color:var(--red);">Erro: '+e.message+'</td></tr></tbody>'; return; }
 
   const firms = _firmsCache;
-  const kpis = document.getElementById('firms-kpis');
   if(kpis) kpis.innerHTML = `
     <div class="stat-card"><div class="stat-lbl">Total Firmas</div><div class="stat-val">${firms.length}</div></div>
     <div class="stat-card"><div class="stat-lbl">Ativas</div><div class="stat-val g">${firms.filter(f=>f.active).length}</div></div>
     <div class="stat-card"><div class="stat-lbl">Inativas</div><div class="stat-val r">${firms.filter(f=>!f.active).length}</div></div>
     <div class="stat-card"><div class="stat-lbl">Desconto Médio</div><div class="stat-val y">${firms.length?Math.round(firms.reduce((s,f)=>s+f.discount,0)/firms.length):0}%</div></div>`;
-
-  const tbl = document.getElementById('firms-tbl');
   if(!tbl) return;
   tbl.innerHTML = `<thead><tr><th>Ordem</th><th>Firma</th><th>Tipo</th><th>Desconto</th><th>Cupom</th><th>Split</th><th>Status</th><th>Ações</th></tr></thead>
     <tbody>${firms.map((f,i)=>`<tr>
