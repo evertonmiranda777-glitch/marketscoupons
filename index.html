@@ -9407,8 +9407,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderFaq();
   autoDetectDDI();
 
-  // Mostrar botões de login imediatamente (checkAuthSession vai sobrescrever se logado)
-  updateAuthUI(false);
+  // Mostrar botões de auth: checar token no localStorage de forma síncrona
+  // Se há token Supabase, mantém escondido até checkAuthSession confirmar
+  // Se não há token, mostra botões de login imediatamente
+  const _hasToken = Object.keys(localStorage).some(k => k.startsWith('sb-') && k.includes('-auth-token'));
+  if (!_hasToken) updateAuthUI(false);
 
   // Navegar para o hash da URL ANTES dos awaits — garante que Ctrl+F5 preserve a página
   const initHash = location.hash.replace('#','');
