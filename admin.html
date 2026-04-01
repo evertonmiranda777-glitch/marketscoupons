@@ -1484,13 +1484,13 @@ function renderLeadsTable(){
  <td style="font-size:11px;">${l.passou_desafio?'<span style="color:var(--green);font-size:10px;">'+l.passou_desafio.slice(0,20)+'...</span>':'—'}</td>
  <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${l.tool||'—'}</span></td>
  <td style="color:var(--t3);white-space:nowrap;">${l.ts?new Date(l.ts).toLocaleDateString('pt-BR'):'—'}</td>
- <td><button onclick="openLeadModal(${getLeadsSync().length-1-i})" style="background:none;border:1px solid var(--b2);border-radius:5px;color:var(--t2);padding:3px 8px;font-size:10px;cursor:pointer;">Ver</button></td>
+ <td><button onclick="openLeadModal('${l.id||i}')" style="background:none;border:1px solid var(--b2);border-radius:5px;color:var(--t2);padding:3px 8px;font-size:10px;cursor:pointer;">Ver</button></td>
  </tr>`).join('')}</tbody>`;
 }
 
-function openLeadModal(idx){
+function openLeadModal(idOrIdx){
  const leads=getLeadsSync();
- const l=leads[idx];
+ const l=leads.find(x=>x.id===idOrIdx)||leads[idOrIdx];
  if(!l)return;
  document.getElementById('lm-title').textContent=l.name||'Lead';
  document.getElementById('lm-body').innerHTML=`
@@ -1521,8 +1521,11 @@ function openLeadModal(idx){
 }
 function closeLeadModal(){ document.getElementById('lead-modal-ov').classList.remove('open'); }
 
-function clearLeads(){
+async function clearLeads(){
  if(!confirm(`Apagar todos os ${getLeadsSync().length} leads? Esta ação é irreversível.`))return;
+ try{
+   await db.from('leads').delete().neq('id','00000000-0000-0000-0000-000000000000');
+ }catch(e){}
  localStorage.removeItem('mc_leads');
  renderLeadsTable();
  toast('Leads apagados.','warn');
@@ -1608,8 +1611,11 @@ function exportEventsCSV(){
  download('events_marketscoupons.csv','data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n')));
  toast(' Eventos exportados!');
 }
-function clearEvents(){
+async function clearEvents(){
  if(!confirm('Apagar todos os eventos?'))return;
+ try{
+   await db.from('events').delete().neq('id','00000000-0000-0000-0000-000000000000');
+ }catch(e){}
  localStorage.removeItem('mc_events');
  renderEventsPage();
  toast('Eventos apagados.','warn');
@@ -1750,28 +1756,6 @@ function previewEmail(){
  toast('Preview gerado!');
 }
 
-function sendEmails(){
- const subject=document.getElementById('em-subject')?.value?.trim();
- const body=document.getElementById('em-body')?.value?.trim();
- if(!subject||!body){toast('Preencha assunto e corpo do e-mail!','warn');return;}
- const leads=getSegmentedLeads();
- if(!leads.length){toast('Nenhum destinatário selecionado!','warn');return;}
-
- // Build mailto string (browser native) - for real sending integrate SMTP/SendGrid
- const emails=leads.map(l=>l.email).filter(Boolean).slice(0,50).join(',');
- const mailtoUrl=`mailto:${emails}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.slice(0,1000)+'...')}`;
-
- // Save campaign log
- const campaigns=getCampaigns();
- campaigns.push({subject,leads:leads.length,ts:new Date().toISOString(),segment:emailSegments.join(',')});
- localStorage.setItem('mc_campaigns',JSON.stringify(campaigns));
-
- window.open(mailtoUrl);
- toast(` Abrindo cliente de e-mail para ${leads.length} destinatários!`);
- updateEmailStats();
- renderCampaignLog();
-}
-
 function saveTemplate(){
  const subject=document.getElementById('em-subject')?.value?.trim();
  const body=document.getElementById('em-body')?.value?.trim();
@@ -1841,7 +1825,7 @@ function updateEmailStats(){
 
 function composeToLead(email,name){
  closeLeadModal();
- adminGo('email',document.querySelector('.nta:nth-child(5)'));
+ adminGo('email',[...document.querySelectorAll('.nta')].find(b=>b.textContent.trim()==='E-mail'));
  setTimeout(()=>{
  document.getElementById('em-subject').value=`Olá ${name}, temos uma oferta especial para você!`;
  document.getElementById('em-body').value=`Olá {nome},\n\nVimos que você tem interesse em prop firms e gostaríamos de compartilhar uma oferta exclusiva!\n\n Use o cupom MARKET89 para 89% OFF na Bulenox.\n\nAcesse: https://marketscoupons.com\n\nAbraços,\nEquipe MarketsCoupons`;
@@ -2306,15 +2290,6 @@ async function getBlogPosts() {
   return JSON.parse(localStorage.getItem('mc_blog_posts')||'[]');
 }
 function getBlogPostsSync() { return JSON.parse(localStorage.getItem('mc_blog_posts')||'[]'); }
-async function saveBlogPost_db(post) {
-  if (post.id && !post.id.startsWith('local_')) {
-    await db.from('blog_posts').update(post).eq('id', post.id);
-  } else {
-    const { id: _id, ...rest } = post;
-    await db.from('blog_posts').insert(rest);
-  }
-}
-
 /* ── FIRMS ── */
 async function renderCmsFirms() {
   const tbl = document.getElementById('firms-tbl');
@@ -2857,12 +2832,18 @@ async function saveGuide(id) {
 }
 async function toggleGuide(id){
   const g=_adminGuides.find(x=>x.id===id);if(!g)return;
-  await db.from('cms_guides').update({active:!g.active}).eq('id',id);
+  try{
+    const{error}=await db.from('cms_guides').update({active:!g.active}).eq('id',id);
+    if(error)throw error;
+  }catch(e){toast('Erro ao atualizar: '+e.message,'warn');return;}
   renderCmsGuides();
 }
 async function deleteGuide(id){
   if(!confirm('Excluir este guia?'))return;
-  await db.from('cms_guides').delete().eq('id',id);
+  try{
+    const{error}=await db.from('cms_guides').delete().eq('id',id);
+    if(error)throw error;
+  }catch(e){toast('Erro ao excluir: '+e.message,'warn');return;}
   renderCmsGuides();toast('Guia removido.','warn');
 }
 
