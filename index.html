@@ -1066,8 +1066,11 @@ img{max-width:100%;}
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px;padding:0 20px 40px;}
 .bc{background:var(--card);border:1px solid var(--b1);border-radius:9px;overflow:hidden;transition:.2s;cursor:pointer;}
 .bc:hover{border-color:var(--b2);transform:translateY(-2px);}
-.bc-img{height:140px;position:relative;background-size:cover;background-position:center;overflow:hidden;}
-.bc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,13,0) 40%,rgba(7,9,13,.7) 100%);}
+.bc-img{height:150px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.bc-img::before{content:'';position:absolute;inset:0;opacity:.18;background:var(--bc-bg,linear-gradient(135deg,#3B82F6,#8B5CF6));}
+.bc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,13,0) 50%,rgba(7,9,13,.85) 100%);}
+.bc-icon{font-size:52px;position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));line-height:1;}
+.bc-img .bc-deco{position:absolute;z-index:0;opacity:.06;font-size:120px;font-weight:900;color:#fff;letter-spacing:-4px;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
 .bc-level{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;z-index:1;}
 .bc-body{padding:14px;}
 .bc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;}
@@ -7795,8 +7798,7 @@ async function renderBlog(){
       _renderBlogCards(g, BLOG_POSTS.map(p=>({
         slug:p.slug, title:t(p.titleKey), excerpt:t(p.excerptKey),
         level:p.level, category:p.catKey?.replace('blog_cat_','') || 'educacao',
-        created_at:null, read_time:p.readMin+'min', lang:'pt',
-        img:p.img, bg:p.bg
+        created_at:null, read_time:p.readMin+'min', lang:'pt'
       })));
     }
 
@@ -7823,23 +7825,65 @@ function _renderBlogGrid(){
   _renderBlogCards(g, posts);
 }
 
+// Capas unicas por tema — gradiente + icone + texto decorativo
+const _BLOG_COVERS = {
+  // -- Chaves por slug (parcial match) --
+  'wyckoff':        {icon:'📊', grad:'linear-gradient(135deg,#6366F1,#3B82F6)', deco:'WYCKOFF'},
+  'elliott':        {icon:'🌊', grad:'linear-gradient(135deg,#0EA5E9,#06B6D4)', deco:'WAVES'},
+  'fibonacci':      {icon:'🔢', grad:'linear-gradient(135deg,#F59E0B,#D97706)', deco:'1.618'},
+  'volume-pre':     {icon:'📈', grad:'linear-gradient(135deg,#8B5CF6,#A855F7)', deco:'VPA'},
+  'anna-coulling':  {icon:'📈', grad:'linear-gradient(135deg,#8B5CF6,#A855F7)', deco:'VPA'},
+  'drawdown':       {icon:'📉', grad:'linear-gradient(135deg,#EF4444,#F97316)', deco:'DD'},
+  'risco':          {icon:'🛡️', grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+  'risk':           {icon:'🛡️', grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+  'risiko':         {icon:'🛡️', grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+  'risque':         {icon:'🛡️', grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+  'gestion-riesgo': {icon:'🛡️', grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+  'gestione-rischio':{icon:'🛡️',grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+  'melhores-prop':  {icon:'🏆', grad:'linear-gradient(135deg,#F0B429,#F59E0B)', deco:'TOP 5'},
+  'mejores-prop':   {icon:'🏆', grad:'linear-gradient(135deg,#F0B429,#F59E0B)', deco:'TOP 5'},
+  'best-prop':      {icon:'🏆', grad:'linear-gradient(135deg,#F0B429,#F59E0B)', deco:'TOP 5'},
+  'meilleures-prop':{icon:'🏆', grad:'linear-gradient(135deg,#F0B429,#F59E0B)', deco:'TOP 5'},
+  'beste-prop':     {icon:'🏆', grad:'linear-gradient(135deg,#F0B429,#F59E0B)', deco:'TOP 5'},
+  'migliori-prop':  {icon:'🏆', grad:'linear-gradient(135deg,#F0B429,#F59E0B)', deco:'TOP 5'},
+  'como-passar':    {icon:'✅', grad:'linear-gradient(135deg,#10B981,#059669)', deco:'PASS'},
+  'how-to-pass':    {icon:'✅', grad:'linear-gradient(135deg,#10B981,#059669)', deco:'PASS'},
+  'como-pasar':     {icon:'✅', grad:'linear-gradient(135deg,#10B981,#059669)', deco:'PASS'},
+  'reussir':        {icon:'✅', grad:'linear-gradient(135deg,#10B981,#059669)', deco:'PASS'},
+  'bewertung':      {icon:'✅', grad:'linear-gradient(135deg,#10B981,#059669)', deco:'PASS'},
+  'superare':       {icon:'✅', grad:'linear-gradient(135deg,#10B981,#059669)', deco:'PASS'},
+  'sua-primeira':   {icon:'🚀', grad:'linear-gradient(135deg,#3B82F6,#6366F1)', deco:'START'},
+  'desafio-10':     {icon:'⏱️', grad:'linear-gradient(135deg,#F43F5E,#E11D48)', deco:'10D'},
+  'multi-account':  {icon:'⚠️', grad:'linear-gradient(135deg,#EF4444,#DC2626)', deco:'RISK'},
+  'scaling':        {icon:'📐', grad:'linear-gradient(135deg,#8B5CF6,#7C3AED)', deco:'SCALE'},
+  '50k-para-300k':  {icon:'📐', grad:'linear-gradient(135deg,#8B5CF6,#7C3AED)', deco:'$300K'},
+  'operando-3':     {icon:'🖥️', grad:'linear-gradient(135deg,#0EA5E9,#2563EB)', deco:'MULTI'},
+  'fiscal':         {icon:'🧾', grad:'linear-gradient(135deg,#64748B,#475569)', deco:'TAX'},
+  'trailing':       {icon:'📉', grad:'linear-gradient(135deg,#EF4444,#F97316)', deco:'TRAIL'},
+  'gerenciamento':  {icon:'🛡️', grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+  'gestao-de-risco':{icon:'🛡️', grad:'linear-gradient(135deg,#22C55E,#14B8A6)', deco:'R:R'},
+};
+
+function _getBlogCover(slug){
+  for(const key in _BLOG_COVERS){
+    if(slug.includes(key)) return _BLOG_COVERS[key];
+  }
+  return {icon:'📝', grad:'linear-gradient(135deg,#6366F1,#3B82F6)', deco:'BLOG'};
+}
+
 function _renderBlogCards(g, posts){
   const curLang = _currentLang || 'pt';
-  const _IMG_MAP = {
-    'analise-tecnica':'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=600&h=300&fit=crop',
-    'prop-firms':'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=300&fit=crop',
-    'educacao':'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=300&fit=crop',
-    'mercado':'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=300&fit=crop',
-  };
   g.innerHTML=posts.map(post=>{
     const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
     const cat = _BLOG_CAT_MAP[post.category]||{color:'var(--blue)',label:post.category||'Blog'};
-    const img = post.img || _IMG_MAP[post.category] || _IMG_MAP['educacao'];
+    const cover = _getBlogCover(post.slug);
     const blogUrl = curLang==='pt' ? '/blog/'+post.slug : '/blog/'+curLang+'/'+post.slug;
     const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) : '';
     return `
     <a href="${blogUrl}" class="bc" style="text-decoration:none;color:inherit;">
-      <div class="bc-img" style="background-image:url('${img}');background-color:var(--gbg);">
+      <div class="bc-img" style="--bc-bg:${cover.grad}">
+        <span class="bc-deco">${cover.deco}</span>
+        <span class="bc-icon">${cover.icon}</span>
         <div class="bc-level" style="background:${lvl.bg};color:${lvl.color};">${lvl.label}</div>
       </div>
       <div class="bc-body">
