@@ -9386,14 +9386,16 @@ async function submitProof() {
     status: 'pending',
   };
 
+  let insertedId = null;
   try {
-    await db.from('loyalty_proofs').insert(proof);
+    const { data: inserted } = await db.from('loyalty_proofs').insert(proof).select('id').maybeSingle();
+    insertedId = inserted?.id;
   } catch(e) {
     showToast('Erro ao enviar. Tente novamente.'); return;
   }
 
   // Update local cache
-  _loyaltyCache.pending.unshift({ ...proof, id: 'local_'+Date.now(), orderNumber, ts: new Date().toISOString() });
+  _loyaltyCache.pending.unshift({ ...proof, id: insertedId||'local_'+Date.now(), orderNumber, ts: new Date().toISOString() });
   localStorage.setItem('mc_loyalty_pending', JSON.stringify(_loyaltyCache.pending));
 
   ['pf-firma','pf-size','pf-order','pf-date','pf-coupon','pf-value'].forEach(id=>{
@@ -9401,8 +9403,36 @@ async function submitProof() {
   });
   removeProofFile();
   renderLoyaltyPage();
-  showToast('Comprovante enviado! Validacao em ate 48 horas.');
+  showToast('Comprovante enviado! Validando automaticamente...');
   track('loyalty_proof_submitted', { firma, size, orderNumber, member: member.email });
+
+  // Trigger AI validation in background
+  if(insertedId){
+    try{
+      const sess = await db.auth.getSession();
+      const token = sess?.data?.session?.access_token;
+      const resp = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/validate-loyalty-proof', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+(token||'')},
+        body:JSON.stringify({proof_id:insertedId})
+      });
+      const result = await resp.json();
+      if(result.status==='approved'){
+        showToast('Comprovante aprovado automaticamente!');
+        // Move from pending to history in cache
+        _loyaltyCache.pending = _loyaltyCache.pending.filter(p=>p.id!==insertedId);
+        _loyaltyCache.history.unshift({...proof, id:insertedId, status:'approved', ai_reason:result.ai_reason});
+        localStorage.setItem('mc_loyalty_pending',JSON.stringify(_loyaltyCache.pending));
+        localStorage.setItem('mc_loyalty_history',JSON.stringify(_loyaltyCache.history));
+        renderLoyaltyPage();
+        checkAnalysisGate();
+      } else if(result.status==='rejected'){
+        showToast('Comprovante não aprovado: '+(result.ai_reason||'verifique os dados'));
+      } else {
+        showToast('Comprovante em análise. Resultado em breve.');
+      }
+    }catch(e){ /* AI validation failed silently, admin will review manually */ }
+  }
 }
 function renderPainelLoyalty(){
   const el = document.getElementById('painel-loyalty-body');

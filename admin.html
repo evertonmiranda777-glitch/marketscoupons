@@ -2229,8 +2229,9 @@ async function getLoyaltyPendingAdmin() {
     return (data||[]).map(p => ({
       id: p.id, name: p.member_name, member: p.member_email, firma: p.firma,
       size: p.plan_size, orderNumber: p.order_number, coupon: p.coupon_used,
-      value: p.purchase_value, fileName: p.file_name, fileUrl: p.file_url,
+      value: p.purchase_value, fileName: p.file_name, fileUrl: p.file_url||p.proof_url,
       status: 'pending', ts: p.created_at, date: p.purchase_date,
+      ai_verdict: p.ai_verdict, ai_reason: p.ai_reason,
     }));
   } catch(e) { return JSON.parse(localStorage.getItem('mc_loyalty_pending')||'[]'); }
 }
@@ -2241,9 +2242,9 @@ async function getLoyaltyHistoryAdmin() {
     return (data||[]).map(p => ({
       id: p.id, name: p.member_name, member: p.member_email, firma: p.firma,
       size: p.plan_size, orderNumber: p.order_number, coupon: p.coupon_used,
-      value: p.purchase_value, fileName: p.file_name, fileUrl: p.file_url,
+      value: p.purchase_value, fileName: p.file_name, fileUrl: p.file_url||p.proof_url,
       status: p.status, ts: p.created_at, date: p.purchase_date,
-      rejectReason: p.reject_reason,
+      rejectReason: p.reject_reason, ai_verdict: p.ai_verdict, ai_reason: p.ai_reason,
     }));
   } catch(e) { return JSON.parse(localStorage.getItem('mc_loyalty_history')||'[]'); }
 }
@@ -2293,11 +2294,12 @@ function renderLoyaltyProofsTable(){
       <td style="font-size:11px;font-family:monospace;">${e.orderNumber||'—'}</td>
       <td style="font-size:11px;">${e.coupon||'—'}</td>
       <td style="font-size:11px;">${e.fileUrl?`<a href="${e.fileUrl}" target="_blank" style="color:var(--blue);">Ver arquivo</a>`:e.fileName?`<span style="color:var(--gold);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">Sem arquivo</span>'}</td>
-      ${loyaltyTab==='pending'?`<td><div style="display:flex;gap:5px;">
+      ${loyaltyTab==='pending'?`<td><div style="display:flex;gap:5px;align-items:center;">
+        ${e.ai_verdict?`<span class="td-badge" style="background:${e.ai_verdict==='approved'?'var(--gnbg)':'var(--rbg)'};color:${e.ai_verdict==='approved'?'var(--green)':'var(--red)'};" title="${e.ai_reason||''}">IA: ${e.ai_verdict==='approved'?'✓':'✗'}</span>`:''}
         <button onclick="openProofReview('${e.id}')" style="padding:4px 10px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Revisar</button>
         <button onclick="quickApprove('${e.id}')" style="padding:4px 10px;background:var(--gnbg);border:1px solid rgba(34,197,94,.3);border-radius:5px;color:var(--green);font-size:10px;font-weight:600;cursor:pointer;">Aprovar</button>
         <button onclick="quickReject('${e.id}')" style="padding:4px 8px;background:var(--rbg);border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">Recusar</button>
-      </div></td>`:`<td><span class="td-badge" style="background:${e.status==='approved'?'var(--gnbg)':'var(--rbg)'};color:${e.status==='approved'?'var(--green)':'var(--red)'};">${e.status==='approved'?'Aprovado':'Recusado'}</span></td>`}
+      </div></td>`:`<td><span class="td-badge" style="background:${e.status==='approved'?'var(--gnbg)':'var(--rbg)'};color:${e.status==='approved'?'var(--green)':'var(--red)'};">${e.status==='approved'?'Aprovado':'Recusado'}</span>${e.ai_verdict?` <span style="font-size:9px;color:var(--t3);">(IA)</span>`:''}</td>`}
     </tr>`).join('')}</tbody>`;
 }
 
@@ -2322,6 +2324,10 @@ function openProofReview(id){
         ? `<a href="${entry.fileUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;color:var(--blue);">📄 Abrir PDF</a>`
         : `<img src="${entry.fileUrl}" class="proof-review-img" alt="Comprovante">`
       }</div>` : `<div style="padding:12px;background:var(--rbg);border:1px solid rgba(239,68,68,.2);border-radius:7px;font-size:12px;color:var(--red);margin-bottom:14px;">Nenhum arquivo — validar pelo número do pedido.</div>`}
+    ${entry.ai_verdict ? `<div style="background:${entry.ai_verdict==='approved'?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${entry.ai_verdict==='approved'?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;">
+      <strong style="color:${entry.ai_verdict==='approved'?'var(--green)':'var(--red)'};">Análise IA: ${entry.ai_verdict==='approved'?'Aprovado ✓':'Rejeitado ✗'}</strong>
+      <div style="color:var(--t2);margin-top:4px;font-size:11px;">${entry.ai_reason||''}</div>
+    </div>` : ''}
     <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;margin-bottom:14px;font-size:11px;color:var(--t2);">
       <strong style="color:var(--t1);">Como verificar:</strong> Acesse o painel parceiro da ${entry.firma||'firma'} e confirme o pedido <strong style="color:var(--gold);font-family:monospace;">${entry.orderNumber||'—'}</strong>.
     </div>
