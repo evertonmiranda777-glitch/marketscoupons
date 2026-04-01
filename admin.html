@@ -2380,9 +2380,10 @@ function openFirmModal(id) {
 
     <div id="fm-sec-prices" class="fm-sec" style="display:none;">
     <div style="font-size:12px;font-weight:700;margin-bottom:8px;">Precos com Desconto (exibido nas firmas)</div>
-    <div style="font-size:10px;color:var(--t3);margin-bottom:10px;">Cada linha: Conta | Preco com desconto | Preco original</div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:10px;">Cada linha: Tipo (ex: Intraday, EOD) | Conta | Preco com desconto | Preco original</div>
     <div id="fm-prices-list">${prices.map((p,i)=>`
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
+      <div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
+        <input type="text" value="${p.t||''}" placeholder="Tipo" class="fm-price-t" style="font-size:11px;color:var(--blue);">
         <input type="text" value="${p.a||''}" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
         <input type="text" value="${p.n||''}" placeholder="Com desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
         <input type="text" value="${p.o||''}" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
@@ -2452,7 +2453,8 @@ function fmTab(btn,sec){
 }
 function addPriceRow(){
   const list=document.getElementById('fm-prices-list');
-  list.insertAdjacentHTML('beforeend',`<div style="display:grid;grid-template-columns:1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
+  list.insertAdjacentHTML('beforeend',`<div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
+    <input type="text" placeholder="Tipo" class="fm-price-t" style="font-size:11px;color:var(--blue);">
     <input type="text" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
     <input type="text" placeholder="Com desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
     <input type="text" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
@@ -2478,10 +2480,11 @@ async function saveFirm(existingId) {
   const priceRows=document.getElementById('fm-prices-list').children;
   const prices=[];
   for(const row of priceRows){
+    const t=row.querySelector('.fm-price-t')?.value.trim();
     const a=row.querySelector('.fm-price-a')?.value.trim();
     const n=row.querySelector('.fm-price-n')?.value.trim();
     const o=row.querySelector('.fm-price-o')?.value.trim();
-    if(a)prices.push({a,n:n||'—',o:o||'—'});
+    if(a)prices.push({t:t||'',a,n:n||'—',o:o||'—'});
   }
   // Collect checkout plans
   const planRows=document.getElementById('fm-co-plans').children;
