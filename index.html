@@ -6206,14 +6206,20 @@ function applyF(){
   let list=FIRMS.filter(f=>{
     if(favOnly && !_favs.has(f.id)) return false;
     if(q && !f.name.toLowerCase().includes(q) && !f.type.toLowerCase().includes(q)) return false;
-    // Mercado
-    if(f.type==='Futuros' && !fFut) return false;
-    if(f.type==='Forex' && !fFx) return false;
-    // Desconto
+    // Mercado — só filtrar se pelo menos um está marcado
+    const anyMkt=fFut||fFx;
+    if(anyMkt){
+      if(f.type==='Futuros' && !fFut) return false;
+      if(f.type==='Forex' && !fFx) return false;
+    }
+    // Desconto — só filtrar se pelo menos um está marcado
     const d=f.discount;
-    if(d>=80 && !dH) return false;
-    if(d>=50 && d<80 && !dM) return false;
-    if(d<50 && !dL) return false;
+    const anyDisc=dH||dM||dL;
+    if(anyDisc){
+      if(d>=80 && !dH) return false;
+      if(d>=50 && d<80 && !dM) return false;
+      if(d<50 && !dL) return false;
+    }
     // Características
     if(fLT && f.dtype!=='lifetime') return false;
     if(fNews && !f.newsTrading) return false;
