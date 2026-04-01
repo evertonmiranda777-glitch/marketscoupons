@@ -410,6 +410,8 @@ img{max-width:100%;}
 .sb-clear{width:100%;padding:7px;border-radius:6px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;cursor:pointer;transition:.2s;}
 .sb-clear:hover{border-color:var(--gold);color:var(--gold);}
 .firms-main{flex:1;min-width:0;padding:14px;}
+.firms-filter-btn{display:none;}
+.firms-sb-overlay{display:none;}
 .search-wrap{position:relative;margin-bottom:12px;}
 .search-wrap input{width:100%;padding:9px 12px 9px 34px;background:var(--card);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;transition:.2s;}
 .search-wrap input:focus{border-color:var(--gold);}
@@ -449,11 +451,11 @@ img{max-width:100%;}
 .fr-tp-stars{color:#00b67a;font-size:10px;letter-spacing:0.5px;}
 .fr-tp-count{font-size:9px;color:var(--t3);}
 .fr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
-.fr-coupon-box{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:7px;flex-shrink:0;width:240px;}
+.fr-coupon-box{display:flex !important;align-items:center !important;justify-content:space-between !important;padding:6px 10px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:7px;flex-shrink:0;gap:8px;}
 .fr-coupon-box-label{display:none;}
-.fr-coupon-box-row{display:flex !important;align-items:center !important;justify-content:space-between !important;flex-wrap:wrap;width:100%;}
-.fr-coupon-box-code{font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--gold);white-space:nowrap;}
-.fr-coupon-box-copy{padding:6px 20px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
+.fr-coupon-box-row{display:flex !important;align-items:center !important;justify-content:space-between !important;gap:8px;flex-wrap:nowrap !important;min-width:0;}
+.fr-coupon-box-code{font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.fr-coupon-box-copy{padding:6px 14px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;flex-shrink:0;}
 .fr-coupon-box-copy:hover{background:#F7C948;}
 .det-btn{padding:7px 14px;border-radius:7px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:600;transition:.2s;cursor:pointer;white-space:nowrap;}
 .det-btn:hover{border-color:var(--gold);color:var(--gold);}
@@ -1162,7 +1164,12 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 
 /* RESPONSIVE */
 @media(max-width:960px){
-  .firms-sb{display:none;}
+  .firms-sb{display:none;position:fixed;top:var(--nav-h);left:0;bottom:0;width:240px;z-index:999;background:var(--sur);border-right:1px solid var(--b1);padding:14px 10px;overflow-y:auto;box-shadow:4px 0 20px rgba(0,0,0,.5);}
+  .firms-sb.open{display:block;}
+  .firms-sb-overlay{display:none;position:fixed;inset:0;top:var(--nav-h);background:rgba(0,0,0,.5);z-index:998;}
+  .firms-sb-overlay.open{display:block;}
+  .firms-filter-btn{display:flex;align-items:center;gap:4px;padding:6px 12px;background:var(--card);border:1px solid var(--b2);border-radius:6px;color:var(--t2);font-family:var(--f);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;}
+  .firms-filter-btn:hover{border-color:var(--gold);color:var(--gold);}
   /* Card vertical mobile */
   .fr{flex-direction:column;align-items:stretch;padding:0;gap:0;overflow:hidden;}
   .fr-header{flex-wrap:nowrap;padding:14px;gap:10px;}
@@ -1184,7 +1191,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
   .fr-coupon-bar{padding:12px 14px;}
   .fr-coupon-bar .drw-coupon-code{font-size:18px;}
   .fr-coupon-bar .drw-coupon-copy{padding:8px 16px;}
-  .fr-btns{display:grid;grid-template-columns:1fr;gap:8px;width:100%;}
+  .fr-btns{display:grid;grid-template-columns:auto 1fr;gap:8px;width:100%;align-items:center;}
   .fr-btns .det-btn{padding:13px;font-size:14px;text-align:center;font-weight:800;border-radius:9px;}
   .ft-grid{grid-template-columns:1fr 1fr;}
 }
@@ -1792,9 +1799,11 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  </div>
  <button class="sb-clear" onclick="clearF()" data-i18n="sb_limpar">Limpar filtros</button>
  </aside>
+ <div class="firms-sb-overlay" id="firms-sb-overlay" onclick="toggleFirmsSb()"></div>
  <main class="firms-main">
  <div class="search-wrap"><span class="search-ico"></span><input type="text" id="search" data-i18n-placeholder="search_placeholder" placeholder="Buscar prop firm..." oninput="applyF()"></div>
  <div class="sort-row">
+ <button class="firms-filter-btn" onclick="toggleFirmsSb()" data-i18n="sb_filtros">⚙ Filtros</button>
  <div class="cnt"><span data-i18n="sb_mostrando">Mostrando</span> <strong id="cnt">6</strong> <span data-i18n="sb_firmas">firmas</span></div>
  <select class="sort-sel" onchange="applyF()">
  <option value="rating" data-i18n="firms_ordenar_rating">Melhor avaliadas</option>
@@ -2642,6 +2651,7 @@ const I18N = {
     sb_caracteristicas:'Características',
     sb_meus_favoritos:'Meus Favoritos',
     sb_so_favoritas:'Só favoritas',
+    sb_filtros:'⚙ Filtros',
     sb_limpar:'Limpar filtros',
     sb_abaixo50:'Abaixo 50%',
     sb_lifetime:'Lifetime',
@@ -3201,6 +3211,7 @@ const I18N = {
     sb_caracteristicas:'Features',
     sb_meus_favoritos:'My Favorites',
     sb_so_favoritas:'Only favorites',
+    sb_filtros:'⚙ Filters',
     sb_limpar:'Clear filters',
     sb_abaixo50:'Less than 50%',
     sb_lifetime:'Lifetime',
@@ -3760,6 +3771,7 @@ const I18N = {
     sb_caracteristicas:'Características',
     sb_meus_favoritos:'Mis favoritos',
     sb_so_favoritas:'Solo favoritas',
+    sb_filtros:'⚙ Filtros',
     sb_limpar:'Borrar filtros',
     sb_abaixo50:'Menos del 50 %',
     sb_lifetime:'lifetime',
@@ -4319,6 +4331,7 @@ const I18N = {
     sb_caracteristicas:'Caratteristiche',
     sb_meus_favoritos:'I miei preferiti',
     sb_so_favoritas:'Solo le preferite',
+    sb_filtros:'⚙ Filtri',
     sb_limpar:'Svuota i filtri',
     sb_abaixo50:'Meno del 50%',
     sb_lifetime:'Durata',
@@ -4878,6 +4891,7 @@ const I18N = {
     sb_caracteristicas:'Caractéristiques',
     sb_meus_favoritos:'Mes favoris',
     sb_so_favoritas:'Uniquement les favoris',
+    sb_filtros:'⚙ Filtres',
     sb_limpar:'Effacer les filtres',
     sb_abaixo50:'Moins de 50 %',
     sb_lifetime:'lifetime',
@@ -5437,6 +5451,7 @@ const I18N = {
     sb_caracteristicas:'Eigenschaften',
     sb_meus_favoritos:'Meine Favoriten',
     sb_so_favoritas:'Nur Favoriten',
+    sb_filtros:'⚙ Filter',
     sb_limpar:'Filter löschen',
     sb_abaixo50:'Unter 50 %',
     sb_lifetime:'Lebensdauer',
@@ -5996,6 +6011,7 @@ const I18N = {
     sb_caracteristicas:'الميزات',
     sb_meus_favoritos:'المفضلة',
     sb_so_favoritas:'المفضلة فقط',
+    sb_filtros:'⚙ مرشحات',
     sb_limpar:'مسح المرشحات',
     sb_abaixo50:'أقل من 50%',
     sb_lifetime:'مدى الحياة',
@@ -6496,6 +6512,9 @@ function setL(lang,flag,code){
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate();
+  // Re-render open drawer if language changed
+  const activeFr = document.querySelector('.fr.active');
+  if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
   updateTVWidgets(lang);
   track('language_change',{language:lang});
 }
@@ -7661,6 +7680,7 @@ function renderFirms(list){
         </div>
         <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`:''}
         <div class="fr-btns">
+          <button class="fr-fav ${_favs.has(f.id)?'active':''}" id="fav-btn-m-${f.id}" onclick="toggleFav('${f.id}')" title="${_favs.has(f.id)?t('firms_fav_remove'):t('firms_fav_add')}">${_favs.has(f.id)?'❤️':'🤍'}<span class="fr-fav-count" id="fav-cnt-m-${f.id}">${_favCounts[f.id]||0}</span></button>
           <button class="det-btn primary" onclick="openD('${f.id}')">${t('firms_ver_planos')}</button>
         </div>
       </div>
@@ -7702,6 +7722,9 @@ async function toggleFav(firmId) {
     else track('firm_favorite', { firm_id: firmId });
   }
   if (btn) { btn.classList.toggle('active', _favs.has(firmId)); btn.innerHTML = (_favs.has(firmId)?'❤️':'🤍')+`<span class="fr-fav-count" id="fav-cnt-${firmId}">${_favCounts[firmId]||0}</span>`; }
+  // Sync mobile fav button
+  const mBtn = document.getElementById('fav-btn-m-'+firmId);
+  if (mBtn) { mBtn.classList.toggle('active', _favs.has(firmId)); mBtn.innerHTML = (_favs.has(firmId)?'❤️':'🤍')+`<span class="fr-fav-count" id="fav-cnt-m-${firmId}">${_favCounts[firmId]||0}</span>`; }
 }
 
 async function initFavs() {
@@ -7826,6 +7849,13 @@ function clearF(){
   ['fFut','fFx','dH','dM','dL'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=true;});
   ['fLT','fNews','fD1','fFavOnly'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
   applyF();
+}
+function toggleFirmsSb(){
+  const sb=document.querySelector('.firms-sb');
+  const ov=document.getElementById('firms-sb-overlay');
+  if(!sb||!ov)return;
+  sb.classList.toggle('open');
+  ov.classList.toggle('open');
 }
 
 /* DRAWER */
