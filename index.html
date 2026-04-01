@@ -669,6 +669,18 @@ img{max-width:100%;}
 .cmp-sel{flex:1;min-width:130px;padding:9px 11px;background:var(--card);border:1px solid var(--b2);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:12px;outline:none;}
 .cmp-sel:focus{border-color:var(--gold);}
 .cmp-tbl-wrap{overflow-x:auto;}
+.cmp-mobile{display:none;}
+.cmp-mob-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
+.cmp-mob-card.winner{border-color:var(--gold);}
+.cmp-mob-hd{display:flex;align-items:center;gap:10px;padding:14px;border-bottom:1px solid var(--b1);}
+.cmp-mob-hd .cmp-mob-ico{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;}
+.cmp-mob-hd .cmp-mob-name{font-size:15px;font-weight:700;}
+.cmp-mob-hd .cmp-mob-badge{font-size:9px;color:var(--gold);font-weight:700;}
+.cmp-mob-rows{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.cmp-mob-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--b1);}
+.cmp-mob-row:nth-child(odd){background:var(--card2);}
+.cmp-mob-row-label{font-size:11px;color:var(--t3);font-weight:500;}
+.cmp-mob-row-val{font-size:12px;font-weight:600;text-align:right;}
 .cmp-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;}
 .cmp-tbl th{background:var(--card2);padding:11px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);border-bottom:1px solid var(--b1);}
 .cmp-tbl td{padding:10px 14px;border-bottom:1px solid var(--b1);vertical-align:middle;}
@@ -1096,17 +1108,14 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  .bot-fab{bottom:14px;right:14px;width:50px;height:50px;}
  .guides-grid,.blog-grid,.ind-grid,.offers-grid{grid-template-columns:1fr;}
  /* Compare mobile */
- .cmp-wrap{padding:16px;}
+ .cmp-wrap{padding:14px;}
  .cmp-h{font-size:18px;}
  .cmp-sels{flex-direction:column;gap:8px;}
  .cmp-sel{min-width:100%;font-size:13px;padding:11px 12px;}
  .cmp-winner-banner{flex-direction:column;text-align:center;gap:10px;padding:14px;}
  .cmp-winner-banner>div:last-child{margin-left:0;}
- .cmp-tbl{font-size:11px;}
- .cmp-tbl th{padding:8px 8px;font-size:9px;white-space:nowrap;}
- .cmp-tbl td{padding:8px 8px;}
- .cmp-tbl .rl{font-size:10px;white-space:nowrap;}
- .cmp-tbl .cv{font-size:11px;}
+ .cmp-tbl-wrap{display:none;}
+ .cmp-mobile{display:flex;flex-direction:column;gap:12px;}
  /* Plataformas mobile */
  .plat-grid{grid-template-columns:1fr;}
  .plat-card-top{flex-wrap:wrap;gap:10px;}
@@ -1727,6 +1736,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  <div class="cmp-winner-banner" id="cmp-winner-banner" style="display:none;"></div>
  <div class="cmp-tbl-wrap"><table class="cmp-tbl" id="cmp-tbl"></table></div>
+ <div class="cmp-mobile" id="cmp-mobile"></div>
  </div>
 </div>
 
@@ -6750,6 +6760,31 @@ function renderCmp(){
     }).join('')}</tr>`;
   });
   tbl.innerHTML=html+'</tbody>';
+
+  // Mobile cards
+  const mobEl=document.getElementById('cmp-mobile');
+  if(mobEl){
+    let mhtml='';
+    sel.forEach((f,i)=>{
+      const isW=i===winnerIdx&&sel.length>=2;
+      mhtml+=`<div class="cmp-mob-card${isW?' winner':''}">
+        <div class="cmp-mob-hd">
+          <div class="cmp-mob-ico" style="background:${f.bg};color:${f.color};">${f.icon}</div>
+          <div><div class="cmp-mob-name">${f.name}</div>${isW?`<div class="cmp-mob-badge">🏆 ${t('cmp_vencedor')}</div>`:''}</div>
+        </div>
+        <div class="cmp-mob-rows">${rows.map(r=>{
+          const v=f[r.k];
+          const disp=r.f?r.f(v):(v||'—');
+          const num=parseFloat(String(v||'0').replace('%',''));
+          const vals2=sel.map(ff=>parseFloat(String(ff[r.k]||'0').replace('%','')));
+          const maxV2=r.higher?Math.max(...vals2):null;
+          const isBest=maxV2!==null&&num===maxV2&&r.higher&&sel.length>=2;
+          return`<div class="cmp-mob-row"><span class="cmp-mob-row-label">${r.l}</span><span class="cmp-mob-row-val${isBest?' best':''}">${disp}${isBest?' ✓':''}</span></div>`;
+        }).join('')}</div>
+      </div>`;
+    });
+    mobEl.innerHTML=mhtml;
+  }
 }
 
 /* CALC */
