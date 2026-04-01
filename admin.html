@@ -296,8 +296,6 @@ a{text-decoration:none;color:inherit;}
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade</button>
  <div class="nta-sep"></div>
  <button class="nta nta-cms" onclick="adminGo('cms-firms',this)">Firmas</button>
- <button class="nta nta-cms" onclick="adminGo('cms-coupons',this)">Cupons</button>
- <button class="nta nta-cms" onclick="adminGo('cms-checkout',this)">Checkout</button>
  <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
  <button class="nta nta-cms" onclick="adminGo('cms-guides',this)">Guias</button>
  <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
@@ -799,29 +797,6 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
 
-    <!-- ══ CMS: COUPONS ══ -->
-    <div class="admin-page" id="page-cms-coupons">
-      <div class="sec-hdr">
-        <div class="sec-title">Cupons & Ofertas</div>
-        <div class="sec-actions">
-          <button class="btn-primary" onclick="openCouponModal()">+ Novo Cupom</button>
-        </div>
-      </div>
-      <div class="chart-card" style="padding:0;overflow:hidden;">
-        <div class="data-table-wrap"><table class="data-table" id="coupons-tbl"></table></div>
-      </div>
-    </div>
-
-    <!-- ══ CMS: CHECKOUT ══ -->
-    <div class="admin-page" id="page-cms-checkout">
-      <div class="sec-hdr">
-        <div class="sec-title">Checkout — Planos & URLs</div>
-        <div class="sec-actions">
-          <button class="btn-secondary" onclick="exportCmsJson('checkout')">Exportar JSON</button>
-        </div>
-      </div>
-      <div id="checkout-firms-list"></div>
-    </div>
 
     <!-- ══ CMS: INDICATORS ══ -->
     <div class="admin-page" id="page-cms-indicators">
@@ -1152,7 +1127,7 @@ async function initAdmin(){
 
 async function refreshAll(){
   await refreshFromSupabase();
-  const pages = ['overview','analytics','leads','events','geo','email','loyalty','cms-firms','cms-coupons','cms-checkout','cms-indicators','cms-guides','cms-blog'];
+  const pages = ['overview','analytics','leads','events','geo','email','loyalty','cms-firms','cms-indicators','cms-guides','cms-blog'];
   const active = pages.find(p => document.getElementById('page-'+p)?.classList.contains('active')) || 'overview';
   renderPage(active);
   document.getElementById('last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
@@ -1174,8 +1149,6 @@ function renderPage(p){
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'cms-firms':      renderCmsFirms(); break;
-    case 'cms-coupons':    renderCmsCoupons(); break;
-    case 'cms-checkout':   renderCmsCheckout(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
     case 'cms-blog':       renderCmsBlog(); break;
