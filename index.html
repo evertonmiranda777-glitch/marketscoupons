@@ -7767,59 +7767,106 @@ Líquido: R$10.400 - R$1.964 = R$8.436</pre>
 ];
 
 let _blogFilter = 'all';
+let _blogPostsDB = []; // posts carregados do Supabase
 
-function renderBlog(){
+const _BLOG_LEVEL_MAP = {
+  iniciante:    {label:'Iniciante',     color:'#22C55E', bg:'rgba(34,197,94,.1)'},
+  intermediario:{label:'Intermediário', color:'#EAB308', bg:'rgba(234,179,8,.1)'},
+  avancado:     {label:'Avançado',      color:'#EF4444', bg:'rgba(239,68,68,.1)'},
+  profissional: {label:'Profissional',  color:'#EF4444', bg:'rgba(239,68,68,.1)'},
+};
+const _BLOG_CAT_MAP = {
+  'analise-tecnica':{color:'var(--blue)',  label:'Análise Técnica'},
+  'prop-firms':     {color:'var(--gold)',  label:'Prop Firms'},
+  'educacao':       {color:'var(--green)', label:'Educação'},
+  'mercado':        {color:'#EC4899',      label:'Mercado'},
+};
+
+let _blogLangLoaded = '';
+
+async function renderBlog(){
   const g=document.getElementById('blog-grid');if(!g)return;
-  const posts = _blogFilter==='all' ? BLOG_POSTS : BLOG_POSTS.filter(p=>p.level===_blogFilter);
-  g.innerHTML=posts.map(post=>`
-    <div class="bc" onclick="openBlogArticle('${post.slug}')">
-      <div class="bc-img" style="background-image:url('${post.img}');background-color:${post.bg};">
-        <div class="bc-level" style="background:${post.levelBg};color:${post.levelColor};">${post.level==='iniciante'?'Iniciante':post.level==='intermediario'?'Intermediário':'Profissional'}</div>
+  const curLang = _currentLang || 'pt';
+
+  // Recarrega se mudou de idioma ou ainda não carregou
+  if(_blogLangLoaded !== curLang || !_blogPostsDB.length){
+    // Mostra fallback hardcoded enquanto carrega (só em PT)
+    if(curLang==='pt' && !_blogPostsDB.length){
+      _renderBlogCards(g, BLOG_POSTS.map(p=>({
+        slug:p.slug, title:t(p.titleKey), excerpt:t(p.excerptKey),
+        level:p.level, category:p.catKey?.replace('blog_cat_','') || 'educacao',
+        created_at:null, read_time:p.readMin+'min', lang:'pt',
+        img:p.img, bg:p.bg
+      })));
+    }
+
+    try {
+      const {data} = await db.from('blog_posts')
+        .select('slug,title,excerpt,level,category,created_at,read_time,lang')
+        .eq('lang', curLang)
+        .eq('active', true)
+        .order('created_at',{ascending:false});
+      if(data && data.length){
+        _blogPostsDB = data;
+        _blogLangLoaded = curLang;
+        _renderBlogGrid();
+      }
+    } catch(e){ /* fallback hardcoded já está visível */ }
+  } else {
+    _renderBlogGrid();
+  }
+}
+
+function _renderBlogGrid(){
+  const g=document.getElementById('blog-grid');if(!g)return;
+  const posts = _blogFilter==='all' ? _blogPostsDB : _blogPostsDB.filter(p=>p.level===_blogFilter);
+  _renderBlogCards(g, posts);
+}
+
+function _renderBlogCards(g, posts){
+  const curLang = _currentLang || 'pt';
+  const _IMG_MAP = {
+    'analise-tecnica':'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=600&h=300&fit=crop',
+    'prop-firms':'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=300&fit=crop',
+    'educacao':'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=300&fit=crop',
+    'mercado':'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=300&fit=crop',
+  };
+  g.innerHTML=posts.map(post=>{
+    const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
+    const cat = _BLOG_CAT_MAP[post.category]||{color:'var(--blue)',label:post.category||'Blog'};
+    const img = post.img || _IMG_MAP[post.category] || _IMG_MAP['educacao'];
+    const blogUrl = curLang==='pt' ? '/blog/'+post.slug : '/blog/'+curLang+'/'+post.slug;
+    const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) : '';
+    return `
+    <a href="${blogUrl}" class="bc" style="text-decoration:none;color:inherit;">
+      <div class="bc-img" style="background-image:url('${img}');background-color:var(--gbg);">
+        <div class="bc-level" style="background:${lvl.bg};color:${lvl.color};">${lvl.label}</div>
       </div>
       <div class="bc-body">
-        <div class="bc-cat" style="color:${post.catColor};">${t(post.catKey)}</div>
-        <div class="bc-title">${t(post.titleKey)}</div>
-        <div class="bc-excerpt">${t(post.excerptKey)}</div>
+        <div class="bc-cat" style="color:${cat.color};">${cat.label}</div>
+        <div class="bc-title">${post.title}</div>
+        <div class="bc-excerpt">${post.excerpt||''}</div>
         <div class="bc-meta">
-          <span class="bc-date">${t(post.dataKey)}</span>
-          <span class="bc-read">${t('blog_ler')}</span>
+          <span class="bc-date">${dateStr}</span>
+          <span class="bc-read">${t('blog_ler')||'Ler →'}</span>
         </div>
       </div>
-    </div>`).join('');
+    </a>`;
+  }).join('');
 }
 
 function filterBlog(level, btn){
   _blogFilter = level;
   document.querySelectorAll('.bf-btn').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  renderBlog();
+  _renderBlogGrid();
 }
 
+// Fallback: se clicar em post hardcoded antes do Supabase carregar
 function openBlogArticle(slug){
-  const post = BLOG_POSTS.find(p=>p.slug===slug);
-  if(!post||!post.content)return;
-  const grid=document.getElementById('blog-grid');
-  const hdr=document.getElementById('blog-header');
-  const filters=document.getElementById('blog-filters');
-  const art=document.getElementById('blog-article');
-  if(grid)grid.style.display='none';
-  if(hdr)hdr.style.display='none';
-  if(filters)filters.style.display='none';
-  const levelLabel = post.level==='iniciante'?'🟢 Iniciante':post.level==='intermediario'?'🟡 Intermediário':'🔴 Profissional';
-  art.innerHTML=`
-    <button class="blog-back" onclick="closeBlogArticle()">← ${t('blog_voltar')||'Voltar ao blog'}</button>
-    <div class="blog-art-level" style="background:${post.levelBg};color:${post.levelColor};">${levelLabel}</div>
-    <div class="blog-art-title">${t(post.titleKey)}</div>
-    <div class="blog-art-meta"><span>~${post.readMin} min de leitura</span><span>${t(post.dataKey)}</span></div>
-    <div class="blog-art-body">${post.content}</div>
-    <div class="blog-art-cta">
-      <div class="blog-art-cta-title">${t('blog_cta_titulo')||'Economize na Sua Próxima Avaliação'}</div>
-      <div class="blog-art-cta-desc">${t('blog_cta_desc')||'Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.'}</div>
-      <button class="blog-art-cta-btn" onclick="go('offers')">${t('blog_cta_btn')||'Ver Cupons'} →</button>
-    </div>`;
-  art.classList.add('open');
-  window.scrollTo({top:0,behavior:'smooth'});
-  track('blog_read',{post_id:post.id,post_slug:slug,level:post.level});
+  const curLang = _currentLang || 'pt';
+  const blogUrl = curLang==='pt' ? '/blog/'+slug : '/blog/'+curLang+'/'+slug;
+  window.location.href = blogUrl;
 }
 
 function closeBlogArticle(){
@@ -7827,8 +7874,7 @@ function closeBlogArticle(){
   const hdr=document.getElementById('blog-header');
   const filters=document.getElementById('blog-filters');
   const art=document.getElementById('blog-article');
-  art.classList.remove('open');
-  art.innerHTML='';
+  if(art){art.classList.remove('open');art.innerHTML='';}
   if(grid)grid.style.display='';
   if(hdr)hdr.style.display='';
   if(filters)filters.style.display='';
