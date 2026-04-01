@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="100%" stop-color="#161B22"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="url(#bg)"/>
+  <!-- Grid -->
+  <g stroke="#1E293B" stroke-width=".5">
+    <line x1="80" y1="20" x2="80" y2="280"/><line x1="560" y1="20" x2="560" y2="280"/>
+    <line x1="80" y1="20" x2="560" y2="20"/><line x1="80" y1="280" x2="560" y2="280"/>
+    <line x1="80" y1="80" x2="560" y2="80"/><line x1="80" y1="140" x2="560" y2="140"/>
+    <line x1="80" y1="200" x2="560" y2="200"/>
+  </g>
+  <!-- Volume bars (left side profile) -->
+  <g opacity=".6">
+    <rect x="82" y="25" width="30" height="8" fill="#8B5CF6" rx="1"/><text x="78" y="32" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#5A6478" text-anchor="end">↑</text>
+    <rect x="82" y="37" width="15" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="49" width="22" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="61" width="45" height="8" fill="#A855F7" rx="1"/>
+    <rect x="82" y="73" width="60" height="8" fill="#A855F7" rx="1"/>
+    <rect x="82" y="85" width="80" height="8" fill="#C084FC" rx="1"/>
+    <rect x="82" y="97" width="55" height="8" fill="#A855F7" rx="1"/>
+    <rect x="82" y="109" width="35" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="121" width="25" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="133" width="40" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="145" width="70" height="8" fill="#A855F7" rx="1"/>
+    <rect x="82" y="157" width="90" height="8" fill="#C084FC" rx="1"/>
+    <rect x="82" y="169" width="110" height="8" fill="#D946EF" rx="1"/>
+    <rect x="82" y="181" width="75" height="8" fill="#A855F7" rx="1"/>
+    <rect x="82" y="193" width="50" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="205" width="30" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="217" width="20" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="229" width="40" height="8" fill="#8B5CF6" rx="1"/>
+    <rect x="82" y="241" width="65" height="8" fill="#A855F7" rx="1"/>
+    <rect x="82" y="253" width="95" height="8" fill="#C084FC" rx="1"/>
+    <rect x="82" y="265" width="50" height="8" fill="#8B5CF6" rx="1"/>
+  </g>
+  <!-- Candlesticks -->
+  <g>
+    <!-- Bullish candles (green) -->
+    <line x1="230" y1="210" x2="230" y2="250" stroke="#22C55E" stroke-width="1"/>
+    <rect x="225" y="220" width="10" height="20" fill="#22C55E" rx="1"/>
+    <line x1="260" y1="195" x2="260" y2="240" stroke="#22C55E" stroke-width="1"/>
+    <rect x="255" y="205" width="10" height="25" fill="#22C55E" rx="1"/>
+    <line x1="290" y1="170" x2="290" y2="220" stroke="#22C55E" stroke-width="1"/>
+    <rect x="285" y="180" width="10" height="28" fill="#22C55E" rx="1"/>
+    <!-- Bearish candle (red) - selling climax -->
+    <line x1="320" y1="155" x2="320" y2="200" stroke="#EF4444" stroke-width="1"/>
+    <rect x="315" y="160" width="10" height="30" fill="#EF4444" rx="1"/>
+    <!-- Narrow bullish - no supply -->
+    <line x1="350" y1="158" x2="350" y2="178" stroke="#22C55E" stroke-width="1"/>
+    <rect x="345" y="163" width="10" height="8" fill="#22C55E" rx="1"/>
+    <!-- Markup -->
+    <line x1="380" y1="130" x2="380" y2="170" stroke="#22C55E" stroke-width="1"/>
+    <rect x="375" y="140" width="10" height="22" fill="#22C55E" rx="1"/>
+    <line x1="410" y1="100" x2="410" y2="150" stroke="#22C55E" stroke-width="1"/>
+    <rect x="405" y="108" width="10" height="30" fill="#22C55E" rx="1"/>
+    <line x1="440" y1="75" x2="440" y2="120" stroke="#22C55E" stroke-width="1"/>
+    <rect x="435" y="82" width="10" height="28" fill="#22C55E" rx="1"/>
+    <!-- High volume buying climax -->
+    <line x1="470" y1="50" x2="470" y2="100" stroke="#EF4444" stroke-width="1"/>
+    <rect x="465" y="55" width="10" height="35" fill="#EF4444" rx="1"/>
+    <!-- Distribution -->
+    <line x1="500" y1="60" x2="500" y2="95" stroke="#EF4444" stroke-width="1"/>
+    <rect x="495" y="68" width="10" height="18" fill="#EF4444" rx="1"/>
+    <line x1="530" y1="70" x2="530" y2="110" stroke="#EF4444" stroke-width="1"/>
+    <rect x="525" y="78" width="10" height="22" fill="#EF4444" rx="1"/>
+  </g>
+  <!-- Annotations -->
+  <text x="350" y="152" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#22C55E" text-anchor="middle" opacity=".7">No Supply</text>
+  <text x="470" y="44" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#EF4444" text-anchor="middle" opacity=".7">Climax</text>
+  <!-- Volume label -->
+  <text x="76" y="156" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#A855F7" text-anchor="end" opacity=".6" transform="rotate(-90,76,156)">VOLUME PROFILE</text>
+</svg>

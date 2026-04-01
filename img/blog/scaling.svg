@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D1117"/><stop offset="100%" stop-color="#161B22"/></linearGradient>
+    <linearGradient id="bar" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#A855F7"/></linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="url(#bg)"/>
+  <g font-family="Inter,system-ui,sans-serif">
+    <!-- Scaling bars chart -->
+    <line x1="60" y1="260" x2="560" y2="260" stroke="#1E293B" stroke-width="1"/>
+    <!-- $50K -->
+    <rect x="80" y="200" width="60" height="60" fill="url(#bar)" opacity=".6" rx="3"/>
+    <text x="110" y="195" font-size="12" fill="#A855F7" text-anchor="middle" font-weight="700">$50K</text>
+    <text x="110" y="275" font-size="8" fill="#5A6478" text-anchor="middle">Start</text>
+    <!-- Arrow -->
+    <text x="155" y="220" font-size="16" fill="#5A6478">→</text>
+    <!-- $100K -->
+    <rect x="180" y="150" width="60" height="110" fill="url(#bar)" opacity=".7" rx="3"/>
+    <text x="210" y="145" font-size="12" fill="#A855F7" text-anchor="middle" font-weight="700">$100K</text>
+    <text x="210" y="275" font-size="8" fill="#5A6478" text-anchor="middle">Month 2</text>
+    <text x="255" y="200" font-size="16" fill="#5A6478">→</text>
+    <!-- $150K -->
+    <rect x="280" y="100" width="60" height="160" fill="url(#bar)" opacity=".8" rx="3"/>
+    <text x="310" y="95" font-size="12" fill="#A855F7" text-anchor="middle" font-weight="700">$150K</text>
+    <text x="310" y="275" font-size="8" fill="#5A6478" text-anchor="middle">Month 4</text>
+    <text x="355" y="170" font-size="16" fill="#5A6478">→</text>
+    <!-- $200K -->
+    <rect x="380" y="65" width="60" height="195" fill="url(#bar)" opacity=".9" rx="3"/>
+    <text x="410" y="60" font-size="12" fill="#C084FC" text-anchor="middle" font-weight="700">$200K</text>
+    <text x="410" y="275" font-size="8" fill="#5A6478" text-anchor="middle">Month 6</text>
+    <text x="455" y="150" font-size="16" fill="#5A6478">→</text>
+    <!-- $300K -->
+    <rect x="480" y="35" width="60" height="225" fill="url(#bar)" rx="3"/>
+    <text x="510" y="28" font-size="14" fill="#F0B429" text-anchor="middle" font-weight="900">$300K</text>
+    <text x="510" y="275" font-size="8" fill="#F0B429" text-anchor="middle" font-weight="600">Month 8</text>
+    <!-- Growth line -->
+    <polyline fill="none" stroke="#F0B429" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,3" opacity=".5"
+      points="110,200 210,150 310,100 410,65 510,35"/>
+  </g>
+</svg>

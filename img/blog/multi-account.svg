@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D1117"/><stop offset="100%" stop-color="#161B22"/></linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="url(#bg)"/>
+  <g font-family="Inter,system-ui,sans-serif">
+    <!-- Warning triangle -->
+    <polygon points="300,20 340,80 260,80" fill="none" stroke="#EF4444" stroke-width="2"/>
+    <text x="300" y="68" font-size="22" fill="#EF4444" text-anchor="middle" font-weight="900">!</text>
+    <!-- Multiple accounts visual -->
+    <rect x="40" y="110" width="150" height="80" fill="#111318" stroke="#22C55E" stroke-width="1.5" rx="6"/>
+    <text x="55" y="132" font-size="9" fill="#22C55E" font-weight="700">Account #1 — Apex</text>
+    <text x="55" y="148" font-size="8" fill="#5A6478">$50K | Trailing DD</text>
+    <text x="55" y="163" font-size="8" fill="#5A6478">IP: 192.168.1.x</text>
+    <text x="55" y="178" font-size="8" fill="#22C55E">Status: Active ✓</text>
+
+    <rect x="220" y="110" width="150" height="80" fill="#111318" stroke="#F59E0B" stroke-width="1.5" rx="6"/>
+    <text x="235" y="132" font-size="9" fill="#F59E0B" font-weight="700">Account #2 — Apex</text>
+    <text x="235" y="148" font-size="8" fill="#5A6478">$50K | Trailing DD</text>
+    <text x="235" y="163" font-size="8" fill="#EF4444">IP: 192.168.1.x ⚠️</text>
+    <text x="235" y="178" font-size="8" fill="#F59E0B">Status: Flagged</text>
+
+    <rect x="400" y="110" width="150" height="80" fill="#111318" stroke="#EF4444" stroke-width="1.5" rx="6"/>
+    <text x="415" y="132" font-size="9" fill="#EF4444" font-weight="700">Account #3 — Apex</text>
+    <text x="415" y="148" font-size="8" fill="#5A6478">$100K | Trailing DD</text>
+    <text x="415" y="163" font-size="8" fill="#EF4444">Same device detected</text>
+    <text x="415" y="178" font-size="8" fill="#EF4444">Status: BANNED ✗</text>
+
+    <!-- Rules section -->
+    <rect x="40" y="210" width="520" height="70" fill="#111318" stroke="#1E293B" stroke-width="1" rx="6"/>
+    <text x="300" y="232" font-size="10" fill="#EF4444" text-anchor="middle" font-weight="700">Multi-Account Rules by Firm</text>
+    <text x="110" y="252" font-size="9" fill="#EF4444" text-anchor="middle">Apex: 1 account</text>
+    <text x="250" y="252" font-size="9" fill="#F59E0B" text-anchor="middle">FTMO: 2 max</text>
+    <text x="390" y="252" font-size="9" fill="#22C55E" text-anchor="middle">Bulenox: Multiple OK</text>
+    <text x="110" y="268" font-size="8" fill="#5A6478" text-anchor="middle">per household</text>
+    <text x="250" y="268" font-size="8" fill="#5A6478" text-anchor="middle">same strategy only</text>
+    <text x="390" y="268" font-size="8" fill="#5A6478" text-anchor="middle">different accounts</text>
+  </g>
+</svg>

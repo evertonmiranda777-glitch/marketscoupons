@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D1117"/><stop offset="100%" stop-color="#161B22"/></linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="url(#bg)"/>
+  <g font-family="Inter,system-ui,sans-serif">
+    <!-- Document icon -->
+    <rect x="230" y="20" width="140" height="180" fill="#111318" stroke="#64748B" stroke-width="1.5" rx="4"/>
+    <polygon points="330,20 370,60 330,60" fill="#1E293B" stroke="#64748B" stroke-width="1"/>
+    <!-- Document lines -->
+    <line x1="250" y1="80" x2="350" y2="80" stroke="#334155" stroke-width="2" rx="1"/>
+    <line x1="250" y1="95" x2="340" y2="95" stroke="#1E293B" stroke-width="2"/>
+    <line x1="250" y1="110" x2="350" y2="110" stroke="#1E293B" stroke-width="2"/>
+    <line x1="250" y1="125" x2="320" y2="125" stroke="#1E293B" stroke-width="2"/>
+    <!-- Tax amount -->
+    <rect x="250" y="140" width="100" height="25" fill="#EF4444" opacity=".08" rx="3"/>
+    <text x="300" y="157" font-size="12" fill="#EF4444" text-anchor="middle" font-weight="700">IR: 15-27.5%</text>
+    <!-- Stamp -->
+    <circle cx="340" cy="170" r="18" fill="none" stroke="#22C55E" stroke-width="2" opacity=".5" transform="rotate(-15,340,170)"/>
+    <text x="340" y="174" font-size="8" fill="#22C55E" text-anchor="middle" font-weight="700" transform="rotate(-15,340,170)">PAGO</text>
+    <!-- Side info cards -->
+    <rect x="30" y="30" width="170" height="60" fill="#111318" stroke="#3B82F6" stroke-width="1" rx="5"/>
+    <text x="45" y="50" font-size="9" fill="#3B82F6" font-weight="700">Pessoa Física</text>
+    <text x="45" y="65" font-size="8" fill="#5A6478">Carnê-Leão mensal</text>
+    <text x="45" y="78" font-size="8" fill="#5A6478">DARF até dia 30</text>
+
+    <rect x="30" y="105" width="170" height="60" fill="#111318" stroke="#F0B429" stroke-width="1" rx="5"/>
+    <text x="45" y="125" font-size="9" fill="#F0B429" font-weight="700">Pessoa Jurídica</text>
+    <text x="45" y="140" font-size="8" fill="#5A6478">Simples/Lucro Presumido</text>
+    <text x="45" y="153" font-size="8" fill="#22C55E">Alíquota: 6-15%</text>
+
+    <rect x="400" y="30" width="170" height="60" fill="#111318" stroke="#22C55E" stroke-width="1" rx="5"/>
+    <text x="415" y="50" font-size="9" fill="#22C55E" font-weight="700">Câmbio</text>
+    <text x="415" y="65" font-size="8" fill="#5A6478">USD → BRL via banco</text>
+    <text x="415" y="78" font-size="8" fill="#5A6478">IOF: 0.38%</text>
+
+    <rect x="400" y="105" width="170" height="60" fill="#111318" stroke="#EF4444" stroke-width="1" rx="5"/>
+    <text x="415" y="125" font-size="9" fill="#EF4444" font-weight="700">Atenção</text>
+    <text x="415" y="140" font-size="8" fill="#5A6478">Declarar IRPF anual</text>
+    <text x="415" y="153" font-size="8" fill="#5A6478">Ganhos no exterior</text>
+
+    <!-- Bottom tip -->
+    <rect x="80" y="225" width="440" height="50" fill="#111318" stroke="#F0B429" stroke-width="1" rx="6"/>
+    <text x="300" y="248" font-size="10" fill="#F0B429" text-anchor="middle" font-weight="700">Dica: Abrir CNPJ pode economizar até 50% em impostos</text>
+    <text x="300" y="264" font-size="8" fill="#5A6478" text-anchor="middle">Consulte um contador especializado em traders</text>
+  </g>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="100%" stop-color="#161B22"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="url(#bg)"/>
+  <!-- Risk/Reward diagram -->
+  <!-- Entry line -->
+  <line x1="120" y1="150" x2="520" y2="150" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="6,4" opacity=".5"/>
+  <text x="115" y="153" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#3B82F6" text-anchor="end" font-weight="600">Entry</text>
+  <!-- Stop loss zone (red) -->
+  <rect x="120" y="150" width="400" height="80" fill="#EF4444" opacity=".04" rx="4"/>
+  <line x1="120" y1="230" x2="520" y2="230" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="6,4" opacity=".5"/>
+  <text x="115" y="233" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#EF4444" text-anchor="end" font-weight="600">Stop</text>
+  <!-- 1R label -->
+  <text x="535" y="193" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#EF4444" opacity=".6" font-weight="700">-1R</text>
+  <!-- Take profit zones (green) -->
+  <rect x="120" y="70" width="400" height="80" fill="#22C55E" opacity=".04" rx="4"/>
+  <line x1="120" y1="70" x2="520" y2="70" stroke="#22C55E" stroke-width="1" stroke-dasharray="6,4" opacity=".3"/>
+  <line x1="120" y1="110" x2="520" y2="110" stroke="#22C55E" stroke-width="1.5" stroke-dasharray="6,4" opacity=".5"/>
+  <text x="115" y="113" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#22C55E" text-anchor="end" font-weight="600">TP1</text>
+  <text x="115" y="73" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#22C55E" text-anchor="end" font-weight="600">TP2</text>
+  <!-- R:R labels -->
+  <text x="535" y="133" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#22C55E" opacity=".6" font-weight="700">+2R</text>
+  <text x="535" y="93" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#22C55E" opacity=".6" font-weight="700">+3R</text>
+  <!-- Price action entering trade -->
+  <polyline fill="none" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".6"
+    points="130,180 160,170 190,175 220,160 250,155 270,150"/>
+  <!-- Price going to TP -->
+  <polyline fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+    points="270,150 300,140 330,125 360,115 390,112 420,108 450,95 480,78 500,72"/>
+  <!-- Entry dot -->
+  <circle cx="270" cy="150" r="5" fill="#3B82F6"/>
+  <!-- Position sizing box -->
+  <g transform="translate(140,245)">
+    <rect x="0" y="0" width="340" height="40" fill="#111318" stroke="#1E293B" stroke-width="1" rx="6"/>
+    <text x="170" y="15" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#5A6478" text-anchor="middle">POSITION SIZE</text>
+    <text x="170" y="30" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#F0B429" text-anchor="middle" font-weight="700">Size = $Risk ÷ (SL × $/pt)  |  Max 1% per trade</text>
+  </g>
+  <!-- Recovery curve (small inset) -->
+  <g transform="translate(380,20)" opacity=".5">
+    <rect x="0" y="0" width="130" height="55" fill="#111318" stroke="#1E293B" stroke-width="1" rx="4"/>
+    <text x="65" y="13" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#5A6478" text-anchor="middle">Recovery Math</text>
+    <polyline fill="none" stroke="#EF4444" stroke-width="1.2" points="10,45 30,38 50,30 70,22 90,18 110,28 120,40"/>
+    <text x="15" y="49" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#EF4444">-50%</text>
+    <text x="90" y="15" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#22C55E">+100%</text>
+  </g>
+</svg>

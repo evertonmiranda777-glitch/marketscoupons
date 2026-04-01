@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="100%" stop-color="#161B22"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="url(#bg)"/>
+  <!-- Progress steps -->
+  <g font-family="Inter,system-ui,sans-serif">
+    <!-- Step line -->
+    <line x1="80" y1="85" x2="520" y2="85" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+    <line x1="80" y1="85" x2="380" y2="85" stroke="#22C55E" stroke-width="3" stroke-linecap="round"/>
+    <!-- Step 1: Sign up -->
+    <circle cx="80" cy="85" r="16" fill="#22C55E"/>
+    <text x="80" y="89" font-size="11" fill="#0D1117" text-anchor="middle" font-weight="800">✓</text>
+    <text x="80" y="115" font-size="9" fill="#22C55E" text-anchor="middle" font-weight="600">Sign Up</text>
+    <!-- Step 2: Evaluation -->
+    <circle cx="190" cy="85" r="16" fill="#22C55E"/>
+    <text x="190" y="89" font-size="11" fill="#0D1117" text-anchor="middle" font-weight="800">✓</text>
+    <text x="190" y="115" font-size="9" fill="#22C55E" text-anchor="middle" font-weight="600">Phase 1</text>
+    <!-- Step 3: Phase 2 -->
+    <circle cx="300" cy="85" r="16" fill="#22C55E"/>
+    <text x="300" y="89" font-size="11" fill="#0D1117" text-anchor="middle" font-weight="800">✓</text>
+    <text x="300" y="115" font-size="9" fill="#22C55E" text-anchor="middle" font-weight="600">Phase 2</text>
+    <!-- Step 4: current -->
+    <circle cx="410" cy="85" r="16" fill="#0D1117" stroke="#F0B429" stroke-width="2.5"/>
+    <circle cx="410" cy="85" r="6" fill="#F0B429"/>
+    <text x="410" y="115" font-size="9" fill="#F0B429" text-anchor="middle" font-weight="700">Funded!</text>
+    <!-- Step 5 -->
+    <circle cx="520" cy="85" r="16" fill="#0D1117" stroke="#1E293B" stroke-width="2"/>
+    <text x="520" y="89" font-size="10" fill="#5A6478" text-anchor="middle">$</text>
+    <text x="520" y="115" font-size="9" fill="#5A6478" text-anchor="middle">Payout</text>
+  </g>
+  <!-- Strategy cards -->
+  <g font-family="Inter,system-ui,sans-serif">
+    <!-- Card 1: Rules -->
+    <rect x="40" y="140" width="155" height="75" fill="#111318" stroke="#22C55E" stroke-width="1" rx="6" opacity=".9"/>
+    <text x="55" y="162" font-size="10" fill="#22C55E" font-weight="700">1. Follow Rules</text>
+    <text x="55" y="178" font-size="8" fill="#5A6478">Max daily loss: 2%</text>
+    <text x="55" y="192" font-size="8" fill="#5A6478">Max drawdown: 5%</text>
+    <text x="55" y="206" font-size="8" fill="#5A6478">Min trading days: 5</text>
+    <!-- Card 2: Risk -->
+    <rect x="210" y="140" width="155" height="75" fill="#111318" stroke="#3B82F6" stroke-width="1" rx="6" opacity=".9"/>
+    <text x="225" y="162" font-size="10" fill="#3B82F6" font-weight="700">2. Size Right</text>
+    <text x="225" y="178" font-size="8" fill="#5A6478">Risk 0.5-1% per trade</text>
+    <text x="225" y="192" font-size="8" fill="#5A6478">R:R minimum 1:2</text>
+    <text x="225" y="206" font-size="8" fill="#5A6478">2 losses → stop day</text>
+    <!-- Card 3: Psychology -->
+    <rect x="380" y="140" width="155" height="75" fill="#111318" stroke="#F0B429" stroke-width="1" rx="6" opacity=".9"/>
+    <text x="395" y="162" font-size="10" fill="#F0B429" font-weight="700">3. Stay Disciplined</text>
+    <text x="395" y="178" font-size="8" fill="#5A6478">No revenge trading</text>
+    <text x="395" y="192" font-size="8" fill="#5A6478">Stick to your plan</text>
+    <text x="395" y="206" font-size="8" fill="#5A6478">Journal every trade</text>
+  </g>
+  <!-- Equity curve climbing -->
+  <g>
+    <polyline fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".6"
+      points="40,275 80,270 120,265 160,262 200,255 240,248 280,240 320,238 360,232 400,226 440,222 480,215 520,210 555,205"/>
+    <!-- Profit target line -->
+    <line x1="40" y1="232" x2="560" y2="232" stroke="#F0B429" stroke-width="1" stroke-dasharray="4,3" opacity=".3"/>
+    <text x="560" y="229" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#F0B429" opacity=".5" text-anchor="end">Profit Target</text>
+  </g>
+</svg>
