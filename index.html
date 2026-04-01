@@ -336,7 +336,7 @@ img{max-width:100%;}
 .mm-tg:hover{background:rgba(240,180,41,.18);}
 
 /* PAGES */
-.page{display:none;padding-top:var(--nav-h);min-height:100vh;padding-bottom:60px;}
+.page{display:none;padding-top:var(--nav-h);min-height:100vh;padding-bottom:60px;overflow-x:hidden;}
 .page.active{display:block;}
 
 /* HERO */
@@ -1185,7 +1185,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  .bot-win{bottom:84px;right:10px;width:calc(100vw - 20px);}
  .bot-fab{bottom:14px;right:14px;width:50px;height:50px;}
  .guides-grid,.blog-grid,.ind-grid,.offers-grid{grid-template-columns:1fr;}
- .blog-filters{padding:0 20px 12px;gap:6px;}
+ .blog-filters{padding:0 20px 12px;gap:6px;flex-wrap:wrap;}
  .bf-btn{padding:5px 10px;font-size:11px;}
  .blog-art-title{font-size:20px;}
  .blog-art-body{font-size:13px;}
@@ -6164,19 +6164,26 @@ async function loadGuidesFromSupabase(){
   }catch(e){}
   _guidesCache=GUIDES_FALLBACK;return GUIDES_FALLBACK;
 }
+const _guiaCatMap={'Iniciante':'guia_cat_iniciante','Intermediário':'guia_cat_intermediario','Prático':'guia_cat_pratico','Técnico':'guia_cat_tecnico','Comparativo':'guia_cat_comparativo','Financeiro':'guia_cat_financeiro'};
+const _guiaI18nMap={'g1':1,'g2':2,'g3':3,'g4':4,'g5':5,'g6':6};
+function _guiaNum(guide,idx){return _guiaI18nMap[guide.id]||(idx+1);}
 function renderGuides(){
   const g=document.getElementById('guides-grid');if(!g)return;
   const guides=_guidesCache.length?_guidesCache:GUIDES_FALLBACK;
-  g.innerHTML=guides.map(guide=>`
-    <div class="gc" onclick="openGuideArticle('${guide.slug}')">
+  g.innerHTML=guides.map((guide,idx)=>{
+    const n=_guiaNum(guide,idx);
+    const cat=_guiaCatMap[guide.category]?t(_guiaCatMap[guide.category]):guide.category;
+    const titulo=t('guia'+n+'_titulo')||guide.title;
+    const desc=t('guia'+n+'_desc')||guide.description;
+    return `<div class="gc" onclick="openGuideArticle('${guide.slug}')">
       <div class="gc-img" style="background-image:url('${guide.img||''}');background-color:var(--card2);"></div>
       <div class="gc-body">
-        <div class="gc-cat" style="color:${guide.cat_color};">${guide.category}</div>
-        <div class="gc-title">${guide.title}</div>
-        <div class="gc-desc">${guide.description}</div>
+        <div class="gc-cat" style="color:${guide.cat_color};">${cat}</div>
+        <div class="gc-title">${titulo}</div>
+        <div class="gc-desc">${desc}</div>
         <div class="gc-read">${t('guia_ler')}</div>
       </div>
-    </div>`).join('');
+    </div>`;}).join('');
 }
 async function openGuideArticle(slug){
   const guide=_guidesCache.find(g=>g.slug===slug);
@@ -6195,10 +6202,14 @@ async function openGuideArticle(slug){
   if(grid)grid.style.display='none';
   if(hdr)hdr.style.display='none';
   const readMin=Math.max(3,Math.round((guide.content||'').replace(/<[^>]*>/g,'').split(/\s+/).length/200));
+  const idx=_guidesCache.indexOf(guide);
+  const n=_guiaNum(guide,idx>=0?idx:0);
+  const cat=_guiaCatMap[guide.category]?t(_guiaCatMap[guide.category]):guide.category;
+  const titulo=t('guia'+n+'_titulo')||guide.title;
   art.innerHTML=`
     <button class="guide-back" onclick="closeGuideArticle()">← ${t('guia_voltar')||'Voltar aos guias'}</button>
-    <div class="guide-art-cat" style="color:${guide.cat_color};">${guide.icon} ${guide.category}</div>
-    <div class="guide-art-title">${guide.title}</div>
+    <div class="guide-art-cat" style="color:${guide.cat_color};">${guide.icon} ${cat}</div>
+    <div class="guide-art-title">${titulo}</div>
     <div class="guide-art-meta"><span>~${readMin} min de leitura</span></div>
     <div class="guide-art-body">${guide.content}</div>
     <div class="guide-art-cta">
