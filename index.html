@@ -1502,7 +1502,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div></div>
  </div>
  <!-- Auth buttons (logged out) -->
- <div id="auth-btns-out">
+ <div id="auth-btns-out" style="display:none;">
   <button class="enter-btn" data-i18n="btn_entrar" onclick="openAuthModal('login')">Entrar</button>
   <button class="signup-btn" data-i18n="btn_cadastrar" onclick="openAuthModal('signup')">Cadastrar-se</button>
  </div>
@@ -1561,7 +1561,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  </div>
  <a href="https://t.me/marketcouponss" target="_blank"><div class="mm-tg" data-i18n="mm_telegram"> Entrar no Telegram</div></a>
  <div class="mm-sec" data-i18n="mm_sec_conta">Conta</div>
- <div id="mm-auth-out">
+ <div id="mm-auth-out" style="display:none;">
   <button class="mm-item" onclick="closeMM();openAuthModal('login')" data-i18n="mm_entrar">Entrar na Conta</button>
   <button class="mm-item" onclick="closeMM();openAuthModal('signup')" data-i18n="mm_criar_conta">Criar Conta</button>
  </div>
@@ -6180,7 +6180,7 @@ async function openGuideArticle(slug){
   // If content not loaded yet (fallback), fetch from Supabase
   if(!guide.content){
     try{
-      const{data}=await db.from('cms_guides').select('*').eq('slug',slug).single();
+      const{data}=await db.from('cms_guides').select('*').eq('slug',slug).maybeSingle();
       if(data){Object.assign(guide,data);}
     }catch(e){}
   }
@@ -9273,7 +9273,12 @@ async function doAuthSignup() {
 }
 
 async function doLogout() {
-  await db.auth.signOut();
+  try { await db.auth.signOut(); } catch(e) { console.warn('signOut error:', e); }
+  // Limpar storage do Supabase como fallback
+  try {
+    const keys = Object.keys(localStorage);
+    keys.forEach(k => { if (k.startsWith('sb-') && k.includes('-auth-token')) localStorage.removeItem(k); });
+  } catch(e) {}
   currentUser = null;
   currentProfile = null;
   updateAuthUI(false);
@@ -9283,7 +9288,7 @@ async function doLogout() {
 
 async function loadUserSession(user) {
   currentUser = user;
-  const { data } = await db.from('profiles').select('*').eq('id', user.id).single();
+  const { data } = await db.from('profiles').select('*').eq('id', user.id).maybeSingle();
   currentProfile = data;
   updateAuthUI(true);
   await loadUserFavs();
@@ -9339,9 +9344,15 @@ async function saveProfile() {
 
 // Check existing session on load
 async function checkAuthSession() {
-  const { data: { session } } = await db.auth.getSession();
-  if (session?.user) {
-    await loadUserSession(session.user);
+  try {
+    const { data: { session } } = await db.auth.getSession();
+    if (session?.user) {
+      await loadUserSession(session.user);
+    } else {
+      updateAuthUI(false);
+    }
+  } catch(e) {
+    updateAuthUI(false);
   }
   // Listen for auth changes
   db.auth.onAuthStateChange(async (event, session) => {
@@ -9386,7 +9397,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Checar se bot está ativado
   try{
-    const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').single();
+    const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').maybeSingle();
     if(data&&data.value==='false'){
       const fab=document.getElementById('bot-fab');if(fab)fab.style.display='none';
       const win=document.getElementById('bot-win');if(win)win.style.display='none';

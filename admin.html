@@ -1133,7 +1133,7 @@ async function initAdmin(){
 /* ══ BOT TOGGLE ══ */
 async function loadBotSetting(){
   try{
-    const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').single();
+    const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').maybeSingle();
     const on = data?.value==='true';
     const btn=document.getElementById('bot-toggle');
     if(btn){btn.classList.toggle('on',on);btn.classList.toggle('off',!on);}
