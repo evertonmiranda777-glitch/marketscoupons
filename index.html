@@ -2530,7 +2530,7 @@ function go(page, skipHash){
   if(!skipHash) location.hash=page==='home'?'':page;
   track('page_view',{page_name:page});
   if(page==='live') checkLoyaltyAndShowLive();
-  if(page==='analise') checkAnalysisGate();
+  if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
 }
@@ -9566,6 +9566,7 @@ function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click
    ══════════════════════════════════════════════════════════════════════════ */
 let currentUser = null;
 let currentProfile = null;
+let _authLoaded = false;
 
 function openAuthModal(type) {
   closeAuthModals();
@@ -9828,6 +9829,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   // Auth session check
   await checkAuthSession();
+  _authLoaded = true;
   checkAnalysisGate();
   renderLoyaltyPage();
   await initFavs();
