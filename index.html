@@ -389,13 +389,15 @@ img{max-width:100%;}
 .oc-disc{font-size:22px;font-weight:800;text-align:right;}
 .oc-off{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;}
 .oc-coupon{
- display:flex;align-items:center;justify-content:space-between;
- padding:8px 11px;background:rgba(28,37,53,.7);
- border:1px dashed var(--b2);border-radius:7px;
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+ padding:10px 14px;background:var(--gbg);
+ border:1px dashed var(--gbr);border-radius:8px;
 }
-.oc-code{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--gold);}
-.oc-copy{font-size:10px;color:var(--t3);background:none;border:none;transition:.15s;}
-.oc-copy:hover{color:var(--gold);}
+.oc-coupon .offer-coupon-label{width:100%;margin-bottom:4px;}
+.oc-code{font-size:14px;font-weight:800;letter-spacing:2px;color:var(--gold);}
+.oc-copy{padding:5px 14px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
+.oc-copy:hover{background:#F7C948;}
+.oc-hint{font-size:10px;color:var(--t3);text-align:center;}
 
 /* FIRMS PAGE */
 .firms-layout{display:flex;min-height:calc(100vh - var(--nav-h));}
@@ -5960,8 +5962,9 @@ function renderHome(){
         <div class="oc-left">${firmIco(f,'36px','13px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};">${f.discount}%</div><div class="oc-off">off ${f.dtype}</div></div>
       </div>
-      ${f.coupon?`<div class="oc-coupon"><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>`:'<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);"><span style="font-size:11px;color:var(--green);font-weight:600;">Desconto aplicado no link</span></div>'}
-      <button style="width:100%;padding:9px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;" onmouseover="this.style.background='#F7C948'" onmouseout="this.style.background='var(--gold)'" onclick="go('firms');setTimeout(()=>openD('${f.id}'),120);track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">${t('home_ver_planos')}</button>
+      ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
+      <div class="oc-hint">${t('firms_hint_cupom')}</div>`:'<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><span style="font-size:11px;color:var(--green);font-weight:600;">✓ ${t("offers_desconto_link")}</span></div>'}
+      <button class="offer-cta" onclick="go('firms');setTimeout(()=>openD('${f.id}'),120);track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">${t('home_ver_planos')}</button>
     </div>`).join('');
 }
 
