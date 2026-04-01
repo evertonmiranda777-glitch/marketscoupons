@@ -1052,7 +1052,7 @@ function getCampaigns()  { return JSON.parse(localStorage.getItem('mc_campaigns'
 
 // Refresh data from Supabase into localStorage cache, then re-render
 async function refreshFromSupabase() {
-  await Promise.all([ getLeadsSync(), getEventsSync() ]);
+  await Promise.all([ getLeads(), getEvents() ]);
 }
 
 function isToday(ts) {
