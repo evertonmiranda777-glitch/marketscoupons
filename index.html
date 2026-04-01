@@ -6418,13 +6418,13 @@ function openD(id){
         <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_plataformas')}</div>
         <div class="plats-flex">${(f.platforms||[]).map(p=>`<span class="plat">${p}</span>`).join('')}</div>
         ${f.prices?.length ? (()=>{
-          const types=[...new Set(f.prices.map(r=>r.t||'').filter(Boolean))];
-          const hasTypes=types.length>1;
+          const pt = f.price_types||[];
+          const hasDual = pt.length>=2 && f.prices.some(r=>r.n2);
           return `
         <div style="height:12px;"></div>
         <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_precos')}</div>
-        ${hasTypes?`<div class="price-type-tabs" data-firm="${f.id}" style="display:flex;gap:6px;margin-bottom:10px;">${types.map((tp,i)=>`<button class="price-type-btn${i===0?' active':''}" onclick="filterPriceType('${f.id}','${tp}',this)" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid ${i===0?'var(--gold)':'var(--b1)'};background:${i===0?'rgba(240,180,41,.15)':'var(--card2)'};color:${i===0?'var(--gold)':'var(--t3)'};">${tp}</button>`).join('')}</div>`:''}
-        <table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr class="price-row-${f.id}" data-ptype="${r.t||''}" ${hasTypes&&r.t!==types[0]?'style="display:none"':''}><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>`;
+        ${hasDual ? `<table class="ptbl"><thead><tr><th rowspan="2">${t('drw_conta')}</th><th colspan="2" style="text-align:center;color:var(--blue);border-bottom:1px solid var(--b1);">${pt[0]}</th><th colspan="2" style="text-align:center;color:var(--green);border-bottom:1px solid var(--b1);">${pt[1]}</th></tr><tr><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td><td class="tn">${r.n2||'—'}</td><td class="to">${r.o2||'—'}</td></tr>`).join('')}</tbody></table>`
+        : `<table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>`}`;
         })() : ''}
         ${f.perks?.length ? `
         <div style="height:12px;"></div>
@@ -6507,22 +6507,6 @@ function drwSelSize(firmId, size) {
   _drwState[firmId] = _drwState[firmId] || {};
   _drwState[firmId].size = size;
   document.querySelectorAll(`#drw-sizes-${firmId} .drw-btn`).forEach(b=>b.classList.toggle('sel', b.textContent.trim()===size));
-}
-function filterPriceType(firmId, type, btn) {
-  document.querySelectorAll(`.price-row-${firmId}`).forEach(r => {
-    r.style.display = (r.dataset.ptype === type) ? '' : 'none';
-  });
-  const tabs = btn.parentElement;
-  tabs.querySelectorAll('.price-type-btn').forEach(b => {
-    b.classList.remove('active');
-    b.style.border = '1px solid var(--b1)';
-    b.style.background = 'var(--card2)';
-    b.style.color = 'var(--t3)';
-  });
-  btn.classList.add('active');
-  btn.style.border = '1px solid var(--gold)';
-  btn.style.background = 'rgba(240,180,41,.15)';
-  btn.style.color = 'var(--gold)';
 }
 function drwGoCheckout(firmId) {
   const cf = CHECKOUT_FIRMS.find(f=>f.id===firmId);
@@ -6729,7 +6713,7 @@ async function loadFirmsFromSupabase() {
         platforms: Array.isArray(f.platforms) ? f.platforms : (f.platforms||'').split(',').map(s=>s.trim()),
         tags: f.tags || [], drawdown: f.drawdown, minDays: f.min_days,
         evalDays: f.eval_days, ddPct: f.dd_pct, target: f.target, scaling: f.scaling,
-        prices: f.prices || [], perks: f.perks || [], proibido: f.proibido || [],
+        prices: f.prices || [], price_types: f.price_types || [], perks: f.perks || [], proibido: f.proibido || [],
         desc: f.description || '',
         badge: f.badge && f.badge.label ? f.badge : undefined,
         newsTrading: f.news_trading || false,

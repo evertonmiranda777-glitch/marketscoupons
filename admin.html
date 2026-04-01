@@ -2380,15 +2380,12 @@ function openFirmModal(id) {
 
     <div id="fm-sec-prices" class="fm-sec" style="display:none;">
     <div style="font-size:12px;font-weight:700;margin-bottom:8px;">Precos com Desconto (exibido nas firmas)</div>
-    <div style="font-size:10px;color:var(--t3);margin-bottom:10px;">Cada linha: Tipo (ex: Intraday, EOD) | Conta | Preco com desconto | Preco original</div>
-    <div id="fm-prices-list">${prices.map((p,i)=>`
-      <div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
-        <input type="text" value="${p.t||''}" placeholder="Tipo" class="fm-price-t" style="font-size:11px;color:var(--blue);">
-        <input type="text" value="${p.a||''}" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
-        <input type="text" value="${p.n||''}" placeholder="Com desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
-        <input type="text" value="${p.o||''}" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
-        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
-      </div>`).join('')}</div>
+    <div class="modal-field" style="margin-bottom:12px;max-width:320px;">
+      <label>Tipos de preco (virgula) <span style="font-size:9px;color:var(--t3);">Ex: Intraday, EOD — deixe vazio para coluna unica</span></label>
+      <input type="text" id="fm-price-types" value="${(f.price_types||[]).join(', ')}" placeholder="Ex: Intraday, EOD" onchange="rebuildPriceHeaders()">
+    </div>
+    <div id="fm-prices-header"></div>
+    <div id="fm-prices-list"></div>
     <button onclick="addPriceRow()" style="margin-top:6px;padding:4px 12px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">+ Adicionar preco</button>
     </div>
 
@@ -2443,6 +2440,11 @@ function openFirmModal(id) {
       <button class="btn-primary" onclick="saveFirm('${id||''}')">Salvar Firma</button>
       <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
     </div>`;
+  // Populate price rows after DOM is ready
+  const pTypes = getPriceTypes();
+  rebuildPriceHeaders();
+  const pList = document.getElementById('fm-prices-list');
+  pList.innerHTML = prices.map(p => buildPriceRowHtml(p, pTypes)).join('');
   document.getElementById('cms-modal-ov').classList.add('open');
 }
 function fmTab(btn,sec){
@@ -2451,15 +2453,44 @@ function fmTab(btn,sec){
   document.querySelectorAll('.fm-sec').forEach(s=>s.style.display='none');
   document.getElementById('fm-sec-'+sec).style.display='';
 }
-function addPriceRow(){
-  const list=document.getElementById('fm-prices-list');
-  list.insertAdjacentHTML('beforeend',`<div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
-    <input type="text" placeholder="Tipo" class="fm-price-t" style="font-size:11px;color:var(--blue);">
-    <input type="text" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
-    <input type="text" placeholder="Com desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
-    <input type="text" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
+function getPriceTypes() {
+  return (document.getElementById('fm-price-types')?.value||'').split(',').map(s=>s.trim()).filter(Boolean);
+}
+function rebuildPriceHeaders() {
+  const types = getPriceTypes();
+  const hdr = document.getElementById('fm-prices-header');
+  if(!hdr) return;
+  if(types.length>=2) {
+    hdr.innerHTML=`<div style="display:grid;grid-template-columns:1fr ${types.map(()=>'1fr 1fr').join(' ')} 30px;gap:6px;margin-bottom:6px;align-items:center;">
+      <span style="font-size:10px;color:var(--t3);font-weight:700;">Conta</span>
+      ${types.map(tp=>`<span style="font-size:10px;color:var(--blue);font-weight:700;">${tp} ↓</span><span style="font-size:10px;color:var(--t3);font-weight:700;">${tp} orig.</span>`).join('')}
+      <span></span></div>`;
+  } else {
+    hdr.innerHTML=`<div style="font-size:10px;color:var(--t3);margin-bottom:6px;">Conta | Com desconto | Original</div>`;
+  }
+}
+function buildPriceRowHtml(p, types) {
+  if(types.length>=2) {
+    return `<div style="display:grid;grid-template-columns:1fr ${types.map(()=>'1fr 1fr').join(' ')} 30px;gap:6px;margin-bottom:4px;align-items:center;">
+      <input type="text" value="${p.a||''}" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
+      <input type="text" value="${p.n||''}" placeholder="Desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
+      <input type="text" value="${p.o||''}" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
+      <input type="text" value="${p.n2||''}" placeholder="Desconto" class="fm-price-n2" style="font-size:11px;color:var(--gold);font-weight:700;">
+      <input type="text" value="${p.o2||''}" placeholder="Original" class="fm-price-o2" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
+      <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
+    </div>`;
+  }
+  return `<div style="display:grid;grid-template-columns:1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
+    <input type="text" value="${p.a||''}" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
+    <input type="text" value="${p.n||''}" placeholder="Com desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
+    <input type="text" value="${p.o||''}" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
     <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
-  </div>`);
+  </div>`;
+}
+function addPriceRow(){
+  const types = getPriceTypes();
+  const list=document.getElementById('fm-prices-list');
+  list.insertAdjacentHTML('beforeend', buildPriceRowHtml({}, types));
 }
 function addCheckoutPlanRow(){
   const list=document.getElementById('fm-co-plans');
@@ -2480,12 +2511,14 @@ async function saveFirm(existingId) {
   const priceRows=document.getElementById('fm-prices-list').children;
   const prices=[];
   for(const row of priceRows){
-    const t=row.querySelector('.fm-price-t')?.value.trim();
     const a=row.querySelector('.fm-price-a')?.value.trim();
     const n=row.querySelector('.fm-price-n')?.value.trim();
     const o=row.querySelector('.fm-price-o')?.value.trim();
-    if(a)prices.push({t:t||'',a,n:n||'—',o:o||'—'});
+    const n2=row.querySelector('.fm-price-n2')?.value.trim()||'';
+    const o2=row.querySelector('.fm-price-o2')?.value.trim()||'';
+    if(a)prices.push({a,n:n||'—',o:o||'—',n2,o2});
   }
+  const price_types = getPriceTypes();
   // Collect checkout plans
   const planRows=document.getElementById('fm-co-plans').children;
   const coPlans=[];
@@ -2537,6 +2570,7 @@ async function saveFirm(existingId) {
     proibido:      document.getElementById('fm-proibido').value.split('\n').map(s=>s.trim()).filter(Boolean),
     description:   document.getElementById('fm-desc').value.trim()||null,
     prices,
+    price_types: price_types.length ? price_types : null,
     badge:         badgeLabel ? {label:badgeLabel,color:badgeColor,bg:badgeColor+'26'} : {},
     checkout_url_template: document.getElementById('fm-co-url').value.trim()||null,
     checkout_types: document.getElementById('fm-co-types').value.split(',').map(s=>s.trim()).filter(Boolean),
