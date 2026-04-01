@@ -6697,7 +6697,6 @@ async function loadFirmsFromSupabase() {
     // Map Supabase rows → FIRMS format (same shape renderFirms() expects)
     FIRMS.length = 0;
     data.forEach(f => {
-      const meta = f.metadata || {};
       const firm = {
         id: f.id, name: f.name, type: f.type,
         color: f.color, bg: f.bg || f.color + '1F',
@@ -6711,7 +6710,9 @@ async function loadFirmsFromSupabase() {
         evalDays: f.eval_days, ddPct: f.dd_pct, target: f.target, scaling: f.scaling,
         prices: f.prices || [], perks: f.perks || [], proibido: f.proibido || [],
         desc: f.description || '',
-        ...meta,
+        badge: f.badge && f.badge.label ? f.badge : undefined,
+        newsTrading: f.news_trading || false,
+        day1Payout: f.day1_payout || false,
       };
       if (f.trustpilot_url) {
         firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };
@@ -6721,17 +6722,29 @@ async function loadFirmsFromSupabase() {
 
     // Map → CHECKOUT_FIRMS format
     CHECKOUT_FIRMS.length = 0;
-    data.filter(f => f.plans?.length).forEach(f => {
+    data.filter(f => f.checkout_plans?.length).forEach(f => {
+      const urlTpl = f.checkout_url_template || f.link || '#';
       CHECKOUT_FIRMS.push({
-        id: f.id, name: f.name, short: f.icon,
+        id: f.id, name: f.name, short: f.short_name || f.icon,
         coupon: f.coupon || null,
         discount: f.discount + '%',
-        color: f.color, bg: f.color + '1F',
-        platforms: Array.isArray(f.platforms) ? f.platforms : (f.platforms||'').split(',').map(s=>s.trim()),
+        color: f.color, bg: f.bg || f.color + '1F',
+        platforms: Array.isArray(f.checkout_platforms) ? f.checkout_platforms : (Array.isArray(f.platforms) ? f.platforms : []),
         types: Array.isArray(f.checkout_types) ? f.checkout_types : ['Standard'],
-        plans: f.plans || [],
-        includes: Array.isArray(f.includes) ? f.includes : [],
-        buildUrl: (size, type, plat) => f.link || '#',
+        plans: f.checkout_plans || [],
+        includes: Array.isArray(f.checkout_includes) ? f.checkout_includes : [],
+        buildUrl: (size, type, plat) => {
+          // Interpolate template: ${size}, ${type}, ${plat} (lowercase+dash) and ${SIZE}, ${TYPE}, ${PLAT} (original)
+          try {
+            return urlTpl
+              .replace(/\$\{size\}/g, size.toLowerCase().replace(/\s+/g,'-'))
+              .replace(/\$\{type\}/g, type.toLowerCase().replace(/\s+/g,'-'))
+              .replace(/\$\{plat\}/g, plat.toLowerCase().replace(/\s+/g,'-'))
+              .replace(/\$\{SIZE\}/g, size)
+              .replace(/\$\{TYPE\}/g, type)
+              .replace(/\$\{PLAT\}/g, plat);
+          } catch(e) { return urlTpl; }
+        },
       });
     });
 

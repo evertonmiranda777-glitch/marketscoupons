@@ -2515,60 +2515,213 @@ async function renderCmsFirms() {
 function openFirmModal(id) {
   const f = id ? (_firmsCache.find(x=>x.id===id) || {}) : {};
   const isNew = !id;
-  const plats = Array.isArray(f.platforms) ? f.platforms.join(',') : (f.platforms||'');
-  document.getElementById('cms-modal-title').textContent = isNew ? 'Nova Firma' : 'Editar Firma';
+  const plats = Array.isArray(f.platforms) ? f.platforms.join(', ') : (f.platforms||'');
+  const coPlats = Array.isArray(f.checkout_platforms) ? f.checkout_platforms.join(', ') : '';
+  const coTypes = Array.isArray(f.checkout_types) ? f.checkout_types.join(', ') : '';
+  const coIncludes = Array.isArray(f.checkout_includes) ? f.checkout_includes.join('\n') : '';
+  const prices = Array.isArray(f.prices) ? f.prices : [];
+  const coPlans = Array.isArray(f.checkout_plans) ? f.checkout_plans : [];
+  const perks = Array.isArray(f.perks) ? f.perks.join('\n') : '';
+  const proibido = Array.isArray(f.proibido) ? f.proibido.join('\n') : '';
+  const tags = Array.isArray(f.tags) ? f.tags.join(', ') : '';
+  const badge = f.badge || {};
+  document.getElementById('cms-modal-title').textContent = isNew ? 'Nova Firma' : 'Editar: ' + (f.name||'');
   document.getElementById('cms-modal-body').innerHTML = `
-    <div class="modal-grid">
-      <div class="modal-field"><label>ID (único, sem espaços)</label><input type="text" id="fm-id" value="${f.id||''}" placeholder="ex: nova_firma" ${isNew?'':'readonly'}></div>
-      <div class="modal-field"><label>Nome da Firma</label><input type="text" id="fm-name" value="${f.name||''}" placeholder="Nome completo"></div>
-      <div class="modal-field"><label>Tipo</label><select id="fm-type"><option ${f.type==='Futuros'?'selected':''}>Futuros</option><option ${f.type==='Forex'?'selected':''}>Forex</option><option ${f.type==='Acoes'?'selected':''}>Acoes</option></select></div>
-      <div class="modal-field"><label>Cor (hex)</label><input type="color" id="fm-color" value="${f.color||'#F0B429'}" style="height:38px;padding:2px;"></div>
-      <div class="modal-field"><label>Ícone (1-2 letras fallback)</label><input type="text" id="fm-icon" value="${f.icon||''}" maxlength="2"></div>
-      <div class="modal-field"><label>URL do Logo (imagem)</label><input type="url" id="fm-icon-url" value="${f.icon_url||''}" placeholder="https://...logo.png"></div>
-      <div class="modal-field"><label>Trustpilot URL</label><input type="url" id="fm-tp-url" value="${f.trustpilot_url||''}" placeholder="https://trustpilot.com/review/..."></div>
-      <div class="modal-field"><label>Desconto (%)</label><input type="number" id="fm-discount" value="${f.discount||0}" min="0" max="100"></div>
-      <div class="modal-field"><label>Cupom</label><input type="text" id="fm-coupon" value="${f.coupon||''}" placeholder="Deixe vazio se só link"></div>
-      <div class="modal-field"><label>Split de Lucro</label><input type="text" id="fm-split" value="${f.split||'80%'}" placeholder="ex: 80%"></div>
-      <div class="modal-field"><label>Tipo de Desconto</label><input type="text" id="fm-dtype" value="${f.discount_type||'lifetime'}" placeholder="lifetime, especial..."></div>
-      <div class="modal-field"><label>Ordem de exibição</label><input type="number" id="fm-sort" value="${f.sort_order||99}"></div>
-      <div class="modal-field modal-full"><label>Link de Checkout / Parceiro</label><input type="url" id="fm-link" value="${f.link||''}" placeholder="https://..."></div>
-      <div class="modal-field modal-full"><label>Plataformas (vírgula)</label><input type="text" id="fm-platforms" value="${plats}" placeholder="Rithmic,NinjaTrader,MT5"></div>
-      <div class="modal-field"><label>Rating (0-5)</label><input type="number" id="fm-rating" value="${f.rating||4.5}" min="0" max="5" step="0.1"></div>
-      <div class="modal-field"><label>Número de Reviews</label><input type="number" id="fm-reviews" value="${f.reviews||0}"></div>
+    <div style="display:flex;gap:6px;margin-bottom:14px;">
+      <button class="btn-secondary fm-tab active" onclick="fmTab(this,'basic')">Dados Basicos</button>
+      <button class="btn-secondary fm-tab" onclick="fmTab(this,'prices')">Precos & Planos</button>
+      <button class="btn-secondary fm-tab" onclick="fmTab(this,'checkout')">Checkout</button>
+      <button class="btn-secondary fm-tab" onclick="fmTab(this,'details')">Detalhes</button>
     </div>
-    <div style="display:flex;gap:10px;margin-top:4px;">
+
+    <div id="fm-sec-basic" class="fm-sec">
+    <div class="modal-grid">
+      <div class="modal-field"><label>ID (unico)</label><input type="text" id="fm-id" value="${f.id||''}" ${isNew?'':'readonly'} style="${isNew?'':'opacity:.5;'}"></div>
+      <div class="modal-field"><label>Nome</label><input type="text" id="fm-name" value="${f.name||''}"></div>
+      <div class="modal-field"><label>Nome Curto</label><input type="text" id="fm-short" value="${f.short_name||''}" placeholder="Ex: TPT"></div>
+      <div class="modal-field"><label>Tipo</label><select id="fm-type"><option ${f.type==='Futuros'?'selected':''}>Futuros</option><option ${f.type==='Forex'?'selected':''}>Forex</option></select></div>
+      <div class="modal-field"><label>Desconto %</label><input type="number" id="fm-discount" value="${f.discount||0}" min="0" max="100" style="font-size:18px;font-weight:800;color:var(--gold);"></div>
+      <div class="modal-field"><label>Cupom</label><input type="text" id="fm-coupon" value="${f.coupon||''}" style="font-family:monospace;font-size:14px;font-weight:700;text-transform:uppercase;"></div>
+      <div class="modal-field"><label>Split</label><input type="text" id="fm-split" value="${f.split||'80%'}"></div>
+      <div class="modal-field"><label>Tipo Desconto</label><input type="text" id="fm-dtype" value="${f.discount_type||'lifetime'}"></div>
+      <div class="modal-field modal-full"><label>Link Afiliado</label><input type="url" id="fm-link" value="${f.link||''}"></div>
+      <div class="modal-field"><label>Cor</label><input type="color" id="fm-color" value="${f.color||'#F0B429'}" style="height:38px;"></div>
+      <div class="modal-field"><label>Icone (1-2 letras)</label><input type="text" id="fm-icon" value="${f.icon||''}" maxlength="2"></div>
+      <div class="modal-field"><label>URL Logo</label><input type="url" id="fm-icon-url" value="${f.icon_url||''}"></div>
+      <div class="modal-field"><label>Ordem</label><input type="number" id="fm-sort" value="${f.sort_order||99}"></div>
+    </div>
+    </div>
+
+    <div id="fm-sec-prices" class="fm-sec" style="display:none;">
+    <div style="font-size:12px;font-weight:700;margin-bottom:8px;">Precos com Desconto (exibido nas firmas)</div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:10px;">Cada linha: Conta | Preco com desconto | Preco original</div>
+    <div id="fm-prices-list">${prices.map((p,i)=>`
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
+        <input type="text" value="${p.a||''}" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
+        <input type="text" value="${p.n||''}" placeholder="Com desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
+        <input type="text" value="${p.o||''}" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
+      </div>`).join('')}</div>
+    <button onclick="addPriceRow()" style="margin-top:6px;padding:4px 12px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">+ Adicionar preco</button>
+    </div>
+
+    <div id="fm-sec-checkout" class="fm-sec" style="display:none;">
+    <div style="font-size:12px;font-weight:700;margin-bottom:8px;">Configuracao do Checkout</div>
+    <div class="modal-grid">
+      <div class="modal-field modal-full"><label>URL Template <span style="font-size:9px;color:var(--t3);">(use \${size} \${type} \${plat} para lowercase ou \${SIZE} \${TYPE} \${PLAT} para original)</span></label><input type="text" id="fm-co-url" value="${f.checkout_url_template||f.link||''}" style="font-family:monospace;font-size:11px;"></div>
+      <div class="modal-field modal-full"><label>Tipos de conta (virgula)</label><input type="text" id="fm-co-types" value="${coTypes}" placeholder="Ex: Trailing DD, EOD DD"></div>
+      <div class="modal-field modal-full"><label>Plataformas checkout (virgula)</label><input type="text" id="fm-co-plats" value="${coPlats}" placeholder="Ex: Rithmic, NinjaTrader"></div>
+      <div class="modal-field modal-full"><label>Beneficios (1 por linha)</label><textarea id="fm-co-includes" rows="4" style="font-size:11px;">${coIncludes}</textarea></div>
+    </div>
+    <div style="font-size:12px;font-weight:700;margin:14px 0 8px;">Planos do Checkout</div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:8px;">Size | Capital | Meta | MaxDD | Original | Com Desconto | Featured</div>
+    <div id="fm-co-plans">${coPlans.map(p=>`
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 50px 30px;gap:4px;margin-bottom:4px;align-items:center;">
+        <input type="text" value="${p.size||''}" placeholder="Size" class="fm-cp-size" style="font-size:10px;">
+        <input type="text" value="${p.capital||''}" placeholder="Capital" class="fm-cp-capital" style="font-size:10px;">
+        <input type="text" value="${p.goal||''}" placeholder="Meta" class="fm-cp-goal" style="font-size:10px;">
+        <input type="text" value="${p.maxDD||''}" placeholder="MaxDD" class="fm-cp-maxdd" style="font-size:10px;">
+        <input type="text" value="${p.orig||''}" placeholder="Original" class="fm-cp-orig" style="font-size:10px;">
+        <input type="text" value="${p.disc||''}" placeholder="Desconto" class="fm-cp-disc" style="font-size:10px;color:var(--gold);font-weight:700;">
+        <label style="font-size:9px;display:flex;align-items:center;gap:3px;"><input type="checkbox" class="fm-cp-feat" ${p.featured?'checked':''}> Dest.</label>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
+      </div>`).join('')}</div>
+    <button onclick="addCheckoutPlanRow()" style="margin-top:6px;padding:4px 12px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">+ Adicionar plano</button>
+    </div>
+
+    <div id="fm-sec-details" class="fm-sec" style="display:none;">
+    <div class="modal-grid">
+      <div class="modal-field modal-full"><label>Plataformas (virgula)</label><input type="text" id="fm-platforms" value="${plats}"></div>
+      <div class="modal-field"><label>Drawdown</label><input type="text" id="fm-drawdown" value="${f.drawdown||''}"></div>
+      <div class="modal-field"><label>DD %</label><input type="text" id="fm-ddpct" value="${f.dd_pct||''}"></div>
+      <div class="modal-field"><label>Meta</label><input type="text" id="fm-target" value="${f.target||''}"></div>
+      <div class="modal-field"><label>Scaling</label><input type="text" id="fm-scaling" value="${f.scaling||''}"></div>
+      <div class="modal-field"><label>Dias minimos</label><input type="number" id="fm-mindays" value="${f.min_days||''}"></div>
+      <div class="modal-field"><label>Prazo avaliacao (dias)</label><input type="number" id="fm-evaldays" value="${f.eval_days||''}"></div>
+      <div class="modal-field"><label>Rating</label><input type="number" id="fm-rating" value="${f.rating||4.5}" step="0.1" min="0" max="5"></div>
+      <div class="modal-field"><label>Reviews</label><input type="number" id="fm-reviews" value="${f.reviews||0}"></div>
+      <div class="modal-field"><label>Trustpilot URL</label><input type="url" id="fm-tp-url" value="${f.trustpilot_url||''}"></div>
+      <div class="modal-field"><label><input type="checkbox" id="fm-news" ${f.news_trading?'checked':''}> Trade noticias</label></div>
+      <div class="modal-field"><label><input type="checkbox" id="fm-d1" ${f.day1_payout?'checked':''}> Saque dia 1</label></div>
+      <div class="modal-field modal-full"><label>Tags (virgula)</label><input type="text" id="fm-tags" value="${tags}"></div>
+      <div class="modal-field modal-full"><label>Beneficios (1 por linha)</label><textarea id="fm-perks" rows="3" style="font-size:11px;">${perks}</textarea></div>
+      <div class="modal-field modal-full"><label>Proibido (1 por linha)</label><textarea id="fm-proibido" rows="2" style="font-size:11px;">${proibido}</textarea></div>
+      <div class="modal-field modal-full"><label>Descricao</label><textarea id="fm-desc" rows="3" style="font-size:11px;">${f.description||''}</textarea></div>
+      <div class="modal-field"><label>Badge Label</label><input type="text" id="fm-badge-label" value="${badge.label||''}"></div>
+      <div class="modal-field"><label>Badge Color</label><input type="color" id="fm-badge-color" value="${badge.color||f.color||'#F0B429'}" style="height:38px;"></div>
+    </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:14px;">
       <button class="btn-primary" onclick="saveFirm('${id||''}')">Salvar Firma</button>
       <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
     </div>`;
   document.getElementById('cms-modal-ov').classList.add('open');
 }
+function fmTab(btn,sec){
+  btn.parentElement.querySelectorAll('.fm-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.fm-sec').forEach(s=>s.style.display='none');
+  document.getElementById('fm-sec-'+sec).style.display='';
+}
+function addPriceRow(){
+  const list=document.getElementById('fm-prices-list');
+  list.insertAdjacentHTML('beforeend',`<div style="display:grid;grid-template-columns:1fr 1fr 1fr 30px;gap:6px;margin-bottom:4px;align-items:center;">
+    <input type="text" placeholder="Conta" class="fm-price-a" style="font-size:11px;">
+    <input type="text" placeholder="Com desconto" class="fm-price-n" style="font-size:11px;color:var(--gold);font-weight:700;">
+    <input type="text" placeholder="Original" class="fm-price-o" style="font-size:11px;color:var(--t3);text-decoration:line-through;">
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
+  </div>`);
+}
+function addCheckoutPlanRow(){
+  const list=document.getElementById('fm-co-plans');
+  list.insertAdjacentHTML('beforeend',`<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 50px 30px;gap:4px;margin-bottom:4px;align-items:center;">
+    <input type="text" placeholder="Size" class="fm-cp-size" style="font-size:10px;">
+    <input type="text" placeholder="Capital" class="fm-cp-capital" style="font-size:10px;">
+    <input type="text" placeholder="Meta" class="fm-cp-goal" style="font-size:10px;">
+    <input type="text" placeholder="MaxDD" class="fm-cp-maxdd" style="font-size:10px;">
+    <input type="text" placeholder="Original" class="fm-cp-orig" style="font-size:10px;">
+    <input type="text" placeholder="Desconto" class="fm-cp-disc" style="font-size:10px;color:var(--gold);font-weight:700;">
+    <label style="font-size:9px;display:flex;align-items:center;gap:3px;"><input type="checkbox" class="fm-cp-feat"> Dest.</label>
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">×</button>
+  </div>`);
+}
 
 async function saveFirm(existingId) {
+  // Collect prices
+  const priceRows=document.getElementById('fm-prices-list').children;
+  const prices=[];
+  for(const row of priceRows){
+    const a=row.querySelector('.fm-price-a')?.value.trim();
+    const n=row.querySelector('.fm-price-n')?.value.trim();
+    const o=row.querySelector('.fm-price-o')?.value.trim();
+    if(a)prices.push({a,n:n||'—',o:o||'—'});
+  }
+  // Collect checkout plans
+  const planRows=document.getElementById('fm-co-plans').children;
+  const coPlans=[];
+  for(const row of planRows){
+    const size=row.querySelector('.fm-cp-size')?.value.trim();
+    if(!size)continue;
+    coPlans.push({
+      size,
+      capital:row.querySelector('.fm-cp-capital')?.value.trim()||'',
+      goal:row.querySelector('.fm-cp-goal')?.value.trim()||'',
+      maxDD:row.querySelector('.fm-cp-maxdd')?.value.trim()||'',
+      orig:row.querySelector('.fm-cp-orig')?.value.trim()||'—',
+      disc:row.querySelector('.fm-cp-disc')?.value.trim()||'—',
+      featured:row.querySelector('.fm-cp-feat')?.checked||false,
+    });
+  }
+  const badgeLabel=document.getElementById('fm-badge-label').value.trim();
+  const badgeColor=document.getElementById('fm-badge-color').value;
   const f = {
     id:            document.getElementById('fm-id').value.trim().replace(/\s+/g,'_').toLowerCase(),
     name:          document.getElementById('fm-name').value.trim(),
+    short_name:    document.getElementById('fm-short').value.trim()||null,
     type:          document.getElementById('fm-type').value,
     color:         document.getElementById('fm-color').value,
     icon:          document.getElementById('fm-icon').value.trim().toUpperCase(),
     icon_url:      document.getElementById('fm-icon-url').value.trim()||null,
-    trustpilot_url:document.getElementById('fm-tp-url').value.trim()||null,
-    trustpilot_score:parseFloat(document.getElementById('fm-rating').value)||null,
-    trustpilot_reviews:parseInt(document.getElementById('fm-reviews').value)||null,
     discount:      parseFloat(document.getElementById('fm-discount').value)||0,
     discount_type: document.getElementById('fm-dtype').value.trim()||'lifetime',
     coupon:        document.getElementById('fm-coupon').value.trim().toUpperCase()||null,
     link:          document.getElementById('fm-link').value.trim(),
-    platforms:     document.getElementById('fm-platforms').value.split(',').map(s=>s.trim()).filter(Boolean),
     split:         document.getElementById('fm-split').value.trim(),
+    sort_order:    parseInt(document.getElementById('fm-sort').value)||99,
+    platforms:     document.getElementById('fm-platforms').value.split(',').map(s=>s.trim()).filter(Boolean),
+    drawdown:      document.getElementById('fm-drawdown').value.trim()||null,
+    dd_pct:        document.getElementById('fm-ddpct').value.trim()||null,
+    target:        document.getElementById('fm-target').value.trim()||null,
+    scaling:       document.getElementById('fm-scaling').value.trim()||null,
+    min_days:      parseInt(document.getElementById('fm-mindays').value)||null,
+    eval_days:     parseInt(document.getElementById('fm-evaldays').value)||null,
     rating:        parseFloat(document.getElementById('fm-rating').value)||4.5,
     reviews:       parseInt(document.getElementById('fm-reviews').value)||0,
-    sort_order:    parseInt(document.getElementById('fm-sort').value)||99,
+    trustpilot_url:document.getElementById('fm-tp-url').value.trim()||null,
+    trustpilot_score:parseFloat(document.getElementById('fm-rating').value)||null,
+    trustpilot_reviews:parseInt(document.getElementById('fm-reviews').value)||null,
+    news_trading:  document.getElementById('fm-news').checked,
+    day1_payout:   document.getElementById('fm-d1').checked,
+    tags:          document.getElementById('fm-tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    perks:         document.getElementById('fm-perks').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    proibido:      document.getElementById('fm-proibido').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    description:   document.getElementById('fm-desc').value.trim()||null,
+    prices,
+    badge:         badgeLabel ? {label:badgeLabel,color:badgeColor,bg:badgeColor+'26'} : {},
+    checkout_url_template: document.getElementById('fm-co-url').value.trim()||null,
+    checkout_types: document.getElementById('fm-co-types').value.split(',').map(s=>s.trim()).filter(Boolean),
+    checkout_platforms: document.getElementById('fm-co-plats').value.split(',').map(s=>s.trim()).filter(Boolean),
+    checkout_includes: document.getElementById('fm-co-includes').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    checkout_plans: coPlans,
     active:        existingId ? (_firmsCache.find(x=>x.id===existingId)?.active ?? true) : true,
   };
+  f.bg = f.color + '1F';
   if(!f.name || !f.id) { toast('Preencha nome e ID!','warn'); return; }
   try {
     if (existingId) {
-      await db.from('cms_firms').update(f).eq('id', existingId);
+      const {id, ...updates} = f;
+      await db.from('cms_firms').update(updates).eq('id', existingId);
       toast('Firma atualizada!');
     } else {
       await db.from('cms_firms').insert(f);
@@ -2625,6 +2778,14 @@ async function renderCmsCheckout() {
     const { data } = await db.from('cms_firms').select('*').order('sort_order');
     _firmsCache = data || [];
   }
+  const prices_fn = (f) => {
+    const p = Array.isArray(f.prices) ? f.prices : [];
+    if(!p.length) return '<div style="font-size:10px;color:var(--t3);">Sem precos cadastrados</div>';
+    return `<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:6px;">
+      <tr style="color:var(--t3);font-size:9px;text-transform:uppercase;"><th style="text-align:left;padding:4px 6px;">Conta</th><th style="text-align:left;padding:4px 6px;">Com Desconto</th><th style="text-align:left;padding:4px 6px;">Original</th></tr>
+      ${p.map((r,i)=>`<tr><td style="padding:4px 6px;border-top:1px solid var(--b1);">${r.a}</td><td style="padding:4px 6px;border-top:1px solid var(--b1);"><input type="text" class="co-price-n-${f.id}" data-idx="${i}" value="${r.n||''}" style="width:80px;padding:3px 6px;background:var(--card2);border:1px solid var(--b1);border-radius:4px;color:var(--gold);font-weight:700;font-size:11px;font-family:var(--f);"></td><td style="padding:4px 6px;border-top:1px solid var(--b1);color:var(--t3);text-decoration:line-through;"><input type="text" class="co-price-o-${f.id}" data-idx="${i}" value="${r.o||''}" style="width:80px;padding:3px 6px;background:var(--card2);border:1px solid var(--b1);border-radius:4px;color:var(--t3);font-size:11px;font-family:var(--f);"></td></tr>`).join('')}
+    </table>`;
+  };
   el.innerHTML = _firmsCache.filter(f=>f.active).map(f => `
     <div class="cms-firm-card">
       <div class="cfc-hd">
@@ -2636,9 +2797,14 @@ async function renderCmsCheckout() {
       </div>
       <div class="cfc-body">
         <div class="cfc-grid">
-          <div class="cfc-field"><label>Cupom</label><input type="text" id="co-coupon-${f.id}" value="${f.coupon||''}"></div>
-          <div class="cfc-field"><label>Desconto (%)</label><input type="number" id="co-disc-${f.id}" value="${f.discount}" min="0" max="100"></div>
-          <div class="cfc-field" style="grid-column:1/-1;"><label>Link de Checkout</label><input type="url" id="co-link-${f.id}" value="${f.link||''}" style="width:100%;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-family:var(--f);font-size:12px;outline:none;"></div>
+          <div class="cfc-field"><label>Cupom</label><input type="text" id="co-coupon-${f.id}" value="${f.coupon||''}" style="text-transform:uppercase;font-weight:700;"></div>
+          <div class="cfc-field"><label>Desconto (%)</label><input type="number" id="co-disc-${f.id}" value="${f.discount}" min="0" max="100" style="font-weight:700;color:var(--gold);"></div>
+          <div class="cfc-field"><label>Split</label><input type="text" id="co-split-${f.id}" value="${f.split||'80%'}"></div>
+          <div class="cfc-field" style="grid-column:1/-1;"><label>Link</label><input type="url" id="co-link-${f.id}" value="${f.link||''}" style="width:100%;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-family:var(--f);font-size:12px;outline:none;"></div>
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:4px;">Precos dos Planos</div>
+          ${prices_fn(f)}
         </div>
       </div>
     </div>`).join('');
@@ -2647,12 +2813,24 @@ async function renderCmsCheckout() {
 async function saveCmsCheckoutFirm(firmId) {
   const coupon = document.getElementById('co-coupon-'+firmId)?.value.trim().toUpperCase()||null;
   const disc   = parseFloat(document.getElementById('co-disc-'+firmId)?.value)||0;
+  const split  = document.getElementById('co-split-'+firmId)?.value.trim()||'80%';
   const link   = document.getElementById('co-link-'+firmId)?.value.trim();
+  // Collect edited prices
+  const firm = _firmsCache.find(f=>f.id===firmId);
+  const prices = Array.isArray(firm?.prices) ? [...firm.prices] : [];
+  document.querySelectorAll('.co-price-n-'+firmId).forEach(inp=>{
+    const i=parseInt(inp.dataset.idx);
+    if(prices[i])prices[i].n=inp.value.trim();
+  });
+  document.querySelectorAll('.co-price-o-'+firmId).forEach(inp=>{
+    const i=parseInt(inp.dataset.idx);
+    if(prices[i])prices[i].o=inp.value.trim();
+  });
   try {
-    await db.from('cms_firms').update({ coupon, discount: disc, link }).eq('id', firmId);
+    await db.from('cms_firms').update({ coupon, discount: disc, split, link, prices }).eq('id', firmId);
     const idx = _firmsCache.findIndex(f=>f.id===firmId);
-    if(idx>=0) { _firmsCache[idx].coupon=coupon; _firmsCache[idx].discount=disc; _firmsCache[idx].link=link; }
-    toast('Checkout de ' + firmId + ' salvo!');
+    if(idx>=0) { Object.assign(_firmsCache[idx], {coupon, discount:disc, split, link, prices}); }
+    toast(firm?.name + ' salvo!');
   } catch(e) { toast('Erro ao salvar','error'); }
 }
 
@@ -3120,7 +3298,7 @@ async function saveAiGeneratedFirm() {
 
 /* ══ EXPORT ══ */
 function exportCmsJson(key) {
-  const data = key==='firms' ? getCmsData('firms',DEFAULT_FIRMS) : getCmsData('checkout_firms', []);
+  const data = key==='firms' ? _firmsCache : [];
   download('cms_'+key+'_'+new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')+'.json', 'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data,null,2)));
   toast('JSON exportado!');
 }
@@ -3270,7 +3448,7 @@ function exportAdminData() {
     events:          getEventsSync(),
     loyalty_pending: getLoyaltyPendingAdmin(),
     loyalty_history: getLoyaltyHistoryAdmin(),
-    cms_firms:       getCmsData('firms', DEFAULT_FIRMS),
+    cms_firms:       _firmsCache,
     cms_indicators:  getCmsData('indicators', DEFAULT_INDICATORS),
     cms_guides:      _adminGuides,
     blog_posts:      getBlogPosts(),
