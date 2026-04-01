@@ -460,6 +460,8 @@ img{max-width:100%;}
 .fr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
 .fr-coupon-pill{padding:8px 16px;border-radius:7px;background:var(--gbg);border:1px dashed var(--gbr);font-size:12px;font-weight:800;color:var(--gold);letter-spacing:1.5px;cursor:pointer;transition:.15s;white-space:nowrap;}
 .fr-coupon-pill:hover{background:rgba(240,180,41,.2);}
+.fr-copy-btn{padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;min-width:70px;text-align:center;}
+.fr-copy-btn:hover{background:#F7C948;}
 .det-btn{padding:7px 14px;border-radius:7px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:600;transition:.2s;cursor:pointer;white-space:nowrap;}
 .det-btn:hover{border-color:var(--gold);color:var(--gold);}
 .det-btn.primary{background:var(--gold);color:#07090D;border-color:var(--gold);font-weight:700;}
@@ -6016,7 +6018,7 @@ function renderFirms(list){
       </div>
       ${f.trustpilot?`<a class="fr-tp-mini" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="fr-tp-stars">${'★'.repeat(tpStars)}</span><span class="fr-tp-count">${f.trustpilot.reviews.toLocaleString()}</span></a>`:''}
       <div class="fr-actions" onclick="event.stopPropagation()">
-        ${f.coupon?`<button class="fr-coupon-pill" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${f.coupon}</button>`:''}
+        ${f.coupon?`<span class="fr-coupon-pill">${f.coupon}</span><button class="fr-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button>`:''}
         <button class="fr-fav ${_favs.has(f.id)?'active':''}" id="fav-btn-${f.id}" onclick="toggleFav('${f.id}')" title="${_favs.has(f.id)?t('firms_fav_remove'):t('firms_fav_add')}">
           ${_favs.has(f.id)?'❤️':'🤍'}<span class="fr-fav-count" id="fav-cnt-${f.id}">${_favCounts[f.id]||0}</span>
         </button>
