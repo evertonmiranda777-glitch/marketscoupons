@@ -803,6 +803,7 @@ img{max-width:100%;}
 .bf-btn{padding:6px 14px;border-radius:8px;border:1px solid var(--b1);background:transparent;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
 .bf-btn:hover{border-color:var(--b2);color:var(--t1);}
 .bf-btn.active{background:var(--gold);color:#07090D;border-color:var(--gold);}
+.bf-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;}
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px;padding:0 20px 40px;}
 .bc{background:var(--card);border:1px solid var(--b1);border-radius:9px;overflow:hidden;transition:.2s;cursor:pointer;}
 .bc:hover{border-color:var(--b2);transform:translateY(-2px);}
@@ -1952,9 +1953,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="sec" id="blog-header"><div class="sec-hd" data-i18n="nav_blog"> Blog</div></div>
  <div class="blog-filters" id="blog-filters">
   <button class="bf-btn active" onclick="filterBlog('all',this)" data-i18n="blog_filtro_todos">Todos</button>
-  <button class="bf-btn" onclick="filterBlog('iniciante',this)">🟢 Iniciante</button>
-  <button class="bf-btn" onclick="filterBlog('intermediario',this)">🟡 Intermediário</button>
-  <button class="bf-btn" onclick="filterBlog('profissional',this)">🔴 Profissional</button>
+  <button class="bf-btn" onclick="filterBlog('iniciante',this)"><span class="bf-dot" style="background:#22c55e;"></span>Iniciante</button>
+  <button class="bf-btn" onclick="filterBlog('intermediario',this)"><span class="bf-dot" style="background:#eab308;"></span>Intermediário</button>
+  <button class="bf-btn" onclick="filterBlog('profissional',this)"><span class="bf-dot" style="background:#ef4444;"></span>Profissional</button>
  </div>
  <div class="blog-grid" id="blog-grid"></div>
  <div class="blog-article" id="blog-article"></div>
