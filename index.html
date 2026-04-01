@@ -460,9 +460,9 @@ img{max-width:100%;}
 .fr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
 .fr-coupon-box{display:flex;align-items:center;justify-content:center;padding:6px 10px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:7px;flex-shrink:0;width:240px;text-align:center;}
 .fr-coupon-box-label{display:none;}
-.fr-coupon-box-row{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;}
+.fr-coupon-box-row{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;}
 .fr-coupon-box-code{font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--gold);white-space:nowrap;}
-.fr-coupon-box-copy{padding:6px 14px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
+.fr-coupon-box-copy{padding:6px 20px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
 .fr-coupon-box-copy:hover{background:#F7C948;}
 .det-btn{padding:7px 14px;border-radius:7px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:600;transition:.2s;cursor:pointer;white-space:nowrap;}
 .det-btn:hover{border-color:var(--gold);color:var(--gold);}
@@ -545,11 +545,11 @@ img{max-width:100%;}
 .offer-disc-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
 .offer-card-body{padding:0 20px 20px;}
 .offer-desc{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5;}
-.offer-coupon-box{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center;}
-.offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:6px;text-align:center;}
-.offer-coupon-row{display:flex;align-items:center;justify-content:center;gap:12px;}
+.offer-coupon-box{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;}
+.offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:8px;text-align:center;}
+.offer-coupon-row{display:flex;flex-direction:column;align-items:center;gap:10px;}
 .offer-coupon-code{font-size:18px;font-weight:800;letter-spacing:3px;color:var(--gold);}
-.offer-copy-btn{padding:7px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
+.offer-copy-btn{padding:8px 28px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
 .offer-copy-btn:hover{background:#d9a020;}
 .offer-no-coupon{font-size:12px;color:var(--green);font-weight:600;}
 .offer-cta{display:block;width:100%;padding:12px;text-align:center;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;font-family:var(--f);box-sizing:border-box;}
@@ -594,7 +594,7 @@ img{max-width:100%;}
 .drw-tp-info{font-size:11px;color:var(--t2);}
 .drw-tp-info b{color:#00b67a;}
 /* Trustpilot badge (kept) */
-.cpn-blk{display:flex;align-items:center;justify-content:center;gap:12px;padding:11px 14px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:9px;margin-bottom:12px;}
+.cpn-blk{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:9px;margin-bottom:12px;}
 .cpn-lbl{font-size:10px;color:var(--t2);margin-bottom:3px;}
 .cpn-code{font-size:15px;font-weight:800;letter-spacing:2px;color:var(--gold);}
 .cpn-copy{padding:7px 13px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:12px;font-weight:700;transition:.2s;}
@@ -893,7 +893,7 @@ img{max-width:100%;}
 .drw-btn.sel{background:var(--gbg);border-color:var(--gbr);color:var(--gold);}
 .drw-coupon-bar{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:6px;text-align:center;}
 .drw-coupon-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:6px;text-align:center;}
-.drw-coupon-row{display:flex;align-items:center;justify-content:center;gap:12px;}
+.drw-coupon-row{display:flex;flex-direction:column;align-items:center;gap:10px;}
 .drw-coupon-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);}
 .drw-coupon-copy{padding:8px 18px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
 .drw-coupon-copy:hover{background:#F7C948;}
@@ -9279,15 +9279,17 @@ async function doAuthSignup() {
 let _loggingOut = false;
 function doLogout() {
   _loggingOut = true;
-  // Limpar TODOS os tokens Supabase do localStorage
+  // Limpar TODOS os tokens Supabase do localStorage e sessionStorage
   try {
-    Object.keys(localStorage).forEach(k => {
-      if (k.startsWith('sb-')) localStorage.removeItem(k);
-    });
-  } catch(e) {}
-  // Forçar reload limpo — a página vai carregar sem sessão
-  window.location.href = window.location.origin + window.location.pathname + '#home';
-  window.location.reload();
+    const lsKeys = [];
+    for (let i = 0; i < localStorage.length; i++) { lsKeys.push(localStorage.key(i)); }
+    lsKeys.forEach(k => { if (k && k.startsWith('sb-')) localStorage.removeItem(k); });
+    const ssKeys = [];
+    for (let i = 0; i < sessionStorage.length; i++) { ssKeys.push(sessionStorage.key(i)); }
+    ssKeys.forEach(k => { if (k && k.startsWith('sb-')) sessionStorage.removeItem(k); });
+  } catch(e) { console.error('logout cleanup error:', e); }
+  // Forçar reload limpo
+  window.location.replace(window.location.origin + window.location.pathname + '#home');
 }
 
 async function loadUserSession(user) {
