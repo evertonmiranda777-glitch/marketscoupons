@@ -1857,18 +1857,15 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 
 <!-- INDICATORS HUB -->
 <div class="page" id="page-indicators">
-  <!-- Loyalty gate for indicators -->
-  <div id="indicators-gate" style="display:none;max-width:520px;margin:0 auto;padding:60px 20px;text-align:center;">
-    <div style="font-size:52px;margin-bottom:16px;">🔒</div>
-    <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;" data-i18n="ind_titulo">Indicadores — Exclusivo Membros</h2>
-    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:24px;" data-i18n="ind_sub">Os indicadores e ferramentas são exclusivos para participantes do Programa de Fidelidade com 3 compras validadas.</p>
-    <div id="indicators-gate-progress" style="background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:20px;margin-bottom:20px;"></div>
-    <button class="btn-gold" onclick="go('loyalty')" data-i18n="ind_ver_fidelidade">Ver programa de fidelidade →</button>
-  </div>
-  <!-- Indicators content (shown when unlocked) -->
-  <div id="indicators-content">
-    <div class="sec"><div class="sec-hd"> Indicadores & Ferramentas</div></div>
-    <div class="ind-grid" id="ind-hub-grid"></div>
+  <div style="max-width:560px;margin:0 auto;padding:80px 20px;text-align:center;">
+    <div style="font-size:56px;margin-bottom:20px;">🚀</div>
+    <h2 style="font-size:22px;font-weight:700;margin-bottom:12px;" data-i18n="ind_em_breve_titulo">Novo conceito de indicadores chegando em breve</h2>
+    <p style="font-size:14px;color:var(--t2);line-height:1.8;margin-bottom:28px;" data-i18n="ind_em_breve_texto">Estamos desenvolvendo indicadores exclusivos com uma abordagem totalmente nova. Acesso será reservado para membros VIP do nosso programa de fidelidade.</p>
+    <div style="background:var(--card);border:1px solid var(--gold);border-radius:12px;padding:20px;margin-bottom:28px;">
+      <div style="font-size:12px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;" data-i18n="ind_em_breve_como">Como garantir acesso</div>
+      <p style="font-size:13px;color:var(--t2);line-height:1.7;" data-i18n="ind_em_breve_passos">Participe do programa de fidelidade, use nossos cupons nas suas compras e, ao ser validado, você terá acesso exclusivo assim que lançarmos.</p>
+    </div>
+    <button class="btn-gold" onclick="go('fidelidade')" data-i18n="ind_em_breve_btn">Participar do programa de fidelidade</button>
   </div>
 </div>
 
@@ -2532,7 +2529,6 @@ function go(page, skipHash){
   if(!skipHash) location.hash=page==='home'?'':page;
   track('page_view',{page_name:page});
   if(page==='live') checkLoyaltyAndShowLive();
-  if(page==='indicators') checkIndicatorsGate();
   if(page==='analise') checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
@@ -2660,9 +2656,11 @@ const I18N = {
     plat_acessar_off:'Acessar com',
     plat_acessar:'Acessar',
     plat_oferta_exclusiva:'OFERTA EXCLUSIVA',
-    ind_titulo:'Indicadores — Exclusivo Membros',
-    ind_sub:'Os indicadores e ferramentas são exclusivos para participantes do Programa de Fidelidade com 3 compras validadas.',
-    ind_ver_fidelidade:'Ver programa de fidelidade →',
+    ind_em_breve_titulo:'Novo conceito de indicadores chegando em breve',
+    ind_em_breve_texto:'Estamos desenvolvendo indicadores exclusivos com uma abordagem totalmente nova. Acesso será reservado para membros VIP do nosso programa de fidelidade.',
+    ind_em_breve_como:'Como garantir acesso',
+    ind_em_breve_passos:'Participe do programa de fidelidade, use nossos cupons nas suas compras e, ao ser validado, você terá acesso exclusivo assim que lançarmos.',
+    ind_em_breve_btn:'Participar do programa de fidelidade',
     cmp_sub:'Selecione até 3 firmas para comparar lado a lado',
     cmp_firma1:'-- Firma 1 --',
     cmp_firma2:'-- Firma 2 --',
@@ -3216,9 +3214,11 @@ const I18N = {
     plat_acessar_off:'Sign in with',
     plat_acessar:'Log in',
     plat_oferta_exclusiva:'EXCLUSIVE OFFER',
-    ind_titulo:'Indicators — Members Only',
-    ind_sub:'These metrics and tools are available exclusively to Loyalty Program members who have made three verified purchases.',
-    ind_ver_fidelidade:'View loyalty program →',
+    ind_em_breve_titulo:'New indicator concept coming soon',
+    ind_em_breve_texto:'We are developing exclusive indicators with an entirely new approach. Access will be reserved for VIP members of our loyalty program.',
+    ind_em_breve_como:'How to secure access',
+    ind_em_breve_passos:'Join the loyalty program, use our coupons on your purchases, and once validated, you will have exclusive access as soon as we launch.',
+    ind_em_breve_btn:'Join the loyalty program',
     cmp_sub:'Select up to 3 companies to compare side by side',
     cmp_firma1:'-- Firm 1 --',
     cmp_firma2:'-- Firm 2 --',
@@ -3772,9 +3772,11 @@ const I18N = {
     plat_acessar_off:'Iniciar sesión con',
     plat_acessar:'Iniciar sesión',
     plat_oferta_exclusiva:'OFERTA EXCLUSIVA',
-    ind_titulo:'Indicadores — Solo para miembros',
-    ind_sub:'Los indicadores y las herramientas son exclusivos para los participantes del Programa de Fidelidad que hayan realizado tres compras validadas.',
-    ind_ver_fidelidade:'Ver el programa de fidelidad →',
+    ind_em_breve_titulo:'Nuevo concepto de indicadores próximamente',
+    ind_em_breve_texto:'Estamos desarrollando indicadores exclusivos con un enfoque totalmente nuevo. El acceso será reservado para miembros VIP de nuestro programa de fidelidad.',
+    ind_em_breve_como:'Cómo garantizar el acceso',
+    ind_em_breve_passos:'Participa en el programa de fidelidad, usa nuestros cupones en tus compras y, al ser validado, tendrás acceso exclusivo cuando lancemos.',
+    ind_em_breve_btn:'Participar del programa de fidelidad',
     cmp_sub:'Selecciona hasta 3 empresas para compararlas una al lado de otra',
     cmp_firma1:'-- Firma 1 --',
     cmp_firma2:'-- Firma 2 --',
@@ -4328,9 +4330,11 @@ const I18N = {
     plat_acessar_off:'Accedi con',
     plat_acessar:'Accedi',
     plat_oferta_exclusiva:'OFFERTA ESCLUSIVA',
-    ind_titulo:'Indicatori — Riservato ai membri',
-    ind_sub:'Gli indicatori e gli strumenti sono riservati ai partecipanti al Programma Fedeltà che hanno effettuato almeno 3 acquisti convalidati.',
-    ind_ver_fidelidade:'Vedi il programma fedeltà →',
+    ind_em_breve_titulo:'Nuovo concetto di indicatori in arrivo',
+    ind_em_breve_texto:'Stiamo sviluppando indicatori esclusivi con un approccio completamente nuovo. L\'accesso sarà riservato ai membri VIP del nostro programma fedeltà.',
+    ind_em_breve_como:'Come garantire l\'accesso',
+    ind_em_breve_passos:'Partecipa al programma fedeltà, usa i nostri coupon nei tuoi acquisti e, una volta validato, avrai accesso esclusivo al lancio.',
+    ind_em_breve_btn:'Partecipa al programma fedeltà',
     cmp_sub:'Seleziona fino a 3 aziende per confrontarle fianco a fianco',
     cmp_firma1:'-- Azienda 1 --',
     cmp_firma2:'-- Azienda 2 --',
@@ -4884,9 +4888,11 @@ const I18N = {
     plat_acessar_off:'Se connecter avec',
     plat_acessar:'Se connecter',
     plat_oferta_exclusiva:'OFFRE EXCLUSIVE',
-    ind_titulo:'Indicateurs — Réservé aux membres',
-    ind_sub:'Ces indicateurs et outils sont réservés aux participants au programme de fidélité ayant effectué au moins trois achats validés.',
-    ind_ver_fidelidade:'Voir le programme de fidélité →',
+    ind_em_breve_titulo:'Nouveau concept d\'indicateurs bientôt disponible',
+    ind_em_breve_texto:'Nous développons des indicateurs exclusifs avec une approche entièrement nouvelle. L\'accès sera réservé aux membres VIP de notre programme de fidélité.',
+    ind_em_breve_como:'Comment garantir l\'accès',
+    ind_em_breve_passos:'Rejoignez le programme de fidélité, utilisez nos coupons lors de vos achats et, une fois validé, vous aurez un accès exclusif dès le lancement.',
+    ind_em_breve_btn:'Rejoindre le programme de fidélité',
     cmp_sub:'Sélectionnez jusqu\'à 3 entreprises pour les comparer côte à côte',
     cmp_firma1:'-- Entreprise 1 --',
     cmp_firma2:'-- Entreprise 2 --',
@@ -5440,9 +5446,11 @@ const I18N = {
     plat_acessar_off:'Anmelden mit',
     plat_acessar:'Anmelden',
     plat_oferta_exclusiva:'EXKLUSIVES ANGEBOT',
-    ind_titulo:'Indikatoren – Nur für Mitglieder',
-    ind_sub:'Die Indikatoren und Tools stehen ausschließlich Teilnehmern des Treueprogramms mit mindestens drei bestätigten Einkäufen zur Verfügung.',
-    ind_ver_fidelidade:'Zum Treueprogramm →',
+    ind_em_breve_titulo:'Neues Indikator-Konzept kommt bald',
+    ind_em_breve_texto:'Wir entwickeln exklusive Indikatoren mit einem völlig neuen Ansatz. Der Zugang wird VIP-Mitgliedern unseres Treueprogramms vorbehalten sein.',
+    ind_em_breve_como:'So sichern Sie sich den Zugang',
+    ind_em_breve_passos:'Nehmen Sie am Treueprogramm teil, nutzen Sie unsere Gutscheine bei Ihren Einkäufen und erhalten Sie exklusiven Zugang sobald wir starten.',
+    ind_em_breve_btn:'Am Treueprogramm teilnehmen',
     cmp_sub:'Wählen Sie bis zu 3 Unternehmen aus, um sie nebeneinander zu vergleichen',
     cmp_firma1:'-- Firma 1 --',
     cmp_firma2:'-- Firma 2 --',
@@ -5996,9 +6004,11 @@ const I18N = {
     plat_acessar_off:'تسجيل الدخول باستخدام',
     plat_acessar:'الدخول',
     plat_oferta_exclusiva:'عرض حصري',
-    ind_titulo:'المؤشرات — حصريًا للأعضاء',
-    ind_sub:'هذه المؤشرات والأدوات متاحة حصريًّا للمشاركين في برنامج الولاء الذين أجروا 3 عمليات شراء تم التحقق منها.',
-    ind_ver_fidelidade:'عرض برنامج الولاء →',
+    ind_em_breve_titulo:'مفهوم جديد للمؤشرات قريبًا',
+    ind_em_breve_texto:'نحن نطور مؤشرات حصرية بنهج جديد تمامًا. سيكون الوصول محجوزًا لأعضاء VIP في برنامج الولاء الخاص بنا.',
+    ind_em_breve_como:'كيف تضمن الوصول',
+    ind_em_breve_passos:'انضم إلى برنامج الولاء، استخدم كوبوناتنا في مشترياتك، وبمجرد التحقق، ستحصل على وصول حصري عند الإطلاق.',
+    ind_em_breve_btn:'الانضمام إلى برنامج الولاء',
     cmp_sub:'اختر ما يصل إلى 3 شركات لمقارنتها جنبًا إلى جنب',
     cmp_firma1:'-- الشركة 1 --',
     cmp_firma2:'-- الشركة 2 --',
@@ -9121,36 +9131,6 @@ function autoDetectDDI() {
   else if (tz.includes('America/Toronto') || tz.includes('America/Vancouver')) ddi = '+1-CA';
   const sel = document.getElementById('lv-ddi');
   if (sel) { sel.value = ddi; updateWaPlaceholder(); }
-}
-
-/* LIVE ROOM — loyalty gate */
-function checkIndicatorsGate() {
-  const history  = getLoyaltyHistory();
-  const approved = history.filter(h => h.status === 'approved').length;
-  const gate     = document.getElementById('indicators-gate');
-  const content  = document.getElementById('indicators-content');
-  const progressEl = document.getElementById('indicators-gate-progress');
-
-  if (approved >= 3) {
-    if (gate)    gate.style.display    = 'none';
-    if (content) content.style.display = 'block';
-    return;
-  }
-
-  if (gate)    gate.style.display    = 'block';
-  if (content) content.style.display = 'none';
-
-  const faltam = Math.max(0, 3 - approved);
-  const pct    = Math.min(100, Math.round(approved/3*100));
-  const member = getLoyaltyMember();
-  if (progressEl) progressEl.innerHTML = `
-    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:8px;">
-      <span>${approved}/3 ${t('prog_compras_validadas')}</span><span>${faltam} ${t('prog_faltam')}</span>
-    </div>
-    <div style="background:var(--b1);border-radius:4px;height:7px;overflow:hidden;margin-bottom:14px;">
-      <div style="height:100%;width:${pct}%;background:var(--gold);border-radius:4px;transition:width 1s;"></div>
-    </div>
-    ${!member ? `<div style="font-size:12px;color:var(--t3);">${t('live_gate_nao_membro')} <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">${t('live_gate_cadastre')}</button></div>` : `<div style="font-size:12px;color:var(--t3);">${t('prog_bem_vindo')}, <strong style="color:var(--t1);">${member.name}</strong>! ${faltam} ${t('prog_para_desbloquear')}.</div>`}`;
 }
 
 function checkLoyaltyAndShowLive(forceCheck = false) {
