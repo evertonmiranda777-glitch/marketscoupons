@@ -1030,7 +1030,7 @@ img{max-width:100%;}
 .imp-legend span{display:flex;align-items:center;gap:5px;}
 
 footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22px;}
-.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:28px;}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:28px;}
 .ft-logo{font-size:17px;font-weight:700;margin-bottom:9px;}
 .ft-logo em{color:var(--gold);font-style:normal;}
 .ft-desc{font-size:12px;color:var(--t3);line-height:1.7;}
@@ -2474,6 +2474,12 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  <a onclick="go('live')">Live Room</a>
  <a onclick="go('faq')">FAQ</a>
  </div>
+ <div class="fc-col">
+ <h4 data-i18n="ft_col_legal">Legal</h4>
+ <a onclick="go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
+ <a onclick="go('terms')" data-i18n="ft_termos">Termos de Uso</a>
+ <a onclick="go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
+ </div>
  </div>
  <div class="ft-bot">
   <span data-i18n="ft_legal">Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. © 2025 Markets Coupons.</span>
@@ -3074,6 +3080,7 @@ const I18N = {
     ft_privacidade:'Política de Privacidade',
     ft_termos:'Termos de Uso',
     ft_cookies:'Política de Cookies',
+    ft_col_legal:'Legal',
     policy_voltar:'Voltar',
     priv_titulo:'Política de Privacidade',
     priv_atualizado:'Última atualização: Abril 2026',
@@ -3605,6 +3612,7 @@ const I18N = {
     ft_privacidade:'Privacy Policy',
     ft_termos:'Terms of Use',
     ft_cookies:'Cookie Policy',
+    ft_col_legal:'Legal',
     policy_voltar:'Back',
     priv_titulo:'Privacy Policy',
     priv_atualizado:'Last updated: April 2026',
@@ -4136,6 +4144,7 @@ const I18N = {
     ft_privacidade:'Política de Privacidad',
     ft_termos:'Términos de Uso',
     ft_cookies:'Política de Cookies',
+    ft_col_legal:'Legal',
     policy_voltar:'Volver',
     priv_titulo:'Política de Privacidad',
     priv_atualizado:'Última actualización: Abril 2026',
@@ -4667,6 +4676,7 @@ const I18N = {
     ft_privacidade:'Informativa sulla Privacy',
     ft_termos:'Termini di Utilizzo',
     ft_cookies:'Politica dei Cookie',
+    ft_col_legal:'Legale',
     policy_voltar:'Indietro',
     priv_titulo:'Informativa sulla Privacy',
     priv_atualizado:'Ultimo aggiornamento: Aprile 2026',
@@ -5198,6 +5208,7 @@ const I18N = {
     ft_privacidade:'Politique de Confidentialité',
     ft_termos:'Conditions d\'Utilisation',
     ft_cookies:'Politique de Cookies',
+    ft_col_legal:'Mentions légales',
     policy_voltar:'Retour',
     priv_titulo:'Politique de Confidentialité',
     priv_atualizado:'Dernière mise à jour : Avril 2026',
@@ -5729,6 +5740,7 @@ const I18N = {
     ft_privacidade:'Datenschutzrichtlinie',
     ft_termos:'Nutzungsbedingungen',
     ft_cookies:'Cookie-Richtlinie',
+    ft_col_legal:'Rechtliches',
     policy_voltar:'Zurück',
     priv_titulo:'Datenschutzrichtlinie',
     priv_atualizado:'Letzte Aktualisierung: April 2026',
@@ -6260,6 +6272,7 @@ const I18N = {
     ft_privacidade:'سياسة الخصوصية',
     ft_termos:'شروط الاستخدام',
     ft_cookies:'سياسة ملفات تعريف الارتباط',
+    ft_col_legal:'قانوني',
     policy_voltar:'رجوع',
     priv_titulo:'سياسة الخصوصية',
     priv_atualizado:'آخر تحديث: أبريل 2026',
