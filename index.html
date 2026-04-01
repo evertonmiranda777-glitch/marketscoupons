@@ -334,7 +334,7 @@ img{max-width:100%;}
 .mm-tg:hover{background:rgba(240,180,41,.18);}
 
 /* PAGES */
-.page{display:none;padding-top:var(--nav-h);min-height:100vh;}
+.page{display:none;padding-top:var(--nav-h);min-height:100vh;padding-bottom:60px;}
 .page.active{display:block;}
 
 /* HERO */
@@ -1147,6 +1147,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  .cmp-sel{min-width:100%;font-size:13px;padding:11px 12px;}
  .cmp-winner-banner{flex-direction:column;text-align:center;gap:10px;padding:14px;}
  .cmp-winner-banner>div:last-child{margin-left:0;}
+ .cmp-mob-rows{grid-template-columns:1fr;}
  .cmp-tbl-wrap{display:none;}
  .cmp-mobile{display:flex;flex-direction:column;gap:12px;}
  /* Plataformas mobile */
@@ -2387,7 +2388,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="bot-win" id="bot-win">
  <div class="bot-hd">
  <div class="bot-hd-l"><div class="bot-av"></div><div><div class="bot-nm">TradeBot IA</div><div class="bot-st">Online agora</div></div></div>
- <button class="bot-x" onclick="toggleBot()"></button>
+ <button class="bot-x" onclick="toggleBot()">&#10005;</button>
  </div>
  <div class="bot-msgs" id="bot-msgs">
  <div class="bmsg bot"><div class="bbbl">Olá! Sou o <strong>TradeBot</strong>, seu assistente especialista em prop firms.<br><br>Posso ajudar com:<br>• Qual firma é ideal para você<br>• Regras, drawdown e cupons<br>• Position size no chat<br>• Como passar no desafio<br>• Apoio psicológico ao trader<br><br>O que precisa hoje?</div><span class="btime">agora</span></div>
@@ -2936,6 +2937,8 @@ const I18N = {
     proof_nota:'A pontuação será creditada em até 48 horas após validação da nossa equipe.',
     loyalty_hist_titulo:'Histórico de compras',
     loyalty_hist_sub:'Apenas compras validadas contam para o seu nível',
+    tp_excellent:'Excelente',
+    tp_reviews_on:'avaliações no',
   },
   en: {
     nav_ofertas:'Specials',
@@ -3433,6 +3436,8 @@ const I18N = {
     proof_nota:'Points will be credited within 48 hours after validation by our team.',
     loyalty_hist_titulo:'Purchase history',
     loyalty_hist_sub:'Only verified purchases count toward your level',
+    tp_excellent:'Excellent',
+    tp_reviews_on:'reviews on',
   },
   es: {
     nav_ofertas:'Ofertas',
@@ -3472,13 +3477,13 @@ const I18N = {
     firms_sel_plat:'Selecciona la plataforma',
     firms_sel_tam:'Selecciona la talla',
     drw_avaliacoes:'valoraciones',
-    drw_drawdown:'Caída',
+    drw_drawdown:'Drawdown',
     drw_split:'Split',
     drw_dias_min:'Días mínimos',
     drw_prazo:'Plazo de evaluación',
     drw_dd_max:'DD máximo',
     drw_meta:'Objetivo de beneficios',
-    drw_scaling:'Escalado',
+    drw_scaling:'Scaling',
     drw_desconto:'Descuento',
     drw_conta:'Cuenta',
     drw_com_cupom:'Con cupón',
@@ -3529,7 +3534,7 @@ const I18N = {
     heatmap_full_titulo:'🌡️ Mapa de calor — S&P 500',
     hm_cripto:'Criptomonedas',
     guides_titulo:'📚 Guías y formación',
-    firm_type_futuros:'Futuros',
+    firm_type_futuros:'Futures',
     firm_type_forex:'Forex',
     sb_mercado:'Mercado',
     sb_desconto:'Descuento',
@@ -3930,6 +3935,8 @@ const I18N = {
     proof_nota:'Los puntos se abonarán en un plazo máximo de 48 horas tras su validación por parte de nuestro equipo.',
     loyalty_hist_titulo:'Historial de compras',
     loyalty_hist_sub:'Solo las compras validadas cuentan para tu nivel',
+    tp_excellent:'Excelente',
+    tp_reviews_on:'reseñas en',
   },
   it: {
     nav_ofertas:'Offerte',
@@ -3970,12 +3977,12 @@ const I18N = {
     firms_sel_tam:'Seleziona la taglia',
     drw_avaliacoes:'recensioni',
     drw_drawdown:'Drawdown',
-    drw_split:'Spaccato',
+    drw_split:'Split',
     drw_dias_min:'Giorni minimi',
     drw_prazo:'Termine per la valutazione',
     drw_dd_max:'DD massimo',
     drw_meta:'Obiettivo di profitto',
-    drw_scaling:'Scalabilità',
+    drw_scaling:'Scaling',
     drw_desconto:'Sconto',
     drw_conta:'Account',
     drw_com_cupom:'Con buono sconto',
@@ -4026,7 +4033,7 @@ const I18N = {
     heatmap_full_titulo:'🟌️ Mappa termica — S&P 500',
     hm_cripto:'Criptovaluta',
     guides_titulo:'🚀 Guide e formazione',
-    firm_type_futuros:'Futuri',
+    firm_type_futuros:'Futures',
     firm_type_forex:'Forex',
     sb_mercado:'Mercato',
     sb_desconto:'Sconto',
@@ -4427,6 +4434,8 @@ const I18N = {
     proof_nota:'I punti saranno accreditati entro 48 ore dalla convalida da parte del nostro team.',
     loyalty_hist_titulo:'Cronologia degli acquisti',
     loyalty_hist_sub:'Solo gli acquisti confermati contano ai fini del tuo livello',
+    tp_excellent:'Eccellente',
+    tp_reviews_on:'recensioni su',
   },
   fr: {
     nav_ofertas:'Offres',
@@ -4472,7 +4481,7 @@ const I18N = {
     drw_prazo:'Délai d\'évaluation',
     drw_dd_max:'DD maximal',
     drw_meta:'Objectif de bénéfice',
-    drw_scaling:'Mise à l\'échelle',
+    drw_scaling:'Scaling',
     drw_desconto:'Réduction',
     drw_conta:'Compte',
     drw_com_cupom:'Avec un bon de réduction',
@@ -4523,7 +4532,7 @@ const I18N = {
     heatmap_full_titulo:'🌡️ Carte thermique — S&P 500',
     hm_cripto:'Crypto',
     guides_titulo:'📚 Guides & Éducation',
-    firm_type_futuros:'Futurs',
+    firm_type_futuros:'Futures',
     firm_type_forex:'Forex',
     sb_mercado:'Marché',
     sb_desconto:'Réduction',
@@ -4924,6 +4933,8 @@ const I18N = {
     proof_nota:'Les points seront crédités dans les 48 heures suivant la validation par notre équipe.',
     loyalty_hist_titulo:'Historique des achats',
     loyalty_hist_sub:'Seuls les achats validés comptent pour votre niveau',
+    tp_excellent:'Excellent',
+    tp_reviews_on:'avis sur',
   },
   de: {
     nav_ofertas:'Angebote',
@@ -4969,7 +4980,7 @@ const I18N = {
     drw_prazo:'Bewertungsfrist',
     drw_dd_max:'Maximale DD',
     drw_meta:'Gewinnziel',
-    drw_scaling:'Skalierung',
+    drw_scaling:'Scaling',
     drw_desconto:'Rabatt',
     drw_conta:'Konto',
     drw_com_cupom:'Mit Gutschein',
@@ -5021,7 +5032,7 @@ const I18N = {
     hm_cripto:'Krypto',
     guides_titulo:'📚 Ratgeber & Bildung',
     firm_type_futuros:'Futures',
-    firm_type_forex:'Devisenhandel',
+    firm_type_forex:'Forex',
     sb_mercado:'Markt',
     sb_desconto:'Rabatt',
     sb_caracteristicas:'Eigenschaften',
@@ -5421,6 +5432,8 @@ const I18N = {
     proof_nota:'Die Punkte werden innerhalb von 48 Stunden nach Überprüfung durch unser Team gutgeschrieben.',
     loyalty_hist_titulo:'Einkaufsverlauf',
     loyalty_hist_sub:'Nur bestätigte Einkäufe zählen für Ihre Stufe',
+    tp_excellent:'Ausgezeichnet',
+    tp_reviews_on:'Bewertungen auf',
   },
   ar: {
     nav_ofertas:'العروض',
@@ -5460,13 +5473,13 @@ const I18N = {
     firms_sel_plat:'اختر المنصة',
     firms_sel_tam:'اختر الحجم',
     drw_avaliacoes:'التقييمات',
-    drw_drawdown:'انخفاض',
-    drw_split:'سبليت',
+    drw_drawdown:'Drawdown',
+    drw_split:'Split',
     drw_dias_min:'الحد الأدنى لعدد الأيام',
     drw_prazo:'الموعد النهائي للتقييم',
     drw_dd_max:'الحد الأقصى لـ DD',
     drw_meta:'هدف الربح',
-    drw_scaling:'التوسع',
+    drw_scaling:'Scaling',
     drw_desconto:'خصم',
     drw_conta:'حساب',
     drw_com_cupom:'مع قسيمة',
@@ -5517,8 +5530,8 @@ const I18N = {
     heatmap_full_titulo:'🌡️ خريطة الحرارة — مؤشر S&P 500',
     hm_cripto:'العملات المشفرة',
     guides_titulo:'📚 أدلة وتعليم',
-    firm_type_futuros:'العقود الآجلة',
-    firm_type_forex:'الفوركس',
+    firm_type_futuros:'Futures',
+    firm_type_forex:'Forex',
     sb_mercado:'السوق',
     sb_desconto:'خصم',
     sb_caracteristicas:'الميزات',
@@ -5918,6 +5931,8 @@ const I18N = {
     proof_nota:'سيتم إضافة النقاط في غضون 48 ساعة بعد اعتمادها من قبل فريقنا.',
     loyalty_hist_titulo:'سجل المشتريات',
     loyalty_hist_sub:'لا يُحتسب في مستواك سوى عمليات الشراء التي تمت المصادقة عليها',
+    tp_excellent:'ممتاز',
+    tp_reviews_on:'تقييمات على',
   }
 };
 let _currentLang = 'pt';
@@ -6168,7 +6183,7 @@ function renderFirms(list){
       </div>
       <!-- Mobile: card layout (hidden on desktop, shown on <=960px) -->
       <div class="fr-left">
-        ${f.trustpilot?`<a class="tp-badge" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="tp-label">Excellent</span><span class="tp-stars">${'★'.repeat(tpStars)}</span><span class="tp-info">${f.trustpilot.reviews.toLocaleString()} reviews on <b>Trustpilot</b></span></a>`:''}
+        ${f.trustpilot?`<a class="tp-badge" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="tp-label">${t('tp_excellent')}</span><span class="tp-stars">${'★'.repeat(tpStars)}</span><span class="tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span></a>`:''}
       </div>
       <div class="fr-mets">
         <div class="fr-mets-inner">
@@ -6369,7 +6384,7 @@ function openD(id){
     icoEl.textContent=f.icon;
   }
   document.getElementById('d-name').textContent=f.name;
-  document.getElementById('d-sub').textContent=`${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.discount}% OFF · Split ${f.split}`;
+  document.getElementById('d-sub').textContent=`${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.discount}% OFF · ${t('drw_split')} ${f.split}`;
 
   // Find matching CHECKOUT_FIRM for inline selectors
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
@@ -6387,9 +6402,9 @@ function openD(id){
   if (f.trustpilot) {
     const tpStars = Math.round(f.trustpilot.score);
     html += `<a class="drw-tp-badge" href="javascript:void(0)" onclick="openTpPopup('${f.trustpilot.url}')">
-      <span class="drw-tp-label">Excellent</span>
+      <span class="drw-tp-label">${t('tp_excellent')}</span>
       <span class="drw-tp-stars-row">${Array(5).fill(0).map((_,i)=>`<span class="drw-tp-star${i<tpStars?' filled':''}">★</span>`).join('')}</span>
-      <span class="drw-tp-info">${f.trustpilot.reviews.toLocaleString()} reviews on <b>Trustpilot</b></span>
+      <span class="drw-tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span>
     </a>`
   }
 
@@ -6465,7 +6480,7 @@ function openD(id){
 
     if (f.coupon) {
       html += `<div class="drw-coupon-bar">
-        <div class="drw-coupon-label">CUPOM EXCLUSIVO</div>
+        <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
         <div class="drw-coupon-row">
           <span class="drw-coupon-code">${f.coupon}</span>
           <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
@@ -6478,7 +6493,7 @@ function openD(id){
     </div>`;
   } else {
     html += `<div style="margin-top:10px;">
-      <button class="go-btn" onclick="closeD();achSelectFirm('${f.id}');go('checkout')">Ver planos com desconto →</button>
+      <button class="go-btn" onclick="closeD();achSelectFirm('${f.id}');go('checkout')">${t('offers_ver_planos')}</button>
     </div>`;
   }
 
@@ -6882,7 +6897,7 @@ function renderCmp(){
         <div class="cmp-winner-reason">${t('cmp_melhor_em')} ${maxScore} ${t('cmp_de')} ${rows.filter(r=>r.higher).length} ${t('cmp_criterios')}</div>
       </div>
       <div style="margin-left:auto;flex-shrink:0;">
-        <button style="padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openD('${winner.id}')">${t('cmp_ver_firma')} ${winner.icon} →</button>
+        <button style="padding:10px 20px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;" onclick="openD('${winner.id}')">${t('cmp_ver_firma')} →</button>
       </div>`;
   }
 
