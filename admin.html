@@ -636,6 +636,18 @@ a{text-decoration:none;color:inherit;}
 
  <div class="geo-grid" id="geo-cards"></div>
 
+ <!-- Tabelas detalhadas -->
+ <div class="charts-grid" style="margin-bottom:20px;">
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Ranking de Países</div></div>
+ <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="tbl-geo-countries"></table></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div class="cc-title">Ranking de Cidades</div></div>
+ <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="tbl-geo-cities"></table></div>
+ </div>
+ </div>
+
  <div class="charts-grid">
  <div class="chart-card">
  <div class="cc-hd"><div class="cc-title">Distribuição por País</div></div>
@@ -1783,10 +1795,14 @@ function renderGeoPage(){
  <div class="stat-card"><div class="stat-lbl">Fusos</div><div class="stat-val">${uniqueTimezones.size}</div><div class="stat-change">distintos</div></div>
  <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val" style="color:var(--green);">${events.filter(e=>e.event==='page_view').length}</div><div class="stat-change">total</div></div>`;
 
- // Count helper
- const countBy=(arr,fn)=>{const c={};arr.forEach(x=>{const v=fn(x);if(v)c[v]=(c[v]||0)+1;});return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,10);};
- const countries=countBy(geoData,g=>COUNTRY_NAMES[g.country]||g.country);
- const states=countBy(geoData,g=>g.region);
+ // Count helper (no limit for tables, limit for charts)
+ const countAll=(arr,fn)=>{const c={};arr.forEach(x=>{const v=fn(x);if(v)c[v]=(c[v]||0)+1;});return Object.entries(c).sort((a,b)=>b[1]-a[1]);};
+ const countBy=(arr,fn)=>countAll(arr,fn).slice(0,10);
+ const allCountries=countAll(geoData,g=>COUNTRY_NAMES[g.country]||g.country);
+ const allStates=countAll(geoData,g=>g.region);
+ const allCities=countAll(geoData,g=>{const c=g.city;const r=g.region;return c?(c+(r?', '+r:'')):''});
+ const countries=allCountries.slice(0,10);
+ const states=allStates.slice(0,10);
  const cities=countBy(geoData,g=>g.city);
  const maxC=countries[0]?.[1]||1,maxS=states[0]?.[1]||1,maxCi=cities[0]?.[1]||1;
 
@@ -1801,6 +1817,14 @@ function renderGeoPage(){
  </div>`).join(''):'<div style="color:var(--t3);font-size:12px;padding:12px;">Sem dados ainda</div>'}
  </div>`;
  document.getElementById('geo-cards').innerHTML=geoCard('Por País',countries,maxC)+geoCard('Por Estado',states,maxS)+geoCard('Por Cidade',cities,maxCi);
+
+ // Ranking tables
+ const total=geoData.length||1;
+ const tblCountries=document.getElementById('tbl-geo-countries');
+ if(tblCountries) tblCountries.innerHTML=`<thead><tr><th>#</th><th>País</th><th>Visitas</th><th>%</th></tr></thead><tbody>${allCountries.map(([name,cnt],i)=>`<tr><td style="color:var(--t3);">${i+1}</td><td><strong>${name}</strong></td><td style="color:var(--gold);">${cnt}</td><td style="color:var(--t3);">${(cnt/total*100).toFixed(1)}%</td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--t3);">Sem dados</td></tr>'}</tbody>`;
+
+ const tblCities=document.getElementById('tbl-geo-cities');
+ if(tblCities) tblCities.innerHTML=`<thead><tr><th>#</th><th>Cidade</th><th>Visitas</th><th>%</th></tr></thead><tbody>${allCities.map(([name,cnt],i)=>`<tr><td style="color:var(--t3);">${i+1}</td><td><strong>${name}</strong></td><td style="color:var(--gold);">${cnt}</td><td style="color:var(--t3);">${(cnt/total*100).toFixed(1)}%</td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--t3);">Sem dados</td></tr>'}</tbody>`;
 
  setTimeout(()=>{
  const colors=['#F0B429','#3B82F6','#22C55E','#A855F7','#06B6D4','#F97316','#EF4444','#F59E0B'];
