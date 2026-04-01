@@ -7227,7 +7227,7 @@ function renderFirms(list){
       </div>
       ${f.trustpilot?`<a class="fr-tp-mini" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="fr-tp-stars">${'★'.repeat(tpStars)}</span><span class="fr-tp-count">${f.trustpilot.reviews.toLocaleString()}</span></a>`:''}
       <div class="fr-actions" onclick="event.stopPropagation()">
-        ${f.coupon?`<div class="fr-coupon-box"><div class="fr-coupon-box-label">${t('firms_cupom_exclusivo')}</div><div class="fr-coupon-box-row"><span class="fr-coupon-box-code">${f.coupon}</span><button class="fr-coupon-box-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button></div></div>`:''}
+        ${f.coupon?`<div class="fr-coupon-box"><div class="fr-coupon-box-label">${t('firms_cupom_exclusivo')}</div><div class="fr-coupon-box-row" style="display:flex;align-items:center;justify-content:center;gap:10px;"><span class="fr-coupon-box-code">${f.coupon}</span><button class="fr-coupon-box-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button></div></div>`:''}
         <button class="fr-fav ${_favs.has(f.id)?'active':''}" id="fav-btn-${f.id}" onclick="toggleFav('${f.id}')" title="${_favs.has(f.id)?t('firms_fav_remove'):t('firms_fav_add')}">
           ${_favs.has(f.id)?'❤️':'🤍'}<span class="fr-fav-count" id="fav-cnt-${f.id}">${_favCounts[f.id]||0}</span>
         </button>
@@ -7247,7 +7247,7 @@ function renderFirms(list){
       <div class="fr-right" onclick="event.stopPropagation()">
         ${f.coupon?`<div class="fr-coupon-bar">
           <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
-          <div class="drw-coupon-row">
+          <div class="drw-coupon-row" style="display:flex;align-items:center;justify-content:center;gap:12px;">
             <span class="drw-coupon-code">${f.coupon}</span>
             <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button>
           </div>
@@ -7360,7 +7360,7 @@ function renderOffers(){
         ${f.coupon?`
         <div class="offer-coupon-box">
           <div class="offer-coupon-label">${t('offers_cupom_label')}</div>
-          <div class="offer-coupon-row">
+          <div class="offer-coupon-row" style="display:flex;align-items:center;justify-content:center;gap:12px;">
             <span class="offer-coupon-code">${f.coupon}</span>
             <button class="offer-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','offers')">${t('geral_copiar')}</button>
           </div>
@@ -7533,7 +7533,7 @@ function openD(id){
     if (f.coupon) {
       html += `<div class="drw-coupon-bar">
         <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
-        <div class="drw-coupon-row">
+        <div class="drw-coupon-row" style="display:flex;align-items:center;justify-content:center;gap:12px;">
           <span class="drw-coupon-code">${f.coupon}</span>
           <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
         </div>
