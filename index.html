@@ -952,55 +952,51 @@ img{max-width:100%;}
 
 /* FOOTER */
 /* ═══ ANÁLISE DE MERCADO IA ═══ */
-.analise-wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px;}
-.analise-hd{margin-bottom:24px;}
+.analise-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+.analise-hd{margin-bottom:24px;text-align:center;}
 .analise-title{font-size:22px;font-weight:700;letter-spacing:-.5px;margin-bottom:5px;}
-.analise-sub{font-size:13px;color:var(--t2);line-height:1.6;}
-.analise-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
-@media(max-width:700px){.analise-grid{grid-template-columns:1fr;}}
-.analise-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:20px;}
-.analise-card.full{grid-column:1/-1;}
-.analise-card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
-.analise-card-title span{font-size:16px;}
-.upload-zone{border:2px dashed var(--b2);border-radius:10px;padding:36px 20px;text-align:center;cursor:pointer;transition:.3s;background:var(--card2);position:relative;}
-.upload-zone:hover{border-color:var(--gold);background:rgba(240,180,41,.04);}
-.upload-zone.has-img{border-color:var(--gold);border-style:solid;}
-.uz-icon{font-size:36px;margin-bottom:10px;}
-.uz-title{font-size:14px;font-weight:600;margin-bottom:4px;}
-.uz-sub{font-size:12px;color:var(--t3);}
-.uz-preview{max-width:100%;max-height:280px;border-radius:8px;object-fit:contain;}
-.uz-remove{position:absolute;top:10px;right:10px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;}
-.analise-context-inp{width:100%;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;resize:vertical;min-height:80px;transition:.2s;line-height:1.6;}
-.analise-context-inp:focus{border-color:var(--gold);}
-.analise-context-inp::placeholder{color:var(--t3);}
-.analise-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;}
-.achip{padding:5px 11px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;}
-.achip:hover{border-color:var(--gold);color:var(--gold);}
-.analise-run-btn{width:100%;padding:13px;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-family:var(--f);font-size:14px;font-weight:800;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.analise-run-btn:hover:not(:disabled){background:#F7C948;transform:translateY(-1px);}
-.analise-run-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-.analise-result{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:24px;margin-top:20px;display:none;}
-.ar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
-.ar-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;}
-.ar-badge{font-size:10px;padding:3px 9px;border-radius:4px;background:var(--gbg);color:var(--gold);border:1px solid var(--gbr);font-weight:700;}
-.ar-copy-btn{padding:6px 12px;background:transparent;border:1px solid var(--b2);color:var(--t2);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;font-family:var(--f);}
-.ar-copy-btn:hover{border-color:var(--gold);color:var(--gold);}
-.ar-body{font-size:13px;line-height:1.8;color:var(--t1);}
-.ar-body h3{font-size:13px;font-weight:700;color:var(--gold);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.4px;}
-.ar-body p{margin-bottom:10px;color:var(--t2);}
-.ar-body strong{color:var(--t1);}
-.ar-body ul{padding-left:16px;margin-bottom:10px;}
-.ar-body ul li{margin-bottom:5px;color:var(--t2);}
-.ar-loading{display:flex;align-items:center;gap:12px;padding:20px;color:var(--gold);font-size:13px;font-weight:600;}
-.ar-spinner{width:20px;height:20px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+.analise-sub{font-size:13px;color:var(--t2);line-height:1.6;max-width:600px;margin:0 auto;}
+.analise-meta{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;font-size:12px;color:var(--t3);}
+.analise-meta-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;}
+.da-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:800px){.da-grid{grid-template-columns:1fr;}}
+.da-card{background:var(--card);border:1px solid var(--b1);border-radius:14px;overflow:hidden;transition:.2s;}
+.da-card:hover{border-color:var(--gold);box-shadow:0 4px 24px rgba(234,179,8,.06);}
+.da-card-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 0;gap:10px;}
+.da-asset{display:flex;align-items:center;gap:10px;}
+.da-ticker{font-size:16px;font-weight:800;color:var(--t1);}
+.da-name{font-size:11px;color:var(--t3);font-weight:500;}
+.da-price-wrap{text-align:right;}
+.da-price{font-size:15px;font-weight:700;color:var(--t1);}
+.da-change{font-size:11px;font-weight:700;margin-top:1px;}
+.da-change.up{color:var(--green);}
+.da-change.down{color:var(--red);}
+.da-change.flat{color:var(--t3);}
+.da-bias-bar{display:flex;align-items:center;gap:8px;padding:10px 18px;font-size:12px;}
+.da-bias-pill{padding:3px 10px;border-radius:5px;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
+.da-bias-pill.bullish{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25);}
+.da-bias-pill.bearish{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25);}
+.da-bias-pill.neutral{background:rgba(234,179,8,.12);color:var(--gold);border:1px solid rgba(234,179,8,.25);}
+.da-confidence{display:flex;gap:3px;align-items:center;}
+.da-conf-dot{width:8px;height:8px;border-radius:50%;background:var(--b2);}
+.da-conf-dot.on{background:var(--gold);}
+.da-chart{width:100%;height:200px;border-bottom:1px solid var(--b1);}
+.da-chart iframe{width:100%;height:100%;border:none;}
+.da-body{padding:14px 18px 16px;}
+.da-levels{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.da-lvl{background:var(--card2);border-radius:7px;padding:8px 10px;}
+.da-lvl-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);font-weight:700;margin-bottom:2px;}
+.da-lvl-val{font-size:12px;font-weight:700;color:var(--t1);}
+.da-lvl-val.support{color:var(--green);}
+.da-lvl-val.resistance{color:var(--red);}
+.da-lvl-val.zone{color:var(--gold);}
+.da-context{font-size:12px;line-height:1.6;color:var(--t2);margin-bottom:8px;}
+.da-events{font-size:11px;color:var(--t3);line-height:1.5;padding-top:8px;border-top:1px solid var(--b1);}
+.da-events strong{color:var(--t2);}
+.da-disclaimer{text-align:center;margin-top:20px;padding:12px;font-size:10px;color:var(--t3);line-height:1.5;border:1px solid var(--b1);border-radius:8px;background:var(--card);}
+.da-loading{text-align:center;padding:60px 20px;color:var(--t3);}
+.da-loading .ar-spinner{width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.ar-sentiment{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-.ar-sent-card{background:var(--card2);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--b1);}
-.ar-sent-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
-.ar-sent-val{font-size:16px;font-weight:800;}
-.ar-sent-val.bull{color:var(--green);}
-.ar-sent-val.bear{color:var(--red);}
-.ar-sent-val.neut{color:var(--gold);}
 
 /* ═══ CALENDÁRIO ECONÔMICO MELHORADO ═══ */
 .cal-wrap{padding:0;}
@@ -1878,56 +1874,18 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
   </div>
 </div>
 
-<!-- ANÁLISE DE MERCADO IA -->
+<!-- ANÁLISE DIÁRIA DE MERCADO -->
 <div class="page" id="page-analise">
   <div class="analise-wrap">
     <div class="analise-hd">
-      <div class="analise-title" data-i18n="analise_titulo"> Análise de Mercado com IA</div>
-      <div class="analise-sub" data-i18n="analise_sub">Cole um print do seu gráfico e receba análise de contexto, estrutura de mercado, notícias do dia e possíveis movimentos — gerado por IA especializada em trading.</div>
+      <div class="analise-title" data-i18n="analise_titulo">Análise Diária de Mercado</div>
+      <div class="analise-sub" data-i18n="analise_sub">Análise educacional gerada por IA às 6h (Brasília). Viés direcional, zonas de atenção e contexto macro para os principais futuros.</div>
+      <div class="analise-meta" id="da-meta"></div>
     </div>
-
-    <div class="analise-grid">
-      <!-- Upload do gráfico -->
-      <div class="analise-card">
-        <div class="analise-card-title"><span></span><span data-i18n="analise_seu_grafico">SEU GRÁFICO</span></div>
-        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('chart-upload').click()">
-          <input type="file" id="chart-upload" accept="image/*" style="display:none" onchange="handleChartUpload(this)">
-          <div id="uz-content">
-            <div class="uz-icon"></div>
-            <div class="uz-title" data-i18n="analise_clique_aqui">Clique ou arraste o print aqui</div>
-            <div class="uz-sub" data-i18n="analise_formatos">PNG, JPG, WebP — qualquer timeframe</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contexto adicional -->
-      <div class="analise-card">
-        <div class="analise-card-title"><span></span><span data-i18n="analise_contexto_adicional">CONTEXTO ADICIONAL</span></div>
-        <div class="analise-chips" id="analise-chips">
-          <button class="achip" onclick="addChip('ES - S&P 500 Futuros')">ES</button>
-          <button class="achip" onclick="addChip('NQ - Nasdaq Futuros')">NQ</button>
-          <button class="achip" onclick="addChip('EUR/USD Forex')">EUR/USD</button>
-          <button class="achip" onclick="addChip('GC - Gold Futuros')">Gold</button>
-          <button class="achip" onclick="addChip('CL - Crude Oil')">CL Oil</button>
-          <button class="achip" onclick="addChip('BTC/USD')">BTC</button>
-        </div>
-        <textarea class="analise-context-inp" id="analise-context" data-i18n-placeholder="analise_placeholder" placeholder="Descreva o ativo, timeframe, o que você está vendo ou qualquer dúvida específica..."rows="5"></textarea>
-      </div>
+    <div class="da-grid" id="da-grid">
+      <div class="da-loading"><div class="ar-spinner"></div><div data-i18n="da_carregando">Carregando análises...</div></div>
     </div>
-
-    <button class="analise-run-btn" id="analise-run-btn" onclick="runAnalise()">
-      <span></span> <span data-i18n="analise_btn">Analisar com IA</span>
-    </button>
-
-    <!-- Resultado -->
-    <div class="analise-result" id="analise-result">
-      <div class="ar-header">
-        <div class="ar-title"> <span data-i18n="analise_gerada">Análise gerada</span> <span class="ar-badge">IA</span></div>
-        <button class="ar-copy-btn" onclick="copyAnalise()" data-i18n="analise_copiar">Copiar</button>
-      </div>
-      <div id="ar-sentiment" class="ar-sentiment"></div>
-      <div class="ar-body" id="ar-body"></div>
-    </div>
+    <div class="da-disclaimer" data-i18n="da_disclaimer">Conteúdo educacional gerado por inteligência artificial. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.</div>
   </div>
 </div>
 
@@ -2569,7 +2527,7 @@ const I18N = {
     nav_comparar:'Comparar',
     nav_calendario:'Calendário Econômico',
     nav_heatmap:'Mapa de Calor',
-    nav_analise:'Análise IA',
+    nav_analise:'Análise Diária',
     nav_guias:'Guias',
     nav_blog:'Blog',
     nav_calc:'Position Size',
@@ -2762,8 +2720,21 @@ const I18N = {
     hm_nasdaq100:'Nasdaq 100',
     hm_global:'Global',
     hm_mapa_calor:'Mapa de Calor — ',
-    analise_titulo:'Análise de Mercado com IA',
-    analise_sub:'Cole um print do seu gráfico e receba análise de contexto, estrutura de mercado, notícias do dia e possíveis movimentos — gerado por IA especializada em trading.',
+    analise_titulo:'Análise Diária de Mercado',
+    analise_sub:'Análise educacional gerada por IA às 6h (Brasília). Viés direcional, zonas de atenção e contexto macro para os principais futuros.',
+    da_carregando:'Carregando análises...',
+    da_sem_analise:'Nenhuma análise disponível ainda',
+    da_primeira_6h:'A primeira análise será gerada às 6h (horário de Brasília)',
+    da_erro:'Erro ao carregar análises',
+    da_atualizado:'Atualizado em',
+    da_bullish:'Bullish',
+    da_bearish:'Bearish',
+    da_neutro:'Neutro',
+    da_suporte:'Suporte',
+    da_resistencia:'Resistência',
+    da_zona_atencao:'Zona de atenção',
+    da_eventos:'Eventos do dia',
+    da_disclaimer:'Conteúdo educacional gerado por inteligência artificial. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.',
     analise_seu_grafico:'SEU GRÁFICO',
     analise_contexto_adicional:'CONTEXTO ADICIONAL',
     analise_clique_aqui:'Clique ou arraste o print aqui',
@@ -3294,8 +3265,21 @@ const I18N = {
     hm_nasdaq100:'Nasdaq 100',
     hm_global:'Global',
     hm_mapa_calor:'Heat Map — ',
-    analise_titulo:'Market Analysis with AI',
-    analise_sub:'Upload a screenshot of your chart and receive an analysis of the market context, market structure, today\'s news, and potential price movements—generated by AI specialized in trading.',
+    analise_titulo:'Daily Market Analysis',
+    analise_sub:'Educational analysis generated by AI at 6 AM (Brasília time). Directional bias, attention zones, and macro context for the main futures.',
+    da_carregando:'Loading analyses...',
+    da_sem_analise:'No analysis available yet',
+    da_primeira_6h:'The first analysis will be generated at 6 AM (Brasília time)',
+    da_erro:'Error loading analyses',
+    da_atualizado:'Updated on',
+    da_bullish:'Bullish',
+    da_bearish:'Bearish',
+    da_neutro:'Neutral',
+    da_suporte:'Support',
+    da_resistencia:'Resistance',
+    da_zona_atencao:'Attention zone',
+    da_eventos:'Today\'s events',
+    da_disclaimer:'Educational content generated by artificial intelligence. This does not constitute investment advice, financial consulting, or trading signals. Trading involves risk of loss. Consult a professional before trading.',
     analise_seu_grafico:'YOUR CHART',
     analise_contexto_adicional:'ADDITIONAL CONTEXT',
     analise_clique_aqui:'Click or drag the screenshot here',
@@ -3826,8 +3810,21 @@ const I18N = {
     hm_nasdaq100:'Nasdaq 100',
     hm_global:'Global',
     hm_mapa_calor:'Mapa de calor — ',
-    analise_titulo:'Análisis de mercado con IA',
-    analise_sub:'Adjunta una captura de pantalla de tu gráfico y recibe un análisis del contexto, la estructura del mercado, las noticias del día y los posibles movimientos, todo ello generado por una IA especializada en trading.',
+    analise_titulo:'Análisis Diario de Mercado',
+    analise_sub:'Análisis educativo generado por IA a las 6h (hora de Brasilia). Sesgo direccional, zonas de atención y contexto macro para los principales futuros.',
+    da_carregando:'Cargando análisis...',
+    da_sem_analise:'Ningún análisis disponible aún',
+    da_primeira_6h:'El primer análisis se generará a las 6h (hora de Brasilia)',
+    da_erro:'Error al cargar análisis',
+    da_atualizado:'Actualizado el',
+    da_bullish:'Bullish',
+    da_bearish:'Bearish',
+    da_neutro:'Neutro',
+    da_suporte:'Soporte',
+    da_resistencia:'Resistencia',
+    da_zona_atencao:'Zona de atención',
+    da_eventos:'Eventos del día',
+    da_disclaimer:'Contenido educativo generado por inteligencia artificial. No constituye recomendación de inversión, asesoría financiera ni señal de operación. El trading implica riesgo de pérdida. Consulte a un profesional antes de operar.',
     analise_seu_grafico:'TU GRÁFICO',
     analise_contexto_adicional:'CONTEXTO ADICIONAL',
     analise_clique_aqui:'Haz clic o arrastra la captura de pantalla aquí',
@@ -4358,8 +4355,21 @@ const I18N = {
     hm_nasdaq100:'Nasdaq 100',
     hm_global:'Globale',
     hm_mapa_calor:'Mappa termica — ',
-    analise_titulo:'Analisi di mercato con l\'IA',
-    analise_sub:'Invia uno screenshot del tuo grafico e ricevi un\'analisi del contesto, della struttura di mercato, delle notizie del giorno e dei possibili movimenti — generata da un\'intelligenza artificiale specializzata nel trading.',
+    analise_titulo:'Analisi Giornaliera di Mercato',
+    analise_sub:'Analisi educativa generata dall\'IA alle 6h (ora di Brasilia). Bias direzionale, zone di attenzione e contesto macro per i principali futures.',
+    da_carregando:'Caricamento analisi...',
+    da_sem_analise:'Nessuna analisi disponibile',
+    da_primeira_6h:'La prima analisi sarà generata alle 6h (ora di Brasilia)',
+    da_erro:'Errore nel caricamento delle analisi',
+    da_atualizado:'Aggiornato il',
+    da_bullish:'Bullish',
+    da_bearish:'Bearish',
+    da_neutro:'Neutro',
+    da_suporte:'Supporto',
+    da_resistencia:'Resistenza',
+    da_zona_atencao:'Zona di attenzione',
+    da_eventos:'Eventi del giorno',
+    da_disclaimer:'Contenuto educativo generato dall\'intelligenza artificiale. Non costituisce raccomandazione di investimento, consulenza finanziaria o segnale di trading. Il trading comporta rischi di perdita. Consultare un professionista prima di operare.',
     analise_seu_grafico:'IL TUO GRAFICO',
     analise_contexto_adicional:'ULTERIORI INFORMAZIONI',
     analise_clique_aqui:'Clicca o trascina l\'immagine qui',
@@ -4890,8 +4900,21 @@ const I18N = {
     hm_nasdaq100:'Nasdaq 100',
     hm_global:'Mondial',
     hm_mapa_calor:'Carte thermique — ',
-    analise_titulo:'Analyse de marché avec l\'IA',
-    analise_sub:'Joignez une capture d\'écran de votre graphique et recevez une analyse du contexte, de la structure du marché, des actualités du jour et des mouvements potentiels — générée par une IA spécialisée dans le trading.',
+    analise_titulo:'Analyse Quotidienne de Marché',
+    analise_sub:'Analyse éducative générée par l\'IA à 6h (heure de Brasilia). Biais directionnel, zones d\'attention et contexte macro pour les principaux contrats à terme.',
+    da_carregando:'Chargement des analyses...',
+    da_sem_analise:'Aucune analyse disponible',
+    da_primeira_6h:'La première analyse sera générée à 6h (heure de Brasilia)',
+    da_erro:'Erreur de chargement des analyses',
+    da_atualizado:'Mis à jour le',
+    da_bullish:'Bullish',
+    da_bearish:'Bearish',
+    da_neutro:'Neutre',
+    da_suporte:'Support',
+    da_resistencia:'Résistance',
+    da_zona_atencao:'Zone d\'attention',
+    da_eventos:'Événements du jour',
+    da_disclaimer:'Contenu éducatif généré par intelligence artificielle. Ne constitue pas une recommandation d\'investissement, un conseil financier ou un signal de trading. Le trading comporte un risque de perte. Consultez un professionnel avant d\'opérer.',
     analise_seu_grafico:'VOTRE GRAPHIQUE',
     analise_contexto_adicional:'CONTEXTE SUPPLÉMENTAIRE',
     analise_clique_aqui:'Cliquez ou faites glisser l\'image ici',
@@ -5422,8 +5445,21 @@ const I18N = {
     hm_nasdaq100:'Nasdaq 100',
     hm_global:'Global',
     hm_mapa_calor:'Heatmap — ',
-    analise_titulo:'Marktanalyse mit KI',
-    analise_sub:'Fügen Sie einen Screenshot Ihres Charts ein und erhalten Sie eine Analyse des Marktkontexts, der Marktstruktur, der aktuellen Nachrichten und möglicher Kursbewegungen – erstellt von einer auf den Handel spezialisierten KI.',
+    analise_titulo:'Tägliche Marktanalyse',
+    analise_sub:'Bildungsanalyse, erstellt von KI um 6 Uhr (Brasilia-Zeit). Richtungsbias, Aufmerksamkeitszonen und Makrokontext für die wichtigsten Futures.',
+    da_carregando:'Analysen werden geladen...',
+    da_sem_analise:'Noch keine Analyse verfügbar',
+    da_primeira_6h:'Die erste Analyse wird um 6 Uhr (Brasilia-Zeit) generiert',
+    da_erro:'Fehler beim Laden der Analysen',
+    da_atualizado:'Aktualisiert am',
+    da_bullish:'Bullish',
+    da_bearish:'Bearish',
+    da_neutro:'Neutral',
+    da_suporte:'Unterstützung',
+    da_resistencia:'Widerstand',
+    da_zona_atencao:'Aufmerksamkeitszone',
+    da_eventos:'Ereignisse des Tages',
+    da_disclaimer:'Bildungsinhalte, erstellt durch künstliche Intelligenz. Stellt keine Anlageberatung, Finanzberatung oder Handelssignale dar. Trading birgt das Risiko von Verlusten. Konsultieren Sie einen Fachmann, bevor Sie handeln.',
     analise_seu_grafico:'IHR DIAGRAMM',
     analise_contexto_adicional:'WEITERE HINTERGRUNDINFORMATIONEN',
     analise_clique_aqui:'Klicken Sie hier oder ziehen Sie den Screenshot hierher',
@@ -5954,8 +5990,21 @@ const I18N = {
     hm_nasdaq100:'ناسداك 100',
     hm_global:'عالمي',
     hm_mapa_calor:'خريطة الحرارة — ',
-    analise_titulo:'تحليل السوق باستخدام الذكاء الاصطناعي',
-    analise_sub:'أرسل صورة من الرسم البياني الخاص بك واحصل على تحليل للسياق، وهيكل السوق، وأخبار اليوم، والتحركات المحتملة — كل ذلك بفضل الذكاء الاصطناعي المتخصص في التداول.',
+    analise_titulo:'التحليل اليومي للسوق',
+    analise_sub:'تحليل تعليمي يتم إنشاؤه بواسطة الذكاء الاصطناعي في الساعة 6 صباحًا (بتوقيت برازيليا). الاتجاه، مناطق الانتباه والسياق الاقتصادي لأهم العقود الآجلة.',
+    da_carregando:'جارٍ تحميل التحليلات...',
+    da_sem_analise:'لا توجد تحليلات متاحة بعد',
+    da_primeira_6h:'سيتم إنشاء أول تحليل في الساعة 6 صباحًا (بتوقيت برازيليا)',
+    da_erro:'خطأ في تحميل التحليلات',
+    da_atualizado:'تم التحديث في',
+    da_bullish:'صاعد',
+    da_bearish:'هابط',
+    da_neutro:'محايد',
+    da_suporte:'دعم',
+    da_resistencia:'مقاومة',
+    da_zona_atencao:'منطقة انتباه',
+    da_eventos:'أحداث اليوم',
+    da_disclaimer:'محتوى تعليمي تم إنشاؤه بواسطة الذكاء الاصطناعي. لا يشكل توصية استثمارية أو استشارة مالية أو إشارة تداول. التداول ينطوي على مخاطر خسارة. استشر متخصصًا قبل التداول.',
     analise_seu_grafico:'الرسم البياني الخاص بك',
     analise_contexto_adicional:'معلومات إضافية',
     analise_clique_aqui:'انقر هنا أو اسحب الصورة',
@@ -8757,147 +8806,74 @@ function renderCal() {
 }
 
 /* ANÁLISE DE MERCADO IA */
-let chartImageData = null;
 
-function handleChartUpload(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    chartImageData = e.target.result;
-    const zone = document.getElementById('upload-zone');
-    document.getElementById('uz-content').innerHTML = `
-      <img src="${chartImageData}" class="uz-preview" alt="Gráfico">
-      <button class="uz-remove" onclick="event.stopPropagation();removeChart()">${t('analise_remover')}</button>`;
-    zone.classList.add('has-img');
-  };
-  reader.readAsDataURL(file);
-}
+/* ─── DAILY ANALYSIS ─── */
+const DA_ASSETS={NQ:{name:'Nasdaq 100',tv:'CME_MINI:NQ1!'},ES:{name:'S&P 500',tv:'CME_MINI:ES1!'},CL:{name:'Petróleo WTI',tv:'NYMEX:CL1!'},GC:{name:'Ouro',tv:'COMEX:GC1!'}};
 
-function removeChart() {
-  chartImageData = null;
-  document.getElementById('chart-upload').value = '';
-  document.getElementById('uz-content').innerHTML = `
-    <div class="uz-icon"></div>
-    <div class="uz-title">${t('analise_clique_aqui')}</div>
-    <div class="uz-sub">${t('analise_formatos')}</div>`;
-  document.getElementById('upload-zone').classList.remove('has-img');
-}
-
-function addChip(text) {
-  const ctx = document.getElementById('analise-context');
-  ctx.value = (ctx.value ? ctx.value + ', ' : '') + text;
-  ctx.focus();
-}
-
-async function runAnalise() {
-  const ctx = document.getElementById('analise-context').value.trim();
-  if (!chartImageData && !ctx) {
-    showToast(t('analise_erro_sem_dados'));
-    return;
-  }
-  const btn = document.getElementById('analise-run-btn');
-  const resultEl = document.getElementById('analise-result');
-  const bodyEl = document.getElementById('ar-body');
-  const sentEl = document.getElementById('ar-sent-card');
-  btn.disabled = true;
-  btn.innerHTML = `<div class="ar-spinner"></div> ${t('analise_analisando')}`;
-  resultEl.style.display = 'block';
-  bodyEl.innerHTML = `<div class="ar-loading"><div class="ar-spinner"></div> ${t('analise_ia_processando')}</div>`;
-  document.getElementById('ar-sentiment').innerHTML = '';
-  resultEl.scrollIntoView({behavior:'smooth', block:'start'});
-
-  try {
-    const messages = [];
-    if (chartImageData) {
-      const base64 = chartImageData.split(',')[1];
-      const mtype = chartImageData.split(';')[0].split(':')[1];
-      messages.push({
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: mtype, data: base64 } },
-          { type: 'text', text: `Você é um analista técnico sênior especializado em futuros, forex e prop firms. Analise este gráfico de trading${ctx ? '. Contexto adicional: ' + ctx : ''}.
-
-Forneça EXATAMENTE neste formato JSON (sem markdown, sem explicações antes ou depois):
-{
-  "sentimento": "BULLISH" ou "BEARISH" ou "NEUTRO",
-  "forca": "FORTE" ou "MODERADO" ou "FRACO",
-  "timeframe_analisado": "qual timeframe você identifica",
-  "contexto": "2-3 frases sobre a estrutura geral do mercado",
-  "suporte_principal": "nível ou zona",
-  "resistencia_principal": "nível ou zona",
-  "tendencia": "descrição clara da tendência",
-  "cenario_favoravel": "movimento mais provável com condições",
-  "cenario_alternativo": "movimento alternativo se falhar",
-  "nivel_invalidacao": "onde o setup invalida",
-  "noticias_relevantes": ["notícia 1 relevante para este ativo hoje", "notícia 2"],
-  "pontos_atencao": ["ponto 1", "ponto 2", "ponto 3"],
-  "conclusao": "resumo objetivo em 2-3 frases para o trader"
-}` }
-        ]
-      });
-    } else {
-      messages.push({
-        role: 'user',
-        content: `Você é um analista técnico sênior. Faça uma análise de mercado para: ${ctx}. Inclua contexto atual, estrutura técnica provável, níveis importantes e possíveis movimentos. Formato JSON idêntico ao solicitado.`
-      });
-    }
-
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1200, messages })
-    });
-    const data = await res.json();
-    const raw = data.content?.[0]?.text || '';
-
-    // Parse JSON
-    let analysis;
-    try {
-      const clean = raw.replace(/```json|```/g, '').trim();
-      analysis = JSON.parse(clean);
-    } catch(e) {
-      // Fallback: render raw text
-      bodyEl.innerHTML = `<p>${raw.replace(/\n/g,'<br>')}</p>`;
-      btn.disabled = false;
-      btn.innerHTML = `<span></span> ${t('analise_btn')}`;
+async function loadDailyAnalysis(){
+  const grid=document.getElementById('da-grid');if(!grid)return;
+  try{
+    const{data,error}=await db.from('daily_analysis').select('*').eq('date',new Date().toISOString().slice(0,10)).order('asset');
+    if(error)throw error;
+    if(!data||data.length===0){
+      // Tenta o dia anterior (fim de semana ou análise ainda não gerada)
+      const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+      const{data:d2}=await db.from('daily_analysis').select('*').eq('date',yesterday.toISOString().slice(0,10)).order('asset');
+      if(d2&&d2.length>0) return renderDailyCards(d2);
+      // Tenta a mais recente disponível
+      const{data:d3}=await db.from('daily_analysis').select('*').order('date',{ascending:false}).limit(4);
+      if(d3&&d3.length>0) return renderDailyCards(d3);
+      grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="font-size:14px;color:var(--t2);font-weight:600;" data-i18n="da_sem_analise">${t('da_sem_analise')}</div><div style="font-size:12px;color:var(--t3);margin-top:6px;" data-i18n="da_primeira_6h">${t('da_primeira_6h')}</div></div>`;
       return;
     }
-
-    // Sentiment cards
-    const sentColor = analysis.sentimento === 'BULLISH' ? 'bull' : analysis.sentimento === 'BEARISH' ? 'bear' : 'neut';
-    document.getElementById('ar-sentiment').innerHTML = `
-      <div class="ar-sent-card"><div class="ar-sent-lbl">${t('analise_sentimento')}</div><div class="ar-sent-val ${sentColor}">${analysis.sentimento}</div></div>
-      <div class="ar-sent-card"><div class="ar-sent-lbl">${t('analise_forca')}</div><div class="ar-sent-val neut">${analysis.forca}</div></div>
-      <div class="ar-sent-card"><div class="ar-sent-lbl">${t('analise_timeframe')}</div><div class="ar-sent-val" style="font-size:13px;">${analysis.timeframe_analisado||'—'}</div></div>`;
-
-    // Full analysis HTML
-    bodyEl.innerHTML = `
-      <h3>📊 ${t('analise_contexto_mercado')}</h3>
-      <p>${analysis.contexto}</p>
-      <h3>📈 ${t('analise_tendencia')}</h3>
-      <p>${analysis.tendencia}</p>
-      <p><strong>${t('analise_suporte')}:</strong> ${analysis.suporte_principal} &nbsp;|&nbsp; <strong>${t('analise_resistencia')}:</strong> ${analysis.resistencia_principal}</p>
-      <h3>🎯 ${t('analise_cenarios')}</h3>
-      <p><strong>${t('analise_cenario_favoravel')}:</strong> ${analysis.cenario_favoravel}</p>
-      <p><strong>${t('analise_cenario_alternativo')}:</strong> ${analysis.cenario_alternativo}</p>
-      <p><strong>${t('analise_nivel_invalidacao')}:</strong> <span style="color:var(--red)">${analysis.nivel_invalidacao}</span></p>
-      ${analysis.noticias_relevantes?.length ? `<h3>📰 ${t('analise_noticias')}</h3><ul>${analysis.noticias_relevantes.map(n=>`<li>${n}</li>`).join('')}</ul>` : ''}
-      ${analysis.pontos_atencao?.length ? `<h3>⚠️ ${t('analise_pontos_atencao')}</h3><ul>${analysis.pontos_atencao.map(p=>`<li>${p}</li>`).join('')}</ul>` : ''}
-      <h3>✅ ${t('analise_conclusao')}</h3>
-      <p style="background:var(--card2);border:1px solid var(--b2);border-radius:8px;padding:12px 16px;">${analysis.conclusao}</p>`;
-
-    track('analise_mercado',{has_chart:!!chartImageData, ctx_length:ctx.length});
-  } catch(err) {
-    bodyEl.innerHTML = '<p style="color:var(--red);">Erro ao conectar com a IA. Verifique sua conexão e tente novamente.</p>';
+    renderDailyCards(data);
+  }catch(e){
+    grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="color:var(--t3);">${t('da_erro')}</div></div>`;
   }
-  btn.disabled = false;
-  btn.innerHTML = `<span></span> ${t('analise_btn')}`;
 }
 
-function copyAnalise() {
-  const text = document.getElementById('ar-body')?.innerText || '';
-  navigator.clipboard.writeText(text).then(() => showToast(t('analise_copiado')));
+function renderDailyCards(items){
+  const grid=document.getElementById('da-grid');if(!grid)return;
+  const meta=document.getElementById('da-meta');
+  if(meta&&items[0]){
+    const d=new Date(items[0].date+'T12:00:00');
+    const dateStr=d.toLocaleDateString(_currentLang==='pt'?'pt-BR':_currentLang,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    meta.innerHTML=`<span><span class="analise-meta-dot"></span> ${t('da_atualizado')} ${dateStr}</span>`;
+  }
+  const tvTheme='dark';
+  grid.innerHTML=items.map(a=>{
+    const info=DA_ASSETS[a.asset]||{name:a.asset_name,tv:''};
+    const biasClass=a.bias;
+    const biasLabel=a.bias==='bullish'?t('da_bullish'):a.bias==='bearish'?t('da_bearish'):t('da_neutro');
+    const chgClass=a.change_pct>0?'up':a.change_pct<0?'down':'flat';
+    const chgSign=a.change_pct>0?'+':'';
+    const confDots=Array.from({length:5},(_, i)=>`<span class="da-conf-dot${i<a.confidence?' on':''}"></span>`).join('');
+    return`<div class="da-card">
+      <div class="da-card-head">
+        <div class="da-asset"><div><div class="da-ticker">${a.asset}</div><div class="da-name">${info.name}</div></div></div>
+        <div class="da-price-wrap">
+          ${a.last_price?`<div class="da-price">${Number(a.last_price).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`:''}
+          ${a.change_pct!=null?`<div class="da-change ${chgClass}">${chgSign}${Number(a.change_pct).toFixed(2)}%</div>`:''}
+        </div>
+      </div>
+      <div class="da-bias-bar">
+        <span class="da-bias-pill ${biasClass}">${biasLabel}</span>
+        <div class="da-confidence">${confDots}</div>
+      </div>
+      <div class="da-chart"><iframe src="https://s.tradingview.com/widgetembed/?frameElementId=da_${a.asset}&symbol=${info.tv}&interval=60&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0a0e17&studies=[]&theme=${tvTheme}&style=1&timezone=America%2FSao_Paulo&withdateranges=0&hideideas=1&overrides=%7B%7D&utm_source=marketscoupons.com" allowtransparency="true" frameborder="0" allowfullscreen></iframe></div>
+      <div class="da-body">
+        <div class="da-levels">
+          <div class="da-lvl"><div class="da-lvl-label">${t('da_suporte')} 1</div><div class="da-lvl-val support">${a.support_1||'—'}</div></div>
+          <div class="da-lvl"><div class="da-lvl-label">${t('da_resistencia')} 1</div><div class="da-lvl-val resistance">${a.resistance_1||'—'}</div></div>
+          <div class="da-lvl"><div class="da-lvl-label">${t('da_suporte')} 2</div><div class="da-lvl-val support">${a.support_2||'—'}</div></div>
+          <div class="da-lvl"><div class="da-lvl-label">${t('da_resistencia')} 2</div><div class="da-lvl-val resistance">${a.resistance_2||'—'}</div></div>
+          ${a.attention_zone?`<div class="da-lvl" style="grid-column:1/-1;"><div class="da-lvl-label">${t('da_zona_atencao')}</div><div class="da-lvl-val zone">${a.attention_zone}</div></div>`:''}
+        </div>
+        <div class="da-context">${a.context}</div>
+        ${a.events?`<div class="da-events"><strong>${t('da_eventos')}:</strong> ${a.events}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* LEAD / UNLOCK */
@@ -9687,6 +9663,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadFirmsFromSupabase();
   await loadGuidesFromSupabase();
   renderGuides();
+  loadDailyAnalysis();
 
   // Carregar fidelidade do membro logado (se tiver email salvo)
   const cachedMember = getLoyaltyMember();
