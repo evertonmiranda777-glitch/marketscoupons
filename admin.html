@@ -2704,51 +2704,112 @@ function saveIndicator(idx) {
 function toggleIndicator(idx){const tools=getCmsData('indicators',DEFAULT_INDICATORS);tools[idx].active=!tools[idx].active;saveCmsData('indicators',tools);renderCmsIndicators();}
 
 /* ══ GUIDES ══ */
-function renderCmsGuides() {
-  const guides = getCmsData('guides', DEFAULT_GUIDES);
+let _adminGuides=[];
+async function loadAdminGuides(){
+  try{
+    const{data,error}=await db.from('cms_guides').select('*').order('sort_order',{ascending:true});
+    if(!error&&data){_adminGuides=data;return data;}
+  }catch(e){}
+  return _adminGuides;
+}
+async function renderCmsGuides() {
+  await loadAdminGuides();
+  const guides=_adminGuides;
   const tbl = document.getElementById('guides-tbl');
   if(!tbl) return;
-  tbl.innerHTML = `<thead><tr><th>Titulo</th><th>Categoria</th><th>Descricao</th><th>Status</th><th>Acoes</th></tr></thead>
-    <tbody>${guides.map((g,i)=>`<tr>
-      <td style="font-weight:600;">${g.title}</td>
-      <td><span class="td-badge" style="background:var(--bbg);color:var(--blue);">${g.cat}</span></td>
-      <td style="font-size:11px;color:var(--t2);max-width:250px;">${g.desc}</td>
+  const catColors={'Iniciante':'var(--blue)','Intermediário':'var(--gold)','Prático':'var(--green)','Técnico':'var(--purple)','Comparativo':'var(--orange)','Financeiro':'var(--cyan)'};
+  tbl.innerHTML = `<thead><tr><th>Titulo</th><th>Categoria</th><th>Slug</th><th>Conteudo</th><th>Status</th><th>Acoes</th></tr></thead>
+    <tbody>${guides.map(g=>`<tr>
+      <td style="font-weight:600;">${g.icon||''} ${g.title}</td>
+      <td><span class="td-badge" style="background:${(catColors[g.category]||'var(--blue)')}22;color:${catColors[g.category]||'var(--blue)'};">${g.category}</span></td>
+      <td style="font-size:10px;color:var(--t3);font-family:monospace;">${g.slug}</td>
+      <td style="font-size:10px;color:var(--t2);">${g.content?'<span style="color:var(--green);">✓ '+Math.round((g.content||'').replace(/<[^>]*>/g,'').split(/\\s+/).length)+' palavras</span>':'<span style="color:var(--red);">Vazio</span>'}</td>
       <td><span class="${g.active?'status-active':'status-inactive'}">${g.active?'Ativo':'Inativo'}</span></td>
       <td><div style="display:flex;gap:5px;">
-        <button onclick="openGuideModal(${i})" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">Editar</button>
-        <button class="toggle-btn ${g.active?'on':'off'}" onclick="toggleGuide(${i})"></button>
-        <button onclick="deleteGuide(${i})" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
+        <button onclick="openGuideModal('${g.id}')" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;cursor:pointer;">Editar</button>
+        <button class="toggle-btn ${g.active?'on':'off'}" onclick="toggleGuide('${g.id}')"></button>
+        <button onclick="deleteGuide('${g.id}')" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
       </div></td>
     </tr>`).join('')}</tbody>`;
 }
 
-function openGuideModal(idx) {
-  const guides = getCmsData('guides', DEFAULT_GUIDES);
-  const g = idx !== undefined ? guides[idx] : {id:'',title:'',cat:'Iniciante',desc:'',content:'',active:true};
-  document.getElementById('cms-modal-title').textContent = idx !== undefined ? 'Editar Guia' : 'Novo Guia';
+function openGuideModal(id) {
+  const g = id ? _adminGuides.find(x=>x.id===id) : {id:'',title:'',slug:'',category:'Iniciante',cat_color:'var(--blue)',icon:'📖',description:'',content:'',meta_title:'',meta_description:'',sort_order:_adminGuides.length+1,active:true};
+  if(!g)return;
+  const cats=['Iniciante','Intermediário','Prático','Técnico','Comparativo','Financeiro'];
+  const icons=['📖','📉','✅','📐','⚖️','💰','📊','🎯','🏆','💡'];
+  document.getElementById('cms-modal-title').textContent = id ? 'Editar Guia' : 'Novo Guia';
   document.getElementById('cms-modal-body').innerHTML = `
     <div class="modal-grid">
-      <div class="modal-field modal-full"><label>Titulo do Guia</label><input type="text" id="gd-title" value="${g.title}"></div>
-      <div class="modal-field"><label>Categoria</label><select id="gd-cat"><option ${g.cat==='Iniciante'?'selected':''}>Iniciante</option><option ${g.cat==='Intermediario'?'selected':''}>Intermediario</option><option ${g.cat==='Avancado'?'selected':''}>Avancado</option></select></div>
-      <div class="modal-field modal-full"><label>Descricao (resumo)</label><input type="text" id="gd-desc" value="${g.desc}"></div>
-      <div class="modal-field modal-full"><label>Conteudo completo</label><textarea id="gd-content" rows="8" placeholder="Escreva o conteudo completo do guia aqui...">${g.content||''}</textarea></div>
+      <div class="modal-field" style="grid-column:1/3;"><label>Titulo</label><input type="text" id="gd-title" value="${g.title}" oninput="autoSlug()"></div>
+      <div class="modal-field"><label>Categoria</label><select id="gd-cat">${cats.map(c=>`<option ${g.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+      <div class="modal-field"><label>Icone</label><select id="gd-icon">${icons.map(i=>`<option ${g.icon===i?'selected':''}>${i}</option>`).join('')}</select></div>
+      <div class="modal-field" style="grid-column:1/3;"><label>Slug (URL)</label><input type="text" id="gd-slug" value="${g.slug}" style="font-family:monospace;font-size:11px;"></div>
+      <div class="modal-field" style="grid-column:1/3;"><label>Descricao curta (card)</label><input type="text" id="gd-desc" value="${g.description||''}"></div>
+      <div class="modal-field" style="grid-column:1/3;"><label>Conteudo HTML completo</label><textarea id="gd-content" rows="14" style="font-family:monospace;font-size:11px;line-height:1.5;">${(g.content||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea></div>
+      <div style="grid-column:1/3;border-top:1px solid var(--b1);padding-top:12px;margin-top:4px;">
+        <div style="font-size:11px;font-weight:700;color:var(--t3);margin-bottom:8px;">SEO</div>
+      </div>
+      <div class="modal-field" style="grid-column:1/3;"><label>Meta Title</label><input type="text" id="gd-meta-title" value="${g.meta_title||''}" maxlength="70"><div style="font-size:9px;color:var(--t3);margin-top:2px;">Max 70 chars. Aparece no Google.</div></div>
+      <div class="modal-field" style="grid-column:1/3;"><label>Meta Description</label><textarea id="gd-meta-desc" rows="2" maxlength="160">${g.meta_description||''}</textarea><div style="font-size:9px;color:var(--t3);margin-top:2px;">Max 160 chars. Aparece no Google.</div></div>
+      <div class="modal-field"><label>Ordem</label><input type="number" id="gd-order" value="${g.sort_order||0}" min="0"></div>
     </div>
-    <div style="display:flex;gap:10px;margin-top:4px;">
-      <button class="btn-primary" onclick="saveGuide(${idx !== undefined ? idx : -1})">Salvar</button>
+    <div style="display:flex;gap:10px;margin-top:12px;">
+      <button class="btn-primary" onclick="saveGuide('${id||''}')">Salvar</button>
       <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
     </div>`;
   document.getElementById('cms-modal-ov').classList.add('open');
 }
 
-function saveGuide(idx) {
-  const guides = getCmsData('guides', DEFAULT_GUIDES);
-  const g = {id:idx>=0?guides[idx].id:'g'+Date.now(),title:document.getElementById('gd-title').value.trim(),cat:document.getElementById('gd-cat').value,desc:document.getElementById('gd-desc').value.trim(),content:document.getElementById('gd-content').value.trim(),active:idx>=0?guides[idx].active:true};
-  if(!g.title){toast('Preencha o titulo!','warn');return;}
-  if(idx>=0)guides[idx]=g;else guides.push(g);
-  saveCmsData('guides',guides);closeCmsModal();renderCmsGuides();toast(idx>=0?'Guia atualizado!':'Novo guia adicionado!');
+function autoSlug(){
+  const title=document.getElementById('gd-title')?.value||'';
+  const slug=document.getElementById('gd-slug');
+  if(slug&&!slug.dataset.manual){
+    slug.value=title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  }
 }
-function toggleGuide(idx){const guides=getCmsData('guides',DEFAULT_GUIDES);guides[idx].active=!guides[idx].active;saveCmsData('guides',guides);renderCmsGuides();}
-function deleteGuide(idx){if(!confirm('Excluir este guia?'))return;const guides=getCmsData('guides',DEFAULT_GUIDES);guides.splice(idx,1);saveCmsData('guides',guides);renderCmsGuides();toast('Guia removido.','warn');}
+
+const catColorMap={'Iniciante':'var(--blue)','Intermediário':'var(--gold)','Prático':'var(--green)','Técnico':'var(--purple)','Comparativo':'var(--orange)','Financeiro':'var(--cyan)'};
+
+async function saveGuide(id) {
+  const g = {
+    title: document.getElementById('gd-title').value.trim(),
+    slug: document.getElementById('gd-slug').value.trim(),
+    category: document.getElementById('gd-cat').value,
+    cat_color: catColorMap[document.getElementById('gd-cat').value]||'var(--blue)',
+    icon: document.getElementById('gd-icon').value,
+    description: document.getElementById('gd-desc').value.trim(),
+    content: document.getElementById('gd-content').value.trim(),
+    meta_title: document.getElementById('gd-meta-title').value.trim(),
+    meta_description: document.getElementById('gd-meta-desc').value.trim(),
+    sort_order: parseInt(document.getElementById('gd-order').value)||0,
+  };
+  if(!g.title||!g.slug){toast('Preencha titulo e slug!','warn');return;}
+  try{
+    if(id){
+      const{error}=await db.from('cms_guides').update(g).eq('id',id);
+      if(error)throw error;
+      toast('Guia atualizado!');
+    }else{
+      g.id='g'+Date.now();
+      g.active=true;
+      const{error}=await db.from('cms_guides').insert(g);
+      if(error)throw error;
+      toast('Novo guia adicionado!');
+    }
+  }catch(e){toast('Erro: '+e.message,'warn');return;}
+  closeCmsModal();renderCmsGuides();
+}
+async function toggleGuide(id){
+  const g=_adminGuides.find(x=>x.id===id);if(!g)return;
+  await db.from('cms_guides').update({active:!g.active}).eq('id',id);
+  renderCmsGuides();
+}
+async function deleteGuide(id){
+  if(!confirm('Excluir este guia?'))return;
+  await db.from('cms_guides').delete().eq('id',id);
+  renderCmsGuides();toast('Guia removido.','warn');
+}
 
 /* ══ BLOG ══ */
 async function renderCmsBlog() {
@@ -3211,7 +3272,7 @@ function exportAdminData() {
     loyalty_history: getLoyaltyHistoryAdmin(),
     cms_firms:       getCmsData('firms', DEFAULT_FIRMS),
     cms_indicators:  getCmsData('indicators', DEFAULT_INDICATORS),
-    cms_guides:      getCmsData('guides', DEFAULT_GUIDES),
+    cms_guides:      _adminGuides,
     blog_posts:      getBlogPosts(),
     exported_at:     new Date().toISOString(),
   };

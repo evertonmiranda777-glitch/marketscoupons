@@ -757,6 +757,41 @@ img{max-width:100%;}
 .gc-desc{font-size:12px;color:var(--t2);line-height:1.6;}
 .gc-read{font-size:11px;color:var(--gold);margin-top:10px;font-weight:600;}
 
+/* GUIDE ARTICLE VIEWER */
+.guide-article{display:none;max-width:780px;margin:0 auto;padding:0 20px 60px;}
+.guide-article.open{display:block;}
+.guide-back{display:inline-flex;align-items:center;gap:6px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;padding:8px 0;margin-bottom:16px;transition:.2s;background:none;border:none;font-family:var(--f);}
+.guide-back:hover{color:var(--gold);}
+.guide-art-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;}
+.guide-art-title{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.3;margin-bottom:10px;}
+.guide-art-meta{font-size:11px;color:var(--t3);margin-bottom:28px;display:flex;align-items:center;gap:14px;}
+.guide-art-body{font-size:14px;line-height:1.85;color:var(--t2);}
+.guide-art-body h2{font-size:22px;font-weight:800;color:var(--t1);margin:32px 0 14px;letter-spacing:-.3px;}
+.guide-art-body h3{font-size:17px;font-weight:700;color:var(--t1);margin:26px 0 10px;}
+.guide-art-body h4{font-size:14px;font-weight:700;color:var(--gold);margin:20px 0 8px;}
+.guide-art-body p{margin-bottom:14px;}
+.guide-art-body ul,.guide-art-body ol{margin:10px 0 16px 20px;}
+.guide-art-body li{margin-bottom:6px;}
+.guide-art-body strong{color:var(--t1);}
+.guide-art-body pre{background:var(--card);border:1px solid var(--b1);border-radius:8px;padding:14px 18px;font-size:13px;color:var(--gold);overflow-x:auto;margin:12px 0 16px;}
+.guide-art-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px;}
+.guide-art-body th{background:var(--card);color:var(--gold);font-weight:700;text-align:left;padding:10px 12px;border:1px solid var(--b1);}
+.guide-art-body td{padding:9px 12px;border:1px solid var(--b1);color:var(--t2);}
+.guide-art-body tr:hover td{background:rgba(240,180,41,.04);}
+.guide-art-cta{margin-top:40px;padding:24px;background:var(--gbg);border:1px solid var(--gbr);border-radius:12px;text-align:center;}
+.guide-art-cta-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.guide-art-cta-desc{font-size:12px;color:var(--t2);margin-bottom:14px;}
+.guide-art-cta-btn{display:inline-block;padding:11px 28px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
+.guide-art-cta-btn:hover{background:#F7C948;transform:translateY(-1px);}
+@media(max-width:600px){
+  .guide-art-title{font-size:20px;}
+  .guide-art-body{font-size:13px;}
+  .guide-art-body h2{font-size:18px;}
+  .guide-art-body h3{font-size:15px;}
+  .guide-art-body table{font-size:11px;}
+  .guide-art-body th,.guide-art-body td{padding:7px 8px;}
+}
+
 /* BLOG */
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px;padding:0 20px 40px;}
 .bc{background:var(--card);border:1px solid var(--b1);border-radius:9px;overflow:hidden;transition:.2s;cursor:pointer;}
@@ -1864,8 +1899,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- GUIDES -->
 <div class="page" id="page-guides">
- <div class="sec"><div class="sec-hd" data-i18n="guides_titulo"> Guias & Educação</div></div>
+ <div class="sec" id="guides-header"><div class="sec-hd" data-i18n="guides_titulo"> Guias & Educação</div></div>
  <div class="guides-grid" id="guides-grid"></div>
+ <div class="guide-article" id="guide-article"></div>
 </div>
 
 <!-- BLOG -->
@@ -2635,6 +2671,10 @@ const I18N = {
     analise_conclusao:'Conclusão',
     analise_copiado:'Análise copiada!',
     guia_ler:'Ler guia →',
+    guia_voltar:'Voltar aos guias',
+    guia_cta_titulo:'Pronto para começar?',
+    guia_cta_desc:'Compare as melhores prop firms com cupons exclusivos de até 90% de desconto.',
+    guia_cta_btn:'Ver Ofertas',
     guia_cat_iniciante:'Iniciante',
     guia_cat_intermediario:'Intermediário',
     guia_cat_pratico:'Prático',
@@ -3128,6 +3168,10 @@ const I18N = {
     analise_conclusao:'Conclusion',
     analise_copiado:'Review copied!',
     guia_ler:'Read the guide →',
+    guia_voltar:'Back to guides',
+    guia_cta_titulo:'Ready to start?',
+    guia_cta_desc:'Compare the best prop firms with exclusive coupons up to 90% off.',
+    guia_cta_btn:'View Offers',
     guia_cat_iniciante:'Beginner',
     guia_cat_intermediario:'Intermediary',
     guia_cat_pratico:'Practical',
@@ -3621,6 +3665,10 @@ const I18N = {
     analise_conclusao:'Conclusión',
     analise_copiado:'¡Análisis copiado!',
     guia_ler:'Leer la guía →',
+    guia_voltar:'Volver a las guías',
+    guia_cta_titulo:'¿Listo para empezar?',
+    guia_cta_desc:'Compara las mejores prop firms con cupones exclusivos de hasta 90% de descuento.',
+    guia_cta_btn:'Ver Ofertas',
     guia_cat_iniciante:'Principiante',
     guia_cat_intermediario:'Intermediario',
     guia_cat_pratico:'Práctico',
@@ -4114,6 +4162,10 @@ const I18N = {
     analise_conclusao:'Conclusione',
     analise_copiado:'Analisi copiata!',
     guia_ler:'Leggi la guida →',
+    guia_voltar:'Torna alle guide',
+    guia_cta_titulo:'Pronto per iniziare?',
+    guia_cta_desc:'Confronta le migliori prop firms con coupon esclusivi fino al 90% di sconto.',
+    guia_cta_btn:'Vedi Offerte',
     guia_cat_iniciante:'Principiante',
     guia_cat_intermediario:'Intermediario',
     guia_cat_pratico:'Pratico',
@@ -4607,6 +4659,10 @@ const I18N = {
     analise_conclusao:'Conclusion',
     analise_copiado:'Analyse copiée !',
     guia_ler:'Lire le guide →',
+    guia_voltar:'Retour aux guides',
+    guia_cta_titulo:'Prêt à commencer ?',
+    guia_cta_desc:'Comparez les meilleures prop firms avec des coupons exclusifs jusqu\'à 90% de réduction.',
+    guia_cta_btn:'Voir les Offres',
     guia_cat_iniciante:'Débutant',
     guia_cat_intermediario:'Intermédiaire',
     guia_cat_pratico:'Pratique',
@@ -5100,6 +5156,10 @@ const I18N = {
     analise_conclusao:'Fazit',
     analise_copiado:'Analyse kopiert!',
     guia_ler:'Anleitung lesen →',
+    guia_voltar:'Zurück zu den Anleitungen',
+    guia_cta_titulo:'Bereit loszulegen?',
+    guia_cta_desc:'Vergleichen Sie die besten Prop Firms mit exklusiven Gutscheinen bis zu 90% Rabatt.',
+    guia_cta_btn:'Angebote ansehen',
     guia_cat_iniciante:'Anfänger',
     guia_cat_intermediario:'Zwischenstufe',
     guia_cat_pratico:'Praktisch',
@@ -5593,6 +5653,10 @@ const I18N = {
     analise_conclusao:'خاتمة',
     analise_copiado:'تم نسخ التحليل!',
     guia_ler:'قراءة الدليل →',
+    guia_voltar:'العودة إلى الأدلة',
+    guia_cta_titulo:'هل أنت مستعد للبدء؟',
+    guia_cta_desc:'قارن أفضل شركات التداول مع كوبونات حصرية بخصم يصل إلى 90%.',
+    guia_cta_btn:'عرض العروض',
     guia_cat_iniciante:'مبتدئ',
     guia_cat_intermediario:'وسيط',
     guia_cat_pratico:'عملي',
@@ -5915,25 +5979,75 @@ function firmIco(f,size='38px',fontSize='14px'){
   return `<div style="width:${size};height:${size};border-radius:8px;background:${f.bg};color:${f.color};display:flex;align-items:center;justify-content:center;font-size:${fontSize};font-weight:800;flex-shrink:0;">${f.icon}</div>`;
 }
 
-/* GUIDES */
-const GUIDES_DATA = [
-  {catKey:'guia_cat_iniciante',catColor:'var(--blue)',ico:'📖',titleKey:'guia1_titulo',descKey:'guia1_desc'},
-  {catKey:'guia_cat_intermediario',catColor:'var(--gold)',ico:'📉',titleKey:'guia2_titulo',descKey:'guia2_desc'},
-  {catKey:'guia_cat_pratico',catColor:'var(--green)',ico:'✅',titleKey:'guia3_titulo',descKey:'guia3_desc'},
-  {catKey:'guia_cat_tecnico',catColor:'var(--purple)',ico:'📐',titleKey:'guia4_titulo',descKey:'guia4_desc'},
-  {catKey:'guia_cat_comparativo',catColor:'var(--orange)',ico:'⚖️',titleKey:'guia5_titulo',descKey:'guia5_desc'},
-  {catKey:'guia_cat_financeiro',catColor:'var(--cyan)',ico:'💰',titleKey:'guia6_titulo',descKey:'guia6_desc'},
+/* GUIDES — Supabase-powered */
+let _guidesCache=[];
+const GUIDES_FALLBACK = [
+  {id:'g1',title:'O que é uma Prop Firm?',slug:'o-que-e-uma-prop-firm',category:'Iniciante',cat_color:'var(--blue)',icon:'📖',description:'Entenda como funcionam as prop firms, como passar no desafio e receber sua conta financiada.'},
+  {id:'g2',title:'Gerenciamento de Drawdown',slug:'gerenciamento-de-drawdown',category:'Intermediário',cat_color:'var(--gold)',icon:'📉',description:'Como calcular, monitorar e evitar violar os limites de drawdown.'},
+  {id:'g3',title:'Como Passar no Desafio',slug:'como-passar-no-desafio',category:'Prático',cat_color:'var(--green)',icon:'✅',description:'Estratégias comprovadas para passar na fase de avaliação.'},
+  {id:'g4',title:'Position Sizing em Prop Firms',slug:'position-sizing-prop-firms',category:'Técnico',cat_color:'var(--purple)',icon:'📐',description:'Como calcular o tamanho correto para maximizar lucro sem violar regras.'},
+  {id:'g5',title:'Apex vs FTMO vs Bulenox',slug:'apex-vs-ftmo-vs-bulenox',category:'Comparativo',cat_color:'var(--orange)',icon:'⚖️',description:'Comparação detalhada: regras, preços, plataformas e payouts.'},
+  {id:'g6',title:'Como Sacar seus Lucros',slug:'como-sacar-seus-lucros',category:'Financeiro',cat_color:'var(--cyan)',icon:'💰',description:'Passo a passo para solicitar payouts em cada firma.'},
 ];
+async function loadGuidesFromSupabase(){
+  try{
+    const{data,error}=await db.from('cms_guides').select('*').eq('active',true).order('sort_order',{ascending:true});
+    if(!error&&data&&data.length){_guidesCache=data;return data;}
+  }catch(e){}
+  _guidesCache=GUIDES_FALLBACK;return GUIDES_FALLBACK;
+}
 function renderGuides(){
   const g=document.getElementById('guides-grid');if(!g)return;
-  g.innerHTML=GUIDES_DATA.map(guide=>`
-    <div class="gc">
-      <div class="gc-cat" style="color:${guide.catColor};">${t(guide.catKey)}</div>
-      <div class="gc-ico">${guide.ico}</div>
-      <div class="gc-title">${t(guide.titleKey)}</div>
-      <div class="gc-desc">${t(guide.descKey)}</div>
+  const guides=_guidesCache.length?_guidesCache:GUIDES_FALLBACK;
+  g.innerHTML=guides.map(guide=>`
+    <div class="gc" onclick="openGuideArticle('${guide.slug}')">
+      <div class="gc-cat" style="color:${guide.cat_color};">${guide.category}</div>
+      <div class="gc-ico">${guide.icon}</div>
+      <div class="gc-title">${guide.title}</div>
+      <div class="gc-desc">${guide.description}</div>
       <div class="gc-read">${t('guia_ler')}</div>
     </div>`).join('');
+}
+async function openGuideArticle(slug){
+  const guide=_guidesCache.find(g=>g.slug===slug);
+  if(!guide)return;
+  // If content not loaded yet (fallback), fetch from Supabase
+  if(!guide.content){
+    try{
+      const{data}=await db.from('cms_guides').select('*').eq('slug',slug).single();
+      if(data){Object.assign(guide,data);}
+    }catch(e){}
+  }
+  if(!guide.content){showToast('Conteúdo não disponível ainda.');return;}
+  const grid=document.getElementById('guides-grid');
+  const hdr=document.getElementById('guides-header');
+  const art=document.getElementById('guide-article');
+  if(grid)grid.style.display='none';
+  if(hdr)hdr.style.display='none';
+  const readMin=Math.max(3,Math.round((guide.content||'').replace(/<[^>]*>/g,'').split(/\s+/).length/200));
+  art.innerHTML=`
+    <button class="guide-back" onclick="closeGuideArticle()">← ${t('guia_voltar')||'Voltar aos guias'}</button>
+    <div class="guide-art-cat" style="color:${guide.cat_color};">${guide.icon} ${guide.category}</div>
+    <div class="guide-art-title">${guide.title}</div>
+    <div class="guide-art-meta"><span>~${readMin} min de leitura</span></div>
+    <div class="guide-art-body">${guide.content}</div>
+    <div class="guide-art-cta">
+      <div class="guide-art-cta-title">${t('guia_cta_titulo')||'Pronto para começar?'}</div>
+      <div class="guide-art-cta-desc">${t('guia_cta_desc')||'Compare as melhores prop firms com cupons exclusivos de até 90% de desconto.'}</div>
+      <button class="guide-art-cta-btn" onclick="go('offers')">${t('guia_cta_btn')||'Ver Ofertas'} →</button>
+    </div>`;
+  art.classList.add('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+  track('guide_read',{guide_id:guide.id,guide_title:guide.title,guide_slug:slug});
+}
+function closeGuideArticle(){
+  const grid=document.getElementById('guides-grid');
+  const hdr=document.getElementById('guides-header');
+  const art=document.getElementById('guide-article');
+  art.classList.remove('open');
+  art.innerHTML='';
+  if(grid)grid.style.display='';
+  if(hdr)hdr.style.display='';
 }
 
 /* BLOG */
@@ -8180,8 +8294,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     track('page_view', { page_name: 'home', language: navigator.language });
   }
 
-  // Carregar firmas do Supabase (sobrescreve hardcoded se disponível)
+  // Carregar firmas e guias do Supabase
   await loadFirmsFromSupabase();
+  await loadGuidesFromSupabase();
+  renderGuides();
 
   // Carregar fidelidade do membro logado (se tiver email salvo)
   const cachedMember = getLoyaltyMember();
