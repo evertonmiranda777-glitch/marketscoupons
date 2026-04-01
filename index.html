@@ -7689,18 +7689,19 @@ async function toggleFav(firmId) {
   if (!currentUser) { openAuthModal('login'); return; }
   const isFav = _favs.has(firmId);
   const btn = document.getElementById('fav-btn-'+firmId);
-  const cnt = document.getElementById('fav-cnt-'+firmId);
   if (isFav) {
     _favs.delete(firmId);
     _favCounts[firmId] = Math.max(0, (_favCounts[firmId]||1) - 1);
-    await db.from('favorites').delete().eq('user_id', currentUser.id).eq('firm_id', firmId);
+    const {error} = await db.from('favorites').delete().eq('user_id', currentUser.id).eq('firm_id', firmId);
+    if(error) console.warn('fav delete error:', error.message);
   } else {
     _favs.add(firmId);
     _favCounts[firmId] = (_favCounts[firmId]||0) + 1;
-    await db.from('favorites').insert({ user_id: currentUser.id, firm_id: firmId });
-    track('firm_favorite', { firm_id: firmId });
+    const {error} = await db.from('favorites').insert({ user_id: currentUser.id, firm_id: firmId });
+    if(error){ console.warn('fav insert error:', error.message); _favs.delete(firmId); _favCounts[firmId]=Math.max(0,(_favCounts[firmId]||1)-1); showToast('Erro ao favoritar. Tente novamente.'); }
+    else track('firm_favorite', { firm_id: firmId });
   }
-  if (btn) { btn.classList.toggle('active', !isFav); btn.innerHTML = (!isFav?'❤️':'🤍')+`<span class="fr-fav-count" id="fav-cnt-${firmId}">${_favCounts[firmId]||0}</span>`; }
+  if (btn) { btn.classList.toggle('active', _favs.has(firmId)); btn.innerHTML = (_favs.has(firmId)?'❤️':'🤍')+`<span class="fr-fav-count" id="fav-cnt-${firmId}">${_favCounts[firmId]||0}</span>`; }
 }
 
 async function initFavs() {
