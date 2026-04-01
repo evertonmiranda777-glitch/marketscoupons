@@ -3384,18 +3384,21 @@ document.addEventListener('click', e => {
 let lastLeadCount = 0;
 let lastProofCount = 0;
 
-function pollForUpdates() {
+async function pollForUpdates() {
   const leads = getLeadsSync();
-  const pending = getLoyaltyPendingAdmin();
   if(leads.length > lastLeadCount && lastLeadCount > 0) {
     const newLead = leads[leads.length-1];
     pushNotif('new_lead','Leads','Novo lead: '+newLead.name+' ('+newLead.tool+')','lead');
   }
-  if(pending.filter(p=>p.status==='pending').length > lastProofCount && lastProofCount > 0) {
-    pushNotif('new_proof','Fidelidade','Novo comprovante aguardando validacao','proof');
-  }
   lastLeadCount = leads.length;
-  lastProofCount = pending.filter(p=>p.status==='pending').length;
+  try {
+    const pending = await getLoyaltyPendingAdmin();
+    const pendingCount = (pending||[]).filter(p=>p.status==='pending').length;
+    if(pendingCount > lastProofCount && lastProofCount > 0) {
+      pushNotif('new_proof','Fidelidade','Novo comprovante aguardando validacao','proof');
+    }
+    lastProofCount = pendingCount;
+  } catch(e) {}
 }
 
 /* Initialize polling and notifications */
@@ -3403,7 +3406,9 @@ document.addEventListener('DOMContentLoaded', () => {
   updateNotifBadge();
   renderNotifList();
   lastLeadCount = getLeadsSync().length;
-  lastProofCount = getLoyaltyPendingAdmin().filter(p=>p.status==='pending').length;
+  getLoyaltyPendingAdmin().then(arr => {
+    lastProofCount = (arr||[]).filter(p=>p.status==='pending').length;
+  }).catch(() => { lastProofCount = 0; });
   setInterval(pollForUpdates, 30000);
 });
 
@@ -3470,18 +3475,19 @@ function loadDemoData() {
 }
 
 /* ══ FIX: renderOverview charts — ensure Chart.js is loaded and canvas exists ══ */
-const _origRenderOverview = renderOverview;
-function renderOverview() {
-  _origRenderOverview();
-  // Re-check charts after a longer delay to ensure canvases are in DOM
-  setTimeout(() => {
-    const canvases = ['chart-leads-tool','chart-coupons','chart-checkout','chart-pages','chart-timeline'];
-    const missing = canvases.filter(id => !document.getElementById(id));
-    if(missing.length > 0) {
-      console.warn('Missing canvases:', missing);
-    }
-  }, 200);
-}
+(function() {
+  const _orig = renderOverview;
+  renderOverview = function() {
+    _orig();
+    setTimeout(() => {
+      const canvases = ['chart-leads-tool','chart-coupons','chart-checkout','chart-pages','chart-timeline'];
+      const missing = canvases.filter(id => !document.getElementById(id));
+      if(missing.length > 0) {
+        console.warn('Missing canvases:', missing);
+      }
+    }, 200);
+  };
+})();
 
 </script>
 </body>
