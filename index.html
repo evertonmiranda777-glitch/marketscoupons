@@ -456,12 +456,13 @@ img{max-width:100%;}
 .fr-tp-stars{color:#00b67a;font-size:10px;letter-spacing:0.5px;}
 .fr-tp-count{font-size:9px;color:var(--t3);}
 .fr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
-.fr-coupon-pill{padding:6px 12px;border-radius:6px;background:var(--gbg);border:1px dashed var(--gbr);font-size:11px;font-weight:800;color:var(--gold);letter-spacing:1px;cursor:pointer;transition:.15s;white-space:nowrap;}
+.fr-coupon-pill{padding:8px 16px;border-radius:7px;background:var(--gbg);border:1px dashed var(--gbr);font-size:12px;font-weight:800;color:var(--gold);letter-spacing:1.5px;cursor:pointer;transition:.15s;white-space:nowrap;}
 .fr-coupon-pill:hover{background:rgba(240,180,41,.2);}
 .det-btn{padding:7px 14px;border-radius:7px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:600;transition:.2s;cursor:pointer;white-space:nowrap;}
 .det-btn:hover{border-color:var(--gold);color:var(--gold);}
 .det-btn.primary{background:var(--gold);color:#07090D;border-color:var(--gold);font-weight:700;}
 .det-btn.primary:hover{background:#d9a020;border-color:#d9a020;}
+.fr-coupon-bar{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:8px;}
 /* Mobile card elements hidden on desktop */
 .fr-right{display:none;}
 .fr-mets{display:none;}
@@ -6033,7 +6034,8 @@ function renderFirms(list){
             <span class="drw-coupon-code">${f.coupon}</span>
             <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button>
           </div>
-        </div>`:''}
+        </div>
+        <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`:''}
         <div class="fr-btns">
           <button class="det-btn primary" onclick="openD('${f.id}')">${t('firms_ver_planos')}</button>
         </div>
