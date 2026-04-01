@@ -5964,7 +5964,7 @@ function renderHome(){
         <div><div class="oc-disc" style="color:${f.color};">${f.discount}%</div><div class="oc-off">off ${f.dtype}</div></div>
       </div>
       ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
-      <div class="oc-hint">${t('firms_hint_cupom')}</div>`:'<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><span style="font-size:11px;color:var(--green);font-weight:600;">✓ ${t("offers_desconto_link")}</span></div>'}
+      <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><span style="font-size:11px;color:var(--green);font-weight:600;">✓ ${t('offers_desconto_link')}</span></div>`}
       <button class="offer-cta" onclick="go('firms');setTimeout(()=>openD('${f.id}'),120);track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">${t('home_ver_planos')}</button>
     </div>`).join('');
 }
