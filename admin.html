@@ -180,7 +180,11 @@ a{text-decoration:none;color:inherit;}
 
 /* RESPONSIVE */
 @media(max-width:900px){.charts-grid{grid-template-columns:1fr;}.geo-grid{grid-template-columns:1fr;}.seg-grid{grid-template-columns:1fr 1fr;}.send-stats{grid-template-columns:1fr 1fr;}}
-@media(max-width:600px){.stats-grid{grid-template-columns:1fr 1fr;}.nav-tabs-admin{display:none;}.lm-grid{grid-template-columns:1fr;}}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr 1fr;}.nav-tabs-admin{display:none;}.lm-grid{grid-template-columns:1fr;}.admin-mobile-menu-btn{display:flex!important;}}
+.admin-mobile-menu-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;background:var(--card);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:18px;cursor:pointer;margin-right:8px;}
+.admin-mobile-dd{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;z-index:999;background:var(--bg);overflow-y:auto;padding:12px;}
+.admin-mobile-dd.open{display:block;}
+.admin-mobile-dd .nta{display:block;width:100%;text-align:left;padding:12px 16px;margin-bottom:4px;border-radius:8px;}
 
 /* ── LOYALTY PROOF REVIEW ── */
 .proof-review-img{max-width:100%;max-height:400px;border-radius:8px;border:1px solid var(--b1);margin-top:10px;}
@@ -302,6 +306,7 @@ a{text-decoration:none;color:inherit;}
  <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
  </div>
  <div class="nav-right-admin">
+   <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
    <div style="display:flex;align-items:center;gap:8px;margin-right:8px;padding:5px 12px;background:var(--card);border:1px solid var(--b1);border-radius:8px;">
      <span style="font-size:11px;font-weight:600;color:var(--t2);">Bot</span>
      <button class="toggle-btn" id="bot-toggle" onclick="toggleBotSetting()"></button>
@@ -335,12 +340,29 @@ a{text-decoration:none;color:inherit;}
  <!-- NOTIFICATION PANEL -->
  <div class="notif-panel" id="notif-panel">
    <div class="notif-hd">
-     <div style="font-size:13px;font-weight:700;">Notificacoes</div>
+     <div style="font-size:13px;font-weight:700;">Notificações</div>
      <button onclick="clearNotifs()" style="background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;">Limpar tudo</button>
    </div>
-   <div id="notif-list"><div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Nenhuma notificacao ainda.</div></div>
+   <div id="notif-list"><div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Nenhuma notificação ainda.</div></div>
  </div>
  </nav>
+
+ <!-- Mobile dropdown menu -->
+ <div class="admin-mobile-dd" id="admin-mobile-dd">
+  <button class="nta active" onclick="adminGoMobile('overview',this)">Overview</button>
+  <button class="nta" onclick="adminGoMobile('analytics',this)">Analytics</button>
+  <button class="nta" onclick="adminGoMobile('leads',this)">Leads</button>
+  <button class="nta" onclick="adminGoMobile('events',this)">Eventos</button>
+  <button class="nta" onclick="adminGoMobile('geo',this)">Geo</button>
+  <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
+  <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade</button>
+  <button class="nta" onclick="adminGoMobile('analysis-vip',this)">Análise VIP</button>
+  <div class="nta-sep"></div>
+  <button class="nta nta-cms" onclick="adminGoMobile('cms-firms',this)">Firmas</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('cms-guides',this)">Guias</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('cms-blog',this)">Blog</button>
+ </div>
 
  <div class="admin-body">
   <!-- DATA BRIDGE BANNER -->
@@ -369,7 +391,7 @@ a{text-decoration:none;color:inherit;}
  <!-- KPI cards -->
  <div class="stats-grid" id="kpi-grid"></div>
 
- <!-- Charts row -->
+ <!-- Charts row 1: Core conversion -->
  <div class="charts-grid">
  <div class="chart-card">
  <div class="cc-hd"><div><div class="cc-title">Leads por Ferramenta</div><div class="cc-sub">Origem do cadastro</div></div></div>
@@ -387,21 +409,45 @@ a{text-decoration:none;color:inherit;}
  <div class="cc-hd"><div><div class="cc-title">Páginas Visitadas</div><div class="cc-sub">Navegação no site</div></div></div>
  <div class="chart-wrap"><canvas id="chart-pages"></canvas></div>
  </div>
+ </div>
+
+ <!-- Charts row 2: Engagement -->
+ <div class="charts-grid">
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Conteúdo Acessado</div><div class="cc-sub">Blog, Guias e Plataformas</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-content"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Fidelidade & Usuários</div><div class="cc-sub">Cadastros, logins e ações</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-users"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Idiomas dos Visitantes</div><div class="cc-sub">Distribuição por idioma</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-langs"></canvas></div>
+ </div>
+ <div class="chart-card">
+ <div class="cc-hd"><div><div class="cc-title">Social & Telegram</div><div class="cc-sub">Cliques em redes sociais</div></div></div>
+ <div class="chart-wrap"><canvas id="chart-social"></canvas></div>
+ </div>
+ </div>
+
+ <!-- Timeline full width -->
+ <div class="charts-grid">
  <div class="chart-card full">
- <div class="cc-hd"><div><div class="cc-title">Eventos ao Longo do Tempo</div><div class="cc-sub">Atividade dos últimos 14 dias (simulado)</div></div></div>
+ <div class="cc-hd"><div><div class="cc-title">Eventos ao Longo do Tempo</div><div class="cc-sub">Atividade dos últimos 14 dias</div></div></div>
  <div class="chart-wrap" style="height:240px;"><canvas id="chart-timeline"></canvas></div>
  </div>
  </div>
 
- <!-- Top Firmss table -->
+ <!-- Top Firms table -->
  <div class="chart-card" style="margin-bottom:24px;">
- <div class="cc-hd"><div class="cc-title"> Ranking de Firmas — Conversão</div></div>
+ <div class="cc-hd"><div class="cc-title">Ranking de Firmas — Conversão</div></div>
  <div class="data-table-wrap"><table class="data-table" id="tbl-firms-rank"></table></div>
  </div>
 
  <!-- Quiz results -->
  <div class="chart-card">
- <div class="cc-hd"><div class="cc-title"> Quiz — Recomendações Dadas</div></div>
+ <div class="cc-hd"><div class="cc-title">Quiz — Recomendações Dadas</div></div>
  <div id="quiz-results-overview"></div>
  </div>
  </div>
@@ -555,13 +601,31 @@ a{text-decoration:none;color:inherit;}
  <input class="filter-inp" id="ev-search" placeholder=" Filtrar eventos..." style="flex:1;" oninput="renderEventsTable()">
  <select class="filter-inp" id="ev-type" onchange="renderEventsTable()">
  <option value="">Todos os tipos</option>
+ <option value="page_view">Page view</option>
  <option value="coupon_copy">Cupom copiado</option>
  <option value="checkout_click">Checkout click</option>
- <option value="checkout_firm_sel">Firma selecionada</option>
- <option value="firm_detail_open">Detalhe aberto</option>
- <option value="page_view">Page view</option>
- <option value="tool_open">Ferramenta aberta</option>
+ <option value="firm_detail_open">Detalhe firma</option>
+ <option value="firm_favorite">Favorito firma</option>
+ <option value="offer_card_click">Card oferta</option>
  <option value="quiz_complete">Quiz completo</option>
+ <option value="blog_read">Blog lido</option>
+ <option value="guide_read">Guia lido</option>
+ <option value="platform_click">Plataforma click</option>
+ <option value="tool_open">Ferramenta aberta</option>
+ <option value="tool_lead_capture">Lead ferramenta</option>
+ <option value="calc_unlocked">Calculadora</option>
+ <option value="bot_message">Bot mensagem</option>
+ <option value="user_signup">Cadastro</option>
+ <option value="user_login">Login</option>
+ <option value="profile_updated">Perfil atualizado</option>
+ <option value="loyalty_register">Fidelidade cadastro</option>
+ <option value="loyalty_proof_submitted">Comprovante enviado</option>
+ <option value="loyalty_checkout_click">Checkout fidelidade</option>
+ <option value="telegram_click">Telegram click</option>
+ <option value="social_click">Social click</option>
+ <option value="language_change">Idioma alterado</option>
+ <option value="cookie_consent">Cookies aceitos</option>
+ <option value="live_signup">Live signup</option>
  </select>
  </div>
  <div class="data-table-wrap">
@@ -1139,7 +1203,15 @@ function ensureDemoData(){
 function adminGo(page,btn){
  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
  document.getElementById('page-'+page).classList.add('active');
- document.querySelectorAll('.nta').forEach(b=>b.classList.remove('active'));
+ document.querySelectorAll('.nav-tabs-admin .nta').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ renderPage(page);
+}
+function adminGoMobile(page,btn){
+ document.getElementById('admin-mobile-dd').classList.remove('open');
+ document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
+ document.getElementById('page-'+page).classList.add('active');
+ document.querySelectorAll('#admin-mobile-dd .nta').forEach(b=>b.classList.remove('active'));
  if(btn)btn.classList.add('active');
  renderPage(page);
 }
@@ -1215,78 +1287,116 @@ function renderPage(p){
 function renderOverview(){
  const leads=getLeadsSync();
  const events=getEventsSync();
- const coupons=events.filter(e=>e.event==='coupon_copy').length;
- const checkouts=events.filter(e=>e.event==='checkout_click').length;
- const pageViews=events.filter(e=>e.event==='page_view').length;
- const quizzes=events.filter(e=>e.event==='quiz_complete').length;
- const botMsgs=events.filter(e=>e.event==='bot_message').length;
+ const ec=(ev)=>events.filter(e=>e.event===ev).length;
+ const ecToday=(ev)=>events.filter(e=>e.event===ev&&isToday(e.created_at||e.ts)).length;
+ const coupons=ec('coupon_copy'), checkouts=ec('checkout_click'), pageViews=ec('page_view');
+ const quizzes=ec('quiz_complete'), botMsgs=ec('bot_message');
+ const signups=ec('user_signup'), logins=ec('user_login');
+ const blogReads=ec('blog_read'), guideReads=ec('guide_read');
+ const loyaltyRegs=ec('loyalty_register'), loyaltyProofs=ec('loyalty_proof_submitted');
+ const favs=ec('firm_favorite'), socialClicks=ec('social_click')+ec('telegram_click');
 
  document.getElementById('kpi-grid').innerHTML=`
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Total de Leads</div><div class="stat-val g">${leads.length}</div><div class="stat-change">+${Math.floor(leads.length*.15)} esta semana</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Cupons Copiados</div><div class="stat-val y">${coupons}</div><div class="stat-change">${events.filter(e=>e.event==='coupon_copy'&&isToday(e.created_at||e.ts)).length} hoje</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Checkout Clicks</div><div class="stat-val b">${checkouts}</div><div class="stat-change">Taxa: ${leads.length?Math.round(checkouts/leads.length*100):0}% dos leads</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Page Views</div><div class="stat-val">${pageViews}</div><div class="stat-change">${events.filter(e=>e.event==='page_view'&&isToday(e.created_at||e.ts)).length} hoje</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Quiz Completos</div><div class="stat-val">${quizzes}</div><div class="stat-change">${leads.length?Math.round(quizzes/leads.length*100):0}% taxa</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Msgs no Bot IA</div><div class="stat-val">${botMsgs}</div><div class="stat-change">${(botMsgs/Math.max(1,leads.length)).toFixed(1)} por lead</div></div>`;
+ <div class="stat-card"><div class="stat-lbl">Total de Leads</div><div class="stat-val g">${leads.length}</div><div class="stat-change">+${ecToday('tool_lead_capture')||ecToday('calc_unlocked')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cupons Copiados</div><div class="stat-val y">${coupons}</div><div class="stat-change">${ecToday('coupon_copy')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Checkout Clicks</div><div class="stat-val b">${checkouts}</div><div class="stat-change">Taxa: ${leads.length?Math.round(checkouts/leads.length*100):0}%</div></div>
+ <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val">${pageViews}</div><div class="stat-change">${ecToday('page_view')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cadastros</div><div class="stat-val" style="color:var(--cyan);">${signups}</div><div class="stat-change">${ecToday('user_signup')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Logins</div><div class="stat-val" style="color:var(--purple);">${logins}</div><div class="stat-change">${ecToday('user_login')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Blog Lidos</div><div class="stat-val" style="color:#F97316;">${blogReads}</div><div class="stat-change">${ecToday('blog_read')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Guias Lidos</div><div class="stat-val" style="color:#3B82F6;">${guideReads}</div><div class="stat-change">${ecToday('guide_read')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Quiz Completos</div><div class="stat-val">${quizzes}</div><div class="stat-change">${leads.length?Math.round(quizzes/leads.length*100):0}% taxa</div></div>
+ <div class="stat-card"><div class="stat-lbl">Bot Mensagens</div><div class="stat-val">${botMsgs}</div><div class="stat-change">${ecToday('bot_message')} hoje</div></div>
+ <div class="stat-card"><div class="stat-lbl">Fidelidade</div><div class="stat-val" style="color:var(--gold);">${loyaltyRegs}</div><div class="stat-change">${loyaltyProofs} comprovantes</div></div>
+ <div class="stat-card"><div class="stat-lbl">Favoritos + Social</div><div class="stat-val" style="color:var(--green);">${favs}</div><div class="stat-change">${socialClicks} cliques social</div></div>`;
 
  // Charts
  setTimeout(()=>{
- const firmKeys=['apex','bulenox','ftmo','tpt','fn','e2t'];
- const firmNames=['Apex','Bulenox','FTMO','TPT','FundedNext','E2T'];
- const colors=['#F97316','#3B82F6','#22C55E','#A855F7','#06B6D4','#F59E0B'];
+ const colors=['#F97316','#3B82F6','#22C55E','#A855F7','#06B6D4','#F59E0B','#EF4444','#F0B429','#EC4899','#14B8A6'];
 
  // Leads by tool
  const toolCounts={};
- getLeadsSync().forEach(l=>{toolCounts[l.tool]=(toolCounts[l.tool]||0)+1;});
+ leads.forEach(l=>{const t=l.tool||'direto';toolCounts[t]=(toolCounts[t]||0)+1;});
  mkChart('chart-leads-tool','doughnut',Object.keys(toolCounts),Object.values(toolCounts),colors);
 
- // Coupons by firm
+ // Coupons by firm — dynamic from real data
  const cpnCounts={};
  events.filter(e=>e.event==='coupon_copy').forEach(e=>{
- const f=e.params?.firm_id||'?';cpnCounts[f]=(cpnCounts[f]||0)+1;
+ const f=e.params?.firm_name||e.params?.firm_id||'?';cpnCounts[f]=(cpnCounts[f]||0)+1;
  });
- mkChart('chart-coupons','bar',firmKeys.map((k,i)=>firmNames[i]),firmKeys.map(k=>cpnCounts[k]||Math.floor(Math.random()*15)),colors);
+ const cpnK=Object.keys(cpnCounts).sort((a,b)=>cpnCounts[b]-cpnCounts[a]).slice(0,10);
+ mkChart('chart-coupons','bar',cpnK,cpnK.map(k=>cpnCounts[k]),colors);
 
- // Checkout by firm
+ // Checkout by firm — dynamic from real data
  const coCounts={};
  events.filter(e=>e.event==='checkout_click').forEach(e=>{
- const f=e.params?.firm_id||'?';coCounts[f]=(coCounts[f]||0)+1;
+ const f=e.params?.firm_name||e.params?.firm_id||'?';coCounts[f]=(coCounts[f]||0)+1;
  });
- mkChart('chart-checkout','bar',firmKeys.map((k,i)=>firmNames[i]),firmKeys.map(k=>coCounts[k]||Math.floor(Math.random()*8)),colors);
+ const coK=Object.keys(coCounts).sort((a,b)=>coCounts[b]-coCounts[a]).slice(0,10);
+ mkChart('chart-checkout','bar',coK,coK.map(k=>coCounts[k]),colors);
 
  // Pages
  const pgCounts={};
  events.filter(e=>e.event==='page_view').forEach(e=>{
  const p=e.params?.page_name||'?';pgCounts[p]=(pgCounts[p]||0)+1;
  });
- const pgK=Object.keys(pgCounts).slice(0,8);
+ const pgK=Object.keys(pgCounts).sort((a,b)=>pgCounts[b]-pgCounts[a]).slice(0,10);
  mkChart('chart-pages','horizontalBar',pgK,pgK.map(k=>pgCounts[k]),colors);
+
+ // Content: blog_read, guide_read, platform_click
+ const contentData={'Blog':blogReads,'Guias':guideReads,'Plataformas':ec('platform_click'),'Ofertas':ec('offer_card_click')};
+ mkChart('chart-content','doughnut',Object.keys(contentData),Object.values(contentData),['#F97316','#3B82F6','#A855F7','#06B6D4']);
+
+ // Users: signup, login, loyalty, favorites
+ const userData={'Cadastros':signups,'Logins':logins,'Fidelidade':loyaltyRegs,'Favoritos':favs,'Perfil atualizado':ec('profile_updated')};
+ mkChart('chart-users','bar',Object.keys(userData),Object.values(userData),['#22C55E','#3B82F6','#F0B429','#EC4899','#A855F7']);
+
+ // Languages
+ const langCounts={};
+ events.filter(e=>e.event==='language_change').forEach(e=>{
+ const l=e.params?.language||'?';langCounts[l]=(langCounts[l]||0)+1;
+ });
+ const langK=Object.keys(langCounts);
+ if(langK.length) mkChart('chart-langs','doughnut',langK,langK.map(k=>langCounts[k]),colors);
+
+ // Social
+ const socCounts={};
+ events.filter(e=>e.event==='social_click'||e.event==='telegram_click').forEach(e=>{
+ const n=e.params?.network||e.params?.location||e.event;socCounts[n]=(socCounts[n]||0)+1;
+ });
+ const socK=Object.keys(socCounts);
+ if(socK.length) mkChart('chart-social','bar',socK,socK.map(k=>socCounts[k]),['#06B6D4','#EC4899','#3B82F6','#F97316']);
 
  // Timeline
  const days=14;const labels=[];const vals=[];
  for(let i=days-1;i>=0;i--){
  const d=new Date(Date.now()-i*86400000);
  labels.push(d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
- vals.push(events.filter(e=>{const ed=new Date(e.ts);return ed.toDateString()===d.toDateString();}).length);
+ vals.push(events.filter(e=>{const ed=new Date(e.created_at||e.ts);return ed.toDateString()===d.toDateString();}).length);
  }
  mkChart('chart-timeline','line',labels,vals,['#F0B429']);
 
-// Firms ranking table
- const firmData=firmKeys.map((id,i)=>({
- name:firmNames[i],
- color:colors[i],
- coupons:events.filter(e=>e.event==='coupon_copy'&&e.params?.firm_id===id).length||Math.floor(Math.random()*20+2),
- checkout:events.filter(e=>e.event==='checkout_click'&&e.params?.firm_id===id).length||Math.floor(Math.random()*10+1),
- detail:events.filter(e=>e.event==='firm_detail_open'&&e.params?.firm_id===id).length||Math.floor(Math.random()*30+5),
- })).sort((a,b)=>b.checkout-a.checkout);
+ // Firms ranking table — dynamic from real events
+ const firmMap={};
+ events.filter(e=>['coupon_copy','checkout_click','firm_detail_open','firm_favorite'].includes(e.event)).forEach(e=>{
+   const id=e.params?.firm_id||'?';
+   const name=e.params?.firm_name||id;
+   if(!firmMap[id]) firmMap[id]={name,coupons:0,checkout:0,detail:0,favs:0};
+   if(e.event==='coupon_copy') firmMap[id].coupons++;
+   if(e.event==='checkout_click') firmMap[id].checkout++;
+   if(e.event==='firm_detail_open') firmMap[id].detail++;
+   if(e.event==='firm_favorite') firmMap[id].favs++;
+ });
+ const firmData=Object.values(firmMap).sort((a,b)=>b.checkout-a.checkout);
 
  document.getElementById('tbl-firms-rank').innerHTML=`
- <thead><tr><th>#</th><th>Firma</th><th>Cupons</th><th>Detalhes</th><th>Checkout</th><th>Conversão</th></tr></thead>
+ <thead><tr><th>#</th><th>Firma</th><th>Cupons</th><th>Detalhes</th><th>Favoritos</th><th>Checkout</th><th>Conversão</th></tr></thead>
  <tbody>${firmData.map((f,i)=>`<tr>
  <td style="color:var(--t3);">${i+1}</td>
- <td style="font-weight:700;display:flex;align-items:center;gap:7px;"><div style="width:8px;height:8px;border-radius:50%;background:${f.color};"></div>${f.name}</td>
+ <td style="font-weight:700;">${f.name}</td>
  <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${f.coupons}</span></td>
  <td>${f.detail}</td>
+ <td style="color:var(--purple);">${f.favs}</td>
  <td style="color:var(--green);font-weight:700;">${f.checkout}</td>
  <td>${f.coupons>0?(f.checkout/f.coupons*100).toFixed(0)+'%':'—'}</td>
  </tr>`).join('')}</tbody>`;
@@ -1572,51 +1682,48 @@ async function clearLeads(){
  */
 function renderEventsPage(){
  const events=getEventsSync();
- const coupons=events.filter(e=>e.event==='coupon_copy').length;
- const checkouts=events.filter(e=>e.event==='checkout_click').length;
- const tools=events.filter(e=>e.event==='tool_open').length;
- const bot=events.filter(e=>e.event==='bot_message').length;
+ const ec=(ev)=>events.filter(e=>e.event===ev).length;
 
  document.getElementById('event-kpis').innerHTML=`
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Cupons copiados</div><div class="stat-val y">${coupons}</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Checkout clicks</div><div class="stat-val g">${checkouts}</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Ferramentas abertas</div><div class="stat-val b">${tools}</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Bot mensagens</div><div class="stat-val">${bot}</div></div>`;
+ <div class="stat-card"><div class="stat-lbl">Total Eventos</div><div class="stat-val">${events.length}</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cupons copiados</div><div class="stat-val y">${ec('coupon_copy')}</div></div>
+ <div class="stat-card"><div class="stat-lbl">Checkout clicks</div><div class="stat-val g">${ec('checkout_click')}</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cadastros + Logins</div><div class="stat-val b">${ec('user_signup')+ec('user_login')}</div></div>`;
 
  setTimeout(()=>{
  const colors=['#F97316','#3B82F6','#22C55E','#A855F7','#06B6D4','#F59E0B','#EF4444','#F0B429'];
 
- // Platform chart
+ // Platform chart — from checkout_click params
  const platC={};
- events.filter(e=>e.event==='checkout_plat_sel'||e.event==='checkout_click').forEach(e=>{
- const p=e.params?.platform||'?';platC[p]=(platC[p]||0)+1;
+ events.filter(e=>e.event==='checkout_click').forEach(e=>{
+ const p=e.params?.platform||'?';if(p!=='?')platC[p]=(platC[p]||0)+1;
  });
  const platK=Object.keys(platC);
- mkChart('chart-plat','doughnut',platK.length?platK:['Rithmic','Tradovate','NinjaTrader','MT5'],[...Object.values(platC),...(platK.length?[]:[12,8,6,4])],colors);
+ if(platK.length) mkChart('chart-plat','doughnut',platK,platK.map(k=>platC[k]),colors);
 
- // Size chart
+ // Size chart — from checkout_click params
  const sizeC={};
- events.filter(e=>e.event==='checkout_size_sel'||e.event==='checkout_click').forEach(e=>{
- const s=e.params?.account_size||'?';sizeC[s]=(sizeC[s]||0)+1;
+ events.filter(e=>e.event==='checkout_click').forEach(e=>{
+ const s=e.params?.account_size||'?';if(s!=='?')sizeC[s]=(sizeC[s]||0)+1;
  });
- const sizeK=Object.keys(sizeC);
- mkChart('chart-size','bar',sizeK.length?sizeK:['25K','50K','100K','150K','200K'],[...Object.values(sizeC),...(sizeK.length?[]:[8,12,15,7,3])],colors);
+ const sizeK=Object.keys(sizeC).sort();
+ if(sizeK.length) mkChart('chart-size','bar',sizeK,sizeK.map(k=>sizeC[k]),colors);
 
  // Tools
  const toolC={};
- events.filter(e=>e.event==='tool_open').forEach(e=>{
- const t=e.params?.tool_name||e.params?.tool_id||'?';toolC[t]=(toolC[t]||0)+1;
+ events.filter(e=>e.event==='tool_open'||e.event==='tool_lead_capture').forEach(e=>{
+ const t=e.params?.tool_name||e.params?.tool||e.params?.tool_id||'?';toolC[t]=(toolC[t]||0)+1;
  });
  const toolK=Object.keys(toolC);
- mkChart('chart-tools','horizontalBar',toolK.length?toolK:['Trade Journal','Backtester','Order Flow','Dashboard','Alerts','NinjaPack'],[...Object.values(toolC),...(toolK.length?[]:[18,14,12,9,7,5])],colors);
+ if(toolK.length) mkChart('chart-tools','horizontalBar',toolK,toolK.map(k=>toolC[k]),colors);
 
  // Bot msgs per day
  const botByDay={};
  events.filter(e=>e.event==='bot_message').forEach(e=>{
- const d=new Date(e.ts).toLocaleDateString('pt-BR');botByDay[d]=(botByDay[d]||0)+1;
+ const d=new Date(e.created_at||e.ts).toLocaleDateString('pt-BR');botByDay[d]=(botByDay[d]||0)+1;
  });
  const days7=[];for(let i=6;i>=0;i--){days7.push(new Date(Date.now()-i*86400000).toLocaleDateString('pt-BR'));}
- mkChart('chart-bot','line',days7,days7.map(d=>botByDay[d]||Math.floor(Math.random()*6)),['#A855F7']);
+ mkChart('chart-bot','line',days7,days7.map(d=>botByDay[d]||0),['#A855F7']);
  },100);
 
  renderEventsTable();
@@ -1631,7 +1738,7 @@ function renderEventsTable(){
  events=events.slice(0,100);
  const tbl=document.getElementById('tbl-events');
  if(!tbl)return;
- const evColors={'coupon_copy':'var(--gold)','checkout_click':'var(--green)','checkout_firm_sel':'var(--blue)','page_view':'var(--t3)','tool_open':'var(--purple)','quiz_complete':'var(--cyan)','bot_message':'#F97316'};
+ const evColors={'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','firm_favorite':'#EC4899','offer_card_click':'#06B6D4','quiz_complete':'var(--cyan)','blog_read':'#F97316','guide_read':'#3B82F6','platform_click':'#A855F7','tool_open':'var(--purple)','tool_lead_capture':'#14B8A6','calc_unlocked':'#F59E0B','bot_message':'#F97316','user_signup':'var(--green)','user_login':'var(--blue)','profile_updated':'var(--t2)','loyalty_register':'var(--gold)','loyalty_proof_submitted':'#F0B429','loyalty_checkout_click':'#22C55E','telegram_click':'#06B6D4','social_click':'#EC4899','language_change':'var(--t3)','cookie_consent':'var(--t3)','live_signup':'#14B8A6'};
  tbl.innerHTML=`<thead><tr><th>Evento</th><th>Parâmetros</th><th>Data/Hora</th></tr></thead>
  <tbody>${events.map(e=>`<tr>
  <td><span class="td-badge" style="background:rgba(255,255,255,.05);color:${evColors[e.event]||'var(--t2)'};">${e.event}</span></td>
@@ -2638,90 +2745,7 @@ async function deleteFirm(id) {
 }
 
 /* ══ COUPONS (reads from cms_firms cache) ══ */
-async function renderCmsCoupons() {
-  if (!_firmsCache.length) {
-    const { data } = await db.from('cms_firms').select('*').order('sort_order');
-    _firmsCache = data || [];
-  }
-  const firms = _firmsCache;
-  const tbl = document.getElementById('coupons-tbl');
-  if(!tbl) return;
-  tbl.innerHTML = `<thead><tr><th>Firma</th><th>Cupom</th><th>Desconto</th><th>Tipo</th><th>Link</th><th>Status</th><th>Ações</th></tr></thead>
-    <tbody>${firms.map(f => `<tr>
-      <td style="font-weight:600;">${f.name}</td>
-      <td><span style="font-family:monospace;font-size:13px;font-weight:700;color:var(--gold);">${f.coupon||'—'}</span></td>
-      <td><span style="color:var(--gold);font-weight:700;">${f.discount}%</span></td>
-      <td style="font-size:11px;color:var(--t2);">${f.discount_type||'lifetime'}</td>
-      <td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><a href="${f.link}" target="_blank" style="color:var(--blue);">${(f.link||'').slice(0,40)}...</a></td>
-      <td><span class="${f.active?'status-active':'status-inactive'}">${f.active?'Ativa':'Inativa'}</span></td>
-      <td><button onclick="openFirmModal('${f.id}')" style="padding:3px 9px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Editar</button></td>
-    </tr>`).join('')}</tbody>`;
-}
-function openCouponModal() { openFirmModal(); }
-
-/* ══ CHECKOUT CMS ══ */
-async function renderCmsCheckout() {
-  const el = document.getElementById('checkout-firms-list');
-  if(!el) return;
-  if (!_firmsCache.length) {
-    const { data } = await db.from('cms_firms').select('*').order('sort_order');
-    _firmsCache = data || [];
-  }
-  const prices_fn = (f) => {
-    const p = Array.isArray(f.prices) ? f.prices : [];
-    if(!p.length) return '<div style="font-size:10px;color:var(--t3);">Sem precos cadastrados</div>';
-    return `<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:6px;">
-      <tr style="color:var(--t3);font-size:9px;text-transform:uppercase;"><th style="text-align:left;padding:4px 6px;">Conta</th><th style="text-align:left;padding:4px 6px;">Com Desconto</th><th style="text-align:left;padding:4px 6px;">Original</th></tr>
-      ${p.map((r,i)=>`<tr><td style="padding:4px 6px;border-top:1px solid var(--b1);">${r.a}</td><td style="padding:4px 6px;border-top:1px solid var(--b1);"><input type="text" class="co-price-n-${f.id}" data-idx="${i}" value="${r.n||''}" style="width:80px;padding:3px 6px;background:var(--card2);border:1px solid var(--b1);border-radius:4px;color:var(--gold);font-weight:700;font-size:11px;font-family:var(--f);"></td><td style="padding:4px 6px;border-top:1px solid var(--b1);color:var(--t3);text-decoration:line-through;"><input type="text" class="co-price-o-${f.id}" data-idx="${i}" value="${r.o||''}" style="width:80px;padding:3px 6px;background:var(--card2);border:1px solid var(--b1);border-radius:4px;color:var(--t3);font-size:11px;font-family:var(--f);"></td></tr>`).join('')}
-    </table>`;
-  };
-  el.innerHTML = _firmsCache.filter(f=>f.active).map(f => `
-    <div class="cms-firm-card">
-      <div class="cfc-hd">
-        <div class="cfc-name">
-          <div class="cfc-ico" style="background:${f.color}22;color:${f.color};">${f.icon}</div>
-          ${f.name} <span class="status-active">${f.discount}% OFF</span>
-        </div>
-        <button onclick="saveCmsCheckoutFirm('${f.id}')" class="btn-primary" style="font-size:11px;padding:6px 12px;">Salvar</button>
-      </div>
-      <div class="cfc-body">
-        <div class="cfc-grid">
-          <div class="cfc-field"><label>Cupom</label><input type="text" id="co-coupon-${f.id}" value="${f.coupon||''}" style="text-transform:uppercase;font-weight:700;"></div>
-          <div class="cfc-field"><label>Desconto (%)</label><input type="number" id="co-disc-${f.id}" value="${f.discount}" min="0" max="100" style="font-weight:700;color:var(--gold);"></div>
-          <div class="cfc-field"><label>Split</label><input type="text" id="co-split-${f.id}" value="${f.split||'80%'}"></div>
-          <div class="cfc-field" style="grid-column:1/-1;"><label>Link</label><input type="url" id="co-link-${f.id}" value="${f.link||''}" style="width:100%;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-family:var(--f);font-size:12px;outline:none;"></div>
-        </div>
-        <div style="margin-top:10px;">
-          <div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:4px;">Precos dos Planos</div>
-          ${prices_fn(f)}
-        </div>
-      </div>
-    </div>`).join('');
-}
-
-async function saveCmsCheckoutFirm(firmId) {
-  const coupon = document.getElementById('co-coupon-'+firmId)?.value.trim().toUpperCase()||null;
-  const disc   = parseFloat(document.getElementById('co-disc-'+firmId)?.value)||0;
-  const split  = document.getElementById('co-split-'+firmId)?.value.trim()||'80%';
-  const link   = document.getElementById('co-link-'+firmId)?.value.trim();
-  // Collect edited prices
-  const firm = _firmsCache.find(f=>f.id===firmId);
-  const prices = Array.isArray(firm?.prices) ? [...firm.prices] : [];
-  document.querySelectorAll('.co-price-n-'+firmId).forEach(inp=>{
-    const i=parseInt(inp.dataset.idx);
-    if(prices[i])prices[i].n=inp.value.trim();
-  });
-  document.querySelectorAll('.co-price-o-'+firmId).forEach(inp=>{
-    const i=parseInt(inp.dataset.idx);
-    if(prices[i])prices[i].o=inp.value.trim();
-  });
-  try {
-    await db.from('cms_firms').update({ coupon, discount: disc, split, link, prices }).eq('id', firmId);
-    const idx = _firmsCache.findIndex(f=>f.id===firmId);
-    if(idx>=0) { Object.assign(_firmsCache[idx], {coupon, discount:disc, split, link, prices}); }
-    toast(firm?.name + ' salvo!');
-  } catch(e) { toast('Erro ao salvar','error'); }
-}
+/* renderCmsCoupons and renderCmsCheckout removed — functionality consolidated into Firmas tab */
 
 /* ══ INDICATORS ══ */
 function renderCmsIndicators() {
@@ -3230,7 +3254,7 @@ function renderNotifList() {
   const notifs = getNotifs();
   const el = document.getElementById('notif-list');
   if(!el) return;
-  if(!notifs.length) { el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Nenhuma notificacao ainda.</div>'; return; }
+  if(!notifs.length) { el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Nenhuma notificação ainda.</div>'; return; }
   const typeColors = { lead:'var(--green)', proof:'var(--gold)', checkout:'var(--blue)', cms:'var(--purple)', info:'var(--t3)' };
   el.innerHTML = notifs.slice(0,20).map((n,i) => `
     <div class="notif-item ${n.read?'':'unread'}" onclick="markNotifRead(${i})">
@@ -3254,7 +3278,7 @@ function clearNotifs() {
   saveNotifs([]);
   updateNotifBadge();
   renderNotifList();
-  toast('Notificacoes limpas.');
+  toast('Notificações limpas.');
 }
 
 function toggleNotifPanel() {
@@ -3285,12 +3309,18 @@ let lastLeadCount = 0;
 let lastProofCount = 0;
 
 async function pollForUpdates() {
-  const leads = getLeadsSync();
-  if(leads.length > lastLeadCount && lastLeadCount > 0) {
-    const newLead = leads[leads.length-1];
-    pushNotif('new_lead','Leads','Novo lead: '+newLead.name+' ('+newLead.tool+')','lead');
-  }
-  lastLeadCount = leads.length;
+  try {
+    // Fetch fresh data from Supabase
+    const { data: freshLeads } = await db.from('leads').select('*').order('created_at', { ascending: false }).limit(500);
+    if(freshLeads && freshLeads.length > lastLeadCount && lastLeadCount > 0) {
+      const newLead = freshLeads[0];
+      pushNotif('new_lead','Leads','Novo lead: '+(newLead.name||newLead.email)+' ('+(newLead.tool||'direto')+')','lead');
+      localStorage.setItem('mc_leads', JSON.stringify(freshLeads));
+      const active = document.querySelector('.admin-page.active')?.id?.replace('page-','');
+      if(active) renderPage(active);
+    }
+    if(freshLeads) lastLeadCount = freshLeads.length;
+  } catch(e) {}
   try {
     const pending = await getLoyaltyPendingAdmin();
     const pendingCount = (pending||[]).filter(p=>p.status==='pending').length;
@@ -3298,6 +3328,11 @@ async function pollForUpdates() {
       pushNotif('new_proof','Fidelidade','Novo comprovante aguardando validacao','proof');
     }
     lastProofCount = pendingCount;
+  } catch(e) {}
+  // Also refresh events silently
+  try {
+    const { data: freshEvents } = await db.from('events').select('*').order('created_at', { ascending: false }).limit(2000);
+    if(freshEvents) localStorage.setItem('mc_events', JSON.stringify(freshEvents));
   } catch(e) {}
 }
 
