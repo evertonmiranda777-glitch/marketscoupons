@@ -2273,155 +2273,6 @@ async function exportLoyaltyCSV(){
   toast('Exportado!');
 }
 
-function renderLoyaltyAdmin(){
-  const pending  = getLoyaltyPendingAdmin();
-  const history  = getLoyaltyHistoryAdmin();
-  const pCount   = pending.filter(p=>p.status==='pending').length;
-  const aCount   = history.filter(h=>h.status==='approved').length;
-  const rCount   = [...pending,...history].filter(h=>h.status==='rejected').length;
-  const members  = new Set([...pending,...history].map(e=>e.member)).size;
-
-  const kpis = document.getElementById('loyalty-kpis');
-  if(kpis) kpis.innerHTML = `
-    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Em analise</div><div class="stat-val y">${pCount}</div><div class="stat-change">Aguardando validacao</div></div>
-    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Aprovados</div><div class="stat-val g">${aCount}</div><div class="stat-change">Pontos creditados</div></div>
-    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Recusados</div><div class="stat-val r">${rCount}</div></div>
-    <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Membros ativos</div><div class="stat-val b">${members}</div></div>`;
-
-  renderLoyaltyProofsTable();
-}
-
-function renderLoyaltyProofsTable(){
-  const pending = getLoyaltyPendingAdmin();
-  const history = getLoyaltyHistoryAdmin();
-  const allEntries = [...pending, ...history].filter(e=>e.status===loyaltyTab).sort((a,b)=>new Date(b.ts)-new Date(a.ts));
-  const tbl = document.getElementById('loyalty-proofs-tbl');
-  if(!tbl) return;
-
-  if(!allEntries.length){
-    tbl.innerHTML=`<tr><td colspan="9" style="padding:32px;text-align:center;color:var(--t3);">Nenhum comprovante ${loyaltyTab==='pending'?'aguardando validacao':loyaltyTab==='approved'?'aprovado':'recusado'} ainda.</td></tr>`;
-    return;
-  }
-
-  tbl.innerHTML=`
-    <thead><tr>
-      <th>Data</th><th>Membro</th><th>E-mail</th><th>Firma</th>
-      <th>Plano</th><th>N. Pedido</th><th>Cupom</th><th>Comprovante</th>
-      ${loyaltyTab==='pending'?'<th>Acoes</th>':'<th>Status</th>'}
-    </tr></thead>
-    <tbody>${allEntries.map(e=>`<tr>
-      <td style="color:var(--t3);white-space:nowrap;">${new Date(e.ts).toLocaleDateString('pt-BR')}</td>
-      <td style="font-weight:600;">${e.name||'—'}</td>
-      <td style="color:var(--t2);font-size:11px;">${e.member||'—'}</td>
-      <td>${e.firma||'—'}</td>
-      <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${e.size||'—'}</span></td>
-      <td style="font-size:11px;font-family:monospace;">${e.orderNumber||'—'}</td>
-      <td style="font-size:11px;">${e.coupon||'—'}</td>
-      <td style="font-size:11px;">${e.fileName?`<span style="color:var(--green);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">Sem arquivo</span>'}</td>
-      ${loyaltyTab==='pending'?`<td>
-        <div style="display:flex;gap:5px;">
-          <button onclick="openProofReview('${e.id}')" style="padding:4px 10px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Revisar</button>
-          <button onclick="quickApprove('${e.id}')" style="padding:4px 10px;background:var(--gnbg);border:1px solid rgba(34,197,94,.3);border-radius:5px;color:var(--green);font-size:10px;font-weight:600;cursor:pointer;">Aprovar</button>
-          <button onclick="quickReject('${e.id}')" style="padding:4px 8px;background:var(--rbg);border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">Recusar</button>
-        </div>
-      </td>`:`<td><span class="${e.status==='approved'?'td-badge" style="background:var(--gnbg);color:var(--green)':'td-badge" style="background:var(--rbg);color:var(--red)'}">${e.status==='approved'?'Aprovado':'Recusado'}</span></td>`}
-    </tr>`).join('')}</tbody>`;
-}
-
-function openProofReview(id){
-  const pending = getLoyaltyPendingAdmin();
-  const history = getLoyaltyHistoryAdmin();
-  const entry   = [...pending,...history].find(e=>e.id===id);
-  if(!entry) return;
-  currentProofId = id;
-
-  document.getElementById('lm-title').textContent = 'Revisar comprovante — ' + entry.name;
-  document.getElementById('lm-body').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-      <div class="lm-field"><div class="lm-lbl">Membro</div><div class="lm-val">${entry.name}</div></div>
-      <div class="lm-field"><div class="lm-lbl">E-mail</div><div class="lm-val" style="color:var(--blue);">${entry.member}</div></div>
-      <div class="lm-field"><div class="lm-lbl">Prop Firm</div><div class="lm-val">${entry.firma}</div></div>
-      <div class="lm-field"><div class="lm-lbl">Plano</div><div class="lm-val">${entry.size}</div></div>
-      <div class="lm-field"><div class="lm-lbl">Numero do Pedido</div><div class="lm-val" style="font-family:monospace;color:var(--gold);">${entry.orderNumber||'—'}</div></div>
-      <div class="lm-field"><div class="lm-lbl">Cupom utilizado</div><div class="lm-val">${entry.coupon||'—'}</div></div>
-      <div class="lm-field"><div class="lm-lbl">Data da compra</div><div class="lm-val">${entry.date?new Date(entry.date).toLocaleDateString('pt-BR'):'—'}</div></div>
-      <div class="lm-field"><div class="lm-lbl">Valor pago</div><div class="lm-val">${entry.value||'—'}</div></div>
-      <div class="lm-field"><div class="lm-lbl">Enviado em</div><div class="lm-val">${new Date(entry.ts).toLocaleString('pt-BR')}</div></div>
-    </div>
-
-    ${entry.fileData ? `
-      <div style="margin-bottom:14px;">
-        <div class="lm-lbl" style="margin-bottom:8px;">Comprovante anexado</div>
-        ${entry.fileType==='application/pdf'
-          ? `<a href="${entry.fileData}" download="${entry.fileName}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;color:var(--blue);text-decoration:none;">Baixar PDF — ${entry.fileName}</a>`
-          : `<img src="${entry.fileData}" class="proof-review-img" alt="Comprovante">`
-        }
-      </div>` : `<div style="padding:12px;background:var(--rbg);border:1px solid rgba(239,68,68,.2);border-radius:7px;font-size:12px;color:var(--red);margin-bottom:14px;">Nenhum arquivo anexado — validar pelo numero do pedido no painel de afiliado.</div>`}
-
-    <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;margin-bottom:14px;font-size:11px;color:var(--t2);">
-      <strong style="color:var(--t1);">Como verificar:</strong> Acesse o painel de afiliado da ${entry.firma||'firma'} e confirme se o pedido <strong style="color:var(--gold);font-family:monospace;">${entry.orderNumber||'—'}</strong> existe e foi feito pelo seu link.
-    </div>
-
-    <div class="proof-review-actions">
-      <button class="btn-approve" onclick="approveProof('${id}')">Aprovar e creditar pontos</button>
-      <div style="flex:1;">
-        <textarea class="rejection-reason" id="reject-reason-${id}" placeholder="Motivo da recusa (opcional)..." rows="2"></textarea>
-        <button class="btn-reject" onclick="rejectProof('${id}')" style="margin-top:6px;width:100%;">Recusar comprovante</button>
-      </div>
-    </div>`;
-  document.getElementById('lead-modal-ov').classList.add('open');
-}
-
-function quickApprove(id){ approveProof(id); }
-function quickReject(id){ rejectProof(id, 'Recusado pela equipe.'); }
-
-function approveProof(id){
-  const pending = getLoyaltyPendingAdmin();
-  const idx = pending.findIndex(e=>e.id===id);
-  if(idx===-1){ toast('Comprovante nao encontrado!','error'); return; }
-  const entry = {...pending[idx], status:'approved', approvedAt:new Date().toISOString(), approvedBy:'admin'};
-  pending.splice(idx,1);
-  localStorage.setItem('mc_loyalty_pending', JSON.stringify(pending));
-  const history = getLoyaltyHistoryAdmin();
-  history.push(entry);
-  localStorage.setItem('mc_loyalty_history', JSON.stringify(history));
-  closeLeadModal();
-  renderLoyaltyAdmin();
-  toast('Compra aprovada! Pontos creditados para '+entry.name);
-  track('loyalty_proof_approved',{id,member:entry.member,firma:entry.firma,size:entry.size});
-}
-
-function rejectProof(id, forcedReason){
-  const pending = getLoyaltyPendingAdmin();
-  const idx = pending.findIndex(e=>e.id===id);
-  if(idx===-1){ toast('Comprovante nao encontrado!','error'); return; }
-  const reason = forcedReason || document.getElementById('reject-reason-'+id)?.value.trim() || 'Comprovante invalido.';
-  const entry = {...pending[idx], status:'rejected', rejectedAt:new Date().toISOString(), rejectedBy:'admin', rejectReason:reason};
-  pending.splice(idx,1);
-  localStorage.setItem('mc_loyalty_pending', JSON.stringify(pending));
-  const history = getLoyaltyHistoryAdmin();
-  history.push(entry);
-  localStorage.setItem('mc_loyalty_history', JSON.stringify(history));
-  closeLeadModal();
-  renderLoyaltyAdmin();
-  toast('Comprovante recusado.','warn');
-}
-
-function refreshLoyaltyAdmin(){ renderLoyaltyAdmin(); toast('Atualizado!'); }
-
-function exportLoyaltyCSV(){
-  const all = [...getLoyaltyPendingAdmin(), ...getLoyaltyHistoryAdmin()];
-  if(!all.length){ toast('Nenhum comprovante para exportar!','warn'); return; }
-  const hdr = 'Data,Membro,Email,Firma,Plano,N.Pedido,Cupom,Valor,Status,Data Analise';
-  const rows = all.map(e=>[
-    new Date(e.ts).toLocaleDateString('pt-BR'),
-    e.name,e.member,e.firma,e.size,e.orderNumber,e.coupon,e.value,e.status,
-    e.approvedAt?new Date(e.approvedAt).toLocaleDateString('pt-BR'):e.rejectedAt?new Date(e.rejectedAt).toLocaleDateString('pt-BR'):'—'
-  ].map(v=>`"${v||''}"`).join(','));
-  download('loyalty_comprovantes.csv','data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n')));
-  toast('Exportado com sucesso!');
-}
-
 /* renderPage loyalty patch — merged into main renderPage */
 
 
@@ -3447,13 +3298,13 @@ function importSiteData(input) {
   input.value = '';
 }
 
-function exportAdminData() {
-  // Export all localStorage data so user can import into site
+async function exportAdminData() {
+  const [loyaltyPending, loyaltyHistory] = await Promise.all([getLoyaltyPendingAdmin(), getLoyaltyHistoryAdmin()]);
   const data = {
     leads:           getLeadsSync(),
     events:          getEventsSync(),
-    loyalty_pending: getLoyaltyPendingAdmin(),
-    loyalty_history: getLoyaltyHistoryAdmin(),
+    loyalty_pending: loyaltyPending,
+    loyalty_history: loyaltyHistory,
     cms_firms:       _firmsCache,
     cms_indicators:  getCmsData('indicators', DEFAULT_INDICATORS),
     cms_guides:      _adminGuides,
