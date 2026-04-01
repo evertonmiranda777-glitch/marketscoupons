@@ -793,10 +793,16 @@ img{max-width:100%;}
 }
 
 /* BLOG */
+.blog-filters{display:flex;gap:8px;padding:0 20px 16px;flex-wrap:wrap;}
+.bf-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--b1);background:var(--card);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;font-family:var(--f);}
+.bf-btn:hover{border-color:var(--b2);color:var(--t1);}
+.bf-btn.active{background:var(--gold);color:#07090D;border-color:var(--gold);}
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px;padding:0 20px 40px;}
 .bc{background:var(--card);border:1px solid var(--b1);border-radius:9px;overflow:hidden;transition:.2s;cursor:pointer;}
 .bc:hover{border-color:var(--b2);transform:translateY(-2px);}
 .bc-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.bc-level{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;}
+.bc-img{position:relative;}
 .bc-body{padding:14px;}
 .bc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;}
 .bc-title{font-size:13px;font-weight:700;margin-bottom:5px;letter-spacing:-.2px;line-height:1.4;}
@@ -804,6 +810,34 @@ img{max-width:100%;}
 .bc-meta{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
 .bc-date{font-size:10px;color:var(--t3);}
 .bc-read{font-size:11px;color:var(--gold);font-weight:600;}
+.blog-article{display:none;max-width:780px;margin:0 auto;padding:0 20px 60px;}
+.blog-article.open{display:block;}
+.blog-back{background:none;border:none;color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:18px;font-family:var(--f);}
+.blog-back:hover{text-decoration:underline;}
+.blog-art-level{display:inline-block;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.blog-art-title{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.3;margin-bottom:10px;}
+.blog-art-meta{font-size:11px;color:var(--t3);margin-bottom:28px;display:flex;align-items:center;gap:14px;}
+.blog-art-body{font-size:14px;line-height:1.85;color:var(--t2);}
+.blog-art-body h2{font-size:22px;font-weight:800;color:var(--t1);margin:32px 0 14px;letter-spacing:-.3px;}
+.blog-art-body h3{font-size:17px;font-weight:700;color:var(--t1);margin:26px 0 10px;}
+.blog-art-body h4{font-size:14px;font-weight:700;color:var(--gold);margin:20px 0 8px;}
+.blog-art-body p{margin-bottom:14px;}
+.blog-art-body ul,.blog-art-body ol{margin:10px 0 16px 20px;}
+.blog-art-body li{margin-bottom:6px;}
+.blog-art-body strong{color:var(--t1);}
+.blog-art-body pre{background:var(--card);border:1px solid var(--b1);border-radius:8px;padding:14px 18px;font-size:13px;color:var(--gold);overflow-x:auto;margin:12px 0 16px;}
+.blog-art-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px;}
+.blog-art-body th{background:var(--card);color:var(--gold);font-weight:700;text-align:left;padding:10px 12px;border:1px solid var(--b1);}
+.blog-art-body td{padding:9px 12px;border:1px solid var(--b1);color:var(--t2);}
+.blog-art-body tr:hover td{background:rgba(240,180,41,.04);}
+.blog-art-body .callout{background:var(--gbg);border:1px solid var(--gbr);border-radius:10px;padding:16px 18px;margin:18px 0;font-size:13px;}
+.blog-art-body .callout-warn{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2);}
+.blog-art-body .callout-tip{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2);}
+.blog-art-cta{margin-top:40px;padding:24px;background:var(--gbg);border:1px solid var(--gbr);border-radius:12px;text-align:center;}
+.blog-art-cta-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.blog-art-cta-desc{font-size:12px;color:var(--t2);margin-bottom:14px;}
+.blog-art-cta-btn{display:inline-block;padding:11px 28px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
+.blog-art-cta-btn:hover{background:#F7C948;transform:translateY(-1px);}
 
 /* INDICATORS */
 .ind-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px;padding:0 20px 40px;}
@@ -1140,6 +1174,14 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  .bot-win{bottom:84px;right:10px;width:calc(100vw - 20px);}
  .bot-fab{bottom:14px;right:14px;width:50px;height:50px;}
  .guides-grid,.blog-grid,.ind-grid,.offers-grid{grid-template-columns:1fr;}
+ .blog-filters{padding:0 14px 12px;}
+ .bf-btn{padding:5px 12px;font-size:11px;}
+ .blog-art-title{font-size:20px;}
+ .blog-art-body{font-size:13px;}
+ .blog-art-body h2{font-size:18px;}
+ .blog-art-body h3{font-size:15px;}
+ .blog-art-body table{font-size:11px;}
+ .blog-art-body th,.blog-art-body td{padding:7px 8px;}
  /* Compare mobile */
  .cmp-wrap{padding:14px;}
  .cmp-h{font-size:18px;}
@@ -1907,8 +1949,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- BLOG -->
 <div class="page" id="page-blog">
- <div class="sec"><div class="sec-hd"> Blog</div></div>
+ <div class="sec" id="blog-header"><div class="sec-hd" data-i18n="nav_blog"> Blog</div></div>
+ <div class="blog-filters" id="blog-filters">
+  <button class="bf-btn active" onclick="filterBlog('all',this)" data-i18n="blog_filtro_todos">Todos</button>
+  <button class="bf-btn" onclick="filterBlog('iniciante',this)">🟢 Iniciante</button>
+  <button class="bf-btn" onclick="filterBlog('intermediario',this)">🟡 Intermediário</button>
+  <button class="bf-btn" onclick="filterBlog('profissional',this)">🔴 Profissional</button>
+ </div>
  <div class="blog-grid" id="blog-grid"></div>
+ <div class="blog-article" id="blog-article"></div>
 </div>
 
 <!-- CALC -->
@@ -2695,30 +2744,44 @@ const I18N = {
     guia6_titulo:'Como Sacar seus Lucros',
     guia6_desc:'Passo a passo para solicitar payouts em cada firma.',
     blog_ler:'Ler →',
+    blog_voltar:'Voltar ao blog',
+    blog_filtro_todos:'Todos',
+    blog_cta_titulo:'Economize na Sua Próxima Avaliação',
+    blog_cta_desc:'Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.',
+    blog_cta_btn:'Ver Cupons',
     blog_cat_noticias:'Notícias',
     blog_cat_estrategia:'Estratégia',
     blog_cat_analise:'Análise',
     blog_cat_educacao:'Educação',
     blog_cat_payouts:'Payouts',
     blog_cat_ferramentas:'Ferramentas',
-    blog1_titulo:'Apex lança promoção histórica de 90% OFF',
-    blog1_excerpt:'A maior prop firm de futuros dos EUA anuncia promoção com código exclusivo.',
-    blog1_data:'Mar 2025',
-    blog2_titulo:'Como passar no FTMO Challenge em 2025',
-    blog2_excerpt:'Guia completo com estratégias para passar na avaliação da maior prop firm do mundo.',
-    blog2_data:'Fev 2025',
-    blog3_titulo:'Bulenox 89% OFF: vale a pena?',
-    blog3_excerpt:'Análise completa com cupom de 89% lifetime. Descubra se é a firma certa para você.',
-    blog3_data:'Fev 2025',
-    blog4_titulo:'Trailing vs Fixed Drawdown',
-    blog4_excerpt:'Entenda as diferenças e como escolher a prop firm certa para seu estilo.',
-    blog4_data:'Jan 2025',
-    blog5_titulo:'Como sacar seus lucros nas prop firms',
-    blog5_excerpt:'Passo a passo para Apex, Bulenox, FTMO e FundedNext.',
-    blog5_data:'Jan 2025',
-    blog6_titulo:'Melhores indicadores para NinjaTrader 8',
-    blog6_excerpt:'Lista com os indicadores mais usados por traders aprovados em prop firms.',
-    blog6_data:'Dez 2024',
+    blog1_titulo:'Sua Primeira Prop Firm: Guia Completo Para Iniciantes em 2025',
+    blog1_excerpt:'Tudo que você precisa saber antes de comprar sua primeira avaliação. Custos reais, como funciona o desafio, e os 5 erros que 80% dos iniciantes cometem.',
+    blog1_data:'Abr 2025',
+    blog2_titulo:'Drawdown Explicado com Números Reais: Trailing vs Static',
+    blog2_excerpt:'O que é drawdown, como funciona EOD vs Intraday, tabela comparativa entre Apex, Bulenox, FTMO e mais. Com simulações reais.',
+    blog2_data:'Abr 2025',
+    blog3_titulo:'O Único Gerenciamento de Risco Que Funciona em Prop Firms',
+    blog3_excerpt:'Framework R:R, position sizing com fórmula prática, template de plano de trading e simulação de como passar na Apex em 15 dias.',
+    blog3_data:'Abr 2025',
+    blog4_titulo:'Como Passar no Desafio da Prop Firm em 10 Dias',
+    blog4_excerpt:'Plano dia-a-dia com estratégia ORB, horários de ouro, checklist de preparação e o que fazer quando o dia começa mal.',
+    blog4_data:'Mar 2025',
+    blog5_titulo:'Trailing vs Static Drawdown: Análise Profunda Para Escolher Sua Firma',
+    blog5_excerpt:'EOD vs Intraday, cenários simulados com mesmo trader em firmas diferentes, custo-benefício real e qual tipo combina com seu estilo.',
+    blog5_data:'Mar 2025',
+    blog6_titulo:'Multi-Accounting em Prop Firms: Regras, Riscos e Estratégias',
+    blog6_excerpt:'Regras oficiais de cada firma sobre múltiplas contas, as 3 abordagens inteligentes e a matemática de lucro com 1, 3 e 5 contas.',
+    blog6_data:'Mar 2025',
+    blog7_titulo:'Operando em 3+ Prop Firms Simultaneamente: Setup Profissional',
+    blog7_excerpt:'Infraestrutura, gestão de capital entre firmas, fluxo de payout semanal e os erros que até profissionais cometem.',
+    blog7_data:'Fev 2025',
+    blog8_titulo:'Gestão Fiscal Para Traders de Prop Firms no Brasil',
+    blog8_excerpt:'Carnê-Leão, PF vs PJ, Simples Nacional vs Lucro Presumido. Tabelas comparativas e checklist fiscal completo.',
+    blog8_data:'Fev 2025',
+    blog9_titulo:'De $50K Para $300K: Scaling Plans das Prop Firms Comparados',
+    blog9_excerpt:'Como cada firma escala sua conta. Roadmap realista de 12 meses: de 1 conta $50K até $300K+ com payouts mensais de $6.000.',
+    blog9_data:'Fev 2025',
     calc_gate_label_nome:'Nome',
     calc_gate_placeholder_nome:'Seu nome',
     calc_gate_label_email:'E-mail',
@@ -2991,7 +3054,7 @@ const I18N = {
     drw_original:'Original',
     drw_sem_limite:'No limit',
     home_titulo:'Best Prop Firm Coupons',
-    home_sub:'Compare prices, copy exclusive coupons, and save up to 90% at the world’s largest prop firms.',
+    home_sub:'Compare prices, copy exclusive coupons, and save up to 90% at the world\'s largest prop firms.',
     home_ver_planos:'View plans →',
     hero_badge:'Verified Coupons — Updated Daily',
     hero_titulo:'Save up to <em>90% OFF</em><br>at the best prop firms',
@@ -3142,7 +3205,7 @@ const I18N = {
     hm_global:'Global',
     hm_mapa_calor:'Heat Map — ',
     analise_titulo:'Market Analysis with AI',
-    analise_sub:'Upload a screenshot of your chart and receive an analysis of the market context, market structure, today’s news, and potential price movements—generated by AI specialized in trading.',
+    analise_sub:'Upload a screenshot of your chart and receive an analysis of the market context, market structure, today\'s news, and potential price movements—generated by AI specialized in trading.',
     analise_seu_grafico:'YOUR CHART',
     analise_contexto_adicional:'ADDITIONAL CONTEXT',
     analise_clique_aqui:'Click or drag the screenshot here',
@@ -3200,24 +3263,38 @@ const I18N = {
     blog_cat_educacao:'Education',
     blog_cat_payouts:'Payouts',
     blog_cat_ferramentas:'Tools',
-    blog1_titulo:'Apex launches a historic 90% OFF sale',
-    blog1_excerpt:'The largest futures prop firm in the U.S. announces a promotion with an exclusive code.',
-    blog1_data:'March 2025',
-    blog2_titulo:'How to Pass the FTMO Challenge in 2025',
-    blog2_excerpt:'A comprehensive guide with strategies for passing the assessment at the world’s largest prop firm.',
-    blog2_data:'Feb 2025',
-    blog3_titulo:'Bulenox 89% OFF: Is it worth it?',
-    blog3_excerpt:'A comprehensive review with an 89% lifetime discount code. Find out if this is the right company for you.',
-    blog3_data:'Feb 2025',
-    blog4_titulo:'Trailing vs. Fixed Drawdown',
-    blog4_excerpt:'Understand the differences and how to choose the right prop firm for your trading style.',
-    blog4_data:'Jan 2025',
-    blog5_titulo:'How to withdraw your profits from prop firms',
-    blog5_excerpt:'Step-by-step guide to Apex, Bulenox, FTMO, and FundedNext.',
-    blog5_data:'Jan 2025',
-    blog6_titulo:'Best Indicators for NinjaTrader 8',
-    blog6_excerpt:'List of the most commonly used indicators by traders hired by prop firms.',
-    blog6_data:'December 2024',
+    blog_voltar:'Back to blog',
+    blog_filtro_todos:'All',
+    blog_cta_titulo:'Save on Your Next Evaluation',
+    blog_cta_desc:'Exclusive coupons up to 90% OFF at the best prop firms.',
+    blog_cta_btn:'See Coupons',
+    blog1_titulo:'Your First Prop Firm: Complete Beginner\'s Guide 2025',
+    blog1_excerpt:'Everything you need to know before buying your first evaluation. Real costs, how challenges work, and the 5 mistakes 80% of beginners make.',
+    blog1_data:'Apr 2025',
+    blog2_titulo:'Drawdown Explained with Real Numbers: Trailing vs Static',
+    blog2_excerpt:'What is drawdown, how EOD vs Intraday works, comparison table between Apex, Bulenox, FTMO and more.',
+    blog2_data:'Apr 2025',
+    blog3_titulo:'The Only Risk Management That Works in Prop Firms',
+    blog3_excerpt:'R:R framework, position sizing formula, trading plan template and simulation of passing Apex in 15 days.',
+    blog3_data:'Apr 2025',
+    blog4_titulo:'How to Pass the Prop Firm Challenge in 10 Days',
+    blog4_excerpt:'Day-by-day plan with ORB strategy, golden hours, preparation checklist and what to do when the day starts badly.',
+    blog4_data:'Mar 2025',
+    blog5_titulo:'Trailing vs Static Drawdown: Deep Analysis to Choose Your Firm',
+    blog5_excerpt:'EOD vs Intraday, simulated scenarios with the same trader at different firms, real cost-benefit analysis.',
+    blog5_data:'Mar 2025',
+    blog6_titulo:'Multi-Accounting in Prop Firms: Rules, Risks and Strategies',
+    blog6_excerpt:'Official rules from each firm on multiple accounts, 3 smart approaches and the profit math with 1, 3 and 5 accounts.',
+    blog6_data:'Mar 2025',
+    blog7_titulo:'Trading at 3+ Prop Firms Simultaneously: Professional Setup',
+    blog7_excerpt:'Infrastructure, capital management across firms, weekly payout flow and mistakes even professionals make.',
+    blog7_data:'Feb 2025',
+    blog8_titulo:'Tax Management for Prop Firm Traders in Brazil',
+    blog8_excerpt:'Monthly tax filing, individual vs company, comparison tables and complete tax checklist for funded traders.',
+    blog8_data:'Feb 2025',
+    blog9_titulo:'From $50K to $300K: Prop Firm Scaling Plans Compared',
+    blog9_excerpt:'How each firm scales your account. Realistic 12-month roadmap from 1 account to $300K+ with $6,000 monthly payouts.',
+    blog9_data:'Feb 2025',
     calc_gate_label_nome:'Name',
     calc_gate_placeholder_nome:'Your name',
     calc_gate_label_email:'Email',
@@ -3699,24 +3776,38 @@ const I18N = {
     blog_cat_educacao:'Educación',
     blog_cat_payouts:'Pagos',
     blog_cat_ferramentas:'Herramientas',
-    blog1_titulo:'Apex lanza una promoción histórica con un 90 % de descuento',
-    blog1_excerpt:'La mayor Prop Firm de futuros de EE. UU. anuncia una promoción con un código exclusivo.',
-    blog1_data:'Marzo de 2025',
-    blog2_titulo:'Cómo superar el FTMO Challenge en 2025',
-    blog2_excerpt:'Guía completa con estrategias para superar la prueba de selección de la mayor prop firm del mundo.',
-    blog2_data:'Febrero de 2025',
-    blog3_titulo:'Bulenox con un 89 % de descuento: ¿merece la pena?',
-    blog3_excerpt:'Análisis completo con un cupón del 89 % lifetime. Descubre si es la empresa adecuada para ti.',
-    blog3_data:'Febrero de 2025',
-    blog4_titulo:'Drawdown acumulado frente a drawdown fijo',
-    blog4_excerpt:'Conoce las diferencias y cómo elegir la firma de inversión adecuada para tu estilo.',
-    blog4_data:'Enero de 2025',
-    blog5_titulo:'Cómo retirar tus ganancias en las prop firms',
-    blog5_excerpt:'Guía paso a paso para Apex, Bulenox, FTMO y FundedNext.',
-    blog5_data:'Enero de 2025',
-    blog6_titulo:'Los mejores indicadores para NinjaTrader 8',
-    blog6_excerpt:'Lista de los indicadores más utilizados por los operadores aprobados en las prop firms.',
-    blog6_data:'Diciembre de 2024',
+    blog_voltar:'Volver al blog',
+    blog_filtro_todos:'Todos',
+    blog_cta_titulo:'Ahorra en tu próxima evaluación',
+    blog_cta_desc:'Cupones exclusivos de hasta 90% OFF en las mejores prop firms.',
+    blog_cta_btn:'Ver Cupones',
+    blog1_titulo:'Tu Primera Prop Firm: Guía Completa Para Principiantes 2025',
+    blog1_excerpt:'Todo lo que necesitas saber antes de comprar tu primera evaluación. Costos reales, cómo funciona el desafío y los 5 errores que comete el 80% de los principiantes.',
+    blog1_data:'Abr 2025',
+    blog2_titulo:'Drawdown Explicado con Números Reales: Trailing vs Static',
+    blog2_excerpt:'Qué es el drawdown, cómo funciona EOD vs Intraday, tabla comparativa entre Apex, Bulenox, FTMO y más.',
+    blog2_data:'Abr 2025',
+    blog3_titulo:'La Única Gestión de Riesgo Que Funciona en Prop Firms',
+    blog3_excerpt:'Framework R:R, fórmula de position sizing, plantilla de plan de trading y simulación para aprobar Apex en 15 días.',
+    blog3_data:'Abr 2025',
+    blog4_titulo:'Cómo Aprobar el Desafío de la Prop Firm en 10 Días',
+    blog4_excerpt:'Plan día a día con estrategia ORB, horarios de oro, checklist de preparación y qué hacer cuando el día empieza mal.',
+    blog4_data:'Mar 2025',
+    blog5_titulo:'Trailing vs Static Drawdown: Análisis Profundo Para Elegir tu Firma',
+    blog5_excerpt:'EOD vs Intraday, escenarios simulados con el mismo trader en firmas diferentes, análisis real de costo-beneficio.',
+    blog5_data:'Mar 2025',
+    blog6_titulo:'Multi-Accounting en Prop Firms: Reglas, Riesgos y Estrategias',
+    blog6_excerpt:'Reglas oficiales de cada firma sobre múltiples cuentas, 3 enfoques inteligentes y la matemática del beneficio con 1, 3 y 5 cuentas.',
+    blog6_data:'Mar 2025',
+    blog7_titulo:'Operando en 3+ Prop Firms Simultáneamente: Setup Profesional',
+    blog7_excerpt:'Infraestructura, gestión de capital entre firmas, flujo de pagos semanal y errores que hasta los profesionales cometen.',
+    blog7_data:'Feb 2025',
+    blog8_titulo:'Gestión Fiscal Para Traders de Prop Firms en Brasil',
+    blog8_excerpt:'Declaración mensual, persona física vs jurídica, tablas comparativas y checklist fiscal completo.',
+    blog8_data:'Feb 2025',
+    blog9_titulo:'De $50K a $300K: Scaling Plans de las Prop Firms Comparados',
+    blog9_excerpt:'Cómo cada firma escala tu cuenta. Hoja de ruta de 12 meses: de 1 cuenta de $50K a $300K+ con pagos de $6.000 mensuales.',
+    blog9_data:'Feb 2025',
     calc_gate_label_nome:'Nombre',
     calc_gate_placeholder_nome:'Tu nombre',
     calc_gate_label_email:'Correo electrónico',
@@ -4198,24 +4289,38 @@ const I18N = {
     blog_cat_educacao:'Istruzione',
     blog_cat_payouts:'Pagamenti',
     blog_cat_ferramentas:'Strumenti',
-    blog1_titulo:'Apex lancia una promozione storica con uno sconto del 90%',
-    blog1_excerpt:'La più grande prop firms di futures degli Stati Uniti annuncia una promozione con un codice esclusivo.',
-    blog1_data:'Marzo 2025',
-    blog2_titulo:'Come superare la FTMO Challenge nel 2025',
-    blog2_excerpt:'Guida completa con strategie per superare il test di selezione della più grande prop firm al mondo.',
-    blog2_data:'Febbraio 2025',
-    blog3_titulo:'Bulenox con uno sconto dell\'89%: ne vale la pena?',
-    blog3_excerpt:'Analisi completa con un buono sconto dell\'89% lifetime. Scopri se è l\'azienda giusta per te.',
-    blog3_data:'Febbraio 2025',
-    blog4_titulo:'Drawdown progressivo vs drawdown fisso',
-    blog4_excerpt:'Scopri le differenze e come scegliere la prop firm più adatta al tuo stile.',
-    blog4_data:'Gennaio 2025',
-    blog5_titulo:'Come prelevare i propri profitti nelle prop firm',
-    blog5_excerpt:'Guida passo passo per Apex, Bulenox, FTMO e FundedNext.',
-    blog5_data:'Gennaio 2025',
-    blog6_titulo:'I migliori indicatori per NinjaTrader 8',
-    blog6_excerpt:'Elenco degli indicatori più utilizzati dai trader ammessi nelle prop firm.',
-    blog6_data:'Dicembre 2024',
+    blog_voltar:'Torna al blog',
+    blog_filtro_todos:'Tutti',
+    blog_cta_titulo:'Risparmia sulla prossima valutazione',
+    blog_cta_desc:'Coupon esclusivi fino al 90% di sconto sulle migliori prop firm.',
+    blog_cta_btn:'Vedi Coupon',
+    blog1_titulo:'La Tua Prima Prop Firm: Guida Completa Per Principianti 2025',
+    blog1_excerpt:'Tutto quello che devi sapere prima di acquistare la tua prima valutazione. Costi reali, come funziona la sfida e i 5 errori che commette l\'80% dei principianti.',
+    blog1_data:'Apr 2025',
+    blog2_titulo:'Drawdown Spiegato con Numeri Reali: Trailing vs Static',
+    blog2_excerpt:'Cos\'è il drawdown, come funziona EOD vs Intraday, tabella comparativa tra Apex, Bulenox, FTMO e altro.',
+    blog2_data:'Apr 2025',
+    blog3_titulo:'L\'Unica Gestione del Rischio Che Funziona nelle Prop Firm',
+    blog3_excerpt:'Framework R:R, formula di position sizing, template del piano di trading e simulazione per superare Apex in 15 giorni.',
+    blog3_data:'Apr 2025',
+    blog4_titulo:'Come Superare la Sfida della Prop Firm in 10 Giorni',
+    blog4_excerpt:'Piano giorno per giorno con strategia ORB, orari d\'oro, checklist di preparazione e cosa fare quando la giornata inizia male.',
+    blog4_data:'Mar 2025',
+    blog5_titulo:'Trailing vs Static Drawdown: Analisi Approfondita Per Scegliere la Tua Firma',
+    blog5_excerpt:'EOD vs Intraday, scenari simulati con lo stesso trader in diverse firme, analisi reale costi-benefici.',
+    blog5_data:'Mar 2025',
+    blog6_titulo:'Multi-Accounting nelle Prop Firm: Regole, Rischi e Strategie',
+    blog6_excerpt:'Regole ufficiali di ogni firma sui conti multipli, 3 approcci intelligenti e la matematica del profitto con 1, 3 e 5 conti.',
+    blog6_data:'Mar 2025',
+    blog7_titulo:'Operare in 3+ Prop Firm Contemporaneamente: Setup Professionale',
+    blog7_excerpt:'Infrastruttura, gestione del capitale tra firme, flusso di pagamenti settimanale e errori che anche i professionisti commettono.',
+    blog7_data:'Feb 2025',
+    blog8_titulo:'Gestione Fiscale Per Trader di Prop Firm in Brasile',
+    blog8_excerpt:'Dichiarazione mensile, persona fisica vs giuridica, tabelle comparative e checklist fiscale completa.',
+    blog8_data:'Feb 2025',
+    blog9_titulo:'Da $50K a $300K: Scaling Plans delle Prop Firm a Confronto',
+    blog9_excerpt:'Come ogni firma scala il tuo conto. Roadmap di 12 mesi: da 1 conto da $50K a $300K+ con pagamenti di $6.000 mensili.',
+    blog9_data:'Feb 2025',
     calc_gate_label_nome:'Nome',
     calc_gate_placeholder_nome:'Il tuo nome',
     calc_gate_label_email:'E-mail',
@@ -4697,24 +4802,38 @@ const I18N = {
     blog_cat_educacao:'Éducation',
     blog_cat_payouts:'Gains',
     blog_cat_ferramentas:'Outils',
-    blog1_titulo:'Apex lance une promotion historique avec 90 % de réduction',
-    blog1_excerpt:'La plus grande prop firm de contrats à terme aux États-Unis annonce une promotion avec un code exclusif.',
-    blog1_data:'Mars 2025',
-    blog2_titulo:'Comment réussir le FTMO Challenge en 2025',
-    blog2_excerpt:'Guide complet proposant des stratégies pour réussir l\'évaluation de la plus grande prop firm au monde.',
-    blog2_data:'Février 2025',
-    blog3_titulo:'Bulenox à 89 % de réduction : ça vaut le coup ?',
-    blog3_excerpt:'Analyse complète avec un bon de réduction de 89 % lifetime. Découvrez si cette entreprise vous convient.',
-    blog3_data:'Février 2025',
-    blog4_titulo:'Drawdown glissant vs drawdown fixe',
-    blog4_excerpt:'Découvrez les différences et comment choisir la prop firm qui correspond à votre style.',
-    blog4_data:'Janvier 2025',
-    blog5_titulo:'Comment retirer vos bénéfices dans les prop firms',
-    blog5_excerpt:'Guide étape par étape pour Apex, Bulenox, FTMO et FundedNext.',
-    blog5_data:'Janvier 2025',
-    blog6_titulo:'Les meilleurs indicateurs pour NinjaTrader 8',
-    blog6_excerpt:'Liste des indicateurs les plus utilisés par les traders agréés dans les prop firms.',
-    blog6_data:'Décembre 2024',
+    blog_voltar:'Retour au blog',
+    blog_filtro_todos:'Tous',
+    blog_cta_titulo:'Économisez sur votre prochaine évaluation',
+    blog_cta_desc:'Coupons exclusifs jusqu\'à 90% de réduction sur les meilleures prop firms.',
+    blog_cta_btn:'Voir les Coupons',
+    blog1_titulo:'Votre Première Prop Firm : Guide Complet Pour Débutants 2025',
+    blog1_excerpt:'Tout ce que vous devez savoir avant d\'acheter votre première évaluation. Coûts réels, fonctionnement du défi et les 5 erreurs que 80% des débutants commettent.',
+    blog1_data:'Avr 2025',
+    blog2_titulo:'Le Drawdown Expliqué avec des Chiffres Réels : Trailing vs Static',
+    blog2_excerpt:'Qu\'est-ce que le drawdown, comment fonctionne EOD vs Intraday, tableau comparatif entre Apex, Bulenox, FTMO et plus.',
+    blog2_data:'Avr 2025',
+    blog3_titulo:'La Seule Gestion des Risques Qui Fonctionne en Prop Firms',
+    blog3_excerpt:'Framework R:R, formule de position sizing, modèle de plan de trading et simulation pour réussir Apex en 15 jours.',
+    blog3_data:'Avr 2025',
+    blog4_titulo:'Comment Réussir le Défi Prop Firm en 10 Jours',
+    blog4_excerpt:'Plan jour par jour avec stratégie ORB, heures d\'or, checklist de préparation et que faire quand la journée commence mal.',
+    blog4_data:'Mar 2025',
+    blog5_titulo:'Trailing vs Static Drawdown : Analyse Approfondie Pour Choisir Votre Firm',
+    blog5_excerpt:'EOD vs Intraday, scénarios simulés avec le même trader dans différentes firmes, analyse coût-bénéfice réelle.',
+    blog5_data:'Mar 2025',
+    blog6_titulo:'Multi-Comptes en Prop Firms : Règles, Risques et Stratégies',
+    blog6_excerpt:'Règles officielles de chaque firme sur les comptes multiples, 3 approches intelligentes et les calculs de profit avec 1, 3 et 5 comptes.',
+    blog6_data:'Mar 2025',
+    blog7_titulo:'Trader sur 3+ Prop Firms Simultanément : Setup Professionnel',
+    blog7_excerpt:'Infrastructure, gestion du capital entre firmes, flux de paiements hebdomadaire et erreurs que même les pros commettent.',
+    blog7_data:'Fév 2025',
+    blog8_titulo:'Gestion Fiscale Pour Traders de Prop Firms au Brésil',
+    blog8_excerpt:'Déclaration mensuelle, personne physique vs morale, tableaux comparatifs et checklist fiscale complète.',
+    blog8_data:'Fév 2025',
+    blog9_titulo:'De $50K à $300K : Les Scaling Plans des Prop Firms Comparés',
+    blog9_excerpt:'Comment chaque firme fait évoluer votre compte. Feuille de route de 12 mois : de 1 compte à $300K+ avec $6.000 de paiements mensuels.',
+    blog9_data:'Fév 2025',
     calc_gate_label_nome:'Nom',
     calc_gate_placeholder_nome:'Votre nom',
     calc_gate_label_email:'E-mail',
@@ -5196,24 +5315,38 @@ const I18N = {
     blog_cat_educacao:'Bildung',
     blog_cat_payouts:'Auszahlungen',
     blog_cat_ferramentas:'Werkzeuge',
-    blog1_titulo:'Apex startet eine historische Aktion mit 90 % Rabatt',
-    blog1_excerpt:'Die größte US-amerikanische Prop Firm für Terminkontrakte kündigt eine Aktion mit einem exklusiven Code an.',
-    blog1_data:'März 2025',
-    blog2_titulo:'Wie man die FTMO Challenge 2025 besteht',
-    blog2_excerpt:'Ein umfassender Leitfaden mit Strategien zum Bestehen des Auswahlverfahrens bei der weltweit größten Prop Firm.',
-    blog2_data:'Februar 2025',
-    blog3_titulo:'Bulenox 89 % Rabatt: Lohnt es sich?',
-    blog3_excerpt:'Ausführliche Bewertung mit einem lifetimeen Rabattgutschein von 89 %. Finden Sie heraus, ob dies das richtige Unternehmen für Sie ist.',
-    blog3_data:'Februar 2025',
-    blog4_titulo:'Trailing Drawdown vs. Fixed Drawdown',
-    blog4_excerpt:'Verstehen Sie die Unterschiede und erfahren Sie, wie Sie die richtige Prop Firm für Ihren Handelsstil auswählen.',
-    blog4_data:'Januar 2025',
-    blog5_titulo:'So lassen Sie sich Ihre Gewinne bei Prop Firms auszahlen',
-    blog5_excerpt:'Schritt-für-Schritt-Anleitung für Apex, Bulenox, FTMO und FundedNext.',
-    blog5_data:'Januar 2025',
-    blog6_titulo:'Die besten Indikatoren für NinjaTrader 8',
-    blog6_excerpt:'Liste der Indikatoren, die von zugelassenen Tradern in Prop Firms am häufigsten verwendet werden.',
-    blog6_data:'Dezember 2024',
+    blog_voltar:'Zurück zum Blog',
+    blog_filtro_todos:'Alle',
+    blog_cta_titulo:'Sparen Sie bei Ihrer nächsten Bewertung',
+    blog_cta_desc:'Exklusive Gutscheine mit bis zu 90% Rabatt bei den besten Prop Firms.',
+    blog_cta_btn:'Gutscheine ansehen',
+    blog1_titulo:'Ihre Erste Prop Firm: Kompletter Leitfaden für Anfänger 2025',
+    blog1_excerpt:'Alles, was Sie wissen müssen, bevor Sie Ihre erste Bewertung kaufen. Echte Kosten, wie Challenges funktionieren und die 5 Fehler, die 80% der Anfänger machen.',
+    blog1_data:'Apr 2025',
+    blog2_titulo:'Drawdown mit echten Zahlen erklärt: Trailing vs Static',
+    blog2_excerpt:'Was ist Drawdown, wie funktioniert EOD vs Intraday, Vergleichstabelle zwischen Apex, Bulenox, FTMO und mehr.',
+    blog2_data:'Apr 2025',
+    blog3_titulo:'Das einzige Risikomanagement, das in Prop Firms funktioniert',
+    blog3_excerpt:'R:R-Framework, Position-Sizing-Formel, Trading-Plan-Vorlage und Simulation zum Bestehen von Apex in 15 Tagen.',
+    blog3_data:'Apr 2025',
+    blog4_titulo:'Wie Sie die Prop Firm Challenge in 10 Tagen bestehen',
+    blog4_excerpt:'Tag-für-Tag-Plan mit ORB-Strategie, goldene Handelszeiten, Vorbereitungs-Checkliste und was zu tun ist, wenn der Tag schlecht beginnt.',
+    blog4_data:'Mär 2025',
+    blog5_titulo:'Trailing vs Static Drawdown: Tiefenanalyse zur Wahl Ihrer Firma',
+    blog5_excerpt:'EOD vs Intraday, simulierte Szenarien mit demselben Trader bei verschiedenen Firmen, echte Kosten-Nutzen-Analyse.',
+    blog5_data:'Mär 2025',
+    blog6_titulo:'Multi-Accounting bei Prop Firms: Regeln, Risiken und Strategien',
+    blog6_excerpt:'Offizielle Regeln jeder Firma zu mehreren Konten, 3 intelligente Ansätze und die Gewinnmathematik mit 1, 3 und 5 Konten.',
+    blog6_data:'Mär 2025',
+    blog7_titulo:'Trading bei 3+ Prop Firms gleichzeitig: Professionelles Setup',
+    blog7_excerpt:'Infrastruktur, Kapitalverwaltung zwischen Firmen, wöchentlicher Auszahlungsfluss und Fehler, die selbst Profis machen.',
+    blog7_data:'Feb 2025',
+    blog8_titulo:'Steuerverwaltung für Prop Firm Trader in Brasilien',
+    blog8_excerpt:'Monatliche Steuererklärung, Einzelperson vs Unternehmen, Vergleichstabellen und vollständige Steuer-Checkliste.',
+    blog8_data:'Feb 2025',
+    blog9_titulo:'Von $50K auf $300K: Scaling Plans der Prop Firms im Vergleich',
+    blog9_excerpt:'Wie jede Firma Ihr Konto skaliert. Realistischer 12-Monats-Plan: von 1 Konto mit $50K auf $300K+ mit $6.000 monatlichen Auszahlungen.',
+    blog9_data:'Feb 2025',
     calc_gate_label_nome:'Name',
     calc_gate_placeholder_nome:'Ihr Name',
     calc_gate_label_email:'E-Mail',
@@ -5695,24 +5828,38 @@ const I18N = {
     blog_cat_educacao:'التعليم',
     blog_cat_payouts:'المدفوعات',
     blog_cat_ferramentas:'الأدوات',
-    blog1_titulo:'تطلق Apex عرضًا ترويجيًا تاريخيًا بخصم 90%',
-    blog1_excerpt:'أكبر Prop Firm احترافي للعقود الآجلة في الولايات المتحدة تعلن عن عرض ترويجي برمز حصري.',
-    blog1_data:'مارس 2025',
-    blog2_titulo:'كيفية النجاح في تحدي FTMO لعام 2025',
-    blog2_excerpt:'دليل شامل يتضمن استراتيجيات للنجاح في اختبار أكبر Prop Firm في العالم.',
-    blog2_data:'فبراير 2025',
-    blog3_titulo:'Bulenox بخصم 89%: هل يستحق الأمر؟',
-    blog3_excerpt:'تحليل شامل مع قسيمة خصم بنسبة 89٪ مدى الحياة. اكتشف ما إذا كانت هذه الشركة هي الخيار المناسب لك.',
-    blog3_data:'فبراير 2025',
-    blog4_titulo:'الانخفاض المتتابع مقابل الانخفاض الثابت',
-    blog4_excerpt:'افهم الفروق وكيفية اختيار Prop Firm المناسبة لأسلوبك.',
-    blog4_data:'يناير 2025',
-    blog5_titulo:'كيفية سحب أرباحك في Prop Firms',
-    blog5_excerpt:'خطوة بخطوة مع Apex وBulenox وFTMO وFundedNext.',
-    blog5_data:'يناير 2025',
-    blog6_titulo:'أفضل المؤشرات لـ NinjaTrader 8',
-    blog6_excerpt:'قائمة بالمؤشرات الأكثر استخدامًا من قبل المتداولين المعتمدين في Prop Firms.',
-    blog6_data:'ديسمبر 2024',
+    blog_voltar:'العودة إلى المدونة',
+    blog_filtro_todos:'الكل',
+    blog_cta_titulo:'وفّر في تقييمك القادم',
+    blog_cta_desc:'كوبونات حصرية بخصم يصل إلى 90% في أفضل شركات Prop Firms.',
+    blog_cta_btn:'عرض الكوبونات',
+    blog1_titulo:'أول Prop Firm لك: دليل شامل للمبتدئين 2025',
+    blog1_excerpt:'كل ما تحتاج معرفته قبل شراء أول تقييم. التكاليف الحقيقية، كيف يعمل التحدي، و5 أخطاء يرتكبها 80% من المبتدئين.',
+    blog1_data:'أبريل 2025',
+    blog2_titulo:'Drawdown بالأرقام الحقيقية: Trailing مقابل Static',
+    blog2_excerpt:'ما هو الـ Drawdown، كيف يعمل EOD مقابل Intraday، جدول مقارنة بين Apex وBulenox وFTMO والمزيد.',
+    blog2_data:'أبريل 2025',
+    blog3_titulo:'إدارة المخاطر الوحيدة التي تنجح في Prop Firms',
+    blog3_excerpt:'إطار R:R، معادلة حجم المركز، نموذج خطة التداول ومحاكاة لاجتياز Apex في 15 يومًا.',
+    blog3_data:'أبريل 2025',
+    blog4_titulo:'كيف تجتاز تحدي Prop Firm في 10 أيام',
+    blog4_excerpt:'خطة يوم بيوم مع استراتيجية ORB، الساعات الذهبية، قائمة التحضير وماذا تفعل عندما يبدأ اليوم بشكل سيء.',
+    blog4_data:'مارس 2025',
+    blog5_titulo:'Trailing مقابل Static Drawdown: تحليل معمق لاختيار شركتك',
+    blog5_excerpt:'EOD مقابل Intraday، سيناريوهات محاكاة مع نفس المتداول في شركات مختلفة، تحليل حقيقي للتكلفة والعائد.',
+    blog5_data:'مارس 2025',
+    blog6_titulo:'حسابات متعددة في Prop Firms: القواعد والمخاطر والاستراتيجيات',
+    blog6_excerpt:'القواعد الرسمية لكل شركة حول الحسابات المتعددة، 3 مناهج ذكية وحسابات الربح مع 1 و3 و5 حسابات.',
+    blog6_data:'مارس 2025',
+    blog7_titulo:'التداول في 3+ شركات Prop Firms في وقت واحد: إعداد احترافي',
+    blog7_excerpt:'البنية التحتية، إدارة رأس المال بين الشركات، تدفق المدفوعات الأسبوعي والأخطاء التي يرتكبها حتى المحترفون.',
+    blog7_data:'فبراير 2025',
+    blog8_titulo:'الإدارة الضريبية لمتداولي Prop Firms في البرازيل',
+    blog8_excerpt:'الإقرار الشهري، شخص طبيعي مقابل اعتباري، جداول مقارنة وقائمة ضريبية كاملة.',
+    blog8_data:'فبراير 2025',
+    blog9_titulo:'من $50K إلى $300K: مقارنة خطط التوسع في Prop Firms',
+    blog9_excerpt:'كيف تقوم كل شركة بتوسيع حسابك. خارطة طريق واقعية لـ 12 شهرًا: من حساب واحد بقيمة $50K إلى $300K+ مع مدفوعات شهرية بقيمة $6,000.',
+    blog9_data:'فبراير 2025',
     calc_gate_label_nome:'الاسم',
     calc_gate_placeholder_nome:'اسمك',
     calc_gate_label_email:'البريد الإلكتروني',
@@ -6066,19 +6213,871 @@ function closeGuideArticle(){
 }
 
 /* BLOG */
-const BLOG_DATA = [
-  {catKey:'blog_cat_noticias',catColor:'var(--orange)',bg:'var(--obg)',titleKey:'blog1_titulo',excerptKey:'blog1_excerpt',dataKey:'blog1_data'},
-  {catKey:'blog_cat_estrategia',catColor:'var(--green)',bg:'var(--gnbg)',titleKey:'blog2_titulo',excerptKey:'blog2_excerpt',dataKey:'blog2_data'},
-  {catKey:'blog_cat_analise',catColor:'var(--blue)',bg:'var(--bbg)',titleKey:'blog3_titulo',excerptKey:'blog3_excerpt',dataKey:'blog3_data'},
-  {catKey:'blog_cat_educacao',catColor:'var(--purple)',bg:'var(--pbg)',titleKey:'blog4_titulo',excerptKey:'blog4_excerpt',dataKey:'blog4_data'},
-  {catKey:'blog_cat_payouts',catColor:'var(--gold)',bg:'var(--gbg)',titleKey:'blog5_titulo',excerptKey:'blog5_excerpt',dataKey:'blog5_data'},
-  {catKey:'blog_cat_ferramentas',catColor:'var(--cyan)',bg:'var(--cbg)',titleKey:'blog6_titulo',excerptKey:'blog6_excerpt',dataKey:'blog6_data'},
+const BLOG_POSTS = [
+  // ─── INICIANTE ─────────────────────────────────────
+  {
+    id:'bp1', slug:'sua-primeira-prop-firm',
+    level:'iniciante', levelColor:'#22C55E', levelBg:'rgba(34,197,94,.1)',
+    catKey:'blog_cat_educacao', catColor:'var(--green)', bg:'var(--gnbg)',
+    icon:'🟢', titleKey:'blog1_titulo', excerptKey:'blog1_excerpt', dataKey:'blog1_data', readMin:12,
+    content:`
+<h2>O Que é Uma Prop Firm e Por Que Você Deveria Considerar</h2>
+<p>Uma prop firm (proprietary trading firm) é uma empresa que <strong>empresta capital para traders operarem</strong>. Você não precisa arriscar seu próprio dinheiro — paga uma taxa de avaliação, passa no desafio, e recebe uma conta financiada que pode chegar a <strong>$300.000 ou mais</strong>.</p>
+<p>Em 2025, o mercado de prop firms movimenta bilhões de dólares. Só a Apex Trader Funding já pagou mais de <strong>$360 milhões em payouts</strong> desde sua fundação. A FTMO ultrapassou <strong>$200 milhões distribuídos</strong>.</p>
+
+<div class="callout callout-tip"><strong>💡 Por que isso importa para você:</strong> Com R$100-300 (em promoção), você pode acessar uma conta de $50.000-$150.000 em futuros. Sem prop firm, você precisaria de pelo menos R$50.000 na conta da corretora para operar 1 contrato de mini ES.</div>
+
+<h2>As 3 Categorias de Prop Firms</h2>
+<h3>1. Futuros (CME)</h3>
+<p>Operam contratos como ES (S&P 500), NQ (Nasdaq), CL (Petróleo). As maiores são <strong>Apex, Bulenox, TopStep e Tradeify</strong>. Vantagem: mercado regulado, horários definidos, alavancagem natural dos futuros.</p>
+
+<h3>2. Forex/CFD</h3>
+<p>Operam pares de moedas e CFDs. Líderes: <strong>FTMO, FundedNext, MyFundedFX</strong>. Vantagem: mercado 24h, mais pares disponíveis, plataformas como MT4/MT5.</p>
+
+<h3>3. Ações/Crypto</h3>
+<p>Mercado menor mas crescente. Algumas firms oferecem contas para operar ações americanas ou criptomoedas.</p>
+
+<h2>Quanto Custa Começar (Valores Reais 2025)</h2>
+<table>
+<thead><tr><th>Firma</th><th>Conta</th><th>Preço Normal</th><th>Com Cupom MC</th></tr></thead>
+<tbody>
+<tr><td>Apex</td><td>$50K Rithmic</td><td>$167/mês</td><td>~$17-33 (80-90% OFF)</td></tr>
+<tr><td>Bulenox</td><td>$50K</td><td>$175/mês</td><td>~$19 (89% OFF lifetime)</td></tr>
+<tr><td>FTMO</td><td>$25K</td><td>€250</td><td>~€225 (10% OFF)</td></tr>
+<tr><td>FundedNext</td><td>$25K</td><td>$199</td><td>~$179 (10% OFF)</td></tr>
+<tr><td>TopStep</td><td>$50K</td><td>$49/mês</td><td>~$25 (50% OFF)</td></tr>
+<tr><td>Tradeify</td><td>$50K</td><td>$150/mês</td><td>~$45 (70% OFF)</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><strong>⚡ Dica MarketsCoupons:</strong> Nunca pague preço cheio. As promoções acontecem quase toda semana, especialmente nas firms de futuros. Acompanhe nossas ofertas para pegar o melhor momento.</div>
+
+<h2>O Processo do Desafio — Passo a Passo</h2>
+<ol>
+<li><strong>Escolha a firma e conta:</strong> Comece com $50K em futuros ou $25K em forex. Não vá direto para contas grandes.</li>
+<li><strong>Entenda as regras:</strong> Cada firma tem meta de lucro (geralmente 6-8%) e limite de drawdown (trailing ou fixo).</li>
+<li><strong>Passe na avaliação:</strong> Atinja a meta sem violar drawdown. Na Apex não tem prazo. Na FTMO são 30 dias.</li>
+<li><strong>Receba a conta financiada:</strong> Após aprovação, você opera com capital real da firma.</li>
+<li><strong>Solicite payout:</strong> Lucre e peça saque. A maioria paga via Rise (antigo Deel), PayPal ou crypto.</li>
+</ol>
+
+<h2>Os 5 Erros Que Todo Iniciante Comete</h2>
+<h3>1. Operar sem stop loss</h3>
+<p>"Vou segurar que volta." Não volta. E quando volta, você já violou o drawdown. <strong>Sempre use stop loss.</strong></p>
+
+<h3>2. Arriscar demais por operação</h3>
+<p>Regra de ouro: <strong>nunca arrisque mais de 1-2% do drawdown por trade</strong>. Em uma conta de $50K com $2.500 de drawdown, isso significa no máximo $25-50 de risco por operação.</p>
+
+<h3>3. Operar notícias econômicas</h3>
+<p>CPI, FOMC, NFP — esses eventos geram volatilidade extrema. Até traders experientes evitam. <strong>Iniciantes devem ficar de fora.</strong></p>
+
+<h3>4. Trocar de estratégia toda semana</h3>
+<p>Escolha UMA estratégia, opere ela por pelo menos 30 dias no simulador. Não existe estratégia perfeita — existe consistência.</p>
+
+<h3>5. Não testar no simulador primeiro</h3>
+<p>Todas as plataformas (NinjaTrader, Rithmic, TradingView) oferecem conta demo gratuita. Use por pelo menos 2-4 semanas antes de pagar qualquer avaliação.</p>
+
+<h2>Qual Firma Escolher Como Primeiro Desafio</h2>
+<p>Para quem está começando, recomendamos:</p>
+<ul>
+<li><strong>Futuros:</strong> Apex $50K — sem prazo para completar, drawdown end-of-day, promoções frequentes de 80-90% OFF</li>
+<li><strong>Forex:</strong> FundedNext $15K Express — preço acessível, processo simples, profit split de 80%</li>
+</ul>
+<p>Comece pequeno, prove para si mesmo que consegue ser consistente, e depois escale para contas maiores.</p>
+`
+  },
+  {
+    id:'bp2', slug:'drawdown-explicado-numeros-reais',
+    level:'iniciante', levelColor:'#22C55E', levelBg:'rgba(34,197,94,.1)',
+    catKey:'blog_cat_educacao', catColor:'var(--blue)', bg:'var(--bbg)',
+    icon:'📉', titleKey:'blog2_titulo', excerptKey:'blog2_excerpt', dataKey:'blog2_data', readMin:10,
+    content:`
+<h2>O Que é Drawdown e Por Que Ele Define Seu Sucesso</h2>
+<p>Drawdown é o <strong>limite máximo de perda permitido</strong> na sua conta. Violou? Conta encerrada. Simples assim. É a regra mais importante de qualquer prop firm e a razão #1 de reprovação.</p>
+<p>Existem dois tipos principais, e entender a diferença entre eles pode ser a diferença entre passar ou perder sua avaliação.</p>
+
+<h2>Trailing Drawdown (Drawdown Móvel)</h2>
+<p>O trailing drawdown <strong>acompanha seu maior lucro</strong>. Conforme você ganha, o piso sobe junto — mas nunca desce.</p>
+
+<h3>Exemplo Prático — Apex $50K</h3>
+<table>
+<thead><tr><th>Situação</th><th>Saldo</th><th>Maior Saldo</th><th>Piso Drawdown</th><th>Espaço Disponível</th></tr></thead>
+<tbody>
+<tr><td>Início</td><td>$50.000</td><td>$50.000</td><td>$47.500</td><td>$2.500</td></tr>
+<tr><td>Lucro de $500</td><td>$50.500</td><td>$50.500</td><td>$48.000</td><td>$2.500</td></tr>
+<tr><td>Lucro de $1.500</td><td>$52.000</td><td>$52.000</td><td>$49.500</td><td>$2.500</td></tr>
+<tr><td>Perda de $800</td><td>$51.200</td><td>$52.000</td><td>$49.500</td><td>$1.700</td></tr>
+<tr><td>Piso travou em $50K</td><td>$52.500+</td><td>$52.500+</td><td>$50.000</td><td>Fixo!</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip"><strong>💡 Detalhe crucial da Apex:</strong> Na Apex, o trailing drawdown é <strong>End-of-Day (EOD)</strong> — ele só atualiza no fechamento do dia. Isso significa que durante o dia você pode ter lucros flutuantes sem que o piso suba. Na Bulenox, o trailing é <strong>intraday</strong> — o piso sobe em tempo real, tick a tick.</div>
+
+<h2>Static Drawdown (Drawdown Fixo)</h2>
+<p>O drawdown fixo <strong>nunca se move</strong>. Se começou em $47.500, fica em $47.500 para sempre, não importa quanto você ganhe.</p>
+
+<h3>Exemplo Prático — FTMO $50K</h3>
+<table>
+<thead><tr><th>Situação</th><th>Saldo</th><th>Piso Drawdown</th><th>Espaço Disponível</th></tr></thead>
+<tbody>
+<tr><td>Início</td><td>$50.000</td><td>$45.000 (10%)</td><td>$5.000</td></tr>
+<tr><td>Lucro de $3.000</td><td>$53.000</td><td>$45.000</td><td>$8.000</td></tr>
+<tr><td>Perda de $2.000</td><td>$51.000</td><td>$45.000</td><td>$6.000</td></tr>
+<tr><td>Lucro de $10.000</td><td>$61.000</td><td>$45.000</td><td>$16.000</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><strong>⚡ Vantagem:</strong> Com drawdown fixo, cada dólar que você ganha aumenta seu "colchão". Com trailing, seu colchão permanece igual até o piso travar.</div>
+
+<h2>Comparativo Real Entre Firmas</h2>
+<table>
+<thead><tr><th>Firma</th><th>Tipo</th><th>Drawdown ($50K)</th><th>Quando Atualiza</th></tr></thead>
+<tbody>
+<tr><td>Apex</td><td>Trailing</td><td>$2.500 (trava em $50K)</td><td>End-of-Day</td></tr>
+<tr><td>Bulenox</td><td>Trailing</td><td>$2.500 (trava em $50K)</td><td>Intraday (real-time)</td></tr>
+<tr><td>TopStep</td><td>Trailing</td><td>$2.000</td><td>End-of-Day</td></tr>
+<tr><td>Tradeify</td><td>Trailing</td><td>$2.500 (trava em $50K)</td><td>End-of-Day</td></tr>
+<tr><td>FTMO</td><td>Fixo</td><td>$5.000 (10%)</td><td>Não se move</td></tr>
+<tr><td>FundedNext</td><td>Fixo</td><td>$5.000 (10%)</td><td>Não se move</td></tr>
+</tbody>
+</table>
+
+<h2>Drawdown Diário vs Total</h2>
+<p>Algumas firms têm <strong>dois limites</strong>:</p>
+<ul>
+<li><strong>Drawdown diário:</strong> Máximo que pode perder em um único dia (ex: FTMO = 5%)</li>
+<li><strong>Drawdown total:</strong> Máximo de perda acumulada (ex: FTMO = 10%)</li>
+</ul>
+<p>Na Apex e Bulenox, existe apenas o drawdown total (trailing). Na FTMO e FundedNext, os dois se aplicam.</p>
+
+<h2>Estratégia Para Não Violar o Drawdown</h2>
+<h3>A Regra dos 1%</h3>
+<p>Nunca arrisque mais de 1% do seu drawdown disponível por operação.</p>
+<pre>Conta $50K Apex — Drawdown: $2.500
+Risco por trade: $2.500 × 1% = $25
+Com 1 micro ES (MES): stop de 5 pontos ($25)
+Com 1 mini ES (ES): stop de 0.5 ponto ($25)</pre>
+
+<h3>A Regra do "Pare no Vermelho"</h3>
+<p>Defina um limite diário de perda. Se perder <strong>30% do seu drawdown em um dia</strong>, pare de operar. Na conta de $50K da Apex, isso seria $750.</p>
+
+<h3>Scaling In (Aumento Gradual)</h3>
+<p>Comece a semana com 1 contrato. Só aumente para 2 após estar no lucro. Nunca comece no tamanho máximo.</p>
+
+<div class="callout callout-warn"><strong>⚠️ Atenção:</strong> O drawdown trailing intraday (Bulenox) é significativamente mais difícil que o EOD (Apex). Se você operar scalping com alvos rápidos, um pico de lucro intraday pode mover seu piso sem que você perceba. Para scalpers, firms com drawdown EOD ou fixo são mais seguras.</div>
+`
+  },
+  {
+    id:'bp3', slug:'gerenciamento-risco-unico-que-funciona',
+    level:'iniciante', levelColor:'#22C55E', levelBg:'rgba(34,197,94,.1)',
+    catKey:'blog_cat_estrategia', catColor:'var(--purple)', bg:'var(--pbg)',
+    icon:'🛡️', titleKey:'blog3_titulo', excerptKey:'blog3_excerpt', dataKey:'blog3_data', readMin:11,
+    content:`
+<h2>Por Que 80% dos Traders Falham no Desafio</h2>
+<p>Não é por falta de estratégia. É por falta de <strong>gerenciamento de risco</strong>. O desafio de uma prop firm não testa se você é um gênio do mercado — testa se você consegue <strong>proteger capital enquanto lucra de forma consistente</strong>.</p>
+<p>De acordo com dados públicos da FTMO, apenas <strong>~10-15% dos traders passam</strong> na primeira tentativa. Mas dos que passam, mais de 60% usam regras simples de risco.</p>
+
+<h2>O Framework R:R — A Base de Tudo</h2>
+<p>R:R é a relação risco/recompensa. Se você arrisca $25 para ganhar $50, seu R:R é 1:2.</p>
+
+<h3>Por que 1:2 é o mínimo aceitável</h3>
+<table>
+<thead><tr><th>R:R</th><th>Win Rate Necessário</th><th>Resultado em 100 Trades ($25 risco)</th></tr></thead>
+<tbody>
+<tr><td>1:1</td><td>55%+</td><td>55 wins × $25 - 45 losses × $25 = $250</td></tr>
+<tr><td>1:2</td><td>40%+</td><td>40 wins × $50 - 60 losses × $25 = $500</td></tr>
+<tr><td>1:3</td><td>30%+</td><td>30 wins × $75 - 70 losses × $25 = $500</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip"><strong>💡 Insight:</strong> Com R:R de 1:2, você pode errar 60% das vezes e AINDA assim lucrar. Isso tira a pressão de "acertar todas" e permite operar com calma.</div>
+
+<h2>Position Sizing — O Calculador que Salva Contas</h2>
+<p>Nunca calcule "de cabeça" quantos contratos operar. Use a fórmula:</p>
+<pre>Contratos = Risco por trade ÷ (Stop em pontos × Valor do tick)
+
+Exemplo — ES (S&P 500 Mini):
+Drawdown: $2.500 | Risco por trade: 1% = $25
+Stop: 2 pontos = $100 por contrato
+Contratos: $25 ÷ $100 = 0.25 → Use MES (micro)
+
+Exemplo — MES (Micro E-mini):
+$25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
+
+<h2>O Plano de Trading Diário (Template Pronto)</h2>
+<p>Antes de abrir qualquer operação, preencha isso:</p>
+<table>
+<thead><tr><th>Item</th><th>Seu Valor</th></tr></thead>
+<tbody>
+<tr><td>Capital da conta</td><td>$50.000</td></tr>
+<tr><td>Drawdown disponível</td><td>$2.500</td></tr>
+<tr><td>Risco máximo por trade (1%)</td><td>$25</td></tr>
+<tr><td>Perda máxima diária (30%)</td><td>$750</td></tr>
+<tr><td>Máximo de trades por dia</td><td>3</td></tr>
+<tr><td>Horário de operação</td><td>9:30-11:30 ET</td></tr>
+<tr><td>Instrumentos</td><td>ES ou NQ apenas</td></tr>
+<tr><td>Após 2 losses seguidos</td><td>PARAR</td></tr>
+</tbody>
+</table>
+
+<h2>As 4 Regras de Ouro Para Prop Firms</h2>
+
+<h3>Regra 1: O Stop Loss é Inegociável</h3>
+<p>Coloque o stop ANTES de entrar na operação. Não mova. Não "dê mais espaço". O mercado não sabe que você existe.</p>
+
+<h3>Regra 2: Nunca Faça Média (Average Down)</h3>
+<p>Se o trade foi contra você, <strong>não adicione mais contratos</strong>. Isso é a forma mais rápida de violar drawdown. Você está tentando provar que está certo, não proteger capital.</p>
+
+<h3>Regra 3: Respeite o Limite Diário</h3>
+<p>Perdeu 30% do drawdown no dia? Desligue o computador. Amanhã é outro dia. A prop firm estará lá esperando. Operar no tilt (emocional) é a causa #1 de violação.</p>
+
+<h3>Regra 4: Opere Menos, Não Mais</h3>
+<p>A maioria dos traders que passam na avaliação fazem <strong>1-3 trades por dia</strong>. Overtrading gera comissões excessivas e decisões emocionais.</p>
+
+<h2>Simulação: Passando na Apex $50K em 15 Dias</h2>
+<table>
+<thead><tr><th>Dia</th><th>Trades</th><th>Resultado</th><th>Saldo</th><th>Drawdown Usado</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>2</td><td>+$150</td><td>$50.150</td><td>$0</td></tr>
+<tr><td>2</td><td>1</td><td>+$200</td><td>$50.350</td><td>$0</td></tr>
+<tr><td>3</td><td>3</td><td>-$75</td><td>$50.275</td><td>$75</td></tr>
+<tr><td>4</td><td>0</td><td>Sem trade</td><td>$50.275</td><td>$75</td></tr>
+<tr><td>5</td><td>2</td><td>+$300</td><td>$50.575</td><td>$0</td></tr>
+<tr><td>6-10</td><td>~2/dia</td><td>+$1.200</td><td>$51.775</td><td>$0</td></tr>
+<tr><td>11-15</td><td>~2/dia</td><td>+$1.525</td><td>$53.300</td><td>$0</td></tr>
+</tbody>
+</table>
+<p><strong>Meta atingida: $3.000 (6%)</strong> com risco controlado. Média de $200/dia, 2 trades/dia, sem dia com perda maior que $200.</p>
+
+<div class="callout"><strong>⚡ Chave do sucesso:</strong> Não tente fazer $3.000 em um dia. Faça $150-300 por dia, de forma consistente. O tempo está do seu lado — na Apex não tem prazo.</div>
+`
+  },
+
+  // ─── INTERMEDIÁRIO ─────────────────────────────────
+  {
+    id:'bp4', slug:'como-passar-desafio-10-dias',
+    level:'intermediario', levelColor:'#EAB308', levelBg:'rgba(234,179,8,.1)',
+    catKey:'blog_cat_estrategia', catColor:'var(--gold)', bg:'var(--gbg)',
+    icon:'⚡', titleKey:'blog4_titulo', excerptKey:'blog4_excerpt', dataKey:'blog4_data', readMin:14,
+    content:`
+<h2>A Mentalidade de 10 Dias</h2>
+<p>Passar no desafio de uma prop firm não é sobre velocidade — é sobre <strong>eficiência calculada</strong>. Mas se você tem uma estratégia testada e disciplina, 10 dias úteis é totalmente possível. Veja o plano.</p>
+
+<h2>Antes de Começar: Os Pré-Requisitos</h2>
+<ul>
+<li><strong>Pelo menos 30 dias de operação lucrativa no simulador</strong> — se você não é consistente no demo, não será no desafio</li>
+<li><strong>Estratégia definida:</strong> entrada, stop, alvo, horários. Tudo escrito.</li>
+<li><strong>Win rate mínimo de 45% com R:R de 1:2</strong> ou 35% com R:R de 1:3</li>
+<li><strong>Journal de trading</strong> com pelo menos 50 operações registradas</li>
+</ul>
+
+<h2>O Plano de 10 Dias — Fase por Fase</h2>
+
+<h3>Dias 1-3: Fase de Aquecimento (Meta: +30% do objetivo)</h3>
+<p>Opere com <strong>tamanho mínimo</strong>. O objetivo é pegar o ritmo, não bater meta.</p>
+<ul>
+<li>1-2 contratos micro (MES/MNQ)</li>
+<li>Máximo 2 trades/dia</li>
+<li>Meta diária: $200-400</li>
+<li>Se o dia começar com loss, pare imediatamente</li>
+</ul>
+
+<h3>Dias 4-6: Fase de Construção (Meta: +40% do objetivo)</h3>
+<p>Com o drawdown protegido pelo lucro dos primeiros dias, <strong>aumente levemente o tamanho</strong>.</p>
+<ul>
+<li>2-3 MES ou 1 ES (se lucro acumulado > $1.000)</li>
+<li>2-3 trades/dia</li>
+<li>Meta diária: $300-500</li>
+<li>Perda máxima diária: 50% do lucro acumulado</li>
+</ul>
+
+<h3>Dias 7-9: Fase de Conclusão (Meta: +30% restante)</h3>
+<p>Volte ao tamanho conservador. Você está perto — <strong>não é hora de arriscar</strong>.</p>
+<ul>
+<li>Volte para 1-2 MES</li>
+<li>1-2 trades/dia</li>
+<li>Meta diária: $200-300</li>
+<li>Se faltar menos de $500 para a meta, um bom trade resolve</li>
+</ul>
+
+<h3>Dia 10: Dia de Reserva</h3>
+<p>Se já atingiu a meta, <strong>não opere</strong>. Se falta pouco, faça 1 trade conservador.</p>
+
+<h2>Estratégia Específica: Open Range Breakout (ORB)</h2>
+<p>A estratégia mais usada por traders aprovados em prop firms de futuros:</p>
+
+<h3>Setup</h3>
+<ol>
+<li>Marque a máxima e mínima dos primeiros 15 minutos após a abertura (9:30-9:45 ET)</li>
+<li>Aguarde rompimento com volume acima da média</li>
+<li>Entre na direção do rompimento com stop na extremidade oposta do range</li>
+<li>Alvo: 1.5x a 2x o tamanho do range</li>
+</ol>
+
+<h3>Exemplo Real — ES (S&P 500)</h3>
+<pre>Range 15min: 5.450,00 - 5.455,00 (5 pontos)
+Rompimento para cima: Compra em 5.455,25
+Stop: 5.449,75 (5.5 pontos = $275 por ES)
+Alvo: 5.462,50 (7.25 pontos = $362.50 por ES)
+R:R: 1:1.3
+
+Com 2 MES: Risco $55, Alvo $72.50</pre>
+
+<h2>Os Horários de Ouro (ET)</h2>
+<table>
+<thead><tr><th>Horário</th><th>Atividade</th><th>Risco</th><th>Recomendação</th></tr></thead>
+<tbody>
+<tr><td>9:30-9:45</td><td>Abertura</td><td>Alto</td><td>Observe, marque range</td></tr>
+<tr><td>9:45-11:00</td><td>Momentum matinal</td><td>Médio</td><td>✅ Melhor janela</td></tr>
+<tr><td>11:00-13:30</td><td>Hora morta</td><td>Baixo</td><td>❌ Evitar (chop)</td></tr>
+<tr><td>13:30-15:00</td><td>Momentum vespertino</td><td>Médio</td><td>✅ Segunda melhor janela</td></tr>
+<tr><td>15:00-16:00</td><td>Fechamento</td><td>Alto</td><td>Só para experientes</td></tr>
+</tbody>
+</table>
+
+<h2>O Que Fazer Quando o Dia Começa Mal</h2>
+<p>Cenário: Você abriu o dia com 2 losses seguidos e está -$150.</p>
+<h3>O que NÃO fazer:</h3>
+<ul>
+<li>Aumentar tamanho para "recuperar rápido"</li>
+<li>Entrar em trade de "vingança"</li>
+<li>Ficar operando na hora morta</li>
+</ul>
+<h3>O que FAZER:</h3>
+<ul>
+<li>Fechar a plataforma por pelo menos 1 hora</li>
+<li>Rever os trades — o setup era válido? A execução foi correta?</li>
+<li>Se o setup era válido, é variância normal. Se não era, anote no journal.</li>
+<li>Considere voltar só na sessão da tarde, ou encerrar o dia</li>
+</ul>
+
+<div class="callout"><strong>⚡ Estatística real:</strong> Traders que param após 2 losses seguidos têm taxa de aprovação 3x maior do que os que continuam operando no mesmo dia. O melhor trade que você pode fazer é o trade que você NÃO faz.</div>
+
+<h2>Checklist Final Para os 10 Dias</h2>
+<ul>
+<li>☐ Estratégia testada em 50+ trades no simulador</li>
+<li>☐ Plano de trading escrito (não na cabeça)</li>
+<li>☐ Risk por trade ≤ 1% do drawdown</li>
+<li>☐ Limite diário de perda definido</li>
+<li>☐ Horários de operação definidos</li>
+<li>☐ Journal pronto para registrar cada trade</li>
+<li>☐ Ambiente de trading preparado (sem distrações)</li>
+<li>☐ Regra dos 2 losses: parar</li>
+</ul>
+`
+  },
+  {
+    id:'bp5', slug:'trailing-vs-static-drawdown-profundo',
+    level:'intermediario', levelColor:'#EAB308', levelBg:'rgba(234,179,8,.1)',
+    catKey:'blog_cat_analise', catColor:'var(--orange)', bg:'var(--obg)',
+    icon:'📊', titleKey:'blog5_titulo', excerptKey:'blog5_excerpt', dataKey:'blog5_data', readMin:13,
+    content:`
+<h2>A Decisão Que Define Qual Firma Você Deveria Escolher</h2>
+<p>Trailing ou static? Essa é a pergunta mais importante que um trader intermediário precisa responder antes de escolher sua prop firm. A resposta depende do seu <strong>estilo de operação, frequência e gerenciamento</strong>.</p>
+
+<h2>Como o Trailing Drawdown Realmente Funciona (Detalhes que Ninguém Explica)</h2>
+
+<h3>End-of-Day (EOD) — Apex, TopStep, Tradeify</h3>
+<p>O trailing EOD só atualiza no <strong>fechamento do dia de trading</strong> (17:00 ET para futuros CME). Isso significa:</p>
+<ul>
+<li>Se você abriu $500 no lucro intraday mas fechou o dia com +$100, o piso só sobe $100</li>
+<li>Picos de lucro durante o dia NÃO movem o piso</li>
+<li>Você pode scalpar agressivamente intraday sem medo do piso subir a cada tick</li>
+</ul>
+
+<h3>Intraday (Real-Time) — Bulenox</h3>
+<p>O trailing intraday acompanha o <strong>maior saldo em tempo real</strong>, tick a tick:</p>
+<ul>
+<li>Se sua conta bateu $51.000 por 1 segundo, o piso subiu para $48.500</li>
+<li>Mesmo que você tenha fechado o trade com +$200 apenas, o piso usou o pico de $1.000</li>
+<li>Isso penaliza scalpers que capturam picos rápidos</li>
+</ul>
+
+<div class="callout callout-warn"><strong>⚠️ Cenário real que pega traders:</strong> Você abre long em ES, o mercado sobe 8 pontos ($400/contrato), você não realiza, o mercado volta e você sai no breakeven. Com trailing EOD: tudo certo, piso não se moveu. Com trailing intraday: seu piso subiu $400 e você não ganhou nada. Agora tem $400 a menos de espaço.</div>
+
+<h2>Cenários Simulados: Mesmo Trader, Firmas Diferentes</h2>
+<p>Trader faz 3 trades no dia. Conta de $50K, drawdown $2.500:</p>
+
+<table>
+<thead><tr><th>Trade</th><th>P&L</th><th>Pico Intraday</th><th>Piso EOD</th><th>Piso Intraday</th></tr></thead>
+<tbody>
+<tr><td>1: Long ES +4pts</td><td>+$200</td><td>$50.200</td><td>Sem mudança</td><td>$47.700</td></tr>
+<tr><td>2: Short NQ -2pts</td><td>-$40</td><td>$50.200</td><td>Sem mudança</td><td>$47.700</td></tr>
+<tr><td>3: Long ES +6pts, max +10pts</td><td>+$300</td><td>$50.960</td><td>Sem mudança</td><td>$48.460</td></tr>
+<tr><td><strong>Fim do dia</strong></td><td><strong>+$460</strong></td><td>—</td><td><strong>$47.960</strong></td><td><strong>$48.460</strong></td></tr>
+</tbody>
+</table>
+<p>O trader terminou +$460. Com EOD, drawdown disponível: $2.500. Com intraday, drawdown disponível: <strong>$2.000</strong>. Diferença de $500 — 20% a menos de espaço.</p>
+
+<h2>Static Drawdown — Quando Ele Brilha</h2>
+<p>O drawdown fixo é matematicamente mais favorável quanto mais você lucra:</p>
+
+<table>
+<thead><tr><th>Lucro Acumulado</th><th>Trailing ($2.500)</th><th>Static ($5.000)</th></tr></thead>
+<tbody>
+<tr><td>$0 (início)</td><td>$2.500 de espaço</td><td>$5.000 de espaço</td></tr>
+<tr><td>$2.500</td><td>$2.500 de espaço*</td><td>$7.500 de espaço</td></tr>
+<tr><td>$5.000</td><td>$2.500 de espaço*</td><td>$10.000 de espaço</td></tr>
+<tr><td>$10.000</td><td>$2.500 de espaço*</td><td>$15.000 de espaço</td></tr>
+</tbody>
+</table>
+<p>* Até o piso travar no saldo inicial (na Apex em $50K).</p>
+
+<h2>Qual Escolher Baseado no Seu Estilo</h2>
+<table>
+<thead><tr><th>Estilo</th><th>Melhor Tipo</th><th>Firma Recomendada</th><th>Motivo</th></tr></thead>
+<tbody>
+<tr><td>Scalping (5-20 ticks)</td><td>EOD Trailing</td><td>Apex, TopStep</td><td>Picos intraday não penalizam</td></tr>
+<tr><td>Day Trading (30-100 ticks)</td><td>Static ou EOD</td><td>FTMO, Apex</td><td>Mais espaço conforme lucra</td></tr>
+<tr><td>Swing (overnight)</td><td>Static</td><td>FTMO, FundedNext</td><td>Drawdown não move com gaps</td></tr>
+<tr><td>Alta frequência</td><td>EOD Trailing</td><td>Apex, Tradeify</td><td>Múltiplas entradas/saídas sem mover piso</td></tr>
+</tbody>
+</table>
+
+<h2>O Fator Preço — Análise Custo-Benefício</h2>
+<p>Static drawdown geralmente significa avaliação mais cara:</p>
+<table>
+<thead><tr><th>Tipo</th><th>Firma</th><th>Preço ($50K)</th><th>Drawdown</th><th>Custo por $ de Drawdown</th></tr></thead>
+<tbody>
+<tr><td>Trailing EOD</td><td>Apex</td><td>~$17 (promo)</td><td>$2.500</td><td>$0.007/$</td></tr>
+<tr><td>Trailing Intraday</td><td>Bulenox</td><td>~$19 (promo)</td><td>$2.500</td><td>$0.008/$</td></tr>
+<tr><td>Static</td><td>FTMO</td><td>~€225</td><td>$5.000</td><td>$0.045/$</td></tr>
+</tbody>
+</table>
+<p>Em termos de custo-benefício puro, as firms de futuros com promoção são imbatíveis. Mas o drawdown estático da FTMO oferece mais margem de erro.</p>
+
+<div class="callout"><strong>⚡ Conclusão prática:</strong> Se você é scalper de futuros, vá de Apex (EOD trailing + preço baixo). Se é day trader de forex que segura posições por horas, vá de FTMO (static + mais espaço). Se quer o melhor dos dois mundos, a Apex trava o trailing em $50K depois de lucrar $2.500 — efetivamente vira static.</div>
+`
+  },
+  {
+    id:'bp6', slug:'multi-accounting-vale-o-risco',
+    level:'intermediario', levelColor:'#EAB308', levelBg:'rgba(234,179,8,.1)',
+    catKey:'blog_cat_analise', catColor:'var(--cyan)', bg:'var(--cbg)',
+    icon:'🔄', titleKey:'blog6_titulo', excerptKey:'blog6_excerpt', dataKey:'blog6_data', readMin:11,
+    content:`
+<h2>O Que é Multi-Accounting e Por Que Todo Mundo Faz</h2>
+<p>Multi-accounting é ter <strong>múltiplas contas financiadas simultaneamente</strong>. Um trader com 5 contas de $50K na Apex efetivamente opera com $250K de poder de compra e pode lucrar 5x mais.</p>
+<p>A pergunta é: <strong>é permitido?</strong> A resposta varia drasticamente por firma.</p>
+
+<h2>Regras Oficiais por Firma (Atualizado 2025)</h2>
+
+<h3>Apex Trader Funding</h3>
+<ul>
+<li><strong>Máximo: 20 contas de avaliação ativas + 20 contas PA (performance)</strong></li>
+<li>Pode operar múltiplas contas simultâneas</li>
+<li>Regra: posições NÃO podem ser opostas entre contas (ex: long em uma, short em outra)</li>
+<li>Todas as contas devem estar no mesmo nome/CPF</li>
+<li>Não é permitido "flipping" — abrir e fechar contas rapidamente para abusar de promoções</li>
+</ul>
+
+<h3>Bulenox</h3>
+<ul>
+<li><strong>Máximo: 5 contas PA simultâneas</strong></li>
+<li>Sem limite de contas de avaliação</li>
+<li>Mesma regra de posições opostas se aplica</li>
+<li>Payouts independentes por conta</li>
+</ul>
+
+<h3>FTMO</h3>
+<ul>
+<li><strong>Capital máximo total: $400K</strong> (ex: 2 contas de $200K ou 4 de $100K)</li>
+<li>Pode combinar diferentes tamanhos</li>
+<li>Cada conta é uma avaliação separada</li>
+<li>Regra de consistência se aplica por conta individualmente</li>
+</ul>
+
+<h3>FundedNext</h3>
+<ul>
+<li><strong>Capital máximo: $300K</strong></li>
+<li>Máximo de 3 contas ativas</li>
+<li>Profit split cresce com o tempo (60% → 90%)</li>
+</ul>
+
+<h3>TopStep</h3>
+<ul>
+<li><strong>Máximo: 5 contas ativas</strong></li>
+<li>Cada conta precisa de avaliação separada</li>
+<li>Contas independentes para payout</li>
+</ul>
+
+<h3>Tradeify</h3>
+<ul>
+<li><strong>Máximo: 5 contas ativas</strong></li>
+<li>Promoções frequentes para múltiplas contas</li>
+</ul>
+
+<h2>Estratégia Inteligente de Multi-Accounting</h2>
+
+<h3>Abordagem 1: Mesma Estratégia, Mesmo Trade</h3>
+<p>Você opera o mesmo setup em todas as contas simultaneamente. Se der certo, lucra em todas. Se der errado, perde em todas.</p>
+<ul>
+<li><strong>Vantagem:</strong> Simples de executar, multiplica lucros</li>
+<li><strong>Desvantagem:</strong> Também multiplica perdas</li>
+<li><strong>Ideal para:</strong> Traders consistentes com win rate comprovado > 55%</li>
+</ul>
+
+<h3>Abordagem 2: Estratégias Complementares</h3>
+<p>Conta 1: scalping na abertura. Conta 2: swing no range. Conta 3: breakout no período da tarde.</p>
+<ul>
+<li><strong>Vantagem:</strong> Diversifica risco</li>
+<li><strong>Desvantagem:</strong> Mais complexo, precisa dominar múltiplas estratégias</li>
+<li><strong>Ideal para:</strong> Traders experientes com 1+ ano de consistência</li>
+</ul>
+
+<h3>Abordagem 3: Escalonamento Gradual</h3>
+<p>Comece com 1 conta. Após 2 payouts bem-sucedidos, adicione a 2ª. Após 2 payouts na 2ª, adicione a 3ª.</p>
+<ul>
+<li><strong>Vantagem:</strong> Crescimento sustentável, menor risco</li>
+<li><strong>Desvantagem:</strong> Mais lento</li>
+<li><strong>Ideal para:</strong> Traders que querem construir uma operação profissional</li>
+</ul>
+
+<div class="callout callout-warn"><strong>⚠️ O que NÃO fazer:</strong><br>
+• Abrir 10 contas de uma vez na promoção sem ter consistência<br>
+• Usar contas diferentes para hedge (long em uma, short em outra) — isso viola os termos de quase todas as firms<br>
+• Compartilhar contas com outras pessoas — rastreiam IP e dispositivo<br>
+• Usar bots/copy trade entre contas sem verificar se é permitido (Apex proíbe)</div>
+
+<h2>Matemática do Multi-Accounting</h2>
+<table>
+<thead><tr><th>Cenário</th><th>1 Conta</th><th>3 Contas</th><th>5 Contas</th></tr></thead>
+<tbody>
+<tr><td>Custo mensal (promo)</td><td>~$20</td><td>~$60</td><td>~$100</td></tr>
+<tr><td>Capital total</td><td>$50K</td><td>$150K</td><td>$250K</td></tr>
+<tr><td>Lucro mensal (2%)</td><td>$1.000</td><td>$3.000</td><td>$5.000</td></tr>
+<tr><td>Payout (80% split)</td><td>$800</td><td>$2.400</td><td>$4.000</td></tr>
+<tr><td>Lucro líquido</td><td>$780</td><td>$2.340</td><td>$3.900</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip"><strong>💡 Realidade:</strong> Com 5 contas Apex em promoção (~$100 total) e 2% de lucro mensal consistente, você pode faturar quase $4.000/mês (~R$20.000). Mas isso REQUER consistência provada — nunca comece com 5 contas se não tem pelo menos 3 meses de resultado positivo em 1 conta.</div>
+`
+  },
+
+  // ─── PROFISSIONAL ─────────────────────────────────
+  {
+    id:'bp7', slug:'operando-3-mesas-simultaneamente',
+    level:'profissional', levelColor:'#EF4444', levelBg:'rgba(239,68,68,.1)',
+    catKey:'blog_cat_estrategia', catColor:'var(--orange)', bg:'var(--obg)',
+    icon:'🏢', titleKey:'blog7_titulo', excerptKey:'blog7_excerpt', dataKey:'blog7_data', readMin:12,
+    content:`
+<h2>A Realidade de Operar em Múltiplas Prop Firms</h2>
+<p>Operar em 3+ prop firms simultaneamente é o caminho que muitos traders profissionais seguem para <strong>maximizar capital, diversificar risco de contraparte e aumentar payouts</strong>. Mas exige organização militar.</p>
+
+<h2>Por Que Diversificar Entre Firmas</h2>
+<h3>1. Risco de Contraparte</h3>
+<p>Prop firms são empresas privadas. Já vimos firms fecharem do dia para a noite (MFF, True Forex Funds). Se todo seu capital está em uma firma e ela fecha, você perde tudo. Com 3 firmas, perde no máximo 33%.</p>
+
+<h3>2. Regras Complementares</h3>
+<p>Apex permite operar notícias. FTMO não permite em certos instrumentos. TopStep tem regras de consistência. Diversificando, você sempre tem uma firma onde seu estilo funciona independente do calendário econômico.</p>
+
+<h3>3. Maximizar Payouts</h3>
+<p>Cada firma tem ciclos de payout diferentes. Com 3 firmas, você pode ter payouts semanais alternados, criando fluxo de caixa constante.</p>
+
+<h2>Setup Operacional Profissional</h2>
+
+<h3>Infraestrutura</h3>
+<table>
+<thead><tr><th>Item</th><th>Recomendação</th><th>Custo Estimado</th></tr></thead>
+<tbody>
+<tr><td>PC</td><td>i7/Ryzen 7, 32GB RAM, SSD NVMe</td><td>R$5.000-8.000</td></tr>
+<tr><td>Monitores</td><td>2-3 monitores (1 por firma + gráfico)</td><td>R$2.000-4.000</td></tr>
+<tr><td>Internet</td><td>Fibra 300Mbps+ com backup 4G</td><td>R$200-400/mês</td></tr>
+<tr><td>VPS</td><td>Para firms que exigem baixa latência</td><td>$20-50/mês</td></tr>
+<tr><td>Plataformas</td><td>NinjaTrader (futuros) + MT5 (forex)</td><td>Licença NT: $99/mês ou $1.099 lifetime</td></tr>
+</tbody>
+</table>
+
+<h3>Organização por Monitor</h3>
+<pre>Monitor 1: Gráfico principal + order flow
+Monitor 2: Plataforma Firma 1 (Apex) + Firma 2 (Bulenox)
+Monitor 3: Plataforma Firma 3 (FTMO/MT5) + Calendário econômico</pre>
+
+<h2>Gestão de Capital Profissional</h2>
+
+<h3>Distribuição Recomendada</h3>
+<table>
+<thead><tr><th>Firma</th><th>Contas</th><th>Capital</th><th>Mercado</th><th>Estratégia Principal</th></tr></thead>
+<tbody>
+<tr><td>Apex</td><td>3-5x $50K</td><td>$150-250K</td><td>Futuros (ES, NQ)</td><td>ORB + Momentum</td></tr>
+<tr><td>Bulenox</td><td>2-3x $50K</td><td>$100-150K</td><td>Futuros (ES, CL)</td><td>Range trading</td></tr>
+<tr><td>FTMO</td><td>1-2x $100K</td><td>$100-200K</td><td>Forex (EUR/USD, GBP)</td><td>Swing + news</td></tr>
+</tbody>
+</table>
+
+<h3>Fluxo de Payout Mensal</h3>
+<table>
+<thead><tr><th>Semana</th><th>Firma</th><th>Payout Estimado</th></tr></thead>
+<tbody>
+<tr><td>Semana 1</td><td>Apex (contas 1-2)</td><td>$800-1.500</td></tr>
+<tr><td>Semana 2</td><td>Bulenox</td><td>$600-1.200</td></tr>
+<tr><td>Semana 3</td><td>Apex (contas 3-5)</td><td>$800-1.500</td></tr>
+<tr><td>Semana 4</td><td>FTMO</td><td>$1.000-2.500</td></tr>
+<tr><td><strong>Total Mensal</strong></td><td></td><td><strong>$3.200-6.700</strong></td></tr>
+</tbody>
+</table>
+
+<h2>Erros Comuns de Profissionais</h2>
+
+<h3>1. Overleverage Cruzado</h3>
+<p>Se você está long em 3 contas Apex + 2 Bulenox simultâneas, efetivamente tem 5x o risco. Uma queda forte de 30 pontos no ES viola TODAS as contas de uma vez.</p>
+<p><strong>Solução:</strong> Nunca tenha mais de 60% das contas na mesma direção simultaneamente.</p>
+
+<h3>2. Ignorar Regras Específicas</h3>
+<p>Apex permite operar fora do horário regular. TopStep não. FTMO tem limite diário. Misturar regras é receita para violação.</p>
+<p><strong>Solução:</strong> Planilha com regras de cada firma visível no setup.</p>
+
+<h3>3. Burnout</h3>
+<p>Gerenciar 5-10 contas é mentalmente exaustivo. Dias ruins em todas as contas ao mesmo tempo geram estresse significativo.</p>
+<p><strong>Solução:</strong> Escale gradualmente. Não pule de 1 para 10 contas. Adicione 1-2 por mês.</p>
+
+<div class="callout"><strong>⚡ Framework profissional:</strong> Trate suas contas como um portfólio. Cada firma é um "ativo" com risco diferente. Diversifique entre mercados (futuros + forex), tipos de drawdown (trailing + static) e estilos (scalp + swing). Isso maximiza retorno ajustado ao risco.</div>
+`
+  },
+  {
+    id:'bp8', slug:'gestao-fiscal-traders-financiados-brasil',
+    level:'profissional', levelColor:'#EF4444', levelBg:'rgba(239,68,68,.1)',
+    catKey:'blog_cat_educacao', catColor:'var(--purple)', bg:'var(--pbg)',
+    icon:'📋', titleKey:'blog8_titulo', excerptKey:'blog8_excerpt', dataKey:'blog8_data', readMin:15,
+    content:`
+<h2>Disclaimer Importante</h2>
+<div class="callout callout-warn"><strong>⚠️ Este artigo é educativo.</strong> Não é aconselhamento fiscal ou jurídico. Consulte um contador especializado em renda variável ou tributação internacional para sua situação específica. As regras fiscais podem mudar.</div>
+
+<h2>Como a Receita Federal Enxerga Rendimentos de Prop Firms</h2>
+<p>Rendimentos de prop firms estrangeiras são classificados como <strong>rendimentos recebidos do exterior</strong>. Na prática, é dinheiro que uma empresa estrangeira te paga por um serviço (gestão de capital). Isso cai na tributação de <strong>rendimentos de pessoa física recebidos do exterior</strong>.</p>
+
+<h3>Enquadramento Tributário</h3>
+<ul>
+<li><strong>Para Pessoa Física:</strong> Tributação pelo Carnê-Leão mensal, com alíquotas progressivas de IR (até 27,5%)</li>
+<li><strong>Para Pessoa Jurídica (MEI/ME):</strong> Pode ser mais vantajoso dependendo do faturamento — veja análise abaixo</li>
+</ul>
+
+<h2>Carnê-Leão — O Passo a Passo</h2>
+
+<h3>1. Recebimento do Payout</h3>
+<p>Você recebe via Rise (antigo Deel), PayPal, Wise ou crypto. O valor precisa ser convertido para Reais pela cotação do <strong>dólar PTAX de venda do último dia útil da primeira quinzena do mês anterior ao recebimento</strong>.</p>
+
+<h3>2. Cálculo Mensal</h3>
+<table>
+<thead><tr><th>Faixa de Rendimento Mensal (2025)</th><th>Alíquota</th><th>Dedução</th></tr></thead>
+<tbody>
+<tr><td>Até R$2.259,20</td><td>Isento</td><td>—</td></tr>
+<tr><td>R$2.259,21 a R$2.826,65</td><td>7,5%</td><td>R$169,44</td></tr>
+<tr><td>R$2.826,66 a R$3.751,05</td><td>15%</td><td>R$381,44</td></tr>
+<tr><td>R$3.751,06 a R$4.664,68</td><td>22,5%</td><td>R$662,77</td></tr>
+<tr><td>Acima de R$4.664,68</td><td>27,5%</td><td>R$896,00</td></tr>
+</tbody>
+</table>
+
+<h3>3. Exemplo Prático</h3>
+<pre>Payout do mês: $2.000
+Câmbio PTAX: R$5,20
+Rendimento em R$: R$10.400
+
+IR = R$10.400 × 27,5% - R$896 = R$1.964
+Líquido: R$10.400 - R$1.964 = R$8.436</pre>
+
+<h2>Pessoa Jurídica — Vale a Pena?</h2>
+
+<h3>Opção 1: MEI (Microempreendedor Individual)</h3>
+<ul>
+<li>Limite: R$81.000/ano (R$6.750/mês)</li>
+<li>Imposto: ~R$70/mês (DAS fixo)</li>
+<li><strong>Problema:</strong> Não existe CNAE para "trading em prop firms". Alguns contadores enquadram como consultoria, mas é arriscado.</li>
+</ul>
+
+<h3>Opção 2: Simples Nacional (ME)</h3>
+<ul>
+<li>Limite: R$360.000/ano</li>
+<li>Alíquota efetiva: 6-15% dependendo da faixa</li>
+<li>Mais seguro juridicamente que MEI</li>
+<li>CNAE sugerido: 6619-3/99 (Outras atividades auxiliares dos serviços financeiros)</li>
+</ul>
+
+<h3>Opção 3: Lucro Presumido</h3>
+<ul>
+<li>Sem limite de faturamento prático</li>
+<li>Presunção de lucro: 32% para serviços</li>
+<li>Alíquota efetiva sobre faturamento: ~13-16%</li>
+<li>Ideal para quem fatura acima de R$15.000/mês</li>
+</ul>
+
+<h3>Comparativo PF vs PJ</h3>
+<table>
+<thead><tr><th>Faturamento Mensal</th><th>IR Pessoa Física</th><th>Simples Nacional</th><th>Lucro Presumido</th></tr></thead>
+<tbody>
+<tr><td>R$5.000</td><td>R$479 (9,6%)</td><td>~R$300 (6%)</td><td>~R$750 (15%)</td></tr>
+<tr><td>R$10.000</td><td>R$1.854 (18,5%)</td><td>~R$800 (8%)</td><td>~R$1.500 (15%)</td></tr>
+<tr><td>R$20.000</td><td>R$4.604 (23%)</td><td>~R$2.200 (11%)</td><td>~R$3.000 (15%)</td></tr>
+<tr><td>R$40.000</td><td>R$10.104 (25,3%)</td><td>~R$5.600 (14%)</td><td>~R$6.000 (15%)</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip"><strong>💡 Conclusão:</strong> Acima de R$5.000/mês, PJ no Simples Nacional quase sempre compensa. Acima de R$15.000/mês, Lucro Presumido pode ser melhor. Consulte um contador para sua situação.</div>
+
+<h2>Declaração Anual (DIRPF)</h2>
+<ol>
+<li><strong>Rendimentos do exterior:</strong> Informar todos os payouts na ficha "Rendimentos Tributáveis Recebidos de PF/Exterior"</li>
+<li><strong>Bens e direitos:</strong> Declarar saldo em plataformas de pagamento (Rise, PayPal, Wise) acima de $140</li>
+<li><strong>Crypto:</strong> Se recebeu payout em crypto, declarar na ficha de Bens e Direitos (cód. 89)</li>
+<li><strong>Câmbio:</strong> Usar a cotação PTAX de cada recebimento</li>
+</ol>
+
+<h2>Erros Que Podem Dar Problema</h2>
+<ul>
+<li><strong>Não declarar:</strong> A Receita cruza dados de câmbio. Transferências internacionais acima de $1.000 são reportadas automaticamente.</li>
+<li><strong>Declarar como "ganho de capital":</strong> Prop firm não é investimento próprio, é serviço. A tributação é diferente.</li>
+<li><strong>Ignorar o câmbio:</strong> Usar "dólar do dia" em vez do PTAX correto pode gerar divergência com a Receita.</li>
+<li><strong>Misturar PF e PJ:</strong> Se tem CNPJ, todos os recebimentos devem ir pelo CNPJ. Não alterne.</li>
+</ul>
+
+<h2>Checklist Fiscal do Trader Profissional</h2>
+<ul>
+<li>☐ Planilha mensal de payouts (data, firma, valor USD, câmbio PTAX, valor BRL)</li>
+<li>☐ Carnê-Leão pago até o último dia útil do mês seguinte</li>
+<li>☐ Comprovantes de transferência arquivados (5 anos)</li>
+<li>☐ Contador informado sobre a natureza dos rendimentos</li>
+<li>☐ DIRPF completa com rendimentos do exterior</li>
+</ul>
+`
+  },
+  {
+    id:'bp9', slug:'de-50k-para-300k-scaling-plans',
+    level:'profissional', levelColor:'#EF4444', levelBg:'rgba(239,68,68,.1)',
+    catKey:'blog_cat_analise', catColor:'var(--gold)', bg:'var(--gbg)',
+    icon:'📈', titleKey:'blog9_titulo', excerptKey:'blog9_excerpt', dataKey:'blog9_data', readMin:13,
+    content:`
+<h2>O Que São Scaling Plans</h2>
+<p>Scaling plans são programas onde a prop firm <strong>aumenta o tamanho da sua conta</strong> baseado no seu desempenho consistente. Começou com $50K, pode chegar a $150K, $300K ou até mais — sem pagar novas avaliações.</p>
+<p>Nem toda firma oferece, e as regras variam muito. Veja o comparativo completo.</p>
+
+<h2>Scaling Plans por Firma (Atualizado 2025)</h2>
+
+<h3>Apex Trader Funding</h3>
+<table>
+<thead><tr><th>Requisito</th><th>Detalhes</th></tr></thead>
+<tbody>
+<tr><td>Elegibilidade</td><td>Conta PA ativa com payouts consistentes</td></tr>
+<tr><td>Progressão</td><td>$50K → $75K → $100K → $150K → $200K → $300K</td></tr>
+<tr><td>Critério por nível</td><td>3 meses consecutivos lucrativos com pelo menos 1 payout/mês</td></tr>
+<tr><td>Drawdown escala?</td><td>Sim, proporcional ao aumento da conta</td></tr>
+<tr><td>Profit split muda?</td><td>Mantém o mesmo (100% nos primeiros $25K, 90% depois)</td></tr>
+</tbody>
+</table>
+
+<h3>FTMO</h3>
+<table>
+<thead><tr><th>Requisito</th><th>Detalhes</th></tr></thead>
+<tbody>
+<tr><td>Elegibilidade</td><td>4 meses com lucro ≥10% em pelo menos 2 deles</td></tr>
+<tr><td>Progressão</td><td>Aumento de 25% do capital original a cada ciclo</td></tr>
+<tr><td>Limite</td><td>Até $400K total (combinando todas as contas)</td></tr>
+<tr><td>Profit split</td><td>Sobe de 80% para 90% após scaling</td></tr>
+<tr><td>Condição especial</td><td>Não pode ter violado nenhuma regra nos 4 meses</td></tr>
+</tbody>
+</table>
+
+<h3>FundedNext</h3>
+<table>
+<thead><tr><th>Requisito</th><th>Detalhes</th></tr></thead>
+<tbody>
+<tr><td>Modelo</td><td>Profit split progressivo (não aumenta conta)</td></tr>
+<tr><td>Início</td><td>60% profit split</td></tr>
+<tr><td>Progressão</td><td>60% → 70% → 80% → 90% baseado em lucro acumulado</td></tr>
+<tr><td>Capital máximo</td><td>$300K (via múltiplas contas)</td></tr>
+</tbody>
+</table>
+
+<h3>Bulenox</h3>
+<table>
+<thead><tr><th>Requisito</th><th>Detalhes</th></tr></thead>
+<tbody>
+<tr><td>Scaling</td><td>Não possui scaling plan formal</td></tr>
+<tr><td>Alternativa</td><td>Compre múltiplas contas (até 5 PA) para escalar capital</td></tr>
+<tr><td>Vantagem</td><td>Com promoção de 89% OFF, 5 contas × $50K = $250K por ~$100 total</td></tr>
+</tbody>
+</table>
+
+<h3>TopStep</h3>
+<table>
+<thead><tr><th>Requisito</th><th>Detalhes</th></tr></thead>
+<tbody>
+<tr><td>Scaling</td><td>Programa "Progression" — aumenta poder de compra gradualmente</td></tr>
+<tr><td>Início</td><td>$50K com 2 contratos max</td></tr>
+<tr><td>Progressão</td><td>Aumenta 1 contrato a cada milestone de lucro</td></tr>
+<tr><td>Alternativa</td><td>Até 5 contas simultâneas</td></tr>
+</tbody>
+</table>
+
+<h2>Roadmap Realista: $50K → $300K em 12 Meses</h2>
+
+<h3>Meses 1-3: Fundação (1 conta $50K)</h3>
+<ul>
+<li>Meta: passar na avaliação e conseguir 2 payouts</li>
+<li>Lucro mensal alvo: $1.000-1.500</li>
+<li>Foco: consistência, não tamanho</li>
+<li>Payout total: ~$3.000</li>
+</ul>
+
+<h3>Meses 4-6: Expansão (3 contas = $150K)</h3>
+<ul>
+<li>Adicionar 2 contas novas (Apex + Bulenox)</li>
+<li>Custo: ~$40 (promoção)</li>
+<li>Lucro mensal alvo: $2.500-4.000</li>
+<li>Solicitar scaling na conta original (Apex $50K → $75K)</li>
+<li>Payout total acumulado: ~$12.000</li>
+</ul>
+
+<h3>Meses 7-9: Diversificação (5 contas + FTMO = $300K)</h3>
+<ul>
+<li>Adicionar FTMO $100K (investimento: ~€450 com desconto)</li>
+<li>Total de capital: $75K (Apex scaled) + $100K (2 Apex) + $50K (Bulenox) + $100K (FTMO) = $325K</li>
+<li>Lucro mensal alvo: $5.000-8.000</li>
+<li>Payout total acumulado: ~$30.000</li>
+</ul>
+
+<h3>Meses 10-12: Otimização ($300K+ operacional)</h3>
+<ul>
+<li>Scaling Apex para $100K+</li>
+<li>FTMO scaling para $150K (profit split 90%)</li>
+<li>Lucro mensal alvo: $6.000-10.000</li>
+<li>Payout total acumulado: ~$54.000</li>
+</ul>
+
+<h2>Matemática do Scaling vs Multi-Account</h2>
+<table>
+<thead><tr><th>Abordagem</th><th>Capital em 12 meses</th><th>Custo</th><th>Complexidade</th><th>Profit Split</th></tr></thead>
+<tbody>
+<tr><td>1 conta + scaling</td><td>$150K (Apex) ou $200K (FTMO)</td><td>~$20</td><td>Baixa</td><td>90-100%</td></tr>
+<tr><td>Multi-account sem scaling</td><td>$250K (5 × $50K)</td><td>~$100</td><td>Alta</td><td>80-90%</td></tr>
+<tr><td>Multi-account + scaling</td><td>$400K+</td><td>~$500+</td><td>Muito alta</td><td>80-100%</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><strong>⚡ Estratégia ideal:</strong> Comece com scaling em 1 firma (Apex ou FTMO). Quando estiver estável em $100K+, diversifique para uma segunda firma. Multi-account + scaling é o endgame, mas leva 6-12 meses de consistência para chegar lá com segurança.</div>
+
+<h2>Armadilhas do Scaling</h2>
+<ul>
+<li><strong>Conta maior ≠ mais agressivo:</strong> Se você escalou de $50K para $100K, continue operando com o mesmo risco percentual. Não dobre o tamanho da posição.</li>
+<li><strong>Reset de drawdown:</strong> Algumas firms resetam o drawdown ao escalar. Verifique se o trailing recomeça do zero.</li>
+<li><strong>Pressão psicológica:</strong> Operar $300K causa mais ansiedade que $50K. Se perceber que está operando diferente, reduza o tamanho.</li>
+<li><strong>Regra de consistência:</strong> FTMO exige que nenhum mês represente mais de 50% do lucro total. Não adianta ter 1 mês excepcional e 3 mediocres.</li>
+</ul>
+`
+  }
 ];
+
+let _blogFilter = 'all';
+
 function renderBlog(){
   const g=document.getElementById('blog-grid');if(!g)return;
-  g.innerHTML=BLOG_DATA.map(post=>`
-    <div class="bc">
-      <div class="bc-img" style="background:${post.bg};"></div>
+  const posts = _blogFilter==='all' ? BLOG_POSTS : BLOG_POSTS.filter(p=>p.level===_blogFilter);
+  g.innerHTML=posts.map(post=>`
+    <div class="bc" onclick="openBlogArticle('${post.slug}')">
+      <div class="bc-img" style="background:${post.bg};">
+        <span style="font-size:38px;">${post.icon}</span>
+        <div class="bc-level" style="background:${post.levelBg};color:${post.levelColor};">${post.level==='iniciante'?'🟢 Iniciante':post.level==='intermediario'?'🟡 Intermediário':'🔴 Profissional'}</div>
+      </div>
       <div class="bc-body">
         <div class="bc-cat" style="color:${post.catColor};">${t(post.catKey)}</div>
         <div class="bc-title">${t(post.titleKey)}</div>
@@ -6089,6 +7088,52 @@ function renderBlog(){
         </div>
       </div>
     </div>`).join('');
+}
+
+function filterBlog(level, btn){
+  _blogFilter = level;
+  document.querySelectorAll('.bf-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderBlog();
+}
+
+function openBlogArticle(slug){
+  const post = BLOG_POSTS.find(p=>p.slug===slug);
+  if(!post||!post.content)return;
+  const grid=document.getElementById('blog-grid');
+  const hdr=document.getElementById('blog-header');
+  const filters=document.getElementById('blog-filters');
+  const art=document.getElementById('blog-article');
+  if(grid)grid.style.display='none';
+  if(hdr)hdr.style.display='none';
+  if(filters)filters.style.display='none';
+  const levelLabel = post.level==='iniciante'?'🟢 Iniciante':post.level==='intermediario'?'🟡 Intermediário':'🔴 Profissional';
+  art.innerHTML=`
+    <button class="blog-back" onclick="closeBlogArticle()">← ${t('blog_voltar')||'Voltar ao blog'}</button>
+    <div class="blog-art-level" style="background:${post.levelBg};color:${post.levelColor};">${levelLabel}</div>
+    <div class="blog-art-title">${t(post.titleKey)}</div>
+    <div class="blog-art-meta"><span>~${post.readMin} min de leitura</span><span>${t(post.dataKey)}</span></div>
+    <div class="blog-art-body">${post.content}</div>
+    <div class="blog-art-cta">
+      <div class="blog-art-cta-title">${t('blog_cta_titulo')||'Economize na Sua Próxima Avaliação'}</div>
+      <div class="blog-art-cta-desc">${t('blog_cta_desc')||'Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.'}</div>
+      <button class="blog-art-cta-btn" onclick="go('offers')">${t('blog_cta_btn')||'Ver Cupons'} →</button>
+    </div>`;
+  art.classList.add('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+  track('blog_read',{post_id:post.id,post_slug:slug,level:post.level});
+}
+
+function closeBlogArticle(){
+  const grid=document.getElementById('blog-grid');
+  const hdr=document.getElementById('blog-header');
+  const filters=document.getElementById('blog-filters');
+  const art=document.getElementById('blog-article');
+  art.classList.remove('open');
+  art.innerHTML='';
+  if(grid)grid.style.display='';
+  if(hdr)hdr.style.display='';
+  if(filters)filters.style.display='';
 }
 
 /* QUIZ */
