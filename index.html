@@ -9,6 +9,16 @@
 <link rel="canonical" href="https://www.marketscoupons.com/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230D1117'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='18' font-weight='bold' fill='%23F0B429'>MC</text></svg>">
 
+<!-- Hreflang: SEO multi-idioma -->
+<link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/">
+<link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/#lang=en">
+<link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/#lang=es">
+<link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/#lang=fr">
+<link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/#lang=de">
+<link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/#lang=it">
+<link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/#lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/">
+
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.marketscoupons.com/">
@@ -142,6 +152,102 @@
     }
   ]
 }
+</script>
+
+<!-- Structured Data: Offers (cupons no Google) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Cupons de Prop Firms",
+  "description": "Cupons exclusivos e descontos para as melhores prop firms de trading",
+  "url": "https://www.marketscoupons.com",
+  "numberOfItems": 5,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Offer",
+        "name": "Cupom Apex Trader Funding — 90% OFF",
+        "description": "Use o cupom MARKET para 90% de desconto na Apex Trader Funding. Válido para todas as contas.",
+        "url": "https://www.marketscoupons.com/#firms",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "Apex Trader Funding" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Offer",
+        "name": "Cupom Bulenox — 89% OFF",
+        "description": "Use o cupom MARKET89 para 89% de desconto na Bulenox. Passe a avaliação em 1 dia.",
+        "url": "https://www.marketscoupons.com/#firms",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "Bulenox" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Offer",
+        "name": "Cupom FTMO — Free Trial",
+        "description": "Comece com Free Trial ilimitado na FTMO. A prop firm mais conhecida do mundo.",
+        "url": "https://www.marketscoupons.com/#firms",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "FTMO" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Offer",
+        "name": "Cupom FundedNext — Desconto Exclusivo",
+        "description": "Desconto exclusivo na FundedNext. Payout garantido em 24h.",
+        "url": "https://www.marketscoupons.com/#firms",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "FundedNext" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "Offer",
+        "name": "Cupom Take Profit Trader — Desconto Exclusivo",
+        "description": "Desconto exclusivo na Take Profit Trader. Saque desde o dia 1.",
+        "url": "https://www.marketscoupons.com/#firms",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "Take Profit Trader" }
+      }
+    }
+  ]
+}
+</script>
+
+<!-- OG image dinâmica por idioma -->
+<script>
+(function(){
+  const p = new URLSearchParams(window.location.search);
+  const h = window.location.hash;
+  const langMatch = h.match(/lang=(\w{2})/) || p.get('lang');
+  const lang = langMatch ? (typeof langMatch === 'string' ? langMatch : langMatch[1]) : null;
+  if (lang && lang !== 'pt') {
+    const ogImg = document.querySelector('meta[property="og:image"]');
+    const twImg = document.querySelector('meta[name="twitter:image"]');
+    const suffix = '-' + lang;
+    if (ogImg) ogImg.content = 'https://www.marketscoupons.com/img/og-cover' + suffix + '.png';
+    if (twImg) twImg.content = 'https://www.marketscoupons.com/img/og-cover' + suffix + '.png';
+  }
+})();
 </script>
 
 <!--
