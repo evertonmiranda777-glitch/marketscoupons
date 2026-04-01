@@ -57,16 +57,21 @@ a{color:inherit;text-decoration:none;}
 .state-btn{display:inline-block;margin-top:8px;padding:12px 28px;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:.2s;}
 .state-btn:hover{background:#F7C948;transform:translateY(-1px);}
 
-.art-wrap{max-width:780px;margin:0 auto;padding:32px 20px 80px;}
-.art-breadcrumb{font-size:11px;color:var(--t3);margin-bottom:20px;}
-.art-breadcrumb a{color:var(--t3);}
-.art-breadcrumb a:hover{color:var(--gold);}
-.art-breadcrumb span{margin:0 6px;}
+.blog-hero{position:relative;overflow:hidden;padding:48px 24px 40px;text-align:center;border-bottom:1px solid var(--b1);}
+.blog-hero::before{content:'';position:absolute;inset:0;opacity:.12;background:radial-gradient(ellipse at 30% 0%,var(--hero-c1,#F0B429) 0%,transparent 60%),radial-gradient(ellipse at 70% 100%,var(--hero-c2,#3B82F6) 0%,transparent 60%);}
+.blog-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,#07090D 100%);}
+.blog-hero-inner{position:relative;z-index:1;max-width:720px;margin:0 auto;}
+.blog-hero .art-breadcrumb{font-size:11px;color:var(--t3);margin-bottom:18px;}
+.blog-hero .art-breadcrumb a{color:var(--t3);}
+.blog-hero .art-breadcrumb a:hover{color:var(--gold);}
+.blog-hero .art-breadcrumb span{margin:0 6px;}
+.blog-hero-level{display:inline-block;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;}
+.blog-hero-title{font-size:34px;font-weight:900;letter-spacing:-.7px;line-height:1.25;margin-bottom:16px;text-shadow:0 2px 20px rgba(0,0,0,.4);}
+.blog-hero-meta{font-size:12px;color:var(--t2);display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
+.blog-hero-meta .art-cat-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;}
+.blog-hero-meta .reading-time{display:flex;align-items:center;gap:4px;}
 
-.blog-art-level{display:inline-block;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
-.blog-art-title{font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1.3;margin-bottom:10px;}
-.blog-art-meta{font-size:11px;color:var(--t3);margin-bottom:28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.art-cat-badge{font-size:10px;font-weight:700;padding:3px 9px;background:rgba(59,130,246,.15);color:var(--blue);border-radius:4px;}
+.art-wrap{max-width:780px;margin:0 auto;padding:32px 20px 80px;}
 
 .blog-art-body{font-size:14px;line-height:1.85;color:var(--t2);}
 .blog-art-body h2{font-size:22px;font-weight:800;color:var(--t1);margin:32px 0 14px;letter-spacing:-.3px;}
@@ -100,8 +105,12 @@ a{color:inherit;text-decoration:none;}
 .ft-links a{font-size:11px;color:var(--t3);transition:.2s;}
 .ft-links a:hover{color:var(--gold);}
 
+@keyframes heroFadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.blog-hero-inner{animation:heroFadeIn .5s ease-out;}
+
 @media(max-width:600px){
-  .blog-art-title{font-size:22px;}
+  .blog-hero{padding:32px 16px 28px;}
+  .blog-hero-title{font-size:24px;}
   .blog-art-body{font-size:13px;}
   .blog-art-body h2{font-size:18px;}
   .art-wrap{padding:20px 16px 60px;}
@@ -150,9 +159,17 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 const SITE = 'https://www.marketscoupons.com';
 
 const LEVELS = {
-  iniciante:    {label:'Iniciante',     color:'#22C55E', bg:'rgba(34,197,94,.1)'},
-  intermediario:{label:'Intermediário', color:'#EAB308', bg:'rgba(234,179,8,.1)'},
-  profissional: {label:'Profissional',  color:'#EF4444', bg:'rgba(239,68,68,.1)'},
+  iniciante:    {label:'Iniciante',     color:'#22C55E', bg:'rgba(34,197,94,.15)'},
+  intermediario:{label:'Intermediário', color:'#EAB308', bg:'rgba(234,179,8,.15)'},
+  avancado:     {label:'Avançado',      color:'#EF4444', bg:'rgba(239,68,68,.15)'},
+  profissional: {label:'Profissional',  color:'#EF4444', bg:'rgba(239,68,68,.15)'},
+};
+const CAT_COLORS = {
+  'analise-tecnica': {c1:'#3B82F6',c2:'#8B5CF6',badge:'rgba(59,130,246,.15)',badgeC:'#3B82F6'},
+  'prop-firms':      {c1:'#F0B429',c2:'#F97316',badge:'rgba(240,180,41,.15)',badgeC:'#F0B429'},
+  'educacao':        {c1:'#22C55E',c2:'#14B8A6',badge:'rgba(34,197,94,.15)',badgeC:'#22C55E'},
+  'mercado':         {c1:'#EC4899',c2:'#F43F5E',badge:'rgba(236,72,153,.15)',badgeC:'#EC4899'},
+  'default':         {c1:'#F0B429',c2:'#3B82F6',badge:'rgba(59,130,246,.15)',badgeC:'#3B82F6'},
 };
 
 function setMeta(sel, attr, val){ const el=document.querySelector(sel); if(el) el.setAttribute(attr, val); }
@@ -189,20 +206,28 @@ function updateSEO(post, slug, blogUrl, lang){
 
 function renderPost(post, slug, blogUrl, T){
   const url = blogUrl || SITE+'/blog/'+slug;
-  const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}) : '';
+  const lang = T === CTA_I18N.ar ? 'ar' : (T === CTA_I18N.en ? 'en' : (T === CTA_I18N.es ? 'es' : (T === CTA_I18N.fr ? 'fr' : (T === CTA_I18N.de ? 'de' : (T === CTA_I18N.it ? 'it' : 'pt')))));
+  const dateLang = lang === 'ar' ? 'ar-SA' : (lang === 'de' ? 'de-DE' : (lang === 'fr' ? 'fr-FR' : (lang === 'it' ? 'it-IT' : (lang === 'es' ? 'es-ES' : (lang === 'en' ? 'en-US' : 'pt-BR')))));
+  const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(dateLang,{day:'2-digit',month:'long',year:'numeric'}) : '';
   const lvl = LEVELS[post.level]||{label:post.level||'Geral',color:'#A0AEC0',bg:'rgba(160,174,192,.1)'};
+  const cat = CAT_COLORS[post.category]||CAT_COLORS['default'];
   const safeTitle = post.title.replace(/'/g,"\\'");
+  const catLabel = (post.category||'').replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 
   document.getElementById('main-content').innerHTML = `
-    <div class="art-wrap">
-      <div class="art-breadcrumb"><a href="/">Home</a><span>›</span><a href="/#blog">Blog</a><span>›</span>${post.title}</div>
-      <span class="blog-art-level" style="background:${lvl.bg};color:${lvl.color};">${lvl.label}</span>
-      <h1 class="blog-art-title">${post.title}</h1>
-      <div class="blog-art-meta">
-        <span>~${post.read_time||'5 min'} ${T.read}</span>
-        ${dateStr?'<span>'+dateStr+'</span>':''}
-        ${post.category?'<span class="art-cat-badge">'+post.category+'</span>':''}
+    <div class="blog-hero" style="--hero-c1:${cat.c1};--hero-c2:${cat.c2}">
+      <div class="blog-hero-inner">
+        <div class="art-breadcrumb"><a href="/">Home</a><span>›</span><a href="/#blog">Blog</a><span>›</span>${post.title}</div>
+        <span class="blog-hero-level" style="background:${lvl.bg};color:${lvl.color};">${lvl.label}</span>
+        <h1 class="blog-hero-title">${post.title}</h1>
+        <div class="blog-hero-meta">
+          <span class="reading-time">📖 ~${post.read_time||'5 min'} ${T.read}</span>
+          ${dateStr?'<span>📅 '+dateStr+'</span>':''}
+          ${post.category?'<span class="art-cat-badge" style="background:'+cat.badge+';color:'+cat.badgeC+'">'+catLabel+'</span>':''}
+        </div>
       </div>
+    </div>
+    <div class="art-wrap">
       <div class="blog-art-body">${post.body||''}</div>
       <div class="share-bar">
         <span class="share-label">${T.share}</span>
