@@ -2533,6 +2533,7 @@ function go(page, skipHash){
   track('page_view',{page_name:page});
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='indicators') checkIndicatorsGate();
+  if(page==='analise') checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
 }
@@ -6476,7 +6477,7 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF(); renderPolicies();
+  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate();
   updateTVWidgets(lang);
   track('language_change',{language:lang});
 }
@@ -9693,6 +9694,7 @@ async function loadUserSession(user) {
   const { data } = await db.from('profiles').select('*').eq('id', user.id).maybeSingle();
   currentProfile = data;
   updateAuthUI(true);
+  checkAnalysisGate();
   await loadUserFavs();
   applyF();
 }
