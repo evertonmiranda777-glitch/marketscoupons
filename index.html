@@ -8993,6 +8993,8 @@ async function checkAnalysisGate(){
     <button class="da-gate-btn" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>`;
 }
 
+function daT(v){if(!v)return'';if(typeof v==='string')return v;return v[_currentLang]||v.pt||v.en||Object.values(v)[0]||'';}
+
 function renderDailyCards(items){
   const grid=document.getElementById('da-grid');if(!grid)return;
   const meta=document.getElementById('da-meta');
@@ -9028,14 +9030,14 @@ function renderDailyCards(items){
           <div class="da-lvl"><div class="da-lvl-label">${t('da_resistencia')} 1</div><div class="da-lvl-val resistance">${a.resistance_1||'—'}</div></div>
           <div class="da-lvl"><div class="da-lvl-label">${t('da_suporte')} 2</div><div class="da-lvl-val support">${a.support_2||'—'}</div></div>
           <div class="da-lvl"><div class="da-lvl-label">${t('da_resistencia')} 2</div><div class="da-lvl-val resistance">${a.resistance_2||'—'}</div></div>
-          ${a.attention_zone?`<div class="da-lvl" style="grid-column:1/-1;"><div class="da-lvl-label">${t('da_zona_atencao')}</div><div class="da-lvl-val zone">${a.attention_zone}</div></div>`:''}
+          ${a.attention_zone?`<div class="da-lvl" style="grid-column:1/-1;"><div class="da-lvl-label">${t('da_zona_atencao')}</div><div class="da-lvl-val zone">${daT(a.attention_zone)}</div></div>`:''}
         </div>
-        <div class="da-context">${a.context}</div>
-        ${a.volume_analysis?`<div class="da-section vol"><div class="da-section-label">${t('da_volume')}</div><div class="da-section-text">${a.volume_analysis}</div></div>`:''}
-        ${a.scenario_bull?`<div class="da-section bull"><div class="da-section-label">${t('da_cenario_bull')}</div><div class="da-section-text">${a.scenario_bull}</div></div>`:''}
-        ${a.scenario_bear?`<div class="da-section bear"><div class="da-section-label">${t('da_cenario_bear')}</div><div class="da-section-text">${a.scenario_bear}</div></div>`:''}
-        ${a.news_impact&&a.news_impact!=='—'?`<div class="da-section news"><div class="da-section-label">${t('da_noticias')}</div><div class="da-section-text">${a.news_impact}</div></div>`:''}
-        ${a.events&&a.events!=='—'?`<div class="da-events"><strong>${t('da_eventos')}:</strong> ${a.events}</div>`:''}
+        <div class="da-context">${daT(a.context)}</div>
+        ${a.volume_analysis?`<div class="da-section vol"><div class="da-section-label">${t('da_volume')}</div><div class="da-section-text">${daT(a.volume_analysis)}</div></div>`:''}
+        ${a.scenario_bull?`<div class="da-section bull"><div class="da-section-label">${t('da_cenario_bull')}</div><div class="da-section-text">${daT(a.scenario_bull)}</div></div>`:''}
+        ${a.scenario_bear?`<div class="da-section bear"><div class="da-section-label">${t('da_cenario_bear')}</div><div class="da-section-text">${daT(a.scenario_bear)}</div></div>`:''}
+        ${daT(a.news_impact)&&daT(a.news_impact)!=='—'?`<div class="da-section news"><div class="da-section-label">${t('da_noticias')}</div><div class="da-section-text">${daT(a.news_impact)}</div></div>`:''}
+        ${daT(a.events)&&daT(a.events)!=='—'?`<div class="da-events"><strong>${t('da_eventos')}:</strong> ${daT(a.events)}</div>`:''}
       </div>
     </div>`;
   }).join('');
