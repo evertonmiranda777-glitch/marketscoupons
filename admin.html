@@ -294,6 +294,7 @@ a{text-decoration:none;color:inherit;}
  <button class="nta" onclick="adminGo('geo',this)">Geo</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade</button>
+ <button class="nta" onclick="adminGo('analysis-vip',this)">Análise VIP</button>
  <div class="nta-sep"></div>
  <button class="nta nta-cms" onclick="adminGo('cms-firms',this)">Firmas</button>
  <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
@@ -742,6 +743,40 @@ a{text-decoration:none;color:inherit;}
 
 
 
+    <!-- ══ ANÁLISE VIP ══ -->
+    <div class="admin-page" id="page-analysis-vip">
+      <div class="sec-hdr">
+        <div class="sec-title">Análise Diária — Controle de Acesso VIP</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="loadVipList()">Atualizar</button>
+        </div>
+      </div>
+
+      <!-- Adicionar VIP -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Liberar acesso VIP</div>
+        <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
+          <div style="flex:1;min-width:250px;">
+            <label style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;">E-mail do usuário</label>
+            <input type="email" id="vip-email" placeholder="usuario@email.com" style="width:100%;padding:8px 12px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:13px;outline:none;">
+          </div>
+          <button class="btn-primary" onclick="grantVip()" style="white-space:nowrap;">Liberar VIP</button>
+        </div>
+        <div id="vip-msg" style="font-size:12px;margin-top:8px;display:none;"></div>
+      </div>
+
+      <!-- Lista VIPs -->
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap">
+          <table class="data-table" id="vip-tbl">
+            <thead><tr><th>Usuário</th><th>E-mail</th><th>VIP desde</th><th>Ação</th></tr></thead>
+            <tbody id="vip-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="vip-empty" style="text-align:center;padding:40px;color:var(--t3);font-size:13px;display:none;">Nenhum usuário VIP ainda.</div>
+    </div>
+
     <!-- ══ CMS: FIRMS ══ -->
     <div class="admin-page" id="page-cms-firms">
       <div class="sec-hdr">
@@ -1168,6 +1203,7 @@ function renderPage(p){
       setTimeout(function(){ renderSmtpAccounts(); renderResendLog(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
+    case 'analysis-vip':   loadVipList(); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
@@ -3352,6 +3388,70 @@ function loadDemoData() {
     }, 200);
   };
 })();
+
+/* ══ ANÁLISE VIP — Controle de Acesso ══ */
+async function loadVipList(){
+  const tbody=document.getElementById('vip-tbody');
+  const empty=document.getElementById('vip-empty');
+  if(!tbody)return;
+  tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Carregando...</td></tr>';
+  try{
+    const{data,error}=await db.from('profiles').select('id,email,full_name,updated_at').eq('analysis_vip',true).order('updated_at',{ascending:false});
+    if(error)throw error;
+    if(!data||data.length===0){
+      tbody.innerHTML='';
+      empty.style.display='block';
+      return;
+    }
+    empty.style.display='none';
+    tbody.innerHTML=data.map(u=>{
+      const name=u.full_name||'—';
+      const dt=new Date(u.updated_at).toLocaleDateString('pt-BR');
+      return '<tr><td>'+name+'</td><td>'+u.email+'</td><td>'+dt+'</td><td><button class="btn-secondary" style="padding:4px 12px;font-size:11px;color:var(--red);border-color:rgba(239,68,68,.3);" onclick="revokeVip(\''+u.id+'\',\''+u.email+'\')">Revogar</button></td></tr>';
+    }).join('');
+  }catch(e){
+    tbody.innerHTML='<tr><td colspan="4" style="color:var(--red);padding:12px;">Erro: '+e.message+'</td></tr>';
+  }
+}
+
+async function grantVip(){
+  const emailInput=document.getElementById('vip-email');
+  const msg=document.getElementById('vip-msg');
+  const email=emailInput.value.trim().toLowerCase();
+  if(!email||!email.includes('@')){
+    msg.style.display='block';msg.style.color='var(--red)';msg.textContent='Informe um e-mail válido.';
+    return;
+  }
+  msg.style.display='block';msg.style.color='var(--t2)';msg.textContent='Processando...';
+  try{
+    // Verificar se o usuário existe no profiles
+    const{data:profile,error:pErr}=await db.from('profiles').select('id,email').eq('email',email).maybeSingle();
+    if(pErr)throw pErr;
+    if(!profile){
+      msg.style.color='var(--red)';msg.textContent='Usuário não encontrado. Ele precisa ter uma conta cadastrada no site.';
+      return;
+    }
+    // Atualizar analysis_vip
+    const{error}=await db.from('profiles').update({analysis_vip:true,updated_at:new Date().toISOString()}).eq('id',profile.id);
+    if(error)throw error;
+    msg.style.color='var(--green)';msg.textContent='VIP liberado para '+email+'!';
+    emailInput.value='';
+    loadVipList();
+  }catch(e){
+    msg.style.color='var(--red)';msg.textContent='Erro: '+e.message;
+  }
+}
+
+async function revokeVip(userId,email){
+  if(!confirm('Revogar acesso VIP de '+email+'?'))return;
+  try{
+    const{error}=await db.from('profiles').update({analysis_vip:false,updated_at:new Date().toISOString()}).eq('id',userId);
+    if(error)throw error;
+    loadVipList();
+  }catch(e){
+    alert('Erro ao revogar: '+e.message);
+  }
+}
 
 </script>
 </body>

@@ -1001,6 +1001,19 @@ img{max-width:100%;}
 .da-events{font-size:11px;color:var(--t3);line-height:1.5;padding-top:8px;border-top:1px solid var(--b1);}
 .da-events strong{color:var(--t2);}
 .da-disclaimer{text-align:center;margin-top:20px;padding:12px;font-size:10px;color:var(--t3);line-height:1.5;border:1px solid var(--b1);border-radius:8px;background:var(--card);}
+.da-wrap-gated{position:relative;}
+.da-wrap-gated .da-grid{filter:blur(8px);pointer-events:none;user-select:none;}
+.da-wrap-gated .da-disclaimer{filter:blur(4px);}
+.da-gate{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:32px 28px;text-align:center;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.da-wrap-gated .da-gate{display:block;}
+.da-gate-icon{font-size:36px;margin-bottom:12px;}
+.da-gate-title{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:8px;}
+.da-gate-text{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:16px;}
+.da-gate-trial{font-size:11px;color:var(--gold);margin-bottom:12px;}
+.da-gate-btn{display:inline-block;padding:10px 28px;background:var(--gold);color:#000;font-weight:700;font-size:14px;border:none;border-radius:8px;cursor:pointer;text-decoration:none;}
+.da-gate-btn:hover{opacity:.9;}
+.da-gate-btn.sec{background:transparent;color:var(--gold);border:1px solid var(--gold);margin-left:8px;}
+.da-gate-btn.sec:hover{background:rgba(234,179,8,.1);}
 .da-loading{text-align:center;padding:60px 20px;color:var(--t3);}
 .da-loading .ar-spinner{width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -1503,7 +1516,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  <button class="nt" data-p="compare" data-i18n="nav_comparar" onclick="go('compare')">Comparar</button>
  <button class="nt" data-p="calendar" data-i18n="nav_calendario" onclick="go('calendar')">Calendário Econômico</button>
  <button class="nt" data-p="heatmap" data-i18n="nav_heatmap" onclick="go('heatmap')">Mapa de Calor</button>
- <button class="nt" data-p="analise" data-i18n="nav_analise" onclick="go('analise')">Análise IA</button>
+ <button class="nt" data-p="analise" data-i18n="nav_analise" onclick="go('analise')">Análise Diária</button>
  <button class="nt" data-p="guides" data-i18n="nav_guias" onclick="go('guides')">Guias</button>
  <button class="nt" data-p="blog" data-i18n="nav_blog" onclick="go('blog')">Blog</button>
  <button class="nt" data-p="calc" data-i18n="nav_calc" onclick="go('calc')">Position Size</button>
@@ -1563,7 +1576,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  <button class="mm-item" onclick="mgo('calc')" data-i18n="mm_calc"> Position Size</button>
  <button class="mm-item" onclick="mgo('calendar')" data-i18n="mm_calendario"> Calendário Econômico</button>
  <button class="mm-item" onclick="mgo('heatmap')" data-i18n="mm_heatmap"> Mapa de Calor</button>
- <button class="mm-item" onclick="mgo('analise')" data-i18n="mm_analise"> Análise de Mercado IA</button>
+ <button class="mm-item" onclick="mgo('analise')" data-i18n="mm_analise"> Análise Diária de Mercado</button>
  <button class="mm-item" onclick="mgo('indicators')" data-i18n="mm_indicadores"> Indicadores</button>
  <div class="mm-sec" data-i18n="mm_sec_plataformas">Plataformas</div>
  <button class="mm-item" onclick="mgo('plataformas')" data-i18n="mm_plataformas"> Plataformas de Trading</button>
@@ -1886,13 +1899,16 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
   <div class="analise-wrap">
     <div class="analise-hd">
       <div class="analise-title" data-i18n="analise_titulo">Análise Diária de Mercado</div>
-      <div class="analise-sub" data-i18n="analise_sub">Análise educacional gerada por IA às 6h (Brasília). Viés direcional, zonas de atenção e contexto macro para os principais futuros.</div>
+      <div class="analise-sub" data-i18n="analise_sub">Atualizada diariamente às 6h (Brasília). Viés direcional, zonas de atenção, impacto de notícias e contexto macro para os principais futuros.</div>
       <div class="analise-meta" id="da-meta"></div>
     </div>
-    <div class="da-grid" id="da-grid">
-      <div class="da-loading"><div class="ar-spinner"></div><div data-i18n="da_carregando">Carregando análises...</div></div>
+    <div class="da-wrap-inner" id="da-wrap-inner">
+      <div class="da-grid" id="da-grid">
+        <div class="da-loading"><div class="ar-spinner"></div><div data-i18n="da_carregando">Carregando análises...</div></div>
+      </div>
+      <div class="da-disclaimer" data-i18n="da_disclaimer">Conteúdo exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.</div>
+      <div class="da-gate" id="da-gate"></div>
     </div>
-    <div class="da-disclaimer" data-i18n="da_disclaimer">Conteúdo exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.</div>
   </div>
 </div>
 
@@ -2745,6 +2761,13 @@ const I18N = {
     da_cenario_bull:'Cenário favorável',
     da_cenario_bear:'Cenário alternativo',
     da_noticias:'Impacto das notícias',
+    da_gate_title_login:'Cadastre-se para acessar',
+    da_gate_text_login:'Crie sua conta gratuita e tenha 3 dias de acesso completo às análises diárias de mercado.',
+    da_gate_btn_login:'Criar conta grátis',
+    da_gate_title_expired:'Acesso exclusivo',
+    da_gate_text_expired:'Seu período de teste acabou. Participe do nosso programa de fidelidade usando cupons do site para desbloquear acesso permanente às análises.',
+    da_gate_btn_loyalty:'Ver programa de fidelidade',
+    da_gate_trial:'Teste grátis — restam {days} dia(s)',
     da_disclaimer:'Conteúdo exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.',
     analise_seu_grafico:'SEU GRÁFICO',
     analise_contexto_adicional:'CONTEXTO ADICIONAL',
@@ -2933,7 +2956,7 @@ const I18N = {
     mm_calc:'Position Size',
     mm_calendario:'Calendário Econômico',
     mm_heatmap:'Mapa de Calor',
-    mm_analise:'Análise de Mercado IA',
+    mm_analise:'Análise Diária de Mercado',
     mm_indicadores:'Indicadores',
     mm_sec_plataformas:'Plataformas',
     mm_plataformas:'Plataformas de Trading',
@@ -3083,7 +3106,7 @@ const I18N = {
     nav_comparar:'Compare',
     nav_calendario:'Economic Calendar',
     nav_heatmap:'Heat Map',
-    nav_analise:'AI Analysis',
+    nav_analise:'Daily Analysis',
     nav_guias:'Guides',
     nav_blog:'Blog',
     nav_calc:'Position Size',
@@ -3294,6 +3317,13 @@ const I18N = {
     da_cenario_bull:'Favorable scenario',
     da_cenario_bear:'Alternative scenario',
     da_noticias:'News impact',
+    da_gate_title_login:'Sign up to access',
+    da_gate_text_login:'Create your free account and get 3 days of full access to daily market analysis.',
+    da_gate_btn_login:'Create free account',
+    da_gate_title_expired:'Exclusive access',
+    da_gate_text_expired:'Your trial period has ended. Join our loyalty program by using coupons from the site to unlock permanent access to the analysis.',
+    da_gate_btn_loyalty:'View loyalty program',
+    da_gate_trial:'Free trial — {days} day(s) left',
     da_disclaimer:'Educational and informational content only. This does not constitute investment advice, financial consulting, or trading signals. Trading involves risk of loss. Consult a professional before trading.',
     analise_seu_grafico:'YOUR CHART',
     analise_contexto_adicional:'ADDITIONAL CONTEXT',
@@ -3482,7 +3512,7 @@ const I18N = {
     mm_calc:'Position Size',
     mm_calendario:'Economic Calendar',
     mm_heatmap:'Heat Map',
-    mm_analise:'AI Market Analysis',
+    mm_analise:'Daily Market Analysis',
     mm_indicadores:'Indicators',
     mm_sec_plataformas:'Platforms',
     mm_plataformas:'Trading Platforms',
@@ -3632,7 +3662,7 @@ const I18N = {
     nav_comparar:'Comparar',
     nav_calendario:'Calendario Económico',
     nav_heatmap:'Mapa de calor',
-    nav_analise:'IA Analysis',
+    nav_analise:'Análisis Diario',
     nav_guias:'Guías',
     nav_blog:'Blog',
     nav_calc:'Position Size',
@@ -3843,6 +3873,13 @@ const I18N = {
     da_cenario_bull:'Escenario favorable',
     da_cenario_bear:'Escenario alternativo',
     da_noticias:'Impacto de noticias',
+    da_gate_title_login:'Regístrate para acceder',
+    da_gate_text_login:'Crea tu cuenta gratuita y obtén 3 días de acceso completo a los análisis diarios de mercado.',
+    da_gate_btn_login:'Crear cuenta gratis',
+    da_gate_title_expired:'Acceso exclusivo',
+    da_gate_text_expired:'Tu período de prueba ha terminado. Únete a nuestro programa de fidelidad usando cupones del sitio para desbloquear acceso permanente a los análisis.',
+    da_gate_btn_loyalty:'Ver programa de fidelidad',
+    da_gate_trial:'Prueba gratis — quedan {days} día(s)',
     da_disclaimer:'Contenido exclusivamente educativo e informativo. No constituye recomendación de inversión, asesoría financiera ni señal de operación. El trading implica riesgo de pérdida. Consulte a un profesional antes de operar.',
     analise_seu_grafico:'TU GRÁFICO',
     analise_contexto_adicional:'CONTEXTO ADICIONAL',
@@ -4031,7 +4068,7 @@ const I18N = {
     mm_calc:'Tamaño de la posición',
     mm_calendario:'Calendario económico',
     mm_heatmap:'Mapa de calor',
-    mm_analise:'Análisis de mercado con IA',
+    mm_analise:'Análisis Diario de Mercado',
     mm_indicadores:'Indicadores',
     mm_sec_plataformas:'Plataformas',
     mm_plataformas:'Plataformas de negociación',
@@ -4181,7 +4218,7 @@ const I18N = {
     nav_comparar:'Confronta',
     nav_calendario:'Calendario Económico',
     nav_heatmap:'Mappa termica',
-    nav_analise:'Analisi IA',
+    nav_analise:'Analisi Giornaliera',
     nav_guias:'Guide',
     nav_blog:'Blog',
     nav_calc:'Position Size',
@@ -4392,6 +4429,13 @@ const I18N = {
     da_cenario_bull:'Scenario favorevole',
     da_cenario_bear:'Scenario alternativo',
     da_noticias:'Impatto delle notizie',
+    da_gate_title_login:'Registrati per accedere',
+    da_gate_text_login:'Crea il tuo account gratuito e ottieni 3 giorni di accesso completo alle analisi giornaliere di mercato.',
+    da_gate_btn_login:'Crea account gratis',
+    da_gate_title_expired:'Accesso esclusivo',
+    da_gate_text_expired:'Il tuo periodo di prova è terminato. Partecipa al nostro programma fedeltà utilizzando i coupon del sito per sbloccare l\'accesso permanente alle analisi.',
+    da_gate_btn_loyalty:'Vedi programma fedeltà',
+    da_gate_trial:'Prova gratuita — {days} giorno/i rimasti',
     da_disclaimer:'Contenuto esclusivamente educativo e informativo. Non costituisce raccomandazione di investimento, consulenza finanziaria o segnale di trading. Il trading comporta rischi di perdita. Consultare un professionista prima di operare.',
     analise_seu_grafico:'IL TUO GRAFICO',
     analise_contexto_adicional:'ULTERIORI INFORMAZIONI',
@@ -4580,7 +4624,7 @@ const I18N = {
     mm_calc:'Dimensione della posizione',
     mm_calendario:'Calendario economico',
     mm_heatmap:'Mappa termica',
-    mm_analise:'Analisi di mercato basata sull\'intelligenza artificiale',
+    mm_analise:'Analisi Giornaliera di Mercato',
     mm_indicadores:'Indicatori',
     mm_sec_plataformas:'Piattaforme',
     mm_plataformas:'Piattaforme di trading',
@@ -4730,7 +4774,7 @@ const I18N = {
     nav_comparar:'Comparer',
     nav_calendario:'Calendrier Économique',
     nav_heatmap:'Carte thermique',
-    nav_analise:'Analyse IA',
+    nav_analise:'Analyse Quotidienne',
     nav_guias:'Guides',
     nav_blog:'Blog',
     nav_calc:'Position Size',
@@ -4941,6 +4985,13 @@ const I18N = {
     da_cenario_bull:'Scénario favorable',
     da_cenario_bear:'Scénario alternatif',
     da_noticias:'Impact des nouvelles',
+    da_gate_title_login:'Inscrivez-vous pour accéder',
+    da_gate_text_login:'Créez votre compte gratuit et bénéficiez de 3 jours d\'accès complet aux analyses quotidiennes de marché.',
+    da_gate_btn_login:'Créer un compte gratuit',
+    da_gate_title_expired:'Accès exclusif',
+    da_gate_text_expired:'Votre période d\'essai est terminée. Rejoignez notre programme de fidélité en utilisant des coupons du site pour débloquer l\'accès permanent aux analyses.',
+    da_gate_btn_loyalty:'Voir le programme de fidélité',
+    da_gate_trial:'Essai gratuit — {days} jour(s) restant(s)',
     da_disclaimer:'Contenu exclusivement éducatif et informatif. Ne constitue pas une recommandation d\'investissement, un conseil financier ou un signal de trading. Le trading comporte un risque de perte. Consultez un professionnel avant d\'opérer.',
     analise_seu_grafico:'VOTRE GRAPHIQUE',
     analise_contexto_adicional:'CONTEXTE SUPPLÉMENTAIRE',
@@ -5129,7 +5180,7 @@ const I18N = {
     mm_calc:'Taille de la position',
     mm_calendario:'Calendrier économique',
     mm_heatmap:'Carte thermique',
-    mm_analise:'Analyse de marché par l\'IA',
+    mm_analise:'Analyse Quotidienne de Marché',
     mm_indicadores:'Indicateurs',
     mm_sec_plataformas:'Plateformes',
     mm_plataformas:'Plates-formes de trading',
@@ -5279,7 +5330,7 @@ const I18N = {
     nav_comparar:'Vergleichen',
     nav_calendario:'Wirtschaftskalender',
     nav_heatmap:'Heatmap',
-    nav_analise:'KI-Analyse',
+    nav_analise:'Tägliche Analyse',
     nav_guias:'Guides',
     nav_blog:'Blog',
     nav_calc:'Position Size',
@@ -5490,6 +5541,13 @@ const I18N = {
     da_cenario_bull:'Günstiges Szenario',
     da_cenario_bear:'Alternatives Szenario',
     da_noticias:'Nachrichtenauswirkung',
+    da_gate_title_login:'Registrieren Sie sich für den Zugang',
+    da_gate_text_login:'Erstellen Sie Ihr kostenloses Konto und erhalten Sie 3 Tage vollen Zugang zu den täglichen Marktanalysen.',
+    da_gate_btn_login:'Kostenloses Konto erstellen',
+    da_gate_title_expired:'Exklusiver Zugang',
+    da_gate_text_expired:'Ihre Testphase ist abgelaufen. Nehmen Sie an unserem Treueprogramm teil, indem Sie Gutscheine der Website nutzen, um dauerhaften Zugang zu den Analysen freizuschalten.',
+    da_gate_btn_loyalty:'Treueprogramm ansehen',
+    da_gate_trial:'Kostenlose Testphase — noch {days} Tag(e)',
     da_disclaimer:'Ausschließlich Bildungs- und Informationsinhalte. Stellt keine Anlageberatung, Finanzberatung oder Handelssignale dar. Trading birgt das Risiko von Verlusten. Konsultieren Sie einen Fachmann, bevor Sie handeln.',
     analise_seu_grafico:'IHR DIAGRAMM',
     analise_contexto_adicional:'WEITERE HINTERGRUNDINFORMATIONEN',
@@ -5678,7 +5736,7 @@ const I18N = {
     mm_calc:'Positionsgröße',
     mm_calendario:'Wirtschaftskalender',
     mm_heatmap:'Heatmap',
-    mm_analise:'KI-Marktanalyse',
+    mm_analise:'Tägliche Marktanalyse',
     mm_indicadores:'Indikatoren',
     mm_sec_plataformas:'Plattformen',
     mm_plataformas:'Handelsplattformen',
@@ -5828,7 +5886,7 @@ const I18N = {
     nav_comparar:'مقارنة',
     nav_calendario:'التقويم الاقتصادي',
     nav_heatmap:'خريطة الحرارة',
-    nav_analise:'AI',
+    nav_analise:'التحليل اليومي',
     nav_guias:'Guides',
     nav_blog:'مدونة',
     nav_calc:'Position Size',
@@ -6039,6 +6097,13 @@ const I18N = {
     da_cenario_bull:'السيناريو المفضل',
     da_cenario_bear:'السيناريو البديل',
     da_noticias:'تأثير الأخبار',
+    da_gate_title_login:'سجّل للوصول',
+    da_gate_text_login:'أنشئ حسابك المجاني واحصل على 3 أيام من الوصول الكامل لتحليلات السوق اليومية.',
+    da_gate_btn_login:'إنشاء حساب مجاني',
+    da_gate_title_expired:'وصول حصري',
+    da_gate_text_expired:'انتهت فترة التجربة الخاصة بك. انضم إلى برنامج الولاء باستخدام كوبونات الموقع لفتح الوصول الدائم للتحليلات.',
+    da_gate_btn_loyalty:'عرض برنامج الولاء',
+    da_gate_trial:'تجربة مجانية — {days} يوم(أيام) متبقية',
     da_disclaimer:'محتوى تعليمي ومعلوماتي حصريًا. لا يشكل توصية استثمارية أو استشارة مالية أو إشارة تداول. التداول ينطوي على مخاطر خسارة. استشر متخصصًا قبل التداول.',
     analise_seu_grafico:'الرسم البياني الخاص بك',
     analise_contexto_adicional:'معلومات إضافية',
@@ -6227,7 +6292,7 @@ const I18N = {
     mm_calc:'حجم المركز',
     mm_calendario:'التقويم الاقتصادي',
     mm_heatmap:'خريطة الحرارة',
-    mm_analise:'تحليل السوق باستخدام الذكاء الاصطناعي',
+    mm_analise:'التحليل اليومي للسوق',
     mm_indicadores:'المؤشرات',
     mm_sec_plataformas:'المنصات',
     mm_plataformas:'منصات التداول',
@@ -8867,6 +8932,66 @@ async function loadDailyAnalysis(){
   }
 }
 
+async function checkAnalysisGate(){
+  const wrap=document.getElementById('da-wrap-inner');
+  const gate=document.getElementById('da-gate');
+  if(!wrap||!gate)return;
+
+  // Não logado → gate de login
+  if(!currentUser||!currentProfile){
+    wrap.classList.add('da-wrap-gated');
+    gate.innerHTML=`<div class="da-gate-icon">🔒</div>
+      <div class="da-gate-title">${t('da_gate_title_login')}</div>
+      <div class="da-gate-text">${t('da_gate_text_login')}</div>
+      <button class="da-gate-btn" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>`;
+    return;
+  }
+
+  // VIP (admin liberou) → acesso total
+  if(currentProfile.analysis_vip===true) {
+    wrap.classList.remove('da-wrap-gated');
+    gate.innerHTML='';
+    return;
+  }
+
+  // Trial: 3 dias após criação da conta
+  const createdAt=new Date(currentProfile.created_at||currentUser.created_at);
+  const now=new Date();
+  const diffDays=Math.floor((now-createdAt)/(1000*60*60*24));
+  if(diffDays<3){
+    wrap.classList.remove('da-wrap-gated');
+    gate.innerHTML='';
+    // Mostrar badge de trial
+    const meta=document.getElementById('da-meta');
+    if(meta){
+      const remaining=3-diffDays;
+      const trialText=t('da_gate_trial').replace('{days}',remaining);
+      if(!meta.querySelector('.da-trial-badge')){
+        meta.insertAdjacentHTML('beforeend',`<span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(234,179,8,.1);padding:3px 10px;border-radius:20px;">⏱ ${trialText}</span>`);
+      }
+    }
+    return;
+  }
+
+  // Fidelidade: tem comprovante aprovado
+  try{
+    const email=currentProfile.email||currentUser.email;
+    const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
+    if(data&&data.length>0){
+      wrap.classList.remove('da-wrap-gated');
+      gate.innerHTML='';
+      return;
+    }
+  }catch(e){}
+
+  // Sem acesso → gate de fidelidade
+  wrap.classList.add('da-wrap-gated');
+  gate.innerHTML=`<div class="da-gate-icon">⭐</div>
+    <div class="da-gate-title">${t('da_gate_title_expired')}</div>
+    <div class="da-gate-text">${t('da_gate_text_expired')}</div>
+    <button class="da-gate-btn" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>`;
+}
+
 function renderDailyCards(items){
   const grid=document.getElementById('da-grid');if(!grid)return;
   const meta=document.getElementById('da-meta');
@@ -9711,6 +9836,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   // Auth session check
   await checkAuthSession();
+  checkAnalysisGate();
   renderLoyaltyPage();
   await initFavs();
 });
