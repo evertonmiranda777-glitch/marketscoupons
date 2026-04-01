@@ -397,7 +397,7 @@ img{max-width:100%;}
  padding:10px 14px;background:var(--gbg);
  border:1px dashed var(--gbr);border-radius:8px;
 }
-.oc-coupon .offer-coupon-label{width:100%;margin-bottom:4px;}
+.oc-coupon .offer-coupon-label{margin-bottom:4px;}
 .oc-code{font-size:14px;font-weight:800;letter-spacing:2px;color:var(--gold);}
 .oc-copy{padding:5px 14px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
 .oc-copy:hover{background:#F7C948;}
@@ -460,7 +460,7 @@ img{max-width:100%;}
 .fr-tp-stars{color:#00b67a;font-size:10px;letter-spacing:0.5px;}
 .fr-tp-count{font-size:9px;color:var(--t3);}
 .fr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
-.fr-coupon-box{display:flex;align-items:center;justify-content:center;padding:6px 10px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:7px;flex-shrink:0;width:240px;text-align:center;}
+.fr-coupon-box{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:7px;flex-shrink:0;width:240px;}
 .fr-coupon-box-label{display:none;}
 .fr-coupon-box-row{display:flex !important;align-items:center !important;justify-content:space-between !important;flex-wrap:wrap;width:100%;}
 .fr-coupon-box-code{font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--gold);white-space:nowrap;}
@@ -547,9 +547,10 @@ img{max-width:100%;}
 .offer-disc-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
 .offer-card-body{padding:0 20px 20px;}
 .offer-desc{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5;}
-.offer-coupon-box{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px;margin-bottom:12px;}
-.offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:8px;}
-.offer-coupon-row{display:flex !important;align-items:center !important;justify-content:space-between !important;flex-wrap:wrap;padding:4px 0;}
+.offer-coupon-box{display:flex !important;align-items:center !important;justify-content:space-between !important;background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px;margin-bottom:12px;}
+.offer-coupon-left{display:flex;flex-direction:column;}
+.offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:4px;}
+.offer-coupon-row{padding:0;}
 .offer-coupon-code{font-size:18px;font-weight:800;letter-spacing:3px;color:var(--gold);}
 .offer-copy-btn{padding:8px 28px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
 .offer-copy-btn:hover{background:#d9a020;}
@@ -893,9 +894,8 @@ img{max-width:100%;}
 .drw-btn{padding:7px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;font-family:var(--f);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;white-space:nowrap;}
 .drw-btn:hover{border-color:var(--b2);color:var(--t1);}
 .drw-btn.sel{background:var(--gbg);border-color:var(--gbr);color:var(--gold);}
-.drw-coupon-bar{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:6px;}
-.drw-coupon-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:6px;}
-.drw-coupon-row{display:flex !important;align-items:center !important;justify-content:space-between !important;flex-wrap:wrap;}
+.drw-coupon-bar{display:flex !important;align-items:center !important;justify-content:space-between !important;background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:6px;}
+.drw-coupon-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:4px;}
 .drw-coupon-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);}
 .drw-coupon-copy{padding:8px 18px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
 .drw-coupon-copy:hover{background:#F7C948;}
@@ -7181,7 +7181,7 @@ function renderHome(){
         <div class="oc-left">${firmIco(f,'36px','13px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};">${f.discount}%</div><div class="oc-off">off ${f.dtype}</div></div>
       </div>
-      ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${f.coupon}</span><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
+      ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${f.coupon}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
       <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">Desconto exclusivo</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
       <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
       <button class="offer-cta" onclick="go('firms');setTimeout(()=>openD('${f.id}'),120);track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">${t('home_ver_planos')}</button>
@@ -7247,12 +7247,12 @@ function renderFirms(list){
         </div>
       </div>
       <div class="fr-right" onclick="event.stopPropagation()">
-        ${f.coupon?`<div class="fr-coupon-bar">
-          <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
-          <div class="drw-coupon-row">
+        ${f.coupon?`<div class="drw-coupon-bar">
+          <div class="offer-coupon-left">
+            <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
             <span class="drw-coupon-code">${f.coupon}</span>
-            <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button>
           </div>
+          <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button>
         </div>
         <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`:''}
         <div class="fr-btns">
@@ -7361,11 +7361,11 @@ function renderOffers(){
         <p class="offer-desc">${f.desc||''}</p>
         ${f.coupon?`
         <div class="offer-coupon-box">
-          <div class="offer-coupon-label">${t('offers_cupom_label')}</div>
-          <div class="offer-coupon-row">
+          <div class="offer-coupon-left">
+            <div class="offer-coupon-label">${t('offers_cupom_label')}</div>
             <span class="offer-coupon-code">${f.coupon}</span>
-            <button class="offer-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','offers')">${t('geral_copiar')}</button>
           </div>
+          <button class="offer-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','offers')">${t('geral_copiar')}</button>
         </div>
         <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`:`<div class="offer-coupon-box" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);">
           <div class="offer-coupon-row"><span class="offer-no-coupon">✓ ${t('offers_desconto_link')}</span></div>
@@ -7534,11 +7534,11 @@ function openD(id){
 
     if (f.coupon) {
       html += `<div class="drw-coupon-bar">
-        <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
-        <div class="drw-coupon-row">
+        <div class="offer-coupon-left">
+          <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
           <span class="drw-coupon-code">${f.coupon}</span>
-          <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
         </div>
+        <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
       </div>
       <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
     }
