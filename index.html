@@ -84,8 +84,8 @@ function track(event, params={}) {
       utm_medium:   MC_UTM.utm_medium,
       utm_campaign: MC_UTM.utm_campaign,
       params,
-    });
-  } catch(e) {}
+    }).then(r=>{ if(r.error) console.warn('track insert error:', r.error.message); });
+  } catch(e) { console.warn('track error:', e); }
 
   // 2. localStorage cache (fallback offline + compatibilidade admin)
   try {

@@ -58,11 +58,12 @@ a{text-decoration:none;color:inherit;}
  padding:0 24px;background:rgba(7,9,13,.97);backdrop-filter:blur(14px);
  border-bottom:1px solid var(--b1);
 }
-.admin-logo{font-size:15px;font-weight:700;}
+.admin-logo{font-size:15px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px;white-space:nowrap;}
 .admin-logo em{color:var(--gold);font-style:normal;}
-.admin-logo span{font-size:11px;color:var(--t3);margin-left:8px;font-weight:400;}
-.nav-tabs-admin{display:flex;gap:2px;}
-.nta{padding:6px 13px;background:none;border:none;border-radius:7px;color:var(--t2);font-size:12px;font-weight:500;transition:.2s;}
+.admin-logo span{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);background:var(--gbg);border:1px solid rgba(234,179,8,.2);padding:2px 7px;border-radius:4px;}
+.nav-tabs-admin{display:flex;align-items:center;gap:1px;overflow-x:auto;scrollbar-width:none;}
+.nav-tabs-admin::-webkit-scrollbar{display:none;}
+.nta{padding:5px 10px;background:none;border:none;border-radius:6px;color:var(--t2);font-size:11.5px;font-weight:500;transition:.2s;white-space:nowrap;}
 .nta:hover{color:var(--t1);background:rgba(255,255,255,.05);}
 .nta.active{color:var(--gold);background:var(--gbg);}
 .nav-right-admin{display:flex;align-items:center;gap:10px;}
@@ -75,7 +76,7 @@ a{text-decoration:none;color:inherit;}
 .admin-page.active{display:block;}
 
 /* STATS GRID */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
 .stat-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px 20px;}
 .stat-icon{font-size:22px;margin-bottom:8px;}
 .stat-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;}
@@ -287,9 +288,7 @@ a{text-decoration:none;color:inherit;}
 <div id="admin-app">
  <!-- NAV -->
  <nav class="admin-nav">
- <div>
  <div class="admin-logo">Markets<em>Coupons</em><span>Admin</span></div>
- </div>
  <div class="nav-tabs-admin" id="admin-nav-tabs">
  <button class="nta active" onclick="adminGo('overview',this)">Overview</button>
  <button class="nta" onclick="adminGo('analytics',this)">Analytics</button>
@@ -365,19 +364,6 @@ a{text-decoration:none;color:inherit;}
  </div>
 
  <div class="admin-body">
-  <!-- DATA BRIDGE BANNER -->
-  <div id="data-bridge-banner" style="background:rgba(240,180,41,.07);border-bottom:1px solid rgba(240,180,41,.2);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-    <div style="font-size:12px;color:var(--t2);">
-      <strong style="color:var(--gold);">Sincronizar dados:</strong> Para ver dados reais do site, exporte pelo site e importe aqui. Ou use os dados de demonstracao abaixo.
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn-secondary" onclick="document.getElementById('import-file').click()" style="font-size:11px;padding:5px 12px;">Importar dados do site</button>
-      <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importSiteData(this)">
-      <button class="btn-secondary" onclick="exportAdminData()" style="font-size:11px;padding:5px 12px;">Exportar para o site</button>
-      <button class="btn-secondary" onclick="loadDemoData()" style="font-size:11px;padding:5px 12px;">Carregar demo</button>
-      <button onclick="document.getElementById('data-bridge-banner').style.display='none'" style="background:none;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:0 4px;">x</button>
-    </div>
-  </div>
 
  <!-- OVERVIEW -->
  <div class="admin-page active" id="page-overview">
