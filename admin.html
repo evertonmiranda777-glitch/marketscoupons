@@ -607,6 +607,7 @@ a{text-decoration:none;color:inherit;}
  <option value="loyalty_register">Fidelidade cadastro</option>
  <option value="loyalty_proof_submitted">Comprovante enviado</option>
  <option value="loyalty_checkout_click">Checkout fidelidade</option>
+ <option value="trustpilot_click">Trustpilot click</option>
  <option value="telegram_click">Telegram click</option>
  <option value="social_click">Social click</option>
  <option value="language_change">Idioma alterado</option>
@@ -1280,7 +1281,7 @@ function renderOverview(){
  const signups=ec('user_signup'), logins=ec('user_login');
  const blogReads=ec('blog_read'), guideReads=ec('guide_read');
  const loyaltyRegs=ec('loyalty_register'), loyaltyProofs=ec('loyalty_proof_submitted');
- const favs=ec('firm_favorite'), socialClicks=ec('social_click')+ec('telegram_click');
+ const favs=ec('firm_favorite'), socialClicks=ec('social_click')+ec('telegram_click')+ec('trustpilot_click');
 
  document.getElementById('kpi-grid').innerHTML=`
  <div class="stat-card"><div class="stat-lbl">Total de Leads</div><div class="stat-val g">${leads.length}</div><div class="stat-change">+${ecToday('tool_lead_capture')||ecToday('calc_unlocked')} hoje</div></div>

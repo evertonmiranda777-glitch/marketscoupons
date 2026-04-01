@@ -113,6 +113,7 @@ function track(event, params={}) {
       'user_signup':      () => fbq('track','CompleteRegistration', params),
       'page_view':        () => fbq('trackCustom','PageView', params),
       'bot_message':      () => fbq('trackCustom','BotInteraction', params),
+      'trustpilot_click': () => fbq('trackCustom','TrustpilotClick', params),
     };
     if (fbMap[event]) fbMap[event]();
   }
@@ -1007,7 +1008,7 @@ img{max-width:100%;}
 .da-wrap-gated{position:relative;}
 .da-wrap-gated .da-grid{filter:blur(8px);pointer-events:none;user-select:none;}
 .da-wrap-gated .da-disclaimer{filter:blur(4px);}
-.da-gate{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:32px 28px;text-align:center;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.da-gate{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:32px 28px;text-align:center;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5);}
 .da-wrap-gated .da-gate{display:block;}
 .da-gate-icon{font-size:36px;margin-bottom:12px;}
 .da-gate-title{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:8px;}
@@ -8036,6 +8037,7 @@ function closeD(){document.getElementById('ov').classList.remove('open');documen
 
 /* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
+  track('trustpilot_click',{url});
   try {
     var isMobile = window.innerWidth <= 767;
     if (isMobile) { window.open(url, '_blank', 'noopener'); return false; }
