@@ -6388,11 +6388,14 @@ function drwGoCheckout(firmId) {
   const f  = FIRMS.find(x=>x.id===firmId);
   if (!cf || !f) { window.open(f?.link||'#','_blank'); return; }
   const st = _drwState[firmId] || {};
-  const url = cf.buildUrl(st.size||'', st.type||'', st.plat||'');
+  let url = cf.buildUrl(st.size||'', st.type||'', st.plat||'');
+  url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=drawer&utm_campaign='+firmId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
   if (f.coupon) {
     navigator.clipboard.writeText(f.coupon).catch(()=>{});
   }
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro'});
+  if(typeof fbq!=='undefined')fbq('track','Lead',{content_name:f.name+' '+(st.size||''),content_category:st.plat||'',type:st.type||'',platform:st.plat||'',account_size:st.size||'',currency:'USD',value:1});
+  registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   window.open(url,'_blank');
 }
 
@@ -6699,7 +6702,7 @@ function achGoCheckout(fId,size){
   let url=firm.buildUrl(size,type,plat);
   url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=checkout&utm_campaign='+fId+'_'+size.replace(/[^a-z0-9]/gi,'_').toLowerCase();
   track('checkout_click',{firm_id:fId,firm_name:firm.name,account_size:size,platform:plat,type,coupon:firm.coupon||'parceiro'});
-  if(typeof fbq!=='undefined')fbq('track','InitiateCheckout',{content_name:firm.name+' '+size,content_category:plat,currency:'USD',value:1});
+  if(typeof fbq!=='undefined')fbq('track','Lead',{content_name:firm.name+' '+size,content_category:plat,type,platform:plat,account_size:size,currency:'USD',value:1});
   registerLoyaltyClick(size,plat,type,firm.name);
   window.open(url,'_blank');
 }
