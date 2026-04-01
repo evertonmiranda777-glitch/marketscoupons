@@ -837,21 +837,19 @@ img{max-width:100%;}
 .plat-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;overflow:hidden;transition:.2s;display:flex;flex-direction:column;}
 .plat-card:hover{border-color:var(--b2);transform:translateY(-2px);}
 .plat-card-featured{border-color:var(--gold)!important;box-shadow:0 0 0 1px var(--gold),0 8px 32px rgba(240,180,41,.15);}
-.plat-card-top{padding:20px;display:flex;align-items:center;gap:14px;}
-.plat-logo{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;flex-shrink:0;}
-.plat-name{font-size:15px;font-weight:700;margin-bottom:2px;}
+.plat-banner{background:linear-gradient(135deg,rgba(240,180,41,.15),rgba(240,180,41,.05));border-bottom:1px solid var(--gbr);padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.plat-banner-text{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);}
+.plat-card-top{padding:16px 20px;display:flex;align-items:center;gap:12px;}
+.plat-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0;}
+.plat-name{font-size:15px;font-weight:700;margin-bottom:1px;}
 .plat-type{font-size:11px;color:var(--t2);}
-.plat-discount-badge{margin-left:auto;text-align:right;}
-.plat-disc-pct{font-size:22px;font-weight:800;color:var(--gold);}
-.plat-disc-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;}
-.plat-body{padding:0 20px 16px;flex:1;display:flex;flex-direction:column;}
+.plat-badge{margin-left:auto;font-size:10px;font-weight:700;padding:4px 10px;border-radius:5px;white-space:nowrap;}
+.plat-body{padding:0 20px 18px;flex:1;display:flex;flex-direction:column;}
 .plat-desc{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px;}
-.plat-feats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
-.plat-feat{font-size:10px;padding:3px 8px;background:var(--card2);border:1px solid var(--b1);border-radius:4px;color:var(--t2);}
-.plat-cta{display:flex;gap:8px;align-items:center;margin-top:auto;}
-.plat-coupon{font-size:12px;font-weight:700;font-family:monospace;color:var(--gold);padding:5px 10px;background:var(--gbg);border:1px solid var(--gbr);border-radius:5px;cursor:pointer;transition:.2s;}
-.plat-coupon:hover{background:var(--gbr);}
-.plat-go{flex:1;padding:9px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;}
+.plat-feats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+.plat-feat{font-size:10px;padding:4px 9px;background:var(--card2);border:1px solid var(--b1);border-radius:5px;color:var(--t2);}
+.plat-cta{margin-top:auto;}
+.plat-go{display:block;width:100%;padding:11px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-family:var(--f);font-size:13px;font-weight:800;cursor:pointer;transition:.2s;text-align:center;box-sizing:border-box;}
 .plat-go:hover{background:#F7C948;}
 
 /* ═══ HEATMAP PAGE ═══ */
@@ -7181,19 +7179,14 @@ function renderPlatforms() {
   if (!g) return;
   g.innerHTML = getPlatforms().map(p => `
     <div class="plat-card${p.highlight?' plat-card-featured':''}">
-      ${p.highlight ? `<div style="background:var(--gold);color:#07090D;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:5px 12px;text-align:center;">⭐ ${t('plat_oferta_excl')} — ${p.discount}% ${t('plat_off_anual')}</div>` : ''}
+      ${p.highlight ? `<div class="plat-banner"><span class="plat-banner-text">⭐ ${t('plat_oferta_excl')} — ${p.discount}% OFF</span></div>` : ''}
       <div class="plat-card-top">
         <div class="plat-logo" style="background:${p.bg};color:${p.color};">${p.icon}</div>
         <div>
           <div class="plat-name">${p.name}</div>
           <div class="plat-type">${p.type}</div>
         </div>
-        ${p.discount > 0 ? `<div class="plat-discount-badge">
-          <div class="plat-disc-pct">${p.discount}%</div>
-          <div class="plat-disc-label">OFF ${p.dtype}</div>
-        </div>` : `<div class="plat-discount-badge">
-          <div style="font-size:10px;padding:3px 8px;border-radius:4px;background:${p.bg};color:${p.color};font-weight:700;">${p.badge}</div>
-        </div>`}
+        ${p.discount > 0 ? `<div class="plat-badge" style="background:var(--gbg);color:var(--gold);border:1px solid var(--gbr);">${p.discount}% OFF</div>` : p.badge ? `<div class="plat-badge" style="background:${p.bg};color:${p.color};border:1px solid ${p.color}40;">${p.badge}</div>` : ''}
       </div>
       <div class="plat-body">
         <p class="plat-desc">${p.desc}</p>
@@ -7201,7 +7194,7 @@ function renderPlatforms() {
           ${p.features.map(f => `<span class="plat-feat">${f}</span>`).join('')}
         </div>
         <div class="plat-cta">
-          <a href="${p.link}" target="_blank" style="flex:1;text-decoration:none;" onclick="track('platform_click',{platform:'${p.id}',discount:${p.discount}})">
+          <a href="${p.link}" target="_blank" style="text-decoration:none;display:block;" onclick="track('platform_click',{platform:'${p.id}',discount:${p.discount}})">
             <button class="plat-go">${p.discount > 0 ? `${t('plat_acessar_com')} ${p.discount}% OFF →` : `${t('plat_acessar')} ${p.name} →`}</button>
           </a>
         </div>
