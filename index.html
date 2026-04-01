@@ -458,7 +458,7 @@ img{max-width:100%;}
 .fr-tp-stars{color:#00b67a;font-size:10px;letter-spacing:0.5px;}
 .fr-tp-count{font-size:9px;color:var(--t3);}
 .fr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
-.fr-coupon-box{display:flex;align-items:center;padding:6px 10px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:7px;flex-shrink:0;width:240px;}
+.fr-coupon-box{display:flex;align-items:center;justify-content:center;padding:6px 10px;background:var(--gbg);border:1px dashed var(--gbr);border-radius:7px;flex-shrink:0;width:240px;text-align:center;}
 .fr-coupon-box-label{display:none;}
 .fr-coupon-box-row{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;}
 .fr-coupon-box-code{font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--gold);white-space:nowrap;}
@@ -545,7 +545,7 @@ img{max-width:100%;}
 .offer-disc-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
 .offer-card-body{padding:0 20px 20px;}
 .offer-desc{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5;}
-.offer-coupon-box{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+.offer-coupon-box{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center;}
 .offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:6px;text-align:center;}
 .offer-coupon-row{display:flex;align-items:center;justify-content:center;gap:12px;}
 .offer-coupon-code{font-size:18px;font-weight:800;letter-spacing:3px;color:var(--gold);}
@@ -891,7 +891,7 @@ img{max-width:100%;}
 .drw-btn{padding:7px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;font-family:var(--f);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;white-space:nowrap;}
 .drw-btn:hover{border-color:var(--b2);color:var(--t1);}
 .drw-btn.sel{background:var(--gbg);border-color:var(--gbr);color:var(--gold);}
-.drw-coupon-bar{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:6px;}
+.drw-coupon-bar{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:6px;text-align:center;}
 .drw-coupon-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:6px;text-align:center;}
 .drw-coupon-row{display:flex;align-items:center;justify-content:center;gap:12px;}
 .drw-coupon-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);}
@@ -1845,20 +1845,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page" id="page-calendar">
   <div style="display:flex;flex-direction:column;height:calc(100vh - var(--nav-h));">
     <div style="flex:1;position:relative;">
-      <div class="tradingview-widget-container" style="width:100%;height:100%;">
-        <div class="tradingview-widget-container__widget" style="width:100%;height:100%;"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-economic-calendar.js" async>
-        {
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "width": "100%",
-          "height": "100%",
-          "locale": "br",
-          "importanceFilter": "-1,0,1",
-          "countryFilter": "us,eu,gb,br,ca,au,jp,cn"
-        }
-        </script>
-      </div>
+      <iframe
+        id="cal-frame"
+        src="https://www.tradingview-widget.com/embed-widget/economic-calendar/?locale=br#%7B%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22countryFilter%22%3A%22us%2Ceu%2Cgb%2Cbr%2Cca%2Cau%2Cjp%2Ccn%22%7D"
+        style="width:100%;height:100%;border:none;display:block;"
+        frameborder="0"
+        allowtransparency="true"
+        scrolling="yes">
+      </iframe>
     </div>
   </div>
 </div>
@@ -6114,18 +6108,8 @@ function applyTranslations() {
 }
 function updateTVWidgets(lang) {
   const tvL = {pt:'br',en:'en',es:'es',it:'it',fr:'fr',de:'de',ar:'en'}[lang]||'en';
-  // Recriar widget do calendário com novo locale
-  const calPage = document.getElementById('page-calendar');
-  const calContainer = calPage?.querySelector('.tradingview-widget-container');
-  if(calContainer){
-    calContainer.innerHTML = `<div class="tradingview-widget-container__widget" style="width:100%;height:100%;"></div>`;
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-economic-calendar.js';
-    s.async = true;
-    s.textContent = JSON.stringify({colorTheme:'dark',isTransparent:true,width:'100%',height:'100%',locale:tvL,importanceFilter:'-1,0,1',countryFilter:'us,eu,gb,br,ca,au,jp,cn'});
-    calContainer.appendChild(s);
-  }
+  const calF = document.getElementById('cal-frame');
+  if(calF) calF.src = `https://www.tradingview-widget.com/embed-widget/economic-calendar/?locale=${tvL}#%7B%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22countryFilter%22%3A%22us%2Ceu%2Cgb%2Cbr%2Cca%2Cau%2Cjp%2Ccn%22%7D`;
   const hmF = document.getElementById('heatmap-frame');
   if(hmF) loadHeatmap(hmF.dataset.source||'SPX500');
 }
@@ -9292,8 +9276,10 @@ async function doAuthSignup() {
   }
 }
 
+let _loggingOut = false;
 async function doLogout() {
-  try { await db.auth.signOut(); } catch(e) { console.warn('signOut error:', e); }
+  _loggingOut = true;
+  try { await db.auth.signOut({ scope: 'local' }); } catch(e) { console.warn('signOut error:', e); }
   // Limpar storage do Supabase como fallback
   try {
     const keys = Object.keys(localStorage);
@@ -9304,6 +9290,8 @@ async function doLogout() {
   updateAuthUI(false);
   go('home');
   track('user_logout');
+  // Recarregar para garantir estado limpo
+  setTimeout(() => { _loggingOut = false; location.reload(); }, 300);
 }
 
 async function loadUserSession(user) {
@@ -9376,6 +9364,7 @@ async function checkAuthSession() {
   }
   // Listen for auth changes
   db.auth.onAuthStateChange(async (event, session) => {
+    if (_loggingOut) return;
     if (event === 'SIGNED_IN' && session?.user) {
       await loadUserSession(session.user);
     } else if (event === 'SIGNED_OUT') {
