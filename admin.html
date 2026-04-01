@@ -612,6 +612,7 @@ a{text-decoration:none;color:inherit;}
  <option value="social_click">Social click</option>
  <option value="language_change">Idioma alterado</option>
  <option value="cookie_consent">Cookies aceitos</option>
+ <option value="geo_detected">Geo detectado</option>
  <option value="live_signup">Live signup</option>
  </select>
  </div>
@@ -645,11 +646,11 @@ a{text-decoration:none;color:inherit;}
  <div class="chart-wrap"><canvas id="chart-lang"></canvas></div>
  </div>
  <div class="chart-card">
- <div class="cc-hd"><div class="cc-title">Sexo dos Traders</div></div>
+ <div class="cc-hd"><div class="cc-title">Fusos Horários</div></div>
  <div class="chart-wrap"><canvas id="chart-sex"></canvas></div>
  </div>
  <div class="chart-card">
- <div class="cc-hd"><div class="cc-title">Faixa Etária</div></div>
+ <div class="cc-hd"><div class="cc-title">Visitas por Dia</div></div>
  <div class="chart-wrap"><canvas id="chart-age"></canvas></div>
  </div>
  </div>
@@ -1755,73 +1756,75 @@ async function clearEvents(){
  GEO & DEMO PAGE
  */
 function renderGeoPage(){
- const leads=getLeadsSync();
  const events=getEventsSync();
+ const COUNTRY_NAMES={BR:'Brasil',US:'EUA',AR:'Argentina',FR:'França',DE:'Alemanha',IT:'Itália',ES:'Espanha',GB:'Reino Unido',CA:'Canadá',PT:'Portugal',MX:'México',CO:'Colômbia',CL:'Chile',PE:'Peru',UY:'Uruguai',PY:'Paraguai',JP:'Japão',CN:'China',IN:'Índia',AE:'Emirados Árabes'};
 
- // Demo KPIs
- const ages=leads.map(l=>l.idade).filter(Boolean);
- const avgAge=ages.length?Math.round(ages.reduce((a,b)=>a+b,0)/ages.length):0;
- const male=leads.filter(l=>l.sexo==='Masculino').length;
- const female=leads.filter(l=>l.sexo==='Feminino').length;
- const langs=events.filter(e=>e.event==='page_view');
+ // Extract geo data from geo_detected events
+ const geoEvents=events.filter(e=>e.event==='geo_detected'&&e.params);
+ const geoData=geoEvents.map(e=>({country:e.params.geo_country||'',region:e.params.geo_region||'',city:e.params.geo_city||'',tz:e.params.geo_timezone||''}));
+
+ // Extract language from page_view events
+ const langEvents=events.filter(e=>e.event==='page_view'&&e.params?.language);
+ const uniqueSessions=new Map();
+ langEvents.forEach(e=>{if(e.session_id&&!uniqueSessions.has(e.session_id))uniqueSessions.set(e.session_id,e.params.language);});
+ const langData=[...uniqueSessions.values()];
+
+ const totalVisitors=Math.max(geoData.length,1);
+ const uniqueCountries=new Set(geoData.map(g=>g.country).filter(Boolean));
+ const uniqueCities=new Set(geoData.map(g=>g.city).filter(Boolean));
+ const uniqueLangs=new Set(langData.filter(Boolean));
+ const uniqueTimezones=new Set(geoData.map(g=>g.tz).filter(Boolean));
 
  document.getElementById('demo-kpis').innerHTML=`
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Idade Média</div><div class="stat-val y">${avgAge||28}</div><div class="stat-change">anos</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Masculino</div><div class="stat-val b">${male||Math.floor(leads.length*.72)}</div><div class="stat-change">${leads.length?Math.round((male||leads.length*.72)/leads.length*100):72}%</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Feminino</div><div class="stat-val" style="color:var(--purple);">${female||Math.floor(leads.length*.26)}</div><div class="stat-change">${leads.length?Math.round((female||leads.length*.26)/leads.length*100):26}%</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Países</div><div class="stat-val">${new Set(leads.map(l=>l.pais).filter(Boolean)).size||8}</div><div class="stat-change">distintos</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Cidades</div><div class="stat-val">${new Set(leads.map(l=>l.cidade).filter(Boolean)).size||12}</div><div class="stat-change">distintas</div></div>
- <div class="stat-card"><div class="stat-icon"></div><div class="stat-lbl">Idiomas</div><div class="stat-val">${new Set(leads.map(l=>l.idioma).filter(Boolean)).size||6}</div><div class="stat-change">distintos</div></div>`;
+ <div class="stat-card"><div class="stat-lbl">Visitantes</div><div class="stat-val y">${geoData.length}</div><div class="stat-change">sessões rastreadas</div></div>
+ <div class="stat-card"><div class="stat-lbl">Países</div><div class="stat-val b">${uniqueCountries.size}</div><div class="stat-change">distintos</div></div>
+ <div class="stat-card"><div class="stat-lbl">Cidades</div><div class="stat-val" style="color:var(--purple);">${uniqueCities.size}</div><div class="stat-change">distintas</div></div>
+ <div class="stat-card"><div class="stat-lbl">Idiomas</div><div class="stat-val">${uniqueLangs.size}</div><div class="stat-change">distintos</div></div>
+ <div class="stat-card"><div class="stat-lbl">Fusos</div><div class="stat-val">${uniqueTimezones.size}</div><div class="stat-change">distintos</div></div>
+ <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val" style="color:var(--green);">${events.filter(e=>e.event==='page_view').length}</div><div class="stat-change">total</div></div>`;
 
- // Geo cards
- const count=(arr,key)=>{const c={};arr.forEach(l=>{const v=l[key];if(v)c[v]=(c[v]||0)+1;});return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,8);};
- const countries=count(leads,'pais');
- const states=count(leads,'estado');
- const cities=count(leads,'cidade');
+ // Count helper
+ const countBy=(arr,fn)=>{const c={};arr.forEach(x=>{const v=fn(x);if(v)c[v]=(c[v]||0)+1;});return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,10);};
+ const countries=countBy(geoData,g=>COUNTRY_NAMES[g.country]||g.country);
+ const states=countBy(geoData,g=>g.region);
+ const cities=countBy(geoData,g=>g.city);
  const maxC=countries[0]?.[1]||1,maxS=states[0]?.[1]||1,maxCi=cities[0]?.[1]||1;
 
  const geoCard=(title,items,max)=>`
  <div class="geo-card">
  <div class="geo-title">${title}</div>
- ${items.map(([name,cnt])=>`
+ ${items.length?items.map(([name,cnt])=>`
  <div class="geo-item">
  <div class="geo-name">${name}</div>
  <div class="geo-bar-wrap"><div class="geo-bar" style="width:${(cnt/max*100).toFixed(0)}%;"></div></div>
  <div class="geo-count">${cnt}</div>
- </div>`).join('')}
+ </div>`).join(''):'<div style="color:var(--t3);font-size:12px;padding:12px;">Sem dados ainda</div>'}
  </div>`;
- document.getElementById('geo-cards').innerHTML=geoCard(' Por País',countries,maxC)+geoCard(' Por Estado',states,maxS)+geoCard(' Por Cidade',cities,maxCi);
+ document.getElementById('geo-cards').innerHTML=geoCard('Por País',countries,maxC)+geoCard('Por Estado',states,maxS)+geoCard('Por Cidade',cities,maxCi);
 
  setTimeout(()=>{
  const colors=['#F0B429','#3B82F6','#22C55E','#A855F7','#06B6D4','#F97316','#EF4444','#F59E0B'];
  // Country chart
- const cC=count(leads,'pais').slice(0,6);
- mkChart('chart-country','doughnut',cC.map(x=>x[0]).length?cC.map(x=>x[0]):['Brasil','EUA','Argentina','França','Alemanha','Outros'],cC.map(x=>x[1]).length?cC.map(x=>x[1]):[45,12,8,5,4,6],colors);
+ const cC=countBy(geoData,g=>COUNTRY_NAMES[g.country]||g.country).slice(0,6);
+ if(cC.length) mkChart('chart-country','doughnut',cC.map(x=>x[0]),cC.map(x=>x[1]),colors);
  // Lang chart
- const lC=count(leads,'idioma').slice(0,6);
- mkChart('chart-lang','doughnut',lC.map(x=>x[0]).length?lC.map(x=>x[0]):['pt-BR','en-US','es-AR','fr-FR','de-DE','ar'],lC.map(x=>x[1]).length?lC.map(x=>x[1]):[40,10,7,4,3,2],colors);
- // Sex chart
- const sexData=[male||Math.floor(leads.length*.72),female||Math.floor(leads.length*.26),leads.length-(male||Math.floor(leads.length*.72))-(female||Math.floor(leads.length*.26))];
- mkChart('chart-sex','doughnut',['Masculino','Feminino','Outro'],sexData,['#3B82F6','#A855F7','#6B7280']);
- // Age chart
- const ageBuckets={'18-24':0,'25-30':0,'31-35':0,'36-40':0,'41-50':0,'50+':0};
- leads.forEach(l=>{
- const a=l.idade||Math.floor(Math.random()*25+20);
- if(a<25)ageBuckets['18-24']++;else if(a<31)ageBuckets['25-30']++;else if(a<36)ageBuckets['31-35']++;else if(a<41)ageBuckets['36-40']++;else if(a<51)ageBuckets['41-50']++;else ageBuckets['50+']++;
- });
- mkChart('chart-age','bar',Object.keys(ageBuckets),Object.values(ageBuckets),colors);
+ const lC=countBy(langData.map(l=>({l})),x=>x.l).slice(0,6);
+ if(lC.length) mkChart('chart-lang','doughnut',lC.map(x=>x[0]),lC.map(x=>x[1]),colors);
+ // Timezone chart (replaces sex chart)
+ const tzC=countBy(geoData,g=>g.tz).slice(0,6);
+ if(tzC.length) mkChart('chart-sex','doughnut',tzC.map(x=>x[0]),tzC.map(x=>x[1]),colors);
+ // Visits per day (replaces age chart)
+ const dayC={};geoEvents.forEach(e=>{const d=new Date(e.created_at||e.ts).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});dayC[d]=(dayC[d]||0)+1;});
+ const dayK=Object.keys(dayC).slice(-14);
+ if(dayK.length) mkChart('chart-age','bar',dayK,dayK.map(k=>dayC[k]),colors);
  },100);
 }
 
 async function fetchGeo(){
- toast(' Obtendo localização atual...','warn');
- try{
- const r=await fetch('https://ipapi.co/json/');
- const d=await r.json();
- toast(` ${d.city}, ${d.region}, ${d.country_name}`);
- }catch(e){
- toast('Não foi possível obter geolocalização','warn');
- }
+ toast('Atualizando dados geo...','warn');
+ await getEvents();
+ renderGeoPage();
+ toast('Dados geo atualizados!');
 }
 
 /* 

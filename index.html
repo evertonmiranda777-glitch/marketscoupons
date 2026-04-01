@@ -118,6 +118,23 @@ function track(event, params={}) {
     if (fbMap[event]) fbMap[event]();
   }
 }
+
+// Geo: fetch once per session, enrich events
+let _geo = null;
+async function fetchGeo() {
+  if (_geo) return _geo;
+  const cached = sessionStorage.getItem('mc_geo');
+  if (cached) { _geo = JSON.parse(cached); return _geo; }
+  try {
+    const r = await fetch('https://ipinfo.io/json');
+    const d = await r.json();
+    _geo = { geo_country: d.country||'', geo_region: d.region||'', geo_city: d.city||'', geo_timezone: d.timezone||'' };
+    sessionStorage.setItem('mc_geo', JSON.stringify(_geo));
+    // Store geo event in Supabase
+    db.from('events').insert({ session_id: MC_SESSION, event: 'geo_detected', params: _geo }).then(()=>{});
+  } catch(e) { _geo = {}; }
+  return _geo;
+}
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -9871,6 +9888,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     track('page_view', { page_name: 'home', language: navigator.language });
   }
+  fetchGeo();
 
   // Checar se bot está ativado
   try{
