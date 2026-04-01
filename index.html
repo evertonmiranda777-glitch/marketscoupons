@@ -549,7 +549,7 @@ img{max-width:100%;}
 .offer-desc{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5;}
 .offer-coupon-box{background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;}
 .offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:8px;text-align:center;}
-.offer-coupon-row{display:flex !important;align-items:center !important;justify-content:center !important;gap:12px !important;flex-wrap:wrap;}
+.offer-coupon-row{display:flex !important;align-items:center !important;justify-content:center !important;gap:12px !important;flex-wrap:wrap;padding:4px 0;}
 .offer-coupon-code{font-size:18px;font-weight:800;letter-spacing:3px;color:var(--gold);}
 .offer-copy-btn{padding:8px 28px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);white-space:nowrap;}
 .offer-copy-btn:hover{background:#d9a020;}
@@ -1479,7 +1479,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <button class="nt" data-p="plataformas" data-i18n="nav_plataformas" onclick="go('plataformas')">Plataformas</button>
  <button class="nt" data-p="indicators" data-i18n="nav_indicadores" onclick="go('indicators')">Indicadores</button>
  <button class="nt" data-p="compare" data-i18n="nav_comparar" onclick="go('compare')">Comparar</button>
- <button class="nt" data-p="calendar" data-i18n="nav_calendario" onclick="go('calendar')">Calendário</button>
+ <button class="nt" data-p="calendar" data-i18n="nav_calendario" onclick="go('calendar')">Calendário Econômico</button>
  <button class="nt" data-p="heatmap" data-i18n="nav_heatmap" onclick="go('heatmap')">Mapa de Calor</button>
  <button class="nt" data-p="analise" data-i18n="nav_analise" onclick="go('analise')">Análise IA</button>
  <button class="nt" data-p="guides" data-i18n="nav_guias" onclick="go('guides')">Guias</button>
@@ -2495,7 +2495,7 @@ const I18N = {
     nav_plataformas:'Plataformas',
     nav_indicadores:'Indicadores',
     nav_comparar:'Comparar',
-    nav_calendario:'Calendário',
+    nav_calendario:'Calendário Econômico',
     nav_heatmap:'Mapa de Calor',
     nav_analise:'Análise IA',
     nav_guias:'Guias',
@@ -3008,7 +3008,7 @@ const I18N = {
     nav_plataformas:'Platforms',
     nav_indicadores:'Indicators',
     nav_comparar:'Compare',
-    nav_calendario:'Calendar',
+    nav_calendario:'Economic Calendar',
     nav_heatmap:'Heat Map',
     nav_analise:'AI Analysis',
     nav_guias:'Guides',
@@ -3521,7 +3521,7 @@ const I18N = {
     nav_plataformas:'Plataformas',
     nav_indicadores:'Indicadores',
     nav_comparar:'Comparar',
-    nav_calendario:'Calendario',
+    nav_calendario:'Calendario Económico',
     nav_heatmap:'Mapa de calor',
     nav_analise:'IA Analysis',
     nav_guias:'Guías',
@@ -4034,7 +4034,7 @@ const I18N = {
     nav_plataformas:'Piattaforme',
     nav_indicadores:'Indicatori',
     nav_comparar:'Confronta',
-    nav_calendario:'Calendario',
+    nav_calendario:'Calendario Económico',
     nav_heatmap:'Mappa termica',
     nav_analise:'Analisi IA',
     nav_guias:'Guide',
@@ -4547,7 +4547,7 @@ const I18N = {
     nav_plataformas:'Plateformes',
     nav_indicadores:'Indicateurs',
     nav_comparar:'Comparer',
-    nav_calendario:'Calendrier',
+    nav_calendario:'Calendrier Économique',
     nav_heatmap:'Carte thermique',
     nav_analise:'Analyse IA',
     nav_guias:'Guides',
@@ -5060,7 +5060,7 @@ const I18N = {
     nav_plataformas:'Plattformen',
     nav_indicadores:'Indikatoren',
     nav_comparar:'Vergleichen',
-    nav_calendario:'Kalender',
+    nav_calendario:'Wirtschaftskalender',
     nav_heatmap:'Heatmap',
     nav_analise:'KI-Analyse',
     nav_guias:'Guides',
@@ -5573,7 +5573,7 @@ const I18N = {
     nav_plataformas:'المنصات',
     nav_indicadores:'المؤشرات',
     nav_comparar:'مقارنة',
-    nav_calendario:'التقويم',
+    nav_calendario:'التقويم الاقتصادي',
     nav_heatmap:'خريطة الحرارة',
     nav_analise:'AI',
     nav_guias:'Guides',
@@ -7229,7 +7229,7 @@ function renderFirms(list){
       </div>
       ${f.trustpilot?`<a class="fr-tp-mini" href="javascript:void(0)" onclick="event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="fr-tp-stars">${'★'.repeat(tpStars)}</span><span class="fr-tp-count">${f.trustpilot.reviews.toLocaleString()}</span></a>`:''}
       <div class="fr-actions" onclick="event.stopPropagation()">
-        ${f.coupon?`<div class="fr-coupon-box"><div class="fr-coupon-box-label">${t('firms_cupom_exclusivo')}</div><div class="fr-coupon-box-row" style="display:flex;align-items:center;justify-content:center;gap:10px;"><span class="fr-coupon-box-code">${f.coupon}</span><button class="fr-coupon-box-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button></div></div>`:''}
+        ${f.coupon?`<div class="fr-coupon-box"><div class="fr-coupon-box-label">${t('firms_cupom_exclusivo')}</div><div class="fr-coupon-box-row"><span class="fr-coupon-box-code">${f.coupon}</span><button class="fr-coupon-box-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button></div></div>`:''}
         <button class="fr-fav ${_favs.has(f.id)?'active':''}" id="fav-btn-${f.id}" onclick="toggleFav('${f.id}')" title="${_favs.has(f.id)?t('firms_fav_remove'):t('firms_fav_add')}">
           ${_favs.has(f.id)?'❤️':'🤍'}<span class="fr-fav-count" id="fav-cnt-${f.id}">${_favCounts[f.id]||0}</span>
         </button>
@@ -7249,7 +7249,7 @@ function renderFirms(list){
       <div class="fr-right" onclick="event.stopPropagation()">
         ${f.coupon?`<div class="fr-coupon-bar">
           <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
-          <div class="drw-coupon-row" style="display:flex;align-items:center;justify-content:center;gap:12px;">
+          <div class="drw-coupon-row">
             <span class="drw-coupon-code">${f.coupon}</span>
             <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button>
           </div>
@@ -7362,7 +7362,7 @@ function renderOffers(){
         ${f.coupon?`
         <div class="offer-coupon-box">
           <div class="offer-coupon-label">${t('offers_cupom_label')}</div>
-          <div class="offer-coupon-row" style="display:flex;align-items:center;justify-content:center;gap:12px;">
+          <div class="offer-coupon-row">
             <span class="offer-coupon-code">${f.coupon}</span>
             <button class="offer-copy-btn" onclick="cpCoupon('${f.coupon}','${f.id}','offers')">${t('geral_copiar')}</button>
           </div>
@@ -7535,7 +7535,7 @@ function openD(id){
     if (f.coupon) {
       html += `<div class="drw-coupon-bar">
         <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
-        <div class="drw-coupon-row" style="display:flex;align-items:center;justify-content:center;gap:12px;">
+        <div class="drw-coupon-row">
           <span class="drw-coupon-code">${f.coupon}</span>
           <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_checkout')">${t('firms_copiar')}</button>
         </div>
