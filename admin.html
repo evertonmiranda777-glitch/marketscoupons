@@ -2035,6 +2035,10 @@ function insertVar(v){
 async function previewEmail(){
  const subject=document.getElementById('em-subject')?.value||'(sem assunto)';
  const body=document.getElementById('em-body')?.value||'(sem conteúdo)';
+ // If promo template, re-render via buildPromoHtml instead of showing __PROMO_HTML__
+ if(emailIsHtml && emailPromoFirm && body==='__PROMO_HTML__'){
+   loadPromoTemplate(emailPromoFirm.id); return;
+ }
  const leads=await getSegmentedLeads();
  const sample=leads[0]||{name:'Trader Exemplo',email:'trader@email.com'};
  const preview=body
@@ -2049,7 +2053,7 @@ async function previewEmail(){
   <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML Rico</strong></div>
   <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Para: <strong style="color:var(--gold);">${leads.length} destinatarios</strong></div>
   <hr style="border-color:var(--b1);margin-bottom:12px;">
-  <iframe srcdoc="${preview.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
+  <iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${preview.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
  } else {
   document.getElementById('em-preview').innerHTML=`
   <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
@@ -2253,7 +2257,7 @@ let emailPromoFirm = null;
 
 const EMAIL_I18N = {
   pt: {
-    greeting: 'Ola {nome},',
+    greeting: 'Ola Trader,',
     intro: 'A <b>{firm}</b> esta com <b>{discount}% de desconto{lt}</b>. Escolha o tamanho da sua conta e assine direto por aqui — rapido, facil e com o melhor preco.',
     exclusive_coupon: 'Cupom Exclusivo',
     coupon_steps: '1. Copie o cupom acima &nbsp;→&nbsp; 2. Escolha sua conta abaixo &nbsp;→&nbsp; 3. Cole no checkout',
@@ -2269,8 +2273,8 @@ const EMAIL_I18N = {
     footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
     unsub: 'Cancelar inscricao',
     tagline: 'As melhores ofertas para traders',
-    copy_coupon: 'Copiar Cupom',
-    copy_first: 'Primeiro copie o cupom, depois escolha sua conta',
+    copy_coupon: 'Usar Cupom →',
+    copy_first: 'Copie o cupom acima e cole no checkout da firma',
     type_label: 'Tipo',
     platform_label: 'Plataforma',
     select_buy: 'Escolha e compre direto',
@@ -2278,7 +2282,7 @@ const EMAIL_I18N = {
     max_dd: 'Max DD',
   },
   en: {
-    greeting: 'Hey {nome},',
+    greeting: 'Hey Trader,',
     intro: '<b>{firm}</b> is offering <b>{discount}% OFF{lt}</b>. Pick your account size and sign up directly — fast, easy, and at the best price.',
     exclusive_coupon: 'Exclusive Coupon',
     coupon_steps: '1. Copy the coupon above &nbsp;→&nbsp; 2. Choose your account below &nbsp;→&nbsp; 3. Paste at checkout',
@@ -2294,8 +2298,8 @@ const EMAIL_I18N = {
     footer: 'You received this email because you subscribed to MarketsCoupons.',
     unsub: 'Unsubscribe',
     tagline: 'The best deals for traders',
-    copy_coupon: 'Copy Coupon',
-    copy_first: 'First copy the coupon, then choose your account',
+    copy_coupon: 'Use Coupon →',
+    copy_first: 'Copy the coupon above and paste it at checkout',
     type_label: 'Type',
     platform_label: 'Platform',
     select_buy: 'Choose and buy directly',
@@ -2303,7 +2307,7 @@ const EMAIL_I18N = {
     max_dd: 'Max DD',
   },
   es: {
-    greeting: 'Hola {nome},',
+    greeting: 'Hola Trader,',
     intro: '<b>{firm}</b> ofrece <b>{discount}% de descuento{lt}</b>. Elige el tamano de tu cuenta y registrate directamente — rapido, facil y al mejor precio.',
     exclusive_coupon: 'Cupon Exclusivo',
     coupon_steps: '1. Copia el cupon &nbsp;→&nbsp; 2. Elige tu cuenta abajo &nbsp;→&nbsp; 3. Pegalo en el checkout',
@@ -2319,8 +2323,8 @@ const EMAIL_I18N = {
     footer: 'Recibiste este email porque estas suscrito a MarketsCoupons.',
     unsub: 'Cancelar suscripcion',
     tagline: 'Las mejores ofertas para traders',
-    copy_coupon: 'Copiar Cupon',
-    copy_first: 'Primero copia el cupon, luego elige tu cuenta',
+    copy_coupon: 'Usar Cupon →',
+    copy_first: 'Copia el cupon de arriba y pegalo en el checkout',
     type_label: 'Tipo',
     platform_label: 'Plataforma',
     select_buy: 'Elige y compra directo',
@@ -2328,7 +2332,7 @@ const EMAIL_I18N = {
     max_dd: 'Max DD',
   },
   fr: {
-    greeting: 'Bonjour {nome},',
+    greeting: 'Bonjour Trader,',
     intro: '<b>{firm}</b> propose <b>{discount}% de reduction{lt}</b>. Choisissez la taille de votre compte et inscrivez-vous directement — rapide, simple et au meilleur prix.',
     exclusive_coupon: 'Coupon Exclusif',
     coupon_steps: '1. Copiez le coupon &nbsp;→&nbsp; 2. Choisissez votre compte &nbsp;→&nbsp; 3. Collez au checkout',
@@ -2344,8 +2348,8 @@ const EMAIL_I18N = {
     footer: 'Vous recevez cet email car vous etes inscrit a MarketsCoupons.',
     unsub: 'Se desinscrire',
     tagline: 'Les meilleures offres pour traders',
-    copy_coupon: 'Copier le Coupon',
-    copy_first: 'Copiez d\'abord le coupon, puis choisissez votre compte',
+    copy_coupon: 'Utiliser le Coupon →',
+    copy_first: 'Copiez le coupon ci-dessus et collez-le au checkout',
     type_label: 'Type',
     platform_label: 'Plateforme',
     select_buy: 'Choisissez et achetez directement',
@@ -2353,7 +2357,7 @@ const EMAIL_I18N = {
     max_dd: 'Max DD',
   },
   de: {
-    greeting: 'Hallo {nome},',
+    greeting: 'Hallo Trader,',
     intro: '<b>{firm}</b> bietet <b>{discount}% Rabatt{lt}</b>. Wahlen Sie Ihre Kontogrosse und melden Sie sich direkt an — schnell, einfach und zum besten Preis.',
     exclusive_coupon: 'Exklusiver Gutschein',
     coupon_steps: '1. Gutschein kopieren &nbsp;→&nbsp; 2. Konto wahlen &nbsp;→&nbsp; 3. Beim Checkout einfugen',
@@ -2369,8 +2373,8 @@ const EMAIL_I18N = {
     footer: 'Sie erhalten diese E-Mail, weil Sie bei MarketsCoupons angemeldet sind.',
     unsub: 'Abmelden',
     tagline: 'Die besten Angebote fur Trader',
-    copy_coupon: 'Gutschein Kopieren',
-    copy_first: 'Zuerst Gutschein kopieren, dann Konto wahlen',
+    copy_coupon: 'Gutschein Verwenden →',
+    copy_first: 'Kopieren Sie den Gutschein oben und fugen Sie ihn beim Checkout ein',
     type_label: 'Typ',
     platform_label: 'Plattform',
     select_buy: 'Wahlen und direkt kaufen',
@@ -2378,7 +2382,7 @@ const EMAIL_I18N = {
     max_dd: 'Max DD',
   },
   it: {
-    greeting: 'Ciao {nome},',
+    greeting: 'Ciao Trader,',
     intro: '<b>{firm}</b> offre <b>{discount}% di sconto{lt}</b>. Scegli la dimensione del tuo conto e iscriviti direttamente — veloce, semplice e al miglior prezzo.',
     exclusive_coupon: 'Coupon Esclusivo',
     coupon_steps: '1. Copia il coupon &nbsp;→&nbsp; 2. Scegli il tuo conto &nbsp;→&nbsp; 3. Incolla al checkout',
@@ -2394,8 +2398,8 @@ const EMAIL_I18N = {
     footer: 'Hai ricevuto questa email perche sei iscritto a MarketsCoupons.',
     unsub: 'Annulla iscrizione',
     tagline: 'Le migliori offerte per trader',
-    copy_coupon: 'Copia Coupon',
-    copy_first: 'Prima copia il coupon, poi scegli il tuo conto',
+    copy_coupon: 'Usa Coupon →',
+    copy_first: 'Copia il coupon sopra e incollalo al checkout',
     type_label: 'Tipo',
     platform_label: 'Piattaforma',
     select_buy: 'Scegli e acquista direttamente',
@@ -2403,7 +2407,7 @@ const EMAIL_I18N = {
     max_dd: 'Max DD',
   },
   ar: {
-    greeting: '{nome} مرحبا',
+    greeting: 'مرحبا Trader,',
     intro: '<b>{firm}</b> تقدم <b>خصم {discount}%{lt}</b>. اختر حجم حسابك وسجل مباشرة — سريع وسهل وبأفضل سعر.',
     exclusive_coupon: 'كوبون حصري',
     coupon_steps: '1. انسخ الكوبون &nbsp;←&nbsp; 2. اختر حسابك &nbsp;←&nbsp; 3. الصقه عند الدفع',
@@ -2419,8 +2423,8 @@ const EMAIL_I18N = {
     footer: 'تلقيت هذا البريد لانك مشترك في MarketsCoupons.',
     unsub: 'الغاء الاشتراك',
     tagline: 'افضل العروض للمتداولين',
-    copy_coupon: 'نسخ الكوبون',
-    copy_first: 'انسخ الكوبون اولا ثم اختر حسابك',
+    copy_coupon: '← استخدم الكوبون',
+    copy_first: 'انسخ الكوبون اعلاه والصقه عند الدفع',
     type_label: 'النوع',
     platform_label: 'المنصة',
     select_buy: 'اختر واشتر مباشرة',
@@ -2461,7 +2465,7 @@ function buildPromoHtml(f, lang='pt'){
       <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">${et('exclusive_coupon')}</div>
       <div style="color:#F0B429;font-size:28px;font-weight:800;letter-spacing:3px;font-family:monospace;">${f.coupon}</div>
       <div style="margin-top:12px;">
-        <a href="https://www.marketscoupons.com/?copy=${encodeURIComponent(f.coupon)}" style="display:inline-block;background:#F0B429;color:#07090D;padding:10px 28px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;">${et('copy_coupon')}</a>
+        <a href="${f.link}" target="_blank" style="display:inline-block;background:#F0B429;color:#07090D;padding:10px 28px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;">${et('copy_coupon')}</a>
       </div>
       <div style="color:#7A8FA6;font-size:11px;margin-top:10px;">${et('copy_first')}</div>
     </div>` : `
@@ -2576,6 +2580,7 @@ function buildPromoHtml(f, lang='pt'){
     <div style="margin-bottom:16px;">
       <div style="color:#EDF2F7;font-size:18px;font-weight:700;">${f.name}</div>
       <div style="color:#7A8FA6;font-size:12px;">${f.description||''}</div>
+      ${platBadges ? `<div style="margin-top:10px;">${platBadges}</div>` : ''}
     </div>
     ${couponSection}
     <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;">
@@ -2613,7 +2618,7 @@ function buildPromoHtml(f, lang='pt'){
   <hr style="border:none;border-top:1px solid #1C2535;margin:24px 0;">
   <div style="text-align:center;color:#3D4F63;font-size:11px;line-height:1.6;">
     ${et('footer')}<br>
-    <a href="https://www.marketscoupons.com" style="color:#3D4F63;">${et('unsub')}</a>
+    <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;">${et('unsub')}</a>
   </div>
 </div>
 </body></html>`;
@@ -2640,7 +2645,7 @@ async function loadPromoTemplate(firmId){
     <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML Rico Multilingue (7 idiomas)</strong></div>
     <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Cada destinatario recebe no seu idioma (pt, en, es, fr, de, it, ar)</div>
     <hr style="border-color:var(--b1);margin-bottom:12px;">
-    <iframe srcdoc="${htmlContent.replace(/{nome}/g,'Trader').replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
+    <iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${htmlContent.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
   toast(f.name+' — template promo multilingue carregado!');
 }
 
@@ -3110,7 +3115,7 @@ async function sendEmailsSmtp(){
   } catch(err){
     toast('Erro de conexao: '+err.message,'error');
   } finally {
-    if(btn){ btn.disabled=false; btn.textContent='Enviar e-mails'; }
+    if(btn){ btn.disabled=false; btn.textContent='Enviar para todos'; }
   }
 }
 
