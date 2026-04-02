@@ -94,7 +94,7 @@ module.exports = async (req, res) => {
       for (const recipient of chunk) {
         const body = {
           sender: senderInfo,
-          to: [{ email: recipient.email, name: recipient.name || '' }],
+          to: [{ email: recipient.email, name: recipient.name || 'Trader' }],
           subject: subject
             .replace(/{nome}/g, recipient.name || 'Trader')
             .replace(/{email}/g, recipient.email || ''),
