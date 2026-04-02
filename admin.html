@@ -166,24 +166,29 @@ a{text-decoration:none;color:inherit;}
 .seg-opt.sel{border-color:var(--gold);color:var(--gold);background:var(--gbg);}
 
 /* TEMPLATE CARDS */
-.tpl-section-title{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:6px;}
-.tpl-section-title span{font-size:6px;vertical-align:middle;}
-.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.tpl-card{position:relative;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s ease;overflow:hidden;text-align:left;}
-.tpl-card:hover{border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 16px rgba(240,180,41,.08);}
-.tpl-card:active{transform:translateY(0);box-shadow:none;}
-.tpl-card-icon{font-size:18px;margin-bottom:6px;line-height:1;filter:grayscale(.2);}
-.tpl-card-name{font-size:11px;font-weight:700;color:var(--t1);margin-bottom:3px;letter-spacing:-.2px;}
-.tpl-card-hook{font-size:9px;color:var(--t3);line-height:1.3;font-weight:400;}
-.tpl-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:opacity .2s;}
-.tpl-card:hover::after{opacity:1;}
-.tpl-promo-grid{display:flex;flex-wrap:wrap;gap:6px;}
-.tpl-promo{position:relative;background:var(--card2);border:1px solid var(--b1);border-radius:7px;padding:7px 12px 7px 10px;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;gap:8px;}
-.tpl-promo:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3);}
+/* ── QUICK TEMPLATES ── */
+.tpl-section-title{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:1.6px;font-weight:700;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px;}
+.tpl-section-title .tpl-sec-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;line-height:1;}
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.tpl-card{position:relative;background:linear-gradient(135deg,var(--card2) 0%,var(--card) 100%);border:1px solid var(--b1);border-radius:10px;padding:16px 14px 14px;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);overflow:hidden;text-align:left;}
+.tpl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),rgba(240,180,41,.3));opacity:0;transition:opacity .25s;}
+.tpl-card::after{content:'→';position:absolute;bottom:12px;right:14px;font-size:14px;color:var(--gold);opacity:0;transform:translateX(-4px);transition:all .25s;}
+.tpl-card:hover{border-color:rgba(240,180,41,.4);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 0 1px rgba(240,180,41,.1);}
+.tpl-card:hover::before{opacity:1;}
+.tpl-card:hover::after{opacity:1;transform:translateX(0);}
+.tpl-card:active{transform:translateY(0);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.tpl-card-icon{font-size:24px;margin-bottom:8px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));}
+.tpl-card-name{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:4px;letter-spacing:-.2px;}
+.tpl-card-hook{font-size:10px;color:var(--t3);line-height:1.4;font-weight:400;}
+.tpl-promo-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.tpl-promo{position:relative;background:var(--card2);border:1px solid var(--b1);border-radius:9px;padding:10px 14px;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:10px;min-width:120px;}
+.tpl-promo::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;border-radius:0 0 9px 9px;opacity:0;transition:opacity .25s;}
+.tpl-promo:hover{transform:translateY(-2px);border-color:var(--fc,var(--b1));box-shadow:0 6px 20px rgba(0,0,0,.4),0 0 0 1px color-mix(in srgb,var(--fc,transparent) 20%,transparent);}
+.tpl-promo:hover::before{opacity:1;background:var(--fc,var(--gold));}
 .tpl-promo:active{transform:translateY(0);}
-.tpl-promo-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.tpl-promo-name{font-size:11px;font-weight:600;color:var(--t1);}
-.tpl-promo-pct{font-size:10px;font-weight:800;margin-left:auto;padding-left:8px;}
+.tpl-promo-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor;}
+.tpl-promo-name{font-size:11px;font-weight:600;color:var(--t1);white-space:nowrap;}
+.tpl-promo-pct{font-size:13px;font-weight:800;margin-left:auto;padding-left:8px;letter-spacing:-.5px;}
 
 /* TOAST */
 .admin-toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--card);border:1px solid var(--green);color:var(--green);padding:10px 20px;border-radius:8px;font-size:12.5px;font-weight:600;opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none;}
@@ -719,14 +724,16 @@ a{text-decoration:none;color:inherit;}
  </div>
 
  <!-- QUICK TEMPLATES -->
- <div class="ec-field" style="margin-bottom:20px;">
-   <label>Templates Rapidos — clique para carregar</label>
+ <div style="margin-bottom:22px;">
 
    <!-- INSTITUCIONAL -->
-   <div class="tpl-section-title" style="margin-top:12px;"><span style="color:var(--gold);">&#9670;</span> Institucional</div>
+   <div class="tpl-section-title" style="margin-top:4px;">
+     <span class="tpl-sec-icon" style="background:rgba(240,180,41,.15);color:var(--gold);">&#9670;</span>
+     Institucional
+   </div>
    <div class="tpl-grid">
      <div class="tpl-card" onclick="loadQuickTemplate('welcome')">
-       <div class="tpl-card-icon">&#128075;</div>
+       <div class="tpl-card-icon">&#9993;&#65039;</div>
        <div class="tpl-card-name">Boas-vindas</div>
        <div class="tpl-card-hook">Primeiro contato com o lead</div>
      </div>
@@ -736,9 +743,9 @@ a{text-decoration:none;color:inherit;}
        <div class="tpl-card-hook">Traga o trader pro site</div>
      </div>
      <div class="tpl-card" onclick="loadQuickTemplate('loyalty')">
-       <div class="tpl-card-icon">&#127942;</div>
+       <div class="tpl-card-icon">&#11088;</div>
        <div class="tpl-card-name">Fidelidade</div>
-       <div class="tpl-card-hook">Compras desbloqueiam beneficios</div>
+       <div class="tpl-card-hook">Programa de cashback</div>
      </div>
      <div class="tpl-card" onclick="loadQuickTemplate('indicators')">
        <div class="tpl-card-icon">&#128200;</div>
@@ -747,56 +754,59 @@ a{text-decoration:none;color:inherit;}
      </div>
      <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')">
        <div class="tpl-card-icon">&#128218;</div>
-       <div class="tpl-card-name">Blog & Guias</div>
+       <div class="tpl-card-name">Blog &amp; Guias</div>
        <div class="tpl-card-hook">Conteudo educacional</div>
      </div>
    </div>
 
    <!-- PROMOS -->
-   <div class="tpl-section-title" style="margin-top:16px;"><span style="color:#22C55E;">&#9670;</span> Promos — puxa dados atuais da firma</div>
+   <div class="tpl-section-title" style="margin-top:20px;">
+     <span class="tpl-sec-icon" style="background:rgba(34,197,94,.15);color:#22C55E;">&#9670;</span>
+     Promos &mdash; puxa dados atuais da firma
+   </div>
    <div class="tpl-promo-grid">
-     <div class="tpl-promo" onclick="loadPromoTemplate('apex')">
-       <span class="tpl-promo-dot" style="background:#F97316;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('apex')" style="--fc:#F97316;">
+       <span class="tpl-promo-dot" style="background:#F97316;color:#F97316;"></span>
        <span class="tpl-promo-name">Apex</span>
        <span class="tpl-promo-pct" style="color:#F97316;">90%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('bulenox')">
-       <span class="tpl-promo-dot" style="background:#3B82F6;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('bulenox')" style="--fc:#3B82F6;">
+       <span class="tpl-promo-dot" style="background:#3B82F6;color:#3B82F6;"></span>
        <span class="tpl-promo-name">Bulenox</span>
        <span class="tpl-promo-pct" style="color:#3B82F6;">89%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('e2t')">
-       <span class="tpl-promo-dot" style="background:#F59E0B;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('e2t')" style="--fc:#F59E0B;">
+       <span class="tpl-promo-dot" style="background:#F59E0B;color:#F59E0B;"></span>
        <span class="tpl-promo-name">E2T</span>
        <span class="tpl-promo-pct" style="color:#F59E0B;">50%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('tpt')">
-       <span class="tpl-promo-dot" style="background:#A855F7;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('tpt')" style="--fc:#A855F7;">
+       <span class="tpl-promo-dot" style="background:#A855F7;color:#A855F7;"></span>
        <span class="tpl-promo-name">TPT</span>
        <span class="tpl-promo-pct" style="color:#A855F7;">40%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('fn')">
-       <span class="tpl-promo-dot" style="background:#06B6D4;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('fn')" style="--fc:#06B6D4;">
+       <span class="tpl-promo-dot" style="background:#06B6D4;color:#06B6D4;"></span>
        <span class="tpl-promo-name">FundedNext</span>
        <span class="tpl-promo-pct" style="color:#06B6D4;">30%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('fundingpips')">
-       <span class="tpl-promo-dot" style="background:#6366F1;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('fundingpips')" style="--fc:#6366F1;">
+       <span class="tpl-promo-dot" style="background:#6366F1;color:#6366F1;"></span>
        <span class="tpl-promo-name">FPips</span>
        <span class="tpl-promo-pct" style="color:#6366F1;">20%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('brightfunded')">
-       <span class="tpl-promo-dot" style="background:#00C9A7;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('brightfunded')" style="--fc:#00C9A7;">
+       <span class="tpl-promo-dot" style="background:#00C9A7;color:#00C9A7;"></span>
        <span class="tpl-promo-name">BrightFunded</span>
        <span class="tpl-promo-pct" style="color:#00C9A7;">20%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('ftmo')">
-       <span class="tpl-promo-dot" style="background:#22C55E;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('ftmo')" style="--fc:#22C55E;">
+       <span class="tpl-promo-dot" style="background:#22C55E;color:#22C55E;"></span>
        <span class="tpl-promo-name">FTMO</span>
        <span class="tpl-promo-pct" style="color:#22C55E;">19%</span>
      </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('the5ers')">
-       <span class="tpl-promo-dot" style="background:#10B981;"></span>
+     <div class="tpl-promo" onclick="loadPromoTemplate('the5ers')" style="--fc:#10B981;">
+       <span class="tpl-promo-dot" style="background:#10B981;color:#10B981;"></span>
        <span class="tpl-promo-name">The5ers</span>
        <span class="tpl-promo-pct" style="color:#10B981;">10%</span>
      </div>
