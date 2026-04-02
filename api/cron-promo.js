@@ -3,7 +3,7 @@
 // GET /api/cron-promo?key=CRON_SECRET
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMzOTAzMjQsImV4cCI6MjA1ODk2NjMyNH0.is5j8TUJMQ4B6OeLmvJGJnCycnbWbY3WqjJCmS84gFI';
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
 // Email translations (7 languages)
 const EMAIL_I18N = {

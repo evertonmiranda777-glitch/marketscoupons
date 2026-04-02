@@ -308,6 +308,14 @@ const MC_UTM = (()=>{
 <script>
 // Security: HTML escape for user-submitted data
 function escHtml(s){ if(s==null) return '—'; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+// Rate limiter: prevents spam submissions on forms
+const _rl = {};
+function rateLimit(key, cooldownMs) {
+  const now = Date.now();
+  if (_rl[key] && now - _rl[key] < cooldownMs) return false;
+  _rl[key] = now;
+  return true;
+}
 
 // Central tracking — Supabase + GTM + GA4 + Facebook Pixel + localStorage cache
 function track(event, params={}) {
@@ -9425,6 +9433,7 @@ function renderDailyCards(items){
 
 // saveLead: Supabase primary, localStorage cache
 async function saveLead(data) {
+  if (!rateLimit('saveLead', 5000)) return; // 5s cooldown
   const payload = {
     ...data,
     idioma:    navigator.language || 'pt-BR',
@@ -9696,6 +9705,7 @@ async function registerLoyalty() {
 }
 
 async function submitProof() {
+  if (!rateLimit('submitProof', 10000)) { showToast('Aguarde antes de enviar novamente.'); return; }
   const member = getLoyaltyMember();
   if (!member) { showToast('Faca o cadastro primeiro!'); return; }
   const firma       = document.getElementById('pf-firma')?.value;
