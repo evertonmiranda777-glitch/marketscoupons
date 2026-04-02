@@ -2453,24 +2453,24 @@ function buildPromoHtml(f, lang='pt'){
   // Site pattern: separate cells for discounted (green) and original (strikethrough)
   const buildDualPriceRows = () => prices.map(r => {
     const plan = plans.find(p => p.size === r.a);
-    const sub = hasPlans && plan ? `<div style="color:#7A8FA6;font-size:10px;font-weight:400;margin-top:2px;font-family:${FI};white-space:nowrap;"><span style="color:#F0B429;font-weight:600;">${plan.goal||''}</span> &middot; DD ${plan.maxDD||''}</div>` : '';
+    const sub = hasPlans && plan ? `<div style="color:#7A8FA6;font-size:9px;font-weight:400;margin-top:1px;font-family:${FI};white-space:nowrap;"><span style="color:#F0B429;">${plan.goal||''}</span> · <span style="color:#EF4444;">${plan.maxDD||''}</span></div>` : '';
     return `<tr>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;color:#EDF2F7;font-weight:600;font-size:13px;font-family:${FI};">${r.a}${sub}</td>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n}</td>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o||''}</td>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n2||''}</td>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o2||''}</td>
+      <td style="padding:6px 8px;border-top:1px solid #1C2535;color:#EDF2F7;font-weight:600;font-size:13px;font-family:${FI};">${r.a}${sub}</td>
+      <td style="padding:6px 6px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n}</td>
+      <td style="padding:6px 6px;border-top:1px solid #1C2535;text-align:right;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o||''}</td>
+      <td style="padding:6px 6px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n2||''}</td>
+      <td style="padding:6px 6px;border-top:1px solid #1C2535;text-align:right;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o2||''}</td>
     </tr>`;
   }).join('');
 
   // ── SINGLE PRICE ROWS ──
   const buildSinglePriceRows = () => prices.map(r => {
     const plan = plans.find(p => p.size === r.a);
-    const sub = hasPlans && plan ? `<div style="color:#7A8FA6;font-size:10px;font-weight:400;margin-top:2px;font-family:${FI};white-space:nowrap;"><span style="color:#F0B429;font-weight:600;">${plan.goal||''}</span> &middot; DD ${plan.maxDD||''}</div>` : '';
+    const sub = hasPlans && plan ? `<div style="color:#7A8FA6;font-size:9px;font-weight:400;margin-top:1px;font-family:${FI};white-space:nowrap;"><span style="color:#F0B429;">${plan.goal||''}</span> · <span style="color:#EF4444;">${plan.maxDD||''}</span></div>` : '';
     return `<tr>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;color:#EDF2F7;font-weight:600;font-size:13px;font-family:${FI};">${r.a}${sub}</td>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n}</td>
-      <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o||''}</td>
+      <td style="padding:6px 8px;border-top:1px solid #1C2535;color:#EDF2F7;font-weight:600;font-size:13px;font-family:${FI};">${r.a}${sub}</td>
+      <td style="padding:6px 6px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n}</td>
+      <td style="padding:6px 6px;border-top:1px solid #1C2535;text-align:right;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o||''}</td>
     </tr>`;
   }).join('');
 
