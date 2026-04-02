@@ -579,9 +579,9 @@ a{text-decoration:none;color:inherit;}
  <div class="cc-hd"><div class="cc-title">Bot IA — Mensagens</div></div>
  <div class="chart-wrap"><canvas id="chart-bot"></canvas></div>
  </div>
- <div class="chart-card">
+ <div class="chart-card full">
  <div class="cc-hd"><div class="cc-title">Abas Mais Acessadas</div></div>
- <div class="chart-wrap"><canvas id="chart-tabs"></canvas></div>
+ <div class="chart-wrap" style="height:300px;"><canvas id="chart-tabs"></canvas></div>
  </div>
  </div>
 
@@ -2174,7 +2174,7 @@ function mkChart(id,type,labels,data,colors){
  plugins:{legend:{display:type==='doughnut',labels:{color:'#7A8FA6',font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:(ctx)=>` ${ctx.formattedValue}`}}},
  scales:realType==='doughnut'?{}:{
  x:{ticks:{color:'#3D4F63',font:{size:10}},grid:{color:'rgba(28,37,53,.5)'}},
- y:{ticks:{color:'#3D4F63',font:{size:10}},grid:{color:'rgba(28,37,53,.5)'}},
+ y:{ticks:{color:'#7A8FA6',font:{size:11},padding:isHBar?4:2},grid:{color:'rgba(28,37,53,.5)'}},
  }
  }
  });
