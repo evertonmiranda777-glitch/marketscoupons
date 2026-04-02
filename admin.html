@@ -1932,24 +1932,35 @@ function toggleSeg(el,seg){
 async function getSegmentedLeads(){
  const results=[];
  const needAll=emailSegments.includes('all');
- // Leads from localStorage
+ // Leads from Supabase (has idioma field)
  if(needAll||emailSegments.includes('leads')){
-  const leads=getLeadsSync().filter(l=>l.email);
-  results.push(...leads.map(l=>({email:l.email,name:l.name||'',source:'lead'})));
+  try {
+   const {data}=await db.from('leads').select('email,name,idioma');
+   if(data) results.push(...data.filter(l=>l.email).map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead'})));
+  } catch(e){
+   const leads=getLeadsSync().filter(l=>l.email);
+   results.push(...leads.map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead'})));
+  }
  }
  // Loyalty members from Supabase
  if(needAll||emailSegments.includes('loyalty')){
   const {data}=await db.from('loyalty_members').select('email,name').neq('email',null);
-  if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',source:'loyalty'})));
+  if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',lang:'pt',source:'loyalty'})));
  }
  // Subscribers from Supabase (always included in 'all')
  if(needAll){
-  const {data}=await db.from('email_subscribers').select('email,name').eq('status','active');
-  if(data) results.push(...data.map(s=>({email:s.email,name:s.name||'',source:'subscriber'})));
+  const {data}=await db.from('email_subscribers').select('email,name,lang').eq('status','active');
+  if(data) results.push(...data.map(s=>({email:s.email,name:s.name||'',lang:s.lang||'en',source:'subscriber'})));
  }
- // Deduplicate by email
+ // Deduplicate by email (keep first = most specific lang)
  const seen=new Set();
  return results.filter(r=>{if(seen.has(r.email))return false;seen.add(r.email);return true;});
+}
+
+function langFromCode(idioma){
+ if(!idioma) return 'en';
+ const code=idioma.toLowerCase().split('-')[0];
+ return ['pt','en','es','fr','de','it','ar'].includes(code)?code:'en';
 }
 
 async function updateDestCount(){
@@ -1961,6 +1972,7 @@ function insertVar(v){
  const ta=document.getElementById('em-body');
  if(!ta)return;
  emailIsHtml=false;
+ emailPromoFirm=null;
  const pos=ta.selectionStart;
  ta.value=ta.value.slice(0,pos)+v+ta.value.slice(ta.selectionEnd);
  ta.focus();ta.setSelectionRange(pos+v.length,pos+v.length);
@@ -2175,6 +2187,7 @@ async function loadQuickTemplate(name){
   const { data } = await db.from('email_templates').select('*').eq('name',name).maybeSingle();
   if(!data){ toast('Template nao encontrado!','warn'); return; }
   emailIsHtml = false;
+  emailPromoFirm = null;
   document.getElementById('em-subject').value = data.subject;
   document.getElementById('em-body').value = data.body;
   previewEmail();
@@ -2182,158 +2195,270 @@ async function loadQuickTemplate(name){
 }
 
 let emailIsHtml = false;
+let emailPromoFirm = null;
 
-async function loadPromoTemplate(firmId){
-  // Pull live data from cms_firms
-  const { data: f } = await db.from('cms_firms').select('*').eq('id',firmId).maybeSingle();
-  if(!f){ toast('Firma nao encontrada!','warn'); return; }
+const EMAIL_I18N = {
+  pt: {
+    greeting: 'Ola {nome},',
+    intro: 'A <b>{firm}</b> esta com <b>{discount}% de desconto{lt}</b>. Escolha o tamanho da sua conta e assine direto por aqui — rapido, facil e com o melhor preco.',
+    exclusive_coupon: 'Cupom Exclusivo',
+    coupon_steps: '1. Copie o cupom acima &nbsp;→&nbsp; 2. Escolha sua conta abaixo &nbsp;→&nbsp; 3. Cole no checkout',
+    auto_discount: 'Desconto aplicado automaticamente pelo nosso link',
+    profit_split: 'Profit Split', discount_label: 'Desconto', drawdown_label: 'Drawdown',
+    platforms: 'Plataformas', benefits: 'Beneficios',
+    choose_account: 'Escolha sua Conta e Compre Agora',
+    prices_sub: 'Precos ja com {discount}% de desconto — clique em "Comprar" para ir direto ao checkout',
+    col_account: 'Conta', col_coupon: 'Com Cupom', col_original: 'Original',
+    buy_btn: 'Comprar →',
+    cta: 'Garantir meu desconto na {firm} →',
+    see_all: 'Ver todas as ofertas no site →',
+    footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
+    unsub: 'Cancelar inscricao',
+    tagline: 'As melhores ofertas para traders',
+  },
+  en: {
+    greeting: 'Hey {nome},',
+    intro: '<b>{firm}</b> is offering <b>{discount}% OFF{lt}</b>. Pick your account size and sign up directly — fast, easy, and at the best price.',
+    exclusive_coupon: 'Exclusive Coupon',
+    coupon_steps: '1. Copy the coupon above &nbsp;→&nbsp; 2. Choose your account below &nbsp;→&nbsp; 3. Paste at checkout',
+    auto_discount: 'Discount applied automatically through our link',
+    profit_split: 'Profit Split', discount_label: 'Discount', drawdown_label: 'Drawdown',
+    platforms: 'Platforms', benefits: 'Benefits',
+    choose_account: 'Choose Your Account & Buy Now',
+    prices_sub: 'Prices already include {discount}% discount — click "Buy" to go straight to checkout',
+    col_account: 'Account', col_coupon: 'With Coupon', col_original: 'Original',
+    buy_btn: 'Buy →',
+    cta: 'Get my discount at {firm} →',
+    see_all: 'See all deals on our site →',
+    footer: 'You received this email because you subscribed to MarketsCoupons.',
+    unsub: 'Unsubscribe',
+    tagline: 'The best deals for traders',
+  },
+  es: {
+    greeting: 'Hola {nome},',
+    intro: '<b>{firm}</b> ofrece <b>{discount}% de descuento{lt}</b>. Elige el tamano de tu cuenta y registrate directamente — rapido, facil y al mejor precio.',
+    exclusive_coupon: 'Cupon Exclusivo',
+    coupon_steps: '1. Copia el cupon &nbsp;→&nbsp; 2. Elige tu cuenta abajo &nbsp;→&nbsp; 3. Pegalo en el checkout',
+    auto_discount: 'Descuento aplicado automaticamente a traves de nuestro enlace',
+    profit_split: 'Profit Split', discount_label: 'Descuento', drawdown_label: 'Drawdown',
+    platforms: 'Plataformas', benefits: 'Beneficios',
+    choose_account: 'Elige tu Cuenta y Compra Ahora',
+    prices_sub: 'Precios ya con {discount}% de descuento — haz clic en "Comprar" para ir al checkout',
+    col_account: 'Cuenta', col_coupon: 'Con Cupon', col_original: 'Original',
+    buy_btn: 'Comprar →',
+    cta: 'Obtener mi descuento en {firm} →',
+    see_all: 'Ver todas las ofertas en el sitio →',
+    footer: 'Recibiste este email porque estas suscrito a MarketsCoupons.',
+    unsub: 'Cancelar suscripcion',
+    tagline: 'Las mejores ofertas para traders',
+  },
+  fr: {
+    greeting: 'Bonjour {nome},',
+    intro: '<b>{firm}</b> propose <b>{discount}% de reduction{lt}</b>. Choisissez la taille de votre compte et inscrivez-vous directement — rapide, simple et au meilleur prix.',
+    exclusive_coupon: 'Coupon Exclusif',
+    coupon_steps: '1. Copiez le coupon &nbsp;→&nbsp; 2. Choisissez votre compte &nbsp;→&nbsp; 3. Collez au checkout',
+    auto_discount: 'Reduction appliquee automatiquement via notre lien',
+    profit_split: 'Profit Split', discount_label: 'Reduction', drawdown_label: 'Drawdown',
+    platforms: 'Plateformes', benefits: 'Avantages',
+    choose_account: 'Choisissez votre Compte et Achetez',
+    prices_sub: 'Prix deja avec {discount}% de reduction — cliquez "Acheter" pour aller au checkout',
+    col_account: 'Compte', col_coupon: 'Avec Coupon', col_original: 'Original',
+    buy_btn: 'Acheter →',
+    cta: 'Obtenir ma reduction chez {firm} →',
+    see_all: 'Voir toutes les offres sur le site →',
+    footer: 'Vous recevez cet email car vous etes inscrit a MarketsCoupons.',
+    unsub: 'Se desinscrire',
+    tagline: 'Les meilleures offres pour traders',
+  },
+  de: {
+    greeting: 'Hallo {nome},',
+    intro: '<b>{firm}</b> bietet <b>{discount}% Rabatt{lt}</b>. Wahlen Sie Ihre Kontogrosse und melden Sie sich direkt an — schnell, einfach und zum besten Preis.',
+    exclusive_coupon: 'Exklusiver Gutschein',
+    coupon_steps: '1. Gutschein kopieren &nbsp;→&nbsp; 2. Konto wahlen &nbsp;→&nbsp; 3. Beim Checkout einfugen',
+    auto_discount: 'Rabatt wird automatisch uber unseren Link angewendet',
+    profit_split: 'Profit Split', discount_label: 'Rabatt', drawdown_label: 'Drawdown',
+    platforms: 'Plattformen', benefits: 'Vorteile',
+    choose_account: 'Konto wahlen und jetzt kaufen',
+    prices_sub: 'Preise bereits mit {discount}% Rabatt — klicken Sie "Kaufen" fur den direkten Checkout',
+    col_account: 'Konto', col_coupon: 'Mit Gutschein', col_original: 'Original',
+    buy_btn: 'Kaufen →',
+    cta: 'Meinen Rabatt bei {firm} sichern →',
+    see_all: 'Alle Angebote auf der Seite ansehen →',
+    footer: 'Sie erhalten diese E-Mail, weil Sie bei MarketsCoupons angemeldet sind.',
+    unsub: 'Abmelden',
+    tagline: 'Die besten Angebote fur Trader',
+  },
+  it: {
+    greeting: 'Ciao {nome},',
+    intro: '<b>{firm}</b> offre <b>{discount}% di sconto{lt}</b>. Scegli la dimensione del tuo conto e iscriviti direttamente — veloce, semplice e al miglior prezzo.',
+    exclusive_coupon: 'Coupon Esclusivo',
+    coupon_steps: '1. Copia il coupon &nbsp;→&nbsp; 2. Scegli il tuo conto &nbsp;→&nbsp; 3. Incolla al checkout',
+    auto_discount: 'Sconto applicato automaticamente tramite il nostro link',
+    profit_split: 'Profit Split', discount_label: 'Sconto', drawdown_label: 'Drawdown',
+    platforms: 'Piattaforme', benefits: 'Vantaggi',
+    choose_account: 'Scegli il tuo Conto e Acquista Ora',
+    prices_sub: 'Prezzi gia con {discount}% di sconto — clicca "Acquista" per andare al checkout',
+    col_account: 'Conto', col_coupon: 'Con Coupon', col_original: 'Originale',
+    buy_btn: 'Acquista →',
+    cta: 'Ottieni il mio sconto su {firm} →',
+    see_all: 'Vedi tutte le offerte sul sito →',
+    footer: 'Hai ricevuto questa email perche sei iscritto a MarketsCoupons.',
+    unsub: 'Annulla iscrizione',
+    tagline: 'Le migliori offerte per trader',
+  },
+  ar: {
+    greeting: '{nome} مرحبا',
+    intro: '<b>{firm}</b> تقدم <b>خصم {discount}%{lt}</b>. اختر حجم حسابك وسجل مباشرة — سريع وسهل وبأفضل سعر.',
+    exclusive_coupon: 'كوبون حصري',
+    coupon_steps: '1. انسخ الكوبون &nbsp;←&nbsp; 2. اختر حسابك &nbsp;←&nbsp; 3. الصقه عند الدفع',
+    auto_discount: 'الخصم يطبق تلقائيا عبر رابطنا',
+    profit_split: 'Profit Split', discount_label: 'خصم', drawdown_label: 'Drawdown',
+    platforms: 'المنصات', benefits: 'المزايا',
+    choose_account: 'اختر حسابك واشتر الان',
+    prices_sub: 'الاسعار تشمل خصم {discount}% — انقر "شراء" للذهاب للدفع مباشرة',
+    col_account: 'الحساب', col_coupon: 'مع كوبون', col_original: 'الاصلي',
+    buy_btn: '← شراء',
+    cta: '← احصل على خصمي في {firm}',
+    see_all: '← شاهد جميع العروض على الموقع',
+    footer: 'تلقيت هذا البريد لانك مشترك في MarketsCoupons.',
+    unsub: 'الغاء الاشتراك',
+    tagline: 'افضل العروض للمتداولين',
+  },
+};
 
+function emailT(lang, key, vars={}){
+  const s = (EMAIL_I18N[lang]||EMAIL_I18N.en)[key] || EMAIL_I18N.en[key] || key;
+  return Object.entries(vars).reduce((str,[k,v])=>str.replace(new RegExp(`\\{${k}\\}`,'g'),v), s);
+}
+
+function buildPromoHtml(f, lang='pt'){
   const lt = f.discount_type==='lifetime' ? ' Lifetime' : '';
-  const subject = `${f.name} com ${f.discount}% OFF${lt} — Aproveite agora`;
+  const et = (key, vars) => emailT(lang, key, {firm:f.name, discount:f.discount, lt, ...vars});
+  const dir = lang==='ar' ? 'rtl' : 'ltr';
 
-  // Build prices table rows
-  const prices = f.prices || [];
-  const priceRows = prices.map(r => `
+  const priceRows = (f.prices||[]).map(r => `
     <tr>
       <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:600;">${r.a}</td>
       <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#22C55E;font-weight:700;">${r.n}</td>
       <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#3D4F63;text-decoration:line-through;">${r.o}</td>
       <td style="padding:10px 14px;border-bottom:1px solid #1C2535;">
-        <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">Comprar →</a>
+        <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">${et('buy_btn')}</a>
       </td>
     </tr>`).join('');
 
-  const priceTable = prices.length ? `
+  const priceTable = (f.prices||[]).length ? `
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:16px 0;">
       <tr style="background:#0B0F16;">
-        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">Conta</th>
-        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">Com Cupom</th>
-        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">Original</th>
+        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_account')}</th>
+        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_coupon')}</th>
+        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_original')}</th>
         <th style="padding:10px 14px;border-bottom:1px solid #1C2535;"></th>
       </tr>
       ${priceRows}
     </table>` : '';
 
-  // Coupon section
   const couponSection = f.coupon ? `
     <div style="background:#0B0F16;border:2px dashed #F0B429;border-radius:10px;padding:18px 24px;margin:20px 0;text-align:center;">
-      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Cupom Exclusivo</div>
+      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">${et('exclusive_coupon')}</div>
       <div style="color:#F0B429;font-size:28px;font-weight:800;letter-spacing:3px;font-family:monospace;">${f.coupon}</div>
-      <div style="color:#7A8FA6;font-size:12px;margin-top:8px;">1. Copie o cupom acima &nbsp;→&nbsp; 2. Escolha sua conta abaixo &nbsp;→&nbsp; 3. Cole no checkout</div>
+      <div style="color:#7A8FA6;font-size:12px;margin-top:8px;">${et('coupon_steps')}</div>
     </div>` : `
     <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:14px 20px;margin:20px 0;text-align:center;">
-      <div style="color:#22C55E;font-size:14px;font-weight:600;">Desconto aplicado automaticamente pelo nosso link</div>
+      <div style="color:#22C55E;font-size:14px;font-weight:600;">${et('auto_discount')}</div>
     </div>`;
 
-  // Platforms
   const platforms = (f.platforms||[]).map(p =>
     `<span style="display:inline-block;background:#10151F;border:1px solid #1C2535;border-radius:6px;padding:5px 12px;margin:3px 4px;font-size:12px;color:#EDF2F7;">${p}</span>`
   ).join('');
 
-  // Perks
   const perks = (f.perks||[]).slice(0,6).map(p =>
     `<div style="padding:4px 0;color:#7A8FA6;font-size:13px;">&#10003; ${p}</div>`
   ).join('');
 
-  // Stats row
-  const stats = `
+  return `<!DOCTYPE html>
+<html dir="${dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#07090D;font-family:Arial,Helvetica,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#07090D;padding:32px 24px;">
+  <div style="text-align:center;margin-bottom:28px;">
+    <div style="font-size:22px;font-weight:800;color:#EDF2F7;">Markets<span style="color:#F0B429;">Coupons</span></div>
+    <div style="color:#3D4F63;font-size:12px;margin-top:4px;">${et('tagline')}</div>
+  </div>
+  <div style="color:#EDF2F7;font-size:15px;margin-bottom:6px;">${et('greeting')}</div>
+  <div style="color:#7A8FA6;font-size:14px;line-height:1.6;margin-bottom:20px;">${et('intro')}</div>
+  <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:24px;margin-bottom:20px;">
+    <div style="margin-bottom:16px;">
+      <div style="color:#EDF2F7;font-size:18px;font-weight:700;">${f.name}</div>
+      <div style="color:#7A8FA6;font-size:12px;">${f.description||''}</div>
+    </div>
+    ${couponSection}
     <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;">
       <tr>
         <td style="text-align:center;padding:12px;background:#10151F;border:1px solid #1C2535;border-radius:8px 0 0 8px;">
-          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">Profit Split</div>
+          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">${et('profit_split')}</div>
           <div style="color:#22C55E;font-size:18px;font-weight:800;margin-top:4px;">${f.split||'—'}</div>
         </td>
         <td style="text-align:center;padding:12px;background:#10151F;border-top:1px solid #1C2535;border-bottom:1px solid #1C2535;">
-          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">Desconto</div>
+          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">${et('discount_label')}</div>
           <div style="color:#F0B429;font-size:18px;font-weight:800;margin-top:4px;">${f.discount}% OFF</div>
         </td>
         <td style="text-align:center;padding:12px;background:#10151F;border:1px solid #1C2535;border-radius:0 8px 8px 0;">
-          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">Drawdown</div>
+          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">${et('drawdown_label')}</div>
           <div style="color:#EDF2F7;font-size:18px;font-weight:800;margin-top:4px;">${f.dd_pct||'—'}</div>
         </td>
       </tr>
-    </table>`;
-
-  const htmlContent = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#07090D;font-family:Arial,Helvetica,sans-serif;">
-<div style="max-width:600px;margin:0 auto;background:#07090D;padding:32px 24px;">
-
-  <!-- Header -->
-  <div style="text-align:center;margin-bottom:28px;">
-    <div style="font-size:22px;font-weight:800;color:#EDF2F7;">Markets<span style="color:#F0B429;">Coupons</span></div>
-    <div style="color:#3D4F63;font-size:12px;margin-top:4px;">As melhores ofertas para traders</div>
-  </div>
-
-  <!-- Greeting -->
-  <div style="color:#EDF2F7;font-size:15px;margin-bottom:6px;">Ola {nome},</div>
-  <div style="color:#7A8FA6;font-size:14px;line-height:1.6;margin-bottom:20px;">
-    A <strong style="color:#EDF2F7;">${f.name}</strong> esta com <strong style="color:#F0B429;">${f.discount}% de desconto${lt}</strong>. Escolha o tamanho da sua conta e assine direto por aqui — rapido, facil e com o melhor preco.
-  </div>
-
-  <!-- Firm Card -->
-  <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:24px;margin-bottom:20px;">
-    <div style="display:flex;align-items:center;margin-bottom:16px;">
-      ${f.icon_url ? `<img src="${f.icon_url}" alt="${f.name}" width="40" height="40" style="border-radius:8px;margin-right:12px;">` : ''}
-      <div>
-        <div style="color:#EDF2F7;font-size:18px;font-weight:700;">${f.name}</div>
-        <div style="color:#7A8FA6;font-size:12px;">${f.description||''}</div>
-      </div>
-    </div>
-
-    ${couponSection}
-    ${stats}
-
-    <!-- Platforms -->
+    </table>
     ${platforms ? `<div style="margin:16px 0;">
-      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Plataformas</div>
+      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">${et('platforms')}</div>
       ${platforms}
     </div>` : ''}
-
-    <!-- Perks -->
     ${perks ? `<div style="margin:16px 0;">
-      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Beneficios</div>
+      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">${et('benefits')}</div>
       ${perks}
     </div>` : ''}
   </div>
-
-  <!-- Prices Table -->
   ${priceTable ? `<div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:20px;margin-bottom:20px;">
-    <div style="color:#EDF2F7;font-size:14px;font-weight:600;margin-bottom:4px;">Escolha sua Conta e Compre Agora</div>
-    <div style="color:#7A8FA6;font-size:12px;margin-bottom:12px;">Precos ja com ${f.discount}% de desconto — clique em "Comprar" para ir direto ao checkout</div>
+    <div style="color:#EDF2F7;font-size:14px;font-weight:600;margin-bottom:4px;">${et('choose_account')}</div>
+    <div style="color:#7A8FA6;font-size:12px;margin-bottom:12px;">${et('prices_sub')}</div>
     ${priceTable}
   </div>` : ''}
-
-  <!-- CTA -->
   <div style="text-align:center;margin:24px 0;">
-    <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:14px 40px;border-radius:8px;font-size:16px;font-weight:700;text-decoration:none;">Garantir meu desconto na ${f.name} →</a>
+    <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:14px 40px;border-radius:8px;font-size:16px;font-weight:700;text-decoration:none;">${et('cta')}</a>
   </div>
-
-  <!-- Secondary CTA -->
   <div style="text-align:center;margin-bottom:24px;">
-    <a href="https://www.marketscoupons.com" style="color:#F0B429;font-size:13px;text-decoration:underline;">Ver todas as ofertas no site</a>
+    <a href="https://www.marketscoupons.com" style="color:#F0B429;font-size:13px;text-decoration:underline;">${et('see_all')}</a>
   </div>
-
-  <!-- Footer -->
   <hr style="border:none;border-top:1px solid #1C2535;margin:24px 0;">
   <div style="text-align:center;color:#3D4F63;font-size:11px;line-height:1.6;">
-    Voce recebeu este email por estar inscrito no MarketsCoupons.<br>
-    <a href="https://www.marketscoupons.com" style="color:#3D4F63;">Cancelar inscricao</a>
+    ${et('footer')}<br>
+    <a href="https://www.marketscoupons.com" style="color:#3D4F63;">${et('unsub')}</a>
   </div>
-
 </div>
 </body></html>`;
+}
 
+async function loadPromoTemplate(firmId){
+  const { data: f } = await db.from('cms_firms').select('*').eq('id',firmId).maybeSingle();
+  if(!f){ toast('Firma nao encontrada!','warn'); return; }
+
+  const lt = f.discount_type==='lifetime' ? ' Lifetime' : '';
+  const subject = `${f.name} — ${f.discount}% OFF${lt}`;
+
+  // Store firm data for per-language sending
+  emailPromoFirm = f;
   emailIsHtml = true;
+
+  // Preview in PT
+  const htmlContent = buildPromoHtml(f, 'pt');
   document.getElementById('em-subject').value = subject;
-  document.getElementById('em-body').value = htmlContent;
-  // Show rendered preview
+  document.getElementById('em-body').value = '__PROMO_HTML__';
+
   document.getElementById('em-preview').innerHTML = `
     <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Tipo: <strong style="color:var(--gold);">HTML Rico</strong></div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML Rico Multilingue (7 idiomas)</strong></div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Cada destinatario recebe no seu idioma (pt, en, es, fr, de, it, ar)</div>
     <hr style="border-color:var(--b1);margin-bottom:12px;">
     <iframe srcdoc="${htmlContent.replace(/{nome}/g,'Trader').replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
-  toast(f.name+' — template promo carregado com dados ao vivo!');
+  toast(f.name+' — template promo multilingue carregado!');
 }
 
 /* renderPage patch1 removed */
@@ -2382,7 +2507,16 @@ async function sendEmailsSmtp(){
   const leads = await getSegmentedLeads();
   if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
 
-  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?`)) return;
+  const isPromo = emailIsHtml && emailPromoFirm;
+  const langGroups = {};
+  leads.forEach(l => {
+    const lang = l.lang || 'en';
+    if(!langGroups[lang]) langGroups[lang] = [];
+    langGroups[lang].push(l);
+  });
+  const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
+
+  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isPromo ? '\n\nHTML promo multilingue — cada um recebe no seu idioma' : ''}`)) return;
 
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
@@ -2390,42 +2524,57 @@ async function sendEmailsSmtp(){
   try {
     const session = await db.auth.getSession();
     const token = session?.data?.session?.access_token;
+    let totalSent=0, totalFailed=0;
 
-    const resp = await fetch('/api/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        to: leads.map(l => ({ email: l.email, name: l.name || '', cupom: 'MARKET89', firma: '' })),
-        subject: subject,
-        ...(emailIsHtml ? { htmlContent: body } : { textContent: body }),
-        tags: ['campaign-manual'],
-      }),
+    if(isPromo){
+      // Send per language group — each gets HTML in their language
+      for(const [lang, group] of Object.entries(langGroups)){
+        const html = buildPromoHtml(emailPromoFirm, lang);
+        const resp = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({
+            to: group.map(l => ({ email: l.email, name: l.name||'' })),
+            subject: subject,
+            htmlContent: html,
+            tags: ['promo-'+emailPromoFirm.id, 'lang-'+lang],
+          }),
+        });
+        const data = await resp.json();
+        if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
+        else { totalFailed+=group.length; }
+      }
+    } else {
+      // Standard text/html send — single language
+      const resp = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({
+          to: leads.map(l => ({ email: l.email, name: l.name||'' })),
+          subject: subject,
+          ...(emailIsHtml ? { htmlContent: body } : { textContent: body }),
+          tags: ['campaign-manual'],
+        }),
+      });
+      const data = await resp.json();
+      if(data.success){ totalSent=data.sent||0; totalFailed=data.failed||0; }
+      else { totalFailed=leads.length; }
+    }
+
+    // Log to Supabase
+    await db.from('email_logs').insert({
+      campaign_name: subject.slice(0,50),
+      subject: subject,
+      recipients: leads.length,
+      status: totalFailed===0 ? 'sent' : (totalSent===0 ? 'failed' : 'partial'),
+      sent_by: 'admin',
+      provider: 'brevo',
+      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups) },
     });
 
-    const data = await resp.json();
-
-    if(data.success){
-      // Log to Supabase
-      await db.from('email_logs').insert({
-        campaign_name: subject.slice(0,50),
-        subject: subject,
-        body: body,
-        recipients: data.total,
-        status: data.failed === 0 ? 'sent' : (data.sent === 0 ? 'failed' : 'partial'),
-        sent_by: 'admin',
-        provider: 'brevo',
-        brevo_response: { sent: data.sent, failed: data.failed },
-      });
-
-      toast(`${data.sent} emails enviados com sucesso!` + (data.failed ? ` (${data.failed} falharam)` : ''));
-      await loadEmailStats();
-      await renderCampaignLog();
-    } else {
-      toast('Erro ao enviar: '+(data.error||'desconhecido'),'error');
-    }
+    toast(`${totalSent} emails enviados!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + ` — ${Object.keys(langGroups).length} idioma(s)`);
+    await loadEmailStats();
+    await renderCampaignLog();
   } catch(err){
     toast('Erro de conexao: '+err.message,'error');
   } finally {
@@ -2440,15 +2589,32 @@ async function loadSubscribers(){
 }
 
 async function importLeadsAsSubscribers(){
-  const leads = getLeadsSync();
+  // Pull leads from Supabase (has idioma field) + localStorage fallback
+  let leads = [];
+  try {
+    const { data } = await db.from('leads').select('email,name,idioma,tool');
+    leads = data || [];
+  } catch(e){}
+  if(!leads.length) leads = getLeadsSync();
   if(!leads.length){ toast('Nenhum lead para importar!','warn'); return; }
-  const emails = leads.filter(l=>l.email).map(l=>({ email: l.email, name: l.name||'', source: 'lead', tags: [l.tool||'site'].filter(Boolean) }));
+
+  function langFromIdioma(idioma){
+    if(!idioma) return 'en';
+    const code = idioma.toLowerCase().split('-')[0];
+    return ['pt','en','es','fr','de','it','ar'].includes(code) ? code : 'en';
+  }
+
   let imported=0, skipped=0;
-  for(const sub of emails){
-    const { error } = await db.from('email_subscribers').upsert({ email: sub.email, name: sub.name, source: sub.source, tags: sub.tags },{ onConflict:'email', ignoreDuplicates:true });
+  for(const l of leads){
+    if(!l.email) continue;
+    const { error } = await db.from('email_subscribers').upsert({
+      email: l.email, name: l.name||'', source: 'lead',
+      tags: [l.tool||'site'].filter(Boolean),
+      lang: langFromIdioma(l.idioma)
+    },{ onConflict:'email', ignoreDuplicates:true });
     if(!error) imported++; else skipped++;
   }
-  toast(`${imported} subscribers importados, ${skipped} já existiam.`);
+  toast(`${imported} subscribers importados, ${skipped} ja existiam.`);
   await loadEmailStats();
 }
 
