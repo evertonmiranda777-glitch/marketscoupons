@@ -81,7 +81,7 @@ module.exports = async (req, res) => {
             'api-key': BREVO_KEY,
           },
           body: JSON.stringify({
-            sender: { name: 'Markets Coupons', email: 'noreply@marketscoupons.com' },
+            sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
             to: [{ email: sub.email, name: sub.name || '' }],
             subject: `🔥 ${firms[0].name} com ${firms[0].discount}% OFF + mais ofertas!`,
             htmlContent: htmlContent.replace(/{nome}/g, sub.name || 'Trader'),

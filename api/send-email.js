@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields: to, subject, htmlContent or textContent' });
   }
 
-  const senderInfo = sender || { name: 'Markets Coupons', email: 'noreply@marketscoupons.com' };
+  const senderInfo = sender || { name: 'Markets Coupons', email: 'offers@marketscoupons.com' };
 
   // Brevo: batch send (max 50 per request, we chunk)
   const results = [];
