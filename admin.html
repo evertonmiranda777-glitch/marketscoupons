@@ -2452,18 +2452,24 @@ function buildPromoHtml(f, lang='pt'){
   const FI = "'Inter',Arial,sans-serif";
   const B1 = '1px solid #1C2535';
   const HS = `font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;font-family:${FI};color:#3D4F63;`;
+  // Column widths — locked grid for pixel-perfect alignment
+  const WA = hasPlans ? '14%' : '22%';  // Conta
+  const WG = '12%';                      // Meta (goal)
+  const WD = '13%';                      // Drawdown
+  const WP = hasPlans ? '16%' : '20%';  // Price (discounted)
+  const WO = hasPlans ? '11%' : '14%';  // Original (strikethrough)
 
   // ── DUAL PRICE ROWS — 7 cols: Conta | Meta | DD | n | o | n2 | o2 ──
   const buildDualPriceRows = () => prices.map(r => {
     const plan = plans.find(p => p.size === r.a);
     return `<tr>
-      <td style="padding:5px 6px;border-top:${B1};color:#EDF2F7;font-weight:700;font-size:12px;font-family:${FI};white-space:nowrap;">${r.a}</td>
-      ${hasPlans && plan ? `<td style="padding:5px 4px;border-top:${B1};text-align:right;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n2||''}</td>
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o2||''}</td>
+      <td width="${WA}" style="width:${WA};padding:5px 6px;border-top:${B1};color:#EDF2F7;font-weight:700;font-size:12px;font-family:${FI};white-space:nowrap;">${r.a}</td>
+      ${hasPlans && plan ? `<td width="${WG}" style="width:${WG};padding:5px 4px;border-top:${B1};text-align:right;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
+      <td width="${WD}" style="width:${WD};padding:5px 4px;border-top:${B1};text-align:right;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
+      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
+      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
+      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n2||''}</td>
+      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o2||''}</td>
     </tr>`;
   }).join('');
 
@@ -2471,11 +2477,11 @@ function buildPromoHtml(f, lang='pt'){
   const buildSinglePriceRows = () => prices.map(r => {
     const plan = plans.find(p => p.size === r.a);
     return `<tr>
-      <td style="padding:5px 6px;border-top:${B1};color:#EDF2F7;font-weight:700;font-size:12px;font-family:${FI};white-space:nowrap;">${r.a}</td>
-      ${hasPlans && plan ? `<td style="padding:5px 4px;border-top:${B1};text-align:right;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
-      <td style="padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
+      <td width="${WA}" style="width:${WA};padding:5px 6px;border-top:${B1};color:#EDF2F7;font-weight:700;font-size:12px;font-family:${FI};white-space:nowrap;">${r.a}</td>
+      ${hasPlans && plan ? `<td width="${WG}" style="width:${WG};padding:5px 4px;border-top:${B1};text-align:right;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
+      <td width="${WD}" style="width:${WD};padding:5px 4px;border-top:${B1};text-align:right;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
+      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
+      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
     </tr>`;
   }).join('');
 
@@ -2607,28 +2613,28 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
       <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;font-family:'Inter',Arial,sans-serif;">${et('prices_title')}</div>
     </td></tr>
     <tr><td style="padding:0 8px 14px;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;table-layout:fixed;">
         ${hasDualPrices ? `
         <tr bgcolor="#141B27" style="background:#141B27;">
-          <th rowspan="2" style="padding:5px 6px;text-align:left;${HS}vertical-align:middle;">${et('col_account')}</th>
-          ${hasPlans ? `<th rowspan="2" style="padding:5px 4px;text-align:right;${HS}vertical-align:middle;">${et('col_goal')}</th>
-          <th rowspan="2" style="padding:5px 4px;text-align:right;${HS}vertical-align:middle;">${et('col_dd')}</th>` : ''}
-          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#3B82F6;border-bottom:${B1};">${pTypes[0]||''}</th>
-          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#22C55E;border-bottom:${B1};">${pTypes[1]||''}</th>
+          <th rowspan="2" width="${WA}" style="width:${WA};padding:5px 6px;text-align:left;${HS}vertical-align:middle;">${et('col_account')}</th>
+          ${hasPlans ? `<th rowspan="2" width="${WG}" style="width:${WG};padding:5px 4px;text-align:right;${HS}vertical-align:middle;">${et('col_goal')}</th>
+          <th rowspan="2" width="${WD}" style="width:${WD};padding:5px 4px;text-align:right;${HS}vertical-align:middle;">${et('col_dd')}</th>` : ''}
+          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#3B82F6;font-size:9px;border-bottom:${B1};">${pTypes[0]||''}</th>
+          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#22C55E;font-size:9px;border-bottom:${B1};">${pTypes[1]||''}</th>
         </tr>
         <tr bgcolor="#141B27" style="background:#141B27;">
-          <th style="padding:3px 4px;text-align:right;${HS}font-size:7px;">${et('col_price')}</th>
-          <th style="padding:3px 4px;text-align:right;${HS}font-size:7px;">${et('col_original')}</th>
-          <th style="padding:3px 4px;text-align:right;${HS}font-size:7px;">${et('col_price')}</th>
-          <th style="padding:3px 4px;text-align:right;${HS}font-size:7px;">${et('col_original')}</th>
+          <th width="${WP}" style="width:${WP};padding:4px 4px;text-align:right;${HS}">${et('col_price')}</th>
+          <th width="${WO}" style="width:${WO};padding:4px 4px;text-align:right;${HS}">${et('col_original')}</th>
+          <th width="${WP}" style="width:${WP};padding:4px 4px;text-align:right;${HS}">${et('col_price')}</th>
+          <th width="${WO}" style="width:${WO};padding:4px 4px;text-align:right;${HS}">${et('col_original')}</th>
         </tr>
         ` : `
         <tr bgcolor="#141B27" style="background:#141B27;">
-          <th style="padding:6px 6px;text-align:left;${HS}">${et('col_account')}</th>
-          ${hasPlans ? `<th style="padding:6px 4px;text-align:right;${HS}">${et('col_goal')}</th>
-          <th style="padding:6px 4px;text-align:right;${HS}">${et('col_dd')}</th>` : ''}
-          <th style="padding:6px 4px;text-align:right;${HS}">${et('col_price')}</th>
-          <th style="padding:6px 4px;text-align:right;${HS}">${et('col_original')}</th>
+          <th width="${WA}" style="width:${WA};padding:6px 6px;text-align:left;${HS}">${et('col_account')}</th>
+          ${hasPlans ? `<th width="${WG}" style="width:${WG};padding:6px 4px;text-align:right;${HS}">${et('col_goal')}</th>
+          <th width="${WD}" style="width:${WD};padding:6px 4px;text-align:right;${HS}">${et('col_dd')}</th>` : ''}
+          <th width="${WP}" style="width:${WP};padding:6px 4px;text-align:right;${HS}">${et('col_price')}</th>
+          <th width="${WO}" style="width:${WO};padding:6px 4px;text-align:right;${HS}">${et('col_original')}</th>
         </tr>
         `}
         ${hasDualPrices ? buildDualPriceRows() : buildSinglePriceRows()}
