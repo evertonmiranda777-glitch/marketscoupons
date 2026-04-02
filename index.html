@@ -6817,7 +6817,7 @@ function renderPolicies(){
 }
 function strs(r){return'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));}
 function firmIco(f,size='38px',fontSize='14px'){
-  if(f.icon_url) return `<div style="width:${size};height:${size};border-radius:8px;overflow:hidden;flex-shrink:0;background:${f.bg};display:flex;align-items:center;justify-content:center;"><img src="${f.icon_url}" alt="${f.name}" style="width:100%;height:100%;object-fit:contain;"></div>`;
+  if(f.icon_url) return `<div style="width:${size};height:${size};border-radius:8px;overflow:hidden;flex-shrink:0;background:${f.bg};display:flex;align-items:center;justify-content:center;"><img src="${f.icon_url}" alt="${f.name}" style="width:100%;height:100%;object-fit:cover;"></div>`;
   return `<div style="width:${size};height:${size};border-radius:8px;background:${f.bg};color:${f.color};display:flex;align-items:center;justify-content:center;font-size:${fontSize};font-weight:800;flex-shrink:0;">${f.icon}</div>`;
 }
 
@@ -8228,7 +8228,7 @@ function openD(id){
   const icoEl = document.getElementById('d-ico');
   if(f.icon_url) {
     icoEl.style.cssText=`background:${f.bg};`;
-    icoEl.innerHTML=`<img src="${f.icon_url}" alt="${f.name}" style="width:100%;height:100%;object-fit:contain;">`;
+    icoEl.innerHTML=`<img src="${f.icon_url}" alt="${f.name}" style="width:100%;height:100%;object-fit:cover;">`;
   } else {
     icoEl.style.cssText=`background:${f.bg};color:${f.color};`;
     icoEl.textContent=f.icon;
