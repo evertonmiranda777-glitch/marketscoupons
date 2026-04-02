@@ -2452,8 +2452,11 @@ function buildPromoHtml(f, lang='pt'){
   const FI = "'Inter',Arial,sans-serif";
   // Site pattern: separate cells for discounted (green) and original (strikethrough)
   const buildDualPriceRows = () => prices.map(r => {
+    const plan = plans.find(p => p.size === r.a);
     return `<tr>
       <td style="padding:8px 10px;border-top:1px solid #1C2535;color:#EDF2F7;font-weight:600;font-size:13px;font-family:${FI};">${r.a}</td>
+      ${hasPlans && plan ? `<td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#F0B429;font-size:13px;font-weight:700;font-family:${FI};">${plan.goal||''}</td>
+      <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#7A8FA6;font-size:12px;font-family:${FI};">${plan.maxDD||''}</td>` : ''}
       <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n}</td>
       <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o||''}</td>
       <td style="padding:8px 10px;border-top:1px solid #1C2535;text-align:right;color:#22C55E;font-weight:800;font-size:14px;font-family:${FI};">${r.n2||''}</td>
@@ -2605,6 +2608,8 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
         ${hasDualPrices ? `
         <tr bgcolor="#141B27" style="background:#141B27;">
           <th rowspan="2" style="padding:7px 10px;text-align:left;color:#3D4F63;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;font-family:${FI};vertical-align:middle;">${et('col_account')}</th>
+          ${hasPlans ? `<th rowspan="2" style="padding:7px 10px;text-align:right;color:#3D4F63;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;font-family:${FI};vertical-align:middle;">${et('profit_target')}</th>
+          <th rowspan="2" style="padding:7px 10px;text-align:right;color:#3D4F63;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;font-family:${FI};vertical-align:middle;">${et('max_dd')}</th>` : ''}
           <th colspan="2" style="padding:7px 10px;text-align:center;color:#3B82F6;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;font-family:${FI};border-bottom:1px solid #1C2535;">${pTypes[0]||''}</th>
           <th colspan="2" style="padding:7px 10px;text-align:center;color:#22C55E;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;font-family:${FI};border-bottom:1px solid #1C2535;">${pTypes[1]||''}</th>
         </tr>
