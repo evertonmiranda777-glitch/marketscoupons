@@ -1280,6 +1280,7 @@ function adminGo(page,btn){
  document.getElementById('page-'+page).classList.add('active');
  document.querySelectorAll('.nav-tabs-admin .nta').forEach(b=>b.classList.remove('active'));
  if(btn)btn.classList.add('active');
+ location.hash = page;
  renderPage(page);
 }
 function adminGoMobile(page,btn){
@@ -1288,6 +1289,7 @@ function adminGoMobile(page,btn){
  document.getElementById('page-'+page).classList.add('active');
  document.querySelectorAll('#admin-mobile-dd .nta').forEach(b=>b.classList.remove('active'));
  if(btn)btn.classList.add('active');
+ location.hash = page;
  renderPage(page);
 }
 
@@ -1295,9 +1297,20 @@ function adminGoMobile(page,btn){
  INIT
  */
 async function initAdmin(){
-  // Fetch live data from Supabase into local cache
   await refreshFromSupabase();
-  renderPage('overview');
+
+  // Restore last active tab from URL hash
+  const savedPage = location.hash.replace('#','');
+  const startPage = savedPage && document.getElementById('page-'+savedPage) ? savedPage : 'overview';
+  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+startPage).classList.add('active');
+  // Highlight correct nav button
+  const navBtns = [...document.querySelectorAll('.nav-tabs-admin .nta')];
+  navBtns.forEach(b=>b.classList.remove('active'));
+  const matchBtn = navBtns.find(b=>b.getAttribute('onclick')?.includes("'"+startPage+"'"));
+  if(matchBtn) matchBtn.classList.add('active');
+  renderPage(startPage);
+
   updateEmailStats();
   renderTemplatesList();
   renderCampaignLog();
