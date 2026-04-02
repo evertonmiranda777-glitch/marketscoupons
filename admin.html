@@ -7,8 +7,8 @@
 <meta name="googlebot" content="noindex,nofollow">
 <title>MarketsCoupons — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-0VpB0wAYDdhWCEv3+IjT0Z9Kgpvszkf70RFX3ro7l4QR5nywxsMaOpmvZKsfRF8I" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" integrity="sha384-DhxhYObIMeMNGyAG7iK11OHzBIKyEIeRL0ad1iFPAOwZB8iirUlTT0O/WJJUk8+o" crossorigin="anonymous"></script>
 <style>
 :root{
  --bg:#07090D;--sur:#0B0F16;--card:#10151F;--card2:#141B27;
@@ -1213,7 +1213,7 @@ async function doLogin() {
   }
 
   // Role check: only admin users can access
-  const ADMIN_EMAILS = ['evertonmirandabr@gmail.com'];
+  const ADMIN_EMAILS = ['evertonmiranda777@gmail.com','evertonmiranda1183@hotmail.com'];
   if (!ADMIN_EMAILS.includes(data.user.email.toLowerCase())) {
     await db.auth.signOut();
     err.textContent = 'Acesso negado. Este painel é restrito.';
@@ -1262,7 +1262,7 @@ function toggleChgPassModal() {
 document.addEventListener('DOMContentLoaded', async () => {
   initAuthUI();
   const { data: { session } } = await db.auth.getSession();
-  const ADMIN_EMAILS = ['evertonmirandabr@gmail.com'];
+  const ADMIN_EMAILS = ['evertonmiranda777@gmail.com','evertonmiranda1183@hotmail.com'];
   if (session && ADMIN_EMAILS.includes(session.user.email.toLowerCase())) {
     isLoggedIn = true;
     _adminEmail = session.user.email;
