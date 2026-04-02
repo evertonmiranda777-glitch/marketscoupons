@@ -689,11 +689,11 @@ a{text-decoration:none;color:inherit;}
         <div>
           <div style="font-size:13px;font-weight:600;margin-bottom:14px;">Composicao</div>
           <div class="email-composer">
-            <!-- Account selector -->
+            <!-- Provider info -->
             <div class="ec-field">
-              <label>Conta de envio (SMTP)</label>
+              <label>Provedor de envio</label>
               <div id="smtp-accounts-list"></div>
-              <button class="btn-secondary" style="margin-top:8px;font-size:11px;" onclick="addSmtpAccount()">+ Adicionar conta</button>
+              <button class="btn-secondary" style="margin-top:8px;font-size:11px;" onclick="importLeadsAsSubscribers()">Importar leads como subscribers</button>
             </div>
 
             <div class="ec-field">
@@ -750,7 +750,7 @@ a{text-decoration:none;color:inherit;}
  <div class="ss-item"><div class="ss-lbl">Campanhas</div><div class="ss-val" id="ss-camp">0</div></div>
  <div class="ss-item"><div class="ss-lbl">Enviados</div><div class="ss-val g" id="ss-sent">0</div></div>
  <div class="ss-item"><div class="ss-lbl">Templates</div><div class="ss-val b" id="ss-tmpl">0</div></div>
- <div class="ss-item"><div class="ss-lbl">Total Leads</div><div class="ss-val y" id="ss-leads">0</div></div>
+ <div class="ss-item"><div class="ss-lbl">Subscribers</div><div class="ss-val y" id="ss-leads">0</div></div>
  </div>
 
  <!-- Saved templates -->
@@ -759,11 +759,12 @@ a{text-decoration:none;color:inherit;}
  <div id="templates-list"></div>
  </div>
 
- <!-- Resend auto log -->
+ <!-- Subscribers info -->
  <div style="margin-top:16px;">
- <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;"> Resend — Enviados Automaticamente</div>
- <div id="resend-log"></div>
- <div style="margin-top:8px;" id="resend-key-status"></div>
+ <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;">Brevo — Envio Automatico a cada 3 dias</div>
+ <div style="font-size:11px;color:var(--t3);padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;">
+   Promo automatica configurada via cron. Envia as 3 melhores ofertas ativas para todos os subscribers a cada 3 dias.
+ </div>
  </div>
 
  <!-- Campaign log -->
@@ -1282,7 +1283,7 @@ function renderPage(p){
       updateEmailStats();
       renderTemplatesList();
       renderCampaignLog();
-      setTimeout(function(){ renderSmtpAccounts(); renderResendLog(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'analysis-vip':   loadVipList(); break;
@@ -1946,72 +1947,74 @@ function previewEmail(){
  toast('Preview gerado!');
 }
 
-function saveTemplate(){
+async function saveTemplate(){
  const subject=document.getElementById('em-subject')?.value?.trim();
  const body=document.getElementById('em-body')?.value?.trim();
  if(!subject||!body){toast('Preencha assunto e corpo!','warn');return;}
- const templates=getTemplates();
- templates.push({subject,body,ts:new Date().toISOString()});
- localStorage.setItem('mc_email_templates',JSON.stringify(templates));
- renderTemplatesList();
- updateEmailStats();
- toast(' Template salvo!');
+ const name = prompt('Nome do template:') || subject.slice(0,30);
+ await db.from('email_templates').insert({ name, subject, body });
+ await renderTemplatesList();
+ await loadEmailStats();
+ toast('Template salvo!');
 }
 
-function loadTemplate(idx){
- const t=getTemplates()[idx];
- if(!t)return;
- document.getElementById('em-subject').value=t.subject;
- document.getElementById('em-body').value=t.body;
+async function loadTemplate(id){
+ const { data } = await db.from('email_templates').select('*').eq('id',id).maybeSingle();
+ if(!data)return;
+ document.getElementById('em-subject').value=data.subject;
+ document.getElementById('em-body').value=data.body;
  toast('Template carregado!');
 }
 
-function deleteTemplate(idx){
- const templates=getTemplates();
- templates.splice(idx,1);
- localStorage.setItem('mc_email_templates',JSON.stringify(templates));
- renderTemplatesList();
- updateEmailStats();
+async function deleteTemplate(id){
+ await db.from('email_templates').delete().eq('id',id);
+ await renderTemplatesList();
+ await loadEmailStats();
 }
 
-function renderTemplatesList(){
- const templates=getTemplates();
+async function renderTemplatesList(){
+ const { data: templates } = await db.from('email_templates').select('*').order('created_at',{ascending:false});
  const el=document.getElementById('templates-list');
  if(!el)return;
- el.innerHTML=templates.length?templates.map((t,i)=>`
+ el.innerHTML=(templates||[]).length?templates.map(t=>`
  <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
  <div>
- <div style="font-size:12px;font-weight:600;">${t.subject}</div>
- <div style="font-size:10px;color:var(--t3);">${new Date(t.ts).toLocaleDateString('pt-BR')}</div>
+ <div style="font-size:12px;font-weight:600;">${t.name||t.subject}</div>
+ <div style="font-size:10px;color:var(--t3);">${t.subject} · ${new Date(t.created_at).toLocaleDateString('pt-BR')}</div>
  </div>
  <div style="display:flex;gap:5px;">
- <button onclick="loadTemplate(${i})" style="padding:3px 9px;background:var(--gbg);border:1px solid var(--gbr);border-radius:5px;color:var(--gold);font-size:10px;font-weight:600;cursor:pointer;">Usar</button>
- <button onclick="deleteTemplate(${i})" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;"></button>
+ <button onclick="loadTemplate('${t.id}')" style="padding:3px 9px;background:var(--gbg);border:1px solid var(--gbr);border-radius:5px;color:var(--gold);font-size:10px;font-weight:600;cursor:pointer;">Usar</button>
+ <button onclick="deleteTemplate('${t.id}')" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
  </div>
  </div>`).join(''):'<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhum template salvo.</div>';
 }
 
-function renderCampaignLog(){
- const campaigns=[...getCampaigns()].reverse().slice(0,10);
+async function renderCampaignLog(){
+ const { data: campaigns } = await db.from('email_logs').select('*').order('created_at',{ascending:false}).limit(10);
  const el=document.getElementById('campaigns-log');
  if(!el)return;
- el.innerHTML=campaigns.length?campaigns.map(c=>`
+ el.innerHTML=(campaigns||[]).length?campaigns.map(c=>`
  <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
  <div>
  <div style="font-size:12px;font-weight:600;">${c.subject}</div>
- <div style="font-size:10px;color:var(--t3);">${new Date(c.ts).toLocaleString('pt-BR')} · ${c.leads} leads · ${c.segment}</div>
+ <div style="font-size:10px;color:var(--t3);">${new Date(c.created_at).toLocaleString('pt-BR')} · ${c.recipients} destinatarios · ${c.sent_by}</div>
  </div>
- <span style="font-size:10px;color:var(--green);font-weight:700;"> Enviado</span>
+ <span style="font-size:10px;color:${c.status==='sent'?'var(--green)':c.status==='failed'?'var(--red)':'var(--gold)'};font-weight:700;">${c.status==='sent'?'Enviado':c.status==='failed'?'Falhou':'Parcial'}</span>
  </div>`).join(''):'<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma campanha enviada.</div>';
 }
 
-function updateEmailStats(){
-  document.getElementById('ss-camp').textContent=getCampaigns().length;
-  var autoSent=(typeof getResendLog==='function'?getResendLog():[]).length;
-  document.getElementById('ss-sent').textContent=getCampaigns().reduce(function(s,c){return s+(c.leads||0);},0)+autoSent;
-  document.getElementById('ss-tmpl').textContent=getTemplates().length;
-  document.getElementById('ss-leads').textContent=getLeadsSync().length;
+async function loadEmailStats(){
+  const { count: campCount } = await db.from('email_logs').select('*',{count:'exact',head:true});
+  const { data: logs } = await db.from('email_logs').select('recipients');
+  const totalSent = (logs||[]).reduce((s,l)=>s+(l.recipients||0),0);
+  const { count: tmplCount } = await db.from('email_templates').select('*',{count:'exact',head:true});
+  const { count: subCount } = await db.from('email_subscribers').select('*',{count:'exact',head:true}).eq('status','active');
+  document.getElementById('ss-camp').textContent=campCount||0;
+  document.getElementById('ss-sent').textContent=totalSent;
+  document.getElementById('ss-tmpl').textContent=tmplCount||0;
+  document.getElementById('ss-leads').textContent=subCount||0;
 }
+function updateEmailStats(){ loadEmailStats(); }
 
 function composeToLead(email,name){
  closeLeadModal();
@@ -2142,125 +2145,104 @@ function exportLeadsCSV(){
 }
 
 
-/* ═══ SMTP ACCOUNT MANAGER ═══ */
-function getSmtpAccounts(){ return JSON.parse(localStorage.getItem('mc_smtp_accounts')||'[]'); }
+/* ═══ BREVO EMAIL ENGINE ═══ */
 
 function renderSmtpAccounts(){
-  const accounts = getSmtpAccounts();
   const el = document.getElementById('smtp-accounts-list');
   if(!el) return;
-  if(!accounts.length){
-    el.innerHTML='<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma conta configurada. Adicione abaixo.</div>';
-    return;
-  }
-  el.innerHTML = accounts.map((acc,i)=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
+  el.innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
       <div>
-        <div style="font-size:13px;font-weight:600;">${acc.email}</div>
-        <div style="font-size:10px;color:var(--t3);">${acc.label||'Conta '+(i+1)} &middot; Enviados hoje: ${getSmtpSentToday(acc.email)}/100</div>
-        <div style="margin-top:4px;height:3px;background:var(--b1);border-radius:2px;overflow:hidden;width:120px;">
-          <div style="height:100%;width:${Math.min(100,getSmtpSentToday(acc.email))}%;background:${getSmtpSentToday(acc.email)>=90?'var(--red)':getSmtpSentToday(acc.email)>=70?'var(--gold)':'var(--green)'};"></div>
-        </div>
+        <div style="font-size:13px;font-weight:600;">Brevo (Sendinblue)</div>
+        <div style="font-size:10px;color:var(--t3);">300 emails/dia · API configurada no Vercel</div>
       </div>
-      <div style="display:flex;gap:5px;">
-        <button onclick="setActiveSmtp(${i})" style="padding:3px 9px;background:${acc.active?'var(--gbg)':'transparent'};border:1px solid ${acc.active?'var(--gbr)':'var(--b2)'};border-radius:5px;color:${acc.active?'var(--gold)':'var(--t2)'};font-size:10px;font-weight:600;cursor:pointer;">${acc.active?'Ativa':'Ativar'}</button>
-        <button onclick="deleteSmtpAccount(${i})" style="padding:3px 7px;background:none;border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">X</button>
-      </div>
-    </div>`).join('');
-}
-
-function getSmtpSentToday(email){
-  const log = JSON.parse(localStorage.getItem('mc_smtp_sent_log')||'{}');
-  const today = new Date().toLocaleDateString('pt-BR');
-  return (log[email]?.[today]) || 0;
+    </div>`;
 }
 
 function addSmtpAccount(){
-  const email = prompt('E-mail da conta SMTP:');
-  if(!email || !email.includes('@')){ toast('E-mail invalido','error'); return; }
-  const label = prompt('Rotulo para esta conta (ex: Conta Principal):') || '';
-  const accounts = getSmtpAccounts();
-  if(accounts.find(a=>a.email===email)){ toast('Conta ja existe!','warn'); return; }
-  accounts.push({ email, label, active: accounts.length===0, dailyLimit:100, ts: new Date().toISOString() });
-  localStorage.setItem('mc_smtp_accounts', JSON.stringify(accounts));
-  renderSmtpAccounts();
-  toast('Conta adicionada!');
+  toast('Brevo já está configurado como provedor de email. Gerencie em app.brevo.com','info');
 }
 
-function setActiveSmtp(idx){
-  const accounts = getSmtpAccounts();
-  accounts.forEach((a,i)=>a.active=i===idx);
-  localStorage.setItem('mc_smtp_accounts', JSON.stringify(accounts));
-  renderSmtpAccounts();
-}
-
-function deleteSmtpAccount(idx){
-  const accounts = getSmtpAccounts();
-  accounts.splice(idx,1);
-  if(accounts.length && !accounts.find(a=>a.active)) accounts[0].active=true;
-  localStorage.setItem('mc_smtp_accounts', JSON.stringify(accounts));
-  renderSmtpAccounts();
-}
-
-function getNextAvailableSmtp(){
-  const accounts = getSmtpAccounts().filter(a => getSmtpSentToday(a.email) < (a.dailyLimit||100));
-  // Return active first, then any available
-  return accounts.find(a=>a.active) || accounts[0] || null;
-}
-
-function incrementSmtpSent(email, count=1){
-  const log = JSON.parse(localStorage.getItem('mc_smtp_sent_log')||'{}');
-  const today = new Date().toLocaleDateString('pt-BR');
-  if(!log[email]) log[email]={};
-  log[email][today] = (log[email][today]||0) + count;
-  localStorage.setItem('mc_smtp_sent_log', JSON.stringify(log));
-}
-
-function sendEmailsSmtp(){
+async function sendEmailsSmtp(){
   const subject = document.getElementById('em-subject')?.value?.trim();
   const body    = document.getElementById('em-body')?.value?.trim();
   if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
 
-  const accounts = getSmtpAccounts();
-  if(!accounts.length){ toast('Adicione ao menos uma conta SMTP!','warn'); return; }
-
   const leads = getSegmentedLeads();
   if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
 
-  const activeAcc = getNextAvailableSmtp();
-  if(!activeAcc){ toast('Limite diario atingido em todas as contas!','error'); return; }
+  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?`)) return;
 
-  const sentToday = getSmtpSentToday(activeAcc.email);
-  const remaining = (activeAcc.dailyLimit||100) - sentToday;
-  if(remaining <= 0){ toast('Limite diario da conta ativa atingido. Ative outra conta.','warn'); return; }
+  const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
+  if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
 
-  const toSend = leads.slice(0, remaining);
-  const emailList = toSend.map(l=>l.email).filter(Boolean);
+  try {
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
 
-  // Build mailto (browser native — for real SMTP integrate backend or Resend)
-  const batchSize = Math.min(50, emailList.length);
-  const mailto = `mailto:${emailList.slice(0,batchSize).join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.replace(/{nome}/g,'Trader').replace(/{cupom}/g,'MARKET').replace(/{link}/g,'https://marketscoupons.com'))}`;
+    const resp = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        to: leads.map(l => ({ email: l.email, name: l.name || '', cupom: 'MARKET89', firma: '' })),
+        subject: subject,
+        textContent: body,
+        tags: ['campaign-manual'],
+      }),
+    });
 
-  // Log campaign
-  const campaigns = getCampaigns();
-  campaigns.push({ subject, leads:toSend.length, account:activeAcc.email, ts:new Date().toISOString(), segment:emailSegments.join(',') });
-  localStorage.setItem('mc_campaigns', JSON.stringify(campaigns));
+    const data = await resp.json();
 
-  // Update sent counter
-  incrementSmtpSent(activeAcc.email, toSend.length);
+    if(data.success){
+      // Log to Supabase
+      await db.from('email_logs').insert({
+        campaign_name: subject.slice(0,50),
+        subject: subject,
+        body: body,
+        recipients: data.total,
+        status: data.failed === 0 ? 'sent' : (data.sent === 0 ? 'failed' : 'partial'),
+        sent_by: 'admin',
+        provider: 'brevo',
+        brevo_response: { sent: data.sent, failed: data.failed },
+      });
 
-  window.open(mailto);
-  toast('Abrindo cliente de e-mail para '+toSend.length+' destinatarios via '+activeAcc.email);
-  renderSmtpAccounts();
-  updateEmailStats();
-  renderCampaignLog();
+      toast(`${data.sent} emails enviados com sucesso!` + (data.failed ? ` (${data.failed} falharam)` : ''));
+      await loadEmailStats();
+      await renderCampaignLog();
+    } else {
+      toast('Erro ao enviar: '+(data.error||'desconhecido'),'error');
+    }
+  } catch(err){
+    toast('Erro de conexao: '+err.message,'error');
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent='Enviar e-mails'; }
+  }
 }
 
-/* renderPage patch2 removed */
+/* ═══ EMAIL SUBSCRIBERS (Supabase) ═══ */
+async function loadSubscribers(){
+  const { data } = await db.from('email_subscribers').select('*').eq('status','active').order('created_at',{ascending:false});
+  return data || [];
+}
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  renderSmtpAccounts();
-});
+async function importLeadsAsSubscribers(){
+  const leads = getLeadsSync();
+  if(!leads.length){ toast('Nenhum lead para importar!','warn'); return; }
+  const emails = leads.filter(l=>l.email).map(l=>({ email: l.email, name: l.name||'', source: 'lead', tags: [l.tool||'site'].filter(Boolean) }));
+  let imported=0, skipped=0;
+  for(const sub of emails){
+    const { error } = await db.from('email_subscribers').upsert({ email: sub.email, name: sub.name, source: sub.source, tags: sub.tags },{ onConflict:'email', ignoreDuplicates:true });
+    if(!error) imported++; else skipped++;
+  }
+  toast(`${imported} subscribers importados, ${skipped} já existiam.`);
+  await loadEmailStats();
+}
+
+/* ═══ EMAIL TEMPLATES (Supabase) ═══ */
 
 
 /* ═══ LOYALTY ADMIN ENGINE ═══ */
