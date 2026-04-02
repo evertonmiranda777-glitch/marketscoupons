@@ -1,15 +1,18 @@
-// Vercel Serverless Function — Generate dark email image for prop firms
+// Vercel Edge Function — Generate dark email image for prop firms
 // GET /api/email-image?firm=e2t
-// Returns a PNG image (1200x auto) that can be used in emails
+// Returns a PNG image (600px wide) for use in hybrid emails
 
-const { ImageResponse } = require('@vercel/og');
+import { ImageResponse } from '@vercel/og';
+
+export const config = { runtime: 'edge' };
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
-module.exports = async (req, res) => {
-  const firmId = req.query.firm;
-  if (!firmId) return res.status(400).json({ error: 'Missing ?firm= parameter' });
+export default async function handler(req) {
+  const { searchParams } = new URL(req.url);
+  const firmId = searchParams.get('firm');
+  if (!firmId) return new Response(JSON.stringify({ error: 'Missing ?firm= parameter' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
 
   // Fetch firm from Supabase
   const resp = await fetch(
@@ -18,7 +21,7 @@ module.exports = async (req, res) => {
   );
   const firms = await resp.json();
   const f = firms?.[0];
-  if (!f) return res.status(404).json({ error: 'Firm not found' });
+  if (!f) return new Response(JSON.stringify({ error: 'Firm not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
 
   const color = f.color || '#F0B429';
   const lt = f.discount_type === 'lifetime' ? ' Lifetime' : '';
@@ -27,8 +30,9 @@ module.exports = async (req, res) => {
   const perks = f.perks || [];
   const tpScore = f.trustpilot_score || f.rating;
   const tpReviews = f.trustpilot_reviews || f.reviews;
+  const stars = '★'.repeat(Math.round(tpScore || 0));
 
-  const image = new ImageResponse(
+  return new ImageResponse(
     {
       type: 'div',
       props: {
@@ -69,7 +73,7 @@ module.exports = async (req, res) => {
           // Divider
           { type: 'div', props: { style: { height: '1px', backgroundColor: '#1C2535', margin: '0 32px' } } },
 
-          // Hero
+          // Hero card
           {
             type: 'div',
             props: {
@@ -107,7 +111,7 @@ module.exports = async (req, res) => {
                             // Description
                             { type: 'div', props: { style: { marginTop: '12px', color: '#7A8FA6', fontSize: '13px', lineHeight: '1.6', maxWidth: '460px' }, children: f.description || '' } },
                             // Trustpilot
-                            tpScore ? { type: 'div', props: { style: { marginTop: '10px', color: '#7A8FA6', fontSize: '11px' }, children: `★★★★★ ${tpScore}/5 · ${(tpReviews||0).toLocaleString()} reviews no Trustpilot` } } : null,
+                            tpScore ? { type: 'div', props: { style: { marginTop: '10px', color: '#7A8FA6', fontSize: '11px' }, children: `${stars} ${tpScore}/5 · ${(tpReviews||0).toLocaleString()} reviews no Trustpilot` } } : null,
                           ].filter(Boolean),
                         },
                       },
@@ -161,7 +165,7 @@ module.exports = async (req, res) => {
                   children: [
                     { type: 'div', props: { style: { flex: 1, textAlign: 'center', padding: '16px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center' }, children: [
                       { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.7px' }, children: 'Profit Split' } },
-                      { type: 'div', props: { style: { color: '#22C55E', fontSize: '20px', fontWeight: 800, marginTop: '4px' }, children: f.split || '—' } },
+                      { type: 'div', props: { style: { color: '#22C55E', fontSize: '20px', fontWeight: 800, marginTop: '4px' }, children: f.split || '' } },
                     ] } },
                     { type: 'div', props: { style: { flex: 1, textAlign: 'center', padding: '16px 8px', borderLeft: '1px solid #1C2535', borderRight: '1px solid #1C2535', display: 'flex', flexDirection: 'column', alignItems: 'center' }, children: [
                       { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.7px' }, children: 'Desconto' } },
@@ -169,7 +173,7 @@ module.exports = async (req, res) => {
                     ] } },
                     { type: 'div', props: { style: { flex: 1, textAlign: 'center', padding: '16px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center' }, children: [
                       { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.7px' }, children: 'Drawdown' } },
-                      { type: 'div', props: { style: { color: '#EDF2F7', fontSize: '20px', fontWeight: 800, marginTop: '4px' }, children: f.dd_pct || '—' } },
+                      { type: 'div', props: { style: { color: '#EDF2F7', fontSize: '20px', fontWeight: 800, marginTop: '4px' }, children: f.dd_pct || '' } },
                     ] } },
                   ],
                 },
@@ -279,7 +283,7 @@ module.exports = async (req, res) => {
             props: {
               style: { padding: '24px 32px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center' },
               children: [
-                { type: 'div', props: { style: { borderTop: '1px solid #1C2535', width: '100%', paddingTop: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' } , children: [
+                { type: 'div', props: { style: { borderTop: '1px solid #1C2535', width: '100%', paddingTop: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }, children: [
                   {
                     type: 'div',
                     props: {
@@ -309,10 +313,4 @@ module.exports = async (req, res) => {
       },
     }
   );
-
-  // Convert to buffer and send
-  const buffer = Buffer.from(await image.arrayBuffer());
-  res.setHeader('Content-Type', 'image/png');
-  res.setHeader('Cache-Control', 'public, max-age=3600');
-  res.send(buffer);
-};
+}

@@ -3297,18 +3297,23 @@ async function loadPromoTemplate(firmId){
   emailPromoFirm = f;
   emailIsHtml = true;
 
-  // Preview in PT
-  const htmlContent = buildPromoHtml(f, 'pt');
+  // Use image-based email (dark PNG generated server-side)
+  const imageUrl = `https://www.marketscoupons.com/api/email-image?firm=${firmId}`;
+  _capturedImageUrl = imageUrl;
+
   document.getElementById('em-subject').value = subject;
   document.getElementById('em-body').value = '__PROMO_HTML__';
 
   document.getElementById('em-preview').innerHTML = `
     <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML Rico Multilingue (7 idiomas)</strong></div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Cada destinatario recebe no seu idioma (pt, en, es, fr, de, it, ar)</div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">IMAGEM CLICAVEL (dark) + botao HTML</strong></div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Imagem dark gerada no servidor — Gmail nao inverte</div>
     <hr style="border-color:var(--b1);margin-bottom:12px;">
-    <iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${htmlContent.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#F2F2F2;"></iframe>`;
-  toast(f.name+' — template promo multilingue carregado!');
+    <div style="text-align:center;background:#07090D;border-radius:8px;padding:16px;border:1px solid var(--b1);">
+      <img src="${imageUrl}" style="max-width:100%;border-radius:6px;" onerror="this.parentElement.innerHTML='<div style=\\'color:#F87171;padding:40px;\\'>Erro ao carregar imagem. Faca deploy primeiro.</div>'">
+    </div>
+    <div style="font-size:10px;color:var(--t3);margin-top:8px;word-break:break-all;">${imageUrl}</div>`;
+  toast(f.name+' — template imagem dark carregado!');
 }
 
 /* renderPage patch1 removed */
