@@ -2464,12 +2464,12 @@ function buildPromoHtml(f, lang='pt'){
     const plan = plans.find(p => p.size === r.a);
     return `<tr>
       <td width="${WA}" style="width:${WA};padding:5px 6px;border-top:${B1};color:#EDF2F7;font-weight:700;font-size:12px;font-family:${FI};white-space:nowrap;">${r.a}</td>
-      ${hasPlans && plan ? `<td width="${WG}" style="width:${WG};padding:5px 4px;border-top:${B1};text-align:right;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
-      <td width="${WD}" style="width:${WD};padding:5px 4px;border-top:${B1};text-align:right;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
-      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
-      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
-      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n2||''}</td>
-      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o2||''}</td>
+      ${hasPlans && plan ? `<td width="${WG}" style="width:${WG};padding:5px 4px;border-top:${B1};text-align:center;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
+      <td width="${WD}" style="width:${WD};padding:5px 4px;border-top:${B1};text-align:center;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
+      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:center;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
+      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:center;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
+      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:center;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n2||''}</td>
+      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:center;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o2||''}</td>
     </tr>`;
   }).join('');
 
@@ -2478,10 +2478,10 @@ function buildPromoHtml(f, lang='pt'){
     const plan = plans.find(p => p.size === r.a);
     return `<tr>
       <td width="${WA}" style="width:${WA};padding:5px 6px;border-top:${B1};color:#EDF2F7;font-weight:700;font-size:12px;font-family:${FI};white-space:nowrap;">${r.a}</td>
-      ${hasPlans && plan ? `<td width="${WG}" style="width:${WG};padding:5px 4px;border-top:${B1};text-align:right;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
-      <td width="${WD}" style="width:${WD};padding:5px 4px;border-top:${B1};text-align:right;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
-      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:right;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
-      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:right;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
+      ${hasPlans && plan ? `<td width="${WG}" style="width:${WG};padding:5px 4px;border-top:${B1};text-align:center;color:#F0B429;font-weight:600;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.goal||''}</td>
+      <td width="${WD}" style="width:${WD};padding:5px 4px;border-top:${B1};text-align:center;color:#EF4444;font-size:11px;font-family:${FI};white-space:nowrap;">${plan.maxDD||''}</td>` : ''}
+      <td width="${WP}" style="width:${WP};padding:5px 4px;border-top:${B1};text-align:center;color:#22C55E;font-weight:800;font-size:12px;font-family:${FI};white-space:nowrap;">${r.n}</td>
+      <td width="${WO}" style="width:${WO};padding:5px 4px;border-top:${B1};text-align:center;color:#3D4F63;font-size:10px;text-decoration:line-through;font-family:${FI};white-space:nowrap;">${r.o||''}</td>
     </tr>`;
   }).join('');
 
@@ -2617,24 +2617,24 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
         ${hasDualPrices ? `
         <tr bgcolor="#141B27" style="background:#141B27;">
           <th rowspan="2" width="${WA}" style="width:${WA};padding:5px 6px;text-align:left;${HS}vertical-align:middle;">${et('col_account')}</th>
-          ${hasPlans ? `<th rowspan="2" width="${WG}" style="width:${WG};padding:5px 4px;text-align:right;${HS}vertical-align:middle;">${et('col_goal')}</th>
-          <th rowspan="2" width="${WD}" style="width:${WD};padding:5px 4px;text-align:right;${HS}vertical-align:middle;">${et('col_dd')}</th>` : ''}
+          ${hasPlans ? `<th rowspan="2" width="${WG}" style="width:${WG};padding:5px 4px;text-align:center;${HS}vertical-align:middle;">${et('col_goal')}</th>
+          <th rowspan="2" width="${WD}" style="width:${WD};padding:5px 4px;text-align:center;${HS}vertical-align:middle;">${et('col_dd')}</th>` : ''}
           <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#3B82F6;font-size:9px;border-bottom:${B1};">${pTypes[0]||''}</th>
           <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#22C55E;font-size:9px;border-bottom:${B1};">${pTypes[1]||''}</th>
         </tr>
         <tr bgcolor="#141B27" style="background:#141B27;">
-          <th width="${WP}" style="width:${WP};padding:4px 4px;text-align:right;${HS}">${et('col_price')}</th>
-          <th width="${WO}" style="width:${WO};padding:4px 4px;text-align:right;${HS}">${et('col_original')}</th>
-          <th width="${WP}" style="width:${WP};padding:4px 4px;text-align:right;${HS}">${et('col_price')}</th>
-          <th width="${WO}" style="width:${WO};padding:4px 4px;text-align:right;${HS}">${et('col_original')}</th>
+          <th width="${WP}" style="width:${WP};padding:4px 4px;text-align:center;${HS}">${et('col_price')}</th>
+          <th width="${WO}" style="width:${WO};padding:4px 4px;text-align:center;${HS}">${et('col_original')}</th>
+          <th width="${WP}" style="width:${WP};padding:4px 4px;text-align:center;${HS}">${et('col_price')}</th>
+          <th width="${WO}" style="width:${WO};padding:4px 4px;text-align:center;${HS}">${et('col_original')}</th>
         </tr>
         ` : `
         <tr bgcolor="#141B27" style="background:#141B27;">
           <th width="${WA}" style="width:${WA};padding:6px 6px;text-align:left;${HS}">${et('col_account')}</th>
-          ${hasPlans ? `<th width="${WG}" style="width:${WG};padding:6px 4px;text-align:right;${HS}">${et('col_goal')}</th>
-          <th width="${WD}" style="width:${WD};padding:6px 4px;text-align:right;${HS}">${et('col_dd')}</th>` : ''}
-          <th width="${WP}" style="width:${WP};padding:6px 4px;text-align:right;${HS}">${et('col_price')}</th>
-          <th width="${WO}" style="width:${WO};padding:6px 4px;text-align:right;${HS}">${et('col_original')}</th>
+          ${hasPlans ? `<th width="${WG}" style="width:${WG};padding:6px 4px;text-align:center;${HS}">${et('col_goal')}</th>
+          <th width="${WD}" style="width:${WD};padding:6px 4px;text-align:center;${HS}">${et('col_dd')}</th>` : ''}
+          <th width="${WP}" style="width:${WP};padding:6px 4px;text-align:center;${HS}">${et('col_price')}</th>
+          <th width="${WO}" style="width:${WO};padding:6px 4px;text-align:center;${HS}">${et('col_original')}</th>
         </tr>
         `}
         ${hasDualPrices ? buildDualPriceRows() : buildSinglePriceRows()}
