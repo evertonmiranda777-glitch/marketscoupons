@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-0VpB0wAYDdhWCEv3+IjT0Z9Kgpvszkf70RFX3ro7l4QR5nywxsMaOpmvZKsfRF8I" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" integrity="sha384-DhxhYObIMeMNGyAG7iK11OHzBIKyEIeRL0ad1iFPAOwZB8iirUlTT0O/WJJUk8+o" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
 <style>
 :root{
  --bg:#07090D;--sur:#0B0F16;--card:#10151F;--card2:#141B27;
@@ -3050,6 +3051,241 @@ body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
 </body></html>`;
 }
 
+// ── Build dark promo image HTML (for capture as PNG) ──
+function buildPromoImageHtml(f){
+  const FI = "'Inter',Arial,sans-serif";
+  const lt = f.discount_type==='lifetime' ? ' Lifetime' : '';
+  const color = f.color || '#F0B429';
+  const prices = f.prices || [];
+  const plats = f.platforms || [];
+  const tpScore = f.trustpilot_score || f.rating;
+  const tpReviews = f.trustpilot_reviews || f.reviews;
+  const plans = f.checkout_plans || [];
+  const hasPlans = plans.length > 0;
+
+  const priceRows = prices.map(r => {
+    const plan = plans.find(p => p.size === r.a);
+    return `<tr>
+      <td style="padding:8px 10px;border-top:1px solid #1C2535;color:#EDF2F7;font-weight:700;font-size:13px;font-family:${FI};">${r.a}</td>
+      ${hasPlans && plan ? `<td style="padding:8px 6px;border-top:1px solid #1C2535;text-align:center;color:#F0B429;font-weight:600;font-size:12px;font-family:${FI};">${plan.goal||''}</td>
+      <td style="padding:8px 6px;border-top:1px solid #1C2535;text-align:center;color:#EF4444;font-size:12px;font-family:${FI};">${plan.maxDD||''}</td>` : ''}
+      <td style="padding:8px 6px;border-top:1px solid #1C2535;text-align:center;color:#22C55E;font-weight:800;font-size:13px;font-family:${FI};">${r.n}</td>
+      <td style="padding:8px 6px;border-top:1px solid #1C2535;text-align:center;color:#3D4F63;font-size:11px;text-decoration:line-through;font-family:${FI};">${r.o||''}</td>
+    </tr>`;
+  }).join('');
+
+  const ruleRow = (label, value, hl) => value && value !== '—' ? `
+    <tr><td style="padding:7px 0;border-bottom:1px solid rgba(28,37,53,0.5);color:#7A8FA6;font-size:12px;font-family:${FI};">${label}</td>
+    <td style="padding:7px 0;border-bottom:1px solid rgba(28,37,53,0.5);text-align:right;color:${hl?'#F0B429':'#EDF2F7'};font-size:12px;font-weight:700;font-family:${FI};">${value}</td></tr>` : '';
+
+  return `<div id="promo-capture" style="width:600px;background:#07090D;font-family:'Inter',Arial,sans-serif;color:#EDF2F7;overflow:hidden;">
+  <!-- Accent top -->
+  <div style="height:4px;background:${color};"></div>
+
+  <!-- Header -->
+  <div style="padding:28px 24px 12px;text-align:center;">
+    <span style="font-size:22px;font-weight:800;letter-spacing:-0.5px;"><span style="color:#EDF2F7;">Markets </span><span style="color:#F0B429;">Coupons</span></span>
+    <span style="display:inline-block;width:7px;height:7px;background:#22C55E;border-radius:50%;margin-left:6px;vertical-align:middle;"></span>
+    <div style="margin-top:5px;font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:#3D4F63;">AS MELHORES OFERTAS PARA TRADERS</div>
+  </div>
+  <div style="margin:0 32px;height:1px;background:#1C2535;"></div>
+
+  <!-- Hero -->
+  <div style="padding:20px 24px 0;">
+    <div style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
+      <div style="height:3px;background:${color};"></div>
+      <div style="padding:28px 24px;text-align:center;">
+        <span style="display:inline-block;background:rgba(240,180,41,0.10);border:1px solid rgba(240,180,41,0.30);border-radius:20px;padding:6px 20px;color:#F0B429;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">${f.discount}% OFF${lt}</span>
+        <div style="margin-top:16px;font-size:28px;font-weight:900;color:#EDF2F7;letter-spacing:-0.8px;line-height:1.15;">${f.name}</div>
+        ${f.type ? `<div style="margin-top:8px;"><span style="display:inline-block;background:rgba(240,180,41,0.08);border:1px solid rgba(240,180,41,0.20);border-radius:6px;padding:3px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#F0B429;">${f.type}</span></div>` : ''}
+        <div style="margin-top:12px;color:#7A8FA6;font-size:13px;line-height:1.65;max-width:460px;margin-left:auto;margin-right:auto;">${f.description||f.desc||''}</div>
+        ${tpScore ? `<div style="margin-top:12px;color:#7A8FA6;font-size:11px;">★★★★★ <span style="color:#EDF2F7;font-weight:700;">${tpScore}</span>/5 · <span style="color:#EDF2F7;font-weight:700;">${(tpReviews||0).toLocaleString()}</span> reviews no Trustpilot</div>` : ''}
+      </div>
+    </div>
+  </div>
+
+  <!-- Greeting -->
+  <div style="padding:24px 24px 0;">
+    <div style="color:#EDF2F7;font-size:15px;font-weight:600;margin-bottom:6px;">Ola Trader,</div>
+    <div style="color:#7A8FA6;font-size:14px;line-height:1.7;">A <strong style="color:#EDF2F7;">${f.name}</strong> esta com <strong style="color:#F0B429;">${f.discount}% de desconto${lt}</strong>. Veja todos os detalhes abaixo e comece agora mesmo.</div>
+  </div>
+
+  <!-- Coupon -->
+  ${f.coupon ? `<div style="padding:20px 24px 0;">
+    <div style="background:rgba(240,180,41,0.06);border:2px dashed rgba(240,180,41,0.35);border-radius:12px;padding:24px 20px;text-align:center;">
+      <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:10px;">CUPOM EXCLUSIVO</div>
+      <div style="color:#F0B429;font-size:36px;font-weight:800;letter-spacing:6px;font-family:'Courier New',monospace;line-height:1.1;text-shadow:0 0 24px rgba(240,180,41,0.30);">${f.coupon}</div>
+      <div style="color:#7A8FA6;font-size:11px;margin-top:12px;">Copie o cupom e cole no checkout</div>
+    </div>
+  </div>` : ''}
+
+  <!-- Stats -->
+  <div style="padding:20px 24px 0;">
+    <div style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
+      <div style="display:flex;">
+        <div style="flex:1;text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;">
+          <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;">Profit Split</div>
+          <div style="color:#22C55E;font-size:20px;font-weight:800;margin-top:4px;">${f.split||'—'}</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;border-left:1px solid #1C2535;border-right:1px solid #1C2535;">
+          <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;">Desconto</div>
+          <div style="color:#F0B429;font-size:20px;font-weight:800;margin-top:4px;">${f.discount}%</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;">
+          <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;">Drawdown</div>
+          <div style="color:#EDF2F7;font-size:20px;font-weight:800;margin-top:4px;">${f.dd_pct||'—'}</div>
+        </div>
+      </div>
+
+      <!-- Rules -->
+      <div style="padding:16px 20px 8px;">
+        <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">REGRAS DA CONTA</div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          ${ruleRow('Dias minimos', f.min_days ? f.min_days+' '+(f.min_days===1?'dia':'dias') : null)}
+          ${ruleRow('Avaliacao', f.eval_days ? f.eval_days+' dias' : 'Sem limite')}
+          ${ruleRow('Meta de lucro', f.target, true)}
+          ${ruleRow('Tipo drawdown', f.drawdown)}
+          ${ruleRow('Scaling', f.scaling)}
+          ${ruleRow('News trading', f.news_trading ? 'Sim' : 'Nao')}
+          ${ruleRow('Payout dia 1', f.day1_payout ? 'Sim' : 'Nao')}
+        </table>
+      </div>
+
+      <!-- Platforms -->
+      ${plats.length ? `<div style="padding:12px 20px;">
+        <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">PLATAFORMAS</div>
+        <div>${plats.map(p => `<span style="display:inline-block;background:#07090D;border:1px solid ${color};border-radius:6px;padding:6px 14px;margin:3px 3px;font-size:11px;font-weight:600;color:#EDF2F7;">${p}</span>`).join('')}</div>
+      </div>` : ''}
+
+      <!-- Perks -->
+      ${(f.perks||[]).length ? `<div style="padding:12px 20px;">
+        <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">BENEFICIOS</div>
+        ${(f.perks||[]).slice(0,6).map(p => `<div style="padding:3px 0;color:#EDF2F7;font-size:12px;"><span style="color:#22C55E;">✓</span> ${p}</div>`).join('')}
+      </div>` : ''}
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  ${prices.length ? `<div style="padding:20px 24px 0;">
+    <div style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid #1C2535;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#3D4F63;">CONTAS DISPONIVEIS</span>
+        <span style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:700;color:#22C55E;">${f.discount}% OFF</span>
+      </div>
+      <div style="padding:0 10px 14px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          <tr style="background:#141B27;">
+            <th style="padding:6px 10px;text-align:left;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;color:#3D4F63;">Conta</th>
+            ${hasPlans ? `<th style="padding:6px 6px;text-align:center;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;color:#3D4F63;">Meta</th>
+            <th style="padding:6px 6px;text-align:center;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;color:#3D4F63;">Drawdown</th>` : ''}
+            <th style="padding:6px 6px;text-align:center;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;color:#3D4F63;">Preco</th>
+            <th style="padding:6px 6px;text-align:center;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;color:#3D4F63;">De</th>
+          </tr>
+          ${priceRows}
+        </table>
+      </div>
+    </div>
+  </div>` : ''}
+
+  <!-- CTA -->
+  <div style="padding:24px 24px 0;text-align:center;">
+    <div style="background:${color};color:#FFFFFF;padding:16px 0;border-radius:8px;font-size:16px;font-weight:800;letter-spacing:0.5px;max-width:500px;margin:0 auto;cursor:pointer;">COMECAR AGORA →</div>
+  </div>
+
+  <!-- Footer -->
+  <div style="padding:24px 32px 28px;text-align:center;">
+    <div style="border-top:1px solid #1C2535;padding-top:16px;">
+      <span style="font-size:13px;font-weight:800;letter-spacing:-0.3px;"><span style="color:#EDF2F7;">Markets</span><span style="color:#F0B429;">Coupons</span></span>
+      <div style="color:#3D4F63;font-size:10px;margin-top:6px;">www.marketscoupons.com</div>
+    </div>
+  </div>
+
+  <!-- Accent bottom -->
+  <div style="height:4px;background:${color};"></div>
+</div>`;
+}
+
+// ── Capture promo image and prepare email ──
+let _capturedImageUrl = null;
+
+async function capturePromoImage(){
+  const el = document.getElementById('promo-capture');
+  if(!el){ toast('Nenhum template para capturar!','warn'); return; }
+
+  toast('Capturando imagem...');
+
+  try {
+    const canvas = await html2canvas(el, {
+      backgroundColor: '#07090D',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      width: 600,
+      windowWidth: 600,
+    });
+
+    // Convert to blob
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/png', 0.95));
+    const firmId = emailPromoFirm?.id || 'promo';
+    const fileName = `email-${firmId}-${Date.now()}.png`;
+
+    // Upload to Supabase Storage
+    const { data, error } = await db.storage.from('loyalty-proofs').upload('email-images/'+fileName, blob, {
+      contentType: 'image/png',
+      upsert: true,
+    });
+
+    if(error) throw error;
+
+    // Get public URL
+    const { data: urlData } = db.storage.from('loyalty-proofs').getPublicUrl('email-images/'+fileName);
+    _capturedImageUrl = urlData.publicUrl;
+
+    // Update preview to show the captured image
+    const previewInfo = document.querySelector('#em-preview .promo-info');
+    if(previewInfo) previewInfo.innerHTML = `
+      <div style="font-size:11px;color:var(--gold);margin-bottom:8px;">✓ Imagem capturada e hospedada!</div>
+      <div style="font-size:10px;color:var(--t3);margin-bottom:4px;word-break:break-all;">${_capturedImageUrl}</div>
+    `;
+
+    // Set email body to image mode
+    document.getElementById('em-body').value = '__IMAGE_EMAIL__';
+
+    toast('Imagem capturada! Pronta para envio.');
+  } catch(err) {
+    console.error('Capture error:', err);
+    toast('Erro ao capturar: '+err.message, 'error');
+  }
+}
+
+// ── Build image-based email (minimal HTML, just clickable image) ──
+function buildImageEmailHtml(imageUrl, link, lang='pt'){
+  const etFooter = (EMAIL_I18N[lang]||EMAIL_I18N.en);
+  const FI = "'Inter',Arial,sans-serif";
+  return `<!DOCTYPE html>
+<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<style>body,table,td{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}</style>
+</head>
+<body bgcolor="#07090D" style="margin:0;padding:0;background:#07090D;font-family:${FI};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" role="presentation">
+<tr><td align="center" style="padding:0;">
+  <a href="${link}" target="_blank" style="display:block;max-width:600px;">
+    <img src="${imageUrl}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;" alt="Oferta exclusiva">
+  </a>
+  <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+    <tr><td style="padding:12px 24px;text-align:center;">
+      <span style="color:#3D4F63;font-size:10px;font-family:${FI};">
+        ${etFooter.footer || 'Voce recebeu este email por estar inscrito no MarketsCoupons.'}<br>
+        <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;text-decoration:underline;">${etFooter.unsub || 'Cancelar inscricao'}</a>
+      </span>
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
 async function loadPromoTemplate(firmId){
   const { data: f } = await db.from('cms_firms').select('*').eq('id',firmId).maybeSingle();
   if(!f){ toast('Firma nao encontrada!','warn'); return; }
@@ -3060,19 +3296,26 @@ async function loadPromoTemplate(firmId){
   // Store firm data for per-language sending
   emailPromoFirm = f;
   emailIsHtml = true;
+  _capturedImageUrl = null;
 
-  // Preview in PT
-  const htmlContent = buildPromoHtml(f, 'pt');
+  // Build dark image preview
+  const imageHtml = buildPromoImageHtml(f);
+
   document.getElementById('em-subject').value = subject;
   document.getElementById('em-body').value = '__PROMO_HTML__';
 
   document.getElementById('em-preview').innerHTML = `
-    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML Rico Multilingue (7 idiomas)</strong></div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Cada destinatario recebe no seu idioma (pt, en, es, fr, de, it, ar)</div>
+    <div class="promo-info">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">Imagem clicavel (dark)</strong></div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Clique em "Capturar Imagem" para gerar o PNG e preparar o envio</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <button onclick="capturePromoImage()" style="background:var(--gold);color:#07090D;border:none;padding:8px 20px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">📷 Capturar Imagem</button>
+    </div>
     <hr style="border-color:var(--b1);margin-bottom:12px;">
-    <iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${htmlContent.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#F2F2F2;"></iframe>`;
-  toast(f.name+' — template promo multilingue carregado!');
+    ${imageHtml}`;
+  toast(f.name+' — template promo carregado! Clique em Capturar Imagem.');
 }
 
 /* renderPage patch1 removed */
@@ -3485,8 +3728,9 @@ async function sendEmailsSmtp(){
   if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
 
   const isPromo = emailIsHtml && emailPromoFirm;
+  const isImageEmail = isPromo && _capturedImageUrl;
   const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
-  const isMultilang = isPromo || isInst;
+  const isMultilang = (isPromo || isInst) && !isImageEmail;
   const langGroups = {};
   leads.forEach(l => {
     const lang = l.lang || 'en';
@@ -3495,7 +3739,7 @@ async function sendEmailsSmtp(){
   });
   const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
 
-  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}`)) return;
+  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\n${isImageEmail ? 'Modo: IMAGEM CLICAVEL (dark)' : 'Idiomas: '+langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}`)) return;
 
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
@@ -3505,7 +3749,23 @@ async function sendEmailsSmtp(){
     const token = session?.data?.session?.access_token;
     let totalSent=0, totalFailed=0;
 
-    if(isPromo || isInst){
+    if(isImageEmail){
+      // Image email — single language, just clickable image
+      const html = buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt');
+      const resp = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({
+          to: leads.map(l => ({ email: l.email, name: l.name||'' })),
+          subject: subject,
+          htmlContent: html,
+          tags: ['promo-image-'+emailPromoFirm.id],
+        }),
+      });
+      const data = await resp.json();
+      if(data.success){ totalSent=data.sent||0; totalFailed=data.failed||0; }
+      else { totalFailed=leads.length; }
+    } else if(isPromo || isInst){
       // Send per language group — each gets HTML in their language
       for(const [lang, group] of Object.entries(langGroups)){
         const html = isPromo ? buildPromoHtml(emailPromoFirm, lang) : buildInstitutionalHtml(window._instTemplateName, lang);
@@ -3574,7 +3834,8 @@ async function sendTestEmail(){
   const isPromo = emailIsHtml && emailPromoFirm;
   const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
   let html=body, subj=subject;
-  if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
+  if(isPromo && _capturedImageUrl) html=buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt');
+  else if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
   if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'pt'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.pt||subject; }
   try {
     const resp = await fetch('/api/send-email',{
@@ -3602,7 +3863,8 @@ async function sendSingleEmail(){
   const isPromo=emailIsHtml&&emailPromoFirm;
   const isInst=emailIsHtml&&window._instTemplateName&&!emailPromoFirm;
   let html=body, subj=subject;
-  if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
+  if(isPromo && _capturedImageUrl) html=buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt');
+  else if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
   if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'pt'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.pt||subject; }
   try {
     const resp=await fetch('/api/send-email',{
