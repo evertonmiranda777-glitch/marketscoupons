@@ -199,6 +199,154 @@ justify-content: space-between !important;  /* codigo esquerda, botao direita */
 
 ---
 
+## Padrao para Adicionar Prop Firms
+
+### REGRA OBRIGATORIA
+**NUNCA** subir uma firma com dados incompletos ou inventados. Antes de adicionar qualquer firma:
+1. Acessar o site oficial da firma e coletar TODOS os dados abaixo
+2. Acessar o Trustpilot da firma para nota e numero de reviews
+3. Verificar promocoes ativas no site
+4. Conferir que a imagem/logo ja existe em `img/Firms/`
+5. Inserir na tabela `cms_firms` do Supabase E no array hardcoded `FIRMS` do `index.html`
+
+### Onde inserir
+1. **Supabase:** `INSERT INTO cms_firms` (fonte primaria — o site carrega daqui)
+2. **index.html:** Array `FIRMS` (fallback caso Supabase falhe)
+
+### Campos obrigatorios (Supabase `cms_firms`)
+
+Referencia: Apex Trader Funding (firma mais completa)
+
+```
+id                  TEXT PK    — slug unico (ex: 'apex', 'bulenox')
+name                TEXT       — nome completo (ex: 'Apex Trader Funding')
+type                TEXT       — 'Futuros' ou 'Forex'
+color               TEXT       — cor hex principal (ex: '#F97316')
+bg                  TEXT       — cor de fundo com opacidade (ex: 'rgba(249,115,22,0.12)')
+icon                TEXT       — letra para fallback (ex: 'A')
+icon_url            TEXT       — caminho da logo (ex: 'img/Firms/apex.png')
+rating              NUMERIC    — nota Trustpilot (ex: 4.4)
+reviews             INTEGER    — total de reviews Trustpilot (ex: 17686)
+discount            INTEGER    — percentual de desconto (ex: 90). Se nao tem desconto: 0
+discount_type       TEXT       — tipo do desconto (ex: 'lifetime', '1 desafio', 'gratis', 'easter')
+coupon              TEXT       — codigo do cupom (ex: 'MARKET'). NULL se nao tem
+link                TEXT       — link de afiliado completo
+tags                TEXT[]     — array de tags (ex: ARRAY['Futuros','Lifetime','Trailing DD'])
+platforms           TEXT[]     — plataformas disponiveis (ex: ARRAY['Rithmic','Tradovate','NinjaTrader'])
+min_days            INTEGER    — dias minimos de trading (ex: 1)
+eval_days           INTEGER    — dias de avaliacao (ex: 30). NULL se ilimitado
+drawdown            TEXT       — tipo de drawdown (ex: 'Trailing/EOD', 'Static', 'Fixed')
+split               TEXT       — profit split (ex: '80%', '90%', '100%')
+dd_pct              TEXT       — percentual de drawdown (ex: '-5% trail', '-10% static')
+target              TEXT       — meta de lucro (ex: '8%', '8%/5%', '10% / 10%+5%')
+scaling             TEXT       — plano de scaling (ex: 'Sim', 'Ate $4M', 'Ate $2M')
+prices              JSONB      — array de planos com precos (ver formato abaixo)
+perks               TEXT[]     — vantagens (ex: ARRAY['Sem limite diario','Payout 5 dias'])
+proibido            TEXT[]     — regras proibidas (ex: ARRAY['Copy entre contas','Latency arbitrage'])
+description         TEXT       — descricao curta da firma em PT-BR
+trustpilot_url      TEXT       — URL da pagina Trustpilot
+trustpilot_score    NUMERIC    — nota Trustpilot (igual ao rating)
+trustpilot_reviews  INTEGER    — total reviews (igual ao reviews)
+sort_order          INTEGER    — ordem de exibicao (1 = primeiro)
+active              BOOLEAN    — true para exibir no site
+badge               JSONB      — selo destaque: {"label":"Texto","color":"#hex","bg":"rgba(...)"}
+news_trading        BOOLEAN    — permite trading em noticias?
+day1_payout         BOOLEAN    — permite saque no dia 1?
+short_name          TEXT       — nome curto para checkout (ex: 'Apex')
+```
+
+### Campos opcionais (checkout — somente firmas com checkout integrado)
+```
+checkout_types      TEXT[]     — tipos de conta no checkout (ex: ARRAY['Intraday Trail','EOD Trail'])
+checkout_platforms  TEXT[]     — plataformas no checkout
+checkout_plans      JSONB      — planos detalhados do checkout (ver formato abaixo)
+checkout_url_template TEXT     — template de URL com variaveis ${size}, ${plat}, ${type}
+checkout_includes   TEXT[]     — itens inclusos no plano
+price_types         TEXT[]     — tipos de preco (ex: ARRAY['Intraday','EOD'])
+```
+
+### Formato do campo `prices` (JSONB)
+
+Cada item representa um plano/conta disponivel:
+```json
+[
+  {"a": "25K",       "n": "$19.90", "o": "$199"},
+  {"a": "50K",       "n": "$24.90", "o": "$249"},
+  {"a": "100K",      "n": "$39.90", "o": "$399"},
+  {"a": "150K",      "n": "$59.90", "o": "$599"}
+]
+```
+- `a` = tamanho da conta (account) — pode incluir tipo: "$5K Hyper Growth", "$10K 2-Step"
+- `n` = preco novo (com desconto). Se gratis: "Gratis"
+- `o` = preco original (sem desconto). Se nao tem desconto: "—"
+- `n2`/`o2` = precos alternativos (opcional, quando firma tem 2 tipos como Intraday/EOD)
+
+### Formato do campo `badge` (JSONB)
+```json
+{"label": "Maior Desconto", "color": "#F97316", "bg": "rgba(249,115,22,0.15)"}
+```
+
+### Formato hardcoded no `index.html` (array FIRMS)
+
+Mesmo dado, mas em sintaxe JS (sem aspas nas chaves, aspas simples nos valores):
+```javascript
+{id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',
+icon:'A',icon_url:'img/Firms/apex.png',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',
+coupon:'MARKET',badge:{label:'Maior Desconto',color:'#F97316',bg:'rgba(249,115,22,0.15)'},
+link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',
+tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],
+minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',
+prices:[{a:'25K',n:'$19.90',o:'$199'},{a:'50K',n:'$24.90',o:'$249'},{a:'100K',n:'$39.90',o:'$399'},{a:'150K',n:'$59.90',o:'$599'}],
+perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],
+proibido:['Copy entre contas','Latency arbitrage'],newsTrading:true,day1Payout:true,
+desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',
+trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}}
+```
+
+### Mapeamento Supabase → JS (campos com nomes diferentes)
+| Supabase | JS (FIRMS array) |
+|---|---|
+| `discount_type` | `dtype` |
+| `min_days` | `minDays` |
+| `eval_days` | `evalDays` |
+| `dd_pct` | `ddPct` |
+| `description` | `desc` |
+| `news_trading` | `newsTrading` |
+| `day1_payout` | `day1Payout` |
+| `trustpilot_url/score/reviews` | `trustpilot: {url, score, reviews}` |
+
+### Checklist antes de subir uma nova firma
+
+- [ ] Nome, ID (slug) e tipo (Futuros/Forex) definidos
+- [ ] Cor principal e cor de fundo com opacidade
+- [ ] Logo em `img/Firms/[id].png` (verificar nome exato do arquivo)
+- [ ] Link de afiliado completo e testado
+- [ ] Cupom de desconto (se existir) e percentual
+- [ ] Trustpilot: nota e numero de reviews coletados do site
+- [ ] Plataformas de trading coletadas do site oficial
+- [ ] TODOS os tamanhos de conta com precos (original e com desconto)
+- [ ] Tipo de drawdown e percentuais
+- [ ] Meta de lucro (profit target) por fase
+- [ ] Profit split percentual
+- [ ] Dias minimos e periodo de avaliacao
+- [ ] Scaling (se tem, ate quanto)
+- [ ] News trading: permitido ou nao
+- [ ] Day 1 payout: sim ou nao
+- [ ] Perks (vantagens) — lista do site
+- [ ] Proibido — regras que resultam em banimento
+- [ ] Descricao curta em PT-BR
+- [ ] Badge (selo destaque) com label, cor e fundo
+- [ ] Inserido no Supabase `cms_firms` com `active: true`
+- [ ] Inserido no array `FIRMS` do `index.html` (fallback)
+- [ ] sort_order definido (proximo numero disponivel)
+
+### Tipos de colunas no Supabase (CUIDADO)
+- `tags`, `platforms`, `perks`, `proibido` = **TEXT[]** → usar `ARRAY['item1','item2']`
+- `prices`, `badge`, `checkout_plans` = **JSONB** → usar `'[...]'::jsonb`
+- NAO misturar: `'["item"]'::jsonb` em colunas TEXT[] causa erro
+
+---
+
 ## Boas Praticas do Projeto
 
 1. **Idioma das respostas:** Sempre responder em portugues (PT-BR)
