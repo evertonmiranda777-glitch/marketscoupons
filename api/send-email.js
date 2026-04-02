@@ -118,6 +118,7 @@ module.exports = async (req, res) => {
         });
 
         const data = await resp.json();
+        console.log(`[BREVO] ${recipient.email} → status=${resp.status} response=${JSON.stringify(data)}`);
         results.push({ email: recipient.email, status: resp.ok ? 'sent' : 'failed', response: data });
 
         // Small delay to avoid rate limiting
