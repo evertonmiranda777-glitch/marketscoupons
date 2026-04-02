@@ -167,11 +167,11 @@ const LEVELS = {
   profissional: {label:'Profissional',  color:'#EF4444', bg:'rgba(239,68,68,.15)'},
 };
 const CAT_COLORS = {
-  'analise-tecnica': {c1:'#3B82F6',c2:'#8B5CF6',badge:'rgba(59,130,246,.15)',badgeC:'#3B82F6'},
-  'prop-firms':      {c1:'#F0B429',c2:'#F97316',badge:'rgba(240,180,41,.15)',badgeC:'#F0B429'},
-  'educacao':        {c1:'#22C55E',c2:'#14B8A6',badge:'rgba(34,197,94,.15)',badgeC:'#22C55E'},
-  'mercado':         {c1:'#EC4899',c2:'#F43F5E',badge:'rgba(236,72,153,.15)',badgeC:'#EC4899'},
-  'default':         {c1:'#F0B429',c2:'#3B82F6',badge:'rgba(59,130,246,.15)',badgeC:'#3B82F6'},
+  'analise-tecnica': {c1:'#3B82F6',c2:'#8B5CF6',badge:'rgba(59,130,246,.15)',badgeC:'#3B82F6',label:'Análise Técnica'},
+  'prop-firms':      {c1:'#F0B429',c2:'#F97316',badge:'rgba(240,180,41,.15)',badgeC:'#F0B429',label:'Prop Firms'},
+  'educacao':        {c1:'#22C55E',c2:'#14B8A6',badge:'rgba(34,197,94,.15)',badgeC:'#22C55E',label:'Educação'},
+  'mercado':         {c1:'#EC4899',c2:'#F43F5E',badge:'rgba(236,72,153,.15)',badgeC:'#EC4899',label:'Mercado'},
+  'default':         {c1:'#F0B429',c2:'#3B82F6',badge:'rgba(59,130,246,.15)',badgeC:'#3B82F6',label:'Geral'},
 };
 
 function setMeta(sel, attr, val){ const el=document.querySelector(sel); if(el) el.setAttribute(attr, val); }
@@ -214,7 +214,7 @@ function renderPost(post, slug, blogUrl, T){
   const lvl = LEVELS[post.level]||{label:post.level||'Geral',color:'#A0AEC0',bg:'rgba(160,174,192,.1)'};
   const cat = CAT_COLORS[post.category]||CAT_COLORS['default'];
   const safeTitle = post.title.replace(/'/g,"\\'");
-  const catLabel = (post.category||'').replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+  const catLabel = cat.label||(post.category||'').replace(/-/g,' ');
 
   document.getElementById('main-content').innerHTML = `
     <div class="blog-hero" style="--hero-c1:${cat.c1};--hero-c2:${cat.c2}">
