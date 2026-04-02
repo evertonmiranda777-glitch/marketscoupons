@@ -2526,6 +2526,8 @@ function buildCheckoutUrl(template, size, type, plat) {
     .replace(/\$\{PLAT\}/g, plat);
 }
 
+function hexToRgb(hex){const h=hex.replace('#','');return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`;}
+
 function buildPromoHtml(f, lang='pt'){
   const lt = f.discount_type==='lifetime' ? ' Lifetime' : '';
   const et = (key, vars) => emailT(lang, key, {firm:f.name, discount:f.discount, lt, ...vars});
@@ -2603,37 +2605,46 @@ u+.body .darkbg{background:#07090D!important;}
 <tr><td align="center" bgcolor="#07090D" class="darkbg" style="padding:0;background:#07090D;background-color:#07090D;">
 <table width="600" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="darkbg" style="max-width:600px;width:100%;background:#07090D;background-color:#07090D;">
 
+<!-- ═══ ACCENT BAR TOP ═══ -->
+<tr><td height="4" bgcolor="${color}" style="background:${color};height:4px;line-height:4px;font-size:0;">&nbsp;</td></tr>
+
 <!-- ═══ HEADER ═══ -->
-<tr><td style="padding:32px 24px 12px;text-align:center;">
+<tr><td style="padding:28px 24px 12px;text-align:center;">
   <table width="100%" cellpadding="0" cellspacing="0"><tr>
     <td align="center">
       <img src="https://www.marketscoupons.com/img/Logo%20Markets%20Coupons.png" alt="Markets Coupons" width="48" height="48" style="display:block;margin:0 auto 10px;border-radius:10px;width:48px;height:48px;">
       <table cellpadding="0" cellspacing="0"><tr>
-        <td style="font-size:20px;font-weight:800;letter-spacing:-0.5px;font-family:'Inter',Arial,sans-serif;">
+        <td style="font-size:22px;font-weight:800;letter-spacing:-0.5px;font-family:'Inter',Arial,sans-serif;">
           <span style="color:#EDF2F7;">Markets </span><span style="color:#F0B429;">Coupons</span>
         </td>
-        <td style="padding-left:8px;">
-          <span style="display:inline-block;width:6px;height:6px;background:#22C55E;border-radius:50%;"></span>
+        <td style="padding-left:7px;vertical-align:middle;">
+          <span style="display:inline-block;width:7px;height:7px;background:#22C55E;border-radius:50%;"></span>
         </td>
       </tr></table>
+      <div style="margin-top:5px;font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:#3D4F63;font-family:'Inter',Arial,sans-serif;">${et('tagline')}</div>
     </td>
   </tr></table>
 </td></tr>
 
+<!-- ═══ DIVIDER ═══ -->
+<tr><td style="padding:0 32px;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td height="1" bgcolor="#1C2535" style="height:1px;line-height:1px;font-size:0;">&nbsp;</td></tr></table></td></tr>
+
 <!-- ═══ HERO BANNER ═══ -->
-<tr><td style="padding:0 24px;">
+<tr><td style="padding:20px 24px 0;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
-    <tr><td style="padding:28px 24px;text-align:center;background:linear-gradient(180deg,rgba(240,180,41,0.06) 0%,transparent 100%);">
+    <tr><td height="3" bgcolor="${color}" style="background:${color};height:3px;line-height:3px;font-size:0;">&nbsp;</td></tr>
+    <tr><td style="padding:28px 24px;text-align:center;">
       <!-- Discount Badge -->
       <table cellpadding="0" cellspacing="0" align="center"><tr>
-        <td style="background:rgba(240,180,41,0.09);border:1px solid rgba(240,180,41,0.25);border-radius:20px;padding:5px 16px;">
-          <span style="color:#F0B429;font-size:11px;font-weight:600;letter-spacing:0.5px;font-family:'Inter',Arial,sans-serif;">${f.discount}% OFF${lt}</span>
+        <td style="background:rgba(240,180,41,0.10);border:1px solid rgba(240,180,41,0.30);border-radius:20px;padding:6px 20px;">
+          <span style="color:#F0B429;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',Arial,sans-serif;">${f.discount}% OFF${lt}</span>
         </td>
       </tr></table>
       <!-- Firm Name -->
-      <div style="margin-top:14px;font-size:26px;font-weight:800;color:#EDF2F7;letter-spacing:-0.5px;line-height:1.2;font-family:'Inter',Arial,sans-serif;">${f.name}</div>
-      <div style="margin-top:6px;color:#7A8FA6;font-size:13px;line-height:1.5;font-family:'Inter',Arial,sans-serif;">${f.description||''}</div>
-      ${tpScore ? `<div style="margin-top:10px;color:#7A8FA6;font-size:12px;font-family:'Inter',Arial,sans-serif;">* <span style="color:#EDF2F7;font-weight:700;">${tpScore}</span>/5 &mdash; ${(tpReviews||0).toLocaleString()} ${et('trustpilot')}</div>` : ''}
+      <div style="margin-top:16px;font-size:28px;font-weight:900;color:#EDF2F7;letter-spacing:-0.8px;line-height:1.15;font-family:'Inter',Arial,sans-serif;">${f.name}</div>
+      ${f.type ? `<div style="margin-top:8px;"><span style="display:inline-block;background:rgba(240,180,41,0.08);border:1px solid rgba(240,180,41,0.20);border-radius:6px;padding:3px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#F0B429;font-family:'Inter',Arial,sans-serif;">${f.type}</span></div>` : ''}
+      <div style="margin-top:12px;color:#7A8FA6;font-size:13px;line-height:1.65;max-width:460px;margin-left:auto;margin-right:auto;font-family:'Inter',Arial,sans-serif;">${f.description||f.desc||''}</div>
+      ${tpScore ? `<div style="margin-top:12px;color:#7A8FA6;font-size:11px;font-family:'Inter',Arial,sans-serif;">&#9733;&#9733;&#9733;&#9733;&#9733; <span style="color:#EDF2F7;font-weight:700;">${tpScore}</span>/5 &middot; <span style="color:#EDF2F7;font-weight:700;">${(tpReviews||0).toLocaleString()}</span> ${et('trustpilot')}</div>` : ''}
     </td></tr>
   </table>
 </td></tr>
@@ -2646,11 +2657,11 @@ u+.body .darkbg{background:#07090D!important;}
 
 <!-- ═══ COUPON BOX ═══ -->
 <tr><td style="padding:20px 24px 0;">
-  ${f.coupon ? `<table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(240,180,41,0.09);border:1px dashed rgba(240,180,41,0.25);border-radius:10px;">
-    <tr><td style="padding:20px;text-align:center;">
-      <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;font-family:'Inter',Arial,sans-serif;">${et('exclusive_coupon')}</div>
-      <div style="color:#F0B429;font-size:30px;font-weight:800;letter-spacing:4px;font-family:'Courier New',monospace;">${f.coupon}</div>
-      <div style="color:#7A8FA6;font-size:11px;margin-top:8px;font-family:'Inter',Arial,sans-serif;">${et('coupon_hint')}</div>
+  ${f.coupon ? `<table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(240,180,41,0.06);border:2px dashed rgba(240,180,41,0.35);border-radius:12px;">
+    <tr><td style="padding:24px 20px;text-align:center;">
+      <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:10px;font-family:'Inter',Arial,sans-serif;">${et('exclusive_coupon')}</div>
+      <div style="color:#F0B429;font-size:36px;font-weight:800;letter-spacing:6px;font-family:'Courier New',Courier,monospace;line-height:1.1;text-shadow:0 0 24px rgba(240,180,41,0.30);">${f.coupon}</div>
+      <div style="color:#7A8FA6;font-size:11px;margin-top:12px;font-family:'Inter',Arial,sans-serif;letter-spacing:0.2px;">${et('coupon_hint')}</div>
     </td></tr>
   </table>` : `<table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);border-radius:10px;">
     <tr><td style="padding:14px 20px;text-align:center;">
@@ -2699,7 +2710,7 @@ u+.body .darkbg{background:#07090D!important;}
     ${plats.length ? `<tr><td style="padding:12px 20px;">
       <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-family:'Inter',Arial,sans-serif;">${et('platforms')}</div>
       <div>${plats.map(p =>
-        `<span style="display:inline-block;background:#07090D;border:1px solid #1C2535;border-radius:6px;padding:5px 12px;margin:2px 3px;font-size:11px;font-weight:500;color:#EDF2F7;font-family:'Inter',Arial,sans-serif;">${p}</span>`
+        `<span style="display:inline-block;background:#07090D;border:1px solid ${color};border-radius:6px;padding:6px 14px;margin:3px 3px;font-size:11px;font-weight:600;color:#EDF2F7;font-family:'Inter',Arial,sans-serif;">${p}</span>`
       ).join('')}</div>
     </td></tr>` : ''}
 
@@ -2717,8 +2728,11 @@ u+.body .darkbg{background:#07090D!important;}
 <!-- ═══ PRICING TABLE ═══ -->
 ${prices.length ? `<tr><td style="padding:20px 24px 0;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
-    <tr><td style="padding:16px 20px 12px;">
-      <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;font-family:'Inter',Arial,sans-serif;">${et('prices_title')}</div>
+    <tr><td bgcolor="#10151F" style="padding:12px 16px 10px;border-bottom:1px solid #1C2535;background:#10151F;">
+      <table width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#3D4F63;font-family:'Inter',Arial,sans-serif;">${et('prices_title')}</td>
+        <td align="right"><span style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:700;color:#22C55E;font-family:'Inter',Arial,sans-serif;">${f.discount}% OFF</span></td>
+      </tr></table>
     </td></tr>
     <tr><td style="padding:0 8px 14px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;table-layout:fixed;">
@@ -2751,30 +2765,44 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
   </table>
 </td></tr>` : ''}
 
+<!-- ═══ URGENCY BAR ═══ -->
+<tr><td style="padding:20px 24px 0;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(${hexToRgb(color)},0.08);border:1px solid rgba(${hexToRgb(color)},0.25);border-radius:8px;">
+    <tr><td align="center" style="padding:12px 20px;text-align:center;">
+      <span style="font-size:11px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:1px;font-family:'Inter',Arial,sans-serif;">&#9650; ${f.discount}% OFF${lt} &mdash; ${f.name} &#9650;</span>
+    </td></tr>
+  </table>
+</td></tr>
+
 <!-- ═══ CTA BUTTON ═══ -->
-<tr><td style="padding:28px 24px 0;">
+<tr><td style="padding:24px 24px 0;">
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr><td align="center">
-      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${f.link}" style="height:52px;v-text-anchor:middle;width:340px;" arcsize="15%" fillcolor="#F0B429"><w:anchorlock/><center style="color:#07090D;font-family:'Inter',Arial,sans-serif;font-size:16px;font-weight:800;">COMEÇAR AGORA →</center></v:roundrect><![endif]-->
-      <!--[if !mso]><!--><a href="${f.link}" target="_blank" style="display:inline-block;background:#F0B429;color:#07090D;padding:15px 52px;border-radius:8px;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:0.3px;font-family:'Inter',Arial,sans-serif;">${et('cta')}</a><!--<![endif]-->
+      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${f.link}" style="height:52px;v-text-anchor:middle;width:500px;" arcsize="12%" fillcolor="${color}"><w:anchorlock/><center style="color:#07090D;font-family:'Inter',Arial,sans-serif;font-size:16px;font-weight:800;">${et('cta')}</center></v:roundrect><![endif]-->
+      <!--[if !mso]><!--><a href="${f.link}" target="_blank" style="display:inline-block;background:${color};color:#07090D;padding:15px 0;width:100%;max-width:500px;box-sizing:border-box;border-radius:8px;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:0.5px;font-family:'Inter',Arial,sans-serif;text-align:center;">${et('cta')}</a><!--<![endif]-->
     </td></tr>
   </table>
 </td></tr>
 
 <!-- ═══ SEE ALL ═══ -->
-<tr><td style="padding:16px 24px 0;text-align:center;">
+<tr><td style="padding:14px 24px 0;text-align:center;">
   <a href="https://www.marketscoupons.com" target="_blank" style="color:#F0B429;font-size:12px;font-weight:500;text-decoration:underline;font-family:'Inter',Arial,sans-serif;">${et('see_all')}</a>
 </td></tr>
 
 <!-- ═══ FOOTER ═══ -->
-<tr><td style="padding:28px 24px 32px;">
+<tr><td style="padding:28px 32px 32px;">
   <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1C2535;"><tr><td style="padding-top:20px;text-align:center;">
-    <div style="color:#3D4F63;font-size:10px;line-height:1.7;font-family:'Inter',Arial,sans-serif;">
+    <div style="font-size:13px;font-weight:800;letter-spacing:-0.3px;margin-bottom:8px;font-family:'Inter',Arial,sans-serif;"><span style="color:#EDF2F7;">Markets</span><span style="color:#F0B429;">Coupons</span></div>
+    <div style="color:#3D4F63;font-size:10px;line-height:1.8;font-family:'Inter',Arial,sans-serif;">
       ${et('footer')}<br>
       <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;text-decoration:underline;">${et('unsub')}</a>
     </div>
+    <div style="margin-top:16px;"><span style="display:inline-block;width:24px;height:3px;background:${color};border-radius:2px;"></span></div>
   </td></tr></table>
 </td></tr>
+
+<!-- ═══ ACCENT BAR BOTTOM ═══ -->
+<tr><td height="4" bgcolor="${color}" style="background:${color};height:4px;line-height:4px;font-size:0;">&nbsp;</td></tr>
 
 </table>
 </td></tr>
