@@ -2215,6 +2215,13 @@ const EMAIL_I18N = {
     footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
     unsub: 'Cancelar inscricao',
     tagline: 'As melhores ofertas para traders',
+    copy_coupon: 'Copiar Cupom',
+    copy_first: 'Primeiro copie o cupom, depois escolha sua conta',
+    type_label: 'Tipo',
+    platform_label: 'Plataforma',
+    select_buy: 'Escolha e compre direto',
+    goal: 'Meta',
+    max_dd: 'Max DD',
   },
   en: {
     greeting: 'Hey {nome},',
@@ -2233,6 +2240,13 @@ const EMAIL_I18N = {
     footer: 'You received this email because you subscribed to MarketsCoupons.',
     unsub: 'Unsubscribe',
     tagline: 'The best deals for traders',
+    copy_coupon: 'Copy Coupon',
+    copy_first: 'First copy the coupon, then choose your account',
+    type_label: 'Type',
+    platform_label: 'Platform',
+    select_buy: 'Choose and buy directly',
+    goal: 'Target',
+    max_dd: 'Max DD',
   },
   es: {
     greeting: 'Hola {nome},',
@@ -2251,6 +2265,13 @@ const EMAIL_I18N = {
     footer: 'Recibiste este email porque estas suscrito a MarketsCoupons.',
     unsub: 'Cancelar suscripcion',
     tagline: 'Las mejores ofertas para traders',
+    copy_coupon: 'Copiar Cupon',
+    copy_first: 'Primero copia el cupon, luego elige tu cuenta',
+    type_label: 'Tipo',
+    platform_label: 'Plataforma',
+    select_buy: 'Elige y compra directo',
+    goal: 'Meta',
+    max_dd: 'Max DD',
   },
   fr: {
     greeting: 'Bonjour {nome},',
@@ -2269,6 +2290,13 @@ const EMAIL_I18N = {
     footer: 'Vous recevez cet email car vous etes inscrit a MarketsCoupons.',
     unsub: 'Se desinscrire',
     tagline: 'Les meilleures offres pour traders',
+    copy_coupon: 'Copier le Coupon',
+    copy_first: 'Copiez d\'abord le coupon, puis choisissez votre compte',
+    type_label: 'Type',
+    platform_label: 'Plateforme',
+    select_buy: 'Choisissez et achetez directement',
+    goal: 'Objectif',
+    max_dd: 'Max DD',
   },
   de: {
     greeting: 'Hallo {nome},',
@@ -2287,6 +2315,13 @@ const EMAIL_I18N = {
     footer: 'Sie erhalten diese E-Mail, weil Sie bei MarketsCoupons angemeldet sind.',
     unsub: 'Abmelden',
     tagline: 'Die besten Angebote fur Trader',
+    copy_coupon: 'Gutschein Kopieren',
+    copy_first: 'Zuerst Gutschein kopieren, dann Konto wahlen',
+    type_label: 'Typ',
+    platform_label: 'Plattform',
+    select_buy: 'Wahlen und direkt kaufen',
+    goal: 'Ziel',
+    max_dd: 'Max DD',
   },
   it: {
     greeting: 'Ciao {nome},',
@@ -2305,6 +2340,13 @@ const EMAIL_I18N = {
     footer: 'Hai ricevuto questa email perche sei iscritto a MarketsCoupons.',
     unsub: 'Annulla iscrizione',
     tagline: 'Le migliori offerte per trader',
+    copy_coupon: 'Copia Coupon',
+    copy_first: 'Prima copia il coupon, poi scegli il tuo conto',
+    type_label: 'Tipo',
+    platform_label: 'Piattaforma',
+    select_buy: 'Scegli e acquista direttamente',
+    goal: 'Obiettivo',
+    max_dd: 'Max DD',
   },
   ar: {
     greeting: '{nome} مرحبا',
@@ -2323,6 +2365,13 @@ const EMAIL_I18N = {
     footer: 'تلقيت هذا البريد لانك مشترك في MarketsCoupons.',
     unsub: 'الغاء الاشتراك',
     tagline: 'افضل العروض للمتداولين',
+    copy_coupon: 'نسخ الكوبون',
+    copy_first: 'انسخ الكوبون اولا ثم اختر حسابك',
+    type_label: 'النوع',
+    platform_label: 'المنصة',
+    select_buy: 'اختر واشتر مباشرة',
+    goal: 'الهدف',
+    max_dd: 'Max DD',
   },
 };
 
@@ -2331,49 +2380,131 @@ function emailT(lang, key, vars={}){
   return Object.entries(vars).reduce((str,[k,v])=>str.replace(new RegExp(`\\{${k}\\}`,'g'),v), s);
 }
 
+function buildCheckoutUrl(template, size, type, plat) {
+  return template
+    .replace(/\$\{size\}/g, size.toLowerCase().replace(/\s+/g,'-'))
+    .replace(/\$\{type\}/g, type.toLowerCase().replace(/\s+/g,'-'))
+    .replace(/\$\{plat\}/g, plat.toLowerCase().replace(/\s+/g,'-'))
+    .replace(/\$\{SIZE\}/g, size)
+    .replace(/\$\{TYPE\}/g, type)
+    .replace(/\$\{PLAT\}/g, plat);
+}
+
 function buildPromoHtml(f, lang='pt'){
   const lt = f.discount_type==='lifetime' ? ' Lifetime' : '';
   const et = (key, vars) => emailT(lang, key, {firm:f.name, discount:f.discount, lt, ...vars});
   const dir = lang==='ar' ? 'rtl' : 'ltr';
+  const hasCheckout = f.checkout_url_template && f.checkout_plans?.length;
+  const types = f.checkout_types || [];
+  const plats = f.checkout_platforms || f.platforms || [];
+  const plans = f.checkout_plans || [];
+  const prices = f.prices || [];
+  const priceTypes = f.price_types || [];
 
-  const priceRows = (f.prices||[]).map(r => `
-    <tr>
-      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:600;">${r.a}</td>
-      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#22C55E;font-weight:700;">${r.n}</td>
-      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#3D4F63;text-decoration:line-through;">${r.o}</td>
-      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;">
-        <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">${et('buy_btn')}</a>
-      </td>
-    </tr>`).join('');
-
-  const priceTable = (f.prices||[]).length ? `
-    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:16px 0;">
-      <tr style="background:#0B0F16;">
-        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_account')}</th>
-        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_coupon')}</th>
-        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_original')}</th>
-        <th style="padding:10px 14px;border-bottom:1px solid #1C2535;"></th>
-      </tr>
-      ${priceRows}
-    </table>` : '';
-
+  // ── COUPON SECTION ──
   const couponSection = f.coupon ? `
-    <div style="background:#0B0F16;border:2px dashed #F0B429;border-radius:10px;padding:18px 24px;margin:20px 0;text-align:center;">
+    <div style="background:#0B0F16;border:2px dashed #F0B429;border-radius:10px;padding:20px 24px;margin:20px 0;text-align:center;">
       <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">${et('exclusive_coupon')}</div>
       <div style="color:#F0B429;font-size:28px;font-weight:800;letter-spacing:3px;font-family:monospace;">${f.coupon}</div>
-      <div style="color:#7A8FA6;font-size:12px;margin-top:8px;">${et('coupon_steps')}</div>
+      <div style="margin-top:12px;">
+        <a href="https://www.marketscoupons.com/?copy=${encodeURIComponent(f.coupon)}" style="display:inline-block;background:#F0B429;color:#07090D;padding:10px 28px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;">${et('copy_coupon')}</a>
+      </div>
+      <div style="color:#7A8FA6;font-size:11px;margin-top:10px;">${et('copy_first')}</div>
     </div>` : `
     <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:14px 20px;margin:20px 0;text-align:center;">
       <div style="color:#22C55E;font-size:14px;font-weight:600;">${et('auto_discount')}</div>
     </div>`;
 
-  const platforms = (f.platforms||[]).map(p =>
+  // ── PLATFORMS BADGES ──
+  const platBadges = plats.map(p =>
     `<span style="display:inline-block;background:#10151F;border:1px solid #1C2535;border-radius:6px;padding:5px 12px;margin:3px 4px;font-size:12px;color:#EDF2F7;">${p}</span>`
   ).join('');
 
+  // ── PERKS ──
   const perks = (f.perks||[]).slice(0,6).map(p =>
     `<div style="padding:4px 0;color:#7A8FA6;font-size:13px;">&#10003; ${p}</div>`
   ).join('');
+
+  // ── CHECKOUT GRID (for firms with checkout_url_template) ──
+  let checkoutSection = '';
+  if(hasCheckout) {
+    // Build a section per platform, with table of sizes × types
+    const platformSections = plats.map(plat => {
+      const rows = plans.map(plan => {
+        const typeCells = types.map(type => {
+          const url = buildCheckoutUrl(f.checkout_url_template, plan.size, type, plat);
+          // Find matching price
+          const priceRow = prices.find(p => p.a === plan.size);
+          const typeIdx = priceTypes.indexOf(type.replace(/ Trail$/,''));
+          const price = typeIdx === 1 && priceRow?.n2 ? priceRow.n2 : (priceRow?.n || plan.disc || '');
+          return `<td style="padding:8px 6px;border-bottom:1px solid #1C2535;text-align:center;">
+            <a href="${url}" style="display:inline-block;background:#F0B429;color:#07090D;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">${price}</a>
+          </td>`;
+        }).join('');
+
+        return `<tr>
+          <td style="padding:8px 10px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:700;font-size:14px;">${plan.size}</td>
+          <td style="padding:8px 10px;border-bottom:1px solid #1C2535;color:#7A8FA6;font-size:11px;">${plan.goal || ''}</td>
+          ${typeCells}
+        </tr>`;
+      }).join('');
+
+      const typeHeaders = types.map(type =>
+        `<th style="padding:8px 6px;text-align:center;color:#F0B429;font-size:11px;font-weight:600;border-bottom:1px solid #1C2535;">${type.replace(/ Trail$/,'')}</th>`
+      ).join('');
+
+      return `
+      <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:16px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;margin-bottom:12px;">
+          <div style="background:#0B0F16;border:1px solid #1C2535;border-radius:6px;padding:6px 14px;">
+            <span style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">${et('platform_label')}</span>
+            <span style="color:#EDF2F7;font-size:13px;font-weight:700;margin-left:6px;">${plat}</span>
+          </div>
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          <tr style="background:#0B0F16;">
+            <th style="padding:8px 10px;text-align:left;color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_account')}</th>
+            <th style="padding:8px 10px;text-align:left;color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('goal')}</th>
+            ${typeHeaders}
+          </tr>
+          ${rows}
+        </table>
+      </div>`;
+    }).join('');
+
+    checkoutSection = `
+    <div style="margin-bottom:20px;">
+      <div style="color:#EDF2F7;font-size:15px;font-weight:700;margin-bottom:4px;">${et('select_buy')}</div>
+      <div style="color:#7A8FA6;font-size:12px;margin-bottom:14px;">${et('prices_sub')}</div>
+      ${platformSections}
+    </div>`;
+  } else {
+    // Fallback: simple price table for firms without checkout
+    const priceRows = prices.map(r => `
+      <tr>
+        <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:600;">${r.a}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#22C55E;font-weight:700;">${r.n}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#3D4F63;text-decoration:line-through;">${r.o}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #1C2535;">
+          <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">${et('buy_btn')}</a>
+        </td>
+      </tr>`).join('');
+
+    checkoutSection = prices.length ? `
+    <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:20px;margin-bottom:20px;">
+      <div style="color:#EDF2F7;font-size:14px;font-weight:600;margin-bottom:4px;">${et('choose_account')}</div>
+      <div style="color:#7A8FA6;font-size:12px;margin-bottom:12px;">${et('prices_sub')}</div>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:16px 0;">
+        <tr style="background:#0B0F16;">
+          <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_account')}</th>
+          <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_coupon')}</th>
+          <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_original')}</th>
+          <th style="padding:10px 14px;border-bottom:1px solid #1C2535;"></th>
+        </tr>
+        ${priceRows}
+      </table>
+    </div>` : '';
+  }
 
   return `<!DOCTYPE html>
 <html dir="${dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
@@ -2385,6 +2516,8 @@ function buildPromoHtml(f, lang='pt'){
   </div>
   <div style="color:#EDF2F7;font-size:15px;margin-bottom:6px;">${et('greeting')}</div>
   <div style="color:#7A8FA6;font-size:14px;line-height:1.6;margin-bottom:20px;">${et('intro')}</div>
+
+  <!-- Firm Info Card -->
   <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:24px;margin-bottom:20px;">
     <div style="margin-bottom:16px;">
       <div style="color:#EDF2F7;font-size:18px;font-weight:700;">${f.name}</div>
@@ -2393,34 +2526,30 @@ function buildPromoHtml(f, lang='pt'){
     ${couponSection}
     <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;">
       <tr>
-        <td style="text-align:center;padding:12px;background:#10151F;border:1px solid #1C2535;border-radius:8px 0 0 8px;">
+        <td style="text-align:center;padding:12px;background:#0B0F16;border:1px solid #1C2535;border-radius:8px 0 0 8px;">
           <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">${et('profit_split')}</div>
           <div style="color:#22C55E;font-size:18px;font-weight:800;margin-top:4px;">${f.split||'—'}</div>
         </td>
-        <td style="text-align:center;padding:12px;background:#10151F;border-top:1px solid #1C2535;border-bottom:1px solid #1C2535;">
+        <td style="text-align:center;padding:12px;background:#0B0F16;border-top:1px solid #1C2535;border-bottom:1px solid #1C2535;">
           <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">${et('discount_label')}</div>
           <div style="color:#F0B429;font-size:18px;font-weight:800;margin-top:4px;">${f.discount}% OFF</div>
         </td>
-        <td style="text-align:center;padding:12px;background:#10151F;border:1px solid #1C2535;border-radius:0 8px 8px 0;">
+        <td style="text-align:center;padding:12px;background:#0B0F16;border:1px solid #1C2535;border-radius:0 8px 8px 0;">
           <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">${et('drawdown_label')}</div>
           <div style="color:#EDF2F7;font-size:18px;font-weight:800;margin-top:4px;">${f.dd_pct||'—'}</div>
         </td>
       </tr>
     </table>
-    ${platforms ? `<div style="margin:16px 0;">
-      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">${et('platforms')}</div>
-      ${platforms}
-    </div>` : ''}
-    ${perks ? `<div style="margin:16px 0;">
+    ${perks ? `<div style="margin:12px 0 0;">
       <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">${et('benefits')}</div>
       ${perks}
     </div>` : ''}
   </div>
-  ${priceTable ? `<div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:20px;margin-bottom:20px;">
-    <div style="color:#EDF2F7;font-size:14px;font-weight:600;margin-bottom:4px;">${et('choose_account')}</div>
-    <div style="color:#7A8FA6;font-size:12px;margin-bottom:12px;">${et('prices_sub')}</div>
-    ${priceTable}
-  </div>` : ''}
+
+  <!-- Checkout Grid -->
+  ${checkoutSection}
+
+  <!-- Main CTA -->
   <div style="text-align:center;margin:24px 0;">
     <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:14px 40px;border-radius:8px;font-size:16px;font-weight:700;text-decoration:none;">${et('cta')}</a>
   </div>

@@ -10221,6 +10221,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const _hasToken = localStorage.getItem('mc-user-auth') !== null;
   if (!_hasToken) updateAuthUI(false);
 
+  // Auto-copy coupon from email link (?copy=CODE)
+  const _urlParams = new URLSearchParams(location.search);
+  const _autoCopy = _urlParams.get('copy');
+  if(_autoCopy){
+    try {
+      await navigator.clipboard.writeText(_autoCopy);
+      setTimeout(()=>{
+        const banner = document.createElement('div');
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#22C55E;color:#fff;text-align:center;padding:14px 20px;font-size:15px;font-weight:700;font-family:Inter,sans-serif;animation:fadeIn .3s;';
+        banner.innerHTML = '&#10003; Coupon <strong style="letter-spacing:2px;">'+_autoCopy+'</strong> copied! Now choose your account below.';
+        document.body.prepend(banner);
+        setTimeout(()=>banner.remove(), 5000);
+      }, 300);
+    } catch(e){}
+    // Clean URL
+    history.replaceState(null, '', location.pathname + location.hash);
+  }
+
   // Navegar para o hash da URL ANTES dos awaits — garante que Ctrl+F5 preserve a página
   const initHash = location.hash.replace('#','');
   if(initHash && document.getElementById('page-'+initHash)){
