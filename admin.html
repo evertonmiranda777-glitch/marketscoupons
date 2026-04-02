@@ -738,22 +738,17 @@ a{text-decoration:none;color:inherit;}
      <div class="tpl-card" onclick="loadQuickTemplate('loyalty')">
        <div class="tpl-card-icon">&#127942;</div>
        <div class="tpl-card-name">Fidelidade</div>
-       <div class="tpl-card-hook">Live Room VIP + sorteios</div>
+       <div class="tpl-card-hook">Compras desbloqueiam beneficios</div>
      </div>
      <div class="tpl-card" onclick="loadQuickTemplate('indicators')">
        <div class="tpl-card-icon">&#128200;</div>
-       <div class="tpl-card-name">Indicadores</div>
-       <div class="tpl-card-hook">Ferramentas gratuitas do site</div>
+       <div class="tpl-card-name">Ferramentas</div>
+       <div class="tpl-card-hook">Screener, Heat Map e mais</div>
      </div>
      <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')">
        <div class="tpl-card-icon">&#128218;</div>
        <div class="tpl-card-name">Blog & Guias</div>
        <div class="tpl-card-hook">Conteudo educacional</div>
-     </div>
-     <div class="tpl-card" onclick="loadQuickTemplate('daily-analysis')">
-       <div class="tpl-card-icon">&#9889;</div>
-       <div class="tpl-card-name">Analise Diaria</div>
-       <div class="tpl-card-hook">Mercado de hoje com IA</div>
      </div>
    </div>
 
@@ -2796,13 +2791,13 @@ const INST_TEMPLATES = {
       ar:'نعرف صعوبة البداية في هذا السوق. لذلك أنشأنا MarketsCoupons — لجمع المتداولين الذين يريدون <b>دفع أقل والتداول بشكل أفضل</b>.'
     },
     features: {
-      pt:['Cupons de ate 90% OFF que voce nao acha no Google','Comparativo honesto entre as maiores firmas','Guias praticos de drawdown, position sizing e estrategia','Programa de fidelidade com Live Room VIP e indicadores','Analise diaria do mercado com IA'],
-      en:['Up to 90% OFF coupons you won\'t find on Google','Honest comparison between top firms','Practical guides on drawdown, position sizing and strategy','Loyalty program with VIP Live Room and indicators','Daily AI market analysis'],
-      es:['Cupones de hasta 90% que no encuentras en Google','Comparativo honesto entre las mejores firmas','Guias practicas de drawdown, position sizing y estrategia','Programa de fidelidad con Live Room VIP e indicadores','Analisis diario del mercado con IA'],
-      fr:['Coupons jusqu\'a 90% introuvables sur Google','Comparatif honnete entre les meilleures firmes','Guides pratiques drawdown, position sizing et strategie','Programme de fidelite avec Live Room VIP et indicateurs','Analyse quotidienne du marche avec IA'],
-      de:['Bis zu 90% Rabatt, die du bei Google nicht findest','Ehrlicher Vergleich der besten Firmen','Praktische Guides zu Drawdown, Position Sizing und Strategie','Treueprogramm mit VIP Live Room und Indikatoren','Tagliche KI-Marktanalyse'],
-      it:['Coupon fino al 90% che non trovi su Google','Confronto onesto tra le migliori firme','Guide pratiche su drawdown, position sizing e strategia','Programma fedelta con Live Room VIP e indicatori','Analisi di mercato giornaliera con IA'],
-      ar:['كوبونات حتى 90% لن تجدها على Google','مقارنة صادقة بين أفضل الشركات','أدلة عملية عن Drawdown و Position Sizing','برنامج ولاء مع Live Room VIP ومؤشرات','تحليل يومي للسوق بالذكاء الاصطناعي']
+      pt:['Cupons de ate 90% OFF que voce nao acha no Google','Comparativo honesto entre as maiores firmas','Guias praticos de drawdown, position sizing e estrategia','Programa de fidelidade que desbloqueia funcionalidades exclusivas','Calculadora de position size e ferramentas de analise'],
+      en:['Up to 90% OFF coupons you won\'t find on Google','Honest comparison between top firms','Practical guides on drawdown, position sizing and strategy','Loyalty program that unlocks exclusive features','Position size calculator and analysis tools'],
+      es:['Cupones de hasta 90% que no encuentras en Google','Comparativo honesto entre las mejores firmas','Guias practicas de drawdown, position sizing y estrategia','Programa de fidelidad que desbloquea funcionalidades exclusivas','Calculadora de position size y herramientas de analisis'],
+      fr:['Coupons jusqu\'a 90% introuvables sur Google','Comparatif honnete entre les meilleures firmes','Guides pratiques drawdown, position sizing et strategie','Programme de fidelite qui debloque des fonctionnalites exclusives','Calculateur de position size et outils d\'analyse'],
+      de:['Bis zu 90% Rabatt, die du bei Google nicht findest','Ehrlicher Vergleich der besten Firmen','Praktische Guides zu Drawdown, Position Sizing und Strategie','Treueprogramm das exklusive Funktionen freischaltet','Position Size Rechner und Analyse-Tools'],
+      it:['Coupon fino al 90% che non trovi su Google','Confronto onesto tra le migliori firme','Guide pratiche su drawdown, position sizing e strategia','Programma fedelta che sblocca funzionalita esclusive','Calcolatore position size e strumenti di analisi'],
+      ar:['كوبونات حتى 90% لن تجدها على Google','مقارنة صادقة بين أفضل الشركات','أدلة عملية عن Drawdown و Position Sizing','برنامج ولاء يفتح ميزات حصرية','حاسبة حجم المركز وأدوات تحليل']
     },
     cta: { pt:'CONHECER O SITE', en:'VISIT THE SITE', es:'CONOCER EL SITIO', fr:'DECOUVRIR LE SITE', de:'WEBSITE BESUCHEN', it:'VISITA IL SITO', ar:'زيارة الموقع' }
   },
@@ -2831,26 +2826,26 @@ const INST_TEMPLATES = {
     cta: { pt:'VER OFERTAS', en:'SEE DEALS', es:'VER OFERTAS', fr:'VOIR LES OFFRES', de:'ANGEBOTE SEHEN', it:'VEDI OFFERTE', ar:'عرض العروض' }
   },
   loyalty: {
-    subject: { pt:'3 compras e voce entra na sala ao vivo', en:'3 purchases and you\'re in the Live Room', es:'3 compras y entras a la sala en vivo', fr:'3 achats et vous entrez dans la salle live', de:'3 Kaufe und du bist im Live Room', it:'3 acquisti e sei nella sala live', ar:'3 عمليات شراء وتدخل غرفة التداول المباشر' },
+    subject: { pt:'Suas compras valem mais do que voce imagina', en:'Your purchases are worth more than you think', es:'Tus compras valen mas de lo que imaginas', fr:'Vos achats valent plus que vous ne pensez', de:'Deine Kaufe sind mehr wert als du denkst', it:'I tuoi acquisti valgono piu di quanto pensi', ar:'مشترياتك تستحق أكثر مما تتصور' },
     icon: '&#127942;',
-    title: { pt:'Quanto mais voce opera, mais voce ganha', en:'The more you trade, the more you earn', es:'Cuanto mas operas, mas ganas', fr:'Plus vous tradez, plus vous gagnez', de:'Je mehr du tradest, desto mehr gewinnst du', it:'Piu operi, piu guadagni', ar:'كلما تداولت أكثر، كسبت أكثر' },
+    title: { pt:'Quanto mais voce compra, mais voce desbloqueia', en:'The more you buy, the more you unlock', es:'Cuanto mas compras, mas desbloqueas', fr:'Plus vous achetez, plus vous debloquez', de:'Je mehr du kaufst, desto mehr schaltest du frei', it:'Piu acquisti, piu sblocchi', ar:'كلما اشتريت أكثر، فتحت المزيد' },
     body: {
-      pt:'Nosso programa de fidelidade e simples: comprou uma Prop Firm pelo nosso link? Manda o comprovante. <b>Com 3 compras validadas voce desbloqueia a Live Room VIP</b> — operacoes ao vivo com traders de verdade, sorteios de contas e indicadores exclusivos.',
-      en:'Our loyalty program is simple: bought a Prop Firm through our link? Submit the receipt. <b>With 3 validated purchases you unlock VIP Live Room</b> — live operations with real traders, account raffles and exclusive indicators.',
-      es:'Nuestro programa es simple: compraste por nuestro enlace? Manda el comprobante. <b>Con 3 compras validadas desbloqueas la Live Room VIP</b> — operaciones en vivo, sorteos y indicadores exclusivos.',
-      fr:'Notre programme est simple : achete via notre lien ? Envoyez la preuve. <b>Avec 3 achats valides vous debloquez la Live Room VIP</b> — operations en direct, tirages au sort et indicateurs exclusifs.',
-      de:'Unser Programm ist einfach: uber unseren Link gekauft? Beleg einreichen. <b>Mit 3 validierten Kaufen schaltest du den VIP Live Room frei</b> — Live-Trading, Verlosungen und exklusive Indikatoren.',
-      it:'Il nostro programma e semplice: acquistato tramite il nostro link? Invia la ricevuta. <b>Con 3 acquisti validati sblocchi la Live Room VIP</b> — operazioni live, sorteggi e indicatori esclusivi.',
-      ar:'برنامجنا بسيط: اشتريت عبر رابطنا؟ أرسل الإيصال. <b>مع 3 عمليات شراء معتمدة تفتح غرفة التداول المباشر VIP</b> — عمليات حية وسحوبات ومؤشرات حصرية.'
+      pt:'Nosso programa de fidelidade e simples: comprou uma Prop Firm pelo nosso link? Manda o comprovante. <b>Com 3 compras validadas voce desbloqueia funcionalidades exclusivas</b> reservadas para membros fieis.',
+      en:'Our loyalty program is simple: bought a Prop Firm through our link? Submit the receipt. <b>With 3 validated purchases you unlock exclusive features</b> reserved for loyal members.',
+      es:'Nuestro programa es simple: compraste por nuestro enlace? Manda el comprobante. <b>Con 3 compras validadas desbloqueas funcionalidades exclusivas</b> reservadas para miembros fieles.',
+      fr:'Notre programme est simple : achete via notre lien ? Envoyez la preuve. <b>Avec 3 achats valides vous debloquez des fonctionnalites exclusives</b> reservees aux membres fideles.',
+      de:'Unser Programm ist einfach: uber unseren Link gekauft? Beleg einreichen. <b>Mit 3 validierten Kaufen schaltest du exklusive Funktionen frei</b> — reserviert fur treue Mitglieder.',
+      it:'Il nostro programma e semplice: acquistato tramite il nostro link? Invia la ricevuta. <b>Con 3 acquisti validati sblocchi funzionalita esclusive</b> riservate ai membri fedeli.',
+      ar:'برنامجنا بسيط: اشتريت عبر رابطنا؟ أرسل الإيصال. <b>مع 3 عمليات شراء معتمدة تفتح ميزات حصرية</b> مخصصة للأعضاء المخلصين.'
     },
     features: {
-      pt:['Compre qualquer Prop Firm pelo nosso link ou cupom','Envie o comprovante de compra pelo site','Validacao em ate 48h pela nossa equipe','Com 3 compras: Live Room VIP com operacoes ao vivo','+ sorteios de contas e indicadores exclusivos'],
-      en:['Buy any Prop Firm through our link or coupon','Submit your purchase receipt on the site','Validation within 48h by our team','With 3 purchases: VIP Live Room with live trading','+ account raffles and exclusive indicators'],
-      es:['Compra cualquier Prop Firm por nuestro enlace o cupon','Envia el comprobante por el sitio','Validacion en hasta 48h por nuestro equipo','Con 3 compras: Live Room VIP con operaciones en vivo','+ sorteos de cuentas e indicadores exclusivos'],
-      fr:['Achetez n\'importe quelle Prop Firm via notre lien ou coupon','Envoyez la preuve d\'achat sur le site','Validation en 48h par notre equipe','Avec 3 achats : Live Room VIP avec du trading en direct','+ tirages au sort et indicateurs exclusifs'],
-      de:['Kaufe eine Prop Firm uber unseren Link oder Gutschein','Beleg uber die Website einreichen','Validierung innerhalb von 48h','Mit 3 Kaufen: VIP Live Room mit Live-Trading','+ Verlosungen und exklusive Indikatoren'],
-      it:['Acquista qualsiasi Prop Firm tramite il nostro link o coupon','Invia la ricevuta sul sito','Validazione entro 48h dal nostro team','Con 3 acquisti: Live Room VIP con trading live','+ sorteggi di conti e indicatori esclusivi'],
-      ar:['اشترِ أي Prop Firm عبر رابطنا أو كوبوننا','أرسل إيصال الشراء عبر الموقع','التحقق خلال 48 ساعة','مع 3 عمليات شراء: غرفة تداول VIP مباشرة','+ سحوبات حسابات ومؤشرات حصرية']
+      pt:['Compre qualquer Prop Firm pelo nosso link ou cupom','Envie o comprovante de compra pelo site','Validacao em ate 48h pela nossa equipe','Com 3 compras validadas: acesso a funcionalidades exclusivas','Quanto mais fidelidade, mais beneficios voce desbloqueia'],
+      en:['Buy any Prop Firm through our link or coupon','Submit your purchase receipt on the site','Validation within 48h by our team','With 3 validated purchases: access to exclusive features','The more loyalty, the more benefits you unlock'],
+      es:['Compra cualquier Prop Firm por nuestro enlace o cupon','Envia el comprobante por el sitio','Validacion en hasta 48h por nuestro equipo','Con 3 compras validadas: acceso a funcionalidades exclusivas','Cuanta mas fidelidad, mas beneficios desbloqueas'],
+      fr:['Achetez n\'importe quelle Prop Firm via notre lien ou coupon','Envoyez la preuve d\'achat sur le site','Validation en 48h par notre equipe','Avec 3 achats valides : acces aux fonctionnalites exclusives','Plus de fidelite, plus d\'avantages debloques'],
+      de:['Kaufe eine Prop Firm uber unseren Link oder Gutschein','Beleg uber die Website einreichen','Validierung innerhalb von 48h','Mit 3 validierten Kaufen: Zugang zu exklusiven Funktionen','Je mehr Treue, desto mehr Vorteile'],
+      it:['Acquista qualsiasi Prop Firm tramite il nostro link o coupon','Invia la ricevuta sul sito','Validazione entro 48h dal nostro team','Con 3 acquisti validati: accesso a funzionalita esclusive','Piu fedelta, piu vantaggi sblocchi'],
+      ar:['اشترِ أي Prop Firm عبر رابطنا أو كوبوننا','أرسل إيصال الشراء عبر الموقع','التحقق خلال 48 ساعة','مع 3 عمليات شراء معتمدة: وصول لميزات حصرية','كلما زاد ولاؤك، زادت المزايا']
     },
     cta: { pt:'COMECAR AGORA', en:'GET STARTED', es:'EMPEZAR AHORA', fr:'COMMENCER', de:'JETZT STARTEN', it:'INIZIA ORA', ar:'ابدأ الآن' }
   },
@@ -2859,22 +2854,22 @@ const INST_TEMPLATES = {
     icon: '&#128200;',
     title: { pt:'Tudo o que voce precisa pra operar', en:'Everything you need to trade', es:'Todo lo que necesitas para operar', fr:'Tout ce qu\'il vous faut pour trader', de:'Alles was du zum Traden brauchst', it:'Tutto cio che ti serve per operare', ar:'كل ما تحتاجه للتداول' },
     body: {
-      pt:'Graficos, screener, Heat Map, calendario economico — <b>tudo aberto e gratuito</b>. Tem tambem analise diaria com IA e calculadora de position size pra te ajudar antes de cada operacao.',
-      en:'Charts, screener, Heat Map, economic calendar — <b>all open and free</b>. Plus daily AI analysis and a position size calculator to help before every trade.',
-      es:'Graficos, screener, Heat Map, calendario economico — <b>todo abierto y gratis</b>. Ademas, analisis diario con IA y calculadora de position size.',
-      fr:'Graphiques, screener, Heat Map, calendrier eco — <b>tout ouvert et gratuit</b>. Plus une analyse IA quotidienne et un calculateur de position size.',
-      de:'Charts, Screener, Heat Map, Wirtschaftskalender — <b>alles offen und kostenlos</b>. Dazu tagliche KI-Analyse und ein Position Size Rechner.',
-      it:'Grafici, screener, Heat Map, calendario economico — <b>tutto aperto e gratuito</b>. In piu analisi IA giornaliera e calcolatore di position size.',
-      ar:'رسوم بيانية وفلاتر وخريطة حرارية وتقويم اقتصادي — <b>كل شيء مفتوح ومجاني</b>. بالإضافة إلى تحليل يومي بالذكاء الاصطناعي وحاسبة حجم المركز.'
+      pt:'Screener, Heat Map, calendario economico, calculadora de position size — <b>ferramentas pensadas pra quem opera de verdade</b>. Tudo reunido num so lugar pra voce se preparar antes de cada operacao.',
+      en:'Screener, Heat Map, economic calendar, position size calculator — <b>tools designed for serious traders</b>. Everything in one place to prepare before every trade.',
+      es:'Screener, Heat Map, calendario economico, calculadora de position size — <b>herramientas pensadas para quienes operan en serio</b>. Todo en un solo lugar.',
+      fr:'Screener, Heat Map, calendrier eco, calculateur de position size — <b>des outils concus pour les vrais traders</b>. Tout au meme endroit.',
+      de:'Screener, Heat Map, Wirtschaftskalender, Position Size Rechner — <b>Tools fur ernsthafte Trader</b>. Alles an einem Ort.',
+      it:'Screener, Heat Map, calendario economico, calcolatore position size — <b>strumenti pensati per chi opera sul serio</b>. Tutto in un unico posto.',
+      ar:'فلاتر وخريطة حرارية وتقويم اقتصادي وحاسبة حجم المركز — <b>أدوات مصممة للمتداولين الجادين</b>. كل شيء في مكان واحد.'
     },
     features: {
-      pt:['Graficos TradingView com dados em tempo real','Heat Map do S&P 500 e Crypto','Calendario economico — saiba o que move o mercado','Analise diaria com IA (3 dias gratis pra testar)','Calculadora de Position Size com email gratuito'],
-      en:['TradingView charts with real-time data','S&P 500 and Crypto Heat Map','Economic calendar — know what moves the market','Daily AI analysis (3 free days to try)','Position Size calculator with free email signup'],
-      es:['Graficos TradingView en tiempo real','Heat Map del S&P 500 y Crypto','Calendario economico','Analisis diario con IA (3 dias gratis)','Calculadora de Position Size con email gratuito'],
-      fr:['Graphiques TradingView en temps reel','Heat Map S&P 500 et Crypto','Calendrier economique','Analyse IA quotidienne (3 jours gratuits)','Calculateur de Position Size avec email gratuit'],
-      de:['TradingView-Charts mit Echtzeitdaten','S&P 500 und Crypto Heat Map','Wirtschaftskalender','Tagliche KI-Analyse (3 Tage gratis testen)','Position Size Rechner mit kostenloser E-Mail'],
-      it:['Grafici TradingView con dati in tempo reale','Heat Map S&P 500 e Crypto','Calendario economico','Analisi IA giornaliera (3 giorni gratis)','Calcolatore Position Size con email gratuita'],
-      ar:['رسوم TradingView بالبيانات الحية','خريطة حرارية S&P 500 وCrypto','تقويم اقتصادي','تحليل يومي بالذكاء الاصطناعي (3 أيام مجانية)','حاسبة حجم المركز بإيميل مجاني']
+      pt:['Heat Map do S&P 500 e Crypto','Calendario economico — saiba o que move o mercado','Screener de ativos e setores','Calculadora de Position Size','Membros do programa de fidelidade desbloqueiam mais ferramentas'],
+      en:['S&P 500 and Crypto Heat Map','Economic calendar — know what moves the market','Asset and sector screener','Position Size calculator','Loyalty program members unlock more tools'],
+      es:['Heat Map del S&P 500 y Crypto','Calendario economico — sabe que mueve el mercado','Screener de activos y sectores','Calculadora de Position Size','Miembros del programa de fidelidad desbloquean mas herramientas'],
+      fr:['Heat Map S&P 500 et Crypto','Calendrier economique — sachez ce qui bouge le marche','Screener d\'actifs et secteurs','Calculateur de Position Size','Les membres fidelite debloquent plus d\'outils'],
+      de:['S&P 500 und Crypto Heat Map','Wirtschaftskalender — wisse was den Markt bewegt','Asset- und Sektor-Screener','Position Size Rechner','Treuemitglieder schalten mehr Tools frei'],
+      it:['Heat Map S&P 500 e Crypto','Calendario economico — scopri cosa muove il mercato','Screener di asset e settori','Calcolatore Position Size','I membri fedelta sbloccano piu strumenti'],
+      ar:['خريطة حرارية S&P 500 وCrypto','تقويم اقتصادي — اعرف ما يحرك السوق','فلتر الأصول والقطاعات','حاسبة حجم المركز','أعضاء برنامج الولاء يفتحون المزيد من الأدوات']
     },
     cta: { pt:'ACESSAR FERRAMENTAS', en:'ACCESS TOOLS', es:'ACCEDER A HERRAMIENTAS', fr:'ACCEDER AUX OUTILS', de:'TOOLS AUFRUFEN', it:'ACCEDI AGLI STRUMENTI', ar:'الوصول إلى الأدوات' }
   },
@@ -2902,30 +2897,6 @@ const INST_TEMPLATES = {
     },
     cta: { pt:'LER AGORA', en:'READ NOW', es:'LEER AHORA', fr:'LIRE MAINTENANT', de:'JETZT LESEN', it:'LEGGI ORA', ar:'اقرأ الآن' }
   },
-  'daily-analysis': {
-    subject: { pt:'O mercado de hoje em 1 minuto', en:'Today\'s market in 1 minute', es:'El mercado de hoy en 1 minuto', fr:'Le marche du jour en 1 minute', de:'Der Markt heute in 1 Minute', it:'Il mercato di oggi in 1 minuto', ar:'سوق اليوم في دقيقة واحدة' },
-    icon: '&#9889;',
-    title: { pt:'Antes de abrir o grafico, leia isso', en:'Before you open the chart, read this', es:'Antes de abrir el grafico, lee esto', fr:'Avant d\'ouvrir le graphique, lisez ceci', de:'Bevor du den Chart offnest, lies das', it:'Prima di aprire il grafico, leggi questo', ar:'قبل أن تفتح الرسم البياني، اقرأ هذا' },
-    body: {
-      pt:'Todo dia as 6h a gente publica uma analise dos principais ativos usando <b>indicadores tecnicos e inteligencia artificial</b>. Rapida, visual e direto ao ponto — pra voce comecar o dia preparado.',
-      en:'Every day at 6am we publish an analysis of key assets using <b>technical indicators and AI</b>. Quick, visual and straight to the point — so you start your day prepared.',
-      es:'Todos los dias a las 6h publicamos un analisis de los principales activos con <b>indicadores tecnicos e IA</b>. Rapido, visual y directo al punto.',
-      fr:'Chaque jour a 6h on publie une analyse des actifs cles avec <b>indicateurs techniques et IA</b>. Rapide, visuelle et droit au but.',
-      de:'Jeden Tag um 6 Uhr veroffentlichen wir eine Analyse der wichtigsten Assets mit <b>technischen Indikatoren und KI</b>. Schnell, visuell und auf den Punkt.',
-      it:'Ogni giorno alle 6 pubblichiamo un\'analisi dei principali asset con <b>indicatori tecnici e IA</b>. Rapida, visiva e dritta al punto.',
-      ar:'كل يوم الساعة 6 صباحاً ننشر تحليلاً للأصول الرئيسية باستخدام <b>مؤشرات فنية وذكاء اصطناعي</b>. سريع ومباشر.'
-    },
-    features: {
-      pt:['S&P 500 (ES) — Futuros','Nasdaq (NQ) — Futuros','Ouro (GC) — Commodities','Petroleo (CL) — Energia','VIX — Volatilidade do mercado'],
-      en:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Gold (GC) — Commodities','Oil (CL) — Energy','VIX — Market Volatility'],
-      es:['S&P 500 (ES) — Futuros','Nasdaq (NQ) — Futuros','Oro (GC) — Commodities','Petroleo (CL) — Energia','VIX — Volatilidad del mercado'],
-      fr:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Or (GC) — Matieres premieres','Petrole (CL) — Energie','VIX — Volatilite du marche'],
-      de:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Gold (GC) — Rohstoffe','Ol (CL) — Energie','VIX — Marktvolatilitat'],
-      it:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Oro (GC) — Commodities','Petrolio (CL) — Energia','VIX — Volatilita del mercato'],
-      ar:['S&P 500 (ES) — العقود الآجلة','Nasdaq (NQ) — العقود الآجلة','الذهب (GC)','النفط (CL)','VIX — تقلب السوق']
-    },
-    cta: { pt:'VER ANALISE DE HOJE', en:'SEE TODAY\'S ANALYSIS', es:'VER ANALISIS DE HOY', fr:'VOIR L\'ANALYSE DU JOUR', de:'HEUTIGE ANALYSE SEHEN', it:'VEDI ANALISI DI OGGI', ar:'عرض تحليل اليوم' }
-  }
 };
 
 function buildInstitutionalHtml(name, lang='pt'){
