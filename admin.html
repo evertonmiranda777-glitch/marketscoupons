@@ -171,16 +171,14 @@ a{text-decoration:none;color:inherit;}
 /* ── QUICK TEMPLATES ── */
 .tpl-section-title{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .tpl-section-title .tpl-sec-icon{font-size:8px;line-height:1;}
-.tpl-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
-.tpl-card{background:var(--card2);border:1px solid var(--b1);border-radius:7px;padding:7px 12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.tpl-card{background:var(--card2);border:1px solid var(--b1);border-radius:6px;padding:6px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;}
 .tpl-card:hover{border-color:var(--gold);background:var(--gbg);}
 .tpl-card:active{opacity:.8;}
-.tpl-card-icon{font-size:14px;line-height:1;flex-shrink:0;}
-.tpl-card-info{display:flex;flex-direction:column;}
-.tpl-card-name{font-size:11px;font-weight:600;color:var(--t1);line-height:1.2;}
+.tpl-card-name{font-size:10px;font-weight:600;color:var(--t1);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tpl-card-hook{font-size:9px;color:var(--t3);line-height:1.2;}
-.tpl-promo-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
-.tpl-promo{background:var(--card2);border:1px solid var(--b1);border-radius:7px;padding:5px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
+.tpl-promo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.tpl-promo{background:var(--card2);border:1px solid var(--b1);border-radius:6px;padding:5px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;}
 .tpl-promo:hover{border-color:var(--fc,var(--b1));background:color-mix(in srgb,var(--fc,var(--gold)) 8%,transparent);}
 .tpl-promo:active{opacity:.8;}
 .tpl-promo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
@@ -208,7 +206,7 @@ a{text-decoration:none;color:inherit;}
 .prog-bar{height:100%;border-radius:3px;transition:width .8s;}
 
 /* RESPONSIVE */
-@media(max-width:900px){.charts-grid{grid-template-columns:1fr;}.geo-grid{grid-template-columns:1fr;}.seg-grid{grid-template-columns:1fr 1fr;}.send-stats{grid-template-columns:1fr 1fr;}}
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr;}.geo-grid{grid-template-columns:1fr;}.seg-grid{grid-template-columns:1fr 1fr;}.send-stats{grid-template-columns:1fr 1fr;}.tpl-grid{grid-template-columns:repeat(2,1fr);}.tpl-promo-grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:600px){.stats-grid{grid-template-columns:1fr 1fr;}.nav-tabs-admin{display:none;}.lm-grid{grid-template-columns:1fr;}.admin-mobile-menu-btn{display:flex!important;}}
 .admin-mobile-menu-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;background:var(--card);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:18px;cursor:pointer;margin-right:8px;}
 .admin-mobile-dd{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;z-index:999;background:var(--bg);overflow-y:auto;padding:12px;}
@@ -339,12 +337,12 @@ a{text-decoration:none;color:inherit;}
      <button class="toggle-btn" id="bot-toggle" onclick="toggleBotSetting()"></button>
    </div>
    <div class="notif-bell" id="notif-bell" onclick="toggleNotifPanel()">
-     <span style="font-size:16px;">&#128276;</span>
+     <span style="font-size:12px;font-weight:700;color:var(--t2);">!</span>
      <span class="notif-count" id="notif-count" style="display:none;">0</span>
    </div>
    <span class="last-update" id="last-update">—</span>
    <button class="btn-secondary" onclick="refreshAll()">Atualizar</button>
-   <button class="btn-secondary" onclick="toggleChgPassModal()" style="font-size:11px;padding:6px 10px;" title="Alterar senha">🔑</button>
+   <button class="btn-secondary" onclick="toggleChgPassModal()" style="font-size:11px;padding:6px 10px;" title="Alterar senha">Senha</button>
    <button class="logout-btn" onclick="doLogout()">Sair</button>
  </div>
 
@@ -724,16 +722,64 @@ a{text-decoration:none;color:inherit;}
  <div class="ss-item"><div class="ss-lbl">Subscribers</div><div class="ss-val y" id="ss-leads">0</div></div>
  </div>
 
+ <!-- IMPORTAR & VALIDAR -->
+ <div style="margin-bottom:20px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px 18px;">
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+     <div style="font-size:13px;font-weight:700;color:var(--t1);">Importar &amp; Validar Emails</div>
+     <div style="font-size:10px;color:var(--t3);">CSV / TXT</div>
+   </div>
+   <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;" id="import-firma-chips">
+     <div class="seg-opt seg-firma sel" data-firma="" onclick="selectImportFirma(this,'')" style="--fc:var(--gold);">Todas</div>
+     <div class="seg-opt seg-firma" data-firma="apex" onclick="selectImportFirma(this,'apex')" style="--fc:#F97316;">Apex</div>
+     <div class="seg-opt seg-firma" data-firma="bulenox" onclick="selectImportFirma(this,'bulenox')" style="--fc:#3B82F6;">Bulenox</div>
+     <div class="seg-opt seg-firma" data-firma="e2t" onclick="selectImportFirma(this,'e2t')" style="--fc:#F59E0B;">E2T</div>
+     <div class="seg-opt seg-firma" data-firma="tpt" onclick="selectImportFirma(this,'tpt')" style="--fc:#A855F7;">TPT</div>
+     <div class="seg-opt seg-firma" data-firma="fn" onclick="selectImportFirma(this,'fn')" style="--fc:#06B6D4;">FN</div>
+     <div class="seg-opt seg-firma" data-firma="fundingpips" onclick="selectImportFirma(this,'fundingpips')" style="--fc:#6366F1;">FPips</div>
+     <div class="seg-opt seg-firma" data-firma="brightfunded" onclick="selectImportFirma(this,'brightfunded')" style="--fc:#00C9A7;">BF</div>
+     <div class="seg-opt seg-firma" data-firma="ftmo" onclick="selectImportFirma(this,'ftmo')" style="--fc:#22C55E;">FTMO</div>
+     <div class="seg-opt seg-firma" data-firma="the5ers" onclick="selectImportFirma(this,'the5ers')" style="--fc:#10B981;">5ers</div>
+   </div>
+   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;">
+     <div>
+       <div style="background:var(--card2);border:2px dashed var(--b1);border-radius:8px;padding:18px;text-align:center;cursor:pointer;" onclick="document.getElementById('csv-file').click()">
+         <div style="font-size:12px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
+         <div style="font-size:10px;color:var(--t3);margin-top:3px;">Coluna "email" ou 1 email por linha</div>
+         <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
+       </div>
+       <div style="display:flex;gap:6px;margin-top:8px;">
+         <button class="btn-secondary" style="font-size:10px;padding:5px 10px;" onclick="runValidation()" id="btn-validate" disabled>Validar</button>
+         <button class="btn-secondary" style="font-size:10px;padding:5px 10px;" onclick="runMxCheck()" id="btn-mx" disabled>Verificar MX</button>
+       </div>
+     </div>
+     <div>
+       <div id="csv-stats" style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;min-height:60px;">
+         <div style="color:var(--t3);font-size:11px;">Nenhum arquivo carregado.</div>
+       </div>
+       <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+         <button class="btn-primary" style="font-size:10px;padding:5px 10px;" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos</button>
+         <button class="btn-secondary" style="font-size:10px;padding:5px 10px;" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar → Subscribers</button>
+       </div>
+       <div style="margin-top:8px;display:flex;gap:6px;align-items:center;">
+         <span style="font-size:10px;color:var(--t3);">MillionVerifier:</span>
+         <input type="file" id="mv-file" accept=".csv,.txt" style="font-size:10px;color:var(--t2);max-width:180px;" onchange="handleMvResult(this)">
+       </div>
+     </div>
+   </div>
+   <div id="csv-log" style="margin-top:8px;max-height:80px;overflow-y:auto;font-size:10px;color:var(--t2);background:var(--card2);border:1px solid var(--b1);border-radius:6px;padding:8px;display:none;"></div>
+   <div style="font-size:9px;color:var(--t3);margin-top:6px;">Firma: <strong id="import-firma-label" style="color:var(--gold);">Todas</strong></div>
+ </div>
+
  <!-- QUICK TEMPLATES -->
  <div style="margin-bottom:14px;">
    <div class="tpl-section-title"><span class="tpl-sec-icon" style="color:var(--gold);">&#9670;</span> Institucional</div>
    <div class="tpl-grid">
-     <div class="tpl-card" onclick="loadQuickTemplate('welcome')"><div class="tpl-card-icon">&#9993;&#65039;</div><div class="tpl-card-info"><div class="tpl-card-name">Boas-vindas</div><div class="tpl-card-hook">Primeiro contato</div></div></div>
-     <div class="tpl-card" onclick="loadQuickTemplate('site-invite')"><div class="tpl-card-icon">&#127760;</div><div class="tpl-card-info"><div class="tpl-card-name">Convite Site</div><div class="tpl-card-hook">Traga pro site</div></div></div>
-     <div class="tpl-card" onclick="loadQuickTemplate('loyalty')"><div class="tpl-card-icon">&#11088;</div><div class="tpl-card-info"><div class="tpl-card-name">Fidelidade</div><div class="tpl-card-hook">Cashback</div></div></div>
-     <div class="tpl-card" onclick="loadQuickTemplate('indicators')"><div class="tpl-card-icon">&#128200;</div><div class="tpl-card-info"><div class="tpl-card-name">Ferramentas</div><div class="tpl-card-hook">Screener, HM</div></div></div>
-     <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')"><div class="tpl-card-icon">&#128218;</div><div class="tpl-card-info"><div class="tpl-card-name">Blog &amp; Guias</div><div class="tpl-card-hook">Educacional</div></div></div>
-     <div class="tpl-card" onclick="loadQuickTemplate('ultimas-horas')"><div class="tpl-card-icon">&#9200;</div><div class="tpl-card-info"><div class="tpl-card-name">Ultimas Horas</div><div class="tpl-card-hook">Urgencia</div></div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('welcome')"><div class="tpl-card-name">Boas-vindas</div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('site-invite')"><div class="tpl-card-name">Convite Site</div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('loyalty')"><div class="tpl-card-name">Fidelidade</div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('indicators')"><div class="tpl-card-name">Ferramentas</div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')"><div class="tpl-card-name">Blog &amp; Guias</div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('ultimas-horas')"><div class="tpl-card-name">Ultimas Horas</div></div>
    </div>
    <div class="tpl-section-title"><span class="tpl-sec-icon" style="color:#22C55E;">&#9670;</span> Promos</div>
    <div class="tpl-promo-grid">
@@ -749,7 +795,7 @@ a{text-decoration:none;color:inherit;}
    </div>
  </div>
 
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+ <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;">
  <!-- COMPOSE -->
  <div>
    <div style="font-size:13px;font-weight:600;margin-bottom:14px;">Composicao</div>
@@ -786,7 +832,7 @@ a{text-decoration:none;color:inherit;}
      <div class="ec-field">
        <label>Envio individual (opcional)</label>
        <div style="display:flex;gap:8px;align-items:center;">
-         <input type="email" id="em-single-email" placeholder="email@exemplo.com" style="flex:1;">
+         <input type="email" id="em-single-email" placeholder="email@exemplo.com" style="flex:1;min-width:0;">
          <button class="btn-secondary" onclick="sendSingleEmail()" style="white-space:nowrap;padding:8px 14px;">Enviar p/ este</button>
        </div>
      </div>
@@ -810,7 +856,7 @@ a{text-decoration:none;color:inherit;}
 
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-primary" onclick="previewEmail()">Preview</button>
-       <button class="btn-secondary" onclick="sendTestEmail()" title="Envia para o email do admin logado">&#9993; Enviar Teste</button>
+       <button class="btn-secondary" onclick="sendTestEmail()" title="Envia para o email do admin logado">Enviar Teste</button>
        <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar para todos</button>
        <button class="btn-secondary" onclick="saveTemplate()">Salvar template</button>
      </div>
@@ -843,69 +889,6 @@ a{text-decoration:none;color:inherit;}
    </div>
  </div>
  </div><!-- /grid compose+preview -->
-
- <!-- EMAIL VALIDATOR / IMPORTER -->
- <div style="margin-top:24px;border-top:1px solid var(--b1);padding-top:24px;">
-   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-     <div>
-       <div style="font-size:15px;font-weight:700;">Importar & Validar Emails</div>
-       <div style="font-size:11px;color:var(--t3);">Upload CSV/TXT, validacao automatica, export para verificacao externa</div>
-     </div>
-   </div>
-
-   <!-- FIRMA TAG SELECTOR -->
-   <div style="margin-bottom:16px;padding:12px 16px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;">
-     <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:8px;font-weight:600;">Importar para qual firma?</div>
-     <div style="display:flex;flex-wrap:wrap;gap:6px;" id="import-firma-chips">
-       <div class="seg-opt seg-firma sel" data-firma="" onclick="selectImportFirma(this,'')" style="--fc:var(--gold);font-size:11px;padding:6px 12px;border-radius:6px;">Nenhuma</div>
-       <div class="seg-opt seg-firma" data-firma="apex" onclick="selectImportFirma(this,'apex')" style="--fc:#F97316;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(249,115,22,.25);">Apex</div>
-       <div class="seg-opt seg-firma" data-firma="bulenox" onclick="selectImportFirma(this,'bulenox')" style="--fc:#3B82F6;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(59,130,246,.25);">Bulenox</div>
-       <div class="seg-opt seg-firma" data-firma="e2t" onclick="selectImportFirma(this,'e2t')" style="--fc:#F59E0B;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(245,158,11,.25);">E2T</div>
-       <div class="seg-opt seg-firma" data-firma="tpt" onclick="selectImportFirma(this,'tpt')" style="--fc:#A855F7;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(168,85,247,.25);">TPT</div>
-       <div class="seg-opt seg-firma" data-firma="fn" onclick="selectImportFirma(this,'fn')" style="--fc:#06B6D4;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(6,182,212,.25);">FundedNext</div>
-       <div class="seg-opt seg-firma" data-firma="fundingpips" onclick="selectImportFirma(this,'fundingpips')" style="--fc:#6366F1;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(99,102,241,.25);">FPips</div>
-       <div class="seg-opt seg-firma" data-firma="brightfunded" onclick="selectImportFirma(this,'brightfunded')" style="--fc:#00C9A7;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(0,201,167,.25);">BrightFunded</div>
-       <div class="seg-opt seg-firma" data-firma="ftmo" onclick="selectImportFirma(this,'ftmo')" style="--fc:#22C55E;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(34,197,94,.25);">FTMO</div>
-       <div class="seg-opt seg-firma" data-firma="the5ers" onclick="selectImportFirma(this,'the5ers')" style="--fc:#10B981;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(16,185,129,.25);">The5ers</div>
-     </div>
-     <div style="font-size:10px;color:var(--t3);margin-top:6px;">Firma selecionada: <strong id="import-firma-label" style="color:var(--gold);">Nenhuma</strong> — todos os emails importados receberao esta tag</div>
-   </div>
-
-   <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-   <div>
-     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">1. Upload CSV ou TXT</div>
-     <div style="background:var(--card);border:2px dashed var(--b2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;" onclick="document.getElementById('csv-file').click()">
-       <div style="font-size:24px;margin-bottom:8px;">&#128196;</div>
-       <div style="font-size:13px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
-       <div style="font-size:11px;color:var(--t3);margin-top:4px;">CSV com coluna "email" ou TXT com um email por linha</div>
-       <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
-     </div>
-     <div style="margin-top:12px;">
-       <button class="btn-secondary" onclick="runValidation()" id="btn-validate" disabled>2. Validar Lista</button>
-       <button class="btn-secondary" onclick="runMxCheck()" id="btn-mx" disabled style="margin-left:6px;">3. Verificar MX</button>
-     </div>
-   </div>
-
-   <div>
-     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Resultado da Validacao</div>
-     <div id="csv-stats" style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;">
-       <div style="color:var(--t3);font-size:12px;">Nenhum arquivo carregado.</div>
-     </div>
-     <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center;">
-       <button class="btn-primary" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos (email-only)</button>
-       <button class="btn-secondary" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar validos → Subscribers</button>
-     </div>
-     <div style="margin-top:12px;">
-       <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:8px;">4. Reimportar resultado MillionVerifier</div>
-       <div style="display:flex;gap:8px;align-items:center;">
-         <input type="file" id="mv-file" accept=".csv,.txt" style="font-size:11px;color:var(--t2);" onchange="handleMvResult(this)">
-       </div>
-     </div>
-   </div>
-   </div>
-
-   <div id="csv-log" style="margin-top:10px;max-height:120px;overflow-y:auto;font-size:11px;color:var(--t2);background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px;display:none;"></div>
- </div>
 
  </div><!-- /page-email -->
 
@@ -990,7 +973,7 @@ a{text-decoration:none;color:inherit;}
       <div class="sec-hdr">
         <div class="sec-title">Firmas</div>
         <div class="sec-actions">
-          <button class="btn-secondary" style="background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.3);color:#A855F7;" onclick="toggleAiFirmPanel()">⚡ Adicionar via IA</button>
+          <button class="btn-secondary" style="background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.3);color:#A855F7;" onclick="toggleAiFirmPanel()">Adicionar via IA</button>
           <button class="btn-primary" onclick="openFirmModal()">+ Nova Firma Manual</button>
           <button class="btn-secondary" onclick="exportCmsJson('firms')">Exportar JSON</button>
         </div>
@@ -999,7 +982,7 @@ a{text-decoration:none;color:inherit;}
       <!-- AI FIRM GENERATOR -->
       <div id="ai-firm-panel" style="display:none;background:var(--card);border:1px solid rgba(168,85,247,.3);border-radius:12px;padding:20px;margin-bottom:20px;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
-          <span style="font-size:16px;">⚡</span>
+          <span style="font-size:13px;font-weight:700;color:#A855F7;">IA</span>
           <span style="font-size:14px;font-weight:700;">Adicionar nova firma com IA</span>
           <span style="font-size:11px;padding:2px 8px;background:rgba(168,85,247,.15);color:#A855F7;border-radius:4px;font-weight:700;">Powered by Claude</span>
         </div>
@@ -1650,11 +1633,11 @@ async function renderAnalytics() {
   const funnelEl = document.getElementById('funnel-grid');
   if (funnelEl) {
     const steps = [
-      { icon: '👁', label: 'Visualizações',  val: pageViews, color: 'var(--blue)'  },
-      { icon: '🎯', label: 'Leads',       val: leads.length, color: 'var(--green)' },
-      { icon: '🏷', label: 'Cupons',      val: coupons,   color: 'var(--gold)'  },
-      { icon: '🛒', label: 'Checkouts',   val: checkouts, color: 'var(--purple)'},
-      { icon: '📈', label: 'Conversão',   val: cvr + '%', color: 'var(--cyan)'  },
+      { icon: 'VIS', label: 'Visualizações',  val: pageViews, color: 'var(--blue)'  },
+      { icon: 'LED', label: 'Leads',       val: leads.length, color: 'var(--green)' },
+      { icon: 'CPN', label: 'Cupons',      val: coupons,   color: 'var(--gold)'  },
+      { icon: 'CHK', label: 'Checkouts',   val: checkouts, color: 'var(--purple)'},
+      { icon: 'CVR', label: 'Conversão',   val: cvr + '%', color: 'var(--cyan)'  },
     ];
     const maxV = Math.max(...steps.slice(0,4).map(s => s.val || 0), 1);
     funnelEl.innerHTML = steps.map((s, i) => {
@@ -1662,7 +1645,7 @@ async function renderAnalytics() {
       const prev = i > 0 && typeof steps[i-1].val === 'number' && steps[i-1].val > 0
         ? '→ ' + ((s.val / steps[i-1].val) * 100).toFixed(0) + '% do anterior' : '';
       return `<div style="text-align:center;padding:16px 8px;border-right:1px solid var(--b1);">
-        <div style="font-size:22px;margin-bottom:4px;">${s.icon}</div>
+        <div style="font-size:11px;font-weight:800;color:${s.color};margin-bottom:4px;letter-spacing:.5px;">${s.icon}</div>
         <div style="height:60px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:8px;">
           <div style="width:40px;background:${s.color};border-radius:4px 4px 0 0;height:${pct}%;opacity:.8;min-height:4px;"></div>
         </div>
@@ -1678,10 +1661,10 @@ async function renderAnalytics() {
   const cpl = leads.length && totalSpend ? (totalSpend / leads.length).toFixed(2) : '—';
   const kpiEl = document.getElementById('traffic-kpis');
   if (kpiEl) kpiEl.innerHTML = `
-    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-lbl">Gasto Total (USD)</div><div class="stat-val y">$${totalSpend.toFixed(0)}</div><div class="stat-change">Meta + Google + outros</div></div>
-    <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-lbl">CPL (Custo/Lead)</div><div class="stat-val b">${cpl !== '—' ? '$' + cpl : '—'}</div><div class="stat-change">Gasto / Leads no período</div></div>
-    <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-lbl">Taxa Lead→Checkout</div><div class="stat-val g">${cvr}%</div><div class="stat-change">${leads.length} leads, ${checkouts} checkouts</div></div>
-    <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-lbl">Eventos Totais</div><div class="stat-val">${events.length}</div><div class="stat-change">${days} dias</div></div>`;
+    <div class="stat-card"><div class="stat-icon" style="font-size:11px;font-weight:800;">$</div><div class="stat-lbl">Gasto Total (USD)</div><div class="stat-val y">$${totalSpend.toFixed(0)}</div><div class="stat-change">Meta + Google + outros</div></div>
+    <div class="stat-card"><div class="stat-icon" style="font-size:11px;font-weight:800;">CPL</div><div class="stat-lbl">CPL (Custo/Lead)</div><div class="stat-val b">${cpl !== '—' ? '$' + cpl : '—'}</div><div class="stat-change">Gasto / Leads no período</div></div>
+    <div class="stat-card"><div class="stat-icon" style="font-size:11px;font-weight:800;">%</div><div class="stat-lbl">Taxa Lead→Checkout</div><div class="stat-val g">${cvr}%</div><div class="stat-change">${leads.length} leads, ${checkouts} checkouts</div></div>
+    <div class="stat-card"><div class="stat-icon" style="font-size:11px;font-weight:800;">#</div><div class="stat-lbl">Eventos Totais</div><div class="stat-val">${events.length}</div><div class="stat-change">${days} dias</div></div>`;
 
   // ── CHARTS ──
   setTimeout(() => {
@@ -2633,7 +2616,7 @@ function buildPromoHtml(f, lang='pt'){
       <!-- Firm Name -->
       <div style="margin-top:14px;font-size:26px;font-weight:800;color:#EDF2F7;letter-spacing:-0.5px;line-height:1.2;font-family:'Inter',Arial,sans-serif;">${f.name}</div>
       <div style="margin-top:6px;color:#7A8FA6;font-size:13px;line-height:1.5;font-family:'Inter',Arial,sans-serif;">${f.description||''}</div>
-      ${tpScore ? `<div style="margin-top:10px;color:#7A8FA6;font-size:12px;font-family:'Inter',Arial,sans-serif;">&#11088; <span style="color:#EDF2F7;font-weight:700;">${tpScore}</span>/5 &mdash; ${(tpReviews||0).toLocaleString()} ${et('trustpilot')}</div>` : ''}
+      ${tpScore ? `<div style="margin-top:10px;color:#7A8FA6;font-size:12px;font-family:'Inter',Arial,sans-serif;">* <span style="color:#EDF2F7;font-weight:700;">${tpScore}</span>/5 &mdash; ${(tpReviews||0).toLocaleString()} ${et('trustpilot')}</div>` : ''}
     </td></tr>
   </table>
 </td></tr>
@@ -2789,7 +2772,7 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
 const INST_TEMPLATES = {
   welcome: {
     subject: { pt:'Bom te ter aqui, Trader', en:'Good to have you here, Trader', es:'Que bueno tenerte aqui, Trader', fr:'Content de vous avoir, Trader', de:'Schon, dass du da bist, Trader', it:'Bello averti qui, Trader', ar:'سعداء بوجودك هنا' },
-    icon: '&#128075;',
+    icon: '',
     title: { pt:'Bom te ter com a gente', en:'Good to have you with us', es:'Que bueno tenerte con nosotros', fr:'Content de vous compter parmi nous', de:'Schon, dass du dabei bist', it:'Bello averti con noi', ar:'سعداء بانضمامك إلينا' },
     body: {
       pt:'A gente sabe como e comecar nesse mercado. Por isso criamos o MarketsCoupons — pra reunir traders como voce que querem <b>pagar menos e operar melhor</b>. Aqui ninguem fica sozinho.',
@@ -2813,7 +2796,7 @@ const INST_TEMPLATES = {
   },
   'site-invite': {
     subject: { pt:'Tem desconto bom rolando agora', en:'Great deals happening right now', es:'Hay buenos descuentos ahora mismo', fr:'De belles promos en ce moment', de:'Gute Rabatte gerade verfugbar', it:'Ci sono ottimi sconti adesso', ar:'خصومات رائعة متاحة الآن' },
-    icon: '&#127760;',
+    icon: '',
     title: { pt:'Ofertas que estao no ar agora', en:'Deals that are live right now', es:'Ofertas activas ahora mismo', fr:'Offres en cours maintenant', de:'Angebote die jetzt laufen', it:'Offerte attive in questo momento', ar:'عروض متاحة الآن' },
     body: {
       pt:'A gente negocia direto com as firmas pra conseguir os melhores cupons. Alguns sao <b>exclusivos nossos</b> — voce nao encontra em outro lugar. Da uma olhada no que esta rolando:',
@@ -2837,7 +2820,7 @@ const INST_TEMPLATES = {
   },
   loyalty: {
     subject: { pt:'Suas compras valem mais do que voce imagina', en:'Your purchases are worth more than you think', es:'Tus compras valen mas de lo que imaginas', fr:'Vos achats valent plus que vous ne pensez', de:'Deine Kaufe sind mehr wert als du denkst', it:'I tuoi acquisti valgono piu di quanto pensi', ar:'مشترياتك تستحق أكثر مما تتصور' },
-    icon: '&#127942;',
+    icon: '',
     title: { pt:'Quanto mais voce compra, mais voce desbloqueia', en:'The more you buy, the more you unlock', es:'Cuanto mas compras, mas desbloqueas', fr:'Plus vous achetez, plus vous debloquez', de:'Je mehr du kaufst, desto mehr schaltest du frei', it:'Piu acquisti, piu sblocchi', ar:'كلما اشتريت أكثر، فتحت المزيد' },
     body: {
       pt:'Nosso programa de fidelidade e simples: comprou uma Prop Firm pelo nosso link? Manda o comprovante. <b>Com 3 compras validadas voce desbloqueia funcionalidades exclusivas</b> reservadas para membros fieis.',
@@ -2861,7 +2844,7 @@ const INST_TEMPLATES = {
   },
   indicators: {
     subject: { pt:'Ferramentas que a gente usa todo dia', en:'Tools we use every day', es:'Herramientas que usamos todos los dias', fr:'Les outils qu\'on utilise chaque jour', de:'Tools die wir taglich nutzen', it:'Strumenti che usiamo ogni giorno', ar:'أدوات نستخدمها كل يوم' },
-    icon: '&#128200;',
+    icon: '',
     title: { pt:'Tudo o que voce precisa pra operar', en:'Everything you need to trade', es:'Todo lo que necesitas para operar', fr:'Tout ce qu\'il vous faut pour trader', de:'Alles was du zum Traden brauchst', it:'Tutto cio che ti serve per operare', ar:'كل ما تحتاجه للتداول' },
     body: {
       pt:'Screener, Heat Map, calendario economico, calculadora de position size — <b>ferramentas pensadas pra quem opera de verdade</b>. Tudo reunido num so lugar pra voce se preparar antes de cada operacao.',
@@ -2885,7 +2868,7 @@ const INST_TEMPLATES = {
   },
   'blog-guides': {
     subject: { pt:'Preparado antes de operar', en:'Prepared before you trade', es:'Preparado antes de operar', fr:'Prepare avant de trader', de:'Vorbereitet bevor du tradest', it:'Preparato prima di operare', ar:'مستعد قبل التداول' },
-    icon: '&#128218;',
+    icon: '',
     title: { pt:'O que ninguem te conta sobre Prop Firms', en:'What nobody tells you about Prop Firms', es:'Lo que nadie te cuenta sobre Prop Firms', fr:'Ce que personne ne vous dit sur les Prop Firms', de:'Was dir niemand uber Prop Firms erzahlt', it:'Quello che nessuno ti dice sulle Prop Firm', ar:'ما لا يخبرك أحد عن Prop Firms' },
     body: {
       pt:'A gente escreveu tudo o que queriamos ter lido antes de comecar. Guias praticos, sem enrolacao, <b>feitos por quem opera de verdade</b>.',
@@ -2909,7 +2892,7 @@ const INST_TEMPLATES = {
   },
   'ultimas-horas': {
     subject: { pt:'Ultimas horas — desconto vai acabar', en:'Last hours — discount ending soon', es:'Ultimas horas — el descuento termina pronto', fr:'Dernieres heures — la promo se termine', de:'Letzte Stunden — Rabatt endet bald', it:'Ultime ore — lo sconto sta per finire', ar:'الساعات الأخيرة — الخصم ينتهي قريباً' },
-    icon: '&#9200;',
+    icon: '',
     title: { pt:'O desconto esta acabando', en:'The discount is ending', es:'El descuento se termina', fr:'La promo touche a sa fin', de:'Der Rabatt endet bald', it:'Lo sconto sta per finire', ar:'الخصم على وشك الانتهاء' },
     body: {
       pt:'As melhores ofertas nao duram pra sempre. Essas promocoes estao nas <b>ultimas horas</b> — depois disso, volta pro preco cheio. Se voce ja estava pensando, agora e a hora.',
@@ -2972,7 +2955,7 @@ function buildInstitutionalHtml(name, lang='pt'){
 <tr><td style="padding:0 24px;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
     <tr><td style="padding:32px 28px;text-align:center;">
-      <div style="font-size:36px;line-height:1;margin-bottom:12px;">${t.icon}</div>
+      ${t.icon?`<div style="font-size:36px;line-height:1;margin-bottom:12px;">${t.icon}</div>`:''}
       <div style="font-size:22px;font-weight:800;color:#EDF2F7;letter-spacing:-0.5px;font-family:${FI};line-height:1.3;">${gt(t.title)}</div>
     </td></tr>
   </table>
@@ -3666,9 +3649,9 @@ async function renderLoyaltyAdmin(){
   const kpis = document.getElementById('loyalty-kpis');
   if(kpis) kpis.innerHTML = `
     <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-lbl">Em analise</div><div class="stat-val y">${pCount}</div><div class="stat-change">Aguardando validacao</div></div>
-    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-lbl">Aprovados</div><div class="stat-val g">${aCount}</div><div class="stat-change">Pontos creditados</div></div>
-    <div class="stat-card"><div class="stat-icon">❌</div><div class="stat-lbl">Recusados</div><div class="stat-val r">${rCount}</div></div>
-    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-lbl">Membros</div><div class="stat-val b">${members}</div></div>`;
+    <div class="stat-card"><div class="stat-icon" style="font-size:11px;font-weight:800;">OK</div><div class="stat-lbl">Aprovados</div><div class="stat-val g">${aCount}</div><div class="stat-change">Pontos creditados</div></div>
+    <div class="stat-card"><div class="stat-icon" style="font-size:11px;font-weight:800;">X</div><div class="stat-lbl">Recusados</div><div class="stat-val r">${rCount}</div></div>
+    <div class="stat-card"><div class="stat-icon" style="font-size:11px;font-weight:800;">MB</div><div class="stat-lbl">Membros</div><div class="stat-val b">${members}</div></div>`;
   renderLoyaltyProofsTable();
 }
 
@@ -3718,7 +3701,7 @@ function openProofReview(id){
     </div>
     ${entry.fileUrl ? `<div style="margin-bottom:14px;"><div class="lm-lbl" style="margin-bottom:8px;">Comprovante</div>
       ${entry.fileName?.endsWith('.pdf')
-        ? `<a href="${entry.fileUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;color:var(--blue);">📄 Abrir PDF</a>`
+        ? `<a href="${entry.fileUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;color:var(--blue);">Abrir PDF</a>`
         : `<img src="${entry.fileUrl}" class="proof-review-img" alt="Comprovante">`
       }</div>` : `<div style="padding:12px;background:var(--rbg);border:1px solid rgba(239,68,68,.2);border-radius:7px;font-size:12px;color:var(--red);margin-bottom:14px;">Nenhum arquivo — validar pelo número do pedido.</div>`}
     ${entry.ai_verdict ? `<div style="background:${entry.ai_verdict==='approved'?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${entry.ai_verdict==='approved'?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;">
@@ -4228,10 +4211,10 @@ async function renderCmsGuides() {
 }
 
 function openGuideModal(id) {
-  const g = id ? _adminGuides.find(x=>x.id===id) : {id:'',title:'',slug:'',category:'Iniciante',cat_color:'var(--blue)',icon:'📖',description:'',content:'',meta_title:'',meta_description:'',sort_order:_adminGuides.length+1,active:true};
+  const g = id ? _adminGuides.find(x=>x.id===id) : {id:'',title:'',slug:'',category:'Iniciante',cat_color:'var(--blue)',icon:'G',description:'',content:'',meta_title:'',meta_description:'',sort_order:_adminGuides.length+1,active:true};
   if(!g)return;
   const cats=['Iniciante','Intermediário','Prático','Técnico','Comparativo','Financeiro'];
-  const icons=['📖','📉','✅','📐','⚖️','💰','📊','🎯','🏆','💡'];
+  const icons=['G','D','OK','R','B','$','C','T','W','I'];
   document.getElementById('cms-modal-title').textContent = id ? 'Editar Guia' : 'Novo Guia';
   document.getElementById('cms-modal-body').innerHTML = `
     <div class="modal-grid">
@@ -4316,7 +4299,7 @@ async function renderCmsBlog() {
   const tbl = document.getElementById('blog-tbl');
   if(!tbl) return;
   const levelColors = {iniciante:'rgba(34,197,94,.15);color:#22C55E',intermediario:'rgba(234,179,8,.15);color:#EAB308',profissional:'rgba(239,68,68,.15);color:#EF4444'};
-  const levelLabels = {iniciante:'🟢 Iniciante',intermediario:'🟡 Intermediário',profissional:'🔴 Profissional'};
+  const levelLabels = {iniciante:'[I] Iniciante',intermediario:'[M] Intermediario',profissional:'[P] Profissional'};
   tbl.innerHTML = posts.length ? `<thead><tr><th>Titulo</th><th>Link</th><th>Nível</th><th>Categoria</th><th>Leitura</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
     <tbody>${posts.map(p=>`<tr>
       <td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title}</td>
@@ -4343,7 +4326,7 @@ function openBlogModal(id) {
   document.getElementById('cms-modal-body').innerHTML = `
     <div class="modal-grid">
       <div class="modal-field modal-full"><label>Titulo</label><input type="text" id="bp-title" value="${((p?.title)||'').replace(/"/g,'&quot;')}"></div>
-      <div class="modal-field"><label>Nível</label><select id="bp-level"><option value="iniciante" ${p?.level==='iniciante'?'selected':''}>🟢 Iniciante</option><option value="intermediario" ${p?.level==='intermediario'?'selected':''}>🟡 Intermediário</option><option value="profissional" ${p?.level==='profissional'?'selected':''}>🔴 Profissional</option></select></div>
+      <div class="modal-field"><label>Nível</label><select id="bp-level"><option value="iniciante" ${p?.level==='iniciante'?'selected':''}>[I] Iniciante</option><option value="intermediario" ${p?.level==='intermediario'?'selected':''}>[M] Intermediario</option><option value="profissional" ${p?.level==='profissional'?'selected':''}>[P] Profissional</option></select></div>
       <div class="modal-field"><label>Categoria</label><input type="text" id="bp-cat" value="${p?.category||p?.cat||''}" placeholder="ex: Estratégia, Análise, Educação..."></div>
       <div class="modal-field"><label>Tempo de Leitura</label><input type="text" id="bp-read" value="${p?.read_time||p?.readTime||'5 min'}"></div>
       <div class="modal-field modal-full"><label>Excerpt (resumo curto)</label><input type="text" id="bp-excerpt" value="${((p?.excerpt)||'').replace(/"/g,'&quot;')}" placeholder="Resumo de 1-2 linhas para o card"></div>
