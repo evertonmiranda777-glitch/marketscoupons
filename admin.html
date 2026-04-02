@@ -2586,12 +2586,13 @@ function buildPromoHtml(f, lang='pt'){
 <html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body style="margin:0;padding:0;background:#07090D;font-family:'Inter',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;">
+<body bgcolor="#07090D" style="margin:0;padding:0;background-color:#07090D;font-family:'Inter',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;">
+<div style="background-color:#07090D;">
 
 <!-- Wrapper -->
-<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" style="background:#07090D;">
-<tr><td align="center" style="padding:0;">
-<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" style="background-color:#07090D;">
+<tr><td align="center" bgcolor="#07090D" style="padding:0;background-color:#07090D;">
+<table width="600" cellpadding="0" cellspacing="0" bgcolor="#07090D" style="max-width:600px;width:100%;background-color:#07090D;">
 
 <!-- ═══ HEADER ═══ -->
 <tr><td style="padding:32px 24px 20px;text-align:center;">
@@ -2768,6 +2769,7 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
 </table>
 </td></tr>
 </table>
+</div>
 </body></html>`;
 }
 
@@ -2940,10 +2942,11 @@ function buildInstitutionalHtml(name, lang='pt'){
 <html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body style="margin:0;padding:0;background:#07090D;font-family:${FI};-webkit-font-smoothing:antialiased;">
-<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" style="background:#07090D;">
-<tr><td align="center" style="padding:0;">
-<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+<body bgcolor="#07090D" style="margin:0;padding:0;background-color:#07090D;font-family:${FI};-webkit-font-smoothing:antialiased;">
+<div style="background-color:#07090D;">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" style="background-color:#07090D;">
+<tr><td align="center" bgcolor="#07090D" style="padding:0;background-color:#07090D;">
+<table width="600" cellpadding="0" cellspacing="0" bgcolor="#07090D" style="max-width:600px;width:100%;background-color:#07090D;">
 
 <!-- HEADER -->
 <tr><td style="padding:32px 24px 20px;text-align:center;">
@@ -3005,6 +3008,7 @@ function buildInstitutionalHtml(name, lang='pt'){
 </td></tr>
 
 </table></td></tr></table>
+</div>
 </body></html>`;
 }
 
