@@ -794,6 +794,54 @@ a{text-decoration:none;color:inherit;}
  </div>
  </div>
 
+ <!-- EMAIL VALIDATOR / IMPORTER -->
+ <div style="margin-top:24px;border-top:1px solid var(--b1);padding-top:24px;">
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+     <div>
+       <div style="font-size:15px;font-weight:700;">Importar & Validar Emails</div>
+       <div style="font-size:11px;color:var(--t3);">Upload CSV, validacao automatica, export para verificacao externa</div>
+     </div>
+   </div>
+
+   <!-- STEP 1: Upload -->
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+   <div>
+     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">1. Upload CSV</div>
+     <div style="background:var(--card);border:2px dashed var(--b2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;" onclick="document.getElementById('csv-file').click()">
+       <div style="font-size:24px;margin-bottom:8px;">📄</div>
+       <div style="font-size:13px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
+       <div style="font-size:11px;color:var(--t3);margin-top:4px;">CSV com coluna "email" (e opcionalmente "name", "lang")</div>
+       <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
+     </div>
+     <div style="margin-top:12px;">
+       <button class="btn-secondary" onclick="runValidation()" id="btn-validate" disabled>2. Validar Lista</button>
+       <button class="btn-secondary" onclick="runMxCheck()" id="btn-mx" disabled style="margin-left:6px;">3. Verificar MX</button>
+     </div>
+   </div>
+
+   <!-- STEP 2: Results -->
+   <div>
+     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Resultado da Validacao</div>
+     <div id="csv-stats" style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;">
+       <div style="color:var(--t3);font-size:12px;">Nenhum arquivo carregado.</div>
+     </div>
+     <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+       <button class="btn-primary" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos (email-only)</button>
+       <button class="btn-secondary" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar validos → Subscribers</button>
+     </div>
+     <div style="margin-top:12px;">
+       <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:8px;">4. Reimportar resultado MillionVerifier</div>
+       <div style="display:flex;gap:8px;align-items:center;">
+         <input type="file" id="mv-file" accept=".csv,.txt" style="font-size:11px;color:var(--t2);" onchange="handleMvResult(this)">
+       </div>
+     </div>
+   </div>
+   </div>
+
+   <!-- Validation log -->
+   <div id="csv-log" style="margin-top:14px;max-height:200px;overflow-y:auto;font-size:11px;color:var(--t3);background:var(--sur);border:1px solid var(--b1);border-radius:8px;padding:10px;display:none;"></div>
+ </div>
+
 
 <!-- LEAD DETAIL MODAL -->
 <div class="lead-modal-ov" id="lead-modal-ov" onclick="if(event.target===this)closeLeadModal()">
@@ -2606,6 +2654,355 @@ function exportLeadsCSV(){
  const csvContent='data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+'\n'+rows.join('\n'));
  download('leads_marketscoupons_'+new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')+'.csv', csvContent);
  toast(` ${leads.length} leads exportados com todos os campos!`);
+}
+
+
+/* ═══ EMAIL VALIDATOR / IMPORTER ═══ */
+
+// Disposable email domains blocklist (top ~200)
+const DISPOSABLE_DOMAINS = new Set([
+'tempmail.com','guerrillamail.com','mailinator.com','throwaway.email','yopmail.com',
+'sharklasers.com','guerrillamailblock.com','grr.la','discard.email','discardmail.com',
+'mailnesia.com','maildrop.cc','dispostable.com','trashmail.com','trashmail.net',
+'trashmail.me','trashmail.org','bugmenot.com','mailcatch.com','mytemp.email',
+'tempail.com','tempr.email','temp-mail.org','temp-mail.io','tempmailo.com',
+'mohmal.com','getnada.com','emailondeck.com','throwawaymail.com','fakeinbox.com',
+'mailnator.com','binkmail.com','bobmail.info','chammy.info','devnullmail.com',
+'emailigo.de','emailsensei.com','emailtemporario.com.br','ephemail.net','filzmail.com',
+'flurred.com','getairmail.com','getonemail.com','getonemail.net','harakirimail.com',
+'imstations.com','inboxbear.com','jetable.org','kasmail.com','koszmail.pl',
+'kurzepost.de','mailexpire.com','mailforspam.com','mailinator.net','mailmoat.com',
+'mailnull.com','mailshell.com','mailsiphon.com','mailzilla.com','mbx.cc',
+'mega.zik.dj','meltmail.com','mintemail.com','mobi.web.id','mvrht.net',
+'mytempemail.com','nomail.xl.cx','nospam.ze.tc','owlpic.com','proxymail.eu',
+'rcpt.at','reallymymail.com','recode.me','regbypass.com','safetymail.info',
+'sandelf.de','saynotospams.com','shieldemail.com','slaskpost.se','sogetthis.com',
+'spambog.com','spambog.de','spambog.ru','spamfree24.org','spaml.com',
+'spammotel.com','spamspot.com','superrito.com','teleworm.us','tempemail.co.za',
+'tempemail.net','tempinbox.com','tempomail.fr','temporaryemail.net','temporaryinbox.com',
+'thankdog.com','tmail.ws','tmpmail.net','tmpmail.org','trashmail.at',
+'trbvm.com','uggsrock.com','veryrealemail.com','wh4f.org','whyspam.me',
+'willhackforfood.biz','xagloo.com','yapped.net','zehnminutenmail.de','zoemail.org',
+'10minutemail.com','20minutemail.it','33mail.com','crazymailing.com','deadaddress.com',
+'disbox.net','disbox.org','e4ward.com','emailmiser.com','emailproxsy.com',
+'emailthe.net','emailwarden.com','enterto.com','fiifke.de','fleckens.hu',
+'freemail.hu','gelitik.in','haltospam.com','imails.info','incognitomail.org',
+'insorg.org','ipoo.org','irish2me.com','jetable.com','link2mail.net',
+'mail-temporaire.fr','mailin8r.com','mailismagic.com','mailmate.com','mailme.lv',
+'mailscrap.com','mailslite.com','mailtemp.info','mailzilla.org','mmmmail.com',
+'mt2015.com','mytrashmail.com','nobulk.com','noclickemail.com','nogmailspam.info',
+'nomail2me.com','nospam4.us','nowmymail.com','obobbo.com','oneoffemail.com',
+'onewaymail.com','otherinbox.com','ourklips.com','outlawspam.com','ovpn.to',
+'owlymail.com','pjjkp.com','plexolan.de','pookmail.com','privacy.net',
+'proxymail.eu','punkass.com','putthisinyouremail.com','qq.com','quickinbox.com',
+'receiveee.com','recode.me','recursor.net','reliable-mail.com','rhyta.com',
+'rmqkr.net','royal.net','rppkn.com','safe-mail.net','safersignup.de',
+'scatmail.com','schafmail.de','selfdestructingmail.com','sendspamhere.com','shiftmail.com',
+'signsupfor.info','slipry.net','slopsbox.com','smashmail.de','soodonims.com',
+'spam4.me','spamavert.com','spambob.net','spamcero.com','spamcon.org',
+'spamcowboy.com','spamcowboy.net','spamcowboy.org','spamday.com','spamex.com',
+'spamfighter.cf','spamfighter.ga','spamfighter.gq','spamfighter.ml','spamfighter.tk',
+'spamgoes.in','spamherelots.com','spamhereplease.com','spamhole.com','spamify.com',
+'spaminator.de','spamkill.info','spaml.de','spamoff.de','spamslicer.com',
+'spamstack.net','spamtrail.com','speed.1s.fr','suremail.info','tempalias.com',
+'tempmailer.com','tempmailer.de','tempomail.fr','temporaryemail.us','tempr.email',
+'thankdog.com','thisisnotmyrealemail.com','throwawayemailaddress.com','tittbit.in',
+'tradermail.info','trash-amil.com','trash-mail.at','trash-mail.com','trash-me.com',
+'trash2009.com','trashemail.de','trashymail.com','trashymail.net','twinmail.de',
+'tyldd.com','uggsrock.com','upliftnow.com','uplipht.com','venompen.com',
+'veryrealemail.com','vidchart.com','viditag.com','viewcastmedia.com','viewcastmedia.net',
+'wasteland.rfc822.org','webemail.me','weg-werf-email.de','wegwerfadresse.de',
+'wegwerfemail.com','wegwerfemail.de','wegwerfmail.de','wegwerfmail.net','wegwerfmail.org',
+'wilemail.com','willhackforfood.biz','willselfdestruct.com','winemaven.info',
+'wronghead.com','wuzup.net','wuzupmail.net','wwwnew.eu','xagloo.com',
+'xemaps.com','xents.com','xjoi.com','xmaily.com','xoxy.net',
+'yapped.net','yep.it','yogamaven.com','yomail.info','yopmail.fr',
+'yopmail.net','yourdomain.com','ypmail.webarnak.fr.eu.org','yuurok.com','zehnminutenmail.de',
+'zippymail.info','zoaxe.com','zoemail.org'
+]);
+
+let _csvRawData = [];       // Raw parsed rows from CSV/TXT
+let _csvValidated = null;   // Validation result object
+
+function handleCsvUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+
+    // Detect format: CSV with headers or plain email list
+    const firstLine = lines[0].toLowerCase().trim();
+    const isCSV = firstLine.includes('email') || firstLine.includes(',') || firstLine.includes(';');
+
+    if (isCSV && (firstLine.includes('email') || firstLine.includes(','))) {
+      // Parse CSV
+      const sep = firstLine.includes(';') ? ';' : ',';
+      const headers = lines[0].split(sep).map(h => h.trim().toLowerCase().replace(/"/g,''));
+      const emailIdx = headers.indexOf('email');
+      const nameIdx = headers.indexOf('name') >= 0 ? headers.indexOf('name') : headers.indexOf('nome');
+      const langIdx = headers.indexOf('lang') >= 0 ? headers.indexOf('lang') : headers.indexOf('idioma');
+
+      if (emailIdx < 0) {
+        // Maybe first column is email
+        _csvRawData = lines.slice(1).map(l => {
+          const cols = l.split(sep).map(c => c.trim().replace(/"/g,''));
+          return { email: cols[0] || '', name: cols[1] || '', lang: '' };
+        });
+      } else {
+        _csvRawData = lines.slice(1).map(l => {
+          const cols = l.split(sep).map(c => c.trim().replace(/"/g,''));
+          return {
+            email: cols[emailIdx] || '',
+            name: nameIdx >= 0 ? (cols[nameIdx] || '') : '',
+            lang: langIdx >= 0 ? (cols[langIdx] || '') : '',
+          };
+        });
+      }
+    } else {
+      // Plain text: one email per line
+      _csvRawData = lines.map(l => ({ email: l.trim().replace(/"/g,''), name: '', lang: '' }));
+    }
+
+    // Filter out empty
+    _csvRawData = _csvRawData.filter(r => r.email);
+
+    _csvValidated = null;
+    document.getElementById('btn-validate').disabled = false;
+    document.getElementById('btn-mx').disabled = true;
+    document.getElementById('btn-export-clean').disabled = true;
+    document.getElementById('btn-import-valid').disabled = true;
+
+    document.getElementById('csv-stats').innerHTML = `
+      <div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:8px;">${file.name}</div>
+      <div style="font-size:12px;color:var(--t2);">${_csvRawData.length.toLocaleString()} emails carregados</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:4px;">Clique em "Validar Lista" para iniciar a limpeza.</div>`;
+    csvLog(`Arquivo carregado: ${file.name} — ${_csvRawData.length.toLocaleString()} linhas`);
+    toast(`${_csvRawData.length.toLocaleString()} emails carregados!`);
+  };
+  reader.readAsText(file);
+}
+
+function csvLog(msg) {
+  const el = document.getElementById('csv-log');
+  el.style.display = 'block';
+  el.innerHTML += `<div>[${new Date().toLocaleTimeString('pt-BR')}] ${msg}</div>`;
+  el.scrollTop = el.scrollHeight;
+}
+
+function isValidEmail(email) {
+  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
+}
+
+function runValidation() {
+  if (!_csvRawData.length) return;
+  const btn = document.getElementById('btn-validate');
+  btn.disabled = true;
+  btn.textContent = 'Validando...';
+
+  const seen = new Set();
+  const valid = [], invalid = [], duplicates = [], disposable = [];
+
+  for (const row of _csvRawData) {
+    const email = row.email.toLowerCase().trim();
+    if (!email) continue;
+
+    // Duplicate check
+    if (seen.has(email)) { duplicates.push({ ...row, email, reason: 'duplicate' }); continue; }
+    seen.add(email);
+
+    // Syntax check
+    if (!isValidEmail(email)) { invalid.push({ ...row, email, reason: 'invalid_syntax' }); continue; }
+
+    // Disposable domain check
+    const domain = email.split('@')[1];
+    if (DISPOSABLE_DOMAINS.has(domain)) { disposable.push({ ...row, email, reason: 'disposable' }); continue; }
+
+    valid.push({ ...row, email, domain, mx: null });
+  }
+
+  _csvValidated = { valid, invalid, duplicates, disposable };
+  const total = _csvRawData.length;
+  const removed = invalid.length + duplicates.length + disposable.length;
+
+  csvLog(`Validacao completa: ${valid.length} validos, ${duplicates.length} duplicados, ${invalid.length} sintaxe invalida, ${disposable.length} descartaveis`);
+
+  document.getElementById('csv-stats').innerHTML = `
+    <div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:12px;">Resultado da Validacao</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:var(--sur);border:1px solid var(--b1);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:700;color:var(--green);">${valid.length.toLocaleString()}</div>
+        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Validos</div>
+      </div>
+      <div style="background:var(--sur);border:1px solid var(--b1);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:700;color:var(--red);">${removed.toLocaleString()}</div>
+        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Removidos</div>
+      </div>
+      <div style="background:var(--sur);border:1px solid var(--b1);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:16px;font-weight:600;color:var(--gold);">${duplicates.length.toLocaleString()}</div>
+        <div style="font-size:10px;color:var(--t3);">Duplicados</div>
+      </div>
+      <div style="background:var(--sur);border:1px solid var(--b1);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:16px;font-weight:600;color:var(--gold);">${disposable.length.toLocaleString()}</div>
+        <div style="font-size:10px;color:var(--t3);">Descartaveis</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--t3);margin-top:8px;">
+      ${invalid.length} com sintaxe invalida · ${Math.round(valid.length/total*100)}% aproveitamento
+    </div>`;
+
+  btn.textContent = '2. Validar Lista';
+  btn.disabled = false;
+  document.getElementById('btn-mx').disabled = false;
+  document.getElementById('btn-export-clean').disabled = false;
+  document.getElementById('btn-import-valid').disabled = false;
+  toast(`Validacao completa! ${valid.length.toLocaleString()} emails validos de ${total.toLocaleString()}`);
+}
+
+async function runMxCheck() {
+  if (!_csvValidated?.valid?.length) return;
+  const btn = document.getElementById('btn-mx');
+  btn.disabled = true;
+  btn.textContent = 'Verificando MX...';
+
+  // Collect unique domains
+  const domains = [...new Set(_csvValidated.valid.map(r => r.domain))];
+  csvLog(`Verificando MX de ${domains.length} dominios unicos...`);
+
+  try {
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
+
+    // Check in batches of 500
+    const mxResults = {};
+    for (let i = 0; i < domains.length; i += 500) {
+      const batch = domains.slice(i, i + 500);
+      const resp = await fetch('/api/validate-mx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ domains: batch }),
+      });
+      const data = await resp.json();
+      Object.assign(mxResults, data.results || {});
+      csvLog(`MX batch ${Math.floor(i/500)+1}: ${batch.length} dominios verificados`);
+    }
+
+    // Filter out invalid MX
+    const mxFailed = [];
+    _csvValidated.valid = _csvValidated.valid.filter(r => {
+      const hasMx = mxResults[r.domain];
+      r.mx = hasMx;
+      if (!hasMx) { mxFailed.push({ ...r, reason: 'no_mx' }); return false; }
+      return true;
+    });
+    _csvValidated.mxFailed = mxFailed;
+
+    csvLog(`MX check completo: ${mxFailed.length} dominios sem MX removidos, ${_csvValidated.valid.length} restantes`);
+
+    // Update stats
+    document.getElementById('csv-stats').querySelector('div[style*="green"]').innerHTML =
+      `<div style="font-size:20px;font-weight:700;color:var(--green);">${_csvValidated.valid.length.toLocaleString()}</div>
+       <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Validos + MX OK</div>`;
+
+    toast(`MX check completo! ${mxFailed.length} removidos, ${_csvValidated.valid.length.toLocaleString()} restantes`);
+  } catch(err) {
+    csvLog(`Erro no MX check: ${err.message}`);
+    toast('Erro no MX check: '+err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '3. Verificar MX';
+  }
+}
+
+function exportCleanEmails() {
+  if (!_csvValidated?.valid?.length) return;
+  // Export ONLY emails — no names, no personal data
+  const emails = _csvValidated.valid.map(r => r.email);
+  const csv = 'email\n' + emails.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `emails_validados_${_csvValidated.valid.length}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  csvLog(`Exportados ${emails.length.toLocaleString()} emails (somente email, sem dados pessoais)`);
+  toast(`${emails.length.toLocaleString()} emails exportados para verificacao externa!`);
+}
+
+async function importValidToSubscribers() {
+  if (!_csvValidated?.valid?.length) return;
+  if (!confirm(`Importar ${_csvValidated.valid.length.toLocaleString()} emails validados para email_subscribers?`)) return;
+
+  const btn = document.getElementById('btn-import-valid');
+  btn.disabled = true;
+  btn.textContent = 'Importando...';
+
+  let imported = 0, skipped = 0;
+  for (const r of _csvValidated.valid) {
+    const lang = langFromCode(r.lang) || 'en';
+    const { error } = await db.from('email_subscribers').upsert({
+      email: r.email, name: r.name || '', source: 'csv-import', lang,
+      tags: ['imported']
+    }, { onConflict: 'email', ignoreDuplicates: true });
+    if (!error) imported++; else skipped++;
+  }
+
+  csvLog(`Importacao completa: ${imported} importados, ${skipped} ja existiam`);
+  toast(`${imported.toLocaleString()} subscribers importados!`);
+  await loadEmailStats();
+  btn.disabled = false;
+  btn.textContent = 'Importar validos → Subscribers';
+}
+
+function handleMvResult(input) {
+  const file = input.files[0];
+  if (!file || !_csvValidated) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+    if (lines.length < 2) { toast('Arquivo vazio!', 'warn'); return; }
+
+    const sep = lines[0].includes(';') ? ';' : ',';
+    const headers = lines[0].split(sep).map(h => h.trim().toLowerCase().replace(/"/g,''));
+    const emailIdx = headers.findIndex(h => h.includes('email'));
+    // MillionVerifier uses "quality" or "result" or "status"
+    const statusIdx = headers.findIndex(h => h.includes('quality') || h.includes('result') || h.includes('status'));
+
+    if (emailIdx < 0 || statusIdx < 0) {
+      toast('CSV invalido: precisa ter colunas "email" e "quality/result/status"', 'warn');
+      return;
+    }
+
+    const invalidEmails = new Set();
+    const validStatuses = new Set(['good','ok','valid','deliverable','safe']);
+
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(sep).map(c => c.trim().toLowerCase().replace(/"/g,''));
+      const email = cols[emailIdx];
+      const status = cols[statusIdx];
+      if (email && !validStatuses.has(status)) {
+        invalidEmails.add(email);
+      }
+    }
+
+    // Remove from valid list
+    const before = _csvValidated.valid.length;
+    _csvValidated.valid = _csvValidated.valid.filter(r => !invalidEmails.has(r.email));
+    const removed = before - _csvValidated.valid.length;
+
+    csvLog(`MillionVerifier: ${removed} emails invalidos removidos. ${_csvValidated.valid.length} restantes de ${before}`);
+
+    // Update stats
+    document.getElementById('csv-stats').querySelector('div[style*="green"]').innerHTML =
+      `<div style="font-size:20px;font-weight:700;color:var(--green);">${_csvValidated.valid.length.toLocaleString()}</div>
+       <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Validos (MV verificado)</div>`;
+
+    toast(`MillionVerifier aplicado! ${removed} removidos, ${_csvValidated.valid.length.toLocaleString()} emails limpos`);
+  };
+  reader.readAsText(file);
 }
 
 
