@@ -919,11 +919,29 @@ a{text-decoration:none;color:inherit;}
      </div>
    </div>
 
+   <!-- FIRMA TAG SELECTOR -->
+   <div style="margin-bottom:16px;padding:12px 16px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;">
+     <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:8px;font-weight:600;">Importar para qual firma?</div>
+     <div style="display:flex;flex-wrap:wrap;gap:6px;" id="import-firma-chips">
+       <div class="seg-opt seg-firma sel" data-firma="" onclick="selectImportFirma(this,'')" style="--fc:var(--gold);font-size:11px;padding:6px 12px;border-radius:6px;">Nenhuma</div>
+       <div class="seg-opt seg-firma" data-firma="apex" onclick="selectImportFirma(this,'apex')" style="--fc:#F97316;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(249,115,22,.25);">Apex</div>
+       <div class="seg-opt seg-firma" data-firma="bulenox" onclick="selectImportFirma(this,'bulenox')" style="--fc:#3B82F6;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(59,130,246,.25);">Bulenox</div>
+       <div class="seg-opt seg-firma" data-firma="e2t" onclick="selectImportFirma(this,'e2t')" style="--fc:#F59E0B;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(245,158,11,.25);">E2T</div>
+       <div class="seg-opt seg-firma" data-firma="tpt" onclick="selectImportFirma(this,'tpt')" style="--fc:#A855F7;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(168,85,247,.25);">TPT</div>
+       <div class="seg-opt seg-firma" data-firma="fn" onclick="selectImportFirma(this,'fn')" style="--fc:#06B6D4;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(6,182,212,.25);">FundedNext</div>
+       <div class="seg-opt seg-firma" data-firma="fundingpips" onclick="selectImportFirma(this,'fundingpips')" style="--fc:#6366F1;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(99,102,241,.25);">FPips</div>
+       <div class="seg-opt seg-firma" data-firma="brightfunded" onclick="selectImportFirma(this,'brightfunded')" style="--fc:#00C9A7;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(0,201,167,.25);">BrightFunded</div>
+       <div class="seg-opt seg-firma" data-firma="ftmo" onclick="selectImportFirma(this,'ftmo')" style="--fc:#22C55E;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(34,197,94,.25);">FTMO</div>
+       <div class="seg-opt seg-firma" data-firma="the5ers" onclick="selectImportFirma(this,'the5ers')" style="--fc:#10B981;font-size:11px;padding:6px 12px;border-radius:6px;border-color:rgba(16,185,129,.25);">The5ers</div>
+     </div>
+     <div style="font-size:10px;color:var(--t3);margin-top:6px;">Firma selecionada: <strong id="import-firma-label" style="color:var(--gold);">Nenhuma</strong> — todos os emails importados receberao esta tag</div>
+   </div>
+
    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
    <div>
      <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">1. Upload CSV ou TXT</div>
      <div style="background:var(--card);border:2px dashed var(--b2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;" onclick="document.getElementById('csv-file').click()">
-       <div style="font-size:24px;margin-bottom:8px;">📄</div>
+       <div style="font-size:24px;margin-bottom:8px;">&#128196;</div>
        <div style="font-size:13px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
        <div style="font-size:11px;color:var(--t3);margin-top:4px;">CSV com coluna "email" ou TXT com um email por linha</div>
        <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
@@ -941,18 +959,6 @@ a{text-decoration:none;color:inherit;}
      </div>
      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center;">
        <button class="btn-primary" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos (email-only)</button>
-       <select id="import-firma-tag" style="padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:11px;">
-         <option value="">Sem firma</option>
-         <option value="apex">Apex</option>
-         <option value="bulenox">Bulenox</option>
-         <option value="e2t">E2T</option>
-         <option value="tpt">TPT</option>
-         <option value="fn">FundedNext</option>
-         <option value="fundingpips">FPips</option>
-         <option value="brightfunded">BrightFunded</option>
-         <option value="ftmo">FTMO</option>
-         <option value="the5ers">The5ers</option>
-       </select>
        <button class="btn-secondary" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar validos → Subscribers</button>
      </div>
      <div style="margin-top:12px;">
@@ -3373,9 +3379,19 @@ function exportCleanEmails() {
   toast(`${emails.length.toLocaleString()} emails exportados para verificacao externa!`);
 }
 
+let _importFirmaTag = '';
+function selectImportFirma(el, firma) {
+  const grid = document.getElementById('import-firma-chips');
+  grid.querySelectorAll('.seg-firma').forEach(s => s.classList.remove('sel'));
+  el.classList.add('sel');
+  _importFirmaTag = firma;
+  const label = document.getElementById('import-firma-label');
+  if (label) label.textContent = firma || 'Nenhuma';
+}
+
 async function importValidToSubscribers() {
   if (!_csvValidated?.valid?.length) return;
-  const firmaTag = document.getElementById('import-firma-tag')?.value || '';
+  const firmaTag = _importFirmaTag;
   const label = firmaTag ? ` (firma: ${firmaTag})` : '';
   if (!confirm(`Importar ${_csvValidated.valid.length.toLocaleString()} emails validados para email_subscribers${label}?`)) return;
 
@@ -3588,7 +3604,6 @@ async function sendSingleEmail(){
   const subject=document.getElementById('em-subject')?.value?.trim();
   const body=document.getElementById('em-body')?.value?.trim();
   if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
-  if(!confirm(`Enviar email para ${email}?`)) return;
   const session=await db.auth.getSession();
   const token=session?.data?.session?.access_token;
   const isPromo=emailIsHtml&&emailPromoFirm;
