@@ -251,22 +251,15 @@
 </script>
 
 <!--
- TRACKING SCRIPTS — loaded only after cookie consent (see loadTracking())
- GTM: GTM-WJGTVX8G | GA4: G-CZ3L00NY77 | FB Pixel: 813048241061812
+ TRACKING — Only GTM (GA4 + Facebook Pixel are managed inside GTM)
+ GTM: GTM-WJGTVX8G
 -->
 <script>
 window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments);}
 function loadTracking(){
   if(window._trackingLoaded)return;window._trackingLoaded=true;
-  // GTM
+  // GTM only — GA4 and Facebook Pixel are configured as tags inside GTM
   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WJGTVX8G');
-  // GA4
-  var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id=G-CZ3L00NY77';document.head.appendChild(gs);
-  gtag('js',new Date());gtag('config','G-CZ3L00NY77',{send_page_view:true});
-  // Facebook Pixel
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','813048241061812');fbq('track','PageView');
 }
 // Auto-load if already consented
 if(localStorage.getItem('mc-cookies-consent')==='accepted')loadTracking();
@@ -339,28 +332,9 @@ function track(event, params={}) {
     localStorage.setItem('mc_events', JSON.stringify(evs));
   } catch(e) {}
 
-  // 3. GTM dataLayer
+  // 3. GTM dataLayer — GA4 and Facebook Pixel triggers are configured inside GTM
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...params, timestamp: ts });
-
-  // 4. GA4
-  if (typeof gtag !== 'undefined') gtag('event', event, params);
-
-  // 5. Facebook Pixel
-  if (typeof fbq !== 'undefined') {
-    const fbMap = {
-      'coupon_copy':      () => fbq('trackCustom','CouponCopy', params),
-      'checkout_start':   () => fbq('trackCustom','CheckoutStart', params),
-      'checkout_click':   () => { fbq('track','Lead', params); fbq('track','InitiateCheckout', params); },
-      'firm_detail_open': () => fbq('trackCustom','FirmDetailOpen', params),
-      'quiz_complete':    () => fbq('trackCustom','QuizComplete', params),
-      'user_signup':      () => fbq('track','CompleteRegistration', params),
-      'page_view':        () => fbq('trackCustom','PageView', params),
-      'bot_message':      () => fbq('trackCustom','BotInteraction', params),
-      'trustpilot_click': () => fbq('trackCustom','TrustpilotClick', params),
-    };
-    if (fbMap[event]) fbMap[event]();
-  }
 }
 
 // Geo: fetch once per session, enrich events
@@ -8384,7 +8358,6 @@ function drwGoCheckout(firmId) {
     navigator.clipboard.writeText(f.coupon).catch(()=>{});
   }
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro'});
-  if(typeof fbq!=='undefined')fbq('track','Lead',{content_name:f.name+' '+(st.size||''),content_category:st.plat||'',type:st.type||'',platform:st.plat||'',account_size:st.size||'',currency:'USD',value:1});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   window.open(url,'_blank');
 }
@@ -8707,7 +8680,6 @@ function achGoCheckout(fId,size){
   let url=firm.buildUrl(size,type,plat);
   url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=checkout&utm_campaign='+fId+'_'+size.replace(/[^a-z0-9]/gi,'_').toLowerCase();
   track('checkout_click',{firm_id:fId,firm_name:firm.name,account_size:size,platform:plat,type,coupon:firm.coupon||'parceiro'});
-  if(typeof fbq!=='undefined')fbq('track','Lead',{content_name:firm.name+' '+size,content_category:plat,type,platform:plat,account_size:size,currency:'USD',value:1});
   registerLoyaltyClick(size,plat,type,firm.name);
   window.open(url,'_blank');
 }
@@ -9618,7 +9590,6 @@ async function joinLive(){
   saveLead(lead);
   document.getElementById('live-gate').classList.add('hide');document.getElementById('live-room').classList.remove('hide');document.getElementById('lv-viewers').textContent=Math.floor(Math.random()*40+10);
   track('live_signup',{name,email,pais:lead.pais,estilo:lead.estilo_trading});
-  if(typeof fbq!=='undefined')fbq('track','Lead',{content_name:'Live Room Signup',value:1,currency:'USD'});
   if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}
 }
 
