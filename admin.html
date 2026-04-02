@@ -791,26 +791,23 @@ a{text-decoration:none;color:inherit;}
      <div id="campaigns-log"></div>
    </div>
  </div>
- </div>
- </div>
 
  <!-- EMAIL VALIDATOR / IMPORTER -->
  <div style="margin-top:24px;border-top:1px solid var(--b1);padding-top:24px;">
    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
      <div>
        <div style="font-size:15px;font-weight:700;">Importar & Validar Emails</div>
-       <div style="font-size:11px;color:var(--t3);">Upload CSV, validacao automatica, export para verificacao externa</div>
+       <div style="font-size:11px;color:var(--t3);">Upload CSV/TXT, validacao automatica, export para verificacao externa</div>
      </div>
    </div>
 
-   <!-- STEP 1: Upload -->
    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
    <div>
-     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">1. Upload CSV</div>
+     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">1. Upload CSV ou TXT</div>
      <div style="background:var(--card);border:2px dashed var(--b2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;" onclick="document.getElementById('csv-file').click()">
        <div style="font-size:24px;margin-bottom:8px;">📄</div>
        <div style="font-size:13px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
-       <div style="font-size:11px;color:var(--t3);margin-top:4px;">CSV com coluna "email" (e opcionalmente "name", "lang")</div>
+       <div style="font-size:11px;color:var(--t3);margin-top:4px;">CSV com coluna "email" ou TXT com um email por linha</div>
        <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
      </div>
      <div style="margin-top:12px;">
@@ -819,7 +816,6 @@ a{text-decoration:none;color:inherit;}
      </div>
    </div>
 
-   <!-- STEP 2: Results -->
    <div>
      <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Resultado da Validacao</div>
      <div id="csv-stats" style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;">
@@ -838,9 +834,10 @@ a{text-decoration:none;color:inherit;}
    </div>
    </div>
 
-   <!-- Validation log -->
    <div id="csv-log" style="margin-top:14px;max-height:200px;overflow-y:auto;font-size:11px;color:var(--t3);background:var(--sur);border:1px solid var(--b1);border-radius:8px;padding:10px;display:none;"></div>
  </div>
+
+ </div><!-- /page-email -->
 
 
 <!-- LEAD DETAIL MODAL -->
