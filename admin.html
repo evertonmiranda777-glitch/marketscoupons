@@ -586,9 +586,9 @@ a{text-decoration:none;color:inherit;}
  </div>
 
  <!-- Ranking Abas -->
- <div class="chart-card" style="margin-bottom:24px;">
+ <div class="chart-card full" style="margin-bottom:24px;">
  <div class="cc-hd"><div class="cc-title">Ranking de Abas / Seções</div></div>
- <div style="overflow-x:auto;"><table class="ev-tbl" id="tbl-tabs-ranking"></table></div>
+ <div class="data-table-wrap"><table class="data-table" id="tbl-tabs-ranking"></table></div>
  </div>
 
  <div class="chart-card">
@@ -1819,24 +1819,19 @@ function renderEventsPage(){
  mkChart('chart-bot','line',days7,days7.map(d=>botByDay[d]||0),['#A855F7']);
 
  // Tabs/pages most accessed
- const tabC={};
- events.filter(e=>e.event==='page_view'&&e.params?.page_name).forEach(e=>{
- const p=e.params.page_name;tabC[p]=(tabC[p]||0)+1;
- });
- const tabEntries=Object.entries(tabC).sort((a,b)=>b[1]-a[1]);
- if(tabEntries.length) mkChart('chart-tabs','horizontalBar',tabEntries.map(x=>x[0]),tabEntries.map(x=>x[1]),colors);
- },100);
-
- // Tabs ranking table
+ const TAB_NAMES={home:'Ofertas',firms:'Firmas',plataformas:'Plataformas',indicators:'Indicadores',compare:'Comparar',calendar:'Calendário Econômico',heatmap:'Mapa de Calor',analise:'Análise Diária',guides:'Guias',blog:'Blog',calc:'Position Size',quiz:'Quiz',faq:'FAQ',live:'Live',loyalty:'Fidelidade',painel:'Meu Painel'};
  const tabCount={};
  events.filter(e=>e.event==='page_view'&&e.params?.page_name).forEach(e=>{
  const p=e.params.page_name;tabCount[p]=(tabCount[p]||0)+1;
  });
  const tabRank=Object.entries(tabCount).sort((a,b)=>b[1]-a[1]);
  const totalPV=tabRank.reduce((s,x)=>s+x[1],0)||1;
- const TAB_NAMES={home:'Ofertas',firms:'Firmas',plataformas:'Plataformas',indicators:'Indicadores',compare:'Comparar',calendar:'Calendário Econômico',heatmap:'Mapa de Calor',analise:'Análise Diária',guides:'Guias',blog:'Blog',calc:'Position Size',quiz:'Quiz',faq:'FAQ',live:'Live',loyalty:'Fidelidade',painel:'Meu Painel'};
+ if(tabRank.length) mkChart('chart-tabs','horizontalBar',tabRank.map(x=>TAB_NAMES[x[0]]||x[0]),tabRank.map(x=>x[1]),colors);
+ },100);
  const tblTabs=document.getElementById('tbl-tabs-ranking');
- if(tblTabs) tblTabs.innerHTML=`<thead><tr><th>#</th><th>Aba</th><th>Acessos</th><th>%</th></tr></thead><tbody>${tabRank.map(([name,cnt],i)=>`<tr><td style="color:var(--t3);">${i+1}</td><td><strong>${TAB_NAMES[name]||name}</strong> <span style="color:var(--t3);font-size:10px;">(${name})</span></td><td style="color:var(--gold);">${cnt}</td><td style="color:var(--t3);">${(cnt/totalPV*100).toFixed(1)}%</td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--t3);">Sem dados de navegação ainda</td></tr>'}</tbody>`;
+ const maxTabCnt=tabRank.length?tabRank[0][1]:1;
+ const rankColor=i=>i===0?'var(--gold)':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--t3)';
+ if(tblTabs) tblTabs.innerHTML=`<thead><tr><th style="width:40px;text-align:center;">#</th><th>Aba</th><th style="width:50%;">Distribuição</th><th style="width:80px;text-align:right;">Acessos</th><th style="width:60px;text-align:right;">%</th></tr></thead><tbody>${tabRank.map(([name,cnt],i)=>{const pct=(cnt/totalPV*100).toFixed(1);const barW=(cnt/maxTabCnt*100).toFixed(1);const bc=i===0?'var(--gold)':i===1?'#60A5FA':i===2?'#A78BFA':'#3D4F63';return`<tr><td style="text-align:center;font-weight:700;color:${rankColor(i)};font-size:14px;">${i+1}</td><td><strong style="color:var(--t1);">${TAB_NAMES[name]||name}</strong> <span style="color:var(--t3);font-size:10px;opacity:.7;">${name}</span></td><td><div style="background:rgba(255,255,255,.04);border-radius:4px;height:22px;overflow:hidden;"><div style="height:100%;width:${barW}%;background:${bc};border-radius:4px;transition:width .3s;"></div></div></td><td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${cnt}</td><td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${pct}%</td></tr>`;}).join('')||'<tr><td colspan="5" style="color:var(--t3);text-align:center;padding:24px;">Sem dados de navegação ainda</td></tr>'}</tbody>`;
 
  renderEventsTable();
 }
