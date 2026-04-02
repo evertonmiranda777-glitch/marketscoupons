@@ -2482,25 +2482,77 @@ function buildPromoHtml(f, lang='pt'){
     </div>` : '';
 
   // ── PRICING TABLE ──
-  const priceRows = prices.map(r => `
-    <tr>
-      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:700;font-size:14px;">${r.a}</td>
-      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:${color};font-weight:800;font-size:14px;text-align:right;">${r.n}</td>
-      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#3D4F63;font-size:12px;text-decoration:line-through;text-align:right;">${r.o||''}</td>
-    </tr>`).join('');
+  const pTypes = f.price_types || [];
+  const hasDualPrices = pTypes.length >= 2 && prices.some(r => r.n2);
+  const plans = f.checkout_plans || [];
+  const hasPlans = plans.length > 0;
 
-  const priceSection = prices.length ? `
-    <div style="margin:20px 0;">
-      <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;border-bottom:1px solid #1C2535;padding-bottom:6px;">${et('prices_title')}</div>
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-        <tr style="background:#0B0F16;">
-          <th style="padding:8px 14px;text-align:left;color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_account')}</th>
-          <th style="padding:8px 14px;text-align:right;color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_price')}</th>
-          <th style="padding:8px 14px;text-align:right;color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">${et('col_original')}</th>
-        </tr>
-        ${priceRows}
-      </table>
-    </div>` : '';
+  let priceSection = '';
+  if(prices.length){
+    if(hasDualPrices){
+      // Dual price types (e.g. Intraday / EOD)
+      const priceRows = prices.map(r => {
+        const plan = plans.find(p => p.size === r.a);
+        const goalCell = plan ? `<td style="padding:8px 6px;border-bottom:1px solid #1C2535;color:#F0B429;font-size:12px;text-align:center;font-weight:600;">${plan.goal||''}</td>` : '';
+        const ddCell = plan ? `<td style="padding:8px 6px;border-bottom:1px solid #1C2535;color:#7A8FA6;font-size:12px;text-align:center;">${plan.maxDD||''}</td>` : '';
+        return `<tr>
+          <td style="padding:8px 10px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:700;font-size:14px;">${r.a}</td>
+          ${hasPlans ? goalCell + ddCell : ''}
+          <td style="padding:8px 6px;border-bottom:1px solid #1C2535;text-align:center;">
+            <span style="color:${color};font-weight:800;font-size:13px;">${r.n}</span>
+            <span style="color:#3D4F63;font-size:10px;text-decoration:line-through;margin-left:4px;">${r.o||''}</span>
+          </td>
+          <td style="padding:8px 6px;border-bottom:1px solid #1C2535;text-align:center;">
+            <span style="color:${color};font-weight:800;font-size:13px;">${r.n2||''}</span>
+            <span style="color:#3D4F63;font-size:10px;text-decoration:line-through;margin-left:4px;">${r.o2||''}</span>
+          </td>
+        </tr>`;
+      }).join('');
+
+      priceSection = `
+      <div style="margin:20px 0;">
+        <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;border-bottom:1px solid #1C2535;padding-bottom:6px;">${et('prices_title')}</div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          <tr style="background:#0B0F16;">
+            <th style="padding:8px 10px;text-align:left;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('col_account')}</th>
+            ${hasPlans ? `<th style="padding:8px 6px;text-align:center;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('profit_target')}</th>
+            <th style="padding:8px 6px;text-align:center;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('max_dd')}</th>` : ''}
+            <th style="padding:8px 6px;text-align:center;color:${color};font-size:10px;font-weight:700;text-transform:uppercase;border-bottom:1px solid #1C2535;">${pTypes[0]||''}</th>
+            <th style="padding:8px 6px;text-align:center;color:${color};font-size:10px;font-weight:700;text-transform:uppercase;border-bottom:1px solid #1C2535;">${pTypes[1]||''}</th>
+          </tr>
+          ${priceRows}
+        </table>
+      </div>`;
+    } else {
+      // Single price type (with optional checkout plan details)
+      const priceRows = prices.map(r => {
+        const plan = plans.find(p => p.size === r.a);
+        const goalCell = plan ? `<td style="padding:10px 8px;border-bottom:1px solid #1C2535;color:#F0B429;font-size:12px;text-align:center;font-weight:600;">${plan.goal||''}</td>` : '';
+        const ddCell = plan ? `<td style="padding:10px 8px;border-bottom:1px solid #1C2535;color:#7A8FA6;font-size:12px;text-align:center;">${plan.maxDD||''}</td>` : '';
+        return `<tr>
+          <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:700;font-size:14px;">${r.a}</td>
+          ${hasPlans ? goalCell + ddCell : ''}
+          <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:${color};font-weight:800;font-size:14px;text-align:right;">${r.n}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#3D4F63;font-size:12px;text-decoration:line-through;text-align:right;">${r.o||''}</td>
+        </tr>`;
+      }).join('');
+
+      priceSection = `
+      <div style="margin:20px 0;">
+        <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;border-bottom:1px solid #1C2535;padding-bottom:6px;">${et('prices_title')}</div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          <tr style="background:#0B0F16;">
+            <th style="padding:8px 14px;text-align:left;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('col_account')}</th>
+            ${hasPlans ? `<th style="padding:8px 8px;text-align:center;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('profit_target')}</th>
+            <th style="padding:8px 8px;text-align:center;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('max_dd')}</th>` : ''}
+            <th style="padding:8px 14px;text-align:right;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('col_price')}</th>
+            <th style="padding:8px 14px;text-align:right;color:#7A8FA6;font-size:10px;text-transform:uppercase;border-bottom:1px solid #1C2535;">${et('col_original')}</th>
+          </tr>
+          ${priceRows}
+        </table>
+      </div>`;
+    }
+  }
 
   // ── TRUSTPILOT ──
   const tpScore = f.trustpilot_score || f.rating;
