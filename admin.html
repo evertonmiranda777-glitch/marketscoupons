@@ -718,92 +718,28 @@ a{text-decoration:none;color:inherit;}
 
  <!-- QUICK TEMPLATES -->
  <div class="ec-field" style="margin-bottom:20px;">
-
-   <!-- INSTITUCIONAL -->
-   <div class="tpl-section-title" style="margin-top:4px;"><span style="color:var(--gold);">&#9670;</span> Engajamento &amp; Conteudo</div>
-   <div class="tpl-grid">
-     <div class="tpl-card" onclick="loadQuickTemplate('welcome')">
-       <div class="tpl-card-icon">&#128075;</div>
-       <div class="tpl-card-name">Boas-vindas</div>
-       <div class="tpl-card-hook">Primeiro contato com o lead</div>
-     </div>
-     <div class="tpl-card" onclick="loadQuickTemplate('site-invite')">
-       <div class="tpl-card-icon">&#127760;</div>
-       <div class="tpl-card-name">Convite Site</div>
-       <div class="tpl-card-hook">Traga o trader pro site</div>
-     </div>
-     <div class="tpl-card" onclick="loadQuickTemplate('loyalty')">
-       <div class="tpl-card-icon">&#128176;</div>
-       <div class="tpl-card-name">Fidelidade</div>
-       <div class="tpl-card-hook">Programa de cashback</div>
-     </div>
-     <div class="tpl-card" onclick="loadQuickTemplate('indicators')">
-       <div class="tpl-card-icon">&#128200;</div>
-       <div class="tpl-card-name">Indicadores</div>
-       <div class="tpl-card-hook">Analise tecnica gratuita</div>
-     </div>
-     <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')">
-       <div class="tpl-card-icon">&#128218;</div>
-       <div class="tpl-card-name">Blog &amp; Guias</div>
-       <div class="tpl-card-hook">Conteudo educacional</div>
-     </div>
-     <div class="tpl-card" onclick="loadQuickTemplate('daily-analysis')">
-       <div class="tpl-card-icon">&#9889;</div>
-       <div class="tpl-card-name">Analise Diaria</div>
-       <div class="tpl-card-hook">Mercado de hoje</div>
-     </div>
+   <label>Templates Rapidos — clique para carregar</label>
+   <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+     <div style="font-size:10px;color:var(--t3);width:100%;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px;">Institucional</div>
+     <button class="seg-opt" onclick="loadQuickTemplate('welcome')">Boas-vindas</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('site-invite')">Convite Site</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('loyalty')">Fidelidade</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('indicators')">Indicadores</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('blog-guides')">Blog & Guias</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('daily-analysis')">Analise Diaria</button>
    </div>
-
-   <!-- PROMOS -->
-   <div class="tpl-section-title" style="margin-top:16px;"><span style="color:var(--green);">&#9670;</span> Promos — dados atuais da firma</div>
-   <div class="tpl-promo-grid">
-     <div class="tpl-promo" onclick="loadPromoTemplate('apex')" style="border-color:rgba(249,115,22,.35);">
-       <span class="tpl-promo-dot" style="background:#F97316;"></span>
-       <span class="tpl-promo-name">Apex</span>
-       <span class="tpl-promo-pct" style="color:#F97316;">90%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('bulenox')" style="border-color:rgba(59,130,246,.35);">
-       <span class="tpl-promo-dot" style="background:#3B82F6;"></span>
-       <span class="tpl-promo-name">Bulenox</span>
-       <span class="tpl-promo-pct" style="color:#3B82F6;">89%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('e2t')" style="border-color:rgba(245,158,11,.35);">
-       <span class="tpl-promo-dot" style="background:#F59E0B;"></span>
-       <span class="tpl-promo-name">E2T</span>
-       <span class="tpl-promo-pct" style="color:#F59E0B;">50%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('tpt')" style="border-color:rgba(168,85,247,.35);">
-       <span class="tpl-promo-dot" style="background:#A855F7;"></span>
-       <span class="tpl-promo-name">TPT</span>
-       <span class="tpl-promo-pct" style="color:#A855F7;">40%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('fn')" style="border-color:rgba(6,182,212,.35);">
-       <span class="tpl-promo-dot" style="background:#06B6D4;"></span>
-       <span class="tpl-promo-name">FundedNext</span>
-       <span class="tpl-promo-pct" style="color:#06B6D4;">30%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('fundingpips')" style="border-color:rgba(99,102,241,.35);">
-       <span class="tpl-promo-dot" style="background:#6366F1;"></span>
-       <span class="tpl-promo-name">FPips</span>
-       <span class="tpl-promo-pct" style="color:#6366F1;">20%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('brightfunded')" style="border-color:rgba(0,201,167,.35);">
-       <span class="tpl-promo-dot" style="background:#00C9A7;"></span>
-       <span class="tpl-promo-name">BrightFunded</span>
-       <span class="tpl-promo-pct" style="color:#00C9A7;">20%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('ftmo')" style="border-color:rgba(34,197,94,.35);">
-       <span class="tpl-promo-dot" style="background:#22C55E;"></span>
-       <span class="tpl-promo-name">FTMO</span>
-       <span class="tpl-promo-pct" style="color:#22C55E;">19%</span>
-     </div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('the5ers')" style="border-color:rgba(16,185,129,.35);">
-       <span class="tpl-promo-dot" style="background:#10B981;"></span>
-       <span class="tpl-promo-name">The5ers</span>
-       <span class="tpl-promo-pct" style="color:#10B981;">10%</span>
-     </div>
+   <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+     <div style="font-size:10px;color:var(--t3);width:100%;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px;">Promos — puxa dados atuais da firma</div>
+     <button class="seg-opt" onclick="loadPromoTemplate('apex')" style="border-color:#F97316;color:#F97316;">Apex 90%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('bulenox')" style="border-color:#3B82F6;color:#3B82F6;">Bulenox 89%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('e2t')" style="border-color:#F59E0B;color:#F59E0B;">E2T 50%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('tpt')" style="border-color:#A855F7;color:#A855F7;">TPT 40%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('fn')" style="border-color:#06B6D4;color:#06B6D4;">FundedNext 30%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('fundingpips')" style="border-color:#6366F1;color:#6366F1;">FPips 20%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('brightfunded')" style="border-color:#00C9A7;color:#00C9A7;">BrightFunded 20%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('ftmo')" style="border-color:#22C55E;color:#22C55E;">FTMO 19%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('the5ers')" style="border-color:#10B981;color:#10B981;">The5ers 10%</button>
    </div>
-
  </div>
 
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
@@ -2123,6 +2059,10 @@ async function previewEmail(){
  if(emailIsHtml && emailPromoFirm && body==='__PROMO_HTML__'){
    loadPromoTemplate(emailPromoFirm.id); return;
  }
+ // If institutional template, re-render
+ if(emailIsHtml && window._instTemplateName && body==='__INST_HTML__'){
+   loadQuickTemplate(window._instTemplateName); return;
+ }
  const leads=await getSegmentedLeads();
  const sample=leads[0]||{name:'Trader Exemplo',email:'trader@email.com'};
  const preview=body
@@ -2326,13 +2266,26 @@ function renderResendLog(){
 
 /* ═══ QUICK TEMPLATE LOADERS ═══ */
 async function loadQuickTemplate(name){
-  const { data } = await db.from('email_templates').select('*').eq('name',name).maybeSingle();
-  if(!data){ toast('Template nao encontrado!','warn'); return; }
-  emailIsHtml = false;
+  const tpl = INST_TEMPLATES[name];
+  if(!tpl){ toast('Template nao encontrado!','warn'); return; }
+
+  emailIsHtml = true;
   emailPromoFirm = null;
-  document.getElementById('em-subject').value = data.subject;
-  document.getElementById('em-body').value = data.body;
-  previewEmail();
+  // Store template name for per-language sending
+  window._instTemplateName = name;
+
+  const subject = tpl.subject.pt || tpl.subject.en;
+  const htmlContent = buildInstitutionalHtml(name, 'pt');
+
+  document.getElementById('em-subject').value = subject;
+  document.getElementById('em-body').value = '__INST_HTML__';
+
+  document.getElementById('em-preview').innerHTML = `
+    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML Rico Multilingue (7 idiomas)</strong></div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Cada destinatario recebe no seu idioma (pt, en, es, fr, de, it, ar)</div>
+    <hr style="border-color:var(--b1);margin-bottom:12px;">
+    <iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${htmlContent.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
   toast('Template "'+name+'" carregado!');
 }
 
@@ -2758,6 +2711,243 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
 </body></html>`;
 }
 
+// ════════════════════════════════════════════
+// INSTITUTIONAL EMAIL TEMPLATES (branded HTML)
+// ════════════════════════════════════════════
+
+const INST_TEMPLATES = {
+  welcome: {
+    subject: { pt:'Bem-vindo ao MarketsCoupons!', en:'Welcome to MarketsCoupons!', es:'Bienvenido a MarketsCoupons!', fr:'Bienvenue chez MarketsCoupons!', de:'Willkommen bei MarketsCoupons!', it:'Benvenuto su MarketsCoupons!', ar:'MarketsCoupons مرحبا بك في' },
+    icon: '&#128075;',
+    title: { pt:'Sua jornada comeca aqui', en:'Your journey starts here', es:'Tu viaje comienza aqui', fr:'Votre parcours commence ici', de:'Ihre Reise beginnt hier', it:'Il tuo viaggio inizia qui', ar:'رحلتك تبدأ هنا' },
+    body: {
+      pt:'Voce agora faz parte da maior comunidade de cupons para <b>Prop Firms</b>. Aqui voce encontra tudo o que precisa para comecar no trading com desconto.',
+      en:'You are now part of the largest coupon community for <b>Prop Firms</b>. Here you will find everything you need to start trading at a discount.',
+      es:'Ahora formas parte de la mayor comunidad de cupones para <b>Prop Firms</b>. Aqui encontraras todo lo que necesitas.',
+      fr:'Vous faites desormais partie de la plus grande communaute de coupons pour <b>Prop Firms</b>.',
+      de:'Sie sind jetzt Teil der grossten Coupon-Community fur <b>Prop Firms</b>.',
+      it:'Ora fai parte della piu grande comunita di coupon per <b>Prop Firms</b>.',
+      ar:'أنت الآن جزء من أكبر مجتمع كوبونات لـ <b>Prop Firms</b>.'
+    },
+    features: {
+      pt:['Cupons exclusivos com ate 90% OFF', 'Comparativo completo entre firmas', 'Calculadora de lucro e drawdown', 'Programa de fidelidade com cashback', 'Analise diaria do mercado gratis'],
+      en:['Exclusive coupons up to 90% OFF','Full comparison between firms','Profit & drawdown calculator','Loyalty program with cashback','Free daily market analysis'],
+      es:['Cupones exclusivos hasta 90% OFF','Comparativa completa entre firmas','Calculadora de ganancias','Programa de fidelidad con cashback','Analisis diario del mercado gratis'],
+      fr:['Coupons exclusifs jusqu\'a 90% OFF','Comparatif complet entre firmes','Calculatrice de profit','Programme de fidelite avec cashback','Analyse quotidienne gratuite'],
+      de:['Exklusive Gutscheine bis zu 90% OFF','Vollstandiger Vergleich zwischen Firmen','Gewinnrechner','Treueprogramm mit Cashback','Kostenlose tagliche Marktanalyse'],
+      it:['Coupon esclusivi fino al 90% OFF','Confronto completo tra le firme','Calcolatore di profitto','Programma fedelta con cashback','Analisi giornaliera gratuita'],
+      ar:['كوبونات حصرية حتى 90% خصم','مقارنة شاملة بين الشركات','حاسبة الأرباح','برنامج ولاء مع استرداد نقدي','تحليل يومي مجاني']
+    },
+    cta: { pt:'EXPLORAR OFERTAS', en:'EXPLORE DEALS', es:'EXPLORAR OFERTAS', fr:'DECOUVRIR LES OFFRES', de:'ANGEBOTE ENTDECKEN', it:'SCOPRI LE OFFERTE', ar:'استكشف العروض' }
+  },
+  'site-invite': {
+    subject: { pt:'As maiores prop firms com desconto', en:'Top prop firms at a discount', es:'Las mejores prop firms con descuento', fr:'Les meilleures prop firms en promotion', de:'Die besten Prop Firms mit Rabatt', it:'Le migliori prop firm in sconto', ar:'أفضل شركات Prop Firm بخصم' },
+    icon: '&#127760;',
+    title: { pt:'Descontos que voce nao encontra em outro lugar', en:'Discounts you won\'t find anywhere else', es:'Descuentos que no encontraras en otro lugar', fr:'Des reductions introuvables ailleurs', de:'Rabatte, die Sie nirgendwo anders finden', it:'Sconti che non troverai altrove', ar:'خصومات لن تجدها في مكان آخر' },
+    body: {
+      pt:'Reunimos as melhores ofertas de <b>Prop Firms</b> em um so lugar. Cupons exclusivos negociados diretamente com as firmas.',
+      en:'We\'ve gathered the best <b>Prop Firm</b> deals in one place. Exclusive coupons negotiated directly with the firms.',
+      es:'Hemos reunido las mejores ofertas de <b>Prop Firms</b> en un solo lugar. Cupones exclusivos negociados directamente.',
+      fr:'Nous avons reuni les meilleures offres de <b>Prop Firms</b> en un seul endroit.',
+      de:'Wir haben die besten <b>Prop Firm</b>-Angebote an einem Ort zusammengestellt.',
+      it:'Abbiamo raccolto le migliori offerte di <b>Prop Firm</b> in un unico posto.',
+      ar:'جمعنا أفضل عروض <b>Prop Firms</b> في مكان واحد.'
+    },
+    features: {
+      pt:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','+ dezenas de outras firmas'],
+      en:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','+ dozens of other firms'],
+      es:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','+ decenas de otras firmas'],
+      fr:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','+ des dizaines d\'autres firmes'],
+      de:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','+ Dutzende weitere Firmen'],
+      it:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','+ decine di altre firme'],
+      ar:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','+ العشرات من الشركات الأخرى']
+    },
+    cta: { pt:'VER TODAS AS OFERTAS', en:'SEE ALL DEALS', es:'VER TODAS LAS OFERTAS', fr:'VOIR TOUTES LES OFFRES', de:'ALLE ANGEBOTE SEHEN', it:'VEDI TUTTE LE OFFERTE', ar:'عرض جميع العروض' }
+  },
+  loyalty: {
+    subject: { pt:'Ganhe cashback em cada compra', en:'Earn cashback on every purchase', es:'Gana cashback en cada compra', fr:'Gagnez du cashback a chaque achat', de:'Cashback bei jedem Kauf', it:'Guadagna cashback su ogni acquisto', ar:'احصل على استرداد نقدي مع كل عملية شراء' },
+    icon: '&#128176;',
+    title: { pt:'Programa de Fidelidade MarketsCoupons', en:'MarketsCoupons Loyalty Program', es:'Programa de Fidelidad MarketsCoupons', fr:'Programme de Fidelite MarketsCoupons', de:'MarketsCoupons Treueprogramm', it:'Programma Fedelta MarketsCoupons', ar:'برنامج ولاء MarketsCoupons' },
+    body: {
+      pt:'Comprou uma Prop Firm pelo nosso link? <b>Receba cashback!</b> Simples assim. Envie o comprovante e receba de volta.',
+      en:'Bought a Prop Firm through our link? <b>Get cashback!</b> Simple as that. Submit your proof and get paid.',
+      es:'Compraste una Prop Firm por nuestro enlace? <b>Recibe cashback!</b> Asi de simple.',
+      fr:'Achat via notre lien ? <b>Recevez du cashback !</b> C\'est aussi simple que ca.',
+      de:'Uber unseren Link gekauft? <b>Cashback erhalten!</b> So einfach ist das.',
+      it:'Hai acquistato tramite il nostro link? <b>Ricevi cashback!</b> Semplice cosi.',
+      ar:'اشتريت عبر رابطنا؟ <b>احصل على استرداد نقدي!</b> بهذه البساطة.'
+    },
+    features: {
+      pt:['Compre pelo nosso link de afiliado','Envie o comprovante de compra','Receba cashback via Pix ou crypto','Quanto mais compra, mais ganha','Programa 100% gratuito'],
+      en:['Buy through our affiliate link','Submit your purchase proof','Receive cashback via Pix or crypto','The more you buy, the more you earn','100% free program'],
+      es:['Compra por nuestro enlace','Envia el comprobante de compra','Recibe cashback via Pix o crypto','Cuanto mas compras, mas ganas','Programa 100% gratuito'],
+      fr:['Achetez via notre lien','Envoyez la preuve d\'achat','Recevez du cashback via Pix ou crypto','Plus vous achetez, plus vous gagnez','Programme 100% gratuit'],
+      de:['Kaufen Sie uber unseren Link','Kaufnachweis einreichen','Cashback via Pix oder Krypto','Je mehr Sie kaufen, desto mehr verdienen Sie','100% kostenloses Programm'],
+      it:['Acquista tramite il nostro link','Invia la prova d\'acquisto','Ricevi cashback via Pix o crypto','Piu acquisti, piu guadagni','Programma 100% gratuito'],
+      ar:['اشترِ عبر رابطنا','أرسل إثبات الشراء','احصل على استرداد نقدي','كلما اشتريت أكثر، كسبت أكثر','برنامج مجاني 100%']
+    },
+    cta: { pt:'PARTICIPAR AGORA', en:'JOIN NOW', es:'PARTICIPAR AHORA', fr:'PARTICIPER MAINTENANT', de:'JETZT TEILNEHMEN', it:'PARTECIPA ORA', ar:'انضم الآن' }
+  },
+  indicators: {
+    subject: { pt:'Analise tecnica gratuita para traders', en:'Free technical analysis for traders', es:'Analisis tecnico gratuito para traders', fr:'Analyse technique gratuite', de:'Kostenlose technische Analyse', it:'Analisi tecnica gratuita', ar:'تحليل فني مجاني للمتداولين' },
+    icon: '&#128200;',
+    title: { pt:'Indicadores e sinais direto no site', en:'Indicators and signals on the site', es:'Indicadores y senales en el sitio', fr:'Indicateurs et signaux sur le site', de:'Indikatoren und Signale auf der Website', it:'Indicatori e segnali sul sito', ar:'مؤشرات وإشارات على الموقع' },
+    body: {
+      pt:'Acesse graficos com indicadores tecnicos, screener de mercado e calendario economico — tudo <b>gratis</b> no MarketsCoupons.',
+      en:'Access charts with technical indicators, market screener and economic calendar — all <b>free</b> on MarketsCoupons.',
+      es:'Accede a graficos con indicadores tecnicos, screener de mercado y calendario economico — todo <b>gratis</b>.',
+      fr:'Accedez aux graphiques avec indicateurs techniques, screener et calendrier economique — tout <b>gratuit</b>.',
+      de:'Zugang zu Charts mit technischen Indikatoren, Markt-Screener und Wirtschaftskalender — alles <b>kostenlos</b>.',
+      it:'Accedi a grafici con indicatori tecnici, screener di mercato e calendario economico — tutto <b>gratis</b>.',
+      ar:'تحليلات فنية ومؤشرات وتقويم اقتصادي — كل شيء <b>مجاني</b>.'
+    },
+    features: {
+      pt:['Graficos TradingView integrados','Screener de acoes e futuros','Calendario economico em tempo real','Analise diaria com IA','Tudo gratis, sem cadastro'],
+      en:['Integrated TradingView charts','Stock & futures screener','Real-time economic calendar','Daily AI-powered analysis','All free, no signup required'],
+      es:['Graficos TradingView integrados','Screener de acciones y futuros','Calendario economico en tiempo real','Analisis diario con IA','Todo gratis, sin registro'],
+      fr:['Graphiques TradingView integres','Screener d\'actions et de futures','Calendrier economique en temps reel','Analyse quotidienne par IA','Tout gratuit, sans inscription'],
+      de:['Integrierte TradingView-Charts','Aktien- & Futures-Screener','Wirtschaftskalender in Echtzeit','Tagliche KI-Analyse','Alles kostenlos, ohne Anmeldung'],
+      it:['Grafici TradingView integrati','Screener azioni e futures','Calendario economico in tempo reale','Analisi giornaliera con IA','Tutto gratis, senza registrazione'],
+      ar:['رسوم بيانية TradingView','فلتر الأسهم والعقود الآجلة','تقويم اقتصادي','تحليل يومي بالذكاء الاصطناعي','كل شيء مجاني']
+    },
+    cta: { pt:'ACESSAR INDICADORES', en:'ACCESS INDICATORS', es:'ACCEDER A INDICADORES', fr:'ACCEDER AUX INDICATEURS', de:'INDIKATOREN AUFRUFEN', it:'ACCEDI AGLI INDICATORI', ar:'الوصول إلى المؤشرات' }
+  },
+  'blog-guides': {
+    subject: { pt:'Guias gratuitos para traders', en:'Free guides for traders', es:'Guias gratuitas para traders', fr:'Guides gratuits pour traders', de:'Kostenlose Guides fur Trader', it:'Guide gratuite per trader', ar:'أدلة مجانية للمتداولين' },
+    icon: '&#128218;',
+    title: { pt:'Aprenda antes de investir', en:'Learn before you invest', es:'Aprende antes de invertir', fr:'Apprenez avant d\'investir', de:'Lernen Sie, bevor Sie investieren', it:'Impara prima di investire', ar:'تعلم قبل أن تستثمر' },
+    body: {
+      pt:'Guias completos sobre Prop Firms, estrategias de trading, gestao de risco e muito mais. <b>Conteudo gratuito</b> feito por traders para traders.',
+      en:'Complete guides on Prop Firms, trading strategies, risk management and more. <b>Free content</b> made by traders for traders.',
+      es:'Guias completas sobre Prop Firms, estrategias de trading, gestion de riesgo y mas. <b>Contenido gratuito</b>.',
+      fr:'Guides complets sur les Prop Firms, strategies de trading, gestion des risques. <b>Contenu gratuit</b>.',
+      de:'Komplette Guides zu Prop Firms, Trading-Strategien, Risikomanagement. <b>Kostenlose Inhalte</b>.',
+      it:'Guide complete su Prop Firm, strategie di trading, gestione del rischio. <b>Contenuto gratuito</b>.',
+      ar:'أدلة شاملة عن Prop Firms واستراتيجيات التداول وإدارة المخاطر. <b>محتوى مجاني</b>.'
+    },
+    features: {
+      pt:['Como escolher sua Prop Firm','Estrategias para passar no desafio','Gestao de risco e drawdown','Quiz: qual firma ideal pra voce?','Calculadora de lucro'],
+      en:['How to choose your Prop Firm','Strategies to pass the challenge','Risk & drawdown management','Quiz: which firm is right for you?','Profit calculator'],
+      es:['Como elegir tu Prop Firm','Estrategias para pasar el desafio','Gestion de riesgo y drawdown','Quiz: cual firma es ideal para ti?','Calculadora de ganancias'],
+      fr:['Comment choisir votre Prop Firm','Strategies pour reussir le challenge','Gestion des risques et drawdown','Quiz : quelle firme pour vous ?','Calculatrice de profit'],
+      de:['So wahlen Sie Ihre Prop Firm','Strategien fur die Challenge','Risiko- & Drawdown-Management','Quiz: Welche Firma passt zu Ihnen?','Gewinnrechner'],
+      it:['Come scegliere la tua Prop Firm','Strategie per superare la challenge','Gestione rischio e drawdown','Quiz: quale firma fa per te?','Calcolatore di profitto'],
+      ar:['كيف تختار شركة Prop Firm','استراتيجيات لاجتياز التحدي','إدارة المخاطر','اختبار: أي شركة مناسبة لك؟','حاسبة الأرباح']
+    },
+    cta: { pt:'LER GUIAS', en:'READ GUIDES', es:'LEER GUIAS', fr:'LIRE LES GUIDES', de:'GUIDES LESEN', it:'LEGGI LE GUIDE', ar:'اقرأ الأدلة' }
+  },
+  'daily-analysis': {
+    subject: { pt:'Analise do mercado de hoje', en:'Today\'s market analysis', es:'Analisis del mercado de hoy', fr:'Analyse du marche du jour', de:'Heutige Marktanalyse', it:'Analisi del mercato di oggi', ar:'تحليل السوق اليوم' },
+    icon: '&#9889;',
+    title: { pt:'Mercado de hoje em 1 minuto', en:'Today\'s market in 1 minute', es:'El mercado de hoy en 1 minuto', fr:'Le marche du jour en 1 minute', de:'Der Markt heute in 1 Minute', it:'Il mercato di oggi in 1 minuto', ar:'سوق اليوم في دقيقة واحدة' },
+    body: {
+      pt:'Analise diaria gerada por <b>inteligencia artificial</b> com indicadores tecnicos (RSI, MACD, Bollinger) dos principais ativos. Atualizada todo dia as 6h.',
+      en:'Daily analysis generated by <b>artificial intelligence</b> with technical indicators (RSI, MACD, Bollinger) of major assets. Updated daily at 6am.',
+      es:'Analisis diario generado por <b>inteligencia artificial</b> con indicadores tecnicos de los principales activos.',
+      fr:'Analyse quotidienne generee par <b>intelligence artificielle</b> avec indicateurs techniques des principaux actifs.',
+      de:'Tagliche Analyse durch <b>kunstliche Intelligenz</b> mit technischen Indikatoren der wichtigsten Assets.',
+      it:'Analisi giornaliera generata da <b>intelligenza artificiale</b> con indicatori tecnici dei principali asset.',
+      ar:'تحليل يومي بواسطة <b>الذكاء الاصطناعي</b> مع مؤشرات فنية لأهم الأصول.'
+    },
+    features: {
+      pt:['S&P 500 (ES) — Futuros','Nasdaq (NQ) — Futuros','Ouro (GC) — Commodities','Petroleo (CL) — Energia','VIX — Indice de Volatilidade'],
+      en:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Gold (GC) — Commodities','Oil (CL) — Energy','VIX — Volatility Index'],
+      es:['S&P 500 (ES) — Futuros','Nasdaq (NQ) — Futuros','Oro (GC) — Commodities','Petroleo (CL) — Energia','VIX — Indice de Volatilidad'],
+      fr:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Or (GC) — Matieres premieres','Petrole (CL) — Energie','VIX — Indice de Volatilite'],
+      de:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Gold (GC) — Rohstoffe','Ol (CL) — Energie','VIX — Volatilitatsindex'],
+      it:['S&P 500 (ES) — Futures','Nasdaq (NQ) — Futures','Oro (GC) — Commodities','Petrolio (CL) — Energia','VIX — Indice di Volatilita'],
+      ar:['S&P 500 (ES) — العقود الآجلة','Nasdaq (NQ) — العقود الآجلة','الذهب (GC)','النفط (CL)','VIX — مؤشر التقلب']
+    },
+    cta: { pt:'VER ANALISE DE HOJE', en:'SEE TODAY\'S ANALYSIS', es:'VER ANALISIS DE HOY', fr:'VOIR L\'ANALYSE DU JOUR', de:'HEUTIGE ANALYSE SEHEN', it:'VEDI ANALISI DI OGGI', ar:'عرض تحليل اليوم' }
+  }
+};
+
+function buildInstitutionalHtml(name, lang='pt'){
+  const t = INST_TEMPLATES[name];
+  if(!t) return '';
+  const FI = "'Inter',Arial,sans-serif";
+  const dir = lang==='ar' ? 'rtl' : 'ltr';
+  const gt = (obj) => obj[lang] || obj.en || obj.pt || '';
+  const feats = (gt(t.features)||[]).map(f =>
+    `<tr><td style="padding:4px 0;font-family:${FI};font-size:13px;color:#EDF2F7;line-height:1.5;">
+      <span style="color:#22C55E;font-weight:700;margin-right:6px;">&#10003;</span> ${f}
+    </td></tr>`
+  ).join('');
+
+  const etFooter = (EMAIL_I18N[lang]||EMAIL_I18N.en);
+
+  return `<!DOCTYPE html>
+<html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#07090D;font-family:${FI};-webkit-font-smoothing:antialiased;">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" style="background:#07090D;">
+<tr><td align="center" style="padding:0;">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+<!-- HEADER -->
+<tr><td style="padding:32px 24px 20px;text-align:center;">
+  <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+    <table cellpadding="0" cellspacing="0"><tr>
+      <td style="font-size:20px;font-weight:800;letter-spacing:-0.5px;font-family:${FI};">
+        <span style="color:#EDF2F7;">Markets </span><span style="color:#F0B429;">Coupons</span>
+      </td>
+      <td style="padding-left:8px;"><span style="display:inline-block;width:6px;height:6px;background:#22C55E;border-radius:50%;"></span></td>
+    </tr></table>
+  </td></tr></table>
+</td></tr>
+
+<!-- HERO -->
+<tr><td style="padding:0 24px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
+    <tr><td style="padding:32px 28px;text-align:center;">
+      <div style="font-size:36px;line-height:1;margin-bottom:12px;">${t.icon}</div>
+      <div style="font-size:22px;font-weight:800;color:#EDF2F7;letter-spacing:-0.5px;font-family:${FI};line-height:1.3;">${gt(t.title)}</div>
+    </td></tr>
+  </table>
+</td></tr>
+
+<!-- BODY -->
+<tr><td style="padding:24px 24px 0;">
+  <div style="font-size:15px;color:#7A8FA6;line-height:1.7;font-family:${FI};">${gt(t.body)}</div>
+</td></tr>
+
+<!-- FEATURES -->
+<tr><td style="padding:20px 24px 0;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
+    <tr><td style="padding:16px 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0">${feats}</table>
+    </td></tr>
+  </table>
+</td></tr>
+
+<!-- CTA -->
+<tr><td style="padding:28px 24px 0;">
+  <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.marketscoupons.com" style="height:52px;v-text-anchor:middle;width:340px;" arcsize="15%" fillcolor="#F0B429"><w:anchorlock/><center style="color:#07090D;font-family:${FI};font-size:16px;font-weight:800;">${gt(t.cta)}</center></v:roundrect><![endif]-->
+    <!--[if !mso]><!--><a href="https://www.marketscoupons.com" target="_blank" style="display:inline-block;background:#F0B429;color:#07090D;padding:15px 52px;border-radius:8px;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:0.3px;font-family:${FI};">${gt(t.cta)}</a><!--<![endif]-->
+  </td></tr></table>
+</td></tr>
+
+<!-- TAGLINE -->
+<tr><td style="padding:16px 24px 0;text-align:center;">
+  <span style="color:#3D4F63;font-size:11px;font-family:${FI};">${etFooter.tagline || 'As melhores ofertas para traders'}</span>
+</td></tr>
+
+<!-- FOOTER -->
+<tr><td style="padding:28px 24px 32px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1C2535;"><tr><td style="padding-top:20px;text-align:center;">
+    <div style="color:#3D4F63;font-size:10px;line-height:1.7;font-family:${FI};">
+      ${etFooter.footer || ''}<br>
+      <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;text-decoration:underline;">${etFooter.unsub || 'Cancelar inscricao'}</a>
+    </div>
+  </td></tr></table>
+</td></tr>
+
+</table></td></tr></table>
+</body></html>`;
+}
+
 async function loadPromoTemplate(firmId){
   const { data: f } = await db.from('cms_firms').select('*').eq('id',firmId).maybeSingle();
   if(!f){ toast('Firma nao encontrada!','warn'); return; }
@@ -3179,6 +3369,8 @@ async function sendEmailsSmtp(){
   if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
 
   const isPromo = emailIsHtml && emailPromoFirm;
+  const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
+  const isMultilang = isPromo || isInst;
   const langGroups = {};
   leads.forEach(l => {
     const lang = l.lang || 'en';
@@ -3187,7 +3379,7 @@ async function sendEmailsSmtp(){
   });
   const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
 
-  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isPromo ? '\n\nHTML promo multilingue — cada um recebe no seu idioma' : ''}`)) return;
+  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}`)) return;
 
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
@@ -3197,18 +3389,20 @@ async function sendEmailsSmtp(){
     const token = session?.data?.session?.access_token;
     let totalSent=0, totalFailed=0;
 
-    if(isPromo){
+    if(isPromo || isInst){
       // Send per language group — each gets HTML in their language
       for(const [lang, group] of Object.entries(langGroups)){
-        const html = buildPromoHtml(emailPromoFirm, lang);
+        const html = isPromo ? buildPromoHtml(emailPromoFirm, lang) : buildInstitutionalHtml(window._instTemplateName, lang);
+        const instTpl = isInst ? INST_TEMPLATES[window._instTemplateName] : null;
+        const langSubject = isInst && instTpl ? (instTpl.subject[lang]||instTpl.subject.en||subject) : subject;
         const resp = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({
             to: group.map(l => ({ email: l.email, name: l.name||'' })),
-            subject: subject,
+            subject: langSubject,
             htmlContent: html,
-            tags: ['promo-'+emailPromoFirm.id, 'lang-'+lang],
+            tags: [isPromo ? 'promo-'+emailPromoFirm.id : 'inst-'+window._instTemplateName, 'lang-'+lang],
           }),
         });
         const data = await resp.json();
