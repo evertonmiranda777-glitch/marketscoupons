@@ -162,8 +162,11 @@ a{text-decoration:none;color:inherit;}
 
 /* SEGMENT BUILDER */
 .seg-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
-.seg-opt{padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;font-weight:500;color:var(--t2);text-align:center;transition:.2s;}
+.seg-opt{padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;font-weight:500;color:var(--t2);text-align:center;transition:.2s;cursor:pointer;}
 .seg-opt.sel{border-color:var(--gold);color:var(--gold);background:var(--gbg);}
+#seg-firma-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin-bottom:0;}
+.seg-firma{font-size:11px;padding:6px 10px;border-radius:6px;}
+.seg-firma.sel{border-color:var(--fc,var(--gold));color:var(--fc,var(--gold));background:color-mix(in srgb,var(--fc,var(--gold)) 12%,transparent);}
 
 /* TEMPLATE CARDS */
 /* ── QUICK TEMPLATES ── */
@@ -830,7 +833,29 @@ a{text-decoration:none;color:inherit;}
          <div class="seg-opt" onclick="toggleSeg(this,'leads')">Leads</div>
          <div class="seg-opt" onclick="toggleSeg(this,'loyalty')">Fidelidade</div>
        </div>
+       <div style="margin-top:8px;">
+         <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:6px;">Filtrar por firma</div>
+         <div class="seg-grid" id="seg-firma-grid">
+           <div class="seg-opt seg-firma" data-firma="apex" onclick="toggleFirma(this,'apex')" style="--fc:#F97316;border-color:rgba(249,115,22,.25);">Apex</div>
+           <div class="seg-opt seg-firma" data-firma="bulenox" onclick="toggleFirma(this,'bulenox')" style="--fc:#3B82F6;border-color:rgba(59,130,246,.25);">Bulenox</div>
+           <div class="seg-opt seg-firma" data-firma="e2t" onclick="toggleFirma(this,'e2t')" style="--fc:#F59E0B;border-color:rgba(245,158,11,.25);">E2T</div>
+           <div class="seg-opt seg-firma" data-firma="tpt" onclick="toggleFirma(this,'tpt')" style="--fc:#A855F7;border-color:rgba(168,85,247,.25);">TPT</div>
+           <div class="seg-opt seg-firma" data-firma="fn" onclick="toggleFirma(this,'fn')" style="--fc:#06B6D4;border-color:rgba(6,182,212,.25);">FundedNext</div>
+           <div class="seg-opt seg-firma" data-firma="fundingpips" onclick="toggleFirma(this,'fundingpips')" style="--fc:#6366F1;border-color:rgba(99,102,241,.25);">FPips</div>
+           <div class="seg-opt seg-firma" data-firma="brightfunded" onclick="toggleFirma(this,'brightfunded')" style="--fc:#00C9A7;border-color:rgba(0,201,167,.25);">BrightFunded</div>
+           <div class="seg-opt seg-firma" data-firma="ftmo" onclick="toggleFirma(this,'ftmo')" style="--fc:#22C55E;border-color:rgba(34,197,94,.25);">FTMO</div>
+           <div class="seg-opt seg-firma" data-firma="the5ers" onclick="toggleFirma(this,'the5ers')" style="--fc:#10B981;border-color:rgba(16,185,129,.25);">The5ers</div>
+         </div>
+       </div>
        <div style="font-size:11px;color:var(--t3);margin-top:6px;">Destinatarios: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
+     </div>
+
+     <div class="ec-field">
+       <label>Envio individual (opcional)</label>
+       <div style="display:flex;gap:8px;align-items:center;">
+         <input type="email" id="em-single-email" placeholder="email@exemplo.com" style="flex:1;">
+         <button class="btn-secondary" onclick="sendSingleEmail()" style="white-space:nowrap;padding:8px 14px;">Enviar p/ este</button>
+       </div>
      </div>
 
      <div class="ec-field">
@@ -852,6 +877,7 @@ a{text-decoration:none;color:inherit;}
 
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-primary" onclick="previewEmail()">Preview</button>
+       <button class="btn-secondary" onclick="sendTestEmail()" title="Envia para o email do admin logado">&#9993; Enviar Teste</button>
        <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar para todos</button>
        <button class="btn-secondary" onclick="saveTemplate()">Salvar template</button>
      </div>
@@ -913,8 +939,20 @@ a{text-decoration:none;color:inherit;}
      <div id="csv-stats" style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;">
        <div style="color:var(--t3);font-size:12px;">Nenhum arquivo carregado.</div>
      </div>
-     <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+     <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center;">
        <button class="btn-primary" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos (email-only)</button>
+       <select id="import-firma-tag" style="padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:11px;">
+         <option value="">Sem firma</option>
+         <option value="apex">Apex</option>
+         <option value="bulenox">Bulenox</option>
+         <option value="e2t">E2T</option>
+         <option value="tpt">TPT</option>
+         <option value="fn">FundedNext</option>
+         <option value="fundingpips">FPips</option>
+         <option value="brightfunded">BrightFunded</option>
+         <option value="ftmo">FTMO</option>
+         <option value="the5ers">The5ers</option>
+       </select>
        <button class="btn-secondary" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar validos → Subscribers</button>
      </div>
      <div style="margin-top:12px;">
@@ -2088,6 +2126,7 @@ async function fetchGeo(){
  EMAIL COMPOSER
  */
 let emailSegments=['all'];
+let emailFirmaFilter=[];
 
 function toggleSeg(el,seg){
  const grid=document.getElementById('seg-grid');
@@ -2109,32 +2148,53 @@ function toggleSeg(el,seg){
  updateDestCount();
 }
 
+function toggleFirma(el,firma){
+ el.classList.toggle('sel');
+ const grid=document.getElementById('seg-firma-grid');
+ emailFirmaFilter=[...grid.querySelectorAll('.seg-firma.sel')].map(s=>s.dataset.firma).filter(Boolean);
+ updateDestCount();
+}
+
 async function getSegmentedLeads(){
  const results=[];
  const needAll=emailSegments.includes('all');
- // Leads from Supabase (has idioma field)
+ const firmaFilter=emailFirmaFilter.length?emailFirmaFilter:null;
+ // Leads from Supabase (has idioma + firma fields)
  if(needAll||emailSegments.includes('leads')){
   try {
-   const {data}=await db.from('leads').select('email,name,idioma');
-   if(data) results.push(...data.filter(l=>l.email).map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead'})));
+   const {data}=await db.from('leads').select('email,name,idioma,firma');
+   if(data) results.push(...data.filter(l=>l.email).map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead',firma:l.firma||''})));
   } catch(e){
    const leads=getLeadsSync().filter(l=>l.email);
-   results.push(...leads.map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead'})));
+   results.push(...leads.map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead',firma:l.firma||''})));
   }
  }
  // Loyalty members from Supabase
  if(needAll||emailSegments.includes('loyalty')){
   const {data}=await db.from('loyalty_members').select('email,name,idioma').neq('email',null);
-  if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',lang:langFromCode(m.idioma),source:'loyalty'})));
+  if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',lang:langFromCode(m.idioma),source:'loyalty',firma:''})));
  }
  // Subscribers from Supabase (always included in 'all')
  if(needAll){
-  const {data}=await db.from('email_subscribers').select('email,name,lang').eq('status','active');
-  if(data) results.push(...data.map(s=>({email:s.email,name:s.name||'',lang:s.lang||'en',source:'subscriber'})));
+  const {data}=await db.from('email_subscribers').select('email,name,lang,tags').eq('status','active');
+  if(data) results.push(...data.map(s=>{
+   const firmTag=(s.tags||[]).find(t=>t.startsWith('firma:'));
+   return {email:s.email,name:s.name||'',lang:s.lang||'en',source:'subscriber',firma:firmTag?firmTag.replace('firma:',''):''};
+  }));
  }
  // Deduplicate by email (keep first = most specific lang)
  const seen=new Set();
- return results.filter(r=>{if(seen.has(r.email))return false;seen.add(r.email);return true;});
+ let list=results.filter(r=>{if(seen.has(r.email))return false;seen.add(r.email);return true;});
+ // Apply firma filter if any selected
+ if(firmaFilter){
+  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'The Prop Trading',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers'};
+  list=list.filter(r=>{
+   if(!r.firma) return false;
+   const f=r.firma.toLowerCase();
+   return firmaFilter.some(id=>f.includes(id)||f.includes((firmaNames[id]||'').toLowerCase()));
+  });
+ }
+ return list;
 }
 
 function langFromCode(idioma){
@@ -3315,7 +3375,9 @@ function exportCleanEmails() {
 
 async function importValidToSubscribers() {
   if (!_csvValidated?.valid?.length) return;
-  if (!confirm(`Importar ${_csvValidated.valid.length.toLocaleString()} emails validados para email_subscribers?`)) return;
+  const firmaTag = document.getElementById('import-firma-tag')?.value || '';
+  const label = firmaTag ? ` (firma: ${firmaTag})` : '';
+  if (!confirm(`Importar ${_csvValidated.valid.length.toLocaleString()} emails validados para email_subscribers${label}?`)) return;
 
   const btn = document.getElementById('btn-import-valid');
   btn.disabled = true;
@@ -3324,15 +3386,17 @@ async function importValidToSubscribers() {
   let imported = 0, skipped = 0;
   for (const r of _csvValidated.valid) {
     const lang = langFromCode(r.lang) || 'en';
+    const tags = ['imported'];
+    if (firmaTag) tags.push('firma:' + firmaTag);
     const { error } = await db.from('email_subscribers').upsert({
       email: r.email, name: r.name || '', source: 'csv-import', lang,
-      tags: ['imported']
+      tags
     }, { onConflict: 'email', ignoreDuplicates: true });
     if (!error) imported++; else skipped++;
   }
 
-  csvLog(`Importacao completa: ${imported} importados, ${skipped} ja existiam`);
-  toast(`${imported.toLocaleString()} subscribers importados!`);
+  csvLog(`Importacao completa: ${imported} importados, ${skipped} ja existiam${label}`);
+  toast(`${imported.toLocaleString()} subscribers importados${label}!`);
   await loadEmailStats();
   btn.disabled = false;
   btn.textContent = 'Importar validos → Subscribers';
@@ -3492,6 +3556,55 @@ async function sendEmailsSmtp(){
   } finally {
     if(btn){ btn.disabled=false; btn.textContent='Enviar para todos'; }
   }
+}
+
+async function sendTestEmail(){
+  const subject = document.getElementById('em-subject')?.value?.trim();
+  const body    = document.getElementById('em-body')?.value?.trim();
+  if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
+  const session = await db.auth.getSession();
+  const token = session?.data?.session?.access_token;
+  const user = session?.data?.session?.user;
+  if(!user?.email){ toast('Voce precisa estar logado!','warn'); return; }
+  const isPromo = emailIsHtml && emailPromoFirm;
+  const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
+  let html=body, subj=subject;
+  if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
+  if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'pt'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.pt||subject; }
+  try {
+    const resp = await fetch('/api/send-email',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+      body:JSON.stringify({to:[{email:user.email,name:'Admin Teste'}],subject:'[TESTE] '+subj,...(emailIsHtml?{htmlContent:html}:{textContent:body}),tags:['test']})
+    });
+    const data=await resp.json();
+    if(data.success) toast(`Teste enviado para ${user.email}!`);
+    else toast('Erro: '+(data.error||'falha no envio'),'error');
+  } catch(err){ toast('Erro: '+err.message,'error'); }
+}
+
+async function sendSingleEmail(){
+  const email=document.getElementById('em-single-email')?.value?.trim();
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Email invalido!','warn'); return; }
+  const subject=document.getElementById('em-subject')?.value?.trim();
+  const body=document.getElementById('em-body')?.value?.trim();
+  if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
+  if(!confirm(`Enviar email para ${email}?`)) return;
+  const session=await db.auth.getSession();
+  const token=session?.data?.session?.access_token;
+  const isPromo=emailIsHtml&&emailPromoFirm;
+  const isInst=emailIsHtml&&window._instTemplateName&&!emailPromoFirm;
+  let html=body, subj=subject;
+  if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
+  if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'pt'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.pt||subject; }
+  try {
+    const resp=await fetch('/api/send-email',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+      body:JSON.stringify({to:[{email,name:''}],subject:subj,...(emailIsHtml?{htmlContent:html}:{textContent:body}),tags:['single-send']})
+    });
+    const data=await resp.json();
+    if(data.success) toast(`Email enviado para ${email}!`);
+    else toast('Erro: '+(data.error||'falha no envio'),'error');
+  } catch(err){ toast('Erro: '+err.message,'error'); }
 }
 
 /* ═══ EMAIL SUBSCRIBERS (Supabase) ═══ */
