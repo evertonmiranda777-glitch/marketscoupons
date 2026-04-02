@@ -2588,22 +2588,31 @@ function buildPromoHtml(f, lang='pt'){
 
   return `<!DOCTYPE html>
 <html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="color-scheme" content="dark">
-<meta name="supported-color-schemes" content="dark">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;}
-body,html{background:#07090D!important;background-color:#07090D!important;}
-.darkbg{background:#07090D!important;background-color:#07090D!important;}
-u+.body .darkbg{background:#07090D!important;}
+:root{color-scheme:light dark;}
+body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+[data-ogsc] body,[data-ogsb] body{background:#07090D!important;background-color:#07090D!important;}
+[data-ogsc] .mc-bg,[data-ogsb] .mc-bg{background:#07090D!important;background-color:#07090D!important;}
+[data-ogsc] .mc-card,[data-ogsb] .mc-card{background:#0B0F16!important;background-color:#0B0F16!important;}
+[data-ogsc] .mc-t1,[data-ogsb] .mc-t1{color:#EDF2F7!important;}
+[data-ogsc] .mc-t2,[data-ogsb] .mc-t2{color:#7A8FA6!important;}
+@media(prefers-color-scheme:dark){
+  .mc-bg{background:#07090D!important;background-color:#07090D!important;}
+  .mc-card{background:#0B0F16!important;background-color:#0B0F16!important;}
+  .mc-t1{color:#EDF2F7!important;}
+  .mc-t2{color:#7A8FA6!important;}
+}
 </style>
 </head>
-<body bgcolor="#07090D" class="body darkbg" style="margin:0;padding:0;background:#07090D;background-color:#07090D;font-family:'Inter',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;">
+<body bgcolor="#07090D" style="margin:0;padding:0;background:#07090D;background-color:#07090D;font-family:'Inter',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;">
 
 <!-- Wrapper -->
-<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="darkbg" style="background:#07090D;background-color:#07090D;min-width:100%;" role="presentation">
-<tr><td align="center" bgcolor="#07090D" class="darkbg" style="padding:0;background:#07090D;background-color:#07090D;">
-<table width="600" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="darkbg" style="max-width:600px;width:100%;background:#07090D;background-color:#07090D;">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="mc-bg" style="background:#07090D;background-color:#07090D;min-width:100%;" role="presentation">
+<tr><td align="center" bgcolor="#07090D" class="mc-bg" style="padding:0;background:#07090D;background-color:#07090D;">
+<table width="600" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="mc-bg" style="max-width:600px;width:100%;background:#07090D;background-color:#07090D;">
 
 <!-- ═══ ACCENT BAR TOP ═══ -->
 <tr><td height="4" bgcolor="${color}" style="background:${color};height:4px;line-height:4px;font-size:0;">&nbsp;</td></tr>
@@ -2612,7 +2621,6 @@ u+.body .darkbg{background:#07090D!important;}
 <tr><td style="padding:28px 24px 12px;text-align:center;">
   <table width="100%" cellpadding="0" cellspacing="0"><tr>
     <td align="center">
-      <img src="https://www.marketscoupons.com/img/Logo%20Markets%20Coupons.png" alt="Markets Coupons" width="48" height="48" style="display:block;margin:0 auto 10px;border-radius:10px;width:48px;height:48px;">
       <table cellpadding="0" cellspacing="0"><tr>
         <td style="font-size:22px;font-weight:800;letter-spacing:-0.5px;font-family:'Inter',Arial,sans-serif;">
           <span style="color:#EDF2F7;">Markets </span><span style="color:#F0B429;">Coupons</span>
@@ -2631,12 +2639,12 @@ u+.body .darkbg{background:#07090D!important;}
 
 <!-- ═══ HERO BANNER ═══ -->
 <tr><td style="padding:20px 24px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B0F16" style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
     <tr><td height="3" bgcolor="${color}" style="background:${color};height:3px;line-height:3px;font-size:0;">&nbsp;</td></tr>
     <tr><td style="padding:28px 24px;text-align:center;">
       <!-- Discount Badge -->
       <table cellpadding="0" cellspacing="0" align="center"><tr>
-        <td style="background:rgba(240,180,41,0.10);border:1px solid rgba(240,180,41,0.30);border-radius:20px;padding:6px 20px;">
+        <td bgcolor="#1C2535" style="background:rgba(240,180,41,0.10);border:1px solid rgba(240,180,41,0.30);border-radius:20px;padding:6px 20px;">
           <span style="color:#F0B429;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',Arial,sans-serif;">${f.discount}% OFF${lt}</span>
         </td>
       </tr></table>
@@ -2672,20 +2680,20 @@ u+.body .darkbg{background:#07090D!important;}
 
 <!-- ═══ FIRM CARD ═══ -->
 <tr><td style="padding:20px 24px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#10151F" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
 
     <!-- Stats Bar: Profit Split | Discount | Drawdown -->
     <tr><td style="padding:0;">
       <table width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="33%" style="text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;">
+        <td width="33%" bgcolor="#0B0F16" style="text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;">
           <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;font-family:'Inter',Arial,sans-serif;">${et('profit_split')}</div>
           <div style="color:#22C55E;font-size:20px;font-weight:800;margin-top:4px;font-family:'Inter',Arial,sans-serif;">${f.split||'—'}</div>
         </td>
-        <td width="34%" style="text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;border-left:1px solid #1C2535;border-right:1px solid #1C2535;">
+        <td width="34%" bgcolor="#0B0F16" style="text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;border-left:1px solid #1C2535;border-right:1px solid #1C2535;">
           <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;font-family:'Inter',Arial,sans-serif;">${et('discount_label','')}</div>
           <div style="color:#F0B429;font-size:20px;font-weight:800;margin-top:4px;font-family:'Inter',Arial,sans-serif;">${f.discount}%</div>
         </td>
-        <td width="33%" style="text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;">
+        <td width="33%" bgcolor="#0B0F16" style="text-align:center;padding:16px 8px;background:#0B0F16;border-bottom:1px solid #1C2535;">
           <div style="color:#3D4F63;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;font-family:'Inter',Arial,sans-serif;">Drawdown</div>
           <div style="color:#EDF2F7;font-size:20px;font-weight:800;margin-top:4px;font-family:'Inter',Arial,sans-serif;">${f.dd_pct||'—'}</div>
         </td>
@@ -2727,7 +2735,7 @@ u+.body .darkbg{background:#07090D!important;}
 
 <!-- ═══ PRICING TABLE ═══ -->
 ${prices.length ? `<tr><td style="padding:20px 24px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#10151F" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
     <tr><td bgcolor="#10151F" style="padding:12px 16px 10px;border-bottom:1px solid #1C2535;background:#10151F;">
       <table width="100%" cellpadding="0" cellspacing="0"><tr>
         <td style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#3D4F63;font-family:'Inter',Arial,sans-serif;">${et('prices_title')}</td>
@@ -2741,8 +2749,8 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
           <th rowspan="2" width="${WA}" style="width:${WA};padding:5px 6px;text-align:left;${HS}vertical-align:middle;">${et('col_account')}</th>
           ${hasPlans ? `<th rowspan="2" width="${WG}" style="width:${WG};padding:5px 4px;text-align:center;${HS}vertical-align:middle;">${et('col_goal')}</th>
           <th rowspan="2" width="${WD}" style="width:${WD};padding:5px 4px;text-align:center;${HS}vertical-align:middle;">${et('col_dd')}</th>` : ''}
-          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#3B82F6;font-size:9px;border-bottom:${B1};">${pTypes[0]||''}</th>
-          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#22C55E;font-size:9px;border-bottom:${B1};">${pTypes[1]||''}</th>
+          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#3B82F6;font-size:9px;border-bottom:1px solid #1C2535;">${pTypes[0]||''}</th>
+          <th colspan="2" style="padding:5px 4px;text-align:center;${HS}color:#22C55E;font-size:9px;border-bottom:1px solid #1C2535;">${pTypes[1]||''}</th>
         </tr>
         <tr bgcolor="#141B27" style="background:#141B27;">
           <th width="${WP}" style="width:${WP};padding:4px 4px;text-align:center;${HS}">${et('col_price')}</th>
@@ -2778,8 +2786,8 @@ ${prices.length ? `<tr><td style="padding:20px 24px 0;">
 <tr><td style="padding:24px 24px 0;">
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr><td align="center">
-      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${f.link}" style="height:52px;v-text-anchor:middle;width:500px;" arcsize="12%" fillcolor="${color}"><w:anchorlock/><center style="color:#07090D;font-family:'Inter',Arial,sans-serif;font-size:16px;font-weight:800;">${et('cta')}</center></v:roundrect><![endif]-->
-      <!--[if !mso]><!--><a href="${f.link}" target="_blank" style="display:inline-block;background:${color};color:#07090D;padding:15px 0;width:100%;max-width:500px;box-sizing:border-box;border-radius:8px;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:0.5px;font-family:'Inter',Arial,sans-serif;text-align:center;">${et('cta')}</a><!--<![endif]-->
+      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${f.link}" style="height:52px;v-text-anchor:middle;width:500px;" arcsize="12%" fillcolor="${color}"><w:anchorlock/><center style="color:#FFFFFF;font-family:'Inter',Arial,sans-serif;font-size:16px;font-weight:800;">${et('cta')}</center></v:roundrect><![endif]-->
+      <!--[if !mso]><!--><a href="${f.link}" target="_blank" style="display:inline-block;background:${color};color:#FFFFFF;padding:15px 0;width:100%;max-width:500px;box-sizing:border-box;border-radius:8px;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:0.5px;font-family:'Inter',Arial,sans-serif;text-align:center;">${et('cta')}</a><!--<![endif]-->
     </td></tr>
   </table>
 </td></tr>
@@ -2977,25 +2985,33 @@ function buildInstitutionalHtml(name, lang='pt'){
 
   return `<!DOCTYPE html>
 <html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="color-scheme" content="dark">
-<meta name="supported-color-schemes" content="dark">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;}
-body,html{background:#07090D!important;background-color:#07090D!important;}
-.darkbg{background:#07090D!important;background-color:#07090D!important;}
-u+.body .darkbg{background:#07090D!important;}
+:root{color-scheme:light dark;}
+body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+[data-ogsc] body,[data-ogsb] body{background:#07090D!important;background-color:#07090D!important;}
+[data-ogsc] .mc-bg,[data-ogsb] .mc-bg{background:#07090D!important;background-color:#07090D!important;}
+[data-ogsc] .mc-card,[data-ogsb] .mc-card{background:#0B0F16!important;background-color:#0B0F16!important;}
+[data-ogsc] .mc-t1,[data-ogsb] .mc-t1{color:#EDF2F7!important;}
+[data-ogsc] .mc-t2,[data-ogsb] .mc-t2{color:#7A8FA6!important;}
+@media(prefers-color-scheme:dark){
+  .mc-bg{background:#07090D!important;background-color:#07090D!important;}
+  .mc-card{background:#0B0F16!important;background-color:#0B0F16!important;}
+  .mc-t1{color:#EDF2F7!important;}
+  .mc-t2{color:#7A8FA6!important;}
+}
 </style>
 </head>
-<body bgcolor="#07090D" class="body darkbg" style="margin:0;padding:0;background:#07090D;background-color:#07090D;font-family:${FI};-webkit-font-smoothing:antialiased;">
-<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="darkbg" style="background:#07090D;background-color:#07090D;min-width:100%;" role="presentation">
-<tr><td align="center" bgcolor="#07090D" class="darkbg" style="padding:0;background:#07090D;background-color:#07090D;">
-<table width="600" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="darkbg" style="max-width:600px;width:100%;background:#07090D;background-color:#07090D;">
+<body bgcolor="#07090D" style="margin:0;padding:0;background:#07090D;background-color:#07090D;font-family:${FI};-webkit-font-smoothing:antialiased;">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="mc-bg" style="background:#07090D;background-color:#07090D;min-width:100%;" role="presentation">
+<tr><td align="center" bgcolor="#07090D" class="mc-bg" style="padding:0;background:#07090D;background-color:#07090D;">
+<table width="600" cellpadding="0" cellspacing="0" bgcolor="#07090D" class="mc-bg" style="max-width:600px;width:100%;background:#07090D;background-color:#07090D;">
 
 <!-- HEADER -->
 <tr><td style="padding:32px 24px 12px;text-align:center;">
   <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
-    <img src="https://www.marketscoupons.com/img/Logo%20Markets%20Coupons.png" alt="Markets Coupons" width="48" height="48" style="display:block;margin:0 auto 10px;border-radius:10px;width:48px;height:48px;">
     <table cellpadding="0" cellspacing="0"><tr>
       <td style="font-size:20px;font-weight:800;letter-spacing:-0.5px;font-family:${FI};">
         <span style="color:#EDF2F7;">Markets </span><span style="color:#F0B429;">Coupons</span>
@@ -3007,7 +3023,7 @@ u+.body .darkbg{background:#07090D!important;}
 
 <!-- HERO -->
 <tr><td style="padding:0 24px;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B0F16" style="background:#0B0F16;border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
     <tr><td style="padding:32px 28px;text-align:center;">
       ${t.icon?`<div style="font-size:36px;line-height:1;margin-bottom:12px;">${t.icon}</div>`:''}
       <div style="font-size:22px;font-weight:800;color:#EDF2F7;letter-spacing:-0.5px;font-family:${FI};line-height:1.3;">${gt(t.title)}</div>
@@ -3022,7 +3038,7 @@ u+.body .darkbg{background:#07090D!important;}
 
 <!-- FEATURES -->
 <tr><td style="padding:20px 24px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#10151F" style="background:#10151F;border:1px solid #1C2535;border-radius:10px;overflow:hidden;">
     <tr><td style="padding:16px 20px;">
       <table width="100%" cellpadding="0" cellspacing="0">${feats}</table>
     </td></tr>
