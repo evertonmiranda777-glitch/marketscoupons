@@ -681,97 +681,115 @@ a{text-decoration:none;color:inherit;}
  <!-- EMAIL -->
  <div class="admin-page" id="page-email">
  <div class="sec-hdr">
- <div class="sec-title"> Disparador de E-mail</div>
+ <div class="sec-title">Email Marketing</div>
+ <div class="sec-actions">
+   <button class="btn-secondary" onclick="importLeadsAsSubscribers()">Importar Leads</button>
+   <button class="btn-secondary" onclick="loadEmailStats();renderCampaignLog()">Atualizar</button>
+ </div>
  </div>
 
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
- <!-- COMPOSE -->
-        <div>
-          <div style="font-size:13px;font-weight:600;margin-bottom:14px;">Composicao</div>
-          <div class="email-composer">
-            <!-- Provider info -->
-            <div class="ec-field">
-              <label>Provedor de envio</label>
-              <div id="smtp-accounts-list"></div>
-              <button class="btn-secondary" style="margin-top:8px;font-size:11px;" onclick="importLeadsAsSubscribers()">Importar leads como subscribers</button>
-            </div>
-
-            <div class="ec-field">
-              <label>Segmento de envio</label>
-              <div class="seg-grid" id="seg-grid">
-                <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos os leads</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'orderflow')">Order Flow</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'journal')">Trade Journal</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'backtester')">Backtester</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'alerts')">Alertas</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'ninjapack')">NinjaPack</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'live')">Live Room</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'male')">Masculino</div>
-                <div class="seg-opt" onclick="toggleSeg(this,'female')">Feminino</div>
-              </div>
-              <div style="font-size:11px;color:var(--t3);margin-top:6px;">Destinatarios: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
-            </div>
-
-            <div class="ec-field">
-              <label>Assunto</label>
-              <input type="text" id="em-subject" placeholder="Assunto do e-mail">
-            </div>
-
-            <div class="ec-field">
-              <label>Mensagem</label>
-              <div class="ec-toolbar">
-                <button class="ec-tb-btn" onclick="insertVar('{nome}')">nome</button>
-                <button class="ec-tb-btn" onclick="insertVar('{email}')">email</button>
-                <button class="ec-tb-btn" onclick="insertVar('{cupom}')">cupom</button>
-                <button class="ec-tb-btn" onclick="insertVar('{firma}')">firma</button>
-                <button class="ec-tb-btn" onclick="insertVar('{link}')">link</button>
-              </div>
-              <textarea id="em-body" rows="10" placeholder="Ola {nome}, ..."></textarea>
-            </div>
-
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn-primary" onclick="previewEmail()">Preview</button>
-              <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar e-mails</button>
-              <button class="btn-secondary" onclick="saveTemplate()">Salvar template</button>
-            </div>
-          </div>
-        </div>
-
-<!-- PREVIEW + STATS -->
- <div>
- <div style="font-size:13px;font-weight:600;margin-bottom:14px;"> Preview & Histórico</div>
-
- <div class="email-composer" style="margin-bottom:16px;">
- <div style="font-size:11px;color:var(--t3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Preview do E-mail</div>
- <div class="ec-preview" id="em-preview">Configure o e-mail ao lado para visualizar o preview aqui.</div>
- </div>
-
- <div class="send-stats">
+ <!-- STATS -->
+ <div class="send-stats" style="margin-bottom:20px;">
  <div class="ss-item"><div class="ss-lbl">Campanhas</div><div class="ss-val" id="ss-camp">0</div></div>
  <div class="ss-item"><div class="ss-lbl">Enviados</div><div class="ss-val g" id="ss-sent">0</div></div>
  <div class="ss-item"><div class="ss-lbl">Templates</div><div class="ss-val b" id="ss-tmpl">0</div></div>
  <div class="ss-item"><div class="ss-lbl">Subscribers</div><div class="ss-val y" id="ss-leads">0</div></div>
  </div>
 
- <!-- Saved templates -->
- <div style="margin-top:16px;">
- <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;"> Templates Salvos</div>
- <div id="templates-list"></div>
+ <!-- QUICK TEMPLATES -->
+ <div class="ec-field" style="margin-bottom:20px;">
+   <label>Templates Rapidos — clique para carregar</label>
+   <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+     <div style="font-size:10px;color:var(--t3);width:100%;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px;">Institucional</div>
+     <button class="seg-opt" onclick="loadQuickTemplate('welcome')">Boas-vindas</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('site-invite')">Convite Site</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('loyalty')">Fidelidade</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('indicators')">Indicadores</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('blog-guides')">Blog & Guias</button>
+     <button class="seg-opt" onclick="loadQuickTemplate('daily-analysis')">Analise Diaria</button>
+   </div>
+   <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+     <div style="font-size:10px;color:var(--t3);width:100%;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px;">Promos — puxa dados atuais da firma</div>
+     <button class="seg-opt" onclick="loadPromoTemplate('apex')" style="border-color:#F97316;color:#F97316;">Apex 90%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('bulenox')" style="border-color:#3B82F6;color:#3B82F6;">Bulenox 89%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('e2t')" style="border-color:#F59E0B;color:#F59E0B;">E2T 50%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('tpt')" style="border-color:#A855F7;color:#A855F7;">TPT 40%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('fn')" style="border-color:#06B6D4;color:#06B6D4;">FundedNext 30%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('fundingpips')" style="border-color:#6366F1;color:#6366F1;">FPips 20%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('brightfunded')" style="border-color:#00C9A7;color:#00C9A7;">BrightFunded 20%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('ftmo')" style="border-color:#22C55E;color:#22C55E;">FTMO 19%</button>
+     <button class="seg-opt" onclick="loadPromoTemplate('the5ers')" style="border-color:#10B981;color:#10B981;">The5ers 10%</button>
+   </div>
  </div>
 
- <!-- Subscribers info -->
- <div style="margin-top:16px;">
- <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;">Brevo — Envio Automatico a cada 3 dias</div>
- <div style="font-size:11px;color:var(--t3);padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;">
-   Promo automatica configurada via cron. Envia as 3 melhores ofertas ativas para todos os subscribers a cada 3 dias.
- </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+ <!-- COMPOSE -->
+ <div>
+   <div style="font-size:13px;font-weight:600;margin-bottom:14px;">Composicao</div>
+   <div class="email-composer">
+     <div class="ec-field">
+       <label>Provedor</label>
+       <div id="smtp-accounts-list"></div>
+     </div>
+
+     <div class="ec-field">
+       <label>Destinatarios</label>
+       <div class="seg-grid" id="seg-grid">
+         <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos</div>
+         <div class="seg-opt" onclick="toggleSeg(this,'leads')">Leads</div>
+         <div class="seg-opt" onclick="toggleSeg(this,'loyalty')">Fidelidade</div>
+       </div>
+       <div style="font-size:11px;color:var(--t3);margin-top:6px;">Destinatarios: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
+     </div>
+
+     <div class="ec-field">
+       <label>Assunto</label>
+       <input type="text" id="em-subject" placeholder="Subject line...">
+     </div>
+
+     <div class="ec-field">
+       <label>Mensagem</label>
+       <div class="ec-toolbar">
+         <button class="ec-tb-btn" onclick="insertVar('{nome}')">nome</button>
+         <button class="ec-tb-btn" onclick="insertVar('{email}')">email</button>
+         <button class="ec-tb-btn" onclick="insertVar('{cupom}')">cupom</button>
+         <button class="ec-tb-btn" onclick="insertVar('{firma}')">firma</button>
+         <button class="ec-tb-btn" onclick="insertVar('{link}')">link</button>
+       </div>
+       <textarea id="em-body" rows="12" placeholder="Hey {nome}, ..."></textarea>
+     </div>
+
+     <div style="display:flex;gap:8px;flex-wrap:wrap;">
+       <button class="btn-primary" onclick="previewEmail()">Preview</button>
+       <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar para todos</button>
+       <button class="btn-secondary" onclick="saveTemplate()">Salvar template</button>
+     </div>
+   </div>
  </div>
 
- <!-- Campaign log -->
- <div style="margin-top:16px;">
- <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;"> Histórico de Campanhas Manuais</div>
- <div id="campaigns-log"></div>
- </div>
+ <!-- PREVIEW + LOG -->
+ <div>
+   <div style="font-size:13px;font-weight:600;margin-bottom:14px;">Preview</div>
+   <div class="email-composer" style="margin-bottom:16px;">
+     <div class="ec-preview" id="em-preview">Selecione um template ou escreva seu email para visualizar aqui.</div>
+   </div>
+
+   <div style="margin-top:16px;">
+     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Templates Salvos</div>
+     <div id="templates-list"></div>
+   </div>
+
+   <div style="margin-top:16px;">
+     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;">Brevo — Promo Automatica a cada 3 dias</div>
+     <div style="font-size:11px;color:var(--t3);padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;">
+       Envia automaticamente as 3 melhores ofertas ativas para todos os subscribers. Dados sempre atualizados do Supabase.
+     </div>
+   </div>
+
+   <div style="margin-top:16px;">
+     <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Historico de Campanhas</div>
+     <div id="campaigns-log"></div>
+   </div>
  </div>
  </div>
  </div>
@@ -1283,6 +1301,7 @@ function renderPage(p){
       updateEmailStats();
       renderTemplatesList();
       renderCampaignLog();
+      updateDestCount();
       setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
@@ -1891,47 +1910,66 @@ async function fetchGeo(){
 let emailSegments=['all'];
 
 function toggleSeg(el,seg){
+ const grid=document.getElementById('seg-grid');
  if(seg==='all'){
- document.querySelectorAll('.seg-opt').forEach(s=>s.classList.remove('sel'));
+ grid.querySelectorAll('.seg-opt').forEach(s=>s.classList.remove('sel'));
  el.classList.add('sel');
  emailSegments=['all'];
  } else {
- document.querySelector('.seg-opt[onclick*="\'all\'"]')?.classList.remove('sel');
+ grid.querySelector('.seg-opt[onclick*="\'all\'"]')?.classList.remove('sel');
  el.classList.toggle('sel',!el.classList.contains('sel'));
- const sels=[...document.querySelectorAll('.seg-opt.sel')].map(s=>s.getAttribute('onclick').match(/'([^']+)'/)?.[1]).filter(Boolean);
+ const sels=[...grid.querySelectorAll('.seg-opt.sel')].map(s=>s.getAttribute('onclick').match(/'([^']+)'/)?.[1]).filter(Boolean);
  emailSegments=sels.length?sels:['all'];
+ if(!emailSegments.length||emailSegments.includes('all')){
+  grid.querySelectorAll('.seg-opt').forEach(s=>s.classList.remove('sel'));
+  grid.querySelector('.seg-opt[onclick*="\'all\'"]')?.classList.add('sel');
+  emailSegments=['all'];
+ }
  }
  updateDestCount();
 }
 
-function getSegmentedLeads(){
- const leads=getLeadsSync();
- if(emailSegments.includes('all'))return leads;
- return leads.filter(l=>{
- return emailSegments.some(s=>{
- if(s==='male')return l.sexo==='Masculino';
- if(s==='female')return l.sexo==='Feminino';
- return l.tool===s;
- });
- });
+async function getSegmentedLeads(){
+ const results=[];
+ const needAll=emailSegments.includes('all');
+ // Leads from localStorage
+ if(needAll||emailSegments.includes('leads')){
+  const leads=getLeadsSync().filter(l=>l.email);
+  results.push(...leads.map(l=>({email:l.email,name:l.name||'',source:'lead'})));
+ }
+ // Loyalty members from Supabase
+ if(needAll||emailSegments.includes('loyalty')){
+  const {data}=await db.from('loyalty_members').select('email,name').neq('email',null);
+  if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',source:'loyalty'})));
+ }
+ // Subscribers from Supabase (always included in 'all')
+ if(needAll){
+  const {data}=await db.from('email_subscribers').select('email,name').eq('status','active');
+  if(data) results.push(...data.map(s=>({email:s.email,name:s.name||'',source:'subscriber'})));
+ }
+ // Deduplicate by email
+ const seen=new Set();
+ return results.filter(r=>{if(seen.has(r.email))return false;seen.add(r.email);return true;});
 }
 
-function updateDestCount(){
- document.getElementById('dest-count').textContent=getSegmentedLeads().length;
+async function updateDestCount(){
+ const leads=await getSegmentedLeads();
+ document.getElementById('dest-count').textContent=leads.length;
 }
 
 function insertVar(v){
  const ta=document.getElementById('em-body');
  if(!ta)return;
+ emailIsHtml=false;
  const pos=ta.selectionStart;
  ta.value=ta.value.slice(0,pos)+v+ta.value.slice(ta.selectionEnd);
  ta.focus();ta.setSelectionRange(pos+v.length,pos+v.length);
 }
 
-function previewEmail(){
+async function previewEmail(){
  const subject=document.getElementById('em-subject')?.value||'(sem assunto)';
  const body=document.getElementById('em-body')?.value||'(sem conteúdo)';
- const leads=getSegmentedLeads();
+ const leads=await getSegmentedLeads();
  const sample=leads[0]||{name:'Trader Exemplo',email:'trader@email.com'};
  const preview=body
  .replace(/{nome}/g,sample.name||'Trader')
@@ -1939,11 +1977,20 @@ function previewEmail(){
  .replace(/{cupom}/g,'MARKET89')
  .replace(/{firma}/g,'Bulenox')
  .replace(/{link}/g,'https://marketscoupons.com');
- document.getElementById('em-preview').innerHTML=`
- <div style="font-size:11px;color:var(--t3);margin-bottom:8px;"> Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
- <div style="font-size:11px;color:var(--t3);margin-bottom:12px;"> Para: <strong style="color:var(--gold);">${leads.length} destinatários</strong></div>
- <hr style="border-color:var(--b1);margin-bottom:12px;">
- <div style="white-space:pre-wrap;line-height:1.7;">${preview}</div>`;
+ if(emailIsHtml){
+  document.getElementById('em-preview').innerHTML=`
+  <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
+  <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML Rico</strong></div>
+  <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Para: <strong style="color:var(--gold);">${leads.length} destinatarios</strong></div>
+  <hr style="border-color:var(--b1);margin-bottom:12px;">
+  <iframe srcdoc="${preview.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
+ } else {
+  document.getElementById('em-preview').innerHTML=`
+  <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
+  <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Para: <strong style="color:var(--gold);">${leads.length} destinatarios</strong></div>
+  <hr style="border-color:var(--b1);margin-bottom:12px;">
+  <div style="white-space:pre-wrap;line-height:1.7;">${preview}</div>`;
+ }
  toast('Preview gerado!');
 }
 
@@ -2123,8 +2170,171 @@ function renderResendLog(){
  }
 }
 
-// patch updateEmailStats to include resend log
-/* updateEmailStats is called directly, Resend log rendered inline */
+/* ═══ QUICK TEMPLATE LOADERS ═══ */
+async function loadQuickTemplate(name){
+  const { data } = await db.from('email_templates').select('*').eq('name',name).maybeSingle();
+  if(!data){ toast('Template nao encontrado!','warn'); return; }
+  emailIsHtml = false;
+  document.getElementById('em-subject').value = data.subject;
+  document.getElementById('em-body').value = data.body;
+  previewEmail();
+  toast('Template "'+name+'" carregado!');
+}
+
+let emailIsHtml = false;
+
+async function loadPromoTemplate(firmId){
+  // Pull live data from cms_firms
+  const { data: f } = await db.from('cms_firms').select('*').eq('id',firmId).maybeSingle();
+  if(!f){ toast('Firma nao encontrada!','warn'); return; }
+
+  const lt = f.discount_type==='lifetime' ? ' Lifetime' : '';
+  const subject = `${f.name} com ${f.discount}% OFF${lt} — Aproveite agora`;
+
+  // Build prices table rows
+  const prices = f.prices || [];
+  const priceRows = prices.map(r => `
+    <tr>
+      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#EDF2F7;font-weight:600;">${r.a}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#22C55E;font-weight:700;">${r.n}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;color:#3D4F63;text-decoration:line-through;">${r.o}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid #1C2535;">
+        <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">Comprar →</a>
+      </td>
+    </tr>`).join('');
+
+  const priceTable = prices.length ? `
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:16px 0;">
+      <tr style="background:#0B0F16;">
+        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">Conta</th>
+        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">Com Cupom</th>
+        <th style="padding:10px 14px;text-align:left;color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #1C2535;">Original</th>
+        <th style="padding:10px 14px;border-bottom:1px solid #1C2535;"></th>
+      </tr>
+      ${priceRows}
+    </table>` : '';
+
+  // Coupon section
+  const couponSection = f.coupon ? `
+    <div style="background:#0B0F16;border:2px dashed #F0B429;border-radius:10px;padding:18px 24px;margin:20px 0;text-align:center;">
+      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Cupom Exclusivo</div>
+      <div style="color:#F0B429;font-size:28px;font-weight:800;letter-spacing:3px;font-family:monospace;">${f.coupon}</div>
+      <div style="color:#7A8FA6;font-size:12px;margin-top:8px;">1. Copie o cupom acima &nbsp;→&nbsp; 2. Escolha sua conta abaixo &nbsp;→&nbsp; 3. Cole no checkout</div>
+    </div>` : `
+    <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:14px 20px;margin:20px 0;text-align:center;">
+      <div style="color:#22C55E;font-size:14px;font-weight:600;">Desconto aplicado automaticamente pelo nosso link</div>
+    </div>`;
+
+  // Platforms
+  const platforms = (f.platforms||[]).map(p =>
+    `<span style="display:inline-block;background:#10151F;border:1px solid #1C2535;border-radius:6px;padding:5px 12px;margin:3px 4px;font-size:12px;color:#EDF2F7;">${p}</span>`
+  ).join('');
+
+  // Perks
+  const perks = (f.perks||[]).slice(0,6).map(p =>
+    `<div style="padding:4px 0;color:#7A8FA6;font-size:13px;">&#10003; ${p}</div>`
+  ).join('');
+
+  // Stats row
+  const stats = `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;">
+      <tr>
+        <td style="text-align:center;padding:12px;background:#10151F;border:1px solid #1C2535;border-radius:8px 0 0 8px;">
+          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">Profit Split</div>
+          <div style="color:#22C55E;font-size:18px;font-weight:800;margin-top:4px;">${f.split||'—'}</div>
+        </td>
+        <td style="text-align:center;padding:12px;background:#10151F;border-top:1px solid #1C2535;border-bottom:1px solid #1C2535;">
+          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">Desconto</div>
+          <div style="color:#F0B429;font-size:18px;font-weight:800;margin-top:4px;">${f.discount}% OFF</div>
+        </td>
+        <td style="text-align:center;padding:12px;background:#10151F;border:1px solid #1C2535;border-radius:0 8px 8px 0;">
+          <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">Drawdown</div>
+          <div style="color:#EDF2F7;font-size:18px;font-weight:800;margin-top:4px;">${f.dd_pct||'—'}</div>
+        </td>
+      </tr>
+    </table>`;
+
+  const htmlContent = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#07090D;font-family:Arial,Helvetica,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#07090D;padding:32px 24px;">
+
+  <!-- Header -->
+  <div style="text-align:center;margin-bottom:28px;">
+    <div style="font-size:22px;font-weight:800;color:#EDF2F7;">Markets<span style="color:#F0B429;">Coupons</span></div>
+    <div style="color:#3D4F63;font-size:12px;margin-top:4px;">As melhores ofertas para traders</div>
+  </div>
+
+  <!-- Greeting -->
+  <div style="color:#EDF2F7;font-size:15px;margin-bottom:6px;">Ola {nome},</div>
+  <div style="color:#7A8FA6;font-size:14px;line-height:1.6;margin-bottom:20px;">
+    A <strong style="color:#EDF2F7;">${f.name}</strong> esta com <strong style="color:#F0B429;">${f.discount}% de desconto${lt}</strong>. Escolha o tamanho da sua conta e assine direto por aqui — rapido, facil e com o melhor preco.
+  </div>
+
+  <!-- Firm Card -->
+  <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:24px;margin-bottom:20px;">
+    <div style="display:flex;align-items:center;margin-bottom:16px;">
+      ${f.icon_url ? `<img src="${f.icon_url}" alt="${f.name}" width="40" height="40" style="border-radius:8px;margin-right:12px;">` : ''}
+      <div>
+        <div style="color:#EDF2F7;font-size:18px;font-weight:700;">${f.name}</div>
+        <div style="color:#7A8FA6;font-size:12px;">${f.description||''}</div>
+      </div>
+    </div>
+
+    ${couponSection}
+    ${stats}
+
+    <!-- Platforms -->
+    ${platforms ? `<div style="margin:16px 0;">
+      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Plataformas</div>
+      ${platforms}
+    </div>` : ''}
+
+    <!-- Perks -->
+    ${perks ? `<div style="margin:16px 0;">
+      <div style="color:#7A8FA6;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Beneficios</div>
+      ${perks}
+    </div>` : ''}
+  </div>
+
+  <!-- Prices Table -->
+  ${priceTable ? `<div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:20px;margin-bottom:20px;">
+    <div style="color:#EDF2F7;font-size:14px;font-weight:600;margin-bottom:4px;">Escolha sua Conta e Compre Agora</div>
+    <div style="color:#7A8FA6;font-size:12px;margin-bottom:12px;">Precos ja com ${f.discount}% de desconto — clique em "Comprar" para ir direto ao checkout</div>
+    ${priceTable}
+  </div>` : ''}
+
+  <!-- CTA -->
+  <div style="text-align:center;margin:24px 0;">
+    <a href="${f.link}" style="display:inline-block;background:#F0B429;color:#07090D;padding:14px 40px;border-radius:8px;font-size:16px;font-weight:700;text-decoration:none;">Garantir meu desconto na ${f.name} →</a>
+  </div>
+
+  <!-- Secondary CTA -->
+  <div style="text-align:center;margin-bottom:24px;">
+    <a href="https://www.marketscoupons.com" style="color:#F0B429;font-size:13px;text-decoration:underline;">Ver todas as ofertas no site</a>
+  </div>
+
+  <!-- Footer -->
+  <hr style="border:none;border-top:1px solid #1C2535;margin:24px 0;">
+  <div style="text-align:center;color:#3D4F63;font-size:11px;line-height:1.6;">
+    Voce recebeu este email por estar inscrito no MarketsCoupons.<br>
+    <a href="https://www.marketscoupons.com" style="color:#3D4F63;">Cancelar inscricao</a>
+  </div>
+
+</div>
+</body></html>`;
+
+  emailIsHtml = true;
+  document.getElementById('em-subject').value = subject;
+  document.getElementById('em-body').value = htmlContent;
+  // Show rendered preview
+  document.getElementById('em-preview').innerHTML = `
+    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Tipo: <strong style="color:var(--gold);">HTML Rico</strong></div>
+    <hr style="border-color:var(--b1);margin-bottom:12px;">
+    <iframe srcdoc="${htmlContent.replace(/{nome}/g,'Trader').replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#07090D;"></iframe>`;
+  toast(f.name+' — template promo carregado com dados ao vivo!');
+}
 
 /* renderPage patch1 removed */
 
@@ -2169,7 +2379,7 @@ async function sendEmailsSmtp(){
   const body    = document.getElementById('em-body')?.value?.trim();
   if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
 
-  const leads = getSegmentedLeads();
+  const leads = await getSegmentedLeads();
   if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
 
   if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?`)) return;
@@ -2190,7 +2400,7 @@ async function sendEmailsSmtp(){
       body: JSON.stringify({
         to: leads.map(l => ({ email: l.email, name: l.name || '', cupom: 'MARKET89', firma: '' })),
         subject: subject,
-        textContent: body,
+        ...(emailIsHtml ? { htmlContent: body } : { textContent: body }),
         tags: ['campaign-manual'],
       }),
     });
