@@ -9094,13 +9094,9 @@ function openD(id){
     size: cf?.plans?.[0]?.size || '',
   };
 
-  const isDesk = window.innerWidth > 768;
-
-  if (isDesk) {
-    openFD(id, f, cf);
-  } else {
-    openDrw(id, f, cf);
-  }
+  // Desktop e mobile usam drawer lateral por enquanto
+  // openFD() (fullscreen overlay) está preservado mas desativado
+  openDrw(id, f, cf);
   history.replaceState(null,'','#firm/'+id);
   track('firm_detail_open',{firm_id:id,firm_name:f.name});
 }
