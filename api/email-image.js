@@ -8,14 +8,14 @@ export const config = { runtime: 'edge' };
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
-// Helper: table row (label left, value right)
-function tRow(label, value, valueColor) {
+// Condition grid cell
+function cell(label, value, valueColor) {
   return {
     type: 'div', props: {
-      style: { display: 'flex', padding: '9px 18px', borderTop: '1px solid #1C2535', justifyContent: 'space-between', alignItems: 'center' },
+      style: { display: 'flex', flexDirection: 'column', width: '48%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '8px', padding: '10px 14px', marginBottom: '6px' },
       children: [
-        { type: 'span', props: { style: { color: '#7A8FA6', fontSize: '12px', fontWeight: 500 }, children: label } },
-        { type: 'span', props: { style: { color: valueColor || '#EDF2F7', fontSize: '12px', fontWeight: 700 }, children: value || '—' } },
+        { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 600, letterSpacing: '0.5px', marginBottom: '4px' }, children: label } },
+        { type: 'div', props: { style: { color: valueColor || '#EDF2F7', fontSize: '14px', fontWeight: 700 }, children: value || '—' } },
       ],
     },
   };
@@ -40,198 +40,196 @@ export default async function handler(req) {
     const prices = f.prices || [];
     const plats = f.platforms || [];
     const perks = f.perks || [];
+    const proibido = f.proibido || [];
     const tpScore = f.trustpilot_score || f.rating || 0;
     const tpReviews = f.trustpilot_reviews || f.reviews || 0;
+    const hasTwoTypes = prices.some(p => p.n2);
 
     const sections = [];
 
     // ══════ GRADIENT TOP BAR ══════
     sections.push({
-      type: 'div', props: { style: { display: 'flex', height: '5px', background: `linear-gradient(90deg, ${color}, #F0B429, ${color})`, width: '100%' } }
+      type: 'div', props: { style: { display: 'flex', height: '4px', background: `linear-gradient(90deg, ${color}, #F0B429, ${color})`, width: '100%' } }
     });
 
     // ══════ HEADER ══════
     sections.push({
       type: 'div', props: {
-        style: { display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '28px 24px 16px', width: '100%' },
+        style: { display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px 24px 14px', width: '100%' },
         children: [
           {
             type: 'div', props: {
               style: { display: 'flex', alignItems: 'center' },
               children: [
-                { type: 'span', props: { style: { fontSize: '22px', fontWeight: 900, color: '#EDF2F7' }, children: 'Markets' } },
-                { type: 'span', props: { style: { fontSize: '22px', fontWeight: 900, color: '#F0B429', marginLeft: '4px' }, children: 'Coupons' } },
-                { type: 'div', props: { style: { display: 'flex', width: '7px', height: '7px', backgroundColor: '#22C55E', borderRadius: '50%', marginLeft: '6px' } } },
+                { type: 'span', props: { style: { fontSize: '20px', fontWeight: 900, color: '#EDF2F7' }, children: 'Markets' } },
+                { type: 'span', props: { style: { fontSize: '20px', fontWeight: 900, color: '#F0B429', marginLeft: '4px' }, children: 'Coupons' } },
+                { type: 'div', props: { style: { display: 'flex', width: '6px', height: '6px', backgroundColor: '#22C55E', borderRadius: '50%', marginLeft: '6px' } } },
               ],
             },
           },
-          { type: 'div', props: { style: { fontSize: '9px', fontWeight: 600, letterSpacing: '2.5px', color: '#3D4F63', marginTop: '5px' }, children: 'AS MELHORES OFERTAS PARA TRADERS' } },
+          { type: 'div', props: { style: { fontSize: '8px', fontWeight: 600, letterSpacing: '2.5px', color: '#3D4F63', marginTop: '4px' }, children: 'AS MELHORES OFERTAS PARA TRADERS' } },
         ],
       },
     });
 
-    // ══════ DIVIDER ══════
-    sections.push({
-      type: 'div', props: { style: { display: 'flex', height: '1px', background: 'linear-gradient(90deg, transparent, #1C2535, #1C2535, transparent)', width: '100%' } }
-    });
-
-    // ══════ HERO CARD ══════
-    const cardInner = [];
-
-    // Discount badge
-    cardInner.push({
-      type: 'div', props: {
-        style: { display: 'flex', backgroundColor: 'rgba(240,180,41,0.10)', border: '1px solid rgba(240,180,41,0.30)', borderRadius: '20px', padding: '6px 22px' },
-        children: { type: 'span', props: { style: { color: '#F0B429', fontSize: '13px', fontWeight: 800, letterSpacing: '1px' }, children: f.discount + '% OFF' + lt } },
-      },
-    });
-
-    // Firm name
-    cardInner.push({
-      type: 'div', props: { style: { marginTop: '14px', fontSize: '30px', fontWeight: 900, color: '#EDF2F7', letterSpacing: '-0.5px' }, children: f.name },
-    });
-
-    // Type badge
-    if (f.type) {
-      cardInner.push({
-        type: 'div', props: {
-          style: { display: 'flex', marginTop: '10px' },
-          children: { type: 'span', props: { style: { display: 'flex', backgroundColor: 'rgba(240,180,41,0.08)', border: '1px solid rgba(240,180,41,0.20)', borderRadius: '6px', padding: '3px 14px', fontSize: '10px', fontWeight: 700, letterSpacing: '1.5px', color: '#F0B429' }, children: f.type } },
-        },
-      });
-    }
-
-    // Description
-    if (f.description) {
-      cardInner.push({
-        type: 'div', props: { style: { marginTop: '12px', color: '#7A8FA6', fontSize: '12px', lineHeight: '1.7', textAlign: 'center', maxWidth: '460px' }, children: f.description },
-      });
-    }
-
-    // Trustpilot
-    if (tpScore) {
-      cardInner.push({
-        type: 'div', props: { style: { display: 'flex', marginTop: '10px', color: '#7A8FA6', fontSize: '11px' }, children: '★ ' + tpScore + '/5 · ' + tpReviews.toLocaleString() + ' reviews no Trustpilot' },
-      });
-    }
-
+    // ══════ FIRM HEADER ══════
     sections.push({
       type: 'div', props: {
-        style: { display: 'flex', padding: '20px 28px 0', width: '100%' },
-        children: {
-          type: 'div', props: {
-            style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '12px', overflow: 'hidden' },
-            children: [
-              { type: 'div', props: { style: { display: 'flex', height: '3px', background: `linear-gradient(90deg, transparent, ${color}, transparent)`, width: '100%' } } },
-              {
-                type: 'div', props: {
-                  style: { display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '28px 24px' },
-                  children: cardInner,
-                },
-              },
-            ],
-          },
-        },
-      },
-    });
-
-    // ══════ GREETING ══════
-    sections.push({
-      type: 'div', props: {
-        style: { display: 'flex', flexDirection: 'column', padding: '22px 28px 0', width: '100%' },
+        style: { display: 'flex', padding: '0 28px', width: '100%', alignItems: 'center' },
         children: [
-          { type: 'div', props: { style: { color: '#EDF2F7', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }, children: 'Ola Trader,' } },
-          { type: 'div', props: { style: { color: '#7A8FA6', fontSize: '13px', lineHeight: '1.7' }, children: 'A ' + f.name + ' esta com ' + f.discount + '% de desconto' + lt + '. Veja todos os detalhes abaixo e comece agora mesmo.' } },
+          // Icon circle
+          { type: 'div', props: {
+            style: { display: 'flex', width: '44px', height: '44px', borderRadius: '10px', backgroundColor: color + '22', justifyContent: 'center', alignItems: 'center', marginRight: '12px', flexShrink: 0 },
+            children: { type: 'span', props: { style: { fontSize: '20px', fontWeight: 900, color: color }, children: f.icon || f.name[0] } },
+          }},
+          { type: 'div', props: {
+            style: { display: 'flex', flexDirection: 'column' },
+            children: [
+              { type: 'div', props: { style: { fontSize: '18px', fontWeight: 900, color: '#EDF2F7' }, children: f.name } },
+              { type: 'div', props: { style: { display: 'flex', fontSize: '11px', color: '#7A8FA6', marginTop: '2px' }, children: f.type + ' · ' + f.discount + '% OFF · Split ' + (f.split || '') } },
+            ],
+          }},
         ],
       },
     });
 
-    // ══════ COUPON ══════
-    if (f.coupon) {
+    // ══════ TRUSTPILOT ══════
+    if (tpScore) {
+      const fullStars = Math.floor(tpScore);
+      const starStr = '★'.repeat(fullStars) + (tpScore % 1 >= 0.5 ? '½' : '');
       sections.push({
         type: 'div', props: {
-          style: { display: 'flex', padding: '18px 28px 0', width: '100%' },
-          children: {
-            type: 'div', props: {
-              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', border: '2px dashed rgba(240,180,41,0.35)', borderRadius: '12px', padding: '20px', backgroundColor: 'rgba(240,180,41,0.02)' },
+          style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
+          children: [
+            { type: 'div', props: {
+              style: { display: 'flex', alignItems: 'center', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '8px', padding: '10px 14px' },
               children: [
-                { type: 'div', props: { style: { color: '#7A8FA6', fontSize: '9px', fontWeight: 700, letterSpacing: '2.5px', marginBottom: '8px' }, children: 'CUPOM EXCLUSIVO' } },
-                { type: 'div', props: { style: { color: '#F0B429', fontSize: '36px', fontWeight: 900, letterSpacing: '6px' }, children: f.coupon } },
-                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '11px', marginTop: '10px' }, children: 'Copie e cole no checkout' } },
+                { type: 'span', props: { style: { fontSize: '24px', fontWeight: 900, color: '#EDF2F7', marginRight: '8px' }, children: tpScore + '' } },
+                { type: 'span', props: { style: { fontSize: '14px', color: '#F0B429', marginRight: '8px' }, children: starStr } },
+                { type: 'span', props: { style: { fontSize: '11px', color: '#7A8FA6' }, children: tpReviews.toLocaleString() + ' avaliacoes' } },
               ],
-            },
-          },
+            }},
+            { type: 'div', props: {
+              style: { display: 'flex', marginTop: '6px', alignItems: 'center' },
+              children: [
+                { type: 'span', props: { style: { display: 'flex', backgroundColor: '#22C55E', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '3px 8px', borderRadius: '4px', marginRight: '8px' }, children: 'Excelente' } },
+                { type: 'span', props: { style: { fontSize: '10px', color: '#7A8FA6' }, children: tpReviews.toLocaleString() + ' avaliacoes no Trustpilot' } },
+              ],
+            }},
+          ],
         },
       });
     }
 
-    // ══════ STATS BAR (Profit Split / Desconto / Drawdown) ══════
+    // ══════ ABOUT ══════
+    if (f.description) {
+      sections.push({
+        type: 'div', props: {
+          style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
+          children: [
+            { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, letterSpacing: '1.5px', marginBottom: '6px', borderBottom: '1px solid #1C2535', paddingBottom: '6px' }, children: 'SOBRE A FIRMA' } },
+            { type: 'div', props: { style: { color: '#7A8FA6', fontSize: '12px', lineHeight: '1.7' }, children: f.description } },
+          ],
+        },
+      });
+    }
+
+    // ══════ CONDITIONS GRID ══════
+    const conditions = [];
+    conditions.push(cell('Drawdown', f.drawdown || '—'));
+    conditions.push(cell('Split', f.split || '—', '#22C55E'));
+    conditions.push(cell('Dias minimos', f.min_days ? f.min_days + 'd' : '—'));
+    conditions.push(cell('Prazo avaliacao', f.eval_days ? f.eval_days + 'd' : 'Ilimitado'));
+    conditions.push(cell('DD maximo', f.dd_pct || '—', '#EF4444'));
+    conditions.push(cell('Meta de lucro', f.target || '—'));
+    conditions.push(cell('Scaling', f.scaling || '—', f.scaling === 'Sim' || (f.scaling && f.scaling !== 'Nao') ? '#22C55E' : '#EDF2F7'));
+    conditions.push(cell('Desconto', f.discount + '% ' + (f.discount_type || ''), '#F0B429'));
+
     sections.push({
       type: 'div', props: {
-        style: { display: 'flex', padding: '18px 28px 0', width: '100%' },
-        children: {
-          type: 'div', props: {
-            style: { display: 'flex', width: '100%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '10px', overflow: 'hidden' },
-            children: [
-              { type: 'div', props: { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, padding: '16px 8px' }, children: [
-                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '8px', fontWeight: 700, letterSpacing: '1px' }, children: 'PROFIT SPLIT' } },
-                { type: 'div', props: { style: { color: '#22C55E', fontSize: '22px', fontWeight: 900, marginTop: '5px' }, children: f.split || '—' } },
-              ] } },
-              { type: 'div', props: { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, padding: '16px 8px', borderLeft: '1px solid #1C2535', borderRight: '1px solid #1C2535' }, children: [
-                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '8px', fontWeight: 700, letterSpacing: '1px' }, children: 'DESCONTO' } },
-                { type: 'div', props: { style: { color: '#F0B429', fontSize: '22px', fontWeight: 900, marginTop: '5px' }, children: f.discount + '%' } },
-              ] } },
-              { type: 'div', props: { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, padding: '16px 8px' }, children: [
-                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '8px', fontWeight: 700, letterSpacing: '1px' }, children: 'DRAWDOWN' } },
-                { type: 'div', props: { style: { color: '#EDF2F7', fontSize: '22px', fontWeight: 900, marginTop: '5px' }, children: f.drawdown || '—' } },
-              ] } },
-            ],
-          },
-        },
-      },
-    });
-
-    // ══════ RULES TABLE ══════
-    const rules = [];
-    if (f.min_days) rules.push(['Dias Minimos', f.min_days + ' dia(s)']);
-    if (f.eval_days) rules.push(['Periodo Avaliacao', f.eval_days + ' dias']);
-    else rules.push(['Periodo Avaliacao', 'Ilimitado']);
-    if (f.target) rules.push(['Meta de Lucro', f.target]);
-    if (f.drawdown) rules.push(['Tipo Drawdown', f.drawdown]);
-    if (f.dd_pct) rules.push(['Drawdown', f.dd_pct]);
-    if (f.scaling) rules.push(['Scaling', f.scaling]);
-    rules.push(['News Trading', f.news_trading ? 'Sim' : 'Nao']);
-    rules.push(['Payout Dia 1', f.day1_payout ? 'Sim' : 'Nao']);
-
-    if (rules.length) {
-      sections.push({
-        type: 'div', props: {
-          style: { display: 'flex', padding: '18px 28px 0', width: '100%' },
-          children: {
+        style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
+        children: [
+          { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, letterSpacing: '1.5px', marginBottom: '8px' }, children: 'CONDICOES' } },
+          {
             type: 'div', props: {
-              style: { display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '10px', overflow: 'hidden' },
-              children: rules.map((r, i) =>
-                tRow(r[0], r[1], r[1] === 'Sim' ? '#22C55E' : r[1] === 'Nao' ? '#EF4444' : '#EDF2F7')
-              ),
+              style: { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', width: '100%' },
+              children: conditions,
             },
           },
-        },
-      });
-    }
+        ],
+      },
+    });
 
     // ══════ PLATFORMS ══════
     if (plats.length) {
       sections.push({
         type: 'div', props: {
-          style: { display: 'flex', flexDirection: 'column', padding: '18px 28px 0', width: '100%' },
+          style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
           children: [
-            { type: 'div', props: { style: { color: '#3D4F63', fontSize: '8px', fontWeight: 700, letterSpacing: '2px', marginBottom: '10px' }, children: 'PLATAFORMAS' } },
+            { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, letterSpacing: '1.5px', marginBottom: '8px' }, children: 'PLATAFORMAS' } },
             {
               type: 'div', props: {
                 style: { display: 'flex', flexWrap: 'wrap', gap: '6px' },
                 children: plats.map(p => ({
-                  type: 'span', props: { style: { display: 'flex', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid ' + color + '44', borderRadius: '6px', padding: '6px 14px', fontSize: '11px', fontWeight: 600, color: '#EDF2F7' }, children: p },
+                  type: 'span', props: { style: { display: 'flex', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '6px', padding: '6px 12px', fontSize: '11px', fontWeight: 600, color: '#EDF2F7' }, children: p },
                 })),
+              },
+            },
+          ],
+        },
+      });
+    }
+
+    // ══════ PRICING TABLE ══════
+    if (prices.length) {
+      const headerCols = [
+        { type: 'div', props: { style: { display: 'flex', flex: 1, fontSize: '8px', fontWeight: 700, color: '#3D4F63', letterSpacing: '1px' }, children: 'CONTA' } },
+      ];
+      if (hasTwoTypes) {
+        headerCols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center' }, children: { type: 'span', props: { style: { display: 'flex', backgroundColor: '#F0B429', color: '#000', fontSize: '8px', fontWeight: 700, padding: '2px 8px', borderRadius: '4px' }, children: 'INTRADAY' } } } });
+        headerCols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center' }, children: { type: 'span', props: { style: { display: 'flex', backgroundColor: '#22C55E', color: '#000', fontSize: '8px', fontWeight: 700, padding: '2px 8px', borderRadius: '4px' }, children: 'EOD' } } } });
+      } else {
+        headerCols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', fontSize: '8px', fontWeight: 700, color: '#3D4F63', letterSpacing: '1px' }, children: 'COM CUPOM' } });
+        headerCols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', fontSize: '8px', fontWeight: 700, color: '#3D4F63', letterSpacing: '1px' }, children: 'ORIGINAL' } });
+      }
+
+      const priceRows = prices.map(r => {
+        const cols = [
+          { type: 'div', props: { style: { display: 'flex', flex: 1, color: '#EDF2F7', fontWeight: 700, fontSize: '14px' }, children: r.a } },
+        ];
+        if (hasTwoTypes) {
+          cols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }, children: [
+            { type: 'span', props: { style: { color: '#22C55E', fontWeight: 800, fontSize: '13px' }, children: r.n } },
+            r.o ? { type: 'span', props: { style: { color: '#3D4F63', fontSize: '10px', textDecoration: 'line-through' }, children: r.o } } : null,
+          ].filter(Boolean) } });
+          cols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }, children: [
+            { type: 'span', props: { style: { color: '#22C55E', fontWeight: 800, fontSize: '13px' }, children: r.n2 || '—' } },
+            r.o2 ? { type: 'span', props: { style: { color: '#3D4F63', fontSize: '10px', textDecoration: 'line-through' }, children: r.o2 } } : null,
+          ].filter(Boolean) } });
+        } else {
+          cols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', color: '#22C55E', fontWeight: 800, fontSize: '14px' }, children: r.n } });
+          cols.push({ type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', color: '#3D4F63', fontSize: '11px', textDecoration: 'line-through' }, children: r.o || '' } });
+        }
+        return {
+          type: 'div', props: {
+            style: { display: 'flex', padding: '10px 14px', borderTop: '1px solid #1C2535', alignItems: 'center' },
+            children: cols,
+          },
+        };
+      });
+
+      sections.push({
+        type: 'div', props: {
+          style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
+          children: [
+            { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, letterSpacing: '1.5px', marginBottom: '8px' }, children: 'PRECOS COM DESCONTO' } },
+            {
+              type: 'div', props: {
+                style: { display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '10px', overflow: 'hidden' },
+                children: [
+                  { type: 'div', props: { style: { display: 'flex', padding: '10px 14px', alignItems: 'center' }, children: headerCols } },
+                  ...priceRows,
+                ],
               },
             },
           ],
@@ -243,53 +241,62 @@ export default async function handler(req) {
     if (perks.length) {
       sections.push({
         type: 'div', props: {
-          style: { display: 'flex', flexDirection: 'column', padding: '18px 28px 0', width: '100%' },
+          style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
           children: [
-            { type: 'div', props: { style: { color: '#3D4F63', fontSize: '8px', fontWeight: 700, letterSpacing: '2px', marginBottom: '8px' }, children: 'BENEFICIOS' } },
-            ...perks.slice(0, 6).map(p => ({
+            { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, letterSpacing: '1.5px', marginBottom: '8px' }, children: 'BENEFICIOS' } },
+            {
               type: 'div', props: {
-                style: { display: 'flex', padding: '3px 0', color: '#EDF2F7', fontSize: '12px', alignItems: 'center' },
-                children: [
-                  { type: 'div', props: { style: { display: 'flex', width: '16px', height: '16px', borderRadius: '50%', backgroundColor: 'rgba(34,197,94,0.12)', justifyContent: 'center', alignItems: 'center', marginRight: '8px', flexShrink: 0 }, children: { type: 'span', props: { style: { color: '#22C55E', fontSize: '9px', fontWeight: 700 }, children: '✓' } } } },
-                  { type: 'span', props: { children: p } },
-                ],
+                style: { display: 'flex', flexWrap: 'wrap', gap: '6px' },
+                children: perks.slice(0, 8).map(p => ({
+                  type: 'span', props: { style: { display: 'flex', backgroundColor: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.20)', borderRadius: '6px', padding: '5px 12px', fontSize: '11px', fontWeight: 600, color: '#22C55E' }, children: '+ ' + p },
+                })),
               },
-            })),
+            },
           ],
         },
       });
     }
 
-    // ══════ PRICING TABLE ══════
-    if (prices.length) {
-      const priceRows = prices.map((r, i) => ({
+    // ══════ PROIBIDO ══════
+    if (proibido.length) {
+      sections.push({
         type: 'div', props: {
-          style: { display: 'flex', padding: '9px 18px', borderTop: '1px solid #1C2535', alignItems: 'center', backgroundColor: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' },
+          style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
           children: [
-            { type: 'div', props: { style: { display: 'flex', flex: 2, color: '#EDF2F7', fontWeight: 700, fontSize: '13px' }, children: r.a } },
-            { type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', color: '#22C55E', fontWeight: 800, fontSize: '13px' }, children: r.n } },
-            { type: 'div', props: { style: { display: 'flex', flex: 1, justifyContent: 'center', color: '#3D4F63', fontSize: '11px', textDecoration: 'line-through' }, children: r.o || '' } },
+            { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', fontWeight: 700, letterSpacing: '1.5px', marginBottom: '8px' }, children: 'PROIBIDO' } },
+            {
+              type: 'div', props: {
+                style: { display: 'flex', flexWrap: 'wrap', gap: '6px' },
+                children: proibido.map(p => ({
+                  type: 'span', props: { style: { display: 'flex', backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.20)', borderRadius: '6px', padding: '5px 12px', fontSize: '11px', fontWeight: 600, color: '#EF4444' }, children: '✕ ' + p },
+                })),
+              },
+            },
           ],
         },
-      }));
+      });
+    }
 
+    // ══════ COUPON ══════
+    if (f.coupon) {
       sections.push({
         type: 'div', props: {
           style: { display: 'flex', padding: '18px 28px 0', width: '100%' },
           children: {
             type: 'div', props: {
-              style: { display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: '#10151F', border: '1px solid #1C2535', borderRadius: '10px', overflow: 'hidden' },
+              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: 'rgba(240,180,41,0.05)', border: '2px dashed rgba(240,180,41,0.35)', borderRadius: '10px', padding: '16px' },
               children: [
+                { type: 'div', props: { style: { color: '#7A8FA6', fontSize: '8px', fontWeight: 700, letterSpacing: '2.5px', marginBottom: '8px' }, children: 'CUPOM EXCLUSIVO' } },
                 {
                   type: 'div', props: {
-                    style: { display: 'flex', padding: '12px 18px', borderBottom: '1px solid #1C2535', justifyContent: 'space-between', alignItems: 'center' },
+                    style: { display: 'flex', width: '100%', backgroundColor: '#07090D', border: '1px solid #1C2535', borderRadius: '8px', padding: '12px 16px', justifyContent: 'space-between', alignItems: 'center' },
                     children: [
-                      { type: 'span', props: { style: { fontSize: '8px', fontWeight: 700, letterSpacing: '2px', color: '#7A8FA6' }, children: 'CONTAS DISPONIVEIS' } },
-                      { type: 'span', props: { style: { display: 'flex', backgroundColor: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '4px', padding: '2px 10px', fontSize: '9px', fontWeight: 800, color: '#22C55E' }, children: '-' + f.discount + '%' } },
+                      { type: 'span', props: { style: { color: '#F0B429', fontSize: '24px', fontWeight: 900, letterSpacing: '4px' }, children: f.coupon } },
+                      { type: 'span', props: { style: { display: 'flex', backgroundColor: color, color: '#fff', fontSize: '11px', fontWeight: 700, padding: '6px 16px', borderRadius: '6px' }, children: 'Copiar' } },
                     ],
                   },
                 },
-                ...priceRows,
+                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '10px', marginTop: '8px' }, children: 'use o cupom no checkout' } },
               ],
             },
           },
@@ -297,27 +304,14 @@ export default async function handler(req) {
       });
     }
 
-    // ══════ DISCOUNT BADGE ══════
-    sections.push({
-      type: 'div', props: {
-        style: { display: 'flex', justifyContent: 'center', padding: '20px 28px 0', width: '100%' },
-        children: {
-          type: 'div', props: {
-            style: { display: 'flex', backgroundColor: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '8px', padding: '8px 20px' },
-            children: { type: 'span', props: { style: { color: '#22C55E', fontSize: '12px', fontWeight: 700 }, children: '↓ ' + f.discount + '% OFF · ' + (f.short_name || f.name) + ' ↓' } },
-          },
-        },
-      },
-    });
-
     // ══════ CTA BUTTON ══════
     sections.push({
       type: 'div', props: {
-        style: { display: 'flex', padding: '16px 28px 0', justifyContent: 'center', width: '100%' },
+        style: { display: 'flex', padding: '18px 28px 0', justifyContent: 'center', width: '100%' },
         children: {
           type: 'div', props: {
-            style: { display: 'flex', justifyContent: 'center', alignItems: 'center', background: `linear-gradient(135deg, ${color}, ${color}cc)`, color: '#FFFFFF', padding: '18px 0', borderRadius: '10px', fontSize: '17px', fontWeight: 900, width: '100%', letterSpacing: '0.5px' },
-            children: 'COMECAR AGORA →',
+            style: { display: 'flex', justifyContent: 'center', alignItems: 'center', background: `linear-gradient(135deg, ${color}, ${color}cc)`, color: '#FFFFFF', padding: '16px 0', borderRadius: '10px', fontSize: '16px', fontWeight: 900, width: '100%', letterSpacing: '0.5px' },
+            children: 'Comecar Agora',
           },
         },
       },
@@ -326,19 +320,18 @@ export default async function handler(req) {
     // ══════ FOOTER ══════
     sections.push({
       type: 'div', props: {
-        style: { display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 32px 8px', width: '100%' },
+        style: { display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '18px 32px 16px', width: '100%' },
         children: [
-          { type: 'div', props: { style: { color: '#3D4F63', fontSize: '10px', marginBottom: '12px' }, children: 'Ver todas as ofertas no MarketsCoupons →' } },
           {
             type: 'div', props: {
-              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', borderTop: '1px solid #1C2535', width: '100%', paddingTop: '14px', paddingBottom: '8px' },
+              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', borderTop: '1px solid #1C2535', width: '100%', paddingTop: '14px' },
               children: [
                 {
                   type: 'div', props: {
                     style: { display: 'flex' },
                     children: [
-                      { type: 'span', props: { style: { fontSize: '13px', fontWeight: 900, color: '#EDF2F7' }, children: 'Markets' } },
-                      { type: 'span', props: { style: { fontSize: '13px', fontWeight: 900, color: '#F0B429', marginLeft: '3px' }, children: 'Coupons' } },
+                      { type: 'span', props: { style: { fontSize: '12px', fontWeight: 900, color: '#EDF2F7' }, children: 'Markets' } },
+                      { type: 'span', props: { style: { fontSize: '12px', fontWeight: 900, color: '#F0B429', marginLeft: '3px' }, children: 'Coupons' } },
                     ],
                   },
                 },
@@ -352,20 +345,21 @@ export default async function handler(req) {
 
     // ══════ GRADIENT BOTTOM BAR ══════
     sections.push({
-      type: 'div', props: { style: { display: 'flex', height: '5px', background: `linear-gradient(90deg, ${color}, #F0B429, ${color})`, width: '100%' } }
+      type: 'div', props: { style: { display: 'flex', height: '4px', background: `linear-gradient(90deg, ${color}, #F0B429, ${color})`, width: '100%' } }
     });
 
-    // Calculate height based on content
-    let h = 120; // header + bars
-    h += 200; // hero card
-    h += 90; // greeting
-    if (f.coupon) h += 130; // coupon
-    h += 80; // stats bar
-    if (rules.length) h += rules.length * 36 + 10; // rules table
-    if (plats.length) h += 60; // platforms
-    if (perks.length) h += perks.slice(0, 6).length * 26 + 40; // perks
-    if (prices.length) h += prices.length * 36 + 60; // pricing table
-    h += 140; // discount badge + CTA + footer
+    // Calculate height
+    let h = 100; // header + bars
+    h += 60; // firm header
+    if (tpScore) h += 80; // trustpilot
+    if (f.description) h += 70; // about
+    h += (Math.ceil(8 / 2)) * 56 + 40; // conditions grid (4 rows of 2)
+    if (plats.length) h += 50; // platforms
+    if (prices.length) h += prices.length * 42 + 60; // pricing
+    if (perks.length) h += 60; // perks badges
+    if (proibido.length) h += 50; // proibido
+    if (f.coupon) h += 110; // coupon
+    h += 120; // CTA + footer
 
     return new ImageResponse(
       {
