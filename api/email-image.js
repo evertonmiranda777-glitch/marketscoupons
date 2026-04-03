@@ -107,7 +107,7 @@ export default async function handler(req) {
             { type: 'div', props: {
               style: { display: 'flex', alignItems: 'center', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '8px', padding: '12px 14px', flexWrap: 'wrap' },
               children: [
-                { type: 'span', props: { style: { fontSize: '11px', fontWeight: 700, color: '#00B67A', marginRight: '8px' }, children: 'Excelente' } },
+                { type: 'span', props: { style: { fontSize: '11px', fontWeight: 700, color: '#7A8FA6', marginRight: '8px' }, children: 'Excelente' } },
                 { type: 'span', props: { style: { fontSize: '12px', fontWeight: 800, color: '#EDF2F7', marginRight: '6px' }, children: starStr } },
                 // Green star boxes (Trustpilot style)
                 ...Array.from({ length: 5 }).map((_, i) => ({
@@ -291,11 +291,11 @@ export default async function handler(req) {
           style: { display: 'flex', padding: '18px 28px 0', width: '100%' },
           children: {
             type: 'div', props: {
-              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', border: '2px dashed rgba(240,180,41,0.35)', borderRadius: '12px', padding: '22px 20px', backgroundColor: 'rgba(240,180,41,0.03)' },
+              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '10px', padding: '12px 16px' },
               children: [
-                { type: 'div', props: { style: { color: '#7A8FA6', fontSize: '9px', fontWeight: 700, letterSpacing: '2.5px', marginBottom: '12px' }, children: 'CUPOM EXCLUSIVO' } },
-                { type: 'div', props: { style: { color: '#F0B429', fontSize: '38px', fontWeight: 900, letterSpacing: '8px' }, children: f.coupon } },
-                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '11px', marginTop: '12px' }, children: 'Copie o cupom e cole no checkout' } },
+                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '8px', fontWeight: 700, letterSpacing: '2px', marginBottom: '8px' }, children: 'CUPOM EXCLUSIVO' } },
+                { type: 'div', props: { style: { color: '#F0B429', fontSize: '28px', fontWeight: 900, letterSpacing: '6px' }, children: f.coupon } },
+                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '10px', marginTop: '6px' }, children: 'use o cupom no checkout' } },
               ],
             },
           },
