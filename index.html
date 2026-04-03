@@ -971,7 +971,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw{
  position:fixed;right:0;top:0;bottom:0;z-index:9991;
  width:min(520px,96vw);background:var(--sur);border-left:1px solid var(--b1);
- overflow-y:auto;transform:translateX(100%);transition:transform .33s cubic-bezier(.4,0,.2,1);
+ overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform .33s cubic-bezier(.4,0,.2,1);
 }
 .drw.open{transform:translateX(0);}
 .drw::-webkit-scrollbar{width:4px;}
@@ -987,7 +987,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw-sub{font-size:11px;color:var(--t2);margin-top:2px;}
 .x-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--b2);background:var(--card);color:var(--t1);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;}
 .x-btn:hover{border-color:var(--red);color:var(--red);background:var(--rbg);}
-.drw-body{padding:18px 20px;}
+.drw-body{padding:18px 20px;overflow-x:hidden;}
 .rating-blk{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--b1);border-radius:9px;margin-bottom:12px;}
 .rb-score{font-size:30px;font-weight:800;letter-spacing:-1px;}
 .rb-stars{display:flex;gap:2px;margin-bottom:2px;}
@@ -1012,11 +1012,12 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .dg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
 .dc{background:var(--card);border:1px solid var(--b1);border-radius:7px;padding:9px 11px;}
 .dc-l{font-size:10px;color:var(--t3);margin-bottom:3px;}
-.dc-v{font-size:12px;font-weight:600;}
+.dc-v{font-size:12px;font-weight:600;word-break:break-word;}
 .dc-v.g{color:var(--green);}
 .dc-v.y{color:var(--gold);}
 .dc-v.r{color:var(--red);}
-.ptbl{width:100%;border-collapse:collapse;font-size:12px;}
+.ptbl{width:100%;border-collapse:collapse;font-size:12px;min-width:280px;}
+.ptbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:4px;}
 .ptbl thead{background:var(--card2);border-radius:6px;}
 .ptbl th{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;padding:7px 10px;text-align:left;font-weight:600;}
 .ptbl th:not(:first-child){text-align:right;}
@@ -1026,7 +1027,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .ptbl td.tn{color:var(--green);font-weight:800;font-size:14px;}
 .ptbl td.to{color:var(--t3);text-decoration:line-through;font-size:11px;}
 .ptbl tr:hover td{background:rgba(255,255,255,.02);}
-.tags-flex{display:flex;gap:4px;flex-wrap:wrap;}
+.tags-flex{display:flex;gap:4px;flex-wrap:wrap;max-width:100%;}
 .tag{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;}
 .tag.g{background:var(--gnbg);color:var(--green);}
 .tag.r{background:var(--rbg);color:var(--red);}
@@ -1282,7 +1283,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);}
 .drw-section-arrow{font-size:12px;color:var(--t3);transition:transform .25s;}
 .drw-section.open .drw-section-arrow{transform:rotate(180deg);}
-.drw-section-body{display:none;padding:12px 14px;border-top:1px solid var(--b1);}
+.drw-section-body{display:none;padding:12px 14px;border-top:1px solid var(--b1);overflow-x:hidden;}
 .drw-section.open .drw-section-body{display:block;}
 
 /* Inline checkout selectors inside drawer */
@@ -1292,9 +1293,9 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw-btn{padding:7px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;font-family:var(--f);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;white-space:nowrap;}
 .drw-btn:hover{border-color:var(--b2);color:var(--t1);}
 .drw-btn.sel{background:var(--gbg);border-color:var(--gbr);color:var(--gold);}
-.drw-coupon-bar{display:flex !important;align-items:center !important;justify-content:space-between !important;background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:6px;}
+.drw-coupon-bar{display:flex !important;align-items:center !important;justify-content:space-between !important;background:var(--gbg);border:1px dashed var(--gbr);border-radius:10px;padding:14px 16px;margin-bottom:6px;overflow:hidden;max-width:100%;}
 .drw-coupon-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:4px;}
-.drw-coupon-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);}
+.drw-coupon-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 80px);}
 .drw-coupon-copy{padding:8px 18px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
 .drw-coupon-copy:hover{background:var(--gold-hover);}
 .drw-coupon-hint{font-size:10px;color:var(--t3);text-align:center;margin-bottom:8px;}
@@ -1757,6 +1758,9 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  .calc-form{grid-template-columns:1fr;}
  .res-grid{grid-template-columns:1fr 1fr;}
  .dg2{grid-template-columns:1fr;}
+ .drw-coupon-code{font-size:14px!important;letter-spacing:1px!important;}
+ .drw-coupon-bar{padding:12px!important;}
+ .drw-coupon-copy{padding:6px 12px!important;font-size:11px!important;}
  .q-opts{grid-template-columns:1fr;}
  .live-stats{grid-template-columns:1fr;}
  .ft-grid{grid-template-columns:1fr;}
@@ -9264,8 +9268,8 @@ function openDrw(id, f, cf) {
           return `
         <div style="height:12px;"></div>
         <div class="drw-section-title" style="margin-bottom:8px;">${t('firms_precos')}</div>
-        ${hasDual ? `<table class="ptbl"><thead><tr><th rowspan="2">${t('drw_conta')}</th><th colspan="2" style="text-align:center;color:var(--blue);border-bottom:1px solid var(--b1);">${pt[0]}</th><th colspan="2" style="text-align:center;color:var(--green);border-bottom:1px solid var(--b1);">${pt[1]}</th></tr><tr><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td><td class="tn">${r.n2||'—'}</td><td class="to">${r.o2||'—'}</td></tr>`).join('')}</tbody></table>`
-        : `<table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>`}`;
+        ${hasDual ? `<div class="ptbl-wrap"><table class="ptbl"><thead><tr><th rowspan="2">${t('drw_conta')}</th><th colspan="2" style="text-align:center;color:var(--blue);border-bottom:1px solid var(--b1);">${pt[0]}</th><th colspan="2" style="text-align:center;color:var(--green);border-bottom:1px solid var(--b1);">${pt[1]}</th></tr><tr><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td><td class="tn">${r.n2||'—'}</td><td class="to">${r.o2||'—'}</td></tr>`).join('')}</tbody></table></div>`
+        : `<div class="ptbl-wrap"><table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table></div>`}`;
         })() : ''}
         ${f.perks?.length ? `
         <div style="height:12px;"></div>
