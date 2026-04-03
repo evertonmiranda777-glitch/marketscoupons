@@ -77,8 +77,12 @@ export default async function handler(req) {
       type: 'div', props: {
         style: { display: 'flex', padding: '0 28px', width: '100%', alignItems: 'center' },
         children: [
-          // Icon circle
-          { type: 'div', props: {
+          // Firm logo
+          f.icon_url ? { type: 'img', props: {
+            src: 'https://www.marketscoupons.com/' + f.icon_url,
+            width: 44, height: 44,
+            style: { display: 'flex', width: '44px', height: '44px', borderRadius: '10px', marginRight: '12px', flexShrink: 0, objectFit: 'contain', backgroundColor: color + '22' },
+          }} : { type: 'div', props: {
             style: { display: 'flex', width: '44px', height: '44px', borderRadius: '10px', backgroundColor: color + '22', justifyContent: 'center', alignItems: 'center', marginRight: '12px', flexShrink: 0 },
             children: { type: 'span', props: { style: { fontSize: '20px', fontWeight: 900, color: color }, children: f.icon || f.name[0] } },
           }},
@@ -95,25 +99,18 @@ export default async function handler(req) {
 
     // ══════ TRUSTPILOT ══════
     if (tpScore) {
-      const fullStars = Math.floor(tpScore);
-      const starStr = '★'.repeat(fullStars) + (tpScore % 1 >= 0.5 ? '½' : '');
+      const starStr = tpScore.toFixed(1);
       sections.push({
         type: 'div', props: {
           style: { display: 'flex', flexDirection: 'column', padding: '14px 28px 0', width: '100%' },
           children: [
             { type: 'div', props: {
-              style: { display: 'flex', alignItems: 'center', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '8px', padding: '10px 14px' },
+              style: { display: 'flex', alignItems: 'center', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '8px', padding: '12px 14px', flexWrap: 'wrap' },
               children: [
-                { type: 'span', props: { style: { fontSize: '24px', fontWeight: 900, color: '#EDF2F7', marginRight: '8px' }, children: tpScore + '' } },
-                { type: 'span', props: { style: { fontSize: '14px', color: '#F0B429', marginRight: '8px' }, children: starStr } },
-                { type: 'span', props: { style: { fontSize: '11px', color: '#7A8FA6' }, children: tpReviews.toLocaleString() + ' avaliacoes' } },
-              ],
-            }},
-            { type: 'div', props: {
-              style: { display: 'flex', marginTop: '6px', alignItems: 'center' },
-              children: [
-                { type: 'span', props: { style: { display: 'flex', backgroundColor: '#22C55E', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '3px 8px', borderRadius: '4px', marginRight: '8px' }, children: 'Excelente' } },
-                { type: 'span', props: { style: { fontSize: '10px', color: '#7A8FA6' }, children: tpReviews.toLocaleString() + ' avaliacoes no Trustpilot' } },
+                { type: 'span', props: { style: { display: 'flex', backgroundColor: '#22C55E', color: '#fff', fontSize: '10px', fontWeight: 700, padding: '3px 10px', borderRadius: '4px', marginRight: '8px' }, children: 'Excelente' } },
+                { type: 'span', props: { style: { fontSize: '16px', marginRight: '6px' }, children: String.fromCodePoint(0x2B50).repeat(Math.round(tpScore)) } },
+                { type: 'span', props: { style: { fontSize: '13px', fontWeight: 800, color: '#EDF2F7', marginRight: '6px' }, children: '(' + starStr + ')' } },
+                { type: 'span', props: { style: { fontSize: '11px', color: '#7A8FA6' }, children: tpReviews.toLocaleString() + ' Reviews Trustpilot' } },
               ],
             }},
           ],
@@ -268,7 +265,7 @@ export default async function handler(req) {
               type: 'div', props: {
                 style: { display: 'flex', flexWrap: 'wrap', gap: '6px' },
                 children: proibido.map(p => ({
-                  type: 'span', props: { style: { display: 'flex', backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.20)', borderRadius: '6px', padding: '5px 12px', fontSize: '11px', fontWeight: 600, color: '#EF4444' }, children: '✕ ' + p },
+                  type: 'span', props: { style: { display: 'flex', backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.20)', borderRadius: '6px', padding: '5px 12px', fontSize: '11px', fontWeight: 600, color: '#EF4444' }, children: 'X ' + p },
                 })),
               },
             },
