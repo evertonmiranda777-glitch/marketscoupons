@@ -965,7 +965,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .offer-badge{display:inline-flex;align-items:center;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:8px;letter-spacing:.3px;}
 @media(max-width:600px){.offers-grid{grid-template-columns:1fr;}.offers-hero-title{font-size:22px;}}
 
-/* DRAWER */
+/* DRAWER / MODAL */
 .ov{position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.3s;}
 .ov.open{opacity:1;pointer-events:all;}
 .drw{
@@ -976,10 +976,32 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw.open{transform:translateX(0);}
 .drw::-webkit-scrollbar{width:4px;}
 .drw::-webkit-scrollbar-thumb{background:var(--b2);}
+/* Desktop: modal centralizado */
+@media(min-width:769px){
+.drw{
+ right:50%;top:50%;bottom:auto;
+ width:min(720px,92vw);max-height:88vh;
+ transform:translate(50%,-50%) scale(.95);opacity:0;
+ border:1px solid var(--b1);border-radius:16px;border-left:1px solid var(--b1);
+ box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04);
+ transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s;
+}
+.drw.open{transform:translate(50%,-50%) scale(1);opacity:1;}
+.drw-body{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;}
+.drw-col-left{padding:20px;border-right:1px solid var(--b1);overflow-y:auto;max-height:calc(88vh - 70px);}
+.drw-col-right{padding:20px;display:flex;flex-direction:column;overflow-y:auto;max-height:calc(88vh - 70px);justify-content:space-between;}
+.drw-col-left::-webkit-scrollbar,.drw-col-right::-webkit-scrollbar{width:3px;}
+.drw-col-left::-webkit-scrollbar-thumb,.drw-col-right::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+}
+/* Mobile: drawer sidebar (default) */
+@media(max-width:768px){
+.drw-col-left,.drw-col-right{padding:0;}
+}
 .drw-hd{
  display:flex;align-items:center;justify-content:space-between;
  padding:16px 20px;border-bottom:1px solid var(--b1);
  position:sticky;top:0;background:var(--sur);z-index:1;
+ border-radius:16px 16px 0 0;
 }
 .drw-left{display:flex;align-items:center;gap:11px;}
 .drw-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;}
@@ -1034,7 +1056,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .plats-flex{display:flex;gap:5px;flex-wrap:wrap;}
 .plat{font-size:11px;color:var(--t2);padding:3px 8px;border:1px solid var(--b2);border-radius:4px;}
 .desc-p{font-size:12.5px;color:var(--t2);line-height:1.7;}
-.go-btn{display:block;width:100%;padding:12px;text-align:center;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;margin-top:6px;}
+.go-btn{display:block;width:100%;padding:12px;text-align:center;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;margin-top:auto;}
 .go-btn:hover{background:var(--gold-hover);}
 
 /* CHECKOUT PAGE */
@@ -1286,7 +1308,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw-section.open .drw-section-body{display:block;}
 
 /* Inline checkout selectors inside drawer */
-.drw-checkout{background:var(--card2);border:1px solid var(--b1);border-radius:10px;padding:14px;margin-top:10px;}
+.drw-checkout{background:var(--card2);border:1px solid var(--b1);border-radius:10px;padding:14px;margin-top:10px;display:flex;flex-direction:column;flex:1;}
 .drw-sel-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
 .drw-btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
 .drw-btn{padding:7px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;font-family:var(--f);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;white-space:nowrap;}
@@ -8803,7 +8825,6 @@ function openD(id){
   document.getElementById('d-name').textContent=f.name;
   document.getElementById('d-sub').textContent=`${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.discount}% OFF · ${t('drw_split')} ${f.split}`;
 
-  // Find matching CHECKOUT_FIRM for inline selectors
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
   if (!_drwState[id]) _drwState[id] = {
     type: cf?.types?.[0] || '',
@@ -8812,22 +8833,23 @@ function openD(id){
   };
 
   const s=strs(f.rating);
+  const isDesk = window.innerWidth > 768;
 
-  // Rating + Trustpilot at top
-  let html = `
+  // — LEFT COLUMN content: rating, trustpilot, accordion sobre —
+  let leftHtml = `
     <div class="rating-blk"><div class="rb-score">${f.rating}</div><div><div class="rb-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div><div class="rb-cnt">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div></div></div>`;
   if (f.trustpilot) {
     const tpStars = Math.round(f.trustpilot.score);
-    html += `<a class="drw-tp-badge" href="javascript:void(0)" onclick="openTpPopup('${f.trustpilot.url}')">
+    leftHtml += `<a class="drw-tp-badge" href="javascript:void(0)" onclick="openTpPopup('${f.trustpilot.url}')">
       <span class="drw-tp-label">${t('tp_excellent')}</span>
       <span class="drw-tp-stars-row">${Array(5).fill(0).map((_,i)=>`<span class="drw-tp-star${i<tpStars?' filled':''}">★</span>`).join('')}</span>
       <span class="drw-tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span>
-    </a>`
+    </a>`;
   }
 
-  // Accordion: Sobre a firma (closed by default)
-  html += `
-    <div class="drw-section" id="drw-sec-sobre-${id}">
+  // Sobre a firma — on desktop: open by default
+  leftHtml += `
+    <div class="drw-section${isDesk?' open':''}" id="drw-sec-sobre-${id}">
       <div class="drw-section-hd" onclick="toggleDrwSection('drw-sec-sobre-${id}')">
         <span class="drw-section-title">${t('firms_sobre')}</span>
         <span class="drw-section-arrow">▼</span>
@@ -8869,34 +8891,35 @@ function openD(id){
       </div>
     </div>`;
 
-  // Inline checkout block
+  // — RIGHT COLUMN content: checkout selectors + coupon + button —
+  let rightHtml = '';
   if (cf) {
     const st = _drwState[id];
-    html += `<div class="drw-checkout">`;
+    rightHtml += `<div class="drw-checkout">`;
 
     if (cf.types?.length > 1) {
-      html += `<div class="drw-sel-label">${t('firms_sel_tipo')}</div>
+      rightHtml += `<div class="drw-sel-label">${t('firms_sel_tipo')}</div>
         <div class="drw-btn-row" id="drw-types-${id}">
           ${cf.types.map(t=>`<button class="drw-btn${t===st.type?' sel':''}" onclick="drwSelType('${id}','${t}')">${t}</button>`).join('')}
         </div>`;
     }
 
     if (cf.platforms?.length) {
-      html += `<div class="drw-sel-label">${t('firms_sel_plat')}</div>
+      rightHtml += `<div class="drw-sel-label">${t('firms_sel_plat')}</div>
         <div class="drw-btn-row" id="drw-plats-${id}">
           ${cf.platforms.map(p=>`<button class="drw-btn${p===st.plat?' sel':''}" onclick="drwSelPlat('${id}','${p}')">${p}</button>`).join('')}
         </div>`;
     }
 
     if (cf.plans?.length) {
-      html += `<div class="drw-sel-label">${t('firms_sel_tam')}</div>
+      rightHtml += `<div class="drw-sel-label">${t('firms_sel_tam')}</div>
         <div class="drw-btn-row" id="drw-sizes-${id}">
           ${cf.plans.map(p=>`<button class="drw-btn${p.size===st.size?' sel':''}" onclick="drwSelSize('${id}','${p.size}')">${p.size}</button>`).join('')}
         </div>`;
     }
 
     if (f.coupon) {
-      html += `<div class="drw-coupon-bar">
+      rightHtml += `<div class="drw-coupon-bar">
         <div class="offer-coupon-left">
           <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
           <span class="drw-coupon-code">${f.coupon}</span>
@@ -8906,12 +8929,20 @@ function openD(id){
       <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
     }
 
-    html += `<button class="go-btn" onclick="drwGoCheckout('${id}')">${t('firms_comecar')}</button>
+    rightHtml += `<button class="go-btn" onclick="drwGoCheckout('${id}')">${t('firms_comecar')}</button>
     </div>`;
   } else {
-    html += `<div style="margin-top:10px;">
+    rightHtml += `<div style="margin-top:10px;">
       <button class="go-btn" onclick="closeD();achSelectFirm('${f.id}');go('checkout')">${t('offers_ver_planos')}</button>
     </div>`;
+  }
+
+  // Assemble: desktop = 2 columns, mobile = linear
+  let html;
+  if (isDesk) {
+    html = `<div class="drw-col-left">${leftHtml}</div><div class="drw-col-right">${rightHtml}</div>`;
+  } else {
+    html = leftHtml + rightHtml;
   }
 
   document.getElementById('d-body').innerHTML = html;
