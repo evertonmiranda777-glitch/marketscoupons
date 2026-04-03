@@ -1393,6 +1393,47 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .fd-cta{width:100%;padding:16px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;transition:transform .3s,box-shadow .3s;font-family:var(--f);box-shadow:0 4px 24px rgba(240,180,41,0.25);animation:authShimmer 3s ease infinite;position:relative;margin-top:8px;}
 .fd-cta::before{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent 50%);pointer-events:none;}
 .fd-cta:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,180,41,0.35);}
+/* ── Size selector pills ── */
+.fd-sizes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.fd-size{padding:12px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;color:var(--t2);font-family:var(--f);font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;position:relative;min-width:72px;text-align:center;}
+.fd-size:hover{border-color:rgba(255,255,255,.12);color:var(--t1);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.3);}
+.fd-size.sel{background:rgba(240,180,41,.08);border-color:rgba(240,180,41,.35);color:var(--gold);box-shadow:0 0 24px rgba(240,180,41,.1),inset 0 1px 0 rgba(240,180,41,.15);}
+.fd-size.sel::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);border-radius:1px;}
+.fd-size-featured{position:relative;}
+.fd-size-featured::before{content:attr(data-badge);position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#030507;background:var(--gold);padding:2px 8px;border-radius:4px;white-space:nowrap;}
+/* ── Promo banner ── */
+.fd-promo{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 20px;background:linear-gradient(135deg,rgba(240,180,41,.06),rgba(240,180,41,.02));border:1px solid rgba(240,180,41,.15);border-radius:14px;margin-bottom:24px;}
+.fd-promo-badge{font-size:13px;font-weight:800;color:var(--gold);}
+.fd-promo-code{display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(240,180,41,.08);border:1px dashed rgba(240,180,41,.3);border-radius:8px;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px;cursor:pointer;transition:.2s;}
+.fd-promo-code:hover{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.5);}
+/* ── Plan detail card ── */
+.fd-plan-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.fd-plan-header{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;}
+.fd-plan-size{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px;}
+.fd-plan-prices{text-align:right;}
+.fd-plan-price-new{font-size:24px;font-weight:800;color:var(--gold);letter-spacing:-1px;}
+.fd-plan-price-old{font-size:13px;color:var(--t3);text-decoration:line-through;margin-top:2px;}
+/* Plan details rows */
+.fd-plan-rows{padding:0;}
+.fd-plan-row{display:flex;align-items:center;justify-content:space-between;padding:13px 24px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;}
+.fd-plan-row:last-child{border-bottom:none;}
+.fd-plan-row:hover{background:rgba(255,255,255,.02);}
+.fd-plan-row-label{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px;}
+.fd-plan-row-val{font-size:13px;font-weight:700;color:var(--t1);}
+.fd-plan-row-val.g{color:var(--green);}
+.fd-plan-row-val.y{color:var(--gold);}
+.fd-plan-row-val.r{color:var(--red);}
+/* Type/Platform selectors in plan */
+.fd-plan-selectors{padding:16px 24px;border-top:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.01);}
+.fd-plan-sel-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:8px;}
+.fd-plan-sel-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.fd-plan-sel-row:last-child{margin-bottom:0;}
+/* Features list */
+.fd-features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.fd-feat{display:flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.1);border-radius:8px;font-size:11px;font-weight:600;color:var(--green);}
+.fd-feat::before{content:'✓';font-weight:800;font-size:10px;}
+.fd-feat-bad{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.1);color:var(--red);}
+.fd-feat-bad::before{content:'✕';}
 /* Prices table in checkout */
 .fd-prices-wrap{margin-bottom:20px;}
 .fd-prices-wrap .ptbl{font-size:12px;}
@@ -8987,94 +9028,149 @@ function openFD(id, f, cf) {
 
   document.getElementById('fd-brand').innerHTML = brandHtml;
 
-  // RIGHT: Checkout stepper
+  // RIGHT: Premium checkout experience
   let ckHtml = '';
-  ckHtml += `<div class="fd-checkout-title">${t('firms_comecar')}</div>`;
-  ckHtml += `<div class="fd-checkout-sub">${t('firms_escolha_opcoes')}</div>`;
 
-  let stepN = 1;
+  // Determine plans data (checkout firms have richer data)
+  const plans = cf ? cf.plans : null;
+  const prices = f.prices || [];
+  const hasCF = !!cf;
 
-  if (cf) {
-    // Firm with checkout config: show stepper
-    if (cf.types?.length > 1) {
-      ckHtml += `<div class="fd-step">
-        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_sel_tipo')}</div>
-        <div class="fd-step-options" id="fd-types-${id}">
-          ${cf.types.map(tp=>`<button class="fd-opt${tp===st.type?' sel':''}" onclick="fdSelType('${id}','${tp}')">${tp}</button>`).join('')}
-        </div>
-      </div>`;
-    }
-
-    if (cf.platforms?.length) {
-      ckHtml += `<div class="fd-step">
-        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_sel_plat')}</div>
-        <div class="fd-step-options" id="fd-plats-${id}">
-          ${cf.platforms.map(p=>`<button class="fd-opt${p===st.plat?' sel':''}" onclick="fdSelPlat('${id}','${p}')">${p}</button>`).join('')}
-        </div>
-      </div>`;
-    }
-
-    if (cf.plans?.length) {
-      ckHtml += `<div class="fd-step">
-        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_sel_tam')}</div>
-        <div class="fd-step-options" id="fd-sizes-${id}">
-          ${cf.plans.map(p=>`<button class="fd-opt${p.size===st.size?' sel':''}" onclick="fdSelSize('${id}','${p.size}')">${p.size}</button>`).join('')}
-        </div>
-      </div>`;
-    }
-
-    // Price display for selected plan
-    const selPlan = cf.plans?.find(p=>p.size===st.size);
-    if (selPlan) {
-      ckHtml += `<div class="fd-price-row" id="fd-price-${id}">
-        <span class="fd-price-new">${selPlan.price||''}</span>
-        <span class="fd-price-old">${selPlan.orig||''}</span>
-        ${f.discount?`<span class="fd-price-save">${f.discount}% OFF</span>`:''}
-      </div>`;
-    }
-  } else {
-    // Firm without checkout: show prices table
-    if (f.prices?.length) {
-      const pt = f.price_types||[];
-      const hasDual = pt.length>=2 && f.prices.some(r=>r.n2);
-      ckHtml += `<div class="fd-prices-wrap">`;
-      if (hasDual) {
-        ckHtml += `<table class="ptbl"><thead><tr><th rowspan="2">${t('drw_conta')}</th><th colspan="2" style="text-align:center;color:var(--blue);border-bottom:1px solid var(--b1);">${pt[0]}</th><th colspan="2" style="text-align:center;color:var(--green);border-bottom:1px solid var(--b1);">${pt[1]}</th></tr><tr><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td><td class="tn">${r.n2||'—'}</td><td class="to">${r.o2||'—'}</td></tr>`).join('')}</tbody></table>`;
-      } else {
-        ckHtml += `<table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>`;
-      }
-      ckHtml += `</div>`;
-    }
-    if (f.platforms?.length) {
-      ckHtml += `<div class="fd-step">
-        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_plataformas')}</div>
-        <div class="fd-step-options">${f.platforms.map(p=>`<span class="fd-opt" style="cursor:default;">${p}</span>`).join('')}</div>
-      </div>`;
-    }
+  // ── Size selector pills ──
+  if (hasCF && plans?.length) {
+    ckHtml += `<div class="fd-checkout-sub" style="margin-bottom:12px;">${t('firms_sel_tam')}</div>`;
+    ckHtml += `<div class="fd-sizes" id="fd-sizes-${id}">`;
+    plans.forEach(p => {
+      const isSel = p.size === st.size;
+      const feat = p.featured ? ' fd-size-featured' : '';
+      ckHtml += `<button class="fd-size${isSel?' sel':''}${feat}"${p.featured?' data-badge="Popular"':''} onclick="fdSelSize('${id}','${p.size}')">${p.size}</button>`;
+    });
+    ckHtml += `</div>`;
+  } else if (prices.length) {
+    ckHtml += `<div class="fd-checkout-sub" style="margin-bottom:12px;">${t('firms_sel_tam')}</div>`;
+    ckHtml += `<div class="fd-sizes" id="fd-sizes-${id}">`;
+    prices.forEach((p,i) => {
+      const isSel = i === (_drwState[id]._priceIdx||0);
+      ckHtml += `<button class="fd-size${isSel?' sel':''}" onclick="fdSelPrice('${id}',${i})">${p.a}</button>`;
+    });
+    ckHtml += `</div>`;
+    if (!_drwState[id]._priceIdx) _drwState[id]._priceIdx = 0;
   }
 
-  // Coupon
-  if (f.coupon) {
-    ckHtml += `<div class="fd-coupon">
-      <div class="fd-coupon-left">
-        <div class="fd-coupon-tag">${t('firms_cupom_exclusivo')}</div>
-        <div class="fd-coupon-code">${f.coupon}</div>
-      </div>
-      <button class="fd-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','fd_checkout')">${t('firms_copiar')}</button>
-    </div>
-    <div class="fd-coupon-hint">${t('firms_hint_cupom')}</div>`;
+  // ── Promo banner ──
+  if (f.discount && f.coupon) {
+    ckHtml += `<div class="fd-promo">
+      <span class="fd-promo-badge">${f.discount}% OFF ${tf(f.dtype)||''}</span>
+      <span class="fd-promo-code" onclick="cpCoupon('${f.coupon}','${f.id}','fd_promo')">Code: ${f.coupon} 📋</span>
+    </div>`;
+  } else if (f.discount) {
+    ckHtml += `<div class="fd-promo">
+      <span class="fd-promo-badge">${f.discount}% OFF ${tf(f.dtype)||''}</span>
+    </div>`;
   }
 
-  // CTA
-  if (cf) {
-    ckHtml += `<button class="fd-cta" onclick="fdGoCheckout('${id}')">${t('firms_comecar')}</button>`;
+  // ── Plan detail card ──
+  ckHtml += `<div class="fd-plan-card" id="fd-plan-card-${id}">`;
+
+  if (hasCF && plans?.length) {
+    const sel = plans.find(p=>p.size===st.size) || plans[0];
+    ckHtml += buildFdPlanCard(sel, f, cf, id);
+  } else if (prices.length) {
+    const idx = _drwState[id]._priceIdx || 0;
+    const sel = prices[idx];
+    ckHtml += buildFdPlanCardSimple(sel, f, id);
+  }
+
+  ckHtml += `</div>`;
+
+  // ── Features ──
+  if (f.perks?.length || f.newsTrading || f.day1Payout) {
+    ckHtml += `<div class="fd-features">`;
+    if (f.newsTrading) ckHtml += `<span class="fd-feat">News Trading</span>`;
+    if (f.day1Payout) ckHtml += `<span class="fd-feat">Day 1 Payout</span>`;
+    (f.perks||[]).slice(0,4).forEach(p => {
+      ckHtml += `<span class="fd-feat">${tf(p)}</span>`;
+    });
+    ckHtml += `</div>`;
+  }
+
+  // ── CTA ──
+  if (hasCF) {
+    ckHtml += `<button class="fd-cta" onclick="fdGoCheckout('${id}')">${t('firms_comecar')} →</button>`;
   } else {
-    ckHtml += `<button class="fd-cta" onclick="window.open('${f.link}','_blank');track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}'});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button>`;
+    ckHtml += `<button class="fd-cta" onclick="window.open('${f.link}','_blank');track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}'});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')} →</button>`;
   }
 
   document.getElementById('fd-checkout').innerHTML = ckHtml;
   document.getElementById('fd-overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
+}
+
+// Build plan card for firms WITH checkout data
+function buildFdPlanCard(plan, f, cf, id) {
+  const st = _drwState[id];
+  let h = `<div class="fd-plan-header">
+    <div class="fd-plan-size">${plan.size}</div>
+    <div class="fd-plan-prices">
+      <div class="fd-plan-price-new">${plan.disc||''}</div>
+      ${plan.orig?`<div class="fd-plan-price-old">${plan.orig}</div>`:''}
+    </div>
+  </div>`;
+  h += `<div class="fd-plan-rows">`;
+  if (plan.capital) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">Capital</span><span class="fd-plan-row-val">${plan.capital}</span></div>`;
+  if (plan.goal) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_meta')}</span><span class="fd-plan-row-val y">${plan.goal}</span></div>`;
+  if (plan.maxDD) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dd_max')}</span><span class="fd-plan-row-val r">${plan.maxDD}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_drawdown')}</span><span class="fd-plan-row-val">${f.drawdown||'—'}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_split')}</span><span class="fd-plan-row-val g">${f.split||'—'}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dias_min')}</span><span class="fd-plan-row-val">${f.minDays?f.minDays+'d':'—'}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_prazo')}</span><span class="fd-plan-row-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</span></div>`;
+  h += `</div>`;
+  // Type/Platform selectors inside card
+  if (cf.types?.length > 1 || cf.platforms?.length) {
+    h += `<div class="fd-plan-selectors">`;
+    if (cf.types?.length > 1) {
+      h += `<div class="fd-plan-sel-label">${t('firms_sel_tipo')}</div>
+        <div class="fd-plan-sel-row" id="fd-types-${id}">
+          ${cf.types.map(tp=>`<button class="fd-opt${tp===st.type?' sel':''}" onclick="fdSelType('${id}','${tp}')">${tp}</button>`).join('')}
+        </div>`;
+    }
+    if (cf.platforms?.length) {
+      h += `<div class="fd-plan-sel-label">${t('firms_sel_plat')}</div>
+        <div class="fd-plan-sel-row" id="fd-plats-${id}">
+          ${cf.platforms.map(p=>`<button class="fd-opt${p===st.plat?' sel':''}" onclick="fdSelPlat('${id}','${p}')">${p}</button>`).join('')}
+        </div>`;
+    }
+    h += `</div>`;
+  }
+  return h;
+}
+
+// Build plan card for firms WITHOUT checkout data (simpler)
+function buildFdPlanCardSimple(price, f, id) {
+  let h = `<div class="fd-plan-header">
+    <div class="fd-plan-size">${price.a}</div>
+    <div class="fd-plan-prices">
+      <div class="fd-plan-price-new">${price.n}</div>
+      ${price.o&&price.o!=='—'?`<div class="fd-plan-price-old">${price.o}</div>`:''}
+    </div>
+  </div>`;
+  h += `<div class="fd-plan-rows">`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_drawdown')}</span><span class="fd-plan-row-val">${f.drawdown||'—'}</span></div>`;
+  if (f.ddPct) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dd_max')}</span><span class="fd-plan-row-val r">${tf(f.ddPct)}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_meta')}</span><span class="fd-plan-row-val y">${tf(f.target)||'—'}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_split')}</span><span class="fd-plan-row-val g">${f.split||'—'}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dias_min')}</span><span class="fd-plan-row-val">${f.minDays?f.minDays+'d':'—'}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_prazo')}</span><span class="fd-plan-row-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</span></div>`;
+  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_scaling')}</span><span class="fd-plan-row-val">${tf(f.scaling)||'—'}</span></div>`;
+  h += `</div>`;
+  // Platforms as read-only
+  if (f.platforms?.length) {
+    h += `<div class="fd-plan-selectors">
+      <div class="fd-plan-sel-label">${t('firms_plataformas')}</div>
+      <div class="fd-plan-sel-row">${f.platforms.map(p=>`<span class="fd-opt" style="cursor:default;">${p}</span>`).join('')}</div>
+    </div>`;
+  }
+  return h;
 }
 
 function closeFD(){
@@ -9088,12 +9184,19 @@ function fdSelType(fId,type){_drwState[fId].type=type;document.querySelectorAll(
 function fdSelPlat(fId,plat){_drwState[fId].plat=plat;document.querySelectorAll(`#fd-plats-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===plat));}
 function fdSelSize(fId,size){
   _drwState[fId].size=size;
-  document.querySelectorAll(`#fd-sizes-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===size));
-  // Update price display
+  document.querySelectorAll(`#fd-sizes-${fId} .fd-size`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===size));
+  // Rebuild plan card
   const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
   const plan=cf?.plans?.find(p=>p.size===size);
-  const priceEl=document.getElementById(`fd-price-${fId}`);
-  if(priceEl&&plan){priceEl.innerHTML=`<span class="fd-price-new">${plan.price||''}</span><span class="fd-price-old">${plan.orig||''}</span>${f.discount?`<span class="fd-price-save">${f.discount}% OFF</span>`:''}`;}
+  const cardEl=document.getElementById(`fd-plan-card-${fId}`);
+  if(cardEl&&plan&&cf) cardEl.innerHTML=buildFdPlanCard(plan,f,cf,fId);
+}
+function fdSelPrice(fId,idx){
+  _drwState[fId]._priceIdx=idx;
+  const f=FIRMS.find(x=>x.id===fId);
+  document.querySelectorAll(`#fd-sizes-${fId} .fd-size`).forEach((b,i)=>b.classList.toggle('sel',i===idx));
+  const cardEl=document.getElementById(`fd-plan-card-${fId}`);
+  if(cardEl&&f.prices?.[idx]) cardEl.innerHTML=buildFdPlanCardSimple(f.prices[idx],f,fId);
 }
 function fdGoCheckout(fId){
   const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
