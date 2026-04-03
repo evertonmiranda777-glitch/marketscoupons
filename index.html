@@ -1371,7 +1371,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .fd-close{position:absolute;top:24px;right:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:var(--t3);font-size:20px;cursor:pointer;transition:.3s;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;z-index:2;}
 .fd-close:hover{color:var(--t1);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,0.1);transform:rotate(90deg);}
 /* Checkout form */
-.fd-checkout{width:100%;max-width:420px;}
+.fd-checkout{width:100%;max-width:480px;}
 .fd-checkout-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
 .fd-checkout-sub{font-size:13px;color:var(--t3);margin-bottom:32px;line-height:1.5;}
 /* Steps */
@@ -1415,37 +1415,45 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .fd-promo-badge{font-size:13px;font-weight:800;color:var(--gold);}
 .fd-promo-code{display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(240,180,41,.08);border:1px dashed rgba(240,180,41,.3);border-radius:8px;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px;cursor:pointer;transition:.2s;}
 .fd-promo-code:hover{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.5);}
-/* ── Plan detail card ── */
-.fd-plan-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;margin-bottom:24px;}
-.fd-plan-header{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;}
-.fd-plan-size{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px;}
-.fd-plan-prices{text-align:right;}
-.fd-plan-price-new{font-size:24px;font-weight:800;color:var(--gold);letter-spacing:-1px;}
-.fd-plan-price-old{font-size:13px;color:var(--t3);text-decoration:line-through;margin-top:2px;}
-/* Plan details rows */
-.fd-plan-rows{padding:0;}
-.fd-plan-row{display:flex;align-items:center;justify-content:space-between;padding:13px 24px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;}
-.fd-plan-row:last-child{border-bottom:none;}
-.fd-plan-row:hover{background:rgba(255,255,255,.02);}
-.fd-plan-row-label{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px;}
-.fd-plan-row-val{font-size:13px;font-weight:700;color:var(--t1);}
-.fd-plan-row-val.g{color:var(--green);}
-.fd-plan-row-val.y{color:var(--gold);}
-.fd-plan-row-val.r{color:var(--red);}
-/* Type/Platform selectors in plan */
-.fd-plan-selectors{padding:16px 24px;border-top:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.01);}
-.fd-plan-sel-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:8px;}
-.fd-plan-sel-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-.fd-plan-sel-row:last-child{margin-bottom:0;}
+/* ── Section cards ── */
+.fd-section{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;margin-bottom:16px;transition:border-color .3s;}
+.fd-section:hover{border-color:rgba(255,255,255,.1);}
+.fd-section-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;user-select:none;}
+.fd-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;display:flex;align-items:center;gap:8px;}
+.fd-section-title .fd-sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.fd-section-arrow{font-size:11px;color:var(--t3);transition:transform .25s;}
+.fd-section.open .fd-section-arrow{transform:rotate(180deg);}
+.fd-section-body{display:none;padding:0;}
+.fd-section.open .fd-section-body{display:block;}
+/* Section rows */
+.fd-row{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s;}
+.fd-row:last-child{border-bottom:none;}
+.fd-row:hover{background:rgba(255,255,255,.015);}
+.fd-row-label{font-size:12px;color:var(--t2);}
+.fd-row-val{font-size:13px;font-weight:700;color:var(--t1);text-align:right;}
+.fd-row-val.g{color:var(--green);}
+.fd-row-val.y{color:var(--gold);}
+.fd-row-val.r{color:var(--red);}
+.fd-row-val.hl{color:#030507;background:var(--gold);padding:3px 10px;border-radius:6px;font-size:12px;}
+/* Price hero */
+.fd-price-hero{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;background:linear-gradient(135deg,rgba(240,180,41,.06),rgba(240,180,41,.02));border-bottom:1px solid rgba(240,180,41,.1);}
+.fd-price-hero-left{display:flex;flex-direction:column;gap:2px;}
+.fd-price-hero-size{font-size:24px;font-weight:800;color:#fff;letter-spacing:-1px;}
+.fd-price-hero-type{font-size:11px;color:var(--t3);font-weight:600;}
+.fd-price-hero-right{text-align:right;}
+.fd-price-hero-new{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:-1px;}
+.fd-price-hero-old{font-size:13px;color:var(--t3);text-decoration:line-through;margin-top:2px;}
+/* Platform features */
+.fd-plat-row{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid rgba(255,255,255,.03);}
+.fd-plat-row:last-child{border-bottom:none;}
+.fd-plat-name{font-size:12px;color:var(--t2);}
+.fd-plat-val{font-size:12px;font-weight:700;color:var(--green);}
 /* Features list */
 .fd-features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
 .fd-feat{display:flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.1);border-radius:8px;font-size:11px;font-weight:600;color:var(--green);}
 .fd-feat::before{content:'✓';font-weight:800;font-size:10px;}
 .fd-feat-bad{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.1);color:var(--red);}
 .fd-feat-bad::before{content:'✕';}
-/* Prices table in checkout */
-.fd-prices-wrap{margin-bottom:20px;}
-.fd-prices-wrap .ptbl{font-size:12px;}
 /* Mobile: hide overlay, use drawer */
 @media(max-width:768px){
 .fd-overlay{display:none!important;}
@@ -3413,6 +3421,21 @@ const I18N = {
     drw_com_cupom:'Com cupom',
     drw_original:'Original',
     drw_sem_limite:'Sem limite',
+    fd_regras_conta:'Regras da Conta',
+    fd_contratos_max:'Contratos máx.',
+    fd_taxa_reset:'Taxa de reset',
+    fd_plataforma_feat:'Plataforma',
+    fd_incluso:'Incluído',
+    fd_conta_funded:'Conta Funded',
+    fd_taxa_ativacao:'Taxa de ativação',
+    fd_prazo_ativacao:'Prazo de ativação',
+    fd_freq_saque:'Frequência de saque',
+    fd_max_contas:'Máx. de contas',
+    fd_limite_diario:'Limite diário',
+    fd_consistencia:'Consistência',
+    fd_ver_mais:'Ver mais',
+    fd_ver_menos:'Ver menos',
+    fd_na:'N/A',
     home_titulo:'Melhores Cupons de Prop Firms',
     home_sub:'Compare preços, copie cupons exclusivos e economize até 90% nas maiores prop firms do mundo.',
     home_ver_planos:'Ver planos →',
@@ -4001,6 +4024,21 @@ const I18N = {
     drw_com_cupom:'With coupon',
     drw_original:'Original',
     drw_sem_limite:'No limit',
+    fd_regras_conta:'Account Rules',
+    fd_contratos_max:'Max Contracts',
+    fd_taxa_reset:'Reset Fee',
+    fd_plataforma_feat:'Platform',
+    fd_incluso:'Included',
+    fd_conta_funded:'Funded Account',
+    fd_taxa_ativacao:'Activation Fee',
+    fd_prazo_ativacao:'Activation Deadline',
+    fd_freq_saque:'Payout Frequency',
+    fd_max_contas:'Max Accounts',
+    fd_limite_diario:'Daily Limit',
+    fd_consistencia:'Consistency',
+    fd_ver_mais:'Show more',
+    fd_ver_menos:'Show less',
+    fd_na:'N/A',
     home_titulo:'Best Prop Firm Coupons',
     home_sub:'Compare prices, copy exclusive coupons, and save up to 90% at the world\'s largest prop firms.',
     home_ver_planos:'View plans →',
@@ -4589,6 +4627,21 @@ const I18N = {
     drw_com_cupom:'Con cupón',
     drw_original:'Original',
     drw_sem_limite:'Sin límite',
+    fd_regras_conta:'Reglas de la Cuenta',
+    fd_contratos_max:'Contratos máx.',
+    fd_taxa_reset:'Tasa de reset',
+    fd_plataforma_feat:'Plataforma',
+    fd_incluso:'Incluido',
+    fd_conta_funded:'Cuenta Funded',
+    fd_taxa_ativacao:'Tasa de activación',
+    fd_prazo_ativacao:'Plazo de activación',
+    fd_freq_saque:'Frecuencia de retiro',
+    fd_max_contas:'Máx. cuentas',
+    fd_limite_diario:'Límite diario',
+    fd_consistencia:'Consistencia',
+    fd_ver_mais:'Ver más',
+    fd_ver_menos:'Ver menos',
+    fd_na:'N/A',
     home_titulo:'Los mejores cupones de Prop Firms',
     home_sub:'Compara precios, copia cupones exclusivos y ahorra hasta un 90 % en las mayores prop firms del mundo.',
     home_ver_planos:'Ver planes →',
@@ -5177,6 +5230,21 @@ const I18N = {
     drw_com_cupom:'Con buono sconto',
     drw_original:'Originale',
     drw_sem_limite:'Senza limiti',
+    fd_regras_conta:'Regole del Conto',
+    fd_contratos_max:'Contratti max.',
+    fd_taxa_reset:'Costo di reset',
+    fd_plataforma_feat:'Piattaforma',
+    fd_incluso:'Incluso',
+    fd_conta_funded:'Conto Funded',
+    fd_taxa_ativacao:'Costo di attivazione',
+    fd_prazo_ativacao:'Scadenza attivazione',
+    fd_freq_saque:'Frequenza prelievo',
+    fd_max_contas:'Max. conti',
+    fd_limite_diario:'Limite giornaliero',
+    fd_consistencia:'Coerenza',
+    fd_ver_mais:'Vedi di più',
+    fd_ver_menos:'Vedi meno',
+    fd_na:'N/A',
     home_titulo:'I migliori coupon per Prop Firms',
     home_sub:'Confronta i prezzi, copia i buoni sconto esclusivi e risparmia fino al 90% presso le più grandi prop firms al mondo.',
     home_ver_planos:'Vedi i piani →',
@@ -5765,6 +5833,21 @@ const I18N = {
     drw_com_cupom:'Avec un bon de réduction',
     drw_original:'Original',
     drw_sem_limite:'Sans limite',
+    fd_regras_conta:'Règles du Compte',
+    fd_contratos_max:'Contrats max.',
+    fd_taxa_reset:'Frais de reset',
+    fd_plataforma_feat:'Plateforme',
+    fd_incluso:'Inclus',
+    fd_conta_funded:'Compte Funded',
+    fd_taxa_ativacao:'Frais d\'activation',
+    fd_prazo_ativacao:'Délai d\'activation',
+    fd_freq_saque:'Fréquence de retrait',
+    fd_max_contas:'Max. comptes',
+    fd_limite_diario:'Limite quotidienne',
+    fd_consistencia:'Cohérence',
+    fd_ver_mais:'Voir plus',
+    fd_ver_menos:'Voir moins',
+    fd_na:'N/A',
     home_titulo:'Meilleurs bons de réduction pour les prop firms',
     home_sub:'Comparez les prix, copiez des bons de réduction exclusifs et économisez jusqu\'à 90 % auprès des plus grandes prop firms au monde.',
     home_ver_planos:'Voir les formules →',
@@ -6353,6 +6436,21 @@ const I18N = {
     drw_com_cupom:'Mit Gutschein',
     drw_original:'Original',
     drw_sem_limite:'Ohne Begrenzung',
+    fd_regras_conta:'Kontoregeln',
+    fd_contratos_max:'Max. Kontrakte',
+    fd_taxa_reset:'Rücksetzgebühr',
+    fd_plataforma_feat:'Plattform',
+    fd_incluso:'Inklusive',
+    fd_conta_funded:'Funded-Konto',
+    fd_taxa_ativacao:'Aktivierungsgebühr',
+    fd_prazo_ativacao:'Aktivierungsfrist',
+    fd_freq_saque:'Auszahlungshäufigkeit',
+    fd_max_contas:'Max. Konten',
+    fd_limite_diario:'Tageslimit',
+    fd_consistencia:'Konsistenz',
+    fd_ver_mais:'Mehr anzeigen',
+    fd_ver_menos:'Weniger anzeigen',
+    fd_na:'N/A',
     home_titulo:'Die besten Gutscheine für Prop Firms',
     home_sub:'Vergleichen Sie Preise, kopieren Sie exklusive Gutscheine und sparen Sie bis zu 90 % bei den weltweit größten Prop Firms.',
     home_ver_planos:'Tarife anzeigen →',
@@ -6941,6 +7039,21 @@ const I18N = {
     drw_com_cupom:'مع قسيمة',
     drw_original:'الأصل',
     drw_sem_limite:'بلا حدود',
+    fd_regras_conta:'قواعد الحساب',
+    fd_contratos_max:'الحد الأقصى للعقود',
+    fd_taxa_reset:'رسوم إعادة التعيين',
+    fd_plataforma_feat:'المنصة',
+    fd_incluso:'مشمول',
+    fd_conta_funded:'حساب ممول',
+    fd_taxa_ativacao:'رسوم التفعيل',
+    fd_prazo_ativacao:'موعد التفعيل',
+    fd_freq_saque:'تكرار السحب',
+    fd_max_contas:'أقصى عدد حسابات',
+    fd_limite_diario:'الحد اليومي',
+    fd_consistencia:'الاتساق',
+    fd_ver_mais:'عرض المزيد',
+    fd_ver_menos:'عرض أقل',
+    fd_na:'غير متاح',
     home_titulo:'أفضل كوبونات Prop Firms',
     home_sub:'قارن الأسعار، وانسخ القسائم الحصرية، ووفر حتى 90% في أكبر Prop Firms في العالم.',
     home_ver_planos:'عرض الخطط →',
@@ -9040,30 +9153,37 @@ function openFD(id, f, cf) {
 
   // RIGHT: Premium checkout experience
   let ckHtml = '';
-
-  // Determine plans data (checkout firms have richer data)
   const plans = cf ? cf.plans : null;
   const prices = f.prices || [];
   const hasCF = !!cf;
 
-  // ── Size selector pills ──
-  if (hasCF && plans?.length) {
-    ckHtml += `<div class="fd-checkout-sub" style="margin-bottom:12px;">${t('firms_sel_tam')}</div>`;
-    ckHtml += `<div class="fd-sizes" id="fd-sizes-${id}">`;
-    plans.forEach(p => {
-      const isSel = p.size === st.size;
-      const feat = p.featured ? ' fd-size-featured' : '';
-      ckHtml += `<button class="fd-size${isSel?' sel':''}${feat}"${p.featured?' data-badge="Popular"':''} onclick="fdSelSize('${id}','${p.size}')">${p.size}</button>`;
-    });
-    ckHtml += `</div>`;
+  // ── Selectors row: Type + Vendor + Size ──
+  if (hasCF) {
+    // Type selector
+    if (cf.types?.length > 1) {
+      ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">1</span>${t('firms_sel_tipo')}</div>
+        <div class="fd-step-options" id="fd-types-${id}">${cf.types.map(tp=>`<button class="fd-opt${tp===st.type?' sel':''}" onclick="fdSelType('${id}','${tp}')">${tp}</button>`).join('')}</div></div>`;
+    }
+    // Platform selector
+    if (cf.platforms?.length) {
+      ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">${cf.types?.length>1?'2':'1'}</span>${t('firms_sel_plat')}</div>
+        <div class="fd-step-options" id="fd-plats-${id}">${cf.platforms.map(p=>`<button class="fd-opt${p===st.plat?' sel':''}" onclick="fdSelPlat('${id}','${p}')">${p}</button>`).join('')}</div></div>`;
+    }
+    // Size selector
+    if (plans?.length) {
+      const stepN = (cf.types?.length>1?2:1)+(cf.platforms?.length?1:0);
+      ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">${stepN}</span>${t('firms_sel_tam')}</div>
+        <div class="fd-sizes" id="fd-sizes-${id}">${plans.map(p=>{
+          const isSel=p.size===st.size;const feat=p.featured?' fd-size-featured':'';
+          return `<button class="fd-size${isSel?' sel':''}${feat}"${p.featured?' data-badge="Popular"':''} onclick="fdSelSize('${id}','${p.size}')">${p.size}</button>`;
+        }).join('')}</div></div>`;
+    }
   } else if (prices.length) {
-    ckHtml += `<div class="fd-checkout-sub" style="margin-bottom:12px;">${t('firms_sel_tam')}</div>`;
-    ckHtml += `<div class="fd-sizes" id="fd-sizes-${id}">`;
-    prices.forEach((p,i) => {
-      const isSel = i === (_drwState[id]._priceIdx||0);
-      ckHtml += `<button class="fd-size${isSel?' sel':''}" onclick="fdSelPrice('${id}',${i})">${p.a}</button>`;
-    });
-    ckHtml += `</div>`;
+    ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">1</span>${t('firms_sel_tam')}</div>
+      <div class="fd-sizes" id="fd-sizes-${id}">${prices.map((p,i)=>{
+        const isSel=i===(_drwState[id]._priceIdx||0);
+        return `<button class="fd-size${isSel?' sel':''}" onclick="fdSelPrice('${id}',${i})">${p.a}</button>`;
+      }).join('')}</div></div>`;
     if (!_drwState[id]._priceIdx) _drwState[id]._priceIdx = 0;
   }
 
@@ -9074,35 +9194,13 @@ function openFD(id, f, cf) {
       <span class="fd-promo-code" onclick="cpCoupon('${f.coupon}','${f.id}','fd_promo')">Code: ${f.coupon} 📋</span>
     </div>`;
   } else if (f.discount) {
-    ckHtml += `<div class="fd-promo">
-      <span class="fd-promo-badge">${f.discount}% OFF ${tf(f.dtype)||''}</span>
-    </div>`;
+    ckHtml += `<div class="fd-promo"><span class="fd-promo-badge">${f.discount}% OFF ${tf(f.dtype)||''}</span></div>`;
   }
 
-  // ── Plan detail card ──
-  ckHtml += `<div class="fd-plan-card" id="fd-plan-card-${id}">`;
-
-  if (hasCF && plans?.length) {
-    const sel = plans.find(p=>p.size===st.size) || plans[0];
-    ckHtml += buildFdPlanCard(sel, f, cf, id);
-  } else if (prices.length) {
-    const idx = _drwState[id]._priceIdx || 0;
-    const sel = prices[idx];
-    ckHtml += buildFdPlanCardSimple(sel, f, id);
-  }
-
+  // ── Sections built from data ──
+  ckHtml += `<div id="fd-sections-${id}">`;
+  ckHtml += buildFdSections(f, cf, id);
   ckHtml += `</div>`;
-
-  // ── Features ──
-  if (f.perks?.length || f.newsTrading || f.day1Payout) {
-    ckHtml += `<div class="fd-features">`;
-    if (f.newsTrading) ckHtml += `<span class="fd-feat">News Trading</span>`;
-    if (f.day1Payout) ckHtml += `<span class="fd-feat">Day 1 Payout</span>`;
-    (f.perks||[]).slice(0,4).forEach(p => {
-      ckHtml += `<span class="fd-feat">${tf(p)}</span>`;
-    });
-    ckHtml += `</div>`;
-  }
 
   // ── CTA ──
   if (hasCF) {
@@ -9116,70 +9214,94 @@ function openFD(id, f, cf) {
   document.body.style.overflow = 'hidden';
 }
 
-// Build plan card for firms WITH checkout data
-function buildFdPlanCard(plan, f, cf, id) {
+// Build all detail sections for desktop overlay
+function buildFdSections(f, cf, id) {
+  const hasCF = !!cf;
+  const plans = cf ? cf.plans : null;
+  const prices = f.prices || [];
   const st = _drwState[id];
-  let h = `<div class="fd-plan-header">
-    <div class="fd-plan-size">${plan.size}</div>
-    <div class="fd-plan-prices">
-      <div class="fd-plan-price-new">${plan.disc||''}</div>
-      ${plan.orig?`<div class="fd-plan-price-old">${plan.orig}</div>`:''}
-    </div>
-  </div>`;
-  h += `<div class="fd-plan-rows">`;
-  if (plan.capital) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">Capital</span><span class="fd-plan-row-val">${plan.capital}</span></div>`;
-  if (plan.goal) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_meta')}</span><span class="fd-plan-row-val y">${plan.goal}</span></div>`;
-  if (plan.maxDD) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dd_max')}</span><span class="fd-plan-row-val r">${plan.maxDD}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_drawdown')}</span><span class="fd-plan-row-val">${f.drawdown||'—'}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_split')}</span><span class="fd-plan-row-val g">${f.split||'—'}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dias_min')}</span><span class="fd-plan-row-val">${f.minDays?f.minDays+'d':'—'}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_prazo')}</span><span class="fd-plan-row-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</span></div>`;
-  h += `</div>`;
-  // Type/Platform selectors inside card
-  if (cf.types?.length > 1 || cf.platforms?.length) {
-    h += `<div class="fd-plan-selectors">`;
-    if (cf.types?.length > 1) {
-      h += `<div class="fd-plan-sel-label">${t('firms_sel_tipo')}</div>
-        <div class="fd-plan-sel-row" id="fd-types-${id}">
-          ${cf.types.map(tp=>`<button class="fd-opt${tp===st.type?' sel':''}" onclick="fdSelType('${id}','${tp}')">${tp}</button>`).join('')}
-        </div>`;
-    }
-    if (cf.platforms?.length) {
-      h += `<div class="fd-plan-sel-label">${t('firms_sel_plat')}</div>
-        <div class="fd-plan-sel-row" id="fd-plats-${id}">
-          ${cf.platforms.map(p=>`<button class="fd-opt${p===st.plat?' sel':''}" onclick="fdSelPlat('${id}','${p}')">${p}</button>`).join('')}
-        </div>`;
-    }
-    h += `</div>`;
-  }
-  return h;
-}
+  let h = '';
 
-// Build plan card for firms WITHOUT checkout data (simpler)
-function buildFdPlanCardSimple(price, f, id) {
-  let h = `<div class="fd-plan-header">
-    <div class="fd-plan-size">${price.a}</div>
-    <div class="fd-plan-prices">
-      <div class="fd-plan-price-new">${price.n}</div>
-      ${price.o&&price.o!=='—'?`<div class="fd-plan-price-old">${price.o}</div>`:''}
-    </div>
-  </div>`;
-  h += `<div class="fd-plan-rows">`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_drawdown')}</span><span class="fd-plan-row-val">${f.drawdown||'—'}</span></div>`;
-  if (f.ddPct) h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dd_max')}</span><span class="fd-plan-row-val r">${tf(f.ddPct)}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_meta')}</span><span class="fd-plan-row-val y">${tf(f.target)||'—'}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_split')}</span><span class="fd-plan-row-val g">${f.split||'—'}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_dias_min')}</span><span class="fd-plan-row-val">${f.minDays?f.minDays+'d':'—'}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_prazo')}</span><span class="fd-plan-row-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</span></div>`;
-  h += `<div class="fd-plan-row"><span class="fd-plan-row-label">${t('drw_scaling')}</span><span class="fd-plan-row-val">${tf(f.scaling)||'—'}</span></div>`;
-  h += `</div>`;
-  // Platforms as read-only
-  if (f.platforms?.length) {
-    h += `<div class="fd-plan-selectors">
-      <div class="fd-plan-sel-label">${t('firms_plataformas')}</div>
-      <div class="fd-plan-sel-row">${f.platforms.map(p=>`<span class="fd-opt" style="cursor:default;">${p}</span>`).join('')}</div>
+  // Determine selected plan/price
+  let selPlan = null, selPrice = null;
+  if (hasCF && plans?.length) selPlan = plans.find(p=>p.size===st.size) || plans[0];
+  else if (prices.length) selPrice = prices[st._priceIdx||0];
+
+  // ── Price hero ──
+  const pSize = selPlan ? selPlan.size : (selPrice ? selPrice.a : '');
+  const pNew = selPlan ? selPlan.disc : (selPrice ? selPrice.n : '');
+  const pOld = selPlan ? selPlan.orig : (selPrice ? selPrice.o : '');
+  const pType = st.type || '';
+  if (pSize) {
+    h += `<div class="fd-price-hero">
+      <div class="fd-price-hero-left"><div class="fd-price-hero-size">${pSize}</div>${pType?`<div class="fd-price-hero-type">${pType}</div>`:''}</div>
+      <div class="fd-price-hero-right"><div class="fd-price-hero-new">${pNew}</div>${pOld&&pOld!=='—'?`<div class="fd-price-hero-old">${pOld}</div>`:''}</div>
     </div>`;
   }
+
+  // ── Section 1: Account Rules ──
+  h += `<div class="fd-section open">
+    <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
+      <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(240,180,41,.08);color:var(--gold);">📋</span>${t('fd_regras_conta')}</span>
+      <span class="fd-section-arrow">▲</span>
+    </div>
+    <div class="fd-section-body">`;
+  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_dias_min')}</span><span class="fd-row-val">${f.minDays||'—'}</span></div>`;
+  if (selPlan?.capital) h += `<div class="fd-row"><span class="fd-row-label">Capital</span><span class="fd-row-val">${selPlan.capital}</span></div>`;
+  if (selPlan?.goal) h += `<div class="fd-row"><span class="fd-row-label">${t('drw_meta')}</span><span class="fd-row-val hl">${selPlan.goal}</span></div>`;
+  else if (f.target) h += `<div class="fd-row"><span class="fd-row-label">${t('drw_meta')}</span><span class="fd-row-val hl">${tf(f.target)}</span></div>`;
+  if (selPlan?.maxDD) h += `<div class="fd-row"><span class="fd-row-label">${t('drw_dd_max')}</span><span class="fd-row-val r">${selPlan.maxDD}</span></div>`;
+  else if (f.ddPct) h += `<div class="fd-row"><span class="fd-row-label">${t('drw_dd_max')}</span><span class="fd-row-val r">${tf(f.ddPct)}</span></div>`;
+  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_drawdown')}</span><span class="fd-row-val">${f.drawdown||'—'}</span></div>`;
+  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_scaling')}</span><span class="fd-row-val">${tf(f.scaling)||'—'}</span></div>`;
+  h += `<div class="fd-row"><span class="fd-row-label">${t('fd_taxa_reset')}</span><span class="fd-row-val">${t('fd_na')}</span></div>`;
+  h += `</div></div>`;
+
+  // ── Section 2: Platform Features ──
+  const includes = cf?.includes || [];
+  if (includes.length || f.platforms?.length) {
+    h += `<div class="fd-section open">
+      <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
+        <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(59,130,246,.08);color:#3B82F6;">⚡</span>${t('fd_plataforma_feat')}</span>
+        <span class="fd-section-arrow">▲</span>
+      </div>
+      <div class="fd-section-body">`;
+    includes.forEach(inc => {
+      h += `<div class="fd-plat-row"><span class="fd-plat-name">${tf(inc)}</span><span class="fd-plat-val">${t('fd_incluso')}</span></div>`;
+    });
+    if (!includes.length && f.platforms?.length) {
+      f.platforms.forEach(p => {
+        h += `<div class="fd-plat-row"><span class="fd-plat-name">${p}</span><span class="fd-plat-val">${t('fd_incluso')}</span></div>`;
+      });
+    }
+    h += `</div></div>`;
+  }
+
+  // ── Section 3: Funded Account / Performance ──
+  h += `<div class="fd-section">
+    <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
+      <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(168,85,247,.08);color:#A855F7;">🏆</span>${t('fd_conta_funded')}</span>
+      <span class="fd-section-arrow">▲</span>
+    </div>
+    <div class="fd-section-body">`;
+  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_split')}</span><span class="fd-row-val g">${f.split||'—'}</span></div>`;
+  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_prazo')}</span><span class="fd-row-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</span></div>`;
+  if (f.newsTrading!==undefined) h += `<div class="fd-row"><span class="fd-row-label">News Trading</span><span class="fd-row-val ${f.newsTrading?'g':'r'}">${f.newsTrading?'YES':'NO'}</span></div>`;
+  if (f.day1Payout!==undefined) h += `<div class="fd-row"><span class="fd-row-label">Day 1 Payout</span><span class="fd-row-val ${f.day1Payout?'g':'r'}">${f.day1Payout?'YES':'NO'}</span></div>`;
+  // Perks
+  if (f.perks?.length) {
+    f.perks.forEach(p => {
+      h += `<div class="fd-row"><span class="fd-row-label">${tf(p)}</span><span class="fd-row-val g">✓</span></div>`;
+    });
+  }
+  // Proibido
+  if (f.proibido?.length) {
+    f.proibido.forEach(p => {
+      h += `<div class="fd-row"><span class="fd-row-label">${tf(p)}</span><span class="fd-row-val r">✕</span></div>`;
+    });
+  }
+  h += `</div></div>`;
+
   return h;
 }
 
@@ -9190,23 +9312,29 @@ function closeFD(){
 }
 
 // FD selection handlers
-function fdSelType(fId,type){_drwState[fId].type=type;document.querySelectorAll(`#fd-types-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===type));}
-function fdSelPlat(fId,plat){_drwState[fId].plat=plat;document.querySelectorAll(`#fd-plats-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===plat));}
+function fdSelType(fId,type){
+  _drwState[fId].type=type;
+  document.querySelectorAll(`#fd-types-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===type));
+  fdRebuildSections(fId);
+}
+function fdSelPlat(fId,plat){
+  _drwState[fId].plat=plat;
+  document.querySelectorAll(`#fd-plats-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===plat));
+}
 function fdSelSize(fId,size){
   _drwState[fId].size=size;
   document.querySelectorAll(`#fd-sizes-${fId} .fd-size`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===size));
-  // Rebuild plan card
-  const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
-  const plan=cf?.plans?.find(p=>p.size===size);
-  const cardEl=document.getElementById(`fd-plan-card-${fId}`);
-  if(cardEl&&plan&&cf) cardEl.innerHTML=buildFdPlanCard(plan,f,cf,fId);
+  fdRebuildSections(fId);
 }
 function fdSelPrice(fId,idx){
   _drwState[fId]._priceIdx=idx;
-  const f=FIRMS.find(x=>x.id===fId);
   document.querySelectorAll(`#fd-sizes-${fId} .fd-size`).forEach((b,i)=>b.classList.toggle('sel',i===idx));
-  const cardEl=document.getElementById(`fd-plan-card-${fId}`);
-  if(cardEl&&f.prices?.[idx]) cardEl.innerHTML=buildFdPlanCardSimple(f.prices[idx],f,fId);
+  fdRebuildSections(fId);
+}
+function fdRebuildSections(fId){
+  const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
+  const el=document.getElementById(`fd-sections-${fId}`);
+  if(el&&f) el.innerHTML=buildFdSections(f,cf,fId);
 }
 function fdGoCheckout(fId){
   const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
