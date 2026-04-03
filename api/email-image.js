@@ -355,6 +355,18 @@ export default async function handler(req) {
       type: 'div', props: { style: { display: 'flex', height: '5px', background: `linear-gradient(90deg, ${color}, #F0B429, ${color})`, width: '100%' } }
     });
 
+    // Calculate height based on content
+    let h = 120; // header + bars
+    h += 200; // hero card
+    h += 90; // greeting
+    if (f.coupon) h += 130; // coupon
+    h += 80; // stats bar
+    if (rules.length) h += rules.length * 36 + 10; // rules table
+    if (plats.length) h += 60; // platforms
+    if (perks.length) h += perks.slice(0, 6).length * 26 + 40; // perks
+    if (prices.length) h += prices.length * 36 + 60; // pricing table
+    h += 140; // discount badge + CTA + footer
+
     return new ImageResponse(
       {
         type: 'div',
@@ -370,7 +382,7 @@ export default async function handler(req) {
           children: sections,
         },
       },
-      { width: 600 }
+      { width: 600, height: h }
     );
 
   } catch (err) {
