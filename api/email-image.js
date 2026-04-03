@@ -107,7 +107,7 @@ export default async function handler(req) {
             { type: 'div', props: {
               style: { display: 'flex', alignItems: 'center', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '8px', padding: '12px 14px', flexWrap: 'wrap' },
               children: [
-                { type: 'span', props: { style: { display: 'flex', backgroundColor: '#00B67A', color: '#fff', fontSize: '10px', fontWeight: 700, padding: '3px 10px', borderRadius: '4px', marginRight: '8px' }, children: 'Excelente' } },
+                { type: 'span', props: { style: { fontSize: '11px', fontWeight: 700, color: '#00B67A', marginRight: '8px' }, children: 'Excelente' } },
                 { type: 'span', props: { style: { fontSize: '12px', fontWeight: 800, color: '#EDF2F7', marginRight: '6px' }, children: starStr } },
                 // Green star boxes (Trustpilot style)
                 ...Array.from({ length: 5 }).map((_, i) => ({
