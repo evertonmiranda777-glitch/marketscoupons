@@ -3262,16 +3262,18 @@ function buildImageEmailHtml(imageUrl, link, lang='pt'){
   return `<!DOCTYPE html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="color-scheme" content="light only">
-<style>body,table,td{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}</style>
+<style>body,table,td,div,p{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}img{-ms-interpolation-mode:bicubic;}</style>
 </head>
-<body bgcolor="#07090D" style="margin:0;padding:0;background:#07090D;font-family:${FI};">
-<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#07090D" role="presentation">
-<tr><td align="center" style="padding:0;">
-  <a href="${link}" target="_blank" style="display:block;max-width:600px;">
-    <img src="${imageUrl}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;" alt="Oferta exclusiva">
-  </a>
-  <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-    <tr><td style="padding:12px 24px;text-align:center;">
+<body bgcolor="#07090D" style="margin:0;padding:0;background-color:#07090D;font-family:${FI};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#07090D" role="presentation" style="background-color:#07090D;">
+<tr><td align="center" bgcolor="#07090D" style="padding:0;background-color:#07090D;">
+  <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#07090D;" bgcolor="#07090D">
+    <tr><td bgcolor="#07090D" style="padding:0;background-color:#07090D;line-height:0;font-size:0;">
+      <a href="${link}" target="_blank" style="display:block;border:0;outline:0;text-decoration:none;">
+        <img src="${imageUrl}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:0;line-height:0;" alt="Oferta exclusiva MarketsCoupons">
+      </a>
+    </td></tr>
+    <tr><td bgcolor="#07090D" style="padding:16px 24px;text-align:center;background-color:#07090D;">
       <span style="color:#3D4F63;font-size:10px;font-family:${FI};">
         ${etFooter.footer || 'Voce recebeu este email por estar inscrito no MarketsCoupons.'}<br>
         <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;text-decoration:underline;">${etFooter.unsub || 'Cancelar inscricao'}</a>
