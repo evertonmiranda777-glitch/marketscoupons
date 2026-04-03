@@ -9101,6 +9101,7 @@ function openD(id){
   } else {
     openDrw(id, f, cf);
   }
+  history.replaceState(null,'','#firm/'+id);
   track('firm_detail_open',{firm_id:id,firm_name:f.name});
 }
 
@@ -9300,6 +9301,7 @@ function closeFD(){
   document.getElementById('fd-overlay').classList.remove('show');
   document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));
   document.body.style.overflow='';
+  if(location.hash.startsWith('#firm/')) history.replaceState(null,'',location.pathname+location.search);
 }
 
 // FD selection handlers
@@ -9490,7 +9492,7 @@ function drwGoCheckout(firmId) {
   window.open(url,'_blank');
 }
 
-function closeD(){document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';}
+function closeD(){document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';if(location.hash.startsWith('#firm/'))history.replaceState(null,'',location.pathname+location.search);}
 
 /* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
@@ -11417,6 +11419,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Carregar firmas e guias do Supabase
   await loadFirmsFromSupabase();
+  // Reopen firm overlay from URL hash (e.g. #firm/apex)
+  if(location.hash.startsWith('#firm/')){
+    const _hFirmId=location.hash.replace('#firm/','');
+    if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
+      go('firms');
+      setTimeout(()=>openD(_hFirmId),200);
+    }
+  }
   await loadGuidesFromSupabase();
   renderGuides();
   loadDailyAnalysis();
