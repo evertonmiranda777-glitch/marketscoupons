@@ -669,6 +669,53 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .mm-logo em{color:var(--gold);font-style:normal;}
 .mm-close{background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer;padding:2px 6px;}
 .mm-body{padding:8px 8px 40px;}
+#mm-auth-top{
+ padding:12px 10px 14px;margin:0 0 2px;
+ background:linear-gradient(135deg,rgba(240,180,41,.06) 0%,rgba(240,180,41,.02) 50%,rgba(255,255,255,.02) 100%);
+ border-bottom:1px solid rgba(240,180,41,.15);
+ display:flex;flex-direction:column;gap:8px;
+ position:relative;overflow:hidden;
+}
+#mm-auth-top::before{
+ content:'';position:absolute;top:-40%;right:-20%;width:120px;height:120px;
+ background:radial-gradient(circle,rgba(240,180,41,.12) 0%,transparent 70%);
+ pointer-events:none;
+}
+.mm-auth-welcome{
+ font-size:13px;font-weight:600;color:var(--t2);
+ margin-bottom:2px;letter-spacing:.2px;
+}
+.mm-auth-welcome span{color:var(--gold);}
+.mm-auth-btn{
+ display:flex;align-items:center;justify-content:center;gap:8px;
+ width:100%;padding:12px 14px;
+ background:rgba(255,255,255,.04);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+ border:1px solid rgba(255,255,255,.08);border-radius:12px;
+ color:var(--t1);font-family:var(--f);font-size:13.5px;font-weight:600;
+ cursor:pointer;transition:all .25s ease;
+ position:relative;overflow:hidden;
+}
+.mm-auth-btn::after{
+ content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
+ transition:left .5s ease;
+}
+.mm-auth-btn:active::after{left:100%;}
+.mm-auth-btn svg{width:16px;height:16px;flex-shrink:0;}
+.mm-auth-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);transform:translateY(-1px);}
+.mm-auth-btn:active{transform:translateY(0) scale(.98);}
+.mm-auth-signup{
+ background:linear-gradient(135deg,var(--gold) 0%,#e8a817 50%,#f5c842 100%)!important;
+ color:#000!important;border:none!important;
+ box-shadow:0 2px 12px rgba(240,180,41,.25),inset 0 1px 0 rgba(255,255,255,.2);
+ font-weight:700;letter-spacing:.3px;
+}
+.mm-auth-signup:hover{
+ box-shadow:0 4px 20px rgba(240,180,41,.35),inset 0 1px 0 rgba(255,255,255,.25);
+ transform:translateY(-1px);filter:brightness(1.05);
+}
+.mm-auth-signup::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);}
 .mm-sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);padding:12px 10px 5px;}
 .mm-item{
  display:block;width:100%;text-align:left;padding:11px 12px;
@@ -1931,6 +1978,17 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  <button class="mm-close" onclick="closeMM()"></button>
  </div>
  <div class="mm-body">
+ <div id="mm-auth-top" style="display:none;">
+  <div class="mm-auth-welcome" data-i18n="mm_auth_welcome">Bem-vindo ao <span>Markets Coupons</span></div>
+  <button class="mm-auth-btn" onclick="closeMM();openAuthModal('login')">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+   <span data-i18n="mm_entrar">Entrar na Conta</span>
+  </button>
+  <button class="mm-auth-btn mm-auth-signup" onclick="closeMM();openAuthModal('signup')">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+   <span data-i18n="mm_criar_conta">Criar Conta Grátis</span>
+  </button>
+ </div>
  <div class="mm-sec" data-i18n="mm_principal">Principal</div>
  <button class="mm-item" onclick="mgo('home')" data-i18n="mm_ofertas"> Ofertas & Cupons</button>
  <div class="mm-sec" data-i18n="mm_sec_firmas">Firmas</div>
@@ -1963,10 +2021,6 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  </div>
  <a href="https://t.me/marketcouponss" target="_blank"><div class="mm-tg" data-i18n="mm_telegram"> Entrar no Telegram</div></a>
  <div class="mm-sec" data-i18n="mm_sec_conta">Conta</div>
- <div id="mm-auth-out" style="display:none;">
-  <button class="mm-item" onclick="closeMM();openAuthModal('login')" data-i18n="mm_entrar">Entrar na Conta</button>
-  <button class="mm-item" onclick="closeMM();openAuthModal('signup')" data-i18n="mm_criar_conta">Criar Conta</button>
- </div>
  <div id="mm-auth-in" style="display:none;">
   <button class="mm-item" onclick="mgo('painel')" data-i18n="mm_painel">Meu Painel</button>
   <button class="mm-item" onclick="closeMM();doLogout()" data-i18n="mm_sair">Sair da Conta</button>
@@ -3572,8 +3626,9 @@ const I18N = {
     mm_sec_idioma:'Idioma',
     mm_telegram:'Entrar no Telegram',
     mm_sec_conta:'Conta',
+    mm_auth_welcome:'Bem-vindo ao <span>Markets Coupons</span>',
     mm_entrar:'Entrar na Conta',
-    mm_criar_conta:'Criar Conta',
+    mm_criar_conta:'Criar Conta Grátis',
     mm_painel:'Meu Painel',
     mm_sair:'Sair da Conta',
     login_titulo:'Entre na sua conta',
@@ -4158,8 +4213,9 @@ const I18N = {
     mm_sec_idioma:'Language',
     mm_telegram:'Sign in to Telegram',
     mm_sec_conta:'Account',
+    mm_auth_welcome:'Welcome to <span>Markets Coupons</span>',
     mm_entrar:'Sign In',
-    mm_criar_conta:'Create Account',
+    mm_criar_conta:'Create Free Account',
     mm_painel:'My Dashboard',
     mm_sair:'Log Out',
     login_titulo:'Sign in to your account',
@@ -4744,8 +4800,9 @@ const I18N = {
     mm_sec_idioma:'Idioma',
     mm_telegram:'Iniciar sesión en Telegram',
     mm_sec_conta:'Cuenta',
+    mm_auth_welcome:'Bienvenido a <span>Markets Coupons</span>',
     mm_entrar:'Iniciar sesión',
-    mm_criar_conta:'Crear cuenta',
+    mm_criar_conta:'Crear cuenta gratis',
     mm_painel:'Mi panel',
     mm_sair:'Salir de la cuenta',
     login_titulo:'Inicie sesión en su cuenta',
@@ -5330,8 +5387,9 @@ const I18N = {
     mm_sec_idioma:'Lingua',
     mm_telegram:'Accedi a Telegram',
     mm_sec_conta:'Account',
+    mm_auth_welcome:'Benvenuto su <span>Markets Coupons</span>',
     mm_entrar:'Accedi all\'account',
-    mm_criar_conta:'Crea un account',
+    mm_criar_conta:'Crea un account gratuito',
     mm_painel:'Il mio pannello',
     mm_sair:'Esci dall\'account',
     login_titulo:'Accedi al tuo account',
@@ -5916,8 +5974,9 @@ const I18N = {
     mm_sec_idioma:'Langue',
     mm_telegram:'Se connecter à Telegram',
     mm_sec_conta:'Compte',
+    mm_auth_welcome:'Bienvenue sur <span>Markets Coupons</span>',
     mm_entrar:'Se connecter',
-    mm_criar_conta:'Créer un compte',
+    mm_criar_conta:'Créer un compte gratuit',
     mm_painel:'Mon tableau de bord',
     mm_sair:'Se déconnecter',
     login_titulo:'Connectez-vous à votre compte',
@@ -6502,8 +6561,9 @@ const I18N = {
     mm_sec_idioma:'Sprache',
     mm_telegram:'Bei Telegram anmelden',
     mm_sec_conta:'Konto',
+    mm_auth_welcome:'Willkommen bei <span>Markets Coupons</span>',
     mm_entrar:'Bei Konto anmelden',
-    mm_criar_conta:'Konto erstellen',
+    mm_criar_conta:'Kostenloses Konto erstellen',
     mm_painel:'Mein Dashboard',
     mm_sair:'Vom Konto abmelden',
     login_titulo:'Melden Sie sich bei Ihrem Konto an',
@@ -7088,8 +7148,9 @@ const I18N = {
     mm_sec_idioma:'اللغة',
     mm_telegram:'تسجيل الدخول إلى Telegram',
     mm_sec_conta:'حساب',
+    mm_auth_welcome:'مرحباً بك في <span>Markets Coupons</span>',
     mm_entrar:'تسجيل الدخول إلى الحساب',
-    mm_criar_conta:'إنشاء حساب',
+    mm_criar_conta:'إنشاء حساب مجاني',
     mm_painel:'لوحتي',
     mm_sair:'تسجيل الخروج من الحساب',
     login_titulo:'سجّل الدخول إلى حسابك',
@@ -10677,9 +10738,9 @@ function updateAuthUI(loggedIn) {
   document.getElementById('auth-btns-out').style.display = loggedIn ? 'none' : 'flex';
   document.getElementById('auth-btns-in').style.display  = loggedIn ? '' : 'none';
   // Mobile menu
-  const mmOut = document.getElementById('mm-auth-out');
+  const mmTop = document.getElementById('mm-auth-top');
   const mmIn  = document.getElementById('mm-auth-in');
-  if (mmOut) mmOut.style.display = loggedIn ? 'none' : '';
+  if (mmTop) mmTop.style.display = loggedIn ? 'none' : '';
   if (mmIn)  mmIn.style.display  = loggedIn ? '' : 'none';
 
   if (loggedIn && currentProfile) {
