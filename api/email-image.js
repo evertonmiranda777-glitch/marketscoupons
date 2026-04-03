@@ -292,11 +292,11 @@ export default async function handler(req) {
           children: [
             {
               type: 'div', props: {
-                style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '10px', padding: '14px 16px' },
+                style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '10px', padding: '8px 16px' },
                 children: [
-                  { type: 'div', props: { style: { color: '#3D4F63', fontSize: '8px', fontWeight: 700, letterSpacing: '2px', marginBottom: '8px' }, children: 'CUPOM EXCLUSIVO' } },
-                  { type: 'div', props: { style: { color: '#F0B429', fontSize: '28px', fontWeight: 900, letterSpacing: '6px' }, children: f.coupon } },
-                  { type: 'div', props: { style: { color: '#3D4F63', fontSize: '10px', marginTop: '6px' }, children: 'use o cupom no checkout' } },
+                  { type: 'div', props: { style: { color: '#3D4F63', fontSize: '7px', fontWeight: 700, letterSpacing: '2px', marginBottom: '4px' }, children: 'CUPOM EXCLUSIVO' } },
+                  { type: 'div', props: { style: { color: '#F0B429', fontSize: '22px', fontWeight: 900, letterSpacing: '5px' }, children: f.coupon } },
+                  { type: 'div', props: { style: { color: '#3D4F63', fontSize: '9px', marginTop: '4px' }, children: 'use o cupom no checkout' } },
                 ],
               },
             },
