@@ -607,9 +607,9 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 /* Mobile */
 @media(max-width:768px){
  .auth-left{display:none;}
- .auth-overlay.show{display:flex;align-items:flex-start;}
- .auth-split{min-height:100%;height:auto;}
- .auth-right{flex:1;padding:24px 20px;padding-top:60px;padding-bottom:40px;background:#030507;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+ .auth-overlay.show{display:flex;align-items:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+ .auth-split{min-height:100%;height:auto;flex-direction:column;}
+ .auth-right{flex:none;width:100%;padding:60px 20px 40px;background:#030507;}
  .auth-form{max-width:100%;}
  .auth-form-title{font-size:24px;}
  .auth-sub{font-size:13px;margin-bottom:24px;}
