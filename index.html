@@ -8932,8 +8932,33 @@ function openD(id){
     rightHtml += `<button class="go-btn" onclick="drwGoCheckout('${id}')">${t('firms_comecar')}</button>
     </div>`;
   } else {
-    rightHtml += `<div style="margin-top:10px;">
-      <button class="go-btn" onclick="closeD();achSelectFirm('${f.id}');go('checkout')">${t('offers_ver_planos')}</button>
+    // Firms without checkout config: show coupon + prices + direct affiliate link
+    rightHtml += `<div class="drw-checkout">`;
+    if (f.coupon) {
+      rightHtml += `<div class="drw-coupon-bar">
+        <div class="offer-coupon-left">
+          <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
+          <span class="drw-coupon-code">${f.coupon}</span>
+        </div>
+        <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_direct')">${t('firms_copiar')}</button>
+      </div>
+      <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
+    }
+    if (f.prices?.length) {
+      const pt = f.price_types||[];
+      const hasDual = pt.length>=2 && f.prices.some(r=>r.n2);
+      rightHtml += `<div class="drw-sel-label" style="margin-top:4px;">${t('firms_precos')}</div>`;
+      if (hasDual) {
+        rightHtml += `<table class="ptbl"><thead><tr><th rowspan="2">${t('drw_conta')}</th><th colspan="2" style="text-align:center;color:var(--blue);border-bottom:1px solid var(--b1);">${pt[0]}</th><th colspan="2" style="text-align:center;color:var(--green);border-bottom:1px solid var(--b1);">${pt[1]}</th></tr><tr><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td><td class="tn">${r.n2||'—'}</td><td class="to">${r.o2||'—'}</td></tr>`).join('')}</tbody></table>`;
+      } else {
+        rightHtml += `<table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>`;
+      }
+    }
+    if (f.platforms?.length) {
+      rightHtml += `<div class="drw-sel-label" style="margin-top:12px;">${t('firms_plataformas')}</div>
+        <div class="plats-flex">${f.platforms.map(p=>`<span class="plat">${p}</span>`).join('')}</div>`;
+    }
+    rightHtml += `<button class="go-btn" onclick="window.open('${f.link}','_blank');track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}'});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button>
     </div>`;
   }
 
