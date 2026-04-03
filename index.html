@@ -965,7 +965,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .offer-badge{display:inline-flex;align-items:center;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:8px;letter-spacing:.3px;}
 @media(max-width:600px){.offers-grid{grid-template-columns:1fr;}.offers-hero-title{font-size:22px;}}
 
-/* DRAWER / MODAL */
+/* DRAWER (mobile only) */
 .ov{position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.3s;}
 .ov.open{opacity:1;pointer-events:all;}
 .drw{
@@ -976,32 +976,10 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw.open{transform:translateX(0);}
 .drw::-webkit-scrollbar{width:4px;}
 .drw::-webkit-scrollbar-thumb{background:var(--b2);}
-/* Desktop: modal centralizado */
-@media(min-width:769px){
-.drw{
- right:50%;top:50%;bottom:auto;
- width:min(720px,92vw);max-height:88vh;
- transform:translate(50%,-50%) scale(.95);opacity:0;
- border:1px solid var(--b1);border-radius:16px;border-left:1px solid var(--b1);
- box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04);
- transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s;
-}
-.drw.open{transform:translate(50%,-50%) scale(1);opacity:1;}
-.drw-body{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;}
-.drw-col-left{padding:20px;border-right:1px solid var(--b1);overflow-y:auto;max-height:calc(88vh - 70px);}
-.drw-col-right{padding:20px;display:flex;flex-direction:column;overflow-y:auto;max-height:calc(88vh - 70px);justify-content:space-between;}
-.drw-col-left::-webkit-scrollbar,.drw-col-right::-webkit-scrollbar{width:3px;}
-.drw-col-left::-webkit-scrollbar-thumb,.drw-col-right::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
-}
-/* Mobile: drawer sidebar (default) */
-@media(max-width:768px){
-.drw-col-left,.drw-col-right{padding:0;}
-}
 .drw-hd{
  display:flex;align-items:center;justify-content:space-between;
  padding:16px 20px;border-bottom:1px solid var(--b1);
  position:sticky;top:0;background:var(--sur);z-index:1;
- border-radius:16px 16px 0 0;
 }
 .drw-left{display:flex;align-items:center;gap:11px;}
 .drw-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;}
@@ -1056,7 +1034,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .plats-flex{display:flex;gap:5px;flex-wrap:wrap;}
 .plat{font-size:11px;color:var(--t2);padding:3px 8px;border:1px solid var(--b2);border-radius:4px;}
 .desc-p{font-size:12.5px;color:var(--t2);line-height:1.7;}
-.go-btn{display:block;width:100%;padding:12px;text-align:center;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;margin-top:auto;}
+.go-btn{display:block;width:100%;padding:12px;text-align:center;background:var(--gold);color:#07090D;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;margin-top:6px;}
 .go-btn:hover{background:var(--gold-hover);}
 
 /* CHECKOUT PAGE */
@@ -1308,7 +1286,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw-section.open .drw-section-body{display:block;}
 
 /* Inline checkout selectors inside drawer */
-.drw-checkout{background:var(--card2);border:1px solid var(--b1);border-radius:10px;padding:14px;margin-top:10px;display:flex;flex-direction:column;flex:1;}
+.drw-checkout{background:var(--card2);border:1px solid var(--b1);border-radius:10px;padding:14px;margin-top:10px;}
 .drw-sel-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
 .drw-btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
 .drw-btn{padding:7px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;font-family:var(--f);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;white-space:nowrap;}
@@ -1320,6 +1298,108 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw-coupon-copy{padding:8px 18px;background:var(--gold);color:#07090D;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--f);}
 .drw-coupon-copy:hover{background:var(--gold-hover);}
 .drw-coupon-hint{font-size:10px;color:var(--t3);text-align:center;margin-bottom:8px;}
+
+/* ═══ FIRM DETAIL OVERLAY (Desktop fullscreen) ═══ */
+.fd-overlay{position:fixed;inset:0;background:#030507;z-index:9995;display:none;overflow:hidden;}
+.fd-overlay.show{display:flex;}
+.fd-split{display:flex;width:100%;height:100%;}
+/* Left: Firm branding */
+.fd-left{flex:0 0 48%;display:flex;flex-direction:column;position:relative;overflow:hidden;background:#030507;}
+.fd-left-aurora{position:absolute;inset:0;background-size:400% 400%;animation:authAurora 15s ease infinite;opacity:.7;}
+.fd-left-stars{position:absolute;inset:0;pointer-events:none;
+background:
+ radial-gradient(1px 1px at 60px 90px,rgba(255,255,255,.5),transparent),
+ radial-gradient(1.5px 1.5px at 250px 50px,rgba(240,180,41,.4),transparent),
+ radial-gradient(1px 1px at 400px 300px,rgba(255,255,255,.3),transparent),
+ radial-gradient(1px 1px at 120px 350px,rgba(168,85,247,.3),transparent),
+ radial-gradient(1.5px 1.5px at 480px 180px,rgba(255,255,255,.4),transparent);
+background-size:550px 450px;animation:authStars 80s linear infinite;}
+.fd-left-mesh{position:absolute;inset:0;background-image:
+ linear-gradient(rgba(240,180,41,0.02) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(240,180,41,0.02) 1px,transparent 1px);
+background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,black 10%,transparent 70%);}
+.fd-left::before{content:'';position:absolute;top:5%;right:0;width:400px;height:400px;background:radial-gradient(circle,rgba(240,180,41,0.15) 0%,transparent 65%);pointer-events:none;animation:authOrb1 8s ease-in-out infinite alternate;filter:blur(50px);}
+.fd-left::after{content:'';position:absolute;bottom:5%;left:5%;width:350px;height:350px;background:radial-gradient(circle,rgba(168,85,247,0.12) 0%,transparent 65%);pointer-events:none;animation:authOrb2 10s ease-in-out infinite alternate;filter:blur(50px);}
+.fd-left-border{position:absolute;right:0;top:0;height:100%;width:1px;background:linear-gradient(to bottom,transparent 5%,rgba(240,180,41,0.15) 30%,rgba(168,85,247,0.1) 70%,transparent 95%);}
+/* Firm branding content */
+.fd-brand{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;height:100%;padding:56px 52px;overflow-y:auto;}
+.fd-brand::-webkit-scrollbar{width:3px;}
+.fd-brand::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
+.fd-logo{width:72px;height:72px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin-bottom:24px;box-shadow:0 8px 32px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);}
+.fd-logo img{width:100%;height:100%;object-fit:cover;border-radius:18px;}
+.fd-firm-name{font-size:36px;font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.1;margin-bottom:8px;}
+.fd-firm-sub{font-size:14px;color:var(--t2);margin-bottom:28px;}
+.fd-rating-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.fd-rating-big{font-size:44px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;}
+.fd-rating-stars{display:flex;gap:3px;margin-bottom:3px;}
+.fd-rating-stars span{color:var(--gold);font-size:16px;text-shadow:0 0 10px rgba(240,180,41,.3);}
+.fd-rating-cnt{font-size:12px;color:var(--t3);}
+.fd-tp{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(0,182,122,0.06);border:1px solid rgba(0,182,122,0.15);border-radius:10px;margin-bottom:28px;cursor:pointer;transition:.2s;}
+.fd-tp:hover{border-color:rgba(0,182,122,0.4);background:rgba(0,182,122,0.1);}
+.fd-tp-label{font-size:12px;font-weight:700;color:var(--tp-green);}
+.fd-tp-stars{display:flex;gap:2px;}
+.fd-tp-star{font-size:14px;color:var(--b2);}
+.fd-tp-star.on{color:var(--tp-green);}
+.fd-tp-info{font-size:11px;color:var(--t2);}
+.fd-tp-info b{color:var(--tp-green);}
+/* Firm stats grid */
+.fd-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;margin-bottom:24px;}
+.fd-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px;backdrop-filter:blur(8px);}
+.fd-stat-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:5px;}
+.fd-stat-val{font-size:14px;font-weight:700;color:var(--t1);}
+.fd-stat-val.g{color:var(--green);}
+.fd-stat-val.y{color:var(--gold);}
+.fd-stat-val.r{color:var(--red);}
+/* Description */
+.fd-desc{font-size:13px;color:var(--t2);line-height:1.7;max-width:440px;margin-bottom:20px;}
+/* Perks */
+.fd-perks{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.fd-perk{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(34,197,94,.06);color:var(--green);border:1px solid rgba(34,197,94,.12);}
+/* Right: Checkout */
+.fd-right{flex:0 0 52%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px 40px;overflow-y:auto;background:#050709;position:relative;}
+.fd-right::-webkit-scrollbar{width:3px;}
+.fd-right::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+.fd-close{position:absolute;top:24px;right:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:var(--t3);font-size:20px;cursor:pointer;transition:.3s;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;z-index:2;}
+.fd-close:hover{color:var(--t1);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,0.1);transform:rotate(90deg);}
+/* Checkout form */
+.fd-checkout{width:100%;max-width:420px;}
+.fd-checkout-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
+.fd-checkout-sub{font-size:13px;color:var(--t3);margin-bottom:32px;line-height:1.5;}
+/* Steps */
+.fd-step{margin-bottom:24px;}
+.fd-step-label{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;}
+.fd-step-num{width:22px;height:22px;border-radius:50%;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.2);color:var(--gold);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fd-step-options{display:flex;gap:8px;flex-wrap:wrap;}
+.fd-opt{padding:10px 18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--t2);font-family:var(--f);font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.fd-opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent 50%);pointer-events:none;opacity:0;transition:.25s;}
+.fd-opt:hover{border-color:rgba(255,255,255,.12);color:var(--t1);transform:translateY(-1px);}
+.fd-opt:hover::before{opacity:1;}
+.fd-opt.sel{background:rgba(240,180,41,.08);border-color:rgba(240,180,41,.3);color:var(--gold);box-shadow:0 0 20px rgba(240,180,41,.08);}
+.fd-opt.sel::after{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(to right,transparent,rgba(240,180,41,.4),transparent);}
+/* Coupon in checkout */
+.fd-coupon{display:flex;align-items:center;justify-content:space-between;background:rgba(240,180,41,.04);border:1px dashed rgba(240,180,41,.2);border-radius:14px;padding:18px 20px;margin-bottom:8px;}
+.fd-coupon-left{display:flex;flex-direction:column;}
+.fd-coupon-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);margin-bottom:5px;}
+.fd-coupon-code{font-size:22px;font-weight:800;letter-spacing:3px;color:var(--gold);text-shadow:0 0 20px rgba(240,180,41,.15);}
+.fd-coupon-copy{padding:10px 20px;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.2);border-radius:10px;color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;transition:.25s;font-family:var(--f);}
+.fd-coupon-copy:hover{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.4);}
+.fd-coupon-hint{font-size:10px;color:var(--t3);text-align:center;margin-bottom:20px;}
+/* Price display */
+.fd-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.fd-price-new{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:-1px;}
+.fd-price-old{font-size:14px;color:var(--t3);text-decoration:line-through;}
+.fd-price-save{font-size:11px;color:var(--green);font-weight:700;padding:3px 10px;background:rgba(34,197,94,.06);border-radius:6px;}
+/* CTA button */
+.fd-cta{width:100%;padding:16px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;transition:transform .3s,box-shadow .3s;font-family:var(--f);box-shadow:0 4px 24px rgba(240,180,41,0.25);animation:authShimmer 3s ease infinite;position:relative;margin-top:8px;}
+.fd-cta::before{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent 50%);pointer-events:none;}
+.fd-cta:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,180,41,0.35);}
+/* Prices table in checkout */
+.fd-prices-wrap{margin-bottom:20px;}
+.fd-prices-wrap .ptbl{font-size:12px;}
+/* Mobile: hide overlay, use drawer */
+@media(max-width:768px){
+.fd-overlay{display:none!important;}
+}
 
 /* ═══ PLATAFORMAS PAGE ═══ */
 .plat-page{padding:24px;max-width:1000px;margin:0 auto;}
@@ -2835,7 +2915,24 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
   </div>
 </div>
 
-<!-- OVERLAY + DRAWER -->
+<!-- FIRM DETAIL OVERLAY (Desktop fullscreen) -->
+<div class="fd-overlay" id="fd-overlay">
+ <div class="fd-split">
+  <div class="fd-left">
+   <div class="fd-left-aurora"></div>
+   <div class="fd-left-stars"></div>
+   <div class="fd-left-mesh"></div>
+   <div class="fd-brand" id="fd-brand"></div>
+   <div class="fd-left-border"></div>
+  </div>
+  <div class="fd-right">
+   <button class="fd-close" onclick="closeFD()">✕</button>
+   <div class="fd-checkout" id="fd-checkout"></div>
+  </div>
+ </div>
+</div>
+
+<!-- OVERLAY + DRAWER (Mobile) -->
 <div class="ov" id="ov" onclick="closeD()"></div>
 <div class="drw" id="drw">
  <div class="drw-hd">
@@ -3246,6 +3343,7 @@ const I18N = {
     firms_beneficios:'Benefícios',
     firms_proibido:'Proibido',
     firms_comecar:'Começar Agora',
+    firms_escolha_opcoes:'Escolha o tipo de conta, plataforma e tamanho para iniciar.',
     firms_copiar:'Copiar',
     firms_hint_cupom:'use o cupom no checkout',
     firms_sel_tipo:'Selecione o Tipo',
@@ -3833,6 +3931,7 @@ const I18N = {
     firms_beneficios:'Benefits',
     firms_proibido:'Prohibited',
     firms_comecar:'Get Started Now',
+    firms_escolha_opcoes:'Choose account type, platform and size to begin.',
     firms_copiar:'Copy',
     firms_hint_cupom:'Use the coupon at checkout',
     firms_sel_tipo:'Select the Type',
@@ -4420,6 +4519,7 @@ const I18N = {
     firms_beneficios:'Ventajas',
     firms_proibido:'Prohibido',
     firms_comecar:'Empezar ahora',
+    firms_escolha_opcoes:'Elige el tipo de cuenta, plataforma y tamaño para comenzar.',
     firms_copiar:'Copiar',
     firms_hint_cupom:'Utiliza el cupón al finalizar la compra',
     firms_sel_tipo:'Selecciona el tipo',
@@ -5007,6 +5107,7 @@ const I18N = {
     firms_beneficios:'Vantaggi',
     firms_proibido:'Vietato',
     firms_comecar:'Inizia ora',
+    firms_escolha_opcoes:'Scegli il tipo di conto, la piattaforma e la dimensione per iniziare.',
     firms_copiar:'Copia',
     firms_hint_cupom:'utilizza il buono sconto al momento del pagamento',
     firms_sel_tipo:'Seleziona il tipo',
@@ -5594,6 +5695,7 @@ const I18N = {
     firms_beneficios:'Avantages',
     firms_proibido:'Interdit',
     firms_comecar:'Commencer maintenant',
+    firms_escolha_opcoes:'Choisissez le type de compte, la plateforme et la taille pour commencer.',
     firms_copiar:'Copier',
     firms_hint_cupom:'utilisez le code promo lors du paiement',
     firms_sel_tipo:'Sélectionnez le type',
@@ -6181,6 +6283,7 @@ const I18N = {
     firms_beneficios:'Vorteile',
     firms_proibido:'Verboten',
     firms_comecar:'Jetzt loslegen',
+    firms_escolha_opcoes:'Wählen Sie Kontotyp, Plattform und Größe, um zu beginnen.',
     firms_copiar:'Kopieren',
     firms_hint_cupom:'Lösen Sie den Gutschein an der Kasse ein',
     firms_sel_tipo:'Wählen Sie den Typ aus',
@@ -6768,6 +6871,7 @@ const I18N = {
     firms_beneficios:'المزايا',
     firms_proibido:'ممنوع',
     firms_comecar:'ابدأ الآن',
+    firms_escolha_opcoes:'اختر نوع الحساب والمنصة والحجم للبدء.',
     firms_copiar:'نسخ',
     firms_hint_cupom:'استخدم القسيمة عند الدفع',
     firms_sel_tipo:'حدد النوع',
@@ -8814,6 +8918,197 @@ const _drwState = {};
 function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
+  const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
+  if (!_drwState[id]) _drwState[id] = {
+    type: cf?.types?.[0] || '',
+    plat: cf?.platforms?.[0] || (f.platforms?.[0] || ''),
+    size: cf?.plans?.[0]?.size || '',
+  };
+
+  const isDesk = window.innerWidth > 768;
+
+  if (isDesk) {
+    openFD(id, f, cf);
+  } else {
+    openDrw(id, f, cf);
+  }
+  track('firm_detail_open',{firm_id:id,firm_name:f.name});
+}
+
+// ── DESKTOP: Fullscreen overlay ──
+function openFD(id, f, cf) {
+  const s = strs(f.rating);
+  const st = _drwState[id];
+
+  // Aurora color based on firm
+  const auroraEl = document.querySelector('.fd-left-aurora');
+  if (auroraEl) auroraEl.style.background = `linear-gradient(-45deg,#030507,${f.bg||'#0d0a1a'},#0a0d17,#030507)`;
+
+  // LEFT: Firm branding
+  let brandHtml = '';
+  // Logo
+  brandHtml += `<div class="fd-logo" style="background:${f.bg};">`;
+  if (f.icon_url) brandHtml += `<img src="${f.icon_url}" alt="${f.name}">`;
+  else brandHtml += `<span style="color:${f.color};">${f.icon}</span>`;
+  brandHtml += `</div>`;
+  // Name + sub
+  brandHtml += `<div class="fd-firm-name">${f.name}</div>`;
+  brandHtml += `<div class="fd-firm-sub">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.discount}% OFF · ${t('drw_split')} ${f.split}</div>`;
+  // Rating
+  brandHtml += `<div class="fd-rating-row">
+    <div class="fd-rating-big">${f.rating}</div>
+    <div><div class="fd-rating-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div>
+    <div class="fd-rating-cnt">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div></div>
+  </div>`;
+  // Trustpilot
+  if (f.trustpilot) {
+    const tpS = Math.round(f.trustpilot.score);
+    brandHtml += `<div class="fd-tp" onclick="openTpPopup('${f.trustpilot.url}')">
+      <span class="fd-tp-label">${t('tp_excellent')}</span>
+      <span class="fd-tp-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star${i<tpS?' on':''}">★</span>`).join('')}</span>
+      <span class="fd-tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span>
+    </div>`;
+  }
+  // Stats grid
+  brandHtml += `<div class="fd-stats">
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_drawdown')}</div><div class="fd-stat-val">${f.drawdown||'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_split')}</div><div class="fd-stat-val g">${f.split||'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_meta')}</div><div class="fd-stat-val y">${tf(f.target)||'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_dias_min')}</div><div class="fd-stat-val">${f.minDays?f.minDays+'d':'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_prazo')}</div><div class="fd-stat-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_scaling')}</div><div class="fd-stat-val">${tf(f.scaling)||'—'}</div></div>
+  </div>`;
+  // Description
+  if (f.desc) brandHtml += `<div class="fd-desc">${tf(f.desc)}</div>`;
+  // Perks
+  if (f.perks?.length) {
+    brandHtml += `<div class="fd-perks">${f.perks.map(p=>`<span class="fd-perk">+ ${tf(p)}</span>`).join('')}</div>`;
+  }
+
+  document.getElementById('fd-brand').innerHTML = brandHtml;
+
+  // RIGHT: Checkout stepper
+  let ckHtml = '';
+  ckHtml += `<div class="fd-checkout-title">${t('firms_comecar')}</div>`;
+  ckHtml += `<div class="fd-checkout-sub">${t('firms_escolha_opcoes')}</div>`;
+
+  let stepN = 1;
+
+  if (cf) {
+    // Firm with checkout config: show stepper
+    if (cf.types?.length > 1) {
+      ckHtml += `<div class="fd-step">
+        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_sel_tipo')}</div>
+        <div class="fd-step-options" id="fd-types-${id}">
+          ${cf.types.map(tp=>`<button class="fd-opt${tp===st.type?' sel':''}" onclick="fdSelType('${id}','${tp}')">${tp}</button>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    if (cf.platforms?.length) {
+      ckHtml += `<div class="fd-step">
+        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_sel_plat')}</div>
+        <div class="fd-step-options" id="fd-plats-${id}">
+          ${cf.platforms.map(p=>`<button class="fd-opt${p===st.plat?' sel':''}" onclick="fdSelPlat('${id}','${p}')">${p}</button>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    if (cf.plans?.length) {
+      ckHtml += `<div class="fd-step">
+        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_sel_tam')}</div>
+        <div class="fd-step-options" id="fd-sizes-${id}">
+          ${cf.plans.map(p=>`<button class="fd-opt${p.size===st.size?' sel':''}" onclick="fdSelSize('${id}','${p.size}')">${p.size}</button>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    // Price display for selected plan
+    const selPlan = cf.plans?.find(p=>p.size===st.size);
+    if (selPlan) {
+      ckHtml += `<div class="fd-price-row" id="fd-price-${id}">
+        <span class="fd-price-new">${selPlan.price||''}</span>
+        <span class="fd-price-old">${selPlan.orig||''}</span>
+        ${f.discount?`<span class="fd-price-save">${f.discount}% OFF</span>`:''}
+      </div>`;
+    }
+  } else {
+    // Firm without checkout: show prices table
+    if (f.prices?.length) {
+      const pt = f.price_types||[];
+      const hasDual = pt.length>=2 && f.prices.some(r=>r.n2);
+      ckHtml += `<div class="fd-prices-wrap">`;
+      if (hasDual) {
+        ckHtml += `<table class="ptbl"><thead><tr><th rowspan="2">${t('drw_conta')}</th><th colspan="2" style="text-align:center;color:var(--blue);border-bottom:1px solid var(--b1);">${pt[0]}</th><th colspan="2" style="text-align:center;color:var(--green);border-bottom:1px solid var(--b1);">${pt[1]}</th></tr><tr><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td><td class="tn">${r.n2||'—'}</td><td class="to">${r.o2||'—'}</td></tr>`).join('')}</tbody></table>`;
+      } else {
+        ckHtml += `<table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>`;
+      }
+      ckHtml += `</div>`;
+    }
+    if (f.platforms?.length) {
+      ckHtml += `<div class="fd-step">
+        <div class="fd-step-label"><span class="fd-step-num">${stepN++}</span>${t('firms_plataformas')}</div>
+        <div class="fd-step-options">${f.platforms.map(p=>`<span class="fd-opt" style="cursor:default;">${p}</span>`).join('')}</div>
+      </div>`;
+    }
+  }
+
+  // Coupon
+  if (f.coupon) {
+    ckHtml += `<div class="fd-coupon">
+      <div class="fd-coupon-left">
+        <div class="fd-coupon-tag">${t('firms_cupom_exclusivo')}</div>
+        <div class="fd-coupon-code">${f.coupon}</div>
+      </div>
+      <button class="fd-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','fd_checkout')">${t('firms_copiar')}</button>
+    </div>
+    <div class="fd-coupon-hint">${t('firms_hint_cupom')}</div>`;
+  }
+
+  // CTA
+  if (cf) {
+    ckHtml += `<button class="fd-cta" onclick="fdGoCheckout('${id}')">${t('firms_comecar')}</button>`;
+  } else {
+    ckHtml += `<button class="fd-cta" onclick="window.open('${f.link}','_blank');track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}'});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button>`;
+  }
+
+  document.getElementById('fd-checkout').innerHTML = ckHtml;
+  document.getElementById('fd-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFD(){
+  document.getElementById('fd-overlay').classList.remove('show');
+  document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));
+  document.body.style.overflow='';
+}
+
+// FD selection handlers
+function fdSelType(fId,type){_drwState[fId].type=type;document.querySelectorAll(`#fd-types-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===type));}
+function fdSelPlat(fId,plat){_drwState[fId].plat=plat;document.querySelectorAll(`#fd-plats-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===plat));}
+function fdSelSize(fId,size){
+  _drwState[fId].size=size;
+  document.querySelectorAll(`#fd-sizes-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===size));
+  // Update price display
+  const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
+  const plan=cf?.plans?.find(p=>p.size===size);
+  const priceEl=document.getElementById(`fd-price-${fId}`);
+  if(priceEl&&plan){priceEl.innerHTML=`<span class="fd-price-new">${plan.price||''}</span><span class="fd-price-old">${plan.orig||''}</span>${f.discount?`<span class="fd-price-save">${f.discount}% OFF</span>`:''}`;}
+}
+function fdGoCheckout(fId){
+  const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
+  if(!cf||!f){window.open(f?.link||'#','_blank');return;}
+  const st=_drwState[fId]||{};
+  let url=cf.buildUrl(st.size||'',st.type||'',st.plat||'');
+  url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+fId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
+  if(f.coupon)navigator.clipboard.writeText(f.coupon).catch(()=>{});
+  track('checkout_click',{firm_id:fId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro'});
+  registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
+  window.open(url,'_blank');
+}
+
+// ── MOBILE: Drawer sidebar ──
+function openDrw(id, f, cf) {
   const icoEl = document.getElementById('d-ico');
   if(f.icon_url) {
     icoEl.style.cssText=`background:${f.bg};`;
@@ -8825,31 +9120,20 @@ function openD(id){
   document.getElementById('d-name').textContent=f.name;
   document.getElementById('d-sub').textContent=`${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.discount}% OFF · ${t('drw_split')} ${f.split}`;
 
-  const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
-  if (!_drwState[id]) _drwState[id] = {
-    type: cf?.types?.[0] || '',
-    plat: cf?.platforms?.[0] || (f.platforms?.[0] || ''),
-    size: cf?.plans?.[0]?.size || '',
-  };
-
   const s=strs(f.rating);
-  const isDesk = window.innerWidth > 768;
-
-  // — LEFT COLUMN content: rating, trustpilot, accordion sobre —
-  let leftHtml = `
+  let html = `
     <div class="rating-blk"><div class="rb-score">${f.rating}</div><div><div class="rb-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div><div class="rb-cnt">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div></div></div>`;
   if (f.trustpilot) {
     const tpStars = Math.round(f.trustpilot.score);
-    leftHtml += `<a class="drw-tp-badge" href="javascript:void(0)" onclick="openTpPopup('${f.trustpilot.url}')">
+    html += `<a class="drw-tp-badge" href="javascript:void(0)" onclick="openTpPopup('${f.trustpilot.url}')">
       <span class="drw-tp-label">${t('tp_excellent')}</span>
       <span class="drw-tp-stars-row">${Array(5).fill(0).map((_,i)=>`<span class="drw-tp-star${i<tpStars?' filled':''}">★</span>`).join('')}</span>
       <span class="drw-tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span>
     </a>`;
   }
 
-  // Sobre a firma — on desktop: open by default
-  leftHtml += `
-    <div class="drw-section${isDesk?' open':''}" id="drw-sec-sobre-${id}">
+  html += `
+    <div class="drw-section" id="drw-sec-sobre-${id}">
       <div class="drw-section-hd" onclick="toggleDrwSection('drw-sec-sobre-${id}')">
         <span class="drw-section-title">${t('firms_sobre')}</span>
         <span class="drw-section-arrow">▼</span>
@@ -8891,35 +9175,29 @@ function openD(id){
       </div>
     </div>`;
 
-  // — RIGHT COLUMN content: checkout selectors + coupon + button —
-  let rightHtml = '';
   if (cf) {
     const st = _drwState[id];
-    rightHtml += `<div class="drw-checkout">`;
-
+    html += `<div class="drw-checkout">`;
     if (cf.types?.length > 1) {
-      rightHtml += `<div class="drw-sel-label">${t('firms_sel_tipo')}</div>
+      html += `<div class="drw-sel-label">${t('firms_sel_tipo')}</div>
         <div class="drw-btn-row" id="drw-types-${id}">
           ${cf.types.map(t=>`<button class="drw-btn${t===st.type?' sel':''}" onclick="drwSelType('${id}','${t}')">${t}</button>`).join('')}
         </div>`;
     }
-
     if (cf.platforms?.length) {
-      rightHtml += `<div class="drw-sel-label">${t('firms_sel_plat')}</div>
+      html += `<div class="drw-sel-label">${t('firms_sel_plat')}</div>
         <div class="drw-btn-row" id="drw-plats-${id}">
           ${cf.platforms.map(p=>`<button class="drw-btn${p===st.plat?' sel':''}" onclick="drwSelPlat('${id}','${p}')">${p}</button>`).join('')}
         </div>`;
     }
-
     if (cf.plans?.length) {
-      rightHtml += `<div class="drw-sel-label">${t('firms_sel_tam')}</div>
+      html += `<div class="drw-sel-label">${t('firms_sel_tam')}</div>
         <div class="drw-btn-row" id="drw-sizes-${id}">
           ${cf.plans.map(p=>`<button class="drw-btn${p.size===st.size?' sel':''}" onclick="drwSelSize('${id}','${p.size}')">${p.size}</button>`).join('')}
         </div>`;
     }
-
     if (f.coupon) {
-      rightHtml += `<div class="drw-coupon-bar">
+      html += `<div class="drw-coupon-bar">
         <div class="offer-coupon-left">
           <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
           <span class="drw-coupon-code">${f.coupon}</span>
@@ -8928,53 +9206,22 @@ function openD(id){
       </div>
       <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
     }
-
-    rightHtml += `<button class="go-btn" onclick="drwGoCheckout('${id}')">${t('firms_comecar')}</button>
-    </div>`;
+    html += `<button class="go-btn" onclick="drwGoCheckout('${id}')">${t('firms_comecar')}</button></div>`;
   } else {
-    // Firms without checkout config: show coupon + prices + direct affiliate link
-    rightHtml += `<div class="drw-checkout">`;
+    html += `<div class="drw-checkout">`;
     if (f.coupon) {
-      rightHtml += `<div class="drw-coupon-bar">
-        <div class="offer-coupon-left">
-          <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
-          <span class="drw-coupon-code">${f.coupon}</span>
-        </div>
+      html += `<div class="drw-coupon-bar">
+        <div class="offer-coupon-left"><div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div><span class="drw-coupon-code">${f.coupon}</span></div>
         <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_direct')">${t('firms_copiar')}</button>
-      </div>
-      <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
+      </div><div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
     }
-    if (f.prices?.length) {
-      const pt = f.price_types||[];
-      const hasDual = pt.length>=2 && f.prices.some(r=>r.n2);
-      rightHtml += `<div class="drw-sel-label" style="margin-top:4px;">${t('firms_precos')}</div>`;
-      if (hasDual) {
-        rightHtml += `<table class="ptbl"><thead><tr><th rowspan="2">${t('drw_conta')}</th><th colspan="2" style="text-align:center;color:var(--blue);border-bottom:1px solid var(--b1);">${pt[0]}</th><th colspan="2" style="text-align:center;color:var(--green);border-bottom:1px solid var(--b1);">${pt[1]}</th></tr><tr><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td><td class="tn">${r.n2||'—'}</td><td class="to">${r.o2||'—'}</td></tr>`).join('')}</tbody></table>`;
-      } else {
-        rightHtml += `<table class="ptbl"><thead><tr><th>${t('drw_conta')}</th><th>${t('drw_com_cupom')}</th><th>${t('drw_original')}</th></tr></thead><tbody>${f.prices.map(r=>`<tr><td class="ta">${r.a}</td><td class="tn">${r.n}</td><td class="to">${r.o}</td></tr>`).join('')}</tbody></table>`;
-      }
-    }
-    if (f.platforms?.length) {
-      rightHtml += `<div class="drw-sel-label" style="margin-top:12px;">${t('firms_plataformas')}</div>
-        <div class="plats-flex">${f.platforms.map(p=>`<span class="plat">${p}</span>`).join('')}</div>`;
-    }
-    rightHtml += `<button class="go-btn" onclick="window.open('${f.link}','_blank');track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}'});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button>
-    </div>`;
-  }
-
-  // Assemble: desktop = 2 columns, mobile = linear
-  let html;
-  if (isDesk) {
-    html = `<div class="drw-col-left">${leftHtml}</div><div class="drw-col-right">${rightHtml}</div>`;
-  } else {
-    html = leftHtml + rightHtml;
+    html += `<button class="go-btn" onclick="window.open('${f.link}','_blank');track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}'});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button></div>`;
   }
 
   document.getElementById('d-body').innerHTML = html;
   document.getElementById('ov').classList.add('open');
   document.getElementById('drw').classList.add('open');
   document.body.style.overflow='hidden';
-  track('firm_detail_open',{firm_id:id,firm_name:f.name});
 }
 
 function toggleDrwSection(id) {
@@ -9011,7 +9258,7 @@ function drwGoCheckout(firmId) {
   window.open(url,'_blank');
 }
 
-function closeD(){document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';}
+function closeD(){document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';}
 
 /* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
