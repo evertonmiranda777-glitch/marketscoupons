@@ -482,30 +482,83 @@ img{max-width:100%;}
 .user-dd-item:hover{background:rgba(255,255,255,.05);color:var(--t1);}
 
 /* AUTH MODALS */
-.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:none;backdrop-filter:blur(4px);}
-.auth-overlay.show{display:flex;align-items:center;justify-content:center;}
-.auth-box{width:100%;max-width:420px;padding:36px;background:var(--sur);border:1px solid var(--b2);border-radius:16px;position:relative;max-height:90vh;overflow-y:auto;}
-.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;transition:.2s;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;}
-.auth-close:hover{color:var(--t1);background:rgba(255,255,255,.05);}
-.auth-title{font-size:20px;font-weight:800;margin-bottom:4px;}
-.auth-title em{color:var(--gold);font-style:normal;}
-.auth-sub{font-size:12px;color:var(--t3);margin-bottom:24px;}
+/* ===== AUTH SCREENS (fullscreen split) ===== */
+.auth-overlay{position:fixed;inset:0;background:#07090D;z-index:9999;display:none;overflow:hidden;}
+.auth-overlay.show{display:flex;}
+.auth-split{display:flex;width:100%;height:100%;}
+/* LEFT: Carousel */
+.auth-left{flex:0 0 50%;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#07090D 0%,#0f1520 40%,#141025 70%,#0d0a1a 100%);}
+.auth-left::before{content:'';position:absolute;top:-30%;right:-20%;width:70%;height:70%;background:radial-gradient(circle,rgba(240,180,41,0.08) 0%,transparent 70%);pointer-events:none;}
+.auth-left::after{content:'';position:absolute;bottom:-20%;left:-10%;width:60%;height:60%;background:radial-gradient(circle,rgba(168,85,247,0.06) 0%,transparent 70%);pointer-events:none;}
+.auth-carousel{position:relative;width:100%;max-width:480px;padding:40px;z-index:1;}
+.auth-carousel-logo{display:flex;align-items:center;gap:10px;margin-bottom:60px;font-size:18px;font-weight:800;color:var(--t1);}
+.auth-carousel-logo img{width:36px;height:36px;border-radius:8px;}
+.auth-carousel-logo em{color:var(--gold);font-style:normal;}
+.auth-slide{display:none;animation:authFadeIn .5s ease;}
+.auth-slide.active{display:block;}
+@keyframes authFadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.auth-slide-visual{position:relative;width:100%;height:260px;margin-bottom:32px;border-radius:16px;overflow:hidden;}
+.auth-slide-visual-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(240,180,41,0.12) 0%,rgba(168,85,247,0.08) 50%,rgba(6,182,212,0.06) 100%);border:1px solid rgba(255,255,255,0.06);border-radius:16px;}
+.auth-slide-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;opacity:.9;}
+.auth-slide-cards{position:absolute;inset:20px;display:flex;gap:12px;align-items:center;justify-content:center;}
+.auth-slide-card{background:rgba(16,21,31,0.9);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;backdrop-filter:blur(8px);min-width:140px;}
+.auth-slide-card-gold{border-color:rgba(240,180,41,0.3);box-shadow:0 0 20px rgba(240,180,41,0.1);}
+.auth-slide-card .asc-pct{font-size:28px;font-weight:800;color:var(--gold);}
+.auth-slide-card .asc-label{font-size:11px;color:var(--t3);margin-top:2px;}
+.auth-slide-card .asc-firm{font-size:12px;font-weight:600;color:var(--t1);margin-top:8px;}
+.auth-slide-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.auth-slide h2{font-size:32px;font-weight:800;color:var(--t1);line-height:1.2;margin-bottom:16px;}
+.auth-slide p{font-size:15px;color:var(--t2);line-height:1.6;max-width:400px;}
+.auth-dots{display:flex;gap:8px;margin-top:40px;}
+.auth-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.15);cursor:pointer;transition:.3s;border:none;padding:0;}
+.auth-dot.active{background:var(--gold);box-shadow:0 0 8px rgba(240,180,41,0.4);}
+/* RIGHT: Form */
+.auth-right{flex:0 0 50%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px;overflow-y:auto;background:#07090D;}
+.auth-form{width:100%;max-width:400px;}
+.auth-close{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--t3);font-size:22px;cursor:pointer;transition:.2s;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;z-index:2;}
+.auth-close:hover{color:var(--t1);background:rgba(255,255,255,.06);}
+.auth-form-title{font-size:28px;font-weight:800;color:var(--t1);margin-bottom:6px;}
+.auth-form-title em{color:var(--gold);font-style:normal;}
+.auth-sub{font-size:13px;color:var(--t3);margin-bottom:28px;}
+/* Google button */
+.auth-google-btn{width:100%;padding:12px;background:transparent;border:1px solid var(--b2);border-radius:10px;color:var(--t1);font-size:14px;font-weight:600;cursor:pointer;transition:.2s;font-family:var(--f);display:flex;align-items:center;justify-content:center;gap:10px;}
+.auth-google-btn:hover{background:rgba(255,255,255,.04);border-color:var(--b3);}
+.auth-google-btn svg{width:20px;height:20px;flex-shrink:0;}
+/* Divider */
+.auth-divider{display:flex;align-items:center;gap:16px;margin:24px 0;color:var(--t3);font-size:12px;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--b1);}
+/* Fields */
 .auth-field{margin-bottom:14px;}
-.auth-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
-.auth-field input,.auth-field select{width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;outline:none;transition:.2s;font-family:var(--f);}
-.auth-field input:focus,.auth-field select:focus{border-color:var(--gold);}
+.auth-field label{display:block;font-size:11px;font-weight:600;color:var(--t2);margin-bottom:6px;}
+.auth-field input,.auth-field select{width:100%;padding:11px 14px;background:var(--card);border:1px solid var(--b1);border-radius:10px;color:var(--t1);font-size:13px;outline:none;transition:.2s;font-family:var(--f);}
+.auth-field input:focus,.auth-field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,180,41,0.08);}
+.auth-field input::placeholder{color:var(--t3);}
 .auth-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237A8FA6'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 .auth-field select option{background:var(--card);color:var(--t1);}
+.auth-field-pw{position:relative;}
+.auth-field-pw input{padding-right:42px;}
+.auth-pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;display:flex;align-items:center;}
+.auth-pw-toggle:hover{color:var(--t2);}
 .auth-row{display:flex;gap:10px;}
 .auth-row .auth-field{flex:1;}
-.auth-btn{width:100%;padding:12px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;margin-top:4px;font-family:var(--f);}
+.auth-btn{width:100%;padding:13px;background:var(--gold);color:#07090D;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;margin-top:8px;font-family:var(--f);}
 .auth-btn:hover{background:var(--gold-hover);}
 .auth-btn:disabled{opacity:.5;cursor:not-allowed;}
-.auth-switch{margin-top:16px;text-align:center;font-size:12px;color:var(--t3);}
-.auth-switch a{color:var(--gold);cursor:pointer;font-weight:600;}
+.auth-switch{margin-top:20px;text-align:center;font-size:13px;color:var(--t3);}
+.auth-switch a{color:var(--gold);cursor:pointer;font-weight:700;}
 .auth-switch a:hover{text-decoration:underline;}
 .auth-error{background:var(--rbg);color:var(--red);padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px;display:none;}
 .auth-success{background:var(--gnbg);color:var(--green);padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px;display:none;}
+.auth-footer{margin-top:32px;text-align:center;font-size:11px;color:var(--t3);}
+.auth-footer a{color:var(--t3);text-decoration:none;margin:0 6px;}
+.auth-footer a:hover{color:var(--t2);}
+/* Mobile: no carousel */
+@media(max-width:768px){
+ .auth-left{display:none;}
+ .auth-right{flex:1;padding:32px 24px;}
+ .auth-form-title{font-size:24px;}
+ .auth-close{top:16px;right:16px;}
+}
 
 /* USER PANEL PAGE */
 .up-header{text-align:center;padding:40px 20px 20px;}
@@ -1858,50 +1911,194 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  </div>
 </div>
 
-<!-- LOGIN MODAL -->
-<div class="auth-overlay" id="login-overlay" onclick="if(event.target===this)closeAuthModals()">
- <div class="auth-box">
-  <button class="auth-close" onclick="closeAuthModals()">&times;</button>
-  <div class="auth-title">Markets <em>Coupons</em></div>
-  <div class="auth-sub" data-i18n="login_titulo">Entre na sua conta</div>
-  <div class="auth-error" id="login-error"></div>
-  <div class="auth-field"><label data-i18n="login_email">E-mail</label><input type="email" id="auth-login-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
-  <div class="auth-field"><label data-i18n="login_senha">Senha</label><input type="password" id="auth-login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
-  <button class="auth-btn" id="login-btn" onclick="doAuthLogin()" data-i18n="login_entrar">Entrar</button>
-  <div class="auth-switch"><span data-i18n="login_nao_tem">Não tem conta?</span> <a onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</a></div>
+<!-- LOGIN SCREEN -->
+<div class="auth-overlay" id="login-overlay">
+ <div class="auth-split">
+  <div class="auth-left">
+   <div class="auth-carousel" id="login-carousel">
+    <div class="auth-carousel-logo"><img src="img/favicon.png" alt="MC"> Markets <em>Coupons</em></div>
+    <div class="auth-slide active" data-slide="0">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card auth-slide-card-gold"><div class="asc-pct">90%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Apex Trader Funding</div></div>
+       <div class="auth-slide-card"><div class="asc-pct">89%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Bulenox</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" data-i18n="auth_slide_tag1">CUPONS EXCLUSIVOS</div>
+     <h2 data-i18n="auth_slide_h1">Descontos de ate 90% em Prop Firms</h2>
+     <p data-i18n="auth_slide_p1">Cupons verificados e negociados diretamente com as mesas. Economize centenas de dolares.</p>
+    </div>
+    <div class="auth-slide" data-slide="1">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(168,85,247,0.12) 0%,rgba(6,182,212,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card" style="border-color:rgba(168,85,247,0.3);box-shadow:0 0 20px rgba(168,85,247,0.1);"><div class="asc-pct" style="color:var(--purple);">+200</div><div class="asc-label">PONTOS</div><div class="asc-firm">Avalie no Trustpilot</div></div>
+       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);"><div class="asc-pct" style="color:var(--green);">+150</div><div class="asc-label">PONTOS</div><div class="asc-firm">Siga no Instagram</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" style="color:var(--purple);" data-i18n="auth_slide_tag2">PROGRAMA DE FIDELIDADE</div>
+     <h2 data-i18n="auth_slide_h2">Ganhe pontos a cada compra</h2>
+     <p data-i18n="auth_slide_p2">Acumule pontos comprando, avaliando e interagindo. Troque por descontos exclusivos.</p>
+    </div>
+    <div class="auth-slide" data-slide="2">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(6,182,212,0.12) 0%,rgba(59,130,246,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card" style="border-color:rgba(6,182,212,0.3);box-shadow:0 0 20px rgba(6,182,212,0.1);"><div class="asc-pct" style="color:var(--cyan);">10+</div><div class="asc-label">FIRMAS</div><div class="asc-firm">Comparativo completo</div></div>
+       <div class="auth-slide-card" style="border-color:rgba(59,130,246,0.3);"><div class="asc-pct" style="color:var(--blue);">24/7</div><div class="asc-label">ATUALIZADO</div><div class="asc-firm">Precos e descontos</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" style="color:var(--cyan);" data-i18n="auth_slide_tag3">COMPARADOR</div>
+     <h2 data-i18n="auth_slide_h3">Compare firmas lado a lado</h2>
+     <p data-i18n="auth_slide_p3">Drawdown, profit split, precos e regras. Encontre a firma perfeita para o seu perfil.</p>
+    </div>
+    <div class="auth-slide" data-slide="3">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(34,197,94,0.12) 0%,rgba(240,180,41,0.08) 50%,rgba(168,85,247,0.06) 100%);"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);box-shadow:0 0 20px rgba(34,197,94,0.1);"><div class="asc-pct" style="color:var(--green);">7</div><div class="asc-label">IDIOMAS</div><div class="asc-firm">Conteudo global</div></div>
+       <div class="auth-slide-card" style="border-color:rgba(240,180,41,0.3);"><div class="asc-pct" style="color:var(--gold);">PRO</div><div class="asc-label">ANALISES</div><div class="asc-firm">Diarias e semanais</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" style="color:var(--green);" data-i18n="auth_slide_tag4">GUIAS E ANALISES</div>
+     <h2 data-i18n="auth_slide_h4">Conteudo gratuito para traders</h2>
+     <p data-i18n="auth_slide_p4">Guias educacionais, analises de mercado e blog com dicas para acelerar sua jornada.</p>
+    </div>
+    <div class="auth-dots" id="login-dots">
+     <button class="auth-dot active" onclick="goAuthSlide('login',0)"></button>
+     <button class="auth-dot" onclick="goAuthSlide('login',1)"></button>
+     <button class="auth-dot" onclick="goAuthSlide('login',2)"></button>
+     <button class="auth-dot" onclick="goAuthSlide('login',3)"></button>
+    </div>
+   </div>
+  </div>
+  <div class="auth-right">
+   <button class="auth-close" onclick="closeAuthModals()">&times;</button>
+   <div class="auth-form">
+    <div class="auth-form-title" data-i18n="login_titulo_new">Entrar</div>
+    <div class="auth-sub" data-i18n="login_subtitulo">Bem-vindo de volta! Entre para continuar.</div>
+    <div class="auth-error" id="login-error"></div>
+    <button class="auth-google-btn" onclick="doGoogleAuth()">
+     <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+     <span data-i18n="auth_google_login">Entrar com Google</span>
+    </button>
+    <div class="auth-divider" data-i18n="auth_ou">ou</div>
+    <div class="auth-field"><label data-i18n="login_email">E-mail</label><input type="email" id="auth-login-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
+    <div class="auth-field">
+     <label data-i18n="login_senha">Senha</label>
+     <div class="auth-field-pw"><input type="password" id="auth-login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuthLogin()"><button class="auth-pw-toggle" onclick="togglePw(this)" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+    </div>
+    <button class="auth-btn" id="login-btn" onclick="doAuthLogin()" data-i18n="login_entrar">Entrar</button>
+    <div class="auth-switch"><span data-i18n="login_nao_tem">Nao tem conta?</span> <a onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</a></div>
+    <div class="auth-footer"><a href="#" data-i18n="auth_suporte">Suporte</a> &middot; <a href="#" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="#" data-i18n="auth_termos">Termos</a></div>
+   </div>
+  </div>
  </div>
 </div>
 
-<!-- SIGNUP MODAL -->
-<div class="auth-overlay" id="signup-overlay" onclick="if(event.target===this)closeAuthModals()">
- <div class="auth-box">
-  <button class="auth-close" onclick="closeAuthModals()">&times;</button>
-  <div class="auth-title">Markets <em>Coupons</em></div>
-  <div class="auth-sub" data-i18n="signup_titulo">Crie sua conta gratuita</div>
-  <div class="auth-error" id="signup-error"></div>
-  <div class="auth-success" id="signup-success"></div>
-  <div class="auth-field"><label data-i18n="signup_nome">Nome completo</label><input type="text" id="auth-signup-name" placeholder="—"></div>
-  <div class="auth-field"><label data-i18n="signup_email">E-mail</label><input type="email" id="auth-signup-email" placeholder="email@example.com"></div>
-  <div class="auth-field"><label data-i18n="signup_senha">Senha (mín. 6 caracteres)</label><input type="password" id="auth-signup-pass" placeholder="••••••••"></div>
-  <div class="auth-field"><label data-i18n="signup_telefone">Telefone</label><input type="tel" id="auth-signup-phone" placeholder="+55 11 99999-9999"></div>
-  <div class="auth-row">
-   <div class="auth-field"><label data-i18n="signup_cidade">Cidade</label><input type="text" id="auth-signup-city" placeholder="—"></div>
-   <div class="auth-field"><label data-i18n="signup_estado">Estado</label><input type="text" id="auth-signup-state" placeholder="—"></div>
+<!-- SIGNUP SCREEN -->
+<div class="auth-overlay" id="signup-overlay">
+ <div class="auth-split">
+  <div class="auth-left">
+   <div class="auth-carousel" id="signup-carousel">
+    <div class="auth-carousel-logo"><img src="img/favicon.png" alt="MC"> Markets <em>Coupons</em></div>
+    <div class="auth-slide active" data-slide="0">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card auth-slide-card-gold"><div class="asc-pct">90%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Apex Trader Funding</div></div>
+       <div class="auth-slide-card"><div class="asc-pct">89%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Bulenox</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" data-i18n="auth_slide_tag1">CUPONS EXCLUSIVOS</div>
+     <h2 data-i18n="auth_slide_h1">Descontos de ate 90% em Prop Firms</h2>
+     <p data-i18n="auth_slide_p1">Cupons verificados e negociados diretamente com as mesas. Economize centenas de dolares.</p>
+    </div>
+    <div class="auth-slide" data-slide="1">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(168,85,247,0.12) 0%,rgba(6,182,212,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card" style="border-color:rgba(168,85,247,0.3);box-shadow:0 0 20px rgba(168,85,247,0.1);"><div class="asc-pct" style="color:var(--purple);">+200</div><div class="asc-label">PONTOS</div><div class="asc-firm">Avalie no Trustpilot</div></div>
+       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);"><div class="asc-pct" style="color:var(--green);">+150</div><div class="asc-label">PONTOS</div><div class="asc-firm">Siga no Instagram</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" style="color:var(--purple);" data-i18n="auth_slide_tag2">PROGRAMA DE FIDELIDADE</div>
+     <h2 data-i18n="auth_slide_h2">Ganhe pontos a cada compra</h2>
+     <p data-i18n="auth_slide_p2">Acumule pontos comprando, avaliando e interagindo. Troque por descontos exclusivos.</p>
+    </div>
+    <div class="auth-slide" data-slide="2">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(6,182,212,0.12) 0%,rgba(59,130,246,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card" style="border-color:rgba(6,182,212,0.3);box-shadow:0 0 20px rgba(6,182,212,0.1);"><div class="asc-pct" style="color:var(--cyan);">10+</div><div class="asc-label">FIRMAS</div><div class="asc-firm">Comparativo completo</div></div>
+       <div class="auth-slide-card" style="border-color:rgba(59,130,246,0.3);"><div class="asc-pct" style="color:var(--blue);">24/7</div><div class="asc-label">ATUALIZADO</div><div class="asc-firm">Precos e descontos</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" style="color:var(--cyan);" data-i18n="auth_slide_tag3">COMPARADOR</div>
+     <h2 data-i18n="auth_slide_h3">Compare firmas lado a lado</h2>
+     <p data-i18n="auth_slide_p3">Drawdown, profit split, precos e regras. Encontre a firma perfeita para o seu perfil.</p>
+    </div>
+    <div class="auth-slide" data-slide="3">
+     <div class="auth-slide-visual">
+      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(34,197,94,0.12) 0%,rgba(240,180,41,0.08) 50%,rgba(168,85,247,0.06) 100%);"></div>
+      <div class="auth-slide-cards">
+       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);box-shadow:0 0 20px rgba(34,197,94,0.1);"><div class="asc-pct" style="color:var(--green);">7</div><div class="asc-label">IDIOMAS</div><div class="asc-firm">Conteudo global</div></div>
+       <div class="auth-slide-card" style="border-color:rgba(240,180,41,0.3);"><div class="asc-pct" style="color:var(--gold);">PRO</div><div class="asc-label">ANALISES</div><div class="asc-firm">Diarias e semanais</div></div>
+      </div>
+     </div>
+     <div class="auth-slide-tag" style="color:var(--green);" data-i18n="auth_slide_tag4">GUIAS E ANALISES</div>
+     <h2 data-i18n="auth_slide_h4">Conteudo gratuito para traders</h2>
+     <p data-i18n="auth_slide_p4">Guias educacionais, analises de mercado e blog com dicas para acelerar sua jornada.</p>
+    </div>
+    <div class="auth-dots" id="signup-dots">
+     <button class="auth-dot active" onclick="goAuthSlide('signup',0)"></button>
+     <button class="auth-dot" onclick="goAuthSlide('signup',1)"></button>
+     <button class="auth-dot" onclick="goAuthSlide('signup',2)"></button>
+     <button class="auth-dot" onclick="goAuthSlide('signup',3)"></button>
+    </div>
+   </div>
   </div>
-  <div class="auth-field"><label data-i18n="signup_pais">País</label>
-   <select id="auth-signup-country">
-    <option value="Brasil">Brasil</option>
-    <option value="Portugal">Portugal</option>
-    <option value="Estados Unidos">Estados Unidos</option>
-    <option value="Argentina">Argentina</option>
-    <option value="Colômbia">Colômbia</option>
-    <option value="México">México</option>
-    <option value="Chile">Chile</option>
-    <option value="Outro">Outro</option>
-   </select>
+  <div class="auth-right">
+   <button class="auth-close" onclick="closeAuthModals()">&times;</button>
+   <div class="auth-form">
+    <div class="auth-form-title" data-i18n="signup_titulo_new">Criar Conta</div>
+    <div class="auth-sub" data-i18n="signup_subtitulo">Desbloqueie oportunidades ilimitadas no trading.</div>
+    <div class="auth-error" id="signup-error"></div>
+    <div class="auth-success" id="signup-success"></div>
+    <button class="auth-google-btn" onclick="doGoogleAuth()">
+     <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+     <span data-i18n="auth_google_signup">Cadastrar com Google</span>
+    </button>
+    <div class="auth-divider" data-i18n="auth_ou_email">ou cadastre-se com e-mail</div>
+    <div class="auth-field"><label data-i18n="signup_nome">Nome completo</label><input type="text" id="auth-signup-name" placeholder="Seu nome completo"></div>
+    <div class="auth-field"><label data-i18n="signup_email">E-mail</label><input type="email" id="auth-signup-email" placeholder="email@example.com"></div>
+    <div class="auth-field">
+     <label data-i18n="signup_senha">Senha (min. 6 caracteres)</label>
+     <div class="auth-field-pw"><input type="password" id="auth-signup-pass" placeholder="••••••••"><button class="auth-pw-toggle" onclick="togglePw(this)" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+    </div>
+    <div class="auth-field"><label data-i18n="signup_telefone">Telefone</label><input type="tel" id="auth-signup-phone" placeholder="+55 11 99999-9999"></div>
+    <div class="auth-row">
+     <div class="auth-field"><label data-i18n="signup_cidade">Cidade</label><input type="text" id="auth-signup-city" placeholder="Sua cidade"></div>
+     <div class="auth-field"><label data-i18n="signup_estado">Estado</label><input type="text" id="auth-signup-state" placeholder="UF"></div>
+    </div>
+    <div class="auth-field"><label data-i18n="signup_pais">Pais</label>
+     <select id="auth-signup-country">
+      <option value="Brasil">Brasil</option>
+      <option value="Portugal">Portugal</option>
+      <option value="Estados Unidos">Estados Unidos</option>
+      <option value="Argentina">Argentina</option>
+      <option value="Colombia">Colombia</option>
+      <option value="Mexico">Mexico</option>
+      <option value="Chile">Chile</option>
+      <option value="Outro">Outro</option>
+     </select>
+    </div>
+    <button class="auth-btn" id="signup-btn" onclick="doAuthSignup()" data-i18n="signup_criar">Criar Conta</button>
+    <div class="auth-switch"><span data-i18n="signup_ja_tem">Ja tem conta?</span> <a onclick="openAuthModal('login')" data-i18n="signup_entrar">Entrar</a></div>
+    <div class="auth-footer"><a href="#" data-i18n="auth_suporte">Suporte</a> &middot; <a href="#" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="#" data-i18n="auth_termos">Termos</a></div>
+   </div>
   </div>
-  <button class="auth-btn" id="signup-btn" onclick="doAuthSignup()" data-i18n="signup_criar">Criar Conta</button>
-  <div class="auth-switch"><span data-i18n="signup_ja_tem">Já tem conta?</span> <a onclick="openAuthModal('login')" data-i18n="signup_entrar">Entrar</a></div>
  </div>
 </div>
 
@@ -10068,15 +10265,68 @@ function openAuthModal(type) {
   closeAuthModals();
   document.getElementById(type === 'login' ? 'login-overlay' : 'signup-overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
+  startAuthCarousel(type === 'login' ? 'login' : 'signup');
 }
 function closeAuthModals() {
   document.getElementById('login-overlay').classList.remove('show');
   document.getElementById('signup-overlay').classList.remove('show');
   document.body.style.overflow = '';
-  // Clear errors
+  stopAuthCarousel();
   ['login-error','signup-error','signup-success'].forEach(id => {
     const el = document.getElementById(id); if(el){el.style.display='none';el.textContent='';}
   });
+}
+
+/* Google OAuth */
+async function doGoogleAuth() {
+  const { error } = await db.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin }
+  });
+  if (error) {
+    showToast(error.message || 'Erro ao conectar com Google', 'error');
+  }
+}
+
+/* Auth Carousel */
+let _authCarouselTimer = null;
+let _authCarouselCtx = null;
+function startAuthCarousel(ctx) {
+  _authCarouselCtx = ctx;
+  stopAuthCarousel();
+  _authCarouselTimer = setInterval(() => {
+    const container = document.getElementById(ctx + '-carousel');
+    if (!container) return;
+    const slides = container.querySelectorAll('.auth-slide');
+    const dots = container.querySelectorAll('.auth-dot');
+    let cur = 0;
+    slides.forEach((s, i) => { if (s.classList.contains('active')) cur = i; });
+    const next = (cur + 1) % slides.length;
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+    slides[next].classList.add('active');
+    dots[next].classList.add('active');
+  }, 4500);
+}
+function stopAuthCarousel() {
+  if (_authCarouselTimer) { clearInterval(_authCarouselTimer); _authCarouselTimer = null; }
+}
+function goAuthSlide(ctx, idx) {
+  const container = document.getElementById(ctx + '-carousel');
+  if (!container) return;
+  container.querySelectorAll('.auth-slide').forEach(s => s.classList.remove('active'));
+  container.querySelectorAll('.auth-dot').forEach(d => d.classList.remove('active'));
+  container.querySelectorAll('.auth-slide')[idx].classList.add('active');
+  container.querySelectorAll('.auth-dot')[idx].classList.add('active');
+  stopAuthCarousel();
+  startAuthCarousel(ctx);
+}
+
+/* Toggle password visibility */
+function togglePw(btn) {
+  const input = btn.parentElement.querySelector('input');
+  if (input.type === 'password') { input.type = 'text'; btn.style.color = 'var(--gold)'; }
+  else { input.type = 'password'; btn.style.color = ''; }
 }
 
 function showAuthError(id, msg) {
