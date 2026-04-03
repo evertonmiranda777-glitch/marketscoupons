@@ -108,23 +108,20 @@ export default async function handler(req) {
               style: { display: 'flex', alignItems: 'center', backgroundColor: '#0B0F16', border: '1px solid #1C2535', borderRadius: '8px', padding: '12px 14px', flexWrap: 'wrap' },
               children: [
                 { type: 'span', props: { style: { display: 'flex', backgroundColor: '#00B67A', color: '#fff', fontSize: '10px', fontWeight: 700, padding: '3px 10px', borderRadius: '4px', marginRight: '8px' }, children: 'Excelente' } },
-                // Trustpilot green stars
+                { type: 'span', props: { style: { fontSize: '12px', fontWeight: 800, color: '#EDF2F7', marginRight: '6px' }, children: starStr } },
+                // Green star boxes (Trustpilot style)
                 ...Array.from({ length: 5 }).map((_, i) => ({
                   type: 'div', props: {
-                    style: { display: 'flex', width: '20px', height: '20px', backgroundColor: i < Math.round(tpScore) ? '#00B67A' : '#1C2535', marginRight: '2px', justifyContent: 'center', alignItems: 'center' },
-                    children: { type: 'span', props: { style: { color: '#fff', fontSize: '12px', fontWeight: 900 }, children: '*' } },
+                    style: { display: 'flex', width: '22px', height: '22px', backgroundColor: i < Math.round(tpScore) ? '#00B67A' : '#1C2535', marginRight: '2px', borderRadius: '2px', justifyContent: 'center', alignItems: 'center' },
+                    children: { type: 'svg', props: { width: '14', height: '14', viewBox: '0 0 24 24', children: { type: 'path', props: { d: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z', fill: '#fff' } } } },
                   },
                 })),
-                { type: 'span', props: { style: { fontSize: '12px', fontWeight: 800, color: '#EDF2F7', marginLeft: '8px', marginRight: '6px' }, children: starStr } },
-                { type: 'span', props: { style: { fontSize: '11px', color: '#7A8FA6' }, children: tpReviews.toLocaleString() + ' avaliacoes' } },
+                { type: 'span', props: { style: { fontSize: '11px', color: '#7A8FA6', marginLeft: '6px' }, children: tpReviews.toLocaleString() + ' avaliacoes' } },
               ],
             }},
             { type: 'div', props: {
               style: { display: 'flex', marginTop: '6px', alignItems: 'center' },
-              children: [
-                { type: 'img', props: { src: 'https://cdn.trustpilot.net/brand-assets/4.1.0/logo-white.svg', width: 80, height: 20, style: { display: 'flex', height: '16px', marginRight: '8px' } } },
-                { type: 'span', props: { style: { fontSize: '10px', color: '#7A8FA6' }, children: tpReviews.toLocaleString() + ' avaliacoes no Trustpilot' } },
-              ],
+              children: { type: 'span', props: { style: { fontSize: '11px', color: '#7A8FA6' }, children: 'Trustpilot · ' + tpReviews.toLocaleString() + ' avaliacoes' } },
             }},
           ],
         },
