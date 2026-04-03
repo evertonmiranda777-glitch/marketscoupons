@@ -1313,7 +1313,7 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .fd-overlay.show{display:flex;}
 .fd-split{display:flex;width:100%;height:100%;}
 /* Left: Firm branding */
-.fd-left{flex:0 0 48%;display:flex;flex-direction:column;position:relative;overflow:hidden;background:#030507;}
+.fd-left{flex:0 0 48%;display:flex;flex-direction:column;position:relative;overflow:visible;background:#030507;}
 .fd-left-aurora{position:absolute;inset:0;background-size:400% 400%;animation:authAurora 15s ease infinite;opacity:.7;}
 .fd-left-stars{position:absolute;inset:0;pointer-events:none;
 background:
@@ -1334,10 +1334,15 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .fd-brand{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;height:100%;padding:40px 36px;overflow-y:auto;}
 .fd-brand::-webkit-scrollbar{width:3px;}
 .fd-brand::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
-.fd-logo{width:72px;height:72px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin-bottom:24px;box-shadow:0 8px 32px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);}
-.fd-logo img{width:100%;height:100%;object-fit:cover;border-radius:18px;}
-.fd-firm-name{font-size:36px;font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.1;margin-bottom:8px;}
-.fd-firm-sub{font-size:14px;color:var(--t2);margin-bottom:28px;}
+.fd-header-row{display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:24px;gap:16px;}
+.fd-header-left{display:flex;align-items:center;gap:14px;}
+.fd-header-disc{text-align:right;flex-shrink:0;}
+.fd-header-disc-pct{font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1;}
+.fd-header-disc-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.5px;margin-top:2px;}
+.fd-logo{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;box-shadow:0 8px 32px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.fd-logo img{width:100%;height:100%;object-fit:cover;border-radius:14px;}
+.fd-firm-name{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;}
+.fd-firm-sub{font-size:12px;color:var(--t3);margin-top:2px;}
 .fd-rating-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
 .fd-rating-big{font-size:44px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;}
 .fd-rating-stars{display:flex;gap:3px;margin-bottom:3px;}
@@ -9110,14 +9115,23 @@ function openFD(id, f, cf) {
 
   // LEFT: Firm branding
   let brandHtml = '';
-  // Logo
-  brandHtml += `<div class="fd-logo" style="background:${f.bg};">`;
+  // Header row: logo + name left, discount right
+  brandHtml += `<div class="fd-header-row">
+    <div class="fd-header-left">
+      <div class="fd-logo" style="background:${f.bg};">`;
   if (f.icon_url) brandHtml += `<img src="${f.icon_url}" alt="${f.name}">`;
   else brandHtml += `<span style="color:${f.color};">${f.icon}</span>`;
+  brandHtml += `</div>
+      <div><div class="fd-firm-name">${f.name}</div>
+      <div class="fd-firm-sub">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div>
+    </div>`;
+  if (f.discount) {
+    brandHtml += `<div class="fd-header-disc">
+      <div class="fd-header-disc-pct" style="color:${f.color};">${f.discount}%</div>
+      <div class="fd-header-disc-label">OFF ${(tf(f.dtype)||'').toUpperCase()}</div>
+    </div>`;
+  }
   brandHtml += `</div>`;
-  // Name + sub
-  brandHtml += `<div class="fd-firm-name">${f.name}</div>`;
-  brandHtml += `<div class="fd-firm-sub">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type} · ${f.discount}% OFF · ${t('drw_split')} ${f.split}</div>`;
   // Rating
   brandHtml += `<div class="fd-rating-row">
     <div class="fd-rating-big">${f.rating}</div>
@@ -9194,13 +9208,6 @@ function openFD(id, f, cf) {
     ckHtml += `<div class="fd-coupon-hint">${t('firms_hint_cupom')}</div>`;
   }
 
-  // ── Promo banner ──
-  if (f.discount) {
-    ckHtml += `<div class="fd-promo">
-      <span class="fd-promo-badge">${f.discount}% OFF ${tf(f.dtype)||''}</span>
-    </div>`;
-  }
-
   // ── CTA ──
   if (hasCF) {
     ckHtml += `<button class="fd-cta" onclick="fdGoCheckout('${id}')">${t('firms_comecar')} →</button>`;
@@ -9221,7 +9228,7 @@ function buildFdInfoSections(f, cf) {
   // ── Section 1: Account Rules ──
   h += `<div class="fd-section open">
     <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
-      <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(240,180,41,.08);color:var(--gold);">📋</span>${t('fd_regras_conta')}</span>
+      <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(240,180,41,.08);color:var(--gold);">I</span>${t('fd_regras_conta')}</span>
       <span class="fd-section-arrow">▲</span>
     </div>
     <div class="fd-section-body">`;
@@ -9238,7 +9245,7 @@ function buildFdInfoSections(f, cf) {
   if (includes.length || f.platforms?.length) {
     h += `<div class="fd-section open">
       <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
-        <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(59,130,246,.08);color:#3B82F6;">⚡</span>${t('fd_plataforma_feat')}</span>
+        <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(59,130,246,.08);color:#3B82F6;">II</span>${t('fd_plataforma_feat')}</span>
         <span class="fd-section-arrow">▲</span>
       </div>
       <div class="fd-section-body">`;
@@ -9255,7 +9262,7 @@ function buildFdInfoSections(f, cf) {
   if (f.perks?.length || f.proibido?.length || f.newsTrading !== undefined) {
     h += `<div class="fd-section">
       <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
-        <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(168,85,247,.08);color:#A855F7;">🏆</span>${t('fd_conta_funded')}</span>
+        <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(168,85,247,.08);color:#A855F7;">III</span>${t('fd_conta_funded')}</span>
         <span class="fd-section-arrow">▲</span>
       </div>
       <div class="fd-section-body">`;
