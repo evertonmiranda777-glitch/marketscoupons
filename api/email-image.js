@@ -291,19 +291,11 @@ export default async function handler(req) {
           style: { display: 'flex', padding: '18px 28px 0', width: '100%' },
           children: {
             type: 'div', props: {
-              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: 'rgba(240,180,41,0.05)', border: '2px dashed rgba(240,180,41,0.35)', borderRadius: '10px', padding: '16px' },
+              style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', border: '2px dashed rgba(240,180,41,0.35)', borderRadius: '12px', padding: '22px 20px', backgroundColor: 'rgba(240,180,41,0.03)' },
               children: [
-                { type: 'div', props: { style: { color: '#7A8FA6', fontSize: '8px', fontWeight: 700, letterSpacing: '2.5px', marginBottom: '8px' }, children: 'CUPOM EXCLUSIVO' } },
-                {
-                  type: 'div', props: {
-                    style: { display: 'flex', width: '100%', backgroundColor: '#07090D', border: '1px solid #1C2535', borderRadius: '8px', padding: '12px 16px', justifyContent: 'space-between', alignItems: 'center' },
-                    children: [
-                      { type: 'span', props: { style: { color: '#F0B429', fontSize: '24px', fontWeight: 900, letterSpacing: '4px' }, children: f.coupon } },
-                      { type: 'span', props: { style: { display: 'flex', backgroundColor: color, color: '#fff', fontSize: '11px', fontWeight: 700, padding: '6px 16px', borderRadius: '6px' }, children: 'Copiar' } },
-                    ],
-                  },
-                },
-                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '10px', marginTop: '8px' }, children: 'use o cupom no checkout' } },
+                { type: 'div', props: { style: { color: '#7A8FA6', fontSize: '9px', fontWeight: 700, letterSpacing: '2.5px', marginBottom: '12px' }, children: 'CUPOM EXCLUSIVO' } },
+                { type: 'div', props: { style: { color: '#F0B429', fontSize: '38px', fontWeight: 900, letterSpacing: '8px' }, children: f.coupon } },
+                { type: 'div', props: { style: { color: '#3D4F63', fontSize: '11px', marginTop: '12px' }, children: 'Copie o cupom e cole no checkout' } },
               ],
             },
           },
