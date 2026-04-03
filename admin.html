@@ -749,34 +749,31 @@ a{text-decoration:none;color:inherit;}
      <div class="seg-opt seg-firma" data-firma="ftmo" onclick="selectImportFirma(this,'ftmo')" style="--fc:#22C55E;">FTMO</div>
      <div class="seg-opt seg-firma" data-firma="the5ers" onclick="selectImportFirma(this,'the5ers')" style="--fc:#10B981;">5ers</div>
    </div>
-   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;">
-     <div>
-       <div style="background:var(--card2);border:2px dashed var(--b1);border-radius:8px;padding:18px;text-align:center;cursor:pointer;" onclick="document.getElementById('csv-file').click()">
-         <div style="font-size:12px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
-         <div style="font-size:10px;color:var(--t3);margin-top:3px;">Coluna "email" ou 1 email por linha</div>
-         <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
-       </div>
-       <div style="display:flex;gap:6px;margin-top:8px;">
-         <button class="btn-secondary" style="font-size:10px;padding:5px 10px;" onclick="runValidation()" id="btn-validate" disabled>Validar</button>
-         <button class="btn-secondary" style="font-size:10px;padding:5px 10px;" onclick="runMxCheck()" id="btn-mx" disabled>Verificar MX</button>
-       </div>
-     </div>
-     <div>
-       <div id="csv-stats" style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;min-height:60px;">
-         <div style="color:var(--t3);font-size:11px;">Nenhum arquivo carregado.</div>
-       </div>
-       <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
-         <button class="btn-primary" style="font-size:10px;padding:5px 10px;" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos</button>
-         <button class="btn-secondary" style="font-size:10px;padding:5px 10px;" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar → Subscribers</button>
-       </div>
-       <div style="margin-top:8px;display:flex;gap:6px;align-items:center;">
-         <span style="font-size:10px;color:var(--t3);">MillionVerifier:</span>
-         <input type="file" id="mv-file" accept=".csv,.txt" style="font-size:10px;color:var(--t2);max-width:180px;" onchange="handleMvResult(this)">
-       </div>
-     </div>
+   <!-- Upload area -->
+   <div style="background:var(--card2);border:2px dashed var(--b1);border-radius:10px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px;" onclick="document.getElementById('csv-file').click()">
+     <div style="font-size:12px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
+     <div style="font-size:10px;color:var(--t3);margin-top:4px;">Coluna "email" ou 1 email por linha</div>
+     <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
    </div>
-   <div id="csv-log" style="margin-top:8px;max-height:80px;overflow-y:auto;font-size:10px;color:var(--t2);background:var(--card2);border:1px solid var(--b1);border-radius:6px;padding:8px;display:none;"></div>
-   <div style="font-size:9px;color:var(--t3);margin-top:6px;">Firma: <strong id="import-firma-label" style="color:var(--gold);">Todas</strong></div>
+   <!-- Stats -->
+   <div id="csv-stats" style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;min-height:40px;margin-bottom:12px;">
+     <div style="color:var(--t3);font-size:11px;">Nenhum arquivo carregado.</div>
+   </div>
+   <!-- Actions -->
+   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;">
+     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="runValidation()" id="btn-validate" disabled>Validar</button>
+     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="runMxCheck()" id="btn-mx" disabled>Verificar MX</button>
+     <button class="btn-primary" style="font-size:10px;padding:6px 12px;" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos</button>
+     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar → Subscribers</button>
+   </div>
+   <!-- MillionVerifier -->
+   <div style="display:flex;gap:8px;align-items:center;">
+     <span style="font-size:10px;color:var(--t3);">MillionVerifier:</span>
+     <input type="file" id="mv-file" accept=".csv,.txt" style="font-size:10px;color:var(--t2);max-width:200px;" onchange="handleMvResult(this)">
+   </div>
+   <!-- Log -->
+   <div id="csv-log" style="margin-top:10px;max-height:80px;overflow-y:auto;font-size:10px;color:var(--t2);background:var(--card2);border:1px solid var(--b1);border-radius:6px;padding:8px;display:none;"></div>
+   <div style="font-size:9px;color:var(--t3);margin-top:8px;">Firma: <strong id="import-firma-label" style="color:var(--gold);">Todas</strong></div>
  </div>
 
  <!-- QUICK TEMPLATES -->
