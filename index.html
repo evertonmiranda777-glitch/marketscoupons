@@ -607,10 +607,20 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 /* Mobile */
 @media(max-width:768px){
  .auth-left{display:none;}
- .auth-right{flex:1;padding:32px 24px;background:#030507;}
- .auth-form-title{font-size:26px;}
- .auth-close{top:16px;right:16px;}
+ .auth-overlay.show{display:flex;align-items:flex-start;}
+ .auth-split{min-height:100%;height:auto;}
+ .auth-right{flex:1;padding:24px 20px;padding-top:60px;padding-bottom:40px;background:#030507;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+ .auth-form{max-width:100%;}
+ .auth-form-title{font-size:24px;}
+ .auth-sub{font-size:13px;margin-bottom:24px;}
+ .auth-close{top:16px;right:16px;width:32px;height:32px;font-size:18px;}
  .auth-btn{padding:13px;}
+ .auth-google-btn{padding:12px;}
+ .auth-field{margin-bottom:12px;}
+ .auth-field input,.auth-field select{padding:11px 14px;font-size:13px;}
+ .auth-divider{margin:20px 0;}
+ .auth-switch{margin-top:18px;}
+ .auth-footer{margin-top:24px;}
 }
 
 /* USER PANEL PAGE */
