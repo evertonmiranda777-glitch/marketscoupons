@@ -407,9 +407,11 @@ img{max-width:100%;}
 }
 .nav-logo{
  font-size:15px;font-weight:700;letter-spacing:-.3px;cursor:pointer;
- white-space:nowrap;margin-right:12px;display:flex;align-items:center;gap:6px;flex-shrink:0;
+ white-space:nowrap;margin-right:12px;display:flex;align-items:center;gap:8px;flex-shrink:0;
 }
-.nav-logo em{color:var(--gold);font-style:normal;}
+.nav-logo-icon{flex-shrink:0;}
+.nav-logo-text{font-weight:400;color:#fff;}
+.nav-logo-text em{color:var(--gold);font-style:normal;font-weight:700;}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.4s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
 
@@ -1309,157 +1311,92 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .drw-coupon-copy:hover{background:var(--gold-hover);}
 .drw-coupon-hint{font-size:10px;color:var(--t3);text-align:center;margin-bottom:8px;}
 
-/* ═══ FIRM DETAIL OVERLAY (Desktop fullscreen) ═══ */
-.fd-overlay{position:fixed;inset:0;background:#030507;z-index:9995;display:none;overflow:hidden;}
+/* ═══ FIRM DETAIL OVERLAY (Desktop fullscreen — v2 premium) ═══ */
+.fd-overlay{position:fixed;inset:0;background:#000;z-index:9995;display:none;overflow:hidden;}
 .fd-overlay.show{display:flex;}
-.fd-split{display:flex;width:100%;height:100%;}
-/* Left: Firm branding */
-.fd-left{flex:0 0 48%;position:relative;overflow:hidden;background:#030507;}
-.fd-left-aurora{position:absolute;inset:0;background-size:400% 400%;animation:authAurora 15s ease infinite;opacity:.7;}
-.fd-left-stars{position:absolute;inset:0;pointer-events:none;
-background:
- radial-gradient(1px 1px at 60px 90px,rgba(255,255,255,.5),transparent),
- radial-gradient(1.5px 1.5px at 250px 50px,rgba(240,180,41,.4),transparent),
- radial-gradient(1px 1px at 400px 300px,rgba(255,255,255,.3),transparent),
- radial-gradient(1px 1px at 120px 350px,rgba(168,85,247,.3),transparent),
- radial-gradient(1.5px 1.5px at 480px 180px,rgba(255,255,255,.4),transparent);
-background-size:550px 450px;animation:authStars 80s linear infinite;}
-.fd-left-mesh{position:absolute;inset:0;background-image:
- linear-gradient(rgba(240,180,41,0.02) 1px,transparent 1px),
- linear-gradient(90deg,rgba(240,180,41,0.02) 1px,transparent 1px);
-background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,black 10%,transparent 70%);}
-.fd-left::before{content:'';position:absolute;top:5%;right:0;width:400px;height:400px;background:radial-gradient(circle,rgba(240,180,41,0.15) 0%,transparent 65%);pointer-events:none;animation:authOrb1 8s ease-in-out infinite alternate;filter:blur(50px);}
-.fd-left::after{content:'';position:absolute;bottom:5%;left:5%;width:350px;height:350px;background:radial-gradient(circle,rgba(168,85,247,0.12) 0%,transparent 65%);pointer-events:none;animation:authOrb2 10s ease-in-out infinite alternate;filter:blur(50px);}
-.fd-left-border{position:absolute;right:0;top:0;height:100%;width:1px;background:linear-gradient(to bottom,transparent 5%,rgba(240,180,41,0.15) 30%,rgba(168,85,247,0.1) 70%,transparent 95%);}
-/* Firm branding content */
-.fd-brand{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:flex-start;padding:40px 36px;overflow-y:auto;}
-.fd-brand::-webkit-scrollbar{width:3px;}
-.fd-brand::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
-.fd-header-row{display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:24px;gap:16px;}
-.fd-header-left{display:flex;align-items:center;gap:14px;}
-.fd-header-disc{text-align:right;flex-shrink:0;}
-.fd-header-disc-pct{font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1;}
-.fd-header-disc-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.5px;margin-top:2px;}
-.fd-logo{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;box-shadow:0 8px 32px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);flex-shrink:0;}
-.fd-logo img{width:100%;height:100%;object-fit:cover;border-radius:14px;}
-.fd-firm-name{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;}
-.fd-firm-sub{font-size:12px;color:var(--t3);margin-top:2px;}
-.fd-rating-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-.fd-rating-big{font-size:44px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;}
-.fd-rating-stars{display:flex;gap:3px;margin-bottom:3px;}
-.fd-rating-stars span{color:var(--gold);font-size:16px;text-shadow:0 0 10px rgba(240,180,41,.3);}
-.fd-rating-cnt{font-size:12px;color:var(--t3);}
-.fd-tp{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(0,182,122,0.06);border:1px solid rgba(0,182,122,0.15);border-radius:10px;margin-bottom:28px;cursor:pointer;transition:.2s;}
-.fd-tp:hover{border-color:rgba(0,182,122,0.4);background:rgba(0,182,122,0.1);}
-.fd-tp-label{font-size:12px;font-weight:700;color:var(--tp-green);}
-.fd-tp-stars{display:flex;gap:2px;}
-.fd-tp-star{font-size:14px;color:var(--b2);}
-.fd-tp-star.on{color:var(--tp-green);}
-.fd-tp-info{font-size:11px;color:var(--t2);}
-.fd-tp-info b{color:var(--tp-green);}
-/* Firm stats grid */
-.fd-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;margin-bottom:24px;}
-.fd-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px;backdrop-filter:blur(8px);}
-.fd-stat-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:5px;}
-.fd-stat-val{font-size:14px;font-weight:700;color:var(--t1);}
+.fd-split{display:flex;width:100%;height:100vh;}
+.fd-left{flex:0 0 52%;position:relative;height:100vh;}
+.fd-left-bg{position:absolute;inset:0;background:center/cover no-repeat;}
+.fd-left-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 40%,rgba(0,0,0,0.6) 100%);}
+.fd-left-content{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:48px 40px;z-index:2;overflow-y:scroll;}
+.fd-left-content::-webkit-scrollbar{width:0;}
+.fd-brand-top{display:flex;flex-direction:column;gap:32px;}
+.fd-logo-row{display:flex;align-items:center;gap:16px;}
+.fd-logo{width:56px;height:56px;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5);border:2px solid rgba(255,255,255,.08);}
+.fd-logo img{width:100%;height:100%;object-fit:cover;}
+.fd-name{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.fd-type{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.fd-discount-pct{font-size:72px;font-weight:900;letter-spacing:-4px;line-height:.9;-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.fd-discount-label{font-size:13px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:2px;margin-top:4px;}
+.fd-rating-block{display:flex;align-items:center;gap:16px;margin-top:32px;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;backdrop-filter:blur(12px);}
+.fd-rating-num{font-size:36px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;}
+.fd-stars{display:flex;gap:2px;}
+.fd-stars span{color:var(--gold);font-size:14px;}
+.fd-reviews{font-size:11px;color:var(--t2);}
+.fd-tp{display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:10px 16px;background:rgba(0,182,122,.06);border:1px solid rgba(0,182,122,.12);border-radius:10px;backdrop-filter:blur(8px);cursor:pointer;transition:.2s;}
+.fd-tp:hover{background:rgba(0,182,122,.12);border-color:rgba(0,182,122,.25);}
+.fd-tp-stars{display:flex;gap:1px;}
+.fd-tp-star{font-size:12px;color:var(--tp-green);}
+.fd-tp-text{font-size:11px;color:rgba(255,255,255,.6);}
+.fd-tp-text b{color:var(--tp-green);}
+.fd-about{margin-top:28px;padding:18px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:14px;backdrop-filter:blur(8px);}
+.fd-about-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:8px;}
+.fd-about-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.7;}
+.fd-about-text b{color:rgba(255,255,255,.85);font-weight:700;}
+.fd-about-highlights{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;}
+.fd-about-hl{display:flex;flex-direction:column;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);border-radius:10px;min-width:80px;}
+.fd-about-hl-val{font-size:16px;font-weight:800;letter-spacing:-0.5px;}
+.fd-about-hl-label{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.35);margin-top:2px;}
+.fd-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.04);}
+.fd-stat{padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;backdrop-filter:blur(8px);}
+.fd-stat-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:4px;}
+.fd-stat-val{font-size:14px;font-weight:700;color:#fff;}
 .fd-stat-val.g{color:var(--green);}
-.fd-stat-val.y{color:var(--gold);}
 .fd-stat-val.r{color:var(--red);}
-/* Description */
-.fd-desc{font-size:13px;color:var(--t2);line-height:1.7;max-width:440px;margin-bottom:20px;}
-/* Perks */
-.fd-perks{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-.fd-perk{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(34,197,94,.06);color:var(--green);border:1px solid rgba(34,197,94,.12);}
-/* Right: Checkout */
-.fd-right{flex:0 0 52%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:40px 40px;overflow-y:auto;background:#050709;position:relative;}
+.fd-stat-val.y{color:var(--gold);}
+.fd-divider{position:absolute;right:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.06) 20%,rgba(255,255,255,.06) 80%,transparent);z-index:3;}
+.fd-right{flex:1;position:relative;height:100vh;overflow-y:auto;background:#060810;}
 .fd-right::-webkit-scrollbar{width:3px;}
-.fd-right::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
-.fd-close{position:absolute;top:24px;right:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:var(--t3);font-size:20px;cursor:pointer;transition:.3s;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;z-index:2;}
-.fd-close:hover{color:var(--t1);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,0.1);transform:rotate(90deg);}
-/* Checkout form */
-.fd-checkout{width:100%;max-width:480px;}
-.fd-checkout-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
-.fd-checkout-sub{font-size:13px;color:var(--t3);margin-bottom:32px;line-height:1.5;}
-/* Steps */
+.fd-right::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;}
+.fd-close{position:absolute;top:20px;right:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--t3);font-size:18px;cursor:pointer;transition:.3s;z-index:10;}
+.fd-close:hover{color:#fff;background:rgba(255,255,255,.06);transform:rotate(90deg);}
+.fd-ck{width:100%;max-width:440px;margin:0 auto;padding:60px 48px 48px;}
+.fd-ck-header{margin-bottom:36px;position:relative;}
+.fd-ck-title{font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
+.fd-ck-sub{font-size:12px;color:var(--t3);line-height:1.6;}
+.fd-ck-header::after{content:'';display:block;width:40px;height:3px;border-radius:2px;margin-top:16px;}
 .fd-step{margin-bottom:24px;}
-.fd-step-label{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;}
-.fd-step-num{width:22px;height:22px;border-radius:50%;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.2);color:var(--gold);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.fd-step-options{display:flex;gap:8px;flex-wrap:wrap;}
-.fd-opt{padding:10px 18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--t2);font-family:var(--f);font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
-.fd-opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent 50%);pointer-events:none;opacity:0;transition:.25s;}
-.fd-opt:hover{border-color:rgba(255,255,255,.12);color:var(--t1);transform:translateY(-1px);}
-.fd-opt:hover::before{opacity:1;}
-.fd-opt.sel{background:rgba(240,180,41,.08);border-color:rgba(240,180,41,.3);color:var(--gold);box-shadow:0 0 20px rgba(240,180,41,.08);}
-.fd-opt.sel::after{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(to right,transparent,rgba(240,180,41,.4),transparent);}
-/* Coupon in checkout */
-.fd-coupon{display:flex;align-items:center;justify-content:space-between;background:rgba(240,180,41,.04);border:1px dashed rgba(240,180,41,.2);border-radius:14px;padding:18px 20px;margin-bottom:8px;}
-.fd-coupon-left{display:flex;flex-direction:column;}
-.fd-coupon-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);margin-bottom:5px;}
-.fd-coupon-code{font-size:22px;font-weight:800;letter-spacing:3px;color:var(--gold);text-shadow:0 0 20px rgba(240,180,41,.15);}
-.fd-coupon-copy{padding:10px 20px;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.2);border-radius:10px;color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;transition:.25s;font-family:var(--f);}
-.fd-coupon-copy:hover{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.4);}
-.fd-coupon-hint{font-size:10px;color:var(--t3);text-align:center;margin-bottom:20px;}
-/* Price display */
-.fd-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
-.fd-price-new{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:-1px;}
-.fd-price-old{font-size:14px;color:var(--t3);text-decoration:line-through;}
-.fd-price-save{font-size:11px;color:var(--green);font-weight:700;padding:3px 10px;background:rgba(34,197,94,.06);border-radius:6px;}
-/* CTA button */
-.fd-cta{width:100%;padding:16px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;transition:transform .3s,box-shadow .3s;font-family:var(--f);box-shadow:0 4px 24px rgba(240,180,41,0.25);animation:authShimmer 3s ease infinite;position:relative;margin-top:8px;}
-.fd-cta::before{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent 50%);pointer-events:none;}
-.fd-cta:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,180,41,0.35);}
-/* ── Size selector pills ── */
-.fd-sizes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
-.fd-size{padding:12px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;color:var(--t2);font-family:var(--f);font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;position:relative;min-width:72px;text-align:center;}
-.fd-size:hover{border-color:rgba(255,255,255,.12);color:var(--t1);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.3);}
-.fd-size.sel{background:rgba(240,180,41,.08);border-color:rgba(240,180,41,.35);color:var(--gold);box-shadow:0 0 24px rgba(240,180,41,.1),inset 0 1px 0 rgba(240,180,41,.15);}
-.fd-size.sel::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);border-radius:1px;}
-.fd-size-featured{position:relative;}
-.fd-size-featured::before{content:attr(data-badge);position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#030507;background:var(--gold);padding:2px 8px;border-radius:4px;white-space:nowrap;}
-/* ── Promo banner ── */
-.fd-promo{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 20px;background:linear-gradient(135deg,rgba(240,180,41,.06),rgba(240,180,41,.02));border:1px solid rgba(240,180,41,.15);border-radius:14px;margin-bottom:24px;}
-.fd-promo-badge{font-size:13px;font-weight:800;color:var(--gold);}
-.fd-promo-code{display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(240,180,41,.08);border:1px dashed rgba(240,180,41,.3);border-radius:8px;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px;cursor:pointer;transition:.2s;}
-.fd-promo-code:hover{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.5);}
-/* ── Section cards ── */
-.fd-section{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;margin-bottom:12px;transition:border-color .3s;width:100%;}
-.fd-section:hover{border-color:rgba(255,255,255,.1);}
-.fd-section-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;user-select:none;}
-.fd-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;display:flex;align-items:center;gap:8px;}
-.fd-section-title .fd-sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.fd-section-arrow{font-size:11px;color:var(--t3);transition:transform .25s;}
-.fd-section.open .fd-section-arrow{transform:rotate(180deg);}
-.fd-section-body{display:none;padding:0;}
-.fd-section.open .fd-section-body{display:block;}
-/* Section rows */
-.fd-row{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s;}
-.fd-row:last-child{border-bottom:none;}
-.fd-row:hover{background:rgba(255,255,255,.015);}
-.fd-row-label{font-size:12px;color:var(--t2);}
-.fd-row-val{font-size:13px;font-weight:700;color:var(--t1);text-align:right;}
-.fd-row-val.g{color:var(--green);}
-.fd-row-val.y{color:var(--gold);}
-.fd-row-val.r{color:var(--red);}
-.fd-row-val.hl{color:#030507;background:var(--gold);padding:3px 10px;border-radius:6px;font-size:12px;}
-/* Price hero */
-.fd-price-hero{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;background:linear-gradient(135deg,rgba(240,180,41,.06),rgba(240,180,41,.02));border-bottom:1px solid rgba(240,180,41,.1);}
-.fd-price-hero-left{display:flex;flex-direction:column;gap:2px;}
-.fd-price-hero-size{font-size:24px;font-weight:800;color:#fff;letter-spacing:-1px;}
-.fd-price-hero-type{font-size:11px;color:var(--t3);font-weight:600;}
-.fd-price-hero-right{text-align:right;}
-.fd-price-hero-new{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:-1px;}
-.fd-price-hero-old{font-size:13px;color:var(--t3);text-decoration:line-through;margin-top:2px;}
-/* Platform features */
-.fd-plat-row{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid rgba(255,255,255,.03);}
-.fd-plat-row:last-child{border-bottom:none;}
-.fd-plat-name{font-size:12px;color:var(--t2);}
-.fd-plat-val{font-size:12px;font-weight:700;color:var(--green);}
-/* Features list */
-.fd-features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
-.fd-feat{display:flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.1);border-radius:8px;font-size:11px;font-weight:600;color:var(--green);}
-.fd-feat::before{content:'✓';font-weight:800;font-size:10px;}
-.fd-feat-bad{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.1);color:var(--red);}
-.fd-feat-bad::before{content:'✕';}
+.fd-step-label{display:flex;align-items:center;gap:8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t2);margin-bottom:10px;}
+.fd-step-dot{width:6px;height:6px;border-radius:50%;}
+.fd-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.fd-pill{padding:10px 18px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--t2);font-family:var(--f);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;}
+.fd-pill:hover{border-color:rgba(255,255,255,.12);color:var(--t1);background:rgba(255,255,255,.03);}
+.fd-sizes{display:flex;gap:8px;flex-wrap:wrap;padding-top:12px;}
+.fd-sz{padding:12px 20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--t2);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;position:relative;text-align:center;min-width:72px;}
+.fd-sz:hover{border-color:rgba(255,255,255,.12);color:var(--t1);background:rgba(255,255,255,.03);}
+.fd-sz.pop::after{content:'Popular';position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#000;background:var(--accent,var(--gold));padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.fd-price{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;margin-top:24px;margin-bottom:24px;position:relative;overflow:hidden;}
+.fd-price-size{font-size:24px;font-weight:800;color:#fff;letter-spacing:-1px;}
+.fd-price-type{font-size:10px;color:var(--t3);font-weight:600;margin-top:2px;}
+.fd-price-right{text-align:right;}
+.fd-price-new{font-size:28px;font-weight:800;letter-spacing:-1px;}
+.fd-price-old{font-size:12px;color:var(--t3);text-decoration:line-through;margin-top:2px;}
+.fd-price-save{display:inline-block;font-size:10px;font-weight:700;color:var(--green);background:rgba(34,197,94,.08);padding:3px 8px;border-radius:4px;margin-top:4px;}
+.fd-cpn{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:rgba(240,180,41,.03);border:1px dashed rgba(240,180,41,.15);border-radius:12px;margin-bottom:6px;}
+.fd-cpn-tag{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);margin-bottom:4px;}
+.fd-cpn-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);text-shadow:0 0 16px rgba(240,180,41,.1);}
+.fd-cpn-code.long{font-size:13px;letter-spacing:1px;}
+.fd-cpn-copy{padding:9px 18px;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.15);border-radius:8px;color:var(--gold);font-size:11px;font-weight:700;transition:.2s;font-family:var(--f);cursor:pointer;}
+.fd-cpn-copy:hover{background:rgba(240,180,41,.12);border-color:rgba(240,180,41,.3);}
+.fd-cpn-hint{font-size:9px;color:var(--t3);text-align:center;margin-bottom:24px;}
+.fd-cta{width:100%;padding:16px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;transition:transform .3s,box-shadow .3s;font-family:var(--f);box-shadow:0 4px 24px rgba(240,180,41,.2);animation:authShimmer 3s ease infinite;position:relative;overflow:hidden;}
+.fd-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent 50%);pointer-events:none;}
+.fd-cta:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,180,41,.3);}
+.fd-includes{margin-top:28px;padding:20px 22px;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.04);border-radius:14px;}
+.fd-inc-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t3);margin-bottom:12px;}
+.fd-inc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fd-inc{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t2);font-weight:500;}
+.fd-inc::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 6px rgba(34,197,94,.3);}
 /* Desktop: wider drawer */
 @media(min-width:769px){
 .drw{width:560px;}
@@ -1780,6 +1717,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 @media(max-width:600px){
  #nav{padding:0 12px;}
  .nav-logo{font-size:13px;}
+ .nav-logo-icon{width:22px;height:22px;}
  .co-firms{grid-template-columns:1fr 1fr;}
  .calc-form{grid-template-columns:1fr;}
  .res-grid{grid-template-columns:1fr 1fr;}
@@ -2090,7 +2028,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 
 <!-- NAV -->
 <nav id="nav">
- <div class="nav-logo" onclick="go('home')">Markets <em>Coupons</em><div class="live-dot"></div></div>
+ <div class="nav-logo" onclick="go('home')"><svg class="nav-logo-icon" width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#lg)"/></svg><span class="nav-logo-text"><em>Markets</em> Coupons</span><div class="live-dot"></div></div>
  <div class="nav-tabs" id="nav-tabs">
  <button class="nt active" data-p="home" data-i18n="nav_ofertas" onclick="go('home')">Ofertas</button>
  <button class="nt" data-p="firms" data-i18n="nav_firmas" onclick="go('firms')">Firmas</button>
@@ -2984,19 +2922,18 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
   </div>
 </div>
 
-<!-- FIRM DETAIL OVERLAY (Desktop fullscreen) -->
+<!-- FIRM DETAIL OVERLAY (Desktop fullscreen — v2 premium) -->
 <div class="fd-overlay" id="fd-overlay">
  <div class="fd-split">
   <div class="fd-left">
-   <div class="fd-left-aurora"></div>
-   <div class="fd-left-stars"></div>
-   <div class="fd-left-mesh"></div>
-   <div class="fd-brand" id="fd-brand"></div>
-   <div class="fd-left-border"></div>
+   <div class="fd-left-bg" id="fd-bg"></div>
+   <div class="fd-left-overlay"></div>
+   <div class="fd-left-content" id="fd-left"></div>
+   <div class="fd-divider"></div>
   </div>
   <div class="fd-right">
-   <button class="fd-close" onclick="closeFD()">✕</button>
-   <div class="fd-checkout" id="fd-checkout"></div>
+   <button class="fd-close" onclick="closeFD()">&#10005;</button>
+   <div class="fd-ck" id="fd-right"></div>
   </div>
  </div>
 </div>
@@ -3275,7 +3212,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
 <script>
 /* DATA */
 const FIRMS=[
-  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',icon_url:'img/Firms/apex.png',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',badge:{label:'Maior Desconto',color:'#F97316',bg:'rgba(249,115,22,0.15)'},link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$17.70',o:'$118'},{a:'50K',n:'$19.70',o:'$131'},{a:'100K',n:'$29.70',o:'$198'},{a:'150K',n:'$39.70',o:'$264'}],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],newsTrading:true,day1Payout:true,desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
+  {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',icon_url:'img/Firms/apex.png',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',coupon:'MARKET',badge:{label:'Maior Desconto',color:'#F97316',bg:'rgba(249,115,22,0.15)'},link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$19.90',o:'$199',n2:'$29.90',o2:'$299'},{a:'50K',n:'$24.90',o:'$249',n2:'$34.90',o2:'$349'},{a:'100K',n:'$39.90',o:'$399',n2:'$59.90',o2:'$599'},{a:'150K',n:'$59.90',o:'$599',n2:'$79.90',o2:'$799'}],price_types:['Intraday','EOD'],perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],proibido:['Copy entre contas','Latency arbitrage'],newsTrading:true,day1Payout:true,desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
   {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',icon_url:'img/Firms/bulenox.png',rating:4.8,reviews:1466,discount:89,dtype:'lifetime',coupon:'MARKET89',badge:{label:'Melhor Split 90%',color:'#3B82F6',bg:'rgba(59,130,246,0.15)'},link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Por conta',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$19.25',o:'$175'},{a:'100K',n:'$23.65',o:'$215'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$48.15',o:'$535'}],perks:['Passa em 1 dia','Sem consistencia','Trade noticias','Payouts semanais'],proibido:['Latency arbitrage'],newsTrading:true,day1Payout:true,desc:'Bulenox e uma prop firm de futuros com regras simplificadas. Possivel passar em 1 dia, sem regra de consistencia.',trustpilot:{score:4.8,reviews:1466,url:'https://www.trustpilot.com/review/bulenox.com'}},
   {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',icon_url:'img/Firms/ftmo.png',rating:4.8,reviews:39754,discount:19,dtype:'especial',coupon:null,badge:{label:'Líder Forex',color:'#22C55E',bg:'rgba(34,197,94,0.15)'},link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader','DXtrade'],minDays:4,evalDays:30,drawdown:'Trailing/Fixed',split:'90%',ddPct:'-5%/-10%',target:'8%/5%',scaling:'Ate $2M',prices:[{a:'10K',n:'€89',o:'—'},{a:'25K',n:'€250',o:'—'},{a:'50K',n:'€345',o:'—'},{a:'100K',n:'€439',o:'€540'},{a:'200K',n:'€1.080',o:'—'}],perks:['Free Trial ilimitado','90% split','Suporte 20 idiomas','$500M+ pagos'],proibido:['Latency arbitrage','Manipulacao spread'],newsTrading:false,day1Payout:false,desc:'FTMO e a maior prop firm de Forex do mundo, fundada em 2015. Mais de 3,5M de clientes e $500M+ pagos.',trustpilot:{score:4.8,reviews:39754,url:'https://www.trustpilot.com/review/ftmo.com'}},
   {id:'tpt',name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'rgba(168,85,247,0.12)',icon:'T',icon_url:'img/Firms/tpt.png',rating:4.4,reviews:8550,discount:40,dtype:'lifetime',coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',tags:['Futuros','Lifetime','Saque dia 1'],platforms:['Tradovate','TradingView','Rithmic','NinjaTrader'],minDays:4,evalDays:null,drawdown:'End-of-Day',split:'80%',ddPct:'EOD',target:'Variavel',scaling:'Sim',prices:[{a:'25K',n:'$90',o:'$150'},{a:'50K',n:'$102',o:'$170'},{a:'75K',n:'$147',o:'$245'},{a:'100K',n:'$198',o:'$330'},{a:'150K',n:'$216',o:'$360'}],perks:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario'],proibido:['Manipulacao spread'],newsTrading:false,day1Payout:true,desc:'Take Profit Trader destaca-se pelo saque desde o primeiro dia e sem taxa de ativacao.',trustpilot:{score:4.4,reviews:8550,url:'https://www.trustpilot.com/review/takeprofittrader.com'}},
@@ -3285,6 +3222,42 @@ const FIRMS=[
   {id:'fundingpips',name:'Funding Pips',type:'Forex',color:'#6366F1',bg:'rgba(99,102,241,0.12)',icon:'P',icon_url:'img/Firms/fundingpips.png',rating:4.5,reviews:50967,discount:20,dtype:'1 compra',coupon:'31985EAA',badge:{label:'$200M+ Pagos',color:'#6366F1',bg:'rgba(99,102,241,0.15)'},link:'https://app.fundingpips.com/register?ref=31985EAA',tags:['Forex','100% Split','3 Plataformas'],platforms:['MT5','Match-Trader','cTrader'],minDays:3,evalDays:null,drawdown:'Static',split:'100%',ddPct:'-10% total / -5% diario',target:'8%/5%',scaling:'Sim',prices:[{a:'$5K',n:'$28.80',o:'$36'},{a:'$10K',n:'$52.80',o:'$66'},{a:'$25K',n:'$119.20',o:'$149'},{a:'$50K',n:'$199.20',o:'$249'},{a:'$100K',n:'$423.20',o:'$529'}],perks:['Split flexivel: 60% semanal / 80% quinzenal / 90% sob demanda / 100% mensal','$200M+ pagos globalmente','Alavancagem 1:100','Comunidade Discord ativa'],proibido:['HFT','Latency arbitrage'],newsTrading:true,day1Payout:false,desc:'Funding Pips e uma das mesas mais populares do mundo. Pagamentos rapidos com split flexivel ate 100% mensal. $200M+ pagos globalmente.',trustpilot:{score:4.5,reviews:50967,url:'https://www.trustpilot.com/review/fundingpips.com'}},
   {id:'brightfunded',name:'BrightFunded',type:'Forex',color:'#00C9A7',bg:'#000000',icon:'B',icon_url:'img/Firms/brightfunded.png',rating:4.2,reviews:528,discount:20,dtype:'easter',coupon:'CLNLTPxtT4Sok0PzHaRIIQ',badge:{label:'Payout 24h',color:'#00C9A7',bg:'rgba(0,201,167,0.15)'},link:'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ',tags:['Forex','Static DD','100% Split'],platforms:['MT5','DXtrade','cTrader'],minDays:5,evalDays:null,drawdown:'Static',split:'100%',ddPct:'-10% total / -5% diario',target:'8%/5%',scaling:'Sem limite',prices:[{a:'$5K',n:'€36',o:'€45'},{a:'$10K',n:'€68',o:'€85'},{a:'$25K',n:'€132',o:'€165'},{a:'$50K',n:'€228',o:'€285'},{a:'$100K',n:'€396',o:'€495'},{a:'$200K',n:'€756',o:'€945'}],perks:['Scaling ate 100% split','Drawdown estatico','Payout garantido 24h ciclo 7 dias','15% bonus lucro avaliacao','Trade2Earn (pontos por operar)','Alavancagem 1:100','Suporte 24/7'],proibido:['Arbitragem','Hedging entre contas','Grid trading','HFT'],newsTrading:true,day1Payout:false,desc:'BrightFunded destaca-se pela experiencia moderna e programa Trade2Earn. Drawdown estatico, scaling ate 100% split, payout em 24h. 150+ instrumentos.',trustpilot:{score:4.2,reviews:528,url:'https://www.trustpilot.com/review/brightfunded.com'}},
 ];
+
+/* ═══ FIRM DETAIL — Background images & About data ═══ */
+const FIRM_BG={
+  apex:'img/apex-bg.jpeg',bulenox:'img/bulenox-bg.jpeg',ftmo:'img/ftmo-bg.jpeg',
+  tpt:'img/tpt-bg.jpeg',fn:'img/fn-bg.jpeg',e2t:'img/e2t-bg.jpeg',
+  the5ers:'img/the5ers-bg.jpeg',fundingpips:'img/fundingpips-bg.jpeg',brightfunded:'img/brightfunded-bg.jpeg'
+};
+const FIRM_ABOUT={
+  apex:{about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
+    types:['Intraday Trail','EOD Trail'],plans:{'Intraday Trail':[{s:'25K',d:'$19.90',o:'$199'},{s:'50K',d:'$24.90',o:'$249'},{s:'100K',d:'$39.90',o:'$399',pop:1},{s:'150K',d:'$59.90',o:'$599'}],'EOD Trail':[{s:'25K',d:'$29.90',o:'$299'},{s:'50K',d:'$34.90',o:'$349'},{s:'100K',d:'$59.90',o:'$599',pop:1},{s:'150K',d:'$79.90',o:'$799'}]},
+    includes:['Sem limite de perda diaria','Sem regra de escalamento','Licenca NinjaTrader','Dados em tempo real','Copy Trader (WealthCharts)','Suporte 24/7']},
+  bulenox:{about:'Fundada em <b>2022</b>. Crescimento de <b>500%</b> em tráfego ano a ano. Regras simplificadas — possível passar em <b>1 dia</b>, sem regra de consistência.',highlights:[{val:'90%',label:'Profit Split'},{val:'1 dia',label:'Para passar'},{val:'$0',label:'Taxa mensal'}],
+    types:['Trailing DD','EOD DD'],plans:{'Trailing DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$48.15',o:'$535'}],'EOD DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$48.15',o:'$535'}]},
+    includes:['Passa em 1 dia','Sem consistencia','Trade durante noticias','Payouts semanais','Trial 14 dias gratis']},
+  ftmo:{about:'Fundada em <b>2015</b> em Praga, República Tcheca. A FTMO é a <b>maior prop firm de Forex do mundo</b>. Mais de <b>3.5M de clientes</b> em 140+ países. Equipe de 300+ profissionais.',highlights:[{val:'$500M+',label:'Pagos a traders'},{val:'3.5M+',label:'Clientes'},{val:'10 anos',label:'No mercado'}],
+    types:['2-Step Challenge','1-Step Challenge'],plans:{'2-Step Challenge':[{s:'10K',d:'€89',o:'—'},{s:'25K',d:'€250',o:'—'},{s:'50K',d:'€345',o:'—'},{s:'100K',d:'€439',o:'€540',pop:1},{s:'200K',d:'€1.080',o:'—'}],'1-Step Challenge':[{s:'10K',d:'€89',o:'—'},{s:'25K',d:'€250',o:'—'},{s:'50K',d:'€345',o:'—'},{s:'100K',d:'€439',o:'€540',pop:1},{s:'200K',d:'€1.080',o:'—'}]},
+    includes:['Free Trial ilimitado','90% split de lucro','Suporte 20 idiomas','Scaling ate $2M','$500M+ pagos']},
+  tpt:{about:'Fundada em <b>2021</b> por James Sixsmith (ex-jogador profissional de hockey). Taxa de sucesso anual de <b>20.37%</b>. Saque desde o <b>dia 1</b>, sem taxa de ativação.',highlights:[{val:'20.4%',label:'Taxa de sucesso'},{val:'Dia 1',label:'Primeiro saque'},{val:'$0',label:'Taxa ativação'}],
+    types:['EOD Drawdown'],plans:{'EOD Drawdown':[{s:'25K',d:'$90',o:'$150'},{s:'50K',d:'$102',o:'$170'},{s:'75K',d:'$147',o:'$245'},{s:'100K',d:'$198',o:'$330',pop:1},{s:'150K',d:'$216',o:'$360'}]},
+    includes:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario','EOD Drawdown']},
+  fn:{about:'Fundada em <b>2022</b> nos Emirados Árabes. <b>Prop Firm do Ano</b> (Finance Magnates 2025). Mais de <b>200K traders ativos</b> e payout garantido em 24h.',highlights:[{val:'$271M+',label:'Pagos a traders'},{val:'95K+',label:'Traders pagos'},{val:'24h',label:'Payout garantido'}],
+    types:['Legacy Challenge','Bolt Challenge','Rapid Challenge'],plans:{'Legacy Challenge':[{s:'25K',d:'$79.99',o:'—'},{s:'50K',d:'$149.99',o:'—'},{s:'100K',d:'$249.99',o:'—',pop:1}],'Bolt Challenge':[{s:'50K',d:'$99.99',o:'—',pop:1}],'Rapid Challenge':[{s:'25K',d:'$109',o:'—',pop:1}]},
+    includes:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso','Sem taxa ativacao']},
+  e2t:{about:'Fundada em <b>2016</b>, celebrando <b>10 anos</b> em 2026. Foco em educação e desenvolvimento. Taxa de aprovação de <b>10.42%</b> — acima da média do setor. Escalamento até $400K.',highlights:[{val:'10 anos',label:'No mercado'},{val:'$400K',label:'Scaling máximo'},{val:'10.4%',label:'Taxa aprovação'}],
+    types:['Trader Career Path','Gauntlet Mini'],plans:{'Trader Career Path':[{s:'TCP25',d:'$75',o:'$150'},{s:'TCP50',d:'$95',o:'$190'},{s:'TCP100',d:'$175',o:'$350',pop:1}],'Gauntlet Mini':[{s:'50K',d:'$85',o:'$170'},{s:'100K',d:'$157.50',o:'$315',pop:1}]},
+    includes:['Journalytix gratis','Reset gratis','NT/Finamark gratis','Escalamento ate $400K']},
+  the5ers:{about:'Fundada em <b>2016</b> por Saul Lokier em Raanana, Israel. Uma das <b>mais antigas prop firms</b> em atividade. Scaling até <b>$4M</b> e profit split até 100%.',highlights:[{val:'$43M+',label:'Pagos a traders'},{val:'30K+',label:'Payouts feitos'},{val:'$4M',label:'Scaling máximo'}],
+    types:['2-Step'],plans:{'2-Step':[{s:'$5K',d:'$39',o:'$65'},{s:'$10K',d:'$70',o:'$110'},{s:'$25K',d:'$155',o:'$225'},{s:'$50K',d:'$275',o:'$345',pop:1},{s:'$100K',d:'$491',o:'$545'}]},
+    includes:['Scaling ate $4M','Profit Split ate 100%','Bootcamp desde $95','Payout medio 16h','Alavancagem 1:100','Sem limite de tempo']},
+  fundingpips:{about:'Fundada em <b>2022</b> por Khaled Ayesh em Dubai. <b>2M+ de traders</b> no mundo. Uma das mesas mais populares com pagamentos rápidos e split flexível até 100%.',highlights:[{val:'$200M+',label:'Pagos a traders'},{val:'2M+',label:'Traders'},{val:'127K+',label:'Payouts verificados'}],
+    types:['2-Step'],plans:{'2-Step':[{s:'$5K',d:'$28.80',o:'$36'},{s:'$10K',d:'$52.80',o:'$66'},{s:'$25K',d:'$119.20',o:'$149'},{s:'$50K',d:'$199.20',o:'$249',pop:1},{s:'$100K',d:'$423.20',o:'$529'}]},
+    includes:['Split flexivel ate 100% mensal','$200M+ pagos','Alavancagem 1:100','Comunidade Discord ativa']},
+  brightfunded:{about:'Fundada em <b>2022</b> na Holanda por Jelle Dijkstra. <b>20K+ traders</b>. Programa Trade2Earn (pontos por operar). Payout em <b>24h</b> com ciclo de 7 dias.',highlights:[{val:'$7M+',label:'Pagos a traders'},{val:'20K+',label:'Traders'},{val:'24h',label:'Payout garantido'}],
+    types:['2-Step'],plans:{'2-Step':[{s:'$5K',d:'€36',o:'€45'},{s:'$10K',d:'€68',o:'€85'},{s:'$25K',d:'€132',o:'€165'},{s:'$50K',d:'€228',o:'€285',pop:1},{s:'$100K',d:'€396',o:'€495'},{s:'$200K',d:'€756',o:'€945'}]},
+    includes:['Scaling ate 100% split','Drawdown estatico','Payout 24h ciclo 7 dias','15% bonus lucro avaliacao','Trade2Earn','Alavancagem 1:100','Suporte 24/7']}
+};
 
 /* FIRM DATA TRANSLATIONS — translates PT firm data to all languages */
 const _ftL=['en','es','fr','it','de','ar'];
@@ -3446,6 +3419,19 @@ const I18N = {
     fd_ver_mais:'Ver mais',
     fd_ver_menos:'Ver menos',
     fd_na:'N/A',
+    fd_desconto:'DESCONTO',
+    fd_no:'no',
+    fd_sobre_firma:'Sobre a firma',
+    fd_configure_conta:'Configure sua conta',
+    fd_aplique_cupom:'Escolha o tipo, plataforma e tamanho. Aplique o cupom no checkout oficial.',
+    fd_tipo_conta:'Tipo de conta',
+    fd_plataforma:'Plataforma',
+    fd_tamanho_conta:'Tamanho da conta',
+    fd_economia:'Economia',
+    fd_cupom_exclusivo:'Cupom exclusivo',
+    fd_cupom_hint:'Aplique o cupom no checkout para garantir seu desconto',
+    fd_comecar:'Comecar Avaliacao',
+    fd_incluso_plano:'Incluso no plano',
     home_titulo:'Melhores Cupons de Prop Firms',
     home_sub:'Compare preços, copie cupons exclusivos e economize até 90% nas maiores prop firms do mundo.',
     home_ver_planos:'Ver planos →',
@@ -4049,6 +4035,19 @@ const I18N = {
     fd_ver_mais:'Show more',
     fd_ver_menos:'Show less',
     fd_na:'N/A',
+    fd_desconto:'DISCOUNT',
+    fd_no:'on',
+    fd_sobre_firma:'About the firm',
+    fd_configure_conta:'Configure your account',
+    fd_aplique_cupom:'Choose the type, platform and size. Apply the coupon at the official checkout.',
+    fd_tipo_conta:'Account type',
+    fd_plataforma:'Platform',
+    fd_tamanho_conta:'Account size',
+    fd_economia:'Save',
+    fd_cupom_exclusivo:'Exclusive coupon',
+    fd_cupom_hint:'Apply the coupon at checkout to secure your discount',
+    fd_comecar:'Start Evaluation',
+    fd_incluso_plano:'Included in the plan',
     home_titulo:'Best Prop Firm Coupons',
     home_sub:'Compare prices, copy exclusive coupons, and save up to 90% at the world\'s largest prop firms.',
     home_ver_planos:'View plans →',
@@ -4652,6 +4651,19 @@ const I18N = {
     fd_ver_mais:'Ver más',
     fd_ver_menos:'Ver menos',
     fd_na:'N/A',
+    fd_desconto:'DESCUENTO',
+    fd_no:'en',
+    fd_sobre_firma:'Sobre la firma',
+    fd_configure_conta:'Configura tu cuenta',
+    fd_aplique_cupom:'Elige el tipo, plataforma y tamaño. Aplica el cupón en el checkout oficial.',
+    fd_tipo_conta:'Tipo de cuenta',
+    fd_plataforma:'Plataforma',
+    fd_tamanho_conta:'Tamaño de la cuenta',
+    fd_economia:'Ahorro',
+    fd_cupom_exclusivo:'Cupón exclusivo',
+    fd_cupom_hint:'Aplica el cupón en el checkout para asegurar tu descuento',
+    fd_comecar:'Iniciar Evaluación',
+    fd_incluso_plano:'Incluido en el plan',
     home_titulo:'Los mejores cupones de Prop Firms',
     home_sub:'Compara precios, copia cupones exclusivos y ahorra hasta un 90 % en las mayores prop firms del mundo.',
     home_ver_planos:'Ver planes →',
@@ -5255,6 +5267,19 @@ const I18N = {
     fd_ver_mais:'Vedi di più',
     fd_ver_menos:'Vedi meno',
     fd_na:'N/A',
+    fd_desconto:'SCONTO',
+    fd_no:'su',
+    fd_sobre_firma:'Sulla firma',
+    fd_configure_conta:'Configura il tuo conto',
+    fd_aplique_cupom:'Scegli il tipo, la piattaforma e la dimensione. Applica il coupon al checkout ufficiale.',
+    fd_tipo_conta:'Tipo di conto',
+    fd_plataforma:'Piattaforma',
+    fd_tamanho_conta:'Dimensione del conto',
+    fd_economia:'Risparmio',
+    fd_cupom_exclusivo:'Coupon esclusivo',
+    fd_cupom_hint:'Applica il coupon al checkout per assicurarti lo sconto',
+    fd_comecar:'Inizia Valutazione',
+    fd_incluso_plano:'Incluso nel piano',
     home_titulo:'I migliori coupon per Prop Firms',
     home_sub:'Confronta i prezzi, copia i buoni sconto esclusivi e risparmia fino al 90% presso le più grandi prop firms al mondo.',
     home_ver_planos:'Vedi i piani →',
@@ -5858,6 +5883,19 @@ const I18N = {
     fd_ver_mais:'Voir plus',
     fd_ver_menos:'Voir moins',
     fd_na:'N/A',
+    fd_desconto:'REMISE',
+    fd_no:'sur',
+    fd_sobre_firma:'À propos de la firme',
+    fd_configure_conta:'Configurez votre compte',
+    fd_aplique_cupom:'Choisissez le type, la plateforme et la taille. Appliquez le coupon au checkout officiel.',
+    fd_tipo_conta:'Type de compte',
+    fd_plataforma:'Plateforme',
+    fd_tamanho_conta:'Taille du compte',
+    fd_economia:'Économie',
+    fd_cupom_exclusivo:'Coupon exclusif',
+    fd_cupom_hint:'Appliquez le coupon au checkout pour garantir votre remise',
+    fd_comecar:'Commencer l\'évaluation',
+    fd_incluso_plano:'Inclus dans le plan',
     home_titulo:'Meilleurs bons de réduction pour les prop firms',
     home_sub:'Comparez les prix, copiez des bons de réduction exclusifs et économisez jusqu\'à 90 % auprès des plus grandes prop firms au monde.',
     home_ver_planos:'Voir les formules →',
@@ -6461,6 +6499,19 @@ const I18N = {
     fd_ver_mais:'Mehr anzeigen',
     fd_ver_menos:'Weniger anzeigen',
     fd_na:'N/A',
+    fd_desconto:'RABATT',
+    fd_no:'auf',
+    fd_sobre_firma:'Über die Firma',
+    fd_configure_conta:'Konfigurieren Sie Ihr Konto',
+    fd_aplique_cupom:'Wählen Sie Typ, Plattform und Größe. Wenden Sie den Gutschein an der offiziellen Kasse an.',
+    fd_tipo_conta:'Kontotyp',
+    fd_plataforma:'Plattform',
+    fd_tamanho_conta:'Kontogröße',
+    fd_economia:'Ersparnis',
+    fd_cupom_exclusivo:'Exklusiver Gutschein',
+    fd_cupom_hint:'Wenden Sie den Gutschein an der Kasse an, um Ihren Rabatt zu sichern',
+    fd_comecar:'Bewertung starten',
+    fd_incluso_plano:'Im Plan enthalten',
     home_titulo:'Die besten Gutscheine für Prop Firms',
     home_sub:'Vergleichen Sie Preise, kopieren Sie exklusive Gutscheine und sparen Sie bis zu 90 % bei den weltweit größten Prop Firms.',
     home_ver_planos:'Tarife anzeigen →',
@@ -7064,6 +7115,19 @@ const I18N = {
     fd_ver_mais:'عرض المزيد',
     fd_ver_menos:'عرض أقل',
     fd_na:'غير متاح',
+    fd_desconto:'خصم',
+    fd_no:'على',
+    fd_sobre_firma:'عن الشركة',
+    fd_configure_conta:'قم بتكوين حسابك',
+    fd_aplique_cupom:'اختر النوع والمنصة والحجم. طبّق القسيمة عند الدفع الرسمي.',
+    fd_tipo_conta:'نوع الحساب',
+    fd_plataforma:'المنصة',
+    fd_tamanho_conta:'حجم الحساب',
+    fd_economia:'توفير',
+    fd_cupom_exclusivo:'قسيمة حصرية',
+    fd_cupom_hint:'طبّق القسيمة عند الدفع لضمان خصمك',
+    fd_comecar:'ابدأ التقييم',
+    fd_incluso_plano:'مشمول في الخطة',
     home_titulo:'أفضل كوبونات Prop Firms',
     home_sub:'قارن الأسعار، وانسخ القسائم الحصرية، ووفر حتى 90% في أكبر Prop Firms في العالم.',
     home_ver_planos:'عرض الخطط →',
@@ -9099,203 +9163,185 @@ function openD(id){
     size: cf?.plans?.[0]?.size || '',
   };
 
-  // Desktop e mobile usam drawer lateral por enquanto
-  // openFD() (fullscreen overlay) está preservado mas desativado
-  openDrw(id, f, cf);
+  // Desktop: fullscreen overlay premium | Mobile: drawer lateral
+  if (window.innerWidth >= 769 && FIRM_ABOUT[id]) {
+    openFD(id, f);
+  } else {
+    openDrw(id, f, cf);
+  }
   history.replaceState(null,'','#firm/'+id);
   track('firm_detail_open',{firm_id:id,firm_name:f.name});
 }
 
-// ── DESKTOP: Fullscreen overlay ──
-function openFD(id, f, cf) {
+// ── DESKTOP: Fullscreen overlay (v2 premium) ──
+let _fdCurrent = null;
+const _fdState = {};
+
+function openFD(id, f) {
+  _fdCurrent = id;
+  const fa = FIRM_ABOUT[id];
+  if (!fa) { openDrw(id, f, CHECKOUT_FIRMS.find(x=>x.id===id)); return; }
+
+  const firstType = fa.types[0];
+  const firstPlans = fa.plans[firstType];
+  const popPlan = firstPlans.find(p=>p.pop) || firstPlans[0];
+  if (!_fdState[id]) _fdState[id] = { type: firstType, plat: f.platforms?.[0]||'', size: popPlan.s };
+  const st = _fdState[id];
+
+  // Ensure size is valid for current type
+  const curPlans = fa.plans[st.type];
+  if (curPlans && !curPlans.find(p=>p.s===st.size)) st.size = (curPlans.find(p=>p.pop)||curPlans[0]).s;
+
+  // Set accent color
+  document.documentElement.style.setProperty('--accent', f.color);
+
+  // Background image
+  const bgUrl = FIRM_BG[id];
+  document.getElementById('fd-bg').style.backgroundImage = bgUrl ? `url('${bgUrl}')` : 'none';
+
+  // ── LEFT: Branding ──
   const s = strs(f.rating);
-  const st = _drwState[id];
+  const tpS = Math.round(f.trustpilot?.score||f.rating);
+  const tpUrl = f.trustpilot?.url||'';
+  const tpReviews = f.trustpilot?.reviews||f.reviews||0;
 
-  // Aurora color based on firm
-  const auroraEl = document.querySelector('.fd-left-aurora');
-  if (auroraEl) auroraEl.style.background = `linear-gradient(-45deg,#030507,${f.bg||'#0d0a1a'},#0a0d17,#030507)`;
-
-  // LEFT: Firm branding
-  let brandHtml = '';
-  // Header row: logo + name left, discount right
-  brandHtml += `<div class="fd-header-row">
-    <div class="fd-header-left">
-      <div class="fd-logo" style="background:${f.bg};">`;
-  if (f.icon_url) brandHtml += `<img src="${f.icon_url}" alt="${f.name}">`;
-  else brandHtml += `<span style="color:${f.color};">${f.icon}</span>`;
-  brandHtml += `</div>
-      <div><div class="fd-firm-name">${f.name}</div>
-      <div class="fd-firm-sub">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div>
-    </div>`;
-  if (f.discount) {
-    brandHtml += `<div class="fd-header-disc">
-      <div class="fd-header-disc-pct" style="color:${f.color};">${f.discount}%</div>
-      <div class="fd-header-disc-label">OFF ${(tf(f.dtype)||'').toUpperCase()}</div>
-    </div>`;
-  }
-  brandHtml += `</div>`;
-  // Rating
-  brandHtml += `<div class="fd-rating-row">
-    <div class="fd-rating-big">${f.rating}</div>
-    <div><div class="fd-rating-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div>
-    <div class="fd-rating-cnt">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div></div>
-  </div>`;
-  // Trustpilot
-  if (f.trustpilot) {
-    const tpS = Math.round(f.trustpilot.score);
-    brandHtml += `<div class="fd-tp" onclick="openTpPopup('${f.trustpilot.url}')">
-      <span class="fd-tp-label">${t('tp_excellent')}</span>
-      <span class="fd-tp-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star${i<tpS?' on':''}">★</span>`).join('')}</span>
-      <span class="fd-tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span>
-    </div>`;
-  }
-  // Description
-  if (f.desc) brandHtml += `<div class="fd-desc">${tf(f.desc)}</div>`;
-
-  // ── Info sections (Account Rules, Platform, Funded) ──
-  brandHtml += buildFdInfoSections(f, cf);
-
-  document.getElementById('fd-brand').innerHTML = brandHtml;
-
-  // RIGHT: Premium checkout experience
-  let ckHtml = '';
-  const plans = cf ? cf.plans : null;
-  const prices = f.prices || [];
-  const hasCF = !!cf;
-
-  // ── Selectors row: Type + Vendor + Size ──
-  if (hasCF) {
-    // Type selector
-    if (cf.types?.length > 1) {
-      ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">1</span>${t('firms_sel_tipo')}</div>
-        <div class="fd-step-options" id="fd-types-${id}">${cf.types.map(tp=>`<button class="fd-opt${tp===st.type?' sel':''}" onclick="fdSelType('${id}','${tp}')">${tp}</button>`).join('')}</div></div>`;
-    }
-    // Platform selector
-    if (cf.platforms?.length) {
-      ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">${cf.types?.length>1?'2':'1'}</span>${t('firms_sel_plat')}</div>
-        <div class="fd-step-options" id="fd-plats-${id}">${cf.platforms.map(p=>`<button class="fd-opt${p===st.plat?' sel':''}" onclick="fdSelPlat('${id}','${p}')">${p}</button>`).join('')}</div></div>`;
-    }
-    // Size selector
-    if (plans?.length) {
-      const stepN = (cf.types?.length>1?2:1)+(cf.platforms?.length?1:0);
-      ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">${stepN}</span>${t('firms_sel_tam')}</div>
-        <div class="fd-sizes" id="fd-sizes-${id}">${plans.map(p=>{
-          const isSel=p.size===st.size;const feat=p.featured?' fd-size-featured':'';
-          return `<button class="fd-size${isSel?' sel':''}${feat}"${p.featured?' data-badge="Popular"':''} onclick="fdSelSize('${id}','${p.size}')">${p.size}</button>`;
-        }).join('')}</div></div>`;
-    }
-  } else if (prices.length) {
-    ckHtml += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-num">1</span>${t('firms_sel_tam')}</div>
-      <div class="fd-sizes" id="fd-sizes-${id}">${prices.map((p,i)=>{
-        const isSel=i===(_drwState[id]._priceIdx||0);
-        return `<button class="fd-size${isSel?' sel':''}" onclick="fdSelPrice('${id}',${i})">${p.a}</button>`;
-      }).join('')}</div></div>`;
-    if (!_drwState[id]._priceIdx) _drwState[id]._priceIdx = 0;
-  }
-
-  // ── Price hero (updates on selection) ──
-  ckHtml += `<div id="fd-price-hero-${id}">`;
-  ckHtml += buildFdPriceHero(f, cf, id);
-  ckHtml += `</div>`;
-
-  // ── Coupon ──
-  if (f.coupon) {
-    ckHtml += `<div class="fd-coupon">
-      <div class="fd-coupon-left">
-        <div class="fd-coupon-tag">${t('offers_cupom_label')||'Cupom exclusivo'}</div>
-        <div class="fd-coupon-code">${f.coupon}</div>
+  let L = `<div class="fd-brand-top">
+    <div class="fd-logo-row">
+      <div class="fd-logo"><img src="${f.icon_url}" alt="${f.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${f.color};font-size:22px;font-weight:800\\'>${f.icon}</span>'"></div>
+      <div><div class="fd-name">${f.name}</div><div class="fd-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div>
+    </div>
+    <div class="fd-discount">
+      <div class="fd-discount-pct" style="background:linear-gradient(135deg,${f.color},#FFD97D,${f.color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}% OFF</div>
+      <div class="fd-discount-label">${t('fd_desconto')} ${(tf(f.dtype)||'').toUpperCase()}</div>
+    </div>
+    <div class="fd-rating-block">
+      <div class="fd-rating-num">${f.rating}</div>
+      <div class="fd-rating-detail">
+        <div class="fd-stars">${s.split('').map(c=>`<span>${c}</span>`).join('')}</div>
+        <div class="fd-reviews">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div>
       </div>
-      <button class="fd-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','fd_coupon')">${t('firms_copiar')}</button>
     </div>`;
-    ckHtml += `<div class="fd-coupon-hint">${t('firms_hint_cupom')}</div>`;
+  if (tpUrl) {
+    L += `<div class="fd-tp" onclick="openTpPopup('${tpUrl}')">
+      <div class="fd-tp-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpS?'★':'☆'}</span>`).join('')}</div>
+      <div class="fd-tp-text">${tpReviews.toLocaleString()} reviews ${t('fd_no')} <b>Trustpilot</b></div>
+    </div>`;
   }
+  L += `<div class="fd-about">
+      <div class="fd-about-title">${t('fd_sobre_firma')}</div>
+      <div class="fd-about-text">${fa.about}</div>
+      <div class="fd-about-highlights">${fa.highlights.map(h=>`<div class="fd-about-hl"><div class="fd-about-hl-val" style="color:${f.color}">${h.val}</div><div class="fd-about-hl-label">${h.label}</div></div>`).join('')}</div>
+    </div>
+  </div>
+  <div class="fd-stats">
+    <div class="fd-stat"><div class="fd-stat-label">Profit Split</div><div class="fd-stat-val g">${f.split}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_meta')}</div><div class="fd-stat-val y">${tf(f.target)||'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">Drawdown</div><div class="fd-stat-val r">${tf(f.ddPct)||'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_dias_min')}</div><div class="fd-stat-val">${f.minDays||'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_scaling')}</div><div class="fd-stat-val">${tf(f.scaling)||'—'}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_prazo')}</div><div class="fd-stat-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</div></div>
+  </div>`;
+  document.getElementById('fd-left').innerHTML = L;
 
-  // ── CTA ──
-  if (hasCF) {
-    ckHtml += `<button class="fd-cta" onclick="fdGoCheckout('${id}')">${t('firms_comecar')} →</button>`;
-  } else {
-    ckHtml += `<button class="fd-cta" onclick="window.open('${f.link}','_blank');track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}'});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')} →</button>`;
-  }
+  // ── RIGHT: Checkout ──
+  fdRenderRight(id, f);
 
-  document.getElementById('fd-checkout').innerHTML = ckHtml;
   document.getElementById('fd-overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
 }
 
-// Build info sections for LEFT column (static, no plan dependency)
-function buildFdInfoSections(f, cf) {
-  let h = '';
-  const includes = cf?.includes || [];
+function fdRenderRight(id, f) {
+  if (!f) f = FIRMS.find(x=>x.id===id);
+  const fa = FIRM_ABOUT[id];
+  if (!fa||!f) return;
+  const st = _fdState[id];
+  const plans = fa.plans[st.type];
 
-  // ── Section 1: Account Rules ──
-  h += `<div class="fd-section open">
-    <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
-      <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(240,180,41,.08);color:var(--gold);">I</span>${t('fd_regras_conta')}</span>
-      <span class="fd-section-arrow">▲</span>
-    </div>
-    <div class="fd-section-body">`;
-  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_dias_min')}</span><span class="fd-row-val">${f.minDays||'—'}</span></div>`;
-  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_meta')}</span><span class="fd-row-val hl">${tf(f.target)||'—'}</span></div>`;
-  if (f.ddPct) h += `<div class="fd-row"><span class="fd-row-label">${t('drw_dd_max')}</span><span class="fd-row-val r">${tf(f.ddPct)}</span></div>`;
-  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_drawdown')}</span><span class="fd-row-val">${f.drawdown||'—'}</span></div>`;
-  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_scaling')}</span><span class="fd-row-val">${tf(f.scaling)||'—'}</span></div>`;
-  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_split')}</span><span class="fd-row-val g">${f.split||'—'}</span></div>`;
-  h += `<div class="fd-row"><span class="fd-row-label">${t('drw_prazo')}</span><span class="fd-row-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</span></div>`;
-  h += `</div></div>`;
+  let h = `<div class="fd-ck-header">
+    <div class="fd-ck-title">${t('fd_configure_conta')}</div>
+    <div class="fd-ck-sub">${f.coupon?t('fd_aplique_cupom'):''}</div>
+  </div>`;
 
-  // ── Section 2: Platform & Includes ──
-  if (includes.length || f.platforms?.length) {
-    h += `<div class="fd-section open">
-      <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
-        <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(59,130,246,.08);color:#3B82F6;">II</span>${t('fd_plataforma_feat')}</span>
-        <span class="fd-section-arrow">▲</span>
-      </div>
-      <div class="fd-section-body">`;
-    if (f.platforms?.length) {
-      h += `<div class="fd-plat-row"><span class="fd-plat-name">${t('firms_plataformas')}</span><span class="fd-plat-val">${f.platforms.join(', ')}</span></div>`;
-    }
-    includes.forEach(inc => {
-      h += `<div class="fd-plat-row"><span class="fd-plat-name">${tf(inc)}</span><span class="fd-plat-val">${t('fd_incluso')}</span></div>`;
-    });
-    h += `</div></div>`;
+  // Type pills
+  if (fa.types.length > 1) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_tipo_conta')}</div>
+      <div class="fd-pills">${fa.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','type','${tp}')">${tp}</button>`).join('')}</div></div>`;
   }
 
-  // ── Section 3: Benefits & Rules ──
-  if (f.perks?.length || f.proibido?.length || f.newsTrading !== undefined) {
-    h += `<div class="fd-section">
-      <div class="fd-section-hd" onclick="this.parentElement.classList.toggle('open')">
-        <span class="fd-section-title"><span class="fd-sec-icon" style="background:rgba(168,85,247,.08);color:#A855F7;">III</span>${t('fd_conta_funded')}</span>
-        <span class="fd-section-arrow">▲</span>
-      </div>
-      <div class="fd-section-body">`;
-    if (f.newsTrading!==undefined) h += `<div class="fd-row"><span class="fd-row-label">News Trading</span><span class="fd-row-val ${f.newsTrading?'g':'r'}">${f.newsTrading?'YES':'NO'}</span></div>`;
-    if (f.day1Payout!==undefined) h += `<div class="fd-row"><span class="fd-row-label">Day 1 Payout</span><span class="fd-row-val ${f.day1Payout?'g':'r'}">${f.day1Payout?'YES':'NO'}</span></div>`;
-    if (f.perks?.length) f.perks.forEach(p => { h += `<div class="fd-row"><span class="fd-row-label">${tf(p)}</span><span class="fd-row-val g">✓</span></div>`; });
-    if (f.proibido?.length) f.proibido.forEach(p => { h += `<div class="fd-row"><span class="fd-row-label">${tf(p)}</span><span class="fd-row-val r">✕</span></div>`; });
-    h += `</div></div>`;
+  // Platform pills
+  if (f.platforms?.length) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_plataforma')}</div>
+      <div class="fd-pills">${f.platforms.map(p=>`<button class="fd-pill${p===st.plat?' sel':''}" style="${p===st.plat?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','plat','${p}')">${p}</button>`).join('')}</div></div>`;
   }
 
-  return h;
+  // Size pills
+  if (plans?.length) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_tamanho_conta')}</div>
+      <div class="fd-sizes">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}" style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="fdSel('${id}','size','${p.s}')">${p.s}</button>`).join('')}</div></div>`;
+  }
+
+  // Price card
+  const plan = plans?.find(p=>p.s===st.size)||plans?.[0];
+  if (plan) {
+    const oNum = parseFloat((plan.o||'').replace(/[^0-9.]/g,''));
+    const dNum = parseFloat((plan.d||'').replace(/[^0-9.]/g,''));
+    const cur = (plan.d||'').match(/[€$]/)?.[0]||'$';
+    const save = oNum&&dNum&&plan.o!=='—' ? (oNum-dNum).toFixed(2) : null;
+    h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
+      <div><div class="fd-price-size">${plan.s}</div><div class="fd-price-type">${st.type}</div></div>
+      <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color}">${plan.d}</div>${plan.o&&plan.o!=='—'?`<div class="fd-price-old">${plan.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
+    </div>`;
+  }
+
+  // Coupon
+  if (f.coupon) {
+    const isLong = f.coupon.length > 12;
+    h += `<div class="fd-cpn"><div><div class="fd-cpn-tag">${t('fd_cupom_exclusivo')}</div><div class="fd-cpn-code${isLong?' long':''}">${f.coupon}</div></div>
+      <button class="fd-cpn-copy" onclick="cpCoupon('${f.coupon}','${f.id||id}','fd_coupon')">${t('firms_copiar')}</button></div>
+      <div class="fd-cpn-hint">${t('fd_cupom_hint')}</div>`;
+  }
+
+  // CTA
+  h += `<button class="fd-cta" onclick="fdGo('${id}')">${t('fd_comecar')} &#8594;</button>`;
+
+  // Includes
+  if (fa.includes?.length) {
+    h += `<div class="fd-includes"><div class="fd-inc-title">${t('fd_incluso_plano')}</div>
+      <div class="fd-inc-grid">${fa.includes.map(i=>`<div class="fd-inc">${tf(i)}</div>`).join('')}</div></div>`;
+  }
+
+  document.getElementById('fd-right').innerHTML = h;
 }
 
-// Build price hero for RIGHT column (dynamic, updates on selection)
-function buildFdPriceHero(f, cf, id) {
-  const plans = cf ? cf.plans : null;
-  const prices = f.prices || [];
-  const st = _drwState[id];
-  let selPlan = null, selPrice = null;
-  if (cf && plans?.length) selPlan = plans.find(p=>p.size===st.size) || plans[0];
-  else if (prices.length) selPrice = prices[st._priceIdx||0];
+function fdSel(id, key, val) {
+  const st = _fdState[id];
+  st[key] = val;
+  // If type changed, reset size to popular
+  if (key==='type') {
+    const fa = FIRM_ABOUT[id];
+    const plans = fa?.plans[val];
+    if (plans) st.size = (plans.find(p=>p.pop)||plans[0]).s;
+  }
+  fdRenderRight(id);
+}
 
-  const pSize = selPlan ? selPlan.size : (selPrice ? selPrice.a : '');
-  const pNew = selPlan ? selPlan.disc : (selPrice ? selPrice.n : '');
-  const pOld = selPlan ? selPlan.orig : (selPrice ? selPrice.o : '');
-  const pType = st.type || '';
-  if (!pSize) return '';
-  return `<div class="fd-price-hero">
-    <div class="fd-price-hero-left"><div class="fd-price-hero-size">${pSize}</div>${pType?`<div class="fd-price-hero-type">${pType}</div>`:''}</div>
-    <div class="fd-price-hero-right"><div class="fd-price-hero-new">${pNew}</div>${pOld&&pOld!=='—'?`<div class="fd-price-hero-old">${pOld}</div>`:''}</div>
-  </div>`;
+function fdGo(id) {
+  const f = FIRMS.find(x=>x.id===id);
+  const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
+  const st = _fdState[id]||{};
+  if (cf) {
+    let url = cf.buildUrl(st.size||'',st.type||'',st.plat||'');
+    url += (url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
+    if (f?.coupon) navigator.clipboard.writeText(f.coupon).catch(()=>{});
+    track('checkout_click',{firm_id:id,firm_name:f?.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f?.coupon||'parceiro'});
+    registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f?.name||'');
+    window.open(url,'_blank');
+  } else {
+    if (f?.coupon) navigator.clipboard.writeText(f.coupon).catch(()=>{});
+    track('checkout_click',{firm_id:id,firm_name:f?.name||'',coupon:f?.coupon||'parceiro'});
+    registerLoyaltyClick('','','',f?.name||'');
+    window.open(f?.link||'#','_blank');
+  }
 }
 
 function closeFD(){
@@ -9304,32 +9350,8 @@ function closeFD(){
   document.body.style.overflow='';
   if(location.hash.startsWith('#firm/')) history.replaceState(null,'',location.pathname+location.search);
 }
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('fd-overlay')?.classList.contains('show'))closeFD();});
 
-// FD selection handlers
-function fdSelType(fId,type){
-  _drwState[fId].type=type;
-  document.querySelectorAll(`#fd-types-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===type));
-  fdUpdatePrice(fId);
-}
-function fdSelPlat(fId,plat){
-  _drwState[fId].plat=plat;
-  document.querySelectorAll(`#fd-plats-${fId} .fd-opt`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===plat));
-}
-function fdSelSize(fId,size){
-  _drwState[fId].size=size;
-  document.querySelectorAll(`#fd-sizes-${fId} .fd-size`).forEach(b=>b.classList.toggle('sel',b.textContent.trim()===size));
-  fdUpdatePrice(fId);
-}
-function fdSelPrice(fId,idx){
-  _drwState[fId]._priceIdx=idx;
-  document.querySelectorAll(`#fd-sizes-${fId} .fd-size`).forEach((b,i)=>b.classList.toggle('sel',i===idx));
-  fdUpdatePrice(fId);
-}
-function fdUpdatePrice(fId){
-  const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
-  const el=document.getElementById(`fd-price-hero-${fId}`);
-  if(el&&f) el.innerHTML=buildFdPriceHero(f,cf,fId);
-}
 function fdGoCheckout(fId){
   const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
   if(!cf||!f){window.open(f?.link||'#','_blank');return;}
@@ -9628,7 +9650,7 @@ const CHECKOUT_FIRMS=[
   {id:'apex',name:'Apex Trader Funding',short:'Apex',coupon:'MARKET',discount:'90%',color:'#F97316',bg:'rgba(249,115,22,0.12)',
    includes:['Sem limite de perda diaria','Sem regra de escalamento','Licenca NinjaTrader (Rithmic)','Dados em tempo real','Copy Trader (WealthCharts)','Suporte 24/7'],
    types:['Intraday Trail','EOD Trail'],platforms:['Rithmic','Tradovate','WealthCharts'],
-   plans:[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$118',disc:'$17.70',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$131',disc:'$19.70',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$198',disc:'$29.70',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$265',disc:'$39.70',featured:false}],
+   plans:[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$199',disc:'$19.90',orig2:'$299',disc2:'$29.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$249',disc:'$24.90',orig2:'$349',disc2:'$34.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$399',disc:'$39.90',orig2:'$599',disc2:'$59.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$599',disc:'$59.90',orig2:'$799',disc2:'$79.90',featured:false}],
    buildUrl:(size,type,plat)=>`https://dashboard.apextraderfunding.com/signup/${size.toLowerCase()}-${plat}-${type==='Intraday Trail'?'intraday-trail':'eod-trail'}?referralCode=evertonmiranda`},
   {id:'bulenox',name:'Bulenox',short:'Bulenox',coupon:'MARKET89',discount:'89%',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',
    includes:['Passa em 1 dia','Sem consistencia','Trade durante noticias','Payouts semanais','Trial 14 dias gratis'],

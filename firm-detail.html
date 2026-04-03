@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Firm Detail — Dev Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+ --bg:#07090D; --card:#10151F;
+ --b1:#1C2535; --b2:#263145;
+ --gold:#F0B429; --gbg:rgba(240,180,41,0.09);
+ --green:#22C55E; --red:#EF4444;
+ --t1:#EDF2F7; --t2:#7A8FA6; --t3:#3D4F63;
+ --f:'Inter',sans-serif;
+ --tp-green:#00B67A;
+ --accent:#F97316; --accent-bg:rgba(249,115,22,0.12); --accent-glow:rgba(249,115,22,0.25);
+}
+body{font-family:var(--f);background:#000;color:var(--t1);margin:0;overflow:hidden;}
+button{font-family:var(--f);cursor:pointer;border:none;background:none;}
+
+/* ═══ LAYOUT ═══ */
+.fd{display:flex;height:100vh;width:100vw;}
+.fd-left{flex:0 0 52%;position:relative;height:100vh;}
+.fd-left-bg{position:absolute;inset:0;background:center/cover no-repeat;}
+.fd-left-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 40%,rgba(0,0,0,0.6) 100%);}
+.fd-left-content{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:48px 40px;z-index:2;overflow-y:scroll;}
+.fd-left-content::-webkit-scrollbar{width:0;}
+.fd-brand-top{display:flex;flex-direction:column;gap:32px;}
+.fd-logo-row{display:flex;align-items:center;gap:16px;}
+.fd-logo{width:56px;height:56px;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5);border:2px solid rgba(255,255,255,.08);}
+.fd-logo img{width:100%;height:100%;object-fit:cover;}
+.fd-name{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.fd-type{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.fd-discount{margin-top:8px;}
+.fd-discount-pct{font-size:72px;font-weight:900;letter-spacing:-4px;line-height:.9;-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.fd-discount-label{font-size:13px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:2px;margin-top:4px;}
+.fd-rating-block{display:flex;align-items:center;gap:16px;margin-top:32px;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;backdrop-filter:blur(12px);}
+.fd-rating-num{font-size:36px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;}
+.fd-rating-detail{display:flex;flex-direction:column;gap:2px;}
+.fd-stars{display:flex;gap:2px;}
+.fd-stars span{color:var(--gold);font-size:14px;}
+.fd-reviews{font-size:11px;color:var(--t2);}
+.fd-tp{display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:10px 16px;background:rgba(0,182,122,.06);border:1px solid rgba(0,182,122,.12);border-radius:10px;backdrop-filter:blur(8px);cursor:pointer;transition:.2s;}
+.fd-tp:hover{background:rgba(0,182,122,.12);border-color:rgba(0,182,122,.25);}
+.fd-tp-stars{display:flex;gap:1px;}
+.fd-tp-star{font-size:12px;color:var(--tp-green);}
+.fd-tp-text{font-size:11px;color:rgba(255,255,255,.6);}
+.fd-tp-text b{color:var(--tp-green);}
+.fd-about{margin-top:28px;padding:18px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:14px;backdrop-filter:blur(8px);}
+.fd-about-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:8px;}
+.fd-about-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.7;}
+.fd-about-text b{color:rgba(255,255,255,.85);font-weight:700;}
+.fd-about-highlights{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;}
+.fd-about-hl{display:flex;flex-direction:column;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);border-radius:10px;min-width:80px;}
+.fd-about-hl-val{font-size:16px;font-weight:800;letter-spacing:-0.5px;}
+.fd-about-hl-label{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.35);margin-top:2px;}
+.fd-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.04);}
+.fd-stat{padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;backdrop-filter:blur(8px);}
+.fd-stat-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:4px;}
+.fd-stat-val{font-size:14px;font-weight:700;color:#fff;}
+.fd-stat-val.g{color:var(--green);}
+.fd-stat-val.r{color:var(--red);}
+.fd-stat-val.y{color:var(--gold);}
+.fd-divider{position:absolute;right:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.06) 20%,rgba(255,255,255,.06) 80%,transparent);z-index:3;}
+
+/* ── RIGHT ── */
+.fd-right{flex:1;position:relative;height:100vh;overflow-y:auto;background:#060810;}
+.fd-right::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;pointer-events:none;}
+.fd-right::-webkit-scrollbar{width:3px;}
+.fd-right::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;}
+.fd-close{position:fixed;top:20px;right:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--t3);font-size:18px;transition:.3s;z-index:10;}
+.fd-close:hover{color:#fff;background:rgba(255,255,255,.06);transform:rotate(90deg);}
+.fd-ck{width:100%;max-width:440px;margin:0 auto;padding:60px 48px 48px;}
+.fd-ck-header{margin-bottom:36px;position:relative;}
+.fd-ck-title{font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
+.fd-ck-sub{font-size:12px;color:var(--t3);line-height:1.6;}
+.fd-ck-header::after{content:'';display:block;width:40px;height:3px;border-radius:2px;margin-top:16px;}
+.fd-step{margin-bottom:24px;}
+.fd-step-label{display:flex;align-items:center;gap:8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t2);margin-bottom:10px;}
+.fd-step-dot{width:6px;height:6px;border-radius:50%;}
+.fd-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.fd-pill{padding:10px 18px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--t2);font-family:var(--f);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;}
+.fd-pill:hover{border-color:rgba(255,255,255,.12);color:var(--t1);background:rgba(255,255,255,.03);}
+.fd-sizes{display:flex;gap:8px;flex-wrap:wrap;padding-top:12px;}
+.fd-sz{padding:12px 20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--t2);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;position:relative;text-align:center;min-width:72px;}
+.fd-sz:hover{border-color:rgba(255,255,255,.12);color:var(--t1);background:rgba(255,255,255,.03);}
+.fd-sz.pop::after{content:'Popular';position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#000;background:var(--accent);padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.fd-price{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;margin-top:24px;margin-bottom:24px;position:relative;overflow:hidden;}
+.fd-price::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.fd-price-size{font-size:24px;font-weight:800;color:#fff;letter-spacing:-1px;}
+.fd-price-type{font-size:10px;color:var(--t3);font-weight:600;margin-top:2px;}
+.fd-price-right{text-align:right;}
+.fd-price-new{font-size:28px;font-weight:800;letter-spacing:-1px;}
+.fd-price-old{font-size:12px;color:var(--t3);text-decoration:line-through;margin-top:2px;}
+.fd-price-save{display:inline-block;font-size:10px;font-weight:700;color:var(--green);background:rgba(34,197,94,.08);padding:3px 8px;border-radius:4px;margin-top:4px;}
+.fd-cpn{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:rgba(240,180,41,.03);border:1px dashed rgba(240,180,41,.15);border-radius:12px;margin-bottom:6px;}
+.fd-cpn-tag{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);margin-bottom:4px;}
+.fd-cpn-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);text-shadow:0 0 16px rgba(240,180,41,.1);}
+.fd-cpn-copy{padding:9px 18px;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.15);border-radius:8px;color:var(--gold);font-size:11px;font-weight:700;transition:.2s;font-family:var(--f);}
+.fd-cpn-copy:hover{background:rgba(240,180,41,.12);border-color:rgba(240,180,41,.3);}
+.fd-cpn-hint{font-size:9px;color:var(--t3);text-align:center;margin-bottom:24px;}
+@keyframes shimmer{0%,100%{background-position:0 0;}50%{background-position:100% 0;}}
+.fd-cta{width:100%;padding:16px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;transition:transform .3s,box-shadow .3s;font-family:var(--f);box-shadow:0 4px 24px rgba(240,180,41,.2);animation:shimmer 3s ease infinite;position:relative;overflow:hidden;}
+.fd-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent 50%);pointer-events:none;}
+.fd-cta:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,180,41,.3);}
+.fd-includes{margin-top:28px;padding:20px 22px;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.04);border-radius:14px;}
+.fd-inc-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t3);margin-bottom:12px;}
+.fd-inc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fd-inc{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t2);font-weight:500;}
+.fd-inc::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 6px rgba(34,197,94,.3);}
+
+/* Nav bar (firm switcher) */
+.fd-nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:6px;padding:8px 12px;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.08);border-radius:14px;backdrop-filter:blur(12px);z-index:20;}
+.fd-nav-btn{padding:6px 12px;border-radius:8px;font-size:10px;font-weight:700;color:var(--t2);cursor:pointer;transition:.2s;font-family:var(--f);background:none;border:1px solid transparent;}
+.fd-nav-btn:hover{color:var(--t1);background:rgba(255,255,255,.05);}
+.fd-nav-btn.active{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
+</style>
+</head>
+<body>
+
+<div class="fd">
+ <div class="fd-left">
+  <div class="fd-left-bg" id="fd-bg"></div>
+  <div class="fd-left-overlay"></div>
+  <div class="fd-left-content" id="fd-left"></div>
+  <div class="fd-divider"></div>
+ </div>
+ <div class="fd-right">
+  <button class="fd-close" onclick="window.close()">&#10005;</button>
+  <div class="fd-ck" id="fd-right"></div>
+ </div>
+</div>
+
+<!-- Nav bar to switch firms -->
+<div class="fd-nav" id="fd-nav"></div>
+
+<script>
+// ═══ ALL FIRMS DATA ═══
+const FIRMS = {
+  apex:{
+    name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'img/apex-bg.jpeg',
+    logo:'img/Firms/apex.png',icon:'A',rating:4.4,reviews:17686,discount:90,dtype:'LIFETIME',
+    coupon:'MARKET',link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',
+    split:'80%',target:'8%',ddPct:'-5% trail',drawdown:'Trailing/EOD',minDays:1,evalDays:30,scaling:'Sim',
+    newsTrading:true,day1Payout:true,
+    trustpilot:'https://www.trustpilot.com/review/apextraderfunding.com',
+    about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',
+    highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
+    types:['Intraday Trail','EOD Trail'],platforms:['Rithmic','Tradovate','WealthCharts'],
+    plans:{
+      'Intraday Trail':[{s:'25K',d:'$19.90',o:'$199'},{s:'50K',d:'$24.90',o:'$249'},{s:'100K',d:'$39.90',o:'$399',pop:1},{s:'150K',d:'$59.90',o:'$599'}],
+      'EOD Trail':[{s:'25K',d:'$29.90',o:'$299'},{s:'50K',d:'$34.90',o:'$349'},{s:'100K',d:'$59.90',o:'$599',pop:1},{s:'150K',d:'$79.90',o:'$799'}]
+    },
+    includes:['Sem limite de perda diaria','Sem regra de escalamento','Licenca NinjaTrader','Dados em tempo real','Copy Trader (WealthCharts)','Suporte 24/7']
+  },
+  bulenox:{
+    name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'img/bulenox-bg.jpeg',
+    logo:'img/Firms/bulenox.png',icon:'B',rating:4.8,reviews:1466,discount:89,dtype:'LIFETIME',
+    coupon:'MARKET89',link:'https://bulenox.com/member/aff/go/marketcoupons',
+    split:'90%',target:'Variavel',ddPct:'Por conta',drawdown:'Trailing',minDays:1,evalDays:null,scaling:'Sim',
+    newsTrading:true,day1Payout:true,
+    trustpilot:'https://www.trustpilot.com/review/bulenox.com',
+    about:'Fundada em <b>2022</b>. Crescimento de <b>500%</b> em tráfego ano a ano. Regras simplificadas — possível passar em <b>1 dia</b>, sem regra de consistência.',
+    highlights:[{val:'90%',label:'Profit Split'},{val:'1 dia',label:'Para passar'},{val:'$0',label:'Taxa mensal'}],
+    types:['Trailing DD','EOD DD'],platforms:['Rithmic','NinjaTrader'],
+    plans:{
+      'Trailing DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$48.15',o:'$535'}],
+      'EOD DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$48.15',o:'$535'}]
+    },
+    includes:['Passa em 1 dia','Sem consistencia','Trade durante noticias','Payouts semanais','Trial 14 dias gratis']
+  },
+  ftmo:{
+    name:'FTMO',type:'Forex',color:'#22C55E',bg:'img/ftmo-bg.jpeg',
+    logo:'img/Firms/ftmo.png',icon:'F',rating:4.8,reviews:39754,discount:19,dtype:'ESPECIAL',
+    coupon:null,link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',
+    split:'90%',target:'8%/5%',ddPct:'-5%/-10%',drawdown:'Trailing/Fixed',minDays:4,evalDays:30,scaling:'Ate $2M',
+    newsTrading:false,day1Payout:false,
+    trustpilot:'https://www.trustpilot.com/review/ftmo.com',
+    about:'Fundada em <b>2015</b> em Praga, República Tcheca. A FTMO é a <b>maior prop firm de Forex do mundo</b>. Mais de <b>3.5M de clientes</b> em 140+ países. Equipe de 300+ profissionais.',
+    highlights:[{val:'$500M+',label:'Pagos a traders'},{val:'3.5M+',label:'Clientes'},{val:'10 anos',label:'No mercado'}],
+    types:['2-Step Challenge','1-Step Challenge'],platforms:['MT4','MT5','cTrader','DXtrade'],
+    plans:{
+      '2-Step Challenge':[{s:'10K',d:'€89',o:'—'},{s:'25K',d:'€250',o:'—'},{s:'50K',d:'€345',o:'—'},{s:'100K',d:'€439',o:'€540',pop:1},{s:'200K',d:'€1.080',o:'—'}],
+      '1-Step Challenge':[{s:'10K',d:'€89',o:'—'},{s:'25K',d:'€250',o:'—'},{s:'50K',d:'€345',o:'—'},{s:'100K',d:'€439',o:'€540',pop:1},{s:'200K',d:'€1.080',o:'—'}]
+    },
+    includes:['Free Trial ilimitado','90% split de lucro','Suporte 20 idiomas','Scaling ate $2M','$500M+ pagos']
+  },
+  tpt:{
+    name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'img/tpt-bg.jpeg',
+    logo:'img/Firms/tpt.png',icon:'T',rating:4.4,reviews:8550,discount:40,dtype:'LIFETIME',
+    coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',
+    split:'80%',target:'Variavel',ddPct:'EOD',drawdown:'End-of-Day',minDays:4,evalDays:null,scaling:'Sim',
+    newsTrading:false,day1Payout:true,
+    trustpilot:'https://www.trustpilot.com/review/takeprofittrader.com',
+    about:'Fundada em <b>2021</b> por James Sixsmith (ex-jogador profissional de hockey). Taxa de sucesso anual de <b>20.37%</b>. Saque desde o <b>dia 1</b>, sem taxa de ativação.',
+    highlights:[{val:'20.4%',label:'Taxa de sucesso'},{val:'Dia 1',label:'Primeiro saque'},{val:'$0',label:'Taxa ativação'}],
+    types:['EOD Drawdown'],platforms:['Tradovate','TradingView','Rithmic','NinjaTrader'],
+    plans:{
+      'EOD Drawdown':[{s:'25K',d:'$90',o:'$150'},{s:'50K',d:'$102',o:'$170'},{s:'75K',d:'$147',o:'$245'},{s:'100K',d:'$198',o:'$330',pop:1},{s:'150K',d:'$216',o:'$360'}]
+    },
+    includes:['Saque desde dia 1','Sem taxa ativacao','Sem limite diario','EOD Drawdown']
+  },
+  fn:{
+    name:'FundedNext',type:'Futuros',color:'#06B6D4',bg:'img/fn-bg.jpeg',
+    logo:'img/Firms/fn.png',icon:'N',rating:4.5,reviews:60850,discount:30,dtype:'1 DESAFIO',
+    coupon:'FNF30',link:'https://fundednext.com/?fpr=everton33',
+    split:'95%',target:'Variavel',ddPct:'Fixo',drawdown:'Fixed',minDays:1,evalDays:null,scaling:'Ate $300K',
+    newsTrading:true,day1Payout:true,
+    trustpilot:'https://www.trustpilot.com/review/fundednext.com',
+    about:'Fundada em <b>2022</b> nos Emirados Árabes. <b>Prop Firm do Ano</b> (Finance Magnates 2025). Mais de <b>200K traders ativos</b> e payout garantido em 24h.',
+    highlights:[{val:'$271M+',label:'Pagos a traders'},{val:'95K+',label:'Traders pagos'},{val:'24h',label:'Payout garantido'}],
+    types:['Legacy Challenge','Bolt Challenge','Rapid Challenge'],platforms:['Tradovate','NinjaTrader'],
+    plans:{
+      'Legacy Challenge':[{s:'25K',d:'$79.99',o:'—'},{s:'50K',d:'$149.99',o:'—'},{s:'100K',d:'$249.99',o:'—',pop:1}],
+      'Bolt Challenge':[{s:'50K',d:'$99.99',o:'—',pop:1}],
+      'Rapid Challenge':[{s:'25K',d:'$109',o:'—',pop:1}]
+    },
+    includes:['Payout garantido 24h','Sem limite de tempo','$1K compensacao atraso','Sem taxa ativacao']
+  },
+  e2t:{
+    name:'Earn2Trade',type:'Futuros',color:'#F59E0B',bg:'img/e2t-bg.jpeg',
+    logo:'img/Firms/e2t.png',icon:'E',rating:4.7,reviews:4647,discount:50,dtype:'CAREER PATH',
+    coupon:'MARKETSCOUPONS',link:'https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14',
+    split:'80%',target:'TCP100: $6.000',ddPct:'TCP100: $3.500',drawdown:'EOD Fixed',minDays:15,evalDays:null,scaling:'Ate $400K',
+    newsTrading:false,day1Payout:false,
+    trustpilot:'https://www.trustpilot.com/review/www.earn2trade.com',
+    about:'Fundada em <b>2016</b>, celebrando <b>10 anos</b> em 2026. Foco em educação e desenvolvimento. Taxa de aprovação de <b>10.42%</b> — acima da média do setor. Escalamento até $400K.',
+    highlights:[{val:'10 anos',label:'No mercado'},{val:'$400K',label:'Scaling máximo'},{val:'10.4%',label:'Taxa aprovação'}],
+    types:['Trader Career Path','Gauntlet Mini'],platforms:['Rithmic','NinjaTrader','Tradovate'],
+    plans:{
+      'Trader Career Path':[{s:'TCP25',d:'$75',o:'$150'},{s:'TCP50',d:'$95',o:'$190'},{s:'TCP100',d:'$175',o:'$350',pop:1}],
+      'Gauntlet Mini':[{s:'50K',d:'$85',o:'$170'},{s:'100K',d:'$157.50',o:'$315',pop:1}]
+    },
+    includes:['Journalytix gratis','Reset gratis','NT/Finamark gratis','Escalamento ate $400K']
+  },
+  the5ers:{
+    name:'The5ers',type:'Forex',color:'#10B981',bg:'img/the5ers-bg.jpeg',
+    logo:'img/Firms/the5ers.png',icon:'5',rating:4.7,reviews:22293,discount:10,dtype:'ESPECIAL',
+    coupon:null,link:'https://www.the5ers.com/?afmc=19jp',
+    split:'100%',target:'10%/5%',ddPct:'-10%/-5%',drawdown:'Static',minDays:3,evalDays:null,scaling:'Ate $4M',
+    newsTrading:true,day1Payout:false,
+    trustpilot:'https://www.trustpilot.com/review/the5ers.com',
+    about:'Fundada em <b>2016</b> por Saul Lokier em Raanana, Israel. Uma das <b>mais antigas prop firms</b> em atividade. Scaling até <b>$4M</b> e profit split até 100%.',
+    highlights:[{val:'$43M+',label:'Pagos a traders'},{val:'30K+',label:'Payouts feitos'},{val:'$4M',label:'Scaling máximo'}],
+    types:['2-Step'],platforms:['MT5'],
+    plans:{
+      '2-Step':[{s:'$5K',d:'$39',o:'$65'},{s:'$10K',d:'$70',o:'$110'},{s:'$25K',d:'$155',o:'$225'},{s:'$50K',d:'$275',o:'$345',pop:1},{s:'$100K',d:'$491',o:'$545'}]
+    },
+    includes:['Scaling ate $4M','Profit Split ate 100%','Bootcamp desde $95','Payout medio 16h','Alavancagem 1:100','Sem limite de tempo']
+  },
+  fundingpips:{
+    name:'Funding Pips',type:'Forex',color:'#6366F1',bg:'img/fundingpips-bg.jpeg',
+    logo:'img/Firms/fundingpips.png',icon:'P',rating:4.5,reviews:50967,discount:20,dtype:'1 COMPRA',
+    coupon:'31985EAA',link:'https://app.fundingpips.com/register?ref=31985EAA',
+    split:'100%',target:'8%/5%',ddPct:'-10%/-5%',drawdown:'Static',minDays:3,evalDays:null,scaling:'Sim',
+    newsTrading:true,day1Payout:false,
+    trustpilot:'https://www.trustpilot.com/review/fundingpips.com',
+    about:'Fundada em <b>2022</b> por Khaled Ayesh em Dubai. <b>2M+ de traders</b> no mundo. Uma das mesas mais populares com pagamentos rápidos e split flexível até 100%.',
+    highlights:[{val:'$200M+',label:'Pagos a traders'},{val:'2M+',label:'Traders'},{val:'127K+',label:'Payouts verificados'}],
+    types:['2-Step'],platforms:['MT5','Match-Trader','cTrader'],
+    plans:{
+      '2-Step':[{s:'$5K',d:'$28.80',o:'$36'},{s:'$10K',d:'$52.80',o:'$66'},{s:'$25K',d:'$119.20',o:'$149'},{s:'$50K',d:'$199.20',o:'$249',pop:1},{s:'$100K',d:'$423.20',o:'$529'}]
+    },
+    includes:['Split flexivel ate 100% mensal','$200M+ pagos','Alavancagem 1:100','Comunidade Discord ativa']
+  },
+  brightfunded:{
+    name:'BrightFunded',type:'Forex',color:'#00C9A7',bg:'img/brightfunded-bg.jpeg',
+    logo:'img/Firms/brightfunded.png',icon:'B',rating:4.2,reviews:528,discount:20,dtype:'EASTER',
+    coupon:'CLNLTPxtT4Sok0PzHaRIIQ',link:'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ',
+    split:'100%',target:'8%/5%',ddPct:'-10%/-5%',drawdown:'Static',minDays:5,evalDays:null,scaling:'Sem limite',
+    newsTrading:true,day1Payout:false,
+    trustpilot:'https://www.trustpilot.com/review/brightfunded.com',
+    about:'Fundada em <b>2022</b> na Holanda por Jelle Dijkstra. <b>20K+ traders</b>. Programa Trade2Earn (pontos por operar). Payout em <b>24h</b> com ciclo de 7 dias.',
+    highlights:[{val:'$7M+',label:'Pagos a traders'},{val:'20K+',label:'Traders'},{val:'24h',label:'Payout garantido'}],
+    types:['2-Step'],platforms:['MT5','DXtrade','cTrader'],
+    plans:{
+      '2-Step':[{s:'$5K',d:'€36',o:'€45'},{s:'$10K',d:'€68',o:'€85'},{s:'$25K',d:'€132',o:'€165'},{s:'$50K',d:'€228',o:'€285',pop:1},{s:'$100K',d:'€396',o:'€495'},{s:'$200K',d:'€756',o:'€945'}]
+    },
+    includes:['Scaling ate 100% split','Drawdown estatico','Payout 24h ciclo 7 dias','15% bonus lucro avaliacao','Trade2Earn','Alavancagem 1:100','Suporte 24/7']
+  }
+};
+
+// ═══ STATE ═══
+const params = new URLSearchParams(location.search);
+let currentFirm = params.get('firm') || 'apex';
+if (!FIRMS[currentFirm]) currentFirm = 'apex';
+const state = {};
+
+function strs(r){const f=Math.floor(r),h=r-f>=0.3&&r-f<0.8;return Array(f).fill('★').concat(h?['½']:[]).concat(Array(5-f-(h?1:0)).fill('☆')).join('');}
+
+function loadFirm(id) {
+  currentFirm = id;
+  const f = FIRMS[id];
+  const firstType = f.types[0];
+  const firstPlans = f.plans[firstType];
+  const popPlan = firstPlans.find(p=>p.pop) || firstPlans[0];
+  state.type = firstType;
+  state.plat = f.platforms[0];
+  state.size = popPlan.s;
+
+  // Set accent colors
+  document.documentElement.style.setProperty('--accent', f.color);
+  document.documentElement.style.setProperty('--accent-bg', f.color+'1F');
+  document.documentElement.style.setProperty('--accent-glow', f.color+'40');
+
+  // Background
+  document.getElementById('fd-bg').style.backgroundImage = `url('${f.bg}')`;
+
+  // LEFT
+  const s = strs(f.rating);
+  const tpStars = Math.round(f.rating);
+  let L = `<div class="fd-brand-top">
+    <div class="fd-logo-row">
+      <div class="fd-logo"><img src="${f.logo}" alt="${f.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${f.color};font-size:22px;font-weight:800\\'>${f.icon}</span>'"></div>
+      <div><div class="fd-name">${f.name}</div><div class="fd-type">${f.type}</div></div>
+    </div>
+    <div class="fd-discount">
+      <div class="fd-discount-pct" style="background:linear-gradient(135deg,${f.color},#FFD97D,${f.color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}% OFF</div>
+      <div class="fd-discount-label">DESCONTO ${f.dtype}</div>
+    </div>
+    <div class="fd-rating-block">
+      <div class="fd-rating-num">${f.rating}</div>
+      <div class="fd-rating-detail">
+        <div class="fd-stars">${s.split('').map(c=>`<span>${c}</span>`).join('')}</div>
+        <div class="fd-reviews">${f.reviews.toLocaleString()} avaliacoes</div>
+      </div>
+    </div>
+    <div class="fd-tp" onclick="openTpPopup('${f.trustpilot}')">
+      <div class="fd-tp-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpStars?'★':'☆'}</span>`).join('')}</div>
+      <div class="fd-tp-text">${f.reviews.toLocaleString()} reviews no <b>Trustpilot</b></div>
+    </div>
+    <div class="fd-about">
+      <div class="fd-about-title">Sobre a firma</div>
+      <div class="fd-about-text">${f.about}</div>
+      <div class="fd-about-highlights">${f.highlights.map(h=>`<div class="fd-about-hl"><div class="fd-about-hl-val" style="color:${f.color}">${h.val}</div><div class="fd-about-hl-label">${h.label}</div></div>`).join('')}</div>
+    </div>
+  </div>
+  <div class="fd-stats">
+    <div class="fd-stat"><div class="fd-stat-label">Profit Split</div><div class="fd-stat-val g">${f.split}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">Meta</div><div class="fd-stat-val y">${f.target}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">Drawdown</div><div class="fd-stat-val r">${f.ddPct}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">Dias minimos</div><div class="fd-stat-val">${f.minDays}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">Scaling</div><div class="fd-stat-val">${f.scaling}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">Avaliacao</div><div class="fd-stat-val">${f.evalDays?f.evalDays+'d':'Sem limite'}</div></div>
+  </div>`;
+  document.getElementById('fd-left').innerHTML = L;
+
+  renderRight();
+  renderNav();
+}
+
+function renderRight() {
+  const f = FIRMS[currentFirm];
+  const plans = f.plans[state.type];
+  if (!plans.find(p=>p.s===state.size)) state.size = (plans.find(p=>p.pop)||plans[0]).s;
+
+  let h = `<div class="fd-ck-header">
+    <div class="fd-ck-title">Configure sua conta</div>
+    <div class="fd-ck-sub">Escolha o tipo, plataforma e tamanho. ${f.coupon?`Aplique o cupom no checkout oficial.`:''}</div>
+  </div>`;
+
+  // Type
+  if (f.types.length > 1) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>Tipo de conta</div>
+      <div class="fd-pills">${f.types.map(t=>`<button class="fd-pill${t===state.type?' sel':''}" style="${t===state.type?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="sel('type','${t}')">${t}</button>`).join('')}</div></div>`;
+  }
+
+  // Platform
+  h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>Plataforma</div>
+    <div class="fd-pills">${f.platforms.map(p=>`<button class="fd-pill${p===state.plat?' sel':''}" style="${p===state.plat?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="sel('plat','${p}')">${p}</button>`).join('')}</div></div>`;
+
+  // Size
+  h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>Tamanho da conta</div>
+    <div class="fd-sizes">${plans.map(p=>`<button class="fd-sz${p.s===state.size?' sel':''}${p.pop?' pop':''}" style="${p.s===state.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''};${p.pop?`--pop-bg:${f.color}`:''}" onclick="sel('size','${p.s}')">${p.s}</button>`).join('')}</div></div>`;
+
+  // Price
+  const plan = plans.find(p=>p.s===state.size)||plans[0];
+  const oNum = parseFloat(plan.o.replace(/[^0-9.]/g,''));
+  const dNum = parseFloat(plan.d.replace(/[^0-9.]/g,''));
+  const currency = plan.d.match(/[€$]/)?.[0]||'$';
+  const save = oNum&&dNum&&plan.o!=='—' ? (oNum-dNum).toFixed(2) : null;
+  h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
+    <div><div class="fd-price-size">${plan.s}</div><div class="fd-price-type">${state.type}</div></div>
+    <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color}">${plan.d}</div>${plan.o&&plan.o!=='—'?`<div class="fd-price-old">${plan.o}</div>`:''}${save?`<div class="fd-price-save">Economia ${currency}${save}</div>`:''}</div>
+  </div>`;
+
+  // Coupon
+  if (f.coupon) {
+    const isLong = f.coupon.length > 12;
+    h += `<div class="fd-cpn"><div><div class="fd-cpn-tag">Cupom exclusivo</div><div class="fd-cpn-code" style="${isLong?'font-size:13px;letter-spacing:1px':''}">${f.coupon}</div></div>
+      <button class="fd-cpn-copy" onclick="cpCoupon('${f.coupon}')">Copiar</button></div>
+      <div class="fd-cpn-hint">Aplique o cupom no checkout para garantir seu desconto</div>`;
+  }
+
+  // CTA
+  h += `<button class="fd-cta" onclick="window.open('${f.link}','_blank')">Comecar Avaliacao &#8594;</button>`;
+
+  // Includes
+  if (f.includes?.length) {
+    h += `<div class="fd-includes"><div class="fd-inc-title">Incluso no plano</div>
+      <div class="fd-inc-grid">${f.includes.map(i=>`<div class="fd-inc">${i}</div>`).join('')}</div></div>`;
+  }
+
+  document.getElementById('fd-right').innerHTML = h;
+}
+
+function renderNav() {
+  document.getElementById('fd-nav').innerHTML = Object.keys(FIRMS).map(id => {
+    const f = FIRMS[id];
+    return `<button class="fd-nav-btn${id===currentFirm?' active':''}" style="${id===currentFirm?`color:${f.color};border-color:${f.color}33`:''}" onclick="loadFirm('${id}')">${f.name.replace('Trader Funding','').replace('Profit Trader','PT').replace('Funding ','').trim()}</button>`;
+  }).join('');
+}
+
+function sel(key, val) {
+  state[key] = val;
+  renderRight();
+}
+
+function cpCoupon(code) {
+  navigator.clipboard.writeText(code);
+  const b = document.querySelector('.fd-cpn-copy');
+  b.textContent = 'Copiado!';
+  setTimeout(()=>b.textContent='Copiar',2000);
+}
+
+function openTpPopup(url) {
+  try {
+    var w = Math.min(1100, Math.floor(screen.width * 0.9));
+    var h = Math.min(850, Math.floor(screen.height * 0.85));
+    var left = Math.floor((screen.width - w) / 2);
+    var top = Math.floor((screen.height - h) / 2);
+    var features = 'width='+w+',height='+h+',left='+left+',top='+top+',resizable=yes,scrollbars=yes,noopener';
+    var popup = window.open(url, 'trustpilotReviews', features);
+    if (!popup || popup.closed) window.open(url, '_blank', 'noopener');
+    else popup.focus();
+  } catch(e) { window.open(url, '_blank'); }
+}
+
+loadFirm(currentFirm);
+</script>
+</body>
+</html>
