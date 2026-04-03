@@ -303,14 +303,14 @@ export default async function handler(req) {
       });
     }
 
-    // ══════ CTA BUTTON ══════
+    // ══════ CTA BUTTON (same width as coupon) ══════
     sections.push({
       type: 'div', props: {
-        style: { display: 'flex', padding: '18px 28px 0', justifyContent: 'center', width: '100%' },
+        style: { display: 'flex', padding: '12px 28px 0', width: '100%' },
         children: {
           type: 'div', props: {
             style: { display: 'flex', justifyContent: 'center', alignItems: 'center', background: `linear-gradient(135deg, ${color}, ${color}cc)`, color: '#FFFFFF', padding: '16px 0', borderRadius: '10px', fontSize: '16px', fontWeight: 900, width: '100%', letterSpacing: '0.5px' },
-            children: 'Comecar Agora',
+            children: 'Começar Agora',
           },
         },
       },
