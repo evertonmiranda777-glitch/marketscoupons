@@ -289,16 +289,16 @@ a{text-decoration:none;color:inherit;}
 /* Creative canvas — premium fd-overlay style */
 .cr-canvas{position:relative;overflow:hidden;font-family:'Inter',sans-serif;color:#fff;}
 .cr-canvas-bg{position:absolute;inset:0;background:#060810;}
-.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.55;}
-.cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 25%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.75) 100%);}
-.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;box-sizing:border-box;}
+.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.6;}
+.cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.3) 30%,rgba(0,0,0,.4) 60%,rgba(0,0,0,.7) 100%);}
+.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box;padding:0 48px;}
 /* Header — MC branding top */
-.cr-hdr{display:flex;align-items:center;justify-content:center;gap:14px;padding:40px 0 20px;}
+.cr-hdr{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px;padding:40px 0 0;z-index:3;}
 .cr-hdr img{width:36px;height:36px;}
 .cr-hdr-txt{font-size:24px;font-weight:700;letter-spacing:-.3px;}
 .cr-hdr-txt b{color:#F0B429;}
-/* Main card — glassmorphism centered */
-.cr-card{flex:1;margin:0 48px;border-radius:24px;border:1px solid rgba(240,180,41,.15);background:rgba(6,8,16,.82);backdrop-filter:blur(20px);padding:44px 56px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden;}
+/* Main card — glassmorphism vertically centered */
+.cr-card{width:100%;border-radius:24px;border:1px solid rgba(240,180,41,.15);background:rgba(6,8,16,.82);backdrop-filter:blur(20px);padding:44px 56px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden;box-sizing:border-box;}
 .cr-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,180,41,.35),transparent);}
 /* Firm row — centered */
 .cr-firm-row{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:24px;}
@@ -343,8 +343,8 @@ a{text-decoration:none;color:inherit;}
 /* Perks — centered */
 .cr-perks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px;width:100%;max-width:600px;}
 .cr-perk{padding:8px 16px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:10px;font-size:13px;font-weight:600;color:#34D399;}
-/* Footer — MC branding */
-.cr-footer{display:flex;align-items:center;justify-content:center;gap:14px;padding:20px 0 36px;}
+/* Footer — MC branding bottom */
+.cr-footer{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 0 36px;z-index:3;}
 .cr-footer img{width:28px;height:28px;}
 .cr-footer-txt{font-size:18px;font-weight:600;letter-spacing:-.2px;color:rgba(255,255,255,.4);}
 .cr-footer-txt b{color:#F0B429;}
