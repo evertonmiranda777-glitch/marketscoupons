@@ -1370,7 +1370,7 @@ img{max-width:100%;}
 .fd-split{display:flex;width:100%;height:100vh;}
 .fd-left{flex:0 0 52%;position:relative;height:100vh;}
 .fd-left-bg{position:absolute;inset:0;background:center/cover no-repeat;}
-.fd-left-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 40%,rgba(0,0,0,0.6) 100%);}
+.fd-left-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.45) 40%,rgba(0,0,0,0.75) 100%);}
 .fd-left-content{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:48px 40px;z-index:2;overflow-y:scroll;}
 .fd-left-content::-webkit-scrollbar{width:0;}
 .fd-brand-top{display:flex;flex-direction:column;gap:32px;}
@@ -1413,12 +1413,12 @@ img{max-width:100%;}
 .fd-right::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;}
 .fd-close{position:absolute;top:20px;right:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--t3);font-size:18px;cursor:pointer;transition:.3s;z-index:10;}
 .fd-close:hover{color:#fff;background:rgba(255,255,255,.06);transform:rotate(90deg);}
-.fd-ck{width:100%;max-width:440px;margin:0 auto;padding:60px 48px 48px;}
-.fd-ck-header{margin-bottom:36px;position:relative;}
-.fd-ck-title{font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
-.fd-ck-sub{font-size:12px;color:var(--t3);line-height:1.6;}
-.fd-ck-header::after{content:'';display:block;width:40px;height:3px;border-radius:2px;margin-top:16px;}
-.fd-step{margin-bottom:24px;}
+.fd-ck{width:100%;max-width:440px;margin:0 auto;padding:28px 44px 36px;}
+.fd-ck-header{margin-bottom:14px;position:relative;}
+.fd-ck-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:3px;}
+.fd-ck-sub{font-size:11px;color:var(--t3);line-height:1.5;}
+.fd-ck-header::after{content:'';display:block;width:36px;height:2px;border-radius:2px;margin-top:10px;}
+.fd-step{margin-bottom:14px;}
 .fd-step-label{display:flex;align-items:center;gap:8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t2);margin-bottom:10px;}
 .fd-step-dot{width:6px;height:6px;border-radius:50%;}
 .fd-pills{display:flex;gap:8px;flex-wrap:wrap;}
@@ -1428,7 +1428,7 @@ img{max-width:100%;}
 .fd-sz{padding:12px 20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--t2);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;position:relative;text-align:center;min-width:72px;}
 .fd-sz:hover{border-color:rgba(255,255,255,.12);color:var(--t1);background:rgba(255,255,255,.03);}
 .fd-sz.pop::after{content:'Popular';position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#000;background:var(--accent,var(--gold));padding:2px 7px;border-radius:4px;white-space:nowrap;}
-.fd-price{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;margin-top:24px;margin-bottom:24px;position:relative;overflow:hidden;}
+.fd-price{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;margin-top:14px;margin-bottom:14px;position:relative;overflow:hidden;}
 .fd-price-size{font-size:24px;font-weight:800;color:#fff;letter-spacing:-1px;}
 .fd-price-type{font-size:10px;color:var(--t3);font-weight:600;margin-top:2px;}
 .fd-price-right{text-align:right;}
@@ -2258,16 +2258,16 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
          <div class="mu-cmp-firm"><img class="mu-logo-sm" src="img/Firms/tpt.png" alt="TPT"><div class="mu-cmp-nm">TPT</div><div class="mu-cmp-stars">4.4 / 8.5K</div></div>
         </div>
         <div class="mu-cmp-rows">
-         <div class="mu-cmp-row"><div class="mu-cmp-label">Desconto</div><div class="mu-cmp-val best">90%</div><div class="mu-cmp-val best">89%</div><div class="mu-cmp-val">40%</div></div>
-         <div class="mu-cmp-row"><div class="mu-cmp-label">100K price</div><div class="mu-cmp-val best">$39.90</div><div class="mu-cmp-val best">$23.65</div><div class="mu-cmp-val">$198</div></div>
+         <div class="mu-cmp-row"><div class="mu-cmp-label" data-i18n="mu_desconto">Desconto</div><div class="mu-cmp-val best">90%</div><div class="mu-cmp-val best">89%</div><div class="mu-cmp-val">40%</div></div>
+         <div class="mu-cmp-row"><div class="mu-cmp-label" data-i18n="mu_100k_price">Preco 100K</div><div class="mu-cmp-val best">$39.90</div><div class="mu-cmp-val best">$23.65</div><div class="mu-cmp-val">$198</div></div>
          <div class="mu-cmp-row"><div class="mu-cmp-label">Drawdown</div><div class="mu-cmp-val">Trailing</div><div class="mu-cmp-val">Trailing</div><div class="mu-cmp-val best">EOD</div></div>
          <div class="mu-cmp-row"><div class="mu-cmp-label">Split</div><div class="mu-cmp-val">80%</div><div class="mu-cmp-val best">90%</div><div class="mu-cmp-val">80%</div></div>
-         <div class="mu-cmp-row"><div class="mu-cmp-label">Min. dias</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val">4</div></div>
+         <div class="mu-cmp-row"><div class="mu-cmp-label" data-i18n="mu_min_dias">Min. dias</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val">4</div></div>
         </div>
         <div class="mu-cmp-winner">
          <img class="mu-logo-sm" src="img/Firms/bulenox.png" alt="Bulenox">
-         <div class="mu-cmp-winner-badge">VENCEDOR</div>
-         <div class="mu-cmp-winner-text">Bulenox — melhor custo-beneficio para 100K</div>
+         <div class="mu-cmp-winner-badge" data-i18n="mu_vencedor">VENCEDOR</div>
+         <div class="mu-cmp-winner-text" data-i18n="mu_vencedor_txt">Bulenox — melhor custo-beneficio para 100K</div>
         </div>
        </div>
       </div>
@@ -2287,8 +2287,8 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
         <div class="mu-live-screen">
          <div class="mu-live-top">
           <div class="mu-live-dot"></div>
-          <div class="mu-live-tag">AO VIVO</div>
-          <div class="mu-live-pair">ES / NQ — Sessao NY</div>
+          <div class="mu-live-tag" data-i18n="mu_ao_vivo">AO VIVO</div>
+          <div class="mu-live-pair" data-i18n="mu_sessao_ny">ES / NQ — Sessao NY</div>
          </div>
          <div class="mu-live-price">
           <div class="mu-live-price-val">5,621.50</div>
@@ -2311,7 +2311,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
          </div>
         </div>
         <div class="mu-live-chat">
-         <div class="mu-live-chat-title">Chat VIP</div>
+         <div class="mu-live-chat-title" data-i18n="mu_chat_vip">Chat VIP</div>
          <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(249,115,22,.3);">T</div><div class="mu-live-msg-txt"><b>Trader01</b> Long ES 5620</div></div>
          <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(34,197,94,.3);">M</div><div class="mu-live-msg-txt"><b>Maria</b> NQ rompeu OB</div></div>
          <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(6,182,212,.3);">C</div><div class="mu-live-msg-txt"><b>Carlos</b> TP1 bateu!</div></div>
@@ -2358,20 +2358,20 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
         </div>
         <div style="flex:0 0 200px;padding:12px;display:flex;flex-direction:column;gap:6px;background:rgba(0,0,0,.2);">
          <div style="display:flex;align-items:center;gap:6px;">
-          <span style="font-size:7px;font-weight:800;color:var(--green);letter-spacing:.5px;text-transform:uppercase;">Analise do Dia</span>
+          <span style="font-size:7px;font-weight:800;color:var(--green);letter-spacing:.5px;text-transform:uppercase;" data-i18n="mu_analise_dia">Analise do Dia</span>
           <span style="font-size:6px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,.15);color:var(--green);">BULLISH</span>
          </div>
-         <div style="font-size:6.5px;color:rgba(255,255,255,.35);line-height:1.6;">Tarifas de Trump impactam mercados globais. ES testa suporte em 5580 apos selloff. FVG no 4H como zona de interesse. FOMC ata confirma pausa nos juros.</div>
+         <div style="font-size:6.5px;color:rgba(255,255,255,.35);line-height:1.6;" data-i18n="mu_analise_resumo">Tarifas de Trump impactam mercados globais. ES testa suporte em 5580 apos selloff. FVG no 4H como zona de interesse. FOMC ata confirma pausa nos juros.</div>
          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:auto;">
-          <div style="background:rgba(34,197,94,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;">SUPORTE 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,580</div></div>
-          <div style="background:rgba(239,68,68,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;">RESISTENCIA 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,650</div></div>
-          <div style="background:rgba(34,197,94,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;">SUPORTE 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,540</div></div>
-          <div style="background:rgba(239,68,68,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;">RESISTENCIA 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,700</div></div>
+          <div style="background:rgba(34,197,94,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;" data-i18n="mu_suporte1">SUPORTE 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,580</div></div>
+          <div style="background:rgba(239,68,68,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;" data-i18n="mu_resist1">RESISTENCIA 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,650</div></div>
+          <div style="background:rgba(34,197,94,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;" data-i18n="mu_suporte2">SUPORTE 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,540</div></div>
+          <div style="background:rgba(239,68,68,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;" data-i18n="mu_resist2">RESISTENCIA 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,700</div></div>
          </div>
          <div style="display:flex;gap:3px;margin-top:2px;">
           <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,.1);color:var(--green);font-weight:700;">SMC</span>
           <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(168,85,247,.1);color:var(--purple);font-weight:700;">Macro</span>
-          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(240,180,41,.1);color:var(--gold);font-weight:700;">Tarifas</span>
+          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(240,180,41,.1);color:var(--gold);font-weight:700;" data-i18n="mu_tarifas">Tarifas</span>
           <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(6,182,212,.1);color:var(--cyan);font-weight:700;">FOMC</span>
          </div>
         </div>
@@ -2391,22 +2391,22 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
       <div class="mu">
        <div class="mu-platforms">
         <div class="mu-plat">
-         <div class="mu-plat-tag">DISPONIVEL</div>
+         <div class="mu-plat-tag" data-i18n="mu_disponivel">DISPONIVEL</div>
          <img class="mu-plat-logo" src="img/Plataformas/tradingview.png" alt="TradingView">
          <div class="mu-plat-name">TradingView</div>
-         <div class="mu-plat-desc">Plataforma de graficos mais usada do mundo</div>
+         <div class="mu-plat-desc" data-i18n="mu_tv_desc">Plataforma de graficos mais usada do mundo</div>
          <div class="mu-plat-price">$12.95</div>
-         <div class="mu-plat-period">por mes</div>
-         <div class="mu-plat-btn">VER PLANOS</div>
+         <div class="mu-plat-period" data-i18n="mu_por_mes">por mes</div>
+         <div class="mu-plat-btn" data-i18n="mu_ver_planos">VER PLANOS</div>
         </div>
         <div class="mu-plat">
-         <div class="mu-plat-tag">DISPONIVEL</div>
+         <div class="mu-plat-tag" data-i18n="mu_disponivel">DISPONIVEL</div>
          <img class="mu-plat-logo" src="img/Plataformas/ninjatrader.png" alt="NinjaTrader">
          <div class="mu-plat-name">NinjaTrader</div>
-         <div class="mu-plat-desc">Execucao profissional para futuros</div>
+         <div class="mu-plat-desc" data-i18n="mu_nt_desc">Execucao profissional para futuros</div>
          <div class="mu-plat-price">$99</div>
-         <div class="mu-plat-period">lifetime</div>
-         <div class="mu-plat-btn">VER PLANOS</div>
+         <div class="mu-plat-period">Lifetime</div>
+         <div class="mu-plat-btn" data-i18n="mu_ver_planos">VER PLANOS</div>
         </div>
        </div>
       </div>
@@ -2424,8 +2424,8 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
       <div class="mu" style="padding:0;overflow:hidden;">
        <div style="position:relative;height:200px;border-radius:16px;overflow:hidden;">
         <div style="position:absolute;top:10px;left:14px;z-index:2;display:flex;align-items:center;gap:8px;">
-         <span style="font-size:10px;font-weight:800;color:#fff;">Mapa de Calor</span>
-         <span style="font-size:7px;color:rgba(255,255,255,.35);">S&amp;P 500 — Tempo real</span>
+         <span style="font-size:10px;font-weight:800;color:#fff;" data-i18n="mu_heatmap">Mapa de Calor</span>
+         <span style="font-size:7px;color:rgba(255,255,255,.35);" data-i18n="mu_heatmap_sub">S&amp;P 500 — Tempo real</span>
         </div>
         <div style="position:absolute;top:8px;right:12px;z-index:2;display:flex;gap:4px;">
          <span style="font-size:6.5px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--gold-dim);color:var(--gold);">S&amp;P 500</span>
@@ -2450,19 +2450,19 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
       <div class="mu">
        <div class="mu-tools">
         <div class="mu-calc">
-         <div class="mu-calc-title">Position Size Calculator</div>
-         <div class="mu-calc-field"><span>Conta</span><span>$50,000</span></div>
-         <div class="mu-calc-field"><span>Risco %</span><span>1.5%</span></div>
+         <div class="mu-calc-title" data-i18n="mu_calc_title">Calculadora Position Size</div>
+         <div class="mu-calc-field"><span data-i18n="mu_conta">Conta</span><span>$50,000</span></div>
+         <div class="mu-calc-field"><span data-i18n="mu_risco_pct">Risco %</span><span>1.5%</span></div>
          <div class="mu-calc-field"><span>Stop Loss</span><span>25 pts</span></div>
-         <div class="mu-calc-result"><span>Lotes</span><span>3.0</span></div>
-         <div class="mu-calc-result"><span>Risco $</span><span>$750</span></div>
+         <div class="mu-calc-result"><span data-i18n="mu_lotes">Lotes</span><span>3.0</span></div>
+         <div class="mu-calc-result"><span data-i18n="mu_risco_val">Risco $</span><span>$750</span></div>
         </div>
         <div class="mu-quiz">
-         <div class="mu-quiz-title">Quiz — Sua Firma Ideal</div>
-         <div class="mu-quiz-q">Qual mercado voce opera?</div>
-         <div class="mu-quiz-opt selected">Futuros (ES, NQ, CL)</div>
-         <div class="mu-quiz-opt">Forex (EUR/USD, GBP)</div>
-         <div class="mu-quiz-opt">Ambos</div>
+         <div class="mu-quiz-title" data-i18n="mu_quiz_title">Quiz — Sua Firma Ideal</div>
+         <div class="mu-quiz-q" data-i18n="mu_quiz_q">Qual mercado voce opera?</div>
+         <div class="mu-quiz-opt selected" data-i18n="mu_quiz_futuros">Futuros (ES, NQ, CL)</div>
+         <div class="mu-quiz-opt" data-i18n="mu_quiz_forex">Forex (EUR/USD, GBP)</div>
+         <div class="mu-quiz-opt" data-i18n="mu_quiz_ambos">Ambos</div>
          <div class="mu-quiz-bar"><div class="mu-quiz-bar-fill"></div></div>
         </div>
        </div>
@@ -2484,30 +2484,30 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
          <div class="mu-blog-card">
           <img class="mu-blog-thumb" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=80&h=80&fit=crop" alt="Prop Firm" style="object-fit:cover;">
           <div class="mu-blog-info">
-           <div class="mu-blog-cat" style="color:var(--green);">Iniciante</div>
-           <div class="mu-blog-t">Sua Primeira Prop Firm: Guia Completo 2025</div>
-           <div class="mu-blog-meta">12 min leitura</div>
+           <div class="mu-blog-cat" style="color:var(--green);" data-i18n="mu_iniciante">Iniciante</div>
+           <div class="mu-blog-t" data-i18n="mu_blog1_t">Sua Primeira Prop Firm: Guia Completo 2025</div>
+           <div class="mu-blog-meta" data-i18n="mu_blog1_meta">12 min leitura</div>
           </div>
          </div>
          <div class="mu-blog-card">
           <img class="mu-blog-thumb" src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=80&h=80&fit=crop" alt="Drawdown" style="object-fit:cover;">
           <div class="mu-blog-info">
-           <div class="mu-blog-cat" style="color:var(--gold);">Intermediario</div>
-           <div class="mu-blog-t">Trailing vs Static Drawdown: qual escolher</div>
-           <div class="mu-blog-meta">8 min leitura</div>
+           <div class="mu-blog-cat" style="color:var(--gold);" data-i18n="mu_intermediario">Intermediario</div>
+           <div class="mu-blog-t" data-i18n="mu_blog2_t">Trailing vs Static Drawdown: qual escolher</div>
+           <div class="mu-blog-meta" data-i18n="mu_blog2_meta">8 min leitura</div>
           </div>
          </div>
          <div class="mu-blog-card">
           <img class="mu-blog-thumb" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=80&h=80&fit=crop" alt="Estrategia" style="object-fit:cover;">
           <div class="mu-blog-info">
-           <div class="mu-blog-cat" style="color:var(--red);">Avancado</div>
-           <div class="mu-blog-t">Order Flow + Delta: leitura institucional</div>
-           <div class="mu-blog-meta">15 min leitura</div>
+           <div class="mu-blog-cat" style="color:var(--red);" data-i18n="mu_avancado">Avancado</div>
+           <div class="mu-blog-t" data-i18n="mu_blog3_t">Order Flow + Delta: leitura institucional</div>
+           <div class="mu-blog-meta" data-i18n="mu_blog3_meta">15 min leitura</div>
           </div>
          </div>
         </div>
         <div class="mu-cal">
-         <div class="mu-cal-title">Calendario</div>
+         <div class="mu-cal-title" data-i18n="mu_calendario">Calendario</div>
          <div class="mu-cal-ev">
           <div class="mu-cal-time">08:30</div>
           <div class="mu-cal-imp" style="background:var(--red);"></div>
@@ -2833,7 +2833,7 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
       <div style="font-size:12px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;" data-i18n="ind_em_breve_como">Como garantir acesso</div>
       <p style="font-size:13px;color:var(--t2);line-height:1.7;" data-i18n="ind_em_breve_passos">Participe do programa de fidelidade, use nossos cupons nas suas compras e, ao ser validado, você terá acesso exclusivo assim que lançarmos.</p>
     </div>
-    <button class="btn-gold" onclick="go('fidelidade')" data-i18n="ind_em_breve_btn">Participar do programa de fidelidade</button>
+    <button class="btn-gold" onclick="go('loyalty')" data-i18n="ind_em_breve_btn">Participar do programa de fidelidade</button>
   </div>
 </div>
 
@@ -2917,9 +2917,9 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  <div class="sec" id="blog-header"><div class="sec-hd" data-i18n="nav_blog"> Blog</div></div>
  <div class="blog-filters" id="blog-filters">
   <button class="bf-btn active" onclick="filterBlog('all',this)" data-i18n="blog_filtro_todos">Todos</button>
-  <button class="bf-btn bf-green" onclick="filterBlog('iniciante',this)">Iniciante</button>
-  <button class="bf-btn bf-yellow" onclick="filterBlog('intermediario',this)">Intermediário</button>
-  <button class="bf-btn bf-red" onclick="filterBlog('profissional',this)">Profissional</button>
+  <button class="bf-btn bf-green" onclick="filterBlog('iniciante',this)" data-i18n="blvl_iniciante">Iniciante</button>
+  <button class="bf-btn bf-yellow" onclick="filterBlog('intermediario',this)" data-i18n="blvl_intermediario">Intermediário</button>
+  <button class="bf-btn bf-red" onclick="filterBlog('profissional',this)" data-i18n="blvl_profissional">Profissional</button>
  </div>
  <div class="blog-grid" id="blog-grid"></div>
  <div class="blog-article" id="blog-article"></div>
@@ -3219,6 +3219,22 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
   <div class="fd-right">
    <button class="fd-close" onclick="closeFD()">&#10005;</button>
    <div class="fd-ck" id="fd-right"></div>
+  </div>
+ </div>
+</div>
+
+<!-- PLATFORM DETAIL OVERLAY (Desktop — reuses fd- CSS classes) -->
+<div class="fd-overlay" id="pd-overlay">
+ <div class="fd-split">
+  <div class="fd-left">
+   <div class="fd-left-bg" id="pd-bg"></div>
+   <div class="fd-left-overlay"></div>
+   <div class="fd-left-content" id="pd-left"></div>
+   <div class="fd-divider"></div>
+  </div>
+  <div class="fd-right">
+   <button class="fd-close" onclick="closePD()">&#10005;</button>
+   <div class="fd-ck" id="pd-right"></div>
   </div>
  </div>
 </div>
@@ -3544,6 +3560,64 @@ const FIRM_ABOUT={
     includes:['Scaling ate 100% split','Drawdown estatico','Payout 24h ciclo 7 dias','15% bonus lucro avaliacao','Trade2Earn','Alavancagem 1:100','Suporte 24/7']}
 };
 
+/* PLATFORM DETAIL DATA — checkout overlay for partner platforms */
+const PLAT_BG={
+  tradingview:'img/tradingview-bg.jpeg',
+  ninjatrader:'img/ninjatrader-bg.jpeg'
+};
+const PLAT_DETAIL={
+  tradingview:{
+    about:'Fundada em <b>2011</b> nos EUA. A plataforma de gráficos <b>mais usada do mundo</b> com <b>50M+ de usuários</b> em 190+ países. Indicadores profissionais, alertas avançados, screener e a maior comunidade de traders do mundo. <b>Pine Script</b> para criar indicadores customizados.',
+    credit:'Ao assinar pelo nosso link, você recebe <b>$15 de crédito</b> na sua conta TradingView.',
+    highlights:[{val:'50M+',label:'Usuários'},{val:'17%',label:'OFF Anual'},{val:'$15',label:'Crédito na conta'}],
+    types:['Anual (17% OFF)','Mensal'],
+    plans:{
+      'Anual (17% OFF)':[
+        {s:'Essential',d:'$12.95/mês',o:'$14.95/mês',feat:'2 gráficos/aba · 5 indicadores · 40 alertas'},
+        {s:'Plus',d:'$24.95/mês',o:'$29.95/mês',pop:1,feat:'4 gráficos/aba · 10 indicadores · 200 alertas'},
+        {s:'Premium',d:'$49.95/mês',o:'$59.95/mês',feat:'8 gráficos/aba · 25 indicadores · 800 alertas'},
+        {s:'Ultimate',d:'$199.95/mês',o:'$239.95/mês',feat:'16 gráficos/aba · 50 indicadores · 2.000 alertas'}
+      ],
+      'Mensal':[
+        {s:'Essential',d:'$14.95/mês',o:'—',feat:'2 gráficos/aba · 5 indicadores · 40 alertas'},
+        {s:'Plus',d:'$29.95/mês',o:'—',pop:1,feat:'4 gráficos/aba · 10 indicadores · 200 alertas'},
+        {s:'Premium',d:'$59.95/mês',o:'—',feat:'8 gráficos/aba · 25 indicadores · 800 alertas'},
+        {s:'Ultimate',d:'$239.95/mês',o:'—',feat:'16 gráficos/aba · 50 indicadores · 2.000 alertas'}
+      ]
+    },
+    includes:['Sem anúncios','Volume Profile','Timeframes customizados','Bar Replay','Alertas avançados','Screener de ativos','Pine Script','Dados multi-mercado','Paper Trading (simulação)','Watchlists ilimitadas','Sync multi-dispositivo','App mobile completo','Comunidade 50M+ traders','Replay de mercado','Heatmaps de mercado','Suporte por chat'],
+    stats:[
+      {label:'Mercados',val:'Ações, Futuros, Forex, Cripto'},
+      {label:'Indicadores',val:'Até 50 por gráfico',color:'var(--green)'},
+      {label:'Alertas',val:'Até 2.000',color:'#EAB308'},
+      {label:'Dispositivos',val:'Desktop + Web + Mobile'},
+      {label:'Linguagem',val:'Pine Script (própria)'},
+      {label:'Comunidade',val:'50M+ traders ativos',color:'var(--green)'}
+    ]
+  },
+  ninjatrader:{
+    about:'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Brokerage própria com acesso direto ao CME Group. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros. Margens intraday: <b>$50</b> Micro / <b>$500</b> E-mini.',
+    highlights:[{val:'500K+',label:'Usuários ativos'},{val:'$0.09',label:'Menor comissão'},{val:'20+',label:'Anos no mercado'}],
+    types:['Plataforma'],
+    plans:{
+      'Plataforma':[
+        {s:'Free',d:'$0/mês',o:'—',feat:'Micro $0.35/lado · Standard $1.29/lado'},
+        {s:'Monthly',d:'$99/mês',o:'—',feat:'Micro $0.25/lado · Standard $0.99/lado'},
+        {s:'Lifetime',d:'$1,499',o:'—',pop:1,feat:'Micro $0.09/lado · Standard $0.59/lado'}
+      ]
+    },
+    includes:['SuperDOM + Order Flow+','100+ indicadores nativos','Automação NinjaScript (C#)','Strategy Analyzer (backtest)','ATM Strategies','Simulação grátis','Brokerage própria (FCM)','Margens intraday $50 Micro','Chart Trader (visual)','Market Analyzer (scanner)','Aceita por 10+ Prop Firms','Dados CME/CBOT/NYMEX','Relatório de performance','Desktop + Web + Mobile','Marketplace com milhares de add-ons','Suporte 24/5'],
+    stats:[
+      {label:'Exchanges',val:'CME, CBOT, NYMEX, COMEX'},
+      {label:'Comissão mínima',val:'$0.09/lado',color:'var(--green)'},
+      {label:'Margem Micro',val:'$50 intraday',color:'#EAB308'},
+      {label:'Automação',val:'NinjaScript (C#)'},
+      {label:'Prop Firms',val:'Apex, Bulenox, Topstep +7',color:'var(--green)'},
+      {label:'Brokerage',val:'Própria (FCM/NFA)'}
+    ]
+  }
+};
+
 /* FIRM DATA TRANSLATIONS — translates PT firm data to all languages */
 const _ftL=['en','es','fr','it','de','ar'];
 const FIRM_T={
@@ -3662,6 +3736,93 @@ const FIRM_T={
 '90% split de lucro':['90% profit split','90% split de beneficio','90% split de profit','90% split del profitto','90% Gewinn-Split','90% تقسيم أرباح'],
 '$500M+ pagos':['$500M+ paid out','$500M+ pagados','$500M+ versés','$500M+ pagati','$500M+ ausgezahlt','$500M+ مدفوعة'],
 'Sem regra de escalamento':['No scaling rules','Sin regla de escalamiento','Sans règle de scaling','Nessuna regola di scaling','Keine Scaling-Regeln','بدون قواعد تصعيد'],
+// PLAT_DETAIL — about texts (updated with richer data)
+'Fundada em <b>2011</b> nos EUA. A plataforma de gráficos <b>mais usada do mundo</b> com <b>50M+ de usuários</b> em 190+ países. Indicadores profissionais, alertas avançados, screener e a maior comunidade de traders do mundo. <b>Pine Script</b> para criar indicadores customizados.':['Founded in <b>2011</b> in the USA. The <b>world\'s most used</b> charting platform with <b>50M+ users</b> in 190+ countries. Professional indicators, advanced alerts, screener and the world\'s largest trader community. <b>Pine Script</b> for custom indicators.','Fundada en <b>2011</b> en EE.UU. La plataforma de gráficos <b>más usada del mundo</b> con <b>50M+ de usuarios</b> en 190+ países. Indicadores profesionales, alertas avanzadas, screener y la mayor comunidad de traders del mundo. <b>Pine Script</b> para indicadores personalizados.','Fondée en <b>2011</b> aux États-Unis. La plateforme de graphiques <b>la plus utilisée au monde</b> avec <b>50M+ d\'utilisateurs</b> dans 190+ pays. Indicateurs professionnels, alertes avancées, screener et la plus grande communauté de traders. <b>Pine Script</b> pour indicateurs personnalisés.','Fondata nel <b>2011</b> negli USA. La piattaforma di grafici <b>più usata al mondo</b> con <b>50M+ di utenti</b> in 190+ paesi. Indicatori professionali, avvisi avanzati, screener e la più grande comunità di trader. <b>Pine Script</b> per indicatori personalizzati.','Gegründet <b>2011</b> in den USA. Die <b>weltweit meistgenutzte</b> Charting-Plattform mit <b>50M+ Nutzern</b> in 190+ Ländern. Professionelle Indikatoren, erweiterte Benachrichtigungen, Screener und die größte Trader-Community. <b>Pine Script</b> für benutzerdefinierte Indikatoren.','تأسست في <b>2011</b> في الولايات المتحدة. منصة الرسوم البيانية <b>الأكثر استخداماً في العالم</b> مع <b>50 مليون+ مستخدم</b> في 190+ دولة. مؤشرات احترافية، تنبيهات متقدمة، فاحص وأكبر مجتمع متداولين. <b>Pine Script</b> لمؤشرات مخصصة.'],
+'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Brokerage própria com acesso direto ao CME Group. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros. Margens intraday: <b>$50</b> Micro / <b>$500</b> E-mini.':['Founded in <b>2003</b> by Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ users</b> in 150+ countries. Own brokerage with direct CME Group access. Acquired <b>Tradovate</b> in 2023. Accepted by <b>most futures Prop Firms</b>. Intraday margins: <b>$50</b> Micro / <b>$500</b> E-mini.','Fundada en <b>2003</b> por Raymond Deux en Denver, Colorado (HQ en Chicago). <b>500K+ usuarios</b> en 150+ países. Brokerage propia con acceso directo al CME Group. Adquirió <b>Tradovate</b> en 2023. Aceptada por la <b>mayoría de las Prop Firms</b> de futuros. Márgenes intraday: <b>$50</b> Micro / <b>$500</b> E-mini.','Fondée en <b>2003</b> par Raymond Deux à Denver, Colorado (siège à Chicago). <b>500K+ utilisateurs</b> dans 150+ pays. Courtage propre avec accès direct CME Group. Acquisition de <b>Tradovate</b> en 2023. Acceptée par la <b>plupart des Prop Firms</b> futures. Marges intraday: <b>50$</b> Micro / <b>500$</b> E-mini.','Fondata nel <b>2003</b> da Raymond Deux a Denver, Colorado (sede a Chicago). <b>500K+ utenti</b> in 150+ paesi. Broker proprio con accesso diretto CME Group. Acquisizione di <b>Tradovate</b> nel 2023. Accettata dalla <b>maggior parte delle Prop Firms</b> futures. Margini intraday: <b>$50</b> Micro / <b>$500</b> E-mini.','Gegründet <b>2003</b> von Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ Nutzer</b> in 150+ Ländern. Eigene Brokerage mit direktem CME Group-Zugang. Übernahme von <b>Tradovate</b> 2023. Von den <b>meisten Futures Prop Firms</b> akzeptiert. Intraday-Margen: <b>$50</b> Micro / <b>$500</b> E-mini.','تأسست في <b>2003</b> بواسطة ريموند دو في دنفر، كولورادو (المقر في شيكاغو). <b>500 ألف+ مستخدم</b> في 150+ دولة. وساطة خاصة مع وصول مباشر لـCME Group. استحوذت على <b>Tradovate</b> في 2023. مقبولة من <b>معظم شركات Prop</b> للعقود الآجلة. هوامش يومية: <b>$50</b> مايكرو / <b>$500</b> E-mini.'],
+// PLAT_DETAIL — credit text
+'Ao assinar pelo nosso link, você recebe <b>$15 de crédito</b> na sua conta TradingView.':['By subscribing through our link, you get <b>$15 credit</b> on your TradingView account.','Al suscribirte por nuestro enlace, recibes <b>$15 de crédito</b> en tu cuenta TradingView.','En vous abonnant via notre lien, vous recevez <b>15$ de crédit</b> sur votre compte TradingView.','Iscrivendoti tramite il nostro link, ricevi <b>$15 di credito</b> sul tuo account TradingView.','Wenn Sie sich über unseren Link anmelden, erhalten Sie <b>$15 Guthaben</b> auf Ihrem TradingView-Konto.','عند الاشتراك عبر رابطنا، تحصل على <b>رصيد $15</b> في حسابك على TradingView.'],
+// PLAT_DETAIL — highlight labels
+'Usuários':['Users','Usuarios','Utilisateurs','Utenti','Nutzer','المستخدمون'],
+'OFF Anual':['OFF Annual','OFF Anual','OFF Annuel','OFF Annuale','RABATT Jährlich','خصم سنوي'],
+'Crédito na conta':['Account credit','Crédito en la cuenta','Crédit sur le compte','Credito sul conto','Kontoguthaben','رصيد في الحساب'],
+'Plano disponível':['Plan available','Plan disponible','Plan disponible','Piano disponibile','Plan verfügbar','خطة متاحة'],
+'Menor comissão':['Lowest commission','Menor comisión','Commission la plus basse','Commissione più bassa','Niedrigste Kommission','أقل عمولة'],
+'Anos no mercado':['Years in market','Años en el mercado','Ans sur le marché','Anni nel mercato','Jahre im Markt','سنوات في السوق'],
+// PLAT_DETAIL — plan feature lines
+'2 gráficos/aba · 5 indicadores · 40 alertas':['2 charts/tab · 5 indicators · 40 alerts','2 gráficos/pestaña · 5 indicadores · 40 alertas','2 graphiques/onglet · 5 indicateurs · 40 alertes','2 grafici/tab · 5 indicatori · 40 avvisi','2 Charts/Tab · 5 Indikatoren · 40 Alarme','2 رسم بياني/علامة · 5 مؤشرات · 40 تنبيه'],
+'4 gráficos/aba · 10 indicadores · 200 alertas':['4 charts/tab · 10 indicators · 200 alerts','4 gráficos/pestaña · 10 indicadores · 200 alertas','4 graphiques/onglet · 10 indicateurs · 200 alertes','4 grafici/tab · 10 indicatori · 200 avvisi','4 Charts/Tab · 10 Indikatoren · 200 Alarme','4 رسم بياني/علامة · 10 مؤشرات · 200 تنبيه'],
+'8 gráficos/aba · 25 indicadores · 800 alertas':['8 charts/tab · 25 indicators · 800 alerts','8 gráficos/pestaña · 25 indicadores · 800 alertas','8 graphiques/onglet · 25 indicateurs · 800 alertes','8 grafici/tab · 25 indicatori · 800 avvisi','8 Charts/Tab · 25 Indikatoren · 800 Alarme','8 رسم بياني/علامة · 25 مؤشر · 800 تنبيه'],
+'16 gráficos/aba · 50 indicadores · 2.000 alertas':['16 charts/tab · 50 indicators · 2,000 alerts','16 gráficos/pestaña · 50 indicadores · 2.000 alertas','16 graphiques/onglet · 50 indicateurs · 2 000 alertes','16 grafici/tab · 50 indicatori · 2.000 avvisi','16 Charts/Tab · 50 Indikatoren · 2.000 Alarme','16 رسم بياني/علامة · 50 مؤشر · 2,000 تنبيه'],
+'Micro $0.35/lado · Standard $1.29/lado':['Micro $0.35/side · Standard $1.29/side','Micro $0.35/lado · Standard $1.29/lado','Micro 0,35$/côté · Standard 1,29$/côté','Micro $0.35/lato · Standard $1.29/lato','Micro $0,35/Seite · Standard $1,29/Seite','مايكرو $0.35/جانب · ستاندرد $1.29/جانب'],
+'Micro $0.25/lado · Standard $0.99/lado':['Micro $0.25/side · Standard $0.99/side','Micro $0.25/lado · Standard $0.99/lado','Micro 0,25$/côté · Standard 0,99$/côté','Micro $0.25/lato · Standard $0.99/lato','Micro $0,25/Seite · Standard $0,99/Seite','مايكرو $0.25/جانب · ستاندرد $0.99/جانب'],
+'Micro $0.09/lado · Standard $0.59/lado':['Micro $0.09/side · Standard $0.59/side','Micro $0.09/lado · Standard $0.59/lado','Micro 0,09$/côté · Standard 0,59$/côté','Micro $0.09/lato · Standard $0.59/lato','Micro $0,09/Seite · Standard $0,59/Seite','مايكرو $0.09/جانب · ستاندرد $0.59/جانب'],
+// NinjaTrader — new includes & highlights
+'Usuários ativos':['Active users','Usuarios activos','Utilisateurs actifs','Utenti attivi','Aktive Nutzer','المستخدمون النشطون'],
+'SuperDOM + Order Flow+':['SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+'],
+'100+ indicadores nativos':['100+ native indicators','100+ indicadores nativos','100+ indicateurs natifs','100+ indicatori nativi','100+ native Indikatoren','100+ مؤشر أصلي'],
+'Automação NinjaScript (C#)':['NinjaScript automation (C#)','Automatización NinjaScript (C#)','Automatisation NinjaScript (C#)','Automazione NinjaScript (C#)','NinjaScript-Automatisierung (C#)','أتمتة NinjaScript (C#)'],
+'Strategy Analyzer (backtest)':['Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (Backtest)','Strategy Analyzer (اختبار)'],
+'ATM Strategies':['ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies'],
+'Brokerage própria (FCM)':['Own brokerage (FCM)','Brokerage propia (FCM)','Courtage propre (FCM)','Broker proprio (FCM)','Eigene Brokerage (FCM)','وساطة خاصة (FCM)'],
+'Margens intraday $50 Micro':['$50 Micro intraday margins','Márgenes intraday $50 Micro','Marges intraday 50$ Micro','Margini intraday $50 Micro','$50 Micro Intraday-Margen','هوامش يومية $50 مايكرو'],
+// TradingView — extra includes
+'Paper Trading (simulação)':['Paper Trading (simulation)','Paper Trading (simulación)','Paper Trading (simulation)','Paper Trading (simulazione)','Paper Trading (Simulation)','تداول تجريبي (محاكاة)'],
+'Watchlists ilimitadas':['Unlimited watchlists','Watchlists ilimitadas','Watchlists illimitées','Watchlist illimitate','Unbegrenzte Watchlists','قوائم مراقبة غير محدودة'],
+'Sync multi-dispositivo':['Multi-device sync','Sync multi-dispositivo','Sync multi-appareils','Sync multi-dispositivo','Multi-Geräte-Sync','مزامنة متعددة الأجهزة'],
+'App mobile completo':['Full mobile app','App mobile completa','App mobile complète','App mobile completa','Vollständige Mobile-App','تطبيق جوال كامل'],
+'Comunidade 50M+ traders':['50M+ trader community','Comunidad 50M+ traders','Communauté 50M+ traders','Comunità 50M+ trader','50M+ Trader-Community','مجتمع 50 مليون+ متداول'],
+'Replay de mercado':['Market replay','Replay de mercado','Replay de marché','Replay di mercato','Markt-Replay','إعادة تشغيل السوق'],
+'Heatmaps de mercado':['Market heatmaps','Heatmaps de mercado','Heatmaps de marché','Heatmap di mercato','Markt-Heatmaps','خرائط حرارية للسوق'],
+'Suporte por chat':['Chat support','Soporte por chat','Support par chat','Supporto via chat','Chat-Support','دعم عبر الدردشة'],
+// NinjaTrader — extra includes
+'Chart Trader (visual)':['Chart Trader (visual)','Chart Trader (visual)','Chart Trader (visuel)','Chart Trader (visuale)','Chart Trader (visuell)','Chart Trader (مرئي)'],
+'Market Analyzer (scanner)':['Market Analyzer (scanner)','Market Analyzer (escáner)','Market Analyzer (scanner)','Market Analyzer (scanner)','Market Analyzer (Scanner)','Market Analyzer (ماسح)'],
+'Aceita por 10+ Prop Firms':['Accepted by 10+ Prop Firms','Aceptada por 10+ Prop Firms','Acceptée par 10+ Prop Firms','Accettata da 10+ Prop Firms','Von 10+ Prop Firms akzeptiert','مقبولة من 10+ شركات Prop'],
+'Dados CME/CBOT/NYMEX':['CME/CBOT/NYMEX data','Datos CME/CBOT/NYMEX','Données CME/CBOT/NYMEX','Dati CME/CBOT/NYMEX','CME/CBOT/NYMEX-Daten','بيانات CME/CBOT/NYMEX'],
+'Relatório de performance':['Performance report','Informe de rendimiento','Rapport de performance','Report di performance','Leistungsbericht','تقرير الأداء'],
+'Marketplace com milhares de add-ons':['Marketplace with thousands of add-ons','Marketplace con miles de add-ons','Marketplace avec milliers d\'add-ons','Marketplace con migliaia di add-on','Marktplatz mit tausenden Add-ons','سوق بآلاف الإضافات'],
+// Platform stats labels
+'Mercados':['Markets','Mercados','Marchés','Mercati','Märkte','الأسواق'],
+'Ações, Futuros, Forex, Cripto':['Stocks, Futures, Forex, Crypto','Acciones, Futuros, Forex, Cripto','Actions, Futures, Forex, Crypto','Azioni, Futures, Forex, Crypto','Aktien, Futures, Forex, Crypto','أسهم، عقود آجلة، فوركس، كريبتو'],
+'Indicadores':['Indicators','Indicadores','Indicateurs','Indicatori','Indikatoren','المؤشرات'],
+'Até 50 por gráfico':['Up to 50 per chart','Hasta 50 por gráfico','Jusqu\'à 50 par graphique','Fino a 50 per grafico','Bis zu 50 pro Chart','حتى 50 لكل رسم بياني'],
+'Até 2.000':['Up to 2,000','Hasta 2.000','Jusqu\'à 2 000','Fino a 2.000','Bis zu 2.000','حتى 2,000'],
+'Dispositivos':['Devices','Dispositivos','Appareils','Dispositivi','Geräte','الأجهزة'],
+'Linguagem':['Language','Lenguaje','Langage','Linguaggio','Sprache','اللغة'],
+'Pine Script (própria)':['Pine Script (proprietary)','Pine Script (propia)','Pine Script (propriétaire)','Pine Script (proprietario)','Pine Script (proprietär)','Pine Script (خاص)'],
+'Comunidade':['Community','Comunidad','Communauté','Comunità','Community','المجتمع'],
+'50M+ traders ativos':['50M+ active traders','50M+ traders activos','50M+ traders actifs','50M+ trader attivi','50M+ aktive Trader','50 مليون+ متداول نشط'],
+'Exchanges':['Exchanges','Exchanges','Exchanges','Exchanges','Exchanges','البورصات'],
+'Comissão mínima':['Min. commission','Comisión mínima','Commission min.','Commissione min.','Min. Kommission','أقل عمولة'],
+'Margem Micro':['Micro margin','Margen Micro','Marge Micro','Margine Micro','Micro-Marge','هامش مايكرو'],
+'$50 intraday':['$50 intraday','$50 intraday','50$ intraday','$50 intraday','$50 intraday','$50 يومي'],
+'Automação':['Automation','Automatización','Automatisation','Automazione','Automatisierung','الأتمتة'],
+'Apex, Bulenox, Topstep +7':['Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7'],
+'Brokerage':['Brokerage','Brokerage','Courtage','Broker','Brokerage','الوساطة'],
+'Própria (FCM/NFA)':['Own (FCM/NFA)','Propia (FCM/NFA)','Propre (FCM/NFA)','Propria (FCM/NFA)','Eigene (FCM/NFA)','خاصة (FCM/NFA)'],
+// PLAT_DETAIL — type labels
+'Anual (17% OFF)':['Annual (17% OFF)','Anual (17% OFF)','Annuel (17% OFF)','Annuale (17% OFF)','Jährlich (17% RABATT)','سنوي (17% خصم)'],
+'Mensal':['Monthly','Mensual','Mensuel','Mensile','Monatlich','شهري'],
+'Plataforma':['Platform','Plataforma','Plateforme','Piattaforma','Plattform','منصة'],
+// PLAT_DETAIL — includes
+'Sem anúncios':['No ads','Sin anuncios','Sans publicités','Senza pubblicità','Ohne Werbung','بدون إعلانات'],
+'Volume Profile':['Volume Profile','Volume Profile','Volume Profile','Volume Profile','Volume Profile','Volume Profile'],
+'Timeframes customizados':['Custom timeframes','Timeframes personalizados','Timeframes personnalisés','Timeframe personalizzati','Benutzerdefinierte Timeframes','أطر زمنية مخصصة'],
+'Bar Replay':['Bar Replay','Bar Replay','Bar Replay','Bar Replay','Bar Replay','Bar Replay'],
+'Alertas avançados':['Advanced alerts','Alertas avanzadas','Alertes avancées','Avvisi avanzati','Erweiterte Benachrichtigungen','تنبيهات متقدمة'],
+'Screener de ativos':['Asset screener','Screener de activos','Screener d\'actifs','Screener di attivi','Asset Screener','فاحص الأصول'],
+'Pine Script':['Pine Script','Pine Script','Pine Script','Pine Script','Pine Script','Pine Script'],
+'Dados multi-mercado':['Multi-market data','Datos multi-mercado','Données multi-marchés','Dati multi-mercato','Multi-Markt-Daten','بيانات متعددة الأسواق'],
+'Simulação grátis':['Free simulation','Simulación gratuita','Simulation gratuite','Simulazione gratuita','Kostenlose Simulation','محاكاة مجانية'],
+'Backtesting avançado':['Advanced backtesting','Backtesting avanzado','Backtesting avancé','Backtesting avanzato','Erweitertes Backtesting','اختبار متقدم'],
+'Automação NinjaScript':['NinjaScript automation','Automatización NinjaScript','Automatisation NinjaScript','Automazione NinjaScript','NinjaScript-Automatisierung','أتمتة NinjaScript'],
+'Marketplace indicadores':['Indicators marketplace','Marketplace indicadores','Marketplace indicateurs','Marketplace indicatori','Indikator-Marktplatz','سوق المؤشرات'],
+'Desktop + Web + Mobile':['Desktop + Web + Mobile','Desktop + Web + Mobile','Desktop + Web + Mobile','Desktop + Web + Mobile','Desktop + Web + Mobile','Desktop + Web + Mobile'],
+'Suporte 24/5':['24/5 support','Soporte 24/5','Support 24/5','Supporto 24/5','24/5 Support','دعم 24/5'],
+'Market Replay':['Market Replay','Market Replay','Market Replay','Market Replay','Market Replay','Market Replay'],
+'Margens intraday baixas':['Low intraday margins','Márgenes intraday bajos','Marges intraday basses','Margini intraday bassi','Niedrige Intraday-Margen','هوامش يومية منخفضة'],
+// PLAT_DETAIL — dtype
+'plano anual':['annual plan','plan anual','plan annuel','piano annuale','Jahresplan','خطة سنوية'],
 };
 function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='pt')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
 
@@ -4000,6 +4161,8 @@ const I18N = {
     blog_ler:'Ler →',
     blog_voltar:'Voltar ao blog',
     blog_filtro_todos:'Todos',
+    blvl_iniciante:'Iniciante',blvl_intermediario:'Intermediário',blvl_avancado:'Avançado',blvl_profissional:'Profissional',
+    bcat_analise_tecnica:'Análise Técnica',bcat_prop_firms:'Prop Firms',bcat_educacao:'Educação',bcat_mercado:'Mercado',bcat_risk_mgmt:'Gestão de Risco',
     blog_cta_titulo:'Economize na Sua Próxima Avaliação',
     blog_cta_desc:'Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.',
     blog_cta_btn:'Ver Cupons',
@@ -4235,6 +4398,23 @@ const I18N = {
     as_stat_firms:'Firmas',
     as_stat_paid:'Pagos a traders',
     as_stat_langs:'Idiomas',
+    /* Mini-UI auth slides */
+    mu_desconto:'Desconto',mu_100k_price:'Preco 100K',mu_min_dias:'Min. dias',mu_vencedor:'VENCEDOR',mu_vencedor_txt:'Bulenox — melhor custo-beneficio para 100K',
+    mu_ao_vivo:'AO VIVO',mu_sessao_ny:'ES / NQ — Sessao NY',mu_chat_vip:'Chat VIP',
+    mu_analise_dia:'Analise do Dia',mu_analise_resumo:'Tarifas de Trump impactam mercados globais. ES testa suporte em 5580 apos selloff. FVG no 4H como zona de interesse. FOMC ata confirma pausa nos juros.',
+    mu_suporte1:'SUPORTE 1',mu_resist1:'RESISTENCIA 1',mu_suporte2:'SUPORTE 2',mu_resist2:'RESISTENCIA 2',mu_tarifas:'Tarifas',
+    mu_disponivel:'DISPONIVEL',mu_tv_desc:'Plataforma de graficos mais usada do mundo',mu_nt_desc:'Execucao profissional para futuros',mu_por_mes:'por mes',mu_ver_planos:'VER PLANOS',
+    mu_heatmap:'Mapa de Calor',mu_heatmap_sub:'S&P 500 — Tempo real',
+    mu_calc_title:'Calculadora Position Size',mu_conta:'Conta',mu_risco_pct:'Risco %',mu_lotes:'Lotes',mu_risco_val:'Risco $',
+    mu_quiz_title:'Quiz — Sua Firma Ideal',mu_quiz_q:'Qual mercado voce opera?',mu_quiz_futuros:'Futuros (ES, NQ, CL)',mu_quiz_forex:'Forex (EUR/USD, GBP)',mu_quiz_ambos:'Ambos',
+    mu_iniciante:'Iniciante',mu_intermediario:'Intermediario',mu_avancado:'Avancado',
+    mu_blog1_t:'Sua Primeira Prop Firm: Guia Completo 2025',mu_blog1_meta:'12 min leitura',
+    mu_blog2_t:'Trailing vs Static Drawdown: qual escolher',mu_blog2_meta:'8 min leitura',
+    mu_blog3_t:'Order Flow + Delta: leitura institucional',mu_blog3_meta:'15 min leitura',
+    mu_calendario:'Calendario',
+    /* Platform detail overlay */
+    pd_sobre:'Sobre a plataforma',pd_escolha_plano:'Escolha seu plano',pd_desconto_anual:'Desconto no plano anual via link exclusivo',pd_planos_disponiveis:'Planos disponiveis',
+    pd_periodo:'Periodo',pd_plano:'Plano',pd_assinar:'Assinar',pd_incluso:'Incluso no plano',pd_ver_planos:'Ver Planos',pd_detalhes_plano:'Detalhes do plano',pd_credit_hint:'Crédito de $15 aplicado automaticamente ao assinar pelo nosso link exclusivo.',
     painel_dados_pessoais:'Dados Pessoais',
     painel_nome:'Nome',
     painel_telefone:'Telefone',
@@ -4665,6 +4845,8 @@ const I18N = {
     blog_cat_ferramentas:'Tools',
     blog_voltar:'Back to blog',
     blog_filtro_todos:'All',
+    blvl_iniciante:'Beginner',blvl_intermediario:'Intermediate',blvl_avancado:'Advanced',blvl_profissional:'Professional',
+    bcat_analise_tecnica:'Technical Analysis',bcat_prop_firms:'Prop Firms',bcat_educacao:'Education',bcat_mercado:'Market',bcat_risk_mgmt:'Risk Management',
     blog_cta_titulo:'Save on Your Next Evaluation',
     blog_cta_desc:'Exclusive coupons up to 90% OFF at the best prop firms.',
     blog_cta_btn:'See Coupons',
@@ -4894,6 +5076,21 @@ const I18N = {
     as_stat_firms:'Firms',
     as_stat_paid:'Paid to traders',
     as_stat_langs:'Languages',
+    mu_desconto:'Discount',mu_100k_price:'100K Price',mu_min_dias:'Min. days',mu_vencedor:'WINNER',mu_vencedor_txt:'Bulenox — best value for 100K',
+    mu_ao_vivo:'LIVE',mu_sessao_ny:'ES / NQ — NY Session',mu_chat_vip:'VIP Chat',
+    mu_analise_dia:'Daily Analysis',mu_analise_resumo:'Trump tariffs impact global markets. ES tests support at 5580 after selloff. FVG on 4H as zone of interest. FOMC minutes confirm rate pause.',
+    mu_suporte1:'SUPPORT 1',mu_resist1:'RESISTANCE 1',mu_suporte2:'SUPPORT 2',mu_resist2:'RESISTANCE 2',mu_tarifas:'Tariffs',
+    mu_disponivel:'AVAILABLE',mu_tv_desc:'The world\'s most used charting platform',mu_nt_desc:'Professional execution for futures',mu_por_mes:'per month',mu_ver_planos:'VIEW PLANS',
+    mu_heatmap:'Heat Map',mu_heatmap_sub:'S&P 500 — Real time',
+    mu_calc_title:'Position Size Calculator',mu_conta:'Account',mu_risco_pct:'Risk %',mu_lotes:'Lots',mu_risco_val:'Risk $',
+    mu_quiz_title:'Quiz — Your Ideal Firm',mu_quiz_q:'Which market do you trade?',mu_quiz_futuros:'Futures (ES, NQ, CL)',mu_quiz_forex:'Forex (EUR/USD, GBP)',mu_quiz_ambos:'Both',
+    mu_iniciante:'Beginner',mu_intermediario:'Intermediate',mu_avancado:'Advanced',
+    mu_blog1_t:'Your First Prop Firm: Complete Guide 2025',mu_blog1_meta:'12 min read',
+    mu_blog2_t:'Trailing vs Static Drawdown: which to choose',mu_blog2_meta:'8 min read',
+    mu_blog3_t:'Order Flow + Delta: institutional reading',mu_blog3_meta:'15 min read',
+    mu_calendario:'Calendar',
+    pd_sobre:'About the platform',pd_escolha_plano:'Choose your plan',pd_desconto_anual:'Discount on annual plan via exclusive link',pd_planos_disponiveis:'Available plans',
+    pd_periodo:'Period',pd_plano:'Plan',pd_assinar:'Subscribe to',pd_incluso:'Included in plan',pd_ver_planos:'View Plans',pd_detalhes_plano:'Plan details',pd_credit_hint:'$15 credit applied automatically when subscribing through our exclusive link.',
     painel_dados_pessoais:'Personal Information',
     painel_nome:'Name',
     painel_telefone:'Phone',
@@ -5324,6 +5521,8 @@ const I18N = {
     blog_cat_ferramentas:'Herramientas',
     blog_voltar:'Volver al blog',
     blog_filtro_todos:'Todos',
+    blvl_iniciante:'Principiante',blvl_intermediario:'Intermedio',blvl_avancado:'Avanzado',blvl_profissional:'Profesional',
+    bcat_analise_tecnica:'Análisis Técnico',bcat_prop_firms:'Prop Firms',bcat_educacao:'Educación',bcat_mercado:'Mercado',bcat_risk_mgmt:'Gestión de Riesgo',
     blog_cta_titulo:'Ahorra en tu próxima evaluación',
     blog_cta_desc:'Cupones exclusivos de hasta 90% OFF en las mejores prop firms.',
     blog_cta_btn:'Ver Cupones',
@@ -5553,6 +5752,21 @@ const I18N = {
     as_stat_firms:'Firmas',
     as_stat_paid:'Pagados a traders',
     as_stat_langs:'Idiomas',
+    mu_desconto:'Descuento',mu_100k_price:'Precio 100K',mu_min_dias:'Días mín.',mu_vencedor:'GANADOR',mu_vencedor_txt:'Bulenox — mejor costo-beneficio para 100K',
+    mu_ao_vivo:'EN VIVO',mu_sessao_ny:'ES / NQ — Sesión NY',mu_chat_vip:'Chat VIP',
+    mu_analise_dia:'Análisis del Día',mu_analise_resumo:'Aranceles de Trump impactan mercados globales. ES prueba soporte en 5580 tras selloff. FVG en 4H como zona de interés. FOMC confirma pausa en tasas.',
+    mu_suporte1:'SOPORTE 1',mu_resist1:'RESISTENCIA 1',mu_suporte2:'SOPORTE 2',mu_resist2:'RESISTENCIA 2',mu_tarifas:'Aranceles',
+    mu_disponivel:'DISPONIBLE',mu_tv_desc:'La plataforma de gráficos más usada del mundo',mu_nt_desc:'Ejecución profesional para futuros',mu_por_mes:'por mes',mu_ver_planos:'VER PLANES',
+    mu_heatmap:'Mapa de Calor',mu_heatmap_sub:'S&P 500 — Tiempo real',
+    mu_calc_title:'Calculadora Position Size',mu_conta:'Cuenta',mu_risco_pct:'Riesgo %',mu_lotes:'Lotes',mu_risco_val:'Riesgo $',
+    mu_quiz_title:'Quiz — Tu Firma Ideal',mu_quiz_q:'¿En qué mercado operas?',mu_quiz_futuros:'Futuros (ES, NQ, CL)',mu_quiz_forex:'Forex (EUR/USD, GBP)',mu_quiz_ambos:'Ambos',
+    mu_iniciante:'Principiante',mu_intermediario:'Intermedio',mu_avancado:'Avanzado',
+    mu_blog1_t:'Tu Primera Prop Firm: Guía Completa 2025',mu_blog1_meta:'12 min lectura',
+    mu_blog2_t:'Trailing vs Static Drawdown: cuál elegir',mu_blog2_meta:'8 min lectura',
+    mu_blog3_t:'Order Flow + Delta: lectura institucional',mu_blog3_meta:'15 min lectura',
+    mu_calendario:'Calendario',
+    pd_sobre:'Sobre la plataforma',pd_escolha_plano:'Elige tu plan',pd_desconto_anual:'Descuento en plan anual via enlace exclusivo',pd_planos_disponiveis:'Planes disponibles',
+    pd_periodo:'Periodo',pd_plano:'Plan',pd_assinar:'Suscribirse a',pd_incluso:'Incluido en el plan',pd_ver_planos:'Ver Planes',pd_detalhes_plano:'Detalles del plan',pd_credit_hint:'Crédito de $15 aplicado automáticamente al suscribirte por nuestro enlace exclusivo.',
     painel_dados_pessoais:'Datos personales',
     painel_nome:'Nombre',
     painel_telefone:'Teléfono',
@@ -5983,6 +6197,8 @@ const I18N = {
     blog_cat_ferramentas:'Strumenti',
     blog_voltar:'Torna al blog',
     blog_filtro_todos:'Tutti',
+    blvl_iniciante:'Principiante',blvl_intermediario:'Intermedio',blvl_avancado:'Avanzato',blvl_profissional:'Professionista',
+    bcat_analise_tecnica:'Analisi Tecnica',bcat_prop_firms:'Prop Firms',bcat_educacao:'Istruzione',bcat_mercado:'Mercato',bcat_risk_mgmt:'Gestione del Rischio',
     blog_cta_titulo:'Risparmia sulla prossima valutazione',
     blog_cta_desc:'Coupon esclusivi fino al 90% di sconto sulle migliori prop firm.',
     blog_cta_btn:'Vedi Coupon',
@@ -6212,6 +6428,21 @@ const I18N = {
     as_stat_firms:'Firme',
     as_stat_paid:'Pagati ai trader',
     as_stat_langs:'Lingue',
+    mu_desconto:'Sconto',mu_100k_price:'Prezzo 100K',mu_min_dias:'Giorni min.',mu_vencedor:'VINCITORE',mu_vencedor_txt:'Bulenox — miglior rapporto qualità-prezzo per 100K',
+    mu_ao_vivo:'IN DIRETTA',mu_sessao_ny:'ES / NQ — Sessione NY',mu_chat_vip:'Chat VIP',
+    mu_analise_dia:'Analisi del Giorno',mu_analise_resumo:'I dazi di Trump impattano i mercati globali. ES testa supporto a 5580 dopo il selloff. FVG sul 4H come zona di interesse. FOMC conferma pausa nei tassi.',
+    mu_suporte1:'SUPPORTO 1',mu_resist1:'RESISTENZA 1',mu_suporte2:'SUPPORTO 2',mu_resist2:'RESISTENZA 2',mu_tarifas:'Dazi',
+    mu_disponivel:'DISPONIBILE',mu_tv_desc:'La piattaforma di grafici più usata al mondo',mu_nt_desc:'Esecuzione professionale per futures',mu_por_mes:'al mese',mu_ver_planos:'VEDI PIANI',
+    mu_heatmap:'Mappa di Calore',mu_heatmap_sub:'S&P 500 — Tempo reale',
+    mu_calc_title:'Calcolatore Position Size',mu_conta:'Conto',mu_risco_pct:'Rischio %',mu_lotes:'Lotti',mu_risco_val:'Rischio $',
+    mu_quiz_title:'Quiz — La Tua Firma Ideale',mu_quiz_q:'In quale mercato operi?',mu_quiz_futuros:'Futures (ES, NQ, CL)',mu_quiz_forex:'Forex (EUR/USD, GBP)',mu_quiz_ambos:'Entrambi',
+    mu_iniciante:'Principiante',mu_intermediario:'Intermedio',mu_avancado:'Avanzato',
+    mu_blog1_t:'La Tua Prima Prop Firm: Guida Completa 2025',mu_blog1_meta:'12 min lettura',
+    mu_blog2_t:'Trailing vs Static Drawdown: quale scegliere',mu_blog2_meta:'8 min lettura',
+    mu_blog3_t:'Order Flow + Delta: lettura istituzionale',mu_blog3_meta:'15 min lettura',
+    mu_calendario:'Calendario',
+    pd_sobre:'Informazioni sulla piattaforma',pd_escolha_plano:'Scegli il tuo piano',pd_desconto_anual:'Sconto sul piano annuale tramite link esclusivo',pd_planos_disponiveis:'Piani disponibili',
+    pd_periodo:'Periodo',pd_plano:'Piano',pd_assinar:'Iscriviti a',pd_incluso:'Incluso nel piano',pd_ver_planos:'Vedi Piani',pd_detalhes_plano:'Dettagli del piano',pd_credit_hint:'Credito di $15 applicato automaticamente iscrivendoti tramite il nostro link esclusivo.',
     painel_dados_pessoais:'Dati personali',
     painel_nome:'Nome',
     painel_telefone:'Telefono',
@@ -6642,6 +6873,8 @@ const I18N = {
     blog_cat_ferramentas:'Outils',
     blog_voltar:'Retour au blog',
     blog_filtro_todos:'Tous',
+    blvl_iniciante:'Débutant',blvl_intermediario:'Intermédiaire',blvl_avancado:'Avancé',blvl_profissional:'Professionnel',
+    bcat_analise_tecnica:'Analyse Technique',bcat_prop_firms:'Prop Firms',bcat_educacao:'Éducation',bcat_mercado:'Marché',bcat_risk_mgmt:'Gestion des Risques',
     blog_cta_titulo:'Économisez sur votre prochaine évaluation',
     blog_cta_desc:'Coupons exclusifs jusqu\'à 90% de réduction sur les meilleures prop firms.',
     blog_cta_btn:'Voir les Coupons',
@@ -6871,6 +7104,21 @@ const I18N = {
     as_stat_firms:'Firmes',
     as_stat_paid:'Versés aux traders',
     as_stat_langs:'Langues',
+    mu_desconto:'Remise',mu_100k_price:'Prix 100K',mu_min_dias:'Jours min.',mu_vencedor:'GAGNANT',mu_vencedor_txt:'Bulenox — meilleur rapport qualité-prix pour 100K',
+    mu_ao_vivo:'EN DIRECT',mu_sessao_ny:'ES / NQ — Session NY',mu_chat_vip:'Chat VIP',
+    mu_analise_dia:'Analyse du Jour',mu_analise_resumo:'Les tarifs de Trump impactent les marchés mondiaux. ES teste le support à 5580 après le selloff. FVG en 4H comme zone d\'intérêt. FOMC confirme la pause des taux.',
+    mu_suporte1:'SUPPORT 1',mu_resist1:'RÉSISTANCE 1',mu_suporte2:'SUPPORT 2',mu_resist2:'RÉSISTANCE 2',mu_tarifas:'Tarifs',
+    mu_disponivel:'DISPONIBLE',mu_tv_desc:'La plateforme de graphiques la plus utilisée au monde',mu_nt_desc:'Exécution professionnelle pour les futures',mu_por_mes:'par mois',mu_ver_planos:'VOIR LES PLANS',
+    mu_heatmap:'Carte de Chaleur',mu_heatmap_sub:'S&P 500 — Temps réel',
+    mu_calc_title:'Calculateur Position Size',mu_conta:'Compte',mu_risco_pct:'Risque %',mu_lotes:'Lots',mu_risco_val:'Risque $',
+    mu_quiz_title:'Quiz — Votre Firme Idéale',mu_quiz_q:'Sur quel marché tradez-vous ?',mu_quiz_futuros:'Futures (ES, NQ, CL)',mu_quiz_forex:'Forex (EUR/USD, GBP)',mu_quiz_ambos:'Les deux',
+    mu_iniciante:'Débutant',mu_intermediario:'Intermédiaire',mu_avancado:'Avancé',
+    mu_blog1_t:'Votre Première Prop Firm : Guide Complet 2025',mu_blog1_meta:'12 min lecture',
+    mu_blog2_t:'Trailing vs Static Drawdown : lequel choisir',mu_blog2_meta:'8 min lecture',
+    mu_blog3_t:'Order Flow + Delta : lecture institutionnelle',mu_blog3_meta:'15 min lecture',
+    mu_calendario:'Calendrier',
+    pd_sobre:'À propos de la plateforme',pd_escolha_plano:'Choisissez votre plan',pd_desconto_anual:'Réduction sur le plan annuel via lien exclusif',pd_planos_disponiveis:'Plans disponibles',
+    pd_periodo:'Période',pd_plano:'Plan',pd_assinar:'S\'abonner à',pd_incluso:'Inclus dans le plan',pd_ver_planos:'Voir les Plans',pd_detalhes_plano:'Détails du plan',pd_credit_hint:'Crédit de 15$ appliqué automatiquement en vous abonnant via notre lien exclusif.',
     painel_dados_pessoais:'Données personnelles',
     painel_nome:'Nom',
     painel_telefone:'Téléphone',
@@ -7301,6 +7549,8 @@ const I18N = {
     blog_cat_ferramentas:'Werkzeuge',
     blog_voltar:'Zurück zum Blog',
     blog_filtro_todos:'Alle',
+    blvl_iniciante:'Anfänger',blvl_intermediario:'Fortgeschritten',blvl_avancado:'Profi',blvl_profissional:'Professionell',
+    bcat_analise_tecnica:'Technische Analyse',bcat_prop_firms:'Prop Firms',bcat_educacao:'Bildung',bcat_mercado:'Markt',bcat_risk_mgmt:'Risikomanagement',
     blog_cta_titulo:'Sparen Sie bei Ihrer nächsten Bewertung',
     blog_cta_desc:'Exklusive Gutscheine mit bis zu 90% Rabatt bei den besten Prop Firms.',
     blog_cta_btn:'Gutscheine ansehen',
@@ -7530,6 +7780,21 @@ const I18N = {
     as_stat_firms:'Firmen',
     as_stat_paid:'An Trader ausgezahlt',
     as_stat_langs:'Sprachen',
+    mu_desconto:'Rabatt',mu_100k_price:'100K Preis',mu_min_dias:'Min. Tage',mu_vencedor:'GEWINNER',mu_vencedor_txt:'Bulenox — bestes Preis-Leistungs-Verhältnis für 100K',
+    mu_ao_vivo:'LIVE',mu_sessao_ny:'ES / NQ — NY-Sitzung',mu_chat_vip:'VIP-Chat',
+    mu_analise_dia:'Tagesanalyse',mu_analise_resumo:'Trumps Zölle beeinflussen globale Märkte. ES testet Unterstützung bei 5580 nach Selloff. FVG im 4H als Interessenzone. FOMC bestätigt Zinspause.',
+    mu_suporte1:'SUPPORT 1',mu_resist1:'WIDERSTAND 1',mu_suporte2:'SUPPORT 2',mu_resist2:'WIDERSTAND 2',mu_tarifas:'Zölle',
+    mu_disponivel:'VERFÜGBAR',mu_tv_desc:'Die weltweit meistgenutzte Charting-Plattform',mu_nt_desc:'Professionelle Ausführung für Futures',mu_por_mes:'pro Monat',mu_ver_planos:'PLÄNE ANZEIGEN',
+    mu_heatmap:'Heatmap',mu_heatmap_sub:'S&P 500 — Echtzeit',
+    mu_calc_title:'Position Size Rechner',mu_conta:'Konto',mu_risco_pct:'Risiko %',mu_lotes:'Lots',mu_risco_val:'Risiko $',
+    mu_quiz_title:'Quiz — Ihre ideale Firma',mu_quiz_q:'Auf welchem Markt handeln Sie?',mu_quiz_futuros:'Futures (ES, NQ, CL)',mu_quiz_forex:'Forex (EUR/USD, GBP)',mu_quiz_ambos:'Beide',
+    mu_iniciante:'Anfänger',mu_intermediario:'Fortgeschritten',mu_avancado:'Profi',
+    mu_blog1_t:'Ihre Erste Prop Firm: Kompletter Guide 2025',mu_blog1_meta:'12 Min. Lesezeit',
+    mu_blog2_t:'Trailing vs Static Drawdown: welches wählen',mu_blog2_meta:'8 Min. Lesezeit',
+    mu_blog3_t:'Order Flow + Delta: institutionelle Analyse',mu_blog3_meta:'15 Min. Lesezeit',
+    mu_calendario:'Kalender',
+    pd_sobre:'Über die Plattform',pd_escolha_plano:'Wählen Sie Ihren Plan',pd_desconto_anual:'Rabatt auf Jahresplan über exklusiven Link',pd_planos_disponiveis:'Verfügbare Pläne',
+    pd_periodo:'Zeitraum',pd_plano:'Plan',pd_assinar:'Abonnieren',pd_incluso:'Im Plan enthalten',pd_ver_planos:'Pläne anzeigen',pd_detalhes_plano:'Plan-Details',pd_credit_hint:'$15 Guthaben wird automatisch gutgeschrieben, wenn Sie sich über unseren exklusiven Link anmelden.',
     painel_dados_pessoais:'Persönliche Daten',
     painel_nome:'Name',
     painel_telefone:'Telefon',
@@ -7960,6 +8225,8 @@ const I18N = {
     blog_cat_ferramentas:'الأدوات',
     blog_voltar:'العودة إلى المدونة',
     blog_filtro_todos:'الكل',
+    blvl_iniciante:'مبتدئ',blvl_intermediario:'متوسط',blvl_avancado:'متقدم',blvl_profissional:'محترف',
+    bcat_analise_tecnica:'التحليل الفني',bcat_prop_firms:'Prop Firms',bcat_educacao:'تعليم',bcat_mercado:'السوق',bcat_risk_mgmt:'إدارة المخاطر',
     blog_cta_titulo:'وفّر في تقييمك القادم',
     blog_cta_desc:'كوبونات حصرية بخصم يصل إلى 90% في أفضل شركات Prop Firms.',
     blog_cta_btn:'عرض الكوبونات',
@@ -8189,6 +8456,21 @@ const I18N = {
     as_stat_firms:'شركات',
     as_stat_paid:'مدفوعة للمتداولين',
     as_stat_langs:'لغات',
+    mu_desconto:'خصم',mu_100k_price:'سعر 100K',mu_min_dias:'أيام دنيا',mu_vencedor:'الفائز',mu_vencedor_txt:'Bulenox — أفضل قيمة مقابل 100K',
+    mu_ao_vivo:'مباشر',mu_sessao_ny:'ES / NQ — جلسة نيويورك',mu_chat_vip:'دردشة VIP',
+    mu_analise_dia:'تحليل اليوم',mu_analise_resumo:'تعريفات ترامب تؤثر على الأسواق العالمية. ES يختبر الدعم عند 5580 بعد البيع. FVG في 4H كمنطقة اهتمام. FOMC يؤكد وقف الفائدة.',
+    mu_suporte1:'دعم 1',mu_resist1:'مقاومة 1',mu_suporte2:'دعم 2',mu_resist2:'مقاومة 2',mu_tarifas:'تعريفات',
+    mu_disponivel:'متاح',mu_tv_desc:'منصة الرسوم البيانية الأكثر استخداماً في العالم',mu_nt_desc:'تنفيذ احترافي للعقود الآجلة',mu_por_mes:'شهرياً',mu_ver_planos:'عرض الخطط',
+    mu_heatmap:'خريطة الحرارة',mu_heatmap_sub:'S&P 500 — الوقت الحقيقي',
+    mu_calc_title:'حاسبة Position Size',mu_conta:'الحساب',mu_risco_pct:'المخاطرة %',mu_lotes:'لوتات',mu_risco_val:'المخاطرة $',
+    mu_quiz_title:'اختبار — شركتك المثالية',mu_quiz_q:'في أي سوق تتداول؟',mu_quiz_futuros:'العقود الآجلة (ES, NQ, CL)',mu_quiz_forex:'فوركس (EUR/USD, GBP)',mu_quiz_ambos:'كلاهما',
+    mu_iniciante:'مبتدئ',mu_intermediario:'متوسط',mu_avancado:'متقدم',
+    mu_blog1_t:'أول Prop Firm لك: الدليل الشامل 2025',mu_blog1_meta:'12 دقيقة قراءة',
+    mu_blog2_t:'Trailing vs Static Drawdown: أيهما تختار',mu_blog2_meta:'8 دقائق قراءة',
+    mu_blog3_t:'Order Flow + Delta: قراءة مؤسسية',mu_blog3_meta:'15 دقيقة قراءة',
+    mu_calendario:'التقويم',
+    pd_sobre:'حول المنصة',pd_escolha_plano:'اختر خطتك',pd_desconto_anual:'خصم على الخطة السنوية عبر رابط حصري',pd_planos_disponiveis:'الخطط المتاحة',
+    pd_periodo:'الفترة',pd_plano:'الخطة',pd_assinar:'اشترك في',pd_incluso:'مشمول في الخطة',pd_ver_planos:'عرض الخطط',pd_detalhes_plano:'تفاصيل الخطة',pd_credit_hint:'رصيد $15 يتم تطبيقه تلقائياً عند الاشتراك عبر رابطنا الحصري.',
     painel_dados_pessoais:'البيانات الشخصية',
     painel_nome:'الاسم',
     painel_telefone:'الهاتف',
@@ -9333,16 +9615,17 @@ let _blogFilter = 'all';
 let _blogPostsDB = []; // posts carregados do Supabase
 
 const _BLOG_LEVEL_MAP = {
-  iniciante:    {label:'Iniciante',     color:'#22C55E', bg:'rgba(34,197,94,.1)'},
-  intermediario:{label:'Intermediário', color:'#EAB308', bg:'rgba(234,179,8,.1)'},
-  avancado:     {label:'Avançado',      color:'#EF4444', bg:'rgba(239,68,68,.1)'},
-  profissional: {label:'Profissional',  color:'#EF4444', bg:'rgba(239,68,68,.1)'},
+  iniciante:    {key:'blvl_iniciante',     color:'#22C55E', bg:'rgba(34,197,94,.1)'},
+  intermediario:{key:'blvl_intermediario', color:'#EAB308', bg:'rgba(234,179,8,.1)'},
+  avancado:     {key:'blvl_avancado',      color:'#EF4444', bg:'rgba(239,68,68,.1)'},
+  profissional: {key:'blvl_profissional',  color:'#EF4444', bg:'rgba(239,68,68,.1)'},
 };
 const _BLOG_CAT_MAP = {
-  'analise-tecnica':{color:'var(--blue)',  label:'Análise Técnica'},
-  'prop-firms':     {color:'var(--gold)',  label:'Prop Firms'},
-  'educacao':       {color:'var(--green)', label:'Educação'},
-  'mercado':        {color:'#EC4899',      label:'Mercado'},
+  'analise-tecnica':{color:'var(--blue)',  key:'bcat_analise_tecnica'},
+  'prop-firms':     {color:'var(--gold)',  key:'bcat_prop_firms'},
+  'educacao':       {color:'var(--green)', key:'bcat_educacao'},
+  'mercado':        {color:'#EC4899',      key:'bcat_mercado'},
+  'risk-management':{color:'var(--gold)',  key:'bcat_risk_mgmt'},
 };
 
 let _blogLangLoaded = '';
@@ -9442,17 +9725,18 @@ function _renderBlogCards(g, posts){
   const curLang = _currentLang || 'pt';
   g.innerHTML=posts.map(post=>{
     const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
-    const cat = _BLOG_CAT_MAP[post.category]||{color:'var(--blue)',label:post.category||'Blog'};
+    const cat = _BLOG_CAT_MAP[post.category]||{color:'var(--blue)',key:''};
     const coverImg = _getBlogCoverImg(post.slug);
     const blogUrl = curLang==='pt' ? '/blog/'+post.slug : '/blog/'+curLang+'/'+post.slug;
-    const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) : '';
+    const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[curLang]||'pt-BR';
+    const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'short',year:'numeric'}) : '';
     return `
     <a href="${blogUrl}" class="bc" style="text-decoration:none;color:inherit;">
       <div class="bc-img" style="background-image:url('${coverImg}')">
-        <div class="bc-level" style="background:${lvl.bg};color:${lvl.color};">${lvl.label}</div>
+        <div class="bc-level" style="background:${lvl.bg};color:${lvl.color};">${t(lvl.key)}</div>
       </div>
       <div class="bc-body">
-        <div class="bc-cat" style="color:${cat.color};">${cat.label}</div>
+        <div class="bc-cat" style="color:${cat.color};">${cat.key?t(cat.key):(post.category||'Blog')}</div>
         <div class="bc-title">${post.title}</div>
         <div class="bc-excerpt">${post.excerpt||''}</div>
         <div class="bc-meta">
@@ -9995,6 +10279,166 @@ function fdGoCheckout(fId){
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   window.open(url,'_blank');
 }
+
+// ── PLATFORM DETAIL OVERLAY (Desktop) ──
+let _pdCurrent = null;
+const _pdState = {};
+
+function openPD(id) {
+  _pdCurrent = id;
+  const p = getPlatforms().find(x=>x.id===id);
+  const pd = PLAT_DETAIL[id];
+  if (!p || !pd) { window.open(p?.link||'#','_blank'); return; }
+
+  const firstType = pd.types[0];
+  const firstPlans = pd.plans[firstType];
+  const popPlan = firstPlans.find(pl=>pl.pop) || firstPlans[0];
+  if (!_pdState[id]) _pdState[id] = { type: firstType, size: popPlan.s };
+  const st = _pdState[id];
+  const curPlans = pd.plans[st.type];
+  if (curPlans && !curPlans.find(pl=>pl.s===st.size)) st.size = (curPlans.find(pl=>pl.pop)||curPlans[0]).s;
+
+  document.documentElement.style.setProperty('--accent', p.color);
+
+  // Background image (same pattern as fd-overlay)
+  const bgEl = document.getElementById('pd-bg');
+  const bgUrl = PLAT_BG[id];
+  bgEl.style.background = `linear-gradient(135deg, ${p.bg} 0%, #060810 50%, ${p.color}08 100%)`;
+  bgEl.style.backgroundSize = 'cover';
+  bgEl.style.backgroundPosition = 'center';
+  if (bgUrl) bgEl.style.backgroundImage = `url('${bgUrl}')`;
+
+  // ── LEFT: Branding (follows fd-overlay pattern exactly) ──
+  let L = `<div class="fd-brand-top">
+    <div class="fd-logo-row">
+      <div class="fd-logo"><img src="${p.icon_url}" alt="${p.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${p.color};font-size:22px;font-weight:800\\'>${p.icon}</span>'"></div>
+      <div><div class="fd-name">${p.name}</div><div class="fd-type">${tf(p.type)}</div></div>
+    </div>`;
+
+  // Discount block (same as fd-overlay)
+  if (p.discount > 0) {
+    L += `<div class="fd-discount">
+      <div class="fd-discount-pct" style="background:linear-gradient(135deg,${p.color},#FFD97D,${p.color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${p.color}40)">${p.discount}% OFF</div>
+      <div class="fd-discount-label">${t('fd_desconto')} ${(tf(p.dtype)||'').toUpperCase()}</div>
+    </div>`;
+  }
+
+  // $15 credit badge (TradingView exclusive — inline with discount)
+  if (pd.credit) {
+    L += `<div style="display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:10px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;backdrop-filter:blur(8px);">
+      <div style="font-size:20px;font-weight:800;color:var(--gold);white-space:nowrap;">+$15</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.7);line-height:1.4;">${tf(pd.credit)}</div>
+    </div>`;
+  }
+
+  // About section
+  L += `<div class="fd-about">
+      <div class="fd-about-title">${t('pd_sobre')}</div>
+      <div class="fd-about-text">${tf(pd.about)}</div>
+      <div class="fd-about-highlights">${pd.highlights.map(h=>`<div class="fd-about-hl"><div class="fd-about-hl-val" style="color:${p.color}">${h.val}</div><div class="fd-about-hl-label">${tf(h.label)}</div></div>`).join('')}</div>
+    </div>
+  </div>
+  <div class="fd-stats">
+    ${(pd.stats||[]).map(s=>`<div class="fd-stat"><div class="fd-stat-label">${tf(s.label)}</div><div class="fd-stat-val" style="color:${s.color||p.color}">${s.val}</div></div>`).join('')}
+  </div>`;
+
+  document.getElementById('pd-left').innerHTML = L;
+  pdRenderRight(id, p);
+  document.getElementById('pd-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  track('platform_detail_open',{platform_id:id,platform_name:p.name});
+}
+
+function pdRenderRight(id, p) {
+  if (!p) p = getPlatforms().find(x=>x.id===id);
+  const pd = PLAT_DETAIL[id];
+  if (!pd||!p) return;
+  const st = _pdState[id];
+  const plans = pd.plans[st.type];
+
+  let h = `<div class="fd-ck-header">
+    <div class="fd-ck-title">${t('pd_escolha_plano')}</div>
+    <div class="fd-ck-sub">${p.discount>0?t('pd_desconto_anual'):t('pd_planos_disponiveis')}</div>
+  </div>`;
+
+  // Type pills (same pattern as fd-overlay)
+  if (pd.types.length > 1) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_periodo')}</div>
+      <div class="fd-pills">${pd.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${p.color}12;border-color:${p.color}4D;color:${p.color}`:''}" onclick="pdSel('${id}','type','${tp}')">${tf(tp)}</button>`).join('')}</div></div>`;
+  }
+
+  // Plan pills (same pattern as fd-overlay size pills)
+  if (plans?.length) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_plano')}</div>
+      <div class="fd-sizes">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}" style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="pdSel('${id}','size','${pl.s}')">${pl.s}</button>`).join('')}</div></div>`;
+  }
+
+  // Price card (same pattern as fd-overlay with savings)
+  const plan = plans?.find(pl=>pl.s===st.size)||plans?.[0];
+  if (plan) {
+    const oNum = parseFloat((plan.o||'').replace(/[^0-9.]/g,''));
+    const dNum = parseFloat((plan.d||'').replace(/[^0-9.]/g,''));
+    const cur = (plan.d||'').match(/[$€]/)?.[0]||'$';
+    const save = oNum&&dNum&&plan.o!=='—' ? (oNum-dNum).toFixed(2) : null;
+    h += `<div class="fd-price" style="border-color:${p.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${p.color}40,transparent)"></div>
+      <div><div class="fd-price-size">${plan.s}</div><div class="fd-price-type">${tf(st.type)}</div></div>
+      <div class="fd-price-right"><div class="fd-price-new" style="color:${p.color}">${plan.d}</div>${plan.o&&plan.o!=='—'?`<div class="fd-price-old">${plan.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
+    </div>`;
+
+    // Plan features detail line
+    if (plan.feat) {
+      h += `<div style="padding:8px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;margin-top:-4px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:2px;">${t('pd_detalhes_plano')}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.8);font-weight:500;">${tf(plan.feat)}</div>
+      </div>`;
+    }
+  }
+
+  // CTA
+  h += `<button class="fd-cta" onclick="pdGo('${id}')">${t('pd_assinar')} ${p.name} &#8594;</button>`;
+
+  // $15 credit reminder for TradingView (right side)
+  if (pd.credit) {
+    h += `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:10px;">
+      <div style="font-size:22px;font-weight:800;color:#22C55E;white-space:nowrap;">+$15</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.6);line-height:1.4;">${t('pd_credit_hint')}</div>
+    </div>`;
+  }
+
+  // Includes
+  if (pd.includes?.length) {
+    h += `<div class="fd-includes"><div class="fd-inc-title">${t('pd_incluso')}</div>
+      <div class="fd-inc-grid">${pd.includes.map(i=>`<div class="fd-inc">${tf(i)}</div>`).join('')}</div></div>`;
+  }
+
+  document.getElementById('pd-right').innerHTML = h;
+}
+
+function pdSel(id, key, val) {
+  const st = _pdState[id];
+  st[key] = val;
+  if (key==='type') {
+    const pd = PLAT_DETAIL[id];
+    const plans = pd?.plans[val];
+    if (plans) st.size = (plans.find(pl=>pl.pop)||plans[0]).s;
+  }
+  pdRenderRight(id);
+}
+
+function pdGo(id) {
+  const p = getPlatforms().find(x=>x.id===id);
+  if (!p) return;
+  const st = _pdState[id]||{};
+  const url = p.link + (p.link.includes('?')?'&':'?') + 'utm_source=marketscoupons&utm_medium=platform_detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
+  track('platform_checkout_click',{platform_id:id,platform_name:p.name,plan:st.size,type:st.type});
+  window.open(url,'_blank');
+}
+
+function closePD(){
+  document.getElementById('pd-overlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('pd-overlay')?.classList.contains('show'))closePD();});
 
 // ── MOBILE: Drawer sidebar ──
 function openDrw(id, f, cf) {
@@ -10970,9 +11414,9 @@ function renderPlatforms() {
           ${p.features.map(f => `<span class="plat-feat">${f}</span>`).join('')}
         </div>
         <div class="plat-cta">
-          <a href="${p.link}" target="_blank" style="text-decoration:none;display:block;" onclick="track('platform_click',{platform:'${p.id}',discount:${p.discount}})">
+          ${PLAT_DETAIL[p.id] ? `<button class="plat-go" onclick="if(window.innerWidth>=769){openPD('${p.id}')}else{window.open('${p.link}','_blank');track('platform_click',{platform:'${p.id}',discount:${p.discount}})}">${t('pd_ver_planos')} ${p.name} →</button>` : `<a href="${p.link}" target="_blank" style="text-decoration:none;display:block;" onclick="track('platform_click',{platform:'${p.id}',discount:${p.discount}})">
             <button class="plat-go">${p.discount > 0 ? `${t('plat_acessar_com')} ${p.discount}% OFF →` : `${t('plat_acessar')} ${p.name} →`}</button>
-          </a>
+          </a>`}
         </div>
       </div>
     </div>`).join('');
