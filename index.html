@@ -685,22 +685,32 @@ img{max-width:100%;}
 .auth-footer a:hover{color:var(--t3);}
 /* Mobile */
 @media(max-width:768px){
- .auth-left{display:none;}
- .auth-overlay{background:var(--bg) url('img/site-bg-mobile.jpeg') center top/cover no-repeat;}
+ .auth-overlay{background:#030507;}
  .auth-overlay.show{display:flex;align-items:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;}
  .auth-split{min-height:100%;height:auto;flex-direction:column;}
- .auth-right{flex:none;width:100%;min-height:100vh;padding:80px 20px 40px;background:rgba(3,5,7,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+ .auth-left{flex:none;height:220px;width:100%;overflow:hidden;}
+ .auth-left-content{padding:20px 20px 16px;}
+ .auth-logo{display:none;}
+ .auth-main{padding:0;justify-content:flex-end;}
+ .auth-slide h2{font-size:20px;letter-spacing:-.3px;margin-bottom:6px;}
+ .auth-slide p{font-size:11px;margin-bottom:10px;max-width:100%;}
+ .auth-features{gap:5px;}
+ .auth-feat{font-size:10px;}
+ .auth-bottom{display:none;}
+ .auth-divider-line{display:none;}
+ .auth-right{flex:none;width:100%;min-height:calc(100vh - 220px);padding:28px 20px 40px;background:#030507;}
+ .auth-close{top:16px;right:16px;width:36px;height:36px;font-size:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:10px;z-index:10;}
  .auth-form{max-width:100%;}
- .auth-form-title{font-size:26px;}
- .auth-sub{font-size:13px;margin-bottom:24px;color:var(--t2);}
- .auth-close{top:16px;right:16px;width:36px;height:36px;font-size:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:10px;}
+ .auth-form-title{font-size:24px;}
+ .auth-sub{font-size:13px;margin-bottom:20px;color:var(--t2);}
  .auth-btn{padding:14px;font-size:14px;}
  .auth-google-btn{padding:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);}
- .auth-field{margin-bottom:14px;}
- .auth-field input,.auth-field select{padding:13px 16px;font-size:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:12px;}
- .auth-divider{margin:22px 0;}
- .auth-switch{margin-top:20px;font-size:13px;}
- .auth-footer{margin-top:28px;}
+ .auth-field{margin-bottom:12px;}
+ .auth-field input,.auth-field select{padding:12px 14px;font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:12px;}
+ .auth-divider{margin:18px 0;}
+ .auth-switch{margin-top:18px;font-size:13px;}
+ .auth-footer{margin-top:24px;}
+ .mu{padding:14px;margin-bottom:14px;}
 }
 
 /* USER PANEL PAGE */
