@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link rel="preload" href="img/site-bg.jpeg" as="image" type="image/jpeg">
-<link rel="preload" href="img/site-bg-mobile.jpeg" as="image" type="image/jpeg" media="(max-width:900px)">
+<link rel="preload" href="img/site-bg.webp" as="image" type="image/webp">
+<link rel="preload" href="img/site-bg-mobile.webp" as="image" type="image/webp" media="(max-width:900px)">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://qfwhduvutfumsaxnuofa.supabase.co" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://qfwhduvutfumsaxnuofa.supabase.co">
 <meta name="description" content="Melhores cupons de prop firms. Economize até 90% na Apex, Bulenox, FTMO, FundedNext e mais.">
@@ -279,7 +278,10 @@ if(localStorage.getItem('mc-cookies-consent')==='accepted')loadTracking();
 <script defer src="i18n.js"></script>
 <script defer src="app.js"></script>
 <!-- TRACKING ENGINE -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Inter';font-style:normal;font-weight:300 800;font-display:swap;src:url('fonts/inter-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Inter';font-style:normal;font-weight:300 800;font-display:swap;src:url('fonts/inter-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+</style>
 <style>
 /* RESET & VARS */
 :root{
@@ -306,7 +308,7 @@ if(localStorage.getItem('mc-cookies-consent')==='accepted')loadTracking();
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:var(--f);color:var(--t1);min-height:100vh;overflow-x:hidden;opacity:0;
- background:var(--bg) url('img/site-bg.jpeg') center top/cover no-repeat fixed;
+ background:var(--bg) url('img/site-bg.webp') center top/cover no-repeat fixed;
 }
 a{text-decoration:none;color:inherit;}
 button{font-family:var(--f);cursor:pointer;}
@@ -1814,7 +1816,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
  .q-opts{grid-template-columns:1fr;}
  .live-stats{grid-template-columns:1fr;}
  .ft-grid{grid-template-columns:1fr;}
- body{background-image:url('img/site-bg-mobile.jpeg')!important;background-attachment:scroll!important;background-size:cover!important;background-position:center top!important;}
+ body{background-image:url('img/site-bg-mobile.webp')!important;background-attachment:scroll!important;background-size:cover!important;background-position:center top!important;}
  .hero h1 br{display:none;}
  .hero-stats{grid-template-columns:1fr 1fr;gap:10px;max-width:100%;}
  .hst{padding:14px 10px;}
@@ -2309,7 +2311,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="auth-overlay" id="login-overlay">
  <div class="auth-split">
   <div class="auth-left">
-   <div class="auth-left-bg" id="auth-bg" style="background-image:url('img/auth-bg-1.jpeg');"></div>
+   <div class="auth-left-bg" id="auth-bg" style="background-image:url('img/auth-bg-1.webp');"></div>
    <div class="auth-left-overlay"></div>
    <div class="auth-left-content">
     <div class="auth-logo">

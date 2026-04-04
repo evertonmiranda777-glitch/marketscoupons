@@ -110,9 +110,9 @@ const FIRMS=[
 
 /* ═══ FIRM DETAIL — Background images & About data ═══ */
 const FIRM_BG={
-  apex:'img/apex-bg.jpeg',bulenox:'img/bulenox-bg.jpeg',ftmo:'img/ftmo-bg.jpeg',
-  tpt:'img/tpt-bg.jpeg',fn:'img/fn-bg.jpeg',e2t:'img/e2t-bg.jpeg',
-  the5ers:'img/the5ers-bg.jpeg',fundingpips:'img/fundingpips-bg.jpeg',brightfunded:'img/brightfunded-bg.jpeg'
+  apex:'img/apex-bg.webp',bulenox:'img/bulenox-bg.webp',ftmo:'img/ftmo-bg.webp',
+  tpt:'img/tpt-bg.webp',fn:'img/fn-bg.webp',e2t:'img/e2t-bg.webp',
+  the5ers:'img/the5ers-bg.webp',fundingpips:'img/fundingpips-bg.webp',brightfunded:'img/brightfunded-bg.webp'
 };
 const FIRM_ABOUT={
   apex:{about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
@@ -146,8 +146,8 @@ const FIRM_ABOUT={
 
 /* PLATFORM DETAIL DATA — checkout overlay for partner platforms */
 const PLAT_BG={
-  tradingview:'img/tradingview-bg.jpeg',
-  ninjatrader:'img/ninjatrader-bg.jpeg'
+  tradingview:'img/tradingview-bg.webp',
+  ninjatrader:'img/ninjatrader-bg.webp'
 };
 const PLAT_DETAIL={
   tradingview:{
@@ -4286,8 +4286,8 @@ let currentProfile = null;
 let _authLoaded = false;
 let _authGroup = 'login';
 let _authSlide = 0;
-const _authLoginBgs = ['img/auth-bg-1.jpeg','img/auth-bg-4.jpeg','img/auth-bg-3.jpeg','img/auth-bg-2.jpeg'];
-const _authSignupBgs = ['img/auth-bg-5.jpeg','img/auth-bg-6.jpeg','img/auth-bg-7.jpeg','img/auth-bg-8.jpeg'];
+const _authLoginBgs = ['img/auth-bg-1.webp','img/auth-bg-4.webp','img/auth-bg-3.webp','img/auth-bg-2.webp'];
+const _authSignupBgs = ['img/auth-bg-5.webp','img/auth-bg-6.webp','img/auth-bg-7.webp','img/auth-bg-8.webp'];
 
 function openAuthModal(type) {
   closeAuthModals();
