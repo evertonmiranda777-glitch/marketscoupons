@@ -279,30 +279,77 @@ a{text-decoration:none;color:inherit;}
 .cr-fmt .sz{font-size:10px;color:var(--t3);margin-top:2px;}
 .cr-fmt.active{border-color:var(--glow-gold-border);background:var(--glow-gold);color:var(--gold);}
 .cr-fmt .nm{font-size:12px;font-weight:700;}
+.cr-checks{display:flex;flex-direction:column;gap:6px;}
+.cr-chk{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);cursor:pointer;}
+.cr-chk input[type="checkbox"]{accent-color:#F0B429;width:14px;height:14px;}
 .cr-preview-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;}
 .cr-preview-scale{transform-origin:top center;}
 .cr-actions{display:flex;gap:8px;justify-content:center;}
-/* Creative canvas */
+/* Creative canvas — premium fd-overlay style */
 .cr-canvas{position:relative;overflow:hidden;font-family:'Inter',sans-serif;color:#fff;}
-.cr-canvas-bg{position:absolute;inset:0;background:#070a10;}
-.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.5;}
-.cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,5,7,.6) 0%,rgba(3,5,7,.2) 30%,rgba(3,5,7,.4) 55%,rgba(3,5,7,.95) 100%);}
-.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:60px 50px;}
-.cr-canvas-logo{display:flex;align-items:center;gap:10px;}
-.cr-canvas-logo-text{font-size:20px;font-weight:700;color:var(--gold);}
-.cr-canvas-logo-text span{color:#fff;font-weight:400;}
-.cr-canvas-hero{flex:1;display:flex;flex-direction:column;justify-content:center;}
-.cr-canvas-badge{display:inline-block;padding:8px 18px;border-radius:8px;font-size:14px;font-weight:800;letter-spacing:.5px;margin-bottom:20px;width:fit-content;}
-.cr-canvas h2{font-size:48px;font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px;}
-.cr-canvas h2 em{font-style:normal;color:var(--gold);}
-.cr-canvas .cr-sub{font-size:18px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:28px;}
-.cr-canvas-coupon{display:flex;align-items:center;gap:14px;padding:16px 24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;width:fit-content;}
-.cr-canvas-coupon-code{font-size:24px;font-weight:800;letter-spacing:2px;color:var(--gold);}
-.cr-canvas-coupon-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;}
-.cr-canvas-cta{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#F0B429,#D97706);color:#07090D;font-size:16px;font-weight:800;border-radius:12px;letter-spacing:.3px;width:fit-content;margin-top:20px;}
-.cr-canvas-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);}
-.cr-canvas-url{font-size:14px;color:rgba(255,255,255,.35);font-weight:500;}
-.cr-canvas-firm-logo{width:48px;height:48px;border-radius:12px;object-fit:contain;background:rgba(0,0,0,.3);padding:4px;}
+.cr-canvas-bg{position:absolute;inset:0;background:#060810;}
+.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;}
+.cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,16,.7) 0%,rgba(6,8,16,.4) 20%,rgba(6,8,16,.5) 50%,rgba(6,8,16,.92) 80%,rgba(6,8,16,.98) 100%);}
+.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;box-sizing:border-box;}
+/* Safe zone guide — 1080x1080 marker */
+.cr-safe-zone{position:absolute;z-index:1;left:0;right:0;bottom:0;height:1080px;border-top:1px dashed rgba(240,180,41,.15);pointer-events:none;}
+/* Header — above safe zone */
+.cr-hdr{display:flex;align-items:center;justify-content:center;gap:14px;padding:36px 0 24px;}
+.cr-hdr img{width:36px;height:36px;}
+.cr-hdr-txt{font-size:22px;font-weight:700;letter-spacing:-.3px;}
+.cr-hdr-txt b{color:#F0B429;}
+/* Main content card — inside safe zone */
+.cr-card{flex:1;margin:0 48px;border-radius:24px;border:1px solid rgba(240,180,41,.12);background:rgba(10,12,18,.85);padding:48px 56px;display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;}
+.cr-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,180,41,.3),transparent);}
+/* Firm row */
+.cr-firm-row{display:flex;align-items:center;gap:18px;margin-bottom:28px;}
+.cr-firm-logo{width:72px;height:72px;border-radius:18px;overflow:hidden;border:2px solid rgba(255,255,255,.08);box-shadow:0 8px 32px rgba(0,0,0,.5);background:rgba(0,0,0,.3);}
+.cr-firm-logo img{width:100%;height:100%;object-fit:contain;}
+.cr-firm-name{font-size:32px;font-weight:800;letter-spacing:-.5px;}
+/* Discount */
+.cr-discount{text-align:center;margin-bottom:24px;}
+.cr-discount-pct{font-size:96px;font-weight:900;letter-spacing:-5px;line-height:.9;-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cr-discount-label{font-size:22px;font-weight:800;letter-spacing:4px;color:rgba(255,255,255,.5);margin-top:4px;}
+/* Rating */
+.cr-rating{display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 24px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;margin-bottom:24px;}
+.cr-rating-stars{color:#00B67A;font-size:20px;letter-spacing:2px;}
+.cr-rating-num{font-size:18px;font-weight:800;color:#fff;}
+.cr-rating-reviews{font-size:14px;color:rgba(255,255,255,.45);}
+.cr-rating-tp{font-size:14px;font-weight:700;color:#00B67A;}
+/* Coupon */
+.cr-coupon{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;background:rgba(240,180,41,.04);border:1.5px dashed rgba(240,180,41,.2);border-radius:16px;margin-bottom:8px;}
+.cr-coupon-left{display:flex;flex-direction:column;gap:4px;}
+.cr-coupon-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(240,180,41,.5);}
+.cr-coupon-code{font-size:32px;font-weight:900;letter-spacing:4px;color:#F0B429;text-shadow:0 0 20px rgba(240,180,41,.15);}
+.cr-coupon-copy{padding:10px 24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;}
+.cr-coupon-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1px;margin-bottom:22px;}
+/* Stats grid */
+.cr-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px;}
+.cr-stat{padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;text-align:center;}
+.cr-stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:4px;}
+.cr-stat-val{font-size:18px;font-weight:800;}
+.cr-stat-val.g{color:#34D399;}.cr-stat-val.y{color:#F0B429;}.cr-stat-val.r{color:#F87171;}
+/* Platforms */
+.cr-platforms{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.cr-plat-label{width:100%;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(240,180,41,.5);margin-bottom:2px;}
+.cr-plat{padding:10px 20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;font-size:14px;font-weight:600;color:rgba(255,255,255,.75);}
+/* Prices */
+.cr-prices{margin-bottom:16px;}
+.cr-prices-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.cr-prices-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cr-price-item{display:flex;align-items:baseline;gap:10px;padding:8px 0;}
+.cr-price-size{font-size:20px;font-weight:800;color:#fff;min-width:60px;}
+.cr-price-new{font-size:22px;font-weight:800;}
+.cr-price-old{font-size:14px;color:rgba(255,255,255,.3);text-decoration:line-through;}
+/* Perks */
+.cr-perks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.cr-perk{padding:8px 16px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:10px;font-size:12px;font-weight:600;color:#34D399;}
+/* Footer */
+.cr-footer{display:flex;align-items:center;justify-content:center;gap:14px;padding:20px 0 32px;}
+.cr-footer img{width:28px;height:28px;}
+.cr-footer-txt{font-size:18px;font-weight:600;letter-spacing:-.2px;color:rgba(255,255,255,.4);}
+.cr-footer-txt b{color:#F0B429;}
+.cr-footer-url{font-size:14px;color:rgba(255,255,255,.3);}
 @media(max-width:900px){.cr-layout{grid-template-columns:1fr;}}
 
 /* PROGRESS BAR */
@@ -1296,30 +1343,28 @@ a{text-decoration:none;color:inherit;}
               <div class="cr-fmt" onclick="setCrFormat('story',this)"><div class="nm">Story</div><div class="sz">1080×1920</div></div>
             </div>
           </div>
+          <div class="cr-field"><label>Idioma</label>
+            <div class="cr-format-pills">
+              <div class="cr-fmt active" onclick="setCrLang('pt',this)"><div class="nm">Portugues</div></div>
+              <div class="cr-fmt" onclick="setCrLang('en',this)"><div class="nm">English</div></div>
+            </div>
+          </div>
           <div class="cr-field"><label>Firma</label>
             <select id="cr-firm" onchange="updateCrPreview()"><option value="">Selecione uma firma</option></select>
           </div>
-          <div class="cr-field"><label>Headline</label>
-            <textarea id="cr-headline" rows="3" onchange="updateCrPreview()" oninput="updateCrPreview()">Ate 90% OFF nas maiores Prop Firms do mundo</textarea>
-          </div>
-          <div class="cr-field"><label>Subtitulo</label>
-            <input id="cr-sub" value="Cupons exclusivos verificados diariamente" onchange="updateCrPreview()" oninput="updateCrPreview()">
-          </div>
-          <div class="cr-field"><label>Cupom (destaque)</label>
-            <input id="cr-coupon" value="MARKET" onchange="updateCrPreview()" oninput="updateCrPreview()">
-          </div>
-          <div class="cr-field"><label>CTA (botao)</label>
-            <input id="cr-cta" value="Resgatar Cupom" onchange="updateCrPreview()" oninput="updateCrPreview()">
-          </div>
-          <div class="cr-field"><label>Cor do Badge</label>
-            <div style="display:flex;gap:6px;">
-              <input type="color" id="cr-badge-color" value="#F0B429" onchange="updateCrPreview()" style="width:40px;height:34px;border:none;background:none;cursor:pointer;">
-              <input id="cr-badge-text" value="EXCLUSIVO" onchange="updateCrPreview()" oninput="updateCrPreview()" style="flex:1;">
+          <div class="cr-field"><label>Informacoes visiveis</label>
+            <div class="cr-checks">
+              <label class="cr-chk"><input type="checkbox" id="cr-show-discount" checked onchange="updateCrPreview()"> Desconto</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-rating" checked onchange="updateCrPreview()"> Rating/Reviews</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-prices" checked onchange="updateCrPreview()"> Precos</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-coupon" checked onchange="updateCrPreview()"> Cupom</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-stats" checked onchange="updateCrPreview()"> Stats (Split/DD/Target)</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-platforms" checked onchange="updateCrPreview()"> Plataformas</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-perks" onchange="updateCrPreview()"> Vantagens</label>
             </div>
           </div>
-          <div class="cr-actions">
+          <div class="cr-actions" style="margin-top:8px;">
             <button class="btn-primary" onclick="exportCreative()">Baixar PNG</button>
-            <button class="btn-secondary" onclick="updateCrPreview()">Atualizar</button>
           </div>
         </div>
         <!-- PREVIEW -->
@@ -1329,28 +1374,7 @@ a{text-decoration:none;color:inherit;}
               <div class="cr-canvas-bg"></div>
               <div class="cr-canvas-img" id="cr-canvas-img"></div>
               <div class="cr-canvas-ov"></div>
-              <div class="cr-canvas-content">
-                <div class="cr-canvas-logo">
-                  <svg width="36" height="36" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="crg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#crg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#crg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#crg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#crg)"/></svg>
-                  <div class="cr-canvas-logo-text">Markets <span>Coupons</span></div>
-                </div>
-                <div class="cr-canvas-hero">
-                  <div class="cr-canvas-badge" id="cr-canvas-badge" style="background:rgba(240,180,41,.15);color:#F0B429;">EXCLUSIVO</div>
-                  <h2 id="cr-canvas-h2">Ate <em>90% OFF</em> nas maiores Prop Firms do mundo</h2>
-                  <div class="cr-sub" id="cr-canvas-sub">Cupons exclusivos verificados diariamente</div>
-                  <div class="cr-canvas-coupon">
-                    <div>
-                      <div class="cr-canvas-coupon-label">Use o cupom</div>
-                      <div class="cr-canvas-coupon-code" id="cr-canvas-code">MARKET</div>
-                    </div>
-                  </div>
-                  <div class="cr-canvas-cta" id="cr-canvas-cta">Resgatar Cupom</div>
-                </div>
-                <div class="cr-canvas-footer">
-                  <div class="cr-canvas-url">marketscoupons.com</div>
-                  <img class="cr-canvas-firm-logo" id="cr-canvas-logo" src="" style="display:none;">
-                </div>
-              </div>
+              <div class="cr-canvas-content" id="cr-canvas-content"></div>
             </div>
           </div>
         </div>
@@ -5584,9 +5608,30 @@ function exportCadastrosCSV() {
 
 // ─── CRIATIVOS TAB ────────────────────────────────────────────────────────
 let _crFormat = 'feed'; // feed=1080x1350, story=1080x1920
+let _crLang = 'pt';     // pt or en — language of the creative output
 
-function initCriativos() {
+const CR_LABELS = {
+  pt: { exclusive_coupon:'CUPOM EXCLUSIVO', use_coupon:'USE O CUPOM NO CHECKOUT', reviews:'Avaliações',
+        profit_split:'Profit Split', drawdown:'Drawdown', target:'Meta', platforms:'PLATAFORMAS',
+        prices:'PREÇOS COM DESCONTO', off:'OFF', lifetime:'LIFETIME', perks_label:'VANTAGENS',
+        min_days:'Dias Min', scaling:'Scaling', eval:'Avaliação', no_limit:'Ilimitado',
+        copy:'Copiar' },
+  en: { exclusive_coupon:'EXCLUSIVE COUPON', use_coupon:'USE THE COUPON AT CHECKOUT', reviews:'Reviews',
+        profit_split:'Profit Split', drawdown:'Drawdown', target:'Target', platforms:'PLATFORMS',
+        prices:'DISCOUNTED PRICES', off:'OFF', lifetime:'LIFETIME', perks_label:'PERKS',
+        min_days:'Min Days', scaling:'Scaling', eval:'Evaluation', no_limit:'Unlimited',
+        copy:'Copy' }
+};
+
+async function initCriativos() {
   const sel = document.getElementById('cr-firm');
+  // Fetch firms from Supabase if cache is empty
+  if (!_firmsCache.length) {
+    try {
+      const { data, error } = await db.from('cms_firms').select('*').order('sort_order');
+      if (!error && data) _firmsCache = data;
+    } catch(e) { console.error('Erro ao carregar firmas:', e); }
+  }
   if (sel.options.length <= 1 && _firmsCache.length) {
     _firmsCache.filter(f => f.active).forEach(f => {
       const opt = document.createElement('option');
@@ -5599,60 +5644,179 @@ function initCriativos() {
   scaleCrPreview();
 }
 
+function setCrLang(lang, btn) {
+  _crLang = lang;
+  // Update active pill — language pills are in the 2nd .cr-format-pills
+  const pills = document.querySelectorAll('.cr-controls .cr-format-pills');
+  if (pills[1]) pills[1].querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  updateCrPreview();
+}
+
 function setCrFormat(fmt, btn) {
   _crFormat = fmt;
-  document.querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
+  const pills = document.querySelectorAll('.cr-controls .cr-format-pills');
+  if (pills[0]) pills[0].querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   const canvas = document.getElementById('cr-canvas');
   canvas.style.width = '1080px';
   canvas.style.height = fmt === 'story' ? '1920px' : '1350px';
+  updateCrPreview();
   scaleCrPreview();
 }
 
 function scaleCrPreview() {
   const wrap = document.getElementById('cr-preview-scale');
-  const canvas = document.getElementById('cr-canvas');
+  if (!wrap) return;
   const availW = wrap.parentElement.clientWidth - 20;
   const scale = Math.min(availW / 1080, 0.45);
   wrap.style.transform = `scale(${scale})`;
   wrap.style.width = '1080px';
-  wrap.style.height = (_crFormat === 'story' ? 1920 : 1350) * scale + 'px';
+  const h = _crFormat === 'story' ? 1920 : 1350;
+  wrap.style.height = h * scale + 'px';
 }
 
-function updateCrPreview() {
-  const firmId = document.getElementById('cr-firm').value;
-  const firm = _firmsCache.find(f => f.id === firmId);
-  const headline = document.getElementById('cr-headline').value || 'Ate 90% OFF';
-  const sub = document.getElementById('cr-sub').value;
-  const coupon = document.getElementById('cr-coupon').value;
-  const cta = document.getElementById('cr-cta').value;
-  const badgeText = document.getElementById('cr-badge-text').value;
-  const badgeColor = document.getElementById('cr-badge-color').value;
+function crChk(id) { return document.getElementById(id)?.checked; }
 
-  // Update firm-specific fields
+function updateCrPreview() {
+  const firmId = document.getElementById('cr-firm')?.value;
+  const firm = _firmsCache.find(f => f.id === firmId);
+  const content = document.getElementById('cr-canvas-content');
+  const bgImg = document.getElementById('cr-canvas-img');
+  const L = CR_LABELS[_crLang] || CR_LABELS.pt;
+  const isStory = _crFormat === 'story';
+
+  if (!content) return;
+
+  // Background
   if (firm) {
-    if (!document.getElementById('cr-coupon')._userEdited) {
-      document.getElementById('cr-coupon').value = firm.coupon || 'MARKET';
-    }
-    const bgImg = document.getElementById('cr-canvas-img');
     const bgUrl = `img/${firm.id}-bg.webp`;
     bgImg.style.backgroundImage = `url('${bgUrl}')`;
-    const logo = document.getElementById('cr-canvas-logo');
-    if (firm.icon_url) { logo.src = firm.icon_url; logo.style.display = 'block'; }
-    else logo.style.display = 'none';
+  } else {
+    bgImg.style.backgroundImage = 'none';
   }
 
-  // Update canvas text
-  const parts = headline.split(/(%?\d+%?\s*OFF)/gi);
-  let h2Html = parts.map(p => /\d+%?\s*OFF/i.test(p) ? `<em>${escHtml(p)}</em>` : escHtml(p)).join('');
-  document.getElementById('cr-canvas-h2').innerHTML = h2Html;
-  document.getElementById('cr-canvas-sub').textContent = sub;
-  document.getElementById('cr-canvas-code').textContent = coupon.toUpperCase();
-  document.getElementById('cr-canvas-cta').textContent = cta;
-  const badge = document.getElementById('cr-canvas-badge');
-  badge.textContent = badgeText;
-  badge.style.background = badgeColor + '22';
-  badge.style.color = badgeColor;
+  // If no firm selected, show placeholder
+  if (!firm) {
+    content.innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;opacity:.3;font-size:28px;font-weight:700;text-align:center;padding:80px;">Selecione uma firma<br>para gerar o criativo</div>`;
+    return;
+  }
+
+  const color = firm.color || '#F0B429';
+  const dtype = (firm.discount_type || firm.dtype || 'lifetime').toUpperCase();
+  const prices = firm.prices || [];
+  const platforms = firm.platforms || [];
+  const perks = firm.perks || [];
+  const split = firm.split || '—';
+  const ddPct = firm.dd_pct || firm.ddPct || '—';
+  const target = firm.target || '—';
+  const coupon = firm.coupon || '';
+  const rating = firm.rating || 0;
+  const reviews = firm.trustpilot_reviews || firm.reviews || 0;
+  const tpScore = Math.round(firm.trustpilot_score || firm.rating || 0);
+
+  // Build stars
+  const stars = Array(5).fill(0).map((_,i) => i < tpScore ? '★' : '☆').join('');
+
+  // Dynamic padding — more breathing room in story
+  const cardPad = isStory ? '56px 56px' : '44px 56px';
+  const topPad = isStory ? '48px' : '32px';
+
+  let h = '';
+
+  // ── HEADER: MC branding ──
+  h += `<div class="cr-hdr" style="padding-top:${topPad};">
+    <img src="img/logo-hexmark.svg" onerror="this.style.display='none'" alt="">
+    <div class="cr-hdr-txt"><b>Markets</b> Coupons</div>
+  </div>`;
+
+  // ── MAIN CARD ──
+  h += `<div class="cr-card" style="padding:${cardPad};">`;
+
+  // Firm logo + name
+  h += `<div class="cr-firm-row">
+    <div class="cr-firm-logo"><img src="${firm.icon_url}" alt="${firm.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${color};font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;height:100%\\'>${firm.icon||firm.name[0]}</span>'"></div>
+    <div class="cr-firm-name">${escHtml(firm.name)}</div>
+  </div>`;
+
+  // Discount
+  if (crChk('cr-show-discount') && firm.discount) {
+    h += `<div class="cr-discount">
+      <div class="cr-discount-pct" style="background:linear-gradient(135deg,${color},#FFD97D,${color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${color}40)">${firm.discount}% ${L.off}</div>
+      <div class="cr-discount-label">${dtype}</div>
+    </div>`;
+  }
+
+  // Rating
+  if (crChk('cr-show-rating') && rating) {
+    h += `<div class="cr-rating">
+      <div class="cr-rating-stars">${stars}</div>
+      <div class="cr-rating-num">(${rating})</div>
+      <div class="cr-rating-reviews">${reviews.toLocaleString()} ${L.reviews}</div>
+      <div class="cr-rating-tp">Trustpilot</div>
+    </div>`;
+  }
+
+  // Coupon
+  if (crChk('cr-show-coupon') && coupon) {
+    h += `<div class="cr-coupon">
+      <div class="cr-coupon-left">
+        <div class="cr-coupon-tag">${L.exclusive_coupon}</div>
+        <div class="cr-coupon-code">${escHtml(coupon)}</div>
+      </div>
+      <div class="cr-coupon-copy">${L.copy}</div>
+    </div>
+    <div class="cr-coupon-hint">${L.use_coupon}</div>`;
+  }
+
+  // Stats
+  if (crChk('cr-show-stats')) {
+    h += `<div class="cr-stats">
+      <div class="cr-stat"><div class="cr-stat-label">${L.profit_split}</div><div class="cr-stat-val g">${split}</div></div>
+      <div class="cr-stat"><div class="cr-stat-label">${L.drawdown}</div><div class="cr-stat-val r">${ddPct}</div></div>
+      <div class="cr-stat"><div class="cr-stat-label">${L.target}</div><div class="cr-stat-val y">${target}</div></div>
+    </div>`;
+  }
+
+  // Platforms
+  if (crChk('cr-show-platforms') && platforms.length) {
+    h += `<div class="cr-platforms">
+      <div class="cr-plat-label">${L.platforms}</div>
+      ${platforms.map(p => `<div class="cr-plat">${escHtml(p)}</div>`).join('')}
+    </div>`;
+  }
+
+  // Prices
+  if (crChk('cr-show-prices') && prices.length) {
+    h += `<div class="cr-prices">
+      <div class="cr-prices-label" style="color:${color};">${L.prices}</div>
+      <div class="cr-prices-grid">
+        ${prices.map(p => `<div class="cr-price-item">
+          <span class="cr-price-size">${p.a}</span>
+          <span class="cr-price-new" style="color:${color};">${p.n}</span>
+          ${p.o && p.o !== '—' ? `<span class="cr-price-old">${p.o}</span>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // Perks
+  if (crChk('cr-show-perks') && perks.length) {
+    h += `<div class="cr-perks">
+      ${perks.slice(0, 6).map(p => `<div class="cr-perk">${escHtml(p)}</div>`).join('')}
+    </div>`;
+  }
+
+  h += `</div>`; // close cr-card
+
+  // ── FOOTER: MC branding ──
+  h += `<div class="cr-footer">
+    <img src="img/logo-hexmark.svg" onerror="this.style.display='none'" alt="">
+    <div class="cr-footer-txt"><b>Markets</b> Coupons</div>
+    <div class="cr-footer-url">marketscoupons.com</div>
+  </div>`;
+
+  content.innerHTML = h;
 }
 
 async function exportCreative() {
@@ -5663,24 +5827,19 @@ async function exportCreative() {
     const c = await html2canvas(canvas, {
       scale: 1,
       useCORS: true,
-      backgroundColor: '#070a10',
+      backgroundColor: '#060810',
       width: 1080,
       height: _crFormat === 'story' ? 1920 : 1350
     });
     const link = document.createElement('a');
-    link.download = `mc-criativo-${_crFormat}-${Date.now()}.png`;
+    const firmId = document.getElementById('cr-firm')?.value || 'geral';
+    link.download = `mc-${firmId}-${_crFormat}-${_crLang}-${Date.now()}.png`;
     link.href = c.toDataURL('image/png');
     link.click();
     toast('Criativo exportado!');
   } catch(e) { toast('Erro ao exportar: ' + e.message, 'error'); }
   btn.textContent = 'Baixar PNG'; btn.disabled = false;
 }
-
-// Track user edits on coupon field
-document.addEventListener('DOMContentLoaded', function() {
-  const ci = document.getElementById('cr-coupon');
-  if (ci) ci.addEventListener('input', function() { this._userEdited = true; });
-});
 
 window.addEventListener('resize', function() {
   if (document.getElementById('page-criativos')?.classList.contains('active')) scaleCrPreview();
