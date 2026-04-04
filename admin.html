@@ -286,71 +286,71 @@ a{text-decoration:none;color:inherit;}
 .cr-preview-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;}
 .cr-preview-scale{transform-origin:top center;}
 .cr-actions{display:flex;gap:8px;justify-content:center;}
-/* Creative canvas — fd-overlay premium style */
+/* Creative canvas — fd-overlay premium (real 1080px sizes) */
 .cr-canvas{position:relative;overflow:hidden;font-family:'Inter',sans-serif;color:#fff;}
 .cr-canvas-bg{position:absolute;inset:0;background:#060810;}
 .cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.6;}
 .cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 30%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.75) 100%);}
-.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box;padding:0 56px;}
-/* Inner wrapper — fixed width, centered */
-.cr-inner{width:100%;max-width:880px;}
-/* MC branding top — centered */
-.cr-mc{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:28px;}
-.cr-mc img{width:32px;height:32px;}
-.cr-mc-txt{font-size:22px;font-weight:700;letter-spacing:-.3px;}
+.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box;padding:0 80px;}
+.cr-inner{width:100%;}
+/* MC branding top */
+.cr-mc{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:40px;}
+.cr-mc img{width:48px;height:48px;}
+.cr-mc-txt{font-size:32px;font-weight:700;letter-spacing:-.3px;}
 .cr-mc-txt b{color:#F0B429;}
-/* Hero row — firm LEFT + discount RIGHT */
-.cr-hero{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:20px;}
-.cr-hero-left{display:flex;align-items:center;gap:16px;}
-.cr-firm-logo{width:68px;height:68px;border-radius:18px;overflow:hidden;border:2px solid rgba(255,255,255,.08);box-shadow:0 8px 32px rgba(0,0,0,.5);background:rgba(0,0,0,.3);flex-shrink:0;}
+/* Hero: firm LEFT + discount RIGHT */
+.cr-hero{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:24px;}
+.cr-hero-left{display:flex;align-items:center;gap:22px;}
+.cr-firm-logo{width:96px;height:96px;border-radius:24px;overflow:hidden;border:3px solid rgba(255,255,255,.08);box-shadow:0 12px 40px rgba(0,0,0,.5);background:rgba(0,0,0,.3);flex-shrink:0;}
 .cr-firm-logo img{width:100%;height:100%;object-fit:contain;}
-.cr-firm-name{font-size:26px;font-weight:800;letter-spacing:-.4px;}
-.cr-firm-type{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-top:2px;}
+.cr-firm-name{font-size:42px;font-weight:800;letter-spacing:-.5px;}
+.cr-firm-type{font-size:16px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.35);margin-top:4px;}
 .cr-hero-right{text-align:right;flex-shrink:0;}
-.cr-discount-pct{font-size:72px;font-weight:900;letter-spacing:-4px;line-height:.85;-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.cr-discount-label{font-size:14px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.4);margin-top:2px;}
-/* Rating + Trustpilot — merged, centered */
-.cr-rating-bar{display:flex;align-items:center;justify-content:center;gap:14px;padding:16px 28px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:14px;margin-bottom:22px;}
-.cr-rb-num{font-size:28px;font-weight:800;color:#fff;}
-.cr-rb-stars{color:#F0B429;font-size:18px;letter-spacing:1px;}
-.cr-rb-reviews{font-size:13px;color:rgba(255,255,255,.4);}
-.cr-rb-sep{width:1px;height:24px;background:rgba(255,255,255,.08);}
-.cr-rb-tp-stars{color:#00B67A;font-size:16px;letter-spacing:1px;}
-.cr-rb-tp{font-size:13px;font-weight:700;color:#00B67A;}
-/* Coupon — centered */
-.cr-coupon{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;background:rgba(240,180,41,.03);border:1.5px dashed rgba(240,180,41,.18);border-radius:14px;margin-bottom:6px;}
-.cr-coupon-left{display:flex;flex-direction:column;gap:3px;}
-.cr-coupon-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(240,180,41,.45);}
-.cr-coupon-code{font-size:30px;font-weight:900;letter-spacing:4px;color:#F0B429;text-shadow:0 0 20px rgba(240,180,41,.12);}
-.cr-coupon-copy{padding:12px 28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;flex-shrink:0;}
-.cr-coupon-hint{text-align:center;font-size:10px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;}
-/* Stats grid — 2 cols, big equal cards */
-.cr-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-.cr-stat{padding:18px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:14px;}
-.cr-stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.3);margin-bottom:6px;}
-.cr-stat-val{font-size:22px;font-weight:800;}
+.cr-discount-pct{font-size:112px;font-weight:900;letter-spacing:-6px;line-height:.82;-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cr-discount-label{font-size:20px;font-weight:800;letter-spacing:4px;color:rgba(255,255,255,.4);margin-top:4px;}
+/* Rating + Trustpilot merged */
+.cr-rating-bar{display:flex;align-items:center;justify-content:center;gap:20px;padding:24px 36px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:18px;margin-bottom:28px;}
+.cr-rb-num{font-size:42px;font-weight:800;color:#fff;}
+.cr-rb-stars{color:#F0B429;font-size:26px;letter-spacing:2px;}
+.cr-rb-reviews{font-size:18px;color:rgba(255,255,255,.4);}
+.cr-rb-sep{width:1px;height:36px;background:rgba(255,255,255,.08);}
+.cr-rb-tp-stars{color:#00B67A;font-size:24px;letter-spacing:2px;}
+.cr-rb-tp{font-size:18px;font-weight:700;color:#00B67A;}
+/* Coupon — centered, no copy btn */
+.cr-coupon{padding:28px 36px;background:rgba(240,180,41,.03);border:2px dashed rgba(240,180,41,.2);border-radius:18px;margin-bottom:10px;text-align:center;}
+.cr-coupon-tag{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(240,180,41,.45);margin-bottom:8px;}
+.cr-coupon-code{font-size:52px;font-weight:900;letter-spacing:6px;color:#F0B429;text-shadow:0 0 28px rgba(240,180,41,.12);}
+.cr-coupon-hint{text-align:center;font-size:14px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:28px;}
+/* Stats — 2 cols, big equal cards */
+.cr-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.cr-stat{padding:22px 24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:16px;}
+.cr-stat-label{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:8px;}
+.cr-stat-val{font-size:32px;font-weight:800;}
 .cr-stat-val.g{color:#34D399;}.cr-stat-val.y{color:#F0B429;}.cr-stat-val.r{color:#F87171;}.cr-stat-val.w{color:#fff;}
 /* Platforms — equal width grid */
-.cr-platforms{display:grid;gap:8px;margin-bottom:20px;}
-.cr-plat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(240,180,41,.45);margin-bottom:4px;text-align:center;}
-.cr-plat{padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;font-size:14px;font-weight:600;color:rgba(255,255,255,.7);text-align:center;}
-/* Prices — grid 2 cols */
-.cr-prices{margin-bottom:16px;}
-.cr-prices-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;text-align:center;}
-.cr-prices-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;}
-.cr-price-item{display:flex;align-items:baseline;justify-content:center;gap:8px;padding:6px 0;}
-.cr-price-size{font-size:22px;font-weight:800;color:#fff;}
-.cr-price-new{font-size:24px;font-weight:800;}
-.cr-price-old{font-size:14px;color:rgba(255,255,255,.28);text-decoration:line-through;}
-/* Perks — equal width grid */
-.cr-perks{display:grid;gap:8px;margin-bottom:20px;}
-.cr-perk{padding:10px 16px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:12px;font-size:13px;font-weight:600;color:#34D399;text-align:center;}
-/* MC footer — inline after content, centered */
-.cr-mc-foot{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:8px;padding-top:18px;border-top:1px solid rgba(255,255,255,.05);}
-.cr-mc-foot img{width:24px;height:24px;}
-.cr-mc-foot-txt{font-size:16px;font-weight:600;color:rgba(255,255,255,.35);}
+.cr-platforms{display:grid;gap:12px;margin-bottom:28px;}
+.cr-plat-label{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(240,180,41,.45);margin-bottom:4px;text-align:center;}
+.cr-plat{padding:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;font-size:20px;font-weight:700;color:rgba(255,255,255,.7);text-align:center;}
+/* Account size pills — like checkout */
+.cr-sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.cr-size-pill{padding:18px 12px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;font-size:24px;font-weight:800;color:rgba(255,255,255,.7);text-align:center;}
+/* Prices — 2 cols */
+.cr-prices{margin-bottom:20px;}
+.cr-prices-label{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;text-align:center;}
+.cr-prices-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;}
+.cr-price-item{display:flex;align-items:baseline;justify-content:center;gap:12px;padding:8px 0;}
+.cr-price-size{font-size:30px;font-weight:800;color:#fff;}
+.cr-price-new{font-size:34px;font-weight:800;}
+.cr-price-old{font-size:18px;color:rgba(255,255,255,.28);text-decoration:line-through;}
+/* Perks — equal grid */
+.cr-perks{display:grid;gap:10px;margin-bottom:24px;}
+.cr-perk{padding:14px 18px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:14px;font-size:18px;font-weight:600;color:#34D399;text-align:center;}
+/* MC footer inline */
+.cr-mc-foot{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;padding-top:24px;border-top:1px solid rgba(255,255,255,.05);}
+.cr-mc-foot img{width:36px;height:36px;}
+.cr-mc-foot-txt{font-size:24px;font-weight:600;color:rgba(255,255,255,.35);}
 .cr-mc-foot-txt b{color:#F0B429;}
-.cr-mc-foot-url{font-size:12px;color:rgba(255,255,255,.2);}
+.cr-mc-foot-url{font-size:18px;color:rgba(255,255,255,.2);}
 @media(max-width:900px){.cr-layout{grid-template-columns:1fr;}}
 
 /* PROGRESS BAR */
@@ -5788,12 +5788,18 @@ function updateCrPreview() {
     </div>`;
   }
 
-  // ── Prices ──
+  // ── Prices (size pills + price grid, max 4 cheapest) ──
   if (crChk('cr-show-prices') && prices.length) {
+    const top4 = prices.slice(0, 4);
+    // Size pills (like checkout)
+    h += `<div class="cr-sizes">
+      ${top4.map(p => `<div class="cr-size-pill" style="border-color:${color}40;color:${color};">${p.a}</div>`).join('')}
+    </div>`;
+    // Price rows
     h += `<div class="cr-prices">
       <div class="cr-prices-label" style="color:${color};">${L.prices}</div>
       <div class="cr-prices-grid">
-        ${prices.map(p => `<div class="cr-price-item">
+        ${top4.map(p => `<div class="cr-price-item">
           <span class="cr-price-size">${p.a}</span>
           <span class="cr-price-new" style="color:${color};">${p.n}</span>
           ${p.o && p.o !== '—' ? `<span class="cr-price-old">${p.o}</span>` : ''}
@@ -5822,8 +5828,18 @@ function updateCrPreview() {
 
 async function exportCreative() {
   const canvas = document.getElementById('cr-canvas');
+  const wrap = document.getElementById('cr-preview-scale');
   const btn = event.target;
   btn.textContent = 'Gerando...'; btn.disabled = true;
+  // Remove scale transform so html2canvas captures at real 1080px
+  const origTransform = wrap.style.transform;
+  const origWidth = wrap.style.width;
+  const origHeight = wrap.style.height;
+  wrap.style.transform = 'none';
+  wrap.style.width = '1080px';
+  wrap.style.height = (_crFormat === 'story' ? 1920 : 1350) + 'px';
+  // Wait a frame for layout to settle
+  await new Promise(r => requestAnimationFrame(r));
   try {
     const c = await html2canvas(canvas, {
       scale: 1,
@@ -5839,6 +5855,10 @@ async function exportCreative() {
     link.click();
     toast('Criativo exportado!');
   } catch(e) { toast('Erro ao exportar: ' + e.message, 'error'); }
+  // Restore scale
+  wrap.style.transform = origTransform;
+  wrap.style.width = origWidth;
+  wrap.style.height = origHeight;
   btn.textContent = 'Baixar PNG'; btn.disabled = false;
 }
 
