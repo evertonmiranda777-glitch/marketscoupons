@@ -291,66 +291,63 @@ a{text-decoration:none;color:inherit;}
 .cr-canvas-bg{position:absolute;inset:0;background:#060810;}
 .cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.6;}
 .cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 30%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.75) 100%);}
-.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box;padding:0 80px;}
+/* Canvas content — vertically centered, generous padding */
+.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box;padding:60px 72px;}
 .cr-inner{width:100%;}
-/* MC branding top */
-.cr-mc{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:40px;}
-.cr-mc img{width:48px;height:48px;}
-.cr-mc-txt{font-size:32px;font-weight:700;letter-spacing:-.3px;}
+/* MC branding — same size top and bottom */
+.cr-mc{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:36px;}
+.cr-mc img{width:40px;height:40px;}
+.cr-mc-txt{font-size:28px;font-weight:700;letter-spacing:-.3px;}
 .cr-mc-txt b{color:#F0B429;}
 /* Hero: firm LEFT + discount RIGHT */
-.cr-hero{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:24px;}
-.cr-hero-left{display:flex;align-items:center;gap:22px;}
-.cr-firm-logo{width:96px;height:96px;border-radius:24px;overflow:hidden;border:3px solid rgba(255,255,255,.08);box-shadow:0 12px 40px rgba(0,0,0,.5);background:rgba(0,0,0,.3);flex-shrink:0;}
+.cr-hero{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:20px;}
+.cr-hero-left{display:flex;align-items:center;gap:20px;}
+.cr-firm-logo{width:88px;height:88px;border-radius:22px;overflow:hidden;border:2px solid rgba(255,255,255,.08);box-shadow:0 10px 36px rgba(0,0,0,.5);background:rgba(0,0,0,.3);flex-shrink:0;}
 .cr-firm-logo img{width:100%;height:100%;object-fit:contain;}
-.cr-firm-name{font-size:42px;font-weight:800;letter-spacing:-.5px;}
-.cr-firm-type{font-size:16px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.35);margin-top:4px;}
+.cr-firm-name{font-size:40px;font-weight:800;letter-spacing:-.5px;}
+.cr-firm-type{font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.35);margin-top:3px;}
 .cr-hero-right{text-align:right;flex-shrink:0;}
-.cr-discount-pct{font-size:112px;font-weight:900;letter-spacing:-6px;line-height:.82;-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.cr-discount-label{font-size:20px;font-weight:800;letter-spacing:4px;color:rgba(255,255,255,.4);margin-top:4px;}
-/* Rating + Trustpilot merged */
-.cr-rating-bar{display:flex;align-items:center;justify-content:center;gap:20px;padding:24px 36px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:18px;margin-bottom:28px;}
-.cr-rb-num{font-size:42px;font-weight:800;color:#fff;}
-.cr-rb-stars{color:#F0B429;font-size:26px;letter-spacing:2px;}
-.cr-rb-reviews{font-size:18px;color:rgba(255,255,255,.4);}
-.cr-rb-sep{width:1px;height:36px;background:rgba(255,255,255,.08);}
-.cr-rb-tp-stars{color:#00B67A;font-size:24px;letter-spacing:2px;}
-.cr-rb-tp{font-size:18px;font-weight:700;color:#00B67A;}
-/* Coupon — centered, no copy btn */
-.cr-coupon{padding:28px 36px;background:rgba(240,180,41,.03);border:2px dashed rgba(240,180,41,.2);border-radius:18px;margin-bottom:10px;text-align:center;}
-.cr-coupon-tag{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(240,180,41,.45);margin-bottom:8px;}
-.cr-coupon-code{font-size:52px;font-weight:900;letter-spacing:6px;color:#F0B429;text-shadow:0 0 28px rgba(240,180,41,.12);}
-.cr-coupon-hint{text-align:center;font-size:14px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:28px;}
+.cr-discount-pct{font-size:100px;font-weight:900;letter-spacing:-5px;line-height:.82;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cr-discount-label{font-size:18px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.4);margin-top:4px;}
+/* Rating + Trustpilot merged bar */
+.cr-rating-bar{display:flex;align-items:center;justify-content:center;gap:18px;padding:22px 32px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:16px;margin-bottom:24px;}
+.cr-rb-num{font-size:38px;font-weight:800;color:#fff;}
+.cr-rb-stars{color:#F0B429;font-size:24px;letter-spacing:2px;}
+.cr-rb-reviews{font-size:17px;color:rgba(255,255,255,.4);}
+.cr-rb-sep{width:1px;height:32px;background:rgba(255,255,255,.08);}
+.cr-rb-tp-stars{color:#00B67A;font-size:22px;letter-spacing:2px;}
+.cr-rb-tp{font-size:17px;font-weight:700;color:#00B67A;}
+/* Coupon — centered */
+.cr-coupon{padding:26px 32px;background:rgba(240,180,41,.03);border:2px dashed rgba(240,180,41,.2);border-radius:18px;margin-bottom:8px;text-align:center;}
+.cr-coupon-tag{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(240,180,41,.45);margin-bottom:6px;}
+.cr-coupon-code{font-size:48px;font-weight:900;letter-spacing:6px;color:#F0B429;}
+.cr-coupon-hint{text-align:center;font-size:13px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:24px;}
 /* Stats — 2 cols, big equal cards */
-.cr-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
-.cr-stat{padding:22px 24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:16px;}
-.cr-stat-label{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:8px;}
-.cr-stat-val{font-size:32px;font-weight:800;}
+.cr-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.cr-stat{padding:20px 22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:14px;}
+.cr-stat-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.3);margin-bottom:6px;}
+.cr-stat-val{font-size:28px;font-weight:800;}
 .cr-stat-val.g{color:#34D399;}.cr-stat-val.y{color:#F0B429;}.cr-stat-val.r{color:#F87171;}.cr-stat-val.w{color:#fff;}
-/* Platforms — equal width grid */
-.cr-platforms{display:grid;gap:12px;margin-bottom:28px;}
-.cr-plat-label{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(240,180,41,.45);margin-bottom:4px;text-align:center;}
-.cr-plat{padding:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;font-size:20px;font-weight:700;color:rgba(255,255,255,.7);text-align:center;}
-/* Account size pills — like checkout */
-.cr-sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.cr-size-pill{padding:18px 12px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;font-size:24px;font-weight:800;color:rgba(255,255,255,.7);text-align:center;}
-/* Prices — 2 cols */
-.cr-prices{margin-bottom:20px;}
-.cr-prices-label{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;text-align:center;}
-.cr-prices-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;}
-.cr-price-item{display:flex;align-items:baseline;justify-content:center;gap:12px;padding:8px 0;}
-.cr-price-size{font-size:30px;font-weight:800;color:#fff;}
-.cr-price-new{font-size:34px;font-weight:800;}
-.cr-price-old{font-size:18px;color:rgba(255,255,255,.28);text-decoration:line-through;}
+/* Platforms — equal grid */
+.cr-platforms{display:grid;gap:10px;margin-bottom:24px;}
+.cr-plat-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(240,180,41,.45);margin-bottom:4px;text-align:center;}
+.cr-plat{padding:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;font-size:18px;font-weight:700;color:rgba(255,255,255,.7);text-align:center;}
+/* Account sizes — unified: pill with size + new price + old price */
+.cr-plans-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(240,180,41,.45);margin-bottom:10px;text-align:center;}
+.cr-plans{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+.cr-plan{padding:18px 10px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;}
+.cr-plan-size{font-size:24px;font-weight:800;color:#fff;}
+.cr-plan-new{font-size:26px;font-weight:800;}
+.cr-plan-old{font-size:14px;color:rgba(255,255,255,.28);text-decoration:line-through;}
 /* Perks — equal grid */
-.cr-perks{display:grid;gap:10px;margin-bottom:24px;}
-.cr-perk{padding:14px 18px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:14px;font-size:18px;font-weight:600;color:#34D399;text-align:center;}
-/* MC footer inline */
-.cr-mc-foot{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;padding-top:24px;border-top:1px solid rgba(255,255,255,.05);}
-.cr-mc-foot img{width:36px;height:36px;}
-.cr-mc-foot-txt{font-size:24px;font-weight:600;color:rgba(255,255,255,.35);}
+.cr-perks{display:grid;gap:10px;margin-bottom:22px;}
+.cr-perk{padding:12px 16px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:14px;font-size:16px;font-weight:600;color:#34D399;text-align:center;}
+/* MC footer — same size as top, centered */
+.cr-mc-foot{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:8px;padding-top:20px;border-top:1px solid rgba(255,255,255,.05);}
+.cr-mc-foot img{width:40px;height:40px;}
+.cr-mc-foot-txt{font-size:28px;font-weight:700;color:rgba(255,255,255,.35);}
 .cr-mc-foot-txt b{color:#F0B429;}
-.cr-mc-foot-url{font-size:18px;color:rgba(255,255,255,.2);}
+.cr-mc-foot-url{font-size:16px;color:rgba(255,255,255,.2);}
 @media(max-width:900px){.cr-layout{grid-template-columns:1fr;}}
 
 /* PROGRESS BAR */
@@ -5739,7 +5736,7 @@ function updateCrPreview() {
     </div>`;
   if (crChk('cr-show-discount') && firm.discount) {
     h += `<div class="cr-hero-right">
-      <div class="cr-discount-pct" style="background:linear-gradient(135deg,${color},#FFD97D,${color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${color}40)">${firm.discount}%</div>
+      <div class="cr-discount-pct" style="background:linear-gradient(135deg,${color},#FFD97D,${color});-webkit-background-clip:text;background-clip:text;">${firm.discount}%</div>
       <div class="cr-discount-label">${L.off} ${dtype}</div>
     </div>`;
   }
@@ -5788,23 +5785,17 @@ function updateCrPreview() {
     </div>`;
   }
 
-  // ── Prices (size pills + price grid, max 4 cheapest) ──
+  // ── Account sizes + prices (unified cards, max 4 cheapest) ──
   if (crChk('cr-show-prices') && prices.length) {
     const top4 = prices.slice(0, 4);
-    // Size pills (like checkout)
-    h += `<div class="cr-sizes">
-      ${top4.map(p => `<div class="cr-size-pill" style="border-color:${color}40;color:${color};">${p.a}</div>`).join('')}
-    </div>`;
-    // Price rows
-    h += `<div class="cr-prices">
-      <div class="cr-prices-label" style="color:${color};">${L.prices}</div>
-      <div class="cr-prices-grid">
-        ${top4.map(p => `<div class="cr-price-item">
-          <span class="cr-price-size">${p.a}</span>
-          <span class="cr-price-new" style="color:${color};">${p.n}</span>
-          ${p.o && p.o !== '—' ? `<span class="cr-price-old">${p.o}</span>` : ''}
-        </div>`).join('')}
-      </div>
+    const cols = top4.length;
+    h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':'ACCOUNT SIZE'}</div>
+    <div class="cr-plans" style="grid-template-columns:repeat(${cols},1fr);">
+      ${top4.map(p => `<div class="cr-plan" style="border-color:${color}30;">
+        <div class="cr-plan-size">${p.a}</div>
+        <div class="cr-plan-new" style="color:${color};">${p.n}</div>
+        ${p.o && p.o !== '—' ? `<div class="cr-plan-old">${p.o}</div>` : ''}
+      </div>`).join('')}
     </div>`;
   }
 
