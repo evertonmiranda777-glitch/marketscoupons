@@ -3729,7 +3729,7 @@ function renderDailyCards(items){
         <span class="da-bias-pill ${biasClass}">${biasLabel}</span>
         <div class="da-confidence">${confDots}</div>
       </div>
-      <div class="da-chart"><iframe src="https://s.tradingview.com/widgetembed/?frameElementId=da_${a.asset}&symbol=${info.tv}&interval=60&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0a0e17&studies=[]&theme=${tvTheme}&style=1&timezone=America%2FSao_Paulo&withdateranges=0&hideideas=1&overrides=%7B%7D&utm_source=marketscoupons.com" allowtransparency="true" frameborder="0" allowfullscreen></iframe></div>
+      <div class="da-chart"><iframe src="https://s.tradingview.com/widgetembed/?frameElementId=da_${a.asset}&symbol=${info.tv}&interval=60&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0a0e17&studies=[]&theme=${tvTheme}&style=1&timezone=America%2FSao_Paulo&withdateranges=0&hideideas=1&overrides=%7B%7D&utm_source=marketscoupons.com" allowtransparency="true" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
       <div class="da-body">
         <div class="da-levels">
           <div class="da-lvl"><div class="da-lvl-label">${t('da_suporte')} 1</div><div class="da-lvl-val support">${a.support_1||'—'}</div></div>
