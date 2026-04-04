@@ -470,7 +470,6 @@ a{text-decoration:none;color:inherit;}
  <button class="nta" onclick="adminGo('cadastros',this)">Cadastros</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade</button>
- <button class="nta" onclick="adminGo('analysis-vip',this)">Análise VIP</button>
  <div class="nta-sep"></div>
  <button class="nta nta-cms" onclick="adminGo('cms-firms',this)">Firmas</button>
  <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
@@ -530,7 +529,6 @@ a{text-decoration:none;color:inherit;}
   <button class="nta" onclick="adminGoMobile('cadastros',this)">Cadastros</button>
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
   <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade</button>
-  <button class="nta" onclick="adminGoMobile('analysis-vip',this)">Análise VIP</button>
   <div class="nta-sep"></div>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-firms',this)">Firmas</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
@@ -743,6 +741,34 @@ a{text-decoration:none;color:inherit;}
  </div>
  </div>
  <div style="font-size:12px;color:var(--t3);" id="leads-count">0 leads encontrados</div>
+
+ <!-- VIP dentro de Leads -->
+ <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--glass-border);">
+   <div class="sec-hdr">
+     <div class="sec-title">Acesso VIP</div>
+     <div class="sec-actions"><button class="btn-secondary" onclick="loadVipList()">Atualizar</button></div>
+   </div>
+   <div class="chart-card" style="margin-bottom:16px;">
+     <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Liberar acesso VIP</div>
+     <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
+       <div style="flex:1;min-width:250px;">
+         <label style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;">E-mail do usuario</label>
+         <input type="email" id="vip-email" placeholder="usuario@email.com" class="filter-inp" style="width:100%;">
+       </div>
+       <button class="btn-primary" onclick="grantVip()" style="white-space:nowrap;">Liberar VIP</button>
+     </div>
+     <div id="vip-msg" style="font-size:12px;margin-top:8px;display:none;"></div>
+   </div>
+   <div class="chart-card" style="padding:0;overflow:hidden;">
+     <div class="data-table-wrap">
+       <table class="data-table" id="vip-tbl">
+         <thead><tr><th>Usuario</th><th>E-mail</th><th>VIP desde</th><th>Acao</th></tr></thead>
+         <tbody id="vip-tbody"></tbody>
+       </table>
+     </div>
+   </div>
+   <div id="vip-empty" style="text-align:center;padding:40px;color:var(--t3);font-size:13px;display:none;">Nenhum usuario VIP ainda.</div>
+ </div>
  </div>
 
  <!-- EVENTS -->
@@ -1102,39 +1128,6 @@ a{text-decoration:none;color:inherit;}
 
 
     <!-- ══ ANÁLISE VIP ══ -->
-    <div class="admin-page" id="page-analysis-vip">
-      <div class="sec-hdr">
-        <div class="sec-title">Análise Diária — Controle de Acesso VIP</div>
-        <div class="sec-actions">
-          <button class="btn-secondary" onclick="loadVipList()">Atualizar</button>
-        </div>
-      </div>
-
-      <!-- Adicionar VIP -->
-      <div class="chart-card" style="margin-bottom:20px;">
-        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Liberar acesso VIP</div>
-        <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
-          <div style="flex:1;min-width:250px;">
-            <label style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;">E-mail do usuário</label>
-            <input type="email" id="vip-email" placeholder="usuario@email.com" style="width:100%;padding:8px 12px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:13px;outline:none;">
-          </div>
-          <button class="btn-primary" onclick="grantVip()" style="white-space:nowrap;">Liberar VIP</button>
-        </div>
-        <div id="vip-msg" style="font-size:12px;margin-top:8px;display:none;"></div>
-      </div>
-
-      <!-- Lista VIPs -->
-      <div class="chart-card" style="padding:0;overflow:hidden;">
-        <div class="data-table-wrap">
-          <table class="data-table" id="vip-tbl">
-            <thead><tr><th>Usuário</th><th>E-mail</th><th>VIP desde</th><th>Ação</th></tr></thead>
-            <tbody id="vip-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div id="vip-empty" style="text-align:center;padding:40px;color:var(--t3);font-size:13px;display:none;">Nenhum usuário VIP ainda.</div>
-    </div>
-
     <!-- ══ CMS: FIRMS ══ -->
     <div class="admin-page" id="page-cms-firms">
       <div class="sec-hdr">
@@ -1791,7 +1784,6 @@ function renderPage(p){
       setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
-    case 'analysis-vip':   loadVipList(); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
@@ -2113,7 +2105,7 @@ async function saveAdSpend() {
   } catch(e) { toast('Erro ao salvar.','error'); }
 }
 
-function renderLeadsPage(){ renderLeadsTable(); }
+function renderLeadsPage(){ renderLeadsTable(); loadVipList(); }
 
 function renderLeadsTable(){
  let leads=getFilteredLeads();
