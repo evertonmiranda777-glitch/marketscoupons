@@ -385,6 +385,7 @@ async function fetchGeo() {
  --f:'Inter',sans-serif;
  --r8:8px; --r10:10px; --r12:12px;
  --gold-hover:#d9a224; --tp-green:#00B67A;
+ --gold-dim:rgba(240,180,41,.15); --cbr:rgba(255,255,255,.07);
  --nav-h:52px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -485,106 +486,159 @@ img{max-width:100%;}
 
 /* AUTH MODALS */
 /* ===== AUTH SCREENS — PREMIUM DARK ===== */
-@property --border-angle{syntax:'<angle>';inherits:false;initial-value:0deg;}
+/* ═══ AUTH SCREENS — Premium V8 ═══ */
 .auth-overlay{position:fixed;inset:0;background:#030507;z-index:9999;display:none;overflow:hidden;}
 .auth-overlay.show{display:flex;}
 .auth-split{display:flex;width:100%;height:100%;}
-/* ── LEFT: SHOWCASE ── */
-.auth-left{flex:0 0 52%;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;background:#030507;}
-/* Aurora animated background */
-.auth-left-aurora{position:absolute;inset:0;background:linear-gradient(-45deg,#030507,#0d0a1a,#0a0d17,#0a1a10);background-size:400% 400%;animation:authAurora 15s ease infinite;opacity:.8;}
-@keyframes authAurora{0%,100%{background-position:0 50%;}50%{background-position:100% 50%;}}
-/* Star field */
-.auth-left-stars{position:absolute;inset:0;pointer-events:none;
-background:
- radial-gradient(1px 1px at 50px 80px,rgba(255,255,255,.6),transparent),
- radial-gradient(1px 1px at 150px 200px,rgba(255,255,255,.4),transparent),
- radial-gradient(1.5px 1.5px at 250px 50px,rgba(240,180,41,.5),transparent),
- radial-gradient(1px 1px at 350px 300px,rgba(255,255,255,.3),transparent),
- radial-gradient(1px 1px at 100px 350px,rgba(168,85,247,.4),transparent),
- radial-gradient(1.5px 1.5px at 450px 150px,rgba(255,255,255,.5),transparent),
- radial-gradient(1px 1px at 300px 400px,rgba(240,180,41,.3),transparent),
- radial-gradient(1px 1px at 500px 250px,rgba(255,255,255,.4),transparent),
- radial-gradient(1px 1px at 200px 150px,rgba(255,255,255,.3),transparent),
- radial-gradient(1.5px 1.5px at 400px 350px,rgba(168,85,247,.3),transparent);
-background-size:550px 450px;animation:authStars 80s linear infinite;}
-@keyframes authStars{to{transform:translateY(-450px);}}
-/* Gold orb */
-.auth-left::before{content:'';position:absolute;top:5%;right:0;width:420px;height:420px;background:radial-gradient(circle,rgba(240,180,41,0.20) 0%,rgba(240,180,41,0.05) 35%,transparent 65%);pointer-events:none;animation:authOrb1 8s ease-in-out infinite alternate;filter:blur(40px);}
-/* Purple orb */
-.auth-left::after{content:'';position:absolute;bottom:5%;left:5%;width:380px;height:380px;background:radial-gradient(circle,rgba(168,85,247,0.16) 0%,rgba(168,85,247,0.04) 35%,transparent 65%);pointer-events:none;animation:authOrb2 10s ease-in-out infinite alternate;filter:blur(40px);}
-@keyframes authOrb1{0%{transform:translate(0,0) scale(1);}100%{transform:translate(-25px,20px) scale(1.08);}}
-@keyframes authOrb2{0%{transform:translate(0,0) scale(1);}100%{transform:translate(20px,-20px) scale(1.05);}}
-/* Mesh grid */
-.auth-left-mesh{position:absolute;inset:0;background-image:
- linear-gradient(rgba(240,180,41,0.025) 1px,transparent 1px),
- linear-gradient(90deg,rgba(240,180,41,0.025) 1px,transparent 1px);
-background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,black 10%,transparent 70%);}
-/* Floating elements */
-.auth-left-ring{position:absolute;top:10%;left:6%;width:140px;height:140px;border:1px solid rgba(240,180,41,0.06);border-radius:50%;pointer-events:none;animation:authFloat 8s ease-in-out infinite;}
-.auth-left-ring2{position:absolute;bottom:12%;right:8%;width:90px;height:90px;border:1px solid rgba(168,85,247,0.06);border-radius:50%;pointer-events:none;animation:authFloat 10s ease-in-out infinite reverse;}
-@keyframes authFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-15px) rotate(3deg);}}
-.auth-left-line{position:absolute;top:18%;right:15%;width:200px;height:1px;background:linear-gradient(to right,transparent,rgba(240,180,41,0.1),transparent);transform:rotate(-20deg);pointer-events:none;animation:authFloat 12s ease-in-out infinite;}
-.auth-left-line2{position:absolute;bottom:22%;left:10%;width:160px;height:1px;background:linear-gradient(to right,transparent,rgba(168,85,247,0.08),transparent);transform:rotate(25deg);pointer-events:none;animation:authFloat 14s ease-in-out infinite reverse;}
-/* Divider */
-.auth-left-border{position:absolute;right:0;top:0;height:100%;width:1px;background:linear-gradient(to bottom,transparent 5%,rgba(240,180,41,0.15) 30%,rgba(168,85,247,0.1) 70%,transparent 95%);}
-/* Carousel */
-.auth-carousel{position:relative;width:100%;max-width:520px;padding:48px;z-index:2;}
-.auth-carousel-logo{display:flex;align-items:center;gap:12px;margin-bottom:48px;font-size:22px;font-weight:800;color:var(--t1);}
-.auth-carousel-logo img{width:44px;height:44px;border-radius:10px;filter:drop-shadow(0 0 16px rgba(240,180,41,0.35));}
-.auth-carousel-logo em{color:var(--gold);font-style:normal;}
-.auth-slide{display:none;animation:authFadeIn .7s cubic-bezier(.4,0,.2,1);}
-.auth-slide.active{display:block;}
-@keyframes authFadeIn{from{opacity:0;transform:translateY(24px) scale(.95);}to{opacity:1;transform:translateY(0) scale(1);}}
-/* ── CARD SHOWCASE with rotating border ── */
-.auth-slide-visual{position:relative;width:100%;height:300px;margin-bottom:40px;padding:2px;border-radius:24px;background:conic-gradient(from var(--border-angle),rgba(240,180,41,0.3),transparent 30%,rgba(168,85,247,0.2) 50%,transparent 70%,rgba(240,180,41,0.3));animation:authBorderSpin 4s linear infinite;}
-@keyframes authBorderSpin{to{--border-angle:360deg;}}
-.auth-slide-visual-bg{position:absolute;inset:2px;background:rgba(5,7,11,0.95);border-radius:22px;backdrop-filter:blur(4px);overflow:hidden;}
-.auth-slide-visual-bg::before{content:'';position:absolute;top:16px;right:16px;width:6px;height:6px;border-radius:50%;background:rgba(240,180,41,0.4);box-shadow:12px 0 0 rgba(240,180,41,0.25),24px 0 0 rgba(240,180,41,0.12);}
-.auth-slide-visual-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(240,180,41,0.04) 0%,transparent 40%,rgba(168,85,247,0.03) 100%);}
-.auth-slide-cards{position:absolute;inset:30px;display:flex;gap:20px;align-items:center;justify-content:center;z-index:1;}
-/* 3D perspective cards */
-.auth-slide-card{background:rgba(10,13,20,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px;backdrop-filter:blur(20px);min-width:165px;transition:transform .5s cubic-bezier(.4,0,.2,1),box-shadow .5s;position:relative;transform:perspective(800px) rotateY(-3deg) rotateX(2deg);}
-.auth-slide-card:nth-child(2){transform:perspective(800px) rotateY(3deg) rotateX(2deg);}
-.auth-slide-card::before{content:'';position:absolute;inset:-1px;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent 40%,transparent 60%,rgba(255,255,255,0.03));z-index:-1;pointer-events:none;}
-.auth-slide-card:hover{transform:perspective(800px) rotateY(0) rotateX(0) translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,0.5);}
-.auth-slide-card-gold{border-color:rgba(240,180,41,0.2);box-shadow:0 8px 40px rgba(240,180,41,0.1),inset 0 1px 0 rgba(240,180,41,0.1);}
-.auth-slide-card-gold::after{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
-.auth-slide-card .asc-pct{font-size:40px;font-weight:800;color:var(--gold);line-height:1;text-shadow:0 0 40px rgba(240,180,41,0.25);}
-.auth-slide-card .asc-label{font-size:9px;font-weight:700;color:var(--t3);margin-top:8px;letter-spacing:2px;text-transform:uppercase;}
-.auth-slide-card .asc-firm{font-size:14px;font-weight:700;color:var(--t1);margin-top:14px;}
-/* Text */
-.auth-slide-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding:6px 14px;background:rgba(240,180,41,0.06);border:1px solid rgba(240,180,41,0.12);border-radius:20px;text-shadow:0 0 20px rgba(240,180,41,0.2);}
-.auth-slide h2{font-size:40px;font-weight:800;color:#fff;line-height:1.08;margin-bottom:18px;letter-spacing:-.8px;}
-.auth-slide p{font-size:15px;color:var(--t2);line-height:1.7;max-width:420px;}
-/* Dots — pill */
-.auth-dots{display:flex;gap:8px;margin-top:48px;}
-.auth-dot{width:32px;height:5px;border-radius:3px;background:rgba(255,255,255,0.06);cursor:pointer;transition:.4s cubic-bezier(.4,0,.2,1);border:none;padding:0;}
-.auth-dot:hover{background:rgba(255,255,255,0.12);}
-.auth-dot.active{background:var(--gold);box-shadow:0 0 14px rgba(240,180,41,0.5);width:52px;}
+/* ── LEFT ── */
+.auth-left{flex:0 0 52%;position:relative;height:100vh;}
+.auth-left-bg{position:absolute;inset:0;background:center/cover no-repeat;transition:background-image .8s ease;}
+.auth-left-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,5,7,0.6) 0%,rgba(3,5,7,0.2) 25%,rgba(3,5,7,0.35) 55%,rgba(3,5,7,0.94) 100%);}
+.auth-left-content{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:36px 44px 32px;z-index:2;overflow-y:auto;}
+.auth-left-content::-webkit-scrollbar{width:0;}
+.auth-divider-line{position:absolute;right:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(240,180,41,.1) 20%,rgba(240,180,41,.1) 80%,transparent);z-index:3;}
+.auth-logo{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.auth-logo-text{font-size:17px;font-weight:700;color:var(--gold);letter-spacing:0.3px;}
+.auth-logo-text span{color:#fff;font-weight:400;}
+.auth-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 0;}
+.auth-slide{display:none;animation:authFadeUp .6s ease;}
+.auth-slide.active{display:flex;flex-direction:column;}
+@keyframes authFadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+/* Mini UI shared */
+.mu{border-radius:16px;padding:20px;margin-bottom:24px;background:rgba(8,10,16,.65);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:relative;overflow:hidden;}
+.mu::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.03),transparent 60%);pointer-events:none;border-radius:16px;}
+.mu-logo{width:34px;height:34px;border-radius:10px;object-fit:contain;flex-shrink:0;background:rgba(0,0,0,.3);padding:3px;}
+.mu-logo-sm{width:28px;height:28px;border-radius:8px;object-fit:contain;flex-shrink:0;background:rgba(0,0,0,.3);padding:2px;}
+/* Coupons */
+.mu-coupons{display:flex;gap:10px;}
+.mu-cpn{flex:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
+.mu-cpn-badge{position:absolute;top:-1px;right:-1px;background:linear-gradient(135deg,var(--gold),#D97706);color:#000;font-size:7.5px;font-weight:800;padding:3px 8px;border-radius:0 12px 0 8px;letter-spacing:.3px;}
+.mu-cpn-name{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.7);text-align:center;letter-spacing:.2px;}
+.mu-cpn-prices{text-align:center;}
+.mu-cpn-old{font-size:8px;color:rgba(255,255,255,.25);text-decoration:line-through;}
+.mu-cpn-new{font-size:13px;font-weight:800;color:var(--gold);}
+.mu-cpn-code{font-size:7px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);padding:2px 6px;border-radius:4px;letter-spacing:1px;font-family:monospace;}
+/* Comparator */
+.mu-compare{display:flex;flex-direction:column;}
+.mu-cmp-header{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:8px;}
+.mu-cmp-firm{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.mu-cmp-nm{font-size:8px;font-weight:700;color:rgba(255,255,255,.6);}
+.mu-cmp-stars{font-size:7px;color:var(--gold);font-weight:700;}
+.mu-cmp-rows{display:flex;flex-direction:column;gap:5px;}
+.mu-cmp-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px;align-items:center;}
+.mu-cmp-label{font-size:7.5px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;}
+.mu-cmp-val{font-size:9px;font-weight:700;color:rgba(255,255,255,.55);text-align:center;}
+.mu-cmp-val.best{color:var(--green);font-weight:800;}
+.mu-cmp-winner{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.07);}
+.mu-cmp-winner-badge{font-size:7px;font-weight:800;color:#000;background:var(--green);padding:2px 8px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;}
+.mu-cmp-winner-text{font-size:8px;font-weight:600;color:rgba(255,255,255,.5);}
+/* Live Room */
+.mu-live{display:flex;gap:10px;height:150px;}
+.mu-live-screen{flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.07);border-radius:10px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.mu-live-top{display:flex;align-items:center;gap:6px;padding:8px 10px;z-index:1;}
+.mu-live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red),0 0 20px rgba(239,68,68,.3);animation:livePulse 1.5s ease infinite;}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 10px var(--red),0 0 20px rgba(239,68,68,.3);}50%{opacity:.5;box-shadow:0 0 4px var(--red);}}
+.mu-live-tag{font-size:7px;font-weight:800;color:var(--red);letter-spacing:1.2px;text-transform:uppercase;}
+.mu-live-pair{font-size:8px;color:rgba(255,255,255,.45);margin-left:auto;font-weight:600;}
+.mu-live-chart{flex:1;padding:0 8px 6px;position:relative;overflow:hidden;}
+.mu-live-chart svg{width:100%;height:100%;}
+@keyframes chartDraw{0%{stroke-dashoffset:500;}100%{stroke-dashoffset:0;}}
+.chart-line-animated{stroke-dasharray:500;animation:chartDraw 15s linear infinite;}
+.mu-live-price{position:absolute;top:8px;right:12px;display:flex;flex-direction:column;align-items:flex-end;gap:1px;}
+.mu-live-price-val{font-size:12px;font-weight:800;color:#fff;text-shadow:0 0 12px rgba(0,0,0,.8);}
+.mu-live-price-chg{font-size:7px;font-weight:700;padding:1px 5px;border-radius:3px;}
+.mu-live-chat{width:110px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);border-radius:10px;display:flex;flex-direction:column;padding:8px;gap:4px;overflow:hidden;}
+.mu-live-chat-title{font-size:7px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.07);}
+.mu-live-msg{display:flex;gap:4px;align-items:flex-start;}
+.mu-live-msg-av{width:12px;height:12px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:5px;font-weight:800;color:#fff;}
+.mu-live-msg-txt{font-size:6.5px;color:rgba(255,255,255,.35);line-height:1.35;}
+.mu-live-msg-txt b{color:rgba(255,255,255,.6);font-weight:700;}
+/* Platforms */
+.mu-platforms{display:flex;gap:12px;}
+.mu-plat{flex:1;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;}
+.mu-plat-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;background:rgba(0,0,0,.3);padding:4px;}
+.mu-plat-name{font-size:11px;font-weight:800;color:rgba(255,255,255,.85);}
+.mu-plat-desc{font-size:7px;color:rgba(255,255,255,.3);text-align:center;line-height:1.4;}
+.mu-plat-price{font-size:15px;font-weight:800;color:var(--gold);}
+.mu-plat-period{font-size:7px;color:rgba(255,255,255,.25);margin-top:-4px;}
+.mu-plat-btn{font-size:7px;font-weight:700;color:#000;background:linear-gradient(135deg,var(--gold),#D97706);padding:5px 16px;border-radius:6px;letter-spacing:.3px;}
+.mu-plat-tag{position:absolute;top:8px;right:8px;font-size:6px;font-weight:800;color:var(--green);background:rgba(34,197,94,.1);padding:2px 6px;border-radius:4px;letter-spacing:.3px;text-transform:uppercase;}
+/* Tools (calc + quiz) */
+.mu-tools{display:flex;gap:10px;}
+.mu-calc{flex:1;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;}
+.mu-calc-title{font-size:8px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;}
+.mu-calc-field{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;}
+.mu-calc-field span:first-child{font-size:7.5px;color:rgba(255,255,255,.3);}
+.mu-calc-field span:last-child{font-size:9px;font-weight:700;color:rgba(255,255,255,.7);}
+.mu-calc-result{background:rgba(240,180,41,.15);border:1px solid rgba(240,180,41,.2);border-radius:6px;padding:7px 8px;display:flex;justify-content:space-between;align-items:center;}
+.mu-calc-result span:first-child{font-size:7.5px;font-weight:600;color:var(--gold);}
+.mu-calc-result span:last-child{font-size:13px;font-weight:800;color:var(--gold);}
+.mu-quiz{flex:1;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;}
+.mu-quiz-title{font-size:8px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;}
+.mu-quiz-q{font-size:10px;font-weight:700;color:rgba(255,255,255,.75);line-height:1.3;}
+.mu-quiz-opt{display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:6px;font-size:8px;color:rgba(255,255,255,.5);font-weight:500;}
+.mu-quiz-opt.selected{border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.08);color:var(--purple);}
+.mu-quiz-opt::before{content:'';width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);flex-shrink:0;}
+.mu-quiz-opt.selected::before{border-color:var(--purple);background:var(--purple);box-shadow:inset 0 0 0 2px rgba(0,0,0,.3);}
+.mu-quiz-bar{height:3px;background:rgba(255,255,255,.05);border-radius:2px;margin-top:auto;}
+.mu-quiz-bar-fill{height:100%;width:60%;background:linear-gradient(90deg,var(--purple),#C084FC);border-radius:2px;}
+/* Blog + Calendar */
+.mu-content{display:flex;gap:10px;}
+.mu-blog{flex:1;display:flex;flex-direction:column;gap:6px;}
+.mu-blog-card{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 10px;display:flex;gap:10px;align-items:center;}
+.mu-blog-thumb{width:36px;height:36px;border-radius:6px;flex-shrink:0;object-fit:cover;}
+.mu-blog-info{display:flex;flex-direction:column;gap:2px;overflow:hidden;}
+.mu-blog-cat{font-size:6px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.mu-blog-t{font-size:8px;font-weight:700;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mu-blog-meta{font-size:6px;color:rgba(255,255,255,.2);}
+.mu-cal{flex:0 0 130px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:4px;}
+.mu-cal-title{font-size:7px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.07);}
+.mu-cal-ev{display:flex;gap:6px;align-items:center;padding:3px 0;}
+.mu-cal-time{font-size:7px;font-weight:600;color:rgba(255,255,255,.3);width:28px;flex-shrink:0;}
+.mu-cal-imp{width:4px;height:14px;border-radius:2px;flex-shrink:0;}
+.mu-cal-info{display:flex;flex-direction:column;}
+.mu-cal-ev-name{font-size:7px;font-weight:600;color:rgba(255,255,255,.6);}
+.mu-cal-ev-country{font-size:6px;color:rgba(255,255,255,.2);}
+/* Slide text */
+.auth-slide h2{font-size:32px;font-weight:800;color:#fff;line-height:1.08;margin-bottom:12px;letter-spacing:-.8px;}
+.auth-slide h2 em{font-style:normal;color:var(--gold);}
+.auth-slide h2 .cyan{color:var(--cyan);}
+.auth-slide h2 .purple{color:var(--purple);}
+.auth-slide h2 .green{color:var(--green);}
+.auth-slide p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.75;max-width:420px;margin-bottom:18px;}
+.auth-features{display:flex;flex-direction:column;gap:8px;}
+.auth-feat{display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.55);font-weight:500;}
+.auth-feat::before{content:'';width:4px;height:4px;border-radius:50%;flex-shrink:0;background:currentColor;box-shadow:0 0 6px currentColor;}
+/* Dots */
+.auth-dots{display:flex;gap:8px;flex-shrink:0;}
+.auth-dot{width:32px;height:4px;border-radius:3px;background:rgba(255,255,255,.06);cursor:pointer;transition:.4s;border:none;padding:0;}
+.auth-dot:hover{background:rgba(255,255,255,.12);}
+.auth-dot.active{background:var(--gold);box-shadow:0 0 12px rgba(240,180,41,.4);width:48px;}
+/* Bottom stats */
+.auth-bottom{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;padding-top:20px;border-top:1px solid rgba(255,255,255,.04);}
+.auth-stats{display:flex;gap:24px;}
+.auth-stat-val{font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.3px;}
+.auth-stat-label{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.2);}
 /* ── RIGHT: FORM ── */
-.auth-right{flex:0 0 48%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px 40px;overflow-y:auto;background:#050709;position:relative;}
+.auth-right{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px 40px;overflow-y:auto;background:#050709;position:relative;}
 .auth-form{width:100%;max-width:400px;}
-.auth-close{position:absolute;top:24px;right:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:var(--t3);font-size:20px;cursor:pointer;transition:.3s;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;z-index:2;}
-.auth-close:hover{color:var(--t1);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,0.1);transform:rotate(90deg);}
+.auth-close{position:absolute;top:24px;right:24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--t3);font-size:20px;cursor:pointer;transition:.3s;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;z-index:2;}
+.auth-close:hover{color:var(--t1);background:rgba(255,255,255,.06);transform:rotate(90deg);}
 .auth-form-title{font-size:32px;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-.5px;}
 .auth-form-title em{color:var(--gold);font-style:normal;}
 .auth-sub{font-size:14px;color:var(--t3);margin-bottom:32px;line-height:1.5;}
-/* Google button — glass */
-.auth-google-btn{width:100%;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:var(--t1);font-size:15px;font-weight:600;cursor:pointer;transition:.3s;font-family:var(--f);display:flex;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden;}
-.auth-google-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.04),transparent 50%);pointer-events:none;}
-.auth-google-btn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,0.12);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.auth-google-btn{width:100%;padding:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:var(--t1);font-size:15px;font-weight:600;cursor:pointer;transition:.3s;font-family:var(--f);display:flex;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden;}
+.auth-google-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent 50%);pointer-events:none;}
+.auth-google-btn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .auth-google-btn svg{width:22px;height:22px;flex-shrink:0;}
-/* Divider */
 .auth-divider{display:flex;align-items:center;gap:16px;margin:28px 0;color:var(--t3);font-size:12px;font-weight:500;}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,0.06),transparent);}
-/* Fields */
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,.06),transparent);}
 .auth-field{margin-bottom:16px;}
 .auth-field label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:7px;}
-.auth-field input,.auth-field select{width:100%;padding:12px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;color:var(--t1);font-size:14px;outline:none;transition:.3s;font-family:var(--f);}
-.auth-field input:focus,.auth-field select:focus{border-color:rgba(240,180,41,0.4);box-shadow:0 0 0 3px rgba(240,180,41,0.08),0 0 20px rgba(240,180,41,0.04);background:rgba(255,255,255,0.05);}
+.auth-field input,.auth-field select{width:100%;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;color:var(--t1);font-size:14px;outline:none;transition:.3s;font-family:var(--f);}
+.auth-field input:focus,.auth-field select:focus{border-color:rgba(240,180,41,.4);box-shadow:0 0 0 3px rgba(240,180,41,.08),0 0 20px rgba(240,180,41,.04);background:rgba(255,255,255,.05);}
 .auth-field input::placeholder{color:var(--t3);}
-.auth-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237A8FA6'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:rgba(255,255,255,0.03);}
+.auth-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237A8FA6'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:rgba(255,255,255,.03);}
 .auth-field select option{background:#0a0d14;color:var(--t1);}
 .auth-field-pw{position:relative;}
 .auth-field-pw input{padding-right:44px;}
@@ -592,19 +646,18 @@ background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse
 .auth-pw-toggle:hover{color:var(--gold);}
 .auth-row{display:flex;gap:12px;}
 .auth-row .auth-field{flex:1;}
-/* Button — shimmer gold */
-.auth-btn{width:100%;padding:14px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .3s,box-shadow .3s;margin-top:10px;font-family:var(--f);box-shadow:0 4px 20px rgba(240,180,41,0.25);animation:authShimmer 3s ease infinite;position:relative;}
-.auth-btn::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent 50%);pointer-events:none;}
+.auth-btn{width:100%;padding:14px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .3s,box-shadow .3s;margin-top:10px;font-family:var(--f);box-shadow:0 4px 20px rgba(240,180,41,.25);animation:authShimmer 3s ease infinite;position:relative;}
+.auth-btn::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent 50%);pointer-events:none;}
 @keyframes authShimmer{0%,100%{background-position:0 0;}50%{background-position:100% 0;}}
-.auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,180,41,0.35);}
+.auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,180,41,.35);}
 .auth-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;animation:none;}
 .auth-switch{margin-top:24px;text-align:center;font-size:13px;color:var(--t3);}
 .auth-switch a{color:var(--gold);cursor:pointer;font-weight:700;transition:.2s;}
 .auth-switch a:hover{text-decoration:underline;color:#f5d060;}
-.auth-error{background:rgba(239,68,68,0.06);color:var(--red);padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;border:1px solid rgba(239,68,68,0.12);}
-.auth-success{background:rgba(34,197,94,0.06);color:var(--green);padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;border:1px solid rgba(34,197,94,0.12);}
-.auth-footer{margin-top:36px;text-align:center;font-size:11px;color:rgba(255,255,255,0.2);}
-.auth-footer a{color:rgba(255,255,255,0.2);text-decoration:none;margin:0 8px;transition:.2s;}
+.auth-error{background:rgba(239,68,68,.06);color:var(--red);padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;border:1px solid rgba(239,68,68,.12);}
+.auth-success{background:rgba(34,197,94,.06);color:var(--green);padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;border:1px solid rgba(34,197,94,.12);}
+.auth-footer{margin-top:36px;text-align:center;font-size:11px;color:rgba(255,255,255,.2);}
+.auth-footer a{color:rgba(255,255,255,.2);text-decoration:none;margin:0 8px;transition:.2s;}
 .auth-footer a:hover{color:var(--t3);}
 /* Mobile */
 @media(max-width:768px){
@@ -2137,79 +2190,379 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
  </div>
 </div>
 
-<!-- LOGIN SCREEN -->
+<!-- AUTH SCREEN (unified login + signup) -->
 <div class="auth-overlay" id="login-overlay">
  <div class="auth-split">
   <div class="auth-left">
-   <div class="auth-left-aurora"></div>
-   <div class="auth-left-stars"></div>
-   <div class="auth-left-mesh"></div>
-   <div class="auth-left-ring"></div>
-   <div class="auth-left-ring2"></div>
-   <div class="auth-left-line"></div>
-   <div class="auth-left-line2"></div>
-   <div class="auth-carousel" id="login-carousel">
-    <div class="auth-carousel-logo"><img src="img/Icone%20Markets%20Coupons%20Amarelo.png" alt="MC"> Markets <em>Coupons</em></div>
-    <div class="auth-slide active" data-slide="0">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card auth-slide-card-gold"><div class="asc-pct">90%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Apex Trader Funding</div></div>
-       <div class="auth-slide-card"><div class="asc-pct">89%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Bulenox</div></div>
+   <div class="auth-left-bg" id="auth-bg" style="background-image:url('img/auth-bg-1.jpeg');"></div>
+   <div class="auth-left-overlay"></div>
+   <div class="auth-left-content">
+    <div class="auth-logo">
+     <svg width="30" height="30" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="alg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#alg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#alg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#alg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#alg)"/></svg>
+     <div class="auth-logo-text">Markets <span>Coupons</span></div>
+    </div>
+
+    <div class="auth-main" id="auth-carousel">
+
+     <!-- LOGIN 1: Cupons com logos reais -->
+     <div class="auth-slide active" data-group="login" data-slide="0">
+      <div class="mu">
+       <div class="mu-coupons">
+        <div class="mu-cpn">
+         <div class="mu-cpn-badge">90% OFF</div>
+         <img class="mu-logo" src="img/Firms/apex.png" alt="Apex">
+         <div class="mu-cpn-name">Apex Trader</div>
+         <div class="mu-cpn-prices"><div class="mu-cpn-old">$249</div><div class="mu-cpn-new">$24.90</div></div>
+         <div class="mu-cpn-code">MARKET</div>
+        </div>
+        <div class="mu-cpn">
+         <div class="mu-cpn-badge">89% OFF</div>
+         <img class="mu-logo" src="img/Firms/bulenox.png" alt="Bulenox">
+         <div class="mu-cpn-name">Bulenox</div>
+         <div class="mu-cpn-prices"><div class="mu-cpn-old">$215</div><div class="mu-cpn-new">$23.65</div></div>
+         <div class="mu-cpn-code">MARKET89</div>
+        </div>
+        <div class="mu-cpn">
+         <div class="mu-cpn-badge">50% OFF</div>
+         <img class="mu-logo" src="img/Firms/e2t.png" alt="Earn2Trade">
+         <div class="mu-cpn-name">Earn2Trade</div>
+         <div class="mu-cpn-prices"><div class="mu-cpn-old">$350</div><div class="mu-cpn-new">$175</div></div>
+         <div class="mu-cpn-code">MARKETSCOUPONS</div>
+        </div>
+        <div class="mu-cpn">
+         <div class="mu-cpn-badge">30% OFF</div>
+         <img class="mu-logo" src="img/Firms/fn.png" alt="FundedNext">
+         <div class="mu-cpn-name">FundedNext</div>
+         <div class="mu-cpn-prices"><div class="mu-cpn-old">$249.99</div><div class="mu-cpn-new">$174.99</div></div>
+         <div class="mu-cpn-code">FNF30</div>
+        </div>
+       </div>
+      </div>
+      <h2>Ate <em>90% OFF</em> nas maiores Prop Firms do mundo</h2>
+      <p>Cupons exclusivos negociados direto com Apex, Bulenox, FTMO, FundedNext e mais. Conta de 100K a partir de $23.65.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--gold);">9+ prop firms com cupons verificados e ativos</div>
+       <div class="auth-feat" style="color:var(--gold);">Precos atualizados direto do site oficial de cada firma</div>
+       <div class="auth-feat" style="color:var(--gold);">Checkout com cupom aplicado automaticamente</div>
       </div>
      </div>
-     <div class="auth-slide-tag" data-i18n="auth_slide_tag1">CUPONS EXCLUSIVOS</div>
-     <h2 data-i18n="auth_slide_h1">Descontos de ate 90% em Prop Firms</h2>
-     <p data-i18n="auth_slide_p1">Cupons verificados e negociados diretamente com as mesas. Economize centenas de dolares.</p>
-    </div>
-    <div class="auth-slide" data-slide="1">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(168,85,247,0.12) 0%,rgba(6,182,212,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card" style="border-color:rgba(168,85,247,0.3);box-shadow:0 0 20px rgba(168,85,247,0.1);"><div class="asc-pct" style="color:var(--purple);">3</div><div class="asc-label">COMPRAS</div><div class="asc-firm">Desbloqueie o VIP</div></div>
-       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);"><div class="asc-pct" style="color:var(--green);">VIP</div><div class="asc-label">ACESSO</div><div class="asc-firm">Live Room + Indicadores</div></div>
+
+     <!-- LOGIN 2: Comparador com vencedor -->
+     <div class="auth-slide" data-group="login" data-slide="1">
+      <div class="mu">
+       <div class="mu-compare">
+        <div class="mu-cmp-header">
+         <div></div>
+         <div class="mu-cmp-firm"><img class="mu-logo-sm" src="img/Firms/apex.png" alt="Apex"><div class="mu-cmp-nm">Apex</div><div class="mu-cmp-stars">4.4 / 17.6K</div></div>
+         <div class="mu-cmp-firm"><img class="mu-logo-sm" src="img/Firms/bulenox.png" alt="Bulenox"><div class="mu-cmp-nm">Bulenox</div><div class="mu-cmp-stars">4.8 / 1.4K</div></div>
+         <div class="mu-cmp-firm"><img class="mu-logo-sm" src="img/Firms/tpt.png" alt="TPT"><div class="mu-cmp-nm">TPT</div><div class="mu-cmp-stars">4.4 / 8.5K</div></div>
+        </div>
+        <div class="mu-cmp-rows">
+         <div class="mu-cmp-row"><div class="mu-cmp-label">Desconto</div><div class="mu-cmp-val best">90%</div><div class="mu-cmp-val best">89%</div><div class="mu-cmp-val">40%</div></div>
+         <div class="mu-cmp-row"><div class="mu-cmp-label">100K price</div><div class="mu-cmp-val best">$39.90</div><div class="mu-cmp-val best">$23.65</div><div class="mu-cmp-val">$198</div></div>
+         <div class="mu-cmp-row"><div class="mu-cmp-label">Drawdown</div><div class="mu-cmp-val">Trailing</div><div class="mu-cmp-val">Trailing</div><div class="mu-cmp-val best">EOD</div></div>
+         <div class="mu-cmp-row"><div class="mu-cmp-label">Split</div><div class="mu-cmp-val">80%</div><div class="mu-cmp-val best">90%</div><div class="mu-cmp-val">80%</div></div>
+         <div class="mu-cmp-row"><div class="mu-cmp-label">Min. dias</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val">4</div></div>
+        </div>
+        <div class="mu-cmp-winner">
+         <img class="mu-logo-sm" src="img/Firms/bulenox.png" alt="Bulenox">
+         <div class="mu-cmp-winner-badge">VENCEDOR</div>
+         <div class="mu-cmp-winner-text">Bulenox — melhor custo-beneficio para 100K</div>
+        </div>
+       </div>
+      </div>
+      <h2>Compare <span class="cyan">todas as firmas</span> antes de escolher</h2>
+      <p>Coloque firmas lado a lado e compare drawdown, profit split, precos, plataformas e regras. Faca o quiz e descubra qual firma combina com voce.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--cyan);">Comparador visual com filtros por tipo, preco e regras</div>
+       <div class="auth-feat" style="color:var(--cyan);">Nota Trustpilot e avaliacoes reais de cada firma</div>
+       <div class="auth-feat" style="color:var(--cyan);">Quiz interativo: descubra sua prop firm ideal em 2 min</div>
       </div>
      </div>
-     <div class="auth-slide-tag" style="color:var(--purple);" data-i18n="auth_slide_tag2">PROGRAMA DE FIDELIDADE</div>
-     <h2 data-i18n="auth_slide_h2">Compre e desbloqueie beneficios VIP</h2>
-     <p data-i18n="auth_slide_p2">Compre prop firms pelo nosso cupom, envie o comprovante e desbloqueie Live Room VIP, sorteios e indicadores exclusivos.</p>
-    </div>
-    <div class="auth-slide" data-slide="2">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(6,182,212,0.12) 0%,rgba(59,130,246,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card" style="border-color:rgba(6,182,212,0.3);box-shadow:0 0 20px rgba(6,182,212,0.1);"><div class="asc-pct" style="color:var(--cyan);">10+</div><div class="asc-label">FIRMAS</div><div class="asc-firm">Comparativo completo</div></div>
-       <div class="auth-slide-card" style="border-color:rgba(59,130,246,0.3);"><div class="asc-pct" style="color:var(--blue);">24/7</div><div class="asc-label">ATUALIZADO</div><div class="asc-firm">Precos e descontos</div></div>
+
+     <!-- LOGIN 3: Live Room com chart animado -->
+     <div class="auth-slide" data-group="login" data-slide="2">
+      <div class="mu">
+       <div class="mu-live">
+        <div class="mu-live-screen">
+         <div class="mu-live-top">
+          <div class="mu-live-dot"></div>
+          <div class="mu-live-tag">AO VIVO</div>
+          <div class="mu-live-pair">ES / NQ — Sessao NY</div>
+         </div>
+         <div class="mu-live-price">
+          <div class="mu-live-price-val">5,621.50</div>
+          <div class="mu-live-price-chg" style="background:rgba(34,197,94,.15);color:var(--green);">+0.42%</div>
+         </div>
+         <div class="mu-live-chart">
+          <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+           <defs>
+            <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A855F7" stop-opacity=".25"/><stop offset="100%" stop-color="#A855F7" stop-opacity="0"/></linearGradient>
+           </defs>
+           <line x1="0" y1="20" x2="300" y2="20" stroke="rgba(255,255,255,.03)" stroke-dasharray="3"/>
+           <line x1="0" y1="40" x2="300" y2="40" stroke="rgba(255,255,255,.03)" stroke-dasharray="3"/>
+           <line x1="0" y1="60" x2="300" y2="60" stroke="rgba(255,255,255,.03)" stroke-dasharray="3"/>
+           <path class="chart-line-animated" d="M0,55 C10,53 15,50 20,48 C25,46 30,42 40,45 C50,48 55,38 65,35 C75,32 80,30 90,32 C100,34 105,28 115,22 C125,16 130,20 140,25 C150,30 155,18 165,15 C175,12 180,18 190,22 C200,26 205,14 215,10 C225,6 230,12 240,18 C250,24 255,16 265,12 C275,8 280,14 290,10 L300,8" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round"/>
+           <path d="M0,55 C10,53 15,50 20,48 C25,46 30,42 40,45 C50,48 55,38 65,35 C75,32 80,30 90,32 C100,34 105,28 115,22 C125,16 130,20 140,25 C150,30 155,18 165,15 C175,12 180,18 190,22 C200,26 205,14 215,10 C225,6 230,12 240,18 C250,24 255,16 265,12 C275,8 280,14 290,10 L300,8 L300,80 L0,80Z" fill="url(#cg)" opacity=".5"/>
+           <circle cx="290" cy="10" r="3" fill="#A855F7" stroke="#000" stroke-width="1.5">
+            <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+           </circle>
+          </svg>
+         </div>
+        </div>
+        <div class="mu-live-chat">
+         <div class="mu-live-chat-title">Chat VIP</div>
+         <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(249,115,22,.3);">T</div><div class="mu-live-msg-txt"><b>Trader01</b> Long ES 5620</div></div>
+         <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(34,197,94,.3);">M</div><div class="mu-live-msg-txt"><b>Maria</b> NQ rompeu OB</div></div>
+         <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(6,182,212,.3);">C</div><div class="mu-live-msg-txt"><b>Carlos</b> TP1 bateu!</div></div>
+         <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(168,85,247,.3);">A</div><div class="mu-live-msg-txt"><b>Ana</b> FVG no 15min</div></div>
+         <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(240,180,41,.3);">P</div><div class="mu-live-msg-txt"><b>Pedro</b> CPI vem forte</div></div>
+        </div>
+       </div>
+      </div>
+      <h2>Live Room <span class="purple">VIP</span> e indicadores exclusivos</h2>
+      <p>Acesse sessoes ao vivo e indicadores profissionais desbloqueados pelo programa de fidelidade. Compre usando nosso cupom e entre no VIP.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--purple);">Sessoes ao vivo com analise de mercado</div>
+       <div class="auth-feat" style="color:var(--purple);">Indicadores exclusivos para membros VIP</div>
+       <div class="auth-feat" style="color:var(--purple);">Sorteios mensais de contas funded</div>
       </div>
      </div>
-     <div class="auth-slide-tag" style="color:var(--cyan);" data-i18n="auth_slide_tag3">COMPARADOR</div>
-     <h2 data-i18n="auth_slide_h3">Compare firmas lado a lado</h2>
-     <p data-i18n="auth_slide_p3">Drawdown, profit split, precos e regras. Encontre a firma perfeita para o seu perfil.</p>
-    </div>
-    <div class="auth-slide" data-slide="3">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(34,197,94,0.12) 0%,rgba(240,180,41,0.08) 50%,rgba(168,85,247,0.06) 100%);"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);box-shadow:0 0 20px rgba(34,197,94,0.1);"><div class="asc-pct" style="color:var(--green);">7</div><div class="asc-label">IDIOMAS</div><div class="asc-firm">Conteudo global</div></div>
-       <div class="auth-slide-card" style="border-color:rgba(240,180,41,0.3);"><div class="asc-pct" style="color:var(--gold);">PRO</div><div class="asc-label">ANALISES</div><div class="asc-firm">Diarias e semanais</div></div>
+
+     <!-- LOGIN 4: Analise Diaria premium -->
+     <div class="auth-slide" data-group="login" data-slide="3">
+      <div class="mu" style="padding:0;overflow:hidden;">
+       <div style="display:flex;height:190px;">
+        <div style="flex:1;position:relative;overflow:hidden;border-right:1px solid var(--cbr);">
+         <div style="position:absolute;top:10px;left:12px;z-index:1;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;font-weight:800;color:#fff;">ES</span>
+          <span style="font-size:8px;color:rgba(255,255,255,.4);">S&amp;P 500 Futures</span>
+         </div>
+         <div style="position:absolute;top:10px;right:12px;z-index:1;display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;font-weight:800;color:#fff;">5,621.50</span>
+          <span style="font-size:7px;font-weight:700;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,.15);color:var(--green);">+0.42%</span>
+         </div>
+         <svg viewBox="0 0 300 100" preserveAspectRatio="none" style="width:100%;height:100%;display:block;">
+          <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22C55E" stop-opacity=".2"/><stop offset="100%" stop-color="#22C55E" stop-opacity="0"/></linearGradient></defs>
+          <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,.03)" stroke-dasharray="3"/>
+          <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,.03)" stroke-dasharray="3"/>
+          <line x1="0" y1="75" x2="300" y2="75" stroke="rgba(255,255,255,.03)" stroke-dasharray="3"/>
+          <path class="chart-line-animated" d="M0,70 C15,68 25,65 35,58 C45,51 55,55 65,48 C75,41 85,45 95,38 C105,31 115,36 125,30 C135,24 145,28 155,22 C165,16 175,20 185,15 C195,12 205,18 215,14 C225,10 235,16 245,12 C255,8 265,14 275,10 C285,6 295,10 300,8" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M0,70 C15,68 25,65 35,58 C45,51 55,55 65,48 C75,41 85,45 95,38 C105,31 115,36 125,30 C135,24 145,28 155,22 C165,16 175,20 185,15 C195,12 205,18 215,14 C225,10 235,16 245,12 C255,8 265,14 275,10 C285,6 295,10 300,8 L300,100 L0,100Z" fill="url(#ag)"/>
+          <line x1="0" y1="58" x2="300" y2="58" stroke="var(--green)" stroke-width=".5" stroke-dasharray="4 3" opacity=".4"/>
+          <text x="4" y="56" fill="var(--green)" font-size="4" font-weight="700" opacity=".5">S1 5,580</text>
+          <line x1="0" y1="15" x2="300" y2="15" stroke="var(--red)" stroke-width=".5" stroke-dasharray="4 3" opacity=".4"/>
+          <text x="4" y="13" fill="var(--red)" font-size="4" font-weight="700" opacity=".5">R1 5,650</text>
+          <circle cx="295" cy="8" r="2.5" fill="var(--green)" stroke="#000" stroke-width="1"><animate attributeName="r" values="2.5;3.5;2.5" dur="2s" repeatCount="indefinite"/></circle>
+         </svg>
+        </div>
+        <div style="flex:0 0 200px;padding:12px;display:flex;flex-direction:column;gap:6px;background:rgba(0,0,0,.2);">
+         <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:7px;font-weight:800;color:var(--green);letter-spacing:.5px;text-transform:uppercase;">Analise do Dia</span>
+          <span style="font-size:6px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,.15);color:var(--green);">BULLISH</span>
+         </div>
+         <div style="font-size:6.5px;color:rgba(255,255,255,.35);line-height:1.6;">Tarifas de Trump impactam mercados globais. ES testa suporte em 5580 apos selloff. FVG no 4H como zona de interesse. FOMC ata confirma pausa nos juros.</div>
+         <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:auto;">
+          <div style="background:rgba(34,197,94,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;">SUPORTE 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,580</div></div>
+          <div style="background:rgba(239,68,68,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;">RESISTENCIA 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,650</div></div>
+          <div style="background:rgba(34,197,94,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;">SUPORTE 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,540</div></div>
+          <div style="background:rgba(239,68,68,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;">RESISTENCIA 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,700</div></div>
+         </div>
+         <div style="display:flex;gap:3px;margin-top:2px;">
+          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,.1);color:var(--green);font-weight:700;">SMC</span>
+          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(168,85,247,.1);color:var(--purple);font-weight:700;">Macro</span>
+          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(240,180,41,.1);color:var(--gold);font-weight:700;">Tarifas</span>
+          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(6,182,212,.1);color:var(--cyan);font-weight:700;">FOMC</span>
+         </div>
+        </div>
+       </div>
+      </div>
+      <h2>Analise Diaria <span class="green">profissional</span> todo dia as 6h</h2>
+      <p>4 ativos analisados: ES, NQ, Petroleo e Ouro. Bias, suportes, resistencias, cenarios e contexto macro com grafico ao vivo.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--green);">Analises diarias com zonas, cenarios e impacto de noticias</div>
+       <div class="auth-feat" style="color:var(--green);">Grafico TradingView ao vivo integrado em cada ativo</div>
+       <div class="auth-feat" style="color:var(--green);">Calendario Economico com eventos de alto impacto</div>
       </div>
      </div>
-     <div class="auth-slide-tag" style="color:var(--green);" data-i18n="auth_slide_tag4">GUIAS E ANALISES</div>
-     <h2 data-i18n="auth_slide_h4">Conteudo gratuito para traders</h2>
-     <p data-i18n="auth_slide_p4">Guias educacionais, analises de mercado e blog com dicas para acelerar sua jornada.</p>
+
+     <!-- SIGNUP 1: Plataformas com logos reais -->
+     <div class="auth-slide" data-group="signup" data-slide="0">
+      <div class="mu">
+       <div class="mu-platforms">
+        <div class="mu-plat">
+         <div class="mu-plat-tag">DISPONIVEL</div>
+         <img class="mu-plat-logo" src="img/Plataformas/tradingview.png" alt="TradingView">
+         <div class="mu-plat-name">TradingView</div>
+         <div class="mu-plat-desc">Plataforma de graficos mais usada do mundo</div>
+         <div class="mu-plat-price">$12.95</div>
+         <div class="mu-plat-period">por mes</div>
+         <div class="mu-plat-btn">VER PLANOS</div>
+        </div>
+        <div class="mu-plat">
+         <div class="mu-plat-tag">DISPONIVEL</div>
+         <img class="mu-plat-logo" src="img/Plataformas/ninjatrader.png" alt="NinjaTrader">
+         <div class="mu-plat-name">NinjaTrader</div>
+         <div class="mu-plat-desc">Execucao profissional para futuros</div>
+         <div class="mu-plat-price">$99</div>
+         <div class="mu-plat-period">lifetime</div>
+         <div class="mu-plat-btn">VER PLANOS</div>
+        </div>
+       </div>
+      </div>
+      <h2>TradingView e <em>NinjaTrader</em> com desconto</h2>
+      <p>Adquira as melhores plataformas de trading direto pelo site. Licencas oficiais com precos exclusivos para membros.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--gold);">TradingView com planos a precos exclusivos</div>
+       <div class="auth-feat" style="color:var(--gold);">NinjaTrader licenciado com desconto para membros</div>
+       <div class="auth-feat" style="color:var(--gold);">Marketplace de plataformas verificadas</div>
+      </div>
+     </div>
+
+     <!-- SIGNUP 2: Mapa de Calor real (TradingView embed) -->
+     <div class="auth-slide" data-group="signup" data-slide="1">
+      <div class="mu" style="padding:0;overflow:hidden;">
+       <div style="position:relative;height:200px;border-radius:16px;overflow:hidden;">
+        <div style="position:absolute;top:10px;left:14px;z-index:2;display:flex;align-items:center;gap:8px;">
+         <span style="font-size:10px;font-weight:800;color:#fff;">Mapa de Calor</span>
+         <span style="font-size:7px;color:rgba(255,255,255,.35);">S&amp;P 500 — Tempo real</span>
+        </div>
+        <div style="position:absolute;top:8px;right:12px;z-index:2;display:flex;gap:4px;">
+         <span style="font-size:6.5px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--gold-dim);color:var(--gold);">S&amp;P 500</span>
+         <span style="font-size:6.5px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);">Nasdaq</span>
+         <span style="font-size:6.5px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);">Global</span>
+         <span style="font-size:6.5px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);">Cripto</span>
+        </div>
+        <iframe src="https://www.tradingview.com/embed-widget/stock-heatmap/?locale=br#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%2C%22locale%22%3A%22br%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Afalse%2C%22isDataSetEnabled%22%3Afalse%2C%22isZoomEnabled%22%3Afalse%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D" style="width:100%;height:100%;border:none;display:block;pointer-events:none;" allowtransparency="true"></iframe>
+       </div>
+      </div>
+      <h2>Mapa de Calor e <span class="cyan">indicadores</span> profissionais</h2>
+      <p>Visualize o mercado inteiro de um relance com o heatmap integrado. S&amp;P 500, Nasdaq, Global e Cripto — tudo em tempo real.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--cyan);">Heatmap real do TradingView com dados ao vivo</div>
+       <div class="auth-feat" style="color:var(--cyan);">4 mercados: S&amp;P 500, Nasdaq 100, Global, Cripto</div>
+       <div class="auth-feat" style="color:var(--cyan);">Indicadores profissionais desbloqueados por fidelidade</div>
+      </div>
+     </div>
+
+     <!-- SIGNUP 3: Position Size + Quiz -->
+     <div class="auth-slide" data-group="signup" data-slide="2">
+      <div class="mu">
+       <div class="mu-tools">
+        <div class="mu-calc">
+         <div class="mu-calc-title">Position Size Calculator</div>
+         <div class="mu-calc-field"><span>Conta</span><span>$50,000</span></div>
+         <div class="mu-calc-field"><span>Risco %</span><span>1.5%</span></div>
+         <div class="mu-calc-field"><span>Stop Loss</span><span>25 pts</span></div>
+         <div class="mu-calc-result"><span>Lotes</span><span>3.0</span></div>
+         <div class="mu-calc-result"><span>Risco $</span><span>$750</span></div>
+        </div>
+        <div class="mu-quiz">
+         <div class="mu-quiz-title">Quiz — Sua Firma Ideal</div>
+         <div class="mu-quiz-q">Qual mercado voce opera?</div>
+         <div class="mu-quiz-opt selected">Futuros (ES, NQ, CL)</div>
+         <div class="mu-quiz-opt">Forex (EUR/USD, GBP)</div>
+         <div class="mu-quiz-opt">Ambos</div>
+         <div class="mu-quiz-bar"><div class="mu-quiz-bar-fill"></div></div>
+        </div>
+       </div>
+      </div>
+      <h2>Position Size e <span class="purple">Quiz</span> interativo</h2>
+      <p>Calcule o tamanho ideal de cada trade antes de entrar. Faca o quiz e descubra qual prop firm combina com seu perfil e estilo de operacao.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--purple);">Calculadora de Position Size com risco personalizado</div>
+       <div class="auth-feat" style="color:var(--purple);">Quiz inteligente para encontrar sua firma ideal</div>
+       <div class="auth-feat" style="color:var(--purple);">Ferramentas de gestao de risco profissional</div>
+      </div>
+     </div>
+
+     <!-- SIGNUP 4: Blog + Calendario -->
+     <div class="auth-slide" data-group="signup" data-slide="3">
+      <div class="mu">
+       <div class="mu-content">
+        <div class="mu-blog">
+         <div class="mu-blog-card">
+          <img class="mu-blog-thumb" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=80&h=80&fit=crop" alt="Prop Firm" style="object-fit:cover;">
+          <div class="mu-blog-info">
+           <div class="mu-blog-cat" style="color:var(--green);">Iniciante</div>
+           <div class="mu-blog-t">Sua Primeira Prop Firm: Guia Completo 2025</div>
+           <div class="mu-blog-meta">12 min leitura</div>
+          </div>
+         </div>
+         <div class="mu-blog-card">
+          <img class="mu-blog-thumb" src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=80&h=80&fit=crop" alt="Drawdown" style="object-fit:cover;">
+          <div class="mu-blog-info">
+           <div class="mu-blog-cat" style="color:var(--gold);">Intermediario</div>
+           <div class="mu-blog-t">Trailing vs Static Drawdown: qual escolher</div>
+           <div class="mu-blog-meta">8 min leitura</div>
+          </div>
+         </div>
+         <div class="mu-blog-card">
+          <img class="mu-blog-thumb" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=80&h=80&fit=crop" alt="Estrategia" style="object-fit:cover;">
+          <div class="mu-blog-info">
+           <div class="mu-blog-cat" style="color:var(--red);">Avancado</div>
+           <div class="mu-blog-t">Order Flow + Delta: leitura institucional</div>
+           <div class="mu-blog-meta">15 min leitura</div>
+          </div>
+         </div>
+        </div>
+        <div class="mu-cal">
+         <div class="mu-cal-title">Calendario</div>
+         <div class="mu-cal-ev">
+          <div class="mu-cal-time">08:30</div>
+          <div class="mu-cal-imp" style="background:var(--red);"></div>
+          <div class="mu-cal-info"><div class="mu-cal-ev-name">Non-Farm Payrolls</div><div class="mu-cal-ev-country">USD</div></div>
+         </div>
+         <div class="mu-cal-ev">
+          <div class="mu-cal-time">10:00</div>
+          <div class="mu-cal-imp" style="background:var(--gold);"></div>
+          <div class="mu-cal-info"><div class="mu-cal-ev-name">ISM Manufacturing</div><div class="mu-cal-ev-country">USD</div></div>
+         </div>
+         <div class="mu-cal-ev">
+          <div class="mu-cal-time">11:30</div>
+          <div class="mu-cal-imp" style="background:rgba(255,255,255,.15);"></div>
+          <div class="mu-cal-info"><div class="mu-cal-ev-name">Crude Oil Inv.</div><div class="mu-cal-ev-country">USD</div></div>
+         </div>
+         <div class="mu-cal-ev">
+          <div class="mu-cal-time">14:00</div>
+          <div class="mu-cal-imp" style="background:var(--red);"></div>
+          <div class="mu-cal-info"><div class="mu-cal-ev-name">FOMC Minutes</div><div class="mu-cal-ev-country">USD</div></div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <h2>Blog, Calendario e tudo em <span class="green">7 idiomas</span></h2>
+      <p>Conteudo educacional completo, calendario economico integrado e analises diarias. Tudo traduzido em 7 idiomas para traders do mundo inteiro.</p>
+      <div class="auth-features">
+       <div class="auth-feat" style="color:var(--green);">Blog com guias, estrategias e conteudo educacional</div>
+       <div class="auth-feat" style="color:var(--green);">Calendario Economico com filtros de impacto</div>
+       <div class="auth-feat" style="color:var(--green);">Site completo em PT, EN, ES, IT, FR, DE e AR</div>
+      </div>
+     </div>
+
     </div>
-    <div class="auth-dots" id="login-dots">
-     <button class="auth-dot active" onclick="goAuthSlide('login',0)"></button>
-     <button class="auth-dot" onclick="goAuthSlide('login',1)"></button>
-     <button class="auth-dot" onclick="goAuthSlide('login',2)"></button>
-     <button class="auth-dot" onclick="goAuthSlide('login',3)"></button>
+
+    <div class="auth-bottom">
+     <div class="auth-dots" id="auth-dots">
+      <button class="auth-dot active" onclick="goAuthSlide(0)"></button>
+      <button class="auth-dot" onclick="goAuthSlide(1)"></button>
+      <button class="auth-dot" onclick="goAuthSlide(2)"></button>
+      <button class="auth-dot" onclick="goAuthSlide(3)"></button>
+     </div>
+     <div class="auth-stats">
+      <div><div class="auth-stat-val" style="color:var(--gold);">9+</div><div class="auth-stat-label">Firmas</div></div>
+      <div><div class="auth-stat-val" style="color:var(--green);">$721M+</div><div class="auth-stat-label">Pagos a traders</div></div>
+      <div><div class="auth-stat-val">7</div><div class="auth-stat-label">Idiomas</div></div>
+     </div>
     </div>
    </div>
-   <div class="auth-left-border"></div>
+   <div class="auth-divider-line"></div>
   </div>
+
   <div class="auth-right">
    <button class="auth-close" onclick="closeAuthModals()">&times;</button>
-   <div class="auth-form">
+   <!-- LOGIN FORM -->
+   <div class="auth-form" id="auth-login-form">
     <div class="auth-form-title" data-i18n="login_titulo_new">Entrar</div>
     <div class="auth-sub" data-i18n="login_subtitulo">Bem-vindo de volta! Entre para continuar.</div>
     <div class="auth-error" id="login-error"></div>
@@ -2227,76 +2580,8 @@ footer{background:var(--sur);border-top:1px solid var(--b1);padding:36px 20px 22
     <div class="auth-switch"><span data-i18n="login_nao_tem">Nao tem conta?</span> <a onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</a></div>
     <div class="auth-footer"><a href="#" data-i18n="auth_suporte">Suporte</a> &middot; <a href="#" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="#" data-i18n="auth_termos">Termos</a></div>
    </div>
-  </div>
- </div>
-</div>
-
-<!-- SIGNUP SCREEN -->
-<div class="auth-overlay" id="signup-overlay">
- <div class="auth-split">
-  <div class="auth-left">
-   <div class="auth-carousel" id="signup-carousel">
-    <div class="auth-carousel-logo"><img src="img/Icone%20Markets%20Coupons%20Amarelo.png" alt="MC"> Markets <em>Coupons</em></div>
-    <div class="auth-slide active" data-slide="0">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card auth-slide-card-gold"><div class="asc-pct">90%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Apex Trader Funding</div></div>
-       <div class="auth-slide-card"><div class="asc-pct">89%</div><div class="asc-label">OFF LIFETIME</div><div class="asc-firm">Bulenox</div></div>
-      </div>
-     </div>
-     <div class="auth-slide-tag" data-i18n="auth_slide_tag1">CUPONS EXCLUSIVOS</div>
-     <h2 data-i18n="auth_slide_h1">Descontos de ate 90% em Prop Firms</h2>
-     <p data-i18n="auth_slide_p1">Cupons verificados e negociados diretamente com as mesas. Economize centenas de dolares.</p>
-    </div>
-    <div class="auth-slide" data-slide="1">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(168,85,247,0.12) 0%,rgba(6,182,212,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card" style="border-color:rgba(168,85,247,0.3);box-shadow:0 0 20px rgba(168,85,247,0.1);"><div class="asc-pct" style="color:var(--purple);">3</div><div class="asc-label">COMPRAS</div><div class="asc-firm">Desbloqueie o VIP</div></div>
-       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);"><div class="asc-pct" style="color:var(--green);">VIP</div><div class="asc-label">ACESSO</div><div class="asc-firm">Live Room + Indicadores</div></div>
-      </div>
-     </div>
-     <div class="auth-slide-tag" style="color:var(--purple);" data-i18n="auth_slide_tag2">PROGRAMA DE FIDELIDADE</div>
-     <h2 data-i18n="auth_slide_h2">Compre e desbloqueie beneficios VIP</h2>
-     <p data-i18n="auth_slide_p2">Compre prop firms pelo nosso cupom, envie o comprovante e desbloqueie Live Room VIP, sorteios e indicadores exclusivos.</p>
-    </div>
-    <div class="auth-slide" data-slide="2">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(6,182,212,0.12) 0%,rgba(59,130,246,0.08) 50%,rgba(240,180,41,0.06) 100%);"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card" style="border-color:rgba(6,182,212,0.3);box-shadow:0 0 20px rgba(6,182,212,0.1);"><div class="asc-pct" style="color:var(--cyan);">10+</div><div class="asc-label">FIRMAS</div><div class="asc-firm">Comparativo completo</div></div>
-       <div class="auth-slide-card" style="border-color:rgba(59,130,246,0.3);"><div class="asc-pct" style="color:var(--blue);">24/7</div><div class="asc-label">ATUALIZADO</div><div class="asc-firm">Precos e descontos</div></div>
-      </div>
-     </div>
-     <div class="auth-slide-tag" style="color:var(--cyan);" data-i18n="auth_slide_tag3">COMPARADOR</div>
-     <h2 data-i18n="auth_slide_h3">Compare firmas lado a lado</h2>
-     <p data-i18n="auth_slide_p3">Drawdown, profit split, precos e regras. Encontre a firma perfeita para o seu perfil.</p>
-    </div>
-    <div class="auth-slide" data-slide="3">
-     <div class="auth-slide-visual">
-      <div class="auth-slide-visual-bg" style="background:linear-gradient(135deg,rgba(34,197,94,0.12) 0%,rgba(240,180,41,0.08) 50%,rgba(168,85,247,0.06) 100%);"></div>
-      <div class="auth-slide-cards">
-       <div class="auth-slide-card" style="border-color:rgba(34,197,94,0.3);box-shadow:0 0 20px rgba(34,197,94,0.1);"><div class="asc-pct" style="color:var(--green);">7</div><div class="asc-label">IDIOMAS</div><div class="asc-firm">Conteudo global</div></div>
-       <div class="auth-slide-card" style="border-color:rgba(240,180,41,0.3);"><div class="asc-pct" style="color:var(--gold);">PRO</div><div class="asc-label">ANALISES</div><div class="asc-firm">Diarias e semanais</div></div>
-      </div>
-     </div>
-     <div class="auth-slide-tag" style="color:var(--green);" data-i18n="auth_slide_tag4">GUIAS E ANALISES</div>
-     <h2 data-i18n="auth_slide_h4">Conteudo gratuito para traders</h2>
-     <p data-i18n="auth_slide_p4">Guias educacionais, analises de mercado e blog com dicas para acelerar sua jornada.</p>
-    </div>
-    <div class="auth-dots" id="signup-dots">
-     <button class="auth-dot active" onclick="goAuthSlide('signup',0)"></button>
-     <button class="auth-dot" onclick="goAuthSlide('signup',1)"></button>
-     <button class="auth-dot" onclick="goAuthSlide('signup',2)"></button>
-     <button class="auth-dot" onclick="goAuthSlide('signup',3)"></button>
-    </div>
-   </div>
-   <div class="auth-left-border"></div>
-  </div>
-  <div class="auth-right">
-   <button class="auth-close" onclick="closeAuthModals()">&times;</button>
-   <div class="auth-form">
+   <!-- SIGNUP FORM -->
+   <div class="auth-form" id="auth-signup-form" style="display:none;">
     <div class="auth-form-title" data-i18n="signup_titulo_new">Criar Conta</div>
     <div class="auth-sub" data-i18n="signup_subtitulo">Desbloqueie oportunidades ilimitadas no trading.</div>
     <div class="auth-error" id="signup-error"></div>
@@ -11114,16 +11399,26 @@ function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click
 let currentUser = null;
 let currentProfile = null;
 let _authLoaded = false;
+let _authGroup = 'login';
+let _authSlide = 0;
+const _authLoginBgs = ['img/auth-bg-1.jpeg','img/auth-bg-4.jpeg','img/auth-bg-3.jpeg','img/auth-bg-2.jpeg'];
+const _authSignupBgs = ['img/auth-bg-5.jpeg','img/auth-bg-6.jpeg','img/auth-bg-7.jpeg','img/auth-bg-8.jpeg'];
 
 function openAuthModal(type) {
   closeAuthModals();
-  document.getElementById(type === 'login' ? 'login-overlay' : 'signup-overlay').classList.add('show');
+  _authGroup = type === 'signup' ? 'signup' : 'login';
+  document.getElementById('login-overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
-  startAuthCarousel(type === 'login' ? 'login' : 'signup');
+  // Show correct form
+  const lf = document.getElementById('auth-login-form');
+  const sf = document.getElementById('auth-signup-form');
+  if (lf) lf.style.display = _authGroup === 'login' ? '' : 'none';
+  if (sf) sf.style.display = _authGroup === 'signup' ? '' : 'none';
+  goAuthSlide(0);
+  startAuthCarousel();
 }
 function closeAuthModals() {
   document.getElementById('login-overlay').classList.remove('show');
-  document.getElementById('signup-overlay').classList.remove('show');
   document.body.style.overflow = '';
   stopAuthCarousel();
   ['login-error','signup-error','signup-success'].forEach(id => {
@@ -11144,36 +11439,28 @@ async function doGoogleAuth() {
 
 /* Auth Carousel */
 let _authCarouselTimer = null;
-let _authCarouselCtx = null;
-function startAuthCarousel(ctx) {
-  _authCarouselCtx = ctx;
+function startAuthCarousel() {
   stopAuthCarousel();
   _authCarouselTimer = setInterval(() => {
-    const container = document.getElementById(ctx + '-carousel');
-    if (!container) return;
-    const slides = container.querySelectorAll('.auth-slide');
-    const dots = container.querySelectorAll('.auth-dot');
-    let cur = 0;
-    slides.forEach((s, i) => { if (s.classList.contains('active')) cur = i; });
-    const next = (cur + 1) % slides.length;
-    slides.forEach(s => s.classList.remove('active'));
-    dots.forEach(d => d.classList.remove('active'));
-    slides[next].classList.add('active');
-    dots[next].classList.add('active');
-  }, 4500);
+    goAuthSlide((_authSlide + 1) % 4);
+  }, 6000);
 }
 function stopAuthCarousel() {
   if (_authCarouselTimer) { clearInterval(_authCarouselTimer); _authCarouselTimer = null; }
 }
-function goAuthSlide(ctx, idx) {
-  const container = document.getElementById(ctx + '-carousel');
-  if (!container) return;
-  container.querySelectorAll('.auth-slide').forEach(s => s.classList.remove('active'));
-  container.querySelectorAll('.auth-dot').forEach(d => d.classList.remove('active'));
-  container.querySelectorAll('.auth-slide')[idx].classList.add('active');
-  container.querySelectorAll('.auth-dot')[idx].classList.add('active');
+function goAuthSlide(idx) {
+  _authSlide = idx;
+  const bgs = _authGroup === 'login' ? _authLoginBgs : _authSignupBgs;
+  const slides = document.querySelectorAll('.auth-slide[data-group="' + _authGroup + '"]');
+  const dots = document.querySelectorAll('#auth-dots .auth-dot');
+  // Hide all slides
+  document.querySelectorAll('#auth-carousel .auth-slide').forEach(s => s.classList.remove('active'));
+  if (slides[idx]) slides[idx].classList.add('active');
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  const bg = document.getElementById('auth-bg');
+  if (bg) bg.style.backgroundImage = "url('" + bgs[idx] + "')";
   stopAuthCarousel();
-  startAuthCarousel(ctx);
+  startAuthCarousel();
 }
 
 /* Toggle password visibility */
