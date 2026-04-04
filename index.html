@@ -1721,7 +1721,7 @@ img{max-width:100%;}
 footer{background:rgba(3,5,7,.85);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.06);padding:48px 24px 28px;position:relative;}
 footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.08) 20%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.08) 80%,transparent 100%);}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:32px;}
-.ft-logo{font-size:18px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px;}
+.ft-logo{font-size:18px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px;display:flex;align-items:center;gap:10px;}
 .ft-logo em{color:var(--gold);font-style:normal;}
 .ft-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.7;}
 .ft-soc{display:flex;gap:10px;margin-top:16px;}
@@ -3615,7 +3615,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 <footer>
  <div class="ft-grid">
  <div>
- <div class="ft-logo">Markets <em>Coupons</em></div>
+ <div class="ft-logo"><svg class="nav-logo-icon" width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="lg2" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lg2)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#lg2)"/></svg><em>Markets</em> Coupons</div>
  <p class="ft-desc" data-i18n="ft_desc">Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.</p>
  <div class="ft-soc">
  <a href="https://t.me/marketcouponss" target="_blank" title="Telegram" onclick="track('social_click',{network:'telegram'})">
