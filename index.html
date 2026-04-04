@@ -2254,8 +2254,22 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 
 @media(max-width:600px){.proof-grid{grid-template-columns:1fr;}.pm-grid{grid-template-columns:1fr;}}
 </style>
+<script>
+// Ativar página correta ANTES do primeiro paint (evita flash da home)
+document.addEventListener('DOMContentLoaded',function(){
+  var h=location.hash.replace('#','');
+  if(h){
+    var pages=document.querySelectorAll('.page');
+    var target=document.getElementById('page-'+h);
+    if(target){
+      for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
+      target.classList.add('active');
+    }
+  }
+},false);
+</script>
 </head>
-<body>
+<body style="opacity:0">
 
 <!-- GTM noscript removed — tracking loaded dynamically after cookie consent -->
 
