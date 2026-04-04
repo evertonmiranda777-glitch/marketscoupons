@@ -2258,13 +2258,13 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 // Ativar página correta ANTES do primeiro paint (evita flash da home)
 document.addEventListener('DOMContentLoaded',function(){
   var h=location.hash.replace('#','');
-  if(h){
+  if(!h){try{h=sessionStorage.getItem('mc_page')||'';}catch(e){}}
+  var id=h?'page-'+h:'page-home';
+  var target=document.getElementById(id);
+  if(target){
     var pages=document.querySelectorAll('.page');
-    var target=document.getElementById('page-'+h);
-    if(target){
-      for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
-      target.classList.add('active');
-    }
+    for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
+    target.classList.add('active');
   }
 },false);
 </script>
@@ -2866,7 +2866,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </div>
 
 <!-- HOME -->
-<div class="page active" id="page-home">
+<div class="page" id="page-home">
  <div class="hero">
  <div class="hero-badge" data-i18n="hero_badge">Cupons Verificados — Atualizados Diariamente</div>
  <h1 id="hero-h1">Economize até <em>90% OFF</em> <br>nas melhores Prop Firms</h1>
@@ -4049,6 +4049,7 @@ function go(page, skipHash){
   document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p===page));
   window.scrollTo({top:0,behavior:'smooth'});
   if(!skipHash) location.hash=page==='home'?'':page;
+  try{sessionStorage.setItem('mc_page',page);}catch(e){}
   track('page_view',{page_name:page});
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='analise' && _authLoaded) checkAnalysisGate();
@@ -13371,9 +13372,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Detectar idioma e aplicar traduções
   initLang();
   // Ativar página correta ANTES de renderizar (evita flash da home)
-  const _initHash = location.hash.replace('#','');
+  const _initHash = location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
   if(_initHash && document.getElementById('page-'+_initHash)){
     go(_initHash, true);
+  } else {
+    go('home', true);
   }
   // Revelar body após decidir a página
   document.body.style.opacity='1';
