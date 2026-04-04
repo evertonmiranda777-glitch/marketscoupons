@@ -362,3 +362,4 @@ trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apext
 11. **Admin noindex:** `admin.html` tem `<meta name="robots" content="noindex,nofollow">`
 12. **Seguranca:** Supabase anon key e publica por design (RLS protege), mas nunca expor service_role key
 13. **Consultar CLAUDE.md:** Sempre ler este arquivo antes de qualquer acao para manter contexto
+14. **I18N obrigatorio antes de deploy:** NUNCA fazer deploy sem verificar que TODOS os textos novos/alterados estao traduzidos nos 7 idiomas (pt, en, es, it, fr, de, ar). Todo texto novo em HTML deve ter `data-i18n` com chave no objeto I18N. Todo texto novo em template JS deve usar `t('chave')` ou `tf('texto')`. Todo texto de dados de firma (about, labels, includes) deve estar no FIRM_T. Testar trocando o idioma antes de commitar.
