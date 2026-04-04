@@ -268,6 +268,43 @@ a{text-decoration:none;color:inherit;}
 .gdb-active{font-size:10px;color:var(--gold);font-weight:600;}
 @media(max-width:768px){.global-date-bar{grid-template-columns:1fr;}.gdb-pills{flex-wrap:wrap;}}
 
+/* CRIATIVOS */
+.cr-layout{display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start;}
+.cr-controls{display:flex;flex-direction:column;gap:14px;}
+.cr-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);margin-bottom:6px;}
+.cr-field select,.cr-field input,.cr-field textarea{width:100%;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:13px;outline:none;transition:.25s;font-family:var(--f);resize:vertical;}
+.cr-field select:focus,.cr-field input:focus,.cr-field textarea:focus{border-color:rgba(240,180,41,.4);box-shadow:0 0 0 3px rgba(240,180,41,.08);}
+.cr-format-pills{display:flex;gap:6px;}
+.cr-fmt{flex:1;padding:10px;text-align:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;cursor:pointer;transition:.25s;font-family:var(--f);}
+.cr-fmt .sz{font-size:10px;color:var(--t3);margin-top:2px;}
+.cr-fmt.active{border-color:var(--glow-gold-border);background:var(--glow-gold);color:var(--gold);}
+.cr-fmt .nm{font-size:12px;font-weight:700;}
+.cr-preview-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.cr-preview-scale{transform-origin:top center;}
+.cr-actions{display:flex;gap:8px;justify-content:center;}
+/* Creative canvas */
+.cr-canvas{position:relative;overflow:hidden;font-family:'Inter',sans-serif;color:#fff;}
+.cr-canvas-bg{position:absolute;inset:0;background:#070a10;}
+.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.5;}
+.cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,5,7,.6) 0%,rgba(3,5,7,.2) 30%,rgba(3,5,7,.4) 55%,rgba(3,5,7,.95) 100%);}
+.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:60px 50px;}
+.cr-canvas-logo{display:flex;align-items:center;gap:10px;}
+.cr-canvas-logo-text{font-size:20px;font-weight:700;color:var(--gold);}
+.cr-canvas-logo-text span{color:#fff;font-weight:400;}
+.cr-canvas-hero{flex:1;display:flex;flex-direction:column;justify-content:center;}
+.cr-canvas-badge{display:inline-block;padding:8px 18px;border-radius:8px;font-size:14px;font-weight:800;letter-spacing:.5px;margin-bottom:20px;width:fit-content;}
+.cr-canvas h2{font-size:48px;font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px;}
+.cr-canvas h2 em{font-style:normal;color:var(--gold);}
+.cr-canvas .cr-sub{font-size:18px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:28px;}
+.cr-canvas-coupon{display:flex;align-items:center;gap:14px;padding:16px 24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;width:fit-content;}
+.cr-canvas-coupon-code{font-size:24px;font-weight:800;letter-spacing:2px;color:var(--gold);}
+.cr-canvas-coupon-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;}
+.cr-canvas-cta{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#F0B429,#D97706);color:#07090D;font-size:16px;font-weight:800;border-radius:12px;letter-spacing:.3px;width:fit-content;margin-top:20px;}
+.cr-canvas-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);}
+.cr-canvas-url{font-size:14px;color:rgba(255,255,255,.35);font-weight:500;}
+.cr-canvas-firm-logo{width:48px;height:48px;border-radius:12px;object-fit:contain;background:rgba(0,0,0,.3);padding:4px;}
+@media(max-width:900px){.cr-layout{grid-template-columns:1fr;}}
+
 /* PROGRESS BAR */
 .prog-bar-wrap{background:var(--b1);border-radius:3px;height:5px;overflow:hidden;margin-top:4px;}
 .prog-bar{height:100%;border-radius:3px;transition:width .8s;}
@@ -439,6 +476,7 @@ a{text-decoration:none;color:inherit;}
  <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
  <button class="nta nta-cms" onclick="adminGo('cms-guides',this)">Guias</button>
  <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
+ <button class="nta nta-cms" onclick="adminGo('criativos',this)">Criativos</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -498,6 +536,7 @@ a{text-decoration:none;color:inherit;}
   <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-guides',this)">Guias</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-blog',this)">Blog</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('criativos',this)">Criativos</button>
  </div>
 
  <!-- GLOBAL DATE FILTER -->
@@ -1250,6 +1289,81 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
 
+    <!-- CRIATIVOS -->
+    <div class="admin-page" id="page-criativos">
+      <div class="sec-hdr">
+        <div class="sec-title">Criativos — Gerador de Anuncios</div>
+      </div>
+      <div class="cr-layout">
+        <!-- CONTROLS -->
+        <div class="cr-controls">
+          <div class="cr-field"><label>Formato</label>
+            <div class="cr-format-pills">
+              <div class="cr-fmt active" onclick="setCrFormat('feed',this)"><div class="nm">Feed</div><div class="sz">1080×1350</div></div>
+              <div class="cr-fmt" onclick="setCrFormat('story',this)"><div class="nm">Story</div><div class="sz">1080×1920</div></div>
+            </div>
+          </div>
+          <div class="cr-field"><label>Firma</label>
+            <select id="cr-firm" onchange="updateCrPreview()"><option value="">Selecione uma firma</option></select>
+          </div>
+          <div class="cr-field"><label>Headline</label>
+            <textarea id="cr-headline" rows="3" onchange="updateCrPreview()" oninput="updateCrPreview()">Ate 90% OFF nas maiores Prop Firms do mundo</textarea>
+          </div>
+          <div class="cr-field"><label>Subtitulo</label>
+            <input id="cr-sub" value="Cupons exclusivos verificados diariamente" onchange="updateCrPreview()" oninput="updateCrPreview()">
+          </div>
+          <div class="cr-field"><label>Cupom (destaque)</label>
+            <input id="cr-coupon" value="MARKET" onchange="updateCrPreview()" oninput="updateCrPreview()">
+          </div>
+          <div class="cr-field"><label>CTA (botao)</label>
+            <input id="cr-cta" value="Resgatar Cupom" onchange="updateCrPreview()" oninput="updateCrPreview()">
+          </div>
+          <div class="cr-field"><label>Cor do Badge</label>
+            <div style="display:flex;gap:6px;">
+              <input type="color" id="cr-badge-color" value="#F0B429" onchange="updateCrPreview()" style="width:40px;height:34px;border:none;background:none;cursor:pointer;">
+              <input id="cr-badge-text" value="EXCLUSIVO" onchange="updateCrPreview()" oninput="updateCrPreview()" style="flex:1;">
+            </div>
+          </div>
+          <div class="cr-actions">
+            <button class="btn-primary" onclick="exportCreative()">Baixar PNG</button>
+            <button class="btn-secondary" onclick="updateCrPreview()">Atualizar</button>
+          </div>
+        </div>
+        <!-- PREVIEW -->
+        <div class="cr-preview-wrap">
+          <div class="cr-preview-scale" id="cr-preview-scale">
+            <div class="cr-canvas" id="cr-canvas" style="width:1080px;height:1350px;">
+              <div class="cr-canvas-bg"></div>
+              <div class="cr-canvas-img" id="cr-canvas-img"></div>
+              <div class="cr-canvas-ov"></div>
+              <div class="cr-canvas-content">
+                <div class="cr-canvas-logo">
+                  <svg width="36" height="36" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="crg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#crg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#crg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#crg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#crg)"/></svg>
+                  <div class="cr-canvas-logo-text">Markets <span>Coupons</span></div>
+                </div>
+                <div class="cr-canvas-hero">
+                  <div class="cr-canvas-badge" id="cr-canvas-badge" style="background:rgba(240,180,41,.15);color:#F0B429;">EXCLUSIVO</div>
+                  <h2 id="cr-canvas-h2">Ate <em>90% OFF</em> nas maiores Prop Firms do mundo</h2>
+                  <div class="cr-sub" id="cr-canvas-sub">Cupons exclusivos verificados diariamente</div>
+                  <div class="cr-canvas-coupon">
+                    <div>
+                      <div class="cr-canvas-coupon-label">Use o cupom</div>
+                      <div class="cr-canvas-coupon-code" id="cr-canvas-code">MARKET</div>
+                    </div>
+                  </div>
+                  <div class="cr-canvas-cta" id="cr-canvas-cta">Resgatar Cupom</div>
+                </div>
+                <div class="cr-canvas-footer">
+                  <div class="cr-canvas-url">marketscoupons.com</div>
+                  <img class="cr-canvas-firm-logo" id="cr-canvas-logo" src="" style="display:none;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- CADASTROS -->
     <div class="admin-page" id="page-cadastros">
       <div class="sec-hdr">
@@ -1682,6 +1796,7 @@ function renderPage(p){
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
     case 'cms-blog':       renderCmsBlog(); break;
+    case 'criativos':      initCriativos(); break;
   }
 }
 
@@ -5474,6 +5589,110 @@ function exportCadastrosCSV() {
   const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'cadastros.csv'; a.click();
 }
+
+// ─── CRIATIVOS TAB ────────────────────────────────────────────────────────
+let _crFormat = 'feed'; // feed=1080x1350, story=1080x1920
+
+function initCriativos() {
+  const sel = document.getElementById('cr-firm');
+  if (sel.options.length <= 1 && _firmsCache.length) {
+    _firmsCache.filter(f => f.active).forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f.id;
+      opt.textContent = `${f.name} (${f.discount||0}% OFF)`;
+      sel.appendChild(opt);
+    });
+  }
+  updateCrPreview();
+  scaleCrPreview();
+}
+
+function setCrFormat(fmt, btn) {
+  _crFormat = fmt;
+  document.querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const canvas = document.getElementById('cr-canvas');
+  canvas.style.width = '1080px';
+  canvas.style.height = fmt === 'story' ? '1920px' : '1350px';
+  scaleCrPreview();
+}
+
+function scaleCrPreview() {
+  const wrap = document.getElementById('cr-preview-scale');
+  const canvas = document.getElementById('cr-canvas');
+  const availW = wrap.parentElement.clientWidth - 20;
+  const scale = Math.min(availW / 1080, 0.45);
+  wrap.style.transform = `scale(${scale})`;
+  wrap.style.width = '1080px';
+  wrap.style.height = (_crFormat === 'story' ? 1920 : 1350) * scale + 'px';
+}
+
+function updateCrPreview() {
+  const firmId = document.getElementById('cr-firm').value;
+  const firm = _firmsCache.find(f => f.id === firmId);
+  const headline = document.getElementById('cr-headline').value || 'Ate 90% OFF';
+  const sub = document.getElementById('cr-sub').value;
+  const coupon = document.getElementById('cr-coupon').value;
+  const cta = document.getElementById('cr-cta').value;
+  const badgeText = document.getElementById('cr-badge-text').value;
+  const badgeColor = document.getElementById('cr-badge-color').value;
+
+  // Update firm-specific fields
+  if (firm) {
+    if (!document.getElementById('cr-coupon')._userEdited) {
+      document.getElementById('cr-coupon').value = firm.coupon || 'MARKET';
+    }
+    const bgImg = document.getElementById('cr-canvas-img');
+    const bgUrl = `img/${firm.id}-bg.webp`;
+    bgImg.style.backgroundImage = `url('${bgUrl}')`;
+    const logo = document.getElementById('cr-canvas-logo');
+    if (firm.icon_url) { logo.src = firm.icon_url; logo.style.display = 'block'; }
+    else logo.style.display = 'none';
+  }
+
+  // Update canvas text
+  const parts = headline.split(/(%?\d+%?\s*OFF)/gi);
+  let h2Html = parts.map(p => /\d+%?\s*OFF/i.test(p) ? `<em>${escHtml(p)}</em>` : escHtml(p)).join('');
+  document.getElementById('cr-canvas-h2').innerHTML = h2Html;
+  document.getElementById('cr-canvas-sub').textContent = sub;
+  document.getElementById('cr-canvas-code').textContent = coupon.toUpperCase();
+  document.getElementById('cr-canvas-cta').textContent = cta;
+  const badge = document.getElementById('cr-canvas-badge');
+  badge.textContent = badgeText;
+  badge.style.background = badgeColor + '22';
+  badge.style.color = badgeColor;
+}
+
+async function exportCreative() {
+  const canvas = document.getElementById('cr-canvas');
+  const btn = event.target;
+  btn.textContent = 'Gerando...'; btn.disabled = true;
+  try {
+    const c = await html2canvas(canvas, {
+      scale: 1,
+      useCORS: true,
+      backgroundColor: '#070a10',
+      width: 1080,
+      height: _crFormat === 'story' ? 1920 : 1350
+    });
+    const link = document.createElement('a');
+    link.download = `mc-criativo-${_crFormat}-${Date.now()}.png`;
+    link.href = c.toDataURL('image/png');
+    link.click();
+    toast('Criativo exportado!');
+  } catch(e) { toast('Erro ao exportar: ' + e.message, 'error'); }
+  btn.textContent = 'Baixar PNG'; btn.disabled = false;
+}
+
+// Track user edits on coupon field
+document.addEventListener('DOMContentLoaded', function() {
+  const ci = document.getElementById('cr-coupon');
+  if (ci) ci.addEventListener('input', function() { this._userEdited = true; });
+});
+
+window.addEventListener('resize', function() {
+  if (document.getElementById('page-criativos')?.classList.contains('active')) scaleCrPreview();
+});
 
 </script>
 </body>
