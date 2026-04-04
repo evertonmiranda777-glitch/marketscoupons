@@ -23,8 +23,10 @@
  --purple:#A855F7;
  --t1:#EDF2F7;--t2:#7A8FA6;--t3:#3D4F63;
  --f:'Inter',sans-serif;
- --gold-hover:var(--gold-hover); --tp-green:#00b67a;
+ --gold-hover:#D9A326; --tp-green:#00b67a;
  --nav:56px;
+ --glass:rgba(255,255,255,.06);--glass-border:rgba(255,255,255,.10);--glass-blur:blur(14px);
+ --glow-gold:rgba(240,180,41,.12);--glow-gold-border:rgba(240,180,41,.22);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:var(--f);background:var(--bg);color:var(--t1);min-height:100vh;}
@@ -99,28 +101,31 @@ a{text-decoration:none;color:inherit;}
  position:fixed;top:0;left:0;right:0;z-index:500;
  height:var(--nav);display:flex;align-items:center;justify-content:space-between;
  padding:0 24px;background:rgba(7,9,13,.97);backdrop-filter:blur(14px);
- border-bottom:1px solid var(--b1);
+ border-bottom:1px solid var(--glass-border);
 }
+.admin-nav::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,180,41,.1) 50%,transparent);}
 .admin-logo{font-size:15px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px;white-space:nowrap;}
 .admin-logo em{color:var(--gold);font-style:normal;}
 .admin-logo span{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);background:var(--gbg);border:1px solid var(--gbr);padding:2px 7px;border-radius:4px;}
 .nav-tabs-admin{display:flex;align-items:center;gap:1px;overflow-x:auto;scrollbar-width:none;}
 .nav-tabs-admin::-webkit-scrollbar{display:none;}
-.nta{padding:5px 10px;background:none;border:none;border-radius:6px;color:var(--t2);font-size:11.5px;font-weight:500;transition:.2s;white-space:nowrap;}
-.nta:hover{color:var(--t1);background:rgba(255,255,255,.05);}
-.nta.active{color:var(--gold);background:var(--gbg);}
+.nta{padding:5px 10px;background:none;border:1px solid transparent;border-radius:6px;color:var(--t2);font-size:11.5px;font-weight:500;transition:.25s;white-space:nowrap;}
+.nta:hover{color:var(--t1);background:var(--glass);border-color:var(--glass-border);}
+.nta.active{color:var(--gold);background:var(--glow-gold);border-color:var(--glow-gold-border);}
 .nav-right-admin{display:flex;align-items:center;gap:10px;}
 .logout-btn{padding:6px 14px;border:1px solid var(--b2);background:transparent;color:var(--t2);border-radius:7px;font-size:12px;font-weight:500;transition:.2s;}
 .logout-btn:hover{border-color:var(--red);color:var(--red);}
 .last-update{font-size:11px;color:var(--t3);}
 
-.admin-body{padding-top:var(--nav);min-height:100vh;}
+.admin-body{padding-top:calc(var(--nav) + 42px);min-height:100vh;}
 .admin-page{display:none;padding:24px;}
 .admin-page.active{display:block;}
 
 /* STATS GRID */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
-.stat-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px 20px;}
+.stat-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:18px 20px;position:relative;overflow:hidden;transition:.25s;}
+.stat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.03),transparent 60%);pointer-events:none;border-radius:14px;}
+.stat-card:hover{border-color:var(--glow-gold-border);box-shadow:0 0 20px rgba(240,180,41,.05);}
 .stat-icon{font-size:22px;margin-bottom:8px;}
 .stat-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;}
 .stat-val{font-size:26px;font-weight:700;letter-spacing:-.5px;}
@@ -132,7 +137,8 @@ a{text-decoration:none;color:inherit;}
 
 /* CHART CARDS */
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
-.chart-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;}
+.chart-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
+.chart-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.02),transparent 60%);pointer-events:none;border-radius:14px;}
 .chart-card.full{grid-column:1/-1;}
 .cc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .cc-title{font-size:13px;font-weight:600;}
@@ -142,27 +148,27 @@ a{text-decoration:none;color:inherit;}
 /* TABLE */
 .data-table-wrap{overflow-x:auto;}
 .data-table{width:100%;border-collapse:collapse;font-size:12px;}
-.data-table th{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;text-align:left;font-weight:600;border-bottom:1px solid var(--b1);white-space:nowrap;}
-.data-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:middle;}
-.data-table tr:hover td{background:rgba(255,255,255,.02);}
+.data-table th{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;text-align:left;font-weight:600;border-bottom:1px solid var(--glass-border);white-space:nowrap;background:rgba(255,255,255,.02);}
+.data-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.data-table tr:hover td{background:var(--glass);}
 .data-table tr:last-child td{border-bottom:none;}
 .td-badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
 
 /* SECTION HDR */
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
-.sec-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
+.sec-title{font-size:18px;font-weight:800;letter-spacing:-.5px;border-left:3px solid var(--gold);padding-left:12px;}
 .sec-actions{display:flex;gap:8px;}
-.btn-primary{padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:12px;font-weight:700;transition:.2s;}
-.btn-primary:hover{background:var(--gold-hover);}
-.btn-secondary{padding:8px 16px;background:transparent;border:1px solid var(--b2);color:var(--t2);border-radius:7px;font-size:12px;font-weight:500;transition:.2s;}
-.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
+.btn-primary{padding:8px 16px;background:linear-gradient(135deg,#F0B429,#D97706);color:#07090D;border:none;border-radius:8px;font-size:12px;font-weight:700;transition:.25s;box-shadow:0 2px 12px rgba(240,180,41,.2);}
+.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 20px rgba(240,180,41,.3);}
+.btn-secondary{padding:8px 16px;background:var(--glass);border:1px solid var(--glass-border);color:var(--t2);border-radius:8px;font-size:12px;font-weight:500;transition:.25s;}
+.btn-secondary:hover{border-color:var(--glow-gold-border);color:var(--gold);background:var(--glow-gold);}
 .fm-tab.active{border-color:var(--gold);color:var(--gold);background:var(--gbg);}
 .btn-danger{padding:8px 16px;background:transparent;border:1px solid rgba(239,68,68,.3);color:var(--red);border-radius:7px;font-size:12px;font-weight:500;transition:.2s;}
 .btn-danger:hover{background:var(--rbg);}
 
 /* GEO CARDS */
 .geo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
-.geo-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;}
+.geo-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:16px;}
 .geo-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:12px;}
 .geo-item{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(28,37,53,.5);}
 .geo-item:last-child{border-bottom:none;}
@@ -172,9 +178,9 @@ a{text-decoration:none;color:inherit;}
 .geo-count{font-size:11px;color:var(--t3);min-width:30px;text-align:right;}
 
 /* LEAD DETAIL */
-.lead-modal-ov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.7);backdrop-filter:blur(3px);display:none;}
+.lead-modal-ov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:none;}
 .lead-modal-ov.open{display:flex;align-items:center;justify-content:center;padding:20px;}
-.lead-modal{background:var(--sur);border:1px solid var(--b2);border-radius:14px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;}
+.lead-modal{background:rgba(11,15,22,.95);border:1px solid var(--glass-border);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;backdrop-filter:blur(16px);}
 .lm-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--b1);position:sticky;top:0;background:var(--sur);}
 .lm-title{font-size:15px;font-weight:700;}
 .lm-x{background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer;}
@@ -185,7 +191,7 @@ a{text-decoration:none;color:inherit;}
 .lm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
 /* EMAIL COMPOSER */
-.email-composer{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:20px;}
+.email-composer{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:20px;}
 .ec-field{margin-bottom:14px;}
 .ec-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:6px;}
 .ec-field input,.ec-field select,.ec-field textarea{width:100%;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;outline:none;transition:.2s;resize:vertical;}
@@ -238,16 +244,29 @@ a{text-decoration:none;color:inherit;}
 .tpl-saved-toggle .arrow{font-size:8px;transition:transform .2s;}
 
 /* TOAST */
-.admin-toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--card);border:1px solid var(--green);color:var(--green);padding:10px 20px;border-radius:8px;font-size:12.5px;font-weight:600;opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none;}
+.admin-toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(16,21,31,.92);backdrop-filter:blur(12px);border:1px solid var(--green);color:var(--green);padding:12px 22px;border-radius:10px;font-size:12.5px;font-weight:600;opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.4);}
 .admin-toast.show{opacity:1;transform:translateY(0);}
 .admin-toast.warn{border-color:var(--gold);color:var(--gold);}
 .admin-toast.error{border-color:var(--red);color:var(--red);}
 
 /* FILTER ROW */
 .filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
-.filter-inp{padding:8px 11px;background:var(--card);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-size:12px;outline:none;transition:.2s;}
-.filter-inp:focus{border-color:var(--gold);}
+.filter-inp{padding:8px 11px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;transition:.25s;font-family:var(--f);}
+.filter-inp:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.06);box-shadow:0 0 0 3px rgba(240,180,41,.08);}
 .filter-inp::placeholder{color:var(--t3);}
+
+/* GLOBAL DATE BAR */
+.global-date-bar{position:sticky;top:var(--nav);z-index:400;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 24px;background:rgba(7,9,13,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--glass-border);}
+.gdb-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;}
+.gdb-pills{display:flex;gap:4px;}
+.gdb-pill{padding:5px 12px;background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;color:var(--t2);font-size:11px;font-weight:600;transition:.25s;cursor:pointer;font-family:var(--f);}
+.gdb-pill:hover{border-color:var(--glow-gold-border);color:var(--t1);}
+.gdb-pill.active{background:var(--glow-gold);border-color:var(--glow-gold-border);color:var(--gold);}
+.gdb-custom{display:flex;align-items:center;gap:6px;margin-left:auto;}
+.gdb-custom span{font-size:10px;color:var(--t3);}
+.gdb-custom .filter-inp{padding:5px 8px;font-size:11px;max-width:130px;}
+.gdb-active{font-size:10px;color:var(--gold);font-weight:600;}
+@media(max-width:768px){.gdb-custom{margin-left:0;width:100%;}.gdb-pills{flex-wrap:wrap;}}
 
 /* PROGRESS BAR */
 .prog-bar-wrap{background:var(--b1);border-radius:3px;height:5px;overflow:hidden;margin-top:4px;}
@@ -411,6 +430,7 @@ a{text-decoration:none;color:inherit;}
  <button class="nta" onclick="adminGo('leads',this)">Leads</button>
  <button class="nta" onclick="adminGo('events',this)">Eventos</button>
  <button class="nta" onclick="adminGo('geo',this)">Geo</button>
+ <button class="nta" onclick="adminGo('cadastros',this)">Cadastros</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade</button>
  <button class="nta" onclick="adminGo('analysis-vip',this)">Análise VIP</button>
@@ -469,6 +489,7 @@ a{text-decoration:none;color:inherit;}
   <button class="nta" onclick="adminGoMobile('leads',this)">Leads</button>
   <button class="nta" onclick="adminGoMobile('events',this)">Eventos</button>
   <button class="nta" onclick="adminGoMobile('geo',this)">Geo</button>
+  <button class="nta" onclick="adminGoMobile('cadastros',this)">Cadastros</button>
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
   <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade</button>
   <button class="nta" onclick="adminGoMobile('analysis-vip',this)">Análise VIP</button>
@@ -477,6 +498,26 @@ a{text-decoration:none;color:inherit;}
   <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-guides',this)">Guias</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-blog',this)">Blog</button>
+ </div>
+
+ <!-- GLOBAL DATE FILTER -->
+ <div class="global-date-bar" id="global-date-bar">
+  <div class="gdb-label">Periodo:</div>
+  <div class="gdb-pills">
+   <button class="gdb-pill" data-days="0" onclick="setGlobalDate(0,this)">Hoje</button>
+   <button class="gdb-pill" data-days="7" onclick="setGlobalDate(7,this)">7d</button>
+   <button class="gdb-pill" data-days="14" onclick="setGlobalDate(14,this)">14d</button>
+   <button class="gdb-pill" data-days="30" onclick="setGlobalDate(30,this)">30d</button>
+   <button class="gdb-pill" data-days="90" onclick="setGlobalDate(90,this)">90d</button>
+   <button class="gdb-pill active" data-days="-1" onclick="setGlobalDate(-1,this)">Todos</button>
+  </div>
+  <div class="gdb-custom">
+   <input type="date" id="gdb-start" class="filter-inp">
+   <span>ate</span>
+   <input type="date" id="gdb-end" class="filter-inp">
+   <button class="btn-secondary" onclick="applyCustomDateRange()" style="padding:5px 12px;font-size:11px;">Aplicar</button>
+  </div>
+  <div class="gdb-active" id="gdb-active">Todos os dados</div>
  </div>
 
  <div class="admin-body">
@@ -1209,6 +1250,35 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
 
+    <!-- CADASTROS -->
+    <div class="admin-page" id="page-cadastros">
+      <div class="sec-hdr">
+        <div class="sec-title">Cadastros — Usuarios Registrados</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="exportCadastrosCSV()">Exportar CSV</button>
+          <button class="btn-secondary" onclick="loadCadastros()">Atualizar</button>
+        </div>
+      </div>
+      <div class="stats-grid" id="cadastros-kpis"></div>
+      <div class="charts-grid" style="margin-bottom:24px;">
+        <div class="chart-card">
+          <div class="cc-hd"><div class="cc-title">Cadastros por Dia</div></div>
+          <div class="chart-wrap"><canvas id="chart-signups-daily"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="cc-hd"><div class="cc-title">Metodo de Cadastro</div></div>
+          <div class="chart-wrap"><canvas id="chart-signup-method"></canvas></div>
+        </div>
+      </div>
+      <div class="filter-row">
+        <input class="filter-inp" id="cadastros-search" placeholder="Buscar por nome ou email..." style="flex:1;" oninput="renderCadastrosTable()">
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="tbl-cadastros"></table></div>
+      </div>
+      <div style="font-size:12px;color:var(--t3);margin-top:8px;" id="cadastros-count">0 cadastros</div>
+    </div>
+
  </div><!-- admin-body -->
 </div><!-- admin-app -->
 
@@ -1243,6 +1313,65 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { storageKey: 'mc-admin-auth' }
 });
+// ────────────────────────────────────────────────────────────────────────────
+
+// ─── GLOBAL DATE FILTER ────────────────────────────────────────────────────
+let globalDateStart = null;
+let globalDateEnd = null;
+
+function setGlobalDate(days, btn) {
+  document.querySelectorAll('.gdb-pill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('gdb-start').value = '';
+  document.getElementById('gdb-end').value = '';
+  if (days === -1) {
+    globalDateStart = null; globalDateEnd = null;
+    document.getElementById('gdb-active').textContent = 'Todos os dados';
+  } else if (days === 0) {
+    const t = new Date(); t.setHours(0,0,0,0);
+    globalDateStart = t.toISOString(); globalDateEnd = null;
+    document.getElementById('gdb-active').textContent = 'Hoje';
+  } else {
+    globalDateStart = new Date(Date.now() - days * 86400000).toISOString(); globalDateEnd = null;
+    document.getElementById('gdb-active').textContent = `Ultimos ${days} dias`;
+  }
+  rerenderActivePage();
+}
+
+function applyCustomDateRange() {
+  const s = document.getElementById('gdb-start').value;
+  const e = document.getElementById('gdb-end').value;
+  if (!s || !e) return;
+  globalDateStart = new Date(s).toISOString();
+  globalDateEnd = new Date(e + 'T23:59:59').toISOString();
+  document.querySelectorAll('.gdb-pill').forEach(b => b.classList.remove('active'));
+  document.getElementById('gdb-active').textContent = `${s} a ${e}`;
+  rerenderActivePage();
+}
+
+function rerenderActivePage() {
+  const active = document.querySelector('.admin-page.active');
+  if (active) { const p = active.id.replace('page-',''); renderPage(p); }
+}
+
+function getFilteredLeads() {
+  let d = getLeadsSync();
+  if (globalDateStart) d = d.filter(l => (l.created_at||l.ts) >= globalDateStart);
+  if (globalDateEnd) d = d.filter(l => (l.created_at||l.ts) <= globalDateEnd);
+  return d;
+}
+function getFilteredEvents() {
+  let d = getEventsSync();
+  if (globalDateStart) d = d.filter(e => (e.created_at||e.ts) >= globalDateStart);
+  if (globalDateEnd) d = d.filter(e => (e.created_at||e.ts) <= globalDateEnd);
+  return d;
+}
+function getFilteredProfiles() {
+  let d = getProfilesSync();
+  if (globalDateStart) d = d.filter(p => p.created_at >= globalDateStart);
+  if (globalDateEnd) d = d.filter(p => p.created_at <= globalDateEnd);
+  return d;
+}
 // ────────────────────────────────────────────────────────────────────────────
 
 let isLoggedIn = false;
@@ -1376,6 +1505,15 @@ async function getEvents() {
 // Sync-cached versions for functions that call synchronously (charts etc)
 function getLeadsSync()  { return JSON.parse(localStorage.getItem('mc_leads')||'[]'); }
 function getEventsSync() { return JSON.parse(localStorage.getItem('mc_events')||'[]'); }
+function getProfilesSync() { return JSON.parse(localStorage.getItem('mc_profiles')||'[]'); }
+
+async function getProfiles() {
+  try {
+    const { data } = await db.from('profiles').select('id,email,full_name,created_at,updated_at,avatar_url').order('created_at', { ascending: false }).limit(500);
+    if (data !== null && data !== undefined) { localStorage.setItem('mc_profiles', JSON.stringify(data)); return data; }
+  } catch(e) {}
+  return JSON.parse(localStorage.getItem('mc_profiles')||'[]');
+}
 
 function getJournal()    { return JSON.parse(localStorage.getItem('mc_journal')||'[]'); }
 function getAlerts()     { return JSON.parse(localStorage.getItem('mc_alerts')||'[]'); }
@@ -1384,7 +1522,7 @@ function getCampaigns()  { return JSON.parse(localStorage.getItem('mc_campaigns'
 
 // Refresh data from Supabase into localStorage cache, then re-render
 async function refreshFromSupabase() {
-  await Promise.all([ getLeads(), getEvents() ]);
+  await Promise.all([ getLeads(), getEvents(), getProfiles() ]);
 }
 
 // Generate rich demo data if empty
@@ -1532,6 +1670,7 @@ function renderPage(p){
     case 'leads':          renderLeadsPage(); break;
     case 'events':         renderEventsPage(); break;
     case 'geo':            renderGeoPage(); break;
+    case 'cadastros':      renderCadastrosPage(); break;
     case 'email':
       loadEmailStats();
       updateDestCount();
@@ -1548,8 +1687,8 @@ function renderPage(p){
 
 /* ── OVERVIEW — uses sync cache ── */
 function renderOverview(){
- const leads=getLeadsSync();
- const events=getEventsSync();
+ const leads=getFilteredLeads();
+ const events=getFilteredEvents();
  const ec=(ev)=>events.filter(e=>e.event===ev).length;
  const ecToday=(ev)=>events.filter(e=>e.event===ev&&isToday(e.created_at||e.ts)).length;
  const coupons=ec('coupon_copy'), checkouts=ec('checkout_click'), pageViews=ec('page_view');
@@ -1687,19 +1826,20 @@ function renderOverview(){
  */
 /* ── ANALYTICS — Tráfego Pago & Orgânico ── */
 async function renderAnalytics() {
-  const days   = parseInt(document.getElementById('analytics-period')?.value || 30);
-  const since  = new Date(Date.now() - days * 86400000).toISOString();
-  const label  = `Últimos ${days} dias`;
-  const lbl    = document.getElementById('analytics-period-label');
+  const since = globalDateStart || new Date(Date.now() - parseInt(document.getElementById('analytics-period')?.value || 30) * 86400000).toISOString();
+  const sinceEnd = globalDateEnd || null;
+  const label = globalDateStart ? document.getElementById('gdb-active')?.textContent||'' : `Últimos ${document.getElementById('analytics-period')?.value||30} dias`;
+  const lbl = document.getElementById('analytics-period-label');
   if (lbl) lbl.textContent = label;
 
   // Fetch from Supabase
   let leads = [], events = [], spends = [];
   try {
+    let lQ = db.from('leads').select('*').gte('created_at', since);
+    let eQ = db.from('events').select('*').gte('created_at', since);
+    if (sinceEnd) { lQ = lQ.lte('created_at', sinceEnd); eQ = eQ.lte('created_at', sinceEnd); }
     const [lRes, eRes, sRes] = await Promise.all([
-      db.from('leads').select('*').gte('created_at', since),
-      db.from('events').select('*').gte('created_at', since),
-      db.from('ad_spend').select('*'),
+      lQ, eQ, db.from('ad_spend').select('*'),
     ]);
     leads  = lRes.data  || [];
     events = eRes.data  || [];
@@ -1861,7 +2001,7 @@ async function saveAdSpend() {
 function renderLeadsPage(){ renderLeadsTable(); }
 
 function renderLeadsTable(){
- let leads=getLeadsSync();
+ let leads=getFilteredLeads();
  const q=(document.getElementById('lead-search')?.value||'').toLowerCase();
  const ft=document.getElementById('lead-filter-tool')?.value||'';
  const fs=document.getElementById('lead-filter-sex')?.value||'';
@@ -1945,7 +2085,7 @@ async function clearLeads(){
  EVENTS PAGE
  */
 function renderEventsPage(){
- const events=getEventsSync();
+ const events=getFilteredEvents();
  const ec=(ev)=>events.filter(e=>e.event===ev).length;
 
  const pvEvents=events.filter(e=>e.event==='page_view'&&e.params?.page_name);
@@ -2049,7 +2189,7 @@ async function clearEvents(){
  GEO & DEMO PAGE
  */
 function renderGeoPage(){
- const events=getEventsSync();
+ const events=getFilteredEvents();
  const COUNTRY_NAMES={BR:'Brasil',US:'EUA',AR:'Argentina',FR:'França',DE:'Alemanha',IT:'Itália',ES:'Espanha',GB:'Reino Unido',CA:'Canadá',PT:'Portugal',MX:'México',CO:'Colômbia',CL:'Chile',PE:'Peru',UY:'Uruguai',PY:'Paraguai',JP:'Japão',CN:'China',IN:'Índia',AE:'Emirados Árabes'};
 
  // Extract geo data from geo_detected events
@@ -5269,6 +5409,70 @@ async function revokeVip(userId,email){
   }catch(e){
     alert('Erro ao revogar: '+e.message);
   }
+}
+
+// ─── CADASTROS TAB ────────────────────────────────────────────────────────
+async function loadCadastros() { await getProfiles(); renderCadastrosPage(); }
+
+function renderCadastrosPage() {
+  const profiles = getFilteredProfiles();
+  const now = new Date();
+  const today = profiles.filter(p => { const d = new Date(p.created_at); return d.toDateString() === now.toDateString(); }).length;
+  const week = profiles.filter(p => new Date(p.created_at) >= new Date(Date.now() - 7*86400000)).length;
+  const withName = profiles.filter(p => p.full_name).length;
+
+  document.getElementById('cadastros-kpis').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Total Cadastros</div><div class="stat-val g">${profiles.length}</div></div>
+    <div class="stat-card"><div class="stat-lbl">Hoje</div><div class="stat-val y">${today}</div></div>
+    <div class="stat-card"><div class="stat-lbl">Ultimos 7 dias</div><div class="stat-val b">${week}</div></div>
+    <div class="stat-card"><div class="stat-lbl">Com Nome</div><div class="stat-val">${withName}</div></div>
+  `;
+  renderCadastrosTable();
+  renderCadastrosCharts(profiles);
+}
+
+function renderCadastrosTable() {
+  const profiles = getFilteredProfiles();
+  const q = (document.getElementById('cadastros-search')?.value || '').toLowerCase();
+  let filtered = profiles;
+  if (q) filtered = filtered.filter(p => ((p.full_name||'')+(p.email||'')).toLowerCase().includes(q));
+  const tbl = document.getElementById('tbl-cadastros');
+  tbl.innerHTML = `<thead><tr><th>#</th><th>Nome</th><th>Email</th><th>Data Cadastro</th><th>Ultima Atividade</th></tr></thead><tbody>`
+    + filtered.slice(0,200).map((p,i) => `<tr>
+      <td>${i+1}</td>
+      <td>${escHtml(p.full_name||'—')}</td>
+      <td style="color:var(--gold);font-weight:500;">${escHtml(p.email||'—')}</td>
+      <td>${p.created_at ? new Date(p.created_at).toLocaleString('pt-BR') : '—'}</td>
+      <td>${p.updated_at ? new Date(p.updated_at).toLocaleString('pt-BR') : '—'}</td>
+    </tr>`).join('') + `</tbody>`;
+  document.getElementById('cadastros-count').textContent = `${filtered.length} cadastros`;
+}
+
+function renderCadastrosCharts(profiles) {
+  // Daily signups (last 14 days)
+  const days = {};
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(Date.now() - i * 86400000);
+    days[d.toISOString().slice(0,10)] = 0;
+  }
+  profiles.forEach(p => { const d = (p.created_at||'').slice(0,10); if (days[d] !== undefined) days[d]++; });
+  const labels = Object.keys(days).map(d => d.slice(5));
+  const vals = Object.values(days);
+  mkChart('chart-signups-daily','bar',labels,[{label:'Cadastros',data:vals,backgroundColor:'rgba(240,180,41,.6)',borderRadius:4}]);
+
+  // Method breakdown
+  const emailCount = profiles.filter(p => !p.avatar_url).length;
+  const oauthCount = profiles.filter(p => p.avatar_url).length;
+  mkChart('chart-signup-method','doughnut',['Email/Senha','Google OAuth'],[{data:[emailCount,oauthCount],backgroundColor:['rgba(240,180,41,.7)','rgba(59,130,246,.7)']}]);
+}
+
+function exportCadastrosCSV() {
+  const profiles = getFilteredProfiles();
+  const rows = [['Nome','Email','Data Cadastro','Ultima Atividade']];
+  profiles.forEach(p => rows.push([p.full_name||'',p.email||'',p.created_at||'',p.updated_at||'']));
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'cadastros.csv'; a.click();
 }
 
 </script>
