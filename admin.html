@@ -342,10 +342,10 @@ a{text-decoration:none;color:inherit;}
 /* Perks — equal grid */
 .cr-perks{display:grid;gap:10px;margin-bottom:16px;}
 .cr-perk{padding:18px 20px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:16px;font-size:22px;font-weight:600;color:#34D399;text-align:center;}
-/* MC footer — same size as top, centered */
-.cr-mc-foot{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);}
-.cr-mc-foot img{width:40px;height:40px;}
-.cr-mc-foot-txt{font-size:28px;font-weight:700;color:rgba(255,255,255,.5);}
+/* MC footer — prominent, centered, same weight as firm logo */
+.cr-mc-foot{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:14px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);}
+.cr-mc-foot img{width:56px;height:56px;}
+.cr-mc-foot-txt{font-size:36px;font-weight:700;color:#fff;}
 .cr-mc-foot-txt b{color:#F0B429;}
 @media(max-width:900px){.cr-layout{grid-template-columns:1fr;}}
 
@@ -5612,12 +5612,24 @@ const CR_LABELS = {
         profit_split:'Profit Split', drawdown:'Drawdown', target:'Meta', platforms:'PLATAFORMAS',
         prices:'PREÇOS COM DESCONTO', off:'OFF', lifetime:'LIFETIME', perks_label:'VANTAGENS',
         min_days:'Dias Min', scaling:'Scaling', eval:'Avaliação', no_limit:'Ilimitado',
-        copy:'Copiar' },
+        copy:'Copiar', futuros:'FUTUROS', forex:'FOREX' },
   en: { exclusive_coupon:'EXCLUSIVE COUPON', use_coupon:'USE THE COUPON AT CHECKOUT', reviews:'Reviews',
         profit_split:'Profit Split', drawdown:'Drawdown', target:'Target', platforms:'PLATFORMS',
         prices:'DISCOUNTED PRICES', off:'OFF', lifetime:'LIFETIME', perks_label:'PERKS',
         min_days:'Min Days', scaling:'Scaling', eval:'Evaluation', no_limit:'Unlimited',
-        copy:'Copy' }
+        copy:'Copy', futuros:'FUTURES', forex:'FOREX' }
+};
+
+const CR_PERKS_EN = {
+  'Sem limite diario':'No daily loss limit','Sem regra escalamento':'No scaling rules',
+  'Payout 5 dias':'5-day payout','Reset $99':'Reset $99','Payout rapido':'Fast payout',
+  'Conta vitalicia':'Lifetime account','Sem taxa mensal':'No monthly fee',
+  'Sem limite de tempo':'No time limit','Copy trading':'Copy trading',
+  'Payout semanal':'Weekly payout','Payout diario':'Daily payout',
+  'Sem regra de consistencia':'No consistency rule','Conta gratuita':'Free account',
+  'Trading de noticias':'News trading','Trailing drawdown':'Trailing drawdown',
+  'Static drawdown':'Static drawdown','Sem tempo minimo':'No minimum time',
+  'Payout 2 semanas':'2-week payout','Conta demo gratis':'Free demo account'
 };
 
 async function initCriativos() {
@@ -5731,7 +5743,7 @@ function updateCrPreview() {
   h += `<div class="cr-hero">
     <div class="cr-hero-left">
       <div class="cr-firm-logo"><img src="${firm.icon_url}" alt="${firm.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${color};font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;height:100%\\'>${firm.icon||firm.name[0]}</span>'"></div>
-      <div><div class="cr-firm-name">${escHtml(firm.name)}</div><div class="cr-firm-type">${escHtml(ftype)}</div></div>
+      <div><div class="cr-firm-name">${escHtml(firm.name)}</div><div class="cr-firm-type">${ftype.toLowerCase()==='futuros'?L.futuros:ftype.toLowerCase()==='forex'?L.forex:escHtml(ftype)}</div></div>
     </div>`;
   if (crChk('cr-show-discount') && firm.discount) {
     h += `<div class="cr-hero-right">
@@ -5795,10 +5807,12 @@ function updateCrPreview() {
     </div>`;
   }
 
-  // ── Perks (equal width grid) ──
+  // ── Perks (equal width grid, translated) ──
   if (crChk('cr-show-perks') && perks.length) {
-    h += `<div class="cr-perks" style="grid-template-columns:repeat(${perkCols},1fr);">
-      ${perks.slice(0, 6).map(p => `<div class="cr-perk">${escHtml(p)}</div>`).join('')}
+    const tPerks = perks.slice(0, 4).map(p => _crLang==='en' ? (CR_PERKS_EN[p] || p) : p);
+    const pc = tPerks.length <= 2 ? tPerks.length : 2;
+    h += `<div class="cr-perks" style="grid-template-columns:repeat(${pc},1fr);">
+      ${tPerks.map(p => `<div class="cr-perk">${escHtml(p)}</div>`).join('')}
     </div>`;
   }
 
