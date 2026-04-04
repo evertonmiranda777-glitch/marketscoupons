@@ -323,15 +323,15 @@ a{text-decoration:none;color:inherit;}
 .cr-coupon-code{font-size:72px;font-weight:900;letter-spacing:8px;color:#F0B429;}
 .cr-coupon-hint{text-align:center;font-size:18px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
 /* Stats — 2 cols, big equal cards */
-.cr-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
-.cr-stat{padding:20px 24px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:18px;}
+.cr-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px;}
+.cr-stat{padding:18px 16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;text-align:center;}
 .cr-stat-label{font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.5);margin-bottom:8px;}
 .cr-stat-val{font-size:40px;font-weight:800;}
 .cr-stat-val.g{color:#34D399;}.cr-stat-val.y{color:#F0B429;}.cr-stat-val.r{color:#F87171;}.cr-stat-val.w{color:#fff;}
 /* Platforms — equal grid */
 .cr-platforms{display:grid;gap:10px;margin-bottom:18px;}
 .cr-plat-label{font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(240,180,41,.7);margin-bottom:6px;text-align:center;}
-.cr-plat{padding:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;font-size:26px;font-weight:700;color:rgba(255,255,255,.8);text-align:center;}
+.cr-plat{padding:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;font-size:26px;font-weight:700;color:rgba(255,255,255,.8);text-align:center;}
 /* Account sizes — unified: pill with size + new price + old price */
 .cr-plans-label{font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(240,180,41,.7);margin-bottom:14px;text-align:center;}
 .cr-plans{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
@@ -5764,15 +5764,12 @@ function updateCrPreview() {
     <div class="cr-coupon-hint">${L.use_coupon}</div>`;
   }
 
-  // ── Stats (2 cols, 6 items — big equal cards) ──
+  // ── Stats (3 cols, 1 row — key metrics) ──
   if (crChk('cr-show-stats')) {
     h += `<div class="cr-stats">
       <div class="cr-stat"><div class="cr-stat-label">${L.profit_split}</div><div class="cr-stat-val g">${split}</div></div>
-      <div class="cr-stat"><div class="cr-stat-label">${L.target}</div><div class="cr-stat-val y">${target}</div></div>
       <div class="cr-stat"><div class="cr-stat-label">${L.drawdown}</div><div class="cr-stat-val r">${ddPct}</div></div>
-      <div class="cr-stat"><div class="cr-stat-label">${L.min_days}</div><div class="cr-stat-val w">${minDays}</div></div>
-      <div class="cr-stat"><div class="cr-stat-label">${L.scaling}</div><div class="cr-stat-val w">${scaling}</div></div>
-      <div class="cr-stat"><div class="cr-stat-label">${L.eval}</div><div class="cr-stat-val w">${evalDays ? evalDays+'d' : (_crLang==='pt'?'Ilimitado':'Unlimited')}</div></div>
+      <div class="cr-stat"><div class="cr-stat-label">${L.target}</div><div class="cr-stat-val y">${target}</div></div>
     </div>`;
   }
 
