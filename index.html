@@ -1770,7 +1770,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
  width:56px;height:56px;border-radius:50%;
  background:linear-gradient(135deg,var(--gold) 0%,#D4961A 100%);
  border:none;cursor:pointer;
- display:flex;align-items:center;justify-content:center;
+ display:none;align-items:center;justify-content:center;
  box-shadow:0 4px 20px rgba(240,180,41,.45);
  transition:all .3s;
  animation:bot-pulse 3s infinite;
@@ -2351,7 +2351,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
  <button class="mm-item" onclick="mgo('blog')">Blog</button>
  <div class="mm-sec" data-i18n="mm_sec_live">Live & Mais</div>
  <button class="mm-item" onclick="mgo('live')" data-i18n="mm_live">Live Room</button>
- <button class="mm-item" id="mm-bot-item" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente IA</button>
+ <button class="mm-item" id="mm-bot-item" style="display:none" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente IA</button>
  <div class="mm-sec" data-i18n="mm_sec_idioma">Idioma</div>
  <div class="mm-langs">
  <button class="mm-flag" onclick="setL('pt','','BR');closeMM()">&#x1F1E7;&#x1F1F7; PT</button>
@@ -13357,13 +13357,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   fetchGeo();
 
-  // Checar se bot está ativado
+  // Checar se bot está ativado (hidden by default, show only if enabled)
   try{
     const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').maybeSingle();
-    if(data&&data.value==='false'){
-      const fab=document.getElementById('bot-fab');if(fab)fab.style.display='none';
-      const win=document.getElementById('bot-win');if(win)win.style.display='none';
-      const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='none';
+    if(data&&data.value==='true'){
+      const fab=document.getElementById('bot-fab');if(fab)fab.style.display='flex';
+      const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='';
     }
   }catch(e){}
 
