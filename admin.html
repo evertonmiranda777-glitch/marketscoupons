@@ -3067,6 +3067,8 @@ function buildPromoHtml(f, lang='pt'){
           <span style="font-size:48px;font-weight:900;color:${color};letter-spacing:-2px;font-family:${FI};text-shadow:0 4px 24px rgba(${hexToRgb(color)},0.3);">${f.discount}% OFF</span>
         </div>
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:${T2};font-family:${FI};">${et('discount_label')} ${lt.toUpperCase()}</div>` : ''}
+        <!-- Description -->
+        <div style="margin-top:16px;color:${T2};font-size:13px;line-height:1.65;font-family:${FI};">${f.description||f.desc||''}</div>
         <!-- Rating block -->
         <table cellpadding="0" cellspacing="0" style="margin-top:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:12px;">
           <tr><td style="padding:14px 20px;">
