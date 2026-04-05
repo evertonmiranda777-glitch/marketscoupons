@@ -6008,7 +6008,7 @@ function updateCrPreview() {
   h += `<div class="cr-hero">
     <div class="cr-hero-left">
       <div class="cr-firm-logo"><img src="${firm.icon_url}" alt="${firm.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${color};font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;height:100%\\'>${firm.icon||firm.name[0]}</span>'"></div>
-      <div><div class="cr-firm-name">${escHtml(firm.name)}</div><div class="cr-firm-type">${ftype.toLowerCase()==='futuros'?L.futuros:ftype.toLowerCase()==='forex'?L.forex:escHtml(ftype)}</div></div>
+      <div><div class="cr-firm-name" style="${firm.name.length>15?'font-size:36px;':''}white-space:nowrap;">${escHtml(firm.name)}</div><div class="cr-firm-type">${ftype.toLowerCase()==='futuros'?L.futuros:ftype.toLowerCase()==='forex'?L.forex:escHtml(ftype)}</div></div>
     </div>`;
   if (crChk('cr-show-discount') && firm.discount) {
     h += `<div class="cr-hero-right">
