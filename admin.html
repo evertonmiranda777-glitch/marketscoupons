@@ -2793,9 +2793,11 @@ const EMAIL_I18N = {
     discount_label: 'Desconto',
     yes: 'Sim', no: 'Nao', unlimited: 'Ilimitado',
     platforms: 'PLATAFORMAS', benefits: 'BENEFICIOS',
+    account_type: 'TIPO DE CONTA', account_size: 'TAMANHO DA CONTA',
+    savings: 'Economia', included: 'INCLUSO NO PLANO',
     prices_title: 'CONTAS DISPONIVEIS',
     col_account: 'Conta', col_goal: 'Meta', col_dd: 'Drawdown', col_price: 'Preco', col_original: 'De',
-    cta: 'COMECAR AGORA →',
+    cta: 'Comecar Avaliacao',
     see_all: 'Ver todas as ofertas no MarketsCoupons →',
     footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
     unsub: 'Cancelar inscricao',
@@ -2815,9 +2817,11 @@ const EMAIL_I18N = {
     discount_label: 'Discount',
     yes: 'Yes', no: 'No', unlimited: 'Unlimited',
     platforms: 'PLATFORMS', benefits: 'BENEFITS',
+    account_type: 'ACCOUNT TYPE', account_size: 'ACCOUNT SIZE',
+    savings: 'Save', included: 'INCLUDED IN PLAN',
     prices_title: 'AVAILABLE ACCOUNTS',
     col_account: 'Account', col_goal: 'Target', col_dd: 'Drawdown', col_price: 'Price', col_original: 'Was',
-    cta: 'GET STARTED NOW →',
+    cta: 'Start Evaluation',
     see_all: 'See all deals on MarketsCoupons →',
     footer: 'You received this email because you subscribed to MarketsCoupons.',
     unsub: 'Unsubscribe',
@@ -2837,6 +2841,8 @@ const EMAIL_I18N = {
     discount_label: 'Descuento',
     yes: 'Si', no: 'No', unlimited: 'Ilimitado',
     platforms: 'PLATAFORMAS', benefits: 'BENEFICIOS',
+    account_type: 'TIPO DE CUENTA', account_size: 'TAMAÑO DE CUENTA',
+    savings: 'Ahorro', included: 'INCLUIDO EN EL PLAN',
     prices_title: 'CUENTAS DISPONIBLES',
     col_account: 'Cuenta', col_goal: 'Meta', col_dd: 'Drawdown', col_price: 'Precio', col_original: 'Antes',
     cta: 'EMPEZAR AHORA →',
@@ -2859,6 +2865,8 @@ const EMAIL_I18N = {
     discount_label: 'Reduction',
     yes: 'Oui', no: 'Non', unlimited: 'Illimite',
     platforms: 'PLATEFORMES', benefits: 'AVANTAGES',
+    account_type: 'TYPE DE COMPTE', account_size: 'TAILLE DU COMPTE',
+    savings: 'Economie', included: 'INCLUS DANS LE PLAN',
     prices_title: 'COMPTES DISPONIBLES',
     col_account: 'Compte', col_goal: 'Objectif', col_dd: 'Drawdown', col_price: 'Prix', col_original: 'Avant',
     cta: 'COMMENCER MAINTENANT →',
@@ -2881,6 +2889,8 @@ const EMAIL_I18N = {
     discount_label: 'Rabatt',
     yes: 'Ja', no: 'Nein', unlimited: 'Unbegrenzt',
     platforms: 'PLATTFORMEN', benefits: 'VORTEILE',
+    account_type: 'KONTOTYP', account_size: 'KONTOGRÖSSE',
+    savings: 'Ersparnis', included: 'IM PLAN ENTHALTEN',
     prices_title: 'VERFUGBARE KONTEN',
     col_account: 'Konto', col_goal: 'Ziel', col_dd: 'Drawdown', col_price: 'Preis', col_original: 'War',
     cta: 'JETZT STARTEN →',
@@ -2903,6 +2913,8 @@ const EMAIL_I18N = {
     discount_label: 'Sconto',
     yes: 'Si', no: 'No', unlimited: 'Illimitato',
     platforms: 'PIATTAFORME', benefits: 'VANTAGGI',
+    account_type: 'TIPO DI CONTO', account_size: 'DIMENSIONE CONTO',
+    savings: 'Risparmio', included: 'INCLUSO NEL PIANO',
     prices_title: 'CONTI DISPONIBILI',
     col_account: 'Conto', col_goal: 'Target', col_dd: 'Drawdown', col_price: 'Prezzo', col_original: 'Era',
     cta: 'INIZIA ORA →',
@@ -2925,6 +2937,8 @@ const EMAIL_I18N = {
     discount_label: 'خصم',
     yes: 'نعم', no: 'لا', unlimited: 'غير محدود',
     platforms: 'المنصات', benefits: 'المزايا',
+    account_type: 'نوع الحساب', account_size: 'حجم الحساب',
+    savings: 'توفير', included: 'مشمول في الخطة',
     prices_title: 'الحسابات المتاحة',
     col_account: 'الحساب', col_goal: 'الهدف', col_dd: 'Drawdown', col_price: 'السعر', col_original: 'كان',
     cta: '← ابدا الان',
@@ -3068,112 +3082,102 @@ function buildPromoHtml(f, lang='pt'){
   </table>`}
 </td></tr>
 
-<!-- ═══ STATS BAR ═══ -->
-<tr><td style="padding:20px 28px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${GLASS}" style="background:${GLASS};border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
-    <tr>${statCell(et('profit_split'), f.split||'—', GREEN)}
-    ${statCell(et('discount_label',''), f.discount+'%', color)}
-    ${statCell('Drawdown', f.dd_pct||'—', '#EF4444')}</tr>
-  </table>
-</td></tr>
+<!-- ═══ CHECKOUT-STYLE: TYPE PILLS ═══ -->
+${hasDualPrices ? `<tr><td style="padding:20px 28px 0;">
+  <div style="color:${T3};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-family:${FI};">
+    <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};margin-right:8px;vertical-align:middle;box-shadow:0 0 8px rgba(${hexToRgb(color)},0.3);"></span>${et('account_type')}
+  </div>
+  <div>${pTypes.map((tp,i) =>
+    `<span style="display:inline-block;background:${i===0?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${i===0?`rgba(${hexToRgb(color)},0.35)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:10px 22px;margin:3px;font-size:13px;font-weight:700;color:${i===0?color:T1};font-family:${FI};">${tp}</span>`
+  ).join('')}</div>
+</td></tr>` : ''}
 
-<!-- ═══ ACCOUNT RULES ═══ -->
-<tr><td style="padding:20px 28px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${GLASS}" style="background:${GLASS};border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
-    <tr><td style="padding:18px 20px;">
-      <div style="color:${T3};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;font-family:${FI};">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};margin-right:8px;vertical-align:middle;box-shadow:0 0 8px rgba(${hexToRgb(color)},0.3);"></span>${et('account_rules')}
-      </div>
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-        ${ruleRow(et('min_days'), f.min_days ? f.min_days+'d' : null)}
-        ${ruleRow(et('eval_days'), f.eval_days ? f.eval_days+'d' : et('unlimited'))}
-        ${ruleRow(et('profit_target'), f.target, color)}
-        ${ruleRow(et('dd_type'), f.drawdown)}
-        ${ruleRow(et('scaling'), f.scaling, f.scaling&&f.scaling!=='—'?GREEN:null)}
-        ${ruleRow(et('news'), f.news_trading ? et('yes') : et('no'), f.news_trading?GREEN:'#EF4444')}
-        ${ruleRow(et('day1'), f.day1_payout ? et('yes') : et('no'), f.day1_payout?GREEN:'#EF4444')}
-      </table>
-    </td></tr>
-  </table>
-</td></tr>
-
-<!-- ═══ PLATFORMS ═══ -->
+<!-- ═══ CHECKOUT-STYLE: PLATFORMS ═══ -->
 ${plats.length ? `<tr><td style="padding:20px 28px 0;">
   <div style="color:${T3};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-family:${FI};">
     <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};margin-right:8px;vertical-align:middle;box-shadow:0 0 8px rgba(${hexToRgb(color)},0.3);"></span>${et('platforms')}
   </div>
-  <div>${plats.map(p =>
-    `<span style="display:inline-block;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:8px 16px;margin:3px;font-size:12px;font-weight:600;color:${T1};font-family:${FI};">${p}</span>`
+  <div>${plats.map((p,i) =>
+    `<span style="display:inline-block;background:${i===0?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${i===0?`rgba(${hexToRgb(color)},0.35)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:10px 20px;margin:3px;font-size:12px;font-weight:600;color:${i===0?color:T1};font-family:${FI};">${p}</span>`
   ).join('')}</div>
 </td></tr>` : ''}
 
-<!-- ═══ PRICING TABLE ═══ -->
+<!-- ═══ CHECKOUT-STYLE: SIZE PILLS ═══ -->
 ${prices.length ? `<tr><td style="padding:20px 28px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${GLASS}" style="background:${GLASS};border:1px solid #1C2535;border-radius:12px;overflow:hidden;">
-    <tr><td style="padding:14px 16px 10px;">
-      <table width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:${T3};font-family:${FI};">
-          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};margin-right:8px;vertical-align:middle;box-shadow:0 0 8px rgba(${hexToRgb(color)},0.3);"></span>${et('prices_title')}
-        </td>
-        <td align="right"><span style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.20);border-radius:6px;padding:3px 10px;font-size:9px;font-weight:700;color:${GREEN};font-family:${FI};">${f.discount}% OFF</span></td>
-      </tr></table>
-    </td></tr>
-    <tr><td style="padding:0 12px 14px;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-        <tr>
-          <th style="padding:8px 12px;text-align:left;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:${T3};font-family:${FI};">${et('col_account')}</th>
-          ${hasDualPrices ? `
-            <th style="padding:8px 6px;text-align:center;font-size:8px;font-weight:700;color:#3B82F6;font-family:${FI};">${pTypes[0]||''}</th>
-            <th style="padding:8px 6px;text-align:center;font-size:8px;font-weight:700;color:${GREEN};font-family:${FI};">${pTypes[1]||''}</th>
-          ` : `
-            <th style="padding:8px 6px;text-align:center;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:${T3};font-family:${FI};">${et('col_price')}</th>
-            <th style="padding:8px 6px;text-align:center;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:${T3};font-family:${FI};">${et('col_original')}</th>
-          `}
-        </tr>
-        ${buildPriceRows()}
-      </table>
-    </td></tr>
-  </table>
+  <div style="color:${T3};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-family:${FI};">
+    <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};margin-right:8px;vertical-align:middle;box-shadow:0 0 8px rgba(${hexToRgb(color)},0.3);"></span>${et('account_size')}
+  </div>
+  <table cellpadding="0" cellspacing="0" width="100%"><tr>
+    ${prices.slice(0,5).map((p,i) => {
+      const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
+      const isMid = i === Math.floor(Math.min(prices.length,5)/2);
+      return `<td align="center" style="padding:3px;">
+        ${isMid?`<div style="text-align:center;margin-bottom:4px;"><span style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:2px 8px;font-size:8px;font-weight:700;color:#EF4444;text-transform:uppercase;font-family:${FI};">POPULAR</span></div>`:''}
+        <div style="background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:12px 8px;text-align:center;">
+          <div style="color:${isMid?color:T1};font-size:15px;font-weight:800;font-family:${FI};">${cleanA}</div>
+        </div>
+      </td>`;
+    }).join('')}
+  </tr></table>
 </td></tr>` : ''}
 
-<!-- ═══ PERKS ═══ -->
-${(f.perks||[]).length ? `<tr><td style="padding:20px 28px 0;">
-  <div style="color:${T3};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-family:${FI};">${et('benefits')}</div>
-  ${(f.perks||[]).slice(0,8).map(p =>
-    `<div style="padding:4px 0;font-size:12px;font-family:${FI};color:${T2};">
-      <span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:${GREEN};margin-right:8px;vertical-align:middle;box-shadow:0 0 6px rgba(34,197,94,.3);"></span>${p}
-    </div>`
-  ).join('')}
+<!-- ═══ CHECKOUT-STYLE: PRICE CARD ═══ -->
+${prices.length ? `<tr><td style="padding:14px 28px 0;">
+  ${(() => {
+    const mid = Math.floor(Math.min(prices.length,5)/2);
+    const p = prices[mid]||prices[0];
+    const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
+    const oNum = parseFloat((p.o||'').replace(/[^0-9.]/g,''));
+    const nNum = parseFloat((p.n||'').replace(/[^0-9.]/g,''));
+    const cur = (p.n||'').match(/[€$]/)?.[0]||'$';
+    const save = oNum&&nNum&&p.o!=='—' ? (oNum-nNum).toFixed(2) : null;
+    return `<table width="100%" cellpadding="0" cellspacing="0" bgcolor="${GLASS}" style="background:${GLASS};border:1px solid rgba(${hexToRgb(color)},0.12);border-radius:14px;overflow:hidden;">
+      <tr><td height="1" style="background:linear-gradient(90deg,transparent,rgba(${hexToRgb(color)},0.25),transparent);height:1px;line-height:1px;font-size:0;">&nbsp;</td></tr>
+      <tr><td style="padding:20px 24px;">
+        <table width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td valign="middle">
+            <div style="font-size:24px;font-weight:900;color:${T1};font-family:${FI};">${cleanA}</div>
+            ${hasDualPrices?`<div style="font-size:11px;color:${T2};margin-top:2px;font-family:${FI};">${pTypes[0]||'Intraday'}</div>`:''}
+          </td>
+          <td align="right" valign="middle">
+            <div style="font-size:28px;font-weight:900;color:${color};font-family:${FI};">${p.n}</div>
+            ${p.o&&p.o!=='—'?`<div style="font-size:13px;color:${T3};text-decoration:line-through;font-family:${FI};text-align:right;">${p.o}</div>`:''}
+            ${save?`<div style="font-size:11px;font-weight:700;color:${GREEN};font-family:${FI};text-align:right;">${et('savings')} ${cur}${save}</div>`:''}
+          </td>
+        </tr></table>
+      </td></tr>
+    </table>`;
+  })()}
 </td></tr>` : ''}
 
 <!-- ═══ CTA ═══ -->
-<tr><td style="padding:28px 28px 0;">
+<tr><td style="padding:24px 28px 0;">
   <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
     <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${f.link}" style="height:52px;v-text-anchor:middle;width:500px;" arcsize="12%" fillcolor="#C8941A"><w:anchorlock/><center style="color:#030507;font-family:${FI};font-size:15px;font-weight:800;">${et('cta')}</center></v:roundrect><![endif]-->
-    <!--[if !mso]><!--><a href="${f.link}" target="_blank" style="display:inline-block;background:linear-gradient(90deg,#C8941A,${GOLD},#F5D060,${GOLD},#C8941A);color:#030507;padding:16px 0;width:100%;max-width:540px;box-sizing:border-box;border-radius:12px;font-size:15px;font-weight:800;text-decoration:none;letter-spacing:0.3px;font-family:${FI};text-align:center;box-shadow:0 4px 24px rgba(240,180,41,.2);">${et('cta')}</a><!--<![endif]-->
+    <!--[if !mso]><!--><a href="${f.link}" target="_blank" style="display:inline-block;background:linear-gradient(90deg,#C8941A,${GOLD},#F5D060,${GOLD},#C8941A);color:#030507;padding:16px 0;width:100%;max-width:540px;box-sizing:border-box;border-radius:12px;font-size:15px;font-weight:800;text-decoration:none;letter-spacing:0.3px;font-family:${FI};text-align:center;box-shadow:0 4px 24px rgba(240,180,41,.2);">${et('cta')} &#8594;</a><!--<![endif]-->
   </td></tr></table>
 </td></tr>
+
+<!-- ═══ INCLUDES ═══ -->
+${(f.perks||[]).length ? `<tr><td style="padding:20px 28px 0;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${GLASS}" style="background:${GLASS};border:1px solid #1C2535;border-radius:14px;overflow:hidden;">
+    <tr><td style="padding:18px 20px;">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:${T3};margin-bottom:14px;font-family:${FI};">${et('included')}</div>
+      <table width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td width="50%" valign="top">${(f.perks||[]).slice(0,4).map(p=>
+          `<div style="padding:4px 0;font-size:11px;color:${T2};font-family:${FI};"><span style="color:${GREEN};margin-right:6px;">&#10003;</span>${p}</div>`
+        ).join('')}</td>
+        <td width="50%" valign="top">${(f.perks||[]).slice(4,8).map(p=>
+          `<div style="padding:4px 0;font-size:11px;color:${T2};font-family:${FI};"><span style="color:${GREEN};margin-right:6px;">&#10003;</span>${p}</div>`
+        ).join('')}</td>
+      </tr></table>
+    </td></tr>
+  </table>
+</td></tr>` : ''}
 
 <!-- ═══ SEE ALL ═══ -->
 <tr><td style="padding:14px 28px 0;text-align:center;">
   <a href="https://www.marketscoupons.com" target="_blank" style="color:${GOLD};font-size:12px;font-weight:500;text-decoration:underline;font-family:${FI};">${et('see_all')}</a>
-</td></tr>
-
-<!-- ═══ INCLUDES ═══ -->
-<tr><td style="padding:24px 28px 0;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.04);border-radius:14px;">
-    <tr><td style="padding:18px 20px;">
-      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:${T3};margin-bottom:12px;font-family:${FI};">${et('benefits')}</div>
-      <table width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="50%" valign="top">${(f.perks||[]).slice(0,4).map(p=>
-          `<div style="padding:3px 0;font-size:11px;color:${T2};font-family:${FI};"><span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:${GREEN};margin-right:6px;vertical-align:middle;"></span>${p}</div>`
-        ).join('')}</td>
-        <td width="50%" valign="top">${(f.perks||[]).slice(4,8).map(p=>
-          `<div style="padding:3px 0;font-size:11px;color:${T2};font-family:${FI};"><span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:${GREEN};margin-right:6px;vertical-align:middle;"></span>${p}</div>`
-        ).join('')}</td>
-      </tr></table>
-    </td></tr>
-  </table>
 </td></tr>
 
 <!-- ═══ FOOTER ═══ -->
