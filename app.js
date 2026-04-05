@@ -3941,11 +3941,8 @@ async function joinLive(){
   const whatsapp= waNum ? ddi+' '+waNum : '';
   if(!name||!email||!whatsapp){showToast(t('toast_preencha_obrigatorios'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
   if(!_emailFormatRe.test(email)){showToast(t('toast_email_invalido'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
-  if(!validatePhone(whatsapp)){showToast(t('toast_telefone_invalido'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
   const lvConsent=document.getElementById('lv-consent')?.checked;
   if(!lvConsent){showToast(t('toast_aceite_privacidade'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
-  const mx=await validateEmailMx(email);
-  if(!mx.valid){showToast(mx.reason==='disposable'?t('toast_email_descartavel'):t('toast_email_invalido'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
   const nasc=document.getElementById('lv-nascimento')?.value;
   const lead={name,email,whatsapp,sexo:document.getElementById('lv-sexo')?.value||null,nascimento:nasc||null,idade:nasc?Math.floor((Date.now()-new Date(nasc))/31557600000):null,pais:document.getElementById('lv-pais')?.value||null,estado:document.getElementById('lv-estado')?.value.trim()||null,cidade:document.getElementById('lv-cidade')?.value.trim()||null,estilo_trading:document.getElementById('lv-estilo')?.value||null,plataforma:document.getElementById('lv-plataforma')?.value||null,firma:document.getElementById('lv-firma')?.value||null,capital_disponivel:document.getElementById('lv-capital')?.value||null,passou_desafio:document.getElementById('lv-desafio')?.value||null,tool:'live',consent:true,consent_date:new Date().toISOString(),ts:new Date().toISOString()};
   saveLead(lead);
@@ -3979,22 +3976,14 @@ function renderIndHub(){const g=document.getElementById('ind-hub-grid');if(!g)re
 function openTool(id){const t=TOOLS.find(x=>x.id===id);if(!t)return;const unlocked=isUnlocked(id);const inner=document.getElementById('tool-modal-inner');inner.innerHTML=`<div class="tm-hd"><div class="tm-title">${t.name} <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${t.badgeBg};color:${t.badgeColor};font-weight:700;">${t.badge}</span></div><button class="tm-x" onclick="closeTool()">x</button></div><div class="tm-body" id="tm-body">${unlocked?renderToolContent(id):renderLeadGate(id,t)}</div>`;document.getElementById('tool-ov').classList.add('open');document.getElementById('tool-modal').classList.add('open');document.body.style.overflow='hidden';track('tool_open',{tool_id:id,tool_name:t.name,unlocked});}
 function closeTool(){document.getElementById('tool-ov').classList.remove('open');document.getElementById('tool-modal').classList.remove('open');document.body.style.overflow='';}
 function renderLeadGate(toolId,tool){return`<div class="lead-gate"><div class="lg-ico"></div><div class="lg-title">Acesse o ${tool.name}</div><div class="lg-desc">${tool.desc}<br><br><strong style="color:var(--t1);">Cadastre-se gratuitamente para desbloquear.</strong></div><div class="lg-form"><div class="lg-field"><label>Nome</label><input type="text" id="lg-name-${toolId}" placeholder="Seu nome"></div><div class="lg-field"><label>E-mail</label><input type="email" id="lg-email-${toolId}" placeholder="seu@email.com"></div><div class="lg-field"><label>WhatsApp</label><input type="tel" id="lg-wa-${toolId}" placeholder="+55 11 99999-9999"></div><label class="lg-consent"><input type="checkbox" id="lg-consent-${toolId}"> <span>${t('consent_label')}</span></label><button class="lg-sub" onclick="submitLead('${toolId}')">Desbloquear</button><div class="lg-note">Seus dados sao privados.</div></div></div>`;}
-async function submitLead(toolId){
+function submitLead(toolId){
   const name=document.getElementById('lg-name-'+toolId)?.value.trim();
   const email=document.getElementById('lg-email-'+toolId)?.value.trim();
   const wa=document.getElementById('lg-wa-'+toolId)?.value.trim();
   const consent=document.getElementById('lg-consent-'+toolId)?.checked;
   if(!name||!email){showToast(t('toast_preencha_nome_email'));return;}
   if(!_emailFormatRe.test(email)){showToast(t('toast_email_invalido'));return;}
-  if(wa && !validatePhone(wa)){showToast(t('toast_telefone_invalido'));return;}
   if(!consent){showToast(t('toast_aceite_privacidade'));return;}
-  const btn=document.querySelector(`#lg-consent-${toolId}`)?.closest('.lg-form')?.querySelector('.lg-sub');
-  if(btn){btn.disabled=true;btn.textContent=t('toast_validando');}
-  const mx=await validateEmailMx(email);
-  if(!mx.valid){
-    if(btn){btn.disabled=false;btn.textContent='Desbloquear';}
-    showToast(mx.reason==='disposable'?t('toast_email_descartavel'):t('toast_email_invalido'));return;
-  }
   saveLead({name,email,whatsapp:wa,tool:toolId,consent:true,consent_date:new Date().toISOString()});
   document.getElementById('tm-body').innerHTML=renderToolContent(toolId);
   showToast(t('toast_acesso_liberado'));

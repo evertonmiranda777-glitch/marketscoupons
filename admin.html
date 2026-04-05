@@ -1102,6 +1102,36 @@ a{text-decoration:none;color:inherit;}
  </div>
  </div><!-- /grid compose+preview -->
 
+ <!-- SUBSCRIBERS MANAGEMENT -->
+ <div style="margin-top:24px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;">
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+     <div style="font-size:14px;font-weight:700;color:var(--t1);">Subscribers</div>
+     <div style="display:flex;gap:8px;">
+       <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="document.getElementById('sub-add-row').classList.toggle('hide')">+ Adicionar</button>
+       <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="loadSubscribersList()">Atualizar</button>
+     </div>
+   </div>
+   <!-- Add subscriber inline -->
+   <div id="sub-add-row" class="hide" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:end;">
+     <div style="flex:1;min-width:140px;"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;">Nome</div><input type="text" id="sub-add-name" placeholder="Nome" style="width:100%;"></div>
+     <div style="flex:1;min-width:180px;"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;">Email</div><input type="email" id="sub-add-email" placeholder="email@exemplo.com" style="width:100%;"></div>
+     <div style="min-width:80px;"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;">Firma</div>
+       <select id="sub-add-firma" style="width:100%;"><option value="">Geral</option></select>
+     </div>
+     <div style="min-width:60px;"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;">Idioma</div>
+       <select id="sub-add-lang" style="width:100%;"><option value="pt">PT</option><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option><option value="it">IT</option><option value="ar">AR</option></select>
+     </div>
+     <button class="btn-primary" style="font-size:10px;padding:6px 14px;" onclick="addSubscriberManual()">Salvar</button>
+   </div>
+   <!-- Firma tabs -->
+   <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;" id="sub-firma-tabs"></div>
+   <!-- Search -->
+   <input class="filter-inp" id="sub-search" placeholder="Buscar por nome ou email..." style="width:100%;margin-bottom:12px;" oninput="renderSubscribersList()">
+   <!-- List -->
+   <div id="sub-list" style="max-height:400px;overflow-y:auto;"></div>
+   <div style="font-size:10px;color:var(--t3);margin-top:8px;" id="sub-total-info"></div>
+ </div>
+
  </div><!-- /page-email -->
 
 
@@ -1778,7 +1808,7 @@ function renderPage(p){
       renderEmailFirmaChips();
       loadEmailStats();
       updateDestCount();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'cms-firms':      renderCmsFirms(); break;
@@ -3984,7 +4014,7 @@ async function importValidToSubscribers() {
   for (const r of _csvValidated.valid) {
     const lang = langFromCode(r.lang) || 'en';
     const tags = ['imported'];
-    if (firmaTag) tags.push('firma:' + firmaTag);
+    if (firmaTag) tags.push(firmaTag);
     const { error } = await db.from('email_subscribers').upsert({
       email: r.email, name: r.name || '', source: 'csv-import', lang,
       tags
@@ -3995,6 +4025,7 @@ async function importValidToSubscribers() {
   csvLog(`Importacao completa: ${imported} importados, ${skipped} ja existiam${label}`);
   toast(`${imported.toLocaleString()} subscribers importados${label}!`);
   await loadEmailStats();
+  await loadSubscribersList();
   btn.disabled = false;
   btn.textContent = 'Importar validos → Subscribers';
 }
@@ -4231,9 +4262,125 @@ async function sendSingleEmail(){
 }
 
 /* ═══ EMAIL SUBSCRIBERS (Supabase) ═══ */
+let _subsList = [];
+let _subsFilter = ''; // firma filter
+
 async function loadSubscribers(){
   const { data } = await db.from('email_subscribers').select('*').eq('status','active').order('created_at',{ascending:false});
   return data || [];
+}
+
+async function loadSubscribersList(){
+  _subsList = await loadSubscribers();
+  renderSubsFirmaTabs();
+  renderSubscribersList();
+  // Populate add-firma select
+  const sel = document.getElementById('sub-add-firma');
+  if(sel && sel.options.length <= 1){
+    const firms = await getEmailFirms();
+    firms.forEach(f => { const o=document.createElement('option'); o.value=f.id; o.textContent=f.short_name||f.name; sel.appendChild(o); });
+  }
+}
+
+function renderSubsFirmaTabs(){
+  const el = document.getElementById('sub-firma-tabs');
+  if(!el) return;
+  // Count per firma tag
+  const counts = { '': _subsList.length };
+  for(const s of _subsList){
+    const tags = s.tags || [];
+    for(const tag of tags){
+      counts[tag] = (counts[tag]||0) + 1;
+    }
+  }
+  // Get firma names
+  const firmaNames = {};
+  if(_emailFirmsCache) _emailFirmsCache.forEach(f => { firmaNames[f.id] = f.short_name||f.name; });
+  const firmTags = Object.keys(counts).filter(k => k && k !== 'site' && k !== 'lead').sort();
+  el.innerHTML = `<div class="seg-opt seg-firma ${_subsFilter===''?'sel':''}" onclick="setSubsFilter('')" style="--fc:var(--gold);">Todos <span style="font-size:9px;opacity:.6;">(${counts['']})</span></div>` +
+    firmTags.map(tag => {
+      const name = firmaNames[tag] || tag;
+      const c = counts[tag] || 0;
+      const firm = _emailFirmsCache?.find(f=>f.id===tag);
+      const fc = firm ? firm.color : 'var(--gold)';
+      return `<div class="seg-opt seg-firma ${_subsFilter===tag?'sel':''}" onclick="setSubsFilter('${tag}')" style="--fc:${fc};">${name} <span style="font-size:9px;opacity:.6;">(${c})</span></div>`;
+    }).join('');
+}
+
+function setSubsFilter(firma){
+  _subsFilter = firma;
+  renderSubsFirmaTabs();
+  renderSubscribersList();
+}
+
+function renderSubscribersList(){
+  const el = document.getElementById('sub-list');
+  const info = document.getElementById('sub-total-info');
+  if(!el) return;
+  const search = (document.getElementById('sub-search')?.value||'').toLowerCase();
+  let filtered = _subsList;
+  if(_subsFilter){
+    filtered = filtered.filter(s => (s.tags||[]).includes(_subsFilter));
+  }
+  if(search){
+    filtered = filtered.filter(s => (s.email||'').toLowerCase().includes(search) || (s.name||'').toLowerCase().includes(search));
+  }
+  if(info) info.textContent = `Mostrando ${filtered.length} de ${_subsList.length} subscribers`;
+  if(!filtered.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--t3);padding:24px;font-size:12px;">Nenhum subscriber encontrado.</div>';
+    return;
+  }
+  const rows = filtered.slice(0, 200);
+  el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:11px;">
+    <thead><tr style="border-bottom:1px solid var(--b1);">
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Email</th>
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Nome</th>
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Firma</th>
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Idioma</th>
+      <th style="text-align:center;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Acao</th>
+    </tr></thead>
+    <tbody>
+    ${rows.map(s => {
+      const tags = (s.tags||[]).filter(t=>t!=='site'&&t!=='lead');
+      const tagStr = tags.length ? tags.join(', ') : '<span style="color:var(--t3);">—</span>';
+      return `<tr style="border-bottom:1px solid var(--b1);">
+        <td style="padding:5px 8px;color:var(--t1);font-weight:500;">${s.email}</td>
+        <td style="padding:5px 8px;color:var(--t2);">${s.name||'—'}</td>
+        <td style="padding:5px 8px;">${tagStr}</td>
+        <td style="padding:5px 8px;color:var(--t3);text-transform:uppercase;">${s.lang||'—'}</td>
+        <td style="padding:5px 8px;text-align:center;"><button onclick="deleteSubscriber('${s.email}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:11px;font-weight:600;">Excluir</button></td>
+      </tr>`;
+    }).join('')}
+    </tbody></table>` + (filtered.length > 200 ? `<div style="text-align:center;color:var(--t3);font-size:10px;padding:8px;">Mostrando 200 de ${filtered.length}. Use a busca para filtrar.</div>` : '');
+}
+
+async function deleteSubscriber(email){
+  if(!confirm(`Excluir subscriber ${email}?`)) return;
+  await db.from('email_subscribers').delete().eq('email', email);
+  _subsList = _subsList.filter(s => s.email !== email);
+  renderSubsFirmaTabs();
+  renderSubscribersList();
+  toast('Subscriber removido.');
+  await loadEmailStats();
+}
+
+async function addSubscriberManual(){
+  const email = document.getElementById('sub-add-email')?.value?.trim();
+  const name = document.getElementById('sub-add-name')?.value?.trim();
+  const firma = document.getElementById('sub-add-firma')?.value;
+  const lang = document.getElementById('sub-add-lang')?.value || 'pt';
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Email invalido!','warn'); return; }
+  const tags = firma ? [firma] : ['site'];
+  const { error } = await db.from('email_subscribers').upsert({
+    email, name: name||'', lang, tags, source:'manual', status:'active'
+  },{ onConflict:'email' });
+  if(error){ toast('Erro: '+error.message,'error'); return; }
+  toast('Subscriber adicionado!');
+  document.getElementById('sub-add-email').value='';
+  document.getElementById('sub-add-name').value='';
+  document.getElementById('sub-add-row').classList.add('hide');
+  await loadSubscribersList();
+  await loadEmailStats();
 }
 
 async function importLeadsAsSubscribers(){
@@ -5762,17 +5909,12 @@ function updateCrPreview() {
 
   let h = '<div class="cr-inner">';
 
-  // ── MC branding (centered, above firm) ──
-  h += `<div class="cr-mc">
-    <img src="img/logo-hexmark.svg" onerror="this.style.display='none'" alt="">
-    <div class="cr-mc-txt"><b>Markets</b> Coupons</div>
-  </div>`;
-
   // ── Hero: Firm LEFT + Discount RIGHT ──
+  const displayName = firm.short_name || firm.name.split(' ').slice(0,2).join(' ');
   h += `<div class="cr-hero">
     <div class="cr-hero-left">
       <div class="cr-firm-logo"><img src="${firm.icon_url}" alt="${firm.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${color};font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;height:100%\\'>${firm.icon||firm.name[0]}</span>'"></div>
-      <div><div class="cr-firm-name">${escHtml(firm.name)}</div><div class="cr-firm-type">${ftype.toLowerCase()==='futuros'?L.futuros:ftype.toLowerCase()==='forex'?L.forex:escHtml(ftype)}</div></div>
+      <div><div class="cr-firm-name" style="white-space:nowrap;">${escHtml(displayName)}</div><div class="cr-firm-type">${ftype.toLowerCase()==='futuros'?L.futuros:ftype.toLowerCase()==='forex'?L.forex:escHtml(ftype)}</div></div>
     </div>`;
   if (crChk('cr-show-discount') && firm.discount) {
     h += `<div class="cr-hero-right">
@@ -5796,10 +5938,12 @@ function updateCrPreview() {
 
   // ── Coupon (centered, no Copy button) ──
   if (crChk('cr-show-coupon') && coupon) {
+    const couponSize = coupon.length > 12 ? '42px' : coupon.length > 8 ? '56px' : '72px';
+    const couponSpacing = coupon.length > 12 ? '2px' : coupon.length > 8 ? '4px' : '8px';
     h += `<div class="cr-coupon">
       <div class="cr-coupon-left" style="width:100%;text-align:center;">
         <div class="cr-coupon-tag">${L.exclusive_coupon}</div>
-        <div class="cr-coupon-code">${escHtml(coupon)}</div>
+        <div class="cr-coupon-code" style="font-size:${couponSize};letter-spacing:${couponSpacing};word-break:break-all;">${escHtml(coupon)}</div>
       </div>
     </div>
     <div class="cr-coupon-hint">${L.use_coupon}</div>`;
@@ -5831,25 +5975,25 @@ function updateCrPreview() {
       const lbl1 = pTypes[0] || 'Intraday';
       const lbl2 = pTypes[1] || 'EOD';
       h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':'ACCOUNT SIZE'}</div>
-      <div style="padding:0 6px;">
+      <div style="padding:0 16px;">
         <table style="width:100%;border-collapse:collapse;border-spacing:0;">
           <thead><tr>
-            <th style="padding:4px 6px;text-align:left;color:#A0AEC0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid ${color}30;">${_crLang==='pt'?'Conta':'Account'}</th>
-            <th style="padding:4px 6px;text-align:center;color:${color};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid ${color}30;">${lbl1}</th>
-            <th style="padding:4px 6px;text-align:center;color:${color};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid ${color}30;">${lbl2}</th>
+            <th style="padding:8px 12px;text-align:left;color:#A0AEC0;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid ${color}30;">${_crLang==='pt'?'Conta':'Account'}</th>
+            <th style="padding:8px 12px;text-align:center;color:${color};font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid ${color}30;">${lbl1}</th>
+            <th style="padding:8px 12px;text-align:center;color:${color};font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid ${color}30;">${lbl2}</th>
           </tr></thead>
           <tbody>
           ${top4.map(p => {
             const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
             return `<tr>
-            <td style="padding:5px 6px;border-top:1px solid ${color}10;color:#EDF2F7;font-weight:700;font-size:12px;">${cleanA}</td>
-            <td style="padding:5px 6px;border-top:1px solid ${color}10;text-align:center;">
-              <span style="color:${color};font-weight:800;font-size:12px;">${p.n}</span>
-              ${p.o && p.o !== '—' ? `<br><span style="color:#4A5568;font-size:9px;text-decoration:line-through;">${p.o}</span>` : ''}
+            <td style="padding:10px 12px;border-top:1px solid ${color}15;color:#EDF2F7;font-weight:800;font-size:28px;">${cleanA}</td>
+            <td style="padding:10px 12px;border-top:1px solid ${color}15;text-align:center;">
+              <span style="color:${color};font-weight:800;font-size:28px;">${p.n}</span>
+              ${p.o && p.o !== '—' ? `<br><span style="color:#4A5568;font-size:16px;text-decoration:line-through;">${p.o}</span>` : ''}
             </td>
-            <td style="padding:5px 6px;border-top:1px solid ${color}10;text-align:center;">
-              <span style="color:${color};font-weight:800;font-size:12px;">${p.n2||'—'}</span>
-              ${p.o2 && p.o2 !== '—' ? `<br><span style="color:#4A5568;font-size:9px;text-decoration:line-through;">${p.o2}</span>` : ''}
+            <td style="padding:10px 12px;border-top:1px solid ${color}15;text-align:center;">
+              <span style="color:${color};font-weight:800;font-size:28px;">${p.n2||'—'}</span>
+              ${p.o2 && p.o2 !== '—' ? `<br><span style="color:#4A5568;font-size:16px;text-decoration:line-through;">${p.o2}</span>` : ''}
             </td>
           </tr>`;}).join('')}
           </tbody>
@@ -5877,11 +6021,7 @@ function updateCrPreview() {
     </div>`;
   }
 
-  // ── MC footer (below content, safe from FB crop) ──
-  h += `<div class="cr-mc-foot">
-    <img src="img/logo-hexmark.svg" onerror="this.style.display='none'" alt="">
-    <div class="cr-mc-foot-txt"><b>Markets</b> Coupons</div>
-  </div>`;
+  // MC footer removed — user adds their own branding
 
   h += '</div>'; // close cr-inner
   content.innerHTML = h;
