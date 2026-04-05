@@ -2470,8 +2470,9 @@ async function getSegmentedLeads(){
  if(needAll){
   const {data}=await db.from('email_subscribers').select('email,name,lang,tags').eq('status','active');
   if(data) results.push(...data.map(s=>{
-   const firmTag=(s.tags||[]).find(t=>t.startsWith('firma:'));
-   return {email:s.email,name:s.name||'',lang:s.lang||'en',source:'subscriber',firma:firmTag?firmTag.replace('firma:',''):''};
+   const tags = s.tags||[];
+   const firmTag = tags.find(t => t!=='imported'&&t!=='site'&&t!=='lead'&&t!=='csv-direct'&&t!=='manual') || '';
+   return {email:s.email,name:s.name||'',lang:s.lang||'pt',source:'subscriber',firma:firmTag};
   }));
  }
  // Deduplicate by email (keep first = most specific lang)
