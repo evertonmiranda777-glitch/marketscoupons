@@ -969,16 +969,7 @@ a{text-decoration:none;color:inherit;}
      <div style="font-size:10px;color:var(--t3);">CSV / TXT</div>
    </div>
    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;" id="import-firma-chips">
-     <div class="seg-opt seg-firma sel" data-firma="" onclick="selectImportFirma(this,'')" style="--fc:var(--gold);">Todas</div>
-     <div class="seg-opt seg-firma" data-firma="apex" onclick="selectImportFirma(this,'apex')" style="--fc:#F97316;">Apex</div>
-     <div class="seg-opt seg-firma" data-firma="bulenox" onclick="selectImportFirma(this,'bulenox')" style="--fc:#3B82F6;">Bulenox</div>
-     <div class="seg-opt seg-firma" data-firma="e2t" onclick="selectImportFirma(this,'e2t')" style="--fc:#F59E0B;">E2T</div>
-     <div class="seg-opt seg-firma" data-firma="tpt" onclick="selectImportFirma(this,'tpt')" style="--fc:#A855F7;">TPT</div>
-     <div class="seg-opt seg-firma" data-firma="fn" onclick="selectImportFirma(this,'fn')" style="--fc:#06B6D4;">FN</div>
-     <div class="seg-opt seg-firma" data-firma="fundingpips" onclick="selectImportFirma(this,'fundingpips')" style="--fc:#6366F1;">FPips</div>
-     <div class="seg-opt seg-firma" data-firma="brightfunded" onclick="selectImportFirma(this,'brightfunded')" style="--fc:#00C9A7;">BF</div>
-     <div class="seg-opt seg-firma" data-firma="ftmo" onclick="selectImportFirma(this,'ftmo')" style="--fc:#22C55E;">FTMO</div>
-     <div class="seg-opt seg-firma" data-firma="the5ers" onclick="selectImportFirma(this,'the5ers')" style="--fc:#10B981;">5ers</div>
+     <!-- Rendered dynamically by renderEmailFirmaChips() -->
    </div>
    <!-- Upload area -->
    <div style="background:var(--card2);border:2px dashed var(--b1);border-radius:10px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px;" onclick="document.getElementById('csv-file').click()">
@@ -1019,16 +1010,8 @@ a{text-decoration:none;color:inherit;}
      <div class="tpl-card" onclick="loadQuickTemplate('ultimas-horas')"><div class="tpl-card-icon">UH</div><div class="tpl-card-text"><div class="tpl-card-name">Ultimas Horas</div><div class="tpl-card-hook">Urgencia de promocao</div></div></div>
    </div>
    <div class="tpl-section-title">Promos por Firma</div>
-   <div class="tpl-promo-grid">
-     <div class="tpl-promo" onclick="loadPromoTemplate('apex')" style="--fc:#F97316;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#F97316;"></span><span class="tpl-promo-name">Apex</span></div><span class="tpl-promo-pct" style="color:#F97316;">90%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('bulenox')" style="--fc:#3B82F6;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#3B82F6;"></span><span class="tpl-promo-name">Bulenox</span></div><span class="tpl-promo-pct" style="color:#3B82F6;">89%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('e2t')" style="--fc:#F59E0B;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#F59E0B;"></span><span class="tpl-promo-name">E2T</span></div><span class="tpl-promo-pct" style="color:#F59E0B;">50%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('tpt')" style="--fc:#A855F7;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#A855F7;"></span><span class="tpl-promo-name">TPT</span></div><span class="tpl-promo-pct" style="color:#A855F7;">40%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('fn')" style="--fc:#06B6D4;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#06B6D4;"></span><span class="tpl-promo-name">FundedNext</span></div><span class="tpl-promo-pct" style="color:#06B6D4;">30%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('fundingpips')" style="--fc:#6366F1;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#6366F1;"></span><span class="tpl-promo-name">FPips</span></div><span class="tpl-promo-pct" style="color:#6366F1;">20%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('brightfunded')" style="--fc:#00C9A7;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#00C9A7;"></span><span class="tpl-promo-name">BrightFunded</span></div><span class="tpl-promo-pct" style="color:#00C9A7;">20%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('ftmo')" style="--fc:#22C55E;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#22C55E;"></span><span class="tpl-promo-name">FTMO</span></div><span class="tpl-promo-pct" style="color:#22C55E;">19%</span></div>
-     <div class="tpl-promo" onclick="loadPromoTemplate('the5ers')" style="--fc:#10B981;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:#10B981;"></span><span class="tpl-promo-name">The5ers</span></div><span class="tpl-promo-pct" style="color:#10B981;">10%</span></div>
+   <div class="tpl-promo-grid" id="tpl-promo-grid">
+     <!-- Rendered dynamically by renderPromoGrid() -->
    </div>
  </div>
 
@@ -1052,15 +1035,7 @@ a{text-decoration:none;color:inherit;}
        <div style="margin-top:6px;">
          <div style="font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:4px;">Filtrar por firma</div>
          <div style="display:flex;flex-wrap:wrap;gap:4px;" id="seg-firma-grid">
-           <div class="seg-opt seg-firma" data-firma="apex" onclick="toggleFirma(this,'apex')" style="--fc:#F97316;">Apex</div>
-           <div class="seg-opt seg-firma" data-firma="bulenox" onclick="toggleFirma(this,'bulenox')" style="--fc:#3B82F6;">Bulenox</div>
-           <div class="seg-opt seg-firma" data-firma="e2t" onclick="toggleFirma(this,'e2t')" style="--fc:#F59E0B;">E2T</div>
-           <div class="seg-opt seg-firma" data-firma="tpt" onclick="toggleFirma(this,'tpt')" style="--fc:#A855F7;">TPT</div>
-           <div class="seg-opt seg-firma" data-firma="fn" onclick="toggleFirma(this,'fn')" style="--fc:#06B6D4;">FN</div>
-           <div class="seg-opt seg-firma" data-firma="fundingpips" onclick="toggleFirma(this,'fundingpips')" style="--fc:#6366F1;">FPips</div>
-           <div class="seg-opt seg-firma" data-firma="brightfunded" onclick="toggleFirma(this,'brightfunded')" style="--fc:#00C9A7;">BF</div>
-           <div class="seg-opt seg-firma" data-firma="ftmo" onclick="toggleFirma(this,'ftmo')" style="--fc:#22C55E;">FTMO</div>
-           <div class="seg-opt seg-firma" data-firma="the5ers" onclick="toggleFirma(this,'the5ers')" style="--fc:#10B981;">5ers</div>
+           <!-- Rendered dynamically by renderEmailFirmaChips() -->
          </div>
        </div>
        <div style="font-size:10px;color:var(--t3);margin-top:4px;">Destinatarios: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
@@ -1800,6 +1775,7 @@ function renderPage(p){
     case 'geo':            renderGeoPage(); break;
     case 'cadastros':      renderCadastrosPage(); break;
     case 'email':
+      renderEmailFirmaChips();
       loadEmailStats();
       updateDestCount();
       setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); }, 60);
@@ -2588,6 +2564,50 @@ async function renderCampaignLog(){
  </div>`).join(''):'<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma campanha enviada.</div>';
 }
 
+/* ═══ DYNAMIC FIRMA CHIPS & PROMO GRID ═══ */
+let _emailFirmsCache = null;
+async function getEmailFirms(){
+  if(_emailFirmsCache) return _emailFirmsCache;
+  const { data } = await db.from('cms_firms').select('id,name,short_name,color,discount,discount_type,coupon').eq('active',true).order('sort_order');
+  _emailFirmsCache = data || [];
+  return _emailFirmsCache;
+}
+
+async function renderEmailFirmaChips(){
+  const firms = await getEmailFirms();
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TPT',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
+
+  // Import firma chips
+  const importEl = document.getElementById('import-firma-chips');
+  if(importEl){
+    importEl.innerHTML = `<div class="seg-opt seg-firma sel" data-firma="" onclick="selectImportFirma(this,'')" style="--fc:var(--gold);">Todas</div>` +
+      firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="selectImportFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
+  }
+
+  // Segmentation firma chips
+  const segEl = document.getElementById('seg-firma-grid');
+  if(segEl){
+    segEl.innerHTML = firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="toggleFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
+  }
+
+  // Promo template grid
+  const promoEl = document.getElementById('tpl-promo-grid');
+  if(promoEl){
+    promoEl.innerHTML = firms.filter(f => f.discount > 0).map(f => {
+      const sn = shortNames[f.id]||f.short_name||f.name;
+      return `<div class="tpl-promo" onclick="loadPromoTemplate('${f.id}')" style="--fc:${f.color};"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:${f.color};"></span><span class="tpl-promo-name">${sn}</span></div><span class="tpl-promo-pct" style="color:${f.color};">${f.discount}%</span></div>`;
+    }).join('');
+    // Add firms without discount but still relevant (FTMO, The5ers)
+    const noDiscount = firms.filter(f => f.discount === 0);
+    if(noDiscount.length){
+      promoEl.innerHTML += noDiscount.map(f => {
+        const sn = shortNames[f.id]||f.short_name||f.name;
+        return `<div class="tpl-promo" onclick="loadPromoTemplate('${f.id}')" style="--fc:${f.color};opacity:.6;"><div class="tpl-promo-info"><span class="tpl-promo-dot" style="background:${f.color};"></span><span class="tpl-promo-name">${sn}</span></div><span class="tpl-promo-pct" style="color:${f.color};">—</span></div>`;
+      }).join('');
+    }
+  }
+}
+
 async function loadEmailStats(){
   const { count: campCount } = await db.from('email_logs').select('*',{count:'exact',head:true});
   const { data: logs } = await db.from('email_logs').select('recipients');
@@ -2677,6 +2697,25 @@ function getResendLog(){ return JSON.parse(localStorage.getItem('mc_email_log')|
 async function loadQuickTemplate(name){
   const tpl = INST_TEMPLATES[name];
   if(!tpl){ toast('Template nao encontrado!','warn'); return; }
+
+  // Dynamically update firm-dependent templates with current data
+  if(name === 'site-invite' || name === 'ultimas-horas'){
+    const firms = await getEmailFirms();
+    const topFirms = firms.filter(f => f.discount > 0).sort((a,b) => b.discount - a.discount).slice(0, 4);
+    const _langs = ['pt','en','es','fr','de','it','ar'];
+    const ltLabel = {pt:'Lifetime',en:'Lifetime',es:'Lifetime',fr:'Lifetime',de:'Lifetime',it:'Lifetime',ar:'Lifetime'};
+    const moreLabel = {pt:'E muito mais...',en:'And much more...',es:'Y mucho mas...',fr:'Et bien plus...',de:'Und vieles mehr...',it:'E molto altro...',ar:'والمزيد...'};
+    const couponLabel = {pt:'cupom',en:'coupon',es:'cupon',fr:'coupon',de:'Gutschein',it:'coupon',ar:'كوبون'};
+    _langs.forEach(lang => {
+      const items = topFirms.map(f => {
+        const lt = f.discount_type === 'lifetime' ? ' Lifetime' : '';
+        const cpn = f.coupon ? ` (${couponLabel[lang]} ${f.coupon})` : '';
+        return `${f.name} — ${f.discount}% OFF${lt}${name==='ultimas-horas'?cpn:''}`;
+      });
+      items.push(name === 'ultimas-horas' ? (lang==='ar'?'صالح لفترة محدودة — بدون تمديد':'Valid for limited time') : moreLabel[lang]);
+      tpl.features[lang] = items;
+    });
+  }
 
   emailIsHtml = true;
   emailPromoFirm = null;
@@ -3197,13 +3236,13 @@ const INST_TEMPLATES = {
       ar:'نتفاوض مباشرة مع الشركات للحصول على أفضل الكوبونات. بعضها <b>حصري لنا</b>. شاهد ما هو متاح:'
     },
     features: {
-      pt:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','E muito mais...'],
-      en:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','And much more...'],
-      es:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','Y mucho mas...'],
-      fr:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','Et bien plus...'],
-      de:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','Und vieles mehr...'],
-      it:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','E molto altro...'],
-      ar:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 50% OFF','FTMO — 19% OFF','والمزيد...']
+      pt:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','E muito mais...'],
+      en:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','And much more...'],
+      es:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','Y mucho mas...'],
+      fr:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','Et bien plus...'],
+      de:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','Und vieles mehr...'],
+      it:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','E molto altro...'],
+      ar:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','والمزيد...']
     },
     cta: { pt:'VER OFERTAS', en:'SEE DEALS', es:'VER OFERTAS', fr:'VOIR LES OFFRES', de:'ANGEBOTE SEHEN', it:'VEDI OFFERTE', ar:'عرض العروض' }
   },
@@ -3293,13 +3332,13 @@ const INST_TEMPLATES = {
       ar:'أفضل العروض لا تدوم للأبد. هذه العروض في <b>ساعاتها الأخيرة</b> — بعدها يعود السعر الكامل. إذا كنت تفكر، الآن هو الوقت.'
     },
     features: {
-      pt:['Apex Trader Funding — 90% OFF Lifetime (cupom MARKET)','Bulenox — 89% OFF Lifetime (cupom MARKET)','Desconto aplicado automaticamente no checkout','Valido por tempo limitado — sem prorrogacao'],
-      en:['Apex Trader Funding — 90% OFF Lifetime (coupon MARKET)','Bulenox — 89% OFF Lifetime (coupon MARKET)','Discount applied automatically at checkout','Valid for limited time — no extensions'],
-      es:['Apex Trader Funding — 90% OFF Lifetime (cupon MARKET)','Bulenox — 89% OFF Lifetime (cupon MARKET)','Descuento aplicado automaticamente en el checkout','Valido por tiempo limitado — sin prorroga'],
-      fr:['Apex Trader Funding — 90% OFF Lifetime (coupon MARKET)','Bulenox — 89% OFF Lifetime (coupon MARKET)','Reduction appliquee automatiquement au checkout','Valable pour une duree limitee — sans prolongation'],
-      de:['Apex Trader Funding — 90% OFF Lifetime (Gutschein MARKET)','Bulenox — 89% OFF Lifetime (Gutschein MARKET)','Rabatt automatisch an der Kasse angewendet','Nur fur begrenzte Zeit — keine Verlangerung'],
-      it:['Apex Trader Funding — 90% OFF Lifetime (coupon MARKET)','Bulenox — 89% OFF Lifetime (coupon MARKET)','Sconto applicato automaticamente al checkout','Valido per tempo limitato — nessuna proroga'],
-      ar:['Apex Trader Funding — 90% OFF Lifetime (كوبون MARKET)','Bulenox — 89% OFF Lifetime (كوبون MARKET)','الخصم يُطبق تلقائياً عند الدفع','صالح لفترة محدودة — بدون تمديد']
+      pt:['Apex Trader Funding — 90% OFF Lifetime (cupom MARKET)','Bulenox — 89% OFF Lifetime (cupom MARKET89)','Desconto aplicado automaticamente no checkout','Valido por tempo limitado — sem prorrogacao'],
+      en:['Apex Trader Funding — 90% OFF Lifetime (coupon MARKET)','Bulenox — 89% OFF Lifetime (coupon MARKET89)','Discount applied automatically at checkout','Valid for limited time — no extensions'],
+      es:['Apex Trader Funding — 90% OFF Lifetime (cupon MARKET)','Bulenox — 89% OFF Lifetime (cupon MARKET89)','Descuento aplicado automaticamente en el checkout','Valido por tiempo limitado — sin prorroga'],
+      fr:['Apex Trader Funding — 90% OFF Lifetime (coupon MARKET)','Bulenox — 89% OFF Lifetime (coupon MARKET89)','Reduction appliquee automatiquement au checkout','Valable pour une duree limitee — sans prolongation'],
+      de:['Apex Trader Funding — 90% OFF Lifetime (Gutschein MARKET)','Bulenox — 89% OFF Lifetime (Gutschein MARKET89)','Rabatt automatisch an der Kasse angewendet','Nur fur begrenzte Zeit — keine Verlangerung'],
+      it:['Apex Trader Funding — 90% OFF Lifetime (coupon MARKET)','Bulenox — 89% OFF Lifetime (coupon MARKET89)','Sconto applicato automaticamente al checkout','Valido per tempo limitato — nessuna proroga'],
+      ar:['Apex Trader Funding — 90% OFF Lifetime (كوبون MARKET)','Bulenox — 89% OFF Lifetime (كوبون MARKET89)','الخصم يُطبق تلقائياً عند الدفع','صالح لفترة محدودة — بدون تمديد']
     },
     cta: { pt:'APROVEITAR AGORA', en:'GET IT NOW', es:'APROVECHAR AHORA', fr:'EN PROFITER', de:'JETZT SICHERN', it:'APPROFITTA ORA', ar:'احصل عليه الآن' }
   },
@@ -5622,14 +5661,38 @@ const CR_LABELS = {
 
 const CR_PERKS_EN = {
   'Sem limite diario':'No daily loss limit','Sem regra escalamento':'No scaling rules',
-  'Payout 5 dias':'5-day payout','Reset $99':'Reset $99','Payout rapido':'Fast payout',
+  'Payout 5 dias':'5-day payout','Payout rapido':'Fast payout',
   'Conta vitalicia':'Lifetime account','Sem taxa mensal':'No monthly fee',
   'Sem limite de tempo':'No time limit','Copy trading':'Copy trading',
   'Payout semanal':'Weekly payout','Payout diario':'Daily payout',
   'Sem regra de consistencia':'No consistency rule','Conta gratuita':'Free account',
   'Trading de noticias':'News trading','Trailing drawdown':'Trailing drawdown',
   'Static drawdown':'Static drawdown','Sem tempo minimo':'No minimum time',
-  'Payout 2 semanas':'2-week payout','Conta demo gratis':'Free demo account'
+  'Payout 2 semanas':'2-week payout','Conta demo gratis':'Free demo account',
+  'Ate 20 contas':'Up to 20 accounts','Sem taxas recorrentes':'No recurring fees',
+  'Passa em 1 dia':'Pass in 1 day','Sem consistencia':'No consistency rule',
+  'Trade noticias':'News trading allowed','Payouts semanais':'Weekly payouts',
+  'Scaling ate $400K':'Scaling up to $400K','Saque desde dia 1':'Withdrawal from day 1',
+  'Sem taxa ativacao':'No activation fee','Ate 3 saques/mes':'Up to 3 withdrawals/month',
+  'Payout garantido 24h':'Guaranteed 24h payout','$1K compensacao atraso':'$1K late compensation',
+  'Ate 95% split':'Up to 95% split','Scaling ate $4M':'Scaling up to $4M',
+  '15% lucro avaliacao':'15% evaluation profit bonus',
+  'Journalytix gratis':'Free Journalytix','Reset gratis':'Free reset',
+  'Educacao inclusa':'Education included',
+  'Profit Split ate 100%':'Profit Split up to 100%',
+  'Payout medio 16h':'Average 16h payout','Alavancagem 1:100':'Leverage 1:100',
+  'Dashboard avancado':'Advanced dashboard',
+  'Split flexivel: 60-100%':'Flexible split: 60-100%',
+  '$200M+ pagos globalmente':'$200M+ paid globally',
+  'Comunidade Discord ativa':'Active Discord community',
+  'Payout sob demanda':'Payout on demand',
+  'Scaling ate 100% split':'Scaling up to 100% split','Drawdown estatico':'Static drawdown',
+  'Payout garantido 24h ciclo 7 dias':'Guaranteed 24h payout, 7-day cycle',
+  '15% bonus lucro avaliacao':'15% evaluation profit bonus',
+  'Trade2Earn (pontos por operar)':'Trade2Earn (points for trading)',
+  'Suporte 24/7':'24/7 support',
+  'Free Trial ilimitado':'Unlimited free trial','90% split':'90% split',
+  'Suporte 20 idiomas':'Support in 20 languages','$500M+ pagos':'$500M+ paid out'
 };
 
 async function initCriativos() {
