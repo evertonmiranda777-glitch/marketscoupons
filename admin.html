@@ -2795,6 +2795,7 @@ const EMAIL_I18N = {
     platforms: 'PLATAFORMAS', benefits: 'BENEFICIOS',
     account_type: 'TIPO DE CONTA', account_size: 'TAMANHO DA CONTA',
     savings: 'Economia', included: 'INCLUSO NO PLANO',
+    about_firm: 'SOBRE A FIRMA',
     prices_title: 'CONTAS DISPONIVEIS',
     col_account: 'Conta', col_goal: 'Meta', col_dd: 'Drawdown', col_price: 'Preco', col_original: 'De',
     cta: 'Comecar Avaliacao',
@@ -2819,6 +2820,7 @@ const EMAIL_I18N = {
     platforms: 'PLATFORMS', benefits: 'BENEFITS',
     account_type: 'ACCOUNT TYPE', account_size: 'ACCOUNT SIZE',
     savings: 'Save', included: 'INCLUDED IN PLAN',
+    about_firm: 'ABOUT THE FIRM',
     prices_title: 'AVAILABLE ACCOUNTS',
     col_account: 'Account', col_goal: 'Target', col_dd: 'Drawdown', col_price: 'Price', col_original: 'Was',
     cta: 'Start Evaluation',
@@ -2843,6 +2845,7 @@ const EMAIL_I18N = {
     platforms: 'PLATAFORMAS', benefits: 'BENEFICIOS',
     account_type: 'TIPO DE CUENTA', account_size: 'TAMAÑO DE CUENTA',
     savings: 'Ahorro', included: 'INCLUIDO EN EL PLAN',
+    about_firm: 'SOBRE LA FIRMA',
     prices_title: 'CUENTAS DISPONIBLES',
     col_account: 'Cuenta', col_goal: 'Meta', col_dd: 'Drawdown', col_price: 'Precio', col_original: 'Antes',
     cta: 'EMPEZAR AHORA →',
@@ -2867,6 +2870,7 @@ const EMAIL_I18N = {
     platforms: 'PLATEFORMES', benefits: 'AVANTAGES',
     account_type: 'TYPE DE COMPTE', account_size: 'TAILLE DU COMPTE',
     savings: 'Economie', included: 'INCLUS DANS LE PLAN',
+    about_firm: 'A PROPOS DE LA FIRME',
     prices_title: 'COMPTES DISPONIBLES',
     col_account: 'Compte', col_goal: 'Objectif', col_dd: 'Drawdown', col_price: 'Prix', col_original: 'Avant',
     cta: 'COMMENCER MAINTENANT →',
@@ -2891,6 +2895,7 @@ const EMAIL_I18N = {
     platforms: 'PLATTFORMEN', benefits: 'VORTEILE',
     account_type: 'KONTOTYP', account_size: 'KONTOGRÖSSE',
     savings: 'Ersparnis', included: 'IM PLAN ENTHALTEN',
+    about_firm: 'UBER DIE FIRMA',
     prices_title: 'VERFUGBARE KONTEN',
     col_account: 'Konto', col_goal: 'Ziel', col_dd: 'Drawdown', col_price: 'Preis', col_original: 'War',
     cta: 'JETZT STARTEN →',
@@ -2915,6 +2920,7 @@ const EMAIL_I18N = {
     platforms: 'PIATTAFORME', benefits: 'VANTAGGI',
     account_type: 'TIPO DI CONTO', account_size: 'DIMENSIONE CONTO',
     savings: 'Risparmio', included: 'INCLUSO NEL PIANO',
+    about_firm: 'SULLA FIRMA',
     prices_title: 'CONTI DISPONIBILI',
     col_account: 'Conto', col_goal: 'Target', col_dd: 'Drawdown', col_price: 'Prezzo', col_original: 'Era',
     cta: 'INIZIA ORA →',
@@ -2939,6 +2945,7 @@ const EMAIL_I18N = {
     platforms: 'المنصات', benefits: 'المزايا',
     account_type: 'نوع الحساب', account_size: 'حجم الحساب',
     savings: 'توفير', included: 'مشمول في الخطة',
+    about_firm: 'عن الشركة',
     prices_title: 'الحسابات المتاحة',
     col_account: 'الحساب', col_goal: 'الهدف', col_dd: 'Drawdown', col_price: 'السعر', col_original: 'كان',
     cta: '← ابدا الان',
@@ -3067,6 +3074,40 @@ function buildPromoHtml(f, lang='pt'){
   <div style="color:${T2};font-size:14px;line-height:1.7;font-family:${FI};">${et('intro')}</div>
 </td></tr>
 
+<!-- ═══ STATS GRID (2x3) ═══ -->
+<tr><td style="padding:20px 28px 0;">
+  <table width="100%" cellpadding="0" cellspacing="4" style="border-collapse:separate;">
+    <tr>
+      <td width="33%" style="background:${GLASS};border:1px solid #1C2535;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${T3};font-family:${FI};">Profit Split</div>
+        <div style="font-size:15px;font-weight:700;color:${GREEN};margin-top:3px;font-family:${FI};">${f.split||'—'}</div>
+      </td>
+      <td width="33%" style="background:${GLASS};border:1px solid #1C2535;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${T3};font-family:${FI};">${et('profit_target')}</div>
+        <div style="font-size:15px;font-weight:700;color:${GOLD};margin-top:3px;font-family:${FI};">${f.target||'—'}</div>
+      </td>
+      <td width="33%" style="background:${GLASS};border:1px solid #1C2535;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${T3};font-family:${FI};">Drawdown</div>
+        <div style="font-size:15px;font-weight:700;color:#EF4444;margin-top:3px;font-family:${FI};">${f.dd_pct||'—'}</div>
+      </td>
+    </tr>
+    <tr>
+      <td width="33%" style="background:${GLASS};border:1px solid #1C2535;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${T3};font-family:${FI};">${et('min_days')}</div>
+        <div style="font-size:15px;font-weight:700;color:${T1};margin-top:3px;font-family:${FI};">${f.min_days||'—'}</div>
+      </td>
+      <td width="33%" style="background:${GLASS};border:1px solid #1C2535;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${T3};font-family:${FI};">${et('scaling')}</div>
+        <div style="font-size:15px;font-weight:700;color:${T1};margin-top:3px;font-family:${FI};">${f.scaling||'—'}</div>
+      </td>
+      <td width="33%" style="background:${GLASS};border:1px solid #1C2535;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${T3};font-family:${FI};">${et('eval_days')}</div>
+        <div style="font-size:15px;font-weight:700;color:${T1};margin-top:3px;font-family:${FI};">${f.eval_days ? f.eval_days+'d' : et('unlimited')}</div>
+      </td>
+    </tr>
+  </table>
+</td></tr>
+
 <!-- ═══ COUPON ═══ -->
 <tr><td style="padding:20px 28px 0;">
   ${f.coupon ? `<table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(${hexToRgb(GOLD)},0.03);border:1px dashed rgba(${hexToRgb(GOLD)},0.18);border-radius:14px;">
@@ -3111,9 +3152,9 @@ ${prices.length ? `<tr><td style="padding:20px 28px 0;">
     ${prices.slice(0,5).map((p,i) => {
       const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
       const isMid = i === Math.floor(Math.min(prices.length,5)/2);
-      return `<td align="center" style="padding:3px;">
-        ${isMid?`<div style="text-align:center;margin-bottom:4px;"><span style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:2px 8px;font-size:8px;font-weight:700;color:#EF4444;text-transform:uppercase;font-family:${FI};">POPULAR</span></div>`:''}
-        <div style="background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:12px 8px;text-align:center;">
+      return `<td align="center" style="padding:3px;" valign="bottom">
+        <div style="background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:${isMid?'6px 8px 12px':'12px 8px'};text-align:center;">
+          ${isMid?`<div style="margin-bottom:4px;"><span style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:2px 8px;font-size:8px;font-weight:700;color:#EF4444;text-transform:uppercase;font-family:${FI};">POPULAR</span></div>`:''}
           <div style="color:${isMid?color:T1};font-size:15px;font-weight:800;font-family:${FI};">${cleanA}</div>
         </div>
       </td>`;
