@@ -3158,21 +3158,18 @@ ${prices.length ? `<tr><td style="padding:20px 28px 0;">
   <div style="color:${T3};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-family:${FI};">
     <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};margin-right:8px;vertical-align:middle;box-shadow:0 0 8px rgba(${hexToRgb(color)},0.3);"></span>${et('account_size')}
   </div>
-  <table cellpadding="0" cellspacing="0" width="100%">
-    <tr>${prices.slice(0,5).map((p,i) => {
-      const isMid = i === Math.floor(Math.min(prices.length,5)/2);
-      return `<td align="center" style="padding:0 3px;height:16px;" valign="bottom">${isMid?`<span style="background:${color};border-radius:4px;padding:2px 8px;font-size:7px;font-weight:800;color:#000;text-transform:uppercase;letter-spacing:.5px;font-family:${FI};">Popular</span>`:''}</td>`;
-    }).join('')}</tr>
-    <tr>${prices.slice(0,5).map((p,i) => {
+  <table cellpadding="0" cellspacing="0" width="100%"><tr>
+    ${prices.slice(0,5).map((p,i) => {
       const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
       const isMid = i === Math.floor(Math.min(prices.length,5)/2);
       return `<td align="center" style="padding:3px;">
-        <div style="background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:12px 8px;text-align:center;">
+        <div style="background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:12px 8px;text-align:center;position:relative;">
+          ${isMid?`<div style="text-align:center;margin-top:-21px;margin-bottom:6px;"><span style="background:${color};border-radius:4px;padding:2px 8px;font-size:7px;font-weight:800;color:#000;text-transform:uppercase;letter-spacing:.5px;font-family:${FI};">Popular</span></div>`:''}
           <div style="color:${isMid?color:T1};font-size:15px;font-weight:800;font-family:${FI};">${cleanA}</div>
         </div>
       </td>`;
-    }).join('')}</tr>
-  </table>
+    }).join('')}
+  </tr></table>
 </td></tr>` : ''}
 
 <!-- ═══ CHECKOUT-STYLE: PRICE CARD ═══ -->
