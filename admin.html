@@ -5738,6 +5738,8 @@ function updateCrPreview() {
   const dtype = (firm.discount_type || firm.dtype || 'lifetime').toUpperCase();
   const ftype = firm.type || '';
   const prices = firm.prices || [];
+  const pTypes = firm.price_types || [];
+  const hasDualPrices = pTypes.length >= 2 && prices.some(r => r.n2);
   const platforms = firm.platforms || [];
   const perks = firm.perks || [];
   const split = firm.split || '—';
@@ -5824,14 +5826,46 @@ function updateCrPreview() {
   if (crChk('cr-show-prices') && prices.length) {
     const top4 = prices.slice(0, 4);
     const cols = top4.length;
-    h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':'ACCOUNT SIZE'}</div>
-    <div class="cr-plans" style="grid-template-columns:repeat(${cols},1fr);">
-      ${top4.map(p => `<div class="cr-plan" style="border-color:${color}30;">
-        <div class="cr-plan-size">${p.a}</div>
-        <div class="cr-plan-new" style="color:${color};">${p.n}</div>
-        ${p.o && p.o !== '—' ? `<div class="cr-plan-old">${p.o}</div>` : ''}
-      </div>`).join('')}
-    </div>`;
+    if (hasDualPrices) {
+      // ── Dual price layout: table with Intraday / EOD columns ──
+      const lbl1 = pTypes[0] || 'Intraday';
+      const lbl2 = pTypes[1] || 'EOD';
+      h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':'ACCOUNT SIZE'}</div>
+      <div style="padding:0 6px;">
+        <table style="width:100%;border-collapse:collapse;border-spacing:0;">
+          <thead><tr>
+            <th style="padding:4px 6px;text-align:left;color:#A0AEC0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid ${color}30;">${_crLang==='pt'?'Conta':'Account'}</th>
+            <th style="padding:4px 6px;text-align:center;color:${color};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid ${color}30;">${lbl1}</th>
+            <th style="padding:4px 6px;text-align:center;color:${color};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid ${color}30;">${lbl2}</th>
+          </tr></thead>
+          <tbody>
+          ${top4.map(p => {
+            const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
+            return `<tr>
+            <td style="padding:5px 6px;border-top:1px solid ${color}10;color:#EDF2F7;font-weight:700;font-size:12px;">${cleanA}</td>
+            <td style="padding:5px 6px;border-top:1px solid ${color}10;text-align:center;">
+              <span style="color:${color};font-weight:800;font-size:12px;">${p.n}</span>
+              ${p.o && p.o !== '—' ? `<br><span style="color:#4A5568;font-size:9px;text-decoration:line-through;">${p.o}</span>` : ''}
+            </td>
+            <td style="padding:5px 6px;border-top:1px solid ${color}10;text-align:center;">
+              <span style="color:${color};font-weight:800;font-size:12px;">${p.n2||'—'}</span>
+              ${p.o2 && p.o2 !== '—' ? `<br><span style="color:#4A5568;font-size:9px;text-decoration:line-through;">${p.o2}</span>` : ''}
+            </td>
+          </tr>`;}).join('')}
+          </tbody>
+        </table>
+      </div>`;
+    } else {
+      // ── Single price layout: card grid ──
+      h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':'ACCOUNT SIZE'}</div>
+      <div class="cr-plans" style="grid-template-columns:repeat(${cols},1fr);">
+        ${top4.map(p => `<div class="cr-plan" style="border-color:${color}30;">
+          <div class="cr-plan-size">${p.a}</div>
+          <div class="cr-plan-new" style="color:${color};">${p.n}</div>
+          ${p.o && p.o !== '—' ? `<div class="cr-plan-old">${p.o}</div>` : ''}
+        </div>`).join('')}
+      </div>`;
+    }
   }
 
   // ── Perks (equal width grid, translated) ──

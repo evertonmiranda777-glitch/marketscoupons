@@ -3761,6 +3761,31 @@ function renderDailyCards(items){
 /* LEAD / UNLOCK */
 /* ── DATA LAYER — Supabase + localStorage cache ── */
 
+// ── Validação de email e telefone ──
+const _emailFormatRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const _phoneMinDigits = { '+55':10, '+1':10, '+351':9, '+54':10, '+34':9, '+33':9, '+49':10, '+44':10, '+971':9, '+81':10, '+61':9, '+52':10, '+57':10, '+56':9 };
+
+function validatePhone(raw) {
+  if (!raw) return false;
+  const digits = raw.replace(/\D/g, '');
+  return digits.length >= 7 && digits.length <= 15;
+}
+
+async function validateEmailMx(email) {
+  if (!_emailFormatRe.test(email)) return { valid: false, reason: 'invalid_format' };
+  try {
+    const resp = await fetch('/api/validate-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    if (!resp.ok) return { valid: true }; // fallback: allow if API fails
+    return await resp.json();
+  } catch {
+    return { valid: true }; // fallback: allow if network fails
+  }
+}
+
 // saveLead: Supabase primary, localStorage cache
 async function saveLead(data) {
   if (!rateLimit('saveLead', 5000)) return; // 5s cooldown
@@ -3915,8 +3940,12 @@ async function joinLive(){
   const waNum=document.getElementById('lv-whatsapp')?.value.trim().replace(/\D/g,'');
   const whatsapp= waNum ? ddi+' '+waNum : '';
   if(!name||!email||!whatsapp){showToast(t('toast_preencha_obrigatorios'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
+  if(!_emailFormatRe.test(email)){showToast(t('toast_email_invalido'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
+  if(!validatePhone(whatsapp)){showToast(t('toast_telefone_invalido'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
   const lvConsent=document.getElementById('lv-consent')?.checked;
   if(!lvConsent){showToast(t('toast_aceite_privacidade'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
+  const mx=await validateEmailMx(email);
+  if(!mx.valid){showToast(mx.reason==='disposable'?t('toast_email_descartavel'):t('toast_email_invalido'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
   const nasc=document.getElementById('lv-nascimento')?.value;
   const lead={name,email,whatsapp,sexo:document.getElementById('lv-sexo')?.value||null,nascimento:nasc||null,idade:nasc?Math.floor((Date.now()-new Date(nasc))/31557600000):null,pais:document.getElementById('lv-pais')?.value||null,estado:document.getElementById('lv-estado')?.value.trim()||null,cidade:document.getElementById('lv-cidade')?.value.trim()||null,estilo_trading:document.getElementById('lv-estilo')?.value||null,plataforma:document.getElementById('lv-plataforma')?.value||null,firma:document.getElementById('lv-firma')?.value||null,capital_disponivel:document.getElementById('lv-capital')?.value||null,passou_desafio:document.getElementById('lv-desafio')?.value||null,tool:'live',consent:true,consent_date:new Date().toISOString(),ts:new Date().toISOString()};
   saveLead(lead);
@@ -3950,7 +3979,26 @@ function renderIndHub(){const g=document.getElementById('ind-hub-grid');if(!g)re
 function openTool(id){const t=TOOLS.find(x=>x.id===id);if(!t)return;const unlocked=isUnlocked(id);const inner=document.getElementById('tool-modal-inner');inner.innerHTML=`<div class="tm-hd"><div class="tm-title">${t.name} <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${t.badgeBg};color:${t.badgeColor};font-weight:700;">${t.badge}</span></div><button class="tm-x" onclick="closeTool()">x</button></div><div class="tm-body" id="tm-body">${unlocked?renderToolContent(id):renderLeadGate(id,t)}</div>`;document.getElementById('tool-ov').classList.add('open');document.getElementById('tool-modal').classList.add('open');document.body.style.overflow='hidden';track('tool_open',{tool_id:id,tool_name:t.name,unlocked});}
 function closeTool(){document.getElementById('tool-ov').classList.remove('open');document.getElementById('tool-modal').classList.remove('open');document.body.style.overflow='';}
 function renderLeadGate(toolId,tool){return`<div class="lead-gate"><div class="lg-ico"></div><div class="lg-title">Acesse o ${tool.name}</div><div class="lg-desc">${tool.desc}<br><br><strong style="color:var(--t1);">Cadastre-se gratuitamente para desbloquear.</strong></div><div class="lg-form"><div class="lg-field"><label>Nome</label><input type="text" id="lg-name-${toolId}" placeholder="Seu nome"></div><div class="lg-field"><label>E-mail</label><input type="email" id="lg-email-${toolId}" placeholder="seu@email.com"></div><div class="lg-field"><label>WhatsApp</label><input type="tel" id="lg-wa-${toolId}" placeholder="+55 11 99999-9999"></div><label class="lg-consent"><input type="checkbox" id="lg-consent-${toolId}"> <span>${t('consent_label')}</span></label><button class="lg-sub" onclick="submitLead('${toolId}')">Desbloquear</button><div class="lg-note">Seus dados sao privados.</div></div></div>`;}
-function submitLead(toolId){const name=document.getElementById('lg-name-'+toolId)?.value.trim();const email=document.getElementById('lg-email-'+toolId)?.value.trim();const wa=document.getElementById('lg-wa-'+toolId)?.value.trim();const consent=document.getElementById('lg-consent-'+toolId)?.checked;if(!name||!email){showToast(t('toast_preencha_nome_email'));return;}if(!consent){showToast(t('toast_aceite_privacidade'));return;}saveLead({name,email,whatsapp:wa,tool:toolId,consent:true,consent_date:new Date().toISOString()});document.getElementById('tm-body').innerHTML=renderToolContent(toolId);showToast(t('toast_acesso_liberado'));}
+async function submitLead(toolId){
+  const name=document.getElementById('lg-name-'+toolId)?.value.trim();
+  const email=document.getElementById('lg-email-'+toolId)?.value.trim();
+  const wa=document.getElementById('lg-wa-'+toolId)?.value.trim();
+  const consent=document.getElementById('lg-consent-'+toolId)?.checked;
+  if(!name||!email){showToast(t('toast_preencha_nome_email'));return;}
+  if(!_emailFormatRe.test(email)){showToast(t('toast_email_invalido'));return;}
+  if(wa && !validatePhone(wa)){showToast(t('toast_telefone_invalido'));return;}
+  if(!consent){showToast(t('toast_aceite_privacidade'));return;}
+  const btn=document.querySelector(`#lg-consent-${toolId}`)?.closest('.lg-form')?.querySelector('.lg-sub');
+  if(btn){btn.disabled=true;btn.textContent=t('toast_validando');}
+  const mx=await validateEmailMx(email);
+  if(!mx.valid){
+    if(btn){btn.disabled=false;btn.textContent='Desbloquear';}
+    showToast(mx.reason==='disposable'?t('toast_email_descartavel'):t('toast_email_invalido'));return;
+  }
+  saveLead({name,email,whatsapp:wa,tool:toolId,consent:true,consent_date:new Date().toISOString()});
+  document.getElementById('tm-body').innerHTML=renderToolContent(toolId);
+  showToast(t('toast_acesso_liberado'));
+}
 function renderToolContent(id){switch(id){case 'orderflow':return renderOrderFlow();case 'dashboard':return renderPFDashboard();case 'journal':return renderJournal();case 'backtester':return renderBacktester();case 'alerts':return renderAlerts();case 'ninjapack':return renderNinjaPack();default:return '<p>'+t('toast_em_breve')+'</p>';}}
 function renderOrderFlow(){const syms=['ES','NQ','CL','GC','YM','6E','RTY'];const data=syms.map(s=>({sym:s,buy:Math.floor(Math.random()*5000+1000),sell:Math.floor(Math.random()*5000+1000)}));data.forEach(d=>d.delta=d.buy-d.sell);return`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div style="font-size:13px;font-weight:600;">Fluxo de Ordens em Tempo Real</div><button class="btn-sm" onclick="document.getElementById('tm-body').innerHTML=renderToolContent('orderflow')">Atualizar</button></div><div style="display:flex;flex-direction:column;gap:6px;">${data.map(d=>{const tot=d.buy+d.sell;const bp=Math.round(d.buy/tot*100);const col=d.delta>0?'var(--green)':'var(--red)';return`<div class="of-row"><div class="of-sym" style="min-width:36px;">${d.sym}</div><div style="flex:1;margin:0 10px;"><div style="display:flex;gap:2px;height:16px;border-radius:3px;overflow:hidden;"><div style="width:${bp}%;background:rgba(34,197,94,.7);border-radius:3px 0 0 3px;"></div><div style="width:${100-bp}%;background:rgba(239,68,68,.7);border-radius:0 3px 3px 0;"></div></div><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t3);margin-top:2px;"><span>Buy ${bp}%</span><span>Sell ${100-bp}%</span></div></div><div style="text-align:right;min-width:70px;"><div style="font-size:12px;font-weight:700;color:${col};">${d.delta>0?'+':''}${d.delta.toLocaleString()}</div><div style="font-size:9px;color:var(--t3);">Delta</div></div></div>`;}).join('')}</div>`;}
 function renderPFDashboard(){const cfg=JSON.parse(localStorage.getItem('mc_pf_config')||'null')||{balance:100000,startBalance:100000,target:108000,ddLimit:5};const pnl=cfg.balance-cfg.startBalance;const dd=Math.max(0,((cfg.startBalance-cfg.balance)/cfg.startBalance*100)).toFixed(2);const tgt=Math.max(0,Math.min(100,Math.round(pnl/(cfg.target-cfg.startBalance)*100)));return`<div class="tool-grid-2"><div class="tool-card"><div class="tc-lbl">Saldo</div><div class="tc-val ${pnl>=0?'g':'r'}">$${cfg.balance.toLocaleString()}</div></div><div class="tool-card"><div class="tc-lbl">P&L</div><div class="tc-val ${pnl>=0?'g':'r'}">${pnl>=0?'+':''}$${Math.abs(pnl).toLocaleString()}</div></div><div class="tool-card"><div class="tc-lbl">Drawdown</div><div class="tc-val ${parseFloat(dd)>3?'r':'y'}">${dd}%</div></div><div class="tool-card"><div class="tc-lbl">Meta</div><div class="tc-val y">${tgt}%</div></div></div><div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:5px;"><span>Progresso da Meta</span><span>${tgt}%</span></div><div style="height:8px;background:var(--b1);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${tgt}%;background:var(--green);border-radius:4px;"></div></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><input class="inp-sm" id="pf-trade" type="number" placeholder="P&L do trade ($)" style="max-width:160px;"><button class="btn-sm" onclick="addPFTrade()">+ Adicionar</button><button class="btn-sm-out" onclick="resetPF()">Resetar</button></div>`;}
