@@ -950,7 +950,7 @@ a{text-decoration:none;color:inherit;}
  <div class="sec-title">Email Marketing</div>
  <div class="sec-actions">
    <button class="btn-secondary" onclick="importLeadsAsSubscribers()">Importar Leads</button>
-   <button class="btn-secondary" onclick="loadEmailStats();renderCampaignLog()">Atualizar</button>
+   <button class="btn-secondary" onclick="loadEmailStats();renderCampaignLog();loadSubscribersList()">Atualizar</button>
  </div>
  </div>
 
@@ -959,7 +959,7 @@ a{text-decoration:none;color:inherit;}
  <div class="ss-item"><div class="ss-lbl">Campanhas</div><div class="ss-val" id="ss-camp">0</div></div>
  <div class="ss-item"><div class="ss-lbl">Enviados</div><div class="ss-val g" id="ss-sent">0</div></div>
  <div class="ss-item"><div class="ss-lbl">Templates</div><div class="ss-val b" id="ss-tmpl">0</div></div>
- <div class="ss-item"><div class="ss-lbl">Subscribers</div><div class="ss-val y" id="ss-leads">0</div></div>
+ <div class="ss-item"><div class="ss-lbl">Inscritos</div><div class="ss-val y" id="ss-leads">0</div></div>
  </div>
 
  <!-- IMPORTAR & VALIDAR -->
@@ -986,7 +986,8 @@ a{text-decoration:none;color:inherit;}
      <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="runValidation()" id="btn-validate" disabled>Validar</button>
      <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="runMxCheck()" id="btn-mx" disabled>Verificar MX</button>
      <button class="btn-primary" style="font-size:10px;padding:6px 12px;" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos</button>
-     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar → Subscribers</button>
+     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar validados</button>
+     <button class="btn-primary" style="font-size:10px;padding:6px 12px;" onclick="importDirectToSubscribers()" id="btn-import-direct" disabled>Importar direto → Subscribers</button>
    </div>
    <!-- MillionVerifier -->
    <div style="display:flex;gap:8px;align-items:center;">
@@ -1105,7 +1106,7 @@ a{text-decoration:none;color:inherit;}
  <!-- SUBSCRIBERS MANAGEMENT -->
  <div style="margin-top:24px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;">
    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-     <div style="font-size:14px;font-weight:700;color:var(--t1);">Subscribers</div>
+     <div style="font-size:14px;font-weight:700;color:var(--t1);">Lista de Subscribers</div>
      <div style="display:flex;gap:8px;">
        <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="document.getElementById('sub-add-row').classList.toggle('hide')">+ Adicionar</button>
        <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="loadSubscribersList()">Atualizar</button>
@@ -1127,6 +1128,13 @@ a{text-decoration:none;color:inherit;}
    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;" id="sub-firma-tabs"></div>
    <!-- Search -->
    <input class="filter-inp" id="sub-search" placeholder="Buscar por nome ou email..." style="width:100%;margin-bottom:12px;" oninput="renderSubscribersList()">
+   <!-- Importar CSV direto para subscribers (sem precisar validar antes) -->
+   <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+     <div style="font-size:10px;color:var(--t3);">Subir lista:</div>
+     <input type="file" id="sub-csv-file" accept=".csv,.txt" style="font-size:10px;color:var(--t2);max-width:200px;" onchange="handleSubCsvUpload(this)">
+     <select id="sub-csv-firma" style="font-size:10px;padding:4px 8px;"></select>
+     <button class="btn-primary" style="font-size:10px;padding:5px 12px;" id="sub-csv-import-btn" onclick="importSubCsvDirect()" disabled>Importar</button>
+   </div>
    <!-- List -->
    <div id="sub-list" style="max-height:400px;overflow-y:auto;"></div>
    <div style="font-size:10px;color:var(--t3);margin-top:8px;" id="sub-total-info"></div>
@@ -3832,6 +3840,7 @@ function handleCsvUpload(input) {
     document.getElementById('btn-mx').disabled = true;
     document.getElementById('btn-export-clean').disabled = true;
     document.getElementById('btn-import-valid').disabled = true;
+    document.getElementById('btn-import-direct').disabled = false;
 
     document.getElementById('csv-stats').innerHTML = `
       <div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:8px;">${file.name}</div>
@@ -4027,7 +4036,40 @@ async function importValidToSubscribers() {
   await loadEmailStats();
   await loadSubscribersList();
   btn.disabled = false;
-  btn.textContent = 'Importar validos → Subscribers';
+  btn.textContent = 'Importar validados';
+}
+
+async function importDirectToSubscribers() {
+  if (!_csvRawData?.length) { toast('Nenhum arquivo carregado!','warn'); return; }
+  const firmaTag = _importFirmaTag;
+  const label = firmaTag ? ` (firma: ${firmaTag})` : '';
+  if (!confirm(`Importar ${_csvRawData.length.toLocaleString()} emails direto para subscribers${label}?\n\nNenhuma validacao sera feita.`)) return;
+
+  const btn = document.getElementById('btn-import-direct');
+  btn.disabled = true;
+  btn.textContent = 'Importando...';
+
+  let imported = 0, erros = 0;
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  for (const r of _csvRawData) {
+    if (!emailRe.test(r.email)) { erros++; continue; }
+    const lang = langFromCode(r.lang) || 'pt';
+    const tags = [];
+    if (firmaTag) tags.push(firmaTag);
+    const { error } = await db.from('email_subscribers').upsert({
+      email: r.email, name: r.name || '', source: 'csv-direct', lang,
+      tags, status: 'active'
+    }, { onConflict: 'email', ignoreDuplicates: true });
+    if (!error) imported++;
+    else { erros++; if(erros<=3) csvLog(`Erro: ${r.email} — ${error.message}`); }
+  }
+
+  csvLog(`Importacao direta: ${imported} importados, ${erros} erros${label}`);
+  toast(`${imported.toLocaleString()} subscribers importados${label}!`);
+  await loadEmailStats();
+  await loadSubscribersList();
+  btn.disabled = false;
+  btn.textContent = 'Importar direto → Subscribers';
 }
 
 function handleMvResult(input) {
@@ -4274,11 +4316,15 @@ async function loadSubscribersList(){
   _subsList = await loadSubscribers();
   renderSubsFirmaTabs();
   renderSubscribersList();
-  // Populate add-firma select
+  // Populate firma selects
+  const firms = await getEmailFirms();
   const sel = document.getElementById('sub-add-firma');
   if(sel && sel.options.length <= 1){
-    const firms = await getEmailFirms();
     firms.forEach(f => { const o=document.createElement('option'); o.value=f.id; o.textContent=f.short_name||f.name; sel.appendChild(o); });
+  }
+  const csvSel = document.getElementById('sub-csv-firma');
+  if(csvSel && csvSel.options.length <= 0){
+    csvSel.innerHTML = '<option value="">Todas</option>' + firms.map(f=>`<option value="${f.id}">${f.short_name||f.name}</option>`).join('');
   }
 }
 
@@ -4325,19 +4371,19 @@ function renderSubscribersList(){
   if(search){
     filtered = filtered.filter(s => (s.email||'').toLowerCase().includes(search) || (s.name||'').toLowerCase().includes(search));
   }
-  if(info) info.textContent = `Mostrando ${filtered.length} de ${_subsList.length} subscribers`;
+  if(info) info.textContent = `Mostrando ${filtered.length} de ${_subsList.length} inscritos`;
   if(!filtered.length){
-    el.innerHTML = '<div style="text-align:center;color:var(--t3);padding:24px;font-size:12px;">Nenhum subscriber encontrado.</div>';
+    el.innerHTML = '<div style="text-align:center;color:var(--t3);padding:24px;font-size:12px;">Nenhum inscrito encontrado.</div>';
     return;
   }
   const rows = filtered.slice(0, 200);
   el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:11px;">
     <thead><tr style="border-bottom:1px solid var(--b1);">
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Email</th>
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Nome</th>
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Firma</th>
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Idioma</th>
-      <th style="text-align:center;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">Acao</th>
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">EMAIL</th>
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">NOME</th>
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">FIRMA</th>
+      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">IDIOMA</th>
+      <th style="text-align:center;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">AÇÃO</th>
     </tr></thead>
     <tbody>
     ${rows.map(s => {
@@ -4362,6 +4408,55 @@ async function deleteSubscriber(email){
   renderSubscribersList();
   toast('Subscriber removido.');
   await loadEmailStats();
+}
+
+let _subCsvData = [];
+function handleSubCsvUpload(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const lines = e.target.result.split(/\r?\n/).filter(l=>l.trim());
+    const first = lines[0].toLowerCase().trim();
+    const isCSV = first.includes('email') || first.includes(',') || first.includes(';');
+    if(isCSV){
+      const sep = first.includes(';')?';':',';
+      const headers = lines[0].split(sep).map(h=>h.trim().toLowerCase().replace(/"/g,''));
+      const ei = headers.indexOf('email');
+      const ni = headers.indexOf('name')>=0?headers.indexOf('name'):headers.indexOf('nome');
+      _subCsvData = lines.slice(1).map(l=>{const c=l.split(sep).map(x=>x.trim().replace(/"/g,''));return{email:ei>=0?c[ei]:c[0],name:ni>=0?c[ni]:''};}).filter(r=>r.email);
+    } else {
+      _subCsvData = lines.map(l=>({email:l.trim().replace(/"/g,''),name:''})).filter(r=>r.email);
+    }
+    document.getElementById('sub-csv-import-btn').disabled = false;
+    toast(`${_subCsvData.length} emails carregados de ${file.name}`);
+  };
+  reader.readAsText(file);
+}
+
+async function importSubCsvDirect(){
+  if(!_subCsvData.length){toast('Nenhum arquivo!','warn');return;}
+  const firma = document.getElementById('sub-csv-firma')?.value||'';
+  const label = firma?` (firma: ${firma})`:'';
+  if(!confirm(`Importar ${_subCsvData.length} emails para subscribers${label}?`))return;
+  const btn = document.getElementById('sub-csv-import-btn');
+  btn.disabled=true; btn.textContent='Importando...';
+  let ok=0, err=0;
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  for(const r of _subCsvData){
+    if(!emailRe.test(r.email)){err++;continue;}
+    const tags = firma?[firma]:[];
+    const {error} = await db.from('email_subscribers').upsert({
+      email:r.email, name:r.name||'', source:'csv-direct', lang:'pt',
+      tags, status:'active'
+    },{onConflict:'email',ignoreDuplicates:true});
+    if(!error)ok++;else{err++;if(err<=2)console.error('Sub import err:',error);}
+  }
+  toast(`${ok} importados, ${err} erros${label}`);
+  await loadEmailStats();
+  await loadSubscribersList();
+  btn.disabled=false; btn.textContent='Importar';
+  _subCsvData=[];
 }
 
 async function addSubscriberManual(){
@@ -5910,11 +6005,10 @@ function updateCrPreview() {
   let h = '<div class="cr-inner">';
 
   // ── Hero: Firm LEFT + Discount RIGHT ──
-  const displayName = firm.short_name || firm.name.split(' ').slice(0,2).join(' ');
   h += `<div class="cr-hero">
     <div class="cr-hero-left">
       <div class="cr-firm-logo"><img src="${firm.icon_url}" alt="${firm.name}" onerror="this.parentElement.innerHTML='<span style=\\'color:${color};font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;height:100%\\'>${firm.icon||firm.name[0]}</span>'"></div>
-      <div><div class="cr-firm-name" style="white-space:nowrap;">${escHtml(displayName)}</div><div class="cr-firm-type">${ftype.toLowerCase()==='futuros'?L.futuros:ftype.toLowerCase()==='forex'?L.forex:escHtml(ftype)}</div></div>
+      <div><div class="cr-firm-name">${escHtml(firm.name)}</div><div class="cr-firm-type">${ftype.toLowerCase()==='futuros'?L.futuros:ftype.toLowerCase()==='forex'?L.forex:escHtml(ftype)}</div></div>
     </div>`;
   if (crChk('cr-show-discount') && firm.discount) {
     h += `<div class="cr-hero-right">
