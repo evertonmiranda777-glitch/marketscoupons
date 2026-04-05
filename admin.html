@@ -3043,29 +3043,51 @@ function buildPromoHtml(f, lang='pt'){
   <div style="margin-top:5px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:${T3};font-family:${FI};">${et('tagline')}</div>
 </td></tr>
 
-<!-- ═══ FIRM HERO ═══ -->
-<tr><td style="padding:0 28px;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${GLASS}" style="background:${GLASS};border:1px solid #1C2535;border-radius:14px;overflow:hidden;">
+<!-- ═══ FIRM HERO (with background image) ═══ -->
+<tr><td style="padding:0;">
+  <!--[if gte mso 9]>
+  <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
+  <v:fill type="frame" src="https://www.marketscoupons.com/img/${f.id}-bg.webp" color="${GLASS}"/>
+  <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0"><div>
+  <![endif]-->
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-image:url('https://www.marketscoupons.com/img/${f.id}-bg.webp');background-size:cover;background-position:center;background-color:${GLASS};">
     <tr><td height="3" style="background:${color};height:3px;line-height:3px;font-size:0;">&nbsp;</td></tr>
-    <tr><td style="padding:24px 24px 20px;">
-      <!-- Firm name + type -->
-      <div style="text-align:center;">
-        ${f.discount ? `<table cellpadding="0" cellspacing="0" align="center" style="margin-bottom:14px;"><tr>
-          <td style="background:rgba(${hexToRgb(color)},0.12);border:1px solid rgba(${hexToRgb(color)},0.25);border-radius:20px;padding:6px 20px;">
-            <span style="color:${color};font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:${FI};">${f.discount}% OFF${lt}</span>
-          </td>
-        </tr></table>` : ''}
-        <div style="font-size:26px;font-weight:900;color:${T1};letter-spacing:-0.8px;line-height:1.2;font-family:${FI};">${f.name}</div>
-        ${f.type ? `<div style="margin-top:8px;"><span style="display:inline-block;background:rgba(${hexToRgb(color)},0.08);border:1px solid rgba(${hexToRgb(color)},0.20);border-radius:6px;padding:3px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${color};font-family:${FI};">${f.type}</span></div>` : ''}
-        <div style="margin-top:12px;color:${T2};font-size:13px;line-height:1.65;font-family:${FI};">${f.description||f.desc||''}</div>
-        ${tpScore ? `<div style="margin-top:14px;color:${T2};font-size:11px;font-family:${FI};">
-          <span style="color:#00B67A;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-          <span style="color:${T1};font-weight:700;margin-left:4px;">${tpScore}</span>/5 &middot;
-          <span style="color:${T1};font-weight:700;">${(tpReviews||0).toLocaleString()}</span> ${et('trustpilot')}
+    <tr><td style="padding:32px 28px 28px;">
+      <div style="text-align:left;">
+        <!-- Logo + Name row -->
+        ${f.icon_url ? `<div style="margin-bottom:16px;">
+          <img src="https://www.marketscoupons.com/${f.icon_url}" width="40" height="40" alt="${f.name}" style="display:inline-block;width:40px;height:40px;border-radius:10px;vertical-align:middle;margin-right:12px;">
+          <span style="display:inline-block;vertical-align:middle;">
+            <span style="font-size:20px;font-weight:800;color:${T1};font-family:${FI};">${f.name}</span><br>
+            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${color};font-family:${FI};">${f.type||''}</span>
+          </span>
         </div>` : ''}
+        <!-- Big discount -->
+        ${f.discount ? `<div style="margin:20px 0 4px;">
+          <span style="font-size:48px;font-weight:900;color:${color};letter-spacing:-2px;font-family:${FI};text-shadow:0 4px 24px rgba(${hexToRgb(color)},0.3);">${f.discount}% OFF</span>
+        </div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:${T2};font-family:${FI};">${et('discount_label')} ${lt.toUpperCase()}</div>` : ''}
+        <!-- Rating block -->
+        <table cellpadding="0" cellspacing="0" style="margin-top:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:12px;">
+          <tr><td style="padding:14px 20px;">
+            <span style="font-size:32px;font-weight:900;color:${T1};font-family:${FI};vertical-align:middle;">${tpScore||''}</span>
+            <span style="display:inline-block;vertical-align:middle;margin-left:10px;">
+              <span style="color:#FBBF24;font-size:14px;">&#9733;&#9733;&#9733;&#9733;&#9733;</span><br>
+              <span style="color:${T2};font-size:11px;font-family:${FI};">${(tpReviews||0).toLocaleString()} ${et('trustpilot')}</span>
+            </span>
+          </td></tr>
+        </table>
+        <!-- Trustpilot bar -->
+        ${tpScore ? `<table width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px;background:rgba(0,182,122,.08);border:1px solid rgba(0,182,122,.15);border-radius:10px;">
+          <tr><td style="padding:10px 16px;">
+            <span style="color:#00B67A;font-size:13px;vertical-align:middle;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <span style="color:${T2};font-size:11px;font-family:${FI};margin-left:8px;">${(tpReviews||0).toLocaleString()} reviews ${et('trustpilot').includes('no') ? 'no' : et('trustpilot').includes('on') ? 'on' : 'no'} <b style="color:#00B67A;">Trustpilot</b></span>
+          </td></tr>
+        </table>` : ''}
       </div>
     </td></tr>
   </table>
+  <!--[if gte mso 9]></div></v:textbox></v:rect><![endif]-->
 </td></tr>
 
 <!-- ═══ GREETING ═══ -->
