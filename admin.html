@@ -2798,7 +2798,7 @@ const EMAIL_I18N = {
     about_firm: 'SOBRE A FIRMA',
     prices_title: 'CONTAS DISPONIVEIS',
     col_account: 'Conta', col_goal: 'Meta', col_dd: 'Drawdown', col_price: 'Preco', col_original: 'De',
-    cta: 'Comecar Avaliacao',
+    cta: 'Começar Avaliação',
     see_all: 'Ver todas as ofertas no MarketsCoupons →',
     footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
     unsub: 'Cancelar inscricao',
@@ -3184,9 +3184,9 @@ ${prices.length ? `<tr><td style="padding:20px 28px 0;">
     ${prices.slice(0,5).map((p,i) => {
       const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
       const isMid = i === Math.floor(Math.min(prices.length,5)/2);
-      return `<td align="center" style="padding:3px 3px ${isMid?'3px':'3px'};">
+      return `<td align="center" style="padding:3px;padding-top:${isMid?'12px':'3px'};">
         <div style="background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:12px 8px;text-align:center;position:relative;overflow:visible;">
-          ${isMid?`<div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);z-index:1;"><span style="background:${color};border-radius:4px;padding:2px 7px;font-size:7px;font-weight:800;color:#000;text-transform:uppercase;letter-spacing:.5px;font-family:${FI};white-space:nowrap;">Popular</span></div>`:''}
+          ${isMid?`<span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:${color};border-radius:4px;padding:2px 7px;font-size:7px;font-weight:800;color:#000;text-transform:uppercase;letter-spacing:.5px;font-family:${FI};white-space:nowrap;">Popular</span>`:''}
           <div style="color:${isMid?color:T1};font-size:15px;font-weight:800;font-family:${FI};">${cleanA}</div>
         </div>
       </td>`;
@@ -3660,13 +3660,13 @@ function buildPromoImageHtml(f, lang='pt'){
     <div style="color:${T3};font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">
       <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};margin-right:8px;vertical-align:middle;"></span>${et('account_size')}
     </div>
-    <div style="display:flex;gap:6px;">
+    <div style="display:flex;gap:6px;padding-top:9px;">
       ${prices.slice(0,5).map((p,i) => {
         const cleanA = p.a.replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
         const isMid = i === mid;
-        return `<div style="flex:1;position:relative;text-align:center;">
-          ${isMid?`<div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);z-index:1;"><span style="background:${color};border-radius:4px;padding:2px 7px;font-size:7px;font-weight:800;color:#000;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;">Popular</span></div>`:''}
-          <div style="background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:12px 8px;">
+        return `<div style="flex:1;text-align:center;">
+          <div style="position:relative;overflow:visible;background:${isMid?`rgba(${hexToRgb(color)},0.10)`:'transparent'};border:1px solid ${isMid?`rgba(${hexToRgb(color)},0.40)`:'rgba(255,255,255,.12)'};border-radius:10px;padding:12px 8px;">
+            ${isMid?`<span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:${color};border-radius:4px;padding:2px 7px;font-size:7px;font-weight:800;color:#000;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;">Popular</span>`:''}
             <span style="color:${isMid?color:T1};font-size:15px;font-weight:800;">${cleanA}</span>
           </div>
         </div>`;
@@ -3785,7 +3785,7 @@ function buildImageEmailHtml(imageUrl, link, lang='pt'){
   const et = (EMAIL_I18N[lang]||EMAIL_I18N.en);
   const FI = "'Inter',Arial,sans-serif";
   const GOLD = '#F0B429';
-  const cta = et.cta || 'Comecar Avaliacao';
+  const cta = et.cta || 'Começar Avaliação';
   return `<!DOCTYPE html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="color-scheme" content="light only">
