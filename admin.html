@@ -3886,20 +3886,22 @@ img{-ms-interpolation-mode:bicubic;border:0;outline:none;}
 </style>
 </head>
 <body bgcolor="#07090D" style="margin:0;padding:0;background:#07090D;font-family:${FI};">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#07090D" role="presentation" style="background:#07090D;border-collapse:collapse;margin:0;padding:0;">
-<tr><td align="center" bgcolor="#07090D" style="padding:0;background:#07090D;">
+<div style="background:#07090D;margin:0;padding:0;width:100%;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#07090D" role="presentation" style="background:#07090D;background-color:#07090D;border-collapse:collapse;margin:0;padding:0;width:100%;min-width:100%;">
+<tr><td align="center" bgcolor="#07090D" style="padding:0;margin:0;background:#07090D;background-color:#07090D;border:none;">
   <!-- Single image = entire email content (anti dark-mode) -->
-  <a href="${link}" target="_blank" style="display:block;border:0;outline:0;text-decoration:none;line-height:0;margin:0;padding:0;">
-    <img src="${imageUrl}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:0;line-height:0;padding:0;margin:0 auto;" alt="Oferta exclusiva MarketsCoupons">
+  <a href="${link}" target="_blank" style="display:block;border:0;outline:0;text-decoration:none;line-height:0;margin:0;padding:0;background:#07090D;">
+    <img src="${imageUrl}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:0;line-height:0;padding:0;margin:0 auto;background:#07090D;" alt="Oferta exclusiva MarketsCoupons">
   </a>
 </td></tr>
-<tr><td bgcolor="#07090D" style="padding:12px 24px 20px;text-align:center;background:#07090D;">
+<tr><td bgcolor="#07090D" style="padding:12px 24px 20px;text-align:center;background:#07090D;background-color:#07090D;">
   <span style="color:#3D4F63;font-size:11px;font-family:${FI};">
     ${et.footer || 'Voce recebeu este email por estar inscrito no MarketsCoupons.'}<br>
     <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;text-decoration:underline;">${et.unsub || 'Cancelar inscrição'}</a>
   </span>
 </td></tr>
 </table>
+</div>
 </body></html>`;
 }
 
