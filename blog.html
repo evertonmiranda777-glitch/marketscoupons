@@ -7,6 +7,14 @@
 <meta name="description" content="">
 <meta name="robots" content="index,follow">
 <link rel="canonical" id="meta-canonical" href="https://www.marketscoupons.com/">
+<link rel="alternate" hreflang="pt" id="hl-pt" href="">
+<link rel="alternate" hreflang="en" id="hl-en" href="">
+<link rel="alternate" hreflang="es" id="hl-es" href="">
+<link rel="alternate" hreflang="fr" id="hl-fr" href="">
+<link rel="alternate" hreflang="de" id="hl-de" href="">
+<link rel="alternate" hreflang="it" id="hl-it" href="">
+<link rel="alternate" hreflang="ar" id="hl-ar" href="">
+<link rel="alternate" hreflang="x-default" id="hl-x" href="">
 <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/png" href="img/favicon.png">
 
@@ -196,6 +204,17 @@ function updateSEO(post, slug, blogUrl, lang){
   setMeta('#meta-tw-desc','content',desc);
   setMeta('#meta-tw-img','content',img);
 
+  // Hreflang: link language variants
+  const baseSlug = post.base_slug || slug;
+  const ptUrl = SITE+'/blog/'+baseSlug;
+  const hlPt = document.getElementById('hl-pt'); if(hlPt) hlPt.href = ptUrl;
+  const hlX = document.getElementById('hl-x'); if(hlX) hlX.href = ptUrl;
+  ['en','es','fr','de','it','ar'].forEach(l=>{
+    const el = document.getElementById('hl-'+l);
+    if(el) el.href = SITE+'/blog/'+l+'/'+baseSlug;
+  });
+
+  // Article JSON-LD
   document.getElementById('jsonld-article').textContent = JSON.stringify({
     '@context':'https://schema.org','@type':'Article',
     headline:post.title, description:desc, image:img, url:url,
@@ -203,7 +222,21 @@ function updateSEO(post, slug, blogUrl, lang){
     dateModified:post.updated_at?new Date(post.updated_at).toISOString():pub,
     author:{'@type':'Organization',name:'Markets Coupons',url:SITE},
     publisher:{'@type':'Organization',name:'Markets Coupons',url:SITE,logo:{'@type':'ImageObject',url:SITE+'/img/og-cover.png'}},
-    mainEntityOfPage:{'@type':'WebPage','@id':url}
+    mainEntityOfPage:{'@type':'WebPage','@id':url},
+    inLanguage:lang==='pt'?'pt-BR':lang,
+    articleSection:post.category||'Prop Firms'
+  });
+
+  // BreadcrumbList JSON-LD
+  let bcEl = document.getElementById('jsonld-breadcrumb');
+  if(!bcEl){bcEl=document.createElement('script');bcEl.type='application/ld+json';bcEl.id='jsonld-breadcrumb';document.head.appendChild(bcEl);}
+  bcEl.textContent = JSON.stringify({
+    '@context':'https://schema.org','@type':'BreadcrumbList',
+    itemListElement:[
+      {'@type':'ListItem',position:1,name:'MarketsCoupons',item:SITE+'/'},
+      {'@type':'ListItem',position:2,name:'Blog',item:SITE+'/#blog'},
+      {'@type':'ListItem',position:3,name:post.title,item:url}
+    ]
   });
 }
 

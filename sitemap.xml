@@ -6,15 +6,65 @@
   <url>
     <loc>https://www.marketscoupons.com/</loc>
     <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/#lang=en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/#lang=es"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/#lang=fr"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/#lang=de"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/#lang=it"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/#lang=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/"/>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- Home language variants -->
+  <url>
+    <loc>https://www.marketscoupons.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/"/>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/"/>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/"/>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/"/>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/it/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/"/>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/ar/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/"/>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <!-- Firmas -->
@@ -23,6 +73,109 @@
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- ==================== DEDICATED FIRM PAGES ==================== -->
+  <url>
+    <loc>https://www.marketscoupons.com/apex</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/bulenox</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/ftmo</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/tpt</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/fn</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/e2t</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/the5ers</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/fundingpips</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/brightfunded</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ==================== FIRM PAGES × LANGUAGE ==================== -->
+  <url><loc>https://www.marketscoupons.com/en/apex</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/apex</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/apex</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/apex</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/apex</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/apex</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/bulenox</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/bulenox</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/bulenox</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/bulenox</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/bulenox</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/bulenox</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/ftmo</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/ftmo</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/ftmo</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/ftmo</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/ftmo</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/ftmo</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/tpt</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/tpt</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/tpt</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/tpt</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/tpt</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/tpt</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/fn</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/fn</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/fn</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/fn</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/fn</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/fn</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/e2t</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/e2t</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/e2t</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/e2t</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/e2t</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/e2t</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/the5ers</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/the5ers</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/the5ers</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/the5ers</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/the5ers</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/the5ers</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/fundingpips</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/fundingpips</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/fundingpips</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/fundingpips</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/fundingpips</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/fundingpips</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 
   <!-- Comparar -->
   <url>

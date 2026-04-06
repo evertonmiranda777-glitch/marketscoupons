@@ -441,8 +441,23 @@ function mgo(p){closeMM();go(p);}
 let _currentLang = 'pt';
 function t(key) { return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.pt[key]) || key; }
 function detectLang() {
+  // Priority 1: URL path language (/en/, /es/apex, etc.)
+  const _pathLangs=['en','es','fr','de','it','ar'];
+  const _pathParts=location.pathname.split('/').filter(Boolean);
+  if(_pathParts.length>0 && _pathLangs.includes(_pathParts[0])){
+    localStorage.setItem('mc_lang',_pathParts[0]);
+    return _pathParts[0];
+  }
+  // Priority 2: URL query param (?lang=en)
+  const _qLang=new URLSearchParams(location.search).get('lang');
+  if(_qLang && I18N[_qLang]) return _qLang;
+  // Priority 3: Hash param (#lang=en)
+  const _hMatch=location.hash.match(/lang=(\w+)/);
+  if(_hMatch && I18N[_hMatch[1]]) return _hMatch[1];
+  // Priority 4: Saved preference
   const saved = localStorage.getItem('mc_lang');
   if (saved && I18N[saved]) return saved;
+  // Priority 5: Browser language
   const nav = (navigator.language || navigator.userLanguage || 'pt').toLowerCase();
   if (nav.startsWith('pt')) return 'pt';
   if (nav.startsWith('en')) return 'en';
@@ -500,6 +515,117 @@ function initLang() {
   if(ogDesc) ogDesc.content = t('meta_og_description');
   const twDesc = document.querySelector('meta[name="twitter:description"]');
   if(twDesc) twDesc.content = t('meta_og_description');
+  // Update canonical for language path URLs (/en/, /es/, etc.)
+  const _langPath=location.pathname.split('/').filter(Boolean);
+  const _isLangPage=['en','es','fr','de','it','ar'].includes(_langPath[0])&&_langPath.length===1;
+  if(_isLangPage){
+    const canon=document.querySelector('link[rel="canonical"]');
+    if(canon) canon.href='https://www.marketscoupons.com/'+_langPath[0]+'/';
+    const ogUrl=document.querySelector('meta[property="og:url"]');
+    if(ogUrl) ogUrl.content='https://www.marketscoupons.com/'+_langPath[0]+'/';
+  }
+}
+
+/* ─── SEO: Dynamic meta tags + Schema for dedicated firm pages ─── */
+const FIRM_SEO_META={
+  pt:{title:'{name} Cupom — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Planos e Avaliação | MarketsCoupons',desc:'Economize até {discount}% na {name} com o cupom exclusivo {coupon}. Planos a partir de {minPrice}. Trustpilot {rating}/5 ({reviews} avaliações).',descNoCoupon:'{name}: planos a partir de {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} avaliações). Compare e escolha.',og:'Cupom exclusivo {name} com até {discount}% OFF. Código {coupon}. Compare planos, preços e avaliações no MarketsCoupons.'},
+  en:{title:'{name} Coupon — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Plans & Review | MarketsCoupons',desc:'Save up to {discount}% on {name} with exclusive coupon code {coupon}. Plans from {minPrice}. Trustpilot {rating}/5 ({reviews} reviews).',descNoCoupon:'{name}: plans from {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} reviews). Compare and choose.',og:'Exclusive {name} coupon with up to {discount}% OFF. Code {coupon}. Compare plans, prices and reviews on MarketsCoupons.'},
+  es:{title:'{name} Cupón — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Planes y Reseña | MarketsCoupons',desc:'Ahorra hasta {discount}% en {name} con el cupón exclusivo {coupon}. Planes desde {minPrice}. Trustpilot {rating}/5 ({reviews} reseñas).',descNoCoupon:'{name}: planes desde {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} reseñas). Compara y elige.',og:'Cupón exclusivo {name} con hasta {discount}% OFF. Código {coupon}. Compara planes, precios y reseñas en MarketsCoupons.'},
+  it:{title:'{name} Coupon — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Piani e Recensione | MarketsCoupons',desc:'Risparmia fino al {discount}% su {name} con il coupon esclusivo {coupon}. Piani da {minPrice}. Trustpilot {rating}/5 ({reviews} recensioni).',descNoCoupon:'{name}: piani da {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} recensioni). Confronta e scegli.',og:'Coupon esclusivo {name} con fino al {discount}% OFF. Codice {coupon}. Confronta piani, prezzi e recensioni su MarketsCoupons.'},
+  fr:{title:'{name} Coupon — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Plans et Avis | MarketsCoupons',desc:'Économisez jusqu\'à {discount}% sur {name} avec le coupon exclusif {coupon}. Plans à partir de {minPrice}. Trustpilot {rating}/5 ({reviews} avis).',descNoCoupon:'{name}: plans à partir de {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} avis). Comparez et choisissez.',og:'Coupon exclusif {name} avec jusqu\'à {discount}% OFF. Code {coupon}. Comparez plans, prix et avis sur MarketsCoupons.'},
+  de:{title:'{name} Gutschein — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Pläne & Bewertung | MarketsCoupons',desc:'Sparen Sie bis zu {discount}% bei {name} mit dem exklusiven Gutschein {coupon}. Pläne ab {minPrice}. Trustpilot {rating}/5 ({reviews} Bewertungen).',descNoCoupon:'{name}: Pläne ab {minPrice}, {split} Profit Split. Trustpilot {rating}/5 ({reviews} Bewertungen). Vergleichen und wählen.',og:'Exklusiver {name} Gutschein mit bis zu {discount}% OFF. Code {coupon}. Vergleichen Sie Pläne, Preise und Bewertungen auf MarketsCoupons.'},
+  ar:{title:'{name} كوبون — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — الخطط والمراجعة | MarketsCoupons',desc:'وفر حتى {discount}% على {name} مع كوبون حصري {coupon}. خطط تبدأ من {minPrice}. Trustpilot {rating}/5 ({reviews} تقييم).',descNoCoupon:'{name}: خطط تبدأ من {minPrice}، {split} profit split. Trustpilot {rating}/5 ({reviews} تقييم). قارن واختر.',og:'كوبون حصري {name} مع خصم يصل إلى {discount}%. الكود {coupon}. قارن الخطط والأسعار والتقييمات على MarketsCoupons.'}
+};
+function setFirmSEO(id){
+  const f=FIRMS.find(x=>x.id===id);if(!f)return;
+  const lang=_currentLang||'pt';
+  const seo=FIRM_SEO_META[lang]||FIRM_SEO_META.pt;
+  const hasCoupon=f.coupon&&f.discount>0;
+  const minPrice=f.prices&&f.prices[0]?f.prices[0].n:'';
+  const vars={'{name}':f.name,'{discount}':f.discount,'{coupon}':f.coupon||'','{minPrice}':minPrice,'{rating}':f.rating,'{reviews}':f.reviews,'{split}':f.split};
+  function fill(tpl){let s=tpl;for(const[k,v]of Object.entries(vars))s=s.replaceAll(k,v);return s;}
+  const title=fill(hasCoupon?seo.title:seo.titleNoCoupon);
+  const desc=fill(hasCoupon?seo.desc:seo.descNoCoupon);
+  const og=fill(hasCoupon?seo.og:seo.descNoCoupon);
+  // Update title
+  document.title=title;
+  // Update meta description
+  const md=document.querySelector('meta[name="description"]');if(md)md.content=desc;
+  // Update keywords
+  const mk=document.querySelector('meta[name="keywords"]');
+  if(mk)mk.content=f.name+' coupon, '+f.name+' discount, '+f.name+' cupom, '+f.name+' review, '+f.name+' promo code, prop firm coupon, '+f.name+' '+new Date().getFullYear();
+  // Update canonical
+  const canon=document.querySelector('link[rel="canonical"]');if(canon)canon.href='https://www.marketscoupons.com/'+id;
+  // Update OG tags
+  const ogUrl=document.querySelector('meta[property="og:url"]');if(ogUrl)ogUrl.content='https://www.marketscoupons.com/'+id;
+  const ogTitle=document.querySelector('meta[property="og:title"]');if(ogTitle)ogTitle.content=title;
+  const ogDesc=document.querySelector('meta[property="og:description"]');if(ogDesc)ogDesc.content=og;
+  const ogImg=document.querySelector('meta[property="og:image"]');if(ogImg&&f.icon_url)ogImg.content='https://www.marketscoupons.com/'+f.icon_url;
+  // Update Twitter tags
+  const twTitle=document.querySelector('meta[name="twitter:title"]');if(twTitle)twTitle.content=title;
+  const twDesc=document.querySelector('meta[name="twitter:description"]');if(twDesc)twDesc.content=og;
+  const twImg=document.querySelector('meta[name="twitter:image"]');if(twImg&&f.icon_url)twImg.content='https://www.marketscoupons.com/'+f.icon_url;
+  // Update hreflang to firm page (path-based)
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(link=>{
+    const hl=link.getAttribute('hreflang');
+    if(hl==='x-default'||hl==='pt')link.href='https://www.marketscoupons.com/'+id;
+    else link.href='https://www.marketscoupons.com/'+hl+'/'+id;
+  });
+  // Inject Product schema JSON-LD
+  let schemaEl=document.getElementById('seo-firm-schema');
+  if(!schemaEl){schemaEl=document.createElement('script');schemaEl.type='application/ld+json';schemaEl.id='seo-firm-schema';document.head.appendChild(schemaEl);}
+  const schema={
+    '@context':'https://schema.org',
+    '@type':'Product',
+    name:f.name+(hasCoupon?' — '+f.discount+'% OFF Coupon':''),
+    description:desc,
+    image:'https://www.marketscoupons.com/'+f.icon_url,
+    url:'https://www.marketscoupons.com/'+id,
+    brand:{'@type':'Brand',name:f.name},
+    category:'Prop Firm',
+    aggregateRating:{'@type':'AggregateRating',ratingValue:f.rating,bestRating:5,worstRating:1,reviewCount:f.reviews,url:f.trustpilot?.url||''},
+    offers:{'@type':'AggregateOffer',priceCurrency:'USD',lowPrice:minPrice.replace(/[^0-9.]/g,''),offerCount:f.prices?.length||1,availability:'https://schema.org/InStock'}
+  };
+  if(hasCoupon){
+    schema.offers.priceSpecification={'@type':'PriceSpecification',price:minPrice.replace(/[^0-9.]/g,''),priceCurrency:'USD',valueAddedTaxIncluded:true};
+  }
+  schemaEl.textContent=JSON.stringify(schema);
+  // Inject BreadcrumbList schema
+  let bcEl=document.getElementById('seo-firm-breadcrumb');
+  if(!bcEl){bcEl=document.createElement('script');bcEl.type='application/ld+json';bcEl.id='seo-firm-breadcrumb';document.head.appendChild(bcEl);}
+  bcEl.textContent=JSON.stringify({
+    '@context':'https://schema.org','@type':'BreadcrumbList',
+    itemListElement:[
+      {'@type':'ListItem',position:1,name:'MarketsCoupons',item:'https://www.marketscoupons.com/'},
+      {'@type':'ListItem',position:2,name:t('nav_firms')||'Firmas',item:'https://www.marketscoupons.com/#firms'},
+      {'@type':'ListItem',position:3,name:f.name,item:'https://www.marketscoupons.com/'+id}
+    ]
+  });
+  // Inject SEO-visible content for crawlers (hidden from users, visible in DOM)
+  let seoBlock=document.getElementById('seo-firm-content');
+  if(!seoBlock){
+    seoBlock=document.createElement('article');
+    seoBlock.id='seo-firm-content';
+    seoBlock.setAttribute('aria-hidden','true');
+    seoBlock.style.cssText='position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;';
+    document.body.appendChild(seoBlock);
+  }
+  const fa=FIRM_ABOUT[id];
+  const aboutText=fa?.about?.replace(/<[^>]+>/g,'')||f.desc||'';
+  const perksText=(f.perks||[]).join(', ');
+  const platsText=(f.platforms||[]).join(', ');
+  const pricesHtml=(f.prices||[]).map(p=>'<li>'+escHtml(p.a)+': '+escHtml(p.n)+(p.o&&p.o!=='—'?' <del>'+escHtml(p.o)+'</del>':'')+'</li>').join('');
+  seoBlock.innerHTML='<h1>'+escHtml(f.name)+(hasCoupon?' — '+f.discount+'% OFF Coupon Code '+escHtml(f.coupon):'')+'</h1>'
+    +'<p>'+escHtml(aboutText)+'</p>'
+    +'<h2>'+escHtml(f.name)+' Plans & Prices</h2><ul>'+pricesHtml+'</ul>'
+    +'<h2>Key Features</h2><p>'+escHtml(perksText)+'</p>'
+    +'<p>Platforms: '+escHtml(platsText)+'</p>'
+    +'<p>Profit Split: '+escHtml(f.split)+' | Drawdown: '+escHtml(f.drawdown)+' | Rating: '+f.rating+'/5 ('+f.reviews+' reviews)</p>'
+    +(hasCoupon?'<p>Use coupon code <strong>'+escHtml(f.coupon)+'</strong> for '+f.discount+'% discount.</p>':'')
+    +'<h2>Compare with Other Prop Firms</h2><ul>'
+    +FIRMS.filter(x=>x.id!==id&&x.id!==f.id).slice(0,5).map(x=>'<li><a href="/'+x.id+'">'+escHtml(x.name)+(x.coupon?' — '+x.discount+'% OFF':'')+' ('+x.rating+'/5)</a></li>').join('')
+    +'</ul>'
+    +'<p><a href="/">View all prop firm coupons on MarketsCoupons</a></p>';
 }
 /* ─── COOKIE CONSENT & POLICIES ─── */
 function acceptCookies(){
@@ -4715,10 +4841,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Carregar firmas e guias do Supabase
   await loadFirmsFromSupabase();
-  // Detect dedicated firm page URL (e.g. /apex, /bulenox)
-  const _pathSlug=location.pathname.replace(/^\//,'').replace(/\/$/,'').toLowerCase();
+  // Detect dedicated firm page URL (e.g. /apex, /bulenox, /en/apex)
+  const _pathParts2=location.pathname.split('/').filter(Boolean);
+  const _pathLangs2=['en','es','fr','de','it','ar'];
+  const _pathSlug=_pathLangs2.includes(_pathParts2[0])?(_pathParts2[1]||''):(_pathParts2[0]||'');
   if(_firmPageSlugs.includes(_pathSlug) && FIRMS.find(x=>x.id===_pathSlug)){
     window._dedicatedFirmSlug=_pathSlug;
+    setFirmSEO(_pathSlug);
     document.body.style.opacity='0';
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');

@@ -9,6 +9,8 @@
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
     { "src": "/blog/([^/]+)", "dest": "/blog.html" },
     { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded)", "dest": "/index.html" },
+    { "src": "/(en|es|fr|de|it|ar)/?$", "dest": "/index.html" },
     { "src": "/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded)", "dest": "/index.html" }
   ],
   "headers": [
@@ -44,6 +46,18 @@
     },
     {
       "source": "/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(en|es|fr|de|it|ar)/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(en|es|fr|de|it|ar)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
