@@ -149,7 +149,7 @@ export default async function handler(req) {
     conditions.push(cell('Prazo avaliacao', f.eval_days ? f.eval_days + 'd' : 'Ilimitado'));
     conditions.push(cell('DD maximo', f.dd_pct || '—', '#EF4444'));
     conditions.push(cell('Meta de lucro', f.target || '—'));
-    conditions.push(cell('Scaling', f.scaling || '—', f.scaling === 'Sim' || (f.scaling && f.scaling !== 'Nao') ? '#22C55E' : '#EDF2F7'));
+    conditions.push(cell('Scaling', f.scaling || '—', f.scaling === 'Sim' || (f.scaling && f.scaling !== 'Não') ? '#22C55E' : '#EDF2F7'));
     conditions.push(cell('Desconto', f.discount + '% ' + (f.discount_type || ''), '#F0B429'));
 
     sections.push({
