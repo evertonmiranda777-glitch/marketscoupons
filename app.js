@@ -1945,7 +1945,7 @@ function openD(id){
   } else {
     openDrw(id, f, cf);
   }
-  history.replaceState(null,'','#firm/'+id);
+  if(!window._dedicatedFirmSlug) history.replaceState(null,'','#firm/'+id);
   track('firm_detail_open',{firm_id:id,firm_name:f.name});
 }
 
