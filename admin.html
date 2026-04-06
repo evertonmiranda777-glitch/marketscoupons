@@ -254,6 +254,8 @@ a{text-decoration:none;color:inherit;}
 .filter-inp{padding:8px 11px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;transition:.25s;font-family:var(--f);}
 .filter-inp:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.06);box-shadow:0 0 0 3px rgba(240,180,41,.08);}
 .filter-inp::placeholder{color:var(--t3);}
+select.filter-inp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A8FA6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
+select.filter-inp option{background:var(--sur);color:var(--t1);}
 
 /* GLOBAL DATE BAR */
 .global-date-bar{position:sticky;top:var(--nav);z-index:400;display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:10px 24px;background:rgba(7,9,13,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--glass-border);}
@@ -730,12 +732,12 @@ a{text-decoration:none;color:inherit;}
    <div class="cc-hd">
     <div class="cc-title">Pixel Tracking por Firma</div>
     <div style="display:flex;gap:8px;align-items:center;">
-     <select id="pixel-period" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking(globalEvents)">
+     <select id="pixel-period" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking()">
       <option value="7">7 dias</option>
       <option value="14">14 dias</option>
       <option value="28" selected>28 dias</option>
      </select>
-     <select id="pixel-source" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking(globalEvents)">
+     <select id="pixel-source" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking()">
       <option value="all">Todas origens</option>
       <option value="dedicated">Página dedicada</option>
       <option value="homepage">Homepage</option>
@@ -2113,28 +2115,22 @@ async function renderAnalytics() {
   }
 
   // ── PIXEL TRACKING POR FIRMA ──
-  window.globalEvents = events;
-  renderPixelTracking(events);
+  renderPixelTracking();
 }
 
-async function renderPixelTracking(allEvents) {
-  // Fetch fresh from Supabase if no events passed
-  if(!allEvents || !allEvents.length) {
-    try {
-      const days = parseInt(document.getElementById('pixel-period')?.value||28);
-      const since = new Date(Date.now() - days*86400000).toISOString();
-      const {data} = await db.from('events').select('*').gte('created_at', since);
-      allEvents = data || [];
-      window.globalEvents = allEvents;
-    } catch(e) { allEvents = []; }
-  }
-
+async function renderPixelTracking() {
   const days = parseInt(document.getElementById('pixel-period')?.value||28);
   const srcFilter = document.getElementById('pixel-source')?.value||'all';
   const since = new Date(Date.now() - days*86400000).toISOString();
 
-  // Filter by period
-  let events = allEvents.filter(e => (e.created_at||e.ts) >= since);
+  // Always fetch fresh from Supabase
+  let events = [];
+  try {
+    const {data} = await db.from('events').select('*')
+      .in('event', ['firm_detail_open','coupon_copy','checkout_click'])
+      .gte('created_at', since);
+    events = data || [];
+  } catch(e) { events = []; }
 
   // Parse params if string
   events = events.map(e => {
