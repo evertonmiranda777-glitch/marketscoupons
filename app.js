@@ -2742,6 +2742,8 @@ function cpCoupon(code,firmId,location){
     showToast('Codigo '+code+' copiado!');
     const f=FIRMS.find(x=>x.id===firmId);
     track('coupon_copy',{coupon_code:code,firm_id:firmId,firm_name:f?.name,discount:f?.discount,location});
+    // Meta Pixel: CopyCode event on dedicated firm pages
+    if(window._dedicatedFirmSlug && typeof fbq==='function') fbq('trackCustom','CopyCode',{firm:firmId,coupon:code});
   });
 }
 
@@ -2951,7 +2953,7 @@ function achGoCheckout(fId,size){
   registerLoyaltyClick(size,plat,type,firm.name);
   window.open(url,'_blank');
 }
-function achCopyCoupon(){const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm?.coupon)return;navigator.clipboard.writeText(firm.coupon).then(()=>{showToast('Codigo '+firm.coupon+' copiado!');track('coupon_copy',{coupon_code:firm.coupon,firm_id:achActiveFirm,location:'checkout_header'});});}
+function achCopyCoupon(){const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm?.coupon)return;navigator.clipboard.writeText(firm.coupon).then(()=>{showToast('Codigo '+firm.coupon+' copiado!');track('coupon_copy',{coupon_code:firm.coupon,firm_id:achActiveFirm,location:'checkout_header'});if(window._dedicatedFirmSlug&&typeof fbq==='function')fbq('trackCustom','CopyCode',{firm:achActiveFirm,coupon:firm.coupon});});}
 
 /* COMPARE */
 function initCmp(){['c1','c2','c3'].forEach(id=>{const sel=document.getElementById(id);if(!sel)return;FIRMS.forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.name;sel.appendChild(o);});});}
@@ -4580,7 +4582,6 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if(window._firmPageMode) return; // Skip main site init on dedicated firm pages
   // Detectar idioma e aplicar traduções
   initLang();
   // Ativar página correta ANTES de renderizar (evita flash da home)
@@ -4661,8 +4662,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Carregar firmas e guias do Supabase
   await loadFirmsFromSupabase();
+  // Detect dedicated firm page URL (e.g. /apex, /bulenox)
+  const _firmSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded'];
+  const _pathSlug=location.pathname.replace(/^\//,'').replace(/\/$/,'').toLowerCase();
+  if(_firmSlugs.includes(_pathSlug) && FIRMS.find(x=>x.id===_pathSlug)){
+    window._dedicatedFirmSlug=_pathSlug;
+    document.body.style.opacity='0';
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
+    document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
+    window.scrollTo(0,0);
+    openD(_pathSlug);
+    requestAnimationFrame(()=>{document.body.style.opacity='1';});
+    // Meta Pixel: Lead event on dedicated firm page
+    if(typeof fbq==='function') fbq('track','Lead',{content_name:_pathSlug});
+  }
   // Reopen firm overlay from URL hash (e.g. #firm/apex)
-  if(location.hash.startsWith('#firm/')){
+  else if(location.hash.startsWith('#firm/')){
     const _hFirmId=location.hash.replace('#firm/','');
     if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
       document.body.style.opacity='0';
