@@ -152,7 +152,7 @@ const PLAT_BG={
 const PLAT_DETAIL={
   tradingview:{
     about:'Fundada em <b>2011</b> nos EUA. A plataforma de gráficos <b>mais usada do mundo</b> com <b>50M+ de usuários</b> em 190+ países. Indicadores profissionais, alertas avançados, screener e a maior comunidade de traders do mundo. <b>Pine Script</b> para criar indicadores customizados.',
-    credit:'Ao assinar pelo nosso link, você recebe <b>$15 de crédito</b> na sua conta TradingView.',
+    credit:'Ao assinar pela Markets Coupons, você recebe <b>$15 de crédito</b> na sua conta TradingView.',
     highlights:[{val:'50M+',label:'Usuários'},{val:'17%',label:'OFF Anual'},{val:'$15',label:'Crédito na conta'}],
     types:['Anual (17% OFF)','Mensal'],
     plans:{
@@ -333,7 +333,7 @@ const FIRM_T={
 'Fundada em <b>2011</b> nos EUA. A plataforma de gráficos <b>mais usada do mundo</b> com <b>50M+ de usuários</b> em 190+ países. Indicadores profissionais, alertas avançados, screener e a maior comunidade de traders do mundo. <b>Pine Script</b> para criar indicadores customizados.':['Founded in <b>2011</b> in the USA. The <b>world\'s most used</b> charting platform with <b>50M+ users</b> in 190+ countries. Professional indicators, advanced alerts, screener and the world\'s largest trader community. <b>Pine Script</b> for custom indicators.','Fundada en <b>2011</b> en EE.UU. La plataforma de gráficos <b>más usada del mundo</b> con <b>50M+ de usuarios</b> en 190+ países. Indicadores profesionales, alertas avanzadas, screener y la mayor comunidad de traders del mundo. <b>Pine Script</b> para indicadores personalizados.','Fondée en <b>2011</b> aux États-Unis. La plateforme de graphiques <b>la plus utilisée au monde</b> avec <b>50M+ d\'utilisateurs</b> dans 190+ pays. Indicateurs professionnels, alertes avancées, screener et la plus grande communauté de traders. <b>Pine Script</b> pour indicateurs personnalisés.','Fondata nel <b>2011</b> negli USA. La piattaforma di grafici <b>più usata al mondo</b> con <b>50M+ di utenti</b> in 190+ paesi. Indicatori professionali, avvisi avanzati, screener e la più grande comunità di trader. <b>Pine Script</b> per indicatori personalizzati.','Gegründet <b>2011</b> in den USA. Die <b>weltweit meistgenutzte</b> Charting-Plattform mit <b>50M+ Nutzern</b> in 190+ Ländern. Professionelle Indikatoren, erweiterte Benachrichtigungen, Screener und die größte Trader-Community. <b>Pine Script</b> für benutzerdefinierte Indikatoren.','تأسست في <b>2011</b> في الولايات المتحدة. منصة الرسوم البيانية <b>الأكثر استخداماً في العالم</b> مع <b>50 مليون+ مستخدم</b> في 190+ دولة. مؤشرات احترافية، تنبيهات متقدمة، فاحص وأكبر مجتمع متداولين. <b>Pine Script</b> لمؤشرات مخصصة.'],
 'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Brokerage própria com acesso direto ao CME Group. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros. Margens intraday: <b>$50</b> Micro / <b>$500</b> E-mini.':['Founded in <b>2003</b> by Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ users</b> in 150+ countries. Own brokerage with direct CME Group access. Acquired <b>Tradovate</b> in 2023. Accepted by <b>most futures Prop Firms</b>. Intraday margins: <b>$50</b> Micro / <b>$500</b> E-mini.','Fundada en <b>2003</b> por Raymond Deux en Denver, Colorado (HQ en Chicago). <b>500K+ usuarios</b> en 150+ países. Brokerage propia con acceso directo al CME Group. Adquirió <b>Tradovate</b> en 2023. Aceptada por la <b>mayoría de las Prop Firms</b> de futuros. Márgenes intraday: <b>$50</b> Micro / <b>$500</b> E-mini.','Fondée en <b>2003</b> par Raymond Deux à Denver, Colorado (siège à Chicago). <b>500K+ utilisateurs</b> dans 150+ pays. Courtage propre avec accès direct CME Group. Acquisition de <b>Tradovate</b> en 2023. Acceptée par la <b>plupart des Prop Firms</b> futures. Marges intraday: <b>50$</b> Micro / <b>500$</b> E-mini.','Fondata nel <b>2003</b> da Raymond Deux a Denver, Colorado (sede a Chicago). <b>500K+ utenti</b> in 150+ paesi. Broker proprio con accesso diretto CME Group. Acquisizione di <b>Tradovate</b> nel 2023. Accettata dalla <b>maggior parte delle Prop Firms</b> futures. Margini intraday: <b>$50</b> Micro / <b>$500</b> E-mini.','Gegründet <b>2003</b> von Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ Nutzer</b> in 150+ Ländern. Eigene Brokerage mit direktem CME Group-Zugang. Übernahme von <b>Tradovate</b> 2023. Von den <b>meisten Futures Prop Firms</b> akzeptiert. Intraday-Margen: <b>$50</b> Micro / <b>$500</b> E-mini.','تأسست في <b>2003</b> بواسطة ريموند دو في دنفر، كولورادو (المقر في شيكاغو). <b>500 ألف+ مستخدم</b> في 150+ دولة. وساطة خاصة مع وصول مباشر لـCME Group. استحوذت على <b>Tradovate</b> في 2023. مقبولة من <b>معظم شركات Prop</b> للعقود الآجلة. هوامش يومية: <b>$50</b> مايكرو / <b>$500</b> E-mini.'],
 // PLAT_DETAIL — credit text
-'Ao assinar pelo nosso link, você recebe <b>$15 de crédito</b> na sua conta TradingView.':['By subscribing through our link, you get <b>$15 credit</b> on your TradingView account.','Al suscribirte por nuestro enlace, recibes <b>$15 de crédito</b> en tu cuenta TradingView.','En vous abonnant via notre lien, vous recevez <b>15$ de crédit</b> sur votre compte TradingView.','Iscrivendoti tramite il nostro link, ricevi <b>$15 di credito</b> sul tuo account TradingView.','Wenn Sie sich über unseren Link anmelden, erhalten Sie <b>$15 Guthaben</b> auf Ihrem TradingView-Konto.','عند الاشتراك عبر رابطنا، تحصل على <b>رصيد $15</b> في حسابك على TradingView.'],
+'Ao assinar pela Markets Coupons, você recebe <b>$15 de crédito</b> na sua conta TradingView.':['By subscribing through Markets Coupons, you get <b>$15 credit</b> on your TradingView account.','Al suscribirte por Markets Coupons, recibes <b>$15 de crédito</b> en tu cuenta TradingView.','En vous abonnant via Markets Coupons, vous recevez <b>15$ de crédit</b> sur votre compte TradingView.','Iscrivendoti tramite Markets Coupons, ricevi <b>$15 di credito</b> sul tuo account TradingView.','Wenn Sie sich über Markets Coupons anmelden, erhalten Sie <b>$15 Guthaben</b> auf Ihrem TradingView-Konto.','عند الاشتراك عبر Markets Coupons، تحصل على <b>رصيد $15</b> في حسابك على TradingView.'],
 // PLAT_DETAIL — highlight labels
 'Usuários':['Users','Usuarios','Utilisateurs','Utenti','Nutzer','المستخدمون'],
 'OFF Anual':['OFF Annual','OFF Anual','OFF Annuel','OFF Annuale','RABATT Jährlich','خصم سنوي'],
@@ -1990,19 +1990,14 @@ function openFD(id, f) {
       <div class="fd-discount-pct" style="background:linear-gradient(135deg,${f.color},#FFD97D,${f.color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}% OFF</div>
       <div class="fd-discount-label">${t('fd_desconto')} ${(tf(f.dtype)||'').toUpperCase()}</div>
     </div>
-    <div class="fd-rating-block">
+    <div class="fd-rating-block"${tpUrl?` onclick="openTpPopup('${tpUrl}')" style="cursor:pointer"`:''}>
       <div class="fd-rating-num">${f.rating}</div>
       <div class="fd-rating-detail">
-        <div class="fd-stars">${s.split('').map(c=>`<span>${c}</span>`).join('')}</div>
-        <div class="fd-reviews">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div>
+        <span class="fd-tp-excellent">${t('tp_excellent')}</span>
+        <div class="fd-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpS?'★':'☆'}</span>`).join('')}</div>
+        <div class="fd-reviews">${tpReviews.toLocaleString()} ${t('tp_reviews_on')} <b style="color:var(--tp-green)">Trustpilot</b></div>
       </div>
     </div>`;
-  if (tpUrl) {
-    L += `<div class="fd-tp" onclick="openTpPopup('${tpUrl}')">
-      <div class="fd-tp-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpS?'★':'☆'}</span>`).join('')}</div>
-      <div class="fd-tp-text">${tpReviews.toLocaleString()} reviews ${t('fd_no')} <b>Trustpilot</b></div>
-    </div>`;
-  }
   L += `<div class="fd-about">
       <div class="fd-about-title">${t('fd_sobre_firma')}</div>
       <div class="fd-about-text">${tf(fa.about)}</div>
@@ -2451,22 +2446,15 @@ function openDrw(id, f, cf) {
       </div>`;
     }
 
-    // Rating block
-    html+=`<div class="fd-rating-block" style="margin-bottom:12px;">
+    // Rating + Trustpilot (unified)
+    html+=`<div class="fd-rating-block" style="margin-bottom:12px;${tpUrl?'cursor:pointer':''}"${tpUrl?` onclick="openTpPopup('${tpUrl}')"`:''}>
       <div class="fd-rating-num">${f.rating}</div>
       <div class="fd-rating-detail">
-        <div class="fd-stars">${s.split('').map(c=>`<span>${c}</span>`).join('')}</div>
-        <div class="fd-reviews">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div>
+        <span class="fd-tp-excellent">${t('tp_excellent')}</span>
+        <div class="fd-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpS?'★':'☆'}</span>`).join('')}</div>
+        <div class="fd-reviews">${tpReviews.toLocaleString()} ${t('tp_reviews_on')} <b style="color:var(--tp-green)">Trustpilot</b></div>
       </div>
     </div>`;
-
-    // Trustpilot
-    if(tpUrl){
-      html+=`<div class="fd-tp" style="margin-bottom:12px;width:100%;" onclick="openTpPopup('${tpUrl}')">
-        <div class="fd-tp-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpS?'★':'☆'}</span>`).join('')}</div>
-        <div class="fd-tp-text">${tpReviews.toLocaleString()} reviews ${t('fd_no')} <b>Trustpilot</b></div>
-      </div>`;
-    }
 
     // About (exposed, no accordion)
     html+=`<div class="fd-about" style="margin-top:0;margin-bottom:14px;">
@@ -2499,14 +2487,14 @@ function openDrw(id, f, cf) {
 
   // ── Fallback: simple drawer for firms without FIRM_ABOUT ──
   let html = '';
-  html += `<div class="rating-blk"><div class="rb-score">${f.rating}</div><div><div class="rb-stars">${[...s].map(x=>`<span>${x}</span>`).join('')}</div><div class="rb-cnt">${(f.reviews||0).toLocaleString()} ${t('drw_avaliacoes')}</div></div></div>`;
-  if (f.trustpilot) {
-    html += `<a class="drw-tp-badge" href="javascript:void(0)" onclick="openTpPopup('${f.trustpilot.url}')">
-      <span class="drw-tp-label">${t('tp_excellent')}</span>
-      <span class="drw-tp-stars-row">${Array(5).fill(0).map((_,i)=>`<span class="drw-tp-star${i<tpS?' filled':''}">★</span>`).join('')}</span>
-      <span class="drw-tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span>
-    </a>`;
-  }
+  html += `<div class="fd-rating-block"${f.trustpilot?` onclick="openTpPopup('${f.trustpilot.url}')" style="cursor:pointer"`:''}>
+    <div class="fd-rating-num">${f.rating}</div>
+    <div class="fd-rating-detail">
+      <span class="fd-tp-excellent">${t('tp_excellent')}</span>
+      <div class="fd-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpS?'★':'☆'}</span>`).join('')}</div>
+      <div class="fd-reviews">${(f.trustpilot?.reviews||f.reviews||0).toLocaleString()} ${t('tp_reviews_on')} <b style="color:var(--tp-green)">Trustpilot</b></div>
+    </div>
+  </div>`;
   html+=`<div class="fd-about" style="margin-top:0;margin-bottom:14px;">
     <div class="fd-about-title">${t('fd_sobre_firma')}</div>
     <div class="fd-about-text">${tf(f.desc)||'—'}</div>

@@ -1403,17 +1403,14 @@ img{max-width:100%;}
 .fd-type{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
 .fd-discount-pct{font-size:72px;font-weight:900;letter-spacing:-4px;line-height:.9;-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .fd-discount-label{font-size:13px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:2px;margin-top:4px;}
-.fd-rating-block{display:flex;align-items:center;gap:16px;margin-top:32px;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:14px;backdrop-filter:blur(12px);}
+.fd-rating-block{display:flex;align-items:center;gap:16px;margin-top:32px;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:14px;backdrop-filter:blur(12px);transition:.2s;}
+.fd-rating-block[onclick]:hover{background:rgba(0,182,122,.08);border-color:rgba(0,182,122,.2);}
 .fd-rating-num{font-size:36px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;}
-.fd-stars{display:flex;gap:2px;}
-.fd-stars span{color:var(--gold);font-size:14px;}
+.fd-tp-excellent{font-size:13px;font-weight:700;color:var(--tp-green);margin-right:4px;}
+.fd-stars{display:flex;gap:2px;align-items:center;}
+.fd-stars span,.fd-tp-star{color:var(--tp-green);font-size:14px;}
 .fd-reviews{font-size:11px;color:var(--t2);}
-.fd-tp{display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:10px 16px;background:rgba(0,182,122,.06);border:1px solid rgba(0,182,122,.12);border-radius:10px;backdrop-filter:blur(8px);cursor:pointer;transition:.2s;}
-.fd-tp:hover{background:rgba(0,182,122,.12);border-color:rgba(0,182,122,.25);}
-.fd-tp-stars{display:flex;gap:1px;}
-.fd-tp-star{font-size:12px;color:var(--tp-green);}
-.fd-tp-text{font-size:11px;color:rgba(255,255,255,.6);}
-.fd-tp-text b{color:var(--tp-green);}
+.fd-reviews b{color:var(--tp-green);}
 .fd-about{margin-top:28px;padding:18px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.05);border-radius:14px;backdrop-filter:blur(8px);}
 .fd-about-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:8px;}
 .fd-about-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.7;}
