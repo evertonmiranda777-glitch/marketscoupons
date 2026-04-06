@@ -3629,7 +3629,7 @@ function buildPromoImageHtml(f, lang='pt'){
   ${f.coupon ? `<div style="padding:20px 28px 0;">
     <div style="background:rgba(${hexToRgb(GOLD)},0.03);border:2px dashed rgba(${hexToRgb(GOLD)},0.18);border-radius:14px;padding:22px 20px;text-align:center;">
       <div style="color:${T3};font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">${et('exclusive_coupon')}</div>
-      <div style="color:${GOLD};font-size:42px;font-weight:800;letter-spacing:5px;font-family:'Courier New',monospace;text-shadow:0 0 20px rgba(240,180,41,.15);">${f.coupon}</div>
+      <div style="color:${GOLD};font-size:42px;font-weight:900;letter-spacing:5px;font-family:${FI};text-shadow:0 0 20px rgba(240,180,41,.15);">${f.coupon}</div>
       <div style="color:${T3};font-size:14px;margin-top:10px;">${et('coupon_hint')}</div>
     </div>
   </div>` : ''}
