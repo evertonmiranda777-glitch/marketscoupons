@@ -725,9 +725,25 @@ a{text-decoration:none;color:inherit;}
    <div class="data-table-wrap"><table class="data-table" id="tbl-campaigns"></table></div>
   </div>
 
-  <!-- TABELA PERFORMANCE POR FIRMA -->
+  <!-- PIXEL TRACKING POR FIRMA -->
   <div class="chart-card" style="margin-bottom:16px;">
-   <div class="cc-hd"><div class="cc-title"> Desempenho por Firma</div></div>
+   <div class="cc-hd">
+    <div class="cc-title">Pixel Tracking por Firma</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+     <select id="pixel-period" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking(globalEvents)">
+      <option value="7">7 dias</option>
+      <option value="14">14 dias</option>
+      <option value="28" selected>28 dias</option>
+     </select>
+     <select id="pixel-source" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking(globalEvents)">
+      <option value="all">Todas origens</option>
+      <option value="dedicated">Página dedicada</option>
+      <option value="homepage">Homepage</option>
+     </select>
+    </div>
+   </div>
+   <!-- Funil visual por firma -->
+   <div id="pixel-funnel" style="margin-bottom:16px;"></div>
    <div class="data-table-wrap"><table class="data-table" id="tbl-firm-perf"></table></div>
   </div>
 
@@ -2096,27 +2112,89 @@ async function renderAnalytics() {
       </tr>`).join('')}</tbody>`;
   }
 
-  // ── TABELA FIRMAS ──
-  const firmTbl = document.getElementById('tbl-firm-perf');
-  if (firmTbl) {
-    const firms = {};
-    events.forEach(e => {
-      const f = e.firm_id || e.params?.firm_id;
-      if (!f) return;
-      if (!firms[f]) firms[f] = { detail:0, coupons:0, checkouts:0 };
-      if (e.event==='firm_detail_open') firms[f].detail++;
-      if (e.event==='coupon_copy')     firms[f].coupons++;
-      if (e.event==='checkout_click')  firms[f].checkouts++;
+  // ── PIXEL TRACKING POR FIRMA ──
+  window.globalEvents = events;
+  renderPixelTracking(events);
+}
+
+function renderPixelTracking(allEvents) {
+  if(!allEvents) return;
+  const days = parseInt(document.getElementById('pixel-period')?.value||28);
+  const srcFilter = document.getElementById('pixel-source')?.value||'all';
+  const since = new Date(Date.now() - days*86400000).toISOString();
+
+  // Filter by period
+  let events = allEvents.filter(e => (e.created_at||e.ts) >= since);
+
+  // Filter by source
+  if(srcFilter!=='all'){
+    events = events.filter(e => {
+      const s = e.params?.source || (e.params && typeof e.params==='string' ? '' : '');
+      return s===srcFilter;
     });
-    const rows = Object.entries(firms).sort((a,b) => b[1].checkouts - a[1].checkouts);
-    firmTbl.innerHTML = `<thead><tr><th>Firma</th><th>Detalhes</th><th>Cupons</th><th>Checkouts</th><th>Cupom→Check.</th></tr></thead>
-      <tbody>${rows.length ? rows.map(([f,d]) => `<tr>
-        <td style="font-weight:700;">${f}</td>
-        <td>${d.detail}</td>
-        <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${d.coupons}</span></td>
-        <td style="color:var(--green);font-weight:700;">${d.checkouts}</td>
-        <td>${d.coupons ? (d.checkouts/d.coupons*100).toFixed(0)+'%' : '—'}</td>
-      </tr>`).join('') : '<tr><td colspan="5" style="padding:24px;text-align:center;color:var(--t3);">Nenhum evento registrado ainda.</td></tr>'}</tbody>`;
+  }
+
+  const firms = {};
+  const firmNames = ['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded'];
+  events.forEach(e => {
+    const f = e.firm_id || e.params?.firm_id;
+    if(!f) return;
+    if(!firms[f]) firms[f] = {detail:0,coupons:0,checkouts:0,dedicated:0,homepage:0};
+    if(e.event==='firm_detail_open') firms[f].detail++;
+    if(e.event==='coupon_copy') firms[f].coupons++;
+    if(e.event==='checkout_click') firms[f].checkouts++;
+    const src = e.params?.source;
+    if(src==='dedicated') firms[f].dedicated++;
+    else firms[f].homepage++;
+  });
+
+  // Funil visual agregado
+  const funnelEl = document.getElementById('pixel-funnel');
+  if(funnelEl){
+    const totDetail = Object.values(firms).reduce((s,d)=>s+d.detail,0);
+    const totCopy   = Object.values(firms).reduce((s,d)=>s+d.coupons,0);
+    const totCheck  = Object.values(firms).reduce((s,d)=>s+d.checkouts,0);
+    const steps = [
+      {icon:'👁',label:'FirmDetailOpen',val:totDetail,color:'var(--blue)'},
+      {icon:'📋',label:'CopyCode',val:totCopy,color:'var(--gold)'},
+      {icon:'🛒',label:'InitiateCheckout',val:totCheck,color:'var(--green)'},
+    ];
+    const maxV = Math.max(...steps.map(s=>s.val||0),1);
+    funnelEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;">
+      ${steps.map((s,i) => {
+        const pct = Math.round((s.val/maxV)*100);
+        const prev = i>0&&steps[i-1].val>0 ? ((s.val/steps[i-1].val)*100).toFixed(0)+'%' : '';
+        return `<div style="text-align:center;padding:14px 8px;border-right:${i<2?'1px solid var(--b1)':'none'};">
+          <div style="font-size:10px;font-weight:800;color:${s.color};letter-spacing:.5px;margin-bottom:4px;">${s.label}</div>
+          <div style="height:50px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px;">
+            <div style="width:36px;background:${s.color};border-radius:4px 4px 0 0;height:${pct}%;opacity:.8;min-height:4px;"></div>
+          </div>
+          <div style="font-size:20px;font-weight:800;color:${s.color};">${s.val.toLocaleString()}</div>
+          ${prev ? `<div style="font-size:9px;color:var(--t3);margin-top:3px;">→ ${prev} do anterior</div>` : ''}
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  // Tabela por firma
+  const firmTbl = document.getElementById('tbl-firm-perf');
+  if(firmTbl){
+    const rows = Object.entries(firms).sort((a,b)=>b[1].checkouts-a[1].checkouts);
+    firmTbl.innerHTML = `<thead><tr><th>Firma</th><th>Detail Open</th><th>Copy Code</th><th>Checkout</th><th>Copy→Check</th><th>Open→Check</th><th>Dedicada</th><th>Homepage</th></tr></thead>
+      <tbody>${rows.length ? rows.map(([f,d]) => {
+        const c2c = d.coupons ? (d.checkouts/d.coupons*100).toFixed(0)+'%' : '—';
+        const o2c = d.detail ? (d.checkouts/d.detail*100).toFixed(0)+'%' : '—';
+        return `<tr>
+          <td style="font-weight:700;">${f}</td>
+          <td>${d.detail}</td>
+          <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${d.coupons}</span></td>
+          <td style="color:var(--green);font-weight:700;">${d.checkouts}</td>
+          <td>${c2c}</td>
+          <td>${o2c}</td>
+          <td style="color:var(--cyan);">${d.dedicated}</td>
+          <td>${d.homepage}</td>
+        </tr>`;
+      }).join('') : '<tr><td colspan="8" style="padding:24px;text-align:center;color:var(--t3);">Nenhum evento registrado ainda.</td></tr>'}</tbody>`;
   }
 }
 
