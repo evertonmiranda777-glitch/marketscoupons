@@ -4664,8 +4664,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(location.hash.startsWith('#firm/')){
     const _hFirmId=location.hash.replace('#firm/','');
     if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
-      go('firms');
-      setTimeout(()=>openD(_hFirmId),200);
+      go('firms',true);
+      requestAnimationFrame(()=>openD(_hFirmId));
     }
   }
   await loadGuidesFromSupabase();
