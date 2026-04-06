@@ -2122,6 +2122,7 @@ function fdGo(id) {
 }
 
 function closeFD(){
+  if(window._dedicatedFirmSlug){history.back();return;}
   document.getElementById('fd-overlay').classList.remove('show');
   document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));
   document.body.style.overflow='';
@@ -2621,7 +2622,7 @@ function drwGoCheckout(firmId) {
   window.open(url,'_blank');
 }
 
-function closeD(){document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';if(location.hash.startsWith('#firm/'))history.replaceState(null,'',location.pathname+location.search);}
+function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';if(location.hash.startsWith('#firm/'))history.replaceState(null,'',location.pathname+location.search);}
 
 /* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
