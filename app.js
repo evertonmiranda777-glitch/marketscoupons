@@ -2920,7 +2920,7 @@ function renderAchPlans(){
         ${firm.types.length>1?`<div class="ach-sel-title">Tipo</div><div class="ach-type-row" id="tr-${firm.id}-${sid}">${firm.types.map(t=>`<button class="ach-type-btn${t===state.type?' sel':''}" onclick="achSelType('${firm.id}','${p.size}','${t}')">${t}</button>`).join('')}</div>`:''}
         <div class="ach-sel-title">Plataforma</div>
         <div class="ach-plat-row" id="pr-${firm.id}-${sid}">${firm.platforms.map(pl=>`<button class="ach-plat-btn${pl===state.plat?' sel':''}" onclick="achSelPlat('${firm.id}','${p.size}','${pl}')">${pl}</button>`).join('')}</div>
-        <button class="ach-start-btn" onclick="achGoCheckout('${firm.id}','${p.size}')">Comecar agora</button>
+        <button class="ach-start-btn" onclick="achGoCheckout('${firm.id}','${p.size}')">Começar agora</button>
       </div>
     </div>`;
   }).join('');

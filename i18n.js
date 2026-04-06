@@ -76,7 +76,7 @@ const I18N = {
     fd_economia:'Economia',
     fd_cupom_exclusivo:'Cupom exclusivo',
     fd_cupom_hint:'Aplique o cupom no checkout para garantir seu desconto',
-    fd_comecar:'Comecar Avaliacao',
+    fd_comecar:'Começar Avaliação',
     fd_incluso_plano:'Incluso no plano',
     home_titulo:'Melhores Cupons de Prop Firms',
     home_sub:'Compare preços, copie cupons exclusivos e economize até 90% nas maiores prop firms do mundo.',
