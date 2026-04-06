@@ -4664,8 +4664,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(location.hash.startsWith('#firm/')){
     const _hFirmId=location.hash.replace('#firm/','');
     if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
-      go('firms',true);
-      requestAnimationFrame(()=>openD(_hFirmId));
+      document.body.style.opacity='0';
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
+      document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
+      window.scrollTo(0,0);
+      openD(_hFirmId);
+      requestAnimationFrame(()=>{document.body.style.opacity='1';});
     }
   }
   await loadGuidesFromSupabase();
