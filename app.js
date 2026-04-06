@@ -2086,12 +2086,14 @@ function fdRenderRight(id, f) {
   // Coupon
   if (f.coupon) {
     const isLong = f.coupon.length > 12;
+    h += `<div class="fd-step-instruction">${t('fd_step1_cupom')}</div>`;
     h += `<div class="fd-cpn"><div><div class="fd-cpn-tag">${t('fd_cupom_exclusivo')}</div><div class="fd-cpn-code${isLong?' long':''}">${f.coupon}</div></div>
       <button class="fd-cpn-copy" onclick="cpCoupon('${f.coupon}','${f.id||id}','fd_coupon')">${t('firms_copiar')}</button></div>
       <div class="fd-cpn-hint">${t('fd_cupom_hint')}</div>`;
   }
 
   // CTA
+  if (f.coupon) h += `<div class="fd-step-instruction">${t('fd_step2_cta')}</div>`;
   h += `<button class="fd-cta" onclick="fdGo('${id}')">${t('fd_comecar')} &#8594;</button>`;
 
   // Includes
@@ -2596,12 +2598,14 @@ function drwRenderCk(id, f) {
   // Coupon
   if(f.coupon){
     const isLong=f.coupon.length>12;
+    h+=`<div class="fd-step-instruction">${t('fd_step1_cupom')}</div>`;
     h+=`<div class="fd-cpn"><div><div class="fd-cpn-tag">${t('fd_cupom_exclusivo')}</div><div class="fd-cpn-code${isLong?' long':''}">${f.coupon}</div></div>
       <button class="fd-cpn-copy" onclick="cpCoupon('${f.coupon}','${id}','drw_fd_coupon')">${t('firms_copiar')}</button></div>
       <div class="fd-cpn-hint">${t('fd_cupom_hint')}</div>`;
   }
 
   // CTA
+  if(f.coupon) h+=`<div class="fd-step-instruction">${t('fd_step2_cta')}</div>`;
   h+=`<button class="fd-cta" onclick="fdGo('${id}')">${t('fd_comecar')} &#8594;</button>`;
 
   // Includes
