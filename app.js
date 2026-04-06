@@ -1929,8 +1929,14 @@ function toggleFirmsSb(){
 /* Drawer state for inline checkout */
 const _drwState = {};
 
+const _firmPageSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded'];
 function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
+  // Redirect to dedicated firm page if available and not already on it
+  if(!window._dedicatedFirmSlug && _firmPageSlugs.includes(id)){
+    window.location.href='/'+id;
+    return;
+  }
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
   if (!_drwState[id]) _drwState[id] = {
@@ -4663,9 +4669,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Carregar firmas e guias do Supabase
   await loadFirmsFromSupabase();
   // Detect dedicated firm page URL (e.g. /apex, /bulenox)
-  const _firmSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded'];
   const _pathSlug=location.pathname.replace(/^\//,'').replace(/\/$/,'').toLowerCase();
-  if(_firmSlugs.includes(_pathSlug) && FIRMS.find(x=>x.id===_pathSlug)){
+  if(_firmPageSlugs.includes(_pathSlug) && FIRMS.find(x=>x.id===_pathSlug)){
     window._dedicatedFirmSlug=_pathSlug;
     document.body.style.opacity='0';
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
