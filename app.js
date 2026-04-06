@@ -1932,11 +1932,6 @@ const _drwState = {};
 const _firmPageSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded'];
 function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
-  // Redirect to dedicated firm page if available and not already on it
-  if(!window._dedicatedFirmSlug && _firmPageSlugs.includes(id)){
-    window.location.href='/'+id;
-    return;
-  }
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
   if (!_drwState[id]) _drwState[id] = {
@@ -1951,7 +1946,15 @@ function openD(id){
   } else {
     openDrw(id, f, cf);
   }
-  if(!window._dedicatedFirmSlug) history.replaceState(null,'','#firm/'+id);
+  // Clean URL: /apex instead of #firm/apex for firms with dedicated pages
+  const _curPath=location.pathname.replace(/^\//,'').replace(/\/$/,'');
+  if(_firmPageSlugs.includes(id)){
+    if(_curPath!==id) history.pushState({firmPage:id},'','/'+id);
+    // Meta Pixel: Lead event on firm page view
+    if(typeof fbq==='function') fbq('track','Lead',{content_name:id});
+  } else {
+    history.replaceState(null,'','#firm/'+id);
+  }
   track('firm_detail_open',{firm_id:id,firm_name:f.name});
 }
 
@@ -2122,13 +2125,25 @@ function fdGo(id) {
 }
 
 function closeFD(){
+  // Direct access to /apex → go back in history
   if(window._dedicatedFirmSlug){history.back();return;}
   document.getElementById('fd-overlay').classList.remove('show');
   document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));
   document.body.style.overflow='';
-  if(location.hash.startsWith('#firm/')) history.replaceState(null,'',location.pathname+location.search);
+  // pushState /apex → go back (instant, no reload)
+  const p=location.pathname.replace(/^\//,'').replace(/\/$/,'');
+  if(_firmPageSlugs.includes(p)){history.back();return;}
+  if(location.hash.startsWith('#firm/')) history.replaceState(null,'',location.pathname.replace(/\/[^/]+$/,'')+location.search);
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('fd-overlay')?.classList.contains('show'))closeFD();});
+// Handle browser back from pushState /apex → close overlay instantly
+window.addEventListener('popstate',()=>{
+  const fdOv=document.getElementById('fd-overlay');
+  if(fdOv&&fdOv.classList.contains('show')){fdOv.classList.remove('show');document.body.style.overflow='';}
+  document.getElementById('ov')?.classList.remove('open');
+  document.getElementById('drw')?.classList.remove('open');
+  document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));
+});
 
 function fdGoCheckout(fId){
   const cf=CHECKOUT_FIRMS.find(x=>x.id===fId);const f=FIRMS.find(x=>x.id===fId);
@@ -2622,7 +2637,7 @@ function drwGoCheckout(firmId) {
   window.open(url,'_blank');
 }
 
-function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';if(location.hash.startsWith('#firm/'))history.replaceState(null,'',location.pathname+location.search);}
+function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';}
 
 /* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
@@ -4680,8 +4695,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.scrollTo(0,0);
     openD(_pathSlug);
     requestAnimationFrame(()=>{document.body.style.opacity='1';});
-    // Meta Pixel: Lead event on dedicated firm page
-    if(typeof fbq==='function') fbq('track','Lead',{content_name:_pathSlug});
   }
   // Reopen firm overlay from URL hash (e.g. #firm/apex)
   else if(location.hash.startsWith('#firm/')){
