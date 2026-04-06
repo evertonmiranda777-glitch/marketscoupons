@@ -2090,7 +2090,7 @@ function fdRenderRight(id, f) {
     h += `<div class="fd-step-instruction"><span class="fd-step-num active">1</span><span class="fd-step-text active">${t('fd_step1_cupom_text')}</span></div>`;
     h += `<div class="fd-cpn"><div><div class="fd-cpn-tag">${t('fd_cupom_exclusivo')}</div><div class="fd-cpn-code${isLong?' long':''}">${f.coupon}</div></div>
       <button class="fd-cpn-copy" onclick="cpCoupon('${f.coupon}','${f.id||id}','fd_coupon')">${t('firms_copiar')}</button></div>
-      <div class="fd-cpn-hint">${t('fd_cupom_hint')}</div>`;
+`;
     h += `<div class="fd-step-instruction"><span class="fd-step-num">2</span><span class="fd-step-text">${t('fd_step2_cta_text')}</span></div>`;
     h += `<button class="fd-cta" onclick="fdGo('${id}')">${t('fd_comecar')} &#8594;</button>`;
     h += `</div>`;
@@ -2604,7 +2604,7 @@ function drwRenderCk(id, f) {
     h+=`<div class="fd-step-instruction"><span class="fd-step-num active">1</span><span class="fd-step-text active">${t('fd_step1_cupom_text')}</span></div>`;
     h+=`<div class="fd-cpn"><div><div class="fd-cpn-tag">${t('fd_cupom_exclusivo')}</div><div class="fd-cpn-code${isLong?' long':''}">${f.coupon}</div></div>
       <button class="fd-cpn-copy" onclick="cpCoupon('${f.coupon}','${id}','drw_fd_coupon')">${t('firms_copiar')}</button></div>
-      <div class="fd-cpn-hint">${t('fd_cupom_hint')}</div>`;
+`;
     h+=`<div class="fd-step-instruction"><span class="fd-step-num">2</span><span class="fd-step-text">${t('fd_step2_cta_text')}</span></div>`;
     h+=`<button class="fd-cta" onclick="fdGo('${id}')">${t('fd_comecar')} &#8594;</button>`;
     h+=`</div>`;
