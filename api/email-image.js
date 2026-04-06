@@ -367,22 +367,35 @@ export default async function handler(req) {
     if (f.coupon) h += 110; // coupon
     h += 120; // CTA + footer
 
+    // Outer wrapper: 640px with 20px dark padding each side to bleed into Gmail's border
     return new ImageResponse(
       {
         type: 'div',
         props: {
           style: {
             display: 'flex',
-            flexDirection: 'column',
+            justifyContent: 'center',
             width: '100%',
             height: '100%',
             backgroundColor: '#07090D',
-            color: '#EDF2F7',
           },
-          children: sections,
+          children: {
+            type: 'div',
+            props: {
+              style: {
+                display: 'flex',
+                flexDirection: 'column',
+                width: '600px',
+                height: '100%',
+                backgroundColor: '#07090D',
+                color: '#EDF2F7',
+              },
+              children: sections,
+            },
+          },
         },
       },
-      { width: 600, height: h }
+      { width: 640, height: h }
     );
 
   } catch (err) {
