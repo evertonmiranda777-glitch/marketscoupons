@@ -4580,6 +4580,7 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+  if(window._firmPageMode) return; // Skip main site init on dedicated firm pages
   // Detectar idioma e aplicar traduções
   initLang();
   // Ativar página correta ANTES de renderizar (evita flash da home)

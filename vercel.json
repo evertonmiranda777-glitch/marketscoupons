@@ -8,7 +8,8 @@
   "routes": [
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
     { "src": "/blog/([^/]+)", "dest": "/blog.html" },
-    { "src": "/admin", "dest": "/admin.html" }
+    { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded)", "dest": "/firm-page.html" }
   ],
   "headers": [
     {
@@ -37,6 +38,18 @@
     },
     {
       "source": "/blog/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/firm-page.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
