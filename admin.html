@@ -3878,24 +3878,25 @@ function buildImageEmailHtml(imageUrl, link, lang='pt'){
 <meta name="supported-color-schemes" content="light only">
 <style>
 :root{color-scheme:light only;}
-html,body{background-color:#07090D !important;margin:0 !important;padding:0 !important;width:100% !important;min-width:100% !important;}
+html,body{background-color:#07090D !important;margin:0 !important;padding:0 !important;}
 body,table,td,div,p,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
 table{border-spacing:0 !important;border-collapse:collapse !important;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;}
-img{-ms-interpolation-mode:bicubic;border:0;outline:none;display:block;width:100% !important;height:auto !important;}
+td{border:none !important;}
+img{-ms-interpolation-mode:bicubic;border:0;outline:none;display:block;}
 [data-ogsc] body,[data-ogsb] body{background-color:#07090D !important;}
-u+#body a{color:inherit;text-decoration:none;font-size:inherit;font-weight:inherit;line-height:inherit;}
-@media screen and (max-width:640px){img{width:100% !important;height:auto !important;}}
 @media(prefers-color-scheme:dark){html,body,table,td,div{background-color:#07090D !important;}}
 </style>
 </head>
-<body bgcolor="#07090D" style="margin:0 !important;padding:0 !important;background:#07090D;background-color:#07090D;font-family:${FI};width:100% !important;min-width:100% !important;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#07090D" role="presentation" style="background:#07090D;background-color:#07090D;border-collapse:collapse;margin:0;padding:0;width:100% !important;min-width:100% !important;">
-<tr><td align="center" valign="top" bgcolor="#07090D" style="padding:0;margin:0;background:#07090D;background-color:#07090D;border:none;line-height:0;font-size:0;">
-  <a href="${link}" target="_blank" style="display:block;border:0;outline:0;text-decoration:none;line-height:0;margin:0;padding:0;">
-    <img src="${imageUrl}" style="display:block;width:100%;height:auto;border:0;outline:0;line-height:0;padding:0;margin:0;" alt="Oferta exclusiva MarketsCoupons">
+<body bgcolor="#07090D" style="margin:0;padding:0;background-color:#07090D;font-family:${FI};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#07090D" role="presentation" style="background-color:#07090D;border-collapse:collapse;">
+<tr><td align="center" valign="top" bgcolor="#07090D" style="padding:0;background-color:#07090D;line-height:0;font-size:0;">
+  <!--[if mso]><table width="600" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
+  <a href="${link}" target="_blank" style="display:block;text-decoration:none;line-height:0;margin:0;padding:0;">
+    <img src="${imageUrl}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:0;line-height:0;padding:0;margin:0 auto;" alt="Oferta exclusiva MarketsCoupons">
   </a>
+  <!--[if mso]></td></tr></table><![endif]-->
 </td></tr>
-<tr><td bgcolor="#07090D" style="padding:12px 24px 20px;text-align:center;background:#07090D;background-color:#07090D;">
+<tr><td bgcolor="#07090D" style="padding:12px 24px 20px;text-align:center;background-color:#07090D;">
   <span style="color:#3D4F63;font-size:11px;font-family:${FI};">
     ${et.footer || 'Voce recebeu este email por estar inscrito no MarketsCoupons.'}<br>
     <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;text-decoration:underline;">${et.unsub || 'Cancelar inscrição'}</a>
