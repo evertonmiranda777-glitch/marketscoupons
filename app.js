@@ -490,6 +490,16 @@ function initLang() {
   document.body.dir = _currentLang==='ar'?'rtl':'ltr';
   applyTranslations();
   updateTVWidgets(_currentLang);
+  // Update meta tags with translated content
+  document.title = t('meta_title');
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if(metaDesc) metaDesc.content = t('meta_description');
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if(ogTitle) ogTitle.content = t('meta_title');
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if(ogDesc) ogDesc.content = t('meta_og_description');
+  const twDesc = document.querySelector('meta[name="twitter:description"]');
+  if(twDesc) twDesc.content = t('meta_og_description');
 }
 /* ─── COOKIE CONSENT & POLICIES ─── */
 function acceptCookies(){
