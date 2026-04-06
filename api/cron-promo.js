@@ -16,7 +16,7 @@ const EMAIL_I18N = {
     see_plans: 'Ver planos',
     see_all: 'Ver todas as ofertas no site',
     footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
-    unsub: 'Cancelar inscricao',
+    unsub: 'Cancelar inscrição',
     tagline: 'As melhores ofertas para traders',
     off: 'OFF',
   },
