@@ -3980,23 +3980,23 @@ function buildWhitePromoHtml(f, lang='pt'){
     const rowBg = isMid ? '#fff3e8' : (i%2===0 ? '#ffffff' : '#f9f9f9');
     const leftBorder = isMid ? 'border-left:3px solid '+color+';' : '';
     const nameWeight = isMid ? '700' : '600';
-    const popularBadge = isMid ? ` <span style="background:${color};color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;margin-left:4px;font-weight:700;">POPULAR</span>` : '';
+    const popularBadge = isMid ? `&nbsp;<span style="display:inline;background:${color};color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;margin-left:4px;font-weight:700;white-space:nowrap;vertical-align:middle;">POPULAR</span>` : '';
 
     if(hasDual){
       return `<tr style="background-color:${rowBg};">
-        <td style="padding:10px;color:${DARK};font-weight:${nameWeight};font-size:12px;border-bottom:1px solid #f0f0f0;${leftBorder}font-family:${FI};">${cleanA}${popularBadge}</td>
-        <td style="padding:10px 6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n||'—'}</td>
-        <td style="padding:10px 6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o&&p.o!=='—'?p.o:'—'}</td>
-        <td style="padding:10px 6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n2||'—'}</td>
-        <td style="padding:10px 6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o2&&p.o2!=='—'?p.o2:'—'}</td>
+        <td style="padding:6px;color:${DARK};font-weight:${nameWeight};font-size:12px;border-bottom:1px solid #f0f0f0;${leftBorder}font-family:${FI};white-space:nowrap;">${cleanA}${popularBadge}</td>
+        <td style="padding:6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n||'—'}</td>
+        <td style="padding:6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o&&p.o!=='—'?p.o:'—'}</td>
+        <td style="padding:6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n2||'—'}</td>
+        <td style="padding:6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o2&&p.o2!=='—'?p.o2:'—'}</td>
       </tr>`;
     } else {
       return `<tr style="background-color:${rowBg};">
-        <td style="padding:10px;color:${DARK};font-weight:${nameWeight};font-size:12px;border-bottom:1px solid #f0f0f0;${leftBorder}font-family:${FI};">${cleanA}${popularBadge}</td>
-        <td style="padding:10px 6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n||'—'}</td>
-        <td style="padding:10px 6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o&&p.o!=='—'?p.o:'—'}</td>
-        <td style="padding:10px 6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n2||p.n||'—'}</td>
-        <td style="padding:10px 6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o2||p.o&&p.o!=='—'?p.o:'—'}</td>
+        <td style="padding:6px;color:${DARK};font-weight:${nameWeight};font-size:12px;border-bottom:1px solid #f0f0f0;${leftBorder}font-family:${FI};white-space:nowrap;">${cleanA}${popularBadge}</td>
+        <td style="padding:6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n||'—'}</td>
+        <td style="padding:6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o&&p.o!=='—'?p.o:'—'}</td>
+        <td style="padding:6px;text-align:center;color:${color};font-weight:700;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.n2||p.n||'—'}</td>
+        <td style="padding:6px;text-align:center;color:#bbb;text-decoration:line-through;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};">${p.o2||p.o&&p.o!=='—'?p.o:'—'}</td>
       </tr>`;
     }
   }).join('');
@@ -4082,13 +4082,12 @@ a{text-decoration:none;}
 
       <!-- Trustpilot bar -->
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fff;border-radius:6px;border:1px solid #eee;margin-bottom:12px;" role="presentation">
-        <tr><td style="padding:8px 12px;">
-          <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+        <tr><td align="center" style="padding:8px 12px;text-align:center;">
+          <table cellpadding="0" cellspacing="0" border="0" align="center" role="presentation">
             <tr>
               <td style="padding-right:8px;vertical-align:middle;"><span style="color:${DARK};font-size:16px;font-weight:700;font-family:${FI};">${tpScore}</span></td>
               <td style="padding-right:8px;vertical-align:middle;">${starsHtml}</td>
-              <td style="padding-right:4px;vertical-align:middle;"><span style="color:#888;font-size:11px;font-family:${FI};">${(tpReviews||0).toLocaleString()} ${(etL.trustpilot||'reviews no Trustpilot').split(' ').slice(0,-1).join(' ')}</span></td>
-              <td style="vertical-align:middle;"><span style="color:#00b67a;font-size:11px;font-weight:600;font-family:${FI};">Trustpilot</span></td>
+              <td style="vertical-align:middle;"><span style="color:#888;font-size:11px;font-family:${FI};">${(tpReviews||0).toLocaleString()} ${(etL.trustpilot||'reviews no Trustpilot').split(' ').slice(0,-1).join(' ')}</span> <span style="color:#00b67a;font-size:11px;font-weight:600;font-family:${FI};">Trustpilot</span></td>
             </tr>
           </table>
         </td></tr>
@@ -4098,7 +4097,7 @@ a{text-decoration:none;}
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
         <tr>
           ${metrics.map(m => `<td width="33%" style="padding:0 4px;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fff;border-radius:6px;border:1px solid #eee;" role="presentation">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f7f7;border-radius:6px;border:1px solid #eee;" role="presentation">
               <tr><td style="padding:8px;text-align:center;">
                 <div style="color:#888;font-size:9px;letter-spacing:0.05em;margin-bottom:2px;font-family:${FI};">${m.label}</div>
                 <div style="color:${m.vc};font-size:15px;font-weight:700;font-family:${FI};">${m.value}</div>
@@ -4116,11 +4115,11 @@ a{text-decoration:none;}
         <tr><td>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-size:12px;" role="presentation">
             <tr style="background-color:${DARK};">
-              <td style="padding:8px 10px;color:#fff;font-weight:600;border-radius:6px 0 0 0;font-family:${FI};">${etL.col_account||'Conta'}</td>
-              <td style="padding:8px 6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${pType1}</td>
-              <td style="padding:8px 6px;text-align:center;color:#aaa;font-size:10px;font-weight:400;text-decoration:line-through;font-family:${FI};">${eraLabel}</td>
-              <td style="padding:8px 6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${pType2}</td>
-              <td style="padding:8px 6px;text-align:center;color:#aaa;font-size:10px;font-weight:400;text-decoration:line-through;border-radius:0 6px 0 0;font-family:${FI};">${eraLabel}</td>
+              <td style="padding:6px 8px;color:#fff;font-weight:600;border-radius:6px 0 0 0;font-family:${FI};">${etL.col_account||'Conta'}</td>
+              <td style="padding:6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${pType1}</td>
+              <td style="padding:6px;text-align:center;color:#aaa;font-size:10px;font-weight:400;text-decoration:line-through;font-family:${FI};">${eraLabel}</td>
+              <td style="padding:6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${pType2}</td>
+              <td style="padding:6px;text-align:center;color:#aaa;font-size:10px;font-weight:400;text-decoration:line-through;border-radius:0 6px 0 0;font-family:${FI};">${eraLabel}</td>
             </tr>
             ${priceRowsHtml}
           </table>
