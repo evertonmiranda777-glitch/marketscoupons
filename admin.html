@@ -3818,6 +3818,7 @@ function buildPromoImageHtml(f, lang='pt', skipHeader=false){
 
 // ── Capture promo image and prepare email ──
 let _capturedImageUrl = null;
+let _whiteEmailMode = false;
 
 async function capturePromoImage(){
   const el = document.getElementById('promo-capture');
@@ -3940,6 +3941,275 @@ img{-ms-interpolation-mode:bicubic;border:0;outline:none;display:block;}
 </body></html>`;
 }
 
+// ── Build white-layout email (pure HTML, no image capture) ──
+function buildWhitePromoHtml(f, lang='pt'){
+  const FI = "'Inter',Arial,sans-serif";
+  const lt = f.discount_type==='lifetime' ? ' Lifetime' : '';
+  const et = (key, vars) => emailT(lang, key, {firm:f.name, discount:f.discount, lt, ...vars});
+  const color = f.color || '#F97316';
+  const prices = f.prices || [];
+  const pTypes = f.price_types || [];
+  const hasDual = pTypes.length >= 2 && prices.some(r => r.n2);
+  const tpScore = f.trustpilot_score || f.rating || 0;
+  const tpReviews = f.trustpilot_reviews || f.reviews || 0;
+  const link = f.link || '#';
+  const DARK = '#07090D';
+  const GOLD = '#F0B429';
+  const GREEN = '#22C55E';
+  const WHITE = '#FFFFFF';
+  const BODY_BG = '#F7F8FA';
+  const CARD_BG = '#FFFFFF';
+  const T_DARK = '#1A202C';
+  const T_MED = '#4A5568';
+  const T_LIGHT = '#718096';
+  const BORDER = '#E2E8F0';
+  const etL = (EMAIL_I18N[lang]||EMAIL_I18N.en);
+
+  const intro = (etL.intro||'').replace('{firm}',f.name||'').replace('{discount}',f.discount||'').replace('{lt}',lt);
+
+  // Stars HTML
+  const fullStars = Math.floor(tpScore);
+  const starsHtml = '<span style="color:#FBBF24;font-size:18px;">' + '&#9733;'.repeat(fullStars) + '&#9734;'.repeat(5-fullStars) + '</span>';
+
+  // Trustpilot label
+  const tpLabel = tpScore >= 4.5 ? 'Excelente' : tpScore >= 4.0 ? 'Ótimo' : tpScore >= 3.5 ? 'Bom' : '';
+
+  // Stats for the firm card
+  const stats = [
+    {label:'Profit Split', value:f.split||'—', vcolor:GREEN},
+    {label:et('profit_target'), value:f.target||'—', vcolor:GOLD},
+    {label:'Drawdown', value:f.dd_pct||'—', vcolor:'#EF4444'},
+    {label:et('min_days'), value:f.min_days ? f.min_days+'d' : '—', vcolor:T_DARK},
+  ];
+
+  // Price table rows
+  const midIdx = Math.floor(Math.min(prices.length,6)/2);
+  const priceRowsHtml = prices.slice(0,6).map((p, i) => {
+    const cleanA = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
+    const isMid = i === midIdx;
+    const rowBg = isMid ? `rgba(${hexToRgb(color)},0.06)` : (i%2===0 ? WHITE : '#F9FAFB');
+    const popularBadge = isMid ? `<span style="display:inline-block;background:${color};color:#FFF;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:3px;margin-left:8px;vertical-align:middle;">Popular</span>` : '';
+
+    if(hasDual){
+      return `<tr style="background-color:${rowBg};">
+        <td style="padding:12px 16px;font-size:15px;font-weight:700;color:${T_DARK};border-bottom:1px solid ${BORDER};font-family:${FI};">${cleanA}${popularBadge}</td>
+        <td style="padding:12px 16px;text-align:center;border-bottom:1px solid ${BORDER};font-family:${FI};">
+          <span style="font-size:16px;font-weight:800;color:${color};">${p.n||'—'}</span>
+          ${p.o&&p.o!=='—'?`<br><span style="font-size:12px;color:${T_LIGHT};text-decoration:line-through;">${p.o}</span>`:''}
+        </td>
+        <td style="padding:12px 16px;text-align:center;border-bottom:1px solid ${BORDER};font-family:${FI};">
+          <span style="font-size:16px;font-weight:800;color:${color};">${p.n2||'—'}</span>
+          ${p.o2&&p.o2!=='—'?`<br><span style="font-size:12px;color:${T_LIGHT};text-decoration:line-through;">${p.o2}</span>`:''}
+        </td>
+      </tr>`;
+    } else {
+      return `<tr style="background-color:${rowBg};">
+        <td style="padding:12px 16px;font-size:15px;font-weight:700;color:${T_DARK};border-bottom:1px solid ${BORDER};font-family:${FI};">${cleanA}${popularBadge}</td>
+        <td style="padding:12px 16px;text-align:center;border-bottom:1px solid ${BORDER};font-family:${FI};">
+          <span style="font-size:16px;font-weight:800;color:${color};">${p.n||'—'}</span>
+        </td>
+        <td style="padding:12px 16px;text-align:center;border-bottom:1px solid ${BORDER};font-family:${FI};">
+          ${p.o&&p.o!=='—'?`<span style="font-size:13px;color:${T_LIGHT};text-decoration:line-through;">${p.o}</span>`:'—'}
+        </td>
+      </tr>`;
+    }
+  }).join('');
+
+  // Price table header
+  const priceHeaderHtml = hasDual
+    ? `<tr>
+        <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${T_LIGHT};border-bottom:2px solid ${BORDER};background:${BODY_BG};font-family:${FI};">${etL.col_account||'Conta'}</th>
+        <th style="padding:10px 16px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${T_LIGHT};border-bottom:2px solid ${BORDER};background:${BODY_BG};font-family:${FI};">${pTypes[0]||'Intraday'}</th>
+        <th style="padding:10px 16px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${T_LIGHT};border-bottom:2px solid ${BORDER};background:${BODY_BG};font-family:${FI};">${pTypes[1]||'EOD'}</th>
+      </tr>`
+    : `<tr>
+        <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${T_LIGHT};border-bottom:2px solid ${BORDER};background:${BODY_BG};font-family:${FI};">${etL.col_account||'Conta'}</th>
+        <th style="padding:10px 16px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${T_LIGHT};border-bottom:2px solid ${BORDER};background:${BODY_BG};font-family:${FI};">${etL.col_price||'Preço'}</th>
+        <th style="padding:10px 16px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${T_LIGHT};border-bottom:2px solid ${BORDER};background:${BODY_BG};font-family:${FI};">${etL.col_original||'De'}</th>
+      </tr>`;
+
+  // Perks
+  const perksHtml = (f.perks||[]).slice(0,6).map(p =>
+    `<tr><td style="padding:4px 0;font-size:14px;color:${T_MED};font-family:${FI};"><span style="color:${GREEN};font-weight:700;margin-right:6px;">✓</span>${p}</td></tr>`
+  ).join('');
+
+  return `<!DOCTYPE html>
+<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<style>
+:root{color-scheme:light only;}
+html,body{margin:0 !important;padding:0 !important;background-color:${BODY_BG} !important;}
+body,table,td,div,p,a,span{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+table{border-spacing:0 !important;border-collapse:collapse !important;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;}
+td{border:none !important;}
+img{-ms-interpolation-mode:bicubic;border:0;outline:none;display:block;}
+a{color:${color};text-decoration:none;}
+</style>
+<!--[if mso]><style>body,table,td{font-family:Arial,sans-serif !important;}</style><![endif]-->
+</head>
+<body bgcolor="${BODY_BG}" style="margin:0;padding:0;background-color:${BODY_BG};font-family:${FI};">
+
+<!-- Wrapper -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BODY_BG}" role="presentation">
+<tr><td align="center" style="padding:0;">
+
+<!-- Container 600px -->
+<!--[if mso]><table width="600" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:0 auto;" role="presentation">
+
+<!-- ═══ DARK HEADER ═══ -->
+<tr><td style="background-color:${DARK};padding:0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${DARK}" role="presentation">
+    <!-- Accent line -->
+    <tr><td style="height:3px;background:linear-gradient(90deg,${color},${GOLD},${color});font-size:0;line-height:0;" bgcolor="${color}">&nbsp;</td></tr>
+    <!-- Logo -->
+    <tr><td bgcolor="${DARK}" style="background-color:${DARK};padding:28px 32px 8px;text-align:center;">
+      <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#EDF2F7;font-family:${FI};">Markets </span><span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:${GOLD};font-family:${FI};">Coupons</span>
+      <span style="display:inline-block;width:7px;height:7px;background-color:${GREEN};border-radius:50%;margin-left:4px;vertical-align:middle;"></span>
+      <div style="margin-top:5px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4A5568;font-family:${FI};">${etL.tagline||'As melhores ofertas para traders'}</div>
+    </td></tr>
+  </table>
+</td></tr>
+
+<!-- ═══ WHITE BODY ═══ -->
+<tr><td style="background-color:${WHITE};padding:0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${WHITE}" role="presentation">
+
+    <!-- Greeting -->
+    <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:28px 32px 0;">
+      <div style="color:${T_DARK};font-size:22px;font-weight:700;margin-bottom:8px;font-family:${FI};">${etL.greeting||'Olá Trader,'}</div>
+      <div style="color:${T_MED};font-size:15px;line-height:1.7;font-family:${FI};">${intro}</div>
+    </td></tr>
+
+    <!-- Firm Card -->
+    <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:24px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${CARD_BG};border:1px solid ${BORDER};border-radius:12px;overflow:hidden;" role="presentation">
+        <!-- Firm accent line -->
+        <tr><td style="height:3px;background-color:${color};font-size:0;line-height:0;" bgcolor="${color}">&nbsp;</td></tr>
+        <!-- Firm info -->
+        <tr><td style="padding:24px 24px 0;text-align:center;">
+          ${f.icon_url ? `<img src="https://www.marketscoupons.com/${f.icon_url}" width="56" height="56" style="width:56px;height:56px;border-radius:12px;margin:0 auto 12px;display:block;" alt="${f.name}">` : ''}
+          <div style="font-size:22px;font-weight:800;color:${T_DARK};font-family:${FI};">${f.name}</div>
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:${color};margin-top:4px;font-family:${FI};">${f.type||''}</div>
+        </td></tr>
+        <!-- Discount badge -->
+        ${f.discount ? `<tr><td style="padding:16px 24px 0;text-align:center;">
+          <span style="display:inline-block;background-color:${color};color:#FFF;font-size:32px;font-weight:900;padding:8px 28px;border-radius:8px;letter-spacing:-1px;font-family:${FI};">${f.discount}% OFF</span>
+          <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:${T_LIGHT};margin-top:8px;font-family:${FI};">${et('discount_label')}${lt.toUpperCase()}</div>
+        </td></tr>` : ''}
+        <!-- Trustpilot centered -->
+        <tr><td style="padding:16px 24px 0;text-align:center;">
+          <table cellpadding="0" cellspacing="0" border="0" align="center" role="presentation">
+            <tr>
+              <td style="padding-right:8px;"><span style="font-size:22px;font-weight:900;color:${T_DARK};font-family:${FI};">${tpScore}</span></td>
+              <td style="padding-right:8px;vertical-align:middle;">${starsHtml}</td>
+              <td style="vertical-align:middle;"><span style="font-size:12px;font-weight:700;color:#00B67A;font-family:${FI};">${tpLabel}</span></td>
+            </tr>
+          </table>
+          <div style="font-size:12px;color:${T_LIGHT};margin-top:4px;font-family:${FI};">${(tpReviews||0).toLocaleString()} ${etL.trustpilot||'reviews no Trustpilot'}</div>
+        </td></tr>
+        <!-- Stats grid 2x2 -->
+        <tr><td style="padding:20px 16px 20px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+            <tr>
+              ${stats.slice(0,2).map(s => `<td width="50%" style="padding:6px 8px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${BODY_BG};border-radius:8px;" role="presentation">
+                  <tr><td style="padding:12px 14px;">
+                    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:${T_LIGHT};font-family:${FI};">${s.label}</div>
+                    <div style="font-size:20px;font-weight:800;color:${s.vcolor};margin-top:2px;font-family:${FI};">${s.value}</div>
+                  </td></tr>
+                </table>
+              </td>`).join('')}
+            </tr>
+            <tr>
+              ${stats.slice(2,4).map(s => `<td width="50%" style="padding:6px 8px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${BODY_BG};border-radius:8px;" role="presentation">
+                  <tr><td style="padding:12px 14px;">
+                    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:${T_LIGHT};font-family:${FI};">${s.label}</div>
+                    <div style="font-size:20px;font-weight:800;color:${s.vcolor};margin-top:2px;font-family:${FI};">${s.value}</div>
+                  </td></tr>
+                </table>
+              </td>`).join('')}
+            </tr>
+          </table>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <!-- Price Table -->
+    ${prices.length ? `<tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:24px 32px 0;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:${T_LIGHT};margin-bottom:12px;font-family:${FI};">${etL.prices_title||'CONTAS DISPONÍVEIS'}</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid ${BORDER};border-radius:10px;overflow:hidden;" role="presentation">
+        ${priceHeaderHtml}
+        ${priceRowsHtml}
+      </table>
+    </td></tr>` : ''}
+
+    <!-- Coupon Block -->
+    ${f.coupon ? `<tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:24px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:2px dashed ${color};border-radius:10px;overflow:hidden;" role="presentation">
+        <tr><td style="padding:20px 24px;text-align:center;background-color:rgba(${hexToRgb(color)},0.04);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:${T_LIGHT};margin-bottom:8px;font-family:${FI};">${et('exclusive_coupon')}</div>
+          <div style="font-size:36px;font-weight:900;letter-spacing:6px;color:${color};font-family:${FI};">${f.coupon}</div>
+          <div style="font-size:12px;color:${T_LIGHT};margin-top:8px;font-family:${FI};">${et('coupon_hint')}</div>
+        </td></tr>
+      </table>
+    </td></tr>` : ''}
+
+    <!-- Perks -->
+    ${(f.perks||[]).length ? `<tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:20px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+        ${perksHtml}
+      </table>
+    </td></tr>` : ''}
+
+    <!-- CTA Button -->
+    <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:24px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+        <tr><td align="center">
+          <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="${link}" style="height:52px;width:400px;" arcsize="12%" fillcolor="${GOLD}"><v:textbox inset="0,0,0,0"><center style="color:#030507;font-family:Arial;font-size:18px;font-weight:800;">${etL.cta||'Começar Avaliação'} →</center></v:textbox></v:roundrect><![endif]-->
+          <!--[if !mso]><!-->
+          <a href="${link}" target="_blank" style="display:block;background:linear-gradient(90deg,#C8941A,${GOLD},#F5D060,${GOLD},#C8941A);color:#030507;padding:16px 0;border-radius:10px;font-size:18px;font-weight:800;text-align:center;text-decoration:none;letter-spacing:0.3px;font-family:${FI};">${etL.cta||'Começar Avaliação'} →</a>
+          <!--<![endif]-->
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <!-- See All link -->
+    <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:16px 32px 28px;text-align:center;">
+      <a href="https://www.marketscoupons.com" target="_blank" style="color:${color};font-size:14px;font-weight:600;text-decoration:underline;font-family:${FI};">${etL.see_all||'Ver todas as ofertas no MarketsCoupons →'}</a>
+    </td></tr>
+
+  </table>
+</td></tr>
+
+<!-- ═══ DARK FOOTER ═══ -->
+<tr><td style="background-color:${DARK};padding:0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${DARK}" role="presentation">
+    <tr><td bgcolor="${DARK}" style="background-color:${DARK};padding:24px 32px;text-align:center;">
+      <span style="font-size:16px;font-weight:800;letter-spacing:-0.3px;font-family:${FI};"><span style="color:#EDF2F7;">Markets</span> <span style="color:${GOLD};">Coupons</span></span>
+      <div style="color:#4A5568;font-size:11px;margin-top:6px;font-family:${FI};">www.marketscoupons.com</div>
+      <div style="margin-top:12px;">
+        <span style="color:#3D4F63;font-size:11px;font-family:${FI};">
+          ${etL.footer||'Voce recebeu este email por estar inscrito no MarketsCoupons.'}<br>
+          <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#3D4F63;text-decoration:underline;">${etL.unsub||'Cancelar inscrição'}</a>
+        </span>
+      </div>
+    </td></tr>
+    <!-- Bottom accent -->
+    <tr><td style="height:3px;background:linear-gradient(90deg,${color},${GOLD},${color});font-size:0;line-height:0;" bgcolor="${color}">&nbsp;</td></tr>
+  </table>
+</td></tr>
+
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+
+</td></tr>
+</table>
+</body></html>`;
+}
+
 async function loadPromoTemplate(firmId){
   const { data: f } = await db.from('cms_firms').select('*').eq('id',firmId).maybeSingle();
   if(!f){ toast('Firma nao encontrada!','warn'); return; }
@@ -4004,14 +4274,19 @@ async function loadPromoTemplate(firmId){
     _capturedImageUrl = urlData.publicUrl;
 
     document.getElementById('em-body').value = '__IMAGE_EMAIL__';
+    _whiteEmailMode = false;
 
     document.getElementById('em-preview').innerHTML = `
       <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
       <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">IMAGEM PNG (anti dark-mode)</strong></div>
       <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Para: <strong style="color:var(--gold);">${leads.length} destinatarios</strong></div>
       <div class="promo-info" style="font-size:11px;color:var(--green);margin-bottom:8px;">✓ Imagem capturada e hospedada!</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <button onclick="switchEmailMode('dark')" id="btn-mode-dark" style="flex:1;padding:8px;border:2px solid var(--gold);background:var(--gold);color:#030507;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">DARK (Imagem)</button>
+        <button onclick="switchEmailMode('white')" id="btn-mode-white" style="flex:1;padding:8px;border:2px solid var(--b1);background:transparent;color:var(--t2);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">WHITE (HTML)</button>
+      </div>
       <hr style="border-color:var(--b1);margin-bottom:12px;">
-      <div style="text-align:center;background:#07090D;border-radius:8px;padding:16px;border:1px solid var(--b1);">
+      <div id="email-mode-preview" style="text-align:center;background:#07090D;border-radius:8px;padding:16px;border:1px solid var(--b1);">
         <img src="${_capturedImageUrl}" style="max-width:100%;border-radius:6px;">
       </div>`;
 
@@ -4031,6 +4306,32 @@ async function loadPromoTemplate(firmId){
 
   // Cleanup hidden container
   container.innerHTML = '';
+}
+
+function switchEmailMode(mode){
+  _whiteEmailMode = (mode === 'white');
+  const btnDark = document.getElementById('btn-mode-dark');
+  const btnWhite = document.getElementById('btn-mode-white');
+  const preview = document.getElementById('email-mode-preview');
+  if(!btnDark||!btnWhite||!preview) return;
+
+  if(mode === 'white'){
+    btnWhite.style.cssText = 'flex:1;padding:8px;border:2px solid var(--gold);background:var(--gold);color:#030507;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;';
+    btnDark.style.cssText = 'flex:1;padding:8px;border:2px solid var(--b1);background:transparent;color:var(--t2);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;';
+    document.getElementById('em-body').value = '__WHITE_EMAIL__';
+    // Show white template preview in iframe
+    const html = buildWhitePromoHtml(emailPromoFirm, 'pt');
+    preview.style.background = '#F7F8FA';
+    preview.innerHTML = `<iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${html.replace(/"/g,'&quot;')}" style="width:100%;height:700px;border:none;border-radius:6px;background:#F7F8FA;"></iframe>`;
+    toast('Modo WHITE ativado — HTML puro, multilingue');
+  } else {
+    btnDark.style.cssText = 'flex:1;padding:8px;border:2px solid var(--gold);background:var(--gold);color:#030507;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;';
+    btnWhite.style.cssText = 'flex:1;padding:8px;border:2px solid var(--b1);background:transparent;color:var(--t2);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;';
+    document.getElementById('em-body').value = '__IMAGE_EMAIL__';
+    preview.style.background = '#07090D';
+    preview.innerHTML = _capturedImageUrl ? `<img src="${_capturedImageUrl}" style="max-width:100%;border-radius:6px;">` : '<span style="color:var(--t3);font-size:12px;">Sem imagem capturada</span>';
+    toast('Modo DARK ativado — imagem PNG');
+  }
 }
 
 /* renderPage patch1 removed */
@@ -4478,7 +4779,8 @@ async function sendEmailsSmtp(){
   if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
 
   const isPromo = emailIsHtml && emailPromoFirm;
-  const isImageEmail = isPromo && _capturedImageUrl;
+  const isWhiteEmail = isPromo && _whiteEmailMode;
+  const isImageEmail = isPromo && _capturedImageUrl && !_whiteEmailMode;
   const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
   const isMultilang = (isPromo || isInst) && !isImageEmail;
   const langGroups = {};
@@ -4489,7 +4791,7 @@ async function sendEmailsSmtp(){
   });
   const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
 
-  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\n${isImageEmail ? 'Modo: IMAGEM CLICAVEL (dark)' : 'Idiomas: '+langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}`)) return;
+  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\n${isImageEmail ? 'Modo: IMAGEM CLICAVEL (dark)' : isWhiteEmail ? 'Modo: WHITE LAYOUT (multilingue)\nIdiomas: '+langSummary : 'Idiomas: '+langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}`)) return;
 
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
@@ -4499,7 +4801,25 @@ async function sendEmailsSmtp(){
     const token = session?.data?.session?.access_token;
     let totalSent=0, totalFailed=0;
 
-    if(isImageEmail){
+    if(isWhiteEmail){
+      // White layout email — multilang, pure HTML
+      for(const [lang, group] of Object.entries(langGroups)){
+        const html = buildWhitePromoHtml(emailPromoFirm, lang);
+        const resp = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({
+            to: group.map(l => ({ email: l.email, name: l.name||'' })),
+            subject: subject,
+            htmlContent: html,
+            tags: ['promo-white-'+emailPromoFirm.id, 'lang-'+lang],
+          }),
+        });
+        const data = await resp.json();
+        if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
+        else { totalFailed+=group.length; }
+      }
+    } else if(isImageEmail){
       // Image email — single language, just clickable image
       const html = buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt', emailPromoFirm);
       const resp = await fetch('/api/send-email', {
@@ -4584,7 +4904,8 @@ async function sendTestEmail(){
   const isPromo = emailIsHtml && emailPromoFirm;
   const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
   let html=body, subj=subject;
-  if(isPromo && _capturedImageUrl) html=buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt', emailPromoFirm);
+  if(isPromo && _whiteEmailMode) html=buildWhitePromoHtml(emailPromoFirm,'pt');
+  else if(isPromo && _capturedImageUrl) html=buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt', emailPromoFirm);
   else if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
   if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'pt'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.pt||subject; }
   try {
@@ -4613,7 +4934,8 @@ async function sendSingleEmail(){
   const isPromo=emailIsHtml&&emailPromoFirm;
   const isInst=emailIsHtml&&window._instTemplateName&&!emailPromoFirm;
   let html=body, subj=subject;
-  if(isPromo && _capturedImageUrl) html=buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt', emailPromoFirm);
+  if(isPromo && _whiteEmailMode) html=buildWhitePromoHtml(emailPromoFirm,'pt');
+  else if(isPromo && _capturedImageUrl) html=buildImageEmailHtml(_capturedImageUrl, emailPromoFirm.link, 'pt', emailPromoFirm);
   else if(isPromo) html=buildPromoHtml(emailPromoFirm,'pt');
   if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'pt'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.pt||subject; }
   try {
