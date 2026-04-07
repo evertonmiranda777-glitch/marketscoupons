@@ -5063,16 +5063,21 @@ function renderGEX(items){
       </div>`;
     }).join('');
 
-    // Level lines: behind bars, tag label on right side
-    const levelLines=levels.map(l=>{
+    // Level lines: behind bars, tag label on right side (with anti-collision)
+    const TAG_H=18; // approx tag height in px
+    const levelPositions=levels.map(l=>{
       const idx=reversedStrikes.findIndex(s=>s.strike===Math.round(l.val));
-      let top;
-      if(idx<0){
-        top=(lvTop(l.val)/100*chartH)+'px';
-      } else {
-        top=(idx*ROW_H+ROW_H/2)+'px';
-      }
-      return`<div class="gx-level-line ${l.cls}" style="top:${top};"><div class="gx-level-tag ${l.cls}">${l.label}</div></div>`;
+      const px=idx<0?(lvTop(l.val)/100*chartH):(idx*ROW_H+ROW_H/2);
+      return{...l,linePx:px,tagPx:px};
+    }).sort((a,b)=>a.tagPx-b.tagPx);
+    // Push overlapping tags apart
+    for(let i=1;i<levelPositions.length;i++){
+      const gap=levelPositions[i].tagPx-levelPositions[i-1].tagPx;
+      if(gap<TAG_H) levelPositions[i].tagPx=levelPositions[i-1].tagPx+TAG_H;
+    }
+    const levelLines=levelPositions.map(l=>{
+      const tagOffset=Math.round(l.tagPx-l.linePx);
+      return`<div class="gx-level-line ${l.cls}" style="top:${l.linePx}px;"><div class="gx-level-tag ${l.cls}" style="top:${tagOffset-6}px;">${l.label}</div></div>`;
     }).join('');
 
     // Spot price line
