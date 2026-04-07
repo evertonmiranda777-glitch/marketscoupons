@@ -5063,22 +5063,22 @@ function renderGEX(items){
       </div>`;
     }).join('');
 
-    // Level lines positioned within the chart
+    // Level lines: behind bars, tag label on right side
     const levelLines=levels.map(l=>{
       const idx=reversedStrikes.findIndex(s=>s.strike===Math.round(l.val));
+      let top;
       if(idx<0){
-        // Interpolate position
-        const pct=lvTop(l.val);
-        return`<div class="gx-level-line ${l.cls}" data-label="${l.label}" style="top:${pct}%;"></div>`;
+        top=(lvTop(l.val)/100*chartH)+'px';
+      } else {
+        top=(idx*ROW_H+ROW_H/2)+'px';
       }
-      const px=idx*ROW_H+ROW_H/2;
-      return`<div class="gx-level-line ${l.cls}" data-label="${l.label}" style="top:${px}px;"></div>`;
+      return`<div class="gx-level-line ${l.cls}" style="top:${top};"><div class="gx-level-tag ${l.cls}">${l.label}</div></div>`;
     }).join('');
 
     // Spot price line
     const spotIdx=reversedStrikes.findIndex(s=>s.strike>=Math.round(spot));
     const spotPx=spotIdx>=0?spotIdx*ROW_H+ROW_H/2:lvTop(spot)/100*chartH;
-    const spotLine=`<div class="gx-spot-line" style="top:${spotPx}px;"><div class="gx-spot-label">${gxFmt(spot)}</div></div>`;
+    const spotLine=`<div class="gx-spot-line" style="top:${spotPx}px;"><div class="gx-spot-tag">${gxFmt(spot)}</div></div>`;
 
     return`<div class="gx-asset-card">
       <div class="gx-asset-hd">
