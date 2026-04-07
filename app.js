@@ -489,8 +489,8 @@ document.addEventListener('click',e=>{
 });
 
 /* ─── TRANSLATION ENGINE ─── */
-let _currentLang = 'pt';
-function t(key) { return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.pt[key]) || key; }
+let _currentLang = 'en';
+function t(key) { return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.en[key]) || key; }
 function detectLang() {
   // Priority 1: URL path language (/en/, /es/apex, etc.)
   const _pathLangs=['en','es','fr','de','it','ar'];
@@ -509,15 +509,15 @@ function detectLang() {
   const saved = localStorage.getItem('mc_lang');
   if (saved && I18N[saved]) return saved;
   // Priority 5: Browser language
-  const nav = (navigator.language || navigator.userLanguage || 'pt').toLowerCase();
-  if (nav.startsWith('pt')) return 'pt';
+  const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
   if (nav.startsWith('en')) return 'en';
+  if (nav.startsWith('pt')) return 'pt';
   if (nav.startsWith('es')) return 'es';
   if (nav.startsWith('it')) return 'it';
   if (nav.startsWith('fr')) return 'fr';
   if (nav.startsWith('de')) return 'de';
   if (nav.startsWith('ar')) return 'ar';
-  return 'pt';
+  return 'en';
 }
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -556,7 +556,7 @@ function setL(lang,flag,code){
 function initLang() {
   _currentLang = detectLang();
   const codes = {pt:'BR',en:'EN',es:'ES',it:'IT',fr:'FR',de:'DE',ar:'AR'};
-  document.getElementById('l-code').textContent = ' ' + (codes[_currentLang]||'BR');
+  document.getElementById('l-code').textContent = ' ' + (codes[_currentLang]||'EN');
   document.body.dir = _currentLang==='ar'?'rtl':'ltr';
   applyTranslations();
   updateTVWidgets(_currentLang);
@@ -593,7 +593,7 @@ const FIRM_SEO_META={
 };
 function setFirmSEO(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
-  const lang=_currentLang||'pt';
+  const lang=_currentLang||'en';
   const seo=FIRM_SEO_META[lang]||FIRM_SEO_META.pt;
   const hasCoupon=f.coupon&&f.discount>0;
   const minPrice=f.prices&&f.prices[0]?f.prices[0].n:'';
