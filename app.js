@@ -419,7 +419,7 @@ function go(page, skipHash){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
   document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p===page));
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'instant'});
   if(!skipHash) location.hash=page==='home'?'':page;
   try{sessionStorage.setItem('mc_page',page);}catch(e){}
   track('page_view',{page_name:page});
@@ -4854,6 +4854,7 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
   // Detectar idioma e aplicar traduções
   initLang();
   // Ativar página correta ANTES de renderizar (evita flash da home)
