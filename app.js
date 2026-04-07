@@ -5065,13 +5065,15 @@ function renderGEX(items){
         :`right:50%;width:${Math.max(w,0.5)}%;`;
       const lvls=strikeLevels[s.strike]||[];
       const hlCls=lvls.length?` gx-hl-${lvls[0].cls}`:'';
-      return`<div class="gx-hrow${lvls.length?' gx-hrow-level '+lvls[0].cls:''}">
+      const lines=lvls.map(l=>`<div class="gx-lvl-line ${l.cls}"></div>`).join('');
+      return`<div class="gx-hrow${lvls.length?' gx-hrow-level':''}">
         <div class="gx-hlabel${hlCls}">${gxFmt(s.strike)}</div>
         <div class="gx-hbar-area">
           <div class="gx-zero-line"></div>
           <div class="gx-hbar ${isPos?'pos':'neg'}" style="${barStyle}"></div>
           <div class="gx-htip">${gxFmt(s.strike)}: ${s.gex>0?'+':''}${s.gex}M</div>
         </div>
+        ${lines}
       </div>`;
     }).join('');
 
