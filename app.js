@@ -3724,7 +3724,7 @@ function loadHeatmap(source, btn) {
   }
 }
 
-/* CALENDÁRIO ECONÔMICO */
+/* CALENDÁRIO ECONÔMICO (Trading Economics via Edge Function) */
 const CUR_COLORS = {
   USD:{bg:'rgba(59,130,246,.15)',c:'#60a5fa'},
   EUR:{bg:'rgba(34,197,94,.15)',c:'#22c55e'},
@@ -3737,9 +3737,8 @@ const CUR_COLORS = {
   CHF:{bg:'rgba(239,68,68,.15)',c:'#ef4444'},
   NZD:{bg:'rgba(6,182,212,.15)',c:'#06b6d4'},
 };
-const COUNTRY_CUR = {US:'USD',EU:'EUR',GB:'GBP',CA:'CAD',AU:'AUD',JP:'JPY',BR:'BRL',CN:'CNY',CH:'CHF',NZ:'NZD',DE:'EUR',FR:'EUR',IT:'EUR',ES:'EUR'};
-// Forex Factory country names → currency codes
-const FF_CUR = {USD:'USD',EUR:'EUR',GBP:'GBP',CAD:'CAD',AUD:'AUD',JPY:'JPY',NZD:'NZD',CHF:'CHF',CNY:'CNY',All:'ALL'};
+
+const CAL_API = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-calendar';
 
 let calActiveFilter = 'all';
 let calEvents = [];
@@ -3768,90 +3767,41 @@ async function loadCalendar(silent) {
   const tmrDate = new Date(today); tmrDate.setDate(tmrDate.getDate()+1);
   const tmrStr = tmrDate.toISOString().slice(0,10);
 
-  // Check localStorage cache (5 min TTL)
-  const cacheKey = 'mc_cal_cache';
-  const cacheTTL = 5*60*1000;
   try {
-    const cached = JSON.parse(localStorage.getItem(cacheKey)||'null');
-    if(cached && Date.now()-cached.ts < cacheTTL && cached.data?.length){
-      calEvents = _parseFFEvents(cached.data, todayStr, tmrStr);
-      renderCal(); if(!_calRefreshTimer) _startCalRefresh();
-      return;
-    }
-  } catch(e){}
-
-  try {
-    // Primary: Forex Factory via faireconomy.media (free, CORS, real-time)
-    const res = await fetch('https://nfs.faireconomy.media/ff_calendar_thisweek.json');
-    if (!res.ok) throw new Error('FF API error '+res.status);
+    const res = await fetch(CAL_API);
+    if (!res.ok) throw new Error('Calendar API error '+res.status);
     const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) throw new Error('No data');
-    // Cache the raw data
-    try{localStorage.setItem(cacheKey, JSON.stringify({ts:Date.now(),data}));}catch(e){}
-    calEvents = _parseFFEvents(data, todayStr, tmrStr);
+    if (!data.events?.length) throw new Error('No events');
+
+    calEvents = data.events.map(ev => {
+      const dateStr = ev.date || '';
+      let day = 'Semana';
+      if (dateStr === todayStr) day = 'Hoje';
+      else if (dateStr === tmrStr) day = 'Amanhã';
+      let imp = 'l';
+      if (ev.importance >= 3) imp = 'h';
+      else if (ev.importance >= 2) imp = 'm';
+      return {
+        day, t: ev.time || '—', cur: ev.currency || '', ev: ev.event || '',
+        ref: ev.reference || '',
+        actual: ev.actual != null ? String(ev.actual) : '—',
+        fore: ev.forecast != null ? String(ev.forecast) : '—',
+        prev: ev.previous != null ? String(ev.previous) : '—',
+        imp, dateStr
+      };
+    });
   } catch(e) {
-    console.warn('Calendar FF API error:', e);
-    // Fallback: Trading Economics guest API
-    try {
-      const res2 = await fetch('https://api.tradingeconomics.com/calendar?c=guest:guest&f=json');
-      if(res2.ok){
-        const te = await res2.json();
-        if(Array.isArray(te) && te.length){
-          calEvents = te.map(ev=>{
-            const dateStr = (ev.Date||'').slice(0,10);
-            const timeStr = (ev.Date||'').slice(11,16)||'—';
-            let day='Semana';
-            if(dateStr===todayStr) day='Hoje';
-            else if(dateStr===tmrStr) day='Amanhã';
-            let imp='l';
-            if(ev.Importance>=3) imp='h'; else if(ev.Importance>=2) imp='m';
-            const cur = ev.Currency||COUNTRY_CUR[ev.Country?.slice(0,2)]||'';
-            return {day,t:timeStr,cur,ev:ev.Event||'',actual:ev.Actual!=null&&ev.Actual!==''?String(ev.Actual):'—',fore:ev.Forecast!=null&&ev.Forecast!==''?String(ev.Forecast):'—',prev:ev.Previous!=null&&ev.Previous!==''?String(ev.Previous):'—',imp,date:ev.Date||'',dateStr};
-          }).sort((a,b)=>a.date.localeCompare(b.date));
-        }
-      }
-    } catch(e2){
-      console.warn('Calendar TE fallback error:', e2);
-      // Keep existing calEvents if any, or show empty
-      if(!calEvents.length){
-        calEvents = [{day:'Hoje',t:'—',cur:'—',ev:t('cal_erro_api'),actual:'—',fore:'—',prev:'—',imp:'l',dateStr:todayStr}];
-      }
+    console.warn('Calendar API error:', e);
+    if (!calEvents.length) {
+      calEvents = [{day:'Hoje',t:'—',cur:'—',ev:t('cal_erro_api'),actual:'—',fore:'—',prev:'—',imp:'l',dateStr:todayStr}];
     }
   }
   renderCal();
-  if(!_calRefreshTimer) _startCalRefresh();
-}
-
-function _parseFFEvents(data, todayStr, tmrStr){
-  return data.filter(ev=>ev.country!=='All' && ev.title!=='Bank Holiday').map(ev=>{
-    const cur = FF_CUR[ev.country]||ev.country||'';
-    const d = ev.date||'';
-    const dateStr = d.slice(0,10);
-    // Parse time from ISO date string (already in ET)
-    const timeStr = d.slice(11,16)||'—';
-    let day='Semana';
-    if(dateStr===todayStr) day='Hoje';
-    else if(dateStr===tmrStr) day='Amanhã';
-    let imp='l';
-    if(ev.impact==='High') imp='h';
-    else if(ev.impact==='Medium') imp='m';
-    else if(ev.impact==='Low') imp='l';
-    return {
-      day, t:timeStr, cur, ev:ev.title||'',
-      actual: ev.actual!=null&&ev.actual!==''?String(ev.actual):'—',
-      fore: ev.forecast!=null&&ev.forecast!==''?String(ev.forecast):'—',
-      prev: ev.previous!=null&&ev.previous!==''?String(ev.previous):'—',
-      imp, date:d, dateStr
-    };
-  }).sort((a,b)=>a.date.localeCompare(b.date));
+  if (!_calRefreshTimer) _startCalRefresh();
 }
 
 function _startCalRefresh(){
-  // Auto-refresh every 3 minutes to catch updated data (actuals)
-  _calRefreshTimer = setInterval(()=>{
-    try{localStorage.removeItem('mc_cal_cache');}catch(e){}
-    loadCalendar(true);
-  }, 3*60*1000);
+  _calRefreshTimer = setInterval(() => loadCalendar(true), 5*60*1000);
 }
 
 function renderCal() {
@@ -3879,7 +3829,7 @@ function renderCal() {
         return `<div class="cal-item">
           <div class="cal-time">${e.t} <span style="font-size:10px;color:var(--t3);">ET</span></div>
           <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${e.cur}</span></div>
-          <div><div class="cal-ev-name">${e.ev}</div></div>
+          <div><div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t3);font-weight:400;">${e.ref}</span>`:''}</div></div>
           <div class="cal-act-wrap"><div class="cal-val" style="color:${actColor};font-weight:700;">${e.actual}</div></div>
           <div class="cal-fore-wrap"><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
           <div class="cal-prev-wrap"><div class="cal-val">${e.prev}</div></div>
