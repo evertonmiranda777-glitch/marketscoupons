@@ -283,7 +283,7 @@ async function loadGEX(){
     renderGEX(data);
   }catch(e){
     console.error('GEX load error:',e);
-    document.getElementById('gx-loading').innerHTML='<div style="color:var(--t3);">Error loading data.</div>';
+    document.getElementById('gx-loading').innerHTML='<div style="color:var(--t3);">Error loading data: '+(e.message||e)+'</div>';
   }
 }
 

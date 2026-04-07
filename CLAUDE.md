@@ -6,7 +6,8 @@ Site de cupons e descontos para **prop firms** de trading. Compara firmas, ofere
 
 - **URL producao:** https://www.marketscoupons.com
 - **Dominio Vercel:** https://marketscoupons.vercel.app
-- **Idioma principal:** Portugues (PT-BR)
+- **Idioma padrao do site:** Ingles (EN) — todo conteudo novo (paginas, textos, meta tags) deve ser criado em ingles primeiro. Traducoes via I18N (data-i18n + objeto I18N)
+- **Excecao:** `admin.html` (dashboard admin) — tudo em portugues, sem I18N
 - **Respostas ao usuario:** Sempre em portugues
 
 ---
