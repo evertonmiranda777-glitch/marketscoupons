@@ -3030,16 +3030,20 @@ document.addEventListener('DOMContentLoaded',function(){
       </div>
     </div>
     <div class="cal-filter-bar" id="cal-filters">
-      <button class="cal-f active" onclick="calFilter('all',this)" data-i18n="cal_todos">Todos</button>
-      <button class="cal-f" onclick="calFilter('h',this)" data-i18n="cal_alto_imp">Alto Impacto</button>
-      <button class="cal-f" onclick="calFilter('USD',this)">USD</button>
-      <button class="cal-f" onclick="calFilter('EUR',this)">EUR</button>
-      <button class="cal-f" onclick="calFilter('GBP',this)">GBP</button>
-      <button class="cal-f" onclick="calFilter('CAD',this)">CAD</button>
-      <button class="cal-f" onclick="calFilter('AUD',this)">AUD</button>
-      <button class="cal-f" onclick="calFilter('JPY',this)">JPY</button>
-      <button class="cal-f" onclick="calFilter('BRL',this)">BRL</button>
-      <button class="cal-f" onclick="calFilter('CNY',this)">CNY</button>
+      <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">Todos</button>
+      <span style="width:1px;background:var(--b1);margin:0 4px;"></span>
+      <button class="cal-f" data-filter="h" onclick="calFilter('h',this)">★★★</button>
+      <button class="cal-f" data-filter="m" onclick="calFilter('m',this)">★★☆</button>
+      <button class="cal-f" data-filter="l" onclick="calFilter('l',this)">★☆☆</button>
+      <span style="width:1px;background:var(--b1);margin:0 4px;"></span>
+      <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">USD</button>
+      <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">EUR</button>
+      <button class="cal-f" data-filter="GBP" onclick="calFilter('GBP',this)">GBP</button>
+      <button class="cal-f" data-filter="CAD" onclick="calFilter('CAD',this)">CAD</button>
+      <button class="cal-f" data-filter="AUD" onclick="calFilter('AUD',this)">AUD</button>
+      <button class="cal-f" data-filter="JPY" onclick="calFilter('JPY',this)">JPY</button>
+      <button class="cal-f" data-filter="BRL" onclick="calFilter('BRL',this)">BRL</button>
+      <button class="cal-f" data-filter="CNY" onclick="calFilter('CNY',this)">CNY</button>
     </div>
     <div class="cal-tbl-hd">
       <div data-i18n="cal_hora">Hora</div>

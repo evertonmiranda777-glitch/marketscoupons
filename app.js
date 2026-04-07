@@ -546,7 +546,7 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate(); renderCal();
+  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true);
   // Re-render open drawer if language changed
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
@@ -3740,14 +3740,24 @@ const CUR_COLORS = {
 
 const CAL_API = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-calendar';
 
-let calActiveFilter = 'all';
+let calFilterCur = 'all';  // currency filter
+let calFilterImp = 'all';  // impact filter
 let calEvents = [];
 let _calRefreshTimer = null;
+let _calLang = '';
 
 function calFilter(filter, btn) {
-  calActiveFilter = filter;
-  document.querySelectorAll('.cal-f').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  // Determine if it's a currency or impact filter
+  if (filter === 'all') { calFilterCur = 'all'; calFilterImp = 'all'; }
+  else if (filter === 'h' || filter === 'm' || filter === 'l') { calFilterImp = calFilterImp === filter ? 'all' : filter; }
+  else { calFilterCur = calFilterCur === filter ? 'all' : filter; }
+  // Update button states
+  document.querySelectorAll('.cal-f').forEach(b => {
+    const f = b.getAttribute('data-filter');
+    if (f === 'all') b.classList.toggle('active', calFilterCur === 'all' && calFilterImp === 'all');
+    else if (f === 'h' || f === 'm' || f === 'l') b.classList.toggle('active', calFilterImp === f);
+    else b.classList.toggle('active', calFilterCur === f);
+  });
   renderCal();
 }
 
@@ -3771,7 +3781,8 @@ async function loadCalendar(silent) {
   try{localStorage.removeItem('mc_cal_cache');}catch(e){}
 
   try {
-    const res = await fetch(CAL_API);
+    const lang = _currentLang || 'en';
+    const res = await fetch(CAL_API + '?lang=' + lang);
     if (!res.ok) throw new Error('Calendar API error '+res.status);
     const data = await res.json();
     if (!data.events?.length) throw new Error('No events');
@@ -3811,8 +3822,8 @@ function renderCal() {
   const el = document.getElementById('cal-list');
   if (!el) return;
   let events = calEvents;
-  if (calActiveFilter === 'h') events = events.filter(e => e.imp === 'h');
-  else if (calActiveFilter !== 'all') events = events.filter(e => e.cur === calActiveFilter);
+  if (calFilterCur !== 'all') events = events.filter(e => e.cur === calFilterCur);
+  if (calFilterImp !== 'all') events = events.filter(e => e.imp === calFilterImp);
 
   if (!events.length) {
     el.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--t2);font-size:13px;">${t('cal_sem_eventos')}</div>`;
