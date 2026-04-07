@@ -474,7 +474,11 @@ function applyTranslations() {
     const val = t(key);
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
     else if (el.tagName === 'OPTION') el.textContent = val;
-    else el.innerHTML = val;
+    else {
+      const svg = el.querySelector('svg');
+      if (svg) { el.innerHTML = ''; el.appendChild(svg); el.append(val); }
+      else el.innerHTML = val;
+    }
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
