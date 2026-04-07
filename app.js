@@ -5009,7 +5009,8 @@ function renderGEX(items){
 
   if(items[0]){
     const d=new Date(items[0].date+'T12:00:00');
-    const ds=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    const locMap={pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'};
+    const ds=d.toLocaleDateString(locMap[_currentLang]||'en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     const el=document.getElementById('gx-date');
     el.removeAttribute('data-i18n');
     el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong> | Source: CBOE (delayed)';
@@ -5024,13 +5025,9 @@ function renderGEX(items){
     const topStrikes=(item.top_strikes||[]).sort((a,b)=>a.strike-b.strike);
     const maxGex=Math.max(...topStrikes.map(s=>Math.abs(s.gex)),1);
     const spot=parseFloat(item.spot_price);
-    const ROW_H=15; // px per row
+    const ROW_H=15;
 
-    // Level positions (percentage from top)
-    function lvPos(val){return((val-minStrike)/range)*100;}
-    // Since strikes go bottom-to-top in chart, invert: top = maxStrike
-    function lvTop(val){return((maxStrike-val)/range)*100;}
-
+    // All levels
     const levels=[
       {val:parseFloat(item.zero_gamma),cls:'lv-zero',label:'Zero Gamma'},
       {val:parseFloat(item.put_wall),cls:'lv-put',label:'Put Wall'},
@@ -5038,9 +5035,7 @@ function renderGEX(items){
       {val:parseFloat(item.hvl),cls:'lv-hvl',label:'HVL'},
       {val:parseFloat(item.vol_trigger)||0,cls:'lv-vt',label:'Vol Trigger'},
       {val:parseFloat(item.max_pain)||0,cls:'lv-mp',label:'Max Pain'},
-    ].filter(l=>l.val>=minStrike&&l.val<=maxStrike);
-
-    const spotTop=lvTop(spot);
+    ].filter(l=>l.val>0);
 
     // Map strikes that match a level → highlight row + tag
     const strikeLevels={};
@@ -5056,6 +5051,9 @@ function renderGEX(items){
     const maxStrike=topStrikes[topStrikes.length-1]?.strike||spot+100;
     const range=maxStrike-minStrike||1;
     const chartH=topStrikes.length*ROW_H;
+
+    function lvTop(val){return((maxStrike-val)/range)*100;}
+    const spotTop=lvTop(spot);
 
     // Build horizontal bar rows (top=highest strike, bottom=lowest)
     const reversedStrikes=[...topStrikes].reverse();
