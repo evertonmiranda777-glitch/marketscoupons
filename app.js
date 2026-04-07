@@ -180,24 +180,23 @@ const PLAT_DETAIL={
     ]
   },
   ninjatrader:{
-    about:'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Brokerage própria com acesso direto ao CME Group. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros. Margens intraday: <b>$50</b> Micro / <b>$500</b> E-mini.',
-    highlights:[{val:'500K+',label:'Usuários ativos'},{val:'$0.09',label:'Menor comissão'},{val:'20+',label:'Anos no mercado'}],
+    about:'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros.',
+    highlights:[{val:'500K+',label:'Usuários ativos'},{val:'C#',label:'Automação'},{val:'20+',label:'Anos no mercado'}],
     types:['Plataforma'],
     plans:{
       'Plataforma':[
-        {s:'Free',d:'$0/mês',o:'—',feat:'Micro $0.35/lado · Standard $1.29/lado'},
-        {s:'Monthly',d:'$99/mês',o:'—',feat:'Micro $0.25/lado · Standard $0.99/lado'},
-        {s:'Lifetime',d:'$1,499',o:'—',pop:1,feat:'Micro $0.09/lado · Standard $0.59/lado'}
+        {s:'Free',d:'$0/mês',o:'—',feat:'Dados EOD gratuitos'},
+        {s:'Monthly',d:'$99/mês',o:'—',feat:'Dados em tempo real inclusos'},
+        {s:'Lifetime',d:'$1,499',o:'—',pop:1,feat:'Licença vitalícia + dados real-time'}
       ]
     },
-    includes:['SuperDOM + Order Flow+','100+ indicadores nativos','Automação NinjaScript (C#)','Strategy Analyzer (backtest)','ATM Strategies','Simulação grátis','Brokerage própria (FCM)','Margens intraday $50 Micro','Chart Trader (visual)','Market Analyzer (scanner)','Aceita por 10+ Prop Firms','Dados CME/CBOT/NYMEX','Relatório de performance','Desktop + Web + Mobile','Marketplace com milhares de add-ons','Suporte 24/5'],
+    includes:['SuperDOM + Order Flow+','100+ indicadores nativos','Automação NinjaScript (C#)','Strategy Analyzer (backtest)','ATM Strategies','Simulação grátis','Chart Trader (visual)','Market Analyzer (scanner)','Aceita por 10+ Prop Firms','Dados CME/CBOT/NYMEX','Relatório de performance','Desktop + Web + Mobile','Marketplace com milhares de add-ons','Suporte 24/5'],
     stats:[
       {label:'Exchanges',val:'CME, CBOT, NYMEX, COMEX'},
-      {label:'Comissão mínima',val:'$0.09/lado',color:'var(--green)'},
-      {label:'Margem Micro',val:'$50 intraday',color:'#EAB308'},
       {label:'Automação',val:'NinjaScript (C#)'},
+      {label:'Backtesting',val:'Strategy Analyzer',color:'var(--green)'},
       {label:'Prop Firms',val:'Apex, Bulenox, Topstep +7',color:'var(--green)'},
-      {label:'Brokerage',val:'Própria (FCM/NFA)'}
+      {label:'Marketplace',val:'Milhares de add-ons'}
     ]
   }
 };
@@ -331,7 +330,7 @@ const FIRM_T={
 'Sem regra de escalamento':['No scaling rules','Sin regla de escalamiento','Sans règle de scaling','Nessuna regola di scaling','Keine Scaling-Regeln','بدون قواعد تصعيد'],
 // PLAT_DETAIL — about texts (updated with richer data)
 'Fundada em <b>2011</b> nos EUA. A plataforma de gráficos <b>mais usada do mundo</b> com <b>50M+ de usuários</b> em 190+ países. Indicadores profissionais, alertas avançados, screener e a maior comunidade de traders do mundo. <b>Pine Script</b> para criar indicadores customizados.':['Founded in <b>2011</b> in the USA. The <b>world\'s most used</b> charting platform with <b>50M+ users</b> in 190+ countries. Professional indicators, advanced alerts, screener and the world\'s largest trader community. <b>Pine Script</b> for custom indicators.','Fundada en <b>2011</b> en EE.UU. La plataforma de gráficos <b>más usada del mundo</b> con <b>50M+ de usuarios</b> en 190+ países. Indicadores profesionales, alertas avanzadas, screener y la mayor comunidad de traders del mundo. <b>Pine Script</b> para indicadores personalizados.','Fondée en <b>2011</b> aux États-Unis. La plateforme de graphiques <b>la plus utilisée au monde</b> avec <b>50M+ d\'utilisateurs</b> dans 190+ pays. Indicateurs professionnels, alertes avancées, screener et la plus grande communauté de traders. <b>Pine Script</b> pour indicateurs personnalisés.','Fondata nel <b>2011</b> negli USA. La piattaforma di grafici <b>più usata al mondo</b> con <b>50M+ di utenti</b> in 190+ paesi. Indicatori professionali, avvisi avanzati, screener e la più grande comunità di trader. <b>Pine Script</b> per indicatori personalizzati.','Gegründet <b>2011</b> in den USA. Die <b>weltweit meistgenutzte</b> Charting-Plattform mit <b>50M+ Nutzern</b> in 190+ Ländern. Professionelle Indikatoren, erweiterte Benachrichtigungen, Screener und die größte Trader-Community. <b>Pine Script</b> für benutzerdefinierte Indikatoren.','تأسست في <b>2011</b> في الولايات المتحدة. منصة الرسوم البيانية <b>الأكثر استخداماً في العالم</b> مع <b>50 مليون+ مستخدم</b> في 190+ دولة. مؤشرات احترافية، تنبيهات متقدمة، فاحص وأكبر مجتمع متداولين. <b>Pine Script</b> لمؤشرات مخصصة.'],
-'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Brokerage própria com acesso direto ao CME Group. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros. Margens intraday: <b>$50</b> Micro / <b>$500</b> E-mini.':['Founded in <b>2003</b> by Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ users</b> in 150+ countries. Own brokerage with direct CME Group access. Acquired <b>Tradovate</b> in 2023. Accepted by <b>most futures Prop Firms</b>. Intraday margins: <b>$50</b> Micro / <b>$500</b> E-mini.','Fundada en <b>2003</b> por Raymond Deux en Denver, Colorado (HQ en Chicago). <b>500K+ usuarios</b> en 150+ países. Brokerage propia con acceso directo al CME Group. Adquirió <b>Tradovate</b> en 2023. Aceptada por la <b>mayoría de las Prop Firms</b> de futuros. Márgenes intraday: <b>$50</b> Micro / <b>$500</b> E-mini.','Fondée en <b>2003</b> par Raymond Deux à Denver, Colorado (siège à Chicago). <b>500K+ utilisateurs</b> dans 150+ pays. Courtage propre avec accès direct CME Group. Acquisition de <b>Tradovate</b> en 2023. Acceptée par la <b>plupart des Prop Firms</b> futures. Marges intraday: <b>50$</b> Micro / <b>500$</b> E-mini.','Fondata nel <b>2003</b> da Raymond Deux a Denver, Colorado (sede a Chicago). <b>500K+ utenti</b> in 150+ paesi. Broker proprio con accesso diretto CME Group. Acquisizione di <b>Tradovate</b> nel 2023. Accettata dalla <b>maggior parte delle Prop Firms</b> futures. Margini intraday: <b>$50</b> Micro / <b>$500</b> E-mini.','Gegründet <b>2003</b> von Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ Nutzer</b> in 150+ Ländern. Eigene Brokerage mit direktem CME Group-Zugang. Übernahme von <b>Tradovate</b> 2023. Von den <b>meisten Futures Prop Firms</b> akzeptiert. Intraday-Margen: <b>$50</b> Micro / <b>$500</b> E-mini.','تأسست في <b>2003</b> بواسطة ريموند دو في دنفر، كولورادو (المقر في شيكاغو). <b>500 ألف+ مستخدم</b> في 150+ دولة. وساطة خاصة مع وصول مباشر لـCME Group. استحوذت على <b>Tradovate</b> في 2023. مقبولة من <b>معظم شركات Prop</b> للعقود الآجلة. هوامش يومية: <b>$50</b> مايكرو / <b>$500</b> E-mini.'],
+'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros.':['Founded in <b>2003</b> by Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ users</b> in 150+ countries. Acquired <b>Tradovate</b> in 2023. Accepted by <b>most futures Prop Firms</b>.','Fundada en <b>2003</b> por Raymond Deux en Denver, Colorado (HQ en Chicago). <b>500K+ usuarios</b> en 150+ países. Adquirió <b>Tradovate</b> en 2023. Aceptada por la <b>mayoría de las Prop Firms</b> de futuros.','Fondée en <b>2003</b> par Raymond Deux à Denver, Colorado (siège à Chicago). <b>500K+ utilisateurs</b> dans 150+ pays. Acquisition de <b>Tradovate</b> en 2023. Acceptée par la <b>plupart des Prop Firms</b> futures.','Fondata nel <b>2003</b> da Raymond Deux a Denver, Colorado (sede a Chicago). <b>500K+ utenti</b> in 150+ paesi. Acquisizione di <b>Tradovate</b> nel 2023. Accettata dalla <b>maggior parte delle Prop Firms</b> futures.','Gegründet <b>2003</b> von Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ Nutzer</b> in 150+ Ländern. Übernahme von <b>Tradovate</b> 2023. Von den <b>meisten Futures Prop Firms</b> akzeptiert.','تأسست في <b>2003</b> بواسطة ريموند دو في دنفر، كولورادو (المقر في شيكاغو). <b>500 ألف+ مستخدم</b> في 150+ دولة. استحوذت على <b>Tradovate</b> في 2023. مقبولة من <b>معظم شركات Prop</b> للعقود الآجلة.'],
 // PLAT_DETAIL — credit text
 'Ao assinar pela Markets Coupons, você recebe <b>$15 de crédito</b> na sua conta TradingView.':['By subscribing through Markets Coupons, you get <b>$15 credit</b> on your TradingView account.','Al suscribirte por Markets Coupons, recibes <b>$15 de crédito</b> en tu cuenta TradingView.','En vous abonnant via Markets Coupons, vous recevez <b>15$ de crédit</b> sur votre compte TradingView.','Iscrivendoti tramite Markets Coupons, ricevi <b>$15 di credito</b> sul tuo account TradingView.','Wenn Sie sich über Markets Coupons anmelden, erhalten Sie <b>$15 Guthaben</b> auf Ihrem TradingView-Konto.','عند الاشتراك عبر Markets Coupons، تحصل على <b>رصيد $15</b> في حسابك على TradingView.'],
 // PLAT_DETAIL — highlight labels
@@ -339,16 +338,16 @@ const FIRM_T={
 'OFF Anual':['OFF Annual','OFF Anual','OFF Annuel','OFF Annuale','RABATT Jährlich','خصم سنوي'],
 'Crédito na conta':['Account credit','Crédito en la cuenta','Crédit sur le compte','Credito sul conto','Kontoguthaben','رصيد في الحساب'],
 'Plano disponível':['Plan available','Plan disponible','Plan disponible','Piano disponibile','Plan verfügbar','خطة متاحة'],
-'Menor comissão':['Lowest commission','Menor comisión','Commission la plus basse','Commissione più bassa','Niedrigste Kommission','أقل عمولة'],
+'Automação':['Automation','Automatización','Automatisation','Automazione','Automatisierung','الأتمتة'],
 'Anos no mercado':['Years in market','Años en el mercado','Ans sur le marché','Anni nel mercato','Jahre im Markt','سنوات في السوق'],
 // PLAT_DETAIL — plan feature lines
 '2 gráficos/aba · 5 indicadores · 40 alertas':['2 charts/tab · 5 indicators · 40 alerts','2 gráficos/pestaña · 5 indicadores · 40 alertas','2 graphiques/onglet · 5 indicateurs · 40 alertes','2 grafici/tab · 5 indicatori · 40 avvisi','2 Charts/Tab · 5 Indikatoren · 40 Alarme','2 رسم بياني/علامة · 5 مؤشرات · 40 تنبيه'],
 '4 gráficos/aba · 10 indicadores · 200 alertas':['4 charts/tab · 10 indicators · 200 alerts','4 gráficos/pestaña · 10 indicadores · 200 alertas','4 graphiques/onglet · 10 indicateurs · 200 alertes','4 grafici/tab · 10 indicatori · 200 avvisi','4 Charts/Tab · 10 Indikatoren · 200 Alarme','4 رسم بياني/علامة · 10 مؤشرات · 200 تنبيه'],
 '8 gráficos/aba · 25 indicadores · 800 alertas':['8 charts/tab · 25 indicators · 800 alerts','8 gráficos/pestaña · 25 indicadores · 800 alertas','8 graphiques/onglet · 25 indicateurs · 800 alertes','8 grafici/tab · 25 indicatori · 800 avvisi','8 Charts/Tab · 25 Indikatoren · 800 Alarme','8 رسم بياني/علامة · 25 مؤشر · 800 تنبيه'],
 '16 gráficos/aba · 50 indicadores · 2.000 alertas':['16 charts/tab · 50 indicators · 2,000 alerts','16 gráficos/pestaña · 50 indicadores · 2.000 alertas','16 graphiques/onglet · 50 indicateurs · 2 000 alertes','16 grafici/tab · 50 indicatori · 2.000 avvisi','16 Charts/Tab · 50 Indikatoren · 2.000 Alarme','16 رسم بياني/علامة · 50 مؤشر · 2,000 تنبيه'],
-'Micro $0.35/lado · Standard $1.29/lado':['Micro $0.35/side · Standard $1.29/side','Micro $0.35/lado · Standard $1.29/lado','Micro 0,35$/côté · Standard 1,29$/côté','Micro $0.35/lato · Standard $1.29/lato','Micro $0,35/Seite · Standard $1,29/Seite','مايكرو $0.35/جانب · ستاندرد $1.29/جانب'],
-'Micro $0.25/lado · Standard $0.99/lado':['Micro $0.25/side · Standard $0.99/side','Micro $0.25/lado · Standard $0.99/lado','Micro 0,25$/côté · Standard 0,99$/côté','Micro $0.25/lato · Standard $0.99/lato','Micro $0,25/Seite · Standard $0,99/Seite','مايكرو $0.25/جانب · ستاندرد $0.99/جانب'],
-'Micro $0.09/lado · Standard $0.59/lado':['Micro $0.09/side · Standard $0.59/side','Micro $0.09/lado · Standard $0.59/lado','Micro 0,09$/côté · Standard 0,59$/côté','Micro $0.09/lato · Standard $0.59/lato','Micro $0,09/Seite · Standard $0,59/Seite','مايكرو $0.09/جانب · ستاندرد $0.59/جانب'],
+'Dados EOD gratuitos':['Free EOD data','Datos EOD gratuitos','Données EOD gratuites','Dati EOD gratuiti','Kostenlose EOD-Daten','بيانات EOD مجانية'],
+'Dados em tempo real inclusos':['Real-time data included','Datos en tiempo real incluidos','Données en temps réel incluses','Dati in tempo reale inclusi','Echtzeit-Daten inklusive','بيانات فورية مضمنة'],
+'Licença vitalícia + dados real-time':['Lifetime license + real-time data','Licencia vitalicia + datos real-time','Licence à vie + données temps réel','Licenza a vita + dati real-time','Lebenslange Lizenz + Echtzeit-Daten','ترخيص مدى الحياة + بيانات فورية'],
 // NinjaTrader — new includes & highlights
 'Usuários ativos':['Active users','Usuarios activos','Utilisateurs actifs','Utenti attivi','Aktive Nutzer','المستخدمون النشطون'],
 'SuperDOM + Order Flow+':['SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+'],
@@ -356,8 +355,6 @@ const FIRM_T={
 'Automação NinjaScript (C#)':['NinjaScript automation (C#)','Automatización NinjaScript (C#)','Automatisation NinjaScript (C#)','Automazione NinjaScript (C#)','NinjaScript-Automatisierung (C#)','أتمتة NinjaScript (C#)'],
 'Strategy Analyzer (backtest)':['Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (Backtest)','Strategy Analyzer (اختبار)'],
 'ATM Strategies':['ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies'],
-'Brokerage própria (FCM)':['Own brokerage (FCM)','Brokerage propia (FCM)','Courtage propre (FCM)','Broker proprio (FCM)','Eigene Brokerage (FCM)','وساطة خاصة (FCM)'],
-'Margens intraday $50 Micro':['$50 Micro intraday margins','Márgenes intraday $50 Micro','Marges intraday 50$ Micro','Margini intraday $50 Micro','$50 Micro Intraday-Margen','هوامش يومية $50 مايكرو'],
 // TradingView — extra includes
 'Paper Trading (simulação)':['Paper Trading (simulation)','Paper Trading (simulación)','Paper Trading (simulation)','Paper Trading (simulazione)','Paper Trading (Simulation)','تداول تجريبي (محاكاة)'],
 'Watchlists ilimitadas':['Unlimited watchlists','Watchlists ilimitadas','Watchlists illimitées','Watchlist illimitate','Unbegrenzte Watchlists','قوائم مراقبة غير محدودة'],
@@ -386,13 +383,11 @@ const FIRM_T={
 'Comunidade':['Community','Comunidad','Communauté','Comunità','Community','المجتمع'],
 '50M+ traders ativos':['50M+ active traders','50M+ traders activos','50M+ traders actifs','50M+ trader attivi','50M+ aktive Trader','50 مليون+ متداول نشط'],
 'Exchanges':['Exchanges','Exchanges','Exchanges','Exchanges','Exchanges','البورصات'],
-'Comissão mínima':['Min. commission','Comisión mínima','Commission min.','Commissione min.','Min. Kommission','أقل عمولة'],
-'Margem Micro':['Micro margin','Margen Micro','Marge Micro','Margine Micro','Micro-Marge','هامش مايكرو'],
-'$50 intraday':['$50 intraday','$50 intraday','50$ intraday','$50 intraday','$50 intraday','$50 يومي'],
+'Backtesting':['Backtesting','Backtesting','Backtesting','Backtesting','Backtesting','اختبار خلفي'],
+'Milhares de add-ons':['Thousands of add-ons','Miles de add-ons','Milliers d\'add-ons','Migliaia di add-on','Tausende Add-ons','آلاف الإضافات'],
 'Automação':['Automation','Automatización','Automatisation','Automazione','Automatisierung','الأتمتة'],
 'Apex, Bulenox, Topstep +7':['Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7'],
-'Brokerage':['Brokerage','Brokerage','Courtage','Broker','Brokerage','الوساطة'],
-'Própria (FCM/NFA)':['Own (FCM/NFA)','Propia (FCM/NFA)','Propre (FCM/NFA)','Propria (FCM/NFA)','Eigene (FCM/NFA)','خاصة (FCM/NFA)'],
+'Marketplace':['Marketplace','Marketplace','Marketplace','Marketplace','Marktplatz','السوق'],
 // PLAT_DETAIL — type labels
 'Anual (17% OFF)':['Annual (17% OFF)','Anual (17% OFF)','Annuel (17% OFF)','Annuale (17% OFF)','Jährlich (17% RABATT)','سنوي (17% خصم)'],
 'Mensal':['Monthly','Mensual','Mensuel','Mensile','Monatlich','شهري'],
