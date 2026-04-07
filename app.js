@@ -5045,6 +5045,10 @@ function renderGEX(items){
 
     const spotTop=lvTop(spot);
 
+    // Map strikes that match a level → color class for Y-axis highlight
+    const strikeLevel={};
+    levels.forEach(l=>{const k=Math.round(l.val);if(!strikeLevel[k])strikeLevel[k]=l.cls;});
+
     // Build horizontal bar rows (top=highest strike, bottom=lowest)
     const reversedStrikes=[...topStrikes].reverse();
     const rows=reversedStrikes.map(s=>{
@@ -5053,8 +5057,9 @@ function renderGEX(items){
       const barStyle=isPos
         ?`left:50%;width:${Math.max(w,0.5)}%;`
         :`right:50%;width:${Math.max(w,0.5)}%;`;
+      const hlCls=strikeLevel[s.strike]?` gx-hl-${strikeLevel[s.strike]}`:'';
       return`<div class="gx-hrow">
-        <div class="gx-hlabel">${gxFmt(s.strike)}</div>
+        <div class="gx-hlabel${hlCls}">${gxFmt(s.strike)}</div>
         <div class="gx-hbar-area">
           <div class="gx-zero-line"></div>
           <div class="gx-hbar ${isPos?'pos':'neg'}" style="${barStyle}"></div>
@@ -5077,7 +5082,7 @@ function renderGEX(items){
     }
     const levelLines=levelPositions.map(l=>{
       const tagOffset=Math.round(l.tagPx-l.linePx);
-      return`<div class="gx-level-line ${l.cls}" style="top:${l.linePx}px;"><div class="gx-level-tag ${l.cls}" style="top:${tagOffset-6}px;">${l.label}</div></div>`;
+      return`<div class="gx-level-line ${l.cls}" style="top:${l.linePx}px;"><div class="gx-level-tag ${l.cls}" style="top:${tagOffset-6}px;">${l.label} · ${gxFmt(l.val)}</div></div>`;
     }).join('');
 
     // Spot price line
