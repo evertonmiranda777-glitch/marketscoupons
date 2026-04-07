@@ -5024,11 +5024,7 @@ function renderGEX(items){
     const topStrikes=(item.top_strikes||[]).sort((a,b)=>a.strike-b.strike);
     const maxGex=Math.max(...topStrikes.map(s=>Math.abs(s.gex)),1);
     const spot=parseFloat(item.spot_price);
-    const minStrike=topStrikes.length?topStrikes[0].strike:spot-100;
-    const maxStrike=topStrikes.length?topStrikes[topStrikes.length-1].strike:spot+100;
-    const range=maxStrike-minStrike||1;
     const ROW_H=15; // px per row
-    const chartH=topStrikes.length*ROW_H;
 
     // Level positions (percentage from top)
     function lvPos(val){return((val-minStrike)/range)*100;}
@@ -5049,6 +5045,17 @@ function renderGEX(items){
     // Map strikes that match a level → highlight row + tag
     const strikeLevels={};
     levels.forEach(l=>{const k=Math.round(l.val);if(!strikeLevels[k])strikeLevels[k]=[];strikeLevels[k].push(l);});
+
+    // Ensure level strikes are in the chart even if not in top 50
+    const strikeSet=new Set(topStrikes.map(s=>s.strike));
+    for(const k of Object.keys(strikeLevels).map(Number)){
+      if(!strikeSet.has(k)){topStrikes.push({strike:k,gex:0,type:'neutral'});strikeSet.add(k);}
+    }
+    topStrikes.sort((a,b)=>a.strike-b.strike);
+    const minStrike=topStrikes[0]?.strike||spot-100;
+    const maxStrike=topStrikes[topStrikes.length-1]?.strike||spot+100;
+    const range=maxStrike-minStrike||1;
+    const chartH=topStrikes.length*ROW_H;
 
     // Build horizontal bar rows (top=highest strike, bottom=lowest)
     const reversedStrikes=[...topStrikes].reverse();
