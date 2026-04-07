@@ -5077,7 +5077,7 @@ function renderGEX(items){
     }
     const levelLines=levelPositions.map(l=>{
       const tagOffset=Math.round(l.tagPx-l.linePx);
-      return`<div class="gx-level-line ${l.cls}" style="top:${l.linePx}px;"><div class="gx-level-tag ${l.cls}" style="top:${tagOffset-6}px;">${l.label}</div></div>`;
+      return`<div class="gx-level-line ${l.cls}" style="top:${l.linePx}px;"><div class="gx-level-tag ${l.cls}" style="top:${tagOffset-6}px;">${l.label} · ${gxFmt(l.val)}</div></div>`;
     }).join('');
 
     // Spot price line
