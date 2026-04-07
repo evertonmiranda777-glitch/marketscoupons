@@ -1642,6 +1642,64 @@ img{max-width:100%;}
 .da-loading .ar-spinner{width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
+/* ═══ GAMMA EXPOSURE (GEX) ═══ */
+.gx-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+.gx-hd{margin-bottom:24px;text-align:center;}
+.gx-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:5px;}
+.gx-title span{color:var(--gold);}
+.gx-sub{font-size:13px;color:var(--t2);line-height:1.6;max-width:620px;margin:0 auto;}
+.gx-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);background:var(--gbg);border:1px solid var(--gbr);padding:5px 14px;border-radius:20px;margin-bottom:12px;}
+.gx-updated{font-size:12px;color:var(--t3);margin-top:12px;}
+.gx-updated strong{color:var(--t2);}
+.gx-asset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:24px;margin-bottom:32px;}
+.gx-asset-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:14px;overflow:hidden;}
+.gx-asset-hd{padding:20px 24px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);}
+.gx-asset-name{font-size:18px;font-weight:700;}
+.gx-asset-name small{font-size:13px;color:var(--t2);font-weight:500;margin-left:8px;}
+.gx-asset-spot{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;}
+.gx-asset-spot .gx-regime{font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;margin-left:10px;vertical-align:middle;}
+.gx-regime-pos{background:rgba(34,197,94,.12);color:var(--green);}
+.gx-regime-neg{background:rgba(239,68,68,.12);color:var(--red);}
+.gx-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);}
+.gx-lvl{padding:16px;text-align:center;background:var(--card);}
+.gx-lvl-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:6px;}
+.gx-lvl-val{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;}
+.gx-lvl-val.zero{color:var(--gold);}
+.gx-lvl-val.put{color:var(--green);}
+.gx-lvl-val.call{color:var(--red);}
+.gx-lvl-val.hvl{color:var(--cyan);}
+.gx-lvl-desc{font-size:10px;color:var(--t3);margin-top:4px;}
+.gx-chart-wrap{padding:20px 24px 24px;}
+.gx-chart-title{font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;}
+.gx-chart{display:flex;align-items:flex-end;gap:2px;height:180px;position:relative;}
+.gx-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;}
+.gx-bar{width:100%;min-width:4px;border-radius:2px 2px 0 0;transition:opacity .2s;cursor:pointer;position:relative;}
+.gx-bar.pos{background:var(--green);}
+.gx-bar.neg{background:var(--red);border-radius:0 0 2px 2px;}
+.gx-bar-wrap:hover .gx-bar{opacity:.8;}
+.gx-bar-wrap:hover .gx-tooltip{display:block;}
+.gx-strike-label{font-size:8px;color:var(--t3);margin-top:4px;transform:rotate(-45deg);white-space:nowrap;}
+.gx-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:6px 10px;font-size:11px;white-space:nowrap;z-index:10;pointer-events:none;}
+.gx-chart-legend{display:flex;gap:16px;margin-top:12px;font-size:11px;color:var(--t2);}
+.gx-chart-legend span{display:flex;align-items:center;gap:5px;}
+.gx-chart-legend .dot{width:8px;height:8px;border-radius:2px;}
+.gx-chart-legend .dot.pos{background:var(--green);}
+.gx-chart-legend .dot.neg{background:var(--red);}
+.gx-edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:32px;}
+.gx-edu-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:24px;}
+.gx-edu-card h3{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--t1);}
+.gx-edu-card p{font-size:13px;color:var(--t2);line-height:1.7;}
+.gx-edu-card strong{color:var(--t1);}
+.gx-loading-box{text-align:center;padding:60px 20px;color:var(--t3);}
+.gx-disclaimer{font-size:10px;color:var(--t3);text-align:center;margin-top:24px;line-height:1.5;opacity:.7;max-width:800px;margin-left:auto;margin-right:auto;}
+@media(max-width:768px){
+  .gx-asset-grid{grid-template-columns:1fr;}
+  .gx-levels{grid-template-columns:repeat(2,1fr);}
+  .gx-asset-hd{flex-direction:column;align-items:flex-start;gap:8px;}
+  .gx-edu-grid{grid-template-columns:1fr;}
+  .gx-chart{height:140px;}
+}
+
 /* ═══ CALENDÁRIO ECONÔMICO MELHORADO ═══ */
 .cal-page-hd{padding:20px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
 .cal-title{font-size:20px;font-weight:700;letter-spacing:-.5px;}
@@ -2281,7 +2339,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <button class="nt" data-p="calendar" data-i18n="nav_calendario" onclick="go('calendar')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendário Econômico</button>
  <button class="nt" data-p="heatmap" data-i18n="nav_heatmap" onclick="go('heatmap')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Mapa de Calor</button>
  <button class="nt" data-p="analise" data-i18n="nav_analise" onclick="go('analise')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>Análise Diária</button>
- <button class="nt" data-i18n="nav_gamma" onclick="window.location.href='/gamma'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Gamma (GEX)</button>
+ <button class="nt" data-p="gamma" data-i18n="nav_gamma" onclick="go('gamma')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Gamma (GEX)</button>
  <button class="nt" data-p="guides" data-i18n="nav_guias" onclick="go('guides')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Guias</button>
  <button class="nt" data-p="blog" data-i18n="nav_blog" onclick="go('blog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Blog</button>
  <button class="nt" data-p="calc" data-i18n="nav_calc" onclick="go('calc')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="14.01"/><line x1="8" y1="18" x2="16" y2="18"/></svg>Position Size</button>
@@ -2323,7 +2381,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <button class="mm-item" onclick="mgo('calendar')" data-i18n="mm_calendario"> Calendário Econômico</button>
  <button class="mm-item" onclick="mgo('heatmap')" data-i18n="mm_heatmap"> Mapa de Calor</button>
  <button class="mm-item" onclick="mgo('analise')" data-i18n="mm_analise"> Análise Diária de Mercado</button>
- <button class="mm-item" onclick="closeMM();window.location.href='/gamma'" data-i18n="mm_gamma"> Gamma Exposure (GEX)</button>
+ <button class="mm-item" onclick="mgo('gamma')" data-i18n="mm_gamma"> Gamma Exposure (GEX)</button>
  <button class="mm-item" onclick="mgo('indicators')" data-i18n="mm_indicadores"> Indicadores</button>
  <div class="mm-sec" data-i18n="mm_sec_plataformas">Plataformas</div>
  <button class="mm-item" onclick="mgo('plataformas')" data-i18n="mm_plataformas"> Plataformas de Trading</button>
@@ -3079,6 +3137,60 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </div>
 
+<!-- GAMMA EXPOSURE (GEX) -->
+<div class="page" id="page-gamma">
+  <div class="gx-wrap">
+    <div class="gx-hd">
+      <div class="gx-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span data-i18n="gx_badge">Updated Daily</span>
+      </div>
+      <div class="gx-title"><span>Gamma</span> Exposure (GEX)</div>
+      <div class="gx-sub" data-i18n="gx_sub">Track market maker Gamma Exposure levels on S&P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price movement.</div>
+      <div class="gx-updated" id="gx-date" data-i18n="gx_loading">Loading data...</div>
+    </div>
+    <div class="gx-loading-box" id="gx-loading">
+      <div class="ar-spinner" style="width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div>
+      <div data-i18n="gx_carregando">Loading CBOE data...</div>
+    </div>
+    <div class="gx-asset-grid" id="gx-grid" style="display:none;"></div>
+    <div class="gx-disclaimer" data-i18n="gx_disclaimer">Options data provided by CBOE with delay. GEX levels are estimates based on mathematical models and do not constitute investment advice. Trading involves risk of loss.</div>
+
+    <div style="margin-top:40px;">
+      <div style="font-size:20px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);"></div>
+        <span data-i18n="gx_edu_title">What is Gamma Exposure (GEX)?</span>
+      </div>
+      <div class="gx-edu-grid">
+        <article class="gx-edu-card">
+          <h3 data-i18n="gx_edu_what_title">What is GEX?</h3>
+          <p data-i18n="gx_edu_what">Gamma Exposure (GEX) measures the options volume that market makers (large banks and institutions) need to hedge at each price level. When a market maker sells an option, they must buy or sell the underlying asset to protect themselves. GEX shows WHERE and HOW MUCH they need to do this.</p>
+        </article>
+        <article class="gx-edu-card">
+          <h3 data-i18n="gx_edu_zero_title">Zero Gamma (Gamma Flip)</h3>
+          <p data-i18n="gx_edu_zero">The Zero Gamma level is where total exposure flips from positive to negative. Above zero gamma, market makers buy dips and sell rallies (suppress volatility). Below zero gamma, they do the opposite and AMPLIFY movements. It's the most important level of the day.</p>
+        </article>
+        <article class="gx-edu-card">
+          <h3 data-i18n="gx_edu_walls_title">Put Wall & Call Wall</h3>
+          <p data-i18n="gx_edu_walls">The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.</p>
+        </article>
+        <article class="gx-edu-card">
+          <h3 data-i18n="gx_edu_hvl_title">HVL (High Volume Level)</h3>
+          <p data-i18n="gx_edu_hvl">The HVL is the strike with the highest absolute gamma volume. Price tends to "stick" to this level during the day because market makers are constantly hedging there. If price breaks through HVL with force, it usually signals a strong directional move.</p>
+        </article>
+        <article class="gx-edu-card">
+          <h3 data-i18n="gx_edu_posneg_title">Positive vs Negative GEX</h3>
+          <p data-i18n="gx_edu_posneg">Positive GEX (total > 0): Market is "pinned" — market makers absorb moves. Tight range days. Negative GEX (total < 0): Market is "loose" — moves are amplified. High volatility days. This is when stops get swept and trends accelerate.</p>
+        </article>
+        <article class="gx-edu-card">
+          <h3 data-i18n="gx_edu_use_title">How to use in trading?</h3>
+          <p data-i18n="gx_edu_use">Use Zero Gamma as the key level of the day. If price is above it, trade mean reversions. If below, trade breakouts and trends. The Put Wall is reliable support and the Call Wall is resistance. Combine with your technical analysis to increase accuracy.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- PLATAFORMAS -->
 <div class="page" id="page-plataformas">
   <div class="plat-page">
@@ -3644,7 +3756,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <a onclick="go('compare')" data-i18n="ft_comparador">Comparador</a>
  <a onclick="go('calendar')" data-i18n="ft_calendario">Calendário</a>
  <a onclick="go('indicators')" data-i18n="ft_indicadores">Indicadores</a>
- <a href="/gamma" data-i18n="ft_gamma">Gamma (GEX)</a>
+ <a onclick="go('gamma')" data-i18n="ft_gamma">Gamma (GEX)</a>
  </div>
  <div class="fc-col">
  <h4 data-i18n="ft_col_links">Links</h4>

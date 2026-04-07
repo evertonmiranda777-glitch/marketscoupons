@@ -427,6 +427,7 @@ function go(page, skipHash){
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
+  if(page==='gamma') loadGEX();
 }
 window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(h)go(h,true);else go('home',true);});
 function toggleMM(){const open=document.getElementById('mm').classList.toggle('open');document.getElementById('mm-ov').classList.toggle('open',open);document.getElementById('hbg').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
@@ -4976,4 +4977,82 @@ document.addEventListener('DOMContentLoaded', async () => {
   checkAnalysisGate();
   renderLoyaltyPage();
   await initFavs();
-});
+});
+
+// ═══ GAMMA EXPOSURE (GEX) ═══
+let _gexLoaded = false;
+function gxFmt(n){return Number(n).toLocaleString('en-US',{maximumFractionDigits:0});}
+
+async function loadGEX(){
+  if(_gexLoaded) return;
+  try{
+    const{data,error}=await db.from('gex_levels').select('*').in('ticker',['ES','NQ']).order('ticker');
+    if(error) throw error;
+    if(!data||!data.length){
+      document.getElementById('gx-loading').innerHTML='<div style="color:var(--t2);font-size:14px;" data-i18n="gx_no_data">GEX data not yet available. Check back after 6 AM ET.</div>';
+      applyTranslations();
+      return;
+    }
+    renderGEX(data);
+    _gexLoaded=true;
+  }catch(e){
+    console.error('GEX load error:',e);
+    document.getElementById('gx-loading').innerHTML='<div style="color:var(--t3);">Error: '+(e.message||e)+'</div>';
+  }
+}
+
+function renderGEX(items){
+  document.getElementById('gx-loading').style.display='none';
+  const grid=document.getElementById('gx-grid');
+  grid.style.display='grid';
+
+  if(items[0]){
+    const d=new Date(items[0].date+'T12:00:00');
+    const ds=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    const el=document.getElementById('gx-date');
+    el.removeAttribute('data-i18n');
+    el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong> | Source: CBOE (delayed)';
+  }
+
+  grid.innerHTML=items.map(item=>{
+    const names={ES:'S&P 500 Futures',NQ:'Nasdaq 100 Futures'};
+    const totalGex=parseFloat(item.total_gex)||0;
+    const regime=totalGex>=0;
+    const regimeLabel=regime?t('gx_positive'):t('gx_negative');
+    const regimeClass=regime?'gx-regime-pos':'gx-regime-neg';
+    const topStrikes=(item.top_strikes||[]).sort((a,b)=>a.strike-b.strike);
+    const maxGex=Math.max(...topStrikes.map(s=>Math.abs(s.gex)),1);
+
+    return`<div class="gx-asset-card">
+      <div class="gx-asset-hd">
+        <div class="gx-asset-name">${item.ticker} <small>${names[item.ticker]||''}</small></div>
+        <div class="gx-asset-spot">${gxFmt(item.spot_price)} <span class="gx-regime ${regimeClass}">${regimeLabel}</span></div>
+      </div>
+      <div class="gx-levels">
+        <div class="gx-lvl"><div class="gx-lvl-label">Zero Gamma</div><div class="gx-lvl-val zero">${gxFmt(item.zero_gamma)}</div><div class="gx-lvl-desc">Gamma Flip</div></div>
+        <div class="gx-lvl"><div class="gx-lvl-label">Put Wall</div><div class="gx-lvl-val put">${gxFmt(item.put_wall)}</div><div class="gx-lvl-desc">${t('gx_support')}</div></div>
+        <div class="gx-lvl"><div class="gx-lvl-label">Call Wall</div><div class="gx-lvl-val call">${gxFmt(item.call_wall)}</div><div class="gx-lvl-desc">${t('gx_resistance')}</div></div>
+        <div class="gx-lvl"><div class="gx-lvl-label">HVL</div><div class="gx-lvl-val hvl">${gxFmt(item.hvl)}</div><div class="gx-lvl-desc">${t('gx_magnet')}</div></div>
+      </div>
+      <div class="gx-chart-wrap">
+        <div class="gx-chart-title">GEX by Strike (millions)</div>
+        <div class="gx-chart" id="chart-${item.ticker}">
+          ${topStrikes.map(s=>{
+            const h=Math.abs(s.gex)/maxGex*100;
+            const isPos=s.gex>=0;
+            return`<div class="gx-bar-wrap">
+              <div class="gx-tooltip">${gxFmt(s.strike)}: ${s.gex>0?'+':''}${s.gex}M</div>
+              <div class="gx-bar ${isPos?'pos':'neg'}" style="height:${Math.max(h,3)}%;${!isPos?'align-self:flex-start;':''}"></div>
+              ${topStrikes.length<=25?`<div class="gx-strike-label">${gxFmt(s.strike)}</div>`:''}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="gx-chart-legend">
+          <span><span class="dot pos"></span> Calls (${t('gx_resistance').toLowerCase()})</span>
+          <span><span class="dot neg"></span> Puts (${t('gx_support').toLowerCase()})</span>
+          <span style="margin-left:auto;color:var(--t3);">Total: ${totalGex>0?'+':''}${totalGex}M</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
