@@ -3738,9 +3738,12 @@ const CUR_COLORS = {
   NZD:{bg:'rgba(6,182,212,.15)',c:'#06b6d4'},
 };
 const COUNTRY_CUR = {US:'USD',EU:'EUR',GB:'GBP',CA:'CAD',AU:'AUD',JP:'JPY',BR:'BRL',CN:'CNY',CH:'CHF',NZ:'NZD',DE:'EUR',FR:'EUR',IT:'EUR',ES:'EUR'};
+// Forex Factory country names → currency codes
+const FF_CUR = {USD:'USD',EUR:'EUR',GBP:'GBP',CAD:'CAD',AUD:'AUD',JPY:'JPY',NZD:'NZD',CHF:'CHF',CNY:'CNY',All:'ALL'};
 
 let calActiveFilter = 'all';
 let calEvents = [];
+let _calRefreshTimer = null;
 
 function calFilter(filter, btn) {
   calActiveFilter = filter;
@@ -3749,65 +3752,106 @@ function calFilter(filter, btn) {
   renderCal();
 }
 
-async function loadCalendar() {
+// Get today's high-impact events (used by analysis)
+function getTodayHighImpactEvents(){
+  const todayStr = new Date().toISOString().slice(0,10);
+  return calEvents.filter(e=>e.dateStr===todayStr && e.imp==='h');
+}
+
+async function loadCalendar(silent) {
   const el = document.getElementById('cal-list');
   if (!el) return;
-  el.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--t2);"><div class="ar-spinner" style="width:24px;height:24px;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div></div>';
+  if(!silent) el.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--t2);"><div class="ar-spinner" style="width:24px;height:24px;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div></div>';
 
   const today = new Date();
-  const from = today.toISOString().slice(0,10);
-  const toDate = new Date(today); toDate.setDate(toDate.getDate()+7);
-  const to = toDate.toISOString().slice(0,10);
-  const todayStr = from;
+  const todayStr = today.toISOString().slice(0,10);
   const tmrDate = new Date(today); tmrDate.setDate(tmrDate.getDate()+1);
   const tmrStr = tmrDate.toISOString().slice(0,10);
 
+  // Check localStorage cache (5 min TTL)
+  const cacheKey = 'mc_cal_cache';
+  const cacheTTL = 5*60*1000;
   try {
-    const FMP_KEY = 'demo';
-    const res = await fetch(`https://financialmodelingprep.com/api/v3/economic_calendar?from=${from}&to=${to}&apikey=${FMP_KEY}`);
-    if (!res.ok) throw new Error('API error');
+    const cached = JSON.parse(localStorage.getItem(cacheKey)||'null');
+    if(cached && Date.now()-cached.ts < cacheTTL && cached.data?.length){
+      calEvents = _parseFFEvents(cached.data, todayStr, tmrStr);
+      renderCal(); if(!_calRefreshTimer) _startCalRefresh();
+      return;
+    }
+  } catch(e){}
+
+  try {
+    // Primary: Forex Factory via faireconomy.media (free, CORS, real-time)
+    const res = await fetch('https://nfs.faireconomy.media/ff_calendar_thisweek.json');
+    if (!res.ok) throw new Error('FF API error '+res.status);
     const data = await res.json();
     if (!Array.isArray(data) || data.length === 0) throw new Error('No data');
-
-    calEvents = data.map(ev => {
-      const cc = ev.country || '';
-      const cur = COUNTRY_CUR[cc] || cc;
-      const dateStr = (ev.date||'').slice(0,10);
-      const timeStr = (ev.date||'').slice(11,16) || '—';
-      let day = 'Semana';
-      if (dateStr === todayStr) day = 'Hoje';
-      else if (dateStr === tmrStr) day = 'Amanhã';
-      const chg = ev.changePercentage;
-      let imp = 'l';
-      if (ev.impact === 'High' || ev.impact === 3) imp = 'h';
-      else if (ev.impact === 'Medium' || ev.impact === 2) imp = 'm';
-      else if (ev.impact === 'Low' || ev.impact === 1) imp = 'l';
-      return {
-        day, t: timeStr, cur, ev: ev.event||'',
-        actual: ev.actual != null ? String(ev.actual) : '—',
-        fore: ev.estimate != null ? String(ev.estimate) : (ev.forecast != null ? String(ev.forecast) : '—'),
-        prev: ev.previous != null ? String(ev.previous) : '—',
-        imp, date: ev.date||'', dateStr
-      };
-    }).sort((a,b) => a.date.localeCompare(b.date));
+    // Cache the raw data
+    try{localStorage.setItem(cacheKey, JSON.stringify({ts:Date.now(),data}));}catch(e){}
+    calEvents = _parseFFEvents(data, todayStr, tmrStr);
   } catch(e) {
-    console.warn('Calendar API fallback:', e);
-    calEvents = [
-      {day:'Hoje',t:'08:30',cur:'USD',ev:'Jobless Claims',actual:'—',prev:'222K',fore:'215K',imp:'h',dateStr:todayStr},
-      {day:'Hoje',t:'09:45',cur:'USD',ev:'S&P Global Manufacturing PMI',actual:'—',prev:'50.2',fore:'50.5',imp:'m',dateStr:todayStr},
-      {day:'Hoje',t:'10:00',cur:'USD',ev:'ISM Services PMI',actual:'—',prev:'53.5',fore:'53.0',imp:'h',dateStr:todayStr},
-      {day:'Hoje',t:'11:00',cur:'EUR',ev:'ECB Lagarde Speech',actual:'—',prev:'—',fore:'—',imp:'h',dateStr:todayStr},
-      {day:'Hoje',t:'14:30',cur:'CAD',ev:'Employment Change',actual:'—',prev:'+37.3K',fore:'+20K',imp:'m',dateStr:todayStr},
-      {day:'Amanhã',t:'08:30',cur:'USD',ev:'Non-Farm Payrolls',actual:'—',prev:'275K',fore:'200K',imp:'h',dateStr:tmrStr},
-      {day:'Amanhã',t:'08:30',cur:'USD',ev:'Unemployment Rate',actual:'—',prev:'3.7%',fore:'3.8%',imp:'h',dateStr:tmrStr},
-      {day:'Amanhã',t:'10:00',cur:'USD',ev:'Fed Chair Powell Speech',actual:'—',prev:'—',fore:'—',imp:'h',dateStr:tmrStr},
-      {day:'Semana',t:'08:00',cur:'EUR',ev:'ECB Interest Rate Decision',actual:'—',prev:'4.50%',fore:'4.25%',imp:'h',dateStr:to},
-      {day:'Semana',t:'20:00',cur:'USD',ev:'FOMC Meeting Minutes',actual:'—',prev:'—',fore:'—',imp:'h',dateStr:to},
-      {day:'Semana',t:'12:30',cur:'USD',ev:'Core PCE Price Index m/m',actual:'—',prev:'0.4%',fore:'0.3%',imp:'h',dateStr:to},
-      {day:'Semana',t:'10:00',cur:'USD',ev:'Consumer Confidence',actual:'—',prev:'104.7',fore:'106.0',imp:'m',dateStr:to},
-    ];
+    console.warn('Calendar FF API error:', e);
+    // Fallback: Trading Economics guest API
+    try {
+      const res2 = await fetch('https://api.tradingeconomics.com/calendar?c=guest:guest&f=json');
+      if(res2.ok){
+        const te = await res2.json();
+        if(Array.isArray(te) && te.length){
+          calEvents = te.map(ev=>{
+            const dateStr = (ev.Date||'').slice(0,10);
+            const timeStr = (ev.Date||'').slice(11,16)||'—';
+            let day='Semana';
+            if(dateStr===todayStr) day='Hoje';
+            else if(dateStr===tmrStr) day='Amanhã';
+            let imp='l';
+            if(ev.Importance>=3) imp='h'; else if(ev.Importance>=2) imp='m';
+            const cur = ev.Currency||COUNTRY_CUR[ev.Country?.slice(0,2)]||'';
+            return {day,t:timeStr,cur,ev:ev.Event||'',actual:ev.Actual!=null&&ev.Actual!==''?String(ev.Actual):'—',fore:ev.Forecast!=null&&ev.Forecast!==''?String(ev.Forecast):'—',prev:ev.Previous!=null&&ev.Previous!==''?String(ev.Previous):'—',imp,date:ev.Date||'',dateStr};
+          }).sort((a,b)=>a.date.localeCompare(b.date));
+        }
+      }
+    } catch(e2){
+      console.warn('Calendar TE fallback error:', e2);
+      // Keep existing calEvents if any, or show empty
+      if(!calEvents.length){
+        calEvents = [{day:'Hoje',t:'—',cur:'—',ev:t('cal_erro_api'),actual:'—',fore:'—',prev:'—',imp:'l',dateStr:todayStr}];
+      }
+    }
   }
   renderCal();
+  if(!_calRefreshTimer) _startCalRefresh();
+}
+
+function _parseFFEvents(data, todayStr, tmrStr){
+  return data.filter(ev=>ev.country!=='All' && ev.title!=='Bank Holiday').map(ev=>{
+    const cur = FF_CUR[ev.country]||ev.country||'';
+    const d = ev.date||'';
+    const dateStr = d.slice(0,10);
+    // Parse time from ISO date string (already in ET)
+    const timeStr = d.slice(11,16)||'—';
+    let day='Semana';
+    if(dateStr===todayStr) day='Hoje';
+    else if(dateStr===tmrStr) day='Amanhã';
+    let imp='l';
+    if(ev.impact==='High') imp='h';
+    else if(ev.impact==='Medium') imp='m';
+    else if(ev.impact==='Low') imp='l';
+    return {
+      day, t:timeStr, cur, ev:ev.title||'',
+      actual: ev.actual!=null&&ev.actual!==''?String(ev.actual):'—',
+      fore: ev.forecast!=null&&ev.forecast!==''?String(ev.forecast):'—',
+      prev: ev.previous!=null&&ev.previous!==''?String(ev.previous):'—',
+      imp, date:d, dateStr
+    };
+  }).sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+function _startCalRefresh(){
+  // Auto-refresh every 3 minutes to catch updated data (actuals)
+  _calRefreshTimer = setInterval(()=>{
+    try{localStorage.removeItem('mc_cal_cache');}catch(e){}
+    loadCalendar(true);
+  }, 3*60*1000);
 }
 
 function renderCal() {
@@ -3852,15 +3896,15 @@ const DA_ASSETS={NQ:{name:'Nasdaq 100',tv:'OANDA:NAS100USD'},ES:{name:'S&P 500',
 
 async function loadDailyAnalysis(){
   const grid=document.getElementById('da-grid');if(!grid)return;
+  // Guarantee calendar is loaded before rendering analysis (events are needed)
+  if(!calEvents.length) await loadCalendar(true);
   try{
     const{data,error}=await db.from('daily_analysis').select('*').eq('date',new Date().toISOString().slice(0,10)).order('asset');
     if(error)throw error;
     if(!data||data.length===0){
-      // Tenta o dia anterior (fim de semana ou análise ainda não gerada)
       const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
       const{data:d2}=await db.from('daily_analysis').select('*').eq('date',yesterday.toISOString().slice(0,10)).order('asset');
       if(d2&&d2.length>0) return renderDailyCards(d2);
-      // Tenta a mais recente disponível
       const{data:d3}=await db.from('daily_analysis').select('*').order('date',{ascending:false}).limit(4);
       if(d3&&d3.length>0) return renderDailyCards(d3);
       grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="font-size:14px;color:var(--t2);font-weight:600;" data-i18n="da_sem_analise">${t('da_sem_analise')}</div><div style="font-size:12px;color:var(--t3);margin-top:6px;" data-i18n="da_primeira_6h">${t('da_primeira_6h')}</div></div>`;
@@ -3934,6 +3978,35 @@ async function checkAnalysisGate(){
 
 function daT(v){if(!v)return'';if(typeof v==='string')return v;return v[_currentLang]||v.pt||v.en||Object.values(v)[0]||'';}
 
+// Build events section: use DB events field + inject live high-impact calendar events
+function _renderDaEvents(a){
+  const dbEvents = daT(a.events);
+  const highImpact = getTodayHighImpactEvents();
+  // Build live calendar events HTML
+  let calHtml='';
+  if(highImpact.length){
+    const evList = highImpact.map(e=>{
+      const cc=CUR_COLORS[e.cur]||{bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
+      const actStr = e.actual!=='—' ? ` → <b style="color:var(--green);">${e.actual}</b>` : '';
+      return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:10px;color:var(--t3);min-width:38px;">${e.t} ET</span>
+        <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:${cc.bg};color:${cc.c};">${e.cur}</span>
+        <span style="font-size:11px;color:var(--t1);">${e.ev}${actStr}</span>
+        ${e.fore!=='—'?`<span style="font-size:10px;color:var(--t3);">(${t('da_previsao')}: ${e.fore})</span>`:''}
+      </div>`;
+    }).join('');
+    calHtml=`<div style="margin-top:8px;padding:10px 12px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.1);border-radius:8px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#ef4444;margin-bottom:6px;">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" style="vertical-align:-1px;margin-right:4px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        ${t('da_eventos_hoje')}
+      </div>
+      ${evList}
+    </div>`;
+  }
+  const dbHtml = dbEvents&&dbEvents!=='—'?`<div class="da-events"><strong>${t('da_eventos')}:</strong> ${dbEvents}</div>`:'';
+  return dbHtml+calHtml;
+}
+
 function renderDailyCards(items){
   const grid=document.getElementById('da-grid');if(!grid)return;
   const meta=document.getElementById('da-meta');
@@ -3976,7 +4049,7 @@ function renderDailyCards(items){
         ${a.scenario_bull?`<div class="da-section bull"><div class="da-section-label">${t('da_cenario_bull')}</div><div class="da-section-text">${daT(a.scenario_bull)}</div></div>`:''}
         ${a.scenario_bear?`<div class="da-section bear"><div class="da-section-label">${t('da_cenario_bear')}</div><div class="da-section-text">${daT(a.scenario_bear)}</div></div>`:''}
         ${daT(a.news_impact)&&daT(a.news_impact)!=='—'?`<div class="da-section news"><div class="da-section-label">${t('da_noticias')}</div><div class="da-section-text">${daT(a.news_impact)}</div></div>`:''}
-        ${daT(a.events)&&daT(a.events)!=='—'?`<div class="da-events"><strong>${t('da_eventos')}:</strong> ${daT(a.events)}</div>`:''}
+        ${_renderDaEvents(a)}
       </div>
     </div>`;
   }).join('');
