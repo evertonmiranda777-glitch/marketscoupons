@@ -5065,7 +5065,6 @@ function renderGEX(items){
         :`right:50%;width:${Math.max(w,0.5)}%;`;
       const lvls=strikeLevels[s.strike]||[];
       const hlCls=lvls.length?` gx-hl-${lvls[0].cls}`:'';
-      const tags=lvls.map((l,i)=>`<div class="gx-row-tag ${l.cls}" style="top:${i*20}px;">${l.label}</div>`).join('');
       return`<div class="gx-hrow${lvls.length?' gx-hrow-level '+lvls[0].cls:''}">
         <div class="gx-hlabel${hlCls}">${gxFmt(s.strike)}</div>
         <div class="gx-hbar-area">
@@ -5073,15 +5072,29 @@ function renderGEX(items){
           <div class="gx-hbar ${isPos?'pos':'neg'}" style="${barStyle}"></div>
           <div class="gx-htip">${gxFmt(s.strike)}: ${s.gex>0?'+':''}${s.gex}M</div>
         </div>
-        ${tags}
       </div>`;
     }).join('');
 
-    const levelLines='';
+    // Level tags: collect all, compute positions, anti-collision, render absolute in chart
+    const allTags=[];
+    reversedStrikes.forEach((s,idx)=>{
+      const lvls=strikeLevels[s.strike]||[];
+      lvls.forEach(l=>{allTags.push({...l,basePx:idx*ROW_H+ROW_H/2});});
+    });
+    allTags.sort((a,b)=>a.basePx-b.basePx);
+    const TAG_H=20;
+    for(let i=0;i<allTags.length;i++) allTags[i].tagPx=allTags[i].basePx;
+    for(let pass=0;pass<3;pass++){
+      for(let i=1;i<allTags.length;i++){
+        if(allTags[i].tagPx-allTags[i-1].tagPx<TAG_H) allTags[i].tagPx=allTags[i-1].tagPx+TAG_H;
+      }
+    }
+    const levelTags=allTags.map(t=>`<div class="gx-row-tag ${t.cls}" style="top:${Math.round(t.tagPx-8)}px;">${t.label}</div>`).join('');
 
-    // Spot price line
-    const spotIdx=reversedStrikes.findIndex(s=>s.strike>=Math.round(spot));
-    const spotPx=spotIdx>=0?spotIdx*ROW_H+ROW_H/2:lvTop(spot)/100*chartH;
+    // Spot price line — find closest row
+    let spotIdx=0,spotMinD=Infinity;
+    reversedStrikes.forEach((s,i)=>{const d=Math.abs(s.strike-Math.round(spot));if(d<spotMinD){spotMinD=d;spotIdx=i;}});
+    const spotPx=spotIdx*ROW_H+ROW_H/2;
     const spotLine=`<div class="gx-spot-line" style="top:${spotPx}px;"><div class="gx-spot-tag">${gxFmt(spot)}</div></div>`;
 
     return`<div class="gx-asset-card">
@@ -5102,7 +5115,7 @@ function renderGEX(items){
         <div class="gx-hchart" style="height:${chartH}px;">
           ${rows}
           ${spotLine}
-          ${levelLines}
+          ${levelTags}
         </div>
         <div class="gx-chart-legend">
           <span><span class="dot pos"></span> Calls (${t('gx_resistance').toLowerCase()})</span>
