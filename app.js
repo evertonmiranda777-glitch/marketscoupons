@@ -3767,6 +3767,9 @@ async function loadCalendar(silent) {
   const tmrDate = new Date(today); tmrDate.setDate(tmrDate.getDate()+1);
   const tmrStr = tmrDate.toISOString().slice(0,10);
 
+  // Clear old FF cache
+  try{localStorage.removeItem('mc_cal_cache');}catch(e){}
+
   try {
     const res = await fetch(CAL_API);
     if (!res.ok) throw new Error('Calendar API error '+res.status);
