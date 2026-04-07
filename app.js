@@ -5069,16 +5069,18 @@ function renderGEX(items){
     }).join('');
 
     // Level lines: behind bars, tag label on right side (with anti-collision)
-    const TAG_H=18; // approx tag height in px
+    const TAG_H=22; // min gap between tags
     const levelPositions=levels.map(l=>{
       const idx=reversedStrikes.findIndex(s=>s.strike===Math.round(l.val));
       const px=idx<0?(lvTop(l.val)/100*chartH):(idx*ROW_H+ROW_H/2);
       return{...l,linePx:px,tagPx:px};
     }).sort((a,b)=>a.tagPx-b.tagPx);
-    // Push overlapping tags apart
-    for(let i=1;i<levelPositions.length;i++){
-      const gap=levelPositions[i].tagPx-levelPositions[i-1].tagPx;
-      if(gap<TAG_H) levelPositions[i].tagPx=levelPositions[i-1].tagPx+TAG_H;
+    // Push overlapping tags apart (two passes for tight clusters)
+    for(let pass=0;pass<2;pass++){
+      for(let i=1;i<levelPositions.length;i++){
+        const gap=levelPositions[i].tagPx-levelPositions[i-1].tagPx;
+        if(gap<TAG_H) levelPositions[i].tagPx=levelPositions[i-1].tagPx+TAG_H;
+      }
     }
     const levelLines=levelPositions.map(l=>{
       const tagOffset=Math.round(l.tagPx-l.linePx);
