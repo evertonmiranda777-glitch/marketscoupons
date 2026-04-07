@@ -437,6 +437,62 @@ window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');
 function toggleMM(){const open=document.getElementById('mm').classList.toggle('open');document.getElementById('mm-ov').classList.toggle('open',open);document.getElementById('hbg').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
 function closeMM(){['mm','mm-ov','hbg'].forEach(id=>document.getElementById(id)?.classList.remove('open'));document.body.style.overflow='';}
 function mgo(p){closeMM();go(p);}
+/* ─── GLOBAL SEARCH ─── */
+function globalSearch(q){
+  const box=document.getElementById('global-search-results');
+  if(!box)return;
+  q=(q||'').trim().toLowerCase();
+  if(q.length<2){box.classList.remove('open');box.innerHTML='';return;}
+  const results=[];
+  // Search pages/sections
+  const pages=[
+    {id:'home',icon:'tag',label:t('nav_ofertas'),sub:t('nav_ofertas'),color:'#F0B429'},
+    {id:'firms',icon:'briefcase',label:t('nav_firmas'),sub:t('nav_firmas'),color:'#F0B429'},
+    {id:'plataformas',icon:'monitor',label:t('nav_plataformas'),sub:t('nav_plataformas'),color:'#8B5CF6'},
+    {id:'indicators',icon:'activity',label:t('nav_indicadores'),sub:t('nav_indicadores'),color:'#22C55E'},
+    {id:'compare',icon:'bar',label:t('nav_comparar'),sub:t('nav_comparar'),color:'#3B82F6'},
+    {id:'calendar',icon:'cal',label:t('nav_calendario'),sub:t('nav_calendario'),color:'#EF4444'},
+    {id:'heatmap',icon:'grid',label:t('nav_heatmap'),sub:t('nav_heatmap'),color:'#F97316'},
+    {id:'analise',icon:'search',label:t('nav_analise'),sub:t('nav_analise'),color:'#06B6D4'},
+    {id:'guides',icon:'book',label:t('nav_guias'),sub:t('nav_guias'),color:'#8B5CF6'},
+    {id:'blog',icon:'edit',label:t('nav_blog'),sub:t('nav_blog'),color:'#EC4899'},
+    {id:'calc',icon:'calc',label:t('nav_calc'),sub:'Position Size Calculator',color:'#22C55E'},
+    {id:'quiz',icon:'?',label:t('nav_quiz'),sub:'Quiz',color:'#F59E0B'},
+    {id:'faq',icon:'faq',label:t('nav_faq'),sub:'FAQ',color:'#64748B'},
+    {id:'awards',icon:'award',label:'Awards',sub:'Awards',color:'#F0B429'},
+    {id:'live',icon:'live',label:'Live Room',sub:'Live Room VIP',color:'#EF4444'},
+  ];
+  pages.forEach(p=>{
+    if(p.label.toLowerCase().includes(q)||p.sub.toLowerCase().includes(q)||p.id.includes(q))
+      results.push({type:'page',...p});
+  });
+  // Search firms
+  if(typeof FIRMS!=='undefined'){
+    FIRMS.filter(f=>f.name.toLowerCase().includes(q)||f.id.includes(q)||(f.coupon||'').toLowerCase().includes(q))
+      .slice(0,5).forEach(f=>{
+        results.push({type:'firm',id:f.id,label:f.name,sub:f.type+(f.coupon?' · '+f.coupon:''),color:f.color,icon_url:f.icon_url,icon:f.icon});
+      });
+  }
+  if(!results.length){box.classList.remove('open');box.innerHTML='';return;}
+  box.innerHTML=results.slice(0,8).map(r=>{
+    const iconHtml=r.icon_url
+      ?`<img src="${r.icon_url}" style="width:28px;height:28px;border-radius:6px;object-fit:contain;background:${r.color||'#222'};">`
+      :`<div class="nav-search-item-icon" style="background:${r.color||'#333'};color:#fff;">${(r.icon||r.label[0]).substring(0,2)}</div>`;
+    const action=r.type==='firm'?`openD('${r.id}')`:`go('${r.id}')`;
+    return `<div class="nav-search-item" onclick="${action};document.getElementById('global-search-results').classList.remove('open');document.getElementById('global-search').value='';">
+      ${iconHtml}
+      <div class="nav-search-item-text"><div class="nav-search-item-title">${r.label}</div><div class="nav-search-item-sub">${r.sub}</div></div>
+    </div>`;
+  }).join('');
+  box.classList.add('open');
+}
+// Close search on click outside
+document.addEventListener('click',e=>{
+  const sr=document.getElementById('global-search-results');
+  const si=document.getElementById('global-search');
+  if(sr&&!sr.contains(e.target)&&e.target!==si)sr.classList.remove('open');
+});
+
 /* ─── TRANSLATION ENGINE ─── */
 let _currentLang = 'pt';
 function t(key) { return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.pt[key]) || key; }
