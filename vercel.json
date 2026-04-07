@@ -8,6 +8,8 @@
   "routes": [
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
     { "src": "/blog/([^/]+)", "dest": "/blog.html" },
+    { "src": "/gamma", "dest": "/gex.html" },
+    { "src": "/(en|es|fr|de|it|ar)/gamma", "dest": "/gex.html" },
     { "src": "/admin", "dest": "/admin.html" },
     { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar)/?$", "dest": "/index.html" },
