@@ -3883,7 +3883,7 @@ function renderCal() {
           <div class="cal-act-wrap"><div class="cal-val" style="color:${actColor};font-weight:700;">${e.actual}</div></div>
           <div class="cal-fore-wrap"><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
           <div class="cal-prev-wrap"><div class="cal-val">${e.prev}</div></div>
-          <div class="imp ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}"></div>
+          <div class="cal-stars ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</div>
         </div>`;
       }).join('')}
     </div>`).join('');
