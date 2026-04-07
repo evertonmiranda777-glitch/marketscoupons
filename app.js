@@ -5045,47 +5045,33 @@ function renderGEX(items){
 
     const spotTop=lvTop(spot);
 
-    // Map strikes that match a level → color class for Y-axis highlight
-    const strikeLevel={};
-    levels.forEach(l=>{const k=Math.round(l.val);if(!strikeLevel[k])strikeLevel[k]=l.cls;});
+    // Map strikes that match a level → highlight row + tag
+    const strikeLevels={};
+    levels.forEach(l=>{const k=Math.round(l.val);if(!strikeLevels[k])strikeLevels[k]=[];strikeLevels[k].push(l);});
 
     // Build horizontal bar rows (top=highest strike, bottom=lowest)
     const reversedStrikes=[...topStrikes].reverse();
     const rows=reversedStrikes.map(s=>{
-      const w=Math.abs(s.gex)/maxGex*48; // max 48% width (half the area)
+      const w=Math.abs(s.gex)/maxGex*48;
       const isPos=s.gex>=0;
       const barStyle=isPos
         ?`left:50%;width:${Math.max(w,0.5)}%;`
         :`right:50%;width:${Math.max(w,0.5)}%;`;
-      const hlCls=strikeLevel[s.strike]?` gx-hl-${strikeLevel[s.strike]}`:'';
-      return`<div class="gx-hrow">
+      const lvls=strikeLevels[s.strike]||[];
+      const hlCls=lvls.length?` gx-hl-${lvls[0].cls}`:'';
+      const tags=lvls.map((l,i)=>`<div class="gx-row-tag ${l.cls}" style="top:${i*20}px;">${l.label}</div>`).join('');
+      return`<div class="gx-hrow${lvls.length?' gx-hrow-level':''}">
         <div class="gx-hlabel${hlCls}">${gxFmt(s.strike)}</div>
         <div class="gx-hbar-area">
           <div class="gx-zero-line"></div>
           <div class="gx-hbar ${isPos?'pos':'neg'}" style="${barStyle}"></div>
           <div class="gx-htip">${gxFmt(s.strike)}: ${s.gex>0?'+':''}${s.gex}M</div>
         </div>
+        ${tags}
       </div>`;
     }).join('');
 
-    // Level lines: behind bars, tag label on right side (with anti-collision)
-    const TAG_H=22; // min gap between tags
-    const levelPositions=levels.map(l=>{
-      const idx=reversedStrikes.findIndex(s=>s.strike===Math.round(l.val));
-      const px=idx<0?(lvTop(l.val)/100*chartH):(idx*ROW_H+ROW_H/2);
-      return{...l,linePx:px,tagPx:px};
-    }).sort((a,b)=>a.tagPx-b.tagPx);
-    // Push overlapping tags apart (two passes for tight clusters)
-    for(let pass=0;pass<2;pass++){
-      for(let i=1;i<levelPositions.length;i++){
-        const gap=levelPositions[i].tagPx-levelPositions[i-1].tagPx;
-        if(gap<TAG_H) levelPositions[i].tagPx=levelPositions[i-1].tagPx+TAG_H;
-      }
-    }
-    const levelLines=levelPositions.map(l=>{
-      const tagOffset=Math.round(l.tagPx-l.linePx);
-      return`<div class="gx-level-line ${l.cls}" style="top:${l.linePx}px;"><div class="gx-level-tag ${l.cls}" style="top:${tagOffset-6}px;">${l.label} · ${gxFmt(l.val)}</div></div>`;
-    }).join('');
+    const levelLines='';
 
     // Spot price line
     const spotIdx=reversedStrikes.findIndex(s=>s.strike>=Math.round(spot));
