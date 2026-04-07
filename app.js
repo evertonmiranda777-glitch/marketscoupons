@@ -5060,7 +5060,7 @@ function renderGEX(items){
       const lvls=strikeLevels[s.strike]||[];
       const hlCls=lvls.length?` gx-hl-${lvls[0].cls}`:'';
       const tags=lvls.map((l,i)=>`<div class="gx-row-tag ${l.cls}" style="top:${i*20}px;">${l.label}</div>`).join('');
-      return`<div class="gx-hrow${lvls.length?' gx-hrow-level':''}">
+      return`<div class="gx-hrow${lvls.length?' gx-hrow-level '+lvls[0].cls:''}">
         <div class="gx-hlabel${hlCls}">${gxFmt(s.strike)}</div>
         <div class="gx-hbar-area">
           <div class="gx-zero-line"></div>
