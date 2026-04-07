@@ -1651,36 +1651,56 @@ img{max-width:100%;}
 .gx-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);background:var(--gbg);border:1px solid var(--gbr);padding:5px 14px;border-radius:20px;margin-bottom:12px;}
 .gx-updated{font-size:12px;color:var(--t3);margin-top:12px;}
 .gx-updated strong{color:var(--t2);}
-.gx-asset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:24px;margin-bottom:32px;}
-.gx-asset-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:14px;overflow:hidden;}
-.gx-asset-hd{padding:20px 24px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);}
+.gx-asset-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:14px;overflow:hidden;margin-bottom:28px;}
+.gx-asset-hd{padding:18px 24px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);}
 .gx-asset-name{font-size:18px;font-weight:700;}
 .gx-asset-name small{font-size:13px;color:var(--t2);font-weight:500;margin-left:8px;}
 .gx-asset-spot{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;}
 .gx-asset-spot .gx-regime{font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;margin-left:10px;vertical-align:middle;}
 .gx-regime-pos{background:rgba(34,197,94,.12);color:var(--green);}
 .gx-regime-neg{background:rgba(239,68,68,.12);color:var(--red);}
-.gx-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);}
-.gx-lvl{padding:16px;text-align:center;background:var(--card);}
-.gx-lvl-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:6px;}
-.gx-lvl-val{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;}
+.gx-levels{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(255,255,255,.06);}
+.gx-lvl{padding:14px 8px;text-align:center;background:var(--card);}
+.gx-lvl-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:4px;}
+.gx-lvl-val{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;}
 .gx-lvl-val.zero{color:var(--gold);}
 .gx-lvl-val.put{color:var(--green);}
 .gx-lvl-val.call{color:var(--red);}
 .gx-lvl-val.hvl{color:var(--cyan);}
-.gx-lvl-desc{font-size:10px;color:var(--t3);margin-top:4px;}
+.gx-lvl-val.vt{color:var(--orange);}
+.gx-lvl-val.mp{color:var(--purple);}
+.gx-lvl-desc{font-size:9px;color:var(--t3);margin-top:3px;}
 .gx-chart-wrap{padding:20px 24px 24px;}
-.gx-chart-title{font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;}
-.gx-chart{display:flex;align-items:flex-end;gap:2px;height:180px;position:relative;}
-.gx-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;}
-.gx-bar{width:100%;min-width:4px;border-radius:2px 2px 0 0;transition:opacity .2s;cursor:pointer;position:relative;}
-.gx-bar.pos{background:var(--green);}
-.gx-bar.neg{background:var(--red);border-radius:0 0 2px 2px;}
-.gx-bar-wrap:hover .gx-bar{opacity:.8;}
-.gx-bar-wrap:hover .gx-tooltip{display:block;}
-.gx-strike-label{font-size:8px;color:var(--t3);margin-top:4px;transform:rotate(-45deg);white-space:nowrap;}
-.gx-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:6px 10px;font-size:11px;white-space:nowrap;z-index:10;pointer-events:none;}
-.gx-chart-legend{display:flex;gap:16px;margin-top:12px;font-size:11px;color:var(--t2);}
+.gx-chart-title{font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.gx-chart-title small{font-size:11px;font-weight:500;color:var(--t3);text-transform:none;letter-spacing:0;}
+.gx-hchart{position:relative;width:100%;}
+.gx-hrow{display:flex;align-items:center;height:14px;margin-bottom:1px;position:relative;}
+.gx-hrow:hover{background:rgba(255,255,255,.04);}
+.gx-hrow:hover .gx-htip{display:block;}
+.gx-hlabel{width:60px;flex-shrink:0;font-size:10px;font-weight:600;color:var(--t3);text-align:right;padding-right:8px;font-variant-numeric:tabular-nums;}
+.gx-hbar-area{flex:1;position:relative;height:100%;display:flex;align-items:center;}
+.gx-hbar{height:10px;border-radius:2px;min-width:2px;position:absolute;transition:opacity .2s;}
+.gx-hbar.pos{background:var(--green);left:50%;}
+.gx-hbar.neg{background:var(--red);right:50%;}
+.gx-hbar-area .gx-zero-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.15);}
+.gx-htip{display:none;position:absolute;left:50%;transform:translateX(-50%);top:-28px;background:rgba(0,0,0,.92);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:4px 10px;font-size:11px;white-space:nowrap;z-index:10;pointer-events:none;}
+.gx-spot-line{position:absolute;left:60px;right:0;border-top:2px dashed var(--gold);z-index:5;pointer-events:none;}
+.gx-spot-label{position:absolute;right:0;top:-8px;font-size:10px;font-weight:700;color:var(--gold);background:rgba(240,180,41,.15);padding:1px 8px;border-radius:4px;}
+.gx-level-line{position:absolute;left:60px;right:0;z-index:4;pointer-events:none;}
+.gx-level-line::before{content:attr(data-label);position:absolute;left:0;top:-8px;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;}
+.gx-level-line.lv-put{border-top:1.5px dashed var(--green);}
+.gx-level-line.lv-put::before{color:var(--green);background:rgba(34,197,94,.15);}
+.gx-level-line.lv-call{border-top:1.5px dashed var(--red);}
+.gx-level-line.lv-call::before{color:var(--red);background:rgba(239,68,68,.15);}
+.gx-level-line.lv-zero{border-top:1.5px dashed var(--gold);}
+.gx-level-line.lv-zero::before{color:var(--gold);background:rgba(240,180,41,.15);}
+.gx-level-line.lv-hvl{border-top:1.5px dashed var(--cyan);}
+.gx-level-line.lv-hvl::before{color:var(--cyan);background:rgba(6,182,212,.15);}
+.gx-level-line.lv-vt{border-top:1.5px dashed var(--orange);}
+.gx-level-line.lv-vt::before{color:var(--orange);background:rgba(249,115,22,.15);}
+.gx-level-line.lv-mp{border-top:1.5px dashed var(--purple);}
+.gx-level-line.lv-mp::before{color:var(--purple);background:rgba(168,85,247,.15);}
+.gx-chart-legend{display:flex;gap:14px;margin-top:14px;font-size:11px;color:var(--t2);flex-wrap:wrap;}
 .gx-chart-legend span{display:flex;align-items:center;gap:5px;}
 .gx-chart-legend .dot{width:8px;height:8px;border-radius:2px;}
 .gx-chart-legend .dot.pos{background:var(--green);}
@@ -1693,11 +1713,13 @@ img{max-width:100%;}
 .gx-loading-box{text-align:center;padding:60px 20px;color:var(--t3);}
 .gx-disclaimer{font-size:10px;color:var(--t3);text-align:center;margin-top:24px;line-height:1.5;opacity:.7;max-width:800px;margin-left:auto;margin-right:auto;}
 @media(max-width:768px){
-  .gx-asset-grid{grid-template-columns:1fr;}
-  .gx-levels{grid-template-columns:repeat(2,1fr);}
+  .gx-levels{grid-template-columns:repeat(3,1fr);}
   .gx-asset-hd{flex-direction:column;align-items:flex-start;gap:8px;}
   .gx-edu-grid{grid-template-columns:1fr;}
-  .gx-chart{height:140px;}
+  .gx-hlabel{width:50px;font-size:9px;}
+}
+@media(max-width:480px){
+  .gx-levels{grid-template-columns:repeat(2,1fr);}
 }
 
 /* ═══ CALENDÁRIO ECONÔMICO MELHORADO ═══ */
@@ -3153,7 +3175,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="ar-spinner" style="width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div>
       <div data-i18n="gx_carregando">Loading CBOE data...</div>
     </div>
-    <div class="gx-asset-grid" id="gx-grid" style="display:none;"></div>
+    <div id="gx-grid" style="display:none;"></div>
     <div class="gx-disclaimer" data-i18n="gx_disclaimer">Options data provided by CBOE with delay. GEX levels are estimates based on mathematical models and do not constitute investment advice. Trading involves risk of loss.</div>
 
     <div style="margin-top:40px;">

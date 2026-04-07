@@ -5004,7 +5004,7 @@ async function loadGEX(){
 function renderGEX(items){
   document.getElementById('gx-loading').style.display='none';
   const grid=document.getElementById('gx-grid');
-  grid.style.display='grid';
+  grid.style.display='block';
 
   if(items[0]){
     const d=new Date(items[0].date+'T12:00:00');
@@ -5022,35 +5022,88 @@ function renderGEX(items){
     const regimeClass=regime?'gx-regime-pos':'gx-regime-neg';
     const topStrikes=(item.top_strikes||[]).sort((a,b)=>a.strike-b.strike);
     const maxGex=Math.max(...topStrikes.map(s=>Math.abs(s.gex)),1);
+    const spot=parseFloat(item.spot_price);
+    const minStrike=topStrikes.length?topStrikes[0].strike:spot-100;
+    const maxStrike=topStrikes.length?topStrikes[topStrikes.length-1].strike:spot+100;
+    const range=maxStrike-minStrike||1;
+    const ROW_H=15; // px per row
+    const chartH=topStrikes.length*ROW_H;
+
+    // Level positions (percentage from top)
+    function lvPos(val){return((val-minStrike)/range)*100;}
+    // Since strikes go bottom-to-top in chart, invert: top = maxStrike
+    function lvTop(val){return((maxStrike-val)/range)*100;}
+
+    const levels=[
+      {val:parseFloat(item.zero_gamma),cls:'lv-zero',label:'Zero Gamma'},
+      {val:parseFloat(item.put_wall),cls:'lv-put',label:'Put Wall'},
+      {val:parseFloat(item.call_wall),cls:'lv-call',label:'Call Wall'},
+      {val:parseFloat(item.hvl),cls:'lv-hvl',label:'HVL'},
+      {val:parseFloat(item.vol_trigger)||0,cls:'lv-vt',label:'Vol Trigger'},
+      {val:parseFloat(item.max_pain)||0,cls:'lv-mp',label:'Max Pain'},
+    ].filter(l=>l.val>=minStrike&&l.val<=maxStrike);
+
+    const spotTop=lvTop(spot);
+
+    // Build horizontal bar rows (top=highest strike, bottom=lowest)
+    const reversedStrikes=[...topStrikes].reverse();
+    const rows=reversedStrikes.map(s=>{
+      const w=Math.abs(s.gex)/maxGex*48; // max 48% width (half the area)
+      const isPos=s.gex>=0;
+      const barStyle=isPos
+        ?`left:50%;width:${Math.max(w,0.5)}%;`
+        :`right:50%;width:${Math.max(w,0.5)}%;`;
+      return`<div class="gx-hrow">
+        <div class="gx-hlabel">${gxFmt(s.strike)}</div>
+        <div class="gx-hbar-area">
+          <div class="gx-zero-line"></div>
+          <div class="gx-hbar ${isPos?'pos':'neg'}" style="${barStyle}"></div>
+          <div class="gx-htip">${gxFmt(s.strike)}: ${s.gex>0?'+':''}${s.gex}M</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Level lines positioned within the chart
+    const levelLines=levels.map(l=>{
+      const idx=reversedStrikes.findIndex(s=>s.strike===Math.round(l.val));
+      if(idx<0){
+        // Interpolate position
+        const pct=lvTop(l.val);
+        return`<div class="gx-level-line ${l.cls}" data-label="${l.label}" style="top:${pct}%;"></div>`;
+      }
+      const px=idx*ROW_H+ROW_H/2;
+      return`<div class="gx-level-line ${l.cls}" data-label="${l.label}" style="top:${px}px;"></div>`;
+    }).join('');
+
+    // Spot price line
+    const spotIdx=reversedStrikes.findIndex(s=>s.strike>=Math.round(spot));
+    const spotPx=spotIdx>=0?spotIdx*ROW_H+ROW_H/2:lvTop(spot)/100*chartH;
+    const spotLine=`<div class="gx-spot-line" style="top:${spotPx}px;"><div class="gx-spot-label">${gxFmt(spot)}</div></div>`;
 
     return`<div class="gx-asset-card">
       <div class="gx-asset-hd">
         <div class="gx-asset-name">${item.ticker} <small>${names[item.ticker]||''}</small></div>
-        <div class="gx-asset-spot">${gxFmt(item.spot_price)} <span class="gx-regime ${regimeClass}">${regimeLabel}</span></div>
+        <div class="gx-asset-spot">${gxFmt(spot)} <span class="gx-regime ${regimeClass}">${regimeLabel}</span></div>
       </div>
       <div class="gx-levels">
         <div class="gx-lvl"><div class="gx-lvl-label">Zero Gamma</div><div class="gx-lvl-val zero">${gxFmt(item.zero_gamma)}</div><div class="gx-lvl-desc">Gamma Flip</div></div>
         <div class="gx-lvl"><div class="gx-lvl-label">Put Wall</div><div class="gx-lvl-val put">${gxFmt(item.put_wall)}</div><div class="gx-lvl-desc">${t('gx_support')}</div></div>
         <div class="gx-lvl"><div class="gx-lvl-label">Call Wall</div><div class="gx-lvl-val call">${gxFmt(item.call_wall)}</div><div class="gx-lvl-desc">${t('gx_resistance')}</div></div>
         <div class="gx-lvl"><div class="gx-lvl-label">HVL</div><div class="gx-lvl-val hvl">${gxFmt(item.hvl)}</div><div class="gx-lvl-desc">${t('gx_magnet')}</div></div>
+        <div class="gx-lvl"><div class="gx-lvl-label">Vol Trigger</div><div class="gx-lvl-val vt">${gxFmt(item.vol_trigger||0)}</div><div class="gx-lvl-desc">${t('gx_vol_trigger')}</div></div>
+        <div class="gx-lvl"><div class="gx-lvl-label">Max Pain</div><div class="gx-lvl-val mp">${gxFmt(item.max_pain||0)}</div><div class="gx-lvl-desc">${t('gx_max_pain')}</div></div>
       </div>
       <div class="gx-chart-wrap">
-        <div class="gx-chart-title">GEX by Strike (millions)</div>
-        <div class="gx-chart" id="chart-${item.ticker}">
-          ${topStrikes.map(s=>{
-            const h=Math.abs(s.gex)/maxGex*100;
-            const isPos=s.gex>=0;
-            return`<div class="gx-bar-wrap">
-              <div class="gx-tooltip">${gxFmt(s.strike)}: ${s.gex>0?'+':''}${s.gex}M</div>
-              <div class="gx-bar ${isPos?'pos':'neg'}" style="height:${Math.max(h,3)}%;${!isPos?'align-self:flex-start;':''}"></div>
-              ${topStrikes.length<=25?`<div class="gx-strike-label">${gxFmt(s.strike)}</div>`:''}
-            </div>`;
-          }).join('')}
+        <div class="gx-chart-title">Gamma Exposure<small>Total: ${totalGex>0?'+':''}${totalGex}M</small></div>
+        <div class="gx-hchart" style="height:${chartH}px;">
+          ${rows}
+          ${spotLine}
+          ${levelLines}
         </div>
         <div class="gx-chart-legend">
           <span><span class="dot pos"></span> Calls (${t('gx_resistance').toLowerCase()})</span>
           <span><span class="dot neg"></span> Puts (${t('gx_support').toLowerCase()})</span>
-          <span style="margin-left:auto;color:var(--t3);">Total: ${totalGex>0?'+':''}${totalGex}M</span>
+          <span style="color:var(--gold);">— ${gxFmt(spot)} Spot</span>
         </div>
       </div>
     </div>`;
