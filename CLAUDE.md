@@ -347,6 +347,30 @@ trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apext
 
 ---
 
+## Padrao de Contraste (Minimos Obrigatorios)
+
+Valores minimos de opacidade para rgba(255,255,255,...) em fundo escuro. NUNCA usar valores abaixo destes:
+
+| Elemento | Propriedade | Minimo | Exemplo |
+|---|---|---|---|
+| Card background | `background` | `.10` | `rgba(255,255,255,.10)` |
+| Card border | `border-color` | `.14` | `rgba(255,255,255,.14)` |
+| Hover background | `background` | `.10` | `rgba(255,255,255,.10)` |
+| Linhas decorativas | `border/background` | `.12` | `rgba(255,255,255,.12)` |
+| Texto primario | `color` | `var(--t1)` | Branco/quase branco |
+| Texto secundario | `color` | `var(--t2)` | Nunca abaixo de t2 para conteudo legivel |
+| Labels/filtros | `color` | `var(--t1)` | Com `font-weight:600` |
+| Valores numericos | `color` + `font-weight` | `var(--t1)` + `700` | Dados importantes sempre bold |
+
+### Regras
+- **NUNCA** usar `.04`, `.05`, `.06` em backgrounds de cards — minimo `.10`
+- **NUNCA** usar `.08` em borders — minimo `.12` (decorativo) ou `.14` (cards)
+- **NUNCA** usar `var(--t3)` em texto que o usuario precisa ler — minimo `var(--t2)`
+- Filtros e botoes de acao: `var(--t1)` com `font-weight:600`
+- `backdrop-filter` proibido em cards/conteudo — apenas em nav, overlay e footer
+
+---
+
 ## Boas Praticas do Projeto
 
 1. **Idioma das respostas:** Sempre responder em portugues (PT-BR)
