@@ -4760,6 +4760,7 @@ const _authSignupBgs = ['img/auth-bg-5.webp','img/auth-bg-6.webp','img/auth-bg-7
 
 function openAuthModal(type) {
   closeAuthModals();
+  removePreviewBanner();
   _authGroup = type === 'signup' ? 'signup' : 'login';
   document.getElementById('login-overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
