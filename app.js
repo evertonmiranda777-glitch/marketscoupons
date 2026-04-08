@@ -2942,7 +2942,7 @@ function drwGoCheckout(firmId) {
   window.open(url,'_blank');
 }
 
-function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');closeFD();document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';}
+function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');document.getElementById('fd-overlay')?.classList.remove('show');document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';const p=location.pathname.replace(/^\//,'').replace(/\/$/,'');if(_firmPageSlugs.includes(p)){history.back();}else if(location.hash.startsWith('#firm/')){history.replaceState(null,'',location.pathname.replace(/\/[^/]+$/,'')+location.search);}}
 
 /* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
