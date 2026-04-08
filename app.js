@@ -415,12 +415,17 @@ const FIRM_T={
 function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='pt')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
 
 /* NAV */
-function go(page, skipHash){
+// Page ID → clean URL slug mapping
+const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel',loyalty:'loyalty','pro-success':'pro-success',calc:'calculator'};
+const SLUG_PAGES=Object.fromEntries(Object.entries(PAGE_SLUGS).map(([k,v])=>[v,k]));
+function _pageUrl(page){const s=PAGE_SLUGS[page];return s?'/'+s:'/';}
+function _pageFromPath(){const p=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').replace(/^\//,'').replace(/\/$/,'');return SLUG_PAGES[p]||'';}
+function go(page, skipPush){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
   document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p===page));
   window.scrollTo({top:0,behavior:'instant'});
-  if(!skipHash) location.hash=page==='home'?'':page;
+  if(!skipPush) history.pushState({page}, '', _pageUrl(page));
   try{sessionStorage.setItem('mc_page',page);}catch(e){}
   track('page_view',{page_name:page});
   // Preview banner only on gated pages
@@ -436,7 +441,9 @@ function go(page, skipHash){
     return;
   }
 }
-window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(h)go(h,true);else go('home',true);});
+window.addEventListener('popstate',()=>{const page=_pageFromPath()||location.hash.replace('#','')||'home';if(document.getElementById('page-'+page))go(page,true);else go('home',true);});
+// Backward compat: redirect old # URLs to clean URLs
+if(location.hash && !location.hash.startsWith('#firm/')){const _oldPage=location.hash.replace('#','');if(PAGE_SLUGS[_oldPage]!==undefined){history.replaceState(null,'',_pageUrl(_oldPage));}}
 function toggleMM(){const open=document.getElementById('mm').classList.toggle('open');document.getElementById('mm-ov').classList.toggle('open',open);document.getElementById('hbg').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
 function closeMM(){['mm','mm-ov','hbg'].forEach(id=>document.getElementById(id)?.classList.remove('open'));document.body.style.overflow='';}
 function mgo(p){closeMM();go(p);}
@@ -4091,7 +4098,7 @@ async function startCheckout(){
     const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/stripe-checkout',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON},
-      body:JSON.stringify({success_url:window.location.origin+'/#pro-success',cancel_url:window.location.origin+'/#'+(location.hash.replace('#','')||'analise')})
+      body:JSON.stringify({success_url:window.location.origin+'/pro-success',cancel_url:window.location.origin+(_pageUrl(_pageFromPath()||'analise'))})
     });
     const json=await res.json();
     if(json.url) window.location.href=json.url;
@@ -4189,7 +4196,7 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
     else showPreviewBanner(rem);
   },1000);
 }
-function _isGatedPage(){const p=sessionStorage.getItem('mc_page')||location.hash.replace('#','');const pg=document.getElementById('page-'+p);return (p==='analise'||p==='gamma')&&pg&&pg.classList.contains('active');}
+function _isGatedPage(){const p=sessionStorage.getItem('mc_page')||_pageFromPath()||location.hash.replace('#','');const pg=document.getElementById('page-'+p);return (p==='analise'||p==='gamma')&&pg&&pg.classList.contains('active');}
 function showPreviewBanner(secs){
   if(!_isGatedPage())return;
   if(document.getElementById(PREVIEW_BANNER_ID))return;
@@ -5238,9 +5245,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load CMS overrides (texts, FAQ) — single Promise.all, one renderFaq call
   Promise.all([loadCmsTexts(), loadCmsFaq()]).then(() => { applyTranslations(); renderFaq(); });
   // Ativar página correta ANTES de renderizar (evita flash da home)
-  const _initHash = location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
-  if(_initHash && document.getElementById('page-'+_initHash)){
-    go(_initHash, true);
+  const _initPage = _pageFromPath() || location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
+  if(_initPage && document.getElementById('page-'+_initPage)){
+    go(_initPage, true);
   } else {
     go('home', true);
   }
@@ -5277,7 +5284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     _authLoaded=true;
     checkAnalysisGate();
     if(_gexLoaded) checkGEXGate();
-    if(location.hash==='#live') checkLoyaltyAndShowLive();
+    if(_pageFromPath()==='live'||location.hash==='#live') checkLoyaltyAndShowLive();
     renderLoyaltyPage();
   });
 
@@ -5300,10 +5307,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     history.replaceState(null, '', location.pathname + location.hash);
   }
 
-  // Navegar para o hash da URL ANTES dos awaits — garante que Ctrl+F5 preserve a página
-  const initHash = location.hash.replace('#','');
-  if(initHash && document.getElementById('page-'+initHash)){
-    go(initHash, true);
+  // Navegar para a URL correta ANTES dos awaits — garante que Ctrl+F5 preserve a página
+  const initPage = _pageFromPath() || location.hash.replace('#','');
+  if(initPage && document.getElementById('page-'+initPage)){
+    go(initPage, true);
   } else {
     track('page_view', { page_name: 'home', language: navigator.language });
   }
