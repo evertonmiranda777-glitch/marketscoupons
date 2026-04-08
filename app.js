@@ -3833,8 +3833,10 @@ async function loadCalendar(silent) {
   if(!silent) el.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--t2);"><div class="ar-spinner" style="width:24px;height:24px;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div></div>';
 
   const today = new Date();
-  const todayStr = today.toISOString().slice(0,10);
-  const tmrDate = new Date(today); tmrDate.setDate(tmrDate.getDate()+1);
+  // Use ET (UTC-4) date to match the calendar event dates
+  const etNow = new Date(today.getTime() - 4 * 60 * 60 * 1000);
+  const todayStr = etNow.toISOString().slice(0,10);
+  const tmrDate = new Date(etNow); tmrDate.setDate(tmrDate.getDate()+1);
   const tmrStr = tmrDate.toISOString().slice(0,10);
 
   // Clear old FF cache
@@ -3855,8 +3857,14 @@ async function loadCalendar(silent) {
       let imp = 'l';
       if (ev.importance >= 3) imp = 'h';
       else if (ev.importance >= 2) imp = 'm';
+      // Convert 12h time (e.g. "02:30 PM") to 24h (e.g. "14:30") for correct sorting/comparison
+      let t24 = ev.time || '—';
+      if (t24 !== '—') {
+        const m = t24.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+        if (m) { let h = parseInt(m[1]); const ampm = m[3].toUpperCase(); if (ampm==='PM' && h<12) h+=12; if (ampm==='AM' && h===12) h=0; t24 = h.toString().padStart(2,'0')+':'+m[2]; }
+      }
       return {
-        day, t: ev.time || '—', cur: ev.currency || '', ev: ev.event || '',
+        day, t: t24, cur: ev.currency || '', ev: ev.event || '',
         ref: ev.reference || '',
         actual: ev.actual != null ? String(ev.actual) : '—',
         fore: ev.forecast != null ? String(ev.forecast) : '—',
@@ -3864,6 +3872,8 @@ async function loadCalendar(silent) {
         imp, dateStr
       };
     });
+    // Sort events by date then time (24h format ensures correct order)
+    calEvents.sort((a,b) => (a.dateStr+a.t).localeCompare(b.dateStr+b.t));
     _calLastUpdate = new Date().toISOString();
   } catch(e) {
     console.warn('Calendar API error:', e);
