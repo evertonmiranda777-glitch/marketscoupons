@@ -1685,7 +1685,8 @@ async function doLogin() {
   if (btn) { btn.disabled = false; btn.textContent = 'Entrar no Admin →'; }
   if (error || !data?.session) {
     _loginAttempts++;
-    err.textContent = error?.message || 'Email ou senha incorretos.';
+    const msg = error?.message;
+    err.textContent = (typeof msg === 'string' && msg.length > 2) ? msg : 'Servidor indisponível. Tente novamente.';
     err.style.display = 'block';
     document.getElementById('login-pass').value = '';
     setTimeout(() => err.style.display = 'none', 5000);

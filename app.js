@@ -4908,7 +4908,11 @@ async function doAuthLogin() {
   const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
   btn.disabled = false; btn.textContent = 'Entrar';
 
-  if (error) return showAuthError('login-error', error.message === 'Invalid login credentials' ? t('auth_email_senha_incorretos') : error.message);
+  if (error) {
+    const msg = (typeof error.message === 'string' && error.message.length > 2) ? error.message : null;
+    if (msg === 'Invalid login credentials') return showAuthError('login-error', t('auth_email_senha_incorretos'));
+    return showAuthError('login-error', msg || t('auth_servidor_indisponivel') || 'Servidor indisponível. Tente novamente.');
+  }
 
   closeAuthModals();
   await loadUserSession(data.user);
