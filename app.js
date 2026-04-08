@@ -425,7 +425,7 @@ function go(page, skipHash){
   track('page_view',{page_name:page});
   // Preview banner only on gated pages
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
-  if(page==='live') checkLoyaltyAndShowLive();
+  if(page==='live' && _authLoaded) checkLoyaltyAndShowLive();
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
@@ -5105,6 +5105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   _authLoaded = true;
   checkAnalysisGate();
   if(_gexLoaded) checkGEXGate();
+  if(location.hash==='#live') checkLoyaltyAndShowLive();
   renderLoyaltyPage();
   await initFavs();
 });
