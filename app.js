@@ -5387,35 +5387,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }catch(e){}
 
-  // Carregar firmas e guias do Supabase
-  await loadFirmsFromSupabase();
-  // Detect dedicated firm page URL (e.g. /apex, /bulenox, /en/apex)
-  const _pathParts2=location.pathname.split('/').filter(Boolean);
-  const _pathLangs2=['en','es','fr','de','it','ar'];
-  const _pathSlug=_pathLangs2.includes(_pathParts2[0])?(_pathParts2[1]||''):(_pathParts2[0]||'');
-  if(_firmPageSlugs.includes(_pathSlug) && FIRMS.find(x=>x.id===_pathSlug)){
-    window._dedicatedFirmSlug=_pathSlug;
-    setFirmSEO(_pathSlug);
-    document.body.style.opacity='0';
+  // Abrir overlay da firma ANTES de esperar Supabase (usa dados hardcoded do FIRMS)
+  if(_isFirmPage){
+    window._dedicatedFirmSlug=_earlySlug;
+    setFirmSEO(_earlySlug);
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
     document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
     window.scrollTo(0,0);
-    openD(_pathSlug);
-    setTimeout(()=>{document.body.style.opacity='1';},80);
+    openD(_earlySlug);
+    document.body.style.opacity='1';
   }
   // Reopen firm overlay from URL hash (e.g. #firm/apex)
   else if(location.hash.startsWith('#firm/')){
     const _hFirmId=location.hash.replace('#firm/','');
     if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
-      document.body.style.opacity='0';
       document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
       const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
       document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
       window.scrollTo(0,0);
       openD(_hFirmId);
-      setTimeout(()=>{document.body.style.opacity='1';},80);
+      document.body.style.opacity='1';
     }
+  }
+  // Carregar firmas do Supabase (atualiza dados em background)
+  await loadFirmsFromSupabase();
+  // Se overlay de firma está aberto, re-render com dados atualizados do Supabase
+  if(_fdCurrent && document.getElementById('fd-overlay')?.classList.contains('show')){
+    openFD(_fdCurrent, FIRMS.find(x=>x.id===_fdCurrent));
   }
   await loadGuidesFromSupabase();
   renderGuides();
