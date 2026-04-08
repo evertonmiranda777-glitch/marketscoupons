@@ -3973,7 +3973,8 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
       showPreviewGate('gx-gate','gx-wrap-inner','gx-wrap-gated');
       return;
     }
-    if(!_isGatedPage()){removePreviewBanner();return;}
+    const modalOpen=document.getElementById('login-overlay')?.classList.contains('show');
+    if(!_isGatedPage()||modalOpen){removePreviewBanner();return;}
     const el=document.getElementById(PREVIEW_BANNER_ID);
     if(el){const s=el.querySelector('.pvw-time');if(s)s.textContent=rem+'s';}
     else showPreviewBanner(rem);
