@@ -1142,6 +1142,8 @@ const I18N = {
     da_resistencia:'Resistance',
     da_zona_atencao:'Attention zone',
     da_eventos:'Today\'s events',
+    da_eventos_hoje:'High-impact events today',
+    da_previsao:'Forecast',
     da_volume:'Volume',
     da_cenario_bull:'Favorable scenario',
     da_cenario_bear:'Alternative scenario',

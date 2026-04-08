@@ -805,7 +805,7 @@ async function openGuideArticle(slug){
     <div class="guide-art-cta">
       <div class="guide-art-cta-title">${t('guia_cta_titulo')||'Pronto para começar?'}</div>
       <div class="guide-art-cta-desc">${t('guia_cta_desc')||'Compare as melhores prop firms com cupons exclusivos de até 90% de desconto.'}</div>
-      <button class="guide-art-cta-btn" onclick="go('offers')">${t('guia_cta_btn')||'Ver Ofertas'} →</button>
+      <button class="guide-art-cta-btn" onclick="go('home')">${t('guia_cta_btn')||'Ver Ofertas'} →</button>
     </div>`;
   art.classList.add('open');
   window.scrollTo({top:0,behavior:'smooth'});
@@ -2405,14 +2405,14 @@ function fdGo(id) {
   if (cf) {
     let url = cf.buildUrl(st.size||'',st.type||'',st.plat||'');
     url += (url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
-    if (f?.coupon) navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
+    if (f?.coupon) _cpToClip(f.coupon);
     track('checkout_click',{firm_id:id,firm_name:f?.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f?.name||'');
     if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:id,source:_src}); fbq('track','Lead',{content_name:id,source:_src}); }
     if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:id,item_name:f?.name,price:0}],coupon:f?.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
     window.open(url,'_blank');
   } else {
-    if (f?.coupon) navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
+    if (f?.coupon) _cpToClip(f.coupon);
     track('checkout_click',{firm_id:id,firm_name:f?.name||'',coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick('','','',f?.name||'');
     if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:id,source:_src}); fbq('track','Lead',{content_name:id,source:_src}); }
@@ -2449,7 +2449,7 @@ function fdGoCheckout(fId){
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   let url=cf.buildUrl(st.size||'',st.type||'',st.plat||'');
   url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+fId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
-  if(f.coupon)navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
+  if(f.coupon) _cpToClip(f.coupon);
   track('checkout_click',{firm_id:fId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:fId,source:_src}); fbq('track','Lead',{content_name:fId,source:_src}); }
@@ -2933,9 +2933,7 @@ function drwGoCheckout(firmId) {
   const st = _drwState[firmId] || {};
   let url = cf.buildUrl(st.size||'', st.type||'', st.plat||'');
   url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=drawer&utm_campaign='+firmId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
-  if (f.coupon) {
-    navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
-  }
+  if (f.coupon) _cpToClip(f.coupon);
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
@@ -3066,6 +3064,15 @@ function renderFaq() {
 
 /* COUPON */
 function shortCode(c,max=12){return c&&c.length>max?c.slice(0,max)+'…':c;}
+function _cpToClip(code){
+  const msg=t('toast_cupom_copiado').replace('{code}',code);
+  try{
+    navigator.clipboard.writeText(code).then(()=>showToast(msg)).catch(()=>{
+      const ta=document.createElement('textarea');ta.value=code;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+      showToast(msg);
+    });
+  }catch(e){const ta=document.createElement('textarea');ta.value=code;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast(msg);}
+}
 function cpCoupon(code,firmId,loc){
   const msg=t('toast_cupom_copiado').replace('{code}',code);
   try{
@@ -5362,13 +5369,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     history.replaceState(null, '', location.pathname + location.hash);
   }
 
-  // Navegar para a URL correta ANTES dos awaits — garante que Ctrl+F5 preserve a página
-  const initPage = _pageFromPath() || location.hash.replace('#','');
-  if(initPage && document.getElementById('page-'+initPage)){
-    go(initPage, true);
-  } else {
-    track('page_view', { page_name: 'home', language: navigator.language });
-  }
   fetchGeo();
 
   // Checar se bot está ativado (hidden by default, show only if enabled)
