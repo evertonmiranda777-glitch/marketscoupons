@@ -2239,12 +2239,10 @@ function openD(id){
   } else {
     history.replaceState(null,'','#firm/'+id);
   }
-  // Meta Pixel: Lead + FirmDetailOpen on every firm overlay open
+  // Tracking: ViewContent on firm overlay open (PageView step of funnel)
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
-  if(typeof fbq==='function'){
-    fbq('track','Lead',{content_name:id});
-    fbq('trackCustom','FirmDetailOpen',{content_name:id,source:_src});
-  }
+  if(typeof fbq==='function') fbq('track','ViewContent',{content_name:id,content_type:'firm',source:_src});
+  if(typeof gtag==='function') gtag('event','view_item',{items:[{item_id:id,item_name:f.name,item_category:'firm'}]});
   track('firm_detail_open',{firm_id:id,firm_name:f.name,source:_src});
 }
 
@@ -2410,13 +2408,15 @@ function fdGo(id) {
     if (f?.coupon) navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
     track('checkout_click',{firm_id:id,firm_name:f?.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f?.name||'');
-    if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:id,source:_src});
+    if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:id,source:_src}); fbq('track','Lead',{content_name:id,source:_src}); }
+    if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:id,item_name:f?.name,price:0}],coupon:f?.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
     window.open(url,'_blank');
   } else {
     if (f?.coupon) navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
     track('checkout_click',{firm_id:id,firm_name:f?.name||'',coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick('','','',f?.name||'');
-    if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:id,source:_src});
+    if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:id,source:_src}); fbq('track','Lead',{content_name:id,source:_src}); }
+    if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:id,item_name:f?.name,price:0}],coupon:f?.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
     window.open(f?.link||'#','_blank');
   }
 }
@@ -2452,7 +2452,8 @@ function fdGoCheckout(fId){
   if(f.coupon)navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
   track('checkout_click',{firm_id:fId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
-  if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:fId,source:_src});
+  if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:fId,source:_src}); fbq('track','Lead',{content_name:fId,source:_src}); }
+  if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:fId,item_name:f.name,price:0}],coupon:f.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
   window.open(url,'_blank');
 }
 
@@ -2833,7 +2834,7 @@ function openDrw(id, f, cf) {
       <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_direct')">${t('firms_copiar')}</button>
     </div><div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
   }
-  html+=`<button class="go-btn" onclick="window.open('${f.link}','_blank');var _s=window._dedicatedFirmSlug?'dedicated':'homepage';track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}',source:_s});if(typeof fbq==='function')fbq('track','InitiateCheckout',{content_name:'${id}',source:_s});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button></div>`;
+  html+=`<button class="go-btn" onclick="window.open('${f.link}','_blank');var _s=window._dedicatedFirmSlug?'dedicated':'homepage';track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}',source:_s});if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_name:'${id}',source:_s});fbq('track','Lead',{content_name:'${id}',source:_s})}if(typeof gtag==='function'){gtag('event','begin_checkout',{items:[{item_id:'${id}',item_name:'${f.name.replace(/'/g,"\\'")}',price:0}],coupon:'${f.coupon||'parceiro'}'});gtag('event','generate_lead',{currency:'USD',value:0})}registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button></div>`;
 
   document.getElementById('d-body').innerHTML = html;
   document.getElementById('ov').classList.add('open');
@@ -2938,7 +2939,8 @@ function drwGoCheckout(firmId) {
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
-  if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:firmId,source:_src});
+  if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:firmId,source:_src}); fbq('track','Lead',{content_name:firmId,source:_src}); }
+  if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:firmId,item_name:f.name,price:0}],coupon:f.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
   window.open(url,'_blank');
 }
 
@@ -3077,6 +3079,7 @@ function cpCoupon(code,firmId,loc){
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   track('coupon_copy',{coupon_code:code,firm_id:firmId,firm_name:f?.name,discount:f?.discount,location:loc,source:_src});
   if(typeof fbq==='function') fbq('trackCustom','CopyCode',{content_name:firmId,coupon:code,source:_src});
+  if(typeof gtag==='function') gtag('event','copy_coupon',{item_id:firmId,coupon:code,source:_src});
 }
 
 /* MULTI-FIRM CHECKOUT */
@@ -3305,10 +3308,11 @@ function achGoCheckout(fId,size){
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   track('checkout_click',{firm_id:fId,firm_name:firm.name,account_size:size,platform:plat,type,coupon:firm.coupon||'parceiro',source:_src});
   registerLoyaltyClick(size,plat,type,firm.name);
-  if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:fId,source:_src});
+  if(typeof fbq==='function'){ fbq('track','InitiateCheckout',{content_name:fId,source:_src}); fbq('track','Lead',{content_name:fId,source:_src}); }
+  if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:fId,item_name:firm.name,price:0}],coupon:firm.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
   window.open(url,'_blank');
 }
-function achCopyCoupon(){const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm?.coupon)return;navigator.clipboard.writeText(firm.coupon).then(()=>{const _src=window._dedicatedFirmSlug?'dedicated':'homepage';showToast(t('toast_cupom_copiado').replace('{code}',firm.coupon));track('coupon_copy',{coupon_code:firm.coupon,firm_id:achActiveFirm,location:'checkout_header',source:_src});if(typeof fbq==='function')fbq('trackCustom','CopyCode',{content_name:achActiveFirm,coupon:firm.coupon,source:_src});});}
+function achCopyCoupon(){const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm?.coupon)return;navigator.clipboard.writeText(firm.coupon).then(()=>{const _src=window._dedicatedFirmSlug?'dedicated':'homepage';showToast(t('toast_cupom_copiado').replace('{code}',firm.coupon));track('coupon_copy',{coupon_code:firm.coupon,firm_id:achActiveFirm,location:'checkout_header',source:_src});if(typeof fbq==='function')fbq('trackCustom','CopyCode',{content_name:achActiveFirm,coupon:firm.coupon,source:_src});if(typeof gtag==='function')gtag('event','copy_coupon',{item_id:achActiveFirm,coupon:firm.coupon,source:_src});});}
 
 /* COMPARE */
 function initCmp(){['c1','c2','c3'].forEach(id=>{const sel=document.getElementById(id);if(!sel)return;FIRMS.forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.name;sel.appendChild(o);});});}

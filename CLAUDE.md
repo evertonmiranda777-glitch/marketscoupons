@@ -171,6 +171,34 @@ justify-content: space-between !important;  /* codigo esquerda, botao direita */
 - Google Analytics 4: `G-CZ3L00NY77`
 - Facebook Pixel: `813048241061812`
 
+### Arquitetura
+- GTM carrega GA4 + Facebook Pixel como tags internas (NAO carregados diretamente no HTML)
+- `loadTracking()` so executa apos cookie consent (`mc-cookies-consent === 'accepted'`)
+- Funcao `track(event, params)` faz 3 coisas: insere no Supabase `events`, salva em localStorage, e push no `dataLayer` (GTM)
+- Chamadas diretas `fbq()` e `gtag()` sao safety net (caso GTM triggers nao estejam configurados)
+- Todas as chamadas usam guards: `if(typeof fbq==='function')` e `if(typeof gtag==='function')`
+
+### Funil de Firmas (4 etapas)
+| Etapa | Quando | dataLayer event | FB Pixel | GA4 gtag |
+|---|---|---|---|---|
+| 1. PageView | Abre overlay da firma | `firm_detail_open` | `ViewContent` | `view_item` |
+| 2. CopyCoupon | Copia cupom | `coupon_copy` | `CopyCode` (custom) | `copy_coupon` (custom) |
+| 3. InitiateCheckout | Clica no botao de checkout | `checkout_click` | `InitiateCheckout` | `begin_checkout` |
+| 4. Lead | Redirect (window.open) | (mesmo que 3) | `Lead` | `generate_lead` |
+
+### Funil Pro Subscription (2 etapas)
+| Etapa | Quando | FB Pixel | GA4 gtag |
+|---|---|---|---|
+| InitiateCheckout | Clica em assinar Pro | `InitiateCheckout` | `begin_checkout` |
+| Purchase | Sucesso do Stripe | `Purchase` | `purchase` |
+
+### Funcoes de checkout que disparam tracking (firmas)
+- `fdGo(id)` — Desktop fullscreen overlay
+- `fdGoCheckout(fId)` — Desktop checkout button
+- `drwGoCheckout(firmId)` — Drawer mobile checkout
+- `achGoCheckout(fId,size)` — Accordion checkout
+- Inline onclick no drawer direto (firmas sem checkout integrado)
+
 ---
 
 ## Deploy
