@@ -3973,11 +3973,15 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
       showPreviewGate('gx-gate','gx-wrap-inner','gx-wrap-gated');
       return;
     }
+    if(!_isGatedPage()){removePreviewBanner();return;}
     const el=document.getElementById(PREVIEW_BANNER_ID);
     if(el){const s=el.querySelector('.pvw-time');if(s)s.textContent=rem+'s';}
+    else showPreviewBanner(rem);
   },1000);
 }
+function _isGatedPage(){const p=sessionStorage.getItem('mc_page')||location.hash.replace('#','');return p==='analise'||p==='gamma';}
 function showPreviewBanner(secs){
+  if(!_isGatedPage())return;
   if(document.getElementById(PREVIEW_BANNER_ID))return;
   const bar=document.createElement('div');
   bar.id=PREVIEW_BANNER_ID;
