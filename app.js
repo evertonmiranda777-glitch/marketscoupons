@@ -1790,7 +1790,7 @@ function _renderBlogCards(g, posts){
     const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[curLang]||'pt-BR';
     const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'short',year:'numeric'}) : '';
     return `
-    <a href="${blogUrl}" class="bc" style="text-decoration:none;color:inherit;">
+    <div class="bc" style="cursor:pointer;" onclick="openBlogArticle('${post.slug}')">
       <div class="bc-img" style="background-image:url('${coverImg}')">
         <div class="bc-level" style="background:${lvl.bg};color:${lvl.color};">${t(lvl.key)}</div>
       </div>
@@ -1803,7 +1803,7 @@ function _renderBlogCards(g, posts){
           <span class="bc-read">${t('blog_ler')||'Ler →'}</span>
         </div>
       </div>
-    </a>`;
+    </div>`;
   }).join('');
 }
 
@@ -1814,11 +1814,39 @@ function filterBlog(level, btn){
   _renderBlogGrid();
 }
 
-// Fallback: se clicar em post hardcoded antes do Supabase carregar
-function openBlogArticle(slug){
-  const curLang = _currentLang || 'pt';
-  const blogUrl = curLang==='pt' ? '/blog/'+slug : '/blog/'+curLang+'/'+slug;
-  window.location.href = blogUrl;
+async function openBlogArticle(slug){
+  const grid=document.getElementById('blog-grid');
+  const hdr=document.getElementById('blog-header');
+  const filters=document.getElementById('blog-filters');
+  const art=document.getElementById('blog-article');
+  if(!art) return;
+  // Hide grid, show article
+  if(grid) grid.style.display='none';
+  if(hdr) hdr.style.display='none';
+  if(filters) filters.style.display='none';
+  art.classList.add('open');
+  art.innerHTML='<div style="text-align:center;padding:60px 20px;"><div class="ar-spinner" style="width:24px;height:24px;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto;"></div></div>';
+  art.scrollIntoView({behavior:'smooth',block:'start'});
+  try {
+    // Try from already-loaded posts first
+    let post = _blogPostsDB.find(p=>p.slug===slug);
+    if(!post || !post.content_html){
+      const{data}=await db.from('blog_posts').select('*').eq('slug',slug).maybeSingle();
+      if(data) post=data;
+    }
+    if(!post){art.innerHTML='<div style="color:var(--t2);padding:40px 0;">Post not found.</div>';return;}
+    const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
+    const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[_currentLang]||'pt-BR';
+    const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'long',year:'numeric'}) : '';
+    art.innerHTML=`
+      <button class="blog-back" onclick="closeBlogArticle()">&larr; ${t('blog_voltar')||'Back to Blog'}</button>
+      <div class="blog-art-level" style="background:${lvl.bg};color:${lvl.color};">${t(lvl.key)}</div>
+      <div class="blog-art-title">${post.title}</div>
+      <div class="blog-art-meta"><span>${dateStr}</span></div>
+      <div class="blog-art-body">${DOMPurify.sanitize(post.content_html||post.content||'')}</div>`;
+  } catch(e){
+    art.innerHTML='<div style="color:var(--t2);padding:40px 0;">Error loading post.</div>';
+  }
 }
 
 function closeBlogArticle(){
