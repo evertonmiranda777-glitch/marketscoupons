@@ -4292,7 +4292,7 @@ function showLiveGatePreview(){
   if(!hasToken){
     contentEl.innerHTML=`<p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_login')}</p><div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;"><button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button><button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('btn_entrar')}</button></div>`;
   } else {
-    contentEl.innerHTML=`<div class="lg-loading"><div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><span>${t('live_checking_access')||'Checking access...'}</span></div>`;
+    contentEl.innerHTML=`<div class="lg-loading"><span>${t('live_checking_access')||'Checking access...'}</span></div>`;
   }
 }
 
