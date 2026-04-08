@@ -573,7 +573,7 @@ function setL(lang,flag,code){
   }
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides();
   if(!_openBlogSlug) renderBlog();
-  renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true);
+  renderQuiz(); applyF(); renderPolicies(); renderAchPlans(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true);
   // Re-render open drawer if language changed
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
@@ -4905,11 +4905,11 @@ function renderLoyaltyPage(){
   if(!currentUser){
     ms.innerHTML=`<div class="loyalty-register-form">
       <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <div class="lrf-title">Crie sua conta para participar</div>
-      <div class="lrf-sub">O cadastro é gratuito. Após criar sua conta você poderá enviar comprovantes de compra e acompanhar seu progresso no programa.</div>
+      <div class="lrf-title">${t('loyalty_crie_conta')}</div>
+      <div class="lrf-sub">${t('loyalty_crie_sub')}</div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
-        <button class="lrf-btn" onclick="openAuthModal('signup')">Cadastrar grátis →</button>
-        <button class="lrf-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);" onclick="openAuthModal('login')">Já tenho conta</button>
+        <button class="lrf-btn" onclick="openAuthModal('signup')">${t('loyalty_btn_cadastrar')}</button>
+        <button class="lrf-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);" onclick="openAuthModal('login')">${t('loyalty_btn_login')}</button>
       </div>
     </div>`;
     document.getElementById('loyalty-proof-section').style.display='none';
