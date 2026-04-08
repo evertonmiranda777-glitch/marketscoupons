@@ -433,7 +433,8 @@ function go(page, skipPush){
   if(page==='live'){ if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview(); }
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
-  if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
+  if(page==='painel' && !currentUser && _authLoaded) { openAuthModal('login'); go('home'); return; }
+  if(page==='painel' && !currentUser && !_authLoaded) { _authReadyPromise?.then(()=>{ if(!currentUser){ openAuthModal('login'); go('home'); } }); }
   if(page==='gamma') loadGEX();
   if(page==='pro-success'){
     go('analise');
@@ -4110,6 +4111,10 @@ function buildProGateAnon(){
 
 async function startCheckout(){
   if(!currentUser){openAuthModal('signup');return;}
+  // Track InitiateCheckout
+  track('initiate_checkout',{item:'pro_subscription',value:9.99,currency:'USD'});
+  if(typeof gtag==='function') gtag('event','begin_checkout',{value:9.99,currency:'USD',items:[{item_id:'pro_monthly',item_name:'Pro Subscription',price:9.99,quantity:1}]});
+  if(typeof fbq==='function') fbq('track','InitiateCheckout',{value:9.99,currency:'USD',content_name:'Pro Subscription',content_type:'subscription'});
   // Disable button and show loading
   const btn=document.querySelector('[onclick="startCheckout()"]');
   const origText=btn?btn.textContent:'';
@@ -4179,10 +4184,25 @@ async function checkProBadge(){
     return;
   }
   try{
-    const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
-    const isPro=data&&data.length>0;
+    let isPro=false;
+    // Check VIP flag
+    if(currentProfile?.analysis_vip===true) isPro=true;
+    // Check active subscription
+    if(!isPro){
+      const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
+      if(data&&data.length>0) isPro=true;
+    }
+    // Check approved loyalty proof
+    if(!isPro){
+      const email=currentProfile?.email||currentUser.email;
+      const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
+      if(data&&data.length>0) isPro=true;
+    }
     if(badge)badge.style.display=isPro?'flex':'none';
     if(manageBtn)manageBtn.style.display=isPro?'block':'none';
+    // Update panel Pro status
+    const panelPro=document.getElementById('up-pro-status');
+    if(panelPro) panelPro.style.display=isPro?'block':'none';
   }catch(e){
     if(badge)badge.style.display='none';
     if(manageBtn)manageBtn.style.display='none';
@@ -4952,6 +4972,7 @@ function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click
 let currentUser = null;
 let currentProfile = null;
 let _authLoaded = false;
+let _authReadyPromise = null;
 let _userHasAccess = false; // cached: user has pro access (sub, loyalty, vip, trial)
 let _authGroup = 'login';
 let _authSlide = 0;
@@ -5310,7 +5331,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Auth: iniciar check imediatamente (em paralelo com o resto)
   const _hasToken = localStorage.getItem('mc-user-auth') !== null;
   if (!_hasToken) updateAuthUI(false);
-  const _authPromise = checkAuthSession().then(()=>{
+  const _authPromise = _authReadyPromise = checkAuthSession().then(()=>{
     _authLoaded=true;
     checkAnalysisGate();
     if(_gexLoaded) checkGEXGate();
