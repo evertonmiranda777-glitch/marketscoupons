@@ -2383,7 +2383,7 @@ document.addEventListener('DOMContentLoaded',function(){
  </div>
  <!-- User menu (logged in) -->
  <div id="auth-btns-in" style="display:none;">
-  <div class="user-menu-btn" onclick="document.getElementById('user-dd-menu').classList.toggle('open')">
+  <div class="user-menu-btn" onclick="if(event.target.closest('.user-dd-item'))return;document.getElementById('user-dd-menu').classList.toggle('open')">
    <div style="position:relative;"><div class="user-avatar-sm" id="nav-avatar">U</div><div id="nav-pro-badge" class="pro-badge" style="display:none;"><svg viewBox="0 0 24 24" fill="#07090D" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div>
    <span id="nav-user-name">Usuário</span>
    <div class="user-dd" id="user-dd-menu"><div class="user-dd-inner">
