@@ -425,7 +425,7 @@ function go(page, skipHash){
   track('page_view',{page_name:page});
   // Preview banner only on gated pages
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
-  if(page==='live' && _authLoaded) checkLoyaltyAndShowLive();
+  if(page==='live'){ if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview(); }
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
@@ -3932,7 +3932,7 @@ async function startCheckout(){
     const json=await res.json();
     if(json.url) window.location.href=json.url;
     else if(json.error==='Already subscribed'){alert(t('pro_already_subscribed'));if(btn){btn.disabled=false;btn.textContent=origText;}}
-    else { console.error('Checkout response:',json); throw new Error(json.error + (json.debug ? ' | DEBUG: key='+json.debug.keyPrefix+' price='+json.debug.priceId+' len='+json.debug.priceIdLength : '')); }
+    else throw new Error(json.error||'Checkout failed');
   }catch(e){
     console.error('Checkout error:',e);
     alert('Error: '+e.message);
@@ -4280,6 +4280,20 @@ function autoDetectDDI() {
   else if (tz.includes('America/Toronto') || tz.includes('America/Vancouver')) ddi = '+1-CA';
   const sel = document.getElementById('lv-ddi');
   if (sel) { sel.value = ddi; updateWaPlaceholder(); }
+}
+
+function showLiveGatePreview(){
+  const gateEl=document.getElementById('live-gate');
+  const roomEl=document.getElementById('live-room');
+  const contentEl=document.getElementById('live-gate-content');
+  if(!gateEl||!roomEl||!contentEl) return;
+  gateEl.classList.remove('hide'); roomEl.classList.add('hide');
+  const hasToken=!!localStorage.getItem('mc-user-auth');
+  if(!hasToken){
+    contentEl.innerHTML=`<p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_login')}</p><div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;"><button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button><button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('btn_entrar')}</button></div>`;
+  } else {
+    contentEl.innerHTML=`<p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_blocked')}</p><div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;"><button class="da-gate-btn" style="width:100%;" onclick="startCheckout()">${t('pro_subscribe_btn')}</button><div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div><button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="go('loyalty')">${t('da_gate_btn_loyalty')}</button></div>`;
+  }
 }
 
 async function checkLoyaltyAndShowLive(forceCheck = false) {
