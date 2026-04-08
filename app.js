@@ -565,9 +565,14 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  // Close open blog article so it reloads in new language
-  if(_openBlogSlug) closeBlogArticle();
-  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true);
+  // If reading a blog article, just update the back button text — don't close the article
+  if(_openBlogSlug){
+    const backBtn=document.querySelector('.blog-back');
+    if(backBtn) backBtn.innerHTML='&larr; '+(t('blog_voltar')||'Back to Blog');
+  }
+  renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides();
+  if(!_openBlogSlug) renderBlog();
+  renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true);
   // Re-render open drawer if language changed
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
