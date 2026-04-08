@@ -423,6 +423,8 @@ function go(page, skipHash){
   if(!skipHash) location.hash=page==='home'?'':page;
   try{sessionStorage.setItem('mc_page',page);}catch(e){}
   track('page_view',{page_name:page});
+  // Preview banner only on gated pages
+  if(page!=='analise'&&page!=='gamma') removePreviewBanner();
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
