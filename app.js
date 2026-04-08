@@ -3931,6 +3931,25 @@ function buildProGate(mode){
     `</div>`;
 }
 
+function buildProGateAnon(){
+  const chk='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+  const benefits=`<div class="pro-benefits">`+
+    `<div class="pro-benefit">${chk}<span>${t('pro_b1')}</span></div>`+
+    `<div class="pro-benefit">${chk}<span>${t('pro_b2')}</span></div>`+
+    `<div class="pro-benefit">${chk}<span>${t('pro_b3')}</span></div>`+
+    `<div class="pro-benefit">${chk}<span>${t('pro_b4')}</span></div>`+
+  `</div>`;
+  return `<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>`+
+    `<div class="da-gate-title">${t('pro_gate_title')}</div>`+
+    `<div class="pro-price">$9.99 <span>/ ${t('pro_month')}</span></div>`+
+    benefits+
+    `<div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:280px;margin:0 auto;">`+
+      `<button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>`+
+      `<div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>`+
+      `<button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('btn_entrar')}</button>`+
+    `</div>`;
+}
+
 async function startCheckout(){
   if(!currentUser){openAuthModal('signup');return;}
   // Disable button and show loading
@@ -4032,14 +4051,7 @@ function showPreviewGate(gateId,wrapId,wrapClass){
   if(!wrap||!gate)return;
   wrap.classList.add(wrapClass);
   gate.style.display='';
-  gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-    <div class="da-gate-title">${t('da_gate_title_login')}</div>
-    <div class="da-gate-text">${t('da_gate_text_login')}</div>
-    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
-      <button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>
-      <div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>
-      <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('signup')">${t('pro_subscribe_btn')}</button>
-    </div>`;
+  gate.innerHTML=buildProGateAnon();
 }
 
 async function checkAnalysisGate(){
@@ -4303,7 +4315,7 @@ function showLiveGatePreview(){
   gateEl.classList.remove('hide'); roomEl.classList.add('hide');
   const hasToken=!!localStorage.getItem('mc-user-auth');
   if(!hasToken){
-    contentEl.innerHTML=`<p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_login')}</p><div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;"><button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button><button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('btn_entrar')}</button></div>`;
+    contentEl.innerHTML=buildProGateAnon();
   } else {
     contentEl.innerHTML=`<div class="lg-loading"><span>${t('live_checking_access')||'Checking access...'}</span></div>`;
   }
