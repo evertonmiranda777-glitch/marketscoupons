@@ -2383,6 +2383,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <button class="nt" data-p="analise" data-i18n="nav_analise" onclick="go('analise')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>Análise Diária</button>
  <button class="nt" data-p="gamma" data-i18n="nav_gamma" onclick="go('gamma')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Gamma (GEX)</button>
  <button class="nt" data-p="guides" data-i18n="nav_guias" onclick="go('guides')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Guias</button>
+ <button class="nt" data-p="blog" data-i18n="nav_blog" onclick="go('blog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Blog</button>
  <button class="nt" data-p="calc" data-i18n="nav_calc" onclick="go('calc')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="14.01"/><line x1="8" y1="18" x2="16" y2="18"/></svg>Position Size</button>
  <button class="nt" data-p="quiz" data-i18n="nav_quiz" onclick="go('quiz')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Quiz</button>
  <button class="nt" data-p="awards" onclick="go('awards')" style="color:#F0B429;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>Awards</button>
@@ -2427,6 +2428,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <button class="mm-item" onclick="mgo('plataformas')" data-i18n="mm_plataformas"> Plataformas de Trading</button>
  <div class="mm-sec" data-i18n="mm_sec_aprender">Aprender</div>
  <button class="mm-item" onclick="mgo('guides')" data-i18n="mm_guias"> Guias & Educação</button>
+ <button class="mm-item" onclick="mgo('blog')" data-i18n="nav_blog"> Blog</button>
  <div class="mm-sec" data-i18n="mm_sec_live">Live & Mais</div>
  <button class="mm-item" onclick="mgo('live')" data-i18n="mm_live">Live Room</button>
  <button class="mm-item" id="mm-bot-item" style="display:none" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente IA</button>
@@ -3265,8 +3267,11 @@ document.addEventListener('DOMContentLoaded',function(){
  <div class="sec" id="guides-header"><div class="sec-hd" data-i18n="guides_titulo">Guias & Educação</div></div>
  <div class="guides-grid" id="guides-grid"></div>
  <div class="guide-article" id="guide-article"></div>
- <!-- Blog integrado abaixo das guias -->
- <div class="sec" id="blog-header" style="margin-top:32px;"><div class="sec-hd" data-i18n="nav_blog">Blog</div></div>
+</div>
+
+<!-- BLOG -->
+<div class="page" id="page-blog">
+ <div class="sec" id="blog-header"><div class="sec-hd" data-i18n="nav_blog">Blog</div></div>
  <div class="blog-filters" id="blog-filters">
   <button class="bf-btn active" onclick="filterBlog('all',this)" data-i18n="blog_filtro_todos">Todos</button>
   <button class="bf-btn bf-green" onclick="filterBlog('iniciante',this)" data-i18n="blvl_iniciante">Iniciante</button>
@@ -3276,9 +3281,6 @@ document.addEventListener('DOMContentLoaded',function(){
  <div class="blog-grid" id="blog-grid"></div>
  <div class="blog-article" id="blog-article"></div>
 </div>
-
-<!-- BLOG (redirect para guides) -->
-<div class="page" id="page-blog"></div>
 
 <!-- CALC -->
 <div class="page" id="page-calc">

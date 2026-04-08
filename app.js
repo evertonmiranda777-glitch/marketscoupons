@@ -425,7 +425,6 @@ function go(page, skipHash){
   track('page_view',{page_name:page});
   // Preview banner only on gated pages
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
-  if(page==='blog'){go('guides');return;}
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
