@@ -3918,8 +3918,7 @@ async function startCheckout(){
   const origText=btn?btn.textContent:'';
   if(btn){btn.disabled=true;btn.textContent='Carregando...';}
   try{
-    // Refresh session to ensure valid token
-    const{data:{session},error:sessErr}=await db.auth.refreshSession();
+    const{data:{session},error:sessErr}=await db.auth.getSession();
     if(sessErr||!session){
       if(btn){btn.disabled=false;btn.textContent=origText;}
       openAuthModal('login');
