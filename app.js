@@ -5053,12 +5053,8 @@ async function saveProfile() {
 
 // Check existing session on load
 async function checkAuthSession() {
-  // Clear orphaned Supabase navigator locks that block auth
-  try { Object.keys(localStorage).forEach(k => { if(k.startsWith('lock:')) localStorage.removeItem(k); }); } catch(e){}
   try {
-    const sessPromise = db.auth.getSession();
-    const timeout = new Promise((_,rej) => setTimeout(() => rej(new Error('timeout')), 8000));
-    const { data: { session } } = await Promise.race([sessPromise, timeout]);
+    const { data: { session } } = await db.auth.getSession();
     if (session?.user) {
       await loadUserSession(session.user);
     } else {
@@ -5066,8 +5062,7 @@ async function checkAuthSession() {
     }
   } catch(e) {
     console.warn('[Auth] Session check failed:', e.message);
-    // Clear corrupted auth state
-    try { Object.keys(localStorage).forEach(k => { if(k.startsWith('mc-user-auth') || k.startsWith('sb-') || k.startsWith('lock:')) localStorage.removeItem(k); }); } catch(ex){}
+    try { await db.auth.signOut(); } catch(ex){}
     updateAuthUI(false);
   }
   // Listen for auth changes

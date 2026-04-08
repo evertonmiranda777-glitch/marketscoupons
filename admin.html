@@ -1743,14 +1743,8 @@ function toggleChgPassModal() {
 // Auto-restore session on reload
 document.addEventListener('DOMContentLoaded', async () => {
   initAuthUI();
-  // Clear any orphaned Supabase locks that block auth
   try {
-    Object.keys(localStorage).forEach(k => { if(k.startsWith('lock:')) localStorage.removeItem(k); });
-  } catch(e){}
-  try {
-    const sessionPromise = db.auth.getSession();
-    const timeoutPromise = new Promise((_,rej) => setTimeout(() => rej(new Error('timeout')), 8000));
-    const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
+    const { data: { session } } = await db.auth.getSession();
     const ADMIN_EMAILS = ['evertonmiranda777@gmail.com','evertonmiranda1183@hotmail.com'];
     if (session && ADMIN_EMAILS.includes(session.user.email.toLowerCase())) {
       isLoggedIn = true;
@@ -1759,12 +1753,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('admin-app').style.display = 'block';
       initAdmin();
     } else if (session) {
-      await db.auth.signOut();
+      await db.auth.signOut(); // non-admin session
     }
   } catch(e) {
     console.warn('[Admin] Session restore failed:', e.message);
-    // Clear corrupted auth state so login works fresh
-    Object.keys(localStorage).forEach(k => { if(k.startsWith('mc-admin-auth') || k.startsWith('sb-') || k.startsWith('lock:')) localStorage.removeItem(k); });
+    try { await db.auth.signOut(); } catch(ex){}
   }
 });
 
