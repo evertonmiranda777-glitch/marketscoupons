@@ -1590,9 +1590,10 @@ function rateLimit(key, cooldownMs) {
 // ─── SUPABASE CONFIG ────────────────────────────────────────────────────────
 const SUPABASE_URL  = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-  auth: { storageKey: 'mc-admin-auth', lock: async (name, acquireTimeout, fn) => await fn(), autoRefreshToken: false, persistSession: true }
-});
+// Clear expired session BEFORE client init to prevent token refresh hang
+(function(){try{const raw=localStorage.getItem('mc-admin-auth');if(!raw)return;const s=JSON.parse(raw);if(s.expires_at&&s.expires_at<Math.floor(Date.now()/1000)){localStorage.removeItem('mc-admin-auth');}}catch(e){}})();
+const _dbOpts = { auth: { storageKey: 'mc-admin-auth', lock: async (name, acquireTimeout, fn) => await fn(), autoRefreshToken: false, persistSession: true } };
+let db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, _dbOpts);
 // ────────────────────────────────────────────────────────────────────────────
 
 // ─── GLOBAL DATE FILTER ────────────────────────────────────────────────────
@@ -1748,12 +1749,12 @@ function toggleChgPassModal() {
   if (!isOpen) ['chg-old','chg-new','chg-new2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
-// Auto-restore session on reload (with 8s timeout)
+// Auto-restore session on reload (with 6s timeout — recreates client if stuck)
 document.addEventListener('DOMContentLoaded', async () => {
   initAuthUI();
   try {
     const sessionPromise = db.auth.getSession();
-    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000));
     const { data: { session } } = await Promise.race([sessionPromise, timeout]);
     const ADMIN_EMAILS = ['evertonmiranda777@gmail.com','evertonmiranda1183@hotmail.com'];
     if (session && ADMIN_EMAILS.includes(session.user.email.toLowerCase())) {
@@ -1767,7 +1768,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   } catch(e) {
     console.warn('[Admin] Session restore failed:', e.message);
-    try { await db.auth.signOut(); } catch(ex){}
+    // Nuke stored session and recreate client so doLogin works
+    localStorage.removeItem('mc-admin-auth');
+    db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, _dbOpts);
   }
 });
 

@@ -1,10 +1,10 @@
 // ─── SUPABASE CONFIG ───
-// ─── SUPABASE CONFIG ─── replace with your project values ───────────────────
 const SUPABASE_URL  = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-  auth: { storageKey: 'mc-user-auth', lock: async (name, acquireTimeout, fn) => await fn(), autoRefreshToken: false, persistSession: true }
-});
+// Clear expired session BEFORE client init to prevent token refresh hang
+(function(){try{const raw=localStorage.getItem('mc-user-auth');if(!raw)return;const s=JSON.parse(raw);if(s.expires_at&&s.expires_at<Math.floor(Date.now()/1000)){localStorage.removeItem('mc-user-auth');}}catch(e){}})();
+const _dbOpts = { auth: { storageKey: 'mc-user-auth', lock: async (name, acquireTimeout, fn) => await fn(), autoRefreshToken: false, persistSession: true } };
+let db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, _dbOpts);
 // ────────────────────────────────────────────────────────────────────────────
 
 // Session ID único por visita (não persiste entre abas)
@@ -5078,11 +5078,11 @@ async function saveProfile() {
   }
 }
 
-// Check existing session on load (with 8s timeout to prevent hanging on 504)
+// Check existing session on load (with 6s timeout — recreates client if stuck)
 async function checkAuthSession() {
   try {
     const sessionPromise = db.auth.getSession();
-    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000));
     const { data: { session } } = await Promise.race([sessionPromise, timeout]);
     if (session?.user) {
       await loadUserSession(session.user);
@@ -5091,7 +5091,9 @@ async function checkAuthSession() {
     }
   } catch(e) {
     console.warn('[Auth] Session check failed:', e.message);
-    try { await db.auth.signOut(); } catch(ex){}
+    // If stuck, nuke stored session and recreate client so signInWithPassword works
+    localStorage.removeItem('mc-user-auth');
+    db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, _dbOpts);
     updateAuthUI(false);
   }
   // Listen for auth changes
