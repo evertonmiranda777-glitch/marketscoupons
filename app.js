@@ -3804,6 +3804,7 @@ let calFilterImp = 'all';  // impact filter
 let calEvents = [];
 let _calRefreshTimer = null;
 let _calLang = '';
+let _calLastUpdate = null;
 
 function calFilter(filter, btn) {
   // Determine if it's a currency or impact filter
@@ -3863,6 +3864,7 @@ async function loadCalendar(silent) {
         imp, dateStr
       };
     });
+    _calLastUpdate = new Date().toISOString();
   } catch(e) {
     console.warn('Calendar API error:', e);
     if (!calEvents.length) {
@@ -3877,39 +3879,73 @@ function _startCalRefresh(){
   _calRefreshTimer = setInterval(() => loadCalendar(true), 5*60*1000);
 }
 
+const CUR_FLAGS = {USD:'🇺🇸',EUR:'🇪🇺',GBP:'🇬🇧',CAD:'🇨🇦',AUD:'🇦🇺',JPY:'🇯🇵',BRL:'🇧🇷',CNY:'🇨🇳',CHF:'🇨🇭',NZD:'🇳🇿',MXN:'🇲🇽',KRW:'🇰🇷',INR:'🇮🇳',ZAR:'🇿🇦',SEK:'🇸🇪',NOK:'🇳🇴',DKK:'🇩🇰',PLN:'🇵🇱',TRY:'🇹🇷',SGD:'🇸🇬',HKD:'🇭🇰',TWD:'🇹🇼',THB:'🇹🇭',IDR:'🇮🇩',RUB:'🇷🇺'};
+
 function renderCal() {
   const el = document.getElementById('cal-list');
   if (!el) return;
   let events = calEvents;
   if (calFilterCur !== 'all') events = events.filter(e => e.cur === calFilterCur);
   if (calFilterImp !== 'all') events = events.filter(e => e.imp === calFilterImp);
+  // Search filter
+  const searchEl = document.getElementById('cal-search');
+  const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
+  if (q) events = events.filter(e => e.ev.toLowerCase().includes(q) || e.cur.toLowerCase().includes(q) || (e.ref||'').toLowerCase().includes(q));
+
+  // Update count
+  const countEl = document.getElementById('cal-count');
+  if (countEl) countEl.textContent = events.length + ' ' + (events.length === 1 ? t('cal_evento_singular') || 'event' : t('cal_eventos_plural') || 'events');
 
   if (!events.length) {
     el.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--t2);font-size:13px;">${t('cal_sem_eventos')}</div>`;
     return;
   }
 
+  // Current time for "now" line (ET = UTC-4)
+  const nowUTC = new Date();
+  const nowET = new Date(nowUTC.getTime() - 4 * 60 * 60 * 1000);
+  const nowHHMM = nowET.getHours().toString().padStart(2,'0') + ':' + nowET.getMinutes().toString().padStart(2,'0');
+  const todayStr = new Date().toISOString().slice(0,10);
+
   const groups = {};
   events.forEach(e => { if (!groups[e.day]) groups[e.day] = []; groups[e.day].push(e); });
   const order = ['Hoje','Amanhã','Semana'];
 
-  el.innerHTML = order.filter(d => groups[d]?.length).map(day => `
-    <div class="cal-date-group">
-      <div class="cal-date-label">${day === 'Hoje' ? t('cal_hoje') : day === 'Amanhã' ? t('cal_amanha') : t('cal_esta_semana')}</div>
-      ${groups[day].map(e => {
+  el.innerHTML = order.filter(d => groups[d]?.length).map(day => {
+    let nowInserted = false;
+    const items = groups[day];
+    return `<div class="cal-date-group">
+      <div class="cal-date-label">${day === 'Hoje' ? t('cal_hoje') + ' — ' + new Date().toLocaleDateString(_currentLang||'en',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : day === 'Amanhã' ? t('cal_amanha') : t('cal_esta_semana')}</div>
+      ${items.map((e, i) => {
         const cc = CUR_COLORS[e.cur] || {bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
-        const actColor = e.actual !== '—' ? (parseFloat(e.actual) > parseFloat(e.fore) ? 'var(--green)' : parseFloat(e.actual) < parseFloat(e.fore) ? 'var(--red)' : '#fff') : 'var(--t2)';
-        return `<div class="cal-item">
+        const flag = CUR_FLAGS[e.cur] || '';
+        const actVal = parseFloat((e.actual||'').replace(/[^0-9.\-]/g,''));
+        const foreVal = parseFloat((e.fore||'').replace(/[^0-9.\-]/g,''));
+        const actClass = (e.actual !== '—' && !isNaN(actVal) && !isNaN(foreVal)) ? (actVal > foreVal ? 'cal-act-up' : actVal < foreVal ? 'cal-act-dn' : '') : '';
+        const actArrow = actClass === 'cal-act-up' ? ' ▲' : actClass === 'cal-act-dn' ? ' ▼' : '';
+        const isPast = day === 'Hoje' && e.t !== '—' && e.t < nowHHMM;
+        // "Now" separator line
+        let nowLine = '';
+        if (day === 'Hoje' && !nowInserted && e.t !== '—' && e.t >= nowHHMM) {
+          nowInserted = true;
+          nowLine = `<div class="cal-now-line"><div class="cal-now-dot"></div><div class="cal-now-label">${t('cal_agora')||'NOW'}</div><div class="cal-now-hr"></div></div>`;
+        }
+        return `${nowLine}<div class="cal-item${isPast?' cal-past':''}">
           <div class="cal-time">${e.t} <span style="font-size:10px;color:var(--t3);">ET</span></div>
-          <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${e.cur}</span></div>
+          <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${flag} ${e.cur}</span></div>
           <div><div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t3);font-weight:400;">${e.ref}</span>`:''}</div></div>
-          <div class="cal-act-wrap"><div class="cal-val" style="color:${actColor};font-weight:700;">${e.actual}</div></div>
+          <div class="cal-act-wrap"><div class="cal-val ${actClass}">${e.actual}${actArrow}</div></div>
           <div class="cal-fore-wrap"><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
           <div class="cal-prev-wrap"><div class="cal-val">${e.prev}</div></div>
           <div class="cal-stars ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</div>
         </div>`;
       }).join('')}
-    </div>`).join('');
+    </div>`;
+  }).join('');
+
+  // Update timestamp
+  const updEl = document.getElementById('cal-updated');
+  if (updEl && _calLastUpdate) updEl.textContent = (t('cal_atualizado')||'Updated') + ' ' + new Date(_calLastUpdate).toLocaleTimeString(_currentLang||'en',{hour:'2-digit',minute:'2-digit'});
 }
 
 /* ANÁLISE DE MERCADO IA */
