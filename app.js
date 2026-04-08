@@ -5064,6 +5064,35 @@ function updateAuthUI(loggedIn) {
   }
 }
 
+async function changePassword() {
+  if (!currentUser) return;
+  const current = document.getElementById('up-pass-current').value;
+  const newPass = document.getElementById('up-pass-new').value;
+  const confirm = document.getElementById('up-pass-confirm').value;
+  const errEl = document.getElementById('up-pass-error');
+  const okEl = document.getElementById('up-pass-ok');
+  errEl.style.display = 'none'; okEl.style.display = 'none';
+
+  if (!current || !newPass || !confirm) { errEl.textContent = t('painel_senha_preencha_todos'); errEl.style.display = 'block'; return; }
+  if (newPass.length < 6) { errEl.textContent = t('auth_senha_minimo'); errEl.style.display = 'block'; return; }
+  if (newPass !== confirm) { errEl.textContent = t('painel_senhas_nao_coincidem'); errEl.style.display = 'block'; return; }
+
+  // Verify current password by re-authenticating
+  const { error: authErr } = await db.auth.signInWithPassword({ email: currentUser.email, password: current });
+  if (authErr) { errEl.textContent = t('painel_senha_atual_incorreta'); errEl.style.display = 'block'; return; }
+
+  // Update password
+  const { error } = await db.auth.updateUser({ password: newPass });
+  if (error) { errEl.textContent = error.message || t('auth_servidor_indisponivel'); errEl.style.display = 'block'; return; }
+
+  document.getElementById('up-pass-current').value = '';
+  document.getElementById('up-pass-new').value = '';
+  document.getElementById('up-pass-confirm').value = '';
+  okEl.style.display = 'block';
+  setTimeout(() => okEl.style.display = 'none', 5000);
+  track('password_changed');
+}
+
 async function saveProfile() {
   if (!currentUser) return;
   const updates = {

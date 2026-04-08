@@ -2953,6 +2953,15 @@ document.addEventListener('DOMContentLoaded',function(){
    <div class="auth-success" id="up-save-ok" style="margin-top:12px;" data-i18n="painel_salvos">Dados salvos com sucesso!</div>
   </div>
   <div class="up-card">
+   <h3 data-i18n="painel_alterar_senha">Change Password</h3>
+   <div class="auth-field"><label data-i18n="painel_senha_atual">Current Password</label><div style="position:relative;"><input type="password" id="up-pass-current"><button type="button" class="toggle-pass-btn" onclick="togglePass(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_nova_senha">New Password</label><div style="position:relative;"><input type="password" id="up-pass-new" minlength="6"><button type="button" class="toggle-pass-btn" onclick="togglePass(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_confirmar_senha">Confirm New Password</label><div style="position:relative;"><input type="password" id="up-pass-confirm" minlength="6"><button type="button" class="toggle-pass-btn" onclick="togglePass(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;">&#128065;</button></div></div>
+   <button class="auth-btn" onclick="changePassword()" data-i18n="painel_btn_alterar_senha">Change Password</button>
+   <div class="auth-error" id="up-pass-error" style="margin-top:8px;"></div>
+   <div class="auth-success" id="up-pass-ok" style="margin-top:8px;" data-i18n="painel_senha_alterada">Password changed successfully!</div>
+  </div>
+  <div class="up-card">
    <h3 data-i18n="painel_resumo">Resumo</h3>
    <div class="up-stats">
     <div class="up-stat"><div class="v" id="up-st-visits">0</div><div class="l" data-i18n="painel_visitas">Visitas</div></div>
