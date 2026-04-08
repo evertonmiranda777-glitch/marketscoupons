@@ -1680,24 +1680,15 @@ async function doLogin() {
   const btn   = document.querySelector('.login-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Entrando...'; }
 
-  // Clear stale locks before auth attempt
-  try { Object.keys(localStorage).forEach(k => { if(k.startsWith('lock:')) localStorage.removeItem(k); }); } catch(e){}
-  let data, error;
-  try {
-    const loginPromise = db.auth.signInWithPassword({ email, password: pass });
-    const timeoutPromise = new Promise((_,rej) => setTimeout(() => rej(new Error('Login timeout')), 12000));
-    ({ data, error } = await Promise.race([loginPromise, timeoutPromise]));
-  } catch(e) {
-    error = { message: e.message === 'Login timeout' ? 'Servidor demorou para responder. Tente novamente.' : e.message };
-  }
+  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
 
   if (btn) { btn.disabled = false; btn.textContent = 'Entrar no Admin →'; }
-  if (error || !data.session) {
+  if (error || !data?.session) {
     _loginAttempts++;
-    err.textContent = 'Email ou senha incorretos.';
+    err.textContent = error?.message || 'Email ou senha incorretos.';
     err.style.display = 'block';
     document.getElementById('login-pass').value = '';
-    setTimeout(() => err.style.display = 'none', 3000);
+    setTimeout(() => err.style.display = 'none', 5000);
     return;
   }
 
