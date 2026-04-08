@@ -2895,7 +2895,7 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <button class="auth-btn" id="login-btn" onclick="doAuthLogin()" data-i18n="login_entrar">Entrar</button>
     <div class="auth-switch"><span data-i18n="login_nao_tem">Não tem conta?</span> <a onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</a></div>
-    <div class="auth-footer"><a href="mailto:support@marketscoupons.com" data-i18n="auth_suporte">Suporte</a> &middot; <a href="javascript:void(0)" onclick="document.querySelector('.auth-overlay').classList.remove('open');go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="javascript:void(0)" onclick="document.querySelector('.auth-overlay').classList.remove('open');go('terms')" data-i18n="auth_termos">Termos</a></div>
+    <div class="auth-footer"><a href="mailto:support@marketscoupons.com" data-i18n="auth_suporte">Suporte</a> &middot; <a href="javascript:void(0)" onclick="closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="javascript:void(0)" onclick="closeAuthModals();go('terms')" data-i18n="auth_termos">Termos</a></div>
    </div>
    <!-- SIGNUP FORM -->
    <div class="auth-form" id="auth-signup-form" style="display:none;">
@@ -2933,7 +2933,7 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <button class="auth-btn" id="signup-btn" onclick="doAuthSignup()" data-i18n="signup_criar">Criar Conta</button>
     <div class="auth-switch"><span data-i18n="signup_ja_tem">Ja tem conta?</span> <a onclick="openAuthModal('login')" data-i18n="signup_entrar">Entrar</a></div>
-    <div class="auth-footer"><a href="mailto:support@marketscoupons.com" data-i18n="auth_suporte">Suporte</a> &middot; <a href="javascript:void(0)" onclick="document.querySelector('.auth-overlay').classList.remove('open');go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="javascript:void(0)" onclick="document.querySelector('.auth-overlay').classList.remove('open');go('terms')" data-i18n="auth_termos">Termos</a></div>
+    <div class="auth-footer"><a href="mailto:support@marketscoupons.com" data-i18n="auth_suporte">Suporte</a> &middot; <a href="javascript:void(0)" onclick="closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="javascript:void(0)" onclick="closeAuthModals();go('terms')" data-i18n="auth_termos">Termos</a></div>
    </div>
   </div>
  </div>
