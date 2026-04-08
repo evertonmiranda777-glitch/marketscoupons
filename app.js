@@ -5307,14 +5307,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load CMS overrides (texts, FAQ) — single Promise.all, one renderFaq call
   Promise.all([loadCmsTexts(), loadCmsFaq()]).then(() => { applyTranslations(); renderFaq(); });
   // Ativar página correta ANTES de renderizar (evita flash da home)
+  // Detect dedicated firm page BEFORE revealing body (avoid flash)
+  const _pathParts=location.pathname.split('/').filter(Boolean);
+  const _pathLangs=['en','es','fr','de','it','ar'];
+  const _earlySlug=_pathLangs.includes(_pathParts[0])?(_pathParts[1]||''):(_pathParts[0]||'');
+  const _isFirmPage=_firmPageSlugs.includes(_earlySlug) && FIRMS.find(x=>x.id===_earlySlug);
   const _initPage = _pageFromPath() || location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
-  if(_initPage && document.getElementById('page-'+_initPage)){
+  if(_isFirmPage){
+    go('home', true);
+  } else if(_initPage && document.getElementById('page-'+_initPage)){
     go(_initPage, true);
   } else {
     go('home', true);
   }
-  // Revelar body após decidir a página
-  document.body.style.opacity='1';
+  // Revelar body — mas NÃO se é firma dedicada (overlay abrirá e revelará depois)
+  if(!_isFirmPage) document.body.style.opacity='1';
   // Preload firm background images
   // Lazy preload firm backgrounds — defer to idle time
   if('requestIdleCallback' in window) requestIdleCallback(()=>{Object.values(FIRM_BG).forEach(url=>{const img=new Image();img.src=url;});});
