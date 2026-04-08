@@ -3941,18 +3941,47 @@ async function openStripePortal(){
   }catch(e){console.error('Portal error:',e);}
 }
 
+// Preview timer: 60s free preview for non-logged users
+let _previewTimer=null;
+function startPreviewTimer(gateId,wrapId,wrapClass){
+  const KEY='mc_preview_start';
+  const stored=localStorage.getItem(KEY);
+  const now=Date.now();
+  if(!stored) localStorage.setItem(KEY,now);
+  const start=parseInt(stored||now,10);
+  const elapsed=Math.floor((now-start)/1000);
+  if(elapsed>=60){showPreviewGate(gateId,wrapId,wrapClass);return;}
+  const wrap=document.getElementById(wrapId);
+  if(wrap) wrap.classList.remove(wrapClass);
+  const gate=document.getElementById(gateId);
+  if(gate){gate.innerHTML='';gate.style.display='none';}
+  if(_previewTimer) clearTimeout(_previewTimer);
+  _previewTimer=setTimeout(()=>{showPreviewGate(gateId,wrapId,wrapClass);},(60-elapsed)*1000);
+}
+function showPreviewGate(gateId,wrapId,wrapClass){
+  const wrap=document.getElementById(wrapId);
+  const gate=document.getElementById(gateId);
+  if(!wrap||!gate)return;
+  wrap.classList.add(wrapClass);
+  gate.style.display='';
+  gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <div class="da-gate-title">${t('da_gate_title_login')}</div>
+    <div class="da-gate-text">${t('da_gate_text_login')}</div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+      <button class="da-gate-btn" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>
+      <div style="font-size:11px;color:var(--t3);margin:4px 0;">${t('pro_or')}</div>
+      <button class="da-gate-btn sec" onclick="openAuthModal('signup')" style="font-size:12px;">${t('pro_subscribe_btn')}</button>
+    </div>`;
+}
+
 async function checkAnalysisGate(){
   const wrap=document.getElementById('da-wrap-inner');
   const gate=document.getElementById('da-gate');
   if(!wrap||!gate)return;
 
-  // Não logado → gate de login
+  // Não logado → preview 60s, depois gate com cadastro + pro
   if(!currentUser||!currentProfile){
-    wrap.classList.add('da-wrap-gated');
-    gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <div class="da-gate-title">${t('da_gate_title_login')}</div>
-      <div class="da-gate-text">${t('da_gate_text_login')}</div>
-      <button class="da-gate-btn" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>`;
+    startPreviewTimer('da-gate','da-wrap-inner','da-wrap-gated');
     return;
   }
 
@@ -5102,11 +5131,7 @@ async function checkGEXGate(){
   if(!wrap||!gate)return;
 
   if(!currentUser||!currentProfile){
-    wrap.classList.add('gx-wrap-gated');
-    gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <div class="da-gate-title">${t('da_gate_title_login')}</div>
-      <div class="da-gate-text">${t('gx_gate_text_login')}</div>
-      <button class="da-gate-btn" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>`;
+    startPreviewTimer('gx-gate','gx-wrap-inner','gx-wrap-gated');
     return;
   }
 
