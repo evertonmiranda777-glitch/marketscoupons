@@ -1628,6 +1628,9 @@ img{max-width:100%;}
 .da-wrap-gated .da-disclaimer{filter:blur(4px);}
 .da-gate{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:32px 28px;text-align:center;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5);}
 .da-wrap-gated .da-gate{display:block;}
+.gx-wrap-inner{position:relative;}
+.gx-wrap-gated #gx-grid,.gx-wrap-gated .gx-loading-box{filter:blur(8px);pointer-events:none;user-select:none;}
+.gx-wrap-gated #gx-gate{display:block;}
 .da-gate-icon{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
 .da-gate-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:8px;}
 .da-gate-text{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:16px;}
@@ -3188,11 +3191,14 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="gx-sub" data-i18n="gx_sub">Track market maker Gamma Exposure levels on S&P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price movement.</div>
       <div class="gx-updated" id="gx-date" data-i18n="gx_loading">Loading data...</div>
     </div>
+    <div class="gx-wrap-inner" id="gx-wrap-inner">
     <div class="gx-loading-box" id="gx-loading">
       <div class="ar-spinner" style="width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div>
       <div data-i18n="gx_carregando">Loading CBOE data...</div>
     </div>
     <div id="gx-grid" style="display:none;"></div>
+      <div class="da-gate" id="gx-gate"></div>
+    </div>
     <div class="gx-disclaimer" data-i18n="gx_disclaimer">Options data provided by CBOE with delay. GEX levels are estimates based on mathematical models and do not constitute investment advice. Trading involves risk of loss.</div>
 
     <div style="margin-top:40px;">

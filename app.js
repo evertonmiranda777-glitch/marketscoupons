@@ -428,6 +428,11 @@ function go(page, skipHash){
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !currentUser) { openAuthModal('login'); go('home'); return; }
   if(page==='gamma') loadGEX();
+  if(page==='pro-success'){
+    go('analise');
+    setTimeout(()=>{alert(t('pro_success_msg'));checkAnalysisGate();},500);
+    return;
+  }
 }
 window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(h)go(h,true);else go('home',true);});
 function toggleMM(){const open=document.getElementById('mm').classList.toggle('open');document.getElementById('mm-ov').classList.toggle('open',open);document.getElementById('hbg').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
@@ -2878,7 +2883,7 @@ const FAQ_LANGS = {
     {q:'Posso usar mais de um cupom ao mesmo tempo?', a:'Geralmente não. Cada prop firm aceita apenas um código de desconto por compra. Nossos cupons já são os maiores disponíveis no mercado.'},
     {q:'O que é Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se move conforme o lucro, podendo voltar ao breakeven. EOD (End of Day) Drawdown só é calculado no fechamento do dia, dando mais flexibilidade durante a operação.'},
     {q:'Quanto tempo leva para receber o payout?', a:'Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h. Take Profit Trader permite saque desde o dia 1.'},
-    {q:'O que é o programa de fidelidade?', a:'Nosso programa de fidelidade recompensa membros com benefícios exclusivos por compras validadas. Com 3 compras aprovadas você desbloqueia o Live Room VIP.'},
+    {q:'O que é o programa de fidelidade?', a:'Nosso programa de fidelidade recompensa membros com benefícios exclusivos por compras validadas. Com 1 compra aprovada você desbloqueia o Live Room VIP, análises diárias e GEX.'},
     {q:'Os cupons têm data de validade?', a:'Alguns cupons são por tempo limitado e outros são permanentes. As promoções de cada firma são atualizadas diariamente. Recomendamos usar o cupom assim que possível.'},
     {q:'Como faço para comparar prop firms?', a:'Use nossa ferramenta de comparação na aba "Comparar" ou acesse a aba "Firmas" para ver todas as opções lado a lado com ratings, preços, plataformas e avaliações do Trustpilot.'},
   ],
@@ -2902,7 +2907,7 @@ const FAQ_LANGS = {
     {q:'¿Puedo usar más de un cupón al mismo tiempo?', a:'Generalmente no. Cada prop firm acepta solo un código de descuento por compra.'},
     {q:'¿Qué es Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se mueve con el beneficio. EOD Drawdown solo se calcula al cierre del mercado, dando más flexibilidad.'},
     {q:'¿Cuánto tiempo lleva recibir el payout?', a:'Varía por firma. Apex y Bulenox procesan en 5 días hábiles. FundedNext garantiza payout en 24h. Take Profit Trader permite retiro desde el día 1.'},
-    {q:'¿Qué es el programa de fidelidad?', a:'Nuestro programa de fidelidad recompensa a los miembros con beneficios exclusivos por sus compras validadas. Con 3 compras aprobadas desbloqueas el Live Room VIP.'},
+    {q:'¿Qué es el programa de fidelidad?', a:'Nuestro programa de fidelidad recompensa a los miembros con beneficios exclusivos por sus compras validadas. Con 1 compra aprobada desbloqueas el Live Room VIP, análisis diarios y GEX.'},
     {q:'¿Los cupones tienen fecha de vencimiento?', a:'Algunos son por tiempo limitado y otros son permanentes. Recomendamos usar el cupón lo antes posible.'},
     {q:'¿Cómo comparo prop firms?', a:'Usa nuestra herramienta de comparación en la pestaña "Comparar" o accede a "Firmas" para ver todas las opciones lado a lado.'},
   ],
@@ -3881,6 +3886,61 @@ async function loadDailyAnalysis(){
   }
 }
 
+// ═══ PRO ACCESS CHECK (subscription + loyalty + vip + trial) ═══
+async function checkProAccess(){
+  if(!currentUser||!currentProfile) return false;
+  // VIP
+  if(currentProfile.analysis_vip===true) return true;
+  // Trial: 3 days
+  const createdAt=new Date(currentProfile.created_at||currentUser.created_at);
+  const diffDays=Math.floor((new Date()-createdAt)/(1000*60*60*24));
+  if(diffDays<3) return true;
+  // Active subscription
+  try{
+    const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
+    if(data&&data.length>0) return true;
+  }catch(e){}
+  // Loyalty: approved proof
+  try{
+    const email=currentProfile.email||currentUser.email;
+    const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
+    if(data&&data.length>0) return true;
+  }catch(e){}
+  return false;
+}
+
+async function startCheckout(){
+  if(!currentUser){openAuthModal('signup');return;}
+  try{
+    const{data:{session}}=await db.auth.getSession();
+    if(!session){openAuthModal('login');return;}
+    const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/stripe-checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON},
+      body:JSON.stringify({success_url:window.location.origin+'/#pro-success',cancel_url:window.location.origin+'/#'+(_currentPage||'analise')})
+    });
+    const json=await res.json();
+    if(json.url) window.location.href=json.url;
+    else if(json.error==='Already subscribed') alert(t('pro_already_subscribed'));
+    else throw new Error(json.error||'Checkout failed');
+  }catch(e){console.error('Checkout error:',e);alert('Error: '+e.message);}
+}
+
+async function openStripePortal(){
+  if(!currentUser) return;
+  try{
+    const{data:{session}}=await db.auth.getSession();
+    if(!session) return;
+    const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/stripe-portal',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON},
+      body:JSON.stringify({return_url:window.location.href})
+    });
+    const json=await res.json();
+    if(json.url) window.location.href=json.url;
+  }catch(e){console.error('Portal error:',e);}
+}
+
 async function checkAnalysisGate(){
   const wrap=document.getElementById('da-wrap-inner');
   const gate=document.getElementById('da-gate');
@@ -3922,23 +3982,39 @@ async function checkAnalysisGate(){
     return;
   }
 
-  // Fidelidade: tem comprovante aprovado
+  // Active subscription
   try{
-    const email=currentProfile.email||currentUser.email;
-    const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
+    const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
     if(data&&data.length>0){
+      _userHasAccess=true;
       wrap.classList.remove('da-wrap-gated');
       gate.innerHTML='';
       return;
     }
   }catch(e){}
 
-  // Sem acesso → gate de fidelidade
+  // Fidelidade: tem comprovante aprovado
+  try{
+    const email=currentProfile.email||currentUser.email;
+    const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
+    if(data&&data.length>0){
+      _userHasAccess=true;
+      wrap.classList.remove('da-wrap-gated');
+      gate.innerHTML='';
+      return;
+    }
+  }catch(e){}
+
+  // Sem acesso → gate com opções (fidelidade + assinatura)
   wrap.classList.add('da-wrap-gated');
   gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
     <div class="da-gate-title">${t('da_gate_title_expired')}</div>
     <div class="da-gate-text">${t('da_gate_text_expired')}</div>
-    <button class="da-gate-btn" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>`;
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+      <button class="da-gate-btn" onclick="startCheckout()">${t('pro_subscribe_btn')}</button>
+      <div style="font-size:11px;color:var(--t3);margin:4px 0;">${t('pro_or')}</div>
+      <button class="da-gate-btn sec" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>
+    </div>`;
 }
 
 function daT(v){if(!v)return'';if(typeof v==='string')return v;return v[_currentLang]||v.pt||v.en||Object.values(v)[0]||'';}
@@ -4125,7 +4201,7 @@ function autoDetectDDI() {
   if (sel) { sel.value = ddi; updateWaPlaceholder(); }
 }
 
-function checkLoyaltyAndShowLive(forceCheck = false) {
+async function checkLoyaltyAndShowLive(forceCheck = false) {
   const history  = getLoyaltyHistory();
   const approved = history.filter(h => h.status === 'approved').length;
   const member   = getLoyaltyMember();
@@ -4133,7 +4209,19 @@ function checkLoyaltyAndShowLive(forceCheck = false) {
   const form     = document.getElementById('live-gate');
   const statusEl = document.getElementById('live-gate-status');
 
-  if (approved >= 3) {
+  // Pro access (VIP, subscription) or 1 approved proof → access
+  let proAccess = approved >= 1;
+  if(!proAccess && currentUser){
+    try{
+      if(currentProfile?.analysis_vip===true) proAccess=true;
+      if(!proAccess){
+        const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
+        if(data&&data.length>0) proAccess=true;
+      }
+    }catch(e){}
+  }
+
+  if (proAccess) {
     // Acesso liberado
     if (gate) gate.classList.add('hide');
     if (form) form.classList.remove('hide');
@@ -4155,14 +4243,14 @@ function checkLoyaltyAndShowLive(forceCheck = false) {
   if (statusEl) {
     const pending = getLoyaltyPending().filter(p => p.status === 'pending').length;
     const total   = approved + pending;
-    const faltam  = Math.max(0, 3 - approved);
+    const faltam  = Math.max(0, 1 - approved);
     statusEl.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
         <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">${t('live_gate_seu_progresso')}</div>
-        <div style="font-size:11px;color:var(--t3);">${approved}/3 ${t('live_gate_validadas_bar')}</div>
+        <div style="font-size:11px;color:var(--t3);">${approved}/1 ${t('live_gate_validadas_bar')}</div>
       </div>
       <div style="background:var(--b1);border-radius:4px;height:7px;overflow:hidden;margin-bottom:14px;">
-        <div style="height:100%;width:${Math.min(100,Math.round(approved/3*100))}%;background:var(--gold);border-radius:4px;transition:width 1s;"></div>
+        <div style="height:100%;width:${Math.min(100,Math.round(approved/1*100))}%;background:var(--gold);border-radius:4px;transition:width 1s;"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:${member?'14px':'0'};">
         <div style="background:var(--card2);border-radius:7px;padding:10px;text-align:center;border:1px solid var(--b1);">
@@ -4178,7 +4266,11 @@ function checkLoyaltyAndShowLive(forceCheck = false) {
           <div style="font-size:18px;font-weight:800;color:var(--red);">${faltam}</div>
         </div>
       </div>
-      ${member ? '' : `<div style="font-size:12px;color:var(--t3);padding-top:12px;border-top:1px solid var(--b1);">${t('live_gate_nao_membro')} <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">${t('live_gate_cadastre')}</button></div>`}`;
+      ${member ? '' : `<div style="font-size:12px;color:var(--t3);padding-top:12px;border-top:1px solid var(--b1);">${t('live_gate_nao_membro')} <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">${t('live_gate_cadastre')}</button></div>`}
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--b1);text-align:center;">
+        <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">${t('pro_or')}</div>
+        <button class="da-gate-btn" onclick="startCheckout()" style="font-size:12px;padding:10px 20px;">${t('pro_subscribe_btn')}</button>
+      </div>`;
   }
 }
 
@@ -4442,9 +4534,9 @@ function renderPainelLoyalty(){
 
   const history = getLoyaltyHistory();
   const approved = history.filter(h=>h.status==='approved').length;
-  const faltam = Math.max(0, 3 - approved);
-  const liveUnlocked = approved >= 3;
-  const progressPct = Math.min(100, Math.round(approved/3*100));
+  const faltam = Math.max(0, 1 - approved);
+  const liveUnlocked = approved >= 1;
+  const progressPct = Math.min(100, Math.round(approved/1*100));
 
   el.innerHTML=`
     <!-- Progresso -->
@@ -4452,7 +4544,7 @@ function renderPainelLoyalty(){
       <div style="font-size:13px;font-weight:700;">${liveUnlocked
         ? '<span style="color:var(--green);">✓ Live Room Desbloqueado!</span>'
         : '<span style="color:var(--gold);">' + faltam + ' compra' + (faltam===1?'':'s') + ' para desbloquear o Live Room VIP</span>'}</div>
-      <div style="font-size:12px;color:var(--t3);font-weight:600;">${approved} de 3 compras validadas</div>
+      <div style="font-size:12px;color:var(--t3);font-weight:600;">${approved} de 1 compra validada</div>
     </div>
     <div style="background:var(--card2);border-radius:6px;height:10px;overflow:hidden;margin-bottom:20px;">
       <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,var(--gold),var(--gold-hover));border-radius:6px;transition:.4s;"></div>
@@ -4495,7 +4587,7 @@ function renderPainelLoyalty(){
       </div>
       <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
         <span style="width:22px;height:22px;border-radius:50%;background:${liveUnlocked?'var(--green)':'var(--b2)'};color:${liveUnlocked?'#07090D':'var(--t3)'};font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</span>
-        Com <strong style="color:var(--t1);">3 compras validadas</strong> → acesso ao Live Room VIP e benefícios
+        Com <strong style="color:var(--t1);">1 compra validada</strong> → acesso ao Live Room VIP e benefícios
       </div>
     </div>
 
@@ -4542,9 +4634,9 @@ function renderLoyaltyPage(){
   }
 
   const pendingCount = pending.filter(p=>p.status==='pending').length;
-  const faltam = Math.max(0, 3 - approved);
-  const progressPct = Math.min(100, Math.round(approved/3*100));
-  const liveUnlocked = approved >= 3;
+  const faltam = Math.max(0, 1 - approved);
+  const progressPct = Math.min(100, Math.round(approved/1*100));
+  const liveUnlocked = approved >= 1;
 
   ms.innerHTML=`<div class="loyalty-my-card">
     <div class="lmc-top">
@@ -4563,7 +4655,7 @@ function renderLoyaltyPage(){
     </div>
     <div style="margin-top:12px;">
       <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:5px;">
-        <span>${approved}/3 compras validadas</span>
+        <span>${approved}/1 compra validada</span>
         <span>${liveUnlocked?'Acesso liberado!':faltam+' faltam'}</span>
       </div>
       <div class="lmc-progress-wrap"><div class="lmc-progress-bar" style="width:${progressPct}%;background:${liveUnlocked?'var(--green)':'var(--gold)'};"></div></div>
@@ -4592,6 +4684,7 @@ function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click
 let currentUser = null;
 let currentProfile = null;
 let _authLoaded = false;
+let _userHasAccess = false; // cached: user has pro access (sub, loyalty, vip, trial)
 let _authGroup = 'login';
 let _authSlide = 0;
 const _authLoginBgs = ['img/auth-bg-1.webp','img/auth-bg-4.webp','img/auth-bg-3.webp','img/auth-bg-2.webp'];
@@ -5000,6 +5093,40 @@ async function loadGEX(){
     console.error('GEX load error:',e);
     document.getElementById('gx-loading').innerHTML='<div style="color:var(--t3);">Error: '+(e.message||e)+'</div>';
   }
+  checkGEXGate();
+}
+
+async function checkGEXGate(){
+  const wrap=document.getElementById('gx-wrap-inner');
+  const gate=document.getElementById('gx-gate');
+  if(!wrap||!gate)return;
+
+  if(!currentUser||!currentProfile){
+    wrap.classList.add('gx-wrap-gated');
+    gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <div class="da-gate-title">${t('da_gate_title_login')}</div>
+      <div class="da-gate-text">${t('gx_gate_text_login')}</div>
+      <button class="da-gate-btn" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>`;
+    return;
+  }
+
+  const hasAccess=await checkProAccess();
+  if(hasAccess){
+    _userHasAccess=true;
+    wrap.classList.remove('gx-wrap-gated');
+    gate.innerHTML='';
+    return;
+  }
+
+  wrap.classList.add('gx-wrap-gated');
+  gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <div class="da-gate-title">${t('da_gate_title_expired')}</div>
+    <div class="da-gate-text">${t('gx_gate_text_expired')}</div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+      <button class="da-gate-btn" onclick="startCheckout()">${t('pro_subscribe_btn')}</button>
+      <div style="font-size:11px;color:var(--t3);margin:4px 0;">${t('pro_or')}</div>
+      <button class="da-gate-btn sec" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>
+    </div>`;
 }
 
 function renderGEX(items){
