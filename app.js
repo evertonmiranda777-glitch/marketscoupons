@@ -3918,7 +3918,7 @@ function renderCal() {
       <div class="cal-date-label">${day === 'Hoje' ? t('cal_hoje') + ' — ' + new Date().toLocaleDateString(_currentLang||'en',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : day === 'Amanhã' ? t('cal_amanha') : t('cal_esta_semana')}</div>
       ${items.map((e, i) => {
         const cc = CUR_COLORS[e.cur] || {bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
-        const flag = CUR_FLAGS[e.cur] || '';
+        const flag = '';
         const actVal = parseFloat((e.actual||'').replace(/[^0-9.\-]/g,''));
         const foreVal = parseFloat((e.fore||'').replace(/[^0-9.\-]/g,''));
         const actClass = (e.actual !== '—' && !isNaN(actVal) && !isNaN(foreVal)) ? (actVal > foreVal ? 'cal-act-up' : actVal < foreVal ? 'cal-act-dn' : '') : '';
