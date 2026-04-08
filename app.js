@@ -4921,13 +4921,19 @@ async function doAuthLogin() {
   const btn = document.getElementById('login-btn');
   btn.disabled = true; btn.textContent = 'Entrando...';
 
-  // Retry up to 2 times on server errors (504, 502, etc.)
+  // signInWithPassword with 12s timeout + 1 retry
   let data, error;
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const result = await db.auth.signInWithPassword({ email, password: pass });
-    data = result.data; error = result.error;
-    if (!error || (error.message === 'Invalid login credentials')) break;
-    if (attempt < 2) await new Promise(r => setTimeout(r, 1500));
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const authCall = db.auth.signInWithPassword({ email, password: pass });
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 12000));
+      const result = await Promise.race([authCall, timeout]);
+      data = result.data; error = result.error;
+      if (!error || (error.message === 'Invalid login credentials')) break;
+    } catch(e) {
+      error = { message: e.message === 'timeout' ? '' : e.message };
+    }
+    if (attempt < 1) await new Promise(r => setTimeout(r, 2000));
   }
   btn.disabled = false; btn.textContent = 'Entrar';
 
