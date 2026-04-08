@@ -3943,6 +3943,8 @@ async function openStripePortal(){
 
 // Preview timer: 60s free preview for non-logged users
 let _previewTimer=null;
+let _previewCountdown=null;
+const PREVIEW_BANNER_ID='mc-preview-banner';
 function startPreviewTimer(gateId,wrapId,wrapClass){
   const KEY='mc_preview_start';
   const stored=localStorage.getItem(KEY);
@@ -3950,14 +3952,33 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
   if(!stored) localStorage.setItem(KEY,now);
   const start=parseInt(stored||now,10);
   const elapsed=Math.floor((now-start)/1000);
-  if(elapsed>=60){showPreviewGate(gateId,wrapId,wrapClass);return;}
+  if(elapsed>=60){removePreviewBanner();showPreviewGate(gateId,wrapId,wrapClass);return;}
   const wrap=document.getElementById(wrapId);
   if(wrap) wrap.classList.remove(wrapClass);
   const gate=document.getElementById(gateId);
   if(gate){gate.innerHTML='';gate.style.display='none';}
   if(_previewTimer) clearTimeout(_previewTimer);
-  _previewTimer=setTimeout(()=>{showPreviewGate(gateId,wrapId,wrapClass);},(60-elapsed)*1000);
+  if(_previewCountdown) clearInterval(_previewCountdown);
+  showPreviewBanner(60-elapsed);
+  _previewCountdown=setInterval(()=>{
+    const rem=60-Math.floor((Date.now()-start)/1000);
+    if(rem<=0){clearInterval(_previewCountdown);removePreviewBanner();showPreviewGate(gateId,wrapId,wrapClass);return;}
+    const el=document.getElementById(PREVIEW_BANNER_ID);
+    if(el){const s=el.querySelector('.pvw-time');if(s)s.textContent=rem+'s';}
+  },1000);
 }
+function showPreviewBanner(secs){
+  if(document.getElementById(PREVIEW_BANNER_ID))return;
+  const bar=document.createElement('div');
+  bar.id=PREVIEW_BANNER_ID;
+  bar.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,rgba(240,180,41,.95),rgba(200,148,26,.95));color:#07090D;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 -4px 20px rgba(0,0,0,.3);';
+  bar.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#07090D" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <span>${t('preview_banner_text')}</span>
+    <span class="pvw-time" style="background:#07090D;color:var(--gold);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:800;min-width:32px;text-align:center;">${secs}s</span>
+    <button onclick="openAuthModal('signup')" style="background:#07090D;color:var(--gold);border:none;padding:6px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-left:8px;">${t('da_gate_btn_login')}</button>`;
+  document.body.appendChild(bar);
+}
+function removePreviewBanner(){const el=document.getElementById(PREVIEW_BANNER_ID);if(el)el.remove();}
 function showPreviewGate(gateId,wrapId,wrapClass){
   const wrap=document.getElementById(wrapId);
   const gate=document.getElementById(gateId);
