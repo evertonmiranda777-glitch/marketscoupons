@@ -4288,9 +4288,15 @@ function renderDailyCards(items){
   const grid=document.getElementById('da-grid');if(!grid)return;
   const meta=document.getElementById('da-meta');
   if(meta&&items[0]){
+    const loc=_currentLang==='pt'?'pt-BR':_currentLang;
     const d=new Date(items[0].date+'T12:00:00');
-    const dateStr=d.toLocaleDateString(_currentLang==='pt'?'pt-BR':_currentLang,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-    meta.innerHTML=`<span><span class="analise-meta-dot"></span> ${t('da_atualizado')} ${dateStr}</span>`;
+    const dateStr=d.toLocaleDateString(loc,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    let timeStr='';
+    if(items[0].created_at){
+      const upd=new Date(items[0].created_at);
+      timeStr=' — '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
+    }
+    meta.innerHTML=`<span><span class="analise-meta-dot"></span> ${t('da_atualizado')} ${dateStr}${timeStr}</span>`;
   }
   const tvTheme='dark';
   grid.innerHTML=items.map(a=>{
@@ -5335,7 +5341,7 @@ function gxFmt(n){return Number(n).toLocaleString('en-US',{maximumFractionDigits
 async function loadGEX(){
   if(_gexLoaded) return;
   try{
-    const{data,error}=await db.from('gex_levels').select('*').in('ticker',['ES','NQ']).order('date',{ascending:false}).limit(2);
+    const{data,error}=await db.from('gex_levels').select('*,updated_at').in('ticker',['ES','NQ']).order('date',{ascending:false}).limit(2);
     if(error) throw error;
     if(!data||!data.length){
       document.getElementById('gx-loading').innerHTML='<div style="color:var(--t2);font-size:14px;" data-i18n="gx_no_data">GEX data not yet available. Check back after 6 AM ET.</div>';
@@ -5396,10 +5402,16 @@ function renderGEX(items){
   if(items[0]){
     const d=new Date(items[0].date+'T12:00:00');
     const locMap={pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'};
-    const ds=d.toLocaleDateString(locMap[_currentLang]||'en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    const loc=locMap[_currentLang]||'en-US';
+    const ds=d.toLocaleDateString(loc,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     const el=document.getElementById('gx-date');
     el.removeAttribute('data-i18n');
-    el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong>';
+    let timeStr='';
+    if(items[0].updated_at){
+      const upd=new Date(items[0].updated_at);
+      timeStr=' — '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
+    }
+    el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong>'+timeStr;
   }
 
   grid.innerHTML=items.map(item=>{
