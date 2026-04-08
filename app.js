@@ -5031,11 +5031,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   showCookieBanner();
   autoDetectDDI();
 
-  // Mostrar botões de auth: checar token no localStorage de forma síncrona
-  // Se há token Supabase, mantém escondido até checkAuthSession confirmar
-  // Se não há token, mostra botões de login imediatamente
+  // Auth: iniciar check imediatamente (em paralelo com o resto)
   const _hasToken = localStorage.getItem('mc-user-auth') !== null;
   if (!_hasToken) updateAuthUI(false);
+  const _authPromise = checkAuthSession().then(()=>{
+    _authLoaded=true;
+    checkAnalysisGate();
+    if(_gexLoaded) checkGEXGate();
+    if(location.hash==='#live') checkLoyaltyAndShowLive();
+    renderLoyaltyPage();
+  });
 
   // Auto-copy coupon from email link (?copy=CODE)
   const _urlParams = new URLSearchParams(location.search);
@@ -5113,13 +5118,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (cachedMember?.email) {
     await loadLoyaltyFromSupabase(cachedMember.email);
   }
-  // Auth session check
-  await checkAuthSession();
-  _authLoaded = true;
-  checkAnalysisGate();
-  if(_gexLoaded) checkGEXGate();
-  if(location.hash==='#live') checkLoyaltyAndShowLive();
-  renderLoyaltyPage();
+  // Wait for auth to finish before initializing favorites
+  await _authPromise;
   await initFavs();
 });
 
