@@ -3913,8 +3913,8 @@ function renderCal() {
 
   // Current time for "now" line (ET = UTC-4)
   const nowUTC = new Date();
-  const nowET = new Date(nowUTC.getTime() - 4 * 60 * 60 * 1000);
-  const nowHHMM = nowET.getHours().toString().padStart(2,'0') + ':' + nowET.getMinutes().toString().padStart(2,'0');
+  const etH = (nowUTC.getUTCHours() - 4 + 24) % 24;
+  const nowHHMM = etH.toString().padStart(2,'0') + ':' + nowUTC.getUTCMinutes().toString().padStart(2,'0');
   const todayStr = new Date().toISOString().slice(0,10);
 
   const groups = {};
