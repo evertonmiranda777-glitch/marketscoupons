@@ -2133,6 +2133,30 @@ function toggleFirmsSb(){
 const _drwState = {};
 
 const _firmPageSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded'];
+// Lazy load overlay data (about_html, detail_plans, bg_image) for a single firm
+const _overlayLoaded = {};
+async function loadFirmOverlayData(id) {
+  if (_overlayLoaded[id]) return;
+  try {
+    const { data } = await db.from('cms_firms')
+      .select('id,bg_image,about_html,about_highlights,detail_types,detail_plans,detail_includes')
+      .eq('id', id).maybeSingle();
+    if (data) {
+      if (data.bg_image) FIRM_BG[id] = data.bg_image;
+      if (data.about_html || data.detail_plans) {
+        FIRM_ABOUT[id] = {
+          about: data.about_html || FIRM_ABOUT[id]?.about || '',
+          highlights: data.about_highlights || FIRM_ABOUT[id]?.highlights || [],
+          types: Array.isArray(data.detail_types) ? data.detail_types : FIRM_ABOUT[id]?.types || [],
+          plans: data.detail_plans || FIRM_ABOUT[id]?.plans || {},
+          includes: Array.isArray(data.detail_includes) ? data.detail_includes : FIRM_ABOUT[id]?.includes || [],
+        };
+      }
+      _overlayLoaded[id] = true;
+    }
+  } catch(e) { console.warn('[MC] Overlay data load failed for', id); }
+}
+
 function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
@@ -2143,6 +2167,8 @@ function openD(id){
     size: cf?.plans?.[0]?.size || '',
   };
 
+  // Lazy load overlay data from Supabase (updates hardcoded FIRM_ABOUT in background)
+  loadFirmOverlayData(id);
   // Desktop: fullscreen overlay premium | Mobile: drawer lateral
   if (window.innerWidth >= 769 && FIRM_ABOUT[id]) {
     openFD(id, f);
@@ -3048,7 +3074,7 @@ CHECKOUT_FIRMS.forEach(f=>{achState[f.id]={};f.plans.forEach(p=>{achState[f.id][
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('*')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) return; // fallback: keep hardcoded
@@ -3078,17 +3104,7 @@ async function loadFirmsFromSupabase() {
       }
       FIRMS.push(firm);
 
-      // Populate FIRM_ABOUT and FIRM_BG from Supabase overlay data
-      if(f.bg_image) FIRM_BG[f.id]=f.bg_image;
-      if(f.about_html || f.detail_plans){
-        FIRM_ABOUT[f.id]={
-          about: f.about_html || FIRM_ABOUT[f.id]?.about || '',
-          highlights: f.about_highlights || FIRM_ABOUT[f.id]?.highlights || [],
-          types: Array.isArray(f.detail_types) ? f.detail_types : FIRM_ABOUT[f.id]?.types || [],
-          plans: f.detail_plans || FIRM_ABOUT[f.id]?.plans || {},
-          includes: Array.isArray(f.detail_includes) ? f.detail_includes : FIRM_ABOUT[f.id]?.includes || [],
-        };
-      }
+      // Overlay data (about_html, detail_plans, bg_image) loaded lazily via loadFirmOverlayData()
     });
 
     // Map → CHECKOUT_FIRMS format
@@ -4905,7 +4921,14 @@ async function doAuthLogin() {
   const btn = document.getElementById('login-btn');
   btn.disabled = true; btn.textContent = 'Entrando...';
 
-  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+  // Retry up to 2 times on server errors (504, 502, etc.)
+  let data, error;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const result = await db.auth.signInWithPassword({ email, password: pass });
+    data = result.data; error = result.error;
+    if (!error || (error.message === 'Invalid login credentials')) break;
+    if (attempt < 2) await new Promise(r => setTimeout(r, 1500));
+  }
   btn.disabled = false; btn.textContent = 'Entrar';
 
   if (error) {
@@ -5055,10 +5078,12 @@ async function saveProfile() {
   }
 }
 
-// Check existing session on load
+// Check existing session on load (with 8s timeout to prevent hanging on 504)
 async function checkAuthSession() {
   try {
-    const { data: { session } } = await db.auth.getSession();
+    const sessionPromise = db.auth.getSession();
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
+    const { data: { session } } = await Promise.race([sessionPromise, timeout]);
     if (session?.user) {
       await loadUserSession(session.user);
     } else {
@@ -5093,9 +5118,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   if('scrollRestoration' in history) history.scrollRestoration='manual';
   // Detectar idioma e aplicar traduções
   initLang();
-  // Load CMS overrides (texts, FAQ) — non-blocking, runs in parallel
-  loadCmsTexts().then(()=>{ applyTranslations(); renderFaq(); });
-  loadCmsFaq().then(()=>{ renderFaq(); });
+  // Load CMS overrides (texts, FAQ) — single Promise.all, one renderFaq call
+  Promise.all([loadCmsTexts(), loadCmsFaq()]).then(() => { applyTranslations(); renderFaq(); });
   // Ativar página correta ANTES de renderizar (evita flash da home)
   const _initHash = location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
   if(_initHash && document.getElementById('page-'+_initHash)){

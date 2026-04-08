@@ -1680,7 +1680,14 @@ async function doLogin() {
   const btn   = document.querySelector('.login-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Entrando...'; }
 
-  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+  // Retry up to 2 times on server errors (504, 502, etc.)
+  let data, error;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const result = await db.auth.signInWithPassword({ email, password: pass });
+    data = result.data; error = result.error;
+    if (!error || (error.message === 'Invalid login credentials')) break;
+    if (attempt < 2) { if(btn) btn.textContent = 'Tentando...'; await new Promise(r => setTimeout(r, 1500)); }
+  }
 
   if (btn) { btn.disabled = false; btn.textContent = 'Entrar no Admin →'; }
   if (error || !data?.session) {
@@ -1741,11 +1748,13 @@ function toggleChgPassModal() {
   if (!isOpen) ['chg-old','chg-new','chg-new2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
-// Auto-restore session on reload
+// Auto-restore session on reload (with 8s timeout)
 document.addEventListener('DOMContentLoaded', async () => {
   initAuthUI();
   try {
-    const { data: { session } } = await db.auth.getSession();
+    const sessionPromise = db.auth.getSession();
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
+    const { data: { session } } = await Promise.race([sessionPromise, timeout]);
     const ADMIN_EMAILS = ['evertonmiranda777@gmail.com','evertonmiranda1183@hotmail.com'];
     if (session && ADMIN_EMAILS.includes(session.user.email.toLowerCase())) {
       isLoggedIn = true;
