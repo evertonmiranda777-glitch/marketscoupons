@@ -800,7 +800,7 @@ async function openGuideArticle(slug){
     <button class="guide-back" onclick="closeGuideArticle()">← ${t('guia_voltar')||'Voltar aos guias'}</button>
     <div class="guide-art-cat" style="color:${guide.cat_color};">${cat}</div>
     <div class="guide-art-title">${titulo}</div>
-    <div class="guide-art-meta"><span>~${readMin} min de leitura</span></div>
+    <div class="guide-art-meta"><span>~${readMin} ${t('guia_leitura')}</span></div>
     <div class="guide-art-body">${typeof DOMPurify!=='undefined'?DOMPurify.sanitize(guide.content||''):(guide.content||'')}</div>
     <div class="guide-art-cta">
       <div class="guide-art-cta-title">${t('guia_cta_titulo')||'Pronto para começar?'}</div>
@@ -3271,21 +3271,21 @@ function renderAchPlans(){
     const sid=p.size.replace(/[^a-z0-9]/gi,'_');
     return`<div class="ach-card${p.featured?' featured':''}">
       <div class="ach-card-header">
-        ${p.featured?'<div class="ach-featured-badge">Mais popular</div>':''}
+        ${p.featured?`<div class="ach-featured-badge">${t('ach_popular')}</div>`:''}
         <div class="ach-plan-name">${p.size}</div>
-        <div class="ach-plan-price"><strong>${p.disc}</strong> /mes ${p.orig!=='—'?`<del>${p.orig}</del>`:''}</div>
+        <div class="ach-plan-price"><strong>${p.disc}</strong> ${t('ach_mes')} ${p.orig!=='—'?`<del>${p.orig}</del>`:''}</div>
         <div class="ach-stats">
-          <div class="ach-stat"><div class="ach-stat-lbl">Capital</div><div class="ach-stat-val">${p.capital}</div></div>
-          <div class="ach-stat"><div class="ach-stat-lbl">Meta</div><div class="ach-stat-val">${p.goal}</div></div>
-          <div class="ach-stat"><div class="ach-stat-lbl">Max DD</div><div class="ach-stat-val">${p.maxDD}</div></div>
-          <div class="ach-stat"><div class="ach-stat-lbl">Desconto</div><div class="ach-stat-val" style="color:var(--gold);">${firm.discount}</div></div>
+          <div class="ach-stat"><div class="ach-stat-lbl">${t('ach_capital')}</div><div class="ach-stat-val">${p.capital}</div></div>
+          <div class="ach-stat"><div class="ach-stat-lbl">${t('ach_meta')}</div><div class="ach-stat-val">${p.goal}</div></div>
+          <div class="ach-stat"><div class="ach-stat-lbl">${t('ach_max_dd')}</div><div class="ach-stat-val">${p.maxDD}</div></div>
+          <div class="ach-stat"><div class="ach-stat-lbl">${t('ach_desconto')}</div><div class="ach-stat-val" style="color:var(--gold);">${firm.discount}</div></div>
         </div>
       </div>
       <div class="ach-card-body">
-        ${firm.types.length>1?`<div class="ach-sel-title">Tipo</div><div class="ach-type-row" id="tr-${firm.id}-${sid}">${firm.types.map(t=>`<button class="ach-type-btn${t===state.type?' sel':''}" onclick="achSelType('${firm.id}','${p.size}','${t}')">${t}</button>`).join('')}</div>`:''}
-        <div class="ach-sel-title">Plataforma</div>
+        ${firm.types.length>1?`<div class="ach-sel-title">${t('ach_tipo')}</div><div class="ach-type-row" id="tr-${firm.id}-${sid}">${firm.types.map(tp=>`<button class="ach-type-btn${tp===state.type?' sel':''}" onclick="achSelType('${firm.id}','${p.size}','${tp}')">${tp}</button>`).join('')}</div>`:''}
+        <div class="ach-sel-title">${t('ach_plataforma')}</div>
         <div class="ach-plat-row" id="pr-${firm.id}-${sid}">${firm.platforms.map(pl=>`<button class="ach-plat-btn${pl===state.plat?' sel':''}" onclick="achSelPlat('${firm.id}','${p.size}','${pl}')">${pl}</button>`).join('')}</div>
-        <button class="ach-start-btn" onclick="achGoCheckout('${firm.id}','${p.size}')">Começar agora</button>
+        <button class="ach-start-btn" onclick="achGoCheckout('${firm.id}','${p.size}')">${t('ach_comecar')}</button>
       </div>
     </div>`;
   }).join('');
@@ -4628,7 +4628,7 @@ const TOOLS=[{id:'orderflow',name:'Order Flow Analyzer',badge:'Gratis',badgeColo
 function renderIndHub(){const g=document.getElementById('ind-hub-grid');if(!g)return;g.innerHTML=TOOLS.map(tool=>`<div class="ic" onclick="openTool('${tool.id}')"><div class="ic-top"><div class="ic-ico"></div><span class="ic-badge" style="background:${tool.badgeBg};color:${tool.badgeColor};">${tool.badge}</span></div><div class="ic-name">${tool.name}</div><div class="ic-desc">${tool.desc}</div><button class="ic-btn">${t('plat_acessar')}</button></div>`).join('');}
 function openTool(id){const t=TOOLS.find(x=>x.id===id);if(!t)return;const unlocked=isUnlocked(id);const inner=document.getElementById('tool-modal-inner');inner.innerHTML=`<div class="tm-hd"><div class="tm-title">${t.name} <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${t.badgeBg};color:${t.badgeColor};font-weight:700;">${t.badge}</span></div><button class="tm-x" onclick="closeTool()">x</button></div><div class="tm-body" id="tm-body">${unlocked?renderToolContent(id):renderLeadGate(id,t)}</div>`;document.getElementById('tool-ov').classList.add('open');document.getElementById('tool-modal').classList.add('open');document.body.style.overflow='hidden';track('tool_open',{tool_id:id,tool_name:t.name,unlocked});}
 function closeTool(){document.getElementById('tool-ov').classList.remove('open');document.getElementById('tool-modal').classList.remove('open');document.body.style.overflow='';}
-function renderLeadGate(toolId,tool){return`<div class="lead-gate"><div class="lg-ico"></div><div class="lg-title">Acesse o ${tool.name}</div><div class="lg-desc">${tool.desc}<br><br><strong style="color:var(--t1);">Cadastre-se gratuitamente para desbloquear.</strong></div><div class="lg-form"><div class="lg-field"><label>Nome</label><input type="text" id="lg-name-${toolId}" placeholder="Seu nome"></div><div class="lg-field"><label>E-mail</label><input type="email" id="lg-email-${toolId}" placeholder="seu@email.com"></div><div class="lg-field"><label>WhatsApp</label><input type="tel" id="lg-wa-${toolId}" placeholder="+55 11 99999-9999"></div><label class="lg-consent"><input type="checkbox" id="lg-consent-${toolId}"> <span>${t('consent_label')}</span></label><button class="lg-sub" onclick="submitLead('${toolId}')">Desbloquear</button><div class="lg-note">Seus dados sao privados.</div></div></div>`;}
+function renderLeadGate(toolId,tool){return`<div class="lead-gate"><div class="lg-ico"></div><div class="lg-title">${t('lg_acesse')} ${tool.name}</div><div class="lg-desc">${tool.desc}<br><br><strong style="color:var(--t1);">${t('lg_cadastre')}</strong></div><div class="lg-form"><div class="lg-field"><label>${t('lg_nome')}</label><input type="text" id="lg-name-${toolId}" placeholder="${t('lg_nome')}"></div><div class="lg-field"><label>E-mail</label><input type="email" id="lg-email-${toolId}" placeholder="email@example.com"></div><div class="lg-field"><label>WhatsApp</label><input type="tel" id="lg-wa-${toolId}" placeholder="+1 555 123-4567"></div><label class="lg-consent"><input type="checkbox" id="lg-consent-${toolId}"> <span>${t('consent_label')}</span></label><button class="lg-sub" onclick="submitLead('${toolId}')">${t('lg_desbloquear')}</button><div class="lg-note">${t('lg_privacidade')}</div></div></div>`;}
 function submitLead(toolId){
   const name=document.getElementById('lg-name-'+toolId)?.value.trim();
   const email=document.getElementById('lg-email-'+toolId)?.value.trim();
@@ -4841,9 +4841,9 @@ function renderPainelLoyalty(){
     <!-- Progresso -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
       <div style="font-size:13px;font-weight:700;">${liveUnlocked
-        ? '<span style="color:var(--green);">✓ Live Room Desbloqueado!</span>'
-        : '<span style="color:var(--gold);">' + faltam + ' compra' + (faltam===1?'':'s') + ' para desbloquear o Live Room VIP</span>'}</div>
-      <div style="font-size:12px;color:var(--t3);font-weight:600;">${approved} de 1 compra validada</div>
+        ? '<span style="color:var(--green);">✓ '+t('loyalty_desbloqueado')+'</span>'
+        : '<span style="color:var(--gold);">'+faltam+' '+t('loyalty_faltam_suf')+'</span>'}</div>
+      <div style="font-size:12px;color:var(--t3);font-weight:600;">${approved} ${t('loyalty_validada')}</div>
     </div>
     <div style="background:var(--card2);border-radius:6px;height:10px;overflow:hidden;margin-bottom:20px;">
       <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,var(--gold),var(--gold-hover));border-radius:6px;transition:.4s;"></div>
@@ -5068,7 +5068,7 @@ async function doAuthLogin() {
   if (!email || !pass) return showAuthError('login-error', t('auth_preencha_email_senha'));
 
   const btn = document.getElementById('login-btn');
-  btn.disabled = true; btn.textContent = 'Entrando...';
+  btn.disabled = true; btn.textContent = t('auth_entrando');
 
   // signInWithPassword with 12s timeout + 1 retry
   let data, error;
@@ -5084,7 +5084,7 @@ async function doAuthLogin() {
     }
     if (attempt < 1) await new Promise(r => setTimeout(r, 2000));
   }
-  btn.disabled = false; btn.textContent = 'Entrar';
+  btn.disabled = false; btn.textContent = t('auth_btn_entrar');
 
   if (error) {
     const msg = (typeof error.message === 'string' && error.message.length > 2) ? error.message : null;
@@ -5110,7 +5110,7 @@ async function doAuthSignup() {
   if (pass.length < 6) return showAuthError('signup-error', t('auth_senha_minimo'));
 
   const btn = document.getElementById('signup-btn');
-  btn.disabled = true; btn.textContent = 'Criando conta...';
+  btn.disabled = true; btn.textContent = t('auth_criando');
 
   const { data, error } = await db.auth.signUp({
     email,
@@ -5119,7 +5119,7 @@ async function doAuthSignup() {
       data: { full_name: name, phone, city, state, country }
     }
   });
-  btn.disabled = false; btn.textContent = 'Criar Conta';
+  btn.disabled = false; btn.textContent = t('auth_btn_criar');
 
   if (error) return showAuthError('signup-error', error.message);
 

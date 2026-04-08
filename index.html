@@ -2429,8 +2429,8 @@ document.addEventListener('DOMContentLoaded',function(){
  <button class="nt" data-p="blog" data-i18n="nav_blog" onclick="go('blog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Blog</button>
  <button class="nt" data-p="calc" data-i18n="nav_calc" onclick="go('calc')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="14.01"/><line x1="8" y1="18" x2="16" y2="18"/></svg>Position Size</button>
  <button class="nt" data-p="quiz" data-i18n="nav_quiz" onclick="go('quiz')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Quiz</button>
- <button class="nt" data-p="awards" onclick="go('awards')" style="color:#F0B429;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>Awards</button>
- <button class="nt nt-live" data-p="live" onclick="go('live')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Live Room</button>
+ <button class="nt" data-p="awards" data-i18n="nav_awards" onclick="go('awards')" style="color:#F0B429;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>Awards</button>
+ <button class="nt nt-live" data-p="live" data-i18n="nav_live" onclick="go('live')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Live Room</button>
  </div>
  </div>
 </nav>
@@ -2972,13 +2972,13 @@ document.addEventListener('DOMContentLoaded',function(){
    <div class="auth-success" id="up-save-ok" style="margin-top:12px;" data-i18n="painel_salvos">Dados salvos com sucesso!</div>
   </div>
   <div class="up-card">
-   <h3 data-i18n="painel_alterar_senha">Change Password</h3>
-   <div class="auth-field"><label data-i18n="painel_senha_atual">Current Password</label><div style="position:relative;"><input type="password" id="up-pass-current"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <div class="auth-field"><label data-i18n="painel_nova_senha">New Password</label><div style="position:relative;"><input type="password" id="up-pass-new" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <div class="auth-field"><label data-i18n="painel_confirmar_senha">Confirm New Password</label><div style="position:relative;"><input type="password" id="up-pass-confirm" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <button class="auth-btn" onclick="changePassword()" data-i18n="painel_btn_alterar_senha">Change Password</button>
+   <h3 data-i18n="painel_alterar_senha">Alterar Senha</h3>
+   <div class="auth-field"><label data-i18n="painel_senha_atual">Senha Atual</label><div style="position:relative;"><input type="password" id="up-pass-current"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_nova_senha">Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-new" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_confirmar_senha">Confirmar Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-confirm" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <button class="auth-btn" onclick="changePassword()" data-i18n="painel_btn_alterar_senha">Alterar Senha</button>
    <div class="auth-error" id="up-pass-error" style="margin-top:8px;"></div>
-   <div class="auth-success" id="up-pass-ok" style="margin-top:8px;" data-i18n="painel_senha_alterada">Password changed successfully!</div>
+   <div class="auth-success" id="up-pass-ok" style="margin-top:8px;" data-i18n="painel_senha_alterada">Senha alterada com sucesso!</div>
   </div>
   <div class="up-card">
    <h3 data-i18n="painel_resumo">Resumo</h3>
@@ -3347,7 +3347,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <!-- Gate: shown if not registered -->
  <div class="calc-gate" id="calc-gate">
    <div class="calc-gate-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-   <div class="calc-gate-title">Position Size Calculator</div>
+   <div class="calc-gate-title" data-i18n="calc_titulo">Position Size Calculator</div>
    <div class="calc-gate-sub" data-i18n="calc_gate_sub">Calcule o tamanho ideal da sua posição. Ferramenta exclusiva para membros cadastrados — gratuito.</div>
    <div class="calc-gate-form">
      <div class="calc-gate-field"><label data-i18n="calc_gate_label_nome">Nome</label><input type="text" id="cg-name" data-i18n-placeholder="calc_gate_placeholder_nome" placeholder="Seu nome"></div>
@@ -3358,7 +3358,7 @@ document.addEventListener('DOMContentLoaded',function(){
  </div>
  <!-- Calculator: shown after registration -->
  <div class="calc-wrap" id="calc-content">
- <div class="calc-h"> Position Size Calculator</div>
+ <div class="calc-h" data-i18n="calc_titulo"> Position Size Calculator</div>
  <div class="calc-sub" data-i18n="calc_sub_ps">Calcule o tamanho ideal da posição baseado no risco da sua conta</div>
  <div class="calc-tabs">
  <button class="calc-tab active" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')" data-i18n="firm_type_futuros">Futuros</button>
@@ -3568,7 +3568,7 @@ document.addEventListener('DOMContentLoaded',function(){
         <div class="proof-form">
           <div class="proof-grid">
             <div class="proof-field">
-              <label>Prop Firm</label>
+              <label data-i18n="proof_label_firma">Prop Firm</label>
               <select id="pf-firma">
                 <option value="">Selecionar...</option>
                 <option>Apex Trader Funding</option>
