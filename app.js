@@ -3919,7 +3919,7 @@ async function startCheckout(){
     const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/stripe-checkout',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON},
-      body:JSON.stringify({success_url:window.location.origin+'/#pro-success',cancel_url:window.location.origin+'/#'+(_currentPage||'analise')})
+      body:JSON.stringify({success_url:window.location.origin+'/#pro-success',cancel_url:window.location.origin+'/#'+(location.hash.replace('#','')||'analise')})
     });
     const json=await res.json();
     if(json.url) window.location.href=json.url;
@@ -4271,107 +4271,59 @@ function autoDetectDDI() {
 }
 
 async function checkLoyaltyAndShowLive(forceCheck = false) {
-  const history  = getLoyaltyHistory();
-  const approved = history.filter(h => h.status === 'approved').length;
-  const member   = getLoyaltyMember();
-  const gate     = document.getElementById('live-loyalty-gate');
-  const form     = document.getElementById('live-gate');
-  const statusEl = document.getElementById('live-gate-status');
+  const gateEl = document.getElementById('live-gate');
+  const roomEl = document.getElementById('live-room');
+  const contentEl = document.getElementById('live-gate-content');
+  if(!gateEl||!roomEl) return;
 
-  // Pro access (VIP, subscription) or 1 approved proof → access
-  let proAccess = approved >= 1;
-  if(!proAccess && currentUser){
-    try{
-      if(currentProfile?.analysis_vip===true) proAccess=true;
-      if(!proAccess){
+  // Check access: VIP, subscription, or 1 approved loyalty proof
+  let hasAccess = false;
+  if(currentUser && currentProfile){
+    if(currentProfile.analysis_vip===true) hasAccess=true;
+    if(!hasAccess){
+      try{
         const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
-        if(data&&data.length>0) proAccess=true;
-      }
-    }catch(e){}
+        if(data&&data.length>0) hasAccess=true;
+      }catch(e){}
+    }
+    if(!hasAccess){
+      const history=getLoyaltyHistory();
+      const approved=history.filter(h=>h.status==='approved').length;
+      if(approved>=1) hasAccess=true;
+    }
   }
 
-  if (proAccess) {
-    // Acesso liberado
-    if (gate) gate.classList.add('hide');
-    if (form) form.classList.remove('hide');
-    // Pré-preencher nome/email da fidelidade
-    if (member) {
-      const nameEl = document.getElementById('lv-name');
-      const emailEl = document.getElementById('lv-email');
-      if (nameEl && !nameEl.value) nameEl.value = member.name || '';
-      if (emailEl && !emailEl.value) emailEl.value = member.email || '';
-    }
-    autoDetectDDI();
+  if(hasAccess){
+    gateEl.classList.add('hide');
+    roomEl.classList.remove('hide');
+    document.getElementById('lv-viewers').textContent=Math.floor(Math.random()*40+10);
     return;
   }
 
-  // Acesso bloqueado — mostrar gate
-  if (gate) gate.classList.remove('hide');
-  if (form) form.classList.add('hide');
+  // Blocked — show gate
+  gateEl.classList.remove('hide');
+  roomEl.classList.add('hide');
 
-  if (statusEl) {
-    const pending = getLoyaltyPending().filter(p => p.status === 'pending').length;
-    const total   = approved + pending;
-    const faltam  = Math.max(0, 1 - approved);
-    statusEl.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">${t('live_gate_seu_progresso')}</div>
-        <div style="font-size:11px;color:var(--t3);">${approved}/1 ${t('live_gate_validadas_bar')}</div>
-      </div>
-      <div style="background:var(--b1);border-radius:4px;height:7px;overflow:hidden;margin-bottom:14px;">
-        <div style="height:100%;width:${Math.min(100,Math.round(approved/1*100))}%;background:var(--gold);border-radius:4px;transition:width 1s;"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:${member?'14px':'0'};">
-        <div style="background:var(--card2);border-radius:7px;padding:10px;text-align:center;border:1px solid var(--b1);">
-          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">${t('live_gate_validadas')}</div>
-          <div style="font-size:18px;font-weight:800;color:var(--green);">${approved}</div>
-        </div>
-        <div style="background:var(--card2);border-radius:7px;padding:10px;text-align:center;border:1px solid var(--b1);">
-          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">${t('live_gate_em_analise')}</div>
-          <div style="font-size:18px;font-weight:800;color:var(--gold);">${pending}</div>
-        </div>
-        <div style="background:var(--card2);border-radius:7px;padding:10px;text-align:center;border:1px solid var(--b1);">
-          <div style="font-size:10px;color:var(--t3);margin-bottom:3px;">${t('live_gate_faltam')}</div>
-          <div style="font-size:18px;font-weight:800;color:var(--red);">${faltam}</div>
-        </div>
-      </div>
-      ${member ? '' : `<div style="font-size:12px;color:var(--t3);padding-top:12px;border-top:1px solid var(--b1);">${t('live_gate_nao_membro')} <button onclick="go('loyalty')" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">${t('live_gate_cadastre')}</button></div>`}
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--b1);text-align:center;">
-        <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">${t('pro_or')}</div>
-        <button class="da-gate-btn" onclick="startCheckout()" style="font-size:12px;padding:10px 20px;">${t('pro_subscribe_btn')}</button>
+  if(!contentEl) return;
+
+  if(!currentUser){
+    // Not logged in
+    contentEl.innerHTML=`
+      <p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_login')}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
+        <button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_signup')}</button>
+        <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('da_gate_btn_login')}</button>
+      </div>`;
+  } else {
+    // Logged in, no access
+    contentEl.innerHTML=`
+      <p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_blocked')}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
+        <button class="da-gate-btn" style="width:100%;" onclick="startCheckout()">${t('pro_subscribe_btn')}</button>
+        <div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>
+        <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>
       </div>`;
   }
-}
-
-function liveStep(step) {
-  [1,2,3].forEach(s=>{document.getElementById('live-step'+s)?.classList.toggle('hide',s!==step);const lp=document.getElementById('lp'+s);if(lp)lp.className='lp-step'+(s<step?' done':s===step?' active':'');});
-  if(step===2){
-    const n=document.getElementById('lv-name')?.value.trim();
-    const e=document.getElementById('lv-email')?.value.trim();
-    const w=document.getElementById('lv-whatsapp')?.value.trim();
-    if(!n||!e||!w){showToast(t('toast_preencha_nome_email_whats'));liveStep(1);return;}
-  }
-  if(step===3){if(!document.getElementById('lv-pais')?.value){showToast(t('toast_selecione_pais'));liveStep(2);return;}}
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-async function joinLive(){
-  const btn=document.getElementById('live-final-btn');if(btn){btn.disabled=true;btn.textContent=t('toast_processando');}
-  const name=document.getElementById('lv-name')?.value.trim();
-  const email=document.getElementById('lv-email')?.value.trim();
-  const ddi=(document.getElementById('lv-ddi')?.value||'+55').replace('-CA','');
-  const waNum=document.getElementById('lv-whatsapp')?.value.trim().replace(/\D/g,'');
-  const whatsapp= waNum ? ddi+' '+waNum : '';
-  if(!name||!email||!whatsapp){showToast(t('toast_preencha_obrigatorios'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
-  if(!_emailFormatRe.test(email)){showToast(t('toast_email_invalido'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
-  const lvConsent=document.getElementById('lv-consent')?.checked;
-  if(!lvConsent){showToast(t('toast_aceite_privacidade'));if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}return;}
-  const nasc=document.getElementById('lv-nascimento')?.value;
-  const lead={name,email,whatsapp,sexo:document.getElementById('lv-sexo')?.value||null,nascimento:nasc||null,idade:nasc?Math.floor((Date.now()-new Date(nasc))/31557600000):null,pais:document.getElementById('lv-pais')?.value||null,estado:document.getElementById('lv-estado')?.value.trim()||null,cidade:document.getElementById('lv-cidade')?.value.trim()||null,estilo_trading:document.getElementById('lv-estilo')?.value||null,plataforma:document.getElementById('lv-plataforma')?.value||null,firma:document.getElementById('lv-firma')?.value||null,capital_disponivel:document.getElementById('lv-capital')?.value||null,passou_desafio:document.getElementById('lv-desafio')?.value||null,tool:'live',consent:true,consent_date:new Date().toISOString(),ts:new Date().toISOString()};
-  saveLead(lead);
-  document.getElementById('live-gate').classList.add('hide');document.getElementById('live-room').classList.remove('hide');document.getElementById('lv-viewers').textContent=Math.floor(Math.random()*40+10);
-  track('live_signup',{name,email,pais:lead.pais,estilo:lead.estilo_trading});
-  if(btn){btn.disabled=false;btn.textContent=t('live_acessar');}
 }
 
 /* BOT */
@@ -5186,6 +5138,17 @@ async function checkGEXGate(){
     _userHasAccess=true;
     wrap.classList.remove('gx-wrap-gated');
     gate.innerHTML='';
+    // Show trial badge if in trial period
+    const createdAt=new Date(currentProfile.created_at||currentUser.created_at);
+    const diffDays=Math.floor((new Date()-createdAt)/(1000*60*60*24));
+    if(diffDays<3){
+      const gxDate=document.getElementById('gx-date');
+      if(gxDate&&!gxDate.querySelector('.da-trial-badge')){
+        const remaining=3-diffDays;
+        const trialText=t('da_gate_trial').replace('{days}',remaining);
+        gxDate.insertAdjacentHTML('beforeend',` <span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">${trialText}</span>`);
+      }
+    }
     return;
   }
 

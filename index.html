@@ -2125,7 +2125,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 @media(max-width:600px){.tool-grid-2{grid-template-columns:1fr;}.bt-stat-grid{grid-template-columns:1fr 1fr;}.tool-modal{padding:10px;}}
 
 /* LIVE FORM FULL */
-.live-gate-full{max-width:680px;margin:0 auto;padding:32px 24px 48px;}
+.live-gate-full{max-width:680px;margin:0 auto;padding:32px 24px 48px;box-sizing:border-box;overflow-x:hidden;}
 .lg-hero{text-align:center;margin-bottom:32px;}
 .lg-hero-ico{width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
 .lg-hero h2{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.4px;margin-bottom:8px;}
@@ -3343,185 +3343,22 @@ document.addEventListener('DOMContentLoaded',function(){
 <!-- LIVE -->
 <div class="page" id="page-live">
 
- <!-- LOYALTY GATE (shown if < 1 compra aprovada) -->
- <div id="live-loyalty-gate" class="hide">
+ <!-- LIVE GATE -->
+ <div id="live-gate">
   <div style="max-width:520px;margin:0 auto;padding:60px 20px;text-align:center;">
-    <div style="font-size:52px;margin-bottom:16px;"></div>
-    <h2 style="font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;" data-i18n="live_gate_titulo">Live Room — Acesso Exclusivo</h2>
-    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:28px;" data-i18n="live_gate_desc">O Live Room é exclusivo para membros do programa de fidelidade com <strong style="color:var(--gold);">pelo menos 3 cupons comprados</strong> e validados pela nossa equipe.</p>
-    <div id="live-gate-status" style="background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:20px;margin-bottom:24px;text-align:left;"></div>
-    <button class="live-submit-btn" onclick="go('loyalty')" style="margin-bottom:10px;" data-i18n="live_gate_ver_fidelidade">Ver meu programa de fidelidade →</button>
-    <div style="font-size:12px;color:var(--t3);"><span data-i18n="live_gate_ja_tem">Já tem 3+ compras validadas?</span> <button onclick="checkLoyaltyAndShowLive(true)" style="background:none;border:none;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;" data-i18n="live_gate_verificar">Verificar novamente</button></div>
+   <div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+   <h2 style="font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;" data-i18n="live_titulo">Live Trading Room</h2>
+   <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px;" data-i18n="live_hero_desc">Assista ao espelhamento do NinjaTrader em tempo real. Nosso indicador exclusivo marca as entradas ao vivo. Cadastre-se gratuitamente para acessar.</p>
+   <div id="live-gate-content"></div>
   </div>
  </div>
- <div id="live-gate">
- <div class="live-gate-full">
- <div class="lg-hero">
- <div class="lg-hero-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
- <h2 data-i18n="live_titulo">Live Trading Room</h2>
- <p data-i18n="live_hero_desc">Assista ao espelhamento do NinjaTrader em tempo real. Nosso indicador exclusivo marca as entradas ao vivo. Cadastre-se gratuitamente para acessar.</p>
- </div>
-
- <!-- PROGRESS STEPS -->
- <div class="live-progress">
- <div class="lp-step active" id="lp1"><div class="lp-dot">1</div><span data-i18n="live_step1_label">Dados pessoais</span></div>
- <div class="lp-line"></div>
- <div class="lp-step" id="lp2"><div class="lp-dot">2</div><span data-i18n="live_step2_label">Localização</span></div>
- <div class="lp-line"></div>
- <div class="lp-step" id="lp3"><div class="lp-dot">3</div><span data-i18n="live_step3_label">Perfil trader</span></div>
- </div>
-
- <!-- STEP 1: Dados pessoais -->
- <div id="live-step1">
- <div class="lg-section">
- <div class="lg-section-title"><span data-i18n="live_step1_titulo"> Dados Pessoais</span> <span style="color:var(--red);font-size:10px;" data-i18n="live_step1_obr">(* obrigatório)</span></div>
- <div class="lg-grid">
- <div class="lff-field lg-full"><label data-i18n="live_label_nome">Nome completo</label> <span class="required-star">*</span><input type="text" id="lv-name" placeholder="—"></div>
- <div class="lff-field"><label data-i18n="live_label_email">E-mail</label> <span class="required-star">*</span><input type="email" id="lv-email" placeholder="email@example.com"></div>
- <div class="lff-field"><label data-i18n="live_label_whatsapp">WhatsApp / Celular</label> <span class="required-star">*</span>
- <div style="display:flex;gap:6px;">
-   <select id="lv-ddi" style="width:110px;flex-shrink:0;padding:9px 8px;background:var(--card);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;" onchange="updateWaPlaceholder()">
-     <option value="+55">🇧🇷 +55</option>
-     <option value="+1">🇺🇸 +1</option>
-     <option value="+351">🇵🇹 +351</option>
-     <option value="+54">🇦🇷 +54</option>
-     <option value="+34">🇪🇸 +34</option>
-     <option value="+33">🇫🇷 +33</option>
-     <option value="+49">🇩🇪 +49</option>
-     <option value="+44">🇬🇧 +44</option>
-     <option value="+971">🇦🇪 +971</option>
-     <option value="+1-CA">🇨🇦 +1</option>
-     <option value="+61">🇦🇺 +61</option>
-     <option value="+81">🇯🇵 +81</option>
-     <option value="+52">🇲🇽 +52</option>
-     <option value="+57">🇨🇴 +57</option>
-     <option value="+56">🇨🇱 +56</option>
-   </select>
-   <input type="tel" id="lv-whatsapp" placeholder="(11) 99999-9999" style="flex:1;">
- </div>
- </div>
- <div class="lff-field"><label data-i18n="live_label_sexo">Sexo</label>
- <select id="lv-sexo">
- <option value="" data-i18n="live_opt_prefiro_nao">Prefiro não informar</option>
- <option data-i18n="live_opt_masculino">Masculino</option>
- <option data-i18n="live_opt_feminino">Feminino</option>
- <option data-i18n="live_opt_outro">Outro</option>
- </select>
- </div>
- <div class="lff-field"><label data-i18n="live_label_nasc">Data de nascimento</label><input type="date" id="lv-nascimento" max="2006-01-01"></div>
- </div>
- </div>
- <button class="live-submit-btn" onclick="liveStep(2)" data-i18n="live_proximo_localizacao">Próximo — Localização →</button>
- </div>
-
- <!-- STEP 2: Localização -->
- <div id="live-step2" class="hide">
- <div class="lg-section">
- <div class="lg-section-title" data-i18n="live_step2_titulo"> Localização</div>
- <div class="lg-grid cols3">
- <div class="lff-field"><label data-i18n="live_label_pais">País</label> <span class="required-star">*</span>
- <select id="lv-pais">
- <option value="" data-i18n="live_opt_selecionar">Selecionar...</option>
- <option selected data-i18n="live_opt_brasil">Brasil</option>
- <option data-i18n="live_opt_eua">Estados Unidos</option>
- <option>Argentina</option>
- <option>Portugal</option>
- <option data-i18n="live_opt_franca">França</option>
- <option data-i18n="live_opt_alemanha">Alemanha</option>
- <option data-i18n="live_opt_reino_unido">Reino Unido</option>
- <option data-i18n="live_opt_emirados">Emirados Árabes</option>
- <option data-i18n="live_opt_canada">Canadá</option>
- <option data-i18n="live_opt_australia">Austrália</option>
- <option data-i18n="live_opt_outro">Outro</option>
- </select>
- </div>
- <div class="lff-field"><label data-i18n="live_label_estado">Estado / Província</label><input type="text" id="lv-estado" placeholder="—"></div>
- <div class="lff-field"><label data-i18n="live_label_cidade">Cidade</label><input type="text" id="lv-cidade" placeholder="—"></div>
- </div>
- </div>
- <div style="display:flex;gap:10px;">
- <button class="live-submit-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);flex:0 0 auto;width:auto;padding:14px 20px;" onclick="liveStep(1)" data-i18n="live_voltar">← Voltar</button>
- <button class="live-submit-btn" onclick="liveStep(3)" data-i18n="live_proximo_perfil">Próximo — Perfil Trader →</button>
- </div>
- </div>
-
- <!-- STEP 3: Perfil trader -->
- <div id="live-step3" class="hide">
- <div class="lg-section">
- <div class="lg-section-title" data-i18n="live_step3_titulo"> Perfil de Trading</div>
- <div class="lg-grid">
- <div class="lff-field"><label data-i18n="live_label_estilo">Estilo de trading</label>
- <select id="lv-estilo">
- <option value="" data-i18n="live_opt_selecionar">Selecionar...</option>
- <option>Scalper</option>
- <option>Day Trader</option>
- <option>Swing Trader</option>
- <option data-i18n="live_opt_algos">Algoritmos / EAs</option>
- <option data-i18n="live_opt_iniciante">Iniciante</option>
- </select>
- </div>
- <div class="lff-field"><label data-i18n="live_label_plataforma">Plataforma que usa</label>
- <select id="lv-plataforma">
- <option value="" data-i18n="live_opt_selecionar">Selecionar...</option>
- <option>NinjaTrader 8</option>
- <option>Tradovate</option>
- <option>MetaTrader 4</option>
- <option>MetaTrader 5</option>
- <option>TradingView</option>
- <option>cTrader</option>
- <option>DXtrade</option>
- <option>WealthCharts</option>
- <option>Rithmic</option>
- <option data-i18n="live_opt_outra">Outra</option>
- </select>
- </div>
- <div class="lff-field"><label data-i18n="live_label_firma">Qual prop firm opera</label>
- <select id="lv-firma">
- <option value="" data-i18n="live_opt_selecionar">Selecionar...</option>
- <option>Apex Trader Funding</option>
- <option>Bulenox</option>
- <option>FTMO</option>
- <option>FundedNext</option>
- <option>Take Profit Trader</option>
- <option>Earn2Trade</option>
- <option data-i18n="live_opt_outra">Outra</option>
- <option data-i18n="live_opt_nenhuma">Nenhuma ainda</option>
- </select>
- </div>
- <div class="lff-field"><label data-i18n="live_label_capital">Capital disponível para trading</label>
- <select id="lv-capital">
- <option value="" data-i18n="live_opt_selecionar">Selecionar...</option>
- <option data-i18n="live_opt_cap1">Menos de $1.000</option>
- <option>$1.000 – $5.000</option>
- <option>$5.000 – $10.000</option>
- <option>$10.000 – $25.000</option>
- <option>$25.000 – $50.000</option>
- <option data-i18n="live_opt_cap6">Acima de $50.000</option>
- </select>
- </div>
- <div class="lff-field lg-full"><label data-i18n="live_label_desafio">Já passou em algum desafio de prop firm?</label>
- <select id="lv-desafio">
- <option value="" data-i18n="live_opt_selecionar">Selecionar...</option>
- <option data-i18n="live_opt_sim_financiada">Sim, já tenho conta financiada</option>
- <option data-i18n="live_opt_sim_ainda_nao">Sim, mas ainda não recebi capital</option>
- <option data-i18n="live_opt_nao_tentando">Não, ainda estou tentando</option>
- <option data-i18n="live_opt_nunca">Nunca tentei ainda</option>
- </select>
- </div>
- </div>
- </div>
- <label class="lg-consent" style="margin:12px 0 8px;"><input type="checkbox" id="lv-consent"> <span data-i18n="consent_label">Concordo com a <a onclick="go('privacy')">Política de Privacidade</a> e os <a onclick="go('terms')">Termos de Uso</a></span></label>
- <div style="display:flex;gap:10px;">
- <button class="live-submit-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);flex:0 0 auto;width:auto;padding:14px 20px;" onclick="liveStep(2)" data-i18n="live_voltar">← Voltar</button>
- <button class="live-submit-btn" id="live-final-btn" onclick="joinLive()" data-i18n="live_acessar"> Acessar o Live Room →</button>
- </div>
- <div class="live-privacy"> <span data-i18n="live_privacidade">Seus dados são protegidos. Você receberá um e-mail de boas-vindas com o acesso ao Live Room.</span><br>
- <span class="resend-badge"> Powered by Resend.com</span>
- </div>
- </div>
- </div>
- </div>
  <div id="live-room" class="hide">
+ <div style="max-width:680px;margin:12px auto 0;padding:0 24px;">
+  <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px 18px;font-size:11px;color:var(--t2);line-height:1.7;">
+   <strong style="color:var(--red);font-size:10px;text-transform:uppercase;letter-spacing:.5px;" data-i18n="live_risk_title">Aviso de Risco</strong><br>
+   <span data-i18n="live_risk_text">O conteúdo apresentado no Live Room é exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou incentivo à compra ou venda de ativos. Operar mercados futuros envolve risco significativo de perda. Resultados passados não garantem resultados futuros. Opere apenas com capital que você pode perder.</span>
+  </div>
+ </div>
  <div class="live-room-wrap">
  <div class="live-badge"><div class="live-dot"></div> <span data-i18n="live_ao_vivo">AO VIVO</span></div>
  <div class="live-player">
