@@ -425,6 +425,7 @@ function go(page, skipHash){
   track('page_view',{page_name:page});
   // Preview banner only on gated pages
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
+  if(page==='blog'){go('guides');return;}
   if(page==='live') checkLoyaltyAndShowLive();
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
@@ -3913,9 +3914,18 @@ async function checkProAccess(){
 
 async function startCheckout(){
   if(!currentUser){openAuthModal('signup');return;}
+  // Disable button and show loading
+  const btn=document.querySelector('[onclick="startCheckout()"]');
+  const origText=btn?btn.textContent:'';
+  if(btn){btn.disabled=true;btn.textContent='Carregando...';}
   try{
-    const{data:{session}}=await db.auth.getSession();
-    if(!session){openAuthModal('login');return;}
+    // Refresh session to ensure valid token
+    const{data:{session},error:sessErr}=await db.auth.refreshSession();
+    if(sessErr||!session){
+      if(btn){btn.disabled=false;btn.textContent=origText;}
+      openAuthModal('login');
+      return;
+    }
     const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/stripe-checkout',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON},
@@ -3923,9 +3933,13 @@ async function startCheckout(){
     });
     const json=await res.json();
     if(json.url) window.location.href=json.url;
-    else if(json.error==='Already subscribed') alert(t('pro_already_subscribed'));
+    else if(json.error==='Already subscribed'){alert(t('pro_already_subscribed'));if(btn){btn.disabled=false;btn.textContent=origText;}}
     else throw new Error(json.error||'Checkout failed');
-  }catch(e){console.error('Checkout error:',e);alert('Error: '+e.message);}
+  }catch(e){
+    console.error('Checkout error:',e);
+    alert('Error: '+e.message);
+    if(btn){btn.disabled=false;btn.textContent=origText;}
+  }
 }
 
 async function openStripePortal(){

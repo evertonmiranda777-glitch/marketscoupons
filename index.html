@@ -2580,9 +2580,9 @@ document.addEventListener('DOMContentLoaded',function(){
        </div>
       </div>
       <h2 data-i18n="as_l2_h">Live Room <span class="purple">VIP</span> e indicadores exclusivos</h2>
-      <p data-i18n="as_l2_p">Acesse sessoes ao vivo e indicadores profissionais desbloqueados pelo programa de fidelidade. Compre usando nosso cupom e entre no VIP.</p>
+      <p data-i18n="as_l2_p">Acesse conteúdo exclusivo e indicadores profissionais desbloqueados pelo programa de fidelidade. Compre usando nosso cupom e entre no VIP.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f1">Sessões ao vivo com análise de mercado</div>
+       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f1">Sessões exclusivas para membros VIP</div>
        <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f2">Indicadores exclusivos para membros VIP</div>
        <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f3">Sorteios mensais de contas funded</div>
       </div>
@@ -3262,14 +3262,11 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <!-- GUIDES -->
 <div class="page" id="page-guides">
- <div class="sec" id="guides-header"><div class="sec-hd" data-i18n="guides_titulo">Guias & Educação</div><button onclick="go('blog')" style="margin-top:8px;background:none;border:1px solid var(--b1);color:var(--t2);padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);" data-i18n="nav_blog">Blog</button></div>
+ <div class="sec" id="guides-header"><div class="sec-hd" data-i18n="guides_titulo">Guias & Educação</div></div>
  <div class="guides-grid" id="guides-grid"></div>
  <div class="guide-article" id="guide-article"></div>
-</div>
-
-<!-- BLOG -->
-<div class="page" id="page-blog">
- <div class="sec" id="blog-header"><div class="sec-hd" data-i18n="nav_blog"> Blog</div></div>
+ <!-- Blog integrado abaixo das guias -->
+ <div class="sec" id="blog-header" style="margin-top:32px;"><div class="sec-hd" data-i18n="nav_blog">Blog</div></div>
  <div class="blog-filters" id="blog-filters">
   <button class="bf-btn active" onclick="filterBlog('all',this)" data-i18n="blog_filtro_todos">Todos</button>
   <button class="bf-btn bf-green" onclick="filterBlog('iniciante',this)" data-i18n="blvl_iniciante">Iniciante</button>
@@ -3279,6 +3276,9 @@ document.addEventListener('DOMContentLoaded',function(){
  <div class="blog-grid" id="blog-grid"></div>
  <div class="blog-article" id="blog-article"></div>
 </div>
+
+<!-- BLOG (redirect para guides) -->
+<div class="page" id="page-blog"></div>
 
 <!-- CALC -->
 <div class="page" id="page-calc">
@@ -3345,7 +3345,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <div style="max-width:520px;margin:0 auto;padding:60px 20px;text-align:center;">
    <div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
    <h2 style="font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;" data-i18n="live_titulo">Live Trading Room</h2>
-   <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px;" data-i18n="live_hero_desc">Assista ao espelhamento do NinjaTrader em tempo real. Nosso indicador exclusivo marca as entradas ao vivo. Cadastre-se gratuitamente para acessar.</p>
+   <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px;" data-i18n="live_hero_desc">Conteúdo exclusivo em tempo real para assinantes Pro e membros do programa de fidelidade.</p>
    <div id="live-gate-content"></div>
   </div>
  </div>
@@ -3361,7 +3361,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <div class="live-player">
  <div class="live-pp">
  <div class="pp-ico"></div>
- <p><span data-i18n="live_stream_desc">O stream começa quando o trader está ao vivo.</span></p>
+ <p><span data-i18n="live_stream_desc">O stream começa quando a sessão está ao vivo.</span></p>
  </div>
  </div>
  <div class="live-stats">
@@ -3449,7 +3449,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
     <div class="loyalty-hero">
       <h2 data-i18n="loyalty_hero_titulo">Programa de Fidelidade</h2>
-      <p data-i18n="loyalty_hero_desc">Compre pela Markets Coupons usando nosso cupom, envie o comprovante e desbloqueie acesso ao Live Room VIP com operações ao vivo, sorteios de avaliações, indicadores e muito mais.</p>
+      <p data-i18n="loyalty_hero_desc">Compre pela Markets Coupons usando nosso cupom, envie o comprovante e desbloqueie acesso ao Live Room VIP, sorteios de avaliações, indicadores e muito mais.</p>
     </div>
 
     <!-- BENEFITS CARDS -->
@@ -3457,7 +3457,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
         <div style="font-size:28px;margin-bottom:8px;"></div>
         <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit1_titulo">Live Room VIP</div>
-        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit1_sub">Operações ao vivo com o trader</div>
+        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit1_sub">Conteúdo exclusivo em tempo real</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
         <div style="font-size:28px;margin-bottom:8px;"></div>
