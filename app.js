@@ -3942,7 +3942,6 @@ async function openStripePortal(){
 }
 
 // Preview timer: 60s free preview for non-logged users
-let _previewTimer=null;
 let _previewCountdown=null;
 const PREVIEW_BANNER_ID='mc-preview-banner';
 function startPreviewTimer(gateId,wrapId,wrapClass){
@@ -3953,16 +3952,25 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
   const start=parseInt(stored||now,10);
   const elapsed=Math.floor((now-start)/1000);
   if(elapsed>=60){removePreviewBanner();showPreviewGate(gateId,wrapId,wrapClass);return;}
+  // Still within 60s — show content, start countdown
   const wrap=document.getElementById(wrapId);
   if(wrap) wrap.classList.remove(wrapClass);
   const gate=document.getElementById(gateId);
   if(gate){gate.innerHTML='';gate.style.display='none';}
-  if(_previewTimer) clearTimeout(_previewTimer);
   if(_previewCountdown) clearInterval(_previewCountdown);
   showPreviewBanner(60-elapsed);
+  // Store current gate info so interval can close the right gate
+  const _gateId=gateId,_wrapId=wrapId,_wrapClass=wrapClass;
   _previewCountdown=setInterval(()=>{
     const rem=60-Math.floor((Date.now()-start)/1000);
-    if(rem<=0){clearInterval(_previewCountdown);removePreviewBanner();showPreviewGate(gateId,wrapId,wrapClass);return;}
+    if(rem<=0){
+      clearInterval(_previewCountdown);
+      removePreviewBanner();
+      // Close ALL gated sections (user might have switched pages)
+      showPreviewGate('da-gate','da-wrap-inner','da-wrap-gated');
+      showPreviewGate('gx-gate','gx-wrap-inner','gx-wrap-gated');
+      return;
+    }
     const el=document.getElementById(PREVIEW_BANNER_ID);
     if(el){const s=el.querySelector('.pvw-time');if(s)s.textContent=rem+'s';}
   },1000);
@@ -3988,10 +3996,10 @@ function showPreviewGate(gateId,wrapId,wrapClass){
   gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
     <div class="da-gate-title">${t('da_gate_title_login')}</div>
     <div class="da-gate-text">${t('da_gate_text_login')}</div>
-    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
-      <button class="da-gate-btn" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>
-      <div style="font-size:11px;color:var(--t3);margin:4px 0;">${t('pro_or')}</div>
-      <button class="da-gate-btn sec" onclick="openAuthModal('signup')" style="font-size:12px;">${t('pro_subscribe_btn')}</button>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
+      <button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>
+      <div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>
+      <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('signup')">${t('pro_subscribe_btn')}</button>
     </div>`;
 }
 
@@ -4060,10 +4068,10 @@ async function checkAnalysisGate(){
   gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
     <div class="da-gate-title">${t('da_gate_title_expired')}</div>
     <div class="da-gate-text">${t('da_gate_text_expired')}</div>
-    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
-      <button class="da-gate-btn" onclick="startCheckout()">${t('pro_subscribe_btn')}</button>
-      <div style="font-size:11px;color:var(--t3);margin:4px 0;">${t('pro_or')}</div>
-      <button class="da-gate-btn sec" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
+      <button class="da-gate-btn" style="width:100%;" onclick="startCheckout()">${t('pro_subscribe_btn')}</button>
+      <div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>
+      <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>
     </div>`;
 }
 
@@ -5168,10 +5176,10 @@ async function checkGEXGate(){
   gate.innerHTML=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
     <div class="da-gate-title">${t('da_gate_title_expired')}</div>
     <div class="da-gate-text">${t('gx_gate_text_expired')}</div>
-    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
-      <button class="da-gate-btn" onclick="startCheckout()">${t('pro_subscribe_btn')}</button>
-      <div style="font-size:11px;color:var(--t3);margin:4px 0;">${t('pro_or')}</div>
-      <button class="da-gate-btn sec" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
+      <button class="da-gate-btn" style="width:100%;" onclick="startCheckout()">${t('pro_subscribe_btn')}</button>
+      <div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>
+      <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="go('fidelidade')">${t('da_gate_btn_loyalty')}</button>
     </div>`;
 }
 
