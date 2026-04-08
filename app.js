@@ -2350,13 +2350,13 @@ function fdGo(id) {
   if (cf) {
     let url = cf.buildUrl(st.size||'',st.type||'',st.plat||'');
     url += (url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
-    if (f?.coupon) navigator.clipboard.writeText(f.coupon).catch(()=>{});
+    if (f?.coupon) navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
     track('checkout_click',{firm_id:id,firm_name:f?.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f?.name||'');
     if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:id,source:_src});
     window.open(url,'_blank');
   } else {
-    if (f?.coupon) navigator.clipboard.writeText(f.coupon).catch(()=>{});
+    if (f?.coupon) navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
     track('checkout_click',{firm_id:id,firm_name:f?.name||'',coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick('','','',f?.name||'');
     if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:id,source:_src});
@@ -2392,7 +2392,7 @@ function fdGoCheckout(fId){
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   let url=cf.buildUrl(st.size||'',st.type||'',st.plat||'');
   url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+fId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
-  if(f.coupon)navigator.clipboard.writeText(f.coupon).catch(()=>{});
+  if(f.coupon)navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
   track('checkout_click',{firm_id:fId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:fId,source:_src});
@@ -2876,7 +2876,7 @@ function drwGoCheckout(firmId) {
   let url = cf.buildUrl(st.size||'', st.type||'', st.plat||'');
   url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=drawer&utm_campaign='+firmId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
   if (f.coupon) {
-    navigator.clipboard.writeText(f.coupon).catch(()=>{});
+    navigator.clipboard.writeText(f.coupon).then(()=>showToast(t('toast_cupom_copiado').replace('{code}',f.coupon))).catch(()=>{});
   }
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
@@ -3009,7 +3009,7 @@ function renderFaq() {
 function shortCode(c,max=12){return c&&c.length>max?c.slice(0,max)+'…':c;}
 function cpCoupon(code,firmId,location){
   navigator.clipboard.writeText(code).then(()=>{
-    showToast('Codigo '+code+' copiado!');
+    showToast(t('toast_cupom_copiado').replace('{code}',code));
     const f=FIRMS.find(x=>x.id===firmId);
     const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
     track('coupon_copy',{coupon_code:code,firm_id:firmId,firm_name:f?.name,discount:f?.discount,location,source:_src});
@@ -3246,7 +3246,7 @@ function achGoCheckout(fId,size){
   if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_name:fId,source:_src});
   window.open(url,'_blank');
 }
-function achCopyCoupon(){const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm?.coupon)return;navigator.clipboard.writeText(firm.coupon).then(()=>{const _src=window._dedicatedFirmSlug?'dedicated':'homepage';showToast('Codigo '+firm.coupon+' copiado!');track('coupon_copy',{coupon_code:firm.coupon,firm_id:achActiveFirm,location:'checkout_header',source:_src});if(typeof fbq==='function')fbq('trackCustom','CopyCode',{content_name:achActiveFirm,coupon:firm.coupon,source:_src});});}
+function achCopyCoupon(){const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm?.coupon)return;navigator.clipboard.writeText(firm.coupon).then(()=>{const _src=window._dedicatedFirmSlug?'dedicated':'homepage';showToast(t('toast_cupom_copiado').replace('{code}',firm.coupon));track('coupon_copy',{coupon_code:firm.coupon,firm_id:achActiveFirm,location:'checkout_header',source:_src});if(typeof fbq==='function')fbq('trackCustom','CopyCode',{content_name:achActiveFirm,coupon:firm.coupon,source:_src});});}
 
 /* COMPARE */
 function initCmp(){['c1','c2','c3'].forEach(id=>{const sel=document.getElementById(id);if(!sel)return;FIRMS.forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.name;sel.appendChild(o);});});}
