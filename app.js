@@ -3732,7 +3732,7 @@ function loadHeatmap(source, btn) {
   }
 }
 
-/* CALENDÁRIO ECONÔMICO (Trading Economics via Edge Function) */
+/* CALENDÁRIO ECONÔMICO */
 const CUR_COLORS = {
   USD:{bg:'rgba(59,130,246,.15)',c:'#60a5fa'},
   EUR:{bg:'rgba(34,197,94,.15)',c:'#22c55e'},
@@ -5174,7 +5174,7 @@ function renderGEX(items){
     const ds=d.toLocaleDateString(locMap[_currentLang]||'en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     const el=document.getElementById('gx-date');
     el.removeAttribute('data-i18n');
-    el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong> | Source: CBOE (delayed)';
+    el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong>';
   }
 
   grid.innerHTML=items.map(item=>{
