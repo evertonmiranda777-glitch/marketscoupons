@@ -5323,6 +5323,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadGuidesFromSupabase();
   renderGuides();
   loadDailyAnalysis();
+  loadGEX();
 
   // Carregar fidelidade do membro logado (se tiver email salvo)
   const cachedMember = getLoyaltyMember();
