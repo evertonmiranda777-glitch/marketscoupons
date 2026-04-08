@@ -1797,7 +1797,7 @@ function _renderBlogCards(g, posts){
     const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[curLang]||'pt-BR';
     const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'short',year:'numeric'}) : '';
     return `
-    <div class="bc" style="cursor:pointer;" onclick="openBlogArticle('${post.slug}')">
+    <a href="${blogUrl}" class="bc" style="text-decoration:none;color:inherit;">
       <div class="bc-img" style="background-image:url('${coverImg}')">
         <div class="bc-level" style="background:${lvl.bg};color:${lvl.color};">${t(lvl.key)}</div>
       </div>
@@ -1810,7 +1810,7 @@ function _renderBlogCards(g, posts){
           <span class="bc-read">${t('blog_ler')||'Ler →'}</span>
         </div>
       </div>
-    </div>`;
+    </a>`;
   }).join('');
 }
 
