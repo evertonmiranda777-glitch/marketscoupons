@@ -3932,7 +3932,7 @@ async function startCheckout(){
     const json=await res.json();
     if(json.url) window.location.href=json.url;
     else if(json.error==='Already subscribed'){alert(t('pro_already_subscribed'));if(btn){btn.disabled=false;btn.textContent=origText;}}
-    else throw new Error(json.error||'Checkout failed');
+    else { console.error('Checkout response:',json); throw new Error(json.error + (json.debug ? ' | DEBUG: key='+json.debug.keyPrefix+' price='+json.debug.priceId+' len='+json.debug.priceIdLength : '')); }
   }catch(e){
     console.error('Checkout error:',e);
     alert('Error: '+e.message);
