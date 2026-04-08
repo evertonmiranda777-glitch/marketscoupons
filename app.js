@@ -5402,7 +5402,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
     window.scrollTo(0,0);
     openD(_pathSlug);
-    requestAnimationFrame(()=>{requestAnimationFrame(()=>{document.body.style.opacity='1';});});
+    setTimeout(()=>{document.body.style.opacity='1';},80);
   }
   // Reopen firm overlay from URL hash (e.g. #firm/apex)
   else if(location.hash.startsWith('#firm/')){
@@ -5414,7 +5414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
       window.scrollTo(0,0);
       openD(_hFirmId);
-      requestAnimationFrame(()=>{requestAnimationFrame(()=>{document.body.style.opacity='1';});});
+      setTimeout(()=>{document.body.style.opacity='1';},80);
     }
   }
   await loadGuidesFromSupabase();
