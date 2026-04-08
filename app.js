@@ -1837,7 +1837,7 @@ async function openBlogArticle(slug){
   try {
     // Try from already-loaded posts first
     let post = _blogPostsDB.find(p=>p.slug===slug);
-    if(!post || !post.content_html){
+    if(!post || !post.body){
       const{data}=await db.from('blog_posts').select('*').eq('slug',slug).maybeSingle();
       if(data) post=data;
     }
@@ -1850,7 +1850,7 @@ async function openBlogArticle(slug){
       <div class="blog-art-level" style="background:${lvl.bg};color:${lvl.color};">${t(lvl.key)}</div>
       <div class="blog-art-title">${post.title}</div>
       <div class="blog-art-meta"><span>${dateStr}</span></div>
-      <div class="blog-art-body">${DOMPurify.sanitize(post.content_html||post.content||'')}</div>`;
+      <div class="blog-art-body">${DOMPurify.sanitize(post.body||'')}</div>`;
   } catch(e){
     art.innerHTML='<div style="color:var(--t2);padding:40px 0;">Error loading post.</div>';
   }
