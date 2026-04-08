@@ -1372,6 +1372,22 @@ img{max-width:100%;}
 @keyframes lg-pulse{0%,100%{opacity:.5;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
 .lg-loading{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:12px;}
 .lg-loading span{font-size:12px;color:var(--t3);letter-spacing:.3px;animation:lg-pulse 1.6s ease-in-out infinite;}
+
+/* PRO SUCCESS OVERLAY */
+.pro-success-ov{position:fixed;inset:0;z-index:99999;background:rgba(7,9,13,.88);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:pro-ov-in .4s ease;}
+@keyframes pro-ov-in{from{opacity:0}to{opacity:1}}
+.pro-success-box{background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:40px 36px;text-align:center;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(240,180,41,.08);}
+.pro-success-icon{width:56px;height:56px;border-radius:50%;background:rgba(240,180,41,.12);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.pro-success-box h2{font-size:22px;font-weight:800;color:var(--t1);margin-bottom:8px;letter-spacing:-.4px;}
+.pro-success-box p{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:24px;}
+.pro-success-cta{width:100%;padding:12px;border:none;border-radius:10px;background:var(--gold);color:#07090D;font-size:14px;font-weight:700;cursor:pointer;transition:.25s;}
+.pro-success-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(240,180,41,.25);}
+
+/* PRO BADGE */
+.pro-badge{position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
+.pro-badge svg{width:8px;height:8px;}
+.user-menu-btn{position:relative;}
+
 .lf-field{margin-bottom:13px;text-align:left;}
 .lf-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
 .lf-field input{width:100%;padding:9px 11px;background:var(--card);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;transition:.2s;}
@@ -2368,10 +2384,11 @@ document.addEventListener('DOMContentLoaded',function(){
  <!-- User menu (logged in) -->
  <div id="auth-btns-in" style="display:none;">
   <div class="user-menu-btn" onclick="document.getElementById('user-dd-menu').classList.toggle('open')">
-   <div class="user-avatar-sm" id="nav-avatar">U</div>
+   <div style="position:relative;"><div class="user-avatar-sm" id="nav-avatar">U</div><div id="nav-pro-badge" class="pro-badge" style="display:none;"><svg viewBox="0 0 24 24" fill="#07090D" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div>
    <span id="nav-user-name">Usuário</span>
    <div class="user-dd" id="user-dd-menu"><div class="user-dd-inner">
     <button class="user-dd-item" data-i18n="btn_meu_painel" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');go('painel')">Meu Painel</button>
+    <button class="user-dd-item" id="dd-manage-sub" data-i18n="pro_manage_sub" style="display:none;" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');openStripePortal()">Gerenciar assinatura</button>
     <button class="user-dd-item" data-i18n="btn_sair" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');doLogout()">Sair</button>
    </div></div>
   </div>

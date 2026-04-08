@@ -432,7 +432,7 @@ function go(page, skipHash){
   if(page==='gamma') loadGEX();
   if(page==='pro-success'){
     go('analise');
-    setTimeout(()=>{alert(t('pro_success_msg'));checkAnalysisGate();},500);
+    setTimeout(()=>{showProSuccessOverlay();checkAnalysisGate();},500);
     return;
   }
 }
@@ -3994,6 +3994,39 @@ async function openStripePortal(){
   }catch(e){console.error('Portal error:',e);}
 }
 
+function showProSuccessOverlay(){
+  const ov=document.createElement('div');
+  ov.className='pro-success-ov';
+  ov.innerHTML=`<div class="pro-success-box">
+    <div class="pro-success-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <h2>${t('pro_success_title')}</h2>
+    <p>${t('pro_success_text')}</p>
+    <button class="pro-success-cta" onclick="this.closest('.pro-success-ov').remove()">${t('pro_success_cta')}</button>
+  </div>`;
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.remove();});
+  document.body.appendChild(ov);
+  checkProBadge();
+}
+
+async function checkProBadge(){
+  const badge=document.getElementById('nav-pro-badge');
+  const manageBtn=document.getElementById('dd-manage-sub');
+  if(!currentUser){
+    if(badge)badge.style.display='none';
+    if(manageBtn)manageBtn.style.display='none';
+    return;
+  }
+  try{
+    const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
+    const isPro=data&&data.length>0;
+    if(badge)badge.style.display=isPro?'flex':'none';
+    if(manageBtn)manageBtn.style.display=isPro?'block':'none';
+  }catch(e){
+    if(badge)badge.style.display='none';
+    if(manageBtn)manageBtn.style.display='none';
+  }
+}
+
 // Preview timer: 60s free preview for non-logged users
 let _previewCountdown=null;
 const PREVIEW_BANNER_ID='mc-preview-banner';
@@ -4930,6 +4963,7 @@ async function loadUserSession(user) {
   currentProfile = data;
   updateAuthUI(true);
   checkAnalysisGate();
+  checkProBadge();
   await loadUserFavs();
   applyF();
   _sessionLoading = false;
