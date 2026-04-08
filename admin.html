@@ -522,6 +522,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta nta-cms" onclick="adminGo('cms-guides',this)">Guias</button>
  <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
  <button class="nta nta-cms" onclick="adminGo('criativos',this)">Criativos</button>
+ <div class="nta-sep"></div>
+ <button class="nta nta-cms" onclick="adminGo('cms-faq',this)">FAQ</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-texts',this)">Textos</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-settings',this)">Config</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -581,6 +585,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta nta-cms" onclick="adminGoMobile('cms-guides',this)">Guias</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-blog',this)">Blog</button>
   <button class="nta nta-cms" onclick="adminGoMobile('criativos',this)">Criativos</button>
+  <div class="nta-sep"></div>
+  <button class="nta nta-cms" onclick="adminGoMobile('cms-faq',this)">FAQ</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('cms-texts',this)">Textos</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('cms-settings',this)">Config</button>
  </div>
 
  <!-- GLOBAL DATE FILTER -->
@@ -1438,6 +1446,55 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div style="font-size:12px;color:var(--t3);margin-top:8px;" id="cadastros-count">0 cadastros</div>
     </div>
 
+    <!-- ══ CMS: FAQ ══ -->
+    <div class="admin-page" id="page-cms-faq">
+      <div class="sec-hdr">
+        <div class="sec-title">FAQ</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="openFaqModal()">+ Nova Pergunta</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="faq-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ CMS: TEXTOS ══ -->
+    <div class="admin-page" id="page-cms-texts">
+      <div class="sec-hdr">
+        <div class="sec-title">Textos do Site</div>
+        <div class="sec-actions">
+          <select id="texts-section-filter" class="filter-inp" onchange="renderCmsTexts()" style="min-width:140px;">
+            <option value="">Todas as seções</option>
+            <option value="hero">Hero</option>
+            <option value="home">Home</option>
+            <option value="live">Live Room</option>
+            <option value="loyalty">Fidelidade</option>
+            <option value="pro">Pro</option>
+            <option value="footer">Footer</option>
+            <option value="general">Geral</option>
+          </select>
+          <button class="btn-primary" onclick="openTextModal()">+ Novo Texto</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="texts-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ CMS: CONFIGURAÇÕES ══ -->
+    <div class="admin-page" id="page-cms-settings">
+      <div class="sec-hdr">
+        <div class="sec-title">Configurações</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="saveSettings()">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:20px;">
+        <div id="settings-form"></div>
+      </div>
+    </div>
+
  </div><!-- admin-body -->
 </div><!-- admin-app -->
 
@@ -1842,6 +1899,9 @@ function renderPage(p){
     case 'cms-guides':     renderCmsGuides(); break;
     case 'cms-blog':       renderCmsBlog(); break;
     case 'criativos':      initCriativos(); break;
+    case 'cms-faq':        renderCmsFaq(); break;
+    case 'cms-texts':      renderCmsTexts(); break;
+    case 'cms-settings':   renderCmsSettings(); break;
   }
 }
 
@@ -5140,6 +5200,7 @@ function openFirmModal(id) {
       <button class="btn-secondary fm-tab" onclick="fmTab(this,'prices')">Precos & Planos</button>
       <button class="btn-secondary fm-tab" onclick="fmTab(this,'checkout')">Checkout</button>
       <button class="btn-secondary fm-tab" onclick="fmTab(this,'details')">Detalhes</button>
+      <button class="btn-secondary fm-tab" onclick="fmTab(this,'overlay')">Overlay</button>
     </div>
 
     <div id="fm-sec-basic" class="fm-sec">
@@ -5215,6 +5276,17 @@ function openFirmModal(id) {
       <div class="modal-field modal-full"><label>Descricao</label><textarea id="fm-desc" rows="3" style="font-size:11px;">${f.description||''}</textarea></div>
       <div class="modal-field"><label>Badge Label</label><input type="text" id="fm-badge-label" value="${badge.label||''}"></div>
       <div class="modal-field"><label>Badge Color</label><input type="color" id="fm-badge-color" value="${badge.color||f.color||'#F0B429'}" style="height:38px;"></div>
+    </div>
+    </div>
+
+    <div id="fm-sec-overlay" class="fm-sec" style="display:none;">
+    <div class="modal-grid">
+      <div class="modal-field modal-full"><label>Imagem de fundo (path)</label><input type="text" id="fm-bg-image" value="${f.bg_image||''}" placeholder="img/apex-bg.webp"></div>
+      <div class="modal-field modal-full"><label>About (HTML)</label><textarea id="fm-about-html" rows="4" style="font-size:11px;">${escHtml(f.about_html||'')}</textarea></div>
+      <div class="modal-field modal-full"><label>Highlights (JSON) <span style="font-size:9px;color:var(--t3);">[{"val":"$721M+","label":"Pagos"}]</span></label><textarea id="fm-about-hl" rows="2" style="font-size:11px;font-family:monospace;">${escHtml(f.about_highlights?JSON.stringify(f.about_highlights):'')}</textarea></div>
+      <div class="modal-field modal-full"><label>Tipos do overlay (virgula)</label><input type="text" id="fm-detail-types" value="${(f.detail_types||[]).join(', ')}" placeholder="Intraday Trail, EOD Trail"></div>
+      <div class="modal-field modal-full"><label>Planos overlay (JSON) <span style="font-size:9px;color:var(--t3);">{"Tipo":[{"s":"25K","d":"$19.90","o":"$199"}]}</span></label><textarea id="fm-detail-plans" rows="4" style="font-size:11px;font-family:monospace;">${escHtml(f.detail_plans?JSON.stringify(f.detail_plans):'')}</textarea></div>
+      <div class="modal-field modal-full"><label>Includes overlay (1 por linha)</label><textarea id="fm-detail-includes" rows="3" style="font-size:11px;">${(f.detail_includes||[]).join('\\n')}</textarea></div>
     </div>
     </div>
 
@@ -5363,6 +5435,13 @@ async function saveFirm(existingId) {
     checkout_includes: document.getElementById('fm-co-includes').value.split('\n').map(s=>s.trim()).filter(Boolean),
     checkout_plans: coPlans,
     active:        existingId ? (_firmsCache.find(x=>x.id===existingId)?.active ?? true) : true,
+    // Overlay fields
+    bg_image:       document.getElementById('fm-bg-image').value.trim()||null,
+    about_html:     document.getElementById('fm-about-html').value.trim()||null,
+    about_highlights: (()=>{ try{ const v=document.getElementById('fm-about-hl').value.trim(); return v?JSON.parse(v):null; }catch(e){ return null; } })(),
+    detail_types:   document.getElementById('fm-detail-types').value.split(',').map(s=>s.trim()).filter(Boolean),
+    detail_plans:   (()=>{ try{ const v=document.getElementById('fm-detail-plans').value.trim(); return v?JSON.parse(v):null; }catch(e){ return null; } })(),
+    detail_includes:document.getElementById('fm-detail-includes').value.split('\n').map(s=>s.trim()).filter(Boolean),
   };
   f.bg = f.color + '1F';
   if(!f.name || !f.id) { toast('Preencha nome e ID!','warn'); return; }
@@ -6517,6 +6596,185 @@ async function exportCreative() {
 window.addEventListener('resize', function() {
   if (document.getElementById('page-criativos')?.classList.contains('active')) scaleCrPreview();
 });
+
+/* ══════════════════════════════════════════════════
+   CMS: FAQ
+   ══════════════════════════════════════════════════ */
+let _faqData=[];
+async function renderCmsFaq(){
+  const{data,error}=await db.from('cms_faq').select('*').order('sort_order',{ascending:true});
+  if(error){toast('Erro ao carregar FAQ','error');return;}
+  _faqData=data||[];
+  const tbl=document.getElementById('faq-tbl');
+  tbl.innerHTML=`<thead><tr><th>#</th><th>Pergunta (PT)</th><th>EN</th><th>Ativo</th><th>Ações</th></tr></thead><tbody>`+
+    _faqData.map((f,i)=>`<tr>
+      <td>${f.sort_order}</td>
+      <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml((f.question?.pt||'').substring(0,60))}</td>
+      <td>${f.question?.en?'✓':'—'}</td>
+      <td><span style="color:${f.active?'var(--green)':'var(--red)'}">${f.active?'Sim':'Não'}</span></td>
+      <td><button class="btn-secondary" onclick="openFaqModal(${f.id})" style="font-size:11px;padding:4px 10px;">Editar</button> <button class="btn-secondary" onclick="deleteFaq(${f.id})" style="font-size:11px;padding:4px 10px;color:var(--red);">Excluir</button></td>
+    </tr>`).join('')+`</tbody>`;
+}
+
+function openFaqModal(id){
+  const f=id?_faqData.find(x=>x.id===id):null;
+  const langs=['pt','en','es','it','fr','de','ar'];
+  let h=`<div style="display:grid;gap:14px;">
+    <div class="ec-field"><label>Ordem</label><input id="faq-order" class="filter-inp" type="number" value="${f?f.sort_order:99}" style="width:80px;"></div>
+    <div class="ec-field"><label><input type="checkbox" id="faq-active" ${!f||f.active?'checked':''}> Ativo</label></div>
+    <div style="font-size:12px;font-weight:700;color:var(--gold);margin-top:8px;">Pergunta</div>`;
+  langs.forEach(l=>{
+    h+=`<div class="ec-field"><label>${l.toUpperCase()}</label><input id="faq-q-${l}" class="filter-inp" style="width:100%;" value="${escHtml(f?.question?.[l]||'')}"></div>`;
+  });
+  h+=`<div style="font-size:12px;font-weight:700;color:var(--gold);margin-top:8px;">Resposta</div>`;
+  langs.forEach(l=>{
+    h+=`<div class="ec-field"><label>${l.toUpperCase()}</label><textarea id="faq-a-${l}" class="filter-inp" rows="2" style="width:100%;resize:vertical;">${escHtml(f?.answer?.[l]||'')}</textarea></div>`;
+  });
+  h+=`<button class="btn-primary" onclick="saveFaq(${id||'null'})" style="margin-top:8px;">${id?'Salvar':'Criar'}</button></div>`;
+  document.getElementById('cms-modal-title').textContent=id?'Editar FAQ':'Nova Pergunta';
+  document.getElementById('cms-modal-body').innerHTML=h;
+  document.getElementById('cms-modal-ov').style.display='flex';
+}
+
+async function saveFaq(id){
+  const langs=['pt','en','es','it','fr','de','ar'];
+  const question={},answer={};
+  langs.forEach(l=>{
+    const q=document.getElementById('faq-q-'+l)?.value?.trim();
+    const a=document.getElementById('faq-a-'+l)?.value?.trim();
+    if(q) question[l]=q;
+    if(a) answer[l]=a;
+  });
+  if(!question.pt&&!question.en){toast('Preencha pelo menos PT ou EN','error');return;}
+  const row={question,answer,sort_order:parseInt(document.getElementById('faq-order').value)||99,active:document.getElementById('faq-active').checked};
+  if(id){
+    const{error}=await db.from('cms_faq').update(row).eq('id',id);
+    if(error){toast('Erro: '+error.message,'error');return;}
+  }else{
+    const{error}=await db.from('cms_faq').insert(row);
+    if(error){toast('Erro: '+error.message,'error');return;}
+  }
+  closeCmsModal();toast('FAQ salvo!');renderCmsFaq();
+}
+
+async function deleteFaq(id){
+  if(!confirm('Excluir esta pergunta?'))return;
+  await db.from('cms_faq').delete().eq('id',id);
+  toast('FAQ excluído');renderCmsFaq();
+}
+
+/* ══════════════════════════════════════════════════
+   CMS: TEXTOS DO SITE
+   ══════════════════════════════════════════════════ */
+let _textsData=[];
+async function renderCmsTexts(){
+  const section=document.getElementById('texts-section-filter')?.value||'';
+  let q=db.from('cms_texts').select('key,section,"values",updated_at').order('section').order('key');
+  if(section) q=q.eq('section',section);
+  const{data,error}=await q;
+  if(error){toast('Erro ao carregar textos','error');return;}
+  _textsData=data||[];
+  const tbl=document.getElementById('texts-tbl');
+  tbl.innerHTML=`<thead><tr><th>Chave</th><th>Seção</th><th>PT</th><th>EN</th><th>Idiomas</th><th>Ações</th></tr></thead><tbody>`+
+    _textsData.map(t=>{
+      const v=t.values||{};
+      const langs=Object.keys(v).filter(k=>v[k]);
+      return `<tr>
+        <td><code style="font-size:11px;background:var(--card2);padding:2px 6px;border-radius:4px;">${escHtml(t.key)}</code></td>
+        <td><span style="font-size:10px;text-transform:uppercase;color:var(--gold);font-weight:700;">${escHtml(t.section)}</span></td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;">${escHtml((v.pt||'').substring(0,50))}</td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;">${escHtml((v.en||'').substring(0,50))}</td>
+        <td style="font-size:11px;">${langs.join(', ')}</td>
+        <td><button class="btn-secondary" onclick="openTextModal('${escHtml(t.key)}')" style="font-size:11px;padding:4px 10px;">Editar</button> <button class="btn-secondary" onclick="deleteText('${escHtml(t.key)}')" style="font-size:11px;padding:4px 10px;color:var(--red);">Excluir</button></td>
+      </tr>`;
+    }).join('')+`</tbody>`;
+}
+
+function openTextModal(key){
+  const t=key?_textsData.find(x=>x.key===key):null;
+  const v=t?.values||{};
+  const langs=['pt','en','es','it','fr','de','ar'];
+  const sections=['hero','home','live','loyalty','pro','footer','general'];
+  let h=`<div style="display:grid;gap:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="ec-field"><label>Chave I18N</label><input id="text-key" class="filter-inp" style="width:100%;" value="${escHtml(t?.key||'')}" ${key?'readonly':''}></div>
+      <div class="ec-field"><label>Seção</label><select id="text-section" class="filter-inp" style="width:100%;">${sections.map(s=>`<option value="${s}" ${t?.section===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--gold);">Textos por idioma</div>`;
+  langs.forEach(l=>{
+    h+=`<div class="ec-field"><label>${l.toUpperCase()}</label><textarea id="text-v-${l}" class="filter-inp" rows="2" style="width:100%;resize:vertical;">${escHtml(v[l]||'')}</textarea></div>`;
+  });
+  h+=`<button class="btn-primary" onclick="saveText(${key?"'"+escHtml(key)+"'":'null'})" style="margin-top:8px;">${key?'Salvar':'Criar'}</button></div>`;
+  document.getElementById('cms-modal-title').textContent=key?'Editar Texto':'Novo Texto';
+  document.getElementById('cms-modal-body').innerHTML=h;
+  document.getElementById('cms-modal-ov').style.display='flex';
+}
+
+async function saveText(existingKey){
+  const langs=['pt','en','es','it','fr','de','ar'];
+  const key=document.getElementById('text-key')?.value?.trim();
+  const section=document.getElementById('text-section')?.value||'general';
+  if(!key){toast('Chave obrigatória','error');return;}
+  const values={};
+  langs.forEach(l=>{
+    const v=document.getElementById('text-v-'+l)?.value?.trim();
+    if(v) values[l]=v;
+  });
+  const row={key,section,"values":values,updated_at:new Date().toISOString()};
+  if(existingKey){
+    const{error}=await db.from('cms_texts').update({section,"values":values,updated_at:new Date().toISOString()}).eq('key',existingKey);
+    if(error){toast('Erro: '+error.message,'error');return;}
+  }else{
+    const{error}=await db.from('cms_texts').upsert(row);
+    if(error){toast('Erro: '+error.message,'error');return;}
+  }
+  closeCmsModal();toast('Texto salvo!');renderCmsTexts();
+}
+
+async function deleteText(key){
+  if(!confirm('Excluir texto "'+key+'"?'))return;
+  await db.from('cms_texts').delete().eq('key',key);
+  toast('Texto excluído');renderCmsTexts();
+}
+
+/* ══════════════════════════════════════════════════
+   CMS: CONFIGURAÇÕES GERAIS
+   ══════════════════════════════════════════════════ */
+let _settingsData={};
+async function renderCmsSettings(){
+  const{data}=await db.from('site_settings').select('*');
+  _settingsData={};
+  (data||[]).forEach(s=>{_settingsData[s.key]=s.value;});
+  const fields=[
+    {key:'default_language',label:'Idioma Padrão',type:'select',options:['en','pt','es','it','fr','de','ar']},
+    {key:'bot_enabled',label:'TradeBot Ativo',type:'toggle'},
+    {key:'live_room_enabled',label:'Live Room Ativo',type:'toggle'},
+    {key:'telegram_url',label:'URL Telegram',type:'text'},
+    {key:'daily_analysis_schedule',label:'Horário Análise Diária',type:'text'},
+  ];
+  const form=document.getElementById('settings-form');
+  form.innerHTML=fields.map(f=>{
+    const v=_settingsData[f.key]||'';
+    if(f.type==='select'){
+      return `<div class="ec-field" style="margin-bottom:16px;"><label>${f.label}</label><select id="set-${f.key}" class="filter-inp" style="width:200px;">${f.options.map(o=>`<option value="${o}" ${v===o?'selected':''}>${o.toUpperCase()}</option>`).join('')}</select></div>`;
+    }
+    if(f.type==='toggle'){
+      return `<div class="ec-field" style="margin-bottom:16px;"><label><input type="checkbox" id="set-${f.key}" ${v==='true'?'checked':''}> ${f.label}</label></div>`;
+    }
+    return `<div class="ec-field" style="margin-bottom:16px;"><label>${f.label}</label><input id="set-${f.key}" class="filter-inp" style="width:100%;max-width:400px;" value="${escHtml(v)}"></div>`;
+  }).join('');
+}
+
+async function saveSettings(){
+  const fields=['default_language','bot_enabled','live_room_enabled','telegram_url','daily_analysis_schedule'];
+  for(const key of fields){
+    const el=document.getElementById('set-'+key);
+    if(!el) continue;
+    const value=el.type==='checkbox'?String(el.checked):(el.value||'');
+    await db.from('site_settings').upsert({key,value,updated_at:new Date().toISOString()});
+  }
+  toast('Configurações salvas!');
+}
 
 </script>
 </body>

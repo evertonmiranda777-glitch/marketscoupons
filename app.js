@@ -498,7 +498,11 @@ document.addEventListener('click',e=>{
 
 /* ─── TRANSLATION ENGINE ─── */
 let _currentLang = 'en';
-function t(key) { return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.en[key]) || key; }
+let _cmsTexts = {}; // DB overrides loaded from cms_texts
+function t(key) {
+  if(_cmsTexts[key]) return _cmsTexts[key][_currentLang] || _cmsTexts[key].en || _cmsTexts[key].pt || (I18N[_currentLang]&&I18N[_currentLang][key]) || key;
+  return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.en[key]) || key;
+}
 function detectLang() {
   // Priority 1: URL path language (/en/, /es/apex, etc.)
   const _pathLangs=['en','es','fr','de','it','ar'];
@@ -2962,7 +2966,7 @@ const FAQ_LANGS = {
     {q:'كيف أقارن بين شركات Prop؟', a:'استخدم أداة المقارنة في تبويب "مقارنة" أو انتقل إلى "شركات" لرؤية جميع الخيارات جنباً إلى جنب.'},
   ],
 };
-function getFaqData() { return FAQ_LANGS[_currentLang] || FAQ_LANGS.pt; }
+function getFaqData() { return (_cmsFaq&&_cmsFaq[_currentLang]&&_cmsFaq[_currentLang].length ? _cmsFaq[_currentLang] : null) || FAQ_LANGS[_currentLang] || FAQ_LANGS.pt; }
 function renderFaq() {
   const el = document.getElementById('faq-list');
   if(!el) return;
@@ -3073,6 +3077,18 @@ async function loadFirmsFromSupabase() {
         firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };
       }
       FIRMS.push(firm);
+
+      // Populate FIRM_ABOUT and FIRM_BG from Supabase overlay data
+      if(f.bg_image) FIRM_BG[f.id]=f.bg_image;
+      if(f.about_html || f.detail_plans){
+        FIRM_ABOUT[f.id]={
+          about: f.about_html || FIRM_ABOUT[f.id]?.about || '',
+          highlights: f.about_highlights || FIRM_ABOUT[f.id]?.highlights || [],
+          types: Array.isArray(f.detail_types) ? f.detail_types : FIRM_ABOUT[f.id]?.types || [],
+          plans: f.detail_plans || FIRM_ABOUT[f.id]?.plans || {},
+          includes: Array.isArray(f.detail_includes) ? f.detail_includes : FIRM_ABOUT[f.id]?.includes || [],
+        };
+      }
     });
 
     // Map → CHECKOUT_FIRMS format
@@ -3123,6 +3139,25 @@ async function loadFirmsFromSupabase() {
     // Supabase unavailable — hardcoded data still works
     console.warn('[MC] Supabase firms unavailable, using local data');
   }
+}
+
+async function loadCmsTexts(){
+  try{
+    const{data}=await db.from('cms_texts').select('key,"values"');
+    if(data) data.forEach(r=>{ _cmsTexts[r.key]=r.values; });
+  }catch(e){}
+}
+
+let _cmsFaq=null;
+async function loadCmsFaq(){
+  try{
+    const{data}=await db.from('cms_faq').select('*').eq('active',true).order('sort_order',{ascending:true});
+    if(data&&data.length){
+      _cmsFaq={};
+      const langs=['pt','en','es','it','fr','de','ar'];
+      langs.forEach(l=>{ _cmsFaq[l]=data.map(r=>({q:r.question[l]||r.question.pt||'',a:r.answer[l]||r.answer.pt||''})).filter(x=>x.q); });
+    }
+  }catch(e){}
 }
 
 function renderAchFirmTabs(){
@@ -5052,6 +5087,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   if('scrollRestoration' in history) history.scrollRestoration='manual';
   // Detectar idioma e aplicar traduções
   initLang();
+  // Load CMS overrides (texts, FAQ) — non-blocking, runs in parallel
+  loadCmsTexts().then(()=>{ applyTranslations(); renderFaq(); });
+  loadCmsFaq().then(()=>{ renderFaq(); });
   // Ativar página correta ANTES de renderizar (evita flash da home)
   const _initHash = location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
   if(_initHash && document.getElementById('page-'+_initHash)){
