@@ -4153,6 +4153,10 @@ async function openStripePortal(){
 }
 
 function showProSuccessOverlay(){
+  // Track purchase conversion
+  track('purchase',{item:'pro_subscription',value:9.99,currency:'USD'});
+  if(typeof gtag==='function') gtag('event','purchase',{transaction_id:'pro_'+Date.now(),value:9.99,currency:'USD',items:[{item_id:'pro_monthly',item_name:'Pro Subscription',price:9.99,quantity:1}]});
+  if(typeof fbq==='function') fbq('track','Purchase',{value:9.99,currency:'USD',content_name:'Pro Subscription',content_type:'subscription'});
   const ov=document.createElement('div');
   ov.className='pro-success-ov';
   ov.innerHTML=`<div class="pro-success-box">
