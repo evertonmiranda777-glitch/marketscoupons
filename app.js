@@ -5003,8 +5003,8 @@ async function doAuthSignup() {
 let _loggingOut = false;
 async function doLogout() {
   _loggingOut = true;
-  // 1. Tentar signOut via Supabase API
-  try { await db.auth.signOut(); } catch(e) {}
+  // 1. Tentar signOut via Supabase API (with 3s timeout to avoid hang)
+  try { await Promise.race([db.auth.signOut(), new Promise(r => setTimeout(r, 3000))]); } catch(e) {}
   // 2. Limpar manualmente como fallback
   localStorage.removeItem('mc-user-auth');
   try {
@@ -5289,7 +5289,7 @@ function gxFmt(n){return Number(n).toLocaleString('en-US',{maximumFractionDigits
 async function loadGEX(){
   if(_gexLoaded) return;
   try{
-    const{data,error}=await db.from('gex_levels').select('*').in('ticker',['ES','NQ']).order('ticker');
+    const{data,error}=await db.from('gex_levels').select('*').in('ticker',['ES','NQ']).order('date',{ascending:false}).limit(2);
     if(error) throw error;
     if(!data||!data.length){
       document.getElementById('gx-loading').innerHTML='<div style="color:var(--t2);font-size:14px;" data-i18n="gx_no_data">GEX data not yet available. Check back after 6 AM ET.</div>';
