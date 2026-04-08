@@ -2345,7 +2345,7 @@ function fdRenderRight(id, f) {
   // Size pills
   if (plans?.length) {
     h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_tamanho_conta')}</div>
-      <div class="fd-sizes">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}" style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="fdSel('${id}','size','${p.s}')">${p.s}</button>`).join('')}</div></div>`;
+      <div class="fd-sizes">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="fdSel('${id}','size','${p.s}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
   // Price card
@@ -2547,7 +2547,7 @@ function pdRenderRight(id, p) {
   // Plan pills (same pattern as fd-overlay size pills)
   if (plans?.length) {
     h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_plano')}</div>
-      <div class="fd-sizes">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}" style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="pdSel('${id}','size','${pl.s}')">${pl.s}</button>`).join('')}</div></div>`;
+      <div class="fd-sizes">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}"${pl.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="pdSel('${id}','size','${pl.s}')">${pl.s}</button>`).join('')}</div></div>`;
   }
 
   // Price card (same pattern as fd-overlay with savings)
@@ -2691,7 +2691,7 @@ function pdRenderMobile(id,p){
   // Plan pills
   if(plans?.length){
     h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_plano')}</div>
-      <div class="fd-sizes">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}" style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="_pdState['${id}'].size='${pl.s}';pdRenderMobile('${id}')">${pl.s}</button>`).join('')}</div></div>`;
+      <div class="fd-sizes">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}"${pl.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="_pdState['${id}'].size='${pl.s}';pdRenderMobile('${id}')">${pl.s}</button>`).join('')}</div></div>`;
   }
 
   // Price card
@@ -2867,7 +2867,7 @@ function drwRenderCk(id, f) {
   // Size pills
   if(plans?.length){
     h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_tamanho_conta')}</div>
-      <div class="fd-sizes">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}" style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="_fdState['${id}'].size='${p.s}';drwRenderCk('${id}')">${p.s}</button>`).join('')}</div></div>`;
+      <div class="fd-sizes">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="_fdState['${id}'].size='${p.s}';drwRenderCk('${id}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
   // Price card
