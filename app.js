@@ -3979,7 +3979,7 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
     else showPreviewBanner(rem);
   },1000);
 }
-function _isGatedPage(){const p=sessionStorage.getItem('mc_page')||location.hash.replace('#','');return p==='analise'||p==='gamma';}
+function _isGatedPage(){const p=sessionStorage.getItem('mc_page')||location.hash.replace('#','');const pg=document.getElementById('page-'+p);return (p==='analise'||p==='gamma')&&pg&&pg.classList.contains('active');}
 function showPreviewBanner(secs){
   if(!_isGatedPage())return;
   if(document.getElementById(PREVIEW_BANNER_ID))return;
