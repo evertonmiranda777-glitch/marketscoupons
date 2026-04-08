@@ -5346,6 +5346,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   showCookieBanner();
   autoDetectDDI();
 
+  // Abrir overlay da firma IMEDIATAMENTE com dados hardcoded (antes de qualquer await)
+  if(_isFirmPage){
+    window._dedicatedFirmSlug=_earlySlug;
+    setFirmSEO(_earlySlug);
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
+    document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
+    window.scrollTo(0,0);
+    openD(_earlySlug);
+    document.body.style.opacity='1';
+  } else if(location.hash.startsWith('#firm/')){
+    const _hFirmId=location.hash.replace('#firm/','');
+    if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
+      document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
+      window.scrollTo(0,0);
+      openD(_hFirmId);
+      document.body.style.opacity='1';
+    }
+  }
+
   // Auth: iniciar check imediatamente (em paralelo com o resto)
   const _hasToken = localStorage.getItem('mc-user-auth') !== null;
   if (!_hasToken) updateAuthUI(false);
@@ -5387,29 +5409,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }catch(e){}
 
-  // Abrir overlay da firma ANTES de esperar Supabase (usa dados hardcoded do FIRMS)
-  if(_isFirmPage){
-    window._dedicatedFirmSlug=_earlySlug;
-    setFirmSEO(_earlySlug);
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
-    document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
-    window.scrollTo(0,0);
-    openD(_earlySlug);
-    document.body.style.opacity='1';
-  }
-  // Reopen firm overlay from URL hash (e.g. #firm/apex)
-  else if(location.hash.startsWith('#firm/')){
-    const _hFirmId=location.hash.replace('#firm/','');
-    if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
-      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-      const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
-      document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
-      window.scrollTo(0,0);
-      openD(_hFirmId);
-      document.body.style.opacity='1';
-    }
-  }
   // Carregar firmas do Supabase (atualiza dados em background)
   await loadFirmsFromSupabase();
   // Se overlay de firma está aberto, re-render com dados atualizados do Supabase
