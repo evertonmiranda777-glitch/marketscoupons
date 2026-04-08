@@ -4311,12 +4311,15 @@ function showLiveGatePreview(){
   const gateEl=document.getElementById('live-gate');
   const roomEl=document.getElementById('live-room');
   const contentEl=document.getElementById('live-gate-content');
+  const staticEl=document.getElementById('live-gate-static');
   if(!gateEl||!roomEl||!contentEl) return;
   gateEl.classList.remove('hide'); roomEl.classList.add('hide');
   const hasToken=!!localStorage.getItem('mc-user-auth');
   if(!hasToken){
+    if(staticEl) staticEl.style.display='none';
     contentEl.innerHTML=buildProGateAnon();
   } else {
+    if(staticEl) staticEl.style.display='';
     contentEl.innerHTML=`<div class="lg-loading"><span>${t('live_checking_access')||'Checking access...'}</span></div>`;
   }
 }
@@ -4356,17 +4359,15 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
   roomEl.classList.add('hide');
 
   if(!contentEl) return;
+  const staticEl=document.getElementById('live-gate-static');
 
   if(!currentUser){
-    // Not logged in
-    contentEl.innerHTML=`
-      <p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_login')}</p>
-      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
-        <button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>
-        <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('btn_entrar')}</button>
-      </div>`;
+    // Not logged in — show full Pro gate, hide static header
+    if(staticEl) staticEl.style.display='none';
+    contentEl.innerHTML=buildProGateAnon();
   } else {
-    // Logged in, no access
+    // Logged in, no access — show Pro gate with checkout, hide static header
+    if(staticEl) staticEl.style.display='none';
     contentEl.innerHTML=buildProGate('compact');
   }
 }
