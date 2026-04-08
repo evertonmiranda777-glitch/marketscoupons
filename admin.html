@@ -208,6 +208,36 @@ a{text-decoration:none;color:inherit;}
 .ss-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
 .ss-val{font-size:16px;font-weight:700;}
 
+/* EMAIL ANALYTICS */
+.ea-panel{margin-top:24px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;}
+.ea-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.ea-title{font-size:14px;font-weight:700;color:var(--t1);}
+.ea-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.ea-period-btn{padding:5px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;}
+.ea-period-btn.sel{border-color:var(--gold);color:var(--gold);background:var(--gbg);}
+.ea-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
+.ea-kpi{background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:14px;text-align:center;}
+.ea-kpi-val{font-size:20px;font-weight:700;color:var(--t1);}
+.ea-kpi-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px;}
+.ea-kpi-sub{font-size:10px;color:var(--t2);margin-top:2px;}
+.ea-chart-wrap{background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:16px;margin-bottom:20px;height:220px;position:relative;}
+.ea-tbl-wrap{max-height:500px;overflow-y:auto;}
+.ea-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.ea-tbl th{position:sticky;top:0;background:var(--card);color:var(--t3);font-size:9px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:8px 10px;text-align:left;border-bottom:1px solid var(--b1);}
+.ea-tbl td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--t1);vertical-align:middle;}
+.ea-tbl tr:hover td{background:rgba(255,255,255,.03);}
+.ea-status{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;}
+.ea-status.delivered{color:#4ade80;background:rgba(74,222,128,.1);}
+.ea-status.opened{color:#60a5fa;background:rgba(96,165,250,.1);}
+.ea-status.clicked{color:var(--gold);background:rgba(240,180,41,.1);}
+.ea-status.bounced{color:#f87171;background:rgba(248,113,113,.1);}
+.ea-status.unsub{color:#fb923c;background:rgba(251,146,60,.1);}
+.ea-firma-chip{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;}
+.ea-bar{height:4px;border-radius:2px;background:var(--card);position:relative;min-width:60px;}
+.ea-bar-fill{height:100%;border-radius:2px;transition:width .3s;}
+.ea-load{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--t3);font-size:12px;}
+@media(max-width:900px){.ea-kpi-grid{grid-template-columns:repeat(2,1fr);}}
+
 /* SEGMENT BUILDER */
 .seg-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
 .seg-opt{padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;font-weight:500;color:var(--t2);text-align:center;transition:.2s;cursor:pointer;}
@@ -1166,6 +1196,40 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <div style="font-size:10px;color:var(--t3);margin-top:8px;" id="sub-total-info"></div>
  </div>
 
+ <!-- ═══ EMAIL ANALYTICS PANEL ═══ -->
+ <div class="ea-panel">
+   <div class="ea-hdr">
+     <div class="ea-title">Analytics de Email</div>
+     <div class="ea-filters">
+       <div style="display:flex;gap:4px;" id="ea-firma-chips"></div>
+       <div style="display:flex;gap:4px;">
+         <button class="ea-period-btn sel" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
+         <button class="ea-period-btn" data-days="14" onclick="eaSetPeriod(14,this)">14d</button>
+         <button class="ea-period-btn" data-days="28" onclick="eaSetPeriod(28,this)">28d</button>
+       </div>
+       <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="eaRefresh()">Atualizar</button>
+     </div>
+   </div>
+
+   <!-- KPIs -->
+   <div class="ea-kpi-grid">
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-total-sent">—</div><div class="ea-kpi-lbl">Enviados</div><div class="ea-kpi-sub" id="ea-total-sent-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-open-rate" style="color:#60a5fa;">—</div><div class="ea-kpi-lbl">Taxa Abertura</div><div class="ea-kpi-sub" id="ea-open-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-click-rate" style="color:var(--gold);">—</div><div class="ea-kpi-lbl">Taxa Clique</div><div class="ea-kpi-sub" id="ea-click-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-bounce-rate" style="color:#f87171;">—</div><div class="ea-kpi-lbl">Bounced</div><div class="ea-kpi-sub" id="ea-bounce-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-unsub-rate" style="color:#fb923c;">—</div><div class="ea-kpi-lbl">Descadastro</div><div class="ea-kpi-sub" id="ea-unsub-sub"></div></div>
+   </div>
+
+   <!-- Chart -->
+   <div class="ea-chart-wrap"><canvas id="ea-daily-chart"></canvas></div>
+
+   <!-- Campaign table -->
+   <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Historico Detalhado</div>
+   <div class="ea-tbl-wrap" id="ea-table-wrap">
+     <div class="ea-load">Carregando dados do Brevo...</div>
+   </div>
+ </div>
+
  </div><!-- /page-email -->
 
 
@@ -1891,7 +1955,7 @@ function renderPage(p){
       renderEmailFirmaChips();
       loadEmailStats();
       updateDestCount();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'cms-firms':      renderCmsFirms(); break;
@@ -2816,7 +2880,247 @@ function composeToLead(email,name){
  },200);
 }
 
-/* 
+/* ═══ EMAIL ANALYTICS ═══ */
+let _eaDays = 7;
+let _eaTag = '';
+let _eaReport = null;
+let _eaEvents = [];
+let _eaDaily = [];
+let _eaCampaigns = [];
+
+async function eaInit(){
+  const firms = await getEmailFirms();
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TPT',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
+  const el = document.getElementById('ea-firma-chips');
+  if(el){
+    el.innerHTML = `<button class="ea-period-btn sel" onclick="eaSetTag('',this)">Todas</button>` +
+      firms.map(f=>`<button class="ea-period-btn" onclick="eaSetTag('promo-${f.id}',this)" style="border-color:${f.color}33;color:var(--t2);" data-color="${f.color}">${shortNames[f.id]||f.short_name||f.name}</button>`).join('');
+  }
+  eaRefresh();
+}
+
+function eaSetPeriod(d, btn){
+  _eaDays = d;
+  document.querySelectorAll('.ea-filters [data-days]').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  eaRefresh();
+}
+
+function eaSetTag(tag, btn){
+  _eaTag = tag;
+  const parent = document.getElementById('ea-firma-chips');
+  if(parent) parent.querySelectorAll('.ea-period-btn').forEach(b=>{
+    b.classList.remove('sel');
+    if(b===btn){
+      b.classList.add('sel');
+      const c = b.dataset.color;
+      if(c){ b.style.borderColor=c; b.style.color=c; b.style.background=c+'1A'; }
+    } else {
+      const c = b.dataset.color;
+      if(c){ b.style.borderColor=c+'33'; b.style.color='var(--t2)'; b.style.background=''; }
+    }
+  });
+  eaRefresh();
+}
+
+async function eaGetToken(){
+  const s = await db.auth.getSession();
+  return s?.data?.session?.access_token || '';
+}
+
+async function eaFetch(params){
+  const token = await eaGetToken();
+  const qs = new URLSearchParams(params).toString();
+  const resp = await fetch(`/api/brevo-stats?${qs}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return resp.json();
+}
+
+async function eaRefresh(){
+  const wrap = document.getElementById('ea-table-wrap');
+  if(wrap) wrap.innerHTML = '<div class="ea-load">Carregando dados do Brevo...</div>';
+
+  try {
+    const tagParam = _eaTag || undefined;
+    // Fetch report + events + daily + local campaigns in parallel
+    const [report, eventsData, dailyData, campaignsRes] = await Promise.all([
+      eaFetch({ type:'report', days:_eaDays, ...(tagParam && {tag:tagParam}) }),
+      eaFetch({ type:'events', days:_eaDays, limit:500, ...(tagParam && {tag:tagParam}) }),
+      eaFetch({ type:'daily', days:_eaDays, ...(tagParam && {tag:tagParam}) }),
+      eaLoadCampaigns(),
+    ]);
+
+    _eaReport = report;
+    _eaEvents = eventsData?.events || [];
+    _eaDaily = dailyData?.reports || [];
+    _eaCampaigns = campaignsRes || [];
+
+    eaRenderKPIs();
+    eaRenderChart();
+    eaRenderTable();
+  } catch(err){
+    console.error('[EA]', err);
+    if(wrap) wrap.innerHTML = `<div class="ea-load" style="color:#f87171;">Erro ao carregar analytics: ${err.message}</div>`;
+    ['ea-total-sent','ea-open-rate','ea-click-rate','ea-bounce-rate','ea-unsub-rate'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.textContent='—';
+    });
+  }
+}
+
+async function eaLoadCampaigns(){
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - _eaDays);
+  const { data } = await db.from('email_logs')
+    .select('*')
+    .gte('created_at', cutoff.toISOString())
+    .order('created_at',{ascending:false});
+  return data || [];
+}
+
+function eaRenderKPIs(){
+  const r = _eaReport || {};
+  const sent = r.requests || 0;
+  const delivered = r.delivered || 0;
+  const opens = r.uniqueOpens || r.opens || 0;
+  const clicks = r.uniqueClicks || r.clicks || 0;
+  const bounces = (r.hardBounces||0) + (r.softBounces||0);
+  const unsubs = r.unsubscriptions || 0;
+
+  const openRate = delivered > 0 ? ((opens/delivered)*100).toFixed(1) : '0.0';
+  const clickRate = delivered > 0 ? ((clicks/delivered)*100).toFixed(1) : '0.0';
+  const bounceRate = sent > 0 ? ((bounces/sent)*100).toFixed(1) : '0.0';
+  const unsubRate = delivered > 0 ? ((unsubs/delivered)*100).toFixed(1) : '0.0';
+
+  document.getElementById('ea-total-sent').textContent = sent.toLocaleString('pt-BR');
+  document.getElementById('ea-total-sent-sub').textContent = `${delivered.toLocaleString('pt-BR')} entregues`;
+  document.getElementById('ea-open-rate').textContent = openRate + '%';
+  document.getElementById('ea-open-sub').textContent = `${opens.toLocaleString('pt-BR')} aberturas`;
+  document.getElementById('ea-click-rate').textContent = clickRate + '%';
+  document.getElementById('ea-click-sub').textContent = `${clicks.toLocaleString('pt-BR')} cliques`;
+  document.getElementById('ea-bounce-rate').textContent = bounceRate + '%';
+  document.getElementById('ea-bounce-sub').textContent = `${bounces.toLocaleString('pt-BR')} bounces`;
+  document.getElementById('ea-unsub-rate').textContent = unsubRate + '%';
+  document.getElementById('ea-unsub-sub').textContent = `${unsubs.toLocaleString('pt-BR')} unsubs`;
+}
+
+function eaRenderChart(){
+  const canvas = document.getElementById('ea-daily-chart');
+  if(!canvas) return;
+  if(chartInstances['ea-daily-chart']) try{ chartInstances['ea-daily-chart'].destroy(); }catch(e){}
+
+  const labels = _eaDaily.map(d => {
+    const dt = new Date(d.date);
+    return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+  });
+  const sentData = _eaDaily.map(d=>d.requests||0);
+  const openData = _eaDaily.map(d=>d.uniqueOpens||d.opens||0);
+  const clickData = _eaDaily.map(d=>d.uniqueClicks||d.clicks||0);
+
+  chartInstances['ea-daily-chart'] = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label:'Enviados', data:sentData, borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,.1)', fill:true, tension:.4, pointRadius:2 },
+        { label:'Aberturas', data:openData, borderColor:'#60a5fa', backgroundColor:'rgba(96,165,250,.1)', fill:true, tension:.4, pointRadius:2 },
+        { label:'Cliques', data:clickData, borderColor:'#f0b429', backgroundColor:'rgba(240,180,41,.1)', fill:true, tension:.4, pointRadius:2 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:'#7A8FA6', font:{size:11}, boxWidth:12 } } },
+      scales:{
+        x:{ ticks:{ color:'#7A8FA6', font:{size:10} }, grid:{ color:'rgba(255,255,255,.05)' } },
+        y:{ beginAtZero:true, ticks:{ color:'#7A8FA6', font:{size:10} }, grid:{ color:'rgba(255,255,255,.05)' } }
+      }
+    }
+  });
+}
+
+function eaRenderTable(){
+  const wrap = document.getElementById('ea-table-wrap');
+  if(!wrap) return;
+
+  // Merge local campaigns with Brevo events
+  // Group events by messageId to get per-email stats
+  const eventsByMsg = {};
+  _eaEvents.forEach(ev => {
+    const tag = (ev.tag||'').replace('promo-','').replace('inst-','').replace('campaign-','');
+    const key = ev.messageId || ev.email + '_' + (ev.date||'').slice(0,13);
+    if(!eventsByMsg[key]) eventsByMsg[key] = { email:ev.email, date:ev.date, subject:ev.subject||'', tag, events:[] };
+    eventsByMsg[key].events.push(ev.event);
+  });
+
+  // Build rows from local campaigns + event data
+  const rows = _eaCampaigns.map(c => {
+    const brevo = c.brevo_response || {};
+    const tags = [];
+    // Extract firma from campaign tags or subject
+    const subj = c.subject || '';
+    const firmaMatch = subj.match(/\b(Apex|Bulenox|FTMO|FundedNext|Take Profit|Earn2Trade|The5ers|FundingPips|BrightFunded)\b/i);
+    const firma = firmaMatch ? firmaMatch[1] : '';
+
+    // Count events for this campaign's time window
+    const campDate = new Date(c.created_at);
+    const campEnd = new Date(campDate.getTime() + 3600000); // 1h window
+    let delivered=0, opened=0, clicked=0, bounced=0, unsub=0;
+    _eaEvents.forEach(ev => {
+      const evDate = new Date(ev.date);
+      if(evDate >= campDate && evDate <= campEnd){
+        if(ev.event==='delivered') delivered++;
+        else if(ev.event==='opened' || ev.event==='uniqueOpened') opened++;
+        else if(ev.event==='click') clicked++;
+        else if(ev.event==='hardBounce' || ev.event==='softBounce') bounced++;
+        else if(ev.event==='unsubscribed') unsub++;
+      }
+    });
+    // Fallback: use brevo_response counts
+    if(delivered===0 && brevo.sent) delivered = brevo.sent;
+
+    return {
+      date: c.created_at,
+      subject: subj,
+      firma,
+      recipients: c.recipients || 0,
+      delivered, opened, clicked, bounced, unsub,
+      status: c.status,
+    };
+  });
+
+  if(!rows.length){
+    wrap.innerHTML = '<div class="ea-load">Nenhuma campanha encontrada no periodo.</div>';
+    return;
+  }
+
+  wrap.innerHTML = `<table class="ea-tbl">
+    <thead><tr>
+      <th>Data</th><th>Assunto</th><th>Firma</th><th>Dest.</th>
+      <th>Entregues</th><th>Abertos</th><th>Cliques</th><th>Bounce</th><th>Unsub</th><th>Status</th>
+    </tr></thead>
+    <tbody>${rows.map(r => {
+      const dt = new Date(r.date).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+      const openPct = r.delivered > 0 ? ((r.opened/r.delivered)*100).toFixed(0) : '—';
+      const clickPct = r.delivered > 0 ? ((r.clicked/r.delivered)*100).toFixed(0) : '—';
+      const statusCls = r.status==='sent'?'delivered':r.status==='failed'?'bounced':'opened';
+      const statusLbl = r.status==='sent'?'Enviado':r.status==='failed'?'Falhou':'Parcial';
+      return `<tr>
+        <td style="font-size:11px;white-space:nowrap;">${dt}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.subject.replace(/"/g,'&quot;')}">${r.subject.slice(0,50)}</td>
+        <td>${r.firma ? `<span class="ea-firma-chip" style="color:var(--t1);background:rgba(255,255,255,.06);">${r.firma}</span>` : '—'}</td>
+        <td style="font-weight:600;">${r.recipients}</td>
+        <td>${r.delivered}</td>
+        <td>${r.opened} <span style="font-size:10px;color:var(--t3);">(${openPct}%)</span></td>
+        <td>${r.clicked} <span style="font-size:10px;color:var(--t3);">(${clickPct}%)</span></td>
+        <td style="color:${r.bounced?'#f87171':'var(--t2)'};">${r.bounced}</td>
+        <td style="color:${r.unsub?'#fb923c':'var(--t2)'};">${r.unsub}</td>
+        <td><span class="ea-status ${statusCls}">${statusLbl}</span></td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+/*
  CHART HELPER
  */
 const chartInstances={};
