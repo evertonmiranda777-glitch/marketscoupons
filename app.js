@@ -4311,7 +4311,7 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
     contentEl.innerHTML=`
       <p style="font-size:13px;color:var(--t2);line-height:1.7;margin:20px 0 24px;">${t('live_gate_text_login')}</p>
       <div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin:0 auto;">
-        <button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_signup')}</button>
+        <button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>
         <button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('da_gate_btn_login')}</button>
       </div>`;
   } else {
