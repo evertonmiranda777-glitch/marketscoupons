@@ -565,6 +565,8 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
+  // Close open blog article so it reloads in new language
+  if(_openBlogSlug) closeBlogArticle();
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides(); renderBlog(); renderQuiz(); applyF(); renderPolicies(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true);
   // Re-render open drawer if language changed
   const activeFr = document.querySelector('.fr.active');
@@ -1726,6 +1728,9 @@ async function renderBlog(){
   } else {
     _renderBlogGrid();
   }
+  // Auto-open article from URL param (?a=slug) on Ctrl+F5
+  const _blogParam = new URLSearchParams(location.search).get('a');
+  if(_blogParam && !_openBlogSlug) openBlogArticle(_blogParam);
 }
 
 function _renderBlogGrid(){
@@ -1821,12 +1826,14 @@ function filterBlog(level, btn){
   _renderBlogGrid();
 }
 
+let _openBlogSlug = '';
 async function openBlogArticle(slug){
   const grid=document.getElementById('blog-grid');
   const hdr=document.getElementById('blog-header');
   const filters=document.getElementById('blog-filters');
   const art=document.getElementById('blog-article');
   if(!art) return;
+  _openBlogSlug = slug;
   // Hide grid, show article
   if(grid) grid.style.display='none';
   if(hdr) hdr.style.display='none';
@@ -1834,12 +1841,19 @@ async function openBlogArticle(slug){
   art.classList.add('open');
   art.innerHTML='<div style="text-align:center;padding:60px 20px;"><div class="ar-spinner" style="width:24px;height:24px;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto;"></div></div>';
   art.scrollIntoView({behavior:'smooth',block:'start'});
+  // Update URL so Ctrl+F5 preserves the article
+  history.replaceState({page:'blog',article:slug}, '', '/blog?a='+encodeURIComponent(slug));
   try {
-    // Try from already-loaded posts first
+    // Try from already-loaded posts first (same language)
     let post = _blogPostsDB.find(p=>p.slug===slug);
     if(!post || !post.body){
-      const{data}=await db.from('blog_posts').select('*').eq('slug',slug).maybeSingle();
-      if(data) post=data;
+      const curLang = _currentLang || 'pt';
+      const{data}=await db.from('blog_posts').select('*').eq('slug',slug).eq('lang',curLang).maybeSingle();
+      if(!data){
+        // Fallback: try any language with this slug
+        const{data:d2}=await db.from('blog_posts').select('*').eq('slug',slug).maybeSingle();
+        if(d2) post=d2;
+      } else { post=data; }
     }
     if(!post){art.innerHTML='<div style="color:var(--t2);padding:40px 0;">Post not found.</div>';return;}
     const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
@@ -1857,6 +1871,7 @@ async function openBlogArticle(slug){
 }
 
 function closeBlogArticle(){
+  _openBlogSlug = '';
   const grid=document.getElementById('blog-grid');
   const hdr=document.getElementById('blog-header');
   const filters=document.getElementById('blog-filters');
@@ -1865,6 +1880,7 @@ function closeBlogArticle(){
   if(grid)grid.style.display='';
   if(hdr)hdr.style.display='';
   if(filters)filters.style.display='';
+  history.replaceState({page:'blog'}, '', '/blog');
 }
 
 /* QUIZ */
