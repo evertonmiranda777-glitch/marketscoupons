@@ -573,7 +573,7 @@ function setL(lang,flag,code){
   }
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides();
   if(!_openBlogSlug) renderBlog();
-  renderQuiz(); applyF(); renderPolicies(); renderAchPlans(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true);
+  renderQuiz(); applyF(); renderPolicies(); renderAchPlans(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true); if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview();
   // Re-render open drawer if language changed
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
@@ -5402,7 +5402,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
     window.scrollTo(0,0);
     openD(_pathSlug);
-    requestAnimationFrame(()=>{document.body.style.opacity='1';});
+    requestAnimationFrame(()=>{requestAnimationFrame(()=>{document.body.style.opacity='1';});});
   }
   // Reopen firm overlay from URL hash (e.g. #firm/apex)
   else if(location.hash.startsWith('#firm/')){
@@ -5414,7 +5414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
       window.scrollTo(0,0);
       openD(_hFirmId);
-      requestAnimationFrame(()=>{document.body.style.opacity='1';});
+      requestAnimationFrame(()=>{requestAnimationFrame(()=>{document.body.style.opacity='1';});});
     }
   }
   await loadGuidesFromSupabase();
