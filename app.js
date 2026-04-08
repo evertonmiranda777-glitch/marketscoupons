@@ -4014,6 +4014,10 @@ async function checkAnalysisGate(){
     return;
   }
 
+  // Logged in — cancel any preview timer/banner
+  removePreviewBanner();
+  if(_previewCountdown){clearInterval(_previewCountdown);_previewCountdown=null;}
+
   // VIP (admin liberou) → acesso total
   if(currentProfile.analysis_vip===true) {
     wrap.classList.remove('da-wrap-gated');
@@ -5127,6 +5131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await checkAuthSession();
   _authLoaded = true;
   checkAnalysisGate();
+  if(_gexLoaded) checkGEXGate();
   renderLoyaltyPage();
   await initFavs();
 });
@@ -5151,7 +5156,7 @@ async function loadGEX(){
     console.error('GEX load error:',e);
     document.getElementById('gx-loading').innerHTML='<div style="color:var(--t3);">Error: '+(e.message||e)+'</div>';
   }
-  checkGEXGate();
+  if(_authLoaded) checkGEXGate();
 }
 
 async function checkGEXGate(){
@@ -5163,6 +5168,10 @@ async function checkGEXGate(){
     startPreviewTimer('gx-gate','gx-wrap-inner','gx-wrap-gated');
     return;
   }
+
+  // Logged in — cancel any preview timer/banner
+  removePreviewBanner();
+  if(_previewCountdown){clearInterval(_previewCountdown);_previewCountdown=null;}
 
   const hasAccess=await checkProAccess();
   if(hasAccess){
