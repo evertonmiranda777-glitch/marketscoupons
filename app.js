@@ -3042,14 +3042,19 @@ function renderFaq() {
 
 /* COUPON */
 function shortCode(c,max=12){return c&&c.length>max?c.slice(0,max)+'…':c;}
-function cpCoupon(code,firmId,location){
-  navigator.clipboard.writeText(code).then(()=>{
-    showToast(t('toast_cupom_copiado').replace('{code}',code));
-    const f=FIRMS.find(x=>x.id===firmId);
-    const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
-    track('coupon_copy',{coupon_code:code,firm_id:firmId,firm_name:f?.name,discount:f?.discount,location,source:_src});
-    if(typeof fbq==='function') fbq('trackCustom','CopyCode',{content_name:firmId,coupon:code,source:_src});
-  });
+function cpCoupon(code,firmId,loc){
+  const msg=t('toast_cupom_copiado').replace('{code}',code);
+  try{
+    navigator.clipboard.writeText(code).then(()=>showToast(msg)).catch(()=>{
+      // Fallback for clipboard API failure
+      const ta=document.createElement('textarea');ta.value=code;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+      showToast(msg);
+    });
+  }catch(e){showToast(msg);}
+  const f=FIRMS.find(x=>x.id===firmId);
+  const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
+  track('coupon_copy',{coupon_code:code,firm_id:firmId,firm_name:f?.name,discount:f?.discount,location:loc,source:_src});
+  if(typeof fbq==='function') fbq('trackCustom','CopyCode',{content_name:firmId,coupon:code,source:_src});
 }
 
 /* MULTI-FIRM CHECKOUT */
