@@ -52,8 +52,7 @@ body{background:#07090D;color:var(--t1);font-family:var(--f);line-height:1.6;min
 a{color:inherit;text-decoration:none;}
 
 .nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:#07090D;border-bottom:1px solid var(--b1);position:sticky;top:0;z-index:100;}
-.nav-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;color:var(--gold);letter-spacing:-.3px;}
-.nav-logo span{font-size:20px;font-weight:900;}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:15px;letter-spacing:-.3px;}
 .nav-back{background:none;border:1px solid var(--b1);border-radius:8px;padding:7px 14px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:.2s;}
 .nav-back:hover{border-color:var(--gold);color:var(--gold);}
 .nav-cta{display:flex;align-items:center;gap:10px;}
@@ -132,7 +131,7 @@ a{color:inherit;text-decoration:none;}
 <body>
 
 <nav class="nav">
-  <a href="/" class="nav-logo"><span>MC</span> Markets Coupons</a>
+  <a href="/" class="nav-logo"><svg width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#lg)"/></svg><span style="font-weight:400;color:#fff;"><em style="color:var(--gold);font-style:normal;font-weight:700;">Markets</em> Coupons</span></a>
   <div class="nav-cta">
     <button class="nav-back" onclick="window.location.href='/blog'">← <span>Blog</span></button>
     <button class="nav-cta-btn" onclick="window.location.href='/'">Ver Cupons</button>
