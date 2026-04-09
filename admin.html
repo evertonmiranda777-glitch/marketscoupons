@@ -2025,16 +2025,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <!-- Ações rápidas -->
           <div class="tg-card">
             <div class="tg-card-title">Ações Rápidas</div>
-            <div class="tg-quick-actions">
+            <div class="tg-quick-actions" style="grid-template-columns:1fr 1fr 1fr;">
               <button class="tg-qa-btn" onclick="tgQuickAction('coupons')">
                 <span class="qa-icon">🏷️</span>
-                Enviar Cupons
-                <div class="qa-lbl">Mensagem com todos os cupons</div>
-              </button>
-              <button class="tg-qa-btn" onclick="tgQuickAction('analysis')">
-                <span class="qa-icon">📊</span>
-                Enviar Análise
-                <div class="qa-lbl">Análise diária do mercado</div>
+                Cupons
+                <div class="qa-lbl">Imagem com todas as firmas</div>
               </button>
               <button class="tg-qa-btn" onclick="tgQuickAction('clean')">
                 <span class="qa-icon">🧹</span>
@@ -2045,6 +2040,24 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
                 <span class="qa-icon">⚡</span>
                 Flash Promo
                 <div class="qa-lbl">Promo rápida de uma firma</div>
+              </button>
+            </div>
+            <div class="tg-card-title" style="margin-top:16px;">Mensagens com Dados Reais</div>
+            <div class="tg-quick-actions" style="grid-template-columns:1fr 1fr 1fr;">
+              <button class="tg-qa-btn" onclick="tgSendAnalysis()" id="tg-btn-analysis">
+                <span class="qa-icon">📊</span>
+                Análise Diária
+                <div class="qa-lbl">1 ativo c/ dados reais + CTA</div>
+              </button>
+              <button class="tg-qa-btn" onclick="tgSendGex()" id="tg-btn-gex">
+                <span class="qa-icon">🎯</span>
+                GEX
+                <div class="qa-lbl">Put/Call walls + CTA</div>
+              </button>
+              <button class="tg-qa-btn" onclick="tgSendCalendar()" id="tg-btn-calendar">
+                <span class="qa-icon">📅</span>
+                Calendário
+                <div class="qa-lbl">Eventos high-impact do dia</div>
               </button>
             </div>
             <!-- Flash Promo firma select (hidden by default) -->
@@ -9330,6 +9343,146 @@ async function tgQuickAction(action){
     st.textContent = 'Erro: '+e.message;
     st.className = 'tg-status err';
   }
+}
+
+/* ── Enviar Análise Diária (dados reais do Supabase) ── */
+async function tgSendAnalysis(){
+  const st = document.getElementById('tg-qa-status');
+  const btn = document.getElementById('tg-btn-analysis');
+  st.textContent = 'Buscando análise...'; st.className = 'tg-status loading';
+  btn.disabled = true;
+  try {
+    // Rotate: pick asset based on day of year
+    const assets = ['ES','NQ','GC','CL'];
+    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+    const assetPick = assets[dayOfYear % assets.length];
+    const assetNames = {ES:'S&P 500 Futures',NQ:'Nasdaq 100 Futures',GC:'Gold Futures',CL:'Crude Oil Futures'};
+
+    const {data,error} = await db.from('daily_analysis')
+      .select('asset,support_1,resistance_1,attention_zone,news_impact')
+      .eq('date', new Date().toISOString().slice(0,10))
+      .eq('asset', assetPick)
+      .maybeSingle();
+    if(error || !data){ st.textContent='Sem análise para hoje ('+assetPick+')'; st.className='tg-status err'; btn.disabled=false; return; }
+
+    const az = typeof data.attention_zone === 'object' ? (data.attention_zone.en||data.attention_zone.pt||'') : (data.attention_zone||'');
+    const ni = typeof data.news_impact === 'object' ? (data.news_impact.en||data.news_impact.pt||'') : (data.news_impact||'');
+
+    const text =
+      `<b>📊 Daily Market Analysis</b>\n` +
+      `Updated every weekday at 5:00 AM ET. Directional bias, attention zones, news impact, and macro context for the main futures.\n\n` +
+      `<b>${data.asset} ${assetNames[data.asset]||data.asset}</b>\n\n` +
+      `<b>Support 1</b>\n${data.support_1}\n\n` +
+      `<b>Resistance 1</b>\n${data.resistance_1}\n\n` +
+      `<b>Attention zone</b>\n${az}\n\n` +
+      `${ni}\n\n` +
+      `For the full analysis, visit https://www.marketscoupons.com/analysis`;
+
+    const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id:TG_CHAT_ID, text, parse_mode:'HTML',
+        reply_markup:{inline_keyboard:[[{text:'📊 Full Analysis → marketscoupons.com',url:'https://www.marketscoupons.com/analysis'}]]} })
+    });
+    const json = await res.json();
+    if(json.ok){ st.textContent='✓ Análise '+assetPick+' enviada!'; st.className='tg-status ok'; toast('Análise enviada!'); }
+    else { st.textContent='Erro: '+(json.description||''); st.className='tg-status err'; }
+  } catch(e){ st.textContent='Erro: '+e.message; st.className='tg-status err'; }
+  btn.disabled = false;
+}
+
+/* ── Enviar GEX (dados reais do Supabase) ── */
+async function tgSendGex(){
+  const st = document.getElementById('tg-qa-status');
+  const btn = document.getElementById('tg-btn-gex');
+  st.textContent = 'Buscando GEX...'; st.className = 'tg-status loading';
+  btn.disabled = true;
+  try {
+    // Rotate: ES on even days, NQ on odd
+    const tickers = ['ES','NQ'];
+    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+    const tickerPick = tickers[dayOfYear % tickers.length];
+    const tickerNames = {ES:'S&P 500 Futures',NQ:'Nasdaq 100 Futures'};
+
+    const {data,error} = await db.from('gex_levels')
+      .select('ticker,put_wall,call_wall')
+      .eq('date', new Date().toISOString().slice(0,10))
+      .eq('ticker', tickerPick)
+      .maybeSingle();
+    if(error || !data){ st.textContent='Sem GEX para hoje ('+tickerPick+')'; st.className='tg-status err'; btn.disabled=false; return; }
+
+    const text =
+      `<b>🎯 Gamma Exposure (GEX)</b>\n` +
+      `Track market maker Gamma Exposure levels on S&P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price movement.\n` +
+      `Updated every business day at 5:00 AM ET.\n\n` +
+      `<b>${data.ticker} ${tickerNames[data.ticker]||data.ticker}</b>\n\n` +
+      `<b>Put Wall</b>\n${Number(data.put_wall).toLocaleString()}\nSupport\n\n` +
+      `<b>Call Wall</b>\n${Number(data.call_wall).toLocaleString()}\nResistance\n\n` +
+      `<b>Put Wall & Call Wall</b>\n` +
+      `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
+      `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
+      `To access all Gamma Exposure (GEX) regions for NQ and ES, visit https://www.marketscoupons.com/gamma`;
+
+    const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id:TG_CHAT_ID, text, parse_mode:'HTML',
+        reply_markup:{inline_keyboard:[[{text:'🎯 Full GEX Data → marketscoupons.com',url:'https://www.marketscoupons.com/gamma'}]]} })
+    });
+    const json = await res.json();
+    if(json.ok){ st.textContent='✓ GEX '+tickerPick+' enviado!'; st.className='tg-status ok'; toast('GEX enviado!'); }
+    else { st.textContent='Erro: '+(json.description||''); st.className='tg-status err'; }
+  } catch(e){ st.textContent='Erro: '+e.message; st.className='tg-status err'; }
+  btn.disabled = false;
+}
+
+/* ── Enviar Calendário Econômico (edge function economic-calendar) ── */
+async function tgSendCalendar(){
+  const st = document.getElementById('tg-qa-status');
+  const btn = document.getElementById('tg-btn-calendar');
+  st.textContent = 'Buscando calendário...'; st.className = 'tg-status loading';
+  btn.disabled = true;
+  try {
+    // Fetch today's events from economic-calendar edge function
+    const resp = await fetch(`${SUPABASE_URL}/functions/v1/economic-calendar`, {
+      headers:{'Authorization':'Bearer '+SUPABASE_ANON}
+    });
+    let events = [];
+    if(resp.ok){
+      const json = await resp.json();
+      events = (json.events||json||[]).filter(e => {
+        const imp = (e.impact||e.importance||'').toLowerCase();
+        return imp === 'high' || imp === 'h' || imp === '3' || e.stars >= 3;
+      });
+    }
+
+    if(!events.length){
+      st.textContent = 'Sem eventos high-impact hoje.'; st.className = 'tg-status err'; btn.disabled = false; return;
+    }
+
+    // Format events
+    const evLines = events.slice(0,8).map(e => {
+      const time = e.time || e.date_time || '';
+      const name = e.event || e.title || '';
+      const cur = e.currency || e.country || '';
+      return `🔴 ${time} ET — ${name} (${cur}) ★★★`;
+    }).join('\n');
+
+    const today = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+    const text =
+      `<b>📅 Economic Calendar — ${today}</b>\n\n` +
+      `${evLines}\n\n` +
+      `👉 Full calendar with alerts: https://www.marketscoupons.com/calendar`;
+
+    const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id:TG_CHAT_ID, text, parse_mode:'HTML',
+        reply_markup:{inline_keyboard:[[{text:'📅 Full Calendar → marketscoupons.com',url:'https://www.marketscoupons.com/calendar'}]]} })
+    });
+    const json = await res.json();
+    if(json.ok){ st.textContent='✓ Calendário enviado!'; st.className='tg-status ok'; toast('Calendário enviado!'); }
+    else { st.textContent='Erro: '+(json.description||''); st.className='tg-status err'; }
+  } catch(e){ st.textContent='Erro: '+e.message; st.className='tg-status err'; }
+  btn.disabled = false;
 }
 
 function tgFlashPromoOpen(){
