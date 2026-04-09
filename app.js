@@ -428,6 +428,8 @@ function go(page, skipPush){
   if(!skipPush) history.pushState({page}, '', _pageUrl(page));
   try{sessionStorage.setItem('mc_page',page);}catch(e){}
   track('page_view',{page_name:page});
+  if(typeof fbq==='function') fbq('track','PageView');
+  if(typeof gtag==='function') gtag('event','page_view',{page_title:page});
   // Preview banner only on gated pages
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
   if(page==='live'){ if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview(); }
@@ -811,6 +813,8 @@ async function openGuideArticle(slug){
   art.classList.add('open');
   window.scrollTo({top:0,behavior:'smooth'});
   track('guide_read',{guide_id:guide.id,guide_title:guide.title,guide_slug:slug});
+  if(typeof fbq==='function') fbq('track','ViewContent',{content_name:guide.title,content_type:'guide'});
+  if(typeof gtag==='function') gtag('event','view_item',{items:[{item_id:guide.id,item_name:guide.title,item_category:'guide'}]});
 }
 function closeGuideArticle(){
   const grid=document.getElementById('guides-grid');
@@ -3411,6 +3415,8 @@ async function unlockCalc(){
   document.getElementById('calc-gate').style.display='none';
   document.getElementById('calc-content').style.display='block';
   track('calc_unlocked',{name,email});
+  if(typeof fbq==='function') fbq('track','Lead',{content_name:'calc',content_category:'tool_gate'});
+  if(typeof gtag==='function') gtag('event','generate_lead',{currency:'USD',value:0,event_label:'calc'});
 }
 function calcPS(){
   const bal=parseFloat(document.getElementById('ps-bal')?.value)||0;const risk=parseFloat(document.getElementById('ps-risk')?.value)||0;const ent=parseFloat(document.getElementById('ps-ent')?.value)||0;const sl=parseFloat(document.getElementById('ps-sl')?.value)||0;const tp=parseFloat(document.getElementById('ps-tp')?.value)||0;const mult=parseFloat(document.getElementById('ps-instr')?.value)||50;
@@ -3435,6 +3441,8 @@ function qfinish(){
     if(!rec)return;
     document.getElementById('q-res-content').innerHTML=`<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec,'28px','11px')} ${rec.name}</span></div><div class="qr-desc">${(I18N[_currentLang]?.['firm_desc_'+rec.id]||I18N.pt['firm_desc_'+rec.id]||rec.desc||'')}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
     track('quiz_complete',{recommended_firm:rec.id,market_pref:market,priority});
+    if(typeof fbq==='function') fbq('track','Lead',{content_name:rec.id,content_category:'quiz'});
+    if(typeof gtag==='function') gtag('event','quiz_complete',{event_label:rec.id});
   },300);
 }
 function qreset(){qA={};qStep=0;renderQuiz();}
@@ -4501,6 +4509,8 @@ async function saveLead(data) {
 
   localStorage.setItem('mc_unlocked_' + data.tool, '1');
   track('tool_lead_capture', { tool: data.tool, email: data.email, name: data.name });
+  if(typeof fbq==='function') fbq('track','Lead',{content_name:data.tool,content_category:'tool_gate'});
+  if(typeof gtag==='function') gtag('event','generate_lead',{currency:'USD',value:0,event_label:data.tool});
 }
 function isUnlocked(t) { return localStorage.getItem('mc_unlocked_' + t) === '1'; }
 
@@ -4723,6 +4733,8 @@ async function registerLoyalty() {
   renderLoyaltyPage();
   showToast(t('toast_bem_vindo') + name + '!');
   track('loyalty_register', { name, email });
+  if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'loyalty',content_category:'loyalty'});
+  if(typeof gtag==='function') gtag('event','sign_up',{method:'loyalty'});
 }
 
 async function submitProof() {
@@ -4792,6 +4804,8 @@ async function submitProof() {
   renderLoyaltyPage();
   showToast(t('toast_comprovante_enviado'));
   track('loyalty_proof_submitted', { firma, size, orderNumber, member: member.email });
+  if(typeof fbq==='function') fbq('track','SubmitApplication',{content_name:firma,content_category:'loyalty_proof'});
+  if(typeof gtag==='function') gtag('event','loyalty_proof',{event_label:firma});
 
   // Trigger AI validation in background
   if(insertedId){
@@ -5096,6 +5110,7 @@ async function doAuthLogin() {
   closeAuthModals();
   await loadUserSession(data.user);
   track('user_login', { method: 'email' });
+  if(typeof gtag==='function') gtag('event','login',{method:'email'});
 }
 
 async function doAuthSignup() {
@@ -5129,6 +5144,8 @@ async function doAuthSignup() {
     closeAuthModals();
     await loadUserSession(data.user);
     track('user_signup', { method: 'email' });
+    if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'email_signup'});
+    if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
     return;
   }
 
@@ -5146,6 +5163,8 @@ async function doAuthSignup() {
     closeAuthModals();
     await loadUserSession(loginData.user);
     track('user_signup', { method: 'email' });
+    if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'email_signup'});
+    if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
     return;
   }
 }
