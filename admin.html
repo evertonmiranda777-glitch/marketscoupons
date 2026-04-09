@@ -8936,7 +8936,7 @@ function tgDrawCanvas(){
   const availH = H - ROWS_START - FOOTER_ZONE;
   const ROW_H = Math.min(160, Math.max(110, Math.floor((availH - ROW_GAP*(firms.length-1)) / Math.max(firms.length,1))));
   const S = ROW_H / 140;
-  const LOGO_R = Math.round(32*S);
+  const LOGO_R = Math.round(40*S);
 
   firms.forEach((f, i)=>{
     const y = ROWS_START + i * (ROW_H + ROW_GAP);
@@ -9004,9 +9004,9 @@ function tgDrawCanvas(){
     let cpLeft = cpRight;
     if(f.coupon){
       ctx.save();
-      ctx.font = `800 ${Math.round(26*S)}px monospace`;
+      ctx.font = `800 ${Math.round(22*S)}px monospace`;
       let cpText = f.coupon;
-      const maxCpTW = Math.round(220*S);
+      const maxCpTW = Math.round(180*S);
       if(ctx.measureText(cpText).width > maxCpTW){
         while(ctx.measureText(cpText+'…').width > maxCpTW && cpText.length > 4) cpText = cpText.slice(0,-1);
         cpText += '…';
@@ -9036,11 +9036,11 @@ function tgDrawCanvas(){
     const nameX = logoX + LOGO_R + Math.round(18*S);
     const nameMaxW = cpLeft - nameX - 8;
     ctx.save();
-    ctx.font = `bold ${Math.round(44*S)}px Inter, sans-serif`;
+    ctx.font = `bold ${Math.round(36*S)}px Inter, sans-serif`;
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(f.name, nameX, midY - Math.round(16*S), nameMaxW);
+    ctx.fillText(f.short_name || f.name, nameX, midY - Math.round(16*S), nameMaxW);
     ctx.restore();
 
     // Type pill
