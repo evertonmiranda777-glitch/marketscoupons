@@ -2296,30 +2296,18 @@ async function renderAlerts(){
     }
   }
 
-  // 3. GEX stale (yellow) — only alert if 2+ business days behind
-  try {
-    const {data} = await db.from('gex_levels').select('date').order('date',{ascending:false}).limit(1);
-    if(data && data.length > 0){
-      const lastDate = new Date(data[0].date + 'T12:00:00Z');
-      const diffMs = now - lastDate;
-      const diffDays = Math.floor(diffMs / 86400000);
-      // Count business days elapsed
-      let bizDays = 0;
-      for(let i = 1; i <= diffDays; i++){
-        const d = new Date(lastDate.getTime() + i * 86400000);
-        const dow = d.getUTCDay();
-        if(dow >= 1 && dow <= 5) bizDays++;
-      }
-      _alertCache.gex = bizDays < 2;
-    } else {
-      _alertCache.gex = false;
+  // 3. GEX stale (yellow) — on weekdays after 5:30 BRT, alert if today's data missing
+  if(isWeekday && (hour > 5 || (hour === 5 && now.getUTCMinutes() >= 30))){
+    try {
+      const {data} = await db.from('gex_levels').select('date').order('date',{ascending:false}).limit(1);
+      _alertCache.gex = data && data.length > 0 && data[0].date === todayStr;
+    } catch(e){ _alertCache.gex = true; }
+    if(!_alertCache.gex){
+      banners.push(`<div class="alert-banner alert-yellow">
+        <span class="ab-icon">&#9679;</span>
+        <span class="ab-text">Gamma Exposure (GEX) não atualizado hoje — esperado às 5:30 BRT</span>
+      </div>`);
     }
-  } catch(e){ _alertCache.gex = true; }
-  if(!_alertCache.gex){
-    banners.push(`<div class="alert-banner alert-yellow">
-      <span class="ab-icon">&#9679;</span>
-      <span class="ab-text">Gamma Exposure (GEX) desatualizado há mais de 1 dia útil</span>
-    </div>`);
   }
 
   wrap.innerHTML = banners.join('');
