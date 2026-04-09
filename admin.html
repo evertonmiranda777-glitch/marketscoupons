@@ -1005,6 +1005,80 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <div class="chart-wrap"><canvas id="chart-age"></canvas></div>
  </div>
  </div>
+
+ <!-- ══ GOOGLE ANALYTICS 4 — DADOS COMPLETOS ══ -->
+ <div style="margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);">
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+     <div>
+       <div style="font-size:16px;font-weight:800;color:var(--t1);display:flex;align-items:center;gap:8px;">
+         <span style="width:28px;height:28px;border-radius:7px;background:rgba(66,133,244,.12);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#4285F4;">G</span>
+         Google Analytics 4
+       </div>
+       <div style="font-size:11px;color:var(--t3);margin-top:2px;">Dados de geolocalização, dispositivos e canais via GA4 Data API</div>
+     </div>
+     <div style="display:flex;align-items:center;gap:8px;">
+       <select id="ga4-days" style="font-size:11px;padding:5px 10px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);">
+         <option value="7">7 dias</option><option value="14">14 dias</option><option value="30" selected>30 dias</option><option value="90">90 dias</option>
+       </select>
+       <button class="btn-secondary" onclick="fetchGA4Geo()" style="font-size:11px;padding:6px 14px;">Carregar GA4</button>
+     </div>
+   </div>
+
+   <!-- GA4 KPIs -->
+   <div class="stats-grid" id="ga4-kpis"></div>
+
+   <!-- GA4 Tables: Countries + Cities -->
+   <div class="charts-grid" style="margin-top:16px;margin-bottom:16px;">
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Países (GA4)</div><div class="cc-sub">Usuários ativos por país</div></div>
+       <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="ga4-countries"></table></div>
+     </div>
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Cidades (GA4)</div><div class="cc-sub">Usuários ativos por cidade</div></div>
+       <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="ga4-cities"></table></div>
+     </div>
+   </div>
+
+   <!-- GA4 Charts: Devices + Browsers + OS + Channels -->
+   <div class="charts-grid" style="margin-bottom:16px;">
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Dispositivos (GA4)</div><div class="cc-sub">Mobile vs Desktop vs Tablet</div></div>
+       <div id="ga4-devices" style="padding:8px;"></div>
+     </div>
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Canais de Aquisição (GA4)</div><div class="cc-sub">Como os visitantes chegam</div></div>
+       <div id="ga4-channels" style="padding:8px;"></div>
+     </div>
+   </div>
+
+   <!-- GA4 Demographics: Age + Gender -->
+   <div class="charts-grid" style="margin-bottom:16px;">
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Faixa Etária (GA4)</div><div class="cc-sub">Distribuição por idade dos visitantes</div></div>
+       <div id="ga4-age" style="padding:8px;"></div>
+     </div>
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Gênero (GA4)</div><div class="cc-sub">Distribuição por sexo dos visitantes</div></div>
+       <div id="ga4-gender" style="padding:8px;"></div>
+     </div>
+   </div>
+
+   <div class="charts-grid">
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Navegadores (GA4)</div></div>
+       <div id="ga4-browsers" style="padding:8px;"></div>
+     </div>
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Sistemas Operacionais (GA4)</div></div>
+       <div id="ga4-os" style="padding:8px;"></div>
+     </div>
+     <div class="chart-card">
+       <div class="cc-hd"><div class="cc-title">Idiomas (GA4)</div></div>
+       <div id="ga4-languages" style="padding:8px;"></div>
+     </div>
+   </div>
+ </div>
+
  </div>
 
  <!-- EMAIL -->
@@ -3211,7 +3285,125 @@ async function fetchGeo(){
  toast('Dados geo atualizados!');
 }
 
-/* 
+/* GA4 Data API Integration */
+const GA4_PROPERTY_ID='505861794';
+let _ga4Cache=null;
+
+async function fetchGA4Geo(){
+ const btn=document.querySelector('[onclick="fetchGA4Geo()"]');
+ if(btn){btn.disabled=true;btn.textContent='Carregando...';}
+ toast('Buscando dados do GA4...','warn');
+ try{
+  const days=parseInt(document.getElementById('ga4-days')?.value||'30');
+  const sess=await db.auth.getSession();
+  const tk=sess?.data?.session?.access_token;
+  if(!tk){toast('Faça login no admin primeiro.','error');return;}
+  const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/ga4-geo',{
+   method:'POST',
+   headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk,'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYyMzI2MDYsImV4cCI6MjA1MTgwODYwNn0.AAanwYp_e8jR1LMYJdGHB5ME4JkJnnwMGnHAkHBtBgo'},
+   body:JSON.stringify({days,propertyId:GA4_PROPERTY_ID})
+  });
+  const data=await res.json();
+  if(data.error){toast('Erro GA4: '+data.error,'error');console.error('GA4 error:',data);return;}
+  _ga4Cache=data;
+  renderGA4Data(data,days);
+  toast('Dados GA4 carregados!');
+ }catch(e){
+  console.error('GA4 fetch error:',e);
+  toast('Erro ao buscar GA4: '+e.message,'error');
+ }finally{
+  if(btn){btn.disabled=false;btn.textContent='Carregar GA4';}
+ }
+}
+
+function renderGA4Data(d,days){
+ // KPIs
+ const totalUsers=d.totals?.users||0;
+ const totalSessions=d.totals?.sessions||0;
+ const avgBounce=d.countries?.length?((d.countries.reduce((s,c)=>s+c.bounceRate,0)/d.countries.length)*100).toFixed(1):'—';
+ const topCountry=d.countries?.[0]?.dim||'—';
+ const topDevice=d.devices?.sort((a,b)=>b.users-a.users)[0]?.dim||'—';
+ const topChannel=d.channels?.[0]?.dim||'—';
+ const el=id=>document.getElementById(id);
+
+ el('ga4-kpis').innerHTML=`
+  <div class="stat-card"><div class="stat-lbl">Usuários Ativos</div><div class="stat-val y">${totalUsers.toLocaleString('pt-BR')}</div><div class="stat-change">${days} dias</div></div>
+  <div class="stat-card"><div class="stat-lbl">Sessões</div><div class="stat-val b">${totalSessions.toLocaleString('pt-BR')}</div><div class="stat-change">${days} dias</div></div>
+  <div class="stat-card"><div class="stat-lbl">Bounce Rate</div><div class="stat-val" style="color:#F97316;">${avgBounce}%</div><div class="stat-change">média</div></div>
+  <div class="stat-card"><div class="stat-lbl">Top País</div><div class="stat-val" style="font-size:18px;">${topCountry}</div><div class="stat-change">${d.countries?.[0]?.users||0} usuários</div></div>
+  <div class="stat-card"><div class="stat-lbl">Top Dispositivo</div><div class="stat-val" style="font-size:18px;text-transform:capitalize;">${topDevice}</div><div class="stat-change">mais acessos</div></div>
+  <div class="stat-card"><div class="stat-lbl">Top Canal</div><div class="stat-val" style="font-size:16px;">${topChannel}</div><div class="stat-change">mais sessões</div></div>`;
+
+ // Helper: bar list renderer
+ const _rankC=i=>i===0?'var(--gold)':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--t3)';
+ const _barC=i=>i===0?'var(--gold)':i===1?'#60A5FA':i===2?'#A78BFA':'#3D4F63';
+
+ const renderTable=(elId,items,showSessions)=>{
+  const t=el(elId);if(!t)return;
+  const max=items[0]?.users||1;
+  const total=items.reduce((s,x)=>s+x.users,0)||1;
+  t.innerHTML=`<thead><tr><th style="width:36px;text-align:center;">#</th><th>Nome</th><th style="width:38%;">Distribuição</th><th style="text-align:right;">Usuários</th>${showSessions?'<th style="text-align:right;">Sessões</th>':''}<th style="text-align:right;">%</th></tr></thead>
+  <tbody>${items.map((x,i)=>{const bW=(x.users/max*100).toFixed(1);return`<tr>
+  <td style="text-align:center;font-weight:700;color:${_rankC(i)};font-size:13px;">${i+1}</td>
+  <td style="font-weight:600;">${x.dim}</td>
+  <td><div style="background:rgba(255,255,255,.04);border-radius:4px;height:18px;overflow:hidden;"><div style="height:100%;width:${bW}%;background:${_barC(i)};border-radius:4px;transition:width .3s;"></div></div></td>
+  <td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${x.users}</td>
+  ${showSessions?`<td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${x.sessions}</td>`:''}
+  <td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${(x.users/total*100).toFixed(1)}%</td>
+  </tr>`;}).join('')||'<tr><td colspan="6" style="color:var(--t3);text-align:center;padding:24px;">Sem dados</td></tr>'}</tbody>`;
+ };
+
+ renderTable('ga4-countries',d.countries||[],true);
+ renderTable('ga4-cities',d.cities||[],true);
+
+ // Helper: horizontal bar list for small sections
+ const renderBarList=(elId,items,colorFn)=>{
+  const c=el(elId);if(!c)return;
+  const max=items[0]?.users||1;
+  const total=items.reduce((s,x)=>s+x.users,0)||1;
+  if(!items.length){c.innerHTML='<div style="color:var(--t3);font-size:12px;padding:12px;text-align:center;">Sem dados</div>';return;}
+  c.innerHTML=items.map((x,i)=>{
+   const pct=(x.users/total*100).toFixed(1);
+   const bW=(x.users/max*100).toFixed(1);
+   const col=colorFn?colorFn(x.dim,i):_barC(i);
+   return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="width:7px;height:7px;border-radius:50%;background:${col};flex-shrink:0;"></div>
+    <div style="flex:1;min-width:0;">
+     <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+      <span style="font-size:12px;font-weight:600;color:var(--t1);text-transform:capitalize;">${x.dim}</span>
+      <span style="font-size:11px;color:var(--t2);font-variant-numeric:tabular-nums;">${x.users} <span style="color:var(--t3);">(${pct}%)</span></span>
+     </div>
+     <div style="background:rgba(255,255,255,.04);border-radius:3px;height:6px;overflow:hidden;"><div style="height:100%;width:${bW}%;background:${col};border-radius:3px;"></div></div>
+    </div>
+   </div>`;
+  }).join('');
+ };
+
+ // Device colors
+ const deviceColors={'desktop':'#3B82F6','mobile':'#22C55E','tablet':'#F97316','smart tv':'#A855F7'};
+ renderBarList('ga4-devices',d.devices||[],(dim)=>deviceColors[dim.toLowerCase()]||'#6B7280');
+
+ // Channel colors
+ const channelColors={'organic search':'#22C55E','direct':'#3B82F6','paid search':'#F97316','organic social':'#EC4899','paid social':'#A855F7','referral':'#06B6D4','email':'#F59E0B','display':'#EF4444','unassigned':'#6B7280'};
+ renderBarList('ga4-channels',d.channels||[],(dim)=>channelColors[dim.toLowerCase()]||'#6B7280');
+
+ renderBarList('ga4-browsers',d.browsers||[]);
+ renderBarList('ga4-os',d.os||[]);
+ renderBarList('ga4-languages',d.languages||[]);
+
+ // Age demographics
+ const ageColors={'18-24':'#06B6D4','25-34':'#3B82F6','35-44':'#8B5CF6','45-54':'#F97316','55-64':'#EF4444','65+':'#EC4899'};
+ renderBarList('ga4-age',d.age||[],(dim)=>ageColors[dim]||'#6B7280');
+
+ // Gender demographics
+ const genderMap={'male':'Masculino','female':'Feminino','unknown':'Não informado'};
+ const genderColors={'male':'#3B82F6','female':'#EC4899','unknown':'#6B7280'};
+ const genderData=(d.gender||[]).map(g=>({...g,dim:genderMap[g.dim.toLowerCase()]||g.dim}));
+ const genderColorFn=(dim)=>{const k=Object.keys(genderMap).find(k=>genderMap[k]===dim);return genderColors[k]||'#6B7280';};
+ renderBarList('ga4-gender',genderData,genderColorFn);
+}
+
+/*
  EMAIL COMPOSER
  */
 let emailSegments=['all'];
