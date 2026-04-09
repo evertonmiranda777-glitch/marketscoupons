@@ -2363,7 +2363,7 @@ function renderPage(p){
     case 'overview':       renderOverview(); renderAlerts(); break;
     case 'analytics':      adminGo('tracking'); break; // absorvido pelo Tracking
     case 'leads':          renderLeadsPage(); break;
-    case 'events':         renderEventsPage(); break;
+    case 'events':         getEvents().then(()=>renderEventsPage()); break;
     case 'geo':            renderGeoPage(); if(!_ga4Cache) fetchGA4Geo(); break;
     case 'cadastros':      renderCadastrosPage(); break;
     case 'email':
@@ -2374,7 +2374,7 @@ function renderPage(p){
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'pro':            renderProPage(); break;
-    case 'tracking':       renderTrackingPage(); break;
+    case 'tracking':       getEvents().then(()=>renderTrackingPage()); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
