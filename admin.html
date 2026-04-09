@@ -3092,13 +3092,14 @@ function renderEventsTable(){
  events=events.slice(0,100);
  const tbl=document.getElementById('tbl-events');
  if(!tbl)return;
- const evColors={'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','firm_favorite':'#EC4899','offer_card_click':'#06B6D4','quiz_complete':'var(--cyan)','blog_read':'#F97316','guide_read':'#3B82F6','platform_click':'#A855F7','tool_open':'var(--purple)','tool_lead_capture':'#14B8A6','calc_unlocked':'#F59E0B','bot_message':'#F97316','user_signup':'var(--green)','user_login':'var(--blue)','profile_updated':'var(--t2)','loyalty_register':'var(--gold)','loyalty_proof_submitted':'#F0B429','loyalty_checkout_click':'#22C55E','telegram_click':'#06B6D4','social_click':'#EC4899','language_change':'var(--t3)','cookie_consent':'var(--t3)','live_signup':'#14B8A6'};
- tbl.innerHTML=`<thead><tr><th>Evento</th><th>Parâmetros</th><th>Data/Hora</th></tr></thead>
- <tbody>${events.map(e=>`<tr>
- <td><span class="td-badge" style="background:rgba(255,255,255,.05);color:${evColors[e.event]||'var(--t2)'};">${e.event}</span></td>
- <td style="color:var(--t2);font-size:11px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${JSON.stringify(e.params||{})}</td>
- <td style="color:var(--t3);">${new Date(e.ts).toLocaleString('pt-BR')}</td>
- </tr>`).join('')}</tbody>`;
+ const evColors={'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','firm_favorite':'#EC4899','offer_card_click':'#06B6D4','quiz_complete':'#06B6D4','blog_read':'#F97316','guide_read':'#3B82F6','platform_click':'#A855F7','tool_open':'#A855F7','tool_lead_capture':'#14B8A6','calc_unlocked':'#F59E0B','bot_message':'#F97316','user_signup':'#22C55E','user_login':'#3B82F6','profile_updated':'var(--t2)','loyalty_register':'var(--gold)','loyalty_proof_submitted':'#F0B429','loyalty_checkout_click':'#22C55E','telegram_click':'#06B6D4','social_click':'#EC4899','language_change':'var(--t3)','cookie_consent':'var(--t3)','live_signup':'#14B8A6','purchase':'#22C55E'};
+ const _fmtParams=(p)=>{if(!p||!Object.keys(p).length)return'<span style="color:var(--t3);">—</span>';const keys=['firm_id','firm_name','coupon_code','page_name','platform','account_size','tool','source'];const parts=[];keys.forEach(k=>{if(p[k])parts.push(`<span style="color:var(--t3);">${k}:</span><span style="color:var(--t1);font-weight:500;">${p[k]}</span>`);});if(!parts.length){const allK=Object.keys(p).slice(0,3);allK.forEach(k=>{parts.push(`<span style="color:var(--t3);">${k}:</span><span style="color:var(--t1);">${String(p[k]).slice(0,30)}</span>`);});}return parts.join(' <span style="color:var(--t3);opacity:.4;">·</span> ');};
+ tbl.innerHTML=`<thead><tr><th>Evento</th><th>Detalhes</th><th style="text-align:right;">Data/Hora</th></tr></thead>
+ <tbody>${events.map(e=>{const ec=evColors[e.event]||'var(--t2)';return`<tr>
+ <td><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:${ec};display:inline-block;flex-shrink:0;"></span><span style="font-weight:600;font-size:11px;color:${ec};">${e.event}</span></span></td>
+ <td style="font-size:11px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${_fmtParams(e.params)}</td>
+ <td style="color:var(--t3);font-size:11px;text-align:right;white-space:nowrap;">${new Date(e.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</td>
+ </tr>`;}).join('')}</tbody>`;
 }
 
 function exportEventsCSV(){
@@ -3174,11 +3175,16 @@ function renderGeoPage(){
 
  // Ranking tables
  const total=geoData.length||1;
+ const _rankC=i=>i===0?'var(--gold)':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--t3)';
+ const _geoBar=i=>i===0?'var(--gold)':i===1?'#60A5FA':i===2?'#A78BFA':'#3D4F63';
+ const _maxCntG=allCountries[0]?.[1]||1;
+ const _maxCityG=allCities[0]?.[1]||1;
+
  const tblCountries=document.getElementById('tbl-geo-countries');
- if(tblCountries) tblCountries.innerHTML=`<thead><tr><th>#</th><th>País</th><th>Visitas</th><th>%</th></tr></thead><tbody>${allCountries.map(([name,cnt],i)=>`<tr><td style="color:var(--t3);">${i+1}</td><td><strong>${name}</strong></td><td style="color:var(--gold);">${cnt}</td><td style="color:var(--t3);">${(cnt/total*100).toFixed(1)}%</td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--t3);">Sem dados</td></tr>'}</tbody>`;
+ if(tblCountries) tblCountries.innerHTML=`<thead><tr><th style="width:40px;text-align:center;">#</th><th>País</th><th style="width:40%;">Distribuição</th><th style="text-align:right;">Visitas</th><th style="text-align:right;">%</th></tr></thead><tbody>${allCountries.map(([name,cnt],i)=>{const bW=(cnt/_maxCntG*100).toFixed(1);return`<tr><td style="text-align:center;font-weight:700;color:${_rankC(i)};font-size:14px;">${i+1}</td><td style="font-weight:600;">${name}</td><td><div style="background:rgba(255,255,255,.04);border-radius:4px;height:20px;overflow:hidden;"><div style="height:100%;width:${bW}%;background:${_geoBar(i)};border-radius:4px;transition:width .3s;"></div></div></td><td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${cnt}</td><td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${(cnt/total*100).toFixed(1)}%</td></tr>`;}).join('')||'<tr><td colspan="5" style="color:var(--t3);text-align:center;padding:24px;">Sem dados de geolocalização</td></tr>'}</tbody>`;
 
  const tblCities=document.getElementById('tbl-geo-cities');
- if(tblCities) tblCities.innerHTML=`<thead><tr><th>#</th><th>Cidade</th><th>Visitas</th><th>%</th></tr></thead><tbody>${allCities.map(([name,cnt],i)=>`<tr><td style="color:var(--t3);">${i+1}</td><td><strong>${name}</strong></td><td style="color:var(--gold);">${cnt}</td><td style="color:var(--t3);">${(cnt/total*100).toFixed(1)}%</td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--t3);">Sem dados</td></tr>'}</tbody>`;
+ if(tblCities) tblCities.innerHTML=`<thead><tr><th style="width:40px;text-align:center;">#</th><th>Cidade</th><th style="width:40%;">Distribuição</th><th style="text-align:right;">Visitas</th><th style="text-align:right;">%</th></tr></thead><tbody>${allCities.map(([name,cnt],i)=>{const bW=(cnt/_maxCityG*100).toFixed(1);return`<tr><td style="text-align:center;font-weight:700;color:${_rankC(i)};font-size:14px;">${i+1}</td><td style="font-weight:600;">${name}</td><td><div style="background:rgba(255,255,255,.04);border-radius:4px;height:20px;overflow:hidden;"><div style="height:100%;width:${bW}%;background:${_geoBar(i)};border-radius:4px;transition:width .3s;"></div></div></td><td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${cnt}</td><td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${(cnt/total*100).toFixed(1)}%</td></tr>`;}).join('')||'<tr><td colspan="5" style="color:var(--t3);text-align:center;padding:24px;">Sem dados de cidades</td></tr>'}</tbody>`;
 
  setTimeout(()=>{
  const colors=['#F0B429','#3B82F6','#22C55E','#A855F7','#06B6D4','#F97316','#EF4444','#F59E0B'];
@@ -5670,24 +5676,27 @@ function renderSubscribersList(){
     return;
   }
   const rows = filtered.slice(0, 200);
-  el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:11px;">
-    <thead><tr style="border-bottom:1px solid var(--b1);">
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">EMAIL</th>
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">NOME</th>
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">FIRMA</th>
-      <th style="text-align:left;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">IDIOMA</th>
-      <th style="text-align:center;padding:6px 8px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;">AÇÃO</th>
+  el.innerHTML = `<table class="data-table">
+    <thead><tr>
+      <th>Email</th>
+      <th>Nome</th>
+      <th>Firma</th>
+      <th>Idioma</th>
+      <th style="text-align:center;width:60px;">Ação</th>
     </tr></thead>
     <tbody>
     ${rows.map(s => {
       const tags = (s.tags||[]).filter(t=>t!=='site'&&t!=='lead');
-      const tagStr = tags.length ? tags.join(', ') : '<span style="color:var(--t3);">—</span>';
-      return `<tr style="border-bottom:1px solid var(--b1);">
-        <td style="padding:5px 8px;color:var(--t1);font-weight:500;">${s.email}</td>
-        <td style="padding:5px 8px;color:var(--t2);">${s.name||'—'}</td>
-        <td style="padding:5px 8px;">${tagStr}</td>
-        <td style="padding:5px 8px;color:var(--t3);text-transform:uppercase;">${s.lang||'—'}</td>
-        <td style="padding:5px 8px;text-align:center;"><button onclick="deleteSubscriber('${s.email}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:11px;font-weight:600;">Excluir</button></td>
+      const fc = tags.length ? (_firmsCache||[]).find(f=>tags.includes(f.id)) : null;
+      const tagHtml = fc ? `<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:50%;background:${fc.color||'var(--gold)'};display:inline-block;"></span><span style="font-weight:600;font-size:11px;">${fc.short_name||fc.name||tags[0]}</span></span>` : tags.length ? `<span style="font-size:11px;color:var(--gold);font-weight:600;">${tags.join(', ')}</span>` : '<span style="color:var(--t3);">—</span>';
+      const langColors = {pt:'#22C55E',en:'#3B82F6',es:'#F97316',fr:'#A855F7',de:'#EF4444',it:'#14B8A6',ar:'#F0B429'};
+      const lc = langColors[s.lang] || 'var(--t3)';
+      return `<tr>
+        <td style="font-weight:500;font-size:12px;">${s.email}</td>
+        <td style="color:var(--t2);font-size:12px;">${s.name||'<span style="color:var(--t3);">—</span>'}</td>
+        <td>${tagHtml}</td>
+        <td><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:${lc};text-transform:uppercase;"><span style="width:6px;height:6px;border-radius:50%;background:${lc};display:inline-block;"></span>${s.lang||'—'}</span></td>
+        <td style="text-align:center;"><button onclick="deleteSubscriber('${s.email}')" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#EF4444;cursor:pointer;font-size:10px;padding:3px 7px;border-radius:6px;font-weight:600;">✕</button></td>
       </tr>`;
     }).join('')}
     </tbody></table>` + (filtered.length > 200 ? `<div style="text-align:center;color:var(--t3);font-size:10px;padding:8px;">Mostrando 200 de ${filtered.length}. Use a busca para filtrar.</div>` : '');
@@ -5867,15 +5876,15 @@ function renderLoyaltyProofsTable(){
   }
   tbl.innerHTML=`
     <thead><tr><th>Data</th><th>Membro</th><th>E-mail</th><th>Firma</th><th>Plano</th><th>N. Pedido</th><th>Cupom</th><th>Arquivo</th>${loyaltyTab==='pending'?'<th>Ações</th>':'<th>Status</th>'}</tr></thead>
-    <tbody>${allEntries.map(e=>`<tr>
-      <td style="color:var(--t3);white-space:nowrap;">${new Date(e.ts).toLocaleDateString('pt-BR')}</td>
+    <tbody>${allEntries.map(e=>{const fc=(_firmsCache||[]).find(f=>f.id===e.firma||f.name===e.firma);const fColor=fc?.color||'var(--gold)';return`<tr>
+      <td style="color:var(--t3);white-space:nowrap;font-size:11px;">${new Date(e.ts).toLocaleDateString('pt-BR')}</td>
       <td style="font-weight:600;">${escHtml(e.name)}</td>
       <td style="color:var(--t2);font-size:11px;">${escHtml(e.member)}</td>
-      <td>${escHtml(e.firma)}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:${fColor};display:inline-block;"></span><span style="font-weight:600;font-size:12px;">${escHtml(fc?.short_name||fc?.name||e.firma)}</span></span></td>
       <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${escHtml(e.size)}</span></td>
-      <td style="font-size:11px;font-family:monospace;">${escHtml(e.orderNumber)}</td>
-      <td style="font-size:11px;">${escHtml(e.coupon)}</td>
-      <td style="font-size:11px;">${e.fileUrl?`<a href="${e.fileUrl}" target="_blank" style="color:var(--blue);">Ver arquivo</a>`:e.fileName?`<span style="color:var(--gold);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">Sem arquivo</span>'}</td>
+      <td><span style="font-family:monospace;font-size:10px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;">${escHtml(e.orderNumber)}</span></td>
+      <td style="font-size:11px;">${e.coupon?`<span style="font-family:monospace;font-weight:600;color:var(--gold);font-size:10px;">${escHtml(e.coupon)}</span>`:'<span style="color:var(--t3);">—</span>'}</td>
+      <td style="font-size:11px;">${e.fileUrl?`<a href="${e.fileUrl}" target="_blank" style="color:var(--blue);font-weight:600;">Ver arquivo</a>`:e.fileName?`<span style="color:var(--gold);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">—</span>'}</td>`;
       ${loyaltyTab==='pending'?`<td><div style="display:flex;gap:5px;align-items:center;">
         ${e.ai_verdict?`<span class="td-badge" style="background:${e.ai_verdict==='approved'?'var(--gnbg)':'var(--rbg)'};color:${e.ai_verdict==='approved'?'var(--green)':'var(--red)'};" title="${e.ai_reason||''}">IA: ${e.ai_verdict==='approved'?'✓':'✗'}</span>`:''}
         <button onclick="openProofReview('${e.id}')" style="padding:4px 10px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Revisar</button>
@@ -7305,7 +7314,8 @@ async function renderTrackingPage(){
   // ── SOURCE FUNNEL ──
   const srcFunnel = {};
   ev.forEach(e => {
-    const src = e.utm_source || 'Direto/Orgânico';
+    const raw = e.utm_source || '';
+    const src = _normSource(raw) || 'direto';
     if (!srcFunnel[src]) srcFunnel[src] = { views: 0, detail: 0, coupons: 0, checkout: 0, signup: 0, leads: 0 };
     if (e.event === 'page_view') srcFunnel[src].views++;
     if (e.event === 'firm_detail_open') srcFunnel[src].detail++;
@@ -7315,19 +7325,26 @@ async function renderTrackingPage(){
     if (e.event === 'tool_lead_capture' || e.event === 'calc_unlocked') srcFunnel[src].leads++;
   });
   const srcArr = Object.entries(srcFunnel).sort((a, b) => b[1].views - a[1].views);
+  const _maxSrcViews = srcArr[0]?.[1]?.views || 1;
   document.getElementById('trk-source-funnel').innerHTML = `
-    <thead><tr><th>Fonte</th><th style="text-align:center;">Page Views</th><th style="text-align:center;">Detail</th><th style="text-align:center;">Cupom</th><th style="text-align:center;">Checkout</th><th style="text-align:center;">Cadastro</th><th style="text-align:center;">Leads</th><th style="text-align:center;">Conv. Rate</th></tr></thead>
+    <thead><tr><th style="width:180px;">Fonte</th><th style="text-align:center;">Views</th><th style="text-align:center;">Detail</th><th style="text-align:center;">Cupom</th><th style="text-align:center;">Checkout</th><th style="text-align:center;">Cadastro</th><th style="text-align:center;">Leads</th><th style="text-align:center;">Conv.</th></tr></thead>
     <tbody>${srcArr.slice(0, 12).map(([src, d]) => {
-      const conv = d.views > 0 ? ((d.checkout / d.views) * 100).toFixed(2) + '%' : '—';
+      const conv = d.views > 0 ? ((d.checkout / d.views) * 100).toFixed(1) + '%' : '—';
       const isBest = d.checkout === Math.max(...srcArr.map(s => s[1].checkout)) && d.checkout > 0;
+      const info = src==='direto'?{label:'Direto / Orgânico',color:'var(--t2)',icon:'○',bg:'rgba(255,255,255,.06)'}:_srcInfo(src);
+      const barW = (d.views / _maxSrcViews * 100).toFixed(0);
       return `<tr>
-        <td style="font-weight:600;">${src}</td>
-        <td style="text-align:center;">${d.views}</td>
+        <td><div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:28px;height:28px;border-radius:7px;background:${info.bg};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:${info.color};flex-shrink:0;">${info.icon}</div>
+          <div><div style="font-weight:700;font-size:12px;color:${info.color};">${info.label}</div>
+          <div style="margin-top:2px;height:3px;width:70px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="height:100%;width:${barW}%;background:${info.color};border-radius:2px;opacity:.5;"></div></div></div>
+        </div></td>
+        <td style="text-align:center;font-weight:600;">${d.views}</td>
         <td style="text-align:center;">${d.detail}</td>
-        <td style="text-align:center;color:var(--gold);">${d.coupons}</td>
+        <td style="text-align:center;color:var(--gold);font-weight:600;">${d.coupons}</td>
         <td style="text-align:center;color:#22C55E;font-weight:700;">${d.checkout}</td>
-        <td style="text-align:center;color:#A855F7;">${d.signup}</td>
-        <td style="text-align:center;color:#3B82F6;">${d.leads}</td>
+        <td style="text-align:center;color:#A855F7;font-weight:600;">${d.signup}</td>
+        <td style="text-align:center;color:#3B82F6;font-weight:600;">${d.leads}</td>
         <td style="text-align:center;font-weight:700;${isBest ? 'color:#22C55E;' : ''}">${conv}</td>
       </tr>`;
     }).join('')}</tbody>`;
@@ -7346,18 +7363,20 @@ async function renderTrackingPage(){
   document.getElementById('trk-campaigns').innerHTML = campArr.length ? `
     <thead><tr><th>Campanha</th><th>Fonte</th><th>Mídia</th><th style="text-align:center;">Views</th><th style="text-align:center;">Cupons</th><th style="text-align:center;">Checkouts</th><th style="text-align:center;">Leads</th><th style="text-align:center;">Conv.</th></tr></thead>
     <tbody>${campArr.slice(0, 15).map(([name, d]) => {
-      const conv = d.views > 0 ? ((d.checkout / d.views) * 100).toFixed(2) + '%' : '—';
+      const conv = d.views > 0 ? ((d.checkout / d.views) * 100).toFixed(1) + '%' : '—';
+      const srcN = _normSource(d.source);
+      const info = srcN ? _srcInfo(srcN) : {label:d.source,color:'var(--t2)'};
       return `<tr>
-        <td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${name}">${name}</td>
-        <td style="font-size:11px;">${d.source}</td>
-        <td style="font-size:11px;">${d.medium}</td>
-        <td style="text-align:center;">${d.views}</td>
-        <td style="text-align:center;color:var(--gold);">${d.coupons}</td>
+        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${name}"><span style="font-family:monospace;font-size:10px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;font-weight:600;">${name}</span></td>
+        <td><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:${info.color};font-weight:600;"><span style="width:8px;height:8px;border-radius:50%;background:${info.color};display:inline-block;"></span>${info.label}</span></td>
+        <td style="font-size:11px;color:var(--t2);">${d.medium}</td>
+        <td style="text-align:center;font-weight:600;">${d.views}</td>
+        <td style="text-align:center;color:var(--gold);font-weight:600;">${d.coupons}</td>
         <td style="text-align:center;color:#22C55E;font-weight:700;">${d.checkout}</td>
-        <td style="text-align:center;color:#3B82F6;">${d.leads}</td>
-        <td style="text-align:center;font-weight:700;">${conv}</td>
+        <td style="text-align:center;color:#3B82F6;font-weight:600;">${d.leads}</td>
+        <td style="text-align:center;font-weight:700;${d.checkout>0?'color:#22C55E;':''}">${conv}</td>
       </tr>`;
-    }).join('')}</tbody>` : '<div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Nenhuma campanha UTM detectada no período.</div>';
+    }).join('')}</tbody>` : `<tbody><tr><td colspan="8" style="padding:32px;text-align:center;"><div style="color:var(--t3);font-size:13px;">Nenhuma campanha UTM detectada</div><div style="color:var(--t3);font-size:11px;margin-top:4px;">Use <span style="font-family:monospace;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">utm_campaign=nome</span> nos links</div></td></tr></tbody>`;
 
   // ── HEATMAP HORÁRIOS ──
   const hourCounts = new Array(24).fill(0);
@@ -7456,26 +7475,49 @@ async function renderTrackingPage(){
     if (e.event === 'checkout_click') firmMap[id].checkout++;
   });
   const firmArr = Object.values(firmMap).sort((a, b) => b.checkout - a.checkout);
+  const _maxFirmDetail = firmArr[0]?.detail || 1;
   document.getElementById('trk-firms-rank').innerHTML = `
-    <thead><tr><th>Firma</th><th style="text-align:center;">Detail Open</th><th style="text-align:center;">Cupom Copiado</th><th style="text-align:center;">Checkout</th><th style="text-align:center;">Detail → Cupom</th><th style="text-align:center;">Cupom → Checkout</th></tr></thead>
-    <tbody>${firmArr.slice(0, 15).map(f => {
+    <thead><tr><th style="width:40px;text-align:center;">#</th><th>Firma</th><th style="text-align:center;">Detail</th><th style="text-align:center;">Cupom</th><th style="text-align:center;">Checkout</th><th style="text-align:center;">Detail→Cupom</th><th style="text-align:center;">Cupom→Checkout</th></tr></thead>
+    <tbody>${firmArr.slice(0, 15).map((f,i) => {
       const d2c = f.detail > 0 ? ((f.coupons / f.detail) * 100).toFixed(1) + '%' : '—';
       const c2k = f.coupons > 0 ? ((f.checkout / f.coupons) * 100).toFixed(1) + '%' : '—';
-      return `<tr><td style="font-weight:600;">${f.name}</td><td style="text-align:center;">${f.detail}</td><td style="text-align:center;color:var(--gold);">${f.coupons}</td><td style="text-align:center;color:#22C55E;font-weight:700;">${f.checkout}</td><td style="text-align:center;">${d2c}</td><td style="text-align:center;">${c2k}</td></tr>`;
+      const rankColor = i===0?'var(--gold)':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--t3)';
+      const fc = (_firmsCache||[]).find(x=>x.id===f.name||x.name===f.name);
+      const fColor = fc?.color||'var(--t2)';
+      const barW = (f.detail / _maxFirmDetail * 100).toFixed(0);
+      return `<tr>
+        <td style="text-align:center;font-weight:700;color:${rankColor};font-size:14px;">${i+1}</td>
+        <td><div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:26px;height:26px;border-radius:6px;background:${fColor}20;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${fColor};flex-shrink:0;">${(fc?.icon||f.name.charAt(0)).toUpperCase()}</div>
+          <div><div style="font-weight:700;font-size:12px;">${fc?.name||f.name}</div>
+          <div style="margin-top:2px;height:2px;width:60px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="height:100%;width:${barW}%;background:${fColor};border-radius:2px;opacity:.5;"></div></div></div>
+        </div></td>
+        <td style="text-align:center;font-weight:600;">${f.detail}</td>
+        <td style="text-align:center;color:var(--gold);font-weight:600;">${f.coupons}</td>
+        <td style="text-align:center;color:#22C55E;font-weight:700;">${f.checkout}</td>
+        <td style="text-align:center;font-weight:600;color:${parseFloat(d2c)>30?'#22C55E':'var(--t2)'};">${d2c}</td>
+        <td style="text-align:center;font-weight:600;color:${parseFloat(c2k)>50?'#22C55E':'var(--t2)'};">${c2k}</td>
+      </tr>`;
     }).join('')}</tbody>`;
 
   // ── RECENT EVENTS ──
+  const _evColors = {'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','user_signup':'#A855F7','user_login':'#3B82F6','tool_lead_capture':'#14B8A6','quiz_complete':'#06B6D4','blog_read':'#F97316','guide_read':'#3B82F6','loyalty_register':'var(--gold)','purchase':'#22C55E'};
   document.getElementById('trk-recent').innerHTML = `
-    <thead><tr><th>Data</th><th>Evento</th><th>Firma</th><th>Cupom</th><th>Página</th></tr></thead>
+    <thead><tr><th>Data</th><th>Evento</th><th>Firma</th><th>Cupom</th><th>Fonte</th></tr></thead>
     <tbody>${ev.slice(0, 50).map(e => {
       const dt = new Date(e.created_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-      const eventColor = e.event === 'checkout_click' ? '#22C55E' : e.event === 'coupon_copy' ? 'var(--gold)' : e.event === 'firm_detail_open' ? '#3B82F6' : 'var(--t2)';
+      const eColor = _evColors[e.event] || 'var(--t2)';
+      const firmId = e.firm_id || e.params?.firm_id || '';
+      const fc = firmId ? (_firmsCache||[]).find(x=>x.id===firmId) : null;
+      const srcRaw = e.utm_source || e.params?.utm_source || '';
+      const srcN = _normSource(srcRaw);
+      const srcI = srcN ? _srcInfo(srcN) : null;
       return `<tr>
-        <td style="font-size:11px;white-space:nowrap;">${dt}</td>
-        <td style="color:${eventColor};font-weight:600;font-size:11px;">${e.event}</td>
-        <td style="font-size:11px;">${e.firm_id || e.params?.firm_id || '—'}</td>
-        <td style="font-size:11px;color:var(--gold);">${e.coupon_code || e.params?.coupon_code || '—'}</td>
-        <td style="font-size:11px;">${e.page_name || e.params?.page_name || '—'}</td>
+        <td style="font-size:11px;white-space:nowrap;color:var(--t3);">${dt}</td>
+        <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:${eColor};"><span style="width:6px;height:6px;border-radius:50%;background:${eColor};display:inline-block;flex-shrink:0;"></span>${e.event}</span></td>
+        <td style="font-size:11px;">${fc?`<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:${fc.color||'var(--t3)'};display:inline-block;"></span><span style="font-weight:600;">${fc.short_name||fc.name||firmId}</span></span>`:firmId||'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="font-size:11px;">${(e.coupon_code||e.params?.coupon_code)?`<span style="font-family:monospace;font-weight:600;color:var(--gold);background:var(--gbg);padding:1px 5px;border-radius:3px;font-size:10px;">${e.coupon_code||e.params.coupon_code}</span>`:'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="font-size:11px;">${srcI?`<span style="display:inline-flex;align-items:center;gap:4px;color:${srcI.color};font-weight:600;"><span style="width:6px;height:6px;border-radius:50%;background:${srcI.color};display:inline-block;"></span>${srcI.label}</span>`:'<span style="color:var(--t3);">direto</span>'}</td>
       </tr>`;
     }).join('')}</tbody>`;
 
@@ -7568,17 +7610,18 @@ async function renderProPage(){
   subsTbl.innerHTML = `<thead><tr><th>Usuário</th><th>Email</th><th>Status</th><th>Período</th><th>Cancelando?</th><th>Stripe ID</th></tr></thead><tbody>`
     + (subs.length ? subs.map(s=>{
       const profile = s.profiles || {};
-      const statusColor = s.status==='active'?'var(--green)':s.status==='trialing'?'var(--blue)':'var(--red)';
+      const stMap = {active:{color:'var(--green)',bg:'var(--gnbg)',label:'Ativo'},trialing:{color:'var(--blue)',bg:'var(--bbg)',label:'Trial'},canceled:{color:'var(--red)',bg:'var(--rbg)',label:'Cancelado'},past_due:{color:'#F97316',bg:'rgba(249,115,22,.1)',label:'Pendente'}};
+      const st = stMap[s.status] || {color:'var(--t3)',bg:'rgba(255,255,255,.06)',label:s.status};
       const periodEnd = s.current_period_end ? new Date(s.current_period_end).toLocaleDateString('pt-BR') : '—';
       return `<tr>
         <td style="font-weight:600;">${escHtml(profile.full_name||'—')}</td>
-        <td style="color:var(--gold);">${escHtml(profile.email||'—')}</td>
-        <td><span style="color:${statusColor};font-weight:700;text-transform:uppercase;font-size:11px;">${s.status}</span></td>
-        <td style="font-size:11px;">até ${periodEnd}</td>
-        <td>${s.cancel_at_period_end?'<span style="color:var(--red);font-weight:600;">Sim</span>':'Não'}</td>
-        <td style="font-size:10px;color:var(--t3);">${escHtml(s.stripe_subscription_id||'')}</td>
+        <td style="color:var(--gold);font-size:12px;">${escHtml(profile.email||'—')}</td>
+        <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:${st.color};"><span style="width:7px;height:7px;border-radius:50%;background:${st.color};display:inline-block;"></span>${st.label}</span></td>
+        <td style="font-size:11px;color:var(--t2);">até ${periodEnd}</td>
+        <td>${s.cancel_at_period_end?'<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--red);font-weight:600;"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;"></span>Sim</span>':'<span style="color:var(--t3);font-size:11px;">Não</span>'}</td>
+        <td><span style="font-family:monospace;font-size:9px;color:var(--t3);background:rgba(255,255,255,.04);padding:2px 5px;border-radius:3px;">${escHtml(s.stripe_subscription_id||'')}</span></td>
       </tr>`;
-    }).join('') : '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3);">Nenhum assinante ainda.</td></tr>') + `</tbody>`;
+    }).join('') : '<tr><td colspan="6" style="text-align:center;padding:32px;"><div style="font-size:28px;margin-bottom:8px;opacity:.3;">$</div><div style="color:var(--t2);font-size:13px;font-weight:600;">Nenhum assinante ainda</div><div style="color:var(--t3);font-size:11px;margin-top:4px;">Assinantes Pro aparecerão aqui automaticamente</div></td></tr>') + `</tbody>`;
 
   // 5. VIP Manual
   const vipTbl = document.getElementById('pro-vip-tbl');
@@ -7600,11 +7643,11 @@ async function renderProPage(){
   // 6. Acesso Fidelidade
   const loyaltyTbl = document.getElementById('pro-loyalty-tbl');
   loyaltyTbl.innerHTML = `<thead><tr><th>Usuário</th><th>Email</th><th>Firma</th><th>Data Compra</th></tr></thead><tbody>`
-    + (loyaltyApproved.length ? loyaltyApproved.slice(0,50).map(p=>`<tr>
+    + (loyaltyApproved.length ? loyaltyApproved.slice(0,50).map(p=>{const fc=(_firmsCache||[]).find(f=>f.id===p.firma||f.name===p.firma);const fColor=fc?.color||'var(--gold)';return`<tr>
       <td style="font-weight:600;">${escHtml(p.member_name||'—')}</td>
-      <td style="color:var(--gold);">${escHtml(p.member_email||'—')}</td>
-      <td>${escHtml(p.firma||'—')}</td>
-      <td style="font-size:11px;">${p.created_at?new Date(p.created_at).toLocaleDateString('pt-BR'):'—'}</td>
+      <td style="color:var(--gold);font-size:12px;">${escHtml(p.member_email||'—')}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:${fColor};display:inline-block;"></span><span style="font-weight:600;font-size:12px;">${escHtml(fc?.short_name||fc?.name||p.firma||'—')}</span></span></td>
+      <td style="font-size:11px;color:var(--t2);">${p.created_at?new Date(p.created_at).toLocaleDateString('pt-BR'):'—'}</td>`;
     </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--t3);">Nenhuma compra aprovada.</td></tr>') + `</tbody>`;
 }
 
@@ -7634,14 +7677,22 @@ function renderCadastrosTable() {
   let filtered = profiles;
   if (q) filtered = filtered.filter(p => ((p.full_name||'')+(p.email||'')).toLowerCase().includes(q));
   const tbl = document.getElementById('tbl-cadastros');
-  tbl.innerHTML = `<thead><tr><th>#</th><th>Nome</th><th>Email</th><th>Data Cadastro</th><th>Ultima Atividade</th></tr></thead><tbody>`
-    + filtered.slice(0,200).map((p,i) => `<tr>
-      <td>${i+1}</td>
-      <td>${escHtml(p.full_name||'—')}</td>
-      <td style="color:var(--gold);font-weight:500;">${escHtml(p.email||'—')}</td>
-      <td>${p.created_at ? new Date(p.created_at).toLocaleString('pt-BR') : '—'}</td>
-      <td>${p.updated_at ? new Date(p.updated_at).toLocaleString('pt-BR') : '—'}</td>
-    </tr>`).join('') + `</tbody>`;
+  const now = Date.now();
+  tbl.innerHTML = `<thead><tr><th style="width:40px;text-align:center;">#</th><th>Nome</th><th>Email</th><th>Cadastro</th><th>Última Atividade</th><th style="width:70px;text-align:center;">Status</th></tr></thead><tbody>`
+    + (filtered.length ? filtered.slice(0,200).map((p,i) => {
+      const created = p.created_at ? new Date(p.created_at) : null;
+      const updated = p.updated_at ? new Date(p.updated_at) : null;
+      const daysAgo = updated ? Math.floor((now - updated.getTime())/86400000) : 999;
+      const isRecent = daysAgo <= 7;
+      const isNew = created && (now - created.getTime()) < 86400000*3;
+      return `<tr>
+      <td style="text-align:center;font-weight:600;color:var(--t3);font-size:12px;">${i+1}</td>
+      <td style="font-weight:600;">${escHtml(p.full_name||'—')}${isNew?' <span style="font-size:9px;background:var(--gnbg);color:var(--green);padding:1px 5px;border-radius:3px;font-weight:700;">NOVO</span>':''}</td>
+      <td style="color:var(--gold);font-weight:500;font-size:12px;">${escHtml(p.email||'—')}</td>
+      <td style="font-size:11px;color:var(--t2);">${created ? created.toLocaleDateString('pt-BR') : '—'}</td>
+      <td style="font-size:11px;color:var(--t2);">${updated ? updated.toLocaleDateString('pt-BR') : '—'}</td>
+      <td style="text-align:center;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:${isRecent?'var(--green)':'var(--t3)'};"><span style="width:6px;height:6px;border-radius:50%;background:${isRecent?'var(--green)':'var(--t3)'};display:inline-block;"></span>${isRecent?'Ativo':'Inativo'}</span></td>
+    </tr>`;}).join('') : '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--t3);">Nenhum cadastro encontrado</td></tr>') + `</tbody>`;
   document.getElementById('cadastros-count').textContent = `${filtered.length} cadastros`;
 }
 
