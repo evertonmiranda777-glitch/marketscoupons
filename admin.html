@@ -384,6 +384,24 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 .cr-mc-foot-txt b{color:#F0B429;}
 @media(max-width:900px){.cr-layout{grid-template-columns:1fr;}}
 
+/* ALERT BANNERS */
+.alert-banner{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;margin-bottom:8px;font-size:12px;font-weight:500;border:1px solid transparent;}
+.alert-banner .ab-icon{font-size:14px;flex-shrink:0;}
+.alert-banner .ab-text{flex:1;}
+.alert-banner .ab-action{font-size:11px;font-weight:600;cursor:pointer;background:none;border:none;padding:4px 10px;border-radius:6px;transition:.2s;font-family:var(--f);}
+.alert-red{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.2);color:#F87171;}
+.alert-red .ab-action{color:#EF4444;border:1px solid rgba(239,68,68,.3);}
+.alert-red .ab-action:hover{background:rgba(239,68,68,.12);}
+.alert-yellow{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.18);color:#FBBF24;}
+.alert-yellow .ab-action{color:#EAB308;border:1px solid rgba(234,179,8,.25);}
+.alert-yellow .ab-action:hover{background:rgba(234,179,8,.1);}
+.alert-green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.15);color:#4ADE80;}
+.day-summary-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.day-chip{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;font-size:12px;font-weight:600;color:var(--t1);}
+.day-chip .dc-val{font-size:16px;font-weight:800;}
+.day-chip .dc-val.g{color:var(--green);}.day-chip .dc-val.y{color:var(--gold);}.day-chip .dc-val.r{color:var(--red);}.day-chip .dc-val.b{color:var(--blue);}
+.nav-badge{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:10px;padding:1px 5px;min-width:14px;text-align:center;margin-left:4px;line-height:14px;}
+
 /* PROGRESS BAR */
 .prog-bar-wrap{background:var(--b1);border-radius:3px;height:5px;overflow:hidden;margin-top:4px;}
 .prog-bar{height:100%;border-radius:3px;transition:width .8s;}
@@ -549,7 +567,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('geo',this)">Geo</button>
  <button class="nta" onclick="adminGo('cadastros',this)">Cadastros</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
- <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade</button>
+ <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -616,7 +634,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta" onclick="adminGoMobile('geo',this)">Geo</button>
   <button class="nta" onclick="adminGoMobile('cadastros',this)">Cadastros</button>
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
-  <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade</button>
+  <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
   <div class="nta-sep"></div>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-firms',this)">Firmas</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
@@ -659,6 +677,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="btn-secondary" onclick="exportAllData()"> Exportar Dados</button>
  </div>
  </div>
+
+ <!-- ALERT BANNERS -->
+ <div id="alert-banners"></div>
+
+ <!-- DAY SUMMARY -->
+ <div id="day-summary" class="day-summary-row"></div>
 
  <!-- KPI cards -->
  <div class="stats-grid" id="kpi-grid"></div>
@@ -2016,7 +2040,7 @@ async function refreshAll(){
 
 function renderPage(p){
   switch(p){
-    case 'overview':       renderOverview(); break;
+    case 'overview':       renderOverview(); renderAlerts(); break;
     case 'analytics':      renderAnalytics(); break;
     case 'leads':          renderLeadsPage(); break;
     case 'events':         renderEventsPage(); break;
@@ -2176,7 +2200,109 @@ function renderOverview(){
  </div>`;
 }
 
-/* 
+/* ═══════════════════════════════════════════════════════════════════════
+   ALERT SYSTEM — banners + day summary + loyalty badge
+   ═══════════════════════════════════════════════════════════════════════ */
+let _alertCache = { pending:0, analysis:false, gex:false, calendar:false };
+
+async function renderAlerts(){
+  const wrap = document.getElementById('alert-banners');
+  const sum  = document.getElementById('day-summary');
+  if(!wrap) return;
+
+  const banners = [];
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0,10);
+  const hour = now.getUTCHours() - 3; // BRT approx
+
+  // 1. Loyalty pending (red)
+  try {
+    const {data,count} = await db.from('loyalty_proofs').select('id',{count:'exact',head:true}).eq('status','pending');
+    _alertCache.pending = count || 0;
+  } catch(e){}
+  if(_alertCache.pending > 0){
+    banners.push(`<div class="alert-banner alert-red">
+      <span class="ab-icon">&#9679;</span>
+      <span class="ab-text"><b>${_alertCache.pending}</b> validação(ões) de fidelidade pendente(s)</span>
+      <button class="ab-action" onclick="adminGo('loyalty',document.querySelector('[onclick*=\\'loyalty\\']'))">Ver pendentes</button>
+    </div>`);
+  }
+  // Update nav badge
+  ['loyalty-badge','loyalty-badge-m'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      if(_alertCache.pending>0){ el.textContent=_alertCache.pending; el.style.display=''; }
+      else{ el.style.display='none'; }
+    }
+  });
+
+  // 2. Daily Analysis missing (yellow) — only check after 9h UTC (6h BRT)
+  if(hour >= 6){
+    try {
+      const {data} = await db.from('daily_analysis').select('id').eq('date',todayStr).limit(1);
+      _alertCache.analysis = data && data.length > 0;
+    } catch(e){}
+    if(!_alertCache.analysis){
+      banners.push(`<div class="alert-banner alert-yellow">
+        <span class="ab-icon">&#9679;</span>
+        <span class="ab-text">Análise Diária ainda não publicada hoje (${todayStr})</span>
+      </div>`);
+    }
+  }
+
+  // 3. GEX missing (yellow)
+  try {
+    const {data} = await db.from('gex_levels').select('date').order('date',{ascending:false}).limit(1);
+    _alertCache.gex = data && data.length > 0 && data[0].date === todayStr;
+  } catch(e){}
+  if(!_alertCache.gex){
+    banners.push(`<div class="alert-banner alert-yellow">
+      <span class="ab-icon">&#9679;</span>
+      <span class="ab-text">Gamma Exposure (GEX) não atualizado hoje</span>
+    </div>`);
+  }
+
+  // 4. Economic Calendar empty (yellow)
+  try {
+    const {data} = await db.from('events').select('id').eq('event','calendar_loaded').gte('created_at',todayStr+'T00:00:00').limit(1);
+    // Fallback: call edge function to check
+    if(!data || data.length === 0){
+      const resp = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-calendar?lang=en');
+      if(resp.ok){
+        const evts = await resp.json();
+        const todayEvents = (evts||[]).filter(e => (e.date||'').startsWith(todayStr));
+        _alertCache.calendar = todayEvents.length > 0;
+      }
+    } else {
+      _alertCache.calendar = true;
+    }
+  } catch(e){ _alertCache.calendar = true; /* assume ok if can't check */ }
+  if(!_alertCache.calendar){
+    banners.push(`<div class="alert-banner alert-yellow">
+      <span class="ab-icon">&#9679;</span>
+      <span class="ab-text">Calendário Econômico sem eventos carregados para hoje</span>
+    </div>`);
+  }
+
+  wrap.innerHTML = banners.join('');
+
+  // 5. Day Summary (green chips)
+  if(sum){
+    const events = getEventsSync();
+    const profiles = getProfilesSync();
+    const signupsToday = profiles.filter(p => isToday(p.created_at)).length;
+    const couponsToday = events.filter(e => e.event==='coupon_copy' && isToday(e.created_at||e.ts)).length;
+    const checkoutsToday = events.filter(e => e.event==='checkout_click' && isToday(e.created_at||e.ts)).length;
+    sum.innerHTML = `
+      <div class="day-chip"><span class="dc-val g">${signupsToday}</span> cadastros hoje</div>
+      <div class="day-chip"><span class="dc-val y">${couponsToday}</span> cupons copiados hoje</div>
+      <div class="day-chip"><span class="dc-val b">${checkoutsToday}</span> checkouts hoje</div>
+      <div class="day-chip"><span class="dc-val r">${_alertCache.pending}</span> validações pendentes</div>
+    `;
+  }
+}
+
+/*
  LEADS PAGE
  */
 /* ── ANALYTICS — Tráfego Pago & Orgânico ── */
@@ -6441,6 +6567,20 @@ async function pollForUpdates() {
     const { data: freshEvents } = await db.from('events').select('*').order('created_at', { ascending: false }).limit(2000);
     if(freshEvents) localStorage.setItem('mc_events', JSON.stringify(freshEvents));
   } catch(e) {}
+  // Update alert banners + loyalty badge if on overview
+  const activePage = document.querySelector('.admin-page.active')?.id?.replace('page-','');
+  if(activePage === 'overview') renderAlerts();
+  else {
+    // Still update loyalty badge even if not on overview
+    try {
+      const {count} = await db.from('loyalty_proofs').select('id',{count:'exact',head:true}).eq('status','pending');
+      _alertCache.pending = count || 0;
+      ['loyalty-badge','loyalty-badge-m'].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el){ if(_alertCache.pending>0){el.textContent=_alertCache.pending;el.style.display='';} else{el.style.display='none';} }
+      });
+    } catch(e){}
+  }
 }
 
 /* Initialize polling and notifications */
