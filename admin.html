@@ -8922,147 +8922,165 @@ function tgDrawCanvas(){
   ctx.fillText('Exclusive coupons for Prop Firms', W/2, 280);
   ctx.restore();
 
-  // --- Firm rows ---
+  // --- Firm rows (compact horizontal — site pattern) ---
   const firms = tgGetSelectedFirms();
-  const ROW_H = 170;
+  const ROW_H = 100;
   const ROWS_START = 340;
-  const PADDING_X = 50;
-  const ROW_W = W - PADDING_X*2;
-  const LOGO_SIZE = 60;
-  const RIGHT_ZONE = 220; // space reserved for % on right
+  const PX = 50;
+  const ROW_W = W - PX*2;
+  const LOGO_R = 32; // logo radius
 
   firms.forEach((f, i)=>{
-    const y = ROWS_START + i * (ROW_H + 14);
+    const y = ROWS_START + i * (ROW_H + 16);
     if(y + ROW_H > H - 200) return;
 
     const fColor = f.color || '#F0B429';
-    const dtype = f.discount_type || f.dtype || '';
-    const offLabel = dtype.toLowerCase() === 'lifetime' ? 'OFF LIFETIME' : 'OFF';
+    const dtype = (f.discount_type || f.dtype || '').toLowerCase();
+    const offLabel = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
+    const score = f.rating || f.trustpilot_score || 0;
+    const revCount = f.reviews || f.trustpilot_reviews || 0;
+    const revLabel = revCount >= 1000 ? Number((revCount/1000).toFixed(1)).toLocaleString('en')+'K' : revCount.toLocaleString('en');
+    const midY = y + ROW_H/2;
 
     // ── Card background ──
     ctx.save();
-    const cardGrad = ctx.createLinearGradient(PADDING_X, y, PADDING_X+ROW_W, y);
-    cardGrad.addColorStop(0, tgAlpha(fColor, 0.10));
-    cardGrad.addColorStop(0.5,'rgba(255,255,255,0.04)');
-    cardGrad.addColorStop(1,'rgba(255,255,255,0.02)');
-    tgRoundRect(ctx, PADDING_X, y, ROW_W, ROW_H, 16);
+    const cardGrad = ctx.createLinearGradient(PX, y, PX+ROW_W, y);
+    cardGrad.addColorStop(0, tgAlpha(fColor, 0.08));
+    cardGrad.addColorStop(1,'rgba(255,255,255,0.03)');
+    tgRoundRect(ctx, PX, y, ROW_W, ROW_H, 14);
     ctx.fillStyle = cardGrad;
     ctx.fill();
-    tgRoundRect(ctx, PADDING_X, y, ROW_W, ROW_H, 16);
-    ctx.strokeStyle = tgAlpha(fColor, 0.22);
-    ctx.lineWidth = 1.5;
+    tgRoundRect(ctx, PX, y, ROW_W, ROW_H, 14);
+    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+    ctx.lineWidth = 1;
     ctx.stroke();
     ctx.restore();
 
-    // ── Logo (circle) ──
-    const logoX = PADDING_X + 24;
-    const logoY = y + 24;
+    // ── 1) Logo circle ──
+    const logoX = PX + 22 + LOGO_R;
     ctx.save();
     ctx.beginPath();
-    ctx.arc(logoX + LOGO_SIZE/2, logoY + LOGO_SIZE/2, LOGO_SIZE/2, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.arc(logoX, midY, LOGO_R, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.fill();
-    ctx.strokeStyle = tgAlpha(fColor, 0.35);
+    ctx.strokeStyle = tgAlpha(fColor, 0.30);
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.font = 'bold 28px Inter, sans-serif';
+    // Fallback letter
+    ctx.font = 'bold 26px Inter, sans-serif';
     ctx.fillStyle = fColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(f.icon || f.name[0], logoX + LOGO_SIZE/2, logoY + LOGO_SIZE/2);
+    ctx.fillText(f.icon || f.name[0], logoX, midY);
     ctx.restore();
+    // Real logo
     const imgKey = 'tg_logo_'+f.id;
     if(window[imgKey] && window[imgKey].complete){
       ctx.save();
       ctx.beginPath();
-      ctx.arc(logoX + LOGO_SIZE/2, logoY + LOGO_SIZE/2, LOGO_SIZE/2 - 2, 0, Math.PI*2);
+      ctx.arc(logoX, midY, LOGO_R - 2, 0, Math.PI*2);
       ctx.clip();
-      ctx.drawImage(window[imgKey], logoX+2, logoY+2, LOGO_SIZE-4, LOGO_SIZE-4);
+      ctx.drawImage(window[imgKey], logoX-LOGO_R+2, midY-LOGO_R+2, (LOGO_R-2)*2, (LOGO_R-2)*2);
       ctx.restore();
     }
 
-    // ── Text area (after logo, before right zone) ──
-    const textX = logoX + LOGO_SIZE + 20;
-    const textMaxW = ROW_W - (textX - PADDING_X) - RIGHT_ZONE;
-
-    // Line 1: Firm name
+    // ── Layout: measure right side first, then fill middle ──
+    // RIGHT: discount % + label
+    const rightMargin = PX + ROW_W - 30;
     ctx.save();
-    ctx.font = 'bold 36px Inter, sans-serif';
-    ctx.fillStyle = '#EDF2F7';
-    ctx.textAlign = 'left';
-    ctx.fillText(f.name, textX, y + 44);
+    ctx.font = 'bold 48px Inter, sans-serif';
+    const pctText = f.discount + '%';
+    const pctW = ctx.measureText(pctText).width;
     ctx.restore();
 
-    // Line 2: Type pill + ★ score + reviews (inline, spaced)
-    const line2Y = y + 58;
+    // Draw discount %
     ctx.save();
-    // Type
-    const tagText = f.type || 'Prop Firm';
-    ctx.font = '600 20px Inter, sans-serif';
-    const tagW = ctx.measureText(tagText).width + 20;
-    ctx.fillStyle = tgAlpha(fColor, 0.15);
-    tgRoundRect(ctx, textX, line2Y, tagW, 26, 6);
+    ctx.font = 'bold 48px Inter, sans-serif';
+    ctx.fillStyle = fColor;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(pctText, rightMargin, midY - 8);
+    // OFF/LIFETIME label below
+    ctx.font = 'bold 18px Inter, sans-serif';
+    ctx.fillStyle = tgAlpha(fColor, 0.7);
+    ctx.fillText(offLabel, rightMargin, midY + 22);
+    ctx.restore();
+
+    // COUPON pill (before discount)
+    const couponRight = rightMargin - pctW - 30;
+    let couponLeft = couponRight;
+    if(f.coupon){
+      ctx.save();
+      ctx.font = '700 22px monospace';
+      let cpText = f.coupon;
+      if(ctx.measureText(cpText).width > 160){
+        while(ctx.measureText(cpText+'…').width > 160 && cpText.length > 4) cpText = cpText.slice(0,-1);
+        cpText += '…';
+      }
+      const cpW = ctx.measureText(cpText).width + 32;
+      const cpH = 36;
+      const cpX = couponRight - cpW;
+      const cpY = midY - cpH/2;
+      // Pill bg + border
+      ctx.fillStyle = 'rgba(240,180,41,0.08)';
+      tgRoundRect(ctx, cpX, cpY, cpW, cpH, 8);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(240,180,41,0.45)';
+      ctx.lineWidth = 1.5;
+      tgRoundRect(ctx, cpX, cpY, cpW, cpH, 8);
+      ctx.stroke();
+      // Text
+      ctx.fillStyle = '#F0B429';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(cpText, cpX + cpW/2, midY);
+      ctx.restore();
+      couponLeft = cpX - 20;
+    }
+
+    // ── 2) Name + type (two lines, left of center area) ──
+    const nameX = PX + 22 + LOGO_R*2 + 18;
+    // Available width for name+type and rating
+    const nameMaxW = couponLeft - nameX - 10;
+
+    // Name (bold, white)
+    ctx.save();
+    ctx.font = 'bold 30px Inter, sans-serif';
+    ctx.fillStyle = '#EDF2F7';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    const shortName = f.short_name || f.name;
+    ctx.fillText(shortName, nameX, midY - 16, nameMaxW);
+    ctx.restore();
+
+    // Second line: TYPE pill + ★ score + reviews
+    const line2Y = midY + 18;
+    ctx.save();
+    // Type pill
+    const tagText = (f.type || 'Prop Firm').toUpperCase();
+    ctx.font = '700 16px Inter, sans-serif';
+    const tagTW = ctx.measureText(tagText).width + 16;
+    const tagH = 22;
+    ctx.fillStyle = tgAlpha(fColor, 0.18);
+    tgRoundRect(ctx, nameX, line2Y - tagH/2, tagTW, tagH, 4);
     ctx.fill();
     ctx.fillStyle = fColor;
     ctx.textAlign = 'left';
-    ctx.fillText(tagText, textX + 10, line2Y + 19);
+    ctx.textBaseline = 'middle';
+    ctx.fillText(tagText, nameX + 8, line2Y);
 
-    // Trustpilot — separate: ★ score  reviews
-    const score = f.rating || f.trustpilot_score || 0;
-    const revCount = f.reviews || f.trustpilot_reviews || 0;
+    // Rating
     if(score > 0){
-      const tpX = textX + tagW + 12;
+      const tpX = nameX + tagTW + 10;
       ctx.fillStyle = '#00b67a';
-      ctx.font = '600 20px Inter, sans-serif';
-      const scoreText = '★ ' + score.toFixed(1);
-      ctx.fillText(scoreText, tpX, line2Y + 19);
-      const scoreW = ctx.measureText(scoreText).width;
-      // Review count in t2
-      ctx.fillStyle = 'rgba(122,143,166,0.8)';
-      ctx.font = '500 18px Inter, sans-serif';
-      const revLabel = revCount >= 1000 ? (revCount/1000).toFixed(1)+'K' : String(revCount);
-      ctx.fillText(revLabel, tpX + scoreW + 8, line2Y + 19);
+      ctx.font = '600 18px Inter, sans-serif';
+      ctx.fillText('★ ' + score.toFixed(1), tpX, line2Y);
+      const sW = ctx.measureText('★ ' + score.toFixed(1)).width;
+      // Reviews
+      ctx.fillStyle = 'rgba(122,143,166,0.7)';
+      ctx.font = '400 16px Inter, sans-serif';
+      ctx.fillText(revLabel + ' reviews', tpX + sW + 8, line2Y);
     }
-    ctx.restore();
-
-    // Line 3: Coupon code pill (capped width, truncate if needed)
-    if(f.coupon){
-      ctx.save();
-      const cpY = y + ROW_H - 52;
-      ctx.font = '700 24px monospace';
-      let cpText = f.coupon;
-      // Truncate long codes
-      const maxCpW = textMaxW - 20;
-      while(ctx.measureText(cpText).width + 40 > maxCpW && cpText.length > 6){
-        cpText = cpText.slice(0, -1);
-      }
-      if(cpText !== f.coupon) cpText += '…';
-      const cpW = ctx.measureText(cpText).width + 40;
-      ctx.fillStyle = 'rgba(240,180,41,0.06)';
-      tgRoundRect(ctx, textX, cpY, cpW, 38, 8);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(240,180,41,0.40)';
-      ctx.lineWidth = 1.5;
-      tgRoundRect(ctx, textX, cpY, cpW, 38, 8);
-      ctx.stroke();
-      ctx.fillStyle = '#F0B429';
-      ctx.textAlign = 'center';
-      ctx.fillText(cpText, textX + cpW/2, cpY + 27);
-      ctx.restore();
-    }
-
-    // ── RIGHT SIDE — 90% + OFF LIFETIME (centered vertically) ──
-    ctx.save();
-    const rightX = PADDING_X + ROW_W - 40;
-    // Big percentage
-    ctx.font = 'bold 68px Inter, sans-serif';
-    ctx.fillStyle = fColor;
-    ctx.textAlign = 'right';
-    ctx.fillText(f.discount+'%', rightX, y + ROW_H/2 + 6);
-    // OFF LIFETIME below
-    ctx.font = 'bold 22px Inter, sans-serif';
-    ctx.fillStyle = tgAlpha(fColor, 0.7);
-    ctx.fillText(offLabel, rightX, y + ROW_H/2 + 38);
     ctx.restore();
   });
 
