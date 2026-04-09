@@ -5,6 +5,14 @@
       "schedule": "0 12 */3 * *"
     }
   ],
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "marketscoupons.com" }],
+      "destination": "https://www.marketscoupons.com/:path",
+      "permanent": true
+    }
+  ],
   "routes": [
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
     { "src": "/blog/([^/]+)", "dest": "/blog.html" },
