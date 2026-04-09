@@ -561,7 +561,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <div class="admin-logo">Markets<em>Coupons</em><span>Admin</span></div>
  <div class="nav-tabs-admin" id="admin-nav-tabs">
  <button class="nta active" onclick="adminGo('overview',this)">Visão Geral</button>
- <button class="nta" onclick="adminGo('analytics',this)">Análises</button>
+ <button class="nta" onclick="adminGo('tracking',this)">Tracking</button>
  <button class="nta" onclick="adminGo('leads',this)">Leads</button>
  <button class="nta" onclick="adminGo('events',this)">Eventos</button>
  <button class="nta" onclick="adminGo('geo',this)">Geo</button>
@@ -569,7 +569,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
  <button class="nta" onclick="adminGo('pro',this)">Pro</button>
- <button class="nta" onclick="adminGo('tracking',this)">Tracking</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -630,7 +629,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <!-- Mobile dropdown menu -->
  <div class="admin-mobile-dd" id="admin-mobile-dd">
   <button class="nta active" onclick="adminGoMobile('overview',this)">Visão Geral</button>
-  <button class="nta" onclick="adminGoMobile('analytics',this)">Análises</button>
+  <button class="nta" onclick="adminGoMobile('tracking',this)">Tracking</button>
   <button class="nta" onclick="adminGoMobile('leads',this)">Leads</button>
   <button class="nta" onclick="adminGoMobile('events',this)">Eventos</button>
   <button class="nta" onclick="adminGoMobile('geo',this)">Geo</button>
@@ -638,7 +637,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
   <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
   <button class="nta" onclick="adminGoMobile('pro',this)">Pro</button>
-  <button class="nta" onclick="adminGoMobile('tracking',this)">Tracking</button>
   <div class="nta-sep"></div>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-firms',this)">Firmas</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
@@ -691,47 +689,19 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <!-- KPI cards -->
  <div class="stats-grid" id="kpi-grid"></div>
 
- <!-- Charts row 1: Core conversion -->
+ <!-- Quick charts -->
  <div class="charts-grid">
  <div class="chart-card">
  <div class="cc-hd"><div><div class="cc-title">Leads por Ferramenta</div><div class="cc-sub">Origem do cadastro</div></div></div>
  <div class="chart-wrap"><canvas id="chart-leads-tool"></canvas></div>
  </div>
  <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Cupons Copiados</div><div class="cc-sub">Por prop firm</div></div></div>
- <div class="chart-wrap"><canvas id="chart-coupons"></canvas></div>
- </div>
- <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Checkout por Firma</div><div class="cc-sub">Cliques finais de conversão</div></div></div>
- <div class="chart-wrap"><canvas id="chart-checkout"></canvas></div>
- </div>
- <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Páginas Visitadas</div><div class="cc-sub">Navegação no site</div></div></div>
- <div class="chart-wrap"><canvas id="chart-pages"></canvas></div>
- </div>
- </div>
-
- <!-- Charts row 2: Engagement -->
- <div class="charts-grid">
- <div class="chart-card">
  <div class="cc-hd"><div><div class="cc-title">Conteúdo Acessado</div><div class="cc-sub">Blog, Guias e Plataformas</div></div></div>
  <div class="chart-wrap"><canvas id="chart-content"></canvas></div>
  </div>
- <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Fidelidade & Usuários</div><div class="cc-sub">Cadastros, acessos e ações</div></div></div>
- <div class="chart-wrap"><canvas id="chart-users"></canvas></div>
- </div>
- <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Idiomas dos Visitantes</div><div class="cc-sub">Distribuição por idioma</div></div></div>
- <div class="chart-wrap"><canvas id="chart-langs"></canvas></div>
- </div>
- <div class="chart-card">
- <div class="cc-hd"><div><div class="cc-title">Redes Sociais</div><div class="cc-sub">Cliques em redes sociais</div></div></div>
- <div class="chart-wrap"><canvas id="chart-social"></canvas></div>
- </div>
  </div>
 
- <!-- Timeline full width -->
+ <!-- Timeline -->
  <div class="charts-grid">
  <div class="chart-card full">
  <div class="cc-hd"><div><div class="cc-title">Eventos ao Longo do Tempo</div><div class="cc-sub">Atividade dos últimos 14 dias</div></div></div>
@@ -739,21 +709,15 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  </div>
  </div>
 
- <!-- Top Firms table -->
- <div class="chart-card" style="margin-bottom:24px;">
- <div class="cc-hd"><div class="cc-title">Ranking de Firmas — Conversão</div></div>
- <div class="data-table-wrap"><table class="data-table" id="tbl-firms-rank"></table></div>
- </div>
-
- <!-- Quiz results -->
- <div class="chart-card">
- <div class="cc-hd"><div class="cc-title">Quiz — Recomendações Dadas</div></div>
- <div id="quiz-results-overview"></div>
+ <!-- CTA para Tracking -->
+ <div style="text-align:center;padding:20px;margin-top:8px;">
+  <button class="btn-secondary" onclick="adminGo('tracking',[...document.querySelectorAll('.nav-tabs-admin .nta')].find(b=>b.textContent.trim()==='Tracking'))" style="font-size:13px;padding:10px 24px;">Ver análise completa no Tracking Dashboard →</button>
  </div>
  </div>
 
  <!-- ANALYTICS — Tráfego Pago & Orgânico -->
- <div class="admin-page" id="page-analytics">
+ <div class="admin-page" id="page-analytics" style="display:none!important;">
+  <!-- ABSORVIDO PELO TRACKING DASHBOARD -->
   <div class="sec-hdr">
    <div class="sec-title">Análises — Tráfego Pago & Orgânico</div>
    <div class="sec-actions">
@@ -2222,7 +2186,7 @@ async function refreshAll(){
 function renderPage(p){
   switch(p){
     case 'overview':       renderOverview(); renderAlerts(); break;
-    case 'analytics':      renderAnalytics(); break;
+    case 'analytics':      adminGo('tracking'); break; // absorvido pelo Tracking
     case 'leads':          renderLeadsPage(); break;
     case 'events':         renderEventsPage(); break;
     case 'geo':            renderGeoPage(); break;
@@ -2283,54 +2247,11 @@ function renderOverview(){
  leads.forEach(l=>{const t=l.tool||'direto';toolCounts[t]=(toolCounts[t]||0)+1;});
  mkChart('chart-leads-tool','doughnut',Object.keys(toolCounts),Object.values(toolCounts),colors);
 
- // Coupons by firm — dynamic from real data
- const cpnCounts={};
- events.filter(e=>e.event==='coupon_copy').forEach(e=>{
- const f=e.params?.firm_name||e.params?.firm_id||'?';cpnCounts[f]=(cpnCounts[f]||0)+1;
- });
- const cpnK=Object.keys(cpnCounts).sort((a,b)=>cpnCounts[b]-cpnCounts[a]).slice(0,10);
- mkChart('chart-coupons','bar',cpnK,cpnK.map(k=>cpnCounts[k]),colors);
-
- // Checkout by firm — dynamic from real data
- const coCounts={};
- events.filter(e=>e.event==='checkout_click').forEach(e=>{
- const f=e.params?.firm_name||e.params?.firm_id||'?';coCounts[f]=(coCounts[f]||0)+1;
- });
- const coK=Object.keys(coCounts).sort((a,b)=>coCounts[b]-coCounts[a]).slice(0,10);
- mkChart('chart-checkout','bar',coK,coK.map(k=>coCounts[k]),colors);
-
- // Pages
- const pgCounts={};
- events.filter(e=>e.event==='page_view').forEach(e=>{
- const p=e.params?.page_name||'?';pgCounts[p]=(pgCounts[p]||0)+1;
- });
- const PG_NAMES={home:'Ofertas',firms:'Firmas',plataformas:'Plataformas',indicators:'Indicadores',compare:'Comparar',calendar:'Calendário Econômico',heatmap:'Mapa de Calor',analise:'Análise Diária',guides:'Guias',blog:'Blog',calc:'Position Size',quiz:'Quiz',faq:'FAQ',live:'Live',loyalty:'Fidelidade',painel:'Meu Painel'};
- const pgK=Object.keys(pgCounts).sort((a,b)=>pgCounts[b]-pgCounts[a]).slice(0,10);
- mkChart('chart-pages','horizontalBar',pgK.map(k=>PG_NAMES[k]||k),pgK.map(k=>pgCounts[k]),colors);
 
  // Content: blog_read, guide_read, platform_click
  const contentData={'Blog':blogReads,'Guias':guideReads,'Plataformas':ec('platform_click'),'Ofertas':ec('offer_card_click')};
  mkChart('chart-content','doughnut',Object.keys(contentData),Object.values(contentData),['#F97316','#3B82F6','#A855F7','#06B6D4']);
 
- // Users: signup, login, loyalty, favorites
- const userData={'Cadastros':signups,'Acessos':logins,'Fidelidade':loyaltyRegs,'Favoritos':favs,'Perfil atualizado':ec('profile_updated')};
- mkChart('chart-users','bar',Object.keys(userData),Object.values(userData),['#22C55E','#3B82F6','#F0B429','#EC4899','#A855F7']);
-
- // Languages
- const langCounts={};
- events.filter(e=>e.event==='language_change').forEach(e=>{
- const l=e.params?.language||'?';langCounts[l]=(langCounts[l]||0)+1;
- });
- const langK=Object.keys(langCounts);
- if(langK.length) mkChart('chart-langs','doughnut',langK,langK.map(k=>langCounts[k]),colors);
-
- // Social
- const socCounts={};
- events.filter(e=>e.event==='social_click'||e.event==='telegram_click').forEach(e=>{
- const n=e.params?.network||e.params?.location||e.event;socCounts[n]=(socCounts[n]||0)+1;
- });
- const socK=Object.keys(socCounts);
- if(socK.length) mkChart('chart-social','bar',socK,socK.map(k=>socCounts[k]),['#06B6D4','#EC4899','#3B82F6','#F97316']);
 
  // Timeline
  const days=14;const labels=[];const vals=[];
@@ -2341,46 +2262,7 @@ function renderOverview(){
  }
  mkChart('chart-timeline','line',labels,vals,['#F0B429']);
 
- // Firms ranking table — dynamic from real events
- const firmMap={};
- events.filter(e=>['coupon_copy','checkout_click','firm_detail_open','firm_favorite'].includes(e.event)).forEach(e=>{
-   const id=e.params?.firm_id||'?';
-   const name=e.params?.firm_name||id;
-   if(!firmMap[id]) firmMap[id]={name,coupons:0,checkout:0,detail:0,favs:0};
-   if(e.event==='coupon_copy') firmMap[id].coupons++;
-   if(e.event==='checkout_click') firmMap[id].checkout++;
-   if(e.event==='firm_detail_open') firmMap[id].detail++;
-   if(e.event==='firm_favorite') firmMap[id].favs++;
- });
- const firmData=Object.values(firmMap).sort((a,b)=>b.checkout-a.checkout);
-
- document.getElementById('tbl-firms-rank').innerHTML=`
- <thead><tr><th>#</th><th>Firma</th><th>Cupons</th><th>Detalhes</th><th>Favoritos</th><th>Checkout</th><th>Conversão</th></tr></thead>
- <tbody>${firmData.map((f,i)=>`<tr>
- <td style="color:var(--t3);">${i+1}</td>
- <td style="font-weight:700;">${f.name}</td>
- <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${f.coupons}</span></td>
- <td>${f.detail}</td>
- <td style="color:var(--purple);">${f.favs}</td>
- <td style="color:var(--green);font-weight:700;">${f.checkout}</td>
- <td>${f.coupons>0?(f.checkout/f.coupons*100).toFixed(0)+'%':'—'}</td>
- </tr>`).join('')}</tbody>`;
-
  },100);
-
- // Quiz results
- const qRes={};
- events.filter(e=>e.event==='quiz_complete').forEach(e=>{
- const f=e.params?.recommended_firm||'?';qRes[f]=(qRes[f]||0)+1;
- });
- document.getElementById('quiz-results-overview').innerHTML=`
- <div style="display:flex;gap:12px;flex-wrap:wrap;">
- ${Object.entries(qRes).map(([f,c])=>`
- <div style="padding:10px 16px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;gap:8px;">
- <span style="font-weight:700;color:var(--t1);">${f}</span>
- <span style="background:var(--gbg);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">${c}x</span>
- </div>`).join('')}
- </div>`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
