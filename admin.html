@@ -789,14 +789,21 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
   <!-- MODAL: Lançar Gasto de Campanha -->
   <div id="spend-modal-ov" style="display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.7);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
-   <div style="background:var(--sur);border:1px solid var(--b2);border-radius:14px;width:100%;max-width:420px;padding:28px;">
-    <div style="font-size:15px;font-weight:700;margin-bottom:20px;">Lançar Gasto de Campanha</div>
+   <div style="background:var(--sur);border:1px solid var(--b2);border-radius:14px;width:100%;max-width:460px;padding:28px;">
+    <div style="font-size:15px;font-weight:700;margin-bottom:20px;">Registrar Gasto com Ads</div>
+    <div class="modal-grid">
+     <div class="modal-field"><label>Data</label><input type="date" id="spend-date"></div>
+     <div class="modal-field"><label>Fonte</label><select id="spend-source"><option value="facebook">Facebook</option><option value="google">Google</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="other">Outro</option></select></div>
+    </div>
+    <div class="modal-grid">
+     <div class="modal-field"><label>Mídia</label><select id="spend-medium"><option value="cpc">CPC</option><option value="cpm">CPM</option><option value="social">Social</option><option value="email">E-mail</option></select></div>
+     <div class="modal-field"><label>Firma (opcional)</label><select id="spend-firm"><option value="">— Geral —</option></select></div>
+    </div>
     <div class="modal-field"><label>Campanha (utm_campaign)</label><input type="text" id="spend-campaign" placeholder="ex: black_friday_apex"></div>
     <div class="modal-grid">
-     <div class="modal-field"><label>Gasto (USD)</label><input type="number" id="spend-value" placeholder="0.00" step="0.01"></div>
-     <div class="modal-field"><label>Plataforma</label><select id="spend-platform"><option>Meta Ads</option><option>Google Ads</option><option>TikTok Ads</option><option>YouTube Ads</option><option>Outro</option></select></div>
-     <div class="modal-field"><label>Início</label><input type="date" id="spend-start"></div>
-     <div class="modal-field"><label>Fim</label><input type="date" id="spend-end"></div>
+     <div class="modal-field"><label>Gasto (USD)</label><input type="number" id="spend-amount" placeholder="0.00" step="0.01" min="0"></div>
+     <div class="modal-field"><label>Impressões</label><input type="number" id="spend-impressions" placeholder="0" min="0"></div>
+     <div class="modal-field"><label>Cliques</label><input type="number" id="spend-clicks" placeholder="0" min="0"></div>
     </div>
     <div class="modal-field"><label>Notas</label><input type="text" id="spend-notes" placeholder="Observações opcionais"></div>
     <div style="display:flex;gap:10px;margin-top:4px;">
@@ -1406,6 +1413,32 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">SÁB</div>
         </div>
         <div id="trk-calendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
+      </div>
+
+      <!-- ══ ROI POR CAMPANHA ══ -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd" style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div class="cc-title">ROI por Fonte / Campanha</div><div class="cc-sub">Gasto × Conversões × Retorno</div></div>
+          <button class="btn-secondary" onclick="openAdSpendModal()" style="font-size:11px;padding:6px 14px;">+ Registrar Gasto</button>
+        </div>
+        <!-- ROI KPIs -->
+        <div id="trk-roi-kpis" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px;"></div>
+        <!-- ROI per source -->
+        <div class="data-table-wrap"><table class="data-table" id="trk-roi-source"></table></div>
+        <!-- ROI per campaign -->
+        <div style="margin-top:16px;">
+          <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:8px;">Detalhamento por Campanha</div>
+          <div class="data-table-wrap"><table class="data-table" id="trk-roi-campaigns"></table></div>
+        </div>
+      </div>
+
+      <!-- ══ HISTÓRICO DE GASTOS ══ -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd" style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div class="cc-title">Histórico de Gastos com Ads</div><div class="cc-sub">Registros manuais de investimento</div></div>
+          <button class="btn-secondary" onclick="exportAdSpendCSV()" style="font-size:11px;padding:6px 14px;">Exportar CSV</button>
+        </div>
+        <div class="data-table-wrap" style="max-height:300px;overflow-y:auto;"><table class="data-table" id="trk-adspend-history"></table></div>
       </div>
 
       <!-- Comparação período -->
@@ -2619,23 +2652,199 @@ async function renderPixelTracking() {
 }
 
 // Ad Spend modal
-function openAdSpendModal()  { const m = document.getElementById('spend-modal-ov'); if(m) m.style.display='flex'; }
+function openAdSpendModal(editId) {
+  const m = document.getElementById('spend-modal-ov'); if(!m) return;
+  // Populate firm select
+  const sel = document.getElementById('spend-firm');
+  if(sel && sel.options.length <= 1) {
+    (_firmsCache||[]).forEach(f => { const o = document.createElement('option'); o.value = f.id; o.textContent = f.name; sel.appendChild(o); });
+  }
+  // Defaults
+  if(!editId) {
+    document.getElementById('spend-date').value = new Date().toISOString().slice(0,10);
+    document.getElementById('spend-source').value = 'facebook';
+    document.getElementById('spend-medium').value = 'cpc';
+    document.getElementById('spend-firm').value = '';
+    document.getElementById('spend-campaign').value = '';
+    document.getElementById('spend-amount').value = '';
+    document.getElementById('spend-impressions').value = '';
+    document.getElementById('spend-clicks').value = '';
+    document.getElementById('spend-notes').value = '';
+  }
+  m.dataset.editId = editId || '';
+  m.style.display = 'flex';
+}
 function closeAdSpendModal() { const m = document.getElementById('spend-modal-ov'); if(m) m.style.display='none'; }
 
 async function saveAdSpend() {
-  const campaign = document.getElementById('spend-campaign')?.value.trim();
-  const spend    = parseFloat(document.getElementById('spend-value')?.value || 0);
-  const platform = document.getElementById('spend-platform')?.value;
-  const start    = document.getElementById('spend-start')?.value || null;
-  const end      = document.getElementById('spend-end')?.value || null;
-  const notes    = document.getElementById('spend-notes')?.value.trim() || null;
-  if (!campaign || !spend) { toast('Preencha campanha e valor!','warn'); return; }
+  const date = document.getElementById('spend-date')?.value;
+  const source = document.getElementById('spend-source')?.value;
+  const medium = document.getElementById('spend-medium')?.value;
+  const firm_id = document.getElementById('spend-firm')?.value || null;
+  const campaign = document.getElementById('spend-campaign')?.value.trim() || null;
+  const amount = parseFloat(document.getElementById('spend-amount')?.value || 0);
+  const impressions = parseInt(document.getElementById('spend-impressions')?.value || 0);
+  const clicks = parseInt(document.getElementById('spend-clicks')?.value || 0);
+  const notes = document.getElementById('spend-notes')?.value.trim() || null;
+  if (!date || !amount) { toast('Preencha data e valor!','warn'); return; }
+  const row = { date, source, medium, firm_id, campaign, amount, impressions, clicks, notes };
+  const editId = document.getElementById('spend-modal-ov')?.dataset.editId;
   try {
-    await db.from('ad_spend').insert({ campaign, spend_usd: spend, platform, period_start: start, period_end: end, notes });
+    if (editId) {
+      await db.from('ad_spend').update(row).eq('id', editId);
+    } else {
+      await db.from('ad_spend').insert(row);
+    }
     closeAdSpendModal();
-    toast('Gasto lançado!');
-    renderAnalytics();
-  } catch(e) { toast('Erro ao salvar.','error'); }
+    toast('Gasto salvo!');
+    renderTrackingPage();
+  } catch(e) { toast('Erro ao salvar: ' + e.message,'error'); }
+}
+
+async function deleteAdSpend(id) {
+  if(!confirm('Excluir este registro de gasto?')) return;
+  await db.from('ad_spend').delete().eq('id', id);
+  toast('Registro excluído');
+  renderTrackingPage();
+}
+
+function exportAdSpendCSV() {
+  const tbl = document.getElementById('trk-adspend-history');
+  if(!tbl) return;
+  const rows = [...tbl.querySelectorAll('tr')];
+  const csv = rows.map(r => [...r.querySelectorAll('th,td')].map(c => '"'+c.textContent.replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ad_spend_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+}
+
+async function renderROI(ev, days) {
+  const cutoff = new Date(Date.now() - days * 86400000).toISOString().slice(0,10);
+  // Fetch ad_spend for same period
+  const { data: spendData } = await db.from('ad_spend').select('*').gte('date', cutoff).order('date', { ascending: false });
+  const spends = spendData || [];
+
+  // Aggregate spend by source
+  const spendBySource = {};
+  const spendByCampaign = {};
+  let totalSpend = 0, totalImpressions = 0, totalClicks = 0;
+  spends.forEach(s => {
+    const src = s.source || 'unknown';
+    if(!spendBySource[src]) spendBySource[src] = { amount:0, impressions:0, clicks:0 };
+    spendBySource[src].amount += parseFloat(s.amount||0);
+    spendBySource[src].impressions += (s.impressions||0);
+    spendBySource[src].clicks += (s.clicks||0);
+    totalSpend += parseFloat(s.amount||0);
+    totalImpressions += (s.impressions||0);
+    totalClicks += (s.clicks||0);
+    if(s.campaign) {
+      const key = s.campaign;
+      if(!spendByCampaign[key]) spendByCampaign[key] = { source:src, amount:0, impressions:0, clicks:0 };
+      spendByCampaign[key].amount += parseFloat(s.amount||0);
+      spendByCampaign[key].impressions += (s.impressions||0);
+      spendByCampaign[key].clicks += (s.clicks||0);
+    }
+  });
+
+  // Aggregate conversions by utm_source
+  const convBySource = {};
+  const convByCampaign = {};
+  let totalCheckouts = 0, totalCoupons = 0;
+  ev.forEach(e => {
+    const src = (e.utm_source || e.params?.utm_source || '').toLowerCase();
+    const camp = e.utm_campaign || e.params?.utm_campaign || '';
+    if(!src) return;
+    if(!convBySource[src]) convBySource[src] = { pv:0, detail:0, coupon:0, checkout:0, signup:0 };
+    if(e.event==='page_view') convBySource[src].pv++;
+    if(e.event==='firm_detail_open') convBySource[src].detail++;
+    if(e.event==='coupon_copy') { convBySource[src].coupon++; totalCoupons++; }
+    if(e.event==='checkout_click') { convBySource[src].checkout++; totalCheckouts++; }
+    if(e.event==='user_signup') convBySource[src].signup++;
+    if(camp) {
+      if(!convByCampaign[camp]) convByCampaign[camp] = { source:src, pv:0, detail:0, coupon:0, checkout:0, signup:0 };
+      if(e.event==='page_view') convByCampaign[camp].pv++;
+      if(e.event==='firm_detail_open') convByCampaign[camp].detail++;
+      if(e.event==='coupon_copy') convByCampaign[camp].coupon++;
+      if(e.event==='checkout_click') convByCampaign[camp].checkout++;
+      if(e.event==='user_signup') convByCampaign[camp].signup++;
+    }
+  });
+
+  // KPIs
+  const cpa = totalCheckouts > 0 ? (totalSpend / totalCheckouts) : 0;
+  const ctr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100) : 0;
+  const cpc = totalClicks > 0 ? (totalSpend / totalClicks) : 0;
+  document.getElementById('trk-roi-kpis').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Total Investido</div><div class="stat-val r">$${totalSpend.toFixed(2)}</div><div class="stat-change">${spends.length} registro${spends.length!==1?'s':''}</div></div>
+    <div class="stat-card"><div class="stat-lbl">Checkouts (Ads)</div><div class="stat-val g">${totalCheckouts}</div><div class="stat-change">${totalCoupons} cupons copiados</div></div>
+    <div class="stat-card"><div class="stat-lbl">CPA</div><div class="stat-val y">$${cpa.toFixed(2)}</div><div class="stat-change">custo por checkout</div></div>
+    <div class="stat-card"><div class="stat-lbl">CPC Médio</div><div class="stat-val b">$${cpc.toFixed(2)}</div><div class="stat-change">${totalClicks.toLocaleString('pt-BR')} cliques</div></div>
+    <div class="stat-card"><div class="stat-lbl">CTR</div><div class="stat-val">${ctr.toFixed(2)}%</div><div class="stat-change">${totalImpressions.toLocaleString('pt-BR')} impressões</div></div>`;
+
+  // Source ROI table
+  const allSources = [...new Set([...Object.keys(spendBySource), ...Object.keys(convBySource)])];
+  const srcTbl = document.getElementById('trk-roi-source');
+  srcTbl.innerHTML = `<thead><tr>
+    <th>Fonte</th><th style="text-align:right;">Gasto</th><th style="text-align:right;">Cliques</th>
+    <th style="text-align:right;">PageViews</th><th style="text-align:right;">Cupons</th><th style="text-align:right;">Checkouts</th>
+    <th style="text-align:right;">CPA</th><th style="text-align:right;">CPC</th>
+  </tr></thead><tbody>${allSources.sort((a,b)=>(spendBySource[b]?.amount||0)-(spendBySource[a]?.amount||0)).map(src => {
+    const sp = spendBySource[src] || { amount:0, clicks:0 };
+    const cv = convBySource[src] || { pv:0, coupon:0, checkout:0 };
+    const srcCpa = cv.checkout > 0 ? (sp.amount / cv.checkout) : 0;
+    const srcCpc = sp.clicks > 0 ? (sp.amount / sp.clicks) : 0;
+    const srcColor = src==='facebook'?'#1877F2':src==='google'?'#4285F4':src==='tiktok'?'#00F2EA':src==='youtube'?'#FF0000':'var(--t2)';
+    return `<tr>
+      <td style="font-weight:700;color:${srcColor};font-size:12px;text-transform:capitalize;">${src}</td>
+      <td style="text-align:right;font-weight:700;color:#EF4444;font-size:12px;">$${sp.amount.toFixed(2)}</td>
+      <td style="text-align:right;font-size:12px;">${sp.clicks.toLocaleString('pt-BR')}</td>
+      <td style="text-align:right;font-size:12px;">${cv.pv.toLocaleString('pt-BR')}</td>
+      <td style="text-align:right;font-size:12px;color:var(--gold);">${cv.coupon}</td>
+      <td style="text-align:right;font-size:12px;color:#22C55E;font-weight:700;">${cv.checkout}</td>
+      <td style="text-align:right;font-size:12px;font-weight:600;color:${srcCpa>0?'#FACC15':'var(--t3)'};">${srcCpa>0?'$'+srcCpa.toFixed(2):'—'}</td>
+      <td style="text-align:right;font-size:12px;color:var(--t2);">${srcCpc>0?'$'+srcCpc.toFixed(2):'—'}</td>
+    </tr>`;
+  }).join('')}</tbody>`;
+
+  // Campaign ROI table
+  const allCamps = [...new Set([...Object.keys(spendByCampaign), ...Object.keys(convByCampaign)])].filter(Boolean);
+  const campTbl = document.getElementById('trk-roi-campaigns');
+  campTbl.innerHTML = allCamps.length ? `<thead><tr>
+    <th>Campanha</th><th>Fonte</th><th style="text-align:right;">Gasto</th>
+    <th style="text-align:right;">Cliques</th><th style="text-align:right;">Cupons</th>
+    <th style="text-align:right;">Checkouts</th><th style="text-align:right;">CPA</th>
+  </tr></thead><tbody>${allCamps.sort((a,b)=>(spendByCampaign[b]?.amount||0)-(spendByCampaign[a]?.amount||0)).map(camp => {
+    const sp = spendByCampaign[camp] || { source:'—', amount:0, clicks:0 };
+    const cv = convByCampaign[camp] || { source:'—', coupon:0, checkout:0 };
+    const campCpa = cv.checkout > 0 ? (sp.amount / cv.checkout) : 0;
+    return `<tr>
+      <td style="font-weight:600;font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${camp}">${camp}</td>
+      <td style="font-size:11px;text-transform:capitalize;">${sp.source||cv.source}</td>
+      <td style="text-align:right;font-weight:700;color:#EF4444;font-size:11px;">$${sp.amount.toFixed(2)}</td>
+      <td style="text-align:right;font-size:11px;">${sp.clicks.toLocaleString('pt-BR')}</td>
+      <td style="text-align:right;font-size:11px;color:var(--gold);">${cv.coupon}</td>
+      <td style="text-align:right;font-size:11px;color:#22C55E;font-weight:700;">${cv.checkout}</td>
+      <td style="text-align:right;font-size:11px;font-weight:600;color:${campCpa>0?'#FACC15':'var(--t3)'};">${campCpa>0?'$'+campCpa.toFixed(2):'—'}</td>
+    </tr>`;
+  }).join('')}</tbody>` : '<tbody><tr><td style="padding:20px;color:var(--t3);text-align:center;" colspan="7">Nenhuma campanha com UTM registrada</td></tr></tbody>';
+
+  // Ad spend history table
+  const histTbl = document.getElementById('trk-adspend-history');
+  histTbl.innerHTML = spends.length ? `<thead><tr>
+    <th>Data</th><th>Fonte</th><th>Mídia</th><th>Campanha</th><th>Firma</th>
+    <th style="text-align:right;">Gasto</th><th style="text-align:right;">Impr.</th><th style="text-align:right;">Cliques</th>
+    <th>Notas</th><th></th>
+  </tr></thead><tbody>${spends.map(s => `<tr>
+    <td style="font-size:11px;white-space:nowrap;">${new Date(s.date+'T12:00:00').toLocaleDateString('pt-BR')}</td>
+    <td style="font-size:11px;text-transform:capitalize;font-weight:600;">${s.source}</td>
+    <td style="font-size:11px;">${s.medium||'—'}</td>
+    <td style="font-size:11px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${s.campaign||''}">${s.campaign||'—'}</td>
+    <td style="font-size:11px;">${s.firm_id||'—'}</td>
+    <td style="text-align:right;font-weight:700;color:#EF4444;font-size:12px;">$${parseFloat(s.amount).toFixed(2)}</td>
+    <td style="text-align:right;font-size:11px;">${(s.impressions||0).toLocaleString('pt-BR')}</td>
+    <td style="text-align:right;font-size:11px;">${(s.clicks||0).toLocaleString('pt-BR')}</td>
+    <td style="font-size:10px;color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${s.notes||''}">${s.notes||'—'}</td>
+    <td style="white-space:nowrap;"><button onclick="deleteAdSpend('${s.id}')" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:11px;padding:2px 6px;" title="Excluir">✕</button></td>
+  </tr>`).join('')}</tbody>` : '<tbody><tr><td style="padding:20px;color:var(--t3);text-align:center;" colspan="10">Nenhum gasto registrado neste período</td></tr></tbody>';
 }
 
 function renderLeadsPage(){ renderLeadsTable(); loadVipList(); }
@@ -7185,6 +7394,9 @@ async function renderTrackingPage(){
         <td style="font-size:11px;">${e.page_name || e.params?.page_name || '—'}</td>
       </tr>`;
     }).join('')}</tbody>`;
+
+  // ── ROI POR CAMPANHA ──
+  renderROI(ev, days);
 }
 
 // ─── PRO & ASSINATURAS ───────────────────────────────────────────────────
