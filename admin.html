@@ -1386,7 +1386,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <!-- Calendário mensal heatmap -->
       <div class="chart-card" style="margin-bottom:20px;">
         <div class="cc-hd" style="display:flex;align-items:center;justify-content:space-between;">
-          <div><div class="cc-title">Calendário de Atividade</div><div class="cc-sub">Visualize os dias mais ativos do mês</div></div>
+          <div><div class="cc-title">Visitantes por Dia</div><div class="cc-sub">Quantidade de pessoas únicas por dia</div></div>
           <div style="display:flex;align-items:center;gap:8px;">
             <button id="trk-cal-prev" style="background:var(--gbg);border:1px solid var(--gbr);color:var(--t1);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;" onclick="_trkCalNav(-1)">◀</button>
             <span id="trk-cal-label" style="font-weight:700;font-size:13px;color:var(--t1);min-width:120px;text-align:center;"></span>
@@ -1403,16 +1403,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">SÁB</div>
         </div>
         <div id="trk-calendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
-        <div style="display:flex;align-items:center;gap:12px;justify-content:flex-end;margin-top:8px;">
-          <span style="font-size:10px;color:var(--t3);">Menos</span>
-          <div style="display:flex;gap:3px;">
-            <div style="width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,.06);"></div>
-            <div style="width:14px;height:14px;border-radius:3px;background:rgba(240,180,41,.3);"></div>
-            <div style="width:14px;height:14px;border-radius:3px;background:#F0B429;"></div>
-            <div style="width:14px;height:14px;border-radius:3px;background:#22C55E;"></div>
-          </div>
-          <span style="font-size:10px;color:var(--t3);">Mais</span>
-        </div>
       </div>
 
       <!-- Comparação período -->
@@ -6840,76 +6830,81 @@ function _trkCalRender() {
 
   document.getElementById('trk-cal-label').textContent = _MONTH_NAMES[month] + ' ' + year;
 
-  // Disable next if current month
   const now = new Date();
-  document.getElementById('trk-cal-next').disabled = (year === now.getFullYear() && month === now.getMonth());
-  document.getElementById('trk-cal-next').style.opacity = (year === now.getFullYear() && month === now.getMonth()) ? '.3' : '1';
+  const isFutureMonth = (year > now.getFullYear()) || (year === now.getFullYear() && month > now.getMonth());
+  document.getElementById('trk-cal-next').disabled = isFutureMonth || (year === now.getFullYear() && month === now.getMonth());
+  document.getElementById('trk-cal-next').style.opacity = document.getElementById('trk-cal-next').disabled ? '.3' : '1';
 
-  // Count events per day
-  const dayCounts = {};
+  // Count unique visitors (session_id) per day
+  const dayVisitors = {};
+  const daySessions = {};
   ev.forEach(e => {
     const d = new Date(e.created_at);
     if (d.getMonth() === month && d.getFullYear() === year) {
       const day = d.getDate();
-      dayCounts[day] = (dayCounts[day] || 0) + 1;
+      if (!daySessions[day]) daySessions[day] = new Set();
+      daySessions[day].add(e.session_id || 'unknown');
     }
   });
+  for (const [day, sessions] of Object.entries(daySessions)) {
+    dayVisitors[day] = sessions.size;
+  }
 
-  const firstDay = new Date(year, month, 1).getDay(); // 0=Dom
+  const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const maxCount = Math.max(...Object.values(dayCounts), 1);
+  const maxCount = Math.max(...Object.values(dayVisitors), 1);
   const today = now.getDate();
   const isCurrentMonth = (year === now.getFullYear() && month === now.getMonth());
 
   let cells = '';
-
-  // Empty cells before first day
   for (let i = 0; i < firstDay; i++) {
-    cells += '<div style="padding:8px;"></div>';
+    cells += '<div></div>';
   }
 
-  // Day cells
   for (let d = 1; d <= daysInMonth; d++) {
-    const c = dayCounts[d] || 0;
-    const intensity = c / maxCount;
-    const bg = c === 0 ? 'rgba(255,255,255,.06)' :
-               intensity > 0.7 ? '#22C55E' :
-               intensity > 0.4 ? '#F0B429' :
-               'rgba(240,180,41,.3)';
-    const dark = intensity > 0.4 && c > 0;
-    const isToday = isCurrentMonth && d === today;
-    const border = isToday ? 'border:2px solid var(--gold);' : 'border:2px solid transparent;';
+    const v = dayVisitors[d] || 0;
     const isFuture = isCurrentMonth && d > today;
+    const isToday = isCurrentMonth && d === today;
+    const border = isToday ? 'border:2px solid var(--gold);' : 'border:1px solid rgba(255,255,255,.08);';
 
-    cells += `<div style="text-align:center;padding:6px 2px;background:${isFuture ? 'transparent' : bg};border-radius:6px;cursor:default;${border}${isFuture ? 'opacity:.3;' : ''}" title="${d}/${month+1}: ${c} eventos">
-      <div style="font-size:11px;font-weight:600;color:${dark ? '#000' : 'var(--t2)'};">${d}</div>
-      <div style="font-size:13px;font-weight:800;color:${dark ? '#000' : (c > 0 ? 'var(--t1)' : 'var(--t3)')};margin-top:2px;">${isFuture ? '' : c}</div>
-    </div>`;
+    if (isFuture) {
+      cells += `<div style="text-align:center;padding:8px 2px;border-radius:6px;opacity:.2;${border}">
+        <div style="font-size:10px;color:var(--t3);">${d}</div>
+        <div style="font-size:14px;color:var(--t3);">—</div>
+      </div>`;
+    } else {
+      const intensity = v / maxCount;
+      const numColor = v === 0 ? 'var(--t3)' : intensity > 0.6 ? '#22C55E' : intensity > 0.3 ? 'var(--gold)' : 'var(--t1)';
+      cells += `<div style="text-align:center;padding:8px 2px;background:rgba(255,255,255,.04);border-radius:6px;cursor:default;${border}" title="Dia ${d}: ${v} visitante${v!==1?'s':''}">
+        <div style="font-size:10px;color:var(--t3);margin-bottom:2px;">${d}</div>
+        <div style="font-size:18px;font-weight:800;color:${numColor};">${v}</div>
+      </div>`;
+    }
   }
 
   document.getElementById('trk-calendar').innerHTML = cells;
 
-  // Summary below: best day, worst day, avg
-  const dayEntries = Object.entries(dayCounts).sort((a,b) => b[1] - a[1]);
-  const total = Object.values(dayCounts).reduce((s,v) => s+v, 0);
-  const activeDays = Object.keys(dayCounts).length;
-  const avg = activeDays > 0 ? Math.round(total / activeDays) : 0;
-  const best = dayEntries[0];
-  const worst = dayEntries[dayEntries.length - 1];
+  // Summary
+  const vals = Object.values(dayVisitors);
+  const totalVisitors = vals.reduce((s,v) => s+v, 0);
+  const activeDays = vals.length;
+  const avg = activeDays > 0 ? Math.round(totalVisitors / activeDays) : 0;
+  const entries = Object.entries(dayVisitors).sort((a,b) => b[1] - a[1]);
+  const best = entries[0];
+  const worst = entries.length > 1 ? entries[entries.length - 1] : null;
 
-  // Add summary if not exists
   let sumEl = document.getElementById('trk-cal-summary');
   if (!sumEl) {
     sumEl = document.createElement('div');
     sumEl.id = 'trk-cal-summary';
-    sumEl.style.cssText = 'display:flex;gap:16px;justify-content:center;padding:8px 0 0;flex-wrap:wrap;';
+    sumEl.style.cssText = 'display:flex;gap:20px;justify-content:center;padding:12px 0 0;flex-wrap:wrap;';
     document.getElementById('trk-calendar').parentNode.insertBefore(sumEl, document.getElementById('trk-calendar').nextSibling.nextSibling);
   }
   sumEl.innerHTML = `
-    <div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Total</div><div style="font-size:16px;font-weight:800;color:var(--t1);">${total}</div></div>
-    <div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Média/dia</div><div style="font-size:16px;font-weight:800;color:var(--t1);">${avg}</div></div>
-    ${best ? `<div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Melhor dia</div><div style="font-size:16px;font-weight:800;color:#22C55E;">${best[0]}/${month+1} (${best[1]})</div></div>` : ''}
-    ${worst && dayEntries.length > 1 ? `<div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Pior dia</div><div style="font-size:16px;font-weight:800;color:var(--gold);">${worst[0]}/${month+1} (${worst[1]})</div></div>` : ''}
+    <div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Total visitantes</div><div style="font-size:20px;font-weight:800;color:var(--t1);">${totalVisitors}</div></div>
+    <div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Média/dia</div><div style="font-size:20px;font-weight:800;color:var(--t1);">${avg}</div></div>
+    ${best ? `<div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Melhor dia</div><div style="font-size:20px;font-weight:800;color:#22C55E;">Dia ${best[0]} <span style="font-size:13px;opacity:.7;">(${best[1]})</span></div></div>` : ''}
+    ${worst ? `<div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Pior dia</div><div style="font-size:20px;font-weight:800;color:var(--gold);">Dia ${worst[0]} <span style="font-size:13px;opacity:.7;">(${worst[1]})</span></div></div>` : ''}
   `;
 }
 
@@ -6921,7 +6916,7 @@ async function renderTrackingPage(){
 
   // Fetch events from Supabase
   const { data: events } = await db.from('events')
-    .select('event,firm_id,coupon_code,page_name,utm_source,utm_medium,utm_campaign,params,created_at')
+    .select('event,firm_id,coupon_code,page_name,utm_source,utm_medium,utm_campaign,params,created_at,session_id')
     .gte('created_at', cutoff)
     .order('created_at', { ascending: false })
     .limit(5000);
