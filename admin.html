@@ -8924,60 +8924,53 @@ function tgDrawCanvas(){
 
   // --- Firm rows ---
   const firms = tgGetSelectedFirms();
-  const ROW_H = 148;
+  const ROW_H = 170;
   const ROWS_START = 340;
   const PADDING_X = 50;
   const ROW_W = W - PADDING_X*2;
-  const LOGO_SIZE = 56;
+  const LOGO_SIZE = 60;
+  const RIGHT_ZONE = 220; // space reserved for % on right
 
   firms.forEach((f, i)=>{
-    const y = ROWS_START + i * (ROW_H + 16);
+    const y = ROWS_START + i * (ROW_H + 14);
     if(y + ROW_H > H - 200) return;
 
     const fColor = f.color || '#F0B429';
+    const dtype = f.discount_type || f.dtype || '';
+    const offLabel = dtype.toLowerCase() === 'lifetime' ? 'OFF LIFETIME' : 'OFF';
 
-    // Card background with firm color tint
+    // ── Card background ──
     ctx.save();
     const cardGrad = ctx.createLinearGradient(PADDING_X, y, PADDING_X+ROW_W, y);
-    cardGrad.addColorStop(0, tgAlpha(fColor, 0.12));
-    cardGrad.addColorStop(0.6,'rgba(255,255,255,0.05)');
+    cardGrad.addColorStop(0, tgAlpha(fColor, 0.10));
+    cardGrad.addColorStop(0.5,'rgba(255,255,255,0.04)');
     cardGrad.addColorStop(1,'rgba(255,255,255,0.02)');
     tgRoundRect(ctx, PADDING_X, y, ROW_W, ROW_H, 16);
     ctx.fillStyle = cardGrad;
     ctx.fill();
-
-    // Card border with firm color glow
     tgRoundRect(ctx, PADDING_X, y, ROW_W, ROW_H, 16);
-    ctx.strokeStyle = tgAlpha(fColor, 0.25);
+    ctx.strokeStyle = tgAlpha(fColor, 0.22);
     ctx.lineWidth = 1.5;
     ctx.stroke();
-
-    // Left accent bar
-    ctx.fillStyle = fColor;
-    tgRoundRect(ctx, PADDING_X, y, 4, ROW_H, [16,0,0,16]);
-    ctx.fill();
     ctx.restore();
 
-    // Logo placeholder (circle with icon letter if no image loaded)
-    const logoX = PADDING_X + 28;
-    const logoY = y + ROW_H/2 - LOGO_SIZE/2;
+    // ── Logo (circle) ──
+    const logoX = PADDING_X + 24;
+    const logoY = y + 24;
     ctx.save();
     ctx.beginPath();
     ctx.arc(logoX + LOGO_SIZE/2, logoY + LOGO_SIZE/2, LOGO_SIZE/2, 0, Math.PI*2);
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     ctx.fill();
-    ctx.strokeStyle = tgAlpha(fColor, 0.4);
+    ctx.strokeStyle = tgAlpha(fColor, 0.35);
     ctx.lineWidth = 2;
     ctx.stroke();
-    // Draw firm icon letter as fallback
-    ctx.font = 'bold 30px Inter, sans-serif';
+    ctx.font = 'bold 28px Inter, sans-serif';
     ctx.fillStyle = fColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(f.icon || f.name[0], logoX + LOGO_SIZE/2, logoY + LOGO_SIZE/2);
     ctx.restore();
-
-    // If logo image is in cache, draw it
     const imgKey = 'tg_logo_'+f.id;
     if(window[imgKey] && window[imgKey].complete){
       ctx.save();
@@ -8988,87 +8981,88 @@ function tgDrawCanvas(){
       ctx.restore();
     }
 
-    // Text start X (after logo)
+    // ── Text area (after logo, before right zone) ──
     const textX = logoX + LOGO_SIZE + 20;
+    const textMaxW = ROW_W - (textX - PADDING_X) - RIGHT_ZONE;
 
-    // Firm name
+    // Line 1: Firm name
     ctx.save();
-    ctx.font = 'bold 38px Inter, sans-serif';
+    ctx.font = 'bold 36px Inter, sans-serif';
     ctx.fillStyle = '#EDF2F7';
     ctx.textAlign = 'left';
-    ctx.fillText(f.name, textX, y + 50);
+    ctx.fillText(f.name, textX, y + 44);
     ctx.restore();
 
-    // Type tag pill
+    // Line 2: Type pill + Trustpilot (★ 4.8 1.5K)
+    const line2Y = y + 60;
+    let cursorX = textX;
+
+    // Type pill
     ctx.save();
     const tagText = f.type || 'Prop Firm';
-    ctx.font = '600 22px Inter, sans-serif';
-    const tagW = ctx.measureText(tagText).width + 24;
-    const tagX = textX;
-    const tagY = y + 64;
+    ctx.font = '600 20px Inter, sans-serif';
+    const tagW = ctx.measureText(tagText).width + 20;
     ctx.fillStyle = tgAlpha(fColor, 0.15);
-    tgRoundRect(ctx, tagX, tagY, tagW, 30, 6);
+    tgRoundRect(ctx, cursorX, line2Y, tagW, 28, 6);
     ctx.fill();
     ctx.fillStyle = fColor;
     ctx.textAlign = 'left';
-    ctx.fillText(tagText, tagX + 12, tagY + 22);
+    ctx.fillText(tagText, cursorX + 10, line2Y + 20);
     ctx.restore();
+    cursorX += tagW + 10;
 
-    // ROW 2: Trustpilot — ★ 4.8 1.5K (green pill style)
-    const row2Y = y + 68;
+    // Trustpilot pill
     const score = f.rating || f.trustpilot_score || 0;
     const revCount = f.reviews || f.trustpilot_reviews || 0;
     if(score > 0){
       ctx.save();
-      // Green pill bg
-      const tpText = '★ ' + score.toFixed(1) + '  ' + (revCount >= 1000 ? (revCount/1000).toFixed(1)+'K' : revCount);
-      ctx.font = '600 22px Inter, sans-serif';
-      const tpW = ctx.measureText(tpText).width + 24;
-      ctx.fillStyle = 'rgba(0,182,122,0.15)';
-      tgRoundRect(ctx, textX, row2Y, tpW, 30, 6);
+      const revLabel = revCount >= 1000 ? (revCount/1000).toFixed(1)+'K' : String(revCount);
+      const tpText = '★ ' + score.toFixed(1) + '  ' + revLabel;
+      ctx.font = '600 20px Inter, sans-serif';
+      const tpW = ctx.measureText(tpText).width + 20;
+      ctx.fillStyle = 'rgba(0,182,122,0.12)';
+      tgRoundRect(ctx, cursorX, line2Y, tpW, 28, 6);
       ctx.fill();
       ctx.fillStyle = '#00b67a';
       ctx.textAlign = 'left';
-      ctx.fillText(tpText, textX + 12, row2Y + 22);
+      ctx.fillText(tpText, cursorX + 10, line2Y + 20);
       ctx.restore();
     }
 
-    // ROW 3: Coupon code — pill with gold border (centered in row)
-    const row3Y = y + ROW_H - 50;
+    // Line 3: Coupon code — big prominent pill with gold border
     if(f.coupon){
       ctx.save();
-      ctx.font = '600 26px monospace';
+      const cpY = y + ROW_H - 55;
+      ctx.font = '700 28px monospace';
       const cpText = f.coupon;
-      const cpW = ctx.measureText(cpText).width + 48;
-      ctx.fillStyle = 'rgba(240,180,41,0.08)';
-      tgRoundRect(ctx, textX, row3Y, cpW, 38, 8);
+      const cpW = Math.max(ctx.measureText(cpText).width + 56, 240);
+      // Dark bg + gold border
+      ctx.fillStyle = 'rgba(240,180,41,0.06)';
+      tgRoundRect(ctx, textX, cpY, cpW, 42, 10);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(240,180,41,0.40)';
+      ctx.strokeStyle = 'rgba(240,180,41,0.45)';
       ctx.lineWidth = 1.5;
-      tgRoundRect(ctx, textX, row3Y, cpW, 38, 8);
+      tgRoundRect(ctx, textX, cpY, cpW, 42, 10);
       ctx.stroke();
+      // Code text centered
       ctx.fillStyle = '#F0B429';
       ctx.textAlign = 'center';
-      ctx.fillText(cpText, textX + cpW/2, row3Y + 27);
+      ctx.fillText(cpText, textX + cpW/2, cpY + 30);
       ctx.restore();
     }
 
-    // RIGHT SIDE — big discount % + OFF LIFETIME (exact site style)
+    // ── RIGHT SIDE — 90% + OFF LIFETIME (centered vertically) ──
     ctx.save();
     const rightX = PADDING_X + ROW_W - 40;
-    const dtype = f.discount_type || f.dtype || '';
-    const offLabel = dtype.toLowerCase() === 'lifetime' ? 'OFF LIFETIME' : 'OFF';
-
-    // Big percentage number
-    ctx.font = 'bold 64px Inter, sans-serif';
+    // Big percentage
+    ctx.font = 'bold 68px Inter, sans-serif';
     ctx.fillStyle = fColor;
     ctx.textAlign = 'right';
-    ctx.fillText(f.discount+'%', rightX, y + ROW_H/2 + 8);
-
-    // OFF LIFETIME label below
-    ctx.font = 'bold 20px Inter, sans-serif';
-    ctx.fillStyle = tgAlpha(fColor, 0.75);
-    ctx.fillText(offLabel, rightX, y + ROW_H/2 + 36);
+    ctx.fillText(f.discount+'%', rightX, y + ROW_H/2 + 6);
+    // OFF LIFETIME below
+    ctx.font = 'bold 22px Inter, sans-serif';
+    ctx.fillStyle = tgAlpha(fColor, 0.7);
+    ctx.fillText(offLabel, rightX, y + ROW_H/2 + 38);
     ctx.restore();
   });
 
