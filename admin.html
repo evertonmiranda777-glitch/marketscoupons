@@ -4630,10 +4630,15 @@ a{text-decoration:none;}
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-size:12px;" role="presentation">
             <tr style="background-color:${DARK};">
               <td style="padding:6px 8px;color:#fff;font-weight:600;border-radius:6px 0 0 0;font-family:${FI};">${etL.col_account||'Conta'}</td>
+              ${hasDual ? `
               <td style="padding:6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${pType1}</td>
               <td style="padding:6px;text-align:center;color:#aaa;font-size:10px;font-weight:400;text-decoration:line-through;font-family:${FI};">${eraLabel}</td>
               <td style="padding:6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${pType2}</td>
               <td style="padding:6px;text-align:center;color:#aaa;font-size:10px;font-weight:400;text-decoration:line-through;border-radius:0 6px 0 0;font-family:${FI};">${eraLabel}</td>
+              ` : `
+              <td style="padding:6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${etL.col_price||'Preço'}</td>
+              <td style="padding:6px;text-align:center;color:#aaa;font-size:10px;font-weight:400;text-decoration:line-through;border-radius:0 6px 0 0;font-family:${FI};">${eraLabel}</td>
+              `}
             </tr>
             ${priceRowsHtml}
           </table>
