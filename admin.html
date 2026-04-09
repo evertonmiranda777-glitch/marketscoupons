@@ -8993,61 +8993,61 @@ function tgDrawCanvas(){
     ctx.fillText(f.name, textX, y + 44);
     ctx.restore();
 
-    // Line 2: Type pill + Trustpilot (★ 4.8 1.5K)
-    const line2Y = y + 60;
-    let cursorX = textX;
-
-    // Type pill
+    // Line 2: Type pill + ★ score + reviews (inline, spaced)
+    const line2Y = y + 58;
     ctx.save();
+    // Type
     const tagText = f.type || 'Prop Firm';
     ctx.font = '600 20px Inter, sans-serif';
     const tagW = ctx.measureText(tagText).width + 20;
     ctx.fillStyle = tgAlpha(fColor, 0.15);
-    tgRoundRect(ctx, cursorX, line2Y, tagW, 28, 6);
+    tgRoundRect(ctx, textX, line2Y, tagW, 26, 6);
     ctx.fill();
     ctx.fillStyle = fColor;
     ctx.textAlign = 'left';
-    ctx.fillText(tagText, cursorX + 10, line2Y + 20);
-    ctx.restore();
-    cursorX += tagW + 10;
+    ctx.fillText(tagText, textX + 10, line2Y + 19);
 
-    // Trustpilot pill
+    // Trustpilot — separate: ★ score  reviews
     const score = f.rating || f.trustpilot_score || 0;
     const revCount = f.reviews || f.trustpilot_reviews || 0;
     if(score > 0){
-      ctx.save();
-      const revLabel = revCount >= 1000 ? (revCount/1000).toFixed(1)+'K' : String(revCount);
-      const tpText = '★ ' + score.toFixed(1) + '  ' + revLabel;
-      ctx.font = '600 20px Inter, sans-serif';
-      const tpW = ctx.measureText(tpText).width + 20;
-      ctx.fillStyle = 'rgba(0,182,122,0.12)';
-      tgRoundRect(ctx, cursorX, line2Y, tpW, 28, 6);
-      ctx.fill();
+      const tpX = textX + tagW + 12;
       ctx.fillStyle = '#00b67a';
-      ctx.textAlign = 'left';
-      ctx.fillText(tpText, cursorX + 10, line2Y + 20);
-      ctx.restore();
+      ctx.font = '600 20px Inter, sans-serif';
+      const scoreText = '★ ' + score.toFixed(1);
+      ctx.fillText(scoreText, tpX, line2Y + 19);
+      const scoreW = ctx.measureText(scoreText).width;
+      // Review count in t2
+      ctx.fillStyle = 'rgba(122,143,166,0.8)';
+      ctx.font = '500 18px Inter, sans-serif';
+      const revLabel = revCount >= 1000 ? (revCount/1000).toFixed(1)+'K' : String(revCount);
+      ctx.fillText(revLabel, tpX + scoreW + 8, line2Y + 19);
     }
+    ctx.restore();
 
-    // Line 3: Coupon code — big prominent pill with gold border
+    // Line 3: Coupon code pill (capped width, truncate if needed)
     if(f.coupon){
       ctx.save();
-      const cpY = y + ROW_H - 55;
-      ctx.font = '700 28px monospace';
-      const cpText = f.coupon;
-      const cpW = Math.max(ctx.measureText(cpText).width + 56, 240);
-      // Dark bg + gold border
+      const cpY = y + ROW_H - 52;
+      ctx.font = '700 24px monospace';
+      let cpText = f.coupon;
+      // Truncate long codes
+      const maxCpW = textMaxW - 20;
+      while(ctx.measureText(cpText).width + 40 > maxCpW && cpText.length > 6){
+        cpText = cpText.slice(0, -1);
+      }
+      if(cpText !== f.coupon) cpText += '…';
+      const cpW = ctx.measureText(cpText).width + 40;
       ctx.fillStyle = 'rgba(240,180,41,0.06)';
-      tgRoundRect(ctx, textX, cpY, cpW, 42, 10);
+      tgRoundRect(ctx, textX, cpY, cpW, 38, 8);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(240,180,41,0.45)';
+      ctx.strokeStyle = 'rgba(240,180,41,0.40)';
       ctx.lineWidth = 1.5;
-      tgRoundRect(ctx, textX, cpY, cpW, 42, 10);
+      tgRoundRect(ctx, textX, cpY, cpW, 38, 8);
       ctx.stroke();
-      // Code text centered
       ctx.fillStyle = '#F0B429';
       ctx.textAlign = 'center';
-      ctx.fillText(cpText, textX + cpW/2, cpY + 30);
+      ctx.fillText(cpText, textX + cpW/2, cpY + 27);
       ctx.restore();
     }
 
