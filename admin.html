@@ -2364,7 +2364,7 @@ function renderPage(p){
     case 'analytics':      adminGo('tracking'); break; // absorvido pelo Tracking
     case 'leads':          renderLeadsPage(); break;
     case 'events':         renderEventsPage(); break;
-    case 'geo':            renderGeoPage(); break;
+    case 'geo':            renderGeoPage(); if(!_ga4Cache) fetchGA4Geo(); break;
     case 'cadastros':      renderCadastrosPage(); break;
     case 'email':
       renderEmailFirmaChips();

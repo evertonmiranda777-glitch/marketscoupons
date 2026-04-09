@@ -5799,11 +5799,11 @@ function renderGEX(items){
 
   // 5. JS Error tracking
   window.addEventListener('error',function(e){
-    if(!_rateLimit('js_error',5000)) return;
+    if(!rateLimit('js_error',5000)) return;
     track('js_error',{message:(e.message||'').slice(0,100),source:(e.filename||'').split('/').pop(),line:e.lineno,page:_currentPage||'home'});
   });
   window.addEventListener('unhandledrejection',function(e){
-    if(!_rateLimit('promise_error',5000)) return;
+    if(!rateLimit('promise_error',5000)) return;
     track('js_error',{message:('Promise: '+(e.reason?.message||String(e.reason)||'')).slice(0,100),page:_currentPage||'home'});
   });
 
