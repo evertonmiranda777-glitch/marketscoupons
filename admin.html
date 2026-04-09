@@ -2310,6 +2310,24 @@ async function renderAlerts(){
     }
   }
 
+  // 4. Economic Calendar empty (yellow) — weekdays only, check edge function
+  if(isWeekday){
+    try {
+      const resp = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-calendar?lang=en');
+      if(resp.ok){
+        const evts = await resp.json();
+        const todayEvents = (evts||[]).filter(e => (e.date||'').startsWith(todayStr));
+        _alertCache.calendar = todayEvents.length > 0;
+      } else { _alertCache.calendar = true; }
+    } catch(e){ _alertCache.calendar = true; }
+    if(!_alertCache.calendar){
+      banners.push(`<div class="alert-banner alert-yellow">
+        <span class="ab-icon">&#9679;</span>
+        <span class="ab-text">Calendário Econômico sem eventos carregados para hoje</span>
+      </div>`);
+    }
+  }
+
   wrap.innerHTML = banners.join('');
 
   // 5. Day Summary (green chips)
