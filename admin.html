@@ -2064,7 +2064,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div class="tg-card-title">Enviar Criativo</div>
             <button class="tg-send-btn" id="tg-send-btn" onclick="tgSendCreative()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-              Enviar pro Telegram
+              Enviar Imagem
+            </button>
+            <button class="tg-send-btn" id="tg-send-html-btn" onclick="tgSendHTML()" style="background:linear-gradient(135deg,#F0B429,#c8941a);color:#030507;margin-top:8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              Enviar HTML com Links
             </button>
             <div class="tg-status" id="tg-send-status"></div>
           </div>
@@ -9129,6 +9133,64 @@ function tgPreloadLogos(){
     img.onload = ()=>{ window[imgKey]=img; tgDrawCanvas(); };
     img.src = f.icon_url;
   });
+}
+
+/* ── Enviar HTML formatado com InlineKeyboard (links clicáveis) ── */
+async function tgSendHTML(){
+  const btn = document.getElementById('tg-send-html-btn');
+  const st = document.getElementById('tg-send-status');
+  const firms = tgGetSelectedFirms();
+  if(!firms.length){ st.textContent='Selecione pelo menos uma firma.'; st.className='tg-status err'; return; }
+
+  btn.disabled = true;
+  st.textContent = 'Enviando HTML...';
+  st.className = 'tg-status loading';
+
+  try{
+    const medals = ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+    let lines = firms.map((f, i)=>{
+      const dtype = (f.discount_type || f.dtype || '').toLowerCase();
+      const offLabel = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
+      const cpLine = f.coupon ? `🎟 Code: <code>${f.coupon}</code>` : '🔗 Auto-applied';
+      return `${medals[i]||'•'} <b>${f.name}</b> — ${f.discount}% ${offLabel}\n${cpLine}`;
+    });
+
+    const text =
+      `🔥 <b>Active Promotions — Prop Firms</b>\n\n` +
+      lines.join('\n\n') +
+      `\n\n💰 Save up to ${Math.max(...firms.map(f=>f.discount))}% with exclusive coupons`;
+
+    // InlineKeyboard: one button per firm (2 columns)
+    const buttons = firms.map(f=>([{
+      text: `${f.name} → ${f.discount}% OFF`,
+      url: f.link || `https://www.marketscoupons.com`
+    }]));
+    // Add site button at bottom
+    buttons.push([{text:'🌐 See all deals → marketscoupons.com', url:'https://www.marketscoupons.com'}]);
+
+    const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        chat_id: TG_CHAT_ID,
+        text: text,
+        parse_mode: 'HTML',
+        reply_markup: { inline_keyboard: buttons }
+      })
+    });
+    const data = await res.json();
+    if(data.ok){
+      st.textContent = '✓ HTML enviado com sucesso!';
+      st.className = 'tg-status ok';
+    } else {
+      st.textContent = 'Erro: ' + (data.description||'unknown');
+      st.className = 'tg-status err';
+    }
+  }catch(e){
+    st.textContent = 'Erro: ' + e.message;
+    st.className = 'tg-status err';
+  }
+  btn.disabled = false;
 }
 
 /* ── Enviar criativo para o Telegram (direto) ── */
