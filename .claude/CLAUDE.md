@@ -13,5 +13,11 @@
 - index.html → arquivo principal do site
 - admin.html → painel admin, deve espelhar dados do index.html
 
+## Geração de imagens
+- SEMPRE usar nano-banana-2 (Gemini 3.1 Flash Image Preview) para gerar imagens
+- API Key: AIzaSyDV_6WUdMm1RlDw2IJBhu1rbfiLMtsMYjw
+- Modelo: gemini-3.1-flash-image-preview
+- Nunca usar outro serviço de geração de imagens
+
 ## Quando tiver dúvida
 Escolha a abordagem mais segura e me avise o que fez.
