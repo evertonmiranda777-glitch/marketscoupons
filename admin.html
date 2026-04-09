@@ -9035,29 +9035,16 @@ function tgDrawCanvas(){
       ctx.restore();
     }
 
-    // Discount badge (right side) — matching site card style
+    // Discount text (right side) — clean, no box
     ctx.save();
-    const badgeW = 120, badgeH = 100;
-    const badgeX = PADDING_X + ROW_W - badgeW - 28;
-    const badgeY = y + ROW_H/2 - badgeH/2;
-    const badgeGrad = ctx.createLinearGradient(badgeX, badgeY, badgeX+badgeW, badgeY+badgeH);
-    badgeGrad.addColorStop(0, fColor);
-    badgeGrad.addColorStop(1, tgDarken(fColor));
-    tgRoundRect(ctx, badgeX, badgeY, badgeW, badgeH, 14);
-    ctx.fillStyle = badgeGrad;
-    ctx.fill();
-    // Subtle inner glow
-    tgRoundRect(ctx, badgeX, badgeY, badgeW, badgeH, 14);
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    ctx.font = 'bold 48px Inter, sans-serif';
-    ctx.fillStyle = '#fff';
-    ctx.textAlign = 'center';
-    ctx.fillText(f.discount+'%', badgeX+badgeW/2, badgeY+55);
-    ctx.font = 'bold 18px Inter, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.fillText('OFF', badgeX+badgeW/2, badgeY+82);
+    const discX = PADDING_X + ROW_W - 50;
+    ctx.font = 'bold 52px Inter, sans-serif';
+    ctx.fillStyle = fColor;
+    ctx.textAlign = 'right';
+    ctx.fillText(f.discount+'%', discX, y + ROW_H/2 + 8);
+    ctx.font = '600 20px Inter, sans-serif';
+    ctx.fillStyle = tgAlpha(fColor, 0.7);
+    ctx.fillText('OFF', discX, y + ROW_H/2 + 36);
     ctx.restore();
   });
 
