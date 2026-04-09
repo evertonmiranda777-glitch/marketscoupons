@@ -1040,16 +1040,36 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <div class="sec-title">Email Marketing</div>
  <div class="sec-actions">
    <button class="btn-secondary" onclick="importLeadsAsSubscribers()">Importar Leads</button>
-   <button class="btn-secondary" onclick="loadEmailStats();renderCampaignLog();loadSubscribersList()">Atualizar</button>
+   <button class="btn-secondary" onclick="eaRefresh();renderCampaignLog();loadSubscribersList()">Atualizar</button>
  </div>
  </div>
 
- <!-- STATS -->
- <div class="send-stats" style="margin-bottom:20px;">
- <div class="ss-item"><div class="ss-lbl">Campanhas</div><div class="ss-val" id="ss-camp">0</div></div>
- <div class="ss-item"><div class="ss-lbl">Enviados</div><div class="ss-val g" id="ss-sent">0</div></div>
- <div class="ss-item"><div class="ss-lbl">Templates</div><div class="ss-val b" id="ss-tmpl">0</div></div>
- <div class="ss-item"><div class="ss-lbl">Inscritos</div><div class="ss-val y" id="ss-leads">0</div></div>
+ <!-- ═══ EMAIL ANALYTICS PANEL ═══ -->
+ <div class="ea-panel">
+   <div class="ea-hdr">
+     <div class="ea-title">Analytics de Email</div>
+     <div class="ea-filters">
+       <div style="display:flex;gap:4px;" id="ea-firma-chips"></div>
+       <div style="display:flex;gap:4px;">
+         <button class="ea-period-btn sel" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
+         <button class="ea-period-btn" data-days="14" onclick="eaSetPeriod(14,this)">14d</button>
+         <button class="ea-period-btn" data-days="28" onclick="eaSetPeriod(28,this)">28d</button>
+       </div>
+       <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="eaRefresh()">Atualizar</button>
+     </div>
+   </div>
+   <div class="ea-kpi-grid">
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-total-sent">—</div><div class="ea-kpi-lbl">Enviados</div><div class="ea-kpi-sub" id="ea-total-sent-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-open-rate" style="color:#60a5fa;">—</div><div class="ea-kpi-lbl">Taxa Abertura</div><div class="ea-kpi-sub" id="ea-open-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-click-rate" style="color:var(--gold);">—</div><div class="ea-kpi-lbl">Taxa Clique</div><div class="ea-kpi-sub" id="ea-click-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-bounce-rate" style="color:#f87171;">—</div><div class="ea-kpi-lbl">Bounced</div><div class="ea-kpi-sub" id="ea-bounce-sub"></div></div>
+     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-unsub-rate" style="color:#fb923c;">—</div><div class="ea-kpi-lbl">Descadastro</div><div class="ea-kpi-sub" id="ea-unsub-sub"></div></div>
+   </div>
+   <div class="ea-chart-wrap"><canvas id="ea-daily-chart"></canvas></div>
+   <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Historico Detalhado</div>
+   <div class="ea-tbl-wrap" id="ea-table-wrap">
+     <div class="ea-load">Carregando dados do Brevo...</div>
+   </div>
  </div>
 
  <!-- IMPORTAR & VALIDAR -->
@@ -1228,40 +1248,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <!-- List -->
    <div id="sub-list" style="max-height:400px;overflow-y:auto;"></div>
    <div style="font-size:10px;color:var(--t3);margin-top:8px;" id="sub-total-info"></div>
- </div>
-
- <!-- ═══ EMAIL ANALYTICS PANEL ═══ -->
- <div class="ea-panel">
-   <div class="ea-hdr">
-     <div class="ea-title">Analytics de Email</div>
-     <div class="ea-filters">
-       <div style="display:flex;gap:4px;" id="ea-firma-chips"></div>
-       <div style="display:flex;gap:4px;">
-         <button class="ea-period-btn sel" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
-         <button class="ea-period-btn" data-days="14" onclick="eaSetPeriod(14,this)">14d</button>
-         <button class="ea-period-btn" data-days="28" onclick="eaSetPeriod(28,this)">28d</button>
-       </div>
-       <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="eaRefresh()">Atualizar</button>
-     </div>
-   </div>
-
-   <!-- KPIs -->
-   <div class="ea-kpi-grid">
-     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-total-sent">—</div><div class="ea-kpi-lbl">Enviados</div><div class="ea-kpi-sub" id="ea-total-sent-sub"></div></div>
-     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-open-rate" style="color:#60a5fa;">—</div><div class="ea-kpi-lbl">Taxa Abertura</div><div class="ea-kpi-sub" id="ea-open-sub"></div></div>
-     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-click-rate" style="color:var(--gold);">—</div><div class="ea-kpi-lbl">Taxa Clique</div><div class="ea-kpi-sub" id="ea-click-sub"></div></div>
-     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-bounce-rate" style="color:#f87171;">—</div><div class="ea-kpi-lbl">Bounced</div><div class="ea-kpi-sub" id="ea-bounce-sub"></div></div>
-     <div class="ea-kpi"><div class="ea-kpi-val" id="ea-unsub-rate" style="color:#fb923c;">—</div><div class="ea-kpi-lbl">Descadastro</div><div class="ea-kpi-sub" id="ea-unsub-sub"></div></div>
-   </div>
-
-   <!-- Chart -->
-   <div class="ea-chart-wrap"><canvas id="ea-daily-chart"></canvas></div>
-
-   <!-- Campaign table -->
-   <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Historico Detalhado</div>
-   <div class="ea-tbl-wrap" id="ea-table-wrap">
-     <div class="ea-load">Carregando dados do Brevo...</div>
-   </div>
  </div>
 
  </div><!-- /page-email -->
@@ -3156,17 +3142,7 @@ async function renderEmailFirmaChips(){
   }
 }
 
-async function loadEmailStats(){
-  const { count: campCount } = await db.from('email_logs').select('*',{count:'exact',head:true});
-  const { data: logs } = await db.from('email_logs').select('recipients');
-  const totalSent = (logs||[]).reduce((s,l)=>s+(l.recipients||0),0);
-  const { count: tmplCount } = await db.from('email_templates').select('*',{count:'exact',head:true});
-  const { count: subCount } = await db.from('email_subscribers').select('*',{count:'exact',head:true}).eq('status','active');
-  document.getElementById('ss-camp').textContent=campCount||0;
-  document.getElementById('ss-sent').textContent=totalSent;
-  document.getElementById('ss-tmpl').textContent=tmplCount||0;
-  document.getElementById('ss-leads').textContent=subCount||0;
-}
+async function loadEmailStats(){ /* KPIs now handled by eaRefresh / Analytics panel */ }
 function composeToLead(email,name){
  closeLeadModal();
  adminGo('email',[...document.querySelectorAll('.nta')].find(b=>b.textContent.trim()==='E-mail'));
