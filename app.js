@@ -933,8 +933,8 @@ const BLOG_POSTS = [
 </ol>
 
 <h2>Os 5 Erros Que Todo Iniciante Comete</h2>
-<h3>1. Operar sem stop loss</h3>
-<p>"Vou segurar que volta." Não volta. E quando volta, você já violou o drawdown. <strong>Sempre use stop loss.</strong></p>
+<h3>1. Operar sem proteção</h3>
+<p>"Vou segurar que volta." Não volta. E quando volta, você já violou o drawdown. <strong>Sempre defina seu limite de perda antes de entrar.</strong></p>
 
 <h3>2. Arriscar demais por operação</h3>
 <p>Regra de ouro: <strong>nunca arrisque mais de 1-2% do drawdown por trade</strong>. Em uma conta de $50K com $2.500 de drawdown, isso significa no máximo $25-50 de risco por operação.</p>
@@ -1140,7 +1140,7 @@ $25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
 <h2>Antes de Começar: Os Pré-Requisitos</h2>
 <ul>
 <li><strong>Pelo menos 30 dias de operação lucrativa no simulador</strong> — se você não é consistente no demo, não será no desafio</li>
-<li><strong>Estratégia definida:</strong> entrada, stop, alvo, horários. Tudo escrito.</li>
+<li><strong>Estratégia definida:</strong> critérios de entrada, proteção, alvo, horários. Tudo escrito.</li>
 <li><strong>Win rate mínimo de 45% com R:R de 1:2</strong> ou 35% com R:R de 1:3</li>
 <li><strong>Journal de trading</strong> com pelo menos 50 operações registradas</li>
 </ul>
@@ -1439,7 +1439,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
     titleKey:'blog7_titulo', excerptKey:'blog7_excerpt', dataKey:'blog7_data', readMin:12,
     content:`
 <h2>A Realidade de Operar em Múltiplas Prop Firms</h2>
-<p>Operar em 3+ prop firms simultaneamente é o caminho que muitos traders profissionais seguem para <strong>maximizar capital, diversificar risco de contraparte e aumentar payouts</strong>. Mas exige organização militar.</p>
+<p>Operar em 3+ prop firms simultaneamente é uma estratégia para <strong>maximizar capital, diversificar risco de contraparte e aumentar payouts</strong>. Mas exige organização militar.</p>
 
 <h2>Por Que Diversificar Entre Firmas</h2>
 <h3>1. Risco de Contraparte</h3>
@@ -3037,7 +3037,7 @@ const FAQ_LANGS = {
   pt: [
     {q:'O que é uma prop firm?', a:'Uma prop firm (proprietary trading firm) é uma empresa que fornece capital para traders operarem. O trader faz uma avaliação, e se aprovado, opera com o dinheiro da firma e recebe parte dos lucros.'},
     {q:'Como funcionam os cupons do Markets Coupons?', a:'Nossos cupons são códigos exclusivos negociados diretamente com as prop firms. Basta copiar o código e colar no checkout da firma para receber o desconto automaticamente. Alguns descontos são aplicados diretamente pelo link de parceiro.'},
-    {q:'Os cupons são realmente gratuitos?', a:'Sim, todos os cupons são 100% gratuitos para usar. O Markets Coupons é remunerado pelas prop firms através de parcerias de afiliados, sem nenhum custo extra para você.'},
+    {q:'Os cupons têm custo?', a:'Não. Os cupons são códigos de desconto negociados diretamente com as prop firms. Você aplica no checkout e o desconto é ativado automaticamente, sem custo adicional.'},
     {q:'Qual a melhor prop firm para iniciantes?', a:'Depende do seu perfil. A Apex Trader Funding oferece até 90% de desconto e regras flexíveis. A Bulenox permite passar em 1 dia. A FTMO tem Free Trial ilimitado. Use nosso Quiz para descobrir a melhor para você.'},
     {q:'Posso usar mais de um cupom ao mesmo tempo?', a:'Geralmente não. Cada prop firm aceita apenas um código de desconto por compra. Nossos cupons já são os maiores disponíveis no mercado.'},
     {q:'O que é Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se move conforme o lucro, podendo voltar ao breakeven. EOD (End of Day) Drawdown só é calculado no fechamento do dia, dando mais flexibilidade durante a operação.'},
@@ -3048,8 +3048,8 @@ const FAQ_LANGS = {
   ],
   en: [
     {q:'What is a prop firm?', a:'A prop firm (proprietary trading firm) is a company that provides capital for traders to operate. The trader takes an evaluation, and if approved, trades with the firm\'s money and receives a share of the profits.'},
-    {q:'How do Markets Coupons coupons work?', a:'Our coupons are exclusive codes negotiated directly with prop firms. Just copy the code and paste it at the firm\'s checkout to receive the discount automatically. Some discounts are applied directly through the affiliate link.'},
-    {q:'Are the coupons really free?', a:'Yes, all coupons are 100% free to use. Markets Coupons is paid by prop firms through affiliate partnerships, at no extra cost to you.'},
+    {q:'How do Markets Coupons coupons work?', a:'Our coupons are exclusive codes negotiated directly with prop firms. Just copy the code and paste it at the firm\'s checkout to receive the discount automatically. Some discounts are applied directly through the partner link.'},
+    {q:'Do the coupons have a cost?', a:'No. The coupons are discount codes negotiated directly with prop firms. You apply them at checkout and the discount is activated automatically, at no additional cost.'},
     {q:'What is the best prop firm for beginners?', a:'It depends on your profile. Apex Trader Funding offers up to 90% off and flexible rules. Bulenox lets you pass in 1 day. FTMO has an unlimited Free Trial. Use our Quiz to find the best one for you.'},
     {q:'Can I use more than one coupon at the same time?', a:'Generally no. Each prop firm accepts only one discount code per purchase. Our coupons are already the largest available in the market.'},
     {q:'What is Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown moves with profit, potentially returning to breakeven. EOD (End of Day) Drawdown is only calculated at market close, giving more flexibility during the trading session.'},
@@ -3061,7 +3061,7 @@ const FAQ_LANGS = {
   es: [
     {q:'¿Qué es una prop firm?', a:'Una prop firm es una empresa que proporciona capital para que los traders operen. El trader realiza una evaluación y, si es aprobado, opera con el dinero de la empresa y recibe parte de las ganancias.'},
     {q:'¿Cómo funcionan los cupones de Markets Coupons?', a:'Nuestros cupones son códigos exclusivos negociados directamente con las prop firms. Solo copia el código y pégalo en el checkout de la firma para recibir el descuento automáticamente.'},
-    {q:'¿Los cupones son realmente gratuitos?', a:'Sí, todos los cupones son 100% gratuitos. Markets Coupons es remunerado por las prop firms a través de asociaciones de afiliados, sin ningún costo extra para ti.'},
+    {q:'¿Los cupones tienen costo?', a:'No. Los cupones son códigos de descuento negociados directamente con las prop firms. Los aplicas en el checkout y el descuento se activa automáticamente, sin costo adicional.'},
     {q:'¿Cuál es la mejor prop firm para principiantes?', a:'Apex ofrece hasta 90% de descuento. Bulenox permite pasar en 1 día. FTMO tiene Free Trial ilimitado. Usa nuestro Quiz para encontrar la mejor para ti.'},
     {q:'¿Puedo usar más de un cupón al mismo tiempo?', a:'Generalmente no. Cada prop firm acepta solo un código de descuento por compra.'},
     {q:'¿Qué es Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se mueve con el beneficio. EOD Drawdown solo se calcula al cierre del mercado, dando más flexibilidad.'},
@@ -3073,7 +3073,7 @@ const FAQ_LANGS = {
   it: [
     {q:'Cos\'è una prop firm?', a:'Una prop firm è un\'azienda che fornisce capitale ai trader per operare. Il trader supera una valutazione e, se approvato, opera con il denaro dell\'azienda ricevendo una parte dei profitti.'},
     {q:'Come funzionano i coupon di Markets Coupons?', a:'I nostri coupon sono codici esclusivi negoziati direttamente con le prop firm. Basta copiare il codice e incollarlo al checkout per ricevere lo sconto automaticamente.'},
-    {q:'I coupon sono davvero gratuiti?', a:'Sì, tutti i coupon sono 100% gratuiti. Markets Coupons è remunerata dalle prop firm tramite partnership di affiliazione, senza costi aggiuntivi per te.'},
+    {q:'I coupon hanno un costo?', a:'No. I coupon sono codici sconto negoziati direttamente con le prop firm. Li applichi al checkout e lo sconto viene attivato automaticamente, senza costi aggiuntivi.'},
     {q:'Qual è la migliore prop firm per i principianti?', a:'Apex offre fino al 90% di sconto. Bulenox permette di superare la valutazione in 1 giorno. FTMO ha un Free Trial illimitato. Usa il nostro Quiz per trovare quella giusta per te.'},
     {q:'Posso usare più di un coupon contemporaneamente?', a:'In generale no. Ogni prop firm accetta solo un codice sconto per acquisto.'},
     {q:'Cos\'è il Trailing Drawdown vs EOD Drawdown?', a:'Il Trailing Drawdown si muove con il profitto. L\'EOD Drawdown viene calcolato solo alla chiusura del mercato, offrendo maggiore flessibilità.'},
@@ -3085,7 +3085,7 @@ const FAQ_LANGS = {
   fr: [
     {q:'Qu\'est-ce qu\'une prop firm ?', a:'Une prop firm est une société qui fournit des capitaux aux traders pour opérer. Le trader passe une évaluation et, s\'il est accepté, opère avec l\'argent de l\'entreprise et reçoit une partie des bénéfices.'},
     {q:'Comment fonctionnent les coupons de Markets Coupons ?', a:'Nos coupons sont des codes exclusifs négociés directement avec les prop firms. Il suffit de copier le code et de le coller lors du paiement pour obtenir la réduction automatiquement.'},
-    {q:'Les coupons sont-ils vraiment gratuits ?', a:'Oui, tous les coupons sont 100% gratuits. Markets Coupons est rémunéré par les prop firms via des partenariats d\'affiliation.'},
+    {q:'Les coupons ont-ils un coût ?', a:'Non. Les coupons sont des codes de réduction négociés directement avec les prop firms. Vous les appliquez au checkout et la réduction est activée automatiquement, sans coût supplémentaire.'},
     {q:'Quelle est la meilleure prop firm pour les débutants ?', a:'Apex offre jusqu\'à 90% de réduction. Bulenox permet de réussir en 1 jour. FTMO a un Free Trial illimité. Utilisez notre Quiz pour trouver la meilleure pour vous.'},
     {q:'Puis-je utiliser plusieurs coupons en même temps ?', a:'En général non. Chaque prop firm accepte seulement un code de réduction par achat.'},
     {q:'Qu\'est-ce que le Trailing Drawdown vs EOD Drawdown ?', a:'Le Trailing Drawdown suit le profit. L\'EOD Drawdown n\'est calculé qu\'à la clôture du marché, offrant plus de flexibilité.'},
@@ -3097,7 +3097,7 @@ const FAQ_LANGS = {
   de: [
     {q:'Was ist eine Prop Firm?', a:'Eine Prop Firm ist ein Unternehmen, das Trader mit Kapital versorgt. Der Trader absolviert eine Bewertung und handelt bei Zulassung mit dem Geld der Firma und erhält einen Teil der Gewinne.'},
     {q:'Wie funktionieren die Gutscheine von Markets Coupons?', a:'Unsere Gutscheine sind exklusive Codes, die direkt mit den Prop Firms ausgehandelt wurden. Kopiere den Code und füge ihn beim Checkout ein, um den Rabatt automatisch zu erhalten.'},
-    {q:'Sind die Gutscheine wirklich kostenlos?', a:'Ja, alle Gutscheine sind 100% kostenlos. Markets Coupons wird von den Prop Firms über Affiliate-Partnerschaften vergütet.'},
+    {q:'Haben die Gutscheine Kosten?', a:'Nein. Die Gutscheine sind Rabattcodes, die direkt mit den Prop Firms ausgehandelt wurden. Du wendest sie beim Checkout an und der Rabatt wird automatisch aktiviert, ohne zusätzliche Kosten.'},
     {q:'Was ist die beste Prop Firm für Anfänger?', a:'Apex bietet bis zu 90% Rabatt. Bulenox ermöglicht das Bestehen in 1 Tag. FTMO hat eine unbegrenzte Free Trial. Nutze unser Quiz, um die Beste für dich zu finden.'},
     {q:'Kann ich mehr als einen Gutschein gleichzeitig verwenden?', a:'Im Allgemeinen nein. Jede Prop Firm akzeptiert nur einen Rabattcode pro Kauf.'},
     {q:'Was ist Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown bewegt sich mit dem Gewinn. EOD Drawdown wird nur bei Marktschluss berechnet und bietet mehr Flexibilität.'},

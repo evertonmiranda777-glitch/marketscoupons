@@ -96,10 +96,10 @@
     },
     {
       "@type": "Question",
-      "name": "Os cupons são realmente gratuitos?",
+      "name": "Os cupons têm custo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sim, todos os cupons são 100% gratuitos para usar. O Markets Coupons é remunerado pelas prop firms através de parcerias de afiliados, sem nenhum custo extra para você."
+        "text": "Não. Os cupons são códigos de desconto negociados diretamente com as prop firms. Você aplica no checkout e o desconto é ativado automaticamente, sem custo adicional."
       }
     },
     {
@@ -2451,7 +2451,7 @@ document.addEventListener('DOMContentLoaded',function(){
   </button>
   <button class="mm-auth-btn mm-auth-signup" onclick="closeMM();openAuthModal('signup')">
    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-   <span data-i18n="mm_criar_conta">Criar Conta Grátis</span>
+   <span data-i18n="mm_criar_conta">Criar Conta</span>
   </button>
  </div>
  <div class="mm-sec" data-i18n="mm_principal">Principal</div>
@@ -2474,7 +2474,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <button class="mm-item" onclick="mgo('blog')" data-i18n="nav_blog"> Blog</button>
  <div class="mm-sec" data-i18n="mm_sec_live">Live & Mais</div>
  <button class="mm-item" onclick="mgo('live')" data-i18n="mm_live">Live Room</button>
- <button class="mm-item" id="mm-bot-item" style="display:none" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente IA</button>
+ <button class="mm-item" id="mm-bot-item" style="display:none" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente</button>
  <div class="mm-sec" data-i18n="mm_sec_idioma">Idioma</div>
  <div class="mm-langs">
  <button class="mm-flag" onclick="setL('pt','','BR');closeMM()">&#x1F1E7;&#x1F1F7; PT</button>
@@ -3029,7 +3029,7 @@ document.addEventListener('DOMContentLoaded',function(){
        <div class="lb-title" data-i18n="lb_title">Programa de Fidelidade</div>
        <div class="lb-sub" data-i18n="lb_sub">Compre via nosso link ou cupom, envie o comprovante e desbloqueie <strong>Live Room VIP</strong>, sorteios de contas e indicadores exclusivos.</div>
        <div class="lb-steps">
-         <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step1">Cadastre-se grátis</span></div>
+         <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step1">Cadastre-se</span></div>
          <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step2">Compre com cupom</span></div>
          <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step3">Envie comprovante</span></div>
          <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step4">Acesso VIP</span></div>
@@ -3037,7 +3037,7 @@ document.addEventListener('DOMContentLoaded',function(){
      </div>
    </div>
    <div class="lb-right">
-     <button class="lb-cta" data-i18n="lb_btn_cadastrar" onclick="openAuthModal('signup')">Cadastrar grátis →</button>
+     <button class="lb-cta" data-i18n="lb_btn_cadastrar" onclick="openAuthModal('signup')">Cadastrar-se →</button>
      <button class="lb-cta-sec" data-i18n="lb_btn_beneficios" onclick="currentUser?go('painel'):go('loyalty')">Ver benefícios</button>
    </div>
  </div>
@@ -3348,12 +3348,12 @@ document.addEventListener('DOMContentLoaded',function(){
  <div class="calc-gate" id="calc-gate">
    <div class="calc-gate-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
    <div class="calc-gate-title" data-i18n="calc_titulo">Position Size Calculator</div>
-   <div class="calc-gate-sub" data-i18n="calc_gate_sub">Calcule o tamanho ideal da sua posição. Ferramenta exclusiva para membros cadastrados — gratuito.</div>
+   <div class="calc-gate-sub" data-i18n="calc_gate_sub">Calcule o tamanho ideal da sua posição. Ferramenta exclusiva para membros cadastrados.</div>
    <div class="calc-gate-form">
      <div class="calc-gate-field"><label data-i18n="calc_gate_label_nome">Nome</label><input type="text" id="cg-name" data-i18n-placeholder="calc_gate_placeholder_nome" placeholder="Seu nome"></div>
      <div class="calc-gate-field"><label data-i18n="calc_gate_label_email">E-mail</label><input type="email" id="cg-email" data-i18n-placeholder="calc_gate_placeholder_email" placeholder="email@example.com"></div>
    </div>
-   <button class="calc-gate-btn" onclick="unlockCalc()" data-i18n="calc_gate_btn">Desbloquear gratuitamente →</button>
+   <button class="calc-gate-btn" onclick="unlockCalc()" data-i18n="calc_gate_btn">Desbloquear →</button>
    <div style="font-size:11px;color:var(--t3);margin-top:10px;" data-i18n="calc_gate_privacidade">Seus dados são privados. Nenhum cartão necessário.</div>
  </div>
  <!-- Calculator: shown after registration -->
