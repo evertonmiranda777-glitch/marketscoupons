@@ -1394,6 +1394,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <option>Take Profit Trader</option>
               <option>FundedNext</option>
               <option>Earn2Trade</option>
+              <option>The5ers</option>
+              <option>Funding Pips</option>
+              <option>BrightFunded</option>
             </select>
           </div>
           <div class="ec-field">
@@ -2715,7 +2718,7 @@ async function getSegmentedLeads(){
  let list=results.filter(r=>{if(seen.has(r.email))return false;seen.add(r.email);return true;});
  // Apply firma filter if any selected
  if(firmaFilter){
-  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'The Prop Trading',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers'};
+  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'Take Profit Trader',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers'};
   list=list.filter(r=>{
    if(!r.firma) return false;
    const f=r.firma.toLowerCase();
@@ -6662,7 +6665,13 @@ const CR_PERKS_EN = {
   'Trade2Earn (pontos por operar)':'Trade2Earn (points for trading)',
   'Suporte 24/7':'24/7 support',
   'Free Trial ilimitado':'Unlimited free trial','90% split':'90% split',
-  'Suporte 20 idiomas':'Support in 20 languages','$500M+ pagos':'$500M+ paid out'
+  'Suporte 20 idiomas':'Support in 20 languages','$500M+ pagos':'$500M+ paid out',
+  'Sem Daily Loss Limit':'No Daily Loss Limit','Saque sem janela fixa':'Withdrawal without fixed window',
+  'Alavancagem 1:30':'Leverage 1:30','Até 90% split':'Up to 90% split',
+  '$210M+ pagos globalmente':'$210M+ paid globally','$210M+ pagos':'$210M+ paid out',
+  'Scaling ate $2M':'Scaling up to $2M','Sem limite de tempo':'No time limit',
+  '$1K compensação atraso':'$1K late compensation','15% lucro avaliação':'15% evaluation profit bonus',
+  'Até 90% split':'Up to 90% split','Scaling até $4M':'Scaling up to $4M'
 };
 
 async function initCriativos() {
