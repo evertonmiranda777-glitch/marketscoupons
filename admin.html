@@ -569,6 +569,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
  <button class="nta" onclick="adminGo('pro',this)">Pro</button>
+ <button class="nta" onclick="adminGo('tracking',this)">Tracking</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -637,6 +638,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
   <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
   <button class="nta" onclick="adminGoMobile('pro',this)">Pro</button>
+  <button class="nta" onclick="adminGoMobile('tracking',this)">Tracking</button>
   <div class="nta-sep"></div>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-firms',this)">Firmas</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
@@ -1346,6 +1348,60 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="pro-loyalty-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ TRACKING DASHBOARD ══ -->
+    <div class="admin-page" id="page-tracking">
+      <div class="sec-hdr">
+        <div class="sec-title">Tracking Dashboard</div>
+        <div class="sec-actions">
+          <select id="trk-period" class="filter-inp" style="font-size:12px;padding:6px 10px;" onchange="renderTrackingPage()">
+            <option value="7">7 dias</option>
+            <option value="14" selected>14 dias</option>
+            <option value="30">30 dias</option>
+          </select>
+          <button class="btn-secondary" onclick="renderTrackingPage()">Atualizar</button>
+        </div>
+      </div>
+
+      <!-- Status dos sistemas -->
+      <div class="stats-grid" id="trk-systems"></div>
+
+      <!-- Funil unificado -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd"><div><div class="cc-title">Funil de Conversão (Supabase — Fonte Primária)</div><div class="cc-sub" id="trk-period-label">Últimos 14 dias</div></div></div>
+        <div id="trk-funnel" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;"></div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="charts-grid" style="margin-bottom:20px;">
+        <div class="chart-card">
+          <div class="cc-hd"><div><div class="cc-title">Eventos por Dia</div><div class="cc-sub">Todos os eventos trackeados</div></div></div>
+          <div class="chart-wrap" style="height:220px;"><canvas id="chart-trk-timeline"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="cc-hd"><div><div class="cc-title">Eventos por Tipo</div><div class="cc-sub">Distribuição dos eventos</div></div></div>
+          <div class="chart-wrap"><canvas id="chart-trk-types"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Mapa de eventos: o que dispara pra onde -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd"><div class="cc-title">Mapa de Tracking — Eventos × Destinos</div></div>
+        <div class="data-table-wrap"><table class="data-table" id="trk-event-map"></table></div>
+      </div>
+
+      <!-- Top firmas por conversão -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd"><div class="cc-title">Ranking de Firmas — Funil Completo</div></div>
+        <div class="data-table-wrap"><table class="data-table" id="trk-firms-rank"></table></div>
+      </div>
+
+      <!-- Eventos recentes -->
+      <div class="chart-card">
+        <div class="cc-hd"><div class="cc-title">Últimos 50 Eventos</div></div>
+        <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="trk-recent"></table></div>
       </div>
     </div>
 
@@ -2140,6 +2196,7 @@ function renderPage(p){
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'pro':            renderProPage(); break;
+    case 'tracking':       renderTrackingPage(); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
@@ -6811,6 +6868,155 @@ async function revokeVip(userId,email){
   }catch(e){
     alert('Erro ao revogar: '+e.message);
   }
+}
+
+// ─── TRACKING DASHBOARD ──────────────────────────────────────────────────
+async function renderTrackingPage(){
+  const days = parseInt(document.getElementById('trk-period')?.value || '14');
+  const cutoff = new Date(Date.now() - days * 86400000).toISOString();
+  document.getElementById('trk-period-label').textContent = `Últimos ${days} dias`;
+
+  // Fetch events from Supabase
+  const { data: events } = await db.from('events')
+    .select('event,firm_id,coupon_code,page_name,params,created_at')
+    .gte('created_at', cutoff)
+    .order('created_at', { ascending: false })
+    .limit(5000);
+  const ev = events || [];
+
+  const ec = (name) => ev.filter(e => e.event === name).length;
+  const ecToday = (name) => ev.filter(e => e.event === name && new Date(e.created_at).toDateString() === new Date().toDateString()).length;
+
+  // ── SYSTEMS STATUS ──
+  const totalEvents = ev.length;
+  const todayEvents = ev.filter(e => new Date(e.created_at).toDateString() === new Date().toDateString()).length;
+  const hasGTM = true; // GTM-WJGTVX8G configured
+  const gaEvents = ec('page_view') + ec('firm_detail_open') + ec('coupon_copy') + ec('checkout_click') + ec('user_signup') + ec('tool_lead_capture') + ec('purchase');
+  const fbEvents = ec('firm_detail_open') + ec('coupon_copy') + ec('checkout_click') + ec('user_signup') + ec('tool_lead_capture') + ec('purchase') + ec('loyalty_register');
+
+  document.getElementById('trk-systems').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Supabase Events</div><div class="stat-val g">${totalEvents.toLocaleString('pt-BR')}</div><div class="stat-change">${todayEvents} hoje</div></div>
+    <div class="stat-card"><div class="stat-lbl">GTM Container</div><div class="stat-val" style="color:#4285F4;">v13</div><div class="stat-change" style="color:#22C55E;">Ativo — 11 tags</div></div>
+    <div class="stat-card"><div class="stat-lbl">GA4 (via GTM + direto)</div><div class="stat-val b">${gaEvents.toLocaleString('pt-BR')}</div><div class="stat-change">6 eventos configurados</div></div>
+    <div class="stat-card"><div class="stat-lbl">Facebook Pixel (via GTM + direto)</div><div class="stat-val" style="color:#1877F2;">${fbEvents.toLocaleString('pt-BR')}</div><div class="stat-change">5 tags configuradas</div></div>
+    <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val">${ec('page_view').toLocaleString('pt-BR')}</div><div class="stat-change">${ecToday('page_view')} hoje</div></div>
+    <div class="stat-card"><div class="stat-lbl">Conversões (Checkout)</div><div class="stat-val y">${ec('checkout_click')}</div><div class="stat-change">${ecToday('checkout_click')} hoje</div></div>`;
+
+  // ── FUNNEL ──
+  const views = ec('page_view');
+  const details = ec('firm_detail_open');
+  const coupons = ec('coupon_copy');
+  const checkouts = ec('checkout_click');
+  const signups = ec('user_signup');
+  const steps = [
+    { code: 'PV', label: 'Page Views', val: views, color: 'var(--t1)' },
+    { code: 'FD', label: 'Firma Detail', val: details, color: '#3B82F6' },
+    { code: 'CC', label: 'Cupom Copiado', val: coupons, color: 'var(--gold)' },
+    { code: 'CK', label: 'Checkout Click', val: checkouts, color: '#22C55E' },
+    { code: 'SU', label: 'Cadastro', val: signups, color: '#A855F7' },
+  ];
+  const maxVal = Math.max(...steps.map(s => s.val), 1);
+  document.getElementById('trk-funnel').innerHTML = steps.map((s, i) => {
+    const pct = (s.val / maxVal * 100).toFixed(0);
+    const convPrev = i > 0 && steps[i - 1].val > 0 ? ((s.val / steps[i - 1].val) * 100).toFixed(1) + '%' : '';
+    return `<div style="text-align:center;padding:16px 8px;position:relative;${i < steps.length - 1 ? 'border-right:1px solid var(--b1);' : ''}">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;">${s.label}</div>
+      <div style="font-size:24px;font-weight:800;color:${s.color};">${s.val.toLocaleString('pt-BR')}</div>
+      <div style="margin:8px auto;width:60%;height:4px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="height:100%;width:${pct}%;background:${s.color};border-radius:2px;"></div></div>
+      ${convPrev ? `<div style="font-size:10px;color:var(--t3);">${convPrev} conversão</div>` : '<div style="font-size:10px;color:var(--t3);">—</div>'}
+    </div>`;
+  }).join('');
+
+  // ── CHARTS ──
+  setTimeout(() => {
+    const colors = ['#F0B429', '#3B82F6', '#22C55E', '#A855F7', '#06B6D4', '#F97316', '#EF4444', '#EC4899'];
+    // Timeline
+    const labels = []; const vals = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(Date.now() - i * 86400000);
+      labels.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
+      vals.push(ev.filter(e => new Date(e.created_at).toDateString() === d.toDateString()).length);
+    }
+    mkChart('chart-trk-timeline', 'line', labels, vals, ['#F0B429']);
+
+    // Event types
+    const typeCounts = {};
+    ev.forEach(e => { typeCounts[e.event] = (typeCounts[e.event] || 0) + 1; });
+    const typeK = Object.keys(typeCounts).sort((a, b) => typeCounts[b] - typeCounts[a]).slice(0, 10);
+    mkChart('chart-trk-types', 'bar', typeK, typeK.map(k => typeCounts[k]), colors);
+  }, 100);
+
+  // ── EVENT MAP TABLE ──
+  const EVENT_MAP = [
+    { event: 'page_view', label: 'Page View', supabase: true, gtm: true, ga4: 'page_view', fb: 'PageView' },
+    { event: 'firm_detail_open', label: 'Firma Detail Open', supabase: true, gtm: true, ga4: 'view_item', fb: 'ViewContent' },
+    { event: 'coupon_copy', label: 'Cupom Copiado', supabase: true, gtm: true, ga4: 'copy_coupon', fb: 'CopyCode' },
+    { event: 'checkout_click', label: 'Checkout Click', supabase: true, gtm: true, ga4: 'begin_checkout + generate_lead', fb: 'InitiateCheckout + Lead' },
+    { event: 'user_signup', label: 'Cadastro', supabase: true, gtm: true, ga4: 'sign_up', fb: 'CompleteRegistration' },
+    { event: 'user_login', label: 'Login', supabase: true, gtm: false, ga4: 'login (direto)', fb: '—' },
+    { event: 'tool_lead_capture', label: 'Lead (Ferramenta)', supabase: true, gtm: true, ga4: 'generate_lead', fb: 'Lead' },
+    { event: 'calc_unlocked', label: 'Calculadora Desbloqueada', supabase: true, gtm: false, ga4: 'generate_lead (direto)', fb: 'Lead (direto)' },
+    { event: 'quiz_complete', label: 'Quiz Completo', supabase: true, gtm: false, ga4: 'quiz_complete (direto)', fb: 'Lead (direto)' },
+    { event: 'guide_read', label: 'Guia Lido', supabase: true, gtm: false, ga4: 'view_item (direto)', fb: 'ViewContent (direto)' },
+    { event: 'loyalty_register', label: 'Cadastro Fidelidade', supabase: true, gtm: false, ga4: 'sign_up (direto)', fb: 'CompleteRegistration (direto)' },
+    { event: 'loyalty_proof_submitted', label: 'Comprovante Enviado', supabase: true, gtm: false, ga4: 'loyalty_proof (direto)', fb: 'SubmitApplication (direto)' },
+    { event: 'purchase', label: 'Compra Pro', supabase: true, gtm: true, ga4: 'purchase', fb: 'Purchase' },
+    { event: 'initiate_checkout', label: 'Checkout Pro', supabase: true, gtm: false, ga4: 'begin_checkout (direto)', fb: 'InitiateCheckout (direto)' },
+  ];
+
+  const check = '<span style="color:#22C55E;font-weight:700;">✓</span>';
+  const direct = '<span style="color:#F0B429;font-size:10px;">direto</span>';
+  const dash = '<span style="color:var(--t3);">—</span>';
+
+  document.getElementById('trk-event-map').innerHTML = `
+    <thead><tr><th>Evento</th><th style="text-align:center;">Qtd (${days}d)</th><th style="text-align:center;">Hoje</th><th style="text-align:center;">Supabase</th><th style="text-align:center;">GTM</th><th style="text-align:center;">GA4</th><th style="text-align:center;">Facebook</th></tr></thead>
+    <tbody>${EVENT_MAP.map(m => {
+      const cnt = ec(m.event);
+      const today = ecToday(m.event);
+      return `<tr>
+        <td style="font-weight:600;">${m.label}<div style="font-size:10px;color:var(--t3);font-weight:400;">${m.event}</div></td>
+        <td style="text-align:center;font-weight:700;">${cnt}</td>
+        <td style="text-align:center;color:${today > 0 ? '#22C55E' : 'var(--t3)'};">${today}</td>
+        <td style="text-align:center;">${check}</td>
+        <td style="text-align:center;">${m.gtm ? check : direct}</td>
+        <td style="text-align:center;font-size:11px;">${m.ga4}</td>
+        <td style="text-align:center;font-size:11px;">${m.fb}</td>
+      </tr>`;
+    }).join('')}</tbody>`;
+
+  // ── FIRMS RANKING ──
+  const firmMap = {};
+  ev.filter(e => ['firm_detail_open', 'coupon_copy', 'checkout_click'].includes(e.event)).forEach(e => {
+    const id = e.firm_id || e.params?.firm_id || '?';
+    const name = e.params?.firm_name || id;
+    if (!firmMap[id]) firmMap[id] = { name, detail: 0, coupons: 0, checkout: 0 };
+    if (e.event === 'firm_detail_open') firmMap[id].detail++;
+    if (e.event === 'coupon_copy') firmMap[id].coupons++;
+    if (e.event === 'checkout_click') firmMap[id].checkout++;
+  });
+  const firmArr = Object.values(firmMap).sort((a, b) => b.checkout - a.checkout);
+  document.getElementById('trk-firms-rank').innerHTML = `
+    <thead><tr><th>Firma</th><th style="text-align:center;">Detail Open</th><th style="text-align:center;">Cupom Copiado</th><th style="text-align:center;">Checkout</th><th style="text-align:center;">Detail → Cupom</th><th style="text-align:center;">Cupom → Checkout</th></tr></thead>
+    <tbody>${firmArr.slice(0, 15).map(f => {
+      const d2c = f.detail > 0 ? ((f.coupons / f.detail) * 100).toFixed(1) + '%' : '—';
+      const c2k = f.coupons > 0 ? ((f.checkout / f.coupons) * 100).toFixed(1) + '%' : '—';
+      return `<tr><td style="font-weight:600;">${f.name}</td><td style="text-align:center;">${f.detail}</td><td style="text-align:center;color:var(--gold);">${f.coupons}</td><td style="text-align:center;color:#22C55E;font-weight:700;">${f.checkout}</td><td style="text-align:center;">${d2c}</td><td style="text-align:center;">${c2k}</td></tr>`;
+    }).join('')}</tbody>`;
+
+  // ── RECENT EVENTS ──
+  document.getElementById('trk-recent').innerHTML = `
+    <thead><tr><th>Data</th><th>Evento</th><th>Firma</th><th>Cupom</th><th>Página</th></tr></thead>
+    <tbody>${ev.slice(0, 50).map(e => {
+      const dt = new Date(e.created_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const eventColor = e.event === 'checkout_click' ? '#22C55E' : e.event === 'coupon_copy' ? 'var(--gold)' : e.event === 'firm_detail_open' ? '#3B82F6' : 'var(--t2)';
+      return `<tr>
+        <td style="font-size:11px;white-space:nowrap;">${dt}</td>
+        <td style="color:${eventColor};font-weight:600;font-size:11px;">${e.event}</td>
+        <td style="font-size:11px;">${e.firm_id || e.params?.firm_id || '—'}</td>
+        <td style="font-size:11px;color:var(--gold);">${e.coupon_code || e.params?.coupon_code || '—'}</td>
+        <td style="font-size:11px;">${e.page_name || e.params?.page_name || '—'}</td>
+      </tr>`;
+    }).join('')}</tbody>`;
 }
 
 // ─── PRO & ASSINATURAS ───────────────────────────────────────────────────
