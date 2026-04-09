@@ -3402,14 +3402,6 @@ document.addEventListener('DOMContentLoaded',function(){
 <!-- LIVE -->
 <div class="page" id="page-live">
 
- <!-- LIVE COMING SOON BANNER -->
- <div id="live-coming-soon" style="max-width:520px;margin:0 auto;padding:20px 20px 0;text-align:center;">
-  <div style="background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.2);border-radius:10px;padding:16px 20px;">
-   <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;" data-i18n="live_em_breve">Coming Soon</div>
-   <div style="font-size:12px;color:var(--t2);line-height:1.6;" data-i18n="live_disponivel_em">The Live Trading Room will be available from April 20, 2026. We are finalizing all the details to deliver the best experience.</div>
-  </div>
- </div>
-
  <!-- LIVE GATE -->
  <div id="live-gate">
   <div style="max-width:520px;margin:0 auto;padding:60px 20px;text-align:center;">
@@ -3421,27 +3413,79 @@ document.addEventListener('DOMContentLoaded',function(){
    <div id="live-gate-content"></div>
   </div>
  </div>
+
  <div id="live-room" class="hide">
- <div style="max-width:680px;margin:12px auto 0;padding:0 24px;">
-  <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px 18px;font-size:11px;color:var(--t2);line-height:1.7;">
-   <strong style="color:var(--red);font-size:10px;text-transform:uppercase;letter-spacing:.5px;" data-i18n="live_risk_title">Aviso de Risco</strong><br>
-   <span data-i18n="live_risk_text">O conteúdo apresentado no Live Room é exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou incentivo à compra ou venda de ativos. Operar mercados futuros envolve risco significativo de perda. Resultados passados não garantem resultados futuros. Opere apenas com capital que você pode perder.</span>
+  <div style="max-width:720px;margin:0 auto;padding:24px 20px;">
+
+   <!-- Hero Section -->
+   <div style="text-align:center;margin-bottom:32px;">
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.15);margin-bottom:16px;">
+     <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);animation:livePulse 1.5s ease infinite;"></div>
+     <span style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;" data-i18n="live_em_breve">Coming Soon</span>
+    </div>
+    <h1 style="font-size:28px;font-weight:800;letter-spacing:-.6px;margin-bottom:8px;line-height:1.1;">Live Trading <span style="color:var(--gold);">Room</span></h1>
+    <p style="font-size:13px;color:var(--t2);line-height:1.7;max-width:480px;margin:0 auto;" data-i18n="live_disponivel_em">The Live Trading Room will be available from April 20, 2026. We are finalizing all the details to deliver the best experience.</p>
+   </div>
+
+   <!-- Countdown cards -->
+   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px;" id="live-countdown">
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px 8px;text-align:center;">
+     <div style="font-size:28px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;" id="lv-cd-days">--</div>
+     <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;" data-i18n="live_dias">Days</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px 8px;text-align:center;">
+     <div style="font-size:28px;font-weight:800;color:var(--t1);font-variant-numeric:tabular-nums;" id="lv-cd-hours">--</div>
+     <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;" data-i18n="live_horas">Hours</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px 8px;text-align:center;">
+     <div style="font-size:28px;font-weight:800;color:var(--t1);font-variant-numeric:tabular-nums;" id="lv-cd-mins">--</div>
+     <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;" data-i18n="live_minutos">Minutes</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px 8px;text-align:center;">
+     <div style="font-size:28px;font-weight:800;color:var(--t1);font-variant-numeric:tabular-nums;" id="lv-cd-secs">--</div>
+     <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;" data-i18n="live_segundos">Seconds</div>
+    </div>
+   </div>
+
+   <!-- Features preview -->
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;">
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px 14px;text-align:center;">
+     <div style="width:40px;height:40px;border-radius:10px;background:rgba(240,180,41,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+     </div>
+     <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="live_feat_stream">Live Streaming</div>
+     <div style="font-size:11px;color:var(--t3);line-height:1.5;" data-i18n="live_feat_stream_desc">Real-time market analysis with professional traders during market hours.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px 14px;text-align:center;">
+     <div style="width:40px;height:40px;border-radius:10px;background:rgba(34,197,94,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+     </div>
+     <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="live_feat_signals">Trade Signals</div>
+     <div style="font-size:11px;color:var(--t3);line-height:1.5;" data-i18n="live_feat_signals_desc">Real-time entry, stop loss, and take profit signals for ES, NQ, GC, and CL.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px 14px;text-align:center;">
+     <div style="width:40px;height:40px;border-radius:10px;background:rgba(59,130,246,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+     </div>
+     <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="live_feat_community">VIP Community</div>
+     <div style="font-size:11px;color:var(--t3);line-height:1.5;" data-i18n="live_feat_community_desc">Exclusive chat with verified prop firm traders sharing setups and analysis.</div>
+    </div>
+   </div>
+
+   <!-- Stats preview -->
+   <div class="live-stats" style="margin-bottom:24px;">
+    <div class="ls-card"><div class="ls-lbl" data-i18n="live_assistindo">Watching</div><div class="ls-val" id="lv-viewers">—</div></div>
+    <div class="ls-card"><div class="ls-lbl" data-i18n="live_sinais">Signals today</div><div class="ls-val" style="color:var(--green);">—</div></div>
+    <div class="ls-card"><div class="ls-lbl" data-i18n="live_status">Status</div><div class="ls-val" style="color:var(--gold);font-size:13px;" data-i18n="live_em_breve">Coming Soon</div></div>
+   </div>
+
+   <!-- Risk disclaimer -->
+   <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px 16px;font-size:10px;color:var(--t3);line-height:1.6;">
+    <strong style="color:var(--t2);font-size:9px;text-transform:uppercase;letter-spacing:.5px;" data-i18n="live_risk_title">Risk Disclaimer</strong><br>
+    <span data-i18n="live_risk_text">O conteúdo apresentado no Live Room é exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou incentivo à compra ou venda de ativos. Operar mercados futuros envolve risco significativo de perda. Resultados passados não garantem resultados futuros. Opere apenas com capital que você pode perder.</span>
+   </div>
+
   </div>
- </div>
- <div class="live-room-wrap">
- <div class="live-badge"><div class="live-dot"></div> <span data-i18n="live_ao_vivo">AO VIVO</span></div>
- <div class="live-player">
- <div class="live-pp">
- <div class="pp-ico"></div>
- <p><span data-i18n="live_stream_desc">O stream começa quando a sessão está ao vivo.</span></p>
- </div>
- </div>
- <div class="live-stats">
- <div class="ls-card"><div class="ls-lbl" data-i18n="live_assistindo">Assistindo</div><div class="ls-val" id="lv-viewers">—</div></div>
- <div class="ls-card"><div class="ls-lbl" data-i18n="live_sinais">Sinais hoje</div><div class="ls-val" style="color:var(--green)">3</div></div>
- <div class="ls-card"><div class="ls-lbl" data-i18n="live_status">Status</div><div class="ls-val" style="color:var(--red)"><span data-i18n="live_aguardando">Aguardando</span></div></div>
- </div>
- </div>
  </div>
 </div>
 

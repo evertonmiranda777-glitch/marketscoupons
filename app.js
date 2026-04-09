@@ -4621,6 +4621,33 @@ function autoDetectDDI() {
   if (sel) { sel.value = ddi; updateWaPlaceholder(); }
 }
 
+let _liveCountdownInterval=null;
+function _startLiveCountdown(){
+  if(_liveCountdownInterval) clearInterval(_liveCountdownInterval);
+  const target=new Date('2026-04-20T13:30:00Z').getTime(); // 9:30 ET = 13:30 UTC
+  function _update(){
+    const now=Date.now();
+    const diff=target-now;
+    if(diff<=0){
+      const el=document.getElementById('live-countdown');
+      if(el) el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:16px;font-size:14px;font-weight:700;color:var(--green);">🔴 Live Now!</div>';
+      clearInterval(_liveCountdownInterval);
+      return;
+    }
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    const el=id=>document.getElementById(id);
+    if(el('lv-cd-days')) el('lv-cd-days').textContent=String(d).padStart(2,'0');
+    if(el('lv-cd-hours')) el('lv-cd-hours').textContent=String(h).padStart(2,'0');
+    if(el('lv-cd-mins')) el('lv-cd-mins').textContent=String(m).padStart(2,'0');
+    if(el('lv-cd-secs')) el('lv-cd-secs').textContent=String(s).padStart(2,'0');
+  }
+  _update();
+  _liveCountdownInterval=setInterval(_update,1000);
+}
+
 function showLiveGatePreview(){
   const gateEl=document.getElementById('live-gate');
   const roomEl=document.getElementById('live-room');
@@ -4665,6 +4692,8 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
     gateEl.classList.add('hide');
     roomEl.classList.remove('hide');
     document.getElementById('lv-viewers').textContent=Math.floor(Math.random()*40+10);
+    // Countdown to April 20, 2026
+    _startLiveCountdown();
     return;
   }
 
