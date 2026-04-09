@@ -8153,46 +8153,32 @@ const CR_LABELS = {
         copy:'Copy', futuros:'FUTURES', forex:'FOREX' }
 };
 
-const CR_PERKS_EN = {
-  'Sem limite diario':'No daily loss limit','Sem regra escalamento':'No scaling rules',
-  'Payout 5 dias':'5-day payout','Payout rapido':'Fast payout',
-  'Conta vitalicia':'Lifetime account','Sem taxa mensal':'No monthly fee',
-  'Sem limite de tempo':'No time limit','Copy trading':'Copy trading',
-  'Payout semanal':'Weekly payout','Payout diario':'Daily payout',
-  'Sem regra de consistencia':'No consistency rule','Conta gratuita':'Free account',
-  'Trading de noticias':'News trading','Trailing drawdown':'Trailing drawdown',
-  'Static drawdown':'Static drawdown','Sem tempo minimo':'No minimum time',
-  'Payout 2 semanas':'2-week payout','Conta demo gratis':'Free demo account',
-  'Até 20 contas':'Up to 20 accounts','Sem taxas recorrentes':'No recurring fees',
-  'Passa em 1 dia':'Pass in 1 day','Sem consistência':'No consistency rule',
-  'Trade notícias':'News trading allowed','Payouts semanais':'Weekly payouts',
-  'Scaling até $400K':'Scaling up to $400K','Saque desde dia 1':'Withdrawal from day 1',
-  'Sem taxa ativação':'No activation fee','Até 3 saques/mês':'Up to 3 withdrawals/month',
-  'Payout garantido 24h':'Guaranteed 24h payout','$1K compensação atraso':'$1K late compensation',
-  'Até 95% split':'Up to 95% split','Scaling até $4M':'Scaling up to $4M',
-  '15% lucro avaliação':'15% evaluation profit bonus',
-  'Journalytix gratis':'Free Journalytix','Reset gratis':'Free reset',
-  'Educação inclusa':'Education included',
-  'Profit Split ate 100%':'Profit Split up to 100%',
-  'Payout medio 16h':'Average 16h payout','Alavancagem 1:100':'Leverage 1:100',
-  'Dashboard avancado':'Advanced dashboard',
-  'Split flexivel: 60-100%':'Flexible split: 60-100%',
-  '$200M+ pagos globalmente':'$200M+ paid globally',
-  'Comunidade Discord ativa':'Active Discord community',
-  'Payout sob demanda':'Payout on demand',
-  'Scaling ate 100% split':'Scaling up to 100% split','Drawdown estatico':'Static drawdown',
-  'Payout garantido 24h ciclo 7 dias':'Guaranteed 24h payout, 7-day cycle',
-  '15% bonus lucro avaliacao':'15% evaluation profit bonus',
-  'Trade2Earn (pontos por operar)':'Trade2Earn (points for trading)',
-  'Suporte 24/7':'24/7 support',
-  'Free Trial ilimitado':'Unlimited free trial','90% split':'90% split',
-  'Suporte 20 idiomas':'Support in 20 languages','$500M+ pagos':'$500M+ paid out',
-  'Sem Daily Loss Limit':'No Daily Loss Limit','Saque sem janela fixa':'Withdrawal without fixed window',
-  'Alavancagem 1:30':'Leverage 1:30','Até 90% split':'Up to 90% split',
-  '$210M+ pagos globalmente':'$210M+ paid globally','$210M+ pagos':'$210M+ paid out',
-  'Scaling ate $2M':'Scaling up to $2M','Sem limite de tempo':'No time limit',
-  '$1K compensação atraso':'$1K late compensation','15% lucro avaliação':'15% evaluation profit bonus',
-  'Até 90% split':'Up to 90% split','Scaling até $4M':'Scaling up to $4M'
+// Perks are stored in English in Supabase — translate to PT when needed
+const CR_PERKS_PT = {
+  'No daily loss limit':'Sem limite diário','No scaling rules':'Sem regra escalamento',
+  'Payout in 5 days':'Payout 5 dias','Up to 20 accounts':'Até 20 contas',
+  'No recurring fees':'Sem taxas recorrentes','Pass in 1 day':'Passa em 1 dia',
+  'No consistency rule':'Sem regra de consistência','News trading allowed':'Trade notícias',
+  'Weekly payouts':'Payouts semanais','Scaling up to $400K':'Scaling até $400K',
+  'No monthly fee':'Sem taxa mensal','Unlimited Free Trial':'Free Trial ilimitado',
+  '90% profit split':'90% split','Support in 20 languages':'Suporte 20 idiomas',
+  '$500M+ paid out':'$500M+ pagos','Scaling up to $2M':'Scaling até $2M',
+  'No time limit':'Sem limite de tempo','Payout from day 1':'Saque desde dia 1',
+  'No activation fee':'Sem taxa ativação','No Daily Loss Limit':'Sem Daily Loss Limit',
+  'Payout anytime':'Saque sem janela fixa','Guaranteed 24h payout':'Payout garantido 24h',
+  '$1K delay compensation':'$1K compensação atraso','Up to 90% split':'Até 90% split',
+  'Scaling up to $4M':'Scaling até $4M','15% evaluation profit':'15% lucro avaliação',
+  'Free Journalytix':'Journalytix grátis','Free reset':'Reset grátis',
+  'Education included':'Educação inclusa','Profit Split up to 100%':'Profit Split até 100%',
+  'Avg payout 16h':'Payout médio 16h','Leverage 1:30':'Alavancagem 1:30',
+  'Advanced dashboard':'Dashboard avançado','Flexible split: 60-100%':'Split flexível: 60-100%',
+  '$210M+ paid globally':'$210M+ pagos globalmente','Leverage 1:100':'Alavancagem 1:100',
+  'Active Discord community':'Comunidade Discord ativa','Payout on demand':'Payout sob demanda',
+  'Scaling up to 100% split':'Scaling até 100% split','Static drawdown':'Drawdown estático',
+  'Guaranteed 24h payout (7-day cycle)':'Payout garantido 24h ciclo 7 dias',
+  '15% evaluation profit bonus':'15% bônus lucro avaliação',
+  'Trade2Earn (points for trading)':'Trade2Earn (pontos por operar)',
+  '24/7 support':'Suporte 24/7'
 };
 
 async function initCriativos() {
@@ -8298,6 +8284,18 @@ function updateCrPreview() {
 
   let h = '<div class="cr-inner">';
 
+  // ── MC branding header: hexagonal logo + Markets Coupons ──
+  h += `<div class="cr-mc">
+    <svg width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="mcg" x1="0" y1="0" x2="50" y2="50"><stop stop-color="#FCD34D"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs>
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="url(#mcg)" stroke-width="2.2" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="url(#mcg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="url(#mcg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="25" cy="14" r="2" fill="url(#mcg)"/>
+    </svg>
+    <div class="cr-mc-txt"><b>Markets</b> Coupons</div>
+  </div>`;
+
   // ── Hero: Firm LEFT + Discount RIGHT ──
   h += `<div class="cr-hero">
     <div class="cr-hero-left">
@@ -8402,14 +8400,25 @@ function updateCrPreview() {
 
   // ── Perks (equal width grid, translated) ──
   if (crChk('cr-show-perks') && perks.length) {
-    const tPerks = perks.slice(0, 4).map(p => _crLang==='en' ? (CR_PERKS_EN[p] || p) : p);
+    const tPerks = perks.slice(0, 4).map(p => _crLang==='pt' ? (CR_PERKS_PT[p] || p) : p);
     const pc = tPerks.length <= 2 ? tPerks.length : 2;
     h += `<div class="cr-perks" style="grid-template-columns:repeat(${pc},1fr);">
       ${tPerks.map(p => `<div class="cr-perk">${escHtml(p)}</div>`).join('')}
     </div>`;
   }
 
-  // MC footer removed — user adds their own branding
+  // ── MC footer: logo + site URL ──
+  h += `<div class="cr-mc-foot">
+    <svg width="36" height="36" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="mcg2" x1="0" y1="0" x2="50" y2="50"><stop stop-color="#FCD34D"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs>
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="url(#mcg2)" stroke-width="2.2" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="url(#mcg2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="url(#mcg2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="25" cy="14" r="2" fill="url(#mcg2)"/>
+    </svg>
+    <div class="cr-mc-foot-txt"><b>Markets</b> Coupons</div>
+  </div>
+  <div style="text-align:center;font-size:18px;color:rgba(255,255,255,.35);margin-top:8px;font-weight:600;">www.marketscoupons.com</div>`;
 
   h += '</div>'; // close cr-inner
   content.innerHTML = h;
@@ -8922,15 +8931,20 @@ function tgDrawCanvas(){
   ctx.fillStyle = glow;
   ctx.fillRect(0,0,W,H);
 
-  // --- Header: branding ---
-  ctx.save();
-  ctx.font = 'bold 46px Inter, sans-serif';
-  ctx.fillStyle = '#F0B429';
-  ctx.textAlign = 'center';
-  ctx.fillText('Markets', W/2 - 80, 100);
-  ctx.fillStyle = '#EDF2F7';
-  ctx.fillText('Coupons', W/2 + 90, 100);
+  // --- Header: hexagonal logo (same as site) + brand text ---
+  const _sz=48, _lx=W/2-140, _ly=88;
+  ctx.save(); ctx.translate(_lx-_sz/2, _ly-_sz/2); ctx.scale(_sz/50, _sz/50);
+  const _lgr=ctx.createLinearGradient(0,0,50,50); _lgr.addColorStop(0,'#FCD34D'); _lgr.addColorStop(1,'#D97706');
+  ctx.strokeStyle=_lgr; ctx.lineWidth=2.2;
+  ctx.beginPath(); ctx.moveTo(25,3); ctx.lineTo(45,14.5); ctx.lineTo(45,35.5); ctx.lineTo(25,47); ctx.lineTo(5,35.5); ctx.lineTo(5,14.5); ctx.closePath(); ctx.stroke();
+  ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.lineJoin='round';
+  ctx.beginPath(); ctx.moveTo(14,33); ctx.lineTo(14,20); ctx.lineTo(25,28); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(36,33); ctx.lineTo(36,20); ctx.lineTo(25,28); ctx.stroke();
+  ctx.beginPath(); ctx.arc(25,14,2,0,Math.PI*2); ctx.fillStyle=_lgr; ctx.fill();
   ctx.restore();
+  const _tx=_lx+_sz/2+12;
+  ctx.save(); ctx.font='700 42px Inter,sans-serif'; ctx.fillStyle='#F0B429'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText('Markets',_tx,_ly);
+  const _mw=ctx.measureText('Markets').width; ctx.font='400 42px Inter,sans-serif'; ctx.fillStyle='#fff'; ctx.fillText(' Coupons',_tx+_mw,_ly); ctx.restore();
 
   // --- Divider line under header ---
   ctx.save();
@@ -9037,7 +9051,7 @@ function tgDrawCanvas(){
     let cpLeft = cpRight;
     if(f.coupon){
       ctx.save();
-      ctx.font = `800 ${Math.round(22*S)}px monospace`;
+      ctx.font = `800 ${Math.round(26*S)}px monospace`;
       let cpText = f.coupon;
       const maxCpTW = Math.round(180*S);
       if(ctx.measureText(cpText).width > maxCpTW){
@@ -9069,11 +9083,11 @@ function tgDrawCanvas(){
     const nameX = logoX + LOGO_R + Math.round(18*S);
     const nameMaxW = cpLeft - nameX - 8;
     ctx.save();
-    ctx.font = `bold ${Math.round(34*S)}px Inter, sans-serif`;
+    ctx.font = `bold ${Math.round(40*S)}px Inter, sans-serif`;
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(f.short_name || f.name, nameX, midY - Math.round(14*S), nameMaxW);
+    ctx.fillText(f.name, nameX, midY - Math.round(14*S), nameMaxW);
     ctx.restore();
 
     // Type pill
