@@ -1567,11 +1567,17 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <option value="">Todas as seções</option>
             <option value="hero">Hero</option>
             <option value="home">Home</option>
+            <option value="offers">Ofertas</option>
+            <option value="firms">Firmas</option>
+            <option value="nav">Navegação</option>
             <option value="live">Live Room</option>
             <option value="loyalty">Fidelidade</option>
+            <option value="analysis">Análise</option>
+            <option value="blog">Blog</option>
+            <option value="guides">Guias</option>
+            <option value="general">Geral</option>
             <option value="pro">Pro</option>
             <option value="footer">Footer</option>
-            <option value="general">Geral</option>
           </select>
           <button class="btn-primary" onclick="openTextModal()">+ Novo Texto</button>
         </div>
@@ -1581,12 +1587,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
     </div>
 
-    <!-- ══ CMS: CONFIGURAÇÕES ══ -->
+    <!-- ══ CMS: CONFIGURAÇÕES (HUB CENTRAL) ══ -->
     <div class="admin-page" id="page-cms-settings">
 
-      <!-- SECTION 1: CUPONS & DESCONTOS (ACESSO RÁPIDO) -->
+      <!-- SECTION 1: CUPONS, DESCONTOS & PREÇOS -->
       <div class="sec-hdr">
-        <div class="sec-title">Cupons & Descontos — Acesso Rápido</div>
+        <div class="sec-title">Cupons, Descontos & Preços das Firmas</div>
         <div class="sec-actions">
           <button class="btn-primary" onclick="saveQuickFirms()">Salvar Alterações</button>
         </div>
@@ -1595,7 +1601,45 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div class="data-table-wrap"><table class="data-table" id="quick-firms-tbl"></table></div>
       </div>
 
-      <!-- SECTION 2: CONFIGURAÇÕES GERAIS -->
+      <!-- SECTION 2: TEXTOS DO SITE -->
+      <div class="sec-hdr" style="margin-top:28px;">
+        <div class="sec-title">Textos do Site</div>
+        <div class="sec-actions">
+          <select id="cfg-texts-filter" class="filter-inp" onchange="renderCfgTexts()" style="min-width:120px;">
+            <option value="">Todas</option>
+            <option value="hero">Hero</option>
+            <option value="home">Home</option>
+            <option value="offers">Ofertas</option>
+            <option value="firms">Firmas</option>
+            <option value="nav">Navegação</option>
+            <option value="live">Live Room</option>
+            <option value="loyalty">Fidelidade</option>
+            <option value="analysis">Análise</option>
+            <option value="blog">Blog</option>
+            <option value="guides">Guias</option>
+            <option value="general">Geral</option>
+            <option value="pro">Pro</option>
+            <option value="footer">Footer</option>
+          </select>
+          <button class="btn-primary" onclick="openTextModal()">+ Novo Texto</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="cfg-texts-tbl"></table></div>
+      </div>
+
+      <!-- SECTION 3: FAQ -->
+      <div class="sec-hdr" style="margin-top:28px;">
+        <div class="sec-title">FAQ</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="openFaqModal()">+ Nova Pergunta</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="cfg-faq-tbl"></table></div>
+      </div>
+
+      <!-- SECTION 4: CONFIGURAÇÕES GERAIS -->
       <div class="sec-hdr" style="margin-top:28px;">
         <div class="sec-title">Configurações Gerais</div>
         <div class="sec-actions">
@@ -1606,7 +1650,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div id="settings-form"></div>
       </div>
 
-      <!-- SECTION 3: ANÁLISE DIÁRIA -->
+      <!-- SECTION 5: ANÁLISE DIÁRIA -->
       <div class="sec-hdr" style="margin-top:28px;">
         <div class="sec-title">Análise Diária</div>
         <div class="sec-actions">
@@ -1617,7 +1661,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div id="analysis-settings-form"></div>
       </div>
 
-      <!-- SECTION 4: LIVE ROOM -->
+      <!-- SECTION 6: LIVE ROOM -->
       <div class="sec-hdr" style="margin-top:28px;">
         <div class="sec-title">Live Room</div>
         <div class="sec-actions">
@@ -7266,17 +7310,25 @@ let _settingsData={};
 function renderQuickFirms(){
   const firms = _firmsCache.filter(f=>f.active).sort((a,b)=>(a.sort_order||99)-(b.sort_order||99));
   const tbl = document.getElementById('quick-firms-tbl');
+  function pricesSummary(prices){
+    if(!prices||!prices.length) return '<span style="color:var(--t3);">—</span>';
+    return prices.slice(0,4).map(p=>`<span style="font-size:10px;background:var(--card2);padding:1px 5px;border-radius:4px;white-space:nowrap;">${p.a}: <b style="color:var(--gold);">${p.n}</b> <s style="color:var(--t3);font-size:9px;">${p.o}</s></span>`).join(' ');
+  }
+  function platSummary(plats){
+    if(!plats||!plats.length) return '—';
+    return plats.map(p=>`<span style="font-size:10px;background:var(--card2);padding:1px 5px;border-radius:4px;">${p}</span>`).join(' ');
+  }
   tbl.innerHTML = `<thead><tr>
-    <th style="width:40px">#</th><th>Firma</th><th style="width:100px">Desconto %</th>
-    <th style="width:80px">Tipo</th><th style="width:130px">Cupom</th>
-    <th style="width:100px">Split</th><th>Link Afiliado</th>
-    <th style="width:70px">Preços</th>
+    <th style="width:30px">#</th><th>Firma</th><th style="width:70px">Desc %</th>
+    <th style="width:75px">Tipo</th><th style="width:110px">Cupom</th>
+    <th style="width:70px">Split</th><th>Preços</th><th>Plataformas</th>
+    <th style="width:55px">Ações</th>
   </tr></thead><tbody>`
   + firms.map((f,i) => `<tr data-fid="${f.id}">
     <td>${i+1}</td>
-    <td style="font-weight:600;color:${f.color||'var(--t1)'}">${escHtml(f.name)}</td>
-    <td><input class="filter-inp qf-discount" data-id="${f.id}" value="${f.discount||0}" style="width:70px;text-align:center;"></td>
-    <td><select class="filter-inp qf-dtype" data-id="${f.id}" style="width:80px;font-size:10px;">
+    <td style="font-weight:600;color:${f.color||'var(--t1)'}; white-space:nowrap;">${escHtml(f.name)}</td>
+    <td><input class="filter-inp qf-discount" data-id="${f.id}" value="${f.discount||0}" style="width:55px;text-align:center;"></td>
+    <td><select class="filter-inp qf-dtype" data-id="${f.id}" style="width:75px;font-size:10px;">
       <option value="lifetime" ${f.discount_type==='lifetime'?'selected':''}>Lifetime</option>
       <option value="1 desafio" ${f.discount_type==='1 desafio'?'selected':''}>1 Desafio</option>
       <option value="1 compra" ${f.discount_type==='1 compra'?'selected':''}>1 Compra</option>
@@ -7284,9 +7336,10 @@ function renderQuickFirms(){
       <option value="recorrente" ${f.discount_type==='recorrente'?'selected':''}>Recorrente</option>
       <option value="" ${!f.discount_type?'selected':''}>—</option>
     </select></td>
-    <td><input class="filter-inp qf-coupon" data-id="${f.id}" value="${escHtml(f.coupon||'')}" style="width:110px;font-weight:700;text-transform:uppercase;"></td>
-    <td><input class="filter-inp qf-split" data-id="${f.id}" value="${escHtml(f.split||'')}" style="width:80px;"></td>
-    <td><input class="filter-inp qf-link" data-id="${f.id}" value="${escHtml(f.link||'')}" style="width:100%;font-size:10px;"></td>
+    <td><input class="filter-inp qf-coupon" data-id="${f.id}" value="${escHtml(f.coupon||'')}" style="width:95px;font-weight:700;text-transform:uppercase;"></td>
+    <td><input class="filter-inp qf-split" data-id="${f.id}" value="${escHtml(f.split||'')}" style="width:60px;"></td>
+    <td style="line-height:1.8;">${pricesSummary(f.prices)}</td>
+    <td style="line-height:1.8;">${platSummary(f.platforms)}</td>
     <td style="text-align:center;"><button class="btn-secondary" style="padding:4px 8px;font-size:10px;" onclick="openFirmModal('${f.id}')">Editar</button></td>
   </tr>`).join('') + `</tbody>`;
 }
@@ -7301,13 +7354,56 @@ async function saveQuickFirms(){
     const discount_type = row.querySelector('.qf-dtype')?.value || null;
     const coupon = row.querySelector('.qf-coupon')?.value?.trim().toUpperCase() || null;
     const split = row.querySelector('.qf-split')?.value?.trim() || null;
-    const link = row.querySelector('.qf-link')?.value?.trim() || null;
-    const {error} = await db.from('cms_firms').update({discount, discount_type, coupon, split, link, updated_at: new Date().toISOString()}).eq('id', id);
+    const {error} = await db.from('cms_firms').update({discount, discount_type, coupon, split, updated_at: new Date().toISOString()}).eq('id', id);
     if(!error) count++;
   }
   toast(count + ' firmas atualizadas!');
   await renderCmsFirms();
   renderQuickFirms();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SECTION 2: TEXTOS DO SITE (mirror in Config)
+// ═══════════════════════════════════════════════════════════════════════
+async function renderCfgTexts(){
+  const section=document.getElementById('cfg-texts-filter')?.value||'';
+  let q=db.from('cms_texts').select('key,section,"values",updated_at').order('section').order('key');
+  if(section) q=q.eq('section',section);
+  const{data,error}=await q;
+  if(error){toast('Erro ao carregar textos','error');return;}
+  _textsData=data||[];
+  const tbl=document.getElementById('cfg-texts-tbl');
+  tbl.innerHTML=`<thead><tr><th>Chave</th><th>Seção</th><th>PT</th><th>EN</th><th>Idiomas</th><th>Ações</th></tr></thead><tbody>`+
+    _textsData.map(t=>{
+      const v=t.values||{};
+      const langs=Object.keys(v).filter(k=>v[k]);
+      return `<tr>
+        <td><code style="font-size:11px;background:var(--card2);padding:2px 6px;border-radius:4px;">${escHtml(t.key)}</code></td>
+        <td><span style="font-size:10px;text-transform:uppercase;color:var(--gold);font-weight:700;">${escHtml(t.section)}</span></td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;">${escHtml((v.pt||'').substring(0,50))}</td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;">${escHtml((v.en||'').substring(0,50))}</td>
+        <td style="font-size:11px;">${langs.join(', ')}</td>
+        <td><button class="btn-secondary" onclick="openTextModal('${escHtml(t.key)}')" style="font-size:11px;padding:4px 10px;">Editar</button> <button class="btn-secondary" onclick="deleteText('${escHtml(t.key)}')" style="font-size:11px;padding:4px 10px;color:var(--red);">Excluir</button></td>
+      </tr>`;
+    }).join('')+`</tbody>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SECTION 3: FAQ (mirror in Config)
+// ═══════════════════════════════════════════════════════════════════════
+async function renderCfgFaq(){
+  const{data,error}=await db.from('cms_faq').select('*').order('sort_order',{ascending:true});
+  if(error){toast('Erro ao carregar FAQ','error');return;}
+  _faqData=data||[];
+  const tbl=document.getElementById('cfg-faq-tbl');
+  tbl.innerHTML=`<thead><tr><th>#</th><th>Pergunta (PT)</th><th>EN</th><th>Ativo</th><th>Ações</th></tr></thead><tbody>`+
+    _faqData.map((f,i)=>`<tr>
+      <td>${f.sort_order}</td>
+      <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml((f.question?.pt||'').substring(0,60))}</td>
+      <td>${f.question?.en?'✓':'—'}</td>
+      <td><span style="color:${f.active?'var(--green)':'var(--red)'}">${f.active?'Sim':'Não'}</span></td>
+      <td><button class="btn-secondary" onclick="openFaqModal(${f.id})" style="font-size:11px;padding:4px 10px;">Editar</button> <button class="btn-secondary" onclick="deleteFaq(${f.id})" style="font-size:11px;padding:4px 10px;color:var(--red);">Excluir</button></td>
+    </tr>`).join('')+`</tbody>`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -7320,6 +7416,10 @@ async function renderCmsSettings(){
 
   // Quick firms table
   renderQuickFirms();
+
+  // Texts & FAQ tables
+  renderCfgTexts();
+  renderCfgFaq();
 
   // General settings
   const fields=[
