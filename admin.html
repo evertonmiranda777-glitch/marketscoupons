@@ -9147,26 +9147,23 @@ async function tgSendHTML(){
   st.className = 'tg-status loading';
 
   try{
-    const medals = ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
     let lines = firms.map((f, i)=>{
       const dtype = (f.discount_type || f.dtype || '').toLowerCase();
       const offLabel = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
-      const cpLine = f.coupon ? `🎟 Code: <code>${f.coupon}</code>` : '🔗 Auto-applied';
-      return `${medals[i]||'•'} <b>${f.name}</b> — ${f.discount}% ${offLabel}\n${cpLine}`;
+      const cpLine = f.coupon ? `Code: <code>${f.coupon}</code>` : 'No code needed';
+      const bar = '━'.repeat(28);
+      return `<b>${f.name}</b>  ·  <b>${f.discount}%</b> ${offLabel}\n${cpLine}\n<i>${bar}</i>`;
     });
 
+    const maxD = Math.max(...firms.map(f=>f.discount));
     const text =
-      `🔥 <b>Active Promotions — Prop Firms</b>\n\n` +
-      lines.join('\n\n') +
-      `\n\n💰 Save up to ${Math.max(...firms.map(f=>f.discount))}% with exclusive coupons`;
+      `<b>🔥 Active Promotions</b>\n` +
+      `<i>Exclusive Prop Firm coupons</i>\n\n` +
+      lines.join('\n') +
+      `\n\n💰 <b>Save up to ${maxD}%</b> — Free, no registration`;
 
-    // InlineKeyboard: one button per firm (2 columns)
-    const buttons = firms.map(f=>([{
-      text: `${f.name} → ${f.discount}% OFF`,
-      url: f.link || `https://www.marketscoupons.com`
-    }]));
-    // Add site button at bottom
-    buttons.push([{text:'🌐 See all deals → marketscoupons.com', url:'https://www.marketscoupons.com'}]);
+    // Single CTA button → site (NOT affiliate links)
+    const buttons = [[{text:`See all ${firms.length} deals → marketscoupons.com`, url:'https://www.marketscoupons.com'}]];
 
     const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
       method:'POST',
