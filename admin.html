@@ -9014,6 +9014,28 @@ function tgDrawCanvas(){
     ctx.fillText(tagText, tagX + 12, tagY + 22);
     ctx.restore();
 
+    // Trustpilot rating
+    if(f.rating || f.trustpilot_score){
+      ctx.save();
+      const score = f.rating || f.trustpilot_score || 0;
+      const starsX = textX + (f.type ? ctx.measureText(f.type||'').width + 60 : 0);
+      const starsY = y + 64;
+      // Star color
+      ctx.fillStyle = '#00b67a';
+      ctx.font = '600 22px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      const fullStars = Math.floor(score);
+      let starStr = '★'.repeat(fullStars);
+      if(score % 1 >= 0.3) starStr += '½';
+      ctx.fillText(starStr, tagX + tagW + 14, tagY + 22);
+      // Score number
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.font = '500 20px Inter, sans-serif';
+      const starEnd = tagX + tagW + 14 + ctx.measureText(starStr).width + 8;
+      ctx.fillText(score.toFixed(1), starEnd, tagY + 22);
+      ctx.restore();
+    }
+
     // Coupon code pill
     if(f.coupon){
       ctx.save();
