@@ -9000,9 +9000,9 @@ function tgDrawCanvas(){
     let cpLeft = cpRight;
     if(f.coupon){
       ctx.save();
-      ctx.font = `800 ${Math.round(22*S)}px monospace`;
+      ctx.font = `800 ${Math.round(26*S)}px monospace`;
       let cpText = f.coupon;
-      const maxCpTW = Math.round(180*S);
+      const maxCpTW = Math.round(220*S);
       if(ctx.measureText(cpText).width > maxCpTW){
         while(ctx.measureText(cpText+'…').width > maxCpTW && cpText.length > 4) cpText = cpText.slice(0,-1);
         cpText += '…';
@@ -9032,11 +9032,11 @@ function tgDrawCanvas(){
     const nameX = logoX + LOGO_R + Math.round(18*S);
     const nameMaxW = cpLeft - nameX - 8;
     ctx.save();
-    ctx.font = `bold ${Math.round(38*S)}px Inter, sans-serif`;
+    ctx.font = `bold ${Math.round(44*S)}px Inter, sans-serif`;
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(f.short_name || f.name, nameX, midY - Math.round(16*S), nameMaxW);
+    ctx.fillText(f.name, nameX, midY - Math.round(16*S), nameMaxW);
     ctx.restore();
 
     // Type pill
