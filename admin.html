@@ -8939,9 +8939,9 @@ function tgDrawCanvas(){
   const FOOTER_ZONE = 220;
   const ROW_GAP = 16;
   const availH = H - ROWS_START - FOOTER_ZONE;
-  const ROW_H = Math.min(160, Math.max(110, Math.floor((availH - ROW_GAP*(firms.length-1)) / Math.max(firms.length,1))));
-  const S = ROW_H / 140;
-  const LOGO_R = Math.round(40*S);
+  const ROW_H = Math.min(150, Math.max(100, Math.floor((availH - ROW_GAP*(firms.length-1)) / Math.max(firms.length,1))));
+  const S = ROW_H / 130;
+  const LOGO_R = Math.round(36*S);
 
   firms.forEach((f, i)=>{
     const y = ROWS_START + i * (ROW_H + ROW_GAP);
@@ -9041,11 +9041,11 @@ function tgDrawCanvas(){
     const nameX = logoX + LOGO_R + Math.round(18*S);
     const nameMaxW = cpLeft - nameX - 8;
     ctx.save();
-    ctx.font = `bold ${Math.round(36*S)}px Inter, sans-serif`;
+    ctx.font = `bold ${Math.round(34*S)}px Inter, sans-serif`;
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(f.short_name || f.name, nameX, midY - Math.round(16*S), nameMaxW);
+    ctx.fillText(f.short_name || f.name, nameX, midY - Math.round(14*S), nameMaxW);
     ctx.restore();
 
     // Type pill
@@ -9105,19 +9105,25 @@ function tgUpdateHTMLPreview(){
   const firms = tgGetSelectedFirms();
   if(!firms.length){ el.innerHTML='<span style="opacity:.4">Selecione firmas para preview</span>'; btnsEl.innerHTML=''; return; }
 
+  const maxD = Math.max(...firms.map(f=>f.discount));
   let lines = firms.map(f=>{
     const dtype = (f.discount_type || f.dtype || '').toLowerCase();
-    const offLabel = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
-    const cpLine = f.coupon ? `Code: <code style="background:rgba(240,180,41,.15);color:#F0B429;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:1px">${f.coupon}</code>` : 'No code needed';
-    return `<b>${f.name}</b>  ·  <b>${f.discount}%</b> ${offLabel}\n${cpLine}`;
+    const off = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
+    const cp = f.coupon ? `\n   🎟  <code style="background:rgba(240,180,41,.12);color:#F0B429;padding:3px 10px;border-radius:4px;font-weight:800;letter-spacing:2px;font-size:13px">${f.coupon}</code>` : '';
+    return `▸ <b>${f.name}</b>  —  <b>${f.discount}% ${off}</b>${cp}`;
   });
-  const maxD = Math.max(...firms.map(f=>f.discount));
-  el.innerHTML =
-    `<b>🔥 Active Promotions</b>\n<i style="opacity:.6">Exclusive Prop Firm coupons</i>\n\n` +
-    lines.join('\n<span style="display:block;border-bottom:1px solid rgba(255,255,255,.08);margin:8px 0"></span>') +
-    `\n\n💰 <b>Save up to ${maxD}%</b> — Free, no registration`;
 
-  btnsEl.innerHTML = `<a href="https://www.marketscoupons.com" target="_blank" style="display:block;text-align:center;padding:10px 16px;background:rgba(0,136,204,.15);border:1px solid rgba(0,136,204,.3);border-radius:8px;color:#54b4eb;font-weight:600;font-size:13px;text-decoration:none;font-family:system-ui">See all ${firms.length} deals → marketscoupons.com</a>`;
+  const sep = '<span style="display:block;border-bottom:1px solid rgba(255,255,255,.08);margin:6px 0"></span>';
+  el.innerHTML =
+    `<span style="display:block;text-align:center;border-bottom:1px solid rgba(240,180,41,.2);padding-bottom:12px;margin-bottom:12px">` +
+    `🔥  <b style="font-size:16px;letter-spacing:1px">ACTIVE PROMOTIONS</b>\n` +
+    `<span style="opacity:.5;font-size:12px">Exclusive Prop Firm Coupons</span></span>\n` +
+    lines.join('\n' + sep) +
+    `\n<span style="display:block;border-top:1px solid rgba(240,180,41,.2);margin-top:12px;padding-top:12px;text-align:center">` +
+    `💰 Save up to <b>${maxD}%</b>\n` +
+    `<span style="opacity:.5;font-size:12px">✓ Free  ·  ✓ No registration  ·  ✓ Instant</span></span>`;
+
+  btnsEl.innerHTML = `<a href="https://www.marketscoupons.com" target="_blank" style="display:block;text-align:center;padding:12px 16px;background:linear-gradient(90deg,rgba(200,148,26,.15),rgba(240,180,41,.15));border:1px solid rgba(240,180,41,.25);border-radius:10px;color:#F0B429;font-weight:700;font-size:13px;text-decoration:none;font-family:system-ui;letter-spacing:.5px">🌐 Claim your coupon → marketscoupons.com</a>`;
 }
 
 /* ── Helpers canvas ── */
@@ -9176,23 +9182,25 @@ async function tgSendHTML(){
   st.className = 'tg-status loading';
 
   try{
-    let lines = firms.map((f, i)=>{
+    const maxD = Math.max(...firms.map(f=>f.discount));
+    let lines = firms.map(f=>{
       const dtype = (f.discount_type || f.dtype || '').toLowerCase();
-      const offLabel = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
-      const cpLine = f.coupon ? `Code: <code>${f.coupon}</code>` : 'No code needed';
-      const bar = '━'.repeat(28);
-      return `<b>${f.name}</b>  ·  <b>${f.discount}%</b> ${offLabel}\n${cpLine}\n<i>${bar}</i>`;
+      const off = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
+      const cp = f.coupon ? `\n   🎟  <code>${f.coupon}</code>` : '';
+      return `▸ <b>${f.name}</b>  —  <b>${f.discount}% ${off}</b>${cp}`;
     });
 
-    const maxD = Math.max(...firms.map(f=>f.discount));
     const text =
-      `<b>🔥 Active Promotions</b>\n` +
-      `<i>Exclusive Prop Firm coupons</i>\n\n` +
-      lines.join('\n') +
-      `\n\n💰 <b>Save up to ${maxD}%</b> — Free, no registration`;
+      `━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `   🔥  <b>ACTIVE PROMOTIONS</b>\n` +
+      `   Exclusive Prop Firm Coupons\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+      lines.join('\n\n') +
+      `\n\n━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `💰 Save up to <b>${maxD}%</b>\n` +
+      `✓ Free  ·  ✓ No registration  ·  ✓ Instant`;
 
-    // Single CTA button → site (NOT affiliate links)
-    const buttons = [[{text:`See all ${firms.length} deals → marketscoupons.com`, url:'https://www.marketscoupons.com'}]];
+    const buttons = [[{text:`🌐 Claim your coupon → marketscoupons.com`, url:'https://www.marketscoupons.com'}]];
 
     const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
       method:'POST',
