@@ -99,17 +99,20 @@ a{text-decoration:none;color:inherit;}
 #admin-app{display:none;}
 .admin-nav{
  position:fixed;top:0;left:0;right:0;z-index:500;
- height:var(--nav);display:flex;align-items:center;justify-content:space-between;
- padding:0 24px;background:rgba(7,9,13,.97);backdrop-filter:blur(14px);
+ display:flex;flex-direction:column;
+ background:rgba(7,9,13,.97);backdrop-filter:blur(14px);
  border-bottom:1px solid var(--glass-border);
 }
 .admin-nav::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,180,41,.1) 50%,transparent);}
+.admin-nav-row1{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:42px;}
+.admin-nav-row2{display:flex;align-items:center;padding:0 24px 0 24px;height:34px;border-top:1px solid rgba(255,255,255,.06);}
 .admin-logo{font-size:15px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px;white-space:nowrap;margin-right:16px;}
 .admin-logo em{color:var(--gold);font-style:normal;}
 .admin-logo span{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);background:var(--gbg);border:1px solid var(--gbr);padding:2px 7px;border-radius:4px;}
 .nav-tabs-admin{display:flex;align-items:center;gap:1px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;}
 .nav-tabs-admin::-webkit-scrollbar{display:none;}
-.nta{padding:5px 8px;background:none;border:1px solid transparent;border-radius:6px;color:var(--t2);font-size:11px;font-weight:500;transition:.25s;white-space:nowrap;}
+.nav-tabs-cms{display:flex;align-items:center;gap:1px;flex:1;}
+.nta{padding:5px 8px;background:none;border:1px solid transparent;border-radius:6px;color:var(--t2);font-size:11px;font-weight:500;transition:.25s;white-space:nowrap;cursor:pointer;}
 .nta:hover{color:var(--t1);background:var(--glass);border-color:var(--glass-border);}
 .nta.active{color:var(--gold);background:var(--glow-gold);border-color:var(--glow-gold-border);}
 .nav-right-admin{display:flex;align-items:center;gap:6px;flex-shrink:0;}
@@ -117,7 +120,7 @@ a{text-decoration:none;color:inherit;}
 .logout-btn:hover{border-color:var(--red);color:var(--red);}
 .last-update{font-size:11px;color:var(--t3);}
 
-.admin-body{padding-top:calc(var(--nav) + 42px);min-height:100vh;}
+.admin-body{padding-top:calc(76px + 42px);min-height:100vh;}
 .admin-page{display:none;padding:24px;}
 .admin-page.active{display:block;}
 
@@ -281,7 +284,7 @@ a{text-decoration:none;color:inherit;}
 
 /* FILTER ROW */
 .filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
-.filter-inp{padding:8px 11px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;transition:.25s;font-family:var(--f);}
+.filter-inp{padding:8px 11px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;transition:.25s;font-family:var(--f);color-scheme:dark;}
 .filter-inp:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.06);box-shadow:0 0 0 3px rgba(240,180,41,.08);}
 .filter-inp::placeholder{color:var(--t3);}
 select.filter-inp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A8FA6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
@@ -387,9 +390,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
 /* RESPONSIVE */
 @media(max-width:900px){.charts-grid{grid-template-columns:1fr;}.geo-grid{grid-template-columns:1fr;}.seg-grid{grid-template-columns:1fr 1fr;}.send-stats{grid-template-columns:1fr 1fr;}.tpl-grid{grid-template-columns:repeat(2,1fr);}.tpl-promo-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:600px){.stats-grid{grid-template-columns:1fr 1fr;}.nav-tabs-admin{display:none;}.lm-grid{grid-template-columns:1fr;}.admin-mobile-menu-btn{display:flex!important;}}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr 1fr;}.nav-tabs-admin{display:none;}.admin-nav-row2{display:none;}.admin-body{padding-top:42px;}.admin-mobile-dd{top:42px;}.lm-grid{grid-template-columns:1fr;}.admin-mobile-menu-btn{display:flex!important;}}
 .admin-mobile-menu-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;background:var(--card);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:18px;cursor:pointer;margin-right:8px;}
-.admin-mobile-dd{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;z-index:999;background:var(--bg);overflow-y:auto;padding:12px;}
+.admin-mobile-dd{display:none;position:fixed;top:76px;left:0;right:0;bottom:0;z-index:999;background:var(--bg);overflow-y:auto;padding:12px;}
 .admin-mobile-dd.open{display:block;}
 .admin-mobile-dd .nta{display:block;width:100%;text-align:left;padding:12px 16px;margin-bottom:4px;border-radius:8px;}
 
@@ -536,6 +539,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 <div id="admin-app">
  <!-- NAV -->
  <nav class="admin-nav">
+ <div class="admin-nav-row1">
  <div class="admin-logo">Markets<em>Coupons</em><span>Admin</span></div>
  <div class="nav-tabs-admin" id="admin-nav-tabs">
  <button class="nta active" onclick="adminGo('overview',this)">Visão Geral</button>
@@ -546,16 +550,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('cadastros',this)">Cadastros</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade</button>
- <div class="nta-sep"></div>
- <button class="nta nta-cms" onclick="adminGo('cms-firms',this)">Firmas</button>
- <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
- <button class="nta nta-cms" onclick="adminGo('cms-guides',this)">Guias</button>
- <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
- <button class="nta nta-cms" onclick="adminGo('criativos',this)">Criativos</button>
- <div class="nta-sep"></div>
- <button class="nta nta-cms" onclick="adminGo('cms-faq',this)">FAQ</button>
- <button class="nta nta-cms" onclick="adminGo('cms-texts',this)">Textos</button>
- <button class="nta nta-cms" onclick="adminGo('cms-settings',this)">Config</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -571,6 +565,20 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <button class="btn-secondary" onclick="refreshAll()">Atualizar</button>
    <button class="btn-secondary" onclick="toggleChgPassModal()" style="font-size:11px;padding:6px 10px;" title="Alterar senha">Senha</button>
    <button class="logout-btn" onclick="doLogout()">Sair</button>
+ </div>
+ </div>
+ <div class="admin-nav-row2">
+ <div class="nav-tabs-cms" id="admin-nav-tabs-cms">
+ <button class="nta nta-cms" onclick="adminGo('cms-firms',this)">Firmas</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-guides',this)">Guias</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
+ <button class="nta nta-cms" onclick="adminGo('criativos',this)">Criativos</button>
+ <div class="nta-sep"></div>
+ <button class="nta nta-cms" onclick="adminGo('cms-faq',this)">FAQ</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-texts',this)">Textos</button>
+ <button class="nta nta-cms" onclick="adminGo('cms-settings',this)">Config</button>
+ </div>
  </div>
 
  <!-- CHANGE PASSWORD MODAL -->
@@ -1816,7 +1824,7 @@ function getProfilesSync() { return JSON.parse(localStorage.getItem('mc_profiles
 
 async function getProfiles() {
   try {
-    const { data } = await db.from('profiles').select('id,email,full_name,created_at,updated_at,avatar_url').order('created_at', { ascending: false }).limit(500);
+    const { data } = await db.from('profiles').select('id,email,full_name,created_at,updated_at').order('created_at', { ascending: false }).limit(500);
     if (data !== null && data !== undefined) { localStorage.setItem('mc_profiles', JSON.stringify(data)); return data; }
   } catch(e) {}
   return JSON.parse(localStorage.getItem('mc_profiles')||'[]');
@@ -1899,7 +1907,7 @@ function ensureDemoData(){
 function adminGo(page,btn){
  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
  document.getElementById('page-'+page).classList.add('active');
- document.querySelectorAll('.nav-tabs-admin .nta').forEach(b=>b.classList.remove('active'));
+ document.querySelectorAll('.nav-tabs-admin .nta, .nav-tabs-cms .nta').forEach(b=>b.classList.remove('active'));
  if(btn)btn.classList.add('active');
  location.hash = page;
  renderPage(page);
@@ -1926,7 +1934,7 @@ async function initAdmin(){
   document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+startPage).classList.add('active');
   // Highlight correct nav button
-  const navBtns = [...document.querySelectorAll('.nav-tabs-admin .nta')];
+  const navBtns = [...document.querySelectorAll('.nav-tabs-admin .nta, .nav-tabs-cms .nta')];
   navBtns.forEach(b=>b.classList.remove('active'));
   const matchBtn = navBtns.find(b=>b.getAttribute('onclick')?.includes("'"+startPage+"'"));
   if(matchBtn) matchBtn.classList.add('active');
@@ -1963,7 +1971,7 @@ async function toggleBotSetting(){
 async function refreshAll(){
   await refreshFromSupabase();
   loadBotSetting();
-  const pages = ['overview','analytics','leads','events','geo','email','loyalty','cms-firms','cms-indicators','cms-guides','cms-blog','analysis-vip'];
+  const pages = ['overview','analytics','leads','events','geo','cadastros','email','loyalty','cms-firms','cms-indicators','cms-guides','cms-blog','criativos','cms-faq','cms-texts','cms-settings','analysis-vip'];
   const active = pages.find(p => document.getElementById('page-'+p)?.classList.contains('active')) || 'overview';
   renderPage(active);
   document.getElementById('last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
@@ -6600,10 +6608,8 @@ function renderCadastrosCharts(profiles) {
   const vals = Object.values(days);
   mkChart('chart-signups-daily','bar',labels,[{label:'Cadastros',data:vals,backgroundColor:'rgba(240,180,41,.6)',borderRadius:4}]);
 
-  // Method breakdown
-  const emailCount = profiles.filter(p => !p.avatar_url).length;
-  const oauthCount = profiles.filter(p => p.avatar_url).length;
-  mkChart('chart-signup-method','doughnut',['Email/Senha','Google OAuth'],[{data:[emailCount,oauthCount],backgroundColor:['rgba(240,180,41,.7)','rgba(59,130,246,.7)']}]);
+  // Method breakdown (all email/password for now)
+  mkChart('chart-signup-method','doughnut',['Email/Senha'],[{data:[profiles.length],backgroundColor:['rgba(240,180,41,.7)']}]);
 }
 
 function exportCadastrosCSV() {
