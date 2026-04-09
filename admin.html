@@ -1559,8 +1559,21 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
     <!-- ══ CMS: CONFIGURAÇÕES ══ -->
     <div class="admin-page" id="page-cms-settings">
+
+      <!-- SECTION 1: CUPONS & DESCONTOS (ACESSO RÁPIDO) -->
       <div class="sec-hdr">
-        <div class="sec-title">Configurações</div>
+        <div class="sec-title">Cupons & Descontos — Acesso Rápido</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="saveQuickFirms()">Salvar Alterações</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="quick-firms-tbl"></table></div>
+      </div>
+
+      <!-- SECTION 2: CONFIGURAÇÕES GERAIS -->
+      <div class="sec-hdr" style="margin-top:28px;">
+        <div class="sec-title">Configurações Gerais</div>
         <div class="sec-actions">
           <button class="btn-primary" onclick="saveSettings()">Salvar</button>
         </div>
@@ -1568,6 +1581,29 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="chart-card" style="padding:20px;">
         <div id="settings-form"></div>
       </div>
+
+      <!-- SECTION 3: ANÁLISE DIÁRIA -->
+      <div class="sec-hdr" style="margin-top:28px;">
+        <div class="sec-title">Análise Diária</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="saveAnalysisSettings()">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:20px;">
+        <div id="analysis-settings-form"></div>
+      </div>
+
+      <!-- SECTION 4: LIVE ROOM -->
+      <div class="sec-hdr" style="margin-top:28px;">
+        <div class="sec-title">Live Room</div>
+        <div class="sec-actions">
+          <button class="btn-primary" onclick="saveLiveRoomSettings()">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:20px;">
+        <div id="liveroom-settings-form"></div>
+      </div>
+
     </div>
 
  </div><!-- admin-body -->
@@ -7084,16 +7120,76 @@ async function deleteText(key){
    CMS: CONFIGURAÇÕES GERAIS
    ══════════════════════════════════════════════════ */
 let _settingsData={};
+// ═══════════════════════════════════════════════════════════════════════
+// SECTION 1: CUPONS & DESCONTOS — ACESSO RÁPIDO
+// ═══════════════════════════════════════════════════════════════════════
+function renderQuickFirms(){
+  const firms = _firmsCache.filter(f=>f.active).sort((a,b)=>(a.sort_order||99)-(b.sort_order||99));
+  const tbl = document.getElementById('quick-firms-tbl');
+  tbl.innerHTML = `<thead><tr>
+    <th style="width:40px">#</th><th>Firma</th><th style="width:100px">Desconto %</th>
+    <th style="width:80px">Tipo</th><th style="width:130px">Cupom</th>
+    <th style="width:100px">Split</th><th>Link Afiliado</th>
+    <th style="width:70px">Preços</th>
+  </tr></thead><tbody>`
+  + firms.map((f,i) => `<tr data-fid="${f.id}">
+    <td>${i+1}</td>
+    <td style="font-weight:600;color:${f.color||'var(--t1)'}">${escHtml(f.name)}</td>
+    <td><input class="filter-inp qf-discount" data-id="${f.id}" value="${f.discount||0}" style="width:70px;text-align:center;"></td>
+    <td><select class="filter-inp qf-dtype" data-id="${f.id}" style="width:80px;font-size:10px;">
+      <option value="lifetime" ${f.discount_type==='lifetime'?'selected':''}>Lifetime</option>
+      <option value="1 desafio" ${f.discount_type==='1 desafio'?'selected':''}>1 Desafio</option>
+      <option value="1 compra" ${f.discount_type==='1 compra'?'selected':''}>1 Compra</option>
+      <option value="gratis" ${f.discount_type==='gratis'?'selected':''}>Grátis</option>
+      <option value="recorrente" ${f.discount_type==='recorrente'?'selected':''}>Recorrente</option>
+      <option value="" ${!f.discount_type?'selected':''}>—</option>
+    </select></td>
+    <td><input class="filter-inp qf-coupon" data-id="${f.id}" value="${escHtml(f.coupon||'')}" style="width:110px;font-weight:700;text-transform:uppercase;"></td>
+    <td><input class="filter-inp qf-split" data-id="${f.id}" value="${escHtml(f.split||'')}" style="width:80px;"></td>
+    <td><input class="filter-inp qf-link" data-id="${f.id}" value="${escHtml(f.link||'')}" style="width:100%;font-size:10px;"></td>
+    <td style="text-align:center;"><button class="btn-secondary" style="padding:4px 8px;font-size:10px;" onclick="openFirmModal('${f.id}')">Editar</button></td>
+  </tr>`).join('') + `</tbody>`;
+}
+
+async function saveQuickFirms(){
+  const rows = document.querySelectorAll('#quick-firms-tbl tbody tr');
+  let count = 0;
+  for(const row of rows){
+    const id = row.dataset.fid;
+    if(!id) continue;
+    const discount = parseInt(row.querySelector('.qf-discount')?.value) || 0;
+    const discount_type = row.querySelector('.qf-dtype')?.value || null;
+    const coupon = row.querySelector('.qf-coupon')?.value?.trim().toUpperCase() || null;
+    const split = row.querySelector('.qf-split')?.value?.trim() || null;
+    const link = row.querySelector('.qf-link')?.value?.trim() || null;
+    const {error} = await db.from('cms_firms').update({discount, discount_type, coupon, split, link, updated_at: new Date().toISOString()}).eq('id', id);
+    if(!error) count++;
+  }
+  toast(count + ' firmas atualizadas!');
+  await renderCmsFirms();
+  renderQuickFirms();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SECTION 2: CONFIGURAÇÕES GERAIS
+// ═══════════════════════════════════════════════════════════════════════
 async function renderCmsSettings(){
   const{data}=await db.from('site_settings').select('*');
   _settingsData={};
   (data||[]).forEach(s=>{_settingsData[s.key]=s.value;});
+
+  // Quick firms table
+  renderQuickFirms();
+
+  // General settings
   const fields=[
-    {key:'default_language',label:'Idioma Padrão',type:'select',options:['en','pt','es','it','fr','de','ar']},
+    {key:'default_language',label:'Idioma Padrão do Site',type:'select',options:['en','pt','es','it','fr','de','ar']},
     {key:'bot_enabled',label:'TradeBot Ativo',type:'toggle'},
-    {key:'live_room_enabled',label:'Live Room Ativo',type:'toggle'},
+    {key:'maintenance_mode',label:'Modo Manutenção (site offline)',type:'toggle'},
     {key:'telegram_url',label:'URL Telegram',type:'text'},
-    {key:'daily_analysis_schedule',label:'Horário Análise Diária',type:'text'},
+    {key:'whatsapp_url',label:'URL WhatsApp',type:'text'},
+    {key:'contact_email',label:'Email de Contato',type:'text'},
+    {key:'cookie_consent_text',label:'Texto Cookie Consent (EN)',type:'text'},
   ];
   const form=document.getElementById('settings-form');
   form.innerHTML=fields.map(f=>{
@@ -7104,19 +7200,81 @@ async function renderCmsSettings(){
     if(f.type==='toggle'){
       return `<div class="ec-field" style="margin-bottom:16px;"><label><input type="checkbox" id="set-${f.key}" ${v==='true'?'checked':''}> ${f.label}</label></div>`;
     }
-    return `<div class="ec-field" style="margin-bottom:16px;"><label>${f.label}</label><input id="set-${f.key}" class="filter-inp" style="width:100%;max-width:400px;" value="${escHtml(v)}"></div>`;
+    return `<div class="ec-field" style="margin-bottom:16px;"><label>${f.label}</label><input id="set-${f.key}" class="filter-inp" style="width:100%;max-width:500px;" value="${escHtml(v)}"></div>`;
   }).join('');
+
+  // Analysis settings
+  renderAnalysisForm();
+
+  // Live room settings
+  renderLiveRoomForm();
 }
 
 async function saveSettings(){
-  const fields=['default_language','bot_enabled','live_room_enabled','telegram_url','daily_analysis_schedule'];
+  const fields=['default_language','bot_enabled','maintenance_mode','telegram_url','whatsapp_url','contact_email','cookie_consent_text'];
   for(const key of fields){
     const el=document.getElementById('set-'+key);
     if(!el) continue;
     const value=el.type==='checkbox'?String(el.checked):(el.value||'');
-    await db.from('site_settings').upsert({key,value,updated_at:new Date().toISOString()});
+    await db.from('site_settings').upsert({key,value,updated_at:new Date().toISOString()},{onConflict:'key'});
   }
-  toast('Configurações salvas!');
+  toast('Configurações gerais salvas!');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SECTION 3: ANÁLISE DIÁRIA
+// ═══════════════════════════════════════════════════════════════════════
+function renderAnalysisForm(){
+  const form = document.getElementById('analysis-settings-form');
+  const schedule = _settingsData['daily_analysis_schedule'] || '06:00 BRT (seg-sex)';
+  const assets = _settingsData['daily_analysis_assets'] || 'ES,NQ,GC,CL';
+  const langs = _settingsData['daily_analysis_languages'] || 'pt,en,es';
+  const enabled = _settingsData['daily_analysis_enabled'] === 'true';
+  form.innerHTML = `
+    <div class="ec-field" style="margin-bottom:16px;"><label><input type="checkbox" id="set-daily_analysis_enabled" ${enabled?'checked':''}> Análise Diária Ativa</label></div>
+    <div class="ec-field" style="margin-bottom:16px;"><label>Horário (cron UTC)</label><input id="set-daily_analysis_schedule" class="filter-inp" style="width:300px;" value="${escHtml(schedule)}" placeholder="06:00 BRT (seg-sex)"></div>
+    <div class="ec-field" style="margin-bottom:16px;"><label>Ativos (separados por vírgula)</label><input id="set-daily_analysis_assets" class="filter-inp" style="width:400px;" value="${escHtml(assets)}" placeholder="ES,NQ,GC,CL"></div>
+    <div class="ec-field" style="margin-bottom:16px;"><label>Idiomas da Análise</label><input id="set-daily_analysis_languages" class="filter-inp" style="width:300px;" value="${escHtml(langs)}" placeholder="pt,en,es"></div>
+  `;
+}
+
+async function saveAnalysisSettings(){
+  const keys=['daily_analysis_enabled','daily_analysis_schedule','daily_analysis_assets','daily_analysis_languages'];
+  for(const key of keys){
+    const el=document.getElementById('set-'+key);
+    if(!el) continue;
+    const value=el.type==='checkbox'?String(el.checked):(el.value||'');
+    await db.from('site_settings').upsert({key,value,updated_at:new Date().toISOString()},{onConflict:'key'});
+  }
+  toast('Configurações de Análise salvas!');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SECTION 4: LIVE ROOM
+// ═══════════════════════════════════════════════════════════════════════
+function renderLiveRoomForm(){
+  const form = document.getElementById('liveroom-settings-form');
+  const enabled = _settingsData['live_room_enabled'] === 'true';
+  const schedule = _settingsData['live_room_schedule'] || '';
+  const headline = _settingsData['live_room_headline'] || '';
+  const desc = _settingsData['live_room_description'] || '';
+  form.innerHTML = `
+    <div class="ec-field" style="margin-bottom:16px;"><label><input type="checkbox" id="set-live_room_enabled" ${enabled?'checked':''}> Live Room Ativo</label></div>
+    <div class="ec-field" style="margin-bottom:16px;"><label>Horário / Agenda</label><input id="set-live_room_schedule" class="filter-inp" style="width:100%;max-width:500px;" value="${escHtml(schedule)}" placeholder="Seg-Sex 09:30 EST"></div>
+    <div class="ec-field" style="margin-bottom:16px;"><label>Headline (EN)</label><input id="set-live_room_headline" class="filter-inp" style="width:100%;max-width:500px;" value="${escHtml(headline)}" placeholder="Join our Live Trading Room"></div>
+    <div class="ec-field" style="margin-bottom:16px;"><label>Descrição (EN)</label><textarea id="set-live_room_description" class="filter-inp" rows="3" style="width:100%;max-width:500px;resize:vertical;">${escHtml(desc)}</textarea></div>
+  `;
+}
+
+async function saveLiveRoomSettings(){
+  const keys=['live_room_enabled','live_room_schedule','live_room_headline','live_room_description'];
+  for(const key of keys){
+    const el=document.getElementById('set-'+key);
+    if(!el) continue;
+    const value=el.type==='checkbox'?String(el.checked):(el.value||'');
+    await db.from('site_settings').upsert({key,value,updated_at:new Date().toISOString()},{onConflict:'key'});
+  }
+  toast('Configurações do Live Room salvas!');
 }
 
 </script>

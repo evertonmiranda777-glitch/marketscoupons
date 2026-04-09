@@ -507,6 +507,7 @@ document.addEventListener('click',e=>{
 /* ─── TRANSLATION ENGINE ─── */
 let _currentLang = 'en';
 let _cmsTexts = {}; // DB overrides loaded from cms_texts
+let _siteSettings = {}; // site_settings key-value from Supabase
 function t(key) {
   if(_cmsTexts[key]) return _cmsTexts[key][_currentLang] || _cmsTexts[key].en || _cmsTexts[key].pt || (I18N[_currentLang]&&I18N[_currentLang][key]) || key;
   return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.en[key]) || key;
@@ -5400,12 +5401,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   fetchGeo();
 
-  // Checar se bot está ativado (hidden by default, show only if enabled)
+  // Carregar configurações do site (site_settings)
   try{
-    const{data}=await db.from('site_settings').select('value').eq('key','bot_enabled').maybeSingle();
-    if(data&&data.value==='true'){
-      const fab=document.getElementById('bot-fab');if(fab)fab.style.display='flex';
-      const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='';
+    const{data}=await db.from('site_settings').select('key,value');
+    if(data){
+      _siteSettings={};
+      data.forEach(s=>{_siteSettings[s.key]=s.value;});
+      // Bot
+      if(_siteSettings.bot_enabled==='true'){
+        const fab=document.getElementById('bot-fab');if(fab)fab.style.display='flex';
+        const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='';
+      }
     }
   }catch(e){}
 
