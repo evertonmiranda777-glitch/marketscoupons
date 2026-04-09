@@ -1383,6 +1383,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         </div>
       </div>
 
+      <!-- Heatmap dias da semana -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd"><div><div class="cc-title">Atividade por Dia da Semana</div><div class="cc-sub">Quais dias têm mais engajamento</div></div></div>
+        <div id="trk-weekday" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:8px 0;"></div>
+      </div>
+
       <!-- Comparação período -->
       <div class="chart-card" style="margin-bottom:20px;">
         <div class="cc-hd"><div class="cc-title">Comparação com Período Anterior</div></div>
@@ -6953,6 +6959,22 @@ async function renderTrackingPage(){
     return `<div style="text-align:center;padding:8px 2px;background:${bg};border-radius:4px;cursor:default;" title="${h}h: ${c} eventos">
       <div style="font-size:9px;font-weight:700;color:${intensity > 0.4 ? '#000' : 'var(--t2)'};">${h}h</div>
       <div style="font-size:11px;font-weight:800;color:${intensity > 0.4 ? '#000' : 'var(--t1)'};">${c}</div>
+    </div>`;
+  }).join('');
+
+  // ── HEATMAP DIAS DA SEMANA ──
+  const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const dayCounts = new Array(7).fill(0);
+  ev.forEach(e => { const d = new Date(e.created_at).getDay(); dayCounts[d]++; });
+  const maxDay = Math.max(...dayCounts, 1);
+  document.getElementById('trk-weekday').innerHTML = dayCounts.map((c, i) => {
+    const intensity = c / maxDay;
+    const bg = intensity > 0.7 ? '#22C55E' : intensity > 0.4 ? '#F0B429' : intensity > 0.1 ? 'rgba(240,180,41,.3)' : 'rgba(255,255,255,.06)';
+    const pct = ev.length ? Math.round(c / ev.length * 100) : 0;
+    return `<div style="text-align:center;padding:12px 4px;background:${bg};border-radius:6px;cursor:default;" title="${dayNames[i]}: ${c} eventos (${pct}%)">
+      <div style="font-size:11px;font-weight:700;color:${intensity > 0.4 ? '#000' : 'var(--t2)'};">${dayNames[i]}</div>
+      <div style="font-size:16px;font-weight:800;color:${intensity > 0.4 ? '#000' : 'var(--t1)'};">${c}</div>
+      <div style="font-size:9px;color:${intensity > 0.4 ? 'rgba(0,0,0,.6)' : 'var(--t3)'};">${pct}%</div>
     </div>`;
   }).join('');
 
