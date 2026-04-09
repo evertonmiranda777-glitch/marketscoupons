@@ -953,6 +953,49 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <option value="cookie_consent">Cookies aceitos</option>
  <option value="geo_detected">Geo detectado</option>
  <option value="live_signup">Cadastro Live</option>
+ <option disabled style="font-weight:700;color:var(--t3);">── Comportamento ──</option>
+ <option value="scroll_depth">Scroll depth</option>
+ <option value="engagement_time">Tempo engajado</option>
+ <option value="session_end">Fim de sessão</option>
+ <option value="tab_hidden">Saiu da aba</option>
+ <option value="tab_visible">Voltou à aba</option>
+ <option value="user_idle">Usuário inativo</option>
+ <option value="user_reactivated">Usuário reativou</option>
+ <option value="rage_click">Rage click</option>
+ <option value="js_error">Erro JS</option>
+ <option value="outbound_click">Link externo</option>
+ <option disabled style="font-weight:700;color:var(--t3);">── Interações ──</option>
+ <option value="search">Busca</option>
+ <option value="menu_toggle">Menu mobile</option>
+ <option value="drawer_select">Seleção drawer</option>
+ <option value="drawer_section_toggle">Seção drawer</option>
+ <option value="platform_select">Seleção plataforma</option>
+ <option value="platform_detail_open">Detalhe plataforma</option>
+ <option value="checkout_firm_select">Firma checkout</option>
+ <option value="checkout_select">Seleção checkout</option>
+ <option value="compare_firms">Comparar firmas</option>
+ <option value="heatmap_load">Heatmap</option>
+ <option value="calendar_filter">Filtro calendário</option>
+ <option value="blog_filter">Filtro blog</option>
+ <option value="firms_sidebar_toggle">Sidebar firmas</option>
+ <option value="firm_unfavorite">Desfavoritar</option>
+ <option disabled style="font-weight:700;color:var(--t3);">── Quiz & Bot ──</option>
+ <option value="quiz_answer">Resposta quiz</option>
+ <option value="quiz_step">Passo quiz</option>
+ <option value="quiz_reset">Reset quiz</option>
+ <option value="bot_toggle">Bot abrir/fechar</option>
+ <option value="bot_quick_msg">Bot msg rápida</option>
+ <option disabled style="font-weight:700;color:var(--t3);">── Ferramentas ──</option>
+ <option value="tool_close">Ferramenta fechada</option>
+ <option value="journal_add_trade">Journal: trade</option>
+ <option value="journal_delete_trade">Journal: deletar</option>
+ <option value="journal_clear">Journal: limpar</option>
+ <option value="journal_export">Journal: exportar</option>
+ <option value="backtest_run">Backtest</option>
+ <option value="alert_create">Alerta criado</option>
+ <option value="alert_toggle">Alerta toggle</option>
+ <option value="alert_delete">Alerta deletado</option>
+ <option value="dashboard_reset">Dashboard reset</option>
  </select>
  </div>
  <div class="data-table-wrap">
@@ -3166,8 +3209,9 @@ function renderEventsTable(){
  events=events.slice(0,100);
  const tbl=document.getElementById('tbl-events');
  if(!tbl)return;
- const evColors={'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','firm_favorite':'#EC4899','offer_card_click':'#06B6D4','quiz_complete':'#06B6D4','blog_read':'#F97316','guide_read':'#3B82F6','platform_click':'#A855F7','tool_open':'#A855F7','tool_lead_capture':'#14B8A6','calc_unlocked':'#F59E0B','bot_message':'#F97316','user_signup':'#22C55E','user_login':'#3B82F6','profile_updated':'var(--t2)','loyalty_register':'var(--gold)','loyalty_proof_submitted':'#F0B429','loyalty_checkout_click':'#22C55E','telegram_click':'#06B6D4','social_click':'#EC4899','language_change':'var(--t3)','cookie_consent':'var(--t3)','live_signup':'#14B8A6','purchase':'#22C55E'};
- const _fmtParams=(p)=>{if(!p||!Object.keys(p).length)return'<span style="color:var(--t3);">—</span>';const keys=['firm_id','firm_name','coupon_code','page_name','platform','account_size','tool','source'];const parts=[];keys.forEach(k=>{if(p[k])parts.push(`<span style="color:var(--t3);">${k}:</span><span style="color:var(--t1);font-weight:500;">${p[k]}</span>`);});if(!parts.length){const allK=Object.keys(p).slice(0,3);allK.forEach(k=>{parts.push(`<span style="color:var(--t3);">${k}:</span><span style="color:var(--t1);">${String(p[k]).slice(0,30)}</span>`);});}return parts.join(' <span style="color:var(--t3);opacity:.4;">·</span> ');};
+ const evColors={'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','firm_favorite':'#EC4899','firm_unfavorite':'#EC4899','offer_card_click':'#06B6D4','quiz_complete':'#06B6D4','quiz_answer':'#06B6D4','quiz_step':'#06B6D4','quiz_reset':'#06B6D4','blog_read':'#F97316','blog_filter':'#F97316','guide_read':'#3B82F6','platform_click':'#A855F7','platform_select':'#A855F7','platform_detail_open':'#A855F7','platform_checkout_click':'#A855F7','tool_open':'#A855F7','tool_close':'#A855F7','tool_lead_capture':'#14B8A6','calc_unlocked':'#F59E0B','bot_message':'#F97316','bot_toggle':'#F97316','bot_quick_msg':'#F97316','user_signup':'#22C55E','user_login':'#3B82F6','profile_updated':'var(--t2)','password_changed':'var(--t2)','loyalty_register':'var(--gold)','loyalty_proof_submitted':'#F0B429','loyalty_checkout_click':'#22C55E','telegram_click':'#06B6D4','social_click':'#EC4899','language_change':'var(--t3)','cookie_consent':'var(--t3)','live_signup':'#14B8A6','purchase':'#22C55E','scroll_depth':'#64748B','engagement_time':'#64748B','session_end':'#64748B','tab_hidden':'#94A3B8','tab_visible':'#94A3B8','user_idle':'#F59E0B','user_reactivated':'#22C55E','rage_click':'#EF4444','js_error':'#EF4444','outbound_click':'#06B6D4','search':'#3B82F6','menu_toggle':'var(--t3)','drawer_select':'#8B5CF6','drawer_section_toggle':'#8B5CF6','checkout_firm_select':'var(--gold)','checkout_select':'var(--gold)','compare_firms':'#3B82F6','heatmap_load':'#F97316','calendar_filter':'#EF4444','firms_sidebar_toggle':'var(--t3)','journal_add_trade':'#14B8A6','journal_delete_trade':'#14B8A6','journal_clear':'#14B8A6','journal_export':'#14B8A6','backtest_run':'#8B5CF6','alert_create':'#F59E0B','alert_toggle':'#F59E0B','alert_delete':'#F59E0B','dashboard_reset':'var(--t3)','initiate_checkout':'var(--green)'};
+ const _paramLabels={firm_id:'Firma',firm_name:'Firma',coupon_code:'Cupom',page_name:'Página',page:'Página',platform:'Plataforma',account_size:'Conta',tool:'Ferramenta',tool_id:'Ferramenta',source:'Fonte',depth:'Profundidade',seconds:'Segundos',total_seconds:'Total (s)',pages_viewed:'Páginas',query:'Busca',state:'Estado',field:'Campo',value:'Valor',size:'Conta',section:'Seção',step:'Passo',answer:'Resposta',message:'Mensagem',clicks:'Cliques',element:'Elemento',url:'URL',text:'Texto',symbol:'Símbolo',direction:'Direção',pnl:'P&L',trades_count:'Trades',win_rate:'Win Rate',profit_factor:'PF',type:'Tipo',channel:'Canal',active:'Ativo',firms:'Firmas',count:'Qtd',filter:'Filtro',level:'Nível',idle_seconds:'Inativo (s)',time_on_page:'Tempo (s)',device:'Dispositivo'};
+ const _fmtParams=(p)=>{if(!p||!Object.keys(p).length)return'<span style="color:var(--t3);">—</span>';const prio=['firm_id','firm_name','query','depth','seconds','total_seconds','page','clicks','element','url','text','symbol','pnl','message','state','field','value','size','step','answer','coupon_code','page_name','platform','account_size','tool','tool_id','source','filter','level','firms','device'];const keys=prio.filter(k=>p[k]!==undefined&&p[k]!==null&&p[k]!=='');if(!keys.length){const allK=Object.keys(p).slice(0,4);allK.forEach(k=>keys.push(k));}const parts=keys.slice(0,4).map(k=>{const lbl=_paramLabels[k]||k;const val=String(p[k]).slice(0,40);return`<span style="color:var(--t3);font-size:10px;">${lbl}:</span><span style="color:var(--t1);font-weight:500;">${val}</span>`;});return parts.join(' <span style="color:var(--t3);opacity:.4;">·</span> ');};
  tbl.innerHTML=`<thead><tr><th>Evento</th><th>Detalhes</th><th style="text-align:right;">Data/Hora</th></tr></thead>
  <tbody>${events.map(e=>{const ec=evColors[e.event]||'var(--t2)';return`<tr>
  <td><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:${ec};display:inline-block;flex-shrink:0;"></span><span style="font-weight:600;font-size:11px;color:${ec};">${e.event}</span></span></td>
@@ -7693,7 +7737,7 @@ async function renderTrackingPage(){
     }).join('')}</tbody>`;
 
   // ── RECENT EVENTS ──
-  const _evColors = {'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','user_signup':'#A855F7','user_login':'#3B82F6','tool_lead_capture':'#14B8A6','quiz_complete':'#06B6D4','blog_read':'#F97316','guide_read':'#3B82F6','loyalty_register':'var(--gold)','purchase':'#22C55E'};
+  const _evColors = {'page_view':'var(--t3)','coupon_copy':'var(--gold)','checkout_click':'var(--green)','firm_detail_open':'var(--blue)','firm_favorite':'#EC4899','firm_unfavorite':'#EC4899','user_signup':'#A855F7','user_login':'#3B82F6','tool_lead_capture':'#14B8A6','tool_open':'#A855F7','tool_close':'#A855F7','quiz_complete':'#06B6D4','quiz_answer':'#06B6D4','quiz_step':'#06B6D4','blog_read':'#F97316','blog_filter':'#F97316','guide_read':'#3B82F6','loyalty_register':'var(--gold)','purchase':'#22C55E','scroll_depth':'#64748B','engagement_time':'#64748B','session_end':'#64748B','tab_hidden':'#94A3B8','tab_visible':'#94A3B8','user_idle':'#F59E0B','user_reactivated':'#22C55E','rage_click':'#EF4444','js_error':'#EF4444','outbound_click':'#06B6D4','search':'#3B82F6','menu_toggle':'var(--t3)','drawer_select':'#8B5CF6','checkout_firm_select':'var(--gold)','checkout_select':'var(--gold)','compare_firms':'#3B82F6','heatmap_load':'#F97316','calendar_filter':'#EF4444','platform_select':'#A855F7','platform_detail_open':'#A855F7','bot_toggle':'#F97316','bot_quick_msg':'#F97316','bot_message':'#F97316','journal_add_trade':'#14B8A6','backtest_run':'#8B5CF6','alert_create':'#F59E0B'};
   document.getElementById('trk-recent').innerHTML = `
     <thead><tr><th>Data</th><th>Evento</th><th>Firma</th><th>Cupom</th><th>Fonte</th></tr></thead>
     <tbody>${ev.slice(0, 50).map(e => {
