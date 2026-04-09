@@ -568,6 +568,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('cadastros',this)">Cadastros</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
+ <button class="nta" onclick="adminGo('pro',this)">Pro</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -635,6 +636,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta" onclick="adminGoMobile('cadastros',this)">Cadastros</button>
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
   <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
+  <button class="nta" onclick="adminGoMobile('pro',this)">Pro</button>
   <div class="nta-sep"></div>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-firms',this)">Firmas</button>
   <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
@@ -1306,7 +1308,61 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
 
 
-    <!-- ══ ANÁLISE VIP ══ -->
+    <!-- ══ PRO & ASSINATURAS ══ -->
+    <div class="admin-page" id="page-pro">
+      <div class="sec-hdr">
+        <div class="sec-title">Pro & Assinaturas</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="renderProPage()">Atualizar</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="stats-grid" id="pro-kpis"></div>
+
+      <!-- Funil Pro -->
+      <div class="charts-grid" style="margin-bottom:20px;">
+        <div class="chart-card">
+          <div class="cc-hd"><div><div class="cc-title">Funil Pro</div><div class="cc-sub">Eventos de conversão</div></div></div>
+          <div id="pro-funnel"></div>
+        </div>
+        <div class="chart-card">
+          <div class="cc-hd"><div><div class="cc-title">Eventos Pro (14 dias)</div><div class="cc-sub">Checkout e conversão</div></div></div>
+          <div class="chart-wrap"><canvas id="chart-pro-funnel"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Tabela Assinantes Stripe -->
+      <div class="sec-hdr" style="margin-top:20px;">
+        <div class="sec-title" style="font-size:14px;">Assinantes Stripe</div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="pro-subs-tbl"></table></div>
+      </div>
+
+      <!-- VIP Manual -->
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">VIP Manual</div>
+      </div>
+      <div class="chart-card" style="padding:16px;">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
+          <input type="email" id="pro-vip-email" placeholder="usuario@email.com" class="filter-inp" style="width:280px;">
+          <button class="btn-primary" onclick="grantVip()" style="font-size:12px;padding:7px 16px;">Liberar VIP</button>
+          <span id="pro-vip-msg" style="font-size:11px;"></span>
+        </div>
+        <div class="data-table-wrap"><table class="data-table" id="pro-vip-tbl"></table></div>
+        <div id="pro-vip-empty" style="padding:16px;text-align:center;color:var(--t3);font-size:12px;display:none;">Nenhum usuário VIP manual.</div>
+      </div>
+
+      <!-- Acesso Fidelidade -->
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Acesso via Fidelidade</div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="pro-loyalty-tbl"></table></div>
+      </div>
+    </div>
+
     <!-- ══ CMS: FIRMS ══ -->
     <div class="admin-page" id="page-cms-firms">
       <div class="sec-hdr">
@@ -2097,6 +2153,7 @@ function renderPage(p){
       setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
+    case 'pro':            renderProPage(); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
@@ -6741,8 +6798,8 @@ async function loadVipList(){
 }
 
 async function grantVip(){
-  const emailInput=document.getElementById('vip-email');
-  const msg=document.getElementById('vip-msg');
+  const emailInput=document.getElementById('pro-vip-email')||document.getElementById('vip-email');
+  const msg=document.getElementById('pro-vip-msg')||document.getElementById('vip-msg');
   const email=emailInput.value.trim().toLowerCase();
   if(!email||!email.includes('@')){
     msg.style.display='block';msg.style.color='var(--red)';msg.textContent='Informe um e-mail válido.';
@@ -6763,6 +6820,7 @@ async function grantVip(){
     msg.style.color='var(--green)';msg.textContent='VIP liberado para '+email+'!';
     emailInput.value='';
     loadVipList();
+    if(document.getElementById('page-pro')?.classList.contains('active')) renderProPage();
   }catch(e){
     msg.style.color='var(--red)';msg.textContent='Erro: '+e.message;
   }
@@ -6774,9 +6832,135 @@ async function revokeVip(userId,email){
     const{error}=await db.from('profiles').update({analysis_vip:false,updated_at:new Date().toISOString()}).eq('id',userId);
     if(error)throw error;
     loadVipList();
+    if(document.getElementById('page-pro')?.classList.contains('active')) renderProPage();
   }catch(e){
     alert('Erro ao revogar: '+e.message);
   }
+}
+
+// ─── PRO & ASSINATURAS ───────────────────────────────────────────────────
+async function renderProPage(){
+  // 1. Load data in parallel
+  const [subsRes, vipRes, loyaltyRes, eventsAll] = await Promise.all([
+    db.from('subscriptions').select('*,profiles!inner(email,full_name)').order('created_at',{ascending:false}),
+    db.from('profiles').select('id,email,full_name,updated_at').eq('analysis_vip',true).order('updated_at',{ascending:false}),
+    db.from('loyalty_proofs').select('member_email,member_name,firma,created_at').eq('status','approved').order('created_at',{ascending:false}),
+    Promise.resolve(getEventsSync()),
+  ]);
+  const subs = subsRes.data || [];
+  const vips = vipRes.data || [];
+  const loyaltyApproved = loyaltyRes.data || [];
+
+  // Unique loyalty emails with access
+  const loyaltyEmails = [...new Set(loyaltyApproved.map(p=>p.member_email))];
+
+  // 2. KPIs
+  const activeSubs = subs.filter(s=>s.status==='active'||s.status==='trialing');
+  const cancelingSubs = subs.filter(s=>s.cancel_at_period_end);
+  const mrr = activeSubs.length * 9.99;
+  const proCheckouts = eventsAll.filter(e=>e.event==='initiate_checkout'&&e.params?.item==='pro_subscription').length;
+  const proPurchases = eventsAll.filter(e=>e.event==='purchase'&&e.params?.item==='pro_subscription').length;
+
+  document.getElementById('pro-kpis').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Assinantes Ativos</div><div class="stat-val g">${activeSubs.length}</div><div class="stat-change">${cancelingSubs.length} cancelando</div></div>
+    <div class="stat-card"><div class="stat-lbl">MRR Estimada</div><div class="stat-val y">$${mrr.toFixed(2)}</div><div class="stat-change">$9.99/mês por assinante</div></div>
+    <div class="stat-card"><div class="stat-lbl">VIP Manual</div><div class="stat-val b">${vips.length}</div><div class="stat-change">Liberados pelo admin</div></div>
+    <div class="stat-card"><div class="stat-lbl">Acesso Fidelidade</div><div class="stat-val" style="color:var(--purple);">${loyaltyEmails.length}</div><div class="stat-change">${loyaltyApproved.length} compras aprovadas</div></div>
+    <div class="stat-card"><div class="stat-lbl">Total com Acesso Pro</div><div class="stat-val" style="color:var(--gold);">${activeSubs.length + vips.length + loyaltyEmails.length}</div><div class="stat-change">Stripe + VIP + Fidelidade</div></div>
+    <div class="stat-card"><div class="stat-lbl">Conversão Pro</div><div class="stat-val">${proCheckouts>0?Math.round(proPurchases/proCheckouts*100):0}%</div><div class="stat-change">${proPurchases} de ${proCheckouts} checkouts</div></div>
+  `;
+
+  // 3. Funil Pro visual
+  const funnelDiv = document.getElementById('pro-funnel');
+  const firmDetailViews = eventsAll.filter(e=>e.event==='page_view'&&(e.params?.page==='analise'||e.params?.page==='analysis')).length;
+  const steps = [
+    {label:'Visualizaram Análise',val:firmDetailViews,color:'var(--blue)'},
+    {label:'Iniciaram Checkout',val:proCheckouts,color:'var(--gold)'},
+    {label:'Compraram Pro',val:proPurchases,color:'var(--green)'},
+  ];
+  const maxVal = Math.max(...steps.map(s=>s.val),1);
+  funnelDiv.innerHTML = steps.map(s=>`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+      <div style="width:140px;font-size:11px;color:var(--t2);text-align:right;">${s.label}</div>
+      <div style="flex:1;background:var(--card2);border-radius:6px;height:28px;overflow:hidden;">
+        <div style="width:${Math.max(s.val/maxVal*100,2)}%;height:100%;background:${s.color};border-radius:6px;display:flex;align-items:center;padding-left:10px;">
+          <span style="font-size:12px;font-weight:700;color:#fff;">${s.val}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Chart: Pro events over 14 days
+  setTimeout(()=>{
+    const days={};
+    for(let i=13;i>=0;i--){
+      const d=new Date(Date.now()-i*86400000);
+      days[d.toISOString().slice(0,10)]={checkout:0,purchase:0};
+    }
+    eventsAll.forEach(e=>{
+      const d=(e.created_at||e.ts||'').slice(0,10);
+      if(!days[d]) return;
+      if(e.event==='initiate_checkout'&&e.params?.item==='pro_subscription') days[d].checkout++;
+      if(e.event==='purchase'&&e.params?.item==='pro_subscription') days[d].purchase++;
+    });
+    const labels=Object.keys(days).map(d=>d.slice(5));
+    const checkoutData=Object.values(days).map(d=>d.checkout);
+    const purchaseData=Object.values(days).map(d=>d.purchase);
+    const canvas=document.getElementById('chart-pro-funnel');
+    if(chartInstances['chart-pro-funnel']) try{chartInstances['chart-pro-funnel'].destroy();}catch(e){}
+    chartInstances['chart-pro-funnel']=new Chart(canvas,{
+      type:'bar',
+      data:{labels,datasets:[
+        {label:'Checkout',data:checkoutData,backgroundColor:'rgba(240,180,41,.6)',borderRadius:4},
+        {label:'Compra',data:purchaseData,backgroundColor:'rgba(34,197,94,.6)',borderRadius:4},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#7A8FA6',font:{size:11}}}},scales:{x:{ticks:{color:'#7A8FA6',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#7A8FA6',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}}}}
+    });
+  },100);
+
+  // 4. Tabela Assinantes Stripe
+  const subsTbl = document.getElementById('pro-subs-tbl');
+  subsTbl.innerHTML = `<thead><tr><th>Usuário</th><th>Email</th><th>Status</th><th>Período</th><th>Cancelando?</th><th>Stripe ID</th></tr></thead><tbody>`
+    + (subs.length ? subs.map(s=>{
+      const profile = s.profiles || {};
+      const statusColor = s.status==='active'?'var(--green)':s.status==='trialing'?'var(--blue)':'var(--red)';
+      const periodEnd = s.current_period_end ? new Date(s.current_period_end).toLocaleDateString('pt-BR') : '—';
+      return `<tr>
+        <td style="font-weight:600;">${escHtml(profile.full_name||'—')}</td>
+        <td style="color:var(--gold);">${escHtml(profile.email||'—')}</td>
+        <td><span style="color:${statusColor};font-weight:700;text-transform:uppercase;font-size:11px;">${s.status}</span></td>
+        <td style="font-size:11px;">até ${periodEnd}</td>
+        <td>${s.cancel_at_period_end?'<span style="color:var(--red);font-weight:600;">Sim</span>':'Não'}</td>
+        <td style="font-size:10px;color:var(--t3);">${escHtml(s.stripe_subscription_id||'')}</td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3);">Nenhum assinante ainda.</td></tr>') + `</tbody>`;
+
+  // 5. VIP Manual
+  const vipTbl = document.getElementById('pro-vip-tbl');
+  const vipEmpty = document.getElementById('pro-vip-empty');
+  if(vips.length){
+    vipEmpty.style.display='none';
+    vipTbl.innerHTML = `<thead><tr><th>Usuário</th><th>Email</th><th>VIP desde</th><th>Ação</th></tr></thead><tbody>`
+      + vips.map(v=>`<tr>
+        <td style="font-weight:600;">${escHtml(v.full_name||'—')}</td>
+        <td style="color:var(--gold);">${escHtml(v.email||'—')}</td>
+        <td style="font-size:11px;">${v.updated_at?new Date(v.updated_at).toLocaleDateString('pt-BR'):'—'}</td>
+        <td><button class="btn-secondary" style="font-size:11px;padding:4px 10px;color:var(--red);" onclick="revokeVip('${v.id}','${escHtml(v.email)}')">Revogar</button></td>
+      </tr>`).join('') + `</tbody>`;
+  } else {
+    vipEmpty.style.display='';
+    vipTbl.innerHTML='';
+  }
+
+  // 6. Acesso Fidelidade
+  const loyaltyTbl = document.getElementById('pro-loyalty-tbl');
+  loyaltyTbl.innerHTML = `<thead><tr><th>Usuário</th><th>Email</th><th>Firma</th><th>Data Compra</th></tr></thead><tbody>`
+    + (loyaltyApproved.length ? loyaltyApproved.slice(0,50).map(p=>`<tr>
+      <td style="font-weight:600;">${escHtml(p.member_name||'—')}</td>
+      <td style="color:var(--gold);">${escHtml(p.member_email||'—')}</td>
+      <td>${escHtml(p.firma||'—')}</td>
+      <td style="font-size:11px;">${p.created_at?new Date(p.created_at).toLocaleDateString('pt-BR'):'—'}</td>
+    </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--t3);">Nenhuma compra aprovada.</td></tr>') + `</tbody>`;
 }
 
 // ─── CADASTROS TAB ────────────────────────────────────────────────────────
