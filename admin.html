@@ -8793,7 +8793,7 @@ async function initTelegramSection(){
       _firmsCache = data||[];
     }catch(e){}
   }
-  _tgFirms = (_firmsCache||[]).filter(f=>f.active && f.discount>0).sort((a,b)=>b.discount-a.discount);
+  _tgFirms = (_firmsCache||[]).filter(f=>f.active).sort((a,b)=>(b.discount||0)-(a.discount||0));
   tgRenderFirmChecks();
   tgPopulateFlashSelect();
   tgGenerateCaption();
@@ -9078,18 +9078,21 @@ function tgDrawCanvas(){
   ctx.restore();
 
   ctx.save();
-  ctx.font = 'bold 40px Inter, sans-serif';
+  ctx.font = 'bold 38px Inter, sans-serif';
   ctx.fillStyle = '#EDF2F7';
   ctx.textAlign = 'center';
-  const maxD = firms.length ? Math.max(...firms.map(f=>f.discount)) : 0;
-  ctx.fillText('Save up to '+maxD+'%  →  www.marketscoupons.com', W/2, footerY + 60);
+  ctx.fillText('www.marketscoupons.com', W/2, footerY + 50);
   ctx.restore();
 
+  // Risk disclaimer
   ctx.save();
-  ctx.font = '28px Inter, sans-serif';
-  ctx.fillStyle = 'rgba(122,143,166,0.7)';
+  ctx.font = '18px Inter, sans-serif';
+  ctx.fillStyle = 'rgba(122,143,166,0.5)';
   ctx.textAlign = 'center';
-  ctx.fillText('Free • No registration required', W/2, footerY + 110);
+  const risk1 = 'Trading futures and forex involves substantial risk and is not for every investor.';
+  const risk2 = 'Only risk capital should be used. Past performance is not indicative of future results.';
+  ctx.fillText(risk1, W/2, footerY + 95);
+  ctx.fillText(risk2, W/2, footerY + 118);
   ctx.restore();
 
   // Update previews whenever canvas redraws
@@ -9105,7 +9108,6 @@ function tgUpdateHTMLPreview(){
   const firms = tgGetSelectedFirms();
   if(!firms.length){ el.innerHTML='<span style="opacity:.4">Selecione firmas para preview</span>'; btnsEl.innerHTML=''; return; }
 
-  const maxD = Math.max(...firms.map(f=>f.discount));
   let lines = firms.map(f=>{
     const dtype = (f.discount_type || f.dtype || '').toLowerCase();
     const off = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
@@ -9119,9 +9121,8 @@ function tgUpdateHTMLPreview(){
     `🔥  <b style="font-size:16px;letter-spacing:1px">ACTIVE PROMOTIONS</b>\n` +
     `<span style="opacity:.5;font-size:12px">Exclusive Prop Firm Coupons</span></span>\n` +
     lines.join('\n' + sep) +
-    `\n<span style="display:block;border-top:1px solid rgba(240,180,41,.2);margin-top:12px;padding-top:12px;text-align:center">` +
-    `💰 Save up to <b>${maxD}%</b>\n` +
-    `<span style="opacity:.5;font-size:12px">✓ Free  ·  ✓ No registration  ·  ✓ Instant</span></span>`;
+    `\n<span style="display:block;border-top:1px solid rgba(240,180,41,.2);margin-top:12px;padding-top:10px">` +
+    `<span style="opacity:.35;font-size:10px;font-style:italic">Trading futures and forex involves substantial risk and is not for every investor. Only risk capital should be used for trading. Past performance is not necessarily indicative of future results.</span></span>`;
 
   btnsEl.innerHTML = `<a href="https://www.marketscoupons.com" target="_blank" style="display:block;text-align:center;padding:12px 16px;background:linear-gradient(90deg,rgba(200,148,26,.15),rgba(240,180,41,.15));border:1px solid rgba(240,180,41,.25);border-radius:10px;color:#F0B429;font-weight:700;font-size:13px;text-decoration:none;font-family:system-ui;letter-spacing:.5px">🌐 Claim your coupon → marketscoupons.com</a>`;
 }
@@ -9182,7 +9183,6 @@ async function tgSendHTML(){
   st.className = 'tg-status loading';
 
   try{
-    const maxD = Math.max(...firms.map(f=>f.discount));
     let lines = firms.map(f=>{
       const dtype = (f.discount_type || f.dtype || '').toLowerCase();
       const off = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
@@ -9197,8 +9197,7 @@ async function tgSendHTML(){
       `━━━━━━━━━━━━━━━━━━━━━━\n\n` +
       lines.join('\n\n') +
       `\n\n━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `💰 Save up to <b>${maxD}%</b>\n` +
-      `✓ Free  ·  ✓ No registration  ·  ✓ Instant`;
+      `<i>Trading futures and forex involves substantial risk and is not for every investor. Only risk capital should be used for trading. Past performance is not necessarily indicative of future results.</i>`;
 
     const buttons = [[{text:`🌐 Claim your coupon → marketscoupons.com`, url:'https://www.marketscoupons.com'}]];
 
