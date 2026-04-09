@@ -2280,8 +2280,10 @@ async function renderAlerts(){
     }
   });
 
-  // 2. Daily Analysis missing (yellow) — only check after 9h UTC (6h BRT)
-  if(hour >= 6){
+  // 2. Daily Analysis missing (yellow) — only on weekdays after 9h UTC (6h BRT)
+  const dayOfWeek = now.getUTCDay(); // 0=Sun, 6=Sat
+  const isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
+  if(isWeekday && hour >= 6){
     try {
       const {data} = await db.from('daily_analysis').select('id').eq('date',todayStr).limit(1);
       _alertCache.analysis = data && data.length > 0;
@@ -2294,37 +2296,29 @@ async function renderAlerts(){
     }
   }
 
-  // 3. GEX missing (yellow)
+  // 3. GEX stale (yellow) — only alert if 2+ business days behind
   try {
     const {data} = await db.from('gex_levels').select('date').order('date',{ascending:false}).limit(1);
-    _alertCache.gex = data && data.length > 0 && data[0].date === todayStr;
-  } catch(e){}
+    if(data && data.length > 0){
+      const lastDate = new Date(data[0].date + 'T12:00:00Z');
+      const diffMs = now - lastDate;
+      const diffDays = Math.floor(diffMs / 86400000);
+      // Count business days elapsed
+      let bizDays = 0;
+      for(let i = 1; i <= diffDays; i++){
+        const d = new Date(lastDate.getTime() + i * 86400000);
+        const dow = d.getUTCDay();
+        if(dow >= 1 && dow <= 5) bizDays++;
+      }
+      _alertCache.gex = bizDays < 2;
+    } else {
+      _alertCache.gex = false;
+    }
+  } catch(e){ _alertCache.gex = true; }
   if(!_alertCache.gex){
     banners.push(`<div class="alert-banner alert-yellow">
       <span class="ab-icon">&#9679;</span>
-      <span class="ab-text">Gamma Exposure (GEX) não atualizado hoje</span>
-    </div>`);
-  }
-
-  // 4. Economic Calendar empty (yellow)
-  try {
-    const {data} = await db.from('events').select('id').eq('event','calendar_loaded').gte('created_at',todayStr+'T00:00:00').limit(1);
-    // Fallback: call edge function to check
-    if(!data || data.length === 0){
-      const resp = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-calendar?lang=en');
-      if(resp.ok){
-        const evts = await resp.json();
-        const todayEvents = (evts||[]).filter(e => (e.date||'').startsWith(todayStr));
-        _alertCache.calendar = todayEvents.length > 0;
-      }
-    } else {
-      _alertCache.calendar = true;
-    }
-  } catch(e){ _alertCache.calendar = true; /* assume ok if can't check */ }
-  if(!_alertCache.calendar){
-    banners.push(`<div class="alert-banner alert-yellow">
-      <span class="ab-icon">&#9679;</span>
-      <span class="ab-text">Calendário Econômico sem eventos carregados para hoje</span>
+      <span class="ab-text">Gamma Exposure (GEX) desatualizado há mais de 1 dia útil</span>
     </div>`);
   }
 
