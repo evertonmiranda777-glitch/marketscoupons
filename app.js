@@ -2302,7 +2302,7 @@ function openD(id){
   // Tracking: ViewContent on firm overlay open (PageView step of funnel)
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   if(typeof fbq==='function') fbq('track','ViewContent',{content_ids:[id],content_type:'product',content_name:f.name,content_category:'firm',value:0,currency:'USD'},{eventID:window._lastTrackId});
-  if(typeof gtag==='function') gtag('event','view_item',{items:[{item_id:id,item_name:f.name,item_category:'firm'}]});
+  if(typeof gtag==='function') gtag('event','view_item',{currency:'USD',value:_fbVal(f),items:[{item_id:id,item_name:f.name,item_category:'firm',price:_fbVal(f),quantity:1}]});
   track('firm_detail_open',{firm_id:id,firm_name:f.name,source:_src});
 }
 
@@ -2469,14 +2469,14 @@ function fdGo(id) {
     track('checkout_click',{firm_id:id,firm_name:f?.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f?.name||'');
     {const _v=_fbVal(f,st.size);const _eid=window._lastTrackId;if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_ids:[id],content_type:'product',content_name:f?.name,value:_v,currency:'USD',num_items:1},{eventID:_eid+'_IC'});fbq('track','Lead',{content_ids:[id],content_name:f?.name,value:_v,currency:'USD'},{eventID:_eid+'_L'});}}
-    if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:id,item_name:f?.name,price:0}],coupon:f?.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
+    if(typeof gtag==='function'){ const _v=_fbVal(f,st.size); gtag('event','begin_checkout',{currency:'USD',value:_v,items:[{item_id:id,item_name:f?.name,price:_v,quantity:1}],coupon:f?.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:_v}); }
     window.open(url,'_blank');
   } else {
     if (f?.coupon) _cpToClip(f.coupon);
     track('checkout_click',{firm_id:id,firm_name:f?.name||'',coupon:f?.coupon||'parceiro',source:_src});
     registerLoyaltyClick('','','',f?.name||'');
     {const _v=_fbVal(f);const _eid=window._lastTrackId;if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_ids:[id],content_type:'product',content_name:f?.name,value:_v,currency:'USD',num_items:1},{eventID:_eid+'_IC'});fbq('track','Lead',{content_ids:[id],content_name:f?.name,value:_v,currency:'USD'},{eventID:_eid+'_L'});}}
-    if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:id,item_name:f?.name,price:0}],coupon:f?.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
+    if(typeof gtag==='function'){ const _v=_fbVal(f); gtag('event','begin_checkout',{currency:'USD',value:_v,items:[{item_id:id,item_name:f?.name,price:_v,quantity:1}],coupon:f?.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:_v}); }
     window.open(f?.link||'#','_blank');
   }
 }
@@ -2513,7 +2513,7 @@ function fdGoCheckout(fId){
   track('checkout_click',{firm_id:fId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   {const _v=_fbVal(f,st.size);const _eid=window._lastTrackId;if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_ids:[fId],content_type:'product',content_name:f.name,value:_v,currency:'USD',num_items:1},{eventID:_eid+'_IC'});fbq('track','Lead',{content_ids:[fId],content_name:f.name,value:_v,currency:'USD'},{eventID:_eid+'_L'});}}
-  if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:fId,item_name:f.name,price:0}],coupon:f.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
+  if(typeof gtag==='function'){ const _v=_fbVal(f,st.size); gtag('event','begin_checkout',{currency:'USD',value:_v,items:[{item_id:fId,item_name:f.name,price:_v,quantity:1}],coupon:f.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:_v}); }
   window.open(url,'_blank');
 }
 
@@ -2894,7 +2894,7 @@ function openDrw(id, f, cf) {
       <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_direct')">${t('firms_copiar')}</button>
     </div><div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
   }
-  html+=`<button class="go-btn" onclick="window.open('${f.link}','_blank');var _s=window._dedicatedFirmSlug?'dedicated':'homepage';var _v=_fbVal(FIRMS.find(function(x){return x.id==='${id}'}));track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}',source:_s});var _eid=window._lastTrackId;if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_ids:['${id}'],content_type:'product',content_name:'${f.name.replace(/'/g,"\\'")}',value:_v,currency:'USD',num_items:1},{eventID:_eid+'_IC'});fbq('track','Lead',{content_ids:['${id}'],content_name:'${f.name.replace(/'/g,"\\'")}',value:_v,currency:'USD'},{eventID:_eid+'_L'})}if(typeof gtag==='function'){gtag('event','begin_checkout',{items:[{item_id:'${id}',item_name:'${f.name.replace(/'/g,"\\'")}',price:0}],coupon:'${f.coupon||'parceiro'}'});gtag('event','generate_lead',{currency:'USD',value:0})}registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button></div>`;
+  html+=`<button class="go-btn" onclick="window.open('${f.link}','_blank');var _s=window._dedicatedFirmSlug?'dedicated':'homepage';var _v=_fbVal(FIRMS.find(function(x){return x.id==='${id}'}));track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon:'${f.coupon||'parceiro'}',source:_s});var _eid=window._lastTrackId;if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_ids:['${id}'],content_type:'product',content_name:'${f.name.replace(/'/g,"\\'")}',value:_v,currency:'USD',num_items:1},{eventID:_eid+'_IC'});fbq('track','Lead',{content_ids:['${id}'],content_name:'${f.name.replace(/'/g,"\\'")}',value:_v,currency:'USD'},{eventID:_eid+'_L'})}if(typeof gtag==='function'){gtag('event','begin_checkout',{currency:'USD',value:_v,items:[{item_id:'${id}',item_name:'${f.name.replace(/'/g,"\\'")}',price:_v,quantity:1}],coupon:'${f.coupon||'parceiro'}'});gtag('event','generate_lead',{currency:'USD',value:_v})}registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button></div>`;
 
   document.getElementById('d-body').innerHTML = html;
   document.getElementById('ov').classList.add('open');
@@ -2998,7 +2998,7 @@ function drwGoCheckout(firmId) {
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   {const _v=_fbVal(f,st.size);const _eid=window._lastTrackId;if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_ids:[firmId],content_type:'product',content_name:f.name,value:_v,currency:'USD',num_items:1},{eventID:_eid+'_IC'});fbq('track','Lead',{content_ids:[firmId],content_name:f.name,value:_v,currency:'USD'},{eventID:_eid+'_L'});}}
-  if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:firmId,item_name:f.name,price:0}],coupon:f.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
+  if(typeof gtag==='function'){ const _v=_fbVal(f,st.size); gtag('event','begin_checkout',{currency:'USD',value:_v,items:[{item_id:firmId,item_name:f.name,price:_v,quantity:1}],coupon:f.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:_v}); }
   window.open(url,'_blank');
 }
 
@@ -3376,7 +3376,7 @@ function achGoCheckout(fId,size){
   track('checkout_click',{firm_id:fId,firm_name:firm.name,account_size:size,platform:plat,type,coupon:firm.coupon||'parceiro',source:_src});
   registerLoyaltyClick(size,plat,type,firm.name);
   {const _f=FIRMS.find(x=>x.id===fId);const _v=_fbVal(_f,size);const _eid=window._lastTrackId;if(typeof fbq==='function'){fbq('track','InitiateCheckout',{content_ids:[fId],content_type:'product',content_name:firm.name,value:_v,currency:'USD',num_items:1},{eventID:_eid+'_IC'});fbq('track','Lead',{content_ids:[fId],content_name:firm.name,value:_v,currency:'USD'},{eventID:_eid+'_L'});}}
-  if(typeof gtag==='function'){ gtag('event','begin_checkout',{items:[{item_id:fId,item_name:firm.name,price:0}],coupon:firm.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:0}); }
+  {const _f=FIRMS.find(x=>x.id===fId);const _gv=_fbVal(_f,size);if(typeof gtag==='function'){ gtag('event','begin_checkout',{currency:'USD',value:_gv,items:[{item_id:fId,item_name:firm.name,price:_gv,quantity:1}],coupon:firm.coupon||'parceiro'}); gtag('event','generate_lead',{currency:'USD',value:_gv}); }}
   window.open(url,'_blank');
 }
 function achCopyCoupon(){const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm?.coupon)return;navigator.clipboard.writeText(firm.coupon).then(()=>{const _src=window._dedicatedFirmSlug?'dedicated':'homepage';showToast(t('toast_cupom_copiado').replace('{code}',firm.coupon));track('coupon_copy',{coupon_code:firm.coupon,firm_id:achActiveFirm,location:'checkout_header',source:_src});if(typeof fbq==='function'){const _f=FIRMS.find(x=>x.id===achActiveFirm);fbq('trackCustom','CopyCode',{content_ids:[achActiveFirm],content_name:_f?.name||achActiveFirm,content_category:'firm',coupon:firm.coupon,value:_fbVal(_f),currency:'USD'},{eventID:window._lastTrackId});}if(typeof gtag==='function')gtag('event','copy_coupon',{item_id:achActiveFirm,coupon:firm.coupon,source:_src});});}
