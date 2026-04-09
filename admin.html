@@ -8924,15 +8924,19 @@ function tgDrawCanvas(){
 
   // --- Firm rows (compact horizontal — site pattern) ---
   const firms = tgGetSelectedFirms();
-  const ROW_H = 140;
-  const ROWS_START = 340;
-  const PX = 40;
+  // Dynamic row height: fill available space
+  const ROWS_START = 360;
+  const FOOTER_ZONE = 220;
+  const PX = 44;
   const ROW_W = W - PX*2;
-  const LOGO_R = 46; // logo radius
+  const ROW_GAP = 18;
+  const availH = H - ROWS_START - FOOTER_ZONE;
+  const ROW_H = Math.min(180, Math.max(130, Math.floor((availH - ROW_GAP*(firms.length-1)) / Math.max(firms.length,1))));
+  const LOGO_R = Math.round(ROW_H * 0.30); // proportional logo
 
   firms.forEach((f, i)=>{
-    const y = ROWS_START + i * (ROW_H + 16);
-    if(y + ROW_H > H - 200) return;
+    const y = ROWS_START + i * (ROW_H + ROW_GAP);
+    if(y + ROW_H > H - FOOTER_ZONE) return;
 
     const fColor = f.color || '#F0B429';
     const dtype = (f.discount_type || f.dtype || '').toLowerCase();
@@ -8966,8 +8970,11 @@ function tgDrawCanvas(){
     ctx.strokeStyle = tgAlpha(fColor, 0.30);
     ctx.lineWidth = 2;
     ctx.stroke();
+    // Scale factor based on row height
+    const S = ROW_H / 160; // 1.0 at 160px row
+
     // Fallback letter
-    ctx.font = 'bold 36px Inter, sans-serif';
+    ctx.font = `bold ${Math.round(38*S)}px Inter, sans-serif`;
     ctx.fillStyle = fColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -8985,49 +8992,51 @@ function tgDrawCanvas(){
     }
 
     // ── Layout: measure right side first, then fill middle ──
-    // RIGHT: discount % + label
-    const rightMargin = PX + ROW_W - 30;
+    const rightMargin = PX + ROW_W - 36;
+    const pctFont = Math.round(72*S);
     ctx.save();
-    ctx.font = 'bold 64px Inter, sans-serif';
+    ctx.font = `bold ${pctFont}px Inter, sans-serif`;
     const pctText = f.discount + '%';
     const pctW = ctx.measureText(pctText).width;
     ctx.restore();
 
     // Draw discount %
     ctx.save();
-    ctx.font = 'bold 64px Inter, sans-serif';
+    ctx.font = `bold ${pctFont}px Inter, sans-serif`;
     ctx.fillStyle = fColor;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
-    ctx.fillText(pctText, rightMargin, midY - 10);
+    ctx.fillText(pctText, rightMargin, midY - Math.round(12*S));
     // OFF/LIFETIME label below
-    ctx.font = 'bold 22px Inter, sans-serif';
+    ctx.font = `bold ${Math.round(24*S)}px Inter, sans-serif`;
     ctx.fillStyle = tgAlpha(fColor, 0.7);
-    ctx.fillText(offLabel, rightMargin, midY + 28);
+    ctx.fillText(offLabel, rightMargin, midY + Math.round(30*S));
     ctx.restore();
 
     // COUPON pill (before discount)
-    const couponRight = rightMargin - pctW - 30;
+    const couponRight = rightMargin - pctW - Math.round(30*S);
     let couponLeft = couponRight;
     if(f.coupon){
       ctx.save();
-      ctx.font = '700 28px monospace';
+      const cpFS = Math.round(30*S);
+      ctx.font = `700 ${cpFS}px monospace`;
       let cpText = f.coupon;
-      if(ctx.measureText(cpText).width > 200){
-        while(ctx.measureText(cpText+'…').width > 200 && cpText.length > 4) cpText = cpText.slice(0,-1);
+      const maxCpTW = Math.round(220*S);
+      if(ctx.measureText(cpText).width > maxCpTW){
+        while(ctx.measureText(cpText+'…').width > maxCpTW && cpText.length > 4) cpText = cpText.slice(0,-1);
         cpText += '…';
       }
-      const cpW = ctx.measureText(cpText).width + 40;
-      const cpH = 46;
+      const cpW = ctx.measureText(cpText).width + Math.round(44*S);
+      const cpH = Math.round(50*S);
       const cpX = couponRight - cpW;
       const cpY = midY - cpH/2;
       // Pill bg + border
       ctx.fillStyle = 'rgba(240,180,41,0.08)';
-      tgRoundRect(ctx, cpX, cpY, cpW, cpH, 8);
+      tgRoundRect(ctx, cpX, cpY, cpW, cpH, 10);
       ctx.fill();
       ctx.strokeStyle = 'rgba(240,180,41,0.45)';
-      ctx.lineWidth = 1.5;
-      tgRoundRect(ctx, cpX, cpY, cpW, cpH, 8);
+      ctx.lineWidth = 2;
+      tgRoundRect(ctx, cpX, cpY, cpW, cpH, 10);
       ctx.stroke();
       // Text
       ctx.fillStyle = '#F0B429';
@@ -9035,32 +9044,32 @@ function tgDrawCanvas(){
       ctx.textBaseline = 'middle';
       ctx.fillText(cpText, cpX + cpW/2, midY);
       ctx.restore();
-      couponLeft = cpX - 20;
+      couponLeft = cpX - Math.round(20*S);
     }
 
     // ── 2) Name + type (two lines, left of center area) ──
-    const nameX = PX + 22 + LOGO_R*2 + 18;
-    // Available width for name+type and rating
+    const nameX = PX + 22 + LOGO_R*2 + Math.round(20*S);
     const nameMaxW = couponLeft - nameX - 10;
 
     // Name (bold, white)
     ctx.save();
-    ctx.font = 'bold 38px Inter, sans-serif';
+    ctx.font = `bold ${Math.round(42*S)}px Inter, sans-serif`;
     ctx.fillStyle = '#EDF2F7';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     const shortName = f.short_name || f.name;
-    ctx.fillText(shortName, nameX, midY - 22, nameMaxW);
+    ctx.fillText(shortName, nameX, midY - Math.round(24*S), nameMaxW);
     ctx.restore();
 
     // Second line: TYPE pill + ★ score + reviews
-    const line2Y = midY + 22;
+    const line2Y = midY + Math.round(24*S);
     ctx.save();
     // Type pill
     const tagText = (f.type || 'Prop Firm').toUpperCase();
-    ctx.font = '700 20px Inter, sans-serif';
-    const tagTW = ctx.measureText(tagText).width + 20;
-    const tagH = 28;
+    const tagFS = Math.round(22*S);
+    ctx.font = `700 ${tagFS}px Inter, sans-serif`;
+    const tagTW = ctx.measureText(tagText).width + Math.round(22*S);
+    const tagH = Math.round(30*S);
     ctx.fillStyle = tgAlpha(fColor, 0.18);
     tgRoundRect(ctx, nameX, line2Y - tagH/2, tagTW, tagH, 4);
     ctx.fill();
@@ -9071,15 +9080,15 @@ function tgDrawCanvas(){
 
     // Rating
     if(score > 0){
-      const tpX = nameX + tagTW + 14;
+      const tpX = nameX + tagTW + Math.round(14*S);
       ctx.fillStyle = '#00b67a';
-      ctx.font = '600 22px Inter, sans-serif';
+      ctx.font = `600 ${Math.round(22*S)}px Inter, sans-serif`;
       ctx.fillText('★ ' + score.toFixed(1), tpX, line2Y);
       const sW = ctx.measureText('★ ' + score.toFixed(1)).width;
       // Reviews
       ctx.fillStyle = 'rgba(122,143,166,0.7)';
-      ctx.font = '400 20px Inter, sans-serif';
-      ctx.fillText(revLabel + ' reviews', tpX + sW + 10, line2Y);
+      ctx.font = `400 ${Math.round(20*S)}px Inter, sans-serif`;
+      ctx.fillText(revLabel + ' reviews', tpX + sW + Math.round(10*S), line2Y);
     }
     ctx.restore();
   });
