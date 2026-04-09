@@ -1383,10 +1383,36 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         </div>
       </div>
 
-      <!-- Heatmap dias da semana -->
+      <!-- Calendário mensal heatmap -->
       <div class="chart-card" style="margin-bottom:20px;">
-        <div class="cc-hd"><div><div class="cc-title">Atividade por Dia da Semana</div><div class="cc-sub">Quais dias têm mais engajamento</div></div></div>
-        <div id="trk-weekday" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:8px 0;"></div>
+        <div class="cc-hd" style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div class="cc-title">Calendário de Atividade</div><div class="cc-sub">Visualize os dias mais ativos do mês</div></div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button id="trk-cal-prev" style="background:var(--gbg);border:1px solid var(--gbr);color:var(--t1);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;" onclick="_trkCalNav(-1)">◀</button>
+            <span id="trk-cal-label" style="font-weight:700;font-size:13px;color:var(--t1);min-width:120px;text-align:center;"></span>
+            <button id="trk-cal-next" style="background:var(--gbg);border:1px solid var(--gbr);color:var(--t1);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;" onclick="_trkCalNav(1)">▶</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:0;padding:8px 0 4px;">
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">DOM</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">SEG</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">TER</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">QUA</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">QUI</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">SEX</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:4px;">SÁB</div>
+        </div>
+        <div id="trk-calendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
+        <div style="display:flex;align-items:center;gap:12px;justify-content:flex-end;margin-top:8px;">
+          <span style="font-size:10px;color:var(--t3);">Menos</span>
+          <div style="display:flex;gap:3px;">
+            <div style="width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,.06);"></div>
+            <div style="width:14px;height:14px;border-radius:3px;background:rgba(240,180,41,.3);"></div>
+            <div style="width:14px;height:14px;border-radius:3px;background:#F0B429;"></div>
+            <div style="width:14px;height:14px;border-radius:3px;background:#22C55E;"></div>
+          </div>
+          <span style="font-size:10px;color:var(--t3);">Mais</span>
+        </div>
       </div>
 
       <!-- Comparação período -->
@@ -6797,6 +6823,96 @@ async function revokeVip(userId,email){
   }
 }
 
+// ─── CALENDÁRIO HEATMAP ──────────────────────────────────────────────────
+const _MONTH_NAMES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+function _trkCalNav(dir) {
+  window._trkCalMonth += dir;
+  if (window._trkCalMonth > 11) { window._trkCalMonth = 0; window._trkCalYear++; }
+  if (window._trkCalMonth < 0) { window._trkCalMonth = 11; window._trkCalYear--; }
+  _trkCalRender();
+}
+
+function _trkCalRender() {
+  const ev = window._trkCalEvents || [];
+  const month = window._trkCalMonth;
+  const year = window._trkCalYear;
+
+  document.getElementById('trk-cal-label').textContent = _MONTH_NAMES[month] + ' ' + year;
+
+  // Disable next if current month
+  const now = new Date();
+  document.getElementById('trk-cal-next').disabled = (year === now.getFullYear() && month === now.getMonth());
+  document.getElementById('trk-cal-next').style.opacity = (year === now.getFullYear() && month === now.getMonth()) ? '.3' : '1';
+
+  // Count events per day
+  const dayCounts = {};
+  ev.forEach(e => {
+    const d = new Date(e.created_at);
+    if (d.getMonth() === month && d.getFullYear() === year) {
+      const day = d.getDate();
+      dayCounts[day] = (dayCounts[day] || 0) + 1;
+    }
+  });
+
+  const firstDay = new Date(year, month, 1).getDay(); // 0=Dom
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const maxCount = Math.max(...Object.values(dayCounts), 1);
+  const today = now.getDate();
+  const isCurrentMonth = (year === now.getFullYear() && month === now.getMonth());
+
+  let cells = '';
+
+  // Empty cells before first day
+  for (let i = 0; i < firstDay; i++) {
+    cells += '<div style="padding:8px;"></div>';
+  }
+
+  // Day cells
+  for (let d = 1; d <= daysInMonth; d++) {
+    const c = dayCounts[d] || 0;
+    const intensity = c / maxCount;
+    const bg = c === 0 ? 'rgba(255,255,255,.06)' :
+               intensity > 0.7 ? '#22C55E' :
+               intensity > 0.4 ? '#F0B429' :
+               'rgba(240,180,41,.3)';
+    const dark = intensity > 0.4 && c > 0;
+    const isToday = isCurrentMonth && d === today;
+    const border = isToday ? 'border:2px solid var(--gold);' : 'border:2px solid transparent;';
+    const isFuture = isCurrentMonth && d > today;
+
+    cells += `<div style="text-align:center;padding:6px 2px;background:${isFuture ? 'transparent' : bg};border-radius:6px;cursor:default;${border}${isFuture ? 'opacity:.3;' : ''}" title="${d}/${month+1}: ${c} eventos">
+      <div style="font-size:11px;font-weight:600;color:${dark ? '#000' : 'var(--t2)'};">${d}</div>
+      <div style="font-size:13px;font-weight:800;color:${dark ? '#000' : (c > 0 ? 'var(--t1)' : 'var(--t3)')};margin-top:2px;">${isFuture ? '' : c}</div>
+    </div>`;
+  }
+
+  document.getElementById('trk-calendar').innerHTML = cells;
+
+  // Summary below: best day, worst day, avg
+  const dayEntries = Object.entries(dayCounts).sort((a,b) => b[1] - a[1]);
+  const total = Object.values(dayCounts).reduce((s,v) => s+v, 0);
+  const activeDays = Object.keys(dayCounts).length;
+  const avg = activeDays > 0 ? Math.round(total / activeDays) : 0;
+  const best = dayEntries[0];
+  const worst = dayEntries[dayEntries.length - 1];
+
+  // Add summary if not exists
+  let sumEl = document.getElementById('trk-cal-summary');
+  if (!sumEl) {
+    sumEl = document.createElement('div');
+    sumEl.id = 'trk-cal-summary';
+    sumEl.style.cssText = 'display:flex;gap:16px;justify-content:center;padding:8px 0 0;flex-wrap:wrap;';
+    document.getElementById('trk-calendar').parentNode.insertBefore(sumEl, document.getElementById('trk-calendar').nextSibling.nextSibling);
+  }
+  sumEl.innerHTML = `
+    <div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Total</div><div style="font-size:16px;font-weight:800;color:var(--t1);">${total}</div></div>
+    <div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Média/dia</div><div style="font-size:16px;font-weight:800;color:var(--t1);">${avg}</div></div>
+    ${best ? `<div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Melhor dia</div><div style="font-size:16px;font-weight:800;color:#22C55E;">${best[0]}/${month+1} (${best[1]})</div></div>` : ''}
+    ${worst && dayEntries.length > 1 ? `<div style="text-align:center;"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;">Pior dia</div><div style="font-size:16px;font-weight:800;color:var(--gold);">${worst[0]}/${month+1} (${worst[1]})</div></div>` : ''}
+  `;
+}
+
 // ─── TRACKING DASHBOARD ──────────────────────────────────────────────────
 async function renderTrackingPage(){
   const days = parseInt(document.getElementById('trk-period')?.value || '14');
@@ -6962,21 +7078,11 @@ async function renderTrackingPage(){
     </div>`;
   }).join('');
 
-  // ── HEATMAP DIAS DA SEMANA ──
-  const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const dayCounts = new Array(7).fill(0);
-  ev.forEach(e => { const d = new Date(e.created_at).getDay(); dayCounts[d]++; });
-  const maxDay = Math.max(...dayCounts, 1);
-  document.getElementById('trk-weekday').innerHTML = dayCounts.map((c, i) => {
-    const intensity = c / maxDay;
-    const bg = intensity > 0.7 ? '#22C55E' : intensity > 0.4 ? '#F0B429' : intensity > 0.1 ? 'rgba(240,180,41,.3)' : 'rgba(255,255,255,.06)';
-    const pct = ev.length ? Math.round(c / ev.length * 100) : 0;
-    return `<div style="text-align:center;padding:12px 4px;background:${bg};border-radius:6px;cursor:default;" title="${dayNames[i]}: ${c} eventos (${pct}%)">
-      <div style="font-size:11px;font-weight:700;color:${intensity > 0.4 ? '#000' : 'var(--t2)'};">${dayNames[i]}</div>
-      <div style="font-size:16px;font-weight:800;color:${intensity > 0.4 ? '#000' : 'var(--t1)'};">${c}</div>
-      <div style="font-size:9px;color:${intensity > 0.4 ? 'rgba(0,0,0,.6)' : 'var(--t3)'};">${pct}%</div>
-    </div>`;
-  }).join('');
+  // ── CALENDÁRIO MENSAL HEATMAP ──
+  window._trkCalEvents = ev;
+  window._trkCalMonth = new Date().getMonth();
+  window._trkCalYear = new Date().getFullYear();
+  _trkCalRender();
 
   // ── COMPARAÇÃO PERÍODO ──
   const prevCutoff = new Date(Date.now() - days * 2 * 86400000).toISOString();
