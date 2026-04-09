@@ -5884,14 +5884,14 @@ function renderLoyaltyProofsTable(){
       <td><span class="td-badge" style="background:var(--gbg);color:var(--gold);">${escHtml(e.size)}</span></td>
       <td><span style="font-family:monospace;font-size:10px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;">${escHtml(e.orderNumber)}</span></td>
       <td style="font-size:11px;">${e.coupon?`<span style="font-family:monospace;font-weight:600;color:var(--gold);font-size:10px;">${escHtml(e.coupon)}</span>`:'<span style="color:var(--t3);">—</span>'}</td>
-      <td style="font-size:11px;">${e.fileUrl?`<a href="${e.fileUrl}" target="_blank" style="color:var(--blue);font-weight:600;">Ver arquivo</a>`:e.fileName?`<span style="color:var(--gold);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">—</span>'}</td>`;
+      <td style="font-size:11px;">${e.fileUrl?`<a href="${e.fileUrl}" target="_blank" style="color:var(--blue);font-weight:600;">Ver arquivo</a>`:e.fileName?`<span style="color:var(--gold);">${e.fileName.slice(0,20)}</span>`:'<span style="color:var(--t3);">—</span>'}</td>
       ${loyaltyTab==='pending'?`<td><div style="display:flex;gap:5px;align-items:center;">
         ${e.ai_verdict?`<span class="td-badge" style="background:${e.ai_verdict==='approved'?'var(--gnbg)':'var(--rbg)'};color:${e.ai_verdict==='approved'?'var(--green)':'var(--red)'};" title="${e.ai_reason||''}">IA: ${e.ai_verdict==='approved'?'✓':'✗'}</span>`:''}
         <button onclick="openProofReview('${e.id}')" style="padding:4px 10px;background:var(--bbg);border:1px solid rgba(59,130,246,.3);border-radius:5px;color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;">Revisar</button>
         <button onclick="quickApprove('${e.id}')" style="padding:4px 10px;background:var(--gnbg);border:1px solid rgba(34,197,94,.3);border-radius:5px;color:var(--green);font-size:10px;font-weight:600;cursor:pointer;">Aprovar</button>
         <button onclick="quickReject('${e.id}')" style="padding:4px 8px;background:var(--rbg);border:1px solid rgba(239,68,68,.3);border-radius:5px;color:var(--red);font-size:10px;cursor:pointer;">Recusar</button>
       </div></td>`:`<td><span class="td-badge" style="background:${e.status==='approved'?'var(--gnbg)':'var(--rbg)'};color:${e.status==='approved'?'var(--green)':'var(--red)'};">${e.status==='approved'?'Aprovado':'Recusado'}</span>${e.ai_verdict?` <span style="font-size:9px;color:var(--t3);">(IA)</span>`:''}</td>`}
-    </tr>`).join('')}</tbody>`;
+    </tr>`}).join('')}</tbody>`;
 }
 
 function openProofReview(id){
@@ -7647,8 +7647,8 @@ async function renderProPage(){
       <td style="font-weight:600;">${escHtml(p.member_name||'—')}</td>
       <td style="color:var(--gold);font-size:12px;">${escHtml(p.member_email||'—')}</td>
       <td><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:${fColor};display:inline-block;"></span><span style="font-weight:600;font-size:12px;">${escHtml(fc?.short_name||fc?.name||p.firma||'—')}</span></span></td>
-      <td style="font-size:11px;color:var(--t2);">${p.created_at?new Date(p.created_at).toLocaleDateString('pt-BR'):'—'}</td>`;
-    </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--t3);">Nenhuma compra aprovada.</td></tr>') + `</tbody>`;
+      <td style="font-size:11px;color:var(--t2);">${p.created_at?new Date(p.created_at).toLocaleDateString('pt-BR'):'—'}</td>
+    </tr>`}).join('') : '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--t3);">Nenhuma compra aprovada.</td></tr>') + `</tbody>`;
 }
 
 // ─── CADASTROS TAB ────────────────────────────────────────────────────────
