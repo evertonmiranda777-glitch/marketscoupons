@@ -2087,6 +2087,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             </div>
           </div>
           <div class="tg-card" style="padding:16px 20px;">
+            <div class="tg-card-title">Preview HTML (Telegram)</div>
+            <div id="tg-html-preview" style="background:#0e1621;border-radius:12px;padding:20px;font-size:14px;line-height:1.7;color:#e4e6eb;font-family:system-ui,-apple-system,sans-serif;white-space:pre-wrap;word-break:break-word;"></div>
+            <div id="tg-html-buttons" style="margin-top:10px;"></div>
+          </div>
+          <div class="tg-card" style="padding:16px 20px;">
             <div class="tg-card-title">Preview da Legenda</div>
             <div class="tg-caption-preview" id="tg-caption-preview">—</div>
           </div>
@@ -9087,8 +9092,32 @@ function tgDrawCanvas(){
   ctx.fillText('Free • No registration required', W/2, footerY + 110);
   ctx.restore();
 
-  // Update caption preview whenever canvas redraws
+  // Update previews whenever canvas redraws
   tgUpdateCaptionPreview();
+  tgUpdateHTMLPreview();
+}
+
+/* ── Preview HTML do Telegram ── */
+function tgUpdateHTMLPreview(){
+  const el = document.getElementById('tg-html-preview');
+  const btnsEl = document.getElementById('tg-html-buttons');
+  if(!el) return;
+  const firms = tgGetSelectedFirms();
+  if(!firms.length){ el.innerHTML='<span style="opacity:.4">Selecione firmas para preview</span>'; btnsEl.innerHTML=''; return; }
+
+  let lines = firms.map(f=>{
+    const dtype = (f.discount_type || f.dtype || '').toLowerCase();
+    const offLabel = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
+    const cpLine = f.coupon ? `Code: <code style="background:rgba(240,180,41,.15);color:#F0B429;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:1px">${f.coupon}</code>` : 'No code needed';
+    return `<b>${f.name}</b>  ·  <b>${f.discount}%</b> ${offLabel}\n${cpLine}`;
+  });
+  const maxD = Math.max(...firms.map(f=>f.discount));
+  el.innerHTML =
+    `<b>🔥 Active Promotions</b>\n<i style="opacity:.6">Exclusive Prop Firm coupons</i>\n\n` +
+    lines.join('\n<span style="display:block;border-bottom:1px solid rgba(255,255,255,.08);margin:8px 0"></span>') +
+    `\n\n💰 <b>Save up to ${maxD}%</b> — Free, no registration`;
+
+  btnsEl.innerHTML = `<a href="https://www.marketscoupons.com" target="_blank" style="display:block;text-align:center;padding:10px 16px;background:rgba(0,136,204,.15);border:1px solid rgba(0,136,204,.3);border-radius:8px;color:#54b4eb;font-weight:600;font-size:13px;text-decoration:none;font-family:system-ui">See all ${firms.length} deals → marketscoupons.com</a>`;
 }
 
 /* ── Helpers canvas ── */
