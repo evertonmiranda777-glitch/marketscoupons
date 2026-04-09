@@ -369,6 +369,21 @@ trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apext
 - [ ] Inserido no array `FIRMS` do `index.html` (fallback)
 - [ ] sort_order definido (proximo numero disponivel)
 
+### Padrao de dados curtos (OBRIGATORIO)
+
+Textos de dados das firmas devem ser **curtos e padronizados** para caber nos cards de 3 colunas (email e site):
+
+| Campo | Maximo | Bom | Ruim |
+|---|---|---|---|
+| `dd_pct` | ~12 chars | `-5% / -10%` | `-5% diário / -10% total` |
+| `target` | ~10 chars | `8% / 5%` | `TCP100: $6.000` |
+| `split` | ~8 chars | `90%` | `80-100% progressivo` |
+| `scaling` | ~10 chars | `Ate $4M` | `Ate $4M com progressao` |
+
+- Ao adicionar/editar uma firma, **padronizar TODAS** as firmas juntas — nunca so a que foi pedida
+- Formato drawdown: `-X% / -Y%` (daily / total)
+- Formato target: `X% / Y%` (fase 1 / fase 2)
+
 ### Tipos de colunas no Supabase (CUIDADO)
 - `tags`, `platforms`, `perks`, `proibido` = **TEXT[]** → usar `ARRAY['item1','item2']`
 - `prices`, `badge`, `checkout_plans` = **JSONB** → usar `'[...]'::jsonb`
