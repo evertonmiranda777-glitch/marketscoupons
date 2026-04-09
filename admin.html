@@ -1032,8 +1032,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div class="ea-kpi"><div class="ea-kpi-val" id="ea-unsub-rate" style="color:#fb923c;">—</div><div class="ea-kpi-lbl">Descadastro</div><div class="ea-kpi-sub" id="ea-unsub-sub"></div></div>
    </div>
    <div class="ea-chart-wrap"><canvas id="ea-daily-chart"></canvas></div>
-   <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;">Historico Detalhado</div>
-   <div class="ea-tbl-wrap" id="ea-table-wrap">
+   <div style="cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:0;user-select:none;" onclick="const w=document.getElementById('ea-table-wrap');const a=this.querySelector('.ea-toggle-arrow');if(w.style.display==='none'){w.style.display='';a.textContent='▼';}else{w.style.display='none';a.textContent='▶';}">
+     <span class="ea-toggle-arrow" style="font-size:10px;color:var(--t3);transition:transform .2s;">▶</span>
+     <span style="font-size:12px;font-weight:600;color:var(--t2);">Histórico Detalhado</span>
+   </div>
+   <div class="ea-tbl-wrap" id="ea-table-wrap" style="display:none;">
      <div class="ea-load">Carregando dados do Brevo...</div>
    </div>
  </div>
