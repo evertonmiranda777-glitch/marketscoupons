@@ -2257,7 +2257,7 @@ async function renderAlerts(){
   const banners = [];
   const now = new Date();
   const todayStr = now.toISOString().slice(0,10);
-  const hour = now.getUTCHours() - 3; // BRT approx
+  const hour = (now.getUTCHours() - 3 + 24) % 24; // BRT approx
 
   // 1. Loyalty pending (red)
   try {
