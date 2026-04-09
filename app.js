@@ -627,10 +627,14 @@ function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
-  // If reading a blog article, just update the back button text — don't close the article
-  if(_openBlogSlug){
-    const backBtn=document.querySelector('.blog-back');
-    if(backBtn) backBtn.innerHTML='&larr; '+(t('blog_voltar')||'Back to Blog');
+  // If reading a blog article, reload it in the new language
+  if(_openBlogSlug && _openBlogGroup){
+    db.from('blog_posts').select('slug').eq('article_group',_openBlogGroup).eq('lang',lang).eq('active',true).maybeSingle().then(({data})=>{
+      if(data) openBlogArticle(data.slug);
+      else { closeBlogArticle(); renderBlog(); }
+    });
+  } else if(_openBlogSlug){
+    closeBlogArticle(); renderBlog();
   }
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides();
   if(!_openBlogSlug) renderBlog();
@@ -1784,7 +1788,7 @@ async function renderBlog(){
 
     try {
       const {data} = await db.from('blog_posts')
-        .select('slug,title,excerpt,level,category,created_at,read_time,lang')
+        .select('slug,title,excerpt,level,category,created_at,read_time,lang,article_group')
         .eq('lang', curLang)
         .eq('active', true)
         .order('created_at',{ascending:false});
@@ -1897,6 +1901,7 @@ function filterBlog(level, btn){
 }
 
 let _openBlogSlug = '';
+let _openBlogGroup = '';
 async function openBlogArticle(slug){
   const grid=document.getElementById('blog-grid');
   const hdr=document.getElementById('blog-header');
@@ -1926,6 +1931,7 @@ async function openBlogArticle(slug){
       } else { post=data; }
     }
     if(!post){art.innerHTML='<div style="color:var(--t2);padding:40px 0;">Post not found.</div>';return;}
+    _openBlogGroup = post.article_group || '';
     const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
     const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[_currentLang]||'pt-BR';
     const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'long',year:'numeric'}) : '';
@@ -1942,6 +1948,7 @@ async function openBlogArticle(slug){
 
 function closeBlogArticle(){
   _openBlogSlug = '';
+  _openBlogGroup = '';
   const grid=document.getElementById('blog-grid');
   const hdr=document.getElementById('blog-header');
   const filters=document.getElementById('blog-filters');
