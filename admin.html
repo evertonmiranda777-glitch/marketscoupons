@@ -3351,22 +3351,22 @@ function eaRenderTable(){
     eventsByMsg[key].events.push(ev.event);
   });
 
-  // Build rows from local campaigns + event data
-  const rows = _eaCampaigns.map(c => {
+  // Sort campaigns by date ascending to build time windows
+  const sorted = [..._eaCampaigns].sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+
+  // Build rows — each campaign owns events from its send time until the next campaign
+  const rows = sorted.map((c, idx) => {
     const brevo = c.brevo_response || {};
-    const tags = [];
-    // Extract firma from campaign tags or subject
     const subj = c.subject || '';
     const firmaMatch = subj.match(/\b(Apex|Bulenox|FTMO|FundedNext|Take Profit|Earn2Trade|The5ers|FundingPips|BrightFunded)\b/i);
     const firma = firmaMatch ? firmaMatch[1] : '';
 
-    // Count events for this campaign's time window
     const campDate = new Date(c.created_at);
-    const campEnd = new Date(campDate.getTime() + 3600000); // 1h window
+    const nextDate = idx < sorted.length - 1 ? new Date(sorted[idx+1].created_at) : new Date(campDate.getTime() + 7*86400000); // until next campaign or 7 days
     let delivered=0, opened=0, clicked=0, bounced=0, unsub=0;
     _eaEvents.forEach(ev => {
       const evDate = new Date(ev.date);
-      if(evDate >= campDate && evDate <= campEnd){
+      if(evDate >= campDate && evDate < nextDate){
         if(ev.event==='delivered') delivered++;
         else if(ev.event==='opened' || ev.event==='uniqueOpened') opened++;
         else if(ev.event==='click') clicked++;
@@ -3374,7 +3374,6 @@ function eaRenderTable(){
         else if(ev.event==='unsubscribed') unsub++;
       }
     });
-    // Fallback: use brevo_response counts
     if(delivered===0 && brevo.sent) delivered = brevo.sent;
 
     return {
@@ -3385,7 +3384,7 @@ function eaRenderTable(){
       delivered, opened, clicked, bounced, unsub,
       status: c.status,
     };
-  });
+  }).reverse(); // most recent first
 
   if(!rows.length){
     wrap.innerHTML = '<div class="ea-load">Nenhuma campanha encontrada no periodo.</div>';
