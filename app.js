@@ -5999,4 +5999,45 @@ function renderGEX(items){
 
   // 8. Page count tracker
   window._pagesViewed=(window._pagesViewed||0)+1;
-})();
+})();
+
+// ═══ NEWSLETTER SUBSCRIBE ═══
+async function subscribeNewsletter(e){
+  e.preventDefault();
+  const input = document.getElementById('ft-nl-email');
+  const btn = document.getElementById('ft-nl-btn');
+  const msg = document.getElementById('ft-nl-msg');
+  const email = (input?.value||'').trim().toLowerCase();
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    const lang = _currentLang || 'en';
+    const { error } = await db.from('email_subscribers').upsert({
+      email: email,
+      name: '',
+      source: 'newsletter',
+      lang: lang,
+      tags: ['newsletter','site'],
+      status: 'active'
+    }, { onConflict: 'email', ignoreDuplicates: true });
+
+    if(error) throw error;
+
+    msg.style.display = 'block';
+    msg.style.color = '#4ade80';
+    msg.textContent = t('ft_newsletter_ok') || 'Done! You\'ll receive our best deals.';
+    input.value = '';
+    track('newsletter_subscribe', { lang: lang });
+  } catch(err) {
+    msg.style.display = 'block';
+    msg.style.color = '#ef4444';
+    msg.textContent = t('ft_newsletter_error') || 'Error. Try again.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = t('ft_newsletter_btn') || 'Subscribe';
+  }
+  return false;
+}

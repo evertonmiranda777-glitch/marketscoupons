@@ -3783,6 +3783,16 @@ document.addEventListener('DOMContentLoaded',function(){
  <div>
  <div class="ft-logo"><svg class="nav-logo-icon" width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="lg2" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lg2)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#lg2)"/></svg><em>Markets</em> Coupons</div>
  <p class="ft-desc" data-i18n="ft_desc">Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.</p>
+ <!-- Newsletter -->
+ <div class="ft-newsletter" style="margin:16px 0;">
+   <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);margin-bottom:8px;" data-i18n="ft_newsletter_label">Newsletter</div>
+   <div style="font-size:11px;color:var(--t2);margin-bottom:8px;line-height:1.5;" data-i18n="ft_newsletter_desc">Receba as melhores promos e dicas de Prop Firms toda semana.</div>
+   <form onsubmit="return subscribeNewsletter(event)" style="display:flex;gap:6px;">
+     <input type="email" id="ft-nl-email" required placeholder="seu@email.com" style="flex:1;min-width:0;padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:7px;color:#fff;font-size:12px;font-family:var(--f);outline:none;transition:.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,.14)'">
+     <button type="submit" id="ft-nl-btn" style="padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:.2s;" data-i18n="ft_newsletter_btn">Inscrever</button>
+   </form>
+   <div id="ft-nl-msg" style="font-size:10px;margin-top:6px;display:none;"></div>
+ </div>
  <div class="ft-soc">
  <a href="https://t.me/marketcouponss" target="_blank" title="Telegram" onclick="track('social_click',{network:'telegram'})">
    <div class="ft-s ft-s-tg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg></div>
