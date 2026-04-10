@@ -4725,6 +4725,7 @@ ${(f.perks||[]).length ? `<tr><td style="padding:20px 28px 0;">
 
 const INST_TEMPLATES = {
   welcome: {
+    color: '#3B82F6',
     subject: { pt:'Bom te ter aqui, Trader', en:'Good to have you here, Trader', es:'Que bueno tenerte aqui, Trader', fr:'Content de vous avoir, Trader', de:'Schon, dass du da bist, Trader', it:'Bello averti qui, Trader', ar:'سعداء بوجودك هنا' },
     icon: '',
     title: { pt:'Bom te ter com a gente', en:'Good to have you with us', es:'Que bueno tenerte con nosotros', fr:'Content de vous compter parmi nous', de:'Schon, dass du dabei bist', it:'Bello averti con noi', ar:'سعداء بانضمامك إلينا' },
@@ -4749,6 +4750,7 @@ const INST_TEMPLATES = {
     cta: { pt:'CONHECER O SITE', en:'VISIT THE SITE', es:'CONOCER EL SITIO', fr:'DECOUVRIR LE SITE', de:'WEBSITE BESUCHEN', it:'VISITA IL SITO', ar:'زيارة الموقع' }
   },
   'site-invite': {
+    color: '#F97316',
     subject: { pt:'Tem desconto bom rolando agora', en:'Great deals happening right now', es:'Hay buenos descuentos ahora mismo', fr:'De belles promos en ce moment', de:'Gute Rabatte gerade verfugbar', it:'Ci sono ottimi sconti adesso', ar:'خصومات رائعة متاحة الآن' },
     icon: '',
     title: { pt:'Ofertas que estao no ar agora', en:'Deals that are live right now', es:'Ofertas activas ahora mismo', fr:'Offres en cours maintenant', de:'Angebote die jetzt laufen', it:'Offerte attive in questo momento', ar:'عروض متاحة الآن' },
@@ -4773,6 +4775,7 @@ const INST_TEMPLATES = {
     cta: { pt:'VER OFERTAS', en:'SEE DEALS', es:'VER OFERTAS', fr:'VOIR LES OFFRES', de:'ANGEBOTE SEHEN', it:'VEDI OFFERTE', ar:'عرض العروض' }
   },
   loyalty: {
+    color: '#8B5CF6',
     subject: { pt:'Suas compras valem mais do que você imagina', en:'Your purchases are worth more than you think', es:'Tus compras valen mas de lo que imaginas', fr:'Vos achats valent plus que vous ne pensez', de:'Deine Kaufe sind mehr wert als du denkst', it:'I tuoi acquisti valgono piu di quanto pensi', ar:'مشترياتك تستحق أكثر مما تتصور' },
     icon: '',
     title: { pt:'Quanto mais você compra, mais você desbloqueia', en:'The more you buy, the more you unlock', es:'Cuanto mas compras, mas desbloqueas', fr:'Plus vous achetez, plus vous debloquez', de:'Je mehr du kaufst, desto mehr schaltest du frei', it:'Piu acquisti, piu sblocchi', ar:'كلما اشتريت أكثر، فتحت المزيد' },
@@ -4797,6 +4800,7 @@ const INST_TEMPLATES = {
     cta: { pt:'COMEÇAR AGORA', en:'GET STARTED', es:'EMPEZAR AHORA', fr:'COMMENCER', de:'JETZT STARTEN', it:'INIZIA ORA', ar:'ابدأ الآن' }
   },
   indicators: {
+    color: '#06B6D4',
     subject: { pt:'Ferramentas que a gente usa todo dia', en:'Tools we use every day', es:'Herramientas que usamos todos los dias', fr:'Les outils qu\'on utilise chaque jour', de:'Tools die wir taglich nutzen', it:'Strumenti che usiamo ogni giorno', ar:'أدوات نستخدمها كل يوم' },
     icon: '',
     title: { pt:'Tudo o que você precisa pra operar', en:'Everything you need to trade', es:'Todo lo que necesitas para operar', fr:'Tout ce qu\'il vous faut pour trader', de:'Alles was du zum Traden brauchst', it:'Tutto cio che ti serve per operare', ar:'كل ما تحتاجه للتداول' },
@@ -4821,6 +4825,7 @@ const INST_TEMPLATES = {
     cta: { pt:'ACESSAR FERRAMENTAS', en:'ACCESS TOOLS', es:'ACCEDER A HERRAMIENTAS', fr:'ACCEDER AUX OUTILS', de:'TOOLS AUFRUFEN', it:'ACCEDI AGLI STRUMENTI', ar:'الوصول إلى الأدوات' }
   },
   'blog-guides': {
+    color: '#10B981',
     subject: { pt:'Preparado antes de operar', en:'Prepared before you trade', es:'Preparado antes de operar', fr:'Prepare avant de trader', de:'Vorbereitet bevor du tradest', it:'Preparato prima di operare', ar:'مستعد قبل التداول' },
     icon: '',
     title: { pt:'O que ninguem te conta sobre Prop Firms', en:'What nobody tells you about Prop Firms', es:'Lo que nadie te cuenta sobre Prop Firms', fr:'Ce que personne ne vous dit sur les Prop Firms', de:'Was dir niemand uber Prop Firms erzahlt', it:'Quello che nessuno ti dice sulle Prop Firm', ar:'ما لا يخبرك أحد عن Prop Firms' },
@@ -4845,6 +4850,7 @@ const INST_TEMPLATES = {
     cta: { pt:'LER AGORA', en:'READ NOW', es:'LEER AHORA', fr:'LIRE MAINTENANT', de:'JETZT LESEN', it:'LEGGI ORA', ar:'اقرأ الآن' }
   },
   'ultimas-horas': {
+    color: '#EF4444',
     subject: { pt:'Ultimas horas — desconto vai acabar', en:'Last hours — discount ending soon', es:'Ultimas horas — el descuento termina pronto', fr:'Dernieres heures — la promo se termine', de:'Letzte Stunden — Rabatt endet bald', it:'Ultime ore — lo sconto sta per finire', ar:'الساعات الأخيرة — الخصم ينتهي قريباً' },
     icon: '',
     title: { pt:'O desconto esta acabando', en:'The discount is ending', es:'El descuento se termina', fr:'La promo touche a sa fin', de:'Der Rabatt endet bald', it:'Lo sconto sta per finire', ar:'الخصم على وشك الانتهاء' },
@@ -4876,16 +4882,16 @@ function buildInstitutionalHtml(name, lang='pt'){
   const FI = "Arial,sans-serif";
   const dir = lang==='ar' ? 'rtl' : 'ltr';
   const gt = (obj) => obj[lang] || obj.en || obj.pt || '';
+  const color = t.color || '#eab308';
   const DARK = '#07090D';
   const WHITE = '#ffffff';
   const CARD = '#f7f7f7';
   const GREEN = '#4ade80';
-  const GOLD = '#eab308';
   const etL = (EMAIL_I18N[lang]||EMAIL_I18N.en);
 
   const feats = (gt(t.features)||[]).map(f =>
     `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;font-family:${FI};">
-      <span style="color:#16a34a;font-weight:700;margin-right:8px;font-size:14px;">&#10003;</span>
+      <span style="color:${color};font-weight:700;margin-right:8px;font-size:14px;">&#10003;</span>
       <span style="color:#444;font-size:13px;line-height:1.6;">${f}</span>
     </td></tr>`
   ).join('');
@@ -4912,7 +4918,7 @@ table{border-spacing:0 !important;border-collapse:collapse !important;}
 
 <!-- ═══ DARK HEADER ═══ -->
 <tr><td bgcolor="${DARK}" style="background-color:${DARK};padding:20px;text-align:center;border-radius:8px 8px 0 0;">
-  <div style="color:#fff;font-size:20px;font-weight:700;font-family:${FI};">Markets <span style="color:${GOLD};">Coupons</span> <span style="color:${GREEN};font-size:10px;">&#9679;</span></div>
+  <div style="color:#fff;font-size:20px;font-weight:700;font-family:${FI};">Markets <span style="color:${color};">Coupons</span> <span style="color:${GREEN};font-size:10px;">&#9679;</span></div>
   <div style="color:#888;font-size:10px;letter-spacing:0.1em;margin-top:4px;font-family:${FI};">${(etL.tagline||'AS MELHORES OFERTAS PARA TRADERS').toUpperCase()}</div>
 </td></tr>
 
@@ -4941,10 +4947,10 @@ table{border-spacing:0 !important;border-collapse:collapse !important;}
   <!-- CTA Button -->
   <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
     <tr><td align="center">
-      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="https://www.marketscoupons.com" style="height:48px;width:400px;" arcsize="17%" fillcolor="${GOLD}"><v:textbox inset="0,0,0,0"><center style="color:#000;font-family:Arial;font-size:15px;font-weight:700;">${gt(t.cta)} &#8594;</center></v:textbox></v:roundrect><![endif]-->
+      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="https://www.marketscoupons.com" style="height:48px;width:400px;" arcsize="17%" fillcolor="${color}"><v:textbox inset="0,0,0,0"><center style="color:#fff;font-family:Arial;font-size:15px;font-weight:700;">${gt(t.cta)} &#8594;</center></v:textbox></v:roundrect><![endif]-->
       <!--[if !mso]><!-->
-      <a href="https://www.marketscoupons.com" target="_blank" style="display:block;background-color:${GOLD};border-radius:8px;padding:14px;text-align:center;text-decoration:none;font-family:${FI};">
-        <span style="color:#000;font-size:15px;font-weight:700;font-family:${FI};">${gt(t.cta)} &#8594;</span>
+      <a href="https://www.marketscoupons.com" target="_blank" style="display:block;background-color:${color};border-radius:8px;padding:14px;text-align:center;text-decoration:none;font-family:${FI};">
+        <span style="color:#fff;font-size:15px;font-weight:700;font-family:${FI};">${gt(t.cta)} &#8594;</span>
       </a>
       <!--<![endif]-->
     </td></tr>
@@ -4954,7 +4960,7 @@ table{border-spacing:0 !important;border-collapse:collapse !important;}
 
 <!-- ═══ DARK FOOTER ═══ -->
 <tr><td bgcolor="${DARK}" style="background-color:${DARK};padding:16px;text-align:center;border-radius:0 0 8px 8px;">
-  <div style="color:#fff;font-size:14px;font-weight:700;font-family:${FI};">Markets <span style="color:${GOLD};">Coupons</span></div>
+  <div style="color:#fff;font-size:14px;font-weight:700;font-family:${FI};">Markets <span style="color:${color};">Coupons</span></div>
   <div style="color:#555;font-size:11px;margin-top:4px;font-family:${FI};">www.marketscoupons.com</div>
   <div style="margin-top:8px;">
     <span style="color:#555;font-size:10px;font-family:${FI};">
