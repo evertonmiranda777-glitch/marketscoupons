@@ -1217,7 +1217,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
      <span style="font-size:9px;color:var(--t3);">Tag customizada:</span>
-     <input type="text" id="import-custom-tag" placeholder="Ex: newsletter-markets" style="font-size:11px;padding:4px 8px;width:180px;" oninput="updateImportTag()">
+     <input type="text" id="import-custom-tag" placeholder="Ex: newsletter-markets" style="font-size:11px;padding:4px 8px;width:180px;background:var(--card2);border:1px solid var(--b1);color:var(--t1);border-radius:6px;" oninput="updateImportTag()">
    </div>
    <!-- Upload area -->
    <div style="background:var(--card2);border:2px dashed var(--b1);border-radius:10px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px;" onclick="document.getElementById('csv-file').click()">
@@ -6031,27 +6031,34 @@ function updateImportTag(){
 async function importValidToSubscribers() {
   if (!_csvValidated?.valid?.length) return;
   const firmaTag = _importFirmaTag;
-  const label = firmaTag ? ` (firma: ${firmaTag})` : '';
-  if (!confirm(`Importar ${_csvValidated.valid.length.toLocaleString()} emails validados para email_subscribers${label}?`)) return;
+  const label = firmaTag ? ` (tag: ${firmaTag})` : '';
+  if (!confirm(`Importar ${_csvValidated.valid.length.toLocaleString()} emails validados${label}?`)) return;
 
   const btn = document.getElementById('btn-import-valid');
   btn.disabled = true;
-  btn.textContent = 'Importando...';
+  const statsEl = document.getElementById('csv-stats');
+  const total = _csvValidated.valid.length;
+  let imported = 0, erros = 0;
+  const BATCH = 500;
 
-  let imported = 0, skipped = 0;
-  for (const r of _csvValidated.valid) {
-    const lang = langFromCode(r.lang) || 'en';
-    const tags = ['imported'];
-    if (firmaTag) tags.push(firmaTag);
-    const { error } = await db.from('email_subscribers').upsert({
-      email: r.email, name: r.name || '', source: 'csv-import', lang,
-      tags
-    }, { onConflict: 'email', ignoreDuplicates: true });
-    if (!error) imported++; else skipped++;
+  for (let i = 0; i < total; i += BATCH) {
+    const batch = _csvValidated.valid.slice(i, i + BATCH).map(r => ({
+      email: r.email, name: r.name || '', source: 'csv-import',
+      lang: langFromCode(r.lang) || 'en',
+      tags: firmaTag ? ['imported', firmaTag] : ['imported'],
+      status: 'active'
+    }));
+    const { error } = await db.from('email_subscribers').upsert(batch, { onConflict: 'email', ignoreDuplicates: true });
+    if (!error) imported += batch.length; else { erros += batch.length; csvLog(`Erro batch ${Math.floor(i/BATCH)+1}: ${error.message}`); }
+    const pct = Math.round(Math.min(i + BATCH, total) / total * 100);
+    btn.textContent = `Importando... ${pct}%`;
+    if(statsEl) statsEl.innerHTML = `<div style="color:var(--gold);font-size:12px;font-weight:600;">Importando ${Math.min(i+BATCH,total).toLocaleString()} de ${total.toLocaleString()} (${pct}%)</div>
+      <div style="background:var(--b1);border-radius:4px;height:6px;margin-top:8px;overflow:hidden;"><div style="background:var(--gold);height:100%;width:${pct}%;transition:width .2s;"></div></div>`;
+    await new Promise(r => setTimeout(r, 0));
   }
 
-  csvLog(`Importacao completa: ${imported} importados, ${skipped} ja existiam${label}`);
-  toast(`${imported.toLocaleString()} subscribers importados${label}!`);
+  csvLog(`Importacao completa: ${imported} importados, ${erros} erros${label}`);
+  toast(`${imported.toLocaleString()} inscritos importados${label}!`);
   await loadEmailStats();
   await loadSubscribersList();
   btn.disabled = false;
@@ -6061,34 +6068,41 @@ async function importValidToSubscribers() {
 async function importDirectToSubscribers() {
   if (!_csvRawData?.length) { toast('Nenhum arquivo carregado!','warn'); return; }
   const firmaTag = _importFirmaTag;
-  const label = firmaTag ? ` (firma: ${firmaTag})` : '';
-  if (!confirm(`Importar ${_csvRawData.length.toLocaleString()} emails direto para subscribers${label}?\n\nNenhuma validação será feita.`)) return;
+  const label = firmaTag ? ` (tag: ${firmaTag})` : '';
+  if (!confirm(`Importar ${_csvRawData.length.toLocaleString()} emails direto${label}?\n\nNenhuma validação será feita.`)) return;
 
   const btn = document.getElementById('btn-import-direct');
   btn.disabled = true;
-  btn.textContent = 'Importando...';
-
-  let imported = 0, erros = 0;
+  const statsEl = document.getElementById('csv-stats');
   const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  for (const r of _csvRawData) {
-    if (!emailRe.test(r.email)) { erros++; continue; }
-    const lang = langFromCode(r.lang) || 'pt';
-    const tags = [];
-    if (firmaTag) tags.push(firmaTag);
-    const { error } = await db.from('email_subscribers').upsert({
-      email: r.email, name: r.name || '', source: 'csv-direct', lang,
-      tags, status: 'active'
-    }, { onConflict: 'email', ignoreDuplicates: true });
-    if (!error) imported++;
-    else { erros++; if(erros<=3) csvLog(`Erro: ${r.email} — ${error.message}`); }
+  const validRows = _csvRawData.filter(r => emailRe.test(r.email));
+  const total = validRows.length;
+  let imported = 0, erros = 0;
+  const BATCH = 500;
+
+  for (let i = 0; i < total; i += BATCH) {
+    const batch = validRows.slice(i, i + BATCH).map(r => ({
+      email: r.email, name: r.name || '', source: 'csv-direct',
+      lang: langFromCode(r.lang) || 'pt',
+      tags: firmaTag ? [firmaTag] : [],
+      status: 'active'
+    }));
+    const { error } = await db.from('email_subscribers').upsert(batch, { onConflict: 'email', ignoreDuplicates: true });
+    if (!error) imported += batch.length; else { erros += batch.length; csvLog(`Erro batch ${Math.floor(i/BATCH)+1}: ${error.message}`); }
+    const pct = Math.round(Math.min(i + BATCH, total) / total * 100);
+    btn.textContent = `Importando... ${pct}%`;
+    if(statsEl) statsEl.innerHTML = `<div style="color:var(--gold);font-size:12px;font-weight:600;">Importando ${Math.min(i+BATCH,total).toLocaleString()} de ${total.toLocaleString()} (${pct}%)</div>
+      <div style="background:var(--b1);border-radius:4px;height:6px;margin-top:8px;overflow:hidden;"><div style="background:var(--gold);height:100%;width:${pct}%;transition:width .2s;"></div></div>`;
+    await new Promise(r => setTimeout(r, 0));
   }
 
-  csvLog(`Importacao direta: ${imported} importados, ${erros} erros${label}`);
-  toast(`${imported.toLocaleString()} subscribers importados${label}!`);
+  const invalidCount = _csvRawData.length - total;
+  csvLog(`Importacao direta: ${imported} importados, ${erros} erros, ${invalidCount} emails invalidos${label}`);
+  toast(`${imported.toLocaleString()} inscritos importados${label}!`);
   await loadEmailStats();
   await loadSubscribersList();
   btn.disabled = false;
-  btn.textContent = 'Importar direto → Subscribers';
+  btn.textContent = 'Importar direto';
 }
 
 function handleMvResult(input) {
