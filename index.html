@@ -1789,34 +1789,29 @@ img{max-width:100%;}
 .cal-item.cal-next-hi{border-color:rgba(239,68,68,.3) !important;background:rgba(239,68,68,.06) !important;box-shadow:0 0 16px rgba(239,68,68,.08);animation:cal-next-pulse 3s ease-in-out infinite;}
 @keyframes cal-next-pulse{0%,100%{box-shadow:0 0 8px rgba(239,68,68,.06);}50%{box-shadow:0 0 20px rgba(239,68,68,.12);}}
 .cal-page-hd{text-align:center;margin-bottom:20px;}
-.cal-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
-.cal-sub{font-size:13px;color:var(--t2);line-height:1.6;max-width:600px;margin:0 auto;}
-.cal-filter-bar{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 14px;border-bottom:1px solid var(--b1);justify-content:center;}
-.cal-f{padding:6px 14px;border-radius:8px;border:1px solid var(--b1);background:transparent;color:var(--t2);font-size:12px;font-weight:600;transition:.2s;cursor:pointer;font-family:var(--f);white-space:nowrap;display:inline-flex;align-items:center;gap:5px;}
-.cal-f:hover{border-color:var(--b2);color:var(--t1);}
+.cal-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:5px;}
+.cal-sub{font-size:13px;color:var(--t2);line-height:1.6;max-width:600px;margin:0 auto 6px;}
+.cal-meta{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:var(--t3);}
+.cal-sep-dot{width:3px;height:3px;border-radius:50%;background:var(--t3);}
+.cal-filter-bar{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 12px;justify-content:center;align-items:center;}
+.cal-f{padding:5px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--t2);font-size:11px;font-weight:600;transition:.2s;cursor:pointer;font-family:var(--f);white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
+.cal-f:hover{border-color:rgba(255,255,255,.25);color:var(--t1);}
 .cal-f.active{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.35);color:var(--gold);}
 .cal-f-h.active{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#ef4444;}
 .cal-f-m.active{background:rgba(240,180,41,.12);border-color:rgba(240,180,41,.35);color:var(--gold);}
 .cal-f-l.active{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#22c55e;}
-.cal-content{padding:16px 0 60px;}
+.cal-sep{width:1px;height:16px;background:rgba(255,255,255,.10);margin:0 2px;flex-shrink:0;}
+.cal-toolbar{display:flex;align-items:center;gap:10px;padding:0 0 14px;border-bottom:1px solid rgba(255,255,255,.10);}
+.cal-search-wrap{position:relative;flex:1;}
+.cal-search-wrap input{width:100%;padding:7px 12px 7px 32px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--t1);font-size:12px;font-family:var(--f);outline:none;transition:.2s;}
+.cal-search-wrap input:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.06);}
+.cal-search-wrap input::placeholder{color:var(--t3);}
+.cal-search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);}
+.cal-content{padding:14px 0 60px;}
 .cal-date-group{margin-bottom:20px;}
 .cal-date-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t2);margin-bottom:8px;padding:0 4px;}
 .cal-item{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px 16px;display:grid;grid-template-columns:70px 80px 1fr 80px 80px 80px 40px;align-items:center;gap:12px;transition:.25s;margin-bottom:5px;}
 .cal-item:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.14);}
-@media(max-width:700px){
-.cal-wrap{padding:20px 16px 60px;}
-.cal-page-hd{margin-bottom:16px;}
-.cal-title{font-size:20px;}
-.cal-sub{font-size:12px;}
-.cal-filter-bar{gap:5px;padding:0 0 12px;}
-.cal-f{padding:5px 10px;font-size:11px;}
-.cal-item{grid-template-columns:60px 1fr auto;}
-.cal-prev-wrap,.cal-fore-wrap,.cal-act-wrap,.cal-stars{display:none;}
-.cal-countdown-bar{padding:10px 16px;gap:10px;}
-.cal-cd-timer{font-size:17px;}
-.cal-search-wrap{flex:1 1 100%;}
-.cal-toolbar{padding:8px 0;}
-}
 .cal-act-wrap{text-align:right;}
 .cal-time{font-size:12px;font-weight:600;color:var(--t1);}
 .cal-cur-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:3px 7px;border-radius:4px;}
@@ -1833,16 +1828,24 @@ img{max-width:100%;}
 .imp.h{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.4);}
 .imp.m{background:var(--gold);}
 .imp.l{background:var(--green);}
-.imp-legend{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--t1);}
-.imp-legend span{display:flex;align-items:center;gap:5px;}
-.cal-sep{width:1px;height:20px;background:rgba(255,255,255,.12);margin:0 2px;flex-shrink:0;}
-.cal-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 0 12px;gap:12px;flex-wrap:wrap;}
-.cal-search-wrap{position:relative;flex:0 0 220px;}
-.cal-search-wrap input{width:100%;padding:7px 12px 7px 32px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.10);color:var(--t1);font-size:12px;font-family:var(--f);outline:none;transition:.2s;}
-.cal-search-wrap input:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.14);}
-.cal-search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);}
-.cal-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);font-weight:600;}
-.cal-sep-dot{width:3px;height:3px;border-radius:50%;background:var(--t3);}
+@media(max-width:700px){
+.cal-wrap{padding:20px 16px 60px;}
+.cal-page-hd{margin-bottom:14px;}
+.cal-title{font-size:19px;}
+.cal-sub{font-size:12px;margin-bottom:4px;}
+.cal-meta{font-size:10px;}
+.cal-filter-bar{gap:5px;padding:0 0 10px;}
+.cal-f{padding:4px 9px;font-size:10px;border-radius:5px;}
+.cal-toolbar{padding:0 0 10px;}
+.cal-search-wrap input{padding:6px 10px 6px 30px;font-size:11px;}
+.cal-item{grid-template-columns:50px 1fr auto;padding:10px 12px;gap:8px;}
+.cal-prev-wrap,.cal-fore-wrap,.cal-act-wrap,.cal-stars{display:none;}
+.cal-time{font-size:11px;}
+.cal-cur-badge{font-size:9px;padding:2px 5px;}
+.cal-ev-name{font-size:12px;}
+.cal-countdown-bar{padding:10px 16px;gap:10px;}
+.cal-cd-timer{font-size:17px;}
+}
 .cal-now-line{display:flex;align-items:center;gap:10px;padding:6px 16px;margin:8px 0;}
 .cal-now-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(240,180,41,.5);animation:pulse-gold 2s infinite;}
 .cal-now-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);}
@@ -3220,6 +3223,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="cal-page-hd">
       <div class="cal-title" data-i18n="cal_titulo">Economic Calendar</div>
       <div class="cal-sub" data-i18n="cal_sub">Global economic events that impact financial markets</div>
+      <div class="cal-meta"><span id="cal-count"></span><span class="cal-sep-dot"></span><span id="cal-updated" style="font-size:11px;"></span></div>
     </div>
     <div class="cal-filter-bar" id="cal-filters">
       <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">All</button>
@@ -3241,25 +3245,19 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <div class="cal-toolbar">
       <div class="cal-search-wrap"><input type="text" id="cal-search" placeholder="Search events..." data-i18n-placeholder="cal_buscar" oninput="renderCal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-      <div class="cal-meta">
-        <div class="cal-tz-wrap">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <select id="cal-tz" class="cal-tz-sel" onchange="calSetTz(this.value)">
-            <option value="ET">ET</option>
-            <option value="local">Local</option>
-            <option value="UTC">UTC</option>
-            <option value="CT">CT</option>
-            <option value="PT">PT</option>
-            <option value="GMT">GMT</option>
-            <option value="CET">CET</option>
-            <option value="JST">JST</option>
-            <option value="BRT">BRT</option>
-          </select>
-        </div>
-        <span class="cal-sep-dot"></span>
-        <span id="cal-count"></span>
-        <span class="cal-sep-dot"></span>
-        <span id="cal-updated" style="color:var(--t3);font-size:11px;"></span>
+      <div class="cal-tz-wrap">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <select id="cal-tz" class="cal-tz-sel" onchange="calSetTz(this.value)">
+          <option value="ET">ET</option>
+          <option value="local">Local</option>
+          <option value="UTC">UTC</option>
+          <option value="CT">CT</option>
+          <option value="PT">PT</option>
+          <option value="GMT">GMT</option>
+          <option value="CET">CET</option>
+          <option value="JST">JST</option>
+          <option value="BRT">BRT</option>
+        </select>
       </div>
     </div>
     <div class="cal-tbl-hd">
