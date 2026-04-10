@@ -1209,8 +1209,8 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <!-- IMPORTAR & VALIDAR -->
  <div style="margin-bottom:20px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px 18px;">
    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-     <div style="font-size:13px;font-weight:700;color:var(--t1);">Importar &amp; Validar Emails</div>
-     <div style="font-size:10px;color:var(--t3);">CSV / TXT</div>
+     <div style="font-size:13px;font-weight:700;color:var(--t1);">Importar Emails</div>
+     <div style="font-size:10px;color:var(--t3);">3 passos: Upload → Validar → Importar</div>
    </div>
    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;" id="import-firma-chips">
      <!-- Rendered dynamically by renderEmailFirmaChips() -->
@@ -1221,25 +1221,32 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
    <!-- Upload area -->
    <div style="background:var(--card2);border:2px dashed var(--b1);border-radius:10px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px;" onclick="document.getElementById('csv-file').click()">
-     <div style="font-size:12px;font-weight:600;color:var(--t1);">Arraste ou clique para selecionar</div>
-     <div style="font-size:10px;color:var(--t3);margin-top:4px;">Coluna "email" ou 1 email por linha</div>
+     <div style="font-size:12px;font-weight:600;color:var(--t1);">1. Arraste ou clique para selecionar</div>
+     <div style="font-size:10px;color:var(--t3);margin-top:4px;">CSV ou TXT — coluna "email" ou 1 email por linha</div>
      <input type="file" id="csv-file" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(this)">
    </div>
    <!-- Stats -->
    <div id="csv-stats" style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;min-height:40px;margin-bottom:12px;">
      <div style="color:var(--t3);font-size:11px;">Nenhum arquivo carregado.</div>
    </div>
-   <!-- Actions -->
+   <!-- Step 2: Validar -->
    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;">
-     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="runValidation()" id="btn-validate" disabled>Validar</button>
+     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="runValidation()" id="btn-validate" disabled>2. Validar Lista</button>
      <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="runMxCheck()" id="btn-mx" disabled>Verificar MX</button>
-     <button class="btn-primary" style="font-size:10px;padding:6px 12px;" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar validos</button>
-     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar validados</button>
-     <button class="btn-primary" style="font-size:10px;padding:6px 12px;" onclick="importDirectToSubscribers()" id="btn-import-direct" disabled>Importar direto → Subscribers</button>
    </div>
-   <!-- MillionVerifier -->
-   <div style="display:flex;gap:8px;align-items:center;">
-     <span style="font-size:10px;color:var(--t3);">MillionVerifier:</span>
+   <!-- Step 3: Importar -->
+   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;">
+     <button class="btn-primary" style="font-size:10px;padding:6px 12px;" onclick="importDirectToSubscribers()" id="btn-import-direct" disabled>3. Importar → Inscritos</button>
+     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="importValidToSubscribers()" id="btn-import-valid" disabled>Importar apenas validados</button>
+     <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="exportCleanEmails()" id="btn-export-clean" disabled>Exportar CSV limpo</button>
+   </div>
+   <!-- Avançado -->
+   <div style="cursor:pointer;display:flex;align-items:center;gap:6px;user-select:none;" onclick="const w=document.getElementById('mv-advanced');const a=this.querySelector('.mv-arrow');if(w.style.display==='none'){w.style.display='flex';a.textContent='▼';}else{w.style.display='none';a.textContent='▶';}">
+     <span class="mv-arrow" style="font-size:9px;color:var(--t3);">▶</span>
+     <span style="font-size:10px;color:var(--t3);">Avançado (MillionVerifier)</span>
+   </div>
+   <div id="mv-advanced" style="display:none;gap:8px;align-items:center;margin-top:6px;">
+     <span style="font-size:10px;color:var(--t3);">Resultado MV:</span>
      <input type="file" id="mv-file" accept=".csv,.txt" style="font-size:10px;color:var(--t2);max-width:200px;" onchange="handleMvResult(this)">
    </div>
    <!-- Log -->
@@ -1398,13 +1405,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;" id="sub-firma-tabs"></div>
    <!-- Search -->
    <input class="filter-inp" id="sub-search" placeholder="Buscar por nome ou email..." style="width:100%;margin-bottom:12px;" oninput="renderSubscribersList()">
-   <!-- Importar CSV direto para subscribers (sem precisar validar antes) -->
-   <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
-     <div style="font-size:10px;color:var(--t3);">Subir lista:</div>
-     <input type="file" id="sub-csv-file" accept=".csv,.txt" style="font-size:10px;color:var(--t2);max-width:200px;" onchange="handleSubCsvUpload(this)">
-     <select id="sub-csv-firma" style="font-size:10px;padding:4px 8px;"></select>
-     <button class="btn-primary" style="font-size:10px;padding:5px 12px;" id="sub-csv-import-btn" onclick="importSubCsvDirect()" disabled>Importar</button>
-   </div>
    <!-- List -->
    <div id="sub-list" style="max-height:400px;overflow-y:auto;"></div>
    <div style="font-size:10px;color:var(--t3);margin-top:8px;" id="sub-total-info"></div>
