@@ -171,7 +171,7 @@ const FIRM_BG={
   apex:'img/apex-bg.webp',bulenox:'img/bulenox-bg.webp',ftmo:'img/ftmo-bg.webp',
   tpt:'img/tpt-bg.webp',fn:'img/fn-bg.webp',e2t:'img/e2t-bg.webp',
   the5ers:'img/the5ers-bg.webp',fundingpips:'img/fundingpips-bg.webp',brightfunded:'img/brightfunded-bg.webp',
-  e8:'img/e8-bg.webp',cti:'img/cti-bg.webp'
+  e8:'img/e8-bg.jpeg',cti:'img/cti-bg.jpeg'
 };
 const FIRM_ABOUT={
   apex:{about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
