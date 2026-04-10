@@ -1776,8 +1776,7 @@ img{max-width:100%;}
 .cal-cd-name{font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cal-cd-timer{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:#ef4444;letter-spacing:1px;text-shadow:0 0 12px rgba(239,68,68,.3);}
 /* Timezone selector */
-.cal-hd-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
-.cal-tz-wrap{display:flex;align-items:center;gap:6px;}
+.cal-tz-wrap{display:inline-flex;align-items:center;gap:4px;}
 .cal-tz-sel{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:rgba(255,255,255,.10) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.5)'/%3E%3C/svg%3E") no-repeat right 8px center;border:1px solid rgba(255,255,255,.14);border-radius:6px;color:var(--t1);font-size:11px;font-weight:600;font-family:var(--f);padding:5px 24px 5px 8px;outline:none;cursor:pointer;transition:.2s;}
 .cal-tz-sel:hover,.cal-tz-sel:focus{border-color:rgba(240,180,41,.4);background-color:rgba(255,255,255,.14);}
 .cal-tz-sel option{background:#1a1a2e;color:#e4e6eb;padding:6px 8px;}
@@ -1805,7 +1804,6 @@ img{max-width:100%;}
 .cal-item .cal-mob-data{display:flex !important;}
 .cal-countdown-bar{padding:10px 16px;gap:10px;}
 .cal-cd-timer{font-size:17px;}
-.cal-hd-right{align-items:flex-start;}
 .cal-item .cal-mob-expand{display:block !important;}
 }
 .cal-mob-data{display:none;grid-column:1/-1;gap:8px;padding:10px 0 4px;border-top:1px solid rgba(255,255,255,.08);margin-top:6px;}
@@ -3221,26 +3219,10 @@ document.addEventListener('DOMContentLoaded',function(){
         <div class="cal-title" data-i18n="cal_titulo">Calendário Econômico</div>
         <div class="cal-sub" data-i18n="cal_sub">Eventos econômicos globais que impactam os mercados financeiros</div>
       </div>
-      <div class="cal-hd-right">
-        <div class="imp-legend">
-          <span><span class="cal-stars h">★★★</span> <span data-i18n="cal_alto_impacto">Alto impacto</span></span>
-          <span><span class="cal-stars m">★★☆</span> <span data-i18n="cal_medio_impacto">Médio impacto</span></span>
-          <span><span class="cal-stars l">★☆☆</span> <span data-i18n="cal_baixo_impacto">Baixo impacto</span></span>
-        </div>
-        <div class="cal-tz-wrap">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <select id="cal-tz" class="cal-tz-sel" onchange="calSetTz(this.value)">
-            <option value="ET">ET (New York)</option>
-            <option value="local">Local</option>
-            <option value="UTC">UTC</option>
-            <option value="CT">CT (Chicago)</option>
-            <option value="PT">PT (Los Angeles)</option>
-            <option value="GMT">GMT (London)</option>
-            <option value="CET">CET (Frankfurt)</option>
-            <option value="JST">JST (Tokyo)</option>
-            <option value="BRT">BRT (São Paulo)</option>
-          </select>
-        </div>
+      <div class="imp-legend">
+        <span><span class="cal-stars h">★★★</span> <span data-i18n="cal_alto_impacto">Alto impacto</span></span>
+        <span><span class="cal-stars m">★★☆</span> <span data-i18n="cal_medio_impacto">Médio impacto</span></span>
+        <span><span class="cal-stars l">★☆☆</span> <span data-i18n="cal_baixo_impacto">Baixo impacto</span></span>
       </div>
     </div>
     <div class="cal-filter-bar" id="cal-filters">
@@ -3263,7 +3245,26 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <div class="cal-toolbar">
       <div class="cal-search-wrap"><input type="text" id="cal-search" placeholder="Search events..." data-i18n-placeholder="cal_buscar" oninput="renderCal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-      <div class="cal-meta"><span id="cal-count"></span><span class="cal-sep-dot"></span><span id="cal-updated" style="color:var(--t3);font-size:11px;"></span></div>
+      <div class="cal-meta">
+        <div class="cal-tz-wrap">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <select id="cal-tz" class="cal-tz-sel" onchange="calSetTz(this.value)">
+            <option value="ET">ET</option>
+            <option value="local">Local</option>
+            <option value="UTC">UTC</option>
+            <option value="CT">CT</option>
+            <option value="PT">PT</option>
+            <option value="GMT">GMT</option>
+            <option value="CET">CET</option>
+            <option value="JST">JST</option>
+            <option value="BRT">BRT</option>
+          </select>
+        </div>
+        <span class="cal-sep-dot"></span>
+        <span id="cal-count"></span>
+        <span class="cal-sep-dot"></span>
+        <span id="cal-updated" style="color:var(--t3);font-size:11px;"></span>
+      </div>
     </div>
     <div class="cal-tbl-hd">
       <div data-i18n="cal_hora">Hora</div>
