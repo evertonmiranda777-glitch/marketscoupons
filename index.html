@@ -1778,8 +1778,9 @@ img{max-width:100%;}
 /* Timezone selector */
 .cal-hd-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
 .cal-tz-wrap{display:flex;align-items:center;gap:6px;}
-.cal-tz-sel{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:6px;color:var(--t1);font-size:11px;font-weight:600;font-family:var(--f);padding:5px 8px;outline:none;cursor:pointer;transition:.2s;}
-.cal-tz-sel:hover,.cal-tz-sel:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.14);}
+.cal-tz-sel{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:rgba(255,255,255,.10) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.5)'/%3E%3C/svg%3E") no-repeat right 8px center;border:1px solid rgba(255,255,255,.14);border-radius:6px;color:var(--t1);font-size:11px;font-weight:600;font-family:var(--f);padding:5px 24px 5px 8px;outline:none;cursor:pointer;transition:.2s;}
+.cal-tz-sel:hover,.cal-tz-sel:focus{border-color:rgba(240,180,41,.4);background-color:rgba(255,255,255,.14);}
+.cal-tz-sel option{background:#1a1a2e;color:#e4e6eb;padding:6px 8px;}
 /* Tooltip for actual vs forecast */
 .cal-tooltip{position:absolute;z-index:100;background:#1a1a2e;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:8px 12px;font-size:11px;font-weight:600;color:var(--t1);pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.5);transform:translateY(-8px);opacity:0;transition:opacity .15s,transform .15s;}
 .cal-tooltip.show{opacity:1;transform:translateY(0);}
