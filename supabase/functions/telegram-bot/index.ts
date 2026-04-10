@@ -286,21 +286,43 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
 
   const now = new Date();
   const windowMs = 5 * 60 * 1000;
-  const toleranceMs = 60 * 1000;
+  const toleranceMs = 90 * 1000; // 1.5min tolerance for cron drift
+
+  // Parse "02:00 PM" + "2026-04-10" into a proper Date in ET
+  function parseEventTime(dateStr?: string, timeStr?: string): Date | null {
+    if (!dateStr || !timeStr) return null;
+    try {
+      // timeStr format: "02:00 PM" or "14:00"
+      let hours = 0, minutes = 0;
+      const match12 = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      const match24 = timeStr.match(/^(\d{1,2}):(\d{2})$/);
+      if (match12) {
+        hours = parseInt(match12[1]);
+        minutes = parseInt(match12[2]);
+        const ampm = match12[3].toUpperCase();
+        if (ampm === "PM" && hours !== 12) hours += 12;
+        if (ampm === "AM" && hours === 12) hours = 0;
+      } else if (match24) {
+        hours = parseInt(match24[1]);
+        minutes = parseInt(match24[2]);
+      } else {
+        return null;
+      }
+      // Create date string in ET timezone format
+      const etStr = `${dateStr}T${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:00`;
+      // Trading Economics times are in ET — convert by creating in ET
+      const etDate = new Date(new Date(etStr + "-04:00").getTime()); // EDT (UTC-4)
+      return isNaN(etDate.getTime()) ? null : etDate;
+    } catch { return null; }
+  }
 
   const upcoming = events.filter((e) => {
     const impNum = Number(e.importance ?? e.impact ?? e.stars ?? 0);
     const cur = (e.currency ?? e.country ?? "").toUpperCase();
     if (impNum < 2 || cur !== "USD") return false;
 
-    const timeStr = e.time ?? e.datetime ?? e.date;
-    if (!timeStr) return false;
-
-    let eventTime: Date;
-    try {
-      eventTime = new Date(timeStr);
-      if (isNaN(eventTime.getTime())) return false;
-    } catch { return false; }
+    const eventTime = parseEventTime(e.date, e.time ?? e.datetime);
+    if (!eventTime) return false;
 
     const diff = eventTime.getTime() - now.getTime();
     return diff >= (windowMs - toleranceMs) && diff <= (windowMs + toleranceMs);
@@ -311,13 +333,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   for (const ev of upcoming) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const timeStr = ev.time ?? ev.datetime ?? "";
-    let timeDisplay = "";
-    try {
-      const d = new Date(timeStr);
-      timeDisplay = d.toLocaleTimeString("en-US", {
-        hour: "2-digit", minute: "2-digit", timeZone: "America/New_York",
-      }) + " ET";
-    } catch { timeDisplay = timeStr; }
+    let timeDisplay = timeStr ? timeStr + " ET" : "";
 
     const prevLine = ev.previous != null ? `Prev: ${ev.previous}` : "";
     const fcLine = (ev.forecast ?? ev.estimate) != null ? `Exp: ${ev.forecast ?? ev.estimate}` : "";
