@@ -101,7 +101,7 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
     lines.join("\n\n") +
     `\n\n👉 All coupons: https://${SITE_URL}`;
 
-  const msgId = await sendMessage(text, [[{ text: "🌐 Claim your coupon → marketscoupons.com", url: `https://${SITE_URL}` }]]);
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "coupons");
 
   return { sent: msgId !== null, count: firms.length };
@@ -142,7 +142,7 @@ async function handleAnalysis(db: ReturnType<typeof createClient>) {
     `${ni}\n\n` +
     `For the full analysis, visit https://${SITE_URL}/analysis`;
 
-  const msgId = await sendMessage(text, [[{ text: "📊 Full Analysis → marketscoupons.com", url: `https://${SITE_URL}/analysis` }]]);
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "analysis");
 
   return { sent: msgId !== null, asset: assetPick };
@@ -184,7 +184,7 @@ async function handleGex(db: ReturnType<typeof createClient>) {
     `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
     `To access all Gamma Exposure (GEX) regions for NQ and ES, visit https://${SITE_URL}/gamma`;
 
-  const msgId = await sendMessage(text, [[{ text: "🎯 Full GEX Data → marketscoupons.com", url: `https://${SITE_URL}/gamma` }]]);
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "gex");
 
   return { sent: msgId !== null, ticker: tickerPick };
@@ -248,7 +248,7 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
     lines.join("\n") +
     `\n\n📊 <a href="https://${SITE_URL}/calendar">Full Calendar</a>`;
 
-  const msgId = await sendMessage(text, [[{ text: "📅 Full Calendar → marketscoupons.com", url: `https://${SITE_URL}/calendar` }]]);
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "calendar_daily");
 
   return { sent: msgId !== null, events: highImpact.length };
@@ -324,7 +324,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       (statsLine ? `📊 ${statsLine}\n` : "") +
       `\n📅 <a href="https://${SITE_URL}/calendar">Full Calendar</a>`;
 
-    const msgId = await sendMessage(text, [[{ text: "📅 Full Calendar → marketscoupons.com", url: `https://${SITE_URL}/calendar` }]]);
+    const msgId = await sendMessage(text);
     if (msgId) await storeMessageId(db, msgId, "calendar_alert");
   }
 
@@ -339,7 +339,6 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
   const isProDay = dayOfWeek % 2 === 1; // Mon, Wed, Fri = Pro; Tue, Thu = Loyalty
 
   let text: string;
-  let button: { text: string; url: string };
 
   if (isProDay) {
     text =
@@ -350,7 +349,6 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
       `• Advanced market analysis features\n` +
       `• Early access to new prop firm partnerships\n\n` +
       `👉 Learn more: https://${SITE_URL}/pro`;
-    button = { text: "⭐ Go PRO → marketscoupons.com", url: `https://${SITE_URL}/pro` };
   } else {
     text =
       `💰 <b>Loyalty Program — Earn Points</b>\n\n` +
@@ -358,10 +356,9 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
       `🎁 Points unlock: exclusive perks, bigger discounts, priority access\n` +
       `📊 Track your points in your dashboard\n\n` +
       `👉 Start earning: https://${SITE_URL}`;
-    button = { text: "💰 Start Earning → marketscoupons.com", url: `https://${SITE_URL}` };
   }
 
-  const msgId = await sendMessage(text, [[button]]);
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "pro_loyalty");
 
   return { sent: msgId !== null, type: isProDay ? "pro" : "loyalty" };
@@ -398,7 +395,7 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
     `\n👉 Claim this deal: ${firm.link ?? `https://${SITE_URL}`}`;
 
-  const msgId = await sendMessage(text, [[{ text: "⚡ Claim Deal → " + firm.name, url: firm.link ?? `https://${SITE_URL}` }]]);
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
 
   return { sent: msgId !== null, firm: firm.name };
