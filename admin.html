@@ -4876,16 +4876,17 @@ function buildInstitutionalHtml(name, lang='pt'){
   const FI = "'Inter',Arial,sans-serif";
   const dir = lang==='ar' ? 'rtl' : 'ltr';
   const gt = (obj) => obj[lang] || obj.en || obj.pt || '';
-  const BG = '#07090D';
-  const GLASS = '#10151F';
-  const T1 = '#EDF2F7';
-  const T2 = '#A0AEC0';
-  const T3 = '#4A5568';
-  const GREEN = '#22C55E';
-  const GOLD = '#F0B429';
+  const BG = '#F2F2F2';
+  const CARD = '#FFFFFF';
+  const T1 = '#1F2937';
+  const T2 = '#4B5563';
+  const T3 = '#9CA3AF';
+  const GREEN = '#16A34A';
+  const GOLD = '#B8860B';
+  const BORDER = '#E5E7EB';
 
   const feats = (gt(t.features)||[]).map(f =>
-    `<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #1C2535;">
+    `<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid ${BORDER};">
       <span style="color:${GREEN};font-weight:700;margin-right:12px;font-size:16px;">&#10003;</span>
       <span style="color:${T2};font-size:14px;line-height:1.5;">${f}</span>
     </div>`
@@ -4895,40 +4896,41 @@ function buildInstitutionalHtml(name, lang='pt'){
 
   return `<!DOCTYPE html>
 <html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body style="margin:0;padding:0;background:${BG};font-family:${FI};-webkit-font-smoothing:antialiased;">
-<div style="max-width:600px;margin:0 auto;background:${BG};">
+<div style="max-width:600px;margin:0 auto;background:${CARD};border-radius:12px;overflow:hidden;">
 
   <!-- Accent top -->
-  <div style="height:3px;background:linear-gradient(90deg,${GOLD},${GREEN},${GOLD});"></div>
+  <div style="height:4px;background:linear-gradient(90deg,${GOLD},${GREEN},${GOLD});"></div>
 
   <!-- Header -->
   <div style="padding:28px 28px 0;text-align:center;">
     <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;"><span style="color:${T1};">Markets </span><span style="color:${GOLD};">Coupons</span></span>
     <span style="display:inline-block;width:7px;height:7px;background:${GREEN};border-radius:50%;margin-left:4px;vertical-align:middle;"></span>
-    <div style="margin-top:5px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:${T3};">${etFooter.tagline || 'The best deals for traders'}</div>
-    <div style="margin-top:16px;text-align:left;">
-      <div style="color:${T1};font-size:22px;font-weight:600;margin-bottom:6px;">${gt(t.title)}</div>
+    <div style="margin-top:5px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${T3};">${etFooter.tagline || 'The best deals for traders'}</div>
+    <div style="margin-top:20px;text-align:left;">
+      <div style="color:${T1};font-size:22px;font-weight:700;margin-bottom:8px;">${gt(t.title)}</div>
       <div style="color:${T2};font-size:15px;line-height:1.7;">${gt(t.body)}</div>
     </div>
   </div>
 
   <!-- Features -->
   <div style="padding:20px 28px 0;">
-    <div style="background:${GLASS};border:1px solid #1C2535;border-radius:12px;padding:4px 20px;">
+    <div style="background:#F9FAFB;border:1px solid ${BORDER};border-radius:12px;padding:4px 20px;">
       ${feats}
     </div>
   </div>
 
   <!-- CTA -->
-  <div style="padding:24px 28px 0;text-align:center;">
-    <a href="https://www.marketscoupons.com" target="_blank" style="display:inline-block;background:linear-gradient(135deg,${GOLD},#D4991A);color:${BG};padding:16px 52px;border-radius:10px;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:0.3px;font-family:${FI};">${gt(t.cta)}</a>
+  <div style="padding:28px 28px 0;text-align:center;">
+    <a href="https://www.marketscoupons.com" target="_blank" style="display:inline-block;background:${GOLD};color:#FFFFFF;padding:16px 52px;border-radius:10px;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:0.3px;font-family:${FI};">${gt(t.cta)}</a>
   </div>
 
   <!-- Footer -->
   <div style="padding:28px 28px 24px;">
-    <div style="border-top:1px solid #1C2535;padding-top:20px;text-align:center;">
+    <div style="border-top:1px solid ${BORDER};padding-top:20px;text-align:center;">
       <span style="font-size:14px;font-weight:800;"><span style="color:${T1};">Markets </span><span style="color:${GOLD};">Coupons</span></span>
       <div style="color:${T3};font-size:10px;margin-top:4px;">www.marketscoupons.com</div>
       <div style="color:${T3};font-size:10px;line-height:1.7;margin-top:12px;">
@@ -4939,7 +4941,7 @@ function buildInstitutionalHtml(name, lang='pt'){
   </div>
 
   <!-- Accent bottom -->
-  <div style="height:3px;background:linear-gradient(90deg,${GOLD},${GREEN},${GOLD});"></div>
+  <div style="height:4px;background:linear-gradient(90deg,${GOLD},${GREEN},${GOLD});"></div>
 </div>
 </body></html>`;
 }
