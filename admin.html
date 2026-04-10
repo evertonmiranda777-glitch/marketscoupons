@@ -5021,57 +5021,136 @@ function buildInstitutionalHtml(name, lang='pt'){
     const RED = '#EF4444';
     const BASE = 'https://www.marketscoupons.com';
 
-    // ── Mini-UI card — same pattern as Calc/Quiz that were approved ──
+    // ── Mini-UI cards — replicating site's auth modal visuals with real data ──
+    const IMG = BASE + '/img/Firms/';
     const muCard = (content) =>
       `<td width="50%" style="padding:10px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.14);border-radius:14px;" role="presentation">
           <tr><td style="padding:18px 16px;vertical-align:top;">${content}</td></tr>
         </table>
       </td>`;
-    const muLbl = (text,ac) => `<div style="color:${ac||'rgba(255,255,255,.4)'};font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;font-family:${FI};">${text}</div>`;
+    const muLbl = (text,ac) => `<div style="color:${ac||'rgba(255,255,255,.4)'};font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;font-family:${FI};">${text}</div>`;
     const muFld = (label,value,vc) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;margin-bottom:5px;" role="presentation"><tr><td style="padding:7px 10px;color:rgba(255,255,255,.35);font-size:9px;font-family:${FI};">${label}</td><td style="padding:7px 10px;text-align:right;color:${vc||'rgba(255,255,255,.75)'};font-size:11px;font-weight:700;font-family:${FI};">${value}</td></tr></table>`;
 
-    // Card 1: Cupons — top 5 firms with colored discount pills
+    // ═══ Card 1: CUPONS — logo + name + old/new price + badge + coupon ═══
     const cupL = {pt:'CUPONS EXCLUSIVOS',en:'EXCLUSIVE COUPONS',es:'CUPONES EXCLUSIVOS',fr:'COUPONS EXCLUSIFS',de:'EXKLUSIVE GUTSCHEINE',it:'COUPON ESCLUSIVI',ar:'كوبونات حصرية'}[lang]||'EXCLUSIVE COUPONS';
-    const cupFirm = (name,disc,fc) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:8px;margin-bottom:4px;" role="presentation"><tr><td style="padding:6px 10px;color:rgba(255,255,255,.8);font-size:10px;font-weight:700;font-family:${FI};">${name}</td><td style="padding:6px 10px;text-align:right;"><span style="background:rgba(${fc},.12);color:rgb(${fc});font-size:10px;font-weight:800;padding:3px 8px;border-radius:4px;font-family:${FI};">${disc}</span></td></tr></table>`;
-    const c1 = muCard(muLbl(cupL,GLD) + cupFirm('Apex Trader','90% OFF','249,115,22') + cupFirm('Bulenox','89% OFF','34,197,94') + cupFirm('FTMO','10% OFF','14,165,233') + cupFirm('FundedNext','10% OFF','168,85,247'));
+    const cupFirm = (img,name,off,oldP,newP,coup,fc) =>
+      `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:6px;" role="presentation">
+        <tr>
+          <td width="28" style="vertical-align:top;padding-right:8px;">
+            <img src="${IMG}${img}" width="28" height="28" alt="${name}" style="width:28px;height:28px;border-radius:7px;display:block;">
+          </td>
+          <td style="vertical-align:top;">
+            <div>
+              <span style="color:#fff;font-size:11px;font-weight:700;font-family:${FI};">${name}</span>
+              <span style="background:rgb(${fc});color:#000;font-size:8px;font-weight:800;padding:2px 6px;border-radius:3px;margin-left:4px;font-family:${FI};">${off}</span>
+            </div>
+            <div style="margin-top:3px;">
+              <span style="color:rgba(255,255,255,.3);font-size:9px;text-decoration:line-through;font-family:${FI};">${oldP}</span>
+              <span style="color:rgb(${fc});font-size:12px;font-weight:800;margin-left:4px;font-family:${FI};">${newP}</span>
+            </div>
+            <div style="margin-top:2px;"><span style="color:rgba(255,255,255,.4);font-size:8px;font-weight:600;padding:2px 6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:3px;font-family:${FI};">${coup}</span></div>
+          </td>
+        </tr>
+      </table>`;
+    const c1 = muCard(muLbl(cupL,GLD)
+      + cupFirm('apex.png','Apex','90% OFF','$249','$24.90','MARKET','249,115,22')
+      + cupFirm('bulenox.png','Bulenox','89% OFF','$215','$23.65','MARKET89','34,197,94')
+      + cupFirm('fundednext.png','FundedNext','10% OFF','$29','$26.10','FNF30','168,85,247')
+    );
 
-    // Card 2: Comparador — same field style as Calculator
+    // ═══ Card 2: COMPARADOR — tabular like site (3 firms, 3 metrics) ═══
     const cmpL = {pt:'COMPARADOR',en:'COMPARATOR',es:'COMPARADOR',fr:'COMPARATEUR',de:'VERGLEICH',it:'COMPARATORE',ar:'المقارن'}[lang]||'COMPARATOR';
-    const c2 = muCard(muLbl(cmpL,CYN) + muFld('Drawdown','-5%',RED) + muFld('Profit Split','90%',GRN) + muFld('Target','8%',GLD));
+    const cmpHdr = (img,name,rating,fc) =>
+      `<td style="text-align:center;padding:0 4px 8px;">
+        <img src="${IMG}${img}" width="24" height="24" alt="${name}" style="width:24px;height:24px;border-radius:6px;display:inline-block;margin-bottom:4px;">
+        <div style="color:#fff;font-size:9px;font-weight:700;font-family:${FI};">${name}</div>
+        <div style="color:${fc};font-size:8px;font-family:${FI};">${rating}</div>
+      </td>`;
+    const cmpRow = (label,v1,v2,v3,vc) =>
+      `<tr>
+        <td style="color:rgba(255,255,255,.35);font-size:8px;font-weight:600;padding:4px 0;border-top:1px solid rgba(255,255,255,.06);font-family:${FI};">${label}</td>
+        <td style="text-align:center;color:${vc||'#fff'};font-size:9px;font-weight:700;padding:4px 0;border-top:1px solid rgba(255,255,255,.06);font-family:${FI};">${v1}</td>
+        <td style="text-align:center;color:${vc||'#fff'};font-size:9px;font-weight:700;padding:4px 0;border-top:1px solid rgba(255,255,255,.06);font-family:${FI};">${v2}</td>
+        <td style="text-align:center;color:${vc||'#fff'};font-size:9px;font-weight:700;padding:4px 0;border-top:1px solid rgba(255,255,255,.06);font-family:${FI};">${v3}</td>
+      </tr>`;
+    const discL = {pt:'DESCONTO',en:'DISCOUNT',es:'DESCUENTO'}[lang]||'DISCOUNT';
+    const ddL = 'DRAWDOWN';
+    const splL = 'SPLIT';
+    const c2 = muCard(muLbl(cmpL,CYN)
+      + `<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+        <tr><td width="25%"></td>${cmpHdr('apex.png','Apex','4.4','#F97316')}${cmpHdr('bulenox.png','Bulenox','4.5',GRN)}${cmpHdr('fundednext.png','FN','4.5',PRP)}</tr>
+        ${cmpRow(discL,'<span style="color:#22c55e;">90%</span>','<span style="color:#22c55e;">89%</span>','<span style="color:#22c55e;">10%</span>')}
+        ${cmpRow(ddL,'Trailing','Trailing','Static')}
+        ${cmpRow(splL,'80%','<span style="color:#22c55e;">90%</span>','80%')}
+      </table>`);
 
-    // Card 3: Calculadora (approved — keeping as is)
-    const calcL = {pt:'CALCULADORA',en:'CALCULATOR',es:'CALCULADORA',fr:'CALCULATEUR',de:'RECHNER',it:'CALCOLATORE',ar:'حاسبة'}[lang]||'CALCULATOR';
+    // ═══ Card 3: CALCULADORA (approved) ═══
+    const calcL = {pt:'CALCULADORA POSITION SIZE',en:'POSITION SIZE CALCULATOR',es:'CALCULADORA POSITION SIZE',fr:'CALCULATEUR POSITION SIZE',de:'POSITION SIZE RECHNER',it:'CALCOLATORE POSITION SIZE',ar:'حاسبة حجم المركز'}[lang]||'POSITION SIZE CALCULATOR';
     const calcAccL = {pt:'Conta',en:'Account',es:'Cuenta',fr:'Compte',de:'Konto',it:'Conto',ar:'حساب'}[lang]||'Account';
-    const calcRiskL = {pt:'Risco',en:'Risk',es:'Riesgo',fr:'Risque',de:'Risiko',it:'Rischio',ar:'مخاطرة'}[lang]||'Risk';
+    const calcRiskL = {pt:'Risco %',en:'Risk %',es:'Riesgo %',fr:'Risque %',de:'Risiko %',it:'Rischio %',ar:'مخاطرة %'}[lang]||'Risk %';
+    const calcSL = 'Stop Loss';
     const calcLotsL = {pt:'Lotes',en:'Lots',es:'Lotes',fr:'Lots',de:'Lots',it:'Lotti',ar:'لوتات'}[lang]||'Lots';
-    const calcRes = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.18);border-radius:8px;" role="presentation"><tr><td style="padding:8px 10px;color:${GLD};font-size:10px;font-weight:600;font-family:${FI};">${calcLotsL}</td><td style="padding:8px 10px;text-align:right;color:${GLD};font-size:16px;font-weight:900;font-family:${FI};">3.0</td></tr></table>`;
-    const c3 = muCard(muLbl(calcL,GLD) + muFld(calcAccL,'$50,000') + muFld(calcRiskL,'1.5%') + calcRes);
+    const calcRiskV = {pt:'Risco $',en:'Risk $',es:'Riesgo $',fr:'Risque $',de:'Risiko $',it:'Rischio $',ar:'مخاطرة $'}[lang]||'Risk $';
+    const goldRes = (label,value) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.18);border-radius:8px;margin-bottom:5px;" role="presentation"><tr><td style="padding:7px 10px;color:${GLD};font-size:9px;font-weight:600;font-family:${FI};">${label}</td><td style="padding:7px 10px;text-align:right;color:${GLD};font-size:14px;font-weight:900;font-family:${FI};">${value}</td></tr></table>`;
+    const c3 = muCard(muLbl(calcL,GLD) + muFld(calcAccL,'$50,000') + muFld(calcRiskL,'1.5%') + muFld(calcSL,'25 pts') + goldRes(calcLotsL,'3.0') + goldRes(calcRiskV,'$750'));
 
-    // Card 4: Quiz (approved — keeping as is)
-    const qzL = {pt:'QUIZ',en:'QUIZ',es:'QUIZ',fr:'QUIZ',de:'QUIZ',it:'QUIZ',ar:'اختبار'}[lang]||'QUIZ';
+    // ═══ Card 4: QUIZ (approved + 3 options + progress bar) ═══
+    const qzL = {pt:'QUIZ — SUA FIRMA IDEAL',en:'QUIZ — YOUR IDEAL FIRM',es:'QUIZ — TU FIRMA IDEAL',fr:'QUIZ — VOTRE FIRME IDÉALE',de:'QUIZ — DEINE IDEALE FIRMA',it:'QUIZ — LA TUA FIRMA IDEALE',ar:'اختبار — شركتك المثالية'}[lang]||'QUIZ — YOUR IDEAL FIRM';
     const qzQ = {pt:'Qual mercado você opera?',en:'Which market do you trade?',es:'¿Qué mercado operas?',fr:'Quel marché tradez-vous ?',de:'Welchen Markt tradest du?',it:'Quale mercato operi?',ar:'أي سوق تتداول؟'}[lang]||'Which market do you trade?';
     const qzOpt = (txt,sel) => {
       const bg = sel ? 'rgba(168,85,247,.10)' : 'rgba(255,255,255,.06)';
       const br = sel ? 'rgba(168,85,247,.25)' : 'rgba(255,255,255,.10)';
       const tc = sel ? PRP : 'rgba(255,255,255,.5)';
       const dot = sel ? `background:${PRP};box-shadow:inset 0 0 0 2px rgba(0,0,0,.3);` : `border:1.5px solid rgba(255,255,255,.15);`;
-      return `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${bg};border:1px solid ${br};border-radius:8px;margin-bottom:5px;" role="presentation"><tr><td width="18" style="padding:8px 0 8px 10px;"><div style="width:12px;height:12px;border-radius:50%;${dot}"></div></td><td style="padding:8px 10px;color:${tc};font-size:11px;font-weight:600;font-family:${FI};">${txt}</td></tr></table>`;
+      return `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${bg};border:1px solid ${br};border-radius:8px;margin-bottom:5px;" role="presentation"><tr><td width="18" style="padding:7px 0 7px 10px;"><div style="width:12px;height:12px;border-radius:50%;${dot}"></div></td><td style="padding:7px 10px;color:${tc};font-size:10px;font-weight:600;font-family:${FI};">${txt}</td></tr></table>`;
     };
-    const futL = {pt:'Futuros (ES, NQ)',en:'Futures (ES, NQ)'}[lang]||'Futures (ES, NQ)';
-    const fxL = {pt:'Forex (EUR/USD)',en:'Forex (EUR/USD)'}[lang]||'Forex (EUR/USD)';
-    const c4 = muCard(muLbl(qzL,PRP) + `<div style="color:rgba(255,255,255,.75);font-size:12px;font-weight:700;margin-bottom:10px;font-family:${FI};">${qzQ}</div>` + qzOpt(futL,true) + qzOpt(fxL,false));
+    const futL = {pt:'Futuros (ES, NQ, CL)',en:'Futures (ES, NQ, CL)'}[lang]||'Futures (ES, NQ, CL)';
+    const fxL = {pt:'Forex (EUR/USD, GBP)',en:'Forex (EUR/USD, GBP)'}[lang]||'Forex (EUR/USD, GBP)';
+    const bothL = {pt:'Ambos',en:'Both',es:'Ambos',fr:'Les deux',de:'Beide',it:'Entrambi',ar:'كلاهما'}[lang]||'Both';
+    const progressBar = `<div style="margin-top:6px;height:3px;background:rgba(255,255,255,.10);border-radius:2px;"><div style="height:100%;width:60%;background:linear-gradient(90deg,${CYN},${PRP});border-radius:2px;"></div></div>`;
+    const c4 = muCard(muLbl(qzL,PRP) + `<div style="color:rgba(255,255,255,.75);font-size:12px;font-weight:700;margin-bottom:10px;font-family:${FI};">${qzQ}</div>` + qzOpt(futL,true) + qzOpt(fxL,false) + qzOpt(bothL,false) + progressBar);
 
-    // Card 5: Análise Diária — tags with colored bg like firm pills
+    // ═══ Card 5: ANÁLISE DIÁRIA — chart-like with S/R levels ═══
     const anL = {pt:'ANÁLISE DIÁRIA',en:'DAILY ANALYSIS',es:'ANÁLISIS DIARIO',fr:'ANALYSE QUOTIDIENNE',de:'TÄGLICHE ANALYSE',it:'ANALISI GIORNALIERA',ar:'تحليل يومي'}[lang]||'DAILY ANALYSIS';
-    const anTag = (n,fc) => `<span style="display:inline-block;padding:6px 14px;background:rgba(${fc},.10);border:1px solid rgba(${fc},.20);border-radius:6px;font-size:12px;font-weight:800;color:rgb(${fc});font-family:${FI};margin:0 4px 6px 0;">${n}</span>`;
     const anTime = {pt:'Todos os dias às 6h',en:'Every day at 6AM',es:'Todos los días a las 6h',fr:'Chaque jour à 6h',de:'Täglich um 6 Uhr',it:'Ogni giorno alle 6',ar:'كل يوم الساعة 6'}[lang]||'Every day at 6AM';
-    const c5 = muCard(muLbl(anL,RED) + `<div style="margin-bottom:8px;">${anTag('ES','249,115,22')}${anTag('NQ','14,165,233')}${anTag('GC','240,180,41')}${anTag('CL','239,68,68')}</div><div style="color:rgba(255,255,255,.5);font-size:10px;font-family:${FI};">${anTime}</div>`);
+    const supL = {pt:'SUPORTE',en:'SUPPORT',es:'SOPORTE'}[lang]||'SUPPORT';
+    const resL = {pt:'RESISTÊNCIA',en:'RESISTANCE',es:'RESISTENCIA'}[lang]||'RESISTANCE';
+    const srBox = (label,value,bg,tc) => `<td width="50%" style="padding:2px;"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${bg};border-radius:6px;" role="presentation"><tr><td style="padding:5px 8px;"><div style="color:rgba(255,255,255,.4);font-size:7px;font-weight:700;font-family:${FI};">${label}</div><div style="color:${tc};font-size:13px;font-weight:800;font-family:${FI};">${value}</div></td></tr></table></td>`;
+    const anTags = [{n:'SMC'},{n:'Macro'},{n:'FOMC'}].map(t2=>`<span style="display:inline-block;padding:3px 8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);border-radius:4px;font-size:8px;font-weight:700;color:rgba(255,255,255,.5);font-family:${FI};margin:0 3px 0 0;">${t2.n}</span>`).join('');
+    const c5 = muCard(muLbl(anL,RED)
+      + `<div style="margin-bottom:6px;"><span style="color:#fff;font-size:11px;font-weight:700;font-family:${FI};">ES / NQ</span><span style="color:${GRN};font-size:10px;font-weight:700;margin-left:6px;font-family:${FI};">+0.42%</span></div>`
+      + `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:6px;" role="presentation"><tr>${srBox(supL+' 1','5,580','rgba(239,68,68,.08)','#EF4444')}${srBox(resL+' 1','5,650','rgba(34,197,94,.08)',GRN)}</tr></table>`
+      + `<div style="margin-top:4px;">${anTags}</div>`
+      + `<div style="color:rgba(255,255,255,.35);font-size:9px;margin-top:6px;font-family:${FI};">${anTime}</div>`);
 
-    // Card 6: Calendário — events with colored bg rows
-    const calL = {pt:'CALENDÁRIO',en:'CALENDAR',es:'CALENDARIO',fr:'CALENDRIER',de:'KALENDER',it:'CALENDARIO',ar:'تقويم'}[lang]||'CALENDAR';
-    const calEv = (time,name,fc) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(${fc},.06);border:1px solid rgba(${fc},.12);border-radius:6px;margin-bottom:4px;" role="presentation"><tr><td width="38" style="padding:6px 0 6px 8px;color:rgba(255,255,255,.4);font-size:9px;font-weight:700;font-family:${FI};">${time}</td><td width="5" style="padding:0 4px;"><div style="width:4px;height:14px;border-radius:2px;background:rgb(${fc});"></div></td><td style="padding:6px 8px;color:rgba(255,255,255,.75);font-size:10px;font-weight:600;font-family:${FI};">${name}</td></tr></table>`;
-    const c6 = muCard(muLbl(calL,GRN) + calEv('08:30','Non-Farm Payrolls','239,68,68') + calEv('10:00','ISM Manufacturing','240,180,41') + calEv('14:00','FOMC Minutes','239,68,68'));
+    // ═══ Card 6: BLOG + CALENDÁRIO (combined like site) ═══
+    const calBlogL = {pt:'BLOG + CALENDÁRIO',en:'BLOG + CALENDAR',es:'BLOG + CALENDARIO',fr:'BLOG + CALENDRIER',de:'BLOG + KALENDER',it:'BLOG + CALENDARIO',ar:'مدونة + تقويم'}[lang]||'BLOG + CALENDAR';
+    const blogRow = (cat,catC,title) =>
+      `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;margin-bottom:4px;" role="presentation">
+        <tr><td style="padding:6px 10px;">
+          <div style="color:${catC};font-size:7px;font-weight:700;text-transform:uppercase;font-family:${FI};">${cat}</div>
+          <div style="color:rgba(255,255,255,.75);font-size:9px;font-weight:700;font-family:${FI};">${title}</div>
+        </td></tr>
+      </table>`;
+    const calRow = (time,name,impC) =>
+      `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:3px;" role="presentation">
+        <tr><td width="30" style="color:rgba(255,255,255,.35);font-size:8px;font-weight:700;font-family:${FI};">${time}</td>
+        <td width="5"><div style="width:3px;height:12px;border-radius:1px;background:${impC};"></div></td>
+        <td style="padding-left:6px;"><div style="color:rgba(255,255,255,.7);font-size:8px;font-weight:600;font-family:${FI};">${name}</div><div style="color:rgba(255,255,255,.25);font-size:7px;font-family:${FI};">USD</div></td></tr>
+      </table>`;
+    const initL = {pt:'INICIANTE',en:'BEGINNER',es:'PRINCIPIANTE'}[lang]||'BEGINNER';
+    const intL = {pt:'INTERMEDIÁRIO',en:'INTERMEDIATE',es:'INTERMEDIO'}[lang]||'INTERMEDIATE';
+    const blogT1 = {pt:'Sua Primeira Prop Firm: Guia',en:'Your First Prop Firm: Guide',es:'Tu Primera Prop Firm: Guía'}[lang]||'Your First Prop Firm: Guide';
+    const blogT2 = {pt:'Trailing vs Static Drawdown',en:'Trailing vs Static Drawdown',es:'Trailing vs Static Drawdown'}[lang]||'Trailing vs Static Drawdown';
+    const c6 = muCard(muLbl(calBlogL,GRN)
+      + blogRow(initL,GRN,blogT1)
+      + blogRow(intL,GLD,blogT2)
+      + `<div style="margin-top:6px;">`
+      + calRow('08:30','Non-Farm Payrolls',RED)
+      + calRow('10:00','ISM Manufacturing',GLD)
+      + calRow('14:00','FOMC Minutes',RED)
+      + `</div>`);
 
     cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DK};border-radius:16px;margin-bottom:20px;" role="presentation">
       <tr><td style="padding:4px;">
