@@ -6,6 +6,11 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "https://qfwhduvutfumsaxnuo
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const SITE_URL = "www.marketscoupons.com";
 
+function siteLink(path = "", campaign = "general") {
+  const base = `https://${SITE_URL}${path}`;
+  return `${base}${base.includes("?") ? "&" : "?"}utm_source=telegram&utm_medium=social&utm_campaign=${campaign}`;
+}
+
 const tgApi = (method: string) =>
   `https://api.telegram.org/bot${BOT_TOKEN}/${method}`;
 
@@ -99,7 +104,7 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
   const text =
     `🔥 <b>Today's Best Prop Firm Deals</b>\n\n` +
     lines.join("\n\n") +
-    `\n\n👉 All coupons: https://${SITE_URL}`;
+    `\n\n👉 <a href="${siteLink("", "coupons")}">All coupons → marketscoupons.com</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "coupons");
@@ -140,7 +145,7 @@ async function handleAnalysis(db: ReturnType<typeof createClient>) {
     `<b>Resistance 1</b>\n${data.resistance_1}\n\n` +
     `<b>Attention zone</b>\n${az}\n\n` +
     `${ni}\n\n` +
-    `For the full analysis, visit https://${SITE_URL}/analysis`;
+    `📊 <a href="${siteLink("/analysis", "analysis")}">Full Analysis → marketscoupons.com</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "analysis");
@@ -182,7 +187,7 @@ async function handleGex(db: ReturnType<typeof createClient>) {
     `<b>Put Wall &amp; Call Wall</b>\n` +
     `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
     `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
-    `To access all Gamma Exposure (GEX) regions for NQ and ES, visit https://${SITE_URL}/gamma`;
+    `🎯 <a href="${siteLink("/gamma", "gex")}">Full GEX Data → marketscoupons.com</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "gex");
@@ -246,7 +251,7 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
   const text =
     `📅 <b>Economic Calendar</b>\n${today}\n\n` +
     lines.join("\n") +
-    `\n\n📊 <a href="https://${SITE_URL}/calendar">Full Calendar</a>`;
+    `\n\n📊 <a href="${siteLink("/calendar", "calendar")}">Full Calendar</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "calendar_daily");
@@ -326,7 +331,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       `${dot} <b>${name}</b> ${stars} in 5 min\n` +
       `🕐 ${timeDisplay}\n` +
       (statsLine ? `📊 ${statsLine}\n` : "") +
-      `\n📅 <a href="https://${SITE_URL}/calendar">Full Calendar</a>`;
+      `\n📅 <a href="${siteLink("/calendar", "calendar_alert")}">Full Calendar</a>`;
 
     const msgId = await sendMessage(text);
     if (msgId) await storeMessageId(db, msgId, "calendar_alert");
@@ -352,14 +357,14 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
       `• Exclusive coupons not available to free users\n` +
       `• Advanced market analysis features\n` +
       `• Early access to new prop firm partnerships\n\n` +
-      `👉 Learn more: https://${SITE_URL}/pro`;
+      `👉 <a href="${siteLink("/pro", "pro")}">Learn more → marketscoupons.com</a>`;
   } else {
     text =
       `💰 <b>Loyalty Program — Earn Points</b>\n\n` +
       `Shop through our links and earn loyalty points!\n\n` +
       `🎁 Points unlock: exclusive perks, bigger discounts, priority access\n` +
       `📊 Track your points in your dashboard\n\n` +
-      `👉 Start earning: https://${SITE_URL}`;
+      `👉 <a href="${siteLink("", "loyalty")}">Start earning → marketscoupons.com</a>`;
   }
 
   const msgId = await sendMessage(text);
@@ -397,7 +402,7 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     couponLine + `\n\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    `\n👉 Claim this deal: ${firm.link ?? `https://${SITE_URL}`}`;
+    `\n👉 <a href="${firm.link ?? siteLink("", "flash_promo")}">Claim this deal → ${firm.name}</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
