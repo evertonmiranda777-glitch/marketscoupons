@@ -9397,12 +9397,21 @@ async function tgPreviewAnalysis(){
     const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
     const assetPick = assets[dayOfYear % assets.length];
     const assetNames = {ES:'S&P 500 Futures',NQ:'Nasdaq 100 Futures',GC:'Gold Futures',CL:'Crude Oil Futures'};
-    const {data,error} = await db.from('daily_analysis')
-      .select('asset,support_1,resistance_1,attention_zone,news_impact')
+    // Try today first, fallback to most recent
+    let {data,error} = await db.from('daily_analysis')
+      .select('asset,date,support_1,resistance_1,attention_zone,news_impact')
       .eq('date', new Date().toISOString().slice(0,10))
       .eq('asset', assetPick)
       .maybeSingle();
-    if(error || !data){ st.textContent='Sem análise para hoje ('+assetPick+')'; st.className='tg-status err'; return; }
+    if(!data){
+      const r2 = await db.from('daily_analysis')
+        .select('asset,date,support_1,resistance_1,attention_zone,news_impact')
+        .eq('asset', assetPick)
+        .order('date',{ascending:false}).limit(1).maybeSingle();
+      data = r2.data;
+    }
+    if(error || !data){ st.textContent='Sem análise disponível ('+assetPick+')'; st.className='tg-status err'; return; }
+    const dateLabel = data.date === new Date().toISOString().slice(0,10) ? '' : ' (dados de '+data.date+')';
     const az = typeof data.attention_zone === 'object' ? (data.attention_zone.en||data.attention_zone.pt||'') : (data.attention_zone||'');
     const ni = typeof data.news_impact === 'object' ? (data.news_impact.en||data.news_impact.pt||'') : (data.news_impact||'');
     const text =
@@ -9414,7 +9423,8 @@ async function tgPreviewAnalysis(){
       `<b>Attention zone</b>\n${az}\n\n` +
       `${ni}\n\n` +
       `For the full analysis, visit https://www.marketscoupons.com/analysis`;
-    st.textContent = ''; st.className = 'tg-status';
+    if(dateLabel) st.textContent = 'Preview com dados anteriores'+dateLabel; else { st.textContent = ''; }
+    st.className = dateLabel ? 'tg-status loading' : 'tg-status';
     tgPreviewShow(tgHtmlToPreview(text), '📊 Full Analysis → marketscoupons.com', 'https://www.marketscoupons.com/analysis', async () => {
       const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -9438,12 +9448,20 @@ async function tgPreviewGex(){
     const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
     const tickerPick = tickers[dayOfYear % tickers.length];
     const tickerNames = {ES:'S&P 500 Futures',NQ:'Nasdaq 100 Futures'};
-    const {data,error} = await db.from('gex_levels')
-      .select('ticker,put_wall,call_wall,spot_price')
+    let {data,error} = await db.from('gex_levels')
+      .select('ticker,date,put_wall,call_wall,spot_price')
       .eq('date', new Date().toISOString().slice(0,10))
       .eq('ticker', tickerPick)
       .maybeSingle();
-    if(error || !data){ st.textContent='Sem GEX para hoje ('+tickerPick+')'; st.className='tg-status err'; return; }
+    if(!data){
+      const r2 = await db.from('gex_levels')
+        .select('ticker,date,put_wall,call_wall,spot_price')
+        .eq('ticker', tickerPick)
+        .order('date',{ascending:false}).limit(1).maybeSingle();
+      data = r2.data;
+    }
+    if(error || !data){ st.textContent='Sem GEX disponível ('+tickerPick+')'; st.className='tg-status err'; return; }
+    const gexDateLabel = data.date === new Date().toISOString().slice(0,10) ? '' : ' (dados de '+data.date+')';
     const text =
       `<b>🎯 Gamma Exposure (GEX)</b>\n` +
       `Track market maker Gamma Exposure levels on S&P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price movement.\n` +
@@ -9455,7 +9473,8 @@ async function tgPreviewGex(){
       `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
       `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
       `To access all Gamma Exposure (GEX) regions for NQ and ES, visit https://www.marketscoupons.com/gamma`;
-    st.textContent = ''; st.className = 'tg-status';
+    if(gexDateLabel) st.textContent = 'Preview com dados anteriores'+gexDateLabel; else { st.textContent = ''; }
+    st.className = gexDateLabel ? 'tg-status loading' : 'tg-status';
     tgPreviewShow(tgHtmlToPreview(text), '🎯 Full GEX Data → marketscoupons.com', 'https://www.marketscoupons.com/gamma', async () => {
       const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -9483,15 +9502,18 @@ async function tgPreviewCalendar(){
       const json = await resp.json();
       events = (json.events||json||[]).filter(e => {
         const imp = (e.impact||e.importance||'').toLowerCase();
-        return imp === 'high' || imp === 'h' || imp === '3' || e.stars >= 3;
+        const s = e.stars||0;
+        return imp === 'high' || imp === 'medium' || imp === 'h' || imp === 'm' || imp === '3' || imp === '2' || s >= 2;
       });
     }
-    if(!events.length){ st.textContent = 'Sem eventos high-impact hoje.'; st.className = 'tg-status err'; return; }
-    const evLines = events.slice(0,8).map(e => {
+    if(!events.length){ st.textContent = 'Sem eventos ★★★/★★☆ hoje.'; st.className = 'tg-status err'; return; }
+    const evLines = events.slice(0,10).map(e => {
       const time = e.time || e.date_time || '';
       const name = e.event || e.title || '';
       const cur = e.currency || e.country || '';
-      return `🔴 ${time} ET — ${name} (${cur}) ★★★`;
+      const imp = (e.impact||e.importance||'').toLowerCase();
+      const isHigh = imp === 'high' || imp === 'h' || imp === '3' || (e.stars||0) >= 3;
+      return `${isHigh?'🔴':'🟡'} ${time} ET — ${name} (${cur}) ${isHigh?'★★★':'★★☆'}`;
     }).join('\n');
     const today = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
     const text =
