@@ -109,40 +109,70 @@ function buildCronEmail(firms, lang) {
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
   const promoCards = firms.map(f => `
-    <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:20px;margin-bottom:12px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <strong style="color:#EDF2F7;font-size:16px;">${f.name}</strong>
-        <span style="color:#22C55E;font-size:20px;font-weight:800;">${f.discount}% ${t('off')}</span>
+    <div style="background:#10151F;border:1px solid #1C2535;border-radius:12px;padding:20px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;margin-bottom:12px;">
+        ${f.icon_url ? `<img src="https://www.marketscoupons.com/${f.icon_url}" width="36" height="36" style="width:36px;height:36px;border-radius:8px;margin-right:12px;object-fit:contain;background:${(f.color || '#F0B429')}22;">` : `<div style="width:36px;height:36px;border-radius:8px;background:${(f.color || '#F0B429')}22;display:flex;align-items:center;justify-content:center;margin-right:12px;font-size:16px;font-weight:900;color:${f.color || '#F0B429'}">${f.name[0]}</div>`}
+        <div style="flex:1;">
+          <div style="color:#EDF2F7;font-size:16px;font-weight:800;">${f.name}</div>
+          <div style="color:#7A8FA6;font-size:11px;margin-top:2px;">${f.type || ''}${f.split ? ' · Split ' + f.split : ''}${f.rating ? ' · ' + f.rating.toFixed(1) + ' Trustpilot' : ''}</div>
+        </div>
+        <div style="text-align:center;margin-left:10px;">
+          <div style="color:#22C55E;font-size:22px;font-weight:900;">${f.discount}%</div>
+          <div style="color:#3D4F63;font-size:9px;font-weight:700;">${t('off')}</div>
+        </div>
       </div>
-      <div style="color:#7A8FA6;font-size:13px;margin-bottom:12px;">${f.description || ''}</div>
-      ${f.coupon ? `<div style="background:#0B0F16;border:1px dashed #F0B429;border-radius:8px;padding:10px 16px;text-align:center;">
-        <div style="color:#7A8FA6;font-size:10px;text-transform:uppercase;letter-spacing:1px;">${t('exclusive_coupon')}</div>
-        <div style="color:#F0B429;font-size:18px;font-weight:800;letter-spacing:2px;margin-top:4px;">${f.coupon}</div>
-        <div style="color:#7A8FA6;font-size:10px;margin-top:4px;">${t('paste_checkout')}</div>
-      </div>` : `<div style="color:#22C55E;font-size:13px;">&#10003; ${t('auto_discount')}</div>`}
-      <a href="${f.link}" style="display:block;text-align:center;background:#F0B429;color:#07090D;padding:12px;border-radius:8px;font-weight:700;text-decoration:none;margin-top:12px;">${t('see_plans')} →</a>
+      <div style="color:#7A8FA6;font-size:13px;line-height:1.5;margin-bottom:14px;">${f.description || ''}</div>
+      ${f.coupon ? `<div style="background:#0B0F16;border:1px dashed #F0B429;border-radius:10px;padding:12px 16px;text-align:center;margin-bottom:14px;">
+        <div style="color:#3D4F63;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">${t('exclusive_coupon')}</div>
+        <div style="color:#F0B429;font-size:20px;font-weight:900;letter-spacing:4px;margin-top:4px;">${f.coupon}</div>
+        <div style="color:#3D4F63;font-size:10px;margin-top:4px;">${t('paste_checkout')}</div>
+      </div>` : `<div style="color:#22C55E;font-size:13px;font-weight:600;margin-bottom:14px;">&#10003; ${t('auto_discount')}</div>`}
+      <a href="${f.link}" style="display:block;text-align:center;background:linear-gradient(135deg,${f.color || '#F0B429'},${f.color || '#F0B429'}cc);color:#fff;padding:14px;border-radius:10px;font-weight:800;font-size:14px;text-decoration:none;letter-spacing:0.5px;">${t('see_plans')} &rarr;</a>
     </div>
   `).join('');
 
   return `<!DOCTYPE html>
 <html dir="${dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background:#07090D;font-family:Arial,Helvetica,sans-serif;">
-<div style="max-width:600px;margin:0 auto;background:#07090D;padding:32px 24px;">
-  <div style="text-align:center;margin-bottom:24px;">
-    <div style="font-size:22px;font-weight:800;color:#EDF2F7;">Markets<span style="color:#F0B429;">Coupons</span></div>
-    <div style="color:#7A8FA6;font-size:13px;margin-top:4px;">${t('tagline')}</div>
+<div style="max-width:600px;margin:0 auto;background:#07090D;">
+
+  <!-- Gold gradient top bar -->
+  <div style="height:4px;background:linear-gradient(90deg,#F0B429,#22C55E,#F0B429);"></div>
+
+  <!-- Header -->
+  <div style="text-align:center;padding:28px 24px 14px;">
+    <div style="font-size:24px;font-weight:900;">
+      <span style="color:#EDF2F7;">Markets</span><span style="color:#F0B429;">Coupons</span>
+      <span style="display:inline-block;width:7px;height:7px;background:#22C55E;border-radius:50%;margin-left:4px;vertical-align:middle;"></span>
+    </div>
+    <div style="color:#3D4F63;font-size:9px;font-weight:700;letter-spacing:3px;margin-top:6px;">${t('tagline').toUpperCase()}</div>
   </div>
-  <div style="font-size:15px;color:#EDF2F7;margin-bottom:8px;">${t('greeting')}</div>
-  <div style="color:#7A8FA6;font-size:14px;margin-bottom:20px;line-height:1.6;">${t('intro')}</div>
-  ${promoCards}
-  <div style="text-align:center;margin-top:24px;">
-    <a href="https://www.marketscoupons.com" style="color:#F0B429;font-size:13px;text-decoration:underline;">${t('see_all')} →</a>
+
+  <div style="padding:0 24px 28px;">
+    <div style="font-size:15px;color:#EDF2F7;font-weight:600;margin-bottom:6px;">${t('greeting')}</div>
+    <div style="color:#7A8FA6;font-size:14px;margin-bottom:20px;line-height:1.7;">${t('intro')}</div>
+
+    ${promoCards}
+
+    <div style="text-align:center;margin-top:20px;">
+      <a href="https://www.marketscoupons.com" style="color:#F0B429;font-size:13px;font-weight:600;text-decoration:underline;">${t('see_all')} &rarr;</a>
+    </div>
   </div>
-  <hr style="border:none;border-top:1px solid #1C2535;margin:24px 0;">
-  <div style="text-align:center;color:#3D4F63;font-size:11px;">
-    ${t('footer')}<br>
-    <a href="https://www.marketscoupons.com" style="color:#3D4F63;">${t('unsub')}</a>
+
+  <!-- Footer -->
+  <div style="border-top:1px solid #1C2535;padding:20px 24px;text-align:center;">
+    <div style="font-size:14px;font-weight:900;">
+      <span style="color:#EDF2F7;">Markets</span><span style="color:#F0B429;">Coupons</span>
+    </div>
+    <div style="color:#3D4F63;font-size:10px;margin-top:4px;">www.marketscoupons.com</div>
+    <div style="color:#3D4F63;font-size:11px;margin-top:12px;line-height:1.6;">
+      ${t('footer')}<br>
+      <a href="https://www.marketscoupons.com" style="color:#3D4F63;">${t('unsub')}</a>
+    </div>
   </div>
+
+  <!-- Gold gradient bottom bar -->
+  <div style="height:4px;background:linear-gradient(90deg,#F0B429,#22C55E,#F0B429);"></div>
 </div>
 </body></html>`;
 }
