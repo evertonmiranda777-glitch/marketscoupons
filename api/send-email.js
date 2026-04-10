@@ -79,7 +79,7 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: `Invalid email(s): ${invalidEmails.map(r => r.email).join(', ').slice(0, 200)}` });
   }
 
-  const senderInfo = sender || { name: 'Markets Coupons', email: 'offers@marketscoupons.com' };
+  const senderInfo = sender || { name: 'Lara | MarketsCoupons', email: 'lara@marketscoupons.com' };
 
   // Brevo: batch send (max 50 per request, we chunk)
   const results = [];
