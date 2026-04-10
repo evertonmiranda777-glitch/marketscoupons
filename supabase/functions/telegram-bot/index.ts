@@ -16,7 +16,7 @@ const tgApi = (method: string) =>
 
 async function sendMessage(text: string, buttons?: Array<Array<{text:string;url:string}>>): Promise<number | null> {
   try {
-    const body: Record<string, unknown> = { chat_id: CHAT_ID, text, parse_mode: "HTML" };
+    const body: Record<string, unknown> = { chat_id: CHAT_ID, text, parse_mode: "HTML", disable_web_page_preview: true };
     if (buttons) body.reply_markup = { inline_keyboard: buttons };
     const res = await fetch(tgApi("sendMessage"), {
       method: "POST",
