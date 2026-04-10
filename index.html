@@ -266,8 +266,13 @@
 window.dataLayer=window.dataLayer||[];
 function loadTracking(){
   if(window._trackingLoaded)return;window._trackingLoaded=true;
-  // GTM only — GA4 and Facebook Pixel are configured as tags inside GTM
+  // GTM
   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WJGTVX8G');
+  // Facebook Pixel (direct fallback — ensures fbq exists even if GTM tag fails)
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','813048241061812');fbq('track','PageView');
+  // GA4 (direct fallback)
+  if(!window.gtag){var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id=G-CZ3L00NY77';document.head.appendChild(gs);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','G-CZ3L00NY77');}
 }
 // Auto-load if already consented
 if(localStorage.getItem('mc-cookies-consent')==='accepted')loadTracking();
