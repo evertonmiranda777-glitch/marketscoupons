@@ -160,7 +160,7 @@ async function handleGex(db: ReturnType<typeof createClient>) {
 
   const { data, error } = await db
     .from("gex_levels")
-    .select("ticker, put_wall, call_wall, zero_gamma, vol_trigger, max_pain, hvl, total_gex, spot_price")
+    .select("ticker, put_wall, call_wall, spot_price")
     .eq("date", today)
     .eq("ticker", tickerPick)
     .maybeSingle();
@@ -177,14 +177,11 @@ async function handleGex(db: ReturnType<typeof createClient>) {
     `Track market maker Gamma Exposure levels on S&P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price movement.\n` +
     `Updated every business day at 5:00 AM ET.\n\n` +
     `<b>${data.ticker} ${tickerNames[data.ticker] || data.ticker}</b>\n\n` +
-    `📍 <b>Spot Price:</b> ${fmt(data.spot_price)}\n\n` +
-    `🟢 <b>Call Wall:</b> ${fmt(data.call_wall)} — Resistance\n` +
-    `🔴 <b>Put Wall:</b> ${fmt(data.put_wall)} — Support\n` +
-    `⚡ <b>Zero Gamma:</b> ${fmt(data.zero_gamma)} — Gamma Flip\n` +
-    `📊 <b>Vol Trigger:</b> ${fmt(data.vol_trigger)} — Volatility threshold\n` +
-    `💀 <b>Max Pain:</b> ${fmt(data.max_pain)} — Options expiry magnet\n` +
-    `📈 <b>HVL:</b> ${fmt(data.hvl)} — Highest Volume Level\n` +
-    `🔋 <b>Total GEX:</b> ${data.total_gex || 0}M$\n\n` +
+    `<b>Put Wall</b>\n${fmt(data.put_wall)} — Support\n\n` +
+    `<b>Call Wall</b>\n${fmt(data.call_wall)} — Resistance\n\n` +
+    `<b>Put Wall &amp; Call Wall</b>\n` +
+    `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
+    `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
     `To access all Gamma Exposure (GEX) regions for NQ and ES, visit https://${SITE_URL}/gamma`;
 
   const msgId = await sendMessage(text, [[{ text: "🎯 Full GEX Data → marketscoupons.com", url: `https://${SITE_URL}/gamma` }]]);
