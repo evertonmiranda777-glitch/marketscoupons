@@ -1275,7 +1275,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <div class="seg-grid" id="seg-grid">
          <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos</div>
          <div class="seg-opt" onclick="toggleSeg(this,'leads')">Leads</div>
-         <div class="seg-opt" onclick="toggleSeg(this,'subscribers')">Subscribers</div>
+         <div class="seg-opt" onclick="toggleSeg(this,'subscribers')">Inscritos</div>
          <div class="seg-opt" onclick="toggleSeg(this,'loyalty')">Fidelidade</div>
        </div>
        <div style="margin-top:6px;">
@@ -1321,10 +1321,22 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <textarea id="em-body" rows="12" placeholder="Hey {nome}, ..."></textarea>
      </div>
 
+     <!-- Queue status -->
+     <div id="email-queue-status" style="display:none;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;margin-bottom:12px;">
+       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+         <div style="font-size:11px;font-weight:700;color:var(--t1);">Fila de Envio</div>
+         <button class="btn-secondary" style="font-size:9px;padding:3px 8px;" onclick="clearEmailQueue()">Limpar fila</button>
+       </div>
+       <div id="email-queue-info" style="font-size:11px;color:var(--t2);"></div>
+       <div style="background:var(--b1);border-radius:3px;height:5px;margin-top:6px;overflow:hidden;"><div id="email-queue-bar" style="background:var(--green);height:100%;width:0%;transition:width .3s;"></div></div>
+       <button class="btn-primary" style="margin-top:8px;font-size:11px;padding:8px 16px;width:100%;" onclick="resumeEmailQueue()">Continuar Envio (proximo lote)</button>
+     </div>
+
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-primary" onclick="previewEmail()">Preview</button>
        <button class="btn-secondary" onclick="sendTestEmail()" title="Envia para o email do admin logado">Enviar Teste</button>
-       <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar para todos</button>
+       <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar lote</button>
+       <button class="btn-secondary" onclick="startEmailQueue()">Enviar para todos (fila)</button>
        <button class="btn-secondary" onclick="saveTemplate()">Salvar template</button>
      </div>
    </div>
@@ -1360,7 +1372,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <!-- SUBSCRIBERS MANAGEMENT -->
  <div style="margin-top:24px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;">
    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-     <div style="font-size:14px;font-weight:700;color:var(--t1);">Lista de Subscribers</div>
+     <div style="font-size:14px;font-weight:700;color:var(--t1);">Lista de Inscritos</div>
      <div style="display:flex;gap:8px;">
        <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="document.getElementById('sub-add-row').classList.toggle('hide')">+ Adicionar</button>
        <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="loadSubscribersList()">Atualizar</button>
@@ -2562,7 +2574,7 @@ function renderPage(p){
       renderEmailFirmaChips();
       loadEmailStats();
       updateDestCount();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'pro':            renderProPage(); break;
@@ -3719,14 +3731,20 @@ async function getSegmentedLeads(){
   const {data}=await db.from('loyalty_members').select('email,name,idioma').neq('email',null);
   if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',lang:langFromCode(m.idioma),source:'loyalty',firma:''})));
  }
- // Subscribers from Supabase
+ // Subscribers from Supabase (paginated — no 1000 limit)
  if(needAll||emailSegments.includes('subscribers')){
-  const {data}=await db.from('email_subscribers').select('email,name,lang,tags').eq('status','active');
-  if(data) results.push(...data.map(s=>{
-   const tags = s.tags||[];
-   const firmTag = tags.find(t => t!=='imported'&&t!=='site'&&t!=='lead'&&t!=='csv-direct'&&t!=='manual') || '';
-   return {email:s.email,name:s.name||'',lang:s.lang||'pt',source:'subscriber',firma:firmTag};
-  }));
+  let from=0; const PG=1000;
+  while(true){
+   const {data}=await db.from('email_subscribers').select('email,name,lang,tags').eq('status','active').range(from,from+PG-1);
+   if(!data||!data.length) break;
+   results.push(...data.map(s=>{
+    const tags = s.tags||[];
+    const firmTag = tags.find(t => t!=='imported'&&t!=='site'&&t!=='lead'&&t!=='csv-direct'&&t!=='manual') || '';
+    return {email:s.email,name:s.name||'',lang:s.lang||'pt',source:'subscriber',firma:firmTag};
+   }));
+   if(data.length<PG) break;
+   from+=PG;
+  }
  }
  // Deduplicate by email (keep first = most specific lang)
  const seen=new Set();
@@ -6202,7 +6220,164 @@ async function sendEmailsSmtp(){
   } catch(err){
     toast('Erro de conexao: '+err.message,'error');
   } finally {
-    if(btn){ btn.disabled=false; btn.textContent='Enviar para todos'; }
+    if(btn){ btn.disabled=false; btn.textContent='Enviar lote'; }
+  }
+}
+
+/* ═══ EMAIL QUEUE — enviar 23k+ de 300 em 300 por dia ═══ */
+const QUEUE_KEY = 'mc-email-queue';
+
+function getEmailQueue(){
+  try { return JSON.parse(localStorage.getItem(QUEUE_KEY)||'null'); } catch { return null; }
+}
+function saveEmailQueue(q){
+  localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+  updateQueueUI();
+}
+function clearEmailQueue(){
+  localStorage.removeItem(QUEUE_KEY);
+  updateQueueUI();
+  toast('Fila de envio limpa.');
+}
+function updateQueueUI(){
+  const q = getEmailQueue();
+  const el = document.getElementById('email-queue-status');
+  if(!el) return;
+  if(!q){ el.style.display='none'; return; }
+  el.style.display='block';
+  const total = q.totalEmails;
+  const sent = q.sentIndex;
+  const pct = total>0 ? Math.round(sent/total*100) : 0;
+  const remaining = total - sent;
+  const daysLeft = Math.ceil(remaining / emailDailyLimit);
+  document.getElementById('email-queue-info').innerHTML = `
+    <div><strong>${sent.toLocaleString()}</strong> de <strong>${total.toLocaleString()}</strong> enviados (${pct}%)</div>
+    <div style="font-size:10px;color:var(--t3);margin-top:2px;">Restam ${remaining.toLocaleString()} · ~${daysLeft} dia(s) restantes · Template: <strong style="color:var(--gold);">${q.templateName||'Manual'}</strong></div>`;
+  document.getElementById('email-queue-bar').style.width = pct+'%';
+}
+
+async function startEmailQueue(){
+  const subject = document.getElementById('em-subject')?.value?.trim();
+  const body = document.getElementById('em-body')?.value?.trim();
+  if(!subject||!body){ toast('Selecione um template primeiro!','warn'); return; }
+
+  const allLeads = await getSegmentedLeads();
+  if(!allLeads.length){ toast('Nenhum destinatario!','warn'); return; }
+
+  const templateName = window._instTemplateName || (emailPromoFirm?.name) || 'Manual';
+  const isPromo = emailIsHtml && emailPromoFirm;
+  const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
+
+  if(!confirm(`Criar fila de envio para ${allLeads.length.toLocaleString()} destinatarios?\n\nTemplate: ${templateName}\nLimite diario: ${emailDailyLimit}\nDias estimados: ~${Math.ceil(allLeads.length/emailDailyLimit)}\n\nVoce podera continuar o envio a cada dia clicando em "Continuar Envio".`)) return;
+
+  // Save queue to localStorage
+  const queue = {
+    emails: allLeads.map(l => ({ email:l.email, name:l.name, lang:l.lang, firma:l.firma })),
+    totalEmails: allLeads.length,
+    sentIndex: 0,
+    subject: subject,
+    templateName: templateName,
+    templateId: window._instTemplateName || null,
+    promoFirmId: emailPromoFirm?.id || null,
+    isPromo: isPromo,
+    isInst: isInst,
+    isHtml: emailIsHtml,
+    createdAt: new Date().toISOString(),
+  };
+  saveEmailQueue(queue);
+  toast(`Fila criada: ${allLeads.length.toLocaleString()} emails. Clique "Continuar Envio" para enviar o primeiro lote.`);
+}
+
+async function resumeEmailQueue(){
+  const q = getEmailQueue();
+  if(!q){ toast('Nenhuma fila ativa.','warn'); return; }
+
+  const remaining = Math.max(0, emailDailyLimit - getEmailSentToday());
+  if(remaining <= 0){
+    toast(`Limite diario atingido (${emailDailyLimit}). Tente amanha.`,'warn');
+    return;
+  }
+
+  const start = q.sentIndex;
+  const end = Math.min(start + remaining, q.totalEmails);
+  const batch = q.emails.slice(start, end);
+  if(!batch.length){
+    toast('Fila concluida! Todos os emails foram enviados.');
+    clearEmailQueue();
+    return;
+  }
+
+  if(!confirm(`Enviar proximo lote: ${batch.length} emails (${start+1} a ${end} de ${q.totalEmails})`)) return;
+
+  const btn = document.querySelector('[onclick="resumeEmailQueue()"]');
+  if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
+
+  try {
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
+    let totalSent=0, totalFailed=0;
+
+    // Group by language
+    const langGroups = {};
+    batch.forEach(l => {
+      const lang = l.lang || 'en';
+      if(!langGroups[lang]) langGroups[lang] = [];
+      langGroups[lang].push(l);
+    });
+
+    for(const [lang, group] of Object.entries(langGroups)){
+      let html, subj = q.subject;
+      if(q.isInst && q.templateId){
+        html = buildInstitutionalHtml(q.templateId, lang);
+        const tpl = INST_TEMPLATES[q.templateId];
+        if(tpl) subj = tpl.subject[lang] || tpl.subject.en || q.subject;
+      } else if(q.isPromo && q.promoFirmId){
+        const firm = (_emailFirmsCache||[]).find(f=>f.id===q.promoFirmId);
+        if(firm) html = buildWhitePromoHtml(firm, lang);
+      }
+      if(!html) continue;
+
+      const resp = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({
+          to: group.map(l => ({ email: l.email, name: l.name||'' })),
+          subject: subj,
+          htmlContent: html,
+          tags: [q.isPromo ? 'promo-'+q.promoFirmId : 'inst-'+q.templateId, 'lang-'+lang, 'queue'],
+        }),
+      });
+      const data = await resp.json();
+      if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
+      else { totalFailed+=group.length; }
+    }
+
+    // Update queue progress
+    q.sentIndex = end;
+    saveEmailQueue(q);
+    addEmailSentToday(totalSent);
+
+    // Log
+    await db.from('email_logs').insert({
+      campaign_name: `[Fila] ${q.templateName} (lote ${Math.ceil(end/emailDailyLimit)})`,
+      subject: q.subject,
+      recipients: batch.length,
+      status: totalFailed===0 ? 'sent' : 'partial',
+      sent_by: 'admin',
+      provider: 'brevo',
+      brevo_response: { sent: totalSent, failed: totalFailed, batch: `${start+1}-${end}` },
+    });
+
+    const done = q.sentIndex >= q.totalEmails;
+    toast(`Lote enviado: ${totalSent} emails!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + (done ? ' — FILA CONCLUIDA!' : ` — ${q.totalEmails-q.sentIndex} restantes`));
+
+    if(done) clearEmailQueue();
+    await loadEmailStats();
+    await renderCampaignLog();
+  } catch(err){
+    toast('Erro: '+err.message,'error');
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent='Continuar Envio (proximo lote)'; }
   }
 }
 
@@ -6267,8 +6442,18 @@ let _subsList = [];
 let _subsFilter = ''; // firma filter
 
 async function loadSubscribers(){
-  const { data } = await db.from('email_subscribers').select('*').eq('status','active').order('created_at',{ascending:false});
-  return data || [];
+  // Supabase returns max 1000 per request — paginate to get all
+  const all = [];
+  const PAGE = 1000;
+  let from = 0;
+  while(true){
+    const { data } = await db.from('email_subscribers').select('*').eq('status','active').order('created_at',{ascending:false}).range(from, from + PAGE - 1);
+    if(!data || !data.length) break;
+    all.push(...data);
+    if(data.length < PAGE) break;
+    from += PAGE;
+  }
+  return all;
 }
 
 async function loadSubscribersList(){
