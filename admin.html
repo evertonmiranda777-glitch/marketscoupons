@@ -4832,7 +4832,7 @@ const INST_TEMPLATES = {
     subject: { pt:'O site que os traders não compartilham', en:'The site traders don\'t share', es:'El sitio que los traders no comparten', fr:'Le site que les traders ne partagent pas', de:'Die Seite die Trader nicht teilen', it:'Il sito che i trader non condividono', ar:'الموقع الذي لا يشاركه المتداولون' },
     greeting: { pt:'Olá, Trader.', en:'Hey, Trader.', es:'Hola, Trader.', fr:'Bonjour, Trader.', de:'Hallo, Trader.', it:'Ciao, Trader.', ar:'مرحباً أيها المتداول.' },
     icon: '',
-    title: { pt:'O site que os traders não compartilham', en:'The site traders don\'t share', es:'El sitio que los traders no comparten', fr:'Le site que les traders ne partagent pas', de:'Die Seite die Trader nicht teilen', it:'Il sito che i trader non condividono', ar:'الموقع الذي لا يشاركه المتداولون' },
+    title: { pt:'', en:'', es:'', fr:'', de:'', it:'', ar:'' },
     body: {
       pt:'Você sabia que é possível começar a operar em uma Prop Firm de $25K pagando menos de $19,90? No MarketsCoupons, reunimos os <b>melhores cupons exclusivos</b> — negociados diretamente com Apex, Bulenox, FTMO, FundedNext e outras — para que você economize até 90% na sua avaliação.',
       en:'Did you know you can start trading a $25K Prop Firm account for less than $19.90? At MarketsCoupons, we gather the <b>best exclusive coupons</b> — negotiated directly with Apex, Bulenox, FTMO, FundedNext and others — so you save up to 90% on your evaluation.',
@@ -4842,15 +4842,7 @@ const INST_TEMPLATES = {
       it:'Sapevi che puoi iniziare a operare in una Prop Firm da $25K pagando meno di $19,90? Su MarketsCoupons, raccogliamo i <b>migliori coupon esclusivi</b> — negoziati direttamente con Apex, Bulenox, FTMO, FundedNext e altre — per farti risparmiare fino al 90%.',
       ar:'هل تعلم أنه يمكنك بدء التداول في حساب Prop Firm بقيمة $25K بأقل من $19.90؟ في MarketsCoupons، نجمع <b>أفضل الكوبونات الحصرية</b> — تم التفاوض عليها مباشرة مع Apex وBulenox وFTMO وFundedNext وغيرها — لتوفر حتى 90%.'
     },
-    features: {
-      pt:['Cupons verificados e atualizados diariamente','Comparador de firmas: drawdown, profit split, plataformas e regras','Quiz interativo para descobrir qual firma combina com você','Ferramentas profissionais: Calculadora, Calendário Econômico, Heat Map e GEX','Análise Diária dos principais mercados às 6h','Conteúdo exclusivo para membros fidelidade'],
-      en:['Verified coupons updated daily','Firm comparator: drawdown, profit split, platforms and rules','Interactive quiz to find which firm fits you','Pro tools: Calculator, Economic Calendar, Heat Map and GEX','Daily Analysis of major markets at 6AM','Exclusive content for loyalty members'],
-      es:['Cupones verificados y actualizados diariamente','Comparador de firmas: drawdown, profit split, plataformas y reglas','Quiz interactivo para descubrir qué firma va contigo','Herramientas profesionales: Calculadora, Calendario Económico, Heat Map y GEX','Análisis Diario de los principales mercados a las 6h','Contenido exclusivo para miembros fidelidad'],
-      fr:['Coupons vérifiés et mis à jour chaque jour','Comparateur de firmes : drawdown, profit split, plateformes et règles','Quiz interactif pour trouver la firme qui vous correspond','Outils pro : Calculateur, Calendrier Économique, Heat Map et GEX','Analyse Quotidienne des principaux marchés à 6h','Contenu exclusif pour les membres fidélité'],
-      de:['Verifizierte Gutscheine täglich aktualisiert','Firmenvergleich: Drawdown, Profit Split, Plattformen und Regeln','Interaktives Quiz um die passende Firma zu finden','Profi-Tools: Rechner, Wirtschaftskalender, Heat Map und GEX','Tägliche Analyse der wichtigsten Märkte um 6 Uhr','Exklusive Inhalte für Treuemitglieder'],
-      it:['Coupon verificati e aggiornati ogni giorno','Comparatore firme: drawdown, profit split, piattaforme e regole','Quiz interattivo per scoprire quale firma fa per te','Strumenti pro: Calcolatore, Calendario Economico, Heat Map e GEX','Analisi Giornaliera dei principali mercati alle 6','Contenuti esclusivi per i membri fedeltà'],
-      ar:['كوبونات موثقة ومحدثة يومياً','مقارنة الشركات: السحب، تقسيم الأرباح، المنصات والقواعد','اختبار تفاعلي لاكتشاف الشركة المناسبة لك','أدوات احترافية: حاسبة، تقويم اقتصادي، خريطة حرارية وGEX','تحليل يومي لأهم الأسواق الساعة 6 صباحاً','محتوى حصري لأعضاء الولاء']
-    },
+    features: { pt:[], en:[], es:[], fr:[], de:[], it:[], ar:[] },
     closing: { pt:'Conta de 100K a partir de $39,90. Isso mesmo.', en:'100K account starting at $39.90. Yes, really.', es:'Cuenta de 100K desde $39,90. Así es.', fr:'Compte 100K à partir de $39,90. Oui, vraiment.', de:'100K Konto ab $39,90. Ja, wirklich.', it:'Conto 100K a partire da $39,90. Sì, davvero.', ar:'حساب 100K يبدأ من $39.90. نعم، حقاً.' },
     cta: { pt:'QUERO CONHECER', en:'CHECK IT OUT', es:'QUIERO VER', fr:'DÉCOUVRIR', de:'ANSEHEN', it:'VOGLIO VEDERE', ar:'أريد أن أرى' }
   },
@@ -5018,37 +5010,89 @@ function buildInstitutionalHtml(name, lang='pt'){
 
   if(name === 'site-invite'){
     const DK = '#0D1117';
-    const GL = '#10151F';
-    const BD = '#1C2535';
-    // Dark mini card helper
-    const dmc = (label, value, vc, desc) =>
+    const BD = 'rgba(255,255,255,.14)';
+    const T1i = '#fff';
+    const T2i = 'rgba(255,255,255,.7)';
+    const T3i = 'rgba(255,255,255,.3)';
+    const GRN = '#22C55E';
+    const GLD = '#F0B429';
+    const PRP = '#A855F7';
+    const CYN = '#0EA5E9';
+    const RED = '#EF4444';
+    const BASE = 'https://www.marketscoupons.com';
+
+    // ── Mini-UI card helper (replicates auth-slide .mu style) ──
+    const muCard = (content) =>
       `<td width="50%" style="padding:3px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${GL};border-radius:8px;border:1px solid ${BD};" role="presentation">
-          <tr><td style="padding:12px 10px;text-align:center;">
-            <div style="color:#888;font-size:8px;font-weight:700;letter-spacing:0.08em;margin-bottom:4px;font-family:${FI};">${label}</div>
-            <div style="color:${vc};font-size:16px;font-weight:800;font-family:${FI};">${value}</div>
-            ${desc ? `<div style="color:#666;font-size:9px;margin-top:3px;font-family:${FI};">${desc}</div>` : ''}
-          </td></tr>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:10px;" role="presentation">
+          <tr><td style="padding:10px 10px;">${content}</td></tr>
         </table>
       </td>`;
 
-    const siL = {
-      pt:['CUPONS EXCLUSIVOS','FIRMAS COMPARADAS','QUIZ INTERATIVO','FERRAMENTAS','ANALISE DIARIA','MEMBROS VIP'],
-      en:['EXCLUSIVE COUPONS','FIRMS COMPARED','INTERACTIVE QUIZ','TOOLS','DAILY ANALYSIS','VIP MEMBERS'],
-      es:['CUPONES EXCLUSIVOS','FIRMAS COMPARADAS','QUIZ INTERACTIVO','HERRAMIENTAS','ANALISIS DIARIO','MIEMBROS VIP'],
-    }[lang]||['EXCLUSIVE COUPONS','FIRMS COMPARED','INTERACTIVE QUIZ','TOOLS','DAILY ANALYSIS','VIP MEMBERS'];
-    const siD = {
-      pt:['Apex, Bulenox, FTMO +','Regras lado a lado','Descubra sua firma ideal','Heat Map, Calc, GEX','Mercados as 6h BRT','Beneficios exclusivos'],
-      en:['Apex, Bulenox, FTMO +','Rules side by side','Find your ideal firm','Heat Map, Calc, GEX','Markets at 6AM BRT','Exclusive benefits'],
-      es:['Apex, Bulenox, FTMO +','Reglas lado a lado','Encuentra tu firma ideal','Heat Map, Calc, GEX','Mercados a las 6h BRT','Beneficios exclusivos'],
-    }[lang]||['Apex, Bulenox, FTMO +','Rules side by side','Find your ideal firm','Heat Map, Calc, GEX','Markets at 6AM BRT','Exclusive benefits'];
+    // Card 1: Cupons — top 3 firms with discount
+    const cupL = {pt:'CUPONS EXCLUSIVOS',en:'EXCLUSIVE COUPONS',es:'CUPONES EXCLUSIVOS',fr:'COUPONS EXCLUSIFS',de:'EXKLUSIVE GUTSCHEINE',it:'COUPON ESCLUSIVI',ar:'كوبونات حصرية'}[lang]||'EXCLUSIVE COUPONS';
+    const cupFirms = [
+      {n:'Apex',d:'90% OFF',c:'#F97316'},
+      {n:'Bulenox',d:'89% OFF',c:GRN},
+      {n:'FTMO',d:'10% OFF',c:CYN},
+    ];
+    const cupRows = cupFirms.map(f=>`<div style="display:flex;justify-content:space-between;padding:3px 0;"><span style="color:${T2i};font-size:9px;font-family:${FI};">${f.n}</span><span style="color:${f.c};font-size:9px;font-weight:800;font-family:${FI};">${f.d}</span></div>`).join('');
+    const c1 = muCard(`<div style="color:${T3i};font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:${FI};">${cupL}</div>${cupRows}`);
 
-    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DK};border-radius:10px;margin-bottom:16px;padding:4px;" role="presentation">
+    // Card 2: Comparador — mini firm row
+    const cmpL = {pt:'COMPARADOR',en:'COMPARATOR',es:'COMPARADOR',fr:'COMPARATEUR',de:'VERGLEICH',it:'COMPARATORE',ar:'المقارن'}[lang]||'COMPARATOR';
+    const cmpH = ['Drawdown','Profit Split','Target'];
+    const cmpV = ['-5%','90%','8%'];
+    const cmpRows = cmpH.map((h,i)=>`<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.06);"><span style="color:${T3i};font-size:8px;font-family:${FI};">${h}</span><span style="color:${T1i};font-size:9px;font-weight:700;font-family:${FI};">${cmpV[i]}</span></div>`).join('');
+    const c2 = muCard(`<div style="color:${T3i};font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:${FI};">${cmpL}</div>${cmpRows}`);
+
+    // Card 3: Quiz
+    const qzL = {pt:'QUIZ INTERATIVO',en:'INTERACTIVE QUIZ',es:'QUIZ INTERACTIVO',fr:'QUIZ INTERACTIF',de:'INTERAKTIVES QUIZ',it:'QUIZ INTERATTIVO',ar:'اختبار تفاعلي'}[lang]||'INTERACTIVE QUIZ';
+    const qzQ = {pt:'Qual mercado você opera?',en:'Which market do you trade?',es:'¿Qué mercado operas?',fr:'Quel marché tradez-vous ?',de:'Welchen Markt tradest du?',it:'Quale mercato operi?',ar:'أي سوق تتداول؟'}[lang]||'Which market do you trade?';
+    const qzOpts = [{l:{pt:'Futuros (ES, NQ)',en:'Futures (ES, NQ)'},sel:true},{l:{pt:'Forex (EUR/USD)',en:'Forex (EUR/USD)'},sel:false}];
+    const qzRows = qzOpts.map(o=>{
+      const txt = (o.l[lang]||o.l.en);
+      const bg = o.sel ? 'rgba(168,85,247,.08)' : 'rgba(255,255,255,.10)';
+      const br = o.sel ? 'rgba(168,85,247,.3)' : BD;
+      const tc = o.sel ? PRP : T2i;
+      return `<div style="padding:4px 8px;background:${bg};border:1px solid ${br};border-radius:6px;margin-bottom:3px;font-size:8px;color:${tc};font-family:${FI};">${txt}</div>`;
+    }).join('');
+    const c3 = muCard(`<div style="color:${T3i};font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;font-family:${FI};">${qzL}</div><div style="color:${T2i};font-size:9px;font-weight:700;margin-bottom:6px;font-family:${FI};">${qzQ}</div>${qzRows}`);
+
+    // Card 4: Ferramentas (Calc + Heat Map + GEX)
+    const tlL = {pt:'FERRAMENTAS PRO',en:'PRO TOOLS',es:'HERRAMIENTAS PRO',fr:'OUTILS PRO',de:'PROFI-TOOLS',it:'STRUMENTI PRO',ar:'أدوات احترافية'}[lang]||'PRO TOOLS';
+    const tools = [
+      {n:'Position Size',v:{pt:'3.0 lotes',en:'3.0 lots'},c:GLD},
+      {n:'Heat Map',v:{pt:'S&P 500',en:'S&P 500'},c:CYN},
+      {n:'GEX',v:{pt:'Gamma Exp.',en:'Gamma Exp.'},c:GRN},
+    ];
+    const tlRows = tools.map(t2=>`<div style="display:flex;justify-content:space-between;padding:3px 0;"><span style="color:${T3i};font-size:8px;font-family:${FI};">${t2.n}</span><span style="color:${t2.c};font-size:9px;font-weight:700;font-family:${FI};">${t2.v[lang]||t2.v.en}</span></div>`).join('');
+    const c4 = muCard(`<div style="color:${T3i};font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:${FI};">${tlL}</div>${tlRows}`);
+
+    // Card 5: Análise Diária
+    const anL = {pt:'ANÁLISE DIÁRIA',en:'DAILY ANALYSIS',es:'ANÁLISIS DIARIO',fr:'ANALYSE QUOTIDIENNE',de:'TÄGLICHE ANALYSE',it:'ANALISI GIORNALIERA',ar:'تحليل يومي'}[lang]||'DAILY ANALYSIS';
+    const anAssets = ['ES','NQ','GC','CL'];
+    const anColors = ['#F97316',CYN,GLD,RED];
+    const anTags = anAssets.map((a,i)=>`<span style="display:inline-block;padding:2px 6px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:4px;font-size:8px;font-weight:700;color:${anColors[i]};font-family:${FI};margin:2px 2px 0 0;">${a}</span>`).join('');
+    const anTime = {pt:'Todos os dias às 6h',en:'Every day at 6AM',es:'Todos los días a las 6h',fr:'Chaque jour à 6h',de:'Täglich um 6 Uhr',it:'Ogni giorno alle 6',ar:'كل يوم الساعة 6'}[lang]||'Every day at 6AM';
+    const c5 = muCard(`<div style="color:${T3i};font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:${FI};">${anL}</div><div style="margin-bottom:4px;">${anTags}</div><div style="color:${T2i};font-size:8px;font-family:${FI};">${anTime}</div>`);
+
+    // Card 6: Conteúdo VIP
+    const vipL = {pt:'ÁREA FIDELIDADE',en:'LOYALTY AREA',es:'ÁREA FIDELIDAD',fr:'ESPACE FIDÉLITÉ',de:'TREUEBEREICH',it:'AREA FEDELTÀ',ar:'منطقة الولاء'}[lang]||'LOYALTY AREA';
+    const vipItems = [
+      {l:{pt:'Indicadores exclusivos',en:'Exclusive indicators'},c:GLD},
+      {l:{pt:'Conteúdo VIP',en:'VIP content'},c:PRP},
+      {l:{pt:'Benefícios únicos',en:'Unique benefits'},c:GRN},
+    ];
+    const vipRows = vipItems.map(v=>`<div style="padding:2px 0;font-size:8px;font-family:${FI};"><span style="color:${v.c};margin-right:4px;">&#9679;</span><span style="color:${T2i};">${v.l[lang]||v.l.en}</span></div>`).join('');
+    const c6 = muCard(`<div style="color:${T3i};font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:${FI};">${vipL}</div>${vipRows}`);
+
+    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DK};border-radius:12px;margin-bottom:16px;padding:4px;" role="presentation">
       <tr><td style="padding:4px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
-          <tr>${dmc(siL[0],'90% OFF','#22c55e',siD[0])}${dmc(siL[1],'11+','#eab308',siD[1])}</tr>
-          <tr>${dmc(siL[2],'QUIZ','#a855f7',siD[2])}${dmc(siL[3],'6+','#0ea5e9',siD[3])}</tr>
-          <tr>${dmc(siL[4],'6AM','#ef4444',siD[4])}${dmc(siL[5],'VIP','#10b981',siD[5])}</tr>
+          <tr>${c1}${c2}</tr>
+          <tr>${c3}${c4}</tr>
+          <tr>${c5}${c6}</tr>
         </table>
       </td></tr>
     </table>`;
