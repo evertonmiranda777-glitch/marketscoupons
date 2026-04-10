@@ -170,7 +170,8 @@ const FIRMS=[
 const FIRM_BG={
   apex:'img/apex-bg.webp',bulenox:'img/bulenox-bg.webp',ftmo:'img/ftmo-bg.webp',
   tpt:'img/tpt-bg.webp',fn:'img/fn-bg.webp',e2t:'img/e2t-bg.webp',
-  the5ers:'img/the5ers-bg.webp',fundingpips:'img/fundingpips-bg.webp',brightfunded:'img/brightfunded-bg.webp'
+  the5ers:'img/the5ers-bg.webp',fundingpips:'img/fundingpips-bg.webp',brightfunded:'img/brightfunded-bg.webp',
+  e8:'img/e8-bg.webp',cti:'img/cti-bg.webp'
 };
 const FIRM_ABOUT={
   apex:{about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
@@ -199,7 +200,13 @@ const FIRM_ABOUT={
     includes:['Split flexivel ate 100% mensal','$210M+ pagos','Alavancagem 1:100','Comunidade Discord ativa']},
   brightfunded:{about:'Fundada em <b>2022</b> na Holanda por Jelle Dijkstra. <b>27.5K+ traders</b>. Programa Trade2Earn (pontos por operar). Payout em <b>24h</b> com ciclo de 7 dias.',highlights:[{val:'$13M+',label:'Pagos a traders'},{val:'27.5K+',label:'Traders'},{val:'24h',label:'Payout garantido'}],
     types:['2-Step'],plans:{'2-Step':[{s:'$5K',d:'€38.25',o:'€45'},{s:'$10K',d:'€72.25',o:'€85'},{s:'$25K',d:'€140.25',o:'€165'},{s:'$50K',d:'€242.25',o:'€285',pop:1},{s:'$100K',d:'€420.75',o:'€495'},{s:'$200K',d:'€803.25',o:'€945'}]},
-    includes:['Scaling até 100% split','Drawdown estático','Payout 24h ciclo 7 dias','15% bonus lucro avaliação','Trade2Earn','Alavancagem 1:100','Suporte 24/7']}
+    includes:['Scaling até 100% split','Drawdown estático','Payout 24h ciclo 7 dias','15% bonus lucro avaliação','Trade2Earn','Alavancagem 1:100','Suporte 24/7']},
+  e8:{about:'Fundada em <b>2021</b> nos EUA. E8 Markets oferece contas de <b>$5K a $500K</b> em Forex, Futuros e Crypto. Dois produtos: <b>Signature</b> (EOD, 80% split) e <b>E8 One</b> (drawdown dinâmico configurável 4-14%, até 100% split).',highlights:[{val:'$500K',label:'Conta máxima'},{val:'100%',label:'Split máximo'},{val:'3',label:'Mercados'}],
+    types:['Signature','E8 One'],plans:{'Signature':[{s:'$25K',d:'$99',o:'$110'},{s:'$50K',d:'$135',o:'$150'},{s:'$100K',d:'$234',o:'$260',pop:1},{s:'$150K',d:'$351',o:'$390'}],'E8 One':[{s:'$25K',d:'$188',o:'—'},{s:'$50K',d:'$288',o:'—'},{s:'$100K',d:'$488',o:'—',pop:1},{s:'$200K',d:'$888',o:'—'},{s:'$500K',d:'$1,888',o:'—'}]},
+    includes:['Sem taxa de ativação','Passa em 1 dia','Forex, Futuros e Crypto','Drawdown configurável 4-14%','Split até 100%','Contas até $500K']},
+  cti:{about:'Fundada em <b>2018</b> no Reino Unido. City Traders Imperium (CTI) oferece <b>5 programas</b> de avaliação com split até <b>100%</b>. Premiada: <b>Best MatchTrader Prop Firm 2025</b>, Top Choice for Traders 2025, Most Trusted Prop Firm 2025.',highlights:[{val:'100%',label:'Split máximo'},{val:'5',label:'Programas'},{val:'$1',label:'Entrada mínima'}],
+    types:['1-Step','2-Step','3-Step','Instant','Instant Pro'],plans:{'1-Step':[{s:'$2.5K',d:'$39',o:'—'},{s:'$5K',d:'$59',o:'—'},{s:'$10K',d:'$109',o:'—'},{s:'$25K',d:'$199',o:'—',pop:1},{s:'$50K',d:'$399',o:'—'},{s:'$100K',d:'$589',o:'—'}],'2-Step':[{s:'$2.5K',d:'$49',o:'—'},{s:'$5K',d:'$69',o:'—'},{s:'$10K',d:'$139',o:'—'},{s:'$25K',d:'$249',o:'—',pop:1},{s:'$50K',d:'$449',o:'—'},{s:'$100K',d:'$689',o:'—'}],'3-Step':[{s:'$2.5K',d:'$1',o:'—'},{s:'$5K',d:'$2',o:'—'},{s:'$10K',d:'$4',o:'—'},{s:'$25K',d:'$10',o:'—',pop:1},{s:'$50K',d:'$20',o:'—'},{s:'$100K',d:'$40',o:'—'}],'Instant':[{s:'$2.5K',d:'$89',o:'—'},{s:'$5K',d:'$159',o:'—'},{s:'$10K',d:'$309',o:'—'},{s:'$20K',d:'$559',o:'—',pop:1},{s:'$40K',d:'$1,059',o:'—'},{s:'$80K',d:'$1,879',o:'—'}],'Instant Pro':[{s:'$5K',d:'$329',o:'—'},{s:'$10K',d:'$659',o:'—'},{s:'$20K',d:'$1,319',o:'—',pop:1},{s:'$40K',d:'$2,639',o:'—'},{s:'$80K',d:'$5,279',o:'—'}]},
+    includes:['5 programas de avaliação','VIP Program: Bronze, Silver, Gold','Coaching 1-on-1 gratuito','Certificado de conquista','Split até 100%','Scaling disponível']}
 };
 
 /* PLATFORM DETAIL DATA — checkout overlay for partner platforms */

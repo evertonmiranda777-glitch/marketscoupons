@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telegram Preview — MarketsCoupons</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#07090D;--card:rgba(255,255,255,.10);--card2:rgba(255,255,255,.06);--border:rgba(255,255,255,.14);--b1:rgba(255,255,255,.12);--gold:#F0B429;--t1:#EDF2F7;--t2:rgba(122,143,166,.9);--t3:rgba(122,143,166,.5);--green:#22C55E;--red:#EF4444;--cyan:#22D3EE;--orange:#F97316;--purple:#A78BFA;--f:'Inter',sans-serif;}
+body{background:#0B0F16;color:var(--t1);font-family:var(--f);padding:20px;}
+h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.subtitle{font-size:12px;color:var(--t2);margin-bottom:16px;}
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;position:relative;}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);pointer-events:none;border-radius:12px 12px 0 0;}
+.pcard-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;}
+.caption-preview{background:rgba(255,255,255,.06);border:1px solid var(--b1);border-radius:8px;padding:12px;font-size:12px;line-height:1.7;color:var(--t2);white-space:pre-wrap;word-break:break-word;}
+.btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--t1);font-family:var(--f);font-size:10px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn:hover{border-color:var(--gold);color:var(--gold);}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.grid-col{min-width:0;}
+.grid-col .canvas-outer{border-radius:10px;overflow:hidden;border:2px solid transparent;transition:.2s;cursor:pointer;}
+.grid-col .canvas-outer:hover{border-color:rgba(240,180,41,.3);}
+.grid-col .canvas-outer.selected{border-color:var(--gold);box-shadow:0 0 16px rgba(240,180,41,.15);}
+.grid-col .col-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:0 2px;}
+.grid-col .col-title{font-size:11px;font-weight:700;color:var(--t1);}
+@media(max-width:1200px){.grid-4{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<h1>Telegram Preview <span style="color:var(--gold);">— 4 Criativos</span></h1>
+<p class="subtitle">Clique num canvas pra selecionar. Dados mock.</p>
+
+<div class="grid-4">
+  <div class="grid-col">
+    <div class="col-hdr"><span class="col-title">Cupons</span></div>
+    <div class="canvas-outer selected" id="cv-wrap-0"><div class="canvas-scale" id="cs-0"><canvas id="cv-0" width="1080" height="1920"></canvas></div></div>
+  </div>
+  <div class="grid-col">
+    <div class="col-hdr"><span class="col-title">Analise</span><button class="btn" onclick="rotateAnalysis()">Proximo ativo</button></div>
+    <div class="canvas-outer" id="cv-wrap-1"><div class="canvas-scale" id="cs-1"><canvas id="cv-1" width="1080" height="1920"></canvas></div></div>
+  </div>
+  <div class="grid-col">
+    <div class="col-hdr"><span class="col-title">GEX</span><button class="btn" onclick="rotateGex()">Proximo ticker</button></div>
+    <div class="canvas-outer" id="cv-wrap-2"><div class="canvas-scale" id="cs-2"><canvas id="cv-2" width="1080" height="1920"></canvas></div></div>
+  </div>
+  <div class="grid-col">
+    <div class="col-hdr"><span class="col-title">Calendario</span></div>
+    <div class="canvas-outer" id="cv-wrap-3"><div class="canvas-scale" id="cs-3"><canvas id="cv-3" width="1080" height="1920"></canvas></div></div>
+  </div>
+</div>
+
+<div class="pcard" style="margin-top:12px;">
+  <div class="pcard-title">Caption — <span id="caption-type" style="color:var(--gold)">Cupons</span></div>
+  <div class="caption-preview" id="caption-preview">—</div>
+</div>
+
+<script>
+/* ══ MOCK DATA ══ */
+const FIRMS=[
+  {id:'apex',name:'Apex Trader Funding',short_name:'Apex',type:'Futuros',color:'#F97316',icon:'A',icon_url:'../img/Firms/apex.png',discount:90,discount_type:'lifetime',coupon:'MARKET'},
+  {id:'bulenox',name:'Bulenox',short_name:'Bulenox',type:'Futuros',color:'#3B82F6',icon:'B',icon_url:'../img/Firms/bulenox.png',discount:89,discount_type:'lifetime',coupon:'MARKET89'},
+  {id:'e2t',name:'Earn2Trade',short_name:'Earn2Trade',type:'Futuros',color:'#10B981',icon:'E',icon_url:'../img/Firms/e2t.png',discount:60,discount_type:'career path',coupon:'MARKETSCOUPONS'},
+  {id:'tpt',name:'Take Profit Trader',short_name:'TPT',type:'Futuros',color:'#8B5CF6',icon:'T',icon_url:'../img/Firms/tpt.png',discount:40,discount_type:'lifetime',coupon:'MARKET40'},
+  {id:'fn',name:'FundedNext',short_name:'FundedNext',type:'Forex',color:'#06B6D4',icon:'F',icon_url:'../img/Firms/fn.png',discount:30,discount_type:'1 desafio',coupon:'FNF30'},
+  {id:'fundingpips',name:'Funding Pips',short_name:'Funding Pips',type:'Forex',color:'#F59E0B',icon:'F',icon_url:'../img/Firms/fundingpips.png',discount:20,discount_type:'1 compra',coupon:'HELLO'},
+  {id:'brightfunded',name:'BrightFunded',short_name:'BrightFunded',type:'Forex',color:'#14B8A6',icon:'B',icon_url:'../img/Firms/brightfunded.png',discount:20,discount_type:'easter',coupon:'CLNLT...'},
+  {id:'ftmo',name:'FTMO',short_name:'FTMO',type:'Forex',color:'#1E40AF',icon:'F',icon_url:'../img/Firms/ftmo.png',discount:19,discount_type:'best value',coupon:null},
+  {id:'the5ers',name:'The5ers',short_name:'The5ers',type:'Forex',color:'#059669',icon:'5',icon_url:'../img/Firms/the5ers.png',discount:10,discount_type:'especial',coupon:null},
+  {id:'e8',name:'E8 Markets',short_name:'E8',type:'Forex',color:'#FF4400',icon:'E',icon_url:'../img/Firms/E8 Markets.png',discount:10,discount_type:'1 compra',coupon:'MARKET'},
+  {id:'cti',name:'City Traders Imperium',short_name:'CTI',type:'Forex',color:'#0A74DA',icon:'C',icon_url:'../img/Firms/City Traders Imperium.png',discount:0,discount_type:null,coupon:null},
+];
+const AN=[
+  {asset:'ES',name:'S&P 500',price:'5,842.15',chg:'+1.2',bias:'bullish',conf:4,s1:'5,780',s2:'5,720',r1:'5,880',r2:'5,940',zone:'5,880-5,900',phase:'Accumulation'},
+  {asset:'NQ',name:'Nasdaq 100',price:'24,903',chg:'-0.4',bias:'bearish',conf:3,s1:'24,578',s2:'24,100',r1:'25,200',r2:'25,500',zone:'24,500-24,600',phase:'Distribution'},
+  {asset:'GC',name:'Gold',price:'4,754.80',chg:'+0.17',bias:'bullish',conf:3,s1:'4,711',s2:'4,688',r1:'4,785',r2:'4,844',zone:'4,785-4,800',phase:'Redistribution'},
+  {asset:'CL',name:'Crude Oil',price:'71.24',chg:'-1.8',bias:'bearish',conf:2,s1:'69.50',s2:'67.80',r1:'72.60',r2:'74.30',zone:'69.50-70.00',phase:'Mark Down'},
+];
+const GX=[
+  {ticker:'ES',name:'S&P 500',spot:5842,call_wall:5950,put_wall:5700,zero_gamma:5780,vol_trigger:5800,max_pain:5825,total_gex:4250,
+   bars:[{s:5700,g:-800},{s:5750,g:-400},{s:5780,g:-150},{s:5800,g:200},{s:5825,g:350},{s:5850,g:600},{s:5875,g:450},{s:5900,g:800},{s:5925,g:500},{s:5950,g:1200},{s:5975,g:300},{s:6000,g:700}]},
+  {ticker:'NQ',name:'Nasdaq 100',spot:24903,call_wall:25500,put_wall:24000,zero_gamma:24578,vol_trigger:24100,max_pain:24100,total_gex:3070,
+   bars:[{s:24000,g:-600},{s:24100,g:853},{s:24300,g:209},{s:24500,g:-20},{s:24800,g:304},{s:24900,g:289},{s:25000,g:127},{s:25200,g:316},{s:25300,g:210},{s:25500,g:306},{s:25700,g:76},{s:26000,g:275}]},
+];
+const CAL=[
+  {time:'08:30',event:'Core PCE MoM',cur:'USD',impact:'h',fore:'0.4%',prev:'0.3%',actual:'—'},
+  {time:'08:30',event:'GDP Final QoQ',cur:'USD',impact:'h',fore:'4.4%',prev:'3.2%',actual:'—'},
+  {time:'08:30',event:'Personal Spending',cur:'USD',impact:'h',fore:'0.4%',prev:'0.2%',actual:'—'},
+  {time:'10:00',event:'Michigan Sentiment',cur:'USD',impact:'m',fore:'76.5',prev:'76.9',actual:'—'},
+  {time:'14:00',event:'Fed Chair Powell',cur:'USD',impact:'h',fore:'—',prev:'—',actual:'—'},
+  {time:'15:30',event:'Crude Oil Inventories',cur:'USD',impact:'m',fore:'-1.2M',prev:'-3.4M',actual:'—'},
+];
+
+let tab='coupons',aIdx=0,gIdx=0;
+const _logos={};
+FIRMS.forEach(f=>{if(!f.icon_url)return;const img=new Image();img.onload=()=>{_logos[f.id]=img;drawOne(0);};img.src=f.icon_url;});
+
+const TABS=['coupons','analysis','gex','calendar'];
+function switchTab(t){tab=t;document.querySelectorAll('.canvas-outer').forEach((el,i)=>el.classList.toggle('selected',TABS[i]===t));document.getElementById('caption-type').textContent=t.charAt(0).toUpperCase()+t.slice(1);caption();}
+function rotateAnalysis(){aIdx=(aIdx+1)%AN.length;drawOne(1);caption();}
+function rotateGex(){gIdx=(gIdx+1)%GX.length;drawOne(2);caption();}
+
+/* ══ HELPERS ══ */
+function rr(c,x,y,w,h,r){if(typeof r==='number')r=[r,r,r,r];const[tl,tr,br,bl]=r;c.beginPath();c.moveTo(x+tl,y);c.lineTo(x+w-tr,y);c.arcTo(x+w,y,x+w,y+tr,tr);c.lineTo(x+w,y+h-br);c.arcTo(x+w,y+h,x+w-br,y+h,br);c.lineTo(x+bl,y+h);c.arcTo(x,y+h,x,y+h-bl,bl);c.lineTo(x,y+tl);c.arcTo(x,y,x+tl,y,tl);c.closePath();}
+function al(hex,a){try{hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');return`rgba(${parseInt(hex.slice(0,2),16)},${parseInt(hex.slice(2,4),16)},${parseInt(hex.slice(4,6),16)},${a})`;}catch(e){return`rgba(240,180,41,${a})`;}}
+
+function drawBg(c,W,H){const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#07090D');g.addColorStop(.5,'#0B0F16');g.addColorStop(1,'#07090D');c.fillStyle=g;c.fillRect(0,0,W,H);const gl=c.createRadialGradient(W*.8,H*.1,0,W*.8,H*.1,W*.6);gl.addColorStop(0,'rgba(240,180,41,0.06)');gl.addColorStop(1,'transparent');c.fillStyle=gl;c.fillRect(0,0,W,H);}
+
+function drawLogo(c,W){
+  // Hexagonal SVG icon
+  const sz=48,lx=W/2-140,ly=88;
+  c.save();c.translate(lx-sz/2,ly-sz/2);c.scale(sz/50,sz/50);
+  const gr=c.createLinearGradient(0,0,50,50);gr.addColorStop(0,'#FCD34D');gr.addColorStop(1,'#D97706');
+  c.strokeStyle=gr;c.lineWidth=2.2;c.beginPath();c.moveTo(25,3);c.lineTo(45,14.5);c.lineTo(45,35.5);c.lineTo(25,47);c.lineTo(5,35.5);c.lineTo(5,14.5);c.closePath();c.stroke();
+  c.lineWidth=2.5;c.lineCap='round';c.lineJoin='round';
+  c.beginPath();c.moveTo(14,33);c.lineTo(14,20);c.lineTo(25,28);c.stroke();
+  c.beginPath();c.moveTo(36,33);c.lineTo(36,20);c.lineTo(25,28);c.stroke();
+  c.beginPath();c.arc(25,14,2,0,Math.PI*2);c.fillStyle=gr;c.fill();c.restore();
+  const tx=lx+sz/2+12;
+  c.save();c.font='700 42px Inter,sans-serif';c.fillStyle='#F0B429';c.textAlign='left';c.textBaseline='middle';c.fillText('Markets',tx,ly);
+  const mw=c.measureText('Markets').width;c.font='400 42px Inter,sans-serif';c.fillStyle='#fff';c.fillText(' Coupons',tx+mw,ly);c.restore();
+  c.save();const d=c.createLinearGradient(60,0,W-60,0);d.addColorStop(0,'transparent');d.addColorStop(.5,'rgba(240,180,41,0.4)');d.addColorStop(1,'transparent');c.strokeStyle=d;c.lineWidth=1.5;c.beginPath();c.moveTo(60,130);c.lineTo(W-60,130);c.stroke();c.restore();
+}
+
+function drawFtr(c,W,H){
+  const fy=H-150;
+  c.save();const g=c.createLinearGradient(60,0,W-60,0);g.addColorStop(0,'transparent');g.addColorStop(.5,'rgba(240,180,41,0.35)');g.addColorStop(1,'transparent');c.strokeStyle=g;c.lineWidth=1.5;c.beginPath();c.moveTo(60,fy);c.lineTo(W-60,fy);c.stroke();c.restore();
+  c.save();c.font='bold 36px Inter,sans-serif';c.fillStyle='#EDF2F7';c.textAlign='center';c.fillText('www.marketscoupons.com',W/2,fy+44);c.restore();
+  c.save();c.font='17px Inter,sans-serif';c.fillStyle='rgba(122,143,166,0.45)';c.textAlign='center';
+  c.fillText('Trading futures and forex involves substantial risk and is not for every investor.',W/2,fy+85);
+  c.fillText('Only risk capital should be used. Past performance is not indicative of future results.',W/2,fy+108);c.restore();
+}
+
+function drawCard(c,x,y,w,h,r){r=r||14;rr(c,x,y,w,h,r);c.fillStyle='rgba(255,255,255,.10)';c.fill();rr(c,x,y,w,h,r);c.strokeStyle='rgba(255,255,255,.14)';c.lineWidth=1;c.stroke();c.save();const g=c.createLinearGradient(x,0,x+w,0);g.addColorStop(0,'transparent');g.addColorStop(.5,'rgba(255,255,255,.1)');g.addColorStop(1,'transparent');c.strokeStyle=g;c.lineWidth=1;c.beginPath();c.moveTo(x+r,y+.5);c.lineTo(x+w-r,y+.5);c.stroke();c.restore();}
+
+function drawDiv(c,x1,x2,y){c.save();const g=c.createLinearGradient(x1,0,x2,0);g.addColorStop(0,'transparent');g.addColorStop(.5,'rgba(255,255,255,.12)');g.addColorStop(1,'transparent');c.strokeStyle=g;c.lineWidth=1;c.beginPath();c.moveTo(x1,y);c.lineTo(x2,y);c.stroke();c.restore();}
+
+function drawTitle(c,W,t1,t2,startY){
+  startY=startY||160;
+  c.save();c.font='bold 64px Inter,sans-serif';c.fillStyle='#EDF2F7';c.textAlign='center';c.fillText(t1,W/2,startY);c.restore();
+  if(t2){c.save();c.font='30px Inter,sans-serif';c.fillStyle='rgba(122,143,166,0.8)';c.textAlign='center';c.fillText(t2,W/2,startY+46);c.restore();}
+  return startY+70;
+}
+
+/* ═══════════════════════════════════════════
+   1. CUPONS — offer-card pattern, logos grandes
+   ═══════════════════════════════════════════ */
+function drawCoupons(c,W,H){
+  drawBg(c,W,H);drawLogo(c,W);
+  let py=drawTitle(c,W,'Active Promotions','Exclusive coupons for Prop Firms');
+
+  const firms=FIRMS.filter(f=>f.discount>0);
+  const PX=50,RW=W-PX*2,FZONE=200,GAP=10;
+  const avail=H-py-FZONE-20;
+  const RH=Math.min(136,Math.max(88,Math.floor((avail-GAP*(firms.length-1))/firms.length)));
+  const S=RH/120;
+
+  firms.forEach((f,i)=>{
+    const y=py+i*(RH+GAP);
+    if(y+RH>H-FZONE) return;
+    const fc=f.color||'#F0B429';
+    const dtype=(f.discount_type||'').toLowerCase();
+    const offLbl=dtype==='lifetime'?'LIFETIME':'OFF';
+    const mid=y+RH/2;
+
+    drawCard(c,PX,y,RW,RH,12);
+
+    // Logo — bigger circle
+    const LR=Math.round(28*S);
+    const lx=PX+18+LR;
+    c.save();c.beginPath();c.arc(lx,mid,LR,0,Math.PI*2);c.fillStyle='rgba(0,0,0,.35)';c.fill();c.strokeStyle=al(fc,.3);c.lineWidth=1.5;c.stroke();c.restore();
+    if(_logos[f.id]){c.save();c.beginPath();c.arc(lx,mid,LR-1,0,Math.PI*2);c.clip();c.drawImage(_logos[f.id],lx-LR+1,mid-LR+1,(LR-1)*2,(LR-1)*2);c.restore();}
+    else{c.save();c.font=`bold ${Math.round(22*S)}px Inter`;c.fillStyle=fc;c.textAlign='center';c.textBaseline='middle';c.fillText(f.icon,lx,mid);c.restore();}
+
+    // Discount % — far right
+    const rx=PX+RW-20;
+    c.save();c.font=`900 ${Math.round(44*S)}px Inter`;const pt=f.discount+'%';const pw=c.measureText(pt).width;
+    c.fillStyle=fc;c.textAlign='right';c.textBaseline='middle';c.fillText(pt,rx,mid-Math.round(6*S));
+    c.font=`700 ${Math.round(13*S)}px Inter`;c.fillStyle=al(fc,.55);c.fillText(offLbl,rx,mid+Math.round(18*S));c.restore();
+
+    // Name — left of coupon
+    const nx=lx+LR+16;
+    // Coupon pill — measure first to know available name width
+    let cpX2=rx-pw-30; // right edge for coupon
+    if(f.coupon){
+      c.save();c.font=`800 ${Math.round(21*S)}px monospace`;
+      const cpTx=f.coupon.length>12?f.coupon.slice(0,12)+'…':f.coupon;
+      const cpw=c.measureText(cpTx).width+Math.round(32*S);const cph=Math.round(38*S);
+      const cpx=cpX2-cpw;const cpy=mid-cph/2;
+      c.setLineDash([5,3]);c.strokeStyle='rgba(240,180,41,.3)';c.lineWidth=1.5;rr(c,cpx,cpy,cpw,cph,6);c.stroke();c.setLineDash([]);
+      c.fillStyle='rgba(240,180,41,.05)';rr(c,cpx,cpy,cpw,cph,6);c.fill();
+      c.fillStyle='#F0B429';c.textAlign='center';c.textBaseline='middle';c.fillText(cpTx,cpx+cpw/2,mid);c.restore();
+      cpX2=cpx-14;
+    }
+
+    const nmxW=cpX2-nx-4;
+    c.save();c.font=`700 ${Math.round(30*S)}px Inter`;c.fillStyle='#fff';c.textAlign='left';c.textBaseline='middle';
+    c.fillText(f.short_name||f.name,nx,mid-Math.round(12*S),nmxW);c.restore();
+    // Type pill
+    const tag=(f.type||'').toUpperCase();
+    c.save();c.font=`700 ${Math.round(14*S)}px Inter`;const tw=c.measureText(tag).width+Math.round(16*S);const th=Math.round(20*S);
+    rr(c,nx,mid+Math.round(8*S),tw,th,4);c.fillStyle=al(fc,.15);c.fill();
+    c.fillStyle=fc;c.textAlign='left';c.textBaseline='middle';c.fillText(tag,nx+Math.round(8*S),mid+Math.round(8*S)+th/2);c.restore();
+  });
+
+  drawFtr(c,W,H);
+}
+
+/* ═══════════════════════════════════════════
+   2. ANÁLISE — da-card + chart + levels
+   ═══════════════════════════════════════════ */
+function drawAnalysis(c,W,H){
+  drawBg(c,W,H);drawLogo(c,W);
+  let py=drawTitle(c,W,'Market Analysis','Daily insights for traders');
+
+  const a=AN[aIdx];
+  const bull=a.bias==='bullish';
+  const bc=bull?'#22C55E':'#EF4444';
+  const cx=W/2,cX=56,cW=W-112;
+
+  // Main card — "screenshot" of da-card from site
+  drawCard(c,cX,py,cW,H-py-170,14);
+  let iy=py+30;
+
+  // ── da-card-head: left = ticker badge + name, right = price + change ──
+  // Ticker badge (gold pill like site)
+  c.save();c.font='900 32px Inter';
+  const tickW=c.measureText(a.asset).width+32;
+  rr(c,cX+24,iy-20,tickW,40,8);c.fillStyle='rgba(240,180,41,.1)';c.fill();
+  rr(c,cX+24,iy-20,tickW,40,8);c.strokeStyle='rgba(240,180,41,.2)';c.lineWidth=1;c.stroke();
+  c.fillStyle='#F0B429';c.textAlign='center';c.textBaseline='middle';c.fillText(a.asset,cX+24+tickW/2,iy);c.restore();
+  // Asset name — right of badge
+  c.save();c.font='500 26px Inter';c.fillStyle='rgba(122,143,166,.8)';c.textAlign='left';c.textBaseline='middle';
+  c.fillText(a.name,cX+24+tickW+14,iy);c.restore();
+  // Price — far right, vertically centered with badge
+  c.save();c.font='800 36px Inter';c.fillStyle='#fff';c.textAlign='right';c.textBaseline='middle';
+  c.fillText(a.price,cX+cW-24,iy-6);c.restore();
+  // Change % — below price
+  c.save();c.font='700 22px Inter';c.fillStyle=bc;c.textAlign='right';c.textBaseline='middle';
+  c.fillText(a.chg+'%',cX+cW-24,iy+22);c.restore();
+  iy+=48;
+
+  // ── da-bias-bar: pill + confidence dots + phase ──
+  drawDiv(c,cX+20,cX+cW-20,iy);iy+=24;
+  // Bias pill
+  c.save();c.font='800 20px Inter';const bt=a.bias.toUpperCase();const btw=c.measureText(bt).width+24;
+  rr(c,cX+24,iy-14,btw,28,5);c.fillStyle=al(bc.replace('#',''),.12);c.fill();
+  rr(c,cX+24,iy-14,btw,28,5);c.strokeStyle=al(bc.replace('#',''),.25);c.lineWidth=1;c.stroke();
+  c.fillStyle=bc;c.textAlign='left';c.textBaseline='middle';c.fillText(bt,cX+36,iy);c.restore();
+  // Confidence dots
+  c.save();for(let i=0;i<5;i++){c.beginPath();c.arc(cX+24+btw+24+i*22,iy,7,0,Math.PI*2);c.fillStyle=i<a.conf?'#F0B429':'rgba(255,255,255,.12)';c.fill();}c.restore();
+  // Phase — far right
+  c.save();c.font='600 18px Inter';c.fillStyle='rgba(122,143,166,.5)';c.textAlign='right';c.textBaseline='middle';c.fillText(a.phase,cX+cW-24,iy);c.restore();
+  iy+=30;
+
+  // ── CHART AREA (fake candlestick/line chart) ──
+  const chartH=420,chartX=cX+24,chartW=cW-48,chartY=iy;
+  rr(c,chartX,chartY,chartW,chartH,10);c.fillStyle='rgba(255,255,255,.03)';c.fill();
+  // Fake price line
+  c.save();c.beginPath();
+  const pts=20;
+  const baseY=chartY+chartH*0.45;
+  let prevPy=baseY;
+  for(let i=0;i<pts;i++){
+    const px=chartX+20+(chartW-40)/(pts-1)*i;
+    const noise=(Math.sin(i*1.3+aIdx*2)*40+Math.cos(i*0.7)*25)*(bull?1:-1);
+    const trend=(bull?-1:1)*(i-pts/2)*3;
+    const lpy=baseY+trend+noise;
+    if(i===0)c.moveTo(px,lpy);else c.lineTo(px,lpy);
+    prevPy=lpy;
+  }
+  c.strokeStyle=bc;c.lineWidth=3;c.stroke();
+  // Fill under line
+  c.lineTo(chartX+chartW-20,chartY+chartH);c.lineTo(chartX+20,chartY+chartH);c.closePath();
+  const fg=c.createLinearGradient(0,chartY,0,chartY+chartH);fg.addColorStop(0,al(bc.replace('#',''),.15));fg.addColorStop(1,'transparent');c.fillStyle=fg;c.fill();
+  c.restore();
+  // Horizontal dashed lines
+  c.save();c.setLineDash([4,4]);c.strokeStyle='rgba(255,255,255,.06)';c.lineWidth=1;
+  for(let i=1;i<4;i++){const ly=chartY+chartH/4*i;c.beginPath();c.moveTo(chartX,ly);c.lineTo(chartX+chartW,ly);c.stroke();}
+  c.setLineDash([]);c.restore();
+  // Support/resistance lines on chart
+  c.save();c.setLineDash([6,4]);c.lineWidth=1.5;
+  const s1y=chartY+chartH*0.7,r1y=chartY+chartH*0.25;
+  c.strokeStyle='rgba(34,197,94,.5)';c.beginPath();c.moveTo(chartX,s1y);c.lineTo(chartX+chartW,s1y);c.stroke();
+  c.strokeStyle='rgba(239,68,68,.5)';c.beginPath();c.moveTo(chartX,r1y);c.lineTo(chartX+chartW,r1y);c.stroke();
+  c.setLineDash([]);
+  c.font='600 18px Inter';c.fillStyle='rgba(34,197,94,.7)';c.textAlign='right';c.fillText('S1 '+a.s1,chartX+chartW-8,s1y-6);
+  c.fillStyle='rgba(239,68,68,.7)';c.fillText('R1 '+a.r1,chartX+chartW-8,r1y-6);c.restore();
+  iy=chartY+chartH+20;
+
+  // ── da-levels grid 2x2 ──
+  const lw=(cW-60)/2,lh=74;
+  function lvl(x,y,label,val,color){rr(c,x,y,lw,lh,7);c.fillStyle='rgba(255,255,255,.06)';c.fill();
+    c.save();c.font='700 16px Inter';c.fillStyle='rgba(122,143,166,.5)';c.textAlign='left';c.fillText(label.toUpperCase(),x+12,y+26);
+    c.font='800 28px Inter';c.fillStyle=color;c.fillText(val,x+12,y+56);c.restore();}
+  lvl(cX+24,iy,  'Support 1',a.s1,'#22C55E');
+  lvl(cX+24+lw+12,iy,'Resistance 1',a.r1,'#EF4444');
+  iy+=lh+10;
+  lvl(cX+24,iy,  'Support 2',a.s2,'#22C55E');
+  lvl(cX+24+lw+12,iy,'Resistance 2',a.r2,'#EF4444');
+  iy+=lh+16;
+
+  // ── Attention zone ──
+  rr(c,cX+24,iy,cW-48,70,7);c.fillStyle='rgba(255,255,255,.06)';c.fill();
+  rr(c,cX+24,iy,cW-48,70,7);c.strokeStyle='rgba(240,180,41,.2)';c.lineWidth=1;c.stroke();
+  c.save();c.font='700 16px Inter';c.fillStyle='rgba(240,180,41,.6)';c.textAlign='left';c.fillText('ATTENTION ZONE',cX+38,iy+26);
+  c.font='800 28px Inter';c.fillStyle='#F0B429';c.fillText(a.zone,cX+38,iy+56);c.restore();
+  iy+=90;
+
+  // ── Blurred teaser ──
+  const lockH=H-iy-170-30;
+  if(lockH>100){
+    rr(c,cX+24,iy,cW-48,lockH,10);c.fillStyle='rgba(255,255,255,.02)';c.fill();
+    for(let i=0;i<4;i++){rr(c,cX+44,iy+20+i*44,160+Math.random()*180,12,3);c.fillStyle='rgba(255,255,255,.05)';c.fill();}
+    c.save();c.font='24px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#F0B429';c.fillText('🔒',cx,iy+lockH/2-20);
+    c.font='700 26px Inter';c.fillStyle='#fff';c.fillText('See full analysis',cx,iy+lockH/2+16);
+    c.font='600 22px Inter';c.fillStyle='#F0B429';c.fillText('MARKET ANALYSIS on Markets Coupons',cx,iy+lockH/2+48);c.restore();
+  }
+
+  drawFtr(c,W,H);
+}
+
+/* ═══════════════════════════════════════════
+   3. GEX — gx-asset-card + levels + bar chart
+   ═══════════════════════════════════════════ */
+function drawGex(c,W,H){
+  drawBg(c,W,H);drawLogo(c,W);
+  let py=drawTitle(c,W,'Gamma Exposure','Options flow key levels');
+
+  const g=GX[gIdx];
+  const cx=W/2,cX=56,cW=W-112;
+  const isPos=g.total_gex>0;
+
+  drawCard(c,cX,py,cW,H-py-170,14);
+  let iy=py+24;
+
+  // ── gx-asset-hd: ticker + name | spot + regime ──
+  c.save();c.font='800 36px Inter';c.fillStyle='#fff';c.textAlign='left';c.fillText(g.ticker,cX+24,iy+10);
+  c.font='500 22px Inter';c.fillStyle='rgba(122,143,166,.7)';c.fillText(g.name+' Futures',cX+24+c.measureText(g.ticker+'  ').width,iy+10);c.restore();
+  // Spot + regime badge
+  c.save();c.font='900 36px Inter';c.fillStyle='#fff';c.textAlign='right';c.fillText(g.spot.toLocaleString(),cX+cW-24,iy+4);
+  const regTx=isPos?'POSITIVE':'NEGATIVE';const regC=isPos?'#22C55E':'#EF4444';
+  c.font='700 16px Inter';const rw=c.measureText(regTx).width+16;
+  rr(c,cX+cW-24-rw,iy+16,rw,24,12);c.fillStyle=al(regC.replace('#',''),.12);c.fill();
+  c.fillStyle=regC;c.textAlign='center';c.fillText(regTx,cX+cW-24-rw/2,iy+32);c.restore();
+  iy+=54;
+  drawDiv(c,cX+20,cX+cW-20,iy);iy+=16;
+
+  // ── gx-levels grid 3x2 — matches site exactly ──
+  const levels=[
+    {label:'Zero Gamma',val:g.zero_gamma,color:'#F0B429',desc:'Gamma Flip'},
+    {label:'Put Wall',val:g.put_wall,color:'#22C55E',desc:'Strong Support'},
+    {label:'Call Wall',val:g.call_wall,color:'#EF4444',desc:'Strong Resistance'},
+    {label:'Vol Trigger',val:g.vol_trigger,color:'#F97316',desc:'Vol Regime'},
+    {label:'Max Pain',val:g.max_pain,color:'#A78BFA',desc:'Max Pain'},
+    {label:'Total GEX',val:g.total_gex,color:'#22D3EE',desc:(isPos?'+':'')+g.total_gex+'M'},
+  ];
+  const lw=(cW-72)/3,lh=100,lGap=8;
+  levels.forEach((lv,i)=>{
+    const col=i%3,row=Math.floor(i/3);
+    const lx=cX+24+col*(lw+lGap),ly=iy+row*(lh+lGap);
+    rr(c,lx,ly,lw,lh,8);c.fillStyle='rgba(255,255,255,.06)';c.fill();
+    c.save();c.font='700 14px Inter';c.fillStyle='rgba(122,143,166,.5)';c.textAlign='center';c.fillText(lv.label.toUpperCase(),lx+lw/2,ly+28);
+    c.font='900 30px Inter';c.fillStyle=lv.color;c.fillText(typeof lv.val==='number'?lv.val.toLocaleString():lv.val,lx+lw/2,ly+62);
+    c.font='500 13px Inter';c.fillStyle='rgba(122,143,166,.4)';c.fillText(lv.desc,lx+lw/2,ly+86);c.restore();
+  });
+  iy+=2*(lh+lGap)+16;
+
+  // ── GEX Bar Chart — matches site gx-hchart ──
+  const chartH=Math.min(500,H-iy-200);const chartX=cX+24,chartW=cW-48;
+  // Title
+  c.save();c.font='700 22px Inter';c.fillStyle='rgba(122,143,166,.6)';c.textAlign='left';c.fillText('Gamma Exposure by Strike',chartX,iy);
+  c.font='500 18px Inter';c.fillStyle='rgba(122,143,166,.4)';c.textAlign='right';c.fillText('Total: '+(isPos?'+':'')+g.total_gex+'M',chartX+chartW,iy);c.restore();
+  iy+=16;
+
+  rr(c,chartX,iy,chartW,chartH,10);c.fillStyle='rgba(255,255,255,.03)';c.fill();
+
+  const bars=g.bars;const maxG=Math.max(...bars.map(b=>Math.abs(b.g)));
+  const barW=Math.floor((chartW-40)/bars.length)-4;const midY=iy+chartH/2;
+
+  // Zero line
+  c.save();c.strokeStyle='rgba(255,255,255,.12)';c.lineWidth=1;c.beginPath();c.moveTo(chartX+10,midY);c.lineTo(chartX+chartW-10,midY);c.stroke();c.restore();
+
+  bars.forEach((b,i)=>{
+    const bx=chartX+20+i*(barW+4);
+    const bh=Math.round((Math.abs(b.g)/maxG)*(chartH/2-30));
+    const pos=b.g>=0;
+    const by=pos?midY-bh:midY;
+    const bColor=pos?'#22C55E':'#EF4444';
+
+    rr(c,bx,by,barW,bh,3);c.fillStyle=al(bColor.replace('#',''),.35);c.fill();
+    rr(c,bx,by,barW,bh,3);c.strokeStyle=al(bColor.replace('#',''),.5);c.lineWidth=1;c.stroke();
+
+    // Strike label
+    c.save();c.font='600 12px Inter';c.fillStyle='rgba(122,143,166,.4)';c.textAlign='center';
+    c.fillText(b.s>=10000?(b.s/1000).toFixed(0)+'K':b.s.toString(),bx+barW/2,midY+chartH/2-8);c.restore();
+  });
+
+  // Spot line
+  const spotFrac=(g.spot-bars[0].s)/(bars[bars.length-1].s-bars[0].s);
+  const spotX=chartX+20+spotFrac*(chartW-40);
+  c.save();c.setLineDash([4,3]);c.strokeStyle='rgba(255,255,255,.5)';c.lineWidth=1.5;
+  c.beginPath();c.moveTo(spotX,iy+10);c.lineTo(spotX,iy+chartH-30);c.stroke();c.setLineDash([]);
+  c.font='700 16px Inter';c.fillStyle='#fff';c.textAlign='center';c.fillText('SPOT',spotX,iy+20);c.restore();
+
+  iy+=chartH+20;
+
+  // ── CTA ──
+  if(iy<H-200){
+    c.save();c.font='700 26px Inter';c.fillStyle='#fff';c.textAlign='center';c.fillText('See full GEX analysis',cx,iy);
+    c.font='600 22px Inter';c.fillStyle='#F0B429';c.fillText('MARKET ANALYSIS on Markets Coupons',cx,iy+34);c.restore();
+  }
+
+  drawFtr(c,W,H);
+}
+
+/* ═══════════════════════════════════════════
+   4. CALENDÁRIO — cal-item pattern, ★★★, compact
+   ═══════════════════════════════════════════ */
+function drawCalendar(c,W,H){
+  drawBg(c,W,H);drawLogo(c,W);
+  const ds=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  let py=drawTitle(c,W,'Economic Calendar',ds);
+
+  const cX=56,cW=W-112;
+
+  // Events — "screenshot" style matching site cal-item
+  const evH=160;const evGap=12;
+  CAL.forEach((ev,i)=>{
+    const ey=py+i*(evH+evGap);
+    if(ey+evH>H-190) return;
+    const isH=ev.impact==='h';
+    const ec=isH?'#EF4444':'#F59E0B';
+    const stars=isH?'★★★':'★★☆';
+
+    // Card
+    drawCard(c,cX,ey,cW,evH,12);
+
+    // Left accent bar (site pattern)
+    c.save();rr(c,cX,ey,5,evH,[12,0,0,12]);c.fillStyle=ec;c.fill();c.restore();
+
+    // Row 1: Stars + Time ET + Event Name
+    const r1y=ey+40;
+    // Impact stars
+    c.save();c.font='24px Inter';c.fillStyle=ec;c.textAlign='left';c.fillText(stars,cX+24,r1y);c.restore();
+    // Time
+    c.save();c.font='700 26px Inter';c.fillStyle='rgba(122,143,166,.8)';c.textAlign='left';
+    c.fillText(ev.time,cX+100,r1y);
+    c.font='500 20px Inter';c.fillStyle='rgba(122,143,166,.4)';c.fillText('ET',cX+100+c.measureText(ev.time+' ').width,r1y);c.restore();
+    // Currency badge
+    c.save();c.font='700 20px Inter';const cbw=c.measureText(ev.cur).width+20;
+    rr(c,cX+220,r1y-16,cbw,28,6);c.fillStyle='rgba(59,130,246,.12)';c.fill();
+    c.fillStyle='#3B82F6';c.textAlign='center';c.textBaseline='middle';c.fillText(ev.cur,cX+220+cbw/2,r1y-2);c.restore();
+
+    // Event name — large, clear
+    const r2y=ey+80;
+    c.save();c.font='700 34px Inter';c.fillStyle='#EDF2F7';c.textAlign='left';
+    c.fillText(ev.event,cX+24,r2y,cW-48);c.restore();
+
+    // Row 3: Forecast | Previous | Actual
+    const r3y=ey+125;
+    const col3w=(cW-80)/3;
+    [{l:'Forecast',v:ev.fore,color:'#F0B429'},{l:'Previous',v:ev.prev,color:'rgba(122,143,166,.7)'},{l:'Actual',v:ev.actual,color:'#fff'}].forEach((d,j)=>{
+      const dx=cX+24+j*(col3w+10);
+      // Mini box
+      rr(c,dx,r3y-14,col3w,40,6);c.fillStyle='rgba(255,255,255,.04)';c.fill();
+      c.save();c.font='500 16px Inter';c.fillStyle='rgba(122,143,166,.4)';c.textAlign='left';c.fillText(d.l,dx+10,r3y+2);
+      c.font='800 22px Inter';c.fillStyle=d.color;c.textAlign='right';c.fillText(d.v,dx+col3w-10,r3y+4);c.restore();
+    });
+  });
+
+  // CTA
+  const ctaY=py+CAL.length*(evH+10)+20;
+  if(ctaY<H-200){
+    c.save();c.font='700 28px Inter';c.fillStyle='#F0B429';c.textAlign='center';
+    c.fillText('Full calendar with alerts at',W/2,ctaY);
+    c.font='800 28px Inter';c.fillText('ECONOMIC CALENDAR on Markets Coupons',W/2,ctaY+38);c.restore();
+  }
+
+  drawFtr(c,W,H);
+}
+
+/* ══ CAPTION ══ */
+function caption(){
+  const el=document.getElementById('caption-preview');let t='';
+  switch(tab){
+    case'coupons':{const fs=FIRMS.filter(f=>f.discount>0);t=`🔥 Active Promotions — Prop Firms\n\n${fs.map(f=>`• ${f.name} — ${f.discount}% OFF${f.coupon?' | Coupon: '+f.coupon:''}`).join('\n')}\n\n💰 Save up to ${Math.max(...fs.map(f=>f.discount))}% on your challenge\n🌐 www.marketscoupons.com`;break;}
+    case'analysis':{const a=AN[aIdx];t=`📊 ${a.asset} — ${a.name} | ${a.price} (${a.chg}%)\n\nSee full analysis for all 4 assets at MARKET ANALYSIS on Markets Coupons.\n\n👉 www.marketscoupons.com`;break;}
+    case'gex':{const g=GX[gIdx];t=`🎯 GEX — ${g.ticker} | Spot: ${g.spot.toLocaleString()}\n\nSee all key levels at MARKET ANALYSIS on Markets Coupons.\n\n👉 www.marketscoupons.com`;break;}
+    case'calendar':{const hi=CAL.filter(e=>e.impact==='h');t=`📅 Economic Calendar — Today\n\n${hi.map(e=>`🔴 ${e.time} ET — ${e.event}`).join('\n')}\n\nFull calendar with alerts at Markets Coupons.\n\n👉 www.marketscoupons.com`;break;}
+  }
+  el.textContent=t;
+}
+
+/* ══ DRAW + SCALE ══ */
+const DRAWFNS=[drawCoupons,drawAnalysis,drawGex,drawCalendar];
+function drawOne(i){const cv=document.getElementById('cv-'+i);if(!cv)return;const c=cv.getContext('2d');c.clearRect(0,0,1080,1920);DRAWFNS[i](c,1080,1920);}
+function drawAll(){for(let i=0;i<4;i++)drawOne(i);}
+function scaleAll(){for(let i=0;i<4;i++){const s=document.getElementById('cs-'+i),w=document.getElementById('cv-wrap-'+i);if(!s||!w)continue;const mw=w.offsetWidth||300;const r=mw/1080;s.style.transform=`scale(${r})`;s.style.width='1080px';s.style.height='1920px';s.style.transformOrigin='top left';w.style.height=Math.round(1920*r)+'px';}}
+document.addEventListener('click',e=>{const w=e.target.closest('.canvas-outer');if(!w)return;const idx=[...document.querySelectorAll('.grid-col .canvas-outer')].indexOf(w);if(idx>=0)switchTab(TABS[idx]);});
+window.addEventListener('load',()=>{scaleAll();drawAll();switchTab('coupons');caption();});
+window.addEventListener('resize',scaleAll);
+</script>
+</body>
+</html>
