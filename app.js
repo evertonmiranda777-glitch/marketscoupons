@@ -4215,20 +4215,13 @@ function renderCal() {
           nowLine = `<div class="cal-now-line"><div class="cal-now-dot"></div><div class="cal-now-label">${t('cal_agora')||'NOW'}</div><div class="cal-now-hr"></div></div>`;
         }
         return `${nowLine}<div class="cal-item${isPast?' cal-past':''}${isNextHi?' cal-next-hi':''}">
-          <div class="cal-mob-row1">
-            <div class="cal-time">${tz.display} <span style="font-size:10px;color:var(--t3);">${tz.label}</span></div>
-            <span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${flag} ${e.cur}</span>
-            <div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t3);font-weight:400;">${e.ref}</span>`:''}</div>
-            <div class="cal-stars ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</div>
-          </div>
+          <div class="cal-time">${tz.display} <span style="font-size:10px;color:var(--t3);">${tz.label}</span></div>
+          <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${e.cur}</span></div>
+          <div><div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t3);font-weight:400;">${e.ref}</span>`:''}</div></div>
           <div class="cal-act-wrap"${tipAttr}><div class="cal-val ${actClass}">${e.actual}${actArrow}</div></div>
           <div class="cal-fore-wrap"><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
           <div class="cal-prev-wrap"><div class="cal-val">${e.prev}</div></div>
-          <div class="cal-mob-data">
-            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_atual')||'Actual'}</div><div class="cal-mob-val ${actClass}">${e.actual}${actArrow}</div></div>
-            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_previsao')||'Forecast'}</div><div class="cal-mob-val" style="color:var(--gold);">${e.fore}</div></div>
-            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_anterior')||'Previous'}</div><div class="cal-mob-val">${e.prev}</div></div>
-          </div>
+          <div class="cal-stars ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</div>
         </div>`;
       }).join('')}
     </div>`;
