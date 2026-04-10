@@ -4902,6 +4902,147 @@ function buildInstitutionalHtml(name, lang='pt'){
     </td></tr>`
   ).join('');
 
+  // Mini card helper (same pattern as firm email metrics)
+  const mc = (label, value, vc, desc) =>
+    `<td width="50%" style="padding:3px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f7f7;border-radius:6px;border:1px solid #eee;" role="presentation">
+        <tr><td style="padding:10px 8px;text-align:center;">
+          <div style="color:#888;font-size:8px;font-weight:700;letter-spacing:0.06em;margin-bottom:3px;font-family:${FI};">${label}</div>
+          <div style="color:${vc};font-size:15px;font-weight:700;font-family:${FI};">${value}</div>
+          ${desc ? `<div style="color:#aaa;font-size:9px;margin-top:2px;font-family:${FI};">${desc}</div>` : ''}
+        </td></tr>
+      </table>
+    </td>`;
+
+  // Build cards section per template
+  let cardsHtml = '';
+
+  if(name === 'welcome'){
+    const wl = {
+      pt:['CUPONS EXCLUSIVOS','ATE','FIRMAS COMPARADAS','FERRAMENTAS','PROGRAMA VIP','CONTEUDO'],
+      en:['EXCLUSIVE COUPONS','UP TO','FIRMS COMPARED','TOOLS','VIP PROGRAM','CONTENT'],
+      es:['CUPONES EXCLUSIVOS','HASTA','FIRMAS COMPARADAS','HERRAMIENTAS','PROGRAMA VIP','CONTENIDO'],
+      fr:['COUPONS EXCLUSIFS','JUSQU\'A','FIRMES COMPAREES','OUTILS','PROGRAMME VIP','CONTENU'],
+      de:['EXKLUSIVE GUTSCHEINE','BIS ZU','FIRMEN VERGLICHEN','TOOLS','VIP PROGRAMM','INHALTE'],
+      it:['COUPON ESCLUSIVI','FINO A','FIRME CONFRONTATE','STRUMENTI','PROGRAMMA VIP','CONTENUTI'],
+      ar:['كوبونات حصرية','حتى','شركات مقارنة','أدوات','برنامج VIP','محتوى']
+    }[lang]||{pt:['CUPONS EXCLUSIVOS','ATE','FIRMAS COMPARADAS','FERRAMENTAS','PROGRAMA VIP','CONTEUDO']}.pt;
+    const wd = {
+      pt:['Negociados direto','Desconto Lifetime','Lado a lado','Heat Map, Screener +','Fidelidade + Pro','Blog, Guias, Quiz'],
+      en:['Direct negotiated','Lifetime discount','Side by side','Heat Map, Screener +','Loyalty + Pro','Blog, Guides, Quiz'],
+    }[lang]||{en:['Direct negotiated','Lifetime discount','Side by side','Heat Map, Screener +','Loyalty + Pro','Blog, Guides, Quiz']}.en;
+    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
+      <tr>${mc(wl[0],'9+',color,wd[0])}${mc(wl[1],'90% OFF','#22c55e',wd[1])}</tr>
+      <tr>${mc(wl[2],'11+','#eab308',wd[2])}${mc(wl[3],'6+','#0ea5e9',wd[3])}</tr>
+      <tr>${mc(wl[4],'VIP','#a855f7',wd[4])}${mc(wl[5],'50+','#10b981',wd[5])}</tr>
+    </table>`;
+  }
+
+  if(name === 'site-invite'){
+    // Best offer highlight card
+    cardsHtml = `
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DARK};border-radius:10px;margin-bottom:16px;" role="presentation">
+      <tr><td style="padding:16px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+          <tr>
+            <td style="vertical-align:middle;">
+              <img src="https://www.marketscoupons.com/img/Firms/apex.png" width="32" height="32" style="width:32px;height:32px;border-radius:6px;" alt="Apex">
+            </td>
+            <td style="vertical-align:middle;padding-left:10px;">
+              <div style="color:#fff;font-size:13px;font-weight:700;font-family:${FI};">Apex Trader Funding</div>
+              <div style="color:#f97316;font-size:10px;font-weight:600;font-family:${FI};">FUTUROS</div>
+            </td>
+            <td style="vertical-align:middle;text-align:right;">
+              <div style="color:#f97316;font-size:24px;font-weight:800;font-family:${FI};">90%</div>
+              <div style="color:#888;font-size:9px;font-family:${FI};">OFF LIFETIME</div>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;" role="presentation">
+          <tr>
+            <td width="33%" style="padding:0 2px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#10151F;border-radius:6px;border:1px solid #1C2535;" role="presentation">
+                <tr><td style="padding:6px;text-align:center;">
+                  <div style="color:#888;font-size:8px;font-family:${FI};">SPLIT</div>
+                  <div style="color:#4ade80;font-size:13px;font-weight:700;font-family:${FI};">80%</div>
+                </td></tr>
+              </table>
+            </td>
+            <td width="33%" style="padding:0 2px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#10151F;border-radius:6px;border:1px solid #1C2535;" role="presentation">
+                <tr><td style="padding:6px;text-align:center;">
+                  <div style="color:#888;font-size:8px;font-family:${FI};">100K</div>
+                  <div style="color:#f97316;font-size:13px;font-weight:700;font-family:${FI};">$39.90</div>
+                </td></tr>
+              </table>
+            </td>
+            <td width="33%" style="padding:0 2px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#10151F;border-radius:6px;border:1px solid #1C2535;" role="presentation">
+                <tr><td style="padding:6px;text-align:center;">
+                  <div style="color:#888;font-size:8px;font-family:${FI};">CUPOM</div>
+                  <div style="color:#eab308;font-size:13px;font-weight:700;font-family:${FI};">MARKET</div>
+                </td></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+    </table>`;
+  }
+
+  if(name === 'loyalty'){
+    const ll = {
+      pt:['COMPARADOR','CALCULADORA','HEAT MAP','ANALISE DIARIA','CALENDARIO','INDICADORES'],
+      en:['COMPARATOR','CALCULATOR','HEAT MAP','DAILY ANALYSIS','CALENDAR','INDICATORS'],
+      es:['COMPARADOR','CALCULADORA','HEAT MAP','ANALISIS DIARIO','CALENDARIO','INDICADORES'],
+    }[lang]||['COMPARATOR','CALCULATOR','HEAT MAP','DAILY ANALYSIS','CALENDAR','INDICATORS'];
+    const ld = {
+      pt:['Firmas lado a lado','Position Size','S&P 500 + Crypto','ES, NQ, GC, CL','Eventos de impacto','Pro exclusivos'],
+      en:['Firms side by side','Position Size','S&P 500 + Crypto','ES, NQ, GC, CL','Impact events','Pro exclusive'],
+      es:['Firmas lado a lado','Position Size','S&P 500 + Crypto','ES, NQ, GC, CL','Eventos de impacto','Pro exclusivos'],
+    }[lang]||['Firms side by side','Position Size','S&P 500 + Crypto','ES, NQ, GC, CL','Impact events','Pro exclusive'];
+    const lc = [color, '#22c55e', '#0ea5e9', '#eab308', '#ef4444', '#a855f7'];
+    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
+      <tr>${mc(ll[0],'VS',lc[0],ld[0])}${mc(ll[1],'R:R',lc[1],ld[1])}</tr>
+      <tr>${mc(ll[2],'LIVE',lc[2],ld[2])}${mc(ll[3],'6AM',lc[3],ld[3])}</tr>
+      <tr>${mc(ll[4],'HI',lc[4],ld[4])}${mc(ll[5],'VIP',lc[5],ld[5])}</tr>
+    </table>`;
+  }
+
+  if(name === 'indicators'){
+    const il = {
+      pt:['HEAT MAP','CALENDARIO ECONOMICO','SCREENER','POSITION SIZE CALC','ANALISE DIARIA','INDICADORES PRO'],
+      en:['HEAT MAP','ECONOMIC CALENDAR','SCREENER','POSITION SIZE CALC','DAILY ANALYSIS','PRO INDICATORS'],
+    }[lang]||['HEAT MAP','ECONOMIC CALENDAR','SCREENER','POSITION SIZE CALC','DAILY ANALYSIS','PRO INDICATORS'];
+    const id = {
+      pt:['S&P 500, Nasdaq, Crypto','Eventos de alto impacto','Ativos e setores','Risco e alavancagem','ES, NQ, GC, CL as 6h','Membros VIP'],
+      en:['S&P 500, Nasdaq, Crypto','High impact events','Assets and sectors','Risk and leverage','ES, NQ, GC, CL at 6AM','VIP members'],
+    }[lang]||['S&P 500, Nasdaq, Crypto','High impact events','Assets and sectors','Risk and leverage','ES, NQ, GC, CL at 6AM','VIP members'];
+    const ic = [color, '#22c55e', '#eab308', '#a855f7', '#ef4444', '#10b981'];
+    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
+      <tr>${mc(il[0],'LIVE',ic[0],id[0])}${mc(il[1],'24/5',ic[1],id[1])}</tr>
+      <tr>${mc(il[2],'500+',ic[2],id[2])}${mc(il[3],'R:R',ic[3],id[3])}</tr>
+      <tr>${mc(il[4],'6AM',ic[4],id[4])}${mc(il[5],'VIP',ic[5],id[5])}</tr>
+    </table>`;
+  }
+
+  if(name === 'blog-guides'){
+    const bl = {
+      pt:['METODO WYCKOFF','PROP FIRMS 101','DRAWDOWN','QUIZ INTERATIVO','POSITION SIZING','ESTRATEGIAS'],
+      en:['WYCKOFF METHOD','PROP FIRMS 101','DRAWDOWN','INTERACTIVE QUIZ','POSITION SIZING','STRATEGIES'],
+    }[lang]||['WYCKOFF METHOD','PROP FIRMS 101','DRAWDOWN','INTERACTIVE QUIZ','POSITION SIZING','STRATEGIES'];
+    const bd = {
+      pt:['Acumulacao e distribuicao','Como escolher a sua','Gestao de risco real','Qual firma pra voce?','Calcule antes de operar','SMC, ICT e mais'],
+      en:['Accumulation & distribution','How to choose yours','Real risk management','Which firm for you?','Calculate before trading','SMC, ICT and more'],
+    }[lang]||['Accumulation & distribution','How to choose yours','Real risk management','Which firm for you?','Calculate before trading','SMC, ICT and more'];
+    const bc = [color, '#eab308', '#ef4444', '#a855f7', '#22c55e', '#0ea5e9'];
+    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
+      <tr>${mc(bl[0],'NEW',bc[0],bd[0])}${mc(bl[1],'GUIDE',bc[1],bd[1])}</tr>
+      <tr>${mc(bl[2],'RISK',bc[2],bd[2])}${mc(bl[3],'QUIZ',bc[3],bd[3])}</tr>
+      <tr>${mc(bl[4],'CALC',bc[4],bd[4])}${mc(bl[5],'PRO',bc[5],bd[5])}</tr>
+    </table>`;
+  }
+
   return `<!DOCTYPE html>
 <html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="color-scheme" content="light only">
@@ -4945,6 +5086,9 @@ ${t.image ? `<tr><td style="font-size:0;line-height:0;">
       <div style="color:#444;font-size:14px;line-height:1.6;font-family:${FI};">${gt(t.body)}</div>
     </td></tr>
   </table>
+
+  <!-- Mini cards -->
+  ${cardsHtml}
 
   <!-- Features -->
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${CARD};border-radius:10px;border:1px solid #eee;margin-bottom:20px;" role="presentation">
