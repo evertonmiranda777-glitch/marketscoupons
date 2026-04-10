@@ -3223,7 +3223,17 @@ const CHECKOUT_FIRMS=[
    includes:['Scaling até 100% split','Drawdown estático','Payout 24h ciclo 7 dias','15% bonus lucro avaliação','Trade2Earn','Alavancagem 1:100','Suporte 24/7'],
    types:['2-Step'],platforms:['MT5','DXtrade','cTrader'],
    plans:[{size:'$5K',capital:'$5,000',goal:'$400',maxDD:'-10%',orig:'€45',disc:'€36',featured:false},{size:'$10K',capital:'$10,000',goal:'$800',maxDD:'-10%',orig:'€85',disc:'€68',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,000',maxDD:'-10%',orig:'€165',disc:'€132',featured:false},{size:'$50K',capital:'$50,000',goal:'$4,000',maxDD:'-10%',orig:'€285',disc:'€228',featured:true},{size:'$100K',capital:'$100,000',goal:'$8,000',maxDD:'-10%',orig:'€495',disc:'€396',featured:false},{size:'$200K',capital:'$200,000',goal:'$16,000',maxDD:'-10%',orig:'€945',disc:'€756',featured:false}],
-   buildUrl:(size,type,plat)=>'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ'}
+   buildUrl:(size,type,plat)=>'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ'},
+  {id:'e8',name:'E8 Markets',short:'E8',coupon:'MARKET',discount:'10%',color:'#FF4400',bg:'rgba(255,68,0,0.12)',
+   includes:['Sem taxa de ativação','Passa em 1 dia','Forex, Futuros e Crypto','Drawdown configurável 4-14%','Split até 100%','Contas até $500K'],
+   types:['Signature','E8 One'],platforms:['MT5','Match-Trader'],
+   plans:[{size:'$25K',capital:'$25,000',goal:'$1,500',maxDD:'-4% EOD',orig:'$110',disc:'$99',featured:false},{size:'$50K',capital:'$50,000',goal:'$3,000',maxDD:'-4% EOD',orig:'$150',disc:'$135',featured:false},{size:'$100K',capital:'$100,000',goal:'$6,000',maxDD:'-4% EOD',orig:'$260',disc:'$234',featured:true},{size:'$150K',capital:'$150,000',goal:'$9,000',maxDD:'-4% EOD',orig:'$390',disc:'$351',featured:false}],
+   buildUrl:(size,type,plat)=>'https://e8markets.com/d/MARKET'},
+  {id:'cti',name:'City Traders Imperium',short:'CTI',coupon:'APR30',discount:'30%',color:'#0A74DA',bg:'rgba(10,116,218,0.12)',
+   includes:['5 programas de avaliação','VIP Program: Bronze, Silver, Gold','Coaching 1-on-1 gratuito','Certificado de conquista','Split até 100%','Scaling disponível'],
+   types:['1-Step','2-Step','3-Step','Instant','Instant Pro'],platforms:['Match-Trader'],
+   plans:[{size:'$2.5K',capital:'$2,500',goal:'$200',maxDD:'-5%',orig:'$39',disc:'$27',featured:false},{size:'$5K',capital:'$5,000',goal:'$400',maxDD:'-5%',orig:'$59',disc:'$41',featured:false},{size:'$10K',capital:'$10,000',goal:'$800',maxDD:'-5%',orig:'$109',disc:'$76',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,000',maxDD:'-5%',orig:'$199',disc:'$139',featured:true},{size:'$50K',capital:'$50,000',goal:'$4,000',maxDD:'-5%',orig:'$399',disc:'$280',featured:false},{size:'$100K',capital:'$100,000',goal:'$8,000',maxDD:'-5%',orig:'$589',disc:'$412',featured:false}],
+   buildUrl:(size,type,plat)=>'https://app.citytradersimperium.com/user-auth/register?referral_code=1331c5&utm_source=client&utm_medium=referral&utm_id=1331c5'}
 ];
 
 let achActiveFirm='apex';
