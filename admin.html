@@ -1275,6 +1275,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <div class="seg-grid" id="seg-grid">
          <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos</div>
          <div class="seg-opt" onclick="toggleSeg(this,'leads')">Leads</div>
+         <div class="seg-opt" onclick="toggleSeg(this,'subscribers')">Subscribers</div>
          <div class="seg-opt" onclick="toggleSeg(this,'loyalty')">Fidelidade</div>
        </div>
        <div style="margin-top:6px;">
@@ -3682,8 +3683,8 @@ async function getSegmentedLeads(){
   const {data}=await db.from('loyalty_members').select('email,name,idioma').neq('email',null);
   if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',lang:langFromCode(m.idioma),source:'loyalty',firma:''})));
  }
- // Subscribers from Supabase (always included in 'all')
- if(needAll){
+ // Subscribers from Supabase
+ if(needAll||emailSegments.includes('subscribers')){
   const {data}=await db.from('email_subscribers').select('email,name,lang,tags').eq('status','active');
   if(data) results.push(...data.map(s=>{
    const tags = s.tags||[];
