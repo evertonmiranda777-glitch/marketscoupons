@@ -3958,22 +3958,106 @@ const CUR_COLORS = {
   NZD:{bg:'rgba(6,182,212,.15)',c:'#06b6d4'},
 };
 
+const CUR_FLAGS = {USD:'🇺🇸',EUR:'🇪🇺',GBP:'🇬🇧',CAD:'🇨🇦',AUD:'🇦🇺',JPY:'🇯🇵',BRL:'🇧🇷',CNY:'🇨🇳',CHF:'🇨🇭',NZD:'🇳🇿',MXN:'🇲🇽',KRW:'🇰🇷',INR:'🇮🇳',ZAR:'🇿🇦',SEK:'🇸🇪',NOK:'🇳🇴',DKK:'🇩🇰',PLN:'🇵🇱',TRY:'🇹🇷',SGD:'🇸🇬',HKD:'🇭🇰',TWD:'🇹🇼',THB:'🇹🇭',IDR:'🇮🇩',RUB:'🇷🇺'};
+
 const CAL_API = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-calendar';
 
-let calFilterCur = 'all';  // currency filter
-let calFilterImp = 'all';  // impact filter
-let calEvents = [];
+// Timezone offsets from UTC in hours
+const CAL_TZ_OFFSETS = {ET:-4,CT:-5,PT:-7,UTC:0,GMT:0,CET:1,JST:9,BRT:-3};
+
+let calFilterCur = 'all';
+let calFilterImp = 'all';
+let calEvents = [];   // raw events with ET times
 let _calRefreshTimer = null;
 let _calLang = '';
 let _calLastUpdate = null;
+let _calTz = 'ET';    // current timezone
+let _calCdTimer = null; // countdown interval
 
+// ── Timezone ──
+function calSetTz(tz){
+  _calTz = tz;
+  try { localStorage.setItem('mc_cal_tz', tz); } catch(e){}
+  renderCal();
+  calUpdateCountdown();
+}
+
+function calInitTz(){
+  try { const saved = localStorage.getItem('mc_cal_tz'); if(saved) _calTz = saved; } catch(e){}
+  const sel = document.getElementById('cal-tz');
+  if(sel) sel.value = _calTz;
+}
+
+// Convert HH:MM in ET to the selected timezone
+function calConvertTime(hhmm){
+  if(!hhmm || hhmm === '—') return {display:'—', label:''};
+  const [hh,mm] = hhmm.split(':').map(Number);
+  if(isNaN(hh) || isNaN(mm)) return {display:hhmm, label:_calTz};
+  if(_calTz === 'local'){
+    // ET is UTC-4, convert to local
+    const now = new Date();
+    const utcH = hh + 4; // ET to UTC
+    const localOffset = -now.getTimezoneOffset() / 60; // local offset in hours from UTC
+    let lh = utcH + localOffset;
+    if(lh < 0) lh += 24; if(lh >= 24) lh -= 24;
+    const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace(/_/g,' ');
+    return {display:String(Math.floor(lh)).padStart(2,'0')+':'+String(mm).padStart(2,'0'), label:tzName};
+  }
+  const offset = CAL_TZ_OFFSETS[_calTz];
+  if(offset === undefined) return {display:hhmm, label:_calTz};
+  const etOffset = -4;
+  let converted = hh + (offset - etOffset);
+  if(converted < 0) converted += 24; if(converted >= 24) converted -= 24;
+  return {display:String(Math.floor(converted)).padStart(2,'0')+':'+String(mm).padStart(2,'0'), label:_calTz};
+}
+
+// ── Countdown timer for next high-impact event ──
+function calUpdateCountdown(){
+  const bar = document.getElementById('cal-countdown-bar');
+  if(!bar) return;
+  const now = new Date();
+  const etNow = new Date(now.getTime() - 4*60*60*1000);
+  const todayStr = etNow.toISOString().slice(0,10);
+  const etH = (now.getUTCHours() - 4 + 24) % 24;
+  const etM = now.getUTCMinutes();
+  const etS = now.getUTCSeconds();
+  const nowSec = etH*3600 + etM*60 + etS;
+
+  // Find next upcoming high-impact event today
+  let nextEv = null;
+  let nextSec = Infinity;
+  for(const e of calEvents){
+    if(e.dateStr !== todayStr || e.imp !== 'h' || e.t === '—') continue;
+    const [h,m] = e.t.split(':').map(Number);
+    if(isNaN(h)) continue;
+    const evSec = h*3600 + m*60;
+    if(evSec > nowSec && evSec < nextSec){ nextSec = evSec; nextEv = e; }
+  }
+  if(!nextEv){
+    bar.style.display = 'none';
+    return;
+  }
+  const diff = nextSec - nowSec;
+  const dH = Math.floor(diff/3600);
+  const dM = Math.floor((diff%3600)/60);
+  const dS = diff%60;
+  document.getElementById('cal-cd-name').textContent = (CUR_FLAGS[nextEv.cur]||'') + ' ' + nextEv.ev + ' (' + nextEv.cur + ')';
+  document.getElementById('cal-cd-timer').textContent = (dH>0?dH+'h ':'') + String(dM).padStart(2,'0') + 'm ' + String(dS).padStart(2,'0') + 's';
+  bar.style.display = 'flex';
+}
+
+function calStartCountdown(){
+  if(_calCdTimer) clearInterval(_calCdTimer);
+  calUpdateCountdown();
+  _calCdTimer = setInterval(calUpdateCountdown, 1000);
+}
+
+// ── Filters ──
 function calFilter(filter, btn) {
   track('calendar_filter',{filter});
-  // Determine if it's a currency or impact filter
   if (filter === 'all') { calFilterCur = 'all'; calFilterImp = 'all'; }
   else if (filter === 'h' || filter === 'm' || filter === 'l') { calFilterImp = calFilterImp === filter ? 'all' : filter; }
   else { calFilterCur = calFilterCur === filter ? 'all' : filter; }
-  // Update button states
   document.querySelectorAll('.cal-f').forEach(b => {
     const f = b.getAttribute('data-filter');
     if (f === 'all') b.classList.toggle('active', calFilterCur === 'all' && calFilterImp === 'all');
@@ -3983,25 +4067,25 @@ function calFilter(filter, btn) {
   renderCal();
 }
 
-// Get today's high-impact events (used by analysis)
 function getTodayHighImpactEvents(){
   const todayStr = new Date().toISOString().slice(0,10);
   return calEvents.filter(e=>e.dateStr===todayStr && e.imp==='h');
 }
 
+// ── Load ──
 async function loadCalendar(silent) {
   const el = document.getElementById('cal-list');
   if (!el) return;
   if(!silent) el.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--t2);"><div class="ar-spinner" style="width:24px;height:24px;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div></div>';
 
+  calInitTz();
+
   const today = new Date();
-  // Use ET (UTC-4) date to match the calendar event dates
   const etNow = new Date(today.getTime() - 4 * 60 * 60 * 1000);
   const todayStr = etNow.toISOString().slice(0,10);
   const tmrDate = new Date(etNow); tmrDate.setDate(tmrDate.getDate()+1);
   const tmrStr = tmrDate.toISOString().slice(0,10);
 
-  // Clear old FF cache
   try{localStorage.removeItem('mc_cal_cache');}catch(e){}
 
   try {
@@ -4019,7 +4103,7 @@ async function loadCalendar(silent) {
       let imp = 'l';
       if (ev.importance >= 3) imp = 'h';
       else if (ev.importance >= 2) imp = 'm';
-      // Convert 12h time (e.g. "02:30 PM") to 24h (e.g. "14:30") for correct sorting/comparison
+      // Convert 12h → 24h (all times stored as ET 24h)
       let t24 = ev.time || '—';
       if (t24 !== '—') {
         const m = t24.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
@@ -4034,7 +4118,6 @@ async function loadCalendar(silent) {
         imp, dateStr
       };
     });
-    // Sort events by date then time (24h format ensures correct order)
     calEvents.sort((a,b) => (a.dateStr+a.t).localeCompare(b.dateStr+b.t));
     _calLastUpdate = new Date().toISOString();
   } catch(e) {
@@ -4044,6 +4127,7 @@ async function loadCalendar(silent) {
     }
   }
   renderCal();
+  calStartCountdown();
   if (!_calRefreshTimer) _startCalRefresh();
 }
 
@@ -4051,20 +4135,41 @@ function _startCalRefresh(){
   _calRefreshTimer = setInterval(() => loadCalendar(true), 5*60*1000);
 }
 
-const CUR_FLAGS = {USD:'🇺🇸',EUR:'🇪🇺',GBP:'🇬🇧',CAD:'🇨🇦',AUD:'🇦🇺',JPY:'🇯🇵',BRL:'🇧🇷',CNY:'🇨🇳',CHF:'🇨🇭',NZD:'🇳🇿',MXN:'🇲🇽',KRW:'🇰🇷',INR:'🇮🇳',ZAR:'🇿🇦',SEK:'🇸🇪',NOK:'🇳🇴',DKK:'🇩🇰',PLN:'🇵🇱',TRY:'🇹🇷',SGD:'🇸🇬',HKD:'🇭🇰',TWD:'🇹🇼',THB:'🇹🇭',IDR:'🇮🇩',RUB:'🇷🇺'};
+// ── Mobile expand ──
+function calToggleMob(el){
+  if(window.innerWidth > 700) return;
+  el.closest('.cal-item')?.classList.toggle('cal-expanded');
+}
 
+// ── Tooltip on actual value ──
+function calShowTip(el, actual, forecast){
+  let tip = document.getElementById('cal-tip');
+  if(!tip){ tip = document.createElement('div'); tip.id='cal-tip'; tip.className='cal-tooltip'; document.body.appendChild(tip); }
+  const actN = parseFloat(actual.replace(/[^0-9.\-]/g,''));
+  const foreN = parseFloat(forecast.replace(/[^0-9.\-]/g,''));
+  if(isNaN(actN) || isNaN(foreN) || foreN === 0) return;
+  const diff = actN - foreN;
+  const pct = ((diff / Math.abs(foreN)) * 100).toFixed(1);
+  const isUp = diff > 0;
+  tip.innerHTML = `<span class="${isUp?'cal-tooltip-up':'cal-tooltip-dn'}">${isUp?'▲':'▼'} ${isUp?'+':''}${pct}%</span> vs forecast`;
+  const r = el.getBoundingClientRect();
+  tip.style.left = (r.left + r.width/2 - 60) + 'px';
+  tip.style.top = (r.top - 40 + window.scrollY) + 'px';
+  requestAnimationFrame(()=> tip.classList.add('show'));
+}
+function calHideTip(){ const tip = document.getElementById('cal-tip'); if(tip) tip.classList.remove('show'); }
+
+// ── Render ──
 function renderCal() {
   const el = document.getElementById('cal-list');
   if (!el) return;
   let events = calEvents;
   if (calFilterCur !== 'all') events = events.filter(e => e.cur === calFilterCur);
   if (calFilterImp !== 'all') events = events.filter(e => e.imp === calFilterImp);
-  // Search filter
   const searchEl = document.getElementById('cal-search');
   const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
   if (q) events = events.filter(e => e.ev.toLowerCase().includes(q) || e.cur.toLowerCase().includes(q) || (e.ref||'').toLowerCase().includes(q));
 
-  // Update count
   const countEl = document.getElementById('cal-count');
   if (countEl) countEl.textContent = events.length + ' ' + (events.length === 1 ? t('cal_evento_singular') || 'event' : t('cal_eventos_plural') || 'events');
 
@@ -4073,11 +4178,21 @@ function renderCal() {
     return;
   }
 
-  // Current time for "now" line (ET = UTC-4)
+  // Current time in ET for "now" line
   const nowUTC = new Date();
   const etH = (nowUTC.getUTCHours() - 4 + 24) % 24;
   const nowHHMM = etH.toString().padStart(2,'0') + ':' + nowUTC.getUTCMinutes().toString().padStart(2,'0');
-  const todayStr = new Date().toISOString().slice(0,10);
+
+  // Find next upcoming high-impact event (for highlight)
+  const etNow = new Date(nowUTC.getTime() - 4*60*60*1000);
+  const todayStr = etNow.toISOString().slice(0,10);
+  let nextHiId = null;
+  for(const e of calEvents){
+    if(e.dateStr === todayStr && e.imp === 'h' && e.t !== '—' && e.t > nowHHMM){
+      nextHiId = e.dateStr + e.t + e.ev;
+      break;
+    }
+  }
 
   const groups = {};
   events.forEach(e => { if (!groups[e.day]) groups[e.day] = []; groups[e.day].push(e); });
@@ -4088,34 +4203,43 @@ function renderCal() {
     const items = groups[day];
     return `<div class="cal-date-group">
       <div class="cal-date-label">${day === 'Hoje' ? t('cal_hoje') + ' — ' + new Date().toLocaleDateString(_currentLang||'en',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : day === 'Amanhã' ? t('cal_amanha') : t('cal_esta_semana')}</div>
-      ${items.map((e, i) => {
+      ${items.map((e) => {
         const cc = CUR_COLORS[e.cur] || {bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
-        const flag = '';
+        const flag = CUR_FLAGS[e.cur] || '';
         const actVal = parseFloat((e.actual||'').replace(/[^0-9.\-]/g,''));
         const foreVal = parseFloat((e.fore||'').replace(/[^0-9.\-]/g,''));
         const actClass = (e.actual !== '—' && !isNaN(actVal) && !isNaN(foreVal)) ? (actVal > foreVal ? 'cal-act-up' : actVal < foreVal ? 'cal-act-dn' : '') : '';
         const actArrow = actClass === 'cal-act-up' ? ' ▲' : actClass === 'cal-act-dn' ? ' ▼' : '';
         const isPast = day === 'Hoje' && e.t !== '—' && e.t < nowHHMM;
-        // "Now" separator line
+        const isNextHi = (e.dateStr + e.t + e.ev) === nextHiId;
+        const tipAttr = (e.actual !== '—' && actClass) ? ` onmouseenter="calShowTip(this,'${e.actual}','${e.fore}')" onmouseleave="calHideTip()"` : '';
+        // Timezone conversion
+        const tz = calConvertTime(e.t);
+        // "Now" separator
         let nowLine = '';
         if (day === 'Hoje' && !nowInserted && e.t !== '—' && e.t >= nowHHMM) {
           nowInserted = true;
           nowLine = `<div class="cal-now-line"><div class="cal-now-dot"></div><div class="cal-now-label">${t('cal_agora')||'NOW'}</div><div class="cal-now-hr"></div></div>`;
         }
-        return `${nowLine}<div class="cal-item${isPast?' cal-past':''}">
-          <div class="cal-time">${e.t} <span style="font-size:10px;color:var(--t3);">ET</span></div>
+        return `${nowLine}<div class="cal-item${isPast?' cal-past':''}${isNextHi?' cal-next-hi':''}" onclick="calToggleMob(this)">
+          <div class="cal-time">${tz.display} <span style="font-size:10px;color:var(--t3);">${tz.label}</span></div>
           <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${flag} ${e.cur}</span></div>
           <div><div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t3);font-weight:400;">${e.ref}</span>`:''}</div></div>
-          <div class="cal-act-wrap"><div class="cal-val ${actClass}">${e.actual}${actArrow}</div></div>
+          <div class="cal-act-wrap"${tipAttr}><div class="cal-val ${actClass}">${e.actual}${actArrow}</div></div>
           <div class="cal-fore-wrap"><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
           <div class="cal-prev-wrap"><div class="cal-val">${e.prev}</div></div>
           <div class="cal-stars ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</div>
+          <div class="cal-mob-data" style="display:none;">
+            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_atual')||'Actual'}</div><div class="cal-mob-val ${actClass}">${e.actual}${actArrow}</div></div>
+            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_previsao')||'Forecast'}</div><div class="cal-mob-val" style="color:var(--gold);">${e.fore}</div></div>
+            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_anterior')||'Previous'}</div><div class="cal-mob-val">${e.prev}</div></div>
+            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_impacto')||'Impact'}</div><div class="cal-mob-val"><span class="cal-stars ${e.imp}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</span></div></div>
+          </div>
         </div>`;
       }).join('')}
     </div>`;
   }).join('');
 
-  // Update timestamp
   const updEl = document.getElementById('cal-updated');
   if (updEl && _calLastUpdate) updEl.textContent = (t('cal_atualizado')||'Updated') + ' ' + new Date(_calLastUpdate).toLocaleTimeString(_currentLang||'en',{hour:'2-digit',minute:'2-digit'});
 }

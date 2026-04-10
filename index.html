@@ -1767,6 +1767,27 @@ img{max-width:100%;}
 }
 
 /* ═══ CALENDÁRIO ECONÔMICO MELHORADO ═══ */
+/* Countdown banner */
+.cal-countdown-bar{display:flex;align-items:center;gap:16px;padding:14px 24px;margin:0 0 2px;background:linear-gradient(90deg,rgba(239,68,68,.08),rgba(239,68,68,.03));border-bottom:1px solid rgba(239,68,68,.15);animation:cal-cd-fade-in .4s;}
+@keyframes cal-cd-fade-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.cal-cd-icon{font-size:18px;animation:pulse-gold 2s infinite;}
+.cal-cd-info{flex:1;min-width:0;}
+.cal-cd-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(239,68,68,.7);}
+.cal-cd-name{font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cal-cd-timer{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:#ef4444;letter-spacing:1px;text-shadow:0 0 12px rgba(239,68,68,.3);}
+/* Timezone selector */
+.cal-hd-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.cal-tz-wrap{display:flex;align-items:center;gap:6px;}
+.cal-tz-sel{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:6px;color:var(--t1);font-size:11px;font-weight:600;font-family:var(--f);padding:5px 8px;outline:none;cursor:pointer;transition:.2s;}
+.cal-tz-sel:hover,.cal-tz-sel:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.14);}
+/* Tooltip for actual vs forecast */
+.cal-tooltip{position:absolute;z-index:100;background:#1a1a2e;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:8px 12px;font-size:11px;font-weight:600;color:var(--t1);pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.5);transform:translateY(-8px);opacity:0;transition:opacity .15s,transform .15s;}
+.cal-tooltip.show{opacity:1;transform:translateY(0);}
+.cal-tooltip-up{color:#22c55e;}
+.cal-tooltip-dn{color:#ef4444;}
+/* Next event highlight */
+.cal-item.cal-next-hi{border-color:rgba(239,68,68,.3) !important;background:rgba(239,68,68,.06) !important;box-shadow:0 0 16px rgba(239,68,68,.08);animation:cal-next-pulse 3s ease-in-out infinite;}
+@keyframes cal-next-pulse{0%,100%{box-shadow:0 0 8px rgba(239,68,68,.06);}50%{box-shadow:0 0 20px rgba(239,68,68,.12);}}
 .cal-page-hd{padding:20px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
 .cal-title{font-size:20px;font-weight:700;letter-spacing:-.5px;}
 .cal-filter-bar{display:flex;gap:7px;flex-wrap:wrap;padding:0 24px 14px;border-bottom:1px solid var(--b1);}
@@ -1777,7 +1798,11 @@ img{max-width:100%;}
 .cal-date-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t2);margin-bottom:8px;padding:0 4px;}
 .cal-item{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px 16px;display:grid;grid-template-columns:70px 80px 1fr 80px 80px 80px 40px;align-items:center;gap:12px;transition:all .25s;margin-bottom:5px;}
 .cal-item:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.14);}
-@media(max-width:700px){.cal-item{grid-template-columns:60px 1fr auto;}.cal-prev-wrap,.cal-fore-wrap,.cal-act-wrap,.cal-stars{display:none;}}
+@media(max-width:700px){.cal-item{grid-template-columns:60px 1fr auto;}.cal-prev-wrap,.cal-fore-wrap,.cal-act-wrap{display:none;}.cal-item.cal-expanded .cal-mob-data{display:flex !important;}.cal-countdown-bar{padding:10px 16px;gap:10px;}.cal-cd-timer{font-size:17px;}.cal-hd-right{align-items:flex-start;}}
+.cal-mob-data{display:none;grid-column:1/-1;gap:8px;padding:8px 0 0;border-top:1px solid rgba(255,255,255,.08);margin-top:4px;}
+.cal-mob-cell{flex:1;text-align:center;}
+.cal-mob-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.cal-mob-val{font-size:13px;font-weight:700;color:var(--t1);}
 .cal-act-wrap{text-align:right;}
 .cal-time{font-size:12px;font-weight:600;color:var(--t1);}
 .cal-cur-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:3px 7px;border-radius:4px;}
@@ -3172,15 +3197,40 @@ document.addEventListener('DOMContentLoaded',function(){
 <!-- CALENDÁRIO ECONÔMICO -->
 <div class="page" id="page-calendar">
   <div class="cal-wrap">
+    <!-- Countdown banner — next high-impact event -->
+    <div class="cal-countdown-bar" id="cal-countdown-bar" style="display:none;">
+      <div class="cal-cd-icon">🔴</div>
+      <div class="cal-cd-info">
+        <div class="cal-cd-label" data-i18n="cal_proximo_evento">Next high-impact event</div>
+        <div class="cal-cd-name" id="cal-cd-name"></div>
+      </div>
+      <div class="cal-cd-timer" id="cal-cd-timer"></div>
+    </div>
     <div class="cal-page-hd">
       <div>
         <div class="cal-title" data-i18n="cal_titulo">Calendário Econômico</div>
         <div class="cal-sub" data-i18n="cal_sub">Eventos econômicos globais que impactam os mercados financeiros</div>
       </div>
-      <div class="imp-legend">
-        <span><span class="cal-stars h">★★★</span> <span data-i18n="cal_alto_impacto">Alto impacto</span></span>
-        <span><span class="cal-stars m">★★☆</span> <span data-i18n="cal_medio_impacto">Médio impacto</span></span>
-        <span><span class="cal-stars l">★☆☆</span> <span data-i18n="cal_baixo_impacto">Baixo impacto</span></span>
+      <div class="cal-hd-right">
+        <div class="imp-legend">
+          <span><span class="cal-stars h">★★★</span> <span data-i18n="cal_alto_impacto">Alto impacto</span></span>
+          <span><span class="cal-stars m">★★☆</span> <span data-i18n="cal_medio_impacto">Médio impacto</span></span>
+          <span><span class="cal-stars l">★☆☆</span> <span data-i18n="cal_baixo_impacto">Baixo impacto</span></span>
+        </div>
+        <div class="cal-tz-wrap">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <select id="cal-tz" class="cal-tz-sel" onchange="calSetTz(this.value)">
+            <option value="ET">ET (New York)</option>
+            <option value="local">Local</option>
+            <option value="UTC">UTC</option>
+            <option value="CT">CT (Chicago)</option>
+            <option value="PT">PT (Los Angeles)</option>
+            <option value="GMT">GMT (London)</option>
+            <option value="CET">CET (Frankfurt)</option>
+            <option value="JST">JST (Tokyo)</option>
+            <option value="BRT">BRT (São Paulo)</option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="cal-filter-bar" id="cal-filters">
@@ -3190,16 +3240,16 @@ document.addEventListener('DOMContentLoaded',function(){
       <button class="cal-f" data-filter="m" onclick="calFilter('m',this)">★★☆</button>
       <button class="cal-f" data-filter="l" onclick="calFilter('l',this)">★☆☆</button>
       <span class="cal-sep"></span>
-      <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">USD</button>
-      <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">EUR</button>
-      <button class="cal-f" data-filter="GBP" onclick="calFilter('GBP',this)">GBP</button>
-      <button class="cal-f" data-filter="CAD" onclick="calFilter('CAD',this)">CAD</button>
-      <button class="cal-f" data-filter="AUD" onclick="calFilter('AUD',this)">AUD</button>
-      <button class="cal-f" data-filter="JPY" onclick="calFilter('JPY',this)">JPY</button>
-      <button class="cal-f" data-filter="CHF" onclick="calFilter('CHF',this)">CHF</button>
-      <button class="cal-f" data-filter="NZD" onclick="calFilter('NZD',this)">NZD</button>
-      <button class="cal-f" data-filter="CNY" onclick="calFilter('CNY',this)">CNY</button>
-      <button class="cal-f" data-filter="BRL" onclick="calFilter('BRL',this)">BRL</button>
+      <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">🇺🇸 USD</button>
+      <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">🇪🇺 EUR</button>
+      <button class="cal-f" data-filter="GBP" onclick="calFilter('GBP',this)">🇬🇧 GBP</button>
+      <button class="cal-f" data-filter="CAD" onclick="calFilter('CAD',this)">🇨🇦 CAD</button>
+      <button class="cal-f" data-filter="AUD" onclick="calFilter('AUD',this)">🇦🇺 AUD</button>
+      <button class="cal-f" data-filter="JPY" onclick="calFilter('JPY',this)">🇯🇵 JPY</button>
+      <button class="cal-f" data-filter="CHF" onclick="calFilter('CHF',this)">🇨🇭 CHF</button>
+      <button class="cal-f" data-filter="NZD" onclick="calFilter('NZD',this)">🇳🇿 NZD</button>
+      <button class="cal-f" data-filter="CNY" onclick="calFilter('CNY',this)">🇨🇳 CNY</button>
+      <button class="cal-f" data-filter="BRL" onclick="calFilter('BRL',this)">🇧🇷 BRL</button>
     </div>
     <div class="cal-toolbar">
       <div class="cal-search-wrap"><input type="text" id="cal-search" placeholder="Search events..." data-i18n-placeholder="cal_buscar" oninput="renderCal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
