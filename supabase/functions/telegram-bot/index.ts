@@ -212,11 +212,12 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
     return { sent: false, reason: "calendar_fetch_error" };
   }
 
-  // Filter ★★★ and ★★☆ events
+  // Filter ★★★ events — USD (US) only, max 3
   const highImpact = events.filter((e) => {
     const imp = Number(e.importance ?? e.impact ?? e.stars ?? 0);
-    return imp >= 2;
-  });
+    const cur = (e.currency ?? e.country ?? "").toUpperCase();
+    return imp >= 3 && cur === "USD";
+  }).slice(0, 3);
 
   if (highImpact.length === 0) return { sent: false, reason: "no_high_impact_events" };
 
@@ -227,10 +228,6 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
 
   const lines = highImpact.map((ev) => {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
-    const currency = ev.currency ?? ev.country ?? "USD";
-    const imp = String(ev.importance ?? ev.impact ?? "").toLowerCase();
-    const stars = Number(ev.importance ?? ev.impact ?? ev.stars ?? 0) >= 3 ? "★★★" : "★★☆";
-    const dot = stars === "★★★" ? "🔴" : "🟡";
 
     let timeDisplay = "";
     try {
@@ -243,13 +240,13 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
       }
     } catch { /* skip */ }
 
-    return `${dot} ${timeDisplay ? timeDisplay + " — " : ""}${name} (${currency}) ${stars}`;
+    return `🔴 ${timeDisplay ? timeDisplay + " — " : ""}<b>${name}</b>`;
   });
 
   const text =
-    `📅 <b>Economic Calendar — ${today}</b>\n\n` +
+    `📅 <b>Economic Calendar</b>\n${today}\n\n` +
     lines.join("\n") +
-    `\n\n👉 Full calendar: https://${SITE_URL}/calendar`;
+    `\n\n📊 <a href="https://${SITE_URL}/calendar">Full Calendar</a>`;
 
   const msgId = await sendMessage(text, [[{ text: "📅 Full Calendar → marketscoupons.com", url: `https://${SITE_URL}/calendar` }]]);
   if (msgId) await storeMessageId(db, msgId, "calendar_daily");
@@ -288,7 +285,8 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
 
   const upcoming = events.filter((e) => {
     const impNum = Number(e.importance ?? e.impact ?? e.stars ?? 0);
-    if (impNum < 2) return false;
+    const cur = (e.currency ?? e.country ?? "").toUpperCase();
+    if (impNum < 3 || cur !== "USD") return false;
 
     const timeStr = e.time ?? e.datetime ?? e.date;
     if (!timeStr) return false;
@@ -307,9 +305,6 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
 
   for (const ev of upcoming) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
-    const currency = ev.currency ?? ev.country ?? "USD";
-    const imp = String(ev.importance ?? ev.impact ?? "").toLowerCase();
-    const stars = Number(ev.importance ?? ev.impact ?? ev.stars ?? 0) >= 3 ? "★★★" : "★★☆";
     const timeStr = ev.time ?? ev.datetime ?? "";
     let timeDisplay = "";
     try {
@@ -319,16 +314,15 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       }) + " ET";
     } catch { timeDisplay = timeStr; }
 
-    const prevLine = ev.previous != null ? `Previous: ${ev.previous}` : "";
-    const fcLine = (ev.forecast ?? ev.estimate) != null ? `Forecast: ${ev.forecast ?? ev.estimate}` : "";
+    const prevLine = ev.previous != null ? `Prev: ${ev.previous}` : "";
+    const fcLine = (ev.forecast ?? ev.estimate) != null ? `Exp: ${ev.forecast ?? ev.estimate}` : "";
     const statsLine = [prevLine, fcLine].filter(Boolean).join(" | ");
 
     const text =
-      `⚠️ <b>HIGH IMPACT in 5 minutes!</b>\n\n` +
-      `${stars === "★★★" ? "🔴" : "🟡"} ${name} (${currency}) ${stars}\n` +
+      `🔴 <b>${name}</b> in 5 min\n` +
       `🕐 ${timeDisplay}\n` +
-      (statsLine ? `${statsLine}\n` : "") +
-      `\n👉 Full calendar: https://${SITE_URL}/calendar`;
+      (statsLine ? `📊 ${statsLine}\n` : "") +
+      `\n📅 <a href="https://${SITE_URL}/calendar">Full Calendar</a>`;
 
     const msgId = await sendMessage(text, [[{ text: "📅 Full Calendar → marketscoupons.com", url: `https://${SITE_URL}/calendar` }]]);
     if (msgId) await storeMessageId(db, msgId, "calendar_alert");
