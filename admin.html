@@ -4726,6 +4726,7 @@ ${(f.perks||[]).length ? `<tr><td style="padding:20px 28px 0;">
 const INST_TEMPLATES = {
   welcome: {
     color: '#E91E63',
+    image: 'img/email-welcome.jpeg',
     subject: { pt:'Bom te ter aqui, Trader', en:'Good to have you here, Trader', es:'Que bueno tenerte aqui, Trader', fr:'Content de vous avoir, Trader', de:'Schon, dass du da bist, Trader', it:'Bello averti qui, Trader', ar:'سعداء بوجودك هنا' },
     icon: '',
     title: { pt:'Bom te ter com a gente', en:'Good to have you with us', es:'Que bueno tenerte con nosotros', fr:'Content de vous compter parmi nous', de:'Schon, dass du dabei bist', it:'Bello averti con noi', ar:'سعداء بانضمامك إلينا' },
@@ -4751,6 +4752,7 @@ const INST_TEMPLATES = {
   },
   'site-invite': {
     color: '#FF6F00',
+    image: 'img/email-site-invite.jpeg',
     subject: { pt:'Tem desconto bom rolando agora', en:'Great deals happening right now', es:'Hay buenos descuentos ahora mismo', fr:'De belles promos en ce moment', de:'Gute Rabatte gerade verfugbar', it:'Ci sono ottimi sconti adesso', ar:'خصومات رائعة متاحة الآن' },
     icon: '',
     title: { pt:'Ofertas que estao no ar agora', en:'Deals that are live right now', es:'Ofertas activas ahora mismo', fr:'Offres en cours maintenant', de:'Angebote die jetzt laufen', it:'Offerte attive in questo momento', ar:'عروض متاحة الآن' },
@@ -4776,6 +4778,7 @@ const INST_TEMPLATES = {
   },
   loyalty: {
     color: '#7C3AED',
+    image: 'img/email-loyalty.jpeg',
     subject: { pt:'Suas compras valem mais do que você imagina', en:'Your purchases are worth more than you think', es:'Tus compras valen mas de lo que imaginas', fr:'Vos achats valent plus que vous ne pensez', de:'Deine Kaufe sind mehr wert als du denkst', it:'I tuoi acquisti valgono piu di quanto pensi', ar:'مشترياتك تستحق أكثر مما تتصور' },
     icon: '',
     title: { pt:'Quanto mais você compra, mais você desbloqueia', en:'The more you buy, the more you unlock', es:'Cuanto mas compras, mas desbloqueas', fr:'Plus vous achetez, plus vous debloquez', de:'Je mehr du kaufst, desto mehr schaltest du frei', it:'Piu acquisti, piu sblocchi', ar:'كلما اشتريت أكثر، فتحت المزيد' },
@@ -4801,6 +4804,7 @@ const INST_TEMPLATES = {
   },
   indicators: {
     color: '#0EA5E9',
+    image: 'img/email-indicators.jpeg',
     subject: { pt:'Ferramentas que a gente usa todo dia', en:'Tools we use every day', es:'Herramientas que usamos todos los dias', fr:'Les outils qu\'on utilise chaque jour', de:'Tools die wir taglich nutzen', it:'Strumenti che usiamo ogni giorno', ar:'أدوات نستخدمها كل يوم' },
     icon: '',
     title: { pt:'Tudo o que você precisa pra operar', en:'Everything you need to trade', es:'Todo lo que necesitas para operar', fr:'Tout ce qu\'il vous faut pour trader', de:'Alles was du zum Traden brauchst', it:'Tutto cio che ti serve per operare', ar:'كل ما تحتاجه للتداول' },
@@ -4826,6 +4830,7 @@ const INST_TEMPLATES = {
   },
   'blog-guides': {
     color: '#84CC16',
+    image: 'img/email-blog-guides.jpeg',
     subject: { pt:'Preparado antes de operar', en:'Prepared before you trade', es:'Preparado antes de operar', fr:'Prepare avant de trader', de:'Vorbereitet bevor du tradest', it:'Preparato prima di operare', ar:'مستعد قبل التداول' },
     icon: '',
     title: { pt:'O que ninguem te conta sobre Prop Firms', en:'What nobody tells you about Prop Firms', es:'Lo que nadie te cuenta sobre Prop Firms', fr:'Ce que personne ne vous dit sur les Prop Firms', de:'Was dir niemand uber Prop Firms erzahlt', it:'Quello che nessuno ti dice sulle Prop Firm', ar:'ما لا يخبرك أحد عن Prop Firms' },
@@ -4851,6 +4856,7 @@ const INST_TEMPLATES = {
   },
   'ultimas-horas': {
     color: '#DC2626',
+    image: 'img/email-ultimas-horas.jpeg',
     subject: { pt:'Ultimas horas — desconto vai acabar', en:'Last hours — discount ending soon', es:'Ultimas horas — el descuento termina pronto', fr:'Dernieres heures — la promo se termine', de:'Letzte Stunden — Rabatt endet bald', it:'Ultime ore — lo sconto sta per finire', ar:'الساعات الأخيرة — الخصم ينتهي قريباً' },
     icon: '',
     title: { pt:'O desconto esta acabando', en:'The discount is ending', es:'El descuento se termina', fr:'La promo touche a sa fin', de:'Der Rabatt endet bald', it:'Lo sconto sta per finire', ar:'الخصم على وشك الانتهاء' },
@@ -5168,6 +5174,11 @@ table{border-spacing:0 !important;border-collapse:collapse !important;}
   <div style="color:#fff;font-size:20px;font-weight:700;font-family:${FI};">Markets <span style="color:${color};">Coupons</span> <span style="color:${GREEN};font-size:10px;">&#9679;</span></div>
   <div style="color:#888;font-size:10px;letter-spacing:0.1em;margin-top:4px;font-family:${FI};">${(etL.tagline||'AS MELHORES OFERTAS PARA TRADERS').toUpperCase()}</div>
 </td></tr>
+
+<!-- ═══ HERO IMAGE ═══ -->
+${t.image ? `<tr><td style="font-size:0;line-height:0;">
+  <img src="https://www.marketscoupons.com/${t.image}" width="480" style="width:100%;height:auto;display:block;" alt="">
+</td></tr>` : ''}
 
 <!-- ═══ WHITE BODY ═══ -->
 <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:24px 20px;">
