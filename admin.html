@@ -6028,6 +6028,18 @@ function updateImportTag(){
   }
 }
 
+async function mergeTagsForBatch(rows, newTags) {
+  const emails = rows.map(r => r.email);
+  const { data: existing } = await db.from('email_subscribers').select('email,tags').in('email', emails);
+  const tagMap = {};
+  if (existing) existing.forEach(e => { tagMap[e.email] = e.tags || []; });
+  return rows.map(r => {
+    const old = tagMap[r.email] || [];
+    const merged = [...new Set([...old, ...newTags])];
+    return { ...r, tags: merged };
+  });
+}
+
 async function importValidToSubscribers() {
   if (!_csvValidated?.valid?.length) return;
   const firmaTag = _importFirmaTag;
@@ -6040,15 +6052,17 @@ async function importValidToSubscribers() {
   const total = _csvValidated.valid.length;
   let imported = 0, erros = 0;
   const BATCH = 500;
+  const newTags = firmaTag ? ['imported', firmaTag] : ['imported'];
 
   for (let i = 0; i < total; i += BATCH) {
-    const batch = _csvValidated.valid.slice(i, i + BATCH).map(r => ({
+    let batch = _csvValidated.valid.slice(i, i + BATCH).map(r => ({
       email: r.email, name: r.name || '', source: 'csv-import',
       lang: langFromCode(r.lang) || 'en',
-      tags: firmaTag ? ['imported', firmaTag] : ['imported'],
+      tags: newTags,
       status: 'active'
     }));
-    const { error } = await db.from('email_subscribers').upsert(batch, { onConflict: 'email', ignoreDuplicates: true });
+    batch = await mergeTagsForBatch(batch, newTags);
+    const { error } = await db.from('email_subscribers').upsert(batch, { onConflict: 'email' });
     if (!error) imported += batch.length; else { erros += batch.length; csvLog(`Erro batch ${Math.floor(i/BATCH)+1}: ${error.message}`); }
     const pct = Math.round(Math.min(i + BATCH, total) / total * 100);
     btn.textContent = `Importando... ${pct}%`;
@@ -6081,13 +6095,15 @@ async function importDirectToSubscribers() {
   const BATCH = 500;
 
   for (let i = 0; i < total; i += BATCH) {
-    const batch = validRows.slice(i, i + BATCH).map(r => ({
+    const newTags = firmaTag ? [firmaTag] : [];
+    let batch = validRows.slice(i, i + BATCH).map(r => ({
       email: r.email, name: r.name || '', source: 'csv-direct',
       lang: langFromCode(r.lang) || 'pt',
-      tags: firmaTag ? [firmaTag] : [],
+      tags: newTags,
       status: 'active'
     }));
-    const { error } = await db.from('email_subscribers').upsert(batch, { onConflict: 'email', ignoreDuplicates: true });
+    batch = await mergeTagsForBatch(batch, newTags);
+    const { error } = await db.from('email_subscribers').upsert(batch, { onConflict: 'email' });
     if (!error) imported += batch.length; else { erros += batch.length; csvLog(`Erro batch ${Math.floor(i/BATCH)+1}: ${error.message}`); }
     const pct = Math.round(Math.min(i + BATCH, total) / total * 100);
     btn.textContent = `Importando... ${pct}%`;
