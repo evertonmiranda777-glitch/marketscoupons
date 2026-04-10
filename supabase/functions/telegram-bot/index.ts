@@ -191,6 +191,75 @@ async function handleGex(db: ReturnType<typeof createClient>) {
   return { sent: msgId !== null, ticker: tickerPick };
 }
 
+// ── action=calendar_daily (morning summary of all high-impact events) ───────
+async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
+  let events: Array<{
+    title?: string; name?: string; event?: string;
+    country?: string; currency?: string;
+    importance?: string | number; impact?: string | number; stars?: number;
+    time?: string; datetime?: string; date?: string;
+  }> = [];
+
+  try {
+    const calRes = await fetch(`${SUPABASE_URL}/functions/v1/economic-calendar`, {
+      headers: { Authorization: `Bearer ${Deno.env.get("SUPABASE_ANON_KEY") ?? ""}` },
+    });
+    if (calRes.ok) {
+      const calData = await calRes.json();
+      events = Array.isArray(calData) ? calData : calData.events ?? [];
+    }
+  } catch (e) {
+    console.error("economic-calendar fetch error:", e);
+    return { sent: false, reason: "calendar_fetch_error" };
+  }
+
+  // Filter ★★★ and ★★☆ events
+  const highImpact = events.filter((e) => {
+    const imp = String(e.importance ?? e.impact ?? "").toLowerCase();
+    const stars = e.stars ?? 0;
+    return imp === "high" || imp === "medium" || imp === "h" || imp === "m" ||
+      imp === "3" || imp === "2" || stars >= 2;
+  });
+
+  if (highImpact.length === 0) return { sent: false, reason: "no_high_impact_events" };
+
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric", year: "numeric",
+    timeZone: "America/New_York",
+  });
+
+  const lines = highImpact.map((ev) => {
+    const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
+    const currency = ev.currency ?? ev.country ?? "USD";
+    const imp = String(ev.importance ?? ev.impact ?? "").toLowerCase();
+    const stars = (imp === "high" || imp === "h" || imp === "3" || (ev.stars ?? 0) >= 3) ? "★★★" : "★★☆";
+    const dot = stars === "★★★" ? "🔴" : "🟡";
+
+    let timeDisplay = "";
+    try {
+      const timeStr = ev.time ?? ev.datetime ?? "";
+      const d = new Date(timeStr);
+      if (!isNaN(d.getTime())) {
+        timeDisplay = d.toLocaleTimeString("en-US", {
+          hour: "2-digit", minute: "2-digit", timeZone: "America/New_York",
+        }) + " ET";
+      }
+    } catch { /* skip */ }
+
+    return `${dot} ${timeDisplay ? timeDisplay + " — " : ""}${name} (${currency}) ${stars}`;
+  });
+
+  const text =
+    `📅 <b>Economic Calendar — ${today}</b>\n\n` +
+    lines.join("\n") +
+    `\n\n👉 Full calendar: https://${SITE_URL}/calendar`;
+
+  const msgId = await sendMessage(text, [[{ text: "📅 Full Calendar → marketscoupons.com", url: `https://${SITE_URL}/calendar` }]]);
+  if (msgId) await storeMessageId(db, msgId, "calendar_daily");
+
+  return { sent: msgId !== null, events: highImpact.length };
+}
+
 // ── action=calendar_alert (5min before ★★★ and ★★☆ events) ─────────────────
 async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   let events: Array<{
@@ -375,6 +444,9 @@ Deno.serve(async (req: Request) => {
         break;
       case "gex":
         result = await handleGex(db);
+        break;
+      case "calendar_daily":
+        result = await handleCalendarDaily(db);
         break;
       case "calendar_alert":
         result = await handleCalendarAlert(db);
