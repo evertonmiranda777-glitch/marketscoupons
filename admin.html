@@ -5017,25 +5017,40 @@ function buildInstitutionalHtml(name, lang='pt'){
   }
 
   if(name === 'site-invite'){
-    const sl = {
-      pt:['CUPONS EXCLUSIVOS','COMPARADOR','QUIZ','FERRAMENTAS PRO','ANALISE DIARIA','AREA VIP'],
-      en:['EXCLUSIVE COUPONS','COMPARATOR','QUIZ','PRO TOOLS','DAILY ANALYSIS','VIP AREA'],
-      es:['CUPONES EXCLUSIVOS','COMPARADOR','QUIZ','HERRAMIENTAS PRO','ANALISIS DIARIO','AREA VIP'],
-      fr:['COUPONS EXCLUSIFS','COMPARATEUR','QUIZ','OUTILS PRO','ANALYSE QUOTIDIENNE','ESPACE VIP'],
-      de:['EXKLUSIVE GUTSCHEINE','VERGLEICH','QUIZ','PROFI-TOOLS','TAGESANALYSE','VIP BEREICH'],
-      it:['COUPON ESCLUSIVI','COMPARATORE','QUIZ','STRUMENTI PRO','ANALISI GIORNALIERA','AREA VIP'],
-      ar:['كوبونات حصرية','مقارنة','اختبار','أدوات احترافية','تحليل يومي','منطقة VIP']
-    }[lang]||['EXCLUSIVE COUPONS','COMPARATOR','QUIZ','PRO TOOLS','DAILY ANALYSIS','VIP AREA'];
-    const sd = {
-      pt:['Ate 90% OFF Lifetime','Firmas lado a lado','Qual firma pra voce?','Calculadora, Heat Map +','Mercados as 6h','Membros fidelidade'],
-      en:['Up to 90% OFF Lifetime','Firms side by side','Which firm for you?','Calculator, Heat Map +','Markets at 6AM','Loyalty members'],
-      es:['Hasta 90% OFF Lifetime','Firmas lado a lado','¿Que firma va contigo?','Calculadora, Heat Map +','Mercados a las 6h','Miembros fidelidad'],
-    }[lang]||['Up to 90% OFF Lifetime','Firms side by side','Which firm for you?','Calculator, Heat Map +','Markets at 6AM','Loyalty members'];
-    const sc = ['#22c55e', '#eab308', '#a855f7', '#0ea5e9', '#ef4444', '#10b981'];
-    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
-      <tr>${mc(sl[0],'90%',sc[0],sd[0])}${mc(sl[1],'VS',sc[1],sd[1])}</tr>
-      <tr>${mc(sl[2],'FIND',sc[2],sd[2])}${mc(sl[3],'6+',sc[3],sd[3])}</tr>
-      <tr>${mc(sl[4],'6AM',sc[4],sd[4])}${mc(sl[5],'VIP',sc[5],sd[5])}</tr>
+    const DK = '#0D1117';
+    const GL = '#10151F';
+    const BD = '#1C2535';
+    // Dark mini card helper
+    const dmc = (label, value, vc, desc) =>
+      `<td width="50%" style="padding:3px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${GL};border-radius:8px;border:1px solid ${BD};" role="presentation">
+          <tr><td style="padding:12px 10px;text-align:center;">
+            <div style="color:#888;font-size:8px;font-weight:700;letter-spacing:0.08em;margin-bottom:4px;font-family:${FI};">${label}</div>
+            <div style="color:${vc};font-size:16px;font-weight:800;font-family:${FI};">${value}</div>
+            ${desc ? `<div style="color:#666;font-size:9px;margin-top:3px;font-family:${FI};">${desc}</div>` : ''}
+          </td></tr>
+        </table>
+      </td>`;
+
+    const siL = {
+      pt:['CUPONS EXCLUSIVOS','FIRMAS COMPARADAS','QUIZ INTERATIVO','FERRAMENTAS','ANALISE DIARIA','MEMBROS VIP'],
+      en:['EXCLUSIVE COUPONS','FIRMS COMPARED','INTERACTIVE QUIZ','TOOLS','DAILY ANALYSIS','VIP MEMBERS'],
+      es:['CUPONES EXCLUSIVOS','FIRMAS COMPARADAS','QUIZ INTERACTIVO','HERRAMIENTAS','ANALISIS DIARIO','MIEMBROS VIP'],
+    }[lang]||['EXCLUSIVE COUPONS','FIRMS COMPARED','INTERACTIVE QUIZ','TOOLS','DAILY ANALYSIS','VIP MEMBERS'];
+    const siD = {
+      pt:['Apex, Bulenox, FTMO +','Regras lado a lado','Descubra sua firma ideal','Heat Map, Calc, GEX','Mercados as 6h BRT','Beneficios exclusivos'],
+      en:['Apex, Bulenox, FTMO +','Rules side by side','Find your ideal firm','Heat Map, Calc, GEX','Markets at 6AM BRT','Exclusive benefits'],
+      es:['Apex, Bulenox, FTMO +','Reglas lado a lado','Encuentra tu firma ideal','Heat Map, Calc, GEX','Mercados a las 6h BRT','Beneficios exclusivos'],
+    }[lang]||['Apex, Bulenox, FTMO +','Rules side by side','Find your ideal firm','Heat Map, Calc, GEX','Markets at 6AM BRT','Exclusive benefits'];
+
+    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DK};border-radius:10px;margin-bottom:16px;padding:4px;" role="presentation">
+      <tr><td style="padding:4px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+          <tr>${dmc(siL[0],'90% OFF','#22c55e',siD[0])}${dmc(siL[1],'11+','#eab308',siD[1])}</tr>
+          <tr>${dmc(siL[2],'QUIZ','#a855f7',siD[2])}${dmc(siL[3],'6+','#0ea5e9',siD[3])}</tr>
+          <tr>${dmc(siL[4],'6AM','#ef4444',siD[4])}${dmc(siL[5],'VIP','#10b981',siD[5])}</tr>
+        </table>
+      </td></tr>
     </table>`;
   }
 
