@@ -1288,6 +1288,15 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
 
      <div class="ec-field">
+       <label>Limite diario</label>
+       <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+         <input type="number" id="em-daily-limit" value="300" min="1" max="100000" style="width:80px;text-align:center;" onchange="emailDailyLimit=parseInt(this.value)||300;updateDailyLimitUI();">
+         <div style="font-size:9px;color:var(--t3);">emails/dia (Brevo Free: 300)</div>
+       </div>
+       <div id="daily-limit-info"></div>
+     </div>
+
+     <div class="ec-field">
        <label>Envio individual (opcional)</label>
        <div style="display:flex;gap:8px;align-items:center;">
          <input type="email" id="em-single-email" placeholder="email@exemplo.com" style="flex:1;min-width:0;">
@@ -2553,7 +2562,7 @@ function renderPage(p){
       renderEmailFirmaChips();
       loadEmailStats();
       updateDestCount();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); }, 60);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'pro':            renderProPage(); break;
@@ -3636,6 +3645,33 @@ function renderGA4Data(d,days){
  */
 let emailSegments=['all'];
 let emailFirmaFilter=[];
+let emailDailyLimit=300; // Brevo free plan default
+let emailSentToday=0;
+
+function getEmailSentToday(){
+  const key='mc-emails-sent-'+new Date().toISOString().slice(0,10);
+  return parseInt(localStorage.getItem(key)||'0',10);
+}
+function addEmailSentToday(n){
+  const key='mc-emails-sent-'+new Date().toISOString().slice(0,10);
+  const cur=getEmailSentToday()+n;
+  localStorage.setItem(key,cur);
+  emailSentToday=cur;
+  updateDailyLimitUI();
+}
+function updateDailyLimitUI(){
+  emailSentToday=getEmailSentToday();
+  const el=document.getElementById('daily-limit-info');
+  if(!el)return;
+  const remaining=Math.max(0,emailDailyLimit-emailSentToday);
+  const pct=emailDailyLimit>0?Math.round(emailSentToday/emailDailyLimit*100):0;
+  const color=pct>=90?'var(--red)':pct>=70?'var(--gold)':'var(--green)';
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;">
+    <div style="flex:1;background:var(--b1);border-radius:3px;height:5px;overflow:hidden;"><div style="background:${color};height:100%;width:${Math.min(pct,100)}%;transition:width .3s;"></div></div>
+    <div style="font-size:10px;color:${color};font-weight:600;white-space:nowrap;">${emailSentToday}/${emailDailyLimit}</div>
+  </div>
+  <div style="font-size:9px;color:var(--t3);margin-top:2px;">${remaining} restantes hoje</div>`;
+}
 
 function toggleSeg(el,seg){
  const grid=document.getElementById('seg-grid');
@@ -6075,8 +6111,20 @@ async function sendEmailsSmtp(){
   const body    = document.getElementById('em-body')?.value?.trim();
   if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
 
-  const leads = await getSegmentedLeads();
+  let leads = await getSegmentedLeads();
   if(!leads.length){ toast('Nenhum destinatario selecionado!','warn'); return; }
+
+  // Apply daily limit
+  const sentToday = getEmailSentToday();
+  const remaining = Math.max(0, emailDailyLimit - sentToday);
+  if(remaining <= 0){
+    toast(`Limite diario atingido (${emailDailyLimit}). Tente amanha ou aumente o limite.`,'warn');
+    return;
+  }
+  if(leads.length > remaining){
+    if(!confirm(`Limite diario: ${emailDailyLimit}\nJa enviados hoje: ${sentToday}\nRestam: ${remaining}\n\nVoce tem ${leads.length} destinatarios, mas so ${remaining} serao enviados agora.\n\nContinuar?`)) return;
+    leads = leads.slice(0, remaining);
+  }
 
   const isPromo = emailIsHtml && emailPromoFirm;
   const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
@@ -6089,7 +6137,7 @@ async function sendEmailsSmtp(){
   });
   const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
 
-  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}`)) return;
+  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}\n\nLimite diario: ${remaining} restantes`)) return;
 
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
@@ -6147,6 +6195,7 @@ async function sendEmailsSmtp(){
       brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups) },
     });
 
+    addEmailSentToday(totalSent);
     toast(`${totalSent} emails enviados!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + ` — ${Object.keys(langGroups).length} idioma(s)`);
     await loadEmailStats();
     await renderCampaignLog();
