@@ -4955,6 +4955,293 @@ const INST_TEMPLATES = {
 function buildInstitutionalHtml(name, lang='pt'){
   const t = INST_TEMPLATES[name];
   if(!t) return '';
+
+  // ═══ SITE-INVITE: Custom premium template ═══
+  if(name === 'site-invite'){
+    const FI = "'Inter',Helvetica,Arial,sans-serif";
+    const O = '#ff8c00';
+    const etL = (EMAIL_I18N[lang]||EMAIL_I18N.en);
+    const L = (obj) => obj[lang]||obj.en||obj.pt||'';
+    const dir = lang==='ar'?'rtl':'ltr';
+
+    // ── Translations ──
+    const TX = {
+      badge:    {pt:'Oferta Exclusiva',en:'Exclusive Offer',es:'Oferta Exclusiva'},
+      h1:      {pt:'Economize ate<br><span style="color:#ff8c00;">90% OFF</span><br>nas melhores<br>Prop Firms',en:'Save up to<br><span style="color:#ff8c00;">90% OFF</span><br>on the best<br>Prop Firms',es:'Ahorra hasta<br><span style="color:#ff8c00;">90% OFF</span><br>en las mejores<br>Prop Firms'},
+      sub:     {pt:'Cupons exclusivos negociados direto com Apex, Bulenox, FTMO, FundedNext e mais.',en:'Exclusive coupons negotiated directly with Apex, Bulenox, FTMO, FundedNext and more.',es:'Cupones exclusivos negociados directo con Apex, Bulenox, FTMO, FundedNext y más.'},
+      s1:      {pt:'conta 100K',en:'100K account',es:'cuenta 100K'},
+      s2:      {pt:'desconto max',en:'max discount',es:'descuento max'},
+      s3:      {pt:'prop firms',en:'prop firms',es:'prop firms'},
+      greet:   {pt:'Ola, Trader.',en:'Hey, Trader.',es:'Hola, Trader.'},
+      body:    {pt:'Voce sabia que e possivel comecar a operar em uma Prop Firm de <strong style="color:#1a1a1a;">$100K</strong> pagando <strong style="color:#ff8c00;">menos de $25</strong>? No Markets Coupons reunimos os melhores cupons exclusivos negociados diretamente com Apex, Bulenox, FTMO, FundedNext e outras para que voce economize ate <strong style="color:#1a1a1a;">90% OFF</strong> na sua avaliacao.',en:'Did you know you can start trading a <strong style="color:#1a1a1a;">$100K</strong> Prop Firm account for <strong style="color:#ff8c00;">less than $25</strong>? At Markets Coupons we gather the best exclusive coupons negotiated directly with Apex, Bulenox, FTMO, FundedNext and others so you save up to <strong style="color:#1a1a1a;">90% OFF</strong> on your evaluation.',es:'Sabias que puedes empezar a operar en una Prop Firm de <strong style="color:#1a1a1a;">$100K</strong> pagando <strong style="color:#ff8c00;">menos de $25</strong>? En Markets Coupons reunimos los mejores cupones exclusivos negociados directamente con Apex, Bulenox, FTMO, FundedNext y otras para que ahorres hasta <strong style="color:#1a1a1a;">90% OFF</strong>.'},
+      section: {pt:'O que voce encontra no site',en:'What you\'ll find on the site',es:'Lo que encontraras en el sitio'},
+      // Card titles
+      c1t:{pt:'Ofertas e Cupons — 11+ Firmas',en:'Deals & Coupons — 11+ Firms',es:'Ofertas y Cupones — 11+ Firmas'},
+      c1d:{pt:'Cupons verificados e atualizados diariamente. Aplicados automaticamente no checkout.',en:'Verified coupons updated daily. Applied automatically at checkout.',es:'Cupones verificados y actualizados diariamente. Aplicados automaticamente en el checkout.'},
+      c2t:{pt:'Live Room VIP',en:'VIP Live Room',es:'Live Room VIP'},
+      c2d:{pt:'Sessoes ao vivo com dados em tempo real e chat exclusivo para membros do programa de fidelidade.',en:'Live sessions with real-time data and exclusive chat for loyalty program members.',es:'Sesiones en vivo con datos en tiempo real y chat exclusivo para miembros del programa de fidelidad.'},
+      c3t:{pt:'Comparador de Prop Firms',en:'Prop Firm Comparator',es:'Comparador de Prop Firms'},
+      c3d:{pt:'Compare drawdown, split, preco e regras lado a lado. Nota Trustpilot real de cada firma.',en:'Compare drawdown, split, price and rules side by side. Real Trustpilot rating for each firm.',es:'Compara drawdown, split, precio y reglas lado a lado. Nota real de Trustpilot de cada firma.'},
+      c4t:{pt:'Analise Diaria de Mercado',en:'Daily Market Analysis',es:'Analisis Diario de Mercado'},
+      c4d:{pt:'ES, NQ, Petroleo e Ouro todo dia as 6h. Bias, suportes, resistencias e contexto macro.',en:'ES, NQ, Oil and Gold daily at 6AM. Bias, supports, resistances and macro context.',es:'ES, NQ, Petroleo y Oro todos los dias a las 6h. Bias, soportes, resistencias y contexto macro.'},
+      c5t:{pt:'Mapa de Calor',en:'Heat Map',es:'Mapa de Calor'},
+      c5d:{pt:'S&P 500, Nasdaq, Global e Cripto em tempo real. Veja o mercado inteiro de um relance.',en:'S&P 500, Nasdaq, Global and Crypto in real time. See the entire market at a glance.',es:'S&P 500, Nasdaq, Global y Crypto en tiempo real. Ve todo el mercado de un vistazo.'},
+      c6t:{pt:'Position Size e Quiz',en:'Position Size & Quiz',es:'Position Size y Quiz'},
+      c6d:{pt:'Calcule o tamanho ideal de cada trade e descubra qual firma combina com seu perfil em 2 minutos.',en:'Calculate the ideal size for each trade and find which firm matches your profile in 2 minutes.',es:'Calcula el tamano ideal de cada trade y descubre cual firma combina con tu perfil en 2 minutos.'},
+      c7t:{pt:'Blog e Guias',en:'Blog & Guides',es:'Blog y Guias'},
+      c7d:{pt:'Conteudo educacional do iniciante ao avancado, em 7 idiomas. Novo artigo toda semana.',en:'Educational content from beginner to advanced, in 7 languages. New article every week.',es:'Contenido educacional del principiante al avanzado, en 7 idiomas. Nuevo articulo cada semana.'},
+      c8t:{pt:'Calendario Economico',en:'Economic Calendar',es:'Calendario Economico'},
+      c8d:{pt:'Eventos de alto impacto filtrados por moeda. Nunca mais seja pego de surpresa pelo mercado.',en:'High-impact events filtered by currency. Never be caught off guard by the market again.',es:'Eventos de alto impacto filtrados por moneda. Nunca mas te sorprenda el mercado.'},
+      hl_badge:{pt:'Melhor oferta do momento',en:'Best deal right now',es:'Mejor oferta del momento'},
+      hl_title:{pt:'Bulenox 100K por apenas <span style="color:#ff8c00;">$23,65</span>',en:'Bulenox 100K for just <span style="color:#ff8c00;">$23.65</span>',es:'Bulenox 100K por solo <span style="color:#ff8c00;">$23,65</span>'},
+      hl_sub:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupon <strong>MARKET89</strong> — 89% OFF aplicado automaticamente en el checkout'},
+      cta:{pt:'Acessar Cupons Agora',en:'Access Coupons Now',es:'Acceder a Cupones Ahora'},
+      tagline:{pt:'as melhores ofertas para traders',en:'the best deals for traders',es:'las mejores ofertas para traders'},
+      sig_team:{pt:'Equipe Markets Coupons',en:'Markets Coupons Team',es:'Equipo Markets Coupons'},
+      footer1:{pt:'Voce esta recebendo este email porque se cadastrou na Markets Coupons.',en:'You are receiving this email because you signed up at Markets Coupons.',es:'Estas recibiendo este email porque te registraste en Markets Coupons.'},
+      unsub:{pt:'Descadastrar',en:'Unsubscribe',es:'Darse de baja'},
+      privacy:{pt:'Politica de Privacidade',en:'Privacy Policy',es:'Politica de Privacidad'},
+      terms:{pt:'Termos de Uso',en:'Terms of Use',es:'Terminos de Uso'},
+      legal:{pt:'Conteudo exclusivamente educacional. Trading envolve risco de perda. Opere apenas com capital que pode perder.',en:'Content is exclusively educational. Trading involves risk of loss. Only trade with capital you can afford to lose.',es:'Contenido exclusivamente educacional. El trading implica riesgo de perdida. Opera solo con capital que puedas perder.'},
+      desconto:{pt:'Desconto',en:'Discount',es:'Descuento'},
+      vencedor:{pt:'Vencedor: Bulenox',en:'Winner: Bulenox',es:'Ganador: Bulenox'},
+      live:{pt:'AO VIVO',en:'LIVE',es:'EN VIVO'},
+      bullish:'BULLISH',
+      sup1:{pt:'SUPORTE 1',en:'SUPPORT 1',es:'SOPORTE 1'},
+      res1:{pt:'RESIST. 1',en:'RESIST. 1',es:'RESIST. 1'},
+      sup2:{pt:'SUPORTE 2',en:'SUPPORT 2',es:'SOPORTE 2'},
+      res2:{pt:'RESIST. 2',en:'RESIST. 2',es:'RESIST. 2'},
+      sp500:{pt:'S&amp;P 500 — Tempo real',en:'S&amp;P 500 — Real time',es:'S&amp;P 500 — Tiempo real'},
+      calc_conta:{pt:'Conta',en:'Account',es:'Cuenta'},
+      calc_risco:{pt:'Risco %',en:'Risk %',es:'Riesgo %'},
+      calc_res:{pt:'Risco $',en:'Risk $',es:'Riesgo $'},
+      quiz_title:{pt:'Quiz — Firma',en:'Quiz — Firm',es:'Quiz — Firma'},
+      quiz_q:{pt:'Qual mercado voce opera?',en:'Which market do you trade?',es:'Que mercado operas?'},
+      quiz_fut:{pt:'Futuros (ES, NQ)',en:'Futures (ES, NQ)',es:'Futuros (ES, NQ)'},
+      iniciante:{pt:'Iniciante',en:'Beginner',es:'Principiante'},
+      intermediario:{pt:'Intermediario',en:'Intermediate',es:'Intermedio'},
+      avancado:{pt:'Avancado',en:'Advanced',es:'Avanzado'},
+      blog1:{pt:'Sua Primeira Prop Firm: Guia Completo 2025',en:'Your First Prop Firm: Complete Guide 2025',es:'Tu Primera Prop Firm: Guia Completa 2025'},
+      blog2:{pt:'Trailing vs Static Drawdown: qual escolher',en:'Trailing vs Static Drawdown: which to choose',es:'Trailing vs Static Drawdown: cual elegir'},
+      blog3:{pt:'Order Flow + Delta: leitura institucional',en:'Order Flow + Delta: institutional reading',es:'Order Flow + Delta: lectura institucional'},
+      cal_title:{pt:'Calendario Economico',en:'Economic Calendar',es:'Calendario Economico'},
+      alto:{pt:'alto impacto',en:'high impact',es:'alto impacto'},
+      medio:{pt:'medio impacto',en:'medium impact',es:'medio impacto'},
+      leitura:{pt:'min leitura',en:'min read',es:'min lectura'},
+    };
+    const tx = (key) => { const v = TX[key]; return typeof v === 'string' ? v : (v[lang]||v.en||v.pt||''); };
+
+    // ── Card helper ──
+    const card = (darkHtml, title, desc) => `
+        <td class="fc" width="252" style="padding-right:8px;padding-left:8px;">
+          <table width="252" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e8e8e8;border-radius:12px;overflow:hidden;">
+            <tr><td class="fu" bgcolor="#111111" style="background-color:#111111;padding:14px;height:200px;vertical-align:top;" height="200">${darkHtml}</td></tr>
+            <tr><td bgcolor="#ffffff" style="background-color:#ffffff;padding:14px 16px;height:100px;vertical-align:top;" height="100">
+              <p style="font-family:${FI};font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:5px;">${title}</p>
+              <p style="font-family:${FI};font-size:11px;color:#888888;line-height:1.55;">${desc}</p>
+            </td></tr>
+          </table>
+        </td>`;
+
+    // ── Card 1: Ofertas ──
+    const firmCol = (off,name2,old,price,code) => `<td width="72" style="padding:0 2px;">
+      <table width="72" cellpadding="0" cellspacing="0" border="0">
+        <tr><td bgcolor="#ff8c00" style="background-color:#ff8c00;border-radius:3px;padding:2px 0;text-align:center;"><span style="font-family:${FI};font-size:8px;font-weight:800;color:#000000;">${off}</span></td></tr>
+        <tr><td height="4" style="font-size:0;">&nbsp;</td></tr>
+        <tr><td bgcolor="#1c1c1c" style="background-color:#1c1c1c;border-radius:6px;padding:8px;">
+          <p style="font-family:${FI};font-size:8px;color:#888888;margin-bottom:2px;">${name2}</p>
+          <p style="font-family:${FI};font-size:8px;color:#555555;text-decoration:line-through;">${old}</p>
+          <p style="font-family:${FI};font-size:14px;font-weight:800;color:#ff8c00;margin-bottom:4px;">${price}</p>
+          <span style="font-family:${FI};font-size:7px;background-color:#2a2a2a;color:#666666;padding:2px 4px;border-radius:2px;">${code}</span>
+        </td></tr>
+      </table>
+    </td>`;
+    const c1Dark = `<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr valign="top">
+      ${firmCol('90% OFF','Apex Trader','$329','$32.90','MARKET')}
+      ${firmCol('89% OFF','Bulenox','$215','$23.65','MARKET89')}
+      ${firmCol('60% OFF','Earn2Trade','$350','$140','MKTCOUPONS')}
+    </tr></table>`;
+
+    // ── Card 2: Live Room ──
+    const c2Dark = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+      <tr><td><span style="font-family:${FI};font-size:9px;font-weight:700;color:#e0503a;">&#9679; ${tx('live')}</span></td>
+      <td align="right"><span style="font-family:${FI};font-size:13px;font-weight:800;color:#ffffff;">5,621.50</span> <span style="font-family:${FI};font-size:9px;background-color:#1a3a20;color:#4caf70;padding:1px 5px;border-radius:3px;">+0.42%</span></td></tr>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr><td bgcolor="#0d0d0d" style="background-color:#0d0d0d;border-radius:6px;padding:4px;">
+      <svg width="100%" height="52" viewBox="0 0 220 52" xmlns="http://www.w3.org/2000/svg"><polyline points="0,46 25,38 55,28 85,22 110,14 135,20 160,11 190,16 220,7" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </td></tr></table>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#1a1a1a" style="background-color:#1a1a1a;border-radius:5px;padding:6px 8px;">
+      <p style="font-family:${FI};font-size:8px;color:#555555;margin-bottom:3px;"><strong style="color:#cccccc;">T</strong> Long ES 5820</p>
+      <p style="font-family:${FI};font-size:8px;color:#555555;margin-bottom:3px;"><strong style="color:#cccccc;">M</strong> NQ rompeu OB</p>
+      <p style="font-family:${FI};font-size:8px;color:#555555;"><strong style="color:#cccccc;">C</strong> TP1 bateu</p>
+    </td></tr></table>`;
+
+    // ── Card 3: Comparador ──
+    const c3Dark = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:6px;">
+      <tr><td width="60">&nbsp;</td><td align="center" style="font-family:${FI};font-size:9px;font-weight:700;color:#ff8c00;">Apex</td><td align="center" style="font-family:${FI};font-size:9px;font-weight:700;color:#ff8c00;">Bulenox</td><td align="center" style="font-family:${FI};font-size:9px;font-weight:700;color:#ff8c00;">TPT</td></tr>
+      <tr><td>&nbsp;</td><td align="center" style="font-family:${FI};font-size:7px;color:#555555;">4.4/18K</td><td align="center" style="font-family:${FI};font-size:7px;color:#555555;">4.8/1.5K</td><td align="center" style="font-family:${FI};font-size:7px;color:#555555;">4.4/8.5K</td></tr>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:0.5px solid #222222;">
+      <tr><td width="60" style="font-family:${FI};font-size:8px;color:#555555;padding:5px 0;">${tx('desconto')}</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">89%</td><td align="center" style="font-family:${FI};font-size:8px;color:#cccccc;padding:5px 0;">40%</td></tr>
+      <tr><td style="font-family:${FI};font-size:8px;color:#555555;padding:5px 0;">100K</td><td align="center" style="font-family:${FI};font-size:8px;color:#cccccc;padding:5px 0;">$32.90</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">$23.65</td><td align="center" style="font-family:${FI};font-size:8px;color:#cccccc;padding:5px 0;">$198</td></tr>
+      <tr><td style="font-family:${FI};font-size:8px;color:#555555;padding:5px 0;">Drawdown</td><td align="center" style="font-family:${FI};font-size:8px;color:#cccccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${FI};font-size:8px;color:#cccccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">EOD</td></tr>
+      <tr><td style="font-family:${FI};font-size:8px;color:#555555;padding:5px 0;">Split</td><td align="center" style="font-family:${FI};font-size:8px;color:#cccccc;padding:5px 0;">100%</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${FI};font-size:8px;color:#cccccc;padding:5px 0;">80%</td></tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;"><tr><td bgcolor="#1a3a20" style="background-color:#1a3a20;border-radius:3px;padding:4px 8px;"><span style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;">${tx('vencedor')}</span></td></tr></table>`;
+
+    // ── Card 4: Análise Diária ──
+    const zn = (lbl,val,bg,clr) => `<td width="48%" style="padding:0 3px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${bg}" style="background-color:${bg};border-radius:3px;padding:5px 7px;"><p style="font-family:${FI};font-size:7px;color:${clr==='g'?'#4a6a4a':'#6a4a4a'};">${lbl}</p><p style="font-family:${FI};font-size:11px;font-weight:700;color:${clr==='g'?'#4caf70':'#e05050'};">${val}</p></td></tr></table></td>`;
+    const c4Dark = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
+      <tr><td><span style="font-family:${FI};font-size:13px;font-weight:700;color:#ffffff;">ES</span> <span style="font-family:${FI};font-size:8px;color:#666666;">S&amp;P 500</span></td><td align="right"><span style="font-family:${FI};font-size:7px;font-weight:700;background-color:#1a3a20;color:#4caf70;padding:2px 5px;border-radius:3px;">${tx('bullish')}</span></td></tr>
+      <tr><td colspan="2"><span style="font-family:${FI};font-size:11px;font-weight:700;color:#ffffff;">5,621.50</span></td></tr>
+    </table>
+    <p style="font-family:${FI};font-size:8px;color:#666666;line-height:1.6;margin-bottom:10px;">ES testa suporte em 5580. FVG no 4H como zona de interesse. FOMC confirma pausa nos juros.</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>${zn(tx('sup1'),'5,580','#1a3a20','g')}${zn(tx('res1'),'5,650','#3a1a1a','r')}</tr>
+      <tr><td height="5" colspan="2">&nbsp;</td></tr>
+      <tr>${zn(tx('sup2'),'5,540','#1a3a20','g')}${zn(tx('res2'),'5,700','#3a1a1a','r')}</tr>
+    </table>`;
+
+    // ── Card 5: Heatmap ──
+    const hm = (tk,bg) => `<td bgcolor="${bg}" style="background-color:${bg};border-radius:3px;text-align:center;padding:5px 3px;"><span style="font-family:${FI};font-size:8px;color:rgba(255,255,255,0.75);">${tk}</span></td>`;
+    const hmB = (tk,bg) => `<td colspan="2" rowspan="2" bgcolor="${bg}" style="background-color:${bg};border-radius:4px;text-align:center;padding:10px 4px;"><span style="font-family:${FI};font-size:9px;font-weight:700;color:rgba(255,255,255,0.9);">${tk}</span></td>`;
+    const c5Dark = `<p style="font-family:${FI};font-size:8px;color:#555555;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">${tx('sp500')}</p>
+    <table width="100%" cellpadding="3" cellspacing="3" border="0">
+      <tr>${hmB('NVDA<br>+2.6%','#1a5c1a')}${hm('AAPL','#8b1a1a')}${hm('MSFT','#8b1a1a')}</tr>
+      <tr>${hm('AMD','#1a3d1a')}${hm('GOOGL','#8b1a1a')}</tr>
+      <tr>${hm('TSLA','#6b1a1a')}${hm('META','#3a7a3a')}${hm('AMZN','#1a5c1a')}${hm('JPM','#1a2e1a')}</tr>
+    </table>`;
+
+    // ── Card 6: Position Size + Quiz ──
+    const fld = (lbl,val) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:4px;"><tr><td bgcolor="#1c1c1c" style="background-color:#1c1c1c;border-radius:3px;padding:4px 6px;"><span style="font-family:${FI};font-size:7px;color:#555555;">${lbl}</span><br><span style="font-family:${FI};font-size:8px;color:#aaaaaa;">${val}</span></td></tr></table>`;
+    const qopt = (txt,sel) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:4px;"><tr><td bgcolor="${sel?'#1e1230':'#1a1a1a'}" style="background-color:${sel?'#1e1230':'#1a1a1a'};border:0.5px solid ${sel?'#7c5cbf':'#2a2a2a'};border-radius:3px;padding:5px 6px;"><span style="font-family:${FI};font-size:8px;color:${sel?'#c9a8ff':'#555555'};">${txt}</span></td></tr></table>`;
+    const c6Dark = `<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr valign="top">
+      <td width="105" style="padding-right:8px;border-right:0.5px solid #222222;">
+        <p style="font-family:${FI};font-size:7px;font-weight:700;color:#555555;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Position Size</p>
+        ${fld(tx('calc_conta'),'$50,000')}${fld(tx('calc_risco'),'1.5%')}${fld('Stop Loss','25 pts')}
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:6px;"><tr><td bgcolor="#1e1600" style="background-color:#1e1600;border-radius:3px;padding:5px 6px;"><span style="font-family:${FI};font-size:7px;color:#666666;">${tx('calc_res')}</span><br><span style="font-family:${FI};font-size:14px;font-weight:800;color:#ff8c00;">$750</span></td></tr></table>
+      </td>
+      <td width="105" style="padding-left:8px;">
+        <p style="font-family:${FI};font-size:7px;font-weight:700;color:#555555;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">${tx('quiz_title')}</p>
+        <p style="font-family:${FI};font-size:8px;color:#cccccc;margin-bottom:7px;">${tx('quiz_q')}</p>
+        ${qopt(tx('quiz_fut'),true)}${qopt('Forex')}${qopt({pt:'Ambos',en:'Both',es:'Ambos'}[lang]||'Both')}
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;"><tr><td bgcolor="#1e1e1e" style="background-color:#1e1e1e;border-radius:2px;height:3px;"><table cellpadding="0" cellspacing="0" border="0" width="33%"><tr><td bgcolor="#7c5cbf" style="background-color:#7c5cbf;border-radius:2px;height:3px;font-size:0;">&nbsp;</td></tr></table></td></tr></table>
+      </td>
+    </tr></table>`;
+
+    // ── Card 7: Blog ──
+    const blogRow = (cat,title2,mins) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom:0.5px solid #1e1e1e;padding-bottom:10px;margin-bottom:10px;"><tr><td>
+      <p style="font-family:${FI};font-size:8px;font-weight:700;color:#ff8c00;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">${cat}</p>
+      <p style="font-family:${FI};font-size:9px;color:#cccccc;margin-bottom:2px;">${title2}</p>
+      <p style="font-family:${FI};font-size:8px;color:#555555;">${mins} ${tx('leitura')}</p>
+    </td></tr></table>`;
+    const c7Dark = `${blogRow(tx('iniciante'),tx('blog1'),'12')}${blogRow(tx('intermediario'),tx('blog2'),'8')}
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>
+      <p style="font-family:${FI};font-size:8px;font-weight:700;color:#ff8c00;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">${tx('avancado')}</p>
+      <p style="font-family:${FI};font-size:9px;color:#cccccc;margin-bottom:2px;">${tx('blog3')}</p>
+      <p style="font-family:${FI};font-size:8px;color:#555555;">15 ${tx('leitura')}</p>
+    </td></tr></table>`;
+
+    // ── Card 8: Calendário ──
+    const calRow = (time,evt,sub,high) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr valign="middle">
+      <td width="32"><span style="font-family:${FI};font-size:8px;color:#666666;">${time}</span></td>
+      <td width="8"><table cellpadding="0" cellspacing="0" border="0"><tr><td width="6" height="6" bgcolor="${high?'#e05050':'#f0a020'}" style="background-color:${high?'#e05050':'#f0a020'};border-radius:50%;font-size:0;">&nbsp;</td></tr></table></td>
+      <td style="padding-left:6px;"><p style="font-family:${FI};font-size:9px;color:#cccccc;">${evt}</p><p style="font-family:${FI};font-size:7px;color:#555555;">USD — ${high?tx('alto'):tx('medio')}</p></td>
+    </tr></table>`;
+    const c8Dark = `<p style="font-family:${FI};font-size:7px;font-weight:700;color:#555555;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">${tx('cal_title')}</p>
+    ${calRow('08:30','Non-Farm Payrolls','',true)}${calRow('10:00','ISM Manufacturing','')}${calRow('11:30','Crude Oil Inventories','')}${calRow('14:00','FOMC Minutes','',true)}`;
+
+    // ── Row helper ──
+    const row = (c1,c2) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;"><tr valign="top">${c1}${c2}</tr></table>`;
+
+    return `<!DOCTYPE html><html lang="${lang}" dir="${dir}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="only light"><meta name="supported-color-schemes" content="only light"><title>Markets Coupons</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');*{margin:0;padding:0;box-sizing:border-box;}body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}table{mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse!important;}img{-ms-interpolation-mode:bicubic;border:0;display:block;max-width:100%;}@media only screen and (max-width:600px){.ec{width:100%!important;}.ps{padding-left:18px!important;padding-right:18px!important;}.fc{display:block!important;width:100%!important;padding-right:0!important;padding-left:0!important;padding-bottom:14px!important;}}</style></head>
+<body style="background-color:#f0f0f0;margin:0;padding:0;" bgcolor="#f0f0f0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f0f0f0;" bgcolor="#f0f0f0"><tr><td align="center" style="padding:32px 16px;">
+<table class="ec" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
+
+<!-- LOGO -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border-radius:16px 16px 0 0;border:1px solid #e0e0e0;border-bottom:none;padding:26px 40px 22px;text-align:center;font-family:${FI};">
+  <span style="font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;">Markets <span style="color:#ff8c00;">Coupons</span><span style="color:#ff8c00;font-size:9px;"> &#9679;</span></span><br>
+  <span style="font-size:11px;font-weight:600;color:#aaaaaa;letter-spacing:2.5px;text-transform:uppercase;">${tx('tagline')}</span>
+</td></tr>
+
+<!-- HERO -->
+<tr><td bgcolor="#111111" style="background-color:#111111;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="4" bgcolor="#ff8c00" style="background-color:#ff8c00;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td class="ps" style="padding:44px 40px 40px;font-family:${FI};">
+    <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;"><tr><td bgcolor="#1e1e1e" style="background-color:#1e1e1e;border:1px solid #2a2a2a;border-radius:20px;padding:5px 14px;">
+      <span style="font-size:11px;font-weight:700;color:#ff8c00;text-transform:uppercase;letter-spacing:1.5px;">${tx('badge')}</span>
+    </td></tr></table>
+    <h1 style="font-family:${FI};font-size:38px;font-weight:800;color:#ffffff;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px;">${tx('h1')}</h1>
+    <p style="font-family:${FI};font-size:15px;color:#888888;line-height:1.6;max-width:380px;margin-bottom:32px;">${tx('sub')}</p>
+    <table cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="padding-right:24px;border-right:1px solid #2a2a2a;"><p style="font-family:${FI};font-size:18px;font-weight:800;color:#ff8c00;">$23,65</p><p style="font-family:${FI};font-size:10px;color:#555555;text-transform:uppercase;letter-spacing:0.5px;">${tx('s1')}</p></td>
+      <td style="padding:0 24px;border-right:1px solid #2a2a2a;"><p style="font-family:${FI};font-size:18px;font-weight:800;color:#ff8c00;">90%</p><p style="font-family:${FI};font-size:10px;color:#555555;text-transform:uppercase;letter-spacing:0.5px;">${tx('s2')}</p></td>
+      <td style="padding-left:24px;"><p style="font-family:${FI};font-size:18px;font-weight:800;color:#ff8c00;">11+</p><p style="font-family:${FI};font-size:10px;color:#555555;text-transform:uppercase;letter-spacing:0.5px;">${tx('s3')}</p></td>
+    </tr></table>
+  </td></tr></table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="4" bgcolor="#ff8c00" style="background-color:#ff8c00;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+</td></tr>
+
+<!-- BODY -->
+<tr><td class="ps" bgcolor="#ffffff" style="background-color:#ffffff;border:1px solid #e0e0e0;border-top:none;border-bottom:none;padding:36px 40px;font-family:${FI};">
+  <p style="font-size:16px;font-weight:600;color:#1a1a1a;margin-bottom:10px;">${tx('greet')}</p>
+  <p style="font-size:15px;color:#555555;line-height:1.75;margin-bottom:28px;">${tx('body')}</p>
+
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;"><tr><td height="1" style="background-color:#eeeeee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+  <p style="font-size:11px;font-weight:700;color:#aaaaaa;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;">${tx('section')}</p>
+
+  ${row(card(c1Dark,tx('c1t'),tx('c1d')),card(c2Dark,tx('c2t'),tx('c2d')))}
+  ${row(card(c3Dark,tx('c3t'),tx('c3d')),card(c4Dark,tx('c4t'),tx('c4d')))}
+  ${row(card(c5Dark,tx('c5t'),tx('c5d')),card(c6Dark,tx('c6t'),tx('c6d')))}
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;"><tr valign="top">${card(c7Dark,tx('c7t'),tx('c7d'))}${card(c8Dark,tx('c8t'),tx('c8d'))}</tr></table>
+
+  <!-- DIVIDER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;"><tr><td height="1" style="background-color:#eeeeee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+
+  <!-- HIGHLIGHT -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;"><tr><td bgcolor="#fff4e6" style="background-color:#fff4e6;border:1px solid #ffcc80;border-left:4px solid #ff8c00;border-radius:12px;padding:22px 24px;">
+    <p style="font-family:${FI};font-size:11px;font-weight:700;color:#ff8c00;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">${tx('hl_badge')}</p>
+    <p style="font-family:${FI};font-size:20px;font-weight:800;color:#1a1a1a;line-height:1.3;margin-bottom:6px;">${tx('hl_title')}</p>
+    <p style="font-family:${FI};font-size:12px;color:#aa7030;line-height:1.5;">${tx('hl_sub')}</p>
+  </td></tr></table>
+
+  <!-- CTA -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr><td align="center">
+    <table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#ff8c00" style="background-color:#ff8c00;border-radius:50px;">
+      <a href="https://www.marketscoupons.com" target="_blank" style="display:inline-block;font-family:${FI};font-size:16px;font-weight:800;color:#ffffff;text-decoration:none;padding:17px 52px;">${tx('cta')}</a>
+    </td></tr></table>
+  </td></tr></table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:32px;"><tr><td align="center"><span style="font-family:${FI};font-size:12px;color:#bbbbbb;">www.marketscoupons.com</span></td></tr></table>
+
+  <!-- DIVIDER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;"><tr><td height="1" style="background-color:#eeeeee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+
+  <!-- SIGNATURE -->
+  <table cellpadding="0" cellspacing="0" border="0"><tr valign="middle">
+    <td width="44"><table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#ff8c00" style="background-color:#ff8c00;border-radius:50%;width:40px;height:40px;text-align:center;vertical-align:middle;"><span style="font-family:${FI};font-size:17px;font-weight:800;color:#ffffff;line-height:40px;display:block;">L</span></td></tr></table></td>
+    <td style="padding-left:12px;"><p style="font-family:${FI};font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">Lara</p><p style="font-family:${FI};font-size:12px;color:#888888;">${tx('sig_team')}</p></td>
+  </tr></table>
+
+</td></tr>
+
+<!-- FOOTER -->
+<tr><td bgcolor="#f7f7f7" style="background-color:#f7f7f7;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 16px 16px;padding:22px 40px;text-align:center;">
+  <p style="font-family:${FI};font-size:11px;color:#aaaaaa;line-height:1.9;">
+    ${tx('footer1')}<br>
+    <a href="#" style="color:#aaaaaa;text-decoration:underline;">${tx('unsub')}</a> &middot;
+    <a href="https://www.marketscoupons.com" style="color:#aaaaaa;text-decoration:underline;">${tx('privacy')}</a> &middot;
+    <a href="https://www.marketscoupons.com" style="color:#aaaaaa;text-decoration:underline;">${tx('terms')}</a><br><br>
+    &copy; 2026 Markets Coupons. ${tx('legal')}
+  </p>
+</td></tr>
+
+</table></td></tr></table></body></html>`;
+  }
+  // ═══ END SITE-INVITE ═══
+
   const FI = "Arial,sans-serif";
   const dir = lang==='ar' ? 'rtl' : 'ltr';
   const gt = (obj) => obj[lang] || obj.en || obj.pt || '';
