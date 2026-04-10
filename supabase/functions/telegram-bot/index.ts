@@ -286,7 +286,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   const upcoming = events.filter((e) => {
     const impNum = Number(e.importance ?? e.impact ?? e.stars ?? 0);
     const cur = (e.currency ?? e.country ?? "").toUpperCase();
-    if (impNum < 3 || cur !== "USD") return false;
+    if (impNum < 2 || cur !== "USD") return false;
 
     const timeStr = e.time ?? e.datetime ?? e.date;
     if (!timeStr) return false;
@@ -318,8 +318,12 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
     const fcLine = (ev.forecast ?? ev.estimate) != null ? `Exp: ${ev.forecast ?? ev.estimate}` : "";
     const statsLine = [prevLine, fcLine].filter(Boolean).join(" | ");
 
+    const impNum = Number(ev.importance ?? ev.impact ?? ev.stars ?? 0);
+    const stars = impNum >= 3 ? "★★★" : "★★☆";
+    const dot = impNum >= 3 ? "🔴" : "🟡";
+
     const text =
-      `🔴 <b>${name}</b> in 5 min\n` +
+      `${dot} <b>${name}</b> ${stars} in 5 min\n` +
       `🕐 ${timeDisplay}\n` +
       (statsLine ? `📊 ${statsLine}\n` : "") +
       `\n📅 <a href="https://${SITE_URL}/calendar">Full Calendar</a>`;
