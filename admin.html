@@ -4322,7 +4322,7 @@ const EMAIL_I18N = {
     col_account: 'Conta', col_goal: 'Meta', col_dd: 'Drawdown', col_price: 'Preco', col_original: 'De',
     cta: 'Começar Avaliação',
     see_all: 'Ver todas as ofertas no MarketsCoupons →',
-    footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
+    footer: 'Este email é automático. Para dúvidas, acesse marketscoupons.com',
     unsub: 'Cancelar inscrição',
     tagline: 'As melhores ofertas para traders',
     trustpilot: 'reviews no Trustpilot',
@@ -4347,7 +4347,7 @@ const EMAIL_I18N = {
     col_account: 'Account', col_goal: 'Target', col_dd: 'Drawdown', col_price: 'Price', col_original: 'Was',
     cta: 'Start Evaluation',
     see_all: 'See all deals on MarketsCoupons →',
-    footer: 'You received this email because you subscribed to MarketsCoupons.',
+    footer: 'This is an automated email. For questions, visit marketscoupons.com',
     unsub: 'Unsubscribe',
     tagline: 'The best deals for traders',
     trustpilot: 'Trustpilot reviews',
@@ -4372,7 +4372,7 @@ const EMAIL_I18N = {
     col_account: 'Cuenta', col_goal: 'Meta', col_dd: 'Drawdown', col_price: 'Precio', col_original: 'Antes',
     cta: 'EMPEZAR AHORA →',
     see_all: 'Ver todas las ofertas en MarketsCoupons →',
-    footer: 'Recibiste este email porque estas suscrito a MarketsCoupons.',
+    footer: 'Este email es automático. Para dudas, visita marketscoupons.com',
     unsub: 'Cancelar suscripcion',
     tagline: 'Las mejores ofertas para traders',
     trustpilot: 'reviews en Trustpilot',
@@ -4397,7 +4397,7 @@ const EMAIL_I18N = {
     col_account: 'Compte', col_goal: 'Objectif', col_dd: 'Drawdown', col_price: 'Prix', col_original: 'Avant',
     cta: 'COMMENCER MAINTENANT →',
     see_all: 'Voir toutes les offres sur MarketsCoupons →',
-    footer: 'Vous recevez cet email car vous etes inscrit a MarketsCoupons.',
+    footer: 'Cet email est automatique. Pour toute question, visitez marketscoupons.com',
     unsub: 'Se desinscrire',
     tagline: 'Les meilleures offres pour traders',
     trustpilot: 'avis sur Trustpilot',
@@ -4422,7 +4422,7 @@ const EMAIL_I18N = {
     col_account: 'Konto', col_goal: 'Ziel', col_dd: 'Drawdown', col_price: 'Preis', col_original: 'War',
     cta: 'JETZT STARTEN →',
     see_all: 'Alle Angebote auf MarketsCoupons ansehen →',
-    footer: 'Sie erhalten diese E-Mail, weil Sie bei MarketsCoupons angemeldet sind.',
+    footer: 'Diese E-Mail ist automatisch. Bei Fragen besuchen Sie marketscoupons.com',
     unsub: 'Abmelden',
     tagline: 'Die besten Angebote fur Trader',
     trustpilot: 'Bewertungen auf Trustpilot',
@@ -4447,7 +4447,7 @@ const EMAIL_I18N = {
     col_account: 'Conto', col_goal: 'Target', col_dd: 'Drawdown', col_price: 'Prezzo', col_original: 'Era',
     cta: 'INIZIA ORA →',
     see_all: 'Vedi tutte le offerte su MarketsCoupons →',
-    footer: 'Hai ricevuto questa email perche sei iscritto a MarketsCoupons.',
+    footer: 'Questa email è automatica. Per domande, visita marketscoupons.com',
     unsub: 'Annulla iscrizione',
     tagline: 'Le migliori offerte per trader',
     trustpilot: 'recensioni su Trustpilot',
@@ -4472,7 +4472,7 @@ const EMAIL_I18N = {
     col_account: 'الحساب', col_goal: 'الهدف', col_dd: 'Drawdown', col_price: 'السعر', col_original: 'كان',
     cta: '← ابدا الان',
     see_all: '← شاهد جميع العروض على MarketsCoupons',
-    footer: 'تلقيت هذا البريد لانك مشترك في MarketsCoupons.',
+    footer: 'هذا البريد تلقائي. للأسئلة، قم بزيارة marketscoupons.com',
     unsub: 'الغاء الاشتراك',
     tagline: 'افضل العروض للمتداولين',
     trustpilot: 'تقييمات على Trustpilot',
@@ -4829,28 +4829,30 @@ const INST_TEMPLATES = {
   'site-invite': {
     color: '#FF6F00',
     image: 'img/email-site-invite.jpeg',
-    subject: { pt:'Tem desconto bom rolando agora', en:'Great deals happening right now', es:'Hay buenos descuentos ahora mismo', fr:'De belles promos en ce moment', de:'Gute Rabatte gerade verfugbar', it:'Ci sono ottimi sconti adesso', ar:'خصومات رائعة متاحة الآن' },
+    subject: { pt:'O site que os traders não compartilham', en:'The site traders don\'t share', es:'El sitio que los traders no comparten', fr:'Le site que les traders ne partagent pas', de:'Die Seite die Trader nicht teilen', it:'Il sito che i trader non condividono', ar:'الموقع الذي لا يشاركه المتداولون' },
+    greeting: { pt:'Fala, Trader.', en:'Hey, Trader.', es:'Hola, Trader.', fr:'Salut, Trader.', de:'Hey, Trader.', it:'Ciao, Trader.', ar:'مرحباً أيها المتداول.' },
     icon: '',
-    title: { pt:'Ofertas que estao no ar agora', en:'Deals that are live right now', es:'Ofertas activas ahora mismo', fr:'Offres en cours maintenant', de:'Angebote die jetzt laufen', it:'Offerte attive in questo momento', ar:'عروض متاحة الآن' },
+    title: { pt:'O site que os traders não compartilham', en:'The site traders don\'t share', es:'El sitio que los traders no comparten', fr:'Le site que les traders ne partagent pas', de:'Die Seite die Trader nicht teilen', it:'Il sito che i trader non condividono', ar:'الموقع الذي لا يشاركه المتداولون' },
     body: {
-      pt:'A gente negocia direto com as firmas pra conseguir os melhores cupons. Alguns são <b>exclusivos nossos</b> — você não encontra em outro lugar. Dá uma olhada no que está rolando:',
-      en:'We negotiate directly with firms to get the best coupons. Some are <b>exclusive to us</b> — you won\'t find them anywhere else. Check out what\'s available:',
-      es:'Negociamos directo con las firmas para conseguir los mejores cupones. Algunos son <b>exclusivos nuestros</b>. Mira lo que hay:',
-      fr:'On negocie directement avec les firmes pour obtenir les meilleurs coupons. Certains sont <b>exclusifs</b>. Regardez ce qui est dispo :',
-      de:'Wir verhandeln direkt mit den Firmen fur die besten Gutscheine. Einige sind <b>exklusiv bei uns</b>. Schau dir an, was gerade lauft:',
-      it:'Negoziamo direttamente con le firme per ottenere i migliori coupon. Alcuni sono <b>esclusivi nostri</b>. Guarda cosa c\'e:',
-      ar:'نتفاوض مباشرة مع الشركات للحصول على أفضل الكوبونات. بعضها <b>حصري لنا</b>. شاهد ما هو متاح:'
+      pt:'Você sabia que é possível começar a operar em uma Prop Firm de $25K pagando menos de $19,90? No MarketsCoupons, reunimos os <b>melhores cupons exclusivos</b> — negociados diretamente com Apex, Bulenox, FTMO, FundedNext e outras — para que você economize até 90% na sua avaliação.',
+      en:'Did you know you can start trading a $25K Prop Firm account for less than $19.90? At MarketsCoupons, we gather the <b>best exclusive coupons</b> — negotiated directly with Apex, Bulenox, FTMO, FundedNext and others — so you save up to 90% on your evaluation.',
+      es:'¿Sabías que puedes empezar a operar en una Prop Firm de $25K pagando menos de $19,90? En MarketsCoupons, reunimos los <b>mejores cupones exclusivos</b> — negociados directamente con Apex, Bulenox, FTMO, FundedNext y otras — para que ahorres hasta 90%.',
+      fr:'Saviez-vous qu\'on peut commencer à trader un compte Prop Firm de $25K pour moins de $19,90 ? Chez MarketsCoupons, on réunit les <b>meilleurs coupons exclusifs</b> — négociés directement avec Apex, Bulenox, FTMO, FundedNext et d\'autres — pour économiser jusqu\'à 90%.',
+      de:'Wusstest du, dass du ein $25K Prop Firm Konto für weniger als $19,90 starten kannst? Bei MarketsCoupons sammeln wir die <b>besten exklusiven Gutscheine</b> — direkt mit Apex, Bulenox, FTMO, FundedNext und anderen verhandelt — damit du bis zu 90% sparst.',
+      it:'Sapevi che puoi iniziare a operare in una Prop Firm da $25K pagando meno di $19,90? Su MarketsCoupons, raccogliamo i <b>migliori coupon esclusivi</b> — negoziati direttamente con Apex, Bulenox, FTMO, FundedNext e altre — per farti risparmiare fino al 90%.',
+      ar:'هل تعلم أنه يمكنك بدء التداول في حساب Prop Firm بقيمة $25K بأقل من $19.90؟ في MarketsCoupons، نجمع <b>أفضل الكوبونات الحصرية</b> — تم التفاوض عليها مباشرة مع Apex وBulenox وFTMO وFundedNext وغيرها — لتوفر حتى 90%.'
     },
     features: {
-      pt:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','E muito mais...'],
-      en:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','And much more...'],
-      es:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','Y mucho mas...'],
-      fr:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','Et bien plus...'],
-      de:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','Und vieles mehr...'],
-      it:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','E molto altro...'],
-      ar:['Apex Trader — 90% OFF Lifetime','Bulenox — 89% OFF Lifetime','Earn2Trade — 60% OFF','FundedNext — 30% OFF','والمزيد...']
+      pt:['Cupons verificados e atualizados diariamente','Comparador de firmas: drawdown, profit split, plataformas e regras','Quiz interativo para descobrir qual firma combina com você','Ferramentas profissionais: Calculadora, Calendário Econômico, Heat Map e GEX','Análise Diária dos principais mercados às 6h','Conteúdo exclusivo para membros fidelidade'],
+      en:['Verified coupons updated daily','Firm comparator: drawdown, profit split, platforms and rules','Interactive quiz to find which firm fits you','Pro tools: Calculator, Economic Calendar, Heat Map and GEX','Daily Analysis of major markets at 6AM','Exclusive content for loyalty members'],
+      es:['Cupones verificados y actualizados diariamente','Comparador de firmas: drawdown, profit split, plataformas y reglas','Quiz interactivo para descubrir qué firma va contigo','Herramientas profesionales: Calculadora, Calendario Económico, Heat Map y GEX','Análisis Diario de los principales mercados a las 6h','Contenido exclusivo para miembros fidelidad'],
+      fr:['Coupons vérifiés et mis à jour chaque jour','Comparateur de firmes : drawdown, profit split, plateformes et règles','Quiz interactif pour trouver la firme qui vous correspond','Outils pro : Calculateur, Calendrier Économique, Heat Map et GEX','Analyse Quotidienne des principaux marchés à 6h','Contenu exclusif pour les membres fidélité'],
+      de:['Verifizierte Gutscheine täglich aktualisiert','Firmenvergleich: Drawdown, Profit Split, Plattformen und Regeln','Interaktives Quiz um die passende Firma zu finden','Profi-Tools: Rechner, Wirtschaftskalender, Heat Map und GEX','Tägliche Analyse der wichtigsten Märkte um 6 Uhr','Exklusive Inhalte für Treuemitglieder'],
+      it:['Coupon verificati e aggiornati ogni giorno','Comparatore firme: drawdown, profit split, piattaforme e regole','Quiz interattivo per scoprire quale firma fa per te','Strumenti pro: Calcolatore, Calendario Economico, Heat Map e GEX','Analisi Giornaliera dei principali mercati alle 6','Contenuti esclusivi per i membri fedeltà'],
+      ar:['كوبونات موثقة ومحدثة يومياً','مقارنة الشركات: السحب، تقسيم الأرباح، المنصات والقواعد','اختبار تفاعلي لاكتشاف الشركة المناسبة لك','أدوات احترافية: حاسبة، تقويم اقتصادي، خريطة حرارية وGEX','تحليل يومي لأهم الأسواق الساعة 6 صباحاً','محتوى حصري لأعضاء الولاء']
     },
-    cta: { pt:'VER OFERTAS', en:'SEE DEALS', es:'VER OFERTAS', fr:'VOIR LES OFFRES', de:'ANGEBOTE SEHEN', it:'VEDI OFFERTE', ar:'عرض العروض' }
+    closing: { pt:'Conta de 100K a partir de $39,90. Isso mesmo.', en:'100K account starting at $39.90. Yes, really.', es:'Cuenta de 100K desde $39,90. Así es.', fr:'Compte 100K à partir de $39,90. Oui, vraiment.', de:'100K Konto ab $39,90. Ja, wirklich.', it:'Conto 100K a partire da $39,90. Sì, davvero.', ar:'حساب 100K يبدأ من $39.90. نعم، حقاً.' },
+    cta: { pt:'QUERO CONHECER', en:'CHECK IT OUT', es:'QUIERO VER', fr:'DÉCOUVRIR', de:'ANSEHEN', it:'VOGLIO VEDERE', ar:'أريد أن أرى' }
   },
   loyalty: {
     color: '#7C3AED',
@@ -5015,54 +5017,25 @@ function buildInstitutionalHtml(name, lang='pt'){
   }
 
   if(name === 'site-invite'){
-    // Best offer highlight card
-    cardsHtml = `
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${DARK};border-radius:10px;margin-bottom:16px;" role="presentation">
-      <tr><td style="padding:16px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
-          <tr>
-            <td style="vertical-align:middle;">
-              <img src="https://www.marketscoupons.com/img/Firms/apex.png" width="32" height="32" style="width:32px;height:32px;border-radius:6px;" alt="Apex">
-            </td>
-            <td style="vertical-align:middle;padding-left:10px;">
-              <div style="color:#fff;font-size:13px;font-weight:700;font-family:${FI};">Apex Trader Funding</div>
-              <div style="color:#f97316;font-size:10px;font-weight:600;font-family:${FI};">FUTUROS</div>
-            </td>
-            <td style="vertical-align:middle;text-align:right;">
-              <div style="color:#f97316;font-size:24px;font-weight:800;font-family:${FI};">90%</div>
-              <div style="color:#888;font-size:9px;font-family:${FI};">OFF LIFETIME</div>
-            </td>
-          </tr>
-        </table>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;" role="presentation">
-          <tr>
-            <td width="33%" style="padding:0 2px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#10151F;border-radius:6px;border:1px solid #1C2535;" role="presentation">
-                <tr><td style="padding:6px;text-align:center;">
-                  <div style="color:#888;font-size:8px;font-family:${FI};">SPLIT</div>
-                  <div style="color:#4ade80;font-size:13px;font-weight:700;font-family:${FI};">80%</div>
-                </td></tr>
-              </table>
-            </td>
-            <td width="33%" style="padding:0 2px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#10151F;border-radius:6px;border:1px solid #1C2535;" role="presentation">
-                <tr><td style="padding:6px;text-align:center;">
-                  <div style="color:#888;font-size:8px;font-family:${FI};">100K</div>
-                  <div style="color:#f97316;font-size:13px;font-weight:700;font-family:${FI};">$39.90</div>
-                </td></tr>
-              </table>
-            </td>
-            <td width="33%" style="padding:0 2px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#10151F;border-radius:6px;border:1px solid #1C2535;" role="presentation">
-                <tr><td style="padding:6px;text-align:center;">
-                  <div style="color:#888;font-size:8px;font-family:${FI};">CUPOM</div>
-                  <div style="color:#eab308;font-size:13px;font-weight:700;font-family:${FI};">MARKET</div>
-                </td></tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td></tr>
+    const sl = {
+      pt:['CUPONS EXCLUSIVOS','COMPARADOR','QUIZ','FERRAMENTAS PRO','ANALISE DIARIA','AREA VIP'],
+      en:['EXCLUSIVE COUPONS','COMPARATOR','QUIZ','PRO TOOLS','DAILY ANALYSIS','VIP AREA'],
+      es:['CUPONES EXCLUSIVOS','COMPARADOR','QUIZ','HERRAMIENTAS PRO','ANALISIS DIARIO','AREA VIP'],
+      fr:['COUPONS EXCLUSIFS','COMPARATEUR','QUIZ','OUTILS PRO','ANALYSE QUOTIDIENNE','ESPACE VIP'],
+      de:['EXKLUSIVE GUTSCHEINE','VERGLEICH','QUIZ','PROFI-TOOLS','TAGESANALYSE','VIP BEREICH'],
+      it:['COUPON ESCLUSIVI','COMPARATORE','QUIZ','STRUMENTI PRO','ANALISI GIORNALIERA','AREA VIP'],
+      ar:['كوبونات حصرية','مقارنة','اختبار','أدوات احترافية','تحليل يومي','منطقة VIP']
+    }[lang]||['EXCLUSIVE COUPONS','COMPARATOR','QUIZ','PRO TOOLS','DAILY ANALYSIS','VIP AREA'];
+    const sd = {
+      pt:['Ate 90% OFF Lifetime','Firmas lado a lado','Qual firma pra voce?','Calculadora, Heat Map +','Mercados as 6h','Membros fidelidade'],
+      en:['Up to 90% OFF Lifetime','Firms side by side','Which firm for you?','Calculator, Heat Map +','Markets at 6AM','Loyalty members'],
+      es:['Hasta 90% OFF Lifetime','Firmas lado a lado','¿Que firma va contigo?','Calculadora, Heat Map +','Mercados a las 6h','Miembros fidelidad'],
+    }[lang]||['Up to 90% OFF Lifetime','Firms side by side','Which firm for you?','Calculator, Heat Map +','Markets at 6AM','Loyalty members'];
+    const sc = ['#22c55e', '#eab308', '#a855f7', '#0ea5e9', '#ef4444', '#10b981'];
+    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
+      <tr>${mc(sl[0],'90%',sc[0],sd[0])}${mc(sl[1],'VS',sc[1],sd[1])}</tr>
+      <tr>${mc(sl[2],'FIND',sc[2],sd[2])}${mc(sl[3],'6+',sc[3],sd[3])}</tr>
+      <tr>${mc(sl[4],'6AM',sc[4],sd[4])}${mc(sl[5],'VIP',sc[5],sd[5])}</tr>
     </table>`;
   }
 
@@ -5153,8 +5126,11 @@ ${t.image ? `<tr><td style="font-size:0;line-height:0;">
 <!-- ═══ WHITE BODY ═══ -->
 <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:24px 20px;">
 
-  <!-- Title + Body -->
+  <!-- Greeting + Title + Body -->
   <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+    ${t.greeting ? `<tr><td style="padding:0 0 10px;">
+      <div style="color:#444;font-size:14px;font-family:${FI};">${gt(t.greeting)}</div>
+    </td></tr>` : ''}
     <tr><td style="padding:0 0 6px;">
       <div style="color:${DARK};font-size:18px;font-weight:700;font-family:${FI};">${gt(t.title)}</div>
     </td></tr>
@@ -5174,6 +5150,11 @@ ${t.image ? `<tr><td style="font-size:0;line-height:0;">
       </table>
     </td></tr>
   </table>
+
+  <!-- Closing text -->
+  ${t.closing ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
+    <tr><td><div style="color:${DARK};font-size:14px;font-weight:700;text-align:center;font-family:${FI};">${gt(t.closing)}</div></td></tr>
+  </table>` : ''}
 
   <!-- CTA Button -->
   <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
