@@ -5703,60 +5703,75 @@ let _csvValidated = null;   // Validation result object
 function handleCsvUpload(input) {
   const file = input.files[0];
   if (!file) return;
+  const statsEl = document.getElementById('csv-stats');
+  statsEl.innerHTML = `<div style="color:var(--gold);font-size:12px;font-weight:600;">Carregando ${file.name} (${(file.size/1024/1024).toFixed(1)}MB)...</div>`;
+
   const reader = new FileReader();
+  reader.onerror = function() {
+    statsEl.innerHTML = `<div style="color:var(--red);font-size:12px;">Erro ao ler o arquivo. Tente novamente.</div>`;
+    csvLog('Erro ao ler arquivo');
+  };
   reader.onload = function(e) {
-    const text = e.target.result;
-    const lines = text.split(/\r?\n/).filter(l => l.trim());
-
-    // Detect format: CSV with headers or plain email list
-    const firstLine = lines[0].toLowerCase().trim();
-    const isCSV = firstLine.includes('email') || firstLine.includes(',') || firstLine.includes(';');
-
-    if (isCSV && (firstLine.includes('email') || firstLine.includes(','))) {
-      // Parse CSV
-      const sep = firstLine.includes(';') ? ';' : ',';
-      const headers = lines[0].split(sep).map(h => h.trim().toLowerCase().replace(/"/g,''));
-      const emailIdx = headers.indexOf('email');
-      const nameIdx = headers.indexOf('name') >= 0 ? headers.indexOf('name') : headers.indexOf('nome');
-      const langIdx = headers.indexOf('lang') >= 0 ? headers.indexOf('lang') : headers.indexOf('idioma');
-
-      if (emailIdx < 0) {
-        // Maybe first column is email
-        _csvRawData = lines.slice(1).map(l => {
-          const cols = l.split(sep).map(c => c.trim().replace(/"/g,''));
-          return { email: cols[0] || '', name: cols[1] || '', lang: '' };
-        });
-      } else {
-        _csvRawData = lines.slice(1).map(l => {
-          const cols = l.split(sep).map(c => c.trim().replace(/"/g,''));
-          return {
-            email: cols[emailIdx] || '',
-            name: nameIdx >= 0 ? (cols[nameIdx] || '') : '',
-            lang: langIdx >= 0 ? (cols[langIdx] || '') : '',
-          };
-        });
+    try {
+      const text = e.target.result;
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      if (!lines.length) {
+        statsEl.innerHTML = `<div style="color:var(--red);font-size:12px;">Arquivo vazio.</div>`;
+        return;
       }
-    } else {
-      // Plain text: one email per line
-      _csvRawData = lines.map(l => ({ email: l.trim().replace(/"/g,''), name: '', lang: '' }));
+
+      // Detect format: CSV with headers or plain email list
+      const firstLine = lines[0].toLowerCase().trim();
+      const isCSV = firstLine.includes('email') || firstLine.includes(',') || firstLine.includes(';');
+
+      if (isCSV && (firstLine.includes('email') || firstLine.includes(','))) {
+        // Parse CSV
+        const sep = firstLine.includes(';') ? ';' : ',';
+        const headers = lines[0].split(sep).map(h => h.trim().toLowerCase().replace(/"/g,''));
+        const emailIdx = headers.indexOf('email');
+        const nameIdx = headers.indexOf('name') >= 0 ? headers.indexOf('name') : headers.indexOf('nome');
+        const langIdx = headers.indexOf('lang') >= 0 ? headers.indexOf('lang') : headers.indexOf('idioma');
+
+        if (emailIdx < 0) {
+          _csvRawData = lines.slice(1).map(l => {
+            const cols = l.split(sep).map(c => c.trim().replace(/"/g,''));
+            return { email: cols[0] || '', name: cols[1] || '', lang: '' };
+          });
+        } else {
+          _csvRawData = lines.slice(1).map(l => {
+            const cols = l.split(sep).map(c => c.trim().replace(/"/g,''));
+            return {
+              email: cols[emailIdx] || '',
+              name: nameIdx >= 0 ? (cols[nameIdx] || '') : '',
+              lang: langIdx >= 0 ? (cols[langIdx] || '') : '',
+            };
+          });
+        }
+      } else {
+        // Plain text: one email per line
+        _csvRawData = lines.map(l => ({ email: l.trim().replace(/"/g,''), name: '', lang: '' }));
+      }
+
+      // Filter out empty
+      _csvRawData = _csvRawData.filter(r => r.email);
+
+      _csvValidated = null;
+      document.getElementById('btn-validate').disabled = false;
+      document.getElementById('btn-mx').disabled = true;
+      document.getElementById('btn-export-clean').disabled = true;
+      document.getElementById('btn-import-valid').disabled = true;
+      document.getElementById('btn-import-direct').disabled = false;
+
+      statsEl.innerHTML = `
+        <div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:8px;">${file.name}</div>
+        <div style="font-size:12px;color:var(--t2);">${_csvRawData.length.toLocaleString()} emails carregados</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:4px;">Clique em "Validar" para iniciar a limpeza.</div>`;
+      csvLog(`Arquivo carregado: ${file.name} — ${_csvRawData.length.toLocaleString()} linhas`);
+      toast(`${_csvRawData.length.toLocaleString()} emails carregados!`);
+    } catch(err) {
+      statsEl.innerHTML = `<div style="color:var(--red);font-size:12px;">Erro ao processar: ${err.message}</div>`;
+      csvLog('Erro: ' + err.message);
     }
-
-    // Filter out empty
-    _csvRawData = _csvRawData.filter(r => r.email);
-
-    _csvValidated = null;
-    document.getElementById('btn-validate').disabled = false;
-    document.getElementById('btn-mx').disabled = true;
-    document.getElementById('btn-export-clean').disabled = true;
-    document.getElementById('btn-import-valid').disabled = true;
-    document.getElementById('btn-import-direct').disabled = false;
-
-    document.getElementById('csv-stats').innerHTML = `
-      <div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:8px;">${file.name}</div>
-      <div style="font-size:12px;color:var(--t2);">${_csvRawData.length.toLocaleString()} emails carregados</div>
-      <div style="font-size:11px;color:var(--t3);margin-top:4px;">Clique em "Validar Lista" para iniciar a limpeza.</div>`;
-    csvLog(`Arquivo carregado: ${file.name} — ${_csvRawData.length.toLocaleString()} linhas`);
-    toast(`${_csvRawData.length.toLocaleString()} emails carregados!`);
   };
   reader.readAsText(file);
 }
@@ -5772,35 +5787,40 @@ function isValidEmail(email) {
   return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
 }
 
-function runValidation() {
+async function runValidation() {
   if (!_csvRawData.length) return;
   const btn = document.getElementById('btn-validate');
   btn.disabled = true;
   btn.textContent = 'Validando...';
+  const statsEl = document.getElementById('csv-stats');
 
   const seen = new Set();
   const valid = [], invalid = [], duplicates = [], disposable = [];
+  const total = _csvRawData.length;
+  const CHUNK = 5000;
 
-  for (const row of _csvRawData) {
-    const email = row.email.toLowerCase().trim();
-    if (!email) continue;
-
-    // Duplicate check
-    if (seen.has(email)) { duplicates.push({ ...row, email, reason: 'duplicate' }); continue; }
-    seen.add(email);
-
-    // Syntax check
-    if (!isValidEmail(email)) { invalid.push({ ...row, email, reason: 'invalid_syntax' }); continue; }
-
-    // Disposable domain check
-    const domain = email.split('@')[1];
-    if (DISPOSABLE_DOMAINS.has(domain)) { disposable.push({ ...row, email, reason: 'disposable' }); continue; }
-
-    valid.push({ ...row, email, domain, mx: null });
+  for (let i = 0; i < total; i += CHUNK) {
+    const end = Math.min(i + CHUNK, total);
+    for (let j = i; j < end; j++) {
+      const row = _csvRawData[j];
+      const email = row.email.toLowerCase().trim();
+      if (!email) continue;
+      if (seen.has(email)) { duplicates.push({ ...row, email, reason: 'duplicate' }); continue; }
+      seen.add(email);
+      if (!isValidEmail(email)) { invalid.push({ ...row, email, reason: 'invalid_syntax' }); continue; }
+      const domain = email.split('@')[1];
+      if (DISPOSABLE_DOMAINS.has(domain)) { disposable.push({ ...row, email, reason: 'disposable' }); continue; }
+      valid.push({ ...row, email, domain, mx: null });
+    }
+    // Yield to UI thread for progress
+    const pct = Math.round(end / total * 100);
+    btn.textContent = `Validando... ${pct}%`;
+    statsEl.innerHTML = `<div style="color:var(--gold);font-size:12px;font-weight:600;">Processando ${end.toLocaleString()} de ${total.toLocaleString()} (${pct}%)</div>
+      <div style="background:var(--b1);border-radius:4px;height:6px;margin-top:8px;overflow:hidden;"><div style="background:var(--gold);height:100%;width:${pct}%;transition:width .2s;"></div></div>`;
+    await new Promise(r => setTimeout(r, 0));
   }
 
   _csvValidated = { valid, invalid, duplicates, disposable };
-  const total = _csvRawData.length;
   const removed = invalid.length + duplicates.length + disposable.length;
 
   csvLog(`Validacao completa: ${valid.length} validos, ${duplicates.length} duplicados, ${invalid.length} sintaxe invalida, ${disposable.length} descartaveis`);
