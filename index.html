@@ -1768,7 +1768,7 @@ img{max-width:100%;}
 
 /* ═══ CALENDÁRIO ECONÔMICO MELHORADO ═══ */
 /* Countdown banner */
-.cal-countdown-bar{display:flex;align-items:center;gap:16px;padding:14px 24px;margin:0 0 2px;background:linear-gradient(90deg,rgba(239,68,68,.08),rgba(239,68,68,.03));border-bottom:1px solid rgba(239,68,68,.15);animation:cal-cd-fade-in .4s;}
+.cal-countdown-bar{display:flex;align-items:center;gap:16px;padding:14px 0;margin:0 0 2px;background:linear-gradient(90deg,rgba(239,68,68,.08),rgba(239,68,68,.03));border-bottom:1px solid rgba(239,68,68,.15);animation:cal-cd-fade-in .4s;}
 @keyframes cal-cd-fade-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
 .cal-cd-icon{font-size:18px;animation:pulse-gold 2s infinite;}
 .cal-cd-info{flex:1;min-width:0;}
@@ -1788,23 +1788,34 @@ img{max-width:100%;}
 /* Next event highlight */
 .cal-item.cal-next-hi{border-color:rgba(239,68,68,.3) !important;background:rgba(239,68,68,.06) !important;box-shadow:0 0 16px rgba(239,68,68,.08);animation:cal-next-pulse 3s ease-in-out infinite;}
 @keyframes cal-next-pulse{0%,100%{box-shadow:0 0 8px rgba(239,68,68,.06);}50%{box-shadow:0 0 20px rgba(239,68,68,.12);}}
-.cal-page-hd{padding:20px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
-.cal-title{font-size:20px;font-weight:700;letter-spacing:-.5px;}
-.cal-filter-bar{display:flex;gap:7px;flex-wrap:wrap;padding:0 24px 14px;border-bottom:1px solid var(--b1);}
-.cal-f{padding:6px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.10);color:var(--t1);font-size:12px;font-weight:600;transition:.25s;cursor:pointer;font-family:var(--f);}
-.cal-f.active{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.35);color:var(--gold);box-shadow:0 0 8px rgba(240,180,41,.15);}
-.cal-content{padding:16px 16px 60px;}
+.cal-page-hd{text-align:center;margin-bottom:20px;}
+.cal-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
+.cal-sub{font-size:13px;color:var(--t2);line-height:1.6;max-width:600px;margin:0 auto;}
+.cal-filter-bar{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 14px;border-bottom:1px solid var(--b1);justify-content:center;}
+.cal-f{padding:6px 14px;border-radius:8px;border:1px solid var(--b1);background:transparent;color:var(--t2);font-size:12px;font-weight:600;transition:.2s;cursor:pointer;font-family:var(--f);white-space:nowrap;display:inline-flex;align-items:center;gap:5px;}
+.cal-f:hover{border-color:var(--b2);color:var(--t1);}
+.cal-f.active{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.35);color:var(--gold);}
+.cal-f-h.active{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#ef4444;}
+.cal-f-m.active{background:rgba(240,180,41,.12);border-color:rgba(240,180,41,.35);color:var(--gold);}
+.cal-f-l.active{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#22c55e;}
+.cal-content{padding:16px 0 60px;}
 .cal-date-group{margin-bottom:20px;}
 .cal-date-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t2);margin-bottom:8px;padding:0 4px;}
-.cal-item{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px 16px;display:grid;grid-template-columns:70px 80px 1fr 80px 80px 80px 40px;align-items:center;gap:12px;transition:all .25s;margin-bottom:5px;}
+.cal-item{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px 16px;display:grid;grid-template-columns:70px 80px 1fr 80px 80px 80px 40px;align-items:center;gap:12px;transition:.25s;margin-bottom:5px;}
 .cal-item:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.14);}
 @media(max-width:700px){
+.cal-wrap{padding:20px 16px 60px;}
+.cal-page-hd{margin-bottom:16px;}
+.cal-title{font-size:20px;}
+.cal-sub{font-size:12px;}
+.cal-filter-bar{gap:5px;padding:0 0 12px;}
+.cal-f{padding:5px 10px;font-size:11px;}
 .cal-item{grid-template-columns:60px 1fr auto;}
 .cal-prev-wrap,.cal-fore-wrap,.cal-act-wrap,.cal-stars{display:none;}
 .cal-countdown-bar{padding:10px 16px;gap:10px;}
 .cal-cd-timer{font-size:17px;}
 .cal-search-wrap{flex:1 1 100%;}
-.cal-toolbar{padding:8px 16px;}
+.cal-toolbar{padding:8px 0;}
 }
 .cal-act-wrap{text-align:right;}
 .cal-time{font-size:12px;font-weight:600;color:var(--t1);}
@@ -1825,7 +1836,7 @@ img{max-width:100%;}
 .imp-legend{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--t1);}
 .imp-legend span{display:flex;align-items:center;gap:5px;}
 .cal-sep{width:1px;height:20px;background:rgba(255,255,255,.12);margin:0 2px;flex-shrink:0;}
-.cal-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 24px 12px;gap:12px;flex-wrap:wrap;}
+.cal-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 0 12px;gap:12px;flex-wrap:wrap;}
 .cal-search-wrap{position:relative;flex:0 0 220px;}
 .cal-search-wrap input{width:100%;padding:7px 12px 7px 32px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.10);color:var(--t1);font-size:12px;font-family:var(--f);outline:none;transition:.2s;}
 .cal-search-wrap input:focus{border-color:rgba(240,180,41,.4);background:rgba(255,255,255,.14);}
@@ -1841,7 +1852,7 @@ img{max-width:100%;}
 .cal-item.cal-past .cal-time{color:var(--t2);}
 .cal-act-up{color:#22c55e !important;}
 .cal-act-dn{color:#ef4444 !important;}
-@media(max-width:700px){.cal-search-wrap{flex:1 1 100%;}.cal-toolbar{padding:8px 16px;}}
+
 
 footer{background:rgba(3,5,7,.85);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.14);padding:48px 24px 28px;position:relative;}
 footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.14) 20%,rgba(255,255,255,.20) 50%,rgba(255,255,255,.14) 80%,transparent 100%);}
@@ -2100,11 +2111,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 }
 
 /* CALENDAR PAGE */
-.cal-wrap{padding:24px;max-width:1100px;margin:0 auto;}
-.cal-page-hd{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
-.cal-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
-.cal-sub{font-size:13px;color:var(--t1);max-width:500px;opacity:.7;}
-.cal-tbl-hd{display:grid;grid-template-columns:70px 80px 1fr 80px 80px 80px 40px;align-items:center;gap:12px;padding:8px 16px;margin:0 16px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);}
+.cal-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+.cal-tbl-hd{display:grid;grid-template-columns:70px 80px 1fr 80px 80px 80px 40px;align-items:center;gap:12px;padding:8px 0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);}
 .cal-tbl-hd div:nth-child(4),.cal-tbl-hd div:nth-child(5),.cal-tbl-hd div:nth-child(6){text-align:right;}
 @media(max-width:700px){.cal-tbl-hd{display:none;}}
 /* INDICATORS PAGE */
@@ -3210,22 +3218,15 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="cal-cd-timer" id="cal-cd-timer"></div>
     </div>
     <div class="cal-page-hd">
-      <div>
-        <div class="cal-title" data-i18n="cal_titulo">Calendário Econômico</div>
-        <div class="cal-sub" data-i18n="cal_sub">Eventos econômicos globais que impactam os mercados financeiros</div>
-      </div>
-      <div class="imp-legend">
-        <span><span class="cal-stars h">★★★</span> <span data-i18n="cal_alto_impacto">Alto impacto</span></span>
-        <span><span class="cal-stars m">★★☆</span> <span data-i18n="cal_medio_impacto">Médio impacto</span></span>
-        <span><span class="cal-stars l">★☆☆</span> <span data-i18n="cal_baixo_impacto">Baixo impacto</span></span>
-      </div>
+      <div class="cal-title" data-i18n="cal_titulo">Economic Calendar</div>
+      <div class="cal-sub" data-i18n="cal_sub">Global economic events that impact financial markets</div>
     </div>
     <div class="cal-filter-bar" id="cal-filters">
-      <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">Todos</button>
+      <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">All</button>
       <span class="cal-sep"></span>
-      <button class="cal-f" data-filter="h" onclick="calFilter('h',this)">★★★</button>
-      <button class="cal-f" data-filter="m" onclick="calFilter('m',this)">★★☆</button>
-      <button class="cal-f" data-filter="l" onclick="calFilter('l',this)">★☆☆</button>
+      <button class="cal-f cal-f-h" data-filter="h" onclick="calFilter('h',this)"><span class="imp h"></span> <span data-i18n="cal_alto">High</span></button>
+      <button class="cal-f cal-f-m" data-filter="m" onclick="calFilter('m',this)"><span class="imp m"></span> <span data-i18n="cal_medio">Medium</span></button>
+      <button class="cal-f cal-f-l" data-filter="l" onclick="calFilter('l',this)"><span class="imp l"></span> <span data-i18n="cal_baixo">Low</span></button>
       <span class="cal-sep"></span>
       <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">USD</button>
       <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">EUR</button>
