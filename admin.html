@@ -2384,7 +2384,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Leads
 async function getLeads() {
   try {
-    const { data } = await db.from('leads').select('*').order('created_at', { ascending: false }).limit(500);
+    const { data } = await db.from('email_subscribers').select('*').order('created_at', { ascending: false }).limit(500);
     if (data !== null && data !== undefined) {
       localStorage.setItem('mc_leads', JSON.stringify(data));
       return data;
@@ -2765,7 +2765,7 @@ async function renderAnalytics() {
   // Fetch from Supabase
   let leads = [], events = [], spends = [];
   try {
-    let lQ = db.from('leads').select('*').gte('created_at', since);
+    let lQ = db.from('email_subscribers').select('*').gte('created_at', since);
     let eQ = db.from('events').select('*').gte('created_at', since);
     if (sinceEnd) { lQ = lQ.lte('created_at', sinceEnd); eQ = eQ.lte('created_at', sinceEnd); }
     const [lRes, eRes, sRes] = await Promise.all([
@@ -3333,7 +3333,7 @@ function closeLeadModal(){ document.getElementById('lead-modal-ov').classList.re
 async function clearLeads(){
  if(!confirm(`Apagar todos os ${getLeadsSync().length} leads? Esta ação é irreversível.`))return;
  try{
-   await db.from('leads').delete().neq('id','00000000-0000-0000-0000-000000000000');
+   await db.from('email_subscribers').delete().neq('id','00000000-0000-0000-0000-000000000000');
  }catch(e){}
  localStorage.removeItem('mc_leads');
  renderLeadsTable();
@@ -3720,20 +3720,20 @@ async function getSegmentedLeads(){
  const results=[];
  const needAll=emailSegments.includes('all');
  const firmaFilter=emailFirmaFilter.length?emailFirmaFilter:null;
- // Leads from Supabase (has idioma + firma fields)
+ // Leads from Supabase (email_subscribers table)
  if(needAll||emailSegments.includes('leads')){
   try {
-   const {data}=await db.from('leads').select('email,name,idioma,firma');
-   if(data) results.push(...data.filter(l=>l.email).map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead',firma:l.firma||''})));
+   const {data}=await db.from('email_subscribers').select('email,name,lang,source');
+   if(data) results.push(...data.filter(l=>l.email).map(l=>({email:l.email,name:l.name||'',lang:l.lang||'en',source:l.source||'lead',firma:''})));
   } catch(e){
    const leads=getLeadsSync().filter(l=>l.email);
-   results.push(...leads.map(l=>({email:l.email,name:l.name||'',lang:langFromCode(l.idioma),source:'lead',firma:l.firma||''})));
+   results.push(...leads.map(l=>({email:l.email,name:l.name||'',lang:l.lang||'en',source:'lead',firma:''})));
   }
  }
  // Loyalty members from Supabase
  if(needAll||emailSegments.includes('loyalty')){
-  const {data}=await db.from('loyalty_members').select('email,name,idioma').neq('email',null);
-  if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',lang:langFromCode(m.idioma),source:'loyalty',firma:''})));
+  const {data}=await db.from('loyalty_members').select('email,name').neq('email',null);
+  if(data) results.push(...data.map(m=>({email:m.email,name:m.name||'',lang:'en',source:'loyalty',firma:''})));
  }
  // Subscribers from Supabase (paginated — no 1000 limit)
  if(needAll||emailSegments.includes('subscribers')){
@@ -7156,23 +7156,12 @@ async function importLeadsAsSubscribers(){
   // Pull leads from Supabase (has idioma field) + localStorage fallback
   let leads = [];
   try {
-    const { data } = await db.from('leads').select('email,name,idioma,tool');
+    const { data } = await db.from('email_subscribers').select('email,name,lang,source');
     leads = data || [];
   } catch(e){}
   if(!leads.length) leads = getLeadsSync();
-  if(!leads.length){ toast('Nenhum lead para importar!','warn'); return; }
-
-  let imported=0, skipped=0;
-  for(const l of leads){
-    if(!l.email) continue;
-    const { error } = await db.from('email_subscribers').upsert({
-      email: l.email, name: l.name||'', source: 'lead',
-      tags: [l.tool||'site'].filter(Boolean),
-      lang: langFromCode(l.idioma)
-    },{ onConflict:'email', ignoreDuplicates:true });
-    if(!error) imported++; else skipped++;
-  }
-  toast(`${imported} subscribers importados, ${skipped} ja existiam.`);
+  if(!leads.length){ toast('Nenhum subscriber encontrado!','warn'); return; }
+  toast(`${leads.length} subscribers ja estao na tabela email_subscribers.`);
   await loadEmailStats();
 }
 
@@ -8327,7 +8316,7 @@ let lastProofCount = 0;
 async function pollForUpdates() {
   try {
     // Fetch fresh data from Supabase
-    const { data: freshLeads } = await db.from('leads').select('*').order('created_at', { ascending: false }).limit(500);
+    const { data: freshLeads } = await db.from('email_subscribers').select('*').order('created_at', { ascending: false }).limit(500);
     if(freshLeads && freshLeads.length > lastLeadCount && lastLeadCount > 0) {
       const newLead = freshLeads[0];
       pushNotif('new_lead','Leads','Novo lead: '+(newLead.name||newLead.email)+' ('+(newLead.tool||'direto')+')','lead');
