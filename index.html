@@ -1799,11 +1799,20 @@ img{max-width:100%;}
 .cal-date-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t2);margin-bottom:8px;padding:0 4px;}
 .cal-item{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px 16px;display:grid;grid-template-columns:70px 80px 1fr 80px 80px 80px 40px;align-items:center;gap:12px;transition:all .25s;margin-bottom:5px;}
 .cal-item:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.14);}
-@media(max-width:700px){.cal-item{grid-template-columns:60px 1fr auto;}.cal-prev-wrap,.cal-fore-wrap,.cal-act-wrap{display:none;}.cal-item.cal-expanded .cal-mob-data{display:flex !important;}.cal-countdown-bar{padding:10px 16px;gap:10px;}.cal-cd-timer{font-size:17px;}.cal-hd-right{align-items:flex-start;}}
-.cal-mob-data{display:none;grid-column:1/-1;gap:8px;padding:8px 0 0;border-top:1px solid rgba(255,255,255,.08);margin-top:4px;}
+@media(max-width:700px){
+.cal-item{grid-template-columns:60px 1fr auto;cursor:pointer;}
+.cal-prev-wrap,.cal-fore-wrap,.cal-act-wrap{display:none;}
+.cal-item .cal-mob-data{display:flex !important;}
+.cal-countdown-bar{padding:10px 16px;gap:10px;}
+.cal-cd-timer{font-size:17px;}
+.cal-hd-right{align-items:flex-start;}
+.cal-item .cal-mob-expand{display:block !important;}
+}
+.cal-mob-data{display:none;grid-column:1/-1;gap:8px;padding:10px 0 4px;border-top:1px solid rgba(255,255,255,.08);margin-top:6px;}
 .cal-mob-cell{flex:1;text-align:center;}
 .cal-mob-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
 .cal-mob-val{font-size:13px;font-weight:700;color:var(--t1);}
+.cal-mob-expand{display:none;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-top:2px;}
 .cal-act-wrap{text-align:right;}
 .cal-time{font-size:12px;font-weight:600;color:var(--t1);}
 .cal-cur-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:3px 7px;border-radius:4px;}
@@ -3241,16 +3250,16 @@ document.addEventListener('DOMContentLoaded',function(){
       <button class="cal-f" data-filter="m" onclick="calFilter('m',this)">★★☆</button>
       <button class="cal-f" data-filter="l" onclick="calFilter('l',this)">★☆☆</button>
       <span class="cal-sep"></span>
-      <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">🇺🇸 USD</button>
-      <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">🇪🇺 EUR</button>
-      <button class="cal-f" data-filter="GBP" onclick="calFilter('GBP',this)">🇬🇧 GBP</button>
-      <button class="cal-f" data-filter="CAD" onclick="calFilter('CAD',this)">🇨🇦 CAD</button>
-      <button class="cal-f" data-filter="AUD" onclick="calFilter('AUD',this)">🇦🇺 AUD</button>
-      <button class="cal-f" data-filter="JPY" onclick="calFilter('JPY',this)">🇯🇵 JPY</button>
-      <button class="cal-f" data-filter="CHF" onclick="calFilter('CHF',this)">🇨🇭 CHF</button>
-      <button class="cal-f" data-filter="NZD" onclick="calFilter('NZD',this)">🇳🇿 NZD</button>
-      <button class="cal-f" data-filter="CNY" onclick="calFilter('CNY',this)">🇨🇳 CNY</button>
-      <button class="cal-f" data-filter="BRL" onclick="calFilter('BRL',this)">🇧🇷 BRL</button>
+      <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">USD</button>
+      <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">EUR</button>
+      <button class="cal-f" data-filter="GBP" onclick="calFilter('GBP',this)">GBP</button>
+      <button class="cal-f" data-filter="CAD" onclick="calFilter('CAD',this)">CAD</button>
+      <button class="cal-f" data-filter="AUD" onclick="calFilter('AUD',this)">AUD</button>
+      <button class="cal-f" data-filter="JPY" onclick="calFilter('JPY',this)">JPY</button>
+      <button class="cal-f" data-filter="CHF" onclick="calFilter('CHF',this)">CHF</button>
+      <button class="cal-f" data-filter="NZD" onclick="calFilter('NZD',this)">NZD</button>
+      <button class="cal-f" data-filter="CNY" onclick="calFilter('CNY',this)">CNY</button>
+      <button class="cal-f" data-filter="BRL" onclick="calFilter('BRL',this)">BRL</button>
     </div>
     <div class="cal-toolbar">
       <div class="cal-search-wrap"><input type="text" id="cal-search" placeholder="Search events..." data-i18n-placeholder="cal_buscar" oninput="renderCal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>

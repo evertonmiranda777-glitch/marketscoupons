@@ -4135,12 +4135,6 @@ function _startCalRefresh(){
   _calRefreshTimer = setInterval(() => loadCalendar(true), 5*60*1000);
 }
 
-// ── Mobile expand ──
-function calToggleMob(el){
-  if(window.innerWidth > 700) return;
-  el.closest('.cal-item')?.classList.toggle('cal-expanded');
-}
-
 // ── Tooltip on actual value ──
 function calShowTip(el, actual, forecast){
   let tip = document.getElementById('cal-tip');
@@ -4183,15 +4177,14 @@ function renderCal() {
   const etH = (nowUTC.getUTCHours() - 4 + 24) % 24;
   const nowHHMM = etH.toString().padStart(2,'0') + ':' + nowUTC.getUTCMinutes().toString().padStart(2,'0');
 
-  // Find next upcoming high-impact event (for highlight)
+  // Find next upcoming high-impact event (for highlight) — search today first, then future days
   const etNow = new Date(nowUTC.getTime() - 4*60*60*1000);
   const todayStr = etNow.toISOString().slice(0,10);
   let nextHiId = null;
   for(const e of calEvents){
-    if(e.dateStr === todayStr && e.imp === 'h' && e.t !== '—' && e.t > nowHHMM){
-      nextHiId = e.dateStr + e.t + e.ev;
-      break;
-    }
+    if(e.imp !== 'h' || e.t === '—') continue;
+    if(e.dateStr === todayStr && e.t > nowHHMM){ nextHiId = e.dateStr + e.t + e.ev; break; }
+    if(e.dateStr > todayStr){ nextHiId = e.dateStr + e.t + e.ev; break; }
   }
 
   const groups = {};
@@ -4205,7 +4198,7 @@ function renderCal() {
       <div class="cal-date-label">${day === 'Hoje' ? t('cal_hoje') + ' — ' + new Date().toLocaleDateString(_currentLang||'en',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : day === 'Amanhã' ? t('cal_amanha') : t('cal_esta_semana')}</div>
       ${items.map((e) => {
         const cc = CUR_COLORS[e.cur] || {bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
-        const flag = CUR_FLAGS[e.cur] || '';
+        const flag = ''; // flags don't render on Windows — keep text only
         const actVal = parseFloat((e.actual||'').replace(/[^0-9.\-]/g,''));
         const foreVal = parseFloat((e.fore||'').replace(/[^0-9.\-]/g,''));
         const actClass = (e.actual !== '—' && !isNaN(actVal) && !isNaN(foreVal)) ? (actVal > foreVal ? 'cal-act-up' : actVal < foreVal ? 'cal-act-dn' : '') : '';
@@ -4221,7 +4214,7 @@ function renderCal() {
           nowInserted = true;
           nowLine = `<div class="cal-now-line"><div class="cal-now-dot"></div><div class="cal-now-label">${t('cal_agora')||'NOW'}</div><div class="cal-now-hr"></div></div>`;
         }
-        return `${nowLine}<div class="cal-item${isPast?' cal-past':''}${isNextHi?' cal-next-hi':''}" onclick="calToggleMob(this)">
+        return `${nowLine}<div class="cal-item${isPast?' cal-past':''}${isNextHi?' cal-next-hi':''}">
           <div class="cal-time">${tz.display} <span style="font-size:10px;color:var(--t3);">${tz.label}</span></div>
           <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${flag} ${e.cur}</span></div>
           <div><div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t3);font-weight:400;">${e.ref}</span>`:''}</div></div>
@@ -4229,11 +4222,10 @@ function renderCal() {
           <div class="cal-fore-wrap"><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
           <div class="cal-prev-wrap"><div class="cal-val">${e.prev}</div></div>
           <div class="cal-stars ${e.imp}" title="${e.imp==='h'?t('cal_alto_impacto'):e.imp==='m'?t('cal_medio_impacto'):t('cal_baixo_impacto')}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</div>
-          <div class="cal-mob-data" style="display:none;">
+          <div class="cal-mob-data">
             <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_atual')||'Actual'}</div><div class="cal-mob-val ${actClass}">${e.actual}${actArrow}</div></div>
             <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_previsao')||'Forecast'}</div><div class="cal-mob-val" style="color:var(--gold);">${e.fore}</div></div>
             <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_anterior')||'Previous'}</div><div class="cal-mob-val">${e.prev}</div></div>
-            <div class="cal-mob-cell"><div class="cal-mob-lbl">${t('cal_impacto')||'Impact'}</div><div class="cal-mob-val"><span class="cal-stars ${e.imp}">${e.imp==='h'?'★★★':e.imp==='m'?'★★☆':'★☆☆'}</span></div></div>
           </div>
         </div>`;
       }).join('')}
