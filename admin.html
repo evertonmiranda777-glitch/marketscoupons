@@ -5023,216 +5023,200 @@ function buildInstitutionalHtml(name, lang='pt'){
 
     const IMG = BASE + '/img/Firms/';
     const PLAT = BASE + '/img/Plataformas/';
+    // Frontend reference sizes: logo 34px/28px, name 8.5px/700, price 13px/800 gold, old 8px/.25, badge 7.5px, code 7px mono, labels 7.5px/.3 upper, vals 9px/.55, panel bg rgba(255,255,255,.10) border .14, padding 12px 10px, section-title 8px/.4 upper, radius 10-12px
 
-    // ── Helper: dark panel with title + content, white description below ──
+    // ── Panel wrapper: dark content + white description ──
     const panel = (titleObj, descObj, accentColor, innerHtml) => {
       const tl = titleObj[lang]||titleObj.en||titleObj.pt||'';
       const dl = descObj[lang]||descObj.en||descObj.pt||'';
-      return `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;border-radius:12px;overflow:hidden;border:1px solid #ddd;" role="presentation">
-        <tr><td bgcolor="${DK}" style="background:${DK};padding:16px 14px;">
-          <div style="color:${accentColor};font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;font-family:${FI};">${tl}</div>
-          ${innerHtml}
-        </td></tr>
-        <tr><td bgcolor="#ffffff" style="background:#ffffff;padding:14px 18px;">
-          <div style="color:#444;font-size:13px;line-height:1.55;font-family:${FI};">${dl}</div>
+      return `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid #ddd;" role="presentation">
+        <tr><td bgcolor="${DK}" style="background:${DK};padding:10px 10px 8px;">${innerHtml}</td></tr>
+        <tr><td bgcolor="#ffffff" style="background:#fff;padding:10px 14px;">
+          <div style="color:${accentColor};font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;font-family:${FI};">${tl}</div>
+          <div style="color:#555;font-size:12px;line-height:1.5;font-family:${FI};">${dl}</div>
         </td></tr>
       </table>`;
     };
 
-    // ── Helper: firm mini-card (logo + name + price + badge + coupon) ──
-    const firmMini = (logo, name, oldP, newP, off, cpn, clr) =>
-      `<td style="padding:4px;text-align:center;vertical-align:top;">
-        <table cellpadding="0" cellspacing="0" border="0" style="background:#161B22;border:1px solid rgba(255,255,255,.12);border-radius:10px;width:100%;" role="presentation">
-          <tr><td style="padding:10px 6px 8px;text-align:center;">
-            <div style="font-size:8px;font-weight:800;color:#000;background:${clr||GLD};display:inline-block;padding:2px 6px;border-radius:4px;margin-bottom:6px;font-family:${FI};">${off}</div><br>
-            <img src="${IMG}${logo}" width="36" height="36" style="width:36px;height:36px;border-radius:8px;display:inline-block;margin-bottom:4px;" alt="${name}">
-            <div style="font-size:10px;font-weight:700;color:#fff;margin-bottom:3px;font-family:${FI};">${name}</div>
-            <div style="font-size:8px;color:rgba(255,255,255,.35);text-decoration:line-through;font-family:${FI};">${oldP}</div>
-            <div style="font-size:14px;font-weight:800;color:#fff;margin:2px 0 4px;font-family:${FI};">${newP}</div>
-            <div style="font-size:7px;font-weight:700;color:${GLD};background:rgba(240,180,41,.12);display:inline-block;padding:2px 8px;border-radius:4px;font-family:${FI};">${cpn}</div>
+    // ── Firm mini-card: matches mu-cpn exactly ──
+    const firmMini = (logo, nm, oldP, newP, off, cpn) =>
+      `<td width="25%" style="padding:3px;text-align:center;vertical-align:top;">
+        <table cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,.10);border:1px solid ${BD};border-radius:12px;width:100%;" role="presentation">
+          <tr><td style="padding:10px 4px 8px;text-align:center;">
+            <div style="font-size:7.5px;font-weight:800;color:#000;background:linear-gradient(135deg,${GLD},#D97706);display:inline-block;padding:2px 6px;border-radius:0 0 6px 6px;margin-bottom:5px;font-family:${FI};">${off}</div><br>
+            <img src="${IMG}${logo}" width="34" height="34" style="width:34px;height:34px;border-radius:10px;background:rgba(0,0,0,.3);padding:3px;" alt="${nm}"><br>
+            <div style="font-size:8.5px;font-weight:700;color:rgba(255,255,255,.7);margin:4px 0 2px;letter-spacing:.2px;font-family:${FI};">${nm}</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.25);text-decoration:line-through;font-family:${FI};">${oldP}</div>
+            <div style="font-size:13px;font-weight:800;color:${GLD};font-family:${FI};">${newP}</div>
+            <div style="font-size:7px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(255,255,255,.10);display:inline-block;padding:2px 5px;border-radius:4px;letter-spacing:1px;font-family:monospace,${FI};">${cpn}</div>
           </td></tr>
         </table>
       </td>`;
 
-    // ═══ CARD 1: Cupons — 4 firmas com logos reais ═══
-    const cpnTitle = {pt:'Cupons Exclusivos',en:'Exclusive Coupons',es:'Cupones Exclusivos',fr:'Coupons Exclusifs',de:'Exklusive Gutscheine',it:'Coupon Esclusivi',ar:'كوبونات حصرية'};
-    const cpnDesc = {pt:'Cupons negociados diretamente com Apex, Bulenox, Earn2Trade, FundedNext e mais. Até 90% OFF Lifetime.',en:'Coupons negotiated directly with Apex, Bulenox, Earn2Trade, FundedNext and more. Up to 90% OFF Lifetime.',es:'Cupones negociados con Apex, Bulenox, Earn2Trade, FundedNext y más. Hasta 90% OFF Lifetime.'};
+    // ═══ 1. CUPONS ═══
     const cpnInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
-      ${firmMini('apex.png','Apex Trader','$249','$24.90','90% OFF','MARKET')}
+      ${firmMini('apex.png','Apex Trader','$329','$32.90','90% OFF','MARKET')}
       ${firmMini('bulenox.png','Bulenox','$215','$23.65','89% OFF','MARKET89')}
       ${firmMini('e2t.png','Earn2Trade','$350','$140','60% OFF','MARKETSCOUPONS')}
-      ${firmMini('fn.png','FundedNext','$499.99','$349.99','30% OFF','FNF30')}
+      ${firmMini('fn.png','FundedNext','$499','$349.99','30% OFF','FNF30')}
     </tr></table>`;
 
-    // ═══ CARD 2: Comparador — tabela 3 firmas ═══
-    const cmpTitle = {pt:'Comparador de Firmas',en:'Firm Comparator',es:'Comparador de Firmas'};
-    const cmpDesc = {pt:'Coloque firmas lado a lado — drawdown, split, preço, plataformas. Descubra a melhor em segundos.',en:'Compare firms side by side — drawdown, split, price, platforms. Find the best in seconds.',es:'Compare firmas lado a lado — drawdown, split, precio, plataformas.'};
-    const cmpLbl = (t) => `<td style="padding:5px 6px;font-size:8px;font-weight:600;color:rgba(255,255,255,.35);font-family:${FI};">${t}</td>`;
-    const cmpVal = (t,best) => `<td style="padding:5px 6px;text-align:center;font-size:10px;font-weight:700;color:${best?GLD:'rgba(255,255,255,.7)'};font-family:${FI};">${t}</td>`;
-    const cmpHead = (logo,nm) => `<td style="text-align:center;padding:6px;"><img src="${IMG}${logo}" width="28" height="28" style="width:28px;height:28px;border-radius:6px;display:block;margin:0 auto 3px;" alt="${nm}"><div style="font-size:9px;font-weight:700;color:#fff;font-family:${FI};">${nm}</div></td>`;
-    const cmpInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:10px;" role="presentation">
-      <tr><td style="padding:6px;"></td>${cmpHead('apex.png','Apex')}${cmpHead('bulenox.png','Bulenox')}${cmpHead('ftmo.png','FTMO')}</tr>
-      <tr style="background:rgba(255,255,255,.03);">${cmpLbl('Discount')}${cmpVal('90%',1)}${cmpVal('89%',1)}${cmpVal('—')}</tr>
+    // ═══ 2. COMPARADOR ═══
+    const cmpLbl = (t) => `<td style="padding:4px 5px;font-size:7.5px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;font-family:${FI};">${t}</td>`;
+    const cmpVal = (t,best) => `<td style="padding:4px 5px;text-align:center;font-size:9px;font-weight:700;color:${best?GRN:'rgba(255,255,255,.55)'};font-family:${FI};">${t}</td>`;
+    const cmpHead = (logo,nm,stars) => `<td style="text-align:center;padding:4px;"><img src="${IMG}${logo}" width="28" height="28" style="width:28px;height:28px;border-radius:8px;background:rgba(0,0,0,.3);padding:2px;" alt="${nm}"><div style="font-size:8px;font-weight:700;color:rgba(255,255,255,.6);margin-top:3px;font-family:${FI};">${nm}</div><div style="font-size:7px;font-weight:700;color:${GLD};font-family:${FI};">${stars}</div></td>`;
+    const cmpInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:10px;" role="presentation">
+      <tr><td style="padding:4px;"></td>${cmpHead('apex.png','Apex','4.4 / 18K')}${cmpHead('bulenox.png','Bulenox','4.8 / 1.5K')}${cmpHead('ftmo.png','FTMO','4.8 / 43K')}</tr>
+      <tr>${cmpLbl({pt:'Desconto',en:'Discount',es:'Descuento'}[lang]||'Discount')}${cmpVal('90%',1)}${cmpVal('89%',1)}${cmpVal('—')}</tr>
       <tr>${cmpLbl('100K')}${cmpVal('$32.90')}${cmpVal('$23.65',1)}${cmpVal('€439')}</tr>
-      <tr style="background:rgba(255,255,255,.03);">${cmpLbl('Split')}${cmpVal('100%',1)}${cmpVal('90%')}${cmpVal('90%')}</tr>
+      <tr>${cmpLbl('Split')}${cmpVal('100%',1)}${cmpVal('90%')}${cmpVal('90%')}</tr>
       <tr>${cmpLbl('Drawdown')}${cmpVal('Trailing')}${cmpVal('Trailing')}${cmpVal('Fixed',1)}</tr>
-      <tr style="background:rgba(255,255,255,.03);">${cmpLbl({pt:'Mín. dias',en:'Min. days',es:'Mín. días'}[lang]||'Min. days')}${cmpVal('1',1)}${cmpVal('1',1)}${cmpVal('4')}</tr>
+      <tr>${cmpLbl({pt:'Mín. dias',en:'Min. days',es:'Mín. días'}[lang]||'Min. days')}${cmpVal('1',1)}${cmpVal('1',1)}${cmpVal('4')}</tr>
     </table>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.15);border-radius:8px;" role="presentation">
-      <tr><td style="padding:8px 10px;text-align:center;">
-        <img src="${IMG}bulenox.png" width="20" height="20" style="width:20px;height:20px;border-radius:4px;vertical-align:middle;margin-right:6px;" alt="Bulenox">
-        <span style="font-size:8px;font-weight:800;color:${GRN};text-transform:uppercase;letter-spacing:.5px;font-family:${FI};">${{pt:'VENCEDOR',en:'WINNER',es:'GANADOR'}[lang]||'WINNER'}</span>
-        <span style="font-size:9px;color:rgba(255,255,255,.6);margin-left:6px;font-family:${FI};">${{pt:'Melhor custo-benefício 100K',en:'Best value for 100K',es:'Mejor costo-beneficio 100K'}[lang]||'Best value for 100K'}</span>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:6px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.12);border-radius:6px;" role="presentation">
+      <tr><td style="padding:5px 8px;text-align:center;">
+        <img src="${IMG}bulenox.png" width="18" height="18" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:4px;" alt="">
+        <span style="font-size:7px;font-weight:800;color:#000;background:${GRN};padding:2px 8px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;font-family:${FI};">${{pt:'VENCEDOR',en:'WINNER',es:'GANADOR'}[lang]||'WINNER'}</span>
+        <span style="font-size:8px;font-weight:600;color:rgba(255,255,255,.5);margin-left:4px;font-family:${FI};">${{pt:'Melhor custo-benefício 100K',en:'Best value for 100K',es:'Mejor costo-beneficio 100K'}[lang]||'Best value for 100K'}</span>
       </td></tr>
     </table>`;
 
-    // ═══ CARD 3: Análise Diária — ES com suportes/resistências ═══
-    const anlTitle = {pt:'Análise Diária',en:'Daily Analysis',es:'Análisis Diario'};
-    const anlDesc = {pt:'4 ativos analisados todo dia às 6h: ES, NQ, Ouro e Petróleo. Suportes, resistências, cenários e contexto macro.',en:'4 assets analyzed daily at 6AM: ES, NQ, Gold and Oil. Supports, resistances, scenarios and macro context.',es:'4 activos analizados diariamente a las 6AM: ES, NQ, Oro y Petróleo.'};
-    const anlZone = (label,val,clr) => `<td width="50%" style="padding:3px;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${clr==='g'?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border-radius:6px;" role="presentation">
-        <tr><td style="padding:6px 8px;"><div style="font-size:7px;font-weight:700;color:${clr==='g'?GRN:RED};font-family:${FI};">${label}</div><div style="font-size:11px;font-weight:800;color:rgba(255,255,255,.7);font-family:${FI};">${val}</div></td></tr>
+    // ═══ 3. ANÁLISE DIÁRIA ═══
+    const anlZone = (label,val,clr) => `<td width="50%" style="padding:2px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${clr==='g'?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border-radius:4px;" role="presentation">
+        <tr><td style="padding:4px 6px;"><div style="font-size:5px;font-weight:700;color:${clr==='g'?GRN:RED};font-family:${FI};">${label}</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);font-family:${FI};">${val}</div></td></tr>
       </table>
     </td>`;
-    const anlInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
-      <tr><td>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:10px;margin-bottom:8px;" role="presentation">
-          <tr><td style="padding:10px 12px;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
-              <td><span style="font-size:13px;font-weight:800;color:#fff;font-family:${FI};">ES</span> <span style="font-size:9px;color:rgba(255,255,255,.35);font-family:${FI};">S&P 500 Futures</span></td>
-              <td style="text-align:right;"><span style="font-size:12px;font-weight:800;color:#fff;font-family:${FI};">5,621.50</span> <span style="font-size:8px;font-weight:700;color:${GRN};background:rgba(34,197,94,.12);padding:2px 5px;border-radius:3px;font-family:${FI};">+0.42%</span></td>
-            </tr></table>
-            <div style="margin-top:6px;font-size:8px;font-weight:800;color:${GRN};font-family:${FI};">● BULLISH</div>
-            <div style="margin-top:4px;font-size:9px;color:rgba(255,255,255,.5);line-height:1.5;font-family:${FI};">${{pt:'FVG no 4H como zona de interesse. FOMC confirma pausa nos juros.',en:'4H FVG as zone of interest. FOMC confirms rate pause.',es:'FVG en 4H como zona de interés. FOMC confirma pausa de tasas.'}[lang]||'4H FVG as zone of interest. FOMC confirms rate pause.'}</div>
-          </td></tr>
-        </table>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
-          <tr>${anlZone({pt:'SUPORTE 1',en:'SUPPORT 1',es:'SOPORTE 1'}[lang]||'SUPPORT 1','5,580','g')}${anlZone({pt:'RESISTÊNCIA 1',en:'RESISTANCE 1',es:'RESISTENCIA 1'}[lang]||'RESISTANCE 1','5,650','r')}</tr>
-          <tr>${anlZone({pt:'SUPORTE 2',en:'SUPPORT 2',es:'SOPORTE 2'}[lang]||'SUPPORT 2','5,540','g')}${anlZone({pt:'RESISTÊNCIA 2',en:'RESISTANCE 2',es:'RESISTENCIA 2'}[lang]||'RESISTANCE 2','5,700','r')}</tr>
-        </table>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:6px;" role="presentation"><tr>
-          <td><span style="font-size:7px;font-weight:700;color:${GRN};background:rgba(34,197,94,.1);padding:2px 6px;border-radius:3px;font-family:${FI};">SMC</span></td>
-          <td><span style="font-size:7px;font-weight:700;color:${PRP};background:rgba(168,85,247,.1);padding:2px 6px;border-radius:3px;font-family:${FI};">Macro</span></td>
-          <td><span style="font-size:7px;font-weight:700;color:${GLD};background:rgba(240,180,41,.1);padding:2px 6px;border-radius:3px;font-family:${FI};">${{pt:'Tarifas',en:'Tariffs',es:'Aranceles'}[lang]||'Tariffs'}</span></td>
-          <td><span style="font-size:7px;font-weight:700;color:${CYN};background:rgba(14,165,233,.1);padding:2px 6px;border-radius:3px;font-family:${FI};">FOMC</span></td>
+    const anlInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:10px;margin-bottom:6px;" role="presentation">
+      <tr><td style="padding:8px 10px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
+          <td><span style="font-size:11px;font-weight:800;color:#fff;font-family:${FI};">ES</span> <span style="font-size:8px;color:rgba(255,255,255,.4);font-family:${FI};">S&amp;P 500 Futures</span></td>
+          <td style="text-align:right;"><span style="font-size:10px;font-weight:800;color:#fff;font-family:${FI};">5,621.50</span> <span style="font-size:7px;font-weight:700;color:${GRN};background:rgba(34,197,94,.15);padding:1px 5px;border-radius:3px;font-family:${FI};">+0.42%</span></td>
         </tr></table>
+        <div style="margin-top:4px;">
+          <span style="font-size:7px;font-weight:800;color:${GRN};font-family:${FI};">BULLISH</span>
+          <span style="font-size:6.5px;font-weight:700;color:#000;background:${GRN};padding:1px 4px;border-radius:2px;margin-left:4px;font-family:${FI};">65%</span>
+        </div>
+        <div style="margin-top:3px;font-size:6.5px;color:rgba(255,255,255,.35);line-height:1.6;font-family:${FI};">${{pt:'FVG no 4H como zona de interesse. FOMC confirma pausa nos juros.',en:'4H FVG as zone of interest. FOMC confirms rate pause.',es:'FVG en 4H como zona de interés. FOMC confirma pausa.'}[lang]||'4H FVG as zone of interest. FOMC confirms rate pause.'}</div>
       </td></tr>
-    </table>`;
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+      <tr>${anlZone({pt:'SUPORTE 1',en:'SUPPORT 1',es:'SOPORTE 1'}[lang]||'SUPPORT 1','5,580','g')}${anlZone({pt:'RESISTÊNCIA 1',en:'RESISTANCE 1',es:'RESISTENCIA 1'}[lang]||'RESISTANCE 1','5,650','r')}</tr>
+      <tr>${anlZone({pt:'SUPORTE 2',en:'SUPPORT 2',es:'SOPORTE 2'}[lang]||'SUPPORT 2','5,540','g')}${anlZone({pt:'RESISTÊNCIA 2',en:'RESISTANCE 2',es:'RESISTENCIA 2'}[lang]||'RESISTANCE 2','5,700','r')}</tr>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:4px;" role="presentation"><tr>
+      <td><span style="font-size:5.5px;font-weight:700;color:${GRN};background:rgba(34,197,94,.1);padding:2px 5px;border-radius:3px;font-family:${FI};">SMC</span></td>
+      <td><span style="font-size:5.5px;font-weight:700;color:${PRP};background:rgba(168,85,247,.1);padding:2px 5px;border-radius:3px;font-family:${FI};">Macro</span></td>
+      <td><span style="font-size:5.5px;font-weight:700;color:${GLD};background:rgba(240,180,41,.1);padding:2px 5px;border-radius:3px;font-family:${FI};">${{pt:'Tarifas',en:'Tariffs',es:'Aranceles'}[lang]||'Tariffs'}</span></td>
+      <td><span style="font-size:5.5px;font-weight:700;color:${CYN};background:rgba(14,165,233,.1);padding:2px 5px;border-radius:3px;font-family:${FI};">FOMC</span></td>
+    </tr></table>`;
 
-    // ═══ CARD 4: Calculadora + Quiz ═══
-    const toolTitle = {pt:'Ferramentas',en:'Tools',es:'Herramientas'};
-    const toolDesc = {pt:'Calculadora de Position Size e Quiz interativo — descubra sua firma ideal em 2 minutos.',en:'Position Size Calculator and interactive Quiz — find your ideal firm in 2 minutes.',es:'Calculadora de Position Size y Quiz interactivo — descubre tu firma ideal en 2 minutos.'};
-    const calcFld = (lbl,val) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);border-radius:6px;margin-bottom:4px;" role="presentation"><tr><td style="padding:5px 8px;font-size:8px;color:rgba(255,255,255,.35);font-family:${FI};">${lbl}</td><td style="padding:5px 8px;text-align:right;font-size:10px;font-weight:700;color:rgba(255,255,255,.7);font-family:${FI};">${val}</td></tr></table>`;
-    const calcRes = (lbl,val) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.18);border-radius:6px;margin-bottom:4px;" role="presentation"><tr><td style="padding:5px 8px;font-size:8px;font-weight:600;color:${GLD};font-family:${FI};">${lbl}</td><td style="padding:5px 8px;text-align:right;font-size:12px;font-weight:800;color:${GLD};font-family:${FI};">${val}</td></tr></table>`;
-    const quizOpt = (txt,sel) => `<div style="padding:5px 8px;background:${sel?'rgba(168,85,247,.08)':'rgba(255,255,255,.08)'};border:1px solid ${sel?'rgba(168,85,247,.25)':'rgba(255,255,255,.10)'};border-radius:6px;margin-bottom:3px;font-size:9px;color:${sel?PRP:'rgba(255,255,255,.5)'};font-weight:${sel?'600':'500'};font-family:${FI};">● ${txt}</div>`;
+    // ═══ 4. CALCULADORA + QUIZ ═══
+    const calcFld = (lbl,val) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,.10);border:1px solid ${BD};border-radius:6px;margin-bottom:3px;" role="presentation"><tr><td style="padding:4px 6px;font-size:7.5px;color:rgba(255,255,255,.3);font-family:${FI};">${lbl}</td><td style="padding:4px 6px;text-align:right;font-size:9px;font-weight:700;color:rgba(255,255,255,.7);font-family:${FI};">${val}</td></tr></table>`;
+    const calcRes = (lbl,val) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(240,180,41,.15);border:1px solid rgba(240,180,41,.2);border-radius:6px;margin-bottom:3px;" role="presentation"><tr><td style="padding:4px 6px;font-size:7.5px;font-weight:600;color:${GLD};font-family:${FI};">${lbl}</td><td style="padding:4px 6px;text-align:right;font-size:13px;font-weight:800;color:${GLD};font-family:${FI};">${val}</td></tr></table>`;
+    const quizOpt = (txt,sel) => `<div style="padding:4px 6px;background:${sel?'rgba(168,85,247,.08)':'rgba(255,255,255,.10)'};border:1px solid ${sel?'rgba(168,85,247,.3)':BD};border-radius:6px;margin-bottom:2px;font-size:8px;color:${sel?PRP:'rgba(255,255,255,.5)'};font-weight:500;font-family:${FI};">${txt}</div>`;
     const toolInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
-      <td width="50%" style="padding-right:6px;vertical-align:top;">
-        <div style="background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:10px;">
-          <div style="font-size:8px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-family:${FI};">Position Size</div>
+      <td width="50%" style="padding-right:5px;vertical-align:top;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:10px;" role="presentation"><tr><td style="padding:10px;">
+          <div style="font-size:8px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:${FI};">Position Size</div>
           ${calcFld({pt:'Conta',en:'Account',es:'Cuenta'}[lang]||'Account','$50,000')}
           ${calcFld({pt:'Risco %',en:'Risk %',es:'Riesgo %'}[lang]||'Risk %','1.5%')}
           ${calcFld('Stop Loss','25 pts')}
           ${calcRes({pt:'Lotes',en:'Lots',es:'Lotes'}[lang]||'Lots','3.0')}
           ${calcRes({pt:'Risco $',en:'Risk $',es:'Riesgo $'}[lang]||'Risk $','$750')}
-        </div>
+        </td></tr></table>
       </td>
-      <td width="50%" style="padding-left:6px;vertical-align:top;">
-        <div style="background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:10px;">
-          <div style="font-size:8px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:${FI};">Quiz</div>
-          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.75);margin-bottom:6px;line-height:1.3;font-family:${FI};">${{pt:'Qual mercado você opera?',en:'Which market do you trade?',es:'¿Qué mercado operas?'}[lang]||'Which market do you trade?'}</div>
+      <td width="50%" style="padding-left:5px;vertical-align:top;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:10px;" role="presentation"><tr><td style="padding:10px;">
+          <div style="font-size:8px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;font-family:${FI};">${{pt:'Quiz — Sua Firma Ideal',en:'Quiz — Your Ideal Firm',es:'Quiz — Tu Firma Ideal'}[lang]||'Quiz — Your Ideal Firm'}</div>
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.75);margin-bottom:5px;line-height:1.3;font-family:${FI};">${{pt:'Qual mercado você opera?',en:'Which market do you trade?',es:'¿Qué mercado operas?'}[lang]||'Which market do you trade?'}</div>
           ${quizOpt({pt:'Futuros (ES, NQ, CL)',en:'Futures (ES, NQ, CL)',es:'Futuros (ES, NQ, CL)'}[lang]||'Futures (ES, NQ, CL)',true)}
           ${quizOpt('Forex (EUR/USD, GBP)')}
           ${quizOpt({pt:'Ambos',en:'Both',es:'Ambos'}[lang]||'Both')}
-          <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px;"><div style="height:100%;width:60%;background:linear-gradient(90deg,${PRP},#C084FC);border-radius:2px;"></div></div>
-        </div>
+          <div style="height:3px;background:rgba(255,255,255,.10);border-radius:2px;margin-top:4px;"><div style="height:100%;width:60%;background:linear-gradient(90deg,${PRP},#C084FC);border-radius:2px;"></div></div>
+        </td></tr></table>
       </td>
     </tr></table>`;
 
-    // ═══ CARD 5: Plataformas — TradingView + NinjaTrader ═══
-    const platTitle = {pt:'Plataformas',en:'Platforms',es:'Plataformas'};
-    const platDesc = {pt:'TradingView e NinjaTrader com preços exclusivos. Licenças oficiais direto pelo site.',en:'TradingView and NinjaTrader with exclusive prices. Official licenses directly from the site.',es:'TradingView y NinjaTrader con precios exclusivos. Licencias oficiales directo del sitio.'};
-    const platCard = (logo,nm,desc2,price,period) => `<td width="50%" style="padding:4px;text-align:center;vertical-align:top;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#161B22;border:1px solid rgba(255,255,255,.12);border-radius:10px;" role="presentation">
-        <tr><td style="padding:12px 8px;text-align:center;">
-          <div style="font-size:7px;font-weight:800;color:${GRN};background:rgba(34,197,94,.1);display:inline-block;padding:2px 6px;border-radius:4px;margin-bottom:6px;text-transform:uppercase;font-family:${FI};">${{pt:'DISPONÍVEL',en:'AVAILABLE',es:'DISPONIBLE'}[lang]||'AVAILABLE'}</div><br>
-          <img src="${PLAT}${logo}" width="40" height="40" style="width:40px;height:40px;border-radius:8px;display:inline-block;margin-bottom:4px;background:rgba(0,0,0,.3);padding:3px;" alt="${nm}">
-          <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,.85);font-family:${FI};">${nm}</div>
-          <div style="font-size:7px;color:rgba(255,255,255,.3);margin:2px 0 6px;font-family:${FI};">${desc2}</div>
-          <div style="font-size:16px;font-weight:800;color:${GLD};font-family:${FI};">${price}</div>
-          <div style="font-size:7px;color:rgba(255,255,255,.25);margin-bottom:6px;font-family:${FI};">${period}</div>
-          <div style="font-size:8px;font-weight:700;color:#000;background:linear-gradient(135deg,${GLD},#D97706);display:inline-block;padding:4px 14px;border-radius:5px;font-family:${FI};">${{pt:'VER PLANOS',en:'VIEW PLANS',es:'VER PLANES'}[lang]||'VIEW PLANS'}</div>
+    // ═══ 5. PLATAFORMAS ═══
+    const platCard = (logo,nm,price,period) => `<td width="50%" style="padding:3px;text-align:center;vertical-align:top;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:12px;" role="presentation">
+        <tr><td style="padding:10px 6px;text-align:center;">
+          <div style="font-size:6px;font-weight:800;color:${GRN};background:rgba(34,197,94,.1);display:inline-block;padding:2px 6px;border-radius:4px;letter-spacing:.3px;text-transform:uppercase;margin-bottom:4px;font-family:${FI};">${{pt:'DISPONÍVEL',en:'AVAILABLE',es:'DISPONIBLE'}[lang]||'AVAILABLE'}</div><br>
+          <img src="${PLAT}${logo}" width="44" height="44" style="width:44px;height:44px;border-radius:10px;background:rgba(0,0,0,.3);padding:4px;" alt="${nm}"><br>
+          <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,.85);margin:4px 0 1px;font-family:${FI};">${nm}</div>
+          <div style="font-size:15px;font-weight:800;color:${GLD};margin:2px 0;font-family:${FI};">${price}</div>
+          <div style="font-size:7px;color:rgba(255,255,255,.25);margin-bottom:4px;font-family:${FI};">${period}</div>
+          <div style="font-size:7px;font-weight:700;color:#000;background:linear-gradient(135deg,${GLD},#D97706);display:inline-block;padding:5px 16px;border-radius:6px;letter-spacing:.3px;font-family:${FI};">${{pt:'VER PLANOS',en:'VIEW PLANS',es:'VER PLANES'}[lang]||'VIEW PLANS'}</div>
         </td></tr>
       </table>
     </td>`;
     const platInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
-      ${platCard('tradingview.png','TradingView',{pt:'Gráficos mais usados do mundo',en:'World\'s most used charts',es:'Gráficos más usados del mundo'}[lang]||'World\'s most used charts','$12.95',{pt:'por mês',en:'per month',es:'por mes'}[lang]||'per month')}
-      ${platCard('ninjatrader.png','NinjaTrader',{pt:'Execução profissional futuros',en:'Professional futures execution',es:'Ejecución profesional futuros'}[lang]||'Professional futures execution','$99','Lifetime')}
+      ${platCard('tradingview.png','TradingView','$12.95',{pt:'por mês',en:'per month',es:'por mes'}[lang]||'per month')}
+      ${platCard('ninjatrader.png','NinjaTrader','$99','Lifetime')}
     </tr></table>`;
 
-    // ═══ CARD 6: Heatmap + Calendário ═══
-    const mktTitle = {pt:'Mercado ao Vivo',en:'Live Market',es:'Mercado en Vivo'};
-    const mktDesc = {pt:'Mapa de Calor S&P 500 em tempo real, Calendário Econômico com eventos de alto impacto e indicadores profissionais.',en:'S&P 500 Heat Map in real time, Economic Calendar with high-impact events and professional indicators.',es:'Mapa de Calor S&P 500 en tiempo real, Calendario Económico con eventos de alto impacto e indicadores profesionales.'};
-    const calEvt = (time,flag,evt,impact) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:3px;" role="presentation"><tr>
-      <td width="40" style="font-size:9px;font-weight:700;color:rgba(255,255,255,.6);font-family:${FI};">${time}</td>
-      <td width="22" style="font-size:10px;">${flag}</td>
-      <td style="font-size:9px;color:rgba(255,255,255,.65);font-family:${FI};">${evt}</td>
-      <td width="30" style="text-align:right;font-size:8px;font-weight:800;color:${impact==='H'?RED:impact==='M'?GLD:'rgba(255,255,255,.3)'};font-family:${FI};">${impact==='H'?'★★★':impact==='M'?'★★':'★'}</td>
+    // ═══ 6. HEATMAP + CALENDÁRIO ═══
+    const hmCell = (tk,pct,up) => `<td style="background:${up?'#166534':'#991b1b'};border-radius:3px;padding:3px 2px;text-align:center;font-size:7px;font-weight:700;color:${up?'#4ade80':'#f87171'};font-family:${FI};">${tk}<br>${pct}</td>`;
+    const calRow = (time,evt,impact) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:2px;" role="presentation"><tr>
+      <td width="34" style="font-size:8px;font-weight:700;color:rgba(255,255,255,.6);font-family:${FI};">${time}</td>
+      <td style="font-size:8px;color:rgba(255,255,255,.6);font-family:${FI};">${evt}</td>
+      <td width="14" style="text-align:right;"><div style="width:8px;height:8px;border-radius:50%;background:${impact==='H'?RED:impact==='M'?GLD:'rgba(255,255,255,.2)'};display:inline-block;"></div></td>
     </tr></table>`;
     const mktInner = `<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
-      <td width="50%" style="padding-right:6px;vertical-align:top;">
-        <div style="background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:10px;">
-          <div style="display:inline-block;font-size:8px;font-weight:800;color:${GLD};letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;font-family:${FI};">${{pt:'MAPA DE CALOR',en:'HEAT MAP',es:'MAPA DE CALOR'}[lang]||'HEAT MAP'}</div>
-          <div style="font-size:7px;color:rgba(255,255,255,.3);margin-bottom:8px;font-family:${FI};">S&P 500</div>
+      <td width="50%" style="padding-right:5px;vertical-align:top;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:10px;" role="presentation"><tr><td style="padding:8px;">
+          <div style="font-size:7px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;font-family:${FI};">${{pt:'MAPA DE CALOR',en:'HEAT MAP',es:'MAPA DE CALOR'}[lang]||'HEAT MAP'}</div>
+          <div style="font-size:7px;color:rgba(255,255,255,.25);margin-bottom:6px;font-family:${FI};">S&amp;P 500</div>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" role="presentation">
-            <tr><td style="background:#166534;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#4ade80;">AAPL<br>+1.2%</td><td style="background:#166534;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#4ade80;">MSFT<br>+0.8%</td><td style="background:#991b1b;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#f87171;">TSLA<br>-2.1%</td></tr>
-            <tr><td style="background:#991b1b;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#f87171;">AMZN<br>-0.5%</td><td style="background:#166534;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#4ade80;">NVDA<br>+3.4%</td><td style="background:#166534;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#4ade80;">META<br>+0.9%</td></tr>
-            <tr><td style="background:#166534;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#4ade80;">GOOG<br>+0.6%</td><td style="background:#991b1b;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#f87171;">JPM<br>-0.3%</td><td style="background:#166534;border-radius:3px;padding:4px 3px;text-align:center;font-size:7px;font-weight:700;color:#4ade80;">V<br>+0.4%</td></tr>
+            <tr>${hmCell('AAPL','+1.2%',1)}${hmCell('MSFT','+0.8%',1)}${hmCell('TSLA','-2.1%',0)}</tr>
+            <tr>${hmCell('AMZN','-0.5%',0)}${hmCell('NVDA','+3.4%',1)}${hmCell('META','+0.9%',1)}</tr>
+            <tr>${hmCell('GOOG','+0.6%',1)}${hmCell('JPM','-0.3%',0)}${hmCell('V','+0.4%',1)}</tr>
           </table>
-        </div>
+        </td></tr></table>
       </td>
-      <td width="50%" style="padding-left:6px;vertical-align:top;">
-        <div style="background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:10px;">
-          <div style="font-size:8px;font-weight:800;color:${RED};letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;font-family:${FI};">${{pt:'CALENDÁRIO',en:'CALENDAR',es:'CALENDARIO'}[lang]||'CALENDAR'}</div>
-          ${calEvt('8:30','🇺🇸','CPI (YoY)','H')}
-          ${calEvt('10:00','🇺🇸','Michigan','M')}
-          ${calEvt('14:00','🇺🇸','FOMC Minutes','H')}
-          ${calEvt('8:30','🇺🇸','Jobless Claims','M')}
-        </div>
+      <td width="50%" style="padding-left:5px;vertical-align:top;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:10px;" role="presentation"><tr><td style="padding:8px;">
+          <div style="font-size:7px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.10);margin-bottom:5px;font-family:${FI};">${{pt:'CALENDÁRIO',en:'CALENDAR',es:'CALENDARIO'}[lang]||'CALENDAR'}</div>
+          ${calRow('8:30','CPI (YoY)','H')}
+          ${calRow('10:00','Michigan','M')}
+          ${calRow('14:00','FOMC Minutes','H')}
+          ${calRow('8:30','Jobless Claims','M')}
+        </td></tr></table>
       </td>
     </tr></table>`;
 
-    // ═══ CARD 7: Blog + Conteúdo ═══
-    const blogTitle = {pt:'Blog & Guias',en:'Blog & Guides',es:'Blog & Guías'};
-    const blogDesc = {pt:'Artigos escritos por profissionais. Guias completos sobre Prop Firms, Drawdown, Plataformas e mais.',en:'Articles written by professionals. Complete guides on Prop Firms, Drawdown, Platforms and more.',es:'Artículos escritos por profesionales. Guías completas sobre Prop Firms, Drawdown, Plataformas y más.'};
-    const blogItem = (cat,catClr,title2,meta) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:8px;margin-bottom:5px;" role="presentation">
-      <tr><td style="padding:8px 10px;">
-        <div style="font-size:7px;font-weight:700;color:${catClr};text-transform:uppercase;margin-bottom:2px;font-family:${FI};">${cat}</div>
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.75);line-height:1.3;font-family:${FI};">${title2}</div>
-        <div style="font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;font-family:${FI};">${meta}</div>
+    // ═══ 7. BLOG ═══
+    const blogItem = (cat,catClr,title2,meta) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(0,0,0,.35);border:1px solid ${BD};border-radius:8px;margin-bottom:4px;" role="presentation">
+      <tr><td style="padding:6px 8px;">
+        <div style="font-size:6px;font-weight:700;color:${catClr};text-transform:uppercase;letter-spacing:.5px;font-family:${FI};">${cat}</div>
+        <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.75);line-height:1.3;font-family:${FI};">${title2}</div>
+        <div style="font-size:6px;color:rgba(255,255,255,.25);margin-top:1px;font-family:${FI};">${meta}</div>
       </td></tr>
     </table>`;
     const blogInner = `${blogItem({pt:'Iniciante',en:'Beginner',es:'Principiante'}[lang]||'Beginner',GRN,{pt:'Sua Primeira Prop Firm: Guia Completo 2025',en:'Your First Prop Firm: Complete Guide 2025',es:'Tu Primera Prop Firm: Guía Completa 2025'}[lang]||'Your First Prop Firm: Complete Guide 2025',{pt:'12 min leitura',en:'12 min read',es:'12 min lectura'}[lang]||'12 min read')}
     ${blogItem({pt:'Intermediário',en:'Intermediate',es:'Intermedio'}[lang]||'Intermediate',GLD,{pt:'Trailing vs Static Drawdown: qual escolher',en:'Trailing vs Static Drawdown: which to choose',es:'Trailing vs Static Drawdown: cuál elegir'}[lang]||'Trailing vs Static Drawdown: which to choose',{pt:'8 min leitura',en:'8 min read',es:'8 min lectura'}[lang]||'8 min read')}
     ${blogItem({pt:'Avançado',en:'Advanced',es:'Avanzado'}[lang]||'Advanced',PRP,{pt:'Como escalar de $25K para $150K em Prop Firms',en:'How to scale from $25K to $150K in Prop Firms',es:'Cómo escalar de $25K a $150K en Prop Firms'}[lang]||'How to scale from $25K to $150K in Prop Firms',{pt:'15 min leitura',en:'15 min read',es:'15 min lectura'}[lang]||'15 min read')}`;
 
-    // ═══ CARD 8: VIP / Loyalty ═══
-    const vipTitle = {pt:'Programa VIP',en:'VIP Program',es:'Programa VIP'};
-    const vipDesc = {pt:'Compre usando nosso cupom e desbloqueie indicadores exclusivos, sorteios de contas funded e conteúdo VIP.',en:'Buy using our coupon and unlock exclusive indicators, funded account giveaways and VIP content.',es:'Compra usando nuestro cupón y desbloquea indicadores exclusivos, sorteos de cuentas funded y contenido VIP.'};
-    const vipPerk = (icon,text) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.12);border-radius:6px;margin-bottom:4px;" role="presentation"><tr><td width="28" style="padding:6px 8px;font-size:12px;text-align:center;">${icon}</td><td style="padding:6px 8px;font-size:9px;font-weight:600;color:rgba(255,255,255,.7);font-family:${FI};">${text}</td></tr></table>`;
-    const vipInner = `${vipPerk('🔓',{pt:'Indicadores exclusivos TradingView',en:'Exclusive TradingView indicators',es:'Indicadores exclusivos TradingView'}[lang]||'Exclusive TradingView indicators')}
-    ${vipPerk('🎁',{pt:'Sorteios mensais de contas funded',en:'Monthly funded account giveaways',es:'Sorteos mensuales de cuentas funded'}[lang]||'Monthly funded account giveaways')}
-    ${vipPerk('⭐',{pt:'Conteúdo exclusivo para membros',en:'Exclusive content for members',es:'Contenido exclusivo para miembros'}[lang]||'Exclusive content for members')}
-    ${vipPerk('📊',{pt:'Dashboard com suas compras e status',en:'Dashboard with your purchases and status',es:'Dashboard con tus compras y estado'}[lang]||'Dashboard with your purchases and status')}`;
+    // ═══ 8. VIP ═══
+    const vipPerk = (label,clr) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.10);border-radius:6px;margin-bottom:3px;" role="presentation"><tr>
+      <td width="6" style="padding:0;"><div style="width:3px;height:100%;background:${clr||PRP};border-radius:3px 0 0 3px;"></div></td>
+      <td style="padding:5px 8px;font-size:8px;font-weight:600;color:rgba(255,255,255,.65);font-family:${FI};">${label}</td>
+    </tr></table>`;
+    const vipInner = `${vipPerk({pt:'Indicadores exclusivos TradingView',en:'Exclusive TradingView indicators',es:'Indicadores exclusivos TradingView'}[lang]||'Exclusive TradingView indicators',PRP)}
+    ${vipPerk({pt:'Sorteios mensais de contas funded',en:'Monthly funded account giveaways',es:'Sorteos mensuales de cuentas funded'}[lang]||'Monthly funded account giveaways',GLD)}
+    ${vipPerk({pt:'Conteúdo exclusivo para membros',en:'Exclusive content for members',es:'Contenido exclusivo para miembros'}[lang]||'Exclusive content for members',GRN)}
+    ${vipPerk({pt:'Dashboard com suas compras e status',en:'Dashboard with your purchases and status',es:'Dashboard con tus compras y estado'}[lang]||'Dashboard with your purchases and status',CYN)}`;
 
-    // ═══ BUILD ALL CARDS ═══
-    cardsHtml = panel(cpnTitle, cpnDesc, GLD, cpnInner)
-      + panel(cmpTitle, cmpDesc, CYN, cmpInner)
-      + panel(anlTitle, anlDesc, GRN, anlInner)
-      + panel(toolTitle, toolDesc, PRP, toolInner)
-      + panel(platTitle, platDesc, GLD, platInner)
-      + panel(mktTitle, mktDesc, RED, mktInner)
-      + panel(blogTitle, blogDesc, GRN, blogInner)
-      + panel(vipTitle, vipDesc, PRP, vipInner);
+    // ═══ BUILD ALL ═══
+    cardsHtml = panel({pt:'Cupons Exclusivos',en:'Exclusive Coupons',es:'Cupones Exclusivos'},{pt:'Cupons negociados com Apex, Bulenox, Earn2Trade, FundedNext e mais. Até 90% OFF Lifetime.',en:'Coupons negotiated with Apex, Bulenox, Earn2Trade, FundedNext and more. Up to 90% OFF Lifetime.',es:'Cupones negociados con Apex, Bulenox, Earn2Trade, FundedNext y más. Hasta 90% OFF Lifetime.'},GLD,cpnInner)
+      + panel({pt:'Comparador de Firmas',en:'Firm Comparator',es:'Comparador de Firmas'},{pt:'Firmas lado a lado — drawdown, split, preço, plataformas. A melhor em segundos.',en:'Firms side by side — drawdown, split, price, platforms. The best in seconds.',es:'Firmas lado a lado — drawdown, split, precio, plataformas.'},CYN,cmpInner)
+      + panel({pt:'Análise Diária',en:'Daily Analysis',es:'Análisis Diario'},{pt:'4 ativos todo dia às 6h: ES, NQ, Ouro e Petróleo. Suportes, resistências, cenários e macro.',en:'4 assets daily at 6AM: ES, NQ, Gold and Oil. Supports, resistances, scenarios and macro context.',es:'4 activos diarios a las 6AM: ES, NQ, Oro y Petróleo.'},GRN,anlInner)
+      + panel({pt:'Ferramentas',en:'Tools',es:'Herramientas'},{pt:'Calculadora Position Size e Quiz interativo — descubra sua firma ideal em 2 minutos.',en:'Position Size Calculator and Quiz — find your ideal firm in 2 minutes.',es:'Calculadora Position Size y Quiz — descubre tu firma ideal en 2 minutos.'},PRP,toolInner)
+      + panel({pt:'Plataformas',en:'Platforms',es:'Plataformas'},{pt:'TradingView e NinjaTrader com preços exclusivos. Licenças oficiais.',en:'TradingView and NinjaTrader with exclusive prices. Official licenses.',es:'TradingView y NinjaTrader con precios exclusivos.'},GLD,platInner)
+      + panel({pt:'Mercado ao Vivo',en:'Live Market',es:'Mercado en Vivo'},{pt:'Mapa de Calor S&P 500, Calendário Econômico com eventos de alto impacto.',en:'S&P 500 Heat Map, Economic Calendar with high-impact events.',es:'Mapa de Calor S&P 500, Calendario Económico con eventos de alto impacto.'},RED,mktInner)
+      + panel({pt:'Blog & Guias',en:'Blog & Guides',es:'Blog & Guías'},{pt:'Guias completos sobre Prop Firms, Drawdown, Plataformas e mais.',en:'Complete guides on Prop Firms, Drawdown, Platforms and more.',es:'Guías completas sobre Prop Firms, Drawdown, Plataformas y más.'},GRN,blogInner)
+      + panel({pt:'Programa VIP',en:'VIP Program',es:'Programa VIP'},{pt:'Compre com nosso cupom e desbloqueie indicadores, sorteios e conteúdo exclusivo.',en:'Buy with our coupon and unlock indicators, giveaways and exclusive content.',es:'Compra con nuestro cupón y desbloquea indicadores, sorteos y contenido exclusivo.'},PRP,vipInner);
   }
 
   if(name === 'loyalty'){
