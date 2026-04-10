@@ -214,10 +214,8 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
 
   // Filter ★★★ and ★★☆ events
   const highImpact = events.filter((e) => {
-    const imp = String(e.importance ?? e.impact ?? "").toLowerCase();
-    const stars = e.stars ?? 0;
-    return imp === "high" || imp === "medium" || imp === "h" || imp === "m" ||
-      imp === "3" || imp === "2" || stars >= 2;
+    const imp = Number(e.importance ?? e.impact ?? e.stars ?? 0);
+    return imp >= 2;
   });
 
   if (highImpact.length === 0) return { sent: false, reason: "no_high_impact_events" };
@@ -231,7 +229,7 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const currency = ev.currency ?? ev.country ?? "USD";
     const imp = String(ev.importance ?? ev.impact ?? "").toLowerCase();
-    const stars = (imp === "high" || imp === "h" || imp === "3" || (ev.stars ?? 0) >= 3) ? "★★★" : "★★☆";
+    const stars = Number(ev.importance ?? ev.impact ?? ev.stars ?? 0) >= 3 ? "★★★" : "★★☆";
     const dot = stars === "★★★" ? "🔴" : "🟡";
 
     let timeDisplay = "";
@@ -289,14 +287,8 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   const toleranceMs = 60 * 1000;
 
   const upcoming = events.filter((e) => {
-    // Include ★★★ (high/3) AND ★★☆ (medium/2)
-    const imp = String(e.importance ?? e.impact ?? "").toLowerCase();
-    const stars = e.stars ?? 0;
-    const isHighOrMedium =
-      imp === "high" || imp === "medium" || imp === "h" || imp === "m" ||
-      imp === "3" || imp === "2" || stars >= 2;
-
-    if (!isHighOrMedium) return false;
+    const impNum = Number(e.importance ?? e.impact ?? e.stars ?? 0);
+    if (impNum < 2) return false;
 
     const timeStr = e.time ?? e.datetime ?? e.date;
     if (!timeStr) return false;
@@ -317,7 +309,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const currency = ev.currency ?? ev.country ?? "USD";
     const imp = String(ev.importance ?? ev.impact ?? "").toLowerCase();
-    const stars = (imp === "high" || imp === "h" || imp === "3" || (ev.stars ?? 0) >= 3) ? "★★★" : "★★☆";
+    const stars = Number(ev.importance ?? ev.impact ?? ev.stars ?? 0) >= 3 ? "★★★" : "★★☆";
     const timeStr = ev.time ?? ev.datetime ?? "";
     let timeDisplay = "";
     try {

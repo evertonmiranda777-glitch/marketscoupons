@@ -9501,19 +9501,17 @@ async function tgPreviewCalendar(){
     if(resp.ok){
       const json = await resp.json();
       events = (json.events||json||[]).filter(e => {
-        const imp = (e.impact||e.importance||'').toLowerCase();
-        const s = e.stars||0;
-        return imp === 'high' || imp === 'medium' || imp === 'h' || imp === 'm' || imp === '3' || imp === '2' || s >= 2;
+        const imp = Number(e.importance ?? e.impact ?? e.stars ?? 0);
+        return imp >= 2;
       });
     }
     if(!events.length){ st.textContent = 'Sem eventos ★★★/★★☆ hoje.'; st.className = 'tg-status err'; return; }
     const evLines = events.slice(0,10).map(e => {
       const time = e.time || e.date_time || '';
       const name = e.event || e.title || '';
-      const cur = e.currency || e.country || '';
-      const imp = (e.impact||e.importance||'').toLowerCase();
-      const isHigh = imp === 'high' || imp === 'h' || imp === '3' || (e.stars||0) >= 3;
-      return `${isHigh?'🔴':'🟡'} ${time} ET — ${name} (${cur}) ${isHigh?'★★★':'★★☆'}`;
+      const cur = (e.currency || e.country || '').toUpperCase();
+      const isHigh = Number(e.importance ?? e.impact ?? 0) >= 3;
+      return `${isHigh?'🔴':'🟡'} ${time} — ${name} (${cur}) ${isHigh?'★★★':'★★☆'}`;
     }).join('\n');
     const today = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
     const text =
