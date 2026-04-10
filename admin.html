@@ -1212,8 +1212,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div style="font-size:13px;font-weight:700;color:var(--t1);">Importar &amp; Validar Emails</div>
      <div style="font-size:10px;color:var(--t3);">CSV / TXT</div>
    </div>
-   <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;" id="import-firma-chips">
+   <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;" id="import-firma-chips">
      <!-- Rendered dynamically by renderEmailFirmaChips() -->
+   </div>
+   <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+     <span style="font-size:9px;color:var(--t3);">Tag customizada:</span>
+     <input type="text" id="import-custom-tag" placeholder="Ex: newsletter-markets" style="font-size:11px;padding:4px 8px;width:180px;" oninput="updateImportTag()">
    </div>
    <!-- Upload area -->
    <div style="background:var(--card2);border:2px dashed var(--b1);border-radius:10px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px;" onclick="document.getElementById('csv-file').click()">
@@ -3739,8 +3743,8 @@ async function getSegmentedLeads(){
    if(!data||!data.length) break;
    results.push(...data.map(s=>{
     const tags = s.tags||[];
-    const firmTag = tags.find(t => t!=='imported'&&t!=='site'&&t!=='lead'&&t!=='csv-direct'&&t!=='manual') || '';
-    return {email:s.email,name:s.name||'',lang:s.lang||'pt',source:'subscriber',firma:firmTag};
+    const userTags = tags.filter(t => t!=='imported'&&t!=='site'&&t!=='lead'&&t!=='csv-direct'&&t!=='manual'&&t!=='');
+    return {email:s.email,name:s.name||'',lang:s.lang||'pt',source:'subscriber',firma:userTags.join(','),tags:userTags};
    }));
    if(data.length<PG) break;
    from+=PG;
@@ -3751,11 +3755,12 @@ async function getSegmentedLeads(){
  let list=results.filter(r=>{if(seen.has(r.email))return false;seen.add(r.email);return true;});
  // Apply firma filter if any selected
  if(firmaFilter){
-  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'Take Profit Trader',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers'};
+  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'Take Profit Trader',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders'};
   list=list.filter(r=>{
-   if(!r.firma) return false;
-   const f=r.firma.toLowerCase();
-   return firmaFilter.some(id=>f.includes(id)||f.includes((firmaNames[id]||'').toLowerCase()));
+   if(!r.firma && !(r.tags?.length)) return false;
+   const f=r.firma?.toLowerCase()||'';
+   const rTags = r.tags||[];
+   return firmaFilter.some(id=>f.includes(id)||f.includes((firmaNames[id]||'').toLowerCase())||rTags.includes(id));
   });
  }
  return list;
@@ -3894,10 +3899,27 @@ async function renderEmailFirmaChips(){
       firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="selectImportFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
   }
 
-  // Segmentation firma chips
+  // Segmentation firma chips (firms + custom tags from subscribers)
   const segEl = document.getElementById('seg-firma-grid');
   if(segEl){
-    segEl.innerHTML = firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="toggleFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
+    let html = firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="toggleFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
+    // Add custom tags from subscribers (non-firm tags)
+    const firmIds = new Set(firms.map(f=>f.id));
+    const skipTags = new Set(['imported','site','lead','csv-direct','manual','']);
+    const customTags = new Set();
+    if(_subsList?.length){
+      for(const s of _subsList){
+        for(const tag of (s.tags||[])){
+          if(!skipTags.has(tag) && !firmIds.has(tag)) customTags.add(tag);
+        }
+      }
+    }
+    if(customTags.size){
+      html += [...customTags].sort().map(tag =>
+        `<div class="seg-opt seg-firma" data-firma="${tag}" onclick="toggleFirma(this,'${tag}')" style="--fc:#9CA3AF;border-style:dashed;">${tag}</div>`
+      ).join('');
+    }
+    segEl.innerHTML = html;
   }
 
   // Promo template grid
@@ -5988,8 +6010,22 @@ function selectImportFirma(el, firma) {
   grid.querySelectorAll('.seg-firma').forEach(s => s.classList.remove('sel'));
   el.classList.add('sel');
   _importFirmaTag = firma;
+  // Clear custom tag when selecting a firma chip
+  const customInput = document.getElementById('import-custom-tag');
+  if(customInput) customInput.value = '';
   const label = document.getElementById('import-firma-label');
-  if (label) label.textContent = firma || 'Nenhuma';
+  if (label) label.textContent = firma || 'Todas';
+}
+function updateImportTag(){
+  const v = (document.getElementById('import-custom-tag')?.value||'').trim().toLowerCase().replace(/\s+/g,'-');
+  if(v){
+    _importFirmaTag = v;
+    // Deselect firma chips
+    const grid = document.getElementById('import-firma-chips');
+    if(grid) grid.querySelectorAll('.seg-firma').forEach(s => s.classList.remove('sel'));
+    const label = document.getElementById('import-firma-label');
+    if(label) label.textContent = v;
+  }
 }
 
 async function importValidToSubscribers() {
