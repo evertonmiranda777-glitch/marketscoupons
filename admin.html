@@ -1340,7 +1340,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        </div>
        <div id="email-queue-info" style="font-size:11px;color:var(--t2);"></div>
        <div style="background:var(--b1);border-radius:3px;height:5px;margin-top:6px;overflow:hidden;"><div id="email-queue-bar" style="background:var(--green);height:100%;width:0%;transition:width .3s;"></div></div>
-       <button class="btn-primary" style="margin-top:8px;font-size:11px;padding:8px 16px;width:100%;" onclick="resumeEmailQueue()">Continuar Envio (proximo lote)</button>
+       <div style="display:flex;gap:6px;margin-top:8px;">
+         <button id="queue-auto-btn" class="btn-primary" style="flex:1;font-size:11px;padding:8px 16px;" onclick="toggleAutoQueue()">▶ Disparar Automático</button>
+         <button class="btn-secondary" style="font-size:11px;padding:8px 12px;" onclick="resumeEmailQueue()">Enviar 1 lote</button>
+       </div>
+       <div id="queue-auto-status" style="display:none;margin-top:6px;font-size:10px;color:var(--t2);"></div>
      </div>
 
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -6792,6 +6796,169 @@ async function resumeEmailQueue(){
   } finally {
     if(btn){ btn.disabled=false; btn.textContent='Continuar Envio (proximo lote)'; }
   }
+}
+
+/* ═══ AUTO QUEUE DISPATCHER — envia até parar, memoriza onde parou ═══ */
+let _autoQueueRunning = false;
+let _autoQueueAbort = false;
+const AUTO_BATCH_SIZE = 50; // sub-lote por request (API max 200)
+const AUTO_DELAY_MS = 3000; // delay entre sub-lotes (3s pra não estourar rate limit)
+
+function toggleAutoQueue(){
+  if(_autoQueueRunning){
+    _autoQueueAbort = true;
+    toast('Parando apos o lote atual...');
+    return;
+  }
+  runAutoQueue();
+}
+
+function updateAutoQueueBtn(running){
+  const btn = document.getElementById('queue-auto-btn');
+  if(!btn) return;
+  if(running){
+    btn.textContent = '⏸ Pausar Envio';
+    btn.style.background = '#ef4444';
+  } else {
+    btn.textContent = '▶ Disparar Automático';
+    btn.style.background = '';
+  }
+}
+
+function updateAutoStatus(msg){
+  const el = document.getElementById('queue-auto-status');
+  if(!el) return;
+  el.style.display = msg ? 'block' : 'none';
+  el.textContent = msg;
+}
+
+async function runAutoQueue(){
+  const q = getEmailQueue();
+  if(!q){ toast('Nenhuma fila ativa. Clique "Enviar para todos (fila)" primeiro.','warn'); return; }
+  if(q.sentIndex >= q.totalEmails){ toast('Fila já concluída!'); clearEmailQueue(); return; }
+
+  _autoQueueRunning = true;
+  _autoQueueAbort = false;
+  updateAutoQueueBtn(true);
+
+  const session = await db.auth.getSession();
+  const token = session?.data?.session?.access_token;
+  if(!token){ toast('Sessão expirada!','error'); _autoQueueRunning=false; updateAutoQueueBtn(false); return; }
+
+  let sent = 0, failed = 0, batchCount = 0;
+  const startTime = Date.now();
+
+  while(!_autoQueueAbort){
+    const qq = getEmailQueue();
+    if(!qq || qq.sentIndex >= qq.totalEmails) break;
+
+    const start = qq.sentIndex;
+    const end = Math.min(start + AUTO_BATCH_SIZE, qq.totalEmails);
+    const batch = qq.emails.slice(start, end);
+    if(!batch.length) break;
+
+    // Group by language
+    const langGroups = {};
+    batch.forEach(l => {
+      const lang = l.lang || 'en';
+      if(!langGroups[lang]) langGroups[lang] = [];
+      langGroups[lang].push(l);
+    });
+
+    updateAutoStatus(`Enviando ${start+1}–${end} de ${qq.totalEmails}... (${batch.length} emails)`);
+
+    let batchSent=0, batchFailed=0;
+    try {
+      for(const [lang, group] of Object.entries(langGroups)){
+        let html, subj = qq.subject;
+        if(qq.isInst && qq.templateId){
+          html = buildInstitutionalHtml(qq.templateId, lang);
+          const tpl = INST_TEMPLATES[qq.templateId];
+          if(tpl) subj = tpl.subject[lang] || tpl.subject.en || qq.subject;
+        } else if(qq.isPromo && qq.promoFirmId){
+          const firm = (_emailFirmsCache||[]).find(f=>f.id===qq.promoFirmId);
+          if(firm) html = buildWhitePromoHtml(firm, lang);
+        }
+        if(!html) continue;
+
+        const resp = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({
+            to: group.map(l => ({ email: l.email, name: l.name||'' })),
+            subject: subj,
+            htmlContent: html,
+            tags: [qq.isPromo ? 'promo-'+qq.promoFirmId : 'inst-'+qq.templateId, 'lang-'+lang, 'auto-queue'],
+          }),
+        });
+        const data = await resp.json();
+        if(data.success){ batchSent+=data.sent||0; batchFailed+=data.failed||0; }
+        else { batchFailed+=group.length; }
+      }
+    } catch(err){
+      toast('Erro no lote: '+err.message,'error');
+      break;
+    }
+
+    sent += batchSent;
+    failed += batchFailed;
+    batchCount++;
+
+    // Update queue position
+    qq.sentIndex = end;
+    saveEmailQueue(qq);
+    addEmailSentToday(batchSent);
+
+    // Update UI
+    updateQueueUI();
+    const elapsed = Math.round((Date.now()-startTime)/1000);
+    updateAutoStatus(`Enviados: ${sent} · Falhas: ${failed} · Lotes: ${batchCount} · Tempo: ${elapsed}s`);
+
+    // Check if done
+    if(qq.sentIndex >= qq.totalEmails){
+      toast(`✓ Fila concluída! ${sent} emails enviados (${failed} falhas) em ${elapsed}s`);
+      // Log final
+      await db.from('email_logs').insert({
+        campaign_name: `[Auto] ${qq.templateName}`,
+        subject: qq.subject,
+        recipients: sent+failed,
+        status: failed===0 ? 'sent' : 'partial',
+        sent_by: 'admin',
+        provider: 'brevo',
+        brevo_response: { sent, failed, batches: batchCount, seconds: elapsed, mode: 'auto' },
+      });
+      clearEmailQueue();
+      break;
+    }
+
+    // Delay between batches
+    await new Promise(r => setTimeout(r, AUTO_DELAY_MS));
+  }
+
+  if(_autoQueueAbort && getEmailQueue()){
+    const qq = getEmailQueue();
+    const remaining = qq.totalEmails - qq.sentIndex;
+    toast(`Pausado. ${sent} enviados nesta sessão, ${remaining} restantes na fila.`);
+    updateAutoStatus(`Pausado — ${remaining} restantes. Clique ▶ para continuar.`);
+    // Log partial
+    if(sent > 0){
+      await db.from('email_logs').insert({
+        campaign_name: `[Auto-Pausa] ${qq.templateName}`,
+        subject: qq.subject,
+        recipients: sent+failed,
+        status: 'partial',
+        sent_by: 'admin',
+        provider: 'brevo',
+        brevo_response: { sent, failed, batches: batchCount, mode: 'auto-paused' },
+      });
+    }
+  }
+
+  _autoQueueRunning = false;
+  _autoQueueAbort = false;
+  updateAutoQueueBtn(false);
+  await loadEmailStats();
+  await renderCampaignLog();
 }
 
 async function sendTestEmail(){
