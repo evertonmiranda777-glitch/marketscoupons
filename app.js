@@ -2640,6 +2640,8 @@ function pdRenderRight(id, p) {
   if (!pd||!p) return;
   const st = _pdState[id];
   const plans = pd.plans[st.type];
+  const tc=pd.types.length<=4?pd.types.length:3;
+  const sc=plans?.length<=5?plans?.length:3;
 
   let h = `<div class="fd-ck-header">
     <div class="fd-ck-title">${t('pd_escolha_plano')}</div>
@@ -2649,13 +2651,13 @@ function pdRenderRight(id, p) {
   // Type pills (same pattern as fd-overlay)
   if (pd.types.length > 1) {
     h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_periodo')}</div>
-      <div class="fd-pills">${pd.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${p.color}12;border-color:${p.color}4D;color:${p.color}`:''}" onclick="pdSel('${id}','type','${tp}')">${tf(tp)}</button>`).join('')}</div></div>`;
+      <div class="fd-pills" style="--cols:${tc}">${pd.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${p.color}12;border-color:${p.color}4D;color:${p.color}`:''}" onclick="pdSel('${id}','type','${tp}')">${tf(tp)}</button>`).join('')}</div></div>`;
   }
 
   // Plan pills (same pattern as fd-overlay size pills)
   if (plans?.length) {
     h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_plano')}</div>
-      <div class="fd-sizes">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}"${pl.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="pdSel('${id}','size','${pl.s}')">${pl.s}</button>`).join('')}</div></div>`;
+      <div class="fd-sizes" style="--cols:${sc}">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}"${pl.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="pdSel('${id}','size','${pl.s}')">${pl.s}</button>`).join('')}</div></div>`;
   }
 
   // Price card (same pattern as fd-overlay with savings)
@@ -2788,6 +2790,8 @@ function pdRenderMobile(id,p){
   const pd=PLAT_DETAIL[id];if(!pd||!p)return;
   const st=_pdState[id];
   const plans=pd.plans[st.type];
+  const tc=pd.types.length<=4?pd.types.length:3;
+  const sc=plans?.length<=5?plans?.length:3;
 
   let h=`<div class="fd-ck-header" style="padding:0;"><div class="fd-ck-title" style="font-size:18px;">${t('pd_escolha_plano')}</div>
     <div class="fd-ck-sub">${p.discount>0?t('pd_desconto_anual'):t('pd_planos_disponiveis')}</div></div>`;
@@ -2795,13 +2799,13 @@ function pdRenderMobile(id,p){
   // Type pills
   if(pd.types.length>1){
     h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_periodo')}</div>
-      <div class="fd-pills">${pd.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${p.color}12;border-color:${p.color}4D;color:${p.color}`:''}" onclick="_pdState['${id}'].type='${tp}';var pl=PLAT_DETAIL['${id}'].plans['${tp}'];_pdState['${id}'].size=(pl.find(x=>x.pop)||pl[0]).s;pdRenderMobile('${id}')">${tf(tp)}</button>`).join('')}</div></div>`;
+      <div class="fd-pills" style="--cols:${tc}">${pd.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${p.color}12;border-color:${p.color}4D;color:${p.color}`:''}" onclick="_pdState['${id}'].type='${tp}';var pl=PLAT_DETAIL['${id}'].plans['${tp}'];_pdState['${id}'].size=(pl.find(x=>x.pop)||pl[0]).s;pdRenderMobile('${id}')">${tf(tp)}</button>`).join('')}</div></div>`;
   }
 
   // Plan pills
   if(plans?.length){
     h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_plano')}</div>
-      <div class="fd-sizes">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}"${pl.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="_pdState['${id}'].size='${pl.s}';pdRenderMobile('${id}')">${pl.s}</button>`).join('')}</div></div>`;
+      <div class="fd-sizes" style="--cols:${sc}">${plans.map(pl=>`<button class="fd-sz${pl.s===st.size?' sel':''}${pl.pop?' pop':''}"${pl.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${pl.s===st.size?`background:${p.color}12;border-color:${p.color}59;color:${p.color}`:''}" onclick="_pdState['${id}'].size='${pl.s}';pdRenderMobile('${id}')">${pl.s}</button>`).join('')}</div></div>`;
   }
 
   // Price card
