@@ -154,7 +154,7 @@ async function fetchGeo() {
 /* DATA */
 const FIRMS=[
   {id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',icon:'A',icon_url:'img/Firms/apex.png',rating:4.4,reviews:18382,discount:90,dtype:'lifetime',coupon:'MARKET',badge:{label:'Maior Desconto',color:'#F97316',bg:'rgba(249,115,22,0.15)'},link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'100%',ddPct:'-5% trail',target:'8%',scaling:'Sim',prices:[{a:'25K',n:'$19.90',o:'$199',n2:'$29.90',o2:'$299'},{a:'50K',n:'$24.90',o:'$249',n2:'$34.90',o2:'$349'},{a:'100K',n:'$39.90',o:'$399',n2:'$59.90',o2:'$599'},{a:'150K',n:'$59.90',o:'$599',n2:'$79.90',o2:'$799'}],price_types:['Intraday','EOD'],perks:['No daily loss limit','No scaling rules','Payout in 5 days','Up to 20 accounts','No recurring fees'],proibido:['Copy trading between accounts','Latency arbitrage'],newsTrading:true,day1Payout:true,desc:'Apex Trader Funding is one of the largest futures prop firms in the US. Known for aggressive discounts and flexible rules.',trustpilot:{score:4.4,reviews:18382,url:'https://www.trustpilot.com/review/apextraderfunding.com'}},
-  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',icon_url:'img/Firms/bulenox.png',rating:4.8,reviews:1516,discount:89,dtype:'lifetime',coupon:'MARKET89',badge:{label:'Melhor Split 90%',color:'#3B82F6',bg:'rgba(59,130,246,0.15)'},link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Varies by size',target:'Varies by size',scaling:'Ate $400K',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$13.75',o:'$125'},{a:'100K',n:'$17.05',o:'$155'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$58.85',o:'$535'}],perks:['Pass in 1 day','No consistency rule','News trading allowed','Weekly payouts','Scaling up to $400K','First $10K at 100% split','14-day free Rithmic trial'],proibido:['Latency arbitrage','Copy trading between accounts'],newsTrading:true,day1Payout:true,desc:'Bulenox is a futures prop firm with simplified rules. Pass in 1 day, no consistency rule required.',trustpilot:{score:4.8,reviews:1516,url:'https://www.trustpilot.com/review/bulenox.com'}},
+  {id:'bulenox',name:'Bulenox',type:'Futuros',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',icon:'B',icon_url:'img/Firms/bulenox.png',rating:4.8,reviews:1516,discount:89,dtype:'lifetime',coupon:'MARKET89',badge:{label:'Melhor Split 90%',color:'#3B82F6',bg:'rgba(59,130,246,0.15)'},link:'https://bulenox.com/member/aff/go/marketcoupons',tags:['Futuros','Lifetime','1 dia'],platforms:['Rithmic','NinjaTrader'],minDays:1,evalDays:null,drawdown:'Trailing',split:'90%',ddPct:'Varies by size',target:'Varies by size',scaling:'Ate $400K',prices:[{a:'25K',n:'$15.95',o:'$145'},{a:'50K',n:'$13.75',o:'$125'},{a:'100K',n:'$17.05',o:'$155'},{a:'150K',n:'$35.75',o:'$325'},{a:'250K',n:'$58.85',o:'$535'}],perks:['Pass in 1 day','No consistency rule','News trading allowed','Weekly payouts','Scaling up to $400K','First $10K at 100% split','14-day free Rithmic trial'],proibido:['Latency arbitrage','Copy trading between accounts'],newsTrading:true,day1Payout:true,desc:'Bulenox is a futures prop firm with simplified rules. Pass in 1 day, no consistency rule required.',trustpilot:{score:4.8,reviews:1516,url:'https://www.trustpilot.com/review/bulenox.com'}},
   {id:'ftmo',name:'FTMO',type:'Forex',color:'#22C55E',bg:'rgba(34,197,94,0.12)',icon:'F',icon_url:'img/Firms/ftmo.png',rating:4.8,reviews:41417,discount:19,dtype:'best value',coupon:null,badge:{label:'Líder Forex',color:'#22C55E',bg:'rgba(34,197,94,0.15)'},link:'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP',tags:['Forex','Free Trial','90% Split'],platforms:['MT4','MT5','cTrader'],minDays:0,evalDays:30,drawdown:'Fixed',split:'90%',ddPct:'-3% / -10%',target:'10%',scaling:'Ate $2M',prices:[{a:'1-Step 10K',n:'€79',o:'—'},{a:'1-Step 25K',n:'€199',o:'—'},{a:'1-Step 50K',n:'€319',o:'—'},{a:'1-Step 100K',n:'€499',o:'—'},{a:'1-Step 200K',n:'€999',o:'—'},{a:'2-Step 10K',n:'€79',o:'—'},{a:'2-Step 25K',n:'€199',o:'—'},{a:'2-Step 50K',n:'€319',o:'—'},{a:'2-Step 100K',n:'€499',o:'—'},{a:'2-Step 200K',n:'€999',o:'—'}],perks:['1-Step challenge (NEW)','Up to 90% profit split','Unlimited trading period','Free Trial available','$500M+ paid worldwide','3.5M+ customers','FTMO Academy included','Support in 18 languages','Since 2015','Best Day Rule 50%'],proibido:['Latency arbitrage','Spread manipulation'],newsTrading:false,day1Payout:false,desc:'FTMO is the largest and most trusted Forex prop firm, founded in 2015. Over 3.5M clients, $500M+ paid out, 4.8 Trustpilot rating with 41K+ reviews.',trustpilot:{score:4.8,reviews:41417,url:'https://www.trustpilot.com/review/ftmo.com'}},
   {id:'tpt',name:'Take Profit Trader',type:'Futuros',color:'#A855F7',bg:'rgba(168,85,247,0.12)',icon:'T',icon_url:'img/Firms/tpt.png',rating:4.4,reviews:8623,discount:40,dtype:'lifetime',coupon:'MARKET40',link:'https://takeprofittrader.com/?referralCode=MARKET40',tags:['Futuros','Lifetime','Saque dia 1'],platforms:['NinjaTrader','TradingView','Tradovate','Rithmic','Quantower','MotiveWave'],minDays:5,evalDays:null,drawdown:'EOD Trailing',split:'90%',ddPct:'Varies by size',target:'Varies by size',scaling:'No',prices:[{a:'25K',n:'$90',o:'$150'},{a:'50K',n:'$102',o:'$170'},{a:'75K',n:'$147',o:'$245'},{a:'100K',n:'$198',o:'$330'},{a:'150K',n:'$216',o:'$360'}],perks:['Day-1 payouts','No activation fee','No Daily Loss Limit','Immediate withdrawals','No max withdrawal','Up to 3 PRO resets','PRO fee $130 one-time','No consistency rule on PRO','15+ platforms available'],proibido:['Trading bots','Counter positions','Consistency rule on test'],newsTrading:true,day1Payout:true,desc:'Take Profit Trader stands out with day-1 payouts and no activation fee.',trustpilot:{score:4.4,reviews:8623,url:'https://www.trustpilot.com/review/takeprofittrader.com'}},
   {id:'fn',name:'FundedNext',type:'Forex/Futuros',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',icon:'N',icon_url:'img/Firms/fn.png',rating:4.5,reviews:64434,discount:30,dtype:'1 desafio',coupon:'FNF30',badge:{label:'Mais Avaliações',color:'#06B6D4',bg:'rgba(6,182,212,0.15)'},link:'https://fundednext.com/?fpr=everton33',tags:['Forex','Futuros','Payout 24h','Sem limite'],platforms:['MT4','MT5','cTrader','Match-Trader','Rithmic'],minDays:5,evalDays:null,drawdown:'Fixed',split:'95%',ddPct:'-5% / -10%',target:'8% / 5%',scaling:'Até $4M',prices:[{a:'Stellar 2-Step 25K',n:'$132.99',o:'$189.99'},{a:'Stellar 2-Step 50K',n:'$188.99',o:'$269.99'},{a:'Stellar 2-Step 100K',n:'$349.99',o:'$499.99'},{a:'Stellar 1-Step 25K',n:'$167.99',o:'$239.99'},{a:'Stellar 1-Step 50K',n:'$237.99',o:'$339.99'},{a:'Stellar 1-Step 100K',n:'$454.99',o:'$649.99'},{a:'Stellar Instant 5K',n:'$104.99',o:'$149.99'},{a:'Stellar Instant 10K',n:'$209.99',o:'$299.99'},{a:'Stellar Instant 20K',n:'$419.99',o:'$599.99'},{a:'Bolt 50K (Futures)',n:'$69.99',o:'$99.99'},{a:'Rapid 25K (Futures)',n:'$62.99',o:'$89.99'},{a:'Rapid 50K (Futures)',n:'$111.99',o:'$159.99'},{a:'Rapid 100K (Futures)',n:'$195.99',o:'$279.99'},{a:'Legacy 25K (Futures)',n:'$55.99',o:'$79.99'},{a:'Legacy 50K (Futures)',n:'$104.99',o:'$149.99'},{a:'Legacy 100K (Futures)',n:'$174.99',o:'$249.99'}],perks:['Up to 95% performance reward','15% reward in challenge phase','Guaranteed 24h payout','No time limit','News trading allowed','Spreads from 0.0 pips','Leverage up to 1:100','$288M+ total rewarded','No activation fee (Futures)'],proibido:['Latency arbitrage','Consistency rule 40% (challenge only)'],newsTrading:true,day1Payout:true,desc:'FundedNext offers Forex and Futures challenges with up to 95% profit split, 15% performance reward during evaluation, and $288M+ total rewarded to 110K+ traders.',trustpilot:{score:4.5,reviews:64434,url:'https://www.trustpilot.com/review/fundednext.com'}},
@@ -176,37 +176,38 @@ const FIRM_BG={
 const FIRM_ABOUT={
   apex:{about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
     types:['Intraday Trail','EOD Trail'],plans:{'Intraday Trail':[{s:'25K',d:'$19.90',o:'$199'},{s:'50K',d:'$24.90',o:'$249'},{s:'100K',d:'$39.90',o:'$399',pop:1},{s:'150K',d:'$59.90',o:'$599'}],'EOD Trail':[{s:'25K',d:'$29.90',o:'$299'},{s:'50K',d:'$34.90',o:'$349'},{s:'100K',d:'$59.90',o:'$599',pop:1},{s:'150K',d:'$79.90',o:'$799'}]},
-    includes:['Sem limite de perda diaria','Sem regra de escalamento','Licenca NinjaTrader','Dados em tempo real','Copy Trader (WealthCharts)','Suporte 24/7']},
+    includes:['Sem limite de perda diária','Sem regra de escalamento','Licença NinjaTrader','Dados em tempo real','Copy Trader (WealthCharts)','Suporte 24/7']},
   bulenox:{about:'Fundada em <b>2022</b>. Crescimento de <b>500%</b> em tráfego ano a ano. Regras simplificadas — possível passar em <b>1 dia</b>, sem regra de consistência.',highlights:[{val:'90%',label:'Profit Split'},{val:'1 dia',label:'Para passar'},{val:'$0',label:'Taxa mensal'}],
     types:['Trailing DD','EOD DD'],plans:{'Trailing DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$13.75',o:'$125',pop:1},{s:'100K',d:'$17.05',o:'$155'},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$58.85',o:'$535'}],'EOD DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$13.75',o:'$125',pop:1},{s:'100K',d:'$17.05',o:'$155'},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$58.85',o:'$535'}]},
-    includes:['Passa em 1 dia','Sem consistência','Trade durante noticias','Payouts semanais','Trial 14 dias gratis']},
+    includes:['Passa em 1 dia','Sem consistência','Trade durante notícias','Payouts semanais','Trial 14 dias grátis']},
   ftmo:{about:'Fundada em <b>2015</b> em Praga, República Tcheca. A FTMO é a <b>maior prop firm de Forex do mundo</b>. Mais de <b>3.5M de clientes</b> em 140+ países. Equipe de 300+ profissionais.',highlights:[{val:'$500M+',label:'Pagos a traders'},{val:'3.5M+',label:'Clientes'},{val:'10 anos',label:'No mercado'}],
     types:['1-Step Challenge','2-Step Challenge'],plans:{'1-Step Challenge':[{s:'10K',d:'€79',o:'—'},{s:'25K',d:'€199',o:'—'},{s:'50K',d:'€319',o:'—'},{s:'100K',d:'€499',o:'—',pop:1},{s:'200K',d:'€999',o:'—'}],'2-Step Challenge':[{s:'10K',d:'€79',o:'—'},{s:'25K',d:'€199',o:'—'},{s:'50K',d:'€319',o:'—'},{s:'100K',d:'€499',o:'—',pop:1},{s:'200K',d:'€999',o:'—'}]},
-    includes:['Free Trial ilimitado','90% split de lucro','Suporte 20 idiomas','Scaling ate $2M','$500M+ pagos','Sem limite de tempo']},
+    includes:['Free Trial ilimitado','90% split de lucro','Suporte 20 idiomas','Scaling até $2M','$500M+ pagos','Sem limite de tempo']},
   tpt:{about:'Fundada em <b>2021</b> por James Sixsmith (ex-jogador profissional de hockey). Taxa de sucesso anual de <b>20.37%</b>. Saque desde o <b>dia 1</b>, sem taxa de ativação.',highlights:[{val:'20.4%',label:'Taxa de sucesso'},{val:'Dia 1',label:'Primeiro saque'},{val:'$0',label:'Taxa ativação'}],
     types:['EOD Drawdown'],plans:{'EOD Drawdown':[{s:'25K',d:'$90',o:'$150'},{s:'50K',d:'$102',o:'$170'},{s:'75K',d:'$147',o:'$245'},{s:'100K',d:'$198',o:'$330',pop:1},{s:'150K',d:'$216',o:'$360'}]},
-    includes:['Saque desde dia 1','Sem taxa ativação','Sem Daily Loss Limit','Saque sem janela fixa','EOD Drawdown']},
+    includes:['Saque desde dia 1','Sem taxa de ativação','Sem Daily Loss Limit','Saque sem janela fixa','EOD Drawdown']},
   fn:{about:'Fundada em <b>2022</b> nos Emirados Árabes. <b>Prop Firm do Ano</b> (Finance Magnates 2025). Mais de <b>423K+ contas</b> e payout garantido em 24h.',highlights:[{val:'$285M+',label:'Pagos a traders'},{val:'108K+',label:'Traders pagos'},{val:'24h',label:'Payout garantido'}],
     types:['Stellar 2-Step','Stellar 1-Step','Stellar Lite','Futures Bolt','Futures Rapid','Futures Legacy'],plans:{'Stellar 2-Step':[{s:'$6K',d:'$48.99',o:'$69.99'},{s:'$15K',d:'$83.99',o:'$119.99'},{s:'$25K',d:'$132.99',o:'$189.99'},{s:'$50K',d:'$188.99',o:'$269.99',pop:1},{s:'$100K',d:'$349.99',o:'$499.99'}],'Stellar 1-Step':[{s:'$6K',d:'$65.99',o:'—'},{s:'$15K',d:'$130.99',o:'—'},{s:'$25K',d:'$170.99',o:'—'},{s:'$50K',d:'$219.99',o:'—',pop:1},{s:'$100K',d:'$449.99',o:'—'},{s:'$200K',d:'$1,099.99',o:'—'}],'Stellar Lite':[{s:'$5K',d:'$32',o:'—'},{s:'$10K',d:'$58',o:'—'},{s:'$25K',d:'$159',o:'—'},{s:'$50K',d:'$229',o:'—',pop:1},{s:'$100K',d:'$399',o:'—'},{s:'$200K',d:'$799',o:'—'}],'Futures Bolt':[{s:'$50K',d:'~$199',o:'—',pop:1}],'Futures Rapid':[{s:'$25K',d:'~$99',o:'—'},{s:'$50K',d:'~$159',o:'—',pop:1},{s:'$100K',d:'~$279',o:'—'}],'Futures Legacy':[{s:'$25K',d:'~$79',o:'—'},{s:'$50K',d:'~$119',o:'—',pop:1},{s:'$100K',d:'~$349',o:'—'}]},
-    includes:['Payout garantido 24h','Sem limite de tempo','$1K compensação atraso','Até 90% split','Scaling até $4M','15% lucro avaliação']},
+    includes:['Payout garantido 24h','Sem limite de tempo','$1K compensação atraso','Até 90% split','Scaling até $4M','15% bônus lucro avaliação']},
   e2t:{about:'Fundada em <b>2016</b>, celebrando <b>10 anos</b> em 2026. Foco em educação e desenvolvimento. Taxa de aprovação de <b>10.42%</b> — acima da média do setor. Escalamento até $400K.',highlights:[{val:'10 anos',label:'No mercado'},{val:'$400K',label:'Scaling máximo'},{val:'10.4%',label:'Taxa aprovação'}],
     types:['Trader Career Path','Gauntlet Mini'],plans:{'Trader Career Path':[{s:'TCP25',d:'$60',o:'$150'},{s:'TCP50',d:'$76',o:'$190'},{s:'TCP100',d:'$140',o:'$350',pop:1}],'Gauntlet Mini':[{s:'50K',d:'$68',o:'$170'},{s:'100K',d:'$126',o:'$315',pop:1},{s:'150K',d:'$150',o:'$375'},{s:'200K',d:'$220',o:'$550'}]},
-    includes:['Journalytix gratis','Reset gratis','NT/Finamark gratis','Escalamento ate $400K','Sem taxa mensal']},
+    includes:['Journalytix grátis','Reset grátis','NT/Finamark grátis','Escalamento até $400K','Sem taxa mensal']},
   the5ers:{about:'Fundada em <b>2016</b> por Saul Lokier em Raanana, Israel. Uma das <b>mais antigas prop firms</b> em atividade. Scaling até <b>$4M</b> e profit split até 100%.',highlights:[{val:'$43M+',label:'Pagos a traders'},{val:'30K+',label:'Payouts feitos'},{val:'$4M',label:'Scaling máximo'}],
     types:['Hyper Growth','Pro Growth','High Stakes','Bootcamp','Futures Basecamp','Futures Rebate'],plans:{'Hyper Growth':[{s:'$5K',d:'$39',o:'—'},{s:'$10K',d:'$85',o:'—'},{s:'$20K',d:'$175',o:'—',pop:1}],'Pro Growth':[{s:'$5K',d:'$74',o:'—'},{s:'$10K',d:'$140',o:'—'},{s:'$20K',d:'$270',o:'—',pop:1}],'High Stakes':[{s:'$2.5K',d:'$19',o:'—'},{s:'$5K',d:'$39',o:'—'},{s:'$10K',d:'$75',o:'—'},{s:'$25K',d:'$175',o:'—',pop:1},{s:'$50K',d:'$315',o:'—'},{s:'$100K',d:'$575',o:'—'}],'Bootcamp':[{s:'$20K',d:'$22',o:'—'},{s:'$100K',d:'$99',o:'—',pop:1},{s:'$250K',d:'$225',o:'—'}],'Futures Basecamp':[{s:'$25K',d:'$50',o:'—'},{s:'$50K',d:'$99',o:'—',pop:1}],'Futures Rebate':[{s:'$25K',d:'$150',o:'—'},{s:'$50K',d:'$299',o:'—',pop:1}]},
-    includes:['Scaling até $4M','Profit Split até 100%','Payout medio 16h','Alavancagem 1:30','Sem limite de tempo','Dashboard avançado']},
+    includes:['Scaling até $4M','Profit Split até 100%','Payout médio 16h','Alavancagem 1:30','Sem limite de tempo','Dashboard avançado']},
   fundingpips:{about:'Fundada em <b>2022</b> por Khaled Ayesh em Dubai. <b>2M+ de traders</b> no mundo. Uma das mesas mais populares com pagamentos rápidos e split flexível até 100%.',highlights:[{val:'$210M+',label:'Pagos a traders'},{val:'2M+',label:'Traders'},{val:'127K+',label:'Payouts verificados'}],
     types:['Zero','1-Step','2-Step','Pro'],plans:{'Zero':[{s:'$5K',d:'$55.20',o:'$69'},{s:'$10K',d:'$79.20',o:'$99'},{s:'$25K',d:'$159.20',o:'$199'},{s:'$50K',d:'$239.20',o:'$299',pop:1},{s:'$100K',d:'$399.20',o:'$499'},{s:'$200K',d:'$798.40',o:'$998'}],'1-Step':[{s:'$5K',d:'$47.20',o:'$59'},{s:'$10K',d:'$79.20',o:'$99'},{s:'$25K',d:'$159.20',o:'$199'},{s:'$50K',d:'$255.20',o:'$319',pop:1},{s:'$100K',d:'$444',o:'$555'}],'2-Step':[{s:'$5K',d:'$28.80',o:'$36'},{s:'$10K',d:'$52.80',o:'$66'},{s:'$25K',d:'$124.80',o:'$156'},{s:'$50K',d:'$231.20',o:'$289',pop:1},{s:'$100K',d:'$423.20',o:'$529'}],'Pro':[{s:'$5K',d:'$23.20',o:'$29'},{s:'$10K',d:'$44',o:'$55'},{s:'$25K',d:'$87.20',o:'$109'},{s:'$50K',d:'$175.20',o:'$219',pop:1},{s:'$100K',d:'$319.20',o:'$399'},{s:'$200K',d:'$638.40',o:'$798'}]},
-    includes:['Split flexivel ate 100% mensal','$210M+ pagos','Alavancagem 1:100','Comunidade Discord ativa']},
+    includes:['Split flexível até 100%','$210M+ pagos','Alavancagem 1:100','Comunidade Discord ativa']},
   brightfunded:{about:'Fundada em <b>2022</b> na Holanda por Jelle Dijkstra. <b>27.5K+ traders</b>. Programa Trade2Earn (pontos por operar). Payout em <b>24h</b> com ciclo de 7 dias.',highlights:[{val:'$13M+',label:'Pagos a traders'},{val:'27.5K+',label:'Traders'},{val:'24h',label:'Payout garantido'}],
     types:['2-Step'],plans:{'2-Step':[{s:'5K',d:'€44',o:'€55'},{s:'10K',d:'€76',o:'€95'},{s:'25K',d:'€156',o:'€195'},{s:'50K',d:'€236',o:'€295',pop:1},{s:'100K',d:'€396',o:'€495'},{s:'200K',d:'€780',o:'€975'}]},
-    includes:['Scaling até 100% split','Drawdown estático','Payout 24h ciclo 7 dias','15% bonus lucro avaliação','Trade2Earn','Alavancagem 1:100','Suporte 24/7']},
+    includes:['Scaling até 100% split','Drawdown estático','Payout 24h ciclo 7 dias','15% bônus lucro avaliação','Trade2Earn','Alavancagem 1:100','Suporte 24/7']},
   e8:{about:'Fundada em <b>2021</b> nos EUA. E8 Markets oferece contas de <b>$5K a $500K</b> em Forex, Futuros e Crypto. Dois produtos: <b>Signature</b> (EOD, 80% split) e <b>E8 One</b> (drawdown dinâmico configurável 4-14%, até 100% split).',highlights:[{val:'$500K',label:'Conta máxima'},{val:'100%',label:'Split máximo'},{val:'3',label:'Mercados'}],
     types:['Signature','E8 One'],plans:{'Signature':[{s:'$25K',d:'$99',o:'$110'},{s:'$50K',d:'$135',o:'$150'},{s:'$100K',d:'$234',o:'$260',pop:1},{s:'$150K',d:'$351',o:'$390'}],'E8 One':[{s:'$5K',d:'$54',o:'$60'},{s:'$10K',d:'$81',o:'$90'},{s:'$25K',d:'$153',o:'$170'},{s:'$50K',d:'$234',o:'$260'},{s:'$100K',d:'$439',o:'$488',pop:1},{s:'$200K',d:'$836',o:'$929'},{s:'$400K',d:'$1,619',o:'$1,799'},{s:'$500K',d:'$2,069',o:'$2,299'}]},
     includes:['Sem taxa de ativação','Passa em 1 dia','Forex, Futuros e Crypto','Drawdown configurável 4-14%','Split até 100%','Contas até $500K']},
   cti:{about:'Fundada em <b>2018</b> no Reino Unido. City Traders Imperium (CTI) oferece <b>5 programas</b> de avaliação com split até <b>100%</b>. Premiada: <b>Best MatchTrader Prop Firm 2025</b>, Top Choice for Traders 2025, Most Trusted Prop Firm 2025.',highlights:[{val:'100%',label:'Split máximo'},{val:'5',label:'Programas'},{val:'$1',label:'Entrada mínima'}],
     types:['1-Step','2-Step','3-Step','Instant','Instant Pro'],plans:{'1-Step':[{s:'$2.5K',d:'$27',o:'$39'},{s:'$5K',d:'$41',o:'$59'},{s:'$10K',d:'$76',o:'$109'},{s:'$25K',d:'$139',o:'$199',pop:1},{s:'$50K',d:'$280',o:'$399'},{s:'$100K',d:'$412',o:'$589'}],'2-Step':[{s:'$2.5K',d:'$34',o:'$49'},{s:'$5K',d:'$48',o:'$69'},{s:'$10K',d:'$97',o:'$139'},{s:'$25K',d:'$174',o:'$249',pop:1},{s:'$50K',d:'$314',o:'$449'},{s:'$100K',d:'$482',o:'$689'}],'3-Step':[{s:'$2.5K',d:'$1',o:'—'},{s:'$5K',d:'$2',o:'—'},{s:'$10K',d:'$4',o:'—'},{s:'$25K',d:'$10',o:'—',pop:1},{s:'$50K',d:'$20',o:'—'},{s:'$100K',d:'$40',o:'—'}],'Instant':[{s:'$2.5K',d:'$62',o:'$89'},{s:'$5K',d:'$111',o:'$159'},{s:'$10K',d:'$216',o:'$309'},{s:'$20K',d:'$391',o:'$559',pop:1},{s:'$40K',d:'$741',o:'$1,059'},{s:'$80K',d:'$1,315',o:'$1,879'}],'Instant Pro':[{s:'$5K',d:'$263',o:'$329'},{s:'$10K',d:'$527',o:'$659'},{s:'$20K',d:'$1,055',o:'$1,319',pop:1},{s:'$40K',d:'$2,111',o:'$2,639'},{s:'$80K',d:'$4,223',o:'$5,279'}]},
     includes:['5 programas de avaliação','VIP Program: Bronze, Silver, Gold','Coaching 1-on-1 gratuito','Certificado de conquista','Split até 100%','Scaling disponível']}
+
 };
 
 /* PLATFORM DETAIL DATA — checkout overlay for partner platforms */
@@ -300,17 +301,17 @@ const FIRM_T={
 'Suporte 20 idiomas':['Support in 20 languages','Soporte en 20 idiomas','Support en 20 langues','Supporto in 20 lingue','Support in 20 Sprachen','دعم بـ 20 لغة'],
 '$500M+ pagos':['$500M+ paid out','$500M+ pagados','$500M+ versés','$500M+ pagati','$500M+ ausgezahlt','$500M+ مدفوعة'],
 'Saque desde dia 1':['Withdrawal from day 1','Retiro desde el día 1','Retrait dès le jour 1','Prelievo dal giorno 1','Auszahlung ab Tag 1','سحب من اليوم الأول'],
-'Sem taxa ativação':['No activation fee','Sin tarifa de activación','Sans frais d\'activation','Nessuna commissione di attivazione','Keine Aktivierungsgebühr','بدون رسوم تفعيل'],
+'Sem taxa de ativação':['No activation fee','Sin tarifa de activación','Sans frais d\'activation','Nessuna commissione di attivazione','Keine Aktivierungsgebühr','بدون رسوم تفعيل'],
 'Payout garantido 24h':['Guaranteed 24h payout','Pago garantizado 24h','Paiement garanti 24h','Pagamento garantito 24h','Garantierte 24h-Auszahlung','دفع مضمون خلال 24 ساعة'],
 'Sem limite de tempo':['No time limit','Sin límite de tiempo','Sans limite de temps','Senza limite di tempo','Kein Zeitlimit','بدون حد زمني'],
 '$1K compensação atraso':['$1K late compensation','$1K compensación por retraso','$1K compensation retard','$1K compenso ritardo','$1K Verspätungsentschädigung','$1K تعويض تأخير'],
-'Journalytix gratis':['Free Journalytix','Journalytix gratis','Journalytix gratuit','Journalytix gratuito','Journalytix kostenlos','Journalytix مجاني'],
-'Reset gratis':['Free reset','Reset gratis','Reset gratuit','Reset gratuito','Kostenloses Reset','إعادة تعيين مجانية'],
+'Journalytix grátis':['Free Journalytix','Journalytix gratis','Journalytix gratuit','Journalytix gratuito','Journalytix kostenlos','Journalytix مجاني'],
+'Reset grátis':['Free reset','Reset gratis','Reset gratuit','Reset gratuito','Kostenloses Reset','إعادة تعيين مجانية'],
 'Scaling até $400K':['Scaling up to $400K','Scaling hasta $400K','Scaling jusqu\'à $400K','Scaling fino a $400K','Scaling bis $400K','تصعيد حتى $400K'],
 'Scaling até $4M':['Scaling up to $4M','Scaling hasta $4M','Scaling jusqu\'à $4M','Scaling fino a $4M','Scaling bis $4M','تصعيد حتى $4M'],
 'Profit Split até 100%':['Profit Split up to 100%','Profit Split hasta 100%','Profit Split jusqu\'à 100%','Profit Split fino al 100%','Profit Split bis 100%','Profit Split حتى 100%'],
 'Bootcamp desde $95':['Bootcamp from $95','Bootcamp desde $95','Bootcamp à partir de $95','Bootcamp da $95','Bootcamp ab $95','معسكر تدريب من $95'],
-'Payout medio 16h':['Average 16h payout','Pago promedio 16h','Paiement moyen 16h','Pagamento medio 16h','Durchschn. 16h-Auszahlung','متوسط دفع 16 ساعة'],
+'Payout médio 16h':['Average 16h payout','Pago promedio 16h','Paiement moyen 16h','Pagamento medio 16h','Durchschn. 16h-Auszahlung','متوسط دفع 16 ساعة'],
 'Alavancagem 1:100':['Leverage 1:100','Apalancamiento 1:100','Effet de levier 1:100','Leva 1:100','Hebel 1:100','رافعة مالية 1:100'],
 'Split flexivel: 60% semanal / 80% quinzenal / 90% sob demanda / 100% mensal':['Flexible split: 60% weekly / 80% biweekly / 90% on demand / 100% monthly','Split flexible: 60% semanal / 80% quincenal / 90% bajo demanda / 100% mensual','Split flexible : 60% hebdo / 80% bimensuel / 90% sur demande / 100% mensuel','Split flessibile: 60% settimanale / 80% bisettimanale / 90% su richiesta / 100% mensile','Flexibler Split: 60% wöchentlich / 80% zweiwöchentlich / 90% auf Anfrage / 100% monatlich','تقسيم مرن: 60% أسبوعي / 80% نصف شهري / 90% عند الطلب / 100% شهري'],
 '$200M+ pagos globalmente':['$200M+ paid globally','$200M+ pagados globalmente','$200M+ versés mondialement','$200M+ pagati globalmente','$200M+ weltweit ausgezahlt','$200M+ مدفوعة عالمياً'],
@@ -318,7 +319,7 @@ const FIRM_T={
 'Scaling até 100% split':['Scaling up to 100% split','Scaling hasta 100% split','Scaling jusqu\'à 100% split','Scaling fino a 100% split','Scaling bis 100% Split','تصعيد حتى 100% تقسيم'],
 'Drawdown estático':['Static drawdown','Drawdown estático','Drawdown statique','Drawdown statico','Statischer Drawdown','سحب ثابت'],
 'Payout garantido 24h ciclo 7 dias':['Guaranteed 24h payout, 7-day cycle','Pago garantizado 24h, ciclo 7 días','Paiement garanti 24h, cycle 7 jours','Pagamento garantito 24h, ciclo 7 giorni','Garantierte 24h-Auszahlung, 7-Tage-Zyklus','دفع مضمون 24 ساعة، دورة 7 أيام'],
-'15% bonus lucro avaliação':['15% evaluation profit bonus','15% bonus beneficio evaluación','15% bonus profit évaluation','15% bonus profitto valutazione','15% Bewertungsgewinn-Bonus','15% مكافأة ربح التقييم'],
+'15% bônus lucro avaliação':['15% evaluation profit bonus','15% bonus beneficio evaluación','15% bonus profit évaluation','15% bonus profitto valutazione','15% Bewertungsgewinn-Bonus','15% مكافأة ربح التقييم'],
 'Trade2Earn (pontos por operar)':['Trade2Earn (points for trading)','Trade2Earn (puntos por operar)','Trade2Earn (points pour trader)','Trade2Earn (punti per operare)','Trade2Earn (Punkte für Handel)','Trade2Earn (نقاط للتداول)'],
 'Suporte 24/7':['24/7 support','Soporte 24/7','Support 24/7','Supporto 24/7','24/7 Support','دعم 24/7'],
 'Até 20 contas':['Up to 20 accounts','Hasta 20 cuentas','Jusqu\'à 20 comptes','Fino a 20 conti','Bis 20 Konten','حتى 20 حساب'],
@@ -376,19 +377,19 @@ const FIRM_T={
 'Fundada em <b>2022</b> por Khaled Ayesh em Dubai. <b>2M+ de traders</b> no mundo. Uma das mesas mais populares com pagamentos rápidos e split flexível até 100%.':['Founded in <b>2022</b> by Khaled Ayesh in Dubai. <b>2M+ traders</b> worldwide. One of the most popular firms with fast payments and flexible split up to 100%.','Fundada en <b>2022</b> por Khaled Ayesh en Dubái. <b>2M+ de traders</b> en el mundo. Una de las mesas más populares con pagos rápidos y split flexible hasta 100%.','Fondée en <b>2022</b> par Khaled Ayesh à Dubaï. <b>2M+ de traders</b> dans le monde. L\'une des firmes les plus populaires avec paiements rapides et split flexible jusqu\'à 100%.','Fondata nel <b>2022</b> da Khaled Ayesh a Dubai. <b>2M+ di trader</b> nel mondo. Una delle firme più popolari con pagamenti rapidi e split flessibile fino al 100%.','Gegründet <b>2022</b> von Khaled Ayesh in Dubai. <b>2M+ Trader</b> weltweit. Eine der beliebtesten Firmen mit schnellen Zahlungen und flexiblem Split bis 100%.','تأسست في <b>2022</b> بواسطة خالد عايش في دبي. <b>2 مليون+ متداول</b> حول العالم. واحدة من أشهر الشركات مع دفعات سريعة وتقسيم مرن حتى 100%.'],
 'Fundada em <b>2022</b> na Holanda por Jelle Dijkstra. <b>20K+ traders</b>. Programa Trade2Earn (pontos por operar). Payout em <b>24h</b> com ciclo de 7 dias.':['Founded in <b>2022</b> in the Netherlands by Jelle Dijkstra. <b>20K+ traders</b>. Trade2Earn program (points for trading). <b>24h</b> payout with 7-day cycle.','Fundada en <b>2022</b> en Holanda por Jelle Dijkstra. <b>20K+ traders</b>. Programa Trade2Earn (puntos por operar). Pago en <b>24h</b> con ciclo de 7 días.','Fondée en <b>2022</b> aux Pays-Bas par Jelle Dijkstra. <b>20K+ traders</b>. Programme Trade2Earn (points pour trader). Paiement sous <b>24h</b> avec cycle de 7 jours.','Fondata nel <b>2022</b> nei Paesi Bassi da Jelle Dijkstra. <b>20K+ trader</b>. Programma Trade2Earn (punti per operare). Pagamento in <b>24h</b> con ciclo di 7 giorni.','Gegründet <b>2022</b> in den Niederlanden von Jelle Dijkstra. <b>20K+ Trader</b>. Trade2Earn-Programm (Punkte für Handel). <b>24h</b>-Auszahlung mit 7-Tage-Zyklus.','تأسست في <b>2022</b> في هولندا بواسطة جيلي ديكسترا. <b>20 ألف+ متداول</b>. برنامج Trade2Earn (نقاط للتداول). دفع خلال <b>24 ساعة</b> مع دورة 7 أيام.'],
 // Includes extras
-'Sem limite de perda diaria':['No daily loss limit','Sin límite de pérdida diaria','Sans limite de perte journalière','Senza limite di perdita giornaliera','Kein tägliches Verlustlimit','بدون حد خسارة يومي'],
-'Licenca NinjaTrader':['NinjaTrader license','Licencia NinjaTrader','Licence NinjaTrader','Licenza NinjaTrader','NinjaTrader-Lizenz','ترخيص NinjaTrader'],
+'Sem limite de perda diária':['No daily loss limit','Sin límite de pérdida diaria','Sans limite de perte journalière','Senza limite di perdita giornaliera','Kein tägliches Verlustlimit','بدون حد خسارة يومي'],
+'Licença NinjaTrader':['NinjaTrader license','Licencia NinjaTrader','Licence NinjaTrader','Licenza NinjaTrader','NinjaTrader-Lizenz','ترخيص NinjaTrader'],
 'Dados em tempo real':['Real-time data','Datos en tiempo real','Données en temps réel','Dati in tempo reale','Echtzeit-Daten','بيانات في الوقت الحقيقي'],
 'Copy Trader (WealthCharts)':['Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)'],
-'Trial 14 dias gratis':['14-day free trial','Prueba 14 días gratis','Essai gratuit 14 jours','Prova gratuita 14 giorni','14 Tage kostenloser Test','تجربة مجانية 14 يوم'],
-'Trade durante noticias':['Trade during news','Trading durante noticias','Trading pendant les nouvelles','Trading durante le notizie','Handel während Nachrichten','التداول أثناء الأخبار'],
-'NT/Finamark gratis':['Free NT/Finamark','NT/Finamark gratis','NT/Finamark gratuit','NT/Finamark gratuito','Kostenloses NT/Finamark','NT/Finamark مجاني'],
-'Escalamento ate $400K':['Scaling up to $400K','Escalamiento hasta $400K','Scaling jusqu\'à $400K','Scaling fino a $400K','Scaling bis $400K','تصعيد حتى $400K'],
-'Split flexivel ate 100%':['Flexible split up to 100%','Split flexible hasta 100%','Split flexible jusqu\'à 100%','Split flessibile fino al 100%','Flexibler Split bis 100%','تقسيم مرن حتى 100%'],
+'Trial 14 dias grátis':['14-day free trial','Prueba 14 días gratis','Essai gratuit 14 jours','Prova gratuita 14 giorni','14 Tage kostenloser Test','تجربة مجانية 14 يوم'],
+'Trade durante notícias':['Trade during news','Trading durante noticias','Trading pendant les nouvelles','Trading durante le notizie','Handel während Nachrichten','التداول أثناء الأخبار'],
+'NT/Finamark grátis':['Free NT/Finamark','NT/Finamark gratis','NT/Finamark gratuit','NT/Finamark gratuito','Kostenloses NT/Finamark','NT/Finamark مجاني'],
+'Escalamento até $400K':['Scaling up to $400K','Escalamiento hasta $400K','Scaling jusqu\'à $400K','Scaling fino a $400K','Scaling bis $400K','تصعيد حتى $400K'],
+'Split flexível até 100%':['Flexible split up to 100%','Split flexible hasta 100%','Split flexible jusqu\'à 100%','Split flessibile fino al 100%','Flexibler Split bis 100%','تقسيم مرن حتى 100%'],
 '$200M+ pagos':['$200M+ paid out','$200M+ pagados','$200M+ versés','$200M+ pagati','$200M+ ausgezahlt','$200M+ مدفوعة'],
 'Scaling até 100% split':['Scaling up to 100% split','Scaling hasta 100% split','Scaling jusqu\'à 100% split','Scaling fino a 100% split','Scaling bis 100% Split','تصعيد حتى 100% تقسيم'],
 'Payout 24h ciclo 7 dias':['24h payout, 7-day cycle','Pago 24h, ciclo 7 días','Paiement 24h, cycle 7 jours','Pagamento 24h, ciclo 7 giorni','24h-Auszahlung, 7-Tage-Zyklus','دفع 24 ساعة، دورة 7 أيام'],
-'15% bonus lucro avaliação':['15% evaluation profit bonus','15% bonus beneficio evaluación','15% bonus profit évaluation','15% bonus profitto valutazione','15% Bewertungsgewinn-Bonus','15% مكافأة ربح التقييم'],
+'15% bônus lucro avaliação':['15% evaluation profit bonus','15% bonus beneficio evaluación','15% bonus profit évaluation','15% bonus profitto valutazione','15% Bewertungsgewinn-Bonus','15% مكافأة ربح التقييم'],
 'Trade2Earn':['Trade2Earn','Trade2Earn','Trade2Earn','Trade2Earn','Trade2Earn','Trade2Earn'],
 '90% split de lucro':['90% profit split','90% split de beneficio','90% split de profit','90% split del profitto','90% Gewinn-Split','90% تقسيم أرباح'],
 '$500M+ pagos':['$500M+ paid out','$500M+ pagados','$500M+ versés','$500M+ pagati','$500M+ ausgezahlt','$500M+ مدفوعة'],
@@ -3189,7 +3190,7 @@ const CHECKOUT_FIRMS=[
    buildUrl:(size,type,plat)=>`https://dashboard.apextraderfunding.com/signup/${size.toLowerCase()}-${plat}-${type==='Intraday Trail'?'intraday-trail':'eod-trail'}?referralCode=evertonmiranda`},
   {id:'bulenox',name:'Bulenox',short:'Bulenox',coupon:'MARKET89',discount:'89%',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',
    includes:['Pass in 1 day','No consistency rule','News trading allowed','Weekly payouts','Scaling up to $400K','14-day free Rithmic trial'],
-   types:['Trailing DD','EOD DD'],platforms:['Rithmic'],
+   types:['Trailing DD','EOD DD'],platforms:['Rithmic','NinjaTrader'],
    plansByType:{
      'Trailing DD':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$145',disc:'$15.95',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$125',disc:'$13.75',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$155',disc:'$17.05',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$325',disc:'$35.75',featured:false},{size:'250K',capital:'$250,000',goal:'$15,000',maxDD:'$5,500',orig:'$535',disc:'$58.85',featured:false}],
      'EOD DD':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$145',disc:'$15.95',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$125',disc:'$13.75',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$155',disc:'$17.05',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$325',disc:'$35.75',featured:false},{size:'250K',capital:'$250,000',goal:'$15,000',maxDD:'$5,500',orig:'$535',disc:'$58.85',featured:false}]
@@ -3324,88 +3325,86 @@ async function loadFirmsFromSupabase() {
       // Overlay data (about_html, detail_plans, bg_image) loaded lazily via loadFirmOverlayData()
     });
 
-    // ── Sync FIRM_ABOUT plans from FIRMS prices (single source of truth) ──
+    // ── Sync prices in-place (keep structure, update values only) ──
+    // Build price lookup from Supabase FIRMS data
     FIRMS.forEach(f => {
       const fa = FIRM_ABOUT[f.id];
-      if (!fa) return;
-      // Build plans object grouped by type from prices array
-      if (f.price_types && f.price_types.length >= 2) {
-        // Firm has 2 price columns (e.g. Apex Intraday/EOD with n/o + n2/o2)
-        const t1 = fa.types?.[0] || f.price_types[0];
-        const t2 = fa.types?.[1] || f.price_types[1];
-        fa.plans = {};
-        fa.plans[t1] = f.prices.map(p => ({s:p.a, d:p.n, o:p.o, pop: fa.plans?.[t1]?.find(x=>x.s===p.a)?.pop ? 1 : undefined}));
-        fa.plans[t2] = f.prices.map(p => ({s:p.a, d:p.n2||p.n, o:p.o2||p.o, pop: fa.plans?.[t2]?.find(x=>x.s===p.a)?.pop ? 1 : undefined}));
-      } else if (fa.types && fa.types.length > 1) {
-        // Multiple types but prices have type in the "a" field (e.g. "Stellar 2-Step 25K")
-        const newPlans = {};
-        fa.types.forEach(tp => { newPlans[tp] = []; });
-        f.prices.forEach(p => {
-          // Match price to type by checking if "a" starts with type name
-          let matched = false;
-          for (const tp of fa.types) {
-            if (p.a.toLowerCase().startsWith(tp.toLowerCase().replace(/ ?\(.*\)/, '').trim().toLowerCase())) {
-              const label = p.a.replace(new RegExp('^' + tp.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*', 'i'), '').trim() || p.a;
-              newPlans[tp].push({s: label || p.a, d: p.n, o: p.o});
-              matched = true;
-              break;
+      if (!fa || !fa.plans || !f.prices) return;
+      // Helper: extract numeric part from size string for fuzzy matching
+      const numOf = s => { const m = s.replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : null; };
+      const hasDual = f.price_types && f.price_types.length >= 2;
+      const typeKeys = Object.keys(fa.plans);
+      typeKeys.forEach((tp, ti) => {
+        if (!fa.plans[tp]) return;
+        fa.plans[tp].forEach(plan => {
+          // Try exact match first, then fuzzy by number
+          let match = f.prices.find(p => p.a === plan.s);
+          if (!match) {
+            const pn = numOf(plan.s);
+            if (pn !== null) {
+              // For multi-type firms, filter prices that belong to this type
+              const candidates = f.prices.filter(p => {
+                const cn = numOf(p.a);
+                return cn === pn;
+              });
+              // If multiple candidates with same number, pick the one matching type index
+              if (candidates.length === 1) match = candidates[0];
+              else if (candidates.length > 1) {
+                // Try matching by type prefix in price name
+                match = candidates.find(p => p.a.toLowerCase().includes(plan.s.toLowerCase()));
+                if (!match) match = candidates[ti] || candidates[0];
+              }
             }
           }
-          if (!matched && fa.types[0]) {
-            newPlans[fa.types[0]].push({s: p.a, d: p.n, o: p.o});
+          if (match) {
+            if (hasDual) {
+              plan.d = ti === 0 ? match.n : (match.n2 || match.n);
+              plan.o = ti === 0 ? match.o : (match.o2 || match.o);
+            } else {
+              plan.d = match.n;
+              plan.o = match.o;
+            }
           }
         });
-        // Preserve pop flags from original plans
-        const origPlans = fa.plans || {};
-        fa.types.forEach(tp => {
-          const orig = origPlans[tp] || [];
-          newPlans[tp].forEach(p => {
-            const op = orig.find(x => x.s === p.s);
-            if (op?.pop) p.pop = 1;
-          });
-          // Auto-pop the middle plan if none has pop
-          if (newPlans[tp].length && !newPlans[tp].some(x=>x.pop)) {
-            const mid = Math.floor(newPlans[tp].length / 2);
-            newPlans[tp][mid].pop = 1;
-          }
-        });
-        fa.plans = newPlans;
-      } else {
-        // Single type — all prices under first type
-        const tp = (fa.types && fa.types[0]) || 'Standard';
-        const orig = (fa.plans && fa.plans[tp]) || [];
-        fa.plans = {};
-        fa.plans[tp] = f.prices.map(p => {
-          const op = orig.find(x => x.s === p.a);
-          return {s: p.a, d: p.n, o: p.o, pop: op?.pop};
-        });
-        if (!fa.plans[tp].some(x=>x.pop) && fa.plans[tp].length) {
-          fa.plans[tp][Math.floor(fa.plans[tp].length / 2)].pop = 1;
-        }
-      }
+      });
     });
 
-    // ── Sync CHECKOUT_FIRMS plansByType from FIRMS prices ──
+    // ── Sync CHECKOUT_FIRMS prices in-place ──
     CHECKOUT_FIRMS.forEach(cf => {
       const firm = FIRMS.find(x => x.id === cf.id);
       if (!firm) return;
-      // Update basic data
       cf.discount = firm.discount + '%';
       cf.coupon = firm.coupon || null;
       cf.platforms = firm.platforms || cf.platforms;
-      // Rebuild plansByType from FIRM_ABOUT if available (has goal/maxDD), else from FIRMS prices
-      const fa = FIRM_ABOUT[cf.id];
-      if (fa?.plans && cf.plansByType) {
-        // Sync prices from FIRM_ABOUT (which was just synced from Supabase)
-        Object.keys(cf.plansByType).forEach(tp => {
-          const faPlans = fa.plans[tp];
-          if (!faPlans) return;
-          cf.plansByType[tp].forEach(p => {
-            const fp = faPlans.find(x => x.s === p.size || x.s.includes(p.size));
-            if (fp) { p.disc = fp.d; p.orig = fp.o; }
-          });
+      if (!cf.plansByType || !firm.prices) return;
+      const numOf = s => { const m = s.replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : null; };
+      const hasDual = firm.price_types && firm.price_types.length >= 2;
+      const typeKeys = Object.keys(cf.plansByType);
+      typeKeys.forEach((tp, ti) => {
+        cf.plansByType[tp].forEach(plan => {
+          let match = firm.prices.find(p => p.a === plan.size);
+          if (!match) {
+            const pn = numOf(plan.size);
+            if (pn !== null) {
+              const candidates = firm.prices.filter(p => numOf(p.a) === pn);
+              if (candidates.length === 1) match = candidates[0];
+              else if (candidates.length > 1) {
+                match = candidates.find(p => p.a.toLowerCase().includes(plan.size.toLowerCase()));
+                if (!match) match = candidates[ti] || candidates[0];
+              }
+            }
+          }
+          if (match) {
+            if (hasDual) {
+              plan.disc = ti === 0 ? match.n : (match.n2 || match.n);
+              plan.orig = ti === 0 ? match.o : (match.o2 || match.o);
+            } else {
+              plan.disc = match.n;
+              plan.orig = match.o;
+            }
+          }
         });
-      }
+      });
     });
 
     // Rebuild achState for new firms
