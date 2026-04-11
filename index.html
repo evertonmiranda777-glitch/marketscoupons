@@ -2345,6 +2345,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .ach-firm-tab.active{color:#fff;border-color:rgba(240,180,41,.25);background:rgba(240,180,41,.06);box-shadow:0 0 12px rgba(240,180,41,.08);}
 .ach-firm-tab .tab-disc{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--gold);color:#07090D;font-weight:800;}
 .ach-firm-tab.active .tab-disc{background:var(--gold);}
+.ach-type-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:0 0 20px;margin-bottom:4px;}
+.ach-type-tab{padding:7px 16px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:8px;font-family:var(--f);font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;transition:.25s;}
+.ach-type-tab:hover{border-color:rgba(255,255,255,.12);color:#fff;}
+.ach-type-tab.active{color:var(--gold);border-color:rgba(240,180,41,.25);background:rgba(240,180,41,.06);}
 
 /* ═══ LOYALTY PROOF SYSTEM ═══ */
 .proof-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:24px;margin-bottom:20px;}
@@ -3166,7 +3170,10 @@ document.addEventListener('DOMContentLoaded',function(){
     <!-- FIRM SELECTOR TABS -->
     <div class="ach-firm-tabs" id="ach-firm-tabs"></div>
 
-    <!-- PLAN CARDS (rendered per firm) -->
+    <!-- TYPE FILTER (rendered per firm) -->
+    <div class="ach-type-tabs" id="ach-type-tabs" style="display:none;"></div>
+
+    <!-- PLAN CARDS (rendered per firm + type) -->
     <div class="ach-plans-grid" id="ach-plans-grid"></div>
 
     <!-- INCLUDES per firm -->
