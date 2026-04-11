@@ -6848,12 +6848,24 @@ async function runAutoQueue(){
   let sent = 0, failed = 0, batchCount = 0;
   const startTime = Date.now();
 
+  let dailySent = getEmailSentToday();
+
   while(!_autoQueueAbort){
+    // Check daily limit
+    if(dailySent >= emailDailyLimit){
+      const qq2 = getEmailQueue();
+      const remaining = qq2 ? qq2.totalEmails - qq2.sentIndex : 0;
+      toast(`Limite diário atingido (${emailDailyLimit}). ${remaining} restantes na fila. Continue amanhã.`,'warn');
+      updateAutoStatus(`Limite diário (${emailDailyLimit}) atingido. ${remaining} restantes. Continue amanhã.`);
+      break;
+    }
+
     const qq = getEmailQueue();
     if(!qq || qq.sentIndex >= qq.totalEmails) break;
 
     const start = qq.sentIndex;
-    const end = Math.min(start + AUTO_BATCH_SIZE, qq.totalEmails);
+    const maxByLimit = emailDailyLimit - dailySent;
+    const end = Math.min(start + Math.min(AUTO_BATCH_SIZE, maxByLimit), qq.totalEmails);
     const batch = qq.emails.slice(start, end);
     if(!batch.length) break;
 
@@ -6902,6 +6914,7 @@ async function runAutoQueue(){
 
     sent += batchSent;
     failed += batchFailed;
+    dailySent += batchSent;
     batchCount++;
 
     // Update queue position
