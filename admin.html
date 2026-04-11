@@ -4828,23 +4828,31 @@ const INST_TEMPLATES = {
   },
   'site-invite': {
     color: '#FF6F00',
-    image: 'img/email-site-invite.jpeg',
-    subject: { pt:'O site que os traders não compartilham', en:'The site traders don\'t share', es:'El sitio que los traders no comparten', fr:'Le site que les traders ne partagent pas', de:'Die Seite die Trader nicht teilen', it:'Il sito che i trader non condividono', ar:'الموقع الذي لا يشاركه المتداولون' },
-    greeting: { pt:'Olá, Trader.', en:'Hey, Trader.', es:'Hola, Trader.', fr:'Bonjour, Trader.', de:'Hallo, Trader.', it:'Ciao, Trader.', ar:'مرحباً أيها المتداول.' },
+    image: '',
+    subject: { pt:'Conta de $25K por $19,90 — cupom exclusivo', en:'$25K account for $19.90 — exclusive coupon', es:'Cuenta de $25K por $19,90 — cupón exclusivo', fr:'Compte de $25K pour $19,90 — coupon exclusif', de:'$25K Konto für $19,90 — exklusiver Gutschein', it:'Conto da $25K a $19,90 — coupon esclusivo', ar:'حساب $25K بسعر $19.90 — كوبون حصري' },
+    greeting: { pt:'', en:'', es:'', fr:'', de:'', it:'', ar:'' },
     icon: '',
     title: { pt:'', en:'', es:'', fr:'', de:'', it:'', ar:'' },
     body: {
-      pt:'Você sabia que é possível começar a operar em uma Prop Firm de $25K pagando menos de $19,90? No MarketsCoupons, reunimos os <b>melhores cupons exclusivos</b> — negociados diretamente com Apex, Bulenox, FTMO, FundedNext e outras — para que você economize até 90% na sua avaliação.',
-      en:'Did you know you can start trading a $25K Prop Firm account for less than $19.90? At MarketsCoupons, we gather the <b>best exclusive coupons</b> — negotiated directly with Apex, Bulenox, FTMO, FundedNext and others — so you save up to 90% on your evaluation.',
-      es:'¿Sabías que puedes empezar a operar en una Prop Firm de $25K pagando menos de $19,90? En MarketsCoupons, reunimos los <b>mejores cupones exclusivos</b> — negociados directamente con Apex, Bulenox, FTMO, FundedNext y otras — para que ahorres hasta 90%.',
-      fr:'Saviez-vous qu\'on peut commencer à trader un compte Prop Firm de $25K pour moins de $19,90 ? Chez MarketsCoupons, on réunit les <b>meilleurs coupons exclusifs</b> — négociés directement avec Apex, Bulenox, FTMO, FundedNext et d\'autres — pour économiser jusqu\'à 90%.',
-      de:'Wusstest du, dass du ein $25K Prop Firm Konto für weniger als $19,90 starten kannst? Bei MarketsCoupons sammeln wir die <b>besten exklusiven Gutscheine</b> — direkt mit Apex, Bulenox, FTMO, FundedNext und anderen verhandelt — damit du bis zu 90% sparst.',
-      it:'Sapevi che puoi iniziare a operare in una Prop Firm da $25K pagando meno di $19,90? Su MarketsCoupons, raccogliamo i <b>migliori coupon esclusivi</b> — negoziati direttamente con Apex, Bulenox, FTMO, FundedNext e altre — per farti risparmiare fino al 90%.',
-      ar:'هل تعلم أنه يمكنك بدء التداول في حساب Prop Firm بقيمة $25K بأقل من $19.90؟ في MarketsCoupons، نجمع <b>أفضل الكوبونات الحصرية</b> — تم التفاوض عليها مباشرة مع Apex وBulenox وFTMO وFundedNext وغيرها — لتوفر حتى 90%.'
+      pt:'Reunimos cupons exclusivos negociados direto com as firmas — até 90% de desconto na sua avaliação. Tudo verificado, atualizado diariamente e aplicado automaticamente no checkout.',
+      en:'We gather exclusive coupons negotiated directly with firms — up to 90% off your evaluation. All verified, updated daily and applied automatically at checkout.',
+      es:'Reunimos cupones exclusivos negociados directamente con las firmas — hasta 90% de descuento en tu evaluación. Todo verificado, actualizado diariamente y aplicado automáticamente en el checkout.',
+      fr:'On réunit des coupons exclusifs négociés directement avec les firmes — jusqu\'à 90% de réduction sur votre évaluation. Tout vérifié, mis à jour quotidiennement et appliqué automatiquement au checkout.',
+      de:'Wir sammeln exklusive Gutscheine direkt mit den Firmen verhandelt — bis zu 90% Rabatt auf deine Evaluierung. Alles verifiziert, täglich aktualisiert und automatisch beim Checkout angewendet.',
+      it:'Raccogliamo coupon esclusivi negoziati direttamente con le firme — fino al 90% di sconto sulla tua valutazione. Tutto verificato, aggiornato quotidianamente e applicato automaticamente al checkout.',
+      ar:'نجمع كوبونات حصرية تم التفاوض عليها مباشرة مع الشركات — خصم يصل إلى 90% على تقييمك. كل شيء موثق ومحدث يومياً ويُطبق تلقائياً عند الدفع.'
     },
-    features: { pt:[], en:[], es:[], fr:[], de:[], it:[], ar:[] },
-    closing: { pt:'Bulenox 100K por apenas $23,65 — cupom MARKET89 (89% OFF)', en:'Bulenox 100K for just $23.65 — coupon MARKET89 (89% OFF)', es:'Bulenox 100K por solo $23,65 — cupón MARKET89 (89% OFF)', fr:'Bulenox 100K pour seulement $23,65 — coupon MARKET89 (89% OFF)', de:'Bulenox 100K für nur $23,65 — Gutschein MARKET89 (89% OFF)', it:'Bulenox 100K a solo $23,65 — coupon MARKET89 (89% OFF)', ar:'Bulenox 100K بسعر $23.65 فقط — كوبون MARKET89 (89% OFF)' },
-    cta: { pt:'QUERO CONHECER', en:'CHECK IT OUT', es:'QUIERO VER', fr:'DÉCOUVRIR', de:'ANSEHEN', it:'VOGLIO VEDERE', ar:'أريد أن أرى' }
+    features: {
+      pt:['11+ Prop Firms com cupons exclusivos','Comparador lado a lado com Trustpilot real','Análise diária às 6h — ES, NQ, Ouro, Petróleo','Heatmap, Calendário Econômico e Calculadoras','Blog educacional do iniciante ao avançado'],
+      en:['11+ Prop Firms with exclusive coupons','Side-by-side comparator with real Trustpilot','Daily analysis at 6AM — ES, NQ, Gold, Oil','Heatmap, Economic Calendar and Calculators','Educational blog from beginner to advanced'],
+      es:['11+ Prop Firms con cupones exclusivos','Comparador lado a lado con Trustpilot real','Análisis diario a las 6h — ES, NQ, Oro, Petróleo','Heatmap, Calendario Económico y Calculadoras','Blog educacional del principiante al avanzado'],
+      fr:['11+ Prop Firms avec coupons exclusifs','Comparateur côte à côte avec Trustpilot réel','Analyse quotidienne à 6h — ES, NQ, Or, Pétrole','Heatmap, Calendrier Économique et Calculatrices','Blog éducatif du débutant à l\'avancé'],
+      de:['11+ Prop Firms mit exklusiven Gutscheinen','Vergleich nebeneinander mit echtem Trustpilot','Tägliche Analyse um 6 Uhr — ES, NQ, Gold, Öl','Heatmap, Wirtschaftskalender und Rechner','Bildungsblog vom Anfänger bis Fortgeschritten'],
+      it:['11+ Prop Firms con coupon esclusivi','Comparatore affiancato con Trustpilot reale','Analisi giornaliera alle 6 — ES, NQ, Oro, Petrolio','Heatmap, Calendario Economico e Calcolatrici','Blog educativo dal principiante all\'avanzato'],
+      ar:['11+ شركة Prop Firm مع كوبونات حصرية','مقارنة جنباً إلى جنب مع Trustpilot حقيقي','تحليل يومي الساعة 6 — ES, NQ, ذهب, نفط','خريطة حرارية, تقويم اقتصادي وحاسبات','مدونة تعليمية من المبتدئ إلى المتقدم']
+    },
+    closing: { pt:'', en:'', es:'', fr:'', de:'', it:'', ar:'' },
+    cta: { pt:'ACESSAR O SITE', en:'VISIT THE SITE', es:'ACCEDER AL SITIO', fr:'ACCÉDER AU SITE', de:'ZUR WEBSITE', it:'VISITA IL SITO', ar:'زيارة الموقع' }
   },
   loyalty: {
     color: '#7C3AED',
@@ -5012,75 +5020,68 @@ function buildInstitutionalHtml(name, lang='pt'){
   }
 
   if(name === 'site-invite'){
-    // v3 card helper: dark UI top (200px) + white info bottom (100px)
-    const siCard = (darkHtml, title, desc) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;border-radius:12px;overflow:hidden;border:1px solid #e8e8e8;" role="presentation">
-      <tr><td bgcolor="#111111" style="background-color:#111111;padding:14px;height:200px;vertical-align:top;" height="200">${darkHtml}</td></tr>
-      <tr><td bgcolor="#ffffff" style="background-color:#ffffff;padding:14px 16px;height:100px;vertical-align:top;" height="100">
-        <div style="font-family:${FI};font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:5px;">${title}</div>
-        <div style="font-family:${FI};font-size:11px;color:#888888;line-height:1.55;">${desc}</div>
-      </td></tr>
-    </table>`;
-
-    // ── Helpers ──
-    const firmCol = (off,nm,old,price,code) => `<td width="33%" style="padding:0 2px;"><table width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr><td bgcolor="#ff8c00" style="background-color:#ff8c00;border-radius:3px;padding:2px 0;text-align:center;"><span style="font-family:${FI};font-size:8px;font-weight:800;color:#000;">${off}</span></td></tr>
-      <tr><td height="4" style="font-size:0;">&nbsp;</td></tr>
-      <tr><td bgcolor="#1c1c1c" style="background-color:#1c1c1c;border-radius:6px;padding:8px;">
-        <p style="font-family:${FI};font-size:8px;color:#888;margin-bottom:2px;">${nm}</p>
-        <p style="font-family:${FI};font-size:8px;color:#555;text-decoration:line-through;">${old}</p>
-        <p style="font-family:${FI};font-size:14px;font-weight:800;color:#ff8c00;margin-bottom:4px;">${price}</p>
-        <span style="font-family:${FI};font-size:7px;background:#2a2a2a;color:#666;padding:2px 4px;border-radius:2px;">${code}</span>
-      </td></tr>
-    </table></td>`;
-    const siZn = (lbl,val,bg,clr) => `<td width="48%" style="padding:0 3px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${bg}" style="background-color:${bg};border-radius:3px;padding:5px 7px;"><p style="font-family:${FI};font-size:7px;color:${clr==='g'?'#4a6a4a':'#6a4a4a'};">${lbl}</p><p style="font-family:${FI};font-size:11px;font-weight:700;color:${clr==='g'?'#4caf70':'#e05050'};">${val}</p></td></tr></table></td>`;
-    const hmC = (tk,bg) => `<td bgcolor="${bg}" style="background-color:${bg};border-radius:3px;text-align:center;padding:5px 3px;"><span style="font-family:${FI};font-size:8px;color:rgba(255,255,255,0.75);">${tk}</span></td>`;
-    const hmB = (tk,bg) => `<td colspan="2" rowspan="2" bgcolor="${bg}" style="background-color:${bg};border-radius:4px;text-align:center;padding:10px 4px;"><span style="font-family:${FI};font-size:9px;font-weight:700;color:rgba(255,255,255,0.9);">${tk}</span></td>`;
-    const siFld = (lbl,val) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:4px;"><tr><td bgcolor="#1c1c1c" style="background-color:#1c1c1c;border-radius:3px;padding:4px 6px;"><span style="font-family:${FI};font-size:7px;color:#555;">${lbl}</span><br><span style="font-family:${FI};font-size:8px;color:#aaa;">${val}</span></td></tr></table>`;
-    const siOpt = (txt,sel) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:4px;"><tr><td bgcolor="${sel?'#1e1230':'#1a1a1a'}" style="background-color:${sel?'#1e1230':'#1a1a1a'};border:0.5px solid ${sel?'#7c5cbf':'#2a2a2a'};border-radius:3px;padding:5px 6px;"><span style="font-family:${FI};font-size:8px;color:${sel?'#c9a8ff':'#555'};">${txt}</span></td></tr></table>`;
-    const calR = (time,evt,impact,clr) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:4px;"><tr><td width="36" style="font-family:${FI};font-size:9px;font-weight:700;color:#888;">${time}</td><td style="font-family:${FI};font-size:9px;color:#ccc;">&#9679; ${evt}<br><span style="font-size:8px;color:#888;">USD — ${impact}</span></td></tr></table>`;
-    const blogR = (cat,catClr,ttl,meta) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border-radius:6px;margin-bottom:4px;"><tr><td style="padding:6px 8px;"><span style="font-family:${FI};font-size:6px;font-weight:700;color:${catClr};text-transform:uppercase;letter-spacing:.5px;">${cat}</span><br><span style="font-family:${FI};font-size:9px;font-weight:700;color:#ccc;line-height:1.3;">${ttl}</span><br><span style="font-family:${FI};font-size:7px;color:#555;">${meta}</span></td></tr></table>`;
-
     const T = (obj) => obj[lang]||obj.en||obj.pt||'';
 
-    // ── 8 cards ──
-    const c1 = siCard(`<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr valign="top">${firmCol('90% OFF','Apex Trader','$399','$39.90','MARKET')}${firmCol('89% OFF','Bulenox','$215','$23.65','MARKET89')}${firmCol('60% OFF','Earn2Trade','$350','$140','MKTCOUPONS')}</tr></table>`,
-      T({pt:'Ofertas e Cupons — 11+ Firmas',en:'Deals & Coupons — 11+ Firms',es:'Ofertas y Cupones — 11+ Firmas'}),
-      T({pt:'Cupons verificados e atualizados diariamente. Aplicados automaticamente no checkout.',en:'Verified coupons updated daily. Applied automatically at checkout.',es:'Cupones verificados y actualizados diariamente.'}));
+    // ── HERO dark com dados reais (substitui imagem AI) ──
+    const heroStat = (val,lbl) => `<td width="33%" align="center" style="padding:6px 4px;">
+      <div style="font-family:${FI};font-size:20px;font-weight:800;color:#fff;">${val}</div>
+      <div style="font-family:${FI};font-size:9px;color:#888;margin-top:2px;">${lbl}</div>
+    </td>`;
 
-    const c2 = siCard(`<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;"><tr><td><span style="font-family:${FI};font-size:9px;font-weight:700;color:#e0503a;">&#9679; ${T({pt:'AO VIVO',en:'LIVE',es:'EN VIVO'})}</span></td><td align="right"><span style="font-family:${FI};font-size:13px;font-weight:800;color:#fff;">5,621.50</span> <span style="font-family:${FI};font-size:9px;background:#1a3a20;color:#4caf70;padding:1px 5px;border-radius:3px;">+0.42%</span></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr><td bgcolor="#0d0d0d" style="background-color:#0d0d0d;border-radius:6px;padding:4px;"><svg width="100%" height="52" viewBox="0 0 220 52" xmlns="http://www.w3.org/2000/svg"><polyline points="0,46 25,38 55,28 85,22 110,14 135,20 160,11 190,16 220,7" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#1a1a1a" style="background-color:#1a1a1a;border-radius:5px;padding:6px 8px;"><p style="font-family:${FI};font-size:8px;color:#555;margin-bottom:3px;"><strong style="color:#ccc;">T</strong> Long ES 5820</p><p style="font-family:${FI};font-size:8px;color:#555;margin-bottom:3px;"><strong style="color:#ccc;">M</strong> NQ rompeu OB</p><p style="font-family:${FI};font-size:8px;color:#555;"><strong style="color:#ccc;">C</strong> TP1 bateu</p></td></tr></table>`,
-      T({pt:'Live Room VIP',en:'VIP Live Room',es:'Live Room VIP'}),
-      T({pt:'Sessões ao vivo com dados em tempo real e chat exclusivo para membros do programa de fidelidade.',en:'Live sessions with real-time data and exclusive chat for loyalty program members.',es:'Sesiones en vivo con datos en tiempo real y chat exclusivo.'}));
-
-    const c3 = siCard(`<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:6px;"><tr><td width="60">&nbsp;</td><td align="center" style="font-family:${FI};font-size:9px;font-weight:700;color:#ff8c00;">Apex</td><td align="center" style="font-family:${FI};font-size:9px;font-weight:700;color:#ff8c00;">Bulenox</td><td align="center" style="font-family:${FI};font-size:9px;font-weight:700;color:#ff8c00;">TPT</td></tr><tr><td>&nbsp;</td><td align="center" style="font-family:${FI};font-size:7px;color:#555;">4.4/18K</td><td align="center" style="font-family:${FI};font-size:7px;color:#555;">4.8/1.5K</td><td align="center" style="font-family:${FI};font-size:7px;color:#555;">4.4/8.5K</td></tr></table><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:0.5px solid #222;"><tr><td width="60" style="font-family:${FI};font-size:8px;color:#555;padding:5px 0;">${T({pt:'Desconto',en:'Discount',es:'Descuento'})}</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">89%</td><td align="center" style="font-family:${FI};font-size:8px;color:#ccc;padding:5px 0;">40%</td></tr><tr><td style="font-family:${FI};font-size:8px;color:#555;padding:5px 0;">100K</td><td align="center" style="font-family:${FI};font-size:8px;color:#ccc;padding:5px 0;">$39.90</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">$23.65</td><td align="center" style="font-family:${FI};font-size:8px;color:#ccc;padding:5px 0;">$198</td></tr><tr><td style="font-family:${FI};font-size:8px;color:#555;padding:5px 0;">Drawdown</td><td align="center" style="font-family:${FI};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${FI};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">EOD</td></tr><tr><td style="font-family:${FI};font-size:8px;color:#555;padding:5px 0;">Split</td><td align="center" style="font-family:${FI};font-size:8px;color:#ccc;padding:5px 0;">100%</td><td align="center" style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${FI};font-size:8px;color:#ccc;padding:5px 0;">80%</td></tr></table><table cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;"><tr><td bgcolor="#1a3a20" style="background-color:#1a3a20;border-radius:3px;padding:4px 8px;"><span style="font-family:${FI};font-size:8px;color:#4caf70;font-weight:700;">${T({pt:'Vencedor: Bulenox',en:'Winner: Bulenox',es:'Ganador: Bulenox'})}</span></td></tr></table>`,
-      T({pt:'Comparador de Prop Firms',en:'Prop Firm Comparator',es:'Comparador de Prop Firms'}),
-      T({pt:'Compare drawdown, split, preço e regras lado a lado. Nota Trustpilot real de cada firma.',en:'Compare drawdown, split, price and rules side by side. Real Trustpilot rating for each firm.',es:'Compara drawdown, split, precio y reglas lado a lado.'}));
-
-    const c4 = siCard(`<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr><td><span style="font-family:${FI};font-size:13px;font-weight:700;color:#fff;">ES</span> <span style="font-family:${FI};font-size:8px;color:#666;">S&amp;P 500</span></td><td align="right"><span style="font-family:${FI};font-size:7px;font-weight:700;background:#1a3a20;color:#4caf70;padding:2px 5px;border-radius:3px;">BULLISH</span></td></tr><tr><td colspan="2"><span style="font-family:${FI};font-size:11px;font-weight:700;color:#fff;">5,621.50</span></td></tr></table><p style="font-family:${FI};font-size:8px;color:#666;line-height:1.6;margin-bottom:10px;">ES testa suporte em 5580. FVG no 4H como zona de interesse. FOMC confirma pausa nos juros.</p><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${siZn(T({pt:'SUPORTE 1',en:'SUPPORT 1',es:'SOPORTE 1'}),'5,580','#1a3a20','g')}${siZn(T({pt:'RESIST. 1',en:'RESIST. 1',es:'RESIST. 1'}),'5,650','#3a1a1a','r')}</tr><tr><td height="5" colspan="2">&nbsp;</td></tr><tr>${siZn(T({pt:'SUPORTE 2',en:'SUPPORT 2',es:'SOPORTE 2'}),'5,540','#1a3a20','g')}${siZn(T({pt:'RESIST. 2',en:'RESIST. 2',es:'RESIST. 2'}),'5,700','#3a1a1a','r')}</tr></table>`,
-      T({pt:'Análise Diária de Mercado',en:'Daily Market Analysis',es:'Análisis Diario de Mercado'}),
-      T({pt:'ES, NQ, Petróleo e Ouro todo dia às 6h. Bias, suportes, resistências e contexto macro.',en:'ES, NQ, Oil and Gold daily at 6AM. Bias, supports, resistances and macro context.',es:'ES, NQ, Petróleo y Oro todos los días a las 6h.'}));
-
-    const c5 = siCard(`<p style="font-family:${FI};font-size:8px;color:#555;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">${T({pt:'S&amp;P 500 — Tempo real',en:'S&amp;P 500 — Real time',es:'S&amp;P 500 — Tiempo real'})}</p><table width="100%" cellpadding="3" cellspacing="3" border="0"><tr>${hmB('NVDA<br>+2.6%','#1a5c1a')}${hmC('AAPL','#8b1a1a')}${hmC('MSFT','#8b1a1a')}</tr><tr>${hmC('AMD','#1a3d1a')}${hmC('GOOGL','#8b1a1a')}</tr><tr>${hmC('TSLA','#6b1a1a')}${hmC('META','#3a7a3a')}${hmC('AMZN','#1a5c1a')}${hmC('JPM','#1a2e1a')}</tr></table>`,
-      T({pt:'Mapa de Calor',en:'Heat Map',es:'Mapa de Calor'}),
-      T({pt:'S&P 500, Nasdaq, Global e Cripto em tempo real. Veja o mercado inteiro de um relance.',en:'S&P 500, Nasdaq, Global and Crypto in real time. See the entire market at a glance.',es:'S&P 500, Nasdaq, Global y Crypto en tiempo real.'}));
-
-    const c6 = siCard(`<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr valign="top"><td width="105" style="padding-right:8px;border-right:0.5px solid #222;"><p style="font-family:${FI};font-size:7px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Position Size</p>${siFld(T({pt:'Conta',en:'Account',es:'Cuenta'}),'$50,000')}${siFld(T({pt:'Risco %',en:'Risk %',es:'Riesgo %'}),'1.5%')}${siFld('Stop Loss','25 pts')}<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:6px;"><tr><td bgcolor="#1e1600" style="background-color:#1e1600;border-radius:3px;padding:5px 6px;"><span style="font-family:${FI};font-size:7px;color:#666;">${T({pt:'Risco $',en:'Risk $',es:'Riesgo $'})}</span><br><span style="font-family:${FI};font-size:14px;font-weight:800;color:#ff8c00;">$750</span></td></tr></table></td><td width="105" style="padding-left:8px;"><p style="font-family:${FI};font-size:7px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">${T({pt:'Quiz — Firma',en:'Quiz — Firm',es:'Quiz — Firma'})}</p><p style="font-family:${FI};font-size:8px;color:#ccc;margin-bottom:7px;">${T({pt:'Qual mercado você opera?',en:'Which market do you trade?',es:'¿Qué mercado operas?'})}</p>${siOpt(T({pt:'Futuros (ES, NQ)',en:'Futures (ES, NQ)',es:'Futuros (ES, NQ)'}),true)}${siOpt('Forex')}${siOpt(T({pt:'Ambos',en:'Both',es:'Ambos'}))}</td></tr></table>`,
-      T({pt:'Position Size e Quiz',en:'Position Size & Quiz',es:'Position Size y Quiz'}),
-      T({pt:'Calcule o tamanho ideal de cada trade e descubra qual firma combina com seu perfil em 2 minutos.',en:'Calculate the ideal size for each trade and find which firm matches your profile in 2 minutes.',es:'Calcula el tamaño ideal de cada trade y descubre cuál firma combina con tu perfil.'}));
-
-    const c7 = siCard(`${blogR(T({pt:'Iniciante',en:'Beginner',es:'Principiante'}),'#4caf70',T({pt:'Sua Primeira Prop Firm: Guia Completo 2025',en:'Your First Prop Firm: Complete Guide 2025',es:'Tu Primera Prop Firm: Guía Completa 2025'}),T({pt:'12 min leitura',en:'12 min read',es:'12 min lectura'}))}${blogR(T({pt:'Intermediário',en:'Intermediate',es:'Intermedio'}),'#ff8c00',T({pt:'Trailing vs Static Drawdown: qual escolher',en:'Trailing vs Static Drawdown: which to choose',es:'Trailing vs Static Drawdown: cuál elegir'}),T({pt:'8 min leitura',en:'8 min read',es:'8 min lectura'}))}${blogR(T({pt:'Avançado',en:'Advanced',es:'Avanzado'}),'#a855f7',T({pt:'Order Flow + Delta: leitura institucional',en:'Order Flow + Delta: institutional reading',es:'Order Flow + Delta: lectura institucional'}),T({pt:'15 min leitura',en:'15 min read',es:'15 min lectura'}))}`,
-      T({pt:'Blog e Guias',en:'Blog & Guides',es:'Blog y Guías'}),
-      T({pt:'Conteúdo educacional do iniciante ao avançado, em 7 idiomas. Novo artigo toda semana.',en:'Educational content from beginner to advanced, in 7 languages. New article every week.',es:'Contenido educacional del principiante al avanzado, en 7 idiomas.'}));
-
-    const c8 = siCard(`${calR('08:30','Non-Farm Payrolls',T({pt:'alto impacto',en:'high impact',es:'alto impacto'}))}${calR('10:00','ISM Manufacturing',T({pt:'médio impacto',en:'medium impact',es:'medio impacto'}))}${calR('11:30','Crude Oil Inventories',T({pt:'médio impacto',en:'medium impact',es:'medio impacto'}))}${calR('14:00','FOMC Minutes',T({pt:'alto impacto',en:'high impact',es:'alto impacto'}))}`,
-      T({pt:'Calendário Econômico',en:'Economic Calendar',es:'Calendario Económico'}),
-      T({pt:'Eventos de alto impacto filtrados por moeda. Nunca mais seja pego de surpresa pelo mercado.',en:'High-impact events filtered by currency. Never be caught off guard by the market again.',es:'Eventos de alto impacto filtrados por moneda.'}));
-
-    // Section title
-    const secTitle = T({pt:'O que você encontra no site',en:'What you\'ll find on the site',es:'Lo que encontrarás en el sitio'});
-    cardsHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
-      <tr><td style="text-align:center;padding:4px 0 16px;"><div style="font-family:${FI};font-size:16px;font-weight:700;color:${DARK};">${secTitle}</div></td></tr>
-      <tr><td>${c1}${c2}${c3}${c4}${c5}${c6}${c7}${c8}</td></tr>
+    const heroHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0d0d0d" role="presentation">
+      <tr><td bgcolor="#0d0d0d" style="background-color:#0d0d0d;padding:28px 20px 24px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          ${heroStat(T({pt:'11+',en:'11+',es:'11+'}),T({pt:'Prop Firms',en:'Prop Firms',es:'Prop Firms'}))}
+          ${heroStat(T({pt:'90%',en:'90%',es:'90%'}),T({pt:'de desconto',en:'discount',es:'de descuento'}))}
+          ${heroStat(T({pt:'$19,90',en:'$19.90',es:'$19,90'}),T({pt:'conta 25K',en:'25K account',es:'cuenta 25K'}))}
+        </tr></table>
+        <div style="border-top:1px solid #222;margin:16px 0 0;padding-top:14px;text-align:center;">
+          <span style="font-family:${FI};font-size:11px;color:#666;">${T({pt:'Cupons exclusivos negociados direto com as firmas',en:'Exclusive coupons negotiated directly with firms',es:'Cupones exclusivos negociados directo con las firmas'})}</span>
+        </div>
+      </td></tr>
     </table>`;
+
+    // ── 3 firm cards (dados precisos) ──
+    const firmCard = (name,off,old,price,code,clr) => `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8f8f8;border-radius:8px;border:1px solid #eee;margin-bottom:8px;" role="presentation">
+      <tr><td style="padding:12px 14px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td><div style="font-family:${FI};font-size:13px;font-weight:700;color:#1a1a1a;">${name}</div>
+          <div style="font-family:${FI};font-size:11px;color:#999;margin-top:1px;"><s>${old}</s></div></td>
+          <td align="right">
+            <div style="font-family:${FI};font-size:18px;font-weight:800;color:${clr};">${price}</div>
+            <div style="font-family:${FI};font-size:9px;color:#999;margin-top:1px;">100K · ${off}</div>
+          </td>
+        </tr></table>
+        <div style="margin-top:8px;background:#1a1a1a;border-radius:4px;padding:5px 10px;display:inline-block;">
+          <span style="font-family:${FI};font-size:10px;color:#888;">${T({pt:'Cupom:',en:'Coupon:',es:'Cupón:'})}</span>
+          <span style="font-family:${FI};font-size:11px;font-weight:700;color:#fff;letter-spacing:1px;">${code}</span>
+        </div>
+      </td></tr>
+    </table>`;
+
+    const firmsHtml = firmCard('Apex Trader Funding','90% OFF','$399','$39.90','MARKET','#F97316')
+      + firmCard('Bulenox','89% OFF','$215','$23.65','MARKET89','#22c55e')
+      + firmCard('Earn2Trade','60% OFF','$350','$140','MKTCOUPONS','#3b82f6');
+
+    // ── HIGHLIGHT BOX (closer antes do CTA) ──
+    const highlightHtml = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0 4px;border-radius:8px;overflow:hidden;" role="presentation">
+      <tr><td bgcolor="#FF6F00" style="background-color:#FF6F00;padding:3px;text-align:center;">
+        <span style="font-family:${FI};font-size:9px;font-weight:800;color:#fff;letter-spacing:1px;">${T({pt:'MELHOR OFERTA DO MOMENTO',en:'BEST DEAL RIGHT NOW',es:'MEJOR OFERTA DEL MOMENTO'})}</span>
+      </td></tr>
+      <tr><td bgcolor="#1a1a1a" style="background-color:#1a1a1a;padding:16px 20px;text-align:center;">
+        <div style="font-family:${FI};font-size:13px;color:#999;">Bulenox 100K</div>
+        <div style="font-family:${FI};font-size:28px;font-weight:800;color:#22c55e;margin:4px 0;">$23,65</div>
+        <div style="font-family:${FI};font-size:11px;color:#666;">${T({pt:'cupom',en:'coupon',es:'cupón'})} <span style="color:#fff;font-weight:700;">MARKET89</span> · 89% OFF</div>
+      </td></tr>
+    </table>`;
+
+    cardsHtml = `
+      ${heroHtml}
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0 8px;" role="presentation">
+        <tr><td style="text-align:center;"><div style="font-family:${FI};font-size:10px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:2px;">${T({pt:'OFERTAS EM DESTAQUE',en:'FEATURED DEALS',es:'OFERTAS DESTACADAS'})}</div></td></tr>
+      </table>
+      ${firmsHtml}
+      ${highlightHtml}`;
   }
 
   if(name === 'loyalty'){
@@ -5218,7 +5219,7 @@ ${t.image ? `<tr><td style="font-size:0;line-height:0;">
     <tr><td align="center">
       <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="https://www.marketscoupons.com" style="height:48px;width:400px;" arcsize="17%" fillcolor="${color}"><v:textbox inset="0,0,0,0"><center style="color:#fff;font-family:Arial;font-size:15px;font-weight:700;">${gt(t.cta)} &#8594;</center></v:textbox></v:roundrect><![endif]-->
       <!--[if !mso]><!-->
-      <a href="https://www.marketscoupons.com" target="_blank" style="display:block;background-color:${color};border-radius:8px;padding:14px;text-align:center;text-decoration:none;font-family:${FI};">
+      <a href="https://www.marketscoupons.com" target="_blank" style="display:block;background-color:${color};border-radius:50px;padding:14px;text-align:center;text-decoration:none;font-family:${FI};">
         <span style="color:#fff;font-size:15px;font-weight:700;font-family:${FI};">${gt(t.cta)} &#8594;</span>
       </a>
       <!--<![endif]-->
