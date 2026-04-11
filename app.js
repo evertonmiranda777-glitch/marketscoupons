@@ -3324,32 +3324,88 @@ async function loadFirmsFromSupabase() {
       // Overlay data (about_html, detail_plans, bg_image) loaded lazily via loadFirmOverlayData()
     });
 
-    // Map → CHECKOUT_FIRMS format
-    CHECKOUT_FIRMS.length = 0;
-    data.filter(f => f.checkout_plans?.length).forEach(f => {
-      const urlTpl = f.checkout_url_template || f.link || '#';
-      CHECKOUT_FIRMS.push({
-        id: f.id, name: f.name, short: f.short_name || f.icon,
-        coupon: f.coupon || null,
-        discount: f.discount + '%',
-        color: f.color, bg: f.bg || f.color + '1F',
-        platforms: Array.isArray(f.checkout_platforms) ? f.checkout_platforms : (Array.isArray(f.platforms) ? f.platforms : []),
-        types: Array.isArray(f.checkout_types) ? f.checkout_types : ['Standard'],
-        plans: f.checkout_plans || [],
-        includes: Array.isArray(f.checkout_includes) ? f.checkout_includes : [],
-        buildUrl: (size, type, plat) => {
-          // Interpolate template: ${size}, ${type}, ${plat} (lowercase+dash) and ${SIZE}, ${TYPE}, ${PLAT} (original)
-          try {
-            return urlTpl
-              .replace(/\$\{size\}/g, size.toLowerCase().replace(/\s+/g,'-'))
-              .replace(/\$\{type\}/g, type.toLowerCase().replace(/\s+/g,'-'))
-              .replace(/\$\{plat\}/g, plat.toLowerCase().replace(/\s+/g,'-'))
-              .replace(/\$\{SIZE\}/g, size)
-              .replace(/\$\{TYPE\}/g, type)
-              .replace(/\$\{PLAT\}/g, plat);
-          } catch(e) { return urlTpl; }
-        },
-      });
+    // ── Sync FIRM_ABOUT plans from FIRMS prices (single source of truth) ──
+    FIRMS.forEach(f => {
+      const fa = FIRM_ABOUT[f.id];
+      if (!fa) return;
+      // Build plans object grouped by type from prices array
+      if (f.price_types && f.price_types.length >= 2) {
+        // Firm has 2 price columns (e.g. Apex Intraday/EOD with n/o + n2/o2)
+        const t1 = fa.types?.[0] || f.price_types[0];
+        const t2 = fa.types?.[1] || f.price_types[1];
+        fa.plans = {};
+        fa.plans[t1] = f.prices.map(p => ({s:p.a, d:p.n, o:p.o, pop: fa.plans?.[t1]?.find(x=>x.s===p.a)?.pop ? 1 : undefined}));
+        fa.plans[t2] = f.prices.map(p => ({s:p.a, d:p.n2||p.n, o:p.o2||p.o, pop: fa.plans?.[t2]?.find(x=>x.s===p.a)?.pop ? 1 : undefined}));
+      } else if (fa.types && fa.types.length > 1) {
+        // Multiple types but prices have type in the "a" field (e.g. "Stellar 2-Step 25K")
+        const newPlans = {};
+        fa.types.forEach(tp => { newPlans[tp] = []; });
+        f.prices.forEach(p => {
+          // Match price to type by checking if "a" starts with type name
+          let matched = false;
+          for (const tp of fa.types) {
+            if (p.a.toLowerCase().startsWith(tp.toLowerCase().replace(/ ?\(.*\)/, '').trim().toLowerCase())) {
+              const label = p.a.replace(new RegExp('^' + tp.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*', 'i'), '').trim() || p.a;
+              newPlans[tp].push({s: label || p.a, d: p.n, o: p.o});
+              matched = true;
+              break;
+            }
+          }
+          if (!matched && fa.types[0]) {
+            newPlans[fa.types[0]].push({s: p.a, d: p.n, o: p.o});
+          }
+        });
+        // Preserve pop flags from original plans
+        const origPlans = fa.plans || {};
+        fa.types.forEach(tp => {
+          const orig = origPlans[tp] || [];
+          newPlans[tp].forEach(p => {
+            const op = orig.find(x => x.s === p.s);
+            if (op?.pop) p.pop = 1;
+          });
+          // Auto-pop the middle plan if none has pop
+          if (newPlans[tp].length && !newPlans[tp].some(x=>x.pop)) {
+            const mid = Math.floor(newPlans[tp].length / 2);
+            newPlans[tp][mid].pop = 1;
+          }
+        });
+        fa.plans = newPlans;
+      } else {
+        // Single type — all prices under first type
+        const tp = (fa.types && fa.types[0]) || 'Standard';
+        const orig = (fa.plans && fa.plans[tp]) || [];
+        fa.plans = {};
+        fa.plans[tp] = f.prices.map(p => {
+          const op = orig.find(x => x.s === p.a);
+          return {s: p.a, d: p.n, o: p.o, pop: op?.pop};
+        });
+        if (!fa.plans[tp].some(x=>x.pop) && fa.plans[tp].length) {
+          fa.plans[tp][Math.floor(fa.plans[tp].length / 2)].pop = 1;
+        }
+      }
+    });
+
+    // ── Sync CHECKOUT_FIRMS plansByType from FIRMS prices ──
+    CHECKOUT_FIRMS.forEach(cf => {
+      const firm = FIRMS.find(x => x.id === cf.id);
+      if (!firm) return;
+      // Update basic data
+      cf.discount = firm.discount + '%';
+      cf.coupon = firm.coupon || null;
+      cf.platforms = firm.platforms || cf.platforms;
+      // Rebuild plansByType from FIRM_ABOUT if available (has goal/maxDD), else from FIRMS prices
+      const fa = FIRM_ABOUT[cf.id];
+      if (fa?.plans && cf.plansByType) {
+        // Sync prices from FIRM_ABOUT (which was just synced from Supabase)
+        Object.keys(cf.plansByType).forEach(tp => {
+          const faPlans = fa.plans[tp];
+          if (!faPlans) return;
+          cf.plansByType[tp].forEach(p => {
+            const fp = faPlans.find(x => x.s === p.size || x.s.includes(p.size));
+            if (fp) { p.disc = fp.d; p.orig = fp.o; }
+          });
+        });
+      }
     });
 
     // Rebuild achState for new firms
