@@ -1,6 +1,6 @@
-// Vercel Serverless Function — Send emails via Brevo API
+// Vercel Serverless Function — Send emails via Brevo + Resend (round-robin fallback)
 // POST /api/send-email
-// Body: { to: [{email, name}], subject, htmlContent, sender?: {name, email}, tags?: [] }
+// Body: { to: [{email, name}], subject, htmlContent, sender?: {name, email}, tags?: [], provider?: 'brevo'|'resend'|'auto' }
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
-  if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
+  const RESEND_KEY = process.env.RESEND_API_KEY;
 
   // Auth: validate JWT and verify admin role
   const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
@@ -62,7 +62,7 @@ module.exports = async (req, res) => {
   const contentLength = parseInt(req.headers['content-length'] || '0', 10);
   if (contentLength > 512000) return res.status(413).json({ error: 'Payload too large (max 500KB)' });
 
-  const { to, subject, htmlContent, textContent, sender, tags } = req.body;
+  const { to, subject, htmlContent, textContent, sender, tags, provider } = req.body;
   if (!to || !to.length || !subject || (!htmlContent && !textContent)) {
     return res.status(400).json({ error: 'Missing required fields: to, subject, htmlContent or textContent' });
   }
@@ -81,62 +81,94 @@ module.exports = async (req, res) => {
 
   const senderInfo = sender || { name: 'Lara | MarketsCoupons', email: 'lara@marketscoupons.com' };
 
-  // Brevo: batch send (max 50 per request, we chunk)
-  const results = [];
-  const chunks = [];
-  for (let i = 0; i < to.length; i += 50) {
-    chunks.push(to.slice(i, i + 50));
+  // Send via Brevo
+  async function sendViaBrevo(recipient, finalSubject, finalHtml) {
+    if (!BREVO_KEY) return { email: recipient.email, status: 'skipped', provider: 'brevo', response: { error: 'no key' } };
+    const body = {
+      sender: senderInfo,
+      to: [{ email: recipient.email, name: recipient.name || 'Trader' }],
+      subject: finalSubject,
+      htmlContent: finalHtml,
+      tags: tags || ['campaign'],
+    };
+    const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
+      body: JSON.stringify(body),
+    });
+    const data = await resp.json();
+    console.log(`[BREVO] ${recipient.email} → ${resp.status}`);
+    return { email: recipient.email, status: resp.ok ? 'sent' : 'failed', provider: 'brevo', response: data };
   }
 
-  for (const chunk of chunks) {
+  // Send via Resend
+  async function sendViaResend(recipient, finalSubject, finalHtml) {
+    if (!RESEND_KEY) return { email: recipient.email, status: 'skipped', provider: 'resend', response: { error: 'no key' } };
+    const body = {
+      from: `${senderInfo.name} <${senderInfo.email}>`,
+      to: [recipient.email],
+      subject: finalSubject,
+      html: finalHtml,
+      tags: (tags || ['campaign']).map(t => ({ name: 'tag', value: t })),
+    };
+    const resp = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+      body: JSON.stringify(body),
+    });
+    const data = await resp.json();
+    console.log(`[RESEND] ${recipient.email} → ${resp.status}`);
+    return { email: recipient.email, status: resp.ok ? 'sent' : 'failed', provider: 'resend', response: data };
+  }
+
+  // Determine provider: 'brevo', 'resend', or 'auto' (brevo first, fallback to resend)
+  const useProvider = provider || 'auto';
+
+  const results = [];
+  for (const recipient of to) {
+    const finalSubject = subject
+      .replace(/{nome}/g, recipient.name || 'Trader')
+      .replace(/{email}/g, recipient.email || '');
+    const finalHtml = (htmlContent || textToHtml(textContent))
+      .replace(/{nome}/g, recipient.name || 'Trader')
+      .replace(/{email}/g, recipient.email || '')
+      .replace(/{cupom}/g, recipient.cupom || 'MARKET')
+      .replace(/{firma}/g, recipient.firma || '')
+      .replace(/{link}/g, 'https://www.marketscoupons.com');
+
+    let result;
     try {
-      // Use transactional email for each recipient (personalized)
-      for (const recipient of chunk) {
-        const body = {
-          sender: senderInfo,
-          to: [{ email: recipient.email, name: recipient.name || 'Trader' }],
-          subject: subject
-            .replace(/{nome}/g, recipient.name || 'Trader')
-            .replace(/{email}/g, recipient.email || ''),
-          htmlContent: (htmlContent || textToHtml(textContent))
-            .replace(/{nome}/g, recipient.name || 'Trader')
-            .replace(/{email}/g, recipient.email || '')
-            .replace(/{cupom}/g, recipient.cupom || 'MARKET')
-            .replace(/{firma}/g, recipient.firma || '')
-            .replace(/{link}/g, 'https://www.marketscoupons.com'),
-          tags: tags || ['campaign'],
-        };
-
-        const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
-          method: 'POST',
-          headers: {
-            'accept': 'application/json',
-            'content-type': 'application/json',
-            'api-key': BREVO_KEY,
-          },
-          body: JSON.stringify(body),
-        });
-
-        const data = await resp.json();
-        console.log(`[BREVO] ${recipient.email} → status=${resp.status} response=${JSON.stringify(data)}`);
-        results.push({ email: recipient.email, status: resp.ok ? 'sent' : 'failed', response: data });
-
-        // Small delay to avoid rate limiting
-        if (chunk.length > 10) await new Promise(r => setTimeout(r, 100));
+      if (useProvider === 'resend') {
+        result = await sendViaResend(recipient, finalSubject, finalHtml);
+      } else if (useProvider === 'brevo') {
+        result = await sendViaBrevo(recipient, finalSubject, finalHtml);
+      } else {
+        // Auto: try Brevo first, fallback to Resend on failure
+        result = await sendViaBrevo(recipient, finalSubject, finalHtml);
+        if (result.status === 'failed' && RESEND_KEY) {
+          console.log(`[AUTO] Brevo failed for ${recipient.email}, trying Resend...`);
+          result = await sendViaResend(recipient, finalSubject, finalHtml);
+        }
       }
     } catch (err) {
-      results.push({ error: err.message });
+      result = { email: recipient.email, status: 'failed', error: err.message };
     }
+    results.push(result);
+
+    // Small delay to avoid rate limiting
+    if (to.length > 10) await new Promise(r => setTimeout(r, 100));
   }
 
   const sent = results.filter(r => r.status === 'sent').length;
   const failed = results.filter(r => r.status === 'failed').length;
+  const providers = { brevo: results.filter(r => r.provider === 'brevo' && r.status === 'sent').length, resend: results.filter(r => r.provider === 'resend' && r.status === 'sent').length };
 
   return res.status(200).json({
     success: true,
     total: to.length,
     sent,
     failed,
+    providers,
     results,
   });
 };
