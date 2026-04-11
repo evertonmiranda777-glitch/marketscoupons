@@ -1301,8 +1301,8 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div class="ec-field">
        <label>Limite diario</label>
        <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
-         <input type="number" id="em-daily-limit" value="300" min="1" max="100000" style="width:80px;text-align:center;" onchange="emailDailyLimit=parseInt(this.value)||300;updateDailyLimitUI();">
-         <div style="font-size:9px;color:var(--t3);">emails/dia (Brevo Free: 300)</div>
+         <input type="number" id="em-daily-limit" value="400" min="1" max="100000" style="width:80px;text-align:center;" onchange="emailDailyLimit=parseInt(this.value)||400;updateDailyLimitUI();">
+         <div style="font-size:9px;color:var(--t3);">emails/dia (Brevo 300 + Resend 100)</div>
        </div>
        <div id="daily-limit-info"></div>
      </div>
@@ -3665,7 +3665,7 @@ function renderGA4Data(d,days){
  */
 let emailSegments=['all'];
 let emailFirmaFilter=[];
-let emailDailyLimit=300; // Brevo free plan default
+let emailDailyLimit=400; // Brevo 300 + Resend 100 (round-robin)
 let emailSentToday=0;
 
 function getEmailSentToday(){
@@ -3759,7 +3759,7 @@ async function getSegmentedLeads(){
  let list=results.filter(r=>{if(seen.has(r.email))return false;seen.add(r.email);return true;});
  // Apply firma filter if any selected
  if(firmaFilter){
-  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'Take Profit Trader',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders'};
+  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'Take Profit Trader',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders Imperium'};
   list=list.filter(r=>{
    if(!r.firma && !(r.tags?.length)) return false;
    const f=r.firma?.toLowerCase()||'';
@@ -3894,13 +3894,18 @@ async function getEmailFirms(){
 
 async function renderEmailFirmaChips(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TPT',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TPT',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI'};
 
   // Import firma chips
   const importEl = document.getElementById('import-firma-chips');
   if(importEl){
     importEl.innerHTML = `<div class="seg-opt seg-firma sel" data-firma="" onclick="selectImportFirma(this,'')" style="--fc:var(--gold);">Todas</div>` +
       firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="selectImportFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
+  }
+
+  // Ensure subscribers are loaded (needed for custom tags)
+  if(!_subsList?.length){
+    try { _subsList = await loadSubscribers(); } catch(e){}
   }
 
   // Segmentation firma chips (firms + custom tags from subscribers)
