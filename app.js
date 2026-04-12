@@ -5608,6 +5608,8 @@ async function loadUserSession(user) {
   currentProfile = data;
   updateAuthUI(true);
   checkAnalysisGate();
+  if(_gexLoaded) checkGEXGate();
+  checkLoyaltyAndShowLive();
   checkProBadge();
   await loadUserFavs();
   applyF();
