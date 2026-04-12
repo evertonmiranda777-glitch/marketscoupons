@@ -2416,6 +2416,65 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .pending-notice strong{color:var(--gold);}
 
 @media(max-width:600px){.proof-grid{grid-template-columns:1fr;}.pm-grid{grid-template-columns:1fr;}}
+
+/* ============ TEAL NEBULA SKIN — section cards ============ */
+/* Deep navy gradient + cyan border + inset reflection,
+   applied to the large card containers across the site so all
+   sections (Telegram, Plataformas, Indicadores, Calendário,
+   Análise Diária, Gamma, Guias, Blog, Position Size) share
+   the same visual skin as the approved offer cards. */
+.hero-tg-cta,
+.plat-card,
+.gc,
+.bc,
+.ic,
+.ind-box,
+.da-card,
+.gx-asset-card,
+.blog-art-cta,
+.guide-art-cta,
+.calc-res,
+.calc-gate-form,
+.faq-item{
+  background:linear-gradient(180deg,#0B1318 0%,#07090D 100%) !important;
+  border:1px solid rgba(107,182,201,.22) !important;
+  box-shadow:0 0 0 1px rgba(74,144,164,.08) inset,0 1px 0 rgba(180,230,235,.08) inset,0 12px 30px -12px rgba(0,0,0,.6) !important;
+  position:relative;
+}
+.hero-tg-cta::after,
+.plat-card::after,
+.gc::before,
+.bc::before,
+.ic::before,
+.ind-box::before,
+.da-card::after,
+.gx-asset-card::before,
+.blog-art-cta::before,
+.guide-art-cta::before,
+.calc-res::before{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;
+  background:
+    radial-gradient(70% 50% at 80% 10%,rgba(107,182,201,.14),transparent 60%),
+    radial-gradient(60% 45% at 15% 95%,rgba(30,77,74,.18),transparent 65%);
+}
+.hero-tg-cta > *,
+.plat-card > *,
+.gc > *,
+.bc > *,
+.ic > *,
+.ind-box > *,
+.da-card > *,
+.gx-asset-card > *,
+.blog-art-cta > *,
+.guide-art-cta > *,
+.calc-res > *{position:relative;z-index:1;}
+.hero-tg-cta:hover,
+.plat-card:hover,
+.gc:hover,
+.bc:hover,
+.ic:hover,
+.da-card:hover,
+.gx-asset-card:hover{border-color:rgba(107,182,201,.38) !important;}
 </style>
 <script>
 // Ativar página correta ANTES do primeiro paint (evita flash da home)
