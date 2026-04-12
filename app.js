@@ -3087,7 +3087,7 @@ function openTpPopup(url) {
     var popup = window.open(url, 'trustpilotReviews', features);
     if (!popup || popup.closed) window.open(url, '_blank', 'noopener');
     else popup.focus();
-  } catch(e) { window.open(url, '_blank'); }
+  } catch(e) { window.open(url, '_blank', 'noopener,noreferrer'); }
   return false;
 }
 
@@ -3456,7 +3456,7 @@ async function loadFirmsFromSupabase() {
       achState[f.id] = {};
       achActiveType[f.id] = f.types[0] || '';
       _achAllPlans(f).forEach(p => {
-        achState[f.id][p.size] = { plat: f.platforms[0] || '' };
+        achState[f.id][p.size] = { type: f.types[0] || '', plat: f.platforms[0] || '' };
       });
     });
 
@@ -4511,7 +4511,7 @@ async function startCheckout(){
   // Disable button and show loading
   const btn=document.querySelector('[onclick="startCheckout()"]');
   const origText=btn?btn.textContent:'';
-  if(btn){btn.disabled=true;btn.textContent='Carregando...';}
+  if(btn){btn.disabled=true;btn.textContent=t('btn_loading');}
   try{
     const{data:{session},error:sessErr}=await db.auth.getSession();
     if(sessErr||!session){
