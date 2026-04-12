@@ -1846,11 +1846,10 @@ img{max-width:100%;}
 .imp.h{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.4);}
 .imp.m{background:var(--gold);}
 .imp.l{background:var(--green);}
-.cal-f-stars{font-size:10px;letter-spacing:.5px;flex-shrink:0;line-height:1;display:inline-block;}
+.cal-f-stars{font-size:11px;letter-spacing:1px;flex-shrink:0;line-height:1;display:inline-block;}
 .cal-f-stars.h{color:#ef4444;}
 .cal-f-stars.m{color:var(--gold);}
-.cal-f-stars.l{color:rgba(255,255,255,.45);}
-@media(max-width:600px){.cal-f-stars{font-size:8px;letter-spacing:0;}.cal-f{gap:3px;}}
+.cal-f-stars.l{color:rgba(255,255,255,.55);}
 @media(max-width:700px){
 .cal-wrap{padding:20px 16px 60px;}
 .cal-page-hd{margin-bottom:14px;}
@@ -2532,11 +2531,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .lv-cd-card > *{position:relative;z-index:1;}
 .lv-cd-num{font-size:28px;font-weight:800;color:var(--t1);font-variant-numeric:tabular-nums;}
 .lv-cd-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
-.lv-feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
-.lv-feat-card{border-radius:10px !important;padding:18px 14px;text-align:center;}
+.lv-feat-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.lv-feat-card{border-radius:10px !important;padding:14px 16px;display:flex;align-items:center;gap:14px;text-align:left;}
 .lv-feat-card > *{position:relative;z-index:1;}
-.lv-feat-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
-.lv-feat-title{font-size:13px;font-weight:700;margin-bottom:4px;color:var(--t1);}
+.lv-feat-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0;}
+.lv-feat-body{min-width:0;flex:1;}
+.lv-feat-title{font-size:13px;font-weight:700;margin-bottom:3px;color:var(--t1);}
 .lv-feat-desc{font-size:11px;color:var(--t3);line-height:1.5;}
 @media(max-width:600px){.lv-cd-num{font-size:22px;}.lv-cd-card{padding:12px 4px;}}
 </style>
@@ -3659,22 +3659,28 @@ document.addEventListener('DOMContentLoaded',function(){
      <div class="lv-feat-ico" style="background:rgba(240,180,41,.1);">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
      </div>
-     <div class="lv-feat-title" data-i18n="live_feat_stream">Live Streaming</div>
-     <div class="lv-feat-desc" data-i18n="live_feat_stream_desc">Exclusive real-time content during market hours for VIP members.</div>
+     <div class="lv-feat-body">
+      <div class="lv-feat-title" data-i18n="live_feat_stream">Live Streaming</div>
+      <div class="lv-feat-desc" data-i18n="live_feat_stream_desc">Exclusive real-time content during market hours for VIP members.</div>
+     </div>
     </div>
     <div class="lv-feat-card">
      <div class="lv-feat-ico" style="background:rgba(34,197,94,.1);">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
      </div>
-     <div class="lv-feat-title" data-i18n="live_feat_signals">Market Insights</div>
-     <div class="lv-feat-desc" data-i18n="live_feat_signals_desc">Key levels and market context updated in real time for futures.</div>
+     <div class="lv-feat-body">
+      <div class="lv-feat-title" data-i18n="live_feat_signals">Market Insights</div>
+      <div class="lv-feat-desc" data-i18n="live_feat_signals_desc">Key levels and market context updated in real time for futures.</div>
+     </div>
     </div>
     <div class="lv-feat-card">
      <div class="lv-feat-ico" style="background:rgba(59,130,246,.1);">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
      </div>
-     <div class="lv-feat-title" data-i18n="live_feat_community">VIP Community</div>
-     <div class="lv-feat-desc" data-i18n="live_feat_community_desc">Exclusive members-only space for sharing ideas and market discussions.</div>
+     <div class="lv-feat-body">
+      <div class="lv-feat-title" data-i18n="live_feat_community">VIP Community</div>
+      <div class="lv-feat-desc" data-i18n="live_feat_community_desc">Exclusive members-only space for sharing ideas and market discussions.</div>
+     </div>
     </div>
    </div>
 
