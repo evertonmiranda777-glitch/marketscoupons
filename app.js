@@ -3330,7 +3330,7 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) return; // fallback: keep hardcoded
@@ -3354,6 +3354,10 @@ async function loadFirmsFromSupabase() {
         badge: f.badge && f.badge.label ? f.badge : undefined,
         newsTrading: f.news_trading || false,
         day1Payout: f.day1_payout || false,
+        leverage: f.leverage || null,
+        consistency: f.consistency || null,
+        payoutSpeed: f.payout_speed || null,
+        maxAccounts: f.max_accounts || null,
       };
       if (f.trustpilot_url) {
         firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };
