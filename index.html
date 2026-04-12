@@ -1844,6 +1844,10 @@ img{max-width:100%;}
 .imp.h{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.4);}
 .imp.m{background:var(--gold);}
 .imp.l{background:var(--green);}
+.cal-f-stars{font-size:10px;letter-spacing:1px;flex-shrink:0;}
+.cal-f-stars.h{color:#ef4444;text-shadow:0 0 6px rgba(239,68,68,.4);}
+.cal-f-stars.m{color:var(--gold);text-shadow:0 0 6px rgba(240,180,41,.3);}
+.cal-f-stars.l{color:rgba(255,255,255,.45);}
 @media(max-width:700px){
 .cal-wrap{padding:20px 16px 60px;}
 .cal-page-hd{margin-bottom:14px;}
@@ -2439,7 +2443,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .calc-gate-form,
 .faq-item,
 .live-player,
-.ls-card{
+.ls-card,
+.cal-item{
   background:linear-gradient(180deg,#0B1318 0%,#07090D 100%) !important;
   border:1px solid rgba(107,182,201,.22) !important;
   box-shadow:0 0 0 1px rgba(74,144,164,.08) inset,0 1px 0 rgba(180,230,235,.08) inset,0 12px 30px -12px rgba(0,0,0,.6) !important;
@@ -3319,9 +3324,9 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="cal-filter-bar" id="cal-filters">
       <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">All</button>
       <span class="cal-sep"></span>
-      <button class="cal-f cal-f-h" data-filter="h" onclick="calFilter('h',this)"><span class="imp h"></span> <span data-i18n="cal_alto">High</span></button>
-      <button class="cal-f cal-f-m" data-filter="m" onclick="calFilter('m',this)"><span class="imp m"></span> <span data-i18n="cal_medio">Medium</span></button>
-      <button class="cal-f cal-f-l" data-filter="l" onclick="calFilter('l',this)"><span class="imp l"></span> <span data-i18n="cal_baixo">Low</span></button>
+      <button class="cal-f cal-f-h" data-filter="h" onclick="calFilter('h',this)"><span class="cal-f-stars h">★★★</span> <span data-i18n="cal_alto">High</span></button>
+      <button class="cal-f cal-f-m" data-filter="m" onclick="calFilter('m',this)"><span class="cal-f-stars m">★★☆</span> <span data-i18n="cal_medio">Medium</span></button>
+      <button class="cal-f cal-f-l" data-filter="l" onclick="calFilter('l',this)"><span class="cal-f-stars l">★☆☆</span> <span data-i18n="cal_baixo">Low</span></button>
       <span class="cal-sep"></span>
       <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">USD</button>
       <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">EUR</button>
