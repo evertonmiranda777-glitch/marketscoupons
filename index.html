@@ -1841,23 +1841,24 @@ img{max-width:100%;}
 .cal-stars{font-size:12px;letter-spacing:1px;flex-shrink:0;text-align:center;white-space:nowrap;}
 .cal-stars.h{color:#ef4444;text-shadow:0 0 6px rgba(239,68,68,.4);}
 .cal-stars.m{color:var(--gold);text-shadow:0 0 6px rgba(240,180,41,.3);}
-.cal-stars.l{color:rgba(255,255,255,.35);}
+.cal-stars.l{color:rgba(255,255,255,.75);}
 .imp{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .imp.h{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.4);}
 .imp.m{background:var(--gold);}
 .imp.l{background:var(--green);}
-.cal-f-stars{font-size:11px;letter-spacing:1px;flex-shrink:0;line-height:1;display:inline-block;}
+.cal-f-stars{font-size:12px;letter-spacing:1.5px;flex-shrink:0;line-height:1;display:inline-block;}
 .cal-f-stars.h{color:#ef4444;}
 .cal-f-stars.m{color:var(--gold);}
-.cal-f-stars.l{color:rgba(255,255,255,.55);}
-@media(max-width:700px){
+.cal-f-stars.l{color:rgba(255,255,255,.8);}
+@media(max-width:600px){
 .cal-wrap{padding:20px 16px 60px;}
 .cal-page-hd{margin-bottom:14px;}
 .cal-title{font-size:19px;}
 .cal-sub{font-size:12px;margin-bottom:4px;}
 .cal-meta{font-size:10px;}
-.cal-filter-bar{gap:5px;padding:0 0 10px;}
-.cal-f{padding:4px 9px;font-size:10px;border-radius:5px;}
+.cal-filter-bar{gap:6px;padding:0 0 10px;justify-content:flex-start;}
+.cal-f{padding:6px 11px;font-size:11px;border-radius:6px;}
+.cal-f-stars{font-size:11px;letter-spacing:1px;}
 .cal-toolbar{padding:0 0 10px;}
 .cal-search-wrap input{padding:6px 10px 6px 30px;font-size:11px;}
 .cal-item{grid-template-columns:44px auto 1fr auto;padding:12px 14px;gap:8px;border-radius:10px;}
@@ -3380,8 +3381,8 @@ document.addEventListener('DOMContentLoaded',function(){
       <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">All</button>
       <span class="cal-sep"></span>
       <button class="cal-f cal-f-h" data-filter="h" onclick="calFilter('h',this)"><span class="cal-f-stars h">★★★</span> <span data-i18n="cal_alto">High</span></button>
-      <button class="cal-f cal-f-m" data-filter="m" onclick="calFilter('m',this)"><span class="cal-f-stars m">★★☆</span> <span data-i18n="cal_medio">Medium</span></button>
-      <button class="cal-f cal-f-l" data-filter="l" onclick="calFilter('l',this)"><span class="cal-f-stars l">★☆☆</span> <span data-i18n="cal_baixo">Low</span></button>
+      <button class="cal-f cal-f-m" data-filter="m" onclick="calFilter('m',this)"><span class="cal-f-stars m">★★</span> <span data-i18n="cal_medio">Medium</span></button>
+      <button class="cal-f cal-f-l" data-filter="l" onclick="calFilter('l',this)"><span class="cal-f-stars l">★</span> <span data-i18n="cal_baixo">Low</span></button>
       <span class="cal-sep"></span>
       <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">USD</button>
       <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">EUR</button>
