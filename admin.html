@@ -1095,74 +1095,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  </div>
  </div>
 
- <!-- ══ GOOGLE ANALYTICS 4 — DADOS COMPLETOS ══ -->
- <div class="ga4-section">
-   <div class="sec-hdr">
-     <div class="sec-title"><span class="ga4-badge">G</span> Google Analytics 4</div>
-     <div class="sec-actions">
-       <select id="ga4-days" class="ga4-select">
-         <option value="7">7 dias</option><option value="14">14 dias</option><option value="30" selected>30 dias</option><option value="90">90 dias</option>
-       </select>
-       <button class="btn-secondary" onclick="fetchGA4Geo()">Atualizar GA4</button>
-     </div>
-   </div>
-
-   <!-- GA4 KPIs -->
-   <div class="stats-grid" id="ga4-kpis"></div>
-
-   <!-- GA4 Tables: Countries + Cities -->
-   <div class="charts-grid">
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Países (GA4)</div><div class="cc-sub">Usuários ativos por país</div></div>
-       <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="ga4-countries"></table></div>
-     </div>
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Cidades (GA4)</div><div class="cc-sub">Usuários ativos por cidade</div></div>
-       <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="ga4-cities"></table></div>
-     </div>
-   </div>
-
-   <!-- GA4 Charts: Devices + Channels -->
-   <div class="charts-grid">
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Dispositivos (GA4)</div><div class="cc-sub">Mobile vs Desktop vs Tablet</div></div>
-       <div id="ga4-devices" class="ga4-chart-body"></div>
-     </div>
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Canais de Aquisição (GA4)</div><div class="cc-sub">Como os visitantes chegam</div></div>
-       <div id="ga4-channels" class="ga4-chart-body"></div>
-     </div>
-   </div>
-
-   <!-- GA4 Demographics: Age + Gender -->
-   <div class="charts-grid">
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Faixa Etária (GA4)</div><div class="cc-sub">Distribuição por idade dos visitantes</div></div>
-       <div id="ga4-age" class="ga4-chart-body"></div>
-     </div>
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Gênero (GA4)</div><div class="cc-sub">Distribuição por sexo dos visitantes</div></div>
-       <div id="ga4-gender" class="ga4-chart-body"></div>
-     </div>
-   </div>
-
-   <!-- GA4 Browsers + OS + Languages -->
-   <div class="charts-grid" style="grid-template-columns:1fr 1fr 1fr;">
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Navegadores (GA4)</div></div>
-       <div id="ga4-browsers" class="ga4-chart-body"></div>
-     </div>
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Sistemas Operacionais (GA4)</div></div>
-       <div id="ga4-os" class="ga4-chart-body"></div>
-     </div>
-     <div class="chart-card">
-       <div class="cc-hd"><div class="cc-title">Idiomas (GA4)</div></div>
-       <div id="ga4-languages" class="ga4-chart-body"></div>
-     </div>
-   </div>
- </div>
-
  </div>
 
  <!-- EMAIL -->
@@ -1651,6 +1583,74 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="chart-card">
         <div class="cc-hd"><div class="cc-title">Últimos 50 Eventos</div></div>
         <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="trk-recent"></table></div>
+      </div>
+
+      <!-- ══ GOOGLE ANALYTICS 4 — DADOS COMPLETOS ══ -->
+      <div class="ga4-section" style="margin-top:24px;">
+        <div class="sec-hdr">
+          <div class="sec-title"><span class="ga4-badge">G</span> Google Analytics 4</div>
+          <div class="sec-actions">
+            <select id="ga4-days" class="ga4-select">
+              <option value="7">7 dias</option><option value="14">14 dias</option><option value="30" selected>30 dias</option><option value="90">90 dias</option>
+            </select>
+            <button class="btn-secondary" onclick="fetchGA4Geo()">Atualizar GA4</button>
+          </div>
+        </div>
+
+        <!-- GA4 KPIs -->
+        <div class="stats-grid" id="ga4-kpis"></div>
+
+        <!-- GA4 Tables: Countries + Cities -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Países (GA4)</div><div class="cc-sub">Usuários ativos por país</div></div>
+            <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="ga4-countries"></table></div>
+          </div>
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Cidades (GA4)</div><div class="cc-sub">Usuários ativos por cidade</div></div>
+            <div class="data-table-wrap" style="max-height:400px;overflow-y:auto;"><table class="data-table" id="ga4-cities"></table></div>
+          </div>
+        </div>
+
+        <!-- GA4 Charts: Devices + Channels -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Dispositivos (GA4)</div><div class="cc-sub">Mobile vs Desktop vs Tablet</div></div>
+            <div id="ga4-devices" class="ga4-chart-body"></div>
+          </div>
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Canais de Aquisição (GA4)</div><div class="cc-sub">Como os visitantes chegam</div></div>
+            <div id="ga4-channels" class="ga4-chart-body"></div>
+          </div>
+        </div>
+
+        <!-- GA4 Demographics: Age + Gender -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Faixa Etária (GA4)</div><div class="cc-sub">Distribuição por idade dos visitantes</div></div>
+            <div id="ga4-age" class="ga4-chart-body"></div>
+          </div>
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Gênero (GA4)</div><div class="cc-sub">Distribuição por sexo dos visitantes</div></div>
+            <div id="ga4-gender" class="ga4-chart-body"></div>
+          </div>
+        </div>
+
+        <!-- GA4 Browsers + OS + Languages -->
+        <div class="charts-grid" style="grid-template-columns:1fr 1fr 1fr;">
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Navegadores (GA4)</div></div>
+            <div id="ga4-browsers" class="ga4-chart-body"></div>
+          </div>
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Sistemas Operacionais (GA4)</div></div>
+            <div id="ga4-os" class="ga4-chart-body"></div>
+          </div>
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Idiomas (GA4)</div></div>
+            <div id="ga4-languages" class="ga4-chart-body"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2576,7 +2576,7 @@ function renderPage(p){
     case 'analytics':      adminGo('tracking'); break; // absorvido pelo Tracking
     case 'leads':          renderLeadsPage(); break;
     case 'events':         getEvents().then(()=>renderEventsPage()); break;
-    case 'geo':            renderGeoPage(); if(!_ga4Cache) fetchGA4Geo(); break;
+    case 'geo':            renderGeoPage(); break;
     case 'cadastros':      renderCadastrosPage(); break;
     case 'email':
       renderEmailFirmaChips();
@@ -2586,7 +2586,7 @@ function renderPage(p){
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'pro':            renderProPage(); break;
-    case 'tracking':       getEvents().then(()=>renderTrackingPage()); break;
+    case 'tracking':       getEvents().then(()=>renderTrackingPage()); if(!_ga4Cache) fetchGA4Geo(); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
