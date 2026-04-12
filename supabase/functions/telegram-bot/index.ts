@@ -104,7 +104,7 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
   const text =
     `🔥 <b>Today's Best Prop Firm Deals</b>\n\n` +
     lines.join("\n\n") +
-    `\n\n👉 <a href="${siteLink("", "coupons")}">All coupons → marketscoupons.com</a>`;
+    `\n\n👉 <a href="${siteLink("", "coupons")}">View all coupons →</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "coupons");
@@ -145,7 +145,7 @@ async function handleAnalysis(db: ReturnType<typeof createClient>) {
     `<b>Resistance 1</b>\n${data.resistance_1}\n\n` +
     `<b>Attention zone</b>\n${az}\n\n` +
     `${ni}\n\n` +
-    `📊 <a href="${siteLink("/analysis", "analysis")}">Full Analysis → marketscoupons.com</a>`;
+    `📊 <a href="${siteLink("/analysis", "analysis")}">Read full analysis →</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "analysis");
@@ -187,7 +187,7 @@ async function handleGex(db: ReturnType<typeof createClient>) {
     `<b>Put Wall &amp; Call Wall</b>\n` +
     `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
     `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
-    `🎯 <a href="${siteLink("/gamma", "gex")}">Full GEX Data → marketscoupons.com</a>`;
+    `🎯 <a href="${siteLink("/gamma", "gex")}">See full GEX data →</a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "gex");
@@ -373,14 +373,14 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
       `• Exclusive coupons not available to free users\n` +
       `• Advanced market analysis features\n` +
       `• Early access to new prop firm partnerships\n\n` +
-      `👉 <a href="${siteLink("/pro", "pro")}">Learn more → marketscoupons.com</a>`;
+      `👉 <a href="${siteLink("/pro", "pro")}">Learn more about Pro →</a>`;
   } else {
     text =
       `💰 <b>Loyalty Program — Earn Points</b>\n\n` +
       `Shop through our links and earn loyalty points!\n\n` +
       `🎁 Points unlock: exclusive perks, bigger discounts, priority access\n` +
       `📊 Track your points in your dashboard\n\n` +
-      `👉 <a href="${siteLink("", "loyalty")}">Start earning → marketscoupons.com</a>`;
+      `👉 <a href="${siteLink("", "loyalty")}">Start earning points →</a>`;
   }
 
   const msgId = await sendMessage(text);
