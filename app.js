@@ -49,12 +49,13 @@ function rateLimit(key, cooldownMs) {
 // Central tracking — Supabase + GTM + GA4 + Facebook Pixel + CAPI + localStorage cache
 function track(event, params={}) {
   const ts = new Date().toISOString();
+  const consentOk = localStorage.getItem('mc-cookies-consent') === 'accepted';
 
   // Generate event_id for FB deduplication (browser fbq + server CAPI)
   const eid = typeof crypto!=='undefined'&&crypto.randomUUID ? crypto.randomUUID() : 'e'+Date.now()+Math.random().toString(36).slice(2,10);
   window._lastTrackId = eid;
 
-  // 1. Supabase (analytics persistente com UTM)
+  // 1. Supabase (analytics persistente com UTM) — first-party, always allowed
   try {
     db.from('events').insert({
       session_id:   MC_SESSION,
@@ -77,6 +78,9 @@ function track(event, params={}) {
     localStorage.setItem('mc_events', JSON.stringify(evs));
   } catch(e) {}
 
+  // GDPR/LGPD: only send to third-party trackers if consent accepted (or consent event itself)
+  if (!consentOk && event !== 'cookie_consent') return;
+
   // 3. GTM dataLayer — GA4 and Facebook Pixel triggers are configured inside GTM
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...params, timestamp: ts });
@@ -87,6 +91,8 @@ function track(event, params={}) {
 
 // Facebook CAPI — fire-and-forget server-side event
 function _sendCAPI(event, params, eid, ts) {
+  // GDPR/LGPD: block server-side tracking without consent
+  if (localStorage.getItem('mc-cookies-consent') !== 'accepted') return;
   try {
     const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
     const user = typeof currentUser!=='undefined' ? currentUser : null;
@@ -4505,7 +4511,7 @@ function buildProGateAnon(){
 async function startCheckout(){
   if(!currentUser){openAuthModal('signup');return;}
   // Track InitiateCheckout
-  track('initiate_checkout',{item:'pro_subscription',value:9.99,currency:'USD'});
+  track('checkout_click',{item:'pro_subscription',value:9.99,currency:'USD'});
   if(typeof gtag==='function') gtag('event','begin_checkout',{value:9.99,currency:'USD',items:[{item_id:'pro_monthly',item_name:'Pro Subscription',price:9.99,quantity:1}]});
   if(typeof fbq==='function') fbq('track','InitiateCheckout',{content_ids:['pro_monthly'],content_type:'product',content_name:'Pro Subscription',value:9.99,currency:'USD',num_items:1},{eventID:window._lastTrackId});
   // Disable button and show loading
