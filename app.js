@@ -2539,8 +2539,8 @@ function closeFD(){
   // pushState /apex → go back (instant, no reload)
   const p=location.pathname.replace(/^\//,'').replace(/\/$/,'');
   if(_firmPageSlugs.includes(p)){history.back();return;}
-  if(location.hash.startsWith('#firm/')) history.replaceState(null,'',location.pathname.replace(/\/[^/]+$/,'')+location.search);
-  if(window._fdOriginPage&&_currentPage!==window._fdOriginPage){go(window._fdOriginPage,true);}
+  if(location.hash.startsWith('#firm/')) history.replaceState(null,'',location.pathname+location.search);
+  if(window._fdOriginPage) go(window._fdOriginPage,true);
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('fd-overlay')?.classList.contains('show'))closeFD();});
 // Handle browser back from pushState /apex → close overlay instantly
@@ -3071,7 +3071,7 @@ function drwGoCheckout(firmId) {
   window.open(url,'_blank','noopener,noreferrer');
 }
 
-function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');document.getElementById('fd-overlay')?.classList.remove('show');document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';const p=location.pathname.replace(/^\//,'').replace(/\/$/,'');if(_firmPageSlugs.includes(p)){history.back();}else if(location.hash.startsWith('#firm/')){history.replaceState(null,'',location.pathname.replace(/\/[^/]+$/,'')+location.search);}if(window._fdOriginPage&&_currentPage!==window._fdOriginPage){go(window._fdOriginPage,true);}}
+function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');document.getElementById('fd-overlay')?.classList.remove('show');document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';const p=location.pathname.replace(/^\//,'').replace(/\/$/,'');if(_firmPageSlugs.includes(p)){history.back();}else{if(location.hash.startsWith('#firm/'))history.replaceState(null,'',location.pathname+location.search);if(window._fdOriginPage)go(window._fdOriginPage,true);}}
 
 /* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
 function openTpPopup(url) {
