@@ -2431,11 +2431,19 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
    Análise Diária, Gamma, Guias, Blog, Position Size) share
    the same visual skin as the approved offer cards. */
 .hero-tg-cta,
+.hero-tg-btn,
 .plat-card,
+.plat-logo,
 .gc,
 .bc,
 .ic,
 .ind-box,
+.ind-icon,
+.lg-hero-ico,
+.da-gate-icon,
+.lb-icon,
+.award-trophy,
+.mu-cpn,
 .da-card,
 .gx-asset-card,
 .blog-art-cta,
@@ -2445,6 +2453,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .faq-item,
 .live-player,
 .ls-card,
+.live-risk,
 .cal-item,
 .up-card,
 .ach-card,
@@ -2512,6 +2521,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .ic:hover,
 .da-card:hover,
 .gx-asset-card:hover{border-color:rgba(107,182,201,.38) !important;}
+.live-risk{border-radius:10px !important;padding:14px 18px !important;font-size:11px;color:var(--t3);line-height:1.7;}
+.live-risk-title{color:var(--t2);font-size:9px;text-transform:uppercase;letter-spacing:.6px;font-weight:800;display:inline-block;margin-bottom:6px;}
 </style>
 <script>
 // Ativar página correta ANTES do primeiro paint (evita flash da home)
@@ -3659,8 +3670,8 @@ document.addEventListener('DOMContentLoaded',function(){
    </div>
 
    <!-- Risk disclaimer -->
-   <div style="background:rgba(107,182,201,.08);border:1px solid rgba(107,182,201,.18);border-radius:8px;padding:12px 16px;font-size:10px;color:var(--t3);line-height:1.6;">
-    <strong style="color:var(--t2);font-size:9px;text-transform:uppercase;letter-spacing:.5px;" data-i18n="live_risk_title">Risk Disclaimer</strong><br>
+   <div class="live-risk">
+    <strong class="live-risk-title" data-i18n="live_risk_title">Risk Disclaimer</strong><br>
     <span data-i18n="live_risk_text">O conteúdo apresentado no Live Room é exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou incentivo à compra ou venda de ativos. Operar mercados futuros envolve risco significativo de perda. Resultados passados não garantem resultados futuros. Opere apenas com capital que você pode perder.</span>
    </div>
 
