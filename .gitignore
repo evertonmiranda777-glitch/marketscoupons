@@ -1,2 +1,11 @@
 .deepl-key
 node_modules/
+
+# Scratchpad / working files — mantém só o telegram-preview.html tracked
+tmp/*
+!tmp/telegram-preview.html
+
+# Ambiente local de agents/skills
+.agents/
+.claude/skills/
+skills-lock.json
