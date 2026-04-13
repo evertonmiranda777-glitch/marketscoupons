@@ -1,4 +1,59 @@
 var _currentPage = 'home';
+// ─── TRACKING SPY (dev) — ativa com ?spy=1 na URL ───
+(function(){try{
+  if(!new URLSearchParams(location.search).has('spy'))return;
+  const hits={ga4:[],fb:[]};
+  const capture=(url)=>{
+    try{
+      if(url.includes('google-analytics.com')||url.includes('/g/collect')){
+        const u=new URL(url);
+        hits.ga4.push({en:u.searchParams.get('en'),id:u.searchParams.get('ep.event_id')||u.searchParams.get('event_id'),t:Date.now()});
+      }
+      if(url.includes('facebook.com/tr')){
+        const u=new URL(url);
+        hits.fb.push({ev:u.searchParams.get('ev'),id:u.searchParams.get('eid')||u.searchParams.get('event_id'),t:Date.now()});
+      }
+    }catch(e){}
+  };
+  const of=window.fetch;
+  window.fetch=function(...a){const u=typeof a[0]==='string'?a[0]:a[0]?.url||'';capture(u);return of.apply(this,a);};
+  const osend=XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open=function(m,u){capture(u||'');return osend.apply(this,arguments);};
+  const OI=window.Image;
+  window.Image=function(){const i=new OI();Object.defineProperty(i,'src',{set(v){capture(v||'');i.setAttribute('src',v);},get(){return i.getAttribute('src');}});return i;};
+  window._trackHits=hits;
+  window._snap=(label)=>{
+    const ga=hits.ga4.slice(),fb=hits.fb.slice();
+    hits.ga4.length=0;hits.fb.length=0;
+    const gaStr=ga.map(h=>h.en+(h.id?' #'+h.id.slice(0,8):' NO_ID')).join(' | ')||'(nada)';
+    const fbStr=fb.map(h=>h.ev+(h.id?' #'+h.id.slice(0,8):' NO_ID')).join(' | ')||'(nada)';
+    const msg=`── ${label} ──\nGA4 (${ga.length}): ${gaStr}\nFB  (${fb.length}): ${fbStr}`;
+    console.log('%c'+msg,'color:#F7B928;font-weight:bold;font-size:13px');
+    return msg;
+  };
+  // Painel flutuante pra disparar _snap sem digitar no console
+  const mk=()=>{
+    const d=document.createElement('div');
+    d.id='spy-panel';
+    d.style.cssText='position:fixed;bottom:12px;right:12px;z-index:999999;background:#0b1020;border:2px solid #F7B928;border-radius:10px;padding:10px;font:12px monospace;color:#fff;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.6)';
+    d.innerHTML='<div style="color:#F7B928;font-weight:700;margin-bottom:6px">TRACKING SPY</div><div id="spy-log" style="max-height:260px;overflow:auto;white-space:pre-wrap;font-size:10px;line-height:1.4;margin-bottom:8px;color:#cfd6e4"></div><div style="display:flex;flex-wrap:wrap;gap:4px"><button data-a="page_load">page</button><button data-a="firm_open">firm</button><button data-a="copy_coupon">copy</button><button data-a="checkout">checkout</button><button data-a="__clear">clear</button></div>';
+    d.querySelectorAll('button').forEach(b=>{
+      b.style.cssText='background:#F7B928;color:#0b1020;border:0;padding:4px 8px;border-radius:4px;font:600 10px monospace;cursor:pointer';
+      b.onclick=(e)=>{
+        e.stopPropagation();
+        const a=b.getAttribute('data-a');
+        const log=d.querySelector('#spy-log');
+        if(a==='__clear'){log.textContent='';return;}
+        const msg=window._snap(a);
+        log.textContent=(log.textContent?log.textContent+'\n\n':'')+msg;
+        log.scrollTop=log.scrollHeight;
+      };
+    });
+    document.body.appendChild(d);
+  };
+  if(document.body)mk();else document.addEventListener('DOMContentLoaded',mk);
+  console.log('%c✅ Tracking spy ativo (?spy=1)','color:#22C55E;font-weight:bold');
+}catch(e){console.warn('spy error',e);}})();
 // ─── SUPABASE CONFIG ───
 const SUPABASE_URL  = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
