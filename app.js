@@ -172,7 +172,48 @@ function track(event, params={}) {
     timestamp:    ts,
   });
 
-  // 4. Facebook Conversions API (server-side — bypasses ad blockers)
+  // 4. GA4 direto — garante que TODO evento chegue ao GA4 com event_id
+  // (inline gtag calls existentes continuam funcionando pra enviar com params de ecommerce ricos)
+  if (typeof gtag === 'function') {
+    try {
+      const gaParams = {
+        event_id: eid,
+        firm_id:  params.firm_id || undefined,
+        page_name: params.page_name || params.page || undefined,
+        coupon: params.coupon_code || params.coupon || undefined,
+        value: typeof params.value === 'number' ? params.value : undefined,
+        currency: params.currency || (typeof params.value === 'number' ? 'USD' : undefined),
+        transaction_id: params.transaction_id || undefined,
+      };
+      // Inclui params extras (exceto campos internos/grandes)
+      for (const k in params) {
+        if (k === 'items' || k === 'content_ids' || k === 'email' || k === 'phone') continue;
+        if (gaParams[k] === undefined && params[k] != null) {
+          const v = params[k];
+          if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+            gaParams[k] = typeof v === 'string' ? v.slice(0, 100) : v;
+          }
+        }
+      }
+      gtag('event', event, gaParams);
+    } catch(e) { console.warn('gtag dispatch error:', e); }
+  }
+
+  // 5. Facebook Pixel — trackCustom pra eventos não-standard (standard events são disparados inline)
+  if (typeof fbq === 'function') {
+    try {
+      const FB_STANDARD = new Set(['page_view','firm_detail_open','coupon_copy','checkout_click','lead','purchase','user_signup','user_login']);
+      if (!FB_STANDARD.has(event)) {
+        const fbParams = { event_id: eid };
+        if (params.firm_id) fbParams.firm_id = params.firm_id;
+        if (params.value != null) { fbParams.value = params.value; fbParams.currency = params.currency || 'USD'; }
+        if (params.page_name) fbParams.page_name = params.page_name;
+        fbq('trackCustom', event, fbParams, { eventID: eid });
+      }
+    } catch(e) { console.warn('fbq dispatch error:', e); }
+  }
+
+  // 6. Facebook Conversions API (server-side — bypasses ad blockers)
   _sendCAPI(event, params, eid, ts);
 }
 
