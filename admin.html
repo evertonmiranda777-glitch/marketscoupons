@@ -4148,31 +4148,39 @@ async function eaInit(){
     el.innerHTML = `<button class="ea-period-btn sel" onclick="eaSetTag('',this)">Todas</button>` +
       firms.map(f=>`<button class="ea-period-btn" onclick="eaSetTag('promo-${f.id}',this)" style="border-color:${f.color}33;color:var(--t2);" data-color="${f.color}">${shortNames[f.id]||f.short_name||f.name}</button>`).join('');
   }
-  // Tags customizadas (vindas dos subscribers)
-  try {
-    const leads = await loadAllLeadsOnce();
-    const firmIds = new Set(firms.map(f=>f.id));
-    const tagCount = {};
-    for(const r of leads){
-      for(const t of (r.tags||[])){
-        if(!t || firmIds.has(t)) continue;
-        tagCount[t] = (tagCount[t]||0) + 1;
-      }
-    }
-    const tags = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]);
-    const row = document.getElementById('ea-customtag-row');
-    const chips = document.getElementById('ea-customtag-chips');
-    if(tags.length && chips && row){
-      row.style.display = '';
-      chips.innerHTML = tags.map(([t,c])=>`<button class="ea-period-btn" onclick="eaSetTag('${t.replace(/'/g,"\\'")}',this)">${t} <span style="opacity:.6;font-weight:500;">(${c})</span></button>`).join('');
-    }
-  } catch(e){ console.warn('[eaInit] tags', e); }
+  // Dispara KPIs do Brevo imediatamente (não bloqueia com o cache de leads)
   eaRefresh();
+  // Tags customizadas em background — não bloqueia o render dos KPIs
+  (async () => {
+    try {
+      const row = document.getElementById('ea-customtag-row');
+      const chips = document.getElementById('ea-customtag-chips');
+      if(chips) chips.innerHTML = '<span style="font-size:10px;color:var(--t3);">Carregando tags...</span>';
+      if(row) row.style.display = '';
+      const leads = await loadAllLeadsOnce();
+      const firmIds = new Set(firms.map(f=>f.id));
+      const tagCount = {};
+      for(const r of leads){
+        for(const t of (r.tags||[])){
+          if(!t || firmIds.has(t)) continue;
+          tagCount[t] = (tagCount[t]||0) + 1;
+        }
+      }
+      const tags = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]);
+      if(chips){
+        if(tags.length){
+          chips.innerHTML = tags.map(([t,c])=>`<button class="ea-period-btn" onclick="eaSetTag('${t.replace(/'/g,"\\'")}',this)">${t} <span style="opacity:.6;font-weight:500;">(${c})</span></button>`).join('');
+        } else {
+          if(row) row.style.display = 'none';
+        }
+      }
+    } catch(e){ console.warn('[eaInit] tags', e); }
+  })();
 }
 
 function eaSetPeriod(d, btn){
   _eaDays = d;
-  document.querySelectorAll('.ea-filters [data-days]').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.ea-hdr [data-days]').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
   eaRefresh();
 }
