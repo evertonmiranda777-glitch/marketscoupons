@@ -219,7 +219,7 @@ a{text-decoration:none;color:inherit;}
 .ss-val{font-size:16px;font-weight:700;}
 
 /* EMAIL ANALYTICS */
-.ea-panel{margin-top:24px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;}
+.ea-panel{margin-top:24px;margin-bottom:28px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;}
 .ea-hdr{display:flex;flex-direction:column;align-items:stretch;margin-bottom:18px;gap:12px;}
 .ea-hdr-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .ea-filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
@@ -3809,6 +3809,7 @@ function renderGA4Data(d,days){
  */
 let emailSegments=['all'];
 let emailFirmaFilter=[];
+let emailCustomTagFilter=[];
 let emailDailyLimit=400; // Brevo 300 + Resend 100 (round-robin)
 let emailSentToday=0;
 
@@ -3864,6 +3865,7 @@ function toggleFirma(el,firma){
  const firmSel=fGrid?[...fGrid.querySelectorAll('.seg-firma.sel')]:[];
  const tagSel=tGrid?[...tGrid.querySelectorAll('.seg-firma.sel')]:[];
  emailFirmaFilter=[...firmSel,...tagSel].map(s=>s.dataset.firma).filter(Boolean);
+ emailCustomTagFilter=tagSel.map(s=>s.dataset.firma).filter(Boolean);
  // Auto-habilita segmento 'subscribers' ao selecionar tag customizada (senão filtro não aplica)
  if(tagSel.length && !emailSegments.includes('subscribers') && !emailSegments.includes('all')){
   const segGrid=document.getElementById('seg-grid');
@@ -6828,7 +6830,7 @@ async function sendEmailsSmtp(){
             to: group.map(l => ({ email: l.email, name: l.name||'' })),
             subject: langSubject,
             htmlContent: html,
-            tags: [isPromo ? 'promo-'+emailPromoFirm.id : 'inst-'+window._instTemplateName, 'lang-'+lang],
+            tags: [isPromo ? 'promo-'+emailPromoFirm.id : 'inst-'+window._instTemplateName, 'lang-'+lang, ...(emailCustomTagFilter||[])],
           }),
         });
         const data = await resp.json();
@@ -6844,7 +6846,7 @@ async function sendEmailsSmtp(){
           to: leads.map(l => ({ email: l.email, name: l.name||'' })),
           subject: subject,
           ...(emailIsHtml ? { htmlContent: body } : { textContent: body }),
-          tags: ['campaign-manual'],
+          tags: ['campaign-manual', ...(emailCustomTagFilter||[])],
         }),
       });
       const data = await resp.json();
