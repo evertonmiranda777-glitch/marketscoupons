@@ -220,7 +220,11 @@ a{text-decoration:none;color:inherit;}
 
 /* EMAIL ANALYTICS */
 .ea-panel{margin-top:24px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;}
-.ea-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.ea-hdr{display:flex;flex-direction:column;align-items:stretch;margin-bottom:18px;gap:12px;}
+.ea-hdr-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.ea-filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.ea-filter-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);min-width:72px;}
+.ea-chip-group{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
 .ea-title{font-size:14px;font-weight:700;color:var(--t1);}
 .ea-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .ea-period-btn{padding:5px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.2s;}
@@ -1110,15 +1114,24 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <!-- ═══ EMAIL ANALYTICS PANEL ═══ -->
  <div class="ea-panel">
    <div class="ea-hdr">
-     <div class="ea-title">Analytics de Email</div>
-     <div class="ea-filters">
-       <div style="display:flex;gap:4px;" id="ea-firma-chips"></div>
-       <div style="display:flex;gap:4px;">
-         <button class="ea-period-btn sel" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
-         <button class="ea-period-btn" data-days="14" onclick="eaSetPeriod(14,this)">14d</button>
-         <button class="ea-period-btn" data-days="28" onclick="eaSetPeriod(28,this)">28d</button>
+     <div class="ea-hdr-top">
+       <div class="ea-title">Analytics de Email</div>
+       <div style="display:flex;gap:8px;align-items:center;">
+         <div style="display:flex;gap:4px;">
+           <button class="ea-period-btn sel" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
+           <button class="ea-period-btn" data-days="14" onclick="eaSetPeriod(14,this)">14d</button>
+           <button class="ea-period-btn" data-days="28" onclick="eaSetPeriod(28,this)">28d</button>
+         </div>
+         <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="eaRefresh()">Atualizar</button>
        </div>
-       <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="eaRefresh()">Atualizar</button>
+     </div>
+     <div class="ea-filter-row">
+       <span class="ea-filter-lbl">Firma</span>
+       <div class="ea-chip-group" id="ea-firma-chips"></div>
+     </div>
+     <div class="ea-filter-row" id="ea-customtag-row" style="display:none;">
+       <span class="ea-filter-lbl">Tag</span>
+       <div class="ea-chip-group" id="ea-customtag-chips"></div>
      </div>
    </div>
    <div class="ea-kpi-grid">
@@ -4133,6 +4146,25 @@ async function eaInit(){
     el.innerHTML = `<button class="ea-period-btn sel" onclick="eaSetTag('',this)">Todas</button>` +
       firms.map(f=>`<button class="ea-period-btn" onclick="eaSetTag('promo-${f.id}',this)" style="border-color:${f.color}33;color:var(--t2);" data-color="${f.color}">${shortNames[f.id]||f.short_name||f.name}</button>`).join('');
   }
+  // Tags customizadas (vindas dos subscribers)
+  try {
+    const leads = await loadAllLeadsOnce();
+    const firmIds = new Set(firms.map(f=>f.id));
+    const tagCount = {};
+    for(const r of leads){
+      for(const t of (r.tags||[])){
+        if(!t || firmIds.has(t)) continue;
+        tagCount[t] = (tagCount[t]||0) + 1;
+      }
+    }
+    const tags = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]);
+    const row = document.getElementById('ea-customtag-row');
+    const chips = document.getElementById('ea-customtag-chips');
+    if(tags.length && chips && row){
+      row.style.display = '';
+      chips.innerHTML = tags.map(([t,c])=>`<button class="ea-period-btn" onclick="eaSetTag('${t.replace(/'/g,"\\'")}',this)">${t} <span style="opacity:.6;font-weight:500;">(${c})</span></button>`).join('');
+    }
+  } catch(e){ console.warn('[eaInit] tags', e); }
   eaRefresh();
 }
 
@@ -4145,17 +4177,20 @@ function eaSetPeriod(d, btn){
 
 function eaSetTag(tag, btn){
   _eaTag = tag;
-  const parent = document.getElementById('ea-firma-chips');
-  if(parent) parent.querySelectorAll('.ea-period-btn').forEach(b=>{
-    b.classList.remove('sel');
-    if(b===btn){
-      b.classList.add('sel');
+  const groups = ['ea-firma-chips','ea-customtag-chips'];
+  groups.forEach(id=>{
+    const parent = document.getElementById(id);
+    if(!parent) return;
+    parent.querySelectorAll('.ea-period-btn').forEach(b=>{
+      b.classList.remove('sel');
       const c = b.dataset.color;
-      if(c){ b.style.borderColor=c; b.style.color=c; b.style.background=c+'1A'; }
-    } else {
-      const c = b.dataset.color;
-      if(c){ b.style.borderColor=c+'33'; b.style.color='var(--t2)'; b.style.background=''; }
-    }
+      if(b===btn){
+        b.classList.add('sel');
+        if(c){ b.style.borderColor=c; b.style.color=c; b.style.background=c+'1A'; }
+      } else {
+        if(c){ b.style.borderColor=c+'33'; b.style.color='var(--t2)'; b.style.background=''; }
+      }
+    });
   });
   eaRefresh();
 }
