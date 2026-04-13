@@ -38,70 +38,174 @@ const DATA = {
   nq: { price: '25,116', zeroGamma: '25,017', putWall: '25,000', callWall: '25,500', hvl: '24,100', volTrigger: '24,100', maxPain: '24,300' },
 };
 
-// ───────── ES GEX chart (SVG string → data URL) ─────────
-function buildEsChartSvg() {
-  const lbl = (x, y, text, fill = 'rgba(255,255,255,.36)', weight = 400) =>
-    `<text x="${x}" y="${y}" font-size="10.5" fill="${fill}" text-anchor="end" font-family="Inter,sans-serif" font-weight="${weight}">${text}</text>`;
-  const bar = (x, y, w, h, fill) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${fill}"/>`;
-  const line = (y, stroke, op = 0.55) =>
-    `<line x1="71" y1="${y}" x2="835" y2="${y}" stroke="${stroke}" stroke-width="1" stroke-dasharray="5,4" opacity="${op}"/>`;
-  const tag = (x, y, w, h, fill, text, textFill = '#fff', stroke = '') => {
-    const strokeAttr = stroke ? ` stroke="${stroke}" stroke-width=".8"` : '';
-    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h >= 14 ? 4 : 3}" fill="${fill}"${strokeAttr}/><text x="${x + w / 2}" y="${y + h - 3}" font-size="${h >= 14 ? 9.5 : 9}" fill="${textFill}" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">${text}</text>`;
-  };
+// ───────── Chart geometry ─────────
+// Bars + dashed lines + spot line stay in SVG (resvg renders them fine).
+// All TEXT is rendered as HTML divs absolutely positioned over the chart
+// because Satori/resvg can't render <text> without embedded fonts.
 
-  return `<svg viewBox="0 0 950 530" xmlns="http://www.w3.org/2000/svg">
-<line x1="70" y1="0" x2="70" y2="530" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-${lbl(66, 15, '7,450')}${bar(71, 6, 145, 10, 'rgba(0,220,130,.82)')}
-${lbl(66, 30, '7,400')}${bar(71, 21, 102, 10, 'rgba(0,220,130,.74)')}
-${lbl(66, 45, '7,350')}${bar(71, 36, 162, 10, 'rgba(0,220,130,.82)')}
-${lbl(66, 60, '7,300')}${bar(71, 51, 125, 10, 'rgba(0,220,130,.76)')}
-${lbl(66, 75, '7,250')}${bar(71, 66, 172, 10, 'rgba(0,220,130,.82)')}
-${lbl(66, 90, '7,200')}${bar(71, 81, 138, 10, 'rgba(0,220,130,.78)')}
-${lbl(66, 105, '7,150')}${bar(71, 96, 158, 10, 'rgba(0,220,130,.80)')}
-${lbl(66, 120, '7,100')}${bar(71, 111, 185, 10, 'rgba(0,220,130,.85)')}
-${lbl(66, 135, '7,050')}${bar(71, 126, 132, 10, 'rgba(0,220,130,.76)')}
-${lbl(66, 150, '7,025')}${bar(71, 141, 155, 10, 'rgba(0,220,130,.78)')}
-${line(159, '#ff5050', 0.65)}
-${lbl(66, 164, '7,000', '#ff5050', 700)}
-${bar(71, 156, 395, 10, 'rgba(0,220,130,.93)')}
-${tag(841, 153, 64, 15, '#ff5050', 'Call Wall')}
-${tag(841, 170, 44, 12, '#00c8a0', 'HVL', '#000')}
-${tag(841, 184, 63, 12, '#f5c518', 'Vol Trigger', '#000')}
-${lbl(66, 214, '6,975')}${bar(71, 205, 116, 10, 'rgba(0,220,130,.72)')}
-${lbl(66, 229, '6,950')}${bar(71, 220, 140, 10, 'rgba(0,220,130,.76)')}
-${lbl(66, 244, '6,925')}${bar(71, 235, 108, 10, 'rgba(0,220,130,.70)')}
-${lbl(66, 259, '6,910')}${bar(71, 250, 98, 10, 'rgba(0,220,130,.68)')}
-${lbl(66, 274, '6,900')}${bar(71, 265, 258, 10, 'rgba(0,220,130,.87)')}
-${lbl(66, 289, '6,880')}${bar(71, 280, 80, 10, 'rgba(0,220,130,.64)')}
-${lbl(66, 304, '6,875')}${bar(71, 295, 68, 10, 'rgba(0,220,130,.62)')}
-<line x1="71" y1="313" x2="835" y2="313" stroke="rgba(255,255,255,.55)" stroke-width="1.5" stroke-dasharray="4,4"/>
-${lbl(66, 318, '6,825', '#fff', 700)}
-${bar(71, 310, 315, 10, 'rgba(0,220,130,.89)')}
-${tag(841, 307, 50, 15, 'rgba(255,255,255,.16)', '6,817', '#fff', 'rgba(255,255,255,.32)')}
-${line(327, '#c07aff')}
-${lbl(66, 332, '6,815', '#c07aff', 700)}
-${bar(71, 324, 278, 10, 'rgba(0,220,130,.83)')}
-${tag(841, 322, 56, 12, '#c07aff', 'Max Pain')}
-${line(341, '#ff9a30')}
-${lbl(66, 346, '6,800', '#ff9a30', 700)}
-${tag(841, 336, 54, 12, '#ff9a30', 'Put Wall', '#000')}
-${line(355, '#f5c518')}
-${lbl(66, 360, '6,795', '#f5c518', 700)}
-${bar(71, 352, 96, 10, 'rgba(255,80,80,.78)')}
-${tag(841, 349, 75, 12, 'rgba(245,197,24,.2)', 'Zero Gamma', '#f5c518', 'rgba(245,197,24,.42)')}
-${lbl(66, 375, '6,750')}${bar(71, 366, 185, 10, 'rgba(255,80,80,.82)')}
-${lbl(66, 390, '6,700')}${bar(71, 381, 155, 10, 'rgba(255,80,80,.76)')}
-${lbl(66, 405, '6,650')}${bar(71, 396, 242, 10, 'rgba(255,80,80,.85)')}
-${lbl(66, 420, '6,600')}${bar(71, 411, 175, 10, 'rgba(255,80,80,.79)')}
-${lbl(66, 435, '6,550')}${bar(71, 426, 135, 10, 'rgba(255,80,80,.73)')}
-${lbl(66, 450, '6,500')}${bar(71, 441, 308, 10, 'rgba(255,80,80,.89)')}
-${lbl(66, 465, '6,400')}${bar(71, 456, 245, 10, 'rgba(255,80,80,.83)')}
-${lbl(66, 480, '6,300')}${bar(71, 471, 188, 10, 'rgba(255,80,80,.78)')}
-${lbl(66, 495, '6,250')}${bar(71, 486, 148, 10, 'rgba(255,80,80,.73)')}
-${lbl(66, 510, '6,150')}${bar(71, 501, 105, 10, 'rgba(255,80,80,.66)')}
-${lbl(66, 525, '6,000')}${bar(71, 516, 72, 10, 'rgba(255,80,80,.58)')}
-</svg>`;
+const CHART_W = 950;
+const CHART_H = 530;
+
+// [y, label, barW, fillRGBA]  — left number + horizontal bar
+const ES_BARS = [
+  [6,  '7,450', 145, 'rgba(0,220,130,.82)'],
+  [21, '7,400', 102, 'rgba(0,220,130,.74)'],
+  [36, '7,350', 162, 'rgba(0,220,130,.82)'],
+  [51, '7,300', 125, 'rgba(0,220,130,.76)'],
+  [66, '7,250', 172, 'rgba(0,220,130,.82)'],
+  [81, '7,200', 138, 'rgba(0,220,130,.78)'],
+  [96, '7,150', 158, 'rgba(0,220,130,.80)'],
+  [111,'7,100', 185, 'rgba(0,220,130,.85)'],
+  [126,'7,050', 132, 'rgba(0,220,130,.76)'],
+  [141,'7,025', 155, 'rgba(0,220,130,.78)'],
+  [156,'7,000', 395, 'rgba(0,220,130,.93)'],      // Call Wall row
+  [205,'6,975', 116, 'rgba(0,220,130,.72)'],
+  [220,'6,950', 140, 'rgba(0,220,130,.76)'],
+  [235,'6,925', 108, 'rgba(0,220,130,.70)'],
+  [250,'6,910', 98,  'rgba(0,220,130,.68)'],
+  [265,'6,900', 258, 'rgba(0,220,130,.87)'],
+  [280,'6,880', 80,  'rgba(0,220,130,.64)'],
+  [295,'6,875', 68,  'rgba(0,220,130,.62)'],
+  [310,'6,825', 315, 'rgba(0,220,130,.89)'],      // Spot row
+  [324,'6,815', 278, 'rgba(0,220,130,.83)'],      // Max Pain row
+  [352,'6,795', 96,  'rgba(255,80,80,.78)'],      // Zero Gamma row (puts start)
+  [366,'6,750', 185, 'rgba(255,80,80,.82)'],
+  [381,'6,700', 155, 'rgba(255,80,80,.76)'],
+  [396,'6,650', 242, 'rgba(255,80,80,.85)'],
+  [411,'6,600', 175, 'rgba(255,80,80,.79)'],
+  [426,'6,550', 135, 'rgba(255,80,80,.73)'],
+  [441,'6,500', 308, 'rgba(255,80,80,.89)'],
+  [456,'6,400', 245, 'rgba(255,80,80,.83)'],
+  [471,'6,300', 188, 'rgba(255,80,80,.78)'],
+  [486,'6,250', 148, 'rgba(255,80,80,.73)'],
+  [501,'6,150', 105, 'rgba(255,80,80,.66)'],
+  [516,'6,000', 72,  'rgba(255,80,80,.58)'],
+];
+
+// Horizontal dashed lines [y, stroke, opacity]
+const ES_LINES = [
+  [159, '#ff5050', 0.65],
+  [327, '#c07aff', 0.55],
+  [341, '#ff9a30', 0.55],
+  [355, '#f5c518', 0.55],
+];
+
+// Key price labels (colored) — these overlay on left axis with color emphasis
+// y uses the SVG text baseline reference; we'll convert to top in HTML
+const ES_KEY_LABELS = [
+  { y: 164, text: '7,000', color: '#ff5050', weight: 700 },
+  { y: 318, text: '6,825', color: '#fff',    weight: 700 },
+  { y: 332, text: '6,815', color: '#c07aff', weight: 700 },
+  { y: 346, text: '6,800', color: '#ff9a30', weight: 700 },
+  { y: 360, text: '6,795', color: '#f5c518', weight: 700 },
+];
+
+// Right-side region pills [x, y, w, h, fill, text, textColor, borderColor]
+const ES_TAGS = [
+  [841, 153, 64, 15, '#ff5050',                 'Call Wall',  '#fff', null],
+  [841, 170, 44, 12, '#00c8a0',                 'HVL',        '#000', null],
+  [841, 184, 63, 12, '#f5c518',                 'Vol Trigger','#000', null],
+  [841, 307, 50, 15, 'rgba(255,255,255,.16)',   '6,817',      '#fff', 'rgba(255,255,255,.32)'],
+  [841, 322, 56, 12, '#c07aff',                 'Max Pain',   '#fff', null],
+  [841, 336, 54, 12, '#ff9a30',                 'Put Wall',   '#000', null],
+  [841, 349, 75, 12, 'rgba(245,197,24,.2)',     'Zero Gamma', '#f5c518', 'rgba(245,197,24,.42)'],
+];
+
+// Build SVG with only rects + lines (no text)
+function buildEsChartSvg() {
+  const bar = (y, w, fill) => `<rect x="71" y="${y}" width="${w}" height="10" rx="2" fill="${fill}"/>`;
+  const line = (y, stroke, op) => `<line x1="71" y1="${y}" x2="835" y2="${y}" stroke="${stroke}" stroke-width="1" stroke-dasharray="5,4" opacity="${op}"/>`;
+  const bars = ES_BARS.map(([y,,w,f]) => bar(y,w,f)).join('');
+  const lines = ES_LINES.map(([y,s,o]) => line(y,s,o)).join('');
+  const spotLine = `<line x1="71" y1="313" x2="835" y2="313" stroke="rgba(255,255,255,.55)" stroke-width="1.5" stroke-dasharray="4,4"/>`;
+  const axis = `<line x1="70" y1="0" x2="70" y2="530" stroke="rgba(255,255,255,.06)" stroke-width="1"/>`;
+  return `<svg viewBox="0 0 ${CHART_W} ${CHART_H}" xmlns="http://www.w3.org/2000/svg">${axis}${bars}${lines}${spotLine}</svg>`;
+}
+
+// Build HTML overlay (absolute-positioned text over the chart img)
+function buildChartOverlay() {
+  const children = [];
+
+  // Left-axis numeric labels (default dim color)
+  ES_BARS.forEach(([y, label]) => {
+    // skip if a key label will cover this y (to avoid double-render)
+    const keyY = ES_KEY_LABELS.find(k => Math.abs(k.y - (y + 9)) < 3);
+    if (keyY) return;
+    children.push({
+      type: 'div',
+      props: {
+        style: {
+          display: 'flex',
+          position: 'absolute',
+          left: '0px',
+          top: `${y - 1}px`,
+          width: '64px',
+          justifyContent: 'flex-end',
+          fontSize: '10px',
+          color: 'rgba(255,255,255,.36)',
+          fontWeight: 400,
+        },
+        children: label,
+      },
+    });
+  });
+
+  // Key colored labels on left axis
+  ES_KEY_LABELS.forEach(({ y, text, color, weight }) => {
+    children.push({
+      type: 'div',
+      props: {
+        style: {
+          display: 'flex',
+          position: 'absolute',
+          left: '0px',
+          top: `${y - 11}px`,
+          width: '64px',
+          justifyContent: 'flex-end',
+          fontSize: '10px',
+          color,
+          fontWeight: weight || 400,
+        },
+        children: text,
+      },
+    });
+  });
+
+  // Right-side pill tags
+  ES_TAGS.forEach(([x, y, w, h, fill, text, textColor, borderColor]) => {
+    const style = {
+      display: 'flex',
+      position: 'absolute',
+      left: `${x}px`,
+      top: `${y}px`,
+      width: `${w}px`,
+      height: `${h}px`,
+      backgroundColor: fill,
+      borderRadius: h >= 14 ? '4px' : '3px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: h >= 14 ? '9px' : '8.5px',
+      fontWeight: 700,
+      color: textColor,
+    };
+    if (borderColor) style.border = `1px solid ${borderColor}`;
+    children.push({ type: 'div', props: { style, children: text } });
+  });
+
+  return {
+    type: 'div',
+    props: {
+      style: {
+        display: 'flex',
+        position: 'absolute',
+        left: '0px',
+        top: '0px',
+        width: `${CHART_W}px`,
+        height: `${CHART_H}px`,
+      },
+      children,
+    },
+  };
 }
 
 // ───────── level card (6-col grid row) ─────────
@@ -250,7 +354,15 @@ export default async function handler() {
             ]),
           ]
         ),
-        div({ padding: '6px 12px 0', flex: 1 }, [img(chartUrl, 1008, 530, { width: '100%', height: 'auto' })]),
+        div({ padding: '6px 12px 0', flex: 1, justifyContent: 'center' }, [
+          div(
+            { position: 'relative', width: `${CHART_W}px`, height: `${CHART_H}px`, flexShrink: 0 },
+            [
+              img(chartUrl, CHART_W, CHART_H, { position: 'absolute', left: 0, top: 0 }),
+              buildChartOverlay(),
+            ]
+          ),
+        ]),
         row({ gap: '16px', alignItems: 'center', padding: '5px 12px 7px' }, [
           row({ alignItems: 'center', gap: '5px' }, [
             div({ width: '10px', height: '8px', borderRadius: '2px', backgroundColor: GREEN }),
