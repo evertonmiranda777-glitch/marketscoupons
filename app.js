@@ -209,19 +209,11 @@ function track(event, params={}) {
     } catch(e) { console.warn('gtag dispatch error:', e); }
   }
 
-  // 5. Facebook Pixel — trackCustom pra eventos não-standard (standard events são disparados inline)
-  if (typeof fbq === 'function' && !skipBrowserPixels) {
-    try {
-      const FB_STANDARD = new Set(['page_view','firm_detail_open','coupon_copy','checkout_click','lead','purchase','user_signup','user_login']);
-      if (!FB_STANDARD.has(event)) {
-        const fbParams = { event_id: eid };
-        if (params.firm_id) fbParams.firm_id = params.firm_id;
-        if (params.value != null) { fbParams.value = params.value; fbParams.currency = params.currency || 'USD'; }
-        if (params.page_name) fbParams.page_name = params.page_name;
-        fbq('trackCustom', event, fbParams, { eventID: eid });
-      }
-    } catch(e) { console.warn('fbq dispatch error:', e); }
-  }
+  // 5. Facebook Pixel — DESATIVADO no track() fan-out.
+  // Eventos standard (PageView, ViewContent, InitiateCheckout, Purchase, Lead, CopyCode)
+  // são disparados inline com items array. Eventos custom (scroll_depth, menu_toggle, etc)
+  // NÃO vão pro FB Pixel — pollui dashboard sem valor pra otimização de ads.
+  // Se precisar de algum custom específico no FB, chamar fbq diretamente no call site.
 
   // 6. Facebook Conversions API (server-side — bypasses ad blockers)
   _sendCAPI(event, params, eid, ts);

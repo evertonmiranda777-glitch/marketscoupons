@@ -216,7 +216,19 @@ module.exports = async (req, res) => {
     const subject = `${firms[0].name} — ${firms[0].discount}% OFF`;
 
     for (const [lang, group] of Object.entries(langGroups)) {
-      const htmlContent = buildCronEmail(firms, lang);
+      // UTM tagging: tag all marketscoupons.com links (external affiliate links pass-through)
+      const tagUrl = (url) => {
+        try {
+          if (!/^https?:\/\/(www\.)?marketscoupons\.(com|vercel\.app)/i.test(url)) return url;
+          const u = new URL(url);
+          if (!u.searchParams.get('utm_source')) u.searchParams.set('utm_source', 'email');
+          if (!u.searchParams.get('utm_medium')) u.searchParams.set('utm_medium', 'promo');
+          if (!u.searchParams.get('utm_campaign')) u.searchParams.set('utm_campaign', 'promo_' + lang);
+          return u.toString();
+        } catch { return url; }
+      };
+      const htmlContent = buildCronEmail(firms, lang)
+        .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url)}"`);
 
       for (const sub of group) {
         try {

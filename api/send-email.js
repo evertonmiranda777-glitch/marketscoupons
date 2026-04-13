@@ -81,6 +81,27 @@ module.exports = async (req, res) => {
 
   const senderInfo = sender || { name: 'Lara | MarketsCoupons', email: 'lara@marketscoupons.com' };
 
+  // UTM tagging: every marketscoupons.com link in the htmlContent gets utm_source=email
+  // utm_medium=broadcast (or from body.utmMedium) utm_campaign=<tag or body.campaign>
+  const utmMedium = (req.body.utmMedium || 'broadcast').toLowerCase().replace(/[^a-z0-9_]/g,'');
+  const utmCampaign = (req.body.campaign || (tags && tags[0]) || 'generic').toLowerCase().replace(/[^a-z0-9_]/g,'_').slice(0,60);
+  function tagUrl(url, provider) {
+    try {
+      if (!/^https?:\/\/(www\.)?marketscoupons\.(com|vercel\.app)/i.test(url)) return url;
+      const u = new URL(url);
+      if (!u.searchParams.get('utm_source')) u.searchParams.set('utm_source', 'email');
+      if (!u.searchParams.get('utm_medium')) u.searchParams.set('utm_medium', utmMedium);
+      if (!u.searchParams.get('utm_campaign')) u.searchParams.set('utm_campaign', utmCampaign);
+      if (provider && !u.searchParams.get('utm_content')) u.searchParams.set('utm_content', provider);
+      return u.toString();
+    } catch { return url; }
+  }
+  function tagHtml(html, provider) {
+    if (!html) return html;
+    return html.replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url, provider)}"`)
+               .replace(/href\s*=\s*'(https?:\/\/[^']+)'/gi, (m, url) => `href='${tagUrl(url, provider)}'`);
+  }
+
   // Send via Brevo
   async function sendViaBrevo(recipient, finalSubject, finalHtml) {
     if (!BREVO_KEY) return { email: recipient.email, status: 'skipped', provider: 'brevo', response: { error: 'no key' } };
@@ -129,12 +150,13 @@ module.exports = async (req, res) => {
     const finalSubject = subject
       .replace(/{nome}/g, recipient.name || 'Trader')
       .replace(/{email}/g, recipient.email || '');
-    const finalHtml = (htmlContent || textToHtml(textContent))
+    const finalHtmlRaw = (htmlContent || textToHtml(textContent))
       .replace(/{nome}/g, recipient.name || 'Trader')
       .replace(/{email}/g, recipient.email || '')
       .replace(/{cupom}/g, recipient.cupom || 'MARKET')
       .replace(/{firma}/g, recipient.firma || '')
-      .replace(/{link}/g, 'https://www.marketscoupons.com');
+      .replace(/{link}/g, tagUrl('https://www.marketscoupons.com'));
+    const finalHtml = tagHtml(finalHtmlRaw);
 
     let result;
     try {

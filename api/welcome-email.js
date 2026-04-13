@@ -344,8 +344,20 @@ module.exports = async (req, res) => {
     });
     const firms = await firmsResp.json();
 
+    // UTM tagging: tag all marketscoupons.com links with utm_source=email&utm_medium=welcome
+    const tagUrl = (url) => {
+      try {
+        if (!/^https?:\/\/(www\.)?marketscoupons\.(com|vercel\.app)/i.test(url)) return url;
+        const u = new URL(url);
+        if (!u.searchParams.get('utm_source')) u.searchParams.set('utm_source', 'email');
+        if (!u.searchParams.get('utm_medium')) u.searchParams.set('utm_medium', 'welcome');
+        if (!u.searchParams.get('utm_campaign')) u.searchParams.set('utm_campaign', 'welcome_' + useLang);
+        return u.toString();
+      } catch { return url; }
+    };
     const htmlContent = buildWelcomeEmail(useLang, Array.isArray(firms) ? firms : [])
-      .replace(/{nome}/g, name || 'Trader');
+      .replace(/{nome}/g, name || 'Trader')
+      .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url)}"`);
 
     const subject = wt(useLang, 'subject');
 
