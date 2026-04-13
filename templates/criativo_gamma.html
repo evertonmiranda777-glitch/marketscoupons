@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1350px;background:#080e18;font-family:'Inter',sans-serif;color:#fff;overflow:hidden;position:relative;}
+.sf{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 7% 4%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 19% 9%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 33% 3%,rgba(255,255,255,.55) 0%,transparent 100%),radial-gradient(1px 1px at 51% 7%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 67% 4%,rgba(255,255,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 82% 11%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 94% 6%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 3% 18%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 14% 25%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 28% 20%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 44% 16%,rgba(255,255,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 60% 22%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 76% 17%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 90% 27%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 6% 35%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 21% 42%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 38% 37%,rgba(255,255,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 55% 44%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 72% 33%,rgba(255,255,255,.55) 0%,transparent 100%),radial-gradient(1px 1px at 88% 40%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 11% 55%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 25% 62%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 42% 58%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 59% 65%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 77% 52%,rgba(255,255,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 93% 60%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 5% 72%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 18% 80%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 35% 75%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 53% 82%,rgba(255,255,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 70% 88%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 85% 78%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 97% 85%,rgba(255,255,255,.35) 0%,transparent 100%);}
+.wv{position:absolute;inset:0;background:radial-gradient(ellipse 900px 300px at 50% 75%,rgba(0,170,120,.055) 0%,transparent 70%);}
+.wrap{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
+
+.logobar{padding:13px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.ll{display:flex;align-items:center;gap:9px;}
+.lsq{width:28px;height:28px;display:flex;align-items:center;justify-content:center;}
+.lname{font-size:18px;font-weight:800;}
+.lname span{color:#f5c518;}
+.lpip{width:5px;height:5px;border-radius:50%;background:#f5c518;margin-left:2px;}
+.upill{display:flex;align-items:center;gap:6px;background:rgba(245,197,24,.08);border:1px solid rgba(245,197,24,.24);border-radius:30px;padding:5px 14px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#f5c518;}
+.udot{width:5px;height:5px;border-radius:50%;background:#f5c518;}
+
+.body{padding:22px 48px 0;flex:1;display:flex;flex-direction:column;}
+
+h1{font-size:44px;font-weight:800;line-height:1.06;letter-spacing:-1.5px;margin-bottom:6px;text-align:center;}
+h1 span{color:#f5c518;}
+.sub{font-size:14px;color:rgba(255,255,255,.4);text-align:center;line-height:1.5;margin-bottom:3px;max-width:820px;margin-left:auto;margin-right:auto;}
+.meta{font-size:10.5px;color:rgba(255,255,255,.22);text-align:center;margin-bottom:14px;}
+
+/* Asset header */
+.ahdr{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:11px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.aht{font-size:17px;font-weight:800;}
+.ahn{font-size:12px;color:rgba(255,255,255,.36);margin-left:7px;}
+.ahp{font-size:22px;font-weight:800;}
+.gpos{font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;background:rgba(0,220,130,.12);color:#00dc82;border:1px solid rgba(0,220,130,.26);}
+
+/* Key levels */
+.lvrow{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-bottom:8px;}
+.lvc{background:rgba(255,255,255,.024);border:1px solid rgba(255,255,255,.062);border-radius:8px;padding:8px 10px;}
+.lvc .lb{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:3px;}
+.lvc .lv{font-size:15px;font-weight:800;}
+.lvc .ls2{font-size:8px;color:rgba(255,255,255,.24);margin-top:1px;}
+.cy{color:#f5c518;}.co{color:#ff9a30;}.cr{color:#ff5050;}.ct{color:#00c8a0;}.cp{color:#c07aff;}
+
+/* GEX chart card - TALL */
+.gex{background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.062);border-radius:12px;overflow:hidden;margin-bottom:8px;flex:1;}
+.gexh{padding:9px 18px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);}
+.gext{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.gexto{font-size:11px;color:rgba(255,255,255,.36);}
+.gexto b{color:#00dc82;}
+.gex-inner{padding:6px 12px 0;}
+
+/* Legend */
+.leg{display:flex;gap:16px;align-items:center;padding:5px 12px 7px;}
+.li{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.42);}
+.lsq2{width:10px;height:8px;border-radius:2px;}
+.ll2{width:16px;height:1px;background:rgba(255,255,255,.5);}
+
+/* NQ mini section */
+.nqdiv{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.nqdiv .nl{flex:1;height:1px;background:rgba(255,255,255,.07);}
+.nqdiv .nt{font-size:13px;font-weight:800;color:#a07aff;}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,rgba(245,197,24,.07),rgba(0,175,100,.04));border:1px solid rgba(245,197,24,.16);border-radius:12px;padding:20px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cta p{font-size:12px;color:rgba(255,255,255,.34);margin-bottom:3px;}
+.cta h3{font-size:21px;font-weight:700;}
+.cbtn{background:#f5c518;color:#000;font-size:14px;font-weight:800;padding:12px 26px;border-radius:9px;text-decoration:none;flex-shrink:0;font-family:'Inter',sans-serif;}
+
+.footer{padding:13px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;margin-top:14px;}
+.fb{font-size:15px;font-weight:700;color:rgba(255,255,255,.46);}
+.fb span{color:#f5c518;}
+.fu{font-size:12px;color:rgba(255,255,255,.22);}
+</style>
+</head>
+<body>
+<div class="sf"></div>
+<div class="wv"></div>
+<div class="wrap">
+
+<div class="logobar">
+  <div class="ll">
+    <div class="lsq"><svg width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#lg)"/></svg></div>
+    <div class="lname">Markets <span>Coupons</span></div>
+    <div class="lpip"></div>
+  </div>
+  <div class="upill"><div class="udot"></div>Updated Daily</div>
+</div>
+
+<div class="body">
+
+  <h1><span>Gamma</span> Exposure (GEX)</h1>
+  <p class="sub">Track Gamma Exposure levels for market makers on S&amp;P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price.</p>
+  <p class="meta">Last update: Monday, April 13, 2026 &mdash; 04:27 ET &nbsp;&bull;&nbsp; Updated every trading day at 5:00 AM ET.</p>
+
+  <!-- ES header -->
+  <div class="ahdr">
+    <div style="display:flex;align-items:center;">
+      <span class="aht">ES</span><span class="ahn">S&amp;P 500 Futures</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="ahp">6,817</span>
+      <span class="gpos">Positive Gamma</span>
+    </div>
+  </div>
+
+  <!-- ES levels -->
+  <div class="lvrow">
+    <div class="lvc"><div class="lb">Zero Gamma</div><div class="lv cy">6,795</div><div class="ls2">Gamma Flip</div></div>
+    <div class="lvc"><div class="lb">Put Wall</div><div class="lv co">6,800</div><div class="ls2">Support</div></div>
+    <div class="lvc"><div class="lb">Call Wall</div><div class="lv cr">7,000</div><div class="ls2">Resistance</div></div>
+    <div class="lvc"><div class="lb">HVL</div><div class="lv ct">7,000</div><div class="ls2">Price Magnet</div></div>
+    <div class="lvc"><div class="lb">Vol Trigger</div><div class="lv cy">7,000</div><div class="ls2">Vol. Trigger</div></div>
+    <div class="lvc"><div class="lb">Max Pain</div><div class="lv cp">6,815</div><div class="ls2">Max Pain</div></div>
+  </div>
+
+  <!-- ES GEX chart - tall, fills flex -->
+  <div class="gex">
+    <div class="gexh">
+      <div class="gext">Gamma Exposure &mdash; ES S&amp;P 500</div>
+      <div class="gexto">Total: <b>+6962M</b></div>
+    </div>
+    <div class="gex-inner">
+      <svg viewBox="0 0 950 530" style="width:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
+        <line x1="70" y1="0" x2="70" y2="530" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <text x="66" y="15"  font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,450</text><rect x="71" y="6"   width="145" height="10" rx="2" fill="rgba(0,220,130,.82)"/>
+        <text x="66" y="30"  font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,400</text><rect x="71" y="21"  width="102" height="10" rx="2" fill="rgba(0,220,130,.74)"/>
+        <text x="66" y="45"  font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,350</text><rect x="71" y="36"  width="162" height="10" rx="2" fill="rgba(0,220,130,.82)"/>
+        <text x="66" y="60"  font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,300</text><rect x="71" y="51"  width="125" height="10" rx="2" fill="rgba(0,220,130,.76)"/>
+        <text x="66" y="75"  font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,250</text><rect x="71" y="66"  width="172" height="10" rx="2" fill="rgba(0,220,130,.82)"/>
+        <text x="66" y="90"  font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,200</text><rect x="71" y="81"  width="138" height="10" rx="2" fill="rgba(0,220,130,.78)"/>
+        <text x="66" y="105" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,150</text><rect x="71" y="96"  width="158" height="10" rx="2" fill="rgba(0,220,130,.80)"/>
+        <text x="66" y="120" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,100</text><rect x="71" y="111" width="185" height="10" rx="2" fill="rgba(0,220,130,.85)"/>
+        <text x="66" y="135" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,050</text><rect x="71" y="126" width="132" height="10" rx="2" fill="rgba(0,220,130,.76)"/>
+        <text x="66" y="150" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">7,025</text><rect x="71" y="141" width="155" height="10" rx="2" fill="rgba(0,220,130,.78)"/>
+        <line x1="71" y1="159" x2="835" y2="159" stroke="#ff5050" stroke-width="1" stroke-dasharray="5,4" opacity=".65"/>
+        <text x="66" y="164" font-size="10.5" fill="#ff5050" text-anchor="end" font-family="Inter,sans-serif" font-weight="700">7,000</text>
+        <rect x="71" y="156" width="395" height="10" rx="2" fill="rgba(0,220,130,.93)"/>
+        <rect x="841" y="153" width="64" height="15" rx="4" fill="#ff5050"/>
+        <text x="873" y="164" font-size="9.5" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">Call Wall</text>
+        <rect x="841" y="170" width="44" height="12" rx="3" fill="#00c8a0"/>
+        <text x="863" y="180" font-size="9" fill="#000" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">HVL</text>
+        <rect x="841" y="184" width="63" height="12" rx="3" fill="#f5c518"/>
+        <text x="872" y="194" font-size="9" fill="#000" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">Vol Trigger</text>
+        <text x="66" y="214" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,975</text><rect x="71" y="205" width="116" height="10" rx="2" fill="rgba(0,220,130,.72)"/>
+        <text x="66" y="229" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,950</text><rect x="71" y="220" width="140" height="10" rx="2" fill="rgba(0,220,130,.76)"/>
+        <text x="66" y="244" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,925</text><rect x="71" y="235" width="108" height="10" rx="2" fill="rgba(0,220,130,.70)"/>
+        <text x="66" y="259" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,910</text><rect x="71" y="250" width="98" height="10" rx="2" fill="rgba(0,220,130,.68)"/>
+        <text x="66" y="274" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,900</text><rect x="71" y="265" width="258" height="10" rx="2" fill="rgba(0,220,130,.87)"/>
+        <text x="66" y="289" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,880</text><rect x="71" y="280" width="80" height="10" rx="2" fill="rgba(0,220,130,.64)"/>
+        <text x="66" y="304" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,875</text><rect x="71" y="295" width="68" height="10" rx="2" fill="rgba(0,220,130,.62)"/>
+        <line x1="71" y1="313" x2="835" y2="313" stroke="rgba(255,255,255,.55)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <text x="66" y="318" font-size="10.5" fill="#fff" text-anchor="end" font-family="Inter,sans-serif" font-weight="700">6,825</text>
+        <rect x="71" y="310" width="315" height="10" rx="2" fill="rgba(0,220,130,.89)"/>
+        <rect x="841" y="307" width="50" height="15" rx="4" fill="rgba(255,255,255,.16)" style="stroke:rgba(255,255,255,.32);stroke-width:.8"/>
+        <text x="866" y="318" font-size="9.5" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">6,817</text>
+        <line x1="71" y1="327" x2="835" y2="327" stroke="#c07aff" stroke-width="1" stroke-dasharray="5,4" opacity=".55"/>
+        <text x="66" y="332" font-size="10.5" fill="#c07aff" text-anchor="end" font-family="Inter,sans-serif" font-weight="700">6,815</text>
+        <rect x="71" y="324" width="278" height="10" rx="2" fill="rgba(0,220,130,.83)"/>
+        <rect x="841" y="322" width="56" height="12" rx="3" fill="#c07aff"/>
+        <text x="869" y="332" font-size="9" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">Max Pain</text>
+        <line x1="71" y1="341" x2="835" y2="341" stroke="#ff9a30" stroke-width="1" stroke-dasharray="5,4" opacity=".55"/>
+        <text x="66" y="346" font-size="10.5" fill="#ff9a30" text-anchor="end" font-family="Inter,sans-serif" font-weight="700">6,800</text>
+        <rect x="841" y="336" width="54" height="12" rx="3" fill="#ff9a30"/>
+        <text x="868" y="346" font-size="9" fill="#000" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">Put Wall</text>
+        <line x1="71" y1="355" x2="835" y2="355" stroke="#f5c518" stroke-width="1" stroke-dasharray="5,4" opacity=".55"/>
+        <text x="66" y="360" font-size="10.5" fill="#f5c518" text-anchor="end" font-family="Inter,sans-serif" font-weight="700">6,795</text>
+        <rect x="71" y="352" width="96" height="10" rx="2" fill="rgba(255,80,80,.78)"/>
+        <rect x="841" y="349" width="75" height="12" rx="3" fill="rgba(245,197,24,.2)" style="stroke:rgba(245,197,24,.42);stroke-width:.8"/>
+        <text x="879" y="359" font-size="9" fill="#f5c518" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">Zero Gamma</text>
+        <text x="66" y="375" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,750</text><rect x="71" y="366" width="185" height="10" rx="2" fill="rgba(255,80,80,.82)"/>
+        <text x="66" y="390" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,700</text><rect x="71" y="381" width="155" height="10" rx="2" fill="rgba(255,80,80,.76)"/>
+        <text x="66" y="405" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,650</text><rect x="71" y="396" width="242" height="10" rx="2" fill="rgba(255,80,80,.85)"/>
+        <text x="66" y="420" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,600</text><rect x="71" y="411" width="175" height="10" rx="2" fill="rgba(255,80,80,.79)"/>
+        <text x="66" y="435" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,550</text><rect x="71" y="426" width="135" height="10" rx="2" fill="rgba(255,80,80,.73)"/>
+        <text x="66" y="450" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,500</text><rect x="71" y="441" width="308" height="10" rx="2" fill="rgba(255,80,80,.89)"/>
+        <text x="66" y="465" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,400</text><rect x="71" y="456" width="245" height="10" rx="2" fill="rgba(255,80,80,.83)"/>
+        <text x="66" y="480" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,300</text><rect x="71" y="471" width="188" height="10" rx="2" fill="rgba(255,80,80,.78)"/>
+        <text x="66" y="495" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,250</text><rect x="71" y="486" width="148" height="10" rx="2" fill="rgba(255,80,80,.73)"/>
+        <text x="66" y="510" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,150</text><rect x="71" y="501" width="105" height="10" rx="2" fill="rgba(255,80,80,.66)"/>
+        <text x="66" y="525" font-size="10.5" fill="rgba(255,255,255,.36)" text-anchor="end" font-family="Inter,sans-serif">6,000</text><rect x="71" y="516" width="72" height="10" rx="2" fill="rgba(255,80,80,.58)"/>
+      </svg>
+    </div>
+    <div class="leg">
+      <div class="li"><div class="lsq2" style="background:#00dc82;"></div>Calls (resistance)</div>
+      <div class="li"><div class="lsq2" style="background:#ff5050;"></div>Puts (support)</div>
+      <div class="li"><div class="ll2"></div>6,817 Spot</div>
+    </div>
+  </div>
+
+  <!-- NQ section -->
+  <div class="nqdiv">
+    <div class="nl"></div>
+    <div class="nt">NQ &mdash; Nasdaq 100 Futures</div>
+    <div class="nl"></div>
+  </div>
+
+  <div class="ahdr" style="border-color:rgba(160,122,255,.2);margin-bottom:8px;">
+    <div style="display:flex;align-items:center;">
+      <span class="aht" style="color:#a07aff;">NQ</span>
+      <span class="ahn">Nasdaq 100 Futures</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="ahp">25,116</span>
+      <span class="gpos">Positive Gamma</span>
+    </div>
+  </div>
+
+  <div class="lvrow" style="margin-bottom:14px;">
+    <div class="lvc"><div class="lb">Zero Gamma</div><div class="lv cy">25,017</div><div class="ls2">Gamma Flip</div></div>
+    <div class="lvc"><div class="lb">Put Wall</div><div class="lv co">25,000</div><div class="ls2">Support</div></div>
+    <div class="lvc"><div class="lb">Call Wall</div><div class="lv cr">25,500</div><div class="ls2">Resistance</div></div>
+    <div class="lvc"><div class="lb">HVL</div><div class="lv ct">24,100</div><div class="ls2">Price Magnet</div></div>
+    <div class="lvc"><div class="lb">Vol Trigger</div><div class="lv cy">24,100</div><div class="ls2">Vol. Trigger</div></div>
+    <div class="lvc"><div class="lb">Max Pain</div><div class="lv cp">24,300</div><div class="ls2">Max Pain</div></div>
+  </div>
+
+  <div class="cta">
+    <div>
+      <p>Updated daily at 5:00 AM ET &bull; ES, NQ, and more</p>
+      <h3>Access the full GEX map for free</h3>
+    </div>
+    <a class="cbtn" href="https://www.marketscoupons.com/gamma">View GEX</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="fb">Markets<span>Coupons</span></div>
+  <div class="fu">marketscoupons.com/gamma</div>
+</div>
+
+</div>
+</body>
+</html>
