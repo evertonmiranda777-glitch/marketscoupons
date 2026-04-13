@@ -172,9 +172,19 @@ function track(event, params={}) {
     timestamp:    ts,
   });
 
+  // Eventos onde chamadas inline gtag/fbq já disparam com params ricos de ecommerce.
+  // Track() NÃO faz fan-out pra gtag/fbq nestes casos pra evitar duplicação no GA4/FB.
+  // (Supabase/cache/queue/dataLayer/CAPI continuam disparando normalmente)
+  const INLINE_HANDLED = new Set([
+    'page_view','firm_detail_open','guide_read','coupon_copy','checkout_click','purchase',
+    'calc_unlocked','quiz_complete','tool_lead_capture',
+    'loyalty_register','loyalty_proof_submitted','user_login','user_signup'
+  ]);
+  const skipBrowserPixels = INLINE_HANDLED.has(event);
+
   // 4. GA4 direto — garante que TODO evento chegue ao GA4 com event_id
   // (inline gtag calls existentes continuam funcionando pra enviar com params de ecommerce ricos)
-  if (typeof gtag === 'function') {
+  if (typeof gtag === 'function' && !skipBrowserPixels) {
     try {
       const gaParams = {
         event_id: eid,
@@ -200,7 +210,7 @@ function track(event, params={}) {
   }
 
   // 5. Facebook Pixel — trackCustom pra eventos não-standard (standard events são disparados inline)
-  if (typeof fbq === 'function') {
+  if (typeof fbq === 'function' && !skipBrowserPixels) {
     try {
       const FB_STANDARD = new Set(['page_view','firm_detail_open','coupon_copy','checkout_click','lead','purchase','user_signup','user_login']);
       if (!FB_STANDARD.has(event)) {
