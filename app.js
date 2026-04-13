@@ -19,6 +19,23 @@ var _currentPage = 'home';
   window.fetch=function(...a){const u=typeof a[0]==='string'?a[0]:a[0]?.url||'';capture(u);return of.apply(this,a);};
   const osend=XMLHttpRequest.prototype.open;
   XMLHttpRequest.prototype.open=function(m,u){capture(u||'');return osend.apply(this,arguments);};
+  if(navigator.sendBeacon){
+    const osb=navigator.sendBeacon.bind(navigator);
+    navigator.sendBeacon=function(u,d){
+      capture(u||'');
+      // Se for POST com body, GA4 manda múltiplos eventos num só beacon — tenta parsear
+      try{
+        if(d && typeof d==='string' && (u.includes('google-analytics.com')||u.includes('/g/collect'))){
+          d.split('\n').forEach(line=>{
+            const p=new URLSearchParams(line);
+            const en=p.get('en');
+            if(en) hits.ga4.push({en,id:p.get('ep.event_id')||p.get('event_id'),t:Date.now()});
+          });
+        }
+      }catch(e){}
+      return osb(u,d);
+    };
+  }
   const OI=window.Image;
   window.Image=function(){const i=new OI();Object.defineProperty(i,'src',{set(v){capture(v||'');i.setAttribute('src',v);},get(){return i.getAttribute('src');}});return i;};
   window._trackHits=hits;
@@ -670,7 +687,7 @@ function go(page, skipPush){
   try{sessionStorage.setItem('mc_page',page);}catch(e){}
   track('page_view',{page_name:page});
   if(typeof fbq==='function') fbq('track','PageView',{content_name:page,content_category:'page'},{eventID:window._lastTrackId});
-  if(typeof gtag==='function') gtag('event','page_view',{page_title:page});
+  if(typeof gtag==='function') gtag('event','page_view',{page_title:page,event_id:window._lastTrackId});
   // Preview banner only on gated pages
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
   if(page==='live'){ if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview(); }
