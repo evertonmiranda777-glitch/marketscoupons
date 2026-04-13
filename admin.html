@@ -1600,6 +1600,36 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <!-- GA4 KPIs -->
         <div class="stats-grid" id="ga4-kpis"></div>
 
+        <!-- GA4 Timeseries (Usuários / Sessões / Pageviews por dia) -->
+        <div class="chart-card" style="margin-top:16px;">
+          <div class="cc-hd"><div class="cc-title">Série temporal (GA4)</div><div class="cc-sub">Usuários, sessões, novos usuários e pageviews por dia</div></div>
+          <div style="position:relative;height:280px;padding:8px 4px;"><canvas id="ga4-timeseries"></canvas></div>
+        </div>
+
+        <!-- GA4 Top Pages + Source/Medium -->
+        <div class="charts-grid" style="margin-top:16px;">
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Top Páginas (GA4)</div><div class="cc-sub">Páginas mais vistas</div></div>
+            <div class="data-table-wrap" style="max-height:420px;overflow-y:auto;"><table class="data-table" id="ga4-top-pages"></table></div>
+          </div>
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Origem / Mídia (GA4)</div><div class="cc-sub">Fontes de aquisição detalhadas</div></div>
+            <div class="data-table-wrap" style="max-height:420px;overflow-y:auto;"><table class="data-table" id="ga4-source-medium"></table></div>
+          </div>
+        </div>
+
+        <!-- GA4 Top Events + Landing Pages -->
+        <div class="charts-grid" style="margin-top:16px;">
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Eventos (GA4)</div><div class="cc-sub">Top eventos disparados</div></div>
+            <div class="data-table-wrap" style="max-height:420px;overflow-y:auto;"><table class="data-table" id="ga4-top-events"></table></div>
+          </div>
+          <div class="chart-card">
+            <div class="cc-hd"><div class="cc-title">Landing Pages (GA4)</div><div class="cc-sub">Páginas de entrada</div></div>
+            <div class="data-table-wrap" style="max-height:420px;overflow-y:auto;"><table class="data-table" id="ga4-landing"></table></div>
+          </div>
+        </div>
+
         <!-- GA4 Tables: Countries + Cities -->
         <div class="charts-grid">
           <div class="chart-card">
@@ -3574,22 +3604,117 @@ async function fetchGA4Geo(){
 }
 
 function renderGA4Data(d,days){
+ const el=id=>document.getElementById(id);
+ const t=d.totals||{};
+ const fmt=n=>(n||0).toLocaleString('pt-BR');
+ const pct=n=>((n||0)*100).toFixed(1)+'%';
+ const dur=s=>{s=Math.round(s||0);const m=Math.floor(s/60);return m?`${m}m ${s%60}s`:`${s}s`;};
  // KPIs
- const totalUsers=d.totals?.users||0;
- const totalSessions=d.totals?.sessions||0;
- const avgBounce=d.countries?.length?((d.countries.reduce((s,c)=>s+c.bounceRate,0)/d.countries.length)*100).toFixed(1):'—';
+ const totalUsers=t.users||0;
+ const totalSessions=t.sessions||0;
+ const newUsers=t.newUsers||0;
+ const pageViews=t.pageViews||0;
+ const engagementRate=t.engagementRate||0;
+ const avgSessionDuration=t.avgSessionDuration||0;
+ const bounceRate=t.bounceRate!=null?t.bounceRate:(d.countries?.length?d.countries.reduce((s,c)=>s+c.bounceRate,0)/d.countries.length:0);
+ const eventCount=t.eventCount||0;
+ const conversions=t.conversions||0;
  const topCountry=d.countries?.[0]?.dim||'—';
  const topDevice=d.devices?.sort((a,b)=>b.users-a.users)[0]?.dim||'—';
  const topChannel=d.channels?.[0]?.dim||'—';
- const el=id=>document.getElementById(id);
 
  el('ga4-kpis').innerHTML=`
-  <div class="stat-card"><div class="stat-lbl">Usuários Ativos</div><div class="stat-val y">${totalUsers.toLocaleString('pt-BR')}</div><div class="stat-change">${days} dias</div></div>
-  <div class="stat-card"><div class="stat-lbl">Sessões</div><div class="stat-val b">${totalSessions.toLocaleString('pt-BR')}</div><div class="stat-change">${days} dias</div></div>
-  <div class="stat-card"><div class="stat-lbl">Bounce Rate</div><div class="stat-val" style="color:#F97316;">${avgBounce}%</div><div class="stat-change">média</div></div>
+  <div class="stat-card"><div class="stat-lbl">Usuários Ativos</div><div class="stat-val y">${fmt(totalUsers)}</div><div class="stat-change">${days} dias</div></div>
+  <div class="stat-card"><div class="stat-lbl">Novos Usuários</div><div class="stat-val b">${fmt(newUsers)}</div><div class="stat-change">${totalUsers?((newUsers/totalUsers)*100).toFixed(0):0}% do total</div></div>
+  <div class="stat-card"><div class="stat-lbl">Sessões</div><div class="stat-val b">${fmt(totalSessions)}</div><div class="stat-change">${totalUsers?(totalSessions/totalUsers).toFixed(2):0}/usuário</div></div>
+  <div class="stat-card"><div class="stat-lbl">Pageviews</div><div class="stat-val">${fmt(pageViews)}</div><div class="stat-change">${totalSessions?(pageViews/totalSessions).toFixed(2):0}/sessão</div></div>
+  <div class="stat-card"><div class="stat-lbl">Engagement Rate</div><div class="stat-val" style="color:#22C55E;">${pct(engagementRate)}</div><div class="stat-change">sessões engajadas</div></div>
+  <div class="stat-card"><div class="stat-lbl">Bounce Rate</div><div class="stat-val" style="color:#F97316;">${pct(bounceRate)}</div><div class="stat-change">média</div></div>
+  <div class="stat-card"><div class="stat-lbl">Duração média</div><div class="stat-val" style="font-size:18px;">${dur(avgSessionDuration)}</div><div class="stat-change">por sessão</div></div>
+  <div class="stat-card"><div class="stat-lbl">Eventos</div><div class="stat-val">${fmt(eventCount)}</div><div class="stat-change">${totalSessions?(eventCount/totalSessions).toFixed(1):0}/sessão</div></div>
+  <div class="stat-card"><div class="stat-lbl">Conversões</div><div class="stat-val y">${fmt(conversions)}</div><div class="stat-change">key events</div></div>
   <div class="stat-card"><div class="stat-lbl">Top País</div><div class="stat-val" style="font-size:18px;">${topCountry}</div><div class="stat-change">${d.countries?.[0]?.users||0} usuários</div></div>
   <div class="stat-card"><div class="stat-lbl">Top Dispositivo</div><div class="stat-val" style="font-size:18px;text-transform:capitalize;">${topDevice}</div><div class="stat-change">mais acessos</div></div>
-  <div class="stat-card"><div class="stat-lbl">Top Canal</div><div class="stat-val" style="font-size:16px;">${topChannel}</div><div class="stat-change">mais sessões</div></div>`;
+  <div class="stat-card"><div class="stat-lbl">Top Canal</div><div class="stat-val" style="font-size:14px;">${topChannel}</div><div class="stat-change">mais sessões</div></div>`;
+
+ // Timeseries chart
+ try{
+  const ts=d.timeseries||[];
+  const cv=document.getElementById('ga4-timeseries');
+  if(cv && typeof Chart!=='undefined'){
+   if(cv._chart){try{cv._chart.destroy();}catch(e){}}
+   const labels=ts.map(r=>{const s=r.date||'';return s.length===8?`${s.slice(6,8)}/${s.slice(4,6)}`:s;});
+   cv._chart=new Chart(cv,{
+    type:'line',
+    data:{labels,datasets:[
+     {label:'Usuários',data:ts.map(r=>r.users||0),borderColor:'#F7B928',backgroundColor:'rgba(247,185,40,0.12)',tension:0.3,fill:true,borderWidth:2,pointRadius:2},
+     {label:'Sessões',data:ts.map(r=>r.sessions||0),borderColor:'#3B82F6',backgroundColor:'rgba(59,130,246,0.08)',tension:0.3,fill:true,borderWidth:2,pointRadius:2},
+     {label:'Novos usuários',data:ts.map(r=>r.newUsers||0),borderColor:'#22C55E',backgroundColor:'rgba(34,197,94,0.08)',tension:0.3,fill:false,borderWidth:2,pointRadius:2},
+     {label:'Pageviews',data:ts.map(r=>r.pageViews||0),borderColor:'#A855F7',backgroundColor:'rgba(168,85,247,0.08)',tension:0.3,fill:false,borderWidth:2,pointRadius:2},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:'#cfd6e4',font:{size:11}}},tooltip:{mode:'index'}},scales:{x:{ticks:{color:'#8892a6',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#8892a6',font:{size:10}},grid:{color:'rgba(255,255,255,.06)'},beginAtZero:true}}}
+   });
+  }
+ }catch(e){console.warn('ga4 timeseries chart error:',e);}
+
+ // Top Pages table
+ const tp=d.topPages||[];
+ const tpEl=el('ga4-top-pages');
+ if(tpEl){
+  tpEl.innerHTML=`<thead><tr><th style="width:36px;text-align:center;">#</th><th>Página</th><th style="text-align:right;">Views</th><th style="text-align:right;">Usuários</th><th style="text-align:right;">Duração</th></tr></thead>
+  <tbody>${tp.map((r,i)=>`<tr>
+   <td style="text-align:center;font-weight:700;color:var(--t3);">${i+1}</td>
+   <td style="max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><div style="font-weight:600;font-size:12px;">${(r.title||'—').replace(/</g,'&lt;').slice(0,60)}</div><div style="font-size:10px;color:var(--t3);font-family:monospace;">${(r.path||'').replace(/</g,'&lt;').slice(0,60)}</div></td>
+   <td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${fmt(r.views)}</td>
+   <td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${fmt(r.users)}</td>
+   <td style="text-align:right;color:var(--t3);font-variant-numeric:tabular-nums;font-size:11px;">${dur(r.avgDuration)}</td>
+  </tr>`).join('')||'<tr><td colspan="5" style="color:var(--t3);text-align:center;padding:24px;">Sem dados</td></tr>'}</tbody>`;
+ }
+
+ // Source/Medium table
+ const sm=d.sourceMedium||[];
+ const smEl=el('ga4-source-medium');
+ if(smEl){
+  smEl.innerHTML=`<thead><tr><th style="width:36px;text-align:center;">#</th><th>Origem / Mídia</th><th style="text-align:right;">Usuários</th><th style="text-align:right;">Sessões</th><th style="text-align:right;">Engaj.</th><th style="text-align:right;">Bounce</th></tr></thead>
+  <tbody>${sm.map((r,i)=>`<tr>
+   <td style="text-align:center;font-weight:700;color:var(--t3);">${i+1}</td>
+   <td style="font-weight:600;font-size:12px;">${(r.dim||'—').replace(/</g,'&lt;')}</td>
+   <td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${fmt(r.users)}</td>
+   <td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${fmt(r.sessions)}</td>
+   <td style="text-align:right;color:#22C55E;font-variant-numeric:tabular-nums;font-size:11px;">${pct(r.engagementRate)}</td>
+   <td style="text-align:right;color:#F97316;font-variant-numeric:tabular-nums;font-size:11px;">${pct(r.bounceRate)}</td>
+  </tr>`).join('')||'<tr><td colspan="6" style="color:var(--t3);text-align:center;padding:24px;">Sem dados</td></tr>'}</tbody>`;
+ }
+
+ // Top Events table
+ const te=d.topEvents||[];
+ const teEl=el('ga4-top-events');
+ if(teEl){
+  const totalEv=te.reduce((s,x)=>s+(x.count||0),0)||1;
+  teEl.innerHTML=`<thead><tr><th style="width:36px;text-align:center;">#</th><th>Evento</th><th style="text-align:right;">Count</th><th style="text-align:right;">Usuários</th><th style="text-align:right;">%</th></tr></thead>
+  <tbody>${te.map((r,i)=>`<tr>
+   <td style="text-align:center;font-weight:700;color:var(--t3);">${i+1}</td>
+   <td style="font-weight:600;font-family:monospace;font-size:11px;">${(r.dim||'—').replace(/</g,'&lt;')}</td>
+   <td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${fmt(r.count)}</td>
+   <td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${fmt(r.users)}</td>
+   <td style="text-align:right;color:var(--t3);font-variant-numeric:tabular-nums;font-size:11px;">${((r.count||0)/totalEv*100).toFixed(1)}%</td>
+  </tr>`).join('')||'<tr><td colspan="5" style="color:var(--t3);text-align:center;padding:24px;">Sem dados</td></tr>'}</tbody>`;
+ }
+
+ // Landing Pages table
+ const lp=d.landingPages||[];
+ const lpEl=el('ga4-landing');
+ if(lpEl){
+  lpEl.innerHTML=`<thead><tr><th style="width:36px;text-align:center;">#</th><th>Landing</th><th style="text-align:right;">Sessões</th><th style="text-align:right;">Usuários</th><th style="text-align:right;">Engaj.</th><th style="text-align:right;">Bounce</th></tr></thead>
+  <tbody>${lp.map((r,i)=>`<tr>
+   <td style="text-align:center;font-weight:700;color:var(--t3);">${i+1}</td>
+   <td style="max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;font-size:11px;font-weight:600;">${(r.dim||'—').replace(/</g,'&lt;').slice(0,80)}</td>
+   <td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${fmt(r.sessions)}</td>
+   <td style="text-align:right;color:var(--t2);font-variant-numeric:tabular-nums;">${fmt(r.users)}</td>
+   <td style="text-align:right;color:#22C55E;font-variant-numeric:tabular-nums;font-size:11px;">${pct(r.engagementRate)}</td>
+   <td style="text-align:right;color:#F97316;font-variant-numeric:tabular-nums;font-size:11px;">${pct(r.bounceRate)}</td>
+  </tr>`).join('')||'<tr><td colspan="6" style="color:var(--t3);text-align:center;padding:24px;">Sem dados</td></tr>'}</tbody>`;
+ }
 
  // Helper: bar list renderer
  const _rankC=i=>i===0?'var(--gold)':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--t3)';
