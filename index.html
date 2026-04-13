@@ -1095,7 +1095,12 @@ img{max-width:100%;}
 .drw-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;}
 .drw-name{font-size:15px;font-weight:700;}
 .drw-sub{font-size:11px;color:var(--t2);margin-top:2px;}
-.x-btn{width:34px;height:34px;border-radius:10px;border:1px solid rgba(107,182,201,.18);background:rgba(107,182,201,.08);color:var(--t1);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.x-btn{width:34px;height:34px;border-radius:10px;border:1px solid rgba(107,182,201,.18);background:rgba(107,182,201,.08);color:var(--t1);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;position:relative}
+.x-btn::before{content:"";position:absolute;inset:-4px;}
+.bf-btn{position:relative}
+.bf-btn::before{content:"";position:absolute;inset:-6px 0;}
+.ck-accept{position:relative}
+.ck-accept::before{content:"";position:absolute;inset:-6px 0;}
 .x-btn:hover{border-color:rgba(239,68,68,.4);color:var(--red);background:rgba(239,68,68,.08);}
 .drw-body{padding:18px 20px;overflow-x:hidden;}
 .drw-hero{position:relative;width:calc(100% + 40px);margin:-18px -20px 16px;height:160px;background:center/cover no-repeat;overflow:hidden;}
