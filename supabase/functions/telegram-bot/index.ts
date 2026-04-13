@@ -104,7 +104,7 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
   const text =
     `🔥 <b>Today's Best Prop Firm Deals</b>\n\n` +
     lines.join("\n\n") +
-    `\n\n👉 <a href="${siteLink("", "coupons")}">View all coupons →</a>`;
+    `\n\n👉 ${siteLink("", "coupons")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "coupons");
@@ -145,7 +145,7 @@ async function handleAnalysis(db: ReturnType<typeof createClient>) {
     `<b>Resistance 1</b>\n${data.resistance_1}\n\n` +
     `<b>Attention zone</b>\n${az}\n\n` +
     `${ni}\n\n` +
-    `📊 <a href="${siteLink("/analysis", "analysis")}">Read full analysis →</a>`;
+    `📊 ${siteLink("/analysis", "analysis")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "analysis");
@@ -187,7 +187,7 @@ async function handleGex(db: ReturnType<typeof createClient>) {
     `<b>Put Wall &amp; Call Wall</b>\n` +
     `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
     `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
-    `🎯 <a href="${siteLink("/gamma", "gex")}">See full GEX data →</a>`;
+    `🎯 ${siteLink("/gamma", "gex")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "gex");
@@ -251,7 +251,7 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
   const text =
     `📅 <b>Economic Calendar</b>\n${today}\n\n` +
     lines.join("\n") +
-    `\n\n📊 <a href="${siteLink("/calendar", "calendar")}">Full Calendar</a>`;
+    `\n\n📊 ${siteLink("/calendar", "calendar")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "calendar_daily");
@@ -347,7 +347,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       `${dot} <b>${name}</b> ${stars} in 5 min\n` +
       `🕐 ${timeDisplay}\n` +
       (statsLine ? `📊 ${statsLine}\n` : "") +
-      `\n📅 <a href="${siteLink("/calendar", "calendar_alert")}">Full Calendar</a>`;
+      `\n📅 ${siteLink("/calendar", "calendar_alert")}`;
 
     const msgId = await sendMessage(text);
     if (msgId) await storeMessageId(db, msgId, "calendar_alert");
@@ -373,14 +373,14 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
       `• Exclusive coupons not available to free users\n` +
       `• Advanced market analysis features\n` +
       `• Early access to new prop firm partnerships\n\n` +
-      `👉 <a href="${siteLink("/pro", "pro")}">Learn more about Pro →</a>`;
+      `👉 ${siteLink("/pro", "pro")}`;
   } else {
     text =
       `💰 <b>Loyalty Program — Earn Points</b>\n\n` +
       `Shop through our links and earn loyalty points!\n\n` +
       `🎁 Points unlock: exclusive perks, bigger discounts, priority access\n` +
       `📊 Track your points in your dashboard\n\n` +
-      `👉 <a href="${siteLink("", "loyalty")}">Start earning points →</a>`;
+      `👉 ${siteLink("", "loyalty")}`;
   }
 
   const msgId = await sendMessage(text);
@@ -418,7 +418,7 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     couponLine + `\n\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    `\n👉 <a href="${firm.link ?? siteLink("", "flash_promo")}">Claim this deal → ${firm.name}</a>`;
+    `\n👉 ${firm.link ?? siteLink("", "flash_promo")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
