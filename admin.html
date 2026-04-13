@@ -1227,6 +1227,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
            <!-- Rendered dynamically by renderEmailFirmaChips() -->
          </div>
        </div>
+       <div style="margin-top:10px;" id="seg-customtags-wrap">
+         <div style="font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:4px;">Filtrar por tag customizada</div>
+         <div style="display:flex;flex-wrap:wrap;gap:4px;" id="seg-customtag-grid">
+           <div style="font-size:10px;color:var(--t3);">Nenhuma tag customizada. Importe CSV com tag no campo acima.</div>
+         </div>
+       </div>
        <div style="font-size:10px;color:var(--t3);margin-top:4px;">Destinatarios: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
      </div>
 
@@ -4033,27 +4039,33 @@ async function renderEmailFirmaChips(){
     try { _subsList = await loadSubscribers(); } catch(e){}
   }
 
-  // Segmentation firma chips (firms + custom tags from subscribers)
+  // Segmentation firma chips (only firms)
   const segEl = document.getElementById('seg-firma-grid');
   if(segEl){
-    let html = firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="toggleFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
-    // Add custom tags from subscribers (non-firm tags)
+    segEl.innerHTML = firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="toggleFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
+  }
+
+  // Custom tags grid (separado pra clareza)
+  const tagEl = document.getElementById('seg-customtag-grid');
+  if(tagEl){
     const firmIds = new Set(firms.map(f=>f.id));
     const skipTags = new Set(['imported','site','lead','csv-direct','manual','']);
-    const customTags = new Set();
+    const tagCounts = {};
     if(_subsList?.length){
       for(const s of _subsList){
         for(const tag of (s.tags||[])){
-          if(!skipTags.has(tag) && !firmIds.has(tag)) customTags.add(tag);
+          if(!skipTags.has(tag) && !firmIds.has(tag)) tagCounts[tag] = (tagCounts[tag]||0) + 1;
         }
       }
     }
-    if(customTags.size){
-      html += [...customTags].sort().map(tag =>
-        `<div class="seg-opt seg-firma" data-firma="${tag}" onclick="toggleFirma(this,'${tag}')" style="--fc:#9CA3AF;border-style:dashed;">${tag}</div>`
+    const tagList = Object.keys(tagCounts).sort();
+    if(tagList.length){
+      tagEl.innerHTML = tagList.map(tag =>
+        `<div class="seg-opt seg-firma" data-firma="${tag}" onclick="toggleFirma(this,'${tag}')" style="--fc:#9CA3AF;border-style:dashed;">${tag} <span style="opacity:.6;font-size:9px;">(${tagCounts[tag]})</span></div>`
       ).join('');
+    } else {
+      tagEl.innerHTML = `<div style="font-size:10px;color:var(--t3);">Nenhuma tag customizada. Importe CSV com tag no campo acima.</div>`;
     }
-    segEl.innerHTML = html;
   }
 
   // Promo template grid
