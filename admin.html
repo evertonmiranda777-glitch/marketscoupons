@@ -2189,7 +2189,20 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <!-- PREVIEW -->
         <div class="tg-preview-wrap">
           <div class="tg-card" style="padding:16px 20px;">
-            <div class="tg-card-title">Preview do Criativo</div>
+            <div class="tg-card-title">Preview Criativos OG (edge functions)</div>
+            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+              <button class="tg-qa-btn" onclick="ogPreview('gamma')" style="background:rgba(245,197,24,.1);border-color:rgba(245,197,24,.4);color:#f5c518;">Gamma</button>
+              <button class="tg-qa-btn" onclick="ogPreview('analysis')" style="background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;">Analysis</button>
+              <button class="tg-qa-btn" onclick="ogPreview('calendar')" style="background:rgba(100,180,255,.1);border-color:rgba(100,180,255,.4);color:#80c8ff;">Calendar</button>
+              <button class="tg-qa-btn" onclick="ogPreview(window._ogLast||'gamma')" style="background:rgba(255,255,255,.06);">↻ Refresh</button>
+            </div>
+            <div id="og-preview-wrap" style="background:#0b0f16;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;text-align:center;min-height:200px;display:flex;align-items:center;justify-content:center;">
+              <span style="color:rgba(255,255,255,.4);font-size:13px;">Clique num botão acima para gerar preview</span>
+            </div>
+            <div id="og-preview-info" style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.4);text-align:center;"></div>
+          </div>
+          <div class="tg-card" style="padding:16px 20px;">
+            <div class="tg-card-title">Preview do Criativo (canvas antigo)</div>
             <div class="tg-canvas-outer">
               <div class="tg-canvas-scale" id="tg-canvas-scale">
                 <!-- Canvas de 1080x1920 renderizado aqui -->
@@ -10211,6 +10224,40 @@ const TG_EDGE_URL   = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/tel
 
 let _tgFirms = [];      // firmas carregadas para a aba Telegram
 let _tgInited = false;
+
+/* ── Preview dos criativos OG (edge functions) ── */
+function ogPreview(kind){
+  window._ogLast = kind;
+  const wrap = document.getElementById('og-preview-wrap');
+  const info = document.getElementById('og-preview-info');
+  if(!wrap) return;
+  const t = Date.now();
+  const url = '/api/og/' + kind + '?t=' + t;
+  wrap.innerHTML = '<span style="color:rgba(255,255,255,.5);font-size:13px;">Gerando ' + kind + '...</span>';
+  info.textContent = 'GET ' + url;
+  const img = new Image();
+  img.onload = () => {
+    wrap.innerHTML = '';
+    img.style.maxWidth = '100%';
+    img.style.height = 'auto';
+    img.style.borderRadius = '8px';
+    img.style.display = 'block';
+    wrap.appendChild(img);
+    info.textContent = kind + ' · ' + img.naturalWidth + '×' + img.naturalHeight + ' · ' + new Date().toLocaleTimeString();
+  };
+  img.onerror = async () => {
+    try {
+      const r = await fetch(url);
+      const txt = await r.text();
+      wrap.innerHTML = '<pre style="color:#ff5050;font-size:10px;text-align:left;max-height:300px;overflow:auto;white-space:pre-wrap;">' + (txt || 'Erro sem body (status ' + r.status + ')') + '</pre>';
+      info.textContent = 'HTTP ' + r.status + ' · ' + (r.headers.get('content-type') || 'no content-type');
+    } catch(e) {
+      wrap.innerHTML = '<span style="color:#ff5050;">Falha ao carregar</span>';
+      info.textContent = e.message;
+    }
+  };
+  img.src = url;
+}
 
 /* ── Inicializa a aba Telegram ── */
 async function initTelegramSection(){
