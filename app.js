@@ -721,6 +721,11 @@ const SLUG_PAGES=Object.fromEntries(Object.entries(PAGE_SLUGS).map(([k,v])=>[v,k
 function _pageUrl(page){const s=PAGE_SLUGS[page];return s?'/'+s:'/';}
 function _pageFromPath(){const p=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').replace(/^\//,'').replace(/\/$/,'');return SLUG_PAGES[p]||'';}
 function go(page, skipPush){
+  // Limpa timers de página anterior pra evitar memory leak
+  if (_currentPage === 'calendar' && page !== 'calendar') {
+    if (_calRefreshTimer) { clearInterval(_calRefreshTimer); _calRefreshTimer = null; }
+    if (_calCdTimer) { clearInterval(_calCdTimer); _calCdTimer = null; }
+  }
   _currentPage=page;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
@@ -2174,7 +2179,7 @@ async function openBlogArticle(slug){
         if(d2) post=d2;
       } else { post=data; }
     }
-    if(!post){art.innerHTML='<div style="color:var(--t2);padding:40px 0;">Post not found.</div>';return;}
+    if(!post){art.innerHTML=`<div style="color:var(--t2);padding:40px 0;">${t('blog_post_not_found')||'Post not found.'}</div>`;return;}
     _openBlogGroup = post.article_group || '';
     const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
     const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[_currentLang]||'pt-BR';
@@ -2360,7 +2365,7 @@ async function toggleFav(firmId) {
     _favs.add(firmId);
     _favCounts[firmId] = (_favCounts[firmId]||0) + 1;
     const {error} = await db.from('favorites').insert({ user_id: currentUser.id, firm_id: firmId });
-    if(error){ console.warn('fav insert error:', error.message); _favs.delete(firmId); _favCounts[firmId]=Math.max(0,(_favCounts[firmId]||1)-1); showToast('Erro ao favoritar. Tente novamente.'); }
+    if(error){ console.warn('fav insert error:', error.message); _favs.delete(firmId); _favCounts[firmId]=Math.max(0,(_favCounts[firmId]||1)-1); showToast(t('toast_fav_error')||'Error saving favorite. Try again.'); }
     else track('firm_favorite', { firm_id: firmId });
   }
   if (btn) { btn.classList.toggle('active', _favs.has(firmId)); btn.innerHTML = favHeart(_favs.has(firmId))+`<span class="fr-fav-count" id="fav-cnt-${firmId}">${_favCounts[firmId]||0}</span>`; }
@@ -3713,7 +3718,7 @@ async function loadCmsFaq(){
 
 function renderAchFirmTabs(){
   const el=document.getElementById('ach-firm-tabs');if(!el)return;
-  el.innerHTML=CHECKOUT_FIRMS.map(f=>`<button class="ach-firm-tab${f.id===achActiveFirm?' active':''}" onclick="achSelectFirm('${f.id}')">${f.name}<span class="tab-disc">${f.discount}</span></button>`).join('');
+  el.innerHTML=CHECKOUT_FIRMS.map(f=>`<button class="ach-firm-tab${f.id===achActiveFirm?' active':''}" onclick="achSelectFirm('${escHtml(f.id)}')">${escHtml(f.name)}<span class="tab-disc">${escHtml(f.discount)}</span></button>`).join('');
 }
 function achSelectFirm(id){
   const firmExists = CHECKOUT_FIRMS.find(f=>f.id===id);
@@ -5249,7 +5254,7 @@ async function sendBot(){
   inp.value='';document.getElementById('bot-snd').disabled=true;document.getElementById('bot-quick').style.display='none';
   addBMsg('usr',txt);botHist.push({role:'user',content:txt});
   const ty=document.getElementById('bot-typing');ty.classList.add('show');document.getElementById('bot-msgs').scrollTop=99999;
-  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:botHist[0].content,messages:botHist.slice(1)})});const data=await res.json();ty.classList.remove('show');const reply=data.content?.[0]?.text||'Erro. Tente novamente.';botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');addBMsg('bot','Erro de conexao. Tente novamente.');}
+  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:botHist[0].content,messages:botHist.slice(1)})});const data=await res.json();ty.classList.remove('show');const reply=data.content?.[0]?.text||data.error||'Erro. Tente novamente.';botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');addBMsg('bot','Erro de conexao. Tente novamente.');}
   document.getElementById('bot-snd').disabled=false;
 }
 
@@ -5412,7 +5417,7 @@ async function submitProof() {
     const { data: inserted } = await db.from('loyalty_proofs').insert(proof).select('id').maybeSingle();
     insertedId = inserted?.id;
   } catch(e) {
-    showToast('Erro ao enviar. Tente novamente.'); return;
+    showToast(t('toast_send_error')||'Error sending. Try again.'); return;
   }
 
   // Update local cache
@@ -5605,11 +5610,11 @@ function renderLoyaltyPage(){
   const allEntries=[...pending,...history].sort((a,b)=>new Date(b.ts)-new Date(a.ts));
   const tbl=document.getElementById('loyalty-history-tbl');
   if(tbl)tbl.innerHTML=allEntries.length
-    ?`<thead><tr><th>Data</th><th>Firma</th><th>Plano</th><th>Cupom</th><th>N.Pedido</th><th>Status</th></tr></thead><tbody>${allEntries.map(h=>`<tr><td style="color:var(--t3);">${new Date(h.ts).toLocaleDateString('pt-BR')}</td><td style="font-weight:600;">${escHtml(h.firma)}</td><td><span style="background:var(--gbg);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;">${escHtml(h.size)}</span></td><td style="font-size:11px;font-family:monospace;">${escHtml(h.coupon)}</td><td style="font-size:11px;color:var(--t2);">${escHtml(h.orderNumber)}</td><td><span class="${h.status==='approved'?'status-approved':h.status==='rejected'?'status-rejected':'status-pending'}">${h.status==='approved'?'Validado':h.status==='rejected'?'Recusado':'Em análise'}</span></td></tr>`).join('')}</tbody>`
-    :'<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--t3);">Nenhuma compra registrada ainda.</td></tr>';
+    ?`<thead><tr><th>${t('loy_col_date')||'Date'}</th><th>${t('loy_col_firm')||'Firm'}</th><th>${t('loy_col_plan')||'Plan'}</th><th>${t('loy_col_coupon')||'Coupon'}</th><th>${t('loy_col_order')||'Order #'}</th><th>${t('loy_col_status')||'Status'}</th></tr></thead><tbody>${allEntries.map(h=>`<tr><td style="color:var(--t2);">${new Date(h.ts).toLocaleDateString((_currentLang==='en'?'en-US':_currentLang==='es'?'es-ES':'pt-BR'))}</td><td style="font-weight:600;">${escHtml(h.firma)}</td><td><span style="background:var(--gbg);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;">${escHtml(h.size)}</span></td><td style="font-size:11px;font-family:monospace;">${escHtml(h.coupon)}</td><td style="font-size:11px;color:var(--t2);">${escHtml(h.orderNumber)}</td><td><span class="${h.status==='approved'?'status-approved':h.status==='rejected'?'status-rejected':'status-pending'}">${h.status==='approved'?(t('loy_status_approved')||'Validated'):h.status==='rejected'?(t('loy_status_rejected')||'Rejected'):(t('loy_status_pending')||'Under review')}</span></td></tr>`).join('')}</tbody>`
+    :`<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--t2);">${t('loy_no_entries')||'No purchases registered yet.'}</td></tr>`;
 }
 let proofFileData=null;
-function handleProofFile(input){const file=input.files[0];if(!file){proofFileData=null;return;}if(file.size>5*1024*1024){showToast('Arquivo muito grande. Maximo 5MB.');input.value='';return;}if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(file.type)){showToast('Formato invalido. JPG, PNG ou PDF.');input.value='';return;}const reader=new FileReader();reader.onload=(e)=>{proofFileData={name:file.name,size:file.size,type:file.type,data:e.target.result};const area=document.getElementById('proof-upload-area');const preview=document.getElementById('pf-file-preview');if(area)area.classList.add('has-file');if(preview){preview.style.display='block';preview.innerHTML=`<div class="pua-preview"><div><div class="pua-preview-name">${file.name}</div><div class="pua-preview-size">${(file.size/1024).toFixed(0)} KB</div></div><button class="pua-remove" onclick="event.stopPropagation();removeProofFile()">x</button></div>`;}const ico=document.getElementById('pua-icon');if(ico)ico.style.display='none';};reader.readAsDataURL(file);}
+function handleProofFile(input){const file=input.files[0];if(!file){proofFileData=null;return;}if(file.size>5*1024*1024){showToast(t('toast_file_too_large')||'File too large. Max 5MB.');input.value='';return;}if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(file.type)){showToast(t('toast_file_format_invalid')||'Invalid format. JPG, PNG or PDF.');input.value='';return;}const reader=new FileReader();reader.onload=(e)=>{proofFileData={name:file.name,size:file.size,type:file.type,data:e.target.result};const area=document.getElementById('proof-upload-area');const preview=document.getElementById('pf-file-preview');if(area)area.classList.add('has-file');if(preview){preview.style.display='block';preview.innerHTML=`<div class="pua-preview"><div><div class="pua-preview-name">${escHtml(file.name)}</div><div class="pua-preview-size">${(file.size/1024).toFixed(0)} KB</div></div><button class="pua-remove" onclick="event.stopPropagation();removeProofFile()">x</button></div>`;}const ico=document.getElementById('pua-icon');if(ico)ico.style.display='none';};reader.readAsDataURL(file);}
 function removeProofFile(){proofFileData=null;const fi=document.getElementById('pf-file');if(fi)fi.value='';const prev=document.getElementById('pf-file-preview');if(prev)prev.style.display='none';const area=document.getElementById('proof-upload-area');if(area)area.classList.remove('has-file');const ico=document.getElementById('pua-icon');if(ico)ico.style.display='block';}
 function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click',{size,plat,type,firm});}
 
