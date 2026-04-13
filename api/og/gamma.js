@@ -160,7 +160,72 @@ const svgLine = (x1, y1, x2, y2, stroke, sw, dash, opacity) => ({
   props: { x1, y1, x2, y2, stroke, strokeWidth: sw, strokeDasharray: dash, opacity },
 });
 
+// SVG as data URL — Satori needs SVG wrapped in <img src="data:..."> not raw children
+const buildChartSvg = () => {
+  const rects = [];
+  const lines = [];
+  const texts = [];
+  const push = (arr, s) => arr.push(s);
+  // calls above spot
+  for (const b of callBars) {
+    push(texts, `<text x="64" y="${b.y + 9}" font-size="10" fill="rgba(255,255,255,0.36)" text-anchor="end" font-family="Inter">${b.label}</text>`);
+    push(rects, `<rect x="69" y="${b.y}" width="${b.w}" height="9" rx="2" fill="rgba(0,220,130,${b.o})"/>`);
+  }
+  for (const b of callBarsMid) {
+    push(texts, `<text x="64" y="${b.y + 9}" font-size="10" fill="rgba(255,255,255,0.36)" text-anchor="end" font-family="Inter">${b.label}</text>`);
+    push(rects, `<rect x="69" y="${b.y}" width="${b.w}" height="9" rx="2" fill="rgba(0,220,130,${b.o})"/>`);
+  }
+  for (const b of putBars) {
+    push(texts, `<text x="64" y="${b.y + 9}" font-size="10" fill="rgba(255,255,255,0.36)" text-anchor="end" font-family="Inter">${b.label}</text>`);
+    push(rects, `<rect x="69" y="${b.y}" width="${b.w}" height="9" rx="2" fill="rgba(255,80,80,${b.o})"/>`);
+  }
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 310" width="870" height="310">
+    <line x1="68" y1="0" x2="68" y2="310" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    ${rects.join('')}
+    ${texts.join('')}
+    <line x1="69" y1="107" x2="820" y2="107" stroke="#ff5050" stroke-width="1" stroke-dasharray="5,4" opacity="0.6"/>
+    <text x="64" y="112" font-size="10" fill="#ff5050" text-anchor="end" font-family="Inter" font-weight="700">7,000</text>
+    <rect x="69" y="104" width="375" height="9" rx="2" fill="rgba(0,220,130,0.92)"/>
+    <rect x="826" y="101" width="62" height="14" rx="4" fill="#ff5050"/>
+    <text x="857" y="112" font-size="9.5" fill="#fff" text-anchor="middle" font-family="Inter" font-weight="700">Call Wall</text>
+    <rect x="826" y="117" width="44" height="12" rx="3" fill="#00c8a0"/>
+    <text x="848" y="127" font-size="9" fill="#000" text-anchor="middle" font-family="Inter" font-weight="700">HVL</text>
+    <rect x="826" y="131" width="62" height="12" rx="3" fill="#f5c518"/>
+    <text x="857" y="141" font-size="9" fill="#000" text-anchor="middle" font-family="Inter" font-weight="700">Vol Trigger</text>
+    <line x1="69" y1="200" x2="820" y2="200" stroke="rgba(255,255,255,0.52)" stroke-width="1.5" stroke-dasharray="4,4"/>
+    <text x="64" y="205" font-size="10" fill="#fff" text-anchor="end" font-family="Inter" font-weight="700">6,825</text>
+    <rect x="69" y="197" width="308" height="9" rx="2" fill="rgba(0,220,130,0.88)"/>
+    <rect x="826" y="194" width="48" height="14" rx="4" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.32)" stroke-width="0.8"/>
+    <text x="850" y="205" font-size="9.5" fill="#fff" text-anchor="middle" font-family="Inter" font-weight="700">6,817</text>
+    <line x1="69" y1="213" x2="820" y2="213" stroke="#c07aff" stroke-width="1" stroke-dasharray="5,4" opacity="0.55"/>
+    <text x="64" y="218" font-size="10" fill="#c07aff" text-anchor="end" font-family="Inter" font-weight="700">6,815</text>
+    <rect x="69" y="210" width="270" height="9" rx="2" fill="rgba(0,220,130,0.82)"/>
+    <rect x="826" y="207" width="54" height="12" rx="3" fill="#c07aff"/>
+    <text x="853" y="217" font-size="9" fill="#fff" text-anchor="middle" font-family="Inter" font-weight="700">Max Pain</text>
+    <line x1="69" y1="226" x2="820" y2="226" stroke="#ff9a30" stroke-width="1" stroke-dasharray="5,4" opacity="0.55"/>
+    <text x="64" y="231" font-size="10" fill="#ff9a30" text-anchor="end" font-family="Inter" font-weight="700">6,800</text>
+    <rect x="826" y="221" width="52" height="12" rx="3" fill="#ff9a30"/>
+    <text x="852" y="231" font-size="9" fill="#000" text-anchor="middle" font-family="Inter" font-weight="700">Put Wall</text>
+    <line x1="69" y1="240" x2="820" y2="240" stroke="#f5c518" stroke-width="1" stroke-dasharray="5,4" opacity="0.55"/>
+    <text x="64" y="245" font-size="10" fill="#f5c518" text-anchor="end" font-family="Inter" font-weight="700">6,795</text>
+    <rect x="69" y="237" width="95" height="9" rx="2" fill="rgba(255,80,80,0.78)"/>
+    <rect x="826" y="234" width="72" height="12" rx="3" fill="rgba(245,197,24,0.2)" stroke="rgba(245,197,24,0.42)" stroke-width="0.8"/>
+    <text x="862" y="244" font-size="9" fill="#f5c518" text-anchor="middle" font-family="Inter" font-weight="700">Zero Gamma</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+};
+
 const gexChart = () => ({
+  type: 'img',
+  props: {
+    src: buildChartSvg(),
+    width: 870,
+    height: 310,
+    style: { display: 'flex' },
+  },
+});
+
+const _unused_old_chart = () => ({
   type: 'svg',
   props: {
     width: 870,
@@ -305,7 +370,7 @@ export default async function handler() {
     // CTA
     const cta = row(
       {
-        background: 'linear-gradient(135deg, rgba(245,197,24,0.07), rgba(0,175,100,0.04))',
+        backgroundImage: 'linear-gradient(135deg, rgba(245,197,24,0.07), rgba(0,175,100,0.04))',
         border: '1px solid rgba(245,197,24,0.16)',
         borderRadius: '13px',
         padding: '22px 32px',
