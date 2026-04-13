@@ -105,7 +105,7 @@ const ES_TAGS = [
   [841, 153, 64, 15, '#ff5050',                 'Call Wall',  '#fff', null],
   [841, 170, 44, 12, '#00c8a0',                 'HVL',        '#000', null],
   [841, 184, 63, 12, '#f5c518',                 'Vol Trigger','#000', null],
-  [831, 307, 78, 15, 'rgba(0,220,130,.18)',     'Positive Gamma', '#00dc82', 'rgba(0,220,130,.5)'],
+  [841, 307, 50, 15, 'rgba(255,255,255,.16)',   '6,817',      '#fff', 'rgba(255,255,255,.32)'],
   [841, 322, 56, 12, '#c07aff',                 'Max Pain',   '#fff', null],
   [841, 336, 54, 12, '#ff9a30',                 'Put Wall',   '#000', null],
   [841, 349, 75, 12, 'rgba(245,197,24,.2)',     'Zero Gamma', '#f5c518', 'rgba(245,197,24,.42)'],
@@ -119,12 +119,46 @@ function buildEsChartSvg() {
   const lines = ES_LINES.map(([y,s,o]) => line(y,s,o)).join('');
   const spotLine = `<line x1="71" y1="313" x2="835" y2="313" stroke="rgba(255,255,255,.55)" stroke-width="1.5" stroke-dasharray="4,4"/>`;
   const axis = `<line x1="70" y1="0" x2="70" y2="530" stroke="rgba(255,255,255,.06)" stroke-width="1"/>`;
-  return `<svg viewBox="0 0 ${CHART_W} ${CHART_H}" xmlns="http://www.w3.org/2000/svg">${axis}${bars}${lines}${spotLine}</svg>`;
+  // Regime regions: above Zero Gamma (y<355) = Positive; below = Negative
+  const posRegion = `<rect x="71" y="0" width="764" height="355" fill="rgba(0,220,130,.05)"/>`;
+  const negRegion = `<rect x="71" y="355" width="764" height="175" fill="rgba(255,80,80,.05)"/>`;
+  const regionDivider = `<line x1="71" y1="355" x2="835" y2="355" stroke="rgba(245,197,24,.35)" stroke-width="1"/>`;
+  return `<svg viewBox="0 0 ${CHART_W} ${CHART_H}" xmlns="http://www.w3.org/2000/svg">${posRegion}${negRegion}${axis}${bars}${lines}${spotLine}${regionDivider}</svg>`;
 }
 
 // Build HTML overlay (absolute-positioned text over the chart img)
 function buildChartOverlay() {
   const children = [];
+
+  // Regime region labels (top-right of each zone)
+  children.push({
+    type: 'div',
+    props: {
+      style: {
+        display: 'flex', position: 'absolute', left: '85px', top: '10px',
+        padding: '3px 10px', borderRadius: '4px',
+        backgroundColor: 'rgba(0,220,130,.12)',
+        border: '1px solid rgba(0,220,130,.38)',
+        fontSize: '10px', fontWeight: 700, color: '#00dc82',
+        letterSpacing: '.5px', textTransform: 'uppercase',
+      },
+      children: 'Positive Gamma Region',
+    },
+  });
+  children.push({
+    type: 'div',
+    props: {
+      style: {
+        display: 'flex', position: 'absolute', left: '85px', top: '365px',
+        padding: '3px 10px', borderRadius: '4px',
+        backgroundColor: 'rgba(255,80,80,.12)',
+        border: '1px solid rgba(255,80,80,.38)',
+        fontSize: '10px', fontWeight: 700, color: '#ff5050',
+        letterSpacing: '.5px', textTransform: 'uppercase',
+      },
+      children: 'Negative Gamma Region',
+    },
+  });
 
   // Left-axis numeric labels (default dim color)
   ES_BARS.forEach(([y, label]) => {
