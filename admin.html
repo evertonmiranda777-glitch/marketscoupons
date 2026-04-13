@@ -6708,13 +6708,21 @@ function renderSmtpAccounts(){
   const el = document.getElementById('smtp-accounts-list');
   if(!el) return;
   el.innerHTML=`
-    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
       <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
       <div>
         <div style="font-size:13px;font-weight:600;">Brevo (Sendinblue)</div>
         <div style="font-size:10px;color:var(--t3);">300 emails/dia · API configurada no Vercel</div>
       </div>
-    </div>`;
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
+      <div>
+        <div style="font-size:13px;font-weight:600;">Resend</div>
+        <div style="font-size:10px;color:var(--t3);">100 emails/dia · API configurada no Vercel</div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--t3);margin-top:6px;">Total: <strong style="color:var(--gold);">400 emails/dia</strong> (round-robin automático)</div>`;
 }
 
 function addSmtpAccount(){
