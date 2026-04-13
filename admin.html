@@ -4055,37 +4055,35 @@ async function renderEmailFirmaChips(){
       firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="selectImportFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
   }
 
-  // Ensure subscribers are loaded (needed for custom tags)
-  if(!_subsList?.length){
-    try { _subsList = await loadSubscribers(); } catch(e){}
-  }
-
   // Segmentation firma chips (only firms)
   const segEl = document.getElementById('seg-firma-grid');
   if(segEl){
     segEl.innerHTML = firms.map(f => `<div class="seg-opt seg-firma" data-firma="${f.id}" onclick="toggleFirma(this,'${f.id}')" style="--fc:${f.color};">${shortNames[f.id]||f.short_name||f.name}</div>`).join('');
   }
 
-  // Custom tags grid (separado pra clareza)
+  // Custom tags grid — usa cache leve de loadAllLeadsOnce
   const tagEl = document.getElementById('seg-customtag-grid');
   if(tagEl){
-    const firmIds = new Set(firms.map(f=>f.id));
-    const skipTags = new Set(['imported','site','lead','csv-direct','manual','']);
-    const tagCounts = {};
-    if(_subsList?.length){
-      for(const s of _subsList){
-        for(const tag of (s.tags||[])){
-          if(!skipTags.has(tag) && !firmIds.has(tag)) tagCounts[tag] = (tagCounts[tag]||0) + 1;
+    tagEl.innerHTML = `<div style="font-size:10px;color:var(--t3);">Carregando tags...</div>`;
+    try {
+      const all = await loadAllLeadsOnce();
+      const firmIds = new Set(firms.map(f=>f.id));
+      const tagCounts = {};
+      for(const r of all){
+        for(const tag of (r.tags||[])){
+          if(!firmIds.has(tag)) tagCounts[tag] = (tagCounts[tag]||0) + 1;
         }
       }
-    }
-    const tagList = Object.keys(tagCounts).sort();
-    if(tagList.length){
-      tagEl.innerHTML = tagList.map(tag =>
-        `<div class="seg-opt seg-firma" data-firma="${tag}" onclick="toggleFirma(this,'${tag}')" style="--fc:#9CA3AF;border-style:dashed;">${tag} <span style="opacity:.6;font-size:9px;">(${tagCounts[tag]})</span></div>`
-      ).join('');
-    } else {
-      tagEl.innerHTML = `<div style="font-size:10px;color:var(--t3);">Nenhuma tag customizada. Importe CSV com tag no campo acima.</div>`;
+      const tagList = Object.keys(tagCounts).sort();
+      if(tagList.length){
+        tagEl.innerHTML = tagList.map(tag =>
+          `<div class="seg-opt seg-firma" data-firma="${tag}" onclick="toggleFirma(this,'${tag}')" style="--fc:#9CA3AF;border-style:dashed;">${tag} <span style="opacity:.6;font-size:9px;">(${tagCounts[tag]})</span></div>`
+        ).join('');
+      } else {
+        tagEl.innerHTML = `<div style="font-size:10px;color:var(--t3);">Nenhuma tag customizada. Importe CSV com tag no campo acima.</div>`;
+      }
+    } catch(e){
+      tagEl.innerHTML = `<div style="font-size:10px;color:#ef4444;">Erro ao carregar tags. Recarregue a página.</div>`;
     }
   }
 
