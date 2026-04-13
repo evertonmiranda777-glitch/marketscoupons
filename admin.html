@@ -3911,7 +3911,36 @@ async function loadAllLeadsOnce(){
  return all;
 }
 
-function invalidateLeadsCache(){ _leadsCache=null; _leadsCacheKey=''; }
+function invalidateLeadsCache(){ _leadsCache=null; _leadsCacheKey=''; _tagCountsCache=null; }
+
+// Query leve só pra contagem de tags — paraleliza todas as páginas
+let _tagCountsCache = null;
+async function loadTagCountsFast(){
+ if(_tagCountsCache) return _tagCountsCache;
+ const PG = 1000;
+ // Primeira página com count exato pra saber quantas páginas paralelizar
+ const first = await db.from('email_subscribers').select('tags',{count:'exact'}).eq('status','active').range(0,PG-1);
+ const total = first.count || 0;
+ const rows = [...(first.data||[])];
+ if(total > PG){
+  const pages = Math.ceil(total/PG);
+  const promises = [];
+  for(let i=1;i<pages;i++){
+   promises.push(db.from('email_subscribers').select('tags').eq('status','active').range(i*PG,(i+1)*PG-1));
+  }
+  const results = await Promise.all(promises);
+  for(const r of results) if(r.data) rows.push(...r.data);
+ }
+ const counts = {};
+ for(const r of rows){
+  for(const t of (r.tags||[])){
+   if(!t) continue;
+   counts[t] = (counts[t]||0) + 1;
+  }
+ }
+ _tagCountsCache = counts;
+ return counts;
+}
 
 async function getSegmentedLeads(){
  const all = await loadAllLeadsOnce();
@@ -4157,16 +4186,10 @@ async function eaInit(){
       const chips = document.getElementById('ea-customtag-chips');
       if(chips) chips.innerHTML = '<span style="font-size:10px;color:var(--t3);">Carregando tags...</span>';
       if(row) row.style.display = '';
-      const leads = await loadAllLeadsOnce();
+      const counts = await loadTagCountsFast();
       const firmIds = new Set(firms.map(f=>f.id));
-      const tagCount = {};
-      for(const r of leads){
-        for(const t of (r.tags||[])){
-          if(!t || firmIds.has(t)) continue;
-          tagCount[t] = (tagCount[t]||0) + 1;
-        }
-      }
-      const tags = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]);
+      const systemTags = new Set(['imported','site','lead','csv-direct','manual']);
+      const tags = Object.entries(counts).filter(([t])=>!firmIds.has(t)&&!systemTags.has(t)).sort((a,b)=>b[1]-a[1]);
       if(chips){
         if(tags.length){
           chips.innerHTML = tags.map(([t,c])=>`<button class="ea-period-btn" onclick="eaSetTag('${t.replace(/'/g,"\\'")}',this)">${t} <span style="opacity:.6;font-weight:500;">(${c})</span></button>`).join('');
@@ -4239,6 +4262,28 @@ async function eaRefresh(){
     _eaDaily = dailyData?.reports || [];
     _eaCampaigns = campaignsRes || [];
 
+    // Fallback: se tag custom filtrada não tem dados no Brevo, soma do email_logs local
+    const brevoSent = (_eaReport?.requests)||0;
+    if(tagParam && brevoSent===0 && _eaCampaigns.length){
+      const matchingLogs = _eaCampaigns.filter(c=>{
+        const logTags = c.brevo_response?.tags || [];
+        return logTags.includes(tagParam);
+      });
+      if(matchingLogs.length){
+        const sum = matchingLogs.reduce((acc,c)=>{
+          const r = c.brevo_response||{};
+          acc.sent += (r.sent||c.recipients||0);
+          return acc;
+        }, {sent:0});
+        _eaReport = {
+          requests: sum.sent,
+          delivered: sum.sent,
+          uniqueOpens: 0, uniqueClicks: 0, hardBounces: 0, softBounces: 0, unsubscriptions: 0,
+          _localFallback: true, _localCount: matchingLogs.length,
+        };
+      }
+    }
+
     eaRenderKPIs();
     eaRenderChart();
     eaRenderTable();
@@ -4276,7 +4321,7 @@ function eaRenderKPIs(){
   const unsubRate = delivered > 0 ? ((unsubs/delivered)*100).toFixed(1) : '0.0';
 
   document.getElementById('ea-total-sent').textContent = sent.toLocaleString('pt-BR');
-  document.getElementById('ea-total-sent-sub').textContent = `${delivered.toLocaleString('pt-BR')} entregues`;
+  document.getElementById('ea-total-sent-sub').textContent = r._localFallback ? `${r._localCount} envio(s) — log local` : `${delivered.toLocaleString('pt-BR')} entregues`;
   document.getElementById('ea-open-rate').textContent = openRate + '%';
   document.getElementById('ea-open-sub').textContent = `${opens.toLocaleString('pt-BR')} aberturas`;
   document.getElementById('ea-click-rate').textContent = clickRate + '%';
@@ -6863,6 +6908,10 @@ async function sendEmailsSmtp(){
     }
 
     // Log to Supabase
+    const logTags = [
+      isPromo ? 'promo-'+emailPromoFirm.id : (isInst ? 'inst-'+window._instTemplateName : 'campaign-manual'),
+      ...(emailCustomTagFilter||[])
+    ];
     await db.from('email_logs').insert({
       campaign_name: subject.slice(0,50),
       subject: subject,
@@ -6870,7 +6919,7 @@ async function sendEmailsSmtp(){
       status: totalFailed===0 ? 'sent' : (totalSent===0 ? 'failed' : 'partial'),
       sent_by: 'admin',
       provider: 'brevo',
-      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups) },
+      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups), tags: logTags },
     });
 
     addEmailSentToday(totalSent);
