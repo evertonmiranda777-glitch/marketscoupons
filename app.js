@@ -35,7 +35,7 @@ var _currentPage = 'home';
   const mk=()=>{
     const d=document.createElement('div');
     d.id='spy-panel';
-    d.style.cssText='position:fixed;bottom:12px;right:12px;z-index:999999;background:#0b1020;border:2px solid #F7B928;border-radius:10px;padding:10px;font:12px monospace;color:#fff;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.6)';
+    d.style.cssText='position:fixed;top:72px;right:12px;z-index:999999;background:#0b1020;border:2px solid #F7B928;border-radius:10px;padding:10px;font:12px monospace;color:#fff;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.6)';
     d.innerHTML='<div style="color:#F7B928;font-weight:700;margin-bottom:6px">TRACKING SPY</div><div id="spy-log" style="max-height:260px;overflow:auto;white-space:pre-wrap;font-size:10px;line-height:1.4;margin-bottom:8px;color:#cfd6e4"></div><div style="display:flex;flex-wrap:wrap;gap:4px"><button data-a="page_load">page</button><button data-a="firm_open">firm</button><button data-a="copy_coupon">copy</button><button data-a="checkout">checkout</button><button data-a="__clear">clear</button></div>';
     d.querySelectorAll('button').forEach(b=>{
       b.style.cssText='background:#F7B928;color:#0b1020;border:0;padding:4px 8px;border-radius:4px;font:600 10px monospace;cursor:pointer';
