@@ -3846,8 +3846,17 @@ function toggleSeg(el,seg){
 
 function toggleFirma(el,firma){
  el.classList.toggle('sel');
- const grid=document.getElementById('seg-firma-grid');
- emailFirmaFilter=[...grid.querySelectorAll('.seg-firma.sel')].map(s=>s.dataset.firma).filter(Boolean);
+ const fGrid=document.getElementById('seg-firma-grid');
+ const tGrid=document.getElementById('seg-customtag-grid');
+ const firmSel=fGrid?[...fGrid.querySelectorAll('.seg-firma.sel')]:[];
+ const tagSel=tGrid?[...tGrid.querySelectorAll('.seg-firma.sel')]:[];
+ emailFirmaFilter=[...firmSel,...tagSel].map(s=>s.dataset.firma).filter(Boolean);
+ // Auto-habilita segmento 'subscribers' ao selecionar tag customizada (senão filtro não aplica)
+ if(tagSel.length && !emailSegments.includes('subscribers') && !emailSegments.includes('all')){
+  const segGrid=document.getElementById('seg-grid');
+  const subBtn=segGrid?.querySelector('.seg-opt[onclick*="\'subscribers\'"]');
+  if(subBtn && !subBtn.classList.contains('sel')) toggleSeg(subBtn,'subscribers');
+ }
  updateDestCount();
 }
 
@@ -5165,8 +5174,37 @@ function buildInstitutionalHtml(name, lang='pt'){
     </table>`;
   }
 
-  if(name === 'site-invite'){
-    const T = (obj) => obj[lang]||obj.en||obj.pt||'';
+  const PREMIUM_CFG = {
+    'site-invite': {
+      color:'#ff8c00', hlBg:'#fff4e6', hlBorder:'#ffcc80', hlSub:'#aa7030',
+      heroBadge:{pt:'Oferta Exclusiva',en:'Exclusive Deal',es:'Oferta Exclusiva',fr:'Offre Exclusive',de:'Exklusives Angebot',it:'Offerta Esclusiva',ar:'عرض حصري'},
+      heroH1:{pt:'Economize até<br><span style="color:${C};">90% OFF</span><br>nas melhores<br>Prop Firms',en:'Save up to<br><span style="color:${C};">90% OFF</span><br>on the best<br>Prop Firms',es:'Ahorra hasta<br><span style="color:${C};">90% OFF</span><br>en las mejores<br>Prop Firms',fr:'Économisez jusqu\'à<br><span style="color:${C};">90% OFF</span><br>sur les meilleures<br>Prop Firms',de:'Spare bis zu<br><span style="color:${C};">90% OFF</span><br>bei den besten<br>Prop Firms',it:'Risparmia fino al<br><span style="color:${C};">90% OFF</span><br>sulle migliori<br>Prop Firms',ar:'وفر حتى<br><span style="color:${C};">90% OFF</span><br>على أفضل<br>Prop Firms'},
+      heroBody:{pt:'Cupons exclusivos negociados direto com Apex, Bulenox, FTMO, FundedNext e mais.',en:'Exclusive coupons negotiated directly with Apex, Bulenox, FTMO, FundedNext and more.',es:'Cupones exclusivos negociados directo con Apex, Bulenox, FTMO, FundedNext y más.',fr:'Coupons exclusifs négociés directement avec Apex, Bulenox, FTMO, FundedNext.',de:'Exklusive Gutscheine direkt mit Apex, Bulenox, FTMO, FundedNext verhandelt.',it:'Coupon esclusivi negoziati direttamente con Apex, Bulenox, FTMO, FundedNext.',ar:'كوبونات حصرية متفاوض عليها مباشرة مع Apex و Bulenox و FTMO و FundedNext.'},
+      m1v:'$23,65', m1l:{pt:'conta 100K',en:'100K account',es:'cuenta 100K',fr:'compte 100K',de:'100K Konto',it:'conto 100K',ar:'حساب 100K'},
+      m2v:'90%', m2l:{pt:'desconto máx',en:'max discount',es:'descuento máx',fr:'réduc max',de:'max Rabatt',it:'sconto max',ar:'أقصى خصم'},
+      m3v:'11+', m3l:{pt:'Prop Firms',en:'Prop Firms',es:'Prop Firms',fr:'Prop Firms',de:'Prop Firms',it:'Prop Firms',ar:'Prop Firms'},
+      hlLabel:{pt:'Melhor oferta do momento',en:'Best deal right now',es:'Mejor oferta del momento',fr:'Meilleure offre',de:'Bestes Angebot',it:'Migliore offerta',ar:'أفضل عرض الآن'},
+      hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
+      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF aplicado automáticamente en el checkout',fr:'Coupon <strong>MARKET89</strong> — 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong> — 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong> — 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong> — 89% OFF يُطبق تلقائياً'}
+    },
+    'welcome': {
+      color:'#ff8c00', hlBg:'#fff4e6', hlBorder:'#ffcc80', hlSub:'#aa7030',
+      heroBadge:{pt:'Bem-vindo',en:'Welcome',es:'Bienvenido',fr:'Bienvenue',de:'Willkommen',it:'Benvenuto',ar:'مرحباً'},
+      heroH1:{pt:'Bom te ter<br>aqui,<br><span style="color:${C};">Trader.</span>',en:'Good to<br>have you,<br><span style="color:${C};">Trader.</span>',es:'Qué bueno<br>tenerte aquí,<br><span style="color:${C};">Trader.</span>',fr:'Content de<br>t\'avoir ici,<br><span style="color:${C};">Trader.</span>',de:'Schön, dass<br>du da bist,<br><span style="color:${C};">Trader.</span>',it:'Bello<br>averti qui,<br><span style="color:${C};">Trader.</span>',ar:'سعداء<br>بوجودك،<br><span style="color:${C};">Trader.</span>'},
+      heroBody:{pt:'A gente sabe como é começar nesse mercado. Criamos o MarketsCoupons pra reunir traders que querem pagar menos e operar melhor.',en:'We know how hard it is to start in this market. We built MarketsCoupons to bring together traders who want to pay less and trade better.',es:'Sabemos lo difícil que es empezar. Creamos MarketsCoupons para reunir traders que quieren pagar menos y operar mejor.',fr:'On sait combien c\'est dur de débuter. On a créé MarketsCoupons pour les traders qui veulent payer moins et mieux trader.',de:'Wir wissen, wie schwer der Anfang ist. Wir haben MarketsCoupons für Trader geschaffen, die weniger zahlen und besser traden wollen.',it:'Sappiamo quanto è difficile iniziare. Abbiamo creato MarketsCoupons per trader che vogliono pagare meno e operare meglio.',ar:'نعرف صعوبة البداية. أنشأنا MarketsCoupons لجمع المتداولين الذين يريدون دفع أقل والتداول بشكل أفضل.'},
+      m1v:'11+', m1l:{pt:'Prop Firms',en:'Prop Firms',es:'Prop Firms',fr:'Prop Firms',de:'Prop Firms',it:'Prop Firms',ar:'Prop Firms'},
+      m2v:'90%', m2l:{pt:'desconto máx',en:'max discount',es:'descuento máx',fr:'réduc max',de:'max Rabatt',it:'sconto max',ar:'أقصى خصم'},
+      m3v:'6+', m3l:{pt:'Ferramentas',en:'Tools',es:'Herramientas',fr:'Outils',de:'Tools',it:'Strumenti',ar:'أدوات'},
+      hlLabel:{pt:'Comece por aqui',en:'Start here',es:'Empieza aquí',fr:'Commencez ici',de:'Starte hier',it:'Inizia qui',ar:'ابدأ من هنا'},
+      hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
+      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF aplicado automáticamente',fr:'Coupon <strong>MARKET89</strong> — 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong> — 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong> — 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong> — 89% OFF يُطبق تلقائياً'}
+    }
+  };
+
+  if(PREMIUM_CFG[name]){
+    const pcfg = PREMIUM_CFG[name];
+    const C = pcfg.color;
+    const T = (obj) => { const s = obj[lang]||obj.en||obj.pt||''; return s.replace(/\$\{C\}/g, C); };
     const F = "'Inter',Helvetica,Arial,sans-serif";
 
     return `<!DOCTYPE html>
@@ -5201,26 +5239,26 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
   <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="4" bgcolor="#ff8c00" style="background-color:#ff8c00;font-size:0;line-height:0;">&nbsp;</td></tr></table>
   <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td class="ps" style="padding:44px 40px 40px;font-family:${F};">
     <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;"><tr><td bgcolor="#1e1e1e" style="background-color:#1e1e1e;border:1px solid #2a2a2a;border-radius:20px;padding:5px 14px;">
-      <span style="font-size:11px;font-weight:700;color:#ff8c00;text-transform:uppercase;letter-spacing:1.5px;">${T({pt:'Oferta Exclusiva',en:'Exclusive Deal',es:'Oferta Exclusiva'})}</span>
+      <span style="font-size:11px;font-weight:700;color:#ff8c00;text-transform:uppercase;letter-spacing:1.5px;">${T(pcfg.heroBadge)}</span>
     </td></tr></table>
     <h1 style="font-family:${F};font-size:38px;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-1.5px;margin:0 0 16px;">
-      ${T({pt:'Economize até',en:'Save up to',es:'Ahorra hasta'})}<br><span style="color:#ff8c00;">90% OFF</span><br>${T({pt:'nas melhores',en:'on the best',es:'en las mejores'})}<br>Prop Firms
+      ${T(pcfg.heroH1)}
     </h1>
     <p style="font-family:${F};font-size:15px;color:#888;line-height:1.6;max-width:380px;margin:0 0 32px;">
-      ${T({pt:'Cupons exclusivos negociados direto com Apex, Bulenox, FTMO, FundedNext e mais.',en:'Exclusive coupons negotiated directly with Apex, Bulenox, FTMO, FundedNext and more.',es:'Cupones exclusivos negociados directo con Apex, Bulenox, FTMO, FundedNext y más.'})}
+      ${T(pcfg.heroBody)}
     </p>
     <table cellpadding="0" cellspacing="0" border="0"><tr>
       <td style="padding-right:24px;border-right:1px solid #2a2a2a;">
-        <p style="font-family:${F};font-size:18px;font-weight:800;color:#ff8c00;margin:0;">$23,65</p>
-        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T({pt:'conta 100K',en:'100K account',es:'cuenta 100K'})}</p>
+        <p style="font-family:${F};font-size:18px;font-weight:800;color:#ff8c00;margin:0;">${pcfg.m1v}</p>
+        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T(pcfg.m1l)}</p>
       </td>
       <td style="padding:0 24px;border-right:1px solid #2a2a2a;">
-        <p style="font-family:${F};font-size:18px;font-weight:800;color:#ff8c00;margin:0;">90%</p>
-        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T({pt:'desconto máx',en:'max discount',es:'descuento máx'})}</p>
+        <p style="font-family:${F};font-size:18px;font-weight:800;color:#ff8c00;margin:0;">${pcfg.m2v}</p>
+        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T(pcfg.m2l)}</p>
       </td>
       <td style="padding-left:24px;">
-        <p style="font-family:${F};font-size:18px;font-weight:800;color:#ff8c00;margin:0;">11+</p>
-        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">Prop Firms</p>
+        <p style="font-family:${F};font-size:18px;font-weight:800;color:#ff8c00;margin:0;">${pcfg.m3v}</p>
+        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T(pcfg.m3l)}</p>
       </td>
     </tr></table>
   </td></tr></table>
