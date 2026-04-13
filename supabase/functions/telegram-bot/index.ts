@@ -11,6 +11,11 @@ function siteLink(path = "", campaign = "general") {
   return `${base}${base.includes("?") ? "&" : "?"}utm_source=telegram&utm_medium=social&utm_campaign=${campaign}`;
 }
 
+// Rota curta para Telegram — /t/<slug> redireciona com UTMs (vercel.json)
+function tgLink(slug: string) {
+  return `https://${SITE_URL}/t/${slug}`;
+}
+
 const tgApi = (method: string) =>
   `https://api.telegram.org/bot${BOT_TOKEN}/${method}`;
 
@@ -104,7 +109,7 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
   const text =
     `🔥 <b>Today's Best Prop Firm Deals</b>\n\n` +
     lines.join("\n\n") +
-    `\n\n👉 ${siteLink("", "coupons")}`;
+    `\n\n👉 ${tgLink("coupons")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "coupons");
@@ -145,7 +150,7 @@ async function handleAnalysis(db: ReturnType<typeof createClient>) {
     `<b>Resistance 1</b>\n${data.resistance_1}\n\n` +
     `<b>Attention zone</b>\n${az}\n\n` +
     `${ni}\n\n` +
-    `📊 ${siteLink("/analysis", "analysis")}`;
+    `📊 ${tgLink("analysis")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "analysis");
@@ -187,7 +192,7 @@ async function handleGex(db: ReturnType<typeof createClient>) {
     `<b>Put Wall &amp; Call Wall</b>\n` +
     `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
     `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
-    `🎯 ${siteLink("/gamma", "gex")}`;
+    `🎯 ${tgLink("gex")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "gex");
@@ -251,7 +256,7 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
   const text =
     `📅 <b>Economic Calendar</b>\n${today}\n\n` +
     lines.join("\n") +
-    `\n\n📊 ${siteLink("/calendar", "calendar")}`;
+    `\n\n📊 ${tgLink("calendar")}`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "calendar_daily");
@@ -347,7 +352,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       `${dot} <b>${name}</b> ${stars} in 5 min\n` +
       `🕐 ${timeDisplay}\n` +
       (statsLine ? `📊 ${statsLine}\n` : "") +
-      `\n📅 ${siteLink("/calendar", "calendar_alert")}`;
+      `\n📅 ${tgLink("calendar-alert")}`;
 
     const msgId = await sendMessage(text);
     if (msgId) await storeMessageId(db, msgId, "calendar_alert");
@@ -373,14 +378,14 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
       `• Exclusive coupons not available to free users\n` +
       `• Advanced market analysis features\n` +
       `• Early access to new prop firm partnerships\n\n` +
-      `👉 ${siteLink("/pro", "pro")}`;
+      `👉 ${tgLink("pro")}`;
   } else {
     text =
       `💰 <b>Loyalty Program — Earn Points</b>\n\n` +
       `Shop through our links and earn loyalty points!\n\n` +
       `🎁 Points unlock: exclusive perks, bigger discounts, priority access\n` +
       `📊 Track your points in your dashboard\n\n` +
-      `👉 ${siteLink("", "loyalty")}`;
+      `👉 ${tgLink("loyalty")}`;
   }
 
   const msgId = await sendMessage(text);

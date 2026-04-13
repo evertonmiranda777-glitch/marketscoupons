@@ -11,7 +11,14 @@
       "has": [{ "type": "host", "value": "marketscoupons.com" }],
       "destination": "https://www.marketscoupons.com/:path",
       "permanent": true
-    }
+    },
+    { "source": "/t/coupons", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=coupons", "permanent": false },
+    { "source": "/t/analysis", "destination": "/analysis?utm_source=telegram&utm_medium=social&utm_campaign=analysis", "permanent": false },
+    { "source": "/t/gex", "destination": "/gamma?utm_source=telegram&utm_medium=social&utm_campaign=gex", "permanent": false },
+    { "source": "/t/calendar", "destination": "/calendar?utm_source=telegram&utm_medium=social&utm_campaign=calendar", "permanent": false },
+    { "source": "/t/calendar-alert", "destination": "/calendar?utm_source=telegram&utm_medium=social&utm_campaign=calendar_alert", "permanent": false },
+    { "source": "/t/pro", "destination": "/pro?utm_source=telegram&utm_medium=social&utm_campaign=pro", "permanent": false },
+    { "source": "/t/loyalty", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=loyalty", "permanent": false }
   ],
   "routes": [
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
