@@ -9012,16 +9012,28 @@ function _trkCalRender() {
 
 // ─── TRACKING DASHBOARD ──────────────────────────────────────────────────
 async function renderTrackingPage(){
-  const days = parseInt(document.getElementById('trk-period')?.value || '14');
-  const cutoff = new Date(Date.now() - days * 86400000).toISOString();
-  document.getElementById('trk-period-label').textContent = `Últimos ${days} dias`;
+  // Global filter prevalece sobre o select local (Hoje/7/14/30/90/Todos)
+  let days, cutoff, periodLabel;
+  if (globalDateStart || globalDateEnd) {
+    cutoff = globalDateStart || new Date(0).toISOString();
+    const end = globalDateEnd || new Date().toISOString();
+    days = Math.max(1, Math.ceil((new Date(end) - new Date(cutoff)) / 86400000));
+    periodLabel = document.getElementById('gdb-active')?.textContent || `Últimos ${days} dias`;
+  } else {
+    days = parseInt(document.getElementById('trk-period')?.value || '14');
+    cutoff = new Date(Date.now() - days * 86400000).toISOString();
+    periodLabel = `Últimos ${days} dias`;
+  }
+  document.getElementById('trk-period-label').textContent = periodLabel;
 
   // Fetch events from Supabase
-  const { data: events } = await db.from('events')
+  let q = db.from('events')
     .select('event,firm_id,coupon_code,page_name,utm_source,utm_medium,utm_campaign,params,created_at,session_id')
     .gte('created_at', cutoff)
     .order('created_at', { ascending: false })
     .limit(5000);
+  if (globalDateEnd) q = q.lte('created_at', globalDateEnd);
+  const { data: events } = await q;
   const ev = events || [];
 
   const ec = (name) => ev.filter(e => e.event === name).length;
@@ -9070,9 +9082,10 @@ async function renderTrackingPage(){
   // ── CHARTS ──
   setTimeout(() => {
     const colors = ['#F0B429', '#3B82F6', '#22C55E', '#A855F7', '#06B6D4', '#F97316', '#EF4444', '#EC4899'];
-    // Timeline
+    // Timeline — cap at 90 days pra não travar o grafico em "Todos"
+    const tlDays = Math.min(days, 90);
     const labels = []; const vals = [];
-    for (let i = days - 1; i >= 0; i--) {
+    for (let i = tlDays - 1; i >= 0; i--) {
       const d = new Date(Date.now() - i * 86400000);
       labels.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
       vals.push(ev.filter(e => new Date(e.created_at).toDateString() === d.toDateString()).length);
