@@ -47,28 +47,30 @@ function rateLimit(key, cooldownMs) {
 }
 
 // Central tracking — Supabase + GTM + GA4 + Facebook Pixel + CAPI + localStorage cache
+// Event priority: CAPI (server-side, ad-blocker-proof) > Supabase (first-party) > browser pixels
 function track(event, params={}) {
   const ts = new Date().toISOString();
   const consentOk = localStorage.getItem('mc-cookies-consent') === 'accepted';
 
-  // Generate event_id for FB deduplication (browser fbq + server CAPI)
+  // Generate event_id for FB deduplication (browser fbq + server CAPI) and GA4 transaction_id
   const eid = typeof crypto!=='undefined'&&crypto.randomUUID ? crypto.randomUUID() : 'e'+Date.now()+Math.random().toString(36).slice(2,10);
   window._lastTrackId = eid;
 
   // 1. Supabase (analytics persistente com UTM) — first-party, always allowed
+  const row = {
+    session_id:   MC_SESSION,
+    event,
+    firm_id:      params.firm_id      || params.firm_name || null,
+    coupon_code:  params.coupon_code  || null,
+    page_name:    params.page_name    || null,
+    utm_source:   MC_UTM.utm_source,
+    utm_medium:   MC_UTM.utm_medium,
+    utm_campaign: MC_UTM.utm_campaign,
+    params:       { ...params, event_id: eid },
+  };
   try {
-    db.from('events').insert({
-      session_id:   MC_SESSION,
-      event,
-      firm_id:      params.firm_id      || params.firm_name || null,
-      coupon_code:  params.coupon_code  || null,
-      page_name:    params.page_name    || null,
-      utm_source:   MC_UTM.utm_source,
-      utm_medium:   MC_UTM.utm_medium,
-      utm_campaign: MC_UTM.utm_campaign,
-      params,
-    }).then(r=>{ if(r.error) console.warn('track insert error:', r.error.message); });
-  } catch(e) { console.warn('track error:', e); }
+    db.from('events').insert(row).then(r=>{ if(r.error){ console.warn('track insert error:', r.error.message); _trackEnqueue(row); } });
+  } catch(e) { console.warn('track error:', e); _trackEnqueue(row); }
 
   // 2. localStorage cache (fallback offline + compatibilidade admin)
   try {
@@ -81,12 +83,106 @@ function track(event, params={}) {
   // GDPR/LGPD: only send to third-party trackers if consent accepted (or consent event itself)
   if (!consentOk && event !== 'cookie_consent') return;
 
-  // 3. GTM dataLayer — GA4 and Facebook Pixel triggers are configured inside GTM
+  // 3. GTM dataLayer — enrich with event_id + commerce context for GTM variables (GA4/FB/etc tags)
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event, ...params, timestamp: ts });
+  window.dataLayer.push({
+    event,
+    event_id:     eid,
+    firm_id:      params.firm_id || null,
+    content_ids:  params.content_ids || (params.firm_id ? [params.firm_id] : null),
+    content_name: params.content_name || params.firm_name || params.page_name || null,
+    content_type: params.content_type || (params.firm_id ? 'product' : null),
+    value:        params.value || 0,
+    currency:     params.currency || 'USD',
+    num_items:    params.num_items || null,
+    coupon:       params.coupon_code || params.coupon || null,
+    ...params,
+    timestamp:    ts,
+  });
 
   // 4. Facebook Conversions API (server-side — bypasses ad blockers)
   _sendCAPI(event, params, eid, ts);
+}
+
+// ─── RETRY QUEUE: events that failed to reach Supabase (network error, offline) ───
+function _trackEnqueue(row){
+  try {
+    const q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]');
+    q.push(row);
+    if(q.length > 200) q.splice(0, q.length - 200); // cap at 200
+    localStorage.setItem('mc_track_queue', JSON.stringify(q));
+  } catch(e){}
+}
+async function _trackFlushQueue(){
+  let q=[]; try { q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]'); } catch(e){ return; }
+  if(!q.length) return;
+  try {
+    const { error } = await db.from('events').insert(q);
+    if(!error) localStorage.removeItem('mc_track_queue');
+  } catch(e){}
+}
+// Flush queue on page show (back from bfcache) and on first load
+window.addEventListener('pageshow', _trackFlushQueue);
+setTimeout(_trackFlushQueue, 3000);
+// Flush on unload via sendBeacon (survives page close)
+window.addEventListener('pagehide', ()=>{
+  try {
+    const q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]');
+    if(!q.length) return;
+    const url = SUPABASE_URL + '/rest/v1/events';
+    const blob = new Blob([JSON.stringify(q)], {type:'application/json'});
+    // sendBeacon can't set auth headers — use fetch with keepalive instead
+    fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Prefer':'return=minimal'},
+      body: blob,
+      keepalive: true,
+    }).then(r=>{ if(r.ok) localStorage.removeItem('mc_track_queue'); }).catch(()=>{});
+  } catch(e){}
+});
+
+// ─── ENHANCED CONVERSIONS: hashed PII for cross-device matching ───
+async function _sha256(str){
+  if(!str||typeof crypto==='undefined'||!crypto.subtle) return '';
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(str).trim().toLowerCase()));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  } catch(e) { return ''; }
+}
+// Call when user logs in — enables GA4 Enhanced Conversions and FB Advanced Matching
+async function setTrackingUser(user){
+  if(!user||localStorage.getItem('mc-cookies-consent')!=='accepted') return;
+  const email = user.email || '';
+  const phone = user.user_metadata?.phone || '';
+  const fn    = user.user_metadata?.full_name || '';
+  const [em_h, ph_h, fn_h] = await Promise.all([_sha256(email), _sha256(phone), _sha256(fn)]);
+  // GA4 Enhanced Conversions (hashed)
+  if(typeof gtag==='function') {
+    gtag('set','user_data',{
+      sha256_email_address: em_h || undefined,
+      sha256_phone_number:  ph_h || undefined,
+    });
+    gtag('set','user_properties',{
+      user_id:     user.id || '',
+      plan:        user.user_metadata?.plan || 'free',
+      loyalty_tier:user.user_metadata?.loyalty_tier || 'none',
+      country:     user.user_metadata?.country || (_geo&&_geo.geo_country) || '',
+    });
+    gtag('config','G-CZ3L00NY77',{ user_id: user.id || undefined });
+  }
+  // FB Pixel Advanced Matching (plain — FB hashes server-side; for browser, pass non-hashed in init)
+  if(typeof fbq==='function' && email) {
+    fbq('init','813048241061812',{em:email, ph:phone, fn:fn, external_id:user.id||''});
+  }
+}
+// Call when geo detected (enriches even anonymous users)
+function setTrackingGeo(geo){
+  if(!geo||typeof gtag!=='function') return;
+  gtag('set','user_properties',{
+    country:  geo.geo_country || '',
+    region:   geo.geo_region || '',
+    timezone: geo.geo_timezone || '',
+  });
 }
 
 // Facebook CAPI — fire-and-forget server-side event
@@ -150,6 +246,7 @@ async function fetchGeo() {
     const d = await r.json();
     _geo = { geo_country: d.country||'', geo_region: d.region||'', geo_city: d.city||'', geo_timezone: d.timezone||'' };
     sessionStorage.setItem('mc_geo', JSON.stringify(_geo));
+    setTrackingGeo(_geo); // GA4 user_properties for anonymous users
     // Store geo event in Supabase
     db.from('events').insert({ session_id: MC_SESSION, event: 'geo_detected', params: _geo }).then(()=>{});
   } catch(e) { _geo = {}; }
@@ -4557,9 +4654,11 @@ async function openStripePortal(){
 }
 
 function showProSuccessOverlay(){
-  // Track purchase conversion
-  track('purchase',{item:'pro_subscription',value:9.99,currency:'USD'});
-  if(typeof gtag==='function') gtag('event','purchase',{transaction_id:'pro_'+Date.now(),value:9.99,currency:'USD',items:[{item_id:'pro_monthly',item_name:'Pro Subscription',price:9.99,quantity:1}]});
+  // Deterministic transaction_id per user per day (GA4 dedupes repeated purchases)
+  const _txId = 'pro_'+(currentUser?.id||MC_SESSION)+'_'+new Date().toISOString().slice(0,10);
+  // Track purchase conversion (event_id auto-generated inside track() for CAPI dedupe)
+  track('purchase',{item:'pro_subscription',value:9.99,currency:'USD',transaction_id:_txId,content_ids:['pro_monthly'],content_type:'product',content_name:'Pro Subscription',num_items:1});
+  if(typeof gtag==='function') gtag('event','purchase',{transaction_id:_txId,value:9.99,currency:'USD',items:[{item_id:'pro_monthly',item_name:'Pro Subscription',price:9.99,quantity:1}]});
   if(typeof fbq==='function') fbq('track','Purchase',{content_ids:['pro_monthly'],content_type:'product',content_name:'Pro Subscription',value:9.99,currency:'USD',num_items:1},{eventID:window._lastTrackId});
   const ov=document.createElement('div');
   ov.className='pro-success-ov';
@@ -5606,6 +5705,7 @@ async function loadUserSession(user) {
   currentUser = user;
   const { data } = await db.from('profiles').select('*').eq('id', user.id).maybeSingle();
   currentProfile = data;
+  setTrackingUser(user); // Enhanced Conversions + User Properties (hashed PII, GA4 user_id)
   updateAuthUI(true);
   checkAnalysisGate();
   if(_gexLoaded) checkGEXGate();
