@@ -167,16 +167,46 @@ justify-content: space-between !important;  /* codigo esquerda, botao direita */
 ---
 
 ## Tracking/Analytics
-- Google Tag Manager: `GTM-WJGTVX8G`
 - Google Analytics 4: `G-CZ3L00NY77`
 - Facebook Pixel: `813048241061812`
+- Google Tag Manager: `GTM-WJGTVX8G` (DESATIVADO em 2026-04-12 — container existe mas nao e carregado pelo site)
 
-### Arquitetura
-- GTM carrega GA4 + Facebook Pixel como tags internas (NAO carregados diretamente no HTML)
-- `loadTracking()` so executa apos cookie consent (`mc-cookies-consent === 'accepted'`)
-- Funcao `track(event, params)` faz 3 coisas: insere no Supabase `events`, salva em localStorage, e push no `dataLayer` (GTM)
-- Chamadas diretas `fbq()` e `gtag()` sao safety net (caso GTM triggers nao estejam configurados)
-- Todas as chamadas usam guards: `if(typeof fbq==='function')` e `if(typeof gtag==='function')`
+### Arquitetura — Code-primary (NAO mexer sem ler tudo)
+**Historico:** Em 2026-04-12 o GTM foi removido do `loadTracking()` porque estava sobrescrevendo `window.gtag` com alias `dataLayer.push` (async) depois dele carregar, quebrando todos os `gtag('event',...)` custom — apenas `page_view` chegava no GA4 (via gtag('config')). A limpeza de 10 tags duplicadas no GTM tambem deixou o codigo como fonte unica confiavel. Entao migramos pra code-primary: **direct gtag.js + direct fbq**, sem GTM.
+
+**Arquivos:**
+- `index.html` → `loadTracking()` carrega gtag.js direto + fbq direto. So roda apos `mc-cookies-consent === 'accepted'`.
+- `app.js` → funcao `track(event, params)` e a fonte unica.
+
+**O que `track()` faz (em ordem):**
+1. **Supabase** — insere linha em `events` (first-party, sempre, independente de consent)
+2. **localStorage cache** — fallback offline + compatibilidade admin
+3. **Retry queue** — se Supabase falhar, enfileira em `mc_track_queue` pra re-enviar via fetch keepalive em pagehide/pageshow
+4. **GTM dataLayer push** — mantido por compatibilidade futura (GTM nao carrega mas dataLayer existe)
+5. **GA4 direct** — `gtag('event', event, {event_id, firm_id, value, currency, coupon, transaction_id, ...params})` — dispara pra TODOS os eventos com event_id unico
+6. **FB Pixel direct** — `fbq('trackCustom', event, {...}, {eventID: eid})` APENAS pra eventos nao-standard. Eventos standard (PageView, ViewContent, InitiateCheckout, Lead, Purchase, CopyCode) sao disparados inline com items array completo.
+7. **Facebook CAPI** — `_sendCAPI()` envia server-side pra bypass ad blockers, com mesmo `event_id` pra dedupe com o pixel browser
+
+**Todos os eventos sao disparados com `event_id` unico (UUID).** O mesmo `event_id` vai pro gtag, fbq browser, e FB CAPI — permite dedupe perfeito.
+
+**Enhanced Conversions (GA4) + Advanced Matching (FB):** `setTrackingUser(user)` em `app.js:208-235` hash SHA-256 de email/phone/name e envia via `gtag('set','user_data',...)` + `fbq('init',...,{em,ph,fn,external_id})`. Chamado em `loadUserSession()` quando o usuario loga.
+
+**User properties GA4:** `gtag('set','user_properties',{user_id,plan,loyalty_tier,country})` + `gtag('config',GA_ID,{user_id})`. Permite segmentacao no GA4.
+
+**Geo anon properties:** `setTrackingGeo(geo)` em `fetchGeo()` adiciona country/region/timezone pra users nao logados.
+
+### O que NUNCA fazer
+- Nunca re-habilitar GTM no `loadTracking()` sem refazer a logica do gtag — GTM sobrescreve `window.gtag` e quebra tudo.
+- Nunca chamar `gtag()` ou `fbq()` DIRETAMENTE sem tambem chamar `track()` com os mesmos params — perde a fonte Supabase e o event_id consistente.
+- Nunca remover o event_id dos params — quebra dedupe CAPI e sobe CPL no FB.
+
+### Debug — Spy de tracking (`?spy=1`)
+URL: `https://www.marketscoupons.com/?spy=1` — ativa painel flutuante no topo direito que intercepta fetch/XHR/sendBeacon/Image.src e conta hits GA4 + FB Pixel por acao (page/firm/copy/checkout). **CUIDADO:** o spy NAO consegue ler bodies do tipo Blob (GA4 batch events usam Blob) — se aparecer "null NO_ID" nos hits GA4, e um bulk beacon e os eventos reais estao chegando normalmente. Validar com GA4 Realtime.
+
+### Validacao GA4
+- Realtime: https://analytics.google.com → Property G-CZ3L00NY77 → Relatorios → Tempo real
+- Debug View: Administrador → DebugView (mostra cada evento com params)
+- Eventos report: Ver o engajamento dos usuarios → Eventos (historico 28 dias)
 
 ### Funil de Firmas (4 etapas)
 | Etapa | Quando | dataLayer event | FB Pixel | GA4 gtag |
@@ -388,6 +418,39 @@ Textos de dados das firmas devem ser **curtos e padronizados** para caber nos ca
 - `tags`, `platforms`, `perks`, `proibido` = **TEXT[]** → usar `ARRAY['item1','item2']`
 - `prices`, `badge`, `checkout_plans` = **JSONB** → usar `'[...]'::jsonb`
 - NAO misturar: `'["item"]'::jsonb` em colunas TEXT[] causa erro
+
+---
+
+## Padrao do fd-overlay (Design Aprovado)
+
+### Botoes (Tipo de Conta, Plataforma, Tamanho da Conta)
+- Usar CSS grid: `grid-template-columns: repeat(var(--cols,2), 1fr)`
+- `--cols` definido inline em cada `.fd-pills` / `.fd-sizes` conforme qtd de botoes por linha
+- Altura fixa: `height: 38px`
+- `display: inline-flex; align-items: center; justify-content: center`
+- `padding: 0 12px; border-radius: 10px; font-size: 12px; font-weight: 600`
+- `white-space: nowrap` — texto nunca quebra
+- Todos os botoes do mesmo grupo tem **mesma largura** (1fr no grid)
+- Se quebra em 2 linhas, segunda linha mantem mesmo tamanho dos de cima
+- Classes: `.fd-pill` (tipo/plataforma), `.fd-sz` (tamanho)
+- Selected state via classe `.sel` — NUNCA inline styles para selected
+
+### Stats Grid (lado esquerdo, abaixo do About)
+- Grid **4 colunas x 3 linhas = 12 cards**
+- `grid-template-columns: 1fr 1fr 1fr 1fr`
+- Conteudo **centralizado** (`text-align: center`)
+- 12 infos padrao: Profit Split, Meta, Drawdown, Dias Minimos, Scaling, Prazo, News Trading, Day 1 Payout, Alavancagem, Consistencia + 2 especificos da firma
+- Padding: `12px 14px`, radius: `10px`, bg: `rgba(255,255,255,.10)`, border: `rgba(255,255,255,.14)`
+
+### Highlights (3 cards sobre a firma)
+- `flex: 1` — todos tem mesma largura
+- Conteudo **centralizado** (`align-items: center; text-align: center`)
+- Dentro do `.fd-about` box
+
+### Regras criticas
+- **NUNCA mexer no Trustpilot** — manter CSS original do site
+- **NUNCA mexer nas cores** — cada firma mantem sua cor accent
+- **Mobile responsivo obrigatorio** — tudo que muda no desktop precisa funcionar no mobile
 
 ---
 
