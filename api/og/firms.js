@@ -47,25 +47,45 @@ function fmtReviews(n) {
   return x >= 1000 ? (x / 1000).toFixed(1) + 'K' : String(x);
 }
 
+// SVG stars (★ glyph isn't in @vercel/og default font — render as inline SVG)
+function starSvg(filled) {
+  const c = filled ? '#f5c518' : 'rgba(245,197,24,.28)';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="${c}"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+  return img(`data:image/svg+xml;utf8,${encodeURIComponent(svg)}`, 13, 13, { marginRight: '2px' });
+}
 function stars(rating) {
   const full = Math.round(Number(rating) || 0);
   const out = [];
-  for (let i = 0; i < 5; i++) {
-    out.push(span({ fontSize: '15px', color: i < full ? GOLD : 'rgba(245,197,24,.28)', marginRight: '1px' }, '★'));
-  }
+  for (let i = 0; i < 5; i++) out.push(starSvg(i < full));
   return row({ justifyContent: 'center', marginTop: '4px' }, out);
 }
+
+const TYPE_EN = { 'Futuros': 'Futures', 'Forex/Futuros': 'Forex / Futures', 'Forex': 'Forex' };
+const BADGE_EN = {
+  'Maior Desconto': 'Best Discount',
+  'Melhor Split 90%': '90% Profit Split',
+  'Melhor Split': 'Best Split',
+  'Scaling $400K': 'Scaling $400K',
+  'Mais Avaliações': 'Most Reviewed',
+  'Mais Avaliacoes': 'Most Reviewed',
+  'Maior Avaliação': 'Top Rated',
+  'Lifetime': 'Lifetime',
+};
 
 function firmRow(f, isTop, blurred) {
   const logo = absoluteLogo(f.icon_url);
   const name = String(f.name || f.short_name || f.id || '').slice(0, 22);
-  const type = f.type || 'Futures';
+  const typeRaw = f.type || 'Futures';
+  const type = TYPE_EN[typeRaw] || typeRaw;
   const typeColor = type.toLowerCase().includes('forex') ? '#00c88a' : '#8899ff';
   const typeBg = type.toLowerCase().includes('forex') ? 'rgba(0,180,120,.14)' : 'rgba(100,120,255,.16)';
   const typeBr = type.toLowerCase().includes('forex') ? 'rgba(0,180,120,.3)' : 'rgba(100,120,255,.32)';
-  const badgeLabel = f.badge && f.badge.label ? f.badge.label : '';
+  const rawBadge = f.badge && f.badge.label ? f.badge.label : '';
+  const badgeLabel = BADGE_EN[rawBadge] || rawBadge;
   const rating = f.rating != null ? String(f.rating) : '—';
   const rev = fmtReviews(f.reviews);
+  const couponStr = f.coupon || '—';
+  const couponFs = couponStr.length > 10 ? '15px' : couponStr.length > 8 ? '18px' : '22px';
 
   const tags = [
     span({ fontSize: '14px', fontWeight: 600, padding: '5px 12px', borderRadius: '6px', backgroundColor: typeBg, color: typeColor, border: `1px solid ${typeBr}`, marginRight: '6px' }, type),
@@ -96,29 +116,30 @@ function firmRow(f, isTop, blurred) {
         row({}, tags),
       ]),
       // disc
-      col({ width: '76px', alignItems: 'center', flexShrink: 0 }, [
+      col({ width: '82px', marginLeft: '6px', alignItems: 'center', flexShrink: 0 }, [
         span({ fontSize: '30px', fontWeight: 800, color: GREEN, lineHeight: 1 }, `${f.discount}%`),
         span({ fontSize: '13px', fontWeight: 600, letterSpacing: '.8px', color: 'rgba(255,255,255,.5)', marginTop: '6px' }, 'DISC'),
       ]),
       // split
-      col({ width: '76px', alignItems: 'center', flexShrink: 0 }, [
+      col({ width: '82px', marginLeft: '6px', alignItems: 'center', flexShrink: 0 }, [
         span({ fontSize: '30px', fontWeight: 800, color: GREEN, lineHeight: 1 }, f.split || '—'),
         span({ fontSize: '13px', fontWeight: 600, letterSpacing: '.8px', color: 'rgba(255,255,255,.5)', marginTop: '6px' }, 'SPLIT'),
       ]),
       // rating
-      col({ width: '74px', alignItems: 'center', flexShrink: 0 }, [
+      col({ width: '78px', marginLeft: '6px', alignItems: 'center', flexShrink: 0 }, [
         span({ fontSize: '28px', fontWeight: 800, color: T1, lineHeight: 1 }, rating),
         stars(rating),
       ]),
       // reviews
-      col({ width: '84px', alignItems: 'center', flexShrink: 0 }, [
+      col({ width: '90px', marginLeft: '6px', alignItems: 'center', flexShrink: 0 }, [
         span({ fontSize: '24px', fontWeight: 700, color: 'rgba(255,255,255,.6)', lineHeight: 1 }, rev),
         span({ fontSize: '13px', fontWeight: 600, letterSpacing: '.8px', color: 'rgba(255,255,255,.5)', marginTop: '6px' }, 'REVIEWS'),
       ]),
       // coupon
       col(
         {
-          width: '156px',
+          width: '180px',
+          marginLeft: '10px',
           flexShrink: 0,
           backgroundColor: 'rgba(245,197,24,.08)',
           border: '1px dashed rgba(245,197,24,.5)',
@@ -127,7 +148,7 @@ function firmRow(f, isTop, blurred) {
           alignItems: 'center',
         },
         [
-          span({ fontSize: '22px', fontWeight: 800, color: GOLD, lineHeight: 1 }, f.coupon || '—'),
+          span({ fontSize: couponFs, fontWeight: 800, color: GOLD, lineHeight: 1 }, couponStr),
           span({ fontSize: '12px', fontWeight: 600, letterSpacing: '.7px', color: 'rgba(255,255,255,.5)', marginTop: '6px' }, 'EXCLUSIVE'),
         ]
       ),
@@ -190,12 +211,12 @@ export default async function handler() {
       span({ fontSize: '56px', fontWeight: 800, letterSpacing: '-2px', color: T1, marginLeft: '4px' }, ' with Coupons'),
     ]);
 
-    const sub = span({ fontSize: '19px', color: 'rgba(255,255,255,.48)', marginBottom: '3px' }, 'Exclusive discount coupons for top-rated prop trading firms. Verified daily.');
+    const sub = div({ fontSize: '19px', color: 'rgba(255,255,255,.48)', marginBottom: '14px', lineHeight: 1.3 }, ['Exclusive discount coupons for top-rated prop trading firms. Verified daily.']);
 
-    const meta = row({ marginBottom: '10px' }, [
+    const meta = row({ marginBottom: '14px', alignItems: 'center' }, [
       span({ fontSize: '15px', color: 'rgba(255,255,255,.36)' }, 'Showing '),
       span({ fontSize: '15px', color: 'rgba(255,255,255,.66)', fontWeight: 600, marginLeft: '4px' }, `${total} companies`),
-      span({ fontSize: '15px', color: 'rgba(255,255,255,.36)', marginLeft: '8px' }, '•  Sorted by Biggest Discount'),
+      span({ fontSize: '15px', color: 'rgba(255,255,255,.36)', marginLeft: '8px' }, '• Sorted by Biggest Discount'),
     ]);
 
     // ── SUMMARY 3 cards ──
