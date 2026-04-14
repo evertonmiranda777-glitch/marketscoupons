@@ -40,13 +40,23 @@ async function sendMessage(text: string, buttons?: Array<Array<{text:string;url:
 
 async function sendPhoto(photoUrl: string, caption: string, buttons?: Array<Array<{text:string;url:string}>>): Promise<number | null> {
   try {
-    const body: Record<string, unknown> = { chat_id: CHAT_ID, photo: photoUrl, caption, parse_mode: "HTML" };
-    if (buttons) body.reply_markup = { inline_keyboard: buttons };
-    const res = await fetch(tgApi("sendPhoto"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    // Fetch the PNG bytes ourselves — Telegram's URL-fetch has a ~5s timeout
+    // which our @vercel/og renderer can exceed. Upload via multipart instead.
+    const imgRes = await fetch(photoUrl);
+    if (!imgRes.ok) {
+      console.error("sendPhoto: failed to fetch image", imgRes.status);
+      return null;
+    }
+    const imgBlob = await imgRes.blob();
+
+    const form = new FormData();
+    form.append("chat_id", CHAT_ID);
+    form.append("caption", caption);
+    form.append("parse_mode", "HTML");
+    form.append("photo", imgBlob, "creative.png");
+    if (buttons) form.append("reply_markup", JSON.stringify({ inline_keyboard: buttons }));
+
+    const res = await fetch(tgApi("sendPhoto"), { method: "POST", body: form });
     const data = await res.json();
     if (data.ok) return data.result.message_id as number;
     console.error("Telegram sendPhoto error:", data);
