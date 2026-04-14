@@ -2204,7 +2204,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div class="tg-card" style="padding:16px 20px;">
             <div class="tg-card-title">Criativos Canvas (1080×1350)</div>
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;">
-              <button class="tg-qa-btn" onclick="tgRenderOgFirms()" style="background:rgba(245,197,24,.12);border-color:rgba(245,197,24,.4);color:#f5c518;">Render Firms</button>
+              <button class="tg-qa-btn" onclick="tgRenderOgFirmsV2()" style="background:rgba(245,197,24,.12);border-color:rgba(245,197,24,.4);color:#f5c518;">Render Firms</button>
               <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Gamma</button>
               <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Analysis</button>
               <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Calendar</button>
@@ -10413,6 +10413,163 @@ function tgDownloadOgCanvas(){
   document.body.appendChild(a); a.click(); a.remove();
 }
 
+async function tgRenderOgFirmsV2(){
+  const info = document.getElementById('tg-canvas-og-info');
+  if(info) info.textContent = 'Buscando firmas…';
+  let firms = (_firmsCache||[]).filter(f=>f.active && f.discount>0).sort((a,b)=>b.discount-a.discount);
+  if(!firms.length){
+    try{
+      const{data}=await db.from('cms_firms').select('*').eq('active',true).order('sort_order');
+      _firmsCache = data||[];
+      firms = (_firmsCache||[]).filter(f=>f.active && f.discount>0).sort((a,b)=>b.discount-a.discount);
+    }catch(e){}
+  }
+  const total = firms.length;
+  const visible = firms.slice(0,6);
+  const blurred = firms.slice(6,8);
+  const maxDisc = Math.max(...firms.map(f=>f.discount||0));
+  const maxSplit = Math.max(...firms.map(f=>{ const m=String(f.split||'0').match(/\d+/); return m?parseInt(m[0]):0; }));
+  if(info) info.textContent = 'Montando HTML…';
+
+  const esc = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+  const firmRow = (f, cls='') => {
+    const name = esc((f.name||f.short_name||f.id||'').slice(0,22));
+    const type = f.type || 'Futures';
+    const typeCls = type.toLowerCase().includes('forex') ? 'frx' : 'fut';
+    const badge = f.badge && f.badge.label || '';
+    const rating = f.rating || '—';
+    const rev = Number(f.reviews||0);
+    const revStr = rev>=1000 ? (rev/1000).toFixed(1)+'K' : String(rev);
+    const starsFull = Math.round(Number(rating)||0);
+    const stars = Array.from({length:5},(_,i)=>`<span class="st"${i>=starsFull?' style="opacity:.28"':''}>★</span>`).join('');
+    const logo = f.icon_url ? `<img src="${esc(f.icon_url)}" style="width:62px;height:62px;object-fit:cover;border-radius:11px;">` : '';
+    return `<div class="firm ${cls}">
+      <div class="fl">${logo}</div>
+      <div class="fi"><div class="fn_">${name}</div><div class="tags"><span class="tag ${typeCls}">${esc(type)}</span>${badge?`<span class="tag hi">${esc(badge)}</span>`:''}</div></div>
+      <div class="st_"><div class="sv" style="color:#00dc82;">${f.discount}%</div><div class="sl">Disc</div></div>
+      <div class="st_"><div class="sv green">${esc(f.split||'—')}</div><div class="sl">Split</div></div>
+      <div class="rat"><div class="rv">${rating}</div><div class="sr">${stars}</div></div>
+      <div class="rw"><div class="sv" style="font-size:24px;color:rgba(255,255,255,.6);">${revStr}</div><div class="sl">Reviews</div></div>
+      <div class="cp_"><div class="ci"><div class="cc">${esc(f.coupon||'—')}</div><div class="cl">Exclusive</div></div></div>
+    </div>`;
+  };
+
+  const html = `<div id="mcOgFirms" style="width:1080px;height:1350px;background:#080e18;color:#fff;font-family:Inter,sans-serif;position:relative;overflow:hidden;">
+<style>
+#mcOgFirms *{margin:0;padding:0;box-sizing:border-box;}
+#mcOgFirms .wrap{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
+#mcOgFirms .logobar{padding:18px 52px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;gap:12px;}
+#mcOgFirms .hex{width:42px;height:42px;background:#f5c518;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;font-size:22px;}
+#mcOgFirms .brand{font-size:24px;font-weight:800;}
+#mcOgFirms .brand b{color:#f5c518;font-weight:800;}
+#mcOgFirms .body{padding:22px 52px 0;flex:1;display:flex;flex-direction:column;}
+#mcOgFirms .ptag{font-size:15px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#f5c518;margin-bottom:9px;}
+#mcOgFirms h1{font-size:62px;font-weight:800;line-height:1.02;letter-spacing:-2px;margin-bottom:8px;}
+#mcOgFirms h1 span{color:#f5c518;}
+#mcOgFirms .sub{font-size:21px;color:rgba(255,255,255,.48);margin-bottom:4px;}
+#mcOgFirms .meta{font-size:16px;color:rgba(255,255,255,.36);margin-bottom:14px;}
+#mcOgFirms .meta b{color:rgba(255,255,255,.66);font-weight:600;}
+#mcOgFirms .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+#mcOgFirms .sum-card{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);border-radius:13px;padding:16px 16px;text-align:center;}
+#mcOgFirms .sum-val{font-size:36px;font-weight:800;color:#f5c518;line-height:1;}
+#mcOgFirms .sum-lbl{font-size:16px;color:rgba(255,255,255,.58);margin-top:6px;font-weight:600;}
+#mcOgFirms .col-head{display:flex;align-items:center;padding:0 16px 8px;font-size:15px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:10px;}
+#mcOgFirms .ch0{width:62px;flex-shrink:0;}
+#mcOgFirms .ch1{flex:1;padding-left:16px;}
+#mcOgFirms .ch2,#mcOgFirms .ch3{width:76px;text-align:center;flex-shrink:0;}
+#mcOgFirms .ch4{width:74px;text-align:center;flex-shrink:0;}
+#mcOgFirms .ch5{width:84px;text-align:center;flex-shrink:0;}
+#mcOgFirms .ch6{width:156px;text-align:center;flex-shrink:0;}
+#mcOgFirms .firm{display:flex;align-items:center;padding:16px 16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);border-radius:13px;margin-bottom:10px;}
+#mcOgFirms .firm.top1{border-color:rgba(245,197,24,.36);background:rgba(245,197,24,.06);}
+#mcOgFirms .firm.bl{filter:blur(5px);opacity:.3;}
+#mcOgFirms .fl{width:62px;height:62px;flex-shrink:0;border-radius:11px;background:rgba(255,255,255,.06);overflow:hidden;}
+#mcOgFirms .fi{flex:1;padding-left:18px;min-width:0;}
+#mcOgFirms .fn_{font-size:28px;font-weight:700;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;}
+#mcOgFirms .tags{display:flex;gap:6px;flex-wrap:wrap;}
+#mcOgFirms .tag{padding:5px 12px;border-radius:6px;font-size:14px;font-weight:600;white-space:nowrap;}
+#mcOgFirms .tag.fut{background:rgba(100,120,255,.16);color:#8899ff;border:1px solid rgba(100,120,255,.32);}
+#mcOgFirms .tag.frx{background:rgba(0,180,120,.14);color:#00c88a;border:1px solid rgba(0,180,120,.3);}
+#mcOgFirms .tag.hi{background:rgba(245,197,24,.14);color:#f5c518;border:1px solid rgba(245,197,24,.34);}
+#mcOgFirms .st_{width:76px;text-align:center;flex-shrink:0;}
+#mcOgFirms .rw{width:84px;text-align:center;flex-shrink:0;}
+#mcOgFirms .sv{font-size:30px;font-weight:800;line-height:1;}
+#mcOgFirms .sl{font-size:13px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;}
+#mcOgFirms .green{color:#00dc82;}
+#mcOgFirms .rat{width:74px;text-align:center;flex-shrink:0;}
+#mcOgFirms .rv{font-size:28px;font-weight:800;line-height:1;}
+#mcOgFirms .sr{display:flex;justify-content:center;gap:2px;margin-top:5px;}
+#mcOgFirms .st{font-size:15px;color:#f5c518;}
+#mcOgFirms .cp_{width:156px;flex-shrink:0;}
+#mcOgFirms .ci{background:rgba(245,197,24,.08);border:1px dashed rgba(245,197,24,.5);border-radius:11px;padding:11px 8px;text-align:center;}
+#mcOgFirms .cc{font-size:22px;font-weight:800;color:#f5c518;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1;}
+#mcOgFirms .cl{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;text-transform:uppercase;letter-spacing:.7px;font-weight:600;}
+#mcOgFirms .bwrap{position:relative;margin-bottom:10px;}
+#mcOgFirms .block{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(8,14,24,.7);border-radius:13px;}
+#mcOgFirms .block p{font-size:22px;font-weight:600;color:rgba(255,255,255,.82);}
+#mcOgFirms .cta{background:linear-gradient(135deg,rgba(245,197,24,.1),rgba(0,175,100,.05));border:1px solid rgba(245,197,24,.22);border-radius:18px;padding:26px 36px;display:flex;align-items:center;justify-content:space-between;margin:14px 52px 0;flex-shrink:0;}
+#mcOgFirms .cta p{font-size:18px;color:rgba(255,255,255,.52);margin-bottom:4px;}
+#mcOgFirms .cta h3{font-size:30px;font-weight:700;color:#fff;}
+#mcOgFirms .cbtn{background:#f5c518;color:#000;font-size:22px;font-weight:800;padding:18px 34px;border-radius:12px;}
+#mcOgFirms .footer{padding:16px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.06);font-size:15px;color:rgba(255,255,255,.38);margin-top:14px;flex-shrink:0;}
+</style>
+<div class="wrap">
+  <div class="logobar"><div class="hex">M</div><div class="brand">Markets <b>Coupons</b></div></div>
+  <div class="body">
+    <div class="ptag">Prop Trading Firms</div>
+    <h1>Best <span>Prop Firms</span> with Coupons</h1>
+    <p class="sub">Exclusive discount coupons for top-rated prop trading firms. Verified daily.</p>
+    <p class="meta">Showing <b>${total} companies</b> &nbsp;&bull;&nbsp; Sorted by Biggest Discount</p>
+    <div class="summary">
+      <div class="sum-card"><div class="sum-val">${total}</div><div class="sum-lbl">Verified Firms</div></div>
+      <div class="sum-card"><div class="sum-val">Up to ${maxDisc}%</div><div class="sum-lbl">Max Discount</div></div>
+      <div class="sum-card"><div class="sum-val">${maxSplit}%</div><div class="sum-lbl">Max Profit Split</div></div>
+    </div>
+    <div class="col-head">
+      <div class="ch0"></div><div class="ch1">Firm</div>
+      <div class="ch2">Disc</div><div class="ch3">Split</div>
+      <div class="ch4">Rating</div><div class="ch5">Reviews</div>
+      <div class="ch6">Coupon</div>
+    </div>
+    ${visible.map((f,i)=>firmRow(f,i===0?'top1':'')).join('')}
+    ${blurred.length?`<div class="bwrap">${blurred.map(f=>firmRow(f,'bl')).join('')}<div class="block"><p>View all ${total} firms and coupons on the website</p></div></div>`:''}
+  </div>
+  <div class="cta">
+    <div><p>Updated daily • Exclusive verified coupons</p><h3>Access all firm coupons for free</h3></div>
+    <div class="cbtn">View All Firms</div>
+  </div>
+  <div class="footer"><span>marketscoupons.com/firms</span><span>${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span></div>
+</div>
+</div>`;
+
+  let host = document.getElementById('mcOgHost');
+  if(!host){
+    host = document.createElement('div');
+    host.id = 'mcOgHost';
+    host.style.cssText = 'position:fixed;left:-20000px;top:0;width:1080px;height:1350px;pointer-events:none;';
+    document.body.appendChild(host);
+  }
+  host.innerHTML = html;
+
+  const imgs = host.querySelectorAll('img');
+  await Promise.all(Array.from(imgs).map(img => img.complete && img.naturalWidth>0 ? Promise.resolve() : new Promise(r=>{ img.onload=img.onerror=r; setTimeout(r,3000); })));
+
+  if(info) info.textContent = 'Renderizando PNG…';
+  try{
+    const rendered = await html2canvas(host.querySelector('#mcOgFirms'), {
+      width: 1080, height: 1350, scale: 1, backgroundColor: '#080e18', useCORS: true, allowTaint: true, logging: false
+    });
+    const canvas = document.getElementById('tg-canvas-og');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,OG_W,OG_H);
+    ctx.drawImage(rendered, 0, 0, OG_W, OG_H);
+    if(info) info.textContent = `✓ Renderizado ${total} firmas (V2 HTML)`;
+  }catch(e){
+    if(info) info.textContent = '❌ Erro: '+e.message;
+    console.error(e);
+  }
+}
+
 async function tgRenderOgFirms(){
   const info = document.getElementById('tg-canvas-og-info');
   if(info) info.textContent = 'Buscando firmas…';
@@ -10472,7 +10629,7 @@ async function tgRenderOgFirms(){
   const sumH = 60;
   const maxDisc = Math.max(...firms.map(f=>f.discount||0));
   const maxSplit = Math.max(...firms.map(f=>{
-    const s = parseInt(String(f.split||'0').replace(/[^0-9]/g,''))||0; return s;
+    const m = String(f.split||'0').match(/\d+/); return m ? parseInt(m[0]) : 0;
   }));
   const sums = [
     [String(total),'Verified Firms'],
@@ -10484,17 +10641,17 @@ async function tgRenderOgFirms(){
     ogRoundRect(ctx,sx,y,sumW,sumH,10);
     ctx.fillStyle='rgba(255,255,255,.025)'; ctx.fill();
     ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.stroke();
-    ctx.fillStyle=OG_GOLD; ctx.font='800 22px Inter,sans-serif';
+    ctx.fillStyle=OG_GOLD; ctx.font='800 28px Inter,sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(s[0],sx+sumW/2,y+22);
-    ctx.fillStyle='rgba(255,255,255,.4)'; ctx.font='500 11px Inter,sans-serif';
-    ctx.fillText(s[1],sx+sumW/2,y+44);
+    ctx.fillText(s[0],sx+sumW/2,y+24);
+    ctx.fillStyle='rgba(255,255,255,.5)'; ctx.font='500 14px Inter,sans-serif';
+    ctx.fillText(s[1],sx+sumW/2,y+48);
   });
   y += sumH + 20;
 
   // ── COL HEADERS
-  ctx.font='700 11px Inter,sans-serif';
-  ctx.fillStyle='rgba(255,255,255,.26)';
+  ctx.font='700 14px Inter,sans-serif';
+  ctx.fillStyle='rgba(255,255,255,.42)';
   ctx.textAlign='left'; ctx.textBaseline='middle';
   const rowX = padX;
   const rowW = OG_W - padX*2;
@@ -10547,7 +10704,7 @@ async function tgRenderOgFirms(){
 
     // name + tags
     const ix = lx + 44 + 14;
-    ctx.font='700 16px Inter,sans-serif'; ctx.fillStyle='#fff';
+    ctx.font='700 20px Inter,sans-serif'; ctx.fillStyle='#fff';
     ctx.textAlign='left'; ctx.textBaseline='top';
     let nm = f.name || f.short_name || f.id;
     // truncar pra 22 chars
@@ -10566,35 +10723,35 @@ async function tgRenderOgFirms(){
 
     // disc col
     const cDiscX = rx + 14 + cLogo + cName + cDisc/2;
-    ctx.font='800 18px Inter,sans-serif';
+    ctx.font='800 22px Inter,sans-serif';
     ctx.fillStyle = OG_GREEN;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(`${f.discount}%`,cDiscX,ry+24);
-    ctx.font='600 9px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
-    ctx.fillText('DISC',cDiscX,ry+42);
+    ctx.fillText(`${f.discount}%`,cDiscX,ry+22);
+    ctx.font='600 11px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.44)';
+    ctx.fillText('DISC',cDiscX,ry+44);
 
     // split col
     const cSplitX = rx + 14 + cLogo + cName + cDisc + cSplit/2;
     const splitVal = f.split || '—';
-    ctx.font='800 18px Inter,sans-serif'; ctx.fillStyle = OG_GREEN;
-    ctx.fillText(splitVal,cSplitX,ry+24);
-    ctx.font='600 9px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
-    ctx.fillText('SPLIT',cSplitX,ry+42);
+    ctx.font='800 22px Inter,sans-serif'; ctx.fillStyle = OG_GREEN;
+    ctx.fillText(splitVal,cSplitX,ry+22);
+    ctx.font='600 11px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.44)';
+    ctx.fillText('SPLIT',cSplitX,ry+44);
 
     // rating col
     const cRatingX = rx + 14 + cLogo + cName + cDisc + cSplit + cRating/2;
-    ctx.font='800 17px Inter,sans-serif'; ctx.fillStyle='#fff';
+    ctx.font='800 22px Inter,sans-serif'; ctx.fillStyle='#fff';
     ctx.fillText(String(f.rating||'—'),cRatingX,ry+22);
-    ogDrawStars(ctx,cRatingX,ry+40,Number(f.rating||0));
+    ogDrawStars(ctx,cRatingX,ry+42,Number(f.rating||0));
 
     // reviews col
     const cRevX = rx + 14 + cLogo + cName + cDisc + cSplit + cRating + cReviews/2;
     const rev = Number(f.reviews||0);
     const revStr = rev>=1000 ? (rev/1000).toFixed(1)+'K' : String(rev);
-    ctx.font='700 14px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.55)';
-    ctx.fillText(revStr,cRevX,ry+24);
-    ctx.font='600 9px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
-    ctx.fillText('REVIEWS',cRevX,ry+42);
+    ctx.font='700 18px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.7)';
+    ctx.fillText(revStr,cRevX,ry+22);
+    ctx.font='600 11px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.44)';
+    ctx.fillText('REVIEWS',cRevX,ry+44);
 
     // coupon col
     const cCouponX = rx + 14 + cLogo + cName + cDisc + cSplit + cRating + cReviews + 6;
@@ -10603,11 +10760,11 @@ async function tgRenderOgFirms(){
     ctx.fillStyle='rgba(245,197,24,.06)'; ctx.fill();
     ctx.lineWidth=1; ctx.strokeStyle='rgba(245,197,24,.45)';
     ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
-    ctx.font='800 15px Inter,sans-serif'; ctx.fillStyle=OG_GOLD;
+    ctx.font='800 18px Inter,sans-serif'; ctx.fillStyle=OG_GOLD;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(f.coupon||'—',cCouponX+cCouponW/2,ry+22);
-    ctx.font='600 8px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
-    ctx.fillText('EXCLUSIVE CODE',cCouponX+cCouponW/2,ry+38);
+    ctx.fillText(f.coupon||'—',cCouponX+cCouponW/2,ry+20);
+    ctx.font='600 10px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.44)';
+    ctx.fillText('EXCLUSIVE',cCouponX+cCouponW/2,ry+38);
 
     if(blurred){ ctx.restore(); }
 
