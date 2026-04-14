@@ -2209,6 +2209,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Analysis</button>
               <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Calendar</button>
             </div>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+              <button class="tg-qa-btn" onclick="tgDownloadOgCanvas()" style="background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;font-size:11px;padding:5px 12px;">⬇ Download PNG (1080×1350)</button>
+            </div>
             <div style="background:#0b0f16;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;display:flex;justify-content:center;overflow:auto;">
               <canvas id="tg-canvas-og" width="1080" height="1350" style="width:100%;max-width:540px;height:auto;display:block;background:#080e18;border-radius:6px;"></canvas>
             </div>
@@ -10397,6 +10400,17 @@ function ogDrawTag(ctx,x,y,label,colors){
   ctx.textAlign='left'; ctx.textBaseline='middle';
   ctx.fillText(label,x+padX,y+h/2+1);
   return w;
+}
+
+function tgDownloadOgCanvas(){
+  const canvas = document.getElementById('tg-canvas-og');
+  if(!canvas) return;
+  const url = canvas.toDataURL('image/png');
+  const a = document.createElement('a');
+  const ts = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `mc-criativo-${ts}.png`;
+  document.body.appendChild(a); a.click(); a.remove();
 }
 
 async function tgRenderOgFirms(){
