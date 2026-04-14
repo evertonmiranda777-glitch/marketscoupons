@@ -7,7 +7,7 @@ import { ImageResponse } from '@vercel/og';
 export const config = { runtime: 'edge' };
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyNjc2NTEsImV4cCI6MjA3NDg0MzY1MX0.w-6c5ul0gCtqyJoTHqSTCdbEEjCQRThZtrj7mdc8NCQ';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 const SITE = 'https://www.marketscoupons.com';
 
 const BG = '#080e18';
