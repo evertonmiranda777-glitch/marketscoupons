@@ -8,8 +8,8 @@ import fs from 'fs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const htmlPath = path.join(root, 'templates', 'criativo_firms.html');
-const outDir = path.join(root, 'img', 'og');
-const outPath = path.join(outDir, 'firms.png');
+const outDir = path.join(root, 'img');
+const outPath = path.join(outDir, 'firms-creative.png');
 
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
