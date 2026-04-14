@@ -140,7 +140,7 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
     lines.join("\n\n") +
     `\n\n👉 ${tgLink("coupons")}`;
 
-  const photoUrl = `https://${SITE_URL}/api/og/firms?t=${Date.now()}`;
+  const photoUrl = `https://${SITE_URL}/img/og/firms.png?t=${Date.now()}`;
   const msgId = await sendPhoto(photoUrl, caption);
   if (msgId) await storeMessageId(db, msgId, "coupons");
 
