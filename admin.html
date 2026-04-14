@@ -2202,6 +2202,19 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div id="og-preview-info" style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.4);text-align:center;"></div>
           </div>
           <div class="tg-card" style="padding:16px 20px;">
+            <div class="tg-card-title">Criativos Canvas (1080×1350)</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;">
+              <button class="tg-qa-btn" onclick="tgRenderOgFirms()" style="background:rgba(245,197,24,.12);border-color:rgba(245,197,24,.4);color:#f5c518;">Render Firms</button>
+              <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Gamma</button>
+              <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Analysis</button>
+              <button class="tg-qa-btn" onclick="alert('Em breve')" style="background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);">Calendar</button>
+            </div>
+            <div style="background:#0b0f16;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;display:flex;justify-content:center;overflow:auto;">
+              <canvas id="tg-canvas-og" width="1080" height="1350" style="width:100%;max-width:540px;height:auto;display:block;background:#080e18;border-radius:6px;"></canvas>
+            </div>
+            <div id="tg-canvas-og-info" style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.4);text-align:center;"></div>
+          </div>
+          <div class="tg-card" style="padding:16px 20px;">
             <div class="tg-card-title">Preview do Criativo (canvas antigo)</div>
             <div class="tg-canvas-outer">
               <div class="tg-canvas-scale" id="tg-canvas-scale">
@@ -10276,6 +10289,358 @@ async function initTelegramSection(){
   tgScaleCanvas();
   tgPreloadLogos();
   tgDrawCanvas();
+}
+
+/* ══════════════════════════════════════════════════════
+   CRIATIVOS CANVAS OG (1080×1350) — Firms / Gamma / Analysis / Calendar
+   ══════════════════════════════════════════════════════ */
+const OG_W = 1080, OG_H = 1350;
+const OG_GOLD = '#f5c518', OG_BG = '#080e18', OG_GREEN = '#00dc82';
+
+function ogRoundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function ogLoadImg(src){
+  return new Promise(res=>{
+    const i = new Image();
+    i.crossOrigin = 'anonymous';
+    i.onload = ()=>res(i);
+    i.onerror = ()=>res(null);
+    i.src = src;
+  });
+}
+function ogStarfield(ctx){
+  // determinístico — mesmo seed sempre
+  let s = 1337;
+  const rnd = ()=>{ s=(s*9301+49297)%233280; return s/233280; };
+  for(let i=0;i<140;i++){
+    const x = rnd()*OG_W, y = rnd()*OG_H;
+    const r = rnd()<0.15 ? 1.5 : 1;
+    const a = 0.25 + rnd()*0.35;
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+  // wave verde no rodapé
+  const g = ctx.createRadialGradient(OG_W/2,OG_H*0.8,0,OG_W/2,OG_H*0.8,500);
+  g.addColorStop(0,'rgba(0,170,120,.055)');
+  g.addColorStop(1,'rgba(0,170,120,0)');
+  ctx.fillStyle = g; ctx.fillRect(0,0,OG_W,OG_H);
+}
+function ogDrawLogoBar(ctx){
+  // bg
+  ctx.fillStyle = OG_BG; ctx.fillRect(0,0,OG_W,OG_H);
+  // border bottom
+  ctx.fillStyle = 'rgba(255,255,255,.06)';
+  ctx.fillRect(0,60,OG_W,1);
+  // logo quadrado dourado
+  ogRoundRect(ctx,44,17,30,30,6); ctx.fillStyle = OG_GOLD; ctx.fill();
+  ctx.fillStyle = '#000'; ctx.font = '900 16px Inter,sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('M',59,32);
+  // nome
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.font = '800 19px Inter,sans-serif';
+  ctx.fillStyle = '#fff'; ctx.fillText('Markets',82,32);
+  ctx.fillStyle = OG_GOLD; ctx.fillText('Coupons',171,32);
+  // pip
+  ctx.beginPath(); ctx.arc(280,32,3,0,Math.PI*2); ctx.fill();
+}
+function ogDrawFooter(ctx,url){
+  const y = OG_H - 50;
+  ctx.fillStyle = 'rgba(255,255,255,.06)';
+  ctx.fillRect(0,y,OG_W,1);
+  ctx.font = '700 15px Inter,sans-serif'; ctx.textBaseline='middle';
+  ctx.textAlign='left';
+  ctx.fillStyle = 'rgba(255,255,255,.46)'; ctx.fillText('Markets',44,y+25);
+  ctx.fillStyle = OG_GOLD; ctx.fillText('Coupons',125,y+25);
+  ctx.textAlign='right';
+  ctx.fillStyle = 'rgba(255,255,255,.22)'; ctx.font='500 12px Inter,sans-serif';
+  ctx.fillText(url,OG_W-44,y+25);
+}
+function ogDrawStars(ctx,cx,cy,rating){
+  // 5 estrelas, dourado, com opacity reduzida nas vazias
+  const total = 5;
+  const filled = Math.round(rating);
+  ctx.font = '11px Arial,sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  const w = 11;
+  const startX = cx - ((total-1)*w)/2;
+  for(let i=0;i<total;i++){
+    ctx.fillStyle = i<filled ? OG_GOLD : 'rgba(245,197,24,.32)';
+    ctx.fillText('★',startX+i*w,cy);
+  }
+}
+function ogTagColor(tag){
+  const t = (tag||'').toLowerCase();
+  if(t.includes('fut')) return ['rgba(100,120,255,.15)','#8899ff','rgba(100,120,255,.28)'];
+  if(t.includes('forex')||t==='frx') return ['rgba(0,180,120,.12)','#00c88a','rgba(0,180,120,.25)'];
+  if(t.includes('bigg')||t.includes('discount')) return ['rgba(245,197,24,.12)','#f5c518','rgba(245,197,24,.28)'];
+  if(t.includes('split')||t.includes('100%')) return ['rgba(0,200,100,.12)','#00dc82','rgba(0,200,100,.25)'];
+  if(t.includes('vip')||t.includes('premium')) return ['rgba(200,80,255,.12)','#d080ff','rgba(200,80,255,.25)'];
+  return ['rgba(0,180,255,.12)','#40c8ff','rgba(0,180,255,.25)'];
+}
+function ogDrawTag(ctx,x,y,label,colors){
+  ctx.font='600 11px Inter,sans-serif';
+  const padX = 8, padY = 4;
+  const w = ctx.measureText(label).width + padX*2;
+  const h = 18;
+  ogRoundRect(ctx,x,y,w,h,4);
+  ctx.fillStyle = colors[0]; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = colors[2]; ctx.stroke();
+  ctx.fillStyle = colors[1];
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText(label,x+padX,y+h/2+1);
+  return w;
+}
+
+async function tgRenderOgFirms(){
+  const info = document.getElementById('tg-canvas-og-info');
+  if(info) info.textContent = 'Buscando firmas…';
+  // top 11 por discount desc, ativas, com cupom
+  let firms = (_firmsCache||[]).filter(f=>f.active && f.discount>0).sort((a,b)=>b.discount-a.discount);
+  if(!firms.length){
+    try{
+      const{data}=await db.from('cms_firms').select('*').eq('active',true).order('sort_order');
+      _firmsCache = data||[];
+      firms = (_firmsCache||[]).filter(f=>f.active && f.discount>0).sort((a,b)=>b.discount-a.discount);
+    }catch(e){}
+  }
+  firms = firms.slice(0,11);
+  const total = firms.length;
+  if(info) info.textContent = `Carregando ${total} logos…`;
+  const logos = await Promise.all(firms.map(f => f.icon_url ? ogLoadImg(f.icon_url) : Promise.resolve(null)));
+
+  const canvas = document.getElementById('tg-canvas-og');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,OG_W,OG_H);
+  ogStarfield(ctx);
+  ogDrawLogoBar(ctx);
+
+  // ── BODY
+  const padX = 44;
+  let y = 60 + 30;
+
+  // ptag
+  ctx.fillStyle = OG_GOLD;
+  ctx.font = '700 12px Inter,sans-serif';
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillText('PROP TRADING FIRMS',padX,y);
+  y += 22;
+
+  // h1
+  ctx.font='800 50px Inter,sans-serif';
+  ctx.fillStyle='#fff';
+  ctx.fillText('Best ',padX,y);
+  const bw = ctx.measureText('Best ').width;
+  ctx.fillStyle=OG_GOLD; ctx.fillText('Prop Firms',padX+bw,y);
+  const pw = ctx.measureText('Prop Firms').width;
+  ctx.fillStyle='#fff'; ctx.fillText(' with Coupons',padX+bw+pw,y);
+  y += 60;
+
+  // sub
+  ctx.font='500 16px Inter,sans-serif';
+  ctx.fillStyle='rgba(255,255,255,.44)';
+  ctx.fillText('Exclusive discount coupons for the top-rated prop trading firms. Verified daily.',padX,y);
+  y += 24;
+  ctx.font='500 13px Inter,sans-serif';
+  ctx.fillStyle='rgba(255,255,255,.27)';
+  ctx.fillText(`Showing ${total} companies  •  Sorted by Biggest Discount`,padX,y);
+  y += 24;
+
+  // ── SUMMARY 3 cards
+  const sumW = (OG_W - padX*2 - 16)/3;
+  const sumH = 60;
+  const maxDisc = Math.max(...firms.map(f=>f.discount||0));
+  const maxSplit = Math.max(...firms.map(f=>{
+    const s = parseInt(String(f.split||'0').replace(/[^0-9]/g,''))||0; return s;
+  }));
+  const sums = [
+    [String(total),'Verified Firms'],
+    [`Up to ${maxDisc}%`,'Max Discount'],
+    [`${maxSplit}%`,'Max Profit Split']
+  ];
+  sums.forEach((s,i)=>{
+    const sx = padX + i*(sumW+8);
+    ogRoundRect(ctx,sx,y,sumW,sumH,10);
+    ctx.fillStyle='rgba(255,255,255,.025)'; ctx.fill();
+    ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.stroke();
+    ctx.fillStyle=OG_GOLD; ctx.font='800 22px Inter,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(s[0],sx+sumW/2,y+22);
+    ctx.fillStyle='rgba(255,255,255,.4)'; ctx.font='500 11px Inter,sans-serif';
+    ctx.fillText(s[1],sx+sumW/2,y+44);
+  });
+  y += sumH + 20;
+
+  // ── COL HEADERS
+  ctx.font='700 11px Inter,sans-serif';
+  ctx.fillStyle='rgba(255,255,255,.26)';
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  const rowX = padX;
+  const rowW = OG_W - padX*2;
+  const cLogo = 50, cName = 220, cDisc = 90, cSplit = 90, cRating = 80, cReviews = 90;
+  const cCoupon = rowW - (cLogo+cName+cDisc+cSplit+cRating+cReviews) - 28;
+  let cx = rowX + 14;
+  ctx.fillText('FIRM',cx + cLogo, y);
+  ctx.textAlign='center';
+  ctx.fillText('DISC', cx + cLogo + cName + cDisc/2, y);
+  ctx.fillText('SPLIT',cx + cLogo + cName + cDisc + cSplit/2, y);
+  ctx.fillText('RATING',cx + cLogo + cName + cDisc + cSplit + cRating/2, y);
+  ctx.fillText('REVIEWS',cx + cLogo + cName + cDisc + cSplit + cRating + cReviews/2, y);
+  ctx.fillText('COUPON', cx + cLogo + cName + cDisc + cSplit + cRating + cReviews + cCoupon/2, y);
+  y += 12;
+  ctx.fillStyle='rgba(255,255,255,.07)'; ctx.fillRect(rowX,y,rowW,1);
+  y += 8;
+
+  // ── FIRM ROWS
+  const rowH = 56;
+  const rowGap = 6;
+  const blurStart = 8; // últimas 3 linhas borradas
+
+  for(let i=0;i<total;i++){
+    const f = firms[i];
+    const blurred = i>=blurStart;
+    const rx = rowX, ry = y;
+
+    if(blurred){ ctx.save(); ctx.filter='blur(4px)'; ctx.globalAlpha=0.35; }
+
+    // bg
+    ogRoundRect(ctx,rx,ry,rowW,rowH,9);
+    if(i===0){
+      ctx.fillStyle='rgba(245,197,24,.05)'; ctx.fill();
+      ctx.lineWidth=1; ctx.strokeStyle='rgba(245,197,24,.32)'; ctx.stroke();
+    }else{
+      ctx.fillStyle='rgba(255,255,255,.025)'; ctx.fill();
+      ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,.055)'; ctx.stroke();
+    }
+
+    // logo
+    const lx = rx + 14, ly = ry + 6;
+    ogRoundRect(ctx,lx,ly,44,44,8);
+    ctx.fillStyle='rgba(255,255,255,.06)'; ctx.fill();
+    if(logos[i]){
+      ctx.save(); ctx.beginPath();
+      ogRoundRect(ctx,lx,ly,44,44,8); ctx.clip();
+      try{ ctx.drawImage(logos[i],lx,ly,44,44); }catch(e){}
+      ctx.restore();
+    }
+
+    // name + tags
+    const ix = lx + 44 + 14;
+    ctx.font='700 16px Inter,sans-serif'; ctx.fillStyle='#fff';
+    ctx.textAlign='left'; ctx.textBaseline='top';
+    let nm = f.name || f.short_name || f.id;
+    // truncar pra 22 chars
+    if(nm.length>22) nm = nm.slice(0,21)+'…';
+    ctx.fillText(nm, ix, ry+8);
+    // primeira tag = type, segunda = badge.label se existir
+    let tx = ix;
+    const tagY = ry+30;
+    if(f.type){
+      const w = ogDrawTag(ctx,tx,tagY,f.type,ogTagColor(f.type));
+      tx += w + 4;
+    }
+    if(f.badge && f.badge.label){
+      ogDrawTag(ctx,tx,tagY,f.badge.label,ogTagColor(f.badge.label));
+    }
+
+    // disc col
+    const cDiscX = rx + 14 + cLogo + cName + cDisc/2;
+    ctx.font='800 18px Inter,sans-serif';
+    ctx.fillStyle = OG_GREEN;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(`${f.discount}%`,cDiscX,ry+24);
+    ctx.font='600 9px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
+    ctx.fillText('DISC',cDiscX,ry+42);
+
+    // split col
+    const cSplitX = rx + 14 + cLogo + cName + cDisc + cSplit/2;
+    const splitVal = f.split || '—';
+    ctx.font='800 18px Inter,sans-serif'; ctx.fillStyle = OG_GREEN;
+    ctx.fillText(splitVal,cSplitX,ry+24);
+    ctx.font='600 9px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
+    ctx.fillText('SPLIT',cSplitX,ry+42);
+
+    // rating col
+    const cRatingX = rx + 14 + cLogo + cName + cDisc + cSplit + cRating/2;
+    ctx.font='800 17px Inter,sans-serif'; ctx.fillStyle='#fff';
+    ctx.fillText(String(f.rating||'—'),cRatingX,ry+22);
+    ogDrawStars(ctx,cRatingX,ry+40,Number(f.rating||0));
+
+    // reviews col
+    const cRevX = rx + 14 + cLogo + cName + cDisc + cSplit + cRating + cReviews/2;
+    const rev = Number(f.reviews||0);
+    const revStr = rev>=1000 ? (rev/1000).toFixed(1)+'K' : String(rev);
+    ctx.font='700 14px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.55)';
+    ctx.fillText(revStr,cRevX,ry+24);
+    ctx.font='600 9px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
+    ctx.fillText('REVIEWS',cRevX,ry+42);
+
+    // coupon col
+    const cCouponX = rx + 14 + cLogo + cName + cDisc + cSplit + cRating + cReviews + 6;
+    const cCouponW = cCoupon - 6;
+    ogRoundRect(ctx,cCouponX,ry+8,cCouponW,40,7);
+    ctx.fillStyle='rgba(245,197,24,.06)'; ctx.fill();
+    ctx.lineWidth=1; ctx.strokeStyle='rgba(245,197,24,.45)';
+    ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font='800 15px Inter,sans-serif'; ctx.fillStyle=OG_GOLD;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(f.coupon||'—',cCouponX+cCouponW/2,ry+22);
+    ctx.font='600 8px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.32)';
+    ctx.fillText('EXCLUSIVE CODE',cCouponX+cCouponW/2,ry+38);
+
+    if(blurred){ ctx.restore(); }
+
+    y += rowH + rowGap;
+  }
+
+  // ── BLUR OVERLAY (somente sobre as últimas 3)
+  if(total>blurStart){
+    const overlayY = rowX + 0; // recalc abaixo
+    const oy0 = (rowX, y - (total-blurStart)*(rowH+rowGap));
+    const oh = (total-blurStart)*(rowH+rowGap);
+    ogRoundRect(ctx,rowX,oy0,rowW,oh-rowGap,9);
+    ctx.fillStyle='rgba(8,14,24,.55)'; ctx.fill();
+    ctx.font='700 17px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.78)';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(`View all ${total} firms and coupons on the website`, OG_W/2, oy0 + (oh-rowGap)/2);
+  }
+
+  // ── CTA
+  const ctaY = OG_H - 50 - 14 - 100;
+  const ctaH = 90;
+  ogRoundRect(ctx,padX,ctaY,OG_W-padX*2,ctaH,13);
+  const grad = ctx.createLinearGradient(padX,ctaY,OG_W-padX,ctaY+ctaH);
+  grad.addColorStop(0,'rgba(245,197,24,.07)');
+  grad.addColorStop(1,'rgba(0,175,100,.04)');
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.lineWidth=1; ctx.strokeStyle='rgba(245,197,24,.16)'; ctx.stroke();
+
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.font='500 13px Inter,sans-serif'; ctx.fillStyle='rgba(255,255,255,.36)';
+  ctx.fillText('Updated daily • Exclusive verified coupons',padX+24,ctaY+22);
+  ctx.font='700 24px Inter,sans-serif'; ctx.fillStyle='#fff';
+  ctx.fillText('Access all firm coupons for free',padX+24,ctaY+42);
+
+  // botão dourado
+  const btnW = 200, btnH = 48;
+  const btnX = OG_W - padX - 24 - btnW;
+  const btnY = ctaY + (ctaH - btnH)/2;
+  ogRoundRect(ctx,btnX,btnY,btnW,btnH,9);
+  ctx.fillStyle = OG_GOLD; ctx.fill();
+  ctx.font='800 15px Inter,sans-serif'; ctx.fillStyle='#000';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('View All Firms',btnX+btnW/2,btnY+btnH/2);
+
+  ogDrawFooter(ctx,'marketscoupons.com/firms');
+
+  if(info) info.textContent = `✓ Renderizado ${total} firmas`;
 }
 
 /* ── Renderiza checkboxes das firmas ── */
