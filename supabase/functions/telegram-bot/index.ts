@@ -38,6 +38,25 @@ async function sendMessage(text: string, buttons?: Array<Array<{text:string;url:
   }
 }
 
+async function sendPhoto(photoUrl: string, caption: string, buttons?: Array<Array<{text:string;url:string}>>): Promise<number | null> {
+  try {
+    const body: Record<string, unknown> = { chat_id: CHAT_ID, photo: photoUrl, caption, parse_mode: "HTML" };
+    if (buttons) body.reply_markup = { inline_keyboard: buttons };
+    const res = await fetch(tgApi("sendPhoto"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (data.ok) return data.result.message_id as number;
+    console.error("Telegram sendPhoto error:", data);
+    return null;
+  } catch (e) {
+    console.error("Telegram sendPhoto fetch error:", e);
+    return null;
+  }
+}
+
 async function deleteMessage(messageId: number): Promise<void> {
   try {
     await fetch(tgApi("deleteMessage"), {
@@ -106,12 +125,13 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
     return `${medals[i]} <b>${f.name}</b> — ${f.discount}% ${label}\n${couponLine}`;
   });
 
-  const text =
+  const caption =
     `🔥 <b>Today's Best Prop Firm Deals</b>\n\n` +
     lines.join("\n\n") +
     `\n\n👉 ${tgLink("coupons")}`;
 
-  const msgId = await sendMessage(text);
+  const photoUrl = `https://${SITE_URL}/api/og/firms?t=${Date.now()}`;
+  const msgId = await sendPhoto(photoUrl, caption);
   if (msgId) await storeMessageId(db, msgId, "coupons");
 
   return { sent: msgId !== null, count: firms.length };
