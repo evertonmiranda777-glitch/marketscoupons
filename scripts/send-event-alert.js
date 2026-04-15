@@ -27,6 +27,8 @@ const STATE_FILE = path.join(root, '.firecrawl', 'events-sent.json');
 
 const LEAD_MIN = 5;
 const WINDOW = 6; // events scheduled in [+5,+11] min get pre-alerted
+const CUTOFF_ET = 18 * 60 + 30; // 18:30 ET — nao alerta eventos depois desse horario
+const US_RX = /united states|^us$|usa/i;
 
 fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
 fs.mkdirSync(path.dirname(OUT_PNG), { recursive: true });
@@ -258,8 +260,10 @@ async function tgDeleteMessage(msgId) {
   const upcoming = (events || []).filter(e => {
     if (e.importance !== 3) return false;
     if (e.date !== todayISO) return false;
+    if (e.currency !== 'USD' && !US_RX.test(e.country || '')) return false;
     const t = parseTimeET(e.time);
     if (t == null) return false;
+    if (t > CUTOFF_ET) return false;
     const delta = t - now;
     if (delta < LEAD_MIN || delta > LEAD_MIN + WINDOW) return false;
     const id = eventId(e);
@@ -284,6 +288,7 @@ async function tgDeleteMessage(msgId) {
   const released = (events || []).filter(e => {
     if (e.importance !== 3) return false;
     if (e.date !== todayISO) return false;
+    if (e.currency !== 'USD' && !US_RX.test(e.country || '')) return false;
     const id = eventId(e);
     const st = state[id];
     if (!st || st.released) return false;
