@@ -6,18 +6,19 @@ const fs = require('fs');
 const path = require('path');
 const { execSync, spawnSync } = require('child_process');
 
+// coupon = null: firma nao expoe codigo publico na homepage (referral embutido no link)
 const FIRMS = [
-  { id: 'apex',         url: 'https://apextraderfunding.com/' },
-  { id: 'bulenox',      url: 'https://bulenox.com/' },
-  { id: 'ftmo',         url: 'https://ftmo.com/en/' },
-  { id: 'tpt',          url: 'https://takeprofittrader.com/' },
-  { id: 'fn',           url: 'https://fundednext.com/' },
-  { id: 'e2t',          url: 'https://www.earn2trade.com/' },
-  { id: 'the5ers',      url: 'https://www.the5ers.com/' },
-  { id: 'fundingpips',  url: 'https://fundingpips.com/' },
-  { id: 'brightfunded', url: 'https://brightfunded.com/' },
-  { id: 'e8',           url: 'https://e8markets.com/' },
-  { id: 'cti',          url: 'https://cityTradersimperium.com/' },
+  { id: 'apex',         url: 'https://apextraderfunding.com/',  coupon: 'MARKET'         },
+  { id: 'bulenox',      url: 'https://bulenox.com/',            coupon: 'MARKET89'       },
+  { id: 'ftmo',         url: 'https://ftmo.com/en/',            coupon: null             },
+  { id: 'tpt',          url: 'https://takeprofittrader.com/',   coupon: 'MARKET40'       },
+  { id: 'fn',           url: 'https://fundednext.com/',         coupon: 'FNF30'          },
+  { id: 'e2t',          url: 'https://www.earn2trade.com/',     coupon: 'MARKETSCOUPONS' },
+  { id: 'the5ers',      url: 'https://www.the5ers.com/',        coupon: null             },
+  { id: 'fundingpips',  url: 'https://fundingpips.com/',        coupon: null             },
+  { id: 'brightfunded', url: 'https://brightfunded.com/',       coupon: null             },
+  { id: 'e8',           url: 'https://e8markets.com/',          coupon: 'MARKET'         },
+  { id: 'cti',          url: 'https://cityTradersimperium.com/', coupon: 'APR30'         },
 ];
 
 const OUT_DIR = path.join(__dirname, '..', '.firecrawl', 'firms');
@@ -69,19 +70,28 @@ async function notifyTelegram(report) {
   console.log('telegram:', res.status);
 }
 
+function couponPresent(file, coupon) {
+  return fs.readFileSync(file, 'utf8').toUpperCase().includes(coupon.toUpperCase());
+}
+
 (async () => {
   const changes = [];
+  const couponAlerts = [];
   for (const f of FIRMS) {
     const prev = latestPrevious(f.id);
     const cur = scrape(f.id, f.url);
     if (!cur) { changes.push(`${f.id}: scrape failed`); continue; }
+    if (f.coupon && !couponPresent(cur, f.coupon)) {
+      couponAlerts.push(`⚠️ ${f.id}: coupon ${f.coupon} NOT found`);
+    }
     const d = diffLines(prev, cur);
     if (!prev) changes.push(`${f.id}: baseline saved`);
     else if (d.added + d.removed > 0) changes.push(`${f.id}: +${d.added}/-${d.removed}`);
   }
-  const report = changes.length ? changes.join('\n') : 'no changes detected';
+  const allLines = [...couponAlerts, ...changes];
+  const report = allLines.length ? allLines.join('\n') : 'no changes detected';
   console.log('\n=== REPORT ===\n' + report);
-  if (changes.some(c => !c.includes('baseline') && !c.includes('no changes'))) {
-    await notifyTelegram(report);
-  }
+  const hasRealChange = couponAlerts.length > 0 ||
+    changes.some(c => !c.includes('baseline') && !c.includes('no changes'));
+  if (hasRealChange) await notifyTelegram(report);
 })();
