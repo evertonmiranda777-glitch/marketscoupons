@@ -887,7 +887,10 @@ function setL(lang,flag,code){
   }
   renderHome(); renderOffers(); renderAwards(); renderFaq(); renderPlatforms(); renderGuides();
   if(!_openBlogSlug) renderBlog();
-  renderQuiz(); applyF(); renderPolicies(); renderAchPlans(); loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true); if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview();
+  renderQuiz(); applyF(); renderPolicies(); renderAchPlans();
+  // Re-render daily analysis sync with cached data so labels/text atualizam imediato
+  if(_lastDailyData && _lastDailyData.length) renderDailyCards(_lastDailyData);
+  loadDailyAnalysis(); checkAnalysisGate(); loadCalendar(true); if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview();
   // Re-render open drawer if language changed
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
@@ -4641,6 +4644,7 @@ function renderCal() {
 /* ─── DAILY ANALYSIS ─── */
 const DA_ASSETS={NQ:{name:'Nasdaq 100',tv:'OANDA:NAS100USD'},ES:{name:'S&P 500',tv:'OANDA:SPX500USD'},CL:{name:'Petróleo WTI',tv:'TVC:USOIL'},GC:{name:'Ouro',tv:'TVC:GOLD'}};
 
+let _lastDailyData=null;
 async function loadDailyAnalysis(){
   const grid=document.getElementById('da-grid');if(!grid)return;
   // Guarantee calendar is loaded before rendering analysis (events are needed)
@@ -4651,12 +4655,13 @@ async function loadDailyAnalysis(){
     if(!data||data.length===0){
       const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
       const{data:d2}=await db.from('daily_analysis').select('*').eq('date',yesterday.toISOString().slice(0,10)).order('asset');
-      if(d2&&d2.length>0) return renderDailyCards(d2);
+      if(d2&&d2.length>0){_lastDailyData=d2;return renderDailyCards(d2);}
       const{data:d3}=await db.from('daily_analysis').select('*').order('date',{ascending:false}).limit(4);
-      if(d3&&d3.length>0) return renderDailyCards(d3);
+      if(d3&&d3.length>0){_lastDailyData=d3;return renderDailyCards(d3);}
       grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="font-size:14px;color:var(--t2);font-weight:600;" data-i18n="da_sem_analise">${t('da_sem_analise')}</div><div style="font-size:12px;color:var(--t3);margin-top:6px;" data-i18n="da_primeira_6h">${t('da_primeira_6h')}</div></div>`;
       return;
     }
+    _lastDailyData=data;
     renderDailyCards(data);
   }catch(e){
     grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="color:var(--t3);">${t('da_erro')}</div></div>`;
