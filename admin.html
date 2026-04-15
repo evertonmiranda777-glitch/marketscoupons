@@ -10248,8 +10248,9 @@ function ogPreview(kind){
   const info = document.getElementById('og-preview-info');
   if(!wrap) return;
   const t = Date.now();
-  const url = '/api/og/' + kind + '?t=' + t;
-  wrap.innerHTML = '<span style="color:rgba(255,255,255,.5);font-size:13px;">Gerando ' + kind + '...</span>';
+  const fileMap = { firms: 'firms-creative.png', gamma: 'gamma-creative.png', analysis: 'analysis-creative.png', calendar: 'calendar-creative.png' };
+  const url = '/img/' + (fileMap[kind] || kind + '-creative.png') + '?t=' + t;
+  wrap.innerHTML = '<span style="color:rgba(255,255,255,.5);font-size:13px;">Carregando ' + kind + '...</span>';
   info.textContent = 'GET ' + url;
   const img = new Image();
   img.onload = () => {
