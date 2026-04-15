@@ -1968,11 +1968,10 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .bot-win.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
 .bot-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--b1);border-radius:15px 15px 0 0;background:var(--card2);}
 .bot-hd-l{display:flex;align-items:center;gap:9px;}
-.bot-av{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#2a1f0a,#0e0a04);border:1.5px solid rgba(240,180,41,.5);position:relative;overflow:hidden;flex-shrink:0;}
-.bot-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;animation:max-float 4s ease-in-out infinite;}
-.bot-win.typing .bot-av{background:url('img/bot/max-sprite.jpeg') 0 0/400% 100% no-repeat;animation:max-talk 0.8s steps(4) infinite;}
-.bot-win.typing .bot-av img{display:none;}
-@keyframes max-talk{from{background-position:0 0;}to{background-position:-400% 0;}}
+.bot-av{width:52px;height:52px;position:relative;overflow:visible;flex-shrink:0;background:none;border:none;filter:drop-shadow(0 4px 10px rgba(240,180,41,.35));}
+.bot-av img{width:100%;height:100%;object-fit:contain;animation:max-float 4s ease-in-out infinite;display:block;}
+.bot-win.typing .bot-av img{animation:max-float 4s ease-in-out infinite,max-pulse 1s ease-in-out infinite;}
+@keyframes max-pulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
 .bot-nm{font-size:13px;font-weight:700;}
 .bot-st{font-size:10px;color:var(--green);display:flex;align-items:center;gap:3px;}
 .bot-st::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;}
@@ -4051,7 +4050,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </button>
 <div class="bot-win" id="bot-win">
  <div class="bot-hd">
- <div class="bot-hd-l"><div class="bot-av"><img src="img/bot/max-avatar.jpeg" alt="Max" draggable="false"></div><div><div class="bot-nm">Max</div><div class="bot-st" data-i18n="bot_online">Online</div></div></div>
+ <div class="bot-hd-l"><div class="bot-av"><img src="img/bot/max-avatar-bot.png" alt="Max" draggable="false"></div><div><div class="bot-nm">Max</div><div class="bot-st" data-i18n="bot_online">Online</div></div></div>
  <button class="bot-x" onclick="toggleBot()">&#10005;</button>
  </div>
  <div class="bot-msgs" id="bot-msgs">

@@ -5305,7 +5305,7 @@ BEHAVIOR RULES:
 8. If you don't know something specific about the site, say so and suggest checking the relevant page.
 9. Identity: you are Max from MarketsCoupons. Never claim to be human or any other AI.`;
 const botHist=[];
-function toggleBot(){botOpen=!botOpen;document.getElementById('bot-win').classList.toggle('open',botOpen);if(botOpen){document.getElementById('bot-badge').style.display='none';document.getElementById('bot-inp').focus();}track('bot_toggle',{state:botOpen?'open':'close'});}
+function toggleBot(){botOpen=!botOpen;document.getElementById('bot-win').classList.toggle('open',botOpen);const fab=document.getElementById('bot-fab');if(fab)fab.style.display=botOpen?'none':'flex';if(botOpen){document.getElementById('bot-badge').style.display='none';document.getElementById('bot-inp').focus();}track('bot_toggle',{state:botOpen?'open':'close'});}
 function openBot(){botOpen=false;toggleBot();}
 function qmsg(t){document.getElementById('bot-inp').value=t;sendBot();track('bot_quick_msg',{message:t.slice(0,50)});}
 function addBMsg(role,text){const c=document.getElementById('bot-msgs');const tm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='bmsg '+role;const safe=role==='usr'?text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):text;d.innerHTML=`<div class="bbbl">${safe.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div><span class="btime">${tm}</span>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
