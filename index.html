@@ -1941,16 +1941,16 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 
 /* BOT */
 .bot-fab{
- position:fixed;bottom:22px;right:22px;z-index:700;
+ position:fixed;bottom:22px;right:22px;z-index:950;
  width:64px;height:64px;border-radius:50%;
- background:#0e0a04;
- border:2px solid rgba(240,180,41,.55);cursor:pointer;
- display:none;align-items:center;justify-content:center;
- box-shadow:0 6px 24px rgba(240,180,41,.45),inset 0 0 20px rgba(240,180,41,.12);
+ background:radial-gradient(circle at 30% 30%,#2a1f0a,#0e0a04);
+ border:2px solid rgba(240,180,41,.7);cursor:pointer;
+ display:none;align-items:flex-end;justify-content:center;
+ box-shadow:0 6px 24px rgba(240,180,41,.55),inset 0 0 20px rgba(240,180,41,.18);
  transition:transform .3s,box-shadow .3s;
- overflow:hidden;animation:max-ring 2.4s ease-in-out infinite;
+ overflow:visible;animation:max-ring 2.4s ease-in-out infinite;
 }
-.bot-fab img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;animation:max-float 4s ease-in-out infinite;}
+.bot-fab img{position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);width:96px;height:auto;pointer-events:none;animation:max-float 4s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));}
 .bot-fab:hover{transform:scale(1.08);}
 .bot-fab:hover img{animation:max-excited 1.2s ease-in-out infinite;}
 @keyframes max-ring{0%,100%{box-shadow:0 6px 24px rgba(240,180,41,.45),inset 0 0 20px rgba(240,180,41,.12),0 0 0 0 rgba(240,180,41,.55);}50%{box-shadow:0 6px 24px rgba(240,180,41,.55),inset 0 0 20px rgba(240,180,41,.12),0 0 0 8px rgba(240,180,41,0);}}
@@ -1958,7 +1958,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 @keyframes max-excited{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-2px) scale(1.03);}}
 .bot-badge{position:absolute;top:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;border:2px solid var(--bg);}
 .bot-win{
- position:fixed;bottom:92px;right:22px;z-index:700;
+ position:fixed;bottom:92px;right:22px;z-index:950;
  width:min(370px,calc(100vw - 32px));
  height:min(540px,calc(100vh - 110px));
  background:var(--sur);border:1px solid var(--b2);border-radius:15px;
@@ -4048,7 +4048,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <!-- BOT -->
 <button class="bot-fab" id="bot-fab" onclick="toggleBot()" aria-label="Chat with Max">
- <img src="img/bot/max-avatar.jpeg" alt="Max" draggable="false">
+ <img src="img/bot/max-avatar-cutout.png" alt="Max" draggable="false">
  <span class="bot-badge" id="bot-badge">1</span>
 </button>
 <div class="bot-win" id="bot-win">
@@ -4064,7 +4064,7 @@ document.addEventListener('DOMContentLoaded',function(){
  <button class="bq" onclick="qmsg('Qual prop firm é ideal para mim?')">Qual firma?</button>
  <button class="bq" onclick="qmsg('Quais cupons estão disponíveis agora?')">Cupons ativos</button>
  <button class="bq" onclick="qmsg('Como calcular position size para ES, conta $100K, risco 1%, stop 5 pontos?')">Position size</button>
- <button class="bq" onclick="qmsg('Estou frustrado com o trading, me ajuda psicologicamente?')">Apoio psicológico</button>
+ <button class="bq" onclick="qmsg('Como passar na avaliação da prop firm?')">Passar na avaliação</button>
  </div>
  <div class="bot-inp-row">
  <input class="bot-inp" id="bot-inp" placeholder="Digite sua dúvida..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendBot();}">
