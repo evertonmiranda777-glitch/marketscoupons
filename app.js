@@ -895,6 +895,16 @@ function setL(lang,flag,code){
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
   updateTVWidgets(lang);
+  // Reset Max chat so old replies don't stay in the old language
+  if(typeof botHist!=='undefined'){
+    botHist.length=0;
+    const msgs=document.getElementById('bot-msgs');
+    if(msgs){
+      msgs.innerHTML=`<div class="bmsg bot"><div class="bbbl" data-i18n="bot_welcome" data-i18n-html="1">${t('bot_welcome')}</div><span class="btime" data-i18n="bot_now">${t('bot_now')}</span></div>`;
+    }
+    const quick=document.getElementById('bot-quick');
+    if(quick) quick.style.display='';
+  }
   track('language_change',{language:lang});
 }
 function initLang() {
