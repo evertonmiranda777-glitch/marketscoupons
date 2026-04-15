@@ -1,5 +1,37 @@
 # MarketsCoupons - Contexto do Projeto
 
+## Event Alert 3-estrelas Telegram (2026-04-15)
+
+Sistema que avisa no Telegram sobre eventos economicos de alto impacto (3 estrelas) em **dois momentos**: 5 min antes do release, e apos o release com o dado real + contexto de mercado.
+
+### Arquitetura
+- **Script:** `scripts/send-event-alert.js` — busca calendario via edge function `economic-calendar`, filtra `importance=3` do dia, renderiza `templates/criativo_evento.html` via Playwright, envia ao Telegram com botao inline `📅 Open Calendar` → marketscoupons.com/calendar
+- **Workflow:** `.github/workflows/event-alert.yml` — cron `*/5 * * * 1-5` (a cada 5 min em dias uteis UTC), permissions `contents: write`, instala playwright chromium, roda o script, commita dedup state
+- **Template:** `templates/criativo_evento.html` (1080x1350) — layout premium com alert pill, currency badge (.cny/.usd/.eur/.jpy/.gbp), event-name 82px, data-grid 3 colunas (Actual/Forecast/Previous), result-badge (.miss/.beat/.inline), market-context
+- **Dedup state:** `.firecrawl/events-sent.json` — map `{ eventId: { preMsgId, released } }` (migra auto do formato antigo array)
+
+### Fluxo de 2 mensagens
+1. **Pass 1 (pre-alert):** eventos 3★ no dia com horario ET em `[+5, +11]` min do agora, nao pre-alertados ainda. Render em modo **upcoming**: alert pill fica amarelo "UPCOMING IN 5 MIN", Actual = "Pending", badge amarelo "⏱ In 5 Min", market-context = "Prepare for volatility...". Envia via `sendPhoto` e salva `message_id`.
+2. **Pass 2 (release):** eventos ja pre-alertados que agora tem `actual` populado. Calcula `result` (beat/miss/inline) comparando actual vs forecast (tolerancia 1%). Gera contexto de mercado via `marketContext()` (regra-based por currency + result + tipo de evento: CPI→bonds, NFP→equities+USD, loans→Asian markets, etc). **Deleta** mensagem do pre-alert via `deleteMessage` API, envia nova com dados reais. Marca `released: true`.
+
+### Helpers-chave no script
+- `parseTimeET("09:00 AM")` → minutos-do-dia
+- `nowInET()` via `Intl.DateTimeFormat` timeZone America/New_York
+- `classifyResult(actual, forecast)` → 'beat' | 'miss' | 'inline'
+- `marketContext(event, result)` → texto HTML com `<span>` destacando pressure/strength
+- `renderEvent(e, mode)` com modes 'upcoming' e 'released' — mesmo template, overrides via page.evaluate
+
+### Selectors do template novo (NAO confundir com versao antiga)
+`.alert-pill .adot .albl` (header), `.event-name`, `.event-sub`, `.time-val`, `.ev-date`, `.cur-badge`, 3x `.data-card > .data-lbl + .data-val`, `.result-badge` (dentro do Actual card), `.mc-lbl`, `.mc-txt` (market context).
+
+### Regras criticas
+- **NUNCA** usar Satori pra esse template — complexo demais, usar Playwright direto
+- `sendPhoto` por multipart (Blob), nao por URL
+- `parse_mode` nao usado nas captions (texto simples)
+- Dedup state mantem historico capado em 500 entradas
+- Validacao de `actual`: ignora '-', string vazia, null
+- Cron ja ativo dias uteis UTC — nao precisa trigger manual
+
 ## Firm Monitor Semanal (2026-04-15)
 
 Sistema automatizado pra detectar mudancas nas prop firms (promocoes, precos, regras) toda segunda-feira.
