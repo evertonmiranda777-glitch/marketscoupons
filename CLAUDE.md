@@ -1,5 +1,40 @@
 # MarketsCoupons - Contexto do Projeto
 
+## Firm Monitor Semanal (2026-04-15)
+
+Sistema automatizado pra detectar mudancas nas prop firms (promocoes, precos, regras) toda segunda-feira.
+
+### Arquitetura
+- **Script:** `scripts/monitor-firms.js` — le lista hardcoded de 11 firmas, scrapeia homepage de cada uma via `firecrawl scrape --only-main-content`, salva markdown em `.firecrawl/firms/<id>-YYYY-MM-DD.md`, faz diff linha-a-linha contra ultimo snapshot commitado, dispara alerta Telegram se houver mudancas
+- **Workflow:** `.github/workflows/firm-monitor.yml` — cron `0 9 * * 1` (seg 09:00 UTC), instala firecrawl-cli, autentica via `FIRECRAWL_API_KEY` secret, roda o script, commita `.firecrawl/firms/` alterado
+- **Telegram:** usa secrets `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` ja existentes
+- **Custo:** 11 credits/semana = ~44/mes (caber na free tier 500/mes com folga)
+
+### Secrets necessarios no GitHub (Settings → Secrets → Actions)
+- `FIRECRAWL_API_KEY` = `fc-9b25c6ef0ca448209c3ffd1e3e11e540` (ja gerado, conta criada via GitHub 2026-04-15)
+- `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` (reusar os do bot existente)
+
+### URLs monitoradas (11 firmas, homepage publica NAO link afiliado)
+apex, bulenox, ftmo, tpt (takeprofittrader), fn (fundednext), e2t (earn2trade), the5ers, fundingpips, brightfunded, e8, cti (citytradersimperium). Lista em `scripts/monitor-firms.js` FIRMS array.
+
+### Como funciona o diff
+- Compara linhas unicas do markdown novo vs ultimo snapshot commitado daquela firma
+- Report: `<firm_id>: +X/-Y` (linhas adicionadas/removidas)
+- Baseline (primeiro snapshot) nao dispara alerta, so salva
+
+### Skills de scraping instaladas 2026-04-15
+- **firecrawl-cli** (`npm i -g firecrawl-cli`) — bypass Cloudflare via stealth/residential proxy. 500 credits/mes free, 1 credit/scrape, 5 credits/query. Auth: `firecrawl login --api-key fc-...`
+- **browser-use** — NAO usar pra prop firms, Cloudflare bloqueia headless. Usar so pra sites simples
+- Skills firecrawl globais em `~/.claude/skills/`: firecrawl-scrape, firecrawl-crawl, firecrawl-map, firecrawl-search, firecrawl-interact, firecrawl-agent, firecrawl-download
+
+### Validacao feita
+Apex Trader Funding scrapeado com sucesso em 2026-04-15 → `.firecrawl/apex-home.md` (942 linhas). Extraiu: 90% desconto, 100% profit split, $1500 target 25K, Rithmic/Tradovate/NinjaTrader/WealthCharts, Trustpilot 4.4/19K, activation $89, payout 5 dias, consistency 50%.
+
+### Proximos passos
+1. User precisa adicionar `FIRECRAWL_API_KEY` como secret no repo GitHub
+2. Primeira run manual via `workflow_dispatch` pra criar baseline
+3. Monday 09:00 UTC comeca a rodar automatico e notificar Telegram se algo mudar
+
 ## Visao Geral
 
 Site de cupons e descontos para **prop firms** de trading. Compara firmas, oferece cupons exclusivos, programa de fidelidade, blog, guias, quiz, calculadoras e mais. Deploy no **Vercel** como site estatico (sem build step).
