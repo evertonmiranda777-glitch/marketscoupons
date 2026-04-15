@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1350px;background:#080e18;font-family:'Inter',sans-serif;color:#fff;overflow:hidden;position:relative;}
+.sf{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 7% 4%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 33% 3%,rgba(255,255,255,.55) 0%,transparent 100%),radial-gradient(1px 1px at 67% 8%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 82% 5%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 14% 22%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 50% 18%,rgba(255,255,255,.38) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 78% 30%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 25% 45%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 60% 50%,rgba(255,255,255,.42) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 88% 55%,rgba(255,255,255,.48) 0%,transparent 100%),radial-gradient(1px 1px at 10% 68%,rgba(255,255,255,.36) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 40% 72%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 70% 80%,rgba(255,255,255,.38) 0%,transparent 100%),radial-gradient(1px 1px at 20% 90%,rgba(255,255,255,.44) 0%,transparent 100%);}
+.wv{position:absolute;inset:0;background:radial-gradient(ellipse 900px 300px at 50% 80%,rgba(0,170,120,.06) 0%,transparent 70%);}
+.wrap{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
+
+.logobar{padding:18px 52px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+
+.body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 52px;gap:32px;}
+
+.alert-pill{display:flex;align-items:center;gap:12px;background:rgba(240,64,64,.1);border:1px solid rgba(240,64,64,.3);border-radius:40px;padding:12px 28px;}
+.adot{width:14px;height:14px;border-radius:50%;background:#f04040;box-shadow:0 0 14px rgba(240,64,64,.9);flex-shrink:0;}
+.albl{font-size:18px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#f08080;}
+
+.impact{display:flex;align-items:center;gap:6px;}
+.star{font-size:32px;color:#f04040;}
+
+.cur-badge{display:inline-flex;align-items:center;gap:10px;padding:10px 24px;border-radius:10px;font-size:22px;font-weight:800;letter-spacing:1px;}
+.cny{background:rgba(255,50,50,.12);color:#ff7070;border:1px solid rgba(255,50,50,.28);}
+.usd{background:rgba(0,195,115,.12);color:#00c873;border:1px solid rgba(0,195,115,.28);}
+.eur{background:rgba(100,180,255,.12);color:#80c8ff;border:1px solid rgba(100,180,255,.28);}
+.jpy{background:rgba(255,148,0,.12);color:#ffaa33;border:1px solid rgba(255,148,0,.28);}
+.gbp{background:rgba(180,100,255,.12);color:#c47aff;border:1px solid rgba(180,100,255,.28);}
+
+.event-name{font-size:82px;font-weight:800;line-height:1.05;letter-spacing:-2.5px;text-align:center;}
+.event-sub{font-size:28px;color:rgba(255,255,255,.4);text-align:center;font-weight:500;}
+
+.time-block{display:flex;align-items:center;gap:14px;}
+.time-val{font-size:48px;font-weight:800;color:#f5c518;}
+.time-lbl{font-size:20px;color:rgba(255,255,255,.38);font-weight:600;}
+
+.div{width:100%;height:1px;background:rgba(255,255,255,.07);}
+
+.data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;}
+.data-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:28px 32px;text-align:center;}
+.data-lbl{font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:12px;}
+.data-val{font-size:46px;font-weight:800;line-height:1;}
+.data-val.neg{color:#ff5050;}
+.data-val.pos{color:#00dc82;}
+.data-val.warn{color:#f5c518;}
+.data-val.na{color:rgba(255,255,255,.25);font-size:36px;}
+
+.result-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:30px;font-size:20px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:14px;}
+.miss{background:rgba(255,80,80,.12);color:#ff5050;border:1px solid rgba(255,80,80,.28);}
+.beat{background:rgba(0,220,130,.12);color:#00dc82;border:1px solid rgba(0,220,130,.28);}
+.inline{background:rgba(245,197,24,.1);color:#f5c518;border:1px solid rgba(245,197,24,.26);}
+
+.market-context{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:28px 36px;width:100%;text-align:center;}
+.mc-lbl{font-size:20px;color:rgba(255,255,255,.4);margin-bottom:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.mc-txt{font-size:26px;color:rgba(255,255,255,.78);line-height:1.55;font-weight:500;}
+.mc-txt span{color:#ff5050;font-weight:700;}
+
+.footer{padding:18px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.fu{font-size:20px;color:rgba(255,255,255,.28);}
+</style></head><body><div class="sf"></div><div class="wv"></div><div class="wrap">
+
+<div class="logobar">
+  <div style="font-size:22px;font-weight:800;letter-spacing:1px;">MC</div>
+  <div style="display:flex;align-items:center;gap:8px;background:rgba(240,64,64,.08);border:1px solid rgba(240,64,64,.22);border-radius:30px;padding:9px 22px;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#f08080;">
+    <div style="width:9px;height:9px;border-radius:50%;background:#f04040;box-shadow:0 0 8px rgba(240,64,64,.8);"></div>High Impact Event
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="alert-pill">
+    <div class="adot"></div>
+    <div class="albl">Economic Calendar Alert</div>
+  </div>
+
+  <div class="impact">
+    <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    <span style="font-size:22px;color:rgba(255,255,255,.4);margin-left:6px;font-weight:600;">HIGH IMPACT</span>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:20px;">
+    <span class="cur-badge cny">CNY</span>
+    <div class="time-block">
+      <div class="time-val">09:00</div>
+      <div class="time-lbl">ET</div>
+    </div>
+    <span style="font-size:22px;color:rgba(255,255,255,.28);">|</span>
+    <div class="ev-date" style="font-size:22px;color:rgba(255,255,255,.38);font-weight:500;">Monday, April 13, 2026</div>
+  </div>
+
+  <div>
+    <div class="event-name">New Loans</div>
+    <div class="event-sub">China &nbsp;&bull;&nbsp; MAR 2026</div>
+  </div>
+
+  <div class="div"></div>
+
+  <div class="data-grid">
+    <div class="data-card">
+      <div class="data-lbl">Actual</div>
+      <div class="data-val neg">CNY<br>2,990B</div>
+      <div class="result-badge miss">▼ Miss</div>
+    </div>
+    <div class="data-card">
+      <div class="data-lbl">Forecast</div>
+      <div class="data-val warn">CNY<br>3,400B</div>
+    </div>
+    <div class="data-card">
+      <div class="data-lbl">Previous</div>
+      <div class="data-val" style="color:rgba(255,255,255,.6);">CNY<br>900B</div>
+    </div>
+  </div>
+
+  <div class="market-context">
+    <div class="mc-lbl">Market Context</div>
+    <div class="mc-txt">
+      China credit data came in below expectations, signaling weaker loan demand. Watch for <span>CNY pressure</span> and potential risk-off sentiment in Asian markets.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div style="font-size:16px;color:rgba(255,255,255,.4);font-weight:700;">MC</div>
+  <div class="fu">marketscoupons.com/calendar</div>
+</div>
+
+</div></body></html>

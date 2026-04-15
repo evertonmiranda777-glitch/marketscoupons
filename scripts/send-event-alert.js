@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// Fires 5 minutes BEFORE a 3-star economic event, not after.
-// Polls economic-calendar, finds 3-star events scheduled in the next 5–10 min
-// window (matches a 5-min cron), renders criativo_evento.html in "upcoming"
-// mode, sends to Telegram with inline "Open Calendar" button.
+// 2-message flow for 3-star economic events:
+//   1) 5 min BEFORE release: send "upcoming" alert (yellow, Actual=Pending)
+//   2) After release (actual appears): delete pre-alert + send "released" alert
+//      with real data, miss/beat/inline badge, and market context explanation.
 //
-// Dedup: .firecrawl/events-sent.json — keeps IDs already alerted.
+// State: .firecrawl/events-sent.json — map { eventId: { preMsgId, released } }
 // Env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 // Run: node scripts/send-event-alert.js
 
@@ -23,27 +23,41 @@ const CALENDAR_URL = `${SUPABASE_URL}/functions/v1/economic-calendar`;
 const CALENDAR_PAGE = 'https://www.marketscoupons.com/calendar';
 const TEMPLATE = path.join(root, 'templates', 'criativo_evento.html');
 const OUT_PNG = path.join(root, 'img', 'event-alert.png');
-const SENT_FILE = path.join(root, '.firecrawl', 'events-sent.json');
+const STATE_FILE = path.join(root, '.firecrawl', 'events-sent.json');
 
-// Window: alert for events scheduled between LEAD_MIN and LEAD_MIN+WINDOW min from now
 const LEAD_MIN = 5;
-const WINDOW = 6; // 5..10 covers a 5-min cron even with 1-2 min drift
+const WINDOW = 6; // events scheduled in [+5,+11] min get pre-alerted
 
-fs.mkdirSync(path.dirname(SENT_FILE), { recursive: true });
+fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
+fs.mkdirSync(path.dirname(OUT_PNG), { recursive: true });
 
-function loadSent() {
-  try { return new Set(JSON.parse(fs.readFileSync(SENT_FILE, 'utf8'))); }
-  catch { return new Set(); }
+function loadState() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+    if (Array.isArray(raw)) {
+      // migrate old format (array of IDs)
+      const m = {};
+      for (const id of raw) m[id] = { preMsgId: null, released: true };
+      return m;
+    }
+    return raw || {};
+  } catch { return {}; }
 }
-function saveSent(set) {
-  fs.writeFileSync(SENT_FILE, JSON.stringify([...set].slice(-500), null, 2));
+function saveState(state) {
+  const keys = Object.keys(state);
+  // cap to last 500
+  if (keys.length > 500) {
+    const trimmed = {};
+    for (const k of keys.slice(-500)) trimmed[k] = state[k];
+    state = trimmed;
+  }
+  fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 function eventId(e) {
   return `${e.date}|${e.time}|${e.currency}|${e.event}|${e.reference || ''}`;
 }
 
 function parseTimeET(timeStr) {
-  // "09:00 AM" / "01:30 PM" → minutes-of-day (ET), or null
   if (!timeStr) return null;
   const m = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
   if (!m) return null;
@@ -64,64 +78,126 @@ function nowInET() {
   return h * 60 + (isNaN(m) ? 0 : m);
 }
 
-function pickUpcomingEvents(events, todayISO) {
-  const now = nowInET();
-  return events.filter(e => {
-    if (e.importance !== 3) return false;
-    if (e.date !== todayISO) return false;
-    const t = parseTimeET(e.time);
-    if (t == null) return false;
-    const delta = t - now;
-    return delta >= LEAD_MIN && delta <= LEAD_MIN + WINDOW;
-  });
+function fmtDate(isoDate) {
+  try {
+    const d = new Date(isoDate + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  } catch { return isoDate; }
 }
 
-async function renderEvent(event) {
+function parseNum(s) {
+  if (s == null) return null;
+  const m = String(s).match(/-?\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : null;
+}
+
+function classifyResult(actual, forecast) {
+  const a = parseNum(actual), f = parseNum(forecast);
+  if (a == null || f == null) return 'inline';
+  if (Math.abs(a - f) / Math.max(Math.abs(f), 1) < 0.01) return 'inline';
+  return a > f ? 'beat' : 'miss';
+}
+
+function marketContext(e, result) {
+  const cur = e.currency || '';
+  const dir = result === 'miss' ? 'below' : result === 'beat' ? 'above' : 'in line with';
+  const ev = (e.event || '').toLowerCase();
+  const pressure = result === 'miss' ? `${cur} pressure` : result === 'beat' ? `${cur} strength` : `muted ${cur} reaction`;
+  let sector = 'FX and risk assets';
+  if (ev.includes('cpi') || ev.includes('inflation') || ev.includes('ppi')) sector = 'bonds and rate-sensitive assets';
+  else if (ev.includes('employment') || ev.includes('payroll') || ev.includes('nfp') || ev.includes('jobless')) sector = 'equities and USD';
+  else if (ev.includes('gdp')) sector = 'growth-sensitive sectors';
+  else if (ev.includes('retail')) sector = 'consumer-sector equities';
+  else if (ev.includes('loan') || ev.includes('credit')) sector = 'Asian markets and commodities';
+  else if (ev.includes('pmi') || ev.includes('manufacturing')) sector = 'cyclical equities';
+  return `${cur} ${e.event} came in ${dir} expectations. Watch for <span>${pressure}</span> and shifts in ${sector}.`;
+}
+
+async function renderEvent(event, mode) {
   const browser = await chromium.launch();
   const ctx = await browser.newContext({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 2 });
   const page = await ctx.newPage();
   await page.goto('file://' + TEMPLATE.replace(/\\/g, '/'), { waitUntil: 'networkidle' });
 
-  await page.evaluate((e) => {
+  await page.evaluate(({ e, mode }) => {
     const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
+    const setHTML = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.innerHTML = val; };
 
+    // Header / event identity
+    set('.event-name', e.event || '');
+    const country = e.country ? e.country.replace(/\b\w/g, c => c.toUpperCase()) : '';
+    const ref = (e.reference || '').toUpperCase();
+    setHTML('.event-sub', `${country} &nbsp;&bull;&nbsp; ${ref}`);
     set('.time-val', (e.time || '').replace(/\s*(AM|PM)/i, ''));
-    set('.ev-name', e.event);
-    set('.ev-period', (e.reference || '').toUpperCase());
-    set('.ev-country', e.country ? e.country.replace(/\b\w/g, c => c.toUpperCase()) : '');
+    set('.ev-date', e.dateFmt || '');
 
-    const cur = document.querySelector('.cur');
-    if (cur) cur.textContent = e.currency || '';
-
-    // header label → "UPCOMING" mode
-    const chLabel = document.querySelector('.ch-label');
-    if (chLabel) chLabel.textContent = `High Impact Event — In ${e.leadMin} Minutes`;
-
-    // data cells: Actual = pending, Forecast, Previous
-    const cells = document.querySelectorAll('.data-cell .dc-val');
-    if (cells[0]) { cells[0].innerHTML = 'Pending'; cells[0].style.color = 'rgba(255,255,255,.35)'; cells[0].style.fontSize = '22px'; }
-    if (cells[1]) cells[1].innerHTML = String(e.forecast || '—');
-    if (cells[2]) cells[2].innerHTML = String(e.previous || '—');
-
-    // badge becomes countdown pill
-    const miss = document.querySelector('.miss-lbl');
-    if (miss) { miss.textContent = `In ${e.leadMin} Min`; miss.style.color = '#f5c518'; }
-    const dot = document.querySelector('.miss-dot');
-    if (dot) dot.style.background = '#f5c518';
-    const badge = document.querySelector('.miss-badge');
-    if (badge) {
-      badge.style.background = 'rgba(245,197,24,.1)';
-      badge.style.borderColor = 'rgba(245,197,24,.3)';
+    // Currency badge — reset classes
+    const cb = document.querySelector('.cur-badge');
+    if (cb) {
+      cb.textContent = e.currency || '';
+      cb.className = 'cur-badge';
+      const map = { CNY:'cny', USD:'usd', EUR:'eur', JPY:'jpy', GBP:'gbp' };
+      const cls = map[e.currency] || 'usd';
+      cb.classList.add(cls);
     }
-    // sub-line under badge
-    const subLine = badge?.parentElement?.querySelector('div:not(.miss-badge)');
-    if (subLine) subLine.innerHTML = `Scheduled <span style="color:#f5c518;font-weight:700">${e.time || ''}</span>`;
 
-    const ctxEl = document.querySelector('.context');
-    if (ctxEl) {
-      ctxEl.innerHTML = `Prepare for potential<br><span>${e.currency} volatility</span> — position<br>before release.`;
+    const actualCard = document.querySelectorAll('.data-card')[0];
+    const forecastCard = document.querySelectorAll('.data-card')[1];
+    const previousCard = document.querySelectorAll('.data-card')[2];
+    const curLbl = e.currency || '';
+
+    if (forecastCard) {
+      const v = forecastCard.querySelector('.data-val');
+      if (v) { v.innerHTML = e.forecast ? `${curLbl}<br>${e.forecast}` : '—'; v.className = 'data-val warn'; }
     }
-  }, { ...event, leadMin: 5 });
+    if (previousCard) {
+      const v = previousCard.querySelector('.data-val');
+      if (v) { v.innerHTML = e.previous ? `${curLbl}<br>${e.previous}` : '—'; v.className = 'data-val'; v.style.color = 'rgba(255,255,255,.6)'; }
+    }
+
+    if (mode === 'upcoming') {
+      // Alert pill → yellow UPCOMING
+      const albl = document.querySelector('.albl');
+      if (albl) { albl.textContent = `UPCOMING IN ${e.leadMin} MIN`; albl.style.color = '#f5c518'; }
+      const adot = document.querySelector('.adot');
+      if (adot) { adot.style.background = '#f5c518'; adot.style.boxShadow = '0 0 14px rgba(245,197,24,.9)'; }
+      const ap = document.querySelector('.alert-pill');
+      if (ap) { ap.style.background = 'rgba(245,197,24,.1)'; ap.style.borderColor = 'rgba(245,197,24,.3)'; }
+
+      // Actual → Pending, badge → yellow "In X Min"
+      if (actualCard) {
+        const v = actualCard.querySelector('.data-val');
+        if (v) { v.innerHTML = 'Pending'; v.className = 'data-val na'; }
+        const badge = actualCard.querySelector('.result-badge');
+        if (badge) {
+          badge.className = 'result-badge inline';
+          badge.innerHTML = `⏱ In ${e.leadMin} Min`;
+        }
+      }
+
+      // Market context → prep message
+      setHTML('.mc-txt', `Scheduled at <span>${e.time || ''}</span>. Prepare for potential <span>${e.currency} volatility</span> — position before release.`);
+    } else {
+      // released
+      const albl = document.querySelector('.albl');
+      if (albl) albl.textContent = 'ECONOMIC CALENDAR — RELEASED';
+
+      if (actualCard) {
+        const v = actualCard.querySelector('.data-val');
+        if (v) {
+          v.innerHTML = e.actual ? `${curLbl}<br>${e.actual}` : '—';
+          v.className = 'data-val ' + (e.result === 'beat' ? 'pos' : e.result === 'miss' ? 'neg' : 'warn');
+        }
+        const badge = actualCard.querySelector('.result-badge');
+        if (badge) {
+          badge.className = 'result-badge ' + e.result;
+          badge.innerHTML = e.result === 'beat' ? '▲ Beat' : e.result === 'miss' ? '▼ Miss' : '● In Line';
+        }
+      }
+
+      setHTML('.mc-txt', e.contextHtml || '');
+    }
+  }, { e: event, mode });
 
   await page.waitForTimeout(400);
   await page.screenshot({ path: OUT_PNG, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' });
@@ -129,7 +205,7 @@ async function renderEvent(event) {
   return OUT_PNG;
 }
 
-async function sendTelegram(pngPath) {
+async function tgSendPhoto(pngPath, caption) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chat = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chat) throw new Error('missing TELEGRAM env');
@@ -138,14 +214,33 @@ async function sendTelegram(pngPath) {
   const fd = new FormData();
   fd.append('chat_id', chat);
   fd.append('photo', new Blob([buf], { type: 'image/png' }), 'event.png');
+  if (caption) fd.append('caption', caption.slice(0, 1020));
   fd.append('reply_markup', JSON.stringify({
     inline_keyboard: [[{ text: '📅 Open Calendar', url: CALENDAR_PAGE }]],
   }));
 
   const res = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: fd });
-  const body = await res.text();
-  console.log(`[telegram] ${res.status} — ${body.slice(0, 200)}`);
-  if (!res.ok) throw new Error('telegram sendPhoto failed');
+  const body = await res.json();
+  console.log(`[tg sendPhoto] ${res.status} ok=${body.ok} msg_id=${body.result?.message_id}`);
+  if (!res.ok || !body.ok) throw new Error('sendPhoto failed: ' + JSON.stringify(body).slice(0,200));
+  return body.result.message_id;
+}
+
+async function tgDeleteMessage(msgId) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chat = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chat || !msgId) return;
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/deleteMessage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ chat_id: chat, message_id: msgId }),
+    });
+    const body = await res.text();
+    console.log(`[tg deleteMessage] ${res.status} — ${body.slice(0,120)}`);
+  } catch (err) {
+    console.error('[tg deleteMessage] failed:', err.message);
+  }
 }
 
 (async () => {
@@ -154,23 +249,67 @@ async function sendTelegram(pngPath) {
   if (!res.ok) { console.error('calendar fetch failed', res.status); process.exit(1); }
   const { events } = await res.json();
   const todayISO = new Date().toISOString().slice(0, 10);
-  const candidates = pickUpcomingEvents(events || [], todayISO);
-  console.log(`[event-alert] nowET=${nowInET()}min | ${candidates.length} upcoming 3-star events in window`);
+  const now = nowInET();
+  console.log(`[event-alert] nowET=${now}min, ${(events || []).length} events total`);
 
-  const sent = loadSent();
-  const fresh = candidates.filter(e => !sent.has(eventId(e)));
-  console.log(`[event-alert] ${fresh.length} not yet alerted`);
+  const state = loadState();
 
-  for (const e of fresh) {
-    console.log(`[event-alert] → ${e.time} ${e.currency} ${e.event}`);
+  // Pass 1: upcoming pre-alerts (events in [+LEAD, +LEAD+WINDOW] not yet pre-alerted)
+  const upcoming = (events || []).filter(e => {
+    if (e.importance !== 3) return false;
+    if (e.date !== todayISO) return false;
+    const t = parseTimeET(e.time);
+    if (t == null) return false;
+    const delta = t - now;
+    if (delta < LEAD_MIN || delta > LEAD_MIN + WINDOW) return false;
+    const id = eventId(e);
+    return !state[id]?.preMsgId && !state[id]?.released;
+  });
+  console.log(`[event-alert] ${upcoming.length} pre-alerts to send`);
+
+  for (const e of upcoming) {
+    const id = eventId(e);
+    console.log(`[pre] → ${e.time} ${e.currency} ${e.event}`);
     try {
-      await renderEvent(e);
-      await sendTelegram(OUT_PNG);
-      sent.add(eventId(e));
-      saveSent(sent);
+      await renderEvent({ ...e, leadMin: LEAD_MIN, dateFmt: fmtDate(e.date) }, 'upcoming');
+      const msgId = await tgSendPhoto(OUT_PNG, `⏱ ${e.currency} ${e.event} — in ${LEAD_MIN} min`);
+      state[id] = { preMsgId: msgId, released: false };
+      saveState(state);
     } catch (err) {
-      console.error(`[event-alert] failed:`, err.message);
+      console.error('[pre] failed:', err.message);
     }
   }
+
+  // Pass 2: release follow-ups (events already pre-alerted that now have actual and not yet released)
+  const released = (events || []).filter(e => {
+    if (e.importance !== 3) return false;
+    if (e.date !== todayISO) return false;
+    const id = eventId(e);
+    const st = state[id];
+    if (!st || st.released) return false;
+    return e.actual != null && String(e.actual).trim() !== '' && String(e.actual).trim() !== '-';
+  });
+  console.log(`[event-alert] ${released.length} release follow-ups to send`);
+
+  for (const e of released) {
+    const id = eventId(e);
+    const st = state[id];
+    const result = classifyResult(e.actual, e.forecast);
+    console.log(`[rel] → ${e.time} ${e.currency} ${e.event} (${result})`);
+    try {
+      await renderEvent({
+        ...e, leadMin: LEAD_MIN, dateFmt: fmtDate(e.date),
+        result, contextHtml: marketContext(e, result),
+      }, 'released');
+      // delete the pre-alert first
+      if (st.preMsgId) await tgDeleteMessage(st.preMsgId);
+      await tgSendPhoto(OUT_PNG, `📊 ${e.currency} ${e.event} — ${result.toUpperCase()}`);
+      state[id] = { preMsgId: null, released: true };
+      saveState(state);
+    } catch (err) {
+      console.error('[rel] failed:', err.message);
+    }
+  }
+
   console.log('[event-alert] done');
 })();
