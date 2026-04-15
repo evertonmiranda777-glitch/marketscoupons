@@ -2574,6 +2574,7 @@ function openD(id){
 
 // ── DESKTOP: Fullscreen overlay (v2 premium) ──
 let _fdCurrent = null;
+let _fdClosing = false;
 const _fdState = {};
 
 function openFD(id, f) {
@@ -2757,22 +2758,37 @@ function fdGo(id) {
 }
 
 function closeFD(){
-  // Direct access to /apex → go back in history
-  if(window._dedicatedFirmSlug){history.back();return;}
-  document.getElementById('fd-overlay').classList.remove('show');
+  if(_fdClosing) return;
+  _fdClosing = true;
+  const ov = document.getElementById('fd-overlay');
+  if(ov) ov.classList.remove('show');
+  const bg = document.getElementById('fd-bg');
+  if(bg) bg.style.backgroundImage = 'none';
   document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));
   document.body.style.overflow='';
-  // pushState /apex → go back (instant, no reload)
-  const p=location.pathname.replace(/^\//,'').replace(/\/$/,'');
-  if(_firmPageSlugs.includes(p)){history.back();return;}
+  _fdCurrent = null;
+
+  const p = location.pathname.replace(/^\//,'').replace(/\/$/,'');
+  const needsBack = window._dedicatedFirmSlug || _firmPageSlugs.includes(p);
+  if(needsBack){
+    setTimeout(()=>{ _fdClosing = false; history.back(); }, 0);
+    return;
+  }
   if(location.hash.startsWith('#firm/')) history.replaceState(null,'',location.pathname+location.search);
-  if(window._fdOriginPage) go(window._fdOriginPage,true);
+  if(window._fdOriginPage && window._fdOriginPage !== _currentPage) go(window._fdOriginPage,true);
+  _fdClosing = false;
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('fd-overlay')?.classList.contains('show'))closeFD();});
 // Handle browser back from pushState /apex → close overlay instantly
 window.addEventListener('popstate',()=>{
   const fdOv=document.getElementById('fd-overlay');
-  if(fdOv&&fdOv.classList.contains('show')){fdOv.classList.remove('show');document.body.style.overflow='';}
+  if(fdOv&&fdOv.classList.contains('show')){
+    fdOv.classList.remove('show');
+    document.body.style.overflow='';
+    const bg = document.getElementById('fd-bg');
+    if(bg) bg.style.backgroundImage = 'none';
+    _fdCurrent = null;
+  }
   document.getElementById('ov')?.classList.remove('open');
   document.getElementById('drw')?.classList.remove('open');
   document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));
@@ -4623,9 +4639,9 @@ function renderCal() {
           nowLine = `<div class="cal-now-line"><div class="cal-now-dot"></div><div class="cal-now-label">${t('cal_agora')||'NOW'}</div><div class="cal-now-hr"></div></div>`;
         }
         return `${nowLine}<div class="cal-item${isPast?' cal-past':''}${isNextHi?' cal-next-hi':''}">
-          <div class="cal-time">${tz.display} <span style="font-size:10px;color:var(--t3);">${tz.label}</span></div>
+          <div class="cal-time">${tz.display} <span style="font-size:10px;color:var(--t2);">${tz.label}</span></div>
           <div><span class="cal-cur-badge" style="background:${cc.bg};color:${cc.c};">${e.cur}</span></div>
-          <div><div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t3);font-weight:400;">${e.ref}</span>`:''}</div></div>
+          <div><div class="cal-ev-name">${e.ev}${e.ref?` <span style="font-size:10px;color:var(--t2);font-weight:400;">${e.ref}</span>`:''}</div></div>
           <div class="cal-act-wrap"${tipAttr}><div class="cal-val ${actClass}">${e.actual}${actArrow}</div></div>
           <div class="cal-fore-wrap"><div class="cal-val" style="color:var(--gold);">${e.fore}</div></div>
           <div class="cal-prev-wrap"><div class="cal-val">${e.prev}</div></div>
@@ -4658,13 +4674,13 @@ async function loadDailyAnalysis(){
       if(d2&&d2.length>0){_lastDailyData=d2;return renderDailyCards(d2);}
       const{data:d3}=await db.from('daily_analysis').select('*').order('date',{ascending:false}).limit(4);
       if(d3&&d3.length>0){_lastDailyData=d3;return renderDailyCards(d3);}
-      grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="font-size:14px;color:var(--t2);font-weight:600;" data-i18n="da_sem_analise">${t('da_sem_analise')}</div><div style="font-size:12px;color:var(--t3);margin-top:6px;" data-i18n="da_primeira_6h">${t('da_primeira_6h')}</div></div>`;
+      grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="font-size:14px;color:var(--t2);font-weight:600;" data-i18n="da_sem_analise">${t('da_sem_analise')}</div><div style="font-size:12px;color:var(--t2);margin-top:6px;" data-i18n="da_primeira_6h">${t('da_primeira_6h')}</div></div>`;
       return;
     }
     _lastDailyData=data;
     renderDailyCards(data);
   }catch(e){
-    grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="color:var(--t3);">${t('da_erro')}</div></div>`;
+    grid.innerHTML=`<div class="da-loading" style="grid-column:1/-1;"><div style="color:var(--t2);">${t('da_erro')}</div></div>`;
   }
 }
 
@@ -4974,10 +4990,10 @@ function _renderDaEvents(a){
       const cc=CUR_COLORS[e.cur]||{bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
       const actStr = e.actual!=='—' ? ` → <b style="color:var(--green);">${e.actual}</b>` : '';
       return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
-        <span style="font-size:10px;color:var(--t3);min-width:38px;">${e.t} ET</span>
+        <span style="font-size:10px;color:var(--t2);min-width:38px;">${e.t} ET</span>
         <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:${cc.bg};color:${cc.c};">${e.cur}</span>
         <span style="font-size:11px;color:var(--t1);">${e.ev}${actStr}</span>
-        ${e.fore!=='—'?`<span style="font-size:10px;color:var(--t3);">(${t('da_previsao')}: ${e.fore})</span>`:''}
+        ${e.fore!=='—'?`<span style="font-size:10px;color:var(--t2);">(${t('da_previsao')}: ${e.fore})</span>`:''}
       </div>`;
     }).join('');
     calHtml=`<div style="margin-top:8px;padding:10px 12px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.1);border-radius:8px;">
@@ -6067,7 +6083,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Carregar firmas do Supabase (atualiza dados em background)
   await loadFirmsFromSupabase();
   // Se overlay de firma está aberto, re-render com dados atualizados do Supabase
-  if(_fdCurrent && document.getElementById('fd-overlay')?.classList.contains('show')){
+  if(_fdCurrent && !_fdClosing && document.getElementById('fd-overlay')?.classList.contains('show')){
     openFD(_fdCurrent, FIRMS.find(x=>x.id===_fdCurrent));
   }
   await loadGuidesFromSupabase();
@@ -6103,7 +6119,7 @@ async function loadGEX(){
     _gexLoaded=true;
   }catch(e){
     console.error('GEX load error:',e);
-    document.getElementById('gx-loading').innerHTML='<div style="color:var(--t3);">Error: '+(e.message||e)+'</div>';
+    document.getElementById('gx-loading').innerHTML='<div style="color:var(--t2);">Error: '+(e.message||e)+'</div>';
   }
   if(_authLoaded) checkGEXGate();
 }
