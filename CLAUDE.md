@@ -25,6 +25,8 @@ Sistema que avisa no Telegram sobre eventos economicos de alto impacto (3 estrel
 `.alert-pill .adot .albl` (header), `.event-name`, `.event-sub`, `.time-val`, `.ev-date`, `.cur-badge`, 3x `.data-card > .data-lbl + .data-val`, `.result-badge` (dentro do Actual card), `.mc-lbl`, `.mc-txt` (market context).
 
 ### Regras criticas
+- **SO eventos US 3-star** — filtra por `currency === 'USD'` ou country match `/united states|^us$|usa/i`. Eventos CNY/EUR/JPY/GBP sao IGNORADOS. Nao existe "alerta de evento chines" nesse sistema.
+- **Cutoff 18:30 ET** — eventos agendados depois das 18:30 ET sao ignorados (`CUTOFF_ET = 18*60+30`). Mercado ja fechou, nao tem pq acordar ninguem.
 - **NUNCA** usar Satori pra esse template — complexo demais, usar Playwright direto
 - `sendPhoto` por multipart (Blob), nao por URL
 - `parse_mode` nao usado nas captions (texto simples)
