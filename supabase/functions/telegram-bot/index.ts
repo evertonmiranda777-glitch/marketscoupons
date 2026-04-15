@@ -40,18 +40,17 @@ async function sendMessage(text: string, buttons?: Array<Array<{text:string;url:
 
 async function sendPhoto(photoUrl: string, caption: string, buttons?: Array<Array<{text:string;url:string}>>): Promise<number | null> {
   try {
-    // Fetch the PNG bytes ourselves — Telegram's URL-fetch has a ~5s timeout
-    // which our @vercel/og renderer can exceed. Upload via multipart instead.
+    // Fetch bytes ourselves — Telegram URL-fetch has ~5s timeout and CDN can stall
     const imgRes = await fetch(photoUrl);
-    if (!imgRes.ok) {
-      console.error("sendPhoto: failed to fetch image", imgRes.status);
-      return null;
-    }
+    if (!imgRes.ok) { console.error("sendPhoto: failed to fetch image", imgRes.status); return null; }
     const imgBlob = await imgRes.blob();
+
+    // Telegram caption limit is 1024 chars — trim if needed
+    const cap = caption.length > 1020 ? caption.slice(0, 1020) + "…" : caption;
 
     const form = new FormData();
     form.append("chat_id", CHAT_ID);
-    form.append("caption", caption);
+    form.append("caption", cap);
     form.append("parse_mode", "HTML");
     form.append("photo", imgBlob, "creative.png");
     if (buttons) form.append("reply_markup", JSON.stringify({ inline_keyboard: buttons }));
@@ -172,17 +171,16 @@ async function handleAnalysis(db: ReturnType<typeof createClient>) {
   const az = getLang(data.attention_zone);
   const ni = getLang(data.news_impact);
 
-  const text =
+  const caption =
     `📊 <b>Daily Market Analysis</b>\n` +
-    `Updated every weekday at 5:00 AM ET. Directional bias, attention zones, news impact, and macro context for the main futures.\n\n` +
     `<b>${data.asset} ${assetNames[data.asset] || data.asset}</b>\n\n` +
-    `<b>Support 1</b>\n${data.support_1}\n\n` +
-    `<b>Resistance 1</b>\n${data.resistance_1}\n\n` +
+    `<b>Support 1</b>: ${data.support_1}\n` +
+    `<b>Resistance 1</b>: ${data.resistance_1}\n\n` +
     `<b>Attention zone</b>\n${az}\n\n` +
-    `${ni}\n\n` +
     `📊 ${tgLink("analysis")}`;
 
-  const msgId = await sendMessage(text);
+  const photoUrl = `https://${SITE_URL}/img/analysis-creative.png?t=${Date.now()}`;
+  const msgId = await sendPhoto(photoUrl, caption);
   if (msgId) await storeMessageId(db, msgId, "analysis");
 
   return { sent: msgId !== null, asset: assetPick };
@@ -212,19 +210,15 @@ async function handleGex(db: ReturnType<typeof createClient>) {
 
   const fmt = (v: unknown) => Number(v || 0).toLocaleString();
 
-  const text =
+  const caption =
     `🎯 <b>Gamma Exposure (GEX)</b>\n` +
-    `Track market maker Gamma Exposure levels on S&P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price movement.\n` +
-    `Updated every business day at 5:00 AM ET.\n\n` +
     `<b>${data.ticker} ${tickerNames[data.ticker] || data.ticker}</b>\n\n` +
-    `<b>Put Wall</b>\n${fmt(data.put_wall)} — Support\n\n` +
-    `<b>Call Wall</b>\n${fmt(data.call_wall)} — Resistance\n\n` +
-    `<b>Put Wall &amp; Call Wall</b>\n` +
-    `The Put Wall is the strike with the largest put options concentration — it acts as strong support because market makers buy the asset at this level. ` +
-    `The Call Wall is the opposite — largest call concentration, acts as resistance because they sell there.\n\n` +
+    `<b>Put Wall</b>: ${fmt(data.put_wall)} — Support\n` +
+    `<b>Call Wall</b>: ${fmt(data.call_wall)} — Resistance\n\n` +
     `🎯 ${tgLink("gex")}`;
 
-  const msgId = await sendMessage(text);
+  const photoUrl = `https://${SITE_URL}/img/gamma-creative.png?t=${Date.now()}`;
+  const msgId = await sendPhoto(photoUrl, caption);
   if (msgId) await storeMessageId(db, msgId, "gex");
 
   return { sent: msgId !== null, ticker: tickerPick };
@@ -283,12 +277,13 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
     return `🔴 ${timeDisplay ? timeDisplay + " — " : ""}<b>${name}</b>`;
   });
 
-  const text =
+  const caption =
     `📅 <b>Economic Calendar</b>\n${today}\n\n` +
     lines.join("\n") +
     `\n\n📊 ${tgLink("calendar")}`;
 
-  const msgId = await sendMessage(text);
+  const photoUrl = `https://${SITE_URL}/img/calendar-creative.png?t=${Date.now()}`;
+  const msgId = await sendPhoto(photoUrl, caption);
   if (msgId) await storeMessageId(db, msgId, "calendar_daily");
 
   return { sent: msgId !== null, events: highImpact.length };
