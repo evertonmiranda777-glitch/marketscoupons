@@ -5801,15 +5801,10 @@ async function doLogout() {
   _loggingOut = true;
   // 1. Tentar signOut via Supabase API (with 3s timeout to avoid hang)
   try { await Promise.race([db.auth.signOut(), new Promise(r => setTimeout(r, 3000))]); } catch(e) {}
-  // 2. Limpar manualmente como fallback
-  localStorage.removeItem('mc-user-auth');
+  // 2. Limpar manualmente APENAS a chave do user (NUNCA tocar em mc-admin-auth nem sb-* genéricos — quebra sessão do admin no mesmo browser)
   try {
-    const lsKeys = [];
-    for (let i = 0; i < localStorage.length; i++) lsKeys.push(localStorage.key(i));
-    lsKeys.forEach(k => { if (k && k.startsWith('sb-')) localStorage.removeItem(k); });
-    const ssKeys = [];
-    for (let i = 0; i < sessionStorage.length; i++) ssKeys.push(sessionStorage.key(i));
-    ssKeys.forEach(k => { if (k && k.startsWith('sb-')) sessionStorage.removeItem(k); });
+    localStorage.removeItem('mc-user-auth');
+    sessionStorage.removeItem('mc-user-auth');
   } catch(e) {}
   // 3. Limpar estado da app
   currentUser = null;
