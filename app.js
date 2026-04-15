@@ -2191,7 +2191,7 @@ async function openBlogArticle(slug){
       <div class="blog-art-meta"><span>${dateStr}</span></div>
       <div class="blog-art-body">${DOMPurify.sanitize(post.body||'')}</div>`;
   } catch(e){
-    art.innerHTML='<div style="color:var(--t2);padding:40px 0;">Error loading post.</div>';
+    art.innerHTML='<div style="color:var(--t2);padding:40px 0;">'+t('err_blog_post')+'</div>';
   }
 }
 
@@ -4550,7 +4550,7 @@ function calShowTip(el, actual, forecast){
   const diff = actN - foreN;
   const pct = ((diff / Math.abs(foreN)) * 100).toFixed(1);
   const isUp = diff > 0;
-  tip.innerHTML = `<span class="${isUp?'cal-tooltip-up':'cal-tooltip-dn'}">${isUp?'▲':'▼'} ${isUp?'+':''}${pct}%</span> vs forecast`;
+  tip.innerHTML = `<span class="${isUp?'cal-tooltip-up':'cal-tooltip-dn'}">${isUp?'▲':'▼'} ${isUp?'+':''}${pct}%</span> ${t('cal_vs_forecast')}`;
   const r = el.getBoundingClientRect();
   tip.style.left = (r.left + r.width/2 - 60) + 'px';
   tip.style.top = (r.top - 40 + window.scrollY) + 'px';
@@ -6039,7 +6039,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const banner = document.createElement('div');
         banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#22C55E;color:#fff;text-align:center;padding:14px 20px;font-size:15px;font-weight:700;font-family:Inter,sans-serif;animation:fadeIn .3s;';
         const _safeCopy = _autoCopy.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-        banner.innerHTML = '&#10003; Coupon <strong style="letter-spacing:2px;">'+_safeCopy+'</strong> copied! Now choose your account below.';
+        banner.innerHTML = '&#10003; '+t('coupon_copied_choose').replace('{code}','<strong style="letter-spacing:2px;">'+_safeCopy+'</strong>');
         document.body.prepend(banner);
         setTimeout(()=>banner.remove(), 5000);
       }, 300);
