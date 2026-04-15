@@ -5265,7 +5265,8 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
 
 /* BOT */
 let botOpen=false;
-const botHist=[{role:'user',content:'Voce e o TradeBot, assistente especialista em prop firms e trading. Conhece: Apex(90%OFF MARKET,futuros,split 80%), Bulenox(89%OFF MARKET89,futuros,passa 1 dia,split 90%), FTMO(forex,MT4/MT5,split 90%,free trial), TakeProfit(40%OFF MARKET40,futuros,saque dia 1), FundedNext(30%OFF FNF30,futuros,payout 24h,split 95%), Earn2Trade(50%OFF MARKETSCOUPONS,futuros,scaling $400K). Quando o trader estiver frustrado, ofereca suporte emocional primeiro. Para position size: mostre o calculo passo a passo. Responda SEMPRE em portugues. Maximo 200 palavras.'}];
+const BOT_SYSTEM='You are TradeBot, an expert assistant on prop firms and trading for the MarketsCoupons website. You know these firms: Apex (90% OFF code MARKET, futures, 80% split), Bulenox (89% OFF code MARKET89, futures, 1-day pass, 90% split), FTMO (forex, MT4/MT5, 90% split, free trial), TakeProfitTrader (40% OFF code MARKET40, futures, day-1 payout), FundedNext (30% OFF code FNF30, futures, 24h payout, 95% split), Earn2Trade (50% OFF code MARKETSCOUPONS, futures, scaling to $400K). When a trader is frustrated, offer emotional support first. For position sizing, show step-by-step math. Never give specific trade recommendations (no buy/sell signals, stop loss, take profit suggestions). Focus on firm comparison, rules, coupons, and trader mindset.';
+const botHist=[];
 function toggleBot(){botOpen=!botOpen;document.getElementById('bot-win').classList.toggle('open',botOpen);if(botOpen){document.getElementById('bot-badge').style.display='none';document.getElementById('bot-inp').focus();}track('bot_toggle',{state:botOpen?'open':'close'});}
 function openBot(){botOpen=false;toggleBot();}
 function qmsg(t){document.getElementById('bot-inp').value=t;sendBot();track('bot_quick_msg',{message:t.slice(0,50)});}
@@ -5275,7 +5276,7 @@ async function sendBot(){
   inp.value='';document.getElementById('bot-snd').disabled=true;document.getElementById('bot-quick').style.display='none';
   addBMsg('usr',txt);botHist.push({role:'user',content:txt});
   const ty=document.getElementById('bot-typing');ty.classList.add('show');document.getElementById('bot-msgs').scrollTop=99999;
-  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:botHist[0].content,messages:botHist.slice(1)})});const data=await res.json();ty.classList.remove('show');const reply=data.content?.[0]?.text||data.error||(t('bot_error_retry')||'Error. Try again.');botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');addBMsg('bot',t('bot_error_connection')||'Connection error. Try again.');}
+  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:BOT_SYSTEM,messages:botHist,lang:(localStorage.getItem('mc-lang')||'en')})});const data=await res.json();ty.classList.remove('show');const reply=data.content?.[0]?.text||data.error||(t('bot_error_retry')||'Error. Try again.');botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');addBMsg('bot',t('bot_error_connection')||'Connection error. Try again.');}
   document.getElementById('bot-snd').disabled=false;
 }
 
