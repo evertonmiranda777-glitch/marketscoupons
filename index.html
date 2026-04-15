@@ -1943,19 +1943,19 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .bot-fab{
  position:fixed;bottom:22px;right:22px;z-index:700;
  width:64px;height:64px;border-radius:50%;
- background:radial-gradient(circle at 30% 30%,#2a1f0a 0%,#0e0a04 100%);
+ background:#0e0a04;
  border:2px solid rgba(240,180,41,.55);cursor:pointer;
  display:none;align-items:center;justify-content:center;
  box-shadow:0 6px 24px rgba(240,180,41,.45),inset 0 0 20px rgba(240,180,41,.12);
  transition:transform .3s,box-shadow .3s;
  overflow:hidden;animation:max-ring 2.4s ease-in-out infinite;
 }
-.bot-fab img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 10%;transform:scale(1.35);animation:max-idle 4s ease-in-out infinite;transform-origin:50% 70%;}
+.bot-fab img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;animation:max-float 4s ease-in-out infinite;}
 .bot-fab:hover{transform:scale(1.08);}
 .bot-fab:hover img{animation:max-excited 1.2s ease-in-out infinite;}
 @keyframes max-ring{0%,100%{box-shadow:0 6px 24px rgba(240,180,41,.45),inset 0 0 20px rgba(240,180,41,.12),0 0 0 0 rgba(240,180,41,.55);}50%{box-shadow:0 6px 24px rgba(240,180,41,.55),inset 0 0 20px rgba(240,180,41,.12),0 0 0 8px rgba(240,180,41,0);}}
-@keyframes max-idle{0%,100%{transform:scale(1.35) translateY(0) rotate(0);}50%{transform:scale(1.35) translateY(-2px) rotate(-1deg);}}
-@keyframes max-excited{0%,100%{transform:scale(1.35) translateY(0) rotate(-3deg);}50%{transform:scale(1.42) translateY(-3px) rotate(3deg);}}
+@keyframes max-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-1.5px);}}
+@keyframes max-excited{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-2px) scale(1.03);}}
 .bot-badge{position:absolute;top:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;border:2px solid var(--bg);}
 .bot-win{
  position:fixed;bottom:92px;right:22px;z-index:700;
@@ -1971,8 +1971,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .bot-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--b1);border-radius:15px 15px 0 0;background:var(--card2);}
 .bot-hd-l{display:flex;align-items:center;gap:9px;}
 .bot-av{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#2a1f0a,#0e0a04);border:1.5px solid rgba(240,180,41,.5);position:relative;overflow:hidden;flex-shrink:0;}
-.bot-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 10%;animation:max-idle 4s ease-in-out infinite;transform-origin:50% 70%;}
-.bot-win.typing .bot-av img{animation:max-excited 1s ease-in-out infinite;}
+.bot-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;animation:max-float 4s ease-in-out infinite;}
+.bot-win.typing .bot-av{background:url('img/bot/max-sprite.jpeg') 0 0/400% 100% no-repeat;animation:max-talk 0.8s steps(4) infinite;}
+.bot-win.typing .bot-av img{display:none;}
+@keyframes max-talk{from{background-position:0 0;}to{background-position:-400% 0;}}
 .bot-nm{font-size:13px;font-weight:700;}
 .bot-st{font-size:10px;color:var(--green);display:flex;align-items:center;gap:3px;}
 .bot-st::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;}
@@ -4046,12 +4048,12 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <!-- BOT -->
 <button class="bot-fab" id="bot-fab" onclick="toggleBot()" aria-label="Chat with Max">
- <img src="img/bot/fox-mascot-mc-cap.png" alt="Max" draggable="false">
+ <img src="img/bot/max-avatar.jpeg" alt="Max" draggable="false">
  <span class="bot-badge" id="bot-badge">1</span>
 </button>
 <div class="bot-win" id="bot-win">
  <div class="bot-hd">
- <div class="bot-hd-l"><div class="bot-av"><img src="img/bot/fox-mascot-mc-cap.png" alt="Max" draggable="false"></div><div><div class="bot-nm">Max</div><div class="bot-st" data-i18n="bot_online">Online</div></div></div>
+ <div class="bot-hd-l"><div class="bot-av"><img src="img/bot/max-avatar.jpeg" alt="Max" draggable="false"></div><div><div class="bot-nm">Max</div><div class="bot-st" data-i18n="bot_online">Online</div></div></div>
  <button class="bot-x" onclick="toggleBot()">&#10005;</button>
  </div>
  <div class="bot-msgs" id="bot-msgs">

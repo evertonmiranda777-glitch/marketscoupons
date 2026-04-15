@@ -1,5 +1,52 @@
 # MarketsCoupons - Contexto do Projeto
 
+## Max - Mascote oficial (2026-04-15)
+
+Max e uma raposa 3D Pixar-style (dourado-laranja #F0B429, olhos amber, bone preto com M dourado). Avatar do chatbot e mascote da marca. **Tem 4 outfits oficiais, todos completos com 3 tipos de asset cada (avatar 1:1 + bible 5-view + sprite 4-frame).**
+
+### Assets em `img/bot/`
+- **Varsity** (principal, integrado no chatbot): max-avatar.jpeg, max-bible.jpeg, max-sprite.jpeg — letterman jacket preto+dourado, Jordan 1 Chicago, gold headphones, Rolex
+- **Hoodie** (streetwear): max-avatar-hoodie, max-bible-hoodie, max-sprite-hoodie — moletom preto com M, jogger, Jordan 1 Chicago
+- **Blazer** (executive): max-avatar-blazer, max-bible-blazer, max-sprite-blazer — blazer+camisa branca, Oxford, Rolex, SEM headphones
+- **Golf** (country-club): max-avatar-golf, max-bible-golf, max-sprite-golf — polo branca (sem bolso) com M bordado, chino bege sem cinto, Air Jordan 1 LOW Golf Travis Scott Neutral Olive
+- **Extras:** max-athlete-drip.jpeg (corpo inteiro varsity), max-nfl-mascot.jpeg (cabecudao plush merch futuro)
+
+### Regras criticas para gerar Max
+- **NUNCA gerar sem usar template salvo em `memory/reference_max_prompts.md`**
+- **PADRAO VALIDADO NAO SE TOCA:** max-avatar.jpeg, max-bible.jpeg e max-sprite.jpeg sao os refs de estilo imutaveis. Qualquer variacao nova usa eles como ref + replica enquadramento/fundo/proporcoes 1:1 — so muda outfit e face
+- **OUTFIT sempre cobre da cabeca aos pes** (calca + sapato explicitos, senao o modelo preenche com "fur natural" = Max pantless)
+- **Bibles (5-view):** sempre incluir "entire body rotated together, NO head/body twisting" — senao sai 3/4 com corpo frontal e cabeca torcida
+- **Sprites (4-frame):** usar max-sprite.jpeg como ref-sprite-style + "CHEST-UP, DARK CHARCOAL GRADIENT" — senao sai tight headshot fundo solido
+- **Travis Scott Jordan 1 Low Golf:** swoosh externo (lateral) REVERSO PRETO, swoosh interno (medial) REGULAR BRANCO/CREAM (NAO preto), LOW TOP (nao high), off-white leather + olive suede
+- **Blazer:** maos NUNCA no bolso do blazer — se for ter mao no bolso, e no bolso da CALCA. Blazer executivo sem headphones/acessorios
+- **Polo golf:** sem bolso no peito, M bordado direto no tecido
+
+### Template de prompt (resumo, completo em `memory/reference_max_prompts.md`)
+```
+Character model sheet of the fox mascot, EXACT SAME STYLE as ref-bible-style.jpeg
+(dark charcoal gradient background, chunky collectible toy figure proportions,
+5 views numbered). Same face/fur/cap as ref-{outfit}.jpeg — golden-orange fur
+(#F0B429), amber eyes, black cap with gold M. OUTFIT: {outfit completo cabeca aos pes}.
+Each view: entire body rotated together, NO head/body twisting. Pixar 3D render.
+```
+Flags: `-r ref-bible-style.jpeg -r ref-{outfit}.jpeg -s 2K -a 16:9`
+
+### Integracao chatbot (em `index.html`)
+- `.bot-fab` (linha ~1943) usa max-avatar.jpeg com object-position:center 20%, animacao max-ring pulse + max-float
+- `.bot-av` (linha ~1974) — **PENDENTE** atualizar src (ainda aponta pra fox-mascot-mc-cap.png deletado)
+- Sprite animation no `.bot-win.typing .bot-av` — **PENDENTE** implementar `background-image: url(max-sprite.jpeg)` + `background-size: 400% 100%` + `steps(4)`
+
+### Bot backend (`api/bot.js`)
+- Gemini 2.5 Flash (2.0 deprecated pra novos users)
+- Env var: GEMINI_API_KEY
+- Tier pago Google Cloud ativo (R$49 acumulados de ~20 imagens geradas)
+
+### Proximos passos do Max (Fase 2+ do plano brand)
+Ver `memory/project_max_expansao_brand.md`. Resumo:
+1. Fechar integracao chatbot (HTML/CSS/commit)
+2. Gerar poses contextuais a partir dos bibles: Max com laptop (hero Analise), trofeu (Fidelidade), lupa (Comparador), grafico (guias), etc
+3. Rollout: home hero → 404 → emails → OG images → banners features
+
 ## Event Alert 3-estrelas Telegram (2026-04-15)
 
 Sistema que avisa no Telegram sobre eventos economicos de alto impacto (3 estrelas) em **dois momentos**: 5 min antes do release, e apos o release com o dado real + contexto de mercado.
