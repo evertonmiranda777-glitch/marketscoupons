@@ -4058,13 +4058,13 @@ document.addEventListener('DOMContentLoaded',function(){
  </div>
  <div class="bot-typing" id="bot-typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>
  <div class="bot-quick" id="bot-quick">
- <button class="bq" onclick="qmsg('Qual prop firm é ideal para mim?')">Qual firma?</button>
- <button class="bq" onclick="qmsg('Quais cupons estão disponíveis agora?')">Cupons ativos</button>
- <button class="bq" onclick="qmsg('Como calcular position size para ES, conta $100K, risco 1%, stop 5 pontos?')">Position size</button>
- <button class="bq" onclick="qmsg('Como passar na avaliação da prop firm?')">Passar na avaliação</button>
+ <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_firm">Which firm?</button>
+ <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_coupons">Best coupons</button>
+ <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_risk">Risk calc</button>
+ <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_tips">Tips to pass</button>
  </div>
  <div class="bot-inp-row">
- <input class="bot-inp" id="bot-inp" placeholder="Digite sua dúvida..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendBot();}">
+ <input class="bot-inp" id="bot-inp" data-i18n-placeholder="bot_placeholder" placeholder="Type your question..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendBot();}">
  <button class="bot-snd" id="bot-snd" onclick="sendBot()"></button>
  </div>
 </div>
