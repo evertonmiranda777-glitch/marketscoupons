@@ -346,14 +346,40 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
     } catch { return null; }
   }
 
-  const upcoming = events.filter((e) => {
-    const impNum = Number(e.importance ?? e.impact ?? e.stars ?? 0);
-    const cur = (e.currency ?? e.country ?? "").toUpperCase();
-    if (impNum < 2 || cur !== "USD") return false;
+  // Parse "HH:MM AM/PM" or "HH:MM" → minutes since midnight (ET local)
+  function timeToMinutes(timeStr: string): number | null {
+    if (!timeStr) return null;
+    const m12 = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    const m24 = timeStr.match(/^(\d{1,2}):(\d{2})$/);
+    let h = 0, m = 0;
+    if (m12) {
+      h = parseInt(m12[1]); m = parseInt(m12[2]);
+      const ampm = m12[3].toUpperCase();
+      if (ampm === "PM" && h !== 12) h += 12;
+      if (ampm === "AM" && h === 12) h = 0;
+    } else if (m24) {
+      h = parseInt(m24[1]); m = parseInt(m24[2]);
+    } else return null;
+    return h * 60 + m;
+  }
+  const CUTOFF_MIN = 18 * 60 + 30; // 18:30 ET
 
+  const upcoming = events.filter((e) => {
+    // Only 3-star events
+    const impNum = Number(e.importance ?? e.impact ?? e.stars ?? 0);
+    if (impNum !== 3) return false;
+
+    // Only USD (US events)
+    const cur = (e.currency ?? e.country ?? "").toUpperCase();
+    if (cur !== "USD") return false;
+
+    // Only events scheduled up to 18:30 ET
+    const mins = timeToMinutes(e.time ?? e.datetime ?? "");
+    if (mins == null || mins > CUTOFF_MIN) return false;
+
+    // Within 5-min alert window
     const eventTime = parseEventTime(e.date, e.time ?? e.datetime);
     if (!eventTime) return false;
-
     const diff = eventTime.getTime() - now.getTime();
     return diff >= (windowMs - toleranceMs) && diff <= (windowMs + toleranceMs);
   });
