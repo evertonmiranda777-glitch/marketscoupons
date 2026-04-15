@@ -522,6 +522,33 @@ Valores minimos de opacidade para rgba(255,255,255,...) em fundo escuro. NUNCA u
 
 ---
 
+## Criativos do Telegram (bot @marketscouponsbot)
+
+### Arquitetura
+- 4 criativos 1080x1350 px: `firms`, `calendar`, `gamma`, `analysis`
+- Fonte: HTMLs perfeitos em `templates/criativo_<nome>.html` (com base64 images, SVGs, grids complexos)
+- Render: `scripts/render-firms-png.js` usa **playwright** (devDep) -> screenshot estatico -> `img/<nome>-creative.png`
+- Entrega: Vercel serve o PNG estatico; edge function `supabase/functions/telegram-bot/index.ts` faz fetch dos bytes e envia via `sendPhoto` multipart upload
+- Comando de render: `node scripts/render-firms-png.js [firms|calendar|gamma|analysis|all]`
+
+### Pra atualizar um criativo
+1. Edita `templates/criativo_<nome>.html`
+2. `node scripts/render-firms-png.js <nome>`
+3. `git add templates/ img/ && git commit -m "..." && git push`
+4. Aguarda ~1min deploy Vercel
+5. Se mexeu no `telegram-bot/index.ts`, redeploy: `SUPABASE_ACCESS_TOKEN=<token 1h> npx supabase functions deploy telegram-bot --project-ref qfwhduvutfumsaxnuofa --no-verify-jwt` (token em supabase.com/dashboard/account/tokens)
+6. Testa: `curl "https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/telegram-bot?action=coupons" -H "Authorization: Bearer <anon-key>"`
+
+### Regras criticas
+- **NUNCA usar Satori/@vercel/og** pra reproduzir HTML complexo — nao renderiza glyphs (estrela vira quadrado), flex quebra, fontes faltam. Ja perdi horas nessa saga em 2026-04-14 — ir direto pro playwright
+- **NUNCA usar subpasta nova em img/** (ex: `img/og/`) — vercel.json legacy `routes` nao serve automaticamente. Usar root `/img/*.png`
+- **NUNCA enviar photo por URL direta** pro Telegram — timeout 5s estoura se CDN nao cacheou. Edge function deve baixar bytes e mandar via FormData multipart
+- **Caption max 1024 chars** — o helper `sendPhoto()` trunca pra 1020 + reticencias
+- **Cache-bust sempre** — `?t=${Date.now()}` no URL do photo pra Telegram nao servir versao velha
+- Anon key Supabase correta: iat `1774377946`. A antiga `1759267651` retorna 401
+
+---
+
 ## Boas Praticas do Projeto
 
 1. **Idioma das respostas:** Sempre responder em portugues (PT-BR)
