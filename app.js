@@ -5313,8 +5313,9 @@ async function sendBot(){
   const inp=document.getElementById('bot-inp');const txt=inp.value.trim();if(!txt)return;
   inp.value='';document.getElementById('bot-snd').disabled=true;document.getElementById('bot-quick').style.display='none';
   addBMsg('usr',txt);botHist.push({role:'user',content:txt});
+  const bw=document.getElementById('bot-win');bw&&bw.classList.add('typing');
   const ty=document.getElementById('bot-typing');ty.classList.add('show');document.getElementById('bot-msgs').scrollTop=99999;
-  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:BOT_SYSTEM,messages:botHist,lang:(typeof _currentLang!=='undefined'?_currentLang:(localStorage.getItem('mc_lang')||'en'))})});const data=await res.json();ty.classList.remove('show');const reply=data.content?.[0]?.text||data.error||(t('bot_error_retry')||'Error. Try again.');botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');addBMsg('bot',t('bot_error_connection')||'Connection error. Try again.');}
+  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:BOT_SYSTEM,messages:botHist,lang:(typeof _currentLang!=='undefined'?_currentLang:(localStorage.getItem('mc_lang')||'en'))})});const data=await res.json();ty.classList.remove('show');bw&&bw.classList.remove('typing');const reply=data.content?.[0]?.text||data.error||(t('bot_error_retry')||'Error. Try again.');botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');bw&&bw.classList.remove('typing');addBMsg('bot',t('bot_error_connection')||'Connection error. Try again.');}
   document.getElementById('bot-snd').disabled=false;
 }
 
