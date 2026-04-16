@@ -10476,13 +10476,27 @@ async function tgPreviewFlashPromo(){
       `⚡ <b>FLASH PROMO — ${firm.name}</b>\n\n` +
       `${firm.discount}% ${dtype}${cp}\n\n` +
       `👉 Claim now: https://www.marketscoupons.com`;
-    const ph = document.getElementById('tg-preview-placeholder'); if(ph) ph.style.display='none';
-    tgPreviewShow(tgHtmlToPreview(text), '⚡ Claim → marketscoupons.com', 'https://www.marketscoupons.com', async () => {
-      const st = document.getElementById('tg-preview-status');
-      await tgQuickAction('flash_promo&firm_id='+firm_id);
-      if(st){ st.textContent='✓ Flash Promo enviada!'; st.className='tg-status ok'; }
-    });
-  }catch(e){ alert('Flash Promo error: '+e.message); }
+    /* -- preenche preview inline -- */
+    const area = document.getElementById('tg-preview-area');
+    const body = document.getElementById('tg-preview-body');
+    const btnArea = document.getElementById('tg-preview-btn-area');
+    const sendBtn = document.getElementById('tg-preview-send');
+    const stEl = document.getElementById('tg-preview-status');
+    const ph = document.getElementById('tg-preview-placeholder');
+    if(ph) ph.style.display='none';
+    if(body) body.innerHTML = text.replace(/\n/g,'<br>');
+    if(btnArea) btnArea.innerHTML = '<a href="https://www.marketscoupons.com" target="_blank" style="color:#5ba0d6;font-size:12px;font-weight:600;text-decoration:none;">⚡ Claim → marketscoupons.com</a>';
+    if(stEl){ stEl.textContent=''; stEl.className='tg-status'; }
+    if(sendBtn) sendBtn.onclick = async () => {
+      sendBtn.disabled=true;
+      if(stEl){ stEl.textContent='Enviando...'; stEl.className='tg-status loading'; }
+      try{ await tgQuickAction('flash_promo&firm_id='+firm_id);
+        if(stEl){ stEl.textContent='✓ Flash Promo enviada!'; stEl.className='tg-status ok'; }
+      }catch(err){ if(stEl){ stEl.textContent='Erro: '+err.message; stEl.className='tg-status err'; } }
+      sendBtn.disabled=false;
+    };
+    if(area){ area.style.display='block'; area.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  }catch(e){ alert('Flash Promo error: '+e.message); console.error(e); }
 }
 
 
