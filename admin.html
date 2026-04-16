@@ -10464,25 +10464,25 @@ function tgFlashPromoOpen(){
 }
 
 async function tgPreviewFlashPromo(){
-  const sel = document.getElementById('tg-flash-firm');
-  const firm_id = sel?.value;
-  if(!firm_id){ toast('Selecione uma firma para a Flash Promo','warn'); return; }
-  const firm = (_firmsCache||[]).find(f=>f.id===firm_id);
-  if(!firm){ toast('Firma não encontrada','warn'); return; }
-  const st = document.getElementById('tg-preview-status');
-  st.textContent = ''; st.className = 'tg-status';
-  document.getElementById('tg-preview-area').style.display = 'block';
-  const dtype = (firm.discount_type||'').toLowerCase()==='lifetime' ? 'LIFETIME' : 'OFF';
-  const cp = firm.coupon ? `\nCode: <code>${firm.coupon}</code>` : '';
-  const text =
-    `⚡ <b>FLASH PROMO — ${firm.name}</b>\n\n` +
-    `${firm.discount}% ${dtype}${cp}\n\n` +
-    `👉 Claim now: https://www.marketscoupons.com`;
-  const ph = document.getElementById('tg-preview-placeholder'); if(ph) ph.style.display='none';
-  tgPreviewShow(tgHtmlToPreview(text), '⚡ Claim → marketscoupons.com', 'https://www.marketscoupons.com', async () => {
-    await tgQuickAction('flash_promo&firm_id='+firm_id);
-    st.textContent='✓ Flash Promo enviada!'; st.className='tg-status ok';
-  });
+  try{
+    const sel = document.getElementById('tg-flash-firm');
+    const firm_id = sel?.value;
+    if(!firm_id){ toast('Selecione uma firma para a Flash Promo','warn'); return; }
+    const firm = (_firmsCache||[]).find(f=>f.id===firm_id);
+    if(!firm){ toast('Firma não encontrada','warn'); return; }
+    const dtype = (firm.discount_type||'').toLowerCase()==='lifetime' ? 'LIFETIME' : 'OFF';
+    const cp = firm.coupon ? `\nCode: <code>${firm.coupon}</code>` : '';
+    const text =
+      `⚡ <b>FLASH PROMO — ${firm.name}</b>\n\n` +
+      `${firm.discount}% ${dtype}${cp}\n\n` +
+      `👉 Claim now: https://www.marketscoupons.com`;
+    const ph = document.getElementById('tg-preview-placeholder'); if(ph) ph.style.display='none';
+    tgPreviewShow(tgHtmlToPreview(text), '⚡ Claim → marketscoupons.com', 'https://www.marketscoupons.com', async () => {
+      const st = document.getElementById('tg-preview-status');
+      await tgQuickAction('flash_promo&firm_id='+firm_id);
+      if(st){ st.textContent='✓ Flash Promo enviada!'; st.className='tg-status ok'; }
+    });
+  }catch(e){ alert('Flash Promo error: '+e.message); }
 }
 
 
