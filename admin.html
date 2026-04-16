@@ -124,6 +124,14 @@ a{text-decoration:none;color:inherit;}
 .admin-page{display:none;padding:24px;}
 .admin-page.active{display:block;}
 
+/* SUB-TABS dentro de abas unificadas */
+.sub-tabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:0;}
+.sub-tab{padding:8px 16px;background:none;border:none;border-bottom:2px solid transparent;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;}
+.sub-tab:hover{color:var(--t1);}
+.sub-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.sub-pane{display:none;}
+.sub-pane.active{display:block;}
+
 /* STATS GRID */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
 .stat-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:18px 20px;position:relative;overflow:hidden;transition:.25s;}
@@ -592,15 +600,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <div class="admin-nav-row1">
  <div class="admin-logo">Markets<em>Coupons</em><span>Admin</span></div>
  <div class="nav-tabs-admin" id="admin-nav-tabs">
- <button class="nta active" onclick="adminGo('overview',this)">Visão Geral</button>
- <button class="nta" onclick="adminGo('tracking',this)">Tracking</button>
- <button class="nta" onclick="adminGo('leads',this)">Leads</button>
- <button class="nta" onclick="adminGo('events',this)">Eventos</button>
- <button class="nta" onclick="adminGo('geo',this)">Geo</button>
- <button class="nta" onclick="adminGo('cadastros',this)">Cadastros</button>
+ <button class="nta active" onclick="adminGo('overview',this)">Dashboard</button>
+ <button class="nta" onclick="adminGo('analytics',this)">Analytics</button>
+ <button class="nta" onclick="adminGo('usuarios',this)">Usuários</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
- <button class="nta" onclick="adminGo('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
- <button class="nta" onclick="adminGo('pro',this)">Pro</button>
+ <button class="nta" onclick="adminGo('monetizacao',this)">Monetização<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -620,16 +624,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  </div>
  <div class="admin-nav-row2">
  <div class="nav-tabs-cms" id="admin-nav-tabs-cms">
- <button class="nta nta-cms" onclick="adminGo('cms-firms',this)">Firmas</button>
- <button class="nta nta-cms" onclick="adminGo('cms-indicators',this)">Indicadores</button>
- <button class="nta nta-cms" onclick="adminGo('cms-guides',this)">Guias</button>
- <button class="nta nta-cms" onclick="adminGo('cms-blog',this)">Blog</button>
- <button class="nta nta-cms" onclick="adminGo('criativos',this)">Criativos</button>
+ <button class="nta nta-cms" onclick="adminGo('firmas',this)">Firmas</button>
+ <button class="nta nta-cms" onclick="adminGo('conteudo',this)">Conteúdo</button>
+ <button class="nta nta-cms" onclick="adminGo('indicadores',this)">Indicadores</button>
  <button class="nta nta-cms" onclick="adminGo('telegram',this)">Telegram</button>
- <div class="nta-sep"></div>
- <button class="nta nta-cms" onclick="adminGo('cms-faq',this)">FAQ</button>
- <button class="nta nta-cms" onclick="adminGo('cms-texts',this)">Textos</button>
- <button class="nta nta-cms" onclick="adminGo('cms-settings',this)">Config</button>
+ <button class="nta nta-cms" onclick="adminGo('config',this)">Config</button>
  </div>
  </div>
 
@@ -661,26 +660,17 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
  <!-- Mobile dropdown menu -->
  <div class="admin-mobile-dd" id="admin-mobile-dd">
-  <button class="nta active" onclick="adminGoMobile('overview',this)">Visão Geral</button>
-  <button class="nta" onclick="adminGoMobile('tracking',this)">Tracking</button>
-  <button class="nta" onclick="adminGoMobile('leads',this)">Leads</button>
-  <button class="nta" onclick="adminGoMobile('events',this)">Eventos</button>
-  <button class="nta" onclick="adminGoMobile('geo',this)">Geo</button>
-  <button class="nta" onclick="adminGoMobile('cadastros',this)">Cadastros</button>
+  <button class="nta active" onclick="adminGoMobile('overview',this)">Dashboard</button>
+  <button class="nta" onclick="adminGoMobile('analytics',this)">Analytics</button>
+  <button class="nta" onclick="adminGoMobile('usuarios',this)">Usuários</button>
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
-  <button class="nta" onclick="adminGoMobile('loyalty',this)">Fidelidade<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
-  <button class="nta" onclick="adminGoMobile('pro',this)">Pro</button>
+  <button class="nta" onclick="adminGoMobile('monetizacao',this)">Monetização<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
   <div class="nta-sep"></div>
-  <button class="nta nta-cms" onclick="adminGoMobile('cms-firms',this)">Firmas</button>
-  <button class="nta nta-cms" onclick="adminGoMobile('cms-indicators',this)">Indicadores</button>
-  <button class="nta nta-cms" onclick="adminGoMobile('cms-guides',this)">Guias</button>
-  <button class="nta nta-cms" onclick="adminGoMobile('cms-blog',this)">Blog</button>
-  <button class="nta nta-cms" onclick="adminGoMobile('criativos',this)">Criativos</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('firmas',this)">Firmas</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('conteudo',this)">Conteúdo</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('indicadores',this)">Indicadores</button>
   <button class="nta nta-cms" onclick="adminGoMobile('telegram',this)">Telegram</button>
-  <div class="nta-sep"></div>
-  <button class="nta nta-cms" onclick="adminGoMobile('cms-faq',this)">FAQ</button>
-  <button class="nta nta-cms" onclick="adminGoMobile('cms-texts',this)">Textos</button>
-  <button class="nta nta-cms" onclick="adminGoMobile('cms-settings',this)">Config</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('config',this)">Config</button>
  </div>
 
  <!-- GLOBAL DATE FILTER -->
@@ -745,7 +735,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
  <!-- CTA para Tracking -->
  <div style="text-align:center;padding:20px;margin-top:8px;">
-  <button class="btn-secondary" onclick="adminGo('tracking',[...document.querySelectorAll('.nav-tabs-admin .nta')].find(b=>b.textContent.trim()==='Tracking'))" style="font-size:13px;padding:10px 24px;">Ver análise completa no Tracking Dashboard →</button>
+  <button class="btn-secondary" onclick="adminGo('analytics')" style="font-size:13px;padding:10px 24px;">Ver análise completa no Analytics →</button>
  </div>
  </div>
 
@@ -2507,25 +2497,110 @@ function ensureDemoData(){
 /* 
  NAV
  */
-function adminGo(page,btn){
- document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
- document.getElementById('page-'+page).classList.add('active');
- document.querySelectorAll('.nav-tabs-admin .nta, .nav-tabs-cms .nta').forEach(b=>b.classList.remove('active'));
- if(btn)btn.classList.add('active');
- location.hash = page;
- renderPage(page);
-}
-function adminGoMobile(page,btn){
- document.getElementById('admin-mobile-dd').classList.remove('open');
- document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
- document.getElementById('page-'+page).classList.add('active');
- document.querySelectorAll('#admin-mobile-dd .nta').forEach(b=>b.classList.remove('active'));
- if(btn)btn.classList.add('active');
- location.hash = page;
- renderPage(page);
+/* ══ UNIFIED TAB SYSTEM ══ */
+// Maps unified tab → sub-pages (first = default, shown first = most important data)
+const _unifiedTabs = {
+  'analytics':   [{id:'tracking',label:'Tracking'},{id:'events',label:'Eventos'},{id:'geo',label:'Geo'}],
+  'usuarios':    [{id:'leads',label:'Leads'},{id:'cadastros',label:'Cadastros'}],
+  'monetizacao': [{id:'pro',label:'Pro'},{id:'loyalty',label:'Fidelidade'}],
+  'firmas':      [{id:'cms-firms',label:'Firmas'},{id:'cms-settings',label:'Preços & Cupons'}],
+  'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
+  'telegram':    [{id:'telegram',label:'Telegram'},{id:'criativos',label:'Criativos'}],
+  'config':      [{id:'cms-texts',label:'Textos'}]
+};
+// Reverse map: sub-page → parent unified tab
+const _subToParent = {};
+Object.entries(_unifiedTabs).forEach(([parent, subs]) => {
+  subs.forEach(s => { _subToParent[s.id] = parent; });
+});
+// Alias for pages whose nav name differs from page-id
+const _pageAlias = {'indicadores':'cms-indicators'};
+let _activeUnified = 'overview';
+let _activeSubPage = 'overview';
+
+function _showSubTabBar(parentId, activeSubId){
+  const subs = _unifiedTabs[parentId];
+  if(!subs || subs.length <= 1) return; // no bar needed for single sub
+  subs.forEach(s => {
+    const pg = document.getElementById('page-'+s.id);
+    if(!pg) return;
+    // Remove old sub-tab bar if exists
+    const old = pg.querySelector('.sub-tabs');
+    if(old) old.remove();
+    // Only add bar to the active sub-page
+    if(s.id === activeSubId){
+      const bar = document.createElement('div');
+      bar.className = 'sub-tabs';
+      subs.forEach(sub => {
+        const btn = document.createElement('button');
+        btn.className = 'sub-tab' + (sub.id === activeSubId ? ' active' : '');
+        btn.textContent = sub.label;
+        btn.onclick = () => _switchSub(parentId, sub.id);
+        bar.appendChild(btn);
+      });
+      pg.insertBefore(bar, pg.firstChild);
+    }
+  });
 }
 
-/* 
+function _switchSub(parentId, subId){
+  const subs = _unifiedTabs[parentId];
+  if(!subs) return;
+  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+subId).classList.add('active');
+  _activeSubPage = subId;
+  location.hash = subId;
+  _showSubTabBar(parentId, subId);
+  renderPage(subId);
+}
+
+function adminGo(page,btn){
+  const resolvedPage = _pageAlias[page] || page;
+  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
+  // Highlight nav
+  document.querySelectorAll('.nav-tabs-admin .nta, .nav-tabs-cms .nta').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+
+  if(_unifiedTabs[page]){
+    // Unified tab — show first sub-page
+    const firstSub = _unifiedTabs[page][0].id;
+    document.getElementById('page-'+firstSub).classList.add('active');
+    _activeUnified = page;
+    _activeSubPage = firstSub;
+    location.hash = page;
+    _showSubTabBar(page, firstSub);
+    renderPage(firstSub);
+  } else if(_subToParent[page]){
+    // Direct sub-page access (e.g. from hash restore)
+    const parent = _subToParent[page];
+    document.getElementById('page-'+page).classList.add('active');
+    _activeUnified = parent;
+    _activeSubPage = page;
+    location.hash = page;
+    // Highlight parent nav button
+    const navBtns = [...document.querySelectorAll('.nav-tabs-admin .nta, .nav-tabs-cms .nta')];
+    const matchBtn = navBtns.find(b=>b.getAttribute('onclick')?.includes("'"+parent+"'"));
+    if(matchBtn) matchBtn.classList.add('active');
+    _showSubTabBar(parent, page);
+    renderPage(page);
+  } else {
+    // Standalone page (overview, email, indicadores)
+    document.getElementById('page-'+resolvedPage).classList.add('active');
+    _activeUnified = page;
+    _activeSubPage = resolvedPage;
+    location.hash = page;
+    renderPage(resolvedPage);
+  }
+}
+
+function adminGoMobile(page,btn){
+  document.getElementById('admin-mobile-dd').classList.remove('open');
+  document.querySelectorAll('#admin-mobile-dd .nta').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  adminGo(page);
+}
+
+/*
  INIT
  */
 async function initAdmin(){
@@ -2533,15 +2608,17 @@ async function initAdmin(){
 
   // Restore last active tab from URL hash
   const savedPage = location.hash.replace('#','');
-  const startPage = savedPage && document.getElementById('page-'+savedPage) ? savedPage : 'overview';
-  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+startPage).classList.add('active');
-  // Highlight correct nav button
+  // Check if it's a valid page or sub-page
+  let startPage = 'overview';
+  if(savedPage){
+    if(document.getElementById('page-'+savedPage)) startPage = savedPage;
+    else if(_unifiedTabs[savedPage]) startPage = savedPage;
+  }
+  // Use adminGo to properly handle unified tabs
   const navBtns = [...document.querySelectorAll('.nav-tabs-admin .nta, .nav-tabs-cms .nta')];
-  navBtns.forEach(b=>b.classList.remove('active'));
-  const matchBtn = navBtns.find(b=>b.getAttribute('onclick')?.includes("'"+startPage+"'"));
-  if(matchBtn) matchBtn.classList.add('active');
-  renderPage(startPage);
+  const directMatch = navBtns.find(b=>b.getAttribute('onclick')?.includes("'"+startPage+"'"));
+  const parentMatch = _subToParent[startPage] ? navBtns.find(b=>b.getAttribute('onclick')?.includes("'"+_subToParent[startPage]+"'")) : null;
+  adminGo(startPage, directMatch || parentMatch);
 
   loadEmailStats();
   renderTemplatesList();
@@ -2574,9 +2651,7 @@ async function toggleBotSetting(){
 async function refreshAll(){
   await refreshFromSupabase();
   loadBotSetting();
-  const pages = ['overview','analytics','leads','events','geo','cadastros','email','loyalty','cms-firms','cms-indicators','cms-guides','cms-blog','criativos','telegram','cms-faq','cms-texts','cms-settings','analysis-vip'];
-  const active = pages.find(p => document.getElementById('page-'+p)?.classList.contains('active')) || 'overview';
-  renderPage(active);
+  renderPage(_activeSubPage || 'overview');
   document.getElementById('last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
   toast('Dados atualizados!');
 }
@@ -2584,7 +2659,6 @@ async function refreshAll(){
 function renderPage(p){
   switch(p){
     case 'overview':       renderOverview(); renderAlerts(); break;
-    case 'analytics':      adminGo('tracking'); break; // absorvido pelo Tracking
     case 'leads':          renderLeadsPage(); break;
     case 'events':         getEvents().then(()=>renderEventsPage()); break;
     case 'geo':            renderGeoPage(); break;
@@ -2688,7 +2762,7 @@ async function renderAlerts(){
     banners.push(`<div class="alert-banner alert-red">
       <span class="ab-icon">&#9679;</span>
       <span class="ab-text"><b>${_alertCache.pending}</b> validação(ões) de fidelidade pendente(s)</span>
-      <button class="ab-action" onclick="adminGo('loyalty',document.querySelector('[onclick*=\\'loyalty\\']'))">Ver pendentes</button>
+      <button class="ab-action" onclick="adminGo('monetizacao');setTimeout(()=>_switchSub('monetizacao','loyalty'),100)">Ver pendentes</button>
     </div>`);
   }
   // Update nav badge
