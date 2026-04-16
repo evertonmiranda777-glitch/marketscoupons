@@ -2068,10 +2068,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div class="tg-card">
             <div class="tg-card-title">Ações Rápidas</div>
             <div class="tg-quick-actions" style="grid-template-columns:1fr 1fr 1fr;">
-              <button class="tg-qa-btn" onclick="tgConfirmAction('coupons','Cupons — imagem com todas as firmas')">
+              <button class="tg-qa-btn" onclick="tgPreviewCoupons()">
                 <span class="qa-icon">🏷️</span>
                 Cupons
-                <div class="qa-lbl">Imagem com todas as firmas</div>
+                <div class="qa-lbl">Ver preview → enviar</div>
               </button>
               <button class="tg-qa-btn" onclick="tgConfirmAction('clean','Limpar mensagens antigas do canal')">
                 <span class="qa-icon">🧹</span>
@@ -2086,20 +2086,20 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             </div>
             <div class="tg-card-title" style="margin-top:16px;">Mensagens com Dados Reais</div>
             <div class="tg-quick-actions" style="grid-template-columns:1fr 1fr 1fr;">
-              <button class="tg-qa-btn" onclick="tgConfirmAction('analysis','Enviar Análise Diária para o canal')" id="tg-btn-analysis">
+              <button class="tg-qa-btn" onclick="tgPreviewAnalysis()" id="tg-btn-analysis">
                 <span class="qa-icon">📊</span>
                 Análise Diária
-                <div class="qa-lbl">Preview antes de enviar</div>
+                <div class="qa-lbl">Ver preview → enviar</div>
               </button>
-              <button class="tg-qa-btn" onclick="tgConfirmAction('gex','Enviar GEX para o canal')" id="tg-btn-gex">
+              <button class="tg-qa-btn" onclick="tgPreviewGex()" id="tg-btn-gex">
                 <span class="qa-icon">🎯</span>
                 GEX
-                <div class="qa-lbl">Preview antes de enviar</div>
+                <div class="qa-lbl">Ver preview → enviar</div>
               </button>
-              <button class="tg-qa-btn" onclick="tgConfirmAction('calendar_daily','Enviar Calendário para o canal')" id="tg-btn-calendar">
+              <button class="tg-qa-btn" onclick="tgPreviewCalendar()" id="tg-btn-calendar">
                 <span class="qa-icon">📅</span>
                 Calendário
-                <div class="qa-lbl">Preview antes de enviar</div>
+                <div class="qa-lbl">Ver preview → enviar</div>
               </button>
             </div>
             <!-- Flash Promo firma select (hidden by default) -->
@@ -2124,28 +2124,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div class="tg-status" id="tg-qa-status"></div>
           </div>
 
-          <!-- Preview das mensagens automáticas -->
-          <div class="tg-card" style="margin-top:12px;">
-            <div class="tg-card-title">Preview das Mensagens</div>
-            <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-              <button class="tg-qa-btn" onclick="tgPreviewAnalysis()" style="flex:1;min-width:100px;text-align:center;">📊 Análise</button>
-              <button class="tg-qa-btn" onclick="tgPreviewGex()" style="flex:1;min-width:100px;text-align:center;">🎯 GEX</button>
-              <button class="tg-qa-btn" onclick="tgPreviewCalendar()" style="flex:1;min-width:100px;text-align:center;">📅 Calendário</button>
-              <button class="tg-qa-btn" onclick="tgPreviewCoupons()" style="flex:1;min-width:100px;text-align:center;">🏷️ Cupons</button>
-            </div>
-            <div id="tg-preview-area" style="display:none;">
-              <div id="tg-preview-body" style="background:#0e1621;border-radius:12px;padding:16px;font-size:13px;line-height:1.6;color:#e4e6eb;white-space:pre-wrap;word-break:break-word;max-height:400px;overflow-y:auto;"></div>
-              <div id="tg-preview-btn-area" style="margin-top:6px;background:#17212b;border-radius:8px;padding:10px;text-align:center;"></div>
-              <button id="tg-preview-send" class="tg-qa-btn" style="width:100%;margin-top:10px;text-align:center;background:rgba(255,179,0,.08);border-color:var(--gold);color:var(--gold);">
-                Disparar manualmente para o canal
-              </button>
-              <div class="tg-status" id="tg-preview-status" style="margin-top:6px;"></div>
-            </div>
-          </div>
-
         </div><!-- /tg-controls -->
 
-        <!-- PREVIEW -->
+        <!-- PREVIEW (direita) -->
         <div class="tg-preview-wrap">
           <div class="tg-card" style="padding:16px 20px;">
             <div class="tg-card-title">Criativos (PNG — atualizado diariamente)</div>
@@ -2163,6 +2144,19 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <button id="tg-download-png" class="tg-qa-btn" onclick="tgDownloadPng()" style="display:none;width:100%;margin-top:8px;text-align:center;background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.3);color:#80c8ff;">
               💾 Salvar PNG
             </button>
+          </div>
+          <!-- Preview da mensagem (carrega ao clicar nos botões da esquerda) -->
+          <div class="tg-card" style="padding:16px 20px;">
+            <div class="tg-card-title">Preview da Mensagem</div>
+            <div id="tg-preview-area" style="display:none;">
+              <div id="tg-preview-body" style="background:#0e1621;border-radius:12px;padding:16px;font-size:13px;line-height:1.6;color:#e4e6eb;white-space:pre-wrap;word-break:break-word;max-height:400px;overflow-y:auto;"></div>
+              <div id="tg-preview-btn-area" style="margin-top:6px;background:#17212b;border-radius:8px;padding:10px;text-align:center;"></div>
+              <button id="tg-preview-send" class="tg-qa-btn" style="width:100%;margin-top:10px;text-align:center;background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;font-weight:700;">
+                Enviar para o canal
+              </button>
+              <div class="tg-status" id="tg-preview-status" style="margin-top:6px;"></div>
+            </div>
+            <div id="tg-preview-placeholder" style="color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:20px 0;">Clique em Análise, GEX, Calendário ou Cupons para ver o preview</div>
           </div>
         </div><!-- /tg-preview-wrap -->
 
@@ -10269,6 +10263,8 @@ function tgPreviewShow(html, buttonText, buttonUrl, sendFn){
   const btnArea = document.getElementById('tg-preview-btn-area');
   const sendBtn = document.getElementById('tg-preview-send');
   const st = document.getElementById('tg-preview-status');
+  const ph = document.getElementById('tg-preview-placeholder');
+  if(ph) ph.style.display = 'none';
   body.innerHTML = html;
   btnArea.innerHTML = buttonText ? `<a href="${buttonUrl}" target="_blank" style="color:#5ba0d6;font-size:12px;font-weight:600;text-decoration:none;">${buttonText}</a>` : '';
   st.textContent = ''; st.className = 'tg-status';
