@@ -6203,9 +6203,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       _siteSettings={};
       data.forEach(s=>{_siteSettings[s.key]=s.value;});
       // Bot
-      if(_siteSettings.bot_enabled==='true'){
-        const fab=document.getElementById('bot-fab');if(fab)fab.style.display='flex';
-        const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='';
+      if(_siteSettings.bot_enabled==='false'){
+        const fab=document.getElementById('bot-fab');if(fab)fab.style.display='none';
+        const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='none';
       }
     }
   }catch(e){}
