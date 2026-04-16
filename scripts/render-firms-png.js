@@ -16,10 +16,12 @@ const SUPABASE_URL = process.env.SUPABASE_URL || 'https://qfwhduvutfumsaxnuofa.s
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
 const TARGETS = {
-  firms:    { html: 'criativo_firms.html',    png: 'firms-creative.png',    inject: injectFirms },
-  calendar: { html: 'criativo_calendar.html', png: 'calendar-creative.png', inject: injectCalendar },
-  gamma:    { html: 'criativo_gamma.html',    png: 'gamma-creative.png',    inject: injectGamma },
-  analysis: { html: 'criativo_analysis.html', png: 'analysis-creative.png', inject: injectAnalysis },
+  firms:      { html: 'criativo_firms.html',        png: 'firms-creative.png',      inject: injectFirms },
+  calendar:   { html: 'criativo_calendar.html',      png: 'calendar-creative.png',   inject: injectCalendar },
+  gamma:      { html: 'criativo_gamma.html',          png: 'gamma-creative.png',      inject: injectGamma },
+  analysis:   { html: 'criativo_analysis.html',       png: 'analysis-creative.png',   inject: injectAnalysis },
+  evento001:  { html: 'criativo_evento 001.html',     png: 'evento-001-creative.png', inject: null },
+  evento002:  { html: 'criativo_evento 002.html',     png: 'evento-002-creative.png', inject: null },
 };
 
 async function sb(table, query) {

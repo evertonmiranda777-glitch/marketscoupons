@@ -2218,6 +2218,20 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div id="tg-canvas-og-info" style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.4);text-align:center;"></div>
           </div>
           <div class="tg-card" style="padding:16px 20px;">
+            <div class="tg-card-title">Criativos Estáticos (PNG do GitHub Action)</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;">
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('firms')" style="background:rgba(245,197,24,.12);border-color:rgba(245,197,24,.4);color:#f5c518;">Firms</button>
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('gamma')" style="background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;">Gamma</button>
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('analysis')" style="background:rgba(100,180,255,.1);border-color:rgba(100,180,255,.4);color:#80c8ff;">Analysis</button>
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('calendar')" style="background:rgba(200,80,255,.1);border-color:rgba(200,80,255,.4);color:#d080ff;">Calendar</button>
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('evento-001')" style="background:rgba(240,64,64,.1);border-color:rgba(240,64,64,.4);color:#f08080;">Evento 001</button>
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('evento-002')" style="background:rgba(240,64,64,.1);border-color:rgba(240,64,64,.4);color:#f08080;">Evento 002</button>
+            </div>
+            <div id="tg-static-png-wrap" style="background:#0b0f16;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;text-align:center;min-height:200px;display:flex;align-items:center;justify-content:center;">
+              <span style="color:rgba(255,255,255,.4);font-size:13px;">Clique num botão para ver o criativo</span>
+            </div>
+          </div>
+          <div class="tg-card" style="padding:16px 20px;">
             <div class="tg-card-title">Preview do Criativo (canvas antigo)</div>
             <div class="tg-canvas-outer">
               <div class="tg-canvas-scale" id="tg-canvas-scale">
@@ -10242,6 +10256,22 @@ let _tgFirms = [];      // firmas carregadas para a aba Telegram
 let _tgInited = false;
 
 /* ── Preview dos criativos OG (edge functions) ── */
+function tgShowStaticPng(kind) {
+  const wrap = document.getElementById('tg-static-png-wrap');
+  if (!wrap) return;
+  const t = Date.now();
+  const fileMap = {
+    firms:'firms-creative.png', gamma:'gamma-creative.png',
+    analysis:'analysis-creative.png', calendar:'calendar-creative.png',
+    'evento-001':'evento-001-creative.png', 'evento-002':'evento-002-creative.png'
+  };
+  const url = '/img/' + (fileMap[kind] || kind + '-creative.png') + '?t=' + t;
+  wrap.innerHTML = '<span style="color:rgba(255,255,255,.5);font-size:13px;">Carregando...</span>';
+  const img = new Image();
+  img.onload = () => { wrap.innerHTML = ''; img.style.maxWidth = '100%'; img.style.height = 'auto'; img.style.borderRadius = '6px'; wrap.appendChild(img); };
+  img.onerror = () => { wrap.innerHTML = '<span style="color:#ff5050;font-size:13px;">Erro ao carregar ' + kind + '. Rode: node scripts/render-firms-png.js all</span>'; };
+  img.src = url;
+}
 function ogPreview(kind){
   window._ogLast = kind;
   const wrap = document.getElementById('og-preview-wrap');
