@@ -7,6 +7,7 @@
 import { chromium } from 'playwright';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import fs from 'fs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -41,13 +42,26 @@ function stars(rating) {
 }
 
 async function injectFirms(page) {
-  const firms = await sb('cms_firms', 'select=name,short_name,discount,split,rating,reviews,coupon,type,sort_order&active=eq.true&order=discount.desc.nullslast&limit=5');
+  const firms = await sb('cms_firms', 'select=name,short_name,discount,split,rating,reviews,coupon,type,sort_order,icon_url&active=eq.true&order=discount.desc.nullslast&limit=5');
   if (!firms || firms.length === 0) { console.warn('[firms] no data, keeping static template'); return; }
 
   const totalFirms = await sb('cms_firms', 'select=id&active=eq.true');
   const total = totalFirms ? totalFirms.length : firms.length;
   const maxDiscount = Math.max(...firms.map(f => f.discount || 0));
   const maxSplit = firms.map(f => parseInt(String(f.split || '').replace(/[^0-9]/g, '')) || 0).reduce((a,b) => Math.max(a,b), 0);
+
+  // Pre-load firm logos as base64
+  const logoCache = {};
+  for (const f of firms) {
+    if (f.icon_url) {
+      const logoPath = path.join(root, f.icon_url);
+      try {
+        const buf = fs.readFileSync(logoPath);
+        const ext = path.extname(logoPath).slice(1) || 'png';
+        logoCache[f.icon_url] = `data:image/${ext};base64,${buf.toString('base64')}`;
+      } catch (e) { console.warn(`[logo] missing: ${logoPath}`); }
+    }
+  }
 
   const rows = firms.map((f, i) => {
     const isTop = i === 0;
@@ -59,9 +73,11 @@ async function injectFirms(page) {
     const hiTag = isTop ? `<span class="tag hi">Biggest Discount</span>` : '';
     const name = f.short_name || f.name;
     const ratingStars = [1,2,3,4,5].map(n => `<span class="st"${n <= Math.round(f.rating || 0) ? '' : ' style="opacity:.28"'}>★</span>`).join('');
+    const logoSrc = logoCache[f.icon_url] || '';
+    const logoImg = logoSrc ? `<img src="${logoSrc}" style="width:66px;height:66px;object-fit:cover;border-radius:12px;">` : '';
 
     return `<div class="firm ${isTop ? 'top1' : ''}">
-      <div class="fl"></div>
+      <div class="fl">${logoImg}</div>
       <div class="fi"><div class="fn_">${name}</div><div class="tags">${typeTag}${hiTag}</div></div>
       <div class="st_"><div class="sv" style="color:${discColor};">${f.discount || 0}%</div><div class="sl">Disc</div></div>
       <div class="st_"><div class="sv green">${splitNum}%</div><div class="sl">Split</div></div>
