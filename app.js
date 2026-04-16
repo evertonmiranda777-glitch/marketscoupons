@@ -4714,6 +4714,25 @@ async function loadDailyAnalysis(){
   }
 }
 
+async function loadAccuracyBadge(){
+  const el=document.getElementById('da-accuracy');if(!el)return;
+  try{
+    const since=new Date();since.setDate(since.getDate()-30);
+    const{data}=await db.from('analysis_targets').select('bull_t1_hit,bull_t2_hit,bear_t1_hit,bear_t2_hit').gte('date',since.toISOString().slice(0,10)).not('scored_at','is',null);
+    if(!data||data.length<4)return;
+    let hits=0,total=0;
+    for(const r of data){
+      if(r.bull_t1_hit!==null){total++;if(r.bull_t1_hit)hits++;}
+      if(r.bull_t2_hit!==null){total++;if(r.bull_t2_hit)hits++;}
+      if(r.bear_t1_hit!==null){total++;if(r.bear_t1_hit)hits++;}
+      if(r.bear_t2_hit!==null){total++;if(r.bear_t2_hit)hits++;}
+    }
+    if(!total)return;
+    const pct=Math.round(hits/total*100);
+    el.innerHTML=`<span class="da-acc-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> ${t('da_acuracia')}: ${pct}% <span class="da-acc-sub">(${data.length} ${t('da_analises')})</span></span>`;
+  }catch(e){}
+}
+
 // ═══ PRO ACCESS CHECK (subscription + loyalty + vip + trial) ═══
 async function checkProAccess(){
   if(!currentUser||!currentProfile) return false;
@@ -5050,7 +5069,8 @@ function renderDailyCards(items){
       const upd=new Date(items[0].created_at);
       timeStr=' — '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
     }
-    meta.innerHTML=`<span><span class="analise-meta-dot"></span> ${t('da_atualizado')} ${dateStr}${timeStr}</span>`;
+    meta.innerHTML=`<span><span class="analise-meta-dot"></span> ${t('da_atualizado')} ${dateStr}${timeStr}</span><span id="da-accuracy"></span>`;
+    loadAccuracyBadge();
   }
   const tvTheme='dark';
   grid.innerHTML=items.map(a=>{
