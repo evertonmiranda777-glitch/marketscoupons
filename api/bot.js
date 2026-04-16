@@ -60,8 +60,8 @@ module.exports = async (req, res) => {
   if (messages.length > 20) return res.status(400).json({ error: 'Too many messages (max 20)' });
 
   const langName = LANG_NAMES[lang] || LANG_NAMES.en;
-  const systemText = String(system || '').slice(0, 4000)
-    + `\n\nRespond in ${langName}. If the user writes in a different language, switch to theirs. Keep responses under 200 words.`;
+  const systemText = String(system || '').slice(0, 12000)
+    + `\n\nRespond in ${langName}. If the user writes in a different language, switch to theirs. NEVER cut off mid-sentence — always finish your complete answer.`;
 
   const contents = messages.slice(-20).map(m => ({
     role: m.role === 'assistant' ? 'model' : 'user',
@@ -76,7 +76,7 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemText }] },
         contents,
-        generationConfig: { maxOutputTokens: 500, temperature: 0.7 },
+        generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
       }),
     });
     const data = await resp.json();
