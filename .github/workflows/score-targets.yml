@@ -1,0 +1,15 @@
+name: Score Analysis Targets
+on:
+  schedule:
+    - cron: '0 22 * * 1-5'  # 18:00 ET (22:00 UTC) weekdays
+  workflow_dispatch:
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Score targets vs actual candles
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/score-targets.js
