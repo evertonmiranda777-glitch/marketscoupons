@@ -5313,7 +5313,24 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
 /* BOT */
 let botOpen=false;
 // BOT_SYSTEM moved server-side to api/bot.js — never expose prompt to client
-const botHist=[];
+const BOT_STORE_KEY='mc_bot_hist';
+const BOT_TTL=48*60*60*1000; // 48h
+function loadBotHist(){
+  try{
+    const raw=localStorage.getItem(BOT_STORE_KEY);
+    if(!raw) return [];
+    const {ts,msgs}=JSON.parse(raw);
+    if(Date.now()-ts>BOT_TTL){localStorage.removeItem(BOT_STORE_KEY);return [];}
+    return Array.isArray(msgs)?msgs:[];
+  }catch(e){return [];}
+}
+function saveBotHist(){
+  try{
+    const slim=botHist.slice(-20);
+    localStorage.setItem(BOT_STORE_KEY,JSON.stringify({ts:Date.now(),msgs:slim}));
+  }catch(e){}
+}
+const botHist=loadBotHist();
 let _askingName=false;
 function getTraderName(){
   let n=localStorage.getItem('mc_trader_name')||'';
@@ -5323,6 +5340,7 @@ function getTraderName(){
   }
   return n;
 }
+let _botRestored=false;
 function toggleBot(){
   botOpen=!botOpen;
   document.getElementById('bot-win').classList.toggle('open',botOpen);
@@ -5331,6 +5349,14 @@ function toggleBot(){
     document.getElementById('bot-badge').style.display='none';
     document.getElementById('bot-inp').focus();
     const name=getTraderName();
+    // Restore saved conversation on first open
+    if(!_botRestored && botHist.length>0){
+      _botRestored=true;
+      botHist.forEach(m=>addBMsg(m.role==='user'?'usr':'bot',m.content));
+      document.getElementById('bot-quick').style.display='none';
+    }else if(!_botRestored){
+      _botRestored=true;
+    }
     const welcomeEl=document.querySelector('#bot-msgs .bmsg.bot .bbbl[data-i18n="bot_welcome"], #bot-msgs .bmsg.bot .bbbl');
     if(!name){
       _askingName=true;
@@ -5417,7 +5443,7 @@ async function sendBot(){
     }
   }
   document.getElementById('bot-snd').disabled=true;document.getElementById('bot-quick').style.display='none';
-  addBMsg('usr',txt);botHist.push({role:'user',content:txt});
+  addBMsg('usr',txt);botHist.push({role:'user',content:txt});saveBotHist();
   const bw=document.getElementById('bot-win');bw&&bw.classList.add('typing');
   const ty=document.getElementById('bot-typing');ty.classList.add('show');document.getElementById('bot-msgs').scrollTop=99999;
   const traderName=getTraderName();
@@ -5425,7 +5451,7 @@ async function sendBot(){
   const errMsg={pt:'Eita, deu ruim aqui. Tenta de novo?',en:'Oops, something went wrong. Try again?',es:'Ups, algo falló. ¿Intentas de nuevo?'};
   const userLang=typeof _currentLang!=='undefined'?_currentLang:'en';
   const friendlyErr=errMsg[userLang]||errMsg.en;
-  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:botHist,lang:userLang,traderName:traderName||undefined,geo:geo||undefined})});const data=await res.json();ty.classList.remove('show');bw&&bw.classList.remove('typing');const reply=data.content?.[0]?.text||(data.error?friendlyErr:friendlyErr);botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');bw&&bw.classList.remove('typing');addBMsg('bot',friendlyErr);}
+  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:botHist,lang:userLang,traderName:traderName||undefined,geo:geo||undefined})});const data=await res.json();ty.classList.remove('show');bw&&bw.classList.remove('typing');const reply=data.content?.[0]?.text||(data.error?friendlyErr:friendlyErr);botHist.push({role:'assistant',content:reply});saveBotHist();addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');bw&&bw.classList.remove('typing');addBMsg('bot',friendlyErr);}
   document.getElementById('bot-snd').disabled=false;
 }
 
@@ -5976,6 +6002,7 @@ async function doLogout() {
   try {
     localStorage.removeItem('mc-user-auth');
     sessionStorage.removeItem('mc-user-auth');
+    localStorage.removeItem(BOT_STORE_KEY);
   } catch(e) {}
   // 3. Limpar estado da app
   currentUser = null;
