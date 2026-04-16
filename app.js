@@ -6304,6 +6304,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fab=document.getElementById('bot-fab');if(fab)fab.style.display='none';
         const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='none';
       }
+      // Nav visibility
+      if(_siteSettings.nav_visibility){
+        const nv=typeof _siteSettings.nav_visibility==='string'?JSON.parse(_siteSettings.nav_visibility):_siteSettings.nav_visibility;
+        Object.entries(nv).forEach(([tabId,visible])=>{
+          if(visible===false){
+            document.querySelectorAll(`.nt[data-p="${tabId}"],.mm-item[onclick*="'${tabId}'"]`).forEach(el=>{el.style.display='none';});
+          }
+        });
+      }
     }
   }catch(e){}
 
