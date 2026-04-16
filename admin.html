@@ -628,6 +628,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta nta-cms" onclick="adminGo('conteudo',this)">Conteúdo</button>
  <button class="nta nta-cms" onclick="adminGo('indicadores',this)">Indicadores</button>
  <button class="nta nta-cms" onclick="adminGo('telegram',this)">Telegram</button>
+ <button class="nta nta-cms" onclick="adminGo('site',this)">Site</button>
  <button class="nta nta-cms" onclick="adminGo('config',this)">Config</button>
  </div>
  </div>
@@ -670,6 +671,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta nta-cms" onclick="adminGoMobile('conteudo',this)">Conteúdo</button>
   <button class="nta nta-cms" onclick="adminGoMobile('indicadores',this)">Indicadores</button>
   <button class="nta nta-cms" onclick="adminGoMobile('telegram',this)">Telegram</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('site',this)">Site</button>
   <button class="nta nta-cms" onclick="adminGoMobile('config',this)">Config</button>
  </div>
 
@@ -1958,6 +1960,77 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
     </div>
 
+    <!-- ══ SITE: HOME / HERO ══ -->
+    <div class="admin-page" id="page-site-hero">
+      <div class="sec-hdr">
+        <div class="sec-title">Página Inicial — Hero</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-primary" onclick="saveSiteHero()">Salvar</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <!-- Hero Principal -->
+        <div class="chart-card">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Hero Principal</div>
+          <div class="ec-field"><label>Badge (topo)</label><input id="sh-badge" class="filter-inp" style="width:100%;" placeholder="Ex: Cupons Verificados — Atualizados Diariamente"></div>
+          <div class="ec-field"><label>Título principal</label><textarea id="sh-title" class="filter-inp" rows="2" style="width:100%;resize:vertical;" placeholder="Ex: Economize até 90% OFF nas melhores Prop Firms"></textarea><div style="font-size:10px;color:var(--t3);margin-top:4px;">Use &lt;em&gt;texto&lt;/em&gt; pra destaque dourado e &lt;br&gt; pra quebra de linha</div></div>
+          <div class="ec-field"><label>Subtítulo</label><textarea id="sh-sub" class="filter-inp" rows="2" style="width:100%;resize:vertical;" placeholder="Ex: Compare firmas, use cupons exclusivos..."></textarea></div>
+          <div class="ec-field"><label>Botão Telegram (texto)</label><input id="sh-tg-cta" class="filter-inp" style="width:100%;" placeholder="Ex: Acessar Cupons Exclusivos no Telegram"></div>
+          <div class="ec-field"><label>Seção abaixo do Hero (título)</label><input id="sh-sec-title" class="filter-inp" style="width:100%;" placeholder="Ex: Melhores ofertas agora"></div>
+        </div>
+
+        <!-- Stat Boxes -->
+        <div class="chart-card">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Cards do Hero (4 boxes)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="ec-field"><label>Box 1 — Título</label><input id="sh-box1-title" class="filter-inp" style="width:100%;"></div>
+            <div class="ec-field"><label>Box 1 — Label</label><input id="sh-box1-label" class="filter-inp" style="width:100%;"></div>
+            <div class="ec-field"><label>Box 2 — Título</label><input id="sh-box2-title" class="filter-inp" style="width:100%;"></div>
+            <div class="ec-field"><label>Box 2 — Label</label><input id="sh-box2-label" class="filter-inp" style="width:100%;"></div>
+            <div class="ec-field"><label>Box 3 — Título</label><input id="sh-box3-title" class="filter-inp" style="width:100%;"></div>
+            <div class="ec-field"><label>Box 3 — Label</label><input id="sh-box3-label" class="filter-inp" style="width:100%;"></div>
+            <div class="ec-field"><label>Box 4 — Título</label><input id="sh-box4-title" class="filter-inp" style="width:100%;"></div>
+            <div class="ec-field"><label>Box 4 — Label</label><input id="sh-box4-label" class="filter-inp" style="width:100%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner Fidelidade -->
+      <div class="chart-card" style="margin-top:20px;">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Banner Fidelidade (abaixo das ofertas)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="ec-field"><label>Título</label><input id="sh-lb-title" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Subtítulo</label><textarea id="sh-lb-sub" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+          <div class="ec-field"><label>Passo 1</label><input id="sh-lb-step1" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Passo 2</label><input id="sh-lb-step2" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Passo 3</label><input id="sh-lb-step3" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Passo 4</label><input id="sh-lb-step4" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Botão principal</label><input id="sh-lb-btn1" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Botão secundário</label><input id="sh-lb-btn2" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: NAVEGAÇÃO ══ -->
+    <div class="admin-page" id="page-site-nav">
+      <div class="sec-hdr"><div class="sec-title">Navegação</div></div>
+      <div class="chart-card"><p style="color:var(--t2);">Em breve — editor de abas do menu.</p></div>
+    </div>
+
+    <!-- ══ SITE: OFERTAS ══ -->
+    <div class="admin-page" id="page-site-ofertas">
+      <div class="sec-hdr"><div class="sec-title">Página de Ofertas</div></div>
+      <div class="chart-card"><p style="color:var(--t2);">Em breve — editor da página de ofertas.</p></div>
+    </div>
+
+    <!-- ══ SITE: FOOTER ══ -->
+    <div class="admin-page" id="page-site-footer">
+      <div class="sec-hdr"><div class="sec-title">Footer</div></div>
+      <div class="chart-card"><p style="color:var(--t2);">Em breve — editor do rodapé.</p></div>
+    </div>
+
     <!-- ══ I18N EDITOR ══ -->
     <div class="admin-page" id="page-i18n-editor">
       <div class="sec-hdr">
@@ -2541,6 +2614,7 @@ const _unifiedTabs = {
   'firmas':      [{id:'cms-firms',label:'Firmas'},{id:'cms-settings',label:'Preços & Cupons'}],
   'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
   'telegram':    [{id:'telegram',label:'Telegram'},{id:'criativos',label:'Criativos'}],
+  'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-footer',label:'Footer'}],
   'config':      [{id:'cms-texts',label:'Textos'},{id:'i18n-editor',label:'Traduções (I18N)'},{id:'firmt-editor',label:'Traduções Firmas'}]
 };
 // Reverse map: sub-page → parent unified tab
@@ -2714,6 +2788,7 @@ function renderPage(p){
     case 'criativos':      initCriativos(); break;
     case 'telegram':       initTelegramSection(); break;
     case 'cms-faq':        renderCmsFaq(); break;
+    case 'site-hero':      loadSiteHero(); break;
     case 'cms-texts':      renderCmsTexts(); break;
     case 'i18n-editor':    renderI18nEditor(); break;
     case 'firmt-editor':   renderFirmTEditor(); break;
@@ -10129,6 +10204,58 @@ async function saveQuickFirms(){
   toast(count + ' firmas atualizadas!');
   await renderCmsFirms();
   renderQuickFirms();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SITE EDITOR — HOME / HERO
+// ═══════════════════════════════════════════════════════════════════════
+const _heroFields = {
+  'sh-badge':      {table:'i18n', key:'hero_badge',      lang:'pt'},
+  'sh-title':      {table:'i18n', key:'hero_titulo',       lang:'pt'},
+  'sh-sub':        {table:'i18n', key:'hero_sub',         lang:'pt'},
+  'sh-tg-cta':     {table:'i18n', key:'hero_tg_cta',      lang:'pt'},
+  'sh-sec-title':  {table:'i18n', key:'home_melhores_ofertas', lang:'pt'},
+  'sh-box1-title': {table:'i18n', key:'hst_box_firms',    lang:'pt'},
+  'sh-box1-label': {table:'i18n', key:'hst_box_firms_l',  lang:'pt'},
+  'sh-box2-title': {table:'i18n', key:'hst_box_quiz',     lang:'pt'},
+  'sh-box2-label': {table:'i18n', key:'hst_box_quiz_l',   lang:'pt'},
+  'sh-box3-title': {table:'i18n', key:'hst_box_calc',     lang:'pt'},
+  'sh-box3-label': {table:'i18n', key:'hst_box_calc_l',   lang:'pt'},
+  'sh-box4-title': {table:'i18n', key:'hst_box_analise',  lang:'pt'},
+  'sh-box4-label': {table:'i18n', key:'hst_box_analise_l',lang:'pt'},
+  'sh-lb-title':   {table:'i18n', key:'lb_title',         lang:'pt'},
+  'sh-lb-sub':     {table:'i18n', key:'lb_sub',           lang:'pt'},
+  'sh-lb-step1':   {table:'i18n', key:'lb_step1',         lang:'pt'},
+  'sh-lb-step2':   {table:'i18n', key:'lb_step2',         lang:'pt'},
+  'sh-lb-step3':   {table:'i18n', key:'lb_step3',         lang:'pt'},
+  'sh-lb-step4':   {table:'i18n', key:'lb_step4',         lang:'pt'},
+  'sh-lb-btn1':    {table:'i18n', key:'lb_btn_cadastrar',  lang:'pt'},
+  'sh-lb-btn2':    {table:'i18n', key:'lb_btn_beneficios', lang:'pt'},
+};
+
+async function loadSiteHero(){
+  const keys = Object.values(_heroFields).map(f=>f.key);
+  const{data}=await db.from('i18n').select('key,pt').in('key',keys);
+  const map={};
+  if(data) data.forEach(r=>{map[r.key]=r.pt||'';});
+  Object.entries(_heroFields).forEach(([inputId, cfg])=>{
+    const el=document.getElementById(inputId);
+    if(el) el.value=map[cfg.key]||'';
+  });
+}
+
+async function saveSiteHero(){
+  let ok=0,fail=0;
+  for(const [inputId, cfg] of Object.entries(_heroFields)){
+    const el=document.getElementById(inputId);
+    if(!el) continue;
+    const val=el.value;
+    if(cfg.table==='i18n'){
+      const{error}=await db.from('i18n').update({pt:val,updated_at:new Date().toISOString()}).eq('key',cfg.key);
+      if(error){fail++;console.error('save:',cfg.key,error);} else ok++;
+    }
+  }
+  toast(ok+' campos salvos'+(fail?' ('+fail+' erros)':'')+'!');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
