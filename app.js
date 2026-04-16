@@ -6317,6 +6317,93 @@ function gxSelectExp(exp){
   renderGEXFiltered();
 }
 
+let _gexView='chart';
+function gxSwitchView(v){
+  _gexView=v;
+  document.querySelectorAll('.gx-vtab').forEach(b=>b.classList.toggle('sel',b.dataset.v===v));
+  document.getElementById('gx-grid').style.display=v==='chart'?'block':'none';
+  document.getElementById('gx-heatmap').style.display=v==='heatmap'?'block':'none';
+  if(v==='heatmap') renderGEXHeatmap();
+}
+
+function renderGEXHeatmap(){
+  const container=document.getElementById('gx-heatmap');if(!container)return;
+  const items=_gexAllData.filter(d=>_gexSelectedTickers.includes(d.ticker));
+  if(!items.length){container.innerHTML='<div style="color:var(--t2);text-align:center;padding:40px;">No data</div>';return;}
+
+  const loc=_currentLang==='pt'?'pt-BR':'en-US';
+  container.innerHTML=items.map(item=>{
+    const bd=item.exp_breakdown||[];
+    if(!bd.length) return '';
+    const spot=parseFloat(item.spot_price);
+
+    // Collect all strikes across expirations
+    const strikeSet=new Set();
+    bd.forEach(exp=>exp.topStrikes.forEach(s=>strikeSet.add(s.strike)));
+    const strikes=Array.from(strikeSet).sort((a,b)=>b-a);
+    const nearSpot=strikes.filter(s=>s>=spot*0.96&&s<=spot*1.04);
+    const displayStrikes=nearSpot.length>5?nearSpot:strikes.slice(0,30);
+    displayStrikes.sort((a,b)=>b-a);
+
+    // Build GEX lookup: {exp: {strike: gex}}
+    const lookup={};
+    let maxAbsGex=1;
+    bd.forEach(exp=>{
+      lookup[exp.expiration]={};
+      exp.topStrikes.forEach(s=>{
+        lookup[exp.expiration][s.strike]=s.gex;
+        if(Math.abs(s.gex)>maxAbsGex) maxAbsGex=Math.abs(s.gex);
+      });
+    });
+
+    const cols=bd.length+1;
+    const expHeaders=bd.map(exp=>{
+      const d=new Date(exp.expiration+'T12:00:00');
+      return`<div class="gx-hm-hdr">${d.toLocaleDateString(loc,{month:'short',day:'numeric'})}</div>`;
+    }).join('');
+
+    const rows=displayStrikes.map(strike=>{
+      const isSpot=Math.abs(strike-Math.round(spot))<=2;
+      const strikeCell=`<div class="gx-hm-strike">${gxFmt(strike)}</div>`;
+      const cells=bd.map(exp=>{
+        const gex=lookup[exp.expiration]?.[strike]||0;
+        const intensity=Math.min(Math.abs(gex)/maxAbsGex,1);
+        let bg,color;
+        if(gex>0){
+          bg=`rgba(34,197,94,${(intensity*0.7+0.05).toFixed(2)})`;
+          color=intensity>0.3?'#fff':'var(--t2)';
+        } else if(gex<0){
+          bg=`rgba(239,68,68,${(intensity*0.7+0.05).toFixed(2)})`;
+          color=intensity>0.3?'#fff':'var(--t2)';
+        } else {
+          bg='rgba(255,255,255,.03)';
+          color='var(--t3)';
+        }
+        const spotCls=isSpot?' gx-hm-spot':'';
+        return`<div class="gx-hm-cell${spotCls}" style="background:${bg};color:${color};" title="${gxFmt(strike)} | ${exp.expiration}: ${gex>0?'+':''}${gex}M">${gex?((gex>0?'+':'')+gex):'·'}</div>`;
+      }).join('');
+      return strikeCell+cells;
+    }).join('');
+
+    const names={ES:'S&P 500',NQ:'Nasdaq 100',SPY:'SPY',QQQ:'QQQ',AAPL:'AAPL',TSLA:'TSLA',NVDA:'NVDA',MSFT:'MSFT',AMZN:'AMZN',META:'META',GOOGL:'GOOGL',GLD:'GLD'};
+
+    return`<div class="gx-hm-wrap">
+      <div class="gx-hm-title">${item.ticker} <small>${names[item.ticker]||''} — Spot: ${gxFmt(spot)}</small></div>
+      <div class="gx-hm-grid" style="grid-template-columns:auto repeat(${bd.length},1fr);">
+        <div class="gx-hm-hdr">Strike</div>
+        ${expHeaders}
+        ${rows}
+      </div>
+      <div class="gx-hm-legend">
+        <span>Puts (−)</span>
+        <div class="gx-hm-legend-bar"></div>
+        <span>Calls (+)</span>
+        <span style="margin-left:12px;color:var(--gold);">■ Spot</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function renderGEXFiltered(){
   const items=_gexAllData.filter(d=>_gexSelectedTickers.includes(d.ticker));
   if(_gexSelectedExp){
@@ -6329,6 +6416,7 @@ function renderGEXFiltered(){
   } else {
     renderGEX(items);
   }
+  if(_gexView==='heatmap') renderGEXHeatmap();
 }
 
 async function loadGEX(){

@@ -1712,6 +1712,21 @@ img{max-width:100%;}
 .gx-exp-btn{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--t3);cursor:pointer;transition:all .15s;}
 .gx-exp-btn:hover{background:rgba(255,255,255,.08);color:var(--t2);}
 .gx-exp-btn.sel{background:rgba(240,180,41,.15);color:var(--gold);border-color:rgba(240,180,41,.3);}
+.gx-view-tabs{display:flex;gap:4px;justify-content:center;margin-bottom:16px;}
+.gx-vtab{padding:6px 18px;border-radius:10px;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:var(--t2);cursor:pointer;transition:all .15s;}
+.gx-vtab:hover{background:rgba(255,255,255,.10);}
+.gx-vtab.sel{background:rgba(240,180,41,.15);color:var(--gold);border-color:rgba(240,180,41,.3);}
+.gx-hm-wrap{background:rgba(107,182,201,.06);border:1px solid rgba(107,182,201,.14);border-radius:14px;padding:20px;margin-bottom:28px;overflow-x:auto;}
+.gx-hm-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.gx-hm-title small{font-size:12px;color:var(--t3);font-weight:400;}
+.gx-hm-grid{display:grid;gap:2px;font-size:10px;}
+.gx-hm-hdr{font-weight:700;color:var(--t2);text-align:center;padding:6px 4px;font-size:10px;white-space:nowrap;}
+.gx-hm-strike{font-weight:700;color:var(--t1);text-align:right;padding:4px 8px 4px 4px;font-variant-numeric:tabular-nums;font-size:11px;white-space:nowrap;}
+.gx-hm-cell{border-radius:3px;text-align:center;padding:4px 2px;font-weight:600;font-variant-numeric:tabular-nums;font-size:10px;min-width:44px;transition:transform .1s;}
+.gx-hm-cell:hover{transform:scale(1.15);z-index:2;position:relative;}
+.gx-hm-spot{outline:2px solid var(--gold);outline-offset:-1px;}
+.gx-hm-legend{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;font-size:11px;color:var(--t3);}
+.gx-hm-legend-bar{width:120px;height:10px;border-radius:5px;background:linear-gradient(90deg,rgba(239,68,68,.8),rgba(239,68,68,.15),transparent,rgba(34,197,94,.15),rgba(34,197,94,.8));}
 .gx-updated{font-size:12px;color:var(--t3);margin-top:12px;}
 .gx-updated strong{color:var(--t2);}
 .gx-asset-card{background:rgba(107,182,201,.08);border:1px solid rgba(107,182,201,.18);border-radius:14px;overflow:visible;margin-bottom:28px;}
@@ -3488,7 +3503,12 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="ar-spinner" style="width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div>
       <div data-i18n="gx_carregando">Loading data...</div>
     </div>
+    <div class="gx-view-tabs" id="gx-view-tabs">
+      <button class="gx-vtab sel" onclick="gxSwitchView('chart')" data-v="chart">Chart</button>
+      <button class="gx-vtab" onclick="gxSwitchView('heatmap')" data-v="heatmap">Heatmap</button>
+    </div>
     <div id="gx-grid" style="display:none;"></div>
+    <div id="gx-heatmap" style="display:none;"></div>
       <div class="da-gate" id="gx-gate"></div>
     </div>
     <div class="gx-disclaimer" data-i18n="gx_disclaimer">Delayed data. GEX levels are estimates based on mathematical models and do not constitute investment advice. Trading involves risk of loss.</div>
