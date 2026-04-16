@@ -3738,6 +3738,54 @@ async function loadCmsTexts(){
   }catch(e){}
 }
 
+/* ─── Load I18N overrides from Supabase ─── */
+async function loadI18nFromSupabase(){
+  try{
+    const{data,error}=await db.from('i18n').select('key,pt,en,es,fr,it,de,ar');
+    if(error||!data||!data.length){
+      const cached=localStorage.getItem('mc_i18n_cache');
+      if(cached){try{const d=JSON.parse(cached);_applyI18nRows(d);}catch(e){}}
+      return;
+    }
+    _applyI18nRows(data);
+    try{localStorage.setItem('mc_i18n_cache',JSON.stringify(data));}catch(e){}
+  }catch(e){
+    const cached=localStorage.getItem('mc_i18n_cache');
+    if(cached){try{_applyI18nRows(JSON.parse(cached));}catch(e2){}}
+  }
+}
+function _applyI18nRows(rows){
+  const langs=['pt','en','es','fr','it','de','ar'];
+  rows.forEach(r=>{
+    langs.forEach(l=>{
+      if(r[l]!=null && typeof I18N[l]==='object') I18N[l][r.key]=r[l];
+    });
+  });
+}
+
+/* ─── Load FIRM_T overrides from Supabase ─── */
+async function loadFirmTFromSupabase(){
+  try{
+    const{data,error}=await db.from('firm_translations').select('key,en,es,fr,it,de,ar');
+    if(error||!data||!data.length){
+      const cached=localStorage.getItem('mc_firmt_cache');
+      if(cached){try{_applyFirmTRows(JSON.parse(cached));}catch(e){}}
+      return;
+    }
+    _applyFirmTRows(data);
+    try{localStorage.setItem('mc_firmt_cache',JSON.stringify(data));}catch(e){}
+  }catch(e){
+    const cached=localStorage.getItem('mc_firmt_cache');
+    if(cached){try{_applyFirmTRows(JSON.parse(cached));}catch(e2){}}
+  }
+}
+function _applyFirmTRows(rows){
+  const langs=['en','es','fr','it','de','ar'];
+  rows.forEach(r=>{
+    FIRM_T[r.key]=langs.map(l=>r[l]||'');
+  });
+}
+
 let _cmsFaq=null;
 async function loadCmsFaq(){
   try{
@@ -6150,7 +6198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Detectar idioma e aplicar traduções
   initLang();
   // Load CMS overrides (texts, FAQ) — single Promise.all, one renderFaq call
-  Promise.all([loadCmsTexts(), loadCmsFaq()]).then(() => { applyTranslations(); renderFaq(); });
+  Promise.all([loadCmsTexts(), loadCmsFaq(), loadI18nFromSupabase(), loadFirmTFromSupabase()]).then(() => { applyTranslations(); renderFaq(); });
   // Ativar página correta ANTES de renderizar (evita flash da home)
   // Detect dedicated firm page BEFORE revealing body (avoid flash)
   const _pathParts=location.pathname.split('/').filter(Boolean);

@@ -1958,6 +1958,41 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
     </div>
 
+    <!-- ══ I18N EDITOR ══ -->
+    <div class="admin-page" id="page-i18n-editor">
+      <div class="sec-hdr">
+        <div class="sec-title">Traduções do Site (I18N)</div>
+        <div class="sec-actions">
+          <input type="text" id="i18n-search" class="filter-inp" placeholder="Buscar chave ou texto..." oninput="renderI18nEditor()" style="min-width:220px;">
+          <select id="i18n-lang-filter" class="filter-inp" onchange="renderI18nEditor()" style="min-width:100px;">
+            <option value="">Todos idiomas</option>
+            <option value="pt">PT</option><option value="en">EN</option><option value="es">ES</option>
+            <option value="fr">FR</option><option value="it">IT</option><option value="de">DE</option><option value="ar">AR</option>
+          </select>
+          <button class="btn-primary" onclick="saveI18nChanges()">Salvar Alterações</button>
+        </div>
+      </div>
+      <div class="stat-value" style="font-size:12px;color:var(--t2);margin-bottom:12px;" id="i18n-count"></div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="i18n-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ FIRM_T EDITOR ══ -->
+    <div class="admin-page" id="page-firmt-editor">
+      <div class="sec-hdr">
+        <div class="sec-title">Traduções de Dados das Firmas</div>
+        <div class="sec-actions">
+          <input type="text" id="firmt-search" class="filter-inp" placeholder="Buscar texto..." oninput="renderFirmTEditor()" style="min-width:220px;">
+          <button class="btn-primary" onclick="saveFirmTChanges()">Salvar Alterações</button>
+        </div>
+      </div>
+      <div class="stat-value" style="font-size:12px;color:var(--t2);margin-bottom:12px;" id="firmt-count"></div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="firmt-tbl"></table></div>
+      </div>
+    </div>
+
     <!-- ══ CMS: CONFIGURAÇÕES (HUB CENTRAL) ══ -->
     <div class="admin-page" id="page-cms-settings">
 
@@ -2506,7 +2541,7 @@ const _unifiedTabs = {
   'firmas':      [{id:'cms-firms',label:'Firmas'},{id:'cms-settings',label:'Preços & Cupons'}],
   'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
   'telegram':    [{id:'telegram',label:'Telegram'},{id:'criativos',label:'Criativos'}],
-  'config':      [{id:'cms-texts',label:'Textos'}]
+  'config':      [{id:'cms-texts',label:'Textos'},{id:'i18n-editor',label:'Traduções (I18N)'},{id:'firmt-editor',label:'Traduções Firmas'}]
 };
 // Reverse map: sub-page → parent unified tab
 const _subToParent = {};
@@ -2680,6 +2715,8 @@ function renderPage(p){
     case 'telegram':       initTelegramSection(); break;
     case 'cms-faq':        renderCmsFaq(); break;
     case 'cms-texts':      renderCmsTexts(); break;
+    case 'i18n-editor':    renderI18nEditor(); break;
+    case 'firmt-editor':   renderFirmTEditor(); break;
     case 'cms-settings':   renderCmsSettings(); break;
   }
 }
@@ -10092,6 +10129,130 @@ async function saveQuickFirms(){
   toast(count + ' firmas atualizadas!');
   await renderCmsFirms();
   renderQuickFirms();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// I18N EDITOR — edit site UI translations (987 keys × 7 languages)
+// ═══════════════════════════════════════════════════════════════════════
+let _i18nData=[];
+let _i18nDirty={};
+const _I18N_PAGE_SIZE=50;
+let _i18nPage=0;
+
+async function renderI18nEditor(){
+  if(!_i18nData.length){
+    const{data,error}=await db.from('i18n').select('key,pt,en,es,fr,it,de,ar').order('key');
+    if(error){toast('Erro ao carregar I18N','error');return;}
+    _i18nData=data||[];
+  }
+  const search=(document.getElementById('i18n-search')?.value||'').toLowerCase();
+  const langFilter=document.getElementById('i18n-lang-filter')?.value||'';
+  let filtered=_i18nData;
+  if(search){
+    filtered=filtered.filter(r=>r.key.toLowerCase().includes(search)||Object.values(r).some(v=>typeof v==='string'&&v.toLowerCase().includes(search)));
+  }
+  if(langFilter){
+    filtered=filtered.filter(r=>!r[langFilter]||r[langFilter]==='');
+  }
+  document.getElementById('i18n-count').textContent=filtered.length+' chaves'+(search?' (filtrado)':'')+' — '+Object.keys(_i18nDirty).length+' alterações pendentes';
+  const start=_i18nPage*_I18N_PAGE_SIZE;
+  const page=filtered.slice(start,start+_I18N_PAGE_SIZE);
+  const totalPages=Math.ceil(filtered.length/_I18N_PAGE_SIZE);
+  const langs=['pt','en','es','fr','it','de','ar'];
+  const tbl=document.getElementById('i18n-tbl');
+  tbl.innerHTML=`<thead><tr><th style="min-width:140px;">Chave</th>${langs.map(l=>`<th>${l.toUpperCase()}</th>`).join('')}</tr></thead><tbody>`+
+    page.map(r=>{
+      return `<tr><td><code style="font-size:10px;background:var(--card2);padding:2px 5px;border-radius:3px;">${escHtml(r.key)}</code></td>`+
+        langs.map(l=>`<td><input class="filter-inp" style="width:100%;font-size:11px;padding:4px 6px;" value="${escHtml(r[l]||'')}" onchange="markI18nDirty('${escHtml(r.key)}','${l}',this.value)"></td>`).join('')+
+        `</tr>`;
+    }).join('')+`</tbody>`;
+  if(totalPages>1){
+    tbl.innerHTML+=`<tfoot><tr><td colspan="${langs.length+1}" style="text-align:center;padding:10px;">
+      <button class="btn-secondary" onclick="_i18nPage=Math.max(0,_i18nPage-1);renderI18nEditor()" ${_i18nPage===0?'disabled':''}>← Anterior</button>
+      <span style="margin:0 12px;font-size:12px;">Página ${_i18nPage+1} de ${totalPages}</span>
+      <button class="btn-secondary" onclick="_i18nPage=Math.min(${totalPages-1},_i18nPage+1);renderI18nEditor()" ${_i18nPage>=totalPages-1?'disabled':''}>Próxima →</button>
+    </td></tr></tfoot>`;
+  }
+}
+
+function markI18nDirty(key,lang,val){
+  if(!_i18nDirty[key])_i18nDirty[key]={};
+  _i18nDirty[key][lang]=val;
+  document.getElementById('i18n-count').textContent=_i18nData.length+' chaves — '+Object.keys(_i18nDirty).length+' alterações pendentes';
+}
+
+async function saveI18nChanges(){
+  const keys=Object.keys(_i18nDirty);
+  if(!keys.length){toast('Nenhuma alteração');return;}
+  let ok=0,fail=0;
+  for(const key of keys){
+    const updates=_i18nDirty[key];
+    updates.updated_at=new Date().toISOString();
+    const{error}=await db.from('i18n').update(updates).eq('key',key);
+    if(error){fail++;console.error('i18n save error:',key,error);}
+    else{
+      ok++;
+      const row=_i18nData.find(r=>r.key===key);
+      if(row) Object.assign(row,updates);
+    }
+  }
+  _i18nDirty={};
+  toast(ok+' chaves salvas'+(fail?' ('+fail+' erros)':''));
+  renderI18nEditor();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// FIRM_T EDITOR — edit firm data translations (196 keys × 6 languages)
+// ═══════════════════════════════════════════════════════════════════════
+let _firmTData=[];
+let _firmTDirty={};
+
+async function renderFirmTEditor(){
+  if(!_firmTData.length){
+    const{data,error}=await db.from('firm_translations').select('key,en,es,fr,it,de,ar').order('key');
+    if(error){toast('Erro ao carregar traduções firmas','error');return;}
+    _firmTData=data||[];
+  }
+  const search=(document.getElementById('firmt-search')?.value||'').toLowerCase();
+  let filtered=_firmTData;
+  if(search){
+    filtered=filtered.filter(r=>r.key.toLowerCase().includes(search)||Object.values(r).some(v=>typeof v==='string'&&v.toLowerCase().includes(search)));
+  }
+  document.getElementById('firmt-count').textContent=filtered.length+' traduções'+(search?' (filtrado)':'')+' — '+Object.keys(_firmTDirty).length+' alterações pendentes';
+  const langs=['en','es','fr','it','de','ar'];
+  const tbl=document.getElementById('firmt-tbl');
+  tbl.innerHTML=`<thead><tr><th style="min-width:160px;">PT (original)</th>${langs.map(l=>`<th>${l.toUpperCase()}</th>`).join('')}</tr></thead><tbody>`+
+    filtered.map(r=>{
+      return `<tr><td style="font-size:11px;font-weight:600;color:var(--gold);">${escHtml(r.key)}</td>`+
+        langs.map(l=>`<td><input class="filter-inp" style="width:100%;font-size:11px;padding:4px 6px;" value="${escHtml(r[l]||'')}" onchange="markFirmTDirty('${escHtml(r.key)}','${l}',this.value)"></td>`).join('')+
+        `</tr>`;
+    }).join('')+`</tbody>`;
+}
+
+function markFirmTDirty(key,lang,val){
+  if(!_firmTDirty[key])_firmTDirty[key]={};
+  _firmTDirty[key][lang]=val;
+  document.getElementById('firmt-count').textContent=_firmTData.length+' traduções — '+Object.keys(_firmTDirty).length+' alterações pendentes';
+}
+
+async function saveFirmTChanges(){
+  const keys=Object.keys(_firmTDirty);
+  if(!keys.length){toast('Nenhuma alteração');return;}
+  let ok=0,fail=0;
+  for(const key of keys){
+    const updates=_firmTDirty[key];
+    updates.updated_at=new Date().toISOString();
+    const{error}=await db.from('firm_translations').update(updates).eq('key',key);
+    if(error){fail++;console.error('firm_t save error:',key,error);}
+    else{
+      ok++;
+      const row=_firmTData.find(r=>r.key===key);
+      if(row) Object.assign(row,updates);
+    }
+  }
+  _firmTDirty={};
+  toast(ok+' traduções salvas'+(fail?' ('+fail+' erros)':''));
+  renderFirmTEditor();
 }
 
 // ═══════════════════════════════════════════════════════════════════════
