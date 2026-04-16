@@ -20,7 +20,7 @@ const TARGETS = {
   calendar:   { html: 'criativo_calendar.html',      png: 'calendar-creative.png',   inject: injectCalendar },
   gamma:      { html: 'criativo_gamma.html',          png: 'gamma-creative.png',      inject: injectGamma },
   analysis:   { html: 'criativo_analysis.html',       png: 'analysis-creative.png',   inject: injectAnalysis },
-  evento001:  { html: 'criativo_evento 001.html',     png: 'evento-001-creative.png', inject: null },
+  evento001:  { html: 'criativo_evento 001.html',     png: 'evento-001-creative.png', inject: null, selector: '.card' },
   evento002:  { html: 'criativo_evento 002.html',     png: 'evento-002-creative.png', inject: null },
 };
 
@@ -152,7 +152,13 @@ for (const name of list) {
     try { await t.inject(page); } catch (e) { console.warn(`[${name}] inject failed:`, e.message); }
   }
   await page.waitForTimeout(500);
-  await page.screenshot({ path: outPath, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' });
+  if (t.selector) {
+    const el = await page.$(t.selector);
+    if (el) await el.screenshot({ path: outPath, type: 'png' });
+    else { console.warn(`[${name}] selector "${t.selector}" not found, falling back to full page`); await page.screenshot({ path: outPath, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' }); }
+  } else {
+    await page.screenshot({ path: outPath, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' });
+  }
   console.log('✅', outPath);
 }
 

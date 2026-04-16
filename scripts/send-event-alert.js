@@ -246,7 +246,13 @@ async function renderEvent(event, mode) {
   }
 
   await page.waitForTimeout(400);
-  await page.screenshot({ path: OUT_PNG, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' });
+  if (mode === 'upcoming') {
+    const card = await page.$('.card');
+    if (card) await card.screenshot({ path: OUT_PNG, type: 'png' });
+    else await page.screenshot({ path: OUT_PNG, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' });
+  } else {
+    await page.screenshot({ path: OUT_PNG, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' });
+  }
   await browser.close();
   return OUT_PNG;
 }
