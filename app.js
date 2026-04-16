@@ -4599,14 +4599,20 @@ async function loadCalendar(silent) {
     const data = await res.json();
     if (!data.events?.length) throw new Error('No events');
 
+    // High-impact US events that Trading Economics under-rates vs Investing.com
+    const _calBoost = /\b(non.?farm|nfp|payroll|cpi\b|inflation rate|ppi\b|producer price|retail sales|gdp |initial jobless|philadelph|philly fed|ism |fomc|fed.*rate|interest rate decision|core pce|pce price|consumer confidence|durable goods|s&p global.*pmi|adp employment|housing starts|building permits|michigan consumer|jolts|import price|export price|employment cost|trade balance)\b/i;
+
     calEvents = data.events.map(ev => {
       const dateStr = ev.date || '';
       let day = 'Semana';
       if (dateStr === todayStr) day = 'Hoje';
       else if (dateStr === tmrStr) day = 'Amanhã';
+      // Boost known high-impact US events from imp 2 → 3
+      let rawImp = ev.importance || 1;
+      if (rawImp === 2 && (ev.currency === 'USD' || /united states/i.test(ev.country)) && _calBoost.test(ev.event)) rawImp = 3;
       let imp = 'l';
-      if (ev.importance >= 3) imp = 'h';
-      else if (ev.importance >= 2) imp = 'm';
+      if (rawImp >= 3) imp = 'h';
+      else if (rawImp >= 2) imp = 'm';
       // Convert 12h → 24h (all times stored as ET 24h)
       let t24 = ev.time || '—';
       if (t24 !== '—') {

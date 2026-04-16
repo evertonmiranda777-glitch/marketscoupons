@@ -333,6 +333,14 @@ async function tgDeleteMessage(msgId) {
   const now = nowInET();
   console.log(`[event-alert] nowET=${now}min, ${(events || []).length} events total`);
 
+  // Boost known high-impact US events from imp 2 → 3
+  const BOOST_RX = /\b(non.?farm|nfp|payroll|cpi\b|inflation rate|ppi\b|producer price|retail sales|gdp |initial jobless|philadelph|philly fed|ism |fomc|fed.*rate|interest rate decision|core pce|pce price|consumer confidence|durable goods|s&p global.*pmi|adp employment|housing starts|building permits|michigan consumer|jolts|import price|export price|employment cost|trade balance)\b/i;
+  for (const e of (events || [])) {
+    if (e.importance === 2 && (e.currency === 'USD' || US_RX.test(e.country || '')) && BOOST_RX.test(e.event)) {
+      e.importance = 3;
+    }
+  }
+
   const state = loadState();
 
   // Pass 1: upcoming pre-alerts (events in [+LEAD, +LEAD+WINDOW] not yet pre-alerted)
