@@ -6313,10 +6313,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           if(!varName.startsWith('--')||!val) return;
           if(varName==='--glass-rgb'){
             const rgb=_hex2rgb(val);
-            root.style.setProperty('--glass','rgba('+rgb+',.08)');
-            root.style.setProperty('--glass-border','rgba('+rgb+',.18)');
-            root.style.setProperty('--glass-strong','rgba('+rgb+',.08)');
-            root.style.setProperty('--cbr','rgba('+rgb+',.18)');
+            const gp=(tc['--glass-pct']||8)/100;
+            const gbp=(tc['--glass-border-pct']||18)/100;
+            root.style.setProperty('--glass','rgba('+rgb+','+gp+')');
+            root.style.setProperty('--glass-border','rgba('+rgb+','+gbp+')');
+            root.style.setProperty('--glass-strong','rgba('+rgb+','+gp+')');
+            root.style.setProperty('--cbr','rgba('+rgb+','+gbp+')');
           } else {
             root.style.setProperty(varName,val);
           }

@@ -2403,6 +2403,16 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div style="font-size:10px;color:var(--t3);margin-top:4px;">Cor dos fundos transparentes (nav, modais, botões glass)</div>
           </div>
           <div class="ec-field">
+            <label>Intensidade Glass (opacidade): <span id="glass-pct-label">8%</span></label>
+            <input type="range" id="tema-glass-pct" min="2" max="25" value="8" style="width:100%;accent-color:var(--gold);" oninput="document.getElementById('glass-pct-label').textContent=this.value+'%'">
+            <div style="font-size:10px;color:var(--t3);margin-top:4px;">Quanto maior, mais visível o efeito cristalino. Padrão: 8%</div>
+          </div>
+          <div class="ec-field">
+            <label>Intensidade Borda Glass: <span id="glass-border-pct-label">18%</span></label>
+            <input type="range" id="tema-glass-border-pct" min="5" max="35" value="18" style="width:100%;accent-color:var(--gold);" oninput="document.getElementById('glass-border-pct-label').textContent=this.value+'%'">
+            <div style="font-size:10px;color:var(--t3);margin-top:4px;">Borda dos elementos glass. Padrão: 18%</div>
+          </div>
+          <div class="ec-field">
             <label>Superfície (--sur)</label>
             <div style="display:flex;gap:8px;align-items:center;">
               <input type="color" id="tema-sur" value="#0B0F16" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
@@ -10828,12 +10838,16 @@ async function loadSiteTema(){
     const hex=document.getElementById('tema-'+v.id+'-hex');
     if(picker) picker.value=val;
     if(hex) hex.value=val;
-    // sync color picker → hex on input
     if(picker) picker.oninput=function(){
       if(hex) hex.value=this.value;
       _temaUpdatePreview();
     };
   });
+  // Glass intensity sliders
+  const gp=document.getElementById('tema-glass-pct');
+  const gbp=document.getElementById('tema-glass-border-pct');
+  if(gp){gp.value=colors['--glass-pct']||8;document.getElementById('glass-pct-label').textContent=gp.value+'%';}
+  if(gbp){gbp.value=colors['--glass-border-pct']||18;document.getElementById('glass-border-pct-label').textContent=gbp.value+'%';}
   _temaUpdatePreview();
 }
 
@@ -10842,6 +10856,8 @@ async function saveSiteTema(){
   _temaVars.forEach(v=>{
     colors[v.css]=document.getElementById('tema-'+v.id+'-hex')?.value||v.def;
   });
+  colors['--glass-pct']=parseInt(document.getElementById('tema-glass-pct')?.value||8);
+  colors['--glass-border-pct']=parseInt(document.getElementById('tema-glass-border-pct')?.value||18);
   const{error}=await db.from('site_settings').upsert({key:'theme_colors',value:colors,updated_at:new Date().toISOString()},{onConflict:'key'});
   if(error){toast('Erro ao salvar cores','error');console.error(error);return;}
   toast('Cores salvas! O site vai aplicar no próximo carregamento.');
