@@ -210,6 +210,17 @@ a{text-decoration:none;color:inherit;}
 
 /* EMAIL COMPOSER */
 .email-composer{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:20px;}
+.blog-toolbar{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;padding:8px;background:rgba(255,255,255,.04);border-radius:8px 8px 0 0;border:1px solid var(--b1);border-bottom:none;}
+.blog-toolbar button{padding:4px 10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:5px;color:var(--t2);font-size:11px;cursor:pointer;font-family:var(--f);transition:.15s;}
+.blog-toolbar button:hover{background:rgba(255,255,255,.15);color:var(--t1);}
+.blog-editor{min-height:300px;max-height:500px;overflow-y:auto;padding:16px;background:var(--card2);border:1px solid var(--b1);border-radius:0 0 8px 8px;color:var(--t1);font-size:14px;line-height:1.7;outline:none;}
+.blog-editor h2{font-size:20px;font-weight:700;margin:16px 0 8px;color:var(--t1);}
+.blog-editor h3{font-size:16px;font-weight:700;margin:12px 0 6px;color:var(--t1);}
+.blog-editor p{margin:8px 0;}
+.blog-editor img{max-width:100%;border-radius:10px;margin:12px 0;}
+.blog-editor ul,.blog-editor ol{padding-left:24px;margin:8px 0;}
+.blog-editor a{color:var(--gold);text-decoration:underline;}
+.blog-editor-raw{min-height:300px;max-height:500px;padding:16px;background:var(--card2);border:1px solid var(--b1);border-radius:0 0 8px 8px;color:var(--green);font-size:12px;font-family:monospace;line-height:1.6;resize:vertical;width:100%;}
 .toggle-switch{position:relative;display:inline-block;width:36px;height:20px;}
 .toggle-switch input{opacity:0;width:0;height:0;}
 .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.15);border-radius:20px;transition:.2s;}
@@ -8958,18 +8969,79 @@ function openBlogModal(id) {
   document.getElementById('cms-modal-title').textContent = isNew ? 'Novo Post' : 'Editar Post';
   document.getElementById('cms-modal-body').innerHTML = `
     <div class="modal-grid">
-      <div class="modal-field modal-full"><label>Titulo</label><input type="text" id="bp-title" value="${((p?.title)||'').replace(/"/g,'&quot;')}"></div>
-      <div class="modal-field"><label>Nível</label><select id="bp-level"><option value="iniciante" ${p?.level==='iniciante'?'selected':''}>[I] Iniciante</option><option value="intermediario" ${p?.level==='intermediario'?'selected':''}>[M] Intermediario</option><option value="profissional" ${p?.level==='profissional'?'selected':''}>[P] Profissional</option></select></div>
+      <div class="modal-field modal-full"><label>Título</label><input type="text" id="bp-title" value="${((p?.title)||'').replace(/"/g,'&quot;')}"></div>
+      <div class="modal-field"><label>Nível</label><select id="bp-level"><option value="iniciante" ${p?.level==='iniciante'?'selected':''}>[I] Iniciante</option><option value="intermediario" ${p?.level==='intermediario'?'selected':''}>[M] Intermediário</option><option value="profissional" ${p?.level==='profissional'?'selected':''}>[P] Profissional</option></select></div>
       <div class="modal-field"><label>Categoria</label><input type="text" id="bp-cat" value="${p?.category||p?.cat||''}" placeholder="ex: Estratégia, Análise, Educação..."></div>
       <div class="modal-field"><label>Tempo de Leitura</label><input type="text" id="bp-read" value="${p?.read_time||p?.readTime||'5 min'}"></div>
-      <div class="modal-field modal-full"><label>Excerpt (resumo curto)</label><input type="text" id="bp-excerpt" value="${((p?.excerpt)||'').replace(/"/g,'&quot;')}" placeholder="Resumo de 1-2 linhas para o card"></div>
-      <div class="modal-field modal-full"><label>Conteudo (HTML)</label><textarea id="bp-body" rows="12">${p?.body||''}</textarea></div>
+      <div class="modal-field modal-full"><label>Resumo (aparece no card)</label><input type="text" id="bp-excerpt" value="${((p?.excerpt)||'').replace(/"/g,'&quot;')}" placeholder="Resumo de 1-2 linhas"></div>
+      <div class="modal-field modal-full">
+        <label>Conteúdo</label>
+        <div class="blog-toolbar">
+          <button type="button" onclick="blogCmd('bold')" title="Negrito"><b>B</b></button>
+          <button type="button" onclick="blogCmd('italic')" title="Itálico"><i>I</i></button>
+          <button type="button" onclick="blogCmd('formatBlock','<h2>')" title="Subtítulo">H2</button>
+          <button type="button" onclick="blogCmd('formatBlock','<h3>')" title="Subtítulo menor">H3</button>
+          <button type="button" onclick="blogCmd('formatBlock','<p>')" title="Parágrafo">P</button>
+          <button type="button" onclick="blogCmd('insertUnorderedList')" title="Lista">• Lista</button>
+          <button type="button" onclick="blogCmd('insertOrderedList')" title="Lista numerada">1. Lista</button>
+          <button type="button" onclick="blogInsertLink()" title="Link">🔗 Link</button>
+          <button type="button" onclick="blogInsertImage()" title="Imagem">📷 Imagem</button>
+          <button type="button" onclick="blogToggleSource()" title="Ver HTML" id="bp-source-btn">&lt;/&gt;</button>
+        </div>
+        <div contenteditable="true" id="bp-editor" class="blog-editor">${p?.body||'<p>Comece a escrever aqui...</p>'}</div>
+        <textarea id="bp-body-raw" class="blog-editor-raw" style="display:none;">${p?.body||''}</textarea>
+      </div>
     </div>
-    <div style="display:flex;gap:10px;margin-top:4px;">
+    <div style="display:flex;gap:10px;margin-top:8px;">
       <button class="btn-primary" onclick="saveBlogPost2('${id||''}')">Publicar</button>
       <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
     </div>`;
   document.getElementById('cms-modal-ov').classList.add('open');
+}
+
+function blogCmd(cmd,val){
+  document.execCommand(cmd,false,val||null);
+  document.getElementById('bp-editor')?.focus();
+}
+function blogInsertLink(){
+  const url=prompt('URL do link:');
+  if(url) document.execCommand('createLink',false,url);
+}
+function blogInsertImage(){
+  const input=document.createElement('input');
+  input.type='file';input.accept='image/*';
+  input.onchange=async function(){
+    if(!this.files[0]) return;
+    const file=this.files[0];
+    const ext=file.name.split('.').pop();
+    const path='blog/'+Date.now()+'.'+ext;
+    toast('Enviando imagem...');
+    const{error}=await db.storage.from('loyalty-proofs').upload(path,file,{upsert:true});
+    if(error){toast('Erro no upload: '+error.message,'error');return;}
+    const{data:urlData}=db.storage.from('loyalty-proofs').getPublicUrl(path);
+    if(urlData?.publicUrl){
+      document.execCommand('insertHTML',false,'<img src="'+urlData.publicUrl+'" style="max-width:100%;border-radius:10px;margin:12px 0;" alt="">');
+      toast('Imagem adicionada!');
+    }
+  };
+  input.click();
+}
+let _blogSourceMode=false;
+function blogToggleSource(){
+  const editor=document.getElementById('bp-editor');
+  const raw=document.getElementById('bp-body-raw');
+  const btn=document.getElementById('bp-source-btn');
+  if(!_blogSourceMode){
+    raw.value=editor.innerHTML;
+    editor.style.display='none';raw.style.display='block';
+    btn.style.background='var(--gold)';btn.style.color='#000';
+    _blogSourceMode=true;
+  } else {
+    editor.innerHTML=raw.value;
+    raw.style.display='none';editor.style.display='block';
+    btn.style.background='';btn.style.color='';
+    _blogSourceMode=false;
+  }
 }
 
 async function saveBlogPost2(existingId) {
@@ -8978,7 +9050,9 @@ async function saveBlogPost2(existingId) {
   const category = document.getElementById('bp-cat').value.trim();
   const read_time= document.getElementById('bp-read').value.trim()||'5 min';
   const excerpt  = document.getElementById('bp-excerpt').value.trim();
-  const body     = document.getElementById('bp-body').value.trim();
+  const editorEl = document.getElementById('bp-editor');
+  const rawEl    = document.getElementById('bp-body-raw');
+  const body     = (_blogSourceMode ? rawEl.value : editorEl?.innerHTML||'').trim();
   if(!title){ toast('Preencha o título!','warn'); return; }
   const slug = title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').slice(0,80) + '-' + Date.now();
   try {
