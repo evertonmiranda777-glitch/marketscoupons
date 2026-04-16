@@ -8715,7 +8715,7 @@ async function saveBlogPost() {
 }
 
 /* ══ CMS MODAL ══ */
-function closeCmsModal() { document.getElementById('cms-modal-ov').classList.remove('open'); }
+function closeCmsModal() { const m=document.getElementById('cms-modal-ov'); m.classList.remove('open'); m.style.display='none'; }
 
 /* ══ AI FIRM GENERATOR ══ */
 let _aiFirmDraft = null;
