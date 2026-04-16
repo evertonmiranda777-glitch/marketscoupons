@@ -895,15 +895,12 @@ function setL(lang,flag,code){
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
   updateTVWidgets(lang);
-  // Reset Max chat so old replies don't stay in the old language
+  // Update bot welcome message language but keep conversation history
   if(typeof botHist!=='undefined'){
-    botHist.length=0;
-    const msgs=document.getElementById('bot-msgs');
-    if(msgs){
-      msgs.innerHTML=`<div class="bmsg bot"><div class="bbbl" data-i18n="bot_welcome" data-i18n-html="1">${t('bot_welcome')}</div><span class="btime" data-i18n="bot_now">${t('bot_now')}</span></div>`;
-    }
-    const quick=document.getElementById('bot-quick');
-    if(quick) quick.style.display='';
+    const welcomeEl=document.querySelector('#bot-msgs .bmsg.bot:first-child .bbbl[data-i18n="bot_welcome"]');
+    if(welcomeEl) welcomeEl.innerHTML=t('bot_welcome');
+    const nowEls=document.querySelectorAll('#bot-msgs .btime[data-i18n="bot_now"]');
+    nowEls.forEach(el=>{ el.textContent=t('bot_now'); });
   }
   track('language_change',{language:lang});
 }
