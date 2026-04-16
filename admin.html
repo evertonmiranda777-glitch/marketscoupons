@@ -2122,11 +2122,24 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               </div>
             </div>
             <div class="tg-status" id="tg-qa-status"></div>
+            <!-- Preview da mensagem (inline, abaixo dos controles) -->
+            <div class="tg-card" style="padding:14px 16px;margin-top:14px;">
+              <div class="tg-card-title">Preview da Mensagem</div>
+              <div id="tg-preview-area" style="display:none;">
+                <div id="tg-preview-body" style="background:#0e1621;border-radius:12px;padding:16px;font-size:13px;line-height:1.6;color:#e4e6eb;white-space:pre-wrap;word-break:break-word;max-height:400px;overflow-y:auto;"></div>
+                <div id="tg-preview-btn-area" style="margin-top:6px;background:#17212b;border-radius:8px;padding:10px;text-align:center;"></div>
+                <button id="tg-preview-send" class="tg-qa-btn" style="width:100%;margin-top:10px;text-align:center;background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;font-weight:700;">
+                  Enviar para o canal
+                </button>
+                <div class="tg-status" id="tg-preview-status" style="margin-top:6px;"></div>
+              </div>
+              <div id="tg-preview-placeholder" style="color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:20px 0;">Clique numa ação para ver o preview aqui</div>
+            </div>
           </div>
 
         </div><!-- /tg-controls -->
 
-        <!-- PREVIEW (direita) -->
+        <!-- CRIATIVOS (direita) -->
         <div class="tg-preview-wrap">
           <div class="tg-card" style="padding:16px 20px;">
             <div class="tg-card-title">Criativos (PNG — atualizado diariamente)</div>
@@ -2144,19 +2157,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <button id="tg-download-png" class="tg-qa-btn" onclick="tgDownloadPng()" style="display:none;width:100%;margin-top:8px;text-align:center;background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.3);color:#80c8ff;">
               💾 Salvar PNG
             </button>
-          </div>
-          <!-- Preview da mensagem (carrega ao clicar nos botões da esquerda) -->
-          <div class="tg-card" style="padding:16px 20px;">
-            <div class="tg-card-title">Preview da Mensagem</div>
-            <div id="tg-preview-area" style="display:none;">
-              <div id="tg-preview-body" style="background:#0e1621;border-radius:12px;padding:16px;font-size:13px;line-height:1.6;color:#e4e6eb;white-space:pre-wrap;word-break:break-word;max-height:400px;overflow-y:auto;"></div>
-              <div id="tg-preview-btn-area" style="margin-top:6px;background:#17212b;border-radius:8px;padding:10px;text-align:center;"></div>
-              <button id="tg-preview-send" class="tg-qa-btn" style="width:100%;margin-top:10px;text-align:center;background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;font-weight:700;">
-                Enviar para o canal
-              </button>
-              <div class="tg-status" id="tg-preview-status" style="margin-top:6px;"></div>
-            </div>
-            <div id="tg-preview-placeholder" style="color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:20px 0;">Clique em Análise, GEX, Calendário ou Cupons para ver o preview</div>
           </div>
         </div><!-- /tg-preview-wrap -->
 
