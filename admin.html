@@ -210,6 +210,12 @@ a{text-decoration:none;color:inherit;}
 
 /* EMAIL COMPOSER */
 .email-composer{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:20px;}
+.toggle-switch{position:relative;display:inline-block;width:36px;height:20px;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.15);border-radius:20px;transition:.2s;}
+.toggle-slider:before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s;}
+.toggle-switch input:checked+.toggle-slider{background:var(--gold);}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(16px);}
 .ec-field{margin-bottom:14px;}
 .ec-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:6px;}
 .ec-field input,.ec-field select,.ec-field textarea{width:100%;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;outline:none;transition:.2s;resize:vertical;}
@@ -2015,8 +2021,18 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
     <!-- ══ SITE: NAVEGAÇÃO ══ -->
     <div class="admin-page" id="page-site-nav">
-      <div class="sec-hdr"><div class="sec-title">Navegação</div></div>
-      <div class="chart-card"><p style="color:var(--t2);">Em breve — editor de abas do menu.</p></div>
+      <div class="sec-hdr">
+        <div class="sec-title">Navegação — Abas do Menu</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-primary" onclick="saveSiteNav()">Salvar</button>
+        </div>
+      </div>
+
+      <div class="chart-card" style="margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px;">Edite o nome de cada aba do menu (em português). Use o toggle pra mostrar/esconder abas no site.</div>
+        <div id="nav-editor-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
     </div>
 
     <!-- ══ SITE: OFERTAS ══ -->
@@ -2789,6 +2805,7 @@ function renderPage(p){
     case 'telegram':       initTelegramSection(); break;
     case 'cms-faq':        renderCmsFaq(); break;
     case 'site-hero':      loadSiteHero(); break;
+    case 'site-nav':       loadSiteNav(); break;
     case 'cms-texts':      renderCmsTexts(); break;
     case 'i18n-editor':    renderI18nEditor(); break;
     case 'firmt-editor':   renderFirmTEditor(); break;
@@ -10256,6 +10273,85 @@ async function saveSiteHero(){
     }
   }
   toast(ok+' campos salvos'+(fail?' ('+fail+' erros)':'')+'!');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SITE: NAVEGAÇÃO — editar labels e visibilidade das abas do menu
+// ═══════════════════════════════════════════════════════════════════════
+const _navTabs = [
+  {id:'home',    i18n:'nav_ofertas',     label:'Ofertas'},
+  {id:'firms',   i18n:'nav_firmas',      label:'Firmas'},
+  {id:'plataformas', i18n:'nav_plataformas', label:'Plataformas'},
+  {id:'indicators',  i18n:'nav_indicadores', label:'Indicadores'},
+  {id:'compare', i18n:'nav_comparar',    label:'Comparar'},
+  {id:'calendar',i18n:'nav_calendario',  label:'Calendário Econômico'},
+  {id:'heatmap', i18n:'nav_heatmap',     label:'Mapa de Calor'},
+  {id:'analise', i18n:'nav_analise',     label:'Análise Diária'},
+  {id:'gamma',   i18n:'nav_gamma',       label:'Gamma (GEX)'},
+  {id:'guides',  i18n:'nav_guias',       label:'Guias'},
+  {id:'blog',    i18n:'nav_blog',        label:'Blog'},
+  {id:'calc',    i18n:'nav_calc',        label:'Calculadora'},
+  {id:'quiz',    i18n:'nav_quiz',        label:'Quiz'},
+  {id:'awards',  i18n:'nav_awards',      label:'Awards'},
+  {id:'live',    i18n:'nav_live',        label:'Live Room'},
+];
+let _navVisibility = {};
+
+async function loadSiteNav(){
+  // Load i18n labels
+  const keys = _navTabs.map(t=>t.i18n);
+  const{data}=await db.from('i18n').select('key,pt').in('key',keys);
+  const map={};
+  if(data) data.forEach(r=>{map[r.key]=r.pt||'';});
+
+  // Load visibility settings
+  const{data:vis}=await db.from('site_settings').select('value').eq('key','nav_visibility').maybeSingle();
+  _navVisibility = vis?.value ? (typeof vis.value==='string'?JSON.parse(vis.value):vis.value) : {};
+
+  const wrap=document.getElementById('nav-editor-list');
+  if(!wrap) return;
+  wrap.innerHTML='';
+
+  _navTabs.forEach((tab,i)=>{
+    const visible = _navVisibility[tab.id] !== false; // default visible
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,.06);border-radius:10px;border:1px solid rgba(255,255,255,.10);';
+    row.innerHTML=`
+      <span style="font-size:12px;color:var(--t3);min-width:24px;text-align:center;">${i+1}</span>
+      <label class="toggle-switch" style="flex-shrink:0;">
+        <input type="checkbox" id="nav-vis-${tab.id}" ${visible?'checked':''}>
+        <span class="toggle-slider"></span>
+      </label>
+      <div style="flex:1;">
+        <div style="font-size:10px;color:var(--t3);margin-bottom:4px;">${tab.id}</div>
+        <input id="nav-lbl-${tab.id}" class="filter-inp" style="width:100%;" value="${(map[tab.i18n]||tab.label).replace(/"/g,'&quot;')}" placeholder="${tab.label}">
+      </div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+async function saveSiteNav(){
+  let ok=0,fail=0;
+
+  // Save labels
+  for(const tab of _navTabs){
+    const el=document.getElementById('nav-lbl-'+tab.id);
+    if(!el) continue;
+    const{error}=await db.from('i18n').update({pt:el.value,updated_at:new Date().toISOString()}).eq('key',tab.i18n);
+    if(error){fail++;console.error('nav save:',tab.i18n,error);} else ok++;
+  }
+
+  // Save visibility
+  const vis={};
+  _navTabs.forEach(tab=>{
+    const cb=document.getElementById('nav-vis-'+tab.id);
+    if(cb) vis[tab.id]=cb.checked;
+  });
+  const{error:visErr}=await db.from('site_settings').upsert({key:'nav_visibility',value:vis,updated_at:new Date().toISOString()},{onConflict:'key'});
+  if(visErr){fail++;console.error('nav visibility save:',visErr);}
+
+  toast(ok+' abas salvas'+(fail?' ('+fail+' erros)':'')+'!');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
