@@ -21,7 +21,8 @@ const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 
 const CALENDAR_URL = `${SUPABASE_URL}/functions/v1/economic-calendar`;
 const CALENDAR_PAGE = 'https://www.marketscoupons.com/calendar';
-const TEMPLATE = path.join(root, 'templates', 'criativo_evento.html');
+const TEMPLATE_UPCOMING = path.join(root, 'templates', 'criativo_evento 001.html');
+const TEMPLATE_RELEASED = path.join(root, 'templates', 'criativo_evento 002.html');
 const OUT_PNG = path.join(root, 'img', 'event-alert.png');
 const STATE_FILE = path.join(root, '.firecrawl', 'events-sent.json');
 
@@ -116,71 +117,114 @@ function marketContext(e, result) {
 }
 
 async function renderEvent(event, mode) {
+  const tpl = mode === 'upcoming' ? TEMPLATE_UPCOMING : TEMPLATE_RELEASED;
   const browser = await chromium.launch();
   const ctx = await browser.newContext({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 2 });
   const page = await ctx.newPage();
-  await page.goto('file://' + TEMPLATE.replace(/\\/g, '/'), { waitUntil: 'networkidle' });
+  await page.goto('file://' + tpl.replace(/\\/g, '/'), { waitUntil: 'networkidle' });
 
-  await page.evaluate(({ e, mode }) => {
-    const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
-    const setHTML = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.innerHTML = val; };
+  if (mode === 'upcoming') {
+    // Template 001 — card horizontal layout
+    await page.evaluate(({ e }) => {
+      const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
+      const setHTML = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.innerHTML = val; };
 
-    // Header / event identity
-    set('.event-name', e.event || '');
-    const country = e.country ? e.country.replace(/\b\w/g, c => c.toUpperCase()) : '';
-    const ref = (e.reference || '').toUpperCase();
-    setHTML('.event-sub', `${country} &nbsp;&bull;&nbsp; ${ref}`);
-    set('.time-val', (e.time || '').replace(/\s*(AM|PM)/i, ''));
-    set('.ev-date', e.dateFmt || '');
-
-    // Currency badge — reset classes
-    const cb = document.querySelector('.cur-badge');
-    if (cb) {
-      cb.textContent = e.currency || '';
-      cb.className = 'cur-badge';
-      const map = { CNY:'cny', USD:'usd', EUR:'eur', JPY:'jpy', GBP:'gbp' };
-      const cls = map[e.currency] || 'usd';
-      cb.classList.add(cls);
-    }
-
-    const actualCard = document.querySelectorAll('.data-card')[0];
-    const forecastCard = document.querySelectorAll('.data-card')[1];
-    const previousCard = document.querySelectorAll('.data-card')[2];
-    const curLbl = e.currency || '';
-
-    if (forecastCard) {
-      const v = forecastCard.querySelector('.data-val');
-      if (v) { v.innerHTML = e.forecast ? `${curLbl}<br>${e.forecast}` : '—'; v.className = 'data-val warn'; }
-    }
-    if (previousCard) {
-      const v = previousCard.querySelector('.data-val');
-      if (v) { v.innerHTML = e.previous ? `${curLbl}<br>${e.previous}` : '—'; v.className = 'data-val'; v.style.color = 'rgba(255,255,255,.6)'; }
-    }
-
-    if (mode === 'upcoming') {
-      // Alert pill → yellow UPCOMING
-      const albl = document.querySelector('.albl');
-      if (albl) { albl.textContent = `UPCOMING IN ${e.leadMin} MIN`; albl.style.color = '#f5c518'; }
+      // Header label → UPCOMING
+      set('.ch-label', `High Impact Event — Upcoming in ${e.leadMin} Min`);
+      // Make header yellow for upcoming
       const adot = document.querySelector('.adot');
-      if (adot) { adot.style.background = '#f5c518'; adot.style.boxShadow = '0 0 14px rgba(245,197,24,.9)'; }
-      const ap = document.querySelector('.alert-pill');
-      if (ap) { ap.style.background = 'rgba(245,197,24,.1)'; ap.style.borderColor = 'rgba(245,197,24,.3)'; }
+      if (adot) { adot.style.background = '#f5c518'; adot.style.boxShadow = '0 0 10px rgba(245,197,24,.9)'; }
+      const accent = document.querySelector('.accent');
+      if (accent) accent.style.background = 'linear-gradient(90deg,#f5c518 0%,#ffdd57 50%,rgba(245,197,24,0) 100%)';
+      const card = document.querySelector('.card');
+      if (card) card.style.borderColor = 'rgba(245,197,24,.18)';
 
-      // Actual → Pending, badge → yellow "In X Min"
-      if (actualCard) {
-        const v = actualCard.querySelector('.data-val');
-        if (v) { v.innerHTML = 'Pending'; v.className = 'data-val na'; }
-        const badge = actualCard.querySelector('.result-badge');
-        if (badge) {
-          badge.className = 'result-badge inline';
-          badge.innerHTML = `⏱ In ${e.leadMin} Min`;
-        }
+      // Time
+      set('.time-val', (e.time || '').replace(/\s*(AM|PM)/i, ''));
+
+      // Currency badge
+      const cb = document.querySelector('.cur');
+      if (cb) {
+        cb.textContent = e.currency || '';
+        cb.className = 'cur';
+        const map = { CNY:'cny', USD:'usd', EUR:'eur', JPY:'jpy', GBP:'gbp' };
+        cb.classList.add(map[e.currency] || 'usd');
       }
 
-      // Market context → prep message
-      setHTML('.mc-txt', `Scheduled at <span>${e.time || ''}</span>. Prepare for potential <span>${e.currency} volatility</span> — position before release.`);
-    } else {
-      // released
+      // Event name + meta
+      set('.ev-name', e.event || '');
+      const country = e.country ? e.country.replace(/\b\w/g, c => c.toUpperCase()) : '';
+      set('.ev-period', (e.reference || '').toUpperCase());
+      set('.ev-country', country);
+
+      // Data cells
+      const cells = document.querySelectorAll('.data-cell');
+      if (cells[0]) { // Actual → Pending
+        const v = cells[0].querySelector('.dc-val');
+        if (v) { v.innerHTML = 'Pending'; v.className = 'dc-val muted'; v.style.fontSize = '22px'; }
+      }
+      if (cells[1]) { // Forecast
+        const v = cells[1].querySelector('.dc-val');
+        if (v) { v.innerHTML = e.forecast ? `${e.currency}<br>${e.forecast}` : '—'; v.className = 'dc-val warn'; }
+      }
+      if (cells[2]) { // Previous
+        const v = cells[2].querySelector('.dc-val');
+        if (v) { v.innerHTML = e.previous ? `${e.currency}<br>${e.previous}` : '—'; v.className = 'dc-val muted'; }
+      }
+
+      // Bottom row → upcoming style
+      const missBadge = document.querySelector('.miss-badge');
+      if (missBadge) {
+        const dot = missBadge.querySelector('.miss-dot');
+        if (dot) { dot.style.background = '#f5c518'; }
+        const lbl = missBadge.querySelector('.miss-lbl');
+        if (lbl) { lbl.textContent = `In ${e.leadMin} Min`; lbl.style.color = '#f5c518'; }
+        missBadge.style.background = 'rgba(245,197,24,.1)';
+        missBadge.style.borderColor = 'rgba(245,197,24,.25)';
+      }
+      // Diff text
+      const diffText = missBadge?.parentNode?.querySelector('div:nth-child(2)');
+      if (diffText) diffText.innerHTML = `Scheduled at <span style="color:#f5c518;font-weight:700;">${e.time || ''}</span>`;
+
+      // Context
+      const ctx = document.querySelector('.context');
+      if (ctx) ctx.innerHTML = `Prepare for potential <span>${e.currency} volatility</span> — position before release.`;
+    }, { e: event });
+  } else {
+    // Template 002 — vertical centered layout (released)
+    await page.evaluate(({ e }) => {
+      const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
+      const setHTML = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.innerHTML = val; };
+
+      set('.event-name', e.event || '');
+      const country = e.country ? e.country.replace(/\b\w/g, c => c.toUpperCase()) : '';
+      const ref = (e.reference || '').toUpperCase();
+      setHTML('.event-sub', `${country} &nbsp;&bull;&nbsp; ${ref}`);
+      set('.time-val', (e.time || '').replace(/\s*(AM|PM)/i, ''));
+      set('.ev-date', e.dateFmt || '');
+
+      const cb = document.querySelector('.cur-badge');
+      if (cb) {
+        cb.textContent = e.currency || '';
+        cb.className = 'cur-badge';
+        const map = { CNY:'cny', USD:'usd', EUR:'eur', JPY:'jpy', GBP:'gbp' };
+        cb.classList.add(map[e.currency] || 'usd');
+      }
+
+      const actualCard = document.querySelectorAll('.data-card')[0];
+      const forecastCard = document.querySelectorAll('.data-card')[1];
+      const previousCard = document.querySelectorAll('.data-card')[2];
+      const curLbl = e.currency || '';
+
+      if (forecastCard) {
+        const v = forecastCard.querySelector('.data-val');
+        if (v) { v.innerHTML = e.forecast ? `${curLbl}<br>${e.forecast}` : '—'; v.className = 'data-val warn'; }
+      }
+      if (previousCard) {
+        const v = previousCard.querySelector('.data-val');
+        if (v) { v.innerHTML = e.previous ? `${curLbl}<br>${e.previous}` : '—'; v.className = 'data-val'; v.style.color = 'rgba(255,255,255,.6)'; }
+      }
+
       const albl = document.querySelector('.albl');
       if (albl) albl.textContent = 'ECONOMIC CALENDAR — RELEASED';
 
@@ -198,8 +242,8 @@ async function renderEvent(event, mode) {
       }
 
       setHTML('.mc-txt', e.contextHtml || '');
-    }
-  }, { e: event, mode });
+    }, { e: event });
+  }
 
   await page.waitForTimeout(400);
   await page.screenshot({ path: OUT_PNG, clip: { x: 0, y: 0, width: 1080, height: 1350 }, type: 'png' });
