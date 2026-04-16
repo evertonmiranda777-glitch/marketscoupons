@@ -5280,7 +5280,8 @@ const BOT_SYSTEM=`You are Max, the mascot and assistant of MarketsCoupons — a 
 VOICE (critical):
 - Talk like a sharp trader friend, casual and direct. Never corporate.
 - NEVER open with "Hello!", "Hi!", "Sure!", "Of course!", "Great question!" — go straight to the answer.
-- Short sentences. Max 100 words per reply. No walls of text.
+- Be TRANSPARENT: always name specific firms, specific coupons, specific numbers. Never vague "there are several coupons available" — LIST THEM.
+- NEVER send incomplete answers. If listing firms/coupons, list ALL relevant ones. Better a longer complete answer than a cut-off one. Max 300 words.
 - First person: "I'd go with Apex", not "We recommend Apex".
 - Light humor ok. Never sarcastic about losses or money.
 - No emojis in replies.
@@ -5379,7 +5380,48 @@ function toggleBot(){
   track('bot_toggle',{state:botOpen?'open':'close'});
 }
 function openBot(){botOpen=false;toggleBot();}
-function qmsg(t){_askingName=false;document.getElementById('bot-inp').value=t;sendBot();track('bot_quick_msg',{message:t.slice(0,50)});}
+const BOT_QUICK_ANSWERS={
+  'bot_q_coupons':{
+    pt:`Sim! Esses são os cupons ativos agora:\n\n**APEX** — cupom **MARKET** → 90% OFF vitalício (25K sai por $19.90)\n**BULENOX** — cupom **MARKET89** → 89% OFF vitalício (25K sai por $15.95)\n**EARN2TRADE** — cupom **MARKETSCOUPONS** → 60% OFF\n**TAKE PROFIT TRADER** — cupom **MARKET40** → 40% OFF\n**FUNDEDNEXT** — cupom **FNF30** → 30% OFF\n**CTI** — cupom **APR30** → 30% OFF\n**FUNDINGPIPS** — cupom **31985EAA** → 20% OFF\n**BRIGHTFUNDED** — cupom na aba Firms → 20% OFF\n**E8 MARKETS** — cupom **MARKET** → 10% OFF\n**FTMO** e **THE5ERS** não tem cupom, mas oferecem trial grátis.\n\nTodos na aba **Offers** com link direto.`,
+    en:`Yes! Here are the active coupons right now:\n\n**APEX** — coupon **MARKET** → 90% OFF lifetime (25K for $19.90)\n**BULENOX** — coupon **MARKET89** → 89% OFF lifetime (25K for $15.95)\n**EARN2TRADE** — coupon **MARKETSCOUPONS** → 60% OFF\n**TAKE PROFIT TRADER** — coupon **MARKET40** → 40% OFF\n**FUNDEDNEXT** — coupon **FNF30** → 30% OFF\n**CTI** — coupon **APR30** → 30% OFF\n**FUNDINGPIPS** — coupon **31985EAA** → 20% OFF\n**BRIGHTFUNDED** — coupon on Firms tab → 20% OFF\n**E8 MARKETS** — coupon **MARKET** → 10% OFF\n**FTMO** and **THE5ERS** have no coupon but offer a free trial.\n\nAll on the **Offers** tab with direct links.`,
+    es:`¡Sí! Estos son los cupones activos ahora:\n\n**APEX** — cupón **MARKET** → 90% OFF vitalicio (25K por $19.90)\n**BULENOX** — cupón **MARKET89** → 89% OFF vitalicio\n**EARN2TRADE** — cupón **MARKETSCOUPONS** → 60% OFF\n**TAKE PROFIT TRADER** — cupón **MARKET40** → 40% OFF\n**FUNDEDNEXT** — cupón **FNF30** → 30% OFF\n**CTI** — cupón **APR30** → 30% OFF\n**FUNDINGPIPS** — cupón **31985EAA** → 20% OFF\n**BRIGHTFUNDED** — cupón en pestaña Firms → 20% OFF\n**E8 MARKETS** — cupón **MARKET** → 10% OFF\n**FTMO** y **THE5ERS** no tienen cupón pero ofrecen prueba gratis.\n\nTodo en la pestaña **Offers**.`
+  },
+  'bot_q_firm':{
+    pt:`Depende do teu perfil. Vou direto ao ponto:\n\n**Futures com maior desconto?** Apex — cupom **MARKET**, 90% OFF vitalício. 25K por $19.90. 100% profit split.\n\n**Forex com melhor split?** FundedNext — 95% split, cupom **FNF30** 30% OFF. Ou The5ers — 100% split, scaling até $4M.\n\n**Menor preço pra começar?** CTI tem conta de $1. Bulenox 25K por $15.95.\n\n**Sem regra de consistência?** Bulenox e Apex.\n\n**Pra decidir melhor:** vai na aba **Quiz** (6 perguntas e te recomendo a ideal) ou **Comparator** pra colocar lado a lado.`,
+    en:`Depends on your profile. Straight to the point:\n\n**Futures with biggest discount?** Apex — coupon **MARKET**, 90% OFF lifetime. 25K for $19.90. 100% profit split.\n\n**Forex with best split?** FundedNext — 95% split, coupon **FNF30** 30% OFF. Or The5ers — 100% split, scaling to $4M.\n\n**Cheapest to start?** CTI has a $1 account. Bulenox 25K for $15.95.\n\n**No consistency rule?** Bulenox and Apex.\n\n**To decide better:** go to the **Quiz** tab (6 questions, I'll recommend the best fit) or **Comparator** to compare side by side.`,
+    es:`Depende de tu perfil. Directo al grano:\n\n**Futures con mayor descuento?** Apex — cupón **MARKET**, 90% OFF vitalicio. 25K por $19.90. 100% profit split.\n\n**Forex con mejor split?** FundedNext — 95% split, cupón **FNF30** 30% OFF. O The5ers — 100% split, scaling hasta $4M.\n\n**Más barato para empezar?** CTI tiene cuenta de $1. Bulenox 25K por $15.95.\n\n**Sin regla de consistencia?** Bulenox y Apex.\n\n**Para decidir mejor:** ve a la pestaña **Quiz** o al **Comparator**.`
+  },
+  'bot_q_risk':{
+    pt:`As dicas mais importantes pra passar na avaliação:\n\n**1. Gestão de risco acima de tudo.** Use a aba **Position Size Calculator** pra calcular o lote certo. Nunca arrisque mais de 1-2% por trade.\n\n**2. Conheça as regras da sua firma.** Cada uma tem drawdown diferente (trailing, EOD, fixo). Se não souber a diferença, vai na aba **Guides**.\n\n**3. Tenha um plano antes de operar.** Horários, ativos, setup — tudo definido antes de abrir o trade. Sem improviso.\n\n**4. Não tente fazer a meta em 1 dia.** Consistência vale mais que um trade home run. Várias firmas exigem mínimo de dias.\n\n**5. Fique atento ao calendário econômico.** Eventos 3 estrelas movem o mercado. Use a aba **Economic Calendar** pra não ser pego de surpresa.\n\nA aba **Guides** tem material completo sobre cada tópico.`,
+    en:`Key tips to pass the evaluation:\n\n**1. Risk management above all.** Use the **Position Size Calculator** tab to calculate the right lot size. Never risk more than 1-2% per trade.\n\n**2. Know your firm's rules.** Each one has different drawdown (trailing, EOD, fixed). Check the **Guides** tab if unsure.\n\n**3. Have a plan before trading.** Hours, assets, setup — all defined before opening a trade. No improvising.\n\n**4. Don't try to hit the target in 1 day.** Consistency matters more than a home run trade. Many firms require minimum days.\n\n**5. Watch the economic calendar.** 3-star events move the market. Use the **Economic Calendar** tab to stay prepared.\n\nThe **Guides** tab has complete material on each topic.`,
+    es:`Tips clave para pasar la evaluación:\n\n**1. Gestión de riesgo ante todo.** Usa la pestaña **Position Size Calculator**. Nunca arriesgues más del 1-2% por trade.\n\n**2. Conoce las reglas de tu firma.** Cada una tiene drawdown diferente. Revisa la pestaña **Guides**.\n\n**3. Ten un plan antes de operar.** Sin improvisar.\n\n**4. No intentes la meta en 1 día.** Consistencia > home run.\n\n**5. Vigila el calendario económico.** Eventos 3 estrellas mueven el mercado. Usa **Economic Calendar**.\n\nLa pestaña **Guides** tiene material completo.`
+  },
+  'bot_q_tips':{
+    pt:`As regras variam por firma, mas essas são universais — quebre uma e perde a conta:\n\n**1. Drawdown máximo.** Pode ser trailing (acompanha seu lucro), EOD (calcula no fim do dia) ou fixo. Entenda qual a sua firma usa. Perde a conta se ultrapassar.\n\n**2. Meta de lucro.** Geralmente 6-10% do tamanho da conta. Sem atingir, não passa.\n\n**3. Dias mínimos de trading.** Apex: 1 dia. Earn2Trade: 10 dias. TPT: 5 dias. Não adianta bater a meta em 1 trade se a firma exige 10 dias.\n\n**4. Proibições comuns:** copy trading entre contas, arbitragem de latência, manipulação de mercado. Cada firma tem sua lista.\n\n**5. News trading.** Apex e Bulenox permitem. FTMO e Earn2Trade **não**. Operar em CPI/NFP sem saber disso = ban.\n\nNa aba **Firms**, cada firma tem todas as regras detalhadas.`,
+    en:`Rules vary by firm, but these are universal — break one and you lose the account:\n\n**1. Max drawdown.** Can be trailing (follows your profit), EOD (calculated at end of day), or fixed. Understand which your firm uses. Exceeding it = account lost.\n\n**2. Profit target.** Usually 6-10% of account size. Must hit it to pass.\n\n**3. Minimum trading days.** Apex: 1 day. Earn2Trade: 10 days. TPT: 5 days. No point hitting target in 1 trade if firm requires 10 days.\n\n**4. Common bans:** copy trading between accounts, latency arbitrage, market manipulation.\n\n**5. News trading.** Apex and Bulenox allow it. FTMO and Earn2Trade **don't**. Trading CPI/NFP without knowing this = ban.\n\nOn the **Firms** tab, each firm has all rules detailed.`,
+    es:`Las reglas varían por firma, pero estas son universales — rompe una y pierdes la cuenta:\n\n**1. Drawdown máximo.** Trailing, EOD o fijo. Entiende cuál usa tu firma.\n\n**2. Meta de lucro.** Generalmente 6-10%. Sin alcanzarla, no pasas.\n\n**3. Días mínimos.** Apex: 1. Earn2Trade: 10. TPT: 5.\n\n**4. Prohibiciones:** copy trading, arbitraje de latencia, manipulación.\n\n**5. News trading.** Apex y Bulenox sí. FTMO y Earn2Trade **no**.\n\nEn la pestaña **Firms** están todas las reglas detalladas.`
+  }
+};
+function getQuickAnswer(qKey){
+  const lang=typeof _currentLang!=='undefined'?_currentLang:'en';
+  const a=BOT_QUICK_ANSWERS[qKey];
+  if(!a)return null;
+  return a[lang]||a.en||a.pt||null;
+}
+function qmsg(txt,qKey){
+  _askingName=false;
+  const quick=qKey?getQuickAnswer(qKey):null;
+  document.getElementById('bot-quick').style.display='none';
+  addBMsg('usr',txt);
+  if(quick){
+    setTimeout(()=>addBMsg('bot',quick),300);
+    track('bot_quick_msg',{message:txt.slice(0,50),source:'preset'});
+  }else{
+    document.getElementById('bot-inp').value=txt;
+    sendBot();
+    track('bot_quick_msg',{message:txt.slice(0,50)});
+  }
+}
 function addBMsg(role,text){const c=document.getElementById('bot-msgs');const tm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='bmsg '+role;const safe=role==='usr'?text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):text;d.innerHTML=`<div class="bbbl">${safe.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div><span class="btime">${tm}</span>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
 async function sendBot(){
   const inp=document.getElementById('bot-inp');const txt=inp.value.trim();if(!txt)return;

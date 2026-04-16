@@ -4058,10 +4058,10 @@ document.addEventListener('DOMContentLoaded',function(){
  </div>
  <div class="bot-typing" id="bot-typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>
  <div class="bot-quick" id="bot-quick">
- <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_firm">Which firm?</button>
- <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_coupons">Best coupons</button>
- <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_risk">Risk calc</button>
- <button class="bq" onclick="qmsg(this.textContent)" data-i18n="bot_q_tips">Tips to pass</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_firm')" data-i18n="bot_q_firm">Which firm?</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_coupons')" data-i18n="bot_q_coupons">Best coupons</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_risk')" data-i18n="bot_q_risk">Risk calc</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_tips')" data-i18n="bot_q_tips">Tips to pass</button>
  </div>
  <div class="bot-inp-row">
  <input class="bot-inp" id="bot-inp" data-i18n-placeholder="bot_placeholder" placeholder="Type your question..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendBot();}">
