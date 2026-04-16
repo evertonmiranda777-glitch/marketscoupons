@@ -2406,6 +2406,12 @@ function renderAwards(){
     {trophy:_asvg('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>','#a78bfa'),catKey:'aw_cat_melhor_iniciante',firmId:'ftmo',reasonKey:'aw_reason_ftmo_iniciante',value:'Free Trial',ribbonKey:'aw_ribbon_iniciante'},
     {trophy:_asvg('<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>','#F97316'),catKey:'aw_cat_melhor_custo',firmId:'e2t',reasonKey:'aw_reason_e2t_custo',value:'$400K',ribbonKey:'aw_ribbon_custo'},
     {trophy:_asvg('<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>'),catKey:'aw_cat_melhor_rating',firmId:'bulenox',reasonKey:'aw_reason_bulenox_rating',value:'4.8',ribbonKey:'aw_ribbon_rating'},
+    {trophy:_asvg('<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>','#60a5fa'),catKey:'aw_cat_mais_plataformas',firmId:'tpt',reasonKey:'aw_reason_tpt_plataformas',value:'15+',ribbonKey:'aw_ribbon_plataformas'},
+    {trophy:_asvg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','#a78bfa'),catKey:'aw_cat_maior_scaling',firmId:'the5ers',reasonKey:'aw_reason_the5ers_scaling',value:'$4M',ribbonKey:'aw_ribbon_scaling'},
+    {trophy:_asvg('<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>','#22c55e'),catKey:'aw_cat_melhor_payout',firmId:'fundingpips',reasonKey:'aw_reason_fundingpips_payout',value:'100% Split',ribbonKey:'aw_ribbon_payout'},
+    {trophy:_asvg('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>','#F97316'),catKey:'aw_cat_payout_garantido',firmId:'brightfunded',reasonKey:'aw_reason_brightfunded_payout',value:'24h',ribbonKey:'aw_ribbon_payout24h'},
+    {trophy:_asvg('<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>','#60a5fa'),catKey:'aw_cat_mais_versatil',firmId:'e8',reasonKey:'aw_reason_e8_versatil',value:'3 mercados',ribbonKey:'aw_ribbon_versatil'},
+    {trophy:_asvg('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>','#22c55e'),catKey:'aw_cat_menor_entrada',firmId:'cti',reasonKey:'aw_reason_cti_entrada',value:'$1',ribbonKey:'aw_ribbon_entrada'},
   ];
   el.innerHTML=categories.map(c=>{
     const f=FIRMS.find(x=>x.id===c.firmId);
@@ -3943,12 +3949,26 @@ function qnext(n){document.getElementById('qs'+qStep).classList.remove('active')
 function qfinish(){
   setTimeout(()=>{
     document.getElementById('qs4').classList.remove('active');document.getElementById('qs-res').classList.add('active');
-    const market=qA[0]||'futures';const priority=qA[4]||'discount';
-    let rec;
-    if(market==='forex')rec=FIRMS.find(f=>f.id==='ftmo');
-    else if(priority==='discount'||priority==='speed')rec=FIRMS.find(f=>f.id==='bulenox');
-    else if(priority==='split')rec=FIRMS.find(f=>f.id==='fn');
-    else rec=FIRMS.find(f=>f.id==='tpt');
+    const market=qA[0]||'futures';const budget=qA[1]||'medium';const exp=qA[2]||'beginner';const dd=qA[3]||'any';const priority=qA[4]||'discount';
+    const scores={};
+    FIRMS.forEach(f=>{
+      let s=0;
+      if(market==='forex'&&f.type==='Forex')s+=3; else if(market==='forex'&&f.type!=='Forex')s-=2;
+      if(market==='futures'&&(f.type==='Futuros'||f.tags?.includes('Futuros')))s+=3; else if(market==='futures'&&f.type==='Forex'&&!f.tags?.includes('Futuros'))s-=2;
+      if(market==='both')s+=1;
+      if(budget==='low'){const cheapest=f.prices?.[0];if(cheapest){const p=parseFloat(String(cheapest.n).replace(/[^0-9.]/g,''));if(p&&p<30)s+=2;else if(p&&p<60)s+=1;}}
+      if(budget==='high'&&f.scaling)s+=1;
+      if(exp==='beginner'){if(f.id==='ftmo'||f.id==='e2t')s+=2;if(f.minDays<=1)s+=1;}
+      if(exp==='advanced'&&f.scaling)s+=1;
+      if(dd==='trailing'&&f.drawdown?.includes('Trail'))s+=2; else if(dd==='static'&&(f.drawdown?.includes('Static')||f.drawdown?.includes('Fixed')))s+=2; else if(dd==='eod'&&f.drawdown?.includes('EOD'))s+=2;
+      if(priority==='discount')s+=Math.min(f.discount/20,5);
+      if(priority==='split'){const sp=parseInt(f.split);if(sp>=100)s+=3;else if(sp>=95)s+=2;else if(sp>=90)s+=1;}
+      if(priority==='speed'){if(f.day1Payout)s+=2;if(f.minDays<=1)s+=2;if(f.payoutSpeed==='fast')s+=1;}
+      if(priority==='rules'){if(f.newsTrading)s+=1;if(!f.consistency||f.consistency==='Não')s+=1;if(f.minDays<=1)s+=1;}
+      scores[f.id]=s;
+    });
+    const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+    let rec=FIRMS.find(f=>f.id===sorted[0][0]);
     if(!rec)rec=FIRMS[0];
     if(!rec)return;
     document.getElementById('q-res-content').innerHTML=`<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec,'28px','11px')} ${rec.name}</span></div><div class="qr-desc">${(I18N[_currentLang]?.['firm_desc_'+rec.id]||I18N.pt['firm_desc_'+rec.id]||rec.desc||'')}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
