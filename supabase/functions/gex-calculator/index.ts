@@ -29,6 +29,52 @@ interface OptionRecord {
   strike: number;
   type: "C" | "P";
   expiration: string;
+  iv: number;
+  delta: number;
+}
+
+// Standard normal PDF and CDF
+function normPDF(x: number): number {
+  return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+}
+function normCDF(x: number): number {
+  const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x) / Math.sqrt(2);
+  const t = 1.0 / (1.0 + p * x);
+  const y = 1.0 - (((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return 0.5 * (1.0 + sign * y);
+}
+
+function calcD1(S: number, K: number, T: number, r: number, sigma: number): number {
+  if (T <= 0 || sigma <= 0) return 0;
+  return (Math.log(S / K) + (r + 0.5 * sigma * sigma) * T) / (sigma * Math.sqrt(T));
+}
+
+// Vanna = dDelta/dVol = (d1 * d2 * normPDF(d1)) / (S * sigma * sqrt(T)) ... simplified
+// per strike: vanna_exposure = vanna * OI * CONTRACT_SIZE * spot
+function calcVanna(S: number, K: number, T: number, sigma: number, oi: number, type: "C"|"P"): number {
+  if (T <= 0 || sigma <= 0) return 0;
+  const r = 0.045;
+  const sqrtT = Math.sqrt(T);
+  const d1 = calcD1(S, K, T, r, sigma);
+  const d2 = d1 - sigma * sqrtT;
+  const vanna = -normPDF(d1) * d2 / (S * sigma * sqrtT);
+  const sign = type === "P" ? -1 : 1;
+  return sign * vanna * oi * CONTRACT_SIZE * S;
+}
+
+// Charm = dDelta/dTime (theta of delta)
+// charm = -normPDF(d1) * (2*r*T - d2*sigma*sqrt(T)) / (2*T*sigma*sqrt(T))
+function calcCharm(S: number, K: number, T: number, sigma: number, oi: number, type: "C"|"P"): number {
+  if (T <= 0 || sigma <= 0) return 0;
+  const r = 0.045;
+  const sqrtT = Math.sqrt(T);
+  const d1 = calcD1(S, K, T, r, sigma);
+  const d2 = d1 - sigma * sqrtT;
+  const charm = -normPDF(d1) * (2 * r * T - d2 * sigma * sqrtT) / (2 * T * sigma * sqrtT);
+  const sign = type === "P" ? -1 : 1;
+  return sign * charm * oi * CONTRACT_SIZE;
 }
 
 async function fetchCBOE(cboeSymbol: string): Promise<{ spot: number; options: OptionRecord[] } | null> {
@@ -70,7 +116,9 @@ async function fetchCBOE(cboeSymbol: string): Promise<{ spot: number; options: O
 
       if (!strike || strike <= 0) continue;
 
-      // Extract expiration date from option symbol (format: TICKER YYMMDD C/P STRIKE)
+      const iv = parseFloat(opt.iv) || 0;
+      const delta = parseFloat(opt.delta) || 0;
+
       let expiration = "";
       const dateMatch = sym.match(/(\d{6})[CP]/);
       if (dateMatch) {
@@ -78,7 +126,7 @@ async function fetchCBOE(cboeSymbol: string): Promise<{ spot: number; options: O
         expiration = `20${d.slice(0,2)}-${d.slice(2,4)}-${d.slice(4,6)}`;
       }
 
-      options.push({ option: sym, gamma: g, open_interest: oi, strike, type, expiration });
+      options.push({ option: sym, gamma: g, open_interest: oi, strike, type, expiration, iv, delta });
     }
 
     console.log(cboeSymbol + ": spot=" + spot + " options=" + options.length);
@@ -237,6 +285,55 @@ function buildExpirationBreakdown(spot: number, options: OptionRecord[], expirat
   return breakdown;
 }
 
+function calculateVannaCharm(spot: number, options: OptionRecord[], today: string) {
+  const minS = spot * 0.90;
+  const maxS = spot * 1.10;
+  const nowMs = new Date(today + "T16:00:00Z").getTime();
+
+  const vannaMap: Record<number, number> = {};
+  const charmMap: Record<number, number> = {};
+  let totalVanna = 0, totalCharm = 0;
+
+  for (const opt of options) {
+    if (opt.strike < minS || opt.strike > maxS || !opt.iv || !opt.expiration) continue;
+    const expMs = new Date(opt.expiration + "T16:00:00Z").getTime();
+    const T = (expMs - nowMs) / (365.25 * 24 * 3600 * 1000);
+    if (T <= 0.001) continue;
+
+    const v = calcVanna(spot, opt.strike, T, opt.iv, opt.open_interest, opt.type);
+    const c = calcCharm(spot, opt.strike, T, opt.iv, opt.open_interest, opt.type);
+    const k = Math.round(opt.strike);
+
+    if (!vannaMap[k]) vannaMap[k] = 0;
+    if (!charmMap[k]) charmMap[k] = 0;
+    vannaMap[k] += v;
+    charmMap[k] += c;
+    totalVanna += v;
+    totalCharm += c;
+  }
+
+  const strikes = [...new Set([...Object.keys(vannaMap), ...Object.keys(charmMap)])].map(Number).sort((a, b) => a - b);
+  const maxAbsVanna = Math.max(...strikes.map(k => Math.abs(vannaMap[k] || 0)), 1);
+  const maxAbsCharm = Math.max(...strikes.map(k => Math.abs(charmMap[k] || 0)), 1);
+
+  const topStrikes = strikes
+    .map(k => ({
+      strike: k,
+      vanna: Math.round((vannaMap[k] || 0) / 1e6),
+      charm: Math.round((charmMap[k] || 0) / 1e6),
+    }))
+    .filter(s => Math.abs(s.vanna) > 0 || Math.abs(s.charm) > 0)
+    .sort((a, b) => Math.abs(b.vanna) + Math.abs(b.charm) - Math.abs(a.vanna) - Math.abs(a.charm))
+    .slice(0, 40)
+    .sort((a, b) => a.strike - b.strike);
+
+  return {
+    totalVanna: Math.round(totalVanna / 1e6),
+    totalCharm: Math.round(totalCharm / 1e6),
+    topStrikes,
+  };
+}
+
 async function processTicker(t: typeof TICKERS[0], today: string): Promise<string> {
   const data = await fetchCBOE(t.cboe);
   if (!data) return t.site + ": no data";
@@ -244,6 +341,9 @@ async function processTicker(t: typeof TICKERS[0], today: string): Promise<strin
   const result = calculateGEX(data.spot, data.options);
   const expirations = getExpirations(data.options);
   const expBreakdown = buildExpirationBreakdown(data.spot, data.options, expirations);
+
+  // Vanna & Charm per strike
+  const vannaCharm = calculateVannaCharm(data.spot, data.options, today);
 
   const row = {
     date: today,
@@ -259,6 +359,7 @@ async function processTicker(t: typeof TICKERS[0], today: string): Promise<strin
     top_strikes: result.topStrikes,
     expirations: expirations.slice(0, 12),
     exp_breakdown: expBreakdown,
+    vanna_charm: vannaCharm,
     updated_at: new Date().toISOString(),
   };
 
@@ -271,7 +372,7 @@ async function processTicker(t: typeof TICKERS[0], today: string): Promise<strin
 
 Deno.serve(async function (req: Request) {
   const today = new Date().toISOString().slice(0, 10);
-  console.log("=== GEX Calculator v5 " + today + " ===");
+  console.log("=== GEX Calculator v6 " + today + " ===");
 
   const results: string[] = [];
   for (const t of TICKERS) {

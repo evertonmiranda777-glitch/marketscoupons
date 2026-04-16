@@ -6323,7 +6323,9 @@ function gxSwitchView(v){
   document.querySelectorAll('.gx-vtab').forEach(b=>b.classList.toggle('sel',b.dataset.v===v));
   document.getElementById('gx-grid').style.display=v==='chart'?'block':'none';
   document.getElementById('gx-heatmap').style.display=v==='heatmap'?'block':'none';
+  document.getElementById('gx-vanna').style.display=v==='vanna'?'block':'none';
   if(v==='heatmap') renderGEXHeatmap();
+  if(v==='vanna') renderGEXVanna();
 }
 
 function renderGEXHeatmap(){
@@ -6404,6 +6406,62 @@ function renderGEXHeatmap(){
   }).join('');
 }
 
+function renderGEXVanna(){
+  const container=document.getElementById('gx-vanna');if(!container)return;
+  const items=_gexAllData.filter(d=>_gexSelectedTickers.includes(d.ticker));
+  if(!items.length){container.innerHTML='<div style="color:var(--t2);text-align:center;padding:40px;">No data</div>';return;}
+
+  const names={ES:'S&P 500',NQ:'Nasdaq 100',SPY:'SPY',QQQ:'QQQ',AAPL:'AAPL',TSLA:'TSLA',NVDA:'NVDA',MSFT:'MSFT',AMZN:'AMZN',META:'META',GOOGL:'GOOGL',GLD:'GLD'};
+
+  container.innerHTML=items.map(item=>{
+    const vc=item.vanna_charm;
+    if(!vc||!vc.topStrikes||!vc.topStrikes.length) return `<div class="gx-vc-wrap"><div class="gx-vc-title">${item.ticker}</div><div style="color:var(--t3);font-size:12px;padding:20px 0;">Vanna & Charm data not available yet.</div></div>`;
+
+    const spot=parseFloat(item.spot_price);
+    const strikes=vc.topStrikes.sort((a,b)=>b.strike-a.strike);
+    const maxV=Math.max(...strikes.map(s=>Math.abs(s.vanna)),1);
+    const maxC=Math.max(...strikes.map(s=>Math.abs(s.charm)),1);
+    const maxAbs=Math.max(maxV,maxC);
+
+    const rows=strikes.map(s=>{
+      const vW=Math.abs(s.vanna)/maxAbs*45;
+      const cW=Math.abs(s.charm)/maxAbs*45;
+      const vLeft=s.vanna>=0?`left:50%;width:${Math.max(vW,0.5)}%`:`right:50%;width:${Math.max(vW,0.5)}%`;
+      const cLeft=s.charm>=0?`left:50%;width:${Math.max(cW,0.5)}%`:`right:50%;width:${Math.max(cW,0.5)}%`;
+      return`<div class="gx-vc-row">
+        <div class="gx-vc-strike">${gxFmt(s.strike)}</div>
+        <div class="gx-vc-bars">
+          <div class="gx-vc-center"></div>
+          <div class="gx-vc-bar vanna" style="${vLeft};" title="Vanna: ${s.vanna>0?'+':''}${s.vanna}M"></div>
+          <div class="gx-vc-bar charm" style="${cLeft};" title="Charm: ${s.charm>0?'+':''}${s.charm}M"></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const tV=vc.totalVanna||0;
+    const tC=vc.totalCharm||0;
+    const vannaDir=tV>0?'↑ Bullish pressure':'↓ Bearish pressure';
+    const charmDir=tC>0?'↑ Delta increasing':'↓ Delta decaying';
+
+    return`<div class="gx-vc-wrap">
+      <div class="gx-vc-title">${item.ticker} <small>${names[item.ticker]||''} — Spot: ${gxFmt(spot)}</small></div>
+      <div class="gx-vc-totals">
+        <div class="gx-vc-total"><span class="dot vanna"></span> Vanna: ${tV>0?'+':''}${tV}M <small style="color:var(--t3);">${vannaDir}</small></div>
+        <div class="gx-vc-total"><span class="dot charm"></span> Charm: ${tC>0?'+':''}${tC}M <small style="color:var(--t3);">${charmDir}</small></div>
+      </div>
+      <div class="gx-vc-chart">${rows}</div>
+      <div class="gx-vc-legend">
+        <span><span style="display:inline-block;width:12px;height:4px;background:#8b5cf6;border-radius:2px;vertical-align:middle;"></span> Vanna</span>
+        <span><span style="display:inline-block;width:12px;height:4px;background:#06b6d4;border-radius:2px;vertical-align:middle;"></span> Charm</span>
+      </div>
+      <div class="gx-vc-edu">
+        <strong>Vanna</strong> = sensitivity of delta to changes in volatility. Positive vanna → if vol drops, market makers buy (bullish). Negative → they sell (bearish).<br>
+        <strong>Charm</strong> = sensitivity of delta to time decay. Shows how delta shifts as expiration approaches — directional pressure from time alone.
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function renderGEXFiltered(){
   const items=_gexAllData.filter(d=>_gexSelectedTickers.includes(d.ticker));
   if(_gexSelectedExp){
@@ -6417,6 +6475,7 @@ function renderGEXFiltered(){
     renderGEX(items);
   }
   if(_gexView==='heatmap') renderGEXHeatmap();
+  if(_gexView==='vanna') renderGEXVanna();
 }
 
 async function loadGEX(){

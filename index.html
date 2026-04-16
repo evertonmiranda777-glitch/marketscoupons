@@ -1727,6 +1727,26 @@ img{max-width:100%;}
 .gx-hm-spot{outline:2px solid var(--gold);outline-offset:-1px;}
 .gx-hm-legend{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;font-size:11px;color:var(--t3);}
 .gx-hm-legend-bar{width:120px;height:10px;border-radius:5px;background:linear-gradient(90deg,rgba(239,68,68,.8),rgba(239,68,68,.15),transparent,rgba(34,197,94,.15),rgba(34,197,94,.8));}
+.gx-vc-wrap{background:rgba(107,182,201,.06);border:1px solid rgba(107,182,201,.14);border-radius:14px;padding:20px;margin-bottom:28px;}
+.gx-vc-title{font-size:15px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.gx-vc-title small{font-size:12px;color:var(--t3);font-weight:400;}
+.gx-vc-totals{display:flex;gap:20px;margin-bottom:16px;font-size:13px;}
+.gx-vc-total{display:flex;align-items:center;gap:6px;}
+.gx-vc-total .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.gx-vc-total .dot.vanna{background:#8b5cf6;}
+.gx-vc-total .dot.charm{background:#06b6d4;}
+.gx-vc-chart{position:relative;width:100%;}
+.gx-vc-row{display:flex;align-items:center;height:16px;margin-bottom:1px;}
+.gx-vc-row:hover{background:rgba(107,182,201,.08);}
+.gx-vc-strike{width:60px;flex-shrink:0;font-size:10px;font-weight:600;color:var(--t2);text-align:right;padding-right:8px;font-variant-numeric:tabular-nums;}
+.gx-vc-bars{flex:1;position:relative;height:100%;display:flex;align-items:center;}
+.gx-vc-bar{height:5px;border-radius:2px;position:absolute;min-width:1px;}
+.gx-vc-bar.vanna{background:#8b5cf6;}
+.gx-vc-bar.charm{background:#06b6d4;top:8px;}
+.gx-vc-center{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);}
+.gx-vc-legend{display:flex;align-items:center;gap:16px;margin-top:10px;font-size:11px;color:var(--t3);justify-content:center;}
+.gx-vc-edu{margin-top:14px;padding:14px;background:rgba(255,255,255,.04);border-radius:10px;font-size:12px;color:var(--t2);line-height:1.6;}
+.gx-vc-edu strong{color:var(--t1);}
 .gx-updated{font-size:12px;color:var(--t3);margin-top:12px;}
 .gx-updated strong{color:var(--t2);}
 .gx-asset-card{background:rgba(107,182,201,.08);border:1px solid rgba(107,182,201,.18);border-radius:14px;overflow:visible;margin-bottom:28px;}
@@ -3506,9 +3526,11 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="gx-view-tabs" id="gx-view-tabs">
       <button class="gx-vtab sel" onclick="gxSwitchView('chart')" data-v="chart">Chart</button>
       <button class="gx-vtab" onclick="gxSwitchView('heatmap')" data-v="heatmap">Heatmap</button>
+      <button class="gx-vtab" onclick="gxSwitchView('vanna')" data-v="vanna">Vanna & Charm</button>
     </div>
     <div id="gx-grid" style="display:none;"></div>
     <div id="gx-heatmap" style="display:none;"></div>
+    <div id="gx-vanna" style="display:none;"></div>
       <div class="da-gate" id="gx-gate"></div>
     </div>
     <div class="gx-disclaimer" data-i18n="gx_disclaimer">Delayed data. GEX levels are estimates based on mathematical models and do not constitute investment advice. Trading involves risk of loss.</div>
