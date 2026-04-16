@@ -2110,6 +2110,16 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
                   <option value="" style="background:#131820;color:#aaa;">Selecione...</option>
                 </select>
               </div>
+              <div class="tg-field" style="margin-top:8px;">
+                <label>Urgência (opcional)</label>
+                <select id="tg-flash-urgency" style="width:100%;padding:9px 12px;background:#131820;border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;font-family:var(--f);-webkit-appearance:none;appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path d=%22M2 4l4 4 4-4%22 fill=%22none%22 stroke=%22%23888%22 stroke-width=%221.5%22/></svg>');background-repeat:no-repeat;background-position:right 12px center;">
+                  <option value="" style="background:#131820;color:#aaa;">Sem urgência</option>
+                  <option value="⏰ Last 24h — don't miss it!" style="background:#131820;color:#e0e0e0;">Last 24h</option>
+                  <option value="⏰ Ends tonight — grab it now!" style="background:#131820;color:#e0e0e0;">Ends tonight</option>
+                  <option value="⏰ Final hours — almost gone!" style="background:#131820;color:#e0e0e0;">Final hours</option>
+                  <option value="⏰ Ends tomorrow — last chance!" style="background:#131820;color:#e0e0e0;">Ends tomorrow</option>
+                </select>
+              </div>
               <button class="tg-qa-btn" style="width:100%;" onclick="tgPreviewFlashPromo()">Preview Flash Promo</button>
             </div>
             <!-- Confirmação antes de disparar -->
@@ -10475,12 +10485,14 @@ async function tgPreviewFlashPromo(){
     const couponLine = firm.coupon
       ? `🎟 Code: <code>${firm.coupon}</code>`
       : `🔗 No code needed — discount applied automatically`;
+    const urgency = document.getElementById('tg-flash-urgency')?.value || '';
     const text =
       `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
       `🔥 ${discountLabel}\n` +
       couponLine + `\n\n` +
       (firm.split ? `💰 Profit Split: ${firm.split}\n` : '') +
       (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : '') +
+      (urgency ? `\n${urgency}\n` : '') +
       `\n👉 ${firm.link || 'https://www.marketscoupons.com'}`;
     /* -- preenche preview inline -- */
     const area = document.getElementById('tg-preview-area');
@@ -10496,7 +10508,7 @@ async function tgPreviewFlashPromo(){
     if(sendBtn) sendBtn.onclick = async () => {
       sendBtn.disabled=true;
       if(stEl){ stEl.textContent='Enviando...'; stEl.className='tg-status loading'; }
-      try{ await tgQuickAction('flash_promo&firm_id='+firm_id);
+      try{ await tgQuickAction('flash_promo&firm_id='+firm_id+(urgency?'&urgency='+encodeURIComponent(urgency):''));
         if(stEl){ stEl.textContent='✓ Flash Promo enviada!'; stEl.className='tg-status ok'; }
       }catch(err){ if(stEl){ stEl.textContent='Erro: '+err.message; stEl.className='tg-status err'; } }
       sendBtn.disabled=false;

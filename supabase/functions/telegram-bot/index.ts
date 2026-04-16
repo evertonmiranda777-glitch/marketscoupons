@@ -446,7 +446,7 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
 }
 
 // ── action=flash_promo ──────────────────────────────────────────────────────
-async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: string) {
+async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: string, urgency = "") {
   if (!firmId) return { sent: false, reason: "missing_firm_id" };
 
   const { data: firm, error } = await db
@@ -474,6 +474,7 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     couponLine + `\n\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
+    (urgency ? `\n${urgency}\n` : "") +
     `\n👉 ${firm.link ?? siteLink("", "flash_promo")}`;
 
   const msgId = await sendMessage(text);
@@ -487,6 +488,7 @@ Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
   const action = url.searchParams.get("action") ?? "";
   const firmId = url.searchParams.get("firm_id") ?? "";
+  const urgency = url.searchParams.get("urgency") ?? "";
 
   const db = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
     auth: { persistSession: false },
@@ -518,7 +520,7 @@ Deno.serve(async (req: Request) => {
         result = await handleProLoyalty(db);
         break;
       case "flash_promo":
-        result = await handleFlashPromo(db, firmId);
+        result = await handleFlashPromo(db, firmId, urgency);
         break;
       default:
         return new Response(JSON.stringify({ error: "Unknown action", action }), {
