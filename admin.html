@@ -2037,14 +2037,67 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
     <!-- ══ SITE: OFERTAS ══ -->
     <div class="admin-page" id="page-site-ofertas">
-      <div class="sec-hdr"><div class="sec-title">Página de Ofertas</div></div>
-      <div class="chart-card"><p style="color:var(--t2);">Em breve — editor da página de ofertas.</p></div>
+      <div class="sec-hdr">
+        <div class="sec-title">Página de Ofertas</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-primary" onclick="saveSiteOfertas()">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Cabeçalho da Página</div>
+        <div class="ec-field"><label>Badge (topo)</label><input id="so-label" class="filter-inp" style="width:100%;" placeholder="Ex: Cupons Exclusivos"></div>
+        <div class="ec-field"><label>Título principal</label><input id="so-title" class="filter-inp" style="width:100%;" placeholder="Ex: Economize nas melhores prop firms"></div>
+        <div class="ec-field"><label>Subtítulo</label><textarea id="so-sub" class="filter-inp" rows="2" style="width:100%;resize:vertical;" placeholder="Ex: Cupons verificados e atualizados..."></textarea></div>
+      </div>
     </div>
 
     <!-- ══ SITE: FOOTER ══ -->
     <div class="admin-page" id="page-site-footer">
-      <div class="sec-hdr"><div class="sec-title">Footer</div></div>
-      <div class="chart-card"><p style="color:var(--t2);">Em breve — editor do rodapé.</p></div>
+      <div class="sec-hdr">
+        <div class="sec-title">Footer (Rodapé)</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-primary" onclick="saveSiteFooter()">Salvar</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="chart-card">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Descrição e Newsletter</div>
+          <div class="ec-field"><label>Descrição do site</label><textarea id="sf-desc" class="filter-inp" rows="2" style="width:100%;resize:vertical;" placeholder="Ex: Cupons verificados para as melhores prop firms..."></textarea></div>
+          <div class="ec-field"><label>Newsletter — label</label><input id="sf-nl-label" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Newsletter — texto</label><input id="sf-nl-desc" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Newsletter — botão</label><input id="sf-nl-btn" class="filter-inp" style="width:100%;"></div>
+        </div>
+
+        <div class="chart-card">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Colunas de Links</div>
+          <div class="ec-field"><label>Coluna "Ferramentas" (título)</label><input id="sf-col-ferramentas" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Coluna "Links" (título)</label><input id="sf-col-links" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Coluna "Legal" (título)</label><input id="sf-col-legal" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+
+      <div class="chart-card" style="margin-top:20px;">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Links do Footer</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Quiz</label><input id="sf-quiz" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Comparador</label><input id="sf-comparador" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Calendário</label><input id="sf-calendario" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Indicadores</label><input id="sf-indicadores" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Gamma</label><input id="sf-gamma" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Guias</label><input id="sf-guias" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+
+      <div class="chart-card" style="margin-top:20px;">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Textos Legais</div>
+        <div class="ec-field"><label>Privacidade (link)</label><input id="sf-privacidade" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Termos (link)</label><input id="sf-termos" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Cookies (link)</label><input id="sf-cookies" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Aviso legal (rodapé)</label><textarea id="sf-legal" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+      </div>
     </div>
 
     <!-- ══ I18N EDITOR ══ -->
@@ -2806,6 +2859,8 @@ function renderPage(p){
     case 'cms-faq':        renderCmsFaq(); break;
     case 'site-hero':      loadSiteHero(); break;
     case 'site-nav':       loadSiteNav(); break;
+    case 'site-ofertas':   loadSiteOfertas(); break;
+    case 'site-footer':    loadSiteFooter(); break;
     case 'cms-texts':      renderCmsTexts(); break;
     case 'i18n-editor':    renderI18nEditor(); break;
     case 'firmt-editor':   renderFirmTEditor(); break;
@@ -10352,6 +10407,82 @@ async function saveSiteNav(){
   if(visErr){fail++;console.error('nav visibility save:',visErr);}
 
   toast(ok+' abas salvas'+(fail?' ('+fail+' erros)':'')+'!');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SITE: OFERTAS — cabeçalho da página de ofertas
+// ═══════════════════════════════════════════════════════════════════════
+const _ofertasFields = {
+  'so-label': {key:'offers_hero_label'},
+  'so-title': {key:'offers_hero_titulo'},
+  'so-sub':   {key:'offers_hero_sub'},
+};
+
+async function loadSiteOfertas(){
+  const keys=Object.values(_ofertasFields).map(f=>f.key);
+  const{data}=await db.from('i18n').select('key,pt').in('key',keys);
+  const map={};
+  if(data) data.forEach(r=>{map[r.key]=r.pt||'';});
+  Object.entries(_ofertasFields).forEach(([id,cfg])=>{
+    const el=document.getElementById(id);
+    if(el) el.value=map[cfg.key]||'';
+  });
+}
+
+async function saveSiteOfertas(){
+  let ok=0,fail=0;
+  for(const [id,cfg] of Object.entries(_ofertasFields)){
+    const el=document.getElementById(id);
+    if(!el) continue;
+    const{error}=await db.from('i18n').update({pt:el.value,updated_at:new Date().toISOString()}).eq('key',cfg.key);
+    if(error){fail++;} else ok++;
+  }
+  toast(ok+' campos salvos'+(fail?' ('+fail+' erros)':'')+'!');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SITE: FOOTER — rodapé do site
+// ═══════════════════════════════════════════════════════════════════════
+const _footerFields = {
+  'sf-desc':            {key:'ft_desc'},
+  'sf-nl-label':        {key:'ft_newsletter_label'},
+  'sf-nl-desc':         {key:'ft_newsletter_desc'},
+  'sf-nl-btn':          {key:'ft_newsletter_btn'},
+  'sf-col-ferramentas': {key:'ft_col_ferramentas'},
+  'sf-col-links':       {key:'ft_col_links'},
+  'sf-col-legal':       {key:'ft_col_legal'},
+  'sf-quiz':            {key:'ft_quiz'},
+  'sf-comparador':      {key:'ft_comparador'},
+  'sf-calendario':      {key:'ft_calendario'},
+  'sf-indicadores':     {key:'ft_indicadores'},
+  'sf-gamma':           {key:'ft_gamma'},
+  'sf-guias':           {key:'ft_guias'},
+  'sf-privacidade':     {key:'ft_privacidade'},
+  'sf-termos':          {key:'ft_termos'},
+  'sf-cookies':         {key:'ft_cookies'},
+  'sf-legal':           {key:'ft_legal'},
+};
+
+async function loadSiteFooter(){
+  const keys=Object.values(_footerFields).map(f=>f.key);
+  const{data}=await db.from('i18n').select('key,pt').in('key',keys);
+  const map={};
+  if(data) data.forEach(r=>{map[r.key]=r.pt||'';});
+  Object.entries(_footerFields).forEach(([id,cfg])=>{
+    const el=document.getElementById(id);
+    if(el) el.value=map[cfg.key]||'';
+  });
+}
+
+async function saveSiteFooter(){
+  let ok=0,fail=0;
+  for(const [id,cfg] of Object.entries(_footerFields)){
+    const el=document.getElementById(id);
+    if(!el) continue;
+    const{error}=await db.from('i18n').update({pt:el.value,updated_at:new Date().toISOString()}).eq('key',cfg.key);
+    if(error){fail++;} else ok++;
+  }
+  toast(ok+' campos salvos'+(fail?' ('+fail+' erros)':'')+'!');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
