@@ -189,12 +189,12 @@ module.exports = async (req, res) => {
       });
       const data = await resp.json();
       if (!resp.ok) {
-        console.error(`[bot] gemini error (key ${keyIdx}, attempt ${attempt}):`, resp.status, JSON.stringify(data).slice(0, 300));
-        if ((resp.status === 429 || resp.status >= 500) && attempt < maxAttempts - 1) {
+        console.error(`[bot] gemini error (key ${keyIdx}, attempt ${attempt}):`, resp.status, JSON.stringify(data).slice(0, 500));
+        if (attempt < maxAttempts - 1) {
           await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)]));
           continue;
         }
-        return res.status(502).json({ error: 'Upstream error' });
+        return res.status(502).json({ error: 'Upstream error', status: resp.status });
       }
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
       if (!text) {
