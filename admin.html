@@ -2372,6 +2372,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-gold" value="#F0B429" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-gold-hex" class="filter-inp" style="width:100%;" value="#F0B429" oninput="document.getElementById('tema-gold').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Botões CTA, badges, destaques, logo, links hover, bordas ativas, ícones dourados</div>
           </div>
           <div class="ec-field">
             <label>Fundo do site</label>
@@ -2379,6 +2380,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-bg" value="#07090D" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-bg-hex" class="filter-inp" style="width:100%;" value="#07090D" oninput="document.getElementById('tema-bg').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Cor de fundo geral (por trás da imagem de nebulosa)</div>
           </div>
           <div class="ec-field">
             <label>Fundo dos cards</label>
@@ -2386,6 +2388,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-card" value="#10151F" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-card-hex" class="filter-inp" style="width:100%;" value="#10151F" oninput="document.getElementById('tema-card').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Cards de firmas, ofertas, stats, guias, blog, tabelas do calendário</div>
           </div>
           <div class="ec-field">
             <label>Texto principal</label>
@@ -2393,6 +2396,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-t1" value="#EDF2F7" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-t1-hex" class="filter-inp" style="width:100%;" value="#EDF2F7" oninput="document.getElementById('tema-t1').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Títulos, nomes de firmas, preços, labels fortes, nav ativo</div>
           </div>
           <div class="ec-field">
             <label>Texto secundário</label>
@@ -2400,6 +2404,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-t2" value="#B8C5D6" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-t2-hex" class="filter-inp" style="width:100%;" value="#B8C5D6" oninput="document.getElementById('tema-t2').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Subtítulos, descrições, parágrafos, excerpt do blog, dados de firmas</div>
           </div>
           <div class="ec-field">
             <label>Texto terciário</label>
@@ -2407,6 +2412,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-t3" value="#8A98AE" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-t3-hex" class="filter-inp" style="width:100%;" value="#8A98AE" oninput="document.getElementById('tema-t3').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Datas, labels pequenos, placeholders, textos auxiliares, dicas</div>
           </div>
           <div class="ec-field">
             <label>Cor Glass (fundos cristalinos)</label>
@@ -2414,24 +2420,25 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-glass" value="#6BB6C9" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-glass-hex" class="filter-inp" style="width:100%;" value="#6BB6C9" oninput="document.getElementById('tema-glass').value=this.value;_temaUpdatePreview()">
             </div>
-            <div style="font-size:10px;color:var(--t3);margin-top:4px;">Cor dos fundos transparentes (nav, modais, botões glass)</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Botões filtro (Calendário, GEX, Blog), nav, busca, idiomas, menu mobile, ticker</div>
           </div>
           <div class="ec-field">
-            <label>Intensidade Glass (opacidade): <span id="glass-pct-label">8%</span></label>
+            <label>Intensidade Glass: <span id="glass-pct-label">8%</span></label>
             <input type="range" id="tema-glass-pct" min="2" max="25" value="8" style="width:100%;accent-color:var(--gold);" oninput="document.getElementById('glass-pct-label').textContent=this.value+'%';_temaUpdatePreview()">
-            <div style="font-size:10px;color:var(--t3);margin-top:4px;">Quanto maior, mais visível o efeito cristalino. Padrão: 8%</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Opacidade do fundo glass. Mais alto = botões mais visíveis. Padrão: 8%</div>
           </div>
           <div class="ec-field">
-            <label>Intensidade Borda Glass: <span id="glass-border-pct-label">18%</span></label>
+            <label>Borda Glass: <span id="glass-border-pct-label">18%</span></label>
             <input type="range" id="tema-glass-border-pct" min="5" max="35" value="18" style="width:100%;accent-color:var(--gold);" oninput="document.getElementById('glass-border-pct-label').textContent=this.value+'%';_temaUpdatePreview()">
-            <div style="font-size:10px;color:var(--t3);margin-top:4px;">Borda dos elementos glass. Padrão: 18%</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Contorno dos botões e cards glass. Mais alto = bordas mais marcadas. Padrão: 18%</div>
           </div>
           <div class="ec-field">
-            <label>Superfície (--sur)</label>
+            <label>Superfície</label>
             <div style="display:flex;gap:8px;align-items:center;">
               <input type="color" id="tema-sur" value="#0B0F16" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-sur-hex" class="filter-inp" style="width:100%;" value="#0B0F16" oninput="document.getElementById('tema-sur').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Fundo da nav, overlay de firma (lado esquerdo), dropdowns</div>
           </div>
           <div class="ec-field">
             <label>Card secundário</label>
@@ -2439,6 +2446,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input type="color" id="tema-card2" value="#141B27" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
               <input id="tema-card2-hex" class="filter-inp" style="width:100%;" value="#141B27" oninput="document.getElementById('tema-card2').value=this.value;_temaUpdatePreview()">
             </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:4px;">Campos de input, editor de blog, modais internos, fundo do chatbot</div>
           </div>
         </div>
       </div>
