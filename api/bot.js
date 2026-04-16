@@ -170,7 +170,8 @@ module.exports = async (req, res) => {
     generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
   });
 
-  for (let attempt = 0; attempt < 2; attempt++) {
+  const delays = [2000, 4000, 6000];
+  for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const resp = await fetch(url, {
         method: 'POST',
@@ -180,8 +181,8 @@ module.exports = async (req, res) => {
       const data = await resp.json();
       if (!resp.ok) {
         console.error(`[bot] gemini error (attempt ${attempt}):`, resp.status, JSON.stringify(data).slice(0, 300));
-        if (resp.status === 429 || resp.status >= 500) {
-          await new Promise(r => setTimeout(r, 1500));
+        if ((resp.status === 429 || resp.status >= 500) && attempt < 2) {
+          await new Promise(r => setTimeout(r, delays[attempt]));
           continue;
         }
         return res.status(502).json({ error: 'Upstream error' });
@@ -189,12 +190,13 @@ module.exports = async (req, res) => {
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
       if (!text) {
         console.error('[bot] empty response:', JSON.stringify(data).slice(0, 300));
+        if (attempt < 2) { await new Promise(r => setTimeout(r, delays[attempt])); continue; }
         return res.status(502).json({ error: 'Empty response' });
       }
       return res.status(200).json({ content: [{ text }] });
     } catch (e) {
       console.error(`[bot] fetch error (attempt ${attempt}):`, e.message);
-      if (attempt === 0) { await new Promise(r => setTimeout(r, 1000)); continue; }
+      if (attempt < 2) { await new Promise(r => setTimeout(r, delays[attempt])); continue; }
       return res.status(500).json({ error: 'Bot error' });
     }
   }
