@@ -6336,6 +6336,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         });
       }
+      // Background images
+      if(_siteSettings.bg_desktop_url){
+        document.body.style.backgroundImage='url('+_siteSettings.bg_desktop_url+')';
+      }
+      if(_siteSettings.bg_mobile_url && window.innerWidth<=900){
+        document.body.style.backgroundImage='url('+_siteSettings.bg_mobile_url+')';
+      }
       // Logo text
       if(_siteSettings.logo_text1||_siteSettings.logo_text2){
         document.querySelectorAll('.nav-logo-text').forEach(el=>{

@@ -2443,6 +2443,27 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         </div>
       </div>
 
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Fundo do Site (imagem)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+          <div>
+            <div class="ec-field">
+              <label>Desktop (atual: site-bg.webp)</label>
+              <div id="tema-bg-preview" style="width:100%;height:120px;border-radius:10px;background:url('img/site-bg.webp') center/cover;border:1px solid rgba(255,255,255,.14);margin-bottom:8px;"></div>
+              <input type="file" id="tema-bg-upload" accept="image/webp,image/jpeg,image/png" class="filter-inp" style="padding:8px;" onchange="previewBgUpload(this,'tema-bg-preview')">
+            </div>
+          </div>
+          <div>
+            <div class="ec-field">
+              <label>Mobile (atual: site-bg-mobile.webp)</label>
+              <div id="tema-bgm-preview" style="width:100%;height:120px;border-radius:10px;background:url('img/site-bg-mobile.webp') center/cover;border:1px solid rgba(255,255,255,.14);margin-bottom:8px;"></div>
+              <input type="file" id="tema-bgm-upload" accept="image/webp,image/jpeg,image/png" class="filter-inp" style="padding:8px;" onchange="previewBgUpload(this,'tema-bgm-preview')">
+            </div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--t3);">WebP recomendado. Desktop: ~1920×1080. Mobile: ~750×1334. A imagem aparece como fundo em todo o site (por trás do calendário, GEX, etc).</div>
+      </div>
+
       <div class="chart-card">
         <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px;">Preview</div>
         <div id="tema-preview" style="padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,.14);">
@@ -11090,6 +11111,16 @@ async function loadSiteTema(){
   _temaUpdatePreview();
 }
 
+function previewBgUpload(input,previewId){
+  if(!input.files||!input.files[0]) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const el=document.getElementById(previewId);
+    if(el) el.style.backgroundImage='url('+e.target.result+')';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
 async function saveSiteTema(){
   const colors={};
   _temaVars.forEach(v=>{
@@ -11099,7 +11130,30 @@ async function saveSiteTema(){
   colors['--glass-border-pct']=parseInt(document.getElementById('tema-glass-border-pct')?.value||18);
   const{error}=await db.from('site_settings').upsert({key:'theme_colors',value:colors,updated_at:new Date().toISOString()},{onConflict:'key'});
   if(error){toast('Erro ao salvar cores','error');console.error(error);return;}
-  toast('Cores salvas! O site vai aplicar no próximo carregamento.');
+
+  // Upload background images if selected
+  const bgFile=document.getElementById('tema-bg-upload')?.files?.[0];
+  const bgmFile=document.getElementById('tema-bgm-upload')?.files?.[0];
+  if(bgFile){
+    toast('Enviando fundo desktop...');
+    const{error:e1}=await db.storage.from('loyalty-proofs').upload('site/site-bg.webp',bgFile,{upsert:true});
+    if(e1){toast('Erro upload desktop: '+e1.message,'error');}
+    else{
+      const{data:u}=db.storage.from('loyalty-proofs').getPublicUrl('site/site-bg.webp');
+      if(u?.publicUrl) await db.from('site_settings').upsert({key:'bg_desktop_url',value:u.publicUrl+'?t='+Date.now(),updated_at:new Date().toISOString()},{onConflict:'key'});
+    }
+  }
+  if(bgmFile){
+    toast('Enviando fundo mobile...');
+    const{error:e2}=await db.storage.from('loyalty-proofs').upload('site/site-bg-mobile.webp',bgmFile,{upsert:true});
+    if(e2){toast('Erro upload mobile: '+e2.message,'error');}
+    else{
+      const{data:u}=db.storage.from('loyalty-proofs').getPublicUrl('site/site-bg-mobile.webp');
+      if(u?.publicUrl) await db.from('site_settings').upsert({key:'bg_mobile_url',value:u.publicUrl+'?t='+Date.now(),updated_at:new Date().toISOString()},{onConflict:'key'});
+    }
+  }
+
+  toast('Tema salvo! O site vai aplicar no próximo carregamento.');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
