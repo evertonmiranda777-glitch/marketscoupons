@@ -10470,12 +10470,18 @@ async function tgPreviewFlashPromo(){
     if(!firm_id){ toast('Selecione uma firma para a Flash Promo','warn'); return; }
     const firm = (_firmsCache||[]).find(f=>f.id===firm_id);
     if(!firm){ toast('Firma não encontrada','warn'); return; }
-    const dtype = (firm.discount_type||'').toLowerCase()==='lifetime' ? 'LIFETIME' : 'OFF';
-    const cp = firm.coupon ? `\nCode: <code>${firm.coupon}</code>` : '';
+    const isLifetime = (firm.discount_type||'').toLowerCase()==='lifetime';
+    const discountLabel = isLifetime ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
+    const couponLine = firm.coupon
+      ? `🎟 Code: <code>${firm.coupon}</code>`
+      : `🔗 No code needed — discount applied automatically`;
     const text =
-      `⚡ <b>FLASH PROMO — ${firm.name}</b>\n\n` +
-      `${firm.discount}% ${dtype}${cp}\n\n` +
-      `👉 Claim now: https://www.marketscoupons.com`;
+      `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
+      `🔥 ${discountLabel}\n` +
+      couponLine + `\n\n` +
+      (firm.split ? `💰 Profit Split: ${firm.split}\n` : '') +
+      (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : '') +
+      `\n👉 ${firm.link || 'https://www.marketscoupons.com'}`;
     /* -- preenche preview inline -- */
     const area = document.getElementById('tg-preview-area');
     const body = document.getElementById('tg-preview-body');
