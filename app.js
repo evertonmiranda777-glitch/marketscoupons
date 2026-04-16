@@ -5351,17 +5351,60 @@ BEHAVIOR:
 - Say "não sei" or "I don't know" when uncertain, suggest the relevant tab.
 - Respond in the user's language (Portuguese, English, Spanish, Italian, French, German, Arabic).`;
 const botHist=[];
-function toggleBot(){botOpen=!botOpen;document.getElementById('bot-win').classList.toggle('open',botOpen);const fab=document.getElementById('bot-fab');if(fab)fab.style.display=botOpen?'none':'flex';if(botOpen){document.getElementById('bot-badge').style.display='none';document.getElementById('bot-inp').focus();}track('bot_toggle',{state:botOpen?'open':'close'});}
+let _askingName=false;
+function getTraderName(){
+  let n=localStorage.getItem('mc_trader_name')||'';
+  if(!n && typeof _currentUser!=='undefined' && _currentUser){
+    n=(_currentUser.user_metadata?.name||_currentUser.user_metadata?.full_name||'').trim().split(/\s+/)[0]||'';
+    if(n) localStorage.setItem('mc_trader_name',n);
+  }
+  return n;
+}
+function toggleBot(){
+  botOpen=!botOpen;
+  document.getElementById('bot-win').classList.toggle('open',botOpen);
+  const fab=document.getElementById('bot-fab');if(fab)fab.style.display=botOpen?'none':'flex';
+  if(botOpen){
+    document.getElementById('bot-badge').style.display='none';
+    document.getElementById('bot-inp').focus();
+    if(!getTraderName() && !_askingName){
+      _askingName=true;
+      setTimeout(()=>{
+        addBMsg('bot',t('bot_ask_name')||'Antes de começar, como posso te chamar?');
+        const q=document.getElementById('bot-quick');if(q)q.style.display='none';
+      },500);
+    }
+  }
+  track('bot_toggle',{state:botOpen?'open':'close'});
+}
 function openBot(){botOpen=false;toggleBot();}
 function qmsg(t){document.getElementById('bot-inp').value=t;sendBot();track('bot_quick_msg',{message:t.slice(0,50)});}
 function addBMsg(role,text){const c=document.getElementById('bot-msgs');const tm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='bmsg '+role;const safe=role==='usr'?text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):text;d.innerHTML=`<div class="bbbl">${safe.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div><span class="btime">${tm}</span>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
 async function sendBot(){
   const inp=document.getElementById('bot-inp');const txt=inp.value.trim();if(!txt)return;
-  inp.value='';document.getElementById('bot-snd').disabled=true;document.getElementById('bot-quick').style.display='none';
+  inp.value='';
+  if(_askingName){
+    const name=txt.replace(/[^\p{L}\p{M}\s'-]/gu,'').trim().split(/\s+/)[0].slice(0,24);
+    if(name){
+      localStorage.setItem('mc_trader_name',name);
+      _askingName=false;
+      addBMsg('usr',txt);
+      const ack=(t('bot_name_ack')||'Prazer, {name}! Bora.').replace('{name}',name);
+      setTimeout(()=>{addBMsg('bot',ack);const q=document.getElementById('bot-quick');if(q)q.style.display='';},300);
+      track('bot_name_set',{});
+      return;
+    }
+  }
+  document.getElementById('bot-snd').disabled=true;document.getElementById('bot-quick').style.display='none';
   addBMsg('usr',txt);botHist.push({role:'user',content:txt});
   const bw=document.getElementById('bot-win');bw&&bw.classList.add('typing');
   const ty=document.getElementById('bot-typing');ty.classList.add('show');document.getElementById('bot-msgs').scrollTop=99999;
-  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:BOT_SYSTEM,messages:botHist,lang:(typeof _currentLang!=='undefined'?_currentLang:(localStorage.getItem('mc_lang')||'en'))})});const data=await res.json();ty.classList.remove('show');bw&&bw.classList.remove('typing');const reply=data.content?.[0]?.text||data.error||(t('bot_error_retry')||'Error. Try again.');botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');bw&&bw.classList.remove('typing');addBMsg('bot',t('bot_error_connection')||'Connection error. Try again.');}
+  const traderName=getTraderName();
+  const geo=(typeof _geo!=='undefined'&&_geo)?`${_geo.geo_country||''}${_geo.geo_region?', '+_geo.geo_region:''}`.trim():'';
+  let sys=BOT_SYSTEM;
+  if(traderName) sys+=`\n\nUSER CONTEXT:\n- Name: ${traderName}. Address them by name naturally, not in every reply. Never guess their gender from the name — stay neutral.`;
+  if(geo) sys+=`${traderName?'':'\n\nUSER CONTEXT:'}\n- Location (from IP): ${geo}. Use only if relevant (e.g. payment methods, timezone for events). Never mention IP tracking.`;
+  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:botHist,lang:(typeof _currentLang!=='undefined'?_currentLang:(localStorage.getItem('mc_lang')||'en'))})});const data=await res.json();ty.classList.remove('show');bw&&bw.classList.remove('typing');const reply=data.content?.[0]?.text||data.error||(t('bot_error_retry')||'Error. Try again.');botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');bw&&bw.classList.remove('typing');addBMsg('bot',t('bot_error_connection')||'Connection error. Try again.');}
   document.getElementById('bot-snd').disabled=false;
 }
 
