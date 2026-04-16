@@ -2055,6 +2055,240 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
     </div>
 
+    <!-- ══ SITE: FIRMAS ══ -->
+    <div class="admin-page" id="page-site-firmas">
+      <div class="sec-hdr">
+        <div class="sec-title">Firmas — Textos da Página</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('firmas')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Filtros de Ordenação</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Ordenar: Melhor avaliadas</label><input id="ss-firms_ordenar_rating" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Ordenar: Maior desconto</label><input id="ss-firms_ordenar_desc" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Ordenar: Mais avaliações</label><input id="ss-firms_ordenar_reviews" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Ordenar: Nome A-Z</label><input id="ss-firms_ordenar_nome" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: PLATAFORMAS ══ -->
+    <div class="admin-page" id="page-site-plataformas">
+      <div class="sec-hdr">
+        <div class="sec-title">Plataformas — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('plataformas')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="ec-field"><label>Título</label><input id="ss-plat_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Subtítulo</label><textarea id="ss-plat_sub" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: INDICADORES ══ -->
+    <div class="admin-page" id="page-site-indicadores">
+      <div class="sec-hdr">
+        <div class="sec-title">Indicadores — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('indicadores')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="ec-field"><label>Título</label><input id="ss-ind_em_breve_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Descrição</label><textarea id="ss-ind_em_breve_texto" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+        <div class="ec-field"><label>Como garantir acesso (label)</label><input id="ss-ind_em_breve_como" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Passos para acesso</label><textarea id="ss-ind_em_breve_passos" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+        <div class="ec-field"><label>Botão CTA</label><input id="ss-ind_em_breve_btn" class="filter-inp" style="width:100%;"></div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: CALENDÁRIO ══ -->
+    <div class="admin-page" id="page-site-calendario">
+      <div class="sec-hdr">
+        <div class="sec-title">Calendário Econômico — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('calendario')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="ec-field"><label>Título</label><input id="ss-cal_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Subtítulo</label><textarea id="ss-cal_sub" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin:16px 0 12px;">Labels da Tabela</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Hora</label><input id="ss-cal_hora" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Moeda</label><input id="ss-cal_moeda" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Evento</label><input id="ss-cal_evento" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Atual</label><input id="ss-cal_atual" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Previsão</label><input id="ss-cal_previsao" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Anterior</label><input id="ss-cal_anterior" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Impacto</label><input id="ss-cal_impacto" class="filter-inp" style="width:100%;"></div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin:16px 0 12px;">Filtros</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Todos</label><input id="ss-cal_todos" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Alto</label><input id="ss-cal_alto" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Médio</label><input id="ss-cal_medio" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Baixo</label><input id="ss-cal_baixo" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: ANÁLISE DIÁRIA ══ -->
+    <div class="admin-page" id="page-site-analise">
+      <div class="sec-hdr">
+        <div class="sec-title">Análise Diária — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('analise')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="ec-field"><label>Título</label><input id="ss-analise_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Subtítulo</label><textarea id="ss-analise_sub" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: GAMMA (GEX) ══ -->
+    <div class="admin-page" id="page-site-gamma">
+      <div class="sec-hdr">
+        <div class="sec-title">Gamma (GEX) — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('gamma')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="ec-field"><label>Aba: Heatmap</label><input id="ss-gx_tab_heatmap" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Texto educativo (Zero Gamma)</label><textarea id="ss-gx_edu_zero" class="filter-inp" rows="3" style="width:100%;resize:vertical;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: CALCULADORA ══ -->
+    <div class="admin-page" id="page-site-calc">
+      <div class="sec-hdr">
+        <div class="sec-title">Calculadora — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('calc')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Tela de Desbloqueio (Gate)</div>
+        <div class="ec-field"><label>Título</label><input id="ss-calc_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Subtítulo (gate)</label><textarea id="ss-calc_gate_sub" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Label: Nome</label><input id="ss-calc_gate_label_nome" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Label: E-mail</label><input id="ss-calc_gate_label_email" class="filter-inp" style="width:100%;"></div>
+        </div>
+        <div class="ec-field"><label>Botão desbloquear</label><input id="ss-calc_gate_btn" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Texto privacidade</label><input id="ss-calc_gate_privacidade" class="filter-inp" style="width:100%;"></div>
+      </div>
+      <div class="chart-card" style="margin-top:20px;">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Calculadora (após desbloqueio)</div>
+        <div class="ec-field"><label>Subtítulo</label><input id="ss-calc_sub_ps" class="filter-inp" style="width:100%;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Saldo</label><input id="ss-calc_saldo" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Risco</label><input id="ss-calc_risco" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Entrada</label><input id="ss-calc_entrada" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Instrumento</label><input id="ss-calc_instr" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Contratos</label><input id="ss-calc_contratos" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Risco ($)</label><input id="ss-calc_risco_res" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Lucro Pot.</label><input id="ss-calc_lucro_pot" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: QUIZ ══ -->
+    <div class="admin-page" id="page-site-quiz">
+      <div class="sec-hdr">
+        <div class="sec-title">Quiz — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('quiz')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px;">O conteúdo do quiz (perguntas e opções) é gerado dinamicamente. Aqui você edita os textos do mini-card na home.</div>
+        <div class="ec-field"><label>Título do card</label><input id="ss-mu_quiz_title" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Pergunta exemplo</label><input id="ss-mu_quiz_q" class="filter-inp" style="width:100%;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Opção 1</label><input id="ss-mu_quiz_futuros" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Opção 2</label><input id="ss-mu_quiz_forex" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Opção 3</label><input id="ss-mu_quiz_ambos" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: LIVE ROOM ══ -->
+    <div class="admin-page" id="page-site-live">
+      <div class="sec-hdr">
+        <div class="sec-title">Live Room — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('live')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="ec-field"><label>Título</label><input id="ss-live_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Descrição</label><textarea id="ss-live_hero_desc" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+        <div class="ec-field"><label>Badge "Coming Soon"</label><input id="ss-live_em_breve" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Texto de disponibilidade</label><textarea id="ss-live_disponivel_em" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin:16px 0 12px;">Labels do Countdown</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Dias</label><input id="ss-live_dias" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Horas</label><input id="ss-live_horas" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Minutos</label><input id="ss-live_minutos" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Segundos</label><input id="ss-live_segundos" class="filter-inp" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: FIDELIDADE ══ -->
+    <div class="admin-page" id="page-site-fidelidade">
+      <div class="sec-hdr">
+        <div class="sec-title">Programa de Fidelidade — Textos</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteSection('fidelidade')">Salvar</button>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="ec-field"><label>Título</label><input id="ss-loyalty_hero_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Descrição</label><textarea id="ss-loyalty_hero_desc" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin:16px 0 12px;">4 Benefícios</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="ec-field"><label>Benefício 1 — Título</label><input id="ss-loyalty_benefit1_titulo" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Benefício 1 — Subtítulo</label><input id="ss-loyalty_benefit1_sub" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Benefício 2 — Título</label><input id="ss-loyalty_benefit2_titulo" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Benefício 2 — Subtítulo</label><input id="ss-loyalty_benefit2_sub" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Benefício 3 — Título</label><input id="ss-loyalty_benefit3_titulo" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Benefício 3 — Subtítulo</label><input id="ss-loyalty_benefit3_sub" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Benefício 4 — Título</label><input id="ss-loyalty_benefit4_titulo" class="filter-inp" style="width:100%;"></div>
+          <div class="ec-field"><label>Benefício 4 — Subtítulo</label><input id="ss-loyalty_benefit4_sub" class="filter-inp" style="width:100%;"></div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin:16px 0 12px;">Como Participar</div>
+        <div class="ec-field"><label>Título</label><input id="ss-loyalty_como_titulo" class="filter-inp" style="width:100%;"></div>
+        <div class="ec-field"><label>Descrição</label><textarea id="ss-loyalty_como_desc" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
+      </div>
+    </div>
+
     <!-- ══ SITE: FOOTER ══ -->
     <div class="admin-page" id="page-site-footer">
       <div class="sec-hdr">
@@ -2687,7 +2921,7 @@ const _unifiedTabs = {
   'firmas':      [{id:'cms-firms',label:'Firmas'},{id:'cms-settings',label:'Preços & Cupons'}],
   'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
   'telegram':    [{id:'telegram',label:'Telegram'},{id:'criativos',label:'Criativos'}],
-  'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-footer',label:'Footer'}],
+  'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-firmas',label:'Firmas'},{id:'site-plataformas',label:'Plataformas'},{id:'site-indicadores',label:'Indicadores'},{id:'site-calendario',label:'Calendário'},{id:'site-analise',label:'Análise'},{id:'site-gamma',label:'Gamma'},{id:'site-calc',label:'Calculadora'},{id:'site-quiz',label:'Quiz'},{id:'site-live',label:'Live Room'},{id:'site-fidelidade',label:'Fidelidade'},{id:'site-footer',label:'Footer'}],
   'config':      [{id:'cms-texts',label:'Textos'},{id:'i18n-editor',label:'Traduções (I18N)'},{id:'firmt-editor',label:'Traduções Firmas'}]
 };
 // Reverse map: sub-page → parent unified tab
@@ -2863,8 +3097,18 @@ function renderPage(p){
     case 'cms-faq':        renderCmsFaq(); break;
     case 'site-hero':      loadSiteHero(); break;
     case 'site-nav':       loadSiteNav(); break;
-    case 'site-ofertas':   loadSiteOfertas(); break;
-    case 'site-footer':    loadSiteFooter(); break;
+    case 'site-ofertas':     loadSiteOfertas(); break;
+    case 'site-firmas':      loadSiteSection('firmas'); break;
+    case 'site-plataformas': loadSiteSection('plataformas'); break;
+    case 'site-indicadores': loadSiteSection('indicadores'); break;
+    case 'site-calendario':  loadSiteSection('calendario'); break;
+    case 'site-analise':     loadSiteSection('analise'); break;
+    case 'site-gamma':       loadSiteSection('gamma'); break;
+    case 'site-calc':        loadSiteSection('calc'); break;
+    case 'site-quiz':        loadSiteSection('quiz'); break;
+    case 'site-live':        loadSiteSection('live'); break;
+    case 'site-fidelidade':  loadSiteSection('fidelidade'); break;
+    case 'site-footer':      loadSiteFooter(); break;
     case 'cms-texts':      renderCmsTexts(); break;
     case 'i18n-editor':    renderI18nEditor(); break;
     case 'firmt-editor':   renderFirmTEditor(); break;
@@ -10411,6 +10655,37 @@ async function saveSiteNav(){
   if(visErr){fail++;console.error('nav visibility save:',visErr);}
 
   toast(ok+' abas salvas'+(fail?' ('+fail+' erros)':'')+'!');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SITE: SEÇÕES GENÉRICAS — carrega/salva inputs com id="ss-{i18n_key}"
+// ═══════════════════════════════════════════════════════════════════════
+async function loadSiteSection(pageId){
+  const wrap=document.getElementById('page-site-'+pageId);
+  if(!wrap) return;
+  const inputs=[...wrap.querySelectorAll('[id^="ss-"]')];
+  const keys=inputs.map(el=>el.id.replace('ss-',''));
+  if(!keys.length) return;
+  const{data}=await db.from('i18n').select('key,pt').in('key',keys);
+  const map={};
+  if(data) data.forEach(r=>{map[r.key]=r.pt||'';});
+  inputs.forEach(el=>{
+    const k=el.id.replace('ss-','');
+    el.value=map[k]||'';
+  });
+}
+
+async function saveSiteSection(pageId){
+  const wrap=document.getElementById('page-site-'+pageId);
+  if(!wrap) return;
+  const inputs=[...wrap.querySelectorAll('[id^="ss-"]')];
+  let ok=0,fail=0;
+  for(const el of inputs){
+    const k=el.id.replace('ss-','');
+    const{error}=await db.from('i18n').update({pt:el.value,updated_at:new Date().toISOString()}).eq('key',k);
+    if(error){fail++;console.error('save:',k,error);} else ok++;
+  }
+  toast(ok+' campos salvos'+(fail?' ('+fail+' erros)':'')+'!');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
