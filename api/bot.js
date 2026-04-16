@@ -68,26 +68,40 @@ module.exports = async (req, res) => {
     parts: [{ text: String(m.content || '').slice(0, 2000) }],
   }));
 
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEY}`;
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemText }] },
-        contents,
-        generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
-      }),
-    });
-    const data = await resp.json();
-    if (!resp.ok) {
-      console.error('[bot] gemini error:', resp.status, data);
-      return res.status(502).json({ error: 'Upstream error' });
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEY}`;
+  const payload = JSON.stringify({
+    systemInstruction: { parts: [{ text: systemText }] },
+    contents,
+    generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+  });
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        console.error(`[bot] gemini error (attempt ${attempt}):`, resp.status, JSON.stringify(data).slice(0, 300));
+        if (resp.status === 429 || resp.status >= 500) {
+          await new Promise(r => setTimeout(r, 1500));
+          continue;
+        }
+        return res.status(502).json({ error: 'Upstream error' });
+      }
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (!text) {
+        console.error('[bot] empty response:', JSON.stringify(data).slice(0, 300));
+        return res.status(502).json({ error: 'Empty response' });
+      }
+      return res.status(200).json({ content: [{ text }] });
+    } catch (e) {
+      console.error(`[bot] fetch error (attempt ${attempt}):`, e.message);
+      if (attempt === 0) { await new Promise(r => setTimeout(r, 1000)); continue; }
+      return res.status(500).json({ error: 'Bot error' });
     }
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    return res.status(200).json({ content: [{ text }] });
-  } catch (e) {
-    console.error('[bot] fetch error:', e.message);
-    return res.status(500).json({ error: 'Bot error' });
   }
+  return res.status(502).json({ error: 'Upstream error after retries' });
 };

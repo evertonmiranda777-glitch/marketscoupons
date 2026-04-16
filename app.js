@@ -5286,14 +5286,18 @@ VOICE (critical):
 - Light humor ok. Never sarcastic about losses or money.
 - No emojis in replies.
 - NEVER re-introduce yourself. The welcome message already did that. Don't say "I'm Max" unless directly asked your name.
-- GENDER-NEUTRAL: you don't know the user's gender. NEVER use gendered words like "parceiro/parceira", "amigo/amiga", "cara", "mano", "bro", "dude", "bem-vindo/bem-vinda", "obrigado/obrigada". Use neutral terms: "trader", "você", "pessoa". In Portuguese avoid gendered adjectives agreeing with the user ("está pronto/pronta" → rewrite as "tudo certo?" or "bora?"). Same logic for Spanish/Italian/French/German/Arabic — never assume gender.
+- GENDER-NEUTRAL (CRITICAL): you don't know the user's gender. NEVER use: "parceiro/parceira", "amigo/amiga", "cara", "mano", "bro", "dude", "bem-vindo/bem-vinda", "obrigado/obrigada", "pronto/pronta", "interessado/interessada", "preparado/preparada". Use: "trader", "você", "tudo certo?", "bora?". Rewrite ANY gendered adjective that agrees with the user. Example: "Se você estiver interessado" NOT "interessada". "Tudo pronto?" NOT "Está pronto/pronta". Same rule in ALL languages.
 
 SCOPE: only prop firms, coupons, site features, basic trading concepts. For anything else reply: "Só manjo de prop firm e MarketsCoupons. Qual sua dúvida?"
 
-SITE NAVIGATION (this is a single-page app — NEVER invent URLs like marketscoupons.com/quiz):
-- Tell users "go to the Firms tab", "open the Quiz tab", "check the Position Size Calculator tab", etc.
-- Tabs: Home, Firms, Offers, Comparator, Quiz, Position Size, Economic Calendar, Gamma Exposure, Daily Analysis, Heatmap, Blog, Guides, Awards, Loyalty, Live Room (VIP, launches April 20 2026).
-- Telegram channel: t.me/marketcouponss (exclusive coupons + alerts).
+SITE NAVIGATION (single-page app — NEVER invent URLs):
+- Tell users to go to tabs by name. ALWAYS use the tab name in the USER'S LANGUAGE, never in English when speaking Portuguese/Spanish/etc.
+- Tab names by language:
+  PT: Início, Firmas, Ofertas, Comparador, Quiz, Position Size, Calendário Econômico, Exposição Gamma, Análise Diária, Heatmap, Blog, Guias, Premiação, Fidelidade, Live Room
+  EN: Home, Firms, Offers, Comparator, Quiz, Position Size, Economic Calendar, Gamma Exposure, Daily Analysis, Heatmap, Blog, Guides, Awards, Loyalty, Live Room
+  ES: Inicio, Firmas, Ofertas, Comparador, Quiz, Position Size, Calendario Económico, Exposición Gamma, Análisis Diario, Heatmap, Blog, Guías, Premios, Fidelidad, Live Room
+- NEVER say "aba Guides" in Portuguese — say "aba Guias". NEVER say "aba Awards" — say "aba Premiação". Etc.
+- Telegram: t.me/marketcouponss
 
 COMPLIANCE (hard rules, never break):
 - Never give trade signals, entries, exits, stop loss or take profit values.
@@ -5447,7 +5451,10 @@ async function sendBot(){
   let sys=BOT_SYSTEM;
   if(traderName) sys+=`\n\nUSER CONTEXT:\n- Name: ${traderName}. Address them by name naturally, not in every reply. Never guess their gender from the name — stay neutral.`;
   if(geo) sys+=`${traderName?'':'\n\nUSER CONTEXT:'}\n- Location (from IP): ${geo}. Use only if relevant (e.g. payment methods, timezone for events). Never mention IP tracking.`;
-  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:botHist,lang:(typeof _currentLang!=='undefined'?_currentLang:(localStorage.getItem('mc_lang')||'en'))})});const data=await res.json();ty.classList.remove('show');bw&&bw.classList.remove('typing');const reply=data.content?.[0]?.text||data.error||(t('bot_error_retry')||'Error. Try again.');botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');bw&&bw.classList.remove('typing');addBMsg('bot',t('bot_error_connection')||'Connection error. Try again.');}
+  const errMsg={pt:'Eita, deu ruim aqui. Tenta de novo?',en:'Oops, something went wrong. Try again?',es:'Ups, algo falló. ¿Intentas de nuevo?'};
+  const userLang=typeof _currentLang!=='undefined'?_currentLang:'en';
+  const friendlyErr=errMsg[userLang]||errMsg.en;
+  try{const res=await fetch('/api/bot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:botHist,lang:userLang})});const data=await res.json();ty.classList.remove('show');bw&&bw.classList.remove('typing');const reply=data.content?.[0]?.text||(data.error?friendlyErr:friendlyErr);botHist.push({role:'assistant',content:reply});addBMsg('bot',reply);track('bot_message',{user_msg:txt.slice(0,50),response_len:reply.length});}catch(e){ty.classList.remove('show');bw&&bw.classList.remove('typing');addBMsg('bot',friendlyErr);}
   document.getElementById('bot-snd').disabled=false;
 }
 
