@@ -10496,7 +10496,7 @@ async function tgPreviewFlashPromo(){
       sendBtn.disabled=false;
     };
     if(area){ area.style.display='block'; area.scrollIntoView({behavior:'smooth',block:'nearest'}); }
-  }catch(e){ alert('Flash Promo error: '+e.message); console.error(e); }
+  }catch(e){ console.error('Flash Promo error:', e); }
 }
 
 
