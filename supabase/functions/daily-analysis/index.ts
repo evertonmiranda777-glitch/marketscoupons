@@ -276,8 +276,10 @@ ESTRUTURA (3 idiomas: {pt,en,es}). Max 3-4 frases DENSAS por campo:
 
 10. MARKET_PHASE: Fase Wyckoff com evidencia do price action.
 
+CAMPOS NUMERICOS OBRIGATORIOS (alem do JSON de texto): extraia os numeros exatos dos cenarios bull e bear. Esses campos sao usados para tracking de acuracia — DEVEM ser numeros puros, sem texto.
+
 JSON puro (sem markdown, sem code blocks):
-{"bias":"bullish|bearish|neutral","confidence":1-5,"market_phase":{"pt":"..","en":"..","es":".."},"support_1":"num","support_2":"num","resistance_1":"num","resistance_2":"num","attention_zone":{"pt":"..","en":"..","es":".."},"context":{"pt":"..","en":"..","es":".."},"volume_analysis":{"pt":"..","en":"..","es":".."},"indicators_summary":{"pt":"..","en":"..","es":".."},"scenario_bull":{"pt":"..","en":"..","es":".."},"scenario_bear":{"pt":"..","en":"..","es":".."},"news_impact":{"pt":"..","en":"..","es":".."},"events":{"pt":"..","en":"..","es":".."},"vix_context":{"pt":"..","en":"..","es":".."}}`;
+{"bias":"bullish|bearish|neutral","confidence":1-5,"market_phase":{"pt":"..","en":"..","es":".."},"support_1":"num","support_2":"num","resistance_1":"num","resistance_2":"num","bull_trigger":num,"bull_target_1":num,"bull_target_2":num,"bull_stop":num,"bull_probability":num,"bear_trigger":num,"bear_target_1":num,"bear_target_2":num,"bear_stop":num,"bear_probability":num,"attention_zone":{"pt":"..","en":"..","es":".."},"context":{"pt":"..","en":"..","es":".."},"volume_analysis":{"pt":"..","en":"..","es":".."},"indicators_summary":{"pt":"..","en":"..","es":".."},"scenario_bull":{"pt":"..","en":"..","es":".."},"scenario_bear":{"pt":"..","en":"..","es":".."},"news_impact":{"pt":"..","en":"..","es":".."},"events":{"pt":"..","en":"..","es":".."},"vix_context":{"pt":"..","en":"..","es":".."}}`;
 
     console.log("Claude:"+A.ticker+"@"+last.toFixed(0)+" mult="+mult.toFixed(4)+(gexBlock?" +GEX":""));
     var r=await fetch("https://api.anthropic.com/v1/messages",{
@@ -307,6 +309,25 @@ JSON puro (sem markdown, sem code blocks):
     };
     var dbr=await db.from("daily_analysis").upsert(row,{onConflict:"date,asset"});
     if(dbr.error)return{error:A.ticker+":DB "+dbr.error.message};
+
+    // Save targets for accuracy tracking
+    var targets={
+      date:today,asset:A.ticker,entry_price:last,
+      bull_trigger:parseFloat(analysis.bull_trigger)||null,
+      bull_target_1:parseFloat(analysis.bull_target_1)||null,
+      bull_target_2:parseFloat(analysis.bull_target_2)||null,
+      bull_stop:parseFloat(analysis.bull_stop)||null,
+      bull_probability:parseInt(analysis.bull_probability)||null,
+      bear_trigger:parseFloat(analysis.bear_trigger)||null,
+      bear_target_1:parseFloat(analysis.bear_target_1)||null,
+      bear_target_2:parseFloat(analysis.bear_target_2)||null,
+      bear_stop:parseFloat(analysis.bear_stop)||null,
+      bear_probability:parseInt(analysis.bear_probability)||null,
+    };
+    var tdr=await db.from("analysis_targets").upsert(targets,{onConflict:"date,asset"});
+    if(tdr.error)console.error(A.ticker+":targets DB "+tdr.error.message);
+    else console.log(A.ticker+":targets saved bull="+targets.bull_target_1+"/"+targets.bull_target_2+" bear="+targets.bear_target_1+"/"+targets.bear_target_2);
+
     console.log(A.ticker+":"+row.bias+"("+row.confidence+") @"+last.toFixed(0));
     return{result:{asset:A.ticker,bias:row.bias,conf:row.confidence,price:last,mult:mult.toFixed(4)}};
   }catch(e:any){console.error(A.ticker+":"+e.message);return{error:A.ticker+":"+e.message};}
