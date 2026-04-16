@@ -6308,8 +6308,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       if(_siteSettings.theme_colors){
         const tc=typeof _siteSettings.theme_colors==='string'?JSON.parse(_siteSettings.theme_colors):_siteSettings.theme_colors;
         const root=document.documentElement;
+        const _hex2rgb=h=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return r+','+g+','+b;};
         Object.entries(tc).forEach(([varName,val])=>{
-          if(varName.startsWith('--')&&val) root.style.setProperty(varName,val);
+          if(!varName.startsWith('--')||!val) return;
+          if(varName==='--glass-rgb'){
+            const rgb=_hex2rgb(val);
+            root.style.setProperty('--glass','rgba('+rgb+',.08)');
+            root.style.setProperty('--glass-border','rgba('+rgb+',.18)');
+            root.style.setProperty('--glass-strong','rgba('+rgb+',.08)');
+            root.style.setProperty('--cbr','rgba('+rgb+',.18)');
+          } else {
+            root.style.setProperty(varName,val);
+          }
+          // Derived gold vars
+          if(varName==='--gold'){
+            const rgb=_hex2rgb(val);
+            root.style.setProperty('--gbg','rgba('+rgb+',0.09)');
+            root.style.setProperty('--gbr','rgba('+rgb+',0.25)');
+            root.style.setProperty('--gold-dim','rgba('+rgb+',.15)');
+            root.style.setProperty('--glow-gold','rgba('+rgb+',.15)');
+            root.style.setProperty('--glow-gold-border','rgba('+rgb+',.25)');
+          }
         });
       }
       // Logo text

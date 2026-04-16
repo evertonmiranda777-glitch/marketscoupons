@@ -2394,6 +2394,28 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <input id="tema-t3-hex" class="filter-inp" style="width:100%;" value="#8A98AE" oninput="document.getElementById('tema-t3').value=this.value">
             </div>
           </div>
+          <div class="ec-field">
+            <label>Cor Glass (fundos cristalinos)</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-glass" value="#6BB6C9" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-glass-hex" class="filter-inp" style="width:100%;" value="#6BB6C9" oninput="document.getElementById('tema-glass').value=this.value">
+            </div>
+            <div style="font-size:10px;color:var(--t3);margin-top:4px;">Cor dos fundos transparentes (nav, modais, botões glass)</div>
+          </div>
+          <div class="ec-field">
+            <label>Superfície (--sur)</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-sur" value="#0B0F16" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-sur-hex" class="filter-inp" style="width:100%;" value="#0B0F16" oninput="document.getElementById('tema-sur').value=this.value">
+            </div>
+          </div>
+          <div class="ec-field">
+            <label>Card secundário</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-card2" value="#141B27" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-card2-hex" class="filter-inp" style="width:100%;" value="#141B27" oninput="document.getElementById('tema-card2').value=this.value">
+            </div>
+          </div>
         </div>
       </div>
 
@@ -10770,12 +10792,15 @@ async function saveSiteNav(){
 // SITE: CORES / TEMA
 // ═══════════════════════════════════════════════════════════════════════
 const _temaVars = [
-  {id:'gold', css:'--gold', def:'#F0B429'},
-  {id:'bg',   css:'--bg',   def:'#07090D'},
-  {id:'card', css:'--card', def:'#10151F'},
-  {id:'t1',   css:'--t1',   def:'#EDF2F7'},
-  {id:'t2',   css:'--t2',   def:'#B8C5D6'},
-  {id:'t3',   css:'--t3',   def:'#8A98AE'},
+  {id:'gold',  css:'--gold',  def:'#F0B429'},
+  {id:'bg',    css:'--bg',    def:'#07090D'},
+  {id:'card',  css:'--card',  def:'#10151F'},
+  {id:'t1',    css:'--t1',    def:'#EDF2F7'},
+  {id:'t2',    css:'--t2',    def:'#B8C5D6'},
+  {id:'t3',    css:'--t3',    def:'#8A98AE'},
+  {id:'glass', css:'--glass-rgb', def:'#6BB6C9'},
+  {id:'sur',   css:'--sur',   def:'#0B0F16'},
+  {id:'card2', css:'--card2', def:'#141B27'},
 ];
 
 function _temaUpdatePreview(){
