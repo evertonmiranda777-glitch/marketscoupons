@@ -502,23 +502,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 .tg-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:6px;}
 .tg-field textarea,.tg-field input{width:100%;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;transition:.2s;resize:vertical;font-family:var(--f);}
 .tg-field textarea:focus,.tg-field input:focus{border-color:rgba(240,180,41,.4);box-shadow:0 0 0 3px rgba(240,180,41,.08);}
-.tg-firm-checks{display:flex;flex-direction:column;gap:5px;max-height:260px;overflow-y:auto;padding-right:4px;}
-.tg-firm-check{display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:7px;cursor:pointer;transition:.15s;}
-.tg-firm-check:hover{background:rgba(255,255,255,.06);}
-.tg-firm-check input[type="checkbox"]{accent-color:#F0B429;width:13px;height:13px;flex-shrink:0;}
-.tg-firm-check-logo{width:22px;height:22px;border-radius:5px;object-fit:contain;flex-shrink:0;}
-.tg-firm-check-name{font-size:12px;font-weight:600;color:var(--t1);flex:1;}
-.tg-firm-check-disc{font-size:11px;font-weight:700;color:var(--gold);}
 .tg-preview-wrap{display:flex;flex-direction:column;gap:16px;}
-.tg-caption-preview{background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:10px;padding:16px;font-size:12px;color:var(--t2);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto;}
 .tg-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .tg-qa-btn{padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:9px;color:var(--t1);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;text-align:left;font-family:var(--f);}
 .tg-qa-btn:hover{border-color:var(--glow-gold-border);background:var(--glow-gold);color:var(--gold);}
 .tg-qa-btn .qa-icon{display:block;font-size:16px;margin-bottom:4px;}
 .tg-qa-btn .qa-lbl{font-size:10px;color:var(--t3);}
-.tg-send-btn{width:100%;padding:13px;background:linear-gradient(135deg,#0088cc,#006fa6);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:.25s;font-family:var(--f);display:flex;align-items:center;justify-content:center;gap:8px;}
-.tg-send-btn:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,136,204,.3);}
-.tg-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tg-status{font-size:11px;margin-top:8px;text-align:center;min-height:16px;}
 .tg-status.ok{color:var(--green);}
 .tg-status.err{color:var(--red);}
@@ -2075,37 +2064,16 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <!-- CONTROLES -->
         <div class="tg-controls">
 
-          <!-- Firmas para incluir -->
-          <div class="tg-card">
-            <div class="tg-card-title">Firmas no Criativo</div>
-            <div style="display:flex;gap:6px;margin-bottom:10px;">
-              <button class="btn-secondary" style="font-size:11px;padding:5px 10px;" onclick="tgSelectAllFirms(true)">Selecionar todas</button>
-              <button class="btn-secondary" style="font-size:11px;padding:5px 10px;" onclick="tgSelectAllFirms(false)">Limpar</button>
-            </div>
-            <div class="tg-firm-checks" id="tg-firm-checks">
-              <div style="color:var(--t3);font-size:12px;padding:8px;">Carregando firmas...</div>
-            </div>
-          </div>
-
-          <!-- Legenda / Caption -->
-          <div class="tg-card">
-            <div class="tg-card-title">Legenda (Caption)</div>
-            <div class="tg-field">
-              <textarea id="tg-caption" rows="8" placeholder="Texto da mensagem..."></textarea>
-            </div>
-            <button class="btn-secondary" style="font-size:11px;padding:5px 10px;margin-bottom:6px;" onclick="tgGenerateCaption()">Gerar automático</button>
-          </div>
-
           <!-- Ações rápidas -->
           <div class="tg-card">
             <div class="tg-card-title">Ações Rápidas</div>
             <div class="tg-quick-actions" style="grid-template-columns:1fr 1fr 1fr;">
-              <button class="tg-qa-btn" onclick="tgQuickAction('coupons')">
+              <button class="tg-qa-btn" onclick="tgConfirmAction('coupons','Cupons — imagem com todas as firmas')">
                 <span class="qa-icon">🏷️</span>
                 Cupons
                 <div class="qa-lbl">Imagem com todas as firmas</div>
               </button>
-              <button class="tg-qa-btn" onclick="tgQuickAction('clean')">
+              <button class="tg-qa-btn" onclick="tgConfirmAction('clean','Limpar mensagens antigas do canal')">
                 <span class="qa-icon">🧹</span>
                 Limpar Canal
                 <div class="qa-lbl">Remove mensagens antigas</div>
@@ -2118,20 +2086,20 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             </div>
             <div class="tg-card-title" style="margin-top:16px;">Mensagens com Dados Reais</div>
             <div class="tg-quick-actions" style="grid-template-columns:1fr 1fr 1fr;">
-              <button class="tg-qa-btn" onclick="tgQuickAction('analysis')" id="tg-btn-analysis">
+              <button class="tg-qa-btn" onclick="tgConfirmAction('analysis','Enviar Análise Diária para o canal')" id="tg-btn-analysis">
                 <span class="qa-icon">📊</span>
                 Análise Diária
-                <div class="qa-lbl">Envia direto para o canal</div>
+                <div class="qa-lbl">Preview antes de enviar</div>
               </button>
-              <button class="tg-qa-btn" onclick="tgQuickAction('gex')" id="tg-btn-gex">
+              <button class="tg-qa-btn" onclick="tgConfirmAction('gex','Enviar GEX para o canal')" id="tg-btn-gex">
                 <span class="qa-icon">🎯</span>
                 GEX
-                <div class="qa-lbl">Envia direto para o canal</div>
+                <div class="qa-lbl">Preview antes de enviar</div>
               </button>
-              <button class="tg-qa-btn" onclick="tgQuickAction('calendar_daily')" id="tg-btn-calendar">
+              <button class="tg-qa-btn" onclick="tgConfirmAction('calendar_daily','Enviar Calendário para o canal')" id="tg-btn-calendar">
                 <span class="qa-icon">📅</span>
                 Calendário
-                <div class="qa-lbl">Envia direto para o canal</div>
+                <div class="qa-lbl">Preview antes de enviar</div>
               </button>
             </div>
             <!-- Flash Promo firma select (hidden by default) -->
@@ -2144,8 +2112,18 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               </div>
               <button class="tg-qa-btn" style="width:100%;" onclick="tgSendFlashPromo()">Enviar Flash Promo</button>
             </div>
+            <!-- Confirmação antes de disparar -->
+            <div id="tg-confirm-box" style="display:none;margin-top:12px;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.25);border-radius:10px;padding:16px;">
+              <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:8px;">Confirmar envio</div>
+              <div id="tg-confirm-msg" style="font-size:12px;color:var(--t2);margin-bottom:12px;"></div>
+              <div style="display:flex;gap:8px;">
+                <button class="tg-qa-btn" id="tg-confirm-yes" style="flex:1;text-align:center;background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;font-weight:700;">Enviar para o canal</button>
+                <button class="tg-qa-btn" onclick="document.getElementById('tg-confirm-box').style.display='none'" style="flex:1;text-align:center;">Cancelar</button>
+              </div>
+            </div>
             <div class="tg-status" id="tg-qa-status"></div>
           </div>
+
           <!-- Preview das mensagens automáticas -->
           <div class="tg-card" style="margin-top:12px;">
             <div class="tg-card-title">Preview das Mensagens</div>
@@ -2165,16 +2143,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             </div>
           </div>
 
-          <!-- Botão enviar criativo -->
-          <div class="tg-card">
-            <div class="tg-card-title">Enviar Criativo</div>
-            <button class="tg-send-btn" id="tg-send-html-btn" onclick="tgSendHTML()" style="background:linear-gradient(135deg,#F0B429,#c8941a);color:#030507;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              Enviar HTML com Links
-            </button>
-            <div class="tg-status" id="tg-send-status"></div>
-          </div>
-
         </div><!-- /tg-controls -->
 
         <!-- PREVIEW -->
@@ -2189,14 +2157,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <button class="tg-qa-btn" onclick="tgShowStaticPng('evento-001')" style="background:rgba(240,64,64,.1);border-color:rgba(240,64,64,.4);color:#f08080;">Evento 001</button>
               <button class="tg-qa-btn" onclick="tgShowStaticPng('evento-002')" style="background:rgba(240,64,64,.1);border-color:rgba(240,64,64,.4);color:#f08080;">Evento 002</button>
             </div>
-            <div id="tg-static-png-wrap" style="background:#0b0f16;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;text-align:center;min-height:200px;display:flex;align-items:center;justify-content:center;">
+            <div id="tg-static-png-wrap" style="background:#0b0f16;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
               <span style="color:rgba(255,255,255,.4);font-size:13px;">Clique num botão para ver o criativo</span>
             </div>
-          </div>
-          <div class="tg-card" style="padding:16px 20px;">
-            <div class="tg-card-title">Preview HTML (Telegram)</div>
-            <div id="tg-html-preview" style="background:#0e1621;border-radius:12px;padding:20px;font-size:14px;line-height:1.7;color:#e4e6eb;font-family:system-ui,-apple-system,sans-serif;white-space:pre-wrap;word-break:break-word;"></div>
-            <div id="tg-html-buttons" style="margin-top:10px;"></div>
+            <button id="tg-download-png" class="tg-qa-btn" onclick="tgDownloadPng()" style="display:none;width:100%;margin-top:8px;text-align:center;background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.3);color:#80c8ff;">
+              💾 Salvar PNG
+            </button>
           </div>
         </div><!-- /tg-preview-wrap -->
 
@@ -10217,8 +10183,15 @@ function tgShowStaticPng(kind) {
   const url = '/img/' + (fileMap[kind] || kind + '-creative.png') + '?t=' + t;
   wrap.innerHTML = '<span style="color:rgba(255,255,255,.5);font-size:13px;">Carregando...</span>';
   const img = new Image();
-  img.onload = () => { wrap.innerHTML = ''; img.style.maxWidth = '100%'; img.style.height = 'auto'; img.style.borderRadius = '6px'; wrap.appendChild(img); };
-  img.onerror = () => { wrap.innerHTML = '<span style="color:#ff5050;font-size:13px;">Erro ao carregar ' + kind + '. Rode: node scripts/render-firms-png.js all</span>'; };
+  img.onload = () => {
+    wrap.innerHTML = ''; img.style.maxWidth = '100%'; img.style.height = 'auto'; img.style.borderRadius = '6px'; wrap.appendChild(img);
+    _tgCurrentPngUrl = url;
+    const dl = document.getElementById('tg-download-png'); if(dl) dl.style.display = 'block';
+  };
+  img.onerror = () => {
+    wrap.innerHTML = '<span style="color:#ff5050;font-size:13px;">Erro ao carregar ' + kind + '. Rode: node scripts/render-firms-png.js all</span>';
+    const dl = document.getElementById('tg-download-png'); if(dl) dl.style.display = 'none';
+  };
   img.src = url;
 }
 /* ── Inicializa a aba Telegram ── */
@@ -10232,34 +10205,7 @@ async function initTelegramSection(){
     }catch(e){}
   }
   _tgFirms = (_firmsCache||[]).filter(f=>f.active && f.discount>0).sort((a,b)=>b.discount-a.discount);
-  tgRenderFirmChecks();
   tgPopulateFlashSelect();
-  tgGenerateCaption();
-}
-
-/* ── Renderiza checkboxes das firmas ── */
-function tgRenderFirmChecks(){
-  const wrap = document.getElementById('tg-firm-checks');
-  if(!wrap) return;
-  if(!_tgFirms.length){ wrap.innerHTML='<div style="color:var(--t3);font-size:12px;padding:8px;">Nenhuma firma ativa com desconto.</div>'; return; }
-  wrap.innerHTML = _tgFirms.map(f=>`
-    <label class="tg-firm-check">
-      <input type="checkbox" class="tg-firm-cb" value="${f.id}" checked onchange="tgGenerateCaption();">
-      ${f.icon_url?`<img class="tg-firm-check-logo" src="${f.icon_url}" onerror="this.style.display='none'">`:''}
-      <span class="tg-firm-check-name">${f.name}</span>
-      <span class="tg-firm-check-disc">${f.discount}% OFF</span>
-    </label>
-  `).join('');
-}
-
-function tgSelectAllFirms(checked){
-  document.querySelectorAll('.tg-firm-cb').forEach(cb=>{ cb.checked=checked; });
-  tgGenerateCaption();
-}
-
-function tgGetSelectedFirms(){
-  const ids = [...document.querySelectorAll('.tg-firm-cb:checked')].map(cb=>cb.value);
-  return _tgFirms.filter(f=>ids.includes(f.id));
 }
 
 /* ── Popula select de Flash Promo ── */
@@ -10270,81 +10216,24 @@ function tgPopulateFlashSelect(){
     (_firmsCache||[]).filter(f=>f.active).map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
 }
 
-/* ── Gera caption automaticamente ── */
-function tgGenerateCaption(){
-  const firms = tgGetSelectedFirms();
-  const lines = firms.map(f=>{
-    const coupon = f.coupon ? ` | Cupom: ${f.coupon}` : '';
-    return `• ${f.name} — ${f.discount}% OFF${coupon}`;
-  });
-  const text = `🔥 Active Promotions — Prop Firms\n\n${lines.join('\n')}\n\n💰 Save up to ${Math.max(...firms.map(f=>f.discount),0)}% on your challenge\n🌐 www.marketscoupons.com`;
-  const ta = document.getElementById('tg-caption');
-  if(ta) ta.value = text;
-  tgUpdateCaptionPreview();
+/* ── Confirmação antes de disparar ação rápida ── */
+function tgConfirmAction(action, label){
+  const box = document.getElementById('tg-confirm-box');
+  const msg = document.getElementById('tg-confirm-msg');
+  const yes = document.getElementById('tg-confirm-yes');
+  msg.textContent = label;
+  yes.onclick = () => { box.style.display='none'; tgQuickAction(action); };
+  box.style.display = 'block';
 }
 
-/* ── Atualiza preview da caption ── */
-function tgUpdateCaptionPreview(){
-  const ta = document.getElementById('tg-caption');
-  const prev = document.getElementById('tg-caption-preview');
-  if(prev && ta) prev.textContent = ta.value || '—';
-}
-
-
-
-/* ── Enviar HTML formatado com InlineKeyboard (links clicáveis) ── */
-async function tgSendHTML(){
-  const btn = document.getElementById('tg-send-html-btn');
-  const st = document.getElementById('tg-send-status');
-  const firms = tgGetSelectedFirms();
-  if(!firms.length){ st.textContent='Selecione pelo menos uma firma.'; st.className='tg-status err'; return; }
-
-  btn.disabled = true;
-  st.textContent = 'Enviando HTML...';
-  st.className = 'tg-status loading';
-
-  try{
-    let lines = firms.map(f=>{
-      const dtype = (f.discount_type || f.dtype || '').toLowerCase();
-      const off = dtype === 'lifetime' ? 'LIFETIME' : 'OFF';
-      const cp = f.coupon ? `\n   🎟  <code>${f.coupon}</code>` : '';
-      return `▸ <b>${f.name}</b>  —  <b>${f.discount}% ${off}</b>${cp}`;
-    });
-
-    const text =
-      `━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `   🔥  <b>ACTIVE PROMOTIONS</b>\n` +
-      `   Exclusive Prop Firm Coupons\n` +
-      `━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-      lines.join('\n\n') +
-      `\n\n━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `<i>Trading futures and forex involves substantial risk and is not for every investor. Only risk capital should be used for trading. Past performance is not necessarily indicative of future results.</i>`;
-
-    const buttons = [[{text:`🌐 Claim your coupon → marketscoupons.com`, url:'https://www.marketscoupons.com'}]];
-
-    const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        chat_id: TG_CHAT_ID,
-        text: text,
-        parse_mode: 'HTML',
-        reply_markup: { inline_keyboard: buttons }
-      })
-    });
-    const data = await res.json();
-    if(data.ok){
-      st.textContent = '✓ HTML enviado com sucesso!';
-      st.className = 'tg-status ok';
-    } else {
-      st.textContent = 'Erro: ' + (data.description||'unknown');
-      st.className = 'tg-status err';
-    }
-  }catch(e){
-    st.textContent = 'Erro: ' + e.message;
-    st.className = 'tg-status err';
-  }
-  btn.disabled = false;
+/* ── Download do PNG exibido ── */
+let _tgCurrentPngUrl = '';
+function tgDownloadPng(){
+  if(!_tgCurrentPngUrl) return;
+  const a = document.createElement('a');
+  a.href = _tgCurrentPngUrl;
+  a.download = _tgCurrentPngUrl.split('/').pop().split('?')[0];
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
 /* ── Ações rápidas via Edge Function ── */
@@ -10583,11 +10472,6 @@ async function tgSendFlashPromo(){
   await tgQuickAction('flash_promo&firm_id='+firm_id);
 }
 
-/* ── caption textarea → atualiza preview em tempo real ── */
-document.addEventListener('DOMContentLoaded',()=>{
-  const ta = document.getElementById('tg-caption');
-  if(ta) ta.addEventListener('input', tgUpdateCaptionPreview);
-});
 
 async function saveLiveRoomSettings(){
   const keys=['live_room_enabled','live_room_schedule','live_room_headline','live_room_description'];
