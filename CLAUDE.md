@@ -665,6 +665,33 @@ Valores minimos de opacidade para rgba(255,255,255,...) em fundo escuro. NUNCA u
 
 ---
 
+## Admin — Autonomia Total (Fase 1 concluida 2026-04-16)
+
+### Principio
+Usuario NAO e dev. Admin deve ser **pratico e intuitivo**: formularios com labels em PT claro, sem chaves I18N expostas, sem tabelas de 987 linhas. Cada secao do site tem editor dedicado sob medida.
+
+### Infraestrutura pronta
+- `cms_firms` — firmas completas (Supabase, editavel no admin)
+- `i18n` — 987 chaves UI × 7 idiomas (Supabase + localStorage cache)
+- `firm_translations` — 196 traducoes dados firma × 6 idiomas
+- `cms_texts` — 68 textos dinamicos em 11 secoes
+- `site_settings` — key-value generico
+- `FIRMS=[]` em app.js — array vazio, site carrega 100% do Supabase
+- Fallback localStorage em tudo (mc_firms_cache, mc_i18n_cache, mc_firmt_cache)
+
+### Editores visuais (em construcao, pagina por pagina)
+Cada secao do site tera um formulario dedicado no admin com campos claros.
+Preview = botao "Ver no site" (nova aba). Ordem: Hero → Nav → Ofertas → Footer → resto.
+
+### Regras pro admin
+- **NUNCA** expor chaves tecnicas (hero_cta_text) — usar labels em PT ("Texto do botao")
+- **NUNCA** tabela generica com 100+ linhas — agrupar por secao, formulario sob medida
+- **NUNCA** exigir conhecimento de codigo pra editar qualquer coisa
+- Salvar por secao com feedback visual (toast)
+- Implementar incrementalmente, testar cada pagina antes da proxima
+
+---
+
 ## Boas Praticas do Projeto
 
 1. **Idioma das respostas:** Sempre responder em portugues (PT-BR)
