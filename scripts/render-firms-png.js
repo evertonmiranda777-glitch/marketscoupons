@@ -42,7 +42,7 @@ function stars(rating) {
 }
 
 async function injectFirms(page) {
-  const firms = await sb('cms_firms', 'select=name,short_name,discount,split,rating,reviews,coupon,type,sort_order,icon_url&active=eq.true&order=discount.desc.nullslast&limit=5');
+  const firms = await sb('cms_firms', 'select=name,short_name,discount,split,rating,reviews,coupon,type,sort_order,icon_url&active=eq.true&id=neq.e2t&order=discount.desc.nullslast&limit=5');
   if (!firms || firms.length === 0) { console.warn('[firms] no data, keeping static template'); return; }
 
   const totalFirms = await sb('cms_firms', 'select=id&active=eq.true');
