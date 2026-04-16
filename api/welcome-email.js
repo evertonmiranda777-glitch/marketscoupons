@@ -319,6 +319,8 @@ function buildWelcomeEmail(lang, firms) {
 </body></html>`;
 }
 
+const _welRL = new Map();
+
 module.exports = async (req, res) => {
   // CORS
   const origin = req.headers.origin || '';
@@ -328,6 +330,11 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
+  if (!_welRL.has(ip)) _welRL.set(ip, []);
+  const now = Date.now(); const hits = _welRL.get(ip).filter(t => now - t < 60_000); hits.push(now); _welRL.set(ip, hits);
+  if (hits.length > 10) return res.status(429).json({ error: 'Rate limit' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });

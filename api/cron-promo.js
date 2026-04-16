@@ -178,10 +178,10 @@ function buildCronEmail(firms, lang) {
 }
 
 module.exports = async (req, res) => {
-  // Verify cron secret
+  // Verify cron secret (mandatory)
   const cronSecret = process.env.CRON_SECRET;
   const authHeader = req.headers.authorization;
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 

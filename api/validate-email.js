@@ -18,6 +18,17 @@ function getCorsOrigin(req) {
   return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
 }
 
+const _hits = new Map();
+function rateLimit(ip) {
+  const now = Date.now();
+  const windowMs = 60_000;
+  const max = 30;
+  const arr = (_hits.get(ip) || []).filter(t => now - t < windowMs);
+  arr.push(now);
+  _hits.set(ip, arr);
+  return arr.length <= max;
+}
+
 // Disposable/temporary email domains (common ones)
 const DISPOSABLE = new Set([
   'mailinator.com','guerrillamail.com','tempmail.com','throwaway.email','yopmail.com',
@@ -36,6 +47,9 @@ module.exports = async (req, res) => {
   res.setHeader('Vary', 'Origin');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
+  if (!rateLimit(ip)) return res.status(429).json({ valid: false, reason: 'rate_limit' });
 
   const { email } = req.body || {};
   if (!email || typeof email !== 'string') {
