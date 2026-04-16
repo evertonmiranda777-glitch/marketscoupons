@@ -9010,10 +9010,8 @@ function openBlogModal(id) {
     <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
       <button class="btn-primary" onclick="saveBlogPost2('${id||''}')">Publicar</button>
       <button class="btn-secondary" onclick="saveBlogPost2('${id||''}',true)">Salvar Rascunho</button>
-      <button class="btn-secondary" onclick="blogAutoTranslate('${id||''}')" style="color:var(--gold);border-color:var(--gold);">🌐 Traduzir (6 idiomas)</button>
       <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
-    </div>
-    <div style="font-size:10px;color:var(--t3);margin-top:6px;">Traduzir: salva o post atual e cria cópias em EN, ES, FR, IT, DE e AR automaticamente.</div>`;
+    </div>`;
   document.getElementById('cms-modal-ov').classList.add('open');
   // Wider modal for blog
   document.querySelector('#cms-modal-ov .lead-modal').style.maxWidth='900px';
