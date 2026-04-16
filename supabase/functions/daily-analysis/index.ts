@@ -113,6 +113,10 @@ async function fetchCal():Promise<string>{
     if(!r.ok){console.log("economic-calendar HTTP "+r.status);return"Calendario indisponivel.";}
     var data=await r.json();
     var events=data.events||[];
+    // Boost known high-impact US events from imp 2 → 3
+    var BOOST=/\b(non.?farm|nfp|payroll|cpi\b|inflation rate|ppi\b|producer price|retail sales|gdp |initial jobless|philadelph|philly fed|ism |fomc|fed.*rate|interest rate decision|core pce|pce price|consumer confidence|durable goods|s&p global.*pmi|adp employment|housing starts|building permits|michigan consumer|jolts|import price|export price|employment cost|trade balance)\b/i;
+    var US_RX=/united states|^us$|usa/i;
+    events.forEach((e:any)=>{if(e.importance===2&&(e.currency==='USD'||US_RX.test(e.country||''))&&BOOST.test(e.event))e.importance=3;});
     var highToday=events.filter((e:any)=>e.date===today && e.importance>=3);
     var medToday=events.filter((e:any)=>e.date===today && e.importance===2);
     if(!highToday.length && !medToday.length){
