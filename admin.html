@@ -10276,6 +10276,7 @@ function tgPreviewShow(html, buttonText, buttonUrl, sendFn){
     sendBtn.disabled = false;
   };
   area.style.display = 'block';
+  area.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function tgHtmlToPreview(text){
