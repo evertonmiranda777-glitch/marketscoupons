@@ -137,8 +137,9 @@ module.exports = async (req, res) => {
   const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
   if (!rateLimit(ip)) return res.status(429).json({ error: 'Rate limit: 20/min' });
 
-  const KEY = process.env.GEMINI_API_KEY;
-  if (!KEY) return res.status(503).json({ error: 'Bot temporarily unavailable' });
+  // Pool de keys: GEMINI_API_KEY pode ter múltiplas keys separadas por vírgula
+  const KEYS = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
+  if (!KEYS.length) return res.status(503).json({ error: 'Bot temporarily unavailable' });
 
   const contentLength = parseInt(req.headers['content-length'] || '0', 10);
   if (contentLength > 32000) return res.status(413).json({ error: 'Payload too large' });
@@ -163,15 +164,23 @@ module.exports = async (req, res) => {
     parts: [{ text: String(m.content || '').slice(0, 2000) }],
   }));
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEY}`;
-  const payload = JSON.stringify({
+  const bodyPayload = {
     systemInstruction: { parts: [{ text: systemText }] },
     contents,
     generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
-  });
+  };
+  const payload = JSON.stringify(bodyPayload);
 
-  const delays = [2000, 4000, 6000];
-  for (let attempt = 0; attempt < 3; attempt++) {
+  // Round-robin start index to distribute load across keys
+  if (typeof module.exports._keyIdx === 'undefined') module.exports._keyIdx = 0;
+  const startIdx = module.exports._keyIdx % KEYS.length;
+  module.exports._keyIdx++;
+
+  const delays = [1500, 3000, 5000];
+  const maxAttempts = Math.max(3, KEYS.length * 2);
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const keyIdx = (startIdx + attempt) % KEYS.length;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEYS[keyIdx]}`;
     try {
       const resp = await fetch(url, {
         method: 'POST',
@@ -180,9 +189,9 @@ module.exports = async (req, res) => {
       });
       const data = await resp.json();
       if (!resp.ok) {
-        console.error(`[bot] gemini error (attempt ${attempt}):`, resp.status, JSON.stringify(data).slice(0, 300));
-        if ((resp.status === 429 || resp.status >= 500) && attempt < 2) {
-          await new Promise(r => setTimeout(r, delays[attempt]));
+        console.error(`[bot] gemini error (key ${keyIdx}, attempt ${attempt}):`, resp.status, JSON.stringify(data).slice(0, 300));
+        if ((resp.status === 429 || resp.status >= 500) && attempt < maxAttempts - 1) {
+          await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)]));
           continue;
         }
         return res.status(502).json({ error: 'Upstream error' });
@@ -190,13 +199,13 @@ module.exports = async (req, res) => {
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
       if (!text) {
         console.error('[bot] empty response:', JSON.stringify(data).slice(0, 300));
-        if (attempt < 2) { await new Promise(r => setTimeout(r, delays[attempt])); continue; }
+        if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }
         return res.status(502).json({ error: 'Empty response' });
       }
       return res.status(200).json({ content: [{ text }] });
     } catch (e) {
-      console.error(`[bot] fetch error (attempt ${attempt}):`, e.message);
-      if (attempt < 2) { await new Promise(r => setTimeout(r, delays[attempt])); continue; }
+      console.error(`[bot] fetch error (key ${keyIdx}, attempt ${attempt}):`, e.message);
+      if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }
       return res.status(500).json({ error: 'Bot error' });
     }
   }
