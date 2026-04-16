@@ -5367,12 +5367,14 @@ function toggleBot(){
   if(botOpen){
     document.getElementById('bot-badge').style.display='none';
     document.getElementById('bot-inp').focus();
-    if(!getTraderName() && !_askingName){
+    const name=getTraderName();
+    const welcomeEl=document.querySelector('#bot-msgs .bmsg.bot .bbbl[data-i18n="bot_welcome"], #bot-msgs .bmsg.bot .bbbl');
+    if(!name){
       _askingName=true;
-      setTimeout(()=>{
-        addBMsg('bot',t('bot_ask_name')||'Antes de começar, como posso te chamar?');
-        const q=document.getElementById('bot-quick');if(q)q.style.display='none';
-      },500);
+      const q=document.getElementById('bot-quick');if(q)q.style.display='none';
+    }else if(welcomeEl && botHist.length===0){
+      welcomeEl.innerHTML=(t('bot_welcome_back')||'Fala, {name}!').replace('{name}',name);
+      welcomeEl.removeAttribute('data-i18n');
     }
   }
   track('bot_toggle',{state:botOpen?'open':'close'});
