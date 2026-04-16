@@ -6304,6 +6304,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fab=document.getElementById('bot-fab');if(fab)fab.style.display='none';
         const mmBot=document.getElementById('mm-bot-item');if(mmBot)mmBot.style.display='none';
       }
+      // Theme colors
+      if(_siteSettings.theme_colors){
+        const tc=typeof _siteSettings.theme_colors==='string'?JSON.parse(_siteSettings.theme_colors):_siteSettings.theme_colors;
+        const root=document.documentElement;
+        Object.entries(tc).forEach(([varName,val])=>{
+          if(varName.startsWith('--')&&val) root.style.setProperty(varName,val);
+        });
+      }
+      // Logo text
+      if(_siteSettings.logo_text1||_siteSettings.logo_text2){
+        document.querySelectorAll('.nav-logo-text').forEach(el=>{
+          el.innerHTML=(_siteSettings.logo_text1||'Markets')+'<em>'+(_siteSettings.logo_text2||'Coupons')+'</em>';
+        });
+      }
       // Nav visibility
       if(_siteSettings.nav_visibility){
         const nv=typeof _siteSettings.nav_visibility==='string'?JSON.parse(_siteSettings.nav_visibility):_siteSettings.nav_visibility;

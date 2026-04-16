@@ -2338,6 +2338,113 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
     </div>
 
+    <!-- ══ SITE: CORES / TEMA ══ -->
+    <div class="admin-page" id="page-site-tema">
+      <div class="sec-hdr">
+        <div class="sec-title">Cores / Tema</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteTema()">Salvar</button>
+        </div>
+      </div>
+
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:16px;">Mude as cores do site. Clique na cor pra abrir o seletor. O site aplica as cores automaticamente ao carregar.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+          <div class="ec-field">
+            <label>Cor principal (dourado)</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-gold" value="#F0B429" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-gold-hex" class="filter-inp" style="width:100%;" value="#F0B429" oninput="document.getElementById('tema-gold').value=this.value">
+            </div>
+          </div>
+          <div class="ec-field">
+            <label>Fundo do site</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-bg" value="#07090D" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-bg-hex" class="filter-inp" style="width:100%;" value="#07090D" oninput="document.getElementById('tema-bg').value=this.value">
+            </div>
+          </div>
+          <div class="ec-field">
+            <label>Fundo dos cards</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-card" value="#10151F" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-card-hex" class="filter-inp" style="width:100%;" value="#10151F" oninput="document.getElementById('tema-card').value=this.value">
+            </div>
+          </div>
+          <div class="ec-field">
+            <label>Texto principal</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-t1" value="#EDF2F7" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-t1-hex" class="filter-inp" style="width:100%;" value="#EDF2F7" oninput="document.getElementById('tema-t1').value=this.value">
+            </div>
+          </div>
+          <div class="ec-field">
+            <label>Texto secundário</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-t2" value="#B8C5D6" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-t2-hex" class="filter-inp" style="width:100%;" value="#B8C5D6" oninput="document.getElementById('tema-t2').value=this.value">
+            </div>
+          </div>
+          <div class="ec-field">
+            <label>Texto terciário</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="tema-t3" value="#8A98AE" style="width:48px;height:36px;border:none;border-radius:6px;cursor:pointer;background:transparent;">
+              <input id="tema-t3-hex" class="filter-inp" style="width:100%;" value="#8A98AE" oninput="document.getElementById('tema-t3').value=this.value">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px;">Preview</div>
+        <div id="tema-preview" style="padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,.14);">
+          <div style="font-size:18px;font-weight:700;margin-bottom:8px;" id="tp-title">Título de exemplo</div>
+          <div style="font-size:13px;margin-bottom:8px;" id="tp-sub">Texto secundário de exemplo</div>
+          <div style="font-size:11px;margin-bottom:12px;" id="tp-muted">Texto terciário menor</div>
+          <button id="tp-btn" style="padding:10px 24px;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:default;">Botão Principal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE: LOGO ══ -->
+    <div class="admin-page" id="page-site-logo">
+      <div class="sec-hdr">
+        <div class="sec-title">Logo do Site</div>
+        <div class="sec-actions">
+          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
+          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
+          <button class="btn-primary" onclick="saveSiteLogo()">Salvar</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="chart-card">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Nome do Site</div>
+          <div class="ec-field"><label>Texto da logo (parte 1)</label><input id="logo-text1" class="filter-inp" style="width:100%;" placeholder="Ex: Markets"></div>
+          <div class="ec-field"><label>Texto da logo (parte destaque)</label><input id="logo-text2" class="filter-inp" style="width:100%;" placeholder="Ex: Coupons"></div>
+          <div style="font-size:10px;color:var(--t3);margin-top:4px;">A parte destaque aparece na cor dourada.</div>
+        </div>
+
+        <div class="chart-card">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;">Favicon / Logo</div>
+          <div class="ec-field">
+            <label>Logo atual</label>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+              <img id="logo-preview" src="img/mc-logo-hex.png" style="height:48px;border-radius:8px;background:rgba(255,255,255,.06);padding:4px;">
+              <span style="font-size:11px;color:var(--t3);" id="logo-path">img/mc-logo-hex.png</span>
+            </div>
+          </div>
+          <div class="ec-field">
+            <label>Trocar logo (upload)</label>
+            <input type="file" id="logo-upload" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="filter-inp" style="padding:8px;" onchange="previewLogoUpload(this)">
+            <div style="font-size:10px;color:var(--t3);margin-top:4px;">PNG ou SVG recomendado. Tamanho ideal: 200×200px.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ I18N EDITOR ══ -->
     <div class="admin-page" id="page-i18n-editor">
       <div class="sec-hdr">
@@ -2921,7 +3028,7 @@ const _unifiedTabs = {
   'firmas':      [{id:'cms-firms',label:'Firmas'},{id:'cms-settings',label:'Preços & Cupons'}],
   'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
   'telegram':    [{id:'telegram',label:'Telegram'},{id:'criativos',label:'Criativos'}],
-  'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-firmas',label:'Firmas'},{id:'site-plataformas',label:'Plataformas'},{id:'site-indicadores',label:'Indicadores'},{id:'site-calendario',label:'Calendário'},{id:'site-analise',label:'Análise'},{id:'site-gamma',label:'Gamma'},{id:'site-calc',label:'Calculadora'},{id:'site-quiz',label:'Quiz'},{id:'site-live',label:'Live Room'},{id:'site-fidelidade',label:'Fidelidade'},{id:'site-footer',label:'Footer'}],
+  'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-firmas',label:'Firmas'},{id:'site-plataformas',label:'Plataformas'},{id:'site-indicadores',label:'Indicadores'},{id:'site-calendario',label:'Calendário'},{id:'site-analise',label:'Análise'},{id:'site-gamma',label:'Gamma'},{id:'site-calc',label:'Calculadora'},{id:'site-quiz',label:'Quiz'},{id:'site-live',label:'Live Room'},{id:'site-fidelidade',label:'Fidelidade'},{id:'site-footer',label:'Footer'},{id:'site-tema',label:'Cores / Tema'},{id:'site-logo',label:'Logo'}],
   'config':      [{id:'cms-texts',label:'Textos'},{id:'i18n-editor',label:'Traduções (I18N)'},{id:'firmt-editor',label:'Traduções Firmas'}]
 };
 // Reverse map: sub-page → parent unified tab
@@ -3109,6 +3216,8 @@ function renderPage(p){
     case 'site-live':        loadSiteSection('live'); break;
     case 'site-fidelidade':  loadSiteSection('fidelidade'); break;
     case 'site-footer':      loadSiteFooter(); break;
+    case 'site-tema':        loadSiteTema(); break;
+    case 'site-logo':        loadSiteLogo(); break;
     case 'cms-texts':      renderCmsTexts(); break;
     case 'i18n-editor':    renderI18nEditor(); break;
     case 'firmt-editor':   renderFirmTEditor(); break;
@@ -10655,6 +10764,126 @@ async function saveSiteNav(){
   if(visErr){fail++;console.error('nav visibility save:',visErr);}
 
   toast(ok+' abas salvas'+(fail?' ('+fail+' erros)':'')+'!');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SITE: CORES / TEMA
+// ═══════════════════════════════════════════════════════════════════════
+const _temaVars = [
+  {id:'gold', css:'--gold', def:'#F0B429'},
+  {id:'bg',   css:'--bg',   def:'#07090D'},
+  {id:'card', css:'--card', def:'#10151F'},
+  {id:'t1',   css:'--t1',   def:'#EDF2F7'},
+  {id:'t2',   css:'--t2',   def:'#B8C5D6'},
+  {id:'t3',   css:'--t3',   def:'#8A98AE'},
+];
+
+function _temaUpdatePreview(){
+  const g=document.getElementById('tema-gold')?.value||'#F0B429';
+  const bg=document.getElementById('tema-bg')?.value||'#07090D';
+  const t1=document.getElementById('tema-t1')?.value||'#EDF2F7';
+  const t2=document.getElementById('tema-t2')?.value||'#B8C5D6';
+  const t3=document.getElementById('tema-t3')?.value||'#8A98AE';
+  const pv=document.getElementById('tema-preview');
+  if(!pv) return;
+  pv.style.background=bg;
+  document.getElementById('tp-title').style.color=t1;
+  document.getElementById('tp-sub').style.color=t2;
+  document.getElementById('tp-muted').style.color=t3;
+  const btn=document.getElementById('tp-btn');
+  btn.style.background=g; btn.style.color=bg;
+}
+
+async function loadSiteTema(){
+  const{data}=await db.from('site_settings').select('key,value').eq('key','theme_colors').maybeSingle();
+  const colors=data?.value?(typeof data.value==='string'?JSON.parse(data.value):data.value):{};
+  _temaVars.forEach(v=>{
+    const val=colors[v.css]||v.def;
+    const picker=document.getElementById('tema-'+v.id);
+    const hex=document.getElementById('tema-'+v.id+'-hex');
+    if(picker) picker.value=val;
+    if(hex) hex.value=val;
+    // sync color picker → hex on input
+    if(picker) picker.oninput=function(){
+      if(hex) hex.value=this.value;
+      _temaUpdatePreview();
+    };
+  });
+  _temaUpdatePreview();
+}
+
+async function saveSiteTema(){
+  const colors={};
+  _temaVars.forEach(v=>{
+    colors[v.css]=document.getElementById('tema-'+v.id+'-hex')?.value||v.def;
+  });
+  const{error}=await db.from('site_settings').upsert({key:'theme_colors',value:colors,updated_at:new Date().toISOString()},{onConflict:'key'});
+  if(error){toast('Erro ao salvar cores','error');console.error(error);return;}
+  toast('Cores salvas! O site vai aplicar no próximo carregamento.');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SITE: LOGO
+// ═══════════════════════════════════════════════════════════════════════
+async function loadSiteLogo(){
+  const{data}=await db.from('site_settings').select('key,value').in('key',['logo_text1','logo_text2','logo_url']);
+  const map={};
+  if(data) data.forEach(r=>{map[r.key]=r.value;});
+  const t1=document.getElementById('logo-text1');
+  const t2=document.getElementById('logo-text2');
+  if(t1) t1.value=map.logo_text1||'Markets';
+  if(t2) t2.value=map.logo_text2||'Coupons';
+  if(map.logo_url){
+    const img=document.getElementById('logo-preview');
+    const path=document.getElementById('logo-path');
+    if(img) img.src=map.logo_url;
+    if(path) path.textContent=map.logo_url;
+  }
+}
+
+function previewLogoUpload(input){
+  if(!input.files||!input.files[0]) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=document.getElementById('logo-preview');
+    if(img) img.src=e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+async function saveSiteLogo(){
+  let ok=0,fail=0;
+  const t1=document.getElementById('logo-text1')?.value||'Markets';
+  const t2=document.getElementById('logo-text2')?.value||'Coupons';
+
+  // Save text
+  for(const [k,v] of [['logo_text1',t1],['logo_text2',t2]]){
+    const{error}=await db.from('site_settings').upsert({key:k,value:v,updated_at:new Date().toISOString()},{onConflict:'key'});
+    if(error) fail++; else ok++;
+  }
+
+  // Upload logo if file selected
+  const fileInput=document.getElementById('logo-upload');
+  if(fileInput?.files?.length){
+    const file=fileInput.files[0];
+    const ext=file.name.split('.').pop();
+    const path='logo/mc-logo.'+ext;
+    const{error:upErr}=await db.storage.from('loyalty-proofs').upload(path,file,{upsert:true});
+    if(upErr){
+      fail++;
+      console.error('upload:',upErr);
+      toast('Erro no upload: '+upErr.message,'error');
+    } else {
+      const{data:urlData}=db.storage.from('loyalty-proofs').getPublicUrl(path);
+      if(urlData?.publicUrl){
+        await db.from('site_settings').upsert({key:'logo_url',value:urlData.publicUrl,updated_at:new Date().toISOString()},{onConflict:'key'});
+        document.getElementById('logo-path').textContent=urlData.publicUrl;
+        ok++;
+      }
+    }
+  }
+
+  toast(ok+' itens salvos'+(fail?' ('+fail+' erros)':'')+'!');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
