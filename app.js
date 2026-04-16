@@ -6415,7 +6415,7 @@ function renderGEXVanna(){
 
   container.innerHTML=items.map(item=>{
     const vc=item.vanna_charm;
-    if(!vc||!vc.topStrikes||!vc.topStrikes.length) return `<div class="gx-vc-wrap"><div class="gx-vc-title">${item.ticker}</div><div style="color:var(--t3);font-size:12px;padding:20px 0;">Vanna & Charm data not available yet.</div></div>`;
+    if(!vc||!vc.topStrikes||!vc.topStrikes.length) return `<div class="gx-vc-wrap"><div class="gx-vc-title">${item.ticker}</div><div style="color:var(--t3);font-size:12px;padding:20px 0;">${t('gx_vanna_nodata')}</div></div>`;
 
     const spot=parseFloat(item.spot_price);
     const strikes=vc.topStrikes.sort((a,b)=>b.strike-a.strike);
@@ -6440,8 +6440,8 @@ function renderGEXVanna(){
 
     const tV=vc.totalVanna||0;
     const tC=vc.totalCharm||0;
-    const vannaDir=tV>0?'↑ Bullish pressure':'↓ Bearish pressure';
-    const charmDir=tC>0?'↑ Delta increasing':'↓ Delta decaying';
+    const vannaDir=tV>0?t('gx_vanna_bullish'):t('gx_vanna_bearish');
+    const charmDir=tC>0?t('gx_charm_increasing'):t('gx_charm_decaying');
 
     return`<div class="gx-vc-wrap">
       <div class="gx-vc-title">${item.ticker} <small>${names[item.ticker]||''} — Spot: ${gxFmt(spot)}</small></div>
@@ -6455,8 +6455,8 @@ function renderGEXVanna(){
         <span><span style="display:inline-block;width:12px;height:4px;background:#06b6d4;border-radius:2px;vertical-align:middle;"></span> Charm</span>
       </div>
       <div class="gx-vc-edu">
-        <strong>Vanna</strong> = sensitivity of delta to changes in volatility. Positive vanna → if vol drops, market makers buy (bullish). Negative → they sell (bearish).<br>
-        <strong>Charm</strong> = sensitivity of delta to time decay. Shows how delta shifts as expiration approaches — directional pressure from time alone.
+        ${t('gx_vanna_edu_vanna')}<br>
+        ${t('gx_vanna_edu_charm')}
       </div>
     </div>`;
   }).join('');
