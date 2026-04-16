@@ -1704,6 +1704,14 @@ img{max-width:100%;}
 .gx-title span{color:var(--gold);}
 .gx-sub{font-size:13px;color:var(--t2);line-height:1.6;max-width:620px;margin:0 auto;}
 .gx-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);background:var(--gbg);border:1px solid var(--gbr);padding:5px 14px;border-radius:20px;margin-bottom:12px;}
+.gx-ticker-bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px;}
+.gx-ticker-btn{padding:6px 14px;border-radius:10px;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:var(--t2);cursor:pointer;transition:all .15s;}
+.gx-ticker-btn:hover{background:rgba(255,255,255,.10);color:var(--t1);}
+.gx-ticker-btn.sel{background:var(--gold);color:#000;border-color:var(--gold);}
+.gx-exp-bar{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:16px;}
+.gx-exp-btn{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--t3);cursor:pointer;transition:all .15s;}
+.gx-exp-btn:hover{background:rgba(255,255,255,.08);color:var(--t2);}
+.gx-exp-btn.sel{background:rgba(240,180,41,.15);color:var(--gold);border-color:rgba(240,180,41,.3);}
 .gx-updated{font-size:12px;color:var(--t3);margin-top:12px;}
 .gx-updated strong{color:var(--t2);}
 .gx-asset-card{background:rgba(107,182,201,.08);border:1px solid rgba(107,182,201,.18);border-radius:14px;overflow:visible;margin-bottom:28px;}
@@ -3469,10 +3477,12 @@ document.addEventListener('DOMContentLoaded',function(){
         <span data-i18n="gx_badge">Updated Daily</span>
       </div>
       <div class="gx-title"><span>Gamma</span> Exposure (GEX)</div>
-      <div class="gx-sub" data-i18n="gx_sub">Track market maker Gamma Exposure levels on S&P 500 and Nasdaq 100. See where the largest options concentrations are and how they affect price movement.</div>
+      <div class="gx-sub" data-i18n="gx_sub2">Track market maker Gamma Exposure levels across major indices and stocks. See where the largest options concentrations are and how they affect price movement.</div>
       <div class="gx-updated" id="gx-date" data-i18n="gx_loading">Loading data...</div>
       <div class="gx-schedule" style="font-size:12px;color:var(--t2);margin-top:4px;" data-i18n="gx_schedule">Updated every business day at 5:30 AM ET.</div>
     </div>
+    <div class="gx-ticker-bar" id="gx-ticker-bar"></div>
+    <div class="gx-exp-bar" id="gx-exp-bar"></div>
     <div class="gx-wrap-inner" id="gx-wrap-inner">
     <div class="gx-loading-box" id="gx-loading">
       <div class="ar-spinner" style="width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div>

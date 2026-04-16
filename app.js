@@ -6256,19 +6256,97 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ═══ GAMMA EXPOSURE (GEX) ═══
 let _gexLoaded = false;
+let _gexAllData = [];
+let _gexSelectedTickers = ['ES','NQ'];
+let _gexSelectedExp = null;
+const GEX_TICKER_GROUPS = [
+  {label:'Futures',tickers:['ES','NQ']},
+  {label:'ETFs',tickers:['SPY','QQQ','GLD']},
+  {label:'Stocks',tickers:['AAPL','TSLA','NVDA','MSFT','AMZN','META','GOOGL']},
+];
 function gxFmt(n){return Number(n).toLocaleString('en-US',{maximumFractionDigits:0});}
+
+function renderGEXTickerBar(){
+  const bar=document.getElementById('gx-ticker-bar');if(!bar)return;
+  const avail=new Set(_gexAllData.map(d=>d.ticker));
+  let html='';
+  for(const g of GEX_TICKER_GROUPS){
+    for(const tk of g.tickers){
+      if(!avail.has(tk)) continue;
+      const sel=_gexSelectedTickers.includes(tk)?'sel':'';
+      html+=`<button class="gx-ticker-btn ${sel}" onclick="gxToggleTicker('${tk}')">${tk}</button>`;
+    }
+  }
+  bar.innerHTML=html;
+}
+
+function renderGEXExpBar(){
+  const bar=document.getElementById('gx-exp-bar');if(!bar)return;
+  const selected=_gexAllData.filter(d=>_gexSelectedTickers.includes(d.ticker));
+  const allExps=new Set();
+  selected.forEach(d=>(d.expirations||[]).forEach(e=>allExps.add(e)));
+  const exps=Array.from(allExps).sort().slice(0,10);
+  if(!exps.length){bar.innerHTML='';return;}
+  const loc=_currentLang==='pt'?'pt-BR':'en-US';
+  let html=`<button class="gx-exp-btn ${!_gexSelectedExp?'sel':''}" onclick="gxSelectExp(null)">${t('gx_all_exp')}</button>`;
+  for(const e of exps){
+    const d=new Date(e+'T12:00:00');
+    const label=d.toLocaleDateString(loc,{month:'short',day:'numeric'});
+    const sel=_gexSelectedExp===e?'sel':'';
+    html+=`<button class="gx-exp-btn ${sel}" onclick="gxSelectExp('${e}')">${label}</button>`;
+  }
+  bar.innerHTML=html;
+}
+
+function gxToggleTicker(tk){
+  if(_gexSelectedTickers.includes(tk)){
+    if(_gexSelectedTickers.length===1) return;
+    _gexSelectedTickers=_gexSelectedTickers.filter(t=>t!==tk);
+  } else {
+    _gexSelectedTickers.push(tk);
+  }
+  _gexSelectedExp=null;
+  renderGEXTickerBar();
+  renderGEXExpBar();
+  renderGEXFiltered();
+}
+
+function gxSelectExp(exp){
+  _gexSelectedExp=exp;
+  renderGEXExpBar();
+  renderGEXFiltered();
+}
+
+function renderGEXFiltered(){
+  const items=_gexAllData.filter(d=>_gexSelectedTickers.includes(d.ticker));
+  if(_gexSelectedExp){
+    const filtered=items.map(item=>{
+      const bd=(item.exp_breakdown||[]).find(b=>b.expiration===_gexSelectedExp);
+      if(!bd) return null;
+      return {...item,zero_gamma:bd.zeroGamma,put_wall:bd.putWall,call_wall:bd.callWall,total_gex:bd.totalGex,top_strikes:bd.topStrikes};
+    }).filter(Boolean);
+    renderGEX(filtered.length?filtered:items);
+  } else {
+    renderGEX(items);
+  }
+}
 
 async function loadGEX(){
   if(_gexLoaded) return;
   try{
-    const{data,error}=await db.from('gex_levels').select('*,updated_at').in('ticker',['ES','NQ']).order('date',{ascending:false}).limit(2);
+    const{data,error}=await db.from('gex_levels').select('*,updated_at').order('date',{ascending:false}).limit(24);
     if(error) throw error;
     if(!data||!data.length){
       document.getElementById('gx-loading').innerHTML='<div style="color:var(--t2);font-size:14px;" data-i18n="gx_no_data">GEX data not yet available. Check back after 6 AM ET.</div>';
       applyTranslations();
       return;
     }
-    renderGEX(data);
+    const latestDate=data[0].date;
+    _gexAllData=data.filter(d=>d.date===latestDate);
+    renderGEXTickerBar();
+    renderGEXExpBar();
+    const initial=_gexAllData.filter(d=>_gexSelectedTickers.includes(d.ticker));
+    renderGEX(initial.length?initial:_gexAllData.slice(0,2));
     _gexLoaded=true;
   }catch(e){
     console.error('GEX load error:',e);
@@ -6335,7 +6413,7 @@ function renderGEX(items){
   }
 
   grid.innerHTML=items.map(item=>{
-    const names={ES:'S&P 500 Futures',NQ:'Nasdaq 100 Futures'};
+    const names={ES:'S&P 500 Futures',NQ:'Nasdaq 100 Futures',SPY:'SPDR S&P 500 ETF',QQQ:'Invesco QQQ ETF',AAPL:'Apple Inc.',TSLA:'Tesla Inc.',NVDA:'NVIDIA Corp.',MSFT:'Microsoft Corp.',AMZN:'Amazon.com Inc.',META:'Meta Platforms',GOOGL:'Alphabet Inc.',GLD:'SPDR Gold Shares'};
     const totalGex=parseFloat(item.total_gex)||0;
     const regime=totalGex>=0;
     const regimeLabel=regime?t('gx_positive'):t('gx_negative');
