@@ -101,7 +101,36 @@ function classifyResult(actual, forecast) {
   return a > f ? 'beat' : 'miss';
 }
 
-function marketContext(e, result) {
+const GEMINI_KEY = process.env.GEMINI_API_KEY || '';
+
+async function marketContext(e, result) {
+  if (!GEMINI_KEY) return marketContextFallback(e, result);
+  const cur = e.currency || '';
+  const dir = result === 'miss' ? 'below' : result === 'beat' ? 'above' : 'in line with';
+  const prompt = `You are a concise macro analyst. An economic event just released:
+Event: ${e.event} (${cur})
+Actual: ${e.actual}, Forecast: ${e.forecast}, Previous: ${e.previous}
+Result: ${result} (actual came in ${dir} expectations).
+
+Write exactly 1-2 sentences (max 180 chars) explaining the market impact. Use trader language. Wrap the most important phrase in <span> tags for highlighting. No disclaimers, no "I think". Example output format:
+Weaker credit demand signals slowdown — watch for <span>CNY pressure</span> and risk-off in Asian markets.`;
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 120, temperature: 0.7 } })
+    });
+    if (!res.ok) throw new Error(`Gemini ${res.status}`);
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (text && text.length > 10) return text;
+    throw new Error('empty response');
+  } catch (err) {
+    console.warn('[marketContext] Gemini failed, using fallback:', err.message);
+    return marketContextFallback(e, result);
+  }
+}
+
+function marketContextFallback(e, result) {
   const cur = e.currency || '';
   const dir = result === 'miss' ? 'below' : result === 'beat' ? 'above' : 'in line with';
   const ev = (e.event || '').toLowerCase();
@@ -354,7 +383,7 @@ async function tgDeleteMessage(msgId) {
     try {
       await renderEvent({
         ...e, leadMin: LEAD_MIN, dateFmt: fmtDate(e.date),
-        result, contextHtml: marketContext(e, result),
+        result, contextHtml: await marketContext(e, result),
       }, 'released');
       // delete the pre-alert first
       if (st.preMsgId) await tgDeleteMessage(st.preMsgId);
