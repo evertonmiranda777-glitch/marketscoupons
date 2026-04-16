@@ -26,14 +26,14 @@ jobs:
           npm install playwright
           npx playwright install --with-deps chromium
 
-      - name: Render all 4 creatives
+      - name: Render all 6 creatives
         run: node scripts/render-firms-png.js all
 
       - name: Commit & push PNGs if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add img/firms-creative.png img/calendar-creative.png img/gamma-creative.png img/analysis-creative.png
+          git add img/firms-creative.png img/calendar-creative.png img/gamma-creative.png img/analysis-creative.png img/evento-001-creative.png img/evento-002-creative.png
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
