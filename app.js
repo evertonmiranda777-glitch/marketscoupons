@@ -5371,7 +5371,6 @@ function toggleBot(){
     const welcomeEl=document.querySelector('#bot-msgs .bmsg.bot .bbbl[data-i18n="bot_welcome"], #bot-msgs .bmsg.bot .bbbl');
     if(!name){
       _askingName=true;
-      const q=document.getElementById('bot-quick');if(q)q.style.display='none';
     }else if(welcomeEl && botHist.length===0){
       welcomeEl.innerHTML=(t('bot_welcome_back')||'Fala, {name}!').replace('{name}',name);
       welcomeEl.removeAttribute('data-i18n');
@@ -5380,7 +5379,7 @@ function toggleBot(){
   track('bot_toggle',{state:botOpen?'open':'close'});
 }
 function openBot(){botOpen=false;toggleBot();}
-function qmsg(t){document.getElementById('bot-inp').value=t;sendBot();track('bot_quick_msg',{message:t.slice(0,50)});}
+function qmsg(t){_askingName=false;document.getElementById('bot-inp').value=t;sendBot();track('bot_quick_msg',{message:t.slice(0,50)});}
 function addBMsg(role,text){const c=document.getElementById('bot-msgs');const tm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='bmsg '+role;const safe=role==='usr'?text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):text;d.innerHTML=`<div class="bbbl">${safe.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div><span class="btime">${tm}</span>`;c.appendChild(d);c.scrollTop=c.scrollHeight;}
 async function sendBot(){
   const inp=document.getElementById('bot-inp');const txt=inp.value.trim();if(!txt)return;
