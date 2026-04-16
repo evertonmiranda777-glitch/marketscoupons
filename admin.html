@@ -2106,11 +2106,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div id="tg-flash-promo-row" style="display:none;margin-top:12px;">
               <div class="tg-field">
                 <label>Firma para Flash Promo</label>
-                <select id="tg-flash-firm" style="width:100%;padding:9px 12px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;font-family:var(--f);">
-                  <option value="">Selecione...</option>
+                <select id="tg-flash-firm" style="width:100%;padding:9px 12px;background:#131820;border:1px solid var(--glass-border);border-radius:8px;color:var(--t1);font-size:12px;outline:none;font-family:var(--f);-webkit-appearance:none;appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path d=%22M2 4l4 4 4-4%22 fill=%22none%22 stroke=%22%23888%22 stroke-width=%221.5%22/></svg>');background-repeat:no-repeat;background-position:right 12px center;">
+                  <option value="" style="background:#131820;color:#aaa;">Selecione...</option>
                 </select>
               </div>
-              <button class="tg-qa-btn" style="width:100%;" onclick="tgSendFlashPromo()">Enviar Flash Promo</button>
+              <button class="tg-qa-btn" style="width:100%;" onclick="tgPreviewFlashPromo()">Preview Flash Promo</button>
             </div>
             <!-- Confirmação antes de disparar -->
             <div id="tg-confirm-box" style="display:none;margin-top:12px;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.25);border-radius:10px;padding:16px;">
@@ -10206,8 +10206,8 @@ async function initTelegramSection(){
 function tgPopulateFlashSelect(){
   const sel = document.getElementById('tg-flash-firm');
   if(!sel) return;
-  sel.innerHTML = '<option value="">Selecione...</option>' +
-    (_firmsCache||[]).filter(f=>f.active).map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
+  sel.innerHTML = '<option value="" style="background:#131820;color:#aaa;">Selecione...</option>' +
+    (_firmsCache||[]).filter(f=>f.active).map(f=>`<option value="${f.id}" style="background:#131820;color:#e0e0e0;">${f.name}</option>`).join('');
 }
 
 /* ── Confirmação antes de disparar ação rápida ── */
@@ -10462,11 +10462,26 @@ function tgFlashPromoOpen(){
   if(row) row.style.display = row.style.display==='none' ? 'block' : 'none';
 }
 
-async function tgSendFlashPromo(){
+async function tgPreviewFlashPromo(){
   const sel = document.getElementById('tg-flash-firm');
   const firm_id = sel?.value;
   if(!firm_id){ toast('Selecione uma firma para a Flash Promo','warn'); return; }
-  await tgQuickAction('flash_promo&firm_id='+firm_id);
+  const firm = (_firmsCache||[]).find(f=>f.id===firm_id);
+  if(!firm){ toast('Firma não encontrada','warn'); return; }
+  const st = document.getElementById('tg-preview-status');
+  st.textContent = ''; st.className = 'tg-status';
+  document.getElementById('tg-preview-area').style.display = 'block';
+  const dtype = (firm.discount_type||'').toLowerCase()==='lifetime' ? 'LIFETIME' : 'OFF';
+  const cp = firm.coupon ? `\nCode: <code>${firm.coupon}</code>` : '';
+  const text =
+    `⚡ <b>FLASH PROMO — ${firm.name}</b>\n\n` +
+    `${firm.discount}% ${dtype}${cp}\n\n` +
+    `👉 Claim now: https://www.marketscoupons.com`;
+  const ph = document.getElementById('tg-preview-placeholder'); if(ph) ph.style.display='none';
+  tgPreviewShow(tgHtmlToPreview(text), '⚡ Claim → marketscoupons.com', 'https://www.marketscoupons.com', async () => {
+    await tgQuickAction('flash_promo&firm_id='+firm_id);
+    st.textContent='✓ Flash Promo enviada!'; st.className='tg-status ok';
+  });
 }
 
 
