@@ -210,6 +210,9 @@ a{text-decoration:none;color:inherit;}
 
 /* EMAIL COMPOSER */
 .email-composer{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:20px;}
+.blog-cover-upload{width:100%;height:200px;border-radius:12px;background:var(--card2);border:2px dashed rgba(255,255,255,.15);cursor:pointer;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;transition:.2s;position:relative;overflow:hidden;}
+.blog-cover-upload:hover{border-color:var(--gold);background-color:rgba(240,180,41,.05);}
+.blog-cover-placeholder{text-align:center;font-size:13px;color:var(--t2);line-height:1.8;}
 .blog-toolbar{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;padding:8px;background:rgba(255,255,255,.04);border-radius:8px 8px 0 0;border:1px solid var(--b1);border-bottom:none;}
 .blog-toolbar button{padding:4px 10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:5px;color:var(--t2);font-size:11px;cursor:pointer;font-family:var(--f);transition:.15s;}
 .blog-toolbar button:hover{background:rgba(255,255,255,.15);color:var(--t1);}
@@ -8966,13 +8969,23 @@ function openBlogModal(id) {
   const posts = getBlogPostsSync();
   const p = id ? posts.find(x=>x.id===id) : null;
   const isNew = !p;
+  _blogSourceMode=false;
   document.getElementById('cms-modal-title').textContent = isNew ? 'Novo Post' : 'Editar Post';
+  const coverUrl=p?.cover_url||'';
   document.getElementById('cms-modal-body').innerHTML = `
-    <div class="modal-grid">
-      <div class="modal-field modal-full"><label>Título</label><input type="text" id="bp-title" value="${((p?.title)||'').replace(/"/g,'&quot;')}"></div>
+    <!-- Capa -->
+    <div class="blog-cover-upload" id="bp-cover-wrap" onclick="document.getElementById('bp-cover-input').click()" style="background-image:${coverUrl?'url('+coverUrl+')':'none'}">
+      ${coverUrl?'':'<div class="blog-cover-placeholder">📷 Clique para adicionar imagem de capa<br><span style="font-size:10px;color:var(--t3);">Tamanho recomendado: 1200×630px</span></div>'}
+      <input type="file" id="bp-cover-input" accept="image/*" style="display:none" onchange="blogUploadCover(this)">
+      <input type="hidden" id="bp-cover-url" value="${coverUrl}">
+    </div>
+
+    <div class="modal-grid" style="margin-top:16px;">
+      <div class="modal-field modal-full"><label>Título</label><input type="text" id="bp-title" value="${((p?.title)||'').replace(/"/g,'&quot;')}" placeholder="Título do post" style="font-size:18px;font-weight:700;padding:12px;"></div>
       <div class="modal-field"><label>Nível</label><select id="bp-level"><option value="iniciante" ${p?.level==='iniciante'?'selected':''}>[I] Iniciante</option><option value="intermediario" ${p?.level==='intermediario'?'selected':''}>[M] Intermediário</option><option value="profissional" ${p?.level==='profissional'?'selected':''}>[P] Profissional</option></select></div>
       <div class="modal-field"><label>Categoria</label><input type="text" id="bp-cat" value="${p?.category||p?.cat||''}" placeholder="ex: Estratégia, Análise, Educação..."></div>
       <div class="modal-field"><label>Tempo de Leitura</label><input type="text" id="bp-read" value="${p?.read_time||p?.readTime||'5 min'}"></div>
+      <div class="modal-field"><label>Autor</label><input type="text" id="bp-author" value="${p?.author||'Markets Coupons'}" placeholder="Nome do autor"></div>
       <div class="modal-field modal-full"><label>Resumo (aparece no card)</label><input type="text" id="bp-excerpt" value="${((p?.excerpt)||'').replace(/"/g,'&quot;')}" placeholder="Resumo de 1-2 linhas"></div>
       <div class="modal-field modal-full">
         <label>Conteúdo</label>
@@ -8984,19 +8997,49 @@ function openBlogModal(id) {
           <button type="button" onclick="blogCmd('formatBlock','<p>')" title="Parágrafo">P</button>
           <button type="button" onclick="blogCmd('insertUnorderedList')" title="Lista">• Lista</button>
           <button type="button" onclick="blogCmd('insertOrderedList')" title="Lista numerada">1. Lista</button>
-          <button type="button" onclick="blogInsertLink()" title="Link">🔗 Link</button>
-          <button type="button" onclick="blogInsertImage()" title="Imagem">📷 Imagem</button>
+          <button type="button" onclick="blogInsertLink()" title="Link">🔗</button>
+          <button type="button" onclick="blogInsertImage()" title="Imagem">📷</button>
+          <button type="button" onclick="blogInsertQuote()" title="Citação">❝</button>
+          <button type="button" onclick="blogInsertDivider()" title="Divisor">—</button>
           <button type="button" onclick="blogToggleSource()" title="Ver HTML" id="bp-source-btn">&lt;/&gt;</button>
         </div>
         <div contenteditable="true" id="bp-editor" class="blog-editor">${p?.body||'<p>Comece a escrever aqui...</p>'}</div>
         <textarea id="bp-body-raw" class="blog-editor-raw" style="display:none;">${p?.body||''}</textarea>
       </div>
     </div>
-    <div style="display:flex;gap:10px;margin-top:8px;">
+    <div style="display:flex;gap:10px;margin-top:12px;">
       <button class="btn-primary" onclick="saveBlogPost2('${id||''}')">Publicar</button>
+      <button class="btn-secondary" onclick="saveBlogPost2('${id||''}',true)">Salvar Rascunho</button>
       <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
     </div>`;
   document.getElementById('cms-modal-ov').classList.add('open');
+  // Wider modal for blog
+  document.querySelector('#cms-modal-ov .lead-modal').style.maxWidth='900px';
+}
+
+async function blogUploadCover(input){
+  if(!input.files[0]) return;
+  const file=input.files[0];
+  const ext=file.name.split('.').pop();
+  const path='blog/cover-'+Date.now()+'.'+ext;
+  toast('Enviando capa...');
+  const{error}=await db.storage.from('loyalty-proofs').upload(path,file,{upsert:true});
+  if(error){toast('Erro: '+error.message,'error');return;}
+  const{data:urlData}=db.storage.from('loyalty-proofs').getPublicUrl(path);
+  if(urlData?.publicUrl){
+    document.getElementById('bp-cover-url').value=urlData.publicUrl;
+    const wrap=document.getElementById('bp-cover-wrap');
+    wrap.style.backgroundImage='url('+urlData.publicUrl+')';
+    wrap.innerHTML='<input type="file" id="bp-cover-input" accept="image/*" style="display:none" onchange="blogUploadCover(this)"><input type="hidden" id="bp-cover-url" value="'+urlData.publicUrl+'">';
+    toast('Capa adicionada!');
+  }
+}
+
+function blogInsertQuote(){
+  document.execCommand('insertHTML',false,'<blockquote style="border-left:3px solid var(--gold);padding:8px 16px;margin:12px 0;color:var(--t2);font-style:italic;">Citação aqui</blockquote>');
+}
+function blogInsertDivider(){
+  document.execCommand('insertHTML',false,'<hr style="border:none;border-top:1px solid rgba(255,255,255,.12);margin:20px 0;">');
 }
 
 function blogCmd(cmd,val){
@@ -9044,24 +9087,27 @@ function blogToggleSource(){
   }
 }
 
-async function saveBlogPost2(existingId) {
+async function saveBlogPost2(existingId, asDraft) {
   const title    = document.getElementById('bp-title').value.trim();
   const level    = document.getElementById('bp-level').value;
   const category = document.getElementById('bp-cat').value.trim();
   const read_time= document.getElementById('bp-read').value.trim()||'5 min';
   const excerpt  = document.getElementById('bp-excerpt').value.trim();
+  const author   = document.getElementById('bp-author')?.value.trim()||'Markets Coupons';
+  const cover_url= document.getElementById('bp-cover-url')?.value||'';
   const editorEl = document.getElementById('bp-editor');
   const rawEl    = document.getElementById('bp-body-raw');
   const body     = (_blogSourceMode ? rawEl.value : editorEl?.innerHTML||'').trim();
   if(!title){ toast('Preencha o título!','warn'); return; }
+  const active   = asDraft ? false : true;
   const slug = title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').slice(0,80) + '-' + Date.now();
   try {
     if (existingId) {
-      await db.from('blog_posts').update({ title, level, category, read_time, excerpt, body }).eq('id', existingId);
-      toast('Post atualizado!');
+      await db.from('blog_posts').update({ title, level, category, read_time, excerpt, body, author, cover_url, active }).eq('id', existingId);
+      toast(asDraft?'Rascunho salvo!':'Post atualizado!');
     } else {
-      await db.from('blog_posts').insert({ title, level, category, read_time, excerpt, body, slug, active: true, ai_generated: false });
-      toast('Post publicado!');
+      await db.from('blog_posts').insert({ title, level, category, read_time, excerpt, body, slug, active, ai_generated: false, author, cover_url });
+      toast(asDraft?'Rascunho salvo!':'Post publicado!');
     }
     closeCmsModal();
     renderCmsBlog();
@@ -9174,7 +9220,7 @@ async function saveBlogPost() {
 }
 
 /* ══ CMS MODAL ══ */
-function closeCmsModal() { const m=document.getElementById('cms-modal-ov'); m.classList.remove('open'); m.style.display='none'; }
+function closeCmsModal() { const m=document.getElementById('cms-modal-ov'); m.classList.remove('open'); m.style.display='none'; const lm=m.querySelector('.lead-modal');if(lm)lm.style.maxWidth='680px'; }
 
 /* ══ AI FIRM GENERATOR ══ */
 let _aiFirmDraft = null;
