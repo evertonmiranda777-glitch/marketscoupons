@@ -2117,7 +2117,7 @@ function _renderBlogCards(g, posts){
   g.innerHTML=posts.map(post=>{
     const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
     const cat = _BLOG_CAT_MAP[post.category]||{color:'var(--blue)',key:''};
-    const coverImg = _getBlogCoverImg(post.slug);
+    const coverImg = post.cover_url || _getBlogCoverImg(post.slug);
     const blogUrl = curLang==='pt' ? '/blog/'+post.slug : '/blog/'+curLang+'/'+post.slug;
     const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[curLang]||'pt-BR';
     const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'short',year:'numeric'}) : '';
@@ -2182,11 +2182,14 @@ async function openBlogArticle(slug){
     const lvl = _BLOG_LEVEL_MAP[post.level]||_BLOG_LEVEL_MAP.iniciante;
     const _dtLocale = {pt:'pt-BR',en:'en-US',es:'es-ES',it:'it-IT',fr:'fr-FR',de:'de-DE',ar:'ar-SA'}[_currentLang]||'pt-BR';
     const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'long',year:'numeric'}) : '';
+    const coverHtml = post.cover_url ? `<div class="blog-art-cover"><img src="${post.cover_url}" alt=""></div>` : '';
+    const authorHtml = post.author ? `<span class="blog-art-author">${post.author}</span> · ` : '';
     art.innerHTML=`
       <button class="blog-back" onclick="closeBlogArticle()">&larr; ${t('blog_voltar')||'Back to Blog'}</button>
+      ${coverHtml}
       <div class="blog-art-level" style="background:${lvl.bg};color:${lvl.color};">${t(lvl.key)}</div>
       <div class="blog-art-title">${DOMPurify.sanitize(post.title)}</div>
-      <div class="blog-art-meta"><span>${dateStr}</span></div>
+      <div class="blog-art-meta">${authorHtml}<span>${dateStr}</span>${post.read_time?' · <span>'+post.read_time+'</span>':''}</div>
       <div class="blog-art-body">${DOMPurify.sanitize(post.body||'')}</div>`;
   } catch(e){
     art.innerHTML='<div style="color:var(--t2);padding:40px 0;">'+t('err_blog_post')+'</div>';

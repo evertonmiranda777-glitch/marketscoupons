@@ -9007,11 +9007,13 @@ function openBlogModal(id) {
         <textarea id="bp-body-raw" class="blog-editor-raw" style="display:none;">${p?.body||''}</textarea>
       </div>
     </div>
-    <div style="display:flex;gap:10px;margin-top:12px;">
+    <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
       <button class="btn-primary" onclick="saveBlogPost2('${id||''}')">Publicar</button>
       <button class="btn-secondary" onclick="saveBlogPost2('${id||''}',true)">Salvar Rascunho</button>
+      <button class="btn-secondary" onclick="blogAutoTranslate('${id||''}')" style="color:var(--gold);border-color:var(--gold);">🌐 Traduzir (6 idiomas)</button>
       <button class="btn-secondary" onclick="closeCmsModal()">Cancelar</button>
-    </div>`;
+    </div>
+    <div style="font-size:10px;color:var(--t3);margin-top:6px;">Traduzir: salva o post atual e cria cópias em EN, ES, FR, IT, DE e AR automaticamente.</div>`;
   document.getElementById('cms-modal-ov').classList.add('open');
   // Wider modal for blog
   document.querySelector('#cms-modal-ov .lead-modal').style.maxWidth='900px';
@@ -9033,6 +9035,75 @@ async function blogUploadCover(input){
     wrap.innerHTML='<input type="file" id="bp-cover-input" accept="image/*" style="display:none" onchange="blogUploadCover(this)"><input type="hidden" id="bp-cover-url" value="'+urlData.publicUrl+'">';
     toast('Capa adicionada!');
   }
+}
+
+async function blogAutoTranslate(existingId){
+  // First save the current post
+  await saveBlogPost2(existingId);
+  // Get the saved post
+  const posts = await fetchBlogPosts();
+  const srcPost = existingId ? posts.find(p=>p.id===existingId) : posts[0];
+  if(!srcPost){toast('Salve o post primeiro!','warn');return;}
+
+  const langs = ['en','es','fr','it','de','ar'];
+  const langNames = {en:'English',es:'Spanish',fr:'French',it:'Italian',de:'German',ar:'Arabic'};
+  const group = srcPost.article_group || srcPost.slug;
+
+  // Ensure source post has article_group set
+  if(!srcPost.article_group){
+    await db.from('blog_posts').update({article_group:group,lang:'pt'}).eq('id',srcPost.id);
+  }
+
+  toast('Traduzindo para 6 idiomas... aguarde');
+  let ok=0,fail=0;
+
+  for(const lang of langs){
+    try{
+      // Call our bot API to translate (reuse Gemini)
+      const resp=await fetch('/api/bot',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({messages:[{
+          role:'user',
+          content:`Translate this blog post to ${langNames[lang]}. Return ONLY a JSON object with keys: title, excerpt, body (HTML). Keep all HTML tags, links, and image URLs intact. Do not add any explanation.\n\nTitle: ${srcPost.title}\nExcerpt: ${srcPost.excerpt}\nBody:\n${srcPost.body}`
+        }]})
+      });
+      const result=await resp.json();
+      const text=result.reply||result.text||'';
+      // Parse JSON from response
+      let translated;
+      try{
+        const jsonMatch=text.match(/\{[\s\S]*\}/);
+        translated=jsonMatch?JSON.parse(jsonMatch[0]):null;
+      }catch(e){translated=null;}
+
+      if(!translated||!translated.title){fail++;continue;}
+
+      // Check if translation already exists
+      const{data:existing}=await db.from('blog_posts').select('id').eq('article_group',group).eq('lang',lang).maybeSingle();
+      if(existing){
+        await db.from('blog_posts').update({
+          title:translated.title, excerpt:translated.excerpt||srcPost.excerpt,
+          body:translated.body||srcPost.body, cover_url:srcPost.cover_url,
+          author:srcPost.author, level:srcPost.level, category:srcPost.category,
+          read_time:srcPost.read_time, active:srcPost.active
+        }).eq('id',existing.id);
+      } else {
+        const slug=translated.title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').slice(0,80)+'-'+Date.now();
+        await db.from('blog_posts').insert({
+          title:translated.title, excerpt:translated.excerpt||srcPost.excerpt,
+          body:translated.body||srcPost.body, slug, lang, article_group:group,
+          cover_url:srcPost.cover_url, author:srcPost.author, level:srcPost.level,
+          category:srcPost.category, read_time:srcPost.read_time,
+          active:srcPost.active, ai_generated:true
+        });
+      }
+      ok++;
+    }catch(e){fail++;console.error('translate '+lang+':',e);}
+  }
+
+  toast(ok+' traduções criadas'+(fail?' ('+fail+' falharam)':'')+'!');
+  renderCmsBlog();
 }
 
 function blogInsertQuote(){
