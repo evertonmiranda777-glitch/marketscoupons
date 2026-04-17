@@ -1994,11 +1994,11 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .bot-fab{
  position:fixed;bottom:22px;right:22px;z-index:950;
  width:84px;height:84px;border:none;background:transparent;
- cursor:pointer;padding:0;display:flex;
+ cursor:pointer;padding:0;display:flex;overflow:hidden;border-radius:50%;
  transition:transform .3s;
  filter:drop-shadow(0 8px 20px rgba(240,180,41,.45)) drop-shadow(0 0 12px rgba(240,180,41,.35));
 }
-.bot-fab img{width:100%;height:100%;object-fit:contain;pointer-events:none;animation:max-float 4s ease-in-out infinite;display:block;}
+.bot-fab img{width:130%;height:130%;margin:-15%;object-fit:cover;pointer-events:none;animation:max-float 4s ease-in-out infinite;display:block;}
 body:has(.bot-win.open) .bot-fab{display:none !important;}
 .bot-fab:hover{transform:scale(1.08);}
 .bot-fab:hover img{animation:max-excited 1.2s ease-in-out infinite;}
@@ -2019,8 +2019,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .bot-win.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
 .bot-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--b1);border-radius:15px 15px 0 0;background:var(--card2);}
 .bot-hd-l{display:flex;align-items:center;gap:9px;}
-.bot-av{width:52px;height:52px;position:relative;overflow:visible;flex-shrink:0;background:none;border:none;filter:drop-shadow(0 4px 10px rgba(240,180,41,.35));}
-.bot-av img{width:100%;height:100%;object-fit:contain;animation:max-float 4s ease-in-out infinite;display:block;}
+.bot-av{width:52px;height:52px;position:relative;overflow:hidden;border-radius:50%;flex-shrink:0;background:none;border:none;filter:drop-shadow(0 4px 10px rgba(240,180,41,.35));}
+.bot-av img{width:130%;height:130%;margin:-15%;object-fit:cover;animation:max-float 4s ease-in-out infinite;display:block;}
 .bot-win.typing .bot-av img{animation:max-float 4s ease-in-out infinite,max-pulse 1s ease-in-out infinite;}
 @keyframes max-pulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
 .bot-nm{font-size:13px;font-weight:700;}
@@ -2618,6 +2618,46 @@ document.addEventListener('DOMContentLoaded',function(){
     for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
     target.classList.add('active');
   }
+},false);
+
+// Max avatar rotation — uma roupa por dia, ciclo diário determinístico
+var MAX_DAILY_AVATARS=[
+  'img/bot/Daily/max-bot-techbro-v2_1.png',
+  'img/bot/Daily/max-bot-streetwear-v5_1.png',
+  'img/bot/Daily/max-bot-techbro-v3_1.png',
+  'img/bot/Daily/max-bot-summer-v2_1.png',
+  'img/bot/Daily/max-bot-blazer_1.png',
+  'img/bot/Daily/max-bot-golf_1.png',
+  'img/bot/Daily/max-bot-varsity-v2_1.png',
+  'img/bot/Daily/max-bot-varsity-v3_2.png',
+  'img/bot/Daily/max-bot-hoodie-v4_2.png',
+  'img/bot/Daily/max-bot-techbro-cap_2.png'
+];
+var MAX_PJ_AVATARS=[
+  'img/bot/Pj/max-bot-hulk_1.png',
+  'img/bot/Pj/max-bot-spidey_1.png',
+  'img/bot/Pj/max-bot-prada_1.png',
+  'img/bot/Pj/max-bot-gucci-v2_1.png',
+  'img/bot/Pj/max-bot-lv-v2_1.png',
+  'img/bot/Pj/max-bot-lacoste-v4_1.png',
+  'img/bot/Pj/max-bot-hulk-pj_1.png',
+  'img/bot/Pj/max-bot-hulk-tee_1.png',
+  'img/bot/Pj/max-bot-spidey-suit-v3_1.png',
+  'img/bot/Pj/max-bot-spidey-pj-cream-v5_2.png'
+];
+function pickMaxAvatar(){
+  var now=new Date();
+  var day=now.getDay();
+  var isWeekend=(day===0||day===6);
+  var pool=isWeekend?MAX_PJ_AVATARS:MAX_DAILY_AVATARS;
+  var start=new Date(now.getFullYear(),0,0);
+  var dayOfYear=Math.floor((now-start)/86400000);
+  return pool[dayOfYear%pool.length];
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var src=pickMaxAvatar();
+  var imgs=document.querySelectorAll('.bot-fab img, .bot-av img');
+  for(var i=0;i<imgs.length;i++) imgs[i].src=src;
 },false);
 </script>
 </head>
@@ -4105,12 +4145,12 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <!-- BOT -->
 <button class="bot-fab" id="bot-fab" onclick="toggleBot()" aria-label="Chat with Max">
- <img src="img/bot/max-avatar-bot.png" alt="Max" draggable="false">
+ <img src="img/bot/Daily/max-bot-techbro-v2_1.png" alt="Max" draggable="false">
  <span class="bot-badge" id="bot-badge">1</span>
 </button>
 <div class="bot-win" id="bot-win">
  <div class="bot-hd">
- <div class="bot-hd-l"><div class="bot-av"><img src="img/bot/max-avatar-bot.png" alt="Max" draggable="false"></div><div><div class="bot-nm">Max</div><div class="bot-st" data-i18n="bot_online">Online</div></div></div>
+ <div class="bot-hd-l"><div class="bot-av"><img src="img/bot/Daily/max-bot-techbro-v2_1.png" alt="Max" draggable="false"></div><div><div class="bot-nm">Max</div><div class="bot-st" data-i18n="bot_online">Online</div></div></div>
  <button class="bot-x" onclick="toggleBot()">&#10005;</button>
  </div>
  <div class="bot-msgs" id="bot-msgs">
