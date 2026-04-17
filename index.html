@@ -2650,9 +2650,27 @@ function pickMaxAvatar(){
   var day=now.getDay();
   var isWeekend=(day===0||day===6);
   var pool=isWeekend?MAX_PJ_AVATARS:MAX_DAILY_AVATARS;
-  var start=new Date(now.getFullYear(),0,0);
-  var dayOfYear=Math.floor((now-start)/86400000);
-  return pool[dayOfYear%pool.length];
+  // Count how many days-of-this-kind (weekday ou fim de semana) passaram desde 1º de janeiro
+  var year=now.getFullYear();
+  var jan1=new Date(year,0,1);
+  var todayIdx=Math.floor((now-jan1)/86400000);
+  var count=0;
+  for(var i=0;i<=todayIdx;i++){
+    var d=new Date(year,0,1+i).getDay();
+    var w=(d===0||d===6);
+    if(w===isWeekend) count++;
+  }
+  var pos=(count-1)%pool.length;
+  var cycleNum=Math.floor((count-1)/pool.length);
+  // Shuffle determinístico por ciclo — cada 10 dias do mesmo tipo vira uma nova ordem aleatória SEM repetir
+  var idx=[]; for(var i=0;i<pool.length;i++) idx.push(i);
+  var seed=((year*1000)+(cycleNum*7)+(isWeekend?3:0))>>>0;
+  for(var i=pool.length-1;i>0;i--){
+    seed=(seed*1664525+1013904223)>>>0;
+    var j=seed%(i+1);
+    var t=idx[i]; idx[i]=idx[j]; idx[j]=t;
+  }
+  return pool[idx[pos]];
 }
 document.addEventListener('DOMContentLoaded',function(){
   var src=pickMaxAvatar();
