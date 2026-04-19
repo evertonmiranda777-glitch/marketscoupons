@@ -518,7 +518,7 @@ Wenn Trailing Drawdown dich Geld oder Schlaf gekostet hat, ist Bulenox der ratio
 ## Verwandte Guides
 
 - [Apex Trader Funding Review 2026](./apex-trader-funding-review) — US-Futures, Lifetime-Rabatt, 100 % Split, Trailing Drawdown
-- [Take Profit Trader Review 2026] — Trailing EOD, unbegrenzte Zeit
+- [Take Profit Trader Review 2026](./take-profit-trader-review) — Trailing EOD, unbegrenzte Zeit
 - [FTMO Review 2026](./ftmo-review) — Multi-Asset globale Alternative, 2-Step oder 1-Step
 
 ---

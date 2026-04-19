@@ -402,7 +402,7 @@ Ja, EAs und automatisierte Strategien sind mit Offenlegung erlaubt. High-Frequen
 
 ## Verwandte Guides auf Markets Coupons
 
-- [Apex Trader Funding Review](/de/guides/apex-review) — beste Futures Prop Firm für Intraday-Scalper
+- [Apex Trader Funding Review](/de/guides/apex-trader-funding-review) — beste Futures Prop Firm für Intraday-Scalper
 - [Take Profit Trader Review](/de/guides/take-profit-trader-review) — 1-Step Futures mit Day-1 Payouts
 - [Bulenox Review](/de/guides/bulenox-review) — Futures mit statischem Drawdown und News-Flexibilität
 - [FTMO Review](/de/guides/ftmo-review) — 2-Step Forex-Challenge, Branchenveteran

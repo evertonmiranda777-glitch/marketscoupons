@@ -610,9 +610,9 @@ Für Forex- und Multi-Asset-Trader, die ihr erstes (oder bestes) Funded Account 
 ## Verwandte Guides
 
 - [Apex Trader Funding Review 2026](./apex-trader-funding-review) — US-Futures-Gegenstück, günstigster Einstieg, 100 % Split
-- [Take Profit Trader Review 2026] — US-Futures, unbegrenzte Evaluation, ähnlich wie Apex EOD-Stil
-- [FundedNext Review 2026] — FTMOs engster Multi-Asset-Konkurrent, höhere Profit-Split-Obergrenze
-- [Bulenox Review 2026] — statische Drawdown-Futures-Alternative zu Apex
+- [Take Profit Trader Review 2026](./take-profit-trader-review) — US-Futures, unbegrenzte Evaluation, ähnlich wie Apex EOD-Stil
+- [FundedNext Review 2026](./fundednext-review) — FTMOs engster Multi-Asset-Konkurrent, höhere Profit-Split-Obergrenze
+- [Bulenox Review 2026](./bulenox-review) — statische Drawdown-Futures-Alternative zu Apex
 
 ---
 
