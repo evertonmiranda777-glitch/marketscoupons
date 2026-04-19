@@ -20,7 +20,7 @@ const LOGO_FILE = {
   bulenox: 'Bulenox-Logo-1-01-800x207.png',
   tpt: null,
   fn: 'FundedNext Monochromatic Logo White 2x.png',
-  e2t: 'E2T Logo Hor LightBG.png',
+  e2t: 'earn2trade white.svg',
   the5ers: 'logo-white-est.png',
   fundingpips: 'fundingpips-logo.svg',
   brightfunded: 'brightfunded logo.svg',
