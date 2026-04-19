@@ -1280,6 +1280,8 @@ img{max-width:100%;}
 .gc:hover{border-color:rgba(240,180,41,.2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(240,180,41,.08);}
 .gc-img{height:120px;background-size:cover;background-position:center;position:relative;}
 .gc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,13,0) 30%,rgba(7,9,13,.65) 100%);}
+.gc.firm .gc-img{aspect-ratio:16/9;height:auto;}
+.gc.firm .gc-img::after{display:none;}
 .gc-body{padding:14px;}
 .gc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;}
 .gc-title{font-size:13px;font-weight:700;margin-bottom:5px;letter-spacing:-.2px;}

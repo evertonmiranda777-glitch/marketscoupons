@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{lang}}" dir="{{dir}}"><head><meta charset="UTF-8"><style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1200px;height:675px;overflow:hidden;background:#0A0A0F;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;color:#fff;}
+.cover{position:relative;width:1200px;height:675px;overflow:hidden;background:radial-gradient(ellipse at 80% 120%,{{accent}}22 0%,transparent 55%),#0A0A0F;}
+.noise{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' /%3E%3C/svg%3E");}
+.content{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:72px 88px;}
+.eyebrow{display:flex;align-items:center;gap:14px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:4px;text-transform:uppercase;}
+.eyebrow-dot{width:6px;height:6px;background:#F0B429;border-radius:50%;}
+.hero{display:flex;flex-direction:column;justify-content:center;gap:28px;flex:1;padding:20px 0;}
+.title{font-family:'Fraunces',serif;font-size:60px;font-weight:500;color:#fff;letter-spacing:-1.8px;line-height:1.05;max-width:960px;}
+[dir="rtl"] .title{font-family:'Amiri',serif;font-weight:700;letter-spacing:0;line-height:1.25;}
+[dir="rtl"] .sub{font-family:'Noto Sans Arabic',sans-serif;}
+[dir="rtl"] .eyebrow{font-family:'Noto Sans Arabic',sans-serif;letter-spacing:1.5px;}
+[dir="rtl"] .footer-meta,[dir="rtl"] .brand{font-family:'Noto Sans Arabic',sans-serif;letter-spacing:1.5px;}
+[dir="rtl"] .logo img{object-position:right center;}
+.title em{font-style:italic;color:{{accent}};font-weight:600;}
+.sub{font-size:17px;font-weight:500;color:rgba(255,255,255,.55);line-height:1.55;max-width:720px;letter-spacing:.1px;}
+.logo{max-width:240px;max-height:64px;filter:drop-shadow(0 4px 20px rgba(0,0,0,.4));}
+.logo img{width:100%;height:100%;object-fit:contain;object-position:left center;}
+.footer{display:flex;justify-content:space-between;align-items:flex-end;}
+.footer-line{flex:1;height:1px;background:linear-gradient(90deg,#F0B429 0%,rgba(240,180,41,.2) 50%,transparent 100%);max-width:120px;margin-right:24px;align-self:center;}
+.footer-meta{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;}
+.brand{font-size:13px;font-weight:800;color:#F0B429;letter-spacing:3px;text-transform:uppercase;}
+</style></head><body>
+<div class="cover">
+  <div class="noise"></div>
+  <div class="content">
+    <div class="eyebrow"><span class="eyebrow-dot"></span><span>{{eyebrow}}</span></div>
+    <div class="hero">
+      <div class="logo"><img src="{{logo}}" alt=""></div>
+      <div class="title">{{titleHtml}}</div>
+      <div class="sub">{{sub}}</div>
+    </div>
+    <div class="footer">
+      <div style="display:flex;align-items:center;flex:1;gap:24px;">
+        <div class="footer-line"></div>
+        <div class="footer-meta">{{footerMeta}}</div>
+      </div>
+      <div class="brand">Markets Coupons</div>
+    </div>
+  </div>
+</div>
+</body></html>

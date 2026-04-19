@@ -1051,14 +1051,32 @@ function firmIco(f,size='38px',fontSize='14px'){
 
 /* GUIDES — Supabase-powered */
 let _guidesCache=[];
-const GUIDES_FALLBACK = [
-  {id:'g1',title:'O que é uma Prop Firm?',slug:'o-que-e-uma-prop-firm',category:'Iniciante',cat_color:'var(--blue)',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&h=250&fit=crop',description:'Entenda como funcionam as prop firms, como passar no desafio e receber sua conta financiada.'},
-  {id:'g2',title:'Gerenciamento de Drawdown',slug:'gerenciamento-de-drawdown',category:'Intermediário',cat_color:'var(--gold)',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=500&h=250&fit=crop',description:'Como calcular, monitorar e evitar violar os limites de drawdown.'},
-  {id:'g3',title:'Como Passar no Desafio',slug:'como-passar-no-desafio',category:'Prático',cat_color:'var(--green)',img:'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=500&h=250&fit=crop',description:'Estratégias comprovadas para passar na fase de avaliação.'},
-  {id:'g4',title:'Position Sizing em Prop Firms',slug:'position-sizing-prop-firms',category:'Técnico',cat_color:'var(--purple)',img:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=250&fit=crop',description:'Como calcular o tamanho correto para maximizar lucro sem violar regras.'},
-  {id:'g5',title:'Apex vs FTMO vs Bulenox',slug:'apex-vs-ftmo-vs-bulenox',category:'Comparativo',cat_color:'var(--orange)',img:'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=500&h=250&fit=crop',description:'Comparação detalhada: regras, preços, plataformas e payouts.'},
-  {id:'g6',title:'Como Sacar seus Lucros',slug:'como-sacar-seus-lucros',category:'Financeiro',cat_color:'var(--cyan)',img:'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=500&h=250&fit=crop',description:'Passo a passo para solicitar payouts em cada firma.'},
+/* FIRM REVIEWS — static, 11 firms × 7 langs (covers in img/guides/<slug>-cover-<lang>.png) */
+const FIRM_REVIEWS = [
+  {id:'apex',         name:'Apex Trader Funding',      slug:'apex-review'},
+  {id:'ftmo',         name:'FTMO',                     slug:'ftmo-review'},
+  {id:'bulenox',      name:'Bulenox',                  slug:'bulenox-review'},
+  {id:'tpt',          name:'TakeProfitTrader',         slug:'tpt-review'},
+  {id:'fn',           name:'FundedNext',               slug:'fundednext-review'},
+  {id:'e2t',          name:'Earn2Trade',               slug:'e2t-review'},
+  {id:'the5ers',      name:'The5ers',                  slug:'the5ers-review'},
+  {id:'fundingpips',  name:'FundingPips',              slug:'fundingpips-review'},
+  {id:'brightfunded', name:'BrightFunded',             slug:'brightfunded-review'},
+  {id:'e8',           name:'E8 Markets',               slug:'e8-review'},
+  {id:'cti',          name:'City Traders Imperium',    slug:'cti-review'},
 ];
+/* Langs with dedicated /<lang>/guides/ pages. Other langs fallback to EN root /guides/ */
+const REVIEW_LANGS = ['fr','de','ar'];
+function firmReviewUrl(slug){
+  const lang=_currentLang||'en';
+  return REVIEW_LANGS.includes(lang)?`/${lang}/guides/${slug}`:`/guides/${slug}`;
+}
+function firmReviewCover(firmId){
+  const lang=_currentLang||'en';
+  return `/img/guides/${firmId}-cover-${lang}.png`;
+}
+function openFirmReview(slug){ window.open(firmReviewUrl(slug),'_blank','noopener'); }
+const GUIDES_FALLBACK = [];
 async function loadGuidesFromSupabase(){
   try{
     const{data,error}=await db.from('cms_guides').select('*').eq('active',true).order('sort_order',{ascending:true});
@@ -1071,8 +1089,22 @@ const _guiaI18nMap={'g1':1,'g2':2,'g3':3,'g4':4,'g5':5,'g6':6};
 function _guiaNum(guide,idx){return _guiaI18nMap[guide.id]||(idx+1);}
 function renderGuides(){
   const g=document.getElementById('guides-grid');if(!g)return;
-  const guides=_guidesCache.length?_guidesCache:GUIDES_FALLBACK;
-  g.innerHTML=guides.map((guide,idx)=>{
+  const firmCards=FIRM_REVIEWS.map(r=>{
+    const cover=firmReviewCover(r.id);
+    const titulo=t('firm_review_title')?t('firm_review_title').replace('{firm}',r.name):`${r.name} Review`;
+    const desc=t('firm_review_desc')||'Rules, pricing, payouts and the full breakdown for 2026.';
+    const readLabel=t('firm_review_read')||'Read full review →';
+    return `<div class="gc firm" onclick="openFirmReview('${r.slug}')">
+      <div class="gc-img" style="background-image:url('${cover}');background-color:#0A0A0F;"></div>
+      <div class="gc-body">
+        <div class="gc-title">${titulo}</div>
+        <div class="gc-desc">${desc}</div>
+        <div class="gc-read">${readLabel}</div>
+      </div>
+    </div>`;
+  }).join('');
+  const cmsGuides=_guidesCache.length?_guidesCache:[];
+  const cmsCards=cmsGuides.map((guide,idx)=>{
     const n=_guiaNum(guide,idx);
     const cat=_guiaCatMap[guide.category]?t(_guiaCatMap[guide.category]):guide.category;
     const titulo=t('guia'+n+'_titulo')||guide.title;
@@ -1085,7 +1117,9 @@ function renderGuides(){
         <div class="gc-desc">${desc}</div>
         <div class="gc-read">${t('guia_ler')}</div>
       </div>
-    </div>`;}).join('');
+    </div>`;
+  }).join('');
+  g.innerHTML=firmCards+cmsCards;
 }
 async function openGuideArticle(slug){
   const guide=_guidesCache.find(g=>g.slug===slug);
