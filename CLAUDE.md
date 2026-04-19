@@ -5,7 +5,7 @@
 Max e uma raposa 3D Pixar-style (dourado-laranja #F0B429, olhos amber, bone preto com M dourado). Avatar do chatbot e mascote da marca. **Tem 4 outfits oficiais, todos completos com 3 tipos de asset cada (avatar 1:1 + bible 5-view + sprite 4-frame).**
 
 ### Assets em `img/bot/`
-- **Varsity** (principal, integrado no chatbot): max-avatar.jpeg, max-bible.jpeg, max-sprite.jpeg — letterman jacket preto+dourado, Jordan 1 Chicago, gold headphones, Rolex
+- **Varsity** (principal, integrado no chatbot): max-avatar.jpeg, max-bible.jpeg, max-sprite.jpeg — letterman jacket preto+dourado, Jordan 1 Chicago, gold headphones, SEM RELÓGIO (skin varsity nao usa Rolex — confirmado 2026-04-17 via ref full-body do usuario)
 - **Hoodie** (streetwear): max-avatar-hoodie, max-bible-hoodie, max-sprite-hoodie — moletom preto com M, jogger, Jordan 1 Chicago
 - **Blazer** (executive): max-avatar-blazer, max-bible-blazer, max-sprite-blazer — blazer+camisa branca, Oxford, Rolex, SEM headphones
 - **Golf** (country-club): max-avatar-golf, max-bible-golf, max-sprite-golf — polo branca (sem bolso) com M bordado, chino bege sem cinto, Air Jordan 1 LOW Golf Travis Scott Neutral Olive
@@ -350,17 +350,21 @@ URL: `https://www.marketscoupons.com/?spy=1` — ativa painel flutuante no topo 
 ## Deploy
 
 ### Vercel
-- Deploy automatico via push no `main`
+- **ATENCAO 2026-04-19:** Git push sozinho NAO deploya automaticamente. Sempre rodar CLI manual apos o push (auto-deploy via GitHub integration quebrado/inativo nesse repo)
 - Sem build step (arquivos estaticos diretos)
 - Headers no-cache em todos os `.html` e `/` para evitar cache de CDN
 - Rota `/admin` reescrita para `/admin.html`
 
-### Processo
+### Processo (obrigatorio em todo deploy)
 1. Fazer alteracoes
 2. `git add [arquivos]` + `git commit`
 3. `git push origin main`
-4. Aguardar ~1-2 min para deploy
-5. Testar com **Ctrl+F5** (hard refresh) para garantir que nao e cache
+4. **`CI=1 npx vercel --prod --yes --token=<VERCEL_TOKEN>`** (sem isso nao vai pro ar). Token salvo em memoria `feedback_git_push_nao_deploya.md`
+5. Aguardar ~20-60s apos "Deployment ... ready"
+6. Validar com curl `?v=$(date +%s)` buscando marcador especifico ANTES de falar "no ar" pro usuario
+7. Testar com **Ctrl+F5** no navegador
+
+Documentado em detalhe em `memory/feedback_git_push_nao_deploya.md`.
 
 ---
 
