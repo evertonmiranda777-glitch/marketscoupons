@@ -1073,7 +1073,7 @@ function firmReviewUrl(slug){
 }
 function firmReviewCover(firmId){
   const lang=_currentLang||'en';
-  return `/img/guides/${firmId}-cover-${lang}.png`;
+  return `/img/guides/${firmId}-cover-${lang}.jpg`;
 }
 function openFirmReview(slug){ window.open(firmReviewUrl(slug),'_blank','noopener'); }
 const GUIDES_FALLBACK = [];

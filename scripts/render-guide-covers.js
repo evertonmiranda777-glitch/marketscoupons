@@ -126,14 +126,14 @@ async function renderOne(browser, tpl, slug, lang, firmColor, logo, bg) {
   };
   const html = fillTemplate(tpl, data);
 
-  const page = await browser.newPage({ viewport: { width: 1200, height: 675 }, deviceScaleFactor: 2 });
+  const page = await browser.newPage({ viewport: { width: 1200, height: 675 }, deviceScaleFactor: 1 });
   await page.setContent(html, { waitUntil: 'networkidle' });
   await page.waitForTimeout(300);
 
   const outDir = path.join(root, 'img', 'guides');
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-  const outPath = path.join(outDir, `${slug}-cover-${lang}.png`);
-  await page.screenshot({ path: outPath, type: 'png', clip: { x: 0, y: 0, width: 1200, height: 675 } });
+  const outPath = path.join(outDir, `${slug}-cover-${lang}.jpg`);
+  await page.screenshot({ path: outPath, type: 'jpeg', quality: 85, clip: { x: 0, y: 0, width: 1200, height: 675 } });
   await page.close();
   console.log(`[${slug}/${lang}] ✓`);
   return true;
