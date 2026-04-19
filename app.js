@@ -1053,20 +1053,20 @@ function firmIco(f,size='38px',fontSize='14px'){
 let _guidesCache=[];
 /* FIRM REVIEWS — static, 11 firms × 7 langs (covers in img/guides/<slug>-cover-<lang>.png) */
 const FIRM_REVIEWS = [
-  {id:'apex',         name:'Apex Trader Funding',      slug:'apex-review'},
+  {id:'apex',         name:'Apex Trader Funding',      slug:'apex-trader-funding-review'},
   {id:'ftmo',         name:'FTMO',                     slug:'ftmo-review'},
   {id:'bulenox',      name:'Bulenox',                  slug:'bulenox-review'},
-  {id:'tpt',          name:'TakeProfitTrader',         slug:'tpt-review'},
+  {id:'tpt',          name:'TakeProfitTrader',         slug:'take-profit-trader-review'},
   {id:'fn',           name:'FundedNext',               slug:'fundednext-review'},
-  {id:'e2t',          name:'Earn2Trade',               slug:'e2t-review'},
+  {id:'e2t',          name:'Earn2Trade',               slug:'earn2trade-review'},
   {id:'the5ers',      name:'The5ers',                  slug:'the5ers-review'},
   {id:'fundingpips',  name:'FundingPips',              slug:'fundingpips-review'},
   {id:'brightfunded', name:'BrightFunded',             slug:'brightfunded-review'},
   {id:'e8',           name:'E8 Markets',               slug:'e8-review'},
   {id:'cti',          name:'City Traders Imperium',    slug:'cti-review'},
 ];
-/* Langs with dedicated /<lang>/guides/ pages. Other langs fallback to EN root /guides/ */
-const REVIEW_LANGS = ['fr','de','ar'];
+/* Langs with dedicated /<lang>/guides/ pages. Others fall back to EN root /guides/ */
+const REVIEW_LANGS = ['es','it','fr','de','ar'];
 function firmReviewUrl(slug){
   const lang=_currentLang||'en';
   return REVIEW_LANGS.includes(lang)?`/${lang}/guides/${slug}`:`/guides/${slug}`;
@@ -1075,7 +1075,7 @@ function firmReviewCover(firmId){
   const lang=_currentLang||'en';
   return `/img/guides/${firmId}-cover-${lang}.jpg`;
 }
-function openFirmReview(slug){ window.open(firmReviewUrl(slug),'_blank','noopener'); }
+function openFirmReview(slug){ window.location.assign(firmReviewUrl(slug)); }
 const GUIDES_FALLBACK = [];
 async function loadGuidesFromSupabase(){
   try{
