@@ -18,7 +18,7 @@ const LOGO_FILE = {
   apex: 'apex-logo-wide-light.png',
   ftmo: 'FTMO logo - light.png',
   bulenox: 'Bulenox-Logo-1-01-800x207.png',
-  tpt: null,
+  tpt: 'TakeProfit white logo.svg',
   fn: 'FundedNext Monochromatic Logo White 2x.png',
   e2t: 'earn2trade white.svg',
   the5ers: 'logo-white-est.png',
