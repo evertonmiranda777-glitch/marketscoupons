@@ -2274,13 +2274,13 @@ function promoTimerPill(f){
   const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
   if(!end || end <= Date.now()) return '';
   if(!f.show_promo_on_checkout) return '';
-  return `<div class="promo-timer" data-promo-ends="${end}" data-promo-mode="cards" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;margin:12px 0;background:linear-gradient(90deg,#C49412 0%,#F0B429 50%,#C49412 100%);border:1px solid rgba(0,0,0,.25);border-radius:10px;font-size:13px;font-weight:800;color:#000;letter-spacing:.3px;box-shadow:0 4px 14px rgba(240,180,41,.3);">
-    <span style="display:inline-flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg><span>${t('promo_ends_in')||'Ends in:'}</span></span>
-    <span style="display:inline-flex;align-items:center;gap:6px;">
-      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-d" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">d</span></span>
-      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-h" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">h</span></span>
-      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-m" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">m</span></span>
-      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-s" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">s</span></span>
+  return `<div class="promo-timer promo-pill" data-promo-ends="${end}" data-promo-mode="cards">
+    <span class="pp-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg><span>${t('promo_ends_in')||'Ends in:'}</span></span>
+    <span class="pp-clock">
+      <span class="pp-unit"><span class="pt-num pt-d">--</span><span class="pp-suf">d</span></span>
+      <span class="pp-unit"><span class="pt-num pt-h">--</span><span class="pp-suf">h</span></span>
+      <span class="pp-unit"><span class="pt-num pt-m">--</span><span class="pp-suf">m</span></span>
+      <span class="pp-unit"><span class="pt-num pt-s">--</span><span class="pp-suf">s</span></span>
     </span></div>`;
 }
 function tickPromoTimers(){
