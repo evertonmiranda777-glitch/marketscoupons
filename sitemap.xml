@@ -1721,5 +1721,33 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/guides/gerenciamento-drawdown"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/guides/gerenciamento-drawdown"/>
   </url>
+  <url>
+    <loc>https://www.marketscoupons.com/guides/position-sizing</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/guides/position-sizing"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/guides/position-sizing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/guides/position-sizing"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/guides/position-sizing"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/guides/position-sizing"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/guides/position-sizing"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/guides/position-sizing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/guides/position-sizing"/>
+  </url>
+  <url>
+    <loc>https://www.marketscoupons.com/guides/como-sacar-lucros</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/guides/como-sacar-lucros"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/guides/como-sacar-lucros"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/guides/como-sacar-lucros"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/guides/como-sacar-lucros"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/guides/como-sacar-lucros"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/guides/como-sacar-lucros"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/guides/como-sacar-lucros"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/guides/como-sacar-lucros"/>
+  </url>
   <!-- END:GUIDES -->
 </urlset>
