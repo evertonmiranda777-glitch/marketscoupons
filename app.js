@@ -3383,6 +3383,9 @@ function drwRenderCk(id, f) {
     </div>`;
   }
 
+  // Promo countdown pill
+  h += promoTimerPill(f);
+
   // Coupon + CTA card
   if(f.coupon){
     const isLong=f.coupon.length>12;
