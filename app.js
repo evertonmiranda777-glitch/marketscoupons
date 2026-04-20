@@ -2273,6 +2273,7 @@ function renderQuiz(){
 function promoTimerPill(f){
   const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
   if(!end || end <= Date.now()) return '';
+  if(!f.show_promo_on_checkout) return '';
   return `<div class="promo-timer" data-promo-ends="${end}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;margin:8px 0;background:linear-gradient(90deg,rgba(239,68,68,.18),rgba(239,68,68,.06));border:1px solid rgba(239,68,68,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ef4444;letter-spacing:.3px;">
     <span style="font-size:13px;">⏳</span><span class="pt-label" style="opacity:.85;">${t('promo_ends_in')||'Ends in:'}</span><span class="pt-val" style="font-variant-numeric:tabular-nums;">—</span></div>`;
 }
@@ -2311,6 +2312,9 @@ if(!window._promoTimerInterval){
 function renderPromoTopbar(){
   const bar = document.getElementById('promo-topbar');
   if(!bar) return;
+  // Master toggle via site_settings
+  const enabled = (typeof _siteSettings !== 'undefined' && _siteSettings?.promo_topbar_enabled !== undefined) ? _siteSettings.promo_topbar_enabled === 'true' : true;
+  if(!enabled){ bar.style.display='none'; bar.innerHTML=''; return; }
   const active = (FIRMS||[]).filter(f=>{
     const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
     return end && end > Date.now();
@@ -3678,7 +3682,7 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
@@ -3689,6 +3693,7 @@ async function loadFirmsFromSupabase() {
       }
       return;
     }
+    // Include promo column in SELECT result (already fetched above since we used named cols)
 
     // Map Supabase rows → FIRMS format (same shape renderFirms() expects)
     FIRMS.length = 0;
@@ -3714,6 +3719,7 @@ async function loadFirmsFromSupabase() {
         payoutSpeed: f.payout_speed || null,
         maxAccounts: f.max_accounts || null,
         promo_ends_at: f.promo_ends_at || null,
+        show_promo_on_checkout: f.show_promo_on_checkout || false,
       };
       if (f.trustpilot_url) {
         firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };

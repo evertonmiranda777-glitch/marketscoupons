@@ -1710,6 +1710,23 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         </div>
       </div>
 
+      <!-- PROMO TOPBAR MASTER TOGGLE -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;margin-bottom:18px;background:linear-gradient(90deg,rgba(240,180,41,.08),rgba(240,180,41,.02));border:1px solid rgba(240,180,41,.25);border-radius:10px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:8px;">Barra de aviso global (topo do site)</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:3px;line-height:1.5;">Mostra countdown das firmas com "Promoção termina em" preenchido. Aparece em todas as páginas. Traduz automático em 7 idiomas.</div>
+        </div>
+        <label style="position:relative;display:inline-block;width:48px;height:26px;flex-shrink:0;">
+          <input type="checkbox" id="promo-topbar-enabled" style="opacity:0;width:0;height:0;" onchange="savePromoTopbarEnabled(this.checked)">
+          <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#374151;border-radius:26px;transition:.2s;"></span>
+          <span style="position:absolute;cursor:pointer;height:20px;width:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s;"></span>
+        </label>
+      </div>
+      <style>
+        #promo-topbar-enabled:checked + span { background:#F0B429 !important; }
+        #promo-topbar-enabled:checked + span + span { transform:translateX(22px); }
+      </style>
+
       <!-- AI FIRM GENERATOR -->
       <div id="ai-firm-panel" style="display:none;background:var(--card);border:1px solid rgba(168,85,247,.3);border-radius:12px;padding:20px;margin-bottom:20px;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
@@ -3235,6 +3252,20 @@ async function loadBotSetting(){
     if(btn){btn.classList.toggle('on',on);btn.classList.toggle('off',!on);}
   }catch(e){}
 }
+async function savePromoTopbarEnabled(checked){
+  try{
+    await db.from('site_settings').upsert({key:'promo_topbar_enabled',value:checked?'true':'false',updated_at:new Date().toISOString()},{onConflict:'key'});
+    toast(checked?'Barra de aviso ATIVADA':'Barra de aviso DESATIVADA');
+  }catch(e){toast('Erro ao salvar','error');}
+}
+async function loadPromoTopbarEnabled(){
+  try{
+    const{data}=await db.from('site_settings').select('value').eq('key','promo_topbar_enabled').maybeSingle();
+    const cb=document.getElementById('promo-topbar-enabled');
+    if(cb) cb.checked = !data || data.value === 'true'; // default true
+  }catch(e){}
+}
+
 async function toggleBotSetting(){
   const btn=document.getElementById('bot-toggle');
   const isOn=btn.classList.contains('on');
@@ -8453,6 +8484,7 @@ function getBlogPostsSync() { return JSON.parse(localStorage.getItem('mc_blog_po
 async function renderCmsFirms() {
   const tbl = document.getElementById('firms-tbl');
   const kpis = document.getElementById('firms-kpis');
+  loadPromoTopbarEnabled();
   if(tbl) tbl.innerHTML = '<tbody><tr><td style="padding:20px;color:var(--t2);">Carregando firmas do Supabase...</td></tr></tbody>';
   try {
     const { data, error } = await db.from('cms_firms').select('*').order('sort_order');
@@ -8543,6 +8575,7 @@ function openFirmModal(id) {
       <div class="modal-field"><label>Desconto %</label><input type="number" id="fm-discount" value="${f.discount||0}" min="0" max="100" style="font-size:18px;font-weight:800;color:var(--gold);"></div>
       <div class="modal-field"><label>Cupom</label><input type="text" id="fm-coupon" value="${f.coupon||''}" style="font-family:monospace;font-size:14px;font-weight:700;text-transform:uppercase;"></div>
       <div class="modal-field"><label>Promocao termina em <span style="font-size:9px;color:var(--t3);">(deixe vazio p/ sem timer)</span></label><input type="datetime-local" id="fm-promo-ends" value="${f.promo_ends_at ? new Date(f.promo_ends_at).toISOString().slice(0,16) : ''}"></div>
+      <div class="modal-field"><label>Mostrar pill no checkout desta firma <span style="font-size:9px;color:var(--t3);">(overlay + drawer mobile)</span></label><label style="display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;cursor:pointer;font-size:12px;"><input type="checkbox" id="fm-show-promo-checkout" ${f.show_promo_on_checkout?'checked':''} style="width:16px;height:16px;accent-color:#F0B429;"> Exibir countdown no checkout</label></div>
       <div class="modal-field"><label>Split</label><input type="text" id="fm-split" value="${f.split||'80%'}"></div>
       <div class="modal-field"><label>Tipo Desconto</label><input type="text" id="fm-dtype" value="${f.discount_type||'lifetime'}"></div>
       <div class="modal-field modal-full"><label>Link Afiliado</label><input type="url" id="fm-link" value="${f.link||''}"></div>
@@ -8738,6 +8771,7 @@ async function saveFirm(existingId) {
     discount_type: document.getElementById('fm-dtype').value.trim()||'lifetime',
     coupon:        document.getElementById('fm-coupon').value.trim().toUpperCase()||null,
     promo_ends_at: (()=>{const v=document.getElementById('fm-promo-ends')?.value; return v ? new Date(v).toISOString() : null;})(),
+    show_promo_on_checkout: document.getElementById('fm-show-promo-checkout')?.checked || false,
     link:          document.getElementById('fm-link').value.trim(),
     split:         document.getElementById('fm-split').value.trim(),
     sort_order:    parseInt(document.getElementById('fm-sort').value)||99,
