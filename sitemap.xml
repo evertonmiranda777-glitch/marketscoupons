@@ -1707,5 +1707,19 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/guides/como-passar-no-desafio"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/guides/como-passar-no-desafio"/>
   </url>
+  <url>
+    <loc>https://www.marketscoupons.com/guides/gerenciamento-drawdown</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/guides/gerenciamento-drawdown"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/guides/gerenciamento-drawdown"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/guides/gerenciamento-drawdown"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/guides/gerenciamento-drawdown"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/guides/gerenciamento-drawdown"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/guides/gerenciamento-drawdown"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/guides/gerenciamento-drawdown"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/guides/gerenciamento-drawdown"/>
+  </url>
   <!-- END:GUIDES -->
 </urlset>
