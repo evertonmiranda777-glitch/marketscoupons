@@ -2277,22 +2277,35 @@ function promoTimerPill(f){
     <span style="font-size:13px;">⏳</span><span class="pt-label" style="opacity:.85;">${t('promo_ends_in')||'Ends in:'}</span><span class="pt-val" style="font-variant-numeric:tabular-nums;">—</span></div>`;
 }
 function tickPromoTimers(){
-  document.querySelectorAll('.promo-timer[data-promo-ends]').forEach(el=>{
+  document.querySelectorAll('[data-promo-ends]').forEach(el=>{
     const end = parseInt(el.dataset.promoEnds,10);
     const diff = end - Date.now();
-    if(diff <= 0){ el.style.display='none'; return; }
+    const mode = el.dataset.promoMode || '';
+    if(diff <= 0){
+      if(mode === 'cards'){ const bar=document.getElementById('promo-topbar'); if(bar){ bar.style.display='none'; bar.innerHTML=''; } }
+      else { el.style.display='none'; }
+      return;
+    }
     const d = Math.floor(diff/86400000);
     const h = Math.floor(diff%86400000/3600000);
     const m = Math.floor(diff%3600000/60000);
     const s = Math.floor(diff%60000/1000);
-    const val = el.querySelector('.pt-val');
-    if(val) val.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+    if(mode === 'cards'){
+      const dEl=el.querySelector('.pt-d'), hEl=el.querySelector('.pt-h'), mEl=el.querySelector('.pt-m'), sEl=el.querySelector('.pt-s');
+      if(dEl) dEl.textContent = String(d).padStart(2,'0');
+      if(hEl) hEl.textContent = String(h).padStart(2,'0');
+      if(mEl) mEl.textContent = String(m).padStart(2,'0');
+      if(sEl) sEl.textContent = String(s).padStart(2,'0');
+    } else {
+      const val = el.querySelector('.pt-val');
+      if(val) val.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+    }
   });
 }
-if(!window._promoTimerInterval){
-  window._promoTimerInterval = setInterval(()=>window.tickPromoTimers&&window.tickPromoTimers(), 1000);
-}
 window.tickPromoTimers = tickPromoTimers;
+if(!window._promoTimerInterval){
+  window._promoTimerInterval = setInterval(tickPromoTimers, 1000);
+}
 
 /* ── Global promo top bar (above nav, all pages) ── */
 function renderPromoTopbar(){
@@ -2317,35 +2330,6 @@ function renderPromoTopbar(){
     </div>${i<active.length-1?'<span class="pt-sep">•</span>':''}`;
   }).join('');
 }
-// Extend tickPromoTimers to handle cards mode (d/h/m/s split)
-(function patchTick(){
-  window.tickPromoTimers = function(){
-    document.querySelectorAll('[data-promo-ends]').forEach(el=>{
-      const end = parseInt(el.dataset.promoEnds,10);
-      const diff = end - Date.now();
-      const mode = el.dataset.promoMode;
-      if(diff <= 0){
-        if(mode === 'cards'){ const bar=document.getElementById('promo-topbar'); if(bar) renderPromoTopbar(); }
-        else { el.style.display='none'; }
-        return;
-      }
-      const d = Math.floor(diff/86400000);
-      const h = Math.floor(diff%86400000/3600000);
-      const m = Math.floor(diff%3600000/60000);
-      const s = Math.floor(diff%60000/1000);
-      if(mode === 'cards'){
-        const dEl=el.querySelector('.pt-d'), hEl=el.querySelector('.pt-h'), mEl=el.querySelector('.pt-m'), sEl=el.querySelector('.pt-s');
-        if(dEl) dEl.textContent = String(d).padStart(2,'0');
-        if(hEl) hEl.textContent = String(h).padStart(2,'0');
-        if(mEl) mEl.textContent = String(m).padStart(2,'0');
-        if(sEl) sEl.textContent = String(s).padStart(2,'0');
-      } else {
-        const val = el.querySelector('.pt-val');
-        if(val) val.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
-      }
-    });
-  };
-})();
 
 /* HOME */
 function renderHome(){
