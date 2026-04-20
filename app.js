@@ -2290,8 +2290,9 @@ function tickPromoTimers(){
   });
 }
 if(!window._promoTimerInterval){
-  window._promoTimerInterval = setInterval(tickPromoTimers, 1000);
+  window._promoTimerInterval = setInterval(()=>window.tickPromoTimers&&window.tickPromoTimers(), 1000);
 }
+window.tickPromoTimers = tickPromoTimers;
 
 /* ── Global promo top bar (above nav, all pages) ── */
 function renderPromoTopbar(){
