@@ -1845,6 +1845,19 @@ img{max-width:100%;}
   .gx-spot-tag,.gx-row-tag{right:-60px;font-size:7px;padding:1px 3px;}
 }
 
+/* ═══ PROMO TOP BAR (global — gold bg, black + white text, live-countdown style) ═══ */
+.promo-topbar{position:sticky;top:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:24px;padding:9px 20px;background:linear-gradient(90deg,#D97706 0%,#F59E0B 50%,#D97706 100%);color:#000;font-size:13px;font-weight:800;letter-spacing:.3px;box-shadow:0 2px 12px rgba(0,0,0,.4);overflow-x:auto;white-space:nowrap;scrollbar-width:none;border-bottom:1px solid rgba(0,0,0,.2);}
+.promo-topbar::-webkit-scrollbar{display:none;}
+.promo-topbar .pt-item{display:inline-flex;align-items:center;gap:12px;}
+.promo-topbar .pt-headline{color:#000;font-weight:800;cursor:pointer;}
+.promo-topbar .pt-headline:hover{text-decoration:underline;text-underline-offset:3px;}
+.promo-topbar .pt-clock{display:inline-flex;align-items:center;gap:6px;}
+.promo-topbar .pt-unit{display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:3px 8px;border-radius:6px;}
+.promo-topbar .pt-num{color:#fff;font-size:14px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:.5px;}
+.promo-topbar .pt-suf{color:#FCD34D;font-size:10px;font-weight:700;text-transform:uppercase;}
+.promo-topbar .pt-sep{opacity:.5;color:#000;margin:0 4px;font-weight:900;}
+@media (max-width:760px){.promo-topbar{font-size:11px;gap:14px;padding:7px 12px;justify-content:flex-start;}.promo-topbar .pt-num{font-size:12px;}.promo-topbar .pt-unit{padding:2px 6px;}.promo-topbar .pt-item{gap:8px;}}
+
 /* ═══ CALENDÁRIO ECONÔMICO MELHORADO ═══ */
 /* Countdown banner */
 .cal-countdown-bar{display:flex;align-items:center;gap:16px;padding:14px 0;margin:0 0 2px;background:linear-gradient(90deg,rgba(239,68,68,.08),rgba(239,68,68,.03));border-bottom:1px solid rgba(239,68,68,.15);animation:cal-cd-fade-in .4s;}
@@ -2686,6 +2699,9 @@ document.addEventListener('DOMContentLoaded',function(){
 <body style="opacity:0">
 
 <!-- GTM noscript removed — tracking loaded dynamically after cookie consent -->
+
+<!-- PROMO TOP BAR (global, above nav) -->
+<div id="promo-topbar" class="promo-topbar" style="display:none;"></div>
 
 <!-- NAV -->
 <nav id="nav" role="navigation" aria-label="Main navigation">

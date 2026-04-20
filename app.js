@@ -2293,6 +2293,59 @@ if(!window._promoTimerInterval){
   window._promoTimerInterval = setInterval(tickPromoTimers, 1000);
 }
 
+/* ── Global promo top bar (above nav, all pages) ── */
+function renderPromoTopbar(){
+  const bar = document.getElementById('promo-topbar');
+  if(!bar) return;
+  const active = (FIRMS||[]).filter(f=>{
+    const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
+    return end && end > Date.now();
+  }).sort((a,b)=>Date.parse(a.promo_ends_at)-Date.parse(b.promo_ends_at));
+  if(!active.length){ bar.style.display='none'; bar.innerHTML=''; return; }
+  bar.style.display='flex';
+  bar.innerHTML = active.map((f,i)=>{
+    const end = Date.parse(f.promo_ends_at);
+    return `<div class="pt-item">
+      <span class="pt-headline" onclick="openD('${f.id}');track('promo_topbar_click',{firm_id:'${f.id}'})">${f.name} ${t('promo_ends_in')||'promo ends in'}</span>
+      <span class="pt-clock promo-timer" data-promo-ends="${end}" data-promo-mode="cards">
+        <span class="pt-unit"><span class="pt-num pt-d">--</span><span class="pt-suf">d</span></span>
+        <span class="pt-unit"><span class="pt-num pt-h">--</span><span class="pt-suf">h</span></span>
+        <span class="pt-unit"><span class="pt-num pt-m">--</span><span class="pt-suf">m</span></span>
+        <span class="pt-unit"><span class="pt-num pt-s">--</span><span class="pt-suf">s</span></span>
+      </span>
+    </div>${i<active.length-1?'<span class="pt-sep">•</span>':''}`;
+  }).join('');
+}
+// Extend tickPromoTimers to handle cards mode (d/h/m/s split)
+(function patchTick(){
+  window.tickPromoTimers = function(){
+    document.querySelectorAll('[data-promo-ends]').forEach(el=>{
+      const end = parseInt(el.dataset.promoEnds,10);
+      const diff = end - Date.now();
+      const mode = el.dataset.promoMode;
+      if(diff <= 0){
+        if(mode === 'cards'){ const bar=document.getElementById('promo-topbar'); if(bar) renderPromoTopbar(); }
+        else { el.style.display='none'; }
+        return;
+      }
+      const d = Math.floor(diff/86400000);
+      const h = Math.floor(diff%86400000/3600000);
+      const m = Math.floor(diff%3600000/60000);
+      const s = Math.floor(diff%60000/1000);
+      if(mode === 'cards'){
+        const dEl=el.querySelector('.pt-d'), hEl=el.querySelector('.pt-h'), mEl=el.querySelector('.pt-m'), sEl=el.querySelector('.pt-s');
+        if(dEl) dEl.textContent = String(d).padStart(2,'0');
+        if(hEl) hEl.textContent = String(h).padStart(2,'0');
+        if(mEl) mEl.textContent = String(m).padStart(2,'0');
+        if(sEl) sEl.textContent = String(s).padStart(2,'0');
+      } else {
+        const val = el.querySelector('.pt-val');
+        if(val) val.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+      }
+    });
+  };
+})();
+
 /* HOME */
 function renderHome(){
   const g=document.getElementById('home-offers');if(!g)return;
@@ -2304,7 +2357,6 @@ function renderHome(){
         <div class="oc-left">${firmIco(f,'36px','13px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div></div>
       </div>
-      ${promoTimerPill(f)}
       ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
       <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">${t('offers_desconto_exclusivo')}</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
       <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
@@ -6432,6 +6484,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Carregar firmas do Supabase (atualiza dados em background)
   await loadFirmsFromSupabase();
+  // Render promo top bar (global, all pages) with active firm timers
+  try { renderPromoTopbar(); tickPromoTimers(); } catch(e){}
   // Se overlay de firma está aberto, re-render com dados atualizados do Supabase
   if(_fdCurrent && !_fdClosing && document.getElementById('fd-overlay')?.classList.contains('show')){
     openFD(_fdCurrent, FIRMS.find(x=>x.id===_fdCurrent));
