@@ -2269,6 +2269,30 @@ function renderQuiz(){
   wrap.innerHTML=html;
 }
 
+/* ── Promo countdown timer (home cards + checkout) ── */
+function promoTimerPill(f){
+  const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
+  if(!end || end <= Date.now()) return '';
+  return `<div class="promo-timer" data-promo-ends="${end}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;margin:8px 0;background:linear-gradient(90deg,rgba(239,68,68,.18),rgba(239,68,68,.06));border:1px solid rgba(239,68,68,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ef4444;letter-spacing:.3px;">
+    <span style="font-size:13px;">⏳</span><span class="pt-label" style="opacity:.85;">${t('promo_ends_in')||'Ends in:'}</span><span class="pt-val" style="font-variant-numeric:tabular-nums;">—</span></div>`;
+}
+function tickPromoTimers(){
+  document.querySelectorAll('.promo-timer[data-promo-ends]').forEach(el=>{
+    const end = parseInt(el.dataset.promoEnds,10);
+    const diff = end - Date.now();
+    if(diff <= 0){ el.style.display='none'; return; }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor(diff%86400000/3600000);
+    const m = Math.floor(diff%3600000/60000);
+    const s = Math.floor(diff%60000/1000);
+    const val = el.querySelector('.pt-val');
+    if(val) val.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+  });
+}
+if(!window._promoTimerInterval){
+  window._promoTimerInterval = setInterval(tickPromoTimers, 1000);
+}
+
 /* HOME */
 function renderHome(){
   const g=document.getElementById('home-offers');if(!g)return;
@@ -2280,6 +2304,7 @@ function renderHome(){
         <div class="oc-left">${firmIco(f,'36px','13px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div></div>
       </div>
+      ${promoTimerPill(f)}
       ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
       <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">${t('offers_desconto_exclusivo')}</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
       <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
@@ -2734,6 +2759,9 @@ function fdRenderRight(id, f) {
       <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color}">${plan.d}</div>${plan.o&&plan.o!=='—'?`<div class="fd-price-old">${plan.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
     </div>`;
   }
+
+  // Promo countdown (if active)
+  h += promoTimerPill(f);
 
   // Coupon + CTA card
   if (f.coupon) {
@@ -3230,6 +3258,7 @@ function openDrw(id, f, cf) {
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_dias_min')}</div><div class="fd-stat-val">${f.minDays||'—'}</div></div>
   </div>`;
   html+=`<div class="drw-checkout">`;
+  html+= promoTimerPill(f);
   if (f.coupon) {
     html+=`<div class="drw-coupon-bar">
       <div class="offer-coupon-left"><div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div><span class="drw-coupon-code${f.coupon.length>12?' long':''}">${f.coupon}</span></div>
@@ -3612,7 +3641,7 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {

@@ -451,7 +451,7 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
 
   const { data: firm, error } = await db
     .from("cms_firms")
-    .select("name, discount, coupon, link, discount_type, split, drawdown")
+    .select("id, name, discount, coupon, link, discount_type, split, drawdown")
     .eq("id", firmId)
     .eq("active", true)
     .maybeSingle();
@@ -468,19 +468,27 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
   const discountLabel =
     firm.discount_type === "lifetime" ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
 
+  // 48h countdown — ends at now + 48h
+  const endsAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
+  const endsLabel = endsAt.toUTCString().replace(":00 GMT", " UTC");
+
+  // Link: site firm checkout deep-link (not direct affiliate)
+  const checkoutUrl = siteLink(`/#firm/${firm.id}`, "flash_promo");
+
   const text =
     `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
     `🔥 ${discountLabel}\n` +
     couponLine + `\n\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    (urgency ? `\n${urgency}\n` : "") +
-    `\n👉 ${firm.link ?? siteLink("", "flash_promo")}`;
+    `⏰ <b>Ends in 48h</b> — ${endsLabel}\n` +
+    (urgency ? `\n${urgency}\n` : "");
 
-  const msgId = await sendMessage(text);
+  const buttons = [[{ text: "👉 Get Deal", url: checkoutUrl }]];
+  const msgId = await sendMessage(text, buttons);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
 
-  return { sent: msgId !== null, firm: firm.name };
+  return { sent: msgId !== null, firm: firm.name, ends_at: endsAt.toISOString() };
 }
 
 // ── Main handler ────────────────────────────────────────────────────────────

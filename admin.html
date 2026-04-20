@@ -8542,6 +8542,7 @@ function openFirmModal(id) {
       <div class="modal-field"><label>Tipo</label><select id="fm-type"><option ${f.type==='Futuros'?'selected':''}>Futuros</option><option ${f.type==='Forex'?'selected':''}>Forex</option></select></div>
       <div class="modal-field"><label>Desconto %</label><input type="number" id="fm-discount" value="${f.discount||0}" min="0" max="100" style="font-size:18px;font-weight:800;color:var(--gold);"></div>
       <div class="modal-field"><label>Cupom</label><input type="text" id="fm-coupon" value="${f.coupon||''}" style="font-family:monospace;font-size:14px;font-weight:700;text-transform:uppercase;"></div>
+      <div class="modal-field"><label>Promocao termina em <span style="font-size:9px;color:var(--t3);">(deixe vazio p/ sem timer)</span></label><input type="datetime-local" id="fm-promo-ends" value="${f.promo_ends_at ? new Date(f.promo_ends_at).toISOString().slice(0,16) : ''}"></div>
       <div class="modal-field"><label>Split</label><input type="text" id="fm-split" value="${f.split||'80%'}"></div>
       <div class="modal-field"><label>Tipo Desconto</label><input type="text" id="fm-dtype" value="${f.discount_type||'lifetime'}"></div>
       <div class="modal-field modal-full"><label>Link Afiliado</label><input type="url" id="fm-link" value="${f.link||''}"></div>
@@ -8736,6 +8737,7 @@ async function saveFirm(existingId) {
     discount:      parseFloat(document.getElementById('fm-discount').value)||0,
     discount_type: document.getElementById('fm-dtype').value.trim()||'lifetime',
     coupon:        document.getElementById('fm-coupon').value.trim().toUpperCase()||null,
+    promo_ends_at: (()=>{const v=document.getElementById('fm-promo-ends')?.value; return v ? new Date(v).toISOString() : null;})(),
     link:          document.getElementById('fm-link').value.trim(),
     split:         document.getElementById('fm-split').value.trim(),
     sort_order:    parseInt(document.getElementById('fm-sort').value)||99,
