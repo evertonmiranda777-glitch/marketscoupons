@@ -496,10 +496,10 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
     `⏰ <b>Ends in 48h</b> — ${endsLabelEn}\n` +
-    (urgency ? `\n${urgency}\n` : "");
+    (urgency ? `\n${urgency}\n` : "") +
+    `\n👉 <a href="${checkoutUrl}"><b>Garantir oferta / Get Deal</b></a>`;
 
-  const buttons = [[{ text: "👉 Garantir oferta / Get Deal", url: checkoutUrl }]];
-  const msgId = await sendMessage(text, buttons);
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
 
   return { sent: msgId !== null, firm: firm.name, ends_at: endsAt.toISOString() };
