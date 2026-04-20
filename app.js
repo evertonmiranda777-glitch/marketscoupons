@@ -889,6 +889,14 @@ function setL(lang,flag,code){
   // Re-render open drawer if language changed
   const activeFr = document.querySelector('.fr.active');
   if (activeFr && document.getElementById('drw')?.classList.contains('open')) openD(activeFr.dataset.id);
+  // Re-render promo topbar so "Ends in:" label picks up new translation
+  if (typeof renderPromoTopbar === 'function') renderPromoTopbar();
+  // Re-render open desktop firm overlay so checkout pill label updates
+  const fdOpen = document.getElementById('fd-overlay');
+  if (fdOpen && fdOpen.classList.contains('show') && typeof _fdCurrent !== 'undefined' && _fdCurrent) {
+    const _f = FIRMS.find(x=>x.id===_fdCurrent);
+    if (_f && typeof fdRenderRight === 'function') fdRenderRight(_fdCurrent, _f);
+  }
   updateTVWidgets(lang);
   // Update bot welcome message language but keep conversation history
   if(typeof botHist!=='undefined'){
