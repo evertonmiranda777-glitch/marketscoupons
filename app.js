@@ -3728,6 +3728,7 @@ async function loadFirmsFromSupabase() {
         consistency: f.consistency || null,
         payoutSpeed: f.payout_speed || null,
         maxAccounts: f.max_accounts || null,
+        promo_ends_at: f.promo_ends_at || null,
       };
       if (f.trustpilot_url) {
         firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };
