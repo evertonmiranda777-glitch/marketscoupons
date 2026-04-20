@@ -478,8 +478,8 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
   const endsLabelPt = endsAt.toLocaleString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) + " UTC";
   const endsLabelEn = endsAt.toUTCString().replace(":00 GMT", " UTC");
 
-  // Dedicated firm page — clean root URL (e.g. /apex)
-  const checkoutUrl = `https://${SITE_URL}/${firm.id}?utm_source=telegram&utm_medium=social&utm_campaign=flash_promo`;
+  // Dedicated firm page — clean URL, UTMs inferred from t.me referrer on the site
+  const checkoutUrl = `https://${SITE_URL}/${firm.id}`;
 
   const text =
     `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +

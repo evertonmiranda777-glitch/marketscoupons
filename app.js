@@ -94,13 +94,20 @@ const MC_UTM = (()=>{
   const stored = sessionStorage.getItem('mc_utm');
   if (stored) return JSON.parse(stored);
   const p = new URLSearchParams(window.location.search);
+  // Detect Telegram referrer (t.me, web.telegram.org) — auto-tag as social/telegram
+  const ref = document.referrer || '';
+  let refHost = '';
+  try { refHost = ref ? new URL(ref).hostname : ''; } catch(_) {}
+  const isTelegram = /(^|\.)t\.me$|telegram\.org$/i.test(refHost);
+  // For firm slug landings from Telegram, auto-fill flash_promo campaign
+  const firmSlug = (location.pathname.match(/^\/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti)\/?$/i)||[])[1];
   const utm = {
-    utm_source:   p.get('utm_source')   || document.referrer && new URL(document.referrer).hostname || '',
-    utm_medium:   p.get('utm_medium')   || '',
-    utm_campaign: p.get('utm_campaign') || '',
-    utm_content:  p.get('utm_content')  || '',
+    utm_source:   p.get('utm_source')   || (isTelegram ? 'telegram' : (refHost || '')),
+    utm_medium:   p.get('utm_medium')   || (isTelegram ? 'social' : ''),
+    utm_campaign: p.get('utm_campaign') || (isTelegram && firmSlug ? 'flash_promo' : (isTelegram ? 'channel' : '')),
+    utm_content:  p.get('utm_content')  || (firmSlug || ''),
     utm_term:     p.get('utm_term')     || '',
-    referrer:     document.referrer     || '',
+    referrer:     ref,
   };
   sessionStorage.setItem('mc_utm', JSON.stringify(utm));
   return utm;
