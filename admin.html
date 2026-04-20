@@ -4352,7 +4352,7 @@ async function fetchGA4Geo(){
   if(!tk){toast('Faça login no admin primeiro.','error');return;}
   const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/ga4-geo',{
    method:'POST',
-   headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk,'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYyMzI2MDYsImV4cCI6MjA1MTgwODYwNn0.AAanwYp_e8jR1LMYJdGHB5ME4JkJnnwMGnHAkHBtBgo'},
+   headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk,'apikey':SUPABASE_ANON},
    body:JSON.stringify({days,propertyId:GA4_PROPERTY_ID})
   });
   const data=await res.json();
