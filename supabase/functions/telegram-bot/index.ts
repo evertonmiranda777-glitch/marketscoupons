@@ -478,8 +478,8 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
   const endsLabelPt = endsAt.toLocaleString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) + " UTC";
   const endsLabelEn = endsAt.toUTCString().replace(":00 GMT", " UTC");
 
-  // Short redirect route — Telegram flags long URLs with fragment+query, this is clean
-  const checkoutUrl = `https://${SITE_URL}/t/firm/${firm.id}`;
+  // Dedicated firm page — clean root URL (e.g. /apex)
+  const checkoutUrl = `https://${SITE_URL}/${firm.id}?utm_source=telegram&utm_medium=social&utm_campaign=flash_promo`;
 
   const text =
     `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
