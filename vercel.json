@@ -19,6 +19,7 @@
     { "source": "/t/calendar-alert", "destination": "/calendar?utm_source=telegram&utm_medium=social&utm_campaign=calendar_alert", "permanent": false },
     { "source": "/t/pro", "destination": "/pro?utm_source=telegram&utm_medium=social&utm_campaign=pro", "permanent": false },
     { "source": "/t/loyalty", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=loyalty", "permanent": false },
+    { "source": "/t/firm/:id", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=flash_promo#firm/:id", "permanent": false },
     { "source": "/pt/guides/:slug", "destination": "/guides/:slug", "permanent": false }
   ],
   "routes": [

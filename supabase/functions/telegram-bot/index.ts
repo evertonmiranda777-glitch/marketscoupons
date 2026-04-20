@@ -472,8 +472,8 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
   const endsAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
   const endsLabel = endsAt.toUTCString().replace(":00 GMT", " UTC");
 
-  // Link: site firm checkout deep-link (not direct affiliate)
-  const checkoutUrl = siteLink(`/#firm/${firm.id}`, "flash_promo");
+  // Short redirect route — Telegram flags long URLs with fragment+query, this is clean
+  const checkoutUrl = `https://${SITE_URL}/t/firm/${firm.id}`;
 
   const text =
     `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
