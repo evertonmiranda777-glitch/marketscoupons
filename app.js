@@ -2319,14 +2319,15 @@ if(!window._promoTimerInterval){
 function renderPromoTopbar(){
   const bar = document.getElementById('promo-topbar');
   if(!bar) return;
+  const hideBar = () => { bar.style.display='none'; bar.innerHTML=''; document.body.classList.remove('has-promo-topbar'); document.documentElement.style.removeProperty('--promo-h'); };
   // Master toggle via site_settings
   const enabled = (typeof _siteSettings !== 'undefined' && _siteSettings?.promo_topbar_enabled !== undefined) ? _siteSettings.promo_topbar_enabled === 'true' : true;
-  if(!enabled){ bar.style.display='none'; bar.innerHTML=''; return; }
+  if(!enabled){ hideBar(); return; }
   const active = (FIRMS||[]).filter(f=>{
     const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
     return end && end > Date.now();
   }).sort((a,b)=>Date.parse(a.promo_ends_at)-Date.parse(b.promo_ends_at));
-  if(!active.length){ bar.style.display='none'; bar.innerHTML=''; return; }
+  if(!active.length){ hideBar(); return; }
   bar.style.display='flex';
   bar.innerHTML = active.map((f,i)=>{
     const end = Date.parse(f.promo_ends_at);
@@ -2340,6 +2341,15 @@ function renderPromoTopbar(){
       </span>
     </div>${i<active.length-1?'<span class="pt-sep">•</span>':''}`;
   }).join('');
+  document.body.classList.add('has-promo-topbar');
+  requestAnimationFrame(()=>{
+    const h = bar.offsetHeight;
+    if(h) document.documentElement.style.setProperty('--promo-h', h+'px');
+  });
+}
+if(!window._promoResizeBound){
+  window._promoResizeBound = true;
+  window.addEventListener('resize', ()=>{ if(document.body.classList.contains('has-promo-topbar')) renderPromoTopbar(); });
 }
 
 /* HOME */
