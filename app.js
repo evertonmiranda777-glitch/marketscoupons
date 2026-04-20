@@ -2349,7 +2349,15 @@ function renderPromoTopbar(){
 }
 if(!window._promoResizeBound){
   window._promoResizeBound = true;
-  window.addEventListener('resize', ()=>{ if(document.body.classList.contains('has-promo-topbar')) renderPromoTopbar(); });
+  let _lastW = window.innerWidth;
+  window.addEventListener('resize', ()=>{
+    const bar = document.getElementById('promo-topbar');
+    if(!bar || !document.body.classList.contains('has-promo-topbar')) return;
+    const h = bar.offsetHeight;
+    if(h) document.documentElement.style.setProperty('--promo-h', h+'px');
+    // Only re-render if width actually changed (breakpoint cross), not mobile URL-bar scroll
+    if(Math.abs(window.innerWidth - _lastW) > 2){ _lastW = window.innerWidth; renderPromoTopbar(); }
+  });
 }
 
 /* HOME */
