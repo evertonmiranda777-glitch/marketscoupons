@@ -461,30 +461,44 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     return { sent: false, reason: "firm_not_found" };
   }
 
-  const couponLine = firm.coupon
+  const couponPt = firm.coupon
+    ? `🎟 Cupom: <code>${firm.coupon}</code>`
+    : `🔗 Desconto aplicado automaticamente`;
+  const couponEn = firm.coupon
     ? `🎟 Code: <code>${firm.coupon}</code>`
     : `🔗 No code needed — discount applied automatically`;
 
-  const discountLabel =
+  const discountPt =
+    firm.discount_type === "lifetime" ? `${firm.discount}% OFF (vitalício!)` : `${firm.discount}% OFF`;
+  const discountEn =
     firm.discount_type === "lifetime" ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
 
   // 48h countdown — ends at now + 48h
   const endsAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
-  const endsLabel = endsAt.toUTCString().replace(":00 GMT", " UTC");
+  const endsLabelPt = endsAt.toLocaleString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) + " UTC";
+  const endsLabelEn = endsAt.toUTCString().replace(":00 GMT", " UTC");
 
   // Short redirect route — Telegram flags long URLs with fragment+query, this is clean
   const checkoutUrl = `https://${SITE_URL}/t/firm/${firm.id}`;
 
   const text =
     `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
-    `🔥 ${discountLabel}\n` +
-    couponLine + `\n\n` +
+    `🇧🇷 <b>PT</b>\n` +
+    `🔥 ${discountPt}\n` +
+    couponPt + `\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    `⏰ <b>Ends in 48h</b> — ${endsLabel}\n` +
+    `⏰ <b>Termina em 48h</b> — ${endsLabelPt}\n` +
+    `\n━━━━━━━━━━\n\n` +
+    `🇺🇸 <b>EN</b>\n` +
+    `🔥 ${discountEn}\n` +
+    couponEn + `\n` +
+    (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
+    (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
+    `⏰ <b>Ends in 48h</b> — ${endsLabelEn}\n` +
     (urgency ? `\n${urgency}\n` : "");
 
-  const buttons = [[{ text: "👉 Get Deal", url: checkoutUrl }]];
+  const buttons = [[{ text: "👉 Garantir oferta / Get Deal", url: checkoutUrl }]];
   const msgId = await sendMessage(text, buttons);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
 
