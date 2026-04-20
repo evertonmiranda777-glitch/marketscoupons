@@ -2274,8 +2274,14 @@ function promoTimerPill(f){
   const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
   if(!end || end <= Date.now()) return '';
   if(!f.show_promo_on_checkout) return '';
-  return `<div class="promo-timer" data-promo-ends="${end}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;margin:10px 0;background:linear-gradient(90deg,#C49412 0%,#F0B429 50%,#C49412 100%);border:1px solid rgba(0,0,0,.25);border-radius:8px;font-size:13px;font-weight:800;color:#000;letter-spacing:.3px;box-shadow:0 2px 10px rgba(240,180,41,.25);">
-    <span style="font-size:14px;">⏳</span><span class="pt-label">${t('promo_ends_in')||'Ends in:'}</span><span class="pt-val" style="background:rgba(0,0,0,.85);color:#fff;padding:4px 10px;border-radius:6px;font-variant-numeric:tabular-nums;font-weight:900;">—</span></div>`;
+  return `<div class="promo-timer" data-promo-ends="${end}" data-promo-mode="cards" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;margin:12px 0;background:linear-gradient(90deg,#C49412 0%,#F0B429 50%,#C49412 100%);border:1px solid rgba(0,0,0,.25);border-radius:10px;font-size:13px;font-weight:800;color:#000;letter-spacing:.3px;box-shadow:0 4px 14px rgba(240,180,41,.3);">
+    <span style="display:inline-flex;align-items:center;gap:8px;"><span style="font-size:15px;">⏳</span><span>${t('promo_ends_in')||'Ends in:'}</span></span>
+    <span style="display:inline-flex;align-items:center;gap:6px;">
+      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-d" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">d</span></span>
+      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-h" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">h</span></span>
+      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-m" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">m</span></span>
+      <span style="display:inline-flex;align-items:baseline;gap:3px;background:rgba(0,0,0,.85);padding:4px 9px;border-radius:6px;"><span class="pt-num pt-s" style="color:#fff;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;">--</span><span style="color:#F0B429;font-size:10px;font-weight:800;text-transform:uppercase;">s</span></span>
+    </span></div>`;
 }
 function tickPromoTimers(){
   document.querySelectorAll('[data-promo-ends]').forEach(el=>{
@@ -2283,7 +2289,8 @@ function tickPromoTimers(){
     const diff = end - Date.now();
     const mode = el.dataset.promoMode || '';
     if(diff <= 0){
-      if(mode === 'cards'){ const bar=document.getElementById('promo-topbar'); if(bar){ bar.style.display='none'; bar.innerHTML=''; } }
+      const bar=document.getElementById('promo-topbar');
+      if(el===bar || el.closest?.('#promo-topbar')){ if(bar){ bar.style.display='none'; bar.innerHTML=''; } }
       else { el.style.display='none'; }
       return;
     }
