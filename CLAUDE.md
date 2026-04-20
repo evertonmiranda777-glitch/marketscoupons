@@ -1,5 +1,63 @@
 # MarketsCoupons - Contexto do Projeto
 
+## PRE-FLIGHT PROTOCOL — OBRIGATÓRIO em toda tarefa visual/criativa
+
+**Criado 2026-04-19 depois de Everton confrontar Oryk sobre preguiça estrutural.** Não pular nenhum passo.
+
+### Antes de produzir qualquer output visual/criativo (HTML mockup, imagem Gemini, composição, criativo Telegram, OG image, email, guia):
+
+1. **Ler** `memory/reference_protocolo_pre_visual.md` — checklist completo
+2. **Executar cada fase escrevendo:**
+   - Fase 1: abrir TODAS as refs locais relevantes com Read tool (não trabalhar de memória)
+   - Fase 2: decompor cada ref (grid, focal, luz, cor, type, textura, respiração)
+   - Fase 3: escolher benchmark específico + declarar gap honesto
+   - Fase 4: aplicar restrição (quantos focais? o que vou subtrair?)
+   - Fase 5: executar
+   - Fase 6: crítica pós + auto-score X/10
+3. **Terminar entrega com audit trail visível** (formato em `memory/feedback_audit_trail_obrigatorio.md`)
+4. **Se auto-score < 9, refazer antes de mostrar pro user**
+
+### Codeword de emergência do Everton
+
+Se ele digitar **"stop"** ou **"preguiça"** em qualquer momento:
+- Parar imediatamente
+- Confessar qual fase do protocolo pulei
+- Voltar à fase pulada e executar do zero
+- Reconhecer antes de explicar (ver `memory/feedback_reconhecer_antes_de_explicar.md`)
+
+### Regras permanentes (ver memórias individuais)
+- `memory/feedback_preguica_estrutural.md` — viés anti-preguiça
+- `memory/feedback_memoria_nao_substitui_fonte.md` — sempre abrir a fonte
+- `memory/feedback_reconhecer_antes_de_explicar.md` — ordem: reconhecer → corrigir → (talvez) explicar
+- `memory/feedback_audit_trail_obrigatorio.md` — mostrar, não afirmar
+- `memory/reference_protocolo_pre_visual.md` — checklist executável
+
+---
+
+## Guias Educacionais — Ilustrações (2026-04-19)
+
+5 guias edu (G1 Prop Firm, G2 Como Passar, G3 Drawdown, G4 Position Sizing, G5 Sacar Lucros) usam **cor accent semântica por guia** — não monotone preto+dourado:
+
+| Guia | Accent | Hex | Semântica |
+|---|---|---|---|
+| G1 Prop Firm | Orange/Gold | #F97316 | premium, energia |
+| G2 Como Passar | Emerald | #10B981 | ganho, crescimento |
+| G3 Drawdown | Red | #EF4444 | risco, alerta |
+| G4 Position Sizing | Blue | #3B82F6 | precisão, cálculo |
+| G5 Sacar Lucros | Gold+Green | #F0B429+#10B981 | conquista, dinheiro |
+
+### DNA visual (fórmula Nazmul — ver `memory/reference_nazmul_branding_dna.md`)
+- Hex/lettermark logo + bold sans wordmark + UMA cor accent por guia + preto profundo + lighting cinemático
+- Refs Nazmul baixadas em `.firecrawl/nazmul-thumbs/` (cardan-c.jpg, fynex-fintech.jpg, autonex.jpg, chaintools.jpg, logofolio2025.jpg)
+
+### Workflow de geração (dual-ref obrigatório pra conceito didático)
+1. Preparar mockup HTML/CSS/SVG do conceito em `preview-guias-replan.html` — user aprova antes de gastar Pro
+2. Screenshot do mockup = content ref
+3. Nazmul thumb relevante = aesthetic ref
+4. `nano-banana -r aesthetic.jpg -r content-mockup.png -m pro -p "..."`
+
+**Regra:** ilustração de guia edu deve ser **bonita + branding + explicativa** (não é trade-off). Labels que ficam sobre linhas de gráfico precisam de pill background escura com borda accent — nunca texto flutuando sobre curvas.
+
 ## Max - Mascote oficial (2026-04-15)
 
 Max e uma raposa 3D Pixar-style (dourado-laranja #F0B429, olhos amber, bone preto com M dourado). Avatar do chatbot e mascote da marca. **Tem 4 outfits oficiais, todos completos com 3 tipos de asset cada (avatar 1:1 + bible 5-view + sprite 4-frame).**
@@ -712,6 +770,7 @@ Preview = botao "Ver no site" (nova aba). Ordem: Hero → Nav → Ofertas → Fo
 12. **Seguranca:** Supabase anon key e publica por design (RLS protege), mas nunca expor service_role key
 13. **Consultar CLAUDE.md:** Sempre ler este arquivo antes de qualquer acao para manter contexto
 14. **I18N obrigatorio antes de deploy:** NUNCA fazer deploy sem verificar que TODOS os textos novos/alterados estao traduzidos nos 7 idiomas (pt, en, es, it, fr, de, ar). Todo texto novo em HTML deve ter `data-i18n` com chave no objeto I18N. Todo texto novo em template JS deve usar `t('chave')` ou `tf('texto')`. Todo texto de dados de firma (about, labels, includes) deve estar no FIRM_T. Testar trocando o idioma antes de commitar.
+14a. **I18N re-render no setL():** Todo componente que usa `t()` dentro de template JS (pill, badge, toast, overlay, drawer, modal, card dinamico) DEVE ter o render chamado dentro de `setL()` em `app.js`. `applyTranslations()` so cobre elementos com `data-i18n` estatico — textos injetados via innerHTML nao atualizam sozinhos. Se o usuario precisar dar Ctrl+F5 pra trocar idioma, esta quebrado. Checar sempre: topbar, drawer aberto, overlay aberto, chatbot, qualquer UI visivel no momento da troca.
 15. **Revisar CADA LINHA de texto visivel antes do deploy:** Antes de qualquer commit que adicione ou altere conteudo visivel, revisar CADA LINHA de texto no diff. Se qualquer texto estiver hardcoded (sem data-i18n, sem t(), sem tf()), corrigir ANTES do commit. Isso inclui mini-UIs, labels dentro de componentes visuais, textos decorativos, tooltips — TUDO que o usuario ve. Nao existe texto "pequeno demais para traduzir".
 16. **NUNCA sair do padrao visual estabelecido:** Ao criar qualquer nova pagina, overlay ou componente, DEVE seguir EXATAMENTE o padrao visual ja aprovado. Exemplos: overlay de firma (fd-overlay) tem imagem de background no lado esquerdo, branding premium, checkout no lado direito com steps, preco, cupom, CTA e includes. Qualquer novo overlay (plataformas, etc.) deve replicar esse padrao 1:1, incluindo imagem de fundo, estrutura dos dados e nivel de detalhe. Pesquisar dados reais com o mesmo rigor das firmas (site oficial, precos, features). Nunca simplificar ou "adaptar" — replicar o padrao.
 17. **NUNCA remover conteudo existente sem ser pedido:** Ao ajustar layout, adicionar features ou refatorar, NUNCA remover textos, secoes, descricoes ou funcionalidades que ja existem. Apenas adicionar ou ajustar o que foi pedido. Se precisar mover algo, manter o original no lugar e adicionar a copia — nunca substituir sem autorizacao explicita.
