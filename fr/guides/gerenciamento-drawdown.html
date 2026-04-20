@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion du Drawdown dans les Prop Firms : Guide Définitif 2026</title>
+<meta name="description" content="Le guide définitif sur le Drawdown dans les Prop Firms en 2026 : les 3 types (statique, Trailing EOD, Trailing Intraday), le Drawdown floor d'Apex, comparatif par firme, mathématiques de la récupération, formule de marge de sécurité et coupe-circuit personnel. Mis à jour en avril 2026.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://www.marketscoupons.com/fr/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/guides/gerenciamento-drawdown">
+<link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/guides/gerenciamento-drawdown">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gestion du Drawdown dans les Prop Firms : Guide Définitif 2026">
+<meta property="og:description" content="Les 3 types de Drawdown, le floor d'Apex, comparatif par firme, mathématiques de la récupération et le coupe-circuit personnel qui sauve les comptes funded.">
+<meta property="og:url" content="https://www.marketscoupons.com/fr/guides/gerenciamento-drawdown">
+<meta property="og:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g3-neardeath.png">
+<meta property="og:site_name" content="Markets Coupons">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gestion du Drawdown dans les Prop Firms — Guide Définitif 2026">
+<meta name="twitter:description" content="Les 3 types de Drawdown, le floor d'Apex, comparatif par firme et la cruelle mathématique de la récupération.">
+<meta name="twitter:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g3-neardeath.png">
+<meta name="author" content="Équipe Markets Coupons">
+<meta name="theme-color" content="#07090D">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://www.marketscoupons.com/fr/guides/gerenciamento-drawdown#article",
+      "headline": "Gestion du Drawdown dans les Prop Firms : Guide Définitif 2026",
+      "description": "Guide complet sur le Drawdown dans les Prop Firms : les 3 types, le Drawdown floor d'Apex, comparatif par firme, mathématiques de la récupération et coupe-circuit personnel.",
+      "datePublished": "2026-04-20",
+      "dateModified": "2026-04-20",
+      "inLanguage": "fr",
+      "author": { "@type": "Organization", "name": "Markets Coupons" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Markets Coupons",
+        "logo": { "@type": "ImageObject", "url": "https://www.marketscoupons.com/img/logo.png" }
+      },
+      "image": "https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g3-neardeath.png",
+      "mainEntityOfPage": "https://www.marketscoupons.com/fr/guides/gerenciamento-drawdown"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que le Drawdown dans une Prop Firm ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Le Drawdown est la limite maximale de perte cumulée que la firme autorise avant de clôturer votre compte. Sur un compte Apex 50K avec un Trailing Drawdown de 2 500 $ US, votre solde ne peut jamais descendre de 2 500 $ US en dessous du pic historique — si c'est le cas, le compte est immédiatement clôturé, même si le solde est toujours supérieur à la valeur initiale. C'est la règle que la firme utilise pour mesurer si vous représentez un risque financier pour son capital." }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle est la différence entre le Drawdown statique et le Trailing ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Le Drawdown statique est une limite fixe calculée sur le solde initial (ex. : 5 000 $ US sur un compte 50K). Le Trailing Drawdown est une limite qui augmente avec le solde : sur un Apex 50K avec un Trailing de 2 500 $ US, si vous atteignez 52 500 $ US, la limite devient 50 000 $ US (le solde ne peut jamais descendre en dessous du pic moins 2 500 $ US). Le Trailing pénalise la récupération du solde, le statique non. Le Trailing est plus courant sur les Futures ; le statique domine sur le Forex." }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment calculer ma limite de risque quotidienne ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Règle consensuelle : votre plafond de perte quotidienne doit être de 30 % à 50 % du Daily Loss Limit de la firme. Sur un Apex 50K avec un Daily Loss de 1 500 $ US, votre plafond personnel doit être de 450 $ US à 750 $ US — une fois atteint, vous fermez la plateforme et ne tradez plus pour la journée. Cela crée une marge de sécurité de 2x entre votre limite et celle de la firme, suffisante pour absorber le slippage, le spread et une erreur d'exécution." }
+        },
+        {
+          "@type": "Question",
+          "name": "Puis-je tout perdre en une mauvaise journée ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Oui, et c'est la cause n° 1 d'échec. Sans plafond quotidien personnel, une journée de forte volatilité combinée à une taille de position excessive peut briser le Daily Loss en 20 minutes. Les traders funded qui durent des mois suivent toujours la règle du coupe-circuit personnel : lorsqu'ils atteignent la moitié du Daily Loss de la firme, ils ferment la plateforme. Cela protège à la fois le Daily Loss et le Max Drawdown lors d'une série de mauvaises journées." }
+        },
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que le Drawdown floor d'Apex ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Le Drawdown floor (plancher) est le point où le Trailing Drawdown d'Apex se bloque et devient statique. Sur un compte 50K, cela se produit lorsque le solde atteint la valeur initiale plus le Trailing (52 500 $ US) : à partir de ce moment, la limite reste bloquée à 50 000 $ US (le solde initial). Avant d'atteindre le floor, le Trailing est mobile et peut vous faire chuter à chaque recul. Après le floor, vous disposez d'un coussin protégé. C'est le point le plus important de tout le cycle d'Apex." }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle Prop Firm a les règles de Drawdown les plus flexibles ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "FTMO et The5%ers utilisent un Drawdown statique (10 % du solde initial, qui ne bouge pas), ce qui est structurellement plus flexible que le Trailing. FundingPips propose les deux modèles. Apex et Bulenox utilisent le Trailing End-of-Day (qui calcule le pic uniquement à la clôture de la journée), moins cruel que le Trailing Intraday. Bulenox Pro et FundingPips avec Static sont généralement les modèles les plus généreux en 2026 pour les débutants." }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment récupérer d'un Drawdown important ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Les mathématiques sont cruelles : perdre 20 % exige de gagner 25 % pour revenir au point initial ; perdre 50 % exige de gagner 100 %. Réduisez la taille de votre position à 25 % de ce que vous tradiez, tradez au maximum 2 fois par jour et acceptez que la récupération prenne 2 à 3 fois plus de temps que la chute. Si vous êtes à moins de 0,5 % de la limite, un reset (80 $ US à 150 $ US) est généralement mathématiquement moins cher que d'insister." }
+        },
+        {
+          "@type": "Question",
+          "name": "Le Drawdown est-il par compte ou par trader ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Par compte dans la plupart des firmes. Chez Apex, chacun de vos comptes a son propre Drawdown indépendant — si l'un est violé, les autres continuent. Chez FTMO, chaque compte est également isolé. L'exception est la règle de violation par copy trade : si vous tradez la même stratégie sur 2 comptes simultanément et que l'un d'eux est violé, la firme peut clôturer tous les comptes sous votre nom pour violation de politique, et non pour le Drawdown lui-même." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#07090D; --sur:#0B0F16; --card:#10151F; --card2:#141B27;
+  --gold:#F0B429; --gbg:rgba(240,180,41,0.09); --gbr:rgba(240,180,41,0.25);
+  --accent:#EF4444; --abg:rgba(239,68,68,0.09); --abr:rgba(239,68,68,0.25);
+  --green:#22C55E; --gnbg:rgba(34,197,94,0.12);
+  --red:#EF4444; --rbg:rgba(239,68,68,0.12);
+  --t1:#EDF2F7; --t2:#B8C5D6; --t3:#8A98AE;
+  --gold-hover:#d9a224;
+  --f:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;font-size:16px;min-height:100vh}
+
+.topnav{position:sticky;top:0;z-index:10;background:rgba(7,9,13,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08)}
+.topnav-inner{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#F0B429,#d9a224);border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#000;font-weight:800;font-size:14px}
+.logo-txt{color:var(--t1);font-weight:700;font-size:15px;letter-spacing:-0.2px}
+.logo-txt b{color:var(--gold)}
+.nav-back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px 9px 14px;background:linear-gradient(135deg,rgba(240,180,41,0.18),rgba(240,180,41,0.10));border:1px solid rgba(240,180,41,0.45);border-radius:999px;color:var(--gold);text-decoration:none;font-size:13px;font-weight:700;transition:all .2s ease;box-shadow:0 2px 12px rgba(240,180,41,0.15)}
+.nav-back:hover{background:linear-gradient(135deg,rgba(240,180,41,0.28),rgba(240,180,41,0.16));border-color:var(--gold);box-shadow:0 4px 18px rgba(240,180,41,0.3);transform:translateY(-1px)}
+.nav-back .x{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(240,180,41,0.25);font-size:14px;font-weight:800;line-height:1}
+
+.container{max-width:880px;margin:0 auto;padding:48px 32px 120px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--abg);border:1px solid var(--abr);border-radius:999px;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:20px}
+.breadcrumb{font-size:12px;color:var(--t3);margin-bottom:16px}
+.breadcrumb a{color:var(--t2);text-decoration:none}
+.breadcrumb a:hover{color:var(--accent)}
+
+.reading-meta{display:flex;gap:14px;align-items:center;color:var(--t3);font-size:13px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.08);flex-wrap:wrap}
+.reading-meta .dot{width:3px;height:3px;background:var(--t3);border-radius:50%}
+
+#content h1{font-size:40px;font-weight:800;line-height:1.2;color:var(--t1);margin:0 0 16px;letter-spacing:-0.5px}
+#content h2{font-size:28px;font-weight:700;color:var(--t1);margin:56px 0 20px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);letter-spacing:-0.3px}
+#content h2:first-of-type{border-top:none;padding-top:0}
+#content h3{font-size:20px;font-weight:700;color:var(--accent);margin:32px 0 12px}
+#content h4{font-size:16px;font-weight:700;color:var(--t1);margin:24px 0 8px}
+#content p{margin:0 0 18px;color:var(--t2);font-size:16px;line-height:1.75}
+#content p em:first-child{color:var(--t3);font-size:13px}
+#content strong{color:var(--t1);font-weight:700}
+#content a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(239,68,68,0.35);transition:.2s}
+#content a:hover{color:#f87171;border-bottom-color:var(--accent)}
+#content ul,#content ol{margin:0 0 20px 24px;padding:0}
+#content li{margin:0 0 10px;color:var(--t2);line-height:1.7}
+#content li::marker{color:var(--accent)}
+#content blockquote{border-left:3px solid var(--accent);background:var(--abg);padding:16px 20px;margin:24px 0;border-radius:8px;color:var(--t1)}
+#content blockquote p{margin:0;color:var(--t1)}
+#content blockquote strong:first-child{color:var(--accent)}
+#content table{width:100%;border-collapse:collapse;margin:24px 0;background:var(--card);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+#content th{background:var(--card2);color:var(--accent);font-weight:700;text-align:left;padding:14px 18px;font-size:13px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(239,68,68,0.2)}
+#content td{padding:12px 18px;color:var(--t2);border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px}
+#content td:first-child{color:var(--t1);font-weight:600}
+#content td strong{color:var(--accent)}
+#content tr:last-child td{border-bottom:none}
+#content hr{border:none;border-top:1px solid rgba(255,255,255,0.1);margin:48px 0}
+#content img{max-width:100%;height:auto;display:block;margin:32px auto;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:var(--card)}
+
+footer.site-footer{border-top:1px solid rgba(255,255,255,0.08);padding:28px 24px;text-align:center;color:var(--t3);font-size:13px}
+footer.site-footer a{color:var(--t2);text-decoration:none;margin:0 8px}
+footer.site-footer a:hover{color:var(--accent)}
+
+@media(max-width:768px){
+  .container{padding:32px 20px 80px}
+  #content h1{font-size:30px}
+  #content h2{font-size:22px;margin:40px 0 16px}
+  #content h3{font-size:18px}
+  #content table{font-size:12px;display:block;overflow-x:auto}
+  #content th,#content td{padding:10px 12px}
+  .topnav-inner{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="/" class="logo" aria-label="Markets Coupons">
+      <span class="logo-mark">M</span>
+      <span class="logo-txt">Markets<b>Coupons</b></span>
+    </a>
+    <a href="/guides" class="nav-back" aria-label="Fermer — Guides"><span class="x">×</span>Fermer</a>
+  </div>
+</nav>
+
+<main class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Accueil</a> / <a href="/guides">Guides</a> / Gestion du Drawdown
+  </nav>
+
+  <div class="reading-meta">
+    <span>Équipe Markets Coupons</span>
+    <span class="dot"></span>
+    <span>18 min de lecture</span>
+    <span class="dot"></span>
+    <span>Mis à jour le 20 avril de 2026</span>
+  </div>
+
+  <article id="content">
+<span class="badge">Guide Définitif · Risque</span>
+<h1>Gestion du Drawdown dans les Prop Firms : le Guide Définitif pour Survivre en 2026</h1>
+<p><em>Dernière mise à jour : 20 avril 2026 — 18 min de lecture</em></p>
+<p><img src="/img/guides-edu/gemini-pro/hero-g3-neardeath.png" alt="Gestion du Drawdown — courbe de solde proche de la limite, ligne rouge, éclairage cinématographique de tension"></p>
+
+<blockquote>
+<p><strong>TL;DR</strong> — Le <strong>Drawdown</strong> est ce qui sépare ceux qui durent des mois sur un compte funded de ceux qui brûlent les frais du challenge en 3 jours. Ce n'est pas un détail technique : c'est la règle principale que toute <strong>Prop Firm</strong> utilise pour décider si vous restez ou partez. Ce guide explique la mécanique exacte des 3 types (statique, Trailing EOD et Trailing Intraday), le concept de Drawdown floor qui sauve les comptes Apex, compare les règles d'Apex, FTMO, Bulenox, FundingPips, The5%ers et E8, montre la cruelle mathématique de la récupération (pourquoi -50% exige +100% pour revenir), enseigne la formule de marge de sécurité avant chaque opération et définit le coupe-circuit personnel. Au final, vous aurez un protocole concret pour protéger votre compte dans n'importe quelle firme, sur n'importe quel marché.</p>
+</blockquote>
+
+<table>
+<thead>
+<tr><th>Les chiffres du Drawdown (2026)</th><th></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>% d'échecs causés par le Drawdown</strong></td><td>Environ 80%</td></tr>
+<tr><td><strong>Type le plus courant sur les Futures</strong></td><td>Trailing End-of-Day</td></tr>
+<tr><td><strong>Type le plus courant sur le Forex</strong></td><td>Statique / fixe</td></tr>
+<tr><td><strong>Marge de sécurité recommandée</strong></td><td>50% du Daily Loss comme plafond personnel</td></tr>
+<tr><td><strong>Gain nécessaire pour récupérer -20%</strong></td><td>+25%</td></tr>
+<tr><td><strong>Gain nécessaire pour récupérer -50%</strong></td><td>+100%</td></tr>
+<tr><td><strong>Temps moyen de récupération d'une mauvaise journée</strong></td><td>3 à 5 jours de trading discipliné</td></tr>
+<tr><td><strong>Jour de la semaine avec le plus de violations</strong></td><td>Vendredi (précipitation de fin de semaine)</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>Qu'est-ce que le Drawdown et pourquoi il tue 90% des comptes</h2>
+<p>Avant toute discussion technique, une définition directe : le <strong>Drawdown</strong> est la limite maximale de perte cumulée que la firme accepte avant de clôturer votre compte. En termes quotidiens : sur un compte Apex 50K avec un Trailing Drawdown de 2 500 $ US, votre solde ne peut jamais être de plus de 2 500 $ US en dessous du pic historique de ce compte. Toucher cette limite une seule fois — même pour 1 seconde, même avec une mèche de prix — met fin à tout. Sans avertissement, sans appel, sans "juste une autre chance".</p>
+<p>Pourquoi tue-t-il 90% des comptes ? Parce que la plupart des traders opèrent en pensant au profit ("combien dois-je gagner pour atteindre l'objectif") tandis que la firme mesure exactement le contraire ("combien ce trader peut-il perdre avant de devenir une perte pour notre capital"). Ce sont des métriques inverses. Pendant que vous regardez le haut de l'échelle, le Drawdown regarde le sol — et c'est le sol qui décide si l'échelle existe toujours.</p>
+<p>Les données agrégées de communautés comme Prop Reviews et MyFxBook montrent qu'<strong>environ 80 % des échecs en 2026 sont causés directement ou indirectement par une violation du Drawdown</strong> — qu'il s'agisse du Max Drawdown total ou du Daily Loss (qui est un Drawdown à court terme). Le reste se divise entre la Consistency Rule, le news trading interdit et les violations contractuelles.</p>
+<p>L'implication est claire : si vous voulez durer, le Drawdown doit être la première chose que vous calculez avant chaque opération — pas l'objectif, pas le setup, pas l'actif. D'abord le sol, puis le plafond.</p>
+
+<hr>
+
+<h2>Les 3 types de Drawdown : mécanique exacte</h2>
+<p>Tous les Drawdown ne sont pas égaux. Il existe trois modèles principaux, chacun avec une mécanique, un comportement et un niveau de cruauté différents. Comprendre quel modèle est actif sur votre compte est un prérequis pour toute gestion de risque réelle.</p>
+
+<h3>1. Statique (fixe)</h3>
+<p>Le modèle le plus simple : la limite est calculée sur le solde initial et ne bouge pas. Sur un FTMO 100K avec un Static Drawdown de 10 %, votre solde ne peut jamais descendre en dessous de 90 000 $ US, que vous atteigniez 110 000 $ US ou 95 000 $ US. Le plancher est absolu.</p>
+<p><strong>Avantage:</strong> prévisible. Vous savez dès le premier jour où se trouve le mur.</p>
+<p><strong>Inconvénient:</strong> vient normalement avec un objectif plus élevé (10 % en phase 1 de FTMO) car la firme compense le risque par un objectif plus difficile.</p>
+<p><strong>Où il domine :</strong> Forex (FTMO, The5%ers, une partie de FundingPips).</p>
+
+<h3>2. Trailing End-of-Day (EOD)</h3>
+<p>La limite augmente avec votre solde, mais seulement à la clôture de la journée. Sur un Apex 50K EOD avec un Trailing de 2 500 $ US, si vous terminez la journée avec 51 000 $ US, à partir de la prochaine séance, votre plancher devient 48 500 $ US. Pendant la journée, le plancher reste à 47 500 $ US (valeur de la clôture précédente moins le Trailing).</p>
+<p><strong>Avantage:</strong> vous pouvez osciller librement pendant la journée sans que le plancher ne suive. Un profit intraday qui se transforme en perte ne pousse pas la limite vers le haut pendant la séance.</p>
+<p><strong>Inconvénient:</strong> clôturer une journée très positive et ensuite avoir une mauvaise séquence peut activer le mur rapidement. Le plancher monte à la clôture et ne descend pas.</p>
+<p><strong>Où il domine :</strong> Apex (option EOD), Bulenox, une partie de Take Profit Trader.</p>
+
+<h3>3. Trailing Intraday</h3>
+<p>Le modèle le plus cruel. Le plancher monte en temps réel, à chaque nouveau pic de solde pendant la séance — y compris avec les profits flottants (<em>unrealized P&L</em>). Sur un Apex 50K Intraday avec un Trailing de 2 500 $ US : vous entrez dans une opération, le profit flottant atteint +1 500 $ US (solde momentané 51 500 $ US), puis revient à zéro. Votre plancher absolu est passé à 49 000 $ US, même si vous avez clôturé le trade à l'équilibre.</p>
+<p><strong>Avantage:</strong> presque aucun pour le trader — c'est la firme qui se protège au maximum.</p>
+<p><strong>Inconvénient:</strong> pénalise brutalement ceux qui conservent leurs profits et ne les réalisent pas. Un trade "presque parfait" qui s'inverse à la dernière seconde peut clôturer votre compte, même s'il se termine à zéro.</p>
+<p><strong>Où il domine :</strong> Apex (option Intraday), Topstep.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/dd-types-by-firm.png" alt="Comparatif des 3 types de Drawdown par firme — Statique, Trailing EOD et Trailing Intraday avec des exemples numériques"></p>
+
+<h3>Le Daily Loss Limit est un Drawdown à court terme</h3>
+<p>Outre les trois principaux, il existe le <strong>Daily Loss Limit</strong> : un plafond de perte sur 24 heures. Sur un Apex 50K, il est d'environ 1 500 $ US. L'atteindre en une seule journée clôture le compte, même si le Max Drawdown total est encore loin. C'est un "Drawdown quotidien", fonctionnement identique, fenêtre d'une seule séance.</p>
+
+<hr>
+
+<h2>Le Drawdown floor : le concept qui sauve les comptes Apex</h2>
+<p>Voici un concept que presque personne n'explique correctement et qui sauve littéralement des milliers de comptes Apex chaque mois : le <strong>Drawdown floor</strong>, ou "plancher du Drawdown". C'est le point où le Trailing Drawdown se bloque et devient statique.</p>
+<p>Chez Apex, le mécanisme fonctionne ainsi : sur un compte 50K avec un Trailing de 2 500 $ US, le plancher commence à 47 500 $ US (50 000 $ US initiaux moins le Trailing). Au fur et à mesure que vous gagnez, le plancher monte. Lorsque votre solde atteint <strong>52 600 $ US</strong> (la valeur initiale + Trailing + 100 $ US de tampon), le plancher se bloque de manière permanente à 50 000 $ US — le solde initial. À partir de ce moment, le Trailing Drawdown ne monte plus, même si votre solde atteint 60 000 $ US.</p>
+<p>L'impact est énorme. Avant le floor, tout recul du solde vous entraîne vers la limite en temps réel. Après le floor, vous disposez d'un coussin absolu : le solde peut osciller entre 60 000 $ US et 50 000 $ US, le compte est protégé. C'est le moment où le compte "respire" pour la première fois.</p>
+<p>La stratégie évidente — et que les traders expérimentés appliquent — est de <strong>trader de manière plus agressive seulement après avoir activé le floor</strong>. Avant cela, taille minimale, discipline maximale. Après cela, vous avez enfin une marge d'erreur sans mourir.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/dd-floor.png" alt="Drawdown floor expliqué — graphique avec la ligne du solde qui monte et le plancher du Drawdown qui se bloque à 50 000 $ US"></p>
+
+<blockquote>
+<p><strong>Règle pratique :</strong> sur tout compte Apex, traitez la valeur "solde initial + Trailing + 100 $ US" comme le point de contrôle le plus important de votre cycle. Jusqu'à l'atteindre, vous êtes en mode survie. Après l'avoir atteint, vous êtes en mode construction. Ne confondez pas les deux phases.</p>
+</blockquote>
+
+<hr>
+
+<h2>Drawdown par firme : le comparatif complet 2026</h2>
+<p>Chaque firme a sa propre combinaison de type de Drawdown, de taille de limite et de règles auxiliaires. Le tableau ci-dessous consolide les règles des 6 firmes les plus pertinentes en avril 2026.</p>
+
+<table>
+<thead>
+<tr><th>Firme</th><th>Type Max DD</th><th>Valeur (compte 50K/100K)</th><th>Daily Loss</th><th>Observation</th></tr>
+</thead>
+<tbody>
+<tr><td><strong><a href="/apex">Apex</a></strong></td><td>Trailing EOD ou Intraday</td><td>2 500 $ US (50K)</td><td>Pas de Daily Loss formel</td><td>Le floor se bloque au solde initial + Trailing + 100 $ US</td></tr>
+<tr><td><strong><a href="/bulenox">Bulenox</a></strong></td><td>Trailing EOD ou Static</td><td>2 500 $ US (50K)</td><td>1 100 $ US (50K)</td><td>Le modèle Pro avec Statique est le plus flexible</td></tr>
+<tr><td><strong><a href="/ftmo">FTMO</a></strong></td><td>Static</td><td>10 % du solde initial</td><td>5 % du solde initial</td><td>Plancher absolu dès le premier jour</td></tr>
+<tr><td><strong><a href="/fundingpips">FundingPips</a></strong></td><td>Static ou Trailing</td><td>6 % à 10 % (configurable)</td><td>3 % à 5 %</td><td>L'un des modèles les plus flexibles du marché</td></tr>
+<tr><td><strong><a href="/the5ers">The5%ers</a></strong></td><td>Static</td><td>4 % à 10 %</td><td>Pas de Daily Loss sur certains plans</td><td>High Stakes utilise un Statique pur</td></tr>
+<tr><td><strong>E8</strong></td><td>Static</td><td>8%</td><td>4%</td><td>Modèle 1 étape avec objectif 8%</td>
+</tr>
+</tbody>
+</table>
+
+<p>Ce que le tableau cache est plus important que ce qu'il montre : <strong>le type de Drawdown décide de la stratégie, pas la taille</strong>. Un Trailing de 2 500 $ US sur un Apex 50K est plus dangereux qu'un Statique de 5 000 $ US sur un FTMO 100K, parce que le premier bouge contre vous et le second non. Pour les débutants, les modèles Statiques (FTMO, The5%ers, Bulenox Pro, FundingPips Static) sont mathématiquement plus faciles à survivre.</p>
+
+<hr>
+
+<h2>La cruelle mathématique de la récupération</h2>
+<p>Il existe un tableau que tout trader de <strong>Prop Firm</strong> devrait avoir imprimé à côté de son moniteur. Il montre le pourcentage de gain nécessaire pour récupérer une perte — et les chiffres ne sont pas intuitifs.</p>
+
+<table>
+<thead>
+<tr><th>Perte cumulée</th><th>Gain nécessaire pour revenir au point initial</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>-5%</strong></td><td>+5,3%</td></tr>
+<tr><td><strong>-10%</strong></td><td>+11,1%</td></tr>
+<tr><td><strong>-20%</strong></td><td>+25%</td></tr>
+<tr><td><strong>-30%</strong></td><td>+42,9%</td></tr>
+<tr><td><strong>-40%</strong></td><td>+66,7%</td></tr>
+<tr><td><strong>-50%</strong></td><td>+100%</td></tr>
+<tr><td><strong>-60%</strong></td><td>+150%</td></tr>
+<tr><td><strong>-70%</strong></td><td>+233%</td>
+</tr>
+</tbody>
+</table>
+
+<p>La formule est simple : gain nécessaire = perte ÷ (1 - perte). Mais l'impact est brutal. Une perte de 20 % n'est pas compensée par un gain de 20 % — vous avez besoin de 25 % car le capital de base a diminué. Perdre la moitié du compte exige <strong>de doubler</strong> ce qui reste.</p>
+<p>Traduit pour une <strong>Prop Firm</strong> : sur un Apex 50K, si vous perdez 2 000 $ US (40 % de votre Trailing de 2 500 $ US), le solde tombe à 48 000 $ US. Pour revenir au point initial, vous devez gagner 2 000 $ US en tradant avec la même taille. Si votre routine était de 4 trades par jour rapportant 100 $ US chacun, cela représente 20 jours de trading sans erreur. Vingt jours. Sans erreur. Les mathématiques favorisent ceux qui ne chutent pas, pas ceux qui montent.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/recovery-math.png" alt="Mathématiques de la récupération — tableau visuel montrant que perdre 50% exige de gagner 100% pour revenir au solde initial"></p>
+
+<blockquote>
+<p><strong>Conclusion pratique :</strong> le plus grand actif financier du trader de Prop Firm n'est pas le signal qu'il a découvert, c'est le jour où il n'a pas tradé. Éviter une chute de 20 % vaut plus que de réussir un trade de 20 %, car le premier vous épargne 25 % d'effort de récupération, le second ne compense l'autre que si l'effort a déjà été fait.</p>
+</blockquote>
+
+<hr>
+
+<h2>Comment calculer votre marge de sécurité avant chaque opération</h2>
+<p>La marge de sécurité est la distance entre votre position actuelle et le point où la firme clôture votre compte — exprimée en dollars ou en pourcentage. La calculer avant chaque opération est l'habitude la plus importante du trader funded.</p>
+
+<h3>Étape 1 : identifiez votre position actuelle</h3>
+<p>Solde actuel. Pas le solde de clôture d'hier, pas le solde après le dernier trade — le solde maintenant, y compris le profit ou la perte flottante. En Trailing Intraday, cela inclut le pic momentané de la séance.</p>
+
+<h3>Étape 2 : identifiez où se trouve le plancher</h3>
+<p>La valeur absolue du Max Drawdown et du Daily Loss. Sur un Apex 50K qui a déjà atteint le pic de 51 800 $ US aujourd'hui, le plancher intraday est de 49 300 $ US (51 800 $ US - 2 500 $ US). Le plancher du Daily Loss dépend du solde d'ouverture de la journée.</p>
+
+<h3>Étape 3 : calculez la distance</h3>
+<p>Marge de sécurité = Solde actuel - Plancher. Dans l'exemple ci-dessus : 51 800 $ US - 49 300 $ US = <strong>2 500 $ US de marge</strong>.</p>
+
+<h3>Étape 4 : appliquez le diviseur de 5</h3>
+<p>Règle pragmatique : le risque de la prochaine opération ne peut pas être supérieur à <strong>1/5 de la marge de sécurité</strong>. Dans l'exemple, risque maximum = 500 $ US. Ce diviseur existe parce que vous devez supporter au moins 5 opérations perdantes consécutives — un scénario statistiquement courant sur des cycles de 20 jours — sans briser le plancher.</p>
+
+<h3>Étape 5 : arrondissez toujours à la baisse</h3>
+<p>Si le calcul donne 1,7 contrats, tradez 1. Si le calcul donne 3 mini lots, tradez 2. Arrondir à la hausse est ce qui transforme une thèse correcte en violation de Drawdown sur un total de 30 trades.</p>
+
+<p>Ce mini-protocole en 5 étapes, appliqué avant chaque opération, élimine la cause n° 1 d'échec dans les <strong>Prop Firms</strong>. Le guide <a href="/guides/position-sizing">Position Sizing dans les Prop Firms</a> approfondit la formule mathématique complète de la taille de position.</p>
+
+<hr>
+
+<h2>Le coupe-circuit personnel : règles d'arrêt</h2>
+<p>Les limites de la firme (Max Drawdown, Daily Loss) sont le mur absolu. Les traders qui durent des mois sur un compte funded n'approchent jamais ce mur — ils s'arrêtent bien avant, à des limites personnelles auto-imposées. C'est ce qu'on appelle le <strong>coupe-circuit personnel</strong>.</p>
+<p>La logique est simple : un marché électronique a des coupe-circuits (arrêts automatiques en cas de chute de 7 %, 13 %, 20 %) pour éviter que la panique ne s'auto-alimente. Le trader a besoin du même mécanisme, car psychologiquement, la tentation de "récupérer sur le prochain trade" augmente exponentiellement à mesure que la perte s'accroît.</p>
+
+<h3>Règle 1 : plafond de perte quotidienne à 50% du Daily Loss</h3>
+<p>Si le Daily Loss de la firme est de 1 500 $ US, votre plafond personnel est de 750 $ US. Une fois atteint, vous fermez la plateforme pour le reste de la journée. Cette règle protège à la fois le Daily Loss et le Max Drawdown — car elle limite la contribution de chaque mauvaise journée au Drawdown cumulé.</p>
+
+<h3>Règle 2 : arrêt après 3 opérations perdantes consécutives</h3>
+<p>Indépendamment de la valeur, 3 <em>losses</em> consécutives = fermez la plateforme, même s'il n'est que 10h30 du matin. Trois pertes consécutives signifient que la lecture du marché est erronée aujourd'hui, ou que l'état émotionnel est déjà compromis. Forcer une quatrième opération est presque toujours un échec.</p>
+
+<h3>Règle 3 : arrêt après avoir atteint l'objectif quotidien</h3>
+<p>Si votre objectif quotidien est de 1 % du solde (500 $ US sur un 50K) et que vous l'avez atteint, fermez. Peu importe s'il est 9h45 et que le marché est "excellent". Verrouiller le profit quotidien est ce qui construit la courbe d'équité cohérente que la firme exige via la Consistency Rule. Le trader qui verrouille gagne toujours contre celui qui "laisse courir" sur le long terme.</p>
+
+<h3>Règle 4 : vendredi avec objectif réduit</h3>
+<p>Le vendredi présente statistiquement la plus forte concentration de violations du Drawdown. Deux raisons : (1) la pression de "clôturer la semaine en positif" augmente la taille de position, (2) la liquidité diminue dans les 2 dernières heures, augmentant le slippage. Règle pragmatique : le vendredi, tradez avec 50 % de la taille normale et clôturez à midi.</p>
+
+<hr>
+
+<h2>Drawdown intraday : pourquoi il fait chuter plus que le total</h2>
+<p>Des trois types de Drawdown, le Trailing Intraday est celui qui fait le plus chuter les traders — et pour une raison spécifique que peu de gens articulent : il pénalise les profits non réalisés. Dans un modèle Intraday, la pire opération possible est celle qui atteint +80 % de l'objectif et revient à zéro. Sur le plan psychologique, vous n'avez "rien perdu". Sur le plan du Drawdown, vous venez de pousser votre plancher vers le haut de 80 % de l'objectif — sans avoir capturé un seul dollar.</p>
+<p>Ce mécanisme crée deux pièges :</p>
+<p><strong>Piège 1 — le trade "presque" :</strong> vous entrez, le profit atteint +800 $ US, vous maintenez en espérant +1 000 $ US, il s'inverse, vous clôturez à l'équilibre. Le trade n'a rien coûté en P&L réalisé, mais votre plancher a augmenté de 800 $ US. Répétez 3 fois dans la journée et le Max Drawdown est devenu un mur à 2 opérations de distance.</p>
+<p><strong>Piège 2 — le stop mental tardif :</strong> l'opération se retourne contre vous, vous "savez" où vous voulez sortir, mais au prix de sortie, le spread s'est étiré et vous avez perdu 200 $ US de plus que prévu. En Trailing Intraday, ces 200 $ US supplémentaires comptent contre le plancher mis à jour par le pic flottant, et non contre le solde du début de journée.</p>
+<p>La contre-mesure est comportementale : sur un compte Intraday, <strong>réalisez une partielle à +50 % de l'objectif</strong>. La moitié de la position sort, le reste est géré. Cela limite la montée du plancher à 50 % du mouvement au lieu de 100 %, réduisant exponentiellement le risque sur les comptes sensibles.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/trailing-vs-static.png" alt="Trailing vs Statique — comparaison visuelle côte à côte montrant comment le même mouvement impacte chaque modèle"></p>
+
+<hr>
+
+<h2>Quand une mauvaise journée devient une chute irréversible : déclencheurs structurels</h2>
+<p>Toutes les mauvaises journées ne sont pas terminales. Certaines sont une calibration du marché, d'autres un excès de volatilité temporaire. Mais il existe des déclencheurs structurels qui indiquent quand une mauvaise journée se transforme en chute sans retour. Reconnaître ces déclencheurs fait la différence entre perdre 1 % et perdre le compte.</p>
+
+<h3>Déclencheur 1 : troisième tentative d'entrée sur le même setup</h3>
+<p>Vous avez vu un setup, êtes entré, stop. Entré à nouveau, stop. Entré une troisième fois. Si vous pensez déjà à la quatrième, le setup n'existe pas aujourd'hui — vous forcez une thèse. Trois tentatives sur le même setup perdant est un déclencheur d'arrêt automatique.</p>
+
+<h3>Déclencheur 2 : augmentation de la taille après une perte</h3>
+<p>Vous tradiez 2 contrats, vous avez perdu. La prochaine opération, vous l'ouvrez avec 3 "pour récupérer plus vite". C'est le déclencheur exact qui transforme -400 $ US en -2 500 $ US en deux opérations. Si vous vous êtes surpris à augmenter la taille après une perte, fermez la plateforme sans poser de deuxième question.</p>
+
+<h3>Déclencheur 3 : trade hors du plan écrit</h3>
+<p>Vous avez ouvert une opération qui n'était pas dans votre plan pré-séance. "Une opportunité est apparue." Les traders cohérents reconnaissent : une opportunité hors plan est une projection émotionnelle dans 80 % des cas. Si le premier trade hors plan a perdu, le second perd presque toujours aussi — parce que la tête est déjà sortie des rails.</p>
+
+<h3>Déclencheur 4 : cortisol perçu</h3>
+<p>Vous avez les mains moites, le cœur qui s'accélère, vous regardez le graphique avec colère. C'est du cortisol — et le cortisol ne trade pas le marché. Fermez la plateforme, marchez 20 minutes, revenez demain. Aucun trade ne vaut la peine d'être poursuivi dans cet état.</p>
+
+<h3>Déclencheur 5 : vous avez perdu la notion du P&L</h3>
+<p>Si vous ne savez pas de tête combien vous perdez ou gagnez aujourd'hui, vous avez arrêté de trader et êtes devenu un parieur. La sortie est littérale : fermez la plateforme, prenez du papier, écrivez le P&L trade par trade. Presque toujours, le chiffre est pire que ce que vous pensiez — et cela seul met fin à la journée.</p>
+
+<blockquote>
+<p><strong>Alerte :</strong> si 2 déclencheurs ou plus sont actifs en même temps, vous êtes déjà en zone de chute. Peu importe ce que le graphique montre — le problème n'est plus le marché, c'est votre tête. Fermez tout. Le compte vous attend demain ; un compte explosé non.</p>
+</blockquote>
+
+<hr>
+
+<h2>Gestion de position en fonction du Drawdown disponible</h2>
+<p>L'une des erreurs les plus coûteuses est de toujours trader avec la même taille, indépendamment de votre position dans le cycle. La taille correcte varie avec la marge de sécurité actuelle. La formule qui fonctionne en pratique a 3 zones.</p>
+
+<h3>Zone verte : marge > 70% du Max Drawdown</h3>
+<p>Vous êtes à l'aise. La taille de position est celle calculée par la règle de 0,5 % à 1 % du solde (voir <a href="/guides/position-sizing">guide de Position Sizing</a>). C'est la zone où vous exécutez votre plan complet, en respectant la routine.</p>
+
+<h3>Zone jaune : marge entre 30% et 70%</h3>
+<p>Vous êtes en terrain normal, mais vous devez réduire. La taille de position tombe à 75 % de la normale. Maximum 3 opérations par jour. Concentrez-vous sur les setups A+, pas A-. Ici, la discipline décide si vous revenez en zone verte ou glissez vers la rouge.</p>
+
+<h3>Zone rouge : marge < 30%</h3>
+<p>Alerte maximale. La taille tombe à 25 % de la normale. Maximum 2 opérations par jour. Si vous perdez la première, la journée est terminée. Trader dans cette zone avec une taille complète est synonyme de reset. Mieux vaut trader petit pendant 5 jours et sortir de la zone rouge que de parier sur une grosse opération pour "s'échapper".</p>
+
+<p>Cette formule simple — taille en fonction de la marge, et non de l'humeur — est ce qui sépare les traders qui durent 12 mois sur un compte funded des traders qui durent 12 jours.</p>
+
+<hr>
+
+<h2>Drawdown sur plusieurs comptes : comment répartir le risque</h2>
+<p>Les traders expérimentés sur les Futures ont l'habitude de trader 2 à 4 comptes Apex ou Bulenox en parallèle. La mathématique du volume favorise : le même setup appliqué sur 3 comptes génère 3x le payout potentiel par cycle. Mais la gestion du Drawdown doit être adaptée.</p>
+
+<h3>Règle du copy trade : jamais</h3>
+<p>Apex, Bulenox et la plupart des firmes interdisent le <strong>copy trading</strong> entre les comptes. Trader la même stratégie sur 3 comptes en même temps, avec des entrées simultanées, est une violation contractuelle. Même si les Drawdown sont respectés, le compte est clôturé pour violation de politique.</p>
+
+<h3>Distribution décalée</h3>
+<p>La forme légitime est de trader chaque compte avec son propre plan et des entrées à des heures différentes. Le compte A trade à l'ouverture de NY, le compte B trade au milieu de la séance, le compte C trade à la fin. Des horaires et des actifs différents = stratégies indépendantes, autorisées.</p>
+
+<h3>Concentration du risque</h3>
+<p>Même en tradant des comptes décalés, évitez de concentrer le risque le même jour. Si le compte A a perdu aujourd'hui, réduisez la taille sur les comptes B et C. La corrélation entre les comptes du même trader est élevée même sans copy — parce que la tête est la même. Traiter chaque compte comme isolé est une illusion ; le traiter comme corrélé est la réalité.</p>
+
+<h3>Ordre de priorisation</h3>
+<p>Lorsqu'il est nécessaire de réduire (mauvaise journée, mauvaise semaine), l'ordre est le suivant : réduisez d'abord le compte avec la plus petite marge de sécurité. Maintenir le compte le plus proche du Drawdown en mode défensif et continuer normalement sur les autres maximise la valeur attendue de l'ensemble.</p>
+
+<hr>
+
+<h2>L'erreur n° 1 qui tue les traders funded : augmenter la taille après un gain</h2>
+<p>S'il fallait choisir une seule erreur responsable de la plupart des comptes funded explosés, ce serait celle-ci : <strong>augmenter la taille de position après une séquence de gains</strong>. Le mécanisme est insidieux car il semble rationnel — "je réussis, je vais augmenter la taille pour en profiter".</p>
+<p>Le problème est statistique. Une séquence de 5 victoires consécutives n'augmente pas la probabilité que la sixième soit une victoire — elle diminue, car le marché tend à la réversion à la moyenne. Augmenter la taille au pic de la série est précisément le moment où la prochaine perte sera plus importante — et la perte plus importante mangera le gain accumulé et un morceau supplémentaire.</p>
+<p>La règle consensuelle parmi les traders funded durables : <strong>ne jamais augmenter la taille avant que le floor ne se bloque</strong>. Avant le floor, la taille est fixe selon la règle de marge de sécurité. Après le floor, augmentation progressive, jamais d'un coup. Tripler la taille après 3 victoires est le moyen le plus rapide de rendre le profit de 2 semaines en 1 trade.</p>
+<p>La contre-mesure est comportementale. Définissez la taille <strong>avant d'ouvrir la plateforme</strong>, en vous basant sur le calcul de la marge. Ne modifiez pas dans le feu de l'action. Si la lecture est si claire que vous "voulez plus d'exposition", sachez que c'est précisément à ce moment-là que

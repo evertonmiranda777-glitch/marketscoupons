@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Position Sizing في Prop Firms: دليل تحديد حجم المركز 2026</title>
+<meta name="description" content="الدليل الشامل لـ Position Sizing في Prop Firms لعام 2026: صيغة عالمية لتحديد الحجم، العقود حسب حجم الحساب، Kelly Criterion المعدل، Fixed Fractional مقابل Fixed Ratio، مقياس Apex الواقعي والخطأ الفادح في زيادة الحجم بعد الخسارة. محدث في أبريل 2026.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://www.marketscoupons.com/ar/guides/position-sizing">
+<link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/guides/position-sizing">
+<link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/guides/position-sizing">
+<link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/guides/position-sizing">
+<link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/guides/position-sizing">
+<link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/guides/position-sizing">
+<link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/guides/position-sizing">
+<link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/guides/position-sizing">
+<link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/guides/position-sizing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Position Sizing في Prop Firms: دليل تحديد حجم المركز 2026">
+<meta property="og:description" content="صيغة عالمية، عقود حسب حجم الحساب، Kelly المعدل، Fixed Fractional مقابل Fixed Ratio والخطأ الفادح الذي يقتل الحسابات الممولة.">
+<meta property="og:url" content="https://www.marketscoupons.com/ar/guides/position-sizing">
+<meta property="og:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g4-bridge.png">
+<meta property="og:site_name" content="Markets Coupons">
+<meta property="og:locale" content="ar_AR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Position Sizing في Prop Firms — الدليل الشامل 2026">
+<meta name="twitter:description" content="صيغة عالمية لتحديد الحجم، عقود لكل حساب، Kelly المعدل ومقياس واقعي في Prop Firm.">
+<meta name="twitter:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g4-bridge.png">
+<meta name="author" content="Markets Coupons Team">
+<meta name="theme-color" content="#07090D">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://www.marketscoupons.com/ar/guides/position-sizing#article",
+      "headline": "Position Sizing في Prop Firms: دليل تحديد حجم المركز 2026",
+      "description": "دليل شامل لـ Position Sizing في Prop Firms: صيغة عالمية، عقود حسب حجم الحساب، Kelly المعدل، Fixed Fractional مقابل Fixed Ratio ومقياس واقعي.",
+      "datePublished": "2026-04-20",
+      "dateModified": "2026-04-20",
+      "inLanguage": "ar",
+      "author": { "@type": "Organization", "name": "Markets Coupons" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Markets Coupons",
+        "logo": { "@type": "ImageObject", "url": "https://www.marketscoupons.com/img/logo.png" }
+      },
+      "image": "https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g4-bridge.png",
+      "mainEntityOfPage": "https://www.marketscoupons.com/ar/guides/position-sizing"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ما هو الحجم المثالي للمركز في Prop Firm؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "القاعدة المتفق عليها: يجب ألا يتجاوز مخاطر الصفقة التالية 0.5% إلى 1% من رصيد الحساب، ولا يزيد أبدًا عن 1/5 من هامش الأمان الحالي (المسافة حتى حد الخسارة). في حساب Apex 50K بهامش 2,500 دولار أمريكي، الحد الأقصى للمخاطرة لكل صفقة هو 500 دولار أمريكي. عمليًا، المتداولون الذين يستمرون لأشهر في حساب ممول يتداولون بالقرب من 0.5% في الأسابيع الأولى ويزيدون إلى 1% فقط بعد تثبيت الـ Drawdown floor." }
+        },
+        {
+          "@type": "Question",
+          "name": "كم عدد العقود التي يمكنني تداولها في حساب Futures بقيمة 50 ألف دولار؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "في العقود الآجلة المصغرة (MES, MNQ, MGC, MCL)، يسمح حساب Apex 50K تقنيًا بما يصل إلى 10 عقود، ولكن يوصى بالبدء بـ 2 إلى 3 عقود وزيادتها فقط بعد تثبيت الـ Drawdown floor. في العقود الآجلة الصغيرة (ES, NQ, GC, CL)، النمط الباقي هو عقد واحد لكل 50 ألف دولار حتى يتم تفعيل الـ floor، وعقدين بعد ذلك. تجاوز هذا يدفع المخاطرة لكل صفقة إلى ما يزيد عن 1% من الرصيد، وهو ما يبدأ فيه Drawdown بالانتصار." }
+        },
+        {
+          "@type": "Question",
+          "name": "مركز ثابت أم نسبة مئوية — أيهما أستخدم؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "في Prop Firm، يتفوق المركز النسبي (Fixed Fractional: 0.5% إلى 1% من الرصيد) على المركز الثابت في معظم السيناريوهات لأنه يتكيف تلقائيًا مع الأرباح أو الخسائر. المركز الثابت بالقيمة المطلقة (على سبيل المثال: دائمًا عقدين) يعمل بشكل جيد فقط في الحسابات المستقرة بالفعل بعد الـ floor. قبل الـ floor، النسبة المئوية أكثر أمانًا رياضيًا." }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أحسب الـ lot في FTMO أو The5%ers؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "في Forex، الصيغة هي: lot = (المخاطرة بالدولار الأمريكي) ÷ (المسافة حتى حد الخسارة بالـ pips × قيمة الـ pip). في حساب FTMO 100K بمخاطرة 500 دولار أمريكي لكل صفقة ومسافة 20 pips لنقطة الخروج، الـ lot هو 500 ÷ (20 × 10) = 2.5 mini lots. دائمًا قم بالتقريب للأسفل (2 lots) — التقريب للأعلى هو ما يحول الفرضية الصحيحة إلى انتهاك للـ Drawdown في مجموع 30 صفقة." }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يعمل Kelly Criterion في Prop Firm؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "Kelly النقي يقتل الحساب الممول. الصيغة الأصلية (f = (bp - q) / b) تفترض رأس مال لا نهائي وتسامحًا كاملاً مع الـ Drawdown — وهما شيئان لا توفرهما Prop Firm. عمليًا، المتداولون الذين يستخدمون Kelly في حساب ممول يطبقون Kelly الجزئي: نصف أو ربع الحجم الذي تقترحه الصيغة. إذا قال Kelly 4%، فإنك تتداول 1%. هذا يحافظ على الميزة الإحصائية دون تفجير الحساب في سلسلة طبيعية من الخسائر." }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يمكنني زيادة الحجم بعد تحقيق أرباح كبيرة؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "زيادة الحجم بعد سلسلة من الأرباح هو الخطأ رقم 1 الذي يقتل الحسابات الممولة. سلسلة من 5 انتصارات لا تزيد من احتمالية السادس — بل تقللها (العودة إلى المتوسط). القاعدة المتفق عليها: لا تزيد الحجم أبدًا قبل تثبيت الـ Drawdown floor. بعد الـ floor، زيادة تدريجية (25% في كل مرة، لا تضاعف)، فقط بعد أسبوعين من الاتساق بالحجم الجديد." }
+        },
+        {
+          "@type": "Question",
+          "name": "ما الفرق بين Fixed Fractional و Fixed Ratio؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "Fixed Fractional يتداول دائمًا بنفس النسبة المئوية من الرصيد (على سبيل المثال: 1%) — الحجم يرتفع وينخفض مع الرصيد. Fixed Ratio يستخدم دلتا: كل X دولار أمريكي من الأرباح المتراكمة يحرر +1 عقد. Fractional أكثر سلاسة وتفاعلية؛ Ratio ينمو بشكل أسرع في الحسابات الفائزة ولكنه يعاقب أكثر في الحسابات المترددة. في Prop Firm، Fractional أكثر ملاءمة لأنه يحمي نفسه تلقائيًا في الـ Drawdown." }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف يمكنني التوسع من 25 ألف دولار إلى 300 ألف دولار في Apex؟",
+          "acceptedAnswer": { "@type": "Answer", "text": "المسار الواقعي يستخدم إعادة استثمار الـ payouts في حسابات جديدة، وليس زيادة الحجم في نفس الحساب. مثال: تجتاز حساب Apex 25K (19.90 دولار أمريكي مع كوبون)، تتداول لمدة 6 أشهر، تسحب 3,000 دولار أمريكي صافي. تستخدم جزءًا لشراء حسابين 50K إضافيين. تتداول جميعها بالتوازي بنفس الحجم. في غضون 12 شهرًا، مجموع حسابات صغيرة متعددة يدر عائدًا أكبر وبمخاطر أقل من محاولة تنمية حساب كبير بمفرده. كل حساب جديد هو نظام مستقل؛ كل Drawdown هو مخاطرة معزولة." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#07090D; --sur:#0B0F16; --card:#10151F; --card2:#141B27;
+  --gold:#F0B429; --gbg:rgba(240,180,41,0.09); --gbr:rgba(240,180,41,0.25);
+  --accent:#3B82F6; --abg:rgba(59,130,246,0.09); --abr:rgba(59,130,246,0.25);
+  --green:#22C55E; --gnbg:rgba(34,197,94,0.12);
+  --red:#EF4444; --rbg:rgba(239,68,68,0.12);
+  --t1:#EDF2F7; --t2:#B8C5D6; --t3:#8A98AE;
+  --gold-hover:#d9a224;
+  --f:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;font-size:16px;min-height:100vh}
+
+.topnav{position:sticky;top:0;z-index:10;background:rgba(7,9,13,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08)}
+.topnav-inner{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#F0B429,#d9a224);border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#000;font-weight:800;font-size:14px}
+.logo-txt{color:var(--t1);font-weight:700;font-size:15px;letter-spacing:-0.2px}
+.logo-txt b{color:var(--gold)}
+.nav-back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px 9px 14px;background:linear-gradient(135deg,rgba(240,180,41,0.18),rgba(240,180,41,0.10));border:1px solid rgba(240,180,41,0.45);border-radius:999px;color:var(--gold);text-decoration:none;font-size:13px;font-weight:700;transition:all .2s ease;box-shadow:0 2px 12px rgba(240,180,41,0.15)}
+.nav-back:hover{background:linear-gradient(135deg,rgba(240,180,41,0.28),rgba(240,180,41,0.16));border-color:var(--gold);box-shadow:0 4px 18px rgba(240,180,41,0.3);transform:translateY(-1px)}
+.nav-back .x{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(240,180,41,0.25);font-size:14px;font-weight:800;line-height:1}
+
+.container{max-width:880px;margin:0 auto;padding:48px 32px 120px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--abg);border:1px solid var(--abr);border-radius:999px;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:20px}
+.breadcrumb{font-size:12px;color:var(--t3);margin-bottom:16px}
+.breadcrumb a{color:var(--t2);text-decoration:none}
+.breadcrumb a:hover{color:var(--accent)}
+
+.reading-meta{display:flex;gap:14px;align-items:center;color:var(--t3);font-size:13px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.08);flex-wrap:wrap}
+.reading-meta .dot{width:3px;height:3px;background:var(--t3);border-radius:50%}
+
+#content h1{font-size:40px;font-weight:800;line-height:1.2;color:var(--t1);margin:0 0 16px;letter-spacing:-0.5px}
+#content h2{font-size:28px;font-weight:700;color:var(--t1);margin:56px 0 20px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);letter-spacing:-0.3px}
+#content h2:first-of-type{border-top:none;padding-top:0}
+#content h3{font-size:20px;font-weight:700;color:var(--accent);margin:32px 0 12px}
+#content h4{font-size:16px;font-weight:700;color:var(--t1);margin:24px 0 8px}
+#content p{margin:0 0 18px;color:var(--t2);font-size:16px;line-height:1.75}
+#content p em:first-child{color:var(--t3);font-size:13px}
+#content strong{color:var(--t1);font-weight:700}
+#content a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(59,130,246,0.35);transition:.2s}
+#content a:hover{color:#60a5fa;border-bottom-color:var(--accent)}
+#content ul,#content ol{margin:0 0 20px 24px;padding:0}
+#content li{margin:0 0 10px;color:var(--t2);line-height:1.7}
+#content li::marker{color:var(--accent)}
+#content blockquote{border-left:3px solid var(--accent);background:var(--abg);padding:16px 20px;margin:24px 0;border-radius:8px;color:var(--t1)}
+#content blockquote p{margin:0;color:var(--t1)}
+#content blockquote strong:first-child{color:var(--accent)}
+#content table{width:100%;border-collapse:collapse;margin:24px 0;background:var(--card);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+#content th{background:var(--card2);color:var(--accent);font-weight:700;text-align:left;padding:14px 18px;font-size:13px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(59,130,246,0.2)}
+#content td{padding:12px 18px;color:var(--t2);border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px}
+#content td:first-child{color:var(--t1);font-weight:600}
+#content td strong{color:var(--accent)}
+#content tr:last-child td{border-bottom:none}
+#content hr{border:none;border-top:1px solid rgba(255,255,255,0.1);margin:48px 0}
+#content img{max-width:100%;height:auto;display:block;margin:32px auto;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:var(--card)}
+
+footer.site-footer{border-top:1px solid rgba(255,255,255,0.08);padding:28px 24px;text-align:center;color:var(--t3);font-size:13px}
+footer.site-footer a{color:var(--t2);text-decoration:none;margin:0 8px}
+footer.site-footer a:hover{color:var(--accent)}
+
+@media(max-width:768px){
+  .container{padding:32px 20px 80px}
+  #content h1{font-size:30px}
+  #content h2{font-size:22px;margin:40px 0 16px}
+  #content h3{font-size:18px}
+  #content table{font-size:12px;display:block;overflow-x:auto}
+  #content th,#content td{padding:10px 12px}
+  .topnav-inner{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="/" class="logo" aria-label="Markets Coupons">
+      <span class="logo-mark">M</span>
+      <span class="logo-txt">Markets<b>Coupons</b></span>
+    </a>
+    <a href="/guides" class="nav-back" aria-label="إغلاق — أدلة"><span class="x">×</span>إغلاق</a>
+  </div>
+</nav>
+
+<main class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقل">
+    <a href="/">الرئيسية</a> / <a href="/guides">أدلة</a> / Position Sizing في Prop Firms
+  </nav>
+
+  <div class="reading-meta">
+    <span>فريق Markets Coupons</span>
+    <span class="dot"></span>
+    <span>20 دقيقة قراءة</span>
+    <span class="dot"></span>
+    <span>محدث في 20 أبريل 2026</span>
+  </div>
+
+  <article id="content">
+<span class="badge">دليل شامل · المخاطر والرياضيات</span>
+<h1>Position Sizing في Prop Firms: الدليل الشامل لتحديد حجم المركز في 2026</h1>
+<p><em>آخر تحديث: 20 أبريل 2026 — 20 دقيقة قراءة</em></p>
+<p><img src="/img/guides-edu/gemini-pro/hero-g4-bridge.png" alt="Position Sizing في Prop Firms — جسر بين الحساب الأولي والحساب المتوسع، إضاءة سينمائية زرقاء دقيقة"></p>
+
+<blockquote>
+<p><strong>TL;DR</strong> — <strong>Position Sizing</strong> (تحديد حجم المركز) هو المحرك الحقيقي لطول العمر في <strong>Prop Firm</strong>. ليس من يمتلك أفضل setup هو من يستمر 12 شهرًا في حساب ممول — بل من يمتلك أفضل تحديد للحجم. يشرح هذا الدليل الصيغة العالمية (نسبة المخاطرة % × الرصيد ÷ المسافة حتى حد الخسارة)، الجدول العملي للعقود حسب حجم الحساب في العقود الآجلة، حساب الـ lot في Forex، مغالطة مقارنة النسب المئوية بين 25K و 50K و 100K، كيفية تطبيق Kelly Criterion دون تفجير الحساب، المدارس الثلاث (Fixed Fractional، Fixed Ratio، Anti-Martingale)، تعديل الحجم كلما ارتفعت في <em>drawdown floor</em>، مقياس Apex الواقعي من 25K إلى 300K عبر إعادة استثمار الـ payouts، الإدارة في حسابات متعددة متوازية والأخطاء الفادحة الثلاثة التي تقتل المتداولين الممولين. في النهاية، سيكون لديك بروتوكول قابل للتنفيذ لتحديد حجم كل صفقة في أي شركة، في أي سوق.</p>
+</blockquote>
+
+<table>
+<thead>
+<tr><th>أرقام Position Sizing (2026)</th><th></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>المخاطرة المتفق عليها لكل صفقة</strong></td><td>0.5% إلى 1% من الرصيد</td></tr>
+<tr><td><strong>سقف المخاطرة كنسبة مئوية من هامش الأمان</strong></td><td>بحد أقصى 1/5 (20%)</td></tr>
+<tr><td><strong>عقود ES/NQ في حساب 50K (قبل الـ floor)</strong></td><td>عقد واحد</td></tr>
+<tr><td><strong>عقود ES/NQ في حساب 50K (بعد الـ floor)</strong></td><td>عقدان</td></tr>
+<tr><td><strong>الـ lot القياسي في Forex في حساب 100K</strong></td><td>1 إلى 2 mini lots لكل صفقة</td></tr>
+<tr><td><strong>Kelly الجزئي الموصى به</strong></td><td>25% من Kelly الكامل</td></tr>
+<tr><td><strong>زيادة الحجم بعد الـ floor</strong></td><td>+25% في كل مرة، لا تضاعف أبدًا</td></tr>
+<tr><td><strong>متوسط الوقت للتوسع 25K ← 150K عبر إعادة الاستثمار</strong></td><td>8 إلى 14 شهرًا</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>ما هو Position Sizing ولماذا هو المحرك الحقيقي لطول العمر</h2>
+<p>المتداولون المبتدئون يخلطون بين <strong>Position Sizing</strong> و "حجم الرهان". ليس هذا هو المقصود. Position Sizing هو القرار الرياضي، الذي يتخذ <em>قبل</em> فتح أي صفقة، بشأن مقدار رأس المال الذي سيتعرض لمخاطرة في فرضية واحدة — معبرًا عنه بالعقود أو الـ lots أو الوحدات المالية. إنه المعيار الذي يحول ميزة إحصائية إلى حساب باقٍ، أو إلى جثة ممولة.</p>
+<p>تتضح الأهمية عندما تفصل المتغيرين لأي نتيجة تداول: (1) التوقع لكل صفقة، والذي يعتمد على الطريقة/الـ setup؛ (2) عدد الصفقات حتى ينفجر الحساب، والذي يعتمد بشكل شبه حصري على Position Sizing. يمكن لمتداولين بنفس الطريقة أن يحققا نتائج معاكسة — أحدهما يستمر لأشهر ممولًا، والآخر يحترق في 4 أيام — ببساطة لأنهم يحددون الحجم بشكل مختلف.</p>
+<p>في <strong>Prop Firm</strong>، التباين أكثر وحشية: المتداول ليس لديه رأس مال لا نهائي وليس لديه تسامح مرن مع <strong>Drawdown</strong>. لديه حد تعاقدي، مبرمج، يطبقه النظام. هذا يغير تمامًا رياضيات تحديد الحجم. صيغة تعمل في حساب خاص قد تكون انتحارية في حساب ممول، لأن الحساب الخاص يسمح لك بالبقاء على قيد الحياة عند -40% والعودة؛ <strong>Prop Firm</strong> تنهي الحساب عند -5%.</p>
+<p>تظهر البيانات المجمعة من مجتمعات مثل Prop Reviews أن <strong>أكثر من 70% من حالات الفشل في عام 2026 تعود إلى تحديد حجم خاطئ</strong>، وليس إلى setup خاطئ. قد يكون الـ setup مثاليًا؛ إذا كان الحجم كبيرًا جدًا بالنسبة لحد الخسارة في الحساب، فإن تقلبًا واحدًا طبيعيًا في السوق يسقطك. هذا عكس ما يعتقده المبتدئ — فهو يعتقد أنه "أصاب التحليل" وخسر؛ الحقيقة هي أن <strong>الحجم لم يكن مناسبًا للمخاطرة المتاحة</strong>.</p>
+
+<hr>
+
+<h2>الصيغة العالمية لتحديد الحجم</h2>
+<p>توجد صيغة واحدة تغطي 90% من حالات Position Sizing في أي سوق وأي شركة. تستحق الحفظ:</p>
+
+<blockquote>
+<p><strong>الحد الأقصى للحجم = (نسبة المخاطرة % × الرصيد) ÷ المسافة حتى حد الخسارة</strong></p>
+</blockquote>
+
+<p>ترجمة كل مصطلح:</p>
+<ul>
+<li><strong>نسبة المخاطرة %</strong>: النسبة المئوية من الرصيد التي تقبل المخاطرة بها في هذه الصفقة. في <strong>Prop Firm</strong>، الإجماع بين المتداولين الذين يستمرون طويلًا هو 0.5% إلى 1%. لا أكثر من ذلك أبدًا.</li>
+<li><strong>الرصيد</strong>: الرصيد الحالي للحساب، وليس الرصيد الأولي. الحساب الذي يبلغ 48,500 دولار أمريكي يتداول على أساس 48,500 دولار أمريكي، وليس 50,000 دولار أمريكي.</li>
+<li><strong>المسافة حتى حد الخسارة</strong>: المسافة، بالنقاط/pips/ticks، بين سعر الدخول والمستوى الذي تخرج عنده إذا فشلت الفرضية. هذا هو ما يحدد الخسارة الفعلية لكل وحدة.</li>
+</ul>
+
+<p><strong>مثال في العقود الآجلة:</strong> حساب Apex 50K (رصيد 50,000 دولار أمريكي)، مخاطرة 1% (500 دولار أمريكي)، تداول ES بمسافة 5 نقاط حتى مستوى الخروج (نقطة واحدة في ES = 50 دولار أمريكي في الـ mini، 5 دولار أمريكي في الـ micro). في الـ mini: 500 ÷ (5 × 50) = عقدين كحد أقصى. في الـ micro: 500 ÷ (5 × 5) = 20 عقدًا كحد أقصى. لاحظ أن الصيغة لا تخبرك أنه <em>يجب</em> عليك تداول 20 micro — بل تخبرك أنه <em>لا يمكنك تجاوز</em> ذلك.</p>
+
+<p><strong>مثال في Forex:</strong> حساب FTMO 100K، مخاطرة 0.5% (500 دولار أمريكي)، تداول EURUSD بمسافة 25 pips. قيمة الـ pip في الـ mini lot = 10 دولار أمريكي. الحد الأقصى للـ lot = 500 ÷ (25 × 10) = 2.5 mini lots.</p>
+
+<p>جمال هذه الصيغة هو أنها تجبرك على تحديد <strong>أين تخرج</strong> قبل الدخول. بدون مسافة محددة، لا يوجد حجم. بدون حجم، لا توجد صفقة. إنه البروتوكول الذي يفصل التداول عن التخمين.</p>
+
+<hr>
+
+<h2>Position Sizing في العقود الآجلة: العقود حسب حجم الحساب</h2>
+<p>يلخص الجدول أدناه النمط الباقي في عام 2026 — كم تتداول في كل حجم حساب، مع فصل الـ micro والـ mini، قبل وبعد تثبيت الـ <em>drawdown floor</em>.</p>
+
+<table>
+<thead>
+<tr><th>الحجم</th><th>Mini ES/NQ (قبل الـ floor)</th><th>Mini ES/NQ (بعد الـ floor)</th><th>Micro MES/MNQ (قبل الـ floor)</th><th>Micro MES/MNQ (بعد الـ floor)</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>25K</strong></td><td>عقد واحد</td><td>عقد واحد</td><td>2 إلى 3 micro</td><td>5 micro</td></tr>
+<tr><td><strong>50K</strong></td><td>عقد واحد</td><td>عقدان</td><td>3 إلى 5 micro</td><td>8 إلى 10 micro</td></tr>
+<tr><td><strong>100K</strong></td><td>عقدان</td><td>3 عقود</td><td>5 إلى 8 micro</td><td>12 إلى 15 micro</td></tr>
+<tr><td><strong>150K</strong></td><td>2 إلى 3 عقود</td><td>4 عقود</td><td>8 إلى 10 micro</td><td>15 إلى 20 micro</td></tr>
+<tr><td><strong>300K</strong></td><td>4 عقود</td><td>6 عقود</td><td>15 micro</td><td>25 إلى 30 micro</td></tr>
+</tbody>
+</table>
+
+<p>ثلاث قراءات مهمة من هذا الجدول:</p>
+
+<p><strong>أولاً:</strong> القفزة بين "قبل" و "بعد" الـ floor حقيقية ولكنها متواضعة — عادةً +50% إلى +100%، وليس 5 أضعاف. من يضاعف الحجم ثلاث مرات بعد الـ floor ينتهك قاعدة "الزيادة التدريجية" وعادة ما يعود إلى نقطة البداية في غضون أسبوعين.</p>
+
+<p><strong>ثانيًا:</strong> الـ micro متفوقة رياضيًا للتعلم. عقد mini ES بـ 5 نقاط = 250 دولار أمريكي مخاطرة؛ عقد micro MES بـ 5 نقاط = 25 دولار أمريكي. تتيح الدقة تعديلات دقيقة للحجم لا يسمح بها الـ mini. لحساب 25K أو 50K، البدء دائمًا بالـ micro هو المسار الأقل تكلفة للخطأ.</p>
+
+<p><strong>ثالثًا:</strong> الفرق بين 50K و 100K ليس "ضعف العقود". إنه حوالي +50% إلى +75%، لأن حد <strong>Drawdown</strong> لا يتضاعف خطيًا — ولأن المخاطرة النفسية لتداول حجم أكبر تتضاعف قبل الرصيد.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/contracts-per-size.png" alt="العقود حسب حجم الحساب — جدول مرئي يوضح العقود الآجلة المصغرة والصغيرة في 25K و 50K و 100K و 150K و 300K، مع قبل وبعد الـ drawdown floor"></p>
+
+<hr>
+
+<h2>Position Sizing في Forex: الـ lots، الـ pips والرافعة المالية الحقيقية</h2>
+<p>في Forex، ما يعادل العقد هو الـ <em>lot</em>. ثلاثة أحجام قياسية:</p>
+<ul>
+<li><strong>Standard lot:</strong> 100,000 وحدة من العملة الأساسية. قيمة الـ pip حوالي 10 دولار أمريكي في الأزواج مقابل الدولار الأمريكي.</li>
+<li><strong>Mini lot:</strong> 10,000 وحدة. قيمة الـ pip حوالي 1 دولار أمريكي.</li>
+<li><strong>Micro lot:</strong> 1,000 وحدة. قيمة الـ pip حوالي 0.10 دولار أمريكي.</li>
+</ul>
+
+<p>في <strong>Prop Firms</strong> للـ Forex مثل FTMO و The5%ers و FundingPips، ما يهم ليس رأس المال "الاسمي" المرفوع، بل <strong>كم تكلف الحركة السلبية بالدولار الأمريكي</strong>. صيغة عملية:</p>
+
+<blockquote>
+<p><strong>الحد الأقصى للـ lot = المخاطرة بالدولار الأمريكي ÷ (المسافة بالـ pips × قيمة الـ pip)</strong></p>
+</blockquote>
+
+<p><strong>مثال:</strong> حساب FTMO 100K مع Static Drawdown بنسبة 10% (10,000 دولار أمريكي)، و Daily Loss بنسبة 5% (5,000 دولار أمريكي). تحدد سقفًا شخصيًا يوميًا بنسبة 50% من Daily Loss = 2,500 دولار أمريكي. تقسم على 5 صفقات محتملة في اليوم = 500 دولار أمريكي مخاطرة لكل صفقة. بمسافة 30 pips حتى نقطة الخروج في EURUSD، الحد الأقصى للـ lot هو 500 ÷ (30 × 10) = 1.67 mini lots — والتي تقرب إلى <strong>1 mini lot</strong>. دائمًا للأسفل.</p>
+
+<p>فخ الـ Forex هو الرافعة المالية النفسية. تسمح لك المنصة بفتح 5 mini lots أو حتى 1 standard lot في حساب 100K. هذا <em>لا</em> يعني أنه يجب عليك — بل يعني فقط أنه ممكن تقنيًا. في <strong>Prop Firm</strong>، الحد الحقيقي هو Drawdown، وليس الهامش المتاح. تداول 5 mini lots بـ stop 30 pips = 1,500 دولار أمريكي مخاطرة لكل صفقة = 30% من Daily Loss في صفقة واحدة. رياضيات إعادة التعيين.</p>
+
+<hr>
+
+<h2>خطأ مقارنة النسب المئوية بين 25K و 50K و 100K</h2>
+<p>خطأ مفاهيمي يرتكبه المتداول المبتدئ طوال الوقت هو مقارنة النسب المئوية للرصيد بين حسابات بأحجام مختلفة واستنتاج أنها "متكافئة". ليست كذلك. هذه هي <em>مغالطة النسبة المئوية الاسمية</em> في <strong>Prop Firm</strong>.</p>
+
+<p>مثال على التفكير الخاطئ: "1% في حساب 25K هو 250 دولار أمريكي، 1% في حساب 100K هو 1,000 دولار أمريكي — نفس النسبة المئوية، نفس القاعدة، نفس المخاطرة النسبية." رياضيًا، الرصيد يتوسع. عمليًا، <strong>لا يتوسع</strong> لثلاثة أسباب:</p>
+
+<h3>السبب 1: التكلفة الثابتة للـ slippage والعمولات لا تتوسع</h3>
+<p>تكلفة الـ round-trip في ES حوالي 4 دولار أمريكي عمولة + حوالي 0.25 نقطة (12.50 دولار أمريكي) في متوسط الـ slippage في أوقات السيولة. في حساب 25K يخاطر بـ 250 دولار أمريكي، تستهلك هذه التكاليف 6.6% من المخاطرة. في حساب 100K يخاطر بـ 1,000 دولار أمريكي، نفس التكاليف لا تتجاوز 1.65% من المخاطرة. الحساب الأكبر أكثر كفاءة 4 مرات لكل صفقة — حتى قبل نتيجة التداول.</p>
+
+<h3>السبب 2: الـ Drawdown لا يتوسع خطيًا مع الرصيد</h3>
+<p>Apex 25K لديها Trailing Drawdown بقيمة 1,500 دولار أمريكي؛ Apex 100K لديها Trailing Drawdown بقيمة 3,000 دولار أمريكي. الرصيد زاد 4 أضعاف، الـ trailing زاد مرتين. هذا يعني أن هامش الأمان النسبي <em>يتقلص</em> كلما ارتفعت — Drawdown/الرصيد هو 6% في 25K و 3% فقط في 100K. الحسابات الأكبر هي رياضيًا <em>أكثر إحكامًا</em> في الهامش، وليست أكثر مرونة.</p>
+
+<h3>السبب 3: الهدف والغاية يظلان بقيمة مطلقة</h3>
+<p>اجتياز حساب Apex 100K يتطلب هدفًا بنسبة 8% (8,000 دولار أمريكي). اجتياز حساب 25K يتطلب 8% (2,000 دولار أمريكي). من حيث <em>الوقت اللازم لتحقيق الهدف</em> بالتداول بنفس حجم العقد، فإنهما متكافئان تقريبًا. لكن المخاطرة المستمرة للانتهاك مختلفة، لأن الـ Drawdown الثابت مختلف.</p>
+
+<p>الاستنتاج غير البديهي: الحسابات الصغيرة ليست "أسهل"، بل هي أرخص فقط. الحسابات الكبيرة ليست "أسهل"، بل هي أغلى فقط. الاستراتيجية الصحيحة لتحديد الحجم ليست أبدًا نسبة مئوية ثابتة عالمية — إنها دالة على الزوج (الرصيد، Drawdown) الخاص بهذا الحساب.</p>
+
+<hr>
+
+<h2>Kelly Criterion معدل لـ Prop Firms</h2>
+<p>Kelly Criterion هي الصيغة الرياضية الكلاسيكية للحجم الأمثل للمركز، التي اشتقها جون كيلي في الخمسينيات. إنها تزيد النمو الهندسي لرأس المال إلى أقصى حد بافتراض أفق لا نهائي:</p>
+
+<blockquote>
+<p><strong>f* = (bp − q) ÷ b</strong><br>حيث f* = الكسر الأمثل لرأس المال، b = نسبة الفوز:الخسارة، p = احتمالية الفوز، q = احتمالية الخسارة</p>
+</blockquote>
+
+<p>مثال: لديك 55% نسبة نجاح مع payoff 1:1 (تربح نفس ما تخاطر به). Kelly النقي يقول: f* = (1 × 0.55 − 0.45) ÷ 1 = 0.10 = 10% من رأس المال لكل صفقة.</p>
+
+<p>عشرة بالمائة. في Apex 50K، سيكون هذا 5,000 دولار أمريكي مخاطرة لكل صفقة. <strong>الـ Drawdown هو 2,500 دولار أمريكي</strong>. Kelly النقي، المطبق في حساب ممول، يكسر الحساب في صفقة خاسرة واحدة. لماذا؟ لأن Kelly يفترض رأس مال لا نهائي وتسامحًا كاملاً مع الـ drawdown. Prop Firm لا تمنحك أيًا من هذين الأمرين.</p>
+
+<h3>الحل: Kelly الجزئي</h3>
+<p>استخدم المتداولون المحترفون لعقود "Fractional Kelly" — التداول بكسر مما يقترحه Kelly. الاتفاقيات الشائعة:</p>
+<ul>
+<li><strong>Half Kelly (50%):</strong> نصف الحجم المقترح. لا يزال عدوانيًا.</li>
+<li><strong>Quarter Kelly (25%):</strong> ربع الحجم المقترح. معيار معقول في السوق الخاص.</li>
+<li><strong>Eighth Kelly (12.5%):</strong> ثمن الحجم. موصى به في الحسابات الممولة.</li>
+</ul>
+
+<p>في المثال أعلاه (Kelly النقي = 10%)، Eighth Kelly = 1.25%. هذا يقترب من الإجماع العملي من 0.5% إلى 1% الذي يستخدمه متداولو <strong>Prop Firm</strong>. ليس صدفة: القاعدة التجريبية تتوافق مع الرياضيات عندما تطبق عامل الأمان الصحيح لرأس المال المحدود + Drawdown صارم.</p>
+
+<p>القيود الأخرى لـ Kelly في <strong>Prop Firm</strong> هي أنه يفترض أنك تعرف <em>p</em> (احتمالية الفوز) و <em>b</em> (النسبة). عمليًا، تقوم بالتقدير مع التحيز. تميل بيانات التاريخ الخاص إلى المبالغة في تقدير <em>p</em> بنسبة 5% إلى 15%، مما يضخم المخاطرة الحقيقية. استخدام كسر أصغر يعوض هذا التحيز.</p>
+
+<hr>
+
+<h2>Fixed Fractional مقابل Fixed Ratio مقابل Anti-Martingale</h2>
+<p>تتنافس ثلاث مدارس رئيسية لتحديد الحجم في السوق:</p>
+
+<h3>Fixed Fractional</h3>
+<p>يتداول دائمًا بنفس النسبة المئوية من الرصيد (على سبيل المثال: 1%). يختلف الحجم بالقيمة المطلقة مع الرصيد: 500 دولار أمريكي في حساب 50K، 450 دولار أمريكي إذا انخفض الرصيد إلى 45K، 550 دولار أمريكي إذا ارتفع إلى 55K. تفاعلي، سلس، يدافع تلقائيًا في الـ drawdown. <strong>هو الأنسب لـ Prop Firm</strong> لأنه يحمي نفسه تلقائيًا مع تقلص الحساب.</p>
+
+<h3>Fixed Ratio</h3>
+<p>طورها ريان جونز. كل دلتا (على سبيل المثال: 2,000 دولار أمريكي من الأرباح المتراكمة) يحرر +1 عقد/lot. ينمو بشكل أسرع من الـ fractional في الحسابات الفائزة، لأن الزيادة منفصلة وليست سلسة. ولكنه يعاقب أكثر في الحسابات المترددة لأنه لا يقلل عندما تخسر — بل يرتفع فقط. <strong>غير مناسب لـ Prop Firm</strong> بسبب التباين (يرتفع في الصعود، لا ينخفض في الهبوط = Drawdown يتقلص).</p>
+
+<h3>Anti-Martingale</h3>
+<p>يزيد الحجم بعد الفوز، ويقلل بعد الخسارة. إنه عكس منطق Martingale (الذي يضاعف بعد الخسارة). متفوق رياضيًا على Martingale، ولكنه لا يزال عرضة لـ "الزيادة في القمة" — الخطأ رقم 1 في الحسابات الممولة. <strong>استخدام جزئي في Prop Firm</strong>: زيادة فقط بعد أسبوعين من الاتساق، وليس أبدًا بعد يوم جيد.</p>
+
+<p><strong>توصية عملية:</strong> في <strong>Prop Firm</strong>، <em>Fixed Fractional</em> بنسبة 0.5% إلى 1% حتى تثبيت الـ drawdown floor. بعد الـ floor، انتقال سلس إلى Anti-Martingale <em>معتدل</em>: +25% في الحجم كل أسبوعين متسقين، وليس أبدًا +100%.</p>
+
+<hr>
+
+<h2>تعديل الحجم كلما ارتفعت في الـ drawdown floor</h2>
+<p>يشرح دليل <a href="/guides/gerenciamento-drawdown">إدارة الـ Drawdown في Prop Firms</a> بالتفصيل مفهوم <em>drawdown floor</em> — النقطة التي يتوقف عندها Trailing Drawdown لـ Apex ويصبح ثابتًا. هنا يهم كيف يجب أن يتغير تحديد الحجم في كل مرحلة من الدورة.</p>
+
+<h3>المرحلة 1 — قبل الـ floor (الرصيد أقل من الأولي + Trailing + 100 دولار أمريكي)</h3>
+<p>وضع البقاء. الحد الأدنى المطلق للحجم. في Apex 50K: 1 mini ES أو 3 micro لكل صفقة، بحد أقصى للمخاطرة 0.5% من الرصيد (250 دولار أمريكي). التركيز الكامل على عدم سحب الـ floor معك. تداول setup A+ فقط، وليس أبدًا A-.</p>
+
+<h3>المرحلة 2 — الـ Floor نشط، الحساب تم تثبيته حديثًا</h3>
+<p>لحظة انتقال. يرتفع الحجم تدريجيًا: +25% في الأسبوع، كحد أقصى. من 1 mini إلى "1 mini وأحيانًا 2" مع ظهور setups عالية الجودة. يمكن أن ترتفع المخاطرة إلى 0.75% من الرصيد. الانضباط لا يزال أقصى — هذه هي اللحظة التي يعتقد فيها الكثيرون "لقد تجاوزت الجزء الصعب" ويعيدون الأرباح.</p>
+
+<h3>المرحلة 3 — حساب مستقر (أسبوعين أو أكثر بعد الـ floor)</h3>
+<p>وضع البناء. الحجم القياسي: 2 mini أو 8 micro في 50K. مخاطرة 1% من الرصيد. setups A+ و A- مقبولة. هنا يبدأ Anti-Martingale المعتدل — زيادات بعد الاتساق المثبت، وليس أبدًا بعد يوم كبير.</p>
+
+<h3>المرحلة 4 — Performance Account / حساب ممول</h3>
+<p>تستأنف الدورة، ولكن الآن تدفع حقًا. العودة إلى تحديد حجم المرحلة 1 في الأسابيع الثلاثة الأولى هي القاعدة الذهبية. العديد من المتداولين الذين يجتازون التحدي يفشلون في الأسبوع الأول من التمويل بسبب الحفاظ على حجم المرحلة 3 في حساب لا يزال لا يمتلك شبكة الأمان (safety net) الثابتة.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/slow-vs-fast.png" alt="نمو بطيء مقابل عدواني — منحنيان للرصيد يظهران أن تحديد الحجم المحافظ يتفوق على تحديد الحجم العدواني في 12 شهرًا"></p>
+
+<blockquote>
+<p><strong>قاعدة عملية:</strong> تحديد الحجم الصحيح في كل مرحلة هو أكثر تحفظًا بنسبة 50% مما يدفعك المنطق لاستخدامه. إذا قال عقلك "يمكن عقدين"، تداول عقدًا واحدًا. إذا قال "يمكن 3"، تداول 2. التحيز السلوكي في الحسابات الممولة دائمًا نحو الأعلى؛ تعويضه للأسفل هو ما يبقى على قيد الحياة.</p>
+</blockquote>
+
+<hr>
+
+<h2>التوسع العدواني مقابل المحافظ: رياضيات العائد على الاستثمار في 12 شهرًا</h2>
+<p>مقارنة تعليمية بين متداولين افتراضيين، نفس الطريقة، نفس نسبة النجاح، نفس الـ setup — يختلف فقط تحديد الحجم.</p>
+
+<table>
+<thead>
+<tr><th>المقياس</th><th>المتداول أ (عدواني)</th><th>المتداول ب (محافظ)</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>المخاطرة لكل صفقة</strong></td><td>2% من الرصيد</td><td>0.75% من الرصيد</td></tr>
+<tr><td><strong>عقود ES في 50K</strong></td><td>3 إلى 5</td><td>1 إلى 2</td></tr>
+<tr><td><strong>نسبة النجاح الحقيقية</strong></td><td>55%</td><td>55%</td></tr>
+<tr><td><strong>الأيام حتى أول انتهاك</strong></td><td>18 يومًا (إعادة تعيين)</td><td>لا يوجد في 12 شهرًا</td></tr>
+<tr><td><strong>الحسابات المفتوحة / المعاد تعيينها في 12 شهرًا</strong></td><td>6 عمليات إعادة تعيين، 2 نجاح</td><td>1 نجاح، 0 عمليات إعادة تعيين</td></tr>
+<tr><td><strong>التكلفة الإجمالية لعمليات إعادة التعيين</strong></td><td>540 دولار أمريكي (6 × 90 دولار أمريكي)</td><td>0 دولار أمريكي</td></tr>
+<tr><td><strong>الـ Payout المتراكم في 12 شهرًا</strong></td><td>3,200 دولار أمريكي</td><td>8,400 دولار أمريكي</td></tr>
+<tr><td><strong>العائد على الاستثمار الحقيقي (payout − التكاليف)</strong></td><td>2,660 دولار أمريكي</td><td>8,380 دولار أمريكي</td></tr>
+</tbody>
+</table>
+
+<p>قد تبدو الأرقام مبالغًا فيها، لكنها تتوافق مع التاريخ الحقيقي لـ Leaderboards في Apex و FTMO. المتداول العدواني <em>يربح أكثر لكل صفقة رابحة</em>، لكنه يخسر الدورة بأكملها بسبب الانتهاكات التي تصفر التقدم. المتداول المحافظ يربح أقل لكل صفقة، لكنه يجمع أشهرًا دون كسر. في المجموع، المتداول المحافظ يضاعف النتيجة 3 مرات.</p>
+
+<p>الدرس غير البديهي: في <strong>Prop Firm</strong>، <strong>الحجم الأصغر يعني عائدًا على الاستثمار أكبر</strong>. الرياضيات تفضل من يحافظ على الدورات، وليس من يزيد الربح لكل صفقة.</p>
+
+<hr>
+
+<h2>حسابات متعددة: تحديد الحجم دون التعرض المفرط</h2>
+<p>عادة ما يتداول المتداولون ذوو الخبرة في العقود الآجلة من 2 إلى 5 حسابات Apex أو Bulenox بالتوازي. الجاذبية واضحة: نفس الـ setup في 3 حسابات يولد 3 أضعاف الـ payout المحتمل لكل دورة. لكن تحديد الحجم في حسابات متعددة له فخاخ محددة.</p>
+
+<h3>القاعدة 1: حجم كل حساب لا يتغير</h3>
+<p>امتلاك 3 حسابات 50K لا يعني التداول كما لو كان لديك 150K. كل حساب له Drawdown خاص به، و Daily Loss خاص به، ودورة خاصة به. يظل حجم كل حساب كما لو كان الحساب الوحيد. <strong>لا تجمع رأس المال بين الحسابات أبدًا لتبرير حجم أكبر في كل منها.</strong>
+
+<h3>القاعدة 2: لا للـ copy trade</h3>
+<p>Apex و Bulenox ومعظم الشركات تحظر <em>copy trading</em> بين حسابات نفس المتداول. تداول نفس الاستراتيجية في 3 حسابات بمدخلات متزامنة هو انتهاك تعاقدي. حتى لو تم احترام الـ Drawdowns، يتم إغلاق جميع الحسابات.</p>
+
+<h3>القاعدة 3: تباعد الأوقات والأصول</h3>
+<p>طريقة مشروعة لتداول حسابات متعددة: الحساب A عند افتتاح نيويورك في ES، الحساب B في منتصف الجلسة في NQ، الحساب C عند الإغلاق في GC. أوقات وأصول مختلفة = استراتيجيات مستقلة، مسموح بها. كل حساب بحجم محسوب بشكل فردي.</p>
+
+<h3>القاعدة 4: الارتباط المعرفي موجود حتى بدون الـ copy</h3>
+<p>حتى عند تداول حسابات متباعدة، العقل هو نفسه. يوم سيء في حساب واحد يؤثر على الآخرين. قاعدة عملية: إذا خسر الحساب A اليوم، قلل الحجم بنسبة 25% في B و C. الارتباط بين حسابات نفس المتداول مرتفع حتى بدون الـ copy — لأن المتداول لا يتغير بينها.</p>
+
+<h3>القاعدة 5: ترتيب الأولوية في التخفيض</h3>
+<p>عند الحاجة إلى تقليل التعرض (يوم سيء، أسبوع سيء)، قلل أولاً الحساب الذي لديه أقل هامش أمان. حافظ على الحسابات المرنة تتداول بشكل طبيعي، وحمِ الحسابات الضيقة في وضع دفاعي.</p>
+
+<hr>
+
+<h2>الحالة الحقيقية: من 25K إلى 300K تم التوسع عبر إعادة الاستثمار</h2>
+<p>الطريقة الواقعية للتوسع في <strong>Prop Firm</strong> ليست محاولة جعل حساب واحد ينمو 10 أضعاف. إنها إعادة استثمار الـ payouts في حسابات جديدة، وتداول حسابات متعددة بالتوازي. الرياضيات تفضل تجميع الوحدات، وليس تضخيم وحدة واحدة فقط.</p>
+
+<p>مسار نموذجي موثق في مجتمعات مثل Propverse و r/propfirms:</p>
+
+<h4>الشهر 0</h4>
+<p>يشتري المتداول حساب Apex 25K بكوبون (19.90 دولار أمريكي في العرض). يجتاز التحدي في 14 يومًا. يبدأ حسابًا ممولًا.</p>
+
+<h4>الأشهر 1 إلى 3</h4>
+<p>يتداول حساب 25K الممول بحجم المرحلة 1/2. يسحب 1,800 دولار أمريكي صافي في أول 3 payouts. يستخدم 40 دولار أمريكي (19.90 دولار أمريكي × 2) لشراء حسابين 25K إضافيين في العرض. الآن لديه حساب 25K ممول + تحديين 25K قيد التقدم.</p>
+
+<h4>الأشهر 4 إلى 6</h4>
+<p>يجتاز الحسابين الجديدين. لديه الآن 3 حسابات 25K ممولة. يسحب 3,900 دولار أمريكي في الربع. يشتري حسابين 50K إضافيين في العرض (24.90 دولار أمريكي × 2 = 49.80 دولار أمريكي). المحفظة الآن: 3 حسابات 25K ممولة + تحديين 50K.</p>
+
+<h4>الأشهر 7 إلى 9</h4>
+<p>يجتاز حسابي 50K. المحفظة: 3 حسابات 25K ممولة + 2 حسابات 50K ممولة. إجمالي رأس المال المخصص: 175,000 دولار أمريكي اسمي. يسحب 6,200 دولار أمريكي في الربع. يشتري حسابين 100K في العرض.</p>
+
+<h4>الأشهر 10 إلى 12</h4>
+<p>يجتاز حسابي 100K. المحفظة النهائية: 3×25K + 2×50K + 2×100K = <strong>375,000 دولار أمريكي اسمي</strong>. الـ Payout ربع السنوي: 9,000 دولار أمريكي+. إعادة الاستثمار صفر في أول 3 اجتيازات؛ بعد الشهر 4، جاءت تكلفة الحسابات الجديدة من الـ payouts، وليس من الجيب.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="مقياس Apex واقعي — جدول زمني لمدة 12 شهرًا يوضح تجميع حسابات 25K + 50K + 100K حتى الوصول إلى 375,000 دولار أمريكي اسمي"></p>
+
+<p>النقطة الأساسية: لم يحتج المتداول أبدًا إلى زيادة تحديد الحجم لكل حساب فوق المعيار. كل حساب يتم تداوله بشكل فردي كما لو كان الوحيد. جاء التوسع من <strong>عدد الوحدات</strong>، وليس من <strong>حجم الوحدة</strong>. هذا هو الفرق بين المستدام والهش.</p>
+
+<hr>
+
+<h2>التأثير المركب المطبق على تحديد الحجم على المدى الطويل</h2>
+<p>تتكون رياضيات إعادة الاستثمار في <strong>Prop Firm</strong> من طبقتين مركبتين. الأولى هي نمو الرصيد داخل كل حساب فردي (تراكم الـ payout). الثانية هي مضاعفة عدد الحسابات المتداولة. تتحد الطبقتان بطريقة غير خطية.</p>
+
+<p>مثال رقمي: 10% عائد على الاستثمار شهريًا على حساب واحد 50K = 5,000 دولار أمريكي/شهريًا. نفس 10% على 5 حسابات 50K متداولة بالتوازي = 25,000 دولار أمريكي/شهريًا. الفرق مضاعف. لكن الوضع الثاني يتطلب انضباطًا أكبر بخمس مرات، لأن الـ Drawdowns الخمسة تعمل بالتوازي والإرهاق المعرفي حقيقي.</p>
+
+<p>يعمل التأثير المركب إذا — وفقط إذا — ظل تحديد الحجم لكل حساب محافظًا. زيادة تحديد الحجم لـ "الاستفادة من التوسع" تكسر المنطق. ما يتوسع هو عدد الحسابات؛ الحجم داخل كل منها يظل ثابتًا. هذا يتعارض مع حدس معظم المتداولين، الذين يرغبون في "زيادة الرهان" كلما اكتسبوا الثقة.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="التأثير المركب — رسم بياني يوضح كيف يتفوق تجميع حسابات صغيرة متعددة على النمو الخطي لحساب كبير في 24 شهرًا"></p>
+
+<blockquote>
+<p><strong>رؤية عملية:</strong> المتداول الممول الذي يضاعف 10 مرات في 24 شهرًا لم يفعل ذلك أبدًا بتداول ضعف الحجم في حساب واحد. لقد فعل ذلك بتداول نفس الحجم في 10 حسابات، تم بناؤها واحدة تلو الأخرى مع إعادة استثمار الـ payouts. نمو حسابي للحجم، وهندسي للوحدات.</p>
+</blockquote>
+
+<hr>
+
+<h2>الأخطاء الفادحة الثلاثة في تحديد الحجم التي تقتل المتداولين الممولين</h2>
+
+<h3>الخطأ 1: زيادة الحجم بعد الخسارة</h3>
+<p>الغريزة هي التعويض — "لقد خسرت 300 دولار أمريكي، في الصفقة التالية سأضاعف لاستردادها بسرعة". هذا هو بوابة Martingale، وهو أسرع طريق لانتهاك الـ Drawdown. سلسلة من 3 خسائر بحجم متزايد تكسر الـ Daily Loss في فترة ما بعد الظهر. القاعدة العكسية: <strong>بعد الخسارة، الصفقة التالية تكون بنسبة 50% من الحجم الطبيعي</strong>، ولا تعود إلى الطبيعي إلا بعد صفقتين رابحتين.</p>
+
+<h3>الخطأ 2: تقليل الحجم بعد الربح</h3>
+<p>عكس الخطأ 1 ولكنه شائع أيضًا، وينبع من الخوف من "إعادة الأرباح". يقلل المتداولون الحجم بعد ربح كبير، ويفوتون الفرصة التالية، وتكون النتيجة الصافية للسلسلة أقل مما كانت ستكون عليه بحجم متسق. الميزة الإحصائية للطريقة لا تظهر إلا في الحجم؛ التقليل بعد الربح هو تخريب ذاتي للطريقة. القاعدة: <strong>الحجم بعد الربح هو نفسه قبل الربح</strong>. غير فقط في الدورات، وليس في الصفقات.</p>
+
+<h3>الخطأ 3: زيادة الحجم "لأن الـ setup واضح"</h3>
+<p>تبدو الصفقة مثالية، القراءة واضحة، إغراء مضاعفة الحجم هائل. هذه هي اللحظة بالضبط التي يكون فيها الدماغ أكثر عرضة للخطأ. الـ setup "الواضح" عادة ما يكون إجماعًا في السوق — والإجماع هو ما ينعكس. القاعدة: <strong>لا تغير الحجم أبدًا في حرارة اللحظة</strong>. تم تحديد الحجم قبل فتح المنصة؛ لا يتغير حتى تغلق المنصة.</p>
+
+<p>هذه الأخطاء الثلاثة، مجتمعة، مسؤولة عن غالبية انتهاكات الـ Drawdown في عام 2026. ليس الطريقة، ليس السوق، ليس الشركة — بل المتداول يغير الحجم استجابة عاطفية للنتائج الأخيرة. الترياق دائمًا هو نفسه: <strong>يتم تحديد الحجم في البروتوكول، وليس في التداول</strong>.</p>
+
+<hr>
+
+<h2>أسئلة متكررة</h2>
+
+<h3>ما هو الحجم المثالي للمركز في Prop Firm؟</h3>
+<p>0.5% إلى 1% من الرصيد لكل صفقة، ولا يزيد أبدًا عن 1/5 من هامش الأمان الحالي. في حساب Apex 50K بهامش 2,500 دولار أمريكي، الحد الأقصى للمخاطرة لكل صفقة هو 500 دولار أمريكي. في الأسابيع الأولى، التداول بنسبة 0.5% (250 دولار أمريكي) أكثر بقاءً. بعد تثبيت الـ drawdown floor، انتقال تدريجي إلى 1%.</p>
+
+<h3>كم عدد العقود التي يمكنني تداولها في حساب 50K؟</h3>
+<p>النمط الباقي في عام 2026: 1 mini ES/NQ أو 3 إلى 5 micro MES/MNQ قبل الـ floor؛ 2 mini أو 8 إلى 10 micro بعد ذلك. تقنيًا، تسمح المنصة بما يصل إلى 10 mini، لكن التداول عند الحد الأقصى التقني هو رياضيات إعادة التعيين، وليس البقاء.</p>
+
+<h3>مركز ثابت أم نسبة مئوية؟</h3>
+<p>النسبة المئوية (Fixed Fractional) تتفوق على الثابتة في معظم السيناريوهات لأنها تتكيف تلقائيًا مع تقلب الرصيد. المركز الثابت بالقيمة المطلقة يعمل بشكل جيد فقط في الحسابات المستقرة بعد الـ floor. قبل الـ floor، النسبة المئوية أكثر أمانًا رياضيًا.</p>
+
+<h3>كيف أحسب الـ lot في FTMO أو The5%ers؟</h3>
+<p>الـ lot = (المخاطرة بالدولار الأمريكي) ÷ (المسافة حتى حد الخسارة بالـ pips × قيمة الـ pip). في حساب FTMO 100K بمخاطرة 500 دولار أمريكي ومسافة 20 pips في EURUSD: 500 ÷ (20 × 10) = 2.5 mini lots. تقرب إلى 2. دائمًا للأسفل.</p>
+
+<h3>هل يعمل Kelly Criterion في Prop Firm؟</h3>
+<p>Kelly النقي يكسر الحساب في صفقة واحدة. Kelly الجزئي (25% من Kelly الكامل، أو "Quarter Kelly") يعمل ويقترب من الإجماع العملي من 0.5% إلى 1% من الرصيد. استخدم دائمًا كسرًا أصغر مما تقترحه الصيغة لتعويض التحيز في تقدير الاحتمالية.</p>
+
+<h3>ما الفرق بين Fixed Fractional و Fixed Ratio؟</h3>
+<p>Fractional يستخدم دائمًا نفس النسبة المئوية من الرصيد؛ Ratio يستخدم دلتا من الأرباح المتراكمة لتحرير +1 وحدة. Fractional تفاعلي ويحمي نفسه في الـ drawdown؛ Ratio ينمو بسرعة في الحساب الفائز ولكنه لا يقلل في الخسائر. في <strong>Prop Firm</strong>، Fractional أكثر ملاءمة.</p>
+
+<h3>هل يجب أن أزيد الحجم بعد سلسلة من الأرباح؟</h3>
+<p>أبدًا قبل تثبيت الـ drawdown floor. بعد الـ floor، زيادات تدريجية بنسبة 25% لكل دورة (أسبوعين متسقين)، لا تضاعف أبدًا دفعة واحدة. زيادة الحجم في ذروة سلسلة هو الخطأ رقم 1 الذي يقتل الحسابات الممولة.</p>
+
+<h3>ما هو الشيء التالي الذي يجب أن أقرأه؟</h3>
+<p>إذا فهمت تحديد الحجم وترغب في تعميق المخاطر، عد إلى <a href="/guides/gerenciamento-drawdown">إدارة الـ Drawdown</a>. إذا كنت ترغب في معرفة كيفية عمل دورة الموافقة الكاملة، انتقل إلى <a href="/guides/como-passar-no-desafio">كيفية اجتياز التحدي</a>. إذا كنت تفكر بالفعل في سحب أول payout، اقرأ <a href="/guides/como-sacar-lucros">كيفية سحب أرباحك</a>.</p>
+
+<hr>
+
+<h2>الخلاصة: تحديد الحجم هو الطريقة</h2>
+<p>هناك وهم مستمر بين المتداولين المبتدئين بأن الطريقة (setup، مؤشر، قراءة التدفق) هي ما يحدد النتيجة. ليس كذلك. في <strong>Prop Firm</strong>، الطريقة شرط ضروري، لكن <strong>Position Sizing شرط كافٍ</strong>. متداولان بنفس الطريقة وتحديد حجم مختلف ينتجان نتائج بمقادير مختلفة؛ متداولان بطرق مختلفة وتحديد حجم منضبط بنفس القدر يميلان إلى التقارب.</p>
+<p>الصيغة العالمية — نسبة المخاطرة % × الرصيد ÷ المسافة حتى حد الخسارة — تناسب ورقة ملاحظات صغيرة. لكن تطبيقها قبل كل صفقة، دون استثناء، دون "لكن اليوم مختلف"، دون "الـ setup مثالي"، هو ما يفصل المتداولين الذين يستمرون 12 شهرًا في حساب ممول عن المتداولين الذين يستمرون 12 يومًا. تحديد الحجم هو قرار يسبق فتح المنصة؛ ما يحدث بعد ذلك هو مجرد تنفيذ.</p>
+<p>إذا أقنعك هذا الدليل بشيء واحد، فليكن هذا: <strong>المتداول الممول الذي يضاعف 10 مرات في 24 شهرًا لم يزد الحجم؛ بل زاد عدد الحسابات</strong>. كل حساب يتم تداوله كما لو كان الوحيد. كل Drawdown يتم احترامه كما لو كان قاتلاً (وهو كذلك). كل تحديد حجم يتم حسابه مسبقًا، وليس أثناء التداول. اختر شركة موثوقة من <a href="/firms">قائمتنا الكاملة</a>، طبق كوبونًا في <a href="/">marketscoupons.com</a>، ابدأ بحساب 25K، تداول أول 15 يومًا بهدف واحد: <strong>احترام تحديد الحجم المحسوب في كل صفقة، دون استثناء</strong>. الباقي هو نتيجة.</p>
+
+<hr>
+
+<h2>أدلة ذات صلة</h2>
+<ul>
+<li><a href="/guides/o-que-e-uma-prop-firm">ما هي Prop Firm</a> — النموذج، الـ payouts وتاريخ سوق رأس المال المخصص</li>
+<li><a href="/guides/como-passar-no-desafio">كيفية اجتياز التحدي</a> — الركائز الأربع، الروتين اليومي وطريقة النجاح بنسبة 90%+</li>
+<li><a href="/guides/gerenciamento-drawdown">إدارة الـ Drawdown</a> — الأنواع الثلاثة، drawdown floor، مقارنة حسب الشركة و circuit breaker الشخصي</li>
+<li><a href="/guides/como-sacar-lucros">كيفية سحب أرباحك</a> — الـ Payout، الضرائب ومسار السحب الأول</li>
+</ul>
+
+<p style="margin-top:48px;padding:20px;background:var(--abg);border:1px solid var(--abr);border-radius:12px;color:var(--t1);font-size:14px">
+<strong style="color:var(--accent)">تحذير:</strong> هذا الدليل هو محتوى تعليمي. Markets Coupons لا تقدم استشارات مالية، ولا تصدر توصيات استثمارية، ولا تضمن النتائج في Prop Firms. التداول ينطوي على مخاطر. استشر محترفًا قبل أي قرار مالي.
+</p>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <a href="/">الرئيسية</a> ·
+  <a href="/guides">أدلة</a> ·
+  <a href="/firms">جميع الشركات</a> ·
+  <a href="/privacy">الخصوصية</a> ·
+  <a href="/terms">الشروط</a>
+  <p style="margin-top:12px;color:var(--t3);font-size:12px">© 2026 Markets Coupons</p>
+</footer>
+</body>
+</html>
