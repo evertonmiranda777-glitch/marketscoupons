@@ -149,8 +149,10 @@ const MC_ATTR = (()=>{
   return attr;
 })();
 
-// Firmas amember (Apex/Bulenox) — suportam ?keyword=X pra atribuicao 1:1 por campanha no painel
-const MC_KEYWORD_FIRMS = new Set(['apex','bulenox']);
+// Firmas amember que suportam ?keyword=X pra atribuicao 1:1 por campanha no painel.
+// Apex foi removido: checkout dinamico vai direto pra dashboard.apextraderfunding.com,
+// bypassa /member/aff/go/ entao o amember nao le o keyword. Pra Apex usa attribution-matcher.
+const MC_KEYWORD_FIRMS = new Set(['bulenox']);
 function mcBuildKeyword(firmId){
   if (!MC_KEYWORD_FIRMS.has(firmId)) return '';
   const raw = MC_ATTR.utm_campaign || MC_ATTR.utm_source || (MC_ATTR.fbclid?'fb':MC_ATTR.gclid?'gad':MC_ATTR.ttclid?'tt':'') || 'mcsite';
