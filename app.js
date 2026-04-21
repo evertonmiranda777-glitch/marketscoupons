@@ -6036,7 +6036,7 @@ let _userHasAccess = false; // cached: user has pro access (sub, loyalty, vip, t
 let _authGroup = 'login';
 let _authSlide = 0;
 const _authLoginBgs = ['img/auth-bg-1.webp','img/auth-bg-4.webp','img/auth-bg-3.webp','img/auth-bg-2.webp'];
-const _authSignupBgs = ['img/auth-bg-5.webp','img/auth-bg-6.webp','img/auth-bg-7.webp','img/auth-bg-8.webp'];
+const _authSignupBgs = ['img/auth-bg-5.webp','img/auth-bg-6.webp','img/auth-bg-7.webp','img/auth-bg-8.webp','img/auth-bg-5.webp'];
 
 function openAuthModal(type) {
   closeAuthModals();
@@ -6049,8 +6049,21 @@ function openAuthModal(type) {
   const sf = document.getElementById('auth-signup-form');
   if (lf) lf.style.display = _authGroup === 'login' ? '' : 'none';
   if (sf) sf.style.display = _authGroup === 'signup' ? '' : 'none';
+  rebuildAuthDots();
   goAuthSlide(0);
   startAuthCarousel();
+}
+function rebuildAuthDots() {
+  const host = document.getElementById('auth-dots');
+  if (!host) return;
+  const count = document.querySelectorAll('.auth-slide[data-group="' + _authGroup + '"]').length;
+  host.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('button');
+    b.className = 'auth-dot' + (i === 0 ? ' active' : '');
+    b.onclick = () => goAuthSlide(i);
+    host.appendChild(b);
+  }
 }
 function closeAuthModals() {
   document.getElementById('login-overlay').classList.remove('show');
@@ -6077,7 +6090,8 @@ let _authCarouselTimer = null;
 function startAuthCarousel() {
   stopAuthCarousel();
   _authCarouselTimer = setInterval(() => {
-    goAuthSlide((_authSlide + 1) % 4);
+    const total = document.querySelectorAll('.auth-slide[data-group="' + _authGroup + '"]').length || 4;
+    goAuthSlide((_authSlide + 1) % total);
   }, 6000);
 }
 function stopAuthCarousel() {
