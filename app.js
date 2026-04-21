@@ -3793,7 +3793,16 @@ const CHECKOUT_FIRMS=[
      'Instant Funding':[{size:'$2.5K',capital:'$2,500',goal:'—',maxDD:'-5%',orig:'$89',disc:'$62',featured:false},{size:'$5K',capital:'$5,000',goal:'—',maxDD:'-5%',orig:'$159',disc:'$111',featured:false},{size:'$10K',capital:'$10,000',goal:'—',maxDD:'-5%',orig:'$309',disc:'$216',featured:false},{size:'$20K',capital:'$20,000',goal:'—',maxDD:'-5%',orig:'$559',disc:'$391',featured:true},{size:'$40K',capital:'$40,000',goal:'—',maxDD:'-5%',orig:'$1,059',disc:'$741',featured:false},{size:'$80K',capital:'$80,000',goal:'—',maxDD:'-5%',orig:'$1,879',disc:'$1,315',featured:false}],
      'Pro Trader':[{size:'$5K',capital:'$5,000',goal:'—',maxDD:'-3%',orig:'$329',disc:'$263',featured:false},{size:'$10K',capital:'$10,000',goal:'—',maxDD:'-3%',orig:'$659',disc:'$527',featured:false},{size:'$20K',capital:'$20,000',goal:'—',maxDD:'-3%',orig:'$1,319',disc:'$1,055',featured:true},{size:'$40K',capital:'$40,000',goal:'—',maxDD:'-3%',orig:'$2,639',disc:'$2,111',featured:false},{size:'$80K',capital:'$80,000',goal:'—',maxDD:'-3%',orig:'$5,279',disc:'$4,223',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://app.citytradersimperium.com/user-auth/register?referral_code=1331c5&utm_source=client&utm_medium=referral&utm_id=1331c5'}
+   buildUrl:(size,type,plat)=>'https://app.citytradersimperium.com/user-auth/register?referral_code=1331c5&utm_source=client&utm_medium=referral&utm_id=1331c5'},
+  {id:'tradeday',name:'TradeDay',short:'TradeDay',coupon:'SAVE30',discount:'30%',color:'#0EA5E9',bg:'rgba(14,165,233,0.12)',
+   includes:['No consistency rule','Day 1 payouts','Keep up to 95% profit split','No activation fee with SAVE30','Futures only (CME, CBOT, NYMEX, COMEX)','24/7 support'],
+   types:['Intraday','EOD','Static'],platforms:['NinjaTrader','Tradovate','TradingView','Jigsaw'],
+   plansByType:{
+     'Intraday':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 trail',orig:'$125',disc:'$87',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 trail',orig:'$200',disc:'$140',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,000 trail',orig:'$300',disc:'$210',featured:false}],
+     'EOD':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 EOD',orig:'$175',disc:'$122',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 EOD',orig:'$275',disc:'$192',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,000 EOD',orig:'$375',disc:'$262',featured:false}],
+     'Static':[{size:'50K',capital:'$50,000',goal:'$1,500',maxDD:'$500 static',orig:'$165',disc:'$115',featured:false},{size:'100K',capital:'$100,000',goal:'$2,500',maxDD:'$750 static',orig:'$250',disc:'$175',featured:true},{size:'150K',capital:'$150,000',goal:'$3,750',maxDD:'$1,000 static',orig:'$350',disc:'$245',featured:false}]
+   },
+   buildUrl:(size,type,plat)=>{const t=type.toLowerCase();const s=size.toLowerCase();return`https://members.tradeday.com/en/user_registration/${s}-${t}-evaluation?a_aid=marketscoupons`;}}
 ];
 
 let achActiveFirm='apex';
