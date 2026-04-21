@@ -316,7 +316,11 @@ if(localStorage.getItem('mc-cookies-consent')==='accepted')loadTracking();
  --glow-gold:rgba(240,180,41,.15); --glow-gold-border:rgba(240,180,41,.25);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;overflow-x:hidden;}
+html{scroll-behavior:smooth;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(107,182,201,.18) transparent;}
+html::-webkit-scrollbar{width:8px;}
+html::-webkit-scrollbar-track{background:transparent;}
+html::-webkit-scrollbar-thumb{background:rgba(107,182,201,.18);border-radius:4px;}
+html::-webkit-scrollbar-thumb:hover{background:rgba(107,182,201,.32);}
 body{font-family:var(--f);color:var(--t1);min-height:100dvh;overflow-x:hidden;opacity:0;transition:opacity .2s ease;
  background:var(--bg) url('img/site-bg.webp') center top/cover no-repeat fixed;
 }
