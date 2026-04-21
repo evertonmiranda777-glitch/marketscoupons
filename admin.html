@@ -1507,6 +1507,14 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">ROAS por Keyword (Apex/Bulenox — atribuição 1:1)</div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Dados coletados da página Keywords do painel da firma (via extensão Chrome). utm_campaign vira <code>keyword</code> no link afiliado → firma mostra vendas por campanha. Cruza com gasto Meta Ads por utm_campaign.</div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="fin-roas-keywords"></table></div>
+      </div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Upload Manual (Apex / TPT — firmas com 2FA)</div>
       </div>
       <div class="chart-card" style="padding:16px;">
@@ -3596,6 +3604,80 @@ async function renderFinanceiro(){
 
   // ROAS Real por Campanha
   renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur);
+  renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur);
+}
+
+async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
+  const tbl = document.getElementById('fin-roas-keywords');
+  if (!tbl) return;
+  const [kwRes, spendRes] = await Promise.all([
+    db.from('affiliate_keyword_stats').select('firm_id,keyword,clicks,unique_clicks,leads,sales,commission,currency,snapshot_date').gte('snapshot_date', sinceDate).lte('snapshot_date', untilDate),
+    db.from('ad_spend_daily').select('campaign_name,spend,currency,clicks').gte('date', sinceDate).lte('date', untilDate)
+  ]);
+  const kws = kwRes.data || [];
+  const spend = spendRes.data || [];
+
+  // Agregar keywords por (firm_id + keyword) — pega ultimo snapshot (valores sao cumulativos no painel amember)
+  const latestByKey = {};
+  kws.forEach(k => {
+    const key = k.firm_id + '::' + k.keyword;
+    if (!latestByKey[key] || k.snapshot_date > latestByKey[key].snapshot_date) latestByKey[key] = k;
+  });
+  const byKw = {};
+  Object.values(latestByKey).forEach(k => {
+    const kw = (k.keyword||'').toLowerCase();
+    if (!byKw[kw]) byKw[kw] = { keyword:kw, firms:[], clicks:0, leads:0, sales:0, commissionUSD:0 };
+    byKw[kw].firms.push(k.firm_id);
+    byKw[kw].clicks += Number(k.clicks||0);
+    byKw[kw].leads += Number(k.leads||0);
+    byKw[kw].sales += Number(k.sales||0);
+    byKw[kw].commissionUSD += Number(k.commission||0);
+  });
+
+  // Agregar spend por campaign_name.lowercase (igual ao formato mcBuildKeyword que normaliza)
+  const spendByKw = {};
+  spend.forEach(s => {
+    const k = String(s.campaign_name||'').toLowerCase().replace(/[^a-z0-9_\-]/g,'_').slice(0,40);
+    if (!k) return;
+    if (!spendByKw[k]) spendByKw[k] = { spend:0, clicks:0, currency:s.currency||'USD' };
+    spendByKw[k].spend += Number(s.spend||0);
+    spendByKw[k].clicks += Number(s.clicks||0);
+  });
+
+  const allKws = new Set([...Object.keys(byKw), ...Object.keys(spendByKw)]);
+  const rows = [...allKws].map(kw => {
+    const a = byKw[kw] || { firms:[], clicks:0, leads:0, sales:0, commissionUSD:0 };
+    const s = spendByKw[kw] || { spend:0, clicks:0, currency:spendCur };
+    const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
+    const commBRL = a.commissionUSD * fxUSDtoBRL;
+    const roas = spendBRL > 0 ? (commBRL/spendBRL) : null;
+    const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
+    return { keyword:kw, firms:[...new Set(a.firms)], adClicks:s.clicks, firmClicks:a.clicks, leads:a.leads, sales:a.sales, spendBRL, commissionUSD:a.commissionUSD, commBRL, roas, cac };
+  }).filter(r => r.sales > 0 || r.spendBRL > 0 || r.firmClicks > 0)
+    .sort((x,y) => (y.roas||-1) - (x.roas||-1));
+
+  const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  tbl.innerHTML = `
+    <thead><tr>
+      <th>Keyword</th><th>Firmas</th><th>Gasto Ads</th><th>Cliques Ads</th><th>Cliques Firma</th><th>Leads</th><th>Vendas</th><th>Comissão</th><th>ROAS</th><th>CAC</th>
+    </tr></thead>
+    <tbody>${rows.length ? rows.map(r=>{
+      const roasColor = r.roas == null ? 'var(--t3)' : r.roas >= 2 ? '#10B981' : r.roas >= 1 ? '#F0B429' : '#EF4444';
+      return `<tr>
+        <td><b>${r.keyword}</b></td>
+        <td style="font-size:10px;">${r.firms.map(f=>f.toUpperCase()).join(', ')||'—'}</td>
+        <td>${fmtBRL(r.spendBRL)}</td>
+        <td>${r.adClicks.toLocaleString('pt-BR')}</td>
+        <td>${r.firmClicks.toLocaleString('pt-BR')}</td>
+        <td>${r.leads}</td>
+        <td>${r.sales}</td>
+        <td>${r.sales ? fmtUSD(r.commissionUSD) + '<div style="font-size:10px;color:var(--t3);">≈ '+fmtBRL(r.commBRL)+'</div>' : '—'}</td>
+        <td style="color:${roasColor};font-weight:700;">${r.roas!=null ? r.roas.toFixed(2)+'x' : '—'}</td>
+        <td>${r.cac ? fmtBRL(r.cac) : '—'}</td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="10" style="text-align:center;color:var(--t3);padding:24px;">Sem dados de keyword ainda. Abra a página Keywords do painel Apex/Bulenox com a extensão Chrome instalada — os dados vão sincronizar automaticamente.</td></tr>'}</tbody>`;
 }
 
 async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur){

@@ -30,6 +30,9 @@ serve(async (req) => {
   // Rows padronizados (Apex/Bulenox): [{date, transactions, commission, clicks_all, clicks_unique, granularity?}]
   const rows: any[] = Array.isArray(body.rows) ? body.rows : [];
 
+  // Keyword rows (Apex/Bulenox amember Keywords page): [{keyword, clicks, unique_clicks, leads, sales, commission}]
+  const keyword_rows: any[] = Array.isArray(body.keyword_rows) ? body.keyword_rows : [];
+
   // FTMO snapshot/leads
   const snapshot = body.snapshot || null;
   const leads: any[] = Array.isArray(body.leads) ? body.leads : [];
@@ -79,6 +82,32 @@ serve(async (req) => {
         .upsert(txs, { onConflict: "firm_id,transaction_id", ignoreDuplicates: false });
       if (error) return json({ error: "upsert_leads_failed", details: error.message }, 500);
       out.leads_saved = txs.length;
+    }
+  }
+
+  if (keyword_rows.length) {
+    const today = new Date().toISOString().slice(0, 10);
+    const kwNorm = keyword_rows
+      .filter(k => k && k.keyword)
+      .map(k => ({
+        firm_id: firm,
+        keyword: String(k.keyword).slice(0, 200),
+        snapshot_date: k.snapshot_date || today,
+        clicks: Number(k.clicks) || 0,
+        unique_clicks: Number(k.unique_clicks) || 0,
+        leads: Number(k.leads) || 0,
+        sales: Number(k.sales) || 0,
+        commission: Number(k.commission) || 0,
+        currency: k.currency || (firm === 'ftmo' ? 'EUR' : 'USD'),
+        source: String(body.source || 'ext_keywords'),
+        raw: k
+      }));
+    if (kwNorm.length) {
+      const { error } = await sb
+        .from("affiliate_keyword_stats")
+        .upsert(kwNorm, { onConflict: "firm_id,keyword,snapshot_date" });
+      if (error) return json({ error: "upsert_keywords_failed", details: error.message }, 500);
+      out.keywords_saved = kwNorm.length;
     }
   }
 

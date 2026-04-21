@@ -1,6 +1,12 @@
 // Bulenox: pagina Affiliate Info -> Statistics tem "Download Report (CSV File)"
 (async () => {
   try {
+    if (typeof mcIsKeywordsPage === 'function' && mcIsKeywordsPage()) {
+      const out = await mcSyncKeywords('bulenox', 'ext_bulenox_keywords_v1');
+      if (out.ok) mcToastBL(`Bulenox keywords: ${out.rows} linhas sincronizadas`);
+      else if (out.reason !== 'no_keyword_rows') mcToastBL('Bulenox keywords: ' + (out.error || out.reason));
+      return;
+    }
     const auto = await mcShouldAutoSyncBL('bulenox');
     if (!auto) return;
     await mcSyncBulenox({ auto: true });

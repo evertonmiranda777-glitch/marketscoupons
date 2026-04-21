@@ -27,13 +27,24 @@
   "background": { "service_worker": "background.js" },
   "content_scripts": [
     {
-      "matches": ["https://dashboard.apextraderfunding.com/aff/member/stats*"],
-      "js": ["config.js", "lib/csv.js", "content/apex.js"],
+      "matches": [
+        "https://dashboard.apextraderfunding.com/aff/member/stats*",
+        "https://dashboard.apextraderfunding.com/aff/member/keywords*",
+        "https://dashboard.apextraderfunding.com/aff/keywords*"
+      ],
+      "js": ["config.js", "lib/csv.js", "lib/keywords.js", "content/apex.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://bulenox.com/member/aff/member/stats*", "https://bulenox.com/aff/member/stats*", "https://bulenox.com/member/aff/stats*"],
-      "js": ["config.js", "lib/csv.js", "content/bulenox.js"],
+      "matches": [
+        "https://bulenox.com/member/aff/member/stats*",
+        "https://bulenox.com/aff/member/stats*",
+        "https://bulenox.com/member/aff/stats*",
+        "https://bulenox.com/member/aff/member/keywords*",
+        "https://bulenox.com/aff/member/keywords*",
+        "https://bulenox.com/member/aff/keywords*"
+      ],
+      "js": ["config.js", "lib/csv.js", "lib/keywords.js", "content/bulenox.js"],
       "run_at": "document_idle"
     },
     {

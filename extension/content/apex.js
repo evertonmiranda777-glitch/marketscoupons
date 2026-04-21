@@ -2,6 +2,12 @@
 // se falhar raspamos a tabela visivel.
 (async () => {
   try {
+    if (typeof mcIsKeywordsPage === 'function' && mcIsKeywordsPage()) {
+      const out = await mcSyncKeywords('apex', 'ext_apex_keywords_v1');
+      if (out.ok) mcToast(`Apex keywords: ${out.rows} linhas sincronizadas`);
+      else if (out.reason !== 'no_keyword_rows') mcToast('Apex keywords: ' + (out.error || out.reason));
+      return;
+    }
     const auto = await mcShouldAutoSync('apex');
     if (!auto) return;
     await mcSyncApex({ auto: true });
