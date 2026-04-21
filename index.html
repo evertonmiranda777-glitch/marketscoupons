@@ -1087,10 +1087,13 @@ img{max-width:100%;}
  width:min(520px,96vw);background:rgba(7,9,13,.92);border-left:1px solid rgba(107,182,201,.18);
  backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);
  overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform .33s cubic-bezier(.4,0,.2,1);
+ scrollbar-width:thin;scrollbar-color:rgba(107,182,201,.18) transparent;
 }
 .drw.open{transform:translateX(0);}
-.drw::-webkit-scrollbar{width:4px;}
-.drw::-webkit-scrollbar-thumb{background:var(--b2);}
+.drw::-webkit-scrollbar{width:6px;}
+.drw::-webkit-scrollbar-track{background:transparent;}
+.drw::-webkit-scrollbar-thumb{background:rgba(107,182,201,.18);border-radius:3px;}
+.drw::-webkit-scrollbar-thumb:hover{background:rgba(107,182,201,.32);}
 .drw-hd{
  display:flex;align-items:center;justify-content:space-between;
  padding:16px 20px;border-bottom:1px solid rgba(107,182,201,.18);
@@ -1512,9 +1515,11 @@ img{max-width:100%;}
 .fd-stat-val.r{color:var(--red);}
 .fd-stat-val.y{color:var(--gold);}
 .fd-divider{position:absolute;right:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(107,182,201,.18) 20%,rgba(107,182,201,.18) 80%,transparent);z-index:3;}
-.fd-right{flex:1;position:relative;height:100vh;overflow-y:auto;background:#060810;}
-.fd-right::-webkit-scrollbar{width:3px;}
-.fd-right::-webkit-scrollbar-thumb{background:rgba(107,182,201,.08);border-radius:3px;}
+.fd-right{flex:1;position:relative;height:100vh;overflow-y:auto;background:#060810;scrollbar-width:thin;scrollbar-color:rgba(107,182,201,.18) transparent;}
+.fd-right::-webkit-scrollbar{width:6px;}
+.fd-right::-webkit-scrollbar-track{background:transparent;}
+.fd-right::-webkit-scrollbar-thumb{background:rgba(107,182,201,.18);border-radius:3px;}
+.fd-right::-webkit-scrollbar-thumb:hover{background:rgba(107,182,201,.32);}
 .fd-close{position:absolute;top:20px;right:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);color:var(--t3);font-size:18px;cursor:pointer;transition:.3s;z-index:10;}
 .fd-close:hover{color:#fff;background:rgba(107,182,201,.08);transform:rotate(90deg);}
 .fd-ck{width:100%;max-width:480px;margin:0 auto;padding:28px 32px 36px;}

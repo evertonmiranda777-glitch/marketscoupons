@@ -2743,7 +2743,7 @@ function toggleFirmsSb(){
 /* Drawer state for inline checkout */
 const _drwState = {};
 
-const _firmPageSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded'];
+const _firmPageSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'];
 // Lazy load overlay data (about_html, detail_plans, bg_image) for a single firm
 const _overlayLoaded = {};
 async function loadFirmOverlayData(id) {
