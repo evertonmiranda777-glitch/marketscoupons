@@ -172,7 +172,7 @@ async function handleAnalysis(db: ReturnType<typeof createClient>) {
     .replace(/\.\s+Stop:/g, ".\nStop:")
     .replace(/\.\s+Probability:/g, ".\nProbability:");
 
-  const text = `<b>NQ</b>\n<b>Favorable scenario</b>\n${formatted}`;
+  const text = `<b>Favorable scenario: NQ</b>\n${formatted}`;
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "analysis");
 
