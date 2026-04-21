@@ -1,0 +1,16 @@
+name: Meta Ads Daily Sync
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 5h Brasilia (08:00 UTC) diario
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger meta-ads-sync edge function
+        run: |
+          curl -sSf -X POST "https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-sync?days=7" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}"

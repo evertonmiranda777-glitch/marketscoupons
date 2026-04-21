@@ -1473,6 +1473,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <option value="90">90 dias</option>
             <option value="365">12 meses</option>
           </select>
+          <button class="btn-secondary" onclick="syncMetaAds(this)">Sync Meta Ads</button>
           <button class="btn-secondary" onclick="renderFinanceiro()">Atualizar</button>
         </div>
       </div>
@@ -3575,6 +3576,30 @@ async function finUploadCsv(){
     st.textContent = `OK — ${data.rows_saved||rows.length} linhas salvas`;
     setTimeout(()=>renderFinanceiro(), 500);
   } catch(e) { st.textContent = 'Erro: '+e.message; }
+}
+
+async function syncMetaAds(btn){
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Sincronizando...';
+  try {
+    const days = parseInt(document.getElementById('fin-period')?.value || '30');
+    const res = await fetch(`https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-sync?days=${days}`, {
+      method:'POST',
+      headers:{'Authorization':'Bearer '+SUPABASE_ANON,'apikey':SUPABASE_ANON}
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      btn.textContent = 'Erro';
+      alert('Erro Meta Ads: ' + JSON.stringify(data));
+    } else {
+      btn.textContent = `OK: ${data.rows} linhas, $${Number(data.total_spend||0).toFixed(2)}`;
+      setTimeout(()=>renderFinanceiro(), 300);
+    }
+  } catch(e) {
+    btn.textContent = 'Erro';
+    alert('Erro: '+e.message);
+  }
+  setTimeout(()=>{ btn.disabled=false; btn.textContent=orig; }, 3000);
 }
 
 function finParseAmemberCSV(text){
