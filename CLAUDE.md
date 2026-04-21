@@ -150,7 +150,7 @@ Sistema automatizado pra detectar mudancas nas prop firms (promocoes, precos, re
 - **Custo:** 11 credits/semana = ~44/mes (caber na free tier 500/mes com folga)
 
 ### Secrets necessarios no GitHub (Settings → Secrets → Actions)
-- `FIRECRAWL_API_KEY` = `fc-9b25c6ef0ca448209c3ffd1e3e11e540` (ja gerado, conta criada via GitHub 2026-04-15)
+- `FIRECRAWL_API_KEY` = ver GitHub Secrets do repo (gerado 2026-04-15, NUNCA commitar em código)
 - `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` (reusar os do bot existente)
 
 ### URLs monitoradas (11 firmas, homepage publica NAO link afiliado)

@@ -11706,9 +11706,17 @@ function renderLiveRoomForm(){
 /* ══════════════════════════════════════════════════════════
    TELEGRAM SECTION
 ══════════════════════════════════════════════════════════ */
-const TG_BOT_TOKEN  = '8733719815:AAEEAw6DHQmPIKiZbATdr0TLQ7Sx_5nBqzU';
-const TG_CHAT_ID    = '-1002924828989';
 const TG_EDGE_URL   = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/telegram-bot';
+/* Envia mensagem custom ao Telegram via edge function (token fica server-side, nunca no client) */
+async function tgSendCustom(text, buttonText, buttonUrl){
+  const res = await fetch(`${TG_EDGE_URL}?action=send_custom`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
+    body: JSON.stringify({ text, buttonText, buttonUrl })
+  });
+  const json = await res.json();
+  return { ok: json.ok && json.result?.sent, error: json.result?.error || json.error };
+}
 
 let _tgFirms = [];      // firmas carregadas para a aba Telegram
 let _tgInited = false;
@@ -11871,14 +11879,9 @@ async function tgPreviewAnalysis(){
     if(dateLabel) st.textContent = 'Preview com dados anteriores'+dateLabel; else { st.textContent = ''; }
     st.className = dateLabel ? 'tg-status loading' : 'tg-status';
     tgPreviewShow(tgHtmlToPreview(text), '📊 Full Analysis → marketscoupons.com', 'https://www.marketscoupons.com/analysis', async () => {
-      const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ chat_id:TG_CHAT_ID, text, parse_mode:'HTML',
-          reply_markup:{inline_keyboard:[[{text:'📊 Full Analysis → marketscoupons.com',url:'https://www.marketscoupons.com/analysis'}]]} })
-      });
-      const json = await res.json();
-      if(json.ok){ st.textContent='✓ Análise '+assetPick+' enviada!'; st.className='tg-status ok'; toast('Análise enviada!'); }
-      else { st.textContent='Erro: '+(json.description||''); st.className='tg-status err'; }
+      const r = await tgSendCustom(text, '📊 Full Analysis → marketscoupons.com', 'https://www.marketscoupons.com/analysis');
+      if(r.ok){ st.textContent='✓ Análise '+assetPick+' enviada!'; st.className='tg-status ok'; toast('Análise enviada!'); }
+      else { st.textContent='Erro: '+(r.error||'falha'); st.className='tg-status err'; }
     });
   } catch(e){ st.textContent='Erro: '+e.message; st.className='tg-status err'; }
 }
@@ -11921,14 +11924,9 @@ async function tgPreviewGex(){
     if(gexDateLabel) st.textContent = 'Preview com dados anteriores'+gexDateLabel; else { st.textContent = ''; }
     st.className = gexDateLabel ? 'tg-status loading' : 'tg-status';
     tgPreviewShow(tgHtmlToPreview(text), '🎯 Full GEX Data → marketscoupons.com', 'https://www.marketscoupons.com/gamma', async () => {
-      const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ chat_id:TG_CHAT_ID, text, parse_mode:'HTML',
-          reply_markup:{inline_keyboard:[[{text:'🎯 Full GEX Data → marketscoupons.com',url:'https://www.marketscoupons.com/gamma'}]]} })
-      });
-      const json = await res.json();
-      if(json.ok){ st.textContent='✓ GEX '+tickerPick+' enviado!'; st.className='tg-status ok'; toast('GEX enviado!'); }
-      else { st.textContent='Erro: '+(json.description||''); st.className='tg-status err'; }
+      const r = await tgSendCustom(text, '🎯 Full GEX Data → marketscoupons.com', 'https://www.marketscoupons.com/gamma');
+      if(r.ok){ st.textContent='✓ GEX '+tickerPick+' enviado!'; st.className='tg-status ok'; toast('GEX enviado!'); }
+      else { st.textContent='Erro: '+(r.error||'falha'); st.className='tg-status err'; }
     });
   } catch(e){ st.textContent='Erro: '+e.message; st.className='tg-status err'; }
 }
@@ -11966,14 +11964,9 @@ async function tgPreviewCalendar(){
       `👉 Full calendar: https://www.marketscoupons.com/calendar`;
     st.textContent = ''; st.className = 'tg-status';
     tgPreviewShow(tgHtmlToPreview(text), '📅 Full Calendar → marketscoupons.com', 'https://www.marketscoupons.com/calendar', async () => {
-      const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ chat_id:TG_CHAT_ID, text, parse_mode:'HTML',
-          reply_markup:{inline_keyboard:[[{text:'📅 Full Calendar → marketscoupons.com',url:'https://www.marketscoupons.com/calendar'}]]} })
-      });
-      const json = await res.json();
-      if(json.ok){ st.textContent='✓ Calendário enviado!'; st.className='tg-status ok'; toast('Calendário enviado!'); }
-      else { st.textContent='Erro: '+(json.description||''); st.className='tg-status err'; }
+      const r = await tgSendCustom(text, '📅 Full Calendar → marketscoupons.com', 'https://www.marketscoupons.com/calendar');
+      if(r.ok){ st.textContent='✓ Calendário enviado!'; st.className='tg-status ok'; toast('Calendário enviado!'); }
+      else { st.textContent='Erro: '+(r.error||'falha'); st.className='tg-status err'; }
     });
   } catch(e){ st.textContent='Erro: '+e.message; st.className='tg-status err'; }
 }
@@ -11995,14 +11988,9 @@ async function tgPreviewCoupons(){
     const text = `🔥 <b>Today's Best Prop Firm Deals</b>\n\n` + lines.join('\n\n') + `\n\n👉 All coupons: https://www.marketscoupons.com`;
     st.textContent = ''; st.className = 'tg-status';
     tgPreviewShow(tgHtmlToPreview(text), '🌐 Claim your coupon → marketscoupons.com', 'https://www.marketscoupons.com', async () => {
-      const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ chat_id:TG_CHAT_ID, text, parse_mode:'HTML',
-          reply_markup:{inline_keyboard:[[{text:'🌐 Claim your coupon → marketscoupons.com',url:'https://www.marketscoupons.com'}]]} })
-      });
-      const json = await res.json();
-      if(json.ok){ st.textContent='✓ Cupons enviados!'; st.className='tg-status ok'; toast('Cupons enviados!'); }
-      else { st.textContent='Erro: '+(json.description||''); st.className='tg-status err'; }
+      const r = await tgSendCustom(text, '🌐 Claim your coupon → marketscoupons.com', 'https://www.marketscoupons.com');
+      if(r.ok){ st.textContent='✓ Cupons enviados!'; st.className='tg-status ok'; toast('Cupons enviados!'); }
+      else { st.textContent='Erro: '+(r.error||'falha'); st.className='tg-status err'; }
     });
   } catch(e){ st.textContent='Erro: '+e.message; st.className='tg-status err'; }
 }

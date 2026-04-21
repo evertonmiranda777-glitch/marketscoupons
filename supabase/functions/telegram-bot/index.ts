@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "8733719815:AAEEAw6DHQmPIKiZbATdr0TLQ7Sx_5nBqzU";
+const BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") ?? "-1002924828989";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "https://qfwhduvutfumsaxnuofa.supabase.co";
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -505,6 +505,19 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
   return { sent: msgId !== null, firm: firm.name, ends_at: endsAt.toISOString() };
 }
 
+// ── action=send_custom (admin preview → send) ──────────────────────────────
+async function handleSendCustom(req: Request) {
+  let body: { text?: string; buttonText?: string; buttonUrl?: string } = {};
+  try { body = await req.json(); } catch { /* empty */ }
+  const text = String(body.text || "").slice(0, 4000);
+  if (!text) return { sent: false, error: "empty text" };
+  const buttons = body.buttonText && body.buttonUrl
+    ? [[{ text: String(body.buttonText), url: String(body.buttonUrl) }]]
+    : undefined;
+  const msgId = await sendMessage(text, buttons);
+  return { sent: msgId !== null, message_id: msgId };
+}
+
 // ── Main handler ────────────────────────────────────────────────────────────
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
@@ -543,6 +556,9 @@ Deno.serve(async (req: Request) => {
         break;
       case "flash_promo":
         result = await handleFlashPromo(db, firmId, urgency);
+        break;
+      case "send_custom":
+        result = await handleSendCustom(req);
         break;
       default:
         return new Response(JSON.stringify({ error: "Unknown action", action }), {

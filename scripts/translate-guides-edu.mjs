@@ -41,6 +41,7 @@ const GUIDES = [
   { id: 'g3', slug: 'gerenciamento-drawdown' },
   { id: 'g4', slug: 'position-sizing' },
   { id: 'g5', slug: 'como-sacar-lucros' },
+  { id: 'cmp1', slug: 'comparativo-apex-tpt-bulenox' },
 ];
 
 const LANGS = [
@@ -133,7 +134,7 @@ async function translateFile(srcPath, dstPath, lang) {
 
 async function main() {
   const args = process.argv.slice(2).map(a => a.toLowerCase());
-  const filterGuide = args.find(a => /^g[1-5]$/.test(a));
+  const filterGuide = args.find(a => /^(g[1-5]|cmp\d+)$/.test(a));
   const filterLang = args.find(a => LANGS.some(l => l.code === a));
 
   const guides = filterGuide ? GUIDES.filter(g => g.id === filterGuide) : GUIDES;
