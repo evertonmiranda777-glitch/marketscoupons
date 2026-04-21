@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MarketsCoupons Sync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sincroniza dados de afiliado das prop firms com o admin MarketsCoupons.",
   "permissions": ["storage", "cookies", "activeTab", "scripting"],
   "host_permissions": [
@@ -23,6 +23,7 @@
     "https://*.e8markets.com/*",
     "https://*.citytradersimperium.com/*",
     "https://*.tradeday.com/*",
+    "https://tradeday.postaffiliatepro.com/*",
     "https://qfwhduvutfumsaxnuofa.supabase.co/*"
   ],
   "background": { "service_worker": "background.js" },
@@ -94,7 +95,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://www.tradeday.com/affiliates*", "https://tradeday.com/affiliates*", "https://*.tradeday.com/affiliates*"],
+      "matches": ["https://www.tradeday.com/affiliates*", "https://tradeday.com/affiliates*", "https://*.tradeday.com/affiliates*", "https://tradeday.postaffiliatepro.com/*"],
       "js": ["config.js", "lib/csv.js", "content/tradeday.js"],
       "run_at": "document_idle"
     }

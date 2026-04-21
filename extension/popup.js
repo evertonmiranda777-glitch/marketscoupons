@@ -10,7 +10,7 @@ const FIRMS = [
   { id:'fundingpips',  name:'FundingPips',  url:'https://app.fundingpips.com/affiliate',                   action:'sync_fundingpips' },
   { id:'e8',           name:'E8 Markets',   url:'https://e8x.e8markets.com/affiliate',                     action:'sync_e8' },
   { id:'cti',          name:'CTI',          url:'https://app.citytradersimperium.com/affiliates',          action:'sync_cti' },
-  { id:'tradeday',     name:'TradeDay',     url:'https://www.tradeday.com/affiliates/',                    action:'sync_tradeday' }
+  { id:'tradeday',     name:'TradeDay',     url:'https://tradeday.postaffiliatepro.com/affiliates/panel.php#Home', action:'sync_tradeday' }
 ];
 
 function fmtAgo(ts) {
