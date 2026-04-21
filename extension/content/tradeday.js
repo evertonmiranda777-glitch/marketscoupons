@@ -27,11 +27,42 @@ async function mcMarkSyncTD(firmId) {
 }
 
 async function mcSyncTD(opts = {}) {
+  // PostAffiliatePro: transacoes estao em #Commissions, nao em #Home
+  const onCommissions = /#Commissions/i.test(location.hash);
+  if (!onCommissions) {
+    // tenta achar e clicar no link "Commissions" na sidebar
+    const navEl = [...document.querySelectorAll('a,span,div,li')].find(el => {
+      const t = (el.textContent || '').trim().toLowerCase();
+      return t === 'commissions' && el.children.length <= 3;
+    });
+    if (navEl) navEl.click();
+    else location.hash = '#Commissions';
+    // espera tabela renderizar (AJAX)
+    let found = [];
+    for (let i = 0; i < 24; i++) {
+      await new Promise(r => setTimeout(r, 500));
+      found = mcScrapeTDTable();
+      if (found.length) break;
+      // tabela vazia mas ja renderizada? detecta cabecalho
+      if (document.querySelector('table thead th, table tr th')) {
+        const heads = [...document.querySelectorAll('table th')].map(x => x.textContent.toLowerCase());
+        if (heads.some(h => h.includes('commission') || h.includes('amount'))) break;
+      }
+    }
+  }
+
   const leads = mcScrapeTDTable();
 
+  // painel vazio e cenario legitimo (0 vendas ate agora) — marca sync pra nao loop
   if (!leads.length) {
-    mcToastTD('TradeDay: sem transacoes na pagina');
-    return { ok:false };
+    const hasCommissionsTable = [...document.querySelectorAll('table th')].some(th => /commission|amount/i.test(th.textContent || ''));
+    if (hasCommissionsTable) {
+      mcToastTD('TradeDay: 0 transacoes (painel vazio)');
+      await mcMarkSyncTD('tradeday');
+      return { ok:true, rows:0, leads:0 };
+    }
+    mcToastTD('TradeDay: abra a aba Commissions manualmente');
+    return { ok:false, reason:'no_commissions_page' };
   }
 
   const byDay = {};
