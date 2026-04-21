@@ -63,12 +63,10 @@ function mcScrapeTPTTransactions() {
   document.querySelectorAll('table, [role="table"]').forEach(t => {
     const headCells = t.querySelectorAll('thead th, [role="columnheader"]');
     const head = [...headCells].map(x => x.textContent.trim().toLowerCase());
-    // precisa ter coluna de data e alguma coluna de valor/comissao
-    const hasDate = head.some(h => h.includes('date'));
     const hasValue = head.some(h => h.includes('commission') || h.includes('amount') || h.includes('earning') || h.includes('payout') || h.includes('value'));
-    if (!hasDate || !hasValue) return;
+    if (!hasValue) return;
 
-    const iDate = head.findIndex(h => h.includes('date'));
+    let iDate = head.findIndex(h => h.includes('date') || h.includes('created') || h.includes('time') || h.includes('when'));
     const iCom = head.findIndex(h => h.includes('commission') || h.includes('earning') || h.includes('payout'));
     const iAmt = head.findIndex(h => h.includes('amount') || h.includes('value') || h.includes('total'));
     const iOrder = head.findIndex(h => h.includes('order') || h.includes('transaction') || h.includes('id') || h.includes('ref'));
@@ -76,6 +74,19 @@ function mcScrapeTPTTransactions() {
     const iCust = head.findIndex(h => h.includes('customer') || h.includes('buyer') || h.includes('user') || h.includes('email'));
 
     const bodyRows = t.querySelectorAll('tbody tr, [role="row"]');
+
+    // Fallback: se nenhuma coluna tem header de data, tenta detectar pela 1a linha
+    if (iDate < 0) {
+      const firstRow = bodyRows[0];
+      if (firstRow) {
+        const cells = [...firstRow.querySelectorAll('td, [role="cell"]')].map(x => x.textContent.trim());
+        for (let i = 0; i < cells.length; i++) {
+          if (mcTPTParseDate(cells[i])) { iDate = i; break; }
+        }
+      }
+    }
+    if (iDate < 0) return;
+
     bodyRows.forEach(tr => {
       const tds = [...tr.querySelectorAll('td, [role="cell"]')].map(x => x.textContent.trim());
       if (!tds.length) return;
