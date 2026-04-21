@@ -120,6 +120,11 @@
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://www.marketscoupons.com/tradeday</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
 
   <!-- ==================== FIRM PAGES × LANGUAGE ==================== -->
   <url><loc>https://www.marketscoupons.com/en/apex</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
@@ -176,6 +181,12 @@
   <url><loc>https://www.marketscoupons.com/de/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.marketscoupons.com/it/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.marketscoupons.com/ar/brightfunded</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/en/tradeday</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/es/tradeday</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/fr/tradeday</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/de/tradeday</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/it/tradeday</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.marketscoupons.com/ar/tradeday</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 
   <!-- Comparar -->
   <url>

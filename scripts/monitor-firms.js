@@ -19,6 +19,7 @@ const FIRMS = [
   { id: 'brightfunded', url: 'https://brightfunded.com/'         },
   { id: 'e8',           url: 'https://e8markets.com/'            },
   { id: 'cti',          url: 'https://cityTradersimperium.com/'  },
+  { id: 'tradeday',     url: 'https://www.tradeday.com/'         },
 ];
 
 const OUT_DIR = path.join(__dirname, '..', '.firecrawl', 'firms');

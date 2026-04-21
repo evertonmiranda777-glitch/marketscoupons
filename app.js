@@ -1164,6 +1164,7 @@ const FIRM_REVIEWS = [
   {id:'brightfunded', name:'BrightFunded',             slug:'brightfunded-review'},
   {id:'e8',           name:'E8 Markets',               slug:'e8-review'},
   {id:'cti',          name:'City Traders Imperium',    slug:'cti-review'},
+  {id:'tradeday',     name:'TradeDay',                 slug:'tradeday-review'},
 ];
 /* Langs with dedicated /<lang>/guides/ pages. Others fall back to EN root /guides/ */
 const REVIEW_LANGS = ['es','it','fr','de','ar'];
