@@ -650,6 +650,7 @@ Valores minimos de opacidade para rgba(255,255,255,...) em fundo escuro. NUNCA u
 ### Regras
 - **NUNCA** usar `.04`, `.05`, `.06` em backgrounds de cards — minimo `.10`
 - **NUNCA** usar `.08` em borders — minimo `.12` (decorativo) ou `.14` (cards)
+- **Card sobre hero image (drawer/fd-overlay):** os minimos acima assumem fundo escuro solido. Quando ha imagem hero atras (`drw-hero`, `fd-bg`), tints claros deixam bg bleed atravessar e matam legibilidade. Usar base escura quase-solida: `background:rgba(13,20,28,.78); border:1px solid rgba(107,182,201,.22)`. Padrao aplicado em `.fd-rating-block`, `.fd-about`, `.fd-about-hl`, `.fd-stat`.
 - **NUNCA** usar `var(--t3)` em texto que o usuario precisa ler — minimo `var(--t2)`
 - Filtros e botoes de acao: `var(--t1)` com `font-weight:600`
 - `backdrop-filter` proibido em cards/conteudo — apenas em nav, overlay e footer
