@@ -3968,6 +3968,11 @@ async function loadFirmsFromSupabase() {
 
     // Cache firms in localStorage for offline fallback
     try { localStorage.setItem('mc_firms_cache', JSON.stringify(FIRMS)); } catch(e){}
+
+    // Retry opening firm overlay if dedicated page loaded before FIRMS arrived
+    if(window._dedicatedFirmSlug && !document.getElementById('fd-overlay')?.classList.contains('show') && !document.getElementById('drw')?.classList.contains('open')){
+      openD(window._dedicatedFirmSlug);
+    }
   } catch(e) {
     // Supabase unavailable — try localStorage cache
     console.warn('[MC] Supabase firms unavailable, trying cache');
@@ -6471,7 +6476,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const _pathParts=location.pathname.split('/').filter(Boolean);
   const _pathLangs=['en','es','fr','de','it','ar'];
   const _earlySlug=_pathLangs.includes(_pathParts[0])?(_pathParts[1]||''):(_pathParts[0]||'');
-  const _isFirmPage=_firmPageSlugs.includes(_earlySlug) && FIRMS.find(x=>x.id===_earlySlug);
+  const _isFirmPage=_firmPageSlugs.includes(_earlySlug);
   const _initPage = _pageFromPath() || location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
   if(_isFirmPage){
     go('home', true);
