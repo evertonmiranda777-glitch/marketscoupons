@@ -34,18 +34,26 @@ async function mcSyncApex(opts = {}) {
   const affId = mcApexAffId();
   if (!affId) { mcToast('Apex: nao identificou aff_id — estou logado no painel de afiliado?'); return { ok:false, reason:'no_aff_id' }; }
 
-  // Statistics page mostra Year selector; exportar CSV do ano atual
-  const year = new Date().getUTCFullYear();
-  const csvUrl = `/aff/member/stats/export?y=${year}`;
+  // 1) Procurar link "Download Report" na pagina (amember pattern)
+  let csvUrl = null;
+  document.querySelectorAll('a').forEach(a => {
+    const txt = (a.textContent || '').toLowerCase();
+    const href = a.href || '';
+    if (txt.includes('download report') || txt.includes('csv') || /aff-stat-.+\.csv/i.test(href)) {
+      csvUrl = a.href;
+    }
+  });
 
   let rows = [];
-  try {
-    const res = await fetch(csvUrl, { credentials: 'include' });
-    if (res.ok) {
-      const text = await res.text();
-      rows = mcParseApexCSV(text);
-    }
-  } catch (e) { /* fallback to DOM scrape */ }
+  if (csvUrl) {
+    try {
+      const res = await fetch(csvUrl, { credentials: 'include' });
+      if (res.ok) {
+        const text = await res.text();
+        rows = mcParseApexCSV(text);
+      }
+    } catch (e) {}
+  }
 
   if (!rows.length) rows = mcScrapeApexTable();
   if (!rows.length) { mcToast('Apex: nenhuma linha encontrada'); return { ok:false, reason:'no_rows' }; }
@@ -77,53 +85,76 @@ function mcParseApexCSV(text) {
   const rows = mcParseCSV(text);
   if (!rows.length) return [];
   const header = rows[0].map(h => h.trim().toLowerCase());
-  const iDate = header.findIndex(h => h === 'date');
-  const iTx = header.findIndex(h => h.includes('transaction'));
-  const iCom = header.findIndex(h => h.includes('commission'));
-  const iCAll = header.findIndex(h => h.includes('all'));
-  const iCUniq = header.findIndex(h => h.includes('unique'));
+  const iDate = header.findIndex(h => h === 'date' || h.includes('date'));
+  const iTx = header.findIndex(h => h.includes('transaction') || h === 'sales');
+  const iCom = header.findIndex(h => h.includes('commission') || h.includes('referral fee') || h.includes('fee earned'));
+  const iCAll = header.findIndex(h => h.includes('all') && h.includes('click'));
+  const iCUniq = header.findIndex(h => h.includes('unique') && h.includes('click'));
+  const iClicksCombined = header.findIndex(h => h.includes('click') && (h.includes('/') || h.includes('all/unique')));
   if (iDate < 0) return [];
   const out = [];
   for (let r = 1; r < rows.length; r++) {
     const row = rows[r];
-    const d = mcParseMonthDay(row[iDate]);
-    if (!d) continue;
+    const raw = (row[iDate] || '').trim();
+    const dDay = mcParseMonthDay(raw);
+    const dMonth = mcParseMonthYear(raw);
+    const date = dDay || (dMonth && dMonth.firstDay);
+    if (!date) continue;
+    let clicks_all = iCAll >= 0 ? Math.round(mcNum(row[iCAll])) : 0;
+    let clicks_unique = iCUniq >= 0 ? Math.round(mcNum(row[iCUniq])) : 0;
+    if (iClicksCombined >= 0) {
+      const m = /(\d+)\s*\/\s*(\d+)/.exec(row[iClicksCombined] || '');
+      if (m) { clicks_all = +m[1]; clicks_unique = +m[2]; }
+    }
     out.push({
-      date: d,
-      transactions: Math.round(mcNum(row[iTx])),
-      commission: mcNum(row[iCom]),
-      clicks_all: Math.round(mcNum(row[iCAll])),
-      clicks_unique: Math.round(mcNum(row[iCUniq]))
+      date,
+      granularity: dDay ? 'day' : 'month',
+      transactions: iTx >= 0 ? Math.round(mcNum(row[iTx])) : 0,
+      commission: iCom >= 0 ? mcNum(row[iCom]) : 0,
+      clicks_all,
+      clicks_unique
     });
   }
   return out;
 }
 
 function mcScrapeApexTable() {
-  // Fallback: pega a tabela visivel na pagina Stats
   const tables = document.querySelectorAll('table');
   for (const t of tables) {
     const head = [...t.querySelectorAll('thead th, tr th')].map(x => x.textContent.trim().toLowerCase());
-    const hasDate = head.some(h => h === 'date');
-    const hasCom = head.some(h => h.includes('commission'));
+    const hasDate = head.some(h => h.includes('date'));
+    const hasCom = head.some(h => h.includes('commission') || h.includes('referral fee') || h.includes('fee earned'));
     if (!hasDate || !hasCom) continue;
-    const iDate = head.findIndex(h => h === 'date');
-    const iTx = head.findIndex(h => h.includes('transaction'));
-    const iCom = head.findIndex(h => h.includes('commission'));
-    const iCAll = head.findIndex(h => h.includes('all'));
-    const iCUniq = head.findIndex(h => h.includes('unique'));
+    const iDate = head.findIndex(h => h.includes('date'));
+    const iTx = head.findIndex(h => h.includes('transaction') || h === 'sales');
+    const iCom = head.findIndex(h => h.includes('commission') || h.includes('referral fee') || h.includes('fee earned'));
+    const iClicks = head.findIndex(h => h.includes('click'));
+    const iCAll = head.findIndex(h => h.includes('all') && h.includes('click'));
+    const iCUniq = head.findIndex(h => h.includes('unique') && h.includes('click'));
     const body = t.querySelectorAll('tbody tr');
     const out = [];
     body.forEach(tr => {
       const tds = [...tr.querySelectorAll('td')].map(x => x.textContent.trim());
-      const d = mcParseMonthDay(tds[iDate]);
-      if (!d) return;
+      const raw = tds[iDate] || '';
+      const dDay = mcParseMonthDay(raw);
+      const dMonth = mcParseMonthYear(raw);
+      const date = dDay || (dMonth && dMonth.firstDay);
+      if (!date) return;
+      let clicks_all = 0, clicks_unique = 0;
+      if (iCAll >= 0) clicks_all = Math.round(mcNum(tds[iCAll]));
+      if (iCUniq >= 0) clicks_unique = Math.round(mcNum(tds[iCUniq]));
+      if ((!clicks_all && !clicks_unique) && iClicks >= 0) {
+        const m = /(\d+)\s*\/\s*(\d+)/.exec(tds[iClicks] || '');
+        if (m) { clicks_all = +m[1]; clicks_unique = +m[2]; }
+        else clicks_all = Math.round(mcNum(tds[iClicks]));
+      }
       out.push({
-        date: d,
-        transactions: Math.round(mcNum(tds[iTx])),
-        commission: mcNum(tds[iCom]),
-        clicks_all: Math.round(mcNum(tds[iCAll])),
-        clicks_unique: Math.round(mcNum(tds[iCUniq]))
+        date,
+        granularity: dDay ? 'day' : 'month',
+        transactions: iTx >= 0 ? Math.round(mcNum(tds[iTx])) : 0,
+        commission: iCom >= 0 ? mcNum(tds[iCom]) : 0,
+        clicks_all,
+        clicks_unique
       });
     });
     if (out.length) return out;
