@@ -9,7 +9,8 @@ const FIRMS = [
   { id:'brightfunded', name:'BrightFunded', url:'https://app.brightfunded.com/affiliate/dashboard',        action:'sync_brightfunded' },
   { id:'fundingpips',  name:'FundingPips',  url:'https://app.fundingpips.com/affiliate',                   action:'sync_fundingpips' },
   { id:'e8',           name:'E8 Markets',   url:'https://e8x.e8markets.com/affiliate',                     action:'sync_e8' },
-  { id:'cti',          name:'CTI',          url:'https://app.citytradersimperium.com/affiliates',          action:'sync_cti' }
+  { id:'cti',          name:'CTI',          url:'https://app.citytradersimperium.com/affiliates',          action:'sync_cti' },
+  { id:'tradeday',     name:'TradeDay',     url:'https://www.tradeday.com/affiliates/',                    action:'sync_tradeday' }
 ];
 
 function fmtAgo(ts) {

@@ -47,10 +47,10 @@ const FIRMS_BY_DAY = {
   0: ['apex', 'bulenox', 'tpt', 'e2t'],
   1: ['apex', 'bulenox', 'tpt', 'e2t'],
   2: ['ftmo', 'fn', 'fundingpips', 'cti'],
-  3: ['apex', 'bulenox', 'tpt', 'e2t'],
+  3: ['apex', 'bulenox', 'tpt', 'tradeday'],
   4: ['ftmo', 'the5ers', 'brightfunded', 'e8'],
   5: ['apex', 'bulenox', 'tpt', 'e2t'],
-  6: ['apex', 'bulenox', 'tpt', 'e2t'],
+  6: ['apex', 'bulenox', 'tpt', 'tradeday'],
 };
 
 function pickFirmIdsForToday() {

@@ -22,6 +22,7 @@
     "https://*.e8funding.com/*",
     "https://*.e8markets.com/*",
     "https://*.citytradersimperium.com/*",
+    "https://*.tradeday.com/*",
     "https://qfwhduvutfumsaxnuofa.supabase.co/*"
   ],
   "background": { "service_worker": "background.js" },
@@ -90,6 +91,11 @@
     {
       "matches": ["https://app.citytradersimperium.com/affiliates*"],
       "js": ["config.js", "lib/csv.js", "content/cti.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.tradeday.com/affiliates*", "https://tradeday.com/affiliates*", "https://*.tradeday.com/affiliates*"],
+      "js": ["config.js", "lib/csv.js", "content/tradeday.js"],
       "run_at": "document_idle"
     }
   ],
