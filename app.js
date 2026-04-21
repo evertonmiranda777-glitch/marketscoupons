@@ -3972,6 +3972,7 @@ async function loadFirmsFromSupabase() {
     // Retry opening firm overlay if dedicated page loaded before FIRMS arrived
     if(window._dedicatedFirmSlug && !document.getElementById('fd-overlay')?.classList.contains('show') && !document.getElementById('drw')?.classList.contains('open')){
       openD(window._dedicatedFirmSlug);
+      document.body.style.opacity='1';
     }
   } catch(e) {
     // Supabase unavailable — try localStorage cache
@@ -6467,6 +6468,10 @@ document.addEventListener('click', e => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   if('scrollRestoration' in history) history.scrollRestoration='manual';
+  // Preload FIRMS from localStorage cache BEFORE sync boot (avoids empty-state flash on /firm-slug refresh)
+  if(FIRMS.length===0){
+    try{ const cached=localStorage.getItem('mc_firms_cache'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
+  }
   // Detectar idioma e aplicar traduções
   initLang();
   // Load CMS overrides (texts, FAQ) — single Promise.all, one renderFaq call
@@ -6520,7 +6525,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
     window.scrollTo(0,0);
     openD(_earlySlug);
-    document.body.style.opacity='1';
+    // If FIRMS not loaded yet, keep body hidden until retry in loadCmsFirms.
+    if(FIRMS.find(x=>x.id===_earlySlug)) document.body.style.opacity='1';
+    else setTimeout(()=>{document.body.style.opacity='1';},2500); // safety fallback
   } else if(location.hash.startsWith('#firm/')){
     const _hFirmId=location.hash.replace('#firm/','');
     if(_hFirmId && FIRMS.find(x=>x.id===_hFirmId)){
