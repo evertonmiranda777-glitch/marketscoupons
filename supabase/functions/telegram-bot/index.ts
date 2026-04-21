@@ -505,6 +505,97 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
   return { sent: msgId !== null, firm: firm.name, ends_at: endsAt.toISOString() };
 }
 
+// ── action=promo_reminder ──────────────────────────────────────────────────
+// Varre cms_firms com promo_ends_at nao-nulo e envia lembrete nos thresholds 48h/24h/2h.
+// Dedupe via promo_reminder_log (firm_id, threshold_hours, promo_ends_at).
+async function handlePromoReminder(db: ReturnType<typeof createClient>) {
+  const now = Date.now();
+  const THRESHOLDS = [48, 24, 2]; // horas
+  const WINDOW_MIN = 30; // janela de +/- 30min em volta do threshold — cron roda de hora em hora
+
+  const { data: firms, error } = await db
+    .from("cms_firms")
+    .select("id, name, discount, discount_type, coupon, split, drawdown, promo_ends_at, promo_label")
+    .eq("active", true)
+    .not("promo_ends_at", "is", null);
+
+  if (error || !firms?.length) return { sent: 0, reason: error ? "db_error" : "no_promos", details: error?.message };
+
+  const results: Array<{ firm: string; threshold: number; sent: boolean; reason?: string }> = [];
+
+  for (const firm of firms) {
+    const endsAt = new Date(firm.promo_ends_at as string).getTime();
+    const hoursLeft = (endsAt - now) / 3600000;
+    if (hoursLeft < 0) continue;
+
+    for (const th of THRESHOLDS) {
+      if (Math.abs(hoursLeft - th) > WINDOW_MIN / 60) continue;
+
+      const { data: already } = await db
+        .from("promo_reminder_log")
+        .select("id")
+        .eq("firm_id", firm.id)
+        .eq("threshold_hours", th)
+        .eq("promo_ends_at", firm.promo_ends_at as string)
+        .maybeSingle();
+      if (already) continue;
+
+      const urgencyLabel = th === 48
+        ? { pt: "⏰ <b>Termina em 48h</b>", en: "⏰ <b>Ends in 48h</b>" }
+        : th === 24
+          ? { pt: "🔥 <b>Termina em 24h</b>", en: "🔥 <b>Ends in 24h</b>" }
+          : { pt: "🚨 <b>ÚLTIMAS 2 HORAS</b>", en: "🚨 <b>LAST 2 HOURS</b>" };
+
+      const discountPt = firm.discount_type === "lifetime"
+        ? `${firm.discount}% OFF (vitalício!)`
+        : `${firm.discount}% OFF`;
+      const discountEn = firm.discount_type === "lifetime"
+        ? `${firm.discount}% OFF (lifetime deal!)`
+        : `${firm.discount}% OFF`;
+
+      const couponPt = firm.coupon ? `🎟 Cupom: <code>${firm.coupon}</code>` : `🔗 Desconto aplicado automaticamente`;
+      const couponEn = firm.coupon ? `🎟 Code: <code>${firm.coupon}</code>` : `🔗 No code needed`;
+
+      const checkoutUrl = `https://${SITE_URL}/${firm.id}`;
+      const promoLabel = firm.promo_label ? ` — ${firm.promo_label}` : "";
+
+      const text =
+        `${th === 2 ? "🚨" : th === 24 ? "🔥" : "⚡"} <b>${firm.name}${promoLabel}</b>\n\n` +
+        `🇧🇷 <b>PT</b>\n` +
+        `🔥 ${discountPt}\n` +
+        couponPt + `\n` +
+        (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
+        (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
+        urgencyLabel.pt + `\n` +
+        `\n━━━━━━━━━━\n\n` +
+        `🇺🇸 <b>EN</b>\n` +
+        `🔥 ${discountEn}\n` +
+        couponEn + `\n` +
+        (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
+        (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
+        urgencyLabel.en + `\n` +
+        `\n👉 <a href="${checkoutUrl}"><b>${th === 2 ? "Garantir agora / Grab now" : "Ver oferta / See deal"}</b></a>`;
+
+      const msgId = await sendMessage(text);
+      if (msgId) {
+        await storeMessageId(db, msgId, `promo_reminder_${th}h`);
+        await db.from("promo_reminder_log").insert({
+          firm_id: firm.id,
+          threshold_hours: th,
+          promo_ends_at: firm.promo_ends_at,
+          telegram_msg_id: msgId
+        });
+        results.push({ firm: firm.id, threshold: th, sent: true });
+      } else {
+        results.push({ firm: firm.id, threshold: th, sent: false, reason: "send_failed" });
+      }
+      break; // so 1 threshold por firma por execucao
+    }
+  }
+
+  return { scanned: firms.length, sent: results.filter(r => r.sent).length, results };
+}
+
 // ── action=send_custom (admin preview → send) ──────────────────────────────
 async function handleSendCustom(req: Request) {
   let body: { text?: string; buttonText?: string; buttonUrl?: string } = {};
@@ -556,6 +647,9 @@ Deno.serve(async (req: Request) => {
         break;
       case "flash_promo":
         result = await handleFlashPromo(db, firmId, urgency);
+        break;
+      case "promo_reminder":
+        result = await handlePromoReminder(db);
         break;
       case "send_custom":
         result = await handleSendCustom(req);

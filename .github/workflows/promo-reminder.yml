@@ -1,0 +1,16 @@
+name: Promo Reminder (hourly)
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # hora em hora
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger promo-reminder action
+        run: |
+          curl -sSf -X GET "https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/telegram-bot?action=promo_reminder" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}"
