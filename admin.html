@@ -704,9 +704,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <button class="gdb-pill" data-days="0" onclick="setGlobalDate(0,this)">Hoje</button>
    <button class="gdb-pill" data-days="7" onclick="setGlobalDate(7,this)">7d</button>
    <button class="gdb-pill" data-days="14" onclick="setGlobalDate(14,this)">14d</button>
-   <button class="gdb-pill" data-days="30" onclick="setGlobalDate(30,this)">30d</button>
-   <button class="gdb-pill" data-days="90" onclick="setGlobalDate(90,this)">90d</button>
-   <button class="gdb-pill active" data-days="-1" onclick="setGlobalDate(-1,this)">Todos</button>
+   <button class="gdb-pill" data-days="28" onclick="setGlobalDate(28,this)">28d</button>
+   <button class="gdb-pill active" data-days="30" onclick="setGlobalDate(30,this)">30d</button>
+   <button class="gdb-pill" data-days="-1" onclick="setGlobalDate(-1,this)">Máximo</button>
   </div>
   <div class="gdb-custom">
    <input type="date" id="gdb-start" class="filter-inp">
@@ -714,7 +714,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <input type="date" id="gdb-end" class="filter-inp">
    <button class="btn-secondary" onclick="applyCustomDateRange()" style="padding:5px 12px;font-size:11px;">Aplicar</button>
   </div>
-  <div class="gdb-active" id="gdb-active">Todos os dados</div>
+  <div class="gdb-active" id="gdb-active">Últimos 30 dias</div>
  </div>
 
  <div class="admin-body">
@@ -818,11 +818,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <div class="cc-hd">
     <div class="cc-title">Pixel Tracking por Firma</div>
     <div style="display:flex;gap:8px;align-items:center;">
-     <select id="pixel-period" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking()">
-      <option value="7">7 dias</option>
-      <option value="14">14 dias</option>
-      <option value="28" selected>28 dias</option>
-     </select>
      <select id="pixel-source" class="filter-inp" style="font-size:11px;padding:5px 8px;" onchange="renderPixelTracking()">
       <option value="all">Todas origens</option>
       <option value="dedicated">Página dedicada</option>
@@ -1467,12 +1462,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="sec-hdr">
         <div class="sec-title">Financeiro — Conversões Reais &amp; ROAS</div>
         <div class="sec-actions">
-          <select id="fin-period" class="filter-inp" style="font-size:12px;padding:6px 10px;" onchange="renderFinanceiro()">
-            <option value="7">7 dias</option>
-            <option value="30" selected>30 dias</option>
-            <option value="90">90 dias</option>
-            <option value="365">12 meses</option>
-          </select>
           <button class="btn-secondary" onclick="syncMetaAds(this)">Sync Meta Ads</button>
           <button class="btn-secondary" onclick="renderFinanceiro()">Atualizar</button>
         </div>
@@ -1529,11 +1518,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="sec-hdr">
         <div class="sec-title">Tracking Dashboard</div>
         <div class="sec-actions">
-          <select id="trk-period" class="filter-inp" style="font-size:12px;padding:6px 10px;" onchange="renderTrackingPage()">
-            <option value="7">7 dias</option>
-            <option value="14" selected>14 dias</option>
-            <option value="30">30 dias</option>
-          </select>
           <button class="btn-secondary" onclick="renderTrackingPage()">Atualizar</button>
         </div>
       </div>
@@ -2898,7 +2882,8 @@ let db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, _dbOpts);
 // ────────────────────────────────────────────────────────────────────────────
 
 // ─── GLOBAL DATE FILTER ────────────────────────────────────────────────────
-let globalDateStart = null;
+// Default: ultimos 30 dias
+let globalDateStart = new Date(Date.now() - 30 * 86400000).toISOString();
 let globalDateEnd = null;
 
 function setGlobalDate(days, btn) {
@@ -3462,14 +3447,17 @@ function renderPage(p){
 /* ══ FINANCEIRO ══ */
 let _finChart = null;
 async function renderFinanceiro(){
-  const days = parseInt(document.getElementById('fin-period')?.value || '30');
-  const since = new Date(Date.now() - days*86400000).toISOString().slice(0,10);
+  // Filtro global: since/until em ISO (created_at) ou YYYY-MM-DD (date)
+  const sinceIso = globalDateStart || new Date(0).toISOString();
+  const untilIso = globalDateEnd || new Date().toISOString();
+  const sinceDate = sinceIso.slice(0,10);
+  const untilDate = untilIso.slice(0,10);
+  const days = Math.max(1, Math.ceil((new Date(untilIso) - new Date(sinceIso)) / 86400000));
 
-  const [statsRes, leadsRes, spendRes] = await Promise.all([
-    db.from('affiliate_daily_stats').select('*').gte('date', since).order('date',{ascending:false}),
-    db.from('affiliate_conversions').select('*').gte('created_at', since).order('created_at',{ascending:false}).limit(50),
-    db.from('ad_spend_daily').select('*').gte('date', since)
-  ]);
+  let statsQ = db.from('affiliate_daily_stats').select('*').gte('date', sinceDate).lte('date', untilDate).order('date',{ascending:false});
+  let leadsQ = db.from('affiliate_conversions').select('*').gte('created_at', sinceIso).lte('created_at', untilIso).order('created_at',{ascending:false}).limit(50);
+  let spendQ = db.from('ad_spend_daily').select('*').gte('date', sinceDate).lte('date', untilDate);
+  const [statsRes, leadsRes, spendRes] = await Promise.all([statsQ, leadsQ, spendQ]);
   const stats = statsRes.data || [];
   const leads = leadsRes.data || [];
   const spend = spendRes.data || [];
@@ -3590,7 +3578,9 @@ async function syncMetaAds(btn){
   const orig = btn.textContent;
   btn.disabled = true; btn.textContent = 'Sincronizando...';
   try {
-    const days = parseInt(document.getElementById('fin-period')?.value || '30');
+    const sinceIso = globalDateStart || new Date(Date.now() - 30*86400000).toISOString();
+    const untilIso = globalDateEnd || new Date().toISOString();
+    const days = Math.min(90, Math.max(1, Math.ceil((new Date(untilIso) - new Date(sinceIso)) / 86400000)));
     const res = await fetch(`https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-sync?days=${days}`, {
       method:'POST',
       headers:{'Authorization':'Bearer '+SUPABASE_ANON,'apikey':SUPABASE_ANON}
@@ -3958,16 +3948,17 @@ async function renderAnalytics() {
 }
 
 async function renderPixelTracking() {
-  const days = parseInt(document.getElementById('pixel-period')?.value||28);
   const srcFilter = document.getElementById('pixel-source')?.value||'all';
-  const since = new Date(Date.now() - days*86400000).toISOString();
+  const since = globalDateStart || new Date(Date.now() - 28*86400000).toISOString();
+  const until = globalDateEnd || null;
 
-  // Always fetch fresh from Supabase
   let events = [];
   try {
-    const {data} = await db.from('events').select('*')
+    let q = db.from('events').select('*')
       .in('event', ['firm_detail_open','coupon_copy','checkout_click'])
       .gte('created_at', since);
+    if (until) q = q.lte('created_at', until);
+    const {data} = await q;
     events = data || [];
   } catch(e) { events = []; }
 
@@ -5270,6 +5261,12 @@ async function eaFetch(params){
 }
 
 async function eaRefresh(){
+  // Usa filtro global de data quando ativo
+  if (globalDateStart) {
+    const since = new Date(globalDateStart);
+    const until = globalDateEnd ? new Date(globalDateEnd) : new Date();
+    _eaDays = Math.max(1, Math.ceil((until - since) / 86400000));
+  }
   const wrap = document.getElementById('ea-table-wrap');
   if(wrap) wrap.innerHTML = '<div class="ea-load">Carregando dados do Brevo...</div>';
 
