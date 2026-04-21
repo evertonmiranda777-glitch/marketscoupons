@@ -1,7 +1,7 @@
 const FIRMS = [
   { id:'apex',    name:'Apex',    url:'https://dashboard.apextraderfunding.com/aff/member/stats', action:'sync_apex' },
-  { id:'bulenox', name:'Bulenox', url:'https://dashboard.bulenox.com/aff/member/stats',           action:'sync_bulenox' },
-  { id:'ftmo',    name:'FTMO',    url:'https://trader.ftmo.com/affiliate',                         action:'sync_ftmo' }
+  { id:'bulenox', name:'Bulenox', url:'https://bulenox.com/member/aff/member/stats',               action:'sync_bulenox' },
+  { id:'ftmo',    name:'FTMO',    url:'https://affiliate.ftmo.com/',                               action:'sync_ftmo' }
 ];
 
 function fmtAgo(ts) {

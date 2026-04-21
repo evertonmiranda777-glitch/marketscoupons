@@ -6,7 +6,7 @@
   "permissions": ["storage", "cookies", "activeTab", "scripting"],
   "host_permissions": [
     "https://dashboard.apextraderfunding.com/*",
-    "https://dashboard.bulenox.com/*",
+    "https://bulenox.com/*",
     "https://trader.ftmo.com/*",
     "https://affiliate.ftmo.com/*",
     "https://*.takeprofittrader.com/*",
@@ -26,7 +26,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://dashboard.bulenox.com/aff/member/stats*", "https://dashboard.bulenox.com/member/aff/stats*"],
+      "matches": ["https://bulenox.com/member/aff/member/stats*", "https://bulenox.com/aff/member/stats*", "https://bulenox.com/member/aff/stats*"],
       "js": ["config.js", "lib/csv.js", "content/bulenox.js"],
       "run_at": "document_idle"
     },
