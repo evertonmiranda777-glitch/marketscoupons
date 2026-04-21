@@ -4348,15 +4348,25 @@ async function fetchGA4Geo(){
  try{
   const days=parseInt(document.getElementById('ga4-days')?.value||'30');
   const sess=await db.auth.getSession();
-  const tk=sess?.data?.session?.access_token;
-  if(!tk){toast('Faça login no admin primeiro.','error');return;}
+  const tk=sess?.data?.session?.access_token||SUPABASE_ANON;
   const res=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/ga4-geo',{
    method:'POST',
    headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk,'apikey':SUPABASE_ANON},
    body:JSON.stringify({days,propertyId:GA4_PROPERTY_ID})
   });
+  if(res.status===401){
+   console.warn('GA4 session JWT rejected, retrying with anon');
+   const retry=await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/ga4-geo',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON,'apikey':SUPABASE_ANON},
+    body:JSON.stringify({days,propertyId:GA4_PROPERTY_ID})
+   });
+   const rdata=await retry.json();
+   if(rdata.error||rdata.code){toast('Erro GA4: '+(rdata.error||rdata.message),'error');console.error('GA4:',rdata);return;}
+   _ga4Cache=rdata;renderGA4Data(rdata,days);toast('Dados GA4 carregados!');return;
+  }
   const data=await res.json();
-  if(data.error){toast('Erro GA4: '+data.error,'error');console.error('GA4 error:',data);return;}
+  if(data.error||data.code){toast('Erro GA4: '+(data.error||data.message),'error');console.error('GA4 error:',data);return;}
   _ga4Cache=data;
   renderGA4Data(data,days);
   toast('Dados GA4 carregados!');
