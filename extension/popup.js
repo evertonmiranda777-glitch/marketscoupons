@@ -1,7 +1,15 @@
 const FIRMS = [
   { id:'apex',    name:'Apex',    url:'https://dashboard.apextraderfunding.com/aff/member/stats', action:'sync_apex' },
   { id:'bulenox', name:'Bulenox', url:'https://bulenox.com/member/aff/member/stats',               action:'sync_bulenox' },
-  { id:'ftmo',    name:'FTMO',    url:'https://affiliate.ftmo.com/',                               action:'sync_ftmo' }
+  { id:'ftmo',    name:'FTMO',    url:'https://affiliate.ftmo.com/',                               action:'sync_ftmo' },
+  { id:'tpt',     name:'Take Profit', url:'https://takeprofittrader.com/affiliate-dashboard/transactions', action:'sync_tpt' },
+  { id:'fn',      name:'FundedNext',  url:'https://fundednext.firstpromoter.com/home',                     action:'sync_fn' },
+  { id:'e2t',     name:'Earn2Trade',  url:'https://partners.earn2trade.com/affiliates/panel.php#Home',     action:'sync_e2t' },
+  { id:'the5ers', name:'The5ers',     url:'https://hub.the5ers.com/en/affiliate',                         action:'sync_the5ers' },
+  { id:'brightfunded', name:'BrightFunded', url:'https://app.brightfunded.com/affiliate/dashboard',        action:'sync_brightfunded' },
+  { id:'fundingpips',  name:'FundingPips',  url:'https://app.fundingpips.com/affiliate',                   action:'sync_fundingpips' },
+  { id:'e8',           name:'E8 Markets',   url:'https://e8x.e8markets.com/affiliate',                     action:'sync_e8' },
+  { id:'cti',          name:'CTI',          url:'https://app.citytradersimperium.com/affiliates',          action:'sync_cti' }
 ];
 
 function fmtAgo(ts) {

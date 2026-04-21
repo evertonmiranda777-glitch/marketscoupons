@@ -9,12 +9,18 @@
     "https://bulenox.com/*",
     "https://trader.ftmo.com/*",
     "https://affiliate.ftmo.com/*",
+    "https://takeprofittrader.com/*",
     "https://*.takeprofittrader.com/*",
+    "https://fundednext.firstpromoter.com/*",
     "https://affiliates.fundednext.com/*",
+    "https://partners.earn2trade.com/*",
+    "https://hub.the5ers.com/*",
     "https://*.the5ers.com/*",
     "https://*.fundingpips.com/*",
+    "https://app.brightfunded.com/*",
     "https://*.brightfunded.com/*",
     "https://*.e8funding.com/*",
+    "https://*.e8markets.com/*",
     "https://*.citytradersimperium.com/*",
     "https://qfwhduvutfumsaxnuofa.supabase.co/*"
   ],
@@ -33,6 +39,46 @@
     {
       "matches": ["https://trader.ftmo.com/affiliate*", "https://trader.ftmo.com/*/affiliate*", "https://affiliate.ftmo.com/*"],
       "js": ["config.js", "content/ftmo.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://takeprofittrader.com/affiliate-dashboard*", "https://*.takeprofittrader.com/affiliate-dashboard*"],
+      "js": ["config.js", "lib/csv.js", "content/tpt.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://fundednext.firstpromoter.com/*"],
+      "js": ["config.js", "lib/csv.js", "content/fn.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://partners.earn2trade.com/*"],
+      "js": ["config.js", "lib/csv.js", "content/e2t.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://hub.the5ers.com/*/affiliate*", "https://hub.the5ers.com/affiliate*"],
+      "js": ["config.js", "lib/csv.js", "content/the5ers.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://app.brightfunded.com/affiliate*"],
+      "js": ["config.js", "lib/csv.js", "content/brightfunded.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://app.fundingpips.com/affiliate*"],
+      "js": ["config.js", "lib/csv.js", "content/fundingpips.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://*.e8markets.com/affiliate*"],
+      "js": ["config.js", "lib/csv.js", "content/e8.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://app.citytradersimperium.com/affiliates*"],
+      "js": ["config.js", "lib/csv.js", "content/cti.js"],
       "run_at": "document_idle"
     }
   ],
