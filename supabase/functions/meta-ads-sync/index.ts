@@ -28,6 +28,14 @@ serve(async (req) => {
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
   const until = new Date().toISOString().slice(0, 10);
 
+  // Busca moeda da conta
+  let accountCurrency = "USD";
+  try {
+    const accRes = await fetch(`https://graph.facebook.com/v21.0/${acct}?fields=currency&access_token=${META_TOKEN}`);
+    const accJson = await accRes.json();
+    if (accJson.currency) accountCurrency = accJson.currency;
+  } catch {}
+
   const fields = [
     "date_start","campaign_id","campaign_name","adset_id","adset_name",
     "spend","impressions","clicks","actions","action_values"
@@ -76,7 +84,7 @@ serve(async (req) => {
       clicks: Number(r.clicks) || 0,
       conversions: convs ? Number(convs.value) : 0,
       conversion_value: convVal ? Number(convVal.value) : 0,
-      currency: "USD",
+      currency: accountCurrency,
       firm_id: null,
       source: "meta_insights_v1",
       raw: r

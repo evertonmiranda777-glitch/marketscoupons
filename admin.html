@@ -3485,7 +3485,15 @@ async function renderFinanceiro(){
   const lucro = totCom - totSpend;
   const convRate = totClicksUniq > 0 ? (totTx/totClicksUniq*100) : 0;
 
+  const spendCur = (spend.find(s=>s.currency)?.currency) || 'USD';
+  const fxBRLtoUSD = 0.19; // ~R$5.30 por USD (ajuste se precisar)
+  const totSpendUSD = spendCur === 'BRL' ? totSpend * fxBRLtoUSD : totSpend;
+  const roasReal = totSpendUSD > 0 ? (totCom/totSpendUSD) : null;
+  const cacReal = totTx > 0 && totSpendUSD > 0 ? (totSpendUSD/totTx) : null;
+  const lucroReal = totCom - totSpendUSD;
+
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmtCur = (v, cur) => (cur==='BRL'?'R$ ':'$') + Number(v||0).toLocaleString(cur==='BRL'?'pt-BR':'en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const kpiCard = (label, value, sub) => `
     <div class="stat-card">
       <div class="stat-label">${label}</div>
@@ -3494,10 +3502,10 @@ async function renderFinanceiro(){
     </div>`;
   document.getElementById('fin-kpis').innerHTML = [
     kpiCard('Comissão', fmtUSD(totCom), `${totTx} vendas`),
-    kpiCard('Gasto Ads', fmtUSD(totSpend), 'Meta Ads'),
-    kpiCard('Lucro', fmtUSD(lucro), lucro>=0?'no azul':'no vermelho'),
-    kpiCard('ROAS', roas?roas.toFixed(2)+'x':'—', 'Comissão/Gasto'),
-    kpiCard('CAC', cac?fmtUSD(cac):'—', 'Custo por venda'),
+    kpiCard('Gasto Ads', fmtCur(totSpend, spendCur), spendCur==='BRL'?`Meta Ads · ≈ ${fmtUSD(totSpendUSD)}`:'Meta Ads'),
+    kpiCard('Lucro', fmtUSD(lucroReal), lucroReal>=0?'no azul':'no vermelho'),
+    kpiCard('ROAS', roasReal?roasReal.toFixed(2)+'x':'—', 'Comissão/Gasto (USD)'),
+    kpiCard('CAC', cacReal?fmtUSD(cacReal):'—', 'Custo por venda'),
     kpiCard('Cliques', totClicksAll.toLocaleString('pt-BR'), `${totClicksUniq} únicos · CVR ${convRate.toFixed(2)}%`)
   ].join('');
 
