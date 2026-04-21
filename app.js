@@ -188,16 +188,31 @@ function track(event, params={}) {
   window._lastTrackId = eid;
 
   // 1. Supabase (analytics persistente com UTM) — first-party, always allowed
+  // Atribuicao: fallback MC_UTM (sessao) -> MC_ATTR (localStorage 7d) pra nao perder campanha em sessao 2+
+  const _src = MC_UTM.utm_source   || MC_ATTR.utm_source   || '';
+  const _med = MC_UTM.utm_medium   || MC_ATTR.utm_medium   || '';
+  const _cmp = MC_UTM.utm_campaign || MC_ATTR.utm_campaign || '';
+  const _enrich = {
+    referrer:     document.referrer || MC_ATTR.referrer || null,
+    path:         location.pathname || null,
+    landing_page: MC_ATTR.landing_page || null,
+    country:      (window._geo && window._geo.country) || null,
+    region:       (window._geo && window._geo.region) || null,
+    fbclid:       MC_ATTR.fbclid || null,
+    gclid:        MC_ATTR.gclid || null,
+    ttclid:       MC_ATTR.ttclid || null,
+    anon_id:      MC_ANON,
+  };
   const row = {
     session_id:   MC_SESSION,
     event,
     firm_id:      params.firm_id      || params.firm_name || null,
     coupon_code:  params.coupon_code  || null,
     page_name:    params.page_name    || null,
-    utm_source:   MC_UTM.utm_source,
-    utm_medium:   MC_UTM.utm_medium,
-    utm_campaign: MC_UTM.utm_campaign,
-    params:       { ...params, event_id: eid },
+    utm_source:   _src,
+    utm_medium:   _med,
+    utm_campaign: _cmp,
+    params:       { ..._enrich, ...params, event_id: eid },
   };
   try {
     db.from('events').insert(row).then(r=>{ if(r.error){ console.warn('track insert error:', r.error.message); _trackEnqueue(row); } });
