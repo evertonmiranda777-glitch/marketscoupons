@@ -1568,6 +1568,17 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div class="data-table-wrap"><table class="data-table" id="trk-campaigns"></table></div>
       </div>
 
+      <!-- Atribuicao de Cupons por Campanha (tabela coupon_clicks) -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd">
+          <div>
+            <div class="cc-title">Cliques de Cupom por Campanha</div>
+            <div class="cc-sub">Qual anúncio/fonte converteu em click de cupom real (fbclid/utm) — próximo passo: cruzar com venda da firma</div>
+          </div>
+        </div>
+        <div class="data-table-wrap"><table class="data-table" id="trk-coupon-attr"></table></div>
+      </div>
+
       <!-- Heatmap de horários -->
       <div class="chart-card" style="margin-bottom:20px;">
         <div class="cc-hd"><div><div class="cc-title">Atividade por Horário</div><div class="cc-sub">Quando seus visitantes mais interagem</div></div></div>
@@ -10588,6 +10599,55 @@ async function renderTrackingPage(){
 
   // ── ROI POR CAMPANHA ──
   renderROI(ev, days);
+  renderCouponAttribution(cutoff, globalDateEnd);
+}
+
+// ─── ATRIBUICAO: cliques de cupom por campanha ─────────────────────────────
+async function renderCouponAttribution(sinceIso, untilIso){
+  const tbl = document.getElementById('trk-coupon-attr');
+  if (!tbl) return;
+  tbl.innerHTML = '<thead><tr><th>Campanha</th><th>Fonte</th><th>Mídia</th><th>Firma</th><th>Cupom</th><th>Clicks</th><th>Únicos</th><th>Último click</th></tr></thead><tbody><tr><td colspan="8" style="text-align:center;color:var(--t3);padding:20px;">Carregando...</td></tr></tbody>';
+  try {
+    let q = db.from('coupon_clicks').select('*').gte('ts', sinceIso).order('ts', {ascending:false}).limit(5000);
+    if (untilIso) q = q.lte('ts', untilIso);
+    const { data, error } = await q;
+    if (error) { tbl.innerHTML = `<thead><tr><th>Erro</th></tr></thead><tbody><tr><td>${error.message}</td></tr></tbody>`; return; }
+    const rows = data || [];
+    if (!rows.length) {
+      tbl.innerHTML = '<thead><tr><th>Campanha</th><th>Fonte</th><th>Mídia</th><th>Firma</th><th>Cupom</th><th>Clicks</th><th>Únicos</th><th>Último click</th></tr></thead><tbody><tr><td colspan="8" style="text-align:center;color:var(--t3);padding:20px;">Nenhum click de cupom capturado ainda no período. Aguardando primeiro click com atribuição.</td></tr></tbody>';
+      return;
+    }
+    const grp = {};
+    rows.forEach(r => {
+      const camp = r.utm_campaign || (r.fbclid ? '(meta-direct)' : '(organico)');
+      const src = r.utm_source || (r.fbclid ? 'facebook' : (r.gclid ? 'google' : (r.referrer ? 'referral' : 'direct')));
+      const med = r.utm_medium || (r.fbclid||r.gclid ? 'cpc' : (r.referrer ? 'referral' : 'none'));
+      const key = [camp, src, med, r.firm_id||'', r.coupon_code||''].join('|');
+      if (!grp[key]) grp[key] = { camp, src, med, firm_id: r.firm_id||'—', coupon: r.coupon_code||'—', clicks:0, anons:new Set(), last:null };
+      grp[key].clicks++;
+      if (r.anon_id) grp[key].anons.add(r.anon_id);
+      if (!grp[key].last || r.ts > grp[key].last) grp[key].last = r.ts;
+    });
+    const arr = Object.values(grp).sort((a,b)=>b.clicks-a.clicks);
+    tbl.innerHTML = `
+      <thead><tr><th>Campanha</th><th>Fonte</th><th>Mídia</th><th>Firma</th><th>Cupom</th><th>Clicks</th><th>Únicos</th><th>Último click</th></tr></thead>
+      <tbody>${arr.map(r=>{
+        const ago = r.last ? Math.round((Date.now()-new Date(r.last).getTime())/3600000) : 0;
+        const agoTxt = ago < 24 ? `${ago}h atrás` : `${Math.round(ago/24)}d atrás`;
+        return `<tr>
+          <td><b>${r.camp}</b></td>
+          <td>${r.src}</td>
+          <td>${r.med}</td>
+          <td><b>${String(r.firm_id).toUpperCase()}</b></td>
+          <td><code style="font-size:11px;color:var(--gold);">${r.coupon}</code></td>
+          <td style="font-weight:700;">${r.clicks}</td>
+          <td>${r.anons.size}</td>
+          <td style="font-size:11px;color:var(--t2);">${agoTxt}</td>
+        </tr>`;
+      }).join('')}</tbody>`;
+  } catch(e) {
+    tbl.innerHTML = `<thead><tr><th>Erro</th></tr></thead><tbody><tr><td>${e.message}</td></tr></tbody>`;
+  }
 }
 
 // ─── PRO & ASSINATURAS ───────────────────────────────────────────────────

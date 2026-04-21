@@ -113,6 +113,42 @@ const MC_UTM = (()=>{
   return utm;
 })();
 
+// Anonymous ID persistente (1 ano) — sobrevive entre sessoes, pra atribuicao campanha→cupom→venda
+const MC_ANON = (()=>{
+  let a = localStorage.getItem('mc_anon');
+  if (!a) {
+    a = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'a_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    localStorage.setItem('mc_anon', a);
+  }
+  return a;
+})();
+
+// Attribution first-touch (janela 7 dias) — pra linkar campanha Meta/Google ao click de cupom
+const MC_ATTR = (()=>{
+  const p = new URLSearchParams(window.location.search);
+  const fbclid = p.get('fbclid') || '';
+  const gclid = p.get('gclid') || '';
+  const ttclid = p.get('ttclid') || '';
+  const hasNew = fbclid || gclid || ttclid || p.get('utm_campaign') || p.get('utm_source');
+  let stored = null;
+  try { stored = JSON.parse(localStorage.getItem('mc_attribution') || 'null'); } catch(_) {}
+  const now = Date.now();
+  if (stored && (now - stored.ts) < 7*86400000 && !hasNew) return stored;
+  const attr = {
+    ts: now,
+    fbclid, gclid, ttclid,
+    utm_source:   p.get('utm_source')   || MC_UTM.utm_source   || '',
+    utm_medium:   p.get('utm_medium')   || MC_UTM.utm_medium   || '',
+    utm_campaign: p.get('utm_campaign') || MC_UTM.utm_campaign || '',
+    utm_content:  p.get('utm_content')  || MC_UTM.utm_content  || '',
+    utm_term:     p.get('utm_term')     || MC_UTM.utm_term     || '',
+    referrer:     document.referrer || '',
+    landing_page: location.pathname + location.search,
+  };
+  if (hasNew || !stored) localStorage.setItem('mc_attribution', JSON.stringify(attr));
+  return attr;
+})();
+
 // ─── TRACKING & UTILS ───
 // Security: HTML escape for user-submitted data
 function escHtml(s){ if(s==null) return '—'; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
@@ -150,6 +186,36 @@ function track(event, params={}) {
   try {
     db.from('events').insert(row).then(r=>{ if(r.error){ console.warn('track insert error:', r.error.message); _trackEnqueue(row); } });
   } catch(e) { console.warn('track error:', e); _trackEnqueue(row); }
+
+  // 1b. coupon_clicks — atribuicao campanha→cupom pra fechar loop com venda real da firma
+  if (event === 'copy_coupon' || event === 'coupon_copy') {
+    try {
+      const click = {
+        ts: ts,
+        anon_id: MC_ANON,
+        user_id: (window.currentUser && window.currentUser.id) || null,
+        email: (window.currentUser && window.currentUser.email) || null,
+        firm_id: params.firm_id || params.firm_name || null,
+        coupon_code: params.coupon_code || params.coupon || null,
+        event_id: eid,
+        fbclid: MC_ATTR.fbclid || null,
+        gclid: MC_ATTR.gclid || null,
+        ttclid: MC_ATTR.ttclid || null,
+        utm_source: MC_ATTR.utm_source || null,
+        utm_medium: MC_ATTR.utm_medium || null,
+        utm_campaign: MC_ATTR.utm_campaign || null,
+        utm_content: MC_ATTR.utm_content || null,
+        utm_term: MC_ATTR.utm_term || null,
+        referrer: MC_ATTR.referrer || null,
+        landing_page: MC_ATTR.landing_page || null,
+        page_url: location.pathname + location.search,
+        user_agent: navigator.userAgent,
+        country: (window._geo && window._geo.country) || null,
+        region: (window._geo && window._geo.region) || null,
+      };
+      db.from('coupon_clicks').insert(click).then(r=>{ if(r.error) console.warn('coupon_clicks insert:', r.error.message); });
+    } catch(e) { console.warn('coupon_clicks error:', e); }
+  }
 
   // 2. localStorage cache (fallback offline + compatibilidade admin)
   try {
