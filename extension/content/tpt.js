@@ -60,6 +60,46 @@ async function mcSyncTPT(opts = {}) {
 
 function mcScrapeTPTTransactions() {
   const out = [];
+
+  // Fallback universal: acha qualquer linha da pagina que contenha
+  // "Commission for partner" + um valor $X + data MM/DD/YYYY HH:MM:SS
+  const all = document.body.innerText || '';
+  if (/commission for partner/i.test(all)) {
+    const lineRegex = /(\d{1,2}\/\d{1,2}\/\d{4})\s+(\d{1,2}:\d{2}:\d{2})?/g;
+    // Procura linhas no DOM que tenham "Commission for partner"
+    document.querySelectorAll('*').forEach(el => {
+      if (el.children.length > 0) return; // so folhas
+      const txt = (el.textContent || '').trim();
+      if (!/commission for partner/i.test(txt)) return;
+      // Sobe na arvore ate achar um container com data e valor
+      let cur = el;
+      for (let i = 0; i < 8 && cur; i++) {
+        cur = cur.parentElement;
+        if (!cur) break;
+        const rowTxt = cur.textContent || '';
+        const dateM = /(\d{1,2}\/\d{1,2}\/\d{4})/.exec(rowTxt);
+        const amtM = /\$(\d+(?:[.,]\d+)?)/.exec(rowTxt);
+        const succeeded = /succeeded/i.test(rowTxt);
+        if (dateM && amtM) {
+          const d = mcTPTParseDate(dateM[1]);
+          if (d && !out.some(x => x._raw === rowTxt)) {
+            out.push({
+              date: d,
+              commission: mcTPTNum(amtM[1]),
+              amount: mcTPTNum(amtM[1]),
+              status: succeeded ? 'paid' : 'pending',
+              _raw: rowTxt
+            });
+          }
+          break;
+        }
+      }
+    });
+    if (out.length) {
+      return out.map(({_raw, ...x}) => x);
+    }
+  }
+
   document.querySelectorAll('table, [role="table"]').forEach(t => {
     const headCells = t.querySelectorAll('thead th, [role="columnheader"]');
     const head = [...headCells].map(x => x.textContent.trim().toLowerCase());
