@@ -427,7 +427,7 @@ img{max-width:100%;}
  padding:5px;box-shadow:0 12px 40px rgba(0,0,0,.6);
  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
-.lang-btn:hover .lang-dd{display:block;}
+.lang-btn:hover .lang-dd,.lang-btn.open .lang-dd{display:block;}
 .lang-opt{padding:7px 10px;border-radius:6px;font-size:12px;color:var(--t2);cursor:pointer;transition:.15s;}
 .lang-opt:hover{background:rgba(107,182,201,.08);color:var(--t1);}
 #auth-btns-out{display:flex;align-items:center;gap:8px;}
@@ -2198,7 +2198,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  .hero-btns{flex-direction:column;align-items:center;padding:0 16px;}
  .hero-btns a{width:auto;}
  .hero-tg-btn{width:auto;justify-content:center;}
- .bot-win{bottom:84px;right:10px;width:calc(100vw - 20px);}
+ .bot-win{bottom:0;right:0;left:0;top:auto;width:100vw;height:100dvh;max-height:100dvh;border-radius:0;transform-origin:bottom center;}
+ .bot-win .bot-hd{border-radius:0;}
+ .bot-inp{font-size:16px !important;}
+ .bq{font-size:12px;padding:9px 10px;}
+ body:has(.bot-win.open){overflow:hidden;}
  .bot-fab{bottom:14px;right:14px;width:76px;height:76px;}
  .guides-grid,.blog-grid,.ind-grid,.offers-grid{grid-template-columns:1fr;}
  .blog-filters{padding:0 20px 12px;gap:6px;flex-wrap:wrap;}
@@ -2742,6 +2746,12 @@ document.addEventListener('DOMContentLoaded',function(){
   var imgs=document.querySelectorAll('.bot-fab img, .bot-av img');
   for(var i=0;i<imgs.length;i++) imgs[i].src=src;
 },false);
+document.addEventListener('click',function(e){
+  var lb=document.querySelector('.lang-btn.open');
+  if(lb && !lb.contains(e.target)) lb.classList.remove('open');
+  var um=document.getElementById('user-dd-menu');
+  if(um && um.classList.contains('open') && !um.closest('.user-menu-btn').contains(e.target)) um.classList.remove('open');
+},false);
 </script>
 </head>
 <body style="opacity:0">
@@ -2761,7 +2771,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="nav-search-results" id="global-search-results"></div>
  </div>
  <div class="nav-r">
- <div class="lang-btn">
+ <div class="lang-btn" onclick="event.stopPropagation();this.classList.toggle('open')">
  <span id="l-flag"></span><span id="l-code"> EN</span>
  <div class="lang-dd"><div class="lang-dd-inner">
  <div class="lang-opt" onclick="setL('pt','','BR')"> Português</div>
