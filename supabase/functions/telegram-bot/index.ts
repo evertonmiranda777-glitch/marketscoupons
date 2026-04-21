@@ -146,44 +146,37 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
   return { sent: msgId !== null, count: firms.length };
 }
 
-// ── action=analysis (1 asset rotation, real data) ───────────────────────────
+// ── action=analysis (NQ Favorable scenario only, English) ───────────────────
 async function handleAnalysis(db: ReturnType<typeof createClient>) {
   const today = new Date().toISOString().slice(0, 10);
-  const assets = ["ES", "NQ", "GC", "CL"];
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
-  const assetPick = assets[dayOfYear % assets.length];
-  const assetNames: Record<string, string> = {
-    ES: "S&P 500 Futures", NQ: "Nasdaq 100 Futures", GC: "Gold Futures", CL: "Crude Oil Futures"
-  };
 
   const { data, error } = await db
     .from("daily_analysis")
-    .select("asset, support_1, resistance_1, attention_zone, news_impact")
+    .select("scenario_bull")
     .eq("date", today)
-    .eq("asset", assetPick)
+    .eq("asset", "NQ")
     .maybeSingle();
 
-  if (error || !data) {
-    console.error("No analysis for", assetPick, "on", today, error);
+  if (error || !data || !data.scenario_bull) {
+    console.error("No NQ analysis for", today, error);
     return { sent: false, reason: "no_data" };
   }
 
-  const az = getLang(data.attention_zone);
-  const ni = getLang(data.news_impact);
+  const sb = data.scenario_bull as Record<string, string> | string;
+  const raw = typeof sb === "string" ? sb : (sb.en || sb.pt || "");
+  if (!raw) return { sent: false, reason: "no_en" };
 
-  const caption =
-    `📊 <b>Daily Market Analysis</b>\n` +
-    `<b>${data.asset} ${assetNames[data.asset] || data.asset}</b>\n\n` +
-    `<b>Support 1</b>: ${data.support_1}\n` +
-    `<b>Resistance 1</b>: ${data.resistance_1}\n\n` +
-    `<b>Attention zone</b>\n${az}\n\n` +
-    `📊 ${tgLink("analysis")}`;
+  const formatted = raw
+    .replace(/\.\s+Target 1:/g, ".\nTarget 1:")
+    .replace(/\.\s+Target 2:/g, ".\nTarget 2:")
+    .replace(/\.\s+Stop:/g, ".\nStop:")
+    .replace(/\.\s+Probability:/g, ".\nProbability:");
 
-  const photoUrl = `https://${SITE_URL}/img/analysis-creative.png?t=${Date.now()}`;
-  const msgId = await sendPhoto(photoUrl, caption);
+  const text = `<b>NQ</b>\n<b>Favorable scenario</b>\n${formatted}`;
+  const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "analysis");
 
-  return { sent: msgId !== null, asset: assetPick };
+  return { sent: msgId !== null, asset: "NQ" };
 }
 
 // ── action=gex (1 ticker rotation, real data) ───────────────────────────────

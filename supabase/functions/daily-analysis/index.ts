@@ -216,7 +216,37 @@ async function processAsset(A:any, hist:any[]|null, dynMults:Record<string,numbe
       }
       if(accDays.length){
         var hits=accDays.filter(d=>d.includes("OK")).length;
-        accCtx="Track record "+hits+"/"+accDays.length+" ("+Math.round(hits/accDays.length*100)+"%): "+accDays.join(" | ")+"\nCalibrar confianca com base nisso.";
+        accCtx="Track record direcional "+hits+"/"+accDays.length+" ("+Math.round(hits/accDays.length*100)+"%): "+accDays.join(" | ")+"\nCalibrar confianca com base nisso.";
+      }
+    }catch(e){}
+
+    // Feedback loop: alvos/stops scored dos ultimos 10 dias pra calibrar sizing
+    var tgtCtx="";
+    try{
+      var{data:tgts}=await db.from("analysis_targets").select("date,bull_trigger,bull_target_1,bull_target_2,bull_stop,bull_trigger_hit,bull_t1_hit,bull_t2_hit,bull_stop_hit,bear_trigger,bear_target_1,bear_stop,bear_trigger_hit,bear_t1_hit,bear_stop_hit,actual_high,actual_low").eq("asset",A.ticker).not("scored_at","is",null).order("date",{ascending:false}).limit(10);
+      if(tgts&&tgts.length){
+        var stats={bullTrig:0,bullT1:0,bullT2:0,bullStop:0,bearTrig:0,bearT1:0,bearStop:0,total:tgts.length};
+        var errors:string[]=[];
+        tgts.forEach((t:any)=>{
+          if(t.bull_trigger_hit)stats.bullTrig++;
+          if(t.bull_t1_hit)stats.bullT1++;
+          if(t.bull_t2_hit)stats.bullT2++;
+          if(t.bull_stop_hit)stats.bullStop++;
+          if(t.bear_trigger_hit)stats.bearTrig++;
+          if(t.bear_t1_hit)stats.bearT1++;
+          if(t.bear_stop_hit)stats.bearStop++;
+          // identificar padroes de erro
+          if(t.bull_trigger_hit&&t.bull_stop_hit&&!t.bull_t1_hit){
+            var stopDist=Math.abs(parseFloat(t.bull_trigger)-parseFloat(t.bull_stop));
+            errors.push(t.date.slice(5)+":bull stop batido sem T1 (dist "+stopDist.toFixed(0)+"pts)");
+          }
+          if(!t.bull_trigger_hit&&t.actual_high){
+            var miss=parseFloat(t.bull_trigger)-parseFloat(t.actual_high);
+            if(miss>0&&miss<30)errors.push(t.date.slice(5)+":bull trigger "+parseFloat(t.bull_trigger).toFixed(0)+" nao bateu por "+miss.toFixed(0)+"pts (high real "+parseFloat(t.actual_high).toFixed(0)+")");
+          }
+        });
+        tgtCtx="Alvos scored ("+stats.total+"d): bull trig "+stats.bullTrig+"/"+stats.total+" T1 "+stats.bullT1+"/"+stats.total+" T2 "+stats.bullT2+"/"+stats.total+" stop "+stats.bullStop+"/"+stats.total+" | bear trig "+stats.bearTrig+"/"+stats.total+" T1 "+stats.bearT1+"/"+stats.total+" stop "+stats.bearStop+"/"+stats.total;
+        if(errors.length)tgtCtx+="\nPadroes de erro recentes: "+errors.slice(0,4).join(" | ")+"\nAJUSTE: se stops batidos sem T1 repetem, alargar stop. Se triggers nao bateram por <30pts, recuar trigger 10-20pts.";
       }
     }catch(e){}
 
@@ -235,7 +265,7 @@ INSTRUCOES GEX (OBRIGATORIO para ES e NQ):
 - Vol Trigger: acima dele vol suprimida, abaixo vol expande. Combine com VIX.
 `:"";
 
-    var prompt=A.ticker+" "+A.name+" @"+last.toFixed(2)+" ("+chg.toFixed(2)+"%) "+A.corr+"\n"+accCtx+"\n"+vix+"\n"+ind+"\n"+sw+"\n"+(gexBlock?gexBlock+"\n":"")+prices+"\nCalendario:\n"+cal+"\nNews:"+news+gexInstructions+`
+    var prompt=A.ticker+" "+A.name+" @"+last.toFixed(2)+" ("+chg.toFixed(2)+"%) "+A.corr+"\n"+accCtx+"\n"+tgtCtx+"\n"+vix+"\n"+ind+"\n"+sw+"\n"+(gexBlock?gexBlock+"\n":"")+prices+"\nCalendario:\n"+cal+"\nNews:"+news+gexInstructions+`
 
 Voce e o analista-chefe de um dos maiores hedge funds do mundo. Traders profissionais e iniciantes confiam na sua analise pra operar. Sua marca: PRECISAO CIRURGICA e CLAREZA ABSOLUTA.
 
@@ -264,9 +294,15 @@ ESTRUTURA (3 idiomas: {pt,en,es}). Max 3-4 frases DENSAS por campo:
 
 2. VOLUME_ANALYSIS: Range vs media, expansao/contracao de volatilidade. O que isso diz sobre participacao institucional (smart money ativo ou ausente?).`+(gexBlock?" Referencie o regime GEX (positivo=range, negativo=trending).":"")+`
 
-3. SCENARIO_BULL: "Gatilho: rompimento acima de X (justificativa do nivel). Alvo 1: Y (justificativa). Alvo 2: Z. Stop: W (justificativa). Probabilidade: N%." Cada numero justificado. STOP PRECISO: o stop DEVE ser cirurgico e apertado — baseado no swing low/high mais proximo, EMA mais relevante, ou nivel estrutural claro (ex: fundo do candle anterior, POC, Put Wall). Distancia maxima: 0.5-0.8% do preco de entrada para futuros (ES/NQ/CL) e 1% para ouro (GC). Um stop bem colocado gera tanta credibilidade quanto um alvo acertado. NUNCA colocar stop em nivel arbitrario ou distante sem justificativa estrutural.`+(gexBlock?" Use Call Wall como resistencia e HVL como referencia.":"")+`
+3. SCENARIO_BULL: "Gatilho: rompimento acima de X (justificativa). Alvo 1: Y (justificativa). Alvo 2: Z. Stop: W (justificativa). Probabilidade: N%."
 
-4. SCENARIO_BEAR: Mesmo formato. Cada numero justificado. Mesma regra de stop preciso: swing high mais proximo, EMA, nivel estrutural. Stop apertado e justificado.`+(gexBlock?" Use Put Wall como suporte e Zero Gamma como nivel-chave.":"")+`
+REGRAS RIGIDAS DE SIZING (obrigatorias):
+- STOP: distancia trigger→stop DEVE ser >= 1.5 x ATR (ATR ja fornecido acima). Stops apertados demais batem em ruido intraday. ANCORAR o stop num swing low/high estrutural real, EMA50 ou Put/Call Wall — NUNCA num nivel arbitrario "redondo".
+- TRIGGER: NUNCA colocar o trigger exatamente num numero psicologico redondo (26900, 27000, 6600). Usar swing high+1 tick ou swing high-1 tick, ou confirmacao de rompimento (ex: fechamento M15 acima do high). Numeros redondos sao zonas de reversao — mercado respeita e vira.
+- ALVO 1: >= 1.5x o risco (trigger-stop). Alvo 2: >= 2.5x. Se a estrutura nao permite essa relacao, PROBABILIDADE cai e confidence tambem.
+- Cada numero deve estar ancorado num nivel estrutural listado (swing, EMA, pivot, GEX). Se for arbitrario, nao usar.`+(gexBlock?" Use Call Wall como resistencia e HVL como referencia.":"")+`
+
+4. SCENARIO_BEAR: Mesmo formato e MESMAS regras rigidas de sizing (stop >= 1.5 ATR, trigger off-round, R:R >= 1.5 T1 / 2.5 T2, ancoragem estrutural).`+(gexBlock?" Use Put Wall como suporte e Zero Gamma como nivel-chave.":"")+`
 
 5. NEWS_IMPACT: Conecte CADA evento/noticia a ESTE ativo com mecanismo de transmissao. Ex: "Pedidos de Bens Duraveis abaixo do esperado (-1.4% vs -0.5%) → sinal de desaceleracao industrial → Fed pode cortar juros mais cedo → positivo pra NQ (growth se beneficia de juros menores)".
 
