@@ -671,11 +671,10 @@ Valores minimos de opacidade para rgba(255,255,255,...) em fundo escuro. NUNCA u
 2. **Assertividade:** Opiniao clara baseada nos dados. NUNCA usar "talvez", "possivelmente", "pode ser que". Cenarios com probabilidade (ex: "65% chance")
 3. **Eventos do calendario:** OBRIGATORIO referenciar eventos de alto impacto do dia com horario e impacto esperado. NUNCA dizer "sem eventos" se existem eventos na lista
 4. **Cenarios completos:** Gatilho especifico, alvo 1, alvo 2, stop loss, probabilidade estimada
-5. **Feedback loop:** Historico de acertos dos ultimos 5 dias calibra a confianca automaticamente
-6. **Suportes/resistencias:** Sempre justificados (swing high/low, pivot, EMA, Bollinger)
-7. **Mecanismo de transmissao:** Nao apenas dizer "NFP afeta o mercado", mas explicar COMO (ex: "NFP forte → expectativa de juros altos → yields sobem → NQ pressao vendedora")
-8. **Multilingual:** Cada campo em 3 idiomas {pt, en, es} — outros idiomas usam fallback no frontend (daT: lang→pt→en)
-9. **Economia de tokens:** max 2-3 frases por campo, historico de 15 dias, max_tokens 6000, prompt compacto
+5. **Suportes/resistencias:** Sempre justificados (swing high/low, pivot, EMA, Bollinger)
+6. **Mecanismo de transmissao:** Nao apenas dizer "NFP afeta o mercado", mas explicar COMO (ex: "NFP forte → expectativa de juros altos → yields sobem → NQ pressao vendedora")
+7. **Multilingual:** Cada campo em 3 idiomas {pt, en, es} — outros idiomas usam fallback no frontend (daT: lang→pt→en)
+8. **Economia de tokens:** max 2-3 frases por campo, historico de 15 dias, max_tokens 6000, prompt compacto
 
 ### Campos da analise
 | Campo | Descricao | Frases |
