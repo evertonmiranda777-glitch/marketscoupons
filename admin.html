@@ -705,7 +705,8 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <button class="gdb-pill" data-days="7" onclick="setGlobalDate(7,this)">7d</button>
    <button class="gdb-pill" data-days="14" onclick="setGlobalDate(14,this)">14d</button>
    <button class="gdb-pill" data-days="28" onclick="setGlobalDate(28,this)">28d</button>
-   <button class="gdb-pill active" data-days="30" onclick="setGlobalDate(30,this)">30d</button>
+   <button class="gdb-pill" data-days="30" onclick="setGlobalDate(30,this)">30d</button>
+   <button class="gdb-pill active" data-days="month" onclick="setGlobalDate('month',this)">Este mês</button>
    <button class="gdb-pill" data-days="-1" onclick="setGlobalDate(-1,this)">Máximo</button>
   </div>
   <div class="gdb-custom">
@@ -714,7 +715,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <input type="date" id="gdb-end" class="filter-inp">
    <button class="btn-secondary" onclick="applyCustomDateRange()" style="padding:5px 12px;font-size:11px;">Aplicar</button>
   </div>
-  <div class="gdb-active" id="gdb-active">Últimos 30 dias</div>
+  <div class="gdb-active" id="gdb-active">Este mês</div>
  </div>
 
  <div class="admin-body">
@@ -2882,8 +2883,11 @@ let db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, _dbOpts);
 // ────────────────────────────────────────────────────────────────────────────
 
 // ─── GLOBAL DATE FILTER ────────────────────────────────────────────────────
-// Default: ultimos 30 dias
-let globalDateStart = new Date(Date.now() - 30 * 86400000).toISOString();
+// Default: este mes (1o do mes atual ate agora)
+let globalDateStart = (function(){
+  const n = new Date();
+  return new Date(n.getFullYear(), n.getMonth(), 1).toISOString();
+})();
 let globalDateEnd = null;
 
 function setGlobalDate(days, btn) {
@@ -2893,14 +2897,19 @@ function setGlobalDate(days, btn) {
   document.getElementById('gdb-end').value = '';
   if (days === -1) {
     globalDateStart = null; globalDateEnd = null;
-    document.getElementById('gdb-active').textContent = 'Todos os dados';
+    document.getElementById('gdb-active').textContent = 'Máximo';
+  } else if (days === 'month') {
+    const n = new Date();
+    globalDateStart = new Date(n.getFullYear(), n.getMonth(), 1).toISOString();
+    globalDateEnd = null;
+    document.getElementById('gdb-active').textContent = 'Este mês';
   } else if (days === 0) {
     const t = new Date(); t.setHours(0,0,0,0);
     globalDateStart = t.toISOString(); globalDateEnd = null;
     document.getElementById('gdb-active').textContent = 'Hoje';
   } else {
     globalDateStart = new Date(Date.now() - days * 86400000).toISOString(); globalDateEnd = null;
-    document.getElementById('gdb-active').textContent = `Ultimos ${days} dias`;
+    document.getElementById('gdb-active').textContent = `Últimos ${days} dias`;
   }
   rerenderActivePage();
 }
