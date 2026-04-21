@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "MarketsCoupons Sync",
+  "version": "0.1.0",
+  "description": "Sincroniza dados de afiliado das prop firms com o admin MarketsCoupons.",
+  "permissions": ["storage", "cookies", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://dashboard.apextraderfunding.com/*",
+    "https://dashboard.bulenox.com/*",
+    "https://trader.ftmo.com/*",
+    "https://affiliate.ftmo.com/*",
+    "https://*.takeprofittrader.com/*",
+    "https://affiliates.fundednext.com/*",
+    "https://*.the5ers.com/*",
+    "https://*.fundingpips.com/*",
+    "https://*.brightfunded.com/*",
+    "https://*.e8funding.com/*",
+    "https://*.citytradersimperium.com/*",
+    "https://qfwhduvutfumsaxnuofa.supabase.co/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://dashboard.apextraderfunding.com/aff/member/stats*"],
+      "js": ["config.js", "lib/csv.js", "content/apex.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://dashboard.bulenox.com/aff/member/stats*", "https://dashboard.bulenox.com/member/aff/stats*"],
+      "js": ["config.js", "lib/csv.js", "content/bulenox.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://trader.ftmo.com/affiliate*", "https://trader.ftmo.com/*/affiliate*", "https://affiliate.ftmo.com/*"],
+      "js": ["config.js", "content/ftmo.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "MarketsCoupons Sync"
+  }
+}

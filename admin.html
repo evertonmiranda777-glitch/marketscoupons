@@ -625,6 +625,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('usuarios',this)">Usuários</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('monetizacao',this)">Monetização<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
+ <button class="nta" onclick="adminGo('financeiro',this)">Financeiro</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -686,6 +687,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta" onclick="adminGoMobile('usuarios',this)">Usuários</button>
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
   <button class="nta" onclick="adminGoMobile('monetizacao',this)">Monetização<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
+  <button class="nta" onclick="adminGoMobile('financeiro',this)">Financeiro</button>
   <div class="nta-sep"></div>
   <button class="nta nta-cms" onclick="adminGoMobile('firmas',this)">Firmas</button>
   <button class="nta nta-cms" onclick="adminGoMobile('conteudo',this)">Conteúdo</button>
@@ -1457,6 +1459,67 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="pro-loyalty-tbl"></table></div>
+      </div>
+    </div>
+
+    <!-- ══ FINANCEIRO — conversoes reais + ads ══ -->
+    <div class="admin-page" id="page-financeiro">
+      <div class="sec-hdr">
+        <div class="sec-title">Financeiro — Conversões Reais &amp; ROAS</div>
+        <div class="sec-actions">
+          <select id="fin-period" class="filter-inp" style="font-size:12px;padding:6px 10px;" onchange="renderFinanceiro()">
+            <option value="7">7 dias</option>
+            <option value="30" selected>30 dias</option>
+            <option value="90">90 dias</option>
+            <option value="365">12 meses</option>
+          </select>
+          <button class="btn-secondary" onclick="renderFinanceiro()">Atualizar</button>
+        </div>
+      </div>
+
+      <div style="background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.25);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:12px;line-height:1.6;color:var(--t2);">
+        <b style="color:var(--gold);">Como funciona:</b> instale a extensão MarketsCoupons Sync no Chrome (pasta <code>extension/</code> do repo). Depois basta abrir o painel de afiliado de cada firma (Apex, Bulenox, FTMO, etc.) uma vez e ela sincroniza sozinha. Cookies ficam no seu browser, nada trafega cru.
+      </div>
+
+      <div class="stats-grid" id="fin-kpis" style="margin-bottom:20px;"></div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Por Firma</div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="fin-firms-tbl"></table></div>
+      </div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Série temporal (comissão USD/dia)</div>
+      </div>
+      <div class="chart-card" style="padding:16px;">
+        <canvas id="fin-chart" height="90"></canvas>
+      </div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Últimas conversões individuais (FTMO Leads)</div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="fin-leads-tbl"></table></div>
+      </div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Upload Manual (Apex / TPT — firmas com 2FA)</div>
+      </div>
+      <div class="chart-card" style="padding:16px;">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <select id="fin-up-firm" class="filter-inp" style="font-size:12px;padding:8px 12px;">
+            <option value="apex">Apex</option>
+            <option value="tpt">TakeProfitTrader</option>
+            <option value="bulenox">Bulenox</option>
+            <option value="ftmo">FTMO</option>
+          </select>
+          <input type="file" id="fin-up-file" accept=".csv" style="font-size:12px;">
+          <button class="btn-secondary" onclick="finUploadCsv()">Enviar CSV</button>
+          <span id="fin-up-status" style="font-size:11px;color:var(--t2);"></span>
+        </div>
+        <div style="font-size:11px;color:var(--t3);margin-top:10px;">Formato aceito: CSV com colunas <code>Date, Transactions, Commission, Clicks (All), Clicks (Unique)</code> (Apex/Bulenox) ou similar. Datas em "Apr 1, 2026" ou "YYYY-MM-DD".</div>
       </div>
     </div>
 
@@ -3364,6 +3427,7 @@ function renderPage(p){
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'pro':            renderProPage(); break;
     case 'tracking':       getEvents().then(()=>renderTrackingPage()); if(!_ga4Cache) fetchGA4Geo(); break;
+    case 'financeiro':     renderFinanceiro(); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
@@ -3392,6 +3456,179 @@ function renderPage(p){
     case 'firmt-editor':   renderFirmTEditor(); break;
     case 'cms-settings':   renderCmsSettings(); break;
   }
+}
+
+/* ══ FINANCEIRO ══ */
+let _finChart = null;
+async function renderFinanceiro(){
+  const days = parseInt(document.getElementById('fin-period')?.value || '30');
+  const since = new Date(Date.now() - days*86400000).toISOString().slice(0,10);
+
+  const [statsRes, leadsRes, spendRes] = await Promise.all([
+    db.from('affiliate_daily_stats').select('*').gte('date', since).order('date',{ascending:false}),
+    db.from('affiliate_conversions').select('*').gte('created_at', since).order('created_at',{ascending:false}).limit(50),
+    db.from('ad_spend_daily').select('*').gte('date', since)
+  ]);
+  const stats = statsRes.data || [];
+  const leads = leadsRes.data || [];
+  const spend = spendRes.data || [];
+
+  // KPIs
+  const totTx = stats.reduce((a,r)=>a+(r.transactions||0),0);
+  const totCom = stats.reduce((a,r)=>a+Number(r.commission||0),0);
+  const totClicksAll = stats.reduce((a,r)=>a+(r.clicks_all||0),0);
+  const totClicksUniq = stats.reduce((a,r)=>a+(r.clicks_unique||0),0);
+  const totSpend = spend.reduce((a,r)=>a+Number(r.spend||0),0);
+  const roas = totSpend > 0 ? (totCom/totSpend) : null;
+  const cac = totTx > 0 && totSpend > 0 ? (totSpend/totTx) : null;
+  const lucro = totCom - totSpend;
+  const convRate = totClicksUniq > 0 ? (totTx/totClicksUniq*100) : 0;
+
+  const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const kpiCard = (label, value, sub) => `
+    <div class="stat-card">
+      <div class="stat-label">${label}</div>
+      <div class="stat-value" style="font-size:22px;">${value}</div>
+      ${sub?`<div class="stat-sub" style="font-size:11px;color:var(--t3);margin-top:4px;">${sub}</div>`:''}
+    </div>`;
+  document.getElementById('fin-kpis').innerHTML = [
+    kpiCard('Comissão', fmtUSD(totCom), `${totTx} vendas`),
+    kpiCard('Gasto Ads', fmtUSD(totSpend), 'Meta Ads'),
+    kpiCard('Lucro', fmtUSD(lucro), lucro>=0?'no azul':'no vermelho'),
+    kpiCard('ROAS', roas?roas.toFixed(2)+'x':'—', 'Comissão/Gasto'),
+    kpiCard('CAC', cac?fmtUSD(cac):'—', 'Custo por venda'),
+    kpiCard('Cliques', totClicksAll.toLocaleString('pt-BR'), `${totClicksUniq} únicos · CVR ${convRate.toFixed(2)}%`)
+  ].join('');
+
+  // Tabela por firma
+  const byFirm = {};
+  stats.forEach(r => {
+    const k = r.firm_id;
+    if (!byFirm[k]) byFirm[k] = { firm_id:k, tx:0, com:0, clicks_all:0, clicks_uniq:0, last:null };
+    byFirm[k].tx += r.transactions||0;
+    byFirm[k].com += Number(r.commission||0);
+    byFirm[k].clicks_all += r.clicks_all||0;
+    byFirm[k].clicks_uniq += r.clicks_unique||0;
+    if (!byFirm[k].last || r.date > byFirm[k].last) byFirm[k].last = r.date;
+  });
+  const firmRows = Object.values(byFirm).sort((a,b)=>b.com-a.com);
+  const tbl = document.getElementById('fin-firms-tbl');
+  tbl.innerHTML = `
+    <thead><tr>
+      <th>Firma</th><th>Vendas</th><th>Comissão</th><th>Cliques (all/uniq)</th><th>CVR</th><th>Última sync</th>
+    </tr></thead>
+    <tbody>${firmRows.length ? firmRows.map(r=>{
+      const cvr = r.clicks_uniq>0 ? (r.tx/r.clicks_uniq*100).toFixed(2)+'%' : '—';
+      const ago = r.last ? Math.round((Date.now()-new Date(r.last).getTime())/86400000)+'d' : '—';
+      return `<tr><td><b>${r.firm_id.toUpperCase()}</b></td><td>${r.tx}</td><td>${fmtUSD(r.com)}</td><td>${r.clicks_all} / ${r.clicks_uniq}</td><td>${cvr}</td><td>${r.last||'—'} (${ago})</td></tr>`;
+    }).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:24px;">Nenhum dado ainda. Instale a extensão ou faça upload CSV.</td></tr>'}</tbody>`;
+
+  // Gráfico série temporal
+  const byDate = {};
+  stats.forEach(r => {
+    byDate[r.date] = (byDate[r.date]||0) + Number(r.commission||0);
+  });
+  const sortedDates = Object.keys(byDate).sort();
+  const canvas = document.getElementById('fin-chart');
+  if (canvas && sortedDates.length && window.Chart) {
+    if (_finChart) _finChart.destroy();
+    _finChart = new Chart(canvas.getContext('2d'), {
+      type:'line',
+      data:{
+        labels: sortedDates,
+        datasets:[{ label:'Comissão (USD)', data: sortedDates.map(d=>byDate[d]), borderColor:'#F0B429', backgroundColor:'rgba(240,180,41,.15)', fill:true, tension:.3 }]
+      },
+      options:{ responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+    });
+  }
+
+  // Leads individuais
+  const leadsTbl = document.getElementById('fin-leads-tbl');
+  leadsTbl.innerHTML = `
+    <thead><tr><th>Firma</th><th>Order ID</th><th>Valor</th><th>Status</th><th>Quando</th></tr></thead>
+    <tbody>${leads.length ? leads.map(l=>{
+      const when = new Date(l.created_at).toLocaleDateString('pt-BR');
+      return `<tr><td><b>${(l.firm_id||'').toUpperCase()}</b></td><td>${l.transaction_id||'—'}</td><td>${l.currency||'USD'} ${Number(l.amount||0).toFixed(2)}</td><td>${l.status||'—'}</td><td>${when}</td></tr>`;
+    }).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px;">Nenhum lead individual ainda (FTMO manda).</td></tr>'}</tbody>`;
+}
+
+async function finUploadCsv(){
+  const firm = document.getElementById('fin-up-firm').value;
+  const file = document.getElementById('fin-up-file').files[0];
+  const st = document.getElementById('fin-up-status');
+  if (!file) { st.textContent = 'Escolha um arquivo CSV'; return; }
+  st.textContent = 'Lendo...';
+  const text = await file.text();
+  const rows = finParseAmemberCSV(text);
+  if (!rows.length) { st.textContent = 'Nenhuma linha válida encontrada'; return; }
+  st.textContent = `Enviando ${rows.length} linhas...`;
+  try {
+    const sess = await db.auth.getSession();
+    const tk = sess?.data?.session?.access_token || SUPABASE_ANON;
+    const res = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/finance-sync', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk,'apikey':SUPABASE_ANON},
+      body:JSON.stringify({firm, source:'admin_csv_upload', rows})
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) { st.textContent = 'Erro: ' + (data.error||data.message||res.status); return; }
+    st.textContent = `OK — ${data.rows_saved||rows.length} linhas salvas`;
+    setTimeout(()=>renderFinanceiro(), 500);
+  } catch(e) { st.textContent = 'Erro: '+e.message; }
+}
+
+function finParseAmemberCSV(text){
+  const lines = text.split(/\r?\n/).filter(l=>l.length);
+  if (!lines.length) return [];
+  const parseLine = l => {
+    const out = []; let cur = '', inQ = false;
+    for (let i = 0; i < l.length; i++) {
+      const c = l[i], n = l[i+1];
+      if (inQ) {
+        if (c === '"' && n === '"') { cur += '"'; i++; }
+        else if (c === '"') inQ = false;
+        else cur += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ',') { out.push(cur); cur = ''; }
+        else cur += c;
+      }
+    }
+    out.push(cur); return out;
+  };
+  const header = parseLine(lines[0]).map(h=>h.trim().toLowerCase());
+  const iDate = header.findIndex(h=>h==='date');
+  const iTx = header.findIndex(h=>h.includes('transaction')||h==='sales');
+  const iCom = header.findIndex(h=>h.includes('commission'));
+  const iCAll = header.findIndex(h=>h.includes('all'));
+  const iCUniq = header.findIndex(h=>h.includes('unique'));
+  if (iDate < 0) return [];
+  const months = { Jan:1, Feb:2, Mar:3, Apr:4, May:5, Jun:6, Jul:7, Aug:8, Sep:9, Oct:10, Nov:11, Dec:12 };
+  const num = s => { const n = parseFloat(String(s||'').replace(/[$,\s€£]/g,'')); return isNaN(n)?0:n; };
+  const parseDate = s => {
+    if (!s) return null;
+    const t = s.trim();
+    let m = /^(\d{4})-(\d{2})-(\d{2})/.exec(t); if (m) return t.slice(0,10);
+    m = /^([A-Za-z]{3})\s+(\d{1,2}),\s*(\d{4})$/.exec(t);
+    if (m) { const mm = months[m[1]]; return mm ? `${m[3]}-${String(mm).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}` : null; }
+    m = /^([A-Za-z]{3})\s+(\d{4})$/.exec(t);
+    if (m) { const mm = months[m[1]]; return mm ? `${m[2]}-${String(mm).padStart(2,'0')}-01` : null; }
+    return null;
+  };
+  const out = [];
+  for (let i = 1; i < lines.length; i++) {
+    const row = parseLine(lines[i]);
+    const d = parseDate(row[iDate]);
+    if (!d) continue;
+    out.push({
+      date: d,
+      transactions: iTx>=0 ? Math.round(num(row[iTx])) : 0,
+      commission: iCom>=0 ? num(row[iCom]) : 0,
+      clicks_all: iCAll>=0 ? Math.round(num(row[iCAll])) : 0,
+      clicks_unique: iCUniq>=0 ? Math.round(num(row[iCUniq])) : 0
+    });
+  }
+  return out;
 }
 
 /* ── OVERVIEW — uses sync cache ── */

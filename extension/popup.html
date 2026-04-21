@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>MarketsCoupons Sync</title>
+<style>
+  :root { color-scheme: dark; }
+  body { font: 13px/1.4 system-ui, -apple-system, Segoe UI, sans-serif; background:#0a0a0a; color:#e8e8e8; margin:0; padding:14px; width:280px; }
+  h1 { font-size:14px; color:#f0b429; margin:0 0 10px; display:flex; align-items:center; gap:8px; }
+  h1::before { content:''; width:10px; height:10px; background:#f0b429; border-radius:2px; }
+  .row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #222; }
+  .row:last-child { border-bottom:none; }
+  .firm { font-weight:600; }
+  .status { font-size:11px; color:#888; }
+  .status.ok { color:#10b981; }
+  .status.old { color:#f59e0b; }
+  button { background:#f0b429; color:#0a0a0a; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; }
+  button:hover { background:#fbbf24; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  .hint { font-size:11px; color:#666; margin-top:12px; line-height:1.5; }
+  .hint a { color:#f0b429; }
+</style>
+</head>
+<body>
+  <h1>MarketsCoupons Sync</h1>
+  <div id="firms"></div>
+  <div class="hint">
+    Pra sincronizar uma firma, abra o painel de afiliado dela no navegador. A extensao detecta login e sincroniza sozinha a cada 6h. Ou clique Sync aqui.
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
