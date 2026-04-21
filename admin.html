@@ -1489,7 +1489,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Últimas conversões individuais (FTMO Leads)</div>
+        <div class="sec-title" style="font-size:14px;">Últimas vendas individuais</div>
       </div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="fin-leads-tbl"></table></div>
@@ -3592,7 +3592,7 @@ async function renderFinanceiro(){
     <tbody>${leads.length ? leads.map(l=>{
       const when = new Date(l.created_at).toLocaleDateString('pt-BR');
       return `<tr><td><b>${(l.firm_id||'').toUpperCase()}</b></td><td>${l.transaction_id||'—'}</td><td>${l.currency||'USD'} ${Number(l.amount||0).toFixed(2)}</td><td>${l.status||'—'}</td><td>${when}</td></tr>`;
-    }).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px;">Nenhum lead individual ainda (FTMO manda).</td></tr>'}</tbody>`;
+    }).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma venda individual ainda.</td></tr>'}</tbody>`;
 
   // ROAS Real por Campanha
   renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur);
