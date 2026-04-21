@@ -111,31 +111,48 @@ async function handleClean(db: ReturnType<typeof createClient>) {
   return { deleted: messages?.length ?? 0 };
 }
 
-// ── action=coupons (top 5 by discount) ──────────────────────────────────────
-async function handleCoupons(db: ReturnType<typeof createClient>) {
-  const { data: firms, error } = await db
-    .from("cms_firms")
-    .select("name, discount, coupon, discount_type")
-    .eq("active", true)
-    .gt("discount", 0)
-    .order("discount", { ascending: false })
-    .limit(5);
+// ── action=coupons (4 firms by day-of-week: futures Mon/Wed/Fri, forex Tue/Thu) ──
+const FIRMS_BY_DAY: Record<number, string[]> = {
+  0: ["apex", "bulenox", "tpt", "e2t"],
+  1: ["apex", "bulenox", "tpt", "e2t"],
+  2: ["ftmo", "fn", "fundingpips", "cti"],
+  3: ["apex", "bulenox", "tpt", "e2t"],
+  4: ["ftmo", "the5ers", "brightfunded", "e8"],
+  5: ["apex", "bulenox", "tpt", "e2t"],
+  6: ["apex", "bulenox", "tpt", "e2t"],
+};
 
-  if (error || !firms || firms.length === 0) {
+async function handleCoupons(db: ReturnType<typeof createClient>) {
+  const day = new Date().getDay();
+  const ids = FIRMS_BY_DAY[day] || FIRMS_BY_DAY[1];
+  const isForex = day === 2 || day === 4;
+
+  const { data: rowsRaw, error } = await db
+    .from("cms_firms")
+    .select("id, name, short_name, discount, coupon, discount_type")
+    .in("id", ids);
+
+  if (error || !rowsRaw || rowsRaw.length === 0) {
     console.error("Failed to fetch firms:", error);
     return { sent: false };
   }
 
-  const medals = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"];
-  const lines = firms.map((f: { name: string; discount: number; coupon: string | null; discount_type: string | null }, i: number) => {
+  type FirmRow = { id: string; name: string; short_name: string | null; discount: number; coupon: string | null; discount_type: string | null };
+  const firms = ids
+    .map((id) => (rowsRaw as FirmRow[]).find((r) => r.id === id))
+    .filter((f): f is FirmRow => Boolean(f));
+
+  const lines = firms.map((f) => {
     const dtype = (f.discount_type || "").toLowerCase();
     const label = dtype === "lifetime" ? "LIFETIME" : "OFF";
+    const name = f.short_name || f.name;
     const couponLine = f.coupon ? `Code: <code>${f.coupon}</code>` : `No code needed`;
-    return `${medals[i]} <b>${f.name}</b> — ${f.discount}% ${label}\n${couponLine}`;
+    return `<b>${name}</b> — ${f.discount}% ${label}\n${couponLine}`;
   });
 
+  const header = isForex ? "Today's Forex Prop Firm Deals" : "Today's Futures Prop Firm Deals";
   const caption =
-    `🔥 <b>Today's Best Prop Firm Deals</b>\n\n` +
+    `🔥 <b>${header}</b>\n\n` +
     lines.join("\n\n") +
     `\n\n👉 ${tgLink("coupons")}`;
 

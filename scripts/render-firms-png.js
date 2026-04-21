@@ -43,9 +43,30 @@ function stars(rating) {
   return [1,2,3,4,5].map(i => star(i <= r)).join('');
 }
 
+const FIRMS_BY_DAY = {
+  0: ['apex', 'bulenox', 'tpt', 'e2t'],
+  1: ['apex', 'bulenox', 'tpt', 'e2t'],
+  2: ['ftmo', 'fn', 'fundingpips', 'cti'],
+  3: ['apex', 'bulenox', 'tpt', 'e2t'],
+  4: ['ftmo', 'the5ers', 'brightfunded', 'e8'],
+  5: ['apex', 'bulenox', 'tpt', 'e2t'],
+  6: ['apex', 'bulenox', 'tpt', 'e2t'],
+};
+
+function pickFirmIdsForToday() {
+  const day = new Date().getDay();
+  return FIRMS_BY_DAY[day] || FIRMS_BY_DAY[1];
+}
+
 async function injectFirms(page) {
-  const firms = await sb('cms_firms', 'select=name,short_name,discount,split,rating,reviews,coupon,type,sort_order,icon_url&active=eq.true&id=neq.e2t&order=discount.desc.nullslast&limit=5');
-  if (!firms || firms.length === 0) { console.warn('[firms] no data, keeping static template'); return; }
+  const ids = pickFirmIdsForToday();
+  const idsList = ids.map(x => `"${x}"`).join(',');
+  const rowsRaw = await sb('cms_firms', `select=id,name,short_name,discount,split,rating,reviews,coupon,type,sort_order,icon_url&active=eq.true&id=in.(${idsList})`);
+  if (!rowsRaw || rowsRaw.length === 0) { console.warn('[firms] no data, keeping static template'); return; }
+
+  // Preserve day order (not DB order)
+  const firms = ids.map(id => rowsRaw.find(r => r.id === id)).filter(Boolean);
+  if (firms.length === 0) { console.warn('[firms] no matching firms, keeping static'); return; }
 
   const totalFirms = await sb('cms_firms', 'select=id&active=eq.true');
   const total = totalFirms ? totalFirms.length : firms.length;
@@ -72,7 +93,7 @@ async function injectFirms(page) {
     const typeTag = (f.type || '').toLowerCase().includes('forex')
       ? `<span class="tag frx">${f.type}</span>`
       : `<span class="tag fut">Futures</span>`;
-    const hiTag = isTop ? `<span class="tag hi">Biggest Discount</span>` : '';
+    const hiTag = '';
     const name = f.short_name || f.name;
     const ratingStars = [1,2,3,4,5].map(n => `<span class="st"${n <= Math.round(f.rating || 0) ? '' : ' style="opacity:.28"'}>★</span>`).join('');
     const logoSrc = logoCache[f.icon_url] || '';
