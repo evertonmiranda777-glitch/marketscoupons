@@ -489,20 +489,24 @@ img{max-width:100%;}
 .mu-cpn-old{font-size:8px;color:rgba(255,255,255,.25);text-decoration:line-through;}
 .mu-cpn-new{font-size:13px;font-weight:800;color:var(--gold);}
 .mu-cpn-code{font-size:7px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(107,182,201,.08);padding:2px 6px;border-radius:4px;letter-spacing:1px;font-family:monospace;}
-/* Comparator */
-.mu-compare{display:flex;flex-direction:column;}
-.mu-cmp-header{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px;padding-bottom:10px;border-bottom:1px solid rgba(107,182,201,.18);margin-bottom:8px;}
-.mu-cmp-firm{display:flex;flex-direction:column;align-items:center;gap:4px;}
-.mu-cmp-nm{font-size:8px;font-weight:700;color:rgba(255,255,255,.6);}
-.mu-cmp-stars{font-size:7px;color:var(--gold);font-weight:700;}
-.mu-cmp-rows{display:flex;flex-direction:column;gap:5px;}
-.mu-cmp-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px;align-items:center;}
-.mu-cmp-label{font-size:7.5px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;}
-.mu-cmp-val{font-size:9px;font-weight:700;color:rgba(255,255,255,.55);text-align:center;}
-.mu-cmp-val.best{color:var(--green);font-weight:800;}
-.mu-cmp-winner{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(107,182,201,.18);}
-.mu-cmp-winner-badge{font-size:7px;font-weight:800;color:#000;background:var(--green);padding:2px 8px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;}
-.mu-cmp-winner-text{font-size:8px;font-weight:600;color:rgba(255,255,255,.5);}
+/* Comparator v2 — fd-overlay DNA */
+.mu-compare{display:flex;flex-direction:column;gap:10px;}
+.mu-cmp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.mu-cmp-card{position:relative;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 8px 9px;display:flex;flex-direction:column;align-items:center;gap:6px;overflow:hidden;transition:all .2s ease;}
+.mu-cmp-card::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(180deg,rgba(var(--acc-rgb),.10),transparent 55%);pointer-events:none;}
+.mu-cmp-card.win{border-color:rgba(var(--acc-rgb),.55);box-shadow:0 0 0 1px rgba(var(--acc-rgb),.25),0 6px 20px rgba(var(--acc-rgb),.18);background:rgba(var(--acc-rgb),.06);}
+.mu-cmp-logo{width:32px;height:32px;border-radius:8px;object-fit:contain;background:rgba(0,0,0,.35);padding:3px;position:relative;z-index:1;}
+.mu-cmp-nm{font-size:10px;font-weight:800;color:#fff;letter-spacing:.2px;position:relative;z-index:1;}
+.mu-cmp-tp{display:flex;align-items:center;gap:3px;font-size:7.5px;font-weight:700;color:var(--gold);position:relative;z-index:1;}
+.mu-cmp-tp::before{content:'★';font-size:9px;}
+.mu-cmp-disc{font-size:11px;font-weight:900;padding:3px 9px;border-radius:999px;background:rgba(var(--acc-rgb),.14);color:rgb(var(--acc-rgb));border:1px solid rgba(var(--acc-rgb),.30);letter-spacing:.3px;position:relative;z-index:1;margin-top:2px;}
+.mu-cmp-stats{display:flex;flex-direction:column;gap:3px;width:100%;margin-top:4px;padding-top:6px;border-top:1px solid rgba(255,255,255,.06);position:relative;z-index:1;}
+.mu-cmp-stat{display:flex;justify-content:space-between;align-items:center;font-size:8px;}
+.mu-cmp-stat-lbl{color:rgba(255,255,255,.45);font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.mu-cmp-stat-val{color:#fff;font-weight:800;}
+.mu-cmp-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:900;color:#000;background:rgb(var(--acc-rgb));padding:2px 9px;border-radius:0 0 6px 6px;letter-spacing:.5px;text-transform:uppercase;z-index:2;}
+.mu-cmp-footer{display:flex;align-items:center;justify-content:center;gap:6px;font-size:8.5px;font-weight:700;color:rgba(255,255,255,.55);margin-top:2px;}
+.mu-cmp-footer b{color:var(--gold);font-weight:800;}
 /* Live Room */
 .mu-live{display:flex;gap:10px;height:150px;}
 .mu-live-screen{flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(107,182,201,.18);border-radius:10px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
@@ -2915,24 +2919,43 @@ document.addEventListener('DOMContentLoaded',function(){
      <div class="auth-slide" data-group="login" data-slide="1">
       <div class="mu">
        <div class="mu-compare">
-        <div class="mu-cmp-header">
-         <div></div>
-         <div class="mu-cmp-firm"><img loading="lazy" class="mu-logo-sm" src="img/Firms/apex.png" alt="Apex"><div class="mu-cmp-nm">Apex</div><div class="mu-cmp-stars">4.4 / 17.6K</div></div>
-         <div class="mu-cmp-firm"><img loading="lazy" class="mu-logo-sm" src="img/Firms/bulenox.png" alt="Bulenox"><div class="mu-cmp-nm">Bulenox</div><div class="mu-cmp-stars">4.8 / 1.4K</div></div>
-         <div class="mu-cmp-firm"><img loading="lazy" class="mu-logo-sm" src="img/Firms/tpt.png" alt="TPT"><div class="mu-cmp-nm">TPT</div><div class="mu-cmp-stars">4.4 / 8.5K</div></div>
+        <div class="mu-cmp-grid">
+         <div class="mu-cmp-card" style="--acc-rgb:249,115,22;">
+          <img loading="lazy" class="mu-cmp-logo" src="img/Firms/apex.png" alt="Apex">
+          <div class="mu-cmp-nm">Apex</div>
+          <div class="mu-cmp-tp">4.4 · 17.6K</div>
+          <div class="mu-cmp-disc">90% OFF</div>
+          <div class="mu-cmp-stats">
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">100K</span><span class="mu-cmp-stat-val">$39.90</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">Split</span><span class="mu-cmp-stat-val">80%</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">Trailing</span></div>
+          </div>
+         </div>
+         <div class="mu-cmp-card win" style="--acc-rgb:16,185,129;">
+          <div class="mu-cmp-badge" data-i18n="mu_vencedor">BEST VALUE</div>
+          <img loading="lazy" class="mu-cmp-logo" src="img/Firms/bulenox.png" alt="Bulenox">
+          <div class="mu-cmp-nm">Bulenox</div>
+          <div class="mu-cmp-tp">4.8 · 1.4K</div>
+          <div class="mu-cmp-disc">89% OFF</div>
+          <div class="mu-cmp-stats">
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">100K</span><span class="mu-cmp-stat-val">$23.65</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">Split</span><span class="mu-cmp-stat-val">90%</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">Trailing</span></div>
+          </div>
+         </div>
+         <div class="mu-cmp-card" style="--acc-rgb:148,163,184;">
+          <img loading="lazy" class="mu-cmp-logo" src="img/Firms/tpt.png" alt="TPT">
+          <div class="mu-cmp-nm">TPT</div>
+          <div class="mu-cmp-tp">4.4 · 8.5K</div>
+          <div class="mu-cmp-disc">40% OFF</div>
+          <div class="mu-cmp-stats">
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">100K</span><span class="mu-cmp-stat-val">$198</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">Split</span><span class="mu-cmp-stat-val">80%</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">EOD</span></div>
+          </div>
+         </div>
         </div>
-        <div class="mu-cmp-rows">
-         <div class="mu-cmp-row"><div class="mu-cmp-label" data-i18n="mu_desconto">Desconto</div><div class="mu-cmp-val best">90%</div><div class="mu-cmp-val best">89%</div><div class="mu-cmp-val">40%</div></div>
-         <div class="mu-cmp-row"><div class="mu-cmp-label" data-i18n="mu_100k_price">Preco 100K</div><div class="mu-cmp-val best">$39.90</div><div class="mu-cmp-val best">$23.65</div><div class="mu-cmp-val">$198</div></div>
-         <div class="mu-cmp-row"><div class="mu-cmp-label">Drawdown</div><div class="mu-cmp-val">Trailing</div><div class="mu-cmp-val">Trailing</div><div class="mu-cmp-val best">EOD</div></div>
-         <div class="mu-cmp-row"><div class="mu-cmp-label">Split</div><div class="mu-cmp-val">80%</div><div class="mu-cmp-val best">90%</div><div class="mu-cmp-val">80%</div></div>
-         <div class="mu-cmp-row"><div class="mu-cmp-label" data-i18n="mu_min_dias">Min. dias</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val best">1</div><div class="mu-cmp-val">4</div></div>
-        </div>
-        <div class="mu-cmp-winner">
-         <img loading="lazy" class="mu-logo-sm" src="img/Firms/bulenox.png" alt="Bulenox">
-         <div class="mu-cmp-winner-badge" data-i18n="mu_vencedor">VENCEDOR</div>
-         <div class="mu-cmp-winner-text" data-i18n="mu_vencedor_txt">Bulenox — melhor custo-beneficio para 100K</div>
-        </div>
+        <div class="mu-cmp-footer" data-i18n="mu_vencedor_txt"><b>Bulenox</b> — melhor custo-beneficio para 100K</div>
        </div>
       </div>
       <h2 data-i18n="as_l1_h">Compare <span class="cyan">todas as firmas</span> antes de escolher</h2>
