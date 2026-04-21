@@ -27,11 +27,11 @@ async function mcMarkSyncE2T(firmId) {
 }
 
 async function mcSyncE2T(opts = {}) {
-  const snapshot = mcScrapeE2TSnapshot();
+  const snapshot = null;
   const leads = mcScrapeE2TTable();
 
-  if (!snapshot && !leads.length) {
-    mcToastE2T('E2T: sem dados — abra Home ou Reports');
+  if (!leads.length) {
+    mcToastE2T('E2T: sem transacoes na pagina');
     return { ok:false };
   }
 

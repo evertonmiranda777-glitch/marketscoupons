@@ -27,11 +27,12 @@ async function mcMarkE8(firmId) {
 }
 
 async function mcSyncE8(opts = {}) {
-  const snapshot = mcScrapeE8Snapshot();
+  // Snapshot desativado: estava chutando valores. So envia se achar tabela real.
+  const snapshot = null;
   const leads = mcScrapeE8Table();
 
-  if (!snapshot && !leads.length) {
-    mcToastE8('E8: sem dados — abra /affiliate');
+  if (!leads.length) {
+    mcToastE8('E8: sem transacoes na pagina');
     return { ok:false };
   }
 

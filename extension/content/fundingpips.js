@@ -27,11 +27,11 @@ async function mcMarkFP(firmId) {
 }
 
 async function mcSyncFP(opts = {}) {
-  const snapshot = mcScrapeFPSnapshot();
+  const snapshot = null;
   const leads = mcScrapeFPTable();
 
-  if (!snapshot && !leads.length) {
-    mcToastFP('FP: sem dados — abra /affiliate');
+  if (!leads.length) {
+    mcToastFP('FP: sem transacoes na pagina');
     return { ok:false };
   }
 

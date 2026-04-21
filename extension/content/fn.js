@@ -27,11 +27,11 @@ async function mcMarkSyncFN(firmId) {
 }
 
 async function mcSyncFN(opts = {}) {
-  const snapshot = mcScrapeFNSnapshot();
+  const snapshot = null;
   const leads = mcScrapeFNTable();
 
-  if (!snapshot && !leads.length) {
-    mcToastFN('FN: sem dados — abra Home ou Commissions');
+  if (!leads.length) {
+    mcToastFN('FN: sem transacoes na pagina');
     return { ok:false };
   }
 

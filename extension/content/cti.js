@@ -27,11 +27,11 @@ async function mcMarkCTI(firmId) {
 }
 
 async function mcSyncCTI(opts = {}) {
-  const snapshot = mcScrapeCTISnapshot();
+  const snapshot = null;
   const leads = mcScrapeCTITable();
 
-  if (!snapshot && !leads.length) {
-    mcToastCTI('CTI: sem dados — abra /affiliates');
+  if (!leads.length) {
+    mcToastCTI('CTI: sem transacoes na pagina');
     return { ok:false };
   }
 

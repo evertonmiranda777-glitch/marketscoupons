@@ -27,11 +27,11 @@ async function mcMark5(firmId) {
 }
 
 async function mcSync5(opts = {}) {
-  const snapshot = mcScrape5Snapshot();
+  const snapshot = null;
   const leads = mcScrape5Table();
 
-  if (!snapshot && !leads.length) {
-    mcToast5('The5ers: sem dados — abra /en/affiliate');
+  if (!leads.length) {
+    mcToast5('The5ers: sem transacoes na pagina');
     return { ok:false };
   }
 

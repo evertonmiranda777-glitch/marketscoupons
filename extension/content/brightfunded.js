@@ -27,11 +27,11 @@ async function mcMarkBF(firmId) {
 }
 
 async function mcSyncBF(opts = {}) {
-  const snapshot = mcScrapeBFSnapshot();
+  const snapshot = null;
   const leads = mcScrapeBFTable();
 
-  if (!snapshot && !leads.length) {
-    mcToastBF('BF: sem dados — abra /affiliate/dashboard');
+  if (!leads.length) {
+    mcToastBF('BF: sem transacoes na pagina');
     return { ok:false };
   }
 
