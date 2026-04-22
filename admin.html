@@ -11442,7 +11442,7 @@ function renderHeroPremium(firm, content, L) {
   if (crChk('cr-show-coupon')) {
     if (coupon) {
       h += `<div class="cr-hp-cplabel">${L.exclusive_coupon || (_crLang==='pt'?'CUPOM EXCLUSIVO':'EXCLUSIVE COUPON')}</div>`;
-      h += `<div class="cr-hp-cpbox" style="border:2px dashed ${color};background:${color}2E;box-shadow:inset 0 0 40px ${color}29, 0 0 32px ${color}40;"><div class="cr-hp-cpcode" style="color:${color};text-shadow:0 0 24px ${color}80;">${escHtml(coupon)}</div></div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${color}8C;background:linear-gradient(180deg, ${color}26, ${color}14);"><div class="cr-hp-cpcode" style="color:${color};">${escHtml(coupon)}</div></div>`;
     } else {
       const GREEN = '#10B981';
       h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
