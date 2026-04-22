@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
 
     const base = (origin || 'https://www.marketscoupons.com/').replace(/\/$/, '') + '/';
     const absolutize = (s) => (s || '')
-      .replace(/url\((['"]?)(?!https?:|data:|\/\/|#)([^'")]+)\1\)/g, (_m, q, p) => `url(${q}${base}${p.replace(/^\/+/, '')}${q})`)
+      .replace(/url\((&quot;|['"]|)\s*(?!https?:|data:|\/\/|#)([^'"&)\s]+)\s*\1\)/g, (_m, q, p) => `url(${q}${base}${p.replace(/^\/+/, '')}${q})`)
       .replace(/(src|href)=(['"])(?!https?:|data:|\/\/|#|mailto:)([^'"]+)\2/g, (_m, attr, q, p) => `${attr}=${q}${base}${p.replace(/^\/+/, '')}${q}`);
 
     const absHtml = absolutize(html);
