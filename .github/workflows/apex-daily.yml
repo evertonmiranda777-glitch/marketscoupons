@@ -1,0 +1,41 @@
+name: Apex Daily Promo Monitor
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # 04:00 UTC = 01:00 BRT
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install firecrawl CLI
+        run: npm install -g firecrawl-cli
+      - name: Authenticate firecrawl
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+        run: firecrawl login --api-key "$FIRECRAWL_API_KEY"
+      - name: Run Apex monitor
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ONLY_FIRM: apex
+        run: node scripts/monitor-firms.js
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .firecrawl/firms/
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(apex-monitor): daily snapshot $(date -u +%Y-%m-%d)"
+            git push
+          else
+            echo "no changes to commit"
+          fi

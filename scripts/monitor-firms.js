@@ -7,7 +7,8 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
-const FIRMS = [
+const ONLY = (process.env.ONLY_FIRM || '').trim().toLowerCase();
+const ALL_FIRMS = [
   { id: 'apex',         url: 'https://apextraderfunding.com/'    },
   { id: 'bulenox',      url: 'https://bulenox.com/'              },
   { id: 'ftmo',         url: 'https://ftmo.com/en/'              },
@@ -21,6 +22,7 @@ const FIRMS = [
   { id: 'cti',          url: 'https://cityTradersimperium.com/'  },
   { id: 'tradeday',     url: 'https://www.tradeday.com/'         },
 ];
+const FIRMS = ONLY ? ALL_FIRMS.filter(f => f.id === ONLY) : ALL_FIRMS;
 
 const OUT_DIR = path.join(__dirname, '..', '.firecrawl', 'firms');
 fs.mkdirSync(OUT_DIR, { recursive: true });
