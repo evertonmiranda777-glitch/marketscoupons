@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hero Minimal Creative — Mockup</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0A0B0D;font-family:'Inter',-apple-system,sans-serif;padding:32px;display:flex;gap:32px;align-items:flex-start}
+  .canvas{width:1080px;height:1350px;background:#000;position:relative;flex-shrink:0;overflow:hidden}
+  .hero-card{
+    position:absolute;inset:60px 60px 60px 60px;
+    background:#000;border:2px solid var(--accent);border-radius:24px;
+    display:flex;flex-direction:column;align-items:center;
+    padding:70px 60px 50px;
+  }
+
+  /* TOP MC branding (small, centered) */
+  .mc-top{
+    position:absolute;top:-36px;left:50%;transform:translateX(-50%);
+    background:#000;padding:0 18px;display:flex;align-items:center;gap:10px;
+  }
+  .mc-top svg{width:34px;height:34px}
+  .mc-top .txt{color:var(--accent);font-size:24px;font-weight:700;letter-spacing:-.3px}
+  .mc-top .txt b{font-weight:800}
+
+  /* Firm logo (wordmark, large, white) */
+  .firm-logo{
+    width:100%;max-width:620px;height:110px;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:10px;margin-bottom:30px;
+  }
+  .firm-logo img{max-width:100%;max-height:100%;object-fit:contain;filter:brightness(0) invert(1)}
+
+  /* Discount % OFF (massive, accent color) */
+  .disc-block{
+    font-family:'Inter',sans-serif;font-weight:900;
+    color:var(--accent);line-height:.95;text-align:center;
+    font-size:260px;letter-spacing:-6px;
+    margin-bottom:36px;
+  }
+  .disc-block .off{display:block;margin-top:-10px}
+
+  /* COUPON label */
+  .coup-label{
+    color:#E5E7EB;font-size:26px;font-weight:500;letter-spacing:8px;
+    text-transform:uppercase;margin-bottom:16px;
+  }
+  .coup-code{
+    color:var(--accent);font-size:72px;font-weight:800;letter-spacing:4px;
+    margin-bottom:40px;
+  }
+
+  /* Featured perk (single line) */
+  .featured{
+    color:#E5E7EB;font-size:22px;font-weight:500;letter-spacing:2px;
+    text-transform:uppercase;margin-bottom:36px;text-align:center;
+  }
+
+  /* Prices grid 2x2 */
+  .prices{
+    display:grid;grid-template-columns:repeat(2,1fr);
+    gap:14px 50px;width:100%;max-width:600px;margin-bottom:40px;
+  }
+  .price-row{
+    color:#fff;font-size:30px;font-weight:800;white-space:nowrap;
+  }
+  .price-row .old{
+    color:var(--accent);font-size:18px;font-weight:400;
+    text-decoration:line-through;margin-left:8px;vertical-align:middle;
+  }
+
+  /* Bottom MC */
+  .mc-bot{
+    position:absolute;bottom:-36px;left:50%;transform:translateX(-50%);
+    background:#000;padding:0 18px;display:flex;align-items:center;gap:10px;
+  }
+  .mc-bot svg{width:30px;height:30px}
+  .mc-bot .txt{color:var(--accent);font-size:22px;font-weight:700}
+  .mc-bot .txt b{font-weight:800}
+
+  /* Labels */
+  .label{position:absolute;top:-48px;left:0;color:#888;font-size:18px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<!-- BULENOX — CYAN (replicando ref 1:1) -->
+<div class="canvas" style="--accent:#22D3EE">
+  <div class="label">BULENOX • CYAN</div>
+  <div class="hero-card">
+    <div class="mc-top">
+      <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#22D3EE" stroke-width="2.4" fill="none"/>
+        <path d="M14 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M36 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="txt"><b>Markets</b> Coupons</div>
+    </div>
+
+    <div class="firm-logo">
+      <img src="../img/Firms Logos/Bulenox-Logo-1-01-800x207.png" alt="Bulenox">
+    </div>
+
+    <div class="disc-block">89%<span class="off">OFF</span></div>
+
+    <div class="coup-label">Coupon:</div>
+    <div class="coup-code">MARKET89</div>
+
+    <div class="featured">Rithmic 14 Day Free Trial</div>
+
+    <div class="prices">
+      <div class="price-row">25K &mdash; $15.95 <span class="old">$145</span></div>
+      <div class="price-row">100K &mdash; $17.05 <span class="old">$155</span></div>
+      <div class="price-row">50K &mdash; $13.75 <span class="old">$125</span></div>
+      <div class="price-row">150K &mdash; $35.75 <span class="old">$325</span></div>
+    </div>
+
+    <div class="mc-bot">
+      <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#22D3EE" stroke-width="2.4" fill="none"/>
+        <path d="M14 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M36 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="txt"><b>Markets</b> Coupons</div>
+    </div>
+  </div>
+</div>
+
+<!-- APEX — ORANGE -->
+<div class="canvas" style="--accent:#F97316">
+  <div class="label">APEX • ORANGE</div>
+  <div class="hero-card">
+    <div class="mc-top">
+      <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#F97316" stroke-width="2.4" fill="none"/>
+        <path d="M14 33V20L25 28" stroke="#F97316" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M36 33V20L25 28" stroke="#F97316" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="txt"><b>Markets</b> Coupons</div>
+    </div>
+
+    <div class="firm-logo">
+      <img src="../img/Firms Logos/apex-logo-wide-light.png" alt="Apex">
+    </div>
+
+    <div class="disc-block">50%<span class="off">OFF</span></div>
+
+    <div class="coup-label">Coupon:</div>
+    <div class="coup-code">MARKET</div>
+
+    <div class="featured">Lifetime Discount &bull; No Daily Limit</div>
+
+    <div class="prices">
+      <div class="price-row">25K &mdash; $99.50 <span class="old">$199</span></div>
+      <div class="price-row">100K &mdash; $199.50 <span class="old">$399</span></div>
+      <div class="price-row">50K &mdash; $124.50 <span class="old">$249</span></div>
+      <div class="price-row">150K &mdash; $299.50 <span class="old">$599</span></div>
+    </div>
+
+    <div class="mc-bot">
+      <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#F97316" stroke-width="2.4" fill="none"/>
+        <path d="M14 33V20L25 28" stroke="#F97316" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M36 33V20L25 28" stroke="#F97316" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="txt"><b>Markets</b> Coupons</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

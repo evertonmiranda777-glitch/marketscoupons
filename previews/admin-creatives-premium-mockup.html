@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Premium Checkout Creative — Mockup</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0A0B0D;font-family:'Inter',-apple-system,sans-serif;padding:32px;display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap}
+
+  /* ---------- CANVAS WRAPPERS ---------- */
+  .canvas{position:relative;flex-shrink:0;overflow:hidden;background:#000;color:#fff}
+  .canvas.feed{width:1080px;height:1350px}
+  .canvas.story{width:1080px;height:1920px}
+
+  /* Hero bg */
+  .bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
+  .bg-tint{position:absolute;inset:0;z-index:1;background:
+    linear-gradient(180deg, rgba(5,8,12,.35) 0%, rgba(5,8,12,.15) 25%, rgba(5,8,12,.15) 75%, rgba(5,8,12,.45) 100%);
+  }
+
+  /* MC top (outside the card) */
+  .mc-outer{position:absolute;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:center;gap:12px}
+  .mc-outer svg{width:42px;height:42px}
+  .mc-outer .txt{color:#fff;font-size:28px;font-weight:600;letter-spacing:-.3px}
+  .mc-outer .txt b{font-weight:800;color:var(--accent)}
+
+  .feed .mc-outer.top{top:60px}
+  .feed .mc-outer.bot{bottom:60px;font-size:20px}
+  .feed .mc-outer.bot .txt{font-size:20px;color:rgba(255,255,255,.8)}
+  .feed .mc-outer.bot svg{width:32px;height:32px}
+
+  .story .mc-outer.top{top:120px}
+  .story .mc-outer.bot{bottom:120px}
+  .story .mc-outer.bot .txt{font-size:22px;color:rgba(255,255,255,.8)}
+  .story .mc-outer.bot svg{width:34px;height:34px}
+
+  /* Square card — margin from canvas edges, rounded corners (checkout site pattern) */
+  .card{
+    position:absolute;width:960px;height:960px;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+    background:rgba(13,20,28,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1.5px solid color-mix(in srgb, var(--accent) 38%, transparent);
+    border-radius:28px;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,.6),
+      0 0 60px color-mix(in srgb, var(--accent) 15%, transparent),
+      inset 0 1px 0 rgba(255,255,255,.05);
+    padding:44px 56px 36px;
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    overflow:hidden;
+  }
+  /* Subtle inner accent gradient (checkout fd-overlay style) */
+  .card::after{
+    content:"";position:absolute;inset:0;border-radius:28px;pointer-events:none;
+    background:radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 60%);
+  }
+
+  /* Firm logo */
+  .firm-logo{
+    width:100%;max-width:680px;height:140px;margin-top:8px;margin-bottom:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .firm-logo img{height:100%;width:auto;max-width:100%;object-fit:contain}
+  /* Per-firm size tweaks — wordmarks com canvas pequeno precisam forçar altura 100% (ok acima). Logos muito largas (ex: FTMO horizontal) podem usar max-height menor. */
+  .firm-logo.narrow img{max-width:520px}
+
+  /* Firm type (Futuros / Forex) */
+  .firm-type{
+    color:rgba(255,255,255,.45);font-size:14px;font-weight:600;letter-spacing:4px;
+    text-transform:uppercase;margin-bottom:12px;
+  }
+
+  /* Discount % OFF — inline, pct solid accent + OFF gradient shine */
+  .disc-block{
+    font-family:'Inter',sans-serif;font-weight:900;
+    line-height:.9;letter-spacing:-4px;
+    font-size:140px;margin-bottom:6px;
+    display:inline-flex;align-items:baseline;gap:16px;
+    filter:drop-shadow(0 0 40px color-mix(in srgb, var(--accent) 35%, transparent));
+  }
+  .disc-block .pct{color:var(--accent)}
+  .disc-block .off{
+    background:linear-gradient(100deg, var(--accent) 0%, #F5E3C4 60%, #FFF7E3 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+  }
+
+  /* Discount type label (LIFETIME etc) */
+  .disc-type{
+    color:color-mix(in srgb, var(--accent) 85%, #fff);font-size:14px;font-weight:700;letter-spacing:5px;
+    text-transform:uppercase;margin-bottom:22px;
+  }
+
+  /* Coupon */
+  .coup-label{
+    color:rgba(255,255,255,.6);font-size:16px;font-weight:500;letter-spacing:5px;
+    text-transform:uppercase;margin-bottom:10px;
+  }
+  .coup-box{
+    padding:12px 36px;
+    border:1.5px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+    border-radius:12px;
+    background:color-mix(in srgb, var(--accent) 8%, transparent);
+    margin-bottom:20px;
+  }
+  .coup-code{
+    color:var(--accent);font-size:48px;font-weight:800;letter-spacing:2.5px;line-height:1;
+  }
+
+  /* Trustpilot row (replaces featured perk) */
+  .trustpilot{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    margin-bottom:22px;padding:8px 16px;
+  }
+  .trustpilot .stars{color:#00B67A;font-size:22px;letter-spacing:2px;line-height:1}
+  .trustpilot .score{color:#fff;font-size:18px;font-weight:800}
+  .trustpilot .sep{color:rgba(255,255,255,.3);font-size:14px}
+  .trustpilot .count{color:rgba(255,255,255,.6);font-size:14px;font-weight:500}
+  .trustpilot .brand{color:#00B67A;font-size:14px;font-weight:700;letter-spacing:.5px}
+
+  /* Prices 2x2 — card style */
+  .prices{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+    width:100%;max-width:780px;
+  }
+  .price-card{
+    position:relative;
+    border:1.5px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius:14px;
+    background:rgba(0,0,0,.35);
+    padding:22px 16px 14px;
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+  }
+  .price-card .size-pill{
+    position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+    background:var(--accent);color:#0A1118;
+    font-size:17px;font-weight:800;letter-spacing:1px;
+    padding:5px 18px;border-radius:10px;white-space:nowrap;
+    box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .price-card .new{color:#fff;font-size:38px;font-weight:800;line-height:1;letter-spacing:-.5px}
+  .price-card .sub{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500}
+  .price-card .old{color:rgba(255,255,255,.4);text-decoration:line-through}
+  .price-card .save{color:#22C55E;font-weight:700}
+
+  /* Label on top */
+  .label-top{position:absolute;top:-48px;left:0;color:#888;font-size:18px;font-weight:600;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- BULENOX FEED 1080x1350 -->
+<div class="canvas feed" style="--accent:#22D3EE">
+  <div class="label-top">BULENOX FEED • 1080×1350</div>
+  <div class="bg" style="background-image:url('../img/bulenox-bg.webp')"></div>
+  <div class="bg-tint"></div>
+
+  <div class="mc-outer top">
+    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#22D3EE" stroke-width="2.4" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="txt"><b>Markets</b> Coupons</div>
+  </div>
+
+  <div class="card">
+    <div class="firm-logo"><img src="../img/Firms Logos/Bulenox-Logo-1-01-800x207.png" alt="Bulenox"></div>
+    <div class="firm-type">Futures Prop Firm</div>
+    <div class="disc-block"><span class="pct">89%</span><span class="off">OFF</span></div>
+    <div class="disc-type">Lifetime Discount</div>
+    <div class="coup-label">Exclusive Coupon</div>
+    <div class="coup-box"><div class="coup-code">MARKET89</div></div>
+    <div class="trustpilot"><span class="stars">★★★★★</span><span class="score">4.5</span><span class="sep">·</span><span class="count">2,847 reviews on</span><span class="brand">Trustpilot</span></div>
+    <div class="prices">
+      <div class="price-card"><div class="size-pill">25K</div><div class="new">$15.95</div><div class="sub"><span class="old">$145</span><span class="save">Save $129</span></div></div>
+      <div class="price-card"><div class="size-pill">50K</div><div class="new">$13.75</div><div class="sub"><span class="old">$125</span><span class="save">Save $111</span></div></div>
+      <div class="price-card"><div class="size-pill">100K</div><div class="new">$17.05</div><div class="sub"><span class="old">$155</span><span class="save">Save $138</span></div></div>
+      <div class="price-card"><div class="size-pill">150K</div><div class="new">$35.75</div><div class="sub"><span class="old">$325</span><span class="save">Save $289</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc-outer bot">
+    <div class="txt">marketscoupons.com</div>
+  </div>
+</div>
+
+<!-- APEX FEED 1080x1350 -->
+<div class="canvas feed" style="--accent:#F97316">
+  <div class="label-top">APEX FEED • 1080×1350</div>
+  <div class="bg" style="background-image:url('../img/apex-bg.webp')"></div>
+  <div class="bg-tint"></div>
+
+  <div class="mc-outer top">
+    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#F97316" stroke-width="2.4" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="#F97316" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="#F97316" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="txt"><b>Markets</b> Coupons</div>
+  </div>
+
+  <div class="card">
+    <div class="firm-logo"><img src="../img/Firms Logos/apex-logo-wide-light.png" alt="Apex"></div>
+    <div class="firm-type">Futures Prop Firm</div>
+    <div class="disc-block"><span class="pct">50%</span><span class="off">OFF</span></div>
+    <div class="disc-type">Lifetime Discount</div>
+    <div class="coup-label">Exclusive Coupon</div>
+    <div class="coup-box"><div class="coup-code">MARKET</div></div>
+    <div class="trustpilot"><span class="stars">★★★★★</span><span class="score">4.4</span><span class="sep">·</span><span class="count">17,686 reviews on</span><span class="brand">Trustpilot</span></div>
+    <div class="prices">
+      <div class="price-card"><div class="size-pill">25K</div><div class="new">$99.50</div><div class="sub"><span class="old">$199</span><span class="save">Save $99</span></div></div>
+      <div class="price-card"><div class="size-pill">50K</div><div class="new">$124.50</div><div class="sub"><span class="old">$249</span><span class="save">Save $124</span></div></div>
+      <div class="price-card"><div class="size-pill">100K</div><div class="new">$199.50</div><div class="sub"><span class="old">$399</span><span class="save">Save $199</span></div></div>
+      <div class="price-card"><div class="size-pill">150K</div><div class="new">$299.50</div><div class="sub"><span class="old">$599</span><span class="save">Save $299</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc-outer bot">
+    <div class="txt">marketscoupons.com</div>
+  </div>
+</div>
+
+<!-- BULENOX STORY 1080x1920 -->
+<div class="canvas story" style="--accent:#22D3EE">
+  <div class="label-top">BULENOX STORY • 1080×1920</div>
+  <div class="bg" style="background-image:url('../img/bulenox-bg.webp')"></div>
+  <div class="bg-tint"></div>
+
+  <div class="mc-outer top">
+    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#22D3EE" stroke-width="2.4" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="txt"><b>Markets</b> Coupons</div>
+  </div>
+
+  <div class="card">
+    <div class="firm-logo"><img src="../img/Firms Logos/Bulenox-Logo-1-01-800x207.png" alt="Bulenox"></div>
+    <div class="firm-type">Futures Prop Firm</div>
+    <div class="disc-block"><span class="pct">89%</span><span class="off">OFF</span></div>
+    <div class="disc-type">Lifetime Discount</div>
+    <div class="coup-label">Exclusive Coupon</div>
+    <div class="coup-box"><div class="coup-code">MARKET89</div></div>
+    <div class="trustpilot"><span class="stars">★★★★★</span><span class="score">4.5</span><span class="sep">·</span><span class="count">2,847 reviews on</span><span class="brand">Trustpilot</span></div>
+    <div class="prices">
+      <div class="price-card"><div class="size-pill">25K</div><div class="new">$15.95</div><div class="sub"><span class="old">$145</span><span class="save">Save $129</span></div></div>
+      <div class="price-card"><div class="size-pill">50K</div><div class="new">$13.75</div><div class="sub"><span class="old">$125</span><span class="save">Save $111</span></div></div>
+      <div class="price-card"><div class="size-pill">100K</div><div class="new">$17.05</div><div class="sub"><span class="old">$155</span><span class="save">Save $138</span></div></div>
+      <div class="price-card"><div class="size-pill">150K</div><div class="new">$35.75</div><div class="sub"><span class="old">$325</span><span class="save">Save $289</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc-outer bot">
+    <div class="txt">marketscoupons.com &bull; Swipe Up</div>
+  </div>
+</div>
+
+<!-- TRADEDAY FEED 1080x1350 -->
+<div class="canvas feed" style="--accent:#22D3EE">
+  <div class="label-top">TRADEDAY FEED • 1080×1350</div>
+  <div class="bg" style="background-image:url('../img/tradeday-bg.png')"></div>
+  <div class="bg-tint"></div>
+
+  <div class="mc-outer top">
+    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#22D3EE" stroke-width="2.4" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="#22D3EE" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="txt"><b>Markets</b> Coupons</div>
+  </div>
+
+  <div class="card">
+    <div class="firm-logo"><img src="../img/Firms Logos/TradeDay.png" alt="TradeDay"></div>
+    <div class="firm-type">Futures Prop Firm</div>
+    <div class="disc-block"><span class="pct">30%</span><span class="off">OFF</span></div>
+    <div class="disc-type">1 Challenge Discount</div>
+    <div class="coup-label">Exclusive Coupon</div>
+    <div class="coup-box"><div class="coup-code">SAVE30</div></div>
+    <div class="trustpilot"><span class="stars">★★★★★</span><span class="score">4.8</span><span class="sep">·</span><span class="count">3,521 reviews on</span><span class="brand">Trustpilot</span></div>
+    <div class="prices">
+      <div class="price-card"><div class="size-pill">25K</div><div class="new">$99</div><div class="sub"><span class="old">$141</span><span class="save">Save $42</span></div></div>
+      <div class="price-card"><div class="size-pill">50K</div><div class="new">$169</div><div class="sub"><span class="old">$241</span><span class="save">Save $72</span></div></div>
+      <div class="price-card"><div class="size-pill">100K</div><div class="new">$259</div><div class="sub"><span class="old">$370</span><span class="save">Save $111</span></div></div>
+      <div class="price-card"><div class="size-pill">150K</div><div class="new">$359</div><div class="sub"><span class="old">$513</span><span class="save">Save $154</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc-outer bot"><div class="txt">marketscoupons.com</div></div>
+</div>
+
+<!-- FTMO FEED 1080x1350 -->
+<div class="canvas feed" style="--accent:#1976D2">
+  <div class="label-top">FTMO FEED • 1080×1350</div>
+  <div class="bg" style="background-image:url('../img/ftmo-bg.webp')"></div>
+  <div class="bg-tint"></div>
+
+  <div class="mc-outer top">
+    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#1976D2" stroke-width="2.4" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="#1976D2" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="#1976D2" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="txt"><b>Markets</b> Coupons</div>
+  </div>
+
+  <div class="card">
+    <div class="firm-logo"><img src="../img/Firms Logos/FTMO logo - light.png" alt="FTMO"></div>
+    <div class="firm-type">Forex Prop Firm</div>
+    <div class="disc-block"><span class="pct">10%</span><span class="off">OFF</span></div>
+    <div class="disc-type">New Customer Discount</div>
+    <div class="coup-label">Exclusive Coupon</div>
+    <div class="coup-box"><div class="coup-code">MARKETS10</div></div>
+    <div class="trustpilot"><span class="stars">★★★★★</span><span class="score">4.8</span><span class="sep">·</span><span class="count">32,145 reviews on</span><span class="brand">Trustpilot</span></div>
+    <div class="prices">
+      <div class="price-card"><div class="size-pill">$10K</div><div class="new">$80</div><div class="sub"><span class="old">$89</span><span class="save">Save $9</span></div></div>
+      <div class="price-card"><div class="size-pill">$25K</div><div class="new">$166</div><div class="sub"><span class="old">$185</span><span class="save">Save $19</span></div></div>
+      <div class="price-card"><div class="size-pill">$100K</div><div class="new">$486</div><div class="sub"><span class="old">$540</span><span class="save">Save $54</span></div></div>
+      <div class="price-card"><div class="size-pill">$200K</div><div class="new">$972</div><div class="sub"><span class="old">$1080</span><span class="save">Save $108</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc-outer bot"><div class="txt">marketscoupons.com</div></div>
+</div>
+
+<!-- TPT FEED 1080x1350 -->
+<div class="canvas feed" style="--accent:#10B981">
+  <div class="label-top">TAKE PROFIT TRADER FEED • 1080×1350</div>
+  <div class="bg" style="background-image:url('../img/tpt-bg.webp')"></div>
+  <div class="bg-tint"></div>
+
+  <div class="mc-outer top">
+    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#10B981" stroke-width="2.4" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="#10B981" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="#10B981" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="txt"><b>Markets</b> Coupons</div>
+  </div>
+
+  <div class="card">
+    <div class="firm-logo"><img src="../img/Firms Logos/TakeProfit white logo.svg" alt="Take Profit Trader"></div>
+    <div class="firm-type">Futures Prop Firm</div>
+    <div class="disc-block"><span class="pct">40%</span><span class="off">OFF</span></div>
+    <div class="disc-type">Lifetime Discount</div>
+    <div class="coup-label">Exclusive Coupon</div>
+    <div class="coup-box"><div class="coup-code">MARKET40</div></div>
+    <div class="featured">No Activation Fees &bull; 90% Profit Split</div>
+    <div class="prices">
+      <div class="price-card"><div class="size-pill">25K</div><div class="new">$89.40</div><div class="sub"><span class="old">$149</span><span class="save">Save $60</span></div></div>
+      <div class="price-card"><div class="size-pill">50K</div><div class="new">$107.40</div><div class="sub"><span class="old">$179</span><span class="save">Save $72</span></div></div>
+      <div class="price-card"><div class="size-pill">100K</div><div class="new">$149.40</div><div class="sub"><span class="old">$249</span><span class="save">Save $100</span></div></div>
+      <div class="price-card"><div class="size-pill">150K</div><div class="new">$203.40</div><div class="sub"><span class="old">$339</span><span class="save">Save $136</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc-outer bot"><div class="txt">marketscoupons.com</div></div>
+</div>
+
+</body>
+</html>

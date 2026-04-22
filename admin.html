@@ -364,11 +364,48 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 /* Creative canvas — fd-overlay premium (real 1080px sizes) */
 .cr-canvas{position:relative;overflow:hidden;font-family:'Inter',sans-serif;color:#fff;}
 .cr-canvas-bg{position:absolute;inset:0;background:#060810;}
-.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.6;}
-.cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 30%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.75) 100%);}
-/* Canvas content — vertically centered, generous padding */
-.cr-canvas-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box;padding:40px 72px;}
-.cr-inner{width:100%;}
+.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;}
+.cr-canvas-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,12,.35) 0%,rgba(5,8,12,.15) 25%,rgba(5,8,12,.15) 75%,rgba(5,8,12,.45) 100%);}
+/* Canvas content — absolute full (new hero-premium template positions itself) */
+.cr-canvas-content{position:relative;z-index:2;height:100%;width:100%;box-sizing:border-box;}
+.cr-inner{width:100%;height:100%;position:relative;}
+/* ───── Hero Premium template ───── */
+.cr-mc-outer{position:absolute;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:center;gap:12px;}
+.cr-mc-outer svg{width:42px;height:42px;}
+.cr-mc-outer .txt{color:#fff;font-size:28px;font-weight:600;letter-spacing:-.3px;}
+.cr-mc-outer .txt b{font-weight:800;}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.top{top:60px;}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.bot{bottom:60px;}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.bot .txt{font-size:20px;color:rgba(255,255,255,.8);}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.bot svg{width:32px;height:32px;}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.top{top:120px;}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.bot{bottom:120px;}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.bot .txt{font-size:22px;color:rgba(255,255,255,.8);}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.bot svg{width:34px;height:34px;}
+.cr-hp-card{position:absolute;width:960px;height:960px;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;background:rgba(13,20,28,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:28px;padding:44px 56px 36px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;overflow:hidden;}
+.cr-hp-card::after{content:"";position:absolute;inset:0;border-radius:28px;pointer-events:none;}
+.cr-hp-logo{width:100%;max-width:680px;height:140px;margin-top:8px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;}
+.cr-hp-logo img{height:100%;width:auto;max-width:100%;object-fit:contain;}
+.cr-hp-type{color:rgba(255,255,255,.45);font-size:14px;font-weight:600;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;}
+.cr-hp-disc{font-family:'Inter',sans-serif;font-weight:900;line-height:.9;letter-spacing:-4px;font-size:140px;margin-bottom:6px;display:inline-flex;align-items:baseline;gap:16px;}
+.cr-hp-disc .off{background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+.cr-hp-dtype{font-size:14px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:22px;}
+.cr-hp-cplabel{color:rgba(255,255,255,.6);font-size:16px;font-weight:500;letter-spacing:5px;text-transform:uppercase;margin-bottom:10px;}
+.cr-hp-cpbox{padding:12px 36px;border-radius:12px;margin-bottom:20px;}
+.cr-hp-cpcode{font-size:48px;font-weight:800;letter-spacing:2.5px;line-height:1;}
+.cr-hp-tp{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:22px;padding:8px 16px;}
+.cr-hp-tp .stars{color:#00B67A;font-size:22px;letter-spacing:2px;line-height:1;}
+.cr-hp-tp .score{color:#fff;font-size:18px;font-weight:800;}
+.cr-hp-tp .sep{color:rgba(255,255,255,.3);font-size:14px;}
+.cr-hp-tp .count{color:rgba(255,255,255,.6);font-size:14px;font-weight:500;}
+.cr-hp-tp .brand{color:#00B67A;font-size:14px;font-weight:700;letter-spacing:.5px;}
+.cr-hp-prices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%;max-width:780px;}
+.cr-hp-pc{position:relative;border-radius:14px;background:rgba(0,0,0,.35);padding:22px 16px 14px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.cr-hp-pc .size-pill{position:absolute;top:-14px;left:50%;transform:translateX(-50%);color:#0A1118;font-size:17px;font-weight:800;letter-spacing:1px;padding:5px 18px;border-radius:10px;white-space:nowrap;}
+.cr-hp-pc .new{color:#fff;font-size:38px;font-weight:800;line-height:1;letter-spacing:-.5px;}
+.cr-hp-pc .sub{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+.cr-hp-pc .old{color:rgba(255,255,255,.4);text-decoration:line-through;}
+.cr-hp-pc .save{color:#22C55E;font-weight:700;}
 /* MC branding — same size top and bottom */
 .cr-mc{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;}
 .cr-mc img{width:40px;height:40px;}
@@ -1999,12 +2036,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div class="cr-field"><label>Informacoes visiveis</label>
             <div class="cr-checks">
               <label class="cr-chk"><input type="checkbox" id="cr-show-discount" checked onchange="updateCrPreview()"> Desconto</label>
-              <label class="cr-chk"><input type="checkbox" id="cr-show-rating" checked onchange="updateCrPreview()"> Rating/Reviews</label>
-              <label class="cr-chk"><input type="checkbox" id="cr-show-prices" checked onchange="updateCrPreview()"> Precos</label>
               <label class="cr-chk"><input type="checkbox" id="cr-show-coupon" checked onchange="updateCrPreview()"> Cupom</label>
-              <label class="cr-chk"><input type="checkbox" id="cr-show-stats" checked onchange="updateCrPreview()"> Stats (Split/DD/Target)</label>
-              <label class="cr-chk"><input type="checkbox" id="cr-show-platforms" checked onchange="updateCrPreview()"> Plataformas</label>
-              <label class="cr-chk"><input type="checkbox" id="cr-show-perks" onchange="updateCrPreview()"> Vantagens</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-rating" checked onchange="updateCrPreview()"> Trustpilot</label>
+              <label class="cr-chk"><input type="checkbox" id="cr-show-prices" checked onchange="updateCrPreview()"> Precos</label>
             </div>
           </div>
           <div class="cr-actions" style="margin-top:8px;">
@@ -2014,7 +2048,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <!-- PREVIEW -->
         <div class="cr-preview-wrap">
           <div class="cr-preview-scale" id="cr-preview-scale">
-            <div class="cr-canvas" id="cr-canvas" style="width:1080px;height:1350px;">
+            <div class="cr-canvas" id="cr-canvas" data-fmt="feed" style="width:1080px;height:1350px;">
               <div class="cr-canvas-bg"></div>
               <div class="cr-canvas-img" id="cr-canvas-img"></div>
               <div class="cr-canvas-ov"></div>
@@ -11234,6 +11268,7 @@ function setCrFormat(fmt, btn) {
   const canvas = document.getElementById('cr-canvas');
   canvas.style.width = '1080px';
   canvas.style.height = fmt === 'story' ? '1920px' : '1350px';
+  canvas.setAttribute('data-fmt', fmt);
   updateCrPreview();
   scaleCrPreview();
 }
@@ -11261,15 +11296,110 @@ function updateCrPreview() {
   if (!content) return;
 
   if (firm) {
-    bgImg.style.backgroundImage = `url('img/${firm.id}-bg.webp')`;
+    // checkout bg (tenta webp, png, jpeg)
+    bgImg.style.backgroundImage = `url('img/${firm.id}-bg.webp'),url('img/${firm.id}-bg.png'),url('img/${firm.id}-bg.jpeg')`;
   } else {
     bgImg.style.backgroundImage = 'none';
   }
 
   if (!firm) {
-    content.innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;opacity:.3;font-size:28px;font-weight:700;text-align:center;padding:80px;">Selecione uma firma<br>para gerar o criativo</div>`;
+    content.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.3;font-size:28px;font-weight:700;text-align:center;">Selecione uma firma<br>para gerar o criativo</div>`;
     return;
   }
+
+  return renderHeroPremium(firm, content, L);
+}
+
+function renderHeroPremium(firm, content, L) {
+  const color = firm.color || '#F0B429';
+  const dtype = (firm.discount_type || firm.dtype || 'lifetime');
+  const ftype = (firm.type||'').toLowerCase();
+  const firmTypeLabel = ftype==='futuros' ? (L.futuros || 'Futures Prop Firm') : ftype==='forex' ? (L.forex || 'Forex Prop Firm') : firm.type||'';
+  const prices = firm.prices || [];
+  const coupon = firm.coupon || '';
+  const rating = firm.rating || firm.trustpilot_score || 0;
+  const reviews = firm.trustpilot_reviews || firm.reviews || 0;
+
+  const dtypeMap = {
+    pt: { lifetime:'DESCONTO LIFETIME', promo:'DESCONTO PROMOCIONAL', '1 desafio':'DESCONTO 1º DESAFIO', easter:'DESCONTO DE PÁSCOA', gratis:'GRÁTIS', 'new customer':'DESCONTO NOVO CLIENTE', april:'DESCONTO DE ABRIL' },
+    en: { lifetime:'LIFETIME DISCOUNT', promo:'PROMO DISCOUNT', '1 desafio':'1 CHALLENGE DISCOUNT', easter:'EASTER DISCOUNT', gratis:'FREE', 'new customer':'NEW CUSTOMER DISCOUNT', april:'APRIL DISCOUNT' }
+  };
+  const dtypeLabel = (dtypeMap[_crLang]||dtypeMap.en)[dtype.toLowerCase()] || dtype.toUpperCase();
+
+  const mcSvg = (stroke) => `<svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="${stroke}" stroke-width="2.4" fill="none"/><path d="M14 33V20L25 28" stroke="${stroke}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M36 33V20L25 28" stroke="${stroke}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+
+  let h = '<div class="cr-inner">';
+
+  // MC top
+  h += `<div class="cr-mc-outer top">${mcSvg(color)}<div class="txt" style="--accent:${color};"><b style="color:${color};">Markets</b> Coupons</div></div>`;
+
+  // Card
+  const cardStyle = `border:1.5px solid ${color}61;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 60px ${color}26,inset 0 1px 0 rgba(255,255,255,.05);`;
+  const cardAfter = `<style>#cr-canvas .cr-hp-card::after{background:radial-gradient(ellipse 80% 50% at 50% 0%, ${color}1A 0%, transparent 60%);}</style>`;
+  h += cardAfter + `<div class="cr-hp-card" style="${cardStyle}">`;
+
+  // Firm logo
+  const logoSrc = firm.icon_url || '';
+  h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.parentElement.innerHTML='<span style=\\'color:${color};font-size:56px;font-weight:800\\'>${escHtml(firm.name)}</span>'"></div>`;
+
+  // Firm type
+  h += `<div class="cr-hp-type">${escHtml(firmTypeLabel)}</div>`;
+
+  // Discount
+  if (crChk('cr-show-discount') && firm.discount) {
+    h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 0 40px ${color}59);"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;">OFF</span></div>`;
+    h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
+  }
+
+  // Coupon
+  if (crChk('cr-show-coupon') && coupon) {
+    h += `<div class="cr-hp-cplabel">${L.exclusive_coupon || (_crLang==='pt'?'CUPOM EXCLUSIVO':'EXCLUSIVE COUPON')}</div>`;
+    h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${color}8C;background:${color}14;"><div class="cr-hp-cpcode" style="color:${color};">${escHtml(coupon)}</div></div>`;
+  }
+
+  // Trustpilot
+  if (crChk('cr-show-rating') && rating) {
+    const score = (+rating).toFixed(1);
+    const cnt = reviews ? reviews.toLocaleString(_crLang==='pt'?'pt-BR':'en-US') : '';
+    h += `<div class="cr-hp-tp"><span class="stars">★★★★★</span><span class="score">${score}</span><span class="sep">·</span><span class="count">${cnt} ${_crLang==='pt'?'avaliações em':'reviews on'}</span><span class="brand">Trustpilot</span></div>`;
+  }
+
+  // Prices 2x2 (top 4)
+  if (crChk('cr-show-prices') && prices.length) {
+    const top4 = prices.slice(0, 4);
+    h += `<div class="cr-hp-prices">`;
+    top4.forEach(p => {
+      const newP = p.n || '—';
+      const oldP = (p.o && p.o !== '—') ? p.o : '';
+      let saveTxt = '';
+      if (oldP) {
+        const n = parseFloat(String(newP).replace(/[^0-9.]/g,''));
+        const o = parseFloat(String(oldP).replace(/[^0-9.]/g,''));
+        if (n && o && o>n) saveTxt = `${_crLang==='pt'?'Economize':'Save'} $${Math.round(o-n)}`;
+      }
+      const size = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
+      h += `<div class="cr-hp-pc" style="border:1.5px solid ${color}73;">
+        <div class="size-pill" style="background:${color};box-shadow:0 4px 14px ${color}4D;">${escHtml(size)}</div>
+        <div class="new">${escHtml(newP)}</div>
+        ${oldP ? `<div class="sub"><span class="old">${escHtml(oldP)}</span>${saveTxt?`<span class="save">${saveTxt}</span>`:''}</div>` : ''}
+      </div>`;
+    });
+    h += `</div>`;
+  }
+
+  h += `</div>`; // card
+
+  // MC bottom
+  const fmt = document.getElementById('cr-canvas')?.getAttribute('data-fmt') || 'feed';
+  const botTxt = fmt==='story' ? 'marketscoupons.com · Swipe Up' : 'marketscoupons.com';
+  h += `<div class="cr-mc-outer bot"><div class="txt">${botTxt}</div></div>`;
+
+  h += '</div>'; // cr-inner
+  content.innerHTML = h;
+  return;
+}
+
+function _unusedOldCreative() {
 
   const color = firm.color || '#F0B429';
   const dtype = (firm.discount_type || firm.dtype || 'lifetime').toUpperCase();
