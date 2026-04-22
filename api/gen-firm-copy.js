@@ -100,7 +100,11 @@ module.exports = async (req, res) => {
   const prompt = buildPrompt(firm, langName);
   const payload = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 1200, temperature: 0.9 },
+    generationConfig: {
+      maxOutputTokens: 4096,
+      temperature: 0.9,
+      thinkingConfig: { thinkingBudget: 0 },
+    },
     safetySettings: [
       { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
