@@ -3935,86 +3935,15 @@ async function loadFirmsFromSupabase() {
       // Overlay data (about_html, detail_plans, bg_image) loaded lazily via loadFirmOverlayData()
     });
 
-    // ── Sync prices in-place (keep structure, update values only) ──
-    // Build price lookup from Supabase FIRMS data
-    FIRMS.forEach(f => {
-      const fa = FIRM_ABOUT[f.id];
-      if (!fa || !fa.plans || !f.prices) return;
-      // Helper: extract numeric part from size string for fuzzy matching
-      const numOf = s => { const m = s.replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : null; };
-      const hasDual = f.price_types && f.price_types.length >= 2;
-      const typeKeys = Object.keys(fa.plans);
-      typeKeys.forEach((tp, ti) => {
-        if (!fa.plans[tp]) return;
-        fa.plans[tp].forEach(plan => {
-          // Try exact match first, then fuzzy by number
-          let match = f.prices.find(p => p.a === plan.s);
-          if (!match) {
-            const pn = numOf(plan.s);
-            if (pn !== null) {
-              // For multi-type firms, filter prices that belong to this type
-              const candidates = f.prices.filter(p => {
-                const cn = numOf(p.a);
-                return cn === pn;
-              });
-              // If multiple candidates with same number, pick the one matching type index
-              if (candidates.length === 1) match = candidates[0];
-              else if (candidates.length > 1) {
-                // Try matching by type prefix in price name
-                match = candidates.find(p => p.a.toLowerCase().includes(plan.s.toLowerCase()));
-                if (!match) match = candidates[ti] || candidates[0];
-              }
-            }
-          }
-          if (match) {
-            if (hasDual) {
-              plan.d = ti === 0 ? match.n : (match.n2 || match.n);
-              plan.o = ti === 0 ? match.o : (match.o2 || match.o);
-            } else {
-              plan.d = match.n;
-              plan.o = match.o;
-            }
-          }
-        });
-      });
-    });
-
-    // ── Sync CHECKOUT_FIRMS prices in-place ──
+    // Sync non-price CHECKOUT_FIRMS fields (discount label, coupon, platforms)
+    // Prices are NOT synced in-place anymore — getPlanPrice() reads from FIRMS[].prices
+    // on each render, avoiding race conditions and stale-overwrite bugs.
     CHECKOUT_FIRMS.forEach(cf => {
       const firm = FIRMS.find(x => x.id === cf.id);
       if (!firm) return;
       cf.discount = firm.discount + '%';
       cf.coupon = firm.coupon || null;
       cf.platforms = firm.platforms || cf.platforms;
-      if (!cf.plansByType || !firm.prices) return;
-      const numOf = s => { const m = s.replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : null; };
-      const hasDual = firm.price_types && firm.price_types.length >= 2;
-      const typeKeys = Object.keys(cf.plansByType);
-      typeKeys.forEach((tp, ti) => {
-        cf.plansByType[tp].forEach(plan => {
-          let match = firm.prices.find(p => p.a === plan.size);
-          if (!match) {
-            const pn = numOf(plan.size);
-            if (pn !== null) {
-              const candidates = firm.prices.filter(p => numOf(p.a) === pn);
-              if (candidates.length === 1) match = candidates[0];
-              else if (candidates.length > 1) {
-                match = candidates.find(p => p.a.toLowerCase().includes(plan.size.toLowerCase()));
-                if (!match) match = candidates[ti] || candidates[0];
-              }
-            }
-          }
-          if (match) {
-            if (hasDual) {
-              plan.disc = ti === 0 ? match.n : (match.n2 || match.n);
-              plan.orig = ti === 0 ? match.o : (match.o2 || match.o);
-            } else {
-              plan.disc = match.n;
-              plan.orig = match.o;
-            }
-          }
-        });
-      });
     });
 
     // Rebuild achState for new firms
