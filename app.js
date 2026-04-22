@@ -103,7 +103,7 @@ const MC_UTM = (()=>{
   const firmSlug = (location.pathname.match(/^\/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti)\/?$/i)||[])[1];
   const utm = {
     utm_source:   p.get('utm_source')   || (isTelegram ? 'telegram' : (refHost || '')),
-    utm_medium:   p.get('utm_medium')   || (isTelegram ? 'social' : ''),
+    utm_medium:   p.get('utm_medium')   || (isTelegram ? 'referral' : ''),
     utm_campaign: p.get('utm_campaign') || (isTelegram && firmSlug ? 'flash_promo' : (isTelegram ? 'channel' : '')),
     utm_content:  p.get('utm_content')  || (firmSlug || ''),
     utm_term:     p.get('utm_term')     || '',

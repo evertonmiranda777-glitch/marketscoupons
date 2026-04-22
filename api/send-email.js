@@ -83,7 +83,7 @@ module.exports = async (req, res) => {
 
   // UTM tagging: every marketscoupons.com link in the htmlContent gets utm_source=email
   // utm_medium=broadcast (or from body.utmMedium) utm_campaign=<tag or body.campaign>
-  const utmMedium = (req.body.utmMedium || 'broadcast').toLowerCase().replace(/[^a-z0-9_]/g,'');
+  const utmMedium = (req.body.utmMedium || 'email').toLowerCase().replace(/[^a-z0-9_]/g,'');
   const utmCampaign = (req.body.campaign || (tags && tags[0]) || 'generic').toLowerCase().replace(/[^a-z0-9_]/g,'_').slice(0,60);
   function tagUrl(url, provider) {
     try {

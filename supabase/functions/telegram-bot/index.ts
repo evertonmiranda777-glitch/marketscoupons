@@ -8,7 +8,7 @@ const SITE_URL = "www.marketscoupons.com";
 
 function siteLink(path = "", campaign = "general") {
   const base = `https://${SITE_URL}${path}`;
-  return `${base}${base.includes("?") ? "&" : "?"}utm_source=telegram&utm_medium=social&utm_campaign=${campaign}`;
+  return `${base}${base.includes("?") ? "&" : "?"}utm_source=telegram&utm_medium=referral&utm_campaign=${campaign}`;
 }
 
 // Rota curta para Telegram — /t/<slug> redireciona com UTMs (vercel.json)
