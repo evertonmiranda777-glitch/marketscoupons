@@ -3840,13 +3840,13 @@ const CHECKOUT_FIRMS=[
      'Pro':[{size:'$5K',capital:'$5,000',goal:'$500',maxDD:'-3%',orig:'$29',disc:'$23.20',featured:false},{size:'$10K',capital:'$10,000',goal:'$1,000',maxDD:'-3%',orig:'$55',disc:'$44',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,500',maxDD:'-3%',orig:'$109',disc:'$87.20',featured:false},{size:'$50K',capital:'$50,000',goal:'$5,000',maxDD:'-3%',orig:'$219',disc:'$175.20',featured:true},{size:'$100K',capital:'$100,000',goal:'$10,000',maxDD:'-3%',orig:'$399',disc:'$319.20',featured:false},{size:'$200K',capital:'$200,000',goal:'$20,000',maxDD:'-3%',orig:'$798',disc:'$638.40',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://app.fundingpips.com/register?ref=31985EAA'},
-  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'CLNLTPxtT4Sok0PzHaRIIQ',discount:'20%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
+  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'NEW15',discount:'20%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
    includes:['Up to 100% profit split','Static drawdown','Guaranteed 24h payout (7-day cycle)','15% profit in challenge phase','Trade2Earn loyalty program','Leverage 1:100','24/7 support'],
    types:['2-Step'],platforms:['MT5','DXtrade','cTrader'],
    plansByType:{
      '2-Step':[{size:'5K',capital:'€5,000',goal:'€400',maxDD:'-10%',orig:'€55',disc:'€44',featured:false},{size:'10K',capital:'€10,000',goal:'€800',maxDD:'-10%',orig:'€95',disc:'€76',featured:false},{size:'25K',capital:'€25,000',goal:'€2,000',maxDD:'-10%',orig:'€195',disc:'€156',featured:false},{size:'50K',capital:'€50,000',goal:'€4,000',maxDD:'-10%',orig:'€295',disc:'€236',featured:true},{size:'100K',capital:'€100,000',goal:'€8,000',maxDD:'-10%',orig:'€495',disc:'€396',featured:false},{size:'200K',capital:'€200,000',goal:'€16,000',maxDD:'-10%',orig:'€975',disc:'€780',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ'},
+   buildUrl:(size,type,plat)=>'https://brightfunded.com/a/NEW15'},
   {id:'e8',name:'E8 Markets',short:'E8',coupon:'MARKET',discount:'10%',color:'#FF4400',bg:'rgba(255,68,0,0.12)',
    includes:['No activation fee','Pass in 1 day','Forex, Futures and Crypto','Configurable drawdown 4-14%','Split up to 100%','$70M+ paid since 2021'],
    types:['Signature','E8 One'],platforms:['MT5','Match-Trader'],
@@ -5808,7 +5808,7 @@ function deleteAlert(i){const alerts=JSON.parse(localStorage.getItem('mc_alerts'
 function renderNinjaPack(){return`<div class="vip-box"><div style="font-size:18px;font-weight:700;margin-bottom:6px;">NinjaTrader Pack — 15 Indicadores</div><div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:16px;">Pack exclusivo para traders de prop firms. NinjaTrader 8. Inclui setup e video tutorial.</div><div class="vip-features"><div class="vip-feat">PropFirm DrawdownGuard</div><div class="vip-feat">DailyTarget Tracker</div><div class="vip-feat">OrderFlow Delta</div><div class="vip-feat">Session VWAP</div><div class="vip-feat">EntryZone Finder</div><div class="vip-feat">NewsFilter</div><div class="vip-feat">RiskManager automatico</div><div class="vip-feat">+ 8 indicadores adicionais</div></div><button class="dl-btn" onclick="showToast('Arquivo em preparacao. Voce recebera por e-mail!')">Baixar NinjaTrader Pack</button></div>`;}
 
 /* LOYALTY — Supabase */
-/* LOYALTY — tiers removed, simple 3-purchase gate for Live Room */
+/* LOYALTY — tiers removed, simple 1-approved-purchase gate for Live Room + Daily Analysis + GEX */
 
 // Cache local para fidelidade (evita múltiplas chamadas ao Supabase)
 let _loyaltyCache = { member: null, history: [], pending: [], loaded: false };
