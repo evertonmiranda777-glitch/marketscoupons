@@ -148,7 +148,7 @@ EARN2TRADE (Futures) — coupon MARKETSCOUPONS, 60% OFF. 80% split. EOD fixed DD
 
 THE5ERS (Forex + Futures) — no coupon, special offers. 100% split. Static DD -3%/-6%. Scaling to $4M. MT5/TradingView/Rithmic. 6 programs (Hyper, Pro, High Stakes, Bootcamp, Futures Basecamp, Futures Rebate). Since 2016. Prices from $19 (High Stakes 2.5K). Payout avg 16h. Trustpilot 4.7 (23k). Min 3 days.
 
-FUNDINGPIPS (Forex) — coupon 31985EAA, 20% OFF. 100% split. Static DD -3%/-5%. MT5, Match-Trader, cTrader. 4 programs: Zero, 1-Step, 2-Step, Pro. On-demand payouts, daily 80% payout Pro beta. Leverage 1:100. Prices from $23.20. Min 1 day. Trustpilot 4.5 (51.3k).
+FUNDINGPIPS (Forex) — coupon HELLO, 20% OFF. 100% split. Static DD -3%/-5%. MT5, Match-Trader, cTrader. 4 programs: Zero, 1-Step, 2-Step, Pro. On-demand payouts, daily 80% payout Pro beta. Leverage 1:100. Prices from $23.20. Min 1 day. Trustpilot 4.5 (51.3k).
 
 BRIGHTFUNDED (Forex) — coupon NEW15, 20% OFF. 100% split. Static DD -10%/-5%. Target 8%/5%. MT5/DXtrade/cTrader. Guaranteed 24h payout. Scaling to $400K. Trade2Earn loyalty. Prices in EUR from €44. Trustpilot 4.5 (528).
 
