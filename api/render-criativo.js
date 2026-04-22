@@ -3,8 +3,10 @@
 // from the browser, renders it in a real Chrome instance (supports
 // backdrop-filter, background-clip:text, filters, transforms, web fonts),
 // returns PNG binary.
-const chromium = require('@sparticuz/chromium');
+const chromium = require('@sparticuz/chromium-min');
 const puppeteer = require('puppeteer-core');
+
+const CHROMIUM_PACK = 'https://github.com/Sparticuz/chromium/releases/download/v123.0.1/chromium-v123.0.1-pack.tar';
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -43,7 +45,7 @@ ${styles || ''}
     browser = await puppeteer.launch({
       args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--single-process'],
       defaultViewport: { width, height, deviceScaleFactor: 1 },
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(CHROMIUM_PACK),
       headless: 'new',
     });
 
