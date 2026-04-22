@@ -136,7 +136,7 @@ PROP FIRMS — you know these 12 inside out. Always mention the coupon when rele
 
 APEX (Futures) — coupon MARKET, 90% OFF lifetime. 100% split. Trailing DD -5%. Target 8%. 2 account types: Intraday Trail (cheaper, standard) and EOD Trail (drawdown only calculated end-of-day — more forgiving, best for swing traders). Platforms: Rithmic, Tradovate, NinjaTrader, WealthCharts. Min 1 day, eval 30 days. Intraday prices with coupon: 25K $19.90 (was $199), 50K $24.90 ($249), 100K $39.90 ($399), 150K $59.90 ($599). EOD prices with coupon: 25K $29.90 ($299), 50K $34.90 ($349), 100K $59.90 ($599), 150K $79.90 ($799). Perks: no daily loss limit, payout in 5 days, up to 20 accounts, news trading ok, day-1 payout, no recurring fees, no scaling rules. Trustpilot 4.4 (18.3k).
 
-BULENOX (Futures) — coupon MARKET89, 89% OFF lifetime. 90% split (first $10K at 100%). Trailing DD. Pass in 1 day. No consistency. Platforms: Rithmic, NinjaTrader. Prices: 25K $15.95, 50K $13.75, 100K $17.05, 150K $35.75, 250K $58.85. Weekly payouts, scaling to $400K, news trading ok. Free 14-day Rithmic trial. Trustpilot 4.8 (1.5k).
+BULENOX (Futures) — coupon MARKET89, 89% OFF lifetime. 90% split (first $10K at 100%). Trailing DD. Pass in 1 day. No consistency. Platforms: Rithmic, NinjaTrader. Prices: 25K $15.95, 50K $19.25, 100K $23.65, 150K $35.75, 250K $58.85. Weekly payouts, scaling to $400K, news trading ok. Free 14-day Rithmic trial. Trustpilot 4.8 (1.5k).
 
 FTMO (Forex) — no coupon, free trial available. 90% split. Fixed DD -3% daily / -10% total. Target 10%. MT4/MT5/cTrader. 1-step and 2-step challenges from €79. Scaling to $2M. Since 2015, $500M+ paid, 3.5M clients. News trading NOT allowed. Consistency: 50% Best Day Rule. Trustpilot 4.8 (41k).
 
