@@ -1,0 +1,18 @@
+
+=== TDY (tradeday-review) ===
+  → EN (45.8kb in)
+    ✓ 45.8kb out
+  → PT (45.8kb in)
+    ✓ 35.0kb out
+  → ES (45.8kb in)
+    ✓ 41.0kb out
+  → IT (45.8kb in)
+    ✓ 50.8kb out
+  → FR (45.8kb in)
+    ✓ 31.4kb out
+  → DE (45.8kb in)
+  ✗ de: Saída suspeitamente curta: 16748b vs 46851b origem
+  → AR (45.8kb in)
+    ✓ 45.4kb out
+
+===== DONE: 6/7 (skipped 0, failed 1) =====

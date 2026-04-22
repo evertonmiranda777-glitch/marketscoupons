@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt"><head><meta charset="UTF-8"><title>Preview — 4 Direções</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0A0A0F;color:#fff;font-family:'Inter',sans-serif;padding:32px}
+h1{font-family:'Fraunces',serif;font-size:32px;font-weight:500;letter-spacing:-1px;margin-bottom:4px}
+.sub{color:rgba(255,255,255,.55);font-size:13px;margin-bottom:28px}
+.q{background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.25);padding:14px 18px;border-radius:10px;margin-bottom:32px;font-size:14px;color:#F0B429}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden}
+.card img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000}
+.meta{padding:16px 18px}
+.letter{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#F0B429;color:#000;font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin-bottom:8px}
+.title{font-family:'Fraunces',serif;font-size:18px;font-weight:500;margin-bottom:4px}
+.desc{color:rgba(255,255,255,.55);font-size:12px;line-height:1.5}
+.refresh{position:fixed;top:20px;right:20px;background:#F0B429;color:#0A0A0F;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+</style></head><body>
+<button class="refresh" onclick="location.reload()">↻ Refresh</button>
+<h1>4 direções — mesmo guia, estéticas diferentes</h1>
+<div class="sub">Guide 1 — "O que é uma Prop Firm?" · escolha qual direção serve os 5 guias (25 imagens)</div>
+<div class="q">Qual te convence? A / B / C / D — ou mistura de 2 (ex: "base B com toques D")</div>
+
+<div class="grid">
+  <div class="card">
+    <img src="img/guides-edu/guide1-hero-A.png?t=2">
+    <div class="meta">
+      <div class="letter">A</div>
+      <div class="title">Still life editorial vintage</div>
+      <div class="desc">Papel craft, moedas antigas, luz lateral tungsten. Tipo WSJ Weekend. <b>Você reclamou que parece foto de 1900.</b></div>
+    </div>
+  </div>
+  <div class="card">
+    <img src="img/guides-edu/guide1-hero-B.png?t=2">
+    <div class="meta">
+      <div class="letter">B</div>
+      <div class="title">3D render premium (Apple / Figma / Stripe)</div>
+      <div class="desc">Glassmorphic, moedas 3D flutuando, gradientes, partículas. Clean e moderno, sente "tech fintech 2026".</div>
+    </div>
+  </div>
+  <div class="card">
+    <img src="img/guides-edu/guide1-hero-C.png?t=2">
+    <div class="meta">
+      <div class="letter">C</div>
+      <div class="title">Studio product photography tech</div>
+      <div class="desc">MacBook + iPhone + Apple Watch mostrando charts. Real, editorial, tipo Bloomberg/WSJ versão 2026.</div>
+    </div>
+  </div>
+  <div class="card">
+    <img src="img/guides-edu/guide1-hero-D.png?t=2">
+    <div class="meta">
+      <div class="letter">D</div>
+      <div class="title">Holo / neon / abstract data</div>
+      <div class="desc">Gráfico 3D holográfico em vazio preto, neon grid, partículas de dados. Meio Tron Legacy mas elegante.</div>
+    </div>
+  </div>
+</div>
+</body></html>

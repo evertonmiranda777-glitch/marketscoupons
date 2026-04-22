@@ -1,0 +1,68 @@
+
+=== G1 (o-que-e-uma-prop-firm) ===
+  skip en (exists)
+  skip es (exists)
+  skip it (exists)
+  skip fr (exists)
+  → DE (43.3kb in)
+    ✓ 41.6kb out
+  → AR (43.3kb in)
+    ✓ 40.9kb out
+
+=== G2 (como-passar-no-desafio) ===
+  → EN (40.9kb in)
+    ✓ 33.0kb out
+  → ES (40.9kb in)
+    ✓ 42.7kb out
+  → IT (40.9kb in)
+    ✓ 34.9kb out
+  → FR (40.9kb in)
+    ✓ 33.1kb out
+  → DE (40.9kb in)
+    ✓ 33.9kb out
+  → AR (40.9kb in)
+    ✓ 29.5kb out
+
+=== G3 (gerenciamento-drawdown) ===
+  → EN (44.3kb in)
+    ✓ 35.4kb out
+  → ES (44.3kb in)
+    ✓ 35.3kb out
+  → IT (44.3kb in)
+    ✓ 42.1kb out
+  → FR (44.3kb in)
+    ✓ 42.0kb out
+  → DE (44.3kb in)
+    ✓ 32.7kb out
+  → AR (44.3kb in)
+    ✓ 40.9kb out
+
+=== G4 (position-sizing) ===
+  → EN (46.0kb in)
+    ✓ 43.9kb out
+  → ES (46.0kb in)
+    ✓ 37.7kb out
+  → IT (46.0kb in)
+    ✓ 35.0kb out
+  → FR (46.0kb in)
+    ✓ 50.3kb out
+  → DE (46.0kb in)
+    ✓ 51.1kb out
+  → AR (46.0kb in)
+  ✗ ar: Saída suspeitamente curta: 25946b vs 47065b origem
+
+=== G5 (como-sacar-lucros) ===
+  → EN (48.8kb in)
+    ✓ 37.1kb out
+  → ES (48.8kb in)
+    ✓ 30.3kb out
+  → IT (48.8kb in)
+  ✗ it: Saída suspeitamente curta: 28790b vs 50007b origem
+  → FR (48.8kb in)
+  ✗ fr: Saída suspeitamente curta: 29121b vs 50007b origem
+  → DE (48.8kb in)
+  ✗ de: Saída suspeitamente curta: 29331b vs 50007b origem
+  → AR (48.8kb in)
+  ✗ ar: Saída suspeitamente curta: 20137b vs 50007b origem
+
+===== DONE: 21/30 (skipped 4, failed 5) =====

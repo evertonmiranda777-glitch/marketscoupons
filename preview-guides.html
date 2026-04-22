@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt"><head><meta charset="UTF-8"><title>Preview Ilustrações Guias</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0A0A0F;color:#fff;font-family:'Inter',sans-serif;padding:40px}
+h1{font-family:'Fraunces',serif;font-size:36px;font-weight:500;letter-spacing:-1px;margin-bottom:8px}
+.sub{color:rgba(255,255,255,.5);font-size:14px;margin-bottom:40px}
+.guide{margin-bottom:60px;border-top:1px solid rgba(255,255,255,.12);padding-top:32px}
+.guide h2{font-family:'Fraunces',serif;font-size:24px;font-weight:500;margin-bottom:4px}
+.guide em{color:#F0B429;font-style:italic}
+.guide p{color:rgba(255,255,255,.55);font-size:13px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden}
+.card img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#0A0A0F}
+.card .meta{padding:12px 16px;font-size:12px;color:rgba(255,255,255,.6);display:flex;justify-content:space-between;align-items:center}
+.card .tag{color:#F0B429;font-weight:600;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.missing{background:repeating-linear-gradient(45deg,rgba(255,255,255,.02),rgba(255,255,255,.02) 10px,rgba(255,255,255,.05) 10px,rgba(255,255,255,.05) 20px);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:12px;letter-spacing:2px;text-transform:uppercase}
+.refresh{position:fixed;top:20px;right:20px;background:#F0B429;color:#0A0A0F;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap">
+</head><body>
+<button class="refresh" onclick="location.reload()">↻ Refresh</button>
+<h1>Preview — Ilustrações dos Guias Educacionais</h1>
+<div class="sub">25 ilustrações planejadas — 5 por guia. Atualiza com o progresso do pipeline. Clique Refresh conforme vou gerando.</div>
+
+<div class="guide">
+<h2>Guia 1 — <em>O que é uma Prop Firm?</em></h2>
+<p>Iniciante · introdução ao conceito, modelos, prós/contras</p>
+<div class="grid" id="g1"></div>
+</div>
+
+<div class="guide">
+<h2>Guia 2 — <em>Como Passar no Desafio</em></h2>
+<p>Prático · regras, risco, erros comuns, checklist</p>
+<div class="grid" id="g2"></div>
+</div>
+
+<div class="guide">
+<h2>Guia 3 — <em>Gerenciamento de Drawdown</em></h2>
+<p>Intermediário · trailing vs static, margem real, protocolos</p>
+<div class="grid" id="g3"></div>
+</div>
+
+<div class="guide">
+<h2>Guia 4 — <em>Position Sizing em Prop Firms</em></h2>
+<p>Técnico · fórmula universal, ativos, ATR, erros</p>
+<div class="grid" id="g4"></div>
+</div>
+
+<div class="guide">
+<h2>Guia 5 — <em>Como Sacar seus Lucros</em></h2>
+<p>Financeiro · ciclos, métodos, timeline, erros fatais</p>
+<div class="grid" id="g5"></div>
+</div>
+
+<script>
+const slots = {
+  g1:['hero','ecosystem','models','scale','checklist'],
+  g2:['hero','rules','risk-math','slow-vs-fast','checklist'],
+  g3:['hero','trailing-vs-static','margin','30-rule','protocols'],
+  g4:['hero','formula','contracts','atr-stop','errors'],
+  g5:['hero','timeline','methods','firms','mistakes']
+};
+const labels = {
+  hero:'Hero',ecosystem:'Ecossistema',models:'3 Modelos',scale:'Prós × Contras',checklist:'Checklist',
+  rules:'Regras',['risk-math']:'Matemática Risco',['slow-vs-fast']:'Slow vs Fast',
+  ['trailing-vs-static']:'Trailing × Static',margin:'Margem Real',['30-rule']:'Regra 30%',protocols:'Protocolos',
+  formula:'Fórmula',contracts:'Contratos',['atr-stop']:'ATR Stop',errors:'5 Erros',
+  timeline:'Timeline',methods:'4 Métodos',firms:'Ciclos Firmas',mistakes:'7 Erros Fatais'
+};
+Object.keys(slots).forEach(gid=>{
+  const guideNum = gid.slice(1);
+  const host = document.getElementById(gid);
+  slots[gid].forEach((slot,i)=>{
+    const src = `img/guides-edu/guide${guideNum}-${slot}.png?t=${Date.now()}`;
+    host.insertAdjacentHTML('beforeend',`
+      <div class="card">
+        <img src="${src}" onerror="this.outerHTML='<div class=missing>Pendente</div>'">
+        <div class="meta">
+          <span>${i+1}. ${labels[slot]||slot}</span>
+          <span class="tag">guide${guideNum}-${slot}</span>
+        </div>
+      </div>`);
+  });
+});
+</script>
+</body></html>

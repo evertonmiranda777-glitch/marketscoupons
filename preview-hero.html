@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preview Hero — Max 5 Cenas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+ --f:'Inter',system-ui,sans-serif;
+ --gold:#F0B429;
+ --green:#00dc82;
+ --t1:#edf2f7;
+ --t2:rgba(237,242,247,.72);
+ --t3:rgba(237,242,247,.5);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#030507;color:var(--t1);font-family:var(--f);-webkit-font-smoothing:antialiased;}
+body{min-height:100vh;}
+
+.pv-label{
+ position:sticky;top:0;z-index:100;
+ background:linear-gradient(180deg,rgba(3,5,7,.95),rgba(3,5,7,.75));
+ backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+ border-bottom:1px solid rgba(240,180,41,.3);
+ padding:14px 24px;
+ font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+ color:var(--gold);text-align:center;
+}
+.pv-label small{display:block;margin-top:4px;font-size:10px;letter-spacing:.5px;color:var(--t3);font-weight:500;text-transform:none;}
+
+/* shared hero base */
+.hero{
+ position:relative;overflow:hidden;
+ padding:60px 24px 60px;
+ min-height:720px;
+ background:
+  radial-gradient(ellipse at 50% 30%,rgba(240,180,41,.06) 0%,transparent 55%),
+  radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.04) 0%,transparent 45%),
+  #030507;
+ display:flex;align-items:center;justify-content:center;
+}
+.hero-inner{position:relative;z-index:3;width:100%;max-width:1200px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;}
+.hero-text{display:flex;flex-direction:column;align-items:flex-start;}
+.hero-badge{
+ display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;
+ padding:7px 20px;border-radius:24px;
+ border:1px solid rgba(107,182,201,.22);
+ background:linear-gradient(180deg,#0B1318 0%,#07090D 100%);
+ box-shadow:0 0 0 1px rgba(74,144,164,.08) inset,0 1px 0 rgba(180,230,235,.08) inset,0 8px 20px -10px rgba(0,0,0,.6);
+ font-size:10px;font-weight:700;color:rgba(255,255,255,.72);letter-spacing:1px;text-transform:uppercase;
+}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero h1{font-size:clamp(36px,5.5vw,68px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;line-height:1;text-shadow:0 4px 24px rgba(0,0,0,.5);}
+.hero h1 em{background:linear-gradient(135deg,#00dc82,#5dffb4,#00dc82);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;filter:drop-shadow(0 4px 24px rgba(0,220,130,.4));}
+.hero p{font-size:15px;color:rgba(237,242,247,.7);max-width:460px;margin:0 0 28px;line-height:1.6;}
+.hero-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px;max-width:440px;width:100%;}
+.hst{background:linear-gradient(180deg,#0B1318 0%,#07090D 100%);border:1px solid rgba(107,182,201,.22);border-radius:12px;padding:12px 14px;text-align:left;display:flex;flex-direction:column;gap:2px;}
+.hst .v{font-size:12px;font-weight:700;color:#fff;}
+.hst .l{font-size:9px;color:var(--t3);letter-spacing:.3px;font-weight:500;text-transform:uppercase;}
+.hero-cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;padding:14px 28px;background:linear-gradient(135deg,var(--gold),#f9d36f);color:#0a0a0f;font-size:14px;font-weight:800;text-decoration:none;border-radius:12px;box-shadow:0 8px 24px rgba(240,180,41,.3);}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:560px;}
+.hero-visual img{max-width:100%;max-height:640px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));position:relative;z-index:2;}
+
+/* headline atrás do Max (padrão Mercado Livre) */
+.hero-bg-word{
+ position:absolute;
+ font-size:clamp(100px,16vw,220px);
+ font-weight:900;
+ letter-spacing:-6px;line-height:.85;
+ color:transparent;
+ -webkit-text-stroke:2px rgba(240,180,41,.14);
+ z-index:1;pointer-events:none;
+ user-select:none;
+}
+
+/* OPÇÃO 1 — CUPONS: badge com "exclusivo" vibe */
+.opt-1 .hero-bg-word{top:40%;right:-30px;transform:translateY(-50%);}
+
+/* OPÇÃO 2 — SIGN: o 90% OFF já tá na placa, headline diferente */
+.opt-2 h1{font-size:clamp(30px,4.8vw,54px);}
+.opt-2 .hero-bg-word{top:20%;left:-20px;font-size:clamp(80px,12vw,180px);}
+
+/* OPÇÃO 3 — PHONE: tech vibe */
+.opt-3 .hero-bg-word{top:30%;right:0;}
+
+/* OPÇÃO 4 — TROPHY: Max centralizado heroico, texto sobrepõe */
+.hero.opt-4{min-height:820px;}
+.opt-4 .hero-inner{grid-template-columns:1fr;text-align:center;align-items:center;position:relative;}
+.opt-4 .hero-text{align-items:center;position:relative;z-index:3;}
+.opt-4 .hero-text p{margin-left:auto;margin-right:auto;text-align:center;}
+.opt-4 .hero-stats{margin-left:auto;margin-right:auto;grid-template-columns:repeat(4,1fr);max-width:680px;}
+.opt-4 .hst{text-align:center;align-items:center;}
+.opt-4 .hero-visual{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.95;}
+.opt-4 .hero-visual img{max-height:780px;filter:drop-shadow(0 40px 80px rgba(240,180,41,.3));}
+.opt-4 .hero-bg-word{top:8%;left:50%;transform:translateX(-50%);font-size:clamp(110px,18vw,240px);color:transparent;-webkit-text-stroke:2px rgba(240,180,41,.22);}
+.opt-4 h1{mix-blend-mode:normal;filter:drop-shadow(0 4px 24px rgba(0,0,0,.8));}
+
+/* OPÇÃO 5 — CHART: inverter ordem (visual esquerda, texto direita) */
+.opt-5 .hero-inner{grid-template-columns:.9fr 1.1fr;}
+.opt-5 .hero-visual{order:0;}
+.opt-5 .hero-text{order:1;}
+.opt-5 .hero-bg-word{top:40%;left:-20px;transform:translateY(-50%);color:transparent;-webkit-text-stroke:2px rgba(0,220,130,.14);}
+
+/* responsive */
+@media (max-width:900px){
+ .hero-inner{grid-template-columns:1fr;gap:16px;}
+ .hero-text{align-items:center;text-align:center;}
+ .hero-text p{margin-left:auto;margin-right:auto;}
+ .hero-text .hero-stats{margin-left:auto;margin-right:auto;}
+ .hero-visual{min-height:auto;order:-1;}
+ .hero-visual img{max-height:380px;}
+ .hero-bg-word{display:none;}
+ .opt-5 .hero-text{order:0;}
+ .opt-5 .hero-visual{order:-1;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ OPÇÃO 1: CUPONS ============ -->
+<div class="pv-label">
+ OPÇÃO 1 — Leque de Cupons
+ <small>Headline padrão + Max segurando cupons dourados · vibe oferta exclusiva</small>
+</div>
+<section class="hero opt-1">
+ <div class="hero-inner">
+  <div class="hero-bg-word">CUPONS</div>
+  <div class="hero-text">
+   <div class="hero-badge">Cupons Verificados — Atualizados Diariamente</div>
+   <h1>Economize até <em>90% OFF</em> nas melhores <span style="color:var(--gold)">Prop Firms</span></h1>
+   <p>Compare firmas, use cupons exclusivos e acesse ferramentas profissionais — tudo em um só lugar.</p>
+   <div class="hero-stats">
+    <div class="hst"><div class="v" style="color:var(--green)">Top Prop Firms</div><div class="l">As Melhores de 2026</div></div>
+    <div class="hst"><div class="v" style="color:var(--gold)">Quiz Firma Ideal</div><div class="l">Encontre a sua</div></div>
+    <div class="hst"><div class="v" style="color:#60a5fa">Calculadora</div><div class="l">Calcule seu Risco</div></div>
+    <div class="hst"><div class="v" style="color:#a78bfa">Análise Diária</div><div class="l">Insights VIP</div></div>
+   </div>
+   <a href="#" class="hero-cta">Ver Cupons Ativos
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+   </a>
+  </div>
+  <div class="hero-visual">
+   <img src="img/bot/hero/max-hero-coupons_1.png" alt="Max com cupons">
+  </div>
+ </div>
+</section>
+
+<!-- ============ OPÇÃO 2: PLACA 90% OFF ============ -->
+<div class="pv-label">
+ OPÇÃO 2 — Placa 90% OFF
+ <small>A placa já comunica desconto · headline complementa, não repete</small>
+</div>
+<section class="hero opt-2">
+ <div class="hero-inner">
+  <div class="hero-bg-word">PROP FIRMS</div>
+  <div class="hero-text">
+   <div class="hero-badge">Maior Desconto do Mercado — Lifetime</div>
+   <h1>Ofertas <em>que valem</em><br>o ano inteiro</h1>
+   <p>Cupons exclusivos nas maiores prop firms. Tier de desconto que você não encontra direto no site da firma.</p>
+   <div class="hero-stats">
+    <div class="hst"><div class="v" style="color:var(--green)">11 Firmas</div><div class="l">Todas Verificadas</div></div>
+    <div class="hst"><div class="v" style="color:var(--gold)">Até 90% OFF</div><div class="l">Desconto Real</div></div>
+    <div class="hst"><div class="v" style="color:#60a5fa">Atualizado Hoje</div><div class="l">Promos ao Vivo</div></div>
+    <div class="hst"><div class="v" style="color:#a78bfa">Fidelidade VIP</div><div class="l">Live Room + Sorteios</div></div>
+   </div>
+   <a href="#" class="hero-cta">Ver Todas as Firmas
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+   </a>
+  </div>
+  <div class="hero-visual">
+   <img src="img/bot/hero/max-hero-sign_1.png" alt="Max com placa 90% OFF">
+  </div>
+ </div>
+</section>
+
+<!-- ============ OPÇÃO 3: PHONE ============ -->
+<div class="pv-label">
+ OPÇÃO 3 — Celular com App
+ <small>Vibe tech/produto · Max mostra a experiência do site na tela</small>
+</div>
+<section class="hero opt-3">
+ <div class="hero-inner">
+  <div class="hero-bg-word">DEALS</div>
+  <div class="hero-text">
+   <div class="hero-badge">Tudo num Só Lugar</div>
+   <h1>Cupons, análises<br>e <em>ferramentas pro</em></h1>
+   <p>Compare firmas, calcule risco, leia análises diárias e resgate cupons — tudo integrado em uma experiência.</p>
+   <div class="hero-stats">
+    <div class="hst"><div class="v" style="color:var(--green)">Comparador</div><div class="l">Side-by-side</div></div>
+    <div class="hst"><div class="v" style="color:var(--gold)">Calendário</div><div class="l">Eventos Econômicos</div></div>
+    <div class="hst"><div class="v" style="color:#60a5fa">GEX Heatmap</div><div class="l">Níveis de Opções</div></div>
+    <div class="hst"><div class="v" style="color:#a78bfa">Position Size</div><div class="l">Calculadora de Risco</div></div>
+   </div>
+   <a href="#" class="hero-cta">Explorar Ferramentas
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+   </a>
+  </div>
+  <div class="hero-visual">
+   <img src="img/bot/hero/max-hero-phone_1.png" alt="Max com celular">
+  </div>
+ </div>
+</section>
+
+<!-- ============ OPÇÃO 4: TROFÉU (centralizado, texto atrás) ============ -->
+<div class="pv-label">
+ OPÇÃO 4 — Troféu Heroico
+ <small>Max centralizado, tipografia massiva atrás dele (padrão Mercado Livre mais direto)</small>
+</div>
+<section class="hero opt-4">
+ <div class="hero-inner">
+  <div class="hero-bg-word">#1 DEALS</div>
+  <div class="hero-visual">
+   <img src="img/bot/hero/max-hero-trophy_1.png" alt="Max com troféu">
+  </div>
+  <div class="hero-text">
+   <div class="hero-badge">Top Ranked Coupons Hub 2026</div>
+   <h1>A maior vitrine<br>de <em>cupons de Prop Firms</em></h1>
+   <p>Descontos validados, comparador, análises e um programa VIP — a plataforma mais completa pra trader funded.</p>
+   <div class="hero-stats">
+    <div class="hst"><div class="v" style="color:var(--green)">11 Firmas</div><div class="l">Verificadas</div></div>
+    <div class="hst"><div class="v" style="color:var(--gold)">Até 90%</div><div class="l">Desconto</div></div>
+    <div class="hst"><div class="v" style="color:#60a5fa">7 idiomas</div><div class="l">Global</div></div>
+    <div class="hst"><div class="v" style="color:#a78bfa">Live VIP</div><div class="l">Fidelidade</div></div>
+   </div>
+   <a href="#" class="hero-cta">Começar Agora
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+   </a>
+  </div>
+ </div>
+</section>
+
+<!-- ============ OPÇÃO 5: CHART (inverter, verde trader) ============ -->
+<div class="pv-label">
+ OPÇÃO 5 — Gráfico Holográfico
+ <small>Vibe trader/finance · ordem invertida (visual esquerda, texto direita)</small>
+</div>
+<section class="hero opt-5">
+ <div class="hero-inner">
+  <div class="hero-bg-word">UPSIDE</div>
+  <div class="hero-visual">
+   <img src="img/bot/hero/max-hero-chart_1.png" alt="Max com gráfico">
+  </div>
+  <div class="hero-text">
+   <div class="hero-badge">Análise Diária Grátis</div>
+   <h1>Opere melhor,<br><em>pague menos</em></h1>
+   <p>Análises diárias ES/NQ/GC/CL, calendário econômico, GEX de opções e calculadoras — mais os cupons das melhores firmas.</p>
+   <div class="hero-stats">
+    <div class="hst"><div class="v" style="color:var(--green)">Análise 6h</div><div class="l">Todo Dia Útil</div></div>
+    <div class="hst"><div class="v" style="color:var(--gold)">GEX</div><div class="l">12 Tickers</div></div>
+    <div class="hst"><div class="v" style="color:#60a5fa">Calendário</div><div class="l">Eventos 3★</div></div>
+    <div class="hst"><div class="v" style="color:#a78bfa">Comparador</div><div class="l">11 Firmas</div></div>
+   </div>
+   <a href="#" class="hero-cta">Ver Análise de Hoje
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+   </a>
+  </div>
+ </div>
+</section>
+
+</body>
+</html>

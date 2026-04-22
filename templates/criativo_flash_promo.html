@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1350px;font-family:'Inter',sans-serif;color:#fff;overflow:hidden;position:relative;background:#080e18;}
+/* background image */
+.bg-img{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.35) saturate(.7);}
+/* dark overlay gradient */
+.bg-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,24,.6) 0%,rgba(8,14,24,.85) 40%,rgba(8,14,24,.97) 70%,#080e18 100%);}
+/* accent glow */
+.glow{position:absolute;top:15%;left:50%;transform:translateX(-50%);width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:.15;}
+/* content */
+.wrap{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:48px 56px;}
+
+/* logo bar */
+.logobar{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;}
+.logo-img{height:48px;}
+.flash-pill{background:rgba(255,60,60,.15);border:1px solid rgba(255,60,60,.4);border-radius:30px;padding:10px 24px;display:flex;align-items:center;gap:8px;}
+.flash-pill .dot{width:10px;height:10px;border-radius:50%;background:#ff3c3c;animation:pulse 1.5s infinite;}
+.flash-pill span{font-size:16px;font-weight:700;color:#ff6b6b;letter-spacing:1.5px;text-transform:uppercase;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* firm section */
+.firm-section{display:flex;align-items:center;gap:28px;margin-bottom:48px;}
+.firm-logo{width:100px;height:100px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.firm-logo img{width:80%;height:80%;object-fit:contain;}
+.firm-icon{font-size:48px;font-weight:900;}
+.firm-info{flex:1;}
+.firm-name{font-size:42px;font-weight:800;line-height:1.1;letter-spacing:-1px;}
+.firm-type{font-size:18px;font-weight:600;color:rgba(255,255,255,.45);margin-top:6px;text-transform:uppercase;letter-spacing:2px;}
+
+/* big discount */
+.discount-block{text-align:center;margin-bottom:44px;}
+.discount-pct{font-size:160px;font-weight:900;line-height:1;letter-spacing:-8px;}
+.discount-pct .pct{font-size:80px;vertical-align:super;letter-spacing:0;}
+.discount-label{font-size:36px;font-weight:700;margin-top:8px;letter-spacing:3px;text-transform:uppercase;}
+.discount-label.lifetime{color:#f5c518;}
+
+/* urgency bar */
+.urgency{display:none;text-align:center;margin-bottom:36px;padding:18px 32px;border-radius:14px;background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.25);}
+.urgency.active{display:block;}
+.urgency span{font-size:28px;font-weight:800;color:#ff6b6b;letter-spacing:1px;}
+
+/* coupon box */
+.coupon-box{background:rgba(245,197,24,.06);border:2px dashed rgba(245,197,24,.5);border-radius:18px;padding:28px 40px;text-align:center;margin-bottom:40px;}
+.coupon-label{font-size:16px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.coupon-code{font-size:52px;font-weight:900;color:#f5c518;letter-spacing:4px;}
+
+/* stats grid */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:auto;}
+.stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px 16px;text-align:center;}
+.stat-val{font-size:28px;font-weight:800;}
+.stat-val.green{color:#00dc82;}
+.stat-val.gold{color:#f5c518;}
+.stat-val.blue{color:#40c8ff;}
+.stat-lbl{font-size:14px;color:rgba(255,255,255,.35);margin-top:4px;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+
+/* footer */
+.footer{display:flex;align-items:center;justify-content:space-between;padding-top:32px;border-top:1px solid rgba(255,255,255,.06);margin-top:auto;}
+.footer-url{font-size:22px;color:rgba(255,255,255,.3);font-weight:500;}
+.footer-cta{background:#f5c518;color:#000;font-size:22px;font-weight:800;padding:16px 36px;border-radius:12px;}
+</style></head>
+<body>
+<!-- background (injected via JS) -->
+<div class="bg-img" id="bg-img"></div>
+<div class="bg-ov"></div>
+<div class="glow" id="glow" style="background:#f97316;"></div>
+
+<div class="wrap">
+  <!-- logo bar -->
+  <div class="logobar">
+    <img class="logo-img" src="data:image/png;base64,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" alt="MC">
+    <div class="flash-pill"><div class="dot"></div><span>Flash Deal</span></div>
+  </div>
+
+  <!-- firm -->
+  <div class="firm-section">
+    <div class="firm-logo" id="firm-logo"><span class="firm-icon" id="firm-icon">A</span></div>
+    <div class="firm-info">
+      <div class="firm-name" id="firm-name">Apex Trader Funding</div>
+      <div class="firm-type" id="firm-type">Futures</div>
+    </div>
+  </div>
+
+  <!-- discount -->
+  <div class="discount-block">
+    <div class="discount-pct" id="discount-pct" style="color:#f97316;">90<span class="pct">%</span></div>
+    <div class="discount-label" id="discount-label">OFF — Lifetime Deal</div>
+  </div>
+
+  <!-- urgency -->
+  <div class="urgency" id="urgency"><span id="urgency-text"></span></div>
+
+  <!-- coupon -->
+  <div class="coupon-box" id="coupon-box">
+    <div class="coupon-label">Use code</div>
+    <div class="coupon-code" id="coupon-code">MARKET</div>
+  </div>
+
+  <!-- stats -->
+  <div class="stats">
+    <div class="stat"><div class="stat-val green" id="stat-split">100%</div><div class="stat-lbl">Profit Split</div></div>
+    <div class="stat"><div class="stat-val gold" id="stat-target">8%</div><div class="stat-lbl">Target</div></div>
+    <div class="stat"><div class="stat-val blue" id="stat-dd">-5% trail</div><div class="stat-lbl">Drawdown</div></div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <div class="footer-url">marketscoupons.com</div>
+    <div class="footer-cta">Claim Now</div>
+  </div>
+</div>
+</body></html>

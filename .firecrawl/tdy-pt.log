@@ -1,0 +1,7 @@
+
+=== TDY (tradeday-review) ===
+  → PT (45.8kb in)
+    ✓ 49.2kb out
+
+===== DONE: 1/1 (skipped 0, failed 0) =====
+Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 76

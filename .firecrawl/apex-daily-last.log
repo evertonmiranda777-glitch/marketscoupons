@@ -1,0 +1,7 @@
+[apex] scraping https://apextraderfunding.com/
+^C[apex] scrape failed
+
+=== REPORT ===
+apex: scrape failed
+no telegram creds, skipping alert
+^C

@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="pt"><head><meta charset="UTF-8"><title>Preview — 25 ilustrações v2 · 10/10 rewrite</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0A0A0F;color:#fff;font-family:'Inter',sans-serif;padding:32px;max-width:1440px;margin:0 auto}
+h1{font-family:'Fraunces',serif;font-size:30px;font-weight:500;letter-spacing:-1px;margin-bottom:6px}
+.sub{color:rgba(255,255,255,.55);font-size:13px;margin-bottom:20px;max-width:900px;line-height:1.5}
+.q{background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.25);padding:14px 18px;border-radius:10px;margin-bottom:28px;font-size:13px;color:#F0B429;line-height:1.5}
+.q b{color:#fff}
+.legend{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:32px}
+.lg{padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);font-size:12px}
+.lg-dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:middle}
+.lg-name{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.guide{margin-bottom:42px}
+.guide-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
+.gnum{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:#000}
+.gtitle{font-family:'Fraunces',serif;font-size:22px;font-weight:500;letter-spacing:-.3px}
+.garc{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.5px;font-style:italic;margin-left:12px}
+.gaccent{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.5px;margin-left:auto}
+.slots{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.slot{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden}
+.mockup{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.slot-meta{padding:12px 14px;font-size:11px}
+.slot-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px}
+.slot-desc{color:rgba(255,255,255,.6);font-size:11px;line-height:1.5;margin-bottom:6px}
+.slot-prompt{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:rgba(255,255,255,.4);line-height:1.5;background:rgba(0,0,0,.3);padding:7px 9px;border-radius:5px;margin-top:6px;border-left:2px solid}
+.refnaz{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);padding:7px 9px;border-radius:5px;margin-top:6px;border:1px solid rgba(255,255,255,.06)}
+.refnaz img{width:42px;height:32px;object-fit:cover;border-radius:3px;border:1px solid rgba(255,255,255,.1)}
+.refnaz .rn{font-size:9.5px;color:rgba(255,255,255,.5);line-height:1.4}
+.refnaz b{color:#F0B429}
+
+/* ====== HEROS v2 ====== */
+.heros-section{margin-bottom:42px}
+.heros-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
+.heros-head .t{font-family:'Fraunces',serif;font-size:20px;font-weight:500}
+.heros-head .s{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.2px;margin-left:auto}
+.heros{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.hero-slot{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden}
+.hero-mockup{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:12px}
+.hero-slot .slot-meta{padding:10px 12px}
+.hero-slot .slot-name{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.hero-slot .slot-desc{font-size:10px;line-height:1.45}
+
+/* G1 HERO — The Deal: A5 double-card offset + accent phrase */
+.h-g1{background:radial-gradient(ellipse at center,rgba(249,115,22,.22) 0%,#0A0A0F 75%);flex-direction:column;gap:8px;padding:14px 12px}
+.h-g1 .hd{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#F97316;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(249,115,22,.5);padding:3px 10px;border-radius:12px;background:rgba(249,115,22,.08);z-index:3}
+.h-g1 .stack{position:relative;width:94%;height:64%}
+.h-g1 .stack::before{content:'';position:absolute;inset:10px -8px -8px 10px;background:#0c0c0c;border:1px solid rgba(249,115,22,.2);border-radius:10px;z-index:1}
+.h-g1 .deal{position:relative;z-index:2;display:flex;align-items:center;gap:8px;width:100%;height:100%;justify-content:space-between;background:#141414;border:1.5px solid rgba(249,115,22,.55);border-radius:10px;padding:14px 12px;box-shadow:0 8px 24px rgba(249,115,22,.2)}
+.h-g1 .side{flex:1;text-align:center;padding:4px}
+.h-g1 .side .ic{font-family:'Fraunces',serif;font-weight:800;font-size:22px;color:#F97316;line-height:1;letter-spacing:-1px}
+.h-g1 .side .lb{font-size:7px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-top:3px;line-height:1.2}
+.h-g1 .plus{color:#F97316;font-size:16px;font-weight:800}
+.h-g1 .sp{background:#0c0c0c;border:1px solid #F97316;padding:3px 10px;border-radius:10px;font-size:8px;color:#F97316;font-weight:800;letter-spacing:1.5px;white-space:nowrap;z-index:3}
+
+/* G2 HERO — The final push */
+.h-g2{background:radial-gradient(ellipse at center,rgba(16,185,129,.22) 0%,#0A0A0F 75%);flex-direction:column;gap:8px;padding:14px 12px}
+.h-g2 .hd{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#10B981;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(16,185,129,.5);padding:3px 10px;border-radius:12px;background:rgba(16,185,129,.08);z-index:3}
+.h-g2 .stack{position:relative;width:92%;height:72%}
+.h-g2 .stack::before{content:'';position:absolute;inset:10px -8px -8px 10px;background:#0c0c0c;border:1px solid rgba(16,185,129,.2);border-radius:10px;z-index:1}
+.h-g2 .fp{position:relative;z-index:2;background:#141414;border:1.5px solid rgba(16,185,129,.55);border-radius:10px;padding:10px 12px;width:100%;height:100%;display:flex;flex-direction:column;gap:4px;justify-content:center;box-shadow:0 8px 24px rgba(16,185,129,.2)}
+.h-g2 .fp .tag{font-size:6.5px;color:#10B981;letter-spacing:1.2px;text-transform:uppercase;font-weight:700}
+.h-g2 .fp .big{font-family:'Fraunces',serif;font-size:18px;color:#fff;font-weight:700;line-height:1;margin:2px 0}
+.h-g2 .fp .big b{color:#10B981}
+.h-g2 .fp .bar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin:3px 0}
+.h-g2 .fp .fl{height:100%;width:94.6%;background:linear-gradient(90deg,#10B981,#34D399);box-shadow:0 0 8px #10B981}
+.h-g2 .fp .row{display:flex;justify-content:space-between;font-size:7px;color:rgba(255,255,255,.55);margin-top:2px}
+.h-g2 .fp .row b{color:#F0B429}
+
+/* G3 HERO — Near-death: cushion almost gone */
+.h-g3{background:radial-gradient(ellipse at center,rgba(239,68,68,.25) 0%,#0A0A0F 75%);flex-direction:column;gap:8px;padding:14px 12px}
+.h-g3 .hd{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#EF4444;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(239,68,68,.55);padding:3px 10px;border-radius:12px;background:rgba(239,68,68,.1);z-index:3}
+.h-g3 .stack{position:relative;width:94%;height:72%}
+.h-g3 .stack::before{content:'';position:absolute;inset:10px -8px -8px 10px;background:#0c0c0c;border:1px solid rgba(239,68,68,.22);border-radius:10px;z-index:1}
+.h-g3 .dd{position:relative;z-index:2;background:#141414;border:1.5px solid #EF4444;border-radius:10px;padding:10px 12px;width:100%;height:100%;display:flex;flex-direction:column;gap:3px;justify-content:center;box-shadow:0 0 24px rgba(239,68,68,.4)}
+.h-g3 .dd .tag{font-size:6.5px;color:#EF4444;letter-spacing:1.3px;text-transform:uppercase;font-weight:800;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+.h-g3 .dd .bal{font-family:'Fraunces',serif;font-size:16px;color:#fff;font-weight:700;line-height:1;margin-top:2px}
+.h-g3 .dd .floor{font-family:'Fraunces',serif;font-size:14px;color:#EF4444;font-weight:800;line-height:1;margin-top:3px}
+.h-g3 .dd .cush{background:rgba(239,68,68,.15);border:1px solid #EF4444;border-radius:4px;padding:4px 6px;margin-top:4px;display:flex;justify-content:space-between;font-size:7px;font-weight:700}
+.h-g3 .dd .cush span{color:rgba(255,255,255,.65)}
+.h-g3 .dd .cush b{color:#EF4444;font-size:10px;font-family:'Fraunces'}
+
+/* G4 HERO — Math to action */
+.h-g4{background:radial-gradient(ellipse at center,rgba(59,130,246,.22) 0%,#0A0A0F 75%);flex-direction:column;gap:8px;padding:14px 12px}
+.h-g4 .hd{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#3B82F6;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(59,130,246,.5);padding:3px 10px;border-radius:12px;background:rgba(59,130,246,.08);z-index:3}
+.h-g4 .stack{position:relative;width:96%;height:72%;display:flex;align-items:stretch;gap:6px}
+.h-g4 .stack::before{content:'';position:absolute;inset:10px -8px -8px 10px;background:#0c0c0c;border:1px solid rgba(59,130,246,.2);border-radius:10px;z-index:1}
+.h-g4 .side{position:relative;z-index:2;background:#141414;border:1.5px solid rgba(59,130,246,.5);border-radius:8px;padding:8px 9px;flex:1;display:flex;flex-direction:column;gap:3px;box-shadow:0 6px 18px rgba(59,130,246,.18)}
+.h-g4 .side .h{font-size:6.5px;color:#3B82F6;letter-spacing:1.2px;text-transform:uppercase;font-weight:700}
+.h-g4 .side .eq{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.65);line-height:1.7;margin-top:auto}
+.h-g4 .side .eq b{color:#3B82F6;font-weight:700}
+.h-g4 .side .big{font-family:'Fraunces',serif;font-size:14px;color:#fff;font-weight:800;line-height:1;margin-top:3px}
+.h-g4 .side .big span{color:#3B82F6}
+.h-g4 .arr{color:#3B82F6;font-size:16px;font-weight:800;flex:0 0 auto;position:relative;z-index:2;align-self:center}
+
+/* G5 HERO — Wire arriving */
+.h-g5{background:radial-gradient(ellipse at center,rgba(240,180,41,.22) 0%,#0A0A0F 75%);flex-direction:column;gap:8px;padding:14px 12px}
+.h-g5 .hd{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#F0B429;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(240,180,41,.55);padding:3px 10px;border-radius:12px;background:rgba(240,180,41,.1);z-index:3}
+.h-g5 .stack{position:relative;width:94%;height:72%;display:flex;align-items:center;justify-content:center}
+.h-g5 .stack::before{content:'';position:absolute;inset:10px -8px -8px 10px;background:#0c0c0c;border:1px solid rgba(240,180,41,.22);border-radius:10px;z-index:1}
+.h-g5 .notif{position:relative;z-index:2;background:#141414;border:1.5px solid rgba(240,180,41,.6);border-radius:10px;padding:10px 12px;width:100%;box-shadow:0 0 24px rgba(240,180,41,.35)}
+.h-g5 .notif .h{display:flex;justify-content:space-between;font-size:6.5px;color:rgba(255,255,255,.6);margin-bottom:6px}
+.h-g5 .notif .h b{color:#F0B429}
+.h-g5 .notif .title{font-size:8px;color:#fff;font-weight:700;margin-bottom:2px;letter-spacing:.5px}
+.h-g5 .notif .big{font-family:'Fraunces',serif;font-size:20px;color:#10B981;font-weight:800;line-height:1;margin:2px 0}
+.h-g5 .notif .from{font-size:7px;color:rgba(255,255,255,.6);margin-top:3px}
+.h-g5 .notif .from b{color:#F0B429}
+
+/* ====== SLOTS v2 ====== */
+
+/* G1-1 Models matrix — Nazmul C3 (pill + hero row + diagonal gesture) */
+.m-matrix{
+  background:
+    radial-gradient(ellipse 420px 260px at 12% 110%,rgba(249,115,22,.32) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#120A06 100%);
+  padding:22px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-matrix .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#F97316;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(249,115,22,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(249,115,22,.06)
+;z-index:3;margin-top:2px}
+.m-matrix .tbl{
+  width:96%;border-radius:10px;overflow:hidden;position:relative;z-index:2;
+  background:linear-gradient(180deg,rgba(249,115,22,.06) 0%,rgba(0,0,0,.3) 100%);
+  border:1px solid rgba(249,115,22,.22)
+}
+.m-matrix .tr{display:grid;grid-template-columns:88px 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.04)}
+.m-matrix .tr:last-child{border-bottom:0}
+.m-matrix .tr.th{background:linear-gradient(90deg,rgba(249,115,22,.22),rgba(249,115,22,.05))}
+.m-matrix .tr.th div{color:#F97316;font-weight:800;font-size:8.5px;text-transform:uppercase;letter-spacing:1.4px;padding:8px 6px;text-align:center;font-family:'JetBrains Mono',monospace}
+.m-matrix .tr.th div:first-child{text-align:left;color:rgba(255,255,255,.4);padding-left:12px}
+.m-matrix .tr div{padding:8px 6px;font-size:10px;color:#fff;text-align:center;font-weight:600}
+.m-matrix .tr div:first-child{color:rgba(255,255,255,.55);font-size:8.5px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:700;padding-left:12px}
+.m-matrix .tr.hero{
+  background:linear-gradient(90deg,rgba(249,115,22,.2) 0%,rgba(249,115,22,.04) 100%);
+  position:relative
+}
+.m-matrix .tr.hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#F97316;box-shadow:0 0 10px #F97316}
+.m-matrix .tr.hero div{font-family:'Fraunces',serif;font-size:11.5px;font-weight:700}
+.m-matrix .tr.hero div:first-child{color:#F97316;font-family:'Fraunces',serif;font-size:10.5px;letter-spacing:.5px;text-transform:none}
+.m-matrix .tr div b{color:#F97316;font-family:'Fraunces',serif}
+
+/* G1-2 Money flow — NAZMUL redesign: hero card + discrete flow */
+.m-flow{
+  background:
+    radial-gradient(ellipse 500px 280px at 85% 55%, rgba(249,115,22,.28) 0%, transparent 60%),
+    linear-gradient(135deg, #0A0A0F 0%, #18100a 100%);
+  padding:22px;
+  gap:18px;
+  justify-content:space-between;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+.m-flow::before{
+  content:'';position:absolute;right:-120px;bottom:-140px;
+  width:460px;height:460px;
+  background:radial-gradient(circle,rgba(249,115,22,.22) 0%,transparent 62%);
+  filter:blur(50px);pointer-events:none;
+}
+.m-flow .flow-side{
+  flex:0 0 40%;display:flex;flex-direction:column;gap:2px;position:relative;z-index:2;
+}
+.m-flow .flow-side .hdr{
+  font-family:'Fraunces',serif;font-size:14px;font-weight:600;color:#fff;
+  line-height:1.1;letter-spacing:-.4px;margin-bottom:10px;
+}
+.m-flow .flow-side .hdr span{color:#F97316}
+.m-flow .flow-row{
+  display:flex;align-items:baseline;gap:8px;padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.m-flow .flow-row:last-of-type{border-bottom:0}
+.m-flow .flow-row .step{
+  font-family:'JetBrains Mono',monospace;font-size:7px;color:#F97316;opacity:.55;
+  min-width:14px;letter-spacing:.5px;font-weight:700;
+}
+.m-flow .flow-row .act{
+  color:rgba(255,255,255,.5);font-size:8px;text-transform:uppercase;
+  letter-spacing:1.2px;font-weight:700;flex:1;
+}
+.m-flow .flow-row b{
+  font-family:'Fraunces',serif;font-size:13px;color:#fff;
+  font-weight:700;letter-spacing:-.3px;
+}
+.m-flow .flow-row.split{
+  border-top:1px solid rgba(249,115,22,.4);margin-top:6px;
+  padding-top:9px;border-bottom:0;
+}
+.m-flow .flow-row.split .act{color:#F97316}
+.m-flow .flow-row.split b{color:#F97316;font-size:17px;font-weight:800}
+.m-flow .card-wrap{
+  flex:1;position:relative;z-index:2;display:flex;
+  flex-direction:column;align-items:center;gap:8px;
+}
+.m-flow .card{
+  width:100%;max-width:340px;height:auto;
+  filter:drop-shadow(10px 16px 32px rgba(0,0,0,.85)) drop-shadow(-3px -3px 10px rgba(249,115,22,.22));
+  transform:rotate(-2.5deg) perspective(500px) rotateY(-8deg) rotateX(3deg);
+}
+.m-flow .arrives{
+  display:flex;align-items:center;gap:7px;
+  font-size:8px;color:#F97316;
+  letter-spacing:2px;text-transform:uppercase;font-weight:800;
+  margin-top:2px;
+}
+.m-flow .arrives .pulse{
+  width:7px;height:7px;border-radius:50%;background:#F97316;
+  box-shadow:0 0 10px #F97316,0 0 20px rgba(249,115,22,.5);
+  animation:cardPulse 1.8s infinite;
+}
+@keyframes cardPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
+
+/* G1-3 Global firm map — Nazmul C3 (pill + 3 region cards + diagonal) */
+.m-map{
+  background:
+    radial-gradient(ellipse 420px 260px at 50% 50%,rgba(249,115,22,.24) 0%,transparent 60%),
+    linear-gradient(180deg,#0A0A0F 0%,#120A06 100%);
+  padding:20px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-map .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#F97316;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(249,115,22,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(249,115,22,.06);z-index:2
+}
+.m-map .regions{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:7px;width:96%;z-index:2;position:relative}
+.m-map .rg{background:rgba(255,255,255,.03);border:1px solid rgba(249,115,22,.25);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.m-map .rg .hd{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.5);letter-spacing:1.4px;text-transform:uppercase;font-weight:700}
+.m-map .rg .nm{font-family:'Fraunces',serif;font-size:13px;color:#fff;font-weight:700;line-height:1;letter-spacing:-.3px}
+.m-map .rg .fm{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#F97316;font-weight:700;line-height:1.5}
+.m-map .rg .tp{font-family:'JetBrains Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.5);letter-spacing:.8px;font-weight:600}
+.m-map .rg.hero{
+  background:linear-gradient(135deg,rgba(249,115,22,.16) 0%,rgba(249,115,22,.03) 100%);
+  border:1px solid #F97316;
+  box-shadow:0 0 22px rgba(249,115,22,.28)
+}
+.m-map .rg.hero .hd{color:#F97316}
+.m-map .rg.hero .nm{font-size:16px}
+.m-map .rg.hero .fm{font-size:8.5px}
+.m-map .rg.hero .tag{align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:6.5px;color:#F97316;letter-spacing:1.5px;font-weight:800;border:1px solid rgba(249,115,22,.55);padding:2px 6px;border-radius:3px;margin-bottom:2px}
+.m-map .stats{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(255,255,255,.55);letter-spacing:1.3px;text-transform:uppercase;font-weight:700;z-index:2;text-align:center}
+.m-map .stats b{color:#F97316;font-family:'Fraunces',serif;font-weight:800;font-size:10px;letter-spacing:-.2px}
+
+/* G1-4 Apex scale path — hierarquia (último tier HERO) + pill */
+.m-path{
+  background:
+    radial-gradient(ellipse 420px 220px at 92% 100%,rgba(249,115,22,.32) 0%,transparent 60%),
+    linear-gradient(180deg,#0A0A0F 0%,#12100A 100%);
+  padding:22px 16px;flex-direction:column;gap:14px;position:relative;overflow:hidden
+}
+.m-path .pill{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#F97316;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(249,115,22,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(249,115,22,.06);z-index:2
+}
+.m-path .tl{display:flex;align-items:center;width:96%;gap:2px;justify-content:space-between;z-index:2;position:relative}
+.m-path .m{flex:1;text-align:center;padding:8px 4px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);border-radius:7px;display:flex;flex-direction:column;justify-content:center;min-height:52px}
+.m-path .m b{display:block;font-family:'Fraunces',serif;font-size:12px;color:#fff;font-weight:700}
+.m-path .m small{display:block;font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;font-weight:700}
+.m-path .m.hero{
+  flex:1.5;background:linear-gradient(180deg,#F97316,#c2410c);
+  border-color:#F97316;box-shadow:0 0 22px rgba(249,115,22,.5);
+  min-height:62px
+}
+.m-path .m.hero b{font-size:18px;color:#fff;letter-spacing:-.4px}
+.m-path .m.hero small{color:rgba(255,255,255,.85);font-weight:800}
+.m-path .arr{color:#F97316;font-size:12px;font-weight:800;flex:0 0 auto;text-align:center;line-height:1}
+.m-path .arr small{display:block;font-size:7px;color:rgba(255,255,255,.55);font-weight:600;letter-spacing:.3px;margin-top:2px;font-family:'JetBrains Mono',monospace}
+.m-path .foot{font-size:7px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;font-weight:600;font-family:'JetBrains Mono',monospace;z-index:2}
+
+/* G2-1 Slow/Fast — Nazmul C3 pill + hero label */
+.m-slowfast{background:radial-gradient(ellipse 420px 260px at 50% 100%,rgba(16,185,129,.22) 0%,transparent 60%),linear-gradient(180deg,#0A0A0F 0%,#06120C 100%);padding:16px;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.m-slowfast .pill{font-family:'JetBrains Mono',monospace;font-size:8px;color:#10B981;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(16,185,129,.5);padding:4px 12px;border-radius:14px;background:rgba(16,185,129,.08);align-self:center;z-index:3;margin-top:2px}
+.m-slowfast svg{width:96%;height:78%}
+
+/* G2-2 Pass rate stats */
+.m-passrate{background:radial-gradient(ellipse 420px 260px at 50% 100%,rgba(16,185,129,.25) 0%,transparent 60%),linear-gradient(180deg,#0A0A0F 0%,#06120C 100%);padding:18px;flex-direction:column;gap:12px;position:relative;overflow:hidden}
+.m-passrate .pill{font-family:'JetBrains Mono',monospace;font-size:8px;color:#10B981;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(16,185,129,.5);padding:4px 12px;border-radius:14px;background:rgba(16,185,129,.08);z-index:3;margin-top:2px}
+.m-passrate .cmp{display:flex;gap:16px;align-items:flex-end;width:85%;justify-content:center;position:relative}
+.m-passrate .pct{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;border-radius:10px;position:relative}
+.m-passrate .pct .num{font-family:'Fraunces',serif;font-size:46px;font-weight:800;line-height:1}
+.m-passrate .pct .lb{font-size:7.5px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1.2px;font-weight:700}
+.m-passrate .bad{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.22)}
+.m-passrate .bad .num{color:#EF4444;opacity:.75}
+.m-passrate .good{background:rgba(16,185,129,.12);border:1.5px solid #10B981;box-shadow:0 0 20px rgba(16,185,129,.25);transform:scale(1.1);padding:22px 14px 10px}
+.m-passrate .good .num{color:#10B981}
+.m-passrate .good .tag{position:absolute;top:6px;left:50%;transform:translateX(-50%);background:#F0B429;color:#0A0A0F;font-size:6.5px;font-weight:800;letter-spacing:1px;padding:2px 6px;border-radius:4px;text-transform:uppercase;white-space:nowrap;z-index:2}
+.m-passrate .vs{color:rgba(255,255,255,.4);font-size:11px;font-weight:700;letter-spacing:2px;padding-bottom:16px}
+.m-passrate .cap{font-size:9px;color:#fff;text-align:center;line-height:1.5;max-width:86%}
+.m-passrate .cap b{color:#10B981}
+
+/* G2-3 R:R backward math */
+.m-rrmath{background:radial-gradient(ellipse 420px 260px at 50% 100%,rgba(16,185,129,.22) 0%,transparent 60%),linear-gradient(180deg,#0A0A0F 0%,#06120C 100%);padding:18px;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.m-rrmath .pill{font-family:'JetBrains Mono',monospace;font-size:8px;color:#10B981;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(16,185,129,.5);padding:4px 12px;border-radius:14px;background:rgba(16,185,129,.08);z-index:3;margin-top:2px}
+.m-rrmath .eq{font-family:'Fraunces',serif;font-size:15px;color:#fff;line-height:1.6;text-align:center;width:94%}
+.m-rrmath .eq b{color:#10B981;font-weight:700}
+.m-rrmath .eq span.sep{color:rgba(255,255,255,.4);font-size:11px;display:block;margin:2px 0;letter-spacing:.5px}
+.m-rrmath .eq .res{background:rgba(16,185,129,.15);border:1.5px solid #10B981;border-radius:10px;padding:10px 18px;display:inline-block;margin-top:10px;font-size:18px;color:#10B981;font-weight:800;box-shadow:0 0 24px rgba(16,185,129,.3)}
+.m-rrmath .eq .res b{color:#fff}
+
+/* G2-4 Rules dashboard — Nazmul B1 hierarchy (hero stat 2x + pill + diagonal) */
+.m-rules{
+  background:
+    radial-gradient(ellipse 420px 260px at 12% 110%,rgba(16,185,129,.3) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#06120C 100%);
+  padding:20px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-rules .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#10B981;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(16,185,129,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(16,185,129,.06);z-index:2
+}
+.m-rules .dash{width:96%;display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:auto auto;gap:8px;z-index:2;position:relative}
+.m-rules .stat{background:rgba(255,255,255,.04);padding:10px 12px;border-radius:8px;border:1px solid rgba(16,185,129,.22);position:relative;display:flex;flex-direction:column;justify-content:center}
+.m-rules .stat .lb{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.2px;font-weight:700}
+.m-rules .stat .vl{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:#fff;margin-top:3px;line-height:1}
+.m-rules .stat.hero{
+  grid-row:1/3;
+  background:linear-gradient(135deg,rgba(239,68,68,.18) 0%,rgba(239,68,68,.04) 100%);
+  border:1px solid #EF4444;
+  box-shadow:0 0 22px rgba(239,68,68,.3)
+}
+.m-rules .stat.hero .lb{color:#EF4444;font-size:8px}
+.m-rules .stat.hero .vl{font-size:26px;color:#fff;letter-spacing:-.5px;margin-top:6px}
+.m-rules .stat.hero .tag{position:absolute;top:8px;right:10px;font-family:'JetBrains Mono',monospace;font-size:6.5px;color:#EF4444;letter-spacing:1.5px;font-weight:800;border:1px solid rgba(239,68,68,.5);padding:2px 6px;border-radius:3px}
+.m-rules .stat.hero .note{font-size:7.5px;color:rgba(255,255,255,.55);margin-top:auto;line-height:1.4;font-family:'Inter'}
+.m-rules .stat.hero .note b{color:#EF4444}
+
+/* G3-1 Trailing vs Static — Nazmul C3 pill + hero label */
+.m-trailing{background:radial-gradient(ellipse 420px 260px at 50% 100%,rgba(239,68,68,.22) 0%,transparent 60%),linear-gradient(180deg,#0A0A0F 0%,#120606 100%);padding:16px;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.m-trailing .pill{font-family:'JetBrains Mono',monospace;font-size:8px;color:#EF4444;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(239,68,68,.5);padding:4px 12px;border-radius:14px;background:rgba(239,68,68,.08);align-self:center;z-index:3;margin-top:2px}
+.m-trailing svg{width:96%;height:78%}
+
+/* G3-2 DD Floor — Nazmul C1 clearance-zone (hero balance + pixel labels in crosshair) */
+.m-ddfloor{
+  background:
+    radial-gradient(ellipse 400px 260px at 50% 50%,rgba(239,68,68,.26) 0%,transparent 58%),
+    linear-gradient(180deg,#0A0A0F 0%,#140606 100%);
+  padding:18px;position:relative;overflow:hidden;flex-direction:column;gap:0
+}
+.m-ddfloor::before,.m-ddfloor::after{
+  content:'';position:absolute;background:rgba(239,68,68,.18);pointer-events:none
+}
+.m-ddfloor::before{left:50%;top:14px;bottom:14px;width:1px;transform:translateX(-.5px)}
+.m-ddfloor::after{top:50%;left:14px;right:14px;height:1px;transform:translateY(-.5px)}
+.m-ddfloor .pill{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;
+  font-family:'JetBrains Mono',monospace;font-size:7.5px;
+  color:#EF4444;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(239,68,68,.5);padding:3px 10px;border-radius:12px;
+  background:rgba(10,10,15,.9)
+}
+.m-ddfloor .hero{
+  position:relative;z-index:2;background:rgba(10,10,15,.85);
+  border:1px solid rgba(239,68,68,.45);border-radius:10px;
+  padding:14px 22px;box-shadow:0 0 28px rgba(239,68,68,.25);
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  margin-top:14px
+}
+.m-ddfloor .hero .bal{font-family:'Fraunces',serif;font-size:28px;color:#fff;font-weight:800;letter-spacing:-1px;line-height:1}
+.m-ddfloor .hero .lb{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.55);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-top:4px}
+.m-ddfloor .cross{position:absolute;font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;letter-spacing:1px;z-index:3;white-space:nowrap;text-transform:uppercase}
+.m-ddfloor .cross b{font-family:'Fraunces',serif;font-size:10px;font-weight:800;letter-spacing:-.3px}
+.m-ddfloor .cross.tl{top:10%;left:6%;color:rgba(255,255,255,.55)}
+.m-ddfloor .cross.tl b{color:#fff}
+.m-ddfloor .cross.tr{top:10%;right:6%;text-align:right;color:#EF4444}
+.m-ddfloor .cross.tr b{color:#EF4444}
+.m-ddfloor .cross.bl{bottom:12%;left:6%;color:#10B981}
+.m-ddfloor .cross.bl b{color:#10B981}
+.m-ddfloor .cross.br{bottom:12%;right:6%;text-align:right;color:rgba(255,255,255,.55)}
+.m-ddfloor .cross.br b{color:#fff}
+
+/* G3-3 Recovery math — asymmetric curve */
+.m-recov{background:radial-gradient(ellipse 420px 260px at 50% 100%,rgba(239,68,68,.22) 0%,transparent 60%),linear-gradient(180deg,#0A0A0F 0%,#120606 100%);padding:16px;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.m-recov .pill{font-family:'JetBrains Mono',monospace;font-size:8px;color:#EF4444;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;border:1px solid rgba(239,68,68,.5);padding:4px 12px;border-radius:14px;background:rgba(239,68,68,.08);align-self:center;z-index:3;margin-top:2px}
+.m-recov svg{width:98%;height:80%}
+
+/* G3-4 DD types by firm — Nazmul C3 (pill + hero row + diagonal gesture) */
+.m-ddtypes{
+  background:
+    radial-gradient(ellipse 420px 260px at 88% 110%,rgba(239,68,68,.3) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#120606 100%);
+  padding:22px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-ddtypes .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#EF4444;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(239,68,68,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(239,68,68,.06)
+;z-index:3;margin-top:2px}
+.m-ddtypes .tbl{
+  width:96%;border-radius:10px;overflow:hidden;position:relative;z-index:2;
+  background:linear-gradient(180deg,rgba(239,68,68,.06) 0%,rgba(0,0,0,.3) 100%);
+  border:1px solid rgba(239,68,68,.22)
+}
+.m-ddtypes .tr{display:grid;grid-template-columns:92px 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.04)}
+.m-ddtypes .tr:last-child{border-bottom:0}
+.m-ddtypes .tr.th{background:linear-gradient(90deg,rgba(239,68,68,.22),rgba(239,68,68,.05))}
+.m-ddtypes .tr.th div{color:#EF4444;font-weight:800;font-size:8.5px;text-transform:uppercase;letter-spacing:1.4px;padding:8px 5px;text-align:center;font-family:'JetBrains Mono',monospace}
+.m-ddtypes .tr.th div:first-child{text-align:left;color:rgba(255,255,255,.4);padding-left:12px}
+.m-ddtypes .tr div{padding:8px 5px;font-size:10px;color:#fff;text-align:center;font-weight:600}
+.m-ddtypes .tr div:first-child{color:#F0B429;font-family:'Fraunces',serif;font-size:11px;text-align:left;font-weight:700;padding-left:12px}
+.m-ddtypes .tr.hero{
+  background:linear-gradient(90deg,rgba(239,68,68,.22) 0%,rgba(239,68,68,.04) 100%);
+  position:relative
+}
+.m-ddtypes .tr.hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#EF4444;box-shadow:0 0 10px #EF4444}
+.m-ddtypes .tr.hero div:first-child{color:#F97316}
+.m-ddtypes .tr .on{color:#EF4444;font-weight:800;font-family:'Fraunces',serif;font-size:10.5px}
+.m-ddtypes .tr .off{color:rgba(255,255,255,.28);font-size:14px;letter-spacing:2px}
+
+/* G4-1 Formula — Nazmul typography hero + pill */
+.m-formula{
+  background:
+    radial-gradient(ellipse 500px 300px at 50% 50%,rgba(59,130,246,.28) 0%,transparent 60%),
+    linear-gradient(180deg,#0A0A0F 0%,#06080F 100%);
+  padding:26px 22px;flex-direction:column;gap:14px;position:relative;overflow:hidden
+}
+.m-formula .pill{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#3B82F6;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(59,130,246,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(59,130,246,.06);z-index:2
+}
+.m-formula .eq{
+  font-family:'Fraunces',serif;font-size:24px;color:#fff;text-align:center;
+  line-height:1.45;font-weight:500;letter-spacing:-.4px;z-index:2;position:relative
+}
+.m-formula .eq b{color:#3B82F6;font-weight:700}
+.m-formula .eq .op{color:rgba(255,255,255,.35);font-weight:500;padding:0 2px}
+.m-formula .ex{
+  font-size:11px;color:rgba(255,255,255,.7);text-align:center;font-family:'JetBrains Mono',monospace;
+  background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.35);border-radius:6px;
+  padding:7px 14px;z-index:2
+}
+.m-formula .ex .res{
+  font-family:'Fraunces',serif;font-size:18px;color:#3B82F6;font-weight:800;margin-left:6px
+}
+
+/* G4-2 Contracts — Nazmul C3 (pill + hero bar 4× glow + diagonal) */
+.m-contracts{
+  background:
+    radial-gradient(ellipse 420px 260px at 88% 110%,rgba(59,130,246,.3) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#06080F 100%);
+  padding:20px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-contracts .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#3B82F6;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(59,130,246,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(59,130,246,.06);z-index:2
+}
+.m-contracts .row{display:flex;align-items:flex-end;gap:10px;width:94%;height:58%;justify-content:center;z-index:2;position:relative}
+.m-contracts .step{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.28);border-radius:8px;padding:8px 4px 6px;color:#fff;font-size:9px;text-align:center;display:flex;flex-direction:column;justify-content:flex-end;flex:1;gap:2px;min-height:40px;position:relative}
+.m-contracts .step b{font-family:'Fraunces',serif;font-size:14px;display:block;line-height:1;color:#fff;font-weight:700}
+.m-contracts .step span{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.5);letter-spacing:.8px;font-weight:700}
+.m-contracts .step.hero{
+  background:linear-gradient(180deg,#3B82F6 0%,#1E40AF 100%);
+  border-color:#3B82F6;
+  box-shadow:0 0 26px rgba(59,130,246,.5);
+  flex:1.3
+}
+.m-contracts .step.hero b{font-size:22px;letter-spacing:-.8px}
+.m-contracts .step.hero span{color:rgba(255,255,255,.85);font-weight:800}
+.m-contracts .step.hero .tag{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:6.5px;color:#fff;letter-spacing:1.5px;font-weight:800;border:1px solid rgba(255,255,255,.45);padding:2px 6px;border-radius:3px;background:rgba(10,10,15,.55);white-space:nowrap}
+.m-contracts .foot{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.45);letter-spacing:1.2px;text-transform:uppercase;font-weight:600;z-index:2;text-align:center}
+
+/* G4-3 Compound 3 curves */
+.m-compound{background:radial-gradient(ellipse at center,rgba(59,130,246,.15) 0%,#0A0A0F 70%);padding:14px}
+.m-compound svg{width:94%;height:88%}
+
+/* G4-4 3 traders — Nazmul B1 hierarchy (Trader A hero survived + pill + diagonal) */
+.m-3t{
+  background:
+    radial-gradient(ellipse 420px 260px at 12% 110%,rgba(59,130,246,.28) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#06080F 100%);
+  padding:20px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-3t .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#3B82F6;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(59,130,246,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(59,130,246,.06);z-index:2
+}
+.m-3t .row{display:flex;gap:7px;width:96%;align-items:stretch;z-index:2;position:relative}
+.m-3t .tr{flex:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 8px;display:flex;flex-direction:column;gap:4px;justify-content:space-between}
+.m-3t .tr.ok{flex:1.4;border-color:#10B981;background:linear-gradient(135deg,rgba(16,185,129,.14) 0%,rgba(16,185,129,.02) 100%);box-shadow:0 0 22px rgba(16,185,129,.25);padding:11px 10px}
+.m-3t .tr.bad{border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.04)}
+.m-3t .tr .nm{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.3px;font-weight:700}
+.m-3t .tr .risk{font-family:'Fraunces',serif;font-size:14px;font-weight:800;line-height:1;letter-spacing:-.3px}
+.m-3t .tr.ok .risk{color:#10B981;font-size:22px}
+.m-3t .tr.bad .risk{color:#EF4444}
+.m-3t .tr svg{width:100%;height:34px}
+.m-3t .tr .out{font-family:'Fraunces',serif;font-size:9px;font-weight:700;letter-spacing:-.2px}
+.m-3t .tr.ok .out{color:#10B981;font-size:11px}
+.m-3t .tr.bad .out{color:#EF4444}
+.m-3t .tr.ok .tag{align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:6.5px;color:#10B981;letter-spacing:1.5px;font-weight:800;border:1px solid rgba(16,185,129,.5);padding:2px 6px;border-radius:3px}
+.m-3t .foot{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.45);letter-spacing:1.2px;text-transform:uppercase;font-weight:600;z-index:2;text-align:center}
+
+/* G5-1 Timeline — Nazmul C3 (pill + hero payout day + diagonal) */
+.m-timeline{
+  background:
+    radial-gradient(ellipse 420px 260px at 88% 110%,rgba(240,180,41,.3) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#12100A 100%);
+  padding:20px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-timeline .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#F0B429;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(240,180,41,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(240,180,41,.06);z-index:2
+}
+.m-timeline .week{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;width:96%;z-index:2;position:relative;align-items:stretch}
+.m-timeline .d{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:62px;justify-content:center}
+.m-timeline .d .day{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.45);letter-spacing:1.5px;font-weight:700;text-transform:uppercase}
+.m-timeline .d .step{font-family:'Fraunces',serif;font-size:13px;color:#fff;font-weight:700;line-height:1}
+.m-timeline .d .lbl{font-family:'JetBrains Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.5);letter-spacing:.8px;font-weight:700;text-transform:uppercase}
+.m-timeline .d.act{background:rgba(240,180,41,.1);border-color:rgba(240,180,41,.35)}
+.m-timeline .d.act .day{color:#F0B429}
+.m-timeline .d.act .lbl{color:rgba(240,180,41,.7)}
+.m-timeline .d.hero{
+  grid-column:5/6;
+  background:linear-gradient(180deg,#F0B429 0%,#C2910A 100%);
+  border-color:#F0B429;
+  box-shadow:0 0 24px rgba(240,180,41,.45);
+  min-height:62px
+}
+.m-timeline .d.hero .day{color:rgba(0,0,0,.55);font-weight:800}
+.m-timeline .d.hero .step{color:#000;font-size:16px;letter-spacing:-.4px}
+.m-timeline .d.hero .amt{font-family:'Fraunces',serif;font-size:11px;color:#000;font-weight:800;line-height:1}
+.m-timeline .d.hero .lbl{color:rgba(0,0,0,.75);font-weight:800}
+.m-timeline .foot{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;font-weight:600;z-index:2;text-align:center;margin-top:4px}
+
+/* G5-2 Firms matrix — Nazmul C3 (pill + hero row + diagonal gesture) */
+.m-firms{
+  background:
+    radial-gradient(ellipse 420px 260px at 50% 120%,rgba(240,180,41,.28) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#12100A 100%);
+  padding:22px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-firms .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#F0B429;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(240,180,41,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(240,180,41,.06)
+;z-index:3;margin-top:2px}
+.m-firms .tbl{
+  width:96%;border-radius:10px;overflow:hidden;position:relative;z-index:2;
+  background:linear-gradient(180deg,rgba(240,180,41,.05) 0%,rgba(0,0,0,.3) 100%);
+  border:1px solid rgba(240,180,41,.22)
+}
+.m-firms .tr{display:grid;grid-template-columns:1.3fr 1fr 1.1fr 1fr;border-bottom:1px solid rgba(255,255,255,.04)}
+.m-firms .tr:last-child{border-bottom:0}
+.m-firms .tr.th{background:linear-gradient(90deg,rgba(240,180,41,.2),rgba(240,180,41,.05))}
+.m-firms .tr.th div{color:#F0B429;font-weight:800;font-size:8px;text-transform:uppercase;letter-spacing:1.4px;padding:7px 5px;text-align:center;font-family:'JetBrains Mono',monospace}
+.m-firms .tr.th div:first-child{text-align:left;color:rgba(255,255,255,.4);padding-left:11px}
+.m-firms .tr div{padding:7px 5px;font-size:10px;color:#fff;text-align:center;font-weight:600}
+.m-firms .tr div:first-child{color:#F0B429;font-family:'Fraunces',serif;font-size:11.5px;text-align:left;font-weight:700;padding-left:11px}
+.m-firms .tr.hero{
+  background:linear-gradient(90deg,rgba(240,180,41,.2) 0%,rgba(240,180,41,.04) 100%);
+  position:relative
+}
+.m-firms .tr.hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#F0B429;box-shadow:0 0 10px #F0B429}
+.m-firms .tr.hero div{font-family:'Fraunces',serif;font-weight:700}
+.m-firms .tr div b{color:#10B981;font-family:'Fraunces',serif;font-size:11px}
+.m-firms .tr.hero div b{color:#F0B429}
+
+/* G5-3 Methods — Nazmul C3 (pill + hero crypto + diagonal) */
+.m-methods{
+  background:
+    radial-gradient(ellipse 420px 260px at 12% 110%,rgba(240,180,41,.3) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#12100A 100%);
+  padding:20px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-methods .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#F0B429;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(240,180,41,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(240,180,41,.06);z-index:2
+}
+.m-methods .grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:6px;width:96%;z-index:2;position:relative;align-items:stretch}
+.m-methods .mt{background:rgba(255,255,255,.04);border:1px solid rgba(240,180,41,.22);border-radius:8px;padding:10px 8px;display:flex;flex-direction:column;gap:4px;justify-content:center}
+.m-methods .mt .lb{font-family:'JetBrains Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.45);letter-spacing:1.3px;font-weight:700;text-transform:uppercase}
+.m-methods .mt .nm{font-family:'Fraunces',serif;font-size:12px;color:#fff;font-weight:700;line-height:1;letter-spacing:-.2px}
+.m-methods .mt .tm{font-family:'Fraunces',serif;font-size:11px;color:#F0B429;font-weight:700;line-height:1;letter-spacing:-.2px;margin-top:2px}
+.m-methods .mt .fe{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.5);font-weight:600}
+.m-methods .mt.hero{
+  background:linear-gradient(135deg,rgba(16,185,129,.15) 0%,rgba(16,185,129,.03) 100%);
+  border:1px solid #10B981;
+  box-shadow:0 0 22px rgba(16,185,129,.28);
+  padding:12px 10px
+}
+.m-methods .mt.hero .lb{color:#10B981}
+.m-methods .mt.hero .nm{font-size:15px;color:#fff}
+.m-methods .mt.hero .tm{font-size:14px;color:#10B981}
+.m-methods .mt.hero .fe{color:#10B981;font-weight:700}
+.m-methods .mt.hero .tag{align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:6.5px;color:#10B981;letter-spacing:1.5px;font-weight:800;border:1px solid rgba(16,185,129,.5);padding:2px 6px;border-radius:3px;margin-bottom:2px}
+
+/* G5-4 Rhythm — Nazmul B1 hierarchy (monthly rhythm hero + pill + diagonal) */
+.m-firstnth{
+  background:
+    radial-gradient(ellipse 420px 260px at 88% 110%,rgba(240,180,41,.28) 0%,transparent 62%),
+    linear-gradient(180deg,#0A0A0F 0%,#12100A 100%);
+  padding:20px 18px;flex-direction:column;gap:10px;position:relative;overflow:hidden
+}
+.m-firstnth .pill{
+  align-self:center;font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:#F0B429;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;
+  border:1px solid rgba(240,180,41,.45);padding:4px 12px;border-radius:14px;
+  background:rgba(240,180,41,.06);z-index:2
+}
+.m-firstnth .rows{display:flex;flex-direction:column;gap:6px;width:96%;z-index:2;position:relative}
+.m-firstnth .r{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid rgba(240,180,41,.22);border-radius:8px;padding:8px 12px}
+.m-firstnth .r .tag{font-family:'JetBrains Mono',monospace;background:rgba(240,180,41,.12);color:#F0B429;font-size:6.5px;font-weight:800;letter-spacing:1.5px;padding:3px 7px;border-radius:4px;white-space:nowrap;border:1px solid rgba(240,180,41,.35)}
+.m-firstnth .r .main{flex:1;display:flex;align-items:baseline;gap:6px}
+.m-firstnth .r .main b{font-family:'Fraunces',serif;font-size:12px;color:#fff;font-weight:700}
+.m-firstnth .r .main span{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.4px}
+.m-firstnth .r .tm{font-family:'Fraunces',serif;font-size:13px;color:#F0B429;font-weight:800;letter-spacing:-.2px}
+.m-firstnth .r.fast{border-color:rgba(16,185,129,.35)}
+.m-firstnth .r.fast .tag{background:rgba(16,185,129,.12);color:#10B981;border-color:rgba(16,185,129,.4)}
+.m-firstnth .r.fast .tm{color:#10B981}
+.m-firstnth .r.hero{
+  background:linear-gradient(90deg,rgba(16,185,129,.18) 0%,rgba(16,185,129,.02) 100%);
+  border:1px solid #10B981;
+  box-shadow:0 0 22px rgba(16,185,129,.28);
+  padding:12px 14px
+}
+.m-firstnth .r.hero .tag{background:#10B981;color:#fff;border-color:#10B981}
+.m-firstnth .r.hero .main b{font-size:15px}
+.m-firstnth .r.hero .tm{color:#10B981;font-size:18px}
+.m-firstnth .foot{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.45);text-align:center;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;z-index:2}
+
+</style></head><body>
+
+<h1>Preview v2 · 25 ilustrações redesenhadas (10/10)</h1>
+<div class="sub">Revisão completa: dados reais, sem duplicatas, arco narrativo por guia, vocabulário visual diverso (tabelas, gráficos SVG, timelines, dashboards — não só listas + iPhones), contexto global (firmas US/EU/Global, métodos com fees reais).</div>
+<div class="q"><b>Aprova os 25?</b> Cada slot agora: (1) ensina algo único (zero sobreposição), (2) dados verificáveis, (3) escala emoção — G1 ambição · G2 determinação · G3 medo real · G4 precisão · G5 conquista.</div>
+
+<div class="legend">
+  <div class="lg"><span class="lg-dot" style="background:#F97316"></span><b>G1 · Orange</b><div class="lg-name">Oportunidade · Ambição</div></div>
+  <div class="lg"><span class="lg-dot" style="background:#10B981"></span><b>G2 · Emerald</b><div class="lg-name">Determinação · Foco</div></div>
+  <div class="lg"><span class="lg-dot" style="background:#EF4444"></span><b>G3 · Red</b><div class="lg-name">Risco real · Medo</div></div>
+  <div class="lg"><span class="lg-dot" style="background:#3B82F6"></span><b>G4 · Blue</b><div class="lg-name">Precisão · Cálculo</div></div>
+  <div class="lg"><span class="lg-dot" style="background:#F0B429"></span><b>G5 · Gold</b><div class="lg-name">Conquista · Saque</div></div>
+</div>
+
+<!-- ============ 5 HEROS ============ -->
+<div class="heros-section">
+  <div class="heros-head"><span class="t">5 Heros · porta-entrada emocional de cada guia</span><span class="s">Conceito central, não decoração</span></div>
+  <div class="heros">
+
+    <div class="hero-slot">
+      <div class="hero-mockup h-g1">
+        <div class="hd">Why Prop Firms Exist</div>
+        <div class="stack">
+          <div class="deal">
+            <div class="side"><div class="ic">$50K</div><div class="lb">Firm's capital</div></div>
+            <div class="plus">+</div>
+            <div class="side"><div class="ic">YOU</div><div class="lb">Trader skill</div></div>
+          </div>
+        </div>
+        <div class="sp">80/20 SPLIT · CONTRACT</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F97316">G1 · Hero · The Deal</div>
+        <div class="slot-desc">Value prop imediato: Firm's capital $50K + Your skill = 80/20 split. Mostra o deal que faz prop firm existir.</div>
+      </div>
+    </div>
+
+    <div class="hero-slot">
+      <div class="hero-mockup h-g2">
+        <div class="hd">Challenge · Final Push</div>
+        <div class="stack">
+          <div class="fp">
+            <div class="tag">Day 4 of 5 · Final push</div>
+            <div class="big"><b>$2,840</b> / $3,000</div>
+            <div class="bar"><div class="fl"></div></div>
+            <div class="row"><span>Progress</span><b>94.6%</b></div>
+            <div class="row"><span>Time left</span><b>24h</b></div>
+            <div class="row"><span>Need</span><b>$160</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#10B981">G2 · Hero · Final Push</div>
+        <div class="slot-desc">Momento de tensão: 94.6% do target, 24h restando, $160 pra passar. Emoção antes da regra. Challenge é vivido, não descrito.</div>
+      </div>
+    </div>
+
+    <div class="hero-slot">
+      <div class="hero-mockup h-g3">
+        <div class="hd">Drawdown · Near Death</div>
+        <div class="stack">
+          <div class="dd">
+            <div class="tag">⚠ Cushion critical</div>
+            <div class="bal">Balance: $47,620</div>
+            <div class="floor">DD Floor: $47,500</div>
+            <div class="cush"><span>Cushion left</span><b>$120</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#EF4444">G3 · Hero · Near Death</div>
+        <div class="slot-desc">Momento visceral: balance $120 acima do floor. Red-alert pulse. Medo REAL, não ondas abstratas. Dispara atenção pra aprender o resto.</div>
+      </div>
+    </div>
+
+    <div class="hero-slot">
+      <div class="hero-mockup h-g4">
+        <div class="hd">Position Sizing · The Bridge</div>
+        <div class="stack">
+          <div class="side">
+            <div class="h">Calc</div>
+            <div class="eq">$50K <b>×</b> 1%<br>÷ (8 <b>×</b> $5)</div>
+            <div class="big">= <span>12</span></div>
+          </div>
+          <div class="arr">→</div>
+          <div class="side">
+            <div class="h">Order</div>
+            <div class="eq">BUY MES<br>Qty: <b>12</b><br>Entry: 15,420<br>SL: 15,412</div>
+            <div class="big">+$500 <span>risk</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#3B82F6">G4 · Hero · Math → Action</div>
+        <div class="slot-desc">Ponte literal: calc de 1 lado resolve fórmula, order ticket do outro usa o resultado. Precisão virou ação.</div>
+      </div>
+    </div>
+
+    <div class="hero-slot">
+      <div class="hero-mockup h-g5">
+        <div class="hd">Payout · Money Arrives</div>
+        <div class="stack">
+          <div class="notif">
+            <div class="h"><span>Bank · now</span><b>Wire received</b></div>
+            <div class="title">Transfer completed</div>
+            <div class="big">+$4,800</div>
+            <div class="from">From <b>Apex Trader Funding</b><br>Payout #1 · 5-day cycle</div>
+          </div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F0B429">G5 · Hero · Money Arrives</div>
+        <div class="slot-desc">Notificação de banco real: "Wire received +$4,800 from Apex". Conquista concreta na tela do banco. Sem wax seal medieval.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ G1 — Orange ============ -->
+<div class="guide">
+  <div class="guide-head"><span class="gnum" style="background:#F97316">1</span><span class="gtitle">What is a Prop Firm?</span><span class="garc">Deal → Pick model → Money flow → Where in the world → Grow</span><span class="gaccent">Accent · #F97316</span></div>
+  <div class="slots">
+
+    <div class="slot">
+      <div class="mockup m-matrix">
+        <div class="pill">3 Models · Evaluated</div>
+        <div class="tbl">
+          <div class="tr th"><div>Metric</div><div>1-Step</div><div>2-Step</div><div>Instant</div></div>
+          <div class="tr hero"><div>Best for</div><div>Fast-trackers</div><div>Beginners</div><div>Small budget</div></div>
+          <div class="tr"><div>Cost</div><div>$300-500</div><div>$150-300</div><div>$99-200</div></div>
+          <div class="tr"><div>Time to fund</div><div>Days-weeks</div><div>Weeks-months</div><div>Instant</div></div>
+          <div class="tr"><div>Pass rate</div><div><b>~10%</b></div><div><b>~7%</b></div><div>N/A</div></div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F97316">G1 · Models Matrix</div>
+        <div class="slot-desc">Matriz 3×4 com comparação ACIONÁVEL: cost / time-to-fund / pass rate / best-for. Trader decide em 10 segundos.</div>
+        <div class="slot-prompt" style="border-color:#F97316">Premium comparison table 3 columns (1-Step / 2-Step / Instant) × 4 rows (Cost / Time / Pass rate / Best for) with data. Orange accent header. Dark studio, cinematic.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/cardan-c.jpg"><div class="rn"><b>Ref Nazmul:</b> Cardan — tabelas estruturadas premium</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-flow">
+        <div class="flow-side">
+          <div class="hdr">Where the <span>money</span> ends up</div>
+          <div class="flow-row"><span class="step">01</span><span class="act">You pay</span><b>$90</b></div>
+          <div class="flow-row"><span class="step">02</span><span class="act">Firm gives</span><b>$50K</b></div>
+          <div class="flow-row"><span class="step">03</span><span class="act">You earn</span><b>$3,000</b></div>
+          <div class="flow-row split"><span class="step">04</span><span class="act">Your 80%</span><b>$2,400</b></div>
+        </div>
+        <div class="card-wrap">
+          <svg class="card" viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#1c1c1c"/>
+                <stop offset=".55" stop-color="#0a0a0a"/>
+                <stop offset="1" stop-color="#000"/>
+              </linearGradient>
+              <linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#e8c183"/>
+                <stop offset=".5" stop-color="#8b6a3d"/>
+                <stop offset="1" stop-color="#c9a572"/>
+              </linearGradient>
+              <linearGradient id="cg3" x1="0" y1=".3" x2="1" y2=".7">
+                <stop offset="0" stop-color="#F97316"/>
+                <stop offset="1" stop-color="#c2410c"/>
+              </linearGradient>
+            </defs>
+            <rect width="280" height="180" rx="14" fill="url(#cg1)"/>
+            <rect x="0" y="0" width="280" height="180" rx="14" fill="url(#cg3)" opacity=".06"/>
+            <rect x="20" y="28" width="34" height="26" rx="4" fill="url(#cg2)"/>
+            <line x1="20" y1="36" x2="54" y2="36" stroke="#000" stroke-opacity=".35" stroke-width="1"/>
+            <line x1="20" y1="44" x2="54" y2="44" stroke="#000" stroke-opacity=".35" stroke-width="1"/>
+            <line x1="37" y1="28" x2="37" y2="54" stroke="#000" stroke-opacity=".35" stroke-width="1"/>
+            <g transform="translate(62,34)" fill="none" stroke="#F97316" stroke-width="1.4" stroke-linecap="round" opacity=".7">
+              <path d="M0 6 Q 4 6 4 10 Q 4 14 0 14"/>
+              <path d="M4 2 Q 10 2 10 10 Q 10 18 4 18"/>
+              <path d="M8 -2 Q 16 -2 16 10 Q 16 22 8 22"/>
+            </g>
+            <text x="20" y="82" font-family="Inter" font-size="6.5" font-weight="800" fill="#F97316" letter-spacing="2">BALANCE</text>
+            <text x="20" y="118" font-family="Fraunces" font-size="30" font-weight="800" fill="#fff" letter-spacing="-1">$2,400<tspan font-size="18" fill="#F97316">.00</tspan></text>
+            <text x="20" y="146" font-family="JetBrains Mono" font-size="8.5" fill="rgba(255,255,255,.55)" letter-spacing="2.5">•••• 2468 •••• 3945</text>
+            <text x="20" y="168" font-family="Fraunces" font-size="10" font-weight="700" fill="#fff" letter-spacing=".3">MarketsCoupons</text>
+            <text x="232" y="168" font-family="Inter" font-size="6.5" fill="rgba(255,255,255,.45)" letter-spacing="1.5" font-weight="700">06/27</text>
+            <circle cx="250" cy="30" r="10" fill="#F97316" opacity=".9"/>
+            <circle cx="238" cy="30" r="10" fill="#fff" opacity=".12"/>
+          </svg>
+          <div class="arrives"><span class="pulse"></span><b>Lands in your account</b></div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F97316">G1 · Money Flow — v2 Nazmul</div>
+        <div class="slot-desc">Hero é o cartão preto premium com saldo $2,400 massive. Flow discreto ao lado mostra origem (90→50K→3K→2,400). Hierarquia: cartão domina 60% do frame, não 8 retângulos iguais.</div>
+        <div class="slot-prompt" style="border-color:#F97316">Premium black credit card mockup floating with slight 3D rotation, chromed chip realistic, contactless icon, MarketsCoupons wordmark, "$2,400.00" balance massive in white with orange ".00" accent. Side-light tungsten right, long shadow left. Dark studio, orange glow diagonal gesture background, ONE focal (the card). Nazmul cardan-c style.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/chaintools.jpg"><div class="rn"><b>Ref Nazmul:</b> ChainTools — flow com valores</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-map">
+        <div class="pill">Global · 3 Regions · 250+ Firms</div>
+        <div class="regions">
+          <div class="rg hero">
+            <span class="tag">LARGEST MARKET</span>
+            <div class="hd">North America</div>
+            <div class="nm">US</div>
+            <div class="fm">Apex · Bulenox · Topstep</div>
+            <div class="tp">Futures-first · CME</div>
+          </div>
+          <div class="rg">
+            <div class="hd">Europe</div>
+            <div class="nm">EU</div>
+            <div class="fm">FTMO · The5ers · E8</div>
+            <div class="tp">FX + CFD</div>
+          </div>
+          <div class="rg">
+            <div class="hd">MENA · Asia</div>
+            <div class="nm">Global</div>
+            <div class="fm">FundingPips · Blueberry</div>
+            <div class="tp">Global FX</div>
+          </div>
+        </div>
+        <div class="stats"><b>250+</b> firms · <b>$10B+</b> funded worldwide</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F97316">G1 · Global Map</div>
+        <div class="slot-desc">Mapa com 3 regiões: US (Apex, Bulenox, Topstep — futures), EU (FTMO, The5ers, E8 — FX), MENA/Asia (FundingPips — global). Trader vê firmas do seu mercado. Stats globais no rodapé.</div>
+        <div class="slot-prompt" style="border-color:#F97316">World map with 3 illuminated clusters: North America (Apex/Bulenox/Topstep · Futures), Europe (FTMO/The5ers/E8 · FX+CFD), MENA-Asia (FundingPips/Blueberry · Global FX). Bottom badge "250+ firms · $10B+ funded". Orange glow, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/heliomove.jpg"><div class="rn"><b>Ref Nazmul:</b> HelioMove — escala global arquitetônica</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-path">
+        <div class="pill">Apex · Stacking Path</div>
+        <div class="tl">
+          <div class="m"><b>$25K</b><small>Start</small></div>
+          <div class="arr">→<small>+$2.5K</small></div>
+          <div class="m"><b>$50K</b><small>Add</small></div>
+          <div class="arr">→<small>+$2.5K</small></div>
+          <div class="m"><b>$100K</b><small>Add</small></div>
+          <div class="arr">→<small>+$5K</small></div>
+          <div class="m hero"><b>$300K</b><small>Stacked</small></div>
+        </div>
+        <div class="foot">Apex official · multi-account · 1:1 from profits</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F97316">G1 · Scale (Apex real)</div>
+        <div class="slot-desc">Plano REAL Apex: stack accounts 1:1 com profit. Não pirâmide inventada — é como funciona na prática. Citação da fonte no rodapé.</div>
+        <div class="slot-prompt" style="border-color:#F97316">Horizontal timeline showing Apex real scaling: "$25K start → +$2.5K profit → add $50K account → +$2.5K → add $100K → +$5K → stacked $300K". Label "Apex official · multi-account stacking". Orange glow, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/autonex.jpg"><div class="rn"><b>Ref Nazmul:</b> AutoNex — timeline horizontal bold</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ G2 — Emerald ============ -->
+<div class="guide">
+  <div class="guide-head"><span class="gnum" style="background:#10B981">2</span><span class="gtitle">How to Pass the Challenge</span><span class="garc">Final push → Who passes → Pass rate data → Math of target → Rules watched</span><span class="gaccent">Accent · #10B981</span></div>
+  <div class="slots">
+
+    <div class="slot">
+      <div class="mockup m-slowfast">
+        <div class="pill">Equity · 20 Days · Same Target</div>
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="180" x2="380" y2="180" stroke="rgba(255,255,255,.15)" stroke-dasharray="3,3"/>
+          <path d="M20,180 Q100,160 180,120 T380,60" stroke="#10B981" stroke-width="2.5" fill="none"/>
+          <path d="M20,180 Q60,100 100,40 Q140,80 200,160 T380,200" stroke="#EF4444" stroke-width="2.5" fill="none"/>
+          <g>
+            <rect x="246" y="44" width="138" height="22" rx="11" fill="#0A0A0F" stroke="#10B981" stroke-width="1.5" opacity="0.95"/>
+            <circle cx="258" cy="55" r="3.5" fill="#10B981"/>
+            <text x="268" y="59" fill="#10B981" font-size="10" font-weight="700">SLOW +8% · PASS</text>
+          </g>
+          <g>
+            <rect x="236" y="156" width="148" height="22" rx="11" fill="#0A0A0F" stroke="#EF4444" stroke-width="1.5" opacity="0.95"/>
+            <circle cx="248" cy="167" r="3.5" fill="#EF4444"/>
+            <text x="258" y="171" fill="#EF4444" font-size="10" font-weight="700">FAST -100% · BUST</text>
+          </g>
+          <text x="22" y="214" fill="rgba(255,255,255,.45)" font-size="7">Day 0</text>
+          <text x="378" y="214" fill="rgba(255,255,255,.45)" font-size="7" text-anchor="end">Day 20</text>
+        </svg>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#10B981">G2 · Slow vs Fast</div>
+        <div class="slot-desc">Duas curvas de equity: verde constante (passou em 20 dias) vs vermelha parabólica (blown up). Perfil psicológico visível.</div>
+        <div class="slot-prompt" style="border-color:#10B981">Dual equity curves on MacBook display: green steady labeled "+8% / 20D · PASSED" vs red parabolic crash labeled "BUSTED". Emerald glow, cinematic dark.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/fynex-fintech.jpg"><div class="rn"><b>Ref Nazmul:</b> Fynex — emerald + tipografia bold</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-passrate">
+        <div class="pill">Pass Rate · 2024 Data</div>
+        <div class="cmp">
+          <div class="pct bad"><div class="num">7%</div><div class="lb">Industry avg</div></div>
+          <div class="vs">VS</div>
+          <div class="pct good"><div class="tag">3.8× Multiplier</div><div class="num">27%</div><div class="lb">Following rules</div></div>
+        </div>
+        <div class="cap">Traders who follow the <b>5 core rules</b> pass at <b>3.8× the industry average</b>.</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#10B981">G2 · Pass Rate Reality</div>
+        <div class="slot-desc">Número grande: 7% média vs 27% seguindo regras. Dado REAL move o leitor: "vale aprender as regras". Source citation.</div>
+        <div class="slot-prompt" style="border-color:#10B981">Big typographic stat comparison: "7%" (red, dim) vs "27%" (emerald, glow), separator "VS". Caption "Traders following 5 core rules pass 3.8× the industry average · 2024 data". Dark studio, cinematic.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/fynex-fintech.jpg"><div class="rn"><b>Ref Nazmul:</b> Fynex — stat typography premium</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-rrmath">
+        <div class="pill">Reverse Math · $3K Target</div>
+        <div class="eq">
+          Target <b>$3,000</b>
+          <span class="sep">÷ 20 expected trades</span>
+          <b>$150</b> avg win needed
+          <span class="sep">at R:R 1:3</span>
+          <span class="res">Risk <b>$50</b> / trade</span>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#10B981">G2 · Math of Target</div>
+        <div class="slot-desc">Math reversa: Target $3K ÷ 20 trades = $150/trade · R:R 1:3 = risk $50/trade. Conecta target, trade count e risk em uma equação clara.</div>
+        <div class="slot-prompt" style="border-color:#10B981">Typographic equation working backward from target: "$3,000 target ÷ 20 trades = $150 avg win · R:R 1:3 → Risk $50/trade". Last step highlighted in emerald pill. Premium serif. Dark studio, cinematic.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/jether-web3.jpg"><div class="rn"><b>Ref Nazmul:</b> Jether — equação tipográfica</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-rules">
+        <div class="pill">Firm · Rules Watched Live</div>
+        <div class="dash">
+          <div class="stat hero">
+            <span class="tag">KILLER #1</span>
+            <div class="lb">Max Drawdown</div>
+            <div class="vl">−$2,500</div>
+            <div class="note">Hit this and <b>account closed instantly</b>. No warning.</div>
+          </div>
+          <div class="stat"><div class="lb">Daily Loss</div><div class="vl">−$1,500</div></div>
+          <div class="stat"><div class="lb">Profit Target</div><div class="vl">$3,000</div></div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#10B981">G2 · Rules Dashboard</div>
+        <div class="slot-desc">4 stats que a firma monitora, com Max Drawdown destacado "CRITICAL" (é o killer #1). Hierarquia visual guia o olho.</div>
+        <div class="slot-prompt" style="border-color:#10B981">Dashboard panel with 4 stat cards: "Max Drawdown −$2,500" (RED, labeled CRITICAL), "Daily Loss Limit −$1,500", "Profit Target $3,000", "Min Days 5". Emerald accent borders, dark glassmorphic studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/fynex-fintech.jpg"><div class="rn"><b>Ref Nazmul:</b> Fynex — dashboard premium</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ G3 — Red ============ -->
+<div class="guide">
+  <div class="guide-head"><span class="gnum" style="background:#EF4444">3</span><span class="gtitle">Drawdown Management</span><span class="garc">Near death → Trailing vs Static → Floor → Recovery math → By firm</span><span class="gaccent">Accent · #EF4444</span></div>
+  <div class="slots">
+
+    <div class="slot">
+      <div class="mockup m-trailing">
+        <div class="pill">Drawdown Behavior · Live Account</div>
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="200" x2="380" y2="200" stroke="rgba(255,255,255,.15)"/>
+          <path d="M20,180 Q80,150 140,120 T260,80 T380,50" stroke="#fff" stroke-width="2.5" fill="none"/>
+          <path d="M20,200 Q80,170 140,140 T260,100 T380,70" stroke="#EF4444" stroke-width="1.8" stroke-dasharray="4,3" fill="none"/>
+          <line x1="20" y1="200" x2="380" y2="200" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="2,4" opacity="0.5"/>
+          <g>
+            <rect x="265" y="42" width="120" height="22" rx="11" fill="#0A0A0F" stroke="#EF4444" stroke-width="1.5" opacity="0.95"/>
+            <circle cx="277" cy="53" r="3.5" fill="#EF4444"/>
+            <text x="287" y="57" fill="#EF4444" font-size="10" font-weight="700">TRAILING −$2K</text>
+          </g>
+          <g>
+            <rect x="265" y="176" width="120" height="22" rx="11" fill="#0A0A0F" stroke="#EF4444" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="277" cy="187" r="3.5" fill="#EF4444" opacity="0.6"/>
+            <text x="287" y="191" fill="#EF4444" font-size="10" font-weight="700" opacity="0.8">STATIC −$2K</text>
+          </g>
+          <g>
+            <rect x="130" y="24" width="76" height="22" rx="11" fill="#0A0A0F" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+            <circle cx="142" cy="35" r="3.5" fill="#fff"/>
+            <text x="152" y="39" fill="#fff" font-size="10" font-weight="700">EQUITY</text>
+          </g>
+        </svg>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#EF4444">G3 · Trailing vs Static</div>
+        <div class="slot-desc">Equity sobe + DD trailing sobe junto vs DD static fixo no piso. Mostra a diferença comportamental real.</div>
+        <div class="slot-prompt" style="border-color:#EF4444">MacBook screen: equity curve in white ascending, 2 drawdown lines — red dashed trailing the curve (TRAILING −$2K), red dotted fixed at floor (STATIC −$2K). Dark studio, red accent glow.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/autonex.jpg"><div class="rn"><b>Ref Nazmul:</b> AutoNex — editorial red</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-ddfloor">
+        <div class="pill">DD Clearance · Live</div>
+        <div class="cross tl">Start<br><b>$50,000</b></div>
+        <div class="cross tr">Floor<br><b>$47,500</b></div>
+        <div class="cross bl">Cushion<br><b>$2,500</b></div>
+        <div class="cross br">Hit floor<br><b>= Busted</b></div>
+        <div class="hero">
+          <div class="bal">$50,000</div>
+          <div class="lb">Balance · Now</div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#EF4444">G3 · DD Floor</div>
+        <div class="slot-desc">Balance $50K, Floor $47.5K, Cushion $2.5K. Gauge mostra onde está. Conceito concreto do drawdown como "piso que não pode tocar".</div>
+        <div class="slot-prompt" style="border-color:#EF4444">iPhone showing drawdown dashboard: "$50K balance", "DD Floor $47.5K", "Cushion $2.5K", gauge bar with "Now" marker. Caption "Hit floor = busted". Red glow, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/autonex.jpg"><div class="rn"><b>Ref Nazmul:</b> AutoNex — dashboard estruturado</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-recov">
+        <div class="pill">Loss → Recovery · Asymmetric</div>
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="recGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#EF4444" stop-opacity=".3"/>
+              <stop offset="1" stop-color="#EF4444" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="40" y1="200" x2="380" y2="200" stroke="rgba(255,255,255,.15)"/>
+          <line x1="40" y1="40" x2="40" y2="200" stroke="rgba(255,255,255,.15)"/>
+          <path d="M40,180 Q120,165 180,145 Q240,115 300,70 Q330,45 380,30" fill="none" stroke="#EF4444" stroke-width="2.5"/>
+          <path d="M40,180 L380,180 L380,200 L40,200 Z" fill="url(#recGrad)" opacity=".2"/>
+          <g>
+            <rect x="32" y="28" width="100" height="20" rx="10" fill="#0A0A0F" stroke="#10B981" stroke-width="1.2" opacity="0.95"/>
+            <circle cx="44" cy="38" r="3" fill="#10B981"/>
+            <text x="52" y="42" fill="#10B981" font-size="9" font-weight="700">−10% → +11%</text>
+          </g>
+          <g>
+            <rect x="32" y="54" width="100" height="20" rx="10" fill="#0A0A0F" stroke="#F59E0B" stroke-width="1.2" opacity="0.95"/>
+            <circle cx="44" cy="64" r="3" fill="#F59E0B"/>
+            <text x="52" y="68" fill="#F59E0B" font-size="9" font-weight="700">−25% → +33%</text>
+          </g>
+          <g>
+            <rect x="32" y="80" width="100" height="20" rx="10" fill="#0A0A0F" stroke="#F97316" stroke-width="1.2" opacity="0.95"/>
+            <circle cx="44" cy="90" r="3" fill="#F97316"/>
+            <text x="52" y="94" fill="#F97316" font-size="9" font-weight="700">−50% → +100%</text>
+          </g>
+          <g>
+            <rect x="32" y="106" width="108" height="22" rx="11" fill="#0A0A0F" stroke="#EF4444" stroke-width="1.8" opacity="0.98"/>
+            <circle cx="44" cy="117" r="3.5" fill="#EF4444"/>
+            <text x="52" y="121" fill="#EF4444" font-size="9.5" font-weight="800">−75% → +300%</text>
+          </g>
+          <text x="40" y="216" fill="rgba(255,255,255,.5)" font-size="7">Loss %</text>
+          <text x="378" y="216" fill="rgba(255,255,255,.5)" font-size="7" text-anchor="end">Recovery required %</text>
+        </svg>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#EF4444">G3 · Recovery Math</div>
+        <div class="slot-desc">Curva assimétrica: -10% exige +11% | -25% → +33% | -50% → +100% | -75% → +300%. Prova matemática de que proteger vale mais que ganhar.</div>
+        <div class="slot-prompt" style="border-color:#EF4444">Asymmetric curve chart titled "LOSS → RECOVERY NEEDED": 4 points plotted showing accelerating recovery: "−10% → +11%", "−25% → +33%", "−50% → +100%", "−75% → +300%". Red gradient fill, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/autonex.jpg"><div class="rn"><b>Ref Nazmul:</b> AutoNex — curvas editorial red</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-ddtypes">
+        <div class="pill">Drawdown · 4 Major Firms</div>
+        <div class="tbl">
+          <div class="tr th"><div>Firm</div><div>Daily DD</div><div>Max DD</div><div>Trailing</div></div>
+          <div class="tr hero"><div>Apex</div><div class="off">—</div><div class="off">—</div><div class="on">EOD · $2.5K</div></div>
+          <div class="tr"><div>FTMO</div><div class="on">−5%</div><div class="on">−10%</div><div class="off">—</div></div>
+          <div class="tr"><div>Topstep</div><div class="off">—</div><div class="off">—</div><div class="on">Intraday · $2K</div></div>
+          <div class="tr"><div>The5ers</div><div class="on">−4%</div><div class="on">−8%</div><div class="off">—</div></div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#EF4444">G3 · DD Types by Firm</div>
+        <div class="slot-desc">4 firmas, 3 tipos de DD: Apex usa Trailing EOD · FTMO Daily+Max · Topstep Trailing Intraday · The5ers Daily+Max. Cada trader escolhe pelo perfil de risco.</div>
+        <div class="slot-prompt" style="border-color:#EF4444">Comparison table: 4 firms (Apex, FTMO, Topstep, The5ers) × 3 DD types (Daily / Max / Trailing) with checkmarks and values. Red accent header. Dark studio, cinematic.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/autonex.jpg"><div class="rn"><b>Ref Nazmul:</b> AutoNex — tabela comparativa</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ G4 — Blue ============ -->
+<div class="guide">
+  <div class="guide-head"><span class="gnum" style="background:#3B82F6">4</span><span class="gtitle">Position Sizing</span><span class="garc">Math→Action → Formula → Bars per size → Compound → 3 traders</span><span class="gaccent">Accent · #3B82F6</span></div>
+  <div class="slots">
+
+    <div class="slot">
+      <div class="mockup m-formula">
+        <div class="pill">Position Sizing · Formula</div>
+        <div class="eq">Contracts <span class="op">=</span> <b>Account × Risk%</b><br><span class="op">÷</span> <b>Stop ticks × Tick value</b></div>
+        <div class="ex">$50,000 × 1% ÷ (8 × $5) <span class="res">= 12</span></div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#3B82F6">G4 · The Formula</div>
+        <div class="slot-desc">Equação real de position sizing com exemplo resolvido (12 contracts). Conceito central do guia.</div>
+        <div class="slot-prompt" style="border-color:#3B82F6">MacBook displaying typographic equation: "Contracts = (Account × Risk%) ÷ (Stop ticks × Tick value)". Example "($50,000 × 1%) ÷ (8 × $5) = 12 contracts" with "12" blue. Premium serif. Dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/jether-web3.jpg"><div class="rn"><b>Ref Nazmul:</b> Jether — tipografia clean</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-contracts">
+        <div class="pill">Same Rule · 1% · 8 Ticks · $5</div>
+        <div class="row">
+          <div class="step" style="height:34%"><b>1×</b><span>$25K</span></div>
+          <div class="step" style="height:58%"><b>2×</b><span>$50K</span></div>
+          <div class="step" style="height:78%"><b>3×</b><span>$100K</span></div>
+          <div class="step hero" style="height:100%"><span class="tag">$150K ACCT</span><b>4×</b><span>Contracts</span></div>
+        </div>
+        <div class="foot">Formula scales linearly · size changes, math doesn't</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#3B82F6">G4 · Contracts per Size</div>
+        <div class="slot-desc">Aplicação direta da fórmula do slot 1: mesma equação resolvida pra 4 tamanhos de conta. Linear 1×/2×/3×/4×.</div>
+        <div class="slot-prompt" style="border-color:#3B82F6">Bar chart 4 ascending blue bars labeled "1× $25K", "2× $50K", "3× $100K", "4× $150K". Caption "Contracts by account size · Same formula · 1% risk · 8-tick stop · $5/tick". Premium 3D, blue glow.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/chaintools.jpg"><div class="rn"><b>Ref Nazmul:</b> ChainTools — barras blue</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-compound">
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <text x="20" y="18" fill="rgba(255,255,255,.7)" font-size="9" font-weight="700" letter-spacing="1">EQUITY · 100 TRADES · 60% WIN · R:R 1:2</text>
+          <line x1="30" y1="200" x2="380" y2="200" stroke="rgba(255,255,255,.15)"/>
+          <line x1="30" y1="40" x2="30" y2="200" stroke="rgba(255,255,255,.15)"/>
+          <path d="M30,180 Q100,150 180,130 Q260,115 380,95" stroke="#10B981" stroke-width="2.5" fill="none"/>
+          <path d="M30,180 Q80,140 140,155 Q200,100 260,135 Q310,85 380,115" stroke="#F97316" stroke-width="2" fill="none"/>
+          <path d="M30,180 Q70,90 110,140 Q150,70 190,180 Q220,120 250,200 Q280,140 310,210 L380,210" stroke="#EF4444" stroke-width="2" fill="none"/>
+          <g>
+            <rect x="275" y="28" width="110" height="18" rx="9" fill="#0A0A0F" stroke="#10B981" stroke-width="1" opacity="0.95"/>
+            <circle cx="285" cy="37" r="3" fill="#10B981"/>
+            <text x="293" y="40" fill="#10B981" font-size="9" font-weight="700">1% · +34%</text>
+          </g>
+          <g>
+            <rect x="275" y="50" width="110" height="18" rx="9" fill="#0A0A0F" stroke="#F97316" stroke-width="1" opacity="0.95"/>
+            <circle cx="285" cy="59" r="3" fill="#F97316"/>
+            <text x="293" y="62" fill="#F97316" font-size="9" font-weight="700">3% · +52% vol</text>
+          </g>
+          <g>
+            <rect x="275" y="72" width="110" height="18" rx="9" fill="#0A0A0F" stroke="#EF4444" stroke-width="1" opacity="0.95"/>
+            <circle cx="285" cy="81" r="3" fill="#EF4444"/>
+            <text x="293" y="84" fill="#EF4444" font-size="9" font-weight="700">10% · BUSTED</text>
+          </g>
+          <text x="32" y="214" fill="rgba(255,255,255,.45)" font-size="7">0 trades</text>
+          <text x="376" y="214" fill="rgba(255,255,255,.45)" font-size="7" text-anchor="end">100 trades</text>
+        </svg>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#3B82F6">G4 · Compound Effect</div>
+        <div class="slot-desc">3 curvas: 1% risk cresce +34% steady · 3% volátil +52% mas roller-coaster · 10% BUSTED. Variância é o killer — não só expected value.</div>
+        <div class="slot-prompt" style="border-color:#3B82F6">Chart "EQUITY · 100 TRADES · 60% WIN · R:R 1:2" with 3 curves: green 1% smooth "+34%", orange 3% volatile "+52% (vol)", red 10% crash "BUSTED". Blue accent, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/chaintools.jpg"><div class="rn"><b>Ref Nazmul:</b> ChainTools — múltiplas curvas</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-3t">
+        <div class="pill">Same Setup · 3 Sizings</div>
+        <div class="row">
+          <div class="tr ok">
+            <span class="tag">ONLY SURVIVOR</span>
+            <div class="nm">Trader A · 1% risk</div>
+            <div class="risk">1%</div>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0,35 Q30,28 50,22 T100,8" stroke="#10B981" stroke-width="2" fill="none"/></svg>
+            <div class="out">→ Day 90 · Alive</div>
+          </div>
+          <div class="tr bad">
+            <div class="nm">Trader B · 3%</div>
+            <div class="risk">3%</div>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0,30 Q20,20 40,25 Q60,10 80,30 L100,38" stroke="#EF4444" stroke-width="1.8" fill="none"/></svg>
+            <div class="out">Busted · Day 14</div>
+          </div>
+          <div class="tr bad">
+            <div class="nm">Trader C · 10%</div>
+            <div class="risk">10%</div>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0,20 Q15,10 25,25 L40,38 L100,40" stroke="#EF4444" stroke-width="1.8" fill="none"/></svg>
+            <div class="out">Busted · Day 3</div>
+          </div>
+        </div>
+        <div class="foot">Sizing — not setup — is what survives</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#3B82F6">G4 · 3 Traders Same Setup</div>
+        <div class="slot-desc">Mesma estratégia, 3 sizings: 1% sobrevive 90 dias · 3% blown dia 14 · 10% blown dia 3. Prova visceral de que sizing > setup.</div>
+        <div class="slot-prompt" style="border-color:#3B82F6">3 cards side by side showing equity curves for same strategy: "Trader A · 1% · survives day 90" (green), "Trader B · 3% · busted day 14" (red), "Trader C · 10% · busted day 3" (red). Bottom caption. Blue glow, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/chaintools.jpg"><div class="rn"><b>Ref Nazmul:</b> ChainTools — 3-split comparative</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ G5 — Gold ============ -->
+<div class="guide">
+  <div class="guide-head"><span class="gnum" style="background:#F0B429">5</span><span class="gtitle">How to Withdraw Profits</span><span class="garc">Wire arrives → Timeline → Firms comparison → Methods w/ fees → First vs rhythm</span><span class="gaccent">Accent · #F0B429</span></div>
+  <div class="slots">
+
+    <div class="slot">
+      <div class="mockup m-timeline">
+        <div class="pill">First Payout · 5-Day Cycle</div>
+        <div class="week">
+          <div class="d act"><div class="day">D1</div><div class="step">Req</div><div class="lbl">Request</div></div>
+          <div class="d"><div class="day">D2</div><div class="step">·</div><div class="lbl">Queue</div></div>
+          <div class="d act"><div class="day">D3</div><div class="step">Rev</div><div class="lbl">Review</div></div>
+          <div class="d"><div class="day">D4</div><div class="step">·</div><div class="lbl">Wire set</div></div>
+          <div class="d hero"><div class="day">D5</div><div class="step">$4,800</div><div class="lbl">Paid</div></div>
+        </div>
+        <div class="foot">Clock starts after profit target + min trading days</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F0B429">G5 · First Payout Timeline</div>
+        <div class="slot-desc">Ciclo D1 Request → D3 Review → D5 Pay. Nota explica quando o clock começa (target + min days). Processo real.</div>
+        <div class="slot-prompt" style="border-color:#F0B429">iPhone iOS Calendar widget "First Payout Timeline · 5-day cycle", 7-day grid with D1/D3/D5 highlighted gold labeled "REQ/REV/PAY". Note "Starts after target + min days". Gold glow, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/cardan-c.jpg"><div class="rn"><b>Ref Nazmul:</b> Cardan — calendar composition</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-firms">
+        <div class="pill">Payout · 6 Firms Benchmarked</div>
+        <div class="tbl">
+          <div class="tr th"><div>Firm</div><div>Split</div><div>Frequency</div><div>First pay</div></div>
+          <div class="tr hero"><div>Apex</div><div><b>90%</b></div><div>5 days</div><div>Day 5</div></div>
+          <div class="tr"><div>FTMO</div><div><b>80→90%</b></div><div>Bi-weekly</div><div>Day 14</div></div>
+          <div class="tr"><div>Bulenox</div><div><b>90%</b></div><div>Weekly</div><div>Day 7</div></div>
+          <div class="tr"><div>The5ers</div><div><b>50→100%</b></div><div>Bi-weekly</div><div>Day 10</div></div>
+          <div class="tr"><div>FundingPips</div><div><b>80→90%</b></div><div>7 days</div><div>Day 7</div></div>
+          <div class="tr"><div>E8</div><div><b>80%</b></div><div>7 days</div><div>Day 7</div></div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F0B429">G5 · Firms Payout Matrix</div>
+        <div class="slot-desc">6 firmas globais (US/EU) com split real escalado + frequência + primeiro pay. Dados verificáveis, não "todas 90%".</div>
+        <div class="slot-prompt" style="border-color:#F0B429">Comparison table with 6 firms (Apex, FTMO, Bulenox, The5ers, FundingPips, E8) × 3 columns (Split % / Frequency / First payout). Gold accent header, dark studio, premium matrix.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/cardan-c.jpg"><div class="rn"><b>Ref Nazmul:</b> Cardan — comparison cards</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-methods">
+        <div class="pill">4 Methods · Real Fees</div>
+        <div class="grid">
+          <div class="mt hero">
+            <span class="tag">FASTEST</span>
+            <div class="lb">Crypto · USDC</div>
+            <div class="nm">Minutes</div>
+            <div class="tm">Fee $1–5</div>
+            <div class="fe">No bank · 24/7</div>
+          </div>
+          <div class="mt">
+            <div class="lb">Bank Wire</div>
+            <div class="nm">1–3 days</div>
+            <div class="tm">Fee $15–35</div>
+          </div>
+          <div class="mt">
+            <div class="lb">Wise Wallet</div>
+            <div class="nm">Hours</div>
+            <div class="tm">0.5–1%</div>
+          </div>
+          <div class="mt">
+            <div class="lb">Prepaid Card</div>
+            <div class="nm">Instant</div>
+            <div class="tm">$10/mo</div>
+          </div>
+        </div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F0B429">G5 · Methods w/ Real Fees</div>
+        <div class="slot-desc">4 métodos com tempo REAL + fee REAL: Wire 1-3d $15-35 · Crypto minutos $1-5 · Prepaid instant $10/mo · Wise horas 0.5-1%. Trader escolhe pelo contexto.</div>
+        <div class="slot-prompt" style="border-color:#F0B429">4 premium icon cards grid: "Bank Wire · 1-3 days · Fee $15-35", "Crypto · Minutes · $1-5 USDC", "Prepaid Card · Instant · $10/mo", "Wallet Wise · Hours · 0.5-1%". Gold glow, dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/logofolio2025.jpg"><div class="rn"><b>Ref Nazmul:</b> Logofolio — 4 símbolos alinhados</div></div>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="mockup m-firstnth">
+        <div class="pill">Payout Rhythm · Accelerates</div>
+        <div class="rows">
+          <div class="r"><div class="tag">#1</div><div class="main"><b>First payout</b><span>Strict KYC · extra verification</span></div><div class="tm">5 days</div></div>
+          <div class="r fast"><div class="tag">#2+</div><div class="main"><b>Next payouts</b><span>Trusted · fast track</span></div><div class="tm">2–3 days</div></div>
+          <div class="r hero"><div class="tag">#5+ RHYTHM</div><div class="main"><b>Monthly income</b><span>Automated · recurring wires</span></div><div class="tm">1–2 days</div></div>
+        </div>
+        <div class="foot">Trust compounds · the rhythm becomes yours</div>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-name" style="color:#F0B429">G5 · Rhythm of Income</div>
+        <div class="slot-desc">Primeiro payout: 5 dias (KYC rigoroso). Segundo+: 2-3 dias. 5º+: 1-2 dias automáticos. Ritmo de income se estabelece com tempo.</div>
+        <div class="slot-prompt" style="border-color:#F0B429">3 stacked rows showing payout acceleration: "#1 First payout · Strict KYC · 5 days", "#2+ Next payouts · Trusted · 2-3 days", "#5+ Monthly rhythm · Automated · 1-2 days". Gold→green progression. Caption "Trust → faster payouts". Dark studio.</div>
+        <div class="refnaz"><img src=".firecrawl/nazmul-thumbs/logofolio2025.jpg"><div class="rn"><b>Ref Nazmul:</b> Logofolio — progressão rítmica</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body></html>
