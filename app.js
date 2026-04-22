@@ -454,6 +454,57 @@ function _fbVal(f,size){
   return isNaN(n)?0:n;
 }
 
+// Single source of truth for plan prices: Supabase FIRMS[].prices with hardcoded fallback.
+// Lookup is fuzzy: exact size match first, then numeric match (25K ≈ TCP25 ≈ $25K).
+// For dual-type firms (e.g. Apex Intraday/EOD), typeIdx selects n/n2 and o/o2.
+function getPlanPrice(firmId, typeName, sizeStr){
+  const numOf = s => { const m = (s||'').replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m?parseFloat(m[1]):null; };
+  // Start with hardcoded fallback from FIRM_ABOUT (used while Supabase is loading or if it fails)
+  let d='', o='';
+  const fa = (typeof FIRM_ABOUT!=='undefined') && FIRM_ABOUT[firmId];
+  if(fa && fa.plans && fa.plans[typeName]){
+    const hp = fa.plans[typeName].find(p=>p.s===sizeStr);
+    if(hp){ d = hp.d||''; o = hp.o||''; }
+  }
+  // Fallback to CHECKOUT_FIRMS plansByType if FIRM_ABOUT missing this entry
+  if(!d){
+    const cf = (typeof CHECKOUT_FIRMS!=='undefined') && CHECKOUT_FIRMS.find(x=>x.id===firmId);
+    if(cf && cf.plansByType && cf.plansByType[typeName]){
+      const hp = cf.plansByType[typeName].find(p=>p.size===sizeStr) ||
+                 cf.plansByType[typeName].find(p=>numOf(p.size)===numOf(sizeStr));
+      if(hp){ d = hp.disc||''; o = hp.orig||''; }
+    }
+  }
+  // Override with Supabase data if FIRMS[] has loaded
+  const f = FIRMS.find(x=>x.id===firmId);
+  if(f && f.prices && f.prices.length){
+    const types = (fa && fa.types) || (f.price_types||[]);
+    const typeIdx = Math.max(0, types.indexOf(typeName));
+    const hasDual = f.price_types && f.price_types.length >= 2;
+    let match = f.prices.find(p=>p.a===sizeStr);
+    if(!match){
+      const pn = numOf(sizeStr);
+      if(pn!==null){
+        const cands = f.prices.filter(p=>numOf(p.a)===pn);
+        if(cands.length===1) match = cands[0];
+        else if(cands.length>1){
+          match = cands.find(p=>p.a.toLowerCase().includes((sizeStr||'').toLowerCase())) || cands[typeIdx] || cands[0];
+        }
+      }
+    }
+    if(match){
+      if(hasDual){
+        d = (typeIdx===0 ? match.n : (match.n2||match.n)) || d;
+        o = (typeIdx===0 ? match.o : (match.o2||match.o)) || o;
+      } else {
+        d = match.n || d;
+        o = match.o || o;
+      }
+    }
+  }
+  return { d, o };
+}
+
 // Geo: fetch once per session, enrich events
 let _geo = null;
 async function fetchGeo() {
