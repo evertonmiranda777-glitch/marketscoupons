@@ -1182,7 +1182,7 @@ const FIRM_REVIEWS = [
   {id:'tradeday',     name:'TradeDay',                 slug:'tradeday-review'},
 ];
 /* Langs with dedicated /<lang>/guides/ pages. Others fall back to EN root /guides/ */
-const REVIEW_LANGS = ['es','it','fr','de','ar'];
+const REVIEW_LANGS = ['pt','es','it','fr','de','ar'];
 function firmReviewUrl(slug){
   const lang=_currentLang||'en';
   return REVIEW_LANGS.includes(lang)?`/${lang}/guides/${slug}`:`/guides/${slug}`;
