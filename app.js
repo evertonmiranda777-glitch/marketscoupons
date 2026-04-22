@@ -3714,12 +3714,12 @@ function cpCoupon(code,firmId,loc){
 
 /* MULTI-FIRM CHECKOUT */
 const CHECKOUT_FIRMS=[
-  {id:'apex',name:'Apex Trader Funding',short:'Apex',coupon:'MARKET',discount:'90%',color:'#F97316',bg:'rgba(249,115,22,0.12)',
+  {id:'apex',name:'Apex Trader Funding',short:'Apex',coupon:'MARKET',discount:'50%',color:'#F97316',bg:'rgba(249,115,22,0.12)',
    includes:['No daily loss limit','No scaling rules','NinjaTrader License (Rithmic)','Real-time data','Copy Trader (WealthCharts)','24/7 Support'],
    types:['Intraday Trail','EOD Trail'],platforms:['Rithmic','Tradovate','WealthCharts'],
    plansByType:{
-     'Intraday Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$199',disc:'$19.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$249',disc:'$24.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$399',disc:'$39.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$599',disc:'$59.90',featured:false}],
-     'EOD Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$299',disc:'$29.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$349',disc:'$34.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$599',disc:'$59.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$799',disc:'$79.90',featured:false}]
+     'Intraday Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$199',disc:'$99.50',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$249',disc:'$124.50',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$399',disc:'$199.50',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$599',disc:'$299.50',featured:false}],
+     'EOD Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$299',disc:'$149.50',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$349',disc:'$174.50',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$599',disc:'$299.50',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$799',disc:'$399.50',featured:false}]
    },
    buildUrl:(size,type,plat)=>`https://dashboard.apextraderfunding.com/signup/${size.toLowerCase()}-${plat}-${type==='Intraday Trail'?'intraday-trail':'eod-trail'}?referralCode=evertonmiranda`},
   {id:'bulenox',name:'Bulenox',short:'Bulenox',coupon:'MARKET89',discount:'89%',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',
@@ -3757,12 +3757,12 @@ const CHECKOUT_FIRMS=[
      'Legacy (Futures)':[{size:'25K',capital:'$25,000',goal:'$2,000',maxDD:'-4%',orig:'$79.99',disc:'$55.99',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'$149.99',disc:'$104.99',featured:true},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'-4%',orig:'$249.99',disc:'$174.99',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://fundednext.com/?fpr=everton33'},
-  {id:'e2t',name:'Earn2Trade',short:'E2T',coupon:'MARKETSCOUPONS',discount:'60%',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',
+  {id:'e2t',name:'Earn2Trade',short:'E2T',coupon:'MARKETSCOUPONS',discount:'50%',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',
    includes:['Free NinjaTrader/Finamark license','Free Journalytix license','Free reset when rebilled','Scaling up to $400K','Education catalog included'],
    types:['Trader Career Path','Gauntlet Mini'],platforms:['Rithmic','NinjaTrader','Finamark','Tradovate','TradingView'],
    plansByType:{
-     'Trader Career Path':[{size:'TCP 25K',capital:'$25,000',goal:'$1,750',maxDD:'$1,500',orig:'$150',disc:'$60',featured:false},{size:'TCP 50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000',orig:'$190',disc:'$76',featured:false},{size:'TCP 100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,500',orig:'$350',disc:'$140',featured:true}],
-     'Gauntlet Mini':[{size:'GAU 50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000',orig:'$170',disc:'$68',featured:false},{size:'GAU 100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,500',orig:'$315',disc:'$126',featured:true},{size:'GAU 150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$375',disc:'$150',featured:false},{size:'GAU 200K',capital:'$200,000',goal:'$12,000',maxDD:'$5,000',orig:'$550',disc:'$220',featured:false}]
+     'Trader Career Path':[{size:'TCP 25K',capital:'$25,000',goal:'$1,750',maxDD:'$1,500',orig:'$150',disc:'$75',featured:false},{size:'TCP 50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000',orig:'$190',disc:'$95',featured:false},{size:'TCP 100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,500',orig:'$350',disc:'$175',featured:true}],
+     'Gauntlet Mini':[{size:'GAU 50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000',orig:'$170',disc:'$85',featured:false},{size:'GAU 100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,500',orig:'$315',disc:'$157.50',featured:true},{size:'GAU 150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$375',disc:'$187.50',featured:false},{size:'GAU 200K',capital:'$200,000',goal:'$12,000',maxDD:'$5,000',orig:'$550',disc:'$275',featured:false}]
    },
    buildUrl:(size,type,plat)=>{const m={'TCP 25K':'TCP25','TCP 50K':'TCP50','TCP 100K':'TCP100','GAU 50K':'GML50','GAU 100K':'GML100','GAU 150K':'GML150','GAU 200K':'GML200'};return`https://www.earn2trade.com/purchase?plan=${m[size]||'TCP25'}&a_pid=marketscoupons&a_bid=2e8e8a14&discount=MARKETSCOUPONS`;}},
   {id:'the5ers',name:'The5ers',short:'The5ers',coupon:null,discount:'0%',color:'#10B981',bg:'rgba(16,185,129,0.12)',
@@ -3787,11 +3787,11 @@ const CHECKOUT_FIRMS=[
      'Pro':[{size:'$5K',capital:'$5,000',goal:'$500',maxDD:'-3%',orig:'$29',disc:'$23.20',featured:false},{size:'$10K',capital:'$10,000',goal:'$1,000',maxDD:'-3%',orig:'$55',disc:'$44',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,500',maxDD:'-3%',orig:'$109',disc:'$87.20',featured:false},{size:'$50K',capital:'$50,000',goal:'$5,000',maxDD:'-3%',orig:'$219',disc:'$175.20',featured:true},{size:'$100K',capital:'$100,000',goal:'$10,000',maxDD:'-3%',orig:'$399',disc:'$319.20',featured:false},{size:'$200K',capital:'$200,000',goal:'$20,000',maxDD:'-3%',orig:'$798',disc:'$638.40',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://app.fundingpips.com/register?ref=31985EAA'},
-  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'CLNLTPxtT4Sok0PzHaRIIQ',discount:'20%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
+  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'CLNLTPxtT4Sok0PzHaRIIQ',discount:'15%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
    includes:['Up to 100% profit split','Static drawdown','Guaranteed 24h payout (7-day cycle)','15% profit in challenge phase','Trade2Earn loyalty program','Leverage 1:100','24/7 support'],
    types:['2-Step'],platforms:['MT5','DXtrade','cTrader'],
    plansByType:{
-     '2-Step':[{size:'5K',capital:'€5,000',goal:'€400',maxDD:'-10%',orig:'€55',disc:'€44',featured:false},{size:'10K',capital:'€10,000',goal:'€800',maxDD:'-10%',orig:'€95',disc:'€76',featured:false},{size:'25K',capital:'€25,000',goal:'€2,000',maxDD:'-10%',orig:'€195',disc:'€156',featured:false},{size:'50K',capital:'€50,000',goal:'€4,000',maxDD:'-10%',orig:'€295',disc:'€236',featured:true},{size:'100K',capital:'€100,000',goal:'€8,000',maxDD:'-10%',orig:'€495',disc:'€396',featured:false},{size:'200K',capital:'€200,000',goal:'€16,000',maxDD:'-10%',orig:'€975',disc:'€780',featured:false}]
+     '2-Step':[{size:'5K',capital:'€5,000',goal:'€400',maxDD:'-10%',orig:'€55',disc:'€46.75',featured:false},{size:'10K',capital:'€10,000',goal:'€800',maxDD:'-10%',orig:'€95',disc:'€80.75',featured:false},{size:'25K',capital:'€25,000',goal:'€2,000',maxDD:'-10%',orig:'€195',disc:'€165.75',featured:false},{size:'50K',capital:'€50,000',goal:'€4,000',maxDD:'-10%',orig:'€295',disc:'€250.75',featured:true},{size:'100K',capital:'€100,000',goal:'€8,000',maxDD:'-10%',orig:'€495',disc:'€420.75',featured:false},{size:'200K',capital:'€200,000',goal:'€16,000',maxDD:'-10%',orig:'€975',disc:'€828.75',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ'},
   {id:'e8',name:'E8 Markets',short:'E8',coupon:'MARKET',discount:'10%',color:'#FF4400',bg:'rgba(255,68,0,0.12)',
