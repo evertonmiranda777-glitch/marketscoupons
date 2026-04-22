@@ -186,7 +186,28 @@ module.exports = async (req, res) => {
   }
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
-  if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
+  const RESEND_KEY = process.env.RESEND_API_KEY;
+  if (!BREVO_KEY && !RESEND_KEY) return res.status(500).json({ error: 'No email provider configured' });
+
+  // Reserve 5 Brevo slots per day for critical emails (signup, welcome).
+  // Query Brevo directly to get the real daily-credits-remaining number.
+  const BREVO_DAILY_RESERVE = 5;
+  let brevoRemaining = 0;
+  if (BREVO_KEY) {
+    try {
+      const accResp = await fetch('https://api.brevo.com/v3/account', {
+        headers: { 'accept': 'application/json', 'api-key': BREVO_KEY },
+      });
+      const acc = await accResp.json();
+      // Brevo returns plan[] with type 'free' having 'credits' = emails left for the period
+      const freePlan = (acc.plan || []).find(p => /free|pay|send/i.test(p.type || '') && typeof p.credits === 'number');
+      brevoRemaining = freePlan ? Math.max(0, freePlan.credits - BREVO_DAILY_RESERVE) : 0;
+      console.log(`[cron-promo] Brevo credits left: ${freePlan?.credits || 0}, reserving ${BREVO_DAILY_RESERVE}, budget for bulk: ${brevoRemaining}`);
+    } catch (e) {
+      console.error('[cron-promo] Could not fetch Brevo account:', e.message);
+      brevoRemaining = 0; // fail safe: don't send via Brevo if we can't read credits
+    }
+  }
 
   try {
     // 1. Get active subscribers with language
@@ -231,23 +252,36 @@ module.exports = async (req, res) => {
         .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url)}"`);
 
       for (const sub of group) {
+        const personalizedHtml = htmlContent.replace(/{nome}/g, sub.name || 'Trader');
+        const useBrevo = brevoRemaining > 0;
         try {
-          const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
-            method: 'POST',
-            headers: {
-              'accept': 'application/json',
-              'content-type': 'application/json',
-              'api-key': BREVO_KEY,
-            },
-            body: JSON.stringify({
-              sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
-              to: [{ email: sub.email, name: sub.name || '' }],
-              subject: subject,
-              htmlContent: htmlContent.replace(/{nome}/g, sub.name || 'Trader'),
-              tags: ['promo-auto', 'lang-' + lang],
-            }),
-          });
-          if (resp.ok) sent++; else failed++;
+          let ok = false;
+          if (useBrevo) {
+            const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+              method: 'POST',
+              headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
+              body: JSON.stringify({
+                sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
+                to: [{ email: sub.email, name: sub.name || '' }],
+                subject, htmlContent: personalizedHtml,
+                tags: ['promo-auto', 'lang-' + lang],
+              }),
+            });
+            ok = resp.ok;
+            if (ok) brevoRemaining--;
+          } else if (RESEND_KEY) {
+            const resp = await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+              body: JSON.stringify({
+                from: 'Markets Coupons <offers@marketscoupons.com>',
+                to: [sub.email], subject, html: personalizedHtml,
+                tags: [{ name: 'type', value: 'promo-auto' }, { name: 'lang', value: lang }],
+              }),
+            });
+            ok = resp.ok;
+          }
+          if (ok) sent++; else failed++;
         } catch { failed++; }
 
         // Rate limit

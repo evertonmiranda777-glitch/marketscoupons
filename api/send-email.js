@@ -145,6 +145,26 @@ module.exports = async (req, res) => {
   // Determine provider: 'brevo', 'resend', or 'auto' (brevo first, fallback to resend)
   const useProvider = provider || 'auto';
 
+  // Reserve 5 Brevo slots/day for critical transactional emails (signup, welcome).
+  // Only applies to bulk 'auto' sends — explicit 'brevo' calls from admin bypass the reserve.
+  const BREVO_DAILY_RESERVE = 5;
+  let brevoBudget = Infinity;
+  if (useProvider === 'auto' && BREVO_KEY && to.length > 1) {
+    try {
+      const accResp = await fetch('https://api.brevo.com/v3/account', {
+        headers: { 'accept': 'application/json', 'api-key': BREVO_KEY },
+      });
+      const acc = await accResp.json();
+      const freePlan = (acc.plan || []).find(p => typeof p.credits === 'number');
+      const credits = freePlan?.credits ?? 0;
+      brevoBudget = Math.max(0, credits - BREVO_DAILY_RESERVE);
+      console.log(`[send-email] Brevo credits: ${credits}, reserve: ${BREVO_DAILY_RESERVE}, bulk budget: ${brevoBudget}`);
+    } catch (e) {
+      console.error('[send-email] Brevo account check failed:', e.message);
+      brevoBudget = 0;
+    }
+  }
+
   const results = [];
   for (const recipient of to) {
     const finalSubject = subject
@@ -165,11 +185,19 @@ module.exports = async (req, res) => {
       } else if (useProvider === 'brevo') {
         result = await sendViaBrevo(recipient, finalSubject, finalHtml);
       } else {
-        // Auto: try Brevo first, fallback to Resend on failure
-        result = await sendViaBrevo(recipient, finalSubject, finalHtml);
-        if (result.status === 'failed' && RESEND_KEY) {
-          console.log(`[AUTO] Brevo failed for ${recipient.email}, trying Resend...`);
+        // Auto: try Brevo first while budget allows (keeping BREVO_DAILY_RESERVE free),
+        // then fallback to Resend when Brevo budget is exhausted or call fails.
+        if (brevoBudget > 0 && BREVO_KEY) {
+          result = await sendViaBrevo(recipient, finalSubject, finalHtml);
+          if (result.status === 'sent') brevoBudget--;
+          if (result.status === 'failed' && RESEND_KEY) {
+            console.log(`[AUTO] Brevo failed for ${recipient.email}, trying Resend...`);
+            result = await sendViaResend(recipient, finalSubject, finalHtml);
+          }
+        } else if (RESEND_KEY) {
           result = await sendViaResend(recipient, finalSubject, finalHtml);
+        } else {
+          result = { email: recipient.email, status: 'failed', response: { error: 'Brevo reserve hit and Resend not configured' } };
         }
       }
     } catch (err) {
