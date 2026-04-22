@@ -4349,12 +4349,16 @@ function _srcInfo(key) {
 
 async function renderROI(ev, days) {
   const cutoff = new Date(Date.now() - days * 86400000).toISOString().slice(0,10);
-  const [spendRes, attrRes] = await Promise.all([
+  const [spendRes, dailyRes, attrRes, fx] = await Promise.all([
     db.from('ad_spend').select('*').gte('date', cutoff).order('date', { ascending: false }),
-    db.from('coupon_attributions').select('utm_source,utm_campaign,amount,sale_date').gte('sale_date', cutoff)
+    db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions,date').gte('date', cutoff),
+    db.from('coupon_attributions').select('utm_source,utm_campaign,amount,sale_date').gte('sale_date', cutoff),
+    fetchUSDtoBRL()
   ]);
   const spends = spendRes.data || [];
+  const dailySpends = dailyRes.data || [];
   const attributions = attrRes.data || [];
+  const fxUSDtoBRL = fx || 5.5;
 
   // Aggregate revenue by source (normalized) and campaign
   const revBySource = {};
@@ -4392,6 +4396,48 @@ async function renderROI(ev, days) {
     }
   });
 
+  // ── Meta Ads auto-sync (ad_spend_daily) — convert BRL→USD, bucket under 'meta' ──
+  // Distribuído proporcionalmente entre facebook/instagram com base em checkouts atribuídos.
+  let metaSpendUSD = 0, metaClicks = 0, metaImpressions = 0;
+  const metaByCampaign = {};
+  dailySpends.forEach(s => {
+    const amtUSD = (s.currency === 'USD') ? Number(s.spend||0) : Number(s.spend||0) / fxUSDtoBRL;
+    metaSpendUSD += amtUSD;
+    metaClicks += (s.clicks||0);
+    metaImpressions += (s.impressions||0);
+    const key = s.campaign_name || '(sem campaign)';
+    if(!metaByCampaign[key]) metaByCampaign[key] = { amount:0, clicks:0, impressions:0 };
+    metaByCampaign[key].amount += amtUSD;
+    metaByCampaign[key].clicks += (s.clicks||0);
+    metaByCampaign[key].impressions += (s.impressions||0);
+  });
+  totalSpend += metaSpendUSD;
+  totalClicks += metaClicks;
+  totalImpressions += metaImpressions;
+  // Merge per-campaign (evita duplicar com ad_spend manual — prioriza auto-sync se mesmo nome)
+  Object.entries(metaByCampaign).forEach(([key, v]) => {
+    if(!spendByCampaign[key]) spendByCampaign[key] = { source:'facebook', amount:0, impressions:0, clicks:0 };
+    spendByCampaign[key].amount += v.amount;
+    spendByCampaign[key].clicks += v.clicks;
+    spendByCampaign[key].impressions += v.impressions;
+  });
+  // Source-level: distribui Meta spend entre facebook/instagram por checkouts atribuídos
+  const fbCk = (ev.filter(e => e.event==='checkout_click' && _normSource(e.utm_source||e.params?.utm_source||'')==='facebook').length) || 0;
+  const igCk = (ev.filter(e => e.event==='checkout_click' && _normSource(e.utm_source||e.params?.utm_source||'')==='instagram').length) || 0;
+  const ckTotal = fbCk + igCk;
+  const fbShare = ckTotal > 0 ? (fbCk/ckTotal) : 0.5;
+  const igShare = ckTotal > 0 ? (igCk/ckTotal) : 0.5;
+  const addMetaToSrc = (src, amt, clk, imp) => {
+    if(!spendBySource[src]) spendBySource[src] = { amount:0, impressions:0, clicks:0 };
+    spendBySource[src].amount += amt;
+    spendBySource[src].clicks += clk;
+    spendBySource[src].impressions += imp;
+  };
+  if(metaSpendUSD > 0) {
+    addMetaToSrc('facebook', metaSpendUSD * fbShare, Math.round(metaClicks * fbShare), Math.round(metaImpressions * fbShare));
+    addMetaToSrc('instagram', metaSpendUSD * igShare, Math.round(metaClicks * igShare), Math.round(metaImpressions * igShare));
+  }
+
   // Aggregate conversions by normalized utm_source
   const convBySource = {};
   const convByCampaign = {};
@@ -4427,7 +4473,7 @@ async function renderROI(ev, days) {
   const roi = totalSpend > 0 ? ((totalRevenue - totalSpend) / totalSpend * 100) : 0;
 
   const kpiData = [
-    { label:'Total Investido', val:'$'+totalSpend.toFixed(2), sub:spends.length+' registro'+(spends.length!==1?'s':''), color:'var(--red)', cls:'r' },
+    { label:'Total Investido', val:'$'+totalSpend.toFixed(2), sub:(spends.length+dailySpends.length)+' registro'+((spends.length+dailySpends.length)!==1?'s':'')+(metaSpendUSD>0?' (Meta auto)':''), color:'var(--red)', cls:'r' },
     { label:'Receita Atribuída', val: totalRevenue>0?'$'+totalRevenue.toFixed(2):'—', sub:attributions.length+' venda'+(attributions.length!==1?'s':''), color:'var(--green)', cls:'g' },
     { label:'ROAS', val: roas>0?roas.toFixed(2)+'x':'—', sub: roi!==0?(roi>0?'+':'')+roi.toFixed(0)+'% ROI':'sem gasto', color: roas>=1?'var(--green)':'var(--red)', cls:'' },
     { label:'Checkouts (Ads)', val:totalCheckouts.toString(), sub:totalCoupons+' cupons copiados', color:'var(--green)', cls:'g' },
