@@ -8,53 +8,99 @@ const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5c
 const LANG_NAMES = { pt: 'Portuguese (Brazil)', en: 'English', es: 'Spanish' };
 
 function buildPrompt(firm, langName) {
-  const prices = Array.isArray(firm.prices) ? firm.prices.slice(0, 4).map(p => `${p.a}: ${p.n}${p.o ? ` (was ${p.o})` : ''}`).join(' | ') : '';
-  const perks = Array.isArray(firm.perks) ? firm.perks.slice(0, 5).join(', ') : '';
+  const prices = Array.isArray(firm.prices) ? firm.prices.slice(0, 4).map(p => `${p.a}: ${p.n}${p.o ? ` (era ${p.o})` : ''}`).join(' | ') : '';
+  const perks = Array.isArray(firm.perks) ? firm.perks.slice(0, 6).join(', ') : '';
   const platforms = Array.isArray(firm.platforms) ? firm.platforms.join(', ') : '';
-  const tp = firm.trustpilot_score ? `Trustpilot ${firm.trustpilot_score}/5 (${firm.trustpilot_reviews || '?'} reviews)` : '';
-  const couponLine = firm.coupon ? `Coupon: ${firm.coupon} — ${firm.discount}% OFF${firm.discount_type ? ` (${firm.discount_type})` : ''}` : (firm.discount ? `${firm.discount}% OFF auto-applied via link` : '');
+  const tp = firm.trustpilot_score ? `Trustpilot ${firm.trustpilot_score}/5 com ${firm.trustpilot_reviews || '?'} reviews` : '';
+  const couponLine = firm.coupon ? `CUPOM: ${firm.coupon} — ${firm.discount}% OFF${firm.discount_type ? ` (${firm.discount_type})` : ''}` : (firm.discount ? `${firm.discount}% OFF aplicado automático via link (sem cupom)` : '');
 
-  return `You are a senior Instagram copywriter for Markets Coupons, a global prop firm coupon platform. Write a HIGH-CONVERSION Instagram caption in ${langName} for the firm below.
+  // Escolhe preço mais barato pra usar como headline de urgência
+  const cheapest = Array.isArray(firm.prices) && firm.prices.length
+    ? firm.prices.reduce((a, b) => {
+        const pa = parseFloat((a.n || '').replace(/[^0-9.]/g, '')) || Infinity;
+        const pb = parseFloat((b.n || '').replace(/[^0-9.]/g, '')) || Infinity;
+        return pa < pb ? a : b;
+      })
+    : null;
+  const cheapLine = cheapest ? `Conta mais barata: ${cheapest.a} por ${cheapest.n}${cheapest.o ? ` (era ${cheapest.o})` : ''}` : '';
 
-FIRM DATA (use only this, never invent):
-- Name: ${firm.name} (${firm.short_name || firm.name})
-- Type: ${firm.type || 'Prop firm'}
-- ${couponLine}
-- Profit split: ${firm.split || '—'}
-- Drawdown: ${firm.drawdown || '—'} (${firm.dd_pct || ''})
-- Target: ${firm.target || '—'}
-- Scaling: ${firm.scaling || '—'}
-- Min days: ${firm.min_days || '—'} | Eval days: ${firm.eval_days || 'unlimited'}
-- Platforms: ${platforms}
-- Prices: ${prices}
-- Perks: ${perks}
-- ${tp}
-- Description: ${firm.description || ''}
+  return `Você é um copywriter de Instagram ELITE, nível Hormozi + top afiliado brasileiro de trading. Direct response, agressivo, conversão. Não é advertorial corporativo.
 
-STRUCTURE (exact, keep line breaks):
-[HOOK] — 1 line, bold claim/question that stops scroll. Max 10 words. No emoji at start.
-[BLANK LINE]
-[BODY] — 3-4 short lines. Each line = 1 benefit anchored in REAL DATA (split %, drawdown, specific price, perk). Use line breaks, never one big paragraph. Lead with what trader gains, not features.
-[BLANK LINE]
-[COUPON CTA] — 1-2 lines. If coupon exists: "Use o cupom ${firm.coupon || 'X'}" + what they save. If no coupon: mention auto-applied discount via link.
-[BLANK LINE]
-[CTA] — 1 line. "Link na bio" / "Link in bio" / equivalent in language. Tell them to grab it.
-[BLANK LINE]
-[HASHTAGS] — 8-12 relevant hashtags (propfirm, trading, futures/forex, firm name, etc). Mix PT+EN hashtags if language is PT/ES.
+Escrevo em ${langName} uma caption de Instagram pra uma prop firm. Alvo: trader que faz scroll no feed às 22h, desmotivado, cansado de prop firm cara, já testou 2-3 e estourou. Meu trabalho: fazer ele PARAR o scroll, sentir "porra, essa é diferente", clicar no link da bio AGORA.
 
-VOICE:
-- Sharp, direct, trader-to-trader. No corporate fluff.
-- Use REAL numbers ($19.90, 90% split, -5% trail) — specifics convert.
-- Short lines, aggressive line breaks (Instagram loves whitespace).
-- 1-3 emojis TOTAL across whole caption, strategic (🔥 💰 ⚡ ✅). Not in hook.
+━━━ DADOS DA FIRMA (fonte única de verdade — ZERO invenção) ━━━
+Nome: ${firm.name} (curto: ${firm.short_name || firm.name})
+Tipo: ${firm.type || 'Prop firm'}
+${couponLine}
+Profit split: ${firm.split || '—'}
+Drawdown: ${firm.drawdown || '—'} ${firm.dd_pct ? `(${firm.dd_pct})` : ''}
+Meta: ${firm.target || '—'}
+Escala: ${firm.scaling || '—'}
+Dias mín: ${firm.min_days || '—'} | Avaliação: ${firm.eval_days || 'ilimitado'} dias
+Plataformas: ${platforms}
+Preços: ${prices}
+${cheapLine}
+Perks: ${perks}
+${tp}
+Descrição: ${firm.description || ''}
 
-COMPLIANCE (HARD BAN — these words get us sued):
-- NEVER use: "signals", "entry", "stop loss", "take profit", "sinais", "entrada", "recomendação", "trader profissional", "operações ao vivo", "guaranteed profit", "lucro garantido".
-- NEVER promise returns, profits, or trading results.
-- NEVER mention AI, Gemini, Claude, or how this was generated.
-- Focus on DEAL (discount, coupon, price) and FIRM FEATURES (split, rules, platforms), never trading advice.
+━━━ ESTRUTURA OBRIGATÓRIA ━━━
 
-Output ONLY the caption, no preamble, no markdown, no quotes. Ready to paste into Instagram.`;
+LINHA 1 — HOOK ASSASSINO (máx 10 palavras, em CAIXA ALTA ou com número chocante)
+Escolha UM destes ângulos (o mais forte pros dados da firma):
+  a) Número choque: "$19.90. CONTA DE $25K. SEM PEGADINHA."
+  b) Inimigo comum: "Cansado de prop firm com drawdown de $500?"
+  c) Contrariar: "Enquanto FTMO cobra €155, isso aqui custa $19."
+  d) Callout cru: "Trader quebrado lendo isso: presta atenção."
+  e) Promessa específica: "Passa o desafio em 1 dia. Sem enrolação."
+ZERO "Quer 100% dos seus lucros?" — isso é hook genérico de site de afiliado ruim.
+ZERO emoji no hook.
+
+[linha em branco]
+
+LINHA 2-5 — BODY (4 linhas curtas, UMA POR LINHA, separadas por quebra)
+Cada linha = 1 fato concreto com NÚMERO REAL. Formato exato:
+  → ${firm.split || 'X%'} de profit split${firm.scaling ? ` (com escala até ${firm.scaling})` : ''}
+  → ${firm.drawdown || 'DD'} de ${firm.dd_pct || 'X%'} — ${firm.drawdown === 'Trailing' ? 'perdoa swing' : firm.drawdown === 'Static' ? 'sem trailing que ferra' : 'regra clara'}
+  → Plataformas fodas: ${platforms || 'várias'}
+  → Trustpilot ${firm.trustpilot_score || '?'}/5 com ${firm.trustpilot_reviews || '?'} reviews reais
+Ordene do mais impactante pro menos. Use linguagem de trader ("passa o desafio", "tira payout", "sem limite diário"), NUNCA advertorial ("proporciona aos operadores...").
+
+[linha em branco]
+
+LINHA 6 — PREÇO COMO PUNCH
+Formato: "${cheapest ? cheapest.a : '25K'} por ${cheapest ? cheapest.n : '$X'}${cheapest && cheapest.o ? ` (antes ${cheapest.o})` : ''}. ${firm.coupon ? `Com o cupom ${firm.coupon}.` : 'Com desconto automático.'}"
+Esse é o soco. Não dilua.
+
+[linha em branco]
+
+LINHA 7 — URGÊNCIA + CTA
+${firm.coupon ? `"Cupom ${firm.coupon} tá ativo. Link na bio."` : `"Link na bio com desconto já aplicado."`}
+Curta, imperativa. Pode adicionar "não dorme nessa" / "enquanto tá de pé" se encaixar.
+
+[linha em branco]
+
+LINHA 8 — HASHTAGS (10-12, separadas por espaço, todas minúsculas)
+Mix: #propfirm #tradingfuturos #daytrade #${(firm.short_name || firm.name).toLowerCase().replace(/\s+/g,'')} + nicho (futuros/forex) + BR (#traderbrasileiro #mercadofinanceiro)
+
+━━━ VOZ (ler 3x antes de escrever) ━━━
+- Trader BR falando com trader BR. Nunca "nós da Markets Coupons acreditamos que..."
+- Linhas CURTAS. Máx 12 palavras por linha. Quebra agressiva. IG respira.
+- Zero adjetivo vazio ("incrível", "excelente", "melhor do mercado", "parceiro ideal").
+- Zero clichê: "transforme sua trading", "eleve seu nível", "o futuro é agora", "chegou a hora".
+- Use dinheiro concreto ($, R$, €) e % REAIS dos dados acima. Números convertem.
+- 2-3 emojis NO MÁXIMO em toda caption (🔥 💰 ⚡ ✅). Nunca no hook.
+- Se tiver prova social (Trustpilot 4.X, X reviews, X pagos), JOGA forte.
+
+━━━ BANIDOS (sem exceção) ━━━
+- "Quer X?" como hook. É fraco.
+- "Conquiste", "libere seu potencial", "realize seus sonhos".
+- Palavras de compliance proibidas: sinais, entrada, stop loss, take profit, recomendação, operação ao vivo, lucro garantido, trader profissional.
+- Mencionar IA, Gemini, Claude ou como foi gerado.
+- Prometer retorno/lucro: "você vai lucrar", "resultados garantidos".
+
+━━━ OUTPUT ━━━
+Escreva APENAS a caption final pronta pra colar no Instagram. Sem preâmbulo, sem "aqui está:", sem markdown (**negrito**), sem aspas envolvendo. Só o texto puro com as quebras de linha certas.`;
 }
 
 const ALLOWED_ORIGINS = [
@@ -102,7 +148,8 @@ module.exports = async (req, res) => {
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: {
       maxOutputTokens: 4096,
-      temperature: 0.9,
+      temperature: 1.15,
+      topP: 0.95,
       thinkingConfig: { thinkingBudget: 0 },
     },
     safetySettings: [
