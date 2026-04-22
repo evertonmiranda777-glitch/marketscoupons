@@ -90,7 +90,7 @@ async function callGemini(prompt) {
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: {
       temperature: 0.2,
-      maxOutputTokens: 32768,
+      maxOutputTokens: 65536,
       responseMimeType: 'text/plain',
     },
   };
@@ -124,8 +124,8 @@ async function translateFile(srcPath, dstPath, lang) {
   const prompt = buildPrompt(src, lang);
   const out = await callGemini(prompt);
   const cleaned = sanitize(out, lang);
-  if (cleaned.length < src.length * 0.6) {
-    throw new Error(`Saída suspeitamente curta: ${cleaned.length}b vs ${src.length}b origem`);
+  if (cleaned.length < src.length * 0.85) {
+    throw new Error(`Saída suspeitamente curta (provável truncamento): ${cleaned.length}b vs ${src.length}b origem`);
   }
   fs.mkdirSync(path.dirname(dstPath), { recursive: true });
   fs.writeFileSync(dstPath, cleaned, 'utf8');
