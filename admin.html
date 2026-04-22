@@ -11408,7 +11408,7 @@ function renderHeroPremium(firm, content, L) {
   h += `<div class="cr-mc-outer top">${mcSvg(color)}<div class="txt" style="--accent:${color};"><b style="color:${color};">Markets</b> Coupons</div></div>`;
 
   // Card
-  const cardStyle = `border:1.5px solid ${color}99;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 80px ${color}40,inset 0 1px 0 rgba(255,255,255,.08);`;
+  const cardStyle = `border:1.5px solid ${color}99;box-shadow:0 40px 100px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);`;
   const cardAfter = `<style>#cr-canvas .cr-hp-card::after{background:radial-gradient(ellipse 80% 50% at 50% 0%, ${color}33 0%, transparent 60%);}</style>`;
   h += cardAfter + `<div class="cr-hp-card" style="${cardStyle}">`;
 
@@ -11435,7 +11435,7 @@ function renderHeroPremium(firm, content, L) {
 
   // Discount
   if (crChk('cr-show-discount') && firm.discount) {
-    h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 6px 14px rgba(0,0,0,.45));"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
+    h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
     h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
   }
 
@@ -11473,7 +11473,7 @@ function renderHeroPremium(firm, content, L) {
       }
       const size = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
       h += `<div class="cr-hp-pc" style="border:1.5px solid ${color}B3;background:linear-gradient(180deg, ${color}14 0%, rgba(0,0,0,.35) 100%);">
-        <div class="size-pill" style="background:${color};box-shadow:0 4px 14px ${color}80;">${escHtml(size)}</div>
+        <div class="size-pill" style="background:${color};box-shadow:0 2px 6px rgba(0,0,0,.35);">${escHtml(size)}</div>
         <div class="new">${escHtml(newP)}</div>
         ${oldP ? `<div class="sub"><span class="old">${escHtml(oldP)}</span>${saveTxt?`<span class="save">${saveTxt}</span>`:''}</div>` : ''}
       </div>`;
