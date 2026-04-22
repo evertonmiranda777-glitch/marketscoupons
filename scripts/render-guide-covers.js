@@ -26,7 +26,7 @@ const LOGO_FILE = {
   brightfunded: 'brightfunded logo.svg',
   e8: 'e8markets logo.svg',
   cti: 'City-Traders-Imperium-Logo-for-Dark-Backgrounds-1-2048x388.png',
-  tradeday: 'tradeday-logo.png',
+  tradeday: 'TradeDay.png',
 };
 
 // Per-firm display name on cover (short, cover-friendly)
