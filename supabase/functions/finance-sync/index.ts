@@ -41,7 +41,10 @@ serve(async (req) => {
 
   if (rows.length) {
     const normalized = rows
-      .filter(r => r && r.date)
+      // Drop monthly summary rows from affiliate panels (Apex/Bulenox CSV includes them).
+      // They have granularity='month' and date=firstDayOfMonth, which collides with the day-1 daily row
+      // under the (firm_id,date) upsert key — corrupting the day-1 value with the full month total.
+      .filter(r => r && r.date && r.granularity !== 'month')
       .map(r => ({
         firm_id: firm,
         date: r.date,
