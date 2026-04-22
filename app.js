@@ -2980,16 +2980,17 @@ function fdRenderRight(id, f) {
       <div class="fd-sizes" style="--cols:${sc}">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="fdSel('${id}','size','${p.s}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
-  // Price card
+  // Price card — getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
   const plan = plans?.find(p=>p.s===st.size)||plans?.[0];
   if (plan) {
-    const oNum = parseFloat((plan.o||'').replace(/[^0-9.]/g,''));
-    const dNum = parseFloat((plan.d||'').replace(/[^0-9.]/g,''));
-    const cur = (plan.d||'').match(/[€$]/)?.[0]||'$';
-    const save = oNum&&dNum&&plan.o!=='—' ? (oNum-dNum).toFixed(2) : null;
+    const pp = getPlanPrice(id, st.type, plan.s);
+    const oNum = parseFloat((pp.o||'').replace(/[^0-9.]/g,''));
+    const dNum = parseFloat((pp.d||'').replace(/[^0-9.]/g,''));
+    const cur = (pp.d||'').match(/[€$]/)?.[0]||'$';
+    const save = oNum&&dNum&&pp.o!=='—' ? (oNum-dNum).toFixed(2) : null;
     h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
       <div><div class="fd-price-size">${plan.s}</div><div class="fd-price-type">${st.type}</div></div>
-      <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color}">${plan.d}</div>${plan.o&&plan.o!=='—'?`<div class="fd-price-old">${plan.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
+      <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color}">${pp.d}</div>${pp.o&&pp.o!=='—'?`<div class="fd-price-old">${pp.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
     </div>`;
   }
 
@@ -3537,16 +3538,17 @@ function drwRenderCk(id, f) {
       <div class="fd-sizes" style="--cols:${sc}">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="_fdState['${id}'].size='${p.s}';drwRenderCk('${id}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
-  // Price card
+  // Price card — getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
   const plan=plans?.find(p=>p.s===st.size)||plans?.[0];
   if(plan){
-    const oNum=parseFloat((plan.o||'').replace(/[^0-9.]/g,''));
-    const dNum=parseFloat((plan.d||'').replace(/[^0-9.]/g,''));
-    const cur=(plan.d||'').match(/[€$]/)?.[0]||'$';
-    const save=oNum&&dNum&&plan.o!=='—'?(oNum-dNum).toFixed(2):null;
+    const pp=getPlanPrice(id, st.type, plan.s);
+    const oNum=parseFloat((pp.o||'').replace(/[^0-9.]/g,''));
+    const dNum=parseFloat((pp.d||'').replace(/[^0-9.]/g,''));
+    const cur=(pp.d||'').match(/[€$]/)?.[0]||'$';
+    const save=oNum&&dNum&&pp.o!=='—'?(oNum-dNum).toFixed(2):null;
     h+=`<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
       <div><div class="fd-price-size" style="font-size:20px;">${plan.s}</div><div class="fd-price-type">${st.type}</div></div>
-      <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color};font-size:24px;">${plan.d}</div>${plan.o&&plan.o!=='—'?`<div class="fd-price-old">${plan.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
+      <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color};font-size:24px;">${pp.d}</div>${pp.o&&pp.o!=='—'?`<div class="fd-price-old">${pp.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
     </div>`;
   }
 
