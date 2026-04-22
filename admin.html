@@ -11365,10 +11365,16 @@ function renderHeroPremium(firm, content, L) {
     h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
   }
 
-  // Coupon
-  if (crChk('cr-show-coupon') && coupon) {
-    h += `<div class="cr-hp-cplabel">${L.exclusive_coupon || (_crLang==='pt'?'CUPOM EXCLUSIVO':'EXCLUSIVE COUPON')}</div>`;
-    h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${color}8C;background:${color}14;"><div class="cr-hp-cpcode" style="color:${color};">${escHtml(coupon)}</div></div>`;
+  // Coupon (ou banner auto-apply pra firmas sem cupom: FTMO, The5ers, etc)
+  if (crChk('cr-show-coupon')) {
+    if (coupon) {
+      h += `<div class="cr-hp-cplabel">${L.exclusive_coupon || (_crLang==='pt'?'CUPOM EXCLUSIVO':'EXCLUSIVE COUPON')}</div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${color}8C;background:${color}14;"><div class="cr-hp-cpcode" style="color:${color};">${escHtml(coupon)}</div></div>`;
+    } else {
+      const GREEN = '#10B981';
+      h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}99;background:${GREEN}14;padding:14px 32px;display:flex;align-items:center;gap:12px;"><span style="color:${GREEN};font-size:28px;font-weight:800;">✓</span><span style="color:${GREEN};font-size:24px;font-weight:700;letter-spacing:.3px;">${_crLang==='pt'?'Desconto aplicado automaticamente via link':'Discount auto-applied via link'}</span></div>`;
+    }
   }
 
   // Trustpilot
