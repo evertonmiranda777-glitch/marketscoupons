@@ -220,21 +220,24 @@ Regras duras:
   c) **Inimigo externo** (contrast + unity): "Enquanto FTMO cobra €155, aqui são $19."
   d) **Pergunta específica** (consistency + self-relevance): "Quantos dias você levou pra passar seu último desafio? Aqui passa em 1."
   e) **Callout raw** (mimetic desire + status): "Trader que tá cansado de firma fraca: lê isso."
-- Linha 2 (opcional, curta) = PIVOT que conecta a dor → possibilidade. Ex: "E se você tivesse 20 contas rodando ao mesmo tempo?" ou "Aí achei essa." ou "Então parei de pagar caro."
+- Linha 2 (opcional, curta) = PIVOT curto conectando dor → possibilidade. Ex: "Aí achei essa." / "Então parei de pagar caro." / "Essa aqui é diferente." NUNCA "e se você tivesse X contas" (frame abstrato que não conecta).
+- HOOK-PERGUNTA ESTÁ BANIDO. "Estourou 3 contas esse ano?" / "Cansado de X?" / "Quer Y?" / "Já aconteceu Z com você?" = REJEITADO. Use AFIRMAÇÃO específica, não pergunta retórica.
 
 ## BODY (4-5 bullets com "→ ") — JOB: preempção de objeção + Hormozi value eq
-Cada bullet = UM fato concreto com NÚMERO REAL da firma.
-Ordem psicológica obrigatória (do mais impactante ao mais operacional):
-1. **Sonho-outcome** (profit split + scaling): "→ ${firm.split || 'X%'} dos lucros${firm.scaling ? ` com escala até ${firm.scaling}` : ''}"
-2. **Redução de esforço** (regra flexível — ataca objeção 2): DD type ou "sem consistency" ou "sem limite diário"
-3. **Redução de delay** (payout/pass time): "payout em X dias" ou "passa em 1 dia"
-4. **Preempção trust** (plataformas + prova): Plataforma conhecida ou reviews
-5. (opcional) **Status/identidade**: "mesma firma usada por X funded traders"
-Linguagem de trader, NUNCA advertorial. "passa o desafio" não "aprove sua avaliação". "tira payout" não "realize saques".
+Cada bullet = UM fato concreto com NÚMERO REAL da firma. Zero adjetivo vago. Zero invenção.
+Ordem obrigatória (use EXATAMENTE esses 4 bullets, nessa ordem):
+1. **Split + scaling** (só o que a firma REALMENTE oferece — não invente "escala livre"): "→ ${firm.split || 'X%'} dos lucros${firm.scaling && firm.scaling !== '—' ? ` — escala até ${firm.scaling}` : ''}"
+2. **Drawdown específico** (OBRIGATÓRIO — nunca pule esse bullet): "→ ${firm.drawdown || 'DD'} de ${firm.dd_pct || 'X%'}" + frase curta de benefício se for trailing favorável ou static ("perdoa swing" / "previsível").
+3. **Regra-relief** (ataca objeção "regra escondida"): cite UMA regra REAL flexível da firma (sem limite diário, sem consistency, news trading permitido, day 1 payout). Se não tem regra-relief clara nos dados, pule e use plataforma.
+4. **Payout + prova de pagamento** (ataca objeção "vão pagar?"): "→ payout em ${firm.min_days ? 'X' : '5'} dias" + (opcional) marco ($ pagos / anos / reviews).
+PROIBIDO inventar regra que a firma não tem. Se o dado não está na FIRMA acima, não escreve.
+Linguagem de trader ("passa o desafio", "tira payout", "MC me pegou"), NUNCA advertorial ("aprove sua avaliação", "realize saques").
+OBRIGATÓRIO: preempte PELO MENOS 2 das 5 objeções listadas em AUDIÊNCIA — marque mentalmente quais você atacou antes de entregar.
 
 ## PROVA SOCIAL (1 linha separada) — JOB: matar objeção "vai fechar/não paga"
-Formato: "Trustpilot ${firm.trustpilot_score || 'X'}/5 com ${firm.trustpilot_reviews || 'X'} reviews. [marco temporal ou valor absoluto se tiver]."
-Exemplo: "Trustpilot 4.4 com 18 mil reviews. Mais de $500M pagos desde 2016."
+Formato: "Trustpilot ${firm.trustpilot_score || 'X'} com ${firm.trustpilot_reviews ? Math.round(firm.trustpilot_reviews / 1000) + ' mil' : 'X mil'} reviews."
+NÚMEROS GRANDES SEMPRE em formato leitura-rápida: "18 mil" não "18382". "41K" ou "41 mil" não "41523".
+Exemplo: "Trustpilot 4.4 com 18 mil reviews. Não é firma de ontem."
 Se não tiver dado forte, pula essa linha.
 
 ## PREÇO-PUNCH (1-2 linhas) — JOB: anchoring + decoy + bundling narrativo
