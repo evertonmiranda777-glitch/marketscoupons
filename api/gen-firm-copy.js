@@ -14,15 +14,40 @@ function buildPrompt(firm, langName) {
   const tp = firm.trustpilot_score ? `Trustpilot ${firm.trustpilot_score}/5 com ${firm.trustpilot_reviews || '?'} reviews` : '';
   const couponLine = firm.coupon ? `CUPOM: ${firm.coupon} — ${firm.discount}% OFF${firm.discount_type ? ` (${firm.discount_type})` : ''}` : (firm.discount ? `${firm.discount}% OFF aplicado automático via link (sem cupom)` : '');
 
-  const cheapest = Array.isArray(firm.prices) && firm.prices.length
-    ? firm.prices.reduce((a, b) => {
+  const sortedPrices = Array.isArray(firm.prices) && firm.prices.length
+    ? [...firm.prices].sort((a, b) => {
         const pa = parseFloat((a.n || '').replace(/[^0-9.]/g, '')) || Infinity;
         const pb = parseFloat((b.n || '').replace(/[^0-9.]/g, '')) || Infinity;
-        return pa < pb ? a : b;
+        return pa - pb;
       })
-    : null;
+    : [];
+  const cheapest = sortedPrices[0] || null;
+  const priciest = sortedPrices[sortedPrices.length - 1] || null;  // decoy/anchor alto
 
   const langCode = langName.includes('Portuguese') ? 'pt' : langName.includes('Spanish') ? 'es' : 'en';
+
+  // Whitelist de hashtags (evita alucinação tipo #nfl pra trading)
+  const HASHTAGS_WHITELIST = {
+    pt: {
+      core: ['#propfirm', '#propfirmtrading', '#trader', '#trading', '#daytrade', '#mercadofinanceiro', '#traderbrasileiro', '#traderiniciante'],
+      futures: ['#futuros', '#tradingfuturos', '#es', '#nq', '#mes', '#mnq', '#mgc', '#cl', '#daytradefuturos', '#mininasdaq', '#miniindice'],
+      forex: ['#forex', '#tradingforex', '#mercadoforex', '#gbpusd', '#eurusd', '#forexbrasil'],
+    },
+    en: {
+      core: ['#propfirm', '#propfirmtrading', '#trader', '#trading', '#daytrading', '#funded', '#fundedtrader'],
+      futures: ['#futurestrading', '#futurestrader', '#es', '#nq', '#mes', '#mnq', '#mgc', '#cl', '#esfutures', '#nqfutures'],
+      forex: ['#forex', '#forextrading', '#forextrader', '#eurusd', '#gbpusd', '#xauusd'],
+    },
+    es: {
+      core: ['#propfirm', '#propfirmtrading', '#trader', '#trading', '#daytrading', '#mercadofinanciero', '#tradernovato'],
+      futures: ['#futuros', '#tradingfuturos', '#es', '#nq', '#mes', '#mnq', '#minidax', '#miniindice'],
+      forex: ['#forex', '#tradingforex', '#forexlatinoamerica', '#eurusd'],
+    }
+  };
+  const whitelistBucket = HASHTAGS_WHITELIST[langCode] || HASHTAGS_WHITELIST.pt;
+  const firmSlug = '#' + (firm.short_name || firm.name).toLowerCase().replace(/[^a-z0-9]/g, '');
+  const typeWhitelist = (firm.type && /forex/i.test(firm.type)) ? whitelistBucket.forex : whitelistBucket.futures;
+  const suggestedHashtags = [firmSlug, ...whitelistBucket.core.slice(0, 5), ...typeWhitelist.slice(0, 6)].slice(0, 12).join(' ');
 
   // Few-shot examples (PT) — mostrar EXEMPLOS > descrever regras (Gemini aprende com padrão)
   const FEW_SHOT_PT = `
@@ -149,20 +174,24 @@ WHY BAD: obvious rhetorical question, zero specific number, "EVERYTHING" caps is
   const fewShot = langCode === 'pt' ? FEW_SHOT_PT : FEW_SHOT_EN;
 
   return `# PAPEL
-Você é um copywriter sênior de direct response especializado em Instagram pra nicho de trading. Escola Hormozi (value equation + specificity) + Ogilvy (headline testing) + Halbert (emotional hooks). Output é caption pronta pra colar no IG, NÃO advertorial.
+Copywriter sênior de direct response pra Instagram, nicho de trading. Base: Cialdini (influência), Kahneman (loss aversion, anchoring), Hormozi (value equation), Ogilvy (especificidade). Você NÃO escreve advertorial. Você escreve caption que para o scroll, vira consideração em click.
 
-# CONTEXTO DO CLIENTE
-Markets Coupons é plataforma afiliada que vende cupons de desconto de prop firms. Monetiza quando trader clica no link da bio e compra uma avaliação usando nosso cupom.
+# CONTEXTO
+Markets Coupons = afiliada de prop firms. Monetiza quando trader clica no link da bio e compra avaliação com nosso cupom. Essa caption vende UMA firma específica.
 
-# AUDIÊNCIA (Voice of Customer)
-- Idade 25-40, homem na maioria, Brasil/LatAm (ou global se EN).
-- Já estourou 2-3 contas de avaliação em outras firmas.
-- Cético: "mais uma firma que vai me ferrar com regra escondida".
-- FOMO alto: vê stories de gente sacando, quer entrar.
-- Linguagem real que usam: "estourei", "quebrei", "tomei", "passei o desafio", "tirei payout", "drawdown me comeu", "trailing me ferrou", "MC (Markets Close)", "MES/MNQ/MGC", "tá caro pra caralho", "vale a pena?"
-- Objeções: preço, regra de drawdown, consistência, confiabilidade da firma (vai pagar?), news trading, scaling.
+# AUDIÊNCIA (Voice of Customer — use as palavras deles, não as suas)
+- Homem 25-40, Brasil/LatAm (ou global se idioma EN).
+- Awareness stage: PRODUCT-AWARE → já conhece prop firms, já comprou avaliação antes, já estourou 2-3 contas esse ano. Não precisa explicar o que é prop firm.
+- Estado emocional: FRUSTRADO + CÉTICO. Acha que toda firma tem pegadinha. Quer relief + prova.
+- Linguagem real: "estourei", "quebrei a conta", "tomei MC", "passei o desafio", "tirei payout", "drawdown me comeu", "trailing me ferrou", "tá caro pra caralho", "vale a pena?", "MES/MNQ/MGC/NQ/ES".
+- 5 objeções que ele PENSA ao ver a caption (preempte pelo menos 2 dentro do body):
+  1. "Mais uma firma que vai fechar e levar meu dinheiro" → atacar com prova social (anos, $ pagos, Trustpilot).
+  2. "Deve ter regra escondida tipo consistency ou scaling agressivo" → atacar citando explicitamente regras flexíveis da firma.
+  3. "Tô queimado, já gastei muito em avaliação" → atacar com preço-âncora (mostrar que o desconto é real e absurdo).
+  4. "Vai pagar mesmo quando eu tirar?" → atacar com tempo de payout específico + $ já pagos.
+  5. "É ruim porque é barato" → atacar com prova de volume (X mil reviews, X anos).
 
-# FIRMA DESTA CAPTION (fonte única — zero invenção, só use o que tá aqui)
+# FIRMA (fonte única — ZERO invenção, só use o que está aqui)
 - Nome: ${firm.name} (short: ${firm.short_name || firm.name})
 - Tipo: ${firm.type || 'Prop firm'}
 - ${couponLine}
@@ -173,64 +202,94 @@ Markets Coupons é plataforma afiliada que vende cupons de desconto de prop firm
 - Dias mín: ${firm.min_days || '—'} | Avaliação: ${firm.eval_days || 'ilimitado'} dias
 - Plataformas: ${platforms}
 - Preços: ${prices}
-${cheapest ? `- Âncora de preço (use esta): ${cheapest.a} por ${cheapest.n}${cheapest.o ? ` (antes ${cheapest.o})` : ''}` : ''}
+${cheapest ? `- ÂNCORA BAIXA (use esta): ${cheapest.a} por ${cheapest.n}${cheapest.o ? ` (era ${cheapest.o})` : ''}` : ''}
+${priciest && priciest !== cheapest ? `- DECOY ALTO (menciona pra tornar a âncora baixa trivial): ${priciest.a} custa ${priciest.n}` : ''}
 - Perks: ${perks}
 - Prova social: ${tp}
 - Descrição: ${firm.description || ''}
 
-# FRAMEWORK DE COPY
-Use PAS (Problem → Agitate → Solution) como espinha dorsal:
-1. HOOK = Problema na pele do trader (usa dor real dele, não feature da firma)
-2. BODY = Solução concreta em 4 bullets com NÚMEROS
-3. PUNCH = Preço-âncora (o único lugar onde você usa o cupom/desconto pra fechar)
-4. CTA = Imperativo + link na bio
+# FRAMEWORK PSICOLÓGICO (aplique em cada bloco — cada bloco tem 1 JOB psicológico)
 
-Aplique o Hormozi Value Equation no body:
-- Dream Outcome (o que ele ganha: 100% split, 20 contas)
-- Perceived Likelihood (Trustpilot, reviews, "$500M pagos")
-- Time Delay (payout em 5 dias, passa em 1 dia)
-- Effort/Sacrifice (sem consistência, sem limite diário)
-Cada bullet = uma alavanca dessa.
+## HOOK (linhas 1-2) — JOB: parar scroll via pattern interrupt
+Regras duras:
+- Precisa CABER em 125 caracteres (IG corta com "... mais" depois disso — toda persuasão precisa estar ANTES).
+- Sem emoji. Sem exclamação. Sem "Quer X?". Sem caixa alta em palavra isolada.
+- Use UM destes mecanismos (escolha o MAIS FORTE pros dados):
+  a) **Perda nomeada** (loss aversion + specificity): "Estourei 3 contas em 30 dias. Então achei essa."
+  b) **Número chocante** (anchoring low): "Conta de $25K. Dezenove dólares. Sem pegadinha."
+  c) **Inimigo externo** (contrast + unity): "Enquanto FTMO cobra €155, aqui são $19."
+  d) **Pergunta específica** (consistency + self-relevance): "Quantos dias você levou pra passar seu último desafio? Aqui passa em 1."
+  e) **Callout raw** (mimetic desire + status): "Trader que tá cansado de firma fraca: lê isso."
+- Linha 2 (opcional, curta) = PIVOT que conecta a dor → possibilidade. Ex: "Mas e se você tocasse 20 contas ao mesmo tempo?"
 
-Teste dos 4 Us pro hook: Useful, Urgent, Unique, Ultra-specific. Passa em pelo menos 3 antes de escrever.
+## BODY (4-5 bullets com "→ ") — JOB: preempção de objeção + Hormozi value eq
+Cada bullet = UM fato concreto com NÚMERO REAL da firma.
+Ordem psicológica obrigatória (do mais impactante ao mais operacional):
+1. **Sonho-outcome** (profit split + scaling): "→ ${firm.split || 'X%'} dos lucros${firm.scaling ? ` com escala até ${firm.scaling}` : ''}"
+2. **Redução de esforço** (regra flexível — ataca objeção 2): DD type ou "sem consistency" ou "sem limite diário"
+3. **Redução de delay** (payout/pass time): "payout em X dias" ou "passa em 1 dia"
+4. **Preempção trust** (plataformas + prova): Plataforma conhecida ou reviews
+5. (opcional) **Status/identidade**: "mesma firma usada por X funded traders"
+Linguagem de trader, NUNCA advertorial. "passa o desafio" não "aprove sua avaliação". "tira payout" não "realize saques".
 
-# ESTRUTURA FINAL (siga os EXEMPLOS abaixo exatamente, não descreva — faça)
+## PROVA SOCIAL (1 linha separada) — JOB: matar objeção "vai fechar/não paga"
+Formato: "Trustpilot ${firm.trustpilot_score || 'X'}/5 com ${firm.trustpilot_reviews || 'X'} reviews. [marco temporal ou valor absoluto se tiver]."
+Exemplo: "Trustpilot 4.4 com 18 mil reviews. Mais de $500M pagos desde 2016."
+Se não tiver dado forte, pula essa linha.
 
-LINHA 1: hook (1 linha, máx 12 palavras, sem emoji)
-LINHA 2: complemento/pivô (1 linha curta) — opcional
-[linha em branco]
-BLOCO: 4-5 bullets começando com "→ " (cada um com NÚMERO/FATO da firma)
-[linha em branco]
-LINHA: prova social em 1 frase (se tem Trustpilot/valor pago/anos no mercado)
-[linha em branco]
-LINHA: urgência/cupom (1-2 linhas) — menciona o CUPOM explícito
-LINHA: "Link na bio." / "Link in bio." / "Enlace en bio." + 1 emoji forte (🔥⚡✅💰)
-[linha em branco]
-LINHA: 10-12 hashtags em lowercase, separadas por espaço, na MESMA LINHA
+## PREÇO-PUNCH (1-2 linhas) — JOB: anchoring + decoy + bundling narrativo
+Estrutura exata:
+- Linha 1: âncora clara. Formato: "${cheapest ? `${cheapest.a} por ${cheapest.n}${cheapest.o ? ` (antes ${cheapest.o}).` : '.'}` : '$X por $Y.'}"
+- Linha 2 (opcional, SE tiver decoy): "${priciest && priciest !== cheapest ? `A de ${priciest.a} fica em ${priciest.n}. Começa pela menor.` : ''}"
+Anchoring funciona quando o "era" aparece ANTES (visão natural) ou logo depois em parentêses. Não use seta "→" aqui.
 
-# EXEMPLOS (padrão desejado — clone a estrutura, troque dados)
+## CUPOM + URGÊNCIA (1-2 linhas) — JOB: scarcity real (nunca inventada) + commitment
+- Se tem cupom: "Cupom ${firm.coupon || 'X'}. ${firm.discount_type === 'lifetime' ? 'Pra sempre — sem renovar.' : `${firm.discount}% OFF enquanto tá ativo.`}"
+- Se é lifetime: use ISSO como gatilho — "Pra sempre" é raro em prop firm, foca nisso.
+- Se não tem cupom: "Desconto aplicado automático no link. Sem código."
+- NUNCA invente urgência falsa ("últimas horas!"). Use só o que é REAL.
+
+## CTA (1 linha) — JOB: autonomy-preserving (não empurrar, convidar)
+"Link na bio." / "Link in bio." / "Enlace en bio."
++ UM emoji forte (🔥 ⚡ ✅ 💰) — escolha o que combina com a firma.
+Nunca "CORRE!" ou "NÃO PERCA!" — reduz autonomy, gera reatância.
+
+## HASHTAGS (1 linha, 10-12 tags, todas em lowercase, separadas por espaço)
+USE APENAS desta whitelist curada (NÃO invente, NÃO use #nfl/#sports/#lifestyle/#motivation/#success — banidas pra trading):
+${suggestedHashtags}
+
+Monte a linha combinando: firma-slug + 4-5 core + 5-6 do nicho (${(firm.type && /forex/i.test(firm.type)) ? 'forex' : 'futures'}).
+
+# EXEMPLOS DE REFERÊNCIA (clone a estrutura, troque dados)
 ${fewShot}
 
-# REGRAS DURAS
-✅ USE: números específicos ($19.90 não "barato"), linguagem de trader real, bullets com →, linha em branco entre blocos, 1-2 emojis no máximo TOTAL
-❌ NÃO USE:
-  - Hook "Quer X?" (clichê de afiliado ruim)
-  - Palavras vazias: "incrível", "excelente", "top do mercado", "realize seus sonhos", "transforme", "eleve", "chegou a hora", "futuro é agora"
-  - Caixa alta em palavras isoladas ("TUDO", "AGORA") — preguiça
-  - Exclamações (! remove)
-  - Emojis no hook
+# OTIMIZAÇÃO PRA ALGORITMO IG 2026
+- Primeiros 125 caracteres são o que aparece no feed antes do "... mais". TODO o peso persuasivo do hook tem que caber ali.
+- Line breaks agressivos (linha em branco entre cada bloco) aumentam tempo de leitura → sinal positivo pro algoritmo.
+- Bullets com "→" aumentam legibilidade e save-rate.
+- Números concretos e decisão-em-1-click aumentam save+share.
+
+# REGRAS DURAS (viole qualquer uma = rejeitado)
+✅ Use: números específicos da firma, linguagem de trader real ("estourei", "passa em X dias"), bullets com "→", linha em branco entre blocos, MÁX 2 emojis em toda caption, âncora de preço explícita, preempção de 2+ objeções.
+❌ Nunca:
+  - Hook genérico "Quer X?" ou "Cansado de Y?"
+  - Palavras vazias: "incrível", "excelente", "top do mercado", "oportunidade única", "realize seus sonhos", "transforme", "eleve", "chegou a hora"
+  - Exclamações (remove todos os "!")
   - Markdown (**negrito**, *itálico*)
   - Aspas envolvendo a caption
   - Preâmbulo ("Aqui está:", "Segue a caption:")
-  - Palavras BANIDAS POR COMPLIANCE (legal risk): "sinais", "entrada", "stop loss", "take profit", "recomendação", "operação ao vivo", "lucro garantido", "trader profissional", "signals", "entry", "guaranteed profit"
-  - Prometer retornos/lucro
-  - Mencionar IA/Gemini/Claude
+  - Emojis no hook
+  - Caixa alta em palavra isolada ("TUDO", "AGORA")
+  - Hashtags alucinadas tipo #nfl, #sports, #lifestyle, #motivation, #luxury, #success, #entrepreneur
+  - Palavras BANIDAS POR COMPLIANCE (RISCO LEGAL): "sinais", "entrada", "stop loss", "take profit", "recomendação de trade", "operação ao vivo", "lucro garantido", "trader profissional", "signals", "entry signals", "guaranteed profit", "copy trade", "we trade for you"
+  - Prometer retornos/lucro ("você vai lucrar", "resultados garantidos")
+  - Mencionar IA/Gemini/Claude/API
 
 # IDIOMA
-Escreva 100% em ${langName}. Se PT, use PT-BR (gírias de trader BR: "tá", "pra", "porra" tá ok, "caralho" evitar). Se EN, US-English direto. Se ES, es-LA neutro.
+100% em ${langName}. Se PT: PT-BR com gírias leves de trader BR ("tá", "pra", "caralho"=evitar). Se EN: US English direto. Se ES: es-LA neutro.
 
-# OUTPUT
-APENAS a caption final. Texto puro. Pronta pra Ctrl+V no Instagram. Sem explicação, sem preâmbulo, sem markdown.`;
+# OUTPUT FINAL
+APENAS a caption. Texto puro pronto pra Ctrl+V no Instagram. Sem explicação, sem preâmbulo, sem markdown, sem aspas.`;
 }
 
 const ALLOWED_ORIGINS = [
