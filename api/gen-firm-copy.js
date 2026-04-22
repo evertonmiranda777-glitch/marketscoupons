@@ -357,11 +357,14 @@ module.exports = async (req, res) => {
   const startIdx = module.exports._keyIdx % KEYS.length;
   module.exports._keyIdx++;
 
-  const delays = [1000, 2000];
-  const maxAttempts = Math.max(2, KEYS.length);
+  const delays = [800, 1500, 2500];
+  const MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-flash-latest'];
+  const maxAttempts = KEYS.length * MODELS.length;
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const keyIdx = (startIdx + attempt) % KEYS.length;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEYS[keyIdx]}`;
+    const modelIdx = Math.floor(attempt / KEYS.length) % MODELS.length;
+    const model = MODELS[modelIdx];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${KEYS[keyIdx]}`;
     try {
       const resp = await fetch(url, {
         method: 'POST',
@@ -371,7 +374,7 @@ module.exports = async (req, res) => {
       const data = await resp.json();
       if (!resp.ok) {
         const errDetail = JSON.stringify(data).slice(0, 400);
-        console.error(`[gen-firm-copy] gemini error (key ${keyIdx}):`, resp.status, errDetail);
+        console.error(`[gen-firm-copy] ${model} key${keyIdx} →`, resp.status, errDetail);
         if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }
         return res.status(502).json({ error: 'Upstream error', status: resp.status, detail: errDetail });
       }
