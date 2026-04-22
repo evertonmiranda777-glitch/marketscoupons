@@ -1,0 +1,111 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>TradeDay Drawdown Types</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0a0e14;font-family:-apple-system,system-ui,'Inter',sans-serif;padding:40px;display:flex;justify-content:center;align-items:center;min-height:100vh}
+  .canvas{width:1200px;height:630px;background:radial-gradient(ellipse at top,#0f1823 0%,#070a0f 100%);border-radius:16px;padding:48px;position:relative;overflow:hidden}
+  .canvas::before{content:'';position:absolute;inset:0;background:
+    radial-gradient(circle at 15% 20%, rgba(14,165,233,.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(34,211,238,.06) 0%, transparent 40%);pointer-events:none}
+  .header{position:relative;z-index:1;margin-bottom:28px}
+  .sub{font-size:12px;color:rgba(255,255,255,.55);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+  .title{font-size:30px;font-weight:700;color:#fff;letter-spacing:-.02em}
+  .title span{color:#22D3EE}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;position:relative;z-index:1}
+  .card{background:linear-gradient(180deg,rgba(14,165,233,.06) 0%,rgba(255,255,255,.02) 100%);border:1px solid rgba(34,211,238,.18);border-radius:14px;padding:26px;min-height:400px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#22D3EE,transparent);opacity:.5}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:#22D3EE;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+  .badge-dot{width:6px;height:6px;background:#22D3EE;border-radius:50%;box-shadow:0 0 8px #22D3EE}
+  .ctype{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.01em;margin-bottom:6px}
+  .ctagline{font-size:12px;color:rgba(255,255,255,.55);font-weight:500;margin-bottom:18px}
+  .diagram{flex:1;background:rgba(0,0,0,.3);border-radius:10px;padding:16px;display:flex;align-items:center;justify-content:center;min-height:140px;margin-bottom:16px;border:1px solid rgba(34,211,238,.08)}
+  .cdesc{font-size:12.5px;color:rgba(255,255,255,.72);line-height:1.55}
+  .cdesc b{color:#22D3EE;font-weight:600}
+  .footer-strip{position:absolute;bottom:20px;left:48px;right:48px;display:flex;justify-content:space-between;align-items:center;z-index:1;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;font-weight:600}
+  .footer-strip img{height:16px;vertical-align:middle;margin-left:8px;filter:brightness(1.1)}
+  .footer-strip .mc span{color:#22D3EE}
+</style></head>
+<body>
+  <div class="canvas">
+    <div class="header">
+      <div class="sub">The Three Drawdown Types</div>
+      <div class="title">Pick the <span>rule set</span> that fits your style</div>
+    </div>
+    <div class="grid">
+      <!-- INTRADAY TRAILING -->
+      <div class="card">
+        <div class="badge"><span class="badge-dot"></span>Aggressive</div>
+        <div class="ctype">Intraday Trailing</div>
+        <div class="ctagline">DD follows every new high in real time</div>
+        <div class="diagram">
+          <svg viewBox="0 0 260 120" width="100%">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#22D3EE" stop-opacity=".25"/>
+                <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- price line -->
+            <polyline points="10,90 40,75 70,55 100,70 130,40 160,50 190,25 220,35 250,20" stroke="#22D3EE" stroke-width="2" fill="none"/>
+            <polygon points="10,90 40,75 70,55 100,70 130,40 160,50 190,25 220,35 250,20 250,120 10,120" fill="url(#g1)"/>
+            <!-- trailing DD -->
+            <polyline points="10,110 40,95 70,75 100,75 130,60 160,60 190,45 220,45 250,40" stroke="#EF4444" stroke-width="1.5" fill="none" stroke-dasharray="4 3" opacity=".8"/>
+            <text x="10" y="10" font-size="9" fill="#EF4444" font-family="Inter" font-weight="600">DD line trails every HH</text>
+          </svg>
+        </div>
+        <div class="cdesc">Drawdown updates on <b>every new high</b>. Locks at +$100 above target. Best for scalpers who take profit fast.</div>
+      </div>
+      <!-- EOD -->
+      <div class="card">
+        <div class="badge"><span class="badge-dot"></span>Balanced</div>
+        <div class="ctype">End-of-Day</div>
+        <div class="ctagline">DD updates only at 4:00 PM CT close</div>
+        <div class="diagram">
+          <svg viewBox="0 0 260 120" width="100%">
+            <defs>
+              <linearGradient id="g2" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#22D3EE" stop-opacity=".25"/>
+                <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <polyline points="10,90 40,75 70,55 100,70 130,40 160,50 190,25 220,35 250,20" stroke="#22D3EE" stroke-width="2" fill="none"/>
+            <polygon points="10,90 40,75 70,55 100,70 130,40 160,50 190,25 220,35 250,20 250,120 10,120" fill="url(#g2)"/>
+            <!-- stepped DD (EOD snapshots) -->
+            <polyline points="10,110 90,110 90,85 170,85 170,60 250,60" stroke="#EF4444" stroke-width="1.5" fill="none" stroke-dasharray="4 3" opacity=".8"/>
+            <circle cx="90" cy="85" r="3" fill="#EF4444"/>
+            <circle cx="170" cy="60" r="3" fill="#EF4444"/>
+            <circle cx="250" cy="60" r="3" fill="#EF4444"/>
+            <text x="10" y="10" font-size="9" fill="#EF4444" font-family="Inter" font-weight="600">Snapshots at 4pm CT</text>
+          </svg>
+        </div>
+        <div class="cdesc">Drawdown re-locks <b>once per day</b> at market close. Room to breathe intraday — ideal for swing/day traders.</div>
+      </div>
+      <!-- STATIC -->
+      <div class="card">
+        <div class="badge"><span class="badge-dot"></span>Conservative</div>
+        <div class="ctype">Static</div>
+        <div class="ctagline">Fixed floor — never moves</div>
+        <div class="diagram">
+          <svg viewBox="0 0 260 120" width="100%">
+            <defs>
+              <linearGradient id="g3" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#22D3EE" stop-opacity=".25"/>
+                <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <polyline points="10,90 40,75 70,55 100,70 130,40 160,50 190,25 220,35 250,20" stroke="#22D3EE" stroke-width="2" fill="none"/>
+            <polygon points="10,90 40,75 70,55 100,70 130,40 160,50 190,25 220,35 250,20 250,120 10,120" fill="url(#g3)"/>
+            <!-- static floor -->
+            <line x1="10" y1="100" x2="250" y2="100" stroke="#EF4444" stroke-width="2" stroke-dasharray="4 3" opacity=".85"/>
+            <text x="10" y="10" font-size="9" fill="#EF4444" font-family="Inter" font-weight="600">Hard floor — immovable</text>
+          </svg>
+        </div>
+        <div class="cdesc">DD is <b>locked from day 1</b>. Never moves up or down. Small buffer but zero surprises. Perfect for systematic traders.</div>
+      </div>
+    </div>
+    <div class="footer-strip">
+      <div>Available on <img src="../img/Firms Logos/TradeDay.png" alt="TradeDay"></div>
+      <div class="mc">markets<span>coupons</span>.com</div>
+    </div>
+  </div>
+</body></html>
