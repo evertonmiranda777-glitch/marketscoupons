@@ -1,328 +1,151 @@
 // Vercel Serverless — Send welcome email to new subscriber
 // POST /api/welcome-email { email, name, lang }
-// Called by Supabase webhook on email_subscribers insert, or manually
+// Uses the new "Markets Coupons." premium template (orange accent, white layout).
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
-const WELCOME_I18N = {
-  pt: {
-    subject: 'Bem-vindo ao MarketsCoupons!',
-    greeting: 'Ola {nome},',
-    welcome_title: 'Bem-vindo ao MarketsCoupons',
-    welcome_text: 'Agora voce tem acesso as melhores ofertas e ferramentas para traders. Confira tudo que preparamos para voce:',
-    section_coupons: 'Cupons Exclusivos',
-    desc_coupons: 'Ate 90% de desconto em prop firms selecionadas. Cupons atualizados diariamente.',
-    section_compare: 'Comparador de Firmas',
-    desc_compare: 'Compare precos, condicoes, drawdown, profit split e mais — lado a lado.',
-    section_analysis: 'Analise Diaria',
-    desc_analysis: 'Insights de mercado diarios para ES, NQ, GC e CL. Gratuito para todos.',
-    section_gex: 'GEX / Gamma Exposure',
-    desc_gex: 'Niveis de gamma exposure atualizados diariamente com zonas-chave.',
-    section_calendar: 'Calendario Economico',
-    desc_calendar: 'Eventos de alto impacto com horarios e expectativas do mercado.',
-    section_blog: 'Blog & Guias',
-    desc_blog: 'Artigos educacionais e guias completos sobre prop trading.',
-    section_calc: 'Calculadora de Position Size',
-    desc_calc: 'Calcule o tamanho ideal da sua posicao baseado no seu risco.',
-    section_quiz: 'Quiz de Prop Firms',
-    desc_quiz: 'Descubra qual prop firm combina com seu perfil de trader.',
-    section_loyalty: 'Programa de Fidelidade',
-    desc_loyalty: 'Ganhe pontos a cada compra e troque por beneficios exclusivos.',
-    cta: 'Explorar MarketsCoupons',
-    footer: 'Voce recebeu este email por estar inscrito no MarketsCoupons.',
-    unsub: 'Cancelar inscricao',
-    tagline: 'As melhores ofertas para traders',
+const INST_WELCOME = {
+  subject: { pt:'Bom te ter aqui, Trader', en:'Good to have you here, Trader', es:'Que bueno tenerte aqui, Trader', fr:'Content de vous avoir, Trader', de:'Schon, dass du da bist, Trader', it:'Bello averti qui, Trader', ar:'سعداء بوجودك هنا' },
+  body: {
+    pt:'A gente sabe como é começar nesse mercado. Por isso criamos o MarketsCoupons — pra reunir traders como você que querem <b>pagar menos e operar melhor</b>. Aqui ninguém fica sozinho.',
+    en:'We know how hard it is to start in this market. That\'s why we created MarketsCoupons — to bring together traders like you who want to <b>pay less and trade better</b>.',
+    es:'Sabemos lo dificil que es empezar en este mercado. Por eso creamos MarketsCoupons — para reunir traders como tu que quieren <b>pagar menos y operar mejor</b>.',
+    fr:'On sait combien c\'est dur de debuter. C\'est pour ca qu\'on a cree MarketsCoupons — pour rassembler des traders comme vous qui veulent <b>payer moins et mieux trader</b>.',
+    de:'Wir wissen, wie schwer der Anfang ist. Deshalb haben wir MarketsCoupons geschaffen — fur Trader wie dich, die <b>weniger zahlen und besser traden</b> wollen.',
+    it:'Sappiamo quanto e difficile iniziare. Per questo abbiamo creato MarketsCoupons — per riunire trader come te che vogliono <b>pagare meno e operare meglio</b>.',
+    ar:'نعرف صعوبة البداية في هذا السوق. لذلك أنشأنا MarketsCoupons — لجمع المتداولين الذين يريدون <b>دفع أقل والتداول بشكل أفضل</b>.'
   },
-  en: {
-    subject: 'Welcome to MarketsCoupons!',
-    greeting: 'Hey {nome},',
-    welcome_title: 'Welcome to MarketsCoupons',
-    welcome_text: 'You now have access to the best deals and tools for traders. Here\'s everything we\'ve prepared for you:',
-    section_coupons: 'Exclusive Coupons',
-    desc_coupons: 'Up to 90% off on selected prop firms. Coupons updated daily.',
-    section_compare: 'Firm Comparator',
-    desc_compare: 'Compare prices, conditions, drawdown, profit split and more — side by side.',
-    section_analysis: 'Daily Analysis',
-    desc_analysis: 'Daily market insights for ES, NQ, GC and CL. Free for everyone.',
-    section_gex: 'GEX / Gamma Exposure',
-    desc_gex: 'Daily updated gamma exposure levels with key zones.',
-    section_calendar: 'Economic Calendar',
-    desc_calendar: 'High-impact events with schedules and market expectations.',
-    section_blog: 'Blog & Guides',
-    desc_blog: 'Educational articles and complete guides on prop trading.',
-    section_calc: 'Position Size Calculator',
-    desc_calc: 'Calculate your ideal position size based on your risk.',
-    section_quiz: 'Prop Firm Quiz',
-    desc_quiz: 'Find out which prop firm matches your trading profile.',
-    section_loyalty: 'Loyalty Program',
-    desc_loyalty: 'Earn points with every purchase and redeem exclusive benefits.',
-    cta: 'Explore MarketsCoupons',
-    footer: 'You received this email because you subscribed to MarketsCoupons.',
-    unsub: 'Unsubscribe',
-    tagline: 'The best deals for traders',
-  },
-  es: {
-    subject: 'Bienvenido a MarketsCoupons!',
-    greeting: 'Hola {nome},',
-    welcome_title: 'Bienvenido a MarketsCoupons',
-    welcome_text: 'Ahora tienes acceso a las mejores ofertas y herramientas para traders. Mira todo lo que preparamos para ti:',
-    section_coupons: 'Cupones Exclusivos',
-    desc_coupons: 'Hasta 90% de descuento en prop firms seleccionadas. Cupones actualizados diariamente.',
-    section_compare: 'Comparador de Firmas',
-    desc_compare: 'Compara precios, condiciones, drawdown, profit split y mas — lado a lado.',
-    section_analysis: 'Analisis Diario',
-    desc_analysis: 'Insights de mercado diarios para ES, NQ, GC y CL. Gratis para todos.',
-    section_gex: 'GEX / Gamma Exposure',
-    desc_gex: 'Niveles de gamma exposure actualizados diariamente con zonas clave.',
-    section_calendar: 'Calendario Economico',
-    desc_calendar: 'Eventos de alto impacto con horarios y expectativas del mercado.',
-    section_blog: 'Blog y Guias',
-    desc_blog: 'Articulos educativos y guias completas sobre prop trading.',
-    section_calc: 'Calculadora de Position Size',
-    desc_calc: 'Calcula el tamano ideal de tu posicion basado en tu riesgo.',
-    section_quiz: 'Quiz de Prop Firms',
-    desc_quiz: 'Descubre cual prop firm combina con tu perfil de trader.',
-    section_loyalty: 'Programa de Fidelidad',
-    desc_loyalty: 'Gana puntos con cada compra y canjea beneficios exclusivos.',
-    cta: 'Explorar MarketsCoupons',
-    footer: 'Recibiste este email porque estas suscrito a MarketsCoupons.',
-    unsub: 'Cancelar suscripcion',
-    tagline: 'Las mejores ofertas para traders',
-  },
-  fr: {
-    subject: 'Bienvenue sur MarketsCoupons!',
-    greeting: 'Bonjour {nome},',
-    welcome_title: 'Bienvenue sur MarketsCoupons',
-    welcome_text: 'Vous avez maintenant acces aux meilleures offres et outils pour traders. Decouvrez tout ce que nous avons prepare pour vous:',
-    section_coupons: 'Coupons Exclusifs',
-    desc_coupons: 'Jusqu\'a 90% de reduction sur des prop firms selectionnees. Coupons mis a jour quotidiennement.',
-    section_compare: 'Comparateur de Firmes',
-    desc_compare: 'Comparez prix, conditions, drawdown, profit split et plus — cote a cote.',
-    section_analysis: 'Analyse Quotidienne',
-    desc_analysis: 'Insights de marche quotidiens pour ES, NQ, GC et CL. Gratuit pour tous.',
-    section_gex: 'GEX / Gamma Exposure',
-    desc_gex: 'Niveaux de gamma exposure mis a jour quotidiennement avec zones cles.',
-    section_calendar: 'Calendrier Economique',
-    desc_calendar: 'Evenements a fort impact avec horaires et attentes du marche.',
-    section_blog: 'Blog & Guides',
-    desc_blog: 'Articles educatifs et guides complets sur le prop trading.',
-    section_calc: 'Calculateur de Taille de Position',
-    desc_calc: 'Calculez la taille ideale de votre position en fonction de votre risque.',
-    section_quiz: 'Quiz Prop Firms',
-    desc_quiz: 'Decouvrez quelle prop firm correspond a votre profil de trader.',
-    section_loyalty: 'Programme de Fidelite',
-    desc_loyalty: 'Gagnez des points a chaque achat et echangez-les contre des avantages exclusifs.',
-    cta: 'Explorer MarketsCoupons',
-    footer: 'Vous recevez cet email car vous etes inscrit a MarketsCoupons.',
-    unsub: 'Se desinscrire',
-    tagline: 'Les meilleures offres pour traders',
-  },
-  de: {
-    subject: 'Willkommen bei MarketsCoupons!',
-    greeting: 'Hallo {nome},',
-    welcome_title: 'Willkommen bei MarketsCoupons',
-    welcome_text: 'Sie haben jetzt Zugang zu den besten Angeboten und Tools fur Trader. Hier ist alles, was wir fur Sie vorbereitet haben:',
-    section_coupons: 'Exklusive Gutscheine',
-    desc_coupons: 'Bis zu 90% Rabatt auf ausgewahlte Prop Firms. Gutscheine taglich aktualisiert.',
-    section_compare: 'Firmenvergleich',
-    desc_compare: 'Vergleichen Sie Preise, Bedingungen, Drawdown, Profit Split und mehr — nebeneinander.',
-    section_analysis: 'Tagliche Analyse',
-    desc_analysis: 'Tagliche Markteinblicke fur ES, NQ, GC und CL. Kostenlos fur alle.',
-    section_gex: 'GEX / Gamma Exposure',
-    desc_gex: 'Taglich aktualisierte Gamma-Exposure-Niveaus mit Schlüsselzonen.',
-    section_calendar: 'Wirtschaftskalender',
-    desc_calendar: 'Ereignisse mit hohem Einfluss mit Zeitplanen und Markterwartungen.',
-    section_blog: 'Blog & Leitfaden',
-    desc_blog: 'Lehrreiche Artikel und vollstandige Leitfaden zum Prop Trading.',
-    section_calc: 'Positionsgrosse-Rechner',
-    desc_calc: 'Berechnen Sie Ihre ideale Positionsgrosse basierend auf Ihrem Risiko.',
-    section_quiz: 'Prop Firm Quiz',
-    desc_quiz: 'Finden Sie heraus, welche Prop Firm zu Ihrem Trading-Profil passt.',
-    section_loyalty: 'Treueprogramm',
-    desc_loyalty: 'Sammeln Sie Punkte bei jedem Kauf und losen Sie exklusive Vorteile ein.',
-    cta: 'MarketsCoupons entdecken',
-    footer: 'Sie erhalten diese E-Mail, weil Sie bei MarketsCoupons angemeldet sind.',
-    unsub: 'Abmelden',
-    tagline: 'Die besten Angebote fur Trader',
-  },
-  it: {
-    subject: 'Benvenuto su MarketsCoupons!',
-    greeting: 'Ciao {nome},',
-    welcome_title: 'Benvenuto su MarketsCoupons',
-    welcome_text: 'Ora hai accesso alle migliori offerte e strumenti per trader. Ecco tutto cio che abbiamo preparato per te:',
-    section_coupons: 'Coupon Esclusivi',
-    desc_coupons: 'Fino al 90% di sconto su prop firms selezionate. Coupon aggiornati quotidianamente.',
-    section_compare: 'Comparatore di Firme',
-    desc_compare: 'Confronta prezzi, condizioni, drawdown, profit split e altro — fianco a fianco.',
-    section_analysis: 'Analisi Giornaliera',
-    desc_analysis: 'Insights di mercato giornalieri per ES, NQ, GC e CL. Gratuito per tutti.',
-    section_gex: 'GEX / Gamma Exposure',
-    desc_gex: 'Livelli di gamma exposure aggiornati quotidianamente con zone chiave.',
-    section_calendar: 'Calendario Economico',
-    desc_calendar: 'Eventi ad alto impatto con orari e aspettative del mercato.',
-    section_blog: 'Blog & Guide',
-    desc_blog: 'Articoli educativi e guide complete sul prop trading.',
-    section_calc: 'Calcolatore Position Size',
-    desc_calc: 'Calcola la dimensione ideale della tua posizione in base al rischio.',
-    section_quiz: 'Quiz Prop Firms',
-    desc_quiz: 'Scopri quale prop firm si adatta al tuo profilo di trader.',
-    section_loyalty: 'Programma Fedelta',
-    desc_loyalty: 'Guadagna punti ad ogni acquisto e riscatta vantaggi esclusivi.',
-    cta: 'Esplora MarketsCoupons',
-    footer: 'Hai ricevuto questa email perche sei iscritto a MarketsCoupons.',
-    unsub: 'Annulla iscrizione',
-    tagline: 'Le migliori offerte per trader',
-  },
-  ar: {
-    subject: 'MarketsCoupons مرحبا بك في',
-    greeting: '{nome} مرحبا',
-    welcome_title: 'MarketsCoupons مرحبا بك في',
-    welcome_text: 'الان لديك وصول لافضل العروض والادوات للمتداولين. اليك كل ما اعددناه لك:',
-    section_coupons: 'كوبونات حصرية',
-    desc_coupons: 'خصم يصل الى 90% على شركات تداول مختارة. كوبونات محدثة يوميا.',
-    section_compare: 'مقارنة الشركات',
-    desc_compare: 'قارن الاسعار والشروط والسحب وتقسيم الارباح والمزيد — جنبا الى جنب.',
-    section_analysis: 'تحليل يومي',
-    desc_analysis: '.رؤى سوقية يومية. مجاني للجميع',
-    section_gex: 'GEX / Gamma Exposure',
-    desc_gex: 'مستويات gamma exposure محدثة يوميا مع مناطق رئيسية.',
-    section_calendar: 'التقويم الاقتصادي',
-    desc_calendar: 'احداث عالية التاثير مع المواعيد وتوقعات السوق.',
-    section_blog: 'مدونة وادلة',
-    desc_blog: 'مقالات تعليمية وادلة كاملة حول prop trading.',
-    section_calc: 'حاسبة حجم المركز',
-    desc_calc: 'احسب الحجم المثالي لمركزك بناء على مخاطرك.',
-    section_quiz: 'اختبار Prop Firms',
-    desc_quiz: 'اكتشف اي prop firm تناسب ملفك كمتداول.',
-    section_loyalty: 'برنامج الولاء',
-    desc_loyalty: 'اكسب نقاط مع كل عملية شراء واستبدلها بمزايا حصرية.',
-    cta: 'MarketsCoupons استكشف',
-    footer: '.MarketsCoupons تلقيت هذا البريد لانك مشترك في',
-    unsub: 'الغاء الاشتراك',
-    tagline: 'افضل العروض للمتداولين',
-  },
+  cta: { pt:'CONHECER O SITE', en:'VISIT THE SITE', es:'CONOCER EL SITIO', fr:'DECOUVRIR LE SITE', de:'WEBSITE BESUCHEN', it:'VISITA IL SITO', ar:'زيارة الموقع' },
+  footer: { pt:'Você está recebendo este email porque se cadastrou na Markets Coupons.', en:'You are receiving this email because you signed up at Markets Coupons.', es:'Estás recibiendo este email porque te registraste en Markets Coupons.', fr:'Vous recevez cet email car vous vous êtes inscrit sur Markets Coupons.', de:'Sie erhalten diese E-Mail, weil Sie sich bei Markets Coupons angemeldet haben.', it:'Ricevi questa email perché ti sei iscritto a Markets Coupons.', ar:'تتلقى هذا البريد لأنك سجلت في Markets Coupons.' },
+  unsub: { pt:'Descadastrar', en:'Unsubscribe', es:'Darse de baja', fr:'Se désinscrire', de:'Abmelden', it:'Annulla iscrizione', ar:'إلغاء الاشتراك' },
 };
 
-function wt(lang, key) {
-  return (WELCOME_I18N[lang] || WELCOME_I18N.en)[key] || WELCOME_I18N.en[key] || key;
-}
+const PCFG = {
+  color:'#ff8c00', hlBg:'#fff4e6', hlBorder:'#ffcc80', hlSub:'#aa7030',
+  heroBadge:{pt:'Bem-vindo',en:'Welcome',es:'Bienvenido',fr:'Bienvenue',de:'Willkommen',it:'Benvenuto',ar:'مرحباً'},
+  heroH1:{pt:'Bom te ter<br>aqui,<br><span style="color:${C};">Trader.</span>',en:'Good to<br>have you,<br><span style="color:${C};">Trader.</span>',es:'Qué bueno<br>tenerte aquí,<br><span style="color:${C};">Trader.</span>',fr:'Content de<br>t\'avoir ici,<br><span style="color:${C};">Trader.</span>',de:'Schön, dass<br>du da bist,<br><span style="color:${C};">Trader.</span>',it:'Bello<br>averti qui,<br><span style="color:${C};">Trader.</span>',ar:'سعداء<br>بوجودك،<br><span style="color:${C};">Trader.</span>'},
+  heroBody:{pt:'A gente sabe como é começar nesse mercado. Criamos o MarketsCoupons pra reunir traders que querem pagar menos e operar melhor.',en:'We know how hard it is to start in this market. We built MarketsCoupons to bring together traders who want to pay less and trade better.',es:'Sabemos lo difícil que es empezar. Creamos MarketsCoupons para reunir traders que quieren pagar menos y operar mejor.',fr:'On sait combien c\'est dur de débuter. On a créé MarketsCoupons pour les traders qui veulent payer moins et mieux trader.',de:'Wir wissen, wie schwer der Anfang ist. Wir haben MarketsCoupons für Trader geschaffen, die weniger zahlen und besser traden wollen.',it:'Sappiamo quanto è difficile iniziare. Abbiamo creato MarketsCoupons per trader che vogliono pagare meno e operare meglio.',ar:'نعرف صعوبة البداية. أنشأنا MarketsCoupons لجمع المتداولين الذين يريدون دفع أقل والتداول بشكل أفضل.'},
+  m1v:'11+', m1l:{pt:'Prop Firms',en:'Prop Firms',es:'Prop Firms',fr:'Prop Firms',de:'Prop Firms',it:'Prop Firms',ar:'Prop Firms'},
+  m2v:'90%', m2l:{pt:'desconto máx',en:'max discount',es:'descuento máx',fr:'réduc max',de:'max Rabatt',it:'sconto max',ar:'أقصى خصم'},
+  m3v:'6+', m3l:{pt:'Ferramentas',en:'Tools',es:'Herramientas',fr:'Outils',de:'Tools',it:'Strumenti',ar:'أدوات'},
+  hlLabel:{pt:'Comece por aqui',en:'Start here',es:'Empieza aquí',fr:'Commencez ici',de:'Starte hier',it:'Inizia qui',ar:'ابدأ من هنا'},
+  hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
+  hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF aplicado automáticamente',fr:'Coupon <strong>MARKET89</strong> — 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong> — 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong> — 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong> — 89% OFF يُطبق تلقائياً'}
+};
 
-function featureCard(icon, title, desc) {
-  return `
-    <div style="display:flex;align-items:flex-start;background:#10151F;border:1px solid #1C2535;border-radius:10px;padding:16px;margin-bottom:8px;">
-      <div style="width:40px;height:40px;min-width:40px;background:#0B0F16;border:1px solid #1C2535;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-right:14px;">
-        <span style="font-size:18px;">${icon}</span>
-      </div>
-      <div>
-        <div style="color:#EDF2F7;font-size:15px;font-weight:700;margin-bottom:4px;">${title}</div>
-        <div style="color:#7A8FA6;font-size:13px;line-height:1.5;">${desc}</div>
-      </div>
-    </div>`;
-}
-
-function buildWelcomeEmail(lang, firms) {
-  const t = (key) => wt(lang, key);
-  const dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-  // Top 3 firms mini-cards
-  const firmCards = firms.slice(0, 3).map(f => `
-    <div style="display:flex;align-items:center;background:#0B0F16;border:1px solid #1C2535;border-radius:10px;padding:12px 14px;margin-bottom:6px;">
-      ${f.icon_url ? `<img src="https://www.marketscoupons.com/${f.icon_url}" width="32" height="32" style="width:32px;height:32px;border-radius:6px;margin-right:10px;object-fit:contain;background:${(f.color || '#F0B429')}22;">` : `<div style="width:32px;height:32px;border-radius:6px;background:${(f.color || '#F0B429')}22;display:flex;align-items:center;justify-content:center;margin-right:10px;font-size:14px;font-weight:900;color:${f.color || '#F0B429'}">${f.name[0]}</div>`}
-      <div style="flex:1;">
-        <div style="color:#EDF2F7;font-size:14px;font-weight:700;">${f.name}</div>
-        <div style="color:#7A8FA6;font-size:11px;">${f.type}${f.coupon ? ' · Coupon: ' + f.coupon : ''}</div>
-      </div>
-      <div style="text-align:center;margin-left:10px;">
-        <div style="color:#22C55E;font-size:18px;font-weight:900;">${f.discount}%</div>
-        <div style="color:#3D4F63;font-size:9px;font-weight:700;">OFF</div>
-      </div>
-    </div>`).join('');
+function buildWelcomeHtml(lang='pt'){
+  const gt = (obj) => obj[lang] || obj.en || obj.pt || '';
+  const C = PCFG.color;
+  const T = (obj) => { const s = obj[lang]||obj.en||obj.pt||''; return s.replace(/\$\{C\}/g, C); };
+  const F = "'Inter',Helvetica,Arial,sans-serif";
+  const dir = lang==='ar' ? 'rtl' : 'ltr';
 
   return `<!DOCTYPE html>
-<html dir="${dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#07090D;font-family:Arial,Helvetica,sans-serif;">
-<div style="max-width:600px;margin:0 auto;background:#07090D;">
+<html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="only light"><meta name="supported-color-schemes" content="only light">
+<style>
+:root{color-scheme:light only;}
+html,body{margin:0!important;padding:0!important;background-color:#f0f0f0!important;}
+body,table,td,div,p,a,span{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+table{border-spacing:0!important;border-collapse:collapse!important;}
+@media only screen and (max-width:600px){
+  .ec{width:100%!important;}
+  .ps{padding-left:18px!important;padding-right:18px!important;}
+}
+</style>
+</head>
+<body bgcolor="#f0f0f0" style="margin:0;padding:0;background-color:#f0f0f0;font-family:${F};">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0f0f0" role="presentation">
+<tr><td align="center" style="padding:32px 16px;">
+<table class="ec" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
-  <!-- Gold gradient top bar -->
-  <div style="height:4px;background:linear-gradient(90deg,#F0B429,#22C55E,#F0B429);"></div>
+<!-- LOGO -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border-radius:16px 16px 0 0;border:1px solid #e0e0e0;border-bottom:none;padding:26px 40px 22px;text-align:center;font-family:${F};">
+  <span style="font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;">Markets <span style="color:#ff8c00;">Coupons</span><span style="color:#ff8c00;font-size:9px;"> &#9679;</span></span><br>
+  <span style="font-size:11px;font-weight:600;color:#aaa;letter-spacing:2.5px;text-transform:uppercase;">${T({pt:'as melhores ofertas para traders',en:'the best deals for traders',es:'las mejores ofertas para traders',fr:'les meilleures offres pour traders',de:'die besten angebote für trader',it:'le migliori offerte per trader',ar:'أفضل العروض للمتداولين'})}</span>
+</td></tr>
 
-  <!-- Header -->
-  <div style="text-align:center;padding:32px 24px 16px;">
-    <div style="font-size:28px;font-weight:900;">
-      <span style="color:#EDF2F7;">Markets</span><span style="color:#F0B429;">Coupons</span>
-      <span style="display:inline-block;width:8px;height:8px;background:#22C55E;border-radius:50%;margin-left:4px;vertical-align:middle;"></span>
-    </div>
-    <div style="color:#3D4F63;font-size:10px;font-weight:700;letter-spacing:3px;margin-top:6px;">${t('tagline').toUpperCase()}</div>
-  </div>
+<!-- HERO -->
+<tr><td bgcolor="#111111" style="background-color:#111111;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="4" bgcolor="${C}" style="background-color:${C};font-size:0;line-height:0;">&nbsp;</td></tr></table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td class="ps" style="padding:44px 40px 40px;font-family:${F};">
+    <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;"><tr><td bgcolor="#1e1e1e" style="background-color:#1e1e1e;border:1px solid #2a2a2a;border-radius:20px;padding:5px 14px;">
+      <span style="font-size:11px;font-weight:700;color:${C};text-transform:uppercase;letter-spacing:1.5px;">${T(PCFG.heroBadge)}</span>
+    </td></tr></table>
+    <h1 style="font-family:${F};font-size:38px;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-1.5px;margin:0 0 16px;">${T(PCFG.heroH1)}</h1>
+    <p style="font-family:${F};font-size:15px;color:#888;line-height:1.6;max-width:380px;margin:0 0 32px;">${T(PCFG.heroBody)}</p>
+    <table cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="padding-right:24px;border-right:1px solid #2a2a2a;">
+        <p style="font-family:${F};font-size:18px;font-weight:800;color:${C};margin:0;">${PCFG.m1v}</p>
+        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T(PCFG.m1l)}</p>
+      </td>
+      <td style="padding:0 24px;border-right:1px solid #2a2a2a;">
+        <p style="font-family:${F};font-size:18px;font-weight:800;color:${C};margin:0;">${PCFG.m2v}</p>
+        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T(PCFG.m2l)}</p>
+      </td>
+      <td style="padding-left:24px;">
+        <p style="font-family:${F};font-size:18px;font-weight:800;color:${C};margin:0;">${PCFG.m3v}</p>
+        <p style="font-family:${F};font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:0;">${T(PCFG.m3l)}</p>
+      </td>
+    </tr></table>
+  </td></tr></table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="4" bgcolor="${C}" style="background-color:${C};font-size:0;line-height:0;">&nbsp;</td></tr></table>
+</td></tr>
 
-  <div style="padding:0 24px 32px;">
-    <!-- Greeting -->
-    <div style="font-size:16px;color:#EDF2F7;font-weight:600;margin-bottom:6px;">${t('greeting')}</div>
-    <div style="color:#7A8FA6;font-size:14px;line-height:1.7;margin-bottom:24px;">${t('welcome_text')}</div>
+<!-- BODY -->
+<tr><td class="ps" bgcolor="#ffffff" style="background-color:#ffffff;border:1px solid #e0e0e0;border-top:none;border-bottom:none;padding:36px 40px;font-family:${F};">
+  <p style="font-size:16px;font-weight:600;color:#1a1a1a;margin:0 0 10px;">${T({pt:'Olá, Trader.',en:'Hey, Trader.',es:'Hola, Trader.',fr:'Salut, Trader.',de:'Hallo, Trader.',it:'Ciao, Trader.',ar:'مرحباً، Trader.'})}</p>
+  <p style="font-size:15px;color:#555;line-height:1.75;margin:0 0 28px;">${gt(INST_WELCOME.body)}</p>
 
-    <!-- Stats row -->
-    <div style="display:flex;gap:8px;margin-bottom:24px;">
-      <div style="flex:1;background:#0B0F16;border:1px solid #1C2535;border-radius:10px;padding:14px 12px;text-align:center;">
-        <div style="color:#F0B429;font-size:24px;font-weight:900;">90%</div>
-        <div style="color:#3D4F63;font-size:9px;font-weight:700;letter-spacing:1px;margin-top:4px;">MAX DISCOUNT</div>
-      </div>
-      <div style="flex:1;background:#0B0F16;border:1px solid #1C2535;border-radius:10px;padding:14px 12px;text-align:center;">
-        <div style="color:#22C55E;font-size:24px;font-weight:900;">11+</div>
-        <div style="color:#3D4F63;font-size:9px;font-weight:700;letter-spacing:1px;margin-top:4px;">PROP FIRMS</div>
-      </div>
-      <div style="flex:1;background:#0B0F16;border:1px solid #1C2535;border-radius:10px;padding:14px 12px;text-align:center;">
-        <div style="color:#EDF2F7;font-size:24px;font-weight:900;">FREE</div>
-        <div style="color:#3D4F63;font-size:9px;font-weight:700;letter-spacing:1px;margin-top:4px;">DAILY ANALYSIS</div>
-      </div>
-    </div>
+  <!-- DIVIDER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;"><tr><td height="1" style="background-color:#eee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
 
-    <!-- Top deals -->
-    <div style="color:#3D4F63;font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:10px;">TOP DEALS</div>
-    ${firmCards}
+  <!-- HIGHLIGHT -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;"><tr><td bgcolor="${PCFG.hlBg}" style="background-color:${PCFG.hlBg};border:1px solid ${PCFG.hlBorder};border-left:4px solid ${C};border-radius:12px;padding:22px 24px;">
+    <p style="font-family:${F};font-size:11px;font-weight:700;color:${C};text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">${T(PCFG.hlLabel)}</p>
+    <p style="font-family:${F};font-size:20px;font-weight:800;color:#1a1a1a;line-height:1.3;margin:0 0 6px;">${T(PCFG.hlTitle)}</p>
+    <p style="font-family:${F};font-size:12px;color:${PCFG.hlSub};line-height:1.5;margin:0;">${T(PCFG.hlSubTxt)}</p>
+  </td></tr></table>
 
-    <!-- Divider -->
-    <div style="height:1px;background:#1C2535;margin:24px 0;"></div>
+  <!-- CTA PILL -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr><td align="center">
+    <table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${C}" style="background-color:${C};border-radius:50px;">
+      <a href="https://www.marketscoupons.com" target="_blank" style="display:inline-block;font-family:${F};font-size:16px;font-weight:800;color:#fff;text-decoration:none;padding:17px 52px;">${gt(INST_WELCOME.cta)}</a>
+    </td></tr></table>
+  </td></tr></table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:32px;"><tr><td align="center"><span style="font-family:${F};font-size:12px;color:#bbb;">www.marketscoupons.com</span></td></tr></table>
 
-    <!-- Features section -->
-    <div style="color:#3D4F63;font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:12px;">FEATURES</div>
+  <!-- DIVIDER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;"><tr><td height="1" style="background-color:#eee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
 
-    ${featureCard('&#128176;', t('section_coupons'), t('desc_coupons'))}
-    ${featureCard('&#128200;', t('section_compare'), t('desc_compare'))}
-    ${featureCard('&#128202;', t('section_analysis'), t('desc_analysis'))}
-    ${featureCard('&#127919;', t('section_gex'), t('desc_gex'))}
-    ${featureCard('&#128197;', t('section_calendar'), t('desc_calendar'))}
-    ${featureCard('&#128221;', t('section_blog'), t('desc_blog'))}
-    ${featureCard('&#129518;', t('section_calc'), t('desc_calc'))}
-    ${featureCard('&#127942;', t('section_quiz'), t('desc_quiz'))}
-    ${featureCard('&#11088;', t('section_loyalty'), t('desc_loyalty'))}
+  <!-- ASSINATURA -->
+  <table cellpadding="0" cellspacing="0" border="0"><tr valign="middle">
+    <td width="44"><table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${C}" style="background-color:${C};border-radius:50%;width:40px;height:40px;text-align:center;vertical-align:middle;">
+      <span style="font-family:${F};font-size:17px;font-weight:800;color:#fff;line-height:40px;display:block;">L</span>
+    </td></tr></table></td>
+    <td style="padding-left:12px;">
+      <p style="font-family:${F};font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 2px;">Lara</p>
+      <p style="font-family:${F};font-size:12px;color:#888;margin:0;">${T({pt:'Equipe Markets Coupons',en:'Markets Coupons Team',es:'Equipo Markets Coupons',fr:'Équipe Markets Coupons',de:'Markets Coupons Team',it:'Team Markets Coupons',ar:'فريق Markets Coupons'})}</p>
+    </td>
+  </tr></table>
+</td></tr>
 
-    <!-- CTA -->
-    <a href="https://www.marketscoupons.com" style="display:block;text-align:center;background:linear-gradient(135deg,#F0B429,#D4991A);color:#07090D;padding:16px;border-radius:10px;font-weight:800;font-size:16px;text-decoration:none;margin-top:20px;letter-spacing:0.5px;">${t('cta')} &rarr;</a>
-  </div>
+<!-- FOOTER -->
+<tr><td bgcolor="#f7f7f7" style="background-color:#f7f7f7;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 16px 16px;padding:22px 40px;text-align:center;">
+  <p style="font-family:${F};font-size:11px;color:#aaa;line-height:1.9;margin:0;">
+    ${gt(INST_WELCOME.footer)}<br>
+    <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#aaa;text-decoration:underline;">${gt(INST_WELCOME.unsub)}</a>
+  </p>
+</td></tr>
 
-  <!-- Footer -->
-  <div style="border-top:1px solid #1C2535;padding:20px 24px;text-align:center;">
-    <div style="font-size:14px;font-weight:900;">
-      <span style="color:#EDF2F7;">Markets</span><span style="color:#F0B429;">Coupons</span>
-    </div>
-    <div style="color:#3D4F63;font-size:10px;margin-top:4px;">www.marketscoupons.com</div>
-    <div style="color:#3D4F63;font-size:11px;margin-top:12px;line-height:1.6;">
-      ${t('footer')}<br>
-      <a href="https://www.marketscoupons.com" style="color:#3D4F63;">${t('unsub')}</a>
-    </div>
-  </div>
-
-  <!-- Gold gradient bottom bar -->
-  <div style="height:4px;background:linear-gradient(90deg,#F0B429,#22C55E,#F0B429);"></div>
-</div>
+</table></td></tr></table>
 </body></html>`;
 }
 
 const _welRL = new Map();
 
 module.exports = async (req, res) => {
-  // CORS
   const origin = req.headers.origin || '';
   const allowed = ['https://www.marketscoupons.com', 'https://marketscoupons.com', 'https://marketscoupons.vercel.app'];
   res.setHeader('Access-Control-Allow-Origin', allowed.includes(origin) ? origin : allowed[0]);
@@ -342,16 +165,9 @@ module.exports = async (req, res) => {
   const { email, name, lang } = req.body || {};
   if (!email) return res.status(400).json({ error: 'Missing email' });
 
-  const useLang = lang || 'en';
+  const useLang = (lang && INST_WELCOME.subject[lang]) ? lang : 'en';
 
   try {
-    // Fetch top 3 firms for the email
-    const firmsResp = await fetch(`${SUPABASE_URL}/rest/v1/cms_firms?active=eq.true&discount=gt.0&order=discount.desc&limit=3&select=id,name,icon_url,color,discount,coupon,type`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-    });
-    const firms = await firmsResp.json();
-
-    // UTM tagging: tag all marketscoupons.com links with utm_source=email&utm_medium=welcome
     const tagUrl = (url) => {
       try {
         if (!/^https?:\/\/(www\.)?marketscoupons\.(com|vercel\.app)/i.test(url)) return url;
@@ -362,11 +178,11 @@ module.exports = async (req, res) => {
         return u.toString();
       } catch { return url; }
     };
-    const htmlContent = buildWelcomeEmail(useLang, Array.isArray(firms) ? firms : [])
-      .replace(/{nome}/g, name || 'Trader')
+
+    const htmlContent = buildWelcomeHtml(useLang)
       .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url)}"`);
 
-    const subject = wt(useLang, 'subject');
+    const subject = INST_WELCOME.subject[useLang] || INST_WELCOME.subject.en;
 
     const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -386,7 +202,6 @@ module.exports = async (req, res) => {
 
     const data = await resp.json();
 
-    // Log
     await fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
       method: 'POST',
       headers: {
