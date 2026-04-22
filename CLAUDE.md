@@ -34,6 +34,32 @@ Se ele digitar **"stop"** ou **"preguiça"** em qualquer momento:
 
 ---
 
+## Guias de Firma — Ilustrações (2026-04-22)
+
+**Regra da firma:** imagens de guia (hero, diagrams, platforms, pros-cons) usam a **cor accent da firma**, NUNCA dourado default. Gerar imagem com shield/laurel/moldura dourada em guia de firma = AI-slop, rejeitado.
+
+| Firma | Accent | Hex | Base existente |
+|---|---|---|---|
+| Apex | Orange | #F97316 | (hero gerado, estilo editorial) |
+| TradeDay | Cyan | #22D3EE | `img/tradeday-bg.png` (checkout bg real Chicago) |
+| FTMO | Blue | #1976D2 | — |
+| Bulenox | (verificar) | — | `img/bulenox-bg.webp` |
+
+### Workflow para firma (aplicar pra cada nova firma)
+1. **Reusar `img/<firm>-bg.webp/png`** (checkout bg) como hero fotográfico em vez de gerar skyline fake
+2. **Logos reais em `img/Plataformas/`** pra card de platforms — canvas uniforme 438x125 (NinjaTrader, Tradovate, Tradingview, Jigsaw já padronizados 2026-04-22)
+3. **Drawdown/diagramas:** SVG editorial com cor accent da firma (não IA)
+4. **Pros/cons:** 2 colunas verde emerald #10B981 / red #EF4444, sem moldura dourada
+5. **Ecoar paleta em TODAS as camadas** — se bg tem candles cyan, holo chart é cyan, stats são cyan, logo é cyan (ver `memory/feedback_reusar_asset_branded.md`)
+
+### Template de mockup
+HTML em `previews/<firm>-<section>-mockup.html` → renderizar via `scripts/render-tradeday-mockup.js` adaptado → PNG em `docs/guias-piloto/img/<firm>-<section>.png`. Canvas 1200x630 @ 2x deviceScaleFactor.
+
+### Regra anti AI-slop
+- NUNCA gerar logo/brand fake via IA (shield "TD", cubo Jigsaw fictício) — buscar logo real no site oficial ou pedir ao user
+- NUNCA default pra dourado em imagem de firma que não tem accent dourado
+- NUNCA moldura barroca/laurel/selo dourado em pros-cons, stats ou cards
+
 ## Guias Educacionais — Ilustrações (2026-04-19)
 
 5 guias edu (G1 Prop Firm, G2 Como Passar, G3 Drawdown, G4 Position Sizing, G5 Sacar Lucros) usam **cor accent semântica por guia** — não monotone preto+dourado:
