@@ -45,10 +45,16 @@ async function mcSyncTD(opts = {}) {
 
   // painel vazio e cenario legitimo (0 vendas ate agora) — marca sync pra nao loop
   if (!leads.length) {
+    const bodyText = (document.body.innerText || '').toLowerCase();
     const hasCommissionsTable = [...document.querySelectorAll('table th')].some(th => /commission|amount/i.test(th.textContent || ''));
-    if (hasCommissionsTable) {
+    const hasCommissionsHeading = /^|\s|>commissions</i.test(document.body.innerHTML) && /commissions/i.test(document.querySelector('h1,h2,h3')?.textContent || '');
+    const hasEmptyMessage = /there are no available data|nothing that matches/i.test(bodyText);
+    // Chegou na pagina de Commissions (por heading OU mensagem de vazio OU tabela), mas sem linhas
+    if (hasCommissionsTable || hasEmptyMessage || hasCommissionsHeading) {
       mcToastTD('TradeDay: 0 transacoes (painel vazio)');
       await mcMarkSyncTD('tradeday');
+      // avisa backend mesmo com zero pra registrar atividade
+      await mcSendTD({ firm:'tradeday', source:'ext_tradeday_v1', rows:[], leads:[] }).catch(()=>{});
       return { ok:true, rows:0, leads:0 };
     }
     mcToastTD('TradeDay: abra a aba Commissions manualmente');
