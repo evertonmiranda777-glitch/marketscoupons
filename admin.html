@@ -389,16 +389,17 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 .cr-hp-type{color:rgba(255,255,255,.45);font-size:14px;font-weight:600;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;}
 .cr-hp-disc{font-family:'Inter',sans-serif;font-weight:900;line-height:.9;letter-spacing:-4px;font-size:140px;margin-bottom:6px;display:inline-flex;align-items:baseline;gap:16px;}
 .cr-hp-disc .off{background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
-.cr-hp-dtype{font-size:14px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:22px;}
+.cr-hp-dtype{font-size:14px;font-weight:700;letter-spacing:7px;text-transform:uppercase;margin-bottom:22px;}
 .cr-hp-cplabel{color:rgba(255,255,255,.6);font-size:16px;font-weight:500;letter-spacing:5px;text-transform:uppercase;margin-bottom:10px;}
-.cr-hp-cpbox{padding:12px 36px;border-radius:12px;margin-bottom:20px;}
-.cr-hp-cpcode{font-size:48px;font-weight:800;letter-spacing:2.5px;line-height:1;}
+.cr-hp-cpbox{padding:14px 40px;border-radius:12px;margin-bottom:20px;}
+.cr-hp-cpcode{font-size:52px;font-weight:900;letter-spacing:3px;line-height:1;}
 .cr-hp-tp{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:22px;padding:8px 16px;}
 .cr-hp-tp .stars{color:#00B67A;font-size:28px;letter-spacing:2px;line-height:1;}
 .cr-hp-tp .score{color:#fff;font-size:24px;font-weight:800;}
 .cr-hp-tp .sep{color:rgba(255,255,255,.45);font-size:18px;}
 .cr-hp-tp .count{color:#fff;font-size:18px;font-weight:600;}
-.cr-hp-tp .brand{color:#00B67A;font-size:18px;font-weight:700;letter-spacing:.5px;}
+.cr-hp-tp .brand{color:#fff;font-size:18px;font-weight:800;letter-spacing:.3px;}
+.cr-hp-tp .brand::before{content:"★";color:#00B67A;margin-right:4px;font-size:16px;}
 .cr-hp-prices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%;max-width:780px;}
 .cr-hp-pc{position:relative;border-radius:14px;background:rgba(0,0,0,.35);padding:22px 16px 14px;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .cr-hp-pc .size-pill{position:absolute;top:-14px;left:50%;transform:translateX(-50%);color:#0A1118;font-size:17px;font-weight:800;letter-spacing:1px;padding:5px 18px;border-radius:10px;white-space:nowrap;}
@@ -11441,7 +11442,7 @@ function renderHeroPremium(firm, content, L) {
   if (crChk('cr-show-coupon')) {
     if (coupon) {
       h += `<div class="cr-hp-cplabel">${L.exclusive_coupon || (_crLang==='pt'?'CUPOM EXCLUSIVO':'EXCLUSIVE COUPON')}</div>`;
-      h += `<div class="cr-hp-cpbox" style="border:2px dashed ${color};background:${color}26;box-shadow:inset 0 0 30px ${color}1F;"><div class="cr-hp-cpcode" style="color:${color};">${escHtml(coupon)}</div></div>`;
+      h += `<div class="cr-hp-cpbox" style="border:2px dashed ${color};background:${color}2E;box-shadow:inset 0 0 40px ${color}29, 0 0 32px ${color}40;"><div class="cr-hp-cpcode" style="color:${color};text-shadow:0 0 24px ${color}80;">${escHtml(coupon)}</div></div>`;
     } else {
       const GREEN = '#10B981';
       h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
