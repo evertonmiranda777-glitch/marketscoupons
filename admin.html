@@ -4360,7 +4360,12 @@ async function renderROI(ev, days) {
   const attributions = attrRes.data || [];
   const fxUSDtoBRL = fx || 5.5;
 
-  // Aggregate revenue by source (normalized) and campaign
+  // Painel em BRL (moeda nativa do Meta Ads).
+  // ad_spend manual: assume USD legacy → converte pra BRL.
+  // ad_spend_daily: usa currency do registro (normalmente BRL).
+  // coupon_attributions.amount: USD → converte pra BRL.
+
+  // Aggregate revenue by source/campaign — em USD (moeda nativa dos afiliados)
   const revBySource = {};
   const revByCampaign = {};
   let totalRevenue = 0;
@@ -4374,44 +4379,45 @@ async function renderROI(ev, days) {
     if (camp) revByCampaign[camp] = (revByCampaign[camp] || 0) + amt;
   });
 
-  // Aggregate spend by source
+  // Aggregate spend by source — em BRL
   const spendBySource = {};
   const spendByCampaign = {};
   let totalSpend = 0, totalImpressions = 0, totalClicks = 0;
   spends.forEach(s => {
     const src = s.source || 'other';
+    const cur = s.currency || 'USD';
+    const amtBRL = cur === 'BRL' ? Number(s.amount||0) : Number(s.amount||0) * fxUSDtoBRL;
     if(!spendBySource[src]) spendBySource[src] = { amount:0, impressions:0, clicks:0 };
-    spendBySource[src].amount += parseFloat(s.amount||0);
+    spendBySource[src].amount += amtBRL;
     spendBySource[src].impressions += (s.impressions||0);
     spendBySource[src].clicks += (s.clicks||0);
-    totalSpend += parseFloat(s.amount||0);
+    totalSpend += amtBRL;
     totalImpressions += (s.impressions||0);
     totalClicks += (s.clicks||0);
     if(s.campaign) {
       const key = s.campaign;
       if(!spendByCampaign[key]) spendByCampaign[key] = { source:src, amount:0, impressions:0, clicks:0 };
-      spendByCampaign[key].amount += parseFloat(s.amount||0);
+      spendByCampaign[key].amount += amtBRL;
       spendByCampaign[key].impressions += (s.impressions||0);
       spendByCampaign[key].clicks += (s.clicks||0);
     }
   });
 
-  // ── Meta Ads auto-sync (ad_spend_daily) — convert BRL→USD, bucket under 'meta' ──
-  // Distribuído proporcionalmente entre facebook/instagram com base em checkouts atribuídos.
-  let metaSpendUSD = 0, metaClicks = 0, metaImpressions = 0;
+  // ── Meta Ads auto-sync (ad_spend_daily) — tudo em BRL ──
+  let metaSpendBRL = 0, metaClicks = 0, metaImpressions = 0;
   const metaByCampaign = {};
   dailySpends.forEach(s => {
-    const amtUSD = (s.currency === 'USD') ? Number(s.spend||0) : Number(s.spend||0) / fxUSDtoBRL;
-    metaSpendUSD += amtUSD;
+    const amtBRL = (s.currency === 'USD') ? Number(s.spend||0) * fxUSDtoBRL : Number(s.spend||0);
+    metaSpendBRL += amtBRL;
     metaClicks += (s.clicks||0);
     metaImpressions += (s.impressions||0);
     const key = s.campaign_name || '(sem campaign)';
     if(!metaByCampaign[key]) metaByCampaign[key] = { amount:0, clicks:0, impressions:0 };
-    metaByCampaign[key].amount += amtUSD;
+    metaByCampaign[key].amount += amtBRL;
     metaByCampaign[key].clicks += (s.clicks||0);
     metaByCampaign[key].impressions += (s.impressions||0);
   });
-  totalSpend += metaSpendUSD;
+  totalSpend += metaSpendBRL;
   totalClicks += metaClicks;
   totalImpressions += metaImpressions;
   // Merge per-campaign (evita duplicar com ad_spend manual — prioriza auto-sync se mesmo nome)
@@ -4464,21 +4470,25 @@ async function renderROI(ev, days) {
   });
 
   // ── KPIs ──
+  // totalSpend em BRL, totalRevenue em USD. Pra ROAS/ROI, converte receita pra BRL.
+  const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const revBRL = totalRevenue * fxUSDtoBRL;
   const cpa = totalCheckouts > 0 ? (totalSpend / totalCheckouts) : 0;
   const ctr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100) : 0;
   const cpc = totalClicks > 0 ? (totalSpend / totalClicks) : 0;
   const convRate = totalPV > 0 ? ((totalCheckouts / totalPV) * 100) : 0;
 
-  const roas = totalSpend > 0 ? (totalRevenue / totalSpend) : 0;
-  const roi = totalSpend > 0 ? ((totalRevenue - totalSpend) / totalSpend * 100) : 0;
+  const roas = totalSpend > 0 ? (revBRL / totalSpend) : 0;
+  const roi = totalSpend > 0 ? ((revBRL - totalSpend) / totalSpend * 100) : 0;
 
   const kpiData = [
-    { label:'Total Investido', val:'$'+totalSpend.toFixed(2), sub:(spends.length+dailySpends.length)+' registro'+((spends.length+dailySpends.length)!==1?'s':'')+(metaSpendUSD>0?' (Meta auto)':''), color:'var(--red)', cls:'r' },
-    { label:'Receita Atribuída', val: totalRevenue>0?'$'+totalRevenue.toFixed(2):'—', sub:attributions.length+' venda'+(attributions.length!==1?'s':''), color:'var(--green)', cls:'g' },
+    { label:'Total Investido', val:fmtBRL(totalSpend), sub:(spends.length+dailySpends.length)+' registro'+((spends.length+dailySpends.length)!==1?'s':'')+(metaSpendBRL>0?' (Meta auto)':''), color:'var(--red)', cls:'r' },
+    { label:'Receita Atribuída', val: totalRevenue>0?fmtUSD(totalRevenue):'—', sub:attributions.length+' venda'+(attributions.length!==1?'s':''), color:'var(--green)', cls:'g' },
     { label:'ROAS', val: roas>0?roas.toFixed(2)+'x':'—', sub: roi!==0?(roi>0?'+':'')+roi.toFixed(0)+'% ROI':'sem gasto', color: roas>=1?'var(--green)':'var(--red)', cls:'' },
     { label:'Checkouts (Ads)', val:totalCheckouts.toString(), sub:totalCoupons+' cupons copiados', color:'var(--green)', cls:'g' },
-    { label:'CPA', val: cpa>0?'$'+cpa.toFixed(2):'—', sub:'custo por checkout', color:'var(--gold)', cls:'y' },
-    { label:'CPC Médio', val: cpc>0?'$'+cpc.toFixed(2):'—', sub:totalClicks.toLocaleString('pt-BR')+' cliques', color:'var(--blue)', cls:'b' },
+    { label:'CPA', val: cpa>0?fmtBRL(cpa):'—', sub:'custo por checkout', color:'var(--gold)', cls:'y' },
+    { label:'CPC Médio', val: cpc>0?fmtBRL(cpc):'—', sub:totalClicks.toLocaleString('pt-BR')+' cliques', color:'var(--blue)', cls:'b' },
     { label:'Conv. Rate', val: convRate>0?convRate.toFixed(2)+'%':'—', sub:'checkout / pageview', color:'#A855F7', cls:'' },
   ];
   document.getElementById('trk-roi-kpis').innerHTML = kpiData.map(k => `
@@ -4512,7 +4522,7 @@ async function renderROI(ev, days) {
       const conv = r.cv.pv > 0 ? ((r.cv.checkout / r.cv.pv) * 100).toFixed(1)+'%' : '—';
       const barW = (r.cv.pv / maxPV * 100).toFixed(0);
       const srcRev = revBySource[r.src] || 0;
-      const srcRoas = r.sp.amount > 0 ? (srcRev / r.sp.amount) : 0;
+      const srcRoas = r.sp.amount > 0 ? ((srcRev * fxUSDtoBRL) / r.sp.amount) : 0;
       return `<tr>
         <td>
           <div style="display:flex;align-items:center;gap:10px;">
@@ -4523,14 +4533,14 @@ async function renderROI(ev, days) {
             </div>
           </div>
         </td>
-        <td style="text-align:right;font-weight:700;color:var(--red);font-size:12px;">${r.sp.amount>0?'$'+r.sp.amount.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
-        <td style="text-align:right;font-weight:700;color:var(--green);font-size:12px;">${srcRev>0?'$'+srcRev.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-weight:700;color:var(--red);font-size:12px;">${r.sp.amount>0?fmtBRL(r.sp.amount):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green);font-size:12px;">${srcRev>0?fmtUSD(srcRev):'<span style="color:var(--t3);">—</span>'}</td>
         <td style="text-align:right;font-size:12px;font-weight:700;color:${srcRoas>=1?'var(--green)':srcRoas>0?'var(--red)':'var(--t3)'};">${srcRoas>0?srcRoas.toFixed(2)+'x':'—'}</td>
         <td style="text-align:right;font-size:12px;font-weight:600;">${r.cv.pv.toLocaleString('pt-BR')}</td>
         <td style="text-align:right;font-size:12px;color:var(--gold);font-weight:600;">${r.cv.coupon||'<span style="color:var(--t3);">0</span>'}</td>
         <td style="text-align:right;font-size:12px;color:var(--green);font-weight:700;">${r.cv.checkout||'<span style="color:var(--t3);">0</span>'}</td>
         <td style="text-align:right;font-size:12px;font-weight:600;color:${r.cv.checkout>0?'#A855F7':'var(--t3)'};">${conv}</td>
-        <td style="text-align:right;font-size:12px;font-weight:600;color:${srcCpa>0?'var(--gold)':'var(--t3)'};">${srcCpa>0?'$'+srcCpa.toFixed(2):'—'}</td>
+        <td style="text-align:right;font-size:12px;font-weight:600;color:${srcCpa>0?'var(--gold)':'var(--t3)'};">${srcCpa>0?fmtBRL(srcCpa):'—'}</td>
       </tr>`;
     }).join('')}</tbody>`;
   } else {
@@ -4558,19 +4568,19 @@ async function renderROI(ev, days) {
       const info = _srcInfo(r.sp.source!=='—'?r.sp.source:r.cv.source);
       const campCpa = r.cv.checkout > 0 && r.sp.amount > 0 ? (r.sp.amount / r.cv.checkout) : 0;
       const campRev = revByCampaign[r.camp] || 0;
-      const campRoas = r.sp.amount > 0 ? (campRev / r.sp.amount) : 0;
+      const campRoas = r.sp.amount > 0 ? ((campRev * fxUSDtoBRL) / r.sp.amount) : 0;
       return `<tr>
         <td style="font-weight:600;font-size:11px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.camp}">
           <span style="font-family:monospace;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;font-size:10px;">${r.camp}</span>
         </td>
         <td><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:${info.color};font-weight:600;"><span style="width:8px;height:8px;border-radius:50%;background:${info.color};display:inline-block;"></span>${info.label}</span></td>
-        <td style="text-align:right;font-weight:700;color:var(--red);font-size:11px;">${r.sp.amount>0?'$'+r.sp.amount.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
-        <td style="text-align:right;font-weight:700;color:var(--green);font-size:11px;">${campRev>0?'$'+campRev.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-weight:700;color:var(--red);font-size:11px;">${r.sp.amount>0?fmtBRL(r.sp.amount):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green);font-size:11px;">${campRev>0?fmtUSD(campRev):'<span style="color:var(--t3);">—</span>'}</td>
         <td style="text-align:right;font-size:11px;font-weight:700;color:${campRoas>=1?'var(--green)':campRoas>0?'var(--red)':'var(--t3)'};">${campRoas>0?campRoas.toFixed(2)+'x':'—'}</td>
         <td style="text-align:right;font-size:11px;">${r.cv.pv.toLocaleString('pt-BR')}</td>
         <td style="text-align:right;font-size:11px;color:var(--gold);font-weight:600;">${r.cv.coupon||'0'}</td>
         <td style="text-align:right;font-size:11px;color:var(--green);font-weight:700;">${r.cv.checkout||'0'}</td>
-        <td style="text-align:right;font-size:11px;font-weight:600;color:${campCpa>0?'var(--gold)':'var(--t3)'};">${campCpa>0?'$'+campCpa.toFixed(2):'—'}</td>
+        <td style="text-align:right;font-size:11px;font-weight:600;color:${campCpa>0?'var(--gold)':'var(--t3)'};">${campCpa>0?fmtBRL(campCpa):'—'}</td>
       </tr>`;
     }).join('')}</tbody>`;
   } else {
