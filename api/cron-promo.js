@@ -252,41 +252,29 @@ module.exports = async (req, res) => {
         .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url)}"`);
 
       for (const sub of group) {
+        // Brevo budget hit? Stop the bulk send — resumes tomorrow when credits reset.
+        // Resend path intentionally disabled for bulk (lands in Gmail Promotions tab).
+        if (brevoRemaining <= 0) break;
+
         const personalizedHtml = htmlContent.replace(/{nome}/g, sub.name || 'Trader');
-        const useBrevo = brevoRemaining > 0;
         try {
-          let ok = false;
-          if (useBrevo) {
-            const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
-              method: 'POST',
-              headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
-              body: JSON.stringify({
-                sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
-                to: [{ email: sub.email, name: sub.name || '' }],
-                subject, htmlContent: personalizedHtml,
-                tags: ['promo-auto', 'lang-' + lang],
-              }),
-            });
-            ok = resp.ok;
-            if (ok) brevoRemaining--;
-          } else if (RESEND_KEY) {
-            const resp = await fetch('https://api.resend.com/emails', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-              body: JSON.stringify({
-                from: 'Markets Coupons <offers@marketscoupons.com>',
-                to: [sub.email], subject, html: personalizedHtml,
-                tags: [{ name: 'type', value: 'promo-auto' }, { name: 'lang', value: lang }],
-              }),
-            });
-            ok = resp.ok;
-          }
-          if (ok) sent++; else failed++;
+          const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
+            body: JSON.stringify({
+              sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
+              to: [{ email: sub.email, name: sub.name || '' }],
+              subject, htmlContent: personalizedHtml,
+              tags: ['promo-auto', 'lang-' + lang],
+            }),
+          });
+          if (resp.ok) { sent++; brevoRemaining--; } else failed++;
         } catch { failed++; }
 
         // Rate limit
         await new Promise(r => setTimeout(r, 150));
       }
+      if (brevoRemaining <= 0) break; // outer lang loop also stops
     }
 
     // 5. Log to Supabase

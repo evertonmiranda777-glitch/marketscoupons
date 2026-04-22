@@ -185,19 +185,18 @@ module.exports = async (req, res) => {
       } else if (useProvider === 'brevo') {
         result = await sendViaBrevo(recipient, finalSubject, finalHtml);
       } else {
-        // Auto: try Brevo first while budget allows (keeping BREVO_DAILY_RESERVE free),
-        // then fallback to Resend when Brevo budget is exhausted or call fails.
+        // Auto: Brevo until budget hits the reserve, then STOP.
+        // Resend fallback disabled for bulk because it lands in Gmail Promotions tab.
+        // If Brevo call itself errors (network/5xx), try Resend once as single-email rescue.
         if (brevoBudget > 0 && BREVO_KEY) {
           result = await sendViaBrevo(recipient, finalSubject, finalHtml);
           if (result.status === 'sent') brevoBudget--;
           if (result.status === 'failed' && RESEND_KEY) {
-            console.log(`[AUTO] Brevo failed for ${recipient.email}, trying Resend...`);
+            console.log(`[AUTO] Brevo errored for ${recipient.email}, trying Resend as rescue...`);
             result = await sendViaResend(recipient, finalSubject, finalHtml);
           }
-        } else if (RESEND_KEY) {
-          result = await sendViaResend(recipient, finalSubject, finalHtml);
         } else {
-          result = { email: recipient.email, status: 'failed', response: { error: 'Brevo reserve hit and Resend not configured' } };
+          result = { email: recipient.email, status: 'skipped', provider: 'brevo', response: { error: 'Brevo daily reserve hit — resumes tomorrow' } };
         }
       }
     } catch (err) {
