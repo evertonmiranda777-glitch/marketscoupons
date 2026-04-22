@@ -8,10 +8,18 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'POST only' });
   }
   try {
-    const { html, styles, width, height } = req.body || {};
+    const { html, styles, width, height, origin } = req.body || {};
     if (!html || !width || !height) {
       return res.status(400).json({ error: 'missing html/width/height' });
     }
+
+    const base = (origin || 'https://www.marketscoupons.com/').replace(/\/$/, '') + '/';
+    const absolutize = (s) => (s || '')
+      .replace(/url\((['"]?)(?!https?:|data:|\/\/|#)([^'")]+)\1\)/g, (_m, q, p) => `url(${q}${base}${p.replace(/^\/+/, '')}${q})`)
+      .replace(/(src|href)=(['"])(?!https?:|data:|\/\/|#|mailto:)([^'"]+)\2/g, (_m, attr, q, p) => `${attr}=${q}${base}${p.replace(/^\/+/, '')}${q}`);
+
+    const absHtml = absolutize(html);
+    const absStyles = absolutize(styles);
 
     const userId = process.env.HCTI_USER_ID;
     const apiKey = process.env.HCTI_API_KEY;
@@ -34,8 +42,8 @@ body{width:${width}px;height:${height}px;overflow:hidden;}
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        html,
-        css: baseCss + '\n' + (styles || ''),
+        html: absHtml,
+        css: baseCss + '\n' + (absStyles || ''),
         google_fonts: 'Inter:400,500,600,700,800,900',
         viewport_width: width,
         viewport_height: height,
