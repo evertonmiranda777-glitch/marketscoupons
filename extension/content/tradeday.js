@@ -28,27 +28,17 @@ async function mcMarkSyncTD(firmId) {
 
 async function mcSyncTD(opts = {}) {
   // PostAffiliatePro: transacoes estao em #Commissions, nao em #Home
-  const onCommissions = /#Commissions/i.test(location.hash);
+  const onCommissions = /commission/i.test(location.hash);
   if (!onCommissions) {
-    // tenta achar e clicar no link "Commissions" na sidebar
-    const navEl = [...document.querySelectorAll('a,span,div,li')].find(el => {
-      const t = (el.textContent || '').trim().toLowerCase();
-      return t === 'commissions' && el.children.length <= 3;
-    });
-    if (navEl) navEl.click();
-    else location.hash = '#Commissions';
-    // espera tabela renderizar (AJAX)
-    let found = [];
-    for (let i = 0; i < 24; i++) {
-      await new Promise(r => setTimeout(r, 500));
-      found = mcScrapeTDTable();
-      if (found.length) break;
-      // tabela vazia mas ja renderizada? detecta cabecalho
-      if (document.querySelector('table thead th, table tr th')) {
-        const heads = [...document.querySelectorAll('table th')].map(x => x.textContent.toLowerCase());
-        if (heads.some(h => h.includes('commission') || h.includes('amount'))) break;
-      }
-    }
+    await mcTDNavigateToCommissions();
+  }
+  // espera tabela renderizar (AJAX) — ate 15s
+  for (let i = 0; i < 30; i++) {
+    await new Promise(r => setTimeout(r, 500));
+    const rows = mcScrapeTDTable();
+    if (rows.length) break;
+    const heads = [...document.querySelectorAll('table th')].map(x => (x.textContent || '').toLowerCase());
+    if (heads.some(h => h.includes('commission') || h.includes('amount'))) break;
   }
 
   const leads = mcScrapeTDTable();
@@ -87,6 +77,34 @@ async function mcSyncTD(opts = {}) {
     mcToastTD('TradeDay: erro — ' + (out.error || '?'));
   }
   return out;
+}
+
+async function mcTDNavigateToCommissions() {
+  // 1. Procura link "Commissions" na sidebar (exato, case insensitive)
+  const candidates = [...document.querySelectorAll('a,span,div,li,button')].filter(el => {
+    const t = (el.textContent || '').trim();
+    return /^commissions$/i.test(t) && (el.offsetParent !== null);
+  });
+  // Prefere o mais raso (menos filhos = link direto)
+  candidates.sort((a,b) => (a.querySelectorAll('*').length || 0) - (b.querySelectorAll('*').length || 0));
+  const target = candidates[0];
+  if (target) {
+    // Dispara mousedown + mouseup + click pra SPAs que nao escutam .click() puro
+    ['mousedown','mouseup','click'].forEach(type => {
+      target.dispatchEvent(new MouseEvent(type, { bubbles:true, cancelable:true, view:window, button:0 }));
+    });
+    await new Promise(r => setTimeout(r, 600));
+    if (/commission/i.test(location.hash)) return true;
+  }
+  // 2. Fallback: tenta hashes conhecidos do PAP
+  const hashes = ['#Commissions','#CommissionsOverview','#AffiliateCommissions','#AffiliateCommissionsOverview'];
+  for (const h of hashes) {
+    location.hash = h;
+    await new Promise(r => setTimeout(r, 700));
+    // se tabela com Commission apareceu, parou aqui
+    if ([...document.querySelectorAll('table th')].some(th => /commission|amount/i.test(th.textContent || ''))) return true;
+  }
+  return false;
 }
 
 function mcScrapeTDTable() {
