@@ -2044,6 +2044,23 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div class="cr-actions" style="margin-top:8px;">
             <button class="btn-primary" onclick="exportCreative()">Baixar PNG</button>
           </div>
+
+          <!-- COPY INSTAGRAM -->
+          <div class="cr-field" style="margin-top:18px;border-top:1px solid rgba(255,255,255,.1);padding-top:18px;">
+            <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span>Copy para Instagram</span>
+              <div class="cr-format-pills" style="gap:6px;">
+                <div class="cr-fmt active" id="cr-copy-lang-pt" onclick="setCrCopyLang('pt',this)" style="padding:4px 10px;font-size:11px;"><div class="nm">PT</div></div>
+                <div class="cr-fmt" id="cr-copy-lang-en" onclick="setCrCopyLang('en',this)" style="padding:4px 10px;font-size:11px;"><div class="nm">EN</div></div>
+                <div class="cr-fmt" id="cr-copy-lang-es" onclick="setCrCopyLang('es',this)" style="padding:4px 10px;font-size:11px;"><div class="nm">ES</div></div>
+              </div>
+            </label>
+            <textarea id="cr-copy-out" placeholder="Clique em &quot;Gerar copy&quot; para criar uma caption Instagram com hook, benefícios reais, cupom e hashtags." style="width:100%;min-height:220px;margin-top:8px;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:var(--t1);font-family:'Inter',sans-serif;font-size:13px;line-height:1.55;resize:vertical;"></textarea>
+            <div class="cr-actions" style="margin-top:8px;display:flex;gap:8px;">
+              <button class="btn-primary" id="cr-copy-gen-btn" onclick="generateFirmCopy()">Gerar copy</button>
+              <button class="btn-secondary" onclick="copyFirmCopyToClipboard()">Copiar</button>
+            </div>
+          </div>
         </div>
         <!-- PREVIEW -->
         <div class="cr-preview-wrap">
@@ -11258,6 +11275,61 @@ function setCrLang(lang, btn) {
   if (pills[1]) pills[1].querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   updateCrPreview();
+}
+
+let _crCopyLang = 'pt';
+function setCrCopyLang(lang, btn) {
+  _crCopyLang = lang;
+  ['pt','en','es'].forEach(l => {
+    const el = document.getElementById('cr-copy-lang-' + l);
+    if (el) el.classList.toggle('active', l === lang);
+  });
+}
+
+async function generateFirmCopy() {
+  const firmId = document.getElementById('cr-firm')?.value;
+  const out = document.getElementById('cr-copy-out');
+  const btn = document.getElementById('cr-copy-gen-btn');
+  if (!firmId) { alert('Selecione uma firma primeiro'); return; }
+  if (!out || !btn) return;
+  const origLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Gerando...';
+  out.value = '';
+  try {
+    const r = await fetch('/api/gen-firm-copy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firmId, lang: _crCopyLang }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'Erro');
+    out.value = data.copy || '';
+  } catch (e) {
+    out.value = '[Erro ao gerar copy: ' + (e.message || 'desconhecido') + ']';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = origLabel;
+  }
+}
+
+async function copyFirmCopyToClipboard() {
+  const out = document.getElementById('cr-copy-out');
+  if (!out || !out.value) { alert('Gere a copy primeiro'); return; }
+  try {
+    await navigator.clipboard.writeText(out.value);
+    const btns = document.querySelectorAll('.cr-actions .btn-secondary');
+    btns.forEach(b => {
+      if (b.textContent === 'Copiar' || b.textContent === 'Copiado!') {
+        const orig = 'Copiar';
+        b.textContent = 'Copiado!';
+        setTimeout(() => { b.textContent = orig; }, 1500);
+      }
+    });
+  } catch (e) {
+    out.select();
+    document.execCommand('copy');
+  }
 }
 
 function setCrFormat(fmt, btn) {
