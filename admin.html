@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.1" integrity="sha384-6uukdHiftld8tJvsEnb1GXdOm6/h98QIKjmAy6BI4WpoHahjbaBL8IVhavKP2sxI" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" integrity="sha384-DhxhYObIMeMNGyAG7iK11OHzBIKyEIeRL0ad1iFPAOwZB8iirUlTT0O/WJJUk8+o" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/modern-screenshot/dist/index.umd.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
 <style>
 :root{
@@ -11434,7 +11435,7 @@ function renderHeroPremium(firm, content, L) {
 
   // Discount
   if (crChk('cr-show-discount') && firm.discount) {
-    h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 0 50px ${color}99);"><span style="color:${color};">${firm.discount}%</span><span class="off" style="color:#FFF7E3;">OFF</span></div>`;
+    h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 0 50px ${color}99);"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
     h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
   }
 
@@ -11677,17 +11678,21 @@ async function exportCreative() {
   // Wait a frame for layout to settle
   await new Promise(r => requestAnimationFrame(r));
   try {
-    const c = await html2canvas(canvas, {
-      scale: 1,
-      useCORS: true,
-      backgroundColor: '#060810',
-      width: 1080,
-      height: _crFormat === 'story' ? 1920 : 1350
-    });
+    const h = _crFormat === 'story' ? 1920 : 1350;
+    let dataUrl;
+    if (window.modernScreenshot?.domToPng) {
+      dataUrl = await window.modernScreenshot.domToPng(canvas, {
+        width: 1080, height: h, scale: 1, backgroundColor: '#060810',
+        style: { margin: '0' }
+      });
+    } else {
+      const c = await html2canvas(canvas, { scale:1, useCORS:true, backgroundColor:'#060810', width:1080, height:h });
+      dataUrl = c.toDataURL('image/png');
+    }
     const link = document.createElement('a');
     const firmId = document.getElementById('cr-firm')?.value || 'geral';
     link.download = `mc-${firmId}-${_crFormat}-${_crLang}-${Date.now()}.png`;
-    link.href = c.toDataURL('image/png');
+    link.href = dataUrl;
     link.click();
     toast('Criativo exportado!');
   } catch(e) { toast('Erro ao exportar: ' + e.message, 'error'); }
