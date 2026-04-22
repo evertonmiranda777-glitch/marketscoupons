@@ -11086,7 +11086,7 @@ function renderCadastrosTable() {
   if (q) filtered = filtered.filter(p => ((p.full_name||'')+(p.email||'')).toLowerCase().includes(q));
   const tbl = document.getElementById('tbl-cadastros');
   const now = Date.now();
-  tbl.innerHTML = `<thead><tr><th style="width:40px;text-align:center;">#</th><th>Nome</th><th>Email</th><th>Cadastro</th><th>Última Atividade</th><th style="width:70px;text-align:center;">Status</th></tr></thead><tbody>`
+  tbl.innerHTML = `<thead><tr><th style="width:40px;text-align:center;">#</th><th>Nome</th><th>Email</th><th>Cadastro</th><th>Última Atividade</th><th style="width:70px;text-align:center;">Status</th><th style="width:50px;text-align:center;">Ações</th></tr></thead><tbody>`
     + (filtered.length ? filtered.slice(0,200).map((p,i) => {
       const created = p.created_at ? new Date(p.created_at) : null;
       const updated = p.updated_at ? new Date(p.updated_at) : null;
@@ -11100,8 +11100,30 @@ function renderCadastrosTable() {
       <td style="font-size:11px;color:var(--t2);">${created ? created.toLocaleDateString('pt-BR') : '—'}</td>
       <td style="font-size:11px;color:var(--t2);">${updated ? updated.toLocaleDateString('pt-BR') : '—'}</td>
       <td style="text-align:center;"><span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:${isRecent?'var(--green)':'var(--t3)'};"><span style="width:6px;height:6px;border-radius:50%;background:${isRecent?'var(--green)':'var(--t3)'};display:inline-block;"></span>${isRecent?'Ativo':'Inativo'}</span></td>
-    </tr>`;}).join('') : '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--t3);">Nenhum cadastro encontrado</td></tr>') + `</tbody>`;
+      <td style="text-align:center;"><button onclick="deleteUserFull('${(p.email||'').replace(/'/g,'\\\'')}')" title="Excluir usuário" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#EF4444;cursor:pointer;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600;">✕</button></td>
+    </tr>`;}).join('') : '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--t3);">Nenhum cadastro encontrado</td></tr>') + `</tbody>`;
   document.getElementById('cadastros-count').textContent = `${filtered.length} cadastros`;
+}
+
+async function deleteUserFull(email){
+  if(!email) return;
+  if(!confirm(`Excluir PERMANENTEMENTE o usuário ${email}?\n\nIsso remove: auth, profile, subscribers, loyalty e favoritos. Não tem como desfazer.`)) return;
+  const token = localStorage.getItem('mc_admin_delete_token') || prompt('Token de admin (ADMIN_DELETE_TOKEN):');
+  if(!token) { toast('Cancelado — sem token.','warn'); return; }
+  localStorage.setItem('mc_admin_delete_token', token);
+  try{
+    const resp = await fetch('/api/delete-user', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, adminToken: token })
+    });
+    const data = await resp.json();
+    if(!resp.ok){
+      if(resp.status===401){ localStorage.removeItem('mc_admin_delete_token'); }
+      toast('Falha: '+(data.error||resp.status),'err'); return;
+    }
+    toast('Usuário removido.');
+    await loadCadastros();
+  }catch(e){ toast('Erro: '+e.message,'err'); }
 }
 
 function renderCadastrosCharts(profiles) {
