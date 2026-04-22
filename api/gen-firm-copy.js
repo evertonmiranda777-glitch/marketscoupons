@@ -220,7 +220,7 @@ Regras duras:
   c) **Inimigo externo** (contrast + unity): "Enquanto FTMO cobra €155, aqui são $19."
   d) **Pergunta específica** (consistency + self-relevance): "Quantos dias você levou pra passar seu último desafio? Aqui passa em 1."
   e) **Callout raw** (mimetic desire + status): "Trader que tá cansado de firma fraca: lê isso."
-- Linha 2 (opcional, curta) = PIVOT que conecta a dor → possibilidade. Ex: "Mas e se você tocasse 20 contas ao mesmo tempo?"
+- Linha 2 (opcional, curta) = PIVOT que conecta a dor → possibilidade. Ex: "E se você tivesse 20 contas rodando ao mesmo tempo?" ou "Aí achei essa." ou "Então parei de pagar caro."
 
 ## BODY (4-5 bullets com "→ ") — JOB: preempção de objeção + Hormozi value eq
 Cada bullet = UM fato concreto com NÚMERO REAL da firma.
@@ -274,6 +274,7 @@ ${fewShot}
 ❌ Nunca:
   - Hook genérico "Quer X?" ou "Cansado de Y?"
   - Palavras vazias: "incrível", "excelente", "top do mercado", "oportunidade única", "realize seus sonhos", "transforme", "eleve", "chegou a hora"
+  - Verbos MAL COLOCADOS com contas de trading. Em PT-BR diz-se: "ter X contas", "operar X contas", "rodar X contas", "gerenciar X contas". NUNCA "tocar contas" (soa como tocar gado/boi), NUNCA "puxar contas", NUNCA "bater X contas".
   - Exclamações (remove todos os "!")
   - Markdown (**negrito**, *itálico*)
   - Aspas envolvendo a caption
