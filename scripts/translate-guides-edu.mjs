@@ -42,10 +42,12 @@ const GUIDES = [
   { id: 'g4', slug: 'position-sizing' },
   { id: 'g5', slug: 'como-sacar-lucros' },
   { id: 'cmp1', slug: 'comparativo-apex-tpt-bulenox' },
+  { id: 'tdy', slug: 'tradeday-review' },
 ];
 
 const LANGS = [
   { code: 'en', name: 'English', locale: 'en_US', dir: 'ltr' },
+  { code: 'pt', name: 'Portuguese (Brazil)', locale: 'pt_BR', dir: 'ltr' },
   { code: 'es', name: 'Spanish (Spain)', locale: 'es_ES', dir: 'ltr' },
   { code: 'it', name: 'Italian', locale: 'it_IT', dir: 'ltr' },
   { code: 'fr', name: 'French', locale: 'fr_FR', dir: 'ltr' },
@@ -134,7 +136,7 @@ async function translateFile(srcPath, dstPath, lang) {
 
 async function main() {
   const args = process.argv.slice(2).map(a => a.toLowerCase());
-  const filterGuide = args.find(a => /^(g[1-5]|cmp\d+)$/.test(a));
+  const filterGuide = args.find(a => /^(g[1-5]|cmp\d+|tdy)$/.test(a));
   const filterLang = args.find(a => LANGS.some(l => l.code === a));
 
   const guides = filterGuide ? GUIDES.filter(g => g.id === filterGuide) : GUIDES;
