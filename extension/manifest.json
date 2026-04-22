@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MarketsCoupons Sync",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Sincroniza dados de afiliado das prop firms com o admin MarketsCoupons.",
   "permissions": ["storage", "cookies", "activeTab", "scripting"],
   "host_permissions": [
