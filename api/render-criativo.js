@@ -37,11 +37,14 @@ ${styles || ''}
 <div id="render-root">${html}</div>
 </body></html>`;
 
+    if (typeof chromium.setHeadlessMode !== 'undefined') chromium.setHeadlessMode = true;
+    if (typeof chromium.setGraphicsMode !== 'undefined') chromium.setGraphicsMode = false;
+
     browser = await puppeteer.launch({
-      args: chromium.args,
+      args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--single-process'],
       defaultViewport: { width, height, deviceScaleFactor: 1 },
       executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
+      headless: 'new',
     });
 
     const page = await browser.newPage();
