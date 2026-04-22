@@ -4155,14 +4155,19 @@ function renderAchPlans(){
   const firm=CHECKOUT_FIRMS.find(f=>f.id===achActiveFirm);if(!firm)return;
   const g=document.getElementById('ach-plans-grid');if(!g)return;
   const plans=_achGetPlans(firm);
+  const curType=achActiveType[firm.id]||firm.types[0];
   g.innerHTML=plans.map(p=>{
     const state=(achState[firm.id]||{})[p.size]||{plat:firm.platforms[0]};
     const sid=p.size.replace(/[^a-z0-9]/gi,'_');
+    // Supabase-first price lookup with hardcoded fallback
+    const pp=getPlanPrice(firm.id, curType, p.size);
+    const disc=pp.d||p.disc;
+    const orig=pp.o||p.orig;
     return`<div class="ach-card${p.featured?' featured':''}">
       <div class="ach-card-header">
         ${p.featured?`<div class="ach-featured-badge">${t('ach_popular')}</div>`:''}
         <div class="ach-plan-name">${p.size}</div>
-        <div class="ach-plan-price"><strong>${p.disc}</strong> ${t('ach_mes')} ${p.orig!=='—'?`<del>${p.orig}</del>`:''}</div>
+        <div class="ach-plan-price"><strong>${disc}</strong> ${t('ach_mes')} ${orig!=='—'?`<del>${orig}</del>`:''}</div>
         <div class="ach-stats">
           <div class="ach-stat"><div class="ach-stat-lbl">${t('ach_capital')}</div><div class="ach-stat-val">${p.capital}</div></div>
           <div class="ach-stat"><div class="ach-stat-lbl">${t('ach_meta')}</div><div class="ach-stat-val">${p.goal}</div></div>
