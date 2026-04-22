@@ -11338,9 +11338,23 @@ function renderHeroPremium(firm, content, L) {
   const cardAfter = `<style>#cr-canvas .cr-hp-card::after{background:radial-gradient(ellipse 80% 50% at 50% 0%, ${color}1A 0%, transparent 60%);}</style>`;
   h += cardAfter + `<div class="cr-hp-card" style="${cardStyle}">`;
 
-  // Firm logo
-  const logoSrc = firm.icon_url || '';
-  h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.parentElement.innerHTML='<span style=\\'color:${color};font-size:56px;font-weight:800\\'>${escHtml(firm.name)}</span>'"></div>`;
+  // Firm logo — wordmark light (fallback para icon_url)
+  const FIRM_WORDMARK = {
+    apex: 'img/Firms Logos/apex-logo-wide-light.png',
+    bulenox: 'img/Firms Logos/Bulenox-Logo-1-01-800x207.png',
+    tradeday: 'img/Firms Logos/TradeDay.png',
+    ftmo: 'img/Firms Logos/FTMO logo - light.png',
+    tpt: 'img/Firms Logos/TakeProfit white logo.svg',
+    cti: 'img/Firms Logos/City-Traders-Imperium-Logo-for-Dark-Backgrounds-1-2048x388.png',
+    fn: 'img/Firms Logos/FundedNext Monochromatic Logo White 2x.png',
+    brightfunded: 'img/Firms Logos/brightfunded logo.svg',
+    e8: 'img/Firms Logos/e8markets logo.svg',
+    fundingpips: 'img/Firms Logos/fundingpips-logo.svg',
+    e2t: 'img/Firms Logos/earn2trade white.svg',
+    the5ers: 'img/Firms Logos/logo-white-est.png'
+  };
+  const logoSrc = FIRM_WORDMARK[firm.id] || firm.icon_url || '';
+  h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.onerror=null;this.src='${firm.icon_url||''}';this.style.maxWidth='220px';"></div>`;
 
   // Firm type
   h += `<div class="cr-hp-type">${escHtml(firmTypeLabel)}</div>`;
