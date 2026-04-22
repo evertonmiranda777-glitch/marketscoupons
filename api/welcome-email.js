@@ -160,7 +160,8 @@ module.exports = async (req, res) => {
   if (hits.length > 10) return res.status(429).json({ error: 'Rate limit' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
-  if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
+  const RESEND_KEY = process.env.RESEND_API_KEY;
+  if (!BREVO_KEY && !RESEND_KEY) return res.status(500).json({ error: 'No email provider configured' });
 
   const { email, name, lang } = req.body || {};
   if (!email) return res.status(400).json({ error: 'Missing email' });
@@ -184,47 +185,65 @@ module.exports = async (req, res) => {
 
     const subject = INST_WELCOME.subject[useLang] || INST_WELCOME.subject.en;
 
-    const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-        'api-key': BREVO_KEY,
-      },
-      body: JSON.stringify({
-        sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
-        to: [{ email, name: name || 'Trader' }],
-        subject,
-        htmlContent,
-        tags: ['welcome', 'lang-' + useLang],
-      }),
-    });
+    async function sendBrevo() {
+      const r = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
+        body: JSON.stringify({
+          sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
+          to: [{ email, name: name || 'Trader' }],
+          subject, htmlContent,
+          tags: ['welcome', 'lang-' + useLang],
+        }),
+      });
+      const d = await r.json().catch(() => ({}));
+      const quotaHit = !r.ok && (r.status === 402 || r.status === 429 || /credit|quota|limit/i.test(JSON.stringify(d)));
+      return { ok: r.ok, status: r.status, data: d, quotaHit, provider: 'brevo' };
+    }
 
-    const data = await resp.json();
+    async function sendResend() {
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+        body: JSON.stringify({
+          from: 'Markets Coupons <offers@marketscoupons.com>',
+          to: [email],
+          subject, html: htmlContent,
+          tags: [{ name: 'type', value: 'welcome' }, { name: 'lang', value: useLang }],
+        }),
+      });
+      const d = await r.json().catch(() => ({}));
+      return { ok: r.ok, status: r.status, data: d, provider: 'resend' };
+    }
+
+    let result = null;
+    if (BREVO_KEY) {
+      result = await sendBrevo();
+      if (!result.ok && RESEND_KEY) {
+        console.log(`[welcome] Brevo failed (${result.status}), falling back to Resend`);
+        result = await sendResend();
+      }
+    } else if (RESEND_KEY) {
+      result = await sendResend();
+    }
 
     await fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
       method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal',
-      },
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
       body: JSON.stringify({
         campaign_name: 'Welcome Email',
-        subject,
-        recipients: 1,
-        status: resp.ok ? 'sent' : 'failed',
+        subject, recipients: 1,
+        status: result.ok ? 'sent' : 'failed',
         sent_by: 'webhook',
-        provider: 'brevo',
+        provider: result.provider,
       }),
     });
 
-    return res.status(resp.ok ? 200 : 500).json({
-      success: resp.ok,
-      email,
-      lang: useLang,
-      response: data,
+    return res.status(result.ok ? 200 : 500).json({
+      success: result.ok,
+      email, lang: useLang,
+      provider: result.provider,
+      response: result.data,
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
