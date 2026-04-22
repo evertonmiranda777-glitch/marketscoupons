@@ -190,7 +190,7 @@ module.exports = async (req, res) => {
         method: 'POST',
         headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
         body: JSON.stringify({
-          sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
+          sender: { name: 'Lara | Markets Coupons', email: 'lara@marketscoupons.com' },
           to: [{ email, name: name || 'Trader' }],
           subject, htmlContent,
           tags: ['welcome', 'lang-' + useLang],
@@ -206,7 +206,7 @@ module.exports = async (req, res) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
         body: JSON.stringify({
-          from: 'Markets Coupons <offers@marketscoupons.com>',
+          from: 'Lara | Markets Coupons <lara@marketscoupons.com>',
           to: [email],
           subject, html: htmlContent,
           tags: [{ name: 'type', value: 'welcome' }, { name: 'lang', value: useLang }],

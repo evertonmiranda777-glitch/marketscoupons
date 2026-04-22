@@ -5,6 +5,115 @@
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
+// Conversational subject pool (7 langs). No symbols/%/emojis — plain chat tone to escape Promotions tab.
+// Placeholders: {firm} = firm name, {nome} = subscriber first name.
+const SUBJECT_POOL = {
+  pt: [
+    'Vc viu o que a {firm} tá fazendo?',
+    '{nome}, rapidinho — sobre a {firm}',
+    'Preciso te mostrar uma coisa da {firm}',
+    'Isso da {firm} não vai durar',
+    'Olha isso antes de escolher firma',
+    'Quase não te mandei esse',
+    '{nome}, deu uma olhada na {firm}?',
+    'Acho que você vai gostar disso',
+    'Sobre ontem — dá uma olhada',
+    'Esse aqui vale o seu tempo',
+    'Sério, dá uma olhada na {firm}',
+    'Você tava esperando isso',
+  ],
+  en: [
+    'Did you see what {firm} is doing?',
+    '{nome}, quick one about {firm}',
+    'Need to show you something from {firm}',
+    'This {firm} thing won\'t last',
+    'Check this before you pick a firm',
+    'Almost didn\'t send you this',
+    '{nome}, seen {firm} lately?',
+    'Think you\'ll like this one',
+    'About yesterday — take a look',
+    'This one is worth your time',
+    'Seriously, take a look at {firm}',
+    'You\'ve been waiting for this',
+  ],
+  es: [
+    'Viste lo que está haciendo {firm}?',
+    '{nome}, rápido — sobre {firm}',
+    'Tengo que mostrarte algo de {firm}',
+    'Esto de {firm} no va a durar',
+    'Mira esto antes de elegir firma',
+    'Casi no te mando este',
+    '{nome}, viste {firm} últimamente?',
+    'Creo que te va a gustar',
+    'Sobre ayer — dale una mirada',
+    'Este vale tu tiempo',
+    'En serio, mira {firm}',
+    'Estabas esperando esto',
+  ],
+  it: [
+    'Hai visto cosa sta facendo {firm}?',
+    '{nome}, veloce — su {firm}',
+    'Devo mostrarti una cosa di {firm}',
+    'Questa di {firm} non durerà',
+    'Guarda prima di scegliere una firm',
+    'Quasi non te lo mandavo',
+    '{nome}, hai visto {firm}?',
+    'Penso che ti piacerà',
+    'Su ieri — dai un\'occhiata',
+    'Questo vale il tuo tempo',
+    'Davvero, guarda {firm}',
+    'Stavi aspettando questo',
+  ],
+  fr: [
+    'T\'as vu ce que fait {firm}?',
+    '{nome}, rapide — sur {firm}',
+    'Faut que je te montre un truc de {firm}',
+    'Ça de {firm} va pas durer',
+    'Regarde avant de choisir une firm',
+    'J\'ai failli pas envoyer',
+    '{nome}, t\'as vu {firm}?',
+    'Je pense que tu vas aimer',
+    'À propos d\'hier — jette un œil',
+    'Celui-là vaut ton temps',
+    'Sérieux, regarde {firm}',
+    'Tu attendais ça',
+  ],
+  de: [
+    'Hast du gesehen was {firm} macht?',
+    '{nome}, kurz — zu {firm}',
+    'Muss dir was von {firm} zeigen',
+    'Das von {firm} hält nicht lang',
+    'Schau das bevor du eine Firm wählst',
+    'Hätte ich fast nicht geschickt',
+    '{nome}, {firm} in letzter Zeit gesehen?',
+    'Glaube das wird dir gefallen',
+    'Zu gestern — schau mal rein',
+    'Das hier lohnt sich',
+    'Ernsthaft, schau dir {firm} an',
+    'Darauf hast du gewartet',
+  ],
+  ar: [
+    'شفت شو عم تعمل {firm}؟',
+    '{nome}، سريعاً — عن {firm}',
+    'لازم أوريك شي من {firm}',
+    'هالشي من {firm} ما رح يدوم',
+    'شوف هيدا قبل ما تختار firm',
+    'كدت ما بعت لك ياها',
+    '{nome}، شفت {firm} مؤخراً؟',
+    'بعتقد رح يعجبك',
+    'عن مبارح — ألقِ نظرة',
+    'هيدا يستحق وقتك',
+    'جدياً، شوف {firm}',
+    'كنت عم تستنى هيدا',
+  ],
+};
+
+function pickSubject(lang, firmName, userName) {
+  const pool = SUBJECT_POOL[lang] || SUBJECT_POOL.en;
+  const tpl = pool[Math.floor(Math.random() * pool.length)];
+  return tpl.replace(/\{firm\}/g, firmName).replace(/\{nome\}/g, userName || (lang === 'pt' ? 'Trader' : 'Trader'));
+}
+
 // Email translations (7 languages)
 const EMAIL_I18N = {
   pt: {
@@ -234,7 +343,8 @@ module.exports = async (req, res) => {
 
     // 4. Send to each language group with localized email
     let sent = 0, failed = 0;
-    const subject = `${firms[0].name} — ${firms[0].discount}% OFF`;
+    // Rotate through top firms so the conversational subject mentions different names across the batch.
+    const subjectFirms = firms.slice(0, 3).map(f => f.short_name || f.name);
 
     for (const [lang, group] of Object.entries(langGroups)) {
       // UTM tagging: tag all marketscoupons.com links (external affiliate links pass-through)
@@ -257,12 +367,15 @@ module.exports = async (req, res) => {
         if (brevoRemaining <= 0) break;
 
         const personalizedHtml = htmlContent.replace(/{nome}/g, sub.name || 'Trader');
+        const firstName = (sub.name || '').trim().split(/\s+/)[0] || '';
+        const firmForSubject = subjectFirms[Math.floor(Math.random() * subjectFirms.length)];
+        const subject = pickSubject(lang, firmForSubject, firstName);
         try {
           const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
             method: 'POST',
             headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
             body: JSON.stringify({
-              sender: { name: 'Markets Coupons', email: 'offers@marketscoupons.com' },
+              sender: { name: 'Lara | Markets Coupons', email: 'lara@marketscoupons.com' },
               to: [{ email: sub.email, name: sub.name || '' }],
               subject, htmlContent: personalizedHtml,
               tags: ['promo-auto', 'lang-' + lang],

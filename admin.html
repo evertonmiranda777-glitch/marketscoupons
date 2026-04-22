@@ -3506,7 +3506,9 @@ async function renderFinanceiro(){
   const untilDate = untilIso.slice(0,10);
   const days = Math.max(1, Math.ceil((new Date(untilIso) - new Date(sinceIso)) / 86400000));
 
-  let statsQ = db.from('affiliate_daily_stats').select('*').gte('date', sinceDate).lte('date', untilDate).order('date',{ascending:false});
+  // granularity: extension inserts both 'day' (per-date) and 'month' (summary) rows from affiliate panels.
+  // Summing both double-counts — keep only 'day' rows. NULL granularity = legacy rows, assume day.
+  let statsQ = db.from('affiliate_daily_stats').select('*').gte('date', sinceDate).lte('date', untilDate).or('granularity.eq.day,granularity.is.null').order('date',{ascending:false});
   let leadsQ = db.from('affiliate_conversions').select('*').gte('created_at', sinceIso).lte('created_at', untilIso).order('created_at',{ascending:false}).limit(50);
   let spendQ = db.from('ad_spend_daily').select('*').gte('date', sinceDate).lte('date', untilDate);
   const [statsRes, leadsRes, spendRes] = await Promise.all([statsQ, leadsQ, spendQ]);
