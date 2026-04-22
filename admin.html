@@ -1637,7 +1637,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <button class="btn-secondary" onclick="openAdSpendModal()" style="font-size:11px;padding:6px 14px;">+ Registrar Gasto</button>
         </div>
         <!-- ROI KPIs -->
-        <div id="trk-roi-kpis" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px;"></div>
+        <div id="trk-roi-kpis" style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:16px;"></div>
         <!-- ROI per source -->
         <div class="data-table-wrap"><table class="data-table" id="trk-roi-source"></table></div>
         <!-- ROI per campaign -->
@@ -4349,8 +4349,26 @@ function _srcInfo(key) {
 
 async function renderROI(ev, days) {
   const cutoff = new Date(Date.now() - days * 86400000).toISOString().slice(0,10);
-  const { data: spendData } = await db.from('ad_spend').select('*').gte('date', cutoff).order('date', { ascending: false });
-  const spends = spendData || [];
+  const [spendRes, attrRes] = await Promise.all([
+    db.from('ad_spend').select('*').gte('date', cutoff).order('date', { ascending: false }),
+    db.from('coupon_attributions').select('utm_source,utm_campaign,amount,sale_date').gte('sale_date', cutoff)
+  ]);
+  const spends = spendRes.data || [];
+  const attributions = attrRes.data || [];
+
+  // Aggregate revenue by source (normalized) and campaign
+  const revBySource = {};
+  const revByCampaign = {};
+  let totalRevenue = 0;
+  attributions.forEach(a => {
+    const src = _normSource(a.utm_source || '');
+    const camp = a.utm_campaign || '';
+    const amt = Number(a.amount || 0);
+    if (!amt) return;
+    totalRevenue += amt;
+    if (src) revBySource[src] = (revBySource[src] || 0) + amt;
+    if (camp) revByCampaign[camp] = (revByCampaign[camp] || 0) + amt;
+  });
 
   // Aggregate spend by source
   const spendBySource = {};
@@ -4405,8 +4423,13 @@ async function renderROI(ev, days) {
   const cpc = totalClicks > 0 ? (totalSpend / totalClicks) : 0;
   const convRate = totalPV > 0 ? ((totalCheckouts / totalPV) * 100) : 0;
 
+  const roas = totalSpend > 0 ? (totalRevenue / totalSpend) : 0;
+  const roi = totalSpend > 0 ? ((totalRevenue - totalSpend) / totalSpend * 100) : 0;
+
   const kpiData = [
     { label:'Total Investido', val:'$'+totalSpend.toFixed(2), sub:spends.length+' registro'+(spends.length!==1?'s':''), color:'var(--red)', cls:'r' },
+    { label:'Receita Atribuída', val: totalRevenue>0?'$'+totalRevenue.toFixed(2):'—', sub:attributions.length+' venda'+(attributions.length!==1?'s':''), color:'var(--green)', cls:'g' },
+    { label:'ROAS', val: roas>0?roas.toFixed(2)+'x':'—', sub: roi!==0?(roi>0?'+':'')+roi.toFixed(0)+'% ROI':'sem gasto', color: roas>=1?'var(--green)':'var(--red)', cls:'' },
     { label:'Checkouts (Ads)', val:totalCheckouts.toString(), sub:totalCoupons+' cupons copiados', color:'var(--green)', cls:'g' },
     { label:'CPA', val: cpa>0?'$'+cpa.toFixed(2):'—', sub:'custo por checkout', color:'var(--gold)', cls:'y' },
     { label:'CPC Médio', val: cpc>0?'$'+cpc.toFixed(2):'—', sub:totalClicks.toLocaleString('pt-BR')+' cliques', color:'var(--blue)', cls:'b' },
@@ -4433,6 +4456,7 @@ async function renderROI(ev, days) {
   if(srcRows.length) {
     srcTbl.innerHTML = `<thead><tr>
       <th style="width:200px;">Fonte</th><th style="text-align:right;">Gasto</th>
+      <th style="text-align:right;">Receita</th><th style="text-align:right;">ROAS</th>
       <th style="text-align:right;">PageViews</th><th style="text-align:right;">Cupons</th>
       <th style="text-align:right;">Checkouts</th><th style="text-align:right;">Conv.</th>
       <th style="text-align:right;">CPA</th>
@@ -4441,6 +4465,8 @@ async function renderROI(ev, days) {
       const srcCpa = r.cv.checkout > 0 && r.sp.amount > 0 ? (r.sp.amount / r.cv.checkout) : 0;
       const conv = r.cv.pv > 0 ? ((r.cv.checkout / r.cv.pv) * 100).toFixed(1)+'%' : '—';
       const barW = (r.cv.pv / maxPV * 100).toFixed(0);
+      const srcRev = revBySource[r.src] || 0;
+      const srcRoas = r.sp.amount > 0 ? (srcRev / r.sp.amount) : 0;
       return `<tr>
         <td>
           <div style="display:flex;align-items:center;gap:10px;">
@@ -4452,6 +4478,8 @@ async function renderROI(ev, days) {
           </div>
         </td>
         <td style="text-align:right;font-weight:700;color:var(--red);font-size:12px;">${r.sp.amount>0?'$'+r.sp.amount.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green);font-size:12px;">${srcRev>0?'$'+srcRev.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-size:12px;font-weight:700;color:${srcRoas>=1?'var(--green)':srcRoas>0?'var(--red)':'var(--t3)'};">${srcRoas>0?srcRoas.toFixed(2)+'x':'—'}</td>
         <td style="text-align:right;font-size:12px;font-weight:600;">${r.cv.pv.toLocaleString('pt-BR')}</td>
         <td style="text-align:right;font-size:12px;color:var(--gold);font-weight:600;">${r.cv.coupon||'<span style="color:var(--t3);">0</span>'}</td>
         <td style="text-align:right;font-size:12px;color:var(--green);font-weight:700;">${r.cv.checkout||'<span style="color:var(--t3);">0</span>'}</td>
@@ -4460,7 +4488,7 @@ async function renderROI(ev, days) {
       </tr>`;
     }).join('')}</tbody>`;
   } else {
-    srcTbl.innerHTML = `<tbody><tr><td colspan="7" style="padding:32px;text-align:center;">
+    srcTbl.innerHTML = `<tbody><tr><td colspan="9" style="padding:32px;text-align:center;">
       <div style="color:var(--t3);font-size:13px;">Nenhum tráfego com utm_source identificado neste período</div>
     </td></tr></tbody>`;
   }
@@ -4477,17 +4505,22 @@ async function renderROI(ev, days) {
   if(campRows.length) {
     campTbl.innerHTML = `<thead><tr>
       <th>Campanha</th><th>Fonte</th><th style="text-align:right;">Gasto</th>
+      <th style="text-align:right;">Receita</th><th style="text-align:right;">ROAS</th>
       <th style="text-align:right;">Views</th><th style="text-align:right;">Cupons</th>
       <th style="text-align:right;">Checkouts</th><th style="text-align:right;">CPA</th>
     </tr></thead><tbody>${campRows.slice(0,15).map(r => {
       const info = _srcInfo(r.sp.source!=='—'?r.sp.source:r.cv.source);
       const campCpa = r.cv.checkout > 0 && r.sp.amount > 0 ? (r.sp.amount / r.cv.checkout) : 0;
+      const campRev = revByCampaign[r.camp] || 0;
+      const campRoas = r.sp.amount > 0 ? (campRev / r.sp.amount) : 0;
       return `<tr>
         <td style="font-weight:600;font-size:11px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.camp}">
           <span style="font-family:monospace;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;font-size:10px;">${r.camp}</span>
         </td>
         <td><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:${info.color};font-weight:600;"><span style="width:8px;height:8px;border-radius:50%;background:${info.color};display:inline-block;"></span>${info.label}</span></td>
         <td style="text-align:right;font-weight:700;color:var(--red);font-size:11px;">${r.sp.amount>0?'$'+r.sp.amount.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green);font-size:11px;">${campRev>0?'$'+campRev.toFixed(2):'<span style="color:var(--t3);">—</span>'}</td>
+        <td style="text-align:right;font-size:11px;font-weight:700;color:${campRoas>=1?'var(--green)':campRoas>0?'var(--red)':'var(--t3)'};">${campRoas>0?campRoas.toFixed(2)+'x':'—'}</td>
         <td style="text-align:right;font-size:11px;">${r.cv.pv.toLocaleString('pt-BR')}</td>
         <td style="text-align:right;font-size:11px;color:var(--gold);font-weight:600;">${r.cv.coupon||'0'}</td>
         <td style="text-align:right;font-size:11px;color:var(--green);font-weight:700;">${r.cv.checkout||'0'}</td>
@@ -4495,7 +4528,7 @@ async function renderROI(ev, days) {
       </tr>`;
     }).join('')}</tbody>`;
   } else {
-    campTbl.innerHTML = `<tbody><tr><td colspan="7" style="padding:32px;text-align:center;">
+    campTbl.innerHTML = `<tbody><tr><td colspan="9" style="padding:32px;text-align:center;">
       <div style="color:var(--t3);font-size:13px;">Nenhuma campanha com utm_campaign identificada</div>
       <div style="color:var(--t3);font-size:11px;margin-top:4px;">Use <span style="font-family:monospace;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">utm_campaign=nome</span> nos links dos anúncios</div>
     </td></tr></tbody>`;
