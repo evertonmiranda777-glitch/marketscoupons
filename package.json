@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@sparticuz/chromium": "^131.0.1",
     "@supabase/supabase-js": "^2.103.0",
     "@vercel/og": "^0.11.1",
+    "puppeteer-core": "^23.10.4",
     "sharp": "^0.34.5"
   },
   "devDependencies": {

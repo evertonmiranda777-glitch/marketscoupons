@@ -11665,41 +11665,38 @@ function _unusedOldCreative() {
 
 async function exportCreative() {
   const canvas = document.getElementById('cr-canvas');
-  const wrap = document.getElementById('cr-preview-scale');
   const btn = event.target;
   btn.textContent = 'Gerando...'; btn.disabled = true;
-  // Remove scale transform so html2canvas captures at real 1080px
-  const origTransform = wrap.style.transform;
-  const origWidth = wrap.style.width;
-  const origHeight = wrap.style.height;
-  wrap.style.transform = 'none';
-  wrap.style.width = '1080px';
-  wrap.style.height = (_crFormat === 'story' ? 1920 : 1350) + 'px';
-  // Wait a frame for layout to settle
-  await new Promise(r => requestAnimationFrame(r));
+  const width = 1080;
+  const height = _crFormat === 'story' ? 1920 : 1350;
   try {
-    const h = _crFormat === 'story' ? 1920 : 1350;
-    let dataUrl;
-    if (window.modernScreenshot?.domToPng) {
-      dataUrl = await window.modernScreenshot.domToPng(canvas, {
-        width: 1080, height: h, scale: 1, backgroundColor: '#060810',
-        style: { margin: '0' }
-      });
-    } else {
-      const c = await html2canvas(canvas, { scale:1, useCORS:true, backgroundColor:'#060810', width:1080, height:h });
-      dataUrl = c.toDataURL('image/png');
-    }
-    const link = document.createElement('a');
+    // Serialize the canvas markup + ALL admin <style> blocks so the
+    // serverless renderer has the exact same visual environment.
+    const html = canvas.outerHTML;
+    const styles = Array.from(document.querySelectorAll('style'))
+      .map(s => s.textContent || '').join('\n');
     const firmId = document.getElementById('cr-firm')?.value || 'geral';
+    const resp = await fetch('/api/render-criativo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ html, styles, width, height, origin: location.origin + '/' })
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error || ('HTTP ' + resp.status));
+    }
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
     link.download = `mc-${firmId}-${_crFormat}-${_crLang}-${Date.now()}.png`;
-    link.href = dataUrl;
+    link.href = url;
     link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
     toast('Criativo exportado!');
-  } catch(e) { toast('Erro ao exportar: ' + e.message, 'error'); }
-  // Restore scale
-  wrap.style.transform = origTransform;
-  wrap.style.width = origWidth;
-  wrap.style.height = origHeight;
+  } catch(e) {
+    console.error(e);
+    toast('Erro ao exportar: ' + e.message, 'error');
+  }
   btn.textContent = 'Baixar PNG'; btn.disabled = false;
 }
 

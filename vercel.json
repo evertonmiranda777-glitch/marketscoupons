@@ -1,4 +1,10 @@
 {
+  "functions": {
+    "api/render-criativo.js": {
+      "memory": 3008,
+      "maxDuration": 60
+    }
+  },
   "crons": [
     {
       "path": "/api/cron-promo",
