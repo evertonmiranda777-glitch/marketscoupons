@@ -101,6 +101,12 @@ module.exports = async (req, res) => {
   const payload = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: { maxOutputTokens: 1200, temperature: 0.9 },
+    safetySettings: [
+      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+    ],
   });
 
   if (typeof module.exports._keyIdx === 'undefined') module.exports._keyIdx = 0;
@@ -120,9 +126,10 @@ module.exports = async (req, res) => {
       });
       const data = await resp.json();
       if (!resp.ok) {
-        console.error(`[gen-firm-copy] gemini error (key ${keyIdx}):`, resp.status, JSON.stringify(data).slice(0, 400));
+        const errDetail = JSON.stringify(data).slice(0, 400);
+        console.error(`[gen-firm-copy] gemini error (key ${keyIdx}):`, resp.status, errDetail);
         if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }
-        return res.status(502).json({ error: 'Upstream error', status: resp.status });
+        return res.status(502).json({ error: 'Upstream error', status: resp.status, detail: errDetail });
       }
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
       if (!text) {
