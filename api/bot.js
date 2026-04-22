@@ -1,6 +1,56 @@
 // Vercel Serverless — Google Gemini 2.5 Flash proxy pro chatbot do site
 // POST /api/bot { messages, lang, traderName?, geo? }
 
+const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+
+let _promoCache = { at: 0, text: '' };
+async function getLivePromoBlock() {
+  const now = Date.now();
+  if (now - _promoCache.at < 60_000 && _promoCache.text) return _promoCache.text;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/cms_firms?active=eq.true&select=short_name,name,coupon,discount,discount_type,promo_ends_at,promo_label`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+    });
+    if (!r.ok) return _promoCache.text || '';
+    const firms = await r.json();
+    const lines = [];
+    for (const f of firms) {
+      const name = f.short_name || f.name;
+      if (!f.coupon && !f.discount) continue;
+      const coupon = f.coupon ? ` coupon ${f.coupon}` : '';
+      const pct = f.discount ? ` ${f.discount}% OFF` : '';
+      let when = '';
+      if (f.promo_ends_at) {
+        const end = Date.parse(f.promo_ends_at);
+        const diffMs = end - now;
+        if (diffMs > 0) {
+          const h = Math.floor(diffMs / 3_600_000);
+          const d = Math.floor(h / 24);
+          const hRem = h % 24;
+          const rel = d > 0 ? `${d}d ${hRem}h` : `${h}h`;
+          when = ` — ENDS IN ${rel} (${new Date(end).toISOString().replace('T',' ').slice(0,16)} UTC)`;
+        } else {
+          when = ' — EXPIRED (do not mention)';
+        }
+      } else if (f.discount_type === 'lifetime') {
+        when = ' — LIFETIME (never expires)';
+      } else if (f.discount_type) {
+        when = ` — ${f.discount_type}`;
+      }
+      lines.push(`- ${name}${coupon}${pct}${when}${f.promo_label ? ` (${f.promo_label})` : ''}`);
+    }
+    const text = lines.length
+      ? `\n\nACTIVE PROMOS (live data, as of ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC — TRUST THIS over any hardcoded info above):\n${lines.join('\n')}\n\nWhen user asks if a promo expires, ALWAYS check this list. If "ENDS IN Xd Xh", say it honestly. If "LIFETIME", say it doesn't expire. Never guess.`
+      : '';
+    _promoCache = { at: now, text };
+    return text;
+  } catch (e) {
+    console.error('[bot] promo fetch failed:', e.message);
+    return _promoCache.text || '';
+  }
+}
+
 const ALLOWED_ORIGINS = [
   'https://www.marketscoupons.com',
   'https://marketscoupons.com',
@@ -168,6 +218,8 @@ module.exports = async (req, res) => {
   let systemText = BOT_SYSTEM;
   if (safeName) systemText += `\n\nUSER CONTEXT:\n- Name: ${safeName}. Address them by name naturally, not in every reply. Infer gender from the name and use correct grammatical gender.`;
   if (safeGeo) systemText += `${safeName ? '' : '\n\nUSER CONTEXT:'}\n- Location (from IP): ${safeGeo}. Use only if relevant (e.g. payment methods, timezone for events). Never mention IP tracking.`;
+  const promoBlock = await getLivePromoBlock();
+  if (promoBlock) systemText += promoBlock;
   systemText += `\n\nRespond in ${langName}. If the user writes in a different language, switch to theirs. NEVER cut off mid-sentence — always finish your complete answer.`;
 
   const contents = messages.slice(-20).map(m => ({
