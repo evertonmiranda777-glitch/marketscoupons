@@ -4349,16 +4349,22 @@ function _srcInfo(key) {
 
 async function renderROI(ev, days) {
   const cutoff = new Date(Date.now() - days * 86400000).toISOString().slice(0,10);
-  const [spendRes, dailyRes, attrRes, fx] = await Promise.all([
+  const [spendRes, dailyRes, attrRes, convRes, fx] = await Promise.all([
     db.from('ad_spend').select('*').gte('date', cutoff).order('date', { ascending: false }),
     db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions,date').gte('date', cutoff),
     db.from('coupon_attributions').select('utm_source,utm_campaign,amount,sale_date').gte('sale_date', cutoff),
+    db.from('affiliate_conversions').select('commission,currency,created_at').gte('created_at', cutoff + 'T00:00:00Z'),
     fetchUSDtoBRL()
   ]);
   const spends = spendRes.data || [];
   const dailySpends = dailyRes.data || [];
   const attributions = attrRes.data || [];
+  const conversions = convRes.data || [];
   const fxUSDtoBRL = fx || 5.5;
+
+  // Receita total (todas as vendas — inclui não-atribuídas a utm)
+  let totalRevenueAll = 0;
+  conversions.forEach(c => { totalRevenueAll += Number(c.commission || 0); });
 
   // Painel em BRL (moeda nativa do Meta Ads).
   // ad_spend manual: assume USD legacy → converte pra BRL.
@@ -4473,7 +4479,9 @@ async function renderROI(ev, days) {
   // totalSpend em BRL, totalRevenue em USD. Pra ROAS/ROI, converte receita pra BRL.
   const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const revBRL = totalRevenue * fxUSDtoBRL;
+  // Usa receita total (affiliate_conversions) se disponível — senão só a atribuída por utm
+  const displayRevenue = totalRevenueAll > 0 ? totalRevenueAll : totalRevenue;
+  const revBRL = displayRevenue * fxUSDtoBRL;
   const cpa = totalCheckouts > 0 ? (totalSpend / totalCheckouts) : 0;
   const ctr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100) : 0;
   const cpc = totalClicks > 0 ? (totalSpend / totalClicks) : 0;
@@ -4484,7 +4492,7 @@ async function renderROI(ev, days) {
 
   const kpiData = [
     { label:'Total Investido', val:fmtBRL(totalSpend), sub:(spends.length+dailySpends.length)+' registro'+((spends.length+dailySpends.length)!==1?'s':'')+(metaSpendBRL>0?' (Meta auto)':''), color:'var(--red)', cls:'r' },
-    { label:'Receita Atribuída', val: totalRevenue>0?fmtUSD(totalRevenue):'—', sub:attributions.length+' venda'+(attributions.length!==1?'s':''), color:'var(--green)', cls:'g' },
+    { label:'Receita', val: displayRevenue>0?fmtUSD(displayRevenue):'—', sub:(conversions.length||attributions.length)+' venda'+(((conversions.length||attributions.length))!==1?'s':'')+(totalRevenue>0 && totalRevenueAll>totalRevenue?' ('+fmtUSD(totalRevenue)+' atrib.)':''), color:'var(--green)', cls:'g' },
     { label:'ROAS', val: roas>0?roas.toFixed(2)+'x':'—', sub: roi!==0?(roi>0?'+':'')+roi.toFixed(0)+'% ROI':'sem gasto', color: roas>=1?'var(--green)':'var(--red)', cls:'' },
     { label:'Checkouts (Ads)', val:totalCheckouts.toString(), sub:totalCoupons+' cupons copiados', color:'var(--green)', cls:'g' },
     { label:'CPA', val: cpa>0?fmtBRL(cpa):'—', sub:'custo por checkout', color:'var(--gold)', cls:'y' },
