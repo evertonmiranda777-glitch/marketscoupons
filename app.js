@@ -6309,6 +6309,7 @@ async function doAuthSignup() {
     track('user_signup', { method: 'email' });
     if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'MarketsCoupons Account',content_category:'signup',value:0,currency:'USD',status:true},{eventID:window._lastTrackId});
     if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
+    try { fetch('/api/welcome-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name,lang:(window.currentLang||'pt')})}); } catch(e){}
     return;
   }
 
@@ -6328,6 +6329,7 @@ async function doAuthSignup() {
     track('user_signup', { method: 'email' });
     if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'MarketsCoupons Account',content_category:'signup',value:0,currency:'USD',status:true},{eventID:window._lastTrackId});
     if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
+    try { fetch('/api/welcome-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name,lang:(window.currentLang||'pt')})}); } catch(e){}
     return;
   }
 }
