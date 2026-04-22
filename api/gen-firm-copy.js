@@ -7,11 +7,35 @@ const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5c
 
 const LANG_NAMES = { pt: 'Portuguese (Brazil)', en: 'English', es: 'Spanish' };
 
+// Normaliza valores bagunçados do Supabase antes de jogar no prompt
+function normalizeScaling(s) {
+  if (!s) return null;
+  const raw = String(s).trim();
+  if (/^(sim|yes|true)$/i.test(raw)) return 'disponível (sem teto fixo publicado)';
+  if (/^(não|nao|no|false|—|-)$/i.test(raw)) return null;
+  return raw;
+}
+// Formata número de reviews pra leitura rápida: 18382 → "18 mil", 1516 → "1,5 mil"
+function fmtReviews(n, langCode) {
+  const num = parseInt(n, 10);
+  if (!num || num < 1) return null;
+  if (num < 1000) return String(num);
+  if (langCode === 'pt' || langCode === 'es') {
+    if (num < 10000) return (num / 1000).toFixed(1).replace('.', ',') + ' mil';
+    return Math.round(num / 1000) + ' mil';
+  }
+  if (num < 10000) return (num / 1000).toFixed(1) + 'K';
+  return Math.round(num / 1000) + 'K';
+}
+
 function buildPrompt(firm, langName) {
+  const langCodeEarly = langName.includes('Portuguese') ? 'pt' : langName.includes('Spanish') ? 'es' : 'en';
   const prices = Array.isArray(firm.prices) ? firm.prices.slice(0, 4).map(p => `${p.a}: ${p.n}${p.o ? ` (era ${p.o})` : ''}`).join(' | ') : '';
   const perks = Array.isArray(firm.perks) ? firm.perks.slice(0, 6).join(', ') : '';
   const platforms = Array.isArray(firm.platforms) ? firm.platforms.join(', ') : '';
-  const tp = firm.trustpilot_score ? `Trustpilot ${firm.trustpilot_score}/5 com ${firm.trustpilot_reviews || '?'} reviews` : '';
+  const scalingNorm = normalizeScaling(firm.scaling);
+  const reviewsFmt = fmtReviews(firm.trustpilot_reviews, langCodeEarly);
+  const tp = firm.trustpilot_score ? `Trustpilot ${firm.trustpilot_score}/5 com ${reviewsFmt || firm.trustpilot_reviews || '?'} reviews` : '';
   const couponLine = firm.coupon ? `CUPOM: ${firm.coupon} — ${firm.discount}% OFF${firm.discount_type ? ` (${firm.discount_type})` : ''}` : (firm.discount ? `${firm.discount}% OFF aplicado automático via link (sem cupom)` : '');
 
   const sortedPrices = Array.isArray(firm.prices) && firm.prices.length
@@ -24,7 +48,7 @@ function buildPrompt(firm, langName) {
   const cheapest = sortedPrices[0] || null;
   const priciest = sortedPrices[sortedPrices.length - 1] || null;  // decoy/anchor alto
 
-  const langCode = langName.includes('Portuguese') ? 'pt' : langName.includes('Spanish') ? 'es' : 'en';
+  const langCode = langCodeEarly;
 
   // Whitelist de hashtags (evita alucinação tipo #nfl pra trading)
   const HASHTAGS_WHITELIST = {
@@ -198,15 +222,32 @@ Markets Coupons = afiliada de prop firms. Monetiza quando trader clica no link d
 - Profit split: ${firm.split || '—'}
 - Drawdown: ${firm.drawdown || '—'} ${firm.dd_pct ? `(${firm.dd_pct})` : ''}
 - Meta: ${firm.target || '—'}
-- Escala: ${firm.scaling || '—'}
+- Escala: ${scalingNorm || 'não informado publicamente'}
 - Dias mín: ${firm.min_days || '—'} | Avaliação: ${firm.eval_days || 'ilimitado'} dias
 - Plataformas: ${platforms}
 - Preços: ${prices}
 ${cheapest ? `- ÂNCORA BAIXA (use esta): ${cheapest.a} por ${cheapest.n}${cheapest.o ? ` (era ${cheapest.o})` : ''}` : ''}
 ${priciest && priciest !== cheapest ? `- DECOY ALTO (menciona pra tornar a âncora baixa trivial): ${priciest.a} custa ${priciest.n}` : ''}
-- Perks: ${perks}
+- Perks DISPONÍVEIS (só cite o que tá aqui): ${perks}
 - Prova social: ${tp}
+- News trading permitido: ${firm.news_trading === true ? 'SIM' : firm.news_trading === false ? 'NÃO' : 'não informado — NÃO mencione'}
+- Day-1 payout: ${firm.day1_payout === true ? 'SIM' : firm.day1_payout === false ? 'NÃO' : 'não informado — NÃO mencione'}
 - Descrição: ${firm.description || ''}
+
+# ❌ ZERO INVENÇÃO — regra sagrada
+Cada número, regra, perk e benefício na caption TEM que existir nos dados acima. Se não tá listado, NÃO EXISTE. Não infere ("provavelmente tem"), não deduz ("firma grande deve ter"), não copia de outra firma do few-shot.
+Exemplos proibidos de invenção:
+  - Dizer "sem limite diário" se news_trading/perks não citam explicitamente.
+  - Dizer "payout em 5 dias" se min_days não é 5.
+  - Explicar mecanismo técnico do DD ("ajusta no fechamento", "congela depois de $X") a não ser que apareça EXATO nos dados.
+  - Citar "mais de $X pagos" se não tá na descrição/perks.
+Se você não tem o dado, ESCOLHE OUTRO BULLET dos disponíveis. Não inventa pra preencher.
+
+# 🔁 CADA DADO APARECE 1× SÓ
+Scaling, split, DD, payout, escala-até — cada um pode aparecer UMA VEZ na caption inteira. Se escala até $X já apareceu no bullet 1, NÃO repete no 4. Duplicação = rejeitado.
+
+# 🪞 COERÊNCIA NARRATIVA
+A firma sendo vendida nesta caption é **${firm.name}**. Se o hook usa mecanismo "saí de X pra cá", X PRECISA ser outra firma (genérica "firma antiga" / "outra firma" se não quiser nomear). NUNCA "Estourei na ${firm.name}. Aí achei a ${firm.name}" — destrói credibilidade.
 
 # FRAMEWORK PSICOLÓGICO (aplique em cada bloco — cada bloco tem 1 JOB psicológico)
 
@@ -234,17 +275,17 @@ PROIBIDO inventar regra que a firma não tem. Se o dado não está na FIRMA acim
 Linguagem de trader ("passa o desafio", "tira payout", "MC me pegou"), NUNCA advertorial ("aprove sua avaliação", "realize saques").
 OBRIGATÓRIO: preempte PELO MENOS 2 das 5 objeções listadas em AUDIÊNCIA — marque mentalmente quais você atacou antes de entregar.
 
-## PROVA SOCIAL (1 linha separada) — JOB: matar objeção "vai fechar/não paga"
-Formato: "Trustpilot ${firm.trustpilot_score || 'X'} com ${firm.trustpilot_reviews ? Math.round(firm.trustpilot_reviews / 1000) + ' mil' : 'X mil'} reviews."
-NÚMEROS GRANDES SEMPRE em formato leitura-rápida: "18 mil" não "18382". "41K" ou "41 mil" não "41523".
-Exemplo: "Trustpilot 4.4 com 18 mil reviews. Não é firma de ontem."
-Se não tiver dado forte, pula essa linha.
+## PROVA SOCIAL (LINHA SEPARADA OBRIGATÓRIA — em branco antes e depois) — JOB: matar objeção "vai fechar/não paga"
+Formato exato: "Trustpilot ${firm.trustpilot_score || 'X'} com ${reviewsFmt || 'X mil'} reviews." + (opcional) frase curta tipo "Não é firma de ontem." / "É a firma de 2015." — SÓ se houver dado de ano na descrição.
+JAMAIS gruda esta linha dentro de um bullet "→". Ela é frase separada.
+Se trustpilot_score/reviews não existem, pula essa linha inteira.
 
 ## PREÇO-PUNCH (1-2 linhas) — JOB: anchoring + decoy + bundling narrativo
 Estrutura exata:
 - Linha 1: âncora clara. Formato: "${cheapest ? `${cheapest.a} por ${cheapest.n}${cheapest.o ? ` (antes ${cheapest.o}).` : '.'}` : '$X por $Y.'}"
-- Linha 2 (opcional, SE tiver decoy): "${priciest && priciest !== cheapest ? `A de ${priciest.a} fica em ${priciest.n}. Começa pela menor.` : ''}"
-Anchoring funciona quando o "era" aparece ANTES (visão natural) ou logo depois em parentêses. Não use seta "→" aqui.
+- Linha 2 (opcional, SE tiver decoy): "${priciest && priciest !== cheapest ? `O plano de ${priciest.a} fica em ${priciest.n}. Começa pela menor.` : ''}"
+OBRIGATÓRIO o prefixo "O plano de" / "O tier" / "The ${priciest ? priciest.a : 'X'} tier" — "A de 150K" sem sujeito soa truncado. Não use seta "→" aqui.
+Anchoring funciona quando o "era" aparece ANTES (visão natural) ou logo depois em parênteses.
 
 ## CUPOM + URGÊNCIA (1-2 linhas) — JOB: scarcity real (nunca inventada) + commitment
 - Se tem cupom: "Cupom ${firm.coupon || 'X'}. ${firm.discount_type === 'lifetime' ? 'Pra sempre — sem renovar.' : `${firm.discount}% OFF enquanto tá ativo.`}"
