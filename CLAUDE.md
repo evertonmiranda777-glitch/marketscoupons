@@ -34,6 +34,43 @@ Se ele digitar **"stop"** ou **"preguiça"** em qualquer momento:
 
 ---
 
+## Preços de firma — fonte única Supabase (2026-04-23)
+
+**Regra:** `cms_firms.prices` no Supabase é a **única fonte de verdade** pra preço de firma. `FIRM_ABOUT` e `CHECKOUT_FIRMS` em app.js são **fallback puro** (usados só enquanto Supabase não carrega). Helper canônico: `getPlanPrice(firmId, typeName, sizeStr)` em [app.js:456](app.js#L456).
+
+**Como mudar promo:**
+```sql
+UPDATE cms_firms SET discount=50, prices='[{"a":"25K","n":"$99.50","o":"$199",...}]'::jsonb WHERE id='apex';
+```
+Zero deploy, zero edit em código. Cache localStorage (`mc_firms_cache_v3`) invalida na próxima carga do usuário. Se precisar invalidar agora, bump chave pra `_v4` em app.js (4 ocorrências).
+
+**O que NUNCA fazer:**
+- Re-introduzir sync destrutivo: `FIRM_ABOUT[id].plans[type][i].d = supabasePrice.n` (causa revert stale→fresh quando Supabase lagga). Removido em commit b993315.
+- Editar preço em dois lugares (Supabase E hardcoded). Hardcoded fica congelado como fallback; só atualizar junto em rebuild major.
+- Ler `plan.d`/`plan.o`/`p.disc`/`p.orig` direto em template novo. Usar sempre `getPlanPrice()`.
+
+**Shape dual-type (Apex, Bulenox):** `prices[i]` tem `n/o` (type 0 = Intraday) + `n2/o2` (type 1 = EOD). `getPlanPrice` resolve pelo `typeIdx` do nome do tipo.
+
+Ver `memory/project_refactor_precos_fonte_unica.md` e `memory/project_promos_historico.md`.
+
+## Financeiro + Extensão (2026-04-22)
+
+**Regra:** `supabase/functions/finance-sync/index.ts` DEVE filtrar `r.granularity !== 'month'` antes de upsert em `affiliate_daily_stats`. A extensão parseia CSV de Apex/Bulenox que tem linha "monthly summary" (ex: `April 2026`) mapeada pra `firstDay` do mês → colide com daily do dia 01 no `ON CONFLICT (firm_id, date)` → dashboard infla ~2x. Filtro aplicado no commit 85ddb0a.
+
+**Diagnóstico de recorrência:** `SELECT firm_id, date, commission, raw->>'granularity' FROM affiliate_daily_stats WHERE raw->>'granularity'='month';` — se retornar linhas, filtro foi bypassed. Limpar + reaplicar.
+
+Ver `memory/feedback_extension_monthly_summary.md`.
+
+## Tradução de guias (Gemini 2.5 Flash)
+
+**Regra:** `scripts/translate-guides-edu.mjs` (e irmãos) usa `maxOutputTokens: 65536` + safety check `cleaned.length < src.length * 0.85`. NUNCA baixar esses valores — HTMLs de ~45kb truncam silenciosamente com 32k tokens.
+
+**Jobs em background:** NÃO commitar enquanto tradução em background roda — job antigo pode sobrescrever arquivo pós-commit. Esperar `DONE: X/Y` no log antes de `git add`.
+
+Ver `memory/feedback_gemini_truncamento.md`.
+
+---
+
 ## Guias de Firma — Ilustrações (2026-04-22)
 
 **Regra da firma:** imagens de guia (hero, diagrams, platforms, pros-cons) usam a **cor accent da firma**, NUNCA dourado default. Gerar imagem com shield/laurel/moldura dourada em guia de firma = AI-slop, rejeitado.
