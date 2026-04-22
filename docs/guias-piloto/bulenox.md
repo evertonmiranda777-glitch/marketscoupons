@@ -1,7 +1,7 @@
 ---
 title: "Bulenox Review 2026: Static Drawdown Futures, Pricing & First $10K at 100%"
 slug: bulenox-review
-meta_description: "Full Bulenox review for 2026: every account tier, the static drawdown advantage, the first $10,000 at 100% payout rule, monthly pricing with $50OFF/$60OFF coupons, and Rithmic execution. Updated April 2026."
+meta_description: "Full Bulenox review for 2026: every account tier, the static drawdown advantage, the first $10,000 at 100% payout rule, monthly pricing with the exclusive MARKET89 coupon (89% off), and Rithmic execution. Updated April 2026."
 primary_keyword: "Bulenox review"
 secondary_keywords:
   - bulenox rules
@@ -82,12 +82,12 @@ Bulenox uses a monthly subscription model. You pay the fee each billing cycle un
 | Account | Max contracts | Profit target | Drawdown | Monthly fee | Coupon |
 |---|---|---|---|---|---|
 | **$25,000** | 3 | $1,500 | $1,500 static | **$145/mo** | — |
-| **$50,000** | 7 | $3,000 | $2,500 static | **$125/mo** (was $175) | `$50OFF` |
-| **$100,000** | 12 | $6,000 | $3,000 static | **$155/mo** (was $215) | `$60OFF` |
+| **$50,000** | 7 | $3,000 | $2,500 static | **$ 19.25/mo** (was $175) | `MARKET89` |
+| **$100,000** | 12 | $6,000 | $3,000 static | **$ 23.65/mo** (was $215) | `MARKET89` |
 | **$150,000** | 15 | $9,000 | $4,500 static | **$325/mo** | — |
 | **$250,000** | 25 | $15,000 | $5,500 static | **$535/mo** | — |
 
-The $50K and $100K tiers have persistent discount coupons — $50OFF on the 50K and $60OFF on the 100K. These are the two most popular entry points.
+The $50K and $100K tiers have persistent discount coupons — MARKET89 on the 50K and MARKET89 on the 100K. These are the two most popular entry points.
 
 ### Two account options per tier: No Scaling vs EOD
 
@@ -206,7 +206,7 @@ The five account tiers are calibrated so each step roughly doubles your profit t
 - **Max contracts:** 7
 - **Profit target:** $3,000 (6% of account)
 - **Drawdown:** $2,500 (5% of account)
-- **Monthly fee:** $125 (with `$50OFF` coupon)
+- **Monthly fee:** $ 19.25 (with `MARKET89` coupon)
 - **Who it's for:** The sweet spot for most Bulenox traders. Enough contract flexibility to size properly, enough drawdown to handle a bad day without fatal damage.
 
 ### $100,000 Qualification Account
@@ -214,7 +214,7 @@ The five account tiers are calibrated so each step roughly doubles your profit t
 - **Max contracts:** 12
 - **Profit target:** $6,000 (6% of account)
 - **Drawdown:** $3,000 (3% of account)
-- **Monthly fee:** $155 (with `$60OFF` coupon)
+- **Monthly fee:** $ 23.65 (with `MARKET89` coupon)
 - **Who it's for:** Experienced traders who can position-size large contracts responsibly. Note: the drawdown-to-account ratio here (3%) is tighter than on the 50K (5%), so you get less proportional breathing room.
 
 ### $150,000 Qualification Account
@@ -368,7 +368,7 @@ Bulenox does **not** support EUREX (DAX, Bund) — that's a Tradovate-only produ
 - **News trading permitted** without restrictions
 - **Multiple accounts allowed** — run several qualifications or masters in parallel
 - **Rithmic-grade execution** — institutional-quality data and routing
-- **Persistent $50OFF / $60OFF coupons** on the 50K and 100K tiers
+- **Persistent MARKET89 89% off coupons** on the 50K and 100K tiers
 
 ### Cons
 
@@ -464,7 +464,7 @@ Rithmic as the routing engine, with front-end support for NinjaTrader, Quantower
 **How fast does Bulenox pay out?**  
 Per Trustpilot reviews, same-day or next-day ACH processing is common. Wire transfers and crypto follow standard bank timelines.
 
-**Does the $50OFF / $60OFF coupon always work?**  
+**Does the MARKET89 89% off coupon always work?**  
 These coupons are persistent — they've been available on Bulenox's public pricing page for more than 12 months. They apply to the first month of subscription only on the 50K and 100K respectively.
 
 **Can I cancel the Bulenox subscription?**  
@@ -484,7 +484,7 @@ No. Bulenox does not refund the qualification subscription fees after you pass. 
 Before paying, use the free Rithmic trial to get comfortable with the platform and instrument feeds. Most traders underestimate Rithmic's learning curve — the trial removes that cost.
 
 **Step 2 — Pick your account tier.**  
-The $50K with the `$50OFF` coupon is the best starting point for most traders. Drawdown-to-account ratio is 5%, which is the most generous in the Bulenox line.
+The $50K with the `MARKET89` coupon is the best starting point for most traders. Drawdown-to-account ratio is 5%, which is the most generous in the Bulenox line.
 
 **Step 3 — Choose No Scaling or EOD.**  
 Pick No Scaling unless you explicitly want the EOD safety of not having positions open at close. No Scaling gives you full contract allowance from day one.
@@ -507,7 +507,7 @@ Your first $10K of Master Account profit is entirely yours. Focus on sustainable
 
 Bulenox is a structurally simple, well-regarded futures prop firm that occupies a specific niche: **traders who want static drawdown above all else**. It's not the cheapest and it's not the biggest, but it delivers on exactly the feature set that Apex's trailing-drawdown customers complain about most.
 
-The $50K account at $125/month (with `$50OFF`) is the sweet spot — enough contracts to trade meaningfully, enough drawdown to absorb a bad day, and the full 100% profit share on the first $10,000 of Master Account earnings. Most Bulenox traders stay at the $50K or $100K tiers and run 2-3 accounts in parallel.
+The $ 50K account at $ 19.25/month (with `MARKET89`) is the sweet spot — enough contracts to trade meaningfully, enough drawdown to absorb a bad day, and the full 100% profit share on the first $10,000 of Master Account earnings. Most Bulenox traders stay at the $50K or $100K tiers and run 2-3 accounts in parallel.
 
 If trailing drawdown has cost you money or sleep, Bulenox is the rational next stop. If you care mostly about price and platform choice, Apex remains the default. There is no single right answer — there are only the tradeoffs you pick.
 
