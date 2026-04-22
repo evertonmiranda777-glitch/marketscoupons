@@ -26,6 +26,7 @@ const LOGO_FILE = {
   brightfunded: 'brightfunded logo.svg',
   e8: 'e8markets logo.svg',
   cti: 'City-Traders-Imperium-Logo-for-Dark-Backgrounds-1-2048x388.png',
+  tradeday: 'tradeday-logo.png',
 };
 
 // Per-firm display name on cover (short, cover-friendly)
@@ -33,6 +34,7 @@ const COVER_NAME = {
   apex: 'Apex', ftmo: 'FTMO', bulenox: 'Bulenox', tpt: 'TakeProfitTrader',
   fn: 'FundedNext', e2t: 'Earn2Trade', the5ers: 'The5ers', fundingpips: 'FundingPips',
   brightfunded: 'BrightFunded', e8: 'E8 Markets', cti: 'City Traders Imperium',
+  tradeday: 'TradeDay',
 };
 
 // i18n copy per language. title() wraps firm name in <em> for italic-gold accent.
