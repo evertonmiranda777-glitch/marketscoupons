@@ -4439,9 +4439,9 @@ async function renderROI(ev, days) {
     spendBySource[src].clicks += clk;
     spendBySource[src].impressions += imp;
   };
-  if(metaSpendUSD > 0) {
-    addMetaToSrc('facebook', metaSpendUSD * fbShare, Math.round(metaClicks * fbShare), Math.round(metaImpressions * fbShare));
-    addMetaToSrc('instagram', metaSpendUSD * igShare, Math.round(metaClicks * igShare), Math.round(metaImpressions * igShare));
+  if(metaSpendBRL > 0) {
+    addMetaToSrc('facebook', metaSpendBRL * fbShare, Math.round(metaClicks * fbShare), Math.round(metaImpressions * fbShare));
+    addMetaToSrc('instagram', metaSpendBRL * igShare, Math.round(metaClicks * igShare), Math.round(metaImpressions * igShare));
   }
 
   // Aggregate conversions by normalized utm_source
