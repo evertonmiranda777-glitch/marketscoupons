@@ -11435,7 +11435,7 @@ function renderHeroPremium(firm, content, L) {
 
   // Discount
   if (crChk('cr-show-discount') && firm.discount) {
-    h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 0 50px ${color}99);"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
+    h += `<div class="cr-hp-disc"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
     h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
   }
 
