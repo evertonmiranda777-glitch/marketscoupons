@@ -2,6 +2,8 @@
 // POST /api/welcome-email { email, name, lang }
 // Uses the new "Markets Coupons." premium template (orange accent, white layout).
 
+const { sign: signUnsub } = require('./unsubscribe.js');
+
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
@@ -34,7 +36,15 @@ const PCFG = {
   hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF aplicado automáticamente',fr:'Coupon <strong>MARKET89</strong> — 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong> — 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong> — 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong> — 89% OFF يُطبق تلقائياً'}
 };
 
-function buildWelcomeHtml(lang='pt'){
+function buildUnsubUrl(email, lang){
+  try {
+    const t = signUnsub(email);
+    return `https://www.marketscoupons.com/api/unsubscribe?e=${encodeURIComponent(email)}&t=${t}&lang=${lang||'en'}`;
+  } catch { return 'https://www.marketscoupons.com/'; }
+}
+
+function buildWelcomeHtml(lang='pt', email=''){
+  const unsubUrl = email ? buildUnsubUrl(email, lang) : 'https://www.marketscoupons.com/';
   const gt = (obj) => obj[lang] || obj.en || obj.pt || '';
   const C = PCFG.color;
   const T = (obj) => { const s = obj[lang]||obj.en||obj.pt||''; return s.replace(/\$\{C\}/g, C); };
@@ -135,7 +145,7 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
 <tr><td bgcolor="#f7f7f7" style="background-color:#f7f7f7;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 16px 16px;padding:22px 40px;text-align:center;">
   <p style="font-family:${F};font-size:11px;color:#aaa;line-height:1.9;margin:0;">
     ${gt(INST_WELCOME.footer)}<br>
-    <a href="https://www.marketscoupons.com/?action=unsubscribe" style="color:#aaa;text-decoration:underline;">${gt(INST_WELCOME.unsub)}</a>
+    <a href="${unsubUrl}" style="color:#aaa;text-decoration:underline;">${gt(INST_WELCOME.unsub)}</a>
   </p>
 </td></tr>
 
@@ -180,8 +190,14 @@ module.exports = async (req, res) => {
       } catch { return url; }
     };
 
-    const htmlContent = buildWelcomeHtml(useLang)
-      .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url)}"`);
+    const unsubUrl = (() => { try { return `https://www.marketscoupons.com/api/unsubscribe?e=${encodeURIComponent(email)}&t=${signUnsub(email)}&lang=${useLang}`; } catch { return ''; } })();
+    const listUnsubHeader = unsubUrl ? `<${unsubUrl}>, <mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>` : '<mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>';
+
+    const htmlContent = buildWelcomeHtml(useLang, email)
+      .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => {
+        if (url.indexOf('/api/unsubscribe') !== -1) return `href="${url}"`;
+        return `href="${tagUrl(url)}"`;
+      });
 
     const subject = INST_WELCOME.subject[useLang] || INST_WELCOME.subject.en;
 
@@ -193,6 +209,10 @@ module.exports = async (req, res) => {
           sender: { name: 'Lara | Markets Coupons', email: 'lara@marketscoupons.com' },
           to: [{ email, name: name || 'Trader' }],
           subject, htmlContent,
+          headers: {
+            'List-Unsubscribe': listUnsubHeader,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          },
           tags: ['welcome', 'lang-' + useLang],
         }),
       });
@@ -209,6 +229,10 @@ module.exports = async (req, res) => {
           from: 'Lara | Markets Coupons <lara@marketscoupons.com>',
           to: [email],
           subject, html: htmlContent,
+          headers: {
+            'List-Unsubscribe': listUnsubHeader,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          },
           tags: [{ name: 'type', value: 'welcome' }, { name: 'lang', value: useLang }],
         }),
       });

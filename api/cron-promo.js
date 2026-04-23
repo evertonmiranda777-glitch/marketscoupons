@@ -2,6 +2,8 @@
 // Triggered by Vercel Cron (vercel.json)
 // GET /api/cron-promo?key=CRON_SECRET
 
+const { sign: signUnsub } = require('./unsubscribe.js');
+
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
@@ -276,7 +278,7 @@ function buildCronEmail(firms, lang) {
     <div style="color:#3D4F63;font-size:10px;margin-top:4px;">www.marketscoupons.com</div>
     <div style="color:#3D4F63;font-size:11px;margin-top:12px;line-height:1.6;">
       ${t('footer')}<br>
-      <a href="https://www.marketscoupons.com" style="color:#3D4F63;">${t('unsub')}</a>
+      <a href="{unsub_url}" style="color:#3D4F63;">${t('unsub')}</a>
     </div>
   </div>
 
@@ -366,7 +368,11 @@ module.exports = async (req, res) => {
         // Resend path intentionally disabled for bulk (lands in Gmail Promotions tab).
         if (brevoRemaining <= 0) break;
 
-        const personalizedHtml = htmlContent.replace(/{nome}/g, sub.name || 'Trader');
+        const unsubUrl = (() => { try { return `https://www.marketscoupons.com/api/unsubscribe?e=${encodeURIComponent(sub.email)}&t=${signUnsub(sub.email)}&lang=${lang}`; } catch { return 'https://www.marketscoupons.com/'; } })();
+        const listUnsubHeader = `<${unsubUrl}>, <mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>`;
+        const personalizedHtml = htmlContent
+          .replace(/{nome}/g, sub.name || 'Trader')
+          .replace(/\{unsub_url\}/g, unsubUrl);
         const firstName = (sub.name || '').trim().split(/\s+/)[0] || '';
         const firmForSubject = subjectFirms[Math.floor(Math.random() * subjectFirms.length)];
         const subject = pickSubject(lang, firmForSubject, firstName);
@@ -378,6 +384,10 @@ module.exports = async (req, res) => {
               sender: { name: 'Lara | Markets Coupons', email: 'lara@marketscoupons.com' },
               to: [{ email: sub.email, name: sub.name || '' }],
               subject, htmlContent: personalizedHtml,
+              headers: {
+                'List-Unsubscribe': listUnsubHeader,
+                'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+              },
               tags: ['promo-auto', 'lang-' + lang],
             }),
           });

@@ -2,6 +2,8 @@
 // POST /api/send-email
 // Body: { to: [{email, name}], subject, htmlContent, sender?: {name, email}, tags?: [], provider?: 'brevo'|'resend'|'auto' }
 
+const { sign: signUnsub } = require('./unsubscribe.js');
+
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
@@ -102,6 +104,13 @@ module.exports = async (req, res) => {
                .replace(/href\s*=\s*'(https?:\/\/[^']+)'/gi, (m, url) => `href='${tagUrl(url, provider)}'`);
   }
 
+  function buildUnsubHeader(email) {
+    try {
+      const url = `https://www.marketscoupons.com/api/unsubscribe?e=${encodeURIComponent(email)}&t=${signUnsub(email)}`;
+      return `<${url}>, <mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>`;
+    } catch { return '<mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>'; }
+  }
+
   // Send via Brevo
   async function sendViaBrevo(recipient, finalSubject, finalHtml) {
     if (!BREVO_KEY) return { email: recipient.email, status: 'skipped', provider: 'brevo', response: { error: 'no key' } };
@@ -110,6 +119,10 @@ module.exports = async (req, res) => {
       to: [{ email: recipient.email, name: recipient.name || 'Trader' }],
       subject: finalSubject,
       htmlContent: finalHtml,
+      headers: {
+        'List-Unsubscribe': buildUnsubHeader(recipient.email),
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
       tags: tags || ['campaign'],
     };
     const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -130,6 +143,10 @@ module.exports = async (req, res) => {
       to: [recipient.email],
       subject: finalSubject,
       html: finalHtml,
+      headers: {
+        'List-Unsubscribe': buildUnsubHeader(recipient.email),
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
       tags: (tags || ['campaign']).map(t => ({ name: 'tag', value: t })),
     };
     const resp = await fetch('https://api.resend.com/emails', {
