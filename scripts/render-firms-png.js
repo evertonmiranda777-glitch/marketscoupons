@@ -78,9 +78,12 @@ async function injectFirms(page) {
   const rowsRaw = await sb('cms_firms', `select=id,name,short_name,discount,split,rating,reviews,coupon,type,sort_order,icon_url&active=eq.true&id=in.(${idsList})`);
   if (!rowsRaw || rowsRaw.length === 0) { console.warn('[firms] no data, keeping static template'); return; }
 
-  // Preserve day order (not DB order)
-  const firms = ids.map(id => rowsRaw.find(r => r.id === id)).filter(Boolean);
-  if (firms.length === 0) { console.warn('[firms] no matching firms, keeping static'); return; }
+  // Apex âncora no top1, resto ordenado por desconto DESC
+  const firmsRaw = ids.map(id => rowsRaw.find(r => r.id === id)).filter(Boolean);
+  if (firmsRaw.length === 0) { console.warn('[firms] no matching firms, keeping static'); return; }
+  const firms = firmsRaw.length > 1
+    ? [firmsRaw[0], ...firmsRaw.slice(1).sort((a,b) => (b.discount||0) - (a.discount||0))]
+    : firmsRaw;
 
   const totalFirms = await sb('cms_firms', 'select=id&active=eq.true');
   const total = totalFirms ? totalFirms.length : firms.length;
