@@ -85,7 +85,7 @@ async function injectFirms(page) {
   const totalFirms = await sb('cms_firms', 'select=id&active=eq.true');
   const total = totalFirms ? totalFirms.length : firms.length;
   const maxDiscount = Math.max(...firms.map(f => f.discount || 0));
-  const maxSplit = firms.map(f => parseInt(String(f.split || '').replace(/[^0-9]/g, '')) || 0).reduce((a,b) => Math.max(a,b), 0);
+  const maxSplit = firms.map(f => (String(f.split || '').match(/\d+/g) || []).map(Number).reduce((a,b)=>Math.max(a,b), 0)).reduce((a,b) => Math.max(a,b), 0);
 
   // Pre-load firm logos as base64
   const logoCache = {};
@@ -102,7 +102,7 @@ async function injectFirms(page) {
 
   const rows = firms.map((f, i) => {
     const isTop = i === 0;
-    const splitNum = parseInt(String(f.split || '').replace(/[^0-9]/g, '')) || 0;
+    const splitNum = (String(f.split || '').match(/\d+/g) || []).map(Number).reduce((a,b)=>Math.max(a,b), 0);
     const discColor = (f.discount || 0) >= 50 ? '#00dc82' : '#f5c518';
     const typeTag = (f.type || '').toLowerCase().includes('forex')
       ? `<span class="tag frx">${f.type}</span>`
