@@ -9,14 +9,15 @@ const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5c
 
 const INST_WELCOME = {
   subject: { pt:'Bom te ter aqui, Trader', en:'Good to have you here, Trader', es:'Que bueno tenerte aqui, Trader', fr:'Content de vous avoir, Trader', de:'Schon, dass du da bist, Trader', it:'Bello averti qui, Trader', ar:'سعداء بوجودك هنا' },
+  preheader: { pt:'Cupons exclusivos negociados direto com as firmas. Até 90% off. Tudo num só lugar.', en:'Exclusive coupons negotiated directly with firms. Up to 90% off. All in one place.', es:'Cupones exclusivos negociados directo con las firmas. Hasta 90% off. Todo en un lugar.', fr:'Coupons exclusifs négociés directement avec les firmes. Jusqu\'à 90% de réduction. Tout au même endroit.', de:'Exklusive Gutscheine direkt mit den Firmen verhandelt. Bis zu 90% Rabatt. Alles an einem Ort.', it:'Coupon esclusivi negoziati direttamente con le firme. Fino al 90% di sconto. Tutto in un unico posto.', ar:'كوبونات حصرية تم التفاوض عليها مباشرة مع الشركات. خصم يصل إلى 90%. كل شيء في مكان واحد.' },
   body: {
-    pt:'A gente sabe como é começar nesse mercado. Por isso criamos o MarketsCoupons — pra reunir traders como você que querem <b>pagar menos e operar melhor</b>. Aqui ninguém fica sozinho.',
-    en:'We know how hard it is to start in this market. That\'s why we created MarketsCoupons — to bring together traders like you who want to <b>pay less and trade better</b>.',
-    es:'Sabemos lo dificil que es empezar en este mercado. Por eso creamos MarketsCoupons — para reunir traders como tu que quieren <b>pagar menos y operar mejor</b>.',
-    fr:'On sait combien c\'est dur de debuter. C\'est pour ca qu\'on a cree MarketsCoupons — pour rassembler des traders comme vous qui veulent <b>payer moins et mieux trader</b>.',
-    de:'Wir wissen, wie schwer der Anfang ist. Deshalb haben wir MarketsCoupons geschaffen — fur Trader wie dich, die <b>weniger zahlen und besser traden</b> wollen.',
-    it:'Sappiamo quanto e difficile iniziare. Per questo abbiamo creato MarketsCoupons — per riunire trader come te che vogliono <b>pagare meno e operare meglio</b>.',
-    ar:'نعرف صعوبة البداية في هذا السوق. لذلك أنشأنا MarketsCoupons — لجمع المتداولين الذين يريدون <b>دفع أقل والتداول بشكل أفضل</b>.'
+    pt:'Aqui você encontra <b>cupons verificados, comparador de firmas, análise diária e calculadoras</b> — tudo num só lugar, atualizado todos os dias. Comece conhecendo as ofertas em destaque.',
+    en:'Here you\'ll find <b>verified coupons, firm comparator, daily analysis and calculators</b> — all in one place, updated daily. Start by checking the featured deals.',
+    es:'Aqui encontras <b>cupones verificados, comparador de firmas, analisis diario y calculadoras</b> — todo en un solo lugar, actualizado todos los dias. Empieza por las ofertas destacadas.',
+    fr:'Ici vous trouverez <b>coupons vérifiés, comparateur de firmes, analyse quotidienne et calculatrices</b> — tout au même endroit, mis à jour chaque jour. Commencez par les offres phares.',
+    de:'Hier findest du <b>verifizierte Gutscheine, Firmen-Vergleich, tägliche Analyse und Rechner</b> — alles an einem Ort, täglich aktualisiert. Starte mit den Top-Angeboten.',
+    it:'Qui trovi <b>coupon verificati, comparatore di firme, analisi quotidiana e calcolatrici</b> — tutto in un unico posto, aggiornato ogni giorno. Inizia dalle offerte in evidenza.',
+    ar:'هنا تجد <b>كوبونات موثقة، مقارن شركات، تحليل يومي وحاسبات</b> — كل شيء في مكان واحد، محدث يومياً. ابدأ بالعروض المميزة.'
   },
   cta: { pt:'CONHECER O SITE', en:'VISIT THE SITE', es:'CONOCER EL SITIO', fr:'DECOUVRIR LE SITE', de:'WEBSITE BESUCHEN', it:'VISITA IL SITO', ar:'زيارة الموقع' },
   footer: { pt:'Você está recebendo este email porque se cadastrou na Markets Coupons.', en:'You are receiving this email because you signed up at Markets Coupons.', es:'Estás recibiendo este email porque te registraste en Markets Coupons.', fr:'Vous recevez cet email car vous vous êtes inscrit sur Markets Coupons.', de:'Sie erhalten diese E-Mail, weil Sie sich bei Markets Coupons angemeldet haben.', it:'Ricevi questa email perché ti sei iscritto a Markets Coupons.', ar:'تتلقى هذا البريد لأنك سجلت في Markets Coupons.' },
@@ -66,6 +67,8 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
 </style>
 </head>
 <body bgcolor="#f0f0f0" style="margin:0;padding:0;background-color:#f0f0f0;font-family:${F};">
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f0f0f0;opacity:0;mso-hide:all;">${gt(INST_WELCOME.preheader)}</div>
+<div style="display:none;max-height:0;overflow:hidden;">&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;</div>
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0f0f0" role="presentation">
 <tr><td align="center" style="padding:32px 16px;">
 <table class="ec" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">

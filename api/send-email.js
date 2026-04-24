@@ -190,7 +190,7 @@ module.exports = async (req, res) => {
     const finalHtmlRaw = (htmlContent || textToHtml(textContent))
       .replace(/{nome}/g, recipient.name || 'Trader')
       .replace(/{email}/g, recipient.email || '')
-      .replace(/{cupom}/g, recipient.cupom || 'MARKET')
+      .replace(/{cupom}/g, recipient.cupom || '')
       .replace(/{firma}/g, recipient.firma || '')
       .replace(/{link}/g, tagUrl('https://www.marketscoupons.com'));
     const finalHtml = tagHtml(finalHtmlRaw);

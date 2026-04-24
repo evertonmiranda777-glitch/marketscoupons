@@ -7,107 +7,90 @@ const { sign: signUnsub } = require('./unsubscribe.js');
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
-// Conversational subject pool (7 langs). No symbols/%/emojis — plain chat tone to escape Promotions tab.
+// Subject pool (7 langs). Neutro/profissional — evita padrão phishing/clickbait que cai em Spam.
 // Placeholders: {firm} = firm name, {nome} = subscriber first name.
 const SUBJECT_POOL = {
   pt: [
-    'Vc viu o que a {firm} tá fazendo?',
-    '{nome}, rapidinho — sobre a {firm}',
-    'Preciso te mostrar uma coisa da {firm}',
-    'Isso da {firm} não vai durar',
-    'Olha isso antes de escolher firma',
-    'Quase não te mandei esse',
-    '{nome}, deu uma olhada na {firm}?',
-    'Acho que você vai gostar disso',
-    'Sobre ontem — dá uma olhada',
-    'Esse aqui vale o seu tempo',
-    'Sério, dá uma olhada na {firm}',
-    'Você tava esperando isso',
+    'Dá uma olhada na {firm}',
+    '{nome}, cupom da {firm} ativo',
+    '{firm} com desconto essa semana',
+    'Nossas ofertas ativas',
+    '{firm}: conferir os planos',
+    'Cupons válidos da semana',
+    '{nome}, seleção da semana',
+    'Promoções ativas agora',
   ],
   en: [
-    'Did you see what {firm} is doing?',
-    '{nome}, quick one about {firm}',
-    'Need to show you something from {firm}',
-    'This {firm} thing won\'t last',
-    'Check this before you pick a firm',
-    'Almost didn\'t send you this',
-    '{nome}, seen {firm} lately?',
-    'Think you\'ll like this one',
-    'About yesterday — take a look',
-    'This one is worth your time',
-    'Seriously, take a look at {firm}',
-    'You\'ve been waiting for this',
+    'Take a look at {firm}',
+    '{nome}, {firm} coupon active',
+    '{firm} discount this week',
+    'Our active deals',
+    '{firm}: check the plans',
+    'This week\'s coupons',
+    '{nome}, our weekly picks',
+    'Active promos right now',
   ],
   es: [
-    'Viste lo que está haciendo {firm}?',
-    '{nome}, rápido — sobre {firm}',
-    'Tengo que mostrarte algo de {firm}',
-    'Esto de {firm} no va a durar',
-    'Mira esto antes de elegir firma',
-    'Casi no te mando este',
-    '{nome}, viste {firm} últimamente?',
-    'Creo que te va a gustar',
-    'Sobre ayer — dale una mirada',
-    'Este vale tu tiempo',
-    'En serio, mira {firm}',
-    'Estabas esperando esto',
+    'Mira {firm}',
+    '{nome}, cupón {firm} activo',
+    '{firm} con descuento esta semana',
+    'Nuestras ofertas activas',
+    '{firm}: ver los planes',
+    'Cupones de la semana',
+    '{nome}, selección semanal',
+    'Promociones activas ahora',
   ],
   it: [
-    'Hai visto cosa sta facendo {firm}?',
-    '{nome}, veloce — su {firm}',
-    'Devo mostrarti una cosa di {firm}',
-    'Questa di {firm} non durerà',
-    'Guarda prima di scegliere una firm',
-    'Quasi non te lo mandavo',
-    '{nome}, hai visto {firm}?',
-    'Penso che ti piacerà',
-    'Su ieri — dai un\'occhiata',
-    'Questo vale il tuo tempo',
-    'Davvero, guarda {firm}',
-    'Stavi aspettando questo',
+    'Dai un\'occhiata a {firm}',
+    '{nome}, coupon {firm} attivo',
+    '{firm} in sconto questa settimana',
+    'Le nostre offerte attive',
+    '{firm}: vedi i piani',
+    'Coupon della settimana',
+    '{nome}, selezione settimanale',
+    'Promozioni attive ora',
   ],
   fr: [
-    'T\'as vu ce que fait {firm}?',
-    '{nome}, rapide — sur {firm}',
-    'Faut que je te montre un truc de {firm}',
-    'Ça de {firm} va pas durer',
-    'Regarde avant de choisir une firm',
-    'J\'ai failli pas envoyer',
-    '{nome}, t\'as vu {firm}?',
-    'Je pense que tu vas aimer',
-    'À propos d\'hier — jette un œil',
-    'Celui-là vaut ton temps',
-    'Sérieux, regarde {firm}',
-    'Tu attendais ça',
+    'Regarde {firm}',
+    '{nome}, coupon {firm} actif',
+    '{firm} en promo cette semaine',
+    'Nos offres actives',
+    '{firm} : voir les plans',
+    'Coupons de la semaine',
+    '{nome}, sélection de la semaine',
+    'Promos actives maintenant',
   ],
   de: [
-    'Hast du gesehen was {firm} macht?',
-    '{nome}, kurz — zu {firm}',
-    'Muss dir was von {firm} zeigen',
-    'Das von {firm} hält nicht lang',
-    'Schau das bevor du eine Firm wählst',
-    'Hätte ich fast nicht geschickt',
-    '{nome}, {firm} in letzter Zeit gesehen?',
-    'Glaube das wird dir gefallen',
-    'Zu gestern — schau mal rein',
-    'Das hier lohnt sich',
-    'Ernsthaft, schau dir {firm} an',
-    'Darauf hast du gewartet',
+    'Schau dir {firm} an',
+    '{nome}, {firm} Gutschein aktiv',
+    '{firm} diese Woche reduziert',
+    'Unsere aktiven Angebote',
+    '{firm}: Pläne ansehen',
+    'Gutscheine der Woche',
+    '{nome}, unsere Wochen-Auswahl',
+    'Aktive Promos jetzt',
   ],
   ar: [
-    'شفت شو عم تعمل {firm}؟',
-    '{nome}، سريعاً — عن {firm}',
-    'لازم أوريك شي من {firm}',
-    'هالشي من {firm} ما رح يدوم',
-    'شوف هيدا قبل ما تختار firm',
-    'كدت ما بعت لك ياها',
-    '{nome}، شفت {firm} مؤخراً؟',
-    'بعتقد رح يعجبك',
-    'عن مبارح — ألقِ نظرة',
-    'هيدا يستحق وقتك',
-    'جدياً، شوف {firm}',
-    'كنت عم تستنى هيدا',
+    'ألقِ نظرة على {firm}',
+    '{nome}، كوبون {firm} مفعّل',
+    '{firm} بخصم هذا الأسبوع',
+    'عروضنا النشطة',
+    '{firm}: شاهد الخطط',
+    'كوبونات الأسبوع',
+    '{nome}، اختيارات الأسبوع',
+    'العروض النشطة الآن',
   ],
+};
+
+// Preheader (hidden preview text 80-120 chars) — complementa o subject no inbox preview.
+const PREHEADER_POOL = {
+  pt: '3 firmas top com cupom exclusivo dentro. Desconto aplicado pelo link.',
+  en: '3 top firms with exclusive coupons inside. Discount applied through the link.',
+  es: '3 firmas top con cupón exclusivo dentro. Descuento aplicado por el enlace.',
+  fr: '3 firmes top avec coupon exclusif. Réduction appliquée via le lien.',
+  de: '3 Top-Firmen mit exklusivem Gutschein. Rabatt über den Link angewendet.',
+  it: '3 top firm con coupon esclusivo dentro. Sconto applicato tramite il link.',
+  ar: '3 شركات رائدة مع كوبون حصري. الخصم يُطبق عبر الرابط.',
 };
 
 function pickSubject(lang, firmName, userName) {
@@ -242,9 +225,12 @@ function buildCronEmail(firms, lang) {
     </div>
   `).join('');
 
+  const preheader = PREHEADER_POOL[lang] || PREHEADER_POOL.en;
   return `<!DOCTYPE html>
 <html dir="${dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background:#07090D;font-family:Arial,Helvetica,sans-serif;">
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#07090D;opacity:0;mso-hide:all;">${preheader}</div>
+<div style="display:none;max-height:0;overflow:hidden;">&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;</div>
 <div style="max-width:600px;margin:0 auto;background:#07090D;">
 
   <!-- Gold gradient top bar -->
@@ -321,6 +307,17 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // 0. Idempotency check — skip if we already sent a cron promo in the last 2 days
+    const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString();
+    const recentResp = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?sent_by=eq.cron&campaign_name=eq.Promo%20Automatica&created_at=gte.${encodeURIComponent(twoDaysAgo)}&select=id&limit=1`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const recent = recentResp.ok ? await recentResp.json() : [];
+    if (recent.length > 0) {
+      console.log('[cron-promo] Last send < 2 days ago, skipping.');
+      return res.status(200).json({ message: 'Skipped: recent send within 2 days', skipped: true });
+    }
+
     // 1. Get active subscribers with language
     const subResp = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?status=eq.active&select=email,name,lang`, {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
@@ -411,7 +408,7 @@ module.exports = async (req, res) => {
       },
       body: JSON.stringify({
         campaign_name: 'Promo Automatica',
-        subject: subject,
+        subject: `Promo auto ${new Date().toISOString().slice(0,10)}`,
         recipients: subscribers.length,
         status: failed === 0 ? 'sent' : (sent === 0 ? 'failed' : 'partial'),
         sent_by: 'cron',
