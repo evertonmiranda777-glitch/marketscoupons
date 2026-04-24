@@ -43,19 +43,33 @@ function stars(rating) {
   return [1,2,3,4,5].map(i => star(i <= r)).join('');
 }
 
-const FIRMS_BY_DAY = {
-  0: ['apex', 'bulenox', 'tpt', 'e2t'],
-  1: ['apex', 'bulenox', 'tpt', 'e2t'],
-  2: ['ftmo', 'fn', 'fundingpips', 'cti'],
-  3: ['apex', 'bulenox', 'tpt', 'tradeday'],
-  4: ['ftmo', 'the5ers', 'brightfunded', 'e8'],
-  5: ['apex', 'bulenox', 'tpt', 'e2t'],
-  6: ['apex', 'bulenox', 'tpt', 'tradeday'],
-};
+// Apex = âncora fixa (top1 card, best converter). Outras 3 = random deterministico pelo dia.
+// e2t ficou fora do pool (coupon MARKETSCOUPONS estoura o card — ver commit cad75f1).
+const DAILY_ANCHOR = 'apex';
+const FIRM_POOL = ['bulenox','tpt','ftmo','fn','fundingpips','cti','the5ers','brightfunded','e8','tradeday'];
+
+function mulberry32(seed) {
+  return function() {
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
 
 function pickFirmIdsForToday() {
-  const day = new Date().getDay();
-  return FIRMS_BY_DAY[day] || FIRMS_BY_DAY[1];
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now - start) / 86400000);
+  const rng = mulberry32(dayOfYear + now.getFullYear() * 1000);
+  const pool = [...FIRM_POOL];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const picks = [DAILY_ANCHOR, ...pool.slice(0, 3)];
+  console.log(`[firms] today's pick: ${picks.join(', ')}`);
+  return picks;
 }
 
 async function injectFirms(page) {
