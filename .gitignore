@@ -1,13 +1,35 @@
+# ─── Secrets — NEVER commit ───────────────────────────────────────────
+# Generic env files
+.env
+.env.*
+!.env.example
+
+# Specific keys/credentials
 .deepl-key
+*.pem
+*.key
+secrets/
+*credentials*.json
+*service-account*.json
+
+# Vercel local
+.vercel
+
+# ─── Build artifacts / deps ───────────────────────────────────────────
 node_modules/
 
-# Scratchpad / working files — mantém só o telegram-preview.html tracked
+# ─── Working files ────────────────────────────────────────────────────
+# Scratchpad — keep telegram-preview.html tracked, ignore the rest
 tmp/*
 !tmp/telegram-preview.html
 
-# Ambiente local de agents/skills
+# Local agents/skills sandbox
 .agents/
 .claude/skills/
 skills-lock.json
 
-.vercel
+# ─── OS / editor cruft ────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*~
