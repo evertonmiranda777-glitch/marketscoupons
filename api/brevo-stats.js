@@ -35,16 +35,48 @@ function dateStr(daysAgo) {
 }
 
 module.exports = async (req, res) => {
-  if (applyCors(req, res, { methods: 'GET, OPTIONS' })) return;
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+  if (applyCors(req, res, { methods: 'GET, POST, OPTIONS' })) return;
+  if (req.method !== 'GET' && req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
-
-  const BREVO_KEY = process.env.BREVO_API_KEY;
-  if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
 
   const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   const admin = await validateAdmin(auth);
   if (!admin) return res.status(403).json({ error: 'Forbidden: admin access required' });
+
+  // POST: notify-telegram (canal admin)
+  if (req.method === 'POST') {
+    const { action, text, parseMode } = req.body || {};
+    if (action !== 'notify-telegram') return res.status(400).json({ error: 'invalid action' });
+    if (!text || typeof text !== 'string') return res.status(400).json({ error: 'text required' });
+    if (text.length > 4000) return res.status(400).json({ error: 'text too long (max 4000)' });
+
+    const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+    const CHAT = process.env.TELEGRAM_ADMIN_CHAT_ID || process.env.TELEGRAM_CHAT_ID;
+    if (!TOKEN || !CHAT) return res.status(500).json({ error: 'telegram not configured' });
+
+    try {
+      const r = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT,
+          text,
+          parse_mode: parseMode || 'HTML',
+          disable_web_page_preview: true,
+        }),
+      });
+      if (!r.ok) {
+        const err = await r.text();
+        return res.status(502).json({ error: 'telegram api error', detail: err.slice(0, 200) });
+      }
+      return res.status(200).json({ success: true });
+    } catch (e) {
+      return safeError(res, 500, 'send failed', e);
+    }
+  }
+
+  const BREVO_KEY = process.env.BREVO_API_KEY;
+  if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
 
   const { type, days, tag, event, offset, limit } = req.query;
   const headers = { 'accept': 'application/json', 'api-key': BREVO_KEY };

@@ -9125,10 +9125,10 @@ async function approveProof(id){
       const firma = entry?.firma || entry?.firm || '?';
       const member = entry?.member || '?';
       const text = `🎉 <b>Compra confirmada</b>\n\n👤 ${member}\n🏢 ${firma}\n📊 Total da compra: ${newCount}ª\n🎖 Tier: ${tier}`;
-      fetch('/api/notify-telegram', {
+      fetch('/api/brevo-stats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ action: 'notify-telegram', text }),
       }).catch(() => null);
     } catch {}
     closeLeadModal();
