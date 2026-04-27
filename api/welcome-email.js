@@ -3,6 +3,9 @@
 // Uses the new "Markets Coupons." premium template (orange accent, white layout).
 
 const { sign: signUnsub } = require('./unsubscribe.js');
+const { applyCors } = require('./_cors.js');
+const { rateLimitIp } = require('./_ratelimit.js');
+const { safeError } = require('./_safe-error.js');
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
@@ -156,21 +159,10 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
 </body></html>`;
 }
 
-const _welRL = new Map();
-
 module.exports = async (req, res) => {
-  const origin = req.headers.origin || '';
-  const allowed = ['https://www.marketscoupons.com', 'https://marketscoupons.com', 'https://marketscoupons.vercel.app'];
-  res.setHeader('Access-Control-Allow-Origin', allowed.includes(origin) ? origin : allowed[0]);
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
-  if (!_welRL.has(ip)) _welRL.set(ip, []);
-  const now = Date.now(); const hits = _welRL.get(ip).filter(t => now - t < 60_000); hits.push(now); _welRL.set(ip, hits);
-  if (hits.length > 10) return res.status(429).json({ error: 'Rate limit' });
+  if (!rateLimitIp(req, 10)) return res.status(429).json({ error: 'rate_limit' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
@@ -273,6 +265,6 @@ module.exports = async (req, res) => {
       response: result.data,
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return safeError(res, 500, 'Internal error', err);
   }
 };

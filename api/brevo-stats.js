@@ -2,19 +2,12 @@
 // GET /api/brevo-stats?type=events|report&days=7&tag=promo-apex&offset=0&limit=50
 // Requires admin JWT in Authorization header
 
+const { applyCors } = require('./_cors.js');
+const { rateLimitIp } = require('./_ratelimit.js');
+const { safeError } = require('./_safe-error.js');
+
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
-
-const ALLOWED_ORIGINS = [
-  'https://www.marketscoupons.com',
-  'https://marketscoupons.com',
-  'https://marketscoupons.vercel.app',
-];
-
-function getCorsOrigin(req) {
-  const origin = req.headers.origin || '';
-  return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-}
 
 async function validateAdmin(jwt) {
   if (!jwt || jwt.length < 50) return null;
@@ -42,13 +35,9 @@ function dateStr(daysAgo) {
 }
 
 module.exports = async (req, res) => {
-  const corsOrigin = getCorsOrigin(req);
-  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Vary', 'Origin');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (applyCors(req, res, { methods: 'GET, OPTIONS' })) return;
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+  if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
@@ -119,6 +108,6 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Invalid type. Use: events, report, daily' });
     }
   } catch (err) {
-    return res.status(500).json({ error: 'Internal error', detail: err.message });
+    return safeError(res, 500, 'Internal error', err);
   }
 };

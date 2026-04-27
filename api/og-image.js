@@ -175,6 +175,7 @@ export default async function handler() {
       { width: 1200, height: 630 }
     );
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    console.error('[og-image]', err && err.message);
+    return new Response(JSON.stringify({ error: 'Internal error' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }

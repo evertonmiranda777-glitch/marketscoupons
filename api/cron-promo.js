@@ -3,6 +3,7 @@
 // GET /api/cron-promo?key=CRON_SECRET
 
 const { sign: signUnsub } = require('./unsubscribe.js');
+const { safeError } = require('./_safe-error.js');
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
@@ -422,6 +423,6 @@ module.exports = async (req, res) => {
       languages: Object.keys(langGroups),
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return safeError(res, 500, 'Internal error', err);
   }
 };

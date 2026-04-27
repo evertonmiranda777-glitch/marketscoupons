@@ -3,16 +3,16 @@
 // Removes: auth.users (cascade to profiles), email_subscribers, loyalty_members
 // Requires SUPABASE_SERVICE_ROLE_KEY + ADMIN_DELETE_TOKEN env vars.
 
+const { applyCors } = require('./_cors.js');
+const { rateLimitIp } = require('./_ratelimit.js');
+const { safeError } = require('./_safe-error.js');
+
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 
 module.exports = async (req, res) => {
-  const origin = req.headers.origin || '';
-  const allowed = ['https://www.marketscoupons.com', 'https://marketscoupons.com', 'https://marketscoupons.vercel.app'];
-  res.setHeader('Access-Control-Allow-Origin', allowed.includes(origin) ? origin : allowed[0]);
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!rateLimitIp(req, 10)) return res.status(429).json({ error: 'rate_limit' });
 
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const ADMIN_TOKEN = process.env.ADMIN_DELETE_TOKEN;
@@ -60,6 +60,6 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({ success: true, email, userId, authDeleted });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return safeError(res, 500, 'Internal error', err);
   }
 };

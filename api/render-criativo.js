@@ -6,6 +6,10 @@
 // AUTH: requires admin JWT (validates against profiles.is_admin in Supabase).
 // HCTI is a paid API; without auth this endpoint could be abused to drain quota.
 
+const { applyCors } = require('./_cors.js');
+const { rateLimitIp } = require('./_ratelimit.js');
+const { safeError } = require('./_safe-error.js');
+
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
@@ -28,9 +32,9 @@ async function validateAdmin(jwt) {
 }
 
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'POST only' });
-  }
+  if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
+  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
+  if (!rateLimitIp(req, 20)) return res.status(429).json({ error: 'rate_limit' });
 
   // Auth gate: only admin can render (HCTI is paid, prevents quota drain abuse)
   const jwt = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
@@ -101,7 +105,6 @@ body{width:${width}px;height:${height}px;overflow:hidden;}
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).send(buf);
   } catch (e) {
-    console.error('[render-criativo]', e);
-    return res.status(500).json({ error: e.message || 'render failed' });
+    return safeError(res, 500, 'render failed', e);
   }
 };

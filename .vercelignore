@@ -1,0 +1,34 @@
+# Mesma defensiva do .gitignore — Vercel deploy NÃO sobe esses arquivos
+.env
+.env.*
+!.env.example
+.deepl-key
+*.pem
+*.key
+secrets/
+*credentials*.json
+*service-account*.json
+
+# Build artifacts
+node_modules/
+
+# Local working dirs
+.firecrawl/
+.agents/
+.claude/
+.vercel
+tmp/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Repo-only files (não precisam ir pra produção)
+SECURITY.md
+CLAUDE.md
+README.md
+docs/
+memory/
+preview-*.html

@@ -386,7 +386,8 @@ export default async function handler(req) {
     );
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message, stack: err.stack }), {
+    console.error('[email-image]', err && err.message, err && err.stack);
+    return new Response(JSON.stringify({ error: 'Internal error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

@@ -3,20 +3,11 @@
 // Body: { to: [{email, name}], subject, htmlContent, sender?: {name, email}, tags?: [], provider?: 'brevo'|'resend'|'auto' }
 
 const { sign: signUnsub } = require('./unsubscribe.js');
+const { applyCors } = require('./_cors.js');
+const { rateLimitIp } = require('./_ratelimit.js');
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
-
-const ALLOWED_ORIGINS = [
-  'https://www.marketscoupons.com',
-  'https://marketscoupons.com',
-  'https://marketscoupons.vercel.app',
-];
-
-function getCorsOrigin(req) {
-  const origin = req.headers.origin || '';
-  return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-}
 
 // Validate JWT with Supabase and check admin role
 async function validateAdmin(jwt) {
@@ -43,14 +34,9 @@ async function validateAdmin(jwt) {
 }
 
 module.exports = async (req, res) => {
-  // CORS — restricted to our domains
-  const corsOrigin = getCorsOrigin(req);
-  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Vary', 'Origin');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
