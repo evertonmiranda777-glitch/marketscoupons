@@ -9,9 +9,18 @@ if (!SK || !BREVO) { console.error('keys missing'); process.exit(1); }
 const SUB_HEAD = { apikey: SK, Authorization: `Bearer ${SK}` };
 
 // Tags Brevo associadas com a campanha site-invite
-const TAGS_OF_INTEREST = ['site-invite', 'campaign', 'invite-site'];
-// Subjects que indicam site-invite (caso tag não bata)
-const SUBJECT_PATTERNS = [/\$25K por \$19/i, /Conta de \$25K/i, /site-invite/i];
+const TAGS_OF_INTEREST = ['site-invite', 'invite-site'];
+// Subjects que indicam site-invite — TODOS os 7 idiomas
+const SUBJECT_PATTERNS = [
+  /\$25K account for \$19\.90/i,        // EN
+  /Conta de \$25K por \$19/i,           // PT
+  /Cuenta de \$25K por \$19/i,          // ES
+  /Compte de \$25K pour \$19/i,         // FR
+  /\$25K Konto für \$19/i,              // DE
+  /Conto da \$25K a \$19/i,             // IT
+  /حساب \$25K بسعر \$19/i,              // AR
+  /site-invite/i,                       // tag fallback
+];
 
 async function fetchBrevoEvents(offset = 0, limit = 2500, eventType = 'delivered') {
   // Brevo: últimos N events. Tipos: requests, delivered, opens, clicks, bounces, etc.
