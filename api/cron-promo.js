@@ -287,10 +287,10 @@ module.exports = async (req, res) => {
   const RESEND_KEY = process.env.RESEND_API_KEY;
   if (!BREVO_KEY && !RESEND_KEY) return res.status(500).json({ error: 'No email provider configured' });
 
-  // Reserve 5 Brevo slots per day for critical emails (signup, welcome).
-  // Query Brevo directly to get the real daily-credits-remaining number.
+  // Reserva 5 em Brevo (transacionais — welcome). Resend full 100. Total bulk ~395/dia.
   const BREVO_DAILY_RESERVE = 5;
   let brevoRemaining = 0;
+  let resendRemaining = 0;
   if (BREVO_KEY) {
     try {
       const accResp = await fetch('https://api.brevo.com/v3/account', {
@@ -300,7 +300,18 @@ module.exports = async (req, res) => {
       // Brevo returns plan[] with type 'free' having 'credits' = emails left for the period
       const freePlan = (acc.plan || []).find(p => /free|pay|send/i.test(p.type || '') && typeof p.credits === 'number');
       brevoRemaining = freePlan ? Math.max(0, freePlan.credits - BREVO_DAILY_RESERVE) : 0;
-      console.log(`[cron-promo] Brevo credits left: ${freePlan?.credits || 0}, reserving ${BREVO_DAILY_RESERVE}, budget for bulk: ${brevoRemaining}`);
+      // Resend free tier: 100/dia (sem endpoint de credits remaining)
+      // Subtraímos quantos já enviamos hoje via email_logs
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.resend&created_at=gte.${today}&select=recipients`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        });
+        const logs = r.ok ? await r.json() : [];
+        const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
+        resendRemaining = Math.max(0, 100 - sentToday);
+      } catch { resendRemaining = 100; }
+      console.log(`[cron-promo] Brevo credits: ${freePlan?.credits || 0}, reserve: ${BREVO_DAILY_RESERVE}, Brevo bulk: ${brevoRemaining}, Resend bulk: ${resendRemaining}`);
     } catch (e) {
       console.error('[cron-promo] Could not fetch Brevo account:', e.message);
       brevoRemaining = 0; // fail safe: don't send via Brevo if we can't read credits
@@ -362,9 +373,8 @@ module.exports = async (req, res) => {
         .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => `href="${tagUrl(url)}"`);
 
       for (const sub of group) {
-        // Brevo budget hit? Stop the bulk send — resumes tomorrow when credits reset.
-        // Resend path intentionally disabled for bulk (lands in Gmail Promotions tab).
-        if (brevoRemaining <= 0) break;
+        // Brevo primeiro até esgotar; depois Resend até esgotar; depois para até amanhã.
+        if (brevoRemaining <= 0 && resendRemaining <= 0) break;
 
         const unsubUrl = (() => { try { return `https://www.marketscoupons.com/api/unsubscribe?e=${encodeURIComponent(sub.email)}&t=${signUnsub(sub.email)}&lang=${lang}`; } catch { return 'https://www.marketscoupons.com/'; } })();
         const listUnsubHeader = `<${unsubUrl}>, <mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>`;
@@ -374,28 +384,48 @@ module.exports = async (req, res) => {
         const firstName = (sub.name || '').trim().split(/\s+/)[0] || '';
         const firmForSubject = subjectFirms[Math.floor(Math.random() * subjectFirms.length)];
         const subject = pickSubject(lang, firmForSubject, firstName);
+
+        const useBrevo = brevoRemaining > 0 && BREVO_KEY;
         try {
-          const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
-            method: 'POST',
-            headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
-            body: JSON.stringify({
-              sender: { name: 'Lara | Markets Coupons', email: 'lara@marketscoupons.com' },
-              to: [{ email: sub.email, name: sub.name || '' }],
-              subject, htmlContent: personalizedHtml,
-              headers: {
-                'List-Unsubscribe': listUnsubHeader,
-                'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-              },
-              tags: ['promo-auto', 'lang-' + lang],
-            }),
-          });
-          if (resp.ok) { sent++; brevoRemaining--; } else failed++;
+          if (useBrevo) {
+            const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+              method: 'POST',
+              headers: { 'accept': 'application/json', 'content-type': 'application/json', 'api-key': BREVO_KEY },
+              body: JSON.stringify({
+                sender: { name: 'Lara | Markets Coupons', email: 'lara@marketscoupons.com' },
+                to: [{ email: sub.email, name: sub.name || '' }],
+                subject, htmlContent: personalizedHtml,
+                headers: {
+                  'List-Unsubscribe': listUnsubHeader,
+                  'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+                },
+                tags: ['promo-auto', 'lang-' + lang],
+              }),
+            });
+            if (resp.ok) { sent++; brevoRemaining--; } else failed++;
+          } else if (resendRemaining > 0 && RESEND_KEY) {
+            const resp = await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+              body: JSON.stringify({
+                from: 'Lara | Markets Coupons <lara@marketscoupons.com>',
+                to: [sub.email],
+                subject, html: personalizedHtml,
+                headers: {
+                  'List-Unsubscribe': listUnsubHeader,
+                  'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+                },
+                tags: [{ name: 'tag', value: 'promo-auto' }, { name: 'lang', value: lang }],
+              }),
+            });
+            if (resp.ok) { sent++; resendRemaining--; } else failed++;
+          }
         } catch { failed++; }
 
         // Rate limit
         await new Promise(r => setTimeout(r, 150));
       }
-      if (brevoRemaining <= 0) break; // outer lang loop also stops
+      if (brevoRemaining <= 0 && resendRemaining <= 0) break; // outer lang loop também para
     }
 
     // 5. Log to Supabase

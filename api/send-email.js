@@ -232,23 +232,43 @@ module.exports = async (req, res) => {
   // Determine provider: 'brevo', 'resend', or 'auto' (brevo first, fallback to resend)
   const useProvider = provider || 'auto';
 
-  // Reserve 5 Brevo slots/day for critical transactional emails (signup, welcome).
-  // Only applies to bulk 'auto' sends — explicit 'brevo' calls from admin bypass the reserve.
-  const BREVO_DAILY_RESERVE = 5;
+  // Reserva 5 em Brevo (transacionais — welcome tenta Brevo primeiro). Resend full 100.
+  // Bulk: ~295 Brevo + ~100 Resend = ~395/dia.
+  const BREVO_RESERVE = 5;
   let brevoBudget = Infinity;
-  if (useProvider === 'auto' && BREVO_KEY && to.length > 1) {
-    try {
-      const accResp = await fetch('https://api.brevo.com/v3/account', {
-        headers: { 'accept': 'application/json', 'api-key': BREVO_KEY },
-      });
-      const acc = await accResp.json();
-      const freePlan = (acc.plan || []).find(p => typeof p.credits === 'number');
-      const credits = freePlan?.credits ?? 0;
-      brevoBudget = Math.max(0, credits - BREVO_DAILY_RESERVE);
-      console.log(`[send-email] Brevo credits: ${credits}, reserve: ${BREVO_DAILY_RESERVE}, bulk budget: ${brevoBudget}`);
-    } catch (e) {
-      console.error('[send-email] Brevo account check failed:', e.message);
-      brevoBudget = 0;
+  let resendBudget = Infinity;
+  if (useProvider === 'auto' && to.length > 1) {
+    if (BREVO_KEY) {
+      try {
+        const accResp = await fetch('https://api.brevo.com/v3/account', {
+          headers: { 'accept': 'application/json', 'api-key': BREVO_KEY },
+        });
+        const acc = await accResp.json();
+        const freePlan = (acc.plan || []).find(p => typeof p.credits === 'number');
+        const credits = freePlan?.credits ?? 0;
+        brevoBudget = Math.max(0, credits - BREVO_RESERVE);
+        console.log(`[send-email] Brevo credits: ${credits}, reserve: ${BREVO_RESERVE}, bulk budget: ${brevoBudget}`);
+      } catch (e) {
+        console.error('[send-email] Brevo account check failed:', e.message);
+        brevoBudget = 0;
+      }
+    }
+    if (RESEND_KEY) {
+      // Resend free tier: 100/dia (sem endpoint de credits remaining).
+      // Subtrai quantos já enviamos hoje via email_logs (provider='resend').
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.resend&created_at=gte.${today}&select=recipients`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        });
+        const logs = r.ok ? await r.json() : [];
+        const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
+        resendBudget = Math.max(0, 100 - sentToday);
+        console.log(`[send-email] Resend sentToday: ${sentToday}, bulk budget: ${resendBudget}`);
+      } catch (e) {
+        console.error('[send-email] Resend budget check failed:', e.message);
+        resendBudget = 100; // fallback otimista
+      }
     }
   }
 
@@ -272,18 +292,21 @@ module.exports = async (req, res) => {
       } else if (useProvider === 'brevo') {
         result = await sendViaBrevo(recipient, finalSubject, finalHtml);
       } else {
-        // Auto: Brevo until budget hits the reserve, then STOP.
-        // Resend fallback disabled for bulk because it lands in Gmail Promotions tab.
-        // If Brevo call itself errors (network/5xx), try Resend once as single-email rescue.
+        // Auto: Brevo primeiro até esgotar budget, depois Resend até esgotar.
+        // Total bulk: ~295 Brevo + ~95 Resend = ~390/dia.
         if (brevoBudget > 0 && BREVO_KEY) {
           result = await sendViaBrevo(recipient, finalSubject, finalHtml);
           if (result.status === 'sent') brevoBudget--;
-          if (result.status === 'failed' && RESEND_KEY) {
-            console.log(`[AUTO] Brevo errored for ${recipient.email}, trying Resend as rescue...`);
+          if (result.status === 'failed' && RESEND_KEY && resendBudget > 0) {
+            console.log(`[AUTO] Brevo errored for ${recipient.email}, falling back to Resend`);
             result = await sendViaResend(recipient, finalSubject, finalHtml);
+            if (result.status === 'sent') resendBudget--;
           }
+        } else if (resendBudget > 0 && RESEND_KEY) {
+          result = await sendViaResend(recipient, finalSubject, finalHtml);
+          if (result.status === 'sent') resendBudget--;
         } else {
-          result = { email: recipient.email, status: 'skipped', provider: 'brevo', response: { error: 'Brevo daily reserve hit — resumes tomorrow' } };
+          result = { email: recipient.email, status: 'skipped', provider: 'auto', response: { error: 'Daily quota hit (Brevo+Resend) — resumes tomorrow' } };
         }
       }
     } catch (err) {
