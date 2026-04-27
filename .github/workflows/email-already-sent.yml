@@ -1,0 +1,22 @@
+name: Email already-sent (site-invite blacklist)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run
+        env:
+          SUPABASE_URL: https://qfwhduvutfumsaxnuofa.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: node scripts/email-already-sent.js
