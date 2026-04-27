@@ -71,11 +71,26 @@ async function ensureBucket() {
 }
 
 async function fetchTable(name, query) {
+  // Pagina via Range header (PostgREST trunca em 1000 por default).
+  // Range: 0-999, 1000-1999, etc. Para quando vierem menos rows do que pediu.
   const q = typeof query === 'function' ? query() : query;
-  const url = `${SUPABASE_URL}/rest/v1/${name}?${q}`;
-  const r = await fetch(url, { headers });
-  if (!r.ok) throw new Error(`fetch ${name} ${r.status}: ${await r.text().catch(()=>'?')}`);
-  return r.json();
+  const all = [];
+  const PAGE = 1000;
+  let offset = 0;
+  while (true) {
+    const url = `${SUPABASE_URL}/rest/v1/${name}?${q}`;
+    const r = await fetch(url, {
+      headers: { ...headers, Range: `${offset}-${offset + PAGE - 1}`, 'Range-Unit': 'items' },
+    });
+    if (!r.ok) throw new Error(`fetch ${name} ${r.status}: ${await r.text().catch(()=>'?')}`);
+    const page = await r.json();
+    if (!Array.isArray(page) || page.length === 0) break;
+    all.push(...page);
+    if (page.length < PAGE) break;
+    offset += PAGE;
+    if (offset > 1_000_000) { console.warn(`[backup] ${name}: hit 1M safety limit`); break; }
+  }
+  return all;
 }
 
 async function uploadObject(key, json) {
