@@ -1,0 +1,37 @@
+name: Email auto-dispatch (cron diário)
+
+on:
+  schedule:
+    # 14:00 UTC = 11:00 BRT — dispara ~400 emails/dia
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+    inputs:
+      campaign:
+        description: 'Campaign key'
+        required: true
+        default: 'site-invite'
+      batchSize:
+        description: 'Emails to send today'
+        required: false
+        default: '400'
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger /api/cron-bulk-send
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          CAMPAIGN="${{ inputs.campaign || 'site-invite' }}"
+          BATCH="${{ inputs.batchSize || '400' }}"
+          echo "Campaign: $CAMPAIGN | Batch: $BATCH"
+          RESPONSE=$(curl -s -X POST "https://www.marketscoupons.com/api/cron-bulk-send" \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            -H "Content-Type: application/json" \
+            -d "{\"campaign\":\"$CAMPAIGN\",\"batchSize\":$BATCH}")
+          echo "$RESPONSE"
+          echo "$RESPONSE" | grep -q '"success":true' || (echo "❌ failure" && exit 1)
