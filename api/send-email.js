@@ -273,6 +273,7 @@ module.exports = async (req, res) => {
   }
 
   const results = [];
+  const tagPromises = []; // colectadas dentro do loop, aguardadas no fim
   for (const recipient of to) {
     const finalSubject = subject
       .replace(/{nome}/g, recipient.name || 'Trader')
@@ -314,13 +315,20 @@ module.exports = async (req, res) => {
     }
     results.push(result);
 
-    // Auto-tag em email_subscribers se envio bem-sucedido (fire-and-forget, não bloqueia)
+    // Auto-tag em email_subscribers se envio bem-sucedido — colecta promise pra await NO FINAL
+    // (fire-and-forget não funciona em Vercel serverless: handler return mata in-flight network)
     if (result.status === 'sent' && campaignKey) {
-      appendCampaignTag(result.email, campaignKey).catch(() => {});
+      tagPromises.push(appendCampaignTag(result.email, campaignKey).catch(() => null));
     }
 
     // Small delay to avoid rate limiting
     if (to.length > 10) await new Promise(r => setTimeout(r, 100));
+  }
+
+  // Aguarda TODOS os auto-tags terminarem antes de retornar (Vercel kills in-flight on return)
+  if (tagPromises.length > 0) {
+    console.log(`[send-email] aguardando ${tagPromises.length} auto-tags...`);
+    await Promise.all(tagPromises);
   }
 
   const sent = results.filter(r => r.status === 'sent').length;

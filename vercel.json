@@ -3,6 +3,9 @@
     "api/render-criativo.js": {
       "memory": 512,
       "maxDuration": 30
+    },
+    "api/send-email.js": {
+      "maxDuration": 60
     }
   },
   "crons": [
