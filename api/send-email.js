@@ -8,6 +8,68 @@ const { rateLimitIp } = require('./_ratelimit.js');
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+// Service role usado pra dedup automático (filtrar quem já recebeu) + auto-tag (marcar quem recebeu agora)
+// Sem isso, RLS bloqueia UPDATE em email_subscribers.tags
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+// Detecta campaign key dos tags (formato 'inst-XXX' ou 'promo-XXX' do admin)
+function detectCampaignKey(tags) {
+  if (!Array.isArray(tags)) return null;
+  for (const t of tags) {
+    const m = String(t).match(/^(?:inst|promo)-(.+)$/);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+// Lista emails que JÁ têm tag `received-{campaignKey}` em email_subscribers
+async function fetchAlreadyTagged(emails, campaignKey) {
+  if (!SUPABASE_SERVICE_KEY || !campaignKey || !emails.length) return new Set();
+  try {
+    const targetTag = `received-${campaignKey}`;
+    // PostgREST: emails IN (...) AND tags @> '{received-X}'
+    const list = emails.map(e => `"${e}"`).join(',');
+    const url = `${SUPABASE_URL}/rest/v1/email_subscribers?email=in.(${list})&tags=cs.{${targetTag}}&select=email`;
+    const r = await fetch(url, {
+      headers: { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` },
+    });
+    if (!r.ok) return new Set();
+    const rows = await r.json();
+    return new Set(rows.map(x => x.email.toLowerCase().trim()));
+  } catch { return new Set(); }
+}
+
+// Append tag `received-{campaignKey}` no email_subscribers do email (após envio bem-sucedido)
+async function appendCampaignTag(email, campaignKey) {
+  if (!SUPABASE_SERVICE_KEY || !campaignKey) return;
+  const targetTag = `received-${campaignKey}`;
+  try {
+    const get = await fetch(
+      `${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(email)}&select=tags`,
+      { headers: { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` } }
+    );
+    if (!get.ok) return;
+    const rows = await get.json();
+    if (!rows.length) return;
+    const cur = rows[0].tags;
+    const arr = Array.isArray(cur) ? [...cur] : (cur ? [cur] : []);
+    if (arr.includes(targetTag)) return;
+    arr.push(targetTag);
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(email)}`,
+      {
+        method: 'PATCH',
+        headers: {
+          apikey: SUPABASE_SERVICE_KEY,
+          Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ tags: arr }),
+      }
+    );
+  } catch { /* silent */ }
+}
 
 // Validate JWT with Supabase and check admin role
 async function validateAdmin(jwt) {
@@ -50,7 +112,8 @@ module.exports = async (req, res) => {
   const contentLength = parseInt(req.headers['content-length'] || '0', 10);
   if (contentLength > 512000) return res.status(413).json({ error: 'Payload too large (max 500KB)' });
 
-  const { to, subject, htmlContent, textContent, sender, tags, provider } = req.body;
+  const { subject, htmlContent, textContent, sender, tags, provider, noDedup } = req.body;
+  let { to } = req.body;
   if (!to || !to.length || !subject || (!htmlContent && !textContent)) {
     return res.status(400).json({ error: 'Missing required fields: to, subject, htmlContent or textContent' });
   }
@@ -58,6 +121,27 @@ module.exports = async (req, res) => {
   // Limit recipients per request
   if (to.length > 200) {
     return res.status(400).json({ error: 'Too many recipients (max 200 per request)' });
+  }
+
+  // DEDUP AUTOMÁTICO: se tags tem 'inst-XXX' ou 'promo-XXX', filtra quem já tem `received-XXX`
+  // Bypass: passar { noDedup: true } no body (ex: pra teste mandar pra si mesmo de novo)
+  const campaignKey = detectCampaignKey(tags);
+  let dedupFilteredOut = [];
+  if (campaignKey && !noDedup) {
+    const allEmails = to.map(t => (t.email || '').toLowerCase().trim()).filter(Boolean);
+    const already = await fetchAlreadyTagged(allEmails, campaignKey);
+    if (already.size > 0) {
+      dedupFilteredOut = to.filter(t => already.has((t.email || '').toLowerCase().trim()));
+      to = to.filter(t => !already.has((t.email || '').toLowerCase().trim()));
+      console.log(`[send-email] dedup '${campaignKey}': filtrou ${dedupFilteredOut.length}, restam ${to.length}`);
+    }
+  }
+  if (to.length === 0) {
+    return res.status(200).json({
+      success: true, total: 0, sent: 0, failed: 0,
+      dedup_filtered_out: dedupFilteredOut.length,
+      message: `Todos ${dedupFilteredOut.length} emails já receberam '${campaignKey}'. Nada a enviar.`,
+    });
   }
 
   // Validate email format (basic)
@@ -207,6 +291,11 @@ module.exports = async (req, res) => {
     }
     results.push(result);
 
+    // Auto-tag em email_subscribers se envio bem-sucedido (fire-and-forget, não bloqueia)
+    if (result.status === 'sent' && campaignKey) {
+      appendCampaignTag(result.email, campaignKey).catch(() => {});
+    }
+
     // Small delay to avoid rate limiting
     if (to.length > 10) await new Promise(r => setTimeout(r, 100));
   }
@@ -221,6 +310,8 @@ module.exports = async (req, res) => {
     sent,
     failed,
     providers,
+    campaign_key: campaignKey,
+    dedup_filtered_out: dedupFilteredOut.length,
     results,
   });
 };
