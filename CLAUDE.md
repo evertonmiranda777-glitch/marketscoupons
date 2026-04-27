@@ -1,5 +1,15 @@
 # MarketsCoupons - Contexto do Projeto
 
+## 🚨 ESTADO ATUAL (atualizado 2026-04-27 — ler PRIMEIRO ao começar sessão)
+
+Antes de qualquer ação, abre estas 3 memórias na ordem:
+
+1. **`memory/feedback_modo_trabalho_empresario.md`** — contrato de comportamento. 7 regras: ação concreta sempre, reconhecer antes de explicar, modo autônomo, caminhos exatos, memória ativa, PT-BR, codewords stop/preguiça.
+
+2. **`memory/project_hardening_2026_04_27.md`** — segurança. CSP estrita ativa, helpers fail-closed em `api/_cors.js` + `_ratelimit.js` + `_safe-error.js`, 2FA em tudo, Gemini API key restrita por API restriction (NUNCA HTTP referrer). Não refazer o que já está feito.
+
+3. **`memory/project_backlog_proximos_passos.md`** — onde paramos. Top 3 prioridades (Sentry pendente DSN, Backup ✅ implementado, Funil pendente), email institucionais outros idiomas pendentes (só PT do blog-guides foi feito), blog SEO orgânico mundial = visão grande do Everton.
+
 ## PRE-FLIGHT PROTOCOL — OBRIGATÓRIO em toda tarefa visual/criativa
 
 **Criado 2026-04-19 depois de Everton confrontar Oryk sobre preguiça estrutural.** Não pular nenhum passo.
