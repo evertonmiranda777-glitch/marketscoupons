@@ -9111,14 +9111,28 @@ async function approveProof(id){
     }).eq('id', id);
     // Update member approved_count
     const entry = _adminProofsCache.find(e=>e.id===id);
+    let newCount = 1, tier = 'bronze';
     if (entry?.member) {
       const { data: mem } = await db.from('loyalty_members').select('approved_count').eq('email',entry.member).maybeSingle();
-      const newCount = (mem?.approved_count||0) + 1;
-      const tier = newCount >= 15 ? 'platinum' : newCount >= 7 ? 'gold' : newCount >= 3 ? 'silver' : 'bronze';
+      newCount = (mem?.approved_count||0) + 1;
+      tier = newCount >= 15 ? 'platinum' : newCount >= 7 ? 'gold' : newCount >= 3 ? 'silver' : 'bronze';
       await db.from('loyalty_members').update({ approved_count: newCount, tier }).eq('email', entry.member);
     }
+    // Telegram alert (fire-and-forget — não bloqueia UI)
+    try {
+      const session = await db.auth.getSession();
+      const token = session?.data?.session?.access_token;
+      const firma = entry?.firma || entry?.firm || '?';
+      const member = entry?.member || '?';
+      const text = `🎉 <b>Compra confirmada</b>\n\n👤 ${member}\n🏢 ${firma}\n📊 Total da compra: ${newCount}ª\n🎖 Tier: ${tier}`;
+      fetch('/api/notify-telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ text }),
+      }).catch(() => null);
+    } catch {}
     closeLeadModal();
-    toast('Aprovado! Pontos creditados.');
+    toast('Aprovado! Pontos creditados + alerta no Telegram.');
     renderLoyaltyAdmin();
   } catch(e) { toast('Erro ao aprovar.','error'); }
 }
