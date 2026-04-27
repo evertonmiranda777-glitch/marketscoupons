@@ -85,7 +85,6 @@ async function main() {
   const payload = {
     date: today,
     total_unique_emails: sentEmails.size,
-    total_events: sentDetail.length,
     emails: Array.from(sentEmails).sort(),
   };
   const key = `site-invite-blacklist-${today}.json`;
