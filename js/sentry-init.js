@@ -10,7 +10,7 @@
 
 (function () {
   // 👇 Cola DSN aqui (ex: 'https://abc123@o12345.ingest.sentry.io/67890')
-  var DSN = '';
+  var DSN = 'https://83c804afc41e83e55231cd52ec5a0401@o4511292987670528.ingest.de.sentry.io/4511292999598160';
 
   if (!DSN) return; // gate — sem DSN, Sentry fica off
   if (typeof Sentry === 'undefined') {
