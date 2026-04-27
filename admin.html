@@ -9118,21 +9118,8 @@ async function approveProof(id){
       tier = newCount >= 15 ? 'platinum' : newCount >= 7 ? 'gold' : newCount >= 3 ? 'silver' : 'bronze';
       await db.from('loyalty_members').update({ approved_count: newCount, tier }).eq('email', entry.member);
     }
-    // Telegram alert (fire-and-forget — não bloqueia UI)
-    try {
-      const session = await db.auth.getSession();
-      const token = session?.data?.session?.access_token;
-      const firma = entry?.firma || entry?.firm || '?';
-      const member = entry?.member || '?';
-      const text = `🎉 <b>Compra confirmada</b>\n\n👤 ${member}\n🏢 ${firma}\n📊 Total da compra: ${newCount}ª\n🎖 Tier: ${tier}`;
-      fetch('/api/brevo-stats', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ action: 'notify-telegram', text }),
-      }).catch(() => null);
-    } catch {}
     closeLeadModal();
-    toast('Aprovado! Pontos creditados + alerta no Telegram.');
+    toast('Aprovado! Pontos creditados.');
     renderLoyaltyAdmin();
   } catch(e) { toast('Erro ao aprovar.','error'); }
 }
@@ -10666,17 +10653,19 @@ async function renderTrackingPage(){
   const ec = (name) => ev.filter(e => e.event === name).length;
   const ecToday = (name) => ev.filter(e => e.event === name && new Date(e.created_at).toDateString() === new Date().toDateString()).length;
 
-  // ── COMPRAS CONFIRMADAS (loyalty_proofs validados — fonte real de venda) ──
-  let totalConfirmedPurchases = 0;
-  let todayConfirmedPurchases = 0;
+  // ── VENDAS REAIS APEX (afiliado — extensão sincroniza affiliate_daily_stats) ──
+  let apexTx = 0, apexCommission = 0, apexTxToday = 0;
   try {
-    const { data: proofs } = await db.from('loyalty_proofs')
-      .select('created_at, validated_at, status')
-      .eq('status', 'approved')
-      .gte('validated_at', cutoff);
-    const ap = proofs || [];
-    totalConfirmedPurchases = ap.length;
-    todayConfirmedPurchases = ap.filter(p => p.validated_at && new Date(p.validated_at).toDateString() === new Date().toDateString()).length;
+    const todayStr = new Date().toISOString().slice(0,10);
+    const { data: rows } = await db.from('affiliate_daily_stats')
+      .select('date, transactions, commission')
+      .eq('firm_id', 'apex')
+      .gte('date', cutoff);
+    (rows || []).forEach(r => {
+      apexTx += Number(r.transactions || 0);
+      apexCommission += Number(r.commission || 0);
+      if (r.date === todayStr) apexTxToday += Number(r.transactions || 0);
+    });
   } catch (e) {}
 
   // ── SYSTEMS STATUS ──
@@ -10693,7 +10682,7 @@ async function renderTrackingPage(){
     <div class="stat-card"><div class="stat-lbl">Facebook Pixel (via GTM + direto)</div><div class="stat-val" style="color:#1877F2;">${fbEvents.toLocaleString('pt-BR')}</div><div class="stat-change">5 tags configuradas</div></div>
     <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val">${ec('page_view').toLocaleString('pt-BR')}</div><div class="stat-change">${ecToday('page_view')} hoje</div></div>
     <div class="stat-card"><div class="stat-lbl">Cliques em "Comprar"</div><div class="stat-val y">${ec('checkout_click')}</div><div class="stat-change">${ecToday('checkout_click')} hoje</div></div>
-    <div class="stat-card"><div class="stat-lbl">Compras Confirmadas</div><div class="stat-val" style="color:#22C55E;">${totalConfirmedPurchases}</div><div class="stat-change">${todayConfirmedPurchases} hoje · via fidelidade</div></div>`;
+    <div class="stat-card"><div class="stat-lbl">Vendas Apex (real)</div><div class="stat-val" style="color:#22C55E;">${apexTx}</div><div class="stat-change">${apexTxToday} hoje · $${apexCommission.toFixed(2)} comissão</div></div>`;
 
   // ── FUNNEL ──
   const views = ec('page_view');
@@ -10707,7 +10696,7 @@ async function renderTrackingPage(){
     { code: 'FD', label: 'Abriu Firma', val: details, color: '#3B82F6' },
     { code: 'CC', label: 'Copiou Cupom', val: coupons, color: 'var(--gold)' },
     { code: 'CK', label: 'Clicou Comprar', val: checkouts, color: '#0EA5E9' },
-    { code: 'CV', label: 'Compra Confirmada', val: totalConfirmedPurchases, color: '#22C55E' },
+    { code: 'CV', label: 'Venda Apex (real)', val: apexTx, color: '#22C55E' },
   ];
   const maxVal = Math.max(...steps.map(s => s.val), 1);
   document.getElementById('trk-funnel').innerHTML = steps.map((s, i) => {
