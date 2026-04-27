@@ -144,7 +144,7 @@ const I18N = {
     home_ver_planos:'Ver planos →',
     hero_badge:'Cupons Verificados — Atualizados Diariamente',
     hero_titulo:'Economize até <em>90% OFF</em> <br>nas melhores Prop Firms',
-    hero_sub:'Compare firmas, use cupons exclusivos e acesse ferramentas profissionais — tudo em um só lugar.',
+    hero_sub:'Compare firmas, use cupons exclusivos e acesse ferramentas profissionais, tudo em um só lugar.',
     hero_btn_firms:'Ver Prop Firms',
     hero_btn_tg:'Grupo do Telegram',
     home_melhores_ofertas:'Melhores ofertas agora',
