@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.1" integrity="sha384-6uukdHiftld8tJvsEnb1GXdOm6/h98QIKjmAy6BI4WpoHahjbaBL8IVhavKP2sxI" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" integrity="sha384-DhxhYObIMeMNGyAG7iK11OHzBIKyEIeRL0ad1iFPAOwZB8iirUlTT0O/WJJUk8+o" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/modern-screenshot/dist/index.umd.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/modern-screenshot@4.6.5/dist/index.umd.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
 <style>
 :root{
@@ -2676,8 +2676,8 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div class="ec-field">
             <label>Logo atual</label>
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-              <img id="logo-preview" src="img/mc-logo-hex.png" style="height:48px;border-radius:8px;background:rgba(255,255,255,.06);padding:4px;">
-              <span style="font-size:11px;color:var(--t3);" id="logo-path">img/mc-logo-hex.png</span>
+              <img id="logo-preview" src="img/logo-hexmark.svg" style="height:48px;border-radius:8px;background:rgba(255,255,255,.06);padding:4px;">
+              <span style="font-size:11px;color:var(--t3);" id="logo-path">img/logo-hexmark.svg</span>
             </div>
           </div>
           <div class="ec-field">
@@ -10652,6 +10652,19 @@ async function renderTrackingPage(){
   const ec = (name) => ev.filter(e => e.event === name).length;
   const ecToday = (name) => ev.filter(e => e.event === name && new Date(e.created_at).toDateString() === new Date().toDateString()).length;
 
+  // ── COMPRAS CONFIRMADAS (loyalty_proofs validados — fonte real de venda) ──
+  let totalConfirmedPurchases = 0;
+  let todayConfirmedPurchases = 0;
+  try {
+    const { data: proofs } = await db.from('loyalty_proofs')
+      .select('created_at, validated_at, status')
+      .eq('status', 'approved')
+      .gte('validated_at', cutoff);
+    const ap = proofs || [];
+    totalConfirmedPurchases = ap.length;
+    todayConfirmedPurchases = ap.filter(p => p.validated_at && new Date(p.validated_at).toDateString() === new Date().toDateString()).length;
+  } catch (e) {}
+
   // ── SYSTEMS STATUS ──
   const totalEvents = ev.length;
   const todayEvents = ev.filter(e => new Date(e.created_at).toDateString() === new Date().toDateString()).length;
@@ -10665,7 +10678,8 @@ async function renderTrackingPage(){
     <div class="stat-card"><div class="stat-lbl">GA4 (via GTM + direto)</div><div class="stat-val b">${gaEvents.toLocaleString('pt-BR')}</div><div class="stat-change">6 eventos configurados</div></div>
     <div class="stat-card"><div class="stat-lbl">Facebook Pixel (via GTM + direto)</div><div class="stat-val" style="color:#1877F2;">${fbEvents.toLocaleString('pt-BR')}</div><div class="stat-change">5 tags configuradas</div></div>
     <div class="stat-card"><div class="stat-lbl">Page Views</div><div class="stat-val">${ec('page_view').toLocaleString('pt-BR')}</div><div class="stat-change">${ecToday('page_view')} hoje</div></div>
-    <div class="stat-card"><div class="stat-lbl">Conversões (Checkout)</div><div class="stat-val y">${ec('checkout_click')}</div><div class="stat-change">${ecToday('checkout_click')} hoje</div></div>`;
+    <div class="stat-card"><div class="stat-lbl">Cliques em "Comprar"</div><div class="stat-val y">${ec('checkout_click')}</div><div class="stat-change">${ecToday('checkout_click')} hoje</div></div>
+    <div class="stat-card"><div class="stat-lbl">Compras Confirmadas</div><div class="stat-val" style="color:#22C55E;">${totalConfirmedPurchases}</div><div class="stat-change">${todayConfirmedPurchases} hoje · via fidelidade</div></div>`;
 
   // ── FUNNEL ──
   const views = ec('page_view');
