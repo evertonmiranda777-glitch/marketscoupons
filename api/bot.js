@@ -21,7 +21,10 @@ async function getLivePromoBlock() {
       const coupon = f.coupon ? ` coupon ${f.coupon}` : '';
       const pct = f.discount ? ` ${f.discount}% OFF` : '';
       let when = '';
-      if (f.promo_ends_at) {
+      // Lifetime tem prioridade — ignora promo_ends_at obsoleto que sobrou de promo anterior
+      if (f.discount_type === 'lifetime') {
+        when = ' — LIFETIME (never expires)';
+      } else if (f.promo_ends_at) {
         const end = Date.parse(f.promo_ends_at);
         const diffMs = end - now;
         if (diffMs > 0) {
@@ -31,10 +34,9 @@ async function getLivePromoBlock() {
           const rel = d > 0 ? `${d}d ${hRem}h` : `${h}h`;
           when = ` — ENDS IN ${rel} (${new Date(end).toISOString().replace('T',' ').slice(0,16)} UTC)`;
         } else {
-          when = ' — EXPIRED (do not mention)';
+          // Promo expirou e não é lifetime — skip pra não vazar info confusa
+          continue;
         }
-      } else if (f.discount_type === 'lifetime') {
-        when = ' — LIFETIME (never expires)';
       } else if (f.discount_type) {
         when = ` — ${f.discount_type}`;
       }
