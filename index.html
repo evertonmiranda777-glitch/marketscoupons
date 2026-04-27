@@ -243,44 +243,13 @@
 </script>
 
 <!-- OG image dinâmica por idioma -->
-<script>
-(function(){
-  const p = new URLSearchParams(window.location.search);
-  const h = window.location.hash;
-  const langMatch = h.match(/lang=(\w{2})/) || p.get('lang');
-  const lang = langMatch ? (typeof langMatch === 'string' ? langMatch : langMatch[1]) : null;
-  if (lang && lang !== 'pt') {
-    const ogImg = document.querySelector('meta[property="og:image"]');
-    const twImg = document.querySelector('meta[name="twitter:image"]');
-    const suffix = '-' + lang;
-    if (ogImg) ogImg.content = 'https://www.marketscoupons.com/img/og-cover' + suffix + '.png';
-    if (twImg) twImg.content = 'https://www.marketscoupons.com/img/og-cover' + suffix + '.png';
-  }
-})();
-</script>
+<script src="js/og-lang.js?v=20260427"></script>
 
 <!--
  TRACKING — Only GTM (GA4 + Facebook Pixel are managed inside GTM)
  GTM: GTM-WJGTVX8G
 -->
-<script>
-window.dataLayer=window.dataLayer||[];
-function loadTracking(){
-  if(window._trackingLoaded)return;window._trackingLoaded=true;
-  // GA4 direto (sem GTM — GTM sobrescrevia window.gtag com alias dataLayer.push
-  // e quebrava todos os gtag('event',...) custom).
-  var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id=G-CZ3L00NY77';document.head.appendChild(gs);
-  window.dataLayer=window.dataLayer||[];
-  window.gtag=function(){dataLayer.push(arguments);};
-  gtag('js',new Date());
-  gtag('config','G-CZ3L00NY77');
-  // Facebook Pixel direto
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','813048241061812');fbq('track','PageView');
-}
-// Auto-load if already consented
-if(localStorage.getItem('mc-cookies-consent')==='accepted')loadTracking();
-</script>
+<script src="js/tracking-init.js?v=20260427"></script>
 
 <!-- SUPABASE CLIENT -->
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.1" integrity="sha384-6uukdHiftld8tJvsEnb1GXdOm6/h98QIKjmAy6BI4WpoHahjbaBL8IVhavKP2sxI" crossorigin="anonymous"></script>
@@ -2673,86 +2642,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .lv-feat-desc{font-size:11px;color:var(--t3);line-height:1.5;}
 @media(max-width:600px){.lv-cd-num{font-size:22px;}.lv-cd-card{padding:12px 4px;}}
 </style>
-<script>
-// Ativar página correta ANTES do primeiro paint (evita flash da home)
-document.addEventListener('DOMContentLoaded',function(){
-  var h=location.hash.replace('#','');
-  if(!h){try{h=sessionStorage.getItem('mc_page')||'';}catch(e){}}
-  var id=h?'page-'+h:'page-home';
-  var target=document.getElementById(id);
-  if(target){
-    var pages=document.querySelectorAll('.page');
-    for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
-    target.classList.add('active');
-  }
-},false);
-
-// Max avatar rotation — uma roupa por dia, ciclo diário determinístico
-var MAX_DAILY_AVATARS=[
-  'img/bot/Daily/max-bot-techbro-v2_1.png',
-  'img/bot/Daily/max-bot-streetwear-v5_1.png',
-  'img/bot/Daily/max-bot-techbro-v3_1.png',
-  'img/bot/Daily/max-bot-summer-v2_1.png',
-  'img/bot/Daily/max-bot-blazer_1.png',
-  'img/bot/Daily/max-bot-golf_1.png',
-  'img/bot/Daily/max-bot-varsity-v2_1.png',
-  'img/bot/Daily/max-bot-varsity-v3_2.png',
-  'img/bot/Daily/max-bot-hoodie-v4_2.png',
-  'img/bot/Daily/max-bot-techbro-cap_2.png'
-];
-var MAX_PJ_AVATARS=[
-  'img/bot/Pj/max-bot-hulk_1.png',
-  'img/bot/Pj/max-bot-spidey_1.png',
-  'img/bot/Pj/max-bot-prada_1.png',
-  'img/bot/Pj/max-bot-gucci-v2_1.png',
-  'img/bot/Pj/max-bot-lv-v2_1.png',
-  'img/bot/Pj/max-bot-lacoste-v4_1.png',
-  'img/bot/Pj/max-bot-hulk-pj_1.png',
-  'img/bot/Pj/max-bot-hulk-tee_1.png',
-  'img/bot/Pj/max-bot-spidey-suit-v3_1.png',
-  'img/bot/Pj/max-bot-spidey-pj-cream-v5_2.png',
-  'img/bot/Pj/max-bot-sulley-pj_1.png',
-  'img/bot/Pj/max-bot-mike-pj_1.png'
-];
-function pickMaxAvatar(){
-  var now=new Date();
-  var day=now.getDay();
-  var isWeekend=(day===0||day===6);
-  var pool=isWeekend?MAX_PJ_AVATARS:MAX_DAILY_AVATARS;
-  // Count how many days-of-this-kind (weekday ou fim de semana) passaram desde 1º de janeiro
-  var year=now.getFullYear();
-  var jan1=new Date(year,0,1);
-  var todayIdx=Math.floor((now-jan1)/86400000);
-  var count=0;
-  for(var i=0;i<=todayIdx;i++){
-    var d=new Date(year,0,1+i).getDay();
-    var w=(d===0||d===6);
-    if(w===isWeekend) count++;
-  }
-  var pos=(count-1)%pool.length;
-  var cycleNum=Math.floor((count-1)/pool.length);
-  // Shuffle determinístico por ciclo — cada 10 dias do mesmo tipo vira uma nova ordem aleatória SEM repetir
-  var idx=[]; for(var i=0;i<pool.length;i++) idx.push(i);
-  var seed=((year*1000)+(cycleNum*7)+(isWeekend?3:0))>>>0;
-  for(var i=pool.length-1;i>0;i--){
-    seed=(seed*1664525+1013904223)>>>0;
-    var j=seed%(i+1);
-    var t=idx[i]; idx[i]=idx[j]; idx[j]=t;
-  }
-  return pool[idx[pos]];
-}
-document.addEventListener('DOMContentLoaded',function(){
-  var src=pickMaxAvatar();
-  var imgs=document.querySelectorAll('.bot-fab img, .bot-av img');
-  for(var i=0;i<imgs.length;i++) imgs[i].src=src;
-},false);
-document.addEventListener('click',function(e){
-  var lb=document.querySelector('.lang-btn.open');
-  if(lb && !lb.contains(e.target)) lb.classList.remove('open');
-  var um=document.getElementById('user-dd-menu');
-  if(um && um.classList.contains('open') && !um.closest('.user-menu-btn').contains(e.target)) um.classList.remove('open');
-},false);
-</script>
+<script src="js/page-boot.js?v=20260427"></script>
 </head>
 <body style="opacity:0">
 
