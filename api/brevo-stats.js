@@ -51,8 +51,8 @@ module.exports = async (req, res) => {
     if (text.length > 4000) return res.status(400).json({ error: 'text too long (max 4000)' });
 
     const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-    const CHAT = process.env.TELEGRAM_ADMIN_CHAT_ID || process.env.TELEGRAM_CHAT_ID;
-    if (!TOKEN || !CHAT) return res.status(500).json({ error: 'telegram not configured' });
+    const CHAT = process.env.TELEGRAM_ADMIN_CHAT_ID;
+    if (!TOKEN || !CHAT) return res.status(500).json({ error: 'admin telegram chat not configured' });
 
     try {
       const r = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
