@@ -964,8 +964,11 @@ let _currentLang = 'en';
 let _cmsTexts = {}; // DB overrides loaded from cms_texts
 let _siteSettings = {}; // site_settings key-value from Supabase
 function t(key) {
-  if(_cmsTexts[key]) return _cmsTexts[key][_currentLang] || _cmsTexts[key].en || _cmsTexts[key].pt || (I18N[_currentLang]&&I18N[_currentLang][key]) || key;
-  return (I18N[_currentLang] && I18N[_currentLang][key]) || (I18N.en[key]) || key;
+  // Prioridade: I18N (sobrescrito por tabela `i18n` no Supabase, que é onde o admin edita) → cms_texts (fallback legacy) → I18N.en → key literal
+  const i18nVal = (I18N[_currentLang] && I18N[_currentLang][key]) || I18N.en[key];
+  if (i18nVal) return i18nVal;
+  if (_cmsTexts[key]) return _cmsTexts[key][_currentLang] || _cmsTexts[key].en || _cmsTexts[key].pt || key;
+  return key;
 }
 function detectLang() {
   // Priority 1: URL path language (/en/, /es/apex, etc.)
