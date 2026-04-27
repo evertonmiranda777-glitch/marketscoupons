@@ -1,0 +1,27 @@
+name: Apply campaign tag (one-shot)
+
+on:
+  workflow_dispatch:
+    inputs:
+      campaign:
+        description: 'Campaign key (ex: site-invite, ultimas-horas, loyalty)'
+        required: true
+        default: 'site-invite'
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run
+        env:
+          SUPABASE_URL: https://qfwhduvutfumsaxnuofa.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          CAMPAIGN: ${{ inputs.campaign }}
+        run: node scripts/apply-campaign-tag.js
