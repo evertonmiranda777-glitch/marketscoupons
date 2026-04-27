@@ -13,12 +13,14 @@ const TAGS_OF_INTEREST = ['site-invite', 'campaign', 'invite-site'];
 // Subjects que indicam site-invite (caso tag não bata)
 const SUBJECT_PATTERNS = [/\$25K por \$19/i, /Conta de \$25K/i, /site-invite/i];
 
-async function fetchBrevoEvents(offset = 0, limit = 1000) {
-  // Brevo retorna últimos N events. Iteramos paginando.
-  // Range: últimos 60 dias.
-  const startDate = new Date(Date.now() - 60 * 86400000).toISOString().split('T')[0];
+async function fetchBrevoEvents(offset = 0, limit = 2500, eventType = 'delivered') {
+  // Brevo: últimos N events. Tipos: requests, delivered, opens, clicks, bounces, etc.
+  // Sem 'event' param, retorna TODOS os tipos misturados.
+  // Sem 'days', max 90 dias por default.
+  const startDate = new Date(Date.now() - 90 * 86400000).toISOString().split('T')[0];
   const endDate = new Date().toISOString().split('T')[0];
-  const url = `https://api.brevo.com/v3/smtp/statistics/events?limit=${limit}&offset=${offset}&startDate=${startDate}&endDate=${endDate}&sort=desc&event=requests`;
+  let url = `https://api.brevo.com/v3/smtp/statistics/events?limit=${limit}&offset=${offset}&startDate=${startDate}&endDate=${endDate}&sort=desc`;
+  if (eventType) url += `&event=${eventType}`;
   const r = await fetch(url, { headers: { 'accept': 'application/json', 'api-key': BREVO } });
   if (!r.ok) {
     console.error(`brevo ${r.status}: ${(await r.text()).slice(0, 200)}`);
@@ -28,33 +30,44 @@ async function fetchBrevoEvents(offset = 0, limit = 1000) {
 }
 
 async function main() {
-  console.log('=== Coletando events do Brevo (últimos 60 dias) ===');
+  console.log('=== DEBUG: 1 event sample pra ver shape do response ===');
+  const sample = await fetchBrevoEvents(0, 5, 'delivered');
+  if (sample && sample.events && sample.events[0]) {
+    console.log(JSON.stringify(sample.events[0], null, 2));
+    console.log('---');
+  }
+
+  console.log('\n=== Coletando ALL delivered events últimos 90 dias ===');
   const sentEmails = new Set();
-  const sentDetail = []; // [{email, date, subject, tag}]
+  const subjectsCount = {}; // pra ver TODOS subjects e identificar quais pertencem ao site-invite
   let offset = 0;
-  const PAGE = 1000;
+  const PAGE = 2500;
 
   while (true) {
-    const data = await fetchBrevoEvents(offset, PAGE);
+    const data = await fetchBrevoEvents(offset, PAGE, 'delivered');
     if (!data || !data.events || data.events.length === 0) break;
 
-    let pageMatched = 0;
     for (const ev of data.events) {
-      const subject = ev.subject || '';
-      const tags = (ev.tags || []).join(',');
+      const subject = (ev.subject || '').trim();
+      if (subject) subjectsCount[subject] = (subjectsCount[subject] || 0) + 1;
+      const tags = Array.isArray(ev.tags) ? ev.tags.join(',') : (ev.tags || '');
       const matchesTag = TAGS_OF_INTEREST.some(t => tags.includes(t));
       const matchesSubject = SUBJECT_PATTERNS.some(re => re.test(subject));
       if (matchesTag || matchesSubject) {
         sentEmails.add(ev.email.toLowerCase().trim());
-        sentDetail.push({ email: ev.email, date: ev.date, subject, tags });
-        pageMatched++;
       }
     }
-    console.log(`  page offset=${offset}: ${data.events.length} events, ${pageMatched} matches site-invite`);
+    console.log(`  page offset=${offset}: ${data.events.length} events, total unique site-invite=${sentEmails.size}`);
     if (data.events.length < PAGE) break;
     offset += PAGE;
-    if (offset > 50000) { console.warn('safety stop at 50k'); break; }
+    if (offset > 100000) { console.warn('safety stop at 100k'); break; }
   }
+
+  console.log('\n=== TOP 20 subjects por volume nos events ===');
+  Object.entries(subjectsCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 20)
+    .forEach(([s, n]) => console.log(`  ${String(n).padStart(6)} | ${s.slice(0, 80)}`));
 
   console.log(`\n=== TOTAL ÚNICO de emails que já receberam site-invite: ${sentEmails.size} ===\n`);
 
