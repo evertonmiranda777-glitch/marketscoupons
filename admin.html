@@ -10683,16 +10683,17 @@ async function renderTrackingPage(){
 
   // ── FUNNEL ──
   const views = ec('page_view');
+  const signups = ec('user_signup');
   const details = ec('firm_detail_open');
   const coupons = ec('coupon_copy');
   const checkouts = ec('checkout_click');
-  const signups = ec('user_signup');
   const steps = [
     { code: 'PV', label: 'Page Views', val: views, color: 'var(--t1)' },
-    { code: 'FD', label: 'Firma Detail', val: details, color: '#3B82F6' },
-    { code: 'CC', label: 'Cupom Copiado', val: coupons, color: 'var(--gold)' },
-    { code: 'CK', label: 'Checkout Click', val: checkouts, color: '#22C55E' },
     { code: 'SU', label: 'Cadastro', val: signups, color: '#A855F7' },
+    { code: 'FD', label: 'Abriu Firma', val: details, color: '#3B82F6' },
+    { code: 'CC', label: 'Copiou Cupom', val: coupons, color: 'var(--gold)' },
+    { code: 'CK', label: 'Clicou Comprar', val: checkouts, color: '#0EA5E9' },
+    { code: 'CV', label: 'Compra Confirmada', val: totalConfirmedPurchases, color: '#22C55E' },
   ];
   const maxVal = Math.max(...steps.map(s => s.val), 1);
   document.getElementById('trk-funnel').innerHTML = steps.map((s, i) => {
