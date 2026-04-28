@@ -397,7 +397,7 @@ ${priciest && priciest !== cheapest ? `- DECOY ALTO (menciona pra tornar a ânco
 - Prova social: ${tp}
 - News trading permitido: ${firm.news_trading === true ? 'SIM' : firm.news_trading === false ? 'NÃO' : 'não informado — NÃO mencione'}
 - Day-1 payout: ${firm.day1_payout === true ? 'SIM' : firm.day1_payout === false ? 'NÃO' : 'não informado — NÃO mencione'}
-- Descrição: ${firm.description || ''}
+- Descrição (USE APENAS PARA CONTEXTO INTERNO — NUNCA COPIE/COLE NO OUTPUT): ${firm.description || ''}
 
 # ❌ ZERO INVENÇÃO — regra sagrada
 Cada número, regra, perk e benefício na caption TEM que existir nos dados acima. Se não tá listado, NÃO EXISTE. Não infere ("provavelmente tem"), não deduz ("firma grande deve ter"), não copia de outra firma do few-shot.
@@ -425,7 +425,7 @@ Siga EXATAMENTE a estrutura dos exemplos few-shot abaixo. Adapte os DADOS pra fi
 
 # ESTRUTURA DO TEMPLATE INSTITUCIONAL (use SE template=institucional)
 1. **Header descritivo:** "Opere com o Capital da [FIRMA]: [Subtítulo descritivo do que diferencia]"
-2. **Tagline corporativa:** "Você tem a estratégia, nós temos o capital. A [FIRMA] [pitch da infraestrutura/diferencial]."
+2. **Tagline corporativa (FRASE FIXA):** começa SEMPRE com "Você tem a estratégia, nós temos o capital." Depois conecta com pitch da firma usando UM destes verbos: "oferece a infraestrutura que você precisa para escalar suas operações...", "disponibiliza o capital institucional para...", "estrutura avaliações que permitem [trader operar maior banca / acessar contas até $X]". JAMAIS começa com "A [FIRMA] é uma das maiores...". JAMAIS copia o campo "Descrição" da firma — esse campo é só pra você entender o contexto, NUNCA aparece no output.
 3. **Lead-in:** "Aproveite nossas condições atuais para iniciar sua avaliação:" (ou variação se sem cupom: "Aproveite as condições via nosso link:")
 4. **Bullets ✅ (3-4 items):** preço, drawdown+regras, plataformas, perks-relief
 5. **Prova social:** "Junte-se a uma comunidade com mais de [N] avaliações positivas no Trustpilot (Nota [X]/5)."
@@ -435,8 +435,8 @@ Siga EXATAMENTE a estrutura dos exemplos few-shot abaixo. Adapte os DADOS pra fi
 
 # ESTRUTURA DO TEMPLATE PROMOCIONAL (use SE template=promocional)
 1. **Header com 🚀:** "🚀 Escala de Capital para Traders de [Futuros/Forex]: [DESC]% OFF na [FIRMA]"
-2. **Pergunta retórica:** "Trader, por que limitar seus ganhos ao tamanho da sua banca pessoal?"
-3. **Pitch da promo:** "A [FIRMA] está liberando um desconto exclusivo de [DESC]% para novas avaliações de [futuros/forex]. É a sua chance de acessar contas de [tier menor] a [tier maior] com [diferencial]."
+2. **Pergunta retórica (FRASE FIXA):** "Trader, por que limitar seus ganhos ao tamanho da sua banca pessoal?" (essa frase é literal — não reescreve, não adapta, não troca palavra. Cola igual nos exemplos.)
+3. **Pitch da promo:** "A [FIRMA] está liberando um desconto exclusivo de [DESC]% para novas avaliações de [futuros/forex]. É a sua chance de acessar contas de [tier menor] a [tier maior] com [diferencial: 'o menor custo do mercado' / 'condições competitivas' / 'regras simplificadas']." JAMAIS copia o campo "Descrição".
 4. **Subtítulo:** "O que diferencia a [FIRMA]:"
 5. **Bullets 🔹 (4-5 items):** payouts/regras, drawdown, regras-relief, profit split, plataforma se relevante
 6. **Prova social parágrafo:** "Milhares de traders já escalaram suas operações conosco." + linha em branco + "Confira nossos reviews no Trustpilot e veja por que somos referência global."
