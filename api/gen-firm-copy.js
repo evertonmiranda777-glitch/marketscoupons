@@ -143,7 +143,7 @@ Garanta sua vaga e comece a operar com escala.
 EXEMPLO PROMOCIONAL 1 (Apex):
 🚀 Escala de Capital para Traders de Futuros: 90% OFF na APEX
 
-Trader, por que limitar seus ganhos ao tamanho da sua banca pessoal?
+Trader, por que limitar seus ganhos ao tamanho do seu capital pessoal?
 
 A APEX Trader Funding está liberando um desconto exclusivo de 90% para novas avaliações de futuros. É a sua chance de acessar contas de 25K a 150K com o menor custo do mercado.
 
@@ -168,7 +168,7 @@ Clique no link e escolha seu plano.
 EXEMPLO PROMOCIONAL 2 (Bulenox):
 🚀 Escala de Capital para Traders de Futuros: 89% OFF na Bulenox
 
-Trader, por que limitar suas operações ao tamanho da sua banca pessoal?
+Trader, por que limitar suas operações ao tamanho do seu capital pessoal?
 
 A Bulenox está com desconto exclusivo de 89% lifetime para novas avaliações. É a oportunidade de acessar contas de 25K a 250K com regras claras e drawdown estático previsível.
 
@@ -194,7 +194,7 @@ Clique no link e escolha seu plano.
 EXEMPLO PROMOCIONAL 3 (FTMO, sem cupom):
 🚀 Escala de Capital para Traders de Forex: Desconto Exclusivo na FTMO
 
-Trader, por que limitar suas operações ao tamanho da sua banca pessoal?
+Trader, por que limitar suas operações ao tamanho do seu capital pessoal?
 
 A FTMO está com desconto exclusivo aplicado automático via nosso link para novas avaliações de forex. É a oportunidade de acessar contas de 10K a 200K com a maior empresa de prop trading do mercado.
 
@@ -286,7 +286,7 @@ Secure your spot and start trading with scale.
 PROMOTIONAL EXAMPLE 1 (Apex):
 🚀 Capital Scale for Futures Traders: 90% OFF on APEX
 
-Trader, why limit your earnings to the size of your personal account?
+Trader, why limit your earnings to the size of your personal capital?
 
 APEX Trader Funding is releasing an exclusive 90% discount on new futures evaluations. It's your chance to access 25K to 150K accounts at the lowest cost on the market.
 
@@ -311,7 +311,7 @@ Click the link below and choose your plan.
 PROMOTIONAL EXAMPLE 2 (Bulenox):
 🚀 Capital Scale for Futures Traders: 89% OFF on Bulenox
 
-Trader, why limit your earnings to the size of your personal account?
+Trader, why limit your earnings to the size of your personal capital?
 
 Bulenox is releasing an exclusive 89% lifetime discount on new evaluations. It's your chance to access 25K to 250K accounts with clear rules and predictable static drawdown.
 
@@ -337,7 +337,7 @@ Click the link below and choose your plan.
 PROMOTIONAL EXAMPLE 3 (FTMO, no coupon):
 🚀 Capital Scale for Forex Traders: Exclusive Discount on FTMO
 
-Trader, why limit your earnings to the size of your personal account?
+Trader, why limit your earnings to the size of your personal capital?
 
 FTMO is releasing an exclusive discount auto-applied via our link on new forex evaluations. It's your chance to access 10K to 200K accounts with the largest prop trading firm on the market.
 
@@ -429,7 +429,7 @@ Asegura tu lugar y comienza a operar con escala.
 EJEMPLO PROMOCIONAL 1 (Apex):
 🚀 Escala de Capital para Traders de Futuros: 90% OFF en APEX
 
-Trader, ¿por qué limitar tus ganancias al tamaño de tu cuenta personal?
+Trader, ¿por qué limitar tus ganancias al tamaño de tu capital personal?
 
 APEX Trader Funding está liberando un descuento exclusivo del 90% para nuevas evaluaciones de futuros. Es tu oportunidad de acceder a cuentas de 25K a 150K con el menor costo del mercado.
 
@@ -454,7 +454,7 @@ Haz clic en el enlace y elige tu plan.
 EJEMPLO PROMOCIONAL 2 (Bulenox):
 🚀 Escala de Capital para Traders de Futuros: 89% OFF en Bulenox
 
-Trader, ¿por qué limitar tus ganancias al tamaño de tu cuenta personal?
+Trader, ¿por qué limitar tus ganancias al tamaño de tu capital personal?
 
 Bulenox está liberando un descuento exclusivo del 89% lifetime para nuevas evaluaciones. Es tu oportunidad de acceder a cuentas de 25K a 250K con reglas claras y drawdown estático predecible.
 
@@ -480,7 +480,7 @@ Haz clic en el enlace y elige tu plan.
 EJEMPLO PROMOCIONAL 3 (FTMO, sin cupón):
 🚀 Escala de Capital para Traders de Forex: Descuento Exclusivo en FTMO
 
-Trader, ¿por qué limitar tus ganancias al tamaño de tu cuenta personal?
+Trader, ¿por qué limitar tus ganancias al tamaño de tu capital personal?
 
 FTMO está liberando un descuento exclusivo aplicado automático vía nuestro enlace para nuevas evaluaciones de forex. Es tu oportunidad de acceder a cuentas de 10K a 200K con la mayor empresa de prop trading del mercado.
 
@@ -576,7 +576,7 @@ Siga EXATAMENTE a estrutura dos exemplos few-shot abaixo. Adapte os DADOS pra fi
 
 # ESTRUTURA DO TEMPLATE INSTITUCIONAL (use SE template=institucional)
 1. **Header descritivo:** "Opere com o Capital da [FIRMA]: [Subtítulo descritivo do que diferencia]"
-2. **Tagline corporativa (FRASE FIXA):** começa SEMPRE com "Você tem a estratégia, nós temos o capital." Depois conecta com pitch da firma usando UM destes verbos: "oferece a infraestrutura que você precisa para escalar suas operações...", "disponibiliza o capital institucional para...", "estrutura avaliações que permitem [trader operar maior banca / acessar contas até $X]". JAMAIS começa com "A [FIRMA] é uma das maiores...". JAMAIS copia o campo "Descrição" da firma — esse campo é só pra você entender o contexto, NUNCA aparece no output.
+2. **Tagline corporativa (FRASE FIXA):** começa SEMPRE com "Você tem a estratégia, nós temos o capital." Depois conecta com pitch da firma usando UM destes verbos: "oferece a infraestrutura que você precisa para escalar suas operações...", "disponibiliza o capital institucional para...", "estrutura avaliações que permitem [trader acessar maior capital / acessar contas até $X]". JAMAIS começa com "A [FIRMA] é uma das maiores...". JAMAIS copia o campo "Descrição" da firma — esse campo é só pra você entender o contexto, NUNCA aparece no output.
 3. **Lead-in:** "Aproveite nossas condições atuais para iniciar sua avaliação:" (ou variação se sem cupom: "Aproveite as condições via nosso link:")
 4. **Bullets ✅ (3-4 items):** preço, drawdown+regras, plataformas, perks-relief
 5. **Prova social:** "Junte-se a uma comunidade com mais de [N] avaliações positivas no Trustpilot (Nota [X]/5)."
@@ -586,7 +586,7 @@ Siga EXATAMENTE a estrutura dos exemplos few-shot abaixo. Adapte os DADOS pra fi
 
 # ESTRUTURA DO TEMPLATE PROMOCIONAL (use SE template=promocional)
 1. **Header com 🚀:** "🚀 Escala de Capital para Traders de [Futuros/Forex]: [DESC]% OFF na [FIRMA]"
-2. **Pergunta retórica (FRASE FIXA):** "Trader, por que limitar seus ganhos ao tamanho da sua banca pessoal?" (essa frase é literal — não reescreve, não adapta, não troca palavra. Cola igual nos exemplos.)
+2. **Pergunta retórica (FRASE FIXA):** "Trader, por que limitar seus ganhos ao tamanho do seu capital pessoal?" (essa frase é literal — não reescreve, não adapta, não troca palavra. Cola igual nos exemplos.)
 3. **Pitch da promo:** "A [FIRMA] está liberando um desconto exclusivo de [DESC]% para novas avaliações de [futuros/forex]. É a sua chance de acessar contas de [tier menor] a [tier maior] com [diferencial: 'o menor custo do mercado' / 'condições competitivas' / 'regras simplificadas']." JAMAIS copia o campo "Descrição".
 4. **Subtítulo:** "O que diferencia a [FIRMA]:"
 5. **Bullets 🔹 (4-5 items):** payouts/regras, drawdown, regras-relief, profit split, plataforma se relevante
