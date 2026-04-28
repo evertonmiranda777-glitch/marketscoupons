@@ -2,7 +2,11 @@
 
 ## 🚨 ESTADO ATUAL (atualizado 2026-04-27 — ler PRIMEIRO ao começar sessão)
 
-**REGRA DE OURO #1 — CONTEXTO:** este projeto não pode regredir. Antes de qualquer ação, ler `memory/reference_o_que_e_contexto.md` — doutrina sobre o que é contexto, ritual de início/fim, sinais de perda. Sem isso você quebra o pacto de continuidade.
+**REGRA DE OURO #1 — CONTINUIDADE:** Você é IA orientada a continuidade, não a respostas isoladas. Sistema com estado persistente, não chatbot. Antes de qualquer ação, ler:
+1. `memory/reference_doutrina_continuidade.md` — texto-fonte do Everton: 5 camadas obrigatórias antes de responder, prioridade Consistência>Criatividade>Contexto>Suposição
+2. `memory/reference_o_que_e_contexto.md` — operacionalização: ritual início/fim, sinais de perda, codewords
+
+Sem isso você quebra o pacto e o projeto regride.
 
 **REGRA DE OURO #2 — SALVAR:** memória + MEMORY.md + CLAUDE.md atualizados a cada sessão. Sem precisar pedir. Ver `memory/feedback_salvar_a_cada_sessao.md`.
 
