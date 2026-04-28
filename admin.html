@@ -11702,9 +11702,11 @@ async function exportCreative() {
     const styles = Array.from(document.querySelectorAll('style'))
       .map(s => s.textContent || '').join('\n');
     const firmId = document.getElementById('cr-firm')?.value || 'geral';
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
     const resp = await fetch('/api/render-criativo', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token||''}` },
       body: JSON.stringify({ html, styles, width, height, origin: location.origin + '/' })
     });
     if (!resp.ok) {
