@@ -159,17 +159,73 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
 </body></html>`;
 }
 
+async function alreadyReceived(email) {
+  try {
+    const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!SK) return false;
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(email.toLowerCase())}&select=tags`, {
+      headers: { apikey: SK, Authorization: `Bearer ${SK}` },
+    });
+    if (!r.ok) return false;
+    const rows = await r.json();
+    return rows.length > 0 && Array.isArray(rows[0].tags) && rows[0].tags.includes('received-welcome');
+  } catch { return false; }
+}
+
+async function markReceived(email) {
+  try {
+    const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!SK) return;
+    const head = { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json' };
+    const e = email.toLowerCase();
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(e)}&select=tags`, { headers: head });
+    const rows = r.ok ? await r.json() : [];
+    if (rows.length) {
+      const cur = Array.isArray(rows[0].tags) ? rows[0].tags : [];
+      if (cur.includes('received-welcome')) return;
+      cur.push('received-welcome');
+      await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(e)}`, {
+        method: 'PATCH', headers: { ...head, Prefer: 'return=minimal' },
+        body: JSON.stringify({ tags: cur }),
+      });
+    } else {
+      await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers`, {
+        method: 'POST', headers: { ...head, Prefer: 'return=minimal' },
+        body: JSON.stringify({ email: e, status: 'active', tags: ['received-welcome'], source: 'auth-hook' }),
+      });
+    }
+  } catch {}
+}
+
 module.exports = async (req, res) => {
   if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  if (!rateLimitIp(req, 10)) return res.status(429).json({ error: 'rate_limit' });
+
+  // Webhook do Supabase: pula rate limit + idempotente. Frontend sem secret: rate limited.
+  const HOOK_SECRET = process.env.WELCOME_HOOK_SECRET;
+  const isHook = HOOK_SECRET && req.headers['x-webhook-secret'] === HOOK_SECRET;
+  if (!isHook && !rateLimitIp(req, 10)) return res.status(429).json({ error: 'rate_limit' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
   if (!BREVO_KEY && !RESEND_KEY) return res.status(500).json({ error: 'No email provider configured' });
 
-  const { email, name, lang } = req.body || {};
+  // Aceita 2 formatos: { email, name, lang } direto OU webhook Supabase { type, record:{email, raw_user_meta_data} }
+  let email, name, lang;
+  const b = req.body || {};
+  if (b.record && b.record.email) {
+    email = b.record.email;
+    name = b.record.raw_user_meta_data?.name || b.record.raw_user_meta_data?.full_name || 'Trader';
+    lang = b.record.raw_user_meta_data?.lang || 'pt';
+    // Só dispara se email já confirmado
+    if (!b.record.email_confirmed_at) return res.status(200).json({ skipped: 'not_confirmed' });
+  } else {
+    ({ email, name, lang } = b);
+  }
   if (!email) return res.status(400).json({ error: 'Missing email' });
+
+  // Idempotência: já recebeu? skip.
+  if (await alreadyReceived(email)) return res.status(200).json({ skipped: 'already_received', email });
 
   const useLang = (lang && INST_WELCOME.subject[lang]) ? lang : 'en';
 
@@ -253,10 +309,12 @@ module.exports = async (req, res) => {
         campaign_name: 'Welcome Email',
         subject, recipients: 1,
         status: result.ok ? 'sent' : 'failed',
-        sent_by: 'webhook',
+        sent_by: isHook ? 'auth-hook' : 'webhook',
         provider: result.provider,
       }),
     });
+
+    if (result.ok) await markReceived(email);
 
     return res.status(result.ok ? 200 : 500).json({
       success: result.ok,
