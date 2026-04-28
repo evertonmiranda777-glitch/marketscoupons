@@ -73,61 +73,73 @@ function buildPrompt(firm, langName) {
   const typeWhitelist = (firm.type && /forex/i.test(firm.type)) ? whitelistBucket.forex : whitelistBucket.futures;
   const suggestedHashtags = [firmSlug, ...whitelistBucket.core.slice(0, 5), ...typeWhitelist.slice(0, 6)].slice(0, 12).join(' ');
 
-  // Few-shot examples (PT) — mostrar EXEMPLOS > descrever regras (Gemini aprende com padrão)
+  // Few-shot examples (PT) — TEMPLATE COMERCIAL ENXUTO: hook curto, benefícios secos, prova social, preço com âncora, cupom, CTA, hashtags.
   const FEW_SHOT_PT = `
 EXEMPLO BOM 1 (Apex, cupom MARKET, $19.90):
-Estourei 3 contas em 30 dias na FTMO.
-Aí descobri essa.
+Estourou 3 contas esse ano?
 
-→ $25K por $19.90 (era $199)
-→ 100% dos lucros DEPOIS do primeiro payout
-→ Trailing DD de -5% (perdoa swing)
-→ Zero limite diário de perda
+Essa aqui é diferente.
+
+→ 100% dos lucros — escala disponível
+→ Trailing/EOD de -5% trail (perdoa swing)
+→ Sem limite diário, news trading permitido e payout no Day-1
 → Payout em 5 dias
 
-Trustpilot 4.4 com 18 mil reviews. Não é firma de um mês de vida.
+Trustpilot 4.4 com 18K reviews. Não é firma de ontem.
 
-Cupom MARKET tá ativo. Lifetime.
+Plano de 25K por $19.90 (era $199).
+O plano de 150K fica em $59.90. Começa pela menor.
+
+Cupom MARKET. Pra sempre — sem renovar.
+
 Link na bio. 🔥
 
-#propfirm #apextraderfunding #futuros #daytrade #traderbrasileiro #mercadofinanceiro #prop #nfl #mnq #trading
+#apex #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #futurestrader #es #nq #mes #mnq
 
 ---
 
-EXEMPLO BOM 2 (Bulenox, cupom MARKET89, pass em 1 dia):
-Quantos dias você levou pra passar seu último desafio?
+EXEMPLO BOM 2 (Bulenox, cupom MARKET89):
+Cansado de firma com pegadinha?
 
-Aqui passa em 1.
+Essa aqui não tem.
 
-→ $25K por $15.95 (desconto de 89%)
-→ Sem regra de consistência
-→ Rithmic grátis por 14 dias
-→ 90% de split (100% nos primeiros $10K)
+→ 90% de split — 100% nos primeiros $10K
+→ Static DD previsível (sem trailing que ferra)
+→ Sem regra de consistência, Rithmic incluso
 → Payout semanal, escala até $400K
 
-Cupom MARKET89. Enquanto tá no ar.
+Trustpilot 4.5 com 1,5K reviews.
+
+Plano de 25K por $19.25 (era $175).
+O plano de 250K fica em $34.10. Começa pela menor.
+
+Cupom MARKET89. 89% OFF lifetime.
+
 Link na bio. ⚡
 
-#propfirm #bulenox #futuros #tradovate #rithmic #daytrade #prop #mes #mnq #traderbrasileiro
+#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #es #nq #mes #mnq #tradovate
 
 ---
 
 EXEMPLO BOM 3 (FTMO, sem cupom, desconto via link):
-FTMO não dá cupom.
-A gente conseguiu um link com desconto automático.
+Forex sério paga em quanto tempo?
 
-→ €79 o desafio de 10K
+A FTMO em 5 dias.
+
 → 90% de split depois do funding
-→ Static DD -10% (sem trailing que ferra)
-→ MT4/MT5/cTrader
-→ €500M+ pagos desde 2015
+→ Static DD -10% (sem trailing)
+→ MT4, MT5 e cTrader nativos
+→ Mais de €500M pagos desde 2015
 
-Trustpilot 4.8 com 41 mil reviews.
-É a FTMO. Tá indo no link, tá com desconto.
+Trustpilot 4.8 com 41K reviews. Não é firma de ontem.
+
+Desafio 10K por €79. Fica em €115 sem o link.
+
+Sem cupom. Desconto aplicado automático.
 
 Link na bio. ✅
 
-#ftmo #propfirm #forex #mt5 #trader #tradingforex #mercadofinanceiro #propfirmforex #traderbrasileiro #daytrade
+#ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
 
 ---
 
@@ -142,43 +154,74 @@ Use o cupom MARKET para ganhar desconto.
 
 Link na bio, pegue essa oferta agora! 💰
 
-POR QUE É RUIM: hook é pergunta óbvia ("quem não quer?"), zero número específico, "TUDO" em caixa é genérico, "regras flexíveis" = vazio, "plataformas top" = vazio, CTA morno. É advertorial de afiliado ruim dos anos 2010.`;
+POR QUE É RUIM: hook genérico ("quer 100%?"), bullets vazios ("regras flexíveis", "plataformas top" = ZERO informação concreta), zero número específico de DD/split/payout, ZERO Trustpilot, ZERO âncora de preço (era → agora), CTA com exclamação. Advertorial dos anos 2010.`;
 
   const FEW_SHOT_EN = `
 GOOD EXAMPLE 1 (Apex, MARKET coupon, $19.90):
-Blew 3 accounts in 30 days on FTMO.
-Then I found this one.
+Blew 3 accounts this year?
 
-→ $25K eval for $19.90 (was $199)
-→ Keep 100% after first payout
-→ -5% trailing DD (swing-friendly)
-→ Zero daily loss limit
+This one is different.
+
+→ Keep 100% of profits — scaling available
+→ Trailing/EOD -5% drawdown (forgives swings)
+→ No daily loss limit, news trading allowed, Day-1 payout
 → Payout in 5 days
 
 Trustpilot 4.4 with 18K reviews. Not some rookie firm.
 
-MARKET coupon is live. Lifetime.
+$25K plan for $19.90 (was $199).
+The $150K plan goes for $59.90. Start with the smallest.
+
+MARKET coupon. Lifetime — no renewal.
+
 Link in bio. 🔥
 
-#propfirm #apextraderfunding #futurestrading #daytrading #funded #prop #es #nq #trading #traders
+#apex #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #futurestrader #es #nq #mes #mnq
 
 ---
 
-GOOD EXAMPLE 2 (Bulenox, MARKET89, 1-day pass):
-How many days did your last eval take you?
+GOOD EXAMPLE 2 (Bulenox, MARKET89):
+Tired of prop firms with hidden rules?
 
-This one passes in 1.
+This one has none.
 
-→ $25K for $15.95 (89% off)
-→ No consistency rule
-→ Free Rithmic for 14 days
-→ 90% split (100% on first $10K)
+→ 90% split — 100% on first $10K
+→ Predictable static DD (no trailing trap)
+→ No consistency rule, Rithmic included
 → Weekly payout, scale to $400K
 
-MARKET89 code. While it lasts.
+Trustpilot 4.5 with 1.5K reviews.
+
+$25K plan for $19.25 (was $175).
+The $250K plan goes for $34.10. Start with the smallest.
+
+MARKET89 code. 89% OFF lifetime.
+
 Link in bio. ⚡
 
-#propfirm #bulenox #futurestrading #tradovate #rithmic #daytrading #prop #mes #mnq #funded
+#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #es #nq #mes #mnq #tradovate
+
+---
+
+GOOD EXAMPLE 3 (FTMO, no coupon, link discount):
+How fast does serious forex pay?
+
+FTMO in 5 days.
+
+→ 90% split after funding
+→ Static -10% DD (no trailing)
+→ MT4, MT5 and cTrader native
+→ Over €500M paid since 2015
+
+Trustpilot 4.8 with 41K reviews. Not some rookie firm.
+
+10K challenge for €79. Goes for €115 without the link.
+
+No code. Discount auto-applied.
+
+Link in bio. ✅
+
+#ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
 
 ---
 
@@ -193,7 +236,7 @@ Use code MARKET for a discount.
 
 Link in bio, grab this deal now! 💰
 
-WHY BAD: obvious rhetorical question, zero specific number, "EVERYTHING" caps is generic, "flexible rules" = empty, weak CTA.`;
+WHY BAD: generic question hook, empty bullets ("flexible rules", "top platforms" = zero concrete data), no specific DD/split/payout numbers, NO Trustpilot, NO price anchor (was → now), exclamation CTA. 2010s affiliate junk.`;
 
   const fewShot = langCode === 'pt' ? FEW_SHOT_PT : FEW_SHOT_EN;
 
@@ -253,16 +296,16 @@ A firma sendo vendida nesta caption é **${firm.name}**. Se o hook usa mecanismo
 
 ## HOOK (linhas 1-2) — JOB: parar scroll via pattern interrupt
 Regras duras:
-- Precisa CABER em 125 caracteres (IG corta com "... mais" depois disso — toda persuasão precisa estar ANTES).
-- Sem emoji. Sem exclamação. Sem "Quer X?". Sem caixa alta em palavra isolada.
-- Use UM destes mecanismos (escolha o MAIS FORTE pros dados):
-  a) **Perda nomeada** (loss aversion + specificity): "Estourei 3 contas em 30 dias. Então achei essa."
-  b) **Número chocante** (anchoring low): "Conta de $25K. Dezenove dólares. Sem pegadinha."
-  c) **Inimigo externo** (contrast + unity): "Enquanto FTMO cobra €155, aqui são $19."
-  d) **Pergunta específica** (consistency + self-relevance): "Quantos dias você levou pra passar seu último desafio? Aqui passa em 1."
-  e) **Callout raw** (mimetic desire + status): "Trader que tá cansado de firma fraca: lê isso."
-- Linha 2 (opcional, curta) = PIVOT curto conectando dor → possibilidade. Ex: "Aí achei essa." / "Então parei de pagar caro." / "Essa aqui é diferente." NUNCA "e se você tivesse X contas" (frame abstrato que não conecta).
-- HOOK-PERGUNTA ESTÁ BANIDO. "Estourou 3 contas esse ano?" / "Cansado de X?" / "Quer Y?" / "Já aconteceu Z com você?" = REJEITADO. Use AFIRMAÇÃO específica, não pergunta retórica.
+- Precisa CABER em 125 caracteres (IG corta com "... mais" depois disso).
+- Sem emoji. Sem exclamação. Sem caixa alta em palavra isolada.
+- Linha 1 = callout específico OU pergunta curta direta (NÃO retórica genérica). Pergunta tem que ser sobre DOR REAL específica do trader. Linha 2 = pivot que diferencia ESSA firma.
+- Mecanismos válidos:
+  a) **Pergunta-callout específica**: "Estourou 3 contas esse ano?" / "Cansado de firma com pegadinha?" / "Forex sério paga em quanto tempo?"
+  b) **Afirmação direta com número**: "Conta de $25K. Dezenove dólares. Sem pegadinha."
+  c) **Inimigo externo (contrast)**: "Enquanto FTMO cobra €155, aqui são $19."
+  d) **Callout raw**: "Trader que tá cansado de firma fraca: lê isso."
+- BANIDO: "Quer X?" / "Cansado de Y?" / "Você sabia que Z?" / "Já pensou em W?" — perguntas retóricas genéricas onde a resposta é óbvia (todo mundo "quer" e "tá cansado de algo"). Pergunta tem que ser ESPECÍFICA da dor.
+- Linha 2 (PIVOT, curta) = "Essa aqui é diferente." / "Aqui passa em 1." / "A FTMO em 5 dias." / "Essa aqui não tem." Conecta hook → solução em 4-6 palavras.
 
 ## BODY (4-5 bullets com "→ ") — JOB: preempção de objeção + Hormozi value eq
 Cada bullet = UM fato concreto com NÚMERO REAL da firma. Zero adjetivo vago. Zero invenção.
