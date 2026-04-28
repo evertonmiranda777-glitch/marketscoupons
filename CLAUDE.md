@@ -2,7 +2,9 @@
 
 ## 🚨 ESTADO ATUAL (atualizado 2026-04-27 — ler PRIMEIRO ao começar sessão)
 
-**REGRA DE OURO:** salvar memória + MEMORY.md + CLAUDE.md a cada sessão. Sem precisar pedir. Ver `memory/feedback_salvar_a_cada_sessao.md`.
+**REGRA DE OURO #1 — CONTEXTO:** este projeto não pode regredir. Antes de qualquer ação, ler `memory/reference_o_que_e_contexto.md` — doutrina sobre o que é contexto, ritual de início/fim, sinais de perda. Sem isso você quebra o pacto de continuidade.
+
+**REGRA DE OURO #2 — SALVAR:** memória + MEMORY.md + CLAUDE.md atualizados a cada sessão. Sem precisar pedir. Ver `memory/feedback_salvar_a_cada_sessao.md`.
 
 Antes de qualquer ação, abre estas 3 memórias na ordem:
 
