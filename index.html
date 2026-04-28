@@ -4157,9 +4157,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <div class="ft-bot">
   <span data-i18n="ft_legal">Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. Termos, preços e benefícios podem ser alterados a qualquer momento sem aviso prévio. © 2025 Markets Coupons.</span>
   <div class="ft-links">
-   <a onclick="go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
-   <a onclick="go('terms')" data-i18n="ft_termos">Termos de Uso</a>
-   <a onclick="go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
+   <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
+   <a href="/terms" onclick="event.preventDefault();go('terms')" data-i18n="ft_termos">Termos de Uso</a>
+   <a href="/privacy#cookies" onclick="event.preventDefault();go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
   </div>
  </div>
  <div class="ft-disclaimers" style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(107,182,201,.18);font-size:10px;line-height:1.7;color:var(--t3);">

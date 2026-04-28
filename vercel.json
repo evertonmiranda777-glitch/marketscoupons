@@ -29,7 +29,13 @@
     { "source": "/t/pro", "destination": "/pro?utm_source=telegram&utm_medium=social&utm_campaign=pro", "permanent": false },
     { "source": "/t/loyalty", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=loyalty", "permanent": false },
     { "source": "/t/firm/:id", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=flash_promo#firm/:id", "permanent": false },
-    { "source": "/pt/guides/:slug", "destination": "/guides/:slug", "permanent": false }
+    { "source": "/pt/guides/:slug", "destination": "/guides/:slug", "permanent": false },
+    { "source": "/privacy-policy", "destination": "/privacy", "permanent": true },
+    { "source": "/privacy_policy", "destination": "/privacy", "permanent": true },
+    { "source": "/politica-de-privacidade", "destination": "/privacy", "permanent": true },
+    { "source": "/terms-of-service", "destination": "/terms", "permanent": true },
+    { "source": "/terms-and-conditions", "destination": "/terms", "permanent": true },
+    { "source": "/termos-de-uso", "destination": "/terms", "permanent": true }
   ],
   "routes": [
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
@@ -41,8 +47,8 @@
     { "src": "/go/(.*)", "dest": "/go.html?firm=$1" },
     { "src": "/guides/([a-z0-9-]+)", "dest": "/guides/$1.html" },
     { "src": "/(pt|en|es|fr|de|it|ar)/guides/([a-z0-9-]+)", "dest": "/$1/guides/$2.html" },
-    { "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|loyalty|pro-success|calculator)", "dest": "/index.html" },
-    { "src": "/(en|es|fr|de|it|ar)/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|loyalty|pro-success|calculator)", "dest": "/index.html" },
+    { "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|loyalty|pro-success|calculator|privacy|terms)", "dest": "/index.html" },
+    { "src": "/(en|es|fr|de|it|ar)/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|loyalty|pro-success|calculator|privacy|terms)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar)/?$", "dest": "/index.html" },
     { "src": "/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" }
