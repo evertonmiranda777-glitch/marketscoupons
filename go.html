@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Redirecionando...</title>
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at top,#1a1410 0%,#0a0e13 60%,#000 100%);
+  color:#E6EDF3;font-family:'Inter',system-ui,sans-serif;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;line-height:1.5;
+}
+.card{
+  max-width:480px;width:100%;
+  background:rgba(13,17,23,.85);
+  border:1px solid rgba(240,180,41,.25);
+  border-radius:20px;
+  padding:40px 32px;
+  text-align:center;
+  box-shadow:0 24px 80px rgba(0,0,0,.5);
+  backdrop-filter:blur(8px);
+}
+.brand{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  color:#F0B429;text-transform:uppercase;margin-bottom:24px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.brand .dot{width:6px;height:6px;background:#F0B429;border-radius:50%;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;letter-spacing:-0.01em}
+.firm{color:#F0B429}
+.coupon-box{
+  margin:24px auto 18px;background:rgba(240,180,41,.12);
+  border:2px dashed rgba(240,180,41,.5);border-radius:14px;
+  padding:18px 24px;display:inline-flex;align-items:center;gap:14px;
+  min-width:240px;
+}
+.coupon-box .label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#F0B429;text-transform:uppercase;text-align:left}
+.coupon-box .code{font-size:24px;font-weight:800;color:#fff;letter-spacing:1px;font-family:'JetBrains Mono',Consolas,monospace;line-height:1}
+.coupon-box .left{display:flex;flex-direction:column;gap:4px;text-align:left}
+.coupon-box .check{width:32px;height:32px;background:#22C55E;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900;flex-shrink:0;animation:bump .35s ease-out}
+@keyframes bump{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.status{font-size:14px;color:#9CA3AF;margin:14px 0 24px}
+.status strong{color:#fff;font-weight:700}
+.bar{height:3px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin:0 auto 18px;max-width:280px}
+.bar-fill{height:100%;background:linear-gradient(90deg,#F0B429,#22C55E);width:0;transition:width 1.5s linear}
+.bar-fill.go{width:100%}
+.manual{
+  margin-top:18px;font-size:12px;color:#6B7280;
+  display:none;
+}
+.manual.show{display:block}
+.manual a{color:#F0B429;text-decoration:underline}
+.no-coupon{font-size:14px;color:#9CA3AF;margin:18px 0}
+@media(max-width:520px){
+  .card{padding:30px 22px}
+  h1{font-size:19px}
+  .coupon-box .code{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand"><span class="dot"></span> MARKETS COUPONS</div>
+  <h1>Redirecionando para <span class="firm" id="firmName">a firma</span></h1>
+
+  <div id="couponWrap">
+    <div class="coupon-box">
+      <span class="check">✓</span>
+      <div class="left">
+        <div class="label" id="couponLabel">Cupom copiado</div>
+        <div class="code" id="couponCode">—</div>
+      </div>
+    </div>
+    <div class="status">Cole o cupom no campo <strong>"Coupon"</strong> do checkout</div>
+  </div>
+  <div id="noCouponWrap" style="display:none">
+    <div class="no-coupon">Desconto aplicado automaticamente no link.</div>
+  </div>
+
+  <div class="bar"><div class="bar-fill" id="bar"></div></div>
+
+  <div class="manual" id="manual">
+    Não foi redirecionado? <a id="manualLink" href="#">Clique aqui</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var p = new URLSearchParams(location.search);
+  var firmId = (p.get('firm')||'').toLowerCase();
+  var to = p.get('to') || '';
+  var coupon = p.get('coupon') || '';
+  var firmName = p.get('name') || '';
+  var i18n = (navigator.language||'pt').slice(0,2);
+
+  var L = {
+    pt:{redir:'Redirecionando para',label:'Cupom copiado',paste:'Cole o cupom no campo "Coupon" do checkout',noCoupon:'Desconto aplicado automaticamente no link.',manual:'Não foi redirecionado?',click:'Clique aqui'},
+    en:{redir:'Redirecting to',label:'Coupon copied',paste:'Paste the coupon in the "Coupon" field at checkout',noCoupon:'Discount auto-applied via link.',manual:'Not redirected?',click:'Click here'},
+    es:{redir:'Redirigiendo a',label:'Cupón copiado',paste:'Pega el cupón en el campo "Coupon" del checkout',noCoupon:'Descuento aplicado automáticamente en el enlace.',manual:'¿No fuiste redirigido?',click:'Haz clic aquí'}
+  }[i18n] || L_pt;
+  var L_pt=L;
+
+  // Headline (extract firm name from URL or use firmId capitalized)
+  var displayName = firmName || (firmId.charAt(0).toUpperCase() + firmId.slice(1));
+  document.querySelector('h1').firstChild.textContent = L.redir + ' ';
+  document.getElementById('firmName').textContent = displayName;
+
+  if (coupon) {
+    document.getElementById('couponLabel').textContent = L.label;
+    document.getElementById('couponCode').textContent = coupon;
+    document.querySelector('.status').innerHTML = L.paste.replace('"Coupon"', '<strong>"Coupon"</strong>');
+    // Try clipboard copy
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(coupon).catch(function(){});
+    } else {
+      // Fallback: textarea + execCommand
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = coupon; ta.style.position='absolute'; ta.style.left='-9999px';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch(e){}
+    }
+  } else {
+    document.getElementById('couponWrap').style.display = 'none';
+    document.getElementById('noCouponWrap').style.display = 'block';
+    document.querySelector('#noCouponWrap .no-coupon').textContent = L.noCoupon;
+  }
+
+  // Validate destination URL (must be http/https)
+  var validTo = '';
+  try {
+    if (to) {
+      var u = new URL(to);
+      if (u.protocol === 'http:' || u.protocol === 'https:') validTo = to;
+    }
+  } catch(e){}
+
+  // Manual fallback link
+  var manualLink = document.getElementById('manualLink');
+  var manualWrap = document.getElementById('manual');
+  if (validTo) {
+    manualLink.href = validTo;
+    manualLink.textContent = L.click;
+    manualWrap.firstChild && (manualWrap.firstChild.nodeValue = L.manual + ' ');
+    setTimeout(function(){ manualWrap.classList.add('show'); }, 2200);
+  } else {
+    manualWrap.classList.add('show');
+    manualLink.textContent = L.click;
+    manualLink.href = '/';
+  }
+
+  // Animate progress bar
+  setTimeout(function(){ document.getElementById('bar').classList.add('go'); }, 100);
+
+  // Redirect
+  if (validTo) {
+    setTimeout(function(){ window.location.replace(validTo); }, 1700);
+  }
+})();
+</script>
+</body>
+</html>

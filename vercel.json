@@ -37,6 +37,8 @@
     { "src": "/gamma", "dest": "/gex.html" },
     { "src": "/(en|es|fr|de|it|ar)/gamma", "dest": "/gex.html" },
     { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/go", "dest": "/go.html" },
+    { "src": "/go/(.*)", "dest": "/go.html?firm=$1" },
     { "src": "/guides/([a-z0-9-]+)", "dest": "/guides/$1.html" },
     { "src": "/(pt|en|es|fr|de|it|ar)/guides/([a-z0-9-]+)", "dest": "/$1/guides/$2.html" },
     { "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|loyalty|pro-success|calculator)", "dest": "/index.html" },
