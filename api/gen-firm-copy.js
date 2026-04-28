@@ -28,7 +28,7 @@ function fmtReviews(n, langCode) {
   return Math.round(num / 1000) + 'K';
 }
 
-function buildPrompt(firm, langName) {
+function buildPrompt(firm, langName, template = 'institucional') {
   const langCodeEarly = langName.includes('Portuguese') ? 'pt' : langName.includes('Spanish') ? 'es' : 'en';
   const prices = Array.isArray(firm.prices) ? firm.prices.slice(0, 4).map(p => `${p.a}: ${p.n}${p.o ? ` (era ${p.o})` : ''}`).join(' | ') : '';
   const perks = Array.isArray(firm.perks) ? firm.perks.slice(0, 6).join(', ') : '';
@@ -73,8 +73,153 @@ function buildPrompt(firm, langName) {
   const typeWhitelist = (firm.type && /forex/i.test(firm.type)) ? whitelistBucket.forex : whitelistBucket.futures;
   const suggestedHashtags = [firmSlug, ...whitelistBucket.core.slice(0, 5), ...typeWhitelist.slice(0, 6)].slice(0, 12).join(' ');
 
-  // Few-shot — TEMPLATE PROMO COMERCIAL: features + desconto + cupom + CTA. Sem dor, sem storytelling. Compliance Meta Ads.
-  const FEW_SHOT_PT = `
+  // ====== TEMPLATE INSTITUCIONAL ======
+  // Tom corporativo sério, sem emojis no header, foco em capital + infraestrutura + condições.
+  const FEW_SHOT_INSTITUCIONAL_PT = `
+EXEMPLO INSTITUCIONAL 1 (Apex):
+Opere com o Capital da APEX: Avaliações de Futuros com Condições Especiais
+
+Você tem a estratégia, nós temos o capital. A APEX Trader Funding oferece a infraestrutura que você precisa para escalar suas operações no mercado de futuros sem arriscar seu patrimônio pessoal.
+
+Aproveite nossas condições atuais para iniciar sua avaliação:
+✅ Planos a partir de $19.90 (Taxa de avaliação).
+✅ Regras flexíveis e Drawdown ajustado (EOD disponível).
+✅ Opere nas principais plataformas: NinjaTrader, Tradovate e Rithmic.
+
+Junte-se a uma comunidade com mais de 18 mil avaliações positivas no Trustpilot (Nota 4.4/5).
+
+Use o cupom: MARKET
+
+Garanta sua vaga e comece a operar com escala.
+
+#apex #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #futurestrader #es #nq #mes #mnq
+
+---
+
+EXEMPLO INSTITUCIONAL 2 (Bulenox):
+Opere com o Capital da Bulenox: Avaliações de Futuros com Drawdown Estático
+
+Você tem a estratégia, nós temos o capital. A Bulenox oferece avaliações com regras claras e drawdown estático previsível, ideal para traders que buscam consistência operacional.
+
+Aproveite as condições atuais para iniciar sua avaliação:
+✅ Planos a partir de $19.25 (taxa de avaliação).
+✅ Drawdown estático sem trailing — limites previsíveis.
+✅ Plataformas: Tradovate, NinjaTrader e Rithmic incluído.
+✅ Sem regra de consistência e payout semanal.
+
+Junte-se a uma comunidade com mais de 1.500 avaliações no Trustpilot (nota 4.5/5).
+
+Use o cupom: MARKET89
+
+Garanta sua vaga e comece a operar com escala.
+
+#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #es #nq #mes #mnq #tradovate
+
+---
+
+EXEMPLO INSTITUCIONAL 3 (FTMO, sem cupom — desconto via link):
+Opere com o Capital da FTMO: Avaliações de Forex com Histórico Comprovado
+
+Você tem a estratégia, nós temos o capital. A FTMO é uma das maiores empresas de prop trading de forex do mercado, com mais de €500 milhões pagos a traders desde 2015.
+
+Aproveite as condições atuais via nosso link:
+✅ Desafios a partir de €79 (10K) — desconto aplicado automático.
+✅ Drawdown estático -10%, sem trailing.
+✅ Plataformas: MT4, MT5 e cTrader nativos.
+✅ Profit split de 90% após o funding.
+
+Junte-se a uma comunidade com mais de 41 mil avaliações no Trustpilot (nota 4.8/5).
+
+Sem cupom — desconto aplicado automático no link.
+
+Garanta sua vaga e comece a operar com escala.
+
+#ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
+`;
+
+  // ====== TEMPLATE PROMOCIONAL ======
+  // Tom mais energético, header com 🚀, hook em pergunta retórica corporativa (não dor), foco em escala e desconto.
+  const FEW_SHOT_PROMOCIONAL_PT = `
+EXEMPLO PROMOCIONAL 1 (Apex):
+🚀 Escala de Capital para Traders de Futuros: 90% OFF na APEX
+
+Trader, por que limitar seus ganhos ao tamanho da sua banca pessoal?
+
+A APEX Trader Funding está liberando um desconto exclusivo de 90% para novas avaliações de futuros. É a sua chance de acessar contas de 25K a 150K com o menor custo do mercado.
+
+O que diferencia a APEX:
+🔹 Payouts ágeis e regras simplificadas.
+🔹 Sem limite de perda diária.
+🔹 News trading permitido.
+🔹 Divisão de lucros competitiva para o trader.
+
+Milhares de traders já escalaram suas operações conosco.
+
+Confira nossos reviews no Trustpilot e veja por que somos referência global.
+
+Insira o cupom: MARKET
+
+Clique no link e escolha seu plano.
+
+#apex #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #futurestrader #es #nq #mes #mnq
+
+---
+
+EXEMPLO PROMOCIONAL 2 (Bulenox):
+🚀 Escala de Capital para Traders de Futuros: 89% OFF na Bulenox
+
+Trader, por que limitar suas operações ao tamanho da sua banca pessoal?
+
+A Bulenox está com desconto exclusivo de 89% lifetime para novas avaliações. É a oportunidade de acessar contas de 25K a 250K com regras claras e drawdown estático previsível.
+
+O que diferencia a Bulenox:
+🔹 Drawdown estático sem trailing.
+🔹 Sem regra de consistência.
+🔹 Payout semanal e escala até $400K.
+🔹 Profit split 90% (100% nos primeiros $10K).
+🔹 Rithmic incluído por 14 dias.
+
+Milhares de traders já passaram nas avaliações conosco.
+
+Confira nossos reviews no Trustpilot (4.5/5 com 1.500 avaliações) e veja por que somos referência.
+
+Insira o cupom: MARKET89
+
+Clique no link e escolha seu plano.
+
+#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #es #nq #mes #mnq #tradovate
+
+---
+
+EXEMPLO PROMOCIONAL 3 (FTMO, sem cupom):
+🚀 Escala de Capital para Traders de Forex: Desconto Exclusivo na FTMO
+
+Trader, por que limitar suas operações ao tamanho da sua banca pessoal?
+
+A FTMO está com desconto exclusivo aplicado automático via nosso link para novas avaliações de forex. É a oportunidade de acessar contas de 10K a 200K com a maior empresa de prop trading do mercado.
+
+O que diferencia a FTMO:
+🔹 Mais de €500M pagos desde 2015.
+🔹 Drawdown estático -10% (sem trailing).
+🔹 MT4, MT5 e cTrader nativos.
+🔹 Profit split de 90% após o funding.
+🔹 Payout em 5 dias.
+
+Milhares de traders já passaram nas avaliações conosco.
+
+Confira nossos reviews no Trustpilot (4.8/5 com 41 mil avaliações) e veja por que somos referência.
+
+Sem cupom — desconto aplicado automático no link.
+
+Clique no link e escolha seu plano.
+
+#ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
+`;
+
+  const FEW_SHOT_PT = template === 'promocional' ? FEW_SHOT_PROMOCIONAL_PT : FEW_SHOT_INSTITUCIONAL_PT;
+
+  // Mantém a referência antiga pra não quebrar (template "promo" 8-blocos vira default só se requisitado explicitamente)
+  const FEW_SHOT_PROMO_8BLOCOS_PT = `
 EXEMPLO BOM 1 (Apex, cupom MARKET, 90% OFF lifetime):
 🚨 APEX 90% OFF AVALIAÇÕES + RESETS POR $50 🚨
 
@@ -341,7 +486,37 @@ Scaling, split, DD, payout, escala-até — cada um pode aparecer UMA VEZ na cap
 # 🪞 COERÊNCIA NARRATIVA
 A firma sendo vendida nesta caption é **${firm.name}**. Se o hook usa mecanismo "saí de X pra cá", X PRECISA ser outra firma (genérica "firma antiga" / "outra firma" se não quiser nomear). NUNCA "Estourei na ${firm.name}. Aí achei a ${firm.name}" — destrói credibilidade.
 
-# ESTRUTURA OBRIGATÓRIA DA CAPTION (siga ordem exata, igual aos exemplos few-shot)
+# TEMPLATE EM USO: ${template === 'promocional' ? 'PROMOCIONAL (🚀 + pergunta retórica + 🔹 bullets)' : 'INSTITUCIONAL (header descritivo + tagline + ✅ bullets)'}
+
+Siga EXATAMENTE a estrutura dos exemplos few-shot abaixo. Adapte os DADOS pra firma atual mas mantenha:
+- Mesmo tom (institucional sério OU promocional energético)
+- Mesma ordem de blocos
+- Mesmos emojis (✅ pra institucional, 🔹 pra promocional)
+- Mesma frase-chave ("Você tem a estratégia, nós temos o capital." pra institucional / "Trader, por que limitar seus ganhos..." pra promocional)
+- Mesma despedida ("Garanta sua vaga e comece a operar com escala." pra institucional / "Clique no link e escolha seu plano." pra promocional)
+
+# ESTRUTURA DO TEMPLATE INSTITUCIONAL (use SE template=institucional)
+1. **Header descritivo:** "Opere com o Capital da [FIRMA]: [Subtítulo descritivo do que diferencia]"
+2. **Tagline corporativa:** "Você tem a estratégia, nós temos o capital. A [FIRMA] [pitch da infraestrutura/diferencial]."
+3. **Lead-in:** "Aproveite nossas condições atuais para iniciar sua avaliação:" (ou variação se sem cupom: "Aproveite as condições via nosso link:")
+4. **Bullets ✅ (3-4 items):** preço, drawdown+regras, plataformas, perks-relief
+5. **Prova social:** "Junte-se a uma comunidade com mais de [N] avaliações positivas no Trustpilot (Nota [X]/5)."
+6. **Cupom:** "Use o cupom: [CODE]" OU "Sem cupom — desconto aplicado automático no link."
+7. **CTA:** "Garanta sua vaga e comece a operar com escala."
+8. **Hashtags:** linha de hashtags
+
+# ESTRUTURA DO TEMPLATE PROMOCIONAL (use SE template=promocional)
+1. **Header com 🚀:** "🚀 Escala de Capital para Traders de [Futuros/Forex]: [DESC]% OFF na [FIRMA]"
+2. **Pergunta retórica:** "Trader, por que limitar seus ganhos ao tamanho da sua banca pessoal?"
+3. **Pitch da promo:** "A [FIRMA] está liberando um desconto exclusivo de [DESC]% para novas avaliações de [futuros/forex]. É a sua chance de acessar contas de [tier menor] a [tier maior] com [diferencial]."
+4. **Subtítulo:** "O que diferencia a [FIRMA]:"
+5. **Bullets 🔹 (4-5 items):** payouts/regras, drawdown, regras-relief, profit split, plataforma se relevante
+6. **Prova social parágrafo:** "Milhares de traders já escalaram suas operações conosco." + linha em branco + "Confira nossos reviews no Trustpilot e veja por que somos referência global."
+7. **Cupom:** "Insira o cupom: [CODE]" OU "Sem cupom — desconto aplicado automático no link."
+8. **CTA:** "Clique no link e escolha seu plano."
+9. **Hashtags:** linha de hashtags
+
+# ESTRUTURA OBRIGATÓRIA DA CAPTION (LEGACY — só usar se template=promo-8-blocos)
 
 ## BLOCO 1 — HEADLINE (linha 1, dentro de 🚨 emojis)
 Formato exato: 🚨 [NOME DA FIRMA EM CAIXA] [DESC]% OFF [PRODUTO + 1 perk extra se relevante] 🚨
@@ -456,9 +631,10 @@ module.exports = async (req, res) => {
   const KEYS = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
   if (!KEYS.length) return res.status(503).json({ error: 'Copy generator unavailable' });
 
-  const { firmId, lang } = req.body || {};
+  const { firmId, lang, template } = req.body || {};
   if (!firmId || typeof firmId !== 'string') return res.status(400).json({ error: 'Missing firmId' });
   const langName = LANG_NAMES[lang] || LANG_NAMES.pt;
+  const tmpl = (template === 'promocional' || template === 'institucional') ? template : 'institucional';
 
   // Buscar dados da firma no Supabase
   let firm;
@@ -474,7 +650,7 @@ module.exports = async (req, res) => {
     return res.status(500).json({ error: 'Firm fetch error' });
   }
 
-  const prompt = buildPrompt(firm, langName);
+  const prompt = buildPrompt(firm, langName, tmpl);
   const payload = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: {
