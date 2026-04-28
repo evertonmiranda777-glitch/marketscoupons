@@ -101,6 +101,45 @@ h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;
   var firmName = p.get('name') || '';
   var i18n = (navigator.language||'pt').slice(0,2);
 
+  // ── Tracking ──
+  var SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+  var SK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+  var sessionId = (function(){ try{var k='mc_go_sid'; var v=sessionStorage.getItem(k); if(!v){v=Date.now().toString(36)+Math.random().toString(36).slice(2,8); sessionStorage.setItem(k,v);} return v;}catch(e){return Date.now().toString(36);} })();
+  var pageStart = Date.now();
+  var redirected = false;
+  var clipboardOk = null;
+
+  function trackGo(event, extra){
+    try {
+      var params = {
+        firm_name: firmName,
+        to_url: to,
+        time_on_page_ms: Date.now() - pageStart,
+        clipboard_ok: clipboardOk,
+        page: 'go'
+      };
+      if (extra) Object.keys(extra).forEach(function(k){ params[k] = extra[k]; });
+      var body = JSON.stringify({
+        session_id: sessionId,
+        event: 'go_' + event,
+        firm_id: firmId || null,
+        coupon_code: coupon || null,
+        page_name: '/go',
+        params: params,
+        created_at: new Date().toISOString()
+      });
+      // fetch com keepalive: garante envio mesmo durante unload
+      fetch(SUPABASE_URL + '/rest/v1/events', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', apikey:SK, Authorization:'Bearer '+SK, Prefer:'return=minimal' },
+        body: body,
+        keepalive: true
+      }).catch(function(){});
+    } catch(e){}
+  }
+  // page view
+  trackGo('view');
+
   var L = {
     pt:{redir:'Redirecionando para',label:'Cupom copiado',paste:'Cole o cupom no campo "Coupon" do checkout',noCoupon:'Desconto aplicado automaticamente no link.',manual:'Não foi redirecionado?',click:'Clique aqui'},
     en:{redir:'Redirecting to',label:'Coupon copied',paste:'Paste the coupon in the "Coupon" field at checkout',noCoupon:'Discount auto-applied via link.',manual:'Not redirected?',click:'Click here'},
@@ -119,15 +158,17 @@ h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;
     document.querySelector('.status').innerHTML = L.paste.replace('"Coupon"', '<strong>"Coupon"</strong>');
     // Try clipboard copy
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(coupon).catch(function(){});
+      navigator.clipboard.writeText(coupon).then(function(){ clipboardOk=true; trackGo('clipboard_ok'); }).catch(function(){ clipboardOk=false; trackGo('clipboard_fail'); });
     } else {
       // Fallback: textarea + execCommand
       try {
         var ta = document.createElement('textarea');
         ta.value = coupon; ta.style.position='absolute'; ta.style.left='-9999px';
-        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        document.body.appendChild(ta); ta.select();
+        clipboardOk = document.execCommand('copy');
         document.body.removeChild(ta);
-      } catch(e){}
+        trackGo(clipboardOk ? 'clipboard_ok' : 'clipboard_fail');
+      } catch(e){ clipboardOk=false; trackGo('clipboard_fail'); }
     }
   } else {
     document.getElementById('couponWrap').style.display = 'none';
@@ -157,13 +198,25 @@ h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;
     manualLink.textContent = L.click;
     manualLink.href = '/';
   }
+  manualLink.addEventListener('click', function(){ trackGo('manual_click'); });
 
   // Animate progress bar
   setTimeout(function(){ document.getElementById('bar').classList.add('go'); }, 100);
 
+  // Track abandono: user fechou aba antes do redirect
+  window.addEventListener('pagehide', function(){
+    if (!redirected) trackGo('abandoned');
+  });
+
   // Redirect
   if (validTo) {
-    setTimeout(function(){ window.location.replace(validTo); }, 1700);
+    setTimeout(function(){
+      redirected = true;
+      trackGo('redirect');
+      window.location.replace(validTo);
+    }, 1700);
+  } else {
+    trackGo('no_destination');
   }
 })();
 </script>
