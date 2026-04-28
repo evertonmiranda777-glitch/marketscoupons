@@ -166,15 +166,13 @@ function mcInjectKeyword(url, firmId){
 }
 
 // ─── /go INTERSTITIAL ───
-// Firmas onde o cupom JÁ é auto-aplicado via URL (não precisa página intermediária).
-// Pra essas, abre direto. Pras outras, passa por /go pra copiar cupom + redirect.
-const MC_AUTO_APPLY_FIRMS = new Set(['bulenox','tpt','e2t','e8']);
+// TODAS as firmas com cupom passam pela /go: UX uniforme + tracking + clipboard backup mesmo
+// pras que já fazem auto-apply (cobre caso da firma falhar em aplicar o cupom).
+// Sem cupom: abre direto (FTMO/The5ers).
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
-  // Auto-apply firms OU sem cupom: abre direto (cupom já no link OU não há cupom).
-  if (!coupon || MC_AUTO_APPLY_FIRMS.has(String(firmId).toLowerCase())) {
+  if (!coupon) {
     return window.open(finalUrl, '_blank', 'noopener,noreferrer');
   }
-  // Demais: rota /go com clipboard copy + redirect (reduz fricção do cupom manual).
   const params = new URLSearchParams({
     firm: firmId || '',
     to: finalUrl,
