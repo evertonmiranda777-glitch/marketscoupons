@@ -2,6 +2,8 @@
 
 ## 🚨 ESTADO ATUAL (atualizado 2026-04-27 — ler PRIMEIRO ao começar sessão)
 
+**REGRA DE OURO:** salvar memória + MEMORY.md + CLAUDE.md a cada sessão. Sem precisar pedir. Ver `memory/feedback_salvar_a_cada_sessao.md`.
+
 Antes de qualquer ação, abre estas 3 memórias na ordem:
 
 1. **`memory/feedback_modo_trabalho_empresario.md`** — contrato de comportamento. 7 regras: ação concreta sempre, reconhecer antes de explicar, modo autônomo, caminhos exatos, memória ativa, PT-BR, codewords stop/preguiça.
