@@ -6616,6 +6616,6 @@ const I18N = {
     cookies_body:'<h2>1. ما هي ملفات تعريف الارتباط؟</h2><p>ملفات نصية صغيرة تُخزن في متصفحك عند زيارة موقع ويب.</p><h2>2. ملفات تعريف الارتباط المستخدمة</h2><p><strong>أساسية:</strong> اللغة والجلسة. لا تتطلب موافقة.</p><p><strong>تحليلية (تتطلب موافقة):</strong> Google Analytics (GA4)، Google Tag Manager، Facebook Pixel.</p><h2>3. إدارة الموافقة</h2><p>في زيارتك الأولى، نعرض شريطًا. يمكنك القبول أو الرفض. يُحفظ اختيارك في localStorage.</p><h2>4. تغيير اختيارك</h2><p>امسح بيانات الموقع في متصفحك وأعد تحميل الصفحة.</p><h2>5. ملفات تعريف ارتباط الطرف الثالث</h2><p>راجع سياسات <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google</a> و<a href="https://www.facebook.com/privacy/explanation" target="_blank" rel="noopener">Meta/Facebook</a>.</p><h2>6. التواصل</h2><p>contato@marketscoupons.com</p>',
     err_blog_post:'خطأ في تحميل المنشور.',
     cal_vs_forecast:'مقابل التوقعات',
-    coupon_copied_choose:'تم نسخ القسيمة {code}! اختر حسابك أدناه الآن.'
+    coupon_copied_choose:'تم نسخ القسيمة {code}! اختر حسابك أدناه الآن.',
   }
 };
