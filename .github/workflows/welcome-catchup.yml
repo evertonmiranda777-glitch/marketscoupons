@@ -1,0 +1,24 @@
+name: Welcome catchup (cron horário)
+
+on:
+  schedule:
+    # A cada hora — pega users confirmados sem welcome
+    - cron: '15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  catchup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run catchup
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SITE_URL: https://www.marketscoupons.com
+        run: node scripts/welcome-catchup.js

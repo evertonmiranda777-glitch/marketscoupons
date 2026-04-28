@@ -44,6 +44,30 @@ Se ele digitar **"stop"** ou **"preguiça"** em qualquer momento:
 
 ---
 
+## Welcome email — Auth Hook on email-confirmed (2026-04-27)
+
+**Regra:** signup com email-confirmation NÃO dispara welcome via `app.js:6302/6322` (fetch só roda se sessão volta na hora ou auto-signin funciona). Fluxo certo:
+
+1. **Auth Hook Supabase on email-confirmed** dispara → POST `/api/welcome-email`
+2. OU script catchup diário pega `auth.users WHERE email_confirmed_at NOT NULL AND email NOT IN (SELECT recipient FROM email_logs WHERE campaign_name='Welcome Email')` → manda em batch
+
+Bug histórico: 21-24/abril 5 cadastros sem welcome. Ver `memory/project_welcome_email_bug.md`.
+
+## Blog vs Guias — não duplicar (2026-04-27)
+
+**Regra:** antes de criar/manter blog post, checar se tema já está em `<lang>/guides/`. Os 5 guias canônicos:
+- `o-que-e-uma-prop-firm`
+- `como-passar-no-desafio`
+- `gerenciamento-drawdown`
+- `position-sizing`
+- `como-sacar-lucros`
+
+Em 2026-04-27 limpeza removeu 26 posts duplicados. Estado: 39 posts (PT 9, outros 5/lang). Ver `memory/project_blog_cleanup_2026_04_27.md`.
+
+**Padrão long-form (referência: Wyckoff PT, 28k chars):** body 15k+ chars, hero `<img>` embedded ou `cover_url` apontando pra asset, read_time honesto (~1min/1.5k chars), dados reais. Stubs de 3k com read_time inflado são rejeitados.
+
+---
+
 ## Preços de firma — fonte única Supabase (2026-04-23)
 
 **Regra:** `cms_firms.prices` no Supabase é a **única fonte de verdade** pra preço de firma. `FIRM_ABOUT` e `CHECKOUT_FIRMS` em app.js são **fallback puro** (usados só enquanto Supabase não carrega). Helper canônico: `getPlanPrice(firmId, typeName, sizeStr)` em [app.js:456](app.js#L456).
