@@ -361,7 +361,150 @@ Click the link below and choose your plan.
 
   const FEW_SHOT_EN = template === 'promocional' ? FEW_SHOT_PROMOCIONAL_EN : FEW_SHOT_INSTITUCIONAL_EN;
 
-  const fewShot = langCode === 'pt' ? FEW_SHOT_PT : FEW_SHOT_EN;
+  // ====== TEMPLATE INSTITUCIONAL — ES ======
+  const FEW_SHOT_INSTITUCIONAL_ES = `
+EJEMPLO INSTITUCIONAL 1 (Apex):
+Opera con el Capital de APEX: Evaluaciones de Futuros con Condiciones Especiales
+
+Tú tienes la estrategia, nosotros el capital. APEX Trader Funding ofrece la infraestructura que necesitas para escalar tus operaciones en el mercado de futuros sin arriesgar tu patrimonio personal.
+
+Aprovecha nuestras condiciones actuales para iniciar tu evaluación:
+✅ Planes desde $19.90 (tasa de evaluación).
+✅ Reglas flexibles y Drawdown ajustado (EOD disponible).
+✅ Opera en las principales plataformas: NinjaTrader, Tradovate y Rithmic.
+
+Únete a una comunidad con más de 18 mil reseñas positivas en Trustpilot (calificación 4.4/5).
+
+Usa el cupón: MARKET
+
+Asegura tu lugar y comienza a operar con escala.
+
+#apex #propfirm #propfirmtrading #trader #trading #daytrading #futuros #tradingfuturos #es #nq #mes #mnq
+
+---
+
+EJEMPLO INSTITUCIONAL 2 (Bulenox):
+Opera con el Capital de Bulenox: Evaluaciones de Futuros con Drawdown Estático
+
+Tú tienes la estrategia, nosotros el capital. Bulenox ofrece evaluaciones con reglas claras y drawdown estático predecible, ideal para traders que buscan consistencia operativa.
+
+Aprovecha nuestras condiciones actuales para iniciar tu evaluación:
+✅ Planes desde $19.25 (tasa de evaluación).
+✅ Drawdown estático sin trailing — límites predecibles.
+✅ Plataformas: Tradovate, NinjaTrader y Rithmic incluido.
+✅ Sin regla de consistencia y payout semanal.
+
+Únete a una comunidad con más de 1.500 reseñas en Trustpilot (calificación 4.5/5).
+
+Usa el cupón: MARKET89
+
+Asegura tu lugar y comienza a operar con escala.
+
+#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futuros #es #nq #mes #mnq #tradovate
+
+---
+
+EJEMPLO INSTITUCIONAL 3 (FTMO, sin cupón):
+Opera con el Capital de FTMO: Evaluaciones de Forex con Historial Comprobado
+
+Tú tienes la estrategia, nosotros el capital. FTMO ofrece la infraestructura que necesitas para escalar tus operaciones de forex con respaldo de más de €500 millones pagados a traders desde 2015.
+
+Aprovecha las condiciones actuales vía nuestro enlace:
+✅ Desafíos desde €79 (10K) — descuento aplicado automático.
+✅ Drawdown estático -10%, sin trailing.
+✅ Plataformas: MT4, MT5 y cTrader nativos.
+✅ Profit split del 90% después del funding.
+
+Únete a una comunidad con más de 41 mil reseñas en Trustpilot (calificación 4.8/5).
+
+Sin cupón — descuento aplicado automático en el enlace.
+
+Asegura tu lugar y comienza a operar con escala.
+
+#ftmo #propfirm #propfirmtrading #forex #trader #trading #tradingforex #mt5 #ctrader #eurusd #gbpusd #xauusd
+`;
+
+  // ====== TEMPLATE PROMOCIONAL — ES ======
+  const FEW_SHOT_PROMOCIONAL_ES = `
+EJEMPLO PROMOCIONAL 1 (Apex):
+🚀 Escala de Capital para Traders de Futuros: 90% OFF en APEX
+
+Trader, ¿por qué limitar tus ganancias al tamaño de tu cuenta personal?
+
+APEX Trader Funding está liberando un descuento exclusivo del 90% para nuevas evaluaciones de futuros. Es tu oportunidad de acceder a cuentas de 25K a 150K con el menor costo del mercado.
+
+Lo que diferencia a APEX:
+🔹 Payouts ágiles y reglas simplificadas.
+🔹 Sin límite de pérdida diaria.
+🔹 News trading permitido.
+🔹 División de ganancias competitiva para el trader.
+
+Miles de traders ya escalaron sus operaciones con nosotros.
+
+Revisa nuestras reseñas en Trustpilot y descubre por qué somos referencia global.
+
+Inserta el cupón: MARKET
+
+Haz clic en el enlace y elige tu plan.
+
+#apex #propfirm #propfirmtrading #trader #trading #daytrading #futuros #tradingfuturos #es #nq #mes #mnq
+
+---
+
+EJEMPLO PROMOCIONAL 2 (Bulenox):
+🚀 Escala de Capital para Traders de Futuros: 89% OFF en Bulenox
+
+Trader, ¿por qué limitar tus ganancias al tamaño de tu cuenta personal?
+
+Bulenox está liberando un descuento exclusivo del 89% lifetime para nuevas evaluaciones. Es tu oportunidad de acceder a cuentas de 25K a 250K con reglas claras y drawdown estático predecible.
+
+Lo que diferencia a Bulenox:
+🔹 Drawdown estático sin trailing.
+🔹 Sin regla de consistencia.
+🔹 Payout semanal y escala hasta $400K.
+🔹 Profit split 90% (100% en los primeros $10K).
+🔹 Rithmic incluido por 14 días.
+
+Miles de traders ya escalaron sus operaciones con nosotros.
+
+Revisa nuestras reseñas en Trustpilot y descubre por qué somos referencia global.
+
+Inserta el cupón: MARKET89
+
+Haz clic en el enlace y elige tu plan.
+
+#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futuros #es #nq #mes #mnq #tradovate
+
+---
+
+EJEMPLO PROMOCIONAL 3 (FTMO, sin cupón):
+🚀 Escala de Capital para Traders de Forex: Descuento Exclusivo en FTMO
+
+Trader, ¿por qué limitar tus ganancias al tamaño de tu cuenta personal?
+
+FTMO está liberando un descuento exclusivo aplicado automático vía nuestro enlace para nuevas evaluaciones de forex. Es tu oportunidad de acceder a cuentas de 10K a 200K con la mayor empresa de prop trading del mercado.
+
+Lo que diferencia a FTMO:
+🔹 Más de €500M pagados desde 2015.
+🔹 Drawdown estático -10% (sin trailing).
+🔹 MT4, MT5 y cTrader nativos.
+🔹 Profit split del 90% después del funding.
+🔹 Payout en 5 días.
+
+Miles de traders ya escalaron sus operaciones con nosotros.
+
+Revisa nuestras reseñas en Trustpilot y descubre por qué somos referencia global.
+
+Sin cupón — descuento aplicado automático en el enlace.
+
+Haz clic en el enlace y elige tu plan.
+
+#ftmo #propfirm #propfirmtrading #forex #trader #trading #tradingforex #mt5 #ctrader #eurusd #gbpusd #xauusd
+`;
+
+  const FEW_SHOT_ES = template === 'promocional' ? FEW_SHOT_PROMOCIONAL_ES : FEW_SHOT_INSTITUCIONAL_ES;
+
+  const fewShot = langCode === 'pt' ? FEW_SHOT_PT : (langCode === 'es' ? FEW_SHOT_ES : FEW_SHOT_EN);
 
   return `# PAPEL
 Copywriter de promo comercial para Instagram, nicho de prop trading. Estilo: anúncio de oferta direto, foco em FEATURES + DESCONTO + CUPOM. NÃO escreve storytelling, NÃO escreve dor, NÃO faz pergunta-callout. Escreve promo que parece anúncio oficial da firma com benefícios listados.

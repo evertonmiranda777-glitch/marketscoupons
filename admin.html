@@ -2030,6 +2030,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div class="cr-format-pills">
               <div class="cr-fmt active" onclick="setCrLang('pt',this)"><div class="nm">Portugues</div></div>
               <div class="cr-fmt" onclick="setCrLang('en',this)"><div class="nm">English</div></div>
+              <div class="cr-fmt" onclick="setCrLang('es',this)"><div class="nm">Español</div></div>
             </div>
           </div>
           <div class="cr-field"><label>Firma</label>
@@ -11251,7 +11252,12 @@ const CR_LABELS = {
         profit_split:'Profit Split', drawdown:'Drawdown', target:'Target', platforms:'PLATFORMS',
         prices:'DISCOUNTED PRICES', off:'OFF', lifetime:'LIFETIME', perks_label:'PERKS',
         min_days:'Min Days', scaling:'Scaling', eval:'Evaluation', no_limit:'Unlimited',
-        copy:'Copy', futuros:'FUTURES', forex:'FOREX' }
+        copy:'Copy', futuros:'FUTURES', forex:'FOREX' },
+  es: { exclusive_coupon:'CUPÓN EXCLUSIVO', use_coupon:'USA EL CUPÓN EN EL CHECKOUT', reviews:'Reseñas',
+        profit_split:'Profit Split', drawdown:'Drawdown', target:'Meta', platforms:'PLATAFORMAS',
+        prices:'PRECIOS CON DESCUENTO', off:'OFF', lifetime:'LIFETIME', perks_label:'BENEFICIOS',
+        min_days:'Días Mín', scaling:'Scaling', eval:'Evaluación', no_limit:'Ilimitado',
+        copy:'Copiar', futuros:'FUTUROS', forex:'FOREX' }
 };
 
 // Perks are stored in English in Supabase — translate to PT when needed
@@ -11437,7 +11443,8 @@ function renderHeroPremium(firm, content, L) {
 
   const dtypeMap = {
     pt: { lifetime:'DESCONTO LIFETIME', promo:'DESCONTO PROMOCIONAL', '1 desafio':'DESCONTO 1º DESAFIO', easter:'DESCONTO DE PÁSCOA', gratis:'GRÁTIS', 'new customer':'DESCONTO NOVO CLIENTE', april:'DESCONTO DE ABRIL' },
-    en: { lifetime:'LIFETIME DISCOUNT', promo:'PROMO DISCOUNT', '1 desafio':'1 CHALLENGE DISCOUNT', easter:'EASTER DISCOUNT', gratis:'FREE', 'new customer':'NEW CUSTOMER DISCOUNT', april:'APRIL DISCOUNT' }
+    en: { lifetime:'LIFETIME DISCOUNT', promo:'PROMO DISCOUNT', '1 desafio':'1 CHALLENGE DISCOUNT', easter:'EASTER DISCOUNT', gratis:'FREE', 'new customer':'NEW CUSTOMER DISCOUNT', april:'APRIL DISCOUNT' },
+    es: { lifetime:'DESCUENTO LIFETIME', promo:'DESCUENTO PROMOCIONAL', '1 desafio':'DESCUENTO 1º DESAFÍO', easter:'DESCUENTO DE PASCUA', gratis:'GRATIS', 'new customer':'DESCUENTO NUEVO CLIENTE', april:'DESCUENTO DE ABRIL' }
   };
   const dtypeLabel = (dtypeMap[_crLang]||dtypeMap.en)[dtype.toLowerCase()] || dtype.toUpperCase();
 
@@ -11483,20 +11490,20 @@ function renderHeroPremium(firm, content, L) {
   // Coupon (ou banner auto-apply pra firmas sem cupom: FTMO, The5ers, etc)
   if (crChk('cr-show-coupon')) {
     if (coupon) {
-      h += `<div class="cr-hp-cplabel">${L.exclusive_coupon || (_crLang==='pt'?'CUPOM EXCLUSIVO':'EXCLUSIVE COUPON')}</div>`;
+      h += `<div class="cr-hp-cplabel">${L.exclusive_coupon || (_crLang==='pt'?'CUPOM EXCLUSIVO':_crLang==='es'?'CUPÓN EXCLUSIVO':'EXCLUSIVE COUPON')}</div>`;
       h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${color}8C;background:linear-gradient(180deg, ${color}26, ${color}14);"><div class="cr-hp-cpcode" style="color:${color};">${escHtml(coupon)}</div></div>`;
     } else {
       const GREEN = '#10B981';
-      h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
-      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;line-height:1;">✓</span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Desconto aplicado automaticamente via link':'Discount auto-applied via link'}</span></div>`;
+      h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':_crLang==='es'?'DESCUENTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;line-height:1;">✓</span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Desconto aplicado automaticamente via link':_crLang==='es'?'Descuento aplicado automáticamente vía enlace':'Discount auto-applied via link'}</span></div>`;
     }
   }
 
   // Trustpilot
   if (crChk('cr-show-rating') && rating) {
     const score = (+rating).toFixed(1);
-    const cnt = reviews ? reviews.toLocaleString(_crLang==='pt'?'pt-BR':'en-US') : '';
-    h += `<div class="cr-hp-tp"><span class="stars">★★★★★</span><span class="score">${score}</span><span class="sep">·</span><span class="count">${cnt} ${_crLang==='pt'?'avaliações em':'reviews on'}</span><span class="brand">Trustpilot</span></div>`;
+    const cnt = reviews ? reviews.toLocaleString(_crLang==='pt'?'pt-BR':_crLang==='es'?'es-ES':'en-US') : '';
+    h += `<div class="cr-hp-tp"><span class="stars">★★★★★</span><span class="score">${score}</span><span class="sep">·</span><span class="count">${cnt} ${_crLang==='pt'?'avaliações em':_crLang==='es'?'reseñas en':'reviews on'}</span><span class="brand">Trustpilot</span></div>`;
   }
 
   // Prices 2x2 (top 4)
@@ -11510,7 +11517,7 @@ function renderHeroPremium(firm, content, L) {
       if (oldP) {
         const n = parseFloat(String(newP).replace(/[^0-9.]/g,''));
         const o = parseFloat(String(oldP).replace(/[^0-9.]/g,''));
-        if (n && o && o>n) saveTxt = `${_crLang==='pt'?'Economize':'Save'} $${Math.round(o-n)}`;
+        if (n && o && o>n) saveTxt = `${_crLang==='pt'?'Economize':_crLang==='es'?'Ahorra':'Save'} $${Math.round(o-n)}`;
       }
       const size = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
       h += `<div class="cr-hp-pc" style="border:1.5px solid ${color}B3;background:linear-gradient(180deg, ${color}14 0%, rgba(0,0,0,.35) 100%);">
@@ -11595,7 +11602,7 @@ function _unusedOldCreative() {
     h += `<div class="cr-rating-bar">
       <div class="cr-rb-num">${rating}</div>
       <div class="cr-rb-stars">${starsGold}</div>
-      <div class="cr-rb-reviews">${reviews.toLocaleString()} ${_crLang==='pt'?'avaliações':'reviews'}</div>
+      <div class="cr-rb-reviews">${reviews.toLocaleString()} ${_crLang==='pt'?'avaliações':_crLang==='es'?'reseñas':'reviews'}</div>
       <div class="cr-rb-sep"></div>
       <div class="cr-rb-tp-stars">${starsTp}</div>
       <div class="cr-rb-tp">Trustpilot</div>
@@ -11640,11 +11647,11 @@ function _unusedOldCreative() {
       // ── Dual price layout: table with Intraday / EOD columns ──
       const lbl1 = pTypes[0] || 'Intraday';
       const lbl2 = pTypes[1] || 'EOD';
-      h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':'ACCOUNT SIZE'}</div>
+      h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':_crLang==='es'?'TAMAÑO DE CUENTA':'ACCOUNT SIZE'}</div>
       <div style="padding:0 16px;">
         <table style="width:100%;border-collapse:collapse;border-spacing:0;">
           <thead><tr>
-            <th style="padding:8px 12px;text-align:left;color:#A0AEC0;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid ${color}30;">${_crLang==='pt'?'Conta':'Account'}</th>
+            <th style="padding:8px 12px;text-align:left;color:#A0AEC0;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid ${color}30;">${_crLang==='pt'?'Conta':_crLang==='es'?'Cuenta':'Account'}</th>
             <th style="padding:8px 12px;text-align:center;color:${color};font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid ${color}30;">${lbl1}</th>
             <th style="padding:8px 12px;text-align:center;color:${color};font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid ${color}30;">${lbl2}</th>
           </tr></thead>
@@ -11667,7 +11674,7 @@ function _unusedOldCreative() {
       </div>`;
     } else {
       // ── Single price layout: card grid ──
-      h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':'ACCOUNT SIZE'}</div>
+      h += `<div class="cr-plans-label">${_crLang==='pt'?'TAMANHO DA CONTA':_crLang==='es'?'TAMAÑO DE CUENTA':'ACCOUNT SIZE'}</div>
       <div class="cr-plans" style="grid-template-columns:repeat(${cols},1fr);">
         ${top4.map(p => `<div class="cr-plan" style="border-color:${color}30;">
           <div class="cr-plan-size">${p.a}</div>
