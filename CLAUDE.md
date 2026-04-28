@@ -1,891 +1,153 @@
-# MarketsCoupons - Contexto do Projeto
+# MarketsCoupons — Contexto do Projeto
 
-## 🚨 ESTADO ATUAL (atualizado 2026-04-27 — ler PRIMEIRO ao começar sessão)
+## 🚨 LER PRIMEIRO (antes de qualquer ação)
 
-**REGRA DE OURO #1 — CONTINUIDADE:** Você é IA orientada a continuidade, não a respostas isoladas. Sistema com estado persistente, não chatbot. Antes de qualquer ação, ler:
-1. `memory/reference_doutrina_continuidade.md` — texto-fonte do Everton: 5 camadas obrigatórias antes de responder, prioridade Consistência>Criatividade>Contexto>Suposição
-2. `memory/reference_o_que_e_contexto.md` — operacionalização: ritual início/fim, sinais de perda, codewords
+1. `memory/reference_doutrina_continuidade.md` — você é IA orientada a continuidade. Sistema com estado, não chatbot. Reconstruir contexto antes de cada resposta.
+2. `memory/reference_o_que_e_contexto.md` — operacionalização. 4 camadas, ritual início/fim, sinais de perda.
+3. `memory/feedback_modo_trabalho_empresario.md` — 7 regras: ação concreta, reconhecer antes de explicar, modo autônomo, caminhos exatos, memória ativa, PT-BR, codewords stop/preguiça.
+4. `memory/feedback_salvar_a_cada_sessao.md` — toda sessão termina com memória + MEMORY.md + CLAUDE.md atualizados, sem precisar pedir.
+5. `memory/MEMORY.md` — índice de memórias por tema.
+6. `memory/project_backlog_proximos_passos.md` — onde paramos / prioridades.
 
-Sem isso você quebra o pacto e o projeto regride.
+**Codewords:** "stop" / "preguiça" → para tudo, confessa o que cortou, refaz.
 
-**REGRA DE OURO #2 — SALVAR:** memória + MEMORY.md + CLAUDE.md atualizados a cada sessão. Sem precisar pedir. Ver `memory/feedback_salvar_a_cada_sessao.md`.
+## Visão geral
 
-Antes de qualquer ação, abre estas 3 memórias na ordem:
+Site de cupons de **prop firms** de trading. Compara firmas, oferece cupons, fidelidade, blog, guias, calculadoras, análise diária. Deploy estático no Vercel.
 
-1. **`memory/feedback_modo_trabalho_empresario.md`** — contrato de comportamento. 7 regras: ação concreta sempre, reconhecer antes de explicar, modo autônomo, caminhos exatos, memória ativa, PT-BR, codewords stop/preguiça.
-
-2. **`memory/project_hardening_2026_04_27.md`** — segurança. CSP estrita ativa, helpers fail-closed em `api/_cors.js` + `_ratelimit.js` + `_safe-error.js`, 2FA em tudo, Gemini API key restrita por API restriction (NUNCA HTTP referrer). Não refazer o que já está feito.
-
-3. **`memory/project_backlog_proximos_passos.md`** — onde paramos. Top 3 prioridades (Sentry pendente DSN, Backup ✅ implementado, Funil pendente), email institucionais outros idiomas pendentes (só PT do blog-guides foi feito), blog SEO orgânico mundial = visão grande do Everton.
-
-## PRE-FLIGHT PROTOCOL — OBRIGATÓRIO em toda tarefa visual/criativa
-
-**Criado 2026-04-19 depois de Everton confrontar Oryk sobre preguiça estrutural.** Não pular nenhum passo.
-
-### Antes de produzir qualquer output visual/criativo (HTML mockup, imagem Gemini, composição, criativo Telegram, OG image, email, guia):
-
-1. **Ler** `memory/reference_protocolo_pre_visual.md` — checklist completo
-2. **Executar cada fase escrevendo:**
-   - Fase 1: abrir TODAS as refs locais relevantes com Read tool (não trabalhar de memória)
-   - Fase 2: decompor cada ref (grid, focal, luz, cor, type, textura, respiração)
-   - Fase 3: escolher benchmark específico + declarar gap honesto
-   - Fase 4: aplicar restrição (quantos focais? o que vou subtrair?)
-   - Fase 5: executar
-   - Fase 6: crítica pós + auto-score X/10
-3. **Terminar entrega com audit trail visível** (formato em `memory/feedback_audit_trail_obrigatorio.md`)
-4. **Se auto-score < 9, refazer antes de mostrar pro user**
-
-### Codeword de emergência do Everton
-
-Se ele digitar **"stop"** ou **"preguiça"** em qualquer momento:
-- Parar imediatamente
-- Confessar qual fase do protocolo pulei
-- Voltar à fase pulada e executar do zero
-- Reconhecer antes de explicar (ver `memory/feedback_reconhecer_antes_de_explicar.md`)
-
-### Regras permanentes (ver memórias individuais)
-- `memory/feedback_preguica_estrutural.md` — viés anti-preguiça
-- `memory/feedback_memoria_nao_substitui_fonte.md` — sempre abrir a fonte
-- `memory/feedback_reconhecer_antes_de_explicar.md` — ordem: reconhecer → corrigir → (talvez) explicar
-- `memory/feedback_audit_trail_obrigatorio.md` — mostrar, não afirmar
-- `memory/reference_protocolo_pre_visual.md` — checklist executável
-
----
-
-## Welcome email — Auth Hook on email-confirmed (2026-04-27)
-
-**Regra:** signup com email-confirmation NÃO dispara welcome via `app.js:6302/6322` (fetch só roda se sessão volta na hora ou auto-signin funciona). Fluxo certo:
-
-1. **Auth Hook Supabase on email-confirmed** dispara → POST `/api/welcome-email`
-2. OU script catchup diário pega `auth.users WHERE email_confirmed_at NOT NULL AND email NOT IN (SELECT recipient FROM email_logs WHERE campaign_name='Welcome Email')` → manda em batch
-
-Bug histórico: 21-24/abril 5 cadastros sem welcome. Ver `memory/project_welcome_email_bug.md`.
-
-## Blog vs Guias — não duplicar (2026-04-27)
-
-**Regra:** antes de criar/manter blog post, checar se tema já está em `<lang>/guides/`. Os 5 guias canônicos:
-- `o-que-e-uma-prop-firm`
-- `como-passar-no-desafio`
-- `gerenciamento-drawdown`
-- `position-sizing`
-- `como-sacar-lucros`
-
-Em 2026-04-27 limpeza removeu 26 posts duplicados. Estado: 39 posts (PT 9, outros 5/lang). Ver `memory/project_blog_cleanup_2026_04_27.md`.
-
-**Padrão long-form (referência: Wyckoff PT, 28k chars):** body 15k+ chars, hero `<img>` embedded ou `cover_url` apontando pra asset, read_time honesto (~1min/1.5k chars), dados reais. Stubs de 3k com read_time inflado são rejeitados.
-
----
-
-## Preços de firma — fonte única Supabase (2026-04-23)
-
-**Regra:** `cms_firms.prices` no Supabase é a **única fonte de verdade** pra preço de firma. `FIRM_ABOUT` e `CHECKOUT_FIRMS` em app.js são **fallback puro** (usados só enquanto Supabase não carrega). Helper canônico: `getPlanPrice(firmId, typeName, sizeStr)` em [app.js:456](app.js#L456).
-
-**Como mudar promo:**
-```sql
-UPDATE cms_firms SET discount=50, prices='[{"a":"25K","n":"$99.50","o":"$199",...}]'::jsonb WHERE id='apex';
-```
-Zero deploy, zero edit em código. Cache localStorage (`mc_firms_cache_v3`) invalida na próxima carga do usuário. Se precisar invalidar agora, bump chave pra `_v4` em app.js (4 ocorrências).
-
-**O que NUNCA fazer:**
-- Re-introduzir sync destrutivo: `FIRM_ABOUT[id].plans[type][i].d = supabasePrice.n` (causa revert stale→fresh quando Supabase lagga). Removido em commit b993315.
-- Editar preço em dois lugares (Supabase E hardcoded). Hardcoded fica congelado como fallback; só atualizar junto em rebuild major.
-- Ler `plan.d`/`plan.o`/`p.disc`/`p.orig` direto em template novo. Usar sempre `getPlanPrice()`.
-
-**Shape dual-type (Apex, Bulenox):** `prices[i]` tem `n/o` (type 0 = Intraday) + `n2/o2` (type 1 = EOD). `getPlanPrice` resolve pelo `typeIdx` do nome do tipo.
-
-Ver `memory/project_refactor_precos_fonte_unica.md` e `memory/project_promos_historico.md`.
-
-## Financeiro + Extensão (2026-04-22)
-
-**Regra:** `supabase/functions/finance-sync/index.ts` DEVE filtrar `r.granularity !== 'month'` antes de upsert em `affiliate_daily_stats`. A extensão parseia CSV de Apex/Bulenox que tem linha "monthly summary" (ex: `April 2026`) mapeada pra `firstDay` do mês → colide com daily do dia 01 no `ON CONFLICT (firm_id, date)` → dashboard infla ~2x. Filtro aplicado no commit 85ddb0a.
-
-**Diagnóstico de recorrência:** `SELECT firm_id, date, commission, raw->>'granularity' FROM affiliate_daily_stats WHERE raw->>'granularity'='month';` — se retornar linhas, filtro foi bypassed. Limpar + reaplicar.
-
-Ver `memory/feedback_extension_monthly_summary.md`.
-
-## Tradução de guias (Gemini 2.5 Flash)
-
-**Regra:** `scripts/translate-guides-edu.mjs` (e irmãos) usa `maxOutputTokens: 65536` + safety check `cleaned.length < src.length * 0.85`. NUNCA baixar esses valores — HTMLs de ~45kb truncam silenciosamente com 32k tokens.
-
-**Jobs em background:** NÃO commitar enquanto tradução em background roda — job antigo pode sobrescrever arquivo pós-commit. Esperar `DONE: X/Y` no log antes de `git add`.
-
-Ver `memory/feedback_gemini_truncamento.md`.
-
----
-
-## Guias de Firma — Ilustrações (2026-04-22)
-
-**Regra da firma:** imagens de guia (hero, diagrams, platforms, pros-cons) usam a **cor accent da firma**, NUNCA dourado default. Gerar imagem com shield/laurel/moldura dourada em guia de firma = AI-slop, rejeitado.
-
-| Firma | Accent | Hex | Base existente |
-|---|---|---|---|
-| Apex | Orange | #F97316 | (hero gerado, estilo editorial) |
-| TradeDay | Cyan | #22D3EE | `img/tradeday-bg.png` (checkout bg real Chicago) |
-| FTMO | Blue | #1976D2 | — |
-| Bulenox | (verificar) | — | `img/bulenox-bg.webp` |
-
-### Workflow para firma (aplicar pra cada nova firma)
-1. **Reusar `img/<firm>-bg.webp/png`** (checkout bg) como hero fotográfico em vez de gerar skyline fake
-2. **Logos reais em `img/Plataformas/`** pra card de platforms — canvas uniforme 438x125 (NinjaTrader, Tradovate, Tradingview, Jigsaw já padronizados 2026-04-22)
-3. **Drawdown/diagramas:** SVG editorial com cor accent da firma (não IA)
-4. **Pros/cons:** 2 colunas verde emerald #10B981 / red #EF4444, sem moldura dourada
-5. **Ecoar paleta em TODAS as camadas** — se bg tem candles cyan, holo chart é cyan, stats são cyan, logo é cyan (ver `memory/feedback_reusar_asset_branded.md`)
-
-### Template de mockup
-HTML em `previews/<firm>-<section>-mockup.html` → renderizar via `scripts/render-tradeday-mockup.js` adaptado → PNG em `docs/guias-piloto/img/<firm>-<section>.png`. Canvas 1200x630 @ 2x deviceScaleFactor.
-
-### Regra anti AI-slop
-- NUNCA gerar logo/brand fake via IA (shield "TD", cubo Jigsaw fictício) — buscar logo real no site oficial ou pedir ao user
-- NUNCA default pra dourado em imagem de firma que não tem accent dourado
-- NUNCA moldura barroca/laurel/selo dourado em pros-cons, stats ou cards
-
-## Guias Educacionais — Ilustrações (2026-04-19)
-
-5 guias edu (G1 Prop Firm, G2 Como Passar, G3 Drawdown, G4 Position Sizing, G5 Sacar Lucros) usam **cor accent semântica por guia** — não monotone preto+dourado:
-
-| Guia | Accent | Hex | Semântica |
-|---|---|---|---|
-| G1 Prop Firm | Orange/Gold | #F97316 | premium, energia |
-| G2 Como Passar | Emerald | #10B981 | ganho, crescimento |
-| G3 Drawdown | Red | #EF4444 | risco, alerta |
-| G4 Position Sizing | Blue | #3B82F6 | precisão, cálculo |
-| G5 Sacar Lucros | Gold+Green | #F0B429+#10B981 | conquista, dinheiro |
-
-### DNA visual (fórmula Nazmul — ver `memory/reference_nazmul_branding_dna.md`)
-- Hex/lettermark logo + bold sans wordmark + UMA cor accent por guia + preto profundo + lighting cinemático
-- Refs Nazmul baixadas em `.firecrawl/nazmul-thumbs/` (cardan-c.jpg, fynex-fintech.jpg, autonex.jpg, chaintools.jpg, logofolio2025.jpg)
-
-### Workflow de geração (dual-ref obrigatório pra conceito didático)
-1. Preparar mockup HTML/CSS/SVG do conceito em `preview-guias-replan.html` — user aprova antes de gastar Pro
-2. Screenshot do mockup = content ref
-3. Nazmul thumb relevante = aesthetic ref
-4. `nano-banana -r aesthetic.jpg -r content-mockup.png -m pro -p "..."`
-
-**Regra:** ilustração de guia edu deve ser **bonita + branding + explicativa** (não é trade-off). Labels que ficam sobre linhas de gráfico precisam de pill background escura com borda accent — nunca texto flutuando sobre curvas.
-
-## Max - Mascote oficial (2026-04-15)
-
-Max e uma raposa 3D Pixar-style (dourado-laranja #F0B429, olhos amber, bone preto com M dourado). Avatar do chatbot e mascote da marca. **Tem 4 outfits oficiais, todos completos com 3 tipos de asset cada (avatar 1:1 + bible 5-view + sprite 4-frame).**
-
-### Assets em `img/bot/`
-- **Varsity** (principal, integrado no chatbot): max-avatar.jpeg, max-bible.jpeg, max-sprite.jpeg — letterman jacket preto+dourado, Jordan 1 Chicago, gold headphones, SEM RELÓGIO (skin varsity nao usa Rolex — confirmado 2026-04-17 via ref full-body do usuario)
-- **Hoodie** (streetwear): max-avatar-hoodie, max-bible-hoodie, max-sprite-hoodie — moletom preto com M, jogger, Jordan 1 Chicago
-- **Blazer** (executive): max-avatar-blazer, max-bible-blazer, max-sprite-blazer — blazer+camisa branca, Oxford, Rolex, SEM headphones
-- **Golf** (country-club): max-avatar-golf, max-bible-golf, max-sprite-golf — polo branca (sem bolso) com M bordado, chino bege sem cinto, Air Jordan 1 LOW Golf Travis Scott Neutral Olive
-- **Extras:** max-athlete-drip.jpeg (corpo inteiro varsity), max-nfl-mascot.jpeg (cabecudao plush merch futuro)
-
-### Regras criticas para gerar Max
-- **NUNCA gerar sem usar template salvo em `memory/reference_max_prompts.md`**
-- **PADRAO VALIDADO NAO SE TOCA:** max-avatar.jpeg, max-bible.jpeg e max-sprite.jpeg sao os refs de estilo imutaveis. Qualquer variacao nova usa eles como ref + replica enquadramento/fundo/proporcoes 1:1 — so muda outfit e face
-- **OUTFIT sempre cobre da cabeca aos pes** (calca + sapato explicitos, senao o modelo preenche com "fur natural" = Max pantless)
-- **Bibles (5-view):** sempre incluir "entire body rotated together, NO head/body twisting" — senao sai 3/4 com corpo frontal e cabeca torcida
-- **Sprites (4-frame):** usar max-sprite.jpeg como ref-sprite-style + "CHEST-UP, DARK CHARCOAL GRADIENT" — senao sai tight headshot fundo solido
-- **Travis Scott Jordan 1 Low Golf:** swoosh externo (lateral) REVERSO PRETO, swoosh interno (medial) REGULAR BRANCO/CREAM (NAO preto), LOW TOP (nao high), off-white leather + olive suede
-- **Blazer:** maos NUNCA no bolso do blazer — se for ter mao no bolso, e no bolso da CALCA. Blazer executivo sem headphones/acessorios
-- **Polo golf:** sem bolso no peito, M bordado direto no tecido
-
-### Template de prompt (resumo, completo em `memory/reference_max_prompts.md`)
-```
-Character model sheet of the fox mascot, EXACT SAME STYLE as ref-bible-style.jpeg
-(dark charcoal gradient background, chunky collectible toy figure proportions,
-5 views numbered). Same face/fur/cap as ref-{outfit}.jpeg — golden-orange fur
-(#F0B429), amber eyes, black cap with gold M. OUTFIT: {outfit completo cabeca aos pes}.
-Each view: entire body rotated together, NO head/body twisting. Pixar 3D render.
-```
-Flags: `-r ref-bible-style.jpeg -r ref-{outfit}.jpeg -s 2K -a 16:9`
-
-### Integracao chatbot (em `index.html`)
-- `.bot-fab` (linha ~1943) usa max-avatar.jpeg com object-position:center 20%, animacao max-ring pulse + max-float
-- `.bot-av` (linha ~1974) — **PENDENTE** atualizar src (ainda aponta pra fox-mascot-mc-cap.png deletado)
-- Sprite animation no `.bot-win.typing .bot-av` — **PENDENTE** implementar `background-image: url(max-sprite.jpeg)` + `background-size: 400% 100%` + `steps(4)`
-
-### Bot backend (`api/bot.js`)
-- Gemini 2.5 Flash (2.0 deprecated pra novos users)
-- Env var: GEMINI_API_KEY
-- Tier pago Google Cloud ativo (R$49 acumulados de ~20 imagens geradas)
-
-### Proximos passos do Max (Fase 2+ do plano brand)
-Ver `memory/project_max_expansao_brand.md`. Resumo:
-1. Fechar integracao chatbot (HTML/CSS/commit)
-2. Gerar poses contextuais a partir dos bibles: Max com laptop (hero Analise), trofeu (Fidelidade), lupa (Comparador), grafico (guias), etc
-3. Rollout: home hero → 404 → emails → OG images → banners features
-
-## Event Alert 3-estrelas Telegram (2026-04-15)
-
-Sistema que avisa no Telegram sobre eventos economicos de alto impacto (3 estrelas) em **dois momentos**: 5 min antes do release, e apos o release com o dado real + contexto de mercado.
-
-### Arquitetura
-- **Script:** `scripts/send-event-alert.js` — busca calendario via edge function `economic-calendar`, filtra `importance=3` do dia, renderiza `templates/criativo_evento.html` via Playwright, envia ao Telegram com botao inline `📅 Open Calendar` → marketscoupons.com/calendar
-- **Workflow:** `.github/workflows/event-alert.yml` — cron `*/5 * * * 1-5` (a cada 5 min em dias uteis UTC), permissions `contents: write`, instala playwright chromium, roda o script, commita dedup state
-- **Template:** `templates/criativo_evento.html` (1080x1350) — layout premium com alert pill, currency badge (.cny/.usd/.eur/.jpy/.gbp), event-name 82px, data-grid 3 colunas (Actual/Forecast/Previous), result-badge (.miss/.beat/.inline), market-context
-- **Dedup state:** `.firecrawl/events-sent.json` — map `{ eventId: { preMsgId, released } }` (migra auto do formato antigo array)
-
-### Fluxo de 2 mensagens
-1. **Pass 1 (pre-alert):** eventos 3★ no dia com horario ET em `[+5, +11]` min do agora, nao pre-alertados ainda. Render em modo **upcoming**: alert pill fica amarelo "UPCOMING IN 5 MIN", Actual = "Pending", badge amarelo "⏱ In 5 Min", market-context = "Prepare for volatility...". Envia via `sendPhoto` e salva `message_id`.
-2. **Pass 2 (release):** eventos ja pre-alertados que agora tem `actual` populado. Calcula `result` (beat/miss/inline) comparando actual vs forecast (tolerancia 1%). Gera contexto de mercado via `marketContext()` (regra-based por currency + result + tipo de evento: CPI→bonds, NFP→equities+USD, loans→Asian markets, etc). **Deleta** mensagem do pre-alert via `deleteMessage` API, envia nova com dados reais. Marca `released: true`.
-
-### Helpers-chave no script
-- `parseTimeET("09:00 AM")` → minutos-do-dia
-- `nowInET()` via `Intl.DateTimeFormat` timeZone America/New_York
-- `classifyResult(actual, forecast)` → 'beat' | 'miss' | 'inline'
-- `marketContext(event, result)` → texto HTML com `<span>` destacando pressure/strength
-- `renderEvent(e, mode)` com modes 'upcoming' e 'released' — mesmo template, overrides via page.evaluate
-
-### Selectors do template novo (NAO confundir com versao antiga)
-`.alert-pill .adot .albl` (header), `.event-name`, `.event-sub`, `.time-val`, `.ev-date`, `.cur-badge`, 3x `.data-card > .data-lbl + .data-val`, `.result-badge` (dentro do Actual card), `.mc-lbl`, `.mc-txt` (market context).
-
-### Regras criticas
-- **SO eventos US 3-star** — filtra por `currency === 'USD'` ou country match `/united states|^us$|usa/i`. Eventos CNY/EUR/JPY/GBP sao IGNORADOS. Nao existe "alerta de evento chines" nesse sistema.
-- **Cutoff 18:30 ET** — eventos agendados depois das 18:30 ET sao ignorados (`CUTOFF_ET = 18*60+30`). Mercado ja fechou, nao tem pq acordar ninguem.
-- **NUNCA** usar Satori pra esse template — complexo demais, usar Playwright direto
-- `sendPhoto` por multipart (Blob), nao por URL
-- `parse_mode` nao usado nas captions (texto simples)
-- Dedup state mantem historico capado em 500 entradas
-- Validacao de `actual`: ignora '-', string vazia, null
-- Cron ja ativo dias uteis UTC — nao precisa trigger manual
-
-## Firm Monitor Semanal (2026-04-15)
-
-Sistema automatizado pra detectar mudancas nas prop firms (promocoes, precos, regras) toda segunda-feira.
-
-### Arquitetura
-- **Script:** `scripts/monitor-firms.js` — le lista hardcoded de 11 firmas, scrapeia homepage de cada uma via `firecrawl scrape --only-main-content`, salva markdown em `.firecrawl/firms/<id>-YYYY-MM-DD.md`, faz diff linha-a-linha contra ultimo snapshot commitado, dispara alerta Telegram se houver mudancas
-- **Workflow:** `.github/workflows/firm-monitor.yml` — cron `0 9 * * 1` (seg 09:00 UTC), instala firecrawl-cli, autentica via `FIRECRAWL_API_KEY` secret, roda o script, commita `.firecrawl/firms/` alterado
-- **Telegram:** usa secrets `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` ja existentes
-- **Custo:** 11 credits/semana = ~44/mes (caber na free tier 500/mes com folga)
-
-### Secrets necessarios no GitHub (Settings → Secrets → Actions)
-- `FIRECRAWL_API_KEY` = ver GitHub Secrets do repo (gerado 2026-04-15, NUNCA commitar em código)
-- `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` (reusar os do bot existente)
-
-### URLs monitoradas (11 firmas, homepage publica NAO link afiliado)
-apex, bulenox, ftmo, tpt (takeprofittrader), fn (fundednext), e2t (earn2trade), the5ers, fundingpips, brightfunded, e8, cti (citytradersimperium). Lista em `scripts/monitor-firms.js` FIRMS array.
-
-### Como funciona o diff
-- Compara linhas unicas do markdown novo vs ultimo snapshot commitado daquela firma
-- Report: `<firm_id>: +X/-Y` (linhas adicionadas/removidas)
-- Baseline (primeiro snapshot) nao dispara alerta, so salva
-
-### Skills de scraping instaladas 2026-04-15
-- **firecrawl-cli** (`npm i -g firecrawl-cli`) — bypass Cloudflare via stealth/residential proxy. 500 credits/mes free, 1 credit/scrape, 5 credits/query. Auth: `firecrawl login --api-key fc-...`
-- **browser-use** — NAO usar pra prop firms, Cloudflare bloqueia headless. Usar so pra sites simples
-- Skills firecrawl globais em `~/.claude/skills/`: firecrawl-scrape, firecrawl-crawl, firecrawl-map, firecrawl-search, firecrawl-interact, firecrawl-agent, firecrawl-download
-
-### Validacao feita
-Apex Trader Funding scrapeado com sucesso em 2026-04-15 → `.firecrawl/apex-home.md` (942 linhas). Extraiu: 90% desconto, 100% profit split, $1500 target 25K, Rithmic/Tradovate/NinjaTrader/WealthCharts, Trustpilot 4.4/19K, activation $89, payout 5 dias, consistency 50%.
-
-### Proximos passos
-1. User precisa adicionar `FIRECRAWL_API_KEY` como secret no repo GitHub
-2. Primeira run manual via `workflow_dispatch` pra criar baseline
-3. Monday 09:00 UTC comeca a rodar automatico e notificar Telegram se algo mudar
-
-## Visao Geral
-
-Site de cupons e descontos para **prop firms** de trading. Compara firmas, oferece cupons exclusivos, programa de fidelidade, blog, guias, quiz, calculadoras e mais. Deploy no **Vercel** como site estatico (sem build step).
-
-- **URL producao:** https://www.marketscoupons.com
-- **Dominio Vercel:** https://marketscoupons.vercel.app
-- **Idioma padrao do site:** Ingles (EN) — todo conteudo novo (paginas, textos, meta tags) deve ser criado em ingles primeiro. Traducoes via I18N (data-i18n + objeto I18N)
-- **Excecao:** `admin.html` (dashboard admin) — tudo em portugues, sem I18N
-- **Respostas ao usuario:** Sempre em portugues
-
----
+- **Prod:** https://www.marketscoupons.com
+- **Idioma do site:** EN (todo conteúdo novo em inglês primeiro, traduzido via I18N)
+- **Admin:** PT-BR, sem I18N
+- **Respostas ao user:** PT-BR sempre
 
 ## Arquitetura
 
-### Arquivos principais
-- `index.html` (~9.450 linhas) — Frontend publico completo (HTML + CSS + JS inline)
-- `admin.html` (~3.380 linhas) — Painel administrativo (HTML + CSS + JS inline)
-- `vercel.json` — Rotas e headers (rota `/admin` -> `admin.html`, no-cache em HTMLs)
-- `translate.js` — Script Node.js para traduzir I18N via DeepL API
-- `fix-translations.js` — Script para corrigir problemas de traducao (entidades HTML, termos tecnicos)
-- `.gitignore` — Ignora `.deepl-key` e `node_modules/`
-- `img/` — Imagens (subpastas `Firms/` e `Plataformas/`)
+| Arquivo | O que é |
+|---|---|
+| `index.html` (~9.5k linhas) | Frontend público (HTML+CSS+JS inline) |
+| `admin.html` (~3.4k linhas) | Painel admin |
+| `app.js` | Lógica frontend, FIRMS array, helpers, tracking |
+| `vercel.json` | Rotas, headers no-cache, CSP |
+| `api/*.js` | 12 Serverless Functions (limite Hobby) |
+| `<lang>/guides/*.html` | 5 guias edu × 7 idiomas |
+| `docs/guias-piloto/*.md` | Guias por firma (11 firmas) |
 
-### Stack
-- **100% vanilla** — HTML/CSS/JS puro, sem framework, sem bundler, sem package.json
-- **Supabase** (v2 via CDN) — Auth, Database (PostgreSQL), Storage
-- **Vercel** — Hosting estatico
-- **DeepL API** — Traducoes automaticas (script offline)
-
----
+**Stack:** vanilla HTML/CSS/JS, Supabase v2 CDN, Vercel hosting, DeepL API (traduções offline). Sem framework, sem bundler.
 
 ## Supabase
 
-### Configuracao
-- **URL:** `https://qfwhduvutfumsaxnuofa.supabase.co`
-- **Anon key:** Hardcoded nos dois HTMLs (mesmo key, protegido por RLS)
-- **Auth storage keys SEPARADOS** (critico para evitar conflito de sessao):
-  - `index.html` usa `storageKey: 'mc-user-auth'`
-  - `admin.html` usa `storageKey: 'mc-admin-auth'`
+- URL: `https://qfwhduvutfumsaxnuofa.supabase.co`
+- Anon key hardcoded (RLS protege)
+- **Auth storageKey separados:** `mc-user-auth` (index) vs `mc-admin-auth` (admin)
+- Tabelas críticas: `cms_firms`, `cms_guides`, `blog_posts`, `email_subscribers`, `email_logs`, `loyalty_members`, `loyalty_proofs`, `affiliate_daily_stats`, `events`, `i18n`, `firm_translations`, `cms_texts`, `site_settings`
+- **Sempre usar `.maybeSingle()`** (não `.single()` — retorna 406 quando vazio)
 
-### Tabelas
-| Tabela | index.html | admin.html | Descricao |
-|---|---|---|---|
-| `events` | X | X | Eventos do calendario |
-| `cms_guides` | X | X | Guias educacionais |
-| `cms_firms` | X | X | Dados das firmas |
-| `blog_posts` | | X | Posts do blog |
-| `leads` | X | X | Leads capturados |
-| `loyalty_members` | X | X | Membros do programa fidelidade |
-| `loyalty_proofs` | X | X | Comprovantes de compra |
-| `profiles` | X | | Perfis de usuario |
-| `site_settings` | X | X | Configuracoes do site |
-| `firm_favorite_counts` | X | | Contagem de favoritos |
-| `favorites` | X | | Favoritos dos usuarios |
-| `ad_spend` | | X | Gastos com anuncios |
+## Regras canônicas
 
-### Storage
-- **Bucket:** `loyalty-proofs` — Comprovantes de compra enviados pelos usuarios
+### Compliance legal (CRÍTICO)
+NUNCA usar: "sinais", "entrada", "stop loss", "take profit", "lucro garantido", "trader profissional", "operação ao vivo", "copy trade", "we trade for you". Em copy de Meta Ads também banido: "fique rico", "renda garantida", "you'll profit". Live Room = "conteúdo exclusivo VIP", nunca "sinais".
 
-### Queries importantes
-- Usar `.maybeSingle()` em vez de `.single()` — `.single()` retorna erro 406 quando nenhuma linha e encontrada
-- Verificar `data !== null && data !== undefined` em vez de `data?.length` para resultados de queries
+### Preços de firma — fonte única
+`cms_firms.prices` no Supabase é única fonte de verdade. `FIRM_ABOUT`/`CHECKOUT_FIRMS` em app.js = fallback puro. Helper canônico: `getPlanPrice(firmId, typeName, sizeStr)` em app.js:456. Nunca re-introduzir sync destrutivo. Cache localStorage `mc_firms_cache_v3`.
 
----
+### Welcome email — real-time (RESOLVIDO 2026-04-28)
+Trigger SQL `welcome_on_confirm` em `auth.users` dispara `pg_net.http_post` pra `/api/welcome-email` quando email_confirmed_at sai de NULL. Header `X-Webhook-Secret` (env Vercel `WELCOME_HOOK_SECRET`). Idempotente via tag `received-welcome` em email_subscribers. Latência ~2s. Cron horário backup em `.github/workflows/welcome-catchup.yml`.
 
-## I18N (Internacionalizacao)
+### Email cron auto-dispatch
+GitHub Actions cron diário 14h UTC dispara `/api/cron-bulk-send` (campaign=site-invite, batch=400). Auth `Bearer ${CRON_SECRET}`. Filtra por tag `received-{campaign}`. Substitui auto-dispatcher do admin (browser-based).
 
-### Estrutura
-- Objeto `const I18N = {...}` dentro do `<script>` do `index.html`
-- **7 idiomas:** pt, en, es, it, fr, de, ar
-- Funcao `t('chave')` retorna a string traduzida no idioma atual
+### Blog vs Guias — não duplicar
+Antes de criar/manter post, checar se tema já está em `<lang>/guides/`. 5 guias canônicos:
+- `o-que-e-uma-prop-firm` · `como-passar-no-desafio` · `gerenciamento-drawdown` · `position-sizing` · `como-sacar-lucros`
 
-### Traducao
-1. Adicionar/editar strings em `pt` no objeto I18N
-2. Rodar `node translate.js` (requer chave DeepL em `.deepl-key` ou `DEEPL_KEY` env var)
-3. Rodar `node fix-translations.js` para corrigir termos tecnicos que nao devem ser traduzidos
+Padrão long-form (ref: Wyckoff PT 28k chars): body 15k+ chars, hero `<img>` embedded ou `cover_url`, read_time honesto (~1min/1.5k chars). Stubs de 3k com read_time inflado = rejeitados.
 
-### Termos que NAO devem ser traduzidos
-- "Prop Firm(s)" — manter em ingles em todos os idiomas
-- "Profit Split" — termo tecnico de trading
-- "Drawdown" — termo tecnico
-- "Lifetime" — contexto de desconto
+### Tradução guias (Gemini 2.5 Flash)
+`scripts/translate-guides-edu.mjs` usa `maxOutputTokens: 65536` + safety `cleaned.length < src.length * 0.85`. NUNCA baixar — HTMLs ~45kb truncam silenciosamente com 32k tokens. Não commitar enquanto job background roda.
 
----
+### Finance + extensão
+`supabase/functions/finance-sync/index.ts` DEVE filtrar `r.granularity !== 'month'` antes do upsert em `affiliate_daily_stats`. CSV de Apex/Bulenox tem linha "monthly summary" que colide com daily do dia 01 → infla dashboard 2x.
 
-## Layout de Cupons (Design Pattern)
+### Firma — accent semântico em ilustração
+Imagens de guia de firma usam **cor accent da firma**, NUNCA dourado default:
+| Firma | Accent |
+|---|---|
+| Apex | #F97316 (orange) |
+| TradeDay | #22D3EE (cyan) |
+| FTMO | #1976D2 (blue) |
 
-### Estrutura correta (todas as variacoes)
-```
-+------------------------------------------+
-| Cupom exclusivo                          |  <- label, alinhado a esquerda
-| MARKET89                      [Copiar]   |  <- codigo esquerda, botao direita
-+------------------------------------------+     botao centralizado verticalmente
-```
+**Workflow firma:** reusar `img/<firm>-bg.webp` como hero, logos reais em `img/Plataformas/`, SVG editorial pra diagramas, NUNCA logo fake via IA.
 
-### Implementacao HTML
-O container e um flex com `space-between`. Dentro dele, um div `.offer-coupon-left` agrupa label + codigo em coluna a esquerda. O botao fica como filho direto do container, centralizado verticalmente.
+### Guias edu — accent por guia
+| Guia | Accent | Semântica |
+|---|---|---|
+| G1 Prop Firm | #F97316 (orange/gold) | premium |
+| G2 Como Passar | #10B981 (emerald) | ganho |
+| G3 Drawdown | #EF4444 (red) | risco |
+| G4 Position Sizing | #3B82F6 (blue) | precisão |
+| G5 Sacar Lucros | #F0B429+#10B981 | conquista |
 
-```html
-<div class="[container-class]">
-  <div class="offer-coupon-left">
-    <div class="[label-class]">Cupom exclusivo</div>
-    <span class="[code-class]">MARKET89</span>
-  </div>
-  <button class="[copy-class]">Copiar</button>
-</div>
-```
+### Auth (admin/user separados)
+Logout user usa `mc-user-auth`, logout admin usa `mc-admin-auth`. Logar/deslogar do admin NÃO afeta sessão user. Listener `onAuthStateChange` com guard `if (_loggingOut) return`.
 
-### CSS do container
-```css
-display: flex !important;
-align-items: center !important;      /* botao centralizado verticalmente */
-justify-content: space-between !important;  /* codigo esquerda, botao direita */
-```
-
-### CSS da coluna esquerda
-```css
-.offer-coupon-left { display: flex; flex-direction: column; }
-```
-
-### Classes por contexto
-| Contexto | Container | Label | Code | Button |
-|---|---|---|---|---|
-| Home (ofertas) | `.oc-coupon` | `.offer-coupon-label` | `.oc-code` | `.oc-copy` |
-| Ofertas (cards) | `.offer-coupon-box` | `.offer-coupon-label` | `.offer-coupon-code` | `.offer-copy-btn` |
-| Firmas (grid) | `.fr-coupon-box` | `.fr-coupon-box-label` | `.fr-coupon-box-code` | `.fr-coupon-box-copy` |
-| Drawer (detalhe) | `.drw-coupon-bar` | `.drw-coupon-label` | `.drw-coupon-code` | `.drw-coupon-copy` |
-| Drawer (checkout) | `.drw-coupon-bar` | `.drw-coupon-label` | `.drw-coupon-code` | `.drw-coupon-copy` |
-| Generico | `.cpn-blk` | `.cpn-lbl` | `.cpn-code` | — |
-
-### Regras importantes
-- **NUNCA** usar inline styles nos templates JS para coupon rows — todo estilo deve vir das classes CSS
-- O label "Cupom exclusivo" fica DENTRO de `.offer-coupon-left` (coluna esquerda), NAO como item separado do flex
-- O botao "Copiar" e filho direto do container, NAO dentro de um sub-div
-
----
-
-## Auth (Autenticacao)
-
-### Fluxo do usuario (index.html)
-1. Botoes "Entrar"/"Cadastrar-se" iniciam **escondidos** (`display:none`)
-2. Check sincrono de `localStorage.getItem('mc-user-auth')` decide se mostra botoes ou menu do usuario
-3. `checkAuthSession()` faz verificacao assincrona via `db.auth.getSession()`
-4. `updateAuthUI(bool)` alterna entre estado logado/deslogado
-5. `onAuthStateChange` listener com guard `if (_loggingOut) return;` para evitar loop
-
-### Logout (doLogout)
-- `db.auth.signOut()`
-- Remove `mc-user-auth` do localStorage
-- Limpa todas as chaves `sb-*` do localStorage e sessionStorage
-- `window.location.replace()` para recarregar sem historico
-
-### Separacao admin/usuario
-- Admin usa `storageKey: 'mc-admin-auth'` — sessao completamente separada
-- Logar/deslogar do admin NAO afeta a sessao do usuario no site principal
-
----
-
-## Calendario Economico
-
-- Usa widget embed do TradingView: `embed-widget/events/` (NAO `embed-widget/economic-calendar/` que retorna 404)
-- A traducao e automatica pelo parametro `locale` no URL do widget
-- Aba no nav chama "Calendario Economico" (nao apenas "Calendario") em todos os idiomas
-
----
-
-## Tracking/Analytics
-- Google Analytics 4: `G-CZ3L00NY77`
-- Facebook Pixel: `813048241061812`
-- Google Tag Manager: `GTM-WJGTVX8G` (DESATIVADO em 2026-04-12 — container existe mas nao e carregado pelo site)
-
-### Arquitetura — Code-primary (NAO mexer sem ler tudo)
-**Historico:** Em 2026-04-12 o GTM foi removido do `loadTracking()` porque estava sobrescrevendo `window.gtag` com alias `dataLayer.push` (async) depois dele carregar, quebrando todos os `gtag('event',...)` custom — apenas `page_view` chegava no GA4 (via gtag('config')). A limpeza de 10 tags duplicadas no GTM tambem deixou o codigo como fonte unica confiavel. Entao migramos pra code-primary: **direct gtag.js + direct fbq**, sem GTM.
-
-**Arquivos:**
-- `index.html` → `loadTracking()` carrega gtag.js direto + fbq direto. So roda apos `mc-cookies-consent === 'accepted'`.
-- `app.js` → funcao `track(event, params)` e a fonte unica.
-
-**O que `track()` faz (em ordem):**
-1. **Supabase** — insere linha em `events` (first-party, sempre, independente de consent)
-2. **localStorage cache** — fallback offline + compatibilidade admin
-3. **Retry queue** — se Supabase falhar, enfileira em `mc_track_queue` pra re-enviar via fetch keepalive em pagehide/pageshow
-4. **GTM dataLayer push** — mantido por compatibilidade futura (GTM nao carrega mas dataLayer existe)
-5. **GA4 direct** — `gtag('event', event, {event_id, firm_id, value, currency, coupon, transaction_id, ...params})` — dispara pra TODOS os eventos com event_id unico
-6. **FB Pixel direct** — `fbq('trackCustom', event, {...}, {eventID: eid})` APENAS pra eventos nao-standard. Eventos standard (PageView, ViewContent, InitiateCheckout, Lead, Purchase, CopyCode) sao disparados inline com items array completo.
-7. **Facebook CAPI** — `_sendCAPI()` envia server-side pra bypass ad blockers, com mesmo `event_id` pra dedupe com o pixel browser
-
-**Todos os eventos sao disparados com `event_id` unico (UUID).** O mesmo `event_id` vai pro gtag, fbq browser, e FB CAPI — permite dedupe perfeito.
-
-**Enhanced Conversions (GA4) + Advanced Matching (FB):** `setTrackingUser(user)` em `app.js:208-235` hash SHA-256 de email/phone/name e envia via `gtag('set','user_data',...)` + `fbq('init',...,{em,ph,fn,external_id})`. Chamado em `loadUserSession()` quando o usuario loga.
-
-**User properties GA4:** `gtag('set','user_properties',{user_id,plan,loyalty_tier,country})` + `gtag('config',GA_ID,{user_id})`. Permite segmentacao no GA4.
-
-**Geo anon properties:** `setTrackingGeo(geo)` em `fetchGeo()` adiciona country/region/timezone pra users nao logados.
-
-### O que NUNCA fazer
-- Nunca re-habilitar GTM no `loadTracking()` sem refazer a logica do gtag — GTM sobrescreve `window.gtag` e quebra tudo.
-- Nunca chamar `gtag()` ou `fbq()` DIRETAMENTE sem tambem chamar `track()` com os mesmos params — perde a fonte Supabase e o event_id consistente.
-- Nunca remover o event_id dos params — quebra dedupe CAPI e sobe CPL no FB.
-
-### Debug — Spy de tracking (`?spy=1`)
-URL: `https://www.marketscoupons.com/?spy=1` — ativa painel flutuante no topo direito que intercepta fetch/XHR/sendBeacon/Image.src e conta hits GA4 + FB Pixel por acao (page/firm/copy/checkout). **CUIDADO:** o spy NAO consegue ler bodies do tipo Blob (GA4 batch events usam Blob) — se aparecer "null NO_ID" nos hits GA4, e um bulk beacon e os eventos reais estao chegando normalmente. Validar com GA4 Realtime.
-
-### Validacao GA4
-- Realtime: https://analytics.google.com → Property G-CZ3L00NY77 → Relatorios → Tempo real
-- Debug View: Administrador → DebugView (mostra cada evento com params)
-- Eventos report: Ver o engajamento dos usuarios → Eventos (historico 28 dias)
-
-### Funil de Firmas (4 etapas)
-| Etapa | Quando | dataLayer event | FB Pixel | GA4 gtag |
-|---|---|---|---|---|
-| 1. PageView | Abre overlay da firma | `firm_detail_open` | `ViewContent` | `view_item` |
-| 2. CopyCoupon | Copia cupom | `coupon_copy` | `CopyCode` (custom) | `copy_coupon` (custom) |
-| 3. InitiateCheckout | Clica no botao de checkout | `checkout_click` | `InitiateCheckout` | `begin_checkout` |
-| 4. Lead | Redirect (window.open) | (mesmo que 3) | `Lead` | `generate_lead` |
-
-### Funil Pro Subscription (2 etapas)
-| Etapa | Quando | FB Pixel | GA4 gtag |
-|---|---|---|---|
-| InitiateCheckout | Clica em assinar Pro | `InitiateCheckout` | `begin_checkout` |
-| Purchase | Sucesso do Stripe | `Purchase` | `purchase` |
-
-### Funcoes de checkout que disparam tracking (firmas)
-- `fdGo(id)` — Desktop fullscreen overlay
-- `fdGoCheckout(fId)` — Desktop checkout button
-- `drwGoCheckout(firmId)` — Drawer mobile checkout
-- `achGoCheckout(fId,size)` — Accordion checkout
-- Inline onclick no drawer direto (firmas sem checkout integrado)
-
----
+### Tracking — code-primary (NÃO mexer sem ler tudo)
+GA4 (`G-CZ3L00NY77`) + FB Pixel (`813048241061812`) carregados direto no `loadTracking()`. GTM **DESATIVADO** desde 2026-04-12 (sobrescrevia `window.gtag`). `track(event, params)` em app.js = fonte única → Supabase `events` + dataLayer + `gtag()` direto + `fbq()` direto + Facebook CAPI server-side. Todos com `event_id` UUID pra dedupe. NUNCA chamar gtag/fbq direto sem `track()`. Funil 4 etapas (firmas): firm_detail_open → coupon_copy → checkout_click → Lead. Spy: `?spy=1`.
 
 ## Deploy
 
-### Vercel
-- **ATENCAO 2026-04-19:** Git push sozinho NAO deploya automaticamente. Sempre rodar CLI manual apos o push (auto-deploy via GitHub integration quebrado/inativo nesse repo)
-- Sem build step (arquivos estaticos diretos)
-- Headers no-cache em todos os `.html` e `/` para evitar cache de CDN
-- Rota `/admin` reescrita para `/admin.html`
-
-### Processo (obrigatorio em todo deploy)
-1. Fazer alteracoes
-2. `git add [arquivos]` + `git commit`
-3. `git push origin main`
-4. **`CI=1 npx vercel --prod --yes --token=<VERCEL_TOKEN>`** (sem isso nao vai pro ar). Token salvo em memoria `feedback_git_push_nao_deploya.md`
-5. Aguardar ~20-60s apos "Deployment ... ready"
-6. Validar com curl `?v=$(date +%s)` buscando marcador especifico ANTES de falar "no ar" pro usuario
-7. Testar com **Ctrl+F5** no navegador
-
-Documentado em detalhe em `memory/feedback_git_push_nao_deploya.md`.
-
----
-
-## CSS - Tema e Variaveis
-
-- **Tema:** Dark mode (fundo escuro, acentos dourados)
-- **Font:** Inter (variavel `--f`)
-- **Cores principais:** `--gold` (dourado), `--card` (fundo card), `--gbg` (fundo cinza), `--gbr` (borda cinza)
-- **Textos:** `--t1` (primario), `--t2` (secundario), `--t3` (terciario)
-- **Usar `!important`** em propriedades de layout de cupons para garantir que inline styles nao sobrescrevam
-
----
-
-## Padrao para Adicionar Prop Firms
-
-### REGRA OBRIGATORIA
-**NUNCA** subir uma firma com dados incompletos ou inventados. Antes de adicionar qualquer firma:
-1. Acessar o site oficial da firma e coletar TODOS os dados abaixo
-2. Acessar o Trustpilot da firma para nota e numero de reviews
-3. Verificar promocoes ativas no site
-4. Conferir que a imagem/logo ja existe em `img/Firms/`
-5. Inserir na tabela `cms_firms` do Supabase E no array hardcoded `FIRMS` do `index.html`
-
-### Onde inserir
-1. **Supabase:** `INSERT INTO cms_firms` (fonte primaria — o site carrega daqui)
-2. **index.html:** Array `FIRMS` (fallback caso Supabase falhe)
-
-### Campos obrigatorios (Supabase `cms_firms`)
-
-Referencia: Apex Trader Funding (firma mais completa)
-
+Git push **NÃO deploya sozinho** (auto-deploy quebrado nesse repo). Sempre rodar:
 ```
-id                  TEXT PK    — slug unico (ex: 'apex', 'bulenox')
-name                TEXT       — nome completo (ex: 'Apex Trader Funding')
-type                TEXT       — 'Futuros' ou 'Forex'
-color               TEXT       — cor hex principal (ex: '#F97316')
-bg                  TEXT       — cor de fundo com opacidade (ex: 'rgba(249,115,22,0.12)')
-icon                TEXT       — letra para fallback (ex: 'A')
-icon_url            TEXT       — caminho da logo (ex: 'img/Firms/apex.png')
-rating              NUMERIC    — nota Trustpilot (ex: 4.4)
-reviews             INTEGER    — total de reviews Trustpilot (ex: 17686)
-discount            INTEGER    — percentual de desconto (ex: 90). Se nao tem desconto: 0
-discount_type       TEXT       — tipo do desconto (ex: 'lifetime', '1 desafio', 'gratis', 'easter')
-coupon              TEXT       — codigo do cupom (ex: 'MARKET'). NULL se nao tem
-link                TEXT       — link de afiliado completo
-tags                TEXT[]     — array de tags (ex: ARRAY['Futuros','Lifetime','Trailing DD'])
-platforms           TEXT[]     — plataformas disponiveis (ex: ARRAY['Rithmic','Tradovate','NinjaTrader'])
-min_days            INTEGER    — dias minimos de trading (ex: 1)
-eval_days           INTEGER    — dias de avaliacao (ex: 30). NULL se ilimitado
-drawdown            TEXT       — tipo de drawdown (ex: 'Trailing/EOD', 'Static', 'Fixed')
-split               TEXT       — profit split (ex: '80%', '90%', '100%')
-dd_pct              TEXT       — percentual de drawdown (ex: '-5% trail', '-10% static')
-target              TEXT       — meta de lucro (ex: '8%', '8%/5%', '10% / 10%+5%')
-scaling             TEXT       — plano de scaling (ex: 'Sim', 'Ate $4M', 'Ate $2M')
-prices              JSONB      — array de planos com precos (ver formato abaixo)
-perks               TEXT[]     — vantagens (ex: ARRAY['Sem limite diario','Payout 5 dias'])
-proibido            TEXT[]     — regras proibidas (ex: ARRAY['Copy entre contas','Latency arbitrage'])
-description         TEXT       — descricao curta da firma em PT-BR
-trustpilot_url      TEXT       — URL da pagina Trustpilot
-trustpilot_score    NUMERIC    — nota Trustpilot (igual ao rating)
-trustpilot_reviews  INTEGER    — total reviews (igual ao reviews)
-sort_order          INTEGER    — ordem de exibicao (1 = primeiro)
-active              BOOLEAN    — true para exibir no site
-badge               JSONB      — selo destaque: {"label":"Texto","color":"#hex","bg":"rgba(...)"}
-news_trading        BOOLEAN    — permite trading em noticias?
-day1_payout         BOOLEAN    — permite saque no dia 1?
-short_name          TEXT       — nome curto para checkout (ex: 'Apex')
+CI=1 npx vercel --prod --yes --token=$VERCEL_TOKEN
 ```
+Validar com curl `?v=$(date +%s)` antes de falar "no ar". `VERCEL_TOKEN` no `.bashrc` (expira ~2026-05-21).
 
-### Campos opcionais (checkout — somente firmas com checkout integrado)
-```
-checkout_types      TEXT[]     — tipos de conta no checkout (ex: ARRAY['Intraday Trail','EOD Trail'])
-checkout_platforms  TEXT[]     — plataformas no checkout
-checkout_plans      JSONB      — planos detalhados do checkout (ver formato abaixo)
-checkout_url_template TEXT     — template de URL com variaveis ${size}, ${plat}, ${type}
-checkout_includes   TEXT[]     — itens inclusos no plano
-price_types         TEXT[]     — tipos de preco (ex: ARRAY['Intraday','EOD'])
-```
+**Limite Vercel Hobby = 12 Serverless Functions.** Adicionar nova exige consolidar com existente.
 
-### Formato do campo `prices` (JSONB)
+## CSS / Design
 
-Cada item representa um plano/conta disponivel:
-```json
-[
-  {"a": "25K",       "n": "$19.90", "o": "$199"},
-  {"a": "50K",       "n": "$24.90", "o": "$249"},
-  {"a": "100K",      "n": "$39.90", "o": "$399"},
-  {"a": "150K",      "n": "$59.90", "o": "$599"}
-]
-```
-- `a` = tamanho da conta (account) — pode incluir tipo: "$5K Hyper Growth", "$10K 2-Step"
-- `n` = preco novo (com desconto). Se gratis: "Gratis"
-- `o` = preco original (sem desconto). Se nao tem desconto: "—"
-- `n2`/`o2` = precos alternativos (opcional, quando firma tem 2 tipos como Intraday/EOD)
+Tema dark, font Inter, paleta gold (`--gold` `#F0B429`). **Mínimos de contraste:** card bg `rgba(255,255,255,.10)`, border `.14`, texto `var(--t1)`/`var(--t2)` (nunca `t3` em conteúdo). Backdrop-filter PROIBIDO em cards (só nav/overlay/footer com bg opaco). Sobre hero image: usar bg `rgba(13,20,28,.78)` semi-opaco.
 
-### Formato do campo `badge` (JSONB)
-```json
-{"label": "Maior Desconto", "color": "#F97316", "bg": "rgba(249,115,22,0.15)"}
-```
+**Cupons:** label "Cupom exclusivo" + código à esquerda, botão "Copiar" à direita centralizado (flex space-between, label/code em `.offer-coupon-left` coluna). Classes por contexto: `.oc-coupon` (home), `.offer-coupon-box` (cards), `.fr-coupon-box` (grid), `.drw-coupon-bar` (drawer/checkout). NUNCA inline styles em template JS.
 
-### Formato hardcoded no `index.html` (array FIRMS)
+**Padrão fd-overlay (firma):** botões grid `--cols`, altura 38px, `white-space:nowrap`, mesma largura. Stats grid 4×3 = 12 cards centralizados. NUNCA mexer em Trustpilot/cores. Mobile responsivo obrigatório.
 
-Mesmo dado, mas em sintaxe JS (sem aspas nas chaves, aspas simples nos valores):
-```javascript
-{id:'apex',name:'Apex Trader Funding',type:'Futuros',color:'#F97316',bg:'rgba(249,115,22,0.12)',
-icon:'A',icon_url:'img/Firms/apex.png',rating:4.4,reviews:17686,discount:90,dtype:'lifetime',
-coupon:'MARKET',badge:{label:'Maior Desconto',color:'#F97316',bg:'rgba(249,115,22,0.15)'},
-link:'https://apextraderfunding.com/member/aff/go/evertonmiranda',
-tags:['Futuros','Lifetime','Trailing DD'],platforms:['Rithmic','Tradovate','NinjaTrader','WealthCharts'],
-minDays:1,evalDays:30,drawdown:'Trailing/EOD',split:'80%',ddPct:'-5% trail',target:'8%',scaling:'Sim',
-prices:[{a:'25K',n:'$19.90',o:'$199'},{a:'50K',n:'$24.90',o:'$249'},{a:'100K',n:'$39.90',o:'$399'},{a:'150K',n:'$59.90',o:'$599'}],
-perks:['Sem limite diario','Sem regra escalamento','Payout 5 dias','Reset $99'],
-proibido:['Copy entre contas','Latency arbitrage'],newsTrading:true,day1Payout:true,
-desc:'Apex Trader Funding e uma das maiores prop firms de futuros dos EUA. Conhecida pelos descontos agressivos e flexibilidade nas regras.',
-trustpilot:{score:4.4,reviews:17686,url:'https://www.trustpilot.com/review/apextraderfunding.com'}}
-```
+## I18N
 
-### Mapeamento Supabase → JS (campos com nomes diferentes)
-| Supabase | JS (FIRMS array) |
-|---|---|
-| `discount_type` | `dtype` |
-| `min_days` | `minDays` |
-| `eval_days` | `evalDays` |
-| `dd_pct` | `ddPct` |
-| `description` | `desc` |
-| `news_trading` | `newsTrading` |
-| `day1_payout` | `day1Payout` |
-| `trustpilot_url/score/reviews` | `trustpilot: {url, score, reviews}` |
+Objeto `const I18N = {...}` em index.html. 7 idiomas: pt, en, es, it, fr, de, ar. Função `t('chave')` traduz. Helper `tf()` traduz dados de firma via `FIRM_T`.
 
-### Checklist antes de subir uma nova firma
+**NUNCA traduzir:** "Prop Firm(s)", "Profit Split", "Drawdown", "Lifetime".
 
-- [ ] Nome, ID (slug) e tipo (Futuros/Forex) definidos
-- [ ] Cor principal e cor de fundo com opacidade
-- [ ] Logo em `img/Firms/[id].png` (verificar nome exato do arquivo)
-- [ ] Link de afiliado completo e testado
-- [ ] Cupom de desconto (se existir) e percentual
-- [ ] Trustpilot: nota e numero de reviews coletados do site
-- [ ] Plataformas de trading coletadas do site oficial
-- [ ] TODOS os tamanhos de conta com precos (original e com desconto)
-- [ ] Tipo de drawdown e percentuais
-- [ ] Meta de lucro (profit target) por fase
-- [ ] Profit split percentual
-- [ ] Dias minimos e periodo de avaliacao
-- [ ] Scaling (se tem, ate quanto)
-- [ ] News trading: permitido ou nao
-- [ ] Day 1 payout: sim ou nao
-- [ ] Perks (vantagens) — lista do site
-- [ ] Proibido — regras que resultam em banimento
-- [ ] Descricao curta em PT-BR
-- [ ] Badge (selo destaque) com label, cor e fundo
-- [ ] Inserido no Supabase `cms_firms` com `active: true`
-- [ ] Inserido no array `FIRMS` do `index.html` (fallback)
-- [ ] sort_order definido (proximo numero disponivel)
+**OBRIGATÓRIO antes de deploy:**
+- Texto novo HTML → `data-i18n="chave"` + entry no objeto I18N
+- Texto novo JS template → `t('chave')` ou `tf('texto')`
+- Componentes que usam `t()` em template JS DEVEM ser re-renderizados em `setL()` (senão exige Ctrl+F5 pra trocar idioma)
+- Revisar CADA LINHA de texto visível no diff antes do commit
 
-### Padrao de dados curtos (OBRIGATORIO)
+Conteúdo institucional pra aprovação **sempre em PT primeiro**, traduz só após OK.
 
-Textos de dados das firmas devem ser **curtos e padronizados** para caber nos cards de 3 colunas (email e site):
+## Padrões de adição
 
-| Campo | Maximo | Bom | Ruim |
-|---|---|---|---|
-| `dd_pct` | ~12 chars | `-5% / -10%` | `-5% diário / -10% total` |
-| `target` | ~10 chars | `8% / 5%` | `TCP100: $6.000` |
-| `split` | ~8 chars | `90%` | `80-100% progressivo` |
-| `scaling` | ~10 chars | `Ate $4M` | `Ate $4M com progressao` |
+### Firma nova
+**NUNCA** subir com dados incompletos/inventados. Coletar do site oficial: nome, ID, cor, logo (`img/Firms/<id>.png`), link afiliado, cupom+%, Trustpilot, plataformas, todos os tamanhos com preços (original+desconto), drawdown, profit target, split, dias mín, scaling, news trading, Day-1 payout, perks, regras proibidas, descrição PT, badge.
 
-- Ao adicionar/editar uma firma, **padronizar TODAS** as firmas juntas — nunca so a que foi pedida
-- Formato drawdown: `-X% / -Y%` (daily / total)
-- Formato target: `X% / Y%` (fase 1 / fase 2)
+**Inserir em 2 lugares:** `cms_firms` (Supabase, primário) E array `FIRMS` em index.html (fallback). Mapeamento: `discount_type` → `dtype`, `min_days` → `minDays`, `description` → `desc`, etc.
 
-### Tipos de colunas no Supabase (CUIDADO)
-- `tags`, `platforms`, `perks`, `proibido` = **TEXT[]** → usar `ARRAY['item1','item2']`
-- `prices`, `badge`, `checkout_plans` = **JSONB** → usar `'[...]'::jsonb`
-- NAO misturar: `'["item"]'::jsonb` em colunas TEXT[] causa erro
+**Dados curtos obrigatório:** dd_pct ~12 chars (`-5% / -10%`), target ~10 (`8% / 5%`), split ~8 (`90%`), scaling ~10. Padronizar TODAS as firmas juntas.
 
----
+## Boas práticas
 
-## Padrao do fd-overlay (Design Aprovado)
-
-### Botoes (Tipo de Conta, Plataforma, Tamanho da Conta)
-- Usar CSS grid: `grid-template-columns: repeat(var(--cols,2), 1fr)`
-- `--cols` definido inline em cada `.fd-pills` / `.fd-sizes` conforme qtd de botoes por linha
-- Altura fixa: `height: 38px`
-- `display: inline-flex; align-items: center; justify-content: center`
-- `padding: 0 12px; border-radius: 10px; font-size: 12px; font-weight: 600`
-- `white-space: nowrap` — texto nunca quebra
-- Todos os botoes do mesmo grupo tem **mesma largura** (1fr no grid)
-- Se quebra em 2 linhas, segunda linha mantem mesmo tamanho dos de cima
-- Classes: `.fd-pill` (tipo/plataforma), `.fd-sz` (tamanho)
-- Selected state via classe `.sel` — NUNCA inline styles para selected
-
-### Stats Grid (lado esquerdo, abaixo do About)
-- Grid **4 colunas x 3 linhas = 12 cards**
-- `grid-template-columns: 1fr 1fr 1fr 1fr`
-- Conteudo **centralizado** (`text-align: center`)
-- 12 infos padrao: Profit Split, Meta, Drawdown, Dias Minimos, Scaling, Prazo, News Trading, Day 1 Payout, Alavancagem, Consistencia + 2 especificos da firma
-- Padding: `12px 14px`, radius: `10px`, bg: `rgba(255,255,255,.10)`, border: `rgba(255,255,255,.14)`
-
-### Highlights (3 cards sobre a firma)
-- `flex: 1` — todos tem mesma largura
-- Conteudo **centralizado** (`align-items: center; text-align: center`)
-- Dentro do `.fd-about` box
-
-### Regras criticas
-- **NUNCA mexer no Trustpilot** — manter CSS original do site
-- **NUNCA mexer nas cores** — cada firma mantem sua cor accent
-- **Mobile responsivo obrigatorio** — tudo que muda no desktop precisa funcionar no mobile
-
----
-
-## Padrao de Contraste (Minimos Obrigatorios)
-
-Valores minimos de opacidade para rgba(255,255,255,...) em fundo escuro. NUNCA usar valores abaixo destes:
-
-| Elemento | Propriedade | Minimo | Exemplo |
-|---|---|---|---|
-| Card background | `background` | `.10` | `rgba(255,255,255,.10)` |
-| Card border | `border-color` | `.14` | `rgba(255,255,255,.14)` |
-| Hover background | `background` | `.10` | `rgba(255,255,255,.10)` |
-| Linhas decorativas | `border/background` | `.12` | `rgba(255,255,255,.12)` |
-| Texto primario | `color` | `var(--t1)` | Branco/quase branco |
-| Texto secundario | `color` | `var(--t2)` | Nunca abaixo de t2 para conteudo legivel |
-| Labels/filtros | `color` | `var(--t1)` | Com `font-weight:600` |
-| Valores numericos | `color` + `font-weight` | `var(--t1)` + `700` | Dados importantes sempre bold |
-
-### Regras
-- **NUNCA** usar `.04`, `.05`, `.06` em backgrounds de cards — minimo `.10`
-- **NUNCA** usar `.08` em borders — minimo `.12` (decorativo) ou `.14` (cards)
-- **Card sobre hero image (drawer/fd-overlay):** os minimos acima assumem fundo escuro solido. Quando ha imagem hero atras (`drw-hero`, `fd-bg`), tints claros deixam bg bleed atravessar e matam legibilidade. Usar base escura quase-solida: `background:rgba(13,20,28,.78); border:1px solid rgba(107,182,201,.22)`. Padrao aplicado em `.fd-rating-block`, `.fd-about`, `.fd-about-hl`, `.fd-stat`.
-- **NUNCA** usar `var(--t3)` em texto que o usuario precisa ler — minimo `var(--t2)`
-- Filtros e botoes de acao: `var(--t1)` com `font-weight:600`
-- `backdrop-filter` proibido em cards/conteudo — apenas em nav, overlay e footer
-
----
-
-## Analise Diaria (Daily Analysis) — Padrao de Qualidade
-
-### Edge Function `daily-analysis` (v25+)
-- **Cron:** `0 9 * * 1-5` (6h Brasilia, seg-sex)
-- **Calendario:** Busca eventos via nossa edge function `economic-calendar` (Trading Economics), NAO Finnhub
-- **Modelo:** Claude Sonnet (`claude-sonnet-4-20250514`), `max_tokens: 6000`
-- **Ativos:** ES (S&P 500), NQ (Nasdaq 100), GC (Ouro), CL (Petroleo WTI)
-- **Idiomas da analise:** 3 (pt, en, es) — outros idiomas usam fallback pt→en no frontend
-- **Custo estimado:** ~$0.45/dia = ~$9/mes (4 ativos × 3 idiomas × 10 campos)
-
-### Padrao de qualidade da analise
-1. **Tom:** Profissional mas acessivel — iniciante entende, profissional respeita. Se usar termo tecnico, explicar entre parenteses na primeira vez
-2. **Assertividade:** Opiniao clara baseada nos dados. NUNCA usar "talvez", "possivelmente", "pode ser que". Cenarios com probabilidade (ex: "65% chance")
-3. **Eventos do calendario:** OBRIGATORIO referenciar eventos de alto impacto do dia com horario e impacto esperado. NUNCA dizer "sem eventos" se existem eventos na lista
-4. **Cenarios completos:** Gatilho especifico, alvo 1, alvo 2, stop loss, probabilidade estimada
-5. **Suportes/resistencias:** Sempre justificados (swing high/low, pivot, EMA, Bollinger)
-6. **Mecanismo de transmissao:** Nao apenas dizer "NFP afeta o mercado", mas explicar COMO (ex: "NFP forte → expectativa de juros altos → yields sobem → NQ pressao vendedora")
-7. **Multilingual:** Cada campo em 3 idiomas {pt, en, es} — outros idiomas usam fallback no frontend (daT: lang→pt→en)
-8. **Economia de tokens:** max 2-3 frases por campo, historico de 15 dias, max_tokens 6000, prompt compacto
-
-### Campos da analise
-| Campo | Descricao | Frases |
-|---|---|---|
-| `context` | Narrativa macro, correlacoes, eventos | 4-5 |
-| `volume_analysis` | Range/momentum, participacao institucional | 2-3 |
-| `scenario_bull` | Gatilho, alvos, stop, probabilidade | 3-4 |
-| `scenario_bear` | Idem | 3-4 |
-| `news_impact` | Noticias + eventos → impacto no ativo | 2-3 |
-| `events` | Eventos do calendario com horarios | 2-4 |
-| `attention_zone` | Zona critica com confluencia | 1-2 |
-| `vix_context` | Volatilidade e correlacao | 1-2 |
-| `indicators_summary` | Interpretacao (nao repetir numeros) | 2-3 |
-| `market_phase` | Fase Wyckoff com evidencia | 1 |
-
-### O que NAO fazer
-- NUNCA gerar analise sem consultar calendario economico primeiro
-- NUNCA usar Finnhub para calendario (premium $3500/mes) — usar economic-calendar edge function
-- NUNCA dizer "sem eventos relevantes" sem confirmar no calendario
-- NUNCA ser generico — cada afirmacao ancorada em dados concretos
-- NUNCA ultrapassar max_tokens desnecessariamente — concisao e qualidade
-
----
-
-## Criativos do Telegram (bot @marketscouponsbot)
-
-### Arquitetura
-- 4 criativos 1080x1350 px: `firms`, `calendar`, `gamma`, `analysis`
-- Fonte: HTMLs perfeitos em `templates/criativo_<nome>.html` (com base64 images, SVGs, grids complexos)
-- Render: `scripts/render-firms-png.js` usa **playwright** (devDep) -> screenshot estatico -> `img/<nome>-creative.png`
-- Entrega: Vercel serve o PNG estatico; edge function `supabase/functions/telegram-bot/index.ts` faz fetch dos bytes e envia via `sendPhoto` multipart upload
-- Comando de render: `node scripts/render-firms-png.js [firms|calendar|gamma|analysis|all]`
-
-### Pra atualizar um criativo
-1. Edita `templates/criativo_<nome>.html`
-2. `node scripts/render-firms-png.js <nome>`
-3. `git add templates/ img/ && git commit -m "..." && git push`
-4. Aguarda ~1min deploy Vercel
-5. Se mexeu no `telegram-bot/index.ts`, redeploy: `SUPABASE_ACCESS_TOKEN=<token 1h> npx supabase functions deploy telegram-bot --project-ref qfwhduvutfumsaxnuofa --no-verify-jwt` (token em supabase.com/dashboard/account/tokens)
-6. Testa: `curl "https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/telegram-bot?action=coupons" -H "Authorization: Bearer <anon-key>"`
-
-### Regras criticas
-- **NUNCA usar Satori/@vercel/og** pra reproduzir HTML complexo — nao renderiza glyphs (estrela vira quadrado), flex quebra, fontes faltam. Ja perdi horas nessa saga em 2026-04-14 — ir direto pro playwright
-- **NUNCA usar subpasta nova em img/** (ex: `img/og/`) — vercel.json legacy `routes` nao serve automaticamente. Usar root `/img/*.png`
-- **NUNCA enviar photo por URL direta** pro Telegram — timeout 5s estoura se CDN nao cacheou. Edge function deve baixar bytes e mandar via FormData multipart
-- **Caption max 1024 chars** — o helper `sendPhoto()` trunca pra 1020 + reticencias
-- **Cache-bust sempre** — `?t=${Date.now()}` no URL do photo pra Telegram nao servir versao velha
-- Anon key Supabase correta: iat `1774377946`. A antiga `1759267651` retorna 401
-
----
-
-## Admin — Autonomia Total (Fase 1 concluida 2026-04-16)
-
-### Principio
-Usuario NAO e dev. Admin deve ser **pratico e intuitivo**: formularios com labels em PT claro, sem chaves I18N expostas, sem tabelas de 987 linhas. Cada secao do site tem editor dedicado sob medida.
-
-### Infraestrutura pronta
-- `cms_firms` — firmas completas (Supabase, editavel no admin)
-- `i18n` — 987 chaves UI × 7 idiomas (Supabase + localStorage cache)
-- `firm_translations` — 196 traducoes dados firma × 6 idiomas
-- `cms_texts` — 68 textos dinamicos em 11 secoes
-- `site_settings` — key-value generico
-- `FIRMS=[]` em app.js — array vazio, site carrega 100% do Supabase
-- Fallback localStorage em tudo (mc_firms_cache, mc_i18n_cache, mc_firmt_cache)
-
-### Editores visuais (em construcao, pagina por pagina)
-Cada secao do site tera um formulario dedicado no admin com campos claros.
-Preview = botao "Ver no site" (nova aba). Ordem: Hero → Nav → Ofertas → Footer → resto.
-
-### Regras pro admin
-- **NUNCA** expor chaves tecnicas (hero_cta_text) — usar labels em PT ("Texto do botao")
-- **NUNCA** tabela generica com 100+ linhas — agrupar por secao, formulario sob medida
-- **NUNCA** exigir conhecimento de codigo pra editar qualquer coisa
-- Salvar por secao com feedback visual (toast)
-- Implementar incrementalmente, testar cada pagina antes da proxima
-
----
-
-## Boas Praticas do Projeto
-
-1. **Idioma das respostas:** Sempre responder em portugues (PT-BR)
-2. **Sem frameworks:** Nao introduzir dependencias, bundlers ou frameworks
-3. **Inline styles:** Evitar ao maximo — usar classes CSS. Especialmente em templates JS
-4. **`.single()` proibido:** Usar `.maybeSingle()` para queries que podem retornar 0 resultados
-5. **Testar apos deploy:** Verificar com `curl` que as mudancas estao no site publicado
-6. **Cache:** Headers no-cache ja configurados no vercel.json, mas sempre orientar Ctrl+F5
-7. **Auth separada:** Nunca usar o mesmo storageKey para admin e usuario
-8. **Termos tecnicos:** "Prop Firm", "Profit Split", "Drawdown", "Lifetime" nao sao traduzidos
-9. **Commits:** Fazer commits focados e descritivos, um por feature/fix
-10. **Nao quebrar layout existente:** Verificar visualmente antes de mudar CSS de componentes compartilhados
-11. **Admin noindex:** `admin.html` tem `<meta name="robots" content="noindex,nofollow">`
-12. **Seguranca:** Supabase anon key e publica por design (RLS protege), mas nunca expor service_role key
-13. **Consultar CLAUDE.md:** Sempre ler este arquivo antes de qualquer acao para manter contexto
-14. **I18N obrigatorio antes de deploy:** NUNCA fazer deploy sem verificar que TODOS os textos novos/alterados estao traduzidos nos 7 idiomas (pt, en, es, it, fr, de, ar). Todo texto novo em HTML deve ter `data-i18n` com chave no objeto I18N. Todo texto novo em template JS deve usar `t('chave')` ou `tf('texto')`. Todo texto de dados de firma (about, labels, includes) deve estar no FIRM_T. Testar trocando o idioma antes de commitar.
-14a. **I18N re-render no setL():** Todo componente que usa `t()` dentro de template JS (pill, badge, toast, overlay, drawer, modal, card dinamico) DEVE ter o render chamado dentro de `setL()` em `app.js`. `applyTranslations()` so cobre elementos com `data-i18n` estatico — textos injetados via innerHTML nao atualizam sozinhos. Se o usuario precisar dar Ctrl+F5 pra trocar idioma, esta quebrado. Checar sempre: topbar, drawer aberto, overlay aberto, chatbot, qualquer UI visivel no momento da troca.
-15. **Revisar CADA LINHA de texto visivel antes do deploy:** Antes de qualquer commit que adicione ou altere conteudo visivel, revisar CADA LINHA de texto no diff. Se qualquer texto estiver hardcoded (sem data-i18n, sem t(), sem tf()), corrigir ANTES do commit. Isso inclui mini-UIs, labels dentro de componentes visuais, textos decorativos, tooltips — TUDO que o usuario ve. Nao existe texto "pequeno demais para traduzir".
-16. **NUNCA sair do padrao visual estabelecido:** Ao criar qualquer nova pagina, overlay ou componente, DEVE seguir EXATAMENTE o padrao visual ja aprovado. Exemplos: overlay de firma (fd-overlay) tem imagem de background no lado esquerdo, branding premium, checkout no lado direito com steps, preco, cupom, CTA e includes. Qualquer novo overlay (plataformas, etc.) deve replicar esse padrao 1:1, incluindo imagem de fundo, estrutura dos dados e nivel de detalhe. Pesquisar dados reais com o mesmo rigor das firmas (site oficial, precos, features). Nunca simplificar ou "adaptar" — replicar o padrao.
-17. **NUNCA remover conteudo existente sem ser pedido:** Ao ajustar layout, adicionar features ou refatorar, NUNCA remover textos, secoes, descricoes ou funcionalidades que ja existem. Apenas adicionar ou ajustar o que foi pedido. Se precisar mover algo, manter o original no lugar e adicionar a copia — nunca substituir sem autorizacao explicita.
-18. **Consistencia visual obrigatoria:** Botoes, textos, espacamentos, fontes, cores, tamanhos — TUDO deve seguir o mesmo padrao dentro de um design. Se um botao tem border-radius 8px, TODOS os botoes daquele contexto tem 8px. Se um label usa font-size 10px uppercase, TODOS os labels equivalentes usam. Se um card tem padding 16px, TODOS os cards irmaos tem. Nunca criar um elemento "quase igual" — ou replica exato ou nao faz. Isso vale para: emails, overlays, cards, tabelas, stats, CTAs, badges, tooltips. O usuario tem olho clinico para inconsistencia — qualquer diferenca sera notada e cobrada.
-19. **COMPLIANCE LEGAL — REGRA CRITICA:** NUNCA escrever copy que prometa, sugira ou implique consultoria financeira, sinais de trading, recomendacoes de compra/venda, ou qualquer servico regulado. Isso inclui:
-    - NUNCA usar: "sinais de entrada", "stop loss", "take profit", "sinais de trading", "trade signals", "recomendacoes"
-    - NUNCA prometer resultados financeiros ou retornos
-    - NUNCA mencionar ativos especificos como promessa de cobertura (ex: "sinais para ES, NQ, GC e CL")
-    - NUNCA usar as palavras "trader(s)", "operacoes ao vivo", "operacoes reais" em contexto de Live Room
-    - Live Room deve ser descrito como "conteudo exclusivo VIP", "insights de mercado", "niveis-chave" — NUNCA como servico de sinais
-    - Termos seguros: "insights", "niveis-chave", "contexto de mercado", "conteudo exclusivo", "espaco para membros"
-    - Termos PROIBIDOS: "sinais", "entrada", "stop loss", "take profit", "recomendacao", "trader(s) profissionais", "operacoes"
-    - **Consequencia:** Copy errada que vai pro ar pode gerar problema legal REAL. Cada texto visivel deve ser revisado com lente de compliance ANTES do commit.
+1. PT-BR sempre nas respostas
+2. Sem frameworks/dependências/bundlers
+3. Inline styles → evitar; usar classes CSS
+4. `.maybeSingle()` proibido `.single()`
+5. Testar com curl pós-deploy + Ctrl+F5
+6. Storage keys auth separados
+7. Termos técnicos não traduzidos (Prop Firm, Profit Split, Drawdown, Lifetime)
+8. Commits focados, descritivos
+9. NUNCA quebrar layout existente
+10. NUNCA remover conteúdo sem ser pedido
+11. Consistência visual obrigatória (border-radius, padding, font-size iguais em irmãos)
+12. NUNCA secret em código (Supabase Secrets / env vars)
+13. NUNCA expor service_role key
+14. NUNCA inventar feature; ler site/dados antes de escrever copy
+15. NUNCA mencionar IA/Gemini/Claude/API em copy ao usuário final
