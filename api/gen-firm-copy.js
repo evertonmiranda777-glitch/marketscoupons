@@ -218,220 +218,148 @@ Clique no link e escolha seu plano.
 
   const FEW_SHOT_PT = template === 'promocional' ? FEW_SHOT_PROMOCIONAL_PT : FEW_SHOT_INSTITUCIONAL_PT;
 
-  // Mantém a referência antiga pra não quebrar (template "promo" 8-blocos vira default só se requisitado explicitamente)
-  const FEW_SHOT_PROMO_8BLOCOS_PT = `
-EXEMPLO BOM 1 (Apex, cupom MARKET, 90% OFF lifetime):
-🚨 APEX 90% OFF AVALIAÇÕES + RESETS POR $50 🚨
+  // ====== TEMPLATE INSTITUCIONAL — EN ======
+  const FEW_SHOT_INSTITUCIONAL_EN = `
+INSTITUTIONAL EXAMPLE 1 (Apex):
+Trade with APEX Capital: Futures Evaluations with Special Conditions
 
-🔥 Descontos pesados em todas as avaliações
-Escolha seu plano e comece hoje:
+You bring the strategy, we provide the capital. APEX Trader Funding offers the infrastructure you need to scale your futures operations without risking your personal capital.
 
-🎟 Descontos do cupom
-* 90% OFF na primeira mensalidade
-* 50% OFF nas mensalidades recorrentes
+Take advantage of our current conditions to start your evaluation:
+✅ Plans starting at $19.90 (evaluation fee).
+✅ Flexible rules and adjusted drawdown (EOD available).
+✅ Trade on top platforms: NinjaTrader, Tradovate and Rithmic.
 
-💰 Planos com desconto
-* 25K · 50K · 100K: a partir de $19.90
-* 150K: $59.90
-
-⚡ Benefícios exclusivos
-* Resets por apenas $50
-* Aprovação em 1 dia
-* Sem regra de consistência na avaliação
-* 100% dos lucros, escala disponível
-* Trailing/EOD de -5% (perdoa swing)
-* Sem limite diário, news trading permitido, payout no Day-1
-* Trustpilot 4.4 com 18K reviews
-
-Use o cupom: MARKET
-
-🚀 Aproveite o desconto e pague menos pelos planos maiores
-💥 Cupom lifetime — sem renovar
-
-Link na bio.
-
-#apex #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #futurestrader #es #nq #mes #mnq
-
----
-
-EXEMPLO BOM 2 (Bulenox, cupom MARKET89, 89% OFF):
-🚨 BULENOX 89% OFF + STATIC DD PREVISÍVEL 🚨
-
-🔥 Avaliação enxuta com regras claras
-Escolha seu plano e comece hoje:
-
-🎟 Desconto do cupom
-* 89% OFF lifetime nas mensalidades
-
-💰 Planos com desconto
-* 25K: $19.25 (era $175)
-* 50K · 100K: a partir de $24.50
-* 250K: $34.10 (era $310)
-
-⚡ Benefícios exclusivos
-* Static DD previsível (sem trailing que ferra)
-* Sem regra de consistência
-* 90% de split (100% nos primeiros $10K)
-* Rithmic incluído por 14 dias
-* Payout semanal, escala até $400K
-* Trustpilot 4.5 com 1,5K reviews
-
-Use o cupom: MARKET89
-
-🚀 Aproveite o desconto e pague menos pelos planos maiores
-💥 Cupom lifetime — sem renovar
-
-Link na bio.
-
-#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #es #nq #mes #mnq #tradovate
-
----
-
-EXEMPLO BOM 3 (FTMO, sem cupom, desconto via link):
-🚨 FTMO COM DESCONTO EXCLUSIVO NO LINK 🚨
-
-🔥 Forex sério, payout em 5 dias
-Escolha seu desafio e comece hoje:
-
-💰 Planos com desconto
-* 10K: €79 (sem o link: €115)
-* 25K: €155 (sem o link: €250)
-* 100K · 200K: a partir de €399
-
-⚡ Benefícios exclusivos
-* 90% de split depois do funding
-* Static DD -10% (sem trailing)
-* Plataformas MT4, MT5 e cTrader
-* Mais de €500M pagos desde 2015
-* Trustpilot 4.8 com 41K reviews
-
-Sem cupom — desconto aplicado automático no link
-
-🚀 Aproveite o desconto e escolha seu desafio
-💥 Oferta exclusiva via Markets Coupons
-
-Link na bio.
-
-#ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
-
----
-
-EXEMPLO RUIM (NÃO FAÇA ISSO):
-Estourou 3 contas esse ano? 😩
-
-Essa aqui é diferente.
-Você vai lucrar muito! 🔥
-Realize seus sonhos no trading.
-Cupom MARKET — pegue agora!
-
-POR QUE É RUIM: storytelling de dor ("estourou 3 contas") não é promo comercial. "Você vai lucrar" promete retorno (BANIDO Meta Ads). "Realize seus sonhos" = vazio. "Pegue agora!" = exclamação + urgência forçada. Falta features secas + preços + cupom estruturado.`;
-
-  const FEW_SHOT_EN = `
-GOOD EXAMPLE 1 (Apex, MARKET, 90% OFF lifetime):
-🚨 APEX 90% OFF EVALS + $50 RESETS 🚨
-
-🔥 Massive discounts on every evaluation
-Pick your plan and start today:
-
-🎟 Coupon discounts
-* 90% OFF first month
-* 50% OFF recurring fees
-
-💰 Discounted plans
-* 25K · 50K · 100K: starting at $19.90
-* 150K: $59.90
-
-⚡ Exclusive benefits
-* Resets for only $50
-* One Day To Pass
-* No consistency rule on evaluations
-* Keep 100% of profits, scaling available
-* Trailing/EOD -5% (forgives swings)
-* No daily loss limit, news trading allowed, Day-1 payout
-* Trustpilot 4.4 with 18K reviews
+Join a community with over 18,000 positive Trustpilot reviews (rating 4.4/5).
 
 Use the coupon: MARKET
 
-🚀 Lock in the discount and scale to bigger plans
-💥 Lifetime coupon — no renewal
-
-Link in bio.
+Secure your spot and start trading with scale.
 
 #apex #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #futurestrader #es #nq #mes #mnq
 
 ---
 
-GOOD EXAMPLE 2 (Bulenox, MARKET89, 89% OFF):
-🚨 BULENOX 89% OFF + PREDICTABLE STATIC DD 🚨
+INSTITUTIONAL EXAMPLE 2 (Bulenox):
+Trade with Bulenox Capital: Futures Evaluations with Static Drawdown
 
-🔥 Clean evaluation with clear rules
-Pick your plan and start today:
+You bring the strategy, we provide the capital. Bulenox offers evaluations with clear rules and predictable static drawdown, ideal for traders seeking operational consistency.
 
-🎟 Coupon discount
-* 89% OFF lifetime on monthly fees
+Take advantage of our current conditions to start your evaluation:
+✅ Plans starting at $19.25 (evaluation fee).
+✅ Static drawdown without trailing — predictable limits.
+✅ Platforms: Tradovate, NinjaTrader and Rithmic included.
+✅ No consistency rule and weekly payout.
 
-💰 Discounted plans
-* 25K: $19.25 (was $175)
-* 50K · 100K: starting at $24.50
-* 250K: $34.10 (was $310)
-
-⚡ Exclusive benefits
-* Predictable static DD (no trailing trap)
-* No consistency rule
-* 90% split (100% on first $10K)
-* Rithmic included for 14 days
-* Weekly payout, scale up to $400K
-* Trustpilot 4.5 with 1.5K reviews
+Join a community with over 1,500 Trustpilot reviews (rating 4.5/5).
 
 Use the coupon: MARKET89
 
-🚀 Lock in the discount and scale to bigger plans
-💥 Lifetime coupon — no renewal
-
-Link in bio.
+Secure your spot and start trading with scale.
 
 #bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #es #nq #mes #mnq #tradovate
 
 ---
 
-GOOD EXAMPLE 3 (FTMO, no coupon, link discount):
-🚨 FTMO WITH EXCLUSIVE DISCOUNT VIA LINK 🚨
+INSTITUTIONAL EXAMPLE 3 (FTMO, no coupon):
+Trade with FTMO Capital: Forex Evaluations with Proven Track Record
 
-🔥 Serious forex, payout in 5 days
-Pick your challenge and start today:
+You bring the strategy, we provide the capital. FTMO is one of the largest forex prop trading firms, with over €500 million paid to traders since 2015.
 
-💰 Discounted plans
-* 10K: €79 (without the link: €115)
-* 25K: €155 (without the link: €250)
-* 100K · 200K: starting at €399
+Take advantage of our current conditions via our link:
+✅ Challenges starting at €79 (10K) — discount auto-applied.
+✅ Static drawdown -10%, no trailing.
+✅ Platforms: MT4, MT5 and cTrader native.
+✅ 90% profit split after funding.
 
-⚡ Exclusive benefits
-* 90% split after funding
-* Static -10% DD (no trailing)
-* MT4, MT5 and cTrader supported
-* Over €500M paid since 2015
-* Trustpilot 4.8 with 41K reviews
+Join a community with over 41,000 Trustpilot reviews (rating 4.8/5).
 
-No coupon — discount auto-applied via link
+No coupon — discount auto-applied via link.
 
-🚀 Lock in the discount and pick your challenge
-💥 Exclusive offer via Markets Coupons
-
-Link in bio.
+Secure your spot and start trading with scale.
 
 #ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
+`;
+
+  // ====== TEMPLATE PROMOCIONAL — EN ======
+  const FEW_SHOT_PROMOCIONAL_EN = `
+PROMOTIONAL EXAMPLE 1 (Apex):
+🚀 Capital Scale for Futures Traders: 90% OFF on APEX
+
+Trader, why limit your earnings to the size of your personal account?
+
+APEX Trader Funding is releasing an exclusive 90% discount on new futures evaluations. It's your chance to access 25K to 150K accounts at the lowest cost on the market.
+
+What sets APEX apart:
+🔹 Fast payouts and simplified rules.
+🔹 No daily loss limit.
+🔹 News trading allowed.
+🔹 Competitive profit split for the trader.
+
+Thousands of traders have already scaled their operations with us.
+
+Check our reviews on Trustpilot and see why we're a global reference.
+
+Enter the coupon: MARKET
+
+Click the link below and choose your plan.
+
+#apex #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #futurestrader #es #nq #mes #mnq
 
 ---
 
-BAD EXAMPLE (DON'T DO THIS):
-Blew 3 accounts this year? 😩
+PROMOTIONAL EXAMPLE 2 (Bulenox):
+🚀 Capital Scale for Futures Traders: 89% OFF on Bulenox
 
-This one is different.
-You'll profit big time! 🔥
-Make your dreams come true.
-Use MARKET — grab it now!
+Trader, why limit your earnings to the size of your personal account?
 
-WHY BAD: pain storytelling ("blew 3 accounts") is not a commercial promo. "You'll profit" promises returns (Meta Ads BAN). "Make your dreams come true" = empty fluff. "Grab it now!" = forced urgency + exclamation. Missing dry features + price tiers + structured coupon block.`;
+Bulenox is releasing an exclusive 89% lifetime discount on new evaluations. It's your chance to access 25K to 250K accounts with clear rules and predictable static drawdown.
+
+What sets Bulenox apart:
+🔹 Predictable static drawdown without trailing.
+🔹 No consistency rule.
+🔹 Weekly payout and scale up to $400K.
+🔹 90% profit split (100% on the first $10K).
+🔹 Rithmic included for 14 days.
+
+Thousands of traders have already scaled their operations with us.
+
+Check our reviews on Trustpilot and see why we're a global reference.
+
+Enter the coupon: MARKET89
+
+Click the link below and choose your plan.
+
+#bulenox #propfirm #propfirmtrading #trader #trading #daytrading #futurestrading #es #nq #mes #mnq #tradovate
+
+---
+
+PROMOTIONAL EXAMPLE 3 (FTMO, no coupon):
+🚀 Capital Scale for Forex Traders: Exclusive Discount on FTMO
+
+Trader, why limit your earnings to the size of your personal account?
+
+FTMO is releasing an exclusive discount auto-applied via our link on new forex evaluations. It's your chance to access 10K to 200K accounts with the largest prop trading firm on the market.
+
+What sets FTMO apart:
+🔹 Over €500M paid since 2015.
+🔹 Static drawdown -10% (no trailing).
+🔹 MT4, MT5 and cTrader native.
+🔹 90% profit split after funding.
+🔹 Payout in 5 days.
+
+Thousands of traders have already scaled their operations with us.
+
+Check our reviews on Trustpilot and see why we're a global reference.
+
+No coupon — discount auto-applied via link.
+
+Click the link below and choose your plan.
+
+#ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
+`;
+
+  const FEW_SHOT_EN = template === 'promocional' ? FEW_SHOT_PROMOCIONAL_EN : FEW_SHOT_INSTITUCIONAL_EN;
 
   const fewShot = langCode === 'pt' ? FEW_SHOT_PT : FEW_SHOT_EN;
 
@@ -516,90 +444,37 @@ Siga EXATAMENTE a estrutura dos exemplos few-shot abaixo. Adapte os DADOS pra fi
 8. **CTA:** "Clique no link e escolha seu plano."
 9. **Hashtags:** linha de hashtags
 
-# ESTRUTURA OBRIGATÓRIA DA CAPTION (LEGACY — só usar se template=promo-8-blocos)
-
-## BLOCO 1 — HEADLINE (linha 1, dentro de 🚨 emojis)
-Formato exato: 🚨 [NOME DA FIRMA EM CAIXA] [DESC]% OFF [PRODUTO + 1 perk extra se relevante] 🚨
-Exemplos:
-- "🚨 APEX 90% OFF AVALIAÇÕES + RESETS POR $50 🚨"
-- "🚨 BULENOX 89% OFF + STATIC DD PREVISÍVEL 🚨"
-- "🚨 FTMO COM DESCONTO EXCLUSIVO NO LINK 🚨"
-Caixa alta SOMENTE no nome da firma e nos números. Não escreva tudo em CAPS LOCK.
-
-## BLOCO 2 — TAGLINE (linha começando com 🔥, depois 1 linha "Escolha seu plano e comece hoje:")
-Formato:
-🔥 [tagline curta de benefício principal — 4-7 palavras, sem promessa de lucro]
-Escolha seu plano e comece hoje:
-
-## BLOCO 3 — DESCONTOS DO CUPOM (🎟, opcional — só se a firma tem cupom)
-🎟 Descontos do cupom
-* [desconto na primeira mensalidade ou lifetime, baseado nos dados]
-* [desconto recorrente se aplicável]
-
-## BLOCO 4 — PLANOS COM DESCONTO (💰, OBRIGATÓRIO)
-💰 Planos com desconto
-* [tier menor]: [preço novo] (era [preço velho]) — usa âncora "era X" se houver
-* [tier médio]: a partir de [preço]
-* [tier maior]: [preço]
-USE OS PREÇOS REAIS da firma (cheapest = ${cheapest ? `${cheapest.a}: ${cheapest.n}${cheapest.o ? ` era ${cheapest.o}` : ''}` : '—'}, priciest = ${priciest ? `${priciest.a}: ${priciest.n}` : '—'})
-
-## BLOCO 5 — BENEFÍCIOS EXCLUSIVOS (⚡, OBRIGATÓRIO — 5 a 8 bullets)
-⚡ Benefícios exclusivos
-* [drawdown + tipo: "Trailing/EOD -5%", "Static DD previsível", etc — usar dado real]
-* [profit split — "100% dos lucros", "90% de split", etc]
-* [scaling se houver — "escala até $X", "sem teto"]
-* [regras-relief reais — "sem limite diário", "news trading permitido", "Day-1 payout", "sem regra de consistência"]
-* [plataformas — "Rithmic incluído", "MT4/MT5/cTrader"]
-* [payout — "payout em X dias", "payout semanal"]
-* [Trustpilot se houver — "Trustpilot ${firm.trustpilot_score || 'X'} com ${reviewsFmt || 'X'} reviews"]
-* [provas históricas se houver — "$X pagos desde Y", "anos no mercado"]
-SÓ inclua bullets com DADOS REAIS da firma (seção FIRMA acima). Sem invenção.
-
-## BLOCO 6 — CUPOM (linha solta, formato exato)
-Se tem cupom: "Use o cupom: ${firm.coupon || 'X'}"
-Se sem cupom: "Sem cupom — desconto aplicado automático no link"
-
-## BLOCO 7 — CTA FINAL (2 linhas com 🚀 e 💥)
-🚀 [convite genérico sem promessa de lucro — ex: "Aproveite o desconto e pague menos pelos planos maiores", "Lock in the discount and scale to bigger plans"]
-💥 [info de permanência/exclusividade — "Cupom lifetime — sem renovar", "Oferta exclusiva via Markets Coupons"]
-
-## BLOCO 8 — LINK NA BIO (1 linha)
-"Link na bio." (PT) / "Link in bio." (EN) / "Enlace en bio." (ES)
-SEM emoji aqui (já tem emojis suficientes nos blocos anteriores).
-
-## HASHTAGS (1 linha, 10-12 tags, todas em lowercase, separadas por espaço)
-USE APENAS desta whitelist curada (NÃO invente, NÃO use #nfl/#sports/#lifestyle/#motivation/#success — banidas pra trading):
-${suggestedHashtags}
-
-Monte a linha combinando: firma-slug + 4-5 core + 5-6 do nicho (${(firm.type && /forex/i.test(firm.type)) ? 'forex' : 'futures'}).
-
-# EXEMPLOS DE REFERÊNCIA (clone a estrutura, troque dados)
+# EXEMPLOS DE REFERÊNCIA — clone EXATAMENTE a estrutura, troque DADOS pela firma atual
 ${fewShot}
 
-# OTIMIZAÇÃO PRA ALGORITMO IG 2026
-- Primeiros 125 caracteres são o que aparece no feed antes do "... mais". TODO o peso persuasivo do hook tem que caber ali.
-- Line breaks agressivos (linha em branco entre cada bloco) aumentam tempo de leitura → sinal positivo pro algoritmo.
-- Bullets com "→" aumentam legibilidade e save-rate.
-- Números concretos e decisão-em-1-click aumentam save+share.
+# DADOS DA FIRMA PRA USAR (lista pra você consultar enquanto adapta o exemplo)
+- cheapest_plan = ${cheapest ? `${cheapest.a} por ${cheapest.n}${cheapest.o ? ` (era ${cheapest.o})` : ''}` : '—'}
+- priciest_plan = ${priciest ? `${priciest.a} por ${priciest.n}` : '—'}
+- todos_precos = ${prices}
+- coupon_line = ${couponLine}
+- trustpilot_line = ${tp || 'sem dado de Trustpilot'}
+- platforms_line = ${platforms || 'sem dado de plataformas'}
+- perks_line = ${perks || 'sem perks listados'}
+
+# HASHTAGS (1 linha, 10-12 tags lowercase, separadas por espaço)
+Use APENAS dessa whitelist (NÃO invente, NÃO use #lifestyle/#motivation/#success/#luxury):
+${suggestedHashtags}
 
 # REGRAS DURAS (viole qualquer uma = rejeitado)
-✅ Use: estrutura de 8 blocos exata (Headline → Tagline → Cupom → Planos → Benefícios → Cupom → CTA → Link), emojis nos cabeçalhos de bloco (🚨 🔥 🎟 💰 ⚡ 🚀 💥), bullets com asterisco (*), preços reais com "era X" (anchoring), Trustpilot dentro do bloco de benefícios.
+✅ OBRIGATÓRIO: replicar EXATAMENTE a voz, ordem dos blocos, emojis e frase-chave do template em uso (${template === 'promocional' ? 'PROMOCIONAL' : 'INSTITUCIONAL'}). Os exemplos few-shot SÃO o template — não recrie estrutura, só substitua os dados.
 
-❌ Nunca:
-  - **Storytelling de dor:** "estourou X contas?", "cansado de Y?", "quebrei minha conta", "MC me pegou", "tomei stop", "tô queimado". Promo comercial NÃO tem dor.
-  - **Pergunta-callout no início:** "Quer X?", "Já passou por Y?", "Cansado de Z?" — REJEITADO.
-  - **Bullets com seta "→"**: usa asterisco (*) em vez de seta. Padrão promo, não Twitter.
-  - **Promessa de retorno** (Meta Ads BAN): "você vai lucrar", "ganhe X", "fique rico", "renda passiva", "results guaranteed", "you'll profit", "make money fast"
-  - **Lifestyle vazio**: "transforme sua vida", "realize seus sonhos", "eleve seu jogo", "chegou a hora"
+❌ NUNCA:
+  - **Misturar templates:** se template=institucional, NÃO use 🚨/🔥/🎟/💥 do promocional antigo. Se template=promocional, NÃO use estrutura puramente institucional.
+  - **Estrutura de "8 blocos com 🚨/🔥/🎟/💰/⚡/🚀/💥"** — esse padrão antigo está APOSENTADO. Use só os 2 templates novos.
+  - **Inventar dados:** cada número/regra/perk DEVE estar nos dados da firma acima. Se não tem, omite.
+  - **Promessa de retorno** (Meta Ads BAN): "você vai lucrar", "ganhe X", "fique rico", "renda passiva", "results guaranteed", "you'll profit"
+  - **Lifestyle vazio**: "transforme sua vida", "realize seus sonhos", "eleve seu jogo"
   - **Adjetivos vazios**: "incrível", "excelente", "top do mercado", "oportunidade única"
-  - **Verbos errados com conta**: NUNCA "tocar contas" (soa como gado), "puxar contas", "bater contas". Use "ter conta", "operar conta", "rodar conta", "comprar avaliação", "passar avaliação".
-  - **Exclamações no corpo** (só nos blocos de headline com 🚨 e CTA com 🚀💥, e olhe lá — o exemplo aprovado tem zero "!" no corpo)
-  - **Markdown** (**negrito**, *itálico*)
-  - **Aspas envolvendo a caption inteira**
+  - **Verbos errados com conta**: NUNCA "tocar contas", "puxar contas", "bater contas". Use "ter conta", "operar conta", "comprar avaliação", "passar avaliação".
+  - **Markdown** (**negrito**, *itálico*) ou aspas envolvendo a caption
   - **Preâmbulo** ("Aqui está:", "Segue a caption:")
-  - **Caixa alta em palavra isolada** ("TUDO", "AGORA") — só permitido no nome da firma no Headline
-  - **Hashtags banidas pra trading**: #nfl, #sports, #lifestyle, #motivation, #luxury, #success, #entrepreneur, #wealth
-  - **Palavras BANIDAS POR COMPLIANCE LEGAL**: "sinais", "entrada", "stop loss", "take profit", "recomendação de trade", "operação ao vivo", "lucro garantido", "trader profissional", "signals", "entry signals", "guaranteed profit", "copy trade", "we trade for you"
+  - **Hashtags banidas**: #nfl, #sports, #lifestyle, #motivation, #luxury, #success, #entrepreneur, #wealth
+  - **Palavras BANIDAS COMPLIANCE LEGAL**: "sinais", "entrada", "stop loss", "take profit", "recomendação de trade", "operação ao vivo", "lucro garantido", "trader profissional", "signals", "guaranteed profit", "copy trade", "we trade for you"
   - **Mencionar IA/Gemini/Claude/API**
 
 # IDIOMA
