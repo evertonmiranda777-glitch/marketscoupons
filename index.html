@@ -2674,6 +2674,12 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .auth-terms-row input[type=checkbox]{margin-top:2px;flex-shrink:0;width:16px;height:16px;accent-color:var(--gold);cursor:pointer;}
 .auth-terms-row a{color:var(--gold);text-decoration:none;}
 .auth-terms-row a:hover{text-decoration:underline;}
+/* B.6 — Pills de firmas favoritas */
+.firm-pills{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0;}
+.firm-pill{padding:8px 14px;border-radius:20px;border:1px solid rgba(107,182,201,.22);background:rgba(13,20,28,.5);color:var(--t2);font-size:13px;cursor:pointer;transition:all .15s ease;font-family:inherit;}
+.firm-pill:hover{border-color:var(--gold);color:var(--t1);}
+.firm-pill.selected{background:var(--gold);color:#0d141c;border-color:var(--gold);font-weight:600;}
+.cp-disclaimer{font-size:12px;color:var(--t3);background:rgba(107,182,201,.05);border:1px solid rgba(107,182,201,.12);border-radius:8px;padding:10px 12px;margin:14px 0 6px;line-height:1.5;}
 </style>
 <script src="js/page-boot.js?v=20260427"></script>
 </head>
@@ -3404,6 +3410,10 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
    <div class="auth-row">
     <div class="auth-field"><label data-i18n="painel_cidade">Cidade</label><input type="text" id="up-edit-city"></div>
     <div class="auth-field" id="up-edit-state-wrap"><label data-i18n="painel_estado">Estado</label><input type="text" id="up-edit-state" placeholder="UF"></div>
+   </div>
+   <div class="auth-field">
+    <label data-i18n="complete_profile_firms_label">Suas firmas favoritas (selecione 1 ou mais)</label>
+    <div class="firm-pills" id="up-edit-firm-pills"></div>
    </div>
    <button class="auth-btn" onclick="saveProfile()" data-i18n="painel_salvar">Salvar Alterações</button>
    <div class="auth-error" id="up-save-err" style="margin-top:12px;display:none;"></div>
@@ -4315,6 +4325,39 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- B.6 — Modal Completar Perfil (loyalty gate + preventivo em rotas gated) -->
+<div class="auth-overlay confirm-email-overlay" id="cp-overlay" style="display:none;">
+  <div class="cem-card" style="max-width:480px;text-align:left;">
+    <button class="cem-close" onclick="closeCompleteProfileModal()" aria-label="Close">&times;</button>
+    <div style="text-align:center;margin-bottom:18px;">
+      <div class="cem-icon-wrap"><div class="cem-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div></div>
+      <h2 class="cem-title" id="cp-title" data-i18n="complete_profile_title">Quase lá! Personalize sua experiência</h2>
+      <p class="cem-body" id="cp-body" data-i18n="complete_profile_body">Pra concorrer aos sorteios e receber só ofertas que interessam pra você (sem spam), preenche os dados abaixo:</p>
+    </div>
+    <div id="cp-fields"></div>
+    <div class="cp-disclaimer" data-i18n="complete_profile_disclaimer">Os alertas serão suaves: só atualizações das suas firmas favoritas e ofertas relacionadas.</div>
+    <div class="auth-error" id="cp-err" style="margin-top:8px;display:none;"></div>
+    <button class="cem-btn-primary" id="cp-save-btn" data-i18n="complete_profile_save">Salvar e continuar</button>
+    <button class="cem-btn-ghost" onclick="closeCompleteProfileModal()" data-i18n="complete_profile_cancel">Cancelar</button>
+  </div>
+</div>
+
+<!-- B.6 — Modal Nickname (pós-OAuth) -->
+<div class="auth-overlay confirm-email-overlay" id="nick-overlay" style="display:none;">
+  <div class="cem-card">
+    <div class="cem-icon-wrap"><div class="cem-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div></div>
+    <h2 class="cem-title" data-i18n="nickname_modal_title">Como você quer ser chamado?</h2>
+    <p class="cem-body" data-i18n="nickname_modal_body">Esse será seu nome no Markets Coupons.</p>
+    <input type="text" id="nick-input" placeholder="jaozin" style="width:100%;padding:12px 14px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:10px;color:var(--t1);font-size:14px;outline:none;margin-bottom:16px;font-family:inherit;">
+    <div class="auth-error" id="nick-err" style="margin-bottom:10px;display:none;"></div>
+    <button class="cem-btn-primary" onclick="saveNicknameModal()" data-i18n="nickname_modal_save">Confirmar</button>
+  </div>
+</div>
 
 <!-- B.3.2 — Confirm Email Modal -->
 <div class="auth-overlay confirm-email-overlay" id="confirm-email-overlay" style="display:none;">
