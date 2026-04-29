@@ -5495,44 +5495,45 @@ function validateBirthdayAdult(iso) {
   return age >= 18;
 }
 
-function renderStateField(country) {
-  const wrap = document.getElementById('auth-signup-state-wrap');
+// Genéricos (recebem prefixo de IDs, reutilizados por signup e painel — Fase C)
+function renderStateFieldFor(prefix, country) {
+  const wrap = document.getElementById(prefix + '-state-wrap');
   if (!wrap) return;
   const labelEl = wrap.querySelector('label');
   const labelHtml = labelEl ? labelEl.outerHTML : '<label data-i18n="signup_estado">Estado</label>';
   let inner;
   if (country === 'BR' || country === 'US') {
     const list = country === 'BR' ? STATES_BR : STATES_US;
-    inner = `<select id="auth-signup-state"><option value="">--</option>${list.map(([c,n])=>`<option value="${c}">${c} — ${n}</option>`).join('')}</select>`;
+    inner = `<select id="${prefix}-state"><option value="">--</option>${list.map(([c,n])=>`<option value="${c}">${c} — ${n}</option>`).join('')}</select>`;
   } else {
-    inner = '<input type="text" id="auth-signup-state" placeholder="State / Region">';
+    inner = `<input type="text" id="${prefix}-state" placeholder="State / Region">`;
   }
   wrap.innerHTML = labelHtml + inner;
 }
 
-function onCountryChange() {
-  const country = document.getElementById('auth-signup-country')?.value;
+function onCountryChangeFor(prefix) {
+  const country = document.getElementById(prefix + '-country')?.value;
   if (!country) return;
-  renderStateField(country);
-  const ph = document.getElementById('auth-signup-phone');
+  renderStateFieldFor(prefix, country);
+  const ph = document.getElementById(prefix + '-phone');
   if (ph) ph.placeholder = (PHONE_PREFIX_BY_COUNTRY[country] || '+') + ' XXX...';
 }
 
-async function onZipBlur() {
-  const zip = document.getElementById('auth-signup-zip')?.value.trim();
-  const country = document.getElementById('auth-signup-country')?.value;
+async function onZipBlurFor(prefix) {
+  const zip = document.getElementById(prefix + '-zip')?.value.trim();
+  const country = document.getElementById(prefix + '-country')?.value;
   if (!zip || !country) return;
-  const spin = document.getElementById('auth-signup-zip-spin');
-  const msg = document.getElementById('auth-signup-zip-msg');
+  const spin = document.getElementById(prefix + '-zip-spin');
+  const msg = document.getElementById(prefix + '-zip-msg');
   if (spin) spin.style.display = 'block';
   if (msg) msg.style.display = 'none';
   try {
     const r = await fetchAddressByZip(zip, country);
     if (spin) spin.style.display = 'none';
     if (r && r.ok) {
-      const addr = document.getElementById('auth-signup-address');
-      const city = document.getElementById('auth-signup-city');
-      const state = document.getElementById('auth-signup-state');
+      const addr = document.getElementById(prefix + '-address');
+      const city = document.getElementById(prefix + '-city');
+      const state = document.getElementById(prefix + '-state');
       if (addr && r.address) addr.value = r.address;
       if (city && r.city) city.value = r.city;
       if (state && r.state) state.value = r.state;
@@ -5545,6 +5546,15 @@ async function onZipBlur() {
     if (spin) spin.style.display = 'none';
   }
 }
+
+// Wrappers compat (mantém callsites HTML existentes — onclick="onZipBlur()" etc)
+function renderStateField(country)  { renderStateFieldFor('auth-signup', country); }
+function onCountryChange()          { onCountryChangeFor('auth-signup'); }
+function onZipBlur()                { return onZipBlurFor('auth-signup'); }
+
+// Wrappers do painel (Fase C)
+function onCountryChangePainel()    { onCountryChangeFor('up-edit'); }
+function onZipBlurPainel()          { return onZipBlurFor('up-edit'); }
 
 function prefillCountryFromGeo() {
   if (!_geo || !_geo.geo_country) return;
@@ -6630,11 +6640,22 @@ function updateAuthUI(loggedIn) {
     document.getElementById('up-avatar').textContent = initial;
     document.getElementById('up-name').textContent = currentProfile.full_name || t('painel_user_fallback') || 'User';
     document.getElementById('up-email').textContent = currentProfile.email;
-    document.getElementById('up-edit-name').value = currentProfile.full_name || '';
-    document.getElementById('up-edit-phone').value = currentProfile.phone || '';
-    document.getElementById('up-edit-city').value = currentProfile.city || '';
-    document.getElementById('up-edit-state').value = currentProfile.state || '';
-    document.getElementById('up-edit-country').value = currentProfile.country || 'Brasil';
+    // Fase C — prefill 12 campos (cascata pra default country: profile → IP → 'BR')
+    const _setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+    const defaultCountry = currentProfile.country
+      || (typeof _geo !== 'undefined' && _geo && _geo.geo_country ? _geo.geo_country.toUpperCase() : '')
+      || 'BR';
+    _setVal('up-edit-first',    currentProfile.first_name);
+    _setVal('up-edit-last',     currentProfile.last_name);
+    _setVal('up-edit-nickname', currentProfile.nickname);
+    _setVal('up-edit-phone',    currentProfile.phone);
+    _setVal('up-edit-birthday', currentProfile.birthday);
+    _setVal('up-edit-zip',      currentProfile.zip);
+    _setVal('up-edit-address',  currentProfile.address);
+    _setVal('up-edit-city',     currentProfile.city);
+    _setVal('up-edit-country',  defaultCountry);
+    renderStateFieldFor('up-edit', defaultCountry);
+    _setVal('up-edit-state',    currentProfile.state);
     renderPainelLoyalty();
   }
 }
@@ -6670,22 +6691,52 @@ async function changePassword() {
 
 async function saveProfile() {
   if (!currentUser) return;
+
+  const _val = (id) => (document.getElementById(id)?.value || '').trim();
+  const first    = _val('up-edit-first');
+  const last     = _val('up-edit-last');
+  const nickname = _val('up-edit-nickname');
+  const phone    = _val('up-edit-phone');
+  const birthday = _val('up-edit-birthday');
+  const country  = _val('up-edit-country');
+  const zip      = _val('up-edit-zip');
+  const address  = _val('up-edit-address');
+  const city     = _val('up-edit-city');
+  const state    = _val('up-edit-state');
+
+  const errEl = document.getElementById('up-save-err');
+  const okEl  = document.getElementById('up-save-ok');
+  if (errEl) { errEl.style.display='none'; errEl.textContent=''; }
+  if (okEl)  { okEl.style.display='none'; }
+  const showErr = (msg) => { if (errEl) { errEl.textContent = msg; errEl.style.display='block'; } };
+
+  if (birthday && !validateBirthdayAdult(birthday)) return showErr(t('auth_idade_minima')||'Você deve ter 18 anos ou mais');
+  if (zip && country && ZIP_RE[country] && !ZIP_RE[country].test(zip)) return showErr(t('auth_cep_invalido')||'CEP/ZIP inválido para o país selecionado');
+
+  const phoneE164 = phone ? normalizePhoneE164(phone, country) : '';
+  const fullName  = `${first} ${last}`.trim() || (currentProfile && currentProfile.full_name) || '';
+
   const updates = {
-    full_name: document.getElementById('up-edit-name').value.trim(),
-    phone:     document.getElementById('up-edit-phone').value.trim(),
-    city:      document.getElementById('up-edit-city').value.trim(),
-    state:     document.getElementById('up-edit-state').value.trim(),
-    country:   document.getElementById('up-edit-country').value,
+    first_name: first    || null,
+    last_name:  last     || null,
+    nickname:   nickname || null,
+    full_name:  fullName || null,
+    phone:      phoneE164 || null,
+    birthday:   birthday || null,
+    address:    address  || null,
+    city:       city     || null,
+    state:      state    || null,
+    country:    country  || null,
+    zip:        zip      || null,
   };
+
   const { error } = await db.from('profiles').update(updates).eq('id', currentUser.id);
-  if (!error) {
-    Object.assign(currentProfile, updates);
-    updateAuthUI(true);
-    const ok = document.getElementById('up-save-ok');
-    ok.style.display = 'block';
-    setTimeout(() => ok.style.display = 'none', 3000);
-    track('profile_updated');
-  }
+  if (error) return showErr(error.message);
+
+  Object.assign(currentProfile, updates);
+  updateAuthUI(true);
+  if (okEl) { okEl.style.display = 'block'; setTimeout(() => { okEl.style.display = 'none'; }, 3000); }
+  track('profile_updated');
 }
 
 // Check existing session on load (with 6s timeout — recreates client if stuck)

@@ -3356,25 +3356,57 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <div class="up-grid">
   <div class="up-card">
    <h3 data-i18n="painel_dados_pessoais">Dados Pessoais</h3>
-   <div class="auth-field"><label data-i18n="painel_nome">Nome</label><input type="text" id="up-edit-name"></div>
-   <div class="auth-field"><label data-i18n="painel_telefone">Telefone</label><input type="tel" id="up-edit-phone"></div>
    <div class="auth-row">
-    <div class="auth-field"><label data-i18n="painel_cidade">Cidade</label><input type="text" id="up-edit-city"></div>
-    <div class="auth-field"><label data-i18n="painel_estado">Estado</label><input type="text" id="up-edit-state"></div>
+    <div class="auth-field"><label data-i18n="signup_first_name">Nome</label><input type="text" id="up-edit-first" placeholder="João"></div>
+    <div class="auth-field"><label data-i18n="signup_last_name">Sobrenome</label><input type="text" id="up-edit-last" placeholder="Silva"></div>
    </div>
+   <div class="auth-field"><label data-i18n="signup_nickname">Apelido</label><input type="text" id="up-edit-nickname" placeholder="jaozin"></div>
+   <div class="auth-field"><label data-i18n="painel_telefone">Telefone</label><input type="tel" id="up-edit-phone" placeholder="+55 11 99999-9999"></div>
+   <div class="auth-field"><label data-i18n="signup_birthday">Data de nascimento</label><input type="date" id="up-edit-birthday" max="2008-01-01"></div>
    <div class="auth-field"><label data-i18n="painel_pais">País</label>
-    <select id="up-edit-country">
-     <option value="Brasil">Brasil</option>
-     <option value="Portugal">Portugal</option>
-     <option value="Estados Unidos">Estados Unidos</option>
-     <option value="Argentina">Argentina</option>
-     <option value="Colômbia">Colômbia</option>
-     <option value="México">México</option>
-     <option value="Chile">Chile</option>
-     <option value="Outro">Outro</option>
+    <select id="up-edit-country" onchange="onCountryChangePainel()">
+     <option value="BR">Brasil</option>
+     <option value="AR">Argentina</option>
+     <option value="BO">Bolivia</option>
+     <option value="CL">Chile</option>
+     <option value="CO">Colombia</option>
+     <option value="EC">Ecuador</option>
+     <option value="MX">México</option>
+     <option value="PY">Paraguay</option>
+     <option value="PE">Perú</option>
+     <option value="UY">Uruguay</option>
+     <option value="VE">Venezuela</option>
+     <option value="US">United States</option>
+     <option value="CA">Canada</option>
+     <option value="PT">Portugal</option>
+     <option value="ES">España</option>
+     <option value="GB">United Kingdom</option>
+     <option value="DE">Deutschland</option>
+     <option value="FR">France</option>
+     <option value="IT">Italia</option>
+     <option value="NL">Nederland</option>
+     <option value="BE">België</option>
+     <option value="CH">Schweiz</option>
+     <option value="AT">Österreich</option>
+     <option value="AU">Australia</option>
+     <option value="JP">日本</option>
+     <option value="OTHER" data-i18n="country_other">Outro</option>
     </select>
    </div>
+   <div class="auth-field"><label data-i18n="signup_zip">CEP</label>
+    <div style="position:relative;">
+     <input type="text" id="up-edit-zip" placeholder="00000-000" onblur="onZipBlurPainel()">
+     <div id="up-edit-zip-spin" class="auth-zip-spin" style="display:none;"></div>
+    </div>
+    <div class="auth-zip-msg" id="up-edit-zip-msg" style="display:none;"></div>
+   </div>
+   <div class="auth-field"><label data-i18n="signup_address">Endereço</label><input type="text" id="up-edit-address" placeholder="Rua, número"></div>
+   <div class="auth-row">
+    <div class="auth-field"><label data-i18n="painel_cidade">Cidade</label><input type="text" id="up-edit-city"></div>
+    <div class="auth-field" id="up-edit-state-wrap"><label data-i18n="painel_estado">Estado</label><input type="text" id="up-edit-state" placeholder="UF"></div>
+   </div>
    <button class="auth-btn" onclick="saveProfile()" data-i18n="painel_salvar">Salvar Alterações</button>
+   <div class="auth-error" id="up-save-err" style="margin-top:12px;display:none;"></div>
    <div class="auth-success" id="up-save-ok" style="margin-top:12px;" data-i18n="painel_salvos">Dados salvos com sucesso!</div>
   </div>
   <div class="up-card">
