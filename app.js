@@ -5340,7 +5340,7 @@ async function checkAnalysisGate(){
     // Mostrar badge de trial
     const meta=document.getElementById('da-meta');
     if(meta){
-      const remaining=3-diffDays;
+      const remaining=Math.max(1,Math.min(3,3-diffDays));
       const trialText=t('da_gate_trial').replace('{days}',remaining);
       if(!meta.querySelector('.da-trial-badge')){
         meta.insertAdjacentHTML('beforeend',`<span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">${trialText}</span>`);
@@ -5790,7 +5790,7 @@ function autoDetectDDI() {
 let _liveCountdownInterval=null;
 function _startLiveCountdown(){
   if(_liveCountdownInterval) clearInterval(_liveCountdownInterval);
-  const target=new Date('2026-04-20T13:30:00Z').getTime(); // 9:30 ET = 13:30 UTC
+  const target=new Date('2026-05-18T13:30:00Z').getTime(); // 9:30 ET = 13:30 UTC
   function _update(){
     const now=Date.now();
     const diff=target-now;
@@ -6680,6 +6680,12 @@ function updateAuthUI(loggedIn) {
   if (mmTop) mmTop.style.display = loggedIn ? 'none' : '';
   if (mmIn)  mmIn.style.display  = loggedIn ? '' : 'none';
 
+  // Painel logged-out: zera textos pra evitar mostrar placeholder "Usuário/email@example.com"
+  if (!loggedIn) {
+    const _z = (id) => { const el = document.getElementById(id); if (el) el.textContent = ''; };
+    _z('up-name'); _z('up-email'); _z('up-avatar');
+  }
+
   if (loggedIn && currentProfile) {
     const initial = (currentProfile.full_name || currentProfile.email || 'U').charAt(0).toUpperCase();
     document.getElementById('nav-avatar').textContent = initial;
@@ -7302,7 +7308,7 @@ async function checkGEXGate(){
     if(diffDays<3){
       const gxDate=document.getElementById('gx-date');
       if(gxDate&&!gxDate.querySelector('.da-trial-badge')){
-        const remaining=3-diffDays;
+        const remaining=Math.max(1,Math.min(3,3-diffDays));
         const trialText=t('da_gate_trial').replace('{days}',remaining);
         gxDate.insertAdjacentHTML('beforeend',` <span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">${trialText}</span>`);
       }
