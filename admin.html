@@ -1317,27 +1317,38 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <textarea id="em-body" rows="12" placeholder="Hey {nome}, ..."></textarea>
      </div>
 
-     <!-- Queue status -->
-     <div id="email-queue-status" style="display:none;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px;margin-bottom:12px;">
-       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-         <div style="font-size:11px;font-weight:700;color:var(--t1);">Fila de Envio</div>
-         <button class="btn-secondary" style="font-size:9px;padding:3px 8px;" onclick="clearEmailQueue()">Limpar fila</button>
+     <!-- Card Envio Automático (sempre visível) -->
+     <div id="auto-status-card" style="background:var(--card2);border:1px solid var(--b1);border-radius:10px;padding:14px;margin-bottom:14px;">
+       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green);"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+         <div style="font-size:12px;font-weight:700;color:var(--t1);flex:1;">Envio Automático</div>
+         <span id="auto-state-pill" style="font-size:9px;padding:3px 9px;border-radius:10px;background:rgba(16,185,129,.15);color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">● Ligado</span>
        </div>
-       <div id="email-queue-info" style="font-size:11px;color:var(--t2);"></div>
-       <div style="background:var(--b1);border-radius:3px;height:5px;margin-top:6px;overflow:hidden;"><div id="email-queue-bar" style="background:var(--green);height:100%;width:0%;transition:width .3s;"></div></div>
-       <div style="display:flex;gap:6px;margin-top:8px;">
-         <button id="queue-auto-btn" class="btn-primary" style="flex:1;font-size:11px;padding:8px 16px;" onclick="toggleAutoQueue()">▶ Disparar Automático</button>
-         <button class="btn-secondary" style="font-size:11px;padding:8px 12px;" onclick="resumeEmailQueue()">Enviar 1 lote</button>
+       <div style="font-size:10px;color:var(--t3);margin-bottom:4px;">8h BRT todo dia · trava 400/dia</div>
+       <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:5px;">
+         <span>Hoje</span><strong id="auto-progress-label" style="color:var(--gold);">0 / 400</strong>
        </div>
-       <div id="queue-auto-status" style="display:none;margin-top:6px;font-size:10px;color:var(--t2);"></div>
+       <div style="background:var(--b1);border-radius:4px;height:8px;overflow:hidden;margin-bottom:10px;">
+         <div id="auto-progress-bar" style="background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3s ease infinite;height:100%;width:0%;transition:width .4s;border-radius:4px;"></div>
+       </div>
+       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:10px;margin-bottom:10px;">
+         <div style="background:var(--card);border:1px solid var(--b1);border-radius:6px;padding:7px 9px;">
+           <div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:8px;margin-bottom:2px;">Próximo envio</div>
+           <div id="auto-next-run" style="color:var(--t1);font-weight:600;">—</div>
+         </div>
+         <div style="background:var(--card);border:1px solid var(--b1);border-radius:6px;padding:7px 9px;">
+           <div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:8px;margin-bottom:2px;">7 dias</div>
+           <div id="auto-week-stats" style="color:var(--t1);font-weight:600;">—</div>
+         </div>
+       </div>
+       <button id="auto-toggle-btn" class="btn-secondary" style="font-size:10px;padding:7px 12px;width:100%;" onclick="toggleAutoEmail()">Pausar automático</button>
      </div>
 
+     <!-- Botões enxutos: Pré-visualizar, Enviar Teste, Enviar Agora -->
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-       <button class="btn-primary" onclick="previewEmail()">Preview</button>
-       <button class="btn-secondary" onclick="sendTestEmail()" title="Envia para o email do admin logado">Enviar Teste</button>
-       <button class="btn-secondary" onclick="sendEmailsSmtp()">Enviar lote</button>
-       <button class="btn-secondary" onclick="startEmailQueue()">Enviar para todos (fila)</button>
-       <button class="btn-secondary" onclick="saveTemplate()">Salvar template</button>
+       <button class="btn-secondary" onclick="previewEmail()">Pré-visualizar</button>
+       <button class="btn-secondary" onclick="sendTestEmail()" title="Envia para o email do admin logado — não conta na cota">Enviar Teste</button>
+       <button class="btn-primary" onclick="sendEmailsSmtp()" style="flex:1;">Enviar agora</button>
      </div>
    </div>
  </div>
@@ -3523,7 +3534,14 @@ function renderPage(p){
       renderEmailFirmaChips();
       loadEmailStats();
       updateDestCount();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
+      // Auto-refresh card a cada 30s enquanto card visível
+      if(window._autoStatusInterval) clearInterval(window._autoStatusInterval);
+      window._autoStatusInterval = setInterval(()=>{
+        const card = document.getElementById('auto-status-card');
+        if(!card || card.offsetParent === null){ clearInterval(window._autoStatusInterval); window._autoStatusInterval=null; return; }
+        loadAutoStatus();
+      }, 30000);
       break;
     case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
     case 'pro':            renderProPage(); break;
@@ -13074,6 +13092,52 @@ async function saveLiveRoomSettings(){
     await db.from('site_settings').upsert({key,value,updated_at:new Date().toISOString()},{onConflict:'key'});
   }
   toast('Configurações do Live Room salvas!');
+}
+
+// === Email Auto Status (card automático) ===
+async function loadAutoStatus(){
+  try{
+    const r = await fetch('/api/email-status', { headers: { Authorization: 'Bearer ' + (window._adminToken||localStorage.getItem('mc-admin-auth-token')||'') } });
+    if(!r.ok) return;
+    const s = await r.json();
+    const pill = document.getElementById('auto-state-pill');
+    const btn = document.getElementById('auto-toggle-btn');
+    const lbl = document.getElementById('auto-progress-label');
+    const bar = document.getElementById('auto-progress-bar');
+    const next = document.getElementById('auto-next-run');
+    const week = document.getElementById('auto-week-stats');
+    if(!pill) return;
+    if(s.paused){
+      pill.style.background='rgba(138,152,174,.15)'; pill.style.color='var(--t3)'; pill.textContent='○ Pausado';
+      if(btn){ btn.textContent='Religar automático'; btn.classList.remove('btn-secondary'); btn.classList.add('btn-primary'); }
+      if(bar){ bar.style.background='var(--t3)'; bar.style.animation='none'; }
+    } else {
+      pill.style.background='rgba(16,185,129,.15)'; pill.style.color='var(--green)'; pill.textContent='● Ligado';
+      if(btn){ btn.textContent='Pausar automático'; btn.classList.add('btn-secondary'); btn.classList.remove('btn-primary'); }
+      if(bar){ bar.style.background='linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a)'; bar.style.backgroundSize='200% 100%'; bar.style.animation='shimmer 3s ease infinite'; }
+    }
+    if(lbl) lbl.textContent = `${s.sent_today||0} / ${s.daily_limit||400}`;
+    if(bar) bar.style.width = Math.min(100, ((s.sent_today||0)/(s.daily_limit||400))*100) + '%';
+    if(next) next.textContent = s.next_run_label || 'Amanhã 08:00';
+    if(week) week.innerHTML = `<span style="color:var(--green);">${(s.week_sent||0).toLocaleString()}</span> ✓ · <span style="color:var(--red);">${s.week_failed||0}</span> falhas`;
+  } catch(e){ /* silencioso */ }
+}
+
+async function toggleAutoEmail(){
+  const btn = document.getElementById('auto-toggle-btn'); if(!btn) return;
+  btn.disabled = true; const old = btn.textContent; btn.textContent = '...';
+  try{
+    const r = await fetch('/api/email-status', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', Authorization: 'Bearer ' + (window._adminToken||localStorage.getItem('mc-admin-auth-token')||'') },
+      body: JSON.stringify({ action: 'toggle_pause' })
+    });
+    if(!r.ok){ throw new Error('falha'); }
+    await loadAutoStatus();
+    toast('Status atualizado');
+  } catch(e){
+    btn.textContent = old; toast('Erro ao atualizar status', 'warn');
+  } finally { btn.disabled = false; }
 }
 
 </script>

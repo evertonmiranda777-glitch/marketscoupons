@@ -2,8 +2,8 @@ name: Email auto-dispatch (cron diário)
 
 on:
   schedule:
-    # 14:00 UTC = 11:00 BRT — dispara ~400 emails/dia
-    - cron: '0 14 * * *'
+    # 11:00 UTC = 08:00 BRT — dispara ~400 emails/dia
+    - cron: '0 11 * * *'
   workflow_dispatch:
     inputs:
       campaign:

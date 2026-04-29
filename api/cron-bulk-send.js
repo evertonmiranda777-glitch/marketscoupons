@@ -117,10 +117,24 @@ module.exports = async (req, res) => {
   if (!CRON_SECRET || auth !== `Bearer ${CRON_SECRET}`) return res.status(401).json({ error: 'Unauthorized' });
   if (!SK || !UNSUB_SECRET) return res.status(500).json({ error: 'missing env keys' });
 
-  const { campaign, filterTag = 'bruno-marques', batchSize = 400 } = req.body || {};
+  const { campaign, filterTag = null, batchSize = 400 } = req.body || {};
   if (!campaign) return res.status(400).json({ error: 'campaign required' });
 
   try {
+    // Check if auto-email is paused (admin toggle via /api/email-status)
+    try {
+      const pauseCheck = await fetch(
+        `${SUPABASE_URL}/rest/v1/site_settings?key=eq.email_auto_paused&select=value`,
+        { headers: { apikey: SK, Authorization: `Bearer ${SK}` } }
+      );
+      if (pauseCheck.ok) {
+        const rows = await pauseCheck.json();
+        if (rows[0]?.value === 'true') {
+          return res.status(200).json({ success: true, skipped: true, reason: 'auto_paused_by_admin' });
+        }
+      }
+    } catch {}
+
     const excludeTag = `received-${campaign}`;
 
     // Calcula budget
