@@ -205,6 +205,34 @@ module.exports = async (req, res) => {
     return { email: recipient.email, status: resp.ok ? 'sent' : 'failed', provider: 'brevo', response: data };
   }
 
+  // Send via SendGrid (3º provider, +100/dia free)
+  async function sendViaSendGrid(recipient, finalSubject, finalHtml) {
+    const SG_KEY = process.env.SENDGRID_API_KEY;
+    if (!SG_KEY) return { email: recipient.email, status: 'skipped', provider: 'sendgrid', response: { error: 'no key' } };
+    const body = {
+      personalizations: [{ to: [{ email: recipient.email, name: recipient.name || 'Trader' }] }],
+      from: { email: senderInfo.email, name: senderInfo.name },
+      subject: finalSubject,
+      content: [{ type: 'text/html', value: finalHtml }],
+      headers: {
+        'List-Unsubscribe': buildUnsubHeader(recipient.email),
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      categories: (tags || ['campaign']).slice(0, 10).map(t => String(t).replace(/[^a-zA-Z0-9_-]/g, '_')),
+    };
+    const resp = await fetch('https://api.sendgrid.com/v3/mail/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SG_KEY}` },
+      body: JSON.stringify(body),
+    });
+    console.log(`[SENDGRID] ${recipient.email} → ${resp.status}`);
+    if (resp.status === 202) {
+      return { email: recipient.email, status: 'sent', provider: 'sendgrid', response: { accepted: true } };
+    }
+    const data = await resp.json().catch(() => ({}));
+    return { email: recipient.email, status: 'failed', provider: 'sendgrid', response: data };
+  }
+
   // Send via Resend
   async function sendViaResend(recipient, finalSubject, finalHtml) {
     if (!RESEND_KEY) return { email: recipient.email, status: 'skipped', provider: 'resend', response: { error: 'no key' } };
@@ -229,14 +257,16 @@ module.exports = async (req, res) => {
     return { email: recipient.email, status: resp.ok ? 'sent' : 'failed', provider: 'resend', response: data };
   }
 
-  // Determine provider: 'brevo', 'resend', or 'auto' (brevo first, fallback to resend)
+  // Determine provider: 'brevo', 'resend', 'sendgrid', or 'auto' (brevo→resend→sendgrid)
   const useProvider = provider || 'auto';
+  const SG_KEY = process.env.SENDGRID_API_KEY;
 
-  // Reserva 5 em Brevo (transacionais — welcome tenta Brevo primeiro). Resend full 100.
-  // Bulk: ~295 Brevo + ~100 Resend = ~395/dia.
+  // Reserva 5 em Brevo (transacionais — welcome tenta Brevo primeiro).
+  // Bulk: ~295 Brevo + ~100 Resend + ~100 SendGrid = ~495/dia.
   const BREVO_RESERVE = 5;
   let brevoBudget = Infinity;
   let resendBudget = Infinity;
+  let sendgridBudget = Infinity;
   if (useProvider === 'auto' && to.length > 1) {
     if (BREVO_KEY) {
       try {
@@ -270,6 +300,22 @@ module.exports = async (req, res) => {
         resendBudget = 100; // fallback otimista
       }
     }
+    if (SG_KEY) {
+      // SendGrid free tier: 100/dia. Subtrai quantos já enviamos hoje via email_logs (provider='sendgrid').
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.sendgrid&created_at=gte.${today}&select=recipients`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        });
+        const logs = r.ok ? await r.json() : [];
+        const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
+        sendgridBudget = Math.max(0, 100 - sentToday);
+        console.log(`[send-email] SendGrid sentToday: ${sentToday}, bulk budget: ${sendgridBudget}`);
+      } catch (e) {
+        console.error('[send-email] SendGrid budget check failed:', e.message);
+        sendgridBudget = 100;
+      }
+    }
   }
 
   const results = [];
@@ -292,9 +338,10 @@ module.exports = async (req, res) => {
         result = await sendViaResend(recipient, finalSubject, finalHtml);
       } else if (useProvider === 'brevo') {
         result = await sendViaBrevo(recipient, finalSubject, finalHtml);
+      } else if (useProvider === 'sendgrid') {
+        result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
       } else {
-        // Auto: Brevo primeiro até esgotar budget, depois Resend até esgotar.
-        // Total bulk: ~295 Brevo + ~95 Resend = ~390/dia.
+        // Auto: Brevo → Resend → SendGrid (escalada ~495/dia: 295+100+100)
         if (brevoBudget > 0 && BREVO_KEY) {
           result = await sendViaBrevo(recipient, finalSubject, finalHtml);
           if (result.status === 'sent') brevoBudget--;
@@ -303,11 +350,24 @@ module.exports = async (req, res) => {
             result = await sendViaResend(recipient, finalSubject, finalHtml);
             if (result.status === 'sent') resendBudget--;
           }
+          if (result.status === 'failed' && SG_KEY && sendgridBudget > 0) {
+            console.log(`[AUTO] Resend errored for ${recipient.email}, falling back to SendGrid`);
+            result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
+            if (result.status === 'sent') sendgridBudget--;
+          }
         } else if (resendBudget > 0 && RESEND_KEY) {
           result = await sendViaResend(recipient, finalSubject, finalHtml);
           if (result.status === 'sent') resendBudget--;
+          if (result.status === 'failed' && SG_KEY && sendgridBudget > 0) {
+            console.log(`[AUTO] Resend errored for ${recipient.email}, falling back to SendGrid`);
+            result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
+            if (result.status === 'sent') sendgridBudget--;
+          }
+        } else if (sendgridBudget > 0 && SG_KEY) {
+          result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
+          if (result.status === 'sent') sendgridBudget--;
         } else {
-          result = { email: recipient.email, status: 'skipped', provider: 'auto', response: { error: 'Daily quota hit (Brevo+Resend) — resumes tomorrow' } };
+          result = { email: recipient.email, status: 'skipped', provider: 'auto', response: { error: 'Daily quota hit (Brevo+Resend+SendGrid) — resumes tomorrow' } };
         }
       }
     } catch (err) {
