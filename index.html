@@ -2642,19 +2642,26 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .lv-feat-title{font-size:13px;font-weight:700;margin-bottom:3px;color:var(--t1);}
 .lv-feat-desc{font-size:11px;color:var(--t3);line-height:1.5;}
 @media(max-width:600px){.lv-cd-num{font-size:22px;}.lv-cd-card{padding:12px 4px;}}
-/* B.3.2 — Confirm Email Modal */
+/* B.3.2 — Confirm Email Modal (dark/glass alinhado com auth-overlay) */
 .confirm-email-overlay{position:fixed;inset:0;background:rgba(8,12,18,.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
-.cem-card{background:#fff;color:#0d141c;border-radius:16px;padding:36px 32px;max-width:420px;width:100%;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.4);}
-.cem-close{position:absolute;top:12px;right:14px;background:none;border:0;font-size:24px;color:#94a3b8;cursor:pointer;line-height:1;}
-.cem-icon-wrap{margin-bottom:16px;}
-.cem-icon{font-size:48px;display:inline-block;}
-.cem-title{font-size:22px;font-weight:700;margin:0 0 12px;color:#0d141c;}
-.cem-body{font-size:15px;line-height:1.5;color:#475569;margin:0 0 16px;}
-.cem-email-display{background:#f1f5f9;border-radius:8px;padding:10px 14px;font-family:monospace;font-size:14px;color:#0d141c;margin-bottom:20px;word-break:break-all;}
-.cem-btn-primary{background:#F0B429;color:#0d141c;border:0;font-weight:700;font-size:15px;padding:12px 24px;border-radius:10px;cursor:pointer;width:100%;margin-bottom:8px;}
-.cem-btn-primary:disabled{opacity:.5;cursor:not-allowed;}
-.cem-btn-ghost{background:none;border:0;color:#64748b;font-size:14px;cursor:pointer;padding:8px;width:100%;}
-.cem-rate-limit{font-size:13px;color:#94a3b8;margin-bottom:12px;}
+.cem-card{background:var(--card);color:var(--t1);border:1px solid rgba(107,182,201,.22);border-radius:16px;padding:36px 32px;max-width:420px;width:100%;text-align:center;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.6),0 0 0 1px rgba(240,180,41,.04);}
+.cem-close{position:absolute;top:12px;right:14px;background:none;border:0;font-size:24px;color:var(--t3);cursor:pointer;line-height:1;transition:color .2s;}
+.cem-close:hover{color:var(--t1);}
+.cem-icon-wrap{margin-bottom:18px;display:flex;justify-content:center;}
+.cem-icon{width:64px;height:64px;border-radius:50%;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.22);display:flex;align-items:center;justify-content:center;color:var(--gold);}
+.cem-icon svg{width:28px;height:28px;}
+.cem-title{font-size:22px;font-weight:700;margin:0 0 12px;color:var(--t1);letter-spacing:-.3px;}
+.cem-body{font-size:15px;line-height:1.5;color:var(--t2);margin:0 0 16px;}
+.cem-email-display{background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:10px;padding:11px 14px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;color:var(--t1);margin-bottom:20px;word-break:break-all;}
+.cem-btn-primary{width:100%;padding:14px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .3s,box-shadow .3s;margin-bottom:8px;font-family:inherit;box-shadow:0 4px 20px rgba(240,180,41,.25);animation:authShimmer 3s ease infinite;position:relative;}
+.cem-btn-primary::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent 50%);pointer-events:none;}
+.cem-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,180,41,.35);}
+.cem-btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;animation:none;}
+.cem-btn-ghost{background:none;border:0;color:var(--t3);font-size:14px;cursor:pointer;padding:10px;width:100%;font-family:inherit;transition:color .2s;}
+.cem-btn-ghost:hover{color:var(--t2);}
+.cem-rate-limit{font-size:13px;color:var(--t3);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.cem-rate-limit::before{content:'';width:14px;height:14px;border:2px solid var(--t3);border-top-color:transparent;border-radius:50%;animation:cemSpin 1s linear infinite;}
+@keyframes cemSpin{to{transform:rotate(360deg);}}
 .cem-toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:#10B981;color:#fff;padding:12px 20px;border-radius:10px;font-weight:600;z-index:10000;box-shadow:0 8px 24px rgba(16,185,129,.4);display:none;}
 </style>
 <script src="js/page-boot.js?v=20260427"></script>

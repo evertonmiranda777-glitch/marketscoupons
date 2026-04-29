@@ -7297,7 +7297,9 @@ function showConfirmEmailModal(state){
   _cemPendingEmail = email;
   const ov = document.getElementById('confirm-email-overlay');
   if(!ov) return;
-  document.getElementById('cem-icon').textContent = state==='expired' ? '⏰' : '📧';
+  const ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  const ICON_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+  document.getElementById('cem-icon').innerHTML = state==='expired' ? ICON_CLOCK : ICON_MAIL;
   document.getElementById('cem-title').textContent = t(state==='expired'?'cem_expired_title':'cem_pending_title');
   document.getElementById('cem-body').textContent  = t(state==='expired'?'cem_expired_body':'cem_pending_body');
   document.getElementById('cem-email-display').textContent = email;

@@ -263,39 +263,108 @@ async function generateSupabaseMagicLink(email) {
 }
 
 const CONFIRM_T = {
-  pt: { headline:'Confirme seu email pra liberar seu acesso completo', subtitle:'Você se cadastrou no Markets Coupons. Confirme seu email pra acessar o programa de fidelidade, sorteios e perfil completo.', cta:'Confirmar email', fallback:'Ou copie e cole no navegador:', not_you:'Se você não criou essa conta, ignore este email.', expires:'Este link expira em 24 horas.' },
-  en: { headline:'Confirm your email to unlock full access', subtitle:'You signed up at Markets Coupons. Confirm your email to access the loyalty program, giveaways, and profile.', cta:'Confirm email', fallback:'Or copy and paste in your browser:', not_you:'If you didn\'t create this account, ignore this email.', expires:'This link expires in 24 hours.' },
-  es: { headline:'Confirma tu email para desbloquear el acceso completo', subtitle:'Te registraste en Markets Coupons. Confirma tu email para acceder al programa de fidelidad, sorteos y perfil.', cta:'Confirmar email', fallback:'O copia y pega en tu navegador:', not_you:'Si no creaste esta cuenta, ignora este email.', expires:'Este enlace expira en 24 horas.' },
-  fr: { headline:'Confirmez votre email pour un accès complet', subtitle:'Vous vous êtes inscrit chez Markets Coupons. Confirmez pour accéder au programme de fidélité, tirages et profil.', cta:'Confirmer email', fallback:'Ou copiez-collez dans votre navigateur :', not_you:'Si vous n\'avez pas créé ce compte, ignorez cet email.', expires:'Ce lien expire dans 24 heures.' },
-  de: { headline:'Bestätigen Sie Ihre E-Mail für vollen Zugriff', subtitle:'Sie haben sich bei Markets Coupons registriert. Bestätigen Sie für Treueprogramm, Gewinnspiele und Profil.', cta:'E-Mail bestätigen', fallback:'Oder kopieren Sie in Ihren Browser:', not_you:'Wenn Sie dieses Konto nicht erstellt haben, ignorieren Sie diese E-Mail.', expires:'Dieser Link läuft in 24 Stunden ab.' },
-  it: { headline:'Conferma la tua email per accesso completo', subtitle:'Ti sei registrato a Markets Coupons. Conferma per accedere al programma fedeltà, concorsi e profilo.', cta:'Conferma email', fallback:'O copia e incolla nel browser:', not_you:'Se non hai creato questo account, ignora questa email.', expires:'Questo link scade in 24 ore.' },
-  ar: { headline:'أكد بريدك الإلكتروني لفتح الوصول الكامل', subtitle:'لقد سجلت في Markets Coupons. أكد بريدك للوصول إلى برنامج الولاء والسحوبات والملف.', cta:'تأكيد البريد', fallback:'أو انسخ والصق في المتصفح:', not_you:'إذا لم تنشئ هذا الحساب، تجاهل هذا البريد.', expires:'تنتهي صلاحية هذا الرابط خلال 24 ساعة.' },
+  pt: { pill:'Confirmação', tagline:'as melhores ofertas para traders', greeting:'Olá', body_p:'Recebemos seu cadastro no Markets Coupons. Pra ativar sua conta e liberar acesso ao programa de fidelidade, sorteios e seu perfil completo, é só clicar no botão abaixo:', signature_role:'Equipe Markets Coupons', headline:'Confirme seu email pra liberar seu acesso completo', subtitle:'Você se cadastrou no Markets Coupons. Confirme seu email pra acessar o programa de fidelidade, sorteios e perfil completo.', cta:'Confirmar email', fallback:'Ou copie e cole no navegador:', not_you:'Se você não criou essa conta, ignore este email.', expires:'Este link expira em 24 horas.' },
+  en: { pill:'Verification', tagline:'the best deals for traders', greeting:'Hi', body_p:'We received your sign-up at Markets Coupons. To activate your account and unlock the loyalty program, giveaways, and your full profile, just click the button below:', signature_role:'Markets Coupons Team', headline:'Confirm your email to unlock full access', subtitle:'You signed up at Markets Coupons. Confirm your email to access the loyalty program, giveaways, and profile.', cta:'Confirm email', fallback:'Or copy and paste in your browser:', not_you:'If you didn\'t create this account, ignore this email.', expires:'This link expires in 24 hours.' },
+  es: { pill:'Verificación', tagline:'las mejores ofertas para traders', greeting:'Hola', body_p:'Recibimos tu registro en Markets Coupons. Para activar tu cuenta y desbloquear el programa de fidelidad, sorteos y tu perfil completo, haz clic en el botón:', signature_role:'Equipo Markets Coupons', headline:'Confirma tu email para desbloquear el acceso completo', subtitle:'Te registraste en Markets Coupons. Confirma tu email para acceder al programa de fidelidad, sorteos y perfil.', cta:'Confirmar email', fallback:'O copia y pega en tu navegador:', not_you:'Si no creaste esta cuenta, ignora este email.', expires:'Este enlace expira en 24 horas.' },
+  fr: { pill:'Vérification', tagline:'les meilleures offres pour traders', greeting:'Salut', body_p:'Nous avons reçu votre inscription à Markets Coupons. Pour activer votre compte et débloquer le programme de fidélité, tirages et votre profil complet, cliquez sur le bouton :', signature_role:'Équipe Markets Coupons', headline:'Confirmez votre email pour un accès complet', subtitle:'Vous vous êtes inscrit chez Markets Coupons. Confirmez pour accéder au programme de fidélité, tirages et profil.', cta:'Confirmer email', fallback:'Ou copiez-collez dans votre navigateur :', not_you:'Si vous n\'avez pas créé ce compte, ignorez cet email.', expires:'Ce lien expire dans 24 heures.' },
+  de: { pill:'Bestätigung', tagline:'die besten angebote für trader', greeting:'Hallo', body_p:'Wir haben deine Registrierung bei Markets Coupons erhalten. Um dein Konto zu aktivieren und das Treueprogramm, Gewinnspiele und dein vollständiges Profil freizuschalten, klicke auf den Button:', signature_role:'Markets Coupons Team', headline:'Bestätigen Sie Ihre E-Mail für vollen Zugriff', subtitle:'Sie haben sich bei Markets Coupons registriert. Bestätigen Sie für Treueprogramm, Gewinnspiele und Profil.', cta:'E-Mail bestätigen', fallback:'Oder kopieren Sie in Ihren Browser:', not_you:'Wenn Sie dieses Konto nicht erstellt haben, ignorieren Sie diese E-Mail.', expires:'Dieser Link läuft in 24 Stunden ab.' },
+  it: { pill:'Conferma', tagline:'le migliori offerte per trader', greeting:'Ciao', body_p:'Abbiamo ricevuto la tua registrazione su Markets Coupons. Per attivare il tuo account e sbloccare il programma fedeltà, concorsi e il tuo profilo completo, clicca sul pulsante:', signature_role:'Team Markets Coupons', headline:'Conferma la tua email per accesso completo', subtitle:'Ti sei registrato a Markets Coupons. Conferma per accedere al programma fedeltà, concorsi e profilo.', cta:'Conferma email', fallback:'O copia e incolla nel browser:', not_you:'Se non hai creato questo account, ignora questa email.', expires:'Questo link scade in 24 ore.' },
+  ar: { pill:'تأكيد', tagline:'أفضل العروض للمتداولين', greeting:'مرحباً', body_p:'استلمنا تسجيلك في Markets Coupons. لتفعيل حسابك وفتح برنامج الولاء والسحوبات وملفك الكامل، انقر على الزر أدناه:', signature_role:'فريق Markets Coupons', headline:'أكد بريدك الإلكتروني لفتح الوصول الكامل', subtitle:'لقد سجلت في Markets Coupons. أكد بريدك للوصول إلى برنامج الولاء والسحوبات والملف.', cta:'تأكيد البريد', fallback:'أو انسخ والصق في المتصفح:', not_you:'إذا لم تنشئ هذا الحساب، تجاهل هذا البريد.', expires:'تنتهي صلاحية هذا الرابط خلال 24 ساعة.' },
 };
 
 function buildConfirmHtml(lang, name, link) {
   const L = CONFIRM_T[lang] || CONFIRM_T.en;
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const F = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+  const safeName = String(name || 'Trader').replace(/[<>"]/g,'').slice(0,60);
   return `<!DOCTYPE html>
 <html lang="${lang}" dir="${dir}">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${L.headline}</title></head>
-<body style="margin:0;padding:0;background:#f4f4f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f7" style="padding:32px 0;"><tr><td align="center">
-<table width="560" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden;max-width:560px;">
-<tr><td align="center" style="padding:40px 40px 24px;">
-<table cellpadding="0" cellspacing="0" border="0"><tr>
-<td style="vertical-align:middle;"><svg width="36" height="36" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#F0B429" stroke-width="2.4" fill="none"/><path d="M14 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M36 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
-<td style="vertical-align:middle;padding-left:10px;"><span style="font-size:18px;font-weight:700;color:#1a1a1a;letter-spacing:-0.01em;"><span style="color:#F0B429;">Markets</span> Coupons</span></td>
-</tr></table></td></tr>
-<tr><td style="padding:0 40px 12px;"><h1 style="margin:0;font-size:24px;font-weight:700;color:#1a1a1a;line-height:1.3;letter-spacing:-0.01em;">${L.headline}</h1></td></tr>
-<tr><td style="padding:0 40px 28px;"><p style="margin:0;font-size:15px;color:#666;line-height:1.5;">${L.subtitle}</p></td></tr>
-<tr><td align="center" style="padding:0 40px 24px;">
-<table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#F0B429" style="border-radius:10px;background:#F0B429;">
-<a href="${link}" target="_blank" style="display:inline-block;padding:16px 40px;font-size:16px;font-weight:700;color:#1a1a1a;text-decoration:none;letter-spacing:.01em;">${L.cta}</a>
-</td></tr></table></td></tr>
-<tr><td style="padding:0 40px 16px;"><p style="margin:0;font-size:12px;color:#999;line-height:1.5;text-align:center;">${L.fallback}<br><a href="${link}" style="color:#F0B429;word-break:break-all;">${link}</a></p></td></tr>
-<tr><td style="padding:24px 40px 12px;border-top:1px solid #eee;"><p style="margin:0 0 8px;font-size:12px;color:#999;line-height:1.6;">${L.not_you}</p><p style="margin:0;font-size:12px;color:#999;line-height:1.6;">${L.expires}</p></td></tr>
-<tr><td align="center" style="padding:20px 40px 32px;"><p style="margin:0;font-size:11px;color:#aaa;">Markets Coupons · marketscoupons.com</p></td></tr>
-</table></td></tr></table></body></html>`;
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${L.headline}</title>
+<style>html,body{margin:0!important;padding:0!important;background-color:#f0f0f0!important;}</style>
+</head>
+<body bgcolor="#f0f0f0" style="margin:0;padding:0;background-color:#f0f0f0;font-family:${F};">
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f0f0f0;opacity:0;mso-hide:all;">${L.subtitle}</div>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0f0f0" style="background-color:#f0f0f0;padding:32px 0;"><tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
+
+<!-- HEADER #fff + logo Coupons laranja #ff8c00 + tagline -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border-radius:16px 16px 0 0;border:1px solid #e0e0e0;border-bottom:none;padding:26px 40px 22px;text-align:center;font-family:${F};">
+  <span style="font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;">Markets <span style="color:#ff8c00;">Coupons</span><span style="color:#ff8c00;font-size:9px;"> &#9679;</span></span><br>
+  <span style="font-size:11px;font-weight:600;color:#aaa;letter-spacing:2.5px;text-transform:uppercase;">${L.tagline}</span>
+</td></tr>
+
+<!-- Linha separadora azul #1976D2 -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;padding:0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="3" bgcolor="#1976D2" style="background-color:#1976D2;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+</td></tr>
+
+<!-- HERO #111111 -->
+<tr><td bgcolor="#111111" style="background-color:#111111;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:48px 40px 44px;font-family:${F};">
+    <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;"><tr>
+      <td bgcolor="#1a2f4a" style="background-color:#1a2f4a;border:1px solid #1976D2;border-radius:20px;padding:5px 14px;">
+        <span style="font-family:${F};font-size:10px;font-weight:700;color:#60A5FA;text-transform:uppercase;letter-spacing:1.5px;">&#9679; ${L.pill}</span>
+      </td>
+    </tr></table>
+    <h1 style="font-family:${F};font-size:34px;font-weight:800;color:#fff;line-height:1.15;letter-spacing:-1.2px;margin:0 0 16px;">${L.headline}</h1>
+    <p style="font-family:${F};font-size:15px;color:#888;line-height:1.6;max-width:480px;margin:0;">${L.subtitle}</p>
+  </td></tr></table>
+</td></tr>
+
+<!-- Linha separadora azul #1976D2 -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;padding:0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="3" bgcolor="#1976D2" style="background-color:#1976D2;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+</td></tr>
+
+<!-- BODY #fff -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border:1px solid #e0e0e0;border-top:none;border-bottom:none;padding:36px 40px 8px;font-family:${F};">
+  <p style="font-size:16px;font-weight:600;color:#1a1a1a;margin:0 0 14px;">${L.greeting}, ${safeName}.</p>
+  <p style="font-size:15px;color:#555;line-height:1.75;margin:0 0 28px;">${L.body_p}</p>
+
+  <!-- CTA azul gradient -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;"><tr><td align="center">
+    <table cellpadding="0" cellspacing="0" border="0"><tr>
+      <td bgcolor="#1976D2" style="background:linear-gradient(90deg,#1565C0,#1976D2,#2196F3,#1976D2,#1565C0);background-color:#1976D2;border-radius:10px;box-shadow:0 4px 16px rgba(25,118,210,.3);">
+        <a href="${link}" target="_blank" style="display:inline-block;font-family:${F};font-size:16px;font-weight:800;color:#ffffff;text-decoration:none;padding:17px 52px;letter-spacing:.3px;">${L.cta}</a>
+      </td>
+    </tr></table>
+  </td></tr></table>
+
+  <!-- Linha #eee -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;"><tr><td height="1" style="background-color:#eee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+
+  <!-- Fallback link -->
+  <p style="font-size:12px;color:#999;line-height:1.6;margin:0 0 8px;text-align:center;">${L.fallback}</p>
+  <p style="font-size:12px;line-height:1.5;margin:0 0 24px;text-align:center;"><a href="${link}" style="color:#1976D2;word-break:break-all;text-decoration:none;">${link}</a></p>
+
+  <!-- Linha #eee -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;"><tr><td height="1" style="background-color:#eee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+
+  <!-- Assinatura Lara — avatar gradient azul -->
+  <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr>
+    <td width="40" valign="top" style="padding-right:12px;">
+      <table cellpadding="0" cellspacing="0" border="0"><tr>
+        <td width="40" height="40" align="center" valign="middle" bgcolor="#1976D2" style="background:linear-gradient(135deg,#1565C0,#2196F3);background-color:#1976D2;border-radius:50%;width:40px;height:40px;">
+          <span style="font-family:${F};font-size:17px;font-weight:800;color:#fff;line-height:40px;display:block;">L</span>
+        </td>
+      </tr></table>
+    </td>
+    <td valign="middle">
+      <p style="font-family:${F};font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 2px;">Lara</p>
+      <p style="font-family:${F};font-size:12px;color:#888;margin:0;">${L.signature_role}</p>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- FOOTER disclaimer -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 16px 16px;padding:24px 40px 28px;font-family:${F};">
+  <p style="margin:0 0 6px;font-size:11px;color:#999;line-height:1.6;text-align:center;">${L.not_you}</p>
+  <p style="margin:0 0 14px;font-size:11px;color:#999;line-height:1.6;text-align:center;">${L.expires}</p>
+  <p style="margin:0;font-size:11px;color:#aaa;line-height:1.6;text-align:center;">Markets Coupons &middot; <a href="https://www.marketscoupons.com" style="color:#aaa;text-decoration:none;">marketscoupons.com</a></p>
+</td></tr>
+
+</table>
+</td></tr></table></body></html>`;
 }
 
 async function sendConfirmEmail(email, name, lang, token) {

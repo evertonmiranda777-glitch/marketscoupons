@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Preview — Modal Confirme Email (B.3.2)</title>
+<style>
+:root{
+  --bg:#07090D; --sur:#0B0F16; --card:#10151F; --card2:#141B27;
+  --b1:#1C2535; --b2:#263145; --b3:#324060;
+  --gold:#F0B429;
+  --t1:#EDF2F7; --t2:#B8C5D6; --t3:#8A98AE;
+  --red:#EF4444; --green:#10B981;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg) url('https://www.marketscoupons.com/img/site-bg.webp') center top/cover no-repeat fixed;
+  min-height:100vh;
+  color:var(--t1);
+  padding:40px 20px;
+}
+h1.preview-title{font-size:24px;color:var(--gold);margin-bottom:8px;}
+p.preview-sub{color:var(--t3);margin-bottom:32px;font-size:14px;}
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1400px;margin:0 auto;}
+.preview-cell{background:rgba(0,0,0,.4);border:1px solid var(--b1);border-radius:12px;padding:20px;}
+.preview-cell h3{color:var(--gold);font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;font-weight:700;}
+.preview-cell h3 small{color:var(--t3);font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;margin-left:8px;}
+.stage{position:relative;background:var(--bg);border-radius:10px;min-height:520px;display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden;}
+
+/* B.3.2 Modal — versão DARK alinhada com auth-overlay */
+.cem-overlay{position:absolute;inset:0;background:rgba(8,12,18,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;}
+.cem-card{
+  background:var(--card);
+  color:var(--t1);
+  border:1px solid rgba(107,182,201,.22);
+  border-radius:16px;
+  padding:36px 32px;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  position:relative;
+  box-shadow:0 24px 64px rgba(0,0,0,.6),0 0 0 1px rgba(240,180,41,.04);
+}
+.cem-close{
+  position:absolute;top:12px;right:14px;
+  background:none;border:0;font-size:24px;
+  color:var(--t3);cursor:pointer;line-height:1;
+  transition:color .2s;
+}
+.cem-close:hover{color:var(--t1);}
+.cem-icon-wrap{margin-bottom:18px;display:flex;justify-content:center;}
+.cem-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:rgba(240,180,41,.08);
+  border:1px solid rgba(240,180,41,.22);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);
+}
+.cem-icon svg{width:28px;height:28px;}
+.cem-title{font-size:22px;font-weight:700;margin:0 0 12px;color:var(--t1);letter-spacing:-.3px;}
+.cem-body{font-size:15px;line-height:1.5;color:var(--t2);margin:0 0 16px;}
+.cem-email-display{
+  background:rgba(13,20,28,.78);
+  border:1px solid rgba(107,182,201,.22);
+  border-radius:10px;
+  padding:11px 14px;
+  font-family:ui-monospace,'SF Mono',Menlo,monospace;
+  font-size:13px;
+  color:var(--t1);
+  margin-bottom:20px;
+  word-break:break-all;
+}
+/* Botão primary = .auth-btn shimmer gold */
+.cem-btn-primary{
+  width:100%;
+  padding:14px;
+  background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);
+  background-size:200% 100%;
+  color:#030507;border:none;border-radius:12px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:transform .3s,box-shadow .3s;
+  margin-bottom:8px;font-family:inherit;
+  box-shadow:0 4px 20px rgba(240,180,41,.25);
+  animation:authShimmer 3s ease infinite;
+  position:relative;
+}
+.cem-btn-primary::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent 50%);pointer-events:none;}
+.cem-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,180,41,.35);}
+.cem-btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;animation:none;}
+@keyframes authShimmer{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.cem-btn-ghost{
+  background:none;border:0;
+  color:var(--t3);font-size:14px;
+  cursor:pointer;padding:10px;
+  width:100%;font-family:inherit;
+  transition:color .2s;
+}
+.cem-btn-ghost:hover{color:var(--t2);}
+.cem-rate-limit{
+  font-size:13px;color:var(--t3);margin-bottom:12px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.cem-rate-limit::before{
+  content:'';width:14px;height:14px;border:2px solid var(--t3);
+  border-top-color:transparent;border-radius:50%;
+  animation:cemSpin 1s linear infinite;
+}
+@keyframes cemSpin{to{transform:rotate(360deg);}}
+
+/* Toast */
+.cem-toast{
+  position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  background:#10B981;color:#fff;
+  padding:12px 20px;border-radius:10px;
+  font-weight:600;font-size:14px;
+  box-shadow:0 8px 24px rgba(16,185,129,.4);
+  z-index:10;
+  display:flex;align-items:center;gap:8px;
+}
+.cem-toast::before{content:'✓';font-weight:800;}
+</style>
+</head>
+<body>
+<h1 class="preview-title">Modal Confirme Email — Preview B.3.2 (dark/glass)</h1>
+<p class="preview-sub">4 estados isolados. Card usa <code>var(--card)</code> #10151F, botão primary herda <code>.auth-btn</code> shimmer gold, texto <code>var(--t1)</code>/<code>var(--t2)</code>/<code>var(--t3)</code>. Backdrop blur 8px sobre fundo do site.</p>
+
+<div class="preview-grid">
+
+  <!-- 1. Pending (default) -->
+  <div class="preview-cell">
+    <h3>1. State: pending <small>(pós-signup, pós-login não-verificado)</small></h3>
+    <div class="stage">
+      <div class="cem-overlay">
+        <div class="cem-card">
+          <button class="cem-close" aria-label="Fechar">&times;</button>
+          <div class="cem-icon-wrap"><div class="cem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div></div>
+          <h2 class="cem-title">Confirme seu email</h2>
+          <p class="cem-body">Enviamos um link de confirmação para o seu email. Clique no link para ativar sua conta e desbloquear todas as features.</p>
+          <div class="cem-email-display">everton@gmail.com</div>
+          <button class="cem-btn-primary">Reenviar email</button>
+          <button class="cem-btn-ghost">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Expired -->
+  <div class="preview-cell">
+    <h3>2. State: expired <small>(?email_confirm_error=expired)</small></h3>
+    <div class="stage">
+      <div class="cem-overlay">
+        <div class="cem-card">
+          <button class="cem-close" aria-label="Fechar">&times;</button>
+          <div class="cem-icon-wrap"><div class="cem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div></div>
+          <h2 class="cem-title">Link expirado</h2>
+          <p class="cem-body">Esse link expirou ou já foi usado. Reenvie um novo para o seu email.</p>
+          <div class="cem-email-display">everton@gmail.com</div>
+          <button class="cem-btn-primary">Reenviar email</button>
+          <button class="cem-btn-ghost">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Countdown ativo -->
+  <div class="preview-cell">
+    <h3>3. Countdown ativo <small>(pós-reenvio ou 429 server)</small></h3>
+    <div class="stage">
+      <div class="cem-overlay">
+        <div class="cem-card">
+          <button class="cem-close" aria-label="Fechar">&times;</button>
+          <div class="cem-icon-wrap"><div class="cem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div></div>
+          <h2 class="cem-title">Confirme seu email</h2>
+          <p class="cem-body">Enviamos um link de confirmação para o seu email. Clique no link para ativar sua conta e desbloquear todas as features.</p>
+          <div class="cem-email-display">everton@gmail.com</div>
+          <button class="cem-btn-primary" disabled>Reenviar email</button>
+          <div class="cem-rate-limit">Aguarde 1m 47s para reenviar</div>
+          <button class="cem-btn-ghost">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Toast pós-resend -->
+  <div class="preview-cell">
+    <h3>4. Pós-resend <small>(toast verde 3s + countdown inicia)</small></h3>
+    <div class="stage">
+      <div class="cem-overlay">
+        <div class="cem-toast">Email enviado! Verifique sua caixa.</div>
+        <div class="cem-card">
+          <button class="cem-close" aria-label="Fechar">&times;</button>
+          <div class="cem-icon-wrap"><div class="cem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div></div>
+          <h2 class="cem-title">Confirme seu email</h2>
+          <p class="cem-body">Enviamos um link de confirmação para o seu email. Clique no link para ativar sua conta e desbloquear todas as features.</p>
+          <div class="cem-email-display">everton@gmail.com</div>
+          <button class="cem-btn-primary" disabled>Reenviar email</button>
+          <div class="cem-rate-limit">Aguarde 1m 59s para reenviar</div>
+          <button class="cem-btn-ghost">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="preview-sub" style="margin-top:32px;text-align:center;">
+  i18n: 7 idiomas (pt/en/es/fr/de/it/ar) já no <code>i18n.js</code> — chaves <code>cem_*</code>.
+  Modal renderiza idioma corrente via <code>t('cem_pending_title')</code> etc.
+</p>
+</body>
+</html>
