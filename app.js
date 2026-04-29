@@ -903,8 +903,6 @@ function go(page, skipPush){
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
   if(page==='live'){ if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview(); }
   if(page==='analise' && _authLoaded) checkAnalysisGate();
-  // B.6 — nudge preventivo em rotas gated (1x por sessão, não bloqueia)
-  if((page==='analise'||page==='live'||page==='gamma') && _authLoaded) { try { setTimeout(()=>maybeShowPreventiveCPModal(), 800); } catch(e){} }
   if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !isAuthed() && _authLoaded) { if(!currentUser) openAuthModal('login'); else showConfirmEmailModal('pending'); go('home'); return; }
   if(page==='painel' && !isAuthed() && !_authLoaded) { _authReadyPromise?.then(()=>{ if(!isAuthed()){ if(!currentUser) openAuthModal('login'); else showConfirmEmailModal('pending'); go('home'); } }); }
@@ -5604,146 +5602,6 @@ function getSelectedFirmsFrom(containerId) {
   return [...wrap.querySelectorAll('.firm-pill.selected')].map(p => p.dataset.firm);
 }
 
-const NICKNAME_RE = /^[\p{L}0-9._\- ]{2,30}$/u;
-const CP_REQUIRED_FIELDS = ['first_name','last_name'];
-
-function profileMissingFields() {
-  if (!currentProfile) return [...CP_REQUIRED_FIELDS, 'favorite_firms'];
-  const missing = CP_REQUIRED_FIELDS.filter(k => {
-    const v = currentProfile[k];
-    return !v || (typeof v === 'string' && v.trim().length < 2);
-  });
-  if (!Array.isArray(currentProfile.favorite_firms) || currentProfile.favorite_firms.length === 0) {
-    missing.push('favorite_firms');
-  }
-  return missing;
-}
-
-let _cpResolver = null;
-let _cpMode = 'gate'; // 'gate' (bloqueia ação) | 'nudge' (preventivo, não bloqueia)
-
-async function ensureCompleteProfile() {
-  if (!currentUser || !currentProfile) return false;
-  const missing = profileMissingFields();
-  if (missing.length === 0) return true;
-  return new Promise((resolve) => {
-    _cpResolver = resolve;
-    _cpMode = 'gate';
-    showCompleteProfileModal(missing);
-  });
-}
-
-function maybeShowPreventiveCPModal() {
-  // Chamado em rotas gated. Não bloqueia. Apenas convida.
-  if (!currentUser || !currentProfile) return;
-  try { if (sessionStorage.getItem('cp_modal_shown')) return; } catch(e){}
-  const missing = profileMissingFields();
-  if (missing.length === 0) return;
-  _cpMode = 'nudge';
-  _cpResolver = null; // nudge não tem resolver
-  showCompleteProfileModal(missing);
-  try { sessionStorage.setItem('cp_modal_shown','1'); } catch(e){}
-}
-
-function showCompleteProfileModal(missing) {
-  const fields = document.getElementById('cp-fields');
-  if (!fields) return;
-  const has = (k) => missing.includes(k);
-  let html = '';
-  if (has('first_name') || has('last_name')) {
-    html += `<div class="auth-row">`;
-    if (has('first_name')) html += `<div class="auth-field"><label data-i18n="signup_first_name">Nome</label><input type="text" id="cp-first" placeholder="João"></div>`;
-    if (has('last_name'))  html += `<div class="auth-field"><label data-i18n="signup_last_name">Sobrenome</label><input type="text" id="cp-last" placeholder="Silva"></div>`;
-    html += `</div>`;
-  }
-  if (has('favorite_firms')) {
-    html += `<div class="auth-field"><label data-i18n="complete_profile_firms_label">Suas firmas favoritas (selecione 1 ou mais)</label><div class="firm-pills" id="cp-firm-pills"></div></div>`;
-  }
-  fields.innerHTML = html;
-  if (has('favorite_firms')) renderFirmPillsInto('cp-firm-pills', currentProfile.favorite_firms || []);
-  // Pré-popula first/last se já existem mas estão sendo "complementados" (ex: só faltam firmas)
-  if (has('first_name')) { const el = document.getElementById('cp-first'); if (el) el.value = currentProfile.first_name || ''; }
-  if (has('last_name'))  { const el = document.getElementById('cp-last');  if (el) el.value = currentProfile.last_name  || ''; }
-  const saveBtn = document.getElementById('cp-save-btn');
-  if (saveBtn) saveBtn.onclick = () => saveCompleteProfileModal(missing);
-  document.getElementById('cp-overlay').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCompleteProfileModal() {
-  document.getElementById('cp-overlay').style.display = 'none';
-  document.body.style.overflow = '';
-  if (_cpResolver) { _cpResolver(false); _cpResolver = null; }
-  _cpMode = 'gate';
-}
-
-async function saveCompleteProfileModal(missing) {
-  const errEl = document.getElementById('cp-err');
-  if (errEl) { errEl.style.display='none'; errEl.textContent=''; }
-  const showErr = (msg) => { if (errEl) { errEl.textContent = msg; errEl.style.display='block'; } };
-
-  const updates = {};
-  if (missing.includes('first_name')) {
-    const v = (document.getElementById('cp-first')?.value || '').trim();
-    if (v.length < 2) return showErr(t('cp_nome_invalido')||'Nome é obrigatório');
-    if (!NICKNAME_RE.test(v)) return showErr(t('cp_nome_caracteres')||'Nome contém caracteres inválidos');
-    updates.first_name = v;
-  }
-  if (missing.includes('last_name')) {
-    const v = (document.getElementById('cp-last')?.value || '').trim();
-    if (v.length < 2) return showErr(t('cp_sobrenome_invalido')||'Sobrenome é obrigatório');
-    if (!NICKNAME_RE.test(v)) return showErr(t('cp_sobrenome_caracteres')||'Sobrenome contém caracteres inválidos');
-    updates.last_name = v;
-  }
-  if (missing.includes('favorite_firms')) {
-    const firms = getSelectedFirmsFrom('cp-firm-pills').filter(f => FIRM_SLUGS.includes(f));
-    if (firms.length === 0) return showErr(t('cp_firma_obrigatoria')||'Selecione pelo menos 1 firma favorita');
-    updates.favorite_firms = firms;
-  }
-  if (updates.first_name || updates.last_name) {
-    const first = updates.first_name || currentProfile.first_name || '';
-    const last  = updates.last_name  || currentProfile.last_name  || '';
-    updates.full_name = `${first} ${last}`.trim();
-  }
-
-  const { error } = await db.from('profiles').update(updates).eq('id', currentUser.id);
-  if (error) return showErr(error.message);
-
-  Object.assign(currentProfile, updates);
-  document.getElementById('cp-overlay').style.display = 'none';
-  document.body.style.overflow = '';
-  track('profile_completed_via_loyalty_gate', {
-    fields: missing.join(','),
-    firms_count: (updates.favorite_firms || currentProfile.favorite_firms || []).length,
-    mode: _cpMode,
-  });
-  if (_cpResolver) { _cpResolver(true); _cpResolver = null; }
-  _cpMode = 'gate';
-}
-
-/* Nickname Modal (pós-OAuth) */
-function showNicknameModal() {
-  const ov = document.getElementById('nick-overlay'); if (!ov) return;
-  const inp = document.getElementById('nick-input'); if (inp) { inp.value = ''; setTimeout(()=>inp.focus(), 100); }
-  const errEl = document.getElementById('nick-err'); if (errEl) { errEl.style.display='none'; errEl.textContent=''; }
-  ov.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-async function saveNicknameModal() {
-  const v = (document.getElementById('nick-input')?.value || '').trim();
-  const errEl = document.getElementById('nick-err');
-  const showErr = (msg) => { if (errEl) { errEl.textContent = msg; errEl.style.display='block'; } };
-  if (!v) return showErr(t('auth_campos_obrigatorios')||'Preencha o apelido');
-  if (!NICKNAME_RE.test(v)) return showErr(t('nickname_invalid')||'Apelido entre 2 e 30 caracteres');
-  const { error } = await db.from('profiles').update({ nickname: v }).eq('id', currentUser.id);
-  if (error) return showErr(error.message);
-  if (currentProfile) currentProfile.nickname = v;
-  document.getElementById('nick-overlay').style.display = 'none';
-  document.body.style.overflow = '';
-  track('nickname_set_post_oauth');
-}
-
 async function validateEmailMx(email) {
   if (!_emailFormatRe.test(email)) return { valid: false, reason: 'invalid_format' };
   try {
@@ -6257,8 +6115,6 @@ async function registerLoyalty() {
 async function submitProof() {
   if (!rateLimit('submitProof', 10000)) { showToast(t('toast_aguarde')); return; }
   if (currentUser && !isAuthed()) { showConfirmEmailModal('pending'); return; }
-  // B.6 — gate bloqueante: completar perfil antes de registrar comprovante
-  if (currentUser && currentProfile) { const ok = await ensureCompleteProfile(); if (!ok) return; }
   const member = getLoyaltyMember();
   if (!member) { showToast(t('toast_cadastro_primeiro')); return; }
   const firma       = document.getElementById('pf-firma')?.value;
@@ -6943,10 +6799,6 @@ async function checkAuthSession() {
       await loadUserSession(session.user);
       if (currentUser && currentProfile && !isAuthed() && !isOAuthUser()) {
         try { if (!sessionStorage.getItem('confirm_modal_shown')) { _cemPendingEmail = currentUser.email; showConfirmEmailModal('pending'); } } catch(e){}
-      }
-      // B.6 — nickname modal pós-OAuth (apenas Google/etc, 1x por sessão)
-      if (currentUser && currentProfile && isOAuthUser() && !currentProfile.nickname) {
-        try { if (!sessionStorage.getItem('nickname_modal_shown')) { showNicknameModal(); sessionStorage.setItem('nickname_modal_shown','1'); } } catch(e){}
       }
     } else if (event === 'SIGNED_OUT') {
       currentUser = null;
