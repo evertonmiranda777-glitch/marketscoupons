@@ -5471,6 +5471,78 @@ async function validateEmailMx(email) {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   GEOCODER — B.5 fetch address by ZIP/CEP (ViaCEP BR + Zippopotam fallback)
+   Cache em memória por sessão. Helper standalone, não conectado ao form ainda.
+   ══════════════════════════════════════════════════════════════════════════ */
+const _zipCache = new Map();
+
+function _normalizeZip(zip, country) {
+  const raw = String(zip || '').replace(/\s/g, '');
+  if (country === 'BR') return raw.replace(/\D/g, '');
+  return raw;
+}
+
+async function fetchAddressByZip(zip, country) {
+  const cc = String(country || '').toUpperCase().slice(0, 2);
+  if (!cc) return { ok: false, error: 'unsupported_country', zip };
+  const norm = _normalizeZip(zip, cc);
+  if (!norm) return { ok: false, error: 'invalid_format', zip };
+
+  const cacheKey = `${cc}:${norm}`;
+  if (_zipCache.has(cacheKey)) return _zipCache.get(cacheKey);
+
+  let result;
+  try {
+    if (cc === 'BR') {
+      if (norm.length !== 8) {
+        result = { ok: false, error: 'invalid_format', zip: norm };
+      } else {
+        const r = await fetch(`https://viacep.com.br/ws/${norm}/json/`);
+        if (!r.ok) result = { ok: false, error: 'network_error', zip: norm };
+        else {
+          const d = await r.json();
+          if (d.erro) result = { ok: false, error: 'zip_not_found', zip: norm };
+          else result = {
+            ok: true,
+            address: d.logradouro || '',
+            city: d.localidade || '',
+            state: d.uf || '',
+            state_full: d.uf || '',
+            country: 'BR',
+            zip: d.cep || norm,
+            raw: d,
+          };
+        }
+      }
+    } else {
+      const r = await fetch(`https://api.zippopotam.us/${cc.toLowerCase()}/${encodeURIComponent(norm)}`);
+      if (r.status === 404) result = { ok: false, error: 'zip_not_found', zip: norm };
+      else if (!r.ok) result = { ok: false, error: 'network_error', zip: norm };
+      else {
+        const d = await r.json();
+        const place = (d.places && d.places[0]) || {};
+        result = {
+          ok: true,
+          address: '',
+          city: place['place name'] || '',
+          state: place['state abbreviation'] || place['state'] || '',
+          state_full: place['state'] || '',
+          country: d['country abbreviation'] || cc,
+          zip: d['post code'] || norm,
+          raw: d,
+        };
+      }
+    }
+  } catch (e) {
+    result = { ok: false, error: 'network_error', zip: norm };
+  }
+
+  _zipCache.set(cacheKey, result);
+  return result;
+}
+window.fetchAddressByZip = fetchAddressByZip; // TEMP: exposed pra smoke test, remover após validação
+
 // saveLead: Supabase primary, localStorage cache
 async function saveLead(data) {
   if (!rateLimit('saveLead', 5000)) return; // 5s cooldown
