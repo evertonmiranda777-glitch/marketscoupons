@@ -13138,8 +13138,8 @@ async function loadAutoStatus(){
       if(btn){ btn.textContent='Pausar automático'; btn.classList.add('btn-secondary'); btn.classList.remove('btn-primary'); }
       if(bar){ bar.style.background='linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a)'; bar.style.backgroundSize='200% 100%'; bar.style.animation='shimmer 3s ease infinite'; }
     }
-    if(lbl) lbl.textContent = `${s.sent_today||0} / ${s.daily_limit||400}`;
-    if(bar) bar.style.width = Math.min(100, ((s.sent_today||0)/(s.daily_limit||400))*100) + '%';
+    if(lbl) lbl.textContent = `${s.sent_today||0} / ${s.daily_limit||300}`;
+    if(bar) bar.style.width = Math.min(100, ((s.sent_today||0)/(s.daily_limit||300))*100) + '%';
     if(next) next.textContent = s.next_run_label || 'Amanhã 08:00';
     if(week) week.innerHTML = `<span style="color:var(--green);">${(s.week_sent||0).toLocaleString()}</span> ✓ · <span style="color:var(--red);">${s.week_failed||0}</span> falhas`;
   } catch(e){ /* silencioso */ }
