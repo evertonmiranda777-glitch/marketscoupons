@@ -6305,7 +6305,17 @@ async function doAuthSignup() {
   if (pass.length < 6) return showAuthError('signup-error', t('auth_senha_minimo'));
 
   const btn = document.getElementById('signup-btn');
-  btn.disabled = true; btn.textContent = t('auth_criando');
+  btn.disabled = true; btn.textContent = t('auth_validando_email')||'Validating email...';
+
+  // B.3.2.1 — server-side email validation (DNS MX + disposable + cache, fallback permissivo)
+  const validation = await validateEmailMx(email);
+  if (validation && validation.valid === false) {
+    btn.disabled = false; btn.textContent = t('auth_btn_criar');
+    const reasonKey = 've_' + (validation.reason || 'cached_invalid');
+    return showAuthError('signup-error', t(reasonKey) || t('ve_cached_invalid') || 'Invalid email');
+  }
+
+  btn.textContent = t('auth_criando');
 
   const { data, error } = await db.auth.signUp({
     email,
