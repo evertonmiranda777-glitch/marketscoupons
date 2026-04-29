@@ -5086,42 +5086,49 @@ async function checkProAccess(){
   return false;
 }
 
+// P1 — Pro Gate 3 caminhos hierárquicos (cadastro grátis > fidelidade > Pro)
+function _proGateHeader(mode){
+  if(mode==='compact') return '';
+  const star=`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>`;
+  return `${star}<div class="da-gate-title">${t('pro_gate_title')}</div>`;
+}
+
+// User logado mas sem acesso (trial expirou) — 2 caminhos: fidelidade primário, Pro secundário
 function buildProGate(mode){
-  const chk='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
-  const benefits=`<div class="pro-benefits">`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b1')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b2')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b3')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b4')}</span></div>`+
-  `</div>`;
-  const icon=mode==='compact'?'':`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>`;
-  const title=mode==='compact'?'':`<div class="da-gate-title">${t('pro_gate_title')}</div>`;
-  return `${icon}${title}`+
-    `<div class="pro-price">$9.99 <span>/ ${t('pro_month')}</span></div>`+
-    benefits+
-    `<div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:280px;margin:0 auto;">`+
-      `<button class="da-gate-btn" style="width:100%;" onclick="startCheckout()">${t('pro_subscribe_cta')}</button>`+
-      `<div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>`+
-      `<button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="go('loyalty')">${t('da_gate_btn_loyalty')}</button>`+
+  return _proGateHeader(mode)+
+    `<div class="pg-stack">`+
+      `<div class="pg-card pg-card-primary">`+
+        `<div class="pg-card-title"><span class="pg-icon">🎁</span>${t('pro_gate_loyalty_title')||'Programa de fidelidade'}</div>`+
+        `<div class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre 1 conta com cupom Markets em qualquer firma → acesso continuado liberado'}</div>`+
+        `<button class="pg-btn pg-btn-gold" onclick="track('gate_loyalty_click',{src:'pro_gate_logged'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
+      `</div>`+
+      `<div class="pg-card pg-card-tertiary">`+
+        `<div class="pg-card-title">${t('pro_gate_pro_q')||'Quer acesso direto sem comprar firma?'}</div>`+
+        `<div class="pg-card-sub">${t('pro_b4')||'Cancele quando quiser'}</div>`+
+        `<button class="pg-btn pg-btn-ghost" onclick="track('gate_pro_click',{src:'pro_gate_logged'});startCheckout()">${t('pro_gate_pro_cta')||'Pro $9.99/mês'}</button>`+
+      `</div>`+
     `</div>`;
 }
 
+// Visitante anônimo — 3 caminhos: cadastro grátis (3d trial) > fidelidade > Pro
 function buildProGateAnon(){
-  const chk='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
-  const benefits=`<div class="pro-benefits">`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b1')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b2')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b3')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b4')}</span></div>`+
-  `</div>`;
-  return `<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>`+
-    `<div class="da-gate-title">${t('pro_gate_title')}</div>`+
-    `<div class="pro-price">$9.99 <span>/ ${t('pro_month')}</span></div>`+
-    benefits+
-    `<div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:280px;margin:0 auto;">`+
-      `<button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>`+
-      `<div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>`+
-      `<button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('btn_entrar')}</button>`+
+  return _proGateHeader()+
+    `<div class="pg-stack">`+
+      `<div class="pg-card pg-card-primary">`+
+        `<div class="pg-card-title"><span class="pg-icon">🆓</span>${t('da_gate_btn_login')||'Criar conta grátis'}</div>`+
+        `<div class="pg-card-sub">${t('pro_gate_signup_sub')||'3 dias de acesso liberados — sem cartão'}</div>`+
+        `<button class="pg-btn pg-btn-gold" onclick="track('gate_signup_click',{src:'pro_gate_anon'});openAuthModal('signup')">${t('pro_gate_signup_cta')||'Criar conta grátis →'}</button>`+
+      `</div>`+
+      `<div class="pg-divider-or">${t('pro_gate_or_path')||'OU continue sem pagar via'}</div>`+
+      `<div class="pg-card pg-card-secondary">`+
+        `<div class="pg-card-title"><span class="pg-icon">🎁</span>${t('pro_gate_loyalty_title')||'Programa de fidelidade'}</div>`+
+        `<div class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre 1 conta com cupom Markets em qualquer firma → acesso continuado liberado'}</div>`+
+        `<button class="pg-btn pg-btn-glass" onclick="track('gate_loyalty_click',{src:'pro_gate_anon'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
+      `</div>`+
+      `<div class="pg-card pg-card-tertiary">`+
+        `<div class="pg-card-title">${t('pro_gate_pro_q')||'Quer acesso direto sem comprar firma?'}</div>`+
+        `<button class="pg-btn pg-btn-ghost" onclick="track('gate_pro_click',{src:'pro_gate_anon'});openAuthModal('signup')">${t('pro_gate_pro_cta')||'Pro $9.99/mês'}</button>`+
+      `</div>`+
     `</div>`;
 }
 
