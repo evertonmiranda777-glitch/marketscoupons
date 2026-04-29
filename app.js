@@ -1210,8 +1210,8 @@ function setFirmSEO(id){
 /* ─── COOKIE CONSENT & POLICIES ─── */
 function acceptCookies(){
   localStorage.setItem('mc-cookies-consent','accepted');
-  document.getElementById('ck-banner').style.display='none';
-  loadTracking();
+  const banner=document.getElementById('ck-banner'); if(banner) banner.style.display='none';
+  // loadTracking() removida — tracking carrega direto no boot desde refactor 2026-04-12 (GTM desativado)
   track('cookie_consent',{action:'accepted'});
 }
 function rejectCookies(){
@@ -2772,8 +2772,10 @@ function renderOffers(){
     </div>`).join('');
 }
 function applyF(){
-  const q=document.getElementById('search').value.toLowerCase();
-  const sort=document.querySelector('.sort-sel').value;
+  const searchEl=document.getElementById('search'); if(!searchEl) return;
+  const sortEl=document.querySelector('.sort-sel'); if(!sortEl) return;
+  const q=searchEl.value.toLowerCase();
+  const sort=sortEl.value;
   const favOnly=document.getElementById('fFavOnly')?.checked;
   const fFut=document.getElementById('fFut')?.checked;
   const fFx=document.getElementById('fFx')?.checked;
@@ -7331,13 +7333,15 @@ function renderGEX(items){
     const loc=locMap[_currentLang]||'en-US';
     const ds=d.toLocaleDateString(loc,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     const el=document.getElementById('gx-date');
-    el.removeAttribute('data-i18n');
-    let timeStr='';
-    if(items[0].updated_at){
-      const upd=new Date(items[0].updated_at);
-      timeStr=' — '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
+    if(el){
+      el.removeAttribute('data-i18n');
+      let timeStr='';
+      if(items[0].updated_at){
+        const upd=new Date(items[0].updated_at);
+        timeStr=' — '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
+      }
+      el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong>'+timeStr;
     }
-    el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong>'+timeStr;
   }
 
   grid.innerHTML=items.map(item=>{
