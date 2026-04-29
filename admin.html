@@ -8361,6 +8361,8 @@ async function sendEmailsSmtp(){
     let totalSent=0, totalFailed=0;
 
     if(isPromo || isInst){
+      window._lastSendResults = [];
+      window._lastSendDebug = { calls: [] };
       // Send per language group — each gets HTML in their language
       for(const [lang, group] of Object.entries(langGroups)){
         const html = isPromo ? buildWhitePromoHtml(emailPromoFirm, lang) : buildInstitutionalHtml(window._instTemplateName, lang);
@@ -8376,7 +8378,10 @@ async function sendEmailsSmtp(){
             tags: [isPromo ? 'promo-'+emailPromoFirm.id : 'inst-'+window._instTemplateName, 'lang-'+lang, ...(emailCustomTagFilter||[])],
           }),
         });
-        const data = await resp.json();
+        const data = await resp.json().catch(()=>({}));
+        // Capture debug pra cada call multilíngue
+        window._lastSendDebug.calls.push({ lang, http_status: resp.status, http_ok: resp.ok, body_keys: Object.keys(data||{}), success: data.success, sent: data.sent, failed: data.failed, error: data.error, message: data.message, results_sample: (data.results||[]).slice(0,2) });
+        if(Array.isArray(data.results)) window._lastSendResults.push(...data.results);
         if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
         else { totalFailed+=group.length; }
       }
