@@ -45,6 +45,7 @@
     { "src": "/admin", "dest": "/admin.html" },
     { "src": "/go", "dest": "/go.html" },
     { "src": "/go/(.*)", "dest": "/go.html?firm=$1" },
+    { "src": "/email-confirm", "dest": "/api/welcome-email" },
     { "src": "/guides/([a-z0-9-]+)", "dest": "/guides/$1.html" },
     { "src": "/(pt|en|es|fr|de|it|ar)/guides/([a-z0-9-]+)", "dest": "/$1/guides/$2.html" },
     { "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|loyalty|pro-success|calculator|privacy|terms)", "dest": "/index.html" },

@@ -1,7 +1,10 @@
-// Vercel Serverless — Send welcome email to new subscriber
-// POST /api/welcome-email { email, name, lang }
-// Uses the new "Markets Coupons." premium template (orange accent, white layout).
-
+// Vercel Serverless — Send welcome email + email confirmation (B.3.1 extended)
+// 3 modos:
+//   1) POST { email, name, lang }                    — legacy welcome (backward compat)
+//   2) POST { record:{...} }                         — webhook auth on email-confirmed
+//   3) POST { action:'send_confirm', email, name, lang, [resend:true] } — envia email de confirmação
+//   4) GET  /email-confirm?token=xxx                 — confirma email + magic link auto-login
+const crypto = require('crypto');
 const { sign: signUnsub } = require('./unsubscribe.js');
 const { applyCors } = require('./_cors.js');
 const { rateLimitIp } = require('./_ratelimit.js');
@@ -9,6 +12,8 @@ const { safeError } = require('./_safe-error.js');
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const APP_URL = 'https://www.marketscoupons.com';
 
 const INST_WELCOME = {
   subject: { pt:'Bom te ter aqui, Trader', en:'Good to have you here, Trader', es:'Que bueno tenerte aqui, Trader', fr:'Content de vous avoir, Trader', de:'Schon, dass du da bist, Trader', it:'Bello averti qui, Trader', ar:'سعداء بوجودك هنا' },
@@ -197,14 +202,266 @@ async function markReceived(email) {
   } catch {}
 }
 
+// ═══ B.3.1 — Email confirmation helpers ═══
+
+async function generateConfirmToken(email) {
+  if (!SK) return null;
+  const token = crypto.randomUUID();
+  const expires = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}`, {
+      method: 'PATCH',
+      headers: { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+      body: JSON.stringify({ email_verification_token: token, email_verification_expires_at: expires }),
+    });
+    if (!r.ok) return null;
+    const rows = await r.json();
+    return rows && rows[0] ? token : null;
+  } catch { return null; }
+}
+
+async function checkLastConfirmRecency(email) {
+  // Retorna ms desde última geração de token. -1 = já verificado. Infinity = nunca gerado.
+  if (!SK) return Infinity;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}&select=email_verification_expires_at,email_verified`, {
+      headers: { apikey: SK, Authorization: `Bearer ${SK}` },
+    });
+    if (!r.ok) return Infinity;
+    const rows = await r.json();
+    if (!rows[0]) return Infinity;
+    if (rows[0].email_verified) return -1;
+    if (!rows[0].email_verification_expires_at) return Infinity;
+    const expiresAt = new Date(rows[0].email_verification_expires_at).getTime();
+    const generatedAt = expiresAt - 24 * 3600 * 1000;
+    return Date.now() - generatedAt;
+  } catch { return Infinity; }
+}
+
+async function generateSupabaseMagicLink(email) {
+  if (!SK) return null;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/auth/v1/admin/generate_link`, {
+      method: 'POST',
+      headers: { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'magiclink',
+        email,
+        options: { redirect_to: `${APP_URL}/?email_confirmed=1` },
+      }),
+    });
+    if (!r.ok) return null;
+    const d = await r.json();
+    return d.action_link || (d.properties && d.properties.action_link) || null;
+  } catch { return null; }
+}
+
+const CONFIRM_T = {
+  pt: { headline:'Confirme seu email pra liberar seu acesso completo', subtitle:'Você se cadastrou no Markets Coupons. Confirme seu email pra acessar o programa de fidelidade, sorteios e perfil completo.', cta:'Confirmar email', fallback:'Ou copie e cole no navegador:', not_you:'Se você não criou essa conta, ignore este email.', expires:'Este link expira em 24 horas.' },
+  en: { headline:'Confirm your email to unlock full access', subtitle:'You signed up at Markets Coupons. Confirm your email to access the loyalty program, giveaways, and profile.', cta:'Confirm email', fallback:'Or copy and paste in your browser:', not_you:'If you didn\'t create this account, ignore this email.', expires:'This link expires in 24 hours.' },
+  es: { headline:'Confirma tu email para desbloquear el acceso completo', subtitle:'Te registraste en Markets Coupons. Confirma tu email para acceder al programa de fidelidad, sorteos y perfil.', cta:'Confirmar email', fallback:'O copia y pega en tu navegador:', not_you:'Si no creaste esta cuenta, ignora este email.', expires:'Este enlace expira en 24 horas.' },
+  fr: { headline:'Confirmez votre email pour un accès complet', subtitle:'Vous vous êtes inscrit chez Markets Coupons. Confirmez pour accéder au programme de fidélité, tirages et profil.', cta:'Confirmer email', fallback:'Ou copiez-collez dans votre navigateur :', not_you:'Si vous n\'avez pas créé ce compte, ignorez cet email.', expires:'Ce lien expire dans 24 heures.' },
+  de: { headline:'Bestätigen Sie Ihre E-Mail für vollen Zugriff', subtitle:'Sie haben sich bei Markets Coupons registriert. Bestätigen Sie für Treueprogramm, Gewinnspiele und Profil.', cta:'E-Mail bestätigen', fallback:'Oder kopieren Sie in Ihren Browser:', not_you:'Wenn Sie dieses Konto nicht erstellt haben, ignorieren Sie diese E-Mail.', expires:'Dieser Link läuft in 24 Stunden ab.' },
+  it: { headline:'Conferma la tua email per accesso completo', subtitle:'Ti sei registrato a Markets Coupons. Conferma per accedere al programma fedeltà, concorsi e profilo.', cta:'Conferma email', fallback:'O copia e incolla nel browser:', not_you:'Se non hai creato questo account, ignora questa email.', expires:'Questo link scade in 24 ore.' },
+  ar: { headline:'أكد بريدك الإلكتروني لفتح الوصول الكامل', subtitle:'لقد سجلت في Markets Coupons. أكد بريدك للوصول إلى برنامج الولاء والسحوبات والملف.', cta:'تأكيد البريد', fallback:'أو انسخ والصق في المتصفح:', not_you:'إذا لم تنشئ هذا الحساب، تجاهل هذا البريد.', expires:'تنتهي صلاحية هذا الرابط خلال 24 ساعة.' },
+};
+
+function buildConfirmHtml(lang, name, link) {
+  const L = CONFIRM_T[lang] || CONFIRM_T.en;
+  const dir = lang === 'ar' ? 'rtl' : 'ltr';
+  return `<!DOCTYPE html>
+<html lang="${lang}" dir="${dir}">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${L.headline}</title></head>
+<body style="margin:0;padding:0;background:#f4f4f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f7" style="padding:32px 0;"><tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden;max-width:560px;">
+<tr><td align="center" style="padding:40px 40px 24px;">
+<table cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="vertical-align:middle;"><svg width="36" height="36" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#F0B429" stroke-width="2.4" fill="none"/><path d="M14 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M36 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+<td style="vertical-align:middle;padding-left:10px;"><span style="font-size:18px;font-weight:700;color:#1a1a1a;letter-spacing:-0.01em;"><span style="color:#F0B429;">Markets</span> Coupons</span></td>
+</tr></table></td></tr>
+<tr><td style="padding:0 40px 12px;"><h1 style="margin:0;font-size:24px;font-weight:700;color:#1a1a1a;line-height:1.3;letter-spacing:-0.01em;">${L.headline}</h1></td></tr>
+<tr><td style="padding:0 40px 28px;"><p style="margin:0;font-size:15px;color:#666;line-height:1.5;">${L.subtitle}</p></td></tr>
+<tr><td align="center" style="padding:0 40px 24px;">
+<table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#F0B429" style="border-radius:10px;background:#F0B429;">
+<a href="${link}" target="_blank" style="display:inline-block;padding:16px 40px;font-size:16px;font-weight:700;color:#1a1a1a;text-decoration:none;letter-spacing:.01em;">${L.cta}</a>
+</td></tr></table></td></tr>
+<tr><td style="padding:0 40px 16px;"><p style="margin:0;font-size:12px;color:#999;line-height:1.5;text-align:center;">${L.fallback}<br><a href="${link}" style="color:#F0B429;word-break:break-all;">${link}</a></p></td></tr>
+<tr><td style="padding:24px 40px 12px;border-top:1px solid #eee;"><p style="margin:0 0 8px;font-size:12px;color:#999;line-height:1.6;">${L.not_you}</p><p style="margin:0;font-size:12px;color:#999;line-height:1.6;">${L.expires}</p></td></tr>
+<tr><td align="center" style="padding:20px 40px 32px;"><p style="margin:0;font-size:11px;color:#aaa;">Markets Coupons · marketscoupons.com</p></td></tr>
+</table></td></tr></table></body></html>`;
+}
+
+async function sendConfirmEmail(email, name, lang, token) {
+  const link = `${APP_URL}/email-confirm?token=${encodeURIComponent(token)}`;
+  const html = buildConfirmHtml(lang, name, link);
+  const subjects = {
+    pt:'Confirme seu email — Markets Coupons', en:'Confirm your email — Markets Coupons',
+    es:'Confirma tu email — Markets Coupons', fr:'Confirmez votre email — Markets Coupons',
+    de:'Bestätigen Sie Ihre E-Mail — Markets Coupons', it:'Conferma la tua email — Markets Coupons',
+    ar:'أكد بريدك الإلكتروني — Markets Coupons',
+  };
+  const subject = subjects[lang] || subjects.en;
+  const BREVO_KEY = process.env.BREVO_API_KEY;
+  const RESEND_KEY = process.env.RESEND_API_KEY;
+
+  if (BREVO_KEY) {
+    try {
+      const r = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method:'POST',
+        headers:{ 'accept':'application/json', 'content-type':'application/json', 'api-key':BREVO_KEY },
+        body: JSON.stringify({
+          sender:{ name:'Markets Coupons', email:'lara@marketscoupons.com' },
+          to:[{ email, name: name || 'Trader' }],
+          subject, htmlContent: html,
+          tags:['email-confirm','lang-'+lang],
+        }),
+      });
+      if (r.ok) return { ok:true, provider:'brevo' };
+    } catch {}
+  }
+  if (RESEND_KEY) {
+    try {
+      const r = await fetch('https://api.resend.com/emails', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${RESEND_KEY}` },
+        body: JSON.stringify({
+          from:'Markets Coupons <lara@marketscoupons.com>',
+          to:[email], subject, html,
+          tags:[{ name:'type', value:'email-confirm' }, { name:'lang', value:lang }],
+        }),
+      });
+      if (r.ok) return { ok:true, provider:'resend' };
+    } catch {}
+  }
+  return { ok:false, provider:'none' };
+}
+
+async function handleSendConfirm(req, res, body) {
+  const { email, name, lang, resend } = body;
+  if (!email || typeof email !== 'string') return res.status(400).json({ error:'email required' });
+  const langCode = (lang && CONFIRM_T[lang]) ? lang : 'pt';
+
+  if (resend) {
+    const sinceLast = await checkLastConfirmRecency(email);
+    if (sinceLast === -1) return res.status(200).json({ skipped:'already_verified' });
+    if (sinceLast < 120000) return res.status(429).json({ error:'rate_limit_resend', retry_in_seconds: Math.ceil((120000 - sinceLast)/1000) });
+  }
+
+  const token = await generateConfirmToken(email);
+  if (!token) return res.status(500).json({ error:'profile_not_found_or_db_error' });
+
+  const result = await sendConfirmEmail(email, name || 'Trader', langCode, token);
+
+  fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
+    method:'POST',
+    headers:{ apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}`, 'Content-Type':'application/json', Prefer:'return=minimal' },
+    body: JSON.stringify({
+      campaign_name: resend ? 'Email Confirm Resend' : 'Email Confirm',
+      subject:'Confirm email', recipients:1,
+      status: result.ok ? 'sent' : 'failed', sent_by:'webhook', provider: result.provider,
+    }),
+  }).catch(()=>{});
+
+  return res.status(result.ok ? 200 : 500).json({ ok:result.ok, provider:result.provider, email });
+}
+
+async function handleConfirmGet(req, res) {
+  const token = (req.query && req.query.token) || '';
+  if (!token || typeof token !== 'string') {
+    res.statusCode = 302;
+    res.setHeader('Location', `${APP_URL}/?email_confirm_error=invalid_token`);
+    return res.end();
+  }
+  if (!SK) {
+    res.statusCode = 302;
+    res.setHeader('Location', `${APP_URL}/?email_confirm_error=server_misconfig`);
+    return res.end();
+  }
+
+  // Atomic UPDATE: só se token bate AND não expirou AND não verified ainda
+  const nowIso = new Date().toISOString();
+  let profileEmail = null;
+  let alreadyVerified = false;
+
+  try {
+    const upd = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email_verification_token=eq.${encodeURIComponent(token)}&email_verification_expires_at=gt.${encodeURIComponent(nowIso)}&email_verified=eq.false`, {
+      method:'PATCH',
+      headers:{ apikey:SK, Authorization:`Bearer ${SK}`, 'Content-Type':'application/json', Prefer:'return=representation' },
+      body: JSON.stringify({ email_verified:true, email_verification_token:null, email_verification_expires_at:null }),
+    });
+
+    if (upd.ok) {
+      const rows = await upd.json();
+      if (rows && rows[0]) {
+        profileEmail = rows[0].email;
+      } else {
+        // 0 rows updated — investigar
+        const check = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email_verification_token=eq.${encodeURIComponent(token)}&select=email,email_verified,email_verification_expires_at`, {
+          headers:{ apikey:SK, Authorization:`Bearer ${SK}` },
+        });
+        const checkRows = check.ok ? await check.json() : [];
+        if (checkRows[0]) {
+          if (checkRows[0].email_verified) {
+            alreadyVerified = true;
+            profileEmail = checkRows[0].email;
+          } else if (new Date(checkRows[0].email_verification_expires_at) < new Date()) {
+            res.statusCode = 302;
+            res.setHeader('Location', `${APP_URL}/?email_confirm_error=expired&email=${encodeURIComponent(checkRows[0].email)}`);
+            return res.end();
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[email-confirm] DB error:', e.message);
+  }
+
+  if (alreadyVerified && profileEmail) {
+    res.statusCode = 302;
+    res.setHeader('Location', `${APP_URL}/?email_confirmed=1&already=1`);
+    return res.end();
+  }
+
+  if (!profileEmail) {
+    res.statusCode = 302;
+    res.setHeader('Location', `${APP_URL}/?email_confirm_error=invalid_token`);
+    return res.end();
+  }
+
+  // Magic link Supabase pra auto-login
+  const magicLink = await generateSupabaseMagicLink(profileEmail);
+  if (magicLink) {
+    res.statusCode = 302;
+    res.setHeader('Location', magicLink);
+    return res.end();
+  }
+
+  // Fallback: redirect com email pré-preenchido pro login manual
+  console.warn('[email-confirm] magic link fallback for:', profileEmail);
+  res.statusCode = 302;
+  res.setHeader('Location', `${APP_URL}/?just_confirmed=1&email=${encodeURIComponent(profileEmail)}`);
+  return res.end();
+}
+
 module.exports = async (req, res) => {
-  if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
+  // ─── B.3.1 GET handler: /email-confirm?token=xxx ───
+  if (req.method === 'GET') {
+    return handleConfirmGet(req, res);
+  }
+
+  if (applyCors(req, res, { methods: 'POST, GET, OPTIONS' })) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   // Webhook do Supabase: pula rate limit + idempotente. Frontend sem secret: rate limited.
   const HOOK_SECRET = process.env.WELCOME_HOOK_SECRET;
   const isHook = HOOK_SECRET && req.headers['x-webhook-secret'] === HOOK_SECRET;
   if (!isHook && !rateLimitIp(req, 10)) return res.status(429).json({ error: 'rate_limit' });
+
+  // ─── B.3.1 POST handler: send_confirm ───
+  if (req.body && req.body.action === 'send_confirm') {
+    return handleSendConfirm(req, res, req.body);
+  }
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
