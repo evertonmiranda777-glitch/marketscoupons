@@ -217,7 +217,7 @@ module.exports = async (req, res) => {
         'List-Unsubscribe': buildUnsubHeader(recipient.email),
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
-      tags: (tags || ['campaign']).map(t => ({ name: 'tag', value: t })),
+      tags: (tags || ['campaign']).map((t, i) => ({ name: `tag${i+1}`, value: String(t).replace(/[^a-zA-Z0-9_-]/g, '_') })),
     };
     const resp = await fetch('https://api.resend.com/emails', {
       method: 'POST',
