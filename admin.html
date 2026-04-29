@@ -13095,9 +13095,13 @@ async function saveLiveRoomSettings(){
 }
 
 // === Email Auto Status (card automático) ===
+async function _adminBearer(){
+  try{ const sess = await db.auth.getSession(); return sess?.data?.session?.access_token || ''; }catch{ return ''; }
+}
 async function loadAutoStatus(){
   try{
-    const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + (window._adminToken||localStorage.getItem('mc-admin-auth-token')||'') } });
+    const tk = await _adminBearer();
+    const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + tk } });
     if(!r.ok) return;
     const s = await r.json();
     const pill = document.getElementById('auto-state-pill');
@@ -13127,9 +13131,10 @@ async function toggleAutoEmail(){
   const btn = document.getElementById('auto-toggle-btn'); if(!btn) return;
   btn.disabled = true; const old = btn.textContent; btn.textContent = '...';
   try{
+    const tk = await _adminBearer();
     const r = await fetch('/api/brevo-stats', {
       method:'POST',
-      headers:{ 'Content-Type':'application/json', Authorization: 'Bearer ' + (window._adminToken||localStorage.getItem('mc-admin-auth-token')||'') },
+      headers:{ 'Content-Type':'application/json', Authorization: 'Bearer ' + tk },
       body: JSON.stringify({ action: 'toggle_pause' })
     });
     if(!r.ok){ throw new Error('falha'); }
