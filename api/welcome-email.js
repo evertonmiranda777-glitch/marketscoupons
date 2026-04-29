@@ -451,6 +451,34 @@ async function handleConfirmGet(req, res) {
 }
 
 module.exports = async (req, res) => {
+  // ─── DEBUG (TEMPORÁRIO): GET ?diag=magic_link&email=X&secret=Y ───
+  if (req.method === 'GET' && req.query?.diag === 'magic_link') {
+    const diagSecret = req.query.secret || '';
+    if (diagSecret !== process.env.WELCOME_HOOK_SECRET) return res.status(403).json({ error: 'forbidden' });
+    if (!SK) return res.status(500).json({ error: 'no_sk' });
+    const email = req.query.email || '';
+    if (!email) return res.status(400).json({ error: 'no_email' });
+    try {
+      const r = await fetch(`${SUPABASE_URL}/auth/v1/admin/generate_link`, {
+        method: 'POST',
+        headers: { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'magiclink',
+          email,
+          options: { redirect_to: `${APP_URL}/?email_confirmed=1` },
+        }),
+      });
+      const txt = await r.text();
+      let parsed; try { parsed = JSON.parse(txt); } catch { parsed = { raw: txt }; }
+      return res.status(200).json({
+        request: { url: `${SUPABASE_URL}/auth/v1/admin/generate_link`, method: 'POST', body: { type:'magiclink', email, options:{redirect_to:`${APP_URL}/?email_confirmed=1`} }, sk_len: SK.length, sk_prefix: SK.slice(0, 20) + '...' },
+        response: { status: r.status, ok: r.ok, body: parsed, body_keys: parsed ? Object.keys(parsed) : [] },
+      });
+    } catch (e) {
+      return res.status(500).json({ error: 'exception', message: e.message });
+    }
+  }
+
   // ─── B.3.1 GET handler: /email-confirm?token=xxx ───
   if (req.method === 'GET') {
     return handleConfirmGet(req, res);
