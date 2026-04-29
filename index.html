@@ -2642,6 +2642,20 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .lv-feat-title{font-size:13px;font-weight:700;margin-bottom:3px;color:var(--t1);}
 .lv-feat-desc{font-size:11px;color:var(--t3);line-height:1.5;}
 @media(max-width:600px){.lv-cd-num{font-size:22px;}.lv-cd-card{padding:12px 4px;}}
+/* B.3.2 — Confirm Email Modal */
+.confirm-email-overlay{position:fixed;inset:0;background:rgba(8,12,18,.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
+.cem-card{background:#fff;color:#0d141c;border-radius:16px;padding:36px 32px;max-width:420px;width:100%;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.cem-close{position:absolute;top:12px;right:14px;background:none;border:0;font-size:24px;color:#94a3b8;cursor:pointer;line-height:1;}
+.cem-icon-wrap{margin-bottom:16px;}
+.cem-icon{font-size:48px;display:inline-block;}
+.cem-title{font-size:22px;font-weight:700;margin:0 0 12px;color:#0d141c;}
+.cem-body{font-size:15px;line-height:1.5;color:#475569;margin:0 0 16px;}
+.cem-email-display{background:#f1f5f9;border-radius:8px;padding:10px 14px;font-family:monospace;font-size:14px;color:#0d141c;margin-bottom:20px;word-break:break-all;}
+.cem-btn-primary{background:#F0B429;color:#0d141c;border:0;font-weight:700;font-size:15px;padding:12px 24px;border-radius:10px;cursor:pointer;width:100%;margin-bottom:8px;}
+.cem-btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+.cem-btn-ghost{background:none;border:0;color:#64748b;font-size:14px;cursor:pointer;padding:8px;width:100%;}
+.cem-rate-limit{font-size:13px;color:#94a3b8;margin-bottom:12px;}
+.cem-toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:#10B981;color:#fff;padding:12px 20px;border-radius:10px;font-weight:600;z-index:10000;box-shadow:0 8px 24px rgba(16,185,129,.4);display:none;}
 </style>
 <script src="js/page-boot.js?v=20260427"></script>
 </head>
@@ -4218,6 +4232,20 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- B.3.2 — Confirm Email Modal -->
+<div class="auth-overlay confirm-email-overlay" id="confirm-email-overlay" style="display:none;">
+  <div class="cem-card">
+    <button class="cem-close" onclick="closeConfirmEmailModal()" aria-label="Close">&times;</button>
+    <div class="cem-icon-wrap"><div class="cem-icon" id="cem-icon">📧</div></div>
+    <h2 class="cem-title" id="cem-title"></h2>
+    <p class="cem-body" id="cem-body"></p>
+    <div class="cem-email-display" id="cem-email-display"></div>
+    <button class="cem-btn-primary" id="cem-resend-btn" onclick="resendConfirmEmail()"></button>
+    <div class="cem-rate-limit" id="cem-rate-limit" style="display:none;"></div>
+    <button class="cem-btn-ghost" onclick="closeConfirmEmailModal()" id="cem-close-text"></button>
+  </div>
+</div>
 
 <!-- JAVASCRIPT -->
 </body>

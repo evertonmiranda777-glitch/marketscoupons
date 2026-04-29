@@ -904,8 +904,8 @@ function go(page, skipPush){
   if(page==='live'){ if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview(); }
   if(page==='analise' && _authLoaded) checkAnalysisGate();
   if(page==='loyalty') renderLoyaltyPage();
-  if(page==='painel' && !currentUser && _authLoaded) { openAuthModal('login'); go('home'); return; }
-  if(page==='painel' && !currentUser && !_authLoaded) { _authReadyPromise?.then(()=>{ if(!currentUser){ openAuthModal('login'); go('home'); } }); }
+  if(page==='painel' && !isAuthed() && _authLoaded) { if(!currentUser) openAuthModal('login'); else showConfirmEmailModal('pending'); go('home'); return; }
+  if(page==='painel' && !isAuthed() && !_authLoaded) { _authReadyPromise?.then(()=>{ if(!isAuthed()){ if(!currentUser) openAuthModal('login'); else showConfirmEmailModal('pending'); go('home'); } }); }
   if(page==='gamma') loadGEX();
   if(page==='pro-success'){
     go('analise');
@@ -2666,6 +2666,7 @@ async function loadUserFavs() {
 
 async function toggleFav(firmId) {
   if (!currentUser) { openAuthModal('login'); return; }
+  if (!isAuthed()) { showConfirmEmailModal('pending'); return; }
   const isFav = _favs.has(firmId);
   const btn = document.getElementById('fav-btn-'+firmId);
   if (isFav) {
@@ -5126,6 +5127,7 @@ function buildProGateAnon(){
 
 async function startCheckout(){
   if(!currentUser){openAuthModal('signup');return;}
+  if(!isAuthed()){showConfirmEmailModal('pending');return;}
   // Track InitiateCheckout
   track('checkout_click',{item:'pro_subscription',value:9.99,currency:'USD'});
   if(typeof gtag==='function') gtag('event','begin_checkout',{value:9.99,currency:'USD',items:[{item_id:'pro_monthly',item_name:'Pro Subscription',price:9.99,quantity:1}]});
@@ -5195,7 +5197,7 @@ function showProSuccessOverlay(){
 async function checkProBadge(){
   const badge=document.getElementById('nav-pro-badge');
   const manageBtn=document.getElementById('dd-manage-sub');
-  if(!currentUser){
+  if(!isAuthed()){
     if(badge)badge.style.display='none';
     if(manageBtn)manageBtn.style.display='none';
     return;
@@ -5631,8 +5633,8 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
   if(!contentEl) return;
   const staticEl=document.getElementById('live-gate-static');
 
-  if(!currentUser){
-    // Not logged in — show full Pro gate, hide static header
+  if(!isAuthed()){
+    // Not logged in or unverified — show full Pro gate, hide static header
     if(staticEl) staticEl.style.display='none';
     contentEl.innerHTML=buildProGateAnon();
   } else {
@@ -5895,6 +5897,7 @@ async function registerLoyalty() {
 
 async function submitProof() {
   if (!rateLimit('submitProof', 10000)) { showToast(t('toast_aguarde')); return; }
+  if (currentUser && !isAuthed()) { showConfirmEmailModal('pending'); return; }
   const member = getLoyaltyMember();
   if (!member) { showToast(t('toast_cadastro_primeiro')); return; }
   const firma       = document.getElementById('pf-firma')?.value;
@@ -6153,6 +6156,12 @@ function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click
    ══════════════════════════════════════════════════════════════════════════ */
 let currentUser = null;
 let currentProfile = null;
+function isAuthed() {
+  return !!(currentUser && currentProfile && (currentProfile.email_verified === true || currentProfile.is_admin === true));
+}
+function isOAuthUser() {
+  return !!(currentUser?.app_metadata?.provider && currentUser.app_metadata.provider !== 'email');
+}
 let _authLoaded = false;
 let _authReadyPromise = null;
 let _userHasAccess = false; // cached: user has pro access (sub, loyalty, vip, trial)
@@ -6316,7 +6325,9 @@ async function doAuthSignup() {
     track('user_signup', { method: 'email' });
     if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'MarketsCoupons Account',content_category:'signup',value:0,currency:'USD',status:true},{eventID:window._lastTrackId+'_CompleteRegistration'});
     if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
-    try { fetch('/api/welcome-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name,lang:(window.currentLang||'pt')})}); } catch(e){}
+    _cemPendingEmail = email;
+    try { fetch('/api/welcome-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_confirm',email,name,lang:(window.currentLang||'pt')})}); } catch(e){}
+    if(!isAuthed()) showConfirmEmailModal('pending');
     return;
   }
 
@@ -6336,7 +6347,9 @@ async function doAuthSignup() {
     track('user_signup', { method: 'email' });
     if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'MarketsCoupons Account',content_category:'signup',value:0,currency:'USD',status:true},{eventID:window._lastTrackId+'_CompleteRegistration'});
     if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
-    try { fetch('/api/welcome-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name,lang:(window.currentLang||'pt')})}); } catch(e){}
+    _cemPendingEmail = email;
+    try { fetch('/api/welcome-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_confirm',email,name,lang:(window.currentLang||'pt')})}); } catch(e){}
+    if(!isAuthed()) showConfirmEmailModal('pending');
     return;
   }
 }
@@ -6476,6 +6489,9 @@ async function checkAuthSession() {
     if (_loggingOut) return;
     if (event === 'SIGNED_IN' && session?.user) {
       await loadUserSession(session.user);
+      if (currentUser && currentProfile && !isAuthed() && !isOAuthUser()) {
+        try { if (!sessionStorage.getItem('confirm_modal_shown')) { _cemPendingEmail = currentUser.email; showConfirmEmailModal('pending'); } } catch(e){}
+      }
     } else if (event === 'SIGNED_OUT') {
       currentUser = null;
       currentProfile = null;
@@ -7257,3 +7273,109 @@ async function subscribeNewsletter(e){
   }
   return false;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CONFIRM EMAIL MODAL — B.3.2 (Fix #1.6)
+   ══════════════════════════════════════════════════════════════════════════ */
+let _cemRateInterval = null;
+let _cemPendingEmail = null;
+
+function showConfirmEmailModal(state){
+  state = state || 'pending';
+  const email = _cemPendingEmail || currentUser?.email || currentProfile?.email || '';
+  if(!email){ openAuthModal('signup'); return; }
+  _cemPendingEmail = email;
+  const ov = document.getElementById('confirm-email-overlay');
+  if(!ov) return;
+  document.getElementById('cem-icon').textContent = state==='expired' ? '⏰' : '📧';
+  document.getElementById('cem-title').textContent = t(state==='expired'?'cem_expired_title':'cem_pending_title');
+  document.getElementById('cem-body').textContent  = t(state==='expired'?'cem_expired_body':'cem_pending_body');
+  document.getElementById('cem-email-display').textContent = email;
+  const btn = document.getElementById('cem-resend-btn');
+  btn.textContent = t('cem_resend');
+  btn.disabled = false;
+  document.getElementById('cem-rate-limit').style.display = 'none';
+  document.getElementById('cem-close-text').textContent = t('cem_close');
+  ov.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  try{ sessionStorage.setItem('confirm_modal_shown','1'); }catch(e){}
+}
+
+function closeConfirmEmailModal(){
+  const ov = document.getElementById('confirm-email-overlay');
+  if(ov) ov.style.display = 'none';
+  document.body.style.overflow = '';
+  if(_cemRateInterval){ clearInterval(_cemRateInterval); _cemRateInterval = null; }
+}
+
+async function resendConfirmEmail(){
+  if(!_cemPendingEmail) return;
+  const btn = document.getElementById('cem-resend-btn');
+  btn.disabled = true;
+  try{
+    const r = await fetch('/api/welcome-email',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'send_confirm', email:_cemPendingEmail, lang:(window.currentLang||'pt')})
+    });
+    const j = await r.json().catch(()=>({}));
+    if(r.status===429){ startResendCountdown(j.retry_after||120); return; }
+    if(!r.ok){ btn.disabled = false; showCemToast(t('cem_resent_ok'),'#EF4444'); return; }
+    showCemToast(t('cem_resent_ok'));
+    startResendCountdown(120);
+  }catch(e){
+    btn.disabled = false;
+    showCemToast(t('cem_resent_ok'),'#EF4444');
+  }
+}
+
+function startResendCountdown(secs){
+  const btn = document.getElementById('cem-resend-btn');
+  const rl  = document.getElementById('cem-rate-limit');
+  if(!btn || !rl) return;
+  let s = secs;
+  btn.disabled = true;
+  rl.style.display = 'block';
+  rl.textContent = t('cem_rate_limit').replace('{s}', s);
+  if(_cemRateInterval) clearInterval(_cemRateInterval);
+  _cemRateInterval = setInterval(()=>{
+    s--;
+    if(s<=0){ clearInterval(_cemRateInterval); _cemRateInterval=null; rl.style.display='none'; btn.disabled=false; return; }
+    rl.textContent = t('cem_rate_limit').replace('{s}', s);
+  },1000);
+}
+
+function showCemToast(msg, bg){
+  let el = document.getElementById('cem-toast');
+  if(!el){ el = document.createElement('div'); el.id = 'cem-toast'; el.className = 'cem-toast'; document.body.appendChild(el); }
+  el.style.background = bg || '#10B981';
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(()=>{ el.style.display = 'none'; }, 3000);
+}
+
+(function handleConfirmQueryParams(){
+  try{
+    const q = new URLSearchParams(location.search);
+    const cleanQuery = (keys)=>{
+      keys.forEach(k=>q.delete(k));
+      const qs = q.toString();
+      history.replaceState(null,'',location.pathname + (qs?'?'+qs:'') + location.hash);
+    };
+    if(q.get('email_confirmed')==='1'){
+      setTimeout(()=>showCemToast(t('cem_confirmed_ok')||'Email confirmed!'), 600);
+      cleanQuery(['email_confirmed','email']);
+    }
+    const err = q.get('email_confirm_error');
+    if(err){
+      _cemPendingEmail = q.get('email') || null;
+      setTimeout(()=>showConfirmEmailModal('expired'), 600);
+      cleanQuery(['email_confirm_error','email']);
+    }
+    if(q.get('just_confirmed')==='1'){
+      const em = q.get('email');
+      setTimeout(()=>{ try{ openAuthModal('login'); const f=document.getElementById('auth-login-email'); if(f && em) f.value=em; const p=document.getElementById('auth-login-pass'); if(p) p.focus(); }catch(e){} }, 500);
+      cleanQuery(['just_confirmed','email']);
+    }
+  }catch(e){}
+})();
