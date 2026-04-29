@@ -55,10 +55,10 @@ async function writePauseFlag(value) {
   });
 }
 async function readEmailDailyStats() {
-  // Hoje: lê do Brevo API direto (fonte da verdade — email_logs perde counts quando brevo_response=null)
-  // Semana: soma email_logs (Brevo aggregated report só vai até 30d, mas counts diários combinados são suficientes)
+  // Hoje: Brevo direto (sent_today_brevo) + email_logs.providers_breakdown (resend/sendgrid)
+  // Semana: soma email_logs
   const BREVO_KEY = process.env.BREVO_API_KEY;
-  let sent_today = 0;
+  let sent_today_brevo = 0;
   if (BREVO_KEY) {
     try {
       const todayStr = new Date().toISOString().slice(0,10);
@@ -66,21 +66,33 @@ async function readEmailDailyStats() {
         { headers: { 'accept':'application/json', 'api-key': BREVO_KEY } });
       if (r.ok) {
         const d = await r.json();
-        sent_today = (d.requests || d.delivered || 0);
+        sent_today_brevo = (d.requests || d.delivered || 0);
       }
     } catch {}
   }
+  let sent_today_resend = 0, sent_today_sendgrid = 0;
   let week_sent=0, week_failed=0;
   if (SK_FOR_PAUSE) {
+    const todayStr = new Date().toISOString().slice(0,10);
+    const weekAgo = new Date(Date.now()-7*86400000).toISOString().slice(0,10);
     try {
-      const weekAgo = new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+      // Hoje: providers_breakdown
+      const t = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${todayStr}&select=brevo_response`,
+        { headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` } });
+      const tRows = t.ok ? await t.json() : [];
+      tRows.forEach(r => {
+        const pb = r.brevo_response?.providers_breakdown;
+        if (pb) { sent_today_resend += (pb.resend || 0); sent_today_sendgrid += (pb.sendgrid || 0); }
+      });
+      // Semana: total
       const w = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${weekAgo}&select=brevo_response`,
         { headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` } });
       const wRows = w.ok ? await w.json() : [];
       wRows.forEach(r => { week_sent += (r.brevo_response?.sent || 0); week_failed += (r.brevo_response?.failed || 0); });
     } catch {}
   }
-  return { sent_today, week_sent, week_failed };
+  const sent_today = sent_today_brevo + sent_today_resend + sent_today_sendgrid;
+  return { sent_today, sent_today_brevo, sent_today_resend, sent_today_sendgrid, week_sent, week_failed };
 }
 function nextEmailRunLabel() {
   const now = new Date(); const next = new Date(now);
@@ -121,7 +133,19 @@ module.exports = async (req, res) => {
   if (type === 'email_status') {
     try {
       const [paused, stats] = await Promise.all([readPauseFlag(), readEmailDailyStats()]);
-      return res.status(200).json({ paused, sent_today: stats.sent_today, daily_limit: 300, next_run_label: nextEmailRunLabel(), week_sent: stats.week_sent, week_failed: stats.week_failed });
+      return res.status(200).json({
+        paused,
+        sent_today: stats.sent_today,
+        daily_limit: 500, // Brevo 300 + Resend 100 + SendGrid 100
+        breakdown: {
+          brevo:    { sent: stats.sent_today_brevo,    limit: 300 },
+          resend:   { sent: stats.sent_today_resend,   limit: 100 },
+          sendgrid: { sent: stats.sent_today_sendgrid, limit: 100 },
+        },
+        next_run_label: nextEmailRunLabel(),
+        week_sent: stats.week_sent,
+        week_failed: stats.week_failed,
+      });
     } catch (e) { return res.status(500).json({ error: 'status_failed', detail: e.message }); }
   }
 

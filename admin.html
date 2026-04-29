@@ -1324,12 +1324,19 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
          <div style="font-size:12px;font-weight:700;color:var(--t1);flex:1;">Envio Automático</div>
          <span id="auto-state-pill" style="font-size:9px;padding:3px 9px;border-radius:10px;background:rgba(16,185,129,.15);color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">● Ligado</span>
        </div>
-       <div style="font-size:10px;color:var(--t3);margin-bottom:4px;">8h BRT todo dia · trava 400/dia</div>
+       <div style="font-size:10px;color:var(--t3);margin-bottom:4px;">8h BRT todo dia · trava 500/dia (Brevo 300 + Resend 100 + SendGrid 100)</div>
        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:5px;">
-         <span>Hoje</span><strong id="auto-progress-label" style="color:var(--gold);">0 / 400</strong>
+         <span>Hoje</span><strong id="auto-progress-label" style="color:var(--gold);">0 / 500</strong>
        </div>
-       <div style="background:var(--b1);border-radius:4px;height:8px;overflow:hidden;margin-bottom:10px;">
+       <div style="background:var(--b1);border-radius:4px;height:8px;overflow:hidden;margin-bottom:8px;">
          <div id="auto-progress-bar" style="background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3s ease infinite;height:100%;width:0%;transition:width .4s;border-radius:4px;"></div>
+       </div>
+       <div id="auto-breakdown" style="display:flex;gap:6px;font-size:9px;color:var(--t3);margin-bottom:10px;flex-wrap:wrap;">
+         <span><span style="color:#22d3ee;">Brevo</span> <strong id="auto-bd-brevo" style="color:var(--t2);">0/300</strong></span>
+         <span style="color:var(--b3);">·</span>
+         <span><span style="color:#a855f7;">Resend</span> <strong id="auto-bd-resend" style="color:var(--t2);">0/100</strong></span>
+         <span style="color:var(--b3);">·</span>
+         <span><span style="color:#10b981;">SendGrid</span> <strong id="auto-bd-sendgrid" style="color:var(--t2);">0/100</strong></span>
        </div>
        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:10px;margin-bottom:10px;">
          <div style="background:var(--card);border:1px solid var(--b1);border-radius:6px;padding:7px 9px;">
@@ -8363,6 +8370,7 @@ async function sendEmailsSmtp(){
     if(isPromo || isInst){
       window._lastSendResults = [];
       window._lastSendDebug = { calls: [] };
+      window._lastSendProviders = { brevo: 0, resend: 0, sendgrid: 0 };
       // Send per language group — each gets HTML in their language
       for(const [lang, group] of Object.entries(langGroups)){
         const html = isPromo ? buildWhitePromoHtml(emailPromoFirm, lang) : buildInstitutionalHtml(window._instTemplateName, lang);
@@ -8382,6 +8390,11 @@ async function sendEmailsSmtp(){
         // Capture debug pra cada call multilíngue
         window._lastSendDebug.calls.push({ lang, http_status: resp.status, http_ok: resp.ok, body_keys: Object.keys(data||{}), success: data.success, sent: data.sent, failed: data.failed, error: data.error, message: data.message, results_sample: (data.results||[]).slice(0,2) });
         if(Array.isArray(data.results)) window._lastSendResults.push(...data.results);
+        if(data.providers){
+          window._lastSendProviders.brevo    += (data.providers.brevo||0);
+          window._lastSendProviders.resend   += (data.providers.resend||0);
+          window._lastSendProviders.sendgrid += (data.providers.sendgrid||0);
+        }
         if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
         else { totalFailed+=group.length; }
       }
@@ -8400,6 +8413,7 @@ async function sendEmailsSmtp(){
       const data = await resp.json().catch(()=>({}));
       window._lastSendResults = data.results || [];
       window._lastSendDebug = { http_status: resp.status, http_ok: resp.ok, body: data };
+      window._lastSendProviders = data.providers || { brevo:0, resend:0, sendgrid:0 };
       if(data.success){ totalSent=data.sent||0; totalFailed=data.failed||0; }
       else { totalFailed=leads.length; }
     }
@@ -8420,14 +8434,15 @@ async function sendEmailsSmtp(){
       }
     } catch(e){}
     const _serverDebug = window._lastSendDebug || null;
+    const _providersBreakdown = window._lastSendProviders || { brevo:0, resend:0, sendgrid:0 };
     await db.from('email_logs').insert({
       campaign_name: subject.slice(0,50),
       subject: subject,
       recipients: leads.length,
       status: totalFailed===0 ? 'sent' : (totalSent===0 ? 'failed' : 'partial'),
       sent_by: 'admin',
-      provider: 'brevo',
-      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups), tags: logTags, first_errors: _firstErrors, server_debug: _serverDebug },
+      provider: 'auto',
+      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups), tags: logTags, first_errors: _firstErrors, server_debug: _serverDebug, providers_breakdown: _providersBreakdown },
     });
 
     addEmailSentToday(totalSent);
@@ -13138,8 +13153,14 @@ async function loadAutoStatus(){
       if(btn){ btn.textContent='Pausar automático'; btn.classList.add('btn-secondary'); btn.classList.remove('btn-primary'); }
       if(bar){ bar.style.background='linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a)'; bar.style.backgroundSize='200% 100%'; bar.style.animation='shimmer 3s ease infinite'; }
     }
-    if(lbl) lbl.textContent = `${s.sent_today||0} / ${s.daily_limit||300}`;
-    if(bar) bar.style.width = Math.min(100, ((s.sent_today||0)/(s.daily_limit||300))*100) + '%';
+    if(lbl) lbl.textContent = `${s.sent_today||0} / ${s.daily_limit||500}`;
+    if(bar) bar.style.width = Math.min(100, ((s.sent_today||0)/(s.daily_limit||500))*100) + '%';
+    if(s.breakdown){
+      const setBd = (id, p) => { const el = document.getElementById(id); if (el && p) el.textContent = `${p.sent||0}/${p.limit||0}`; };
+      setBd('auto-bd-brevo', s.breakdown.brevo);
+      setBd('auto-bd-resend', s.breakdown.resend);
+      setBd('auto-bd-sendgrid', s.breakdown.sendgrid);
+    }
     if(next) next.textContent = s.next_run_label || 'Amanhã 08:00';
     if(week) week.innerHTML = `<span style="color:var(--green);">${(s.week_sent||0).toLocaleString()}</span> ✓ · <span style="color:var(--red);">${s.week_failed||0}</span> falhas`;
   } catch(e){ /* silencioso */ }

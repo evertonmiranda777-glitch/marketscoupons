@@ -393,7 +393,11 @@ module.exports = async (req, res) => {
 
   const sent = results.filter(r => r.status === 'sent').length;
   const failed = results.filter(r => r.status === 'failed').length;
-  const providers = { brevo: results.filter(r => r.provider === 'brevo' && r.status === 'sent').length, resend: results.filter(r => r.provider === 'resend' && r.status === 'sent').length };
+  const providers = {
+    brevo:    results.filter(r => r.provider === 'brevo'    && r.status === 'sent').length,
+    resend:   results.filter(r => r.provider === 'resend'   && r.status === 'sent').length,
+    sendgrid: results.filter(r => r.provider === 'sendgrid' && r.status === 'sent').length,
+  };
 
   return res.status(200).json({
     success: true,
