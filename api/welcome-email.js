@@ -239,7 +239,7 @@ async function checkLastConfirmRecency(email) {
 }
 
 async function generateSupabaseMagicLink(email) {
-  if (!SK) return null;
+  if (!SK) { console.warn('[email-confirm] magic link skipped: no SK'); return null; }
   try {
     const r = await fetch(`${SUPABASE_URL}/auth/v1/admin/generate_link`, {
       method: 'POST',
@@ -250,10 +250,16 @@ async function generateSupabaseMagicLink(email) {
         options: { redirect_to: `${APP_URL}/?email_confirmed=1` },
       }),
     });
-    if (!r.ok) return null;
-    const d = await r.json();
-    return d.action_link || (d.properties && d.properties.action_link) || null;
-  } catch { return null; }
+    const txt = await r.text();
+    if (!r.ok) {
+      console.warn('[email-confirm] magic link http error', r.status, txt.slice(0, 300));
+      return null;
+    }
+    let d; try { d = JSON.parse(txt); } catch { console.warn('[email-confirm] magic link parse error:', txt.slice(0,200)); return null; }
+    const link = d.action_link || (d.properties && d.properties.action_link) || null;
+    if (!link) console.warn('[email-confirm] magic link missing action_link, response keys:', Object.keys(d));
+    return link;
+  } catch (e) { console.warn('[email-confirm] magic link exception:', e.message); return null; }
 }
 
 const CONFIRM_T = {
