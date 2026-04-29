@@ -5541,7 +5541,6 @@ async function fetchAddressByZip(zip, country) {
   _zipCache.set(cacheKey, result);
   return result;
 }
-window.fetchAddressByZip = fetchAddressByZip; // TEMP: exposed pra smoke test, remover após validação
 
 // saveLead: Supabase primary, localStorage cache
 async function saveLead(data) {
