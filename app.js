@@ -5456,6 +5456,113 @@ function validatePhone(raw) {
   return digits.length >= 7 && digits.length <= 15;
 }
 
+// B.4 — country/state/zip/phone/birthday helpers
+const STATES_BR = [['AC','Acre'],['AL','Alagoas'],['AP','Amapá'],['AM','Amazonas'],['BA','Bahia'],['CE','Ceará'],['DF','Distrito Federal'],['ES','Espírito Santo'],['GO','Goiás'],['MA','Maranhão'],['MT','Mato Grosso'],['MS','Mato Grosso do Sul'],['MG','Minas Gerais'],['PA','Pará'],['PB','Paraíba'],['PR','Paraná'],['PE','Pernambuco'],['PI','Piauí'],['RJ','Rio de Janeiro'],['RN','Rio Grande do Norte'],['RS','Rio Grande do Sul'],['RO','Rondônia'],['RR','Roraima'],['SC','Santa Catarina'],['SP','São Paulo'],['SE','Sergipe'],['TO','Tocantins']];
+const STATES_US = [['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','District of Columbia'],['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']];
+
+const ZIP_RE = {
+  BR: /^\d{5}-?\d{3}$/,
+  US: /^\d{5}(-\d{4})?$/,
+  MX: /^\d{5}$/,
+  PT: /^\d{4}-\d{3}$/,
+};
+
+const PHONE_PREFIX_BY_COUNTRY = {
+  BR:'+55', US:'+1', CA:'+1', PT:'+351', ES:'+34', MX:'+52', AR:'+54',
+  CO:'+57', CL:'+56', PE:'+51', UY:'+598', PY:'+595', VE:'+58', EC:'+593',
+  BO:'+591', GB:'+44', DE:'+49', FR:'+33', IT:'+39', NL:'+31', BE:'+32',
+  CH:'+41', AT:'+43', AU:'+61', JP:'+81',
+};
+
+function normalizePhoneE164(raw, country) {
+  if (!raw) return '';
+  const trimmed = String(raw).trim();
+  if (trimmed.startsWith('+')) return '+' + trimmed.replace(/\D/g,'');
+  const digits = trimmed.replace(/\D/g,'');
+  if (!digits) return '';
+  const prefix = PHONE_PREFIX_BY_COUNTRY[country] || '';
+  return prefix + digits;
+}
+
+function validateBirthdayAdult(iso) {
+  if (!iso) return false;
+  const dob = new Date(iso);
+  if (isNaN(dob.getTime())) return false;
+  const now = new Date();
+  let age = now.getFullYear() - dob.getFullYear();
+  const m = now.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
+  return age >= 18;
+}
+
+function renderStateField(country) {
+  const wrap = document.getElementById('auth-signup-state-wrap');
+  if (!wrap) return;
+  const labelEl = wrap.querySelector('label');
+  const labelHtml = labelEl ? labelEl.outerHTML : '<label data-i18n="signup_estado">Estado</label>';
+  let inner;
+  if (country === 'BR' || country === 'US') {
+    const list = country === 'BR' ? STATES_BR : STATES_US;
+    inner = `<select id="auth-signup-state"><option value="">--</option>${list.map(([c,n])=>`<option value="${c}">${c} — ${n}</option>`).join('')}</select>`;
+  } else {
+    inner = '<input type="text" id="auth-signup-state" placeholder="State / Region">';
+  }
+  wrap.innerHTML = labelHtml + inner;
+}
+
+function onCountryChange() {
+  const country = document.getElementById('auth-signup-country')?.value;
+  if (!country) return;
+  renderStateField(country);
+  const ph = document.getElementById('auth-signup-phone');
+  if (ph) ph.placeholder = (PHONE_PREFIX_BY_COUNTRY[country] || '+') + ' XXX...';
+}
+
+async function onZipBlur() {
+  const zip = document.getElementById('auth-signup-zip')?.value.trim();
+  const country = document.getElementById('auth-signup-country')?.value;
+  if (!zip || !country) return;
+  const spin = document.getElementById('auth-signup-zip-spin');
+  const msg = document.getElementById('auth-signup-zip-msg');
+  if (spin) spin.style.display = 'block';
+  if (msg) msg.style.display = 'none';
+  try {
+    const r = await fetchAddressByZip(zip, country);
+    if (spin) spin.style.display = 'none';
+    if (r && r.ok) {
+      const addr = document.getElementById('auth-signup-address');
+      const city = document.getElementById('auth-signup-city');
+      const state = document.getElementById('auth-signup-state');
+      if (addr && r.address) addr.value = r.address;
+      if (city && r.city) city.value = r.city;
+      if (state && r.state) state.value = r.state;
+      if (msg) { msg.style.display='block'; msg.className='auth-zip-msg ok'; msg.textContent = t('zip_ok')||'Address found'; }
+    } else {
+      const errKey = 'zip_' + ((r && r.error) || 'zip_not_found');
+      if (msg) { msg.style.display='block'; msg.className='auth-zip-msg error'; msg.textContent = t(errKey) || t('zip_zip_not_found') || 'CEP não encontrado, preencha manualmente'; }
+    }
+  } catch(e) {
+    if (spin) spin.style.display = 'none';
+  }
+}
+
+function prefillCountryFromGeo() {
+  if (!_geo || !_geo.geo_country) return;
+  const sel = document.getElementById('auth-signup-country');
+  if (!sel) return;
+  const cc = _geo.geo_country.toUpperCase();
+  if ([...sel.options].some(o => o.value === cc)) {
+    sel.value = cc;
+    onCountryChange();
+  }
+}
+
+function initSignupForm() {
+  prefillCountryFromGeo();
+  const sel = document.getElementById('auth-signup-country');
+  if (sel) renderStateField(sel.value);
+}
+
 async function validateEmailMx(email) {
   if (!_emailFormatRe.test(email)) return { valid: false, reason: 'invalid_format' };
   try {
@@ -6252,6 +6359,7 @@ function openAuthModal(type) {
   const sf = document.getElementById('auth-signup-form');
   if (lf) lf.style.display = _authGroup === 'login' ? '' : 'none';
   if (sf) sf.style.display = _authGroup === 'signup' ? '' : 'none';
+  if (_authGroup === 'signup') { try { initSignupForm(); } catch(e) {} }
   rebuildAuthDots();
   goAuthSlide(0);
   startAuthCarousel();
@@ -6364,16 +6472,32 @@ async function doAuthLogin() {
 }
 
 async function doAuthSignup() {
-  const name    = document.getElementById('auth-signup-name').value.trim();
-  const email   = document.getElementById('auth-signup-email').value.trim();
-  const pass    = document.getElementById('auth-signup-pass').value;
-  const phone   = document.getElementById('auth-signup-phone').value.trim();
-  const city    = document.getElementById('auth-signup-city').value.trim();
-  const state   = document.getElementById('auth-signup-state').value.trim();
-  const country = document.getElementById('auth-signup-country').value;
+  const first    = document.getElementById('auth-signup-first')?.value.trim() || '';
+  const last     = document.getElementById('auth-signup-last')?.value.trim() || '';
+  const nickname = document.getElementById('auth-signup-nickname')?.value.trim() || '';
+  const email    = document.getElementById('auth-signup-email').value.trim();
+  const pass     = document.getElementById('auth-signup-pass').value;
+  const phone    = document.getElementById('auth-signup-phone')?.value.trim() || '';
+  const birthday = document.getElementById('auth-signup-birthday')?.value || '';
+  const country  = document.getElementById('auth-signup-country')?.value || '';
+  const zip      = document.getElementById('auth-signup-zip')?.value.trim() || '';
+  const address  = document.getElementById('auth-signup-address')?.value.trim() || '';
+  const city     = document.getElementById('auth-signup-city')?.value.trim() || '';
+  const state    = document.getElementById('auth-signup-state')?.value.trim() || '';
+  const terms    = document.getElementById('auth-signup-terms')?.checked;
 
-  if (!name || !email || !pass) return showAuthError('signup-error', t('auth_nome_email_senha'));
+  // Hard-required
+  if (!first || !last || !nickname || !email || !pass) return showAuthError('signup-error', t('auth_campos_obrigatorios')||'Preencha todos os campos obrigatórios');
   if (pass.length < 6) return showAuthError('signup-error', t('auth_senha_minimo'));
+  if (!terms) return showAuthError('signup-error', t('auth_aceite_termos')||'Aceite os termos para continuar');
+
+  // Soft-required: birthday se preenchido tem que ser adulto
+  if (birthday && !validateBirthdayAdult(birthday)) return showAuthError('signup-error', t('auth_idade_minima')||'Você deve ter 18 anos ou mais');
+
+  // ZIP validation por país (se preenchido)
+  if (zip && country && ZIP_RE[country]) {
+    if (!ZIP_RE[country].test(zip)) return showAuthError('signup-error', t('auth_cep_invalido')||'CEP/ZIP inválido para o país selecionado');
+  }
 
   const btn = document.getElementById('signup-btn');
   btn.disabled = true; btn.textContent = t('auth_validando_email')||'Validating email...';
@@ -6388,11 +6512,28 @@ async function doAuthSignup() {
 
   btn.textContent = t('auth_criando');
 
+  const phoneE164 = phone ? normalizePhoneE164(phone, country) : '';
+  const fullName  = `${first} ${last}`.trim();
+  const name      = fullName; // compat com referências locais abaixo
+
   const { data, error } = await db.auth.signUp({
     email,
     password: pass,
     options: {
-      data: { full_name: name, phone, city, state, country }
+      data: {
+        first_name: first,
+        last_name:  last,
+        nickname,
+        full_name:  fullName,
+        phone:      phoneE164,
+        birthday:   birthday || '',
+        address,
+        city,
+        state,
+        country,
+        zip,
+        terms_accepted: 'true',
+      }
     }
   });
   btn.disabled = false; btn.textContent = t('auth_btn_criar');
