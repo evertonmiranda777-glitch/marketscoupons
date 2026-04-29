@@ -13097,7 +13097,7 @@ async function saveLiveRoomSettings(){
 // === Email Auto Status (card automático) ===
 async function loadAutoStatus(){
   try{
-    const r = await fetch('/api/email-status', { headers: { Authorization: 'Bearer ' + (window._adminToken||localStorage.getItem('mc-admin-auth-token')||'') } });
+    const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + (window._adminToken||localStorage.getItem('mc-admin-auth-token')||'') } });
     if(!r.ok) return;
     const s = await r.json();
     const pill = document.getElementById('auto-state-pill');
@@ -13127,7 +13127,7 @@ async function toggleAutoEmail(){
   const btn = document.getElementById('auto-toggle-btn'); if(!btn) return;
   btn.disabled = true; const old = btn.textContent; btn.textContent = '...';
   try{
-    const r = await fetch('/api/email-status', {
+    const r = await fetch('/api/brevo-stats', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', Authorization: 'Bearer ' + (window._adminToken||localStorage.getItem('mc-admin-auth-token')||'') },
       body: JSON.stringify({ action: 'toggle_pause' })

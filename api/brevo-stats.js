@@ -34,19 +34,89 @@ function dateStr(daysAgo) {
   return d.toISOString().split('T')[0];
 }
 
-module.exports = async (req, res) => {
-  if (applyCors(req, res, { methods: 'GET, OPTIONS' })) return;
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
-  if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
+// === Email auto-dispatch status helpers (consolidado pra economizar slot Vercel Hobby) ===
+const SK_FOR_PAUSE = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+async function readPauseFlag() {
+  if (!SK_FOR_PAUSE) return false;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.email_auto_paused&select=value`,
+      { headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` } });
+    if (!r.ok) return false;
+    const rows = await r.json();
+    return rows[0]?.value === 'true';
+  } catch { return false; }
+}
+async function writePauseFlag(value) {
+  if (!SK_FOR_PAUSE) throw new Error('no service key');
+  await fetch(`${SUPABASE_URL}/rest/v1/site_settings`, {
+    method: 'POST',
+    headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}`, 'Content-Type':'application/json', Prefer:'resolution=merge-duplicates' },
+    body: JSON.stringify({ key: 'email_auto_paused', value: value ? 'true' : 'false', updated_at: new Date().toISOString() }),
+  });
+}
+async function readEmailDailyStats() {
+  if (!SK_FOR_PAUSE) return { sent_today:0, week_sent:0, week_failed:0 };
+  const today = new Date().toISOString().slice(0,10);
+  const weekAgo = new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+  try {
+    const t = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${today}&select=brevo_response`,
+      { headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` } });
+    const tRows = t.ok ? await t.json() : [];
+    let sent_today = 0; tRows.forEach(r => { sent_today += (r.brevo_response?.sent || 0); });
+    const w = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${weekAgo}&select=brevo_response`,
+      { headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` } });
+    const wRows = w.ok ? await w.json() : [];
+    let week_sent=0, week_failed=0;
+    wRows.forEach(r => { week_sent += (r.brevo_response?.sent || 0); week_failed += (r.brevo_response?.failed || 0); });
+    return { sent_today, week_sent, week_failed };
+  } catch { return { sent_today:0, week_sent:0, week_failed:0 }; }
+}
+function nextEmailRunLabel() {
+  const now = new Date(); const next = new Date(now);
+  next.setUTCHours(11, 0, 0, 0);
+  if (next.getTime() <= now.getTime()) next.setUTCDate(next.getUTCDate() + 1);
+  const diffMs = next.getTime() - now.getTime();
+  const h = Math.floor(diffMs/3600000), m = Math.floor((diffMs%3600000)/60000);
+  const today = new Date(); today.setUTCHours(11,0,0,0);
+  return `${today.getTime()===next.getTime() ? 'Hoje' : 'Amanhã'} 08:00 (em ${h}h ${m}min)`;
+}
 
-  const BREVO_KEY = process.env.BREVO_API_KEY;
-  if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
+module.exports = async (req, res) => {
+  if (applyCors(req, res, { methods: 'GET, POST, OPTIONS' })) return;
+  if (!rateLimitIp(req, 60)) return res.status(429).json({ error: 'rate_limit' });
 
   const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   const admin = await validateAdmin(auth);
   if (!admin) return res.status(403).json({ error: 'Forbidden: admin access required' });
 
+  // === POST: toggle pause flag ===
+  if (req.method === 'POST') {
+    const { action } = req.body || {};
+    if (action === 'toggle_pause') {
+      try {
+        const cur = await readPauseFlag();
+        await writePauseFlag(!cur);
+        return res.status(200).json({ paused: !cur });
+      } catch (e) { return res.status(500).json({ error: 'toggle_failed', detail: e.message }); }
+    }
+    return res.status(400).json({ error: 'unknown_action' });
+  }
+
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
   const { type, days, tag, event, offset, limit } = req.query;
+
+  // === GET type=email_status (admin email card) ===
+  if (type === 'email_status') {
+    try {
+      const [paused, stats] = await Promise.all([readPauseFlag(), readEmailDailyStats()]);
+      return res.status(200).json({ paused, sent_today: stats.sent_today, daily_limit: 400, next_run_label: nextEmailRunLabel(), week_sent: stats.week_sent, week_failed: stats.week_failed });
+    } catch (e) { return res.status(500).json({ error: 'status_failed', detail: e.message }); }
+  }
+
+  // === Brevo stats (legado: type=events / type=report etc) ===
+  const BREVO_KEY = process.env.BREVO_API_KEY;
+  if (!BREVO_KEY) return res.status(500).json({ error: 'BREVO_API_KEY not configured' });
   const headers = { 'accept': 'application/json', 'api-key': BREVO_KEY };
 
   try {
