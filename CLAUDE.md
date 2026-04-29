@@ -88,7 +88,25 @@ Imagens de guia de firma usam **cor accent da firma**, NUNCA dourado default:
 | G5 Sacar Lucros | #F0B429+#10B981 | conquista |
 
 ### Auth (admin/user separados)
-Logout user usa `mc-user-auth`, logout admin usa `mc-admin-auth`. Logar/deslogar do admin NÃO afeta sessão user. Listener `onAuthStateChange` com guard `if (_loggingOut) return`.
+Logout user usa `mc-user-auth`, logout admin usa `mc-admin-auth`. Logar/deslogar do admin NÃO afeta sessão user. Listener `onAuthStateChange` com guard `if (_loggingOut) return`. **`isAuthed()` helper** (app.js) = `currentUser && currentProfile && (email_verified===true || is_admin===true)`. Admin tem bypass pra não travar operação interna. Gates de conversão usam `isAuthed()`, não `currentUser` puro.
+
+### Sistema cores por contexto de email (canônico 2026-04-29)
+🟠 `#ff8c00` ofertas · 🟢 verde blog · 🔴 vermelho urgência · 🔵 `#1976D2` (FTMO) verificação. **Logo "Coupons" SEMPRE laranja `#ff8c00`** independente do contexto — regra fixa de marca.
+
+### Skeleton canônico de email institucional
+Header `#fff` (logo+tagline) → linha separadora cor temática → hero `#111111` dark (pill+h1 34-38px branco+subtitle) → linha separadora → body `#fff` (saudação Olá+nome → parágrafo → CTA gradient cor temática → fallback → assinatura Lara avatar circular gradient → footer disclaimer). Ref: `api/welcome-email.js` `buildHtml()`+`buildConfirmHtml()`.
+
+### Modal sobre o site = skeleton auth-overlay
+bg `var(--card)` `#10151F`, border `rgba(107,182,201,.22)`, botão herda `.auth-btn` shimmer gold, texto `var(--t1)`/`t2`/`t3`. Backdrop `rgba(8,12,18,.85) + blur(8px)`. Ref `.cem-*` em `index.html`.
+
+### Ícones = Feather pattern, ZERO emoji em UI
+Padrão: `viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`. Não usar emoji em modal/card/UI — sempre SVG inline.
+
+### Previews visuais antes de prod
+Mudança visual significativa = preview HTML standalone em `data/preview/<feature>.html` com mock + estados → user abre local → aprova → aplica. Previews ficam versionados como referência canônica futura. Ex: `data/preview/modal-confirm-email.html` + `email-confirmation.html`.
+
+### Validate-email — fallback permissivo
+`validateEmailMx()` em app.js retorna `{valid:true}` em erro de rede/500. Melhor aceitar email duvidoso ocasional do que bloquear todos por infra própria. Conectado em `doAuthSignup` antes do `db.auth.signUp` — bloqueia disposable/no_mx/invalid_format com mensagens i18n por reason (`ve_*`).
 
 ### Tracking — code-primary (NÃO mexer sem ler tudo)
 GA4 (`G-CZ3L00NY77`) + FB Pixel (`813048241061812`) carregados direto no `loadTracking()`. GTM **DESATIVADO** desde 2026-04-12 (sobrescrevia `window.gtag`). `track(event, params)` em app.js = fonte única → Supabase `events` + dataLayer + `gtag()` direto + `fbq()` direto + Facebook CAPI server-side. Todos com `event_id` UUID pra dedupe. NUNCA chamar gtag/fbq direto sem `track()`. Funil 4 etapas (firmas): firm_detail_open → coupon_copy → checkout_click → Lead. Spy: `?spy=1`.
