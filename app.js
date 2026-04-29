@@ -5086,42 +5086,62 @@ async function checkProAccess(){
   return false;
 }
 
-function buildProGate(mode){
-  const chk='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
-  const benefits=`<div class="pro-benefits">`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b1')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b2')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b3')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b4')}</span></div>`+
+// P1 v2 — Pro Gate 3 caminhos
+const PG_ICO_USER='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>';
+const PG_ICO_GIFT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
+const PG_ICO_STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+const PG_ICO_CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+const PG_CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+function _pgProCard(src){
+  const action = src==='pro_gate_anon' ? "openAuthModal('signup')" : 'startCheckout()';
+  return `<div class="pg-card pg-card-pro">`+
+    `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_STAR}</span><span class="pg-card-title">${t('pro_gate_pro_title')||'Acesso direto, sem fidelidade'}</span></div>`+
+    `<p class="pg-card-sub">${t('pro_gate_pro_sub')||'Plano premium pra pular a etapa.'}</p>`+
+    `<div class="pg-pro-perks">`+
+      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b1')}</div>`+
+      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b2')}</div>`+
+      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b3')}</div>`+
+      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b4')}</div>`+
+    `</div>`+
+    `<button class="pg-pro-cta" onclick="track('gate_pro_click',{src:'${src}'});${action}">`+
+      `<span class="pg-pro-cta-label">${t('pro_gate_pro_cta_label')||'Assinar Pro'}</span>`+
+      `<span class="pg-pro-cta-price">$9.99 / ${t('pro_month')}</span>`+
+    `</button>`+
   `</div>`;
-  const icon=mode==='compact'?'':`<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>`;
-  const title=mode==='compact'?'':`<div class="da-gate-title">${t('pro_gate_title')}</div>`;
-  return `${icon}${title}`+
-    `<div class="pro-price">$9.99 <span>/ ${t('pro_month')}</span></div>`+
-    benefits+
-    `<div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:280px;margin:0 auto;">`+
-      `<button class="da-gate-btn" style="width:100%;" onclick="startCheckout()">${t('pro_subscribe_cta')}</button>`+
-      `<div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>`+
-      `<button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="go('loyalty')">${t('da_gate_btn_loyalty')}</button>`+
+}
+
+// User logado sem acesso — fidelidade primário + Pro secundário
+function buildProGate(mode){
+  const head = mode==='compact' ? '' :
+    `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_CLOCK}</div><h2 class="da-gate-title">${t('pro_gate_logged_title')||'Seu trial expirou'}</h2><p class="da-gate-subtitle">${t('pro_gate_logged_sub')||'Continue acessando Análise + GEX + Live Room.'}</p></div>`;
+  return head+
+    `<div class="pg-stack">`+
+      `<div class="pg-card pg-card-primary">`+
+        `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_GIFT}</span><span class="pg-card-title">${t('pro_gate_loyalty_logged_title')||'Acesso grátis com fidelidade'}</span></div>`+
+        `<p class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre uma avaliação com cupom Markets e ative sua fidelidade.'}</p>`+
+        `<button class="pg-btn pg-btn-gold" onclick="track('gate_loyalty_click',{src:'pro_gate_logged'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
+      `</div>`+
+      _pgProCard('pro_gate_logged')+
     `</div>`;
 }
 
+// Visitante anônimo — 3 caminhos
 function buildProGateAnon(){
-  const chk='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
-  const benefits=`<div class="pro-benefits">`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b1')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b2')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b3')}</span></div>`+
-    `<div class="pro-benefit">${chk}<span>${t('pro_b4')}</span></div>`+
-  `</div>`;
-  return `<div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>`+
-    `<div class="da-gate-title">${t('pro_gate_title')}</div>`+
-    `<div class="pro-price">$9.99 <span>/ ${t('pro_month')}</span></div>`+
-    benefits+
-    `<div style="display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:280px;margin:0 auto;">`+
-      `<button class="da-gate-btn" style="width:100%;" onclick="openAuthModal('signup')">${t('da_gate_btn_login')}</button>`+
-      `<div style="font-size:11px;color:var(--t3);margin:2px 0;">${t('pro_or')}</div>`+
-      `<button class="da-gate-btn sec" style="width:100%;margin-left:0;" onclick="openAuthModal('login')">${t('btn_entrar')}</button>`+
+  return `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_STAR}</div><h2 class="da-gate-title">${t('pro_gate_title')}</h2><p class="da-gate-subtitle">${t('pro_gate_anon_sub')||'3 formas — escolha a sua.'}</p></div>`+
+    `<div class="pg-stack">`+
+      `<div class="pg-card pg-card-primary">`+
+        `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_USER}</span><span class="pg-card-title">${t('da_gate_btn_login')||'Criar conta grátis'}</span></div>`+
+        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'3 dias de acesso liberados — sem cartão.'}</p>`+
+        `<button class="pg-btn pg-btn-gold" onclick="track('gate_signup_click',{src:'pro_gate_anon'});openAuthModal('signup')">${t('pro_gate_signup_cta')||'Criar conta grátis →'}</button>`+
+      `</div>`+
+      `<div class="pg-divider-or">${t('pro_gate_or_path')||'OU continue sem pagar via'}</div>`+
+      `<div class="pg-card pg-card-secondary">`+
+        `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_GIFT}</span><span class="pg-card-title">${t('pro_gate_loyalty_title')||'Programa de fidelidade'}</span></div>`+
+        `<p class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre uma avaliação com cupom Markets e ative sua fidelidade.'}</p>`+
+        `<button class="pg-btn pg-btn-glass" onclick="track('gate_loyalty_click',{src:'pro_gate_anon'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
+      `</div>`+
+      _pgProCard('pro_gate_anon')+
     `</div>`;
 }
 
