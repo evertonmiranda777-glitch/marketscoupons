@@ -399,7 +399,33 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   for (const ev of upcoming) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const timeStr = ev.time ?? ev.datetime ?? "";
-    let timeDisplay = timeStr ? timeStr + " ET" : "";
+    // Converte ET → BRT pra eliminar confusão de fuso na mensagem
+    function etToBrt(s: string): string {
+      if (!s) return "";
+      const m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+      if (!m) return "";
+      let h = parseInt(m[1]);
+      const mm = parseInt(m[2]);
+      const ampm = (m[3] || "").toUpperCase();
+      if (ampm === "PM" && h !== 12) h += 12;
+      if (ampm === "AM" && h === 12) h = 0;
+      // US DST: 2nd Sunday March → 1st Sunday November
+      const now = new Date();
+      const y = now.getUTCFullYear();
+      const marStart = new Date(Date.UTC(y, 2, 1));
+      marStart.setUTCDate(1 + ((7 - marStart.getUTCDay()) % 7) + 7);
+      const novEnd = new Date(Date.UTC(y, 10, 1));
+      novEnd.setUTCDate(1 + ((7 - novEnd.getUTCDay()) % 7));
+      const isDst = now >= marStart && now < novEnd;
+      // EDT=UTC-4, EST=UTC-5; BRT=UTC-3 → +1h (DST) ou +2h (standard)
+      let brtH = h + (isDst ? 1 : 2);
+      if (brtH >= 24) brtH -= 24;
+      return `${String(brtH).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
+    }
+    const brtTime = etToBrt(timeStr);
+    let timeDisplay = timeStr
+      ? (brtTime ? `${timeStr} ET · ${brtTime} BRT` : timeStr + " ET")
+      : "";
 
     const prevLine = ev.previous != null ? `Prev: ${ev.previous}` : "";
     const fcLine = (ev.forecast ?? ev.estimate) != null ? `Exp: ${ev.forecast ?? ev.estimate}` : "";
