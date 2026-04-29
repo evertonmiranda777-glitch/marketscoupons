@@ -284,6 +284,10 @@ a{text-decoration:none;color:inherit;}
 
 /* SEGMENT BUILDER */
 .seg-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.cota-banner{background:rgba(107,182,201,.06);border:1px solid rgba(107,182,201,.18);color:var(--t2);}
+.cota-banner.cota-ok{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.22);color:var(--t1);}
+.cota-banner.cota-warn{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.32);color:var(--t1);}
+.cota-banner.cota-zero{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.32);color:var(--t1);}
 .seg-opt{padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;font-size:12px;font-weight:500;color:var(--t2);text-align:center;transition:.2s;cursor:pointer;}
 .seg-opt.sel{border-color:var(--gold);color:var(--gold);background:var(--gbg);}
 .seg-firma{font-size:10px;padding:4px 8px;border-radius:5px;}
@@ -1338,18 +1342,27 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
          <span style="color:var(--b3);">·</span>
          <span><span style="color:#10b981;">SendGrid</span> <strong id="auto-bd-sendgrid" style="color:var(--t2);">0/100</strong></span>
        </div>
-       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:10px;margin-bottom:10px;">
+       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
          <div style="background:var(--card);border:1px solid var(--b1);border-radius:6px;padding:7px 9px;">
            <div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:8px;margin-bottom:2px;">Próximo envio</div>
-           <div id="auto-next-run" style="color:var(--t1);font-weight:600;">—</div>
+           <div id="auto-next-run" style="color:var(--t1);font-weight:600;font-size:10px;">—</div>
          </div>
          <div style="background:var(--card);border:1px solid var(--b1);border-radius:6px;padding:7px 9px;">
-           <div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:8px;margin-bottom:2px;">7 dias</div>
-           <div id="auto-week-stats" style="color:var(--t1);font-weight:600;">—</div>
+           <div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:8px;margin-bottom:2px;">Fila aguardando</div>
+           <div id="auto-queue-count" style="color:var(--t1);font-weight:600;font-size:10px;">—</div>
          </div>
        </div>
-       <button id="auto-toggle-btn" class="btn-secondary" style="font-size:10px;padding:7px 12px;width:100%;" onclick="toggleAutoEmail()">Pausar automático</button>
+       <div style="background:var(--card);border:1px solid var(--b1);border-radius:6px;padding:7px 9px;font-size:10px;color:var(--t2);margin-bottom:10px;text-align:center;">
+         <span id="auto-week-stats">—</span>
+       </div>
+       <div style="display:flex;gap:6px;">
+         <button class="btn-secondary" style="flex:1;font-size:10px;padding:7px 10px;" onclick="showCampaignHistory()">Ver histórico</button>
+         <button id="auto-toggle-btn" class="btn-secondary" style="flex:1;font-size:10px;padding:7px 10px;" onclick="toggleAutoEmail()">Pausar automático</button>
+       </div>
      </div>
+
+     <!-- Banner cota dinâmica (atualizado quando audiência muda) -->
+     <div id="cota-banner" class="cota-banner" style="display:none;font-size:11px;padding:9px 12px;border-radius:8px;margin-bottom:10px;line-height:1.5;"></div>
 
      <!-- Botões enxutos: Pré-visualizar, Enviar Teste, Enviar Agora -->
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -5409,7 +5422,42 @@ function langFromCode(idioma){
 
 async function updateDestCount(){
  const leads=await getSegmentedLeads();
- document.getElementById('dest-count').textContent=leads.length;
+ const n = leads.length;
+ const el = document.getElementById('dest-count'); if(el) el.textContent=n;
+ // Atualiza botão "Enviar agora (N)" dinâmico
+ const sendBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
+ if(sendBtn) sendBtn.textContent = n > 0 ? `Enviar agora (${n.toLocaleString()})` : 'Enviar agora';
+ // Atualiza banner cota disponível
+ updateCotaBanner(n);
+}
+async function updateCotaBanner(audienceCount){
+ const banner = document.getElementById('cota-banner'); if(!banner) return;
+ try{
+   const tk = await _adminBearer();
+   const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + tk } });
+   if(!r.ok){ banner.style.display='none'; return; }
+   const s = await r.json();
+   const used = s.sent_today || 0;
+   const limit = s.daily_limit || 500;
+   const avail = Math.max(0, limit - used);
+   const willSend = Math.min(audienceCount, avail);
+   const overflow = Math.max(0, audienceCount - avail);
+   let cls = 'cota-ok', html = '';
+   if(audienceCount === 0){
+     banner.style.display='none'; return;
+   } else if(avail === 0){
+     cls = 'cota-zero';
+     html = `Cota esgotada (${used}/${limit}). <strong>Volta amanhã 08:00</strong> ou aguarda automático.`;
+   } else if(overflow > 0){
+     cls = 'cota-warn';
+     html = `Hoje: <strong>${used}/${limit}</strong> · Disponíveis: <strong>${avail}</strong> · ${audienceCount.toLocaleString()} excede cota → envia <strong>${willSend}</strong> agora + ${overflow.toLocaleString()} entram na fila do automático.`;
+   } else {
+     html = `Hoje: <strong>${used}/${limit}</strong> · Disponíveis: <strong>${avail}</strong> · ${audienceCount.toLocaleString()} ≤ ${avail} → envia tudo agora.`;
+   }
+   banner.className = 'cota-banner ' + cls;
+   banner.innerHTML = html;
+   banner.style.display='block';
+ } catch { banner.style.display='none'; }
 }
 
 function insertVar(v){
@@ -13131,7 +13179,22 @@ async function saveLiveRoomSettings(){
 async function _adminBearer(){
   try{ const sess = await db.auth.getSession(); return sess?.data?.session?.access_token || ''; }catch{ return ''; }
 }
+async function showCampaignHistory(){
+  const log = document.getElementById('campaigns-log');
+  if(log){ log.scrollIntoView({behavior:'smooth',block:'start'}); log.style.transition='box-shadow .4s'; log.style.boxShadow='0 0 0 2px var(--gold)'; setTimeout(()=>{log.style.boxShadow='';},1500); }
+}
+async function loadQueueCount(){
+  try{
+    const tk = await _adminBearer();
+    const url = `${window._supabaseUrl||'https://qfwhduvutfumsaxnuofa.supabase.co'}/rest/v1/email_subscribers?status=eq.active&unsubscribed_at=is.null&not.tags=cs.{received-site-invite}&select=id`;
+    const r = await fetch(url, { headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer '+tk, Prefer: 'count=exact', Range: '0-0' } });
+    const total = parseInt((r.headers.get('content-range')||'0/0').split('/')[1]) || 0;
+    const el = document.getElementById('auto-queue-count');
+    if(el) el.textContent = total.toLocaleString() + ' destinatários';
+  } catch(e){}
+}
 async function loadAutoStatus(){
+  loadQueueCount();
   try{
     const tk = await _adminBearer();
     const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + tk } });
