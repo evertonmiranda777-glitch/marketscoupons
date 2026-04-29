@@ -8393,6 +8393,7 @@ async function sendEmailsSmtp(){
         }),
       });
       const data = await resp.json();
+      window._lastSendResults = data.results || [];
       if(data.success){ totalSent=data.sent||0; totalFailed=data.failed||0; }
       else { totalFailed=leads.length; }
     }
@@ -8402,6 +8403,16 @@ async function sendEmailsSmtp(){
       isPromo ? 'promo-'+emailPromoFirm.id : (isInst ? 'inst-'+window._instTemplateName : 'campaign-manual'),
       ...(emailCustomTagFilter||[])
     ];
+    // Log to Supabase — coleta erros REAIS dos primeiros 3 fails (Brevo response detail)
+    let _firstErrors = [];
+    try {
+      if(window._lastSendResults && Array.isArray(window._lastSendResults)){
+        _firstErrors = window._lastSendResults
+          .filter(r => r.status === 'failed')
+          .slice(0,3)
+          .map(r => ({ email: r.email, provider: r.provider, response: r.response }));
+      }
+    } catch(e){}
     await db.from('email_logs').insert({
       campaign_name: subject.slice(0,50),
       subject: subject,
@@ -8409,7 +8420,7 @@ async function sendEmailsSmtp(){
       status: totalFailed===0 ? 'sent' : (totalSent===0 ? 'failed' : 'partial'),
       sent_by: 'admin',
       provider: 'brevo',
-      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups), tags: logTags },
+      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups), tags: logTags, first_errors: _firstErrors },
     });
 
     addEmailSentToday(totalSent);
