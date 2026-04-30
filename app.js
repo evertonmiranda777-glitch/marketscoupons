@@ -172,16 +172,15 @@ const MC_ATTR = (()=>{
 // Sub_id (?keyword=) injection movido pra tracking.js em 2026-04-30 — unifica Apex+Bulenox
 // com cascata utm_term > utm_campaign > fbclid > utm_source > mcsite.
 
-// ─── DIRECT REDIRECT ───
-// window.open IMEDIATAMENTE pra preservar user gesture e reduzir delay percebido.
-// Tracking fire-and-forget depois.
-// REMOVIDO o segundo clipboard.writeText daqui (fdGo ja chama _cpToClip antes
-// de mcOpenFirm). Duas chamadas em ~10ms disparavam prompt de permissao em
-// Chrome mobile/iOS — heuristica anti-spam.
+// ─── SAME-TAB REDIRECT ───
+// window.location.href em vez de window.open pra eliminar about:blank gap.
+// Browser mantem a nossa pagina renderizada ate a firma carregar — transicao
+// instantanea. Back button do browser restaura via bfcache.
+// Tracking dispara ANTES da navegacao (browser tipicamente nao cancela fetch
+// in-flight; melhor effort).
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
-  const win = window.open(finalUrl, '_blank', 'noopener,noreferrer');
   try { if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl}); } catch(e){}
-  return win;
+  window.location.href = finalUrl;
 }
 
 // ─── TRACKING & UTILS ───
