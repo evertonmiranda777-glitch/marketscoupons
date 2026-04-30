@@ -1,16 +1,20 @@
 /**
- * tracking.js — sub_id (keyword) injection for Apex affiliate links
+ * tracking.js — sub_id (keyword) injection for affiliate links
  *
  * Captures UTMs from URL on pageload (TTL 30d, last-touch).
- * On Apex link click OR window.open(apex...), injects ?keyword=fb_<utm_term>
- * BEFORE the hash anchor.
+ * On affiliate link click OR window.open(<affiliate>...), injects
+ * ?keyword=<value> BEFORE the hash anchor, where <value> is built by cascade:
+ *   1. utm_term     → fb_<term>
+ *   2. utm_campaign → fb_<campaign>
+ *   3. fbclid (no UTM) → fb
+ *   4. utm_source   → <source>
+ *   5. (none)       → mcsite
  *
  * SECURITY GUARANTEES:
  * - Failsafe: any error → original URL untouched (try/catch everywhere)
  * - Idempotent: re-running does not duplicate ?keyword=
  * - Feature flag TRACKING_ENABLED (set false → system off without redeploy)
- * - Only Apex (Bulenox/TPT excluded until confirmed)
- * - Does NOT touch CHECKOUT_FIRMS, FIRMS arrays, or cms_firms
+ * - Whitelist of affiliate URL substrings (not domain-wide)
  *
  * Loaded last via <script src="/tracking.js" defer></script>
  */
@@ -20,10 +24,13 @@
   const TRACKING_ENABLED = true;
   if (!TRACKING_ENABLED) return;
 
-  const APEX_MATCH = 'apextraderfunding.com/member/aff/go/evertonmiranda';
+  const AFFILIATE_MATCHES = [
+    'apextraderfunding.com/member/aff/go/evertonmiranda',
+    'bulenox.com/member/aff/go/marketcoupons'
+  ];
+
   const STORAGE_KEY = 'mc_attribution';
   const TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
-  const KEYWORD_PREFIX = 'fb_';
   const MAX_LEN = 100;
 
   // Dev detection: localhost, staging.*, *.vercel.app
@@ -36,8 +43,7 @@
 
   function sanitize(s) {
     try {
-      if (!s || typeof s !== 'string') return '';
-      return s.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, MAX_LEN);
+      return String(s).toLowerCase().replace(/[^a-z0-9_\-]/g, '_').slice(0, MAX_LEN);
     } catch (e) { return ''; }
   }
 
@@ -79,58 +85,75 @@
     } catch (e) {}
   }
 
-  // ─── Step 2: Read sanitized utm_term from localStorage (respects TTL) ───
-  function readUtmTerm() {
+  // ─── Step 2: Read attribution object from localStorage (respects TTL) ───
+  function readAttribution() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return '';
+      if (!raw) return null;
       const attr = JSON.parse(raw) || {};
-      if (attr.ts && Date.now() - attr.ts > TTL_MS) return '';
-      return sanitize(attr.utm_term || '');
-    } catch (e) { return ''; }
+      if (attr.ts && Date.now() - attr.ts > TTL_MS) return null;
+      return attr;
+    } catch (e) { return null; }
   }
 
-  // ─── Step 3: Idempotent keyword injection BEFORE hash ───
+  // ─── Step 3: Build keyword from attribution (cascade) ───
+  function buildKeyword(attr) {
+    try {
+      if (!attr) return 'mcsite';
+      if (attr.utm_term)     return sanitize('fb_' + attr.utm_term);
+      if (attr.utm_campaign) return sanitize('fb_' + attr.utm_campaign);
+      if (attr.fbclid)       return 'fb';
+      if (attr.utm_source)   return sanitize(attr.utm_source);
+      return 'mcsite';
+    } catch (e) { return 'mcsite'; }
+  }
+
+  // ─── Step 4: Idempotent keyword injection BEFORE hash ───
   function injectKeyword(url) {
     try {
       if (!url || typeof url !== 'string') return url;
-      if (url.indexOf(APEX_MATCH) < 0) return url;          // not an Apex link
-      if (/[?&]keyword=/.test(url)) return url;              // idempotent
-      const term = readUtmTerm();
-      if (!term) return url;
+      if (!isAffiliateLink(url)) return url;
+      if (/[?&]keyword=/.test(url)) return url; // idempotent
 
-      const kw = KEYWORD_PREFIX + term;
+      const kw = buildKeyword(readAttribution());
+      if (!kw) return url;
+
       const hashIdx = url.indexOf('#');
       const beforeHash = hashIdx >= 0 ? url.slice(0, hashIdx) : url;
       const hash       = hashIdx >= 0 ? url.slice(hashIdx)    : '';
       const sep = beforeHash.indexOf('?') >= 0 ? '&' : '?';
       const newUrl = beforeHash + sep + 'keyword=' + encodeURIComponent(kw) + hash;
 
-      log('keyword ' + kw + ' applied');
+      const host = (beforeHash.split('/')[2] || '').replace(/^www\./, '');
+      log('keyword ' + kw + ' applied to ' + host);
       return newUrl;
     } catch (e) { return url; }
   }
 
-  function isApexAffiliateLink(href) {
+  function isAffiliateLink(href) {
     try {
-      return typeof href === 'string' && href.indexOf(APEX_MATCH) >= 0;
+      if (typeof href !== 'string') return false;
+      for (let i = 0; i < AFFILIATE_MATCHES.length; i++) {
+        if (href.indexOf(AFFILIATE_MATCHES[i]) >= 0) return true;
+      }
+      return false;
     } catch (e) { return false; }
   }
 
-  // ─── Step 4a: Delegated click listener on <a> tags ───
+  // ─── Step 5a: Delegated click listener on <a> tags ───
   function handleClick(e) {
     try {
       let el = e.target;
       while (el && el.nodeType === 1 && el.tagName !== 'A') el = el.parentElement;
       if (!el || el.tagName !== 'A') return;
       const href = el.getAttribute('href') || '';
-      if (!isApexAffiliateLink(href)) return;
+      if (!isAffiliateLink(href)) return;
       const newHref = injectKeyword(href);
       if (newHref !== href) el.setAttribute('href', newHref);
     } catch (e) {}
   }
 
-  // ─── Step 4b: window.open patch (catches mcOpenFirm in checkout drawer) ───
+  // ─── Step 5b: window.open patch (catches mcOpenFirm in checkout drawer) ───
   function patchWindowOpen() {
     try {
       const _origOpen = window.open;
@@ -138,7 +161,7 @@
       if (window.open.__mcPatched) return;
       const wrapped = function (url, target, features) {
         try {
-          if (typeof url === 'string' && isApexAffiliateLink(url)) {
+          if (typeof url === 'string' && isAffiliateLink(url)) {
             url = injectKeyword(url);
           }
         } catch (e) {}
