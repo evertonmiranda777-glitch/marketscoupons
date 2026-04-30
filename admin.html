@@ -5410,24 +5410,31 @@ async function updateDestCount(){
  const leads=await getSegmentedLeads();
  const n = leads.length;
  const el = document.getElementById('dest-count'); if(el) el.textContent=n;
- // Atualiza botão "Enviar agora (N)" dinâmico
- const sendBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
- if(sendBtn) sendBtn.textContent = n > 0 ? `Enviar agora (${n.toLocaleString()})` : 'Enviar agora';
- // Atualiza banner cota disponível
+ // Atualiza banner cota disponível (também ajusta o botão com o valor que VAI sair de fato)
  updateCotaBanner(n);
 }
 async function updateCotaBanner(audienceCount){
  const banner = document.getElementById('cota-banner'); if(!banner) return;
+ const sendBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
  try{
    const tk = await _adminBearer();
    const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + tk } });
-   if(!r.ok){ banner.style.display='none'; return; }
+   if(!r.ok){ banner.style.display='none'; if(sendBtn) sendBtn.textContent = audienceCount > 0 ? `Enviar agora (${audienceCount.toLocaleString()})` : 'Enviar agora'; return; }
    const s = await r.json();
    const used = s.sent_today || 0;
    const limit = s.daily_limit || 500;
    const avail = Math.max(0, limit - used);
    const willSend = Math.min(audienceCount, avail);
    const overflow = Math.max(0, audienceCount - avail);
+
+   // Botão mostra o que VAI sair agora, não o total da audiência
+   if(sendBtn){
+     if(audienceCount === 0) sendBtn.textContent = 'Enviar agora';
+     else if(avail === 0)    sendBtn.textContent = `Cota esgotada (0/${audienceCount.toLocaleString()})`;
+     else if(overflow > 0)   sendBtn.textContent = `Enviar lote de hoje (${willSend} de ${audienceCount.toLocaleString()})`;
+     else                    sendBtn.textContent = `Enviar agora (${willSend.toLocaleString()})`;
+   }
+
    let cls = 'cota-ok', html = '';
    if(audienceCount === 0){
      banner.style.display='none'; return;
@@ -5436,14 +5443,17 @@ async function updateCotaBanner(audienceCount){
      html = `Cota esgotada (${used}/${limit}). <strong>Volta amanhã 08:00</strong> ou aguarda automático.`;
    } else if(overflow > 0){
      cls = 'cota-warn';
-     html = `Hoje: <strong>${used}/${limit}</strong> · Disponíveis: <strong>${avail}</strong> · ${audienceCount.toLocaleString()} excede cota → envia <strong>${willSend}</strong> agora + ${overflow.toLocaleString()} entram na fila do automático.`;
+     html = `Hoje: <strong>${used}/${limit}</strong> · Disponíveis: <strong>${avail}</strong> · Vai enviar <strong>${willSend}</strong> agora · Restantes <strong>${overflow.toLocaleString()}</strong> ficam na fila do automático (cron diário 14h UTC, lote 400/dia).`;
    } else {
      html = `Hoje: <strong>${used}/${limit}</strong> · Disponíveis: <strong>${avail}</strong> · ${audienceCount.toLocaleString()} ≤ ${avail} → envia tudo agora.`;
    }
    banner.className = 'cota-banner ' + cls;
    banner.innerHTML = html;
    banner.style.display='block';
- } catch { banner.style.display='none'; }
+ } catch {
+   banner.style.display='none';
+   if(sendBtn) sendBtn.textContent = audienceCount > 0 ? `Enviar agora (${audienceCount.toLocaleString()})` : 'Enviar agora';
+ }
 }
 
 function insertVar(v){
