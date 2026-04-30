@@ -1262,7 +1262,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </span>
      <div style="flex:1;">
        <div style="font-size:15px;font-weight:700;color:var(--t1);">Envio Automático</div>
-       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Dispara 400 emails/dia todo dia às 08:00 BRT</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Dispara 500 emails/dia todo dia às 08:00 BRT (Brevo 300 + Resend 100 + SendGrid 100)</div>
      </div>
    </div>
 
@@ -1273,7 +1273,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
    <div style="margin-bottom:14px;">
      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:6px;">
-       <span>Hoje</span><strong id="auto-progress-label" style="color:var(--gold);font-weight:700;">0 / 400</strong>
+       <span>Hoje</span><strong id="auto-progress-label" style="color:var(--gold);font-weight:700;">0 / 500</strong>
      </div>
      <div style="height:10px;background:var(--sur,var(--card2));border-radius:6px;overflow:hidden;border:1px solid var(--b1);">
        <div id="auto-progress-bar" style="height:100%;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3s ease infinite;border-radius:6px;width:0%;transition:width .4s;"></div>
@@ -1295,10 +1295,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <span id="auto-week-stats">Últimos 7 dias: —</span>
    </div>
 
-   <div id="auto-breakdown" style="display:none;gap:10px;font-size:10px;color:var(--t3);margin-bottom:10px;flex-wrap:wrap;">
-     <span><span style="color:#22d3ee;">Brevo</span> <strong id="auto-bd-brevo" style="color:var(--t2);">0/300</strong></span>
-     <span><span style="color:#a855f7;">Resend</span> <strong id="auto-bd-resend" style="color:var(--t2);">0/100</strong></span>
-     <span><span style="color:#10b981;">SendGrid</span> <strong id="auto-bd-sendgrid" style="color:var(--t2);">0/100</strong></span>
+   <div id="auto-breakdown" style="display:flex;gap:14px;font-size:10px;color:var(--t3);margin-bottom:14px;flex-wrap:wrap;justify-content:center;">
+     <span><span style="color:#22d3ee;">●</span> Brevo <strong id="auto-bd-brevo" style="color:var(--t2);margin-left:4px;">0/300</strong></span>
+     <span style="color:var(--b3);">·</span>
+     <span><span style="color:#a855f7;">●</span> Resend <strong id="auto-bd-resend" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
+     <span style="color:var(--b3);">·</span>
+     <span><span style="color:#10b981;">●</span> SendGrid <strong id="auto-bd-sendgrid" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
    </div>
 
    <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -1307,8 +1309,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
  </div>
 
+ <!-- 2-COL GRID: Card 2 (Enviar Agora) à esquerda + Preview à direita -->
+ <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;margin-bottom:18px;align-items:start;">
  <!-- ════════════ CARD 2: ENVIAR AGORA ════════════ -->
- <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-bottom:18px;max-width:760px;">
+ <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;">
    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
      <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(240,180,41,.14);color:var(--gold);">
        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -1372,7 +1376,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        </div>
        <div style="display:flex;gap:8px;align-items:center;">
          <label style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">Limite/dia</label>
-         <input type="number" id="em-daily-limit" value="400" min="1" max="100000" style="width:80px;text-align:center;padding:6px 8px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;" onchange="emailDailyLimit=parseInt(this.value)||400;updateDailyLimitUI();">
+         <input type="number" id="em-daily-limit" value="500" min="1" max="100000" style="width:80px;text-align:center;padding:6px 8px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;" onchange="emailDailyLimit=parseInt(this.value)||500;updateDailyLimitUI();">
          <div id="daily-limit-info" style="flex:1;"></div>
        </div>
        <div>
@@ -1399,24 +1403,25 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
  </div>
 
- <!-- Preview + Templates + Histórico (abaixo dos cards) -->
- <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:8px;">
-   <div>
-     <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--t2);">Preview</div>
-     <div class="email-composer" style="margin-bottom:16px;">
-       <div class="ec-preview" id="em-preview">Selecione um template ou escreva seu email para visualizar aqui.</div>
-     </div>
-     <div style="margin-top:12px;">
-       <div class="tpl-saved-toggle" onclick="const l=document.getElementById('templates-list');const a=this.querySelector('.arrow');if(l.style.display==='none'){l.style.display='';a.style.transform='rotate(90deg)';}else{l.style.display='none';a.style.transform='';}">
-         <span class="arrow">&#9654;</span> Templates Salvos
-       </div>
-       <div id="templates-list" style="display:none;"></div>
-     </div>
+ <!-- Coluna direita: Preview + Templates Salvos -->
+ <div>
+   <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--t2);">Preview</div>
+   <div class="email-composer" style="margin-bottom:16px;">
+     <div class="ec-preview" id="em-preview">Selecione um template ou escreva seu email para visualizar aqui.</div>
    </div>
-   <div>
-     <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--t2);">Histórico de Campanhas</div>
-     <div id="campaigns-log"></div>
+   <div style="margin-top:12px;">
+     <div class="tpl-saved-toggle" onclick="const l=document.getElementById('templates-list');const a=this.querySelector('.arrow');if(l.style.display==='none'){l.style.display='';a.style.transform='rotate(90deg)';}else{l.style.display='none';a.style.transform='';}">
+       <span class="arrow">&#9654;</span> Templates Salvos
+     </div>
+     <div id="templates-list" style="display:none;"></div>
    </div>
+ </div>
+ </div><!-- /grid 2-col card2+preview -->
+
+ <!-- Histórico abaixo, full-width -->
+ <div style="margin-top:8px;">
+   <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--t2);">Histórico de Campanhas</div>
+   <div id="campaigns-log"></div>
  </div>
 
  <!-- SUBSCRIBERS MANAGEMENT -->
@@ -5264,7 +5269,7 @@ function renderGA4Data(d,days){
 let emailSegments=['all'];
 let emailFirmaFilter=[];
 let emailCustomTagFilter=[];
-let emailDailyLimit=400; // Brevo 300 + Resend 100 (round-robin)
+let emailDailyLimit=500; // Brevo 300 + Resend 100 + SendGrid 100 (round-robin)
 let emailSentToday=0;
 
 function getEmailSentToday(){
@@ -5329,7 +5334,7 @@ async function selectAudience(value){
   await updateDestCount();
 }
 
-// Popula optgroup "Por firma" com contagem de subscribers ativos por tag
+// Popula optgroups "Por firma" + "Por tag customizada" com contagens reais
 async function populateAudienceFirms(){
   const og = document.getElementById('audience-firms'); if(!og) return;
   const FIRMS_LIST = [
@@ -5352,6 +5357,48 @@ async function populateAudienceFirms(){
   og.innerHTML = FIRMS_LIST.map((f,i) =>
     `<option value="firm:${f.id}">Lista ${f.name} (${counts[i]} emails)</option>`
   ).join('');
+
+  // Descobre tags customizadas (importações CSV ou tags ad-hoc) e popula novo optgroup
+  const KNOWN = new Set([
+    ...FIRMS_LIST.map(f=>f.id),
+    'imported','site','lead','csv-direct','manual','newsletter','signup','active','newsletter-1'
+  ]);
+  const tagCounts = {};
+  try {
+    let from = 0; const PG = 1000;
+    while(true){
+      const { data } = await db.from('email_subscribers')
+        .select('tags').eq('status','active').range(from, from+PG-1);
+      if(!data || !data.length) break;
+      for(const r of data){
+        for(const t of (r.tags||[])){
+          if(!t || KNOWN.has(t)) continue;
+          if(t.startsWith('received-')) continue;
+          tagCounts[t] = (tagCounts[t]||0) + 1;
+        }
+      }
+      if(data.length < PG) break;
+      from += PG;
+    }
+  } catch(e){}
+  const sel = document.getElementById('audience-select');
+  if(sel){
+    // Remove optgroup tag antigo se existir
+    const oldOg = sel.querySelector('optgroup[label="Por tag customizada"]');
+    if(oldOg) oldOg.remove();
+    const tagEntries = Object.entries(tagCounts).sort((a,b)=>b[1]-a[1]);
+    if(tagEntries.length){
+      const newOg = document.createElement('optgroup');
+      newOg.label = 'Por tag customizada';
+      newOg.innerHTML = tagEntries.map(([tag,n]) =>
+        `<option value="tag:${tag}">Tag "${tag}" (${n} emails)</option>`
+      ).join('');
+      // Insere antes do optgroup "Geral"
+      const geralOg = sel.querySelector('optgroup[label="Geral"]');
+      if(geralOg) sel.insertBefore(newOg, geralOg);
+      else sel.appendChild(newOg);
+    }
+  }
 }
 
 function toggleSeg(el,seg){
@@ -8442,21 +8489,28 @@ function renderSmtpAccounts(){
   const el = document.getElementById('smtp-accounts-list');
   if(!el) return;
   el.innerHTML=`
-    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
       <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
       <div>
         <div style="font-size:13px;font-weight:600;">Brevo (Sendinblue)</div>
         <div style="font-size:10px;color:var(--t3);">300 emails/dia · API configurada no Vercel</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
       <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
       <div>
         <div style="font-size:13px;font-weight:600;">Resend</div>
         <div style="font-size:10px;color:var(--t3);">100 emails/dia · API configurada no Vercel</div>
       </div>
     </div>
-    <div style="font-size:10px;color:var(--t3);margin-top:6px;">Total: <strong style="color:var(--gold);">400 emails/dia</strong> (round-robin automático)</div>`;
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--b1);border-radius:7px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
+      <div>
+        <div style="font-size:13px;font-weight:600;">SendGrid</div>
+        <div style="font-size:10px;color:var(--t3);">100 emails/dia · API configurada no Vercel</div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--t3);margin-top:6px;">Total: <strong style="color:var(--gold);">500 emails/dia</strong> (round-robin automático)</div>`;
 }
 
 function addSmtpAccount(){

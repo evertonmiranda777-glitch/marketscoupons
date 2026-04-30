@@ -6597,6 +6597,19 @@ async function doAuthSignup() {
 
   if (error) return showAuthError('signup-error', error.message);
 
+  // Auto-cadastra na lista de email_subscribers (pra aparecer no admin/email)
+  try {
+    const lang = (window.currentLang || 'pt');
+    db.from('email_subscribers').upsert({
+      email,
+      name: fullName || '',
+      source: 'signup',
+      lang,
+      tags: ['site','signup'],
+      status: 'active'
+    }, { onConflict: 'email', ignoreDuplicates: false }).then(()=>{}).catch(()=>{});
+  } catch(e){}
+
   // If session returned directly, login immediately
   if (data.session) {
     closeAuthModals();
