@@ -5334,7 +5334,9 @@ async function selectAudience(value){
   await updateDestCount();
 }
 
-// Popula optgroups "Por firma" + "Por tag customizada" com contagens reais
+// Popula optgroups "Por firma" + "Por tag customizada" — REUSA cache _leadsCache
+// pra evitar 12 queries de count + scan paginado redundante (renderEmailFirmaChips
+// ja chama loadAllLeadsOnce que carrega tudo uma vez por sessao).
 async function populateAudienceFirms(){
   const og = document.getElementById('audience-firms'); if(!og) return;
   const FIRMS_LIST = [
@@ -5344,46 +5346,40 @@ async function populateAudienceFirms(){
     {id:'brightfunded',name:'BrightFunded'}, {id:'e8',name:'E8 Markets'},
     {id:'cti',name:'City Traders Imperium'}, {id:'tradeday',name:'TradeDay'}
   ];
-  // Busca counts em paralelo
-  const counts = await Promise.all(FIRMS_LIST.map(async f => {
-    try {
-      const { count } = await db.from('email_subscribers')
-        .select('email', { count:'exact', head:true })
-        .eq('status','active')
-        .contains('tags', [f.id]);
-      return count || 0;
-    } catch { return 0; }
-  }));
-  og.innerHTML = FIRMS_LIST.map((f,i) =>
-    `<option value="firm:${f.id}">Lista ${f.name} (${counts[i]} emails)</option>`
-  ).join('');
-
-  // Descobre tags customizadas (importações CSV ou tags ad-hoc) e popula novo optgroup
+  const FIRM_IDS = new Set(FIRMS_LIST.map(f=>f.id));
   const KNOWN = new Set([
     ...FIRMS_LIST.map(f=>f.id),
     'imported','site','lead','csv-direct','manual','newsletter','signup','active','newsletter-1'
   ]);
+
+  // Render imediato com 0s pra UI nao ficar bloqueada
+  og.innerHTML = FIRMS_LIST.map(f =>
+    `<option value="firm:${f.id}">Lista ${f.name} (... emails)</option>`
+  ).join('');
+
+  // Conta tudo de uma vez do cache compartilhado
+  let leads = [];
+  try { leads = await loadAllLeadsOnce(); } catch(e){ leads = []; }
+
+  const firmCounts = Object.fromEntries(FIRMS_LIST.map(f=>[f.id,0]));
   const tagCounts = {};
-  try {
-    let from = 0; const PG = 1000;
-    while(true){
-      const { data } = await db.from('email_subscribers')
-        .select('tags').eq('status','active').range(from, from+PG-1);
-      if(!data || !data.length) break;
-      for(const r of data){
-        for(const t of (r.tags||[])){
-          if(!t || KNOWN.has(t)) continue;
-          if(t.startsWith('received-')) continue;
-          tagCounts[t] = (tagCounts[t]||0) + 1;
-        }
-      }
-      if(data.length < PG) break;
-      from += PG;
+  for(const r of leads){
+    for(const t of (r.tags||[])){
+      if(!t) continue;
+      if(FIRM_IDS.has(t)){ firmCounts[t]++; continue; }
+      if(KNOWN.has(t) || t.startsWith('received-')) continue;
+      tagCounts[t] = (tagCounts[t]||0) + 1;
     }
-  } catch(e){}
+  }
+
+  // Atualiza optgroup firma com contagens reais
+  og.innerHTML = FIRMS_LIST.map(f =>
+    `<option value="firm:${f.id}">Lista ${f.name} (${firmCounts[f.id]} emails)</option>`
+  ).join('');
+
+  // Adiciona optgroup tag customizada (se houver)
   const sel = document.getElementById('audience-select');
   if(sel){
-    // Remove optgroup tag antigo se existir
     const oldOg = sel.querySelector('optgroup[label="Por tag customizada"]');
     if(oldOg) oldOg.remove();
     const tagEntries = Object.entries(tagCounts).sort((a,b)=>b[1]-a[1]);
@@ -5393,7 +5389,6 @@ async function populateAudienceFirms(){
       newOg.innerHTML = tagEntries.map(([tag,n]) =>
         `<option value="tag:${tag}">Tag "${tag}" (${n} emails)</option>`
       ).join('');
-      // Insere antes do optgroup "Geral"
       const geralOg = sel.querySelector('optgroup[label="Geral"]');
       if(geralOg) sel.insertBefore(newOg, geralOg);
       else sel.appendChild(newOg);
