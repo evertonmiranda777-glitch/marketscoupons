@@ -167,21 +167,25 @@ function mcInjectKeyword(url, firmId){
   return url + sep + 'keyword=' + encodeURIComponent(kw);
 }
 
-// ─── /go INTERSTITIAL ───
-// TODAS as firmas com cupom passam pela /go: UX uniforme + tracking + clipboard backup mesmo
-// pras que já fazem auto-apply (cobre caso da firma falhar em aplicar o cupom).
-// Sem cupom: abre direto (FTMO/The5ers).
+// ─── DIRECT REDIRECT ───
+// Removido /go interstitial em 2026-04-29: dados do funil mostraram clipboard ok 17% +
+// 1.7s de delay puro. Agora copia cupom em background (best-effort) e abre direto.
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
-  if (!coupon) {
-    return window.open(finalUrl, '_blank', 'noopener,noreferrer');
+  try { if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl}); } catch(e){}
+  if (coupon) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(coupon).catch(()=>{});
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = coupon; ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch(e){}
+        ta.remove();
+      }
+    } catch(e){}
   }
-  const params = new URLSearchParams({
-    firm: firmId || '',
-    to: finalUrl,
-    coupon: coupon,
-    name: firmName || ''
-  });
-  return window.open('/go?' + params.toString(), '_blank', 'noopener,noreferrer');
+  return window.open(finalUrl, '_blank', 'noopener,noreferrer');
 }
 
 // ─── TRACKING & UTILS ───
