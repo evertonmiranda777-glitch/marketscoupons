@@ -3807,7 +3807,7 @@ const CHECKOUT_FIRMS=[
      'Trailing DD':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$145',disc:'$15.95',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$175',disc:'$19.25',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$215',disc:'$23.65',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$325',disc:'$35.75',featured:false},{size:'250K',capital:'$250,000',goal:'$15,000',maxDD:'$5,500',orig:'$535',disc:'$58.85',featured:false}],
      'EOD DD':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$145',disc:'$15.95',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$175',disc:'$19.25',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$215',disc:'$23.65',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$325',disc:'$35.75',featured:false},{size:'250K',capital:'$250,000',goal:'$15,000',maxDD:'$5,500',orig:'$535',disc:'$58.85',featured:false}]
    },
-   buildUrl:(size,type,plat)=>{const h={'Trailing DD':{'25K':'XmYUhXXvx1ud','50K':'0bT4YXXXHKC8','100K':'T4Lmwnn9yBzB','150K':'GhglNC59Ffdl','250K':'LZyTKrCf9Gx3'},'EOD DD':{'25K':'gaYjK4hbWZVH','50K':'SO2xo1C8RMiR','100K':'X16PzRq0l1Gf','150K':'hX4U32Jsgrh6','250K':'N3eDYQd3rQF2'}};const hash=h[type]?.[size];return hash?`https://bulenox.com/member/buy/${hash}`:'https://bulenox.com/member/aff/go/marketcoupons';}},
+   buildUrl:(size,type,plat)=>'https://bulenox.com/member/aff/go/marketcoupons'},
   {id:'ftmo',name:'FTMO',short:'FTMO',coupon:null,discount:'0%',color:'#22C55E',bg:'rgba(34,197,94,0.12)',
    includes:['Free Trial available','Up to 90% profit split','1-Step (NEW) and 2-Step','Support in 18 languages','Scaling up to $2M','No time limit'],
    types:['1-Step Challenge','2-Step Challenge'],platforms:['MT4','MT5','cTrader','DXtrade'],
@@ -3823,7 +3823,7 @@ const CHECKOUT_FIRMS=[
      'EOD Drawdown':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$150',disc:'$90',featured:false},{size:'50K',capital:'$50,000',goal:'$2,500',maxDD:'$2,000',orig:'$170',disc:'$102',featured:false},{size:'75K',capital:'$75,000',goal:'$4,250',maxDD:'$2,750',orig:'$245',disc:'$147',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$330',disc:'$198',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$360',disc:'$216',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://takeprofittrader.com/?referralCode=MARKET40'},
-  {id:'fn',name:'FundedNext',short:'FundedNext',coupon:'FNF30',discount:'30%',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',
+  {id:'fn',name:'FundedNext',short:'FundedNext',coupon:'APRIL20',discount:'30%',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',
    includes:['Up to 95% profit split','15% reward in challenge phase','Guaranteed 24h payout','No time limit','News trading allowed','$288M+ total rewarded'],
    types:['Stellar 2-Step','Stellar 1-Step','Stellar Instant','Bolt (Futures)','Rapid (Futures)','Legacy (Futures)'],platforms:['MT4','MT5','cTrader','Match-Trader','Rithmic'],
    plansByType:{
@@ -3842,7 +3842,7 @@ const CHECKOUT_FIRMS=[
      'Trader Career Path':[{size:'TCP 25K',capital:'$25,000',goal:'$1,750',maxDD:'$1,500',orig:'$150',disc:'$60',featured:false},{size:'TCP 50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000',orig:'$190',disc:'$76',featured:false},{size:'TCP 100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,500',orig:'$350',disc:'$140',featured:true}],
      'Gauntlet Mini':[{size:'GAU 50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000',orig:'$170',disc:'$68',featured:false},{size:'GAU 100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,500',orig:'$315',disc:'$126',featured:true},{size:'GAU 150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$375',disc:'$150',featured:false},{size:'GAU 200K',capital:'$200,000',goal:'$12,000',maxDD:'$5,000',orig:'$550',disc:'$220',featured:false}]
    },
-   buildUrl:(size,type,plat)=>{const m={'TCP 25K':'TCP25','TCP 50K':'TCP50','TCP 100K':'TCP100','GAU 50K':'GML50','GAU 100K':'GML100','GAU 150K':'GML150','GAU 200K':'GML200'};return`https://www.earn2trade.com/purchase?plan=${m[size]||'TCP25'}&a_pid=marketscoupons&a_bid=2e8e8a14&discount=MARKETSCOUPONS`;}},
+   buildUrl:(size,type,plat)=>{const m={'TCP 25K':'TCP25','TCP 50K':'TCP50','TCP 100K':'TCP100','GAU 50K':'GML50','GAU 100K':'GML100','GAU 150K':'GML150','GAU 200K':'GML200'};const plan=m[size]||'TCP25';const aBid=plan.startsWith('GML')?'fcc26bfd':'2e8e8a14';return`https://www.earn2trade.com/purchase?plan=${plan}&a_pid=marketscoupons&a_bid=${aBid}&discount=MARKETSCOUPONS`;}},
   {id:'the5ers',name:'The5ers',short:'The5ers',coupon:null,discount:'0%',color:'#10B981',bg:'rgba(16,185,129,0.12)',
    includes:['Scale up to $4M','Up to 100% profit split','No time limit','Since 2016','24/7 support','Multi-currency: USD/EUR/GBP'],
    types:['Hyper Growth','Pro Growth','High Stakes','Bootcamp','Futures Basecamp','Futures Rebate'],platforms:['MT5','TradingView','Rithmic'],
@@ -3864,14 +3864,14 @@ const CHECKOUT_FIRMS=[
      '2-Step':[{size:'$5K',capital:'$5,000',goal:'$400',maxDD:'-5%',orig:'$36',disc:'$28.80',featured:false},{size:'$10K',capital:'$10,000',goal:'$800',maxDD:'-5%',orig:'$66',disc:'$52.80',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,000',maxDD:'-5%',orig:'$156',disc:'$124.80',featured:false},{size:'$50K',capital:'$50,000',goal:'$4,000',maxDD:'-5%',orig:'$289',disc:'$231.20',featured:true},{size:'$100K',capital:'$100,000',goal:'$8,000',maxDD:'-5%',orig:'$529',disc:'$423.20',featured:false}],
      'Pro':[{size:'$5K',capital:'$5,000',goal:'$500',maxDD:'-3%',orig:'$29',disc:'$23.20',featured:false},{size:'$10K',capital:'$10,000',goal:'$1,000',maxDD:'-3%',orig:'$55',disc:'$44',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,500',maxDD:'-3%',orig:'$109',disc:'$87.20',featured:false},{size:'$50K',capital:'$50,000',goal:'$5,000',maxDD:'-3%',orig:'$219',disc:'$175.20',featured:true},{size:'$100K',capital:'$100,000',goal:'$10,000',maxDD:'-3%',orig:'$399',disc:'$319.20',featured:false},{size:'$200K',capital:'$200,000',goal:'$20,000',maxDD:'-3%',orig:'$798',disc:'$638.40',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://app.fundingpips.com/register?ref=HELLO'},
-  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'NEW15',discount:'20%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
+   buildUrl:(size,type,plat)=>'https://app.fundingpips.com/register?ref=31985EAA'},
+  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'CLNLTPxtT4Sok0PzHaRIIQ',discount:'20%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
    includes:['Up to 100% profit split','Static drawdown','Guaranteed 24h payout (7-day cycle)','15% profit in challenge phase','Trade2Earn loyalty program','Leverage 1:100','24/7 support'],
    types:['2-Step'],platforms:['MT5','DXtrade','cTrader'],
    plansByType:{
      '2-Step':[{size:'5K',capital:'€5,000',goal:'€400',maxDD:'-10%',orig:'€55',disc:'€44',featured:false},{size:'10K',capital:'€10,000',goal:'€800',maxDD:'-10%',orig:'€95',disc:'€76',featured:false},{size:'25K',capital:'€25,000',goal:'€2,000',maxDD:'-10%',orig:'€195',disc:'€156',featured:false},{size:'50K',capital:'€50,000',goal:'€4,000',maxDD:'-10%',orig:'€295',disc:'€236',featured:true},{size:'100K',capital:'€100,000',goal:'€8,000',maxDD:'-10%',orig:'€495',disc:'€396',featured:false},{size:'200K',capital:'€200,000',goal:'€16,000',maxDD:'-10%',orig:'€975',disc:'€780',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://brightfunded.com/a/NEW15'},
+   buildUrl:(size,type,plat)=>'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ'},
   {id:'e8',name:'E8 Markets',short:'E8',coupon:'MARKET',discount:'10%',color:'#FF4400',bg:'rgba(255,68,0,0.12)',
    includes:['No activation fee','Pass in 1 day','Forex, Futures and Crypto','Configurable drawdown 4-14%','Split up to 100%','$70M+ paid since 2021'],
    types:['Signature','E8 One'],platforms:['MT5','Match-Trader'],
@@ -3899,7 +3899,7 @@ const CHECKOUT_FIRMS=[
      'EOD':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 EOD',orig:'$175',disc:'$122',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 EOD',orig:'$275',disc:'$192',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,000 EOD',orig:'$375',disc:'$262',featured:false}],
      'Static':[{size:'50K',capital:'$50,000',goal:'$1,500',maxDD:'$500 static',orig:'$165',disc:'$115',featured:false},{size:'100K',capital:'$100,000',goal:'$2,500',maxDD:'$750 static',orig:'$250',disc:'$175',featured:true},{size:'150K',capital:'$150,000',goal:'$3,750',maxDD:'$1,000 static',orig:'$350',disc:'$245',featured:false}]
    },
-   buildUrl:(size,type,plat)=>{const t=type.toLowerCase();const s=size.toLowerCase();return`https://members.tradeday.com/en/user_registration/${s}-${t}-evaluation?a_aid=marketscoupons`;}}
+   buildUrl:(size,type,plat)=>'https://www.tradeday.com/?a_aid=marketscoupons'}
 ];
 
 let achActiveFirm='apex';
