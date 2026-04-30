@@ -1265,26 +1265,29 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
 
      <div class="ec-field">
-       <label>Destinatarios</label>
-       <div class="seg-grid" id="seg-grid">
-         <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos</div>
-         <div class="seg-opt" onclick="toggleSeg(this,'leads')">Leads</div>
-         <div class="seg-opt" onclick="toggleSeg(this,'subscribers')">Inscritos</div>
-         <div class="seg-opt" onclick="toggleSeg(this,'loyalty')">Fidelidade</div>
-       </div>
-       <div style="margin-top:6px;">
-         <div style="font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:4px;">Filtrar por firma</div>
-         <div style="display:flex;flex-wrap:wrap;gap:4px;" id="seg-firma-grid">
-           <!-- Rendered dynamically by renderEmailFirmaChips() -->
+       <label>Para quem</label>
+       <select id="audience-select" onchange="selectAudience(this.value)" style="width:100%;padding:11px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;cursor:pointer;">
+         <optgroup label="Teste">
+           <option value="test">Só pra mim (teste — não conta na cota)</option>
+         </optgroup>
+         <optgroup label="Por firma" id="audience-firms"></optgroup>
+         <optgroup label="Geral">
+           <option value="all" selected>Todos os usuários ativos</option>
+         </optgroup>
+       </select>
+       <div style="font-size:10px;color:var(--t3);margin-top:6px;">Destinatários: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
+       <!-- Picker antigo escondido — DOM mantido pra compatibilidade com funções existentes -->
+       <div id="legacy-picker" style="display:none;">
+         <div class="seg-grid" id="seg-grid">
+           <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos</div>
+           <div class="seg-opt" onclick="toggleSeg(this,'leads')">Leads</div>
+           <div class="seg-opt" onclick="toggleSeg(this,'subscribers')">Inscritos</div>
+           <div class="seg-opt" onclick="toggleSeg(this,'loyalty')">Fidelidade</div>
          </div>
+         <div id="seg-firma-grid"></div>
+         <div id="seg-customtag-grid"></div>
+         <div id="seg-customtags-wrap"></div>
        </div>
-       <div style="margin-top:10px;" id="seg-customtags-wrap">
-         <div style="font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:4px;">Filtrar por tag customizada</div>
-         <div style="display:flex;flex-wrap:wrap;gap:4px;" id="seg-customtag-grid">
-           <div style="font-size:10px;color:var(--t3);">Nenhuma tag customizada. Importe CSV com tag no campo acima.</div>
-         </div>
-       </div>
-       <div style="font-size:10px;color:var(--t3);margin-top:4px;">Destinatarios: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
      </div>
 
      <div class="ec-field">
@@ -3540,6 +3543,7 @@ function renderPage(p){
       renderEmailFirmaChips();
       loadEmailStats();
       updateDestCount();
+      populateAudienceFirms();
       setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
       // Auto-refresh card a cada 30s enquanto card visível
       if(window._autoStatusInterval) clearInterval(window._autoStatusInterval);
@@ -5270,6 +5274,59 @@ function updateDailyLimitUI(){
     <div style="font-size:10px;color:${color};font-weight:600;white-space:nowrap;">${emailSentToday}/${emailDailyLimit}</div>
   </div>
   <div style="font-size:9px;color:var(--t3);margin-top:2px;">${remaining} restantes hoje</div>`;
+}
+
+// Audience select novo (versão simplificada). Mapeia pra emailSegments/emailFirmaFilter.
+window._isTestSend = false;
+async function selectAudience(value){
+  const fbBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
+  if(value === 'test'){
+    window._isTestSend = true;
+    emailSegments = ['all'];
+    emailFirmaFilter = [];
+    emailCustomTagFilter = [];
+    const el = document.getElementById('dest-count'); if(el) el.textContent = '1 (você)';
+    const banner = document.getElementById('cota-banner'); if(banner) banner.style.display='none';
+    if(fbBtn) fbBtn.textContent = 'Enviar teste pra mim';
+    return;
+  }
+  window._isTestSend = false;
+  if(value === 'all'){
+    emailSegments = ['all'];
+    emailFirmaFilter = [];
+    emailCustomTagFilter = [];
+  } else if(value.startsWith('firm:')){
+    const firmId = value.slice(5);
+    emailSegments = ['subscribers'];
+    emailFirmaFilter = [firmId];
+    emailCustomTagFilter = [];
+  }
+  await updateDestCount();
+}
+
+// Popula optgroup "Por firma" com contagem de subscribers ativos por tag
+async function populateAudienceFirms(){
+  const og = document.getElementById('audience-firms'); if(!og) return;
+  const FIRMS_LIST = [
+    {id:'apex',name:'Apex'}, {id:'bulenox',name:'Bulenox'}, {id:'ftmo',name:'FTMO'},
+    {id:'tpt',name:'Take Profit Trader'}, {id:'fn',name:'FundedNext'}, {id:'e2t',name:'Earn2Trade'},
+    {id:'the5ers',name:'The5ers'}, {id:'fundingpips',name:'Funding Pips'},
+    {id:'brightfunded',name:'BrightFunded'}, {id:'e8',name:'E8 Markets'},
+    {id:'cti',name:'City Traders Imperium'}, {id:'tradeday',name:'TradeDay'}
+  ];
+  // Busca counts em paralelo
+  const counts = await Promise.all(FIRMS_LIST.map(async f => {
+    try {
+      const { count } = await db.from('email_subscribers')
+        .select('email', { count:'exact', head:true })
+        .eq('status','active')
+        .contains('tags', [f.id]);
+      return count || 0;
+    } catch { return 0; }
+  }));
+  og.innerHTML = FIRMS_LIST.map((f,i) =>
+    `<option value="firm:${f.id}">Lista ${f.name} (${counts[i]} emails)</option>`
+  ).join('');
 }
 
 function toggleSeg(el,seg){
@@ -8371,6 +8428,9 @@ function addSmtpAccount(){
 }
 
 async function sendEmailsSmtp(){
+  // Modo teste: dispatcher pra sendTestEmail (não consome cota)
+  if(window._isTestSend){ return sendTestEmail(); }
+
   const subject = document.getElementById('em-subject')?.value?.trim();
   const body    = document.getElementById('em-body')?.value?.trim();
   if(!subject||!body){ toast('Preencha assunto e mensagem!','warn'); return; }
