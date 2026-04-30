@@ -12,19 +12,20 @@ const CORS = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const META_TOKEN = Deno.env.get("META_ADS_TOKEN")!;
-const META_ACCOUNT_ID = Deno.env.get("META_AD_ACCOUNT_ID")!;
 
-serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+// Suporta multiplas contas via META_AD_ACCOUNT_IDS (CSV) com fallback pra
+// META_AD_ACCOUNT_ID (legado single).
+const RAW_IDS =
+  Deno.env.get("META_AD_ACCOUNT_IDS") ||
+  Deno.env.get("META_AD_ACCOUNT_ID") ||
+  "";
+const ACCOUNT_IDS = RAW_IDS
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean)
+  .map((id) => (id.startsWith("act_") ? id : `act_${id}`));
 
-  const url = new URL(req.url);
-  const days = Math.min(parseInt(url.searchParams.get("days") || "7"), 90);
-
-  if (!META_TOKEN || !META_ACCOUNT_ID) {
-    return json({ error: "missing_secrets" }, 500);
-  }
-
-  const acct = META_ACCOUNT_ID.startsWith("act_") ? META_ACCOUNT_ID : `act_${META_ACCOUNT_ID}`;
+async function syncAccount(acct: string, days: number) {
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
   const until = new Date().toISOString().slice(0, 10);
 
@@ -51,22 +52,16 @@ serve(async (req) => {
 
   let all: any[] = [];
   let next: string | null = api;
-  try {
-    while (next) {
-      const r = await fetch(next);
-      const j = await r.json();
-      if (!r.ok) return json({ error: "meta_api_error", details: j }, 500);
-      all = all.concat(j.data || []);
-      next = j.paging?.next || null;
-      if (all.length > 5000) break; // safety
-    }
-  } catch (e) {
-    return json({ error: "fetch_failed", message: String(e) }, 500);
+  while (next) {
+    const r = await fetch(next);
+    const j = await r.json();
+    if (!r.ok) throw new Error(`meta_api_error account=${acct} ${JSON.stringify(j)}`);
+    all = all.concat(j.data || []);
+    next = j.paging?.next || null;
+    if (all.length > 5000) break; // safety
   }
 
-  if (!all.length) return json({ ok: true, rows: 0, note: "no_insights_returned" });
-
-  const rows = all.map((r: any) => {
+  return all.map((r: any) => {
     const convs = (r.actions || []).find((a: any) =>
       ["purchase","offsite_conversion.fb_pixel_purchase","complete_registration"].includes(a.action_type)
     );
@@ -90,16 +85,44 @@ serve(async (req) => {
       raw: r
     };
   });
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+
+  const url = new URL(req.url);
+  const days = Math.min(parseInt(url.searchParams.get("days") || "7"), 90);
+
+  if (!META_TOKEN || !ACCOUNT_IDS.length) {
+    return json({ error: "missing_secrets", note: "Set META_ADS_TOKEN and META_AD_ACCOUNT_IDS" }, 500);
+  }
+
+  const perAccount: Record<string, { rows: number; spend: number; error?: string }> = {};
+  let allRows: any[] = [];
+
+  for (const acct of ACCOUNT_IDS) {
+    try {
+      const rows = await syncAccount(acct, days);
+      allRows = allRows.concat(rows);
+      perAccount[acct] = { rows: rows.length, spend: rows.reduce((a, r) => a + r.spend, 0) };
+    } catch (e) {
+      perAccount[acct] = { rows: 0, spend: 0, error: String(e) };
+    }
+  }
+
+  if (!allRows.length) {
+    return json({ ok: true, rows: 0, accounts: ACCOUNT_IDS, perAccount, note: "no_insights_returned" });
+  }
 
   const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
   const { error } = await sb
     .from("ad_spend_daily")
-    .upsert(rows, { onConflict: "date,platform,campaign_id,adset_id" });
+    .upsert(allRows, { onConflict: "date,platform,campaign_id,adset_id" });
 
   if (error) return json({ error: "upsert_failed", details: error.message }, 500);
 
-  const totalSpend = rows.reduce((a, r) => a + r.spend, 0);
-  return json({ ok: true, rows: rows.length, days, total_spend: totalSpend });
+  const totalSpend = allRows.reduce((a, r) => a + r.spend, 0);
+  return json({ ok: true, rows: allRows.length, days, accounts: ACCOUNT_IDS, total_spend: totalSpend, perAccount });
 });
 
 function json(obj: any, status = 200) {
