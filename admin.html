@@ -8385,24 +8385,12 @@ async function sendEmailsSmtp(){
     toast(`Limite diario atingido (${emailDailyLimit}). Tente amanha ou aumente o limite.`,'warn');
     return;
   }
-  let pauseCronAfter = false;
   if(leads.length > remaining){
     const overflow = leads.length - remaining;
-    const choice = window.prompt(
-      `Limite diario: ${emailDailyLimit} (ja enviados: ${sentToday}, restam: ${remaining})\n\n` +
-      `Voce tem ${leads.length.toLocaleString()} destinatarios.\n` +
-      `${remaining} sairao agora. Os outros ${overflow.toLocaleString()} ficam elegiveis pro cron automatico (14h UTC, lote 400/dia).\n\n` +
-      `Digite UMA das opcoes e OK:\n` +
-      `  1 = enviar lote E PAUSAR cron (restantes NAO sairao)\n` +
-      `  2 = enviar lote E DEIXAR cron continuar (restantes saem nos proximos dias)\n` +
-      `  cancelar = nao enviar nada`,
-      '1'
-    );
-    if(choice === null) return;
-    const c = String(choice).trim().toLowerCase();
-    if(c === 'cancelar' || c === '') return;
-    if(c === '1') pauseCronAfter = true;
-    else if(c !== '2'){ toast('Opcao invalida — envio cancelado.','warn'); return; }
+    if(!confirm(`Enviar ${remaining} emails agora?\n\n` +
+                `Audiencia: ${leads.length.toLocaleString()}\n` +
+                `Cota hoje: ${remaining} (de ${emailDailyLimit})\n` +
+                `Os ${overflow.toLocaleString()} restantes ficam na fila do cron automatico (lote 400/dia).`)) return;
     leads = leads.slice(0, remaining);
   }
 
@@ -8417,7 +8405,7 @@ async function sendEmailsSmtp(){
   });
   const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
 
-  if(!confirm(`Enviar email para ${leads.length} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\n\nHTML multilingue — cada um recebe no seu idioma' : ''}${pauseCronAfter ? '\n\nApos envio: cron automatico sera PAUSADO (restantes NAO sairao).' : ''}`)) return;
+  if(!confirm(`Enviar para ${leads.length.toLocaleString()} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\nHTML multilingue — cada um recebe no seu idioma.' : ''}`)) return;
 
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
@@ -8507,18 +8495,6 @@ async function sendEmailsSmtp(){
 
     addEmailSentToday(totalSent);
     toast(`${totalSent} emails enviados!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + ` — ${Object.keys(langGroups).length} idioma(s)`);
-
-    // Pausa cron automatico se solicitado no prompt inicial
-    if(pauseCronAfter){
-      try {
-        await db.from('site_settings').upsert({ key:'email_auto_paused', value:'true', updated_at:new Date().toISOString() }, { onConflict:'key' });
-        toast('Cron automatico PAUSADO — restantes nao sairao ate voce reativar', 'warn');
-        try { await loadAutoStatus(); } catch(e){}
-      } catch(e){
-        toast('Envio ok, mas falhou ao pausar cron: ' + (e.message||''), 'warn');
-      }
-    }
-
     await loadEmailStats();
     await renderCampaignLog();
   } catch(err){
