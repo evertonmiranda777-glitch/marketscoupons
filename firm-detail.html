@@ -332,10 +332,12 @@ function loadFirm(id) {
   const f = FIRMS[id];
   const firstType = f.types[0];
   const firstPlans = f.plans[firstType];
-  const popPlan = firstPlans.find(p=>p.pop) || firstPlans[0];
+  // Default = menor tamanho (firstPlans[0]) pra bater com criativo de trafego pago
+  // que mostra preco de entrada baixo. Badge POPULAR no plan.pop continua intacto na
+  // renderizacao — so muda o estado inicial selecionado.
   state.type = firstType;
   state.plat = f.platforms[0];
-  state.size = popPlan.s;
+  state.size = firstPlans[0].s;
 
   // Set accent colors
   document.documentElement.style.setProperty('--accent', f.color);
