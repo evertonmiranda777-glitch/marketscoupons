@@ -1403,15 +1403,24 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
  </div>
 
- <!-- Coluna direita: Preview + Templates Salvos -->
+ <!-- Coluna direita: Preview + Templates Salvos (mesmo card style que Card 2) -->
  <div>
-   <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--t2);">Preview</div>
-   <div class="email-composer" style="margin-bottom:16px;">
-     <div class="ec-preview" id="em-preview">Selecione um template ou escreva seu email para visualizar aqui.</div>
+   <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-bottom:14px;">
+     <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+       <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(107,182,201,.14);color:#6BB6C9;">
+         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+       </span>
+       <div style="flex:1;">
+         <div style="font-size:15px;font-weight:700;color:var(--t1);">Preview</div>
+         <div style="font-size:12px;color:var(--t3);margin-top:2px;">Como vai ficar no inbox</div>
+       </div>
+     </div>
+     <div class="ec-preview" id="em-preview" style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:16px;color:var(--t2);font-size:13px;line-height:1.5;min-height:200px;">Selecione um template ou escreva seu email para visualizar aqui.</div>
    </div>
-   <div style="margin-top:12px;">
-     <div class="tpl-saved-toggle" onclick="const l=document.getElementById('templates-list');const a=this.querySelector('.arrow');if(l.style.display==='none'){l.style.display='';a.style.transform='rotate(90deg)';}else{l.style.display='none';a.style.transform='';}">
-       <span class="arrow">&#9654;</span> Templates Salvos
+
+   <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:18px 22px;">
+     <div class="tpl-saved-toggle" onclick="const l=document.getElementById('templates-list');const a=this.querySelector('.arrow');if(l.style.display==='none'){l.style.display='';a.style.transform='rotate(90deg)';}else{l.style.display='none';a.style.transform='';}" style="cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--t1);font-size:13px;font-weight:600;user-select:none;">
+       <span class="arrow" style="display:inline-block;transition:transform .2s;color:var(--t3);">&#9654;</span> Templates Salvos
      </div>
      <div id="templates-list" style="display:none;"></div>
    </div>
@@ -1419,18 +1428,32 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  </div><!-- /grid 2-col card2+preview -->
 
  <!-- Histórico abaixo, full-width -->
- <div style="margin-top:8px;">
-   <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--t2);">Histórico de Campanhas</div>
+ <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+     <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(168,85,247,.14);color:#a855f7;">
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+     </span>
+     <div style="flex:1;">
+       <div style="font-size:15px;font-weight:700;color:var(--t1);">Histórico de Campanhas</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Todas as campanhas enviadas (manual + cron)</div>
+     </div>
+   </div>
    <div id="campaigns-log"></div>
  </div>
 
  <!-- SUBSCRIBERS MANAGEMENT -->
- <div style="margin-top:24px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:18px;">
-   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-     <div style="font-size:14px;font-weight:700;color:var(--t1);">Lista de Inscritos</div>
+ <div style="margin-top:18px;background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;">
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+     <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(34,211,238,.14);color:#22d3ee;">
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+     </span>
+     <div style="flex:1;">
+       <div style="font-size:15px;font-weight:700;color:var(--t1);">Lista de Inscritos</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Subscribers ativos com tags + idioma</div>
+     </div>
      <div style="display:flex;gap:8px;">
-       <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="document.getElementById('sub-add-row').classList.toggle('hide')">+ Adicionar</button>
-       <button class="btn-secondary" style="font-size:10px;padding:6px 12px;" onclick="loadSubscribersList()">Atualizar</button>
+       <button class="btn-secondary" style="font-size:11px;padding:8px 14px;" onclick="document.getElementById('sub-add-row').classList.toggle('hide')">+ Adicionar</button>
+       <button class="btn-secondary" style="font-size:11px;padding:8px 14px;" onclick="loadSubscribersList()">Atualizar</button>
      </div>
    </div>
    <!-- Add subscriber inline -->
