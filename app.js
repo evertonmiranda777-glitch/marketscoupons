@@ -3793,7 +3793,13 @@ const CHECKOUT_FIRMS=[
      'Intraday Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$199',disc:'$19.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$249',disc:'$24.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$399',disc:'$39.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$599',disc:'$59.90',featured:false}],
      'EOD Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$299',disc:'$29.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$349',disc:'$34.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$599',disc:'$59.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$799',disc:'$79.90',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644'},
+   buildUrl:(size,type,plat)=>{
+     // Deep-link com afiliacao preservada via ?page= do amember (descoberto 2026-04-30):
+     // /member/aff/go/<user> seta cookie afiliado e redireciona pro path em ?page=.
+     // Pattern: /member/signup/<size>-<vendor>-<type> (ex: 50k-Rithmic-intraday-trail).
+     const typeSlug = type === 'Intraday Trail' ? 'intraday-trail' : 'eod-trail';
+     return `https://apextraderfunding.com/member/aff/go/evertonmiranda?page=/member/signup/${size.toLowerCase()}-${plat}-${typeSlug}`;
+   }},
   {id:'bulenox',name:'Bulenox',short:'Bulenox',coupon:'MARKET89',discount:'89%',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',
    includes:['Pass in 1 day','No consistency rule','News trading allowed','Weekly payouts','Scaling up to $400K','14-day free Rithmic trial'],
    types:['Trailing DD','EOD DD'],platforms:['Rithmic','NinjaTrader'],
