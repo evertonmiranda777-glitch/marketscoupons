@@ -174,22 +174,13 @@ const MC_ATTR = (()=>{
 
 // ─── DIRECT REDIRECT ───
 // window.open IMEDIATAMENTE pra preservar user gesture e reduzir delay percebido.
-// Tracking + clipboard sao fire-and-forget DEPOIS — nao bloqueiam o redirect.
-// (Antes: track/clipboard rodavam antes do window.open, criando ~1-2s de about:blank
-// + risco de popup blocker mobile quando clipboard async quebrava gesture chain.)
+// Tracking fire-and-forget depois.
+// REMOVIDO o segundo clipboard.writeText daqui (fdGo ja chama _cpToClip antes
+// de mcOpenFirm). Duas chamadas em ~10ms disparavam prompt de permissao em
+// Chrome mobile/iOS — heuristica anti-spam.
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
   const win = window.open(finalUrl, '_blank', 'noopener,noreferrer');
-  // Tracking depois — async, nao afeta a navegacao
   try { if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl}); } catch(e){}
-  // Clipboard ja foi feito em fdGo via _cpToClip; segundo disparo aqui e best-effort
-  // pra fluxos que nao passam por _cpToClip (ex: chamada direta).
-  if (coupon) {
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(coupon).catch(()=>{});
-      }
-    } catch(e){}
-  }
   return win;
 }
 
