@@ -2914,13 +2914,14 @@ function openFD(id, f) {
 
   const firstType = fa.types[0];
   const firstPlans = fa.plans[firstType];
-  const popPlan = firstPlans.find(p=>p.pop) || firstPlans[0];
-  if (!_fdState[id]) _fdState[id] = { type: firstType, plat: f.platforms?.[0]||'', size: popPlan.s };
+  // Default = menor tamanho (firstPlans[0]) pra bater com criativo de trafego pago.
+  // Badge POPULAR (p.pop) continua intacto na renderizacao de pills, so muda o estado inicial.
+  if (!_fdState[id]) _fdState[id] = { type: firstType, plat: f.platforms?.[0]||'', size: firstPlans[0].s };
   const st = _fdState[id];
 
   // Ensure size is valid for current type
   const curPlans = fa.plans[st.type];
-  if (curPlans && !curPlans.find(p=>p.s===st.size)) st.size = (curPlans.find(p=>p.pop)||curPlans[0]).s;
+  if (curPlans && !curPlans.find(p=>p.s===st.size)) st.size = curPlans[0].s;
 
   // Set accent color
   document.documentElement.style.setProperty('--accent', f.color);
@@ -3444,8 +3445,8 @@ function openDrw(id, f, cf) {
   if (fa) {
     if(!_fdState[id]){
       const firstType=fa.types[0]; const firstPlans=fa.plans[firstType];
-      const popPlan=firstPlans.find(p=>p.pop)||firstPlans[0];
-      _fdState[id]={type:firstType,plat:f.platforms?.[0]||'',size:popPlan.s};
+      // Default = menor tamanho (firstPlans[0]) — alinhar com criativo de trafego pago
+      _fdState[id]={type:firstType,plat:f.platforms?.[0]||'',size:firstPlans[0].s};
     }
 
     let html = '';
