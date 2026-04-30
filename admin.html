@@ -7834,11 +7834,29 @@ a{text-decoration:none;}
 <!-- separador cor temática -->
 <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:0 20px;"><div style="height:2px;background-color:${color};"></div></td></tr>
 
-<!-- ═══ HERO DARK #111111 ═══ -->
-<tr><td bgcolor="#111111" style="background-color:#111111;padding:32px 24px;text-align:center;">
-  <div style="display:inline-block;padding:6px 14px;background-color:rgba(255,255,255,0.08);border:1px solid ${color};border-radius:20px;color:${color};font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;font-family:${FI};margin-bottom:18px;">${heroPill}</div>
-  <div style="color:#fff;font-size:34px;font-weight:800;line-height:1.15;font-family:${FI};margin-bottom:14px;">${heroH1Tpl}</div>
-  <div style="color:#bbb;font-size:14px;line-height:1.55;font-family:${FI};max-width:380px;margin:0 auto;">${heroSubTpl}</div>
+<!-- ═══ HERO DARK #111111 (left-aligned, padrao institucional) ═══ -->
+<tr><td bgcolor="#111111" style="background-color:#111111;padding:32px 28px 24px;text-align:left;">
+  <div style="display:inline-block;padding:6px 14px;background-color:rgba(255,140,0,0.15);border-radius:6px;color:#ff8c00;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;font-family:${FI};margin-bottom:18px;">${heroPill}</div>
+  <div style="color:#fff;font-size:36px;font-weight:800;line-height:1.1;font-family:${FI};margin-bottom:16px;letter-spacing:-0.02em;">${heroH1Tpl}</div>
+  <div style="color:#aaa;font-size:14px;line-height:1.55;font-family:${FI};margin-bottom:24px;">${heroSubTpl}</div>
+
+  <!-- Mini metrics: Trustpilot + Profit Split + Drawdown -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-top:8px;">
+    <tr>
+      <td width="34%" style="vertical-align:top;padding-right:8px;">
+        <div style="color:${color};font-size:18px;font-weight:800;font-family:${FI};line-height:1.1;">${tpScore || '—'} <span style="color:#00b67a;font-size:13px;">&#9733;</span></div>
+        <div style="color:#888;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;font-family:${FI};margin-top:4px;">Trustpilot · ${(tpReviews||0).toLocaleString()}</div>
+      </td>
+      <td width="33%" style="vertical-align:top;padding:0 8px;">
+        <div style="color:#4ade80;font-size:18px;font-weight:800;font-family:${FI};line-height:1.1;">${f.split||'—'}</div>
+        <div style="color:#888;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;font-family:${FI};margin-top:4px;">Profit Split</div>
+      </td>
+      <td width="33%" style="vertical-align:top;padding-left:8px;">
+        <div style="color:#ef4444;font-size:18px;font-weight:800;font-family:${FI};line-height:1.1;">${f.dd_pct || f.drawdown || '—'}</div>
+        <div style="color:#888;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;font-family:${FI};margin-top:4px;">Drawdown</div>
+      </td>
+    </tr>
+  </table>
 </td></tr>
 
 <!-- separador cor temática -->
