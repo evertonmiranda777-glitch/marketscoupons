@@ -9,12 +9,9 @@
 <link rel="preconnect" href="https://qfwhduvutfumsaxnuofa.supabase.co" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://qfwhduvutfumsaxnuofa.supabase.co">
-<!-- Pre-connect afiliados — economiza ~300-700ms no checkout (TLS handshake antecipado) -->
-<link rel="preconnect" href="https://apextraderfunding.com" crossorigin>
-<link rel="preconnect" href="https://bulenox.com" crossorigin>
-<link rel="preconnect" href="https://takeprofittrader.com" crossorigin>
-<link rel="preconnect" href="https://fundednext.com" crossorigin>
-<link rel="preconnect" href="https://app.fundingpips.com" crossorigin>
+<!-- DNS prefetch das firmas (leve — so resolve DNS, sem TLS) -->
+<!-- preconnect proibido aqui: limite de 4, ja usados em jsdelivr+supabase. -->
+<!-- TLS handshake das firmas e disparado on-hover do botao via JS (rel=preconnect dinamico). -->
 <link rel="dns-prefetch" href="//apextraderfunding.com">
 <link rel="dns-prefetch" href="//bulenox.com">
 <link rel="dns-prefetch" href="//takeprofittrader.com">
