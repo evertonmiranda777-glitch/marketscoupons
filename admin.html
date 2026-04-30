@@ -7796,6 +7796,16 @@ function buildWhitePromoHtml(f, lang='pt'){
   const pType2 = pTypes[1] || 'EOD';
   const eraLabel = (etL.col_original||'era').toLowerCase();
 
+  // Hero copy localizada (pill, h1 com desconto, subtitle)
+  const heroPill = {pt:'Oferta Exclusiva',en:'Exclusive Deal',es:'Oferta Exclusiva',fr:'Offre Exclusive',de:'Exklusives Angebot',it:'Offerta Esclusiva',ar:'عرض حصري'}[lang] || 'Exclusive Deal';
+  const heroH1Tpl = {pt:`Economize até<br><span style="color:${color};">${f.discount}% OFF</span><br>na ${f.name}`,en:`Save up to<br><span style="color:${color};">${f.discount}% OFF</span><br>at ${f.name}`,es:`Ahorra hasta<br><span style="color:${color};">${f.discount}% OFF</span><br>en ${f.name}`,fr:`Économisez<br><span style="color:${color};">${f.discount}% OFF</span><br>chez ${f.name}`,de:`Spare<br><span style="color:${color};">${f.discount}% OFF</span><br>bei ${f.name}`,it:`Risparmia<br><span style="color:${color};">${f.discount}% OFF</span><br>su ${f.name}`,ar:`وفر<br><span style="color:${color};">${f.discount}% OFF</span><br>على ${f.name}`}[lang] || `Save up to<br><span style="color:${color};">${f.discount}% OFF</span><br>at ${f.name}`;
+  const heroSubTpl = {pt:`Cupom exclusivo negociado direto com a ${f.name}.`,en:`Exclusive coupon negotiated directly with ${f.name}.`,es:`Cupón exclusivo negociado directo con ${f.name}.`,fr:`Coupon exclusif négocié directement avec ${f.name}.`,de:`Exklusiver Gutschein direkt mit ${f.name} verhandelt.`,it:`Coupon esclusivo negoziato direttamente con ${f.name}.`,ar:`كوبون حصري متفاوض عليه مباشرة مع ${f.name}.`}[lang] || `Exclusive coupon negotiated directly with ${f.name}.`;
+  const ctaLabel = etL.cta || 'Começar Avaliação';
+  const fallbackTxt = {pt:'Não consegue clicar?',en:"Can't click?",es:'¿No puedes hacer clic?',fr:'Impossible de cliquer ?',de:'Klick funktioniert nicht?',it:'Non riesci a cliccare?',ar:'لا يمكنك النقر؟'}[lang] || "Can't click?";
+  const fallbackLink = {pt:'Copiar link',en:'Copy link',es:'Copiar enlace',fr:'Copier le lien',de:'Link kopieren',it:'Copia link',ar:'نسخ الرابط'}[lang] || 'Copy link';
+  const sigName = 'Lara';
+  const sigRole = {pt:'Markets Coupons',en:'Markets Coupons',es:'Markets Coupons',fr:'Markets Coupons',de:'Markets Coupons',it:'Markets Coupons',ar:'Markets Coupons'}[lang] || 'Markets Coupons';
+
   return `<!DOCTYPE html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="color-scheme" content="light only">
@@ -7820,11 +7830,24 @@ a{text-decoration:none;}
 <!--[if mso]><table width="480" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin:0 auto;" role="presentation">
 
-<!-- ═══ DARK HEADER ═══ -->
-<tr><td bgcolor="${DARK}" style="background-color:${DARK};padding:20px;text-align:center;border-radius:8px 8px 0 0;">
-  <div style="color:#fff;font-size:20px;font-weight:700;font-family:${FI};">Markets <span style="color:${color};">Coupons</span> <span style="color:${GREEN};font-size:10px;">&#9679;</span></div>
+<!-- ═══ HEADER BRANCO (logo Coupons SEMPRE laranja #ff8c00) ═══ -->
+<tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:20px;text-align:center;border-radius:8px 8px 0 0;">
+  <div style="color:${DARK};font-size:20px;font-weight:700;font-family:${FI};">Markets <span style="color:#ff8c00;">Coupons</span></div>
   <div style="color:#888;font-size:10px;letter-spacing:0.1em;margin-top:4px;font-family:${FI};">${(etL.tagline||'AS MELHORES OFERTAS PARA TRADERS').toUpperCase()}</div>
 </td></tr>
+
+<!-- separador cor temática -->
+<tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:0 20px;"><div style="height:2px;background-color:${color};"></div></td></tr>
+
+<!-- ═══ HERO DARK #111111 ═══ -->
+<tr><td bgcolor="#111111" style="background-color:#111111;padding:32px 24px;text-align:center;">
+  <div style="display:inline-block;padding:6px 14px;background-color:rgba(255,255,255,0.08);border:1px solid ${color};border-radius:20px;color:${color};font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;font-family:${FI};margin-bottom:18px;">${heroPill}</div>
+  <div style="color:#fff;font-size:34px;font-weight:800;line-height:1.15;font-family:${FI};margin-bottom:14px;">${heroH1Tpl}</div>
+  <div style="color:#bbb;font-size:14px;line-height:1.55;font-family:${FI};max-width:380px;margin:0 auto;">${heroSubTpl}</div>
+</td></tr>
+
+<!-- separador cor temática -->
+<tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:0 20px;"><div style="height:2px;background-color:${color};"></div></td></tr>
 
 <!-- ═══ WHITE BODY ═══ -->
 <tr><td bgcolor="${WHITE}" style="background-color:${WHITE};padding:24px 20px;">
@@ -7930,33 +7953,53 @@ a{text-decoration:none;}
         </td></tr>
       </table>` : ''}
 
-      <!-- CTA Button -->
+      <!-- CTA Button (gradient cor temática da firma) -->
       <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
         <tr><td align="center">
-          <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="${link}" style="height:48px;width:400px;" arcsize="17%" fillcolor="#eab308"><v:textbox inset="0,0,0,0"><center style="color:#000;font-family:Arial;font-size:15px;font-weight:700;">${etL.cta||'Começar Avaliação'} &#8594;</center></v:textbox></v:roundrect><![endif]-->
+          <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="${link}" style="height:48px;width:400px;" arcsize="17%" fillcolor="${color}"><v:textbox inset="0,0,0,0"><center style="color:#fff;font-family:Arial;font-size:15px;font-weight:700;">${ctaLabel} &#8594;</center></v:textbox></v:roundrect><![endif]-->
           <!--[if !mso]><!-->
-          <a href="${link}" target="_blank" style="display:block;background-color:#eab308;border-radius:8px;padding:14px;text-align:center;text-decoration:none;font-family:${FI};">
-            <span style="color:#000;font-size:15px;font-weight:700;font-family:${FI};">${etL.cta||'Começar Avaliação'} &#8594;</span>
+          <a href="${link}" target="_blank" style="display:block;background:linear-gradient(90deg,${color},${color});background-color:${color};border-radius:8px;padding:14px;text-align:center;text-decoration:none;font-family:${FI};">
+            <span style="color:#fff;font-size:15px;font-weight:700;font-family:${FI};">${ctaLabel} &#8594;</span>
           </a>
           <!--<![endif]-->
         </td></tr>
       </table>
 
+      <!-- Fallback link -->
+      <div style="text-align:center;color:#888;font-size:11px;margin-top:10px;font-family:${FI};">
+        ${fallbackTxt} <a href="${link}" target="_blank" style="color:${color};text-decoration:underline;font-family:${FI};">${fallbackLink}</a>
+      </div>
+
     </td></tr>
+  </table>
+
+  <!-- ═══ ASSINATURA LARA ═══ -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:24px;border-top:1px solid #eee;padding-top:18px;" role="presentation">
+    <tr>
+      <td width="48" style="vertical-align:middle;padding-right:12px;">
+        <table cellpadding="0" cellspacing="0" border="0" style="width:48px;height:48px;background:linear-gradient(135deg,${color},#ff8c00);border-radius:50%;" role="presentation">
+          <tr><td align="center" valign="middle" style="color:#fff;font-size:18px;font-weight:700;font-family:${FI};">L</td></tr>
+        </table>
+      </td>
+      <td style="vertical-align:middle;">
+        <div style="color:${DARK};font-size:14px;font-weight:700;font-family:${FI};">${sigName}</div>
+        <div style="color:#888;font-size:12px;font-family:${FI};">${sigRole}</div>
+      </td>
+    </tr>
   </table>
 
   <!-- See all link -->
   <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
-    <tr><td style="padding:16px 0 0;text-align:center;">
+    <tr><td style="padding:14px 0 0;text-align:center;">
       <a href="https://www.marketscoupons.com" target="_blank" style="color:${color};font-size:12px;text-decoration:none;font-family:${FI};">${etL.see_all||'Ver todas as ofertas no MarketsCoupons →'}</a>
     </td></tr>
   </table>
 
 </td></tr>
 
-<!-- ═══ DARK FOOTER ═══ -->
+<!-- ═══ FOOTER (logo Coupons SEMPRE laranja) ═══ -->
 <tr><td bgcolor="${DARK}" style="background-color:${DARK};padding:16px;text-align:center;border-radius:0 0 8px 8px;">
-  <div style="color:#fff;font-size:14px;font-weight:700;font-family:${FI};">Markets <span style="color:${color};">Coupons</span></div>
+  <div style="color:#fff;font-size:14px;font-weight:700;font-family:${FI};">Markets <span style="color:#ff8c00;">Coupons</span></div>
   <div style="color:#555;font-size:11px;margin-top:4px;font-family:${FI};">www.marketscoupons.com</div>
   <div style="margin-top:8px;">
     <span style="color:#555;font-size:10px;font-family:${FI};">
