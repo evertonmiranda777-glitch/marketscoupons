@@ -1670,6 +1670,15 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div id="trk-funnel" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;"></div>
       </div>
 
+      <!-- Performance do Redirect (firm_redirect_unload) — fast / slow / abandoned por firma -->
+      <div class="chart-card" style="margin-bottom:20px;">
+        <div class="cc-hd"><div>
+          <div class="cc-title">⚡ Performance do Redirect</div>
+          <div class="cc-sub">Tempo do click até user sair do overlay. Fast (&lt;2s) = firma carregou rápido. Abandoned (&gt;10s) = candidata a otimizar.</div>
+        </div></div>
+        <div id="trk-redirect-perf" style="overflow-x:auto;padding:8px 0;"></div>
+      </div>
+
       <!-- Gráficos -->
       <div class="charts-grid" style="margin-bottom:20px;">
         <div class="chart-card">
@@ -11059,6 +11068,73 @@ async function renderTrackingPage(){
       ${convPrev ? `<div style="font-size:10px;color:var(--t3);">${convPrev} conversão</div>` : '<div style="font-size:10px;color:var(--t3);">—</div>'}
     </div>`;
   }).join('');
+
+  // ── REDIRECT PERFORMANCE (firm_redirect_unload) ──
+  try {
+    const unloads = (events || []).filter(e => e.event === 'firm_redirect_unload');
+    const elBox = document.getElementById('trk-redirect-perf');
+    if (!elBox) {} else if (!unloads.length) {
+      elBox.innerHTML = '<div style="padding:20px;color:var(--t3);font-size:13px;text-align:center;">Sem dados ainda. Tracking de unload começou em 2026-04-30 — esperar 24-48h pra popular.</div>';
+    } else {
+      const byFirm = {};
+      unloads.forEach(e => {
+        const id = e.firm_id || 'unknown';
+        const cat = (e.params && e.params.category) || 'unknown';
+        const ms = (e.params && e.params.elapsed_ms) || 0;
+        if (!byFirm[id]) byFirm[id] = { fast:0, slow:0, abandoned:0, unknown:0, total:0, sumMs:0 };
+        byFirm[id][cat] = (byFirm[id][cat] || 0) + 1;
+        byFirm[id].total++;
+        byFirm[id].sumMs += ms;
+      });
+      const rows = Object.entries(byFirm)
+        .map(([id, s]) => ({
+          id,
+          ...s,
+          avgMs: s.total ? Math.round(s.sumMs / s.total) : 0,
+          fastPct: s.total ? (s.fast / s.total * 100) : 0,
+          slowPct: s.total ? (s.slow / s.total * 100) : 0,
+          abPct:   s.total ? (s.abandoned / s.total * 100) : 0,
+        }))
+        .sort((a,b) => b.total - a.total);
+      const tot = rows.reduce((acc, r) => ({ total:acc.total+r.total, fast:acc.fast+r.fast, slow:acc.slow+r.slow, abandoned:acc.abandoned+r.abandoned, sumMs:acc.sumMs+r.sumMs }), {total:0,fast:0,slow:0,abandoned:0,sumMs:0});
+      const totFastPct = tot.total ? (tot.fast/tot.total*100).toFixed(1) : '0';
+      const totSlowPct = tot.total ? (tot.slow/tot.total*100).toFixed(1) : '0';
+      const totAbPct   = tot.total ? (tot.abandoned/tot.total*100).toFixed(1) : '0';
+      const totAvgMs   = tot.total ? Math.round(tot.sumMs/tot.total) : 0;
+      let html = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr style="background:rgba(255,255,255,.04);text-align:left;">
+          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Firma</th>
+          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">Clicks</th>
+          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">Avg ms</th>
+          <th style="padding:10px 14px;font-size:11px;color:#22C55E;text-transform:uppercase;letter-spacing:.5px;text-align:right;">Fast (&lt;2s)</th>
+          <th style="padding:10px 14px;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;text-align:right;">Slow (2-10s)</th>
+          <th style="padding:10px 14px;font-size:11px;color:#EF4444;text-transform:uppercase;letter-spacing:.5px;text-align:right;">Abandoned (&gt;10s)</th>
+        </tr></thead><tbody>
+        <tr style="background:rgba(240,180,41,.06);font-weight:700;border-bottom:2px solid rgba(240,180,41,.2);">
+          <td style="padding:10px 14px;color:var(--gold);">TOTAL</td>
+          <td style="padding:10px 14px;text-align:right;">${tot.total}</td>
+          <td style="padding:10px 14px;text-align:right;color:var(--t1);">${totAvgMs}ms</td>
+          <td style="padding:10px 14px;text-align:right;color:#22C55E;">${tot.fast} (${totFastPct}%)</td>
+          <td style="padding:10px 14px;text-align:right;color:var(--gold);">${tot.slow} (${totSlowPct}%)</td>
+          <td style="padding:10px 14px;text-align:right;color:#EF4444;">${tot.abandoned} (${totAbPct}%)</td>
+        </tr>`;
+      rows.forEach(r => {
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,.05);">
+          <td style="padding:10px 14px;font-weight:600;text-transform:capitalize;">${r.id}</td>
+          <td style="padding:10px 14px;text-align:right;">${r.total}</td>
+          <td style="padding:10px 14px;text-align:right;color:${r.avgMs>5000?'#EF4444':r.avgMs>2000?'var(--gold)':'#22C55E'};">${r.avgMs}ms</td>
+          <td style="padding:10px 14px;text-align:right;color:#22C55E;">${r.fast} (${r.fastPct.toFixed(1)}%)</td>
+          <td style="padding:10px 14px;text-align:right;color:var(--gold);">${r.slow} (${r.slowPct.toFixed(1)}%)</td>
+          <td style="padding:10px 14px;text-align:right;color:${r.abPct>20?'#EF4444':'var(--t1)'};">${r.abandoned} (${r.abPct.toFixed(1)}%)</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      elBox.innerHTML = html;
+    }
+  } catch(e) {
+    const elBox = document.getElementById('trk-redirect-perf');
+    if (elBox) elBox.innerHTML = '<div style="padding:20px;color:#EF4444;font-size:13px;">Erro ao carregar perf: ' + (e.message||'') + '</div>';
+  }
 
   // ── CHARTS ──
   setTimeout(() => {
