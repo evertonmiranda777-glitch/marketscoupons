@@ -5,9 +5,25 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Safe JSON parse: returns parsed JSON or throws with the actual response text
+// when it's not valid JSON (e.g. Google returns HTML error pages on 4xx/5xx).
+async function safeJson(res: Response, ctx: string) {
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    const snippet = text.slice(0, 300).replace(/\s+/g, ' ');
+    throw new Error(`${ctx} returned non-JSON (HTTP ${res.status}): ${snippet}`);
+  }
+}
+
 async function getAccessToken(): Promise<string> {
-  const sa = JSON.parse(Deno.env.get('GA4_SERVICE_ACCOUNT') || '{}');
-  if (!sa.private_key || !sa.client_email) throw new Error('Missing GA4_SERVICE_ACCOUNT secret');
+  const saRaw = Deno.env.get('GA4_SERVICE_ACCOUNT') || '';
+  if (!saRaw) throw new Error('GA4_SERVICE_ACCOUNT secret is empty/unset in Supabase');
+  let sa: any;
+  try { sa = JSON.parse(saRaw); }
+  catch { throw new Error('GA4_SERVICE_ACCOUNT is not valid JSON (check escaping of \\n in private_key)'); }
+  if (!sa.private_key || !sa.client_email) throw new Error('GA4_SERVICE_ACCOUNT missing private_key or client_email');
 
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: 'RS256', typ: 'JWT' };
@@ -35,8 +51,8 @@ async function getAccessToken(): Promise<string> {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
   });
-  const data = await res.json();
-  if (!data.access_token) throw new Error('Token exchange failed: ' + JSON.stringify(data));
+  const data = await safeJson(res, 'OAuth token exchange');
+  if (!data.access_token) throw new Error('OAuth refused token: ' + JSON.stringify(data));
   return data.access_token;
 }
 
@@ -46,7 +62,7 @@ async function queryGA4(token: string, propertyId: string, body: unknown) {
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  return res.json();
+  return safeJson(res, `GA4 runReport (property ${propertyId})`);
 }
 
 Deno.serve(async (req: Request) => {

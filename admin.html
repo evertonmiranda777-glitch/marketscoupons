@@ -1617,20 +1617,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="stats-grid" id="trk-systems"></div>
 
       <style>@keyframes goPulse{0%,100%{opacity:.4;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}</style>
-      <!-- ═══ /GO INTERSTITIAL — DESTAQUE NO TOPO ═══ -->
-      <div class="chart-card" style="margin-bottom:20px;border:2px solid rgba(240,180,41,.35);background:linear-gradient(135deg,rgba(240,180,41,.06) 0%,rgba(240,180,41,.02) 100%);box-shadow:0 4px 20px rgba(240,180,41,.08);">
-        <div class="cc-hd" style="border-bottom:1px solid rgba(240,180,41,.2);">
-          <div>
-            <div class="cc-title" style="color:var(--gold);display:flex;align-items:center;gap:10px;">
-              <span style="display:inline-block;width:8px;height:8px;background:var(--gold);border-radius:50%;animation:goPulse 2s infinite;"></span>
-              Página /go — Fricção do Cupom Manual
-            </div>
-            <div class="cc-sub">Trader clica em "Comprar" → /go copia cupom + mostra instrução → redirect pra firma. Métrica crítica: quantos completam vs abortam por firma.</div>
-          </div>
-        </div>
-        <div id="trk-go-funnel" style="overflow-x:auto;padding:8px 0;"></div>
-      </div>
-
       <!-- Funil unificado -->
       <div class="chart-card" style="margin-bottom:20px;">
         <div class="cc-hd"><div><div class="cc-title">Funil de Conversão (Supabase — Fonte Primária)</div><div class="cc-sub" id="trk-period-label">Últimos 14 dias</div></div></div>
@@ -10830,77 +10816,6 @@ async function renderTrackingPage(){
       ${convPrev ? `<div style="font-size:10px;color:var(--t3);">${convPrev} conversão</div>` : '<div style="font-size:10px;color:var(--t3);">—</div>'}
     </div>`;
   }).join('');
-
-  // ── /GO FUNNEL (fricção do cupom manual) ──
-  try {
-    const cutoffIso = new Date(Date.now() - days*86400000).toISOString();
-    const { data: goEvents } = await db.from('events')
-      .select('event,firm_id')
-      .like('event','go_%')
-      .gte('created_at', cutoffIso);
-    const ge = goEvents || [];
-    if (ge.length === 0) {
-      document.getElementById('trk-go-funnel').innerHTML = '<div style="padding:20px;color:var(--t3);font-size:13px;text-align:center;">Sem dados de /go ainda. Cliente precisa clicar em "Comprar" numa firma com cupom pra começar a popular.</div>';
-    } else {
-      const byFirm = {};
-      ge.forEach(e => {
-        const id = e.firm_id || 'unknown';
-        if (!byFirm[id]) byFirm[id] = { view:0, ok:0, fail:0, redir:0, ab:0, manual:0 };
-        const ev = e.event;
-        if (ev === 'go_view') byFirm[id].view++;
-        else if (ev === 'go_clipboard_ok') byFirm[id].ok++;
-        else if (ev === 'go_clipboard_fail') byFirm[id].fail++;
-        else if (ev === 'go_redirect') byFirm[id].redir++;
-        else if (ev === 'go_abandoned') byFirm[id].ab++;
-        else if (ev === 'go_manual_click') byFirm[id].manual++;
-      });
-      const rows = Object.entries(byFirm)
-        .map(([id, s]) => ({ id, ...s, redirPct: s.view ? (s.redir/s.view*100) : 0, abPct: s.view ? (s.ab/s.view*100) : 0, failPct: s.view ? (s.fail/s.view*100) : 0 }))
-        .sort((a,b) => b.view - a.view);
-      const tot = rows.reduce((acc, r) => ({ view:acc.view+r.view, redir:acc.redir+r.redir, ab:acc.ab+r.ab, fail:acc.fail+r.fail, manual:acc.manual+r.manual }), {view:0,redir:0,ab:0,fail:0,manual:0});
-      const totRedirPct = tot.view ? (tot.redir/tot.view*100).toFixed(1) : '0';
-      const totAbPct = tot.view ? (tot.ab/tot.view*100).toFixed(1) : '0';
-      const totFailPct = tot.view ? (tot.fail/tot.view*100).toFixed(1) : '0';
-      let html = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
-        <thead><tr style="background:rgba(255,255,255,.04);text-align:left;">
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Firma</th>
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">Views</th>
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">Redirect</th>
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">% Redirect</th>
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">Abandono</th>
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">% Aband.</th>
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">% Cópia Manual</th>
-          <th style="padding:10px 14px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:right;">Manual</th>
-        </tr></thead><tbody>`;
-      // TOTAL primeiro
-      html += `<tr style="background:rgba(240,180,41,.06);font-weight:700;border-bottom:2px solid rgba(240,180,41,.2);">
-        <td style="padding:10px 14px;color:var(--gold);">TOTAL</td>
-        <td style="padding:10px 14px;text-align:right;">${tot.view}</td>
-        <td style="padding:10px 14px;text-align:right;">${tot.redir}</td>
-        <td style="padding:10px 14px;text-align:right;color:#22C55E;">${totRedirPct}%</td>
-        <td style="padding:10px 14px;text-align:right;">${tot.ab}</td>
-        <td style="padding:10px 14px;text-align:right;color:${parseFloat(totAbPct)>15?'#EF4444':'var(--t1)'};">${totAbPct}%</td>
-        <td style="padding:10px 14px;text-align:right;color:${parseFloat(totFailPct)>10?'#EF4444':'var(--t1)'};">${totFailPct}%</td>
-        <td style="padding:10px 14px;text-align:right;">${tot.manual}</td>
-      </tr>`;
-      rows.forEach(r => {
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,.05);">
-          <td style="padding:10px 14px;font-weight:600;text-transform:capitalize;">${r.id}</td>
-          <td style="padding:10px 14px;text-align:right;">${r.view}</td>
-          <td style="padding:10px 14px;text-align:right;">${r.redir}</td>
-          <td style="padding:10px 14px;text-align:right;color:#22C55E;">${r.redirPct.toFixed(1)}%</td>
-          <td style="padding:10px 14px;text-align:right;">${r.ab}</td>
-          <td style="padding:10px 14px;text-align:right;color:${r.abPct>15?'#EF4444':'var(--t1)'};">${r.abPct.toFixed(1)}%</td>
-          <td style="padding:10px 14px;text-align:right;color:${r.failPct>10?'#EF4444':'var(--t1)'};">${r.failPct.toFixed(1)}%</td>
-          <td style="padding:10px 14px;text-align:right;">${r.manual}</td>
-        </tr>`;
-      });
-      html += '</tbody></table>';
-      document.getElementById('trk-go-funnel').innerHTML = html;
-    }
-  } catch(e) {
-    document.getElementById('trk-go-funnel').innerHTML = '<div style="padding:20px;color:#EF4444;font-size:13px;">Erro carregando /go funnel: ' + (e.message||'') + '</div>';
-  }
 
   // ── CHARTS ──
   setTimeout(() => {
