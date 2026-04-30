@@ -172,13 +172,18 @@ const MC_ATTR = (()=>{
 // Sub_id (?keyword=) injection movido pra tracking.js em 2026-04-30 — unifica Apex+Bulenox
 // com cascata utm_term > utm_campaign > fbclid > utm_source > mcsite.
 
-// ─── SAME-TAB REDIRECT ───
+// ─── SAME-TAB REDIRECT + OVERLAY ───
 // window.location.href em vez de window.open pra eliminar about:blank gap.
-// Browser mantem a nossa pagina renderizada ate a firma carregar — transicao
-// instantanea. Back button do browser restaura via bfcache.
-// Tracking dispara ANTES da navegacao (browser tipicamente nao cancela fetch
-// in-flight; melhor effort).
+// Overlay com spinner + 'Redirecionando para X' mostra feedback visual
+// IMEDIATO no click — sem sensacao de 'emperrado' enquanto firma responde.
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
+  // Overlay visual (sincrono) — display:flex revela imediato, navigate em seguida
+  try {
+    const ov = document.getElementById('mc-redirect-ov');
+    const fn = document.getElementById('mc-redirect-firm');
+    if (fn) fn.textContent = firmName || 'a firma';
+    if (ov) ov.style.display = 'flex';
+  } catch(e){}
   try { if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl}); } catch(e){}
   window.location.href = finalUrl;
 }

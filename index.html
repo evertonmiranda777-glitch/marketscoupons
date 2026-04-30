@@ -4384,6 +4384,14 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
   </div>
 </div>
 
+<!-- Redirect Overlay (mostrado durante navigation pra firma — feedback visual) -->
+<div id="mc-redirect-ov" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(8,12,18,.95);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;gap:18px;color:#fff;font-family:Inter,system-ui,sans-serif;">
+  <div style="width:48px;height:48px;border:3px solid rgba(240,180,41,.2);border-top-color:#F0B429;border-radius:50%;animation:mcRedirSpin .8s linear infinite;"></div>
+  <div style="font-size:15px;font-weight:600;letter-spacing:.3px;">Redirecionando para <span id="mc-redirect-firm" style="color:#F0B429;">a firma</span>...</div>
+  <div style="font-size:11px;color:#8A98AE;">Aguarde alguns segundos</div>
+</div>
+<style>@keyframes mcRedirSpin{to{transform:rotate(360deg)}}</style>
+
 <!-- JAVASCRIPT -->
 <script src="/tracking.js" defer></script>
 </body>
