@@ -47,16 +47,28 @@
     } catch (e) { return ''; }
   }
 
+  // Decode recursivo (Meta as vezes manda double-encoded)
+  function safeDecodeUtm(s) {
+    if (!s) return null;
+    let cur = String(s), prev = '';
+    for (let i = 0; i < 3 && cur !== prev; i++) {
+      prev = cur;
+      try { cur = decodeURIComponent(cur); } catch (e) { return prev; }
+    }
+    return cur;
+  }
+
   // ─── Step 1: Persist UTMs from URL into localStorage (TTL 30d, last-touch) ───
   function persistUtmsFromUrl() {
     try {
       const p = new URLSearchParams(location.search);
+      const _g = (k) => safeDecodeUtm(p.get(k));
       const fromUrl = {
-        utm_source:   p.get('utm_source')   || null,
-        utm_medium:   p.get('utm_medium')   || null,
-        utm_campaign: p.get('utm_campaign') || null,
-        utm_content:  p.get('utm_content')  || null,
-        utm_term:     p.get('utm_term')     || null,
+        utm_source:   _g('utm_source'),
+        utm_medium:   _g('utm_medium'),
+        utm_campaign: _g('utm_campaign'),
+        utm_content:  _g('utm_content'),
+        utm_term:     _g('utm_term'),
         fbclid:       p.get('fbclid')       || null,
         gclid:        p.get('gclid')        || null,
         ttclid:       p.get('ttclid')       || null,

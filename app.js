@@ -89,11 +89,25 @@ const MC_SESSION = sessionStorage.getItem('mc_sid') || (()=>{
   return id;
 })();
 
+// Decode recursivo de UTMs — Meta as vezes manda double-encoded (%255B -> %5B -> [).
+// URLSearchParams decodifica 1x; se o valor ainda parece encoded, decodifica de novo
+// ate estabilizar. Failsafe: se decode falhar, retorna o ultimo valor valido.
+function safeDecodeUtm(s){
+  if(!s) return '';
+  let cur = String(s), prev = '';
+  for(let i=0; i<3 && cur !== prev; i++){
+    prev = cur;
+    try { cur = decodeURIComponent(cur); } catch(e){ return prev; }
+  }
+  return cur;
+}
+
 // Capturar UTMs da URL uma vez e guardar na sessão
 const MC_UTM = (()=>{
   const stored = sessionStorage.getItem('mc_utm');
   if (stored) return JSON.parse(stored);
   const p = new URLSearchParams(window.location.search);
+  const _g = (k) => safeDecodeUtm(p.get(k) || '');
   // Detect Telegram referrer (t.me, web.telegram.org) — auto-tag as social/telegram
   const ref = document.referrer || '';
   let refHost = '';
@@ -102,11 +116,11 @@ const MC_UTM = (()=>{
   // For firm slug landings from Telegram, auto-fill flash_promo campaign
   const firmSlug = (location.pathname.match(/^\/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti)\/?$/i)||[])[1];
   const utm = {
-    utm_source:   p.get('utm_source')   || (isTelegram ? 'telegram' : (refHost || '')),
-    utm_medium:   p.get('utm_medium')   || (isTelegram ? 'referral' : ''),
-    utm_campaign: p.get('utm_campaign') || (isTelegram && firmSlug ? 'flash_promo' : (isTelegram ? 'channel' : '')),
-    utm_content:  p.get('utm_content')  || (firmSlug || ''),
-    utm_term:     p.get('utm_term')     || '',
+    utm_source:   _g('utm_source')   || (isTelegram ? 'telegram' : (refHost || '')),
+    utm_medium:   _g('utm_medium')   || (isTelegram ? 'referral' : ''),
+    utm_campaign: _g('utm_campaign') || (isTelegram && firmSlug ? 'flash_promo' : (isTelegram ? 'channel' : '')),
+    utm_content:  _g('utm_content')  || (firmSlug || ''),
+    utm_term:     _g('utm_term')     || '',
     referrer:     ref,
   };
   sessionStorage.setItem('mc_utm', JSON.stringify(utm));
@@ -126,6 +140,7 @@ const MC_ANON = (()=>{
 // Attribution first-touch (janela 7 dias) — pra linkar campanha Meta/Google ao click de cupom
 const MC_ATTR = (()=>{
   const p = new URLSearchParams(window.location.search);
+  const _g = (k) => safeDecodeUtm(p.get(k) || '');
   const fbclid = p.get('fbclid') || '';
   const gclid = p.get('gclid') || '';
   const ttclid = p.get('ttclid') || '';
@@ -137,11 +152,11 @@ const MC_ATTR = (()=>{
   const attr = {
     ts: now,
     fbclid, gclid, ttclid,
-    utm_source:   p.get('utm_source')   || MC_UTM.utm_source   || '',
-    utm_medium:   p.get('utm_medium')   || MC_UTM.utm_medium   || '',
-    utm_campaign: p.get('utm_campaign') || MC_UTM.utm_campaign || '',
-    utm_content:  p.get('utm_content')  || MC_UTM.utm_content  || '',
-    utm_term:     p.get('utm_term')     || MC_UTM.utm_term     || '',
+    utm_source:   _g('utm_source')   || MC_UTM.utm_source   || '',
+    utm_medium:   _g('utm_medium')   || MC_UTM.utm_medium   || '',
+    utm_campaign: _g('utm_campaign') || MC_UTM.utm_campaign || '',
+    utm_content:  _g('utm_content')  || MC_UTM.utm_content  || '',
+    utm_term:     _g('utm_term')     || MC_UTM.utm_term     || '',
     referrer:     document.referrer || '',
     landing_page: location.pathname + location.search,
   };
