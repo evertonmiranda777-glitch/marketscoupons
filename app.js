@@ -172,19 +172,42 @@ const MC_ATTR = (()=>{
 // Sub_id (?keyword=) injection movido pra tracking.js em 2026-04-30 — unifica Apex+Bulenox
 // com cascata utm_term > utm_campaign > fbclid > utm_source > mcsite.
 
-// ─── SAME-TAB REDIRECT + OVERLAY ───
-// window.location.href em vez de window.open pra eliminar about:blank gap.
-// Overlay com spinner + 'Redirecionando para X' mostra feedback visual
-// IMEDIATO no click — sem sensacao de 'emperrado' enquanto firma responde.
+// ─── SAME-TAB REDIRECT + OVERLAY + ABANDON TRACKING ───
+// window.location.href elimina about:blank gap.
+// Overlay 'Redirecionando para X' = feedback visual imediato.
+// pagehide listener loga tempo no overlay antes de sair (firma carregou ou abandonou).
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
-  // Overlay visual (sincrono) — display:flex revela imediato, navigate em seguida
+  const startTs = Date.now();
+  // Overlay visual (sincrono)
   try {
     const ov = document.getElementById('mc-redirect-ov');
     const fn = document.getElementById('mc-redirect-firm');
     if (fn) fn.textContent = firmName || 'a firma';
     if (ov) ov.style.display = 'flex';
   } catch(e){}
+  // Track inicio do redirect (fire-and-forget, fetch normal)
   try { if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl}); } catch(e){}
+  // pagehide listener — usa sendBeacon pra sobreviver ao unload e logar tempo no overlay
+  try {
+    const onPageHide = () => {
+      const elapsed = Date.now() - startTs;
+      // Categoriza abandono: <2s = redirect normal; 2-10s = lento; >10s = provavel abandono
+      const category = elapsed < 2000 ? 'fast' : (elapsed < 10000 ? 'slow' : 'abandoned');
+      try {
+        if (navigator.sendBeacon) {
+          const payload = JSON.stringify({
+            session_id: typeof MC_SESSION !== 'undefined' ? MC_SESSION : null,
+            event: 'firm_redirect_unload',
+            firm_id: firmId || null,
+            params: { firm_name: firmName, to_url: finalUrl, elapsed_ms: elapsed, category, anon_id: typeof MC_ANON !== 'undefined' ? MC_ANON : null },
+          });
+          const blob = new Blob([payload], { type: 'application/json' });
+          navigator.sendBeacon(SUPABASE_URL+'/rest/v1/events?apikey='+encodeURIComponent(SUPABASE_ANON), blob);
+        }
+      } catch(e){}
+    };
+    window.addEventListener('pagehide', onPageHide, { once: true });
+  } catch(e){}
   window.location.href = finalUrl;
 }
 
