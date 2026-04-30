@@ -150,8 +150,10 @@ const MC_ATTR = (()=>{
 })();
 
 // Firmas amember que suportam ?keyword=X pra atribuicao 1:1 por campanha no painel.
-// Apex foi removido: checkout dinamico vai direto pra dashboard.apextraderfunding.com,
-// bypassa /member/aff/go/ entao o amember nao le o keyword. Pra Apex usa attribution-matcher.
+// Apex: roteia 100% via /member/aff/go/evertonmiranda (homepage #products) pra garantir
+// cookie afiliado. Deep-link de plano nao e possivel — amember reescreve URL no redirect.
+// Bug historico: usar dashboard.apextraderfunding.com/signup/...?referralCode= NAO seta
+// cookie e gera "vendas sem click" no painel (ex: 3 vendas / 1 click em 2026-04-29).
 const MC_KEYWORD_FIRMS = new Set(['bulenox']);
 function mcBuildKeyword(firmId){
   if (!MC_KEYWORD_FIRMS.has(firmId)) return '';
@@ -3797,7 +3799,7 @@ const CHECKOUT_FIRMS=[
      'Intraday Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$199',disc:'$19.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$249',disc:'$24.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$399',disc:'$39.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$599',disc:'$59.90',featured:false}],
      'EOD Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$299',disc:'$29.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$349',disc:'$34.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$599',disc:'$59.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$799',disc:'$79.90',featured:false}]
    },
-   buildUrl:(size,type,plat)=>`https://dashboard.apextraderfunding.com/signup/${size.toLowerCase()}-${plat}-${type==='Intraday Trail'?'intraday-trail':'eod-trail'}?referralCode=evertonmiranda`},
+   buildUrl:(size,type,plat)=>'https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644'},
   {id:'bulenox',name:'Bulenox',short:'Bulenox',coupon:'MARKET89',discount:'89%',color:'#3B82F6',bg:'rgba(59,130,246,0.12)',
    includes:['Pass in 1 day','No consistency rule','News trading allowed','Weekly payouts','Scaling up to $400K','14-day free Rithmic trial'],
    types:['Trailing DD','EOD DD'],platforms:['Rithmic','NinjaTrader'],
