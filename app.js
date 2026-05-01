@@ -3397,7 +3397,7 @@ function pdRenderMobile(id,p){
   // Type pills
   if(pd.types.length>1){
     h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${p.color};box-shadow:0 0 8px ${p.color}40"></span>${t('pd_periodo')}</div>
-      <div class="fd-pills" style="--cols:${tc}">${pd.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${p.color}12;border-color:${p.color}4D;color:${p.color}`:''}" onclick="_pdState['${id}'].type='${tp}';var pl=PLAT_DETAIL['${id}'].plans['${tp}'];_pdState['${id}'].size=(pl.find(x=>x.pop)||pl[0]).s;pdRenderMobile('${id}')">${tf(tp)}</button>`).join('')}</div></div>`;
+      <div class="fd-pills" style="--cols:${tc}">${pd.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${p.color}12;border-color:${p.color}4D;color:${p.color}`:''}" onclick="_pdState['${id}'].type='${tp}';var pl=(PLAT_DETAIL['${id}']&&PLAT_DETAIL['${id}'].plans&&PLAT_DETAIL['${id}'].plans['${tp}'])||[];if(pl.length)_pdState['${id}'].size=(pl.find(x=>x.pop)||pl[0]).s;pdRenderMobile('${id}')">${tf(tp)}</button>`).join('')}</div></div>`;
   }
 
   // Plan pills
@@ -3575,7 +3575,7 @@ function drwRenderCk(id, f) {
   if(fa.types.length>1){
     const tc=fa.types.length<=4?fa.types.length:3;
     h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_tipo_conta')}</div>
-      <div class="fd-pills" style="--cols:${tc}">${fa.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="_fdState['${id}'].type='${tp}';var pl=FIRM_ABOUT['${id}'].plans['${tp}'];_fdState['${id}'].size=(pl.find(p=>p.pop)||pl[0]).s;drwRenderCk('${id}')">${tp}</button>`).join('')}</div></div>`;
+      <div class="fd-pills" style="--cols:${tc}">${fa.types.map(tp=>`<button class="fd-pill${tp===st.type?' sel':''}" style="${tp===st.type?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="_fdState['${id}'].type='${tp}';var pl=(FIRM_ABOUT['${id}']&&FIRM_ABOUT['${id}'].plans&&FIRM_ABOUT['${id}'].plans['${tp}'])||[];if(pl.length)_fdState['${id}'].size=(pl.find(p=>p.pop)||pl[0]).s;drwRenderCk('${id}')">${tp}</button>`).join('')}</div></div>`;
   }
 
   // Platform pills
