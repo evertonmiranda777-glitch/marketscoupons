@@ -1,0 +1,24 @@
+name: Auto-revert prod
+
+on:
+  # Disparado por webhook externo (Better Stack, UptimeRobot, etc) via repository_dispatch
+  repository_dispatch:
+    types: [prod-down]
+  # Disparo manual pra teste
+  workflow_dispatch:
+
+jobs:
+  revert:
+    uses: evertonmiranda777-glitch/everton-devops-shared/.github/workflows/auto-revert.yml@main
+    with:
+      project_name: marketscoupons
+      vercel_project_id: prj_hKvvvfaXXPsqYXBszxQiCfIvPJ2q
+      # Confirma 3x que está down antes de reverter (evita falso positivo)
+      health_urls: |
+        https://www.marketscoupons.com|Markets Coupons
+        https://www.marketscoupons.com/apex|Começar
+        https://www.marketscoupons.com/app.js|MarketsCoupons
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
