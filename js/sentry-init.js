@@ -38,10 +38,14 @@
       'AbortError',
       'ResizeObserver loop limit exceeded',
       'ResizeObserver loop completed with undelivered notifications',
-      // Instagram in-app browser bridge: tenta acessar webkit.messageHandlers que nao existe.
-      // Erro vem da injeção da Meta no webview, não do nosso código. Inofensivo.
+      // Instagram in-app browser (iOS): bridge webkit.messageHandlers nao existe no webview.
       /window\.webkit\.messageHandlers/,
       "evaluating 'window.webkit.messageHandlers'",
+      // Instagram in-app browser (Android): postMessage entre o WebView e Java host falha
+      // quando user navega antes do bridge sincronizar. Erro vem do navigation_performance_logger.
+      /Error invoking postMessage/,
+      /Java object is gone/,
+      /iabjs:\/\//,
       // Browser extensions
       /chrome-extension:\/\//,
       /moz-extension:\/\//,
