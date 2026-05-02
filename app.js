@@ -2844,7 +2844,7 @@ function applyF(){
   renderFirms(list);
 }
 function clearF(){
-  document.getElementById('search').value='';
+  const s=document.getElementById('search'); if(s) s.value='';
   ['fFut','fFx','dH','dM','dL'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=true;});
   ['fLT','fNews','fD1','fFavOnly'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
   applyF();
@@ -7307,11 +7307,13 @@ function renderGEXFiltered(){
 
 async function loadGEX(){
   if(_gexLoaded) return;
+  const gxLoading = document.getElementById('gx-loading');
+  if(!gxLoading) return; // user navigated away from gx page before load completed
   try{
     const{data,error}=await db.from('gex_levels').select('*,updated_at').order('date',{ascending:false}).limit(24);
     if(error) throw error;
     if(!data||!data.length){
-      document.getElementById('gx-loading').innerHTML='<div style="color:var(--t2);font-size:14px;" data-i18n="gx_no_data">GEX data not yet available. Check back after 6 AM ET.</div>';
+      gxLoading.innerHTML='<div style="color:var(--t2);font-size:14px;" data-i18n="gx_no_data">GEX data not yet available. Check back after 6 AM ET.</div>';
       applyTranslations();
       return;
     }
@@ -7324,7 +7326,7 @@ async function loadGEX(){
     _gexLoaded=true;
   }catch(e){
     console.error('GEX load error:',e);
-    document.getElementById('gx-loading').innerHTML='<div style="color:var(--t2);">Error: '+(e.message||e)+'</div>';
+    if(gxLoading) gxLoading.innerHTML='<div style="color:var(--t2);">Error: '+(e.message||e)+'</div>';
   }
   if(_authLoaded) checkGEXGate();
 }

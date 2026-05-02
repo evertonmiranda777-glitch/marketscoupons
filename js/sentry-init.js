@@ -46,6 +46,10 @@
       /Error invoking postMessage/,
       /Java object is gone/,
       /iabjs:\/\//,
+      // TradingView widget: sendMessageToIFrames itera iframes e chama postMessage.
+      // Se iframe foi removido entre tick (navegação rápida), contentWindow é null.
+      /contentWindow\.postMessage/,
+      /sendMessageToIFrames/,
       // Browser extensions
       /chrome-extension:\/\//,
       /moz-extension:\/\//,
