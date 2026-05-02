@@ -44,8 +44,11 @@ function genPage(a, b) {
   const minB = priceMin(b.prices);
   const minLabel = (n) => n ? `$${n.toFixed(2)}` : '—';
 
-  const title = `${a.name} vs ${b.name}: Comparativo Completo 2026 | Markets Coupons`;
-  const desc = `Compare ${a.name} e ${b.name}: preços, drawdown, profit split, payout. Cupons exclusivos atualizados 2026.${a.coupon ? ` Cupom ${a.coupon} pra ${a.name}.` : ''}`;
+  // Title curto pra SEO (~60 chars max — Google trunca acima disso)
+  const shortA = a.short_name || a.name.split(' ')[0];
+  const shortB = b.short_name || b.name.split(' ')[0];
+  const title = `${shortA} vs ${shortB} 2026: Comparativo | Markets Coupons`;
+  const desc = `Compare ${a.name} e ${b.name}: preços, drawdown, profit split, payout. Cupons exclusivos atualizados.`;
   const h1 = `${a.name} vs ${b.name}`;
   const sub = `Comparativo lado a lado das duas prop firms. Atualizado em ${new Date().toISOString().slice(0,10)}.`;
   const slugPair = `${a.id}-vs-${b.id}`;
@@ -131,6 +134,8 @@ function genPage(a, b) {
 <meta property="og:locale" content="pt_BR">
 <meta property="og:image" content="https://www.marketscoupons.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="pt-BR" href="https://www.marketscoupons.com/${slugPair}">
+<link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/${slugPair}">
 <link rel="icon" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
