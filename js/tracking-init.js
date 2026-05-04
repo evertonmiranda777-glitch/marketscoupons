@@ -24,7 +24,17 @@ function loadTracking() {
     t = b.createElement(e); t.async = !0; t.src = v;
     s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
   }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '813048241061812');
+  // Advanced Matching: external_id estavel pra anonimos (90% do trafego pago).
+  // Sem isso, EMQ trava em ~5/10. App.js re-inicia com em/ph/fn quando user loga.
+  var _anon = '';
+  try {
+    _anon = localStorage.getItem('mc_anon') || '';
+    if (!_anon) {
+      _anon = (crypto.randomUUID && crypto.randomUUID()) || (Date.now()+'_'+Math.random().toString(36).slice(2));
+      localStorage.setItem('mc_anon', _anon);
+    }
+  } catch (e) {}
+  fbq('init', '813048241061812', _anon ? { external_id: _anon } : {});
   fbq('track', 'PageView');
 }
 window.loadTracking = loadTracking;
