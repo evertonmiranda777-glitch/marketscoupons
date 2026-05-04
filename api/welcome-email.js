@@ -428,9 +428,11 @@ async function handleSendConfirm(req, res, body) {
 
   const result = await sendConfirmEmail(email, name || 'Trader', langCode, token);
 
+  // RLS em email_logs exige service_role pra INSERT (anon falha silencioso).
+  // Sem service_role configurado, log perde — mas o envio do email ja rolou OK.
   fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
     method:'POST',
-    headers:{ apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}`, 'Content-Type':'application/json', Prefer:'return=minimal' },
+    headers:{ apikey:SK||SUPABASE_KEY, Authorization:`Bearer ${SK||SUPABASE_KEY}`, 'Content-Type':'application/json', Prefer:'return=minimal' },
     body: JSON.stringify({
       campaign_name: resend ? 'Email Confirm Resend' : 'Email Confirm',
       subject:'Confirm email', recipients:1,
@@ -636,7 +638,7 @@ module.exports = async (req, res) => {
 
     await fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
       method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      headers: { 'apikey': SK||SUPABASE_KEY, 'Authorization': `Bearer ${SK||SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
       body: JSON.stringify({
         campaign_name: 'Welcome Email',
         subject, recipients: 1,
