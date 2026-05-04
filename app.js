@@ -198,16 +198,22 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
       // Categoriza abandono: <2s = redirect normal; 2-10s = lento; >10s = provavel abandono
       const category = elapsed < 2000 ? 'fast' : (elapsed < 10000 ? 'slow' : 'abandoned');
       try {
-        if (navigator.sendBeacon) {
-          const payload = JSON.stringify({
-            session_id: typeof MC_SESSION !== 'undefined' ? MC_SESSION : null,
-            event: 'firm_redirect_unload',
-            firm_id: firmId || null,
-            params: { firm_name: firmName, to_url: finalUrl, elapsed_ms: elapsed, category, anon_id: typeof MC_ANON !== 'undefined' ? MC_ANON : null },
-          });
-          const blob = new Blob([payload], { type: 'application/json' });
-          navigator.sendBeacon(SUPABASE_URL+'/rest/v1/events?apikey='+encodeURIComponent(SUPABASE_ANON), blob);
-        }
+        // sendBeacon nao funciona aqui — manda credentials:include e Supabase responde
+        // Access-Control-Allow-Origin:* (wildcard), browser bloqueia. Usar fetch+keepalive
+        // com credentials:omit pra sobreviver ao unload sem violar CORS.
+        const payload = JSON.stringify({
+          session_id: typeof MC_SESSION !== 'undefined' ? MC_SESSION : null,
+          event: 'firm_redirect_unload',
+          firm_id: firmId || null,
+          params: { firm_name: firmName, to_url: finalUrl, elapsed_ms: elapsed, category, anon_id: typeof MC_ANON !== 'undefined' ? MC_ANON : null },
+        });
+        fetch(SUPABASE_URL+'/rest/v1/events', {
+          method: 'POST',
+          keepalive: true,
+          credentials: 'omit',
+          headers: { 'Content-Type':'application/json', 'apikey':SUPABASE_ANON },
+          body: payload
+        }).catch(()=>{});
       } catch(e){}
     };
     window.addEventListener('pagehide', onPageHide, { once: true });
