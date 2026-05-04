@@ -184,6 +184,11 @@
     } catch (e) {}
   }
 
+  // ─── Step 5c: expose injectKeyword globally ───
+  // Pra cobrir window.location.href em mcOpenFirm (não passa pelo patch de window.open).
+  // Chamado em app.js:mcOpenFirm antes do redirect.
+  try { window.mcInjectKeyword = injectKeyword; } catch (e) {}
+
   // ─── Init ───
   try {
     persistUtmsFromUrl();

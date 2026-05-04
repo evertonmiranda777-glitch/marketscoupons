@@ -178,6 +178,10 @@ const MC_ATTR = (()=>{
 // pagehide listener loga tempo no overlay antes de sair (firma carregou ou abandonou).
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
   const startTs = Date.now();
+  // Inject sub_id (?keyword=fb_<adname>) ANTES do redirect — tracking.js só
+  // patcha window.open + <a> click; window.location.href escapava sem keyword
+  // (96% dos clicks Apex/Bulenox iam sem sub_id em 2026-05-01/02).
+  try { if (typeof window.mcInjectKeyword === 'function') finalUrl = window.mcInjectKeyword(finalUrl); } catch(e){}
   // Overlay visual (sincrono)
   try {
     const ov = document.getElementById('mc-redirect-ov');
