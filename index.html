@@ -517,7 +517,7 @@ img{max-width:100%;}
 /* Platforms */
 .mu-platforms{display:flex;gap:12px;}
 .mu-plat{flex:1;background:rgba(0,0,0,.35);border:1px solid rgba(107,182,201,.18);border-radius:12px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;}
-.mu-plat-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;background:rgba(0,0,0,.3);padding:4px;}
+.mu-plat-logo{width:auto;height:32px;max-width:140px;border-radius:8px;object-fit:contain;background:rgba(0,0,0,.3);padding:4px 8px;}
 .mu-plat-name{font-size:11px;font-weight:800;color:rgba(255,255,255,.85);}
 .mu-plat-desc{font-size:7px;color:rgba(255,255,255,.3);text-align:center;line-height:1.4;}
 .mu-plat-price{font-size:15px;font-weight:800;color:var(--gold);}
@@ -3398,9 +3398,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- USER PANEL PAGE -->
 <div class="page" id="page-painel">
  <div class="up-header">
-  <div class="up-avatar" id="up-avatar">U</div>
-  <div class="up-name" id="up-name" data-i18n="painel_usuario">Usuário</div>
-  <div class="up-email" id="up-email">email@example.com</div>
+  <div class="up-avatar" id="up-avatar"></div>
+  <div class="up-name" id="up-name"></div>
+  <div class="up-email" id="up-email"></div>
   <div id="up-pro-status" style="display:none;margin-top:8px;"><span style="background:linear-gradient(135deg,#F0B429,#D97706);color:#07090D;font-size:11px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;">PRO</span></div>
  </div>
  <div class="up-grid">
