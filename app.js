@@ -4823,25 +4823,25 @@ function calInitTz(){
   if(sel) sel.value = _calTz;
 }
 
-// Convert HH:MM in ET to the selected timezone
+// Convert HH:MM in UTC (API returns UTC) to the selected timezone.
+// FIX 2026-05-05: antes assumia input em ET → calendar mostrava UTC com label "ET"
+// (ex: JOLTs 14:00 UTC virava "14:00 ET" mas o real é 10:00 ET = 11:00 BRT).
 function calConvertTime(hhmm){
   if(!hhmm || hhmm === '—') return {display:'—', label:''};
   const [hh,mm] = hhmm.split(':').map(Number);
   if(isNaN(hh) || isNaN(mm)) return {display:hhmm, label:_calTz};
   if(_calTz === 'local'){
-    // ET is UTC-4, convert to local
     const now = new Date();
-    const utcH = hh + 4; // ET to UTC
-    const localOffset = -now.getTimezoneOffset() / 60; // local offset in hours from UTC
-    let lh = utcH + localOffset;
+    const localOffset = -now.getTimezoneOffset() / 60; // offset local em horas vs UTC
+    let lh = hh + localOffset;
     if(lh < 0) lh += 24; if(lh >= 24) lh -= 24;
     const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace(/_/g,' ');
     return {display:String(Math.floor(lh)).padStart(2,'0')+':'+String(mm).padStart(2,'0'), label:tzName};
   }
   const offset = CAL_TZ_OFFSETS[_calTz];
   if(offset === undefined) return {display:hhmm, label:_calTz};
-  const etOffset = -4;
-  let converted = hh + (offset - etOffset);
+  // input em UTC → simplesmente soma o offset do tz alvo
+  let converted = hh + offset;
   if(converted < 0) converted += 24; if(converted >= 24) converted -= 24;
   return {display:String(Math.floor(converted)).padStart(2,'0')+':'+String(mm).padStart(2,'0'), label:_calTz};
 }
