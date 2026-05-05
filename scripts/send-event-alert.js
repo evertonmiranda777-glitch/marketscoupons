@@ -308,8 +308,10 @@ async function renderEvent(event, mode) {
 
 async function tgSendPhoto(pngPath, caption) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chat = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chat) throw new Error('missing TELEGRAM env');
+  // Aceita TELEGRAM_CHAT_ID OU TELEGRAM_ADMIN_CHAT_ID — varia conforme onde foi configurado.
+  const chat = process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_ADMIN_CHAT_ID;
+  if (!token) throw new Error('missing TELEGRAM_BOT_TOKEN env');
+  if (!chat) throw new Error('missing TELEGRAM_CHAT_ID/TELEGRAM_ADMIN_CHAT_ID env');
 
   const buf = fs.readFileSync(pngPath);
   const fd = new FormData();
@@ -329,7 +331,7 @@ async function tgSendPhoto(pngPath, caption) {
 
 async function tgDeleteMessage(msgId) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chat = process.env.TELEGRAM_CHAT_ID;
+  const chat = process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_ADMIN_CHAT_ID;
   if (!token || !chat || !msgId) return;
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/deleteMessage`, {
