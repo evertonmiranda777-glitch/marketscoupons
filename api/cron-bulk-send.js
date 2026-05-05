@@ -156,12 +156,14 @@ module.exports = async (req, res) => {
     }
 
     let sent = 0, failed = 0, brevoSent = 0, resendSent2 = 0;
+    const sentEmails = []; // Onda 1: log per-recipient pra admin drilldown
+    const failedEmails = [];
     for (const sub of eligible) {
       if (brevoBudget <= 0 && resendBudget <= 0) break;
       const lang = sub.lang || 'en';
       const html = renderInstHtml(campaign, lang, buildUnsubUrl(sub.email, lang));
       const subject = getSubject(campaign, lang);
-      if (!html) { failed++; continue; }
+      if (!html) { failed++; failedEmails.push(sub.email); continue; }
 
       const rec = { email: sub.email, name: sub.name, lang, campaign };
       let ok = false;
@@ -178,13 +180,14 @@ module.exports = async (req, res) => {
 
       if (ok) {
         sent++;
+        sentEmails.push(sub.email);
         await appendTag(sub.email, excludeTag).catch(() => null);
-      } else failed++;
+      } else { failed++; failedEmails.push(sub.email); }
 
       await new Promise(r => setTimeout(r, 100));
     }
 
-    // Log no email_logs
+    // Log no email_logs (recipients_emails permite drilldown "quem recebeu")
     await fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
       method: 'POST',
       headers: { ...SUB_HEAD, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
@@ -192,9 +195,11 @@ module.exports = async (req, res) => {
         campaign_name: `[Cron] ${campaign}`,
         subject: `Cron ${campaign} ${new Date().toISOString().slice(0,10)}`,
         recipients: sent + failed,
+        recipients_emails: sentEmails,
         status: failed === 0 ? 'sent' : (sent === 0 ? 'failed' : 'partial'),
         sent_by: 'cron',
         provider: brevoSent >= resendSent2 ? 'brevo' : 'resend',
+        brevo_response: { sent, failed, brevoSent, resendSent: resendSent2, failed_emails: failedEmails.slice(0, 50) },
       }),
     }).catch(() => null);
 

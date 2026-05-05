@@ -1,0 +1,23 @@
+[    2026ms] [LOG] %c
+       ██████╗ ███████╗███╗   ██╗████████╗██████╗ ██╗   ██╗
+      ██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝██╔══██╗╚██╗ ██╔╝
+      ╚█████╗  █████╗  ██╔██╗ ██║   ██║   ██████╔╝ ╚████╔╝
+       ╚═══██╗ ██╔══╝  ██║╚██╗██║   ██║   ██╔══██╗  ╚██╔╝
+      ██████╔╝ ███████╗██║ ╚████║   ██║   ██║  ██║   ██║
+      ╚═════╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝
+
+      👋 Hey, you opened the console!
+
+      Found a bug?
+      Yeah, we probably know about it. We literally built a company
+      around finding and fixing bugs. The irony isn't lost on us.
+
+      📚 Docs: https://docs.sentry.io/
+      💬 Ideas? Complaints? Hot takes? https://github.com/getsentry/sentry/discussions
+
+      Like poking around in dev tools? We like that about you.
+      We're hiring: https://sentry.io/careers/
+      (We have snacks. And opinions about error handling.)
+     color: #653DE9; font-family: 'Roboto Mono', Monaco, Consolas, 'Courier New', monospace; @ https://s1.sentry-cdn.com/_static/dist/sentry/chunks/26706.e54f515c82944cdb.js:501
+[    3038ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://m.stripe.com/6:0
+[    5775ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://de.sentry.io/api/0/projects/markets-coupons/javascript-0a/events/0efb380fefc5493a93990093f5f3ad50/committers/:0

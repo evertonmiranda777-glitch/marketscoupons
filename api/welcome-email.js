@@ -436,6 +436,7 @@ async function handleSendConfirm(req, res, body) {
     body: JSON.stringify({
       campaign_name: resend ? 'Email Confirm Resend' : 'Email Confirm',
       subject:'Confirm email', recipients:1,
+      recipients_emails: result.ok ? [email] : [],
       status: result.ok ? 'sent' : 'failed', sent_by:'webhook', provider: result.provider,
     }),
   }).catch(()=>{});
@@ -642,6 +643,7 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         campaign_name: 'Welcome Email',
         subject, recipients: 1,
+        recipients_emails: result.ok ? [email] : [],
         status: result.ok ? 'sent' : 'failed',
         sent_by: isHook ? 'auth-hook' : 'webhook',
         provider: result.provider,

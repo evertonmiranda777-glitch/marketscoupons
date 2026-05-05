@@ -1,0 +1,469 @@
+- generic [active] [ref=e1]:
+  - navigation "Main navigation" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4] [cursor=pointer]:
+        - img [ref=e5]
+        - generic [ref=e10]:
+          - emphasis [ref=e11]: Markets
+          - text: Coupons
+      - generic [ref=e13]:
+        - img
+        - textbox "Buscar firmas, guias, ferramentas..." [ref=e14]
+      - generic [ref=e15]:
+        - generic [ref=e17] [cursor=pointer]: BR
+        - generic [ref=e18]:
+          - button "Entrar" [ref=e19] [cursor=pointer]
+          - button "Cadastrar-se" [ref=e20] [cursor=pointer]
+    - generic [ref=e22]:
+      - button "Ofertas" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+        - text: Ofertas
+      - button "Firmas" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: Firmas
+      - button "Plataformas" [ref=e30] [cursor=pointer]:
+        - img [ref=e31]
+        - text: Plataformas
+      - button "Indicadores" [ref=e33] [cursor=pointer]:
+        - img [ref=e34]
+        - text: Indicadores
+      - button "Comparar" [ref=e36] [cursor=pointer]:
+        - img [ref=e37]
+        - text: Comparar
+      - button "Calendário Econômico" [ref=e38] [cursor=pointer]:
+        - img [ref=e39]
+        - text: Calendário Econômico
+      - button "Mapa de Calor" [ref=e41] [cursor=pointer]:
+        - img [ref=e42]
+        - text: Mapa de Calor
+      - button "Análise Diária" [ref=e47] [cursor=pointer]:
+        - img [ref=e48]
+        - text: Análise Diária
+      - button "Gamma (GEX)" [ref=e51] [cursor=pointer]:
+        - img [ref=e52]
+        - text: Gamma (GEX)
+      - button "Guias" [ref=e56] [cursor=pointer]:
+        - img [ref=e57]
+        - text: Guias
+      - button "Blog" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+        - text: Blog
+      - button "Position Size" [ref=e64] [cursor=pointer]:
+        - img [ref=e65]
+        - text: Position Size
+      - button "Quiz" [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+        - text: Quiz
+      - button "Awards" [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+        - text: Awards
+      - button "Live Room" [ref=e75] [cursor=pointer]:
+        - img [ref=e76]
+        - text: Live Room
+  - generic [ref=e79]:
+    - generic [ref=e80]:
+      - generic [ref=e81]:
+        - text: Markets
+        - emphasis [ref=e82]: Coupons
+      - button [ref=e83] [cursor=pointer]
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - generic [ref=e86]: Bem-vindo ao Markets Coupons
+        - button "Entrar na Conta" [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+          - generic [ref=e91]: Entrar na Conta
+        - button "Criar Conta" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+          - generic [ref=e96]: Criar Conta
+      - generic [ref=e97]: Principal
+      - button "Ofertas & Cupons" [ref=e98] [cursor=pointer]
+      - generic [ref=e99]: Firmas
+      - button "Ver todas as firmas" [ref=e100] [cursor=pointer]
+      - button "Comparar firmas" [ref=e101] [cursor=pointer]
+      - button "Quiz — qual firma?" [ref=e102] [cursor=pointer]
+      - generic [ref=e103]: Ferramentas
+      - button "Position Size" [ref=e104] [cursor=pointer]
+      - button "Calendário Econômico" [ref=e105] [cursor=pointer]
+      - button "Mapa de Calor" [ref=e106] [cursor=pointer]
+      - button "Análise Diária de Mercado" [ref=e107] [cursor=pointer]
+      - button "Gamma Exposure (GEX)" [ref=e108] [cursor=pointer]
+      - button "Indicadores" [ref=e109] [cursor=pointer]
+      - generic [ref=e110]: Plataformas
+      - button "Plataformas de Trading" [ref=e111] [cursor=pointer]
+      - generic [ref=e112]: Aprender
+      - button "Guias & Educação" [ref=e113] [cursor=pointer]
+      - button "Blog" [ref=e114] [cursor=pointer]
+      - generic [ref=e115]: Live & Mais
+      - button "Live Room" [ref=e116] [cursor=pointer]
+      - generic [ref=e117]: Idioma
+      - generic [ref=e118]:
+        - button "🇧🇷 PT" [ref=e119] [cursor=pointer]
+        - button "🇺🇸 EN" [ref=e120] [cursor=pointer]
+        - button "🇪🇸 ES" [ref=e121] [cursor=pointer]
+        - button "🇮🇹 IT" [ref=e122] [cursor=pointer]
+        - button "🇫🇷 FR" [ref=e123] [cursor=pointer]
+        - button "🇩🇪 DE" [ref=e124] [cursor=pointer]
+        - button "🇸🇦 AR" [ref=e125] [cursor=pointer]
+      - link "Entrar no Telegram" [ref=e126] [cursor=pointer]:
+        - /url: https://t.me/marketcouponss
+        - generic [ref=e127]: Entrar no Telegram
+      - generic [ref=e128]: Conta
+  - text: ★ ★ ★
+  - generic [ref=e129]:
+    - generic [ref=e130]:
+      - generic [ref=e131]: Cupons Verificados — Atualizados Diariamente
+      - heading "Economize até 90% OFF nas melhores Prop Firms" [level=1] [ref=e132]:
+        - text: Economize até
+        - emphasis [ref=e133]: 90% OFF
+        - text: nas melhores Prop Firms
+      - paragraph [ref=e134]: Compare firmas, use cupons exclusivos e acesse ferramentas profissionais, tudo em um só lugar.
+      - generic [ref=e135]:
+        - generic [ref=e136] [cursor=pointer]:
+          - generic [ref=e137]: Top Prop Firms
+          - generic [ref=e138]: As Melhores de 2026
+        - generic [ref=e139] [cursor=pointer]:
+          - generic [ref=e140]: Firma Ideal?
+          - generic [ref=e141]: Faça o Quiz de Seleção
+        - generic [ref=e142] [cursor=pointer]:
+          - generic [ref=e143]: Calculadora
+          - generic [ref=e144]: Calcule seu Risco
+        - generic [ref=e145] [cursor=pointer]:
+          - generic [ref=e146]: Análise Diária
+          - generic [ref=e147]: Insights de Mercado
+      - link "Acessar Cupons Exclusivos no Telegram" [ref=e148] [cursor=pointer]:
+        - /url: https://t.me/marketcouponss
+        - img [ref=e149]
+        - generic [ref=e151]: Acessar Cupons Exclusivos no Telegram
+    - generic [ref=e152]:
+      - generic [ref=e153]: Melhores ofertas agora
+      - generic [ref=e154]:
+        - generic [ref=e155] [cursor=pointer]:
+          - generic [ref=e156]:
+            - generic [ref=e157]:
+              - img "Apex Trader Funding" [ref=e159]
+              - generic [ref=e160]:
+                - generic [ref=e161]: Apex Trader Funding
+                - generic [ref=e162]: Futuros
+            - generic [ref=e163]:
+              - generic [ref=e164]: 90%
+              - generic [ref=e165]: off lifetime
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - generic [ref=e168]: Cupom exclusivo
+              - generic [ref=e169]: MARKET
+            - button "Copiar" [ref=e170]
+          - generic [ref=e171]: use o cupom no checkout
+          - button "Ver planos →" [ref=e172]
+        - generic [ref=e173] [cursor=pointer]:
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - img "Bulenox" [ref=e177]
+              - generic [ref=e178]:
+                - generic [ref=e179]: Bulenox
+                - generic [ref=e180]: Futuros
+            - generic [ref=e181]:
+              - generic [ref=e182]: 89%
+              - generic [ref=e183]: off lifetime
+          - generic [ref=e184]:
+            - generic [ref=e185]:
+              - generic [ref=e186]: Cupom exclusivo
+              - generic [ref=e187]: MARKET89
+            - button "Copiar" [ref=e188]
+          - generic [ref=e189]: use o cupom no checkout
+          - button "Ver planos →" [ref=e190]
+        - generic [ref=e191] [cursor=pointer]:
+          - generic [ref=e192]:
+            - generic [ref=e193]:
+              - img "Earn2Trade" [ref=e195]
+              - generic [ref=e196]:
+                - generic [ref=e197]: Earn2Trade
+                - generic [ref=e198]: Futuros
+            - generic [ref=e199]:
+              - generic [ref=e200]: 50%
+              - generic [ref=e201]: off career path
+          - generic [ref=e202]:
+            - generic [ref=e203]:
+              - generic [ref=e204]: Cupom exclusivo
+              - generic [ref=e205]: MARKETSCOUPO…
+            - button "Copiar" [ref=e206]
+          - generic [ref=e207]: use o cupom no checkout
+          - button "Ver planos →" [ref=e208]
+        - generic [ref=e209] [cursor=pointer]:
+          - generic [ref=e210]:
+            - generic [ref=e211]:
+              - img "Take Profit Trader" [ref=e213]
+              - generic [ref=e214]:
+                - generic [ref=e215]: Take Profit Trader
+                - generic [ref=e216]: Futuros
+            - generic [ref=e217]:
+              - generic [ref=e218]: 40%
+              - generic [ref=e219]: off lifetime
+          - generic [ref=e220]:
+            - generic [ref=e221]:
+              - generic [ref=e222]: Cupom exclusivo
+              - generic [ref=e223]: MARKET40
+            - button "Copiar" [ref=e224]
+          - generic [ref=e225]: use o cupom no checkout
+          - button "Ver planos →" [ref=e226]
+        - generic [ref=e227] [cursor=pointer]:
+          - generic [ref=e228]:
+            - generic [ref=e229]:
+              - img "FundedNext" [ref=e231]
+              - generic [ref=e232]:
+                - generic [ref=e233]: FundedNext
+                - generic [ref=e234]: Forex/Futuros
+            - generic [ref=e235]:
+              - generic [ref=e236]: 40%
+              - generic [ref=e237]: off 1 desafio
+          - generic [ref=e238]:
+            - generic [ref=e239]:
+              - generic [ref=e240]: Cupom exclusivo
+              - generic [ref=e241]: APRIL20
+            - button "Copiar" [ref=e242]
+          - generic [ref=e243]: use o cupom no checkout
+          - button "Ver planos →" [ref=e244]
+        - generic [ref=e245] [cursor=pointer]:
+          - generic [ref=e246]:
+            - generic [ref=e247]:
+              - img "City Traders Imperium" [ref=e249]
+              - generic [ref=e250]:
+                - generic [ref=e251]: City Traders Imperium
+                - generic [ref=e252]: Forex
+            - generic [ref=e253]:
+              - generic [ref=e254]: 30%
+              - generic [ref=e255]: off 1 compra
+          - generic [ref=e256]:
+            - generic [ref=e257]:
+              - generic [ref=e258]: Cupom exclusivo
+              - generic [ref=e259]: APR30
+            - button "Copiar" [ref=e260]
+          - generic [ref=e261]: use o cupom no checkout
+          - button "Ver planos →" [ref=e262]
+        - generic [ref=e263] [cursor=pointer]:
+          - generic [ref=e264]:
+            - generic [ref=e265]:
+              - img "TradeDay" [ref=e267]
+              - generic [ref=e268]:
+                - generic [ref=e269]: TradeDay
+                - generic [ref=e270]: Futuros
+            - generic [ref=e271]:
+              - generic [ref=e272]: 30%
+              - generic [ref=e273]: off 1 desafio
+          - generic [ref=e274]:
+            - generic [ref=e275]:
+              - generic [ref=e276]: Cupom exclusivo
+              - generic [ref=e277]: SAVE30
+            - button "Copiar" [ref=e278]
+          - generic [ref=e279]: use o cupom no checkout
+          - button "Ver planos →" [ref=e280]
+        - generic [ref=e281] [cursor=pointer]:
+          - generic [ref=e282]:
+            - generic [ref=e283]:
+              - img "Funding Pips" [ref=e285]
+              - generic [ref=e286]:
+                - generic [ref=e287]: Funding Pips
+                - generic [ref=e288]: Forex
+            - generic [ref=e289]:
+              - generic [ref=e290]: 20%
+              - generic [ref=e291]: off 1 compra
+          - generic [ref=e292]:
+            - generic [ref=e293]:
+              - generic [ref=e294]: Cupom exclusivo
+              - generic [ref=e295]: HELLO
+            - button "Copiar" [ref=e296]
+          - generic [ref=e297]: use o cupom no checkout
+          - button "Ver planos →" [ref=e298]
+        - generic [ref=e299] [cursor=pointer]:
+          - generic [ref=e300]:
+            - generic [ref=e301]:
+              - img "FTMO" [ref=e303]
+              - generic [ref=e304]:
+                - generic [ref=e305]: FTMO
+                - generic [ref=e306]: Forex
+            - generic [ref=e307]:
+              - generic [ref=e308]: 19%
+              - generic [ref=e309]: off best value
+          - generic [ref=e310]:
+            - generic [ref=e311]: Desconto exclusivo
+            - generic [ref=e312]: ✓ Desconto aplicado automaticamente via link
+          - button "Ver planos →" [ref=e313]
+        - generic [ref=e314] [cursor=pointer]:
+          - generic [ref=e315]:
+            - generic [ref=e316]:
+              - img "BrightFunded" [ref=e318]
+              - generic [ref=e319]:
+                - generic [ref=e320]: BrightFunded
+                - generic [ref=e321]: Forex
+            - generic [ref=e322]:
+              - generic [ref=e323]: 15%
+              - generic [ref=e324]: off new customer
+          - generic [ref=e325]:
+            - generic [ref=e326]:
+              - generic [ref=e327]: Cupom exclusivo
+              - generic [ref=e328]: CLNLTPxtT4So…
+            - button "Copiar" [ref=e329]
+          - generic [ref=e330]: use o cupom no checkout
+          - button "Ver planos →" [ref=e331]
+        - generic [ref=e332] [cursor=pointer]:
+          - generic [ref=e333]:
+            - generic [ref=e334]:
+              - img "The5ers" [ref=e336]
+              - generic [ref=e337]:
+                - generic [ref=e338]: The5ers
+                - generic [ref=e339]: Forex/Futuros
+            - generic [ref=e340]:
+              - generic [ref=e341]: 10%
+              - generic [ref=e342]: off especial
+          - generic [ref=e343]:
+            - generic [ref=e344]:
+              - generic [ref=e345]: Cupom exclusivo
+              - generic [ref=e346]: EELIQ
+            - button "Copiar" [ref=e347]
+          - generic [ref=e348]: use o cupom no checkout
+          - button "Ver planos →" [ref=e349]
+        - generic [ref=e350] [cursor=pointer]:
+          - generic [ref=e351]:
+            - generic [ref=e352]:
+              - img "E8 Markets" [ref=e354]
+              - generic [ref=e355]:
+                - generic [ref=e356]: E8 Markets
+                - generic [ref=e357]: Forex
+            - generic [ref=e358]:
+              - generic [ref=e359]: 10%
+              - generic [ref=e360]: off 1 compra
+          - generic [ref=e361]:
+            - generic [ref=e362]:
+              - generic [ref=e363]: Cupom exclusivo
+              - generic [ref=e364]: MARKET
+            - button "Copiar" [ref=e365]
+          - generic [ref=e366]: use o cupom no checkout
+          - button "Ver planos →" [ref=e367]
+    - generic [ref=e368]:
+      - generic [ref=e369]:
+        - img [ref=e371]
+        - generic [ref=e376]:
+          - generic [ref=e377]: Programa de Fidelidade
+          - generic [ref=e378]: Compre via nosso link ou cupom, envie o comprovante e desbloqueie Live Room VIP, sorteios de contas e indicadores exclusivos.
+          - generic [ref=e379]:
+            - generic [ref=e382]: Cadastre-se
+            - generic [ref=e385]: Compre com cupom
+            - generic [ref=e388]: Envie comprovante
+            - generic [ref=e391]: Acesso VIP
+      - generic [ref=e392]:
+        - button "Cadastrar-se →" [ref=e393] [cursor=pointer]
+        - button "Ver benefícios" [ref=e394] [cursor=pointer]
+  - button "✕" [ref=e400] [cursor=pointer]
+  - contentinfo [ref=e402]:
+    - generic [ref=e403]:
+      - generic [ref=e404]:
+        - generic [ref=e405]:
+          - img [ref=e406]
+          - emphasis [ref=e411]: Markets
+          - text: Coupons
+        - paragraph [ref=e412]: Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.
+        - generic [ref=e413]:
+          - generic [ref=e414]: Newsletter
+          - generic [ref=e415]: Receba as melhores promos e dicas de Prop Firms toda semana.
+          - generic [ref=e416]:
+            - textbox "seu@email.com" [ref=e417]
+            - button "Inscrever" [ref=e418] [cursor=pointer]
+        - generic [ref=e419]:
+          - link "Telegram" [ref=e420] [cursor=pointer]:
+            - /url: https://t.me/marketcouponss
+            - img [ref=e422]
+          - link "Instagram" [ref=e424] [cursor=pointer]:
+            - /url: https://www.instagram.com/marketscoupons
+            - img [ref=e426]
+          - link "Facebook" [ref=e428] [cursor=pointer]:
+            - /url: https://www.facebook.com/marketscoupons/
+            - img [ref=e430]
+      - generic [ref=e432]:
+        - heading "Prop Firms" [level=4] [ref=e433]
+        - link "Apex Trader Funding" [ref=e434] [cursor=pointer]:
+          - /url: https://apextraderfunding.com/member/aff/go/evertonmiranda
+        - link "Bulenox" [ref=e435] [cursor=pointer]:
+          - /url: https://bulenox.com/member/aff/go/marketcoupons
+        - link "FTMO" [ref=e436] [cursor=pointer]:
+          - /url: https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP
+        - link "FundedNext" [ref=e437] [cursor=pointer]:
+          - /url: https://fundednext.com/?fpr=everton33
+        - link "Take Profit Trader" [ref=e438] [cursor=pointer]:
+          - /url: https://takeprofittrader.com/?referralCode=MARKET40
+        - link "Earn2Trade" [ref=e439] [cursor=pointer]:
+          - /url: https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14
+      - generic [ref=e440]:
+        - heading "Ferramentas" [level=4] [ref=e441]
+        - generic [ref=e442] [cursor=pointer]: Position Size
+        - generic [ref=e443] [cursor=pointer]: Quiz de Firma
+        - generic [ref=e444] [cursor=pointer]: Comparador
+        - generic [ref=e445] [cursor=pointer]: Calendário
+        - generic [ref=e446] [cursor=pointer]: Indicadores
+        - generic [ref=e447] [cursor=pointer]: Gamma (GEX)
+      - generic [ref=e448]:
+        - heading "Links" [level=4] [ref=e449]
+        - link "Telegram" [ref=e450] [cursor=pointer]:
+          - /url: https://t.me/marketcouponss
+        - link "Instagram" [ref=e451] [cursor=pointer]:
+          - /url: https://www.instagram.com/marketscoupons
+        - generic [ref=e452] [cursor=pointer]: Guias
+        - generic [ref=e453] [cursor=pointer]: Blog
+        - generic [ref=e454] [cursor=pointer]: Live Room
+        - generic [ref=e455] [cursor=pointer]: FAQ
+      - generic [ref=e456]:
+        - heading "Legal" [level=4] [ref=e457]
+        - generic [ref=e458] [cursor=pointer]: Política de Privacidade
+        - generic [ref=e459] [cursor=pointer]: Termos de Uso
+        - generic [ref=e460] [cursor=pointer]: Política de Cookies
+    - generic [ref=e461]:
+      - text: Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. Termos, preços e benefícios podem ser alterados a qualquer momento sem aviso prévio. © 2025 Markets Coupons.
+      - generic [ref=e462]:
+        - link "Política de Privacidade" [ref=e463] [cursor=pointer]:
+          - /url: /privacy
+        - link "Termos de Uso" [ref=e464] [cursor=pointer]:
+          - /url: /terms
+        - link "Política de Cookies" [ref=e465] [cursor=pointer]:
+          - /url: /privacy#cookies
+    - generic [ref=e466]:
+      - generic [ref=e467]:
+        - strong [ref=e468]: "Declaração de risco:"
+        - paragraph [ref=e469]: A negociação de futuros e forex acarreta riscos substanciais e não é para qualquer investidor. Um investidor pode potencialmente perder tudo ou mais do que o investimento inicial. Capital de risco é o dinheiro que pode ser perdido sem comprometer a segurança financeira ou o estilo de vida da pessoa. Apenas o capital de risco deve ser usado para negociação, e apenas aqueles com capital de risco suficiente devem considerar a negociação. Resultados passados não são necessariamente indicativos de resultados futuros.
+      - generic [ref=e470]:
+        - strong [ref=e471]: "Declaração de resultados simulados:"
+        - paragraph [ref=e472]: Os resultados obtidos em simulações possuem muitas limitações inerentes. Nenhuma premissa deve ser feita de que qualquer conta terá resultados semelhantes aos apresentados em simulação. Existem diferenças frequentes entre os resultados de simulação e os resultados reais. A negociação simulada não envolve risco financeiro e nenhum registro de negociação simulada pode explicar o risco financeiro da negociação real.
+      - generic [ref=e473]:
+        - strong [ref=e474]: "Divulgação de depoimentos:"
+        - paragraph [ref=e475]: Os depoimentos que aparecem neste site podem não ser representativos de outros clientes e não são uma garantia de desempenho ou sucesso futuro.
+      - generic [ref=e476]:
+        - strong [ref=e477]: "Divulgação de Sala de Trade Ao Vivo:"
+        - paragraph [ref=e478]: Esta apresentação é apenas para fins educacionais e as opiniões expressas são exclusivamente do apresentador. Todas as operações apresentadas devem ser consideradas hipotéticas e não devem ser esperadas como replicáveis em uma conta de negociação real.
+  - button "Chat with Max" [ref=e479] [cursor=pointer]:
+    - img "Max"
+    - generic [ref=e480]: "1"
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - img "Max"
+        - generic:
+          - generic: Max
+          - generic: Online
+      - button "✕"
+    - generic:
+      - generic:
+        - generic:
+          - text: Fala, trader! 👊
+          - text: Antes de começarmos, como você prefere que eu te chame?
+          - text: Sou o
+          - strong: Max
+          - text: . Posso te ajudar com tudo sobre prop firms, cupons e regras, inclusive aquelas que quase ninguém lê.
+          - text: Fique à vontade para escolher uma opção abaixo ou digitar sua dúvida 🚀
+        - generic: agora
+    - generic:
+      - button "Qual a melhor prop firm pra mim?"
+      - button "Tem cupom de desconto agora?"
+      - button "Como passar na avaliação?"
+      - button "Quais são as regras mais importantes?"
+    - generic:
+      - textbox "Digite sua dúvida..."
+      - button:
+        - img

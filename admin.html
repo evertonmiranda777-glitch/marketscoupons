@@ -5712,17 +5712,38 @@ async function renderTemplatesList(){
 }
 
 async function renderCampaignLog(){
- const { data: campaigns } = await db.from('email_logs').select('*').order('created_at',{ascending:false}).limit(10);
+ const { data: campaigns } = await db.from('email_logs').select('*').order('created_at',{ascending:false}).limit(20);
  const el=document.getElementById('campaigns-log');
  if(!el)return;
- el.innerHTML=(campaigns||[]).length?campaigns.map(c=>`
- <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;">
- <div>
- <div style="font-size:12px;font-weight:600;">${c.subject}</div>
- <div style="font-size:10px;color:var(--t3);">${new Date(c.created_at).toLocaleString('pt-BR')} · ${c.recipients} destinatarios · ${c.sent_by}</div>
- </div>
- <span style="font-size:10px;color:${c.status==='sent'?'var(--green)':c.status==='failed'?'var(--red)':'var(--gold)'};font-weight:700;">${c.status==='sent'?'Enviado':c.status==='failed'?'Falhou':'Parcial'}</span>
- </div>`).join(''):'<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma campanha enviada.</div>';
+ if(!(campaigns||[]).length){
+   el.innerHTML='<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma campanha enviada.</div>';
+   return;
+ }
+ el.innerHTML = campaigns.map((c,i)=>{
+   const emails = Array.isArray(c.recipients_emails) ? c.recipients_emails : [];
+   const hasDrilldown = emails.length > 0;
+   const statusColor = c.status==='sent'?'var(--green)':c.status==='failed'?'var(--red)':'var(--gold)';
+   const statusLabel = c.status==='sent'?'Enviado':c.status==='failed'?'Falhou':'Parcial';
+   const dt = new Date(c.created_at).toLocaleString('pt-BR');
+   return `
+   <div style="background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;overflow:hidden;">
+     <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:${hasDrilldown?'pointer':'default'};" ${hasDrilldown?`onclick="toggleEmailLogDrilldown(${i})"`:''}>
+       <div style="flex:1;min-width:0;">
+         <div style="font-size:12px;font-weight:600;">${(c.subject||'(sem assunto)').replace(/</g,'&lt;')}</div>
+         <div style="font-size:10px;color:var(--t3);">${dt} · ${c.recipients||0} destinatários · ${c.sent_by||'?'}${hasDrilldown?' · <span style="color:var(--gold);">▼ ver lista</span>':''}</div>
+       </div>
+       <span style="font-size:10px;color:${statusColor};font-weight:700;margin-left:8px;">${statusLabel}</span>
+     </div>
+     ${hasDrilldown?`<div id="emlog-dd-${i}" style="display:none;padding:8px 12px;border-top:1px solid var(--b1);background:rgba(0,0,0,.15);">
+       <div style="font-size:10px;color:var(--t3);margin-bottom:4px;">${emails.length} email(s):</div>
+       <div style="font-size:11px;color:var(--t2);max-height:180px;overflow-y:auto;font-family:monospace;line-height:1.6;">${emails.map(e=>String(e).replace(/</g,'&lt;')).join('<br>')}</div>
+     </div>`:''}
+   </div>`;
+ }).join('');
+}
+function toggleEmailLogDrilldown(i){
+  const el = document.getElementById('emlog-dd-'+i);
+  if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
 }
 
 /* ═══ DYNAMIC FIRMA CHIPS & PROMO GRID ═══ */
@@ -8725,6 +8746,7 @@ async function sendEmailsSmtp(){
       campaign_name: subject.slice(0,50),
       subject: subject,
       recipients: leads.length,
+      recipients_emails: (leads||[]).map(l=>l.email).filter(Boolean),
       status: totalFailed===0 ? 'sent' : (totalSent===0 ? 'failed' : 'partial'),
       sent_by: 'admin',
       provider: 'auto',
@@ -8880,6 +8902,7 @@ async function resumeEmailQueue(){
       campaign_name: `[Fila] ${q.templateName} (lote ${Math.ceil(end/emailDailyLimit)})`,
       subject: q.subject,
       recipients: batch.length,
+      recipients_emails: (batch||[]).map(l=>l.email).filter(Boolean),
       status: totalFailed===0 ? 'sent' : 'partial',
       sent_by: 'admin',
       provider: 'brevo',
@@ -8947,6 +8970,7 @@ async function runAutoQueue(){
   if(!token){ toast('Sessão expirada!','error'); _autoQueueRunning=false; updateAutoQueueBtn(false); return; }
 
   let sent = 0, failed = 0, batchCount = 0;
+  const allAttempted = []; // Onda 1: acumular todos os emails tentados pra log final
   const startTime = Date.now();
 
   let dailySent = getEmailSentToday();
@@ -8969,6 +8993,8 @@ async function runAutoQueue(){
     const end = Math.min(start + Math.min(AUTO_BATCH_SIZE, maxByLimit), qq.totalEmails);
     const batch = qq.emails.slice(start, end);
     if(!batch.length) break;
+
+    batch.forEach(l => { if(l.email) allAttempted.push(l.email); });
 
     // Group by language
     const langGroups = {};
@@ -9036,6 +9062,7 @@ async function runAutoQueue(){
         campaign_name: `[Auto] ${qq.templateName}`,
         subject: qq.subject,
         recipients: sent+failed,
+        recipients_emails: allAttempted,
         status: failed===0 ? 'sent' : 'partial',
         sent_by: 'admin',
         provider: 'brevo',
@@ -9060,6 +9087,7 @@ async function runAutoQueue(){
         campaign_name: `[Auto-Pausa] ${qq.templateName}`,
         subject: qq.subject,
         recipients: sent+failed,
+        recipients_emails: allAttempted,
         status: 'partial',
         sent_by: 'admin',
         provider: 'brevo',
@@ -9096,7 +9124,7 @@ async function sendTestEmail(){
     const data=await resp.json();
     if(data.success){
       toast(`Teste enviado para ${user.email}!`);
-      await db.from('email_logs').insert({campaign_name:'[TESTE] '+subj.slice(0,45),subject:'[TESTE] '+subj,recipients:1,status:'sent',sent_by:'admin',provider:'brevo',brevo_response:{sent:1,failed:0,type:'test'}});
+      await db.from('email_logs').insert({campaign_name:'[TESTE] '+subj.slice(0,45),subject:'[TESTE] '+subj,recipients:1,recipients_emails:[user.email],status:'sent',sent_by:'admin',provider:'brevo',brevo_response:{sent:1,failed:0,type:'test'}});
       await loadEmailStats();
     }
     else toast('Erro: '+(data.error||'falha no envio'),'error');
@@ -9124,7 +9152,7 @@ async function sendSingleEmail(){
     const data=await resp.json();
     if(data.success){
       toast(`Email enviado para ${email}!`);
-      await db.from('email_logs').insert({campaign_name:subj.slice(0,50),subject:subj,recipients:1,status:'sent',sent_by:'admin',provider:'brevo',brevo_response:{sent:1,failed:0,type:'single',to:email}});
+      await db.from('email_logs').insert({campaign_name:subj.slice(0,50),subject:subj,recipients:1,recipients_emails:[email],status:'sent',sent_by:'admin',provider:'brevo',brevo_response:{sent:1,failed:0,type:'single',to:email}});
       await loadEmailStats();
     }
     else toast('Erro: '+(data.error||'falha no envio'),'error');
