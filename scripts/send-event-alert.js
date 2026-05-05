@@ -32,8 +32,21 @@ const STATE_FILE = path.join(root, '.firecrawl', 'events-sent.json');
 // chega — antes era miss completo. LEAD_MIN preservado pro display.
 const LEAD_MIN = 5;
 const WINDOW = 120; // events scheduled in [+5, +125] min get pre-alerted
-// 22:30 UTC = 18:30 EDT = 17:30 EST — eventos depois dessa hora UTC não alertam
-const CUTOFF_ET = 22 * 60 + 30;
+// CUTOFF dinâmico DST-aware: 18:30 ET (sempre) → UTC convertido com offset atual.
+// EDT (mar-nov, UTC-4) → 22:30 UTC. EST (nov-mar, UTC-5) → 23:30 UTC.
+function getEtUtcOffset() {
+  // Pega offset em horas via tz America/New_York vs UTC
+  const now = new Date();
+  const utcMs = now.getTime();
+  const etStr = now.toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
+  const etDate = new Date(etStr);
+  return Math.round((etDate.getTime() - utcMs) / 3600000); // -4 (EDT) ou -5 (EST)
+}
+function computeCutoffUtc() {
+  const offset = getEtUtcOffset(); // -4 ou -5
+  return (18 * 60 + 30) - offset * 60; // 18:30 ET em minutos UTC
+}
+const CUTOFF_ET = computeCutoffUtc(); // calculado on init
 const US_RX = /united states|^us$|usa/i;
 
 fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });

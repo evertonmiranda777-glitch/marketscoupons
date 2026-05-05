@@ -28,9 +28,12 @@ async function validateAdmin(jwt) {
     if (!resp.ok) return null;
     const user = await resp.json();
     if (!user?.id) return null;
+    // Usa service_role pra ler is_admin (consistente com cron-bulk-send.isAdminJwt).
+    // Antes usava JWT do user — frágil se RLS futuro esconder is_admin do próprio user.
+    const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const profileResp = await fetch(
       `${SUPABASE_URL}/rest/v1/profiles?id=eq.${user.id}&is_admin=eq.true&select=id`,
-      { headers: { 'Authorization': `Bearer ${jwt}`, 'apikey': SUPABASE_KEY } }
+      { headers: { 'Authorization': `Bearer ${SK || jwt}`, 'apikey': SK || SUPABASE_KEY } }
     );
     if (!profileResp.ok) return null;
     const profiles = await profileResp.json();

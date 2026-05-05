@@ -95,6 +95,13 @@ module.exports = async (req, res) => {
       await fetch(`${SUPABASE_URL}/rest/v1/favorites?user_id=eq.${targetUserId}`, { method: 'DELETE', headers: H });
     }
 
+    // Audit log estruturado pra Vercel logs (filtrável)
+    console.log(JSON.stringify({
+      type: 'delete_user_audit',
+      mode, email, target_user_id: targetUserId, auth_deleted: authDeleted,
+      caller_ip: req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown',
+      ts: new Date().toISOString(),
+    }));
     return res.status(200).json({ success: true, email, userId: targetUserId, authDeleted, mode });
   } catch (err) {
     return safeError(res, 500, 'Internal error', err);

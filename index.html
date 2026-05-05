@@ -881,7 +881,8 @@ img{max-width:100%;}
  border:1.5px dashed rgba(240,180,41,.55);border-radius:10px;
 }
 .oc-coupon .offer-coupon-label{margin-bottom:4px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t2);}
-.oc-code{font-size:16px;font-weight:800;letter-spacing:3px;color:var(--gold);text-shadow:0 0 16px rgba(240,180,41,.1);}
+.oc-code{font-size:clamp(11px,3.6vw,16px);font-weight:800;letter-spacing:2px;color:var(--gold);text-shadow:0 0 16px rgba(240,180,41,.1);white-space:nowrap;overflow:hidden;text-overflow:clip;}
+@media(max-width:480px){.oc-code{letter-spacing:1px;}}
 .oc-copy{padding:9px 18px;background:rgba(240,180,41,.08);color:var(--gold);border:1px solid rgba(240,180,41,.55);border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:.2s;font-family:var(--f);}
 .oc-copy:hover{background:rgba(240,180,41,.16);border-color:rgba(240,180,41,.75);}
 .oc-hint{font-size:10px;color:var(--t3);text-align:center;}
@@ -2184,7 +2185,10 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  .bot-inp{font-size:16px !important;}
  .bq{font-size:12px;padding:9px 10px;}
  body:has(.bot-win.open){overflow:hidden;}
- .bot-fab{bottom:14px;right:14px;width:76px;height:76px;}
+ .bot-fab{bottom:14px;right:14px;width:64px;height:64px;}
+ /* Em pages com CTA grande no hero/footer (home, heatmap), recolhe pra cima pra não tampar */
+ body[data-page="home"] .bot-fab,
+ body[data-page="heatmap"] .bot-fab{bottom:80px;right:12px;width:60px;height:60px;}
  .guides-grid,.blog-grid,.ind-grid,.offers-grid{grid-template-columns:1fr;}
  .blog-filters{padding:0 20px 12px;gap:6px;flex-wrap:wrap;}
  .bf-btn{padding:5px 10px;font-size:11px;}

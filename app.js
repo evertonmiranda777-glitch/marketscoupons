@@ -942,6 +942,7 @@ function go(page, skipPush){
     if (_calCdTimer) { clearInterval(_calCdTimer); _calCdTimer = null; }
   }
   _currentPage=page;
+  try { document.body.dataset.page = page; } catch(e){} // pra CSS condicional (ex: bot-fab posicionamento por page)
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
   document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p===page));

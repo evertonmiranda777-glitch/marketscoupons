@@ -256,7 +256,8 @@ function genPage(f, allFirms) {
 <meta property="og:locale" content="pt_BR">
 ${f.icon_url ? `<meta property="og:image" content="${esc(imgUrl(f.icon_url))}">` : ''}
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/favicon.png">
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+<link rel="icon" type="image/png" href="/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
