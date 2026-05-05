@@ -172,6 +172,19 @@ const MC_ATTR = (()=>{
 // Sub_id (?keyword=) injection movido pra tracking.js em 2026-04-30 — unifica Apex+Bulenox
 // com cascata utm_term > utm_campaign > fbclid > utm_source > mcsite.
 
+// Append query params ANTES do hash (#fragment).
+// FIX 2026-05-05: padrão antigo `url += (url.includes('?')?'&':'?') + 'utm=...'`
+// quebrava quando a URL tinha #anchor (ex: apex `/aff/go/X#block_660bfb7d`) —
+// utm caía dentro do hash (UTMs perdidos pra Apex/Bulenox).
+function _appendQuery(url, qs) {
+  if (!qs || typeof url !== 'string') return url;
+  const hashIdx = url.indexOf('#');
+  const beforeHash = hashIdx >= 0 ? url.slice(0, hashIdx) : url;
+  const hash       = hashIdx >= 0 ? url.slice(hashIdx)    : '';
+  const sep = beforeHash.indexOf('?') >= 0 ? '&' : '?';
+  return beforeHash + sep + qs + hash;
+}
+
 // ─── SAME-TAB REDIRECT + OVERLAY + ABANDON TRACKING ───
 // window.location.href elimina about:blank gap.
 // Overlay 'Redirecionando para X' = feedback visual imediato.
@@ -3104,7 +3117,7 @@ function fdGo(id) {
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   if (cf) {
     let url = cf.buildUrl(st.size||'',st.type||'',st.plat||'');
-    url += (url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
+    url = _appendQuery(url, 'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase());
     // Clipboard automatico removido — gerava prompt mobile e nao agregava (user nem via).
     track('checkout_click',{firm_id:id,firm_name:f?.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f?.coupon||'parceiro',source:_src,value:_fbVal(f,st.size),currency:'USD'});
     registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f?.name||'');
@@ -3164,7 +3177,7 @@ function fdGoCheckout(fId){
   const st=_drwState[fId]||{};
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   let url=cf.buildUrl(st.size||'',st.type||'',st.plat||'');
-  url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+fId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
+  url = _appendQuery(url, 'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+fId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase());
   // Clipboard automatico removido — redirect limpo
   track('checkout_click',{firm_id:fId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src,value:_fbVal(f,st.size),currency:'USD'});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
@@ -3325,7 +3338,7 @@ function pdGo(id) {
   const p = getPlatforms().find(x=>x.id===id);
   if (!p) return;
   const st = _pdState[id]||{};
-  const url = p.link + (p.link.includes('?')?'&':'?') + 'utm_source=marketscoupons&utm_medium=platform_detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
+  const url = _appendQuery(p.link, 'utm_source=marketscoupons&utm_medium=platform_detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase());
   track('platform_checkout_click',{platform_id:id,platform_name:p.name,plan:st.size,type:st.type});
   window.open(url,'_blank','noopener,noreferrer');
 }
@@ -3672,7 +3685,7 @@ function drwGoCheckout(firmId) {
   if (!cf || !f) { mcOpenFirm(firmId, f?.link||'#', f?.coupon, f?.name); return; }
   const st = _drwState[firmId] || {};
   let url = cf.buildUrl(st.size||'', st.type||'', st.plat||'');
-  url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=drawer&utm_campaign='+firmId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase();
+  url = _appendQuery(url, 'utm_source=marketscoupons&utm_medium=drawer&utm_campaign='+firmId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase());
   // Clipboard automatico removido — redirect limpo
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src,value:_fbVal(f,st.size),currency:'USD'});
@@ -4200,7 +4213,7 @@ function achGoCheckout(fId,size){
   const type=achActiveType[fId]||firm.types[0];
   const plat=state.plat||firm.platforms[0];
   let url=firm.buildUrl(size,type,plat);
-  url+=(url.includes('?')?'&':'?')+'utm_source=marketscoupons&utm_medium=checkout&utm_campaign='+fId+'_'+size.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+  url = _appendQuery(url, 'utm_source=marketscoupons&utm_medium=checkout&utm_campaign='+fId+'_'+size.replace(/[^a-z0-9]/gi,'_').toLowerCase());
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   {const _f=FIRMS.find(x=>x.id===fId);track('checkout_click',{firm_id:fId,firm_name:firm.name,account_size:size,platform:plat,type,coupon:firm.coupon||'parceiro',source:_src,value:_fbVal(_f,size),currency:'USD'});}
   registerLoyaltyClick(size,plat,type,firm.name);
