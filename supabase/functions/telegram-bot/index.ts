@@ -265,13 +265,13 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
 
   if (highImpact.length === 0) return { sent: false, reason: "no_high_impact_events" };
 
-  const today = new Date().toLocaleDateString("pt-BR", {
+  const today = new Date().toLocaleDateString("en-US", {
     weekday: "long", month: "long", day: "numeric", year: "numeric",
-    timeZone: "America/Sao_Paulo",
+    timeZone: "America/New_York",
   });
 
-  // FIX 2026-05-05: API retorna UTC; display em BRT (UTC-3, sem DST).
-  function utcStrToBrt(s: string): string {
+  // API retorna UTC; display em ET (horário do mercado US).
+  function utcStrToEt(s: string): string {
     if (!s) return "";
     const m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
     if (!m) return "";
@@ -280,15 +280,26 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
     const ampm = (m[3] || "").toUpperCase();
     if (ampm === "PM" && h !== 12) h += 12;
     if (ampm === "AM" && h === 12) h = 0;
-    let brtH = h - 3;
-    if (brtH < 0) brtH += 24;
-    return `${String(brtH).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
+    // DST detection
+    const now = new Date();
+    const y = now.getUTCFullYear();
+    const marStart = new Date(Date.UTC(y, 2, 1));
+    marStart.setUTCDate(1 + ((7 - marStart.getUTCDay()) % 7) + 7);
+    const novEnd = new Date(Date.UTC(y, 10, 1));
+    novEnd.setUTCDate(1 + ((7 - novEnd.getUTCDay()) % 7));
+    const isDst = now >= marStart && now < novEnd;
+    const offset = isDst ? -4 : -5;
+    let etH = h + offset;
+    if (etH < 0) etH += 24;
+    const ampmOut = etH >= 12 ? "PM" : "AM";
+    let h12 = etH % 12; if (h12 === 0) h12 = 12;
+    return `${String(h12).padStart(2,"0")}:${String(mm).padStart(2,"0")} ${ampmOut} ET`;
   }
 
   const lines = highImpact.map((ev) => {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
-    const brt = utcStrToBrt(ev.time ?? ev.datetime ?? "");
-    return `🔴 ${brt ? brt + " BRT — " : ""}<b>${name}</b>`;
+    const et = utcStrToEt(ev.time ?? ev.datetime ?? "");
+    return `🔴 ${et ? et + " — " : ""}<b>${name}</b>`;
   });
 
   const caption =
@@ -402,9 +413,9 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   for (const ev of upcoming) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const timeStr = ev.time ?? ev.datetime ?? "";
-    // FIX 2026-05-05: API retorna UTC. BRT = UTC-3 (não tem DST).
-    // Display BRT only — sem ET, sem UTC, sem dois timezones.
-    function utcToBrt(s: string): string {
+    // Display em ET (horário do mercado US — onde o evento acontece).
+    // API retorna UTC; convertemos pra ET pra mostrar.
+    function utcToEt(s: string): string {
       if (!s) return "";
       const m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
       if (!m) return "";
@@ -413,13 +424,23 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       const ampm = (m[3] || "").toUpperCase();
       if (ampm === "PM" && h !== 12) h += 12;
       if (ampm === "AM" && h === 12) h = 0;
-      // BRT = UTC-3
-      let brtH = h - 3;
-      if (brtH < 0) brtH += 24;
-      return `${String(brtH).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
+      // ET = UTC-4 (EDT, mar-nov) ou UTC-5 (EST, nov-mar)
+      const now = new Date();
+      const y = now.getUTCFullYear();
+      const marStart = new Date(Date.UTC(y, 2, 1));
+      marStart.setUTCDate(1 + ((7 - marStart.getUTCDay()) % 7) + 7);
+      const novEnd = new Date(Date.UTC(y, 10, 1));
+      novEnd.setUTCDate(1 + ((7 - novEnd.getUTCDay()) % 7));
+      const isDst = now >= marStart && now < novEnd;
+      const offset = isDst ? -4 : -5;
+      let etH = h + offset;
+      if (etH < 0) etH += 24;
+      // Format 12h AM/PM (padrão US)
+      const ampmOut = etH >= 12 ? "PM" : "AM";
+      let h12 = etH % 12; if (h12 === 0) h12 = 12;
+      return `${String(h12).padStart(2,"0")}:${String(mm).padStart(2,"0")} ${ampmOut} ET`;
     }
-    const brtTime = utcToBrt(timeStr);
-    const timeDisplay = brtTime ? `${brtTime} BRT` : "";
+    const timeDisplay = utcToEt(timeStr);
 
     const prevLine = ev.previous != null ? `Prev: ${ev.previous}` : "";
     const fcLine = (ev.forecast ?? ev.estimate) != null ? `Exp: ${ev.forecast ?? ev.estimate}` : "";
