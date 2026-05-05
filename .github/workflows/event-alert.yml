@@ -1,16 +1,28 @@
-name: Event Alert (5min before)
+name: Event Alert (US hours only)
 
+# 2026-05-05: Reduzido de */5min 24/7 (288 runs/dia) pra */10min apenas
+# horário comercial US (60 runs/dia). Janela WINDOW=120min compensa.
+# GitHub Actions tava falhando "Waiting for runner" por sobrecarga,
+# gerando emails de failure desnecessários.
 on:
   schedule:
-    - cron: '*/5 * * * 1-5'  # every 5 min, weekdays (UTC)
+    # */10 min, 12-22 UTC (= 8h-18h EDT / 7h-17h EST), weekdays
+    - cron: '*/10 12-22 * * 1-5'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+# Cancela runs anteriores quando um novo dispara — evita acumular
+# jobs esperando runner.
+concurrency:
+  group: event-alert
+  cancel-in-progress: true
+
 jobs:
   alert:
     runs-on: ubuntu-latest
+    timeout-minutes: 8  # falha rápido se runner não vier
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,12 +39,13 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/send-event-alert.js
       - name: Persist sent-events dedup state
+        continue-on-error: true  # commit conflict não deve falhar workflow
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .firecrawl/events-sent.json || true
           if ! git diff --cached --quiet; then
             git commit -m "chore(event-alert): dedup state $(date -u +%Y-%m-%dT%H:%MZ)"
-            git pull --rebase
-            git push
+            git pull --rebase || true
+            git push || true
           fi
