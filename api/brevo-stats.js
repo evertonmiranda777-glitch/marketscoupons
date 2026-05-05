@@ -186,6 +186,44 @@ module.exports = async (req, res) => {
 
   const { type, days, tag, event, offset, limit } = req.query;
 
+  // === type=signups_today — quem cadastrou hoje + status do welcome email ===
+  if (type === 'signups_today') {
+    if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
+    try {
+      const todayStr = new Date().toISOString().slice(0,10);
+      const subHead = { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` };
+      // Profiles criados hoje
+      const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?created_at=gte.${todayStr}&select=id,email,full_name,first_name,created_at,email_verified&order=created_at.desc&limit=200`, { headers: subHead });
+      const profiles = pr.ok ? await pr.json() : [];
+      // Welcome/Confirm logs de hoje
+      const lr = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${todayStr}&campaign_name=in.(Welcome Email,Email Confirm,Email Confirm Resend)&select=campaign_name,recipients_emails,status,provider,created_at`, { headers: subHead });
+      const logs = lr.ok ? await lr.json() : [];
+      // Index emails que receberam welcome / confirm
+      const welcomeSet = new Set(), confirmSet = new Set();
+      logs.forEach(l => {
+        const arr = Array.isArray(l.recipients_emails) ? l.recipients_emails : [];
+        const isWelcome = l.campaign_name === 'Welcome Email';
+        arr.forEach(e => (isWelcome ? welcomeSet : confirmSet).add(String(e).toLowerCase()));
+      });
+      const enriched = profiles.map(p => {
+        const emailLc = (p.email||'').toLowerCase();
+        return {
+          id: p.id, email: p.email, name: p.first_name || p.full_name || '',
+          created_at: p.created_at, email_verified: !!p.email_verified,
+          welcome_sent: welcomeSet.has(emailLc),
+          confirm_sent: confirmSet.has(emailLc),
+        };
+      });
+      const summary = {
+        total: profiles.length,
+        verified: enriched.filter(e => e.email_verified).length,
+        welcome_sent: enriched.filter(e => e.welcome_sent).length,
+        confirm_sent: enriched.filter(e => e.confirm_sent).length,
+      };
+      return res.status(200).json({ summary, signups: enriched });
+    } catch (e) { return res.status(500).json({ error: 'signups_today_failed', detail: e.message }); }
+  }
+
   // === Onda 2: type=email_today — envios de hoje com drilldown ===
   if (type === 'email_today') {
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
@@ -312,9 +350,10 @@ module.exports = async (req, res) => {
       return res.status(200).json({
         paused,
         sent_today: stats.sent_today,
-        daily_limit: 500, // Brevo 300 + Resend 100 + SendGrid 100
+        daily_limit: 495, // Brevo bulk 295 (300-5 reserve) + Resend 100 + SendGrid 100
+        brevo_reserve: 5, // welcome/confirm transacional usa esses 5
         breakdown: {
-          brevo:    { sent: stats.sent_today_brevo,    limit: 300 },
+          brevo:    { sent: stats.sent_today_brevo,    limit: 295 }, // bulk budget (reserva já subtraída)
           resend:   { sent: stats.sent_today_resend,   limit: 100 },
           sendgrid: { sent: stats.sent_today_sendgrid, limit: 100 },
         },

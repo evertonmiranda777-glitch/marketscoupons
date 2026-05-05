@@ -1145,7 +1145,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <div class="sec-title">Email Marketing</div>
  <div class="sec-actions">
    <button class="btn-secondary" onclick="importLeadsAsSubscribers()">Importar Leads</button>
-   <button class="btn-secondary" onclick="eaRefresh();renderCampaignLog();loadEmailToday();loadCampaignsProgress();loadEmailHealth();loadSubscribersList()">Atualizar</button>
+   <button class="btn-secondary" onclick="eaRefresh();renderCampaignLog();loadEmailToday();loadCampaignsProgress();loadEmailHealth();loadSignupsToday();loadSubscribersList()">Atualizar</button>
  </div>
  </div>
 
@@ -1296,12 +1296,14 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
    <!-- Breakdown providers + actions na mesma linha (rodapé compacto) -->
    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:14px;border-top:1px solid var(--b1);">
-     <div id="auto-breakdown" style="display:flex;gap:14px;font-size:10px;color:var(--t3);flex-wrap:wrap;">
-       <span><span style="color:#22d3ee;">●</span> Brevo <strong id="auto-bd-brevo" style="color:var(--t2);margin-left:4px;">0/300</strong></span>
+     <div id="auto-breakdown" style="display:flex;gap:14px;font-size:10px;color:var(--t3);flex-wrap:wrap;align-items:center;">
+       <span><span style="color:#22d3ee;">●</span> Brevo <strong id="auto-bd-brevo" style="color:var(--t2);margin-left:4px;">0/295</strong></span>
        <span style="color:var(--b3);">·</span>
        <span><span style="color:#a855f7;">●</span> Resend <strong id="auto-bd-resend" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
        <span style="color:var(--b3);">·</span>
        <span><span style="color:#10b981;">●</span> SendGrid <strong id="auto-bd-sendgrid" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
+       <span style="color:var(--b3);">·</span>
+       <span style="color:var(--gold);" title="5 emails Brevo reservados pra welcome/confirm de novos cadastros — não consumidos pelo bulk">🛡 +5 reservados pra transacional</span>
      </div>
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-secondary" onclick="showCampaignHistory()" style="padding:8px 14px;font-size:12px;">Ver histórico</button>
@@ -1428,6 +1430,22 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
  </div>
  </div><!-- /grid 2-col card2+preview -->
+
+ <!-- Cadastros de Hoje (signups + status do welcome) -->
+ <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+     <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(168,85,247,.14);color:#a855f7;">
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+     </span>
+     <div style="flex:1;">
+       <div style="font-size:15px;font-weight:700;color:var(--t1);">Cadastros de Hoje</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Quem se cadastrou hoje + status do welcome auto + confirmação</div>
+     </div>
+     <button class="btn-secondary" style="font-size:11px;" onclick="loadSignupsToday()">↻ Atualizar</button>
+   </div>
+   <div id="signups-today-summary" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;"></div>
+   <div id="signups-today-list"></div>
+ </div>
 
  <!-- ONDA 3: Saúde de Envio (bounce/complaint rates + auto-pause) -->
  <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
@@ -3646,7 +3664,7 @@ function renderPage(p){
       loadEmailStats();
       updateDestCount();
       populateAudienceFirms();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadEmailToday(); loadCampaignsProgress(); loadEmailHealth(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadEmailToday(); loadCampaignsProgress(); loadEmailHealth(); loadSignupsToday(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
       // Auto-refresh card a cada 30s enquanto card visível
       if(window._autoStatusInterval) clearInterval(window._autoStatusInterval);
       window._autoStatusInterval = setInterval(()=>{
@@ -5848,6 +5866,52 @@ async function loadEmailToday(){
 function toggleTodayDrilldown(i){
   const el = document.getElementById('today-dd-'+i);
   if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+// ── Cadastros de Hoje ──
+async function loadSignupsToday(){
+  try{
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
+    if(!token) return;
+    const r = await fetch('/api/brevo-stats?type=signups_today', { headers:{ Authorization:'Bearer '+token } });
+    const data = await r.json();
+    const sumEl = document.getElementById('signups-today-summary');
+    const listEl = document.getElementById('signups-today-list');
+    if(!sumEl||!listEl) return;
+    if(data.error){ sumEl.innerHTML=''; listEl.innerHTML=`<div style="font-size:12px;color:var(--red);">${data.error}</div>`; return; }
+    const s = data.summary || {};
+    const cards = [
+      { label:'Cadastros', val:s.total||0, color:'#a855f7' },
+      { label:'Verificados', val:s.verified||0, color:'var(--green)' },
+      { label:'Welcome enviado', val:s.welcome_sent||0, color:'var(--gold)' },
+      { label:'Confirm enviado', val:s.confirm_sent||0, color:'#22d3ee' },
+    ];
+    sumEl.innerHTML = cards.map(c=>`<div style="flex:1;min-width:120px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
+      <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">${c.label}</div>
+      <div style="font-size:22px;font-weight:800;color:${c.color};margin-top:4px;">${c.val.toLocaleString('pt-BR')}</div>
+    </div>`).join('');
+    const list = data.signups || [];
+    if(!list.length){ listEl.innerHTML='<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhum cadastro hoje ainda.</div>'; return; }
+    listEl.innerHTML = `<div style="max-height:340px;overflow-y:auto;">${list.map(p=>{
+      const time = new Date(p.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      const v = p.email_verified ? '<span title="Email verificado" style="color:var(--green);">✓</span>' : '<span title="Não verificado" style="color:var(--t3);">○</span>';
+      const w = p.welcome_sent ? '<span title="Welcome enviado" style="color:var(--gold);">●</span>' : '<span title="Welcome NÃO enviado" style="color:var(--red);">●</span>';
+      const c = p.confirm_sent ? '<span title="Confirm enviado" style="color:#22d3ee;">●</span>' : '<span title="Confirm NÃO enviado" style="color:var(--t3);">○</span>';
+      return `<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:4px;">
+        <div style="font-size:11px;color:var(--t3);min-width:48px;font-family:monospace;">${time}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:600;color:var(--t1);font-family:monospace;">${(p.email||'').replace(/</g,'&lt;')}</div>
+          ${p.name?`<div style="font-size:11px;color:var(--t3);">${(p.name||'').replace(/</g,'&lt;')}</div>`:''}
+        </div>
+        <div style="display:flex;gap:8px;font-size:14px;line-height:1;align-items:center;">
+          <span title="Verified">${v}</span>
+          <span style="font-size:10px;color:var(--t3);">W ${w}</span>
+          <span style="font-size:10px;color:var(--t3);">C ${c}</span>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  }catch(e){ console.error('loadSignupsToday', e); }
 }
 
 // ── ONDA 3: Saúde do envio ──
