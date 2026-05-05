@@ -1254,58 +1254,60 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
  </div>
 
- <!-- ════════════ CARD 1: ENVIO AUTOMÁTICO ════════════ -->
- <div id="auto-status-card" style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-bottom:18px;max-width:760px;">
+ <!-- ════════════ CARD 1: ENVIO AUTOMÁTICO (layout horizontal compacto) ════════════ -->
+ <div id="auto-status-card" style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-bottom:18px;">
+   <!-- Header com state à direita -->
    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
      <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(16,185,129,.14);color:var(--green);">
        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
      </span>
-     <div style="flex:1;">
+     <div style="flex:1;min-width:0;">
        <div style="font-size:15px;font-weight:700;color:var(--t1);">Envio Automático</div>
-       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Dispara 500 emails/dia todo dia às 08:00 BRT (Brevo 300 + Resend 100 + SendGrid 100)</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Dispara 500 emails/dia · 08:00 BRT (Brevo 300 + Resend 100 + SendGrid 100)</div>
+     </div>
+     <div id="auto-state-row" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);font-weight:600;flex-shrink:0;">
+       <span id="auto-state-dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(16,185,129,.6);"></span>
+       <span id="auto-state-pill">Ligado</span>
      </div>
    </div>
 
-   <div id="auto-state-row" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);font-weight:600;margin-bottom:14px;">
-     <span id="auto-state-dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(16,185,129,.6);"></span>
-     <span id="auto-state-pill">Ligado — funcionando normal</span>
-   </div>
-
-   <div style="margin-bottom:14px;">
-     <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:6px;">
-       <span>Hoje</span><strong id="auto-progress-label" style="color:var(--gold);font-weight:700;">0 / 500</strong>
+   <!-- 2-col: progresso (esquerda) + KPIs (direita) -->
+   <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;margin-bottom:14px;align-items:center;">
+     <div>
+       <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:6px;">
+         <span>Hoje</span><strong id="auto-progress-label" style="color:var(--gold);font-weight:700;">0 / 500</strong>
+       </div>
+       <div style="height:10px;background:var(--card2);border-radius:6px;overflow:hidden;border:1px solid var(--b1);">
+         <div id="auto-progress-bar" style="height:100%;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3s ease infinite;border-radius:6px;width:0%;transition:width .4s;"></div>
+       </div>
+       <div id="auto-week-stats" style="font-size:11px;color:var(--t3);margin-top:6px;">Últimos 7 dias: —</div>
      </div>
-     <div style="height:10px;background:var(--sur,var(--card2));border-radius:6px;overflow:hidden;border:1px solid var(--b1);">
-       <div id="auto-progress-bar" style="height:100%;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3s ease infinite;border-radius:6px;width:0%;transition:width .4s;"></div>
-     </div>
-   </div>
-
-   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-     <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
-       <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Próximo envio</div>
-       <div id="auto-next-run" style="font-size:14px;color:var(--t1);font-weight:600;">—</div>
-     </div>
-     <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
-       <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Fila aguardando</div>
-       <div id="auto-queue-count" style="font-size:14px;color:var(--t1);font-weight:600;">—</div>
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+       <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
+         <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Próximo envio</div>
+         <div id="auto-next-run" style="font-size:14px;color:var(--t1);font-weight:600;">—</div>
+       </div>
+       <div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
+         <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Fila aguardando</div>
+         <div id="auto-queue-count" style="font-size:14px;color:var(--t1);font-weight:600;">—</div>
+       </div>
      </div>
    </div>
 
-   <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 14px;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-     <span id="auto-week-stats">Últimos 7 dias: —</span>
-   </div>
-
-   <div id="auto-breakdown" style="display:flex;gap:14px;font-size:10px;color:var(--t3);margin-bottom:14px;flex-wrap:wrap;justify-content:center;">
-     <span><span style="color:#22d3ee;">●</span> Brevo <strong id="auto-bd-brevo" style="color:var(--t2);margin-left:4px;">0/300</strong></span>
-     <span style="color:var(--b3);">·</span>
-     <span><span style="color:#a855f7;">●</span> Resend <strong id="auto-bd-resend" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
-     <span style="color:var(--b3);">·</span>
-     <span><span style="color:#10b981;">●</span> SendGrid <strong id="auto-bd-sendgrid" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
-   </div>
-
-   <div style="display:flex;gap:10px;flex-wrap:wrap;">
-     <button class="btn-secondary" onclick="showCampaignHistory()" style="padding:10px 16px;">Ver histórico</button>
-     <button id="auto-toggle-btn" onclick="toggleAutoEmail()" style="padding:10px 16px;background:transparent;border:1px solid rgba(239,68,68,.32);color:var(--red);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Pausar automático</button>
+   <!-- Breakdown providers + actions na mesma linha (rodapé compacto) -->
+   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:14px;border-top:1px solid var(--b1);">
+     <div id="auto-breakdown" style="display:flex;gap:14px;font-size:10px;color:var(--t3);flex-wrap:wrap;">
+       <span><span style="color:#22d3ee;">●</span> Brevo <strong id="auto-bd-brevo" style="color:var(--t2);margin-left:4px;">0/300</strong></span>
+       <span style="color:var(--b3);">·</span>
+       <span><span style="color:#a855f7;">●</span> Resend <strong id="auto-bd-resend" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
+       <span style="color:var(--b3);">·</span>
+       <span><span style="color:#10b981;">●</span> SendGrid <strong id="auto-bd-sendgrid" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
+     </div>
+     <div style="display:flex;gap:8px;flex-wrap:wrap;">
+       <button class="btn-secondary" onclick="showCampaignHistory()" style="padding:8px 14px;font-size:12px;">Ver histórico</button>
+       <button id="auto-force-btn" onclick="forceCronSend()" style="padding:8px 14px;background:linear-gradient(135deg,#F0B429,#D97706);border:none;color:#07090D;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">▶ Enviar 500 agora</button>
+       <button id="auto-toggle-btn" onclick="toggleAutoEmail()" style="padding:8px 14px;background:transparent;border:1px solid rgba(239,68,68,.32);color:var(--red);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Pausar</button>
+     </div>
    </div>
  </div>
 
@@ -13672,6 +13674,34 @@ async function loadAutoStatus(){
     if(next) next.textContent = s.next_run_label || 'Amanhã 08:00';
     if(week) week.innerHTML = `Últimos 7 dias: <strong style="color:var(--green);">${(s.week_sent||0).toLocaleString()} enviados</strong> · <strong style="color:var(--red);">${s.week_failed||0} falhas</strong>`;
   } catch(e){ /* silencioso */ }
+}
+
+// Forçar envio agora — chama cron-bulk-send com JWT admin
+async function forceCronSend(){
+  const btn = document.getElementById('auto-force-btn'); if(!btn) return;
+  const batchStr = prompt('Quantos emails enviar agora? (default 500, máx 500/dia entre os 3 providers)', '500');
+  if(batchStr===null) return;
+  const batchSize = Math.max(1, Math.min(500, parseInt(batchStr,10) || 500));
+  if(!confirm(`Disparar ${batchSize} emails da campanha "site-invite" AGORA?\n\nDedup automático — quem já recebeu não recebe de novo.`)) return;
+  btn.disabled = true; const old = btn.innerHTML; btn.innerHTML = '⏳ Enviando...';
+  try{
+    const tk = await _adminBearer();
+    const r = await fetch('/api/cron-bulk-send', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', Authorization: 'Bearer ' + tk },
+      body: JSON.stringify({ campaign:'site-invite', batchSize })
+    });
+    const data = await r.json();
+    if(!r.ok){ toast('Falha: '+(data.error||r.status), 'error'); return; }
+    if(data.skipped){ toast('Pulou: '+data.reason, 'warn'); return; }
+    if(data.message==='Daily quota exhausted'){ toast('Quota diária esgotada. Tente amanhã.','warn'); return; }
+    if(data.message==='No eligible subscribers'){ toast('Nenhum subscriber pendente.','warn'); return; }
+    toast(`✓ ${data.sent||0} enviados (${data.failed||0} falhas) · Brevo:${data.brevoSent||0} Resend:${data.resendSent||0}`);
+    await loadAutoStatus();
+    if(typeof loadEmailToday==='function') await loadEmailToday();
+    if(typeof loadCampaignsProgress==='function') await loadCampaignsProgress();
+  } catch(e){ toast('Erro: '+e.message,'error'); }
+  finally { btn.innerHTML = old; btn.disabled = false; }
 }
 
 async function toggleAutoEmail(){

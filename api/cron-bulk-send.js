@@ -113,10 +113,31 @@ async function sendViaResend(rec, subject, html, unsubUrl) {
   return r.ok;
 }
 
+async function isAdminJwt(jwt) {
+  if (!jwt || jwt.length < 50 || !SK) return false;
+  try {
+    const ur = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: SK, Authorization: `Bearer ${jwt}` }
+    });
+    if (!ur.ok) return false;
+    const user = await ur.json();
+    if (!user?.id) return false;
+    const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${user.id}&is_admin=eq.true&select=id`, {
+      headers: { apikey: SK, Authorization: `Bearer ${SK}` }
+    });
+    if (!pr.ok) return false;
+    const rows = await pr.json();
+    return rows && rows.length > 0;
+  } catch { return false; }
+}
+
 module.exports = async (req, res) => {
-  // Auth: Bearer CRON_SECRET
-  const auth = req.headers.authorization;
-  if (!CRON_SECRET || auth !== `Bearer ${CRON_SECRET}`) return res.status(401).json({ error: 'Unauthorized' });
+  // Auth dual: Bearer CRON_SECRET (GitHub Actions) OU Bearer admin-jwt (admin força envio)
+  const auth = req.headers.authorization || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+  const isCron = CRON_SECRET && token === CRON_SECRET;
+  const isAdmin = !isCron && (await isAdminJwt(token));
+  if (!isCron && !isAdmin) return res.status(401).json({ error: 'Unauthorized' });
   if (!SK || !UNSUB_SECRET) return res.status(500).json({ error: 'missing env keys' });
 
   const { campaign, filterTag = null, batchSize = 400 } = req.body || {};
