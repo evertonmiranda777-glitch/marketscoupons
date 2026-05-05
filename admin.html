@@ -13778,7 +13778,7 @@ async function forceCronSend(){
     if(data.skipped){ toast('Pulou: '+data.reason, 'warn'); return; }
     if(data.message==='Daily quota exhausted'){ toast('Quota diária esgotada. Tente amanhã.','warn'); return; }
     if(data.message==='No eligible subscribers'){ toast('Nenhum subscriber pendente.','warn'); return; }
-    toast(`✓ ${data.sent||0} enviados (${data.failed||0} falhas) · Brevo:${data.brevoSent||0} Resend:${data.resendSent||0}`);
+    toast(`✓ ${data.sent||0} enviados (${data.failed||0} falhas) · Brevo:${data.brevoSent||0} Resend:${data.resendSent||0} SendGrid:${data.sgSent||0}`);
     await loadAutoStatus();
     if(typeof loadEmailToday==='function') await loadEmailToday();
     if(typeof loadCampaignsProgress==='function') await loadCampaignsProgress();

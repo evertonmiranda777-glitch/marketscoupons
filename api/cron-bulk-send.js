@@ -13,6 +13,7 @@ const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const BREVO_KEY = process.env.BREVO_API_KEY;
 const RESEND_KEY = process.env.RESEND_API_KEY;
+const SG_KEY = process.env.SENDGRID_API_KEY;
 const UNSUB_SECRET = process.env.UNSUBSCRIBE_SECRET;
 const CRON_SECRET = process.env.CRON_SECRET;
 
@@ -46,14 +47,16 @@ async function fetchEligible(filterTag, excludeTag, limit) {
   return r.json();
 }
 
-async function getResendSentToday() {
+async function getProviderSentToday(provider) {
   const today = new Date().toISOString().slice(0, 10);
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.resend&created_at=gte.${today}&select=recipients`, { headers: SUB_HEAD });
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.${provider}&created_at=gte.${today}&select=recipients`, { headers: SUB_HEAD });
     const logs = r.ok ? await r.json() : [];
     return logs.reduce((s, l) => s + (l.recipients || 0), 0);
   } catch { return 0; }
 }
+async function getResendSentToday() { return getProviderSentToday('resend'); }
+async function getSendGridSentToday() { return getProviderSentToday('sendgrid'); }
 
 async function getBrevoCredits() {
   try {
@@ -113,6 +116,23 @@ async function sendViaResend(rec, subject, html, unsubUrl) {
   return r.ok;
 }
 
+async function sendViaSendGrid(rec, subject, html, unsubUrl) {
+  const listUnsub = `<${unsubUrl}>, <mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>`;
+  const r = await fetch('https://api.sendgrid.com/v3/mail/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SG_KEY}` },
+    body: JSON.stringify({
+      personalizations: [{ to: [{ email: rec.email, name: rec.name || 'Trader' }] }],
+      from: { email: 'lara@marketscoupons.com', name: 'Lara | Markets Coupons' },
+      subject,
+      content: [{ type: 'text/html', value: html }],
+      headers: { 'List-Unsubscribe': listUnsub, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' },
+      categories: ['inst-' + rec.campaign, 'lang-' + rec.lang, 'cron'].map(c => String(c).replace(/[^a-zA-Z0-9_-]/g, '_')),
+    }),
+  });
+  return r.status === 202;
+}
+
 async function isAdminJwt(jwt) {
   if (!jwt || jwt.length < 50 || !SK) return false;
   try {
@@ -160,16 +180,18 @@ module.exports = async (req, res) => {
 
     const excludeTag = `received-${campaign}`;
 
-    // Calcula budget
+    // Calcula budget — 3 providers (Brevo bulk + Resend + SendGrid)
     const BREVO_RESERVE = 5;
     const credits = BREVO_KEY ? await getBrevoCredits() : 0;
     let brevoBudget = Math.max(0, credits - BREVO_RESERVE);
     const resendSent = RESEND_KEY ? await getResendSentToday() : 100;
     let resendBudget = RESEND_KEY ? Math.max(0, 100 - resendSent) : 0;
-    const totalBudget = brevoBudget + resendBudget;
+    const sgSent = SG_KEY ? await getSendGridSentToday() : 100;
+    let sgBudget = SG_KEY ? Math.max(0, 100 - sgSent) : 0;
+    const totalBudget = brevoBudget + resendBudget + sgBudget;
 
     if (totalBudget === 0) {
-      return res.status(200).json({ success: true, message: 'Daily quota exhausted', sent: 0, brevoBudget, resendBudget });
+      return res.status(200).json({ success: true, message: 'Daily quota exhausted', sent: 0, brevoBudget, resendBudget, sgBudget });
     }
 
     const fetchLimit = Math.min(batchSize, totalBudget);
@@ -178,11 +200,11 @@ module.exports = async (req, res) => {
       return res.status(200).json({ success: true, message: 'No eligible subscribers', sent: 0 });
     }
 
-    let sent = 0, failed = 0, brevoSent = 0, resendSent2 = 0;
+    let sent = 0, failed = 0, brevoSent = 0, resendSent2 = 0, sgSent2 = 0;
     const sentEmails = []; // Onda 1: log per-recipient pra admin drilldown
     const failedEmails = [];
     for (const sub of eligible) {
-      if (brevoBudget <= 0 && resendBudget <= 0) break;
+      if (brevoBudget <= 0 && resendBudget <= 0 && sgBudget <= 0) break;
       const lang = sub.lang || 'en';
       const html = renderInstHtml(campaign, lang, buildUnsubUrl(sub.email, lang));
       const subject = getSubject(campaign, lang);
@@ -199,6 +221,10 @@ module.exports = async (req, res) => {
           ok = await sendViaResend(rec, subject, html, buildUnsubUrl(sub.email, lang));
           if (ok) { resendSent2++; resendBudget--; }
         }
+        if (!ok && sgBudget > 0 && SG_KEY) {
+          ok = await sendViaSendGrid(rec, subject, html, buildUnsubUrl(sub.email, lang));
+          if (ok) { sgSent2++; sgBudget--; }
+        }
       } catch { ok = false; }
 
       if (ok) {
@@ -211,6 +237,9 @@ module.exports = async (req, res) => {
     }
 
     // Log no email_logs (recipients_emails permite drilldown "quem recebeu")
+    // Provider mais usado pra log primário
+    const topProvider = brevoSent >= resendSent2 && brevoSent >= sgSent2 ? 'brevo'
+      : resendSent2 >= sgSent2 ? 'resend' : 'sendgrid';
     await fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
       method: 'POST',
       headers: { ...SUB_HEAD, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
@@ -221,8 +250,12 @@ module.exports = async (req, res) => {
         recipients_emails: sentEmails,
         status: failed === 0 ? 'sent' : (sent === 0 ? 'failed' : 'partial'),
         sent_by: 'cron',
-        provider: brevoSent >= resendSent2 ? 'brevo' : 'resend',
-        brevo_response: { sent, failed, brevoSent, resendSent: resendSent2, failed_emails: failedEmails.slice(0, 50) },
+        provider: topProvider,
+        brevo_response: {
+          sent, failed,
+          providers_breakdown: { brevo: brevoSent, resend: resendSent2, sendgrid: sgSent2 },
+          failed_emails: failedEmails.slice(0, 50)
+        },
       }),
     }).catch(() => null);
 
@@ -230,8 +263,8 @@ module.exports = async (req, res) => {
       success: true,
       campaign, filterTag, eligible: eligible.length,
       sent, failed,
-      brevoSent, resendSent: resendSent2,
-      brevoBudgetRemaining: brevoBudget, resendBudgetRemaining: resendBudget,
+      brevoSent, resendSent: resendSent2, sgSent: sgSent2,
+      budgetsRemaining: { brevo: brevoBudget, resend: resendBudget, sendgrid: sgBudget },
     });
   } catch (e) {
     console.error('[cron-bulk-send]', e);
