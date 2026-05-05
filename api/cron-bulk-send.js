@@ -29,17 +29,19 @@ function buildUnsubUrl(email, lang){
 }
 
 async function fetchEligible(filterTag, excludeTag, limit) {
-  // Busca subscribers ativos: tem filterTag, NÃO tem excludeTag.
-  // tags=cs.{X} = contém X. tags=not.cs.{Y} = não contém Y.
+  // Busca subscribers ativos: tem filterTag (se passado), NÃO tem excludeTag.
+  // BUG fix 2026-05-05: quando filterTag=null, antes virava tags=cs.{null} literal,
+  // batia 0 rows. Cron de site-invite ficou 6 dias sem enviar (~2k emails perdidos).
+  // Agora: filterTag null = sem filtro de tag (= todos os ativos não-recebidos).
   const params = [
     'status=eq.active',
-    `tags=cs.{${filterTag}}`,
     `tags=not.cs.{${excludeTag}}`,
     'select=email,name,lang',
     'order=created_at.asc',
     `limit=${limit}`,
-  ].join('&');
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?${params}`, { headers: SUB_HEAD });
+  ];
+  if (filterTag) params.splice(1, 0, `tags=cs.{${filterTag}}`);
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?${params.join('&')}`, { headers: SUB_HEAD });
   if (!r.ok) throw new Error(`fetch eligible ${r.status}: ${await r.text()}`);
   return r.json();
 }
