@@ -25,6 +25,7 @@ permissions:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    continue-on-error: true
     timeout-minutes: 10
     steps:
       - name: Trigger /api/cron-bulk-send

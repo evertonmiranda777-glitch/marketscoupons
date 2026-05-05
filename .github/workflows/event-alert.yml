@@ -22,6 +22,7 @@ concurrency:
 jobs:
   alert:
     runs-on: ubuntu-latest
+    continue-on-error: true
     timeout-minutes: 8  # falha rápido se runner não vier
     steps:
       - uses: actions/checkout@v4

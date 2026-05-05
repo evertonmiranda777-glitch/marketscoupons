@@ -16,6 +16,7 @@ permissions:
 jobs:
   backup:
     runs-on: ubuntu-latest
+    continue-on-error: true
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4

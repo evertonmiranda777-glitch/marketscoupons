@@ -12,6 +12,7 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    continue-on-error: true
     timeout-minutes: 10
     steps:
       - name: Trigger meta-ads-sync edge function
