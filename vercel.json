@@ -43,6 +43,8 @@
     { "src": "/gamma", "dest": "/gex.html" },
     { "src": "/(en|es|fr|de|it|ar)/gamma", "dest": "/gex.html" },
     { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/risk-disclosure", "dest": "/risk-disclosure.html" },
+    { "src": "/declaracao-de-risco", "dest": "/risk-disclosure.html" },
     { "src": "/go", "dest": "/go.html" },
     { "src": "/go/(.*)", "dest": "/go.html?firm=$1" },
     { "src": "/email-confirm", "dest": "/api/welcome-email" },
