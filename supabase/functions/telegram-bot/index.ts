@@ -265,26 +265,30 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
 
   if (highImpact.length === 0) return { sent: false, reason: "no_high_impact_events" };
 
-  const today = new Date().toLocaleDateString("en-US", {
+  const today = new Date().toLocaleDateString("pt-BR", {
     weekday: "long", month: "long", day: "numeric", year: "numeric",
-    timeZone: "America/New_York",
+    timeZone: "America/Sao_Paulo",
   });
+
+  // FIX 2026-05-05: API retorna UTC; display em BRT (UTC-3, sem DST).
+  function utcStrToBrt(s: string): string {
+    if (!s) return "";
+    const m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+    if (!m) return "";
+    let h = parseInt(m[1]);
+    const mm = parseInt(m[2]);
+    const ampm = (m[3] || "").toUpperCase();
+    if (ampm === "PM" && h !== 12) h += 12;
+    if (ampm === "AM" && h === 12) h = 0;
+    let brtH = h - 3;
+    if (brtH < 0) brtH += 24;
+    return `${String(brtH).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
+  }
 
   const lines = highImpact.map((ev) => {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
-
-    let timeDisplay = "";
-    try {
-      const timeStr = ev.time ?? ev.datetime ?? "";
-      const d = new Date(timeStr);
-      if (!isNaN(d.getTime())) {
-        timeDisplay = d.toLocaleTimeString("en-US", {
-          hour: "2-digit", minute: "2-digit", timeZone: "America/New_York",
-        }) + " ET";
-      }
-    } catch { /* skip */ }
-
-    return `🔴 ${timeDisplay ? timeDisplay + " — " : ""}<b>${name}</b>`;
+    const brt = utcStrToBrt(ev.time ?? ev.datetime ?? "");
+    return `🔴 ${brt ? brt + " BRT — " : ""}<b>${name}</b>`;
   });
 
   const caption =
@@ -328,11 +332,12 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   const windowMs = 5 * 60 * 1000;
   const toleranceMs = 90 * 1000; // 1.5min tolerance for cron drift
 
-  // Parse "02:00 PM" + "2026-04-10" into a proper Date in ET
+  // FIX 2026-05-05: API economic-calendar retorna UTC, não ET. Antes assumia
+  // ET (-04:00) e disparava alerta 3-4h tarde porque achava que evento UTC
+  // 14:00 era ET 14:00 (= UTC 18:00).
   function parseEventTime(dateStr?: string, timeStr?: string): Date | null {
     if (!dateStr || !timeStr) return null;
     try {
-      // timeStr format: "02:00 PM" or "14:00"
       let hours = 0, minutes = 0;
       const match12 = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
       const match24 = timeStr.match(/^(\d{1,2}):(\d{2})$/);
@@ -348,11 +353,9 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       } else {
         return null;
       }
-      // Create date string in ET timezone format
-      const etStr = `${dateStr}T${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:00`;
-      // Trading Economics times are in ET — convert by creating in ET
-      const etDate = new Date(new Date(etStr + "-04:00").getTime()); // EDT (UTC-4)
-      return isNaN(etDate.getTime()) ? null : etDate;
+      const utcStr = `${dateStr}T${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:00Z`;
+      const d = new Date(utcStr);
+      return isNaN(d.getTime()) ? null : d;
     } catch { return null; }
   }
 
@@ -399,8 +402,9 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   for (const ev of upcoming) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const timeStr = ev.time ?? ev.datetime ?? "";
-    // Converte ET → BRT pra eliminar confusão de fuso na mensagem
-    function etToBrt(s: string): string {
+    // FIX 2026-05-05: API retorna UTC. BRT = UTC-3 (não tem DST).
+    // Display BRT only — sem ET, sem UTC, sem dois timezones.
+    function utcToBrt(s: string): string {
       if (!s) return "";
       const m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
       if (!m) return "";
@@ -409,23 +413,13 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
       const ampm = (m[3] || "").toUpperCase();
       if (ampm === "PM" && h !== 12) h += 12;
       if (ampm === "AM" && h === 12) h = 0;
-      // US DST: 2nd Sunday March → 1st Sunday November
-      const now = new Date();
-      const y = now.getUTCFullYear();
-      const marStart = new Date(Date.UTC(y, 2, 1));
-      marStart.setUTCDate(1 + ((7 - marStart.getUTCDay()) % 7) + 7);
-      const novEnd = new Date(Date.UTC(y, 10, 1));
-      novEnd.setUTCDate(1 + ((7 - novEnd.getUTCDay()) % 7));
-      const isDst = now >= marStart && now < novEnd;
-      // EDT=UTC-4, EST=UTC-5; BRT=UTC-3 → +1h (DST) ou +2h (standard)
-      let brtH = h + (isDst ? 1 : 2);
-      if (brtH >= 24) brtH -= 24;
+      // BRT = UTC-3
+      let brtH = h - 3;
+      if (brtH < 0) brtH += 24;
       return `${String(brtH).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
     }
-    const brtTime = etToBrt(timeStr);
-    let timeDisplay = timeStr
-      ? (brtTime ? `${timeStr} ET · ${brtTime} BRT` : timeStr + " ET")
-      : "";
+    const brtTime = utcToBrt(timeStr);
+    const timeDisplay = brtTime ? `${brtTime} BRT` : "";
 
     const prevLine = ev.previous != null ? `Prev: ${ev.previous}` : "";
     const fcLine = (ev.forecast ?? ev.estimate) != null ? `Exp: ${ev.forecast ?? ev.estimate}` : "";
