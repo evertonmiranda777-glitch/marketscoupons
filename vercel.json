@@ -6,6 +6,9 @@
     },
     "api/send-email.js": {
       "maxDuration": 60
+    },
+    "api/cron-bulk-send.js": {
+      "maxDuration": 300
     }
   },
   "crons": [

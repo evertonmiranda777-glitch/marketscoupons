@@ -205,10 +205,16 @@ module.exports = async (req, res) => {
       return res.status(200).json({ success: true, message: 'No eligible subscribers', sent: 0 });
     }
 
+    // Timeout-aware: Vercel mata função em 300s. Reservamos 30s pro log final
+    // + buffer. Se passar 270s, para o loop e reporta progresso.
+    const startTs = Date.now();
+    const SOFT_DEADLINE_MS = 270 * 1000;
     let sent = 0, failed = 0, brevoSent = 0, resendSent2 = 0, sgSent2 = 0;
     const sentEmails = []; // Onda 1: log per-recipient pra admin drilldown
     const failedEmails = [];
+    let stoppedByDeadline = false;
     for (const sub of eligible) {
+      if (Date.now() - startTs > SOFT_DEADLINE_MS) { stoppedByDeadline = true; break; }
       if (brevoBudget <= 0 && resendBudget <= 0 && sgBudget <= 0) break;
       const lang = sub.lang || 'en';
       const html = renderInstHtml(campaign, lang, buildUnsubUrl(sub.email, lang));
@@ -238,7 +244,8 @@ module.exports = async (req, res) => {
         await appendTag(sub.email, excludeTag).catch(() => null);
       } else { failed++; failedEmails.push(sub.email); }
 
-      await new Promise(r => setTimeout(r, 100));
+      // Delay reduzido de 100ms → 30ms (provider rate limits comportam)
+      await new Promise(r => setTimeout(r, 30));
     }
 
     // Log no email_logs (recipients_emails permite drilldown "quem recebeu")
@@ -270,6 +277,8 @@ module.exports = async (req, res) => {
       sent, failed,
       brevoSent, resendSent: resendSent2, sgSent: sgSent2,
       budgetsRemaining: { brevo: brevoBudget, resend: resendBudget, sendgrid: sgBudget },
+      stopped_by_deadline: stoppedByDeadline,
+      duration_ms: Date.now() - startTs,
     });
   } catch (e) {
     console.error('[cron-bulk-send]', e);

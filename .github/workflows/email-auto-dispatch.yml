@@ -11,9 +11,9 @@ on:
         required: true
         default: 'site-invite'
       batchSize:
-        description: 'Emails to send today'
+        description: 'Emails to send today (max 495 = Brevo 295+Resend 100+SG 100)'
         required: false
-        default: '400'
+        default: '250'
 
 permissions:
   contents: read
@@ -27,7 +27,7 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           CAMPAIGN="${{ inputs.campaign || 'site-invite' }}"
-          BATCH="${{ inputs.batchSize || '400' }}"
+          BATCH="${{ inputs.batchSize || '250' }}"
           echo "Campaign: $CAMPAIGN | Batch: $BATCH"
           RESPONSE=$(curl -s -X POST "https://www.marketscoupons.com/api/cron-bulk-send" \
             -H "Authorization: Bearer $CRON_SECRET" \
