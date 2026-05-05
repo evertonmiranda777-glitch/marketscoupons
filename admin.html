@@ -1145,7 +1145,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <div class="sec-title">Email Marketing</div>
  <div class="sec-actions">
    <button class="btn-secondary" onclick="importLeadsAsSubscribers()">Importar Leads</button>
-   <button class="btn-secondary" onclick="eaRefresh();renderCampaignLog();loadEmailToday();loadCampaignsProgress();loadSubscribersList()">Atualizar</button>
+   <button class="btn-secondary" onclick="eaRefresh();renderCampaignLog();loadEmailToday();loadCampaignsProgress();loadEmailHealth();loadSubscribersList()">Atualizar</button>
  </div>
  </div>
 
@@ -1426,6 +1426,21 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    </div>
  </div>
  </div><!-- /grid 2-col card2+preview -->
+
+ <!-- ONDA 3: Saúde de Envio (bounce/complaint rates + auto-pause) -->
+ <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+     <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(239,68,68,.14);color:#EF4444;">
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+     </span>
+     <div style="flex:1;">
+       <div style="font-size:15px;font-weight:700;color:var(--t1);">Saúde do Envio</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Bounce rate, complaints e suppression list (7 dias). Pausa auto se >5%.</div>
+     </div>
+     <button class="btn-secondary" style="font-size:11px;" onclick="loadEmailHealth()">↻ Atualizar</button>
+   </div>
+   <div id="email-health-cards" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+ </div>
 
  <!-- ONDA 2: Envios de Hoje (todos os senders consolidados) -->
  <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
@@ -3629,7 +3644,7 @@ function renderPage(p){
       loadEmailStats();
       updateDestCount();
       populateAudienceFirms();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadEmailToday(); loadCampaignsProgress(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadEmailToday(); loadCampaignsProgress(); loadEmailHealth(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
       // Auto-refresh card a cada 30s enquanto card visível
       if(window._autoStatusInterval) clearInterval(window._autoStatusInterval);
       window._autoStatusInterval = setInterval(()=>{
@@ -5831,6 +5846,42 @@ async function loadEmailToday(){
 function toggleTodayDrilldown(i){
   const el = document.getElementById('today-dd-'+i);
   if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+// ── ONDA 3: Saúde do envio ──
+async function loadEmailHealth(){
+  try{
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
+    if(!token) return;
+    const r = await fetch('/api/brevo-stats?type=health', { headers:{ Authorization:'Bearer '+token } });
+    const data = await r.json();
+    const el = document.getElementById('email-health-cards');
+    if(!el) return;
+    if(data.error){ el.innerHTML=`<div style="font-size:12px;color:var(--red);">${data.error}</div>`; return; }
+    const stats = data.subscribers_by_status || {};
+    const w = data.last_7d || {};
+    const t = data.thresholds || {};
+    const bColor = w.bounce_rate >= t.bounce_critical ? 'var(--red)' : w.bounce_rate >= t.bounce_warn ? 'var(--gold)' : 'var(--green)';
+    const cColor = w.complaint_rate >= t.complaint_critical ? 'var(--red)' : w.complaint_rate >= t.complaint_warn ? 'var(--gold)' : 'var(--green)';
+    const cards = [
+      { label:'Bounce Rate (7d)', val:(w.bounce_rate||0)+'%', color:bColor, sub:`limite ${t.bounce_critical}% antes de pausar auto` },
+      { label:'Spam Complaint (7d)', val:(w.complaint_rate||0)+'%', color:cColor, sub:`limite Gmail ${t.complaint_critical}%` },
+      { label:'Delivered (7d)', val:(w.delivered||0).toLocaleString('pt-BR'), color:'var(--t1)', sub:'entregues nos últimos 7 dias' },
+      { label:'Active', val:(stats.active||0).toLocaleString('pt-BR'), color:'var(--green)', sub:'recebem campanhas' },
+      { label:'Bounced (suppressed)', val:(stats.bounced||0).toLocaleString('pt-BR'), color:'var(--red)', sub:'auto-removidos por bounce' },
+      { label:'Complained', val:(stats.complained||0).toLocaleString('pt-BR'), color:'var(--red)', sub:'marcaram como spam' },
+      { label:'Unsubscribed', val:(stats.unsubscribed||0).toLocaleString('pt-BR'), color:'var(--t2)', sub:'desinscritos via link' },
+    ];
+    el.innerHTML = cards.map(c=>`<div style="flex:1;min-width:160px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
+      <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">${c.label}</div>
+      <div style="font-size:22px;font-weight:800;color:${c.color};margin-top:4px;">${c.val}</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:2px;">${c.sub}</div>
+    </div>`).join('');
+    if(data.auto_paused_now){
+      toast('⚠ Bounce rate >5% — auto-envio PAUSADO automaticamente. Verifique a lista antes de retomar.','warn');
+    }
+  }catch(e){ console.error('loadEmailHealth', e); }
 }
 
 // ── ONDA 2: Campanhas em Andamento ──

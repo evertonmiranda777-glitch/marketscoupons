@@ -108,6 +108,63 @@ module.exports = async (req, res) => {
   if (applyCors(req, res, { methods: 'GET, POST, OPTIONS' })) return;
   if (!rateLimitIp(req, 60)) return res.status(429).json({ error: 'rate_limit' });
 
+  // === Onda 3: Brevo webhook (autenticação via token na URL, sem JWT) ===
+  // Brevo POSTa em /api/brevo-stats?action=webhook&token=<BREVO_WEBHOOK_TOKEN>
+  // Eventos: delivered, soft_bounce, hard_bounce, spam, unsubscribed, etc.
+  if (req.method === 'POST' && req.query?.action === 'webhook') {
+    const expectedToken = process.env.BREVO_WEBHOOK_TOKEN;
+    if (!expectedToken) return res.status(500).json({ error: 'BREVO_WEBHOOK_TOKEN not configured' });
+    if (req.query.token !== expectedToken) return res.status(401).json({ error: 'Invalid webhook token' });
+    if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
+
+    try {
+      const ev = req.body || {};
+      const event = (ev.event || '').toLowerCase();
+      const email = (ev.email || '').toLowerCase().trim();
+      const reason = String(ev.reason || ev.message || '').slice(0, 200);
+      if (!email) return res.status(200).json({ ok: true, skipped: 'no_email' });
+
+      const subHead = { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}`, 'Content-Type': 'application/json' };
+      const now = new Date().toISOString();
+      let patch = { last_event_at: now };
+
+      if (event === 'hard_bounce') {
+        patch.status = 'bounced';
+        patch.bounce_status = 'hard_bounce';
+        patch.bounce_reason = reason;
+      } else if (event === 'spam' || event === 'complaint') {
+        patch.status = 'complained';
+        patch.bounce_status = 'spam_complaint';
+        patch.bounce_reason = reason;
+      } else if (event === 'unsubscribed') {
+        patch.status = 'unsubscribed';
+      } else if (event === 'soft_bounce') {
+        // Soft bounce: incrementa contador. Ao chegar 3, vira hard.
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(email)}&select=soft_bounce_count`, { headers: subHead });
+        const rows = r.ok ? await r.json() : [];
+        const cur = (rows[0]?.soft_bounce_count || 0) + 1;
+        patch.soft_bounce_count = cur;
+        patch.bounce_status = 'soft_bounce';
+        patch.bounce_reason = reason;
+        if (cur >= 3) {
+          patch.status = 'bounced';
+          patch.bounce_status = 'soft_bounce_3x';
+        }
+      } else {
+        // delivered/opened/click → log apenas last_event_at
+      }
+
+      await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(email)}`, {
+        method: 'PATCH',
+        headers: { ...subHead, Prefer: 'return=minimal' },
+        body: JSON.stringify(patch),
+      });
+      return res.status(200).json({ ok: true, event, email, applied: patch });
+    } catch (e) {
+      return res.status(500).json({ error: 'webhook_failed', detail: e.message });
+    }
+  }
+
   const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   const admin = await validateAdmin(auth);
   if (!admin) return res.status(403).json({ error: 'Forbidden: admin access required' });
@@ -193,6 +250,59 @@ module.exports = async (req, res) => {
         next_cron_label: nextEmailRunLabel(),
       });
     } catch (e) { return res.status(500).json({ error: 'campaigns_progress_failed', detail: e.message }); }
+  }
+
+  // === Onda 3: type=health — saúde do envio (bounce rate, complaints, suppression) ===
+  if (type === 'health') {
+    if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
+    try {
+      const subHead = { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` };
+      // Counts por status
+      const statuses = ['active','bounced','complained','unsubscribed'];
+      const counts = {};
+      await Promise.all(statuses.map(async s => {
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?status=eq.${s}&select=*`, {
+          headers: { ...subHead, Prefer:'count=exact', Range:'0-0' },
+        });
+        const cr = r.headers.get('content-range') || '*/0';
+        counts[s] = parseInt(cr.split('/')[1] || '0', 10);
+      }));
+      // Brevo aggregated últimos 7 dias pra rates
+      let bounceRate = 0, complaintRate = 0, deliveredCount = 0;
+      const BREVO_KEY = process.env.BREVO_API_KEY;
+      if (BREVO_KEY) {
+        try {
+          const start = new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+          const end = new Date().toISOString().slice(0,10);
+          const r = await fetch(`https://api.brevo.com/v3/smtp/statistics/aggregatedReport?startDate=${start}&endDate=${end}`,
+            { headers: { 'accept':'application/json', 'api-key': BREVO_KEY } });
+          if (r.ok) {
+            const d = await r.json();
+            const total = d.requests || d.delivered || 0;
+            const bounces = (d.hardBounces||0) + (d.softBounces||0);
+            const complaints = d.spamReports || 0;
+            deliveredCount = d.delivered || 0;
+            bounceRate = total > 0 ? (bounces / total * 100) : 0;
+            complaintRate = total > 0 ? (complaints / total * 100) : 0;
+          }
+        } catch {}
+      }
+      // Auto-pause se bounce > 5% (Gmail caps em 0.3%, mas threshold de pânico = 5%)
+      let autoPaused = false;
+      if (bounceRate > 5 && deliveredCount > 50) {
+        const cur = await readPauseFlag();
+        if (!cur) {
+          await writePauseFlag(true);
+          autoPaused = true;
+        }
+      }
+      return res.status(200).json({
+        subscribers_by_status: counts,
+        last_7d: { bounce_rate: +bounceRate.toFixed(2), complaint_rate: +complaintRate.toFixed(3), delivered: deliveredCount },
+        thresholds: { bounce_warn: 2, bounce_critical: 5, complaint_warn: 0.1, complaint_critical: 0.3 },
+        auto_paused_now: autoPaused,
+      });
+    } catch (e) { return res.status(500).json({ error: 'health_failed', detail: e.message }); }
   }
 
   // === GET type=email_status (admin email card) ===
