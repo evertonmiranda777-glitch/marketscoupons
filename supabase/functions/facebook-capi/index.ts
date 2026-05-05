@@ -28,9 +28,12 @@ const EVENT_MAP: Record<string, string[]> = {
   'checkout_click':         ['InitiateCheckout', 'Lead'],
   'user_signup':            ['CompleteRegistration'],
   'user_login':             ['Login'],
-  'tool_lead_capture':      ['Lead'],
-  'calc_unlocked':          ['Lead'],
-  'quiz_complete':          ['Lead'],
+  // 2026-05-05: removido mapping pra Lead. Tool/quiz/calc unlock NÃO indica
+  // intenção de compra. Inflava ~30x denominador Meta (4994 leads vs 160 IC).
+  // Eventos seguem rastreados internamente como custom events sem mapping CAPI.
+  'tool_lead_capture':      [],
+  'calc_unlocked':          [],
+  'quiz_complete':          [],
   'loyalty_register':       ['CompleteRegistration'],
   'loyalty_proof_submitted':['SubmitApplication'],
   'pro_checkout_click':     ['InitiateCheckout'],

@@ -4314,10 +4314,9 @@ async function unlockCalc(){
   document.getElementById('calc-gate').style.display='none';
   document.getElementById('calc-content').style.display='block';
   track('calc_unlocked',{name,email});
-  // Removido fbq('track','Lead') — tool unlock NÃO é candidato a compra. Inflava
-  // denominador Lead ~30x (4994 leads vs 160 InitiateCheckout). Meta otimizava
-  // pra trazer user de tool em vez de comprador. GA generate_lead segue pra GA4.
-  if(typeof gtag==='function') gtag('event','generate_lead',{currency:'USD',value:0,event_label:'calc'});
+  // Removido fbq Lead + gtag generate_lead — tool unlock NÃO é candidato a compra.
+  // Inflava denominador Lead ~30x (4994 leads vs 160 IC) tanto em Meta quanto GA4.
+  // Evento interno calc_unlocked segue rastreado em Supabase pra analytics próprios.
 }
 function calcPS(){
   const bal=parseFloat(document.getElementById('ps-bal')?.value)||0;const risk=parseFloat(document.getElementById('ps-risk')?.value)||0;const ent=parseFloat(document.getElementById('ps-ent')?.value)||0;const sl=parseFloat(document.getElementById('ps-sl')?.value)||0;const tp=parseFloat(document.getElementById('ps-tp')?.value)||0;const mult=parseFloat(document.getElementById('ps-instr')?.value)||50;
@@ -5805,8 +5804,7 @@ async function saveLead(data) {
 
   localStorage.setItem('mc_unlocked_' + data.tool, '1');
   track('tool_lead_capture', { tool: data.tool, email: data.email, name: data.name });
-  // Removido fbq Lead — tool unlock genérico não é compra. Inflava denominador.
-  if(typeof gtag==='function') gtag('event','generate_lead',{currency:'USD',value:0,event_label:data.tool});
+  // Removido fbq Lead + gtag generate_lead — tool unlock genérico não é compra.
 }
 function isUnlocked(t) { return localStorage.getItem('mc_unlocked_' + t) === '1'; }
 
