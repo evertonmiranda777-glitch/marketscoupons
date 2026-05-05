@@ -5,12 +5,17 @@ on:
     - cron: '0 4 * * *'  # 04:00 UTC = 01:00 BRT
   workflow_dispatch:
 
+
+concurrency:
+  group: apex-daily
+  cancel-in-progress: true
 permissions:
   contents: write
 
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

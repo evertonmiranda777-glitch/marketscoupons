@@ -5,12 +5,17 @@ on:
     - cron: '0 9 * * 1'  # Monday 09:00 UTC
   workflow_dispatch:
 
+
+concurrency:
+  group: firm-monitor
+  cancel-in-progress: true
 permissions:
   contents: write
 
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

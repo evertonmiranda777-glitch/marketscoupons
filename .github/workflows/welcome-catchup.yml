@@ -6,12 +6,17 @@ on:
     - cron: '15 * * * *'
   workflow_dispatch:
 
+
+concurrency:
+  group: welcome-catchup
+  cancel-in-progress: true
 permissions:
   contents: read
 
 jobs:
   catchup:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

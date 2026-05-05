@@ -15,12 +15,17 @@ on:
         required: false
         default: '250'
 
+
+concurrency:
+  group: email-auto-dispatch
+  cancel-in-progress: true
 permissions:
   contents: read
 
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Trigger /api/cron-bulk-send
         env:

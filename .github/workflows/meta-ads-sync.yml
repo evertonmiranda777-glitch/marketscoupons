@@ -5,9 +5,14 @@ on:
     - cron: '0 8 * * *'  # 5h Brasilia (08:00 UTC) diario
   workflow_dispatch:
 
+
+concurrency:
+  group: meta-ads-sync
+  cancel-in-progress: true
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Trigger meta-ads-sync edge function
         run: |

@@ -5,9 +5,14 @@ on:
     - cron: '30 8 * * *'  # 5h30 Brasilia (08:30 UTC) — roda apos meta-ads-sync
   workflow_dispatch:
 
+
+concurrency:
+  group: attribution-matcher
+  cancel-in-progress: true
 jobs:
   match:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Trigger attribution-matcher edge function
         run: |

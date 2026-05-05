@@ -6,12 +6,17 @@ on:
     - cron: '0 3 * * *'
   workflow_dispatch:
 
+
+concurrency:
+  group: backup-supabase
+  cancel-in-progress: true
 permissions:
   contents: read
 
 jobs:
   backup:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 

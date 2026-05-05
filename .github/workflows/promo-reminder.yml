@@ -5,9 +5,15 @@ on:
     - cron: '0 * * * *'  # hora em hora
   workflow_dispatch:
 
+# Evita acumular jobs esperando runner
+concurrency:
+  group: promo-reminder
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Trigger promo-reminder action
         run: |
