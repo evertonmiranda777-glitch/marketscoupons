@@ -13740,13 +13740,31 @@ async function loadAutoStatus(){
   } catch(e){ /* silencioso */ }
 }
 
-// Forçar envio agora — chama cron-bulk-send com JWT admin
+// Forçar envio agora — chama cron-bulk-send com JWT admin (com dedup proof)
 async function forceCronSend(){
   const btn = document.getElementById('auto-force-btn'); if(!btn) return;
-  const batchStr = prompt('Quantos emails enviar agora? (default 500, máx 500/dia entre os 3 providers)', '500');
+  // Buscar progresso real ANTES de mostrar prompt
+  let elegiveis = '?', jaReceberam = '?';
+  try {
+    const tk0 = await _adminBearer();
+    const pr = await fetch('/api/brevo-stats?type=campaigns_progress', { headers:{ Authorization:'Bearer '+tk0 } });
+    const pd = await pr.json();
+    const camp = (pd.campaigns||[]).find(c => c.campaign_key === 'site-invite');
+    if (camp) {
+      jaReceberam = (camp.received_count||0).toLocaleString('pt-BR');
+      elegiveis = (camp.pending_estimate||0).toLocaleString('pt-BR');
+    }
+  } catch {}
+  const batchStr = prompt(
+    `ENVIAR AGORA — campanha site-invite\n\n`+
+    `✓ Já receberam (NÃO recebem de novo): ${jaReceberam}\n`+
+    `→ Elegíveis agora (sem tag received-site-invite): ${elegiveis}\n\n`+
+    `Quantos enviar? (max 500/dia somando os 3 providers)`,
+    '500'
+  );
   if(batchStr===null) return;
   const batchSize = Math.max(1, Math.min(500, parseInt(batchStr,10) || 500));
-  if(!confirm(`Disparar ${batchSize} emails da campanha "site-invite" AGORA?\n\nDedup automático — quem já recebeu não recebe de novo.`)) return;
+  if(!confirm(`Disparar ${batchSize} emails AGORA?\n\nDedup garantido: query filtra tags=not.cs.{received-site-invite}. Quem ESTÁ na lista de "já receberam" (${jaReceberam}) é excluído antes de qualquer envio.`)) return;
   btn.disabled = true; const old = btn.innerHTML; btn.innerHTML = '⏳ Enviando...';
   try{
     const tk = await _adminBearer();
