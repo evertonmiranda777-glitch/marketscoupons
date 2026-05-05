@@ -4314,7 +4314,9 @@ async function unlockCalc(){
   document.getElementById('calc-gate').style.display='none';
   document.getElementById('calc-content').style.display='block';
   track('calc_unlocked',{name,email});
-  if(typeof fbq==='function') fbq('track','Lead',{content_name:'Position Size Calculator',content_category:'tool',value:0,currency:'USD'},{eventID:window._lastTrackId+'_Lead'});
+  // Removido fbq('track','Lead') — tool unlock NÃO é candidato a compra. Inflava
+  // denominador Lead ~30x (4994 leads vs 160 InitiateCheckout). Meta otimizava
+  // pra trazer user de tool em vez de comprador. GA generate_lead segue pra GA4.
   if(typeof gtag==='function') gtag('event','generate_lead',{currency:'USD',value:0,event_label:'calc'});
 }
 function calcPS(){
@@ -4354,7 +4356,7 @@ function qfinish(){
     if(!rec)return;
     document.getElementById('q-res-content').innerHTML=`<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec,'28px','11px')} ${rec.name}</span></div><div class="qr-desc">${(I18N[_currentLang]?.['firm_desc_'+rec.id]||I18N.pt['firm_desc_'+rec.id]||rec.desc||'')}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
     track('quiz_complete',{recommended_firm:rec.id,market_pref:market,priority});
-    if(typeof fbq==='function') fbq('track','Lead',{content_ids:[rec.id],content_name:rec.name,content_category:'quiz',value:0,currency:'USD'},{eventID:window._lastTrackId+'_Lead'});
+    // Removido fbq Lead — quiz não indica intenção de compra. Inflava denominador.
     if(typeof gtag==='function') gtag('event','quiz_complete',{event_label:rec.id});
   },300);
 }
@@ -5803,7 +5805,7 @@ async function saveLead(data) {
 
   localStorage.setItem('mc_unlocked_' + data.tool, '1');
   track('tool_lead_capture', { tool: data.tool, email: data.email, name: data.name });
-  if(typeof fbq==='function') fbq('track','Lead',{content_name:data.tool,content_category:'tool',value:0,currency:'USD'},{eventID:window._lastTrackId+'_Lead'});
+  // Removido fbq Lead — tool unlock genérico não é compra. Inflava denominador.
   if(typeof gtag==='function') gtag('event','generate_lead',{currency:'USD',value:0,event_label:data.tool});
 }
 function isUnlocked(t) { return localStorage.getItem('mc_unlocked_' + t) === '1'; }
