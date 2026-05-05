@@ -26,9 +26,14 @@ const TEMPLATE_RELEASED = path.join(root, 'templates', 'criativo_evento 002.html
 const OUT_PNG = path.join(root, 'img', 'event-alert.png');
 const STATE_FILE = path.join(root, '.firecrawl', 'events-sent.json');
 
+// 2026-05-05: GitHub Actions schedule cron tem throttle pesado (gaps 47-194 min
+// observados em 24h vs declarado */5min). Janela alargada pra 120 min compensa.
+// Trade-off: alert pode chegar até ~2h antes do evento em vez de 5 min, mas
+// chega — antes era miss completo. LEAD_MIN preservado pro display.
 const LEAD_MIN = 5;
-const WINDOW = 6; // events scheduled in [+5,+11] min get pre-alerted
-const CUTOFF_ET = 18 * 60 + 30; // 18:30 ET — nao alerta eventos depois desse horario
+const WINDOW = 120; // events scheduled in [+5, +125] min get pre-alerted
+// 22:30 UTC = 18:30 EDT = 17:30 EST — eventos depois dessa hora UTC não alertam
+const CUTOFF_ET = 22 * 60 + 30;
 const US_RX = /united states|^us$|usa/i;
 
 fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
@@ -60,7 +65,10 @@ function eventId(e) {
   return `${e.date}|${e.time}|${e.currency}|${e.event}|${e.reference || ''}`;
 }
 
-function parseTimeET(timeStr) {
+// FIX 2026-05-05: economic-calendar API retorna horários em UTC ("02:00 PM" = 14:00 UTC),
+// não ET. Antes parseTimeET tratava como ET → alerta saía 3-4h depois do evento real.
+// Agora ambos (parseTimeUtc + nowInUtc) usam UTC consistente.
+function parseTimeUtc(timeStr) {
   if (!timeStr) return null;
   const m = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
   if (!m) return null;
@@ -71,15 +79,14 @@ function parseTimeET(timeStr) {
   if (ap === 'AM' && h === 12) h = 0;
   return h * 60 + min;
 }
+// alias mantido pra compat
+const parseTimeET = parseTimeUtc;
 
-function nowInET() {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false,
-  }).formatToParts(new Date());
-  const h = parseInt(parts.find(p => p.type === 'hour').value, 10);
-  const m = parseInt(parts.find(p => p.type === 'minute').value, 10);
-  return h * 60 + (isNaN(m) ? 0 : m);
+function nowInUtc() {
+  const d = new Date();
+  return d.getUTCHours() * 60 + d.getUTCMinutes();
 }
+const nowInET = nowInUtc;
 
 function fmtDate(isoDate) {
   try {
@@ -158,8 +165,8 @@ async function renderEvent(event, mode) {
       const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
       const setHTML = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.innerHTML = val; };
 
-      // Header label → UPCOMING
-      set('.ch-label', `High Impact Event — Upcoming in ${e.leadMin} Min`);
+      // Header label → UPCOMING (usa leadDisplay que pode ser '45 min' ou '2h 15min')
+      set('.ch-label', `High Impact Event — Upcoming in ${e.leadDisplay || (e.leadMin + ' Min')}`);
       // Make header yellow for upcoming
       const adot = document.querySelector('.adot');
       if (adot) { adot.style.background = '#f5c518'; adot.style.boxShadow = '0 0 10px rgba(245,197,24,.9)'; }
@@ -207,7 +214,7 @@ async function renderEvent(event, mode) {
         const dot = missBadge.querySelector('.miss-dot');
         if (dot) { dot.style.background = '#f5c518'; }
         const lbl = missBadge.querySelector('.miss-lbl');
-        if (lbl) { lbl.textContent = `In ${e.leadMin} Min`; lbl.style.color = '#f5c518'; }
+        if (lbl) { lbl.textContent = `In ${e.leadDisplay || (e.leadMin + ' Min')}`; lbl.style.color = '#f5c518'; }
         missBadge.style.background = 'rgba(245,197,24,.1)';
         missBadge.style.borderColor = 'rgba(245,197,24,.25)';
       }
@@ -360,10 +367,13 @@ async function tgDeleteMessage(msgId) {
 
   for (const e of upcoming) {
     const id = eventId(e);
-    console.log(`[pre] → ${e.time} ${e.currency} ${e.event}`);
+    const t = parseTimeET(e.time);
+    const actualLeadMin = t != null ? Math.max(LEAD_MIN, t - now) : LEAD_MIN;
+    const leadDisplay = actualLeadMin >= 60 ? `${Math.floor(actualLeadMin/60)}h${actualLeadMin%60 ? ' '+actualLeadMin%60+'min' : ''}` : `${actualLeadMin} min`;
+    console.log(`[pre] → ${e.time} ${e.currency} ${e.event} (in ${leadDisplay})`);
     try {
-      await renderEvent({ ...e, leadMin: LEAD_MIN, dateFmt: fmtDate(e.date) }, 'upcoming');
-      const msgId = await tgSendPhoto(OUT_PNG, `⏱ ${e.currency} ${e.event} — in ${LEAD_MIN} min`);
+      await renderEvent({ ...e, leadMin: actualLeadMin, leadDisplay, dateFmt: fmtDate(e.date) }, 'upcoming');
+      const msgId = await tgSendPhoto(OUT_PNG, `⏱ ${e.currency} ${e.event} — in ${leadDisplay}`);
       state[id] = { preMsgId: msgId, released: false };
       saveState(state);
     } catch (err) {
@@ -403,5 +413,10 @@ async function tgDeleteMessage(msgId) {
     }
   }
 
+  // Sempre persiste state (mesmo vazio) pra prova de execução + debug timestamp
+  state.__last_run = new Date().toISOString();
+  state.__last_now_et = now;
+  state.__last_summary = { events_total: events.length, upcoming_sent: upcoming.length, released_sent: released.length };
+  saveState(state);
   console.log('[event-alert] done');
 })();
