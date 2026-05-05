@@ -160,8 +160,13 @@ module.exports = async (req, res) => {
   if (!isCron && !isAdmin) return res.status(401).json({ error: 'Unauthorized' });
   if (!SK || !UNSUB_SECRET) return res.status(500).json({ error: 'missing env keys' });
 
-  const { campaign, filterTag = null, batchSize = 400 } = req.body || {};
+  const { campaign, filterTag = null } = req.body || {};
+  // batchSize bounded: max 500 (Brevo bulk 295 + Resend 100 + SendGrid 100), evita drain via JWT admin comprometido
+  const batchSize = Math.max(1, Math.min(Number(req.body?.batchSize) || 400, 500));
   if (!campaign) return res.status(400).json({ error: 'campaign required' });
+  // Validar campaign/filterTag pra evitar PostgREST filter injection
+  if (!/^[a-z0-9_-]+$/i.test(campaign)) return res.status(400).json({ error: 'invalid campaign format' });
+  if (filterTag && !/^[a-z0-9_-]+$/i.test(filterTag)) return res.status(400).json({ error: 'invalid filterTag format' });
 
   try {
     // Check if auto-email is paused (admin toggle via /api/email-status)

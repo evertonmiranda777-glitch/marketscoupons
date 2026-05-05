@@ -2,9 +2,19 @@
 // GET /api/brevo-stats?type=events|report&days=7&tag=promo-apex&offset=0&limit=50
 // Requires admin JWT in Authorization header
 
+const crypto = require('crypto');
 const { applyCors } = require('./_cors.js');
 const { rateLimitIp } = require('./_ratelimit.js');
 const { safeError } = require('./_safe-error.js');
+
+function timingSafeEq(a, b) {
+  try {
+    const ba = Buffer.from(String(a || ''));
+    const bb = Buffer.from(String(b || ''));
+    if (ba.length !== bb.length) return false;
+    return crypto.timingSafeEqual(ba, bb);
+  } catch { return false; }
+}
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
@@ -108,13 +118,16 @@ module.exports = async (req, res) => {
   if (applyCors(req, res, { methods: 'GET, POST, OPTIONS' })) return;
   if (!rateLimitIp(req, 60)) return res.status(429).json({ error: 'rate_limit' });
 
-  // === Onda 3: Brevo webhook (autenticação via token na URL, sem JWT) ===
-  // Brevo POSTa em /api/brevo-stats?action=webhook&token=<BREVO_WEBHOOK_TOKEN>
+  // === Onda 3: Brevo webhook (autenticação via token, sem JWT) ===
+  // Brevo POSTa em /api/brevo-stats?action=webhook
+  // Token aceito via header X-Webhook-Token OU query param ?token=X (legacy/Brevo UI)
   // Eventos: delivered, soft_bounce, hard_bounce, spam, unsubscribed, etc.
   if (req.method === 'POST' && req.query?.action === 'webhook') {
+    if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit_webhook' });
     const expectedToken = process.env.BREVO_WEBHOOK_TOKEN;
     if (!expectedToken) return res.status(500).json({ error: 'BREVO_WEBHOOK_TOKEN not configured' });
-    if (req.query.token !== expectedToken) return res.status(401).json({ error: 'Invalid webhook token' });
+    const provided = req.headers['x-webhook-token'] || req.query.token || '';
+    if (!timingSafeEq(provided, expectedToken)) return res.status(401).json({ error: 'Invalid webhook token' });
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
 
     try {

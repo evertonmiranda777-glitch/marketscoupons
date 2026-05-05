@@ -1,0 +1,235 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "Markets Coupons" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - link "← Voltar pra home" [ref=e4] [cursor=pointer]:
+      - /url: /
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]: Comparativo Prop Firms 2026
+      - heading "Apex Trader Funding vs Bulenox" [level=1] [ref=e8]:
+        - text: Apex Trader Funding
+        - generic [ref=e9]: vs
+        - text: Bulenox
+      - paragraph [ref=e10]: Análise lado a lado das duas prop firms. Conta de entrada a partir de $15.95.
+    - generic [ref=e11]:
+      - article [ref=e12]:
+        - img "Apex Trader Funding logo" [ref=e13]
+        - generic [ref=e14]: Apex Trader Funding
+        - generic [ref=e15]: Futuros
+        - generic [ref=e16]: 90% OFF
+        - generic [ref=e17]: lifetime
+        - generic [ref=e18]:
+          - generic [ref=e19]: Futuros
+          - generic [ref=e20]: Lifetime
+          - generic [ref=e21]: Trailing DD
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - strong [ref=e24]: 100%
+            - text: split
+          - generic [ref=e25]:
+            - strong [ref=e26]: $19.90
+            - text: entry
+          - strong [ref=e28]: 4.4 ★
+        - link "Acessar Apex →" [ref=e29] [cursor=pointer]:
+          - /url: https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644
+        - generic [ref=e30]:
+          - text: "Cupom:"
+          - strong [ref=e31]: MARKET
+      - generic [ref=e32]: VS
+      - article [ref=e33]:
+        - img "Bulenox logo" [ref=e34]
+        - generic [ref=e35]: Bulenox
+        - generic [ref=e36]: Futuros
+        - generic [ref=e37]: 89% OFF
+        - generic [ref=e38]: lifetime
+        - generic [ref=e39]:
+          - generic [ref=e40]: Futuros
+          - generic [ref=e41]: Lifetime
+          - generic [ref=e42]: 1 dia
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - strong [ref=e45]: 90%
+            - text: split
+          - generic [ref=e46]:
+            - strong [ref=e47]: $15.95
+            - text: entry
+          - strong [ref=e49]: 4.8 ★
+        - link "Acessar Bulenox →" [ref=e50] [cursor=pointer]:
+          - /url: https://bulenox.com/member/aff/go/marketcoupons
+        - generic [ref=e51]:
+          - text: "Cupom:"
+          - strong [ref=e52]: MARKET89
+    - generic [ref=e53]:
+      - generic [ref=e54]:
+        - generic [ref=e55]: ★★★★☆
+        - generic [ref=e56]:
+          - generic [ref=e57]: "4.4"
+          - generic [ref=e58]: 18.382 reviews · Trustpilot
+      - generic [ref=e59]:
+        - generic [ref=e60]: ★★★★½
+        - generic [ref=e61]:
+          - generic [ref=e62]: "4.8"
+          - generic [ref=e63]: 1.516 reviews · Trustpilot
+    - generic [ref=e64]:
+      - generic [ref=e65]: Lado a lado
+      - heading "Apex vs Bulenox — Comparação" [level=2] [ref=e66]
+      - paragraph [ref=e67]: Cada categoria mostra o vencedor entre as duas firmas.
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - generic [ref=e70]:
+          - text: Desconto
+          - generic [ref=e71]: Quanto OFF do preço original
+        - generic [ref=e72]:
+          - generic [ref=e73]:
+            - generic [ref=e74]: 90% lifetime
+            - generic [ref=e75]: ✓ Vence
+          - generic [ref=e76]: vs
+          - generic [ref=e78]: 89% lifetime
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - text: Conta menor
+          - generic [ref=e81]: Preço final c/ cupom (entrada mais barata)
+        - generic [ref=e82]:
+          - generic [ref=e84]: $19.90
+          - generic [ref=e85]: vs
+          - generic [ref=e86]:
+            - generic [ref=e87]: $15.95
+            - generic [ref=e88]: ✓ Vence
+      - generic [ref=e89]:
+        - generic [ref=e90]:
+          - text: Profit Split
+          - generic [ref=e91]: Quanto do lucro fica com o trader
+        - generic [ref=e92]:
+          - generic [ref=e94]: 100%
+          - generic [ref=e95]: vs
+          - generic [ref=e97]: 90%
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - text: Drawdown
+          - generic [ref=e100]: Tipo de limite de perda
+        - generic [ref=e101]:
+          - generic [ref=e103]: Trailing/EOD
+          - generic [ref=e104]: vs
+          - generic [ref=e106]: Trailing
+      - generic [ref=e107]:
+        - generic [ref=e108]: DD Limit
+        - generic [ref=e109]:
+          - generic [ref=e111]: "-5% trail"
+          - generic [ref=e112]: vs
+          - generic [ref=e114]: "-$1.5K a -$6.5K"
+      - generic [ref=e115]:
+        - generic [ref=e116]: Profit Target
+        - generic [ref=e117]:
+          - generic [ref=e119]: 8%
+          - generic [ref=e120]: vs
+          - generic [ref=e122]: $1.5K a $15K
+      - generic [ref=e123]:
+        - generic [ref=e124]: Min. Days
+        - generic [ref=e125]:
+          - generic [ref=e127]: "1"
+          - generic [ref=e128]: vs
+          - generic [ref=e130]: "1"
+      - generic [ref=e131]:
+        - generic [ref=e132]: News Trading
+        - generic [ref=e133]:
+          - generic [ref=e135]: ✓ Permitido
+          - generic [ref=e136]: vs
+          - generic [ref=e138]: ✓ Permitido
+      - generic [ref=e139]:
+        - generic [ref=e140]: Day-1 Payout
+        - generic [ref=e141]:
+          - generic [ref=e143]: ✓ Sim
+          - generic [ref=e144]: vs
+          - generic [ref=e146]: ✓ Sim
+      - generic [ref=e147]:
+        - generic [ref=e148]: Scaling
+        - generic [ref=e149]:
+          - generic [ref=e151]: Sim
+          - generic [ref=e152]: vs
+          - generic [ref=e154]: Ate $400K
+      - generic [ref=e155]:
+        - generic [ref=e156]: Plataformas
+        - generic [ref=e157]:
+          - generic [ref=e159]: Rithmic, Tradovate, NinjaTrader...
+          - generic [ref=e160]: vs
+          - generic [ref=e162]: Rithmic, NinjaTrader
+      - generic [ref=e163]:
+        - generic [ref=e164]:
+          - text: Trustpilot
+          - generic [ref=e165]: Reputação real
+        - generic [ref=e166]:
+          - generic [ref=e168]: 4.4 (18.382)
+          - generic [ref=e169]: vs
+          - generic [ref=e170]:
+            - generic [ref=e171]: 4.8 (1.516)
+            - generic [ref=e172]: ✓ Vence
+    - generic [ref=e173]:
+      - generic [ref=e174]: Quem deve escolher
+      - heading "Pra quem cada firma é melhor" [level=2] [ref=e175]
+    - generic [ref=e176]:
+      - article [ref=e177]:
+        - generic [ref=e178]:
+          - text: Escolha
+          - generic [ref=e179]: Apex Trader Funding
+          - text: se você...
+        - list [ref=e180]:
+          - listitem [ref=e181]: ✓ prioriza maior desconto (90% OFF)
+      - article [ref=e182]:
+        - generic [ref=e183]:
+          - text: Escolha
+          - generic [ref=e184]: Bulenox
+          - text: se você...
+        - list [ref=e185]:
+          - listitem [ref=e186]: ✓ quer entrar com pouco capital (a partir de $15.95)
+          - listitem [ref=e187]: ✓ valoriza reputação Trustpilot (4.8 ★)
+    - generic [ref=e188]:
+      - generic [ref=e189]: Perguntas frequentes
+      - heading "Apex vs Bulenox — FAQ" [level=2] [ref=e190]
+    - generic [ref=e191]:
+      - group [ref=e192]:
+        - 'generic "? Qual é melhor: Apex Trader Funding ou Bulenox?" [ref=e193]'
+      - group [ref=e194]:
+        - generic "? Quanto custa a conta de Apex vs Bulenox?" [ref=e195]
+      - group [ref=e196]:
+        - generic "? Apex ou Bulenox permite news trading?" [ref=e197]
+      - group [ref=e198]:
+        - generic "? Quanto tempo pra fazer payout em Apex e Bulenox?" [ref=e199]
+      - group [ref=e200]:
+        - generic "? Posso ter conta nas duas firmas ao mesmo tempo?" [ref=e201]
+    - generic [ref=e202]:
+      - generic [ref=e203]: Outros comparativos
+      - heading "Compare também" [level=2] [ref=e204]
+    - generic [ref=e205]:
+      - link "Apex vs FTMO" [ref=e206] [cursor=pointer]:
+        - /url: /apex-vs-ftmo
+      - link "Apex vs TPT" [ref=e207] [cursor=pointer]:
+        - /url: /apex-vs-tpt
+      - link "Apex vs FundedNext" [ref=e208] [cursor=pointer]:
+        - /url: /apex-vs-fn
+      - link "Apex vs E2T" [ref=e209] [cursor=pointer]:
+        - /url: /apex-vs-e2t
+      - link "Apex vs The5ers" [ref=e210] [cursor=pointer]:
+        - /url: /apex-vs-the5ers
+      - link "Apex vs FPips" [ref=e211] [cursor=pointer]:
+        - /url: /apex-vs-fundingpips
+      - link "Apex vs BFunded" [ref=e212] [cursor=pointer]:
+        - /url: /apex-vs-brightfunded
+      - link "Apex vs E8" [ref=e213] [cursor=pointer]:
+        - /url: /apex-vs-e8
+    - generic [ref=e214]:
+      - link "Pronto pra começar? Apex Trader Funding 90% OFF · cupom MARKET" [ref=e215] [cursor=pointer]:
+        - /url: https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644
+        - generic [ref=e216]: Pronto pra começar?
+        - generic [ref=e217]: Apex Trader Funding
+        - generic [ref=e218]: 90% OFF · cupom MARKET
+      - link "Pronto pra começar? Bulenox 89% OFF · cupom MARKET89" [ref=e219] [cursor=pointer]:
+        - /url: https://bulenox.com/member/aff/go/marketcoupons
+        - generic [ref=e220]: Pronto pra começar?
+        - generic [ref=e221]: Bulenox
+        - generic [ref=e222]: 89% OFF · cupom MARKET89
+    - contentinfo [ref=e223]:
+      - link "marketscoupons.com" [ref=e224] [cursor=pointer]:
+        - /url: /
+      - text: · Comparativo gerado de dados oficiais e atualizado em 02/05/2026
+      - paragraph [ref=e225]: Cupons e condições podem mudar. Confirme no checkout da firma. Markets Coupons recebe comissão de afiliado em compras feitas via links acima — sem custo adicional pra você.

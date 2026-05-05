@@ -289,7 +289,7 @@ module.exports = async (req, res) => {
       try {
         const today = new Date().toISOString().slice(0, 10);
         const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.resend&created_at=gte.${today}&select=recipients`, {
-          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+          headers: { apikey: SUPABASE_SERVICE_KEY||SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY||SUPABASE_KEY}` },
         });
         const logs = r.ok ? await r.json() : [];
         const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
@@ -305,7 +305,7 @@ module.exports = async (req, res) => {
       try {
         const today = new Date().toISOString().slice(0, 10);
         const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.sendgrid&created_at=gte.${today}&select=recipients`, {
-          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+          headers: { apikey: SUPABASE_SERVICE_KEY||SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY||SUPABASE_KEY}` },
         });
         const logs = r.ok ? await r.json() : [];
         const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);

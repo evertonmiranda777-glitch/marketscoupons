@@ -39,6 +39,10 @@ if (!SR && !SBP) { console.error('SUPABASE_SERVICE_ROLE ou SUPABASE_ACCESS_TOKEN
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const num = (s) => { const m = String(s ?? '').match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : null; };
+// Safe JSON pra inline em <script type="application/ld+json"> — escape </script>, < e &
+const safeJson = (o) => JSON.stringify(o).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+// Img URL com slash garantido (icon_url do CMS pode vir sem leading /)
+const imgUrl = (p) => p ? `https://www.marketscoupons.com${String(p).startsWith('/') ? '' : '/'}${p}` : '';
 
 async function loadFirms() {
   // Tenta PostgREST primeiro se tiver service_role JWT
@@ -82,7 +86,9 @@ function genPage(f, allFirms) {
   const short = f.short_name || f.name.split(' ')[0];
   const others = allFirms.filter(o => o.id !== f.id).slice(0, 6);
 
-  const title = `${f.name} ${f.discount ? f.discount + '% OFF' : 'Cupom'} 2026 | Cupom ${f.coupon || ''} | Markets Coupons`;
+  // Title: omitir o segmento "Cupom XXX" se firma não tem código próprio
+  const titleCouponPart = f.coupon ? ` | Cupom ${f.coupon}` : '';
+  const title = `${f.name} ${f.discount ? f.discount + '% OFF' : 'Cupom Exclusivo'} 2026${titleCouponPart} | Markets Coupons`;
   const desc = `${f.name}: ${f.discount ? f.discount + '% OFF' : 'cupom exclusivo'}${f.coupon ? ' com código ' + f.coupon : ''}. Drawdown ${f.drawdown || ''}, Split ${f.split || ''}. Conta a partir de ${minPrice ? '$' + minPrice.toFixed(2) : 'preços competitivos'}.`.slice(0, 160);
 
   // Stats compactos
@@ -143,11 +149,21 @@ function genPage(f, allFirms) {
     return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
   };
 
-  // FAQ
+  // FAQ — todos os interpolados de DB passam por esc() pra evitar XSS via CMS field
+  const eName = esc(f.name);
+  const eCoupon = esc(f.coupon || '');
+  const eShort = esc(short);
+  const eDiscType = esc(f.discount_type || '');
+  const eDrawdown = esc(f.drawdown || '—');
+  const eDdPct = esc(f.dd_pct || '');
+  const eTarget = esc(f.target || '—');
+  const eSplit = esc(f.split || '—');
+  const eMinDays = esc(f.min_days ? String(f.min_days) : 'alguns');
+  const ePlatforms = Array.isArray(f.platforms) && f.platforms.length ? f.platforms.map(esc).join(', ') : '';
   const faqs = [
     {
       q: `Qual o cupom de desconto da ${f.name}?`,
-      a: `${f.coupon ? `Use o cupom <strong>${f.coupon}</strong> no checkout da ${f.name}` : `Cupons exclusivos disponíveis`} pra ${f.discount ? f.discount + '% de desconto' : 'desconto especial'}${f.discount_type ? ' (' + f.discount_type + ')' : ''}.`
+      a: `${f.coupon ? `Use o cupom <strong>${eCoupon}</strong> no checkout da ${eName}` : `Cupons exclusivos disponíveis`} pra ${f.discount ? f.discount + '% de desconto' : 'desconto especial'}${f.discount_type ? ' (' + eDiscType + ')' : ''}.`
     },
     {
       q: `Quanto custa a conta mais barata na ${f.name}?`,
@@ -155,19 +171,19 @@ function genPage(f, allFirms) {
     },
     {
       q: `${short} permite news trading?`,
-      a: `${f.news_trading ? `Sim, ${f.name} <strong>permite</strong> operar durante notícias econômicas.` : `Não, ${f.name} <strong>bloqueia</strong> trades durante janelas de notícias econômicas (5 min antes/depois geralmente).`}`
+      a: `${f.news_trading ? `Sim, ${eName} <strong>permite</strong> operar durante notícias econômicas.` : `Não, ${eName} <strong>bloqueia</strong> trades durante janelas de notícias econômicas (5 min antes/depois geralmente).`}`
     },
     {
       q: `Tem Day-1 payout na ${short}?`,
-      a: `${f.day1_payout ? `Sim, ${f.name} libera saque desde o Day-1 (assim que você bater o profit target da fase paga).` : `Não, ${f.name} exige período mínimo (${f.min_days || 'alguns'} dias) antes do primeiro payout.`}`
+      a: `${f.day1_payout ? `Sim, ${eName} libera saque desde o Day-1 (assim que você bater o profit target da fase paga).` : `Não, ${eName} exige período mínimo (${eMinDays} dias) antes do primeiro payout.`}`
     },
     {
       q: `Qual o drawdown e profit target da ${short}?`,
-      a: `Drawdown: ${f.drawdown || '—'}${f.dd_pct ? ' (' + f.dd_pct + ')' : ''}. Profit Target: ${f.target || '—'}. Profit Split: ${f.split || '—'}.`
+      a: `Drawdown: ${eDrawdown}${f.dd_pct ? ' (' + eDdPct + ')' : ''}. Profit Target: ${eTarget}. Profit Split: ${eSplit}.`
     },
     {
       q: `Quais plataformas a ${short} oferece?`,
-      a: Array.isArray(f.platforms) && f.platforms.length ? `Plataformas suportadas: ${f.platforms.join(', ')}.` : `Plataformas listadas no checkout oficial da firma.`
+      a: ePlatforms ? `Plataformas suportadas: ${ePlatforms}.` : `Plataformas listadas no checkout oficial da firma.`
     },
   ];
 
@@ -178,7 +194,7 @@ function genPage(f, allFirms) {
     name: f.name,
     description: desc,
     brand: { '@type': 'Brand', name: f.name },
-    image: f.icon_url ? `https://www.marketscoupons.com${f.icon_url}` : undefined,
+    image: f.icon_url ? imgUrl(f.icon_url) : undefined,
     offers: minPrice ? {
       '@type': 'Offer',
       priceCurrency: 'USD',
@@ -238,15 +254,15 @@ function genPage(f, allFirms) {
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="https://www.marketscoupons.com/${f.id}">
 <meta property="og:locale" content="pt_BR">
-${f.icon_url ? `<meta property="og:image" content="https://www.marketscoupons.com${esc(f.icon_url)}">` : ''}
+${f.icon_url ? `<meta property="og:image" content="${esc(imgUrl(f.icon_url))}">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script type="application/ld+json">${JSON.stringify(productSchema)}</script>
-<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
-<script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
+<script type="application/ld+json">${safeJson(productSchema)}</script>
+<script type="application/ld+json">${safeJson(faqSchema)}</script>
+<script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -503,20 +519,6 @@ img{max-width:100%;display:block}
 
 </div>
 
-<script>
-// Track clicks
-document.querySelectorAll('a[data-firm], .ch-cta, .plan-cta').forEach(a => {
-  a.addEventListener('click', () => {
-    try { if (window.parent !== window) return; } catch(e){}
-    try {
-      if (typeof navigator.sendBeacon === 'function') {
-        // Fallback minimo (sem dependência do app.js)
-        // O redirect carrega index.html no destino — tracking vai pegar lá
-      }
-    } catch(e){}
-  });
-});
-</script>
 </body>
 </html>`;
 }
