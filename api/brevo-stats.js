@@ -129,6 +129,72 @@ module.exports = async (req, res) => {
 
   const { type, days, tag, event, offset, limit } = req.query;
 
+  // === Onda 2: type=email_today — envios de hoje com drilldown ===
+  if (type === 'email_today') {
+    if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
+    try {
+      const todayStr = new Date().toISOString().slice(0,10);
+      const r = await fetch(
+        `${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${todayStr}&select=id,campaign_name,subject,recipients,recipients_emails,status,sent_by,provider,brevo_response,created_at&order=created_at.desc&limit=200`,
+        { headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` } }
+      );
+      const logs = r.ok ? await r.json() : [];
+      // Stats sumarizados
+      const totalSent = logs.reduce((s,l) => s + (l.recipients||0), 0);
+      const bySource = {};
+      const byProvider = { brevo:0, resend:0, sendgrid:0, auto:0 };
+      logs.forEach(l => {
+        const src = l.sent_by || 'unknown';
+        bySource[src] = (bySource[src]||0) + (l.recipients||0);
+        if (byProvider.hasOwnProperty(l.provider)) byProvider[l.provider] += (l.recipients||0);
+      });
+      return res.status(200).json({ total_today: totalSent, by_source: bySource, by_provider: byProvider, logs });
+    } catch (e) { return res.status(500).json({ error: 'email_today_failed', detail: e.message }); }
+  }
+
+  // === Onda 2: type=campaigns_progress — progresso por campanha (received-X) ===
+  if (type === 'campaigns_progress') {
+    if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
+    try {
+      const subHead = { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` };
+      // Pega todos os subscribers ativos com tags
+      const allR = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?status=eq.active&select=tags`, { headers: subHead });
+      const all = allR.ok ? await allR.json() : [];
+      const totalActive = all.length;
+      // Conta received-X tags
+      const received = {}; // {campaign_key: count}
+      all.forEach(s => {
+        if (Array.isArray(s.tags)) {
+          s.tags.forEach(t => {
+            const m = String(t).match(/^received-(.+)$/);
+            if (m) received[m[1]] = (received[m[1]]||0) + 1;
+          });
+        }
+      });
+      // Pega last send timestamp per campaign do email_logs
+      const logsR = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?select=campaign_name,created_at,brevo_response&order=created_at.desc&limit=200`, { headers: subHead });
+      const logs = logsR.ok ? await logsR.json() : [];
+      const lastSend = {};
+      logs.forEach(l => {
+        const m = (l.campaign_name||'').match(/(?:\[Cron\]|\[Auto\]|\[Fila\]|\[Auto-Pausa\])\s*(.+?)(?:\s*\(.*)?$/);
+        const campaignKey = m ? m[1].trim() : null;
+        if (campaignKey && !lastSend[campaignKey]) lastSend[campaignKey] = l.created_at;
+      });
+      const campaigns = Object.entries(received).map(([key, count]) => ({
+        campaign_key: key,
+        received_count: count,
+        pending_estimate: Math.max(0, totalActive - count),
+        total_active: totalActive,
+        last_send_at: lastSend[key] || null,
+      })).sort((a,b) => b.received_count - a.received_count);
+      return res.status(200).json({
+        total_active_subscribers: totalActive,
+        campaigns,
+        next_cron_label: nextEmailRunLabel(),
+      });
+    } catch (e) { return res.status(500).json({ error: 'campaigns_progress_failed', detail: e.message }); }
+  }
+
   // === GET type=email_status (admin email card) ===
   if (type === 'email_status') {
     try {

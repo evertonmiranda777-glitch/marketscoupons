@@ -1145,7 +1145,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <div class="sec-title">Email Marketing</div>
  <div class="sec-actions">
    <button class="btn-secondary" onclick="importLeadsAsSubscribers()">Importar Leads</button>
-   <button class="btn-secondary" onclick="eaRefresh();renderCampaignLog();loadSubscribersList()">Atualizar</button>
+   <button class="btn-secondary" onclick="eaRefresh();renderCampaignLog();loadEmailToday();loadCampaignsProgress();loadSubscribersList()">Atualizar</button>
  </div>
  </div>
 
@@ -1427,6 +1427,38 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  </div>
  </div><!-- /grid 2-col card2+preview -->
 
+ <!-- ONDA 2: Envios de Hoje (todos os senders consolidados) -->
+ <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+     <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(34,197,94,.14);color:#22C55E;">
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+     </span>
+     <div style="flex:1;">
+       <div style="font-size:15px;font-weight:700;color:var(--t1);">Envios de Hoje</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Todos os emails enviados hoje (welcome auto + manual + cron)</div>
+     </div>
+     <button class="btn-secondary" style="font-size:11px;" onclick="loadEmailToday()">↻ Atualizar</button>
+   </div>
+   <div id="email-today-summary" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;"></div>
+   <div id="email-today-logs"></div>
+ </div>
+
+ <!-- ONDA 2: Campanhas em Andamento -->
+ <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+     <span style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(240,180,41,.14);color:var(--gold);">
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+     </span>
+     <div style="flex:1;">
+       <div style="font-size:15px;font-weight:700;color:var(--t1);">Campanhas em Andamento</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Pra cada campanha: quantos receberam, quantos pendentes, próximo cron</div>
+     </div>
+     <button class="btn-secondary" style="font-size:11px;" onclick="loadCampaignsProgress()">↻ Atualizar</button>
+   </div>
+   <div id="campaigns-progress-meta" style="font-size:12px;color:var(--t3);margin-bottom:10px;"></div>
+   <div id="campaigns-progress"></div>
+ </div>
+
  <!-- Histórico abaixo, full-width -->
  <div style="background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-top:8px;">
    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
@@ -1434,8 +1466,8 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
      </span>
      <div style="flex:1;">
-       <div style="font-size:15px;font-weight:700;color:var(--t1);">Histórico de Campanhas</div>
-       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Todas as campanhas enviadas (manual + cron)</div>
+       <div style="font-size:15px;font-weight:700;color:var(--t1);">Histórico de Campanhas (últimas 20)</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Clique numa linha pra ver os emails que receberam</div>
      </div>
    </div>
    <div id="campaigns-log"></div>
@@ -3597,7 +3629,7 @@ function renderPage(p){
       loadEmailStats();
       updateDestCount();
       populateAudienceFirms();
-      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
+      setTimeout(function(){ renderSmtpAccounts(); loadEmailStats(); renderTemplatesList(); renderCampaignLog(); loadEmailToday(); loadCampaignsProgress(); loadSubscribersList(); eaInit(); updateDailyLimitUI(); updateQueueUI(); loadAutoStatus(); }, 60);
       // Auto-refresh card a cada 30s enquanto card visível
       if(window._autoStatusInterval) clearInterval(window._autoStatusInterval);
       window._autoStatusInterval = setInterval(()=>{
@@ -5744,6 +5776,100 @@ async function renderCampaignLog(){
 function toggleEmailLogDrilldown(i){
   const el = document.getElementById('emlog-dd-'+i);
   if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+// ── ONDA 2: Envios de Hoje ──
+async function loadEmailToday(){
+  try{
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
+    if(!token) return;
+    const r = await fetch('/api/brevo-stats?type=email_today', { headers:{ Authorization:'Bearer '+token } });
+    const data = await r.json();
+    const sumEl = document.getElementById('email-today-summary');
+    const logsEl = document.getElementById('email-today-logs');
+    if(!sumEl||!logsEl) return;
+    if(data.error){ sumEl.innerHTML=''; logsEl.innerHTML=`<div style="font-size:12px;color:var(--red);">${data.error}</div>`; return; }
+    const total = data.total_today || 0;
+    const bs = data.by_source || {};
+    const bp = data.by_provider || {};
+    const sourceLabel = { 'auth-hook':'Welcome auto', 'webhook':'Confirm/Resend', 'cron':'Cron diário', 'admin':'Manual admin' };
+    const cards = [
+      { label:'Total enviados hoje', val:total, color:'var(--gold)' },
+      ...Object.entries(bs).map(([k,v])=>({ label: sourceLabel[k]||k, val:v, color:'var(--t1)' })),
+      { label:'via Brevo', val:bp.brevo||0, color:'#3B82F6' },
+      { label:'via Resend', val:bp.resend||0, color:'#A855F7' },
+      { label:'via SendGrid', val:bp.sendgrid||0, color:'#22D3EE' },
+    ];
+    sumEl.innerHTML = cards.map(c=>`<div style="flex:1;min-width:120px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
+      <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">${c.label}</div>
+      <div style="font-size:22px;font-weight:800;color:${c.color};margin-top:4px;">${c.val.toLocaleString('pt-BR')}</div>
+    </div>`).join('');
+    const logs = data.logs || [];
+    if(!logs.length){ logsEl.innerHTML='<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhum envio hoje ainda.</div>'; return; }
+    logsEl.innerHTML = logs.map((l,i)=>{
+      const emails = Array.isArray(l.recipients_emails) ? l.recipients_emails : [];
+      const time = new Date(l.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      const status = l.status==='sent'?'✓':l.status==='failed'?'✗':'⚠';
+      const color = l.status==='sent'?'var(--green)':l.status==='failed'?'var(--red)':'var(--gold)';
+      return `<div style="background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:6px;overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;${emails.length?'cursor:pointer;':''}" ${emails.length?`onclick="toggleTodayDrilldown(${i})"`:''}>
+          <span style="color:${color};font-size:14px;font-weight:800;">${status}</span>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;">${(l.subject||l.campaign_name||'(sem assunto)').replace(/</g,'&lt;')}</div>
+            <div style="font-size:10px;color:var(--t3);">${time} · ${l.recipients||0} destinatários · ${sourceLabel[l.sent_by]||l.sent_by} · ${l.provider}${emails.length?' · <span style="color:var(--gold);">▼ ver lista</span>':''}</div>
+          </div>
+        </div>
+        ${emails.length?`<div id="today-dd-${i}" style="display:none;padding:8px 12px;border-top:1px solid var(--b1);background:rgba(0,0,0,.15);">
+          <div style="font-size:10px;color:var(--t3);margin-bottom:4px;">${emails.length} email(s):</div>
+          <div style="font-size:11px;color:var(--t2);max-height:200px;overflow-y:auto;font-family:monospace;line-height:1.6;">${emails.map(e=>String(e).replace(/</g,'&lt;')).join('<br>')}</div>
+        </div>`:''}
+      </div>`;
+    }).join('');
+  }catch(e){ console.error('loadEmailToday', e); }
+}
+function toggleTodayDrilldown(i){
+  const el = document.getElementById('today-dd-'+i);
+  if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+// ── ONDA 2: Campanhas em Andamento ──
+async function loadCampaignsProgress(){
+  try{
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
+    if(!token) return;
+    const r = await fetch('/api/brevo-stats?type=campaigns_progress', { headers:{ Authorization:'Bearer '+token } });
+    const data = await r.json();
+    const meta = document.getElementById('campaigns-progress-meta');
+    const el = document.getElementById('campaigns-progress');
+    if(!meta||!el) return;
+    if(data.error){ meta.textContent=''; el.innerHTML=`<div style="font-size:12px;color:var(--red);">${data.error}</div>`; return; }
+    meta.innerHTML = `<strong style="color:var(--t1);">${(data.total_active_subscribers||0).toLocaleString('pt-BR')}</strong> subscribers ativos · próximo cron: <strong style="color:var(--gold);">${data.next_cron_label||'?'}</strong>`;
+    const camps = data.campaigns || [];
+    if(!camps.length){ el.innerHTML='<div style="font-size:12px;color:var(--t3);padding:8px 0;">Nenhuma campanha iniciada ainda.</div>'; return; }
+    el.innerHTML = camps.map(c=>{
+      const total = c.total_active || 1;
+      const pct = Math.round((c.received_count / total) * 100);
+      const lastSendStr = c.last_send_at ? new Date(c.last_send_at).toLocaleString('pt-BR') : 'nunca';
+      const isActive = c.pending_estimate > 0;
+      return `<div style="background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:12px 14px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--t1);">${c.campaign_key.replace(/</g,'&lt;')}</div>
+          <div style="font-size:11px;color:${isActive?'var(--gold)':'var(--green)'};font-weight:700;">${isActive?`${c.pending_estimate} pendentes`:'✓ completa'}</div>
+        </div>
+        <div style="display:flex;gap:14px;font-size:11px;color:var(--t2);margin-bottom:8px;flex-wrap:wrap;">
+          <div><strong style="color:var(--green);">${c.received_count}</strong> receberam</div>
+          <div><strong style="color:var(--gold);">${c.pending_estimate}</strong> pendentes</div>
+          <div>último envio: ${lastSendStr}</div>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:3px;transition:width .3s;"></div>
+        </div>
+        <div style="font-size:10px;color:var(--t3);margin-top:6px;text-align:right;">${pct}% completo</div>
+      </div>`;
+    }).join('');
+  }catch(e){ console.error('loadCampaignsProgress', e); }
 }
 
 /* ═══ DYNAMIC FIRMA CHIPS & PROMO GRID ═══ */
