@@ -5582,13 +5582,14 @@ async function loadAllLeadsOnce(){
  } catch(e){}
  // 3) Profiles (signup do site) — via /api/brevo-stats?type=signups_all com service_role
  //    (RLS bloqueia leitura direta de profiles pelo anon/JWT do admin)
+ let signupsLoaded = false;
  try {
   const session = await db.auth.getSession();
   const token = session?.data?.session?.access_token;
   if(token){
    const r = await fetch('/api/brevo-stats?type=signups_all', { headers:{ Authorization:'Bearer '+token } });
+   const json = await r.json().catch(()=>({}));
    if(r.ok){
-    const json = await r.json();
     const rows = json.signups || [];
     for(const u of rows){
      if(!u.email||seen.has(u.email)) continue;
@@ -5597,9 +5598,17 @@ async function loadAllLeadsOnce(){
      const lang = u.country==='BR' ? 'pt' : 'en';
      all.push({email:u.email,name,lang,source:'signup',firma:'',tags:[]});
     }
+    signupsLoaded = true;
+    console.log('[loadAllLeads] signups carregados:', rows.length);
+   } else {
+    console.warn('[loadAllLeads] signups_all falhou:', r.status, json);
    }
+  } else {
+   console.warn('[loadAllLeads] sem token de sessão pra signups_all');
   }
- } catch(e){}
+ } catch(e){ console.warn('[loadAllLeads] erro signups_all:', e); }
+ // Se signups falhou, não cacheia — força retry na próxima chamada
+ if(!signupsLoaded){ _leadsCache = null; _leadsCacheKey = ''; return all; }
  _leadsCache = all; _leadsCacheKey = cacheKey;
  return all;
 }

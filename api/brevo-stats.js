@@ -246,19 +246,23 @@ module.exports = async (req, res) => {
     try {
       const subHead = { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` };
       const out = [];
-      let from = 0; const PG = 1000;
+      let off = 0; const PG = 1000;
       while (true) {
-        const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=email,full_name,first_name,country&order=created_at.desc`, {
-          headers: { ...subHead, Range: `${from}-${from+PG-1}`, 'Range-Unit': 'items' },
-        });
-        if (!pr.ok) break;
+        const url = `${SUPABASE_URL}/rest/v1/profiles?select=email,full_name,first_name,country&order=created_at.desc&offset=${off}&limit=${PG}`;
+        const pr = await fetch(url, { headers: subHead });
+        if (!pr.ok) {
+          const txt = await pr.text();
+          return res.status(500).json({ error: 'signups_all_query_failed', status: pr.status, detail: txt.slice(0, 300) });
+        }
         const rows = await pr.json();
         if (!rows.length) break;
         out.push(...rows);
         if (rows.length < PG) break;
-        from += PG;
+        off += PG;
       }
-      return res.status(200).json({ total: out.length, signups: out });
+      // Filtra rows sem email (profiles podem existir antes do email_confirm)
+      const valid = out.filter(r => r.email && r.email.includes('@'));
+      return res.status(200).json({ total: valid.length, scanned: out.length, signups: valid });
     } catch (e) { return res.status(500).json({ error: 'signups_all_failed', detail: e.message }); }
   }
 
