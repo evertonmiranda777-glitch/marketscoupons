@@ -9270,7 +9270,9 @@ async function sendEmailsSmtp(){
   } catch(err){
     toast('Erro de conexao: '+err.message,'error');
   } finally {
-    if(btn){ btn.disabled=false; btn.textContent='Enviar lote'; }
+    if(btn){ btn.disabled=false; btn.textContent='Enviar agora'; }
+    // Restaura label dinâmico ("Enviar agora (N)" ou "Enviar X + enfileirar Y")
+    try { await updateDestCount(); } catch {}
   }
 }
 
