@@ -191,39 +191,75 @@ function _appendQuery(url, qs) {
 // pagehide listener loga tempo no overlay antes de sair (firma carregou ou abandonou).
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
   const startTs = Date.now();
-  // Inject sub_id (?keyword=fb_<adname>) ANTES do redirect — tracking.js só
-  // patcha window.open + <a> click; window.location.href escapava sem keyword
-  // (96% dos clicks Apex/Bulenox iam sem sub_id em 2026-05-01/02).
+  // Inject sub_id (?keyword=fb_<adname>) ANTES do redirect.
   try { if (typeof window.mcInjectKeyword === 'function') finalUrl = window.mcInjectKeyword(finalUrl); } catch(e){}
-  // Overlay visual (sincrono)
+
+  // Overlay visual com contexto (cupom + desconto reforçam motivo do click).
   try {
     const ov = document.getElementById('mc-redirect-ov');
     const fn = document.getElementById('mc-redirect-firm');
+    const cp = document.getElementById('mc-redirect-coupon');
+    const fb = document.getElementById('mc-redirect-fallback');
+    const ds = document.getElementById('mc-redirect-discount');
     if (fn) fn.textContent = firmName || 'a firma';
+    if (cp) cp.textContent = coupon || '';
+    if (cp) cp.parentElement.style.display = coupon ? '' : 'none';
+    // Discount inline (busca FIRMS pra info)
+    try {
+      const f = (typeof FIRMS !== 'undefined' ? FIRMS : []).find(x=>x.id===firmId);
+      if (ds && f?.discount) ds.textContent = `${f.discount}% OFF`;
+      else if (ds) ds.textContent = '';
+    } catch(e){}
+    if (fb) {
+      fb.style.display = 'none';
+      fb.href = finalUrl;
+    }
     if (ov) ov.style.display = 'flex';
   } catch(e){}
-  // Track inicio do redirect (fire-and-forget, fetch normal)
-  try { if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl}); } catch(e){}
-  // pagehide listener — usa sendBeacon pra sobreviver ao unload e logar tempo no overlay
+
+  // Track inicio com keepalive — não perde se user fechar muito rápido.
+  try {
+    if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl});
+  } catch(e){}
+
+  // Fallback CTA aparece após 5s — recupera abandono em conexão lenta / Instagram in-app
+  let fbTimer = null, panicTimer = null;
+  try {
+    fbTimer = setTimeout(() => {
+      const fb = document.getElementById('mc-redirect-fallback');
+      const sub = document.getElementById('mc-redirect-sub');
+      if (fb) fb.style.display = '';
+      if (sub) sub.textContent = 'Demorou mais que o normal — toque no botão pra abrir manualmente';
+    }, 5000);
+    // Após 12s mostra "algo deu errado" — page provavelmente bloqueada (in-app browsers, etc)
+    panicTimer = setTimeout(() => {
+      const sub = document.getElementById('mc-redirect-sub');
+      if (sub) { sub.textContent = '⚠ Não carregou — tente abrir manualmente ou fora do app do Instagram/TikTok'; sub.style.color = '#EF4444'; }
+    }, 12000);
+  } catch(e){}
+
+  // Unload listener — fetch keepalive + connection type pra distinguir 4G ruim de desinteresse
   try {
     const onPageHide = () => {
+      try { if (fbTimer) clearTimeout(fbTimer); if (panicTimer) clearTimeout(panicTimer); } catch(e){}
       const elapsed = Date.now() - startTs;
-      // Categoriza abandono: <2s = redirect normal; 2-10s = lento; >10s = provavel abandono
-      const category = elapsed < 2000 ? 'fast' : (elapsed < 10000 ? 'slow' : 'abandoned');
+      // Threshold ajustado (mobile 4G normal fica 3-5s):
+      // <3s = fast · 3-12s = slow · >12s = abandoned
+      const category = elapsed < 3000 ? 'fast' : (elapsed < 12000 ? 'slow' : 'abandoned');
       try {
-        // sendBeacon nao funciona aqui — manda credentials:include e Supabase responde
-        // Access-Control-Allow-Origin:* (wildcard), browser bloqueia. Usar fetch+keepalive
-        // com credentials:omit pra sobreviver ao unload sem violar CORS.
         const payload = JSON.stringify({
           session_id: typeof MC_SESSION !== 'undefined' ? MC_SESSION : null,
           event: 'firm_redirect_unload',
           firm_id: firmId || null,
-          params: { firm_name: firmName, to_url: finalUrl, elapsed_ms: elapsed, category, anon_id: typeof MC_ANON !== 'undefined' ? MC_ANON : null },
+          params: {
+            firm_name: firmName, to_url: finalUrl, elapsed_ms: elapsed, category,
+            anon_id: typeof MC_ANON !== 'undefined' ? MC_ANON : null,
+            connection_type: (navigator.connection && navigator.connection.effectiveType) || null,
+          },
         });
+        // CORS: credentials:omit pra Supabase wildcard ACAO:*
         fetch(SUPABASE_URL+'/rest/v1/events', {
-          method: 'POST',
-          keepalive: true,
-          credentials: 'omit',
+          method: 'POST', keepalive: true, credentials: 'omit',
           headers: { 'Content-Type':'application/json', 'apikey':SUPABASE_ANON },
           body: payload
         }).catch(()=>{});
