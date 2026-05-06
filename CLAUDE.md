@@ -56,6 +56,12 @@ Trigger SQL `welcome_on_confirm` em `auth.users` dispara `pg_net.http_post` pra 
 ### Email cron auto-dispatch
 GitHub Actions cron diário 14h UTC dispara `/api/cron-bulk-send` (campaign=site-invite, batch=400). Auth `Bearer ${CRON_SECRET}`. Filtra por tag `received-{campaign}`. Substitui auto-dispatcher do admin (browser-based).
 
+### INST_TEMPLATES — dual source
+Templates institucionais (welcome, site-invite, loyalty, indicators, blog-guides, ultimas-horas, giveaway-*) vivem em **2 lugares**: `admin.html` (cliente, envio manual) E `lib/email-render.js` (servidor, cron-bulk-send). Adicionar/editar template = update nos dois. Senão overflow da fila não disparar via cron. Subject/preheader em 7 langs; se body builder é hardcoded num idioma, travar `subject` em todos os langs apontando pro mesmo texto pra evitar mismatch (ex: subject EN + corpo PT). Site é EN-default — caixas traduzem auto se preciso, então padrão é EN.
+
+### profiles RLS bloqueia anon
+`public.profiles` RLS só expõe a própria row. Admin client-side não vê todos signups. Pra audience de email/dashboards, usar `/api/brevo-stats?type=signups_all` (service_role + isAdminJwt guard). `loadAllLeadsOnce` em admin.html: profiles primeiro → email_subscribers (merge tags) → loyalty. Inverter ofusca signups como 'subscriber'.
+
 ### Blog vs Guias — não duplicar
 Antes de criar/manter post, checar se tema já está em `<lang>/guides/`. 5 guias canônicos:
 - `o-que-e-uma-prop-firm` · `como-passar-no-desafio` · `gerenciamento-drawdown` · `position-sizing` · `como-sacar-lucros`
