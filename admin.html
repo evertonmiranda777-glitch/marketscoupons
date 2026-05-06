@@ -7214,29 +7214,27 @@ const INST_TEMPLATES = {
     cta: { pt:'APROVEITAR AGORA', en:'GET IT NOW', es:'APROVECHAR AHORA', fr:'EN PROFITER', de:'JETZT SICHERN', it:'APPROFITTA ORA', ar:'احصل عليه الآن' }
   },
   // ═══ GIVEAWAY: para duplicar pra próximo sorteio, copia esse bloco e ajusta firm/drawDate/heroImage/postLink ═══
-  // Nota: sorteio é PT-only (audiência BR) — todos os idiomas apontam pro mesmo texto PT
-  //       pra evitar mismatch (ex: subject EN + corpo PT).
+  // Site é EN-default — caixas traduzem automaticamente. Tudo em inglês pra consistência.
   'giveaway-apex-may26': (() => {
-    const ptSubject = 'Você foi escolhido — Sorteio de 3 contas Apex';
-    const ptPreheader = '3 chances de ganhar conta de avaliação na Apex Trader Funding — 100% grátis pra participar';
-    const ptCta = 'Participar do Sorteio';
+    const subj = 'You\'re in — 3 Apex Evaluation Accounts giveaway';
+    const pre = '3 chances to win an Apex Trader Funding evaluation account — 100% free to enter';
+    const cta = 'Enter the Giveaway';
     const langs = ['pt','en','es','fr','de','it','ar'];
     const fillAll = (v) => Object.fromEntries(langs.map(l => [l, v]));
     return {
       kind: 'giveaway',
-      forceLang: 'pt', // sorteio é PT-only
       color: '#F0B429',
       accent: '#F97316',
       firm: 'Apex Trader Funding',
       numPrizes: '3',
       prizeType: 'Evaluation Accounts',
-      drawDate: '12 de maio de 2026',
-      deadline: '11 de maio às 23:59 BRT',
+      drawDate: 'May 12, 2026',
+      deadline: 'May 11 at 23:59 BRT',
       postLink: 'https://www.instagram.com/p/DX9X4Qdtu4X/',
       heroImage: 'https://www.marketscoupons.com/img/email-giveaway-apex-tickets.jpg',
-      subject: fillAll(ptSubject),
-      preheader: fillAll(ptPreheader),
-      cta: fillAll(ptCta),
+      subject: fillAll(subj),
+      preheader: fillAll(pre),
+      cta: fillAll(cta),
     };
   })(),
 };
@@ -7259,13 +7257,13 @@ function buildGiveawayHtml(t, lang){
   const ano = new Date().getFullYear();
 
   return `<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="color-scheme" content="only light">
 <meta name="supported-color-schemes" content="only light">
-<title>Sorteio ${firm} — Markets Coupons</title>
+<title>${firm} Giveaway — Markets Coupons</title>
 <style>
   :root { color-scheme: light only; supported-color-schemes: light only; }
   html, body { margin:0!important; padding:0!important; background-color:#f4f5f7!important; }
@@ -7284,7 +7282,7 @@ function buildGiveawayHtml(t, lang){
 <body class="body" style="margin:0;padding:0;background:#f4f5f7;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#111;-webkit-font-smoothing:antialiased;">
 
 <div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f4f5f7;opacity:0;">
-  ${numPrizes} chances de ganhar conta de avaliação na ${firm} — 100% grátis pra participar
+  ${numPrizes} chances to win a ${firm} evaluation account — 100% free to enter
 </div>
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f5f7;padding:24px 0;">
@@ -7296,7 +7294,7 @@ function buildGiveawayHtml(t, lang){
       <span style="font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;">Markets <span style="color:#ff8c00;">Coupons</span><span style="color:#ff8c00;font-size:9px;">&nbsp;&#9679;</span></span>
     </a>
     <div style="margin-top:8px;font-size:11px;color:#6b7480;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;">
-      Sorteio Exclusivo
+      Exclusive Giveaway
     </div>
   </td></tr>
 
@@ -7309,11 +7307,11 @@ function buildGiveawayHtml(t, lang){
 
     <h1 style="margin:0 0 14px;font-size:36px;font-weight:900;line-height:1.1;color:#fff;letter-spacing:-1px;">
       ${numPrizes} ${prizeType}<br>
-      <span style="background:linear-gradient(135deg,${color},#ffe066);-webkit-background-clip:text;background-clip:text;color:transparent;">na ${firm}</span>
+      <span style="background:linear-gradient(135deg,${color},#ffe066);-webkit-background-clip:text;background-clip:text;color:transparent;">at ${firm}</span>
     </h1>
 
     <p style="margin:0 0 24px;font-size:15px;color:#b8c5d6;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;">
-      Sorteio em <strong style="color:${color};">${drawDate}</strong> · Participação 100% grátis
+      Drawing on <strong style="color:${color};">${drawDate}</strong> · 100% free to enter
     </p>
 
     <img src="${heroImage}" alt="${numPrizes} ${prizeType} ${firm}" width="540" style="display:block;margin:0 auto;max-width:100%;height:auto;border:0;border-radius:12px;">
@@ -7324,31 +7322,31 @@ function buildGiveawayHtml(t, lang){
   <tr><td style="padding:36px 36px 8px;">
 
     <p style="margin:0 0 18px;font-size:16px;color:#111;line-height:1.7;">
-      Olá <strong>{nome}</strong>,
+      Hi <strong>{nome}</strong>,
     </p>
 
     <p style="margin:0 0 22px;font-size:15px;color:#374151;line-height:1.7;">
-      A gente abriu mais um sorteio e você foi escolhido pra participar. <strong style="color:#111;">${numPrizes} ${prizeType} (FASE DE AVALIAÇÃO)</strong> da ${firm} vão ser sorteadas — 100% grátis, sem taxa de inscrição.
+      We're running another giveaway and you've been picked to enter. <strong style="color:#111;">${numPrizes} ${prizeType} (EVALUATION PHASE)</strong> at ${firm} are up for grabs — 100% free, no entry fee.
     </p>
 
     <p style="margin:0 0 22px;font-size:14px;color:#6b7480;line-height:1.7;font-style:italic;">
-      Não é conta financiada direta — é o acesso à avaliação oficial. Sua porta de entrada pra uma conta financiada de verdade.
+      Not a direct funded account — it's access to the official evaluation. Your gateway to a real funded account.
     </p>
 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fafafa;border:1px solid #e5e7eb;border-left:4px solid ${accent};border-radius:10px;margin-bottom:24px;">
       <tr><td style="padding:20px 22px;">
-        <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:${accent};margin-bottom:12px;">Como participar</div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:${accent};margin-bottom:12px;">How to enter</div>
         <ol style="margin:0;padding:0 0 0 20px;color:#374151;font-size:14px;line-height:1.85;">
-          <li><strong style="color:#111;">Cadastre-se no site</strong> (se ainda não tem conta)</li>
-          <li><strong style="color:#111;">Curta o post</strong> oficial do sorteio no Instagram</li>
-          <li><strong style="color:#111;">Marque amigos traders</strong> nos comentários — quanto mais, mais chances</li>
+          <li><strong style="color:#111;">Sign up on the site</strong> (if you don't have an account yet)</li>
+          <li><strong style="color:#111;">Like the official giveaway post</strong> on Instagram</li>
+          <li><strong style="color:#111;">Tag trader friends</strong> in the comments — the more, the more chances</li>
         </ol>
       </td></tr>
     </table>
 
     <p style="margin:0 0 28px;font-size:14px;color:#6b7480;line-height:1.7;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Prazo pra entrar: <strong style="color:#111;">${deadline}</strong><br>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Sorteio ao vivo no Instagram em ${drawDate}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Entry deadline: <strong style="color:#111;">${deadline}</strong><br>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Live drawing on Instagram on ${drawDate}
     </p>
 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
@@ -7360,7 +7358,7 @@ function buildGiveawayHtml(t, lang){
     </table>
 
     <p style="margin:0 0 28px;font-size:12px;color:#9ca3af;text-align:center;line-height:1.6;">
-      Se o botão não abrir, copie e cole:<br>
+      If the button doesn't work, copy and paste:<br>
       <a href="${postLink}" style="color:#6b7480;text-decoration:underline;word-break:break-all;">${postLink}</a>
     </p>
 
@@ -7376,7 +7374,7 @@ function buildGiveawayHtml(t, lang){
         </td>
         <td style="vertical-align:middle;">
           <div style="font-size:14px;font-weight:700;color:#111;">Lara</div>
-          <div style="font-size:12px;color:#6b7480;">Markets Coupons · Boa sorte aí</div>
+          <div style="font-size:12px;color:#6b7480;">Markets Coupons · Good luck out there</div>
         </td>
       </tr>
     </table>
@@ -7384,16 +7382,16 @@ function buildGiveawayHtml(t, lang){
 
   <tr><td style="background:#fafafa;padding:22px 32px;text-align:center;border-top:1px solid #e5e7eb;">
     <p style="margin:0 0 8px;font-size:11px;color:#9ca3af;line-height:1.6;">
-      Você está recebendo este email porque é cadastrado no Markets Coupons.<br>
-      Markets Coupons é uma plataforma educacional/afiliada — não somos broker, FCM ou consultor registrado.
+      You're receiving this email because you signed up at Markets Coupons.<br>
+      Markets Coupons is an educational/affiliate platform — we are not a broker, FCM, or registered advisor.
     </p>
     <p style="margin:8px 0 0;font-size:11px;color:#9ca3af;">
       &copy; ${ano} Markets Coupons &middot;
-      <a href="https://www.marketscoupons.com/privacy" style="color:#6b7480;text-decoration:underline;">Privacidade</a> &middot;
-      <a href="https://www.marketscoupons.com/terms" style="color:#6b7480;text-decoration:underline;">Termos</a>
+      <a href="https://www.marketscoupons.com/privacy" style="color:#6b7480;text-decoration:underline;">Privacy</a> &middot;
+      <a href="https://www.marketscoupons.com/terms" style="color:#6b7480;text-decoration:underline;">Terms</a>
     </p>
     <p style="margin:10px 0 0;font-size:10px;color:#b9c0c9;">
-      <a href="https://www.marketscoupons.com/api/unsubscribe?e={email}" style="color:#9ca3af;text-decoration:underline;">Descadastrar</a>
+      <a href="https://www.marketscoupons.com/api/unsubscribe?e={email}" style="color:#9ca3af;text-decoration:underline;">Unsubscribe</a>
     </p>
   </td></tr>
 
