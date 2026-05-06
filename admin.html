@@ -5445,6 +5445,11 @@ async function selectAudience(value){
     emailSegments = ['subscribers'];
     emailFirmaFilter = [firmId];
     emailCustomTagFilter = [];
+  } else if(value.startsWith('tag:')){
+    const tag = value.slice(4);
+    emailSegments = ['all'];
+    emailFirmaFilter = [tag];
+    emailCustomTagFilter = [tag];
   }
   await updateDestCount();
 }
@@ -7209,21 +7214,31 @@ const INST_TEMPLATES = {
     cta: { pt:'APROVEITAR AGORA', en:'GET IT NOW', es:'APROVECHAR AHORA', fr:'EN PROFITER', de:'JETZT SICHERN', it:'APPROFITTA ORA', ar:'احصل عليه الآن' }
   },
   // ═══ GIVEAWAY: para duplicar pra próximo sorteio, copia esse bloco e ajusta firm/drawDate/heroImage/postLink ═══
-  'giveaway-apex-may26': {
-    kind: 'giveaway',
-    color: '#F0B429',
-    accent: '#F97316',
-    firm: 'Apex Trader Funding',
-    numPrizes: '3',
-    prizeType: 'Evaluation Accounts',
-    drawDate: '12 de maio de 2026',
-    deadline: '11 de maio às 23:59 BRT',
-    postLink: 'https://www.instagram.com/p/DX9X4Qdtu4X/',
-    heroImage: 'https://www.marketscoupons.com/img/email-giveaway-apex-tickets.jpg',
-    subject: { pt:'Você foi escolhido — Sorteio de 3 contas Apex', en:'You\'re in — Apex 3-account giveaway', es:'Fuiste elegido — Sorteo de 3 cuentas Apex', fr:'Vous êtes choisi — Tirage de 3 comptes Apex', de:'Du bist dabei — Apex 3-Konten Verlosung', it:'Sei stato scelto — Estrazione di 3 conti Apex', ar:'تم اختيارك — سحب 3 حسابات Apex' },
-    preheader: { pt:'3 chances de ganhar conta de avaliação na Apex Trader Funding — 100% grátis pra participar', en:'3 chances to win an Apex Trader Funding evaluation account — 100% free to enter', es:'3 oportunidades de ganar cuenta de evaluación en Apex Trader Funding — 100% gratis', fr:'3 chances de gagner un compte d\'évaluation Apex Trader Funding — 100% gratuit', de:'3 Chancen auf ein Apex Trader Funding Evaluation Account — 100% gratis', it:'3 possibilità di vincere un account di valutazione Apex Trader Funding — 100% gratis', ar:'3 فرص للفوز بحساب تقييم Apex Trader Funding — مجاني 100%' },
-    cta: { pt:'Participar do Sorteio', en:'Enter the Giveaway', es:'Participar del Sorteo', fr:'Participer au Tirage', de:'Am Giveaway teilnehmen', it:'Partecipa al Sorteggio', ar:'الاشتراك في السحب' }
-  },
+  // Nota: sorteio é PT-only (audiência BR) — todos os idiomas apontam pro mesmo texto PT
+  //       pra evitar mismatch (ex: subject EN + corpo PT).
+  'giveaway-apex-may26': (() => {
+    const ptSubject = 'Você foi escolhido — Sorteio de 3 contas Apex';
+    const ptPreheader = '3 chances de ganhar conta de avaliação na Apex Trader Funding — 100% grátis pra participar';
+    const ptCta = 'Participar do Sorteio';
+    const langs = ['pt','en','es','fr','de','it','ar'];
+    const fillAll = (v) => Object.fromEntries(langs.map(l => [l, v]));
+    return {
+      kind: 'giveaway',
+      forceLang: 'pt', // sorteio é PT-only
+      color: '#F0B429',
+      accent: '#F97316',
+      firm: 'Apex Trader Funding',
+      numPrizes: '3',
+      prizeType: 'Evaluation Accounts',
+      drawDate: '12 de maio de 2026',
+      deadline: '11 de maio às 23:59 BRT',
+      postLink: 'https://www.instagram.com/p/DX9X4Qdtu4X/',
+      heroImage: 'https://www.marketscoupons.com/img/email-giveaway-apex-tickets.jpg',
+      subject: fillAll(ptSubject),
+      preheader: fillAll(ptPreheader),
+      cta: fillAll(ptCta),
+    };
+  })(),
 };
 
 // Reusable giveaway HTML builder — para usar com qualquer sorteio futuro,
