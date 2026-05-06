@@ -13944,7 +13944,7 @@ async function showCampaignHistory(){
 async function loadQueueCount(){
   try{
     const tk = await _adminBearer();
-    const url = `${window._supabaseUrl||'https://qfwhduvutfumsaxnuofa.supabase.co'}/rest/v1/email_subscribers?status=eq.active&unsubscribed_at=is.null&not.tags=cs.{received-site-invite}&select=id`;
+    const url = `${window._supabaseUrl||'https://qfwhduvutfumsaxnuofa.supabase.co'}/rest/v1/email_subscribers?status=eq.active&unsubscribed_at=is.null&tags=not.cs.%7Breceived-site-invite%7D&select=id`;
     const r = await fetch(url, { headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer '+tk, Prefer: 'count=exact', Range: '0-0' } });
     const total = parseInt((r.headers.get('content-range')||'0/0').split('/')[1]) || 0;
     const el = document.getElementById('auto-queue-count');
