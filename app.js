@@ -1124,7 +1124,11 @@ function updateTVWidgets(lang) {
   const hmF = document.getElementById('heatmap-frame');
   if(hmF) loadHeatmap(hmF.dataset.source||'SPX500');
 }
-function setL(lang,flag,code){
+async function setL(lang,flag,code){
+  // Lazy-load idioma se ainda não tá em memória (post-split i18n).
+  if (typeof I18N !== 'undefined' && !I18N[lang] && typeof window._loadLang === 'function') {
+    try { await window._loadLang(lang); } catch(e){}
+  }
   _currentLang = lang;
   localStorage.setItem('mc_lang', lang);
   document.getElementById('l-flag').textContent=flag;
@@ -1172,6 +1176,11 @@ function initLang() {
   const codes = {pt:'BR',en:'EN',es:'ES',it:'IT',fr:'FR',de:'DE',ar:'AR'};
   document.getElementById('l-code').textContent = ' ' + (codes[_currentLang]||'EN');
   document.body.dir = _currentLang==='ar'?'rtl':'ltr';
+  // Se i18n loader split ainda carregando, espera ready antes de aplicar pra evitar
+  // flash de keys literais. _mcI18nReady=true vem do i18n/loader.js quando EN+lang prontos.
+  if (typeof window._mcI18nReady === 'boolean' && !window._mcI18nReady) {
+    window.addEventListener('mc-i18n-ready', () => { applyTranslations(); }, { once: true });
+  }
   applyTranslations();
   updateTVWidgets(_currentLang);
   // Update meta tags with translated content
