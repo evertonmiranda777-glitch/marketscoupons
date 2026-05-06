@@ -240,6 +240,28 @@ module.exports = async (req, res) => {
     } catch (e) { return res.status(500).json({ error: 'signups_today_failed', detail: e.message }); }
   }
 
+  // === type=signups_all — todos os cadastrados do site (pra audience de email) ===
+  if (type === 'signups_all') {
+    if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
+    try {
+      const subHead = { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` };
+      const out = [];
+      let from = 0; const PG = 1000;
+      while (true) {
+        const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=email,full_name,first_name,country&order=created_at.desc`, {
+          headers: { ...subHead, Range: `${from}-${from+PG-1}`, 'Range-Unit': 'items' },
+        });
+        if (!pr.ok) break;
+        const rows = await pr.json();
+        if (!rows.length) break;
+        out.push(...rows);
+        if (rows.length < PG) break;
+        from += PG;
+      }
+      return res.status(200).json({ total: out.length, signups: out });
+    } catch (e) { return res.status(500).json({ error: 'signups_all_failed', detail: e.message }); }
+  }
+
   // === Onda 2: type=email_today — envios de hoje com drilldown ===
   if (type === 'email_today') {
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });

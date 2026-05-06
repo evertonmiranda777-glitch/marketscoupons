@@ -5580,22 +5580,24 @@ async function loadAllLeadsOnce(){
    all.push({email:m.email,name:m.name||'',lang:'en',source:'loyalty',firma:'',tags:[]});
   }
  } catch(e){}
- // 3) Profiles (signup do site — usuários cadastrados que ainda não viraram subscribers)
+ // 3) Profiles (signup do site) — via /api/brevo-stats?type=signups_all com service_role
+ //    (RLS bloqueia leitura direta de profiles pelo anon/JWT do admin)
  try {
-  let p=0;
-  while(true){
-   const {data}=await db.from('profiles').select('email,full_name,first_name,country').range(p,p+PG-1);
-   if(!data||!data.length) break;
-   for(const u of data){
-    if(!u.email||seen.has(u.email)) continue;
-    seen.add(u.email);
-    const name = u.first_name || (u.full_name ? u.full_name.split(' ')[0] : '');
-    // Idioma fallback: BR=pt, EN default
-    const lang = u.country==='BR' ? 'pt' : 'en';
-    all.push({email:u.email,name,lang,source:'signup',firma:'',tags:[]});
+  const session = await db.auth.getSession();
+  const token = session?.data?.session?.access_token;
+  if(token){
+   const r = await fetch('/api/brevo-stats?type=signups_all', { headers:{ Authorization:'Bearer '+token } });
+   if(r.ok){
+    const json = await r.json();
+    const rows = json.signups || [];
+    for(const u of rows){
+     if(!u.email||seen.has(u.email)) continue;
+     seen.add(u.email);
+     const name = u.first_name || (u.full_name ? u.full_name.split(' ')[0] : '');
+     const lang = u.country==='BR' ? 'pt' : 'en';
+     all.push({email:u.email,name,lang,source:'signup',firma:'',tags:[]});
+    }
    }
-   if(data.length<PG) break;
-   p+=PG;
   }
  } catch(e){}
  _leadsCache = all; _leadsCacheKey = cacheKey;
