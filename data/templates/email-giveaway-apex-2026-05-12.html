@@ -7,6 +7,13 @@
 </head>
 <body style="margin:0;padding:0;background:#f4f5f7;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#111;-webkit-font-smoothing:antialiased;">
 
+<style>
+  /* Mobile: tickets empilham em vez de 3-col */
+  @media only screen and (max-width:520px) {
+    .ticket-cell { display:block !important; width:100% !important; padding:0 0 12px 0 !important; }
+  }
+</style>
+
 <div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f4f5f7;opacity:0;">
   3 chances de ganhar conta de avaliação na Apex Trader Funding — 100% grátis pra participar
 </div>
@@ -40,9 +47,41 @@
       Sorteio em <strong style="color:#F0B429;">12 de maio de 2026</strong> · Participação 100% grátis
     </p>
 
-    <div style="display:inline-block;background:#000;border:1px solid #F9731633;border-radius:14px;padding:18px 28px;">
-      <img src="https://www.marketscoupons.com/img/Firms/apex.png" alt="Apex Trader Funding" width="180" style="display:block;max-width:180px;height:auto;border:0;">
-    </div>
+    <!-- 3 ingressos / passes lado a lado (empilham no mobile) -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin:0 auto;">
+    <tr>
+      <td class="ticket-cell" valign="top" align="center" style="width:33.33%;padding:0 5px;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#000;border:1px solid rgba(249,115,22,.35);border-radius:14px;box-shadow:0 0 24px rgba(240,180,41,.18);">
+          <tr><td align="center" style="padding:18px 12px;">
+            <img src="https://www.marketscoupons.com/img/Firms/apex.png" alt="Apex" width="84" style="display:block;margin:0 auto 10px;border:0;max-width:84px;height:auto;">
+            <div style="font-size:9px;font-weight:800;letter-spacing:1.6px;color:#F0B429;text-transform:uppercase;line-height:1.4;">Evaluation</div>
+            <div style="font-size:9px;font-weight:800;letter-spacing:1.6px;color:#F0B429;text-transform:uppercase;margin-bottom:10px;">Account</div>
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(34,197,94,.15);border:1px solid #22C55E;color:#22C55E;font-size:14px;font-weight:800;line-height:22px;text-align:center;margin:0 auto;">✓</div>
+          </td></tr>
+        </table>
+      </td>
+      <td class="ticket-cell" valign="top" align="center" style="width:33.33%;padding:0 5px;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#000;border:1px solid rgba(249,115,22,.5);border-radius:14px;box-shadow:0 0 32px rgba(240,180,41,.32);">
+          <tr><td align="center" style="padding:22px 12px;">
+            <img src="https://www.marketscoupons.com/img/Firms/apex.png" alt="Apex" width="92" style="display:block;margin:0 auto 10px;border:0;max-width:92px;height:auto;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:1.6px;color:#F0B429;text-transform:uppercase;line-height:1.4;">Evaluation</div>
+            <div style="font-size:10px;font-weight:800;letter-spacing:1.6px;color:#F0B429;text-transform:uppercase;margin-bottom:12px;">Account</div>
+            <div style="width:26px;height:26px;border-radius:50%;background:rgba(34,197,94,.18);border:1px solid #22C55E;color:#22C55E;font-size:15px;font-weight:800;line-height:24px;text-align:center;margin:0 auto;">✓</div>
+          </td></tr>
+        </table>
+      </td>
+      <td class="ticket-cell" valign="top" align="center" style="width:33.33%;padding:0 5px;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#000;border:1px solid rgba(249,115,22,.35);border-radius:14px;box-shadow:0 0 24px rgba(240,180,41,.18);">
+          <tr><td align="center" style="padding:18px 12px;">
+            <img src="https://www.marketscoupons.com/img/Firms/apex.png" alt="Apex" width="84" style="display:block;margin:0 auto 10px;border:0;max-width:84px;height:auto;">
+            <div style="font-size:9px;font-weight:800;letter-spacing:1.6px;color:#F0B429;text-transform:uppercase;line-height:1.4;">Evaluation</div>
+            <div style="font-size:9px;font-weight:800;letter-spacing:1.6px;color:#F0B429;text-transform:uppercase;margin-bottom:10px;">Account</div>
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(34,197,94,.15);border:1px solid #22C55E;color:#22C55E;font-size:14px;font-weight:800;line-height:22px;text-align:center;margin:0 auto;">✓</div>
+          </td></tr>
+        </table>
+      </td>
+    </tr>
+    </table>
   </td></tr>
 
   <tr><td style="height:3px;background:linear-gradient(90deg,transparent,#F97316,transparent);"></td></tr>
@@ -79,7 +118,7 @@
 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
       <tr><td align="center">
-        <a href="https://www.instagram.com/p/DX9X4Qdtu4X/" style="display:inline-block;padding:16px 36px;background:linear-gradient(135deg,#c8941a,#F0B429,#f5d060,#F0B429,#c8941a);background-size:200% 100%;color:#0d141c;font-size:15px;font-weight:800;text-decoration:none;border-radius:10px;letter-spacing:.3px;box-shadow:0 8px 24px rgba(240,180,41,.3);">
+        <a href="https://www.instagram.com/p/DX9X4Qdtu4X/" style="display:inline-block;padding:17px 48px;background:linear-gradient(135deg,#c8941a,#F0B429,#f5d060,#F0B429,#c8941a);background-size:200% 100%;color:#0d141c;font-size:16px;font-weight:800;text-decoration:none;border-radius:50px;letter-spacing:.3px;box-shadow:0 8px 24px rgba(240,180,41,.3);">
           Participar do Sorteio →
         </a>
       </td></tr>
