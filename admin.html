@@ -1335,10 +1335,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        </optgroup>
        <optgroup label="Por firma" id="audience-firms"></optgroup>
        <optgroup label="Geral">
-         <option value="all" selected>Todos os usuários ativos (subscribers + loyalty + cadastrados)</option>
-         <option value="signups_only">Só cadastrados no site (profiles · signup)</option>
-         <option value="subscribers_only">Só inscritos newsletter (email_subscribers)</option>
-         <option value="loyalty_only">Só programa fidelidade (loyalty_members)</option>
+         <option value="all" selected>Todos os usuários ativos</option>
+         <option value="signups_only">Só cadastrados no site</option>
+         <option value="subscribers_only">Só inscritos na newsletter</option>
+         <option value="loyalty_only">Só programa de fidelidade</option>
        </optgroup>
      </select>
      <div style="font-size:10px;color:var(--t3);margin-top:6px;">Destinatários: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
@@ -5863,7 +5863,7 @@ async function loadEmailToday(){
     const total = data.total_today || 0;
     const bs = data.by_source || {};
     const bp = data.by_provider || {};
-    const sourceLabel = { 'auth-hook':'Welcome auto', 'webhook':'Confirm/Resend', 'cron':'Cron diário', 'admin':'Manual admin' };
+    const sourceLabel = { 'auth-hook':'Boas-vindas (auto)', 'webhook':'Confirmação', 'cron':'Cron diário', 'admin':'Manual (admin)' };
     const cards = [
       { label:'Total enviados hoje', val:total, color:'var(--gold)' },
       ...Object.entries(bs).map(([k,v])=>({ label: sourceLabel[k]||k, val:v, color:'var(--t1)' })),
@@ -5919,8 +5919,8 @@ async function loadSignupsToday(){
     const cards = [
       { label:'Cadastros', val:s.total||0, color:'#a855f7' },
       { label:'Verificados', val:s.verified||0, color:'var(--green)' },
-      { label:'Welcome enviado', val:s.welcome_sent||0, color:'var(--gold)' },
-      { label:'Confirm enviado', val:s.confirm_sent||0, color:'#22d3ee' },
+      { label:'Boas-vindas enviado', val:s.welcome_sent||0, color:'var(--gold)' },
+      { label:'Confirmação enviado', val:s.confirm_sent||0, color:'#22d3ee' },
     ];
     sumEl.innerHTML = cards.map(c=>`<div style="flex:1;min-width:120px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
       <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">${c.label}</div>
@@ -5931,8 +5931,8 @@ async function loadSignupsToday(){
     listEl.innerHTML = `<div style="max-height:340px;overflow-y:auto;">${list.map(p=>{
       const time = new Date(p.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
       const v = p.email_verified ? '<span title="Email verificado" style="color:var(--green);">✓</span>' : '<span title="Não verificado" style="color:var(--t3);">○</span>';
-      const w = p.welcome_sent ? '<span title="Welcome enviado" style="color:var(--gold);">●</span>' : '<span title="Welcome NÃO enviado" style="color:var(--red);">●</span>';
-      const c = p.confirm_sent ? '<span title="Confirm enviado" style="color:#22d3ee;">●</span>' : '<span title="Confirm NÃO enviado" style="color:var(--t3);">○</span>';
+      const w = p.welcome_sent ? '<span title="Boas-vindas enviado" style="color:var(--gold);">●</span>' : '<span title="Boas-vindas NÃO enviado" style="color:var(--red);">●</span>';
+      const c = p.confirm_sent ? '<span title="Confirmação enviado" style="color:#22d3ee;">●</span>' : '<span title="Confirmação NÃO enviado" style="color:var(--t3);">○</span>';
       return `<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;margin-bottom:4px;">
         <div style="font-size:11px;color:var(--t3);min-width:48px;font-family:monospace;">${time}</div>
         <div style="flex:1;min-width:0;">
@@ -5940,9 +5940,9 @@ async function loadSignupsToday(){
           ${p.name?`<div style="font-size:11px;color:var(--t3);">${(p.name||'').replace(/</g,'&lt;')}</div>`:''}
         </div>
         <div style="display:flex;gap:8px;font-size:14px;line-height:1;align-items:center;">
-          <span title="Verified">${v}</span>
-          <span style="font-size:10px;color:var(--t3);">W ${w}</span>
-          <span style="font-size:10px;color:var(--t3);">C ${c}</span>
+          <span title="Verificado">${v}</span>
+          <span style="font-size:10px;color:var(--t3);" title="Boas-vindas">B ${w}</span>
+          <span style="font-size:10px;color:var(--t3);" title="Confirmação">C ${c}</span>
         </div>
       </div>`;
     }).join('')}</div>`;
@@ -5966,13 +5966,13 @@ async function loadEmailHealth(){
     const bColor = w.bounce_rate >= t.bounce_critical ? 'var(--red)' : w.bounce_rate >= t.bounce_warn ? 'var(--gold)' : 'var(--green)';
     const cColor = w.complaint_rate >= t.complaint_critical ? 'var(--red)' : w.complaint_rate >= t.complaint_warn ? 'var(--gold)' : 'var(--green)';
     const cards = [
-      { label:'Bounce Rate (7d)', val:(w.bounce_rate||0)+'%', color:bColor, sub:`limite ${t.bounce_critical}% antes de pausar auto` },
-      { label:'Spam Complaint (7d)', val:(w.complaint_rate||0)+'%', color:cColor, sub:`limite Gmail ${t.complaint_critical}%` },
-      { label:'Delivered (7d)', val:(w.delivered||0).toLocaleString('pt-BR'), color:'var(--t1)', sub:'entregues nos últimos 7 dias' },
-      { label:'Active', val:(stats.active||0).toLocaleString('pt-BR'), color:'var(--green)', sub:'recebem campanhas' },
-      { label:'Bounced (suppressed)', val:(stats.bounced||0).toLocaleString('pt-BR'), color:'var(--red)', sub:'auto-removidos por bounce' },
-      { label:'Complained', val:(stats.complained||0).toLocaleString('pt-BR'), color:'var(--red)', sub:'marcaram como spam' },
-      { label:'Unsubscribed', val:(stats.unsubscribed||0).toLocaleString('pt-BR'), color:'var(--t2)', sub:'desinscritos via link' },
+      { label:'Taxa de Rejeição (7d)', val:(w.bounce_rate||0)+'%', color:bColor, sub:`limite ${t.bounce_critical}% antes de pausar auto` },
+      { label:'Reclamação Spam (7d)', val:(w.complaint_rate||0)+'%', color:cColor, sub:`limite Gmail ${t.complaint_critical}%` },
+      { label:'Entregues (7d)', val:(w.delivered||0).toLocaleString('pt-BR'), color:'var(--t1)', sub:'entregues nos últimos 7 dias' },
+      { label:'Ativos', val:(stats.active||0).toLocaleString('pt-BR'), color:'var(--green)', sub:'recebem campanhas' },
+      { label:'Removidos (rejeição)', val:(stats.bounced||0).toLocaleString('pt-BR'), color:'var(--red)', sub:'auto-removidos por rejeição do email' },
+      { label:'Marcaram como Spam', val:(stats.complained||0).toLocaleString('pt-BR'), color:'var(--red)', sub:'reportaram como spam' },
+      { label:'Descadastrados', val:(stats.unsubscribed||0).toLocaleString('pt-BR'), color:'var(--t2)', sub:'descadastrados via link' },
     ];
     el.innerHTML = cards.map(c=>`<div style="flex:1;min-width:160px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;">
       <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">${c.label}</div>
