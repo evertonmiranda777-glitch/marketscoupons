@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Giveaway — Markets Coupons</title>
+<!--
+═══════════════════════════════════════════════════════════════════════════
+  EMAIL DE SORTEIO — Template editável Markets Coupons
+
+  COMO USAR:
+  1. Substitua os valores entre {{...}} abaixo (também aparecem no HTML).
+  2. Cole o HTML inteiro no admin → Send Custom Email → assunto + body.
+  3. Pra reutilizar com outra firma, troque só o bloco VARIÁVEIS.
+
+  TODAS as variáveis editáveis (use Find&Replace):
+  ───────────────────────────────────────────────────────────────────────
+  {{FIRM_NAME}}       — Nome da firma (ex: Apex Trader Funding)
+  {{FIRM_LOGO}}       — URL absoluta logo (ex: https://www.marketscoupons.com/img/Firms/apex.png)
+  {{ACCENT}}          — Cor accent da firma em hex (Apex #F97316, Bulenox #3B82F6, etc)
+  {{NUM_PRIZES}}      — Quantos prêmios (ex: 3)
+  {{PRIZE_TYPE}}      — Tipo de prêmio (ex: Evaluation Accounts, Funded Accounts, $50K Challenge)
+  {{DRAW_DATE}}       — Data do sorteio (ex: 12 de maio de 2026)
+  {{DRAW_DEADLINE}}   — Prazo pra participar (ex: 11 de maio às 23:59 BRT)
+  {{POST_LINK}}       — Link do post Instagram (https://instagram.com/p/...)
+  {{CTA_TEXT}}        — Texto do botão (ex: Participar do Sorteio)
+  {{ANO}}             — Ano corrente (2026)
+  ═══════════════════════════════════════════════════════════════════════════
+-->
+</head>
+<body style="margin:0;padding:0;background:#f4f5f7;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#111;-webkit-font-smoothing:antialiased;">
+
+<!-- Preheader (preview no inbox, oculto no email) -->
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f4f5f7;opacity:0;">
+  3 chances de ganhar conta de avaliação na {{FIRM_NAME}} — 100% grátis pra participar
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f5f7;padding:24px 0;">
+<tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.08);">
+
+  <!-- ═══════ HEADER (logo + tagline, fundo branco) ═══════ -->
+  <tr><td style="padding:28px 32px 20px;text-align:center;">
+    <a href="https://www.marketscoupons.com" style="text-decoration:none;color:inherit;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center"><tr>
+        <td style="padding-right:8px;vertical-align:middle;">
+          <img src="https://www.marketscoupons.com/img/logo.png" alt="" width="32" height="32" style="display:block;border:0;">
+        </td>
+        <td style="vertical-align:middle;font-size:18px;font-weight:800;letter-spacing:-.3px;color:#111;">
+          Markets <span style="color:#ff8c00;">Coupons</span>
+        </td>
+      </tr></table>
+    </a>
+    <div style="margin-top:8px;font-size:11px;color:#6b7480;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;">
+      Sorteio Exclusivo
+    </div>
+  </td></tr>
+
+  <!-- Separador cor accent (substituir {{ACCENT}}) -->
+  <tr><td style="height:3px;background:linear-gradient(90deg,transparent,{{ACCENT}},transparent);"></td></tr>
+
+  <!-- ═══════ HERO dark com pill + h1 ═══════ -->
+  <tr><td style="background:#111111;padding:48px 32px 44px;text-align:center;">
+    <!-- Pill GIVEAWAY -->
+    <div style="display:inline-block;padding:6px 16px;background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.4);border-radius:99px;font-size:11px;font-weight:800;letter-spacing:2px;color:#F0B429;text-transform:uppercase;margin-bottom:18px;">
+      🎁 Giveaway · Win 1 of {{NUM_PRIZES}}
+    </div>
+
+    <h1 style="margin:0 0 14px;font-size:36px;font-weight:900;line-height:1.1;color:#fff;letter-spacing:-1px;">
+      {{NUM_PRIZES}} {{PRIZE_TYPE}}<br>
+      <span style="background:linear-gradient(135deg,#F0B429,#ffe066);-webkit-background-clip:text;background-clip:text;color:transparent;">na {{FIRM_NAME}}</span>
+    </h1>
+
+    <p style="margin:0 0 24px;font-size:15px;color:#b8c5d6;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;">
+      Sorteio em <strong style="color:#F0B429;">{{DRAW_DATE}}</strong> · Participação 100% grátis
+    </p>
+
+    <!-- Logo da firma destacado -->
+    <div style="display:inline-block;background:#0a0d14;border:1px solid {{ACCENT}}33;border-radius:14px;padding:18px 28px;">
+      <img src="{{FIRM_LOGO}}" alt="{{FIRM_NAME}}" width="180" style="display:block;max-width:180px;height:auto;border:0;">
+    </div>
+  </td></tr>
+
+  <!-- Separador -->
+  <tr><td style="height:3px;background:linear-gradient(90deg,transparent,{{ACCENT}},transparent);"></td></tr>
+
+  <!-- ═══════ BODY: regras + CTA ═══════ -->
+  <tr><td style="padding:36px 36px 8px;">
+
+    <p style="margin:0 0 18px;font-size:16px;color:#111;line-height:1.7;">
+      Olá <strong>{nome}</strong>,
+    </p>
+
+    <p style="margin:0 0 22px;font-size:15px;color:#374151;line-height:1.7;">
+      A gente abriu mais um sorteio e você foi escolhido pra participar. <strong style="color:#111;">{{NUM_PRIZES}} {{PRIZE_TYPE}}</strong> da {{FIRM_NAME}} vão ser sorteadas — 100% grátis, sem taxa de inscrição.
+    </p>
+
+    <!-- Box "como participar" -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fafafa;border:1px solid #e5e7eb;border-left:4px solid {{ACCENT}};border-radius:10px;margin-bottom:24px;">
+      <tr><td style="padding:20px 22px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:{{ACCENT}};margin-bottom:12px;">Como participar</div>
+        <ol style="margin:0;padding:0 0 0 20px;color:#374151;font-size:14px;line-height:1.85;">
+          <li><strong style="color:#111;">Cadastre-se no site</strong> (se ainda não tem conta)</li>
+          <li><strong style="color:#111;">Curta o post</strong> oficial do sorteio no Instagram</li>
+          <li><strong style="color:#111;">Marque amigos traders</strong> nos comentários — quanto mais, mais chances</li>
+        </ol>
+      </td></tr>
+    </table>
+
+    <p style="margin:0 0 28px;font-size:14px;color:#6b7480;line-height:1.7;">
+      ⏰ Prazo pra entrar: <strong style="color:#111;">{{DRAW_DEADLINE}}</strong><br>
+      🎯 Sorteio ao vivo no Instagram em {{DRAW_DATE}}
+    </p>
+
+    <!-- CTA principal -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
+      <tr><td align="center">
+        <a href="{{POST_LINK}}" style="display:inline-block;padding:16px 36px;background:linear-gradient(135deg,#c8941a,#F0B429,#f5d060,#F0B429,#c8941a);background-size:200% 100%;color:#0d141c;font-size:15px;font-weight:800;text-decoration:none;border-radius:10px;letter-spacing:.3px;box-shadow:0 8px 24px rgba(240,180,41,.3);">
+          {{CTA_TEXT}} →
+        </a>
+      </td></tr>
+    </table>
+
+    <p style="margin:0 0 28px;font-size:12px;color:#9ca3af;text-align:center;line-height:1.6;">
+      Se o botão não abrir, copie e cole:<br>
+      <a href="{{POST_LINK}}" style="color:#6b7480;text-decoration:underline;word-break:break-all;">{{POST_LINK}}</a>
+    </p>
+
+  </td></tr>
+
+  <!-- Separador -->
+  <tr><td style="padding:0 36px;"><div style="border-top:1px solid #e5e7eb;"></div></td></tr>
+
+  <!-- Assinatura Lara -->
+  <tr><td style="padding:24px 36px 28px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="vertical-align:middle;padding-right:14px;">
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#F0B429,#ff8c00);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;line-height:48px;text-align:center;">L</div>
+        </td>
+        <td style="vertical-align:middle;">
+          <div style="font-size:14px;font-weight:700;color:#111;">Lara</div>
+          <div style="font-size:12px;color:#6b7480;">Markets Coupons · Boa sorte aí 🍀</div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <tr><td style="background:#fafafa;padding:22px 32px;text-align:center;border-top:1px solid #e5e7eb;">
+    <p style="margin:0 0 8px;font-size:11px;color:#9ca3af;line-height:1.6;">
+      Você está recebendo este email porque é cadastrado no Markets Coupons.<br>
+      Markets Coupons é uma plataforma educacional/afiliada — não somos broker, FCM ou consultor registrado.
+    </p>
+    <p style="margin:8px 0 0;font-size:11px;color:#9ca3af;">
+      © {{ANO}} Markets Coupons ·
+      <a href="https://www.marketscoupons.com/privacy" style="color:#6b7480;text-decoration:underline;">Privacidade</a> ·
+      <a href="https://www.marketscoupons.com/terms" style="color:#6b7480;text-decoration:underline;">Termos</a> ·
+      <a href="{{POST_LINK}}" style="color:#6b7480;text-decoration:underline;">Sorteio oficial</a>
+    </p>
+    <p style="margin:10px 0 0;font-size:10px;color:#b9c0c9;">
+      <a href="https://www.marketscoupons.com/api/unsubscribe?e={email}" style="color:#9ca3af;text-decoration:underline;">Descadastrar</a>
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+
+</body>
+</html>
