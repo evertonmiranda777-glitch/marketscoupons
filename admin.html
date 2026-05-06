@@ -1335,7 +1335,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        </optgroup>
        <optgroup label="Por firma" id="audience-firms"></optgroup>
        <optgroup label="Geral">
-         <option value="all" selected>Todos os usuários ativos</option>
+         <option value="all" selected>Todos os usuários ativos (subscribers + loyalty + cadastrados)</option>
+         <option value="signups_only">Só cadastrados no site (profiles · signup)</option>
+         <option value="subscribers_only">Só inscritos newsletter (email_subscribers)</option>
+         <option value="loyalty_only">Só programa fidelidade (loyalty_members)</option>
        </optgroup>
      </select>
      <div style="font-size:10px;color:var(--t3);margin-top:6px;">Destinatários: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
@@ -5424,6 +5427,18 @@ async function selectAudience(value){
     emailSegments = ['all'];
     emailFirmaFilter = [];
     emailCustomTagFilter = [];
+  } else if(value === 'signups_only'){
+    emailSegments = ['signup'];
+    emailFirmaFilter = [];
+    emailCustomTagFilter = [];
+  } else if(value === 'subscribers_only'){
+    emailSegments = ['subscriber'];
+    emailFirmaFilter = [];
+    emailCustomTagFilter = [];
+  } else if(value === 'loyalty_only'){
+    emailSegments = ['loyalty'];
+    emailFirmaFilter = [];
+    emailCustomTagFilter = [];
   } else if(value.startsWith('firm:')){
     const firmId = value.slice(5);
     emailSegments = ['subscribers'];
@@ -5564,6 +5579,24 @@ async function loadAllLeadsOnce(){
    all.push({email:m.email,name:m.name||'',lang:'en',source:'loyalty',firma:'',tags:[]});
   }
  } catch(e){}
+ // 3) Profiles (signup do site — usuários cadastrados que ainda não viraram subscribers)
+ try {
+  let p=0;
+  while(true){
+   const {data}=await db.from('profiles').select('email,full_name,first_name,country').range(p,p+PG-1);
+   if(!data||!data.length) break;
+   for(const u of data){
+    if(!u.email||seen.has(u.email)) continue;
+    seen.add(u.email);
+    const name = u.first_name || (u.full_name ? u.full_name.split(' ')[0] : '');
+    // Idioma fallback: BR=pt, EN default
+    const lang = u.country==='BR' ? 'pt' : 'en';
+    all.push({email:u.email,name,lang,source:'signup',firma:'',tags:[]});
+   }
+   if(data.length<PG) break;
+   p+=PG;
+  }
+ } catch(e){}
  _leadsCache = all; _leadsCacheKey = cacheKey;
  return all;
 }
@@ -5608,7 +5641,9 @@ async function getSegmentedLeads(){
   if(needAll) return true;
   if(emailSegments.includes('loyalty') && r.source==='loyalty') return true;
   if(emailSegments.includes('subscribers') && r.source==='subscriber') return true;
+  if(emailSegments.includes('subscriber') && r.source==='subscriber') return true;
   if(emailSegments.includes('leads') && r.source==='subscriber') return true;
+  if(emailSegments.includes('signup') && r.source==='signup') return true;
   return false;
  });
  // Firma/tag filter
