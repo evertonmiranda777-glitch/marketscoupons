@@ -1247,6 +1247,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div class="tpl-card" onclick="loadQuickTemplate('indicators')"><div class="tpl-card-icon">FT</div><div class="tpl-card-text"><div class="tpl-card-name">Ferramentas</div><div class="tpl-card-hook">Ferramentas de trading</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')"><div class="tpl-card-icon">BG</div><div class="tpl-card-text"><div class="tpl-card-name">Blog &amp; Guias</div><div class="tpl-card-hook">Conteudo educacional</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('ultimas-horas')"><div class="tpl-card-icon">UH</div><div class="tpl-card-text"><div class="tpl-card-name">Últimas Horas</div><div class="tpl-card-hook">Urgência de promoção</div></div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('giveaway-apex-may26')"><div class="tpl-card-icon">SR</div><div class="tpl-card-text"><div class="tpl-card-name">Sorteio Apex</div><div class="tpl-card-hook">Giveaway 3 contas · 12/05</div></div></div>
    </div>
    <div class="tpl-section-title">Promos por Firma</div>
    <div class="tpl-promo-grid" id="tpl-promo-grid">
@@ -7170,11 +7171,182 @@ const INST_TEMPLATES = {
     },
     cta: { pt:'APROVEITAR AGORA', en:'GET IT NOW', es:'APROVECHAR AHORA', fr:'EN PROFITER', de:'JETZT SICHERN', it:'APPROFITTA ORA', ar:'احصل عليه الآن' }
   },
+  // ═══ GIVEAWAY: para duplicar pra próximo sorteio, copia esse bloco e ajusta firm/drawDate/heroImage/postLink ═══
+  'giveaway-apex-may26': {
+    kind: 'giveaway',
+    color: '#F0B429',
+    accent: '#F97316',
+    firm: 'Apex Trader Funding',
+    numPrizes: '3',
+    prizeType: 'Evaluation Accounts',
+    drawDate: '12 de maio de 2026',
+    deadline: '11 de maio às 23:59 BRT',
+    postLink: 'https://www.instagram.com/p/DX9X4Qdtu4X/',
+    heroImage: 'https://www.marketscoupons.com/img/email-giveaway-apex-tickets.jpg',
+    subject: { pt:'Você foi escolhido — Sorteio de 3 contas Apex', en:'You\'re in — Apex 3-account giveaway', es:'Fuiste elegido — Sorteo de 3 cuentas Apex', fr:'Vous êtes choisi — Tirage de 3 comptes Apex', de:'Du bist dabei — Apex 3-Konten Verlosung', it:'Sei stato scelto — Estrazione di 3 conti Apex', ar:'تم اختيارك — سحب 3 حسابات Apex' },
+    preheader: { pt:'3 chances de ganhar conta de avaliação na Apex Trader Funding — 100% grátis pra participar', en:'3 chances to win an Apex Trader Funding evaluation account — 100% free to enter', es:'3 oportunidades de ganar cuenta de evaluación en Apex Trader Funding — 100% gratis', fr:'3 chances de gagner un compte d\'évaluation Apex Trader Funding — 100% gratuit', de:'3 Chancen auf ein Apex Trader Funding Evaluation Account — 100% gratis', it:'3 possibilità di vincere un account di valutazione Apex Trader Funding — 100% gratis', ar:'3 فرص للفوز بحساب تقييم Apex Trader Funding — مجاني 100%' },
+    cta: { pt:'Participar do Sorteio', en:'Enter the Giveaway', es:'Participar del Sorteo', fr:'Participer au Tirage', de:'Am Giveaway teilnehmen', it:'Partecipa al Sorteggio', ar:'الاشتراك في السحب' }
+  },
 };
+
+// Reusable giveaway HTML builder — para usar com qualquer sorteio futuro,
+// adiciona uma entry com kind:'giveaway' em INST_TEMPLATES e define
+// firm, numPrizes, prizeType, drawDate, deadline, postLink, heroImage, color, accent, cta.
+function buildGiveawayHtml(t, lang){
+  const gt = (obj) => (obj && (obj[lang] || obj.pt || obj.en)) || '';
+  const cta = gt(t.cta) || 'Participar';
+  const color = t.color || '#F0B429';
+  const accent = t.accent || '#F97316';
+  const firm = t.firm || '';
+  const numPrizes = t.numPrizes || '3';
+  const prizeType = t.prizeType || 'Evaluation Accounts';
+  const drawDate = t.drawDate || '';
+  const deadline = t.deadline || '';
+  const postLink = t.postLink || '#';
+  const heroImage = t.heroImage || '';
+  const ano = new Date().getFullYear();
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sorteio ${firm} — Markets Coupons</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f5f7;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#111;-webkit-font-smoothing:antialiased;">
+
+<style>
+  @media only screen and (max-width:520px) {
+    .ticket-cell { display:block !important; width:100% !important; padding:0 0 12px 0 !important; }
+  }
+</style>
+
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f4f5f7;opacity:0;">
+  ${numPrizes} chances de ganhar conta de avaliação na ${firm} — 100% grátis pra participar
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f5f7;padding:24px 0;">
+<tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.08);">
+
+  <tr><td style="padding:28px 32px 20px;text-align:center;">
+    <a href="https://www.marketscoupons.com" style="text-decoration:none;color:inherit;">
+      <span style="font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;">Markets <span style="color:#ff8c00;">Coupons</span><span style="color:#ff8c00;font-size:9px;">&nbsp;&#9679;</span></span>
+    </a>
+    <div style="margin-top:8px;font-size:11px;color:#6b7480;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;">
+      Sorteio Exclusivo
+    </div>
+  </td></tr>
+
+  <tr><td style="height:3px;background:linear-gradient(90deg,transparent,${accent},transparent);"></td></tr>
+
+  <tr><td style="background:#000000;padding:48px 32px 44px;text-align:center;">
+    <div style="display:inline-block;padding:6px 16px;background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.4);border-radius:99px;font-size:11px;font-weight:800;letter-spacing:2px;color:${color};text-transform:uppercase;margin-bottom:18px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px;"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Giveaway · Win 1 of ${numPrizes}
+    </div>
+
+    <h1 style="margin:0 0 14px;font-size:36px;font-weight:900;line-height:1.1;color:#fff;letter-spacing:-1px;">
+      ${numPrizes} ${prizeType}<br>
+      <span style="background:linear-gradient(135deg,${color},#ffe066);-webkit-background-clip:text;background-clip:text;color:transparent;">na ${firm}</span>
+    </h1>
+
+    <p style="margin:0 0 24px;font-size:15px;color:#b8c5d6;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;">
+      Sorteio em <strong style="color:${color};">${drawDate}</strong> · Participação 100% grátis
+    </p>
+
+    <img src="${heroImage}" alt="${numPrizes} ${prizeType} ${firm}" width="540" style="display:block;margin:0 auto;max-width:100%;height:auto;border:0;border-radius:12px;">
+  </td></tr>
+
+  <tr><td style="height:3px;background:linear-gradient(90deg,transparent,${accent},transparent);"></td></tr>
+
+  <tr><td style="padding:36px 36px 8px;">
+
+    <p style="margin:0 0 18px;font-size:16px;color:#111;line-height:1.7;">
+      Olá <strong>{nome}</strong>,
+    </p>
+
+    <p style="margin:0 0 22px;font-size:15px;color:#374151;line-height:1.7;">
+      A gente abriu mais um sorteio e você foi escolhido pra participar. <strong style="color:#111;">${numPrizes} ${prizeType} (FASE DE AVALIAÇÃO)</strong> da ${firm} vão ser sorteadas — 100% grátis, sem taxa de inscrição.
+    </p>
+
+    <p style="margin:0 0 22px;font-size:14px;color:#6b7480;line-height:1.7;font-style:italic;">
+      Não é conta financiada direta — é o acesso à avaliação oficial. Sua porta de entrada pra uma conta financiada de verdade.
+    </p>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fafafa;border:1px solid #e5e7eb;border-left:4px solid ${accent};border-radius:10px;margin-bottom:24px;">
+      <tr><td style="padding:20px 22px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:${accent};margin-bottom:12px;">Como participar</div>
+        <ol style="margin:0;padding:0 0 0 20px;color:#374151;font-size:14px;line-height:1.85;">
+          <li><strong style="color:#111;">Cadastre-se no site</strong> (se ainda não tem conta)</li>
+          <li><strong style="color:#111;">Curta o post</strong> oficial do sorteio no Instagram</li>
+          <li><strong style="color:#111;">Marque amigos traders</strong> nos comentários — quanto mais, mais chances</li>
+        </ol>
+      </td></tr>
+    </table>
+
+    <p style="margin:0 0 28px;font-size:14px;color:#6b7480;line-height:1.7;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Prazo pra entrar: <strong style="color:#111;">${deadline}</strong><br>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Sorteio ao vivo no Instagram em ${drawDate}
+    </p>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;">
+      <tr><td align="center">
+        <a href="${postLink}" style="display:inline-block;padding:17px 48px;background:linear-gradient(135deg,#c8941a,${color},#f5d060,${color},#c8941a);background-size:200% 100%;color:#0d141c;font-size:16px;font-weight:800;text-decoration:none;border-radius:50px;letter-spacing:.3px;box-shadow:0 8px 24px rgba(240,180,41,.3);">
+          ${cta} &rarr;
+        </a>
+      </td></tr>
+    </table>
+
+    <p style="margin:0 0 28px;font-size:12px;color:#9ca3af;text-align:center;line-height:1.6;">
+      Se o botão não abrir, copie e cole:<br>
+      <a href="${postLink}" style="color:#6b7480;text-decoration:underline;word-break:break-all;">${postLink}</a>
+    </p>
+
+  </td></tr>
+
+  <tr><td style="padding:0 36px;"><div style="border-top:1px solid #e5e7eb;"></div></td></tr>
+
+  <tr><td style="padding:24px 36px 28px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="vertical-align:middle;padding-right:14px;">
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,${color},#ff8c00);text-align:center;line-height:48px;font-size:18px;font-weight:800;color:#fff;">L</div>
+        </td>
+        <td style="vertical-align:middle;">
+          <div style="font-size:14px;font-weight:700;color:#111;">Lara</div>
+          <div style="font-size:12px;color:#6b7480;">Markets Coupons · Boa sorte aí</div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="background:#fafafa;padding:22px 32px;text-align:center;border-top:1px solid #e5e7eb;">
+    <p style="margin:0 0 8px;font-size:11px;color:#9ca3af;line-height:1.6;">
+      Você está recebendo este email porque é cadastrado no Markets Coupons.<br>
+      Markets Coupons é uma plataforma educacional/afiliada — não somos broker, FCM ou consultor registrado.
+    </p>
+    <p style="margin:8px 0 0;font-size:11px;color:#9ca3af;">
+      &copy; ${ano} Markets Coupons &middot;
+      <a href="https://www.marketscoupons.com/privacy" style="color:#6b7480;text-decoration:underline;">Privacidade</a> &middot;
+      <a href="https://www.marketscoupons.com/terms" style="color:#6b7480;text-decoration:underline;">Termos</a>
+    </p>
+    <p style="margin:10px 0 0;font-size:10px;color:#b9c0c9;">
+      <a href="https://www.marketscoupons.com/api/unsubscribe?e={email}" style="color:#9ca3af;text-decoration:underline;">Descadastrar</a>
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+
+</body>
+</html>`;
+}
 
 function buildInstitutionalHtml(name, lang='pt'){
   const t = INST_TEMPLATES[name];
   if(!t) return '';
+  if(t.kind === 'giveaway') return buildGiveawayHtml(t, lang);
 
   // ═══ SITE-INVITE: uses standard institutional layout with v3 cards ═══
 
