@@ -5668,6 +5668,8 @@ function langFromCode(idioma){
 }
 
 async function updateDestCount(){
+ // Modo teste: já está fixado em '1 (você)' por selectAudience — não recalcular
+ if(window._isTestSend) return;
  const leads=await getSegmentedLeads();
  const n = leads.length;
  const el = document.getElementById('dest-count'); if(el) el.textContent=n;
@@ -5676,6 +5678,8 @@ async function updateDestCount(){
 }
 async function updateCotaBanner(audienceCount){
  const banner = document.getElementById('cota-banner'); if(!banner) return;
+ // Modo teste: banner+botão já configurados por selectAudience('test')
+ if(window._isTestSend){ banner.style.display='none'; return; }
  const sendBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
  const sendInfo = document.getElementById('send-info');
  try{
