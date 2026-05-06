@@ -253,14 +253,23 @@
 }
 </script>
 
+<!-- Preconnect às firmas de afiliação — TTFB do redirect mais rápido -->
+<link rel="dns-prefetch" href="//apextraderfunding.com">
+<link rel="dns-prefetch" href="//bulenox.com">
+<link rel="dns-prefetch" href="//ftmo.com">
+<link rel="dns-prefetch" href="//takeprofittrader.com">
+<link rel="dns-prefetch" href="//fundednext.com">
+<link rel="preconnect" href="https://apextraderfunding.com" crossorigin>
+<link rel="preconnect" href="https://bulenox.com" crossorigin>
+
 <!-- OG image dinâmica por idioma -->
-<script src="js/og-lang.js?v=20260427"></script>
+<script src="js/og-lang.js?v=20260427" defer></script>
 
 <!--
  TRACKING — Only GTM (GA4 + Facebook Pixel are managed inside GTM)
  GTM: GTM-WJGTVX8G
 -->
-<script src="js/tracking-init.js?v=20260427"></script>
+<script src="js/tracking-init.js?v=20260427" defer></script>
 
 <!-- SUPABASE CLIENT -->
 <script defer src="https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js" crossorigin="anonymous"></script>
