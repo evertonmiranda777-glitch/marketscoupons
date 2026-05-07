@@ -5724,6 +5724,24 @@ async function getSegmentedLeads(){
    return firmaFilter.some(id=>rTags.includes(id)||rTags.some(t=>t.toLowerCase()===(firmaNames[id]||'').toLowerCase()));
   });
  }
+ // DEDUP CLIENT-SIDE: se template institucional selecionado, exclui quem já tem tag received-{template}
+ // Espelha o dedup server-side de api/send-email.js — mostra dest count REAL antes de clicar Enviar
+ try {
+  const tplName = window._instTemplateName;
+  if (tplName && emailIsHtml) {
+   const dedupTag = 'received-' + tplName;
+   const before = list.length;
+   list = list.filter(r => !((r.tags || []).includes(dedupTag)));
+   const filtered = before - list.length;
+   if (filtered > 0) {
+    window._lastDedupFiltered = { template: tplName, count: filtered };
+   } else {
+    window._lastDedupFiltered = null;
+   }
+  } else {
+   window._lastDedupFiltered = null;
+  }
+ } catch(e){}
  return list;
 }
 
@@ -5776,11 +5794,13 @@ async function updateCotaBanner(audienceCount){
 
    // sendInfo: linha única abaixo do botão (substitui banner)
    banner.style.display = 'none';
+   const dedupInfo = window._lastDedupFiltered;
+   const dedupNote = dedupInfo ? ` <span style="color:#10B981;">· ${dedupInfo.count.toLocaleString()} já receberam (filtrados)</span>` : '';
    if(sendInfo){
-     if(audienceCount === 0) sendInfo.textContent = '';
-     else if(avail === 0) sendInfo.textContent = `Cota de hoje esgotada (${used}/${limit}). Volta amanhã às 08:00 BRT.`;
-     else if(overflow > 0) sendInfo.innerHTML = `<span style="color:var(--t2);">Manda <strong style="color:var(--gold);">${willSend.toLocaleString()}</strong> agora · <strong>${overflow.toLocaleString()}</strong> ficam na fila do automático</span>`;
-     else sendInfo.innerHTML = `<span style="color:var(--t2);">Manda <strong style="color:var(--gold);">${willSend.toLocaleString()}</strong> agora · cota: ${used}/${limit}</span>`;
+     if(audienceCount === 0) sendInfo.innerHTML = dedupInfo ? `<span style="color:var(--t3);">Todos os ${dedupInfo.count.toLocaleString()} desta lista já receberam "${dedupInfo.template}". Nada a enviar.</span>` : '';
+     else if(avail === 0) sendInfo.innerHTML = `Cota de hoje esgotada (${used}/${limit}). Volta amanhã às 08:00 BRT.${dedupNote}`;
+     else if(overflow > 0) sendInfo.innerHTML = `<span style="color:var(--t2);">Manda <strong style="color:var(--gold);">${willSend.toLocaleString()}</strong> agora · <strong>${overflow.toLocaleString()}</strong> ficam na fila${dedupNote}</span>`;
+     else sendInfo.innerHTML = `<span style="color:var(--t2);">Manda <strong style="color:var(--gold);">${willSend.toLocaleString()}</strong> agora · cota: ${used}/${limit}${dedupNote}</span>`;
    }
    return;
  } catch {
@@ -6610,6 +6630,8 @@ async function loadQuickTemplate(name){
     <hr style="border-color:var(--b1);margin-bottom:12px;">
     <iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${htmlContent.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#F2F2F2;"></iframe>`;
   toast('Template "'+name+'" carregado!');
+  // Atualiza dest count + banner com dedup do template (filtra quem já recebeu received-{name})
+  try { await updateDestCount(); } catch {}
 }
 
 let emailIsHtml = false;
