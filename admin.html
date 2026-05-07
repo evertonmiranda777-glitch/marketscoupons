@@ -1333,6 +1333,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <select id="audience-select" onchange="selectAudience(this.value)" style="width:100%;padding:11px 14px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;cursor:pointer;">
        <optgroup label="Teste">
          <option value="test">Só pra mim (teste — não conta na cota)</option>
+         <option value="single">Email específico (digitar abaixo)</option>
        </optgroup>
        <optgroup label="Por firma" id="audience-firms"></optgroup>
        <optgroup label="Geral">
@@ -1342,6 +1343,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
          <option value="loyalty_only">Só programa de fidelidade</option>
        </optgroup>
      </select>
+     <div id="single-email-row" style="display:none;margin-top:8px;">
+       <input type="email" id="em-single-email" placeholder="email@exemplo.com" style="width:100%;padding:10px 12px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;">
+       <div style="font-size:10px;color:var(--t3);margin-top:4px;">Vai usar o template e assunto selecionados acima · não conta na cota diária</div>
+     </div>
      <div style="font-size:10px;color:var(--t3);margin-top:6px;">Destinatários: <strong id="dest-count" style="color:var(--gold);">0</strong></div>
    </div>
 
@@ -1386,13 +1391,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
          <label style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">Limite/dia</label>
          <input type="number" id="em-daily-limit" value="500" min="1" max="100000" style="width:80px;text-align:center;padding:6px 8px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;" onchange="emailDailyLimit=parseInt(this.value)||500;updateDailyLimitUI();">
          <div id="daily-limit-info" style="flex:1;"></div>
-       </div>
-       <div>
-         <label style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);display:block;margin-bottom:4px;">Envio individual</label>
-         <div style="display:flex;gap:8px;">
-           <input type="email" id="em-single-email" placeholder="email@exemplo.com" style="flex:1;padding:8px 10px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;">
-           <button class="btn-secondary" onclick="sendSingleEmail()" style="padding:6px 12px;font-size:11px;white-space:nowrap;">Enviar p/ este</button>
-         </div>
        </div>
      </div>
    </details>
@@ -5406,6 +5404,19 @@ async function selectAudience(value){
   const fbBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
   const sendInfo = document.getElementById('send-info');
   const banner = document.getElementById('cota-banner');
+  // Esconde input de email único por padrão; reabre só no modo 'single'
+  const singleRow = document.getElementById('single-email-row');
+  if(singleRow) singleRow.style.display = (value==='single' ? 'block' : 'none');
+  window._isSingleSend = (value==='single');
+  if(value === 'single'){
+    window._isTestSend = false;
+    const el = document.getElementById('dest-count'); if(el) el.textContent = '1 (email específico)';
+    const banner = document.getElementById('cota-banner'); if(banner) banner.style.display='none';
+    const sendInfo = document.getElementById('send-info'); if(sendInfo) sendInfo.textContent = 'Envia 1 email · não conta na cota';
+    const fbBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
+    if(fbBtn){ fbBtn.textContent = 'Enviar pra este email'; fbBtn.disabled = false; }
+    return;
+  }
   if(value === 'test'){
     window._isTestSend = true;
     emailSegments = ['all'];
@@ -9142,6 +9153,8 @@ function addSmtpAccount(){
 async function sendEmailsSmtp(){
   // Modo teste: dispatcher pra sendTestEmail (não consome cota)
   if(window._isTestSend){ return sendTestEmail(); }
+  // Modo single: dispatcher pra sendSingleEmail (não consome cota)
+  if(window._isSingleSend){ return sendSingleEmail(); }
 
   const subject = document.getElementById('em-subject')?.value?.trim();
   const body    = document.getElementById('em-body')?.value?.trim();
@@ -9192,15 +9205,19 @@ async function sendEmailsSmtp(){
       window._lastSendDebug = { calls: [] };
       window._lastSendProviders = { brevo: 0, resend: 0, sendgrid: 0 };
       // Send per language group — each gets HTML in their language
+      // Chunk em lotes de 200 (limite do /api/send-email — Brevo aceita até 1000 mas a função impõe 200)
+      const CHUNK = 200;
       for(const [lang, group] of Object.entries(langGroups)){
         const html = isPromo ? buildWhitePromoHtml(emailPromoFirm, lang) : buildInstitutionalHtml(window._instTemplateName, lang);
         const instTpl = isInst ? INST_TEMPLATES[window._instTemplateName] : null;
         const langSubject = isInst && instTpl ? (instTpl.subject[lang]||instTpl.subject.en||subject) : subject;
+        for(let off=0; off<group.length; off+=CHUNK){
+        const chunk = group.slice(off, off+CHUNK);
         const resp = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({
-            to: group.map(l => ({ email: l.email, name: l.name||'' })),
+            to: chunk.map(l => ({ email: l.email, name: l.name||'' })),
             subject: langSubject,
             htmlContent: html,
             tags: [isPromo ? 'promo-'+emailPromoFirm.id : 'inst-'+window._instTemplateName, 'lang-'+lang, ...(emailCustomTagFilter||[])],
@@ -9208,7 +9225,7 @@ async function sendEmailsSmtp(){
         });
         const data = await resp.json().catch(()=>({}));
         // Capture debug pra cada call multilíngue
-        window._lastSendDebug.calls.push({ lang, http_status: resp.status, http_ok: resp.ok, body_keys: Object.keys(data||{}), success: data.success, sent: data.sent, failed: data.failed, error: data.error, message: data.message, results_sample: (data.results||[]).slice(0,2) });
+        window._lastSendDebug.calls.push({ lang, chunk_off: off, chunk_size: chunk.length, http_status: resp.status, http_ok: resp.ok, body_keys: Object.keys(data||{}), success: data.success, sent: data.sent, failed: data.failed, error: data.error, message: data.message, results_sample: (data.results||[]).slice(0,2) });
         if(Array.isArray(data.results)) window._lastSendResults.push(...data.results);
         if(data.providers){
           window._lastSendProviders.brevo    += (data.providers.brevo||0);
@@ -9216,7 +9233,8 @@ async function sendEmailsSmtp(){
           window._lastSendProviders.sendgrid += (data.providers.sendgrid||0);
         }
         if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
-        else { totalFailed+=group.length; }
+        else { totalFailed+=chunk.length; }
+        }
       }
     } else {
       // Standard text/html send — single language
