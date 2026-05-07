@@ -6592,16 +6592,18 @@ async function loadQuickTemplate(name){
   // Store template name for per-language sending
   window._instTemplateName = name;
 
-  const subject = tpl.subject.en || tpl.subject.pt;
-  const htmlContent = buildInstitutionalHtml(name, 'en');
+  const previewLang = tpl.forceLang || 'pt';
+  const subject = tpl.subject[previewLang] || tpl.subject.en || tpl.subject.pt;
+  const htmlContent = buildInstitutionalHtml(name, previewLang);
+  const isLocked = !!tpl.forceLang;
 
   document.getElementById('em-subject').value = subject;
   document.getElementById('em-body').value = '__INST_HTML__';
 
   document.getElementById('em-preview').innerHTML = `
     <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Assunto: <strong style="color:var(--t1);">${subject}</strong></div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">HTML em Inglês (idioma padrão único)</strong></div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">Todos destinatários recebem em EN — sem mismatch subject/corpo</div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:8px;">Tipo: <strong style="color:var(--gold);">${isLocked?`Travado em ${previewLang.toUpperCase()} (template single-lang)`:'HTML Rico Multilíngue (7 idiomas)'}</strong></div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">${isLocked?'Todos destinatários recebem nesse idioma (template não tem traduções)':'Cada destinatário recebe no seu idioma (pt, en, es, fr, de, it, ar)'}</div>
     <hr style="border-color:var(--b1);margin-bottom:12px;">
     <iframe sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="${htmlContent.replace(/"/g,'&quot;')}" style="width:100%;height:600px;border:1px solid var(--b1);border-radius:8px;background:#F2F2F2;"></iframe>`;
   toast('Template "'+name+'" carregado!');
@@ -7283,6 +7285,7 @@ const INST_TEMPLATES = {
     const fillAll = (v) => Object.fromEntries(langs.map(l => [l, v]));
     return {
       kind: 'giveaway',
+      forceLang: 'en', // template single-lang (HTML hardcoded em EN) — trava todos no EN
       color: '#F0B429',
       accent: '#F97316',
       firm: 'Apex Trader Funding',
@@ -9239,9 +9242,21 @@ async function sendEmailsSmtp(){
   const isPromo = emailIsHtml && emailPromoFirm;
   const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
   const isMultilang = isPromo || isInst;
-  // POLÍTICA: bulk emails sempre em EN (lang padrão do site, evita mismatch subject/body).
-  // Antes era multi-lang por l.lang — virou agrupamento único 'en'.
-  const langGroups = { en: leads.slice() };
+  // Multi-lang por destinatário (l.lang) — agrupa pra mandar HTML certo por idioma.
+  // Templates com forceLang (ex: giveaway-apex-may26 'en') são travados num idioma só:
+  // todos os recipients vão pro mesmo grupo do forceLang pra evitar mismatch subject/body.
+  const _instTpl = isInst ? INST_TEMPLATES[window._instTemplateName] : null;
+  const _forceLang = _instTpl?.forceLang || (isPromo ? null : null);
+  const langGroups = {};
+  if(_forceLang){
+    langGroups[_forceLang] = leads.slice();
+  } else {
+    leads.forEach(l => {
+      const lang = l.lang || 'en';
+      if(!langGroups[lang]) langGroups[lang] = [];
+      langGroups[lang].push(l);
+    });
+  }
   const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
 
   if(!confirm(`Enviar para ${leads.length.toLocaleString()} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\nHTML multilingue — cada um recebe no seu idioma.' : ''}`)) return;
@@ -9475,8 +9490,19 @@ async function resumeEmailQueue(){
     const token = session?.data?.session?.access_token;
     let totalSent=0, totalFailed=0;
 
-    // POLÍTICA: bulk = EN único (sem multi-lang)
-    const langGroups = { en: batch.slice() };
+    // Multi-lang por destinatário; templates com forceLang travam num idioma só
+    const _qTpl = q.isInst && q.templateId ? INST_TEMPLATES[q.templateId] : null;
+    const _qForceLang = _qTpl?.forceLang || null;
+    const langGroups = {};
+    if(_qForceLang){
+      langGroups[_qForceLang] = batch.slice();
+    } else {
+      batch.forEach(l => {
+        const lang = l.lang || 'en';
+        if(!langGroups[lang]) langGroups[lang] = [];
+        langGroups[lang].push(l);
+      });
+    }
 
     for(const [lang, group] of Object.entries(langGroups)){
       let html, subj = q.subject;
@@ -9609,8 +9635,19 @@ async function runAutoQueue(){
 
     batch.forEach(l => { if(l.email) allAttempted.push(l.email); });
 
-    // POLÍTICA: bulk = EN único (sem multi-lang)
-    const langGroups = { en: batch.slice() };
+    // Multi-lang por destinatário; templates com forceLang travam num idioma só
+    const _qTpl = q.isInst && q.templateId ? INST_TEMPLATES[q.templateId] : null;
+    const _qForceLang = _qTpl?.forceLang || null;
+    const langGroups = {};
+    if(_qForceLang){
+      langGroups[_qForceLang] = batch.slice();
+    } else {
+      batch.forEach(l => {
+        const lang = l.lang || 'en';
+        if(!langGroups[lang]) langGroups[lang] = [];
+        langGroups[lang].push(l);
+      });
+    }
 
     updateAutoStatus(`Enviando ${start+1}–${end} de ${qq.totalEmails}... (${batch.length} emails)`);
 
@@ -9722,8 +9759,11 @@ async function sendTestEmail(){
   const isPromo = emailIsHtml && emailPromoFirm;
   const isInst = emailIsHtml && window._instTemplateName && !emailPromoFirm;
   let html=body, subj=subject;
-  if(isPromo) html=buildWhitePromoHtml(emailPromoFirm,'en');
-  if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'en'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.en||tpl.subject.pt||subject; }
+  // Single send: respeita lang do destinatário (se conhecido) ou usa forceLang do template
+  const _singleTpl = isInst ? INST_TEMPLATES[window._instTemplateName] : null;
+  const _singleLang = _singleTpl?.forceLang || 'pt';
+  if(isPromo) html=buildWhitePromoHtml(emailPromoFirm, _singleLang);
+  if(isInst){ html=buildInstitutionalHtml(window._instTemplateName, _singleLang); if(_singleTpl) subj=_singleTpl.subject[_singleLang]||_singleTpl.subject.en||subject; }
   try {
     const resp = await fetch('/api/send-email',{
       method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
@@ -9750,8 +9790,11 @@ async function sendSingleEmail(){
   const isPromo=emailIsHtml&&emailPromoFirm;
   const isInst=emailIsHtml&&window._instTemplateName&&!emailPromoFirm;
   let html=body, subj=subject;
-  if(isPromo) html=buildWhitePromoHtml(emailPromoFirm,'en');
-  if(isInst){ html=buildInstitutionalHtml(window._instTemplateName,'en'); const tpl=INST_TEMPLATES[window._instTemplateName]; if(tpl) subj=tpl.subject.en||tpl.subject.pt||subject; }
+  // Single send: respeita lang do destinatário (se conhecido) ou usa forceLang do template
+  const _singleTpl = isInst ? INST_TEMPLATES[window._instTemplateName] : null;
+  const _singleLang = _singleTpl?.forceLang || 'pt';
+  if(isPromo) html=buildWhitePromoHtml(emailPromoFirm, _singleLang);
+  if(isInst){ html=buildInstitutionalHtml(window._instTemplateName, _singleLang); if(_singleTpl) subj=_singleTpl.subject[_singleLang]||_singleTpl.subject.en||subject; }
   try {
     const resp=await fetch('/api/send-email',{
       method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},

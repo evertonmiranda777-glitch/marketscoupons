@@ -7,7 +7,7 @@
 // renderiza HTML por idioma, envia via Brevo + Resend respeitando reservas, auto-tag.
 
 const crypto = require('crypto');
-const { renderInstHtml, getSubject } = require('../lib/email-render.js');
+const { renderInstHtml, getSubject, INST_TEMPLATES: _RENDER_TPLS } = require('../lib/email-render.js');
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -241,8 +241,10 @@ module.exports = async (req, res) => {
     for (const sub of eligible) {
       if (Date.now() - startTs > SOFT_DEADLINE_MS) { stoppedByDeadline = true; break; }
       if (brevoBudget <= 0 && resendBudget <= 0 && sgBudget <= 0) break;
-      // POLÍTICA: bulk emails sempre em EN (lang padrão do site, evita mismatch subject/body)
-      const lang = 'en';
+      // Respeita lang do destinatário; se template tem forceLang (ex: giveaway-apex-may26 'en'),
+      // trava nesse idioma pra evitar mismatch subject/body em templates single-lang.
+      const _tpl = _RENDER_TPLS[campaign];
+      const lang = (_tpl && _tpl.forceLang) ? _tpl.forceLang : (sub.lang || 'en');
       const html = renderInstHtml(campaign, lang, buildUnsubUrl(sub.email, lang));
       const subject = getSubject(campaign, lang);
       if (!html) { failed++; failedEmails.push(sub.email); continue; }
