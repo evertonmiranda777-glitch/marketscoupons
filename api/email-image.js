@@ -47,46 +47,46 @@ export default async function handler(req) {
       const expired = diff <= 0;
       const pad = (n) => String(n).padStart(2, '0');
 
+      // Estilo limpo: bloco branco, número escuro grande, label minúscula cinza embaixo, accent só num separador sutil
       const block = (val, lbl) => ({
         type: 'div', props: {
           style: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                   width: '78px', padding: '8px 0', backgroundColor: '#0d141c', borderRadius: '8px', margin: '0 4px' },
+                   minWidth: '64px', padding: '6px 10px' },
           children: [
-            { type: 'div', props: { style: { color: accent, fontSize: '32px', fontWeight: 800, lineHeight: 1, fontFamily: 'monospace' }, children: pad(val) } },
-            { type: 'div', props: { style: { color: '#8b97a8', fontSize: '10px', fontWeight: 600, letterSpacing: '1.2px', marginTop: '4px', textTransform: 'uppercase' }, children: lbl } },
+            { type: 'div', props: { style: { color: '#111', fontSize: '36px', fontWeight: 800, lineHeight: 1, letterSpacing: '-1px', fontVariantNumeric: 'tabular-nums' }, children: pad(val) } },
+            { type: 'div', props: { style: { color: '#9ca3af', fontSize: '10px', fontWeight: 700, letterSpacing: '1.5px', marginTop: '6px', textTransform: 'uppercase' }, children: lbl } },
           ],
+        },
+      });
+      const sep = () => ({
+        type: 'div', props: {
+          style: { display: 'flex', color: accent, fontSize: '28px', fontWeight: 700, lineHeight: 1, alignSelf: 'center', marginTop: '-10px' },
+          children: ':',
         },
       });
 
       const content = expired ? {
         type: 'div', props: {
           style: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%',
-                   color: '#9ca3af', fontSize: '20px', fontWeight: 700, fontFamily: 'monospace', letterSpacing: '1.5px', textTransform: 'uppercase' },
+                   color: '#9ca3af', fontSize: '18px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase' },
           children: 'Promo ended',
         },
       } : {
         type: 'div', props: {
-          style: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' },
-          children: [
-            { type: 'div', props: { style: { color: '#9ca3af', fontSize: '11px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '8px' }, children: label } },
-            { type: 'div', props: {
-              style: { display: 'flex', flexDirection: 'row' },
-              children: [block(dd, 'Days'), block(hh, 'Hrs'), block(mm, 'Min'), block(ss, 'Sec')],
-            }},
-          ],
+          style: { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' },
+          children: [block(dd, 'Days'), sep(), block(hh, 'Hrs'), sep(), block(mm, 'Min'), sep(), block(ss, 'Sec')],
         },
       };
 
       return new ImageResponse({
         type: 'div', props: {
-          style: { display: 'flex', width: '100%', height: '100%', backgroundColor: 'transparent', padding: '8px' },
+          style: { display: 'flex', width: '100%', height: '100%', backgroundColor: 'transparent' },
           children: [content],
         },
       }, {
         width: 360,
-        height: 110,
+        height: 90,
         headers: {
-          // No-cache crítico: cliente de email re-renderiza ao reabrir → valor sempre atualizado
           'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
           'Pragma': 'no-cache',
           'Expires': '0',
