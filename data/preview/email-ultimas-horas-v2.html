@@ -76,53 +76,56 @@
           </td>
         </tr></table>
       </td></tr>
-      <!-- Countdown REAL Apex (PNG dinâmico — recalcula a cada abertura do email) -->
+      <!-- Countdown REAL Apex: SVG ampulheta + label em HTML, PNG dinâmico só com números -->
       <tr><td style="padding:14px 22px 0;text-align:center;">
-        <img src="https://www.marketscoupons.com/api/email-image?type=countdown&d=2026-05-08T03:59:00Z&c=F97316&label=Apex%20promo%20ends%20in"
-             alt="Apex promo ends in 0d 8h 0m 0s"
-             width="360" height="110"
+        <div style="font-size:11px;font-weight:700;color:#6b7480;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>Apex promo ends in
+        </div>
+        <img src="https://www.marketscoupons.com/api/email-image?type=countdown&d=2026-05-08T03:59:00Z&c=F97316"
+             alt="0d 8h 0m 0s"
+             width="360" height="90"
              style="display:block;margin:0 auto;border:0;max-width:100%;">
       </td></tr>
       <!-- Tabela preços -->
       <tr><td style="padding:8px 22px 18px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
           <tr class="price-row" style="border-bottom:1px solid #f3f4f6;">
-            <td style="padding:14px 0;font-size:14px;font-weight:700;color:#111;width:60px;text-align:left;">25K</td>
+            <td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;width:60px;text-align:left;">25K</td>
             <td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$199</td>
             <td style="padding:14px 8px;font-size:18px;font-weight:800;color:#F97316;text-align:left;">$19.90</td>
-            <td align="right" style="padding:14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $179</td>
+            <td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $179</td>
           </tr>
           <tr class="price-row" style="border-bottom:1px solid #f3f4f6;">
-            <td style="padding:14px 0;font-size:14px;font-weight:700;color:#111;text-align:left;">50K</td>
+            <td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;text-align:left;">50K</td>
             <td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$249</td>
             <td style="padding:14px 8px;font-size:18px;font-weight:800;color:#F97316;text-align:left;">$24.90</td>
-            <td align="right" style="padding:14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $224</td>
+            <td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $224</td>
           </tr>
-          <!-- 100K destacado: card clicável estilo botão -->
-          <tr><td colspan="4" style="padding:14px 0 6px;">
-            <a href="https://www.marketscoupons.com/aff/go/apex" style="display:block;text-decoration:none;border:2px solid #F97316;border-radius:10px;padding:14px 16px;background:#fff7ed;position:relative;">
+          <!-- 100K destacado: card clicável (botãozinho) com box-shadow inset (não ocupa layout) — alinha com outras linhas -->
+          <tr><td colspan="4" style="padding:14px 0;">
+            <a href="https://www.marketscoupons.com/aff/go/apex" style="display:block;text-decoration:none;background:#fff7ed;border-radius:10px;box-shadow:inset 0 0 0 2px #F97316;position:relative;">
               <div style="position:absolute;top:-9px;left:14px;background:#F97316;color:#fff;font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:4px;">Most Popular</div>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-                <td style="font-size:15px;font-weight:800;color:#111;width:60px;text-align:left;">100K</td>
-                <td style="font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$399</td>
-                <td style="font-size:22px;font-weight:900;color:#F97316;text-align:left;">$39.90</td>
-                <td align="right" style="font-size:11px;color:#10B981;font-weight:700;">Save $359</td>
+                <td style="padding:18px 0 18px 14px;font-size:15px;font-weight:800;color:#111;width:60px;text-align:left;">100K</td>
+                <td style="padding:18px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$399</td>
+                <td style="padding:18px 8px;font-size:22px;font-weight:900;color:#F97316;text-align:left;">$39.90</td>
+                <td align="right" style="padding:18px 14px 18px 0;font-size:11px;color:#10B981;font-weight:700;">Save $359</td>
               </tr></table>
             </a>
           </td></tr>
-          <tr class="price-row">
-            <td style="padding:14px 0;font-size:14px;font-weight:700;color:#111;text-align:left;">150K</td>
+          <tr class="price-row" style="border-top:1px solid #f3f4f6;">
+            <td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;text-align:left;">150K</td>
             <td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$599</td>
             <td style="padding:14px 8px;font-size:18px;font-weight:800;color:#F97316;text-align:left;">$59.90</td>
-            <td align="right" style="padding:14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $539</td>
+            <td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $539</td>
           </tr>
         </table>
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td align="center">
           <a href="https://www.marketscoupons.com/aff/go/apex" style="display:inline-block;padding:13px 32px;background:#F97316;color:#fff;font-size:14px;font-weight:800;text-decoration:none;border-radius:8px;letter-spacing:.2px;">
             Get Apex with MARKET coupon &rarr;
           </a>
         </td></tr></table>
-        <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;">Use the coupon code <strong style="color:#374151;">MARKET</strong> at checkout to apply the 90% discount.</p>
+        <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;text-align:center;">Use the coupon code <strong style="color:#374151;">MARKET</strong> at checkout to apply the 90% discount.</p>
       </td></tr>
     </table>
 
@@ -142,41 +145,41 @@
       <tr><td style="padding:8px 22px 18px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
           <tr class="price-row" style="border-bottom:1px solid #f3f4f6;">
-            <td style="padding:14px 0;font-size:14px;font-weight:700;color:#111;width:60px;text-align:left;">25K</td>
+            <td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;width:60px;text-align:left;">25K</td>
             <td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$145</td>
             <td style="padding:14px 8px;font-size:18px;font-weight:800;color:#3B82F6;text-align:left;">$15.95</td>
-            <td align="right" style="padding:14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $129</td>
+            <td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $129</td>
           </tr>
           <tr class="price-row" style="border-bottom:1px solid #f3f4f6;">
-            <td style="padding:14px 0;font-size:14px;font-weight:700;color:#111;text-align:left;">50K</td>
+            <td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;text-align:left;">50K</td>
             <td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$175</td>
             <td style="padding:14px 8px;font-size:18px;font-weight:800;color:#3B82F6;text-align:left;">$19.25</td>
-            <td align="right" style="padding:14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $156</td>
+            <td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $156</td>
           </tr>
-          <tr><td colspan="4" style="padding:14px 0 6px;">
-            <a href="https://www.marketscoupons.com/aff/go/bulenox" style="display:block;text-decoration:none;border:2px solid #3B82F6;border-radius:10px;padding:14px 16px;background:#eff6ff;position:relative;">
+          <tr><td colspan="4" style="padding:14px 0;">
+            <a href="https://www.marketscoupons.com/aff/go/bulenox" style="display:block;text-decoration:none;background:#eff6ff;border-radius:10px;box-shadow:inset 0 0 0 2px #3B82F6;position:relative;">
               <div style="position:absolute;top:-9px;left:14px;background:#3B82F6;color:#fff;font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:4px;">Most Popular</div>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-                <td style="font-size:15px;font-weight:800;color:#111;width:60px;text-align:left;">100K</td>
-                <td style="font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$215</td>
-                <td style="font-size:22px;font-weight:900;color:#3B82F6;text-align:left;">$23.65</td>
-                <td align="right" style="font-size:11px;color:#10B981;font-weight:700;">Save $191</td>
+                <td style="padding:18px 0 18px 14px;font-size:15px;font-weight:800;color:#111;width:60px;text-align:left;">100K</td>
+                <td style="padding:18px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$215</td>
+                <td style="padding:18px 8px;font-size:22px;font-weight:900;color:#3B82F6;text-align:left;">$23.65</td>
+                <td align="right" style="padding:18px 14px 18px 0;font-size:11px;color:#10B981;font-weight:700;">Save $191</td>
               </tr></table>
             </a>
           </td></tr>
-          <tr class="price-row">
-            <td style="padding:14px 0;font-size:14px;font-weight:700;color:#111;text-align:left;">150K</td>
+          <tr class="price-row" style="border-top:1px solid #f3f4f6;">
+            <td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;text-align:left;">150K</td>
             <td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$325</td>
             <td style="padding:14px 8px;font-size:18px;font-weight:800;color:#3B82F6;text-align:left;">$35.75</td>
-            <td align="right" style="padding:14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $289</td>
+            <td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;" class="save">Save $289</td>
           </tr>
         </table>
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td align="center">
           <a href="https://www.marketscoupons.com/aff/go/bulenox" style="display:inline-block;padding:13px 32px;background:#3B82F6;color:#fff;font-size:14px;font-weight:800;text-decoration:none;border-radius:8px;letter-spacing:.2px;">
             Get Bulenox with MARKET89 &rarr;
           </a>
         </td></tr></table>
-        <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;">Use the coupon code <strong style="color:#374151;">MARKET89</strong> at checkout to apply the 89% discount.</p>
+        <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;text-align:center;">Use the coupon code <strong style="color:#374151;">MARKET89</strong> at checkout to apply the 89% discount.</p>
       </td></tr>
     </table>
 
