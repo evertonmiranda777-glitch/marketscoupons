@@ -389,15 +389,31 @@ module.exports = async (req, res) => {
   if (type === 'email_status') {
     try {
       const [paused, stats] = await Promise.all([readPauseFlag(), readEmailDailyStats()]);
+      // Lê resend_daily_limit do site_settings (default 100 free; user sobe ao assinar Pro)
+      let resendLimit = 100;
+      if (SK_FOR_PAUSE) {
+        try {
+          const sr = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.resend_daily_limit&select=value`,
+            { headers: { apikey: SK_FOR_PAUSE, Authorization: `Bearer ${SK_FOR_PAUSE}` } });
+          if (sr.ok) {
+            const rows = await sr.json();
+            const v = parseInt(rows[0]?.value, 10);
+            if (Number.isFinite(v) && v > 0) resendLimit = v;
+          }
+        } catch {}
+      }
+      const brevoLimit = 295;
+      const sgLimit = 100;
+      const dailyLimit = brevoLimit + resendLimit + sgLimit;
       return res.status(200).json({
         paused,
         sent_today: stats.sent_today,
-        daily_limit: 495, // Brevo bulk 295 (300-5 reserve) + Resend 100 + SendGrid 100
-        brevo_reserve: 5, // welcome/confirm transacional usa esses 5
+        daily_limit: dailyLimit, // soma dinâmica (Brevo 295 + Resend custom + SG 100)
+        brevo_reserve: 5,
         breakdown: {
-          brevo:    { sent: stats.sent_today_brevo,    limit: 295 }, // bulk budget (reserva já subtraída)
-          resend:   { sent: stats.sent_today_resend,   limit: 100 },
-          sendgrid: { sent: stats.sent_today_sendgrid, limit: 100 },
+          brevo:    { sent: stats.sent_today_brevo,    limit: brevoLimit },
+          resend:   { sent: stats.sent_today_resend,   limit: resendLimit },
+          sendgrid: { sent: stats.sent_today_sendgrid, limit: sgLimit },
         },
         next_run_label: nextEmailRunLabel(),
         week_sent: stats.week_sent,
