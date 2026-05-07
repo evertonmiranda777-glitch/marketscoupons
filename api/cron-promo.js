@@ -304,12 +304,23 @@ module.exports = async (req, res) => {
       // Subtraímos quantos já enviamos hoje via email_logs
       try {
         const today = new Date().toISOString().slice(0, 10);
+        // Lê resend_daily_limit do site_settings (default 100 free; Pro=25k+)
+        let resendDailyLimit = 100;
+        try {
+          const sr = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.resend_daily_limit&select=value`,
+            { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+          if (sr.ok) {
+            const rows = await sr.json();
+            const v = parseInt(rows[0]?.value, 10);
+            if (Number.isFinite(v) && v > 0) resendDailyLimit = v;
+          }
+        } catch {}
         const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.resend&created_at=gte.${today}&select=recipients`, {
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         });
         const logs = r.ok ? await r.json() : [];
         const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
-        resendRemaining = Math.max(0, 100 - sentToday);
+        resendRemaining = Math.max(0, resendDailyLimit - sentToday);
       } catch { resendRemaining = 100; }
       console.log(`[cron-promo] Brevo credits: ${freePlan?.credits || 0}, reserve: ${BREVO_DAILY_RESERVE}, Brevo bulk: ${brevoRemaining}, Resend bulk: ${resendRemaining}`);
     } catch (e) {
