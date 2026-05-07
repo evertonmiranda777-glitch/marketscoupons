@@ -9374,7 +9374,20 @@ async function sendEmailsSmtp(){
 
   try {
     const session = await db.auth.getSession();
-    const token = session?.data?.session?.access_token;
+    let token = session?.data?.session?.access_token;
+    // Token JWT do Supabase dura ~1h. Disparo de 23k em chunks pode demorar 1-2h →
+    // token expira no meio, server retorna 403/429. Helper pra renovar antes de cada chunk.
+    let _lastTokenRefresh = Date.now();
+    const TOKEN_REFRESH_MS = 30 * 60 * 1000; // refresh a cada 30min (token expira em ~60min)
+    const ensureFreshToken = async () => {
+      if (Date.now() - _lastTokenRefresh < TOKEN_REFRESH_MS) return token;
+      try {
+        const r = await db.auth.refreshSession();
+        const newToken = r?.data?.session?.access_token;
+        if (newToken) { token = newToken; _lastTokenRefresh = Date.now(); console.log('[sendEmailsSmtp] JWT refreshed at', new Date().toISOString()); }
+      } catch(e){ console.warn('[sendEmailsSmtp] token refresh failed:', e); }
+      return token;
+    };
     let totalSent=0, totalFailed=0;
 
     if(isPromo || isInst){
@@ -9390,6 +9403,7 @@ async function sendEmailsSmtp(){
         const langSubject = isInst && instTpl ? (instTpl.subject[lang]||instTpl.subject.en||subject) : subject;
         for(let off=0; off<group.length; off+=CHUNK){
         const chunk = group.slice(off, off+CHUNK);
+        await ensureFreshToken();
         const resp = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
