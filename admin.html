@@ -1370,6 +1370,20 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <!-- Cota bar -->
    <div id="cota-banner" class="cota-banner" style="display:none;font-size:12px;padding:10px 14px;border-radius:8px;margin-bottom:14px;line-height:1.5;background:var(--card2);border:1px solid var(--b1);"></div>
 
+   <!-- Quantidade do lote + limite diário (visível, não escondido em avançado) -->
+   <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;color:var(--t2);">
+     <div style="display:flex;align-items:center;gap:8px;">
+       <label for="em-batch-size" style="white-space:nowrap;">Enviar agora:</label>
+       <input type="number" id="em-batch-size" min="1" max="100000" placeholder="auto" style="width:90px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;">
+       <span style="font-size:10px;color:var(--t3);">vazio = cota cheia</span>
+     </div>
+     <div style="display:flex;align-items:center;gap:8px;">
+       <label for="em-daily-limit" style="white-space:nowrap;">Limite/dia:</label>
+       <input type="number" id="em-daily-limit" value="500" min="1" max="100000" style="width:90px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;" onchange="emailDailyLimit=parseInt(this.value)||500;updateDailyLimitUI();updateDestCount();">
+       <span id="daily-limit-info" style="font-size:10px;color:var(--t3);"></span>
+     </div>
+   </div>
+
    <!-- Action row -->
    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
      <div id="send-info" style="font-size:11px;color:var(--t3);"></div>
@@ -1379,6 +1393,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
    </div>
 
+   <!-- Status do último envio (persistente até próximo envio) -->
+   <div id="last-send-status" style="display:none;margin-top:14px;padding:14px;background:var(--card2);border:1px solid var(--b1);border-radius:8px;font-size:12px;line-height:1.5;"></div>
+
    <!-- Avançado (provedor + limite + envio individual) -->
    <details style="margin-top:14px;font-size:11px;color:var(--t3);">
      <summary style="cursor:pointer;user-select:none;padding:6px 0;display:flex;align-items:center;gap:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Avançado</summary>
@@ -1386,11 +1403,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <div>
          <label style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);display:block;margin-bottom:4px;">Provedor</label>
          <div id="smtp-accounts-list"></div>
-       </div>
-       <div style="display:flex;gap:8px;align-items:center;">
-         <label style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">Limite/dia</label>
-         <input type="number" id="em-daily-limit" value="500" min="1" max="100000" style="width:80px;text-align:center;padding:6px 8px;background:var(--card);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;" onchange="emailDailyLimit=parseInt(this.value)||500;updateDailyLimitUI();">
-         <div id="daily-limit-info" style="flex:1;"></div>
        </div>
      </div>
    </details>
@@ -9170,13 +9182,24 @@ async function sendEmailsSmtp(){
     toast(`Limite diario atingido (${emailDailyLimit}). Tente amanha ou aumente o limite.`,'warn');
     return;
   }
-  if(leads.length > remaining){
-    const overflow = leads.length - remaining;
-    if(!confirm(`Enviar ${remaining} emails agora?\n\n` +
+  // Quantidade explícita digitada pelo user (override da cota cheia)
+  const batchInput = parseInt(document.getElementById('em-batch-size')?.value);
+  const wantedBatch = (Number.isFinite(batchInput) && batchInput > 0) ? batchInput : null;
+  let cap = remaining;
+  if(wantedBatch !== null){
+    cap = Math.min(wantedBatch, remaining);
+    if(wantedBatch > remaining){
+      if(!confirm(`Você pediu ${wantedBatch.toLocaleString()}, mas a cota hoje só permite ${remaining}. Enviar ${remaining} agora?`)) return;
+    }
+  }
+  if(leads.length > cap){
+    const overflow = leads.length - cap;
+    if(!confirm(`Enviar ${cap.toLocaleString()} emails agora?\n\n` +
                 `Audiencia: ${leads.length.toLocaleString()}\n` +
                 `Cota hoje: ${remaining} (de ${emailDailyLimit})\n` +
-                `Os ${overflow.toLocaleString()} restantes ficam na fila do cron automatico (lote 400/dia).`)) return;
-    leads = leads.slice(0, remaining);
+                `Quantidade pedida: ${wantedBatch?wantedBatch.toLocaleString():'(auto)'}\n` +
+                `Os ${overflow.toLocaleString()} restantes ficam na fila do cron automatico.`)) return;
+    leads = leads.slice(0, cap);
   }
 
   const isPromo = emailIsHtml && emailPromoFirm;
@@ -9286,10 +9309,34 @@ async function sendEmailsSmtp(){
 
     addEmailSentToday(totalSent);
     toast(`${totalSent} emails enviados!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + ` — ${Object.keys(langGroups).length} idioma(s)`);
+    // Painel persistente "Último envio"
+    try {
+      const lse = document.getElementById('last-send-status');
+      if(lse){
+        const ok = totalFailed === 0 && totalSent > 0;
+        const partial = totalSent > 0 && totalFailed > 0;
+        const allFailed = totalSent === 0 && totalFailed > 0;
+        const color = ok ? 'var(--green)' : partial ? 'var(--orange,#F59E0B)' : 'var(--red)';
+        const label = ok ? 'Enviado com sucesso' : partial ? 'Parcial' : allFailed ? 'Falhou' : 'Nada enviado';
+        const dbg = window._lastSendDebug?.calls || [];
+        const errSample = dbg.find(c => c.error)?.error || (dbg.find(c => !c.http_ok)?.body_keys?.includes('error') ? 'erro HTTP — abrir DevTools' : '');
+        const langStats = Object.entries(window._lastSendProviders||{}).filter(([,v])=>v>0).map(([p,v])=>`${p}:${v}`).join(' ');
+        lse.style.display='block';
+        lse.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:10px;flex-wrap:wrap;">
+          <strong style="color:${color};font-size:13px;">${label}</strong>
+          <span style="font-size:11px;color:var(--t3);">${new Date().toLocaleString('pt-BR')}</span>
+        </div>
+        <div style="color:var(--t2);">Subject: <strong style="color:var(--t1);">${subject.replace(/[<>]/g,'')}</strong></div>
+        <div style="color:var(--t2);">Enviados: <strong style="color:var(--green);">${totalSent}</strong> · Falharam: <strong style="color:${totalFailed?'var(--red)':'var(--t3)'};">${totalFailed}</strong> · Audiência: ${leads.length}</div>
+        ${langStats?`<div style="color:var(--t3);font-size:11px;">Provedores: ${langStats}</div>`:''}
+        ${errSample?`<div style="color:var(--red);font-size:11px;margin-top:4px;">Motivo: ${String(errSample).replace(/[<>]/g,'')}</div>`:''}`;
+      }
+    } catch(e){}
     await loadEmailStats();
     await renderCampaignLog();
   } catch(err){
     toast('Erro de conexao: '+err.message,'error');
+    try { const lse = document.getElementById('last-send-status'); if(lse){ lse.style.display='block'; lse.innerHTML = `<strong style="color:var(--red);">Erro: ${err.message.replace(/[<>]/g,'')}</strong>`; } } catch{}
   } finally {
     if(btn){ btn.disabled=false; btn.textContent='Enviar agora'; }
     // Restaura label dinâmico ("Enviar agora (N)" ou "Enviar X + enfileirar Y")
