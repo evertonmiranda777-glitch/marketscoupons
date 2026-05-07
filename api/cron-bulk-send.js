@@ -241,7 +241,8 @@ module.exports = async (req, res) => {
     for (const sub of eligible) {
       if (Date.now() - startTs > SOFT_DEADLINE_MS) { stoppedByDeadline = true; break; }
       if (brevoBudget <= 0 && resendBudget <= 0 && sgBudget <= 0) break;
-      const lang = sub.lang || 'en';
+      // POLÍTICA: bulk emails sempre em EN (lang padrão do site, evita mismatch subject/body)
+      const lang = 'en';
       const html = renderInstHtml(campaign, lang, buildUnsubUrl(sub.email, lang));
       const subject = getSubject(campaign, lang);
       if (!html) { failed++; failedEmails.push(sub.email); continue; }
