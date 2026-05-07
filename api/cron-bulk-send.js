@@ -162,7 +162,20 @@ module.exports = async (req, res) => {
 
   const { campaign, filterTag = null } = req.body || {};
   // batchSize bounded: max 500 (Brevo bulk 295 + Resend 100 + SendGrid 100), evita drain via JWT admin comprometido
-  const batchSize = Math.max(1, Math.min(Number(req.body?.batchSize) || 400, 500));
+  // Se não passou batchSize no body, lê de site_settings.email_daily_limit (configurável pelo admin)
+  let dynamicDefault = 400;
+  if (!req.body?.batchSize) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.email_daily_limit&select=value`,
+        { headers: { apikey: SK, Authorization: `Bearer ${SK}` } });
+      if (r.ok) {
+        const rows = await r.json();
+        const v = parseInt(rows[0]?.value, 10);
+        if (Number.isFinite(v) && v > 0) dynamicDefault = v;
+      }
+    } catch {}
+  }
+  const batchSize = Math.max(1, Math.min(Number(req.body?.batchSize) || dynamicDefault, 500));
   if (!campaign) return res.status(400).json({ error: 'campaign required' });
   // Validar campaign/filterTag pra evitar PostgREST filter injection
   if (!/^[a-z0-9_-]+$/i.test(campaign)) return res.status(400).json({ error: 'invalid campaign format' });

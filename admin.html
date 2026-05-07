@@ -1264,7 +1264,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </span>
      <div style="flex:1;min-width:0;">
        <div style="font-size:15px;font-weight:700;color:var(--t1);">Envio Automático</div>
-       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Dispara 500 emails/dia · 08:00 BRT (Brevo 300 + Resend 100 + SendGrid 100)</div>
+       <div style="font-size:12px;color:var(--t3);margin-top:2px;">Dispara <strong id="auto-daily-label" style="color:var(--gold);">500</strong> emails/dia · 08:00 BRT · para quando a fila acaba</div>
+     </div>
+     <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);flex-shrink:0;">
+       <label for="auto-daily-input" style="white-space:nowrap;">Qtd/dia:</label>
+       <input type="number" id="auto-daily-input" min="1" max="100000" value="500" onchange="setAutoDailyLimit(this.value)" style="width:80px;padding:6px 8px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;">
      </div>
      <div id="auto-state-row" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);font-weight:600;flex-shrink:0;">
        <span id="auto-state-dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(16,185,129,.6);"></span>
@@ -1304,11 +1308,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <span style="color:var(--b3);">·</span>
        <span><span style="color:#10b981;">●</span> SendGrid <strong id="auto-bd-sendgrid" style="color:var(--t2);margin-left:4px;">0/100</strong></span>
        <span style="color:var(--b3);">·</span>
-       <span style="color:var(--gold);" title="5 emails Brevo reservados pra welcome/confirm de novos cadastros — não consumidos pelo bulk">🛡 +5 reservados pra transacional</span>
+       <span style="color:var(--gold);display:inline-flex;align-items:center;gap:4px;" title="5 emails Brevo reservados pra welcome/confirm de novos cadastros — não consumidos pelo bulk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>+5 reservados pra transacional</span>
      </div>
      <div style="display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-secondary" onclick="showCampaignHistory()" style="padding:8px 14px;font-size:12px;">Ver histórico</button>
-       <button id="auto-force-btn" onclick="forceCronSend()" style="padding:8px 14px;background:linear-gradient(135deg,#F0B429,#D97706);border:none;color:#07090D;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">▶ Enviar 500 agora</button>
+       <button id="auto-force-btn" onclick="forceCronSend()" style="padding:8px 14px;background:linear-gradient(135deg,#F0B429,#D97706);border:none;color:#07090D;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 4 20 12 6 20"/></svg>Enviar <span id="auto-force-qty">500</span> agora</button>
        <button id="auto-toggle-btn" onclick="toggleAutoEmail()" style="padding:8px 14px;background:transparent;border:1px solid rgba(239,68,68,.32);color:var(--red);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Pausar</button>
      </div>
    </div>
@@ -14038,6 +14042,11 @@ async function loadQueueCount(){
   } catch(e){}
 }
 async function loadAutoStatus(){
+  // Hidrata input de qtd/dia (persistido no localStorage)
+  const savedLimit = parseInt(localStorage.getItem('mc-auto-daily-limit'),10) || 500;
+  const inp = document.getElementById('auto-daily-input'); if(inp && !inp.dataset.hydrated){ inp.value = savedLimit; inp.dataset.hydrated='1'; }
+  const lbl = document.getElementById('auto-daily-label'); if(lbl) lbl.textContent = savedLimit;
+  const qty = document.getElementById('auto-force-qty'); if(qty) qty.textContent = savedLimit;
   loadQueueCount();
   try{
     const tk = await _adminBearer();
@@ -14081,6 +14090,19 @@ async function loadAutoStatus(){
 }
 
 // Forçar envio agora — chama cron-bulk-send com JWT admin (com dedup proof)
+function setAutoDailyLimit(v){
+  const n = Math.max(1, Math.min(500, parseInt(v,10) || 500));
+  localStorage.setItem('mc-auto-daily-limit', String(n));
+  const lbl = document.getElementById('auto-daily-label'); if(lbl) lbl.textContent = n;
+  const qty = document.getElementById('auto-force-qty'); if(qty) qty.textContent = n;
+  const inp = document.getElementById('auto-daily-input'); if(inp) inp.value = n;
+  // Persiste no Supabase pra cron diário ler (best-effort)
+  try {
+    db.from('site_settings').upsert({ key:'email_daily_limit', value:String(n), updated_at:new Date().toISOString() }, { onConflict:'key' }).then(()=>{}).catch(()=>{});
+  } catch(e){}
+  toast('Limite diário ajustado: '+n);
+}
+
 async function forceCronSend(){
   const btn = document.getElementById('auto-force-btn'); if(!btn) return;
   // Buscar progresso real ANTES de mostrar prompt
@@ -14095,15 +14117,16 @@ async function forceCronSend(){
       elegiveis = (camp.pending_estimate||0).toLocaleString('pt-BR');
     }
   } catch {}
+  const defaultQty = parseInt(localStorage.getItem('mc-auto-daily-limit'),10) || 500;
   const batchStr = prompt(
     `ENVIAR AGORA — campanha site-invite\n\n`+
     `Já receberam (NÃO recebem de novo): ${jaReceberam}\n`+
     `Elegíveis agora (sem tag received-site-invite): ${elegiveis}\n\n`+
     `Quantos enviar? (max 500/dia somando os 3 providers)`,
-    '500'
+    String(defaultQty)
   );
   if(batchStr===null) return;
-  const batchSize = Math.max(1, Math.min(500, parseInt(batchStr,10) || 500));
+  const batchSize = Math.max(1, Math.min(500, parseInt(batchStr,10) || defaultQty));
   if(!confirm(`Disparar ${batchSize} emails AGORA?\n\nDedup garantido: query filtra tags=not.cs.{received-site-invite}. Quem ESTÁ na lista de "já receberam" (${jaReceberam}) é excluído antes de qualquer envio.`)) return;
   btn.disabled = true; const old = btn.innerHTML; btn.innerHTML = 'Enviando...';
   try{
