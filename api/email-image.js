@@ -24,6 +24,76 @@ function cell(label, value, valueColor) {
 export default async function handler(req) {
   try {
     const { searchParams } = new URL(req.url);
+
+    // ───────────────────────────────────────────────
+    // MODO COUNTDOWN: ?type=countdown&d=2026-05-08T03:59:00Z&c=F97316
+    // Retorna PNG dinâmico que mostra dd hh mm ss até o deadline.
+    // Usado em emails (img src) — server recalcula a cada abertura.
+    // ───────────────────────────────────────────────
+    if (searchParams.get('type') === 'countdown') {
+      const deadlineISO = searchParams.get('d');
+      const accent = '#' + (searchParams.get('c') || 'F97316').replace(/^#/, '').slice(0, 6);
+      const label = (searchParams.get('label') || 'Ends in').slice(0, 30);
+      if (!deadlineISO) return new Response('Missing ?d= (deadline ISO)', { status: 400 });
+
+      const deadline = new Date(deadlineISO).getTime();
+      if (!Number.isFinite(deadline)) return new Response('Invalid deadline', { status: 400 });
+
+      const diff = Math.max(0, deadline - Date.now());
+      const dd = Math.floor(diff / 86400000);
+      const hh = Math.floor((diff % 86400000) / 3600000);
+      const mm = Math.floor((diff % 3600000) / 60000);
+      const ss = Math.floor((diff % 60000) / 1000);
+      const expired = diff <= 0;
+      const pad = (n) => String(n).padStart(2, '0');
+
+      const block = (val, lbl) => ({
+        type: 'div', props: {
+          style: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                   width: '78px', padding: '8px 0', backgroundColor: '#0d141c', borderRadius: '8px', margin: '0 4px' },
+          children: [
+            { type: 'div', props: { style: { color: accent, fontSize: '32px', fontWeight: 800, lineHeight: 1, fontFamily: 'monospace' }, children: pad(val) } },
+            { type: 'div', props: { style: { color: '#8b97a8', fontSize: '10px', fontWeight: 600, letterSpacing: '1.2px', marginTop: '4px', textTransform: 'uppercase' }, children: lbl } },
+          ],
+        },
+      });
+
+      const content = expired ? {
+        type: 'div', props: {
+          style: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%',
+                   color: '#9ca3af', fontSize: '20px', fontWeight: 700, fontFamily: 'monospace', letterSpacing: '1.5px', textTransform: 'uppercase' },
+          children: 'Promo ended',
+        },
+      } : {
+        type: 'div', props: {
+          style: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' },
+          children: [
+            { type: 'div', props: { style: { color: '#9ca3af', fontSize: '11px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '8px' }, children: label } },
+            { type: 'div', props: {
+              style: { display: 'flex', flexDirection: 'row' },
+              children: [block(dd, 'Days'), block(hh, 'Hrs'), block(mm, 'Min'), block(ss, 'Sec')],
+            }},
+          ],
+        },
+      };
+
+      return new ImageResponse({
+        type: 'div', props: {
+          style: { display: 'flex', width: '100%', height: '100%', backgroundColor: 'transparent', padding: '8px' },
+          children: [content],
+        },
+      }, {
+        width: 360,
+        height: 110,
+        headers: {
+          // No-cache crítico: cliente de email re-renderiza ao reabrir → valor sempre atualizado
+          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      });
+    }
+
     const firmId = searchParams.get('firm');
     if (!firmId) return new Response('Missing ?firm=', { status: 400 });
 
