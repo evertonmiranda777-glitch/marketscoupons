@@ -191,8 +191,19 @@ function _appendQuery(url, qs) {
 // pagehide listener loga tempo no overlay antes de sair (firma carregou ou abandonou).
 function mcOpenFirm(firmId, finalUrl, coupon, firmName){
   const startTs = Date.now();
+  const _safeErr = (e) => { try { return String(e?.message || e || '').slice(0,200); } catch { return 'unknown'; } };
+  // Validação inicial: URL precisa ser string válida
+  if (!finalUrl || typeof finalUrl !== 'string' || !/^https?:\/\//.test(finalUrl)) {
+    try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'invalid_url', err: 'url_missing_or_invalid', url: String(finalUrl).slice(0,120) }); } catch(e){}
+    // Sem URL não tem o que abrir — retorna em vez de window.location undefined
+    return;
+  }
   // Inject sub_id (?keyword=fb_<adname>) ANTES do redirect.
-  try { if (typeof window.mcInjectKeyword === 'function') finalUrl = window.mcInjectKeyword(finalUrl); } catch(e){}
+  try {
+    if (typeof window.mcInjectKeyword === 'function') finalUrl = window.mcInjectKeyword(finalUrl);
+  } catch(e){
+    try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'inject_keyword', err: _safeErr(e), url: finalUrl.slice(0,120) }); } catch{}
+  }
 
   // Overlay visual com contexto (cupom + desconto reforçam motivo do click).
   try {
@@ -215,7 +226,9 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
       fb.href = finalUrl;
     }
     if (ov) ov.style.display = 'flex';
-  } catch(e){}
+  } catch(e){
+    try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'overlay_render', err: _safeErr(e) }); } catch{}
+  }
 
   // Track inicio com keepalive — não perde se user fechar muito rápido.
   try {
@@ -266,8 +279,15 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
       } catch(e){}
     };
     window.addEventListener('pagehide', onPageHide, { once: true });
-  } catch(e){}
-  window.location.href = finalUrl;
+  } catch(e){
+    try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'unload_listener', err: _safeErr(e) }); } catch{}
+  }
+  // Redirect final — captura exceção raríssima de browser bloqueado/CSP
+  try {
+    window.location.href = finalUrl;
+  } catch(e){
+    try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'navigation', err: _safeErr(e), url: finalUrl.slice(0,120) }); } catch{}
+  }
 }
 
 // ─── TRACKING & UTILS ───
@@ -307,6 +327,8 @@ function track(event, params={}) {
     gclid:        MC_ATTR.gclid || null,
     ttclid:       MC_ATTR.ttclid || null,
     anon_id:      MC_ANON,
+    // A/B test "default size" — A=control (menor), B=treatment (popular). Estável por sessão.
+    ab_default_size: (typeof _abDefaultSizeVariant === 'function') ? _abDefaultSizeVariant() : null,
   };
   const row = {
     session_id:   MC_SESSION,
@@ -2947,16 +2969,48 @@ async function loadFirmOverlayData(id) {
   } catch(e) { console.warn('[MC] Overlay data load failed for', id); }
 }
 
+// ─── A/B TEST: default size na pill de planos ───
+// A (control) = primeiro plano (firstPlans[0]) — comportamento atual
+// B (treatment) = plano popular (pop:1) se existir, senão fallback A
+// Hash estável do session id pra 50/50 — variante NÃO muda durante a sessão.
+function _abDefaultSizeVariant(){
+  try {
+    if (window._abVariantCache) return window._abVariantCache;
+    const sid = (typeof MC_SESSION !== 'undefined' && MC_SESSION) || (typeof MC_ANON !== 'undefined' && MC_ANON) || 'anon';
+    let h = 0; for (let i=0;i<sid.length;i++) h = ((h<<5)-h + sid.charCodeAt(i))|0;
+    const v = (Math.abs(h) % 2) === 0 ? 'A' : 'B';
+    window._abVariantCache = v;
+    return v;
+  } catch(e){ return 'A'; }
+}
+// Pega size default conforme variante. fa = FIRM_ABOUT entry, type = type atual
+function _abPickDefaultSize(planList){
+  if (!Array.isArray(planList) || !planList.length) return '';
+  const variant = _abDefaultSizeVariant();
+  if (variant === 'B') {
+    const popular = planList.find(p => p.pop || p.pop===1 || p.pop===true);
+    if (popular) return popular.s;
+  }
+  return planList[0].s;
+}
+
 function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   window._fdOriginPage=_currentPage;
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
-  if (!_drwState[id]) _drwState[id] = {
-    type: cf?.types?.[0] || '',
-    plat: cf?.platforms?.[0] || (f.platforms?.[0] || ''),
-    size: cf?.plans?.[0]?.size || '',
-  };
+  if (!_drwState[id]) {
+    const firstPlans = cf?.plans || [];
+    // _drwState usa shape diferente (cf.plans com .size, não .s)
+    const popPlan = firstPlans.find(p => p.pop || p.pop===1);
+    const variant = _abDefaultSizeVariant();
+    const defSize = (variant === 'B' && popPlan) ? popPlan.size : (firstPlans[0]?.size || '');
+    _drwState[id] = {
+      type: cf?.types?.[0] || '',
+      plat: cf?.platforms?.[0] || (f.platforms?.[0] || ''),
+      size: defSize,
+    };
+  }
 
   // Lazy load overlay data from Supabase (updates hardcoded FIRM_ABOUT in background)
   loadFirmOverlayData(id);
@@ -2992,10 +3046,10 @@ function openFD(id, f) {
 
   const firstType = fa.types[0];
   const firstPlans = fa.plans[firstType];
-  // Default = menor tamanho (firstPlans[0]) pra alinhar com criativo de trafego.
-  // buildUrl da maioria das firmas e estatica (nao usa size na URL); E2T tem fallback.
-  // Badge POPULAR (p.pop) continua intacto na renderizacao das pills.
-  if (!_fdState[id]) _fdState[id] = { type: firstType, plat: f.platforms?.[0]||'', size: firstPlans[0].s };
+  // A/B test default size (50/50 stable por sessão):
+  //   A = firstPlans[0] (controle, comportamento atual = menor tamanho)
+  //   B = plano com pop:1 (treatment, geralmente $100K)
+  if (!_fdState[id]) _fdState[id] = { type: firstType, plat: f.platforms?.[0]||'', size: _abPickDefaultSize(firstPlans) };
   const st = _fdState[id];
 
   // Ensure size is valid for current type
@@ -3524,8 +3578,8 @@ function openDrw(id, f, cf) {
   if (fa) {
     if(!_fdState[id]){
       const firstType=fa.types[0]; const firstPlans=fa.plans[firstType];
-      // Default = menor tamanho — alinhar com criativo
-      _fdState[id]={type:firstType,plat:f.platforms?.[0]||'',size:firstPlans[0].s};
+      // A/B test default size (variante A = menor / B = popular)
+      _fdState[id]={type:firstType,plat:f.platforms?.[0]||'',size:_abPickDefaultSize(firstPlans)};
     }
 
     let html = '';
