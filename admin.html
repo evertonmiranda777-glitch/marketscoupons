@@ -9344,10 +9344,10 @@ async function sendEmailsSmtp(){
     addEmailSentToday(totalSent);
     toast(`${totalSent} emails enviados!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + ` — ${Object.keys(langGroups).length} idioma(s)`);
     // Registra a campanha como ativa pro cron diário continuar mandando até zerar a fila
+    // Importante: campaign key SEM prefixo 'inst-' (cron-bulk-send aplica 'received-{campaign}')
     try {
       if(isInst && totalSent > 0){
-        const campKey = 'inst-' + window._instTemplateName;
-        await registerActiveCampaign(campKey);
+        await registerActiveCampaign(window._instTemplateName);
       }
     } catch(e){}
     // Painel persistente "Último envio"
