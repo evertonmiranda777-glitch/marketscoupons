@@ -214,8 +214,19 @@ module.exports = async (req, res) => {
     const BREVO_RESERVE = 5;
     const credits = BREVO_KEY ? await getBrevoCredits() : 0;
     let brevoBudget = Math.max(0, credits - BREVO_RESERVE);
-    const resendSent = RESEND_KEY ? await getResendSentToday() : 100;
-    let resendBudget = RESEND_KEY ? Math.max(0, 100 - resendSent) : 0;
+    // Resend cap: lê site_settings.resend_daily_limit (default 100; user sobe ao assinar Pro)
+    let resendDailyLimit = 100;
+    try {
+      const sr = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.resend_daily_limit&select=value`,
+        { headers: { apikey: SK, Authorization: `Bearer ${SK}` } });
+      if (sr.ok) {
+        const rows = await sr.json();
+        const v = parseInt(rows[0]?.value, 10);
+        if (Number.isFinite(v) && v > 0) resendDailyLimit = v;
+      }
+    } catch {}
+    const resendSent = RESEND_KEY ? await getResendSentToday() : resendDailyLimit;
+    let resendBudget = RESEND_KEY ? Math.max(0, resendDailyLimit - resendSent) : 0;
     const sgSent = SG_KEY ? await getSendGridSentToday() : 100;
     let sgBudget = SG_KEY ? Math.max(0, 100 - sgSent) : 0;
     const totalBudget = brevoBudget + resendBudget + sgBudget;

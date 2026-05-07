@@ -284,20 +284,31 @@ module.exports = async (req, res) => {
       }
     }
     if (RESEND_KEY) {
-      // Resend free tier: 100/dia (sem endpoint de credits remaining).
+      // Resend cap: lê de site_settings.resend_daily_limit (default 100 free; user pode subir após assinar Pro).
       // Subtrai quantos já enviamos hoje via email_logs (provider='resend').
       try {
         const today = new Date().toISOString().slice(0, 10);
+        const subKey = SUPABASE_SERVICE_KEY||SUPABASE_KEY;
+        let resendDailyLimit = 100;
+        try {
+          const sr = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.resend_daily_limit&select=value`,
+            { headers: { apikey: subKey, Authorization: `Bearer ${subKey}` } });
+          if (sr.ok) {
+            const rows = await sr.json();
+            const v = parseInt(rows[0]?.value, 10);
+            if (Number.isFinite(v) && v > 0) resendDailyLimit = v;
+          }
+        } catch {}
         const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.resend&created_at=gte.${today}&select=recipients`, {
-          headers: { apikey: SUPABASE_SERVICE_KEY||SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY||SUPABASE_KEY}` },
+          headers: { apikey: subKey, Authorization: `Bearer ${subKey}` },
         });
         const logs = r.ok ? await r.json() : [];
         const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
-        resendBudget = Math.max(0, 100 - sentToday);
-        console.log(`[send-email] Resend sentToday: ${sentToday}, bulk budget: ${resendBudget}`);
+        resendBudget = Math.max(0, resendDailyLimit - sentToday);
+        console.log(`[send-email] Resend sentToday: ${sentToday}, dailyLimit: ${resendDailyLimit}, bulk budget: ${resendBudget}`);
       } catch (e) {
         console.error('[send-email] Resend budget check failed:', e.message);
-        resendBudget = 100; // fallback otimista
+        resendBudget = 100; // fallback conservador
       }
     }
     if (SG_KEY) {
