@@ -6591,12 +6591,12 @@ async function loadQuickTemplate(name){
   const tpl = INST_TEMPLATES[name];
   if(!tpl){ toast('Template nao encontrado!','warn'); return; }
 
-  // Dynamically update firm-dependent templates with current data
-  if(name === 'site-invite' || name === 'ultimas-horas'){
+  // Dynamically update firm-dependent templates with current data.
+  // Pula se template não tem features (ex: urgent-deal/giveaway usam builders próprios).
+  if((name === 'site-invite' || name === 'ultimas-horas') && tpl.features){
     const firms = await getEmailFirms();
     const topFirms = firms.filter(f => f.discount > 0).sort((a,b) => b.discount - a.discount).slice(0, 4);
     const _langs = ['pt','en','es','fr','de','it','ar'];
-    const ltLabel = {pt:'Lifetime',en:'Lifetime',es:'Lifetime',fr:'Lifetime',de:'Lifetime',it:'Lifetime',ar:'Lifetime'};
     const moreLabel = {pt:'E muito mais...',en:'And much more...',es:'Y mucho mas...',fr:'Et bien plus...',de:'Und vieles mehr...',it:'E molto altro...',ar:'والمزيد...'};
     const couponLabel = {pt:'cupom',en:'coupon',es:'cupon',fr:'coupon',de:'Gutschein',it:'coupon',ar:'كوبون'};
     _langs.forEach(lang => {
