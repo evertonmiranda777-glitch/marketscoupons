@@ -109,13 +109,22 @@
   }
 
   // ─── Step 3: Build keyword from attribution (cascade) ───
+  // Rejeita macros Meta não substituídos (ex: __ad_name__, {{campaign.name}}, {ad_name}).
+  // Sem isso, sub_id chegava no painel da firma como 'fb___ad_name__' — inútil pra atribuição.
+  function isMetaMacroLiteral(v) {
+    if (!v || typeof v !== 'string') return false;
+    const s = v.trim();
+    return /^__.+__$/.test(s)        // __ad_name__
+        || /\{\{.+\}\}/.test(s)       // {{ad.name}}, {{campaign.name}}
+        || /^\{[^{}]+\}$/.test(s);    // {ad_name}, {campaign_name}
+  }
   function buildKeyword(attr) {
     try {
       if (!attr) return 'mcsite';
-      if (attr.utm_term)     return sanitize('fb_' + attr.utm_term);
-      if (attr.utm_campaign) return sanitize('fb_' + attr.utm_campaign);
+      if (attr.utm_term     && !isMetaMacroLiteral(attr.utm_term))     return sanitize('fb_' + attr.utm_term);
+      if (attr.utm_campaign && !isMetaMacroLiteral(attr.utm_campaign)) return sanitize('fb_' + attr.utm_campaign);
       if (attr.fbclid)       return 'fb';
-      if (attr.utm_source)   return sanitize(attr.utm_source);
+      if (attr.utm_source   && !isMetaMacroLiteral(attr.utm_source))   return sanitize(attr.utm_source);
       return 'mcsite';
     } catch (e) { return 'mcsite'; }
   }
