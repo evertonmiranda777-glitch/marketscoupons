@@ -98,15 +98,20 @@ async function validateAdmin(jwt) {
 module.exports = async (req, res) => {
   if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
 
-  // Auth: validate JWT and verify admin role
+  // Auth: validate JWT and verify admin role PRIMEIRO (bypassa rate limit pra admin)
   const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   const admin = await validateAdmin(auth);
-  if (!admin) return res.status(403).json({ error: 'Forbidden: admin access required' });
+  if (!admin) {
+    // Não-admin: aplica rate limit anti-abuse (30/min por IP)
+    if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
+    return res.status(403).json({ error: 'Forbidden: admin access required' });
+  }
+  // Admin autenticado: rate limit MUITO maior (200/min) — disparo de 23k em chunks de 200 = ~120 calls
+  if (!rateLimitIp(req, 200)) return res.status(429).json({ error: 'rate_limit_admin', detail: 'Even admin limited at 200/min — slow down or chunk larger' });
 
   // Input validation
   const contentLength = parseInt(req.headers['content-length'] || '0', 10);
