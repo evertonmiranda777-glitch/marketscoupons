@@ -5757,7 +5757,10 @@ async function updateCotaBanner(audienceCount){
    if(!r.ok){ banner.style.display='none'; if(sendBtn) sendBtn.textContent = audienceCount > 0 ? `Enviar (${audienceCount.toLocaleString()})` : 'Enviar agora'; if(sendInfo) sendInfo.textContent=''; return; }
    const s = await r.json();
    const used = s.sent_today || 0;
-   const limit = s.daily_limit || 400;
+   // Limite efetivo = MIN entre cap dos provedores (server) e o que o user pediu em "Limite/dia"
+   const serverLimit = s.daily_limit || 400;
+   const userLimit = (typeof emailDailyLimit === 'number' && emailDailyLimit > 0) ? emailDailyLimit : serverLimit;
+   const limit = Math.min(serverLimit, userLimit);
    const avail = Math.max(0, limit - used);
    // willSend respeita: audiência, cota disponível E quantidade explícita do user
    const cap = wantedBatch !== null ? Math.min(wantedBatch, avail) : avail;
