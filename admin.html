@@ -1378,13 +1378,13 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <div id="batch-controls-row" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;color:var(--t2);">
      <div style="display:flex;align-items:center;gap:8px;">
        <label for="em-batch-size" style="white-space:nowrap;">Enviar agora:</label>
-       <input type="number" id="em-batch-size" min="1" max="100000" placeholder="auto" style="width:90px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;">
+       <input type="number" id="em-batch-size" min="1" max="100000" placeholder="auto" oninput="updateDestCount()" style="width:90px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;">
        <span style="font-size:10px;color:var(--t3);">vazio = cota cheia</span>
      </div>
      <div style="display:flex;align-items:center;gap:8px;">
        <label for="em-daily-limit" style="white-space:nowrap;">Limite/dia:</label>
        <input type="number" id="em-daily-limit" value="500" min="1" max="100000" style="width:90px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;" onchange="emailDailyLimit=parseInt(this.value)||500;updateDailyLimitUI();updateDestCount();">
-       <span id="daily-limit-info" style="font-size:10px;color:var(--t3);"></span>
+       <span id="daily-limit-info" style="font-size:10px;color:var(--t3);display:none;"></span>
      </div>
    </div>
 
@@ -5748,38 +5748,65 @@ async function updateCotaBanner(audienceCount){
  if(window._isTestSend || window._isSingleSend){ banner.style.display='none'; return; }
  const sendBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
  const sendInfo = document.getElementById('send-info');
+ // Quantidade explícita digitada pelo user
+ const batchInput = parseInt(document.getElementById('em-batch-size')?.value, 10);
+ const wantedBatch = (Number.isFinite(batchInput) && batchInput > 0) ? batchInput : null;
  try{
    const tk = await _adminBearer();
    const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + tk } });
-   if(!r.ok){ banner.style.display='none'; if(sendBtn) sendBtn.textContent = audienceCount > 0 ? `Enviar agora (${audienceCount.toLocaleString()})` : 'Enviar agora'; if(sendInfo) sendInfo.textContent=''; return; }
+   if(!r.ok){ banner.style.display='none'; if(sendBtn) sendBtn.textContent = audienceCount > 0 ? `Enviar (${audienceCount.toLocaleString()})` : 'Enviar agora'; if(sendInfo) sendInfo.textContent=''; return; }
+   const s = await r.json();
+   const used = s.sent_today || 0;
+   const limit = s.daily_limit || 400;
+   const avail = Math.max(0, limit - used);
+   // willSend respeita: audiência, cota disponível E quantidade explícita do user
+   const cap = wantedBatch !== null ? Math.min(wantedBatch, avail) : avail;
+   const willSend = Math.min(audienceCount, cap);
+   const overflow = Math.max(0, audienceCount - willSend);
+
+   // Botão: estado único e claro
+   if(sendBtn){
+     if(audienceCount === 0)      { sendBtn.textContent = 'Enviar agora'; sendBtn.disabled = true; sendBtn.style.opacity='.4'; sendBtn.style.cursor='not-allowed'; }
+     else if(avail === 0)         { sendBtn.textContent = 'Cota esgotada'; sendBtn.disabled = true; sendBtn.style.opacity='.4'; sendBtn.style.cursor='not-allowed'; }
+     else                         { sendBtn.textContent = `Enviar ${willSend.toLocaleString()}`; sendBtn.disabled = false; sendBtn.style.opacity=''; sendBtn.style.cursor=''; }
+   }
+
+   // sendInfo: linha única abaixo do botão (substitui banner)
+   banner.style.display = 'none';
+   if(sendInfo){
+     if(audienceCount === 0) sendInfo.textContent = '';
+     else if(avail === 0) sendInfo.textContent = `Cota de hoje esgotada (${used}/${limit}). Volta amanhã às 08:00 BRT.`;
+     else if(overflow > 0) sendInfo.innerHTML = `<span style="color:var(--t2);">Manda <strong style="color:var(--gold);">${willSend.toLocaleString()}</strong> agora · <strong>${overflow.toLocaleString()}</strong> ficam na fila do automático</span>`;
+     else sendInfo.innerHTML = `<span style="color:var(--t2);">Manda <strong style="color:var(--gold);">${willSend.toLocaleString()}</strong> agora · cota: ${used}/${limit}</span>`;
+   }
+   return;
+ } catch {
+   banner.style.display='none';
+   if(sendBtn) sendBtn.textContent = audienceCount > 0 ? `Enviar ${audienceCount.toLocaleString()}` : 'Enviar agora';
+   if(sendInfo) sendInfo.textContent='';
+ }
+}
+
+// Bloco morto removido — substituído pela lógica acima
+async function _cotaBannerLegacy_unused(audienceCount){
+ const banner = document.getElementById('cota-banner'); if(!banner) return;
+ const sendBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
+ const sendInfo = document.getElementById('send-info');
+ try{
+   const tk = await _adminBearer();
+   const r = await fetch('/api/brevo-stats?type=email_status', { headers: { Authorization: 'Bearer ' + tk } });
+   if(!r.ok) return;
    const s = await r.json();
    const used = s.sent_today || 0;
    const limit = s.daily_limit || 400;
    const avail = Math.max(0, limit - used);
    const willSend = Math.min(audienceCount, avail);
    const overflow = Math.max(0, audienceCount - avail);
-
-   // Botão mostra o que VAI sair agora, não o total da audiência
-   if(sendBtn){
-     if(audienceCount === 0)      sendBtn.textContent = 'Enviar agora';
-     else if(avail === 0)         { sendBtn.textContent = 'Enviar agora'; sendBtn.disabled = true; sendBtn.style.opacity='.4'; sendBtn.style.cursor='not-allowed'; }
-     else if(overflow > 0)        { sendBtn.textContent = `Enviar ${willSend.toLocaleString()} + enfileirar ${overflow.toLocaleString()}`; sendBtn.disabled = false; sendBtn.style.opacity=''; sendBtn.style.cursor=''; }
-     else                         { sendBtn.textContent = `Enviar agora (${willSend.toLocaleString()})`; sendBtn.disabled = false; sendBtn.style.opacity=''; sendBtn.style.cursor=''; }
-   }
-
-   // Banner — sempre visível com estado claro
-   banner.style.display = 'flex';
-   banner.style.alignItems = 'center';
-   banner.style.gap = '8px';
+   if(sendBtn){}
    if(audienceCount === 0){
-     banner.style.display = 'none';
-     if(sendInfo) sendInfo.textContent = '';
      return;
    } else if(avail === 0){
-     banner.style.borderColor = 'rgba(239,68,68,.32)';
-     banner.style.background = 'rgba(239,68,68,.05)';
-     banner.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--red);flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span style="color:var(--t2);">Cota de hoje esgotada (${used}/${limit}) · Volta amanhã 08:00</span>`;
-     if(sendInfo) sendInfo.textContent = 'Lista vai pra fila automática';
+     return;
    } else if(overflow > 0){
      banner.style.borderColor = 'rgba(245,158,11,.32)';
      banner.style.background = 'rgba(245,158,11,.05)';
