@@ -1371,7 +1371,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <div id="cota-banner" class="cota-banner" style="display:none;font-size:12px;padding:10px 14px;border-radius:8px;margin-bottom:14px;line-height:1.5;background:var(--card2);border:1px solid var(--b1);"></div>
 
    <!-- Quantidade do lote + limite diário (visível, não escondido em avançado) -->
-   <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;color:var(--t2);">
+   <div id="batch-controls-row" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;color:var(--t2);">
      <div style="display:flex;align-items:center;gap:8px;">
        <label for="em-batch-size" style="white-space:nowrap;">Enviar agora:</label>
        <input type="number" id="em-batch-size" min="1" max="100000" placeholder="auto" style="width:90px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;">
@@ -5419,6 +5419,9 @@ async function selectAudience(value){
   // Esconde input de email único por padrão; reabre só no modo 'single'
   const singleRow = document.getElementById('single-email-row');
   if(singleRow) singleRow.style.display = (value==='single' ? 'block' : 'none');
+  // Esconde controles de lote (qtd + limite/dia) nos modos single/test
+  const batchRow = document.getElementById('batch-controls-row');
+  if(batchRow) batchRow.style.display = (value==='single' || value==='test') ? 'none' : 'flex';
   window._isSingleSend = (value==='single');
   if(value === 'single'){
     window._isTestSend = false;
@@ -5727,8 +5730,8 @@ function langFromCode(idioma){
 }
 
 async function updateDestCount(){
- // Modo teste: já está fixado em '1 (você)' por selectAudience — não recalcular
- if(window._isTestSend) return;
+ // Modo teste/single: já está fixado por selectAudience — não recalcular
+ if(window._isTestSend || window._isSingleSend) return;
  const leads=await getSegmentedLeads();
  const n = leads.length;
  const el = document.getElementById('dest-count'); if(el) el.textContent=n;
@@ -5737,8 +5740,8 @@ async function updateDestCount(){
 }
 async function updateCotaBanner(audienceCount){
  const banner = document.getElementById('cota-banner'); if(!banner) return;
- // Modo teste: banner+botão já configurados por selectAudience('test')
- if(window._isTestSend){ banner.style.display='none'; return; }
+ // Modo teste/single: banner+botão já configurados por selectAudience
+ if(window._isTestSend || window._isSingleSend){ banner.style.display='none'; return; }
  const sendBtn = document.querySelector('button[onclick="sendEmailsSmtp()"]');
  const sendInfo = document.getElementById('send-info');
  try{
