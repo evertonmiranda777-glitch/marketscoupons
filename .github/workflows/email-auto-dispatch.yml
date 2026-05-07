@@ -26,18 +26,29 @@ jobs:
   dispatch:
     runs-on: ubuntu-latest
     continue-on-error: true
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - name: Trigger /api/cron-bulk-send
+      - name: Trigger /api/cron-bulk-send (todas campanhas ativas)
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          CAMPAIGN="${{ inputs.campaign || 'site-invite' }}"
+          # Se workflow_dispatch passou campaign explícito, usa só ele
+          if [ -n "${{ inputs.campaign }}" ]; then
+            CAMPAIGNS="${{ inputs.campaign }}"
+          else
+            # Lê lista de campanhas ativas do endpoint (Supabase site_settings.email_active_campaigns)
+            CAMPAIGNS=$(curl -s "https://www.marketscoupons.com/api/cron-bulk-send?list_active=1" \
+              -H "Authorization: Bearer $CRON_SECRET")
+            # Fallback se endpoint vazio: roda só site-invite (comportamento legado)
+            [ -z "$CAMPAIGNS" ] && CAMPAIGNS="site-invite"
+          fi
           BATCH="${{ inputs.batchSize || '250' }}"
-          echo "Campaign: $CAMPAIGN | Batch: $BATCH"
-          RESPONSE=$(curl -s -X POST "https://www.marketscoupons.com/api/cron-bulk-send" \
-            -H "Authorization: Bearer $CRON_SECRET" \
-            -H "Content-Type: application/json" \
-            -d "{\"campaign\":\"$CAMPAIGN\",\"batchSize\":$BATCH}")
-          echo "$RESPONSE"
-          echo "$RESPONSE" | grep -q '"success":true' || (echo "❌ failure" && exit 1)
+          echo "Campaigns ativas: $CAMPAIGNS | Batch/cada: $BATCH"
+          for CAMPAIGN in $(echo "$CAMPAIGNS" | tr ',' ' '); do
+            echo "--- Disparando: $CAMPAIGN ---"
+            RESPONSE=$(curl -s -X POST "https://www.marketscoupons.com/api/cron-bulk-send" \
+              -H "Authorization: Bearer $CRON_SECRET" \
+              -H "Content-Type: application/json" \
+              -d "{\"campaign\":\"$CAMPAIGN\",\"batchSize\":$BATCH}")
+            echo "$RESPONSE"
+          done

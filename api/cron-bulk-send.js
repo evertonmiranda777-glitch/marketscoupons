@@ -160,6 +160,18 @@ module.exports = async (req, res) => {
   if (!isCron && !isAdmin) return res.status(401).json({ error: 'Unauthorized' });
   if (!SK || !UNSUB_SECRET) return res.status(500).json({ error: 'missing env keys' });
 
+  // GET ?list_active=1 — retorna lista de campanhas ativas (CSV) pra workflow consumir
+  if (req.method === 'GET' && req.query?.list_active) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.email_active_campaigns&select=value`,
+        { headers: { apikey: SK, Authorization: `Bearer ${SK}` } });
+      const rows = r.ok ? await r.json() : [];
+      const csv = (rows[0]?.value || 'site-invite').trim();
+      res.setHeader('Content-Type','text/plain');
+      return res.status(200).send(csv);
+    } catch { return res.status(200).send('site-invite'); }
+  }
+
   const { campaign, filterTag = null } = req.body || {};
   // batchSize bounded: max 500 (Brevo bulk 295 + Resend 100 + SendGrid 100), evita drain via JWT admin comprometido
   // Se não passou batchSize no body, lê de site_settings.email_daily_limit (configurável pelo admin)

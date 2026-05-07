@@ -9343,6 +9343,13 @@ async function sendEmailsSmtp(){
 
     addEmailSentToday(totalSent);
     toast(`${totalSent} emails enviados!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + ` — ${Object.keys(langGroups).length} idioma(s)`);
+    // Registra a campanha como ativa pro cron diário continuar mandando até zerar a fila
+    try {
+      if(isInst && totalSent > 0){
+        const campKey = 'inst-' + window._instTemplateName;
+        await registerActiveCampaign(campKey);
+      }
+    } catch(e){}
     // Painel persistente "Último envio"
     try {
       const lse = document.getElementById('last-send-status');
@@ -14117,6 +14124,19 @@ async function loadAutoStatus(){
 }
 
 // Forçar envio agora — chama cron-bulk-send com JWT admin (com dedup proof)
+// Adiciona campanha à lista de ativas no auto-dispatch (lê CSV, faz set, salva)
+async function registerActiveCampaign(campKey){
+  try {
+    const { data } = await db.from('site_settings').select('value').eq('key','email_active_campaigns').maybeSingle();
+    const cur = (data?.value || 'site-invite').split(',').map(s=>s.trim()).filter(Boolean);
+    if(!cur.includes(campKey)){
+      cur.push(campKey);
+      await db.from('site_settings').upsert({ key:'email_active_campaigns', value:cur.join(','), updated_at:new Date().toISOString() }, { onConflict:'key' });
+      toast(`Campanha "${campKey}" agora roda no automático diário (até a fila zerar)`);
+    }
+  } catch(e){ console.warn('registerActiveCampaign', e); }
+}
+
 function setAutoDailyLimit(v){
   const n = Math.max(1, Math.min(500, parseInt(v,10) || 500));
   localStorage.setItem('mc-auto-daily-limit', String(n));
