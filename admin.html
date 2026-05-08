@@ -1155,15 +1155,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div class="ea-hdr-top">
        <div class="ea-title">Analytics de Email</div>
        <div style="display:flex;gap:8px;align-items:center;">
-         <div style="display:flex;gap:4px;flex-wrap:wrap;">
-           <button class="ea-period-btn" data-days="1" onclick="eaSetPeriod(1,this)">Hoje</button>
-           <button class="ea-period-btn" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
-           <button class="ea-period-btn" data-days="14" onclick="eaSetPeriod(14,this)">14d</button>
-           <button class="ea-period-btn" data-days="28" onclick="eaSetPeriod(28,this)">28d</button>
-           <button class="ea-period-btn" data-days="30" onclick="eaSetPeriod(30,this)">30d</button>
-           <button class="ea-period-btn sel" data-days="month" onclick="eaSetPeriod('month',this)">Este mês</button>
-           <button class="ea-period-btn" data-days="max" onclick="eaSetPeriod('max',this)">Máximo</button>
-         </div>
+         <div style="font-size:11px;color:var(--t3);">Período: <strong id="ea-period-label" style="color:var(--gold);">filtro global no topo</strong></div>
          <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="eaRefresh()">Atualizar</button>
        </div>
      </div>
