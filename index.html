@@ -628,8 +628,8 @@ img{max-width:100%;}
 .auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,180,41,.35);}
 .auth-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;animation:none;}
 .auth-switch{margin-top:24px;text-align:center;font-size:13px;color:var(--t2);}
-.auth-switch a{color:var(--gold);cursor:pointer;font-weight:700;transition:.2s;}
-.auth-switch a:hover{text-decoration:underline;color:#f5d060;}
+.auth-switch a,.auth-switch .link-btn{color:var(--gold);cursor:pointer;font-weight:700;transition:.2s;background:none;border:none;padding:0;font-size:inherit;font-family:inherit;}
+.auth-switch a:hover,.auth-switch .link-btn:hover{text-decoration:underline;color:#f5d060;}
 .auth-error{background:rgba(239,68,68,.06);color:var(--red);padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;border:1px solid rgba(239,68,68,.12);}
 .auth-success{background:rgba(34,197,94,.06);color:var(--green);padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;border:1px solid rgba(34,197,94,.12);}
 .auth-footer{margin-top:36px;text-align:center;font-size:11px;color:rgba(255,255,255,.2);}
@@ -823,7 +823,7 @@ img{max-width:100%;}
  border:1px solid rgba(107,182,201,.22);
  background:linear-gradient(180deg,#0B1318 0%,#07090D 100%);
  box-shadow:0 0 0 1px rgba(74,144,164,.08) inset,0 1px 0 rgba(180,230,235,.08) inset,0 8px 20px -10px rgba(0,0,0,.6);
- font-size:10px;font-weight:700;color:rgba(255,255,255,.72);letter-spacing:1px;text-transform:uppercase;
+ font-size:12px;font-weight:700;color:rgba(255,255,255,.72);letter-spacing:1px;text-transform:uppercase;
 }
 .hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite;}
 .hero h1{font-size:clamp(24px,5vw,56px);font-weight:900;letter-spacing:-1.5px;margin-bottom:16px;line-height:1.1;text-shadow:0 4px 24px rgba(0,0,0,.5);}
@@ -839,7 +839,7 @@ img{max-width:100%;}
 .btn-tg:hover{background:#1a8bbf;transform:translateY(-1px);}
 .hst .v{font-size:19px;font-weight:700;}
 .hst .v em{color:var(--gold);font-style:normal;}
-.hst .l{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-top:2px;}
+.hst .l{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-top:2px;}
 
 /* SECTION COMMONS */
 .sec{padding:40px 24px;position:relative;}
@@ -860,7 +860,7 @@ img{max-width:100%;}
 .hst::after{display:none;}
 .hst:hover{border-color:rgba(107,182,201,.08);box-shadow:0 8px 28px rgba(0,0,0,.3);transform:translateY(-3px);}
 .hst .v{font-size:13px;font-weight:700;letter-spacing:-.2px;color:#fff;}
-.hst .l{font-size:9px;color:var(--t3);letter-spacing:.3px;font-weight:500;line-height:1.3;}
+.hst .l{font-size:12px;color:var(--t3);letter-spacing:.3px;font-weight:500;line-height:1.3;}
 /* FIRM LOGOS STRIP */
 .hero-firms-strip{width:100%;margin-top:32px;position:relative;overflow:hidden;padding:16px 0;}
 .hero-firms-strip::before,.hero-firms-strip::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none;}
@@ -903,7 +903,7 @@ img{max-width:100%;}
 @media(max-width:480px){.oc-code{letter-spacing:1px;}}
 .oc-copy{padding:9px 18px;background:rgba(240,180,41,.08);color:var(--gold);border:1px solid rgba(240,180,41,.55);border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:.2s;font-family:var(--f);}
 .oc-copy:hover{background:rgba(240,180,41,.16);border-color:rgba(240,180,41,.75);}
-.oc-hint{font-size:10px;color:var(--t3);text-align:center;}
+.oc-hint{font-size:12px;color:var(--t3);text-align:center;}
 
 /* FIRMS PAGE */
 .firms-layout{display:flex;min-height:calc(100vh - var(--nav-h));}
@@ -1883,7 +1883,7 @@ body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,36px))
   .promo-topbar .pt-unit{padding:3px 7px;gap:2px;}
   .promo-topbar .pt-item{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;}
   .promo-topbar .pt-sep{display:none;}
-  .promo-topbar .pt-headline{white-space:normal;text-align:center;font-size:11px;line-height:1.2;}
+  .promo-topbar .pt-headline{white-space:normal;text-align:center;font-size:12px;line-height:1.2;}
   .promo-topbar .pt-clock{gap:5px;}
   .promo-topbar .pt-suf{font-size:9px;}
 }
@@ -2012,7 +2012,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:32px;}
 .ft-logo{font-size:18px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px;display:flex;align-items:center;gap:10px;}
 .ft-logo em{color:var(--gold);font-style:normal;}
-.ft-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.7;}
+.ft-desc{font-size:12px;color:rgba(255,255,255,.35);line-height:1.7;}
 .ft-soc{display:flex;gap:10px;margin-top:16px;}
 .ft-s{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border-radius:10px;border:1px solid rgba(107,182,201,.18);background:rgba(107,182,201,.08);color:var(--t2);font-size:0;transition:.3s;cursor:pointer;}
 .ft-s svg{width:18px;height:18px;}
@@ -2026,9 +2026,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .fc-col h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);margin-bottom:14px;}
 .fc-col a,.fc-col a:link,.fc-col a:visited{display:block;font-size:12px;color:var(--t2)!important;margin-bottom:9px;transition:color .2s;cursor:pointer;text-decoration:none!important;}
 .fc-col a:hover{color:#fff!important;}
-.ft-bot{padding-top:20px;border-top:1px solid rgba(107,182,201,.18);font-size:10px;color:rgba(255,255,255,.25);line-height:1.7;}
+.ft-bot{padding-top:20px;border-top:1px solid rgba(107,182,201,.18);font-size:12px;color:rgba(255,255,255,.25);line-height:1.7;}
 .ft-links{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;}
-.ft-links a{color:rgba(255,255,255,.3);font-size:10px;text-decoration:underline;cursor:pointer;}
+.ft-links a{color:rgba(255,255,255,.3);font-size:12px;text-decoration:underline;cursor:pointer;}
 .ft-links a:hover{color:var(--t2);}
 
 /* COOKIE BANNER */
@@ -2824,7 +2824,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <div class="mm" id="mm">
  <div class="mm-top">
  <div class="mm-logo">Markets <em>Coupons</em></div>
- <button class="mm-close" onclick="closeMM()"></button>
+ <button class="mm-close" onclick="closeMM()" aria-label="Fechar menu"></button>
  </div>
  <div class="mm-body">
  <div id="mm-auth-top" style="display:none;">
@@ -3339,7 +3339,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
      <div class="auth-field-pw"><input type="password" id="auth-login-pass" name="password" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuthLogin()"><button class="auth-pw-toggle" onclick="togglePw(this)" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
     </div>
     <button class="auth-btn" id="login-btn" onclick="doAuthLogin()" data-i18n="login_entrar">Entrar</button>
-    <div class="auth-switch"><span data-i18n="login_nao_tem">Não tem conta?</span> <a onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</a></div>
+    <div class="auth-switch"><span data-i18n="login_nao_tem">Não tem conta?</span> <button type="button" class="link-btn" onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</button></div>
     <div class="auth-footer"><a href="/privacy" onclick="event.preventDefault();closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="/terms" onclick="event.preventDefault();closeAuthModals();go('terms')" data-i18n="auth_termos">Termos</a></div>
    </form>
    <!-- SIGNUP FORM -->
@@ -3410,7 +3410,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     </div>
     <div class="auth-terms"><label class="auth-terms-row"><input type="checkbox" id="auth-signup-terms"><span data-i18n="signup_terms_label">Li e aceito a <a href="/privacy" target="_blank">Política de Privacidade</a> e os <a href="/terms" target="_blank">Termos de Uso</a></span></label></div>
     <button class="auth-btn" id="signup-btn" onclick="doAuthSignup()" data-i18n="signup_criar">Criar Conta</button>
-    <div class="auth-switch"><span data-i18n="signup_ja_tem">Já tem conta?</span> <a onclick="openAuthModal('login')" data-i18n="signup_entrar">Entrar</a></div>
+    <div class="auth-switch"><span data-i18n="signup_ja_tem">Já tem conta?</span> <button type="button" class="link-btn" onclick="openAuthModal('login')" data-i18n="signup_entrar">Entrar</button></div>
     <div class="auth-footer"><a href="/privacy" onclick="event.preventDefault();closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="/terms" onclick="event.preventDefault();closeAuthModals();go('terms')" data-i18n="auth_termos">Termos</a></div>
    </form>
   </div>
@@ -4281,7 +4281,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <!-- Newsletter -->
  <div class="ft-newsletter" style="margin:16px 0;">
    <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);margin-bottom:8px;" data-i18n="ft_newsletter_label">Newsletter</div>
-   <div style="font-size:11px;color:var(--t2);margin-bottom:8px;line-height:1.5;" data-i18n="ft_newsletter_desc">Receba as melhores promos e dicas de Prop Firms toda semana.</div>
+   <div style="font-size:12px;color:var(--t2);margin-bottom:8px;line-height:1.5;" data-i18n="ft_newsletter_desc">Receba as melhores promos e dicas de Prop Firms toda semana.</div>
    <form onsubmit="return subscribeNewsletter(event)" style="display:flex;gap:6px;">
      <input type="email" id="ft-nl-email" required placeholder="seu@email.com" style="flex:1;min-width:0;padding:8px 12px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:7px;color:#fff;font-size:12px;font-family:var(--f);outline:none;transition:.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(107,182,201,.18)'">
      <button type="submit" id="ft-nl-btn" style="padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:.2s;" data-i18n="ft_newsletter_btn">Inscrever</button>
@@ -4301,7 +4301,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
  </div>
  <div class="fc-col">
- <h4>Prop Firms</h4>
+ <h3>Prop Firms</h3>
  <a href="https://apextraderfunding.com/member/aff/go/evertonmiranda" target="_blank" rel="noopener noreferrer">Apex Trader Funding</a>
  <a href="https://bulenox.com/member/aff/go/marketcoupons" target="_blank" rel="noopener noreferrer">Bulenox</a>
  <a href="https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP" target="_blank" rel="noopener noreferrer">FTMO</a>
@@ -4310,7 +4310,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <a href="https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14" target="_blank" rel="noopener noreferrer">Earn2Trade</a>
  </div>
  <div class="fc-col">
- <h4 data-i18n="ft_col_ferramentas">Ferramentas</h4>
+ <h3 data-i18n="ft_col_ferramentas">Ferramentas</h3>
  <a onclick="go('calc')">Position Size</a>
  <a onclick="go('quiz')" data-i18n="ft_quiz">Quiz de Firma</a>
  <a onclick="go('compare')" data-i18n="ft_comparador">Comparador</a>
@@ -4319,7 +4319,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <a onclick="go('gamma')" data-i18n="ft_gamma">Gamma (GEX)</a>
  </div>
  <div class="fc-col">
- <h4 data-i18n="ft_col_links">Links</h4>
+ <h3 data-i18n="ft_col_links">Links</h3>
  <a href="https://t.me/marketcouponss" target="_blank" rel="noopener noreferrer">Telegram</a>
  <a href="https://www.instagram.com/marketscoupons" target="_blank" rel="noopener noreferrer">Instagram</a>
  <a onclick="go('guides')" data-i18n="ft_guias">Guias</a>
@@ -4328,7 +4328,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <a onclick="go('faq')">FAQ</a>
  </div>
  <div class="fc-col">
- <h4 data-i18n="ft_col_legal">Legal</h4>
+ <h3 data-i18n="ft_col_legal">Legal</h3>
  <a onclick="go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
  <a onclick="go('terms')" data-i18n="ft_termos">Termos de Uso</a>
  <a onclick="go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
@@ -4344,19 +4344,19 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
  <div class="ft-disclaimers" style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(107,182,201,.18);font-size:10px;line-height:1.7;color:var(--t3);">
   <div style="margin-bottom:16px;">
-   <strong style="color:var(--t2);font-size:11px;" data-i18n="disc_risco_title">Declaração de risco:</strong>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_risco_title">Declaração de risco:</strong>
    <p style="margin:6px 0 0;" data-i18n="disc_risco">A negociação de futuros e forex acarreta riscos substanciais e não é para qualquer investidor. Um investidor pode potencialmente perder tudo ou mais do que o investimento inicial. Capital de risco é o dinheiro que pode ser perdido sem comprometer a segurança financeira ou o estilo de vida da pessoa. Apenas o capital de risco deve ser usado para negociação, e apenas aqueles com capital de risco suficiente devem considerar a negociação. Resultados passados não são necessariamente indicativos de resultados futuros.</p>
   </div>
   <div style="margin-bottom:16px;">
-   <strong style="color:var(--t2);font-size:11px;" data-i18n="disc_simulados_title">Declaração de resultados simulados:</strong>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_simulados_title">Declaração de resultados simulados:</strong>
    <p style="margin:6px 0 0;" data-i18n="disc_simulados">Os resultados obtidos em simulações possuem muitas limitações inerentes. Nenhuma premissa deve ser feita de que qualquer conta terá resultados semelhantes aos apresentados em simulação. Existem diferenças frequentes entre os resultados de simulação e os resultados reais. A negociação simulada não envolve risco financeiro e nenhum registro de negociação simulada pode explicar o risco financeiro da negociação real.</p>
   </div>
   <div style="margin-bottom:16px;">
-   <strong style="color:var(--t2);font-size:11px;" data-i18n="disc_depoimentos_title">Divulgação de depoimentos:</strong>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_depoimentos_title">Divulgação de depoimentos:</strong>
    <p style="margin:6px 0 0;" data-i18n="disc_depoimentos">Os depoimentos que aparecem neste site podem não ser representativos de outros clientes e não são uma garantia de desempenho ou sucesso futuro.</p>
   </div>
   <div>
-   <strong style="color:var(--t2);font-size:11px;" data-i18n="disc_sala_title">Divulgação de Sala de Trade Ao Vivo:</strong>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_sala_title">Divulgação de Sala de Trade Ao Vivo:</strong>
    <p style="margin:6px 0 0;" data-i18n="disc_sala">Esta apresentação é apenas para fins educacionais e as opiniões expressas são exclusivamente do apresentador. Todas as operações apresentadas devem ser consideradas hipotéticas e não devem ser esperadas como replicáveis em uma conta de negociação real.</p>
   </div>
  </div>
@@ -4372,8 +4372,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 </div>
 
 <!-- BOT -->
-<button class="bot-fab" id="bot-fab" onclick="toggleBot()" aria-label="Chat with Max">
- <img src="img/bot/Daily/max-bot-techbro-v2_1.webp" alt="Max" draggable="false" loading="lazy" decoding="async" width="84" height="84">
+<button class="bot-fab" id="bot-fab" onclick="toggleBot()" aria-label="Abrir chat com Max">
+ <img src="img/bot/Daily/max-bot-techbro-v2_1.webp" alt="" draggable="false" loading="lazy" decoding="async" width="84" height="84">
  <span class="bot-badge" id="bot-badge">1</span>
 </button>
 <div class="bot-win" id="bot-win">
@@ -4393,7 +4393,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
  <div class="bot-inp-row">
  <input class="bot-inp" id="bot-inp" data-i18n-placeholder="bot_placeholder" placeholder="Type your question..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendBot();}">
- <button class="bot-snd" id="bot-snd" onclick="sendBot()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
+ <button class="bot-snd" id="bot-snd" onclick="sendBot()" aria-label="Enviar mensagem"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
  </div>
 </div>
 
