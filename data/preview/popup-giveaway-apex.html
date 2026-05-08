@@ -139,55 +139,20 @@ body {
   line-height: 1.5;
 }
 
-/* Tickets row */
-.gw-tickets {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 22px 24px 8px;
-}
-.gw-ticket {
-  flex: 1;
-  max-width: 110px;
-  background: linear-gradient(180deg, #0d0e12 0%, #050608 100%);
-  border: 1px solid rgba(249, 115, 22, .35);
-  border-radius: 12px;
-  padding: 14px 8px 10px;
+/* Hero image (reusa asset do email) */
+.gw-hero-img {
+  padding: 18px 18px 0;
   text-align: center;
-  position: relative;
-  transition: .25s;
 }
-.gw-ticket.featured {
-  border-color: rgba(249, 115, 22, .7);
-  box-shadow: 0 0 24px rgba(249, 115, 22, .25), inset 0 1px 0 rgba(249, 115, 22, .2);
-  transform: translateY(-4px);
+.gw-hero-img img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid rgba(249, 115, 22, .25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
 }
-.gw-ticket-logo {
-  font-size: 22px;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: -1px;
-  font-family: Inter, system-ui, sans-serif;
-}
-.gw-ticket-label {
-  font-size: 8px;
-  color: #f97316;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-top: 6px;
-  text-transform: uppercase;
-}
-.gw-ticket-check {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #10b981;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 8px auto 0;
-}
-.gw-ticket-check svg { width: 11px; height: 11px; color: #fff; }
 
 /* Body */
 .gw-body { padding: 8px 24px 22px; }
@@ -300,9 +265,7 @@ body {
   .gw-modal { max-width: 100%; }
   .gw-hd { padding: 24px 18px 18px; }
   .gw-hd-title { font-size: 22px; }
-  .gw-tickets { padding: 18px 18px 4px; gap: 8px; }
-  .gw-ticket { padding: 12px 6px 8px; }
-  .gw-ticket-logo { font-size: 18px; }
+  .gw-hero-img { padding: 14px 14px 0; }
   .gw-body { padding: 6px 18px 18px; }
 }
 </style>
@@ -327,28 +290,8 @@ body {
       <p class="gw-hd-sub">3 Evaluation Accounts up for grabs. Free to enter. Your gateway to a funded trader.</p>
     </div>
 
-    <div class="gw-tickets">
-      <div class="gw-ticket">
-        <div class="gw-ticket-logo">M</div>
-        <div class="gw-ticket-label">Evaluation</div>
-        <div class="gw-ticket-check">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-      </div>
-      <div class="gw-ticket featured">
-        <div class="gw-ticket-logo">M</div>
-        <div class="gw-ticket-label">Evaluation</div>
-        <div class="gw-ticket-check">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-      </div>
-      <div class="gw-ticket">
-        <div class="gw-ticket-logo">M</div>
-        <div class="gw-ticket-label">Evaluation</div>
-        <div class="gw-ticket-check">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-      </div>
+    <div class="gw-hero-img">
+      <img src="https://www.marketscoupons.com/img/email-giveaway-apex-tickets.jpg" alt="3 Apex Evaluation tickets" width="540" height="280">
     </div>
 
     <div class="gw-body">
