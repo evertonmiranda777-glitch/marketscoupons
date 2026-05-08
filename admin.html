@@ -1601,9 +1601,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
     <!-- KPIs -->
     <div id="gw-kpis" class="stats-grid" style="margin-bottom:18px;">
       <div class="stat-card"><div class="stat-label">Sorteios ativos</div><div class="stat-value" id="gw-kpi-active">—</div></div>
-      <div class="stat-card"><div class="stat-label">Impressões 7d</div><div class="stat-value" id="gw-kpi-shown">—</div></div>
-      <div class="stat-card"><div class="stat-label">CTA clicks 7d</div><div class="stat-value" id="gw-kpi-clicks">—</div></div>
-      <div class="stat-card"><div class="stat-label">Conversão signup 7d</div><div class="stat-value" id="gw-kpi-conv">—</div></div>
+      <div class="stat-card"><div class="stat-label" id="gw-kpi-shown-l">Impressões · 7d</div><div class="stat-value" id="gw-kpi-shown">—</div></div>
+      <div class="stat-card"><div class="stat-label" id="gw-kpi-clicks-l">CTA clicks · 7d</div><div class="stat-value" id="gw-kpi-clicks">—</div></div>
+      <div class="stat-card"><div class="stat-label" id="gw-kpi-conv-l">Conversão signup · 7d</div><div class="stat-value" id="gw-kpi-conv">—</div></div>
     </div>
 
     <!-- Lista -->
@@ -14569,18 +14569,36 @@ async function loadGwList(){
 
 async function loadGwKpis(){
   try{
-    const since = new Date(Date.now()-7*86400000).toISOString();
-    const [{count:active},{data:shown},{data:clicks},{data:signups}] = await Promise.all([
+    // Usa o filtro global de datas do topbar
+    const startISO = globalDateStart;
+    const endISO = globalDateEnd;
+    const buildQuery = (eventName) => {
+      let q = db.from('events').select('id',{count:'exact',head:true}).eq('event', eventName);
+      if(startISO) q = q.gte('created_at', startISO);
+      if(endISO)   q = q.lte('created_at', endISO);
+      return q;
+    };
+    const [activeRes, shownRes, clicksRes, signupsRes] = await Promise.all([
       db.from('giveaways').select('id',{count:'exact',head:true}).eq('active',true),
-      db.from('events').select('id',{count:'exact',head:true}).eq('event','giveaway_popup_shown').gte('created_at',since),
-      db.from('events').select('id',{count:'exact',head:true}).eq('event','giveaway_popup_cta_click').gte('created_at',since),
-      db.from('events').select('id',{count:'exact',head:true}).eq('event','giveaway_popup_signup_complete').gte('created_at',since),
+      buildQuery('giveaway_popup_shown'),
+      buildQuery('giveaway_popup_cta_click'),
+      buildQuery('giveaway_popup_signup_complete'),
     ]);
-    document.getElementById('gw-kpi-active').textContent = active||0;
-    document.getElementById('gw-kpi-shown').textContent = shown?.count ?? '—';
-    document.getElementById('gw-kpi-clicks').textContent = clicks?.count ?? '—';
-    const sCount = signups?.count || 0, cCount = clicks?.count || 0;
-    document.getElementById('gw-kpi-conv').textContent = cCount ? Math.round(sCount*100/cCount)+'%' : '—';
+    const shown = shownRes?.count ?? 0;
+    const clicks = clicksRes?.count ?? 0;
+    const signups = signupsRes?.count ?? 0;
+    document.getElementById('gw-kpi-active').textContent = activeRes?.count ?? 0;
+    document.getElementById('gw-kpi-shown').textContent = shown;
+    document.getElementById('gw-kpi-clicks').textContent = clicks;
+    document.getElementById('gw-kpi-conv').textContent = clicks ? Math.round(signups*100/clicks)+'%' : '—';
+    // Atualiza labels dos cards refletindo o range ativo
+    const rangeLabel = (document.getElementById('gdb-active')?.textContent || '7d').trim();
+    const lShown = document.getElementById('gw-kpi-shown-l');
+    const lClicks = document.getElementById('gw-kpi-clicks-l');
+    const lConv = document.getElementById('gw-kpi-conv-l');
+    if(lShown) lShown.textContent = 'Impressões · ' + rangeLabel;
+    if(lClicks) lClicks.textContent = 'CTA clicks · ' + rangeLabel;
+    if(lConv) lConv.textContent = 'Conversão signup · ' + rangeLabel;
   }catch(e){ console.warn('gw kpis', e); }
 }
 
