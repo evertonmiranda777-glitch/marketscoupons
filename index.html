@@ -898,7 +898,7 @@ img{max-width:100%;}
  padding:14px 16px;background:linear-gradient(180deg,rgba(10,30,36,.55),rgba(10,20,24,.55));
  border:1.5px dashed rgba(240,180,41,.55);border-radius:10px;
 }
-.oc-coupon .offer-coupon-label{margin-bottom:4px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t2);}
+.oc-coupon .offer-coupon-label{margin-bottom:4px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t2);}
 .oc-code{font-size:clamp(11px,3.6vw,16px);font-weight:800;letter-spacing:2px;color:var(--gold);text-shadow:0 0 16px rgba(240,180,41,.1);white-space:nowrap;overflow:hidden;text-overflow:clip;}
 @media(max-width:480px){.oc-code{letter-spacing:1px;}}
 .oc-copy{padding:9px 18px;background:rgba(240,180,41,.08);color:var(--gold);border:1px solid rgba(240,180,41,.55);border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:.2s;font-family:var(--f);}
@@ -1071,7 +1071,7 @@ img{max-width:100%;}
 .offer-desc{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5;}
 .offer-coupon-box{display:flex !important;align-items:center !important;justify-content:space-between !important;gap:10px;background:linear-gradient(180deg,rgba(10,30,36,.55),rgba(10,20,24,.55));border:1.5px dashed rgba(240,180,41,.55);border-radius:12px;padding:14px;margin-bottom:12px;}
 .offer-coupon-left{display:flex;flex-direction:column;min-width:0;flex:1;}
-.offer-coupon-label{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t2);text-transform:uppercase;margin-bottom:4px;}
+.offer-coupon-label{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--t2);text-transform:uppercase;margin-bottom:4px;}
 .offer-coupon-row{padding:0;}
 .offer-coupon-code{font-size:18px;font-weight:800;letter-spacing:3px;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:clip;}
 @media(max-width:600px){.offer-coupon-code{font-size:14px;letter-spacing:1.5px;}}
@@ -3810,10 +3810,10 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     <div class="gx-disclaimer" data-i18n="gx_disclaimer">Dados com atraso. Níveis de GEX são estimativas baseadas em modelos matemáticos e não constituem recomendação de investimento. Trading envolve risco de perda.</div>
 
     <div style="margin-top:40px;">
-      <div style="font-size:20px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);"></div>
+      <h2 style="font-size:20px;font-weight:700;margin:0 0 20px;display:flex;align-items:center;gap:10px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block;"></span>
         <span data-i18n="gx_edu_title">O que é Gamma Exposure (GEX)?</span>
-      </div>
+      </h2>
       <div class="gx-edu-grid">
         <article class="gx-edu-card">
           <h3 data-i18n="gx_edu_what_title">O que é GEX?</h3>
@@ -4311,27 +4311,27 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
  <div class="fc-col">
  <h3 data-i18n="ft_col_ferramentas">Ferramentas</h3>
- <a onclick="go('calc')">Position Size</a>
- <a onclick="go('quiz')" data-i18n="ft_quiz">Quiz de Firma</a>
- <a onclick="go('compare')" data-i18n="ft_comparador">Comparador</a>
- <a onclick="go('calendar')" data-i18n="ft_calendario">Calendário</a>
- <a onclick="go('indicators')" data-i18n="ft_indicadores">Indicadores</a>
- <a onclick="go('gamma')" data-i18n="ft_gamma">Gamma (GEX)</a>
+ <a href="/calculator" onclick="event.preventDefault();go('calc')">Position Size</a>
+ <a href="/quiz" onclick="event.preventDefault();go('quiz')" data-i18n="ft_quiz">Quiz de Firma</a>
+ <a href="/compare" onclick="event.preventDefault();go('compare')" data-i18n="ft_comparador">Comparador</a>
+ <a href="/calendar" onclick="event.preventDefault();go('calendar')" data-i18n="ft_calendario">Calendário</a>
+ <a href="/indicators" onclick="event.preventDefault();go('indicators')" data-i18n="ft_indicadores">Indicadores</a>
+ <a href="/gamma" onclick="event.preventDefault();go('gamma')" data-i18n="ft_gamma">Gamma (GEX)</a>
  </div>
  <div class="fc-col">
  <h3 data-i18n="ft_col_links">Links</h3>
  <a href="https://t.me/marketcouponss" target="_blank" rel="noopener noreferrer">Telegram</a>
  <a href="https://www.instagram.com/marketscoupons" target="_blank" rel="noopener noreferrer">Instagram</a>
- <a onclick="go('guides')" data-i18n="ft_guias">Guias</a>
- <a onclick="go('blog')">Blog</a>
- <a onclick="go('live')">Live Room</a>
- <a onclick="go('faq')">FAQ</a>
+ <a href="/guides" onclick="event.preventDefault();go('guides')" data-i18n="ft_guias">Guias</a>
+ <a href="/blog" onclick="event.preventDefault();go('blog')">Blog</a>
+ <a href="/live" onclick="event.preventDefault();go('live')">Live Room</a>
+ <a href="/#faq" onclick="event.preventDefault();go('faq')">FAQ</a>
  </div>
  <div class="fc-col">
  <h3 data-i18n="ft_col_legal">Legal</h3>
- <a onclick="go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
- <a onclick="go('terms')" data-i18n="ft_termos">Termos de Uso</a>
- <a onclick="go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
+ <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
+ <a href="/terms" onclick="event.preventDefault();go('terms')" data-i18n="ft_termos">Termos de Uso</a>
+ <a href="/privacy#cookies" onclick="event.preventDefault();go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
  </div>
  </div>
  <div class="ft-bot">
@@ -4342,7 +4342,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
    <a href="/privacy#cookies" onclick="event.preventDefault();go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
   </div>
  </div>
- <div class="ft-disclaimers" style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(107,182,201,.18);font-size:10px;line-height:1.7;color:var(--t3);">
+ <div class="ft-disclaimers" style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(107,182,201,.18);font-size:12px;line-height:1.7;color:var(--t3);">
   <div style="margin-bottom:16px;">
    <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_risco_title">Declaração de risco:</strong>
    <p style="margin:6px 0 0;" data-i18n="disc_risco">A negociação de futuros e forex acarreta riscos substanciais e não é para qualquer investidor. Um investidor pode potencialmente perder tudo ou mais do que o investimento inicial. Capital de risco é o dinheiro que pode ser perdido sem comprometer a segurança financeira ou o estilo de vida da pessoa. Apenas o capital de risco deve ser usado para negociação, e apenas aqueles com capital de risco suficiente devem considerar a negociação. Resultados passados não são necessariamente indicativos de resultados futuros.</p>
@@ -4364,7 +4364,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 
 <!-- COOKIE CONSENT BANNER -->
 <div class="ck-banner" id="ck-banner" style="display:none;">
- <div class="ck-text"><span data-i18n="ck_texto">Usamos cookies para analytics e melhorar sua experiência. Ao aceitar, você concorda com nossa</span> <a onclick="go('privacy')" data-i18n="ck_link_privacidade">Política de Privacidade</a>.</div>
+ <div class="ck-text"><span data-i18n="ck_texto">Usamos cookies para analytics e melhorar sua experiência. Ao aceitar, você concorda com nossa</span> <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ck_link_privacidade">Política de Privacidade</a>.</div>
  <div class="ck-btns">
   <button class="ck-reject" onclick="rejectCookies()" data-i18n="ck_recusar">Recusar</button>
   <button class="ck-accept" onclick="acceptCookies()" data-i18n="ck_aceitar">Aceitar</button>
@@ -4374,7 +4374,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- BOT -->
 <button class="bot-fab" id="bot-fab" onclick="toggleBot()" aria-label="Abrir chat com Max">
  <img src="img/bot/Daily/max-bot-techbro-v2_1.webp" alt="" draggable="false" loading="lazy" decoding="async" width="84" height="84">
- <span class="bot-badge" id="bot-badge">1</span>
+ <span class="bot-badge" id="bot-badge" aria-hidden="true">1</span>
 </button>
 <div class="bot-win" id="bot-win">
  <div class="bot-hd">
