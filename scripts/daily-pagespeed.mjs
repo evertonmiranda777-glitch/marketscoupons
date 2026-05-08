@@ -10,20 +10,20 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 
-const URL = 'https://www.marketscoupons.com/';
+const SITE_URL = 'https://www.marketscoupons.com/';
 const PSI_KEY = process.env.PAGESPEED_API_KEY || '';
 const SB_URL = process.env.SUPABASE_URL;
 const SB_SK  = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const TG_TOK = process.env.TELEGRAM_BOT_TOKEN;
 const TG_CHT = process.env.TELEGRAM_CHAT_ID;
-const REGRESSION_THRESHOLD = 10; // pontos abaixo da media 7d = trigger auto-fix
-const REVERT_THRESHOLD = 25;     // pontos abaixo = trigger auto-revert
+const REGRESSION_THRESHOLD = 10;
+const REVERT_THRESHOLD = 25;
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname).replace(/^\/([A-Z]):/i,'$1:'),'..');
 
 async function runPSI(strategy) {
   const u = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
-  u.searchParams.set('url', URL);
+  u.searchParams.set('url', SITE_URL);
   u.searchParams.set('strategy', strategy);
   u.searchParams.set('category', 'performance');
   if (PSI_KEY) u.searchParams.set('key', PSI_KEY);
@@ -66,7 +66,7 @@ async function getBaseline(strategy) {
   const u = new URL(`${SB_URL}/rest/v1/pagespeed_runs`);
   u.searchParams.set('select','perf_score,lcp_ms,cls');
   u.searchParams.set('strategy',`eq.${strategy}`);
-  u.searchParams.set('url',`eq.${URL}`);
+  u.searchParams.set('url',`eq.${SITE_URL}`);
   u.searchParams.set('created_at',`gte.${since}`);
   u.searchParams.set('limit','30');
   const r = await fetch(u.href, { headers: { apikey: SB_SK, Authorization: `Bearer ${SB_SK}` }});
@@ -152,8 +152,8 @@ async function triggerAutoRevert() {
   console.log('PSI run start', new Date().toISOString());
   const [m, d] = await Promise.all([runPSI('mobile'), runPSI('desktop')]);
   await sbInsert([
-    { url: URL, ...m },
-    { url: URL, ...d }
+    { url: SITE_URL, ...m },
+    { url: SITE_URL, ...d }
   ]);
 
   const baseM = await getBaseline('mobile');
