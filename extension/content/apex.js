@@ -40,7 +40,7 @@ async function mcSyncApex(opts = {}) {
   const affId = mcApexAffId();
   if (!affId) { mcToast('Apex: nao identificou aff_id — estou logado no painel de afiliado?'); return { ok:false, reason:'no_aff_id' }; }
 
-  // 1) Procurar link "Download Report" na pagina (amember pattern)
+  // 1) Daily aggregates (existente — vai pra affiliate_daily_stats)
   let csvUrl = null;
   document.querySelectorAll('a').forEach(a => {
     const txt = (a.textContent || '').toLowerCase();
@@ -60,24 +60,108 @@ async function mcSyncApex(opts = {}) {
       }
     } catch (e) {}
   }
-
   if (!rows.length) rows = mcScrapeApexTable();
-  if (!rows.length) { mcToast('Apex: nenhuma linha encontrada'); return { ok:false, reason:'no_rows' }; }
+
+  // 2) Transactions individuais (NOVO — vai pra affiliate_conversions, alimenta matcher)
+  const leads = await mcFetchApexTransactions(affId);
+
+  if (!rows.length && !leads.length) { mcToast('Apex: nenhum dado encontrado'); return { ok:false, reason:'no_data' }; }
 
   const payload = {
     firm: 'apex',
-    source: 'ext_apex_v1',
+    source: 'ext_apex_v2',
     affiliate_id: affId,
-    rows
+    rows,
+    leads
   };
   const out = await mcSend(payload);
   if (out.ok) {
-    mcToast(`Apex: ${rows.length} dias sincronizados`);
+    mcToast(`Apex: ${rows.length} dias + ${leads.length} transacoes sincronizadas`);
     await mcMarkSync('apex');
   } else {
     mcToast('Apex: erro ao enviar — ' + (out.error || 'desconhecido'));
   }
   return out;
+}
+
+// NOVO: scrape transactions individuais. amember-pro tipicamente expõe em:
+//   /aff/member/transactions
+//   /aff/member/leads (algumas firmas)
+//   /aff/stat?group=transactions
+// Tentamos os 3 + parse adaptativo da tabela.
+async function mcFetchApexTransactions(affId) {
+  const baseUrl = location.origin; // ex: https://dashboard.apextraderfunding.com
+  const candidates = [
+    baseUrl + '/aff/member/transactions',
+    baseUrl + '/aff/stat?period=last-3m&group=transactions',
+    baseUrl + '/aff/member/leads'
+  ];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url, { credentials: 'include', headers: { 'Accept': 'text/html' }});
+      if (!res.ok) continue;
+      const html = await res.text();
+      const leads = mcParseApexTransactionsHtml(html);
+      if (leads.length) {
+        console.log('[MC] Apex transactions encontrado em', url, '— leads:', leads.length);
+        return leads;
+      }
+    } catch (e) {}
+  }
+  return [];
+}
+
+function mcParseApexTransactionsHtml(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const tables = doc.querySelectorAll('table');
+  for (const t of tables) {
+    const head = [...t.querySelectorAll('thead th, tr th')].map(x => x.textContent.trim().toLowerCase());
+    const hasOrder = head.some(h => h.includes('order') || h.includes('invoice') || h.includes('id'));
+    const hasAmt = head.some(h => h.includes('amount') || h.includes('commission') || h.includes('fee') || h.includes('value'));
+    const hasDate = head.some(h => h.includes('date') || h.includes('time'));
+    if (!(hasOrder && hasAmt && hasDate)) continue;
+
+    const iOrder = head.findIndex(h => h.includes('order') || h.includes('invoice') || (h.includes('id') && !h.includes('user')));
+    const iAmt = head.findIndex(h => h.includes('commission') || h.includes('amount') || h.includes('fee') || h.includes('value'));
+    const iDate = head.findIndex(h => h.includes('date') || h.includes('time'));
+    const iKw = head.findIndex(h => h.includes('keyword') || h.includes('sub') || h.includes('campaign') || h.includes('source'));
+    const iStatus = head.findIndex(h => h.includes('status'));
+    const iEmail = head.findIndex(h => h.includes('email') || h.includes('user') || h.includes('customer'));
+
+    const rows = t.querySelectorAll('tbody tr');
+    const leads = [];
+    rows.forEach(tr => {
+      const tds = [...tr.querySelectorAll('td')].map(x => x.textContent.trim());
+      const order_id = tds[iOrder] || '';
+      const amount = mcNum(tds[iAmt] || '');
+      const dateRaw = tds[iDate] || '';
+      const sub_id = iKw >= 0 ? (tds[iKw] || '') : '';
+      const status = iStatus >= 0 ? (tds[iStatus] || 'approved').toLowerCase() : 'approved';
+      const email = iEmail >= 0 ? (tds[iEmail] || '') : '';
+      if (!order_id || !amount) return;
+      leads.push({
+        order_id,
+        amount,
+        date: mcParseDateIso(dateRaw) || dateRaw,
+        sub_id,
+        status: status.includes('paid') || status.includes('approved') ? 'approved' : (status.includes('pend') ? 'pending' : 'approved'),
+        email,
+        raw: { dateRaw, order_id, amount, sub_id }
+      });
+    });
+    if (leads.length) return leads;
+  }
+  return [];
+}
+
+function mcParseDateIso(s) {
+  if (!s) return null;
+  // tenta YYYY-MM-DD ou MM/DD/YYYY
+  let m = /(\d{4})-(\d{2})-(\d{2})/.exec(s);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = /(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(s);
+  if (m) return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+  return null;
 }
 
 function mcApexAffId() {
