@@ -1,4 +1,22 @@
-<!DOCTYPE html><html lang="pt"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VPA — Volume Price Analysis: O Guia Definitivo Inspirado em Anna Coulling</title><style>body{background:#0a0d14;color:#e8eaed;font:16px/1.7 -apple-system,Segoe UI,sans-serif;max-width:760px;margin:40px auto;padding:0 20px}h1{color:#f0b429;font-size:36px;font-weight:800;line-height:1.2;margin:30px 0}h2{color:#fff;font-size:26px;margin:36px 0 14px;border-bottom:1px solid #2a2f3a;padding-bottom:10px}h3{color:#fff;font-size:19px;margin:24px 0 10px}p{margin:14px 0;color:#cbd0d8}strong{color:#fff}em{color:#f0b429;font-style:normal}.callout{padding:18px 24px;margin:24px 0;border-radius:8px;border-left:4px solid}.callout-gold{background:rgba(240,180,41,.08);border-color:#f0b429}.callout-red{background:rgba(239,68,68,.08);border-color:#ef4444}.callout-blue{background:rgba(107,182,201,.08);border-color:#6bb6c9}.callout-green{background:rgba(16,185,129,.08);border-color:#10b981}table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}th{background:rgba(240,180,41,.1);color:#f0b429;text-align:left;padding:12px;border-bottom:2px solid #f0b429}td{padding:12px;border-bottom:1px solid #2a2f3a;color:#cbd0d8}.mini-ui{background:rgba(13,20,28,.6);border:1px solid #2a2f3a;border-radius:10px;padding:24px;margin:24px 0}img{max-width:100%;height:auto;border-radius:10px;margin:14px 0}ul{padding-left:24px}li{margin:8px 0;color:#cbd0d8}hr{border:none;border-top:1px solid #2a2f3a;margin:32px 0}a{color:#6bb6c9;text-decoration:none;border-bottom:1px solid rgba(107,182,201,.3)}</style></head><body><h1>VPA — Volume Price Analysis: O Guia Definitivo Inspirado em Anna Coulling</h1><div style="color:#8590a3;font-size:13px;margin:0 0 30px;">Análise Técnica · Nível intermediario · 18 min · pt</div><img src="https://qfwhduvutfumsaxnuofa.supabase.co/storage/v1/object/public/blog-images/vpa-volume-price-analysis/hero.jpeg" alt="VPA Volume Price Analysis - barra de candle com volume profile institucional sobreposto">
+import { writeArticle, cdn } from './build-articles.mjs';
+
+const slug = 'vpa-volume-price-analysis';
+
+const meta = {
+  title: 'VPA — Volume Price Analysis: O Guia Definitivo Inspirado em Anna Coulling',
+  slug,
+  category: 'Análise Técnica',
+  level: 'intermediario',
+  read_time: '18 min',
+  lang: 'pt',
+  icon: '📊',
+  author: 'Markets Coupons',
+  excerpt: 'VPA não é mais um indicador. É a metodologia que Anna Coulling sistematizou a partir de Wyckoff para ler a INTENÇÃO institucional por trás de cada barra. Climaxes, no-supply, no-demand, divergências esforço×resultado, ciclo volumétrico em 4 fases — aplicado a NQ, ES, CL e GC sob a régua de prop firm.',
+  cover_url: cdn(slug, 'hero.jpeg')
+};
+
+const body = `
+<img src="${cdn(slug, 'hero.jpeg')}" alt="VPA Volume Price Analysis - barra de candle com volume profile institucional sobreposto">
 
 <h2>O Único Dado que o Mercado Não Consegue Mentir</h2>
 <p>Anna Coulling abre <em>A Complete Guide to Volume Price Analysis</em> com uma provocação que ecoa por todos os 400+ páginas do livro: <strong>preço pode ser manipulado, volume não</strong>. Uma vela de manipulação custa centavos pra ser desenhada. Volume é o registro contábil de quem realmente apareceu pra negociar — e não tem como falsificar isso sem dinheiro real entrando.</p>
@@ -105,7 +123,7 @@
 <p>Espelho da Fase 2. Volume expansivo nas barras de queda, recuos com volume decrescente. Médias móveis funcionam — agora como resistência. Repiques contra-tendência sangram.</p>
 <p>Termina quando o volume de venda para de crescer mesmo com novos fundos sendo feitos. Nesse momento, a Fase 1 do próximo ciclo começa a se desenhar.</p>
 
-<img src="https://qfwhduvutfumsaxnuofa.supabase.co/storage/v1/object/public/blog-images/vpa-volume-price-analysis/cycle-acumulacao-markup.jpeg" alt="Diagrama de transição entre Fase 1 (acumulação) e Fase 2 (markup) com volumes anotados">
+<img src="${cdn(slug, 'cycle-acumulacao-markup.jpeg')}" alt="Diagrama de transição entre Fase 1 (acumulação) e Fase 2 (markup) com volumes anotados">
 
 <h2>Anatomia das Barras — O Vocabulário Coulling</h2>
 <p>Não basta saber o ciclo. Tem que ler barra por barra. As que mais importam:</p>
@@ -256,4 +274,8 @@
 
 <hr>
 
-<p><em>Este guia é parte da série de análise técnica do Markets Coupons. Para aplicar VPA em desafios de prop firm, veja nosso <a href="/guides/gerenciamento-drawdown">guia de gerenciamento de drawdown</a> e <a href="/guides/position-sizing">position sizing para futuros</a>.</em></p></body></html>
+<p><em>Este guia é parte da série de análise técnica do Markets Coupons. Para aplicar VPA em desafios de prop firm, veja nosso <a href="/guides/gerenciamento-drawdown">guia de gerenciamento de drawdown</a> e <a href="/guides/position-sizing">position sizing para futuros</a>.</em></p>
+`.trim();
+
+const stats = writeArticle(meta, body);
+console.log('VPA enriquecido:', JSON.stringify(stats, null, 2));
