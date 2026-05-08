@@ -36,12 +36,11 @@ async function runPSI(strategy) {
   }
   // Fallback: lighthouse CLI local
   const tmpFile = path.join(ROOT, `lh-${strategy}.json`);
-  const preset = strategy === 'mobile' ? 'mobile' : 'desktop';
   const flags = [
     SITE_URL,
     `--output=json`,
     `--output-path=${tmpFile}`,
-    `--preset=${preset}`,
+    strategy === 'desktop' ? `--preset=desktop` : `--form-factor=mobile`,
     `--only-categories=performance`,
     `--chrome-flags="--headless=new --no-sandbox --disable-gpu"`,
     `--max-wait-for-load=60000`,
