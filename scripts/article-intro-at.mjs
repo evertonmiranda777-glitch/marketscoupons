@@ -1,0 +1,262 @@
+import { writeArticle, cdn } from './build-articles.mjs';
+
+const slug = 'introducao-analise-tecnica';
+
+const meta = {
+  title: 'Introdução à Análise Técnica: Os Fundamentos que Toda Mesa Profissional Aplica',
+  slug,
+  category: 'Análise Técnica',
+  level: 'iniciante',
+  read_time: '15 min',
+  lang: 'pt',
+  icon: '📚',
+  author: 'Markets Coupons',
+  excerpt: 'Análise técnica não é "ler bola de cristal". É a leitura sistemática do comportamento agregado de quem realmente move o preço — instituições, algoritmos, fundos. Este guia cobre os 7 axiomas fundamentais, os 4 tipos de análise, suportes e resistências, padrões clássicos, e o método de combinação que profissionais usam.',
+  cover_url: cdn(slug, 'hero.jpeg')
+};
+
+const body = `
+<img src="${cdn(slug, 'hero.jpeg')}" alt="Gráfico de candles com linhas de tendência, suportes e resistências marcados">
+
+<h2>O Que Análise Técnica Realmente É — e o Que Ela Não É</h2>
+<p>Quem chega à análise técnica vindo do hábito de "olhar fundamento" geralmente carrega um preconceito: análise técnica seria meio místico, um joguinho de padrões que "às vezes funciona". Esse preconceito é meio injusto. Não porque análise técnica seja infalível — não é. Mas porque ela <strong>responde uma pergunta diferente</strong> da análise fundamental, e responde bem.</p>
+<p>Análise fundamental pergunta: <em>esse ativo está caro ou barato em termos absolutos?</em> Resposta vem de balanço, fluxo de caixa, múltiplos. Análise técnica pergunta: <em>quem está comprando agora? quem está vendendo? em que velocidade? com que convicção?</em> Resposta vem do gráfico, da relação preço-volume, dos níveis-chave que algoritmos respeitam.</p>
+<p>As duas perguntas são complementares. Trader profissional usa fundamental pra decidir <em>o que</em> operar (qual ativo está estruturalmente bem posicionado), e técnica pra decidir <em>quando</em> operar (em que momento entrar, com que stop, com que alvo). Quem usa só uma ou só outra opera com metade das informações.</p>
+
+<div class="callout callout-gold">
+<strong>Princípio fundador (Charles Dow, 1900):</strong> "O preço descontou tudo." Ou seja, qualquer informação relevante — fundamental, macro, sentimento — já está refletida no preço atual. Análise técnica é a leitura desse desconto coletivo. Quem opera técnico bem não está adivinhando — está lendo a memória contábil de milhões de decisões.
+</div>
+
+<h2>Os 7 Axiomas da Análise Técnica</h2>
+<p>Antes de qualquer ferramenta específica, sete princípios fundamentam tudo o que vem depois.</p>
+
+<table>
+<thead><tr><th>#</th><th>Axioma</th><th>Implicação prática</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>O preço desconta tudo</td><td>Não tente prever notícias. Olhe a reação ao preço — ela contém a notícia.</td></tr>
+<tr><td>2</td><td>Preço se move em tendências</td><td>Identifique a tendência primeiro. Operar contra-tendência tem RR pior.</td></tr>
+<tr><td>3</td><td>Tendências persistem até evidência clara de reversão</td><td>Não saia de uma operação só porque "subiu muito". Saia quando a estrutura quebrar.</td></tr>
+<tr><td>4</td><td>Mercado se move em padrões repetitivos</td><td>Padrões clássicos (cabeça-ombros, triângulos, bandeiras) funcionam porque a psicologia humana é repetitiva.</td></tr>
+<tr><td>5</td><td>Volume confirma o preço</td><td>Movimento sem volume é movimento sem convicção. Sempre verifique volume.</td></tr>
+<tr><td>6</td><td>Suportes e resistências invertem-se</td><td>Resistência rompida vira suporte. Suporte rompido vira resistência. Consistente.</td></tr>
+<tr><td>7</td><td>Tempo importa tanto quanto preço</td><td>Movimentos têm duração natural. Onda 3 dura X. Onda 5 dura Y. Velocidade é informação.</td></tr>
+</tbody>
+</table>
+
+<h2>Os 4 Tipos de Análise no Gráfico</h2>
+<p>Análise técnica se decompõe em quatro abordagens, e o trader profissional usa as quatro em camadas.</p>
+
+<table>
+<thead><tr><th>Tipo</th><th>Foco</th><th>Ferramenta principal</th><th>Exemplo de pergunta</th></tr></thead>
+<tbody>
+<tr><td><strong>Estrutural</strong></td><td>Suportes, resistências, níveis-chave</td><td>Linhas horizontais, Fibonacci, pivots</td><td>Onde estão as paredes deste mercado?</td></tr>
+<tr><td><strong>Direcional</strong></td><td>Tendência: alta, baixa ou range</td><td>Médias móveis, ADX, MACD</td><td>O mercado tem direção dominante?</td></tr>
+<tr><td><strong>Momento</strong></td><td>Velocidade e força do movimento</td><td>RSI, Estocástico, ROC</td><td>A tendência está acelerando ou desacelerando?</td></tr>
+<tr><td><strong>Volumétrica</strong></td><td>Convicção institucional por trás do movimento</td><td>Volume, VWAP, Volume Profile, OBV</td><td>Há dinheiro grande comprando ou vendendo?</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-blue">
+<strong>Ordem de leitura recomendada:</strong> Estrutural primeiro (onde estamos?), depois Direcional (pra onde vamos?), depois Momento (com que velocidade?), por último Volumétrica (com que convicção?). Inverter essa ordem é receita pra confusão.
+</div>
+
+<h2>Suportes e Resistências — O Conceito Mais Subestimado</h2>
+<p>Suporte é um nível de preço onde compradores aparecem com força suficiente pra parar a queda. Resistência é o oposto — vendedores aparecem com força suficiente pra parar a alta. Ambos existem porque memória institucional é real: algoritmos lembram desses níveis e operam ativamente neles.</p>
+
+<div class="mini-ui">
+<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+<defs><pattern id="grid-sr" width="50" height="20" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.04)"/></pattern></defs>
+<rect width="700" height="240" fill="url(#grid-sr)"/>
+<line x1="0" y1="60" x2="700" y2="60" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="600" y="55" fill="#ef4444" font-size="11">Resistência</text>
+<line x1="0" y1="180" x2="700" y2="180" stroke="#10b981" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="600" y="175" fill="#10b981" font-size="11">Suporte</text>
+<polyline points="20,200 70,150 110,170 160,80 200,75 240,140 280,170 330,75 380,80 420,140 470,180 510,165 550,75 600,80 640,170 690,165" stroke="#f0b429" stroke-width="2" fill="none"/>
+<circle cx="160" cy="80" r="4" fill="#ef4444"/>
+<text x="155" y="40" fill="#cbd0d8" font-size="10">Toque 1</text>
+<circle cx="330" cy="75" r="4" fill="#ef4444"/>
+<text x="325" y="40" fill="#cbd0d8" font-size="10">Toque 2</text>
+<circle cx="550" cy="75" r="4" fill="#ef4444"/>
+<text x="545" y="40" fill="#cbd0d8" font-size="10">Toque 3</text>
+<circle cx="280" cy="170" r="4" fill="#10b981"/>
+<text x="270" y="225" fill="#cbd0d8" font-size="10">Bounce 1</text>
+<circle cx="470" cy="180" r="4" fill="#10b981"/>
+<text x="460" y="225" fill="#cbd0d8" font-size="10">Bounce 2</text>
+</svg>
+<p style="text-align:center;color:#8590a3;font-size:13px;margin:8px 0 0;">Range clássico: preço respeita suporte e resistência por múltiplos toques antes de romper. Cada toque adicional fortalece o nível — até que ele quebra com volume.</p>
+</div>
+
+<h3>Como identificar S/R reais</h3>
+<ul>
+<li><strong>Pelo menos 2 toques anteriores</strong> com reação clara</li>
+<li><strong>Volume aumentando nas reações</strong> (dinheiro grande agindo)</li>
+<li><strong>Coincidência com níveis psicológicos</strong> (números redondos, máximas/mínimas anteriores)</li>
+<li><strong>Reação respeitando timeframe maior</strong> (S/R do diário é mais importante que do 5min)</li>
+</ul>
+
+<h3>O princípio da inversão</h3>
+<p>Quando uma resistência é rompida com convicção (volume + close acima), ela se torna suporte. E vice-versa. Isso é fundamental: o nível-chave não desaparece após o rompimento — ele muda de função. Esse comportamento é a base de muitos setups de continuação.</p>
+
+<h2>Tipos de Tendência — e Como Identificar Cada Uma</h2>
+
+<table>
+<thead><tr><th>Tipo</th><th>Características</th><th>Estratégia</th></tr></thead>
+<tbody>
+<tr><td><strong>Tendência de alta</strong></td><td>Topos e fundos progressivamente mais altos. Preço acima da SMA 50 e SMA 200.</td><td>Comprar pullbacks. Não shortear.</td></tr>
+<tr><td><strong>Tendência de baixa</strong></td><td>Topos e fundos progressivamente mais baixos. Preço abaixo da SMA 50 e SMA 200.</td><td>Vender repiques. Não comprar.</td></tr>
+<tr><td><strong>Lateralização (range)</strong></td><td>Topos e fundos se alternando em zona definida. ADX baixo (&lt;20).</td><td>Comprar suporte, vender resistência. Aguarde rompimento pra mudar estratégia.</td></tr>
+<tr><td><strong>Acumulação</strong></td><td>Range após queda forte. Volume crescente nos repiques.</td><td>Aguarde rompimento da resistência. Setup pra long.</td></tr>
+<tr><td><strong>Distribuição</strong></td><td>Range após alta forte. Volume crescente nas quedas.</td><td>Aguarde quebra do suporte. Setup pra short.</td></tr>
+</tbody>
+</table>
+
+<h2>Os 5 Padrões Clássicos que Toda Mesa Reconhece</h2>
+<p>Padrões gráficos não são mágica — são a memória visual de comportamentos repetitivos. Os cinco abaixo aparecem com frequência suficiente pra valer a pena conhecer.</p>
+
+<table>
+<thead><tr><th>Padrão</th><th>Estrutura</th><th>Direção implícita</th><th>Confirmação</th></tr></thead>
+<tbody>
+<tr><td><strong>Cabeça e Ombros</strong></td><td>3 topos: ombro-cabeça-ombro. Cabeça mais alta. Ombros em altura similar.</td><td>Reversão de alta pra baixa</td><td>Quebra do "neckline" com volume</td></tr>
+<tr><td><strong>Cabeça e Ombros invertido</strong></td><td>3 fundos espelhando o anterior</td><td>Reversão de baixa pra alta</td><td>Quebra do neckline com volume</td></tr>
+<tr><td><strong>Triângulo ascendente</strong></td><td>Resistência horizontal + suporte ascendente</td><td>Rompimento bullish (75% das vezes)</td><td>Quebra da resistência com volume</td></tr>
+<tr><td><strong>Triângulo descendente</strong></td><td>Suporte horizontal + resistência descendente</td><td>Rompimento bearish (75% das vezes)</td><td>Quebra do suporte com volume</td></tr>
+<tr><td><strong>Bandeira (flag)</strong></td><td>Movimento forte + canal estreito contra-tendência</td><td>Continuação na direção do movimento original</td><td>Rompimento do canal com volume</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-red">
+<strong>Aviso importante:</strong> padrões só valem com confirmação. "Está parecendo cabeça-ombros" não é setup. "Cabeça-ombros completou + neckline rompeu com volume 2× a média + retested como resistência" é setup. Sem confirmação, é torcida.
+</div>
+
+<h2>Linhas de Tendência — Mais que Decoração</h2>
+<p>Linha de tendência é uma reta que conecta múltiplos topos (em queda) ou múltiplos fundos (em alta). É uma das ferramentas mais simples e mais úteis da análise técnica.</p>
+
+<table>
+<thead><tr><th>Regra</th><th>Detalhe</th></tr></thead>
+<tbody>
+<tr><td>Mínimo 3 toques</td><td>2 pontos definem uma reta. 3 pontos validam que é uma linha de tendência real.</td></tr>
+<tr><td>Maior timeframe = maior força</td><td>Linha do diário &gt; linha do 4h &gt; linha do 1h &gt; linha do 15min.</td></tr>
+<tr><td>Quebra com volume = reversão real</td><td>Linha quebrando sem volume é provável fakeout.</td></tr>
+<tr><td>Re-teste como resistência/suporte</td><td>Após quebra, preço frequentemente retorna pra retestar a linha.</td></tr>
+<tr><td>Inclinação importa</td><td>Linha muito íngreme (&gt;60°) é insustentável e quebra cedo.</td></tr>
+</tbody>
+</table>
+
+<h2>Candlesticks — A Linguagem Japonesa do Preço</h2>
+<p>Velas (candlesticks) foram desenvolvidas no Japão do século 18 por Munehisa Homma pra operar arroz. Cada vela mostra: preço de abertura, fechamento, máxima, mínima do período. Cores indicam direção (verde/branco = alta, vermelho/preto = baixa).</p>
+<p>Padrões de velas isolados ou em sequência produzem sinais. Os mais usados:</p>
+
+<table>
+<thead><tr><th>Padrão</th><th>Aparência</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td><strong>Doji</strong></td><td>Open ≈ close, pavios visíveis</td><td>Indecisão. Em topo/fundo = possível reversão.</td></tr>
+<tr><td><strong>Hammer</strong></td><td>Pavio inferior longo, corpo pequeno no topo</td><td>Em fundo = reversão alta possível.</td></tr>
+<tr><td><strong>Shooting star</strong></td><td>Pavio superior longo, corpo pequeno no fundo</td><td>Em topo = reversão baixa possível.</td></tr>
+<tr><td><strong>Engolfo bullish</strong></td><td>Vela verde "engole" a anterior vermelha</td><td>Reversão alta confirmada.</td></tr>
+<tr><td><strong>Engolfo bearish</strong></td><td>Vela vermelha "engole" a anterior verde</td><td>Reversão baixa confirmada.</td></tr>
+<tr><td><strong>Marubozu</strong></td><td>Vela longa sem pavios (close = high ou low)</td><td>Tendência muito forte na direção da vela.</td></tr>
+</tbody>
+</table>
+
+<h2>Timeframes — A Hierarquia que Importa</h2>
+<p>Trader profissional opera em <strong>3 timeframes simultaneamente</strong>: o macro (define a direção), o operacional (executa as entradas) e o micro (refina o timing).</p>
+
+<table>
+<thead><tr><th>Estilo</th><th>Macro</th><th>Operacional</th><th>Micro</th></tr></thead>
+<tbody>
+<tr><td><strong>Scalper</strong></td><td>15min</td><td>5min</td><td>1min</td></tr>
+<tr><td><strong>Day trader</strong></td><td>1h</td><td>15min</td><td>5min</td></tr>
+<tr><td><strong>Swing trader</strong></td><td>Diário</td><td>4h</td><td>1h</td></tr>
+<tr><td><strong>Position trader</strong></td><td>Semanal</td><td>Diário</td><td>4h</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-blue">
+<strong>Regra ouro dos timeframes:</strong> sempre opere a favor da direção do macro. Se macro está em alta, no operacional só procure long. Brigar contra o macro tem RR ruim e taxa de stops altíssima.
+</div>
+
+<h2>Como Estruturar uma Análise Profissional do Zero</h2>
+<p>Toda manhã, antes do mercado abrir, traders profissionais fazem uma rotina de análise em 7 passos. Adote essa rotina:</p>
+
+<table>
+<thead><tr><th>Passo</th><th>O que fazer</th><th>Tempo</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Olhar o macro: SMA 50/200 no diário, regime atual</td><td>2min</td></tr>
+<tr><td>2</td><td>Identificar S/R principais: máximas e mínimas das últimas 30 sessões</td><td>3min</td></tr>
+<tr><td>3</td><td>Marcar tendência atual: linhas de tendência conectando swings</td><td>2min</td></tr>
+<tr><td>4</td><td>Verificar momentum: RSI no operacional, divergências</td><td>2min</td></tr>
+<tr><td>5</td><td>Listar setups potenciais: padrões em formação ou perto de níveis</td><td>3min</td></tr>
+<tr><td>6</td><td>Verificar calendário econômico: eventos do dia que podem distorcer</td><td>2min</td></tr>
+<tr><td>7</td><td>Definir plano: setups específicos, stops, alvos antes de operar</td><td>5min</td></tr>
+</tbody>
+</table>
+
+<p>Total: 19 minutos. Trader que pula essa rotina opera reativo. Trader que a faz, opera preparado.</p>
+
+<h2>Erros Mais Caros de Iniciantes em Análise Técnica</h2>
+
+<h3>Forçar setup onde não há</h3>
+<p>"Eu preciso operar hoje." Não, não precisa. Análise técnica produz 0-3 setups por dia em cada instrumento. Forçar é receita pra drawdown.</p>
+
+<h3>Mudar de timeframe pra justificar trade</h3>
+<p>Você está perdendo no 15min. Você sobe pro 1h pra "ver melhor". Sobe pro 4h pra "validar". Está fugindo. O setup do 15min ou foi válido ou não foi — não muda mudando timeframe.</p>
+
+<h3>Operar sem stop-loss físico</h3>
+<p>"Vou tirar a perda mentalmente." Não vai. Você vai segurar perda crescente até quebrar conta. Stop tem que estar na corretora, definido antes de entrar.</p>
+
+<h3>Ignorar contexto macro</h3>
+<p>Setup bonito de compra no 5min mas o diário está em queda forte? Não opera. Macro dita micro. Sempre.</p>
+
+<h3>Acreditar em padrões com 1 toque</h3>
+<p>Triângulo precisa de pelo menos 4 toques (2 superiores + 2 inferiores). Cabeça-ombros precisa de neckline confirmado. Padrão "parecendo formar" não é padrão.</p>
+
+<div class="callout callout-red">
+<strong>Erro mais comum:</strong> entender análise técnica apenas como "padrões de candle". Padrões são uma camada — análise técnica completa é estrutura + tendência + momentum + volume. Quem reduz a "achar bandeirinha" no gráfico vai perder dinheiro consistentemente.
+</div>
+
+<h2>Análise Técnica em Prop Firm — A Disciplina Sob Pressão</h2>
+<p>Trader em conta de prop firm (Apex, Bulenox, FTMO) opera com regras apertadas: 8% drawdown, 5% perda diária, blackout de notícias. Análise técnica te ajuda a:</p>
+<ul>
+<li><strong>Identificar setups de baixo risco:</strong> entradas perto de S/R com stop apertado</li>
+<li><strong>Filtrar dias bons vs ruins:</strong> ADX baixo? Provavelmente dia ruim. Aguarde.</li>
+<li><strong>Definir alvos realistas:</strong> extensões Fib ou próxima resistência, não "vamos ver até onde vai"</li>
+<li><strong>Saber quando NÃO operar:</strong> sem setup limpo = sem trade. A maioria das contas de prop morre por overtrading, não por azar.</li>
+</ul>
+
+<h2>O Que Muda na Sua Mesa Amanhã</h2>
+<p><strong>Primeiro:</strong> você vai começar todo dia com a rotina de 7 passos. Vai parecer chato no início. Em 30 dias vira reflexo. Em 90 dias é sua vantagem competitiva.</p>
+<p><strong>Segundo:</strong> você vai aprender a dizer "não opero hoje" em dias sem setup. A maioria dos amadores não consegue. Você vai conseguir, e sua conta vai sobreviver mais tempo.</p>
+<p><strong>Terceiro:</strong> análise técnica vai parar de ser "olhar o gráfico" e virar uma camada estruturada de leitura. Cada elemento (estrutura, tendência, momentum, volume) responde uma pergunta. Você vai operar com clareza, não com torcida.</p>
+
+<div class="callout callout-gold">
+<strong>Checklist de análise técnica antes de qualquer trade:</strong>
+<ul style="margin-top:8px;">
+<li>1. Macro: tendência clara no diário? (SMA 50 vs 200)</li>
+<li>2. Estrutural: setup está perto de S/R relevante?</li>
+<li>3. Direcional: a operação é a favor ou contra a tendência?</li>
+<li>4. Momento: RSI/MACD confirmam ou divergem?</li>
+<li>5. Volume: há convicção (volume crescente)?</li>
+<li>6. Stop: está em ponto técnico (abaixo de S/R), não palpite?</li>
+<li>7. Alvo: extensão Fib ou próximo S/R, RR mínimo 2:1?</li>
+<li>8. Calendário: tem evento crítico em &lt;30min?</li>
+</ul>
+</div>
+
+<h2>Leituras Recomendadas</h2>
+<ul>
+<li><strong>Technical Analysis of the Financial Markets</strong> — John J. Murphy. A bíblia. Comece por ela.</li>
+<li><strong>Technical Analysis Explained</strong> — Martin Pring. Mais avançado, mas indispensável.</li>
+<li><strong>Encyclopedia of Chart Patterns</strong> — Thomas Bulkowski. Estatísticas frias de cada padrão clássico.</li>
+<li><strong>Japanese Candlestick Charting Techniques</strong> — Steve Nison. Trouxe candles pro Ocidente.</li>
+<li><strong>The Visual Investor</strong> — John J. Murphy. Mais visual, ótimo pra iniciantes.</li>
+<li><strong>Trading for a Living</strong> — Alexander Elder. Tripé técnica + risco + psicologia.</li>
+<li><strong>Trading in the Zone</strong> — Mark Douglas. Sem disciplina, técnica não funciona.</li>
+</ul>
+
+<hr>
+
+<p><em>Para aprofundar em frameworks específicos, leia <a href="/blog/metodo-wyckoff-guia-completo">método Wyckoff</a>, <a href="/blog/vpa-volume-price-analysis">VPA</a>, <a href="/blog/ondas-de-elliott-guia-completo">ondas de Elliott</a> e <a href="/blog/indicadores-tecnicos-guia-completo">indicadores técnicos</a>.</em></p>
+`.trim();
+
+const stats = writeArticle(meta, body);
+console.log('Intro AT:', JSON.stringify(stats, null, 2));

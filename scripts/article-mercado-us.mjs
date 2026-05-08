@@ -1,0 +1,309 @@
+import { writeArticle, cdn } from './build-articles.mjs';
+
+const slug = 'mercado-americano-guia-trader';
+
+const meta = {
+  title: 'Mercado Americano: O Guia Completo para Traders Brasileiros que Operam NYSE, Nasdaq e Futuros',
+  slug,
+  category: 'Educação',
+  level: 'iniciante',
+  read_time: '16 min',
+  lang: 'pt',
+  icon: '🇺🇸',
+  author: 'Markets Coupons',
+  excerpt: 'O mercado americano é o mais profundo, líquido e regulado do mundo. Para o trader brasileiro de prop firm, conhecer NYSE, Nasdaq, CME, sessões, fuso horário, eventos macro e impostos não é detalhe — é a diferença entre passar avaliação e ser eliminado por operar fora de sessão.',
+  cover_url: cdn(slug, 'hero.jpeg')
+};
+
+const body = `
+<img src="${cdn(slug, 'hero.jpeg')}" alt="Skyline de Wall Street com gráficos sobrepostos representando mercado americano">
+
+<h2>Por Que o Mercado Americano Domina o Trading Mundial</h2>
+<p>Quando se fala em "mercado financeiro" no jornal, quase sempre o assunto é o mercado americano. Não é exagero: <strong>os EUA representam ~50% do valor de mercado global de ações</strong>, abrigam as duas maiores bolsas do mundo (NYSE e Nasdaq), o maior mercado de futuros (CME), e a moeda de reserva global (USD). Pra trader profissional — especialmente em prop firm — entender as engrenagens desse mercado é mais importante que dominar qualquer indicador técnico.</p>
+<p>Para o trader brasileiro, há três motivos práticos pra focar no mercado americano:</p>
+<ol>
+<li><strong>Liquidez incomparável.</strong> Você pode operar 1.000 contratos de NQ ou ES sem mover o mercado. No mini-índice da B3 (WIN), volumes muito menores já causam slippage.</li>
+<li><strong>Volatilidade controlada e previsível.</strong> NQ e ES têm sessões de "horário nobre" claras, eventos macro previsíveis (calendário Fed, NFP, CPI), e movimentos consistentes.</li>
+<li><strong>Prop firms aceitam.</strong> Apex, Bulenox, FTMO, FundedNext — quase todas as principais firmas operam com instrumentos americanos. Você está disputando o mesmo mercado dos traders globais.</li>
+</ol>
+
+<div class="callout callout-gold">
+<strong>Princípio fundamental:</strong> mercado americano não dorme — mas tem horário nobre. Operar fora dele é como dirigir contra a mão. Conhecer a estrutura de sessões é a primeira vantagem competitiva real.
+</div>
+
+<h2>As Bolsas Americanas — NYSE, Nasdaq e CME</h2>
+
+<table>
+<thead><tr><th>Bolsa</th><th>Foco</th><th>Volume diário</th><th>Maiores ativos</th></tr></thead>
+<tbody>
+<tr><td><strong>NYSE</strong> (New York Stock Exchange)</td><td>Ações tradicionais, blue-chips</td><td>~$600 bi</td><td>JPM, BAC, JNJ, KO, IBM</td></tr>
+<tr><td><strong>Nasdaq</strong></td><td>Ações tech, growth, biotecnologia</td><td>~$500 bi</td><td>AAPL, MSFT, GOOGL, NVDA, TSLA</td></tr>
+<tr><td><strong>CME Group</strong></td><td>Futuros, opções, commodities</td><td>~$100 bi (notional trilhões)</td><td>ES, NQ, CL, GC, ZB</td></tr>
+<tr><td><strong>CBOE</strong></td><td>Opções e VIX</td><td>~$50 bi</td><td>SPX options, VIX futures</td></tr>
+<tr><td><strong>ICE</strong> (Intercontinental Exchange)</td><td>Commodities energia, agrícolas</td><td>~$30 bi</td><td>Brent, ALG (algodão), KC (café)</td></tr>
+</tbody>
+</table>
+
+<p>Pra trader de prop firm focado em futuros, o universo é principalmente CME. Pra trader de ações, NYSE + Nasdaq.</p>
+
+<h2>Os Índices Americanos — O Que Realmente São</h2>
+<p>Não confunda índice com bolsa. Bolsa é o local de negociação. Índice é uma cesta de ações que mede algo. Os 4 que importam:</p>
+
+<table>
+<thead><tr><th>Índice</th><th>O que mede</th><th>Composição</th><th>Futuro relacionado</th></tr></thead>
+<tbody>
+<tr><td><strong>S&amp;P 500</strong></td><td>500 maiores empresas dos EUA por valor de mercado</td><td>500 ações ponderadas por capitalização</td><td>ES (E-mini S&amp;P 500), MES (Micro)</td></tr>
+<tr><td><strong>Nasdaq-100</strong></td><td>100 maiores empresas tech/growth do Nasdaq</td><td>100 ações, peso forte em tech (50%+)</td><td>NQ (E-mini Nasdaq), MNQ (Micro)</td></tr>
+<tr><td><strong>Dow Jones (DJIA)</strong></td><td>30 blue-chips americanas</td><td>30 ações, ponderadas por preço (não cap.)</td><td>YM (E-mini Dow), MYM (Micro)</td></tr>
+<tr><td><strong>Russell 2000</strong></td><td>2000 small-caps americanas</td><td>Small e mid caps domésticas</td><td>RTY (E-mini Russell)</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-blue">
+<strong>O índice mais usado em prop firm:</strong> ES (S&amp;P 500) por ter o volume mais limpo e o comportamento mais previsível. NQ (Nasdaq) por ter mais volatilidade — bom pra day trade. CL (petróleo) e GC (ouro) entram como diversificação.
+</div>
+
+<h2>Sessões de Trading — A Anatomia do Dia</h2>
+<p>Mercado americano tem três fases distintas durante o dia. Conhecer cada uma é fundamental — algumas são oportunidade, outras são armadilha.</p>
+
+<table>
+<thead><tr><th>Sessão</th><th>Horário (ET)</th><th>Horário (BRT)</th><th>Característica</th></tr></thead>
+<tbody>
+<tr><td><strong>Pre-market</strong></td><td>4:00-9:30</td><td>5:00-10:30 (BRT-1 inverno) ou 5:00-10:30 (BRT-1 inverno) / 6:00-11:30 (BRT verão)</td><td>Volume baixo, news-driven, slippage alto</td></tr>
+<tr><td><strong>Cash session</strong> (regular)</td><td>9:30-16:00</td><td>10:30-17:00 (inverno) / 11:30-18:00 (verão)</td><td>Liquidez máxima, sessão principal</td></tr>
+<tr><td><strong>After-hours</strong></td><td>16:00-20:00</td><td>17:00-21:00 (inverno)</td><td>Volume reduzido, news pós-mercado</td></tr>
+<tr><td><strong>Overnight</strong> (futuros)</td><td>18:00-9:30 next day</td><td>19:00-10:30</td><td>Liquidez muito baixa, evite</td></tr>
+</tbody>
+</table>
+
+<h3>Os "Power Hours" — quando profissionais operam</h3>
+<p>Dentro da cash session, há janelas onde a liquidez e o "movimento real" se concentram:</p>
+<ul>
+<li><strong>9:30-10:30 ET</strong> (1ª hora): Open volatility. Preço se "estabiliza" após primeira reação. Setups limpos.</li>
+<li><strong>11:00-12:00 ET</strong>: Momentum builders. Movimento da sessão se confirma ou inverte.</li>
+<li><strong>12:00-13:30 ET</strong>: Almoço institucional. Volume cai, ranges estreitos. EVITE operar.</li>
+<li><strong>13:30-15:00 ET</strong>: Retomada. Profissionais voltam ao mercado.</li>
+<li><strong>15:00-16:00 ET</strong> (última hora): Power Hour. Maior volume. Posicionamento institucional pra fechamento.</li>
+</ul>
+
+<div class="callout callout-red">
+<strong>Regra de ouro pra prop firm:</strong> opere preferencialmente na 1ª hora (9:30-10:30 ET) e na última hora (15:00-16:00 ET). Tem mais setups limpos, RR melhor, e menos manipulação. O resto do dia é "esperar oportunidade", não "forçar trade".
+</div>
+
+<h2>Fuso Horário — A Confusão que Custa Caro</h2>
+<p>EUA têm 4 fusos principais: ET (Eastern Time), CT, MT, PT. Bolsas operam em ET. Brasil opera em BRT (UTC-3). A diferença muda 2 vezes por ano por causa do horário de verão americano (DST).</p>
+
+<table>
+<thead><tr><th>Período</th><th>Diferença ET → BRT</th><th>Bolsa abre BRT</th></tr></thead>
+<tbody>
+<tr><td>Verão americano (~ março a novembro)</td><td>BRT = ET + 1h</td><td>10:30 BRT</td></tr>
+<tr><td>Inverno americano (~ novembro a março)</td><td>BRT = ET + 2h</td><td>11:30 BRT</td></tr>
+</tbody>
+</table>
+
+<p>Para evitar erros, configure sua plataforma de trading em ET sempre. Não tente "calcular mentalmente" — é fonte de erros bobos que custam dinheiro.</p>
+
+<h2>Os Eventos Macro Que Movem o Mercado</h2>
+<p>Há eventos com impacto previsível e datas fixas. Trader profissional sabe a agenda do mês inteiro de cor. Os mais importantes:</p>
+
+<table>
+<thead><tr><th>Evento</th><th>Frequência</th><th>Horário ET</th><th>Impacto</th></tr></thead>
+<tbody>
+<tr><td><strong>NFP</strong> (Non-Farm Payrolls)</td><td>1ª sexta do mês</td><td>8:30</td><td>Alto. Move USD, S&amp;P, NQ, GC</td></tr>
+<tr><td><strong>CPI</strong> (Consumer Price Index)</td><td>2ª semana do mês</td><td>8:30</td><td>Muito alto em ciclo de Fed</td></tr>
+<tr><td><strong>FOMC Meeting</strong> (Fed)</td><td>8x ao ano</td><td>14:00 (decisão), 14:30 (Powell)</td><td>O maior. Move tudo.</td></tr>
+<tr><td><strong>PPI</strong> (Producer Price Index)</td><td>Mensal</td><td>8:30</td><td>Médio</td></tr>
+<tr><td><strong>GDP</strong></td><td>Trimestral</td><td>8:30</td><td>Médio</td></tr>
+<tr><td><strong>EIA Crude</strong> (estoques petróleo)</td><td>Quartas</td><td>10:30</td><td>Alto pra CL</td></tr>
+<tr><td><strong>Earnings season</strong></td><td>4× ao ano (Jan/Abr/Jul/Out)</td><td>Pré ou pós mercado</td><td>Específico por ação</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-red">
+<strong>Regra crítica:</strong> em prop firms (Apex, Bulenox, FTMO), operar durante FOMC, NFP ou CPI é proibido OU não conta para a meta de lucro. Sempre verifique o calendário antes de abrir posição. 5 minutos antes do evento, fora.
+</div>
+
+<h2>Futuros vs Ações — Para Onde o Trader Brasileiro Deve Ir</h2>
+
+<table>
+<thead><tr><th>Aspecto</th><th>Ações americanas</th><th>Futuros (ES, NQ, CL, GC)</th></tr></thead>
+<tbody>
+<tr><td><strong>Capital mínimo</strong></td><td>$25k (regra do PDT — Pattern Day Trader)</td><td>$5-10k em prop firm; pessoal $500 em micros</td></tr>
+<tr><td><strong>Alavancagem</strong></td><td>2-4x (regulada)</td><td>30-50x natural (margin baixo)</td></tr>
+<tr><td><strong>Imposto Brasil</strong></td><td>15% sobre ganhos &gt; R$35k/mês (declaração mensal)</td><td>15% (tributação simples para residente)</td></tr>
+<tr><td><strong>Liquidez</strong></td><td>Variável (top 100 ações são ótimas)</td><td>ES, NQ líquidos 24h</td></tr>
+<tr><td><strong>Operação noturna</strong></td><td>Limitada (after-hours)</td><td>Quase 24h</td></tr>
+<tr><td><strong>Custos</strong></td><td>$0-5 por trade (corretoras americanas)</td><td>$2-5 por contrato round-trip</td></tr>
+<tr><td><strong>Aceitação prop firm</strong></td><td>Limitada</td><td>Universal</td></tr>
+</tbody>
+</table>
+
+<p>Pra prop firm trading: futuros vencem com folga. Pra investimento de longo prazo ou especulação direcional em empresas: ações.</p>
+
+<h2>O Universo de Futuros — Especificações Técnicas</h2>
+
+<table>
+<thead><tr><th>Símbolo</th><th>Nome</th><th>Tick</th><th>$/tick</th><th>Margin (intraday em prop)</th></tr></thead>
+<tbody>
+<tr><td><strong>ES</strong></td><td>E-mini S&amp;P 500</td><td>0.25</td><td>$12.50</td><td>~$500</td></tr>
+<tr><td><strong>NQ</strong></td><td>E-mini Nasdaq-100</td><td>0.25</td><td>$5.00</td><td>~$500</td></tr>
+<tr><td><strong>YM</strong></td><td>E-mini Dow</td><td>1.00</td><td>$5.00</td><td>~$400</td></tr>
+<tr><td><strong>RTY</strong></td><td>E-mini Russell 2000</td><td>0.10</td><td>$5.00</td><td>~$400</td></tr>
+<tr><td><strong>CL</strong></td><td>Petróleo (Crude Oil WTI)</td><td>0.01</td><td>$10.00</td><td>~$700</td></tr>
+<tr><td><strong>GC</strong></td><td>Ouro</td><td>0.10</td><td>$10.00</td><td>~$1,500</td></tr>
+<tr><td><strong>SI</strong></td><td>Prata</td><td>0.005</td><td>$25.00</td><td>~$2,500</td></tr>
+<tr><td><strong>ZB</strong></td><td>30-Year Treasury Bond</td><td>1/32</td><td>$31.25</td><td>~$1,000</td></tr>
+<tr><td><strong>6E</strong></td><td>Euro/USD</td><td>0.00005</td><td>$6.25</td><td>~$1,500</td></tr>
+</tbody>
+</table>
+
+<h3>Os Micros — Onde Iniciantes Devem Começar</h3>
+<p>Cada futuro tem versão Micro com 1/10 do tamanho. MES (Micro S&amp;P), MNQ (Micro Nasdaq), MGC (Micro Gold), MCL (Micro Crude). Tick value reduzido pra $0.50-$1.00. Permite testar estratégias com risco baixíssimo antes de escalar para os mini.</p>
+
+<div class="callout callout-blue">
+<strong>Estratégia para iniciantes:</strong> faça as primeiras 100 operações em micros (MES ou MNQ). Capital de risco pequeno, mesmas regras de prop firm. Quando taxa de acerto e RR estiverem consistentes, suba pro mini equivalente.
+</div>
+
+<h2>Plataformas de Trading Americanas</h2>
+
+<table>
+<thead><tr><th>Plataforma</th><th>Foco</th><th>Custo mensal</th><th>Aceito em prop?</th></tr></thead>
+<tbody>
+<tr><td><strong>NinjaTrader</strong></td><td>Futuros, day trade</td><td>$60-100 ou $1500 lifetime</td><td>Apex, Bulenox, FTMO ✓</td></tr>
+<tr><td><strong>Tradovate</strong></td><td>Futuros, web/mobile</td><td>$0-99 (variável por plano)</td><td>Apex, TradeDay ✓</td></tr>
+<tr><td><strong>Rithmic</strong></td><td>Roteamento, baixa latência</td><td>~$300 setup + $40/mês</td><td>Apex, Bulenox ✓ (preferida)</td></tr>
+<tr><td><strong>TradingView</strong></td><td>Análise, alertas, replay</td><td>$15-60</td><td>Não opera direto, mas conecta</td></tr>
+<tr><td><strong>Sierra Chart</strong></td><td>Day trade avançado, footprint</td><td>$26-99</td><td>Compatível com Rithmic</td></tr>
+<tr><td><strong>ThinkOrSwim</strong> (TOS)</td><td>Ações + opções, retail</td><td>Grátis (TD Ameritrade)</td><td>Mais ações que prop</td></tr>
+</tbody>
+</table>
+
+<h2>Vocabulário Essencial do Trader US</h2>
+
+<table>
+<thead><tr><th>Termo</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td><strong>Bid</strong></td><td>Preço de compra (oferta de quem quer comprar)</td></tr>
+<tr><td><strong>Ask</strong> (Offer)</td><td>Preço de venda (oferta de quem quer vender)</td></tr>
+<tr><td><strong>Spread</strong></td><td>Diferença entre bid e ask</td></tr>
+<tr><td><strong>Tick</strong></td><td>Menor variação possível de preço</td></tr>
+<tr><td><strong>Contract</strong></td><td>Unidade padrão de futuros (1 contrato ES = $50× o índice)</td></tr>
+<tr><td><strong>Long</strong> / <strong>Short</strong></td><td>Comprado (alta) / Vendido (baixa)</td></tr>
+<tr><td><strong>Stop loss</strong></td><td>Ordem que limita perda</td></tr>
+<tr><td><strong>Take profit</strong></td><td>Ordem que captura lucro em alvo</td></tr>
+<tr><td><strong>Margin</strong></td><td>Capital exigido pra abrir/manter posição</td></tr>
+<tr><td><strong>Slippage</strong></td><td>Diferença entre preço esperado e executado</td></tr>
+<tr><td><strong>Leverage</strong></td><td>Alavancagem — multiplicador da exposição</td></tr>
+<tr><td><strong>P&amp;L</strong> (Profit and Loss)</td><td>Resultado financeiro da operação</td></tr>
+<tr><td><strong>Drawdown</strong></td><td>Perda máxima desde o pico</td></tr>
+<tr><td><strong>Position size</strong></td><td>Quantidade de contratos por trade</td></tr>
+</tbody>
+</table>
+
+<h2>Tributação Para Trader Brasileiro Operando Mercado Americano</h2>
+
+<h3>Operando via prop firm</h3>
+<p>Em prop firm (Apex, Bulenox, FTMO), você não tem capital próprio em risco — você opera capital da firma e recebe payout sobre o lucro. Tributação no Brasil:</p>
+<ul>
+<li>Payouts são considerados <strong>renda</strong> (não ganho de capital)</li>
+<li>Recolhimento via <strong>Carnê-Leão</strong> (mensal)</li>
+<li>Alíquotas progressivas: 0% até R$2.112 / 7.5% até R$2.826 / 15% até R$3.751 / 22.5% até R$4.664 / 27.5% acima</li>
+<li>Pode considerar como Pessoa Jurídica via PJ (Lucro Presumido) — tributação ~15%</li>
+</ul>
+
+<h3>Operando capital próprio em corretora americana</h3>
+<p>Caso opere conta pessoal em corretora americana (Interactive Brokers, TastyTrade, etc):</p>
+<ul>
+<li>Ganhos em USD convertidos pra BRL na data da operação</li>
+<li><strong>Renda variável:</strong> 15% sobre ganhos &gt; R$35.000/mês (sem isenção como ações brasileiras)</li>
+<li>Recolhimento via DARF (mensal)</li>
+<li>Declaração obrigatória de saldo &gt; $5k em conta no exterior</li>
+</ul>
+
+<div class="callout callout-red">
+<strong>Aviso:</strong> tributação muda. Sempre consulte contador especializado em renda variável internacional antes de operar volumes relevantes. Erro tributário pode custar mais que perda em trade.
+</div>
+
+<h2>Diferenças Culturais que Pegam o Trader Brasileiro Desprevenido</h2>
+
+<h3>Volatilidade muito mais controlada</h3>
+<p>NQ pode mover 100 pontos em um dia "agitado". WIN move 800 pontos em dia normal. Mas o "tamanho" relativo do movimento (em % do ativo) é menor no mercado americano. Isso muda completamente o tamanho de stop e alvo necessários.</p>
+
+<h3>Sessão limpa, sem leilão de fechamento confuso</h3>
+<p>NYSE/Nasdaq fecham às 16:00 ET com leilão (Closing Auction). Diferente da B3 que tem call de fechamento volátil, o leilão americano é mais estruturado.</p>
+
+<h3>Earnings movem demais</h3>
+<p>Resultados trimestrais de empresas tech (AAPL, NVDA, TSLA) podem mover a ação 5-15% em uma noite. NQ inteiro pode oscilar 1-2% só por earnings de uma única ação grande. Calendário de earnings é crítico.</p>
+
+<h3>Fed é o jogador principal</h3>
+<p>Praticamente todo movimento macro relevante é dirigido pela política do Fed. Outros bancos centrais (BCE, BOJ, BOE) influenciam, mas o Fed dita o tom global. Powell falando = mercado parando pra ouvir.</p>
+
+<h2>Erros Mais Comuns do Iniciante Brasileiro</h2>
+
+<h3>Não ajustar pra fuso horário</h3>
+<p>Operar achando que sessão abriu mas ainda está em pre-market = entrar em volume baixo, slippage alto. Sempre confirme em ET.</p>
+
+<h3>Ignorar calendário macro</h3>
+<p>Entrar em NQ minutos antes do FOMC sem perceber. Stop é varrido em segundos. Calendário econômico é leitura obrigatória diária.</p>
+
+<h3>Operar futuros sem entender margin</h3>
+<p>Margin de NQ pode dobrar overnight. Posição de 5 contratos com margin de $500 cada à tarde pode exigir $1000 cada à noite. Liquidação automática se conta não cobre.</p>
+
+<h3>Trade overnight em prop firm</h3>
+<p>Quase todas as prop firms PROIBEM posições overnight. Esquecer ordem aberta = violação automática. Sempre fechar tudo antes do encerramento da sessão da firma.</p>
+
+<h3>Subestimar custos</h3>
+<p>$2.50 ida + $2.50 volta = $5 por contrato. Day trader fazendo 20 trades/dia = $100 em custos. Em conta de $50k, isso é 0.2% ao dia, 4% ao mês. Brutal.</p>
+
+<div class="callout callout-red">
+<strong>Erro mais caro:</strong> tratar mercado americano como se fosse o brasileiro com símbolos diferentes. Estrutura de sessão, comportamento de volume, regulação, eventos macro — tudo é distinto. Adaptar leitura é obrigatório.
+</div>
+
+<h2>Caminho do Iniciante — Roadmap dos Primeiros 90 Dias</h2>
+
+<table>
+<thead><tr><th>Período</th><th>Foco</th><th>Meta</th></tr></thead>
+<tbody>
+<tr><td><strong>Dias 1-14</strong></td><td>Aprender estrutura: bolsas, índices, sessões, fuso, vocabulário</td><td>Conseguir explicar diferença ES vs NQ, sessão regular vs overnight</td></tr>
+<tr><td><strong>Dias 15-30</strong></td><td>Paper trading em micros (MES ou MNQ). Aprender plataforma (NinjaTrader, Tradovate)</td><td>50 trades simulados sem violar regra de drawdown</td></tr>
+<tr><td><strong>Dias 31-60</strong></td><td>Conta de avaliação Apex/Bulenox em micros. Operar 9:30-11:30 ET apenas.</td><td>Passar avaliação ou aprender exatamente onde quebrou</td></tr>
+<tr><td><strong>Dias 61-90</strong></td><td>Conta funded ou segunda avaliação com lições aprendidas</td><td>Primeiro payout (mesmo pequeno) ou disciplina pra não overtrade</td></tr>
+</tbody>
+</table>
+
+<h2>O Que Muda na Sua Mesa Amanhã</h2>
+<p><strong>Primeiro:</strong> você vai parar de operar fora do horário nobre. 9:30-11:30 ET e 15:00-16:00 ET. O resto é "esperar oportunidade", não "forçar trade". Sua taxa de acerto vai subir só por isso.</p>
+<p><strong>Segundo:</strong> calendário econômico vira leitura matinal obrigatória. Em dias de FOMC ou NFP, você não opera. Pronto. Não há "talvez". Sua conta agradece.</p>
+<p><strong>Terceiro:</strong> você vai começar em micros. Não importa quanto capital tem disponível. Os primeiros 100 trades em MES ou MNQ. Risco de aprendizado é o mais barato que existe — não pague esse aprendizado em mini.</p>
+
+<div class="callout callout-gold">
+<strong>Checklist diário do trader US (cole na mesa):</strong>
+<ul style="margin-top:8px;">
+<li>1. Que horas abre o mercado hoje em BRT? (verificar DST)</li>
+<li>2. Calendário econômico: tem evento crítico? Em qual horário?</li>
+<li>3. Earnings hoje? Quais ações? Pré ou pós?</li>
+<li>4. SMA 50/200 do diário do meu instrumento — em qual lado?</li>
+<li>5. Sessão asiática trouxe gap? De quanto?</li>
+<li>6. Power hours: 9:30-10:30 e 15:00-16:00 ET</li>
+<li>7. Vai operar fora? Aceite que está em modo "exception" — RR pior</li>
+</ul>
+</div>
+
+<h2>Leituras Recomendadas</h2>
+<ul>
+<li><strong>Market Wizards</strong> — Jack Schwager. Entrevistas com os melhores traders dos EUA.</li>
+<li><strong>Trading in the Zone</strong> — Mark Douglas. Psicologia aplicada ao mercado americano.</li>
+<li><strong>Reminiscences of a Stock Operator</strong> — Edwin Lefèvre. Clássico sobre Jesse Livermore na NYSE de 1900.</li>
+<li><strong>The Intelligent Investor</strong> — Benjamin Graham. Para quem quer também investir em ações.</li>
+<li><strong>Day Trading and Swing Trading the Currency Market</strong> — Kathy Lien. Forex em horário americano.</li>
+<li><strong>One Up on Wall Street</strong> — Peter Lynch. Cultura de investimento americano.</li>
+<li><strong>Liar's Poker</strong> — Michael Lewis. Para entender Wall Street por dentro (literário).</li>
+</ul>
+
+<hr>
+
+<p><em>Para começar a operar mercado americano via prop firm, leia nosso <a href="/firms">comparativo de firmas</a> e <a href="/guides/o-que-e-uma-prop-firm">guia de prop firms</a>.</em></p>
+`.trim();
+
+const stats = writeArticle(meta, body);
+console.log('Mercado US:', JSON.stringify(stats, null, 2));
