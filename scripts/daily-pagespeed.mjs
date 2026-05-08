@@ -27,9 +27,18 @@ async function runPSI(strategy) {
   u.searchParams.set('strategy', strategy);
   u.searchParams.set('category', 'performance');
   if (PSI_KEY) u.searchParams.set('key', PSI_KEY);
-  const r = await fetch(u.href);
-  if (!r.ok) throw new Error(`PSI ${strategy}: ${r.status}`);
-  const j = await r.json();
+  let lastErr;
+  for (let i = 0; i < 5; i++) {
+    if (i > 0) await new Promise(r => setTimeout(r, 30000 * i));
+    const r = await fetch(u.href);
+    if (r.ok) { const j = await r.json(); return parsePSI(strategy, j); }
+    lastErr = `PSI ${strategy}: ${r.status}`;
+    if (r.status !== 429 && r.status < 500) break;
+  }
+  throw new Error(lastErr);
+}
+
+function parsePSI(strategy, j) {
   const lh = j.lighthouseResult || {};
   const cats = lh.categories || {};
   const audits = lh.audits || {};
