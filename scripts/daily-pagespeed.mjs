@@ -46,7 +46,7 @@ async function runPSI(strategy) {
     `--max-wait-for-load=60000`,
     `--quiet`
   ].join(' ');
-  execSync(`lighthouse ${flags}`, { stdio: 'pipe' });
+  execSync(`npx --yes lighthouse@12 ${flags}`, { stdio: 'pipe' });
   const j = JSON.parse(fs.readFileSync(tmpFile, 'utf8'));
   fs.unlinkSync(tmpFile);
   // lighthouse CLI direct output has same schema as lighthouseResult inside PSI
