@@ -6339,13 +6339,32 @@ async function eaRefresh(){
     _eaDaily = dailyData?.reports || [];
     _eaCampaigns = campaignsRes || [];
 
-    // Fallback: se tag custom filtrada não tem dados no Brevo, soma do email_logs local
+    // SOMA Resend+SendGrid do email_logs local pra completar o report Brevo (que só conta Brevo).
+    // Sem isso, painel mostra só ~5% dos envios quando Resend Pro é o provider principal.
+    const matchingLogs = _eaCampaigns.filter(c=>{
+      if(!tagParam) return true;
+      const logTags = c.brevo_response?.tags || [];
+      return logTags.includes(tagParam);
+    });
+    if(matchingLogs.length){
+      const localSum = matchingLogs.reduce((acc,c)=>{
+        const r = c.brevo_response || {};
+        const pb = r.providers_breakdown || {};
+        acc.resend += (pb.resend || 0);
+        acc.sendgrid += (pb.sendgrid || 0);
+        // Brevo já é contado no report da API — não duplica
+        return acc;
+      }, {resend:0, sendgrid:0});
+      const localExtra = localSum.resend + localSum.sendgrid;
+      // Soma ao requests/delivered (não temos opens/clicks de Resend/SG no Brevo report)
+      _eaReport.requests = (_eaReport.requests || 0) + localExtra;
+      _eaReport.delivered = (_eaReport.delivered || 0) + localExtra;
+      _eaReport._resendCount = localSum.resend;
+      _eaReport._sendgridCount = localSum.sendgrid;
+    }
+    // Fallback antigo: tag filtrada, Brevo zero → mostra do log local
     const brevoSent = (_eaReport?.requests)||0;
     if(tagParam && brevoSent===0 && _eaCampaigns.length){
-      const matchingLogs = _eaCampaigns.filter(c=>{
-        const logTags = c.brevo_response?.tags || [];
-        return logTags.includes(tagParam);
-      });
       if(matchingLogs.length){
         const sum = matchingLogs.reduce((acc,c)=>{
           const r = c.brevo_response||{};
