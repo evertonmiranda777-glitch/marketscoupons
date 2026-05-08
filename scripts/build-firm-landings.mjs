@@ -115,7 +115,7 @@ function genPage(f, allFirms) {
         const sav = (orig && fin) ? (orig - fin).toFixed(2) : null;
         const pct = (orig && fin) ? Math.round((1 - fin/orig) * 100) : null;
         return `<div class="plan">
-          <div class="plan-size">${esc(p.size || p.s || '—')}</div>
+          <div class="plan-size">${esc(p.a || p.size || p.s || '—')}</div>
           ${pct ? `<div class="plan-pct">${pct}% OFF</div>` : ''}
           <div class="plan-prices">
             ${orig ? `<div class="plan-orig">$${orig.toFixed(2)}</div>` : ''}
