@@ -1388,6 +1388,32 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
    </div>
 
+   <!-- Painel de progresso LIVE durante o disparo (escondido até clicar Enviar) -->
+   <div id="send-progress-panel" style="display:none;margin-bottom:14px;padding:16px 18px;background:linear-gradient(135deg,rgba(240,180,41,.08),rgba(255,140,0,.04));border:1px solid rgba(240,180,41,.32);border-radius:10px;">
+     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+       <div style="display:flex;align-items:center;gap:8px;">
+         <span id="sp-spinner" style="width:14px;height:14px;border:2px solid rgba(240,180,41,.3);border-top-color:var(--gold);border-radius:50%;display:inline-block;animation:sp-spin .8s linear infinite;"></span>
+         <strong id="sp-status-label" style="font-size:13px;color:var(--t1);">Enviando…</strong>
+         <span id="sp-counter" style="font-size:13px;color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums;">0 / 0</span>
+       </div>
+       <div style="font-size:11px;color:var(--t3);">
+         <span id="sp-rate">— / min</span> · ETA <span id="sp-eta">—</span>
+       </div>
+     </div>
+     <!-- Barra de progresso -->
+     <div style="height:8px;background:var(--card2);border-radius:4px;overflow:hidden;border:1px solid var(--b1);margin-bottom:10px;">
+       <div id="sp-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3s ease infinite;border-radius:4px;transition:width .4s;"></div>
+     </div>
+     <!-- Métricas detalhadas -->
+     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:11px;">
+       <div><div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:10px;">Sent</div><div id="sp-sent" style="color:var(--green);font-weight:700;font-size:14px;">0</div></div>
+       <div><div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:10px;">Failed</div><div id="sp-failed" style="color:var(--red);font-weight:700;font-size:14px;">0</div></div>
+       <div><div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:10px;">Brevo·Resend·SG</div><div id="sp-providers" style="color:var(--t1);font-weight:700;font-size:13px;">0·0·0</div></div>
+       <div style="text-align:right;"><div style="color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:10px;">Chunks</div><div id="sp-chunks" style="color:var(--t1);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;">0 / 0</div></div>
+     </div>
+   </div>
+   <style>@keyframes sp-spin { to { transform: rotate(360deg); } }</style>
+
    <!-- Action row -->
    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
      <div id="send-info" style="font-size:11px;color:var(--t3);"></div>
@@ -9396,6 +9422,40 @@ async function sendEmailsSmtp(){
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
 
+  // ─── PAINEL DE PROGRESSO LIVE ───
+  const totalLeads = leads.length;
+  const CHUNK_SIZE = 200;
+  const totalChunks = Math.max(1, Math.ceil(totalLeads / CHUNK_SIZE));
+  let chunksDone = 0;
+  const startTime = Date.now();
+  const _liveProviders = { brevo: 0, resend: 0, sendgrid: 0 };
+  const sp = (id) => document.getElementById(id);
+  const showProgress = () => { const p = sp('send-progress-panel'); if(p) p.style.display = 'block'; };
+  const hideSpinner = () => { const s = sp('sp-spinner'); if(s) s.style.display = 'none'; };
+  const updateProgress = (sent, failed) => {
+    const pct = Math.min(100, Math.round((chunksDone / totalChunks) * 100));
+    const elapsed = (Date.now() - startTime) / 1000;
+    const rate = elapsed > 0 ? Math.round((sent / elapsed) * 60) : 0;
+    const remaining = totalLeads - sent - failed;
+    const etaSec = rate > 0 ? Math.round((remaining * 60) / rate) : 0;
+    const etaText = etaSec > 60 ? `${Math.round(etaSec/60)}min` : `${etaSec}s`;
+    if(sp('sp-counter')) sp('sp-counter').textContent = `${sent.toLocaleString('pt-BR')} / ${totalLeads.toLocaleString('pt-BR')}`;
+    if(sp('sp-bar')) sp('sp-bar').style.width = pct + '%';
+    if(sp('sp-rate')) sp('sp-rate').textContent = `${rate.toLocaleString('pt-BR')} / min`;
+    if(sp('sp-eta')) sp('sp-eta').textContent = remaining > 0 ? etaText : '✓ done';
+    if(sp('sp-sent')) sp('sp-sent').textContent = sent.toLocaleString('pt-BR');
+    if(sp('sp-failed')) sp('sp-failed').textContent = failed.toLocaleString('pt-BR');
+    if(sp('sp-providers')) sp('sp-providers').textContent = `${_liveProviders.brevo}·${_liveProviders.resend}·${_liveProviders.sendgrid}`;
+    if(sp('sp-chunks')) sp('sp-chunks').textContent = `${chunksDone} / ${totalChunks}`;
+  };
+  const finalizeProgress = (sent, failed) => {
+    hideSpinner();
+    if(sp('sp-status-label')) sp('sp-status-label').textContent = failed === 0 ? '✓ Concluído' : (sent === 0 ? '✗ Falhou' : '⚠ Parcial');
+    if(sp('sp-status-label')) sp('sp-status-label').style.color = failed === 0 ? 'var(--green)' : (sent === 0 ? 'var(--red)' : 'var(--gold)');
+  };
+  showProgress();
+  updateProgress(0, 0);
+
   try {
     const session = await db.auth.getSession();
     let token = session?.data?.session?.access_token;
@@ -9446,9 +9506,16 @@ async function sendEmailsSmtp(){
           window._lastSendProviders.brevo    += (data.providers.brevo||0);
           window._lastSendProviders.resend   += (data.providers.resend||0);
           window._lastSendProviders.sendgrid += (data.providers.sendgrid||0);
+          // Live providers (visualização imediata no painel)
+          _liveProviders.brevo    += (data.providers.brevo||0);
+          _liveProviders.resend   += (data.providers.resend||0);
+          _liveProviders.sendgrid += (data.providers.sendgrid||0);
         }
         if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
         else { totalFailed+=chunk.length; }
+        // Atualiza painel LIVE a cada chunk
+        chunksDone++;
+        updateProgress(totalSent, totalFailed);
         }
       }
     } else {
@@ -9500,6 +9567,7 @@ async function sendEmailsSmtp(){
     });
 
     addEmailSentToday(totalSent);
+    finalizeProgress(totalSent, totalFailed);
     toast(`${totalSent} emails enviados!` + (totalFailed ? ` (${totalFailed} falharam)` : '') + ` — ${Object.keys(langGroups).length} idioma(s)`);
     // Registra a campanha como ativa pro cron diário continuar mandando até zerar a fila
     // Importante: campaign key SEM prefixo 'inst-' (cron-bulk-send aplica 'received-{campaign}')
@@ -9535,6 +9603,7 @@ async function sendEmailsSmtp(){
     await renderCampaignLog();
   } catch(err){
     toast('Erro de conexao: '+err.message,'error');
+    try { finalizeProgress(totalSent, totalFailed); } catch {}
     try { const lse = document.getElementById('last-send-status'); if(lse){ lse.style.display='block'; lse.innerHTML = `<strong style="color:var(--red);">Erro: ${err.message.replace(/[<>]/g,'')}</strong>`; } } catch{}
   } finally {
     if(btn){ btn.disabled=false; btn.textContent='Enviar agora'; }
