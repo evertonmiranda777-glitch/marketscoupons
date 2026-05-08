@@ -6339,8 +6339,9 @@ async function eaRefresh(){
     _eaDaily = dailyData?.reports || [];
     _eaCampaigns = campaignsRes || [];
 
-    // SOMA Resend+SendGrid do email_logs local pra completar o report Brevo (que só conta Brevo).
-    // Sem isso, painel mostra só ~5% dos envios quando Resend Pro é o provider principal.
+    // ENVIADOS = soma TOTAL dos email_logs locais (sent), substituindo o requests/delivered da Brevo API
+    // (que só conta envios via Brevo provider — ignora Resend/SendGrid).
+    // providers_breakdown não é confiável: incrementa por chunk, não por email.
     const matchingLogs = _eaCampaigns.filter(c=>{
       if(!tagParam) return true;
       const logTags = c.brevo_response?.tags || [];
@@ -6349,16 +6350,20 @@ async function eaRefresh(){
     if(matchingLogs.length){
       const localSum = matchingLogs.reduce((acc,c)=>{
         const r = c.brevo_response || {};
+        // Conta sent (real, dos logs) — não providers_breakdown (bugado)
+        const sent = parseInt(r.sent, 10) || 0;
+        acc.totalSent += sent;
         const pb = r.providers_breakdown || {};
+        // breakdown só pra display informacional (ainda que possa estar incorreto)
+        acc.brevo += (pb.brevo || 0);
         acc.resend += (pb.resend || 0);
         acc.sendgrid += (pb.sendgrid || 0);
-        // Brevo já é contado no report da API — não duplica
         return acc;
-      }, {resend:0, sendgrid:0});
-      const localExtra = localSum.resend + localSum.sendgrid;
-      // Soma ao requests/delivered (não temos opens/clicks de Resend/SG no Brevo report)
-      _eaReport.requests = (_eaReport.requests || 0) + localExtra;
-      _eaReport.delivered = (_eaReport.delivered || 0) + localExtra;
+      }, {totalSent:0, brevo:0, resend:0, sendgrid:0});
+      // SUBSTITUI requests/delivered (não acumula — total dos logs é a verdade)
+      _eaReport.requests = localSum.totalSent;
+      _eaReport.delivered = localSum.totalSent;
+      _eaReport._localTotalSent = localSum.totalSent;
       _eaReport._resendCount = localSum.resend;
       _eaReport._sendgridCount = localSum.sendgrid;
     }
