@@ -3187,6 +3187,13 @@ function fdRenderRight(id, f) {
       <div class="fd-inc-grid">${fa.includes.map(i=>`<div class="fd-inc">${tf(i)}</div>`).join('')}</div></div>`;
   }
 
+  // Activation fee disclaimer (transparência: trader sabe antes do checkout que tem taxa extra ao passar)
+  if (f.hasActivationFee) {
+    h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho)'}.</span></div>`;
+  } else {
+    h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong> — ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
+  }
+
   document.getElementById('fd-right').innerHTML = h;
 }
 
@@ -3745,6 +3752,13 @@ function drwRenderCk(id, f) {
       <div class="fd-inc-grid">${fa.includes.map(i=>`<div class="fd-inc">${tf(i)}</div>`).join('')}</div></div>`;
   }
 
+  // Activation fee disclaimer (mesma lógica do desktop fd-overlay)
+  if (f.hasActivationFee) {
+    h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho)'}.</span></div>`;
+  } else {
+    h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong> — ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
+  }
+
   document.getElementById('drw-ck-'+id).innerHTML=h;
 }
 
@@ -4057,7 +4071,7 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
@@ -4089,6 +4103,7 @@ async function loadFirmsFromSupabase() {
         badge: f.badge && f.badge.label ? f.badge : undefined,
         newsTrading: f.news_trading || false,
         day1Payout: f.day1_payout || false,
+        hasActivationFee: f.has_activation_fee !== false,
         leverage: f.leverage || null,
         consistency: f.consistency || null,
         payoutSpeed: f.payout_speed || null,
