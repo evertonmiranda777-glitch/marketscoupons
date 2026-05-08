@@ -1,0 +1,23 @@
+name: Notify Telegram
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message to send'
+        required: true
+        type: string
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram
+        env:
+          TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          MSG: ${{ inputs.message }}
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot$TG/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -nc --arg c "$CHAT" --arg t "$MSG" '{chat_id:$c,text:$t,parse_mode:"HTML",disable_web_page_preview:true}')"
