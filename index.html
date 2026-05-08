@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<script>(function(){var s=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').split('/').filter(Boolean)[0]||'';if(['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'].indexOf(s)>-1){var st=document.createElement('style');st.textContent='body{opacity:0;transition:opacity .2s ease}';document.head.appendChild(st);}})();</script>
 <link rel="preload" href="img/site-bg.webp" as="image" type="image/webp">
 <link rel="preload" href="img/site-bg-mobile.webp" as="image" type="image/webp" media="(max-width:900px)">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -317,7 +316,7 @@ html::-webkit-scrollbar{width:8px;}
 html::-webkit-scrollbar-track{background:transparent;}
 html::-webkit-scrollbar-thumb{background:rgba(107,182,201,.18);border-radius:4px;}
 html::-webkit-scrollbar-thumb:hover{background:rgba(107,182,201,.32);}
-body{font-family:var(--f);color:var(--t1);min-height:100dvh;overflow-x:hidden;
+body{font-family:var(--f);color:var(--t1);min-height:100dvh;overflow-x:hidden;opacity:0;transition:opacity .2s ease;
  background:var(--bg) url('img/site-bg.webp') center top/cover no-repeat fixed;
 }
 a{text-decoration:none;color:inherit;}
