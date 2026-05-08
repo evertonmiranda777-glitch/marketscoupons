@@ -22,20 +22,36 @@ const REVERT_THRESHOLD = 25;
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname).replace(/^\/([A-Z]):/i,'$1:'),'..');
 
 async function runPSI(strategy) {
-  const u = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
-  u.searchParams.set('url', SITE_URL);
-  u.searchParams.set('strategy', strategy);
-  u.searchParams.set('category', 'performance');
-  if (PSI_KEY) u.searchParams.set('key', PSI_KEY);
-  let lastErr;
-  for (let i = 0; i < 5; i++) {
-    if (i > 0) await new Promise(r => setTimeout(r, 30000 * i));
-    const r = await fetch(u.href);
-    if (r.ok) { const j = await r.json(); return parsePSI(strategy, j); }
-    lastErr = `PSI ${strategy}: ${r.status}`;
-    if (r.status !== 429 && r.status < 500) break;
+  // Tenta PSI API primeiro (mais leve). Se 429/falhar, roda lighthouse-cli local.
+  if (PSI_KEY) {
+    try {
+      const u = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
+      u.searchParams.set('url', SITE_URL);
+      u.searchParams.set('strategy', strategy);
+      u.searchParams.set('category', 'performance');
+      u.searchParams.set('key', PSI_KEY);
+      const r = await fetch(u.href);
+      if (r.ok) return parsePSI(strategy, await r.json());
+    } catch {}
   }
-  throw new Error(lastErr);
+  // Fallback: lighthouse CLI local
+  const tmpFile = path.join(ROOT, `lh-${strategy}.json`);
+  const preset = strategy === 'mobile' ? 'mobile' : 'desktop';
+  const flags = [
+    SITE_URL,
+    `--output=json`,
+    `--output-path=${tmpFile}`,
+    `--preset=${preset}`,
+    `--only-categories=performance`,
+    `--chrome-flags="--headless=new --no-sandbox --disable-gpu"`,
+    `--max-wait-for-load=60000`,
+    `--quiet`
+  ].join(' ');
+  execSync(`lighthouse ${flags}`, { stdio: 'pipe' });
+  const j = JSON.parse(fs.readFileSync(tmpFile, 'utf8'));
+  fs.unlinkSync(tmpFile);
+  // lighthouse CLI direct output has same schema as lighthouseResult inside PSI
+  return parsePSI(strategy, { lighthouseResult: j });
 }
 
 function parsePSI(strategy, j) {

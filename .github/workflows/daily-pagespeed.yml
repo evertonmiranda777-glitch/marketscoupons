@@ -20,11 +20,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Run PageSpeed audit
+      - name: Install Lighthouse + Chrome
+        run: |
+          npm install -g lighthouse@12
+          # Chrome is preinstalled in ubuntu-latest runner
+          which google-chrome || which chromium-browser
+      - name: Run Lighthouse audit
         env:
-          PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/daily-pagespeed.mjs
