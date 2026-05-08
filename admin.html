@@ -1155,10 +1155,14 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div class="ea-hdr-top">
        <div class="ea-title">Analytics de Email</div>
        <div style="display:flex;gap:8px;align-items:center;">
-         <div style="display:flex;gap:4px;">
-           <button class="ea-period-btn sel" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
+         <div style="display:flex;gap:4px;flex-wrap:wrap;">
+           <button class="ea-period-btn" data-days="1" onclick="eaSetPeriod(1,this)">Hoje</button>
+           <button class="ea-period-btn" data-days="7" onclick="eaSetPeriod(7,this)">7d</button>
            <button class="ea-period-btn" data-days="14" onclick="eaSetPeriod(14,this)">14d</button>
            <button class="ea-period-btn" data-days="28" onclick="eaSetPeriod(28,this)">28d</button>
+           <button class="ea-period-btn" data-days="30" onclick="eaSetPeriod(30,this)">30d</button>
+           <button class="ea-period-btn sel" data-days="month" onclick="eaSetPeriod('month',this)">Este mês</button>
+           <button class="ea-period-btn" data-days="max" onclick="eaSetPeriod('max',this)">Máximo</button>
          </div>
          <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="eaRefresh()">Atualizar</button>
        </div>
@@ -6259,7 +6263,15 @@ function composeToLead(email,name){
 }
 
 /* ═══ EMAIL ANALYTICS ═══ */
+// Default: "Este mês" (do dia 1 até hoje). Calculado em eaInit.
 let _eaDays = 7;
+(function setEaDaysDefault(){
+  try {
+    const now = new Date();
+    const day1 = new Date(now.getFullYear(), now.getMonth(), 1);
+    _eaDays = Math.max(1, Math.ceil((now - day1) / 86400000));
+  } catch {}
+})();
 let _eaTag = '';
 let _eaReport = null;
 let _eaEvents = [];
@@ -6299,7 +6311,16 @@ async function eaInit(){
 }
 
 function eaSetPeriod(d, btn){
-  _eaDays = d;
+  // Suporta: número (dias), 'month' (do dia 1 deste mês), 'max' (90 dias = histórico longo)
+  if (d === 'month') {
+    const now = new Date();
+    const day1 = new Date(now.getFullYear(), now.getMonth(), 1);
+    _eaDays = Math.max(1, Math.ceil((now - day1) / 86400000));
+  } else if (d === 'max') {
+    _eaDays = 90;
+  } else {
+    _eaDays = parseInt(d, 10) || 7;
+  }
   document.querySelectorAll('.ea-hdr [data-days]').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
   eaRefresh();
