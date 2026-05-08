@@ -2661,7 +2661,7 @@ if(!window._promoResizeBound){
 /* HOME */
 function renderHome(){
   const g=document.getElementById('home-offers');if(!g)return;
-  const h1=document.getElementById('hero-h1');if(h1)h1.innerHTML=t('hero_titulo');
+  const h1=document.getElementById('hero-h1');if(h1 && _currentLang && _currentLang!=='en')h1.innerHTML=t('hero_titulo');
   const shd=document.getElementById('home-sec-hd');if(shd)shd.innerHTML=t('home_melhores_ofertas');
   g.innerHTML=[...FIRMS].sort((a,b)=>b.discount-a.discount).map(f=>`
     <div class="oc">
