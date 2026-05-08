@@ -2997,6 +2997,7 @@ function _abPickDefaultSize(planList){
 function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   window._fdOriginPage=_currentPage;
+  try{ maybeShowGiveaway(id, 'firm_open'); }catch(e){}
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
   if (!_drwState[id]) {
@@ -6829,6 +6830,7 @@ async function loadUserSession(user) {
   await loadUserFavs();
   applyF();
   _sessionLoading = false;
+  try{ window.dispatchEvent(new CustomEvent('mc:user-loaded')); }catch(e){}
 }
 
 function updateAuthUI(loggedIn) {
@@ -7879,3 +7881,124 @@ function showCemToast(msg, bg){
     }
   }catch(e){}
 })();
+
+/* ============= GIVEAWAY POPUP ============= */
+let _gwData = null;
+let _gwShownAt = 0;
+
+async function loadActiveGiveaway(){
+  if(_gwData!==null) return _gwData;
+  try{
+    const { data } = await db.from('giveaways').select('*').eq('active',true).order('created_at',{ascending:false}).limit(1).maybeSingle();
+    _gwData = data || false;
+    return _gwData;
+  }catch(e){ _gwData=false; return false; }
+}
+
+function gwAlreadyEntered(slug){
+  try{ return localStorage.getItem('mc_gw_entered_'+slug)==='1'; }catch(e){ return false; }
+}
+function gwClosedRecently(slug, days){
+  try{
+    const t = parseInt(localStorage.getItem('mc_gw_closed_'+slug)||'0',10);
+    return t && (Date.now()-t) < days*86400000;
+  }catch(e){ return false; }
+}
+function gwSeenThisSession(slug){
+  try{ return sessionStorage.getItem('mc_gw_seen_'+slug)==='1'; }catch(e){ return false; }
+}
+
+async function maybeShowGiveaway(triggerFirmId, triggerType){
+  if(currentProfile && currentProfile.is_admin) return;
+  const gw = await loadActiveGiveaway();
+  if(!gw) return;
+  if(gw.firm_id && gw.firm_id !== triggerFirmId && !gw.show_global) return;
+  if(triggerType==='firm_open' && !gw.show_on_firm_open) return;
+  if(triggerType==='coupon_copy' && !gw.show_on_coupon_copy) return;
+  if(triggerType==='checkout' && !gw.show_on_checkout) return;
+  if(gwAlreadyEntered(gw.slug)) return;
+  if(gwSeenThisSession(gw.slug)) return;
+  if(gwClosedRecently(gw.slug, gw.reshow_after_close_days||7)) return;
+  setTimeout(()=>showGiveaway(gw, triggerType), gw.delay_ms||3000);
+}
+
+function showGiveaway(gw, trigger){
+  const bd = document.getElementById('gw-bd'); if(!bd) return;
+  document.querySelector('[data-gw="title"]').innerHTML = gw.prize_label || 'Win a free Evaluation';
+  document.querySelector('[data-gw="disclaimer"]').innerHTML = '<strong>What you win:</strong> '+(gw.prize_disclaimer||'');
+  const heroImg = document.getElementById('gw-hero');
+  if(heroImg && gw.hero_image){ heroImg.src = gw.hero_image; heroImg.alt = gw.prize_label?.replace(/<[^>]+>/g,'') || 'Giveaway prize'; }
+  if(gw.draw_date){
+    const d = new Date(gw.draw_date+'T12:00:00');
+    document.getElementById('gw-date').textContent = d.toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
+  }
+  const stepsEl = document.getElementById('gw-steps');
+  stepsEl.innerHTML = (gw.steps||[]).map((s,i)=>`<li class="gw-stp"><span class="gw-stp-n">${i+1}</span><span>${s.text}</span></li>`).join('');
+  const cta = document.getElementById('gw-cta');
+  if(cta && gw.cta_label) cta.textContent = gw.cta_label;
+  bd.dataset.slug = gw.slug;
+  bd.dataset.instagram = gw.instagram_url || '';
+  bd.classList.add('show');
+  _gwShownAt = Date.now();
+  try{ sessionStorage.setItem('mc_gw_seen_'+gw.slug,'1'); }catch(e){}
+  try{ track('giveaway_popup_shown', {slug:gw.slug, trigger, firm:gw.firm_id}); }catch(e){}
+}
+
+function closeGiveaway(reason){
+  const bd = document.getElementById('gw-bd'); if(!bd) return;
+  if(!bd.classList.contains('show')) return;
+  const slug = bd.dataset.slug;
+  const elapsed = _gwShownAt ? Math.round((Date.now()-_gwShownAt)/1000) : 0;
+  bd.classList.remove('show');
+  try{ localStorage.setItem('mc_gw_closed_'+slug, String(Date.now())); }catch(e){}
+  try{ track('giveaway_popup_close_'+(reason||'x'), {slug, time_to_close_s:elapsed}); }catch(e){}
+}
+
+async function giveawayCtaClick(){
+  const bd = document.getElementById('gw-bd');
+  const slug = bd?.dataset?.slug;
+  const igUrl = bd?.dataset?.instagram;
+  const elapsed = _gwShownAt ? Math.round((Date.now()-_gwShownAt)/1000) : 0;
+  try{ track('giveaway_popup_cta_click', {slug, time_to_click_s:elapsed}); }catch(e){}
+  if(currentUser && currentProfile){
+    // Já logado — só marca tag e abre Instagram
+    try{
+      await db.from('email_subscribers').upsert({email: currentUser.email, tags:['received-giveaway-'+slug, 'giveaway-entered']}, {onConflict:'email'});
+    }catch(e){}
+    try{ localStorage.setItem('mc_gw_entered_'+slug,'1'); }catch(e){}
+    try{ track('giveaway_popup_instagram_open', {slug}); }catch(e){}
+    bd?.classList.remove('show');
+    if(igUrl) window.open(igUrl,'_blank','noopener');
+    return;
+  }
+  // Não logado — abre signup. Tag será adicionada após confirmação.
+  try{ sessionStorage.setItem('mc_gw_pending_signup', slug); }catch(e){}
+  try{ sessionStorage.setItem('mc_gw_pending_ig', igUrl||''); }catch(e){}
+  bd?.classList.remove('show');
+  if(typeof openAuthModal==='function') openAuthModal('signup');
+}
+
+// ESC fecha popup
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){
+    const bd = document.getElementById('gw-bd');
+    if(bd && bd.classList.contains('show')) closeGiveaway('esc');
+  }
+});
+
+// Hook pós-signup: se houver giveaway pendente, marca tag e abre Instagram
+window.addEventListener('mc:user-loaded', async function(){
+  let pendingSlug, pendingIg;
+  try{ pendingSlug = sessionStorage.getItem('mc_gw_pending_signup'); pendingIg = sessionStorage.getItem('mc_gw_pending_ig'); }catch(e){}
+  if(!pendingSlug || !currentUser) return;
+  try{
+    await db.from('email_subscribers').upsert({email: currentUser.email, tags:['received-giveaway-'+pendingSlug, 'giveaway-entered']}, {onConflict:'email'});
+  }catch(e){}
+  try{ localStorage.setItem('mc_gw_entered_'+pendingSlug,'1'); }catch(e){}
+  try{ sessionStorage.removeItem('mc_gw_pending_signup'); sessionStorage.removeItem('mc_gw_pending_ig'); }catch(e){}
+  try{ track('giveaway_popup_signup_complete', {slug:pendingSlug}); }catch(e){}
+  if(pendingIg){
+    try{ track('giveaway_popup_instagram_open', {slug:pendingSlug}); }catch(e){}
+    setTimeout(()=>window.open(pendingIg,'_blank','noopener'), 1500);
+  }
+});
