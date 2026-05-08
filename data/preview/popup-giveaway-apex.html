@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
-  background: #0a0d14 url('https://www.marketscoupons.com/img/site-bg.webp') center/cover no-repeat fixed;
+  background: #000000;
   color: #e8eaed;
   min-height: 100vh;
   display: flex;
@@ -34,19 +34,19 @@ body {
 
 @keyframes gwFadeIn { from { opacity: 0 } to { opacity: 1 } }
 @keyframes gwSlideUp { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes gwPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, .5); } 50% { box-shadow: 0 0 0 12px rgba(249, 115, 22, 0); } }
+@keyframes gwPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(240, 180, 41, .5); } 50% { box-shadow: 0 0 0 12px rgba(240, 180, 41, 0); } }
 
 /* Modal */
 .gw-modal {
   position: relative;
   max-width: 460px;
   width: 100%;
-  background: linear-gradient(180deg, #14181f 0%, #0a0d14 100%);
-  border: 1px solid rgba(249, 115, 22, .25);
+  background: #000000;
+  border: 1px solid rgba(240, 180, 41, .25);
   border-radius: 18px;
   padding: 0;
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, .6), 0 0 60px rgba(249, 115, 22, .12);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .6), 0 0 60px rgba(240, 180, 41, .12);
   animation: gwSlideUp .35s cubic-bezier(.16, 1, .3, 1);
   max-height: 92vh;
   overflow-y: auto;
@@ -75,10 +75,10 @@ body {
 
 /* Header */
 .gw-hd {
-  background: linear-gradient(135deg, #1a1208 0%, #0a0d14 100%);
+  background: #000000;
   padding: 28px 24px 22px;
   text-align: center;
-  border-bottom: 1px solid rgba(249, 115, 22, .15);
+  border-bottom: 1px solid rgba(240, 180, 41, .15);
   position: relative;
   overflow: hidden;
 }
@@ -86,16 +86,16 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(249, 115, 22, .18) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 0%, rgba(240, 180, 41, .18) 0%, transparent 60%);
   pointer-events: none;
 }
 .gw-hd-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(249, 115, 22, .14);
-  border: 1px solid rgba(249, 115, 22, .35);
-  color: #f97316;
+  background: rgba(240, 180, 41, .14);
+  border: 1px solid rgba(240, 180, 41, .35);
+  color: #f0b429;
   padding: 5px 12px;
   border-radius: 999px;
   font-size: 11px;
@@ -111,8 +111,8 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #f97316;
-  box-shadow: 0 0 10px #f97316;
+  background: #f0b429;
+  box-shadow: 0 0 10px #f0b429;
   animation: gwBlink 1.5s infinite;
 }
 @keyframes gwBlink { 0%, 100% { opacity: 1 } 50% { opacity: .3 } }
@@ -127,7 +127,7 @@ body {
   z-index: 1;
 }
 .gw-hd-title em {
-  color: #f97316;
+  color: #f0b429;
   font-style: normal;
 }
 .gw-hd-sub {
@@ -150,7 +150,7 @@ body {
   border-radius: 12px;
   display: block;
   margin: 0 auto;
-  border: 1px solid rgba(249, 115, 22, .25);
+  border: 1px solid rgba(240, 180, 41, .25);
   box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
 }
 
@@ -166,8 +166,8 @@ body {
 .gw-prize strong { color: #fff; font-weight: 700; }
 
 .gw-deadline {
-  background: rgba(249, 115, 22, .08);
-  border: 1px solid rgba(249, 115, 22, .2);
+  background: rgba(240, 180, 41, .08);
+  border: 1px solid rgba(240, 180, 41, .2);
   border-radius: 10px;
   padding: 12px 14px;
   margin: 0 0 18px;
@@ -176,7 +176,7 @@ body {
   gap: 10px;
   font-size: 13px;
 }
-.gw-deadline svg { width: 18px; height: 18px; color: #f97316; flex-shrink: 0; }
+.gw-deadline svg { width: 18px; height: 18px; color: #f0b429; flex-shrink: 0; }
 .gw-deadline-l { color: #8590a3; font-weight: 600; }
 .gw-deadline-v { color: #fff; font-weight: 700; margin-left: auto; }
 
@@ -184,7 +184,7 @@ body {
 .gw-steps-title {
   font-size: 11px;
   font-weight: 700;
-  color: #f97316;
+  color: #f0b429;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   margin: 0 0 10px;
@@ -210,9 +210,9 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(249, 115, 22, .15);
-  border: 1px solid rgba(249, 115, 22, .35);
-  color: #f97316;
+  background: rgba(240, 180, 41, .15);
+  border: 1px solid rgba(240, 180, 41, .35);
+  color: #f0b429;
   font-size: 11px;
   font-weight: 800;
   display: flex;
@@ -226,7 +226,7 @@ body {
 .gw-cta {
   display: block;
   width: 100%;
-  background: linear-gradient(90deg, #ea580c 0%, #f97316 50%, #ea580c 100%);
+  background: linear-gradient(90deg, #c8941a 0%, #f0b429 50%, #c8941a 100%);
   background-size: 200% 100%;
   color: #fff;
   border: none;
@@ -244,7 +244,7 @@ body {
 .gw-cta:hover {
   transform: translateY(-2px);
   background-position: 100% 0;
-  box-shadow: 0 12px 24px rgba(249, 115, 22, .35);
+  box-shadow: 0 12px 24px rgba(240, 180, 41, .35);
 }
 
 .gw-foot {
@@ -273,7 +273,7 @@ body {
 <body>
 
 <!-- Trigger button so você possa abrir/fechar testando -->
-<button onclick="document.querySelector('.gw-backdrop').style.display='flex'" style="position:fixed;bottom:20px;right:20px;background:#f97316;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:700;cursor:pointer;z-index:9998;">Reabrir popup</button>
+<button onclick="document.querySelector('.gw-backdrop').style.display='flex'" style="position:fixed;bottom:20px;right:20px;background:#f0b429;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:700;cursor:pointer;z-index:9998;">Reabrir popup</button>
 
 <div class="gw-backdrop" onclick="if(event.target===this)this.style.display='none'">
   <div class="gw-modal" role="dialog" aria-labelledby="gw-title" aria-modal="true">
