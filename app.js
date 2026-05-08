@@ -3189,7 +3189,7 @@ function fdRenderRight(id, f) {
 
   // Activation fee disclaimer (transparência: trader sabe antes do checkout que tem taxa extra ao passar)
   if (f.hasActivationFee) {
-    h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho)'}.</span></div>`;
+    h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho de conta)'}.</span></div>`;
   } else {
     h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong> — ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
   }
@@ -3754,7 +3754,7 @@ function drwRenderCk(id, f) {
 
   // Activation fee disclaimer (mesma lógica do desktop fd-overlay)
   if (f.hasActivationFee) {
-    h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho)'}.</span></div>`;
+    h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho de conta)'}.</span></div>`;
   } else {
     h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong> — ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
   }
