@@ -6723,6 +6723,22 @@ async function doAuthSignup() {
   const fullName  = `${first} ${last}`.trim();
   const name      = fullName; // compat com referências locais abaixo
 
+  // Giveaway: marcar tag IMEDIATAMENTE no email (antes do double opt-in completar)
+  // Garante que mesmo se user fechar a aba antes de confirmar email, lead fica taggeado.
+  let _gwPendingSlug = null;
+  let _gwPendingIg = null;
+  try{
+    _gwPendingSlug = sessionStorage.getItem('mc_gw_pending_signup');
+    _gwPendingIg   = sessionStorage.getItem('mc_gw_pending_ig');
+    if(_gwPendingSlug){
+      db.from('email_subscribers').upsert(
+        { email, name: fullName, lang:(window._currentLang||'en'), source:'giveaway', tags:['received-giveaway-'+_gwPendingSlug,'giveaway-entered'] },
+        { onConflict:'email' }
+      ).then(()=>{}).catch(()=>{});
+      try{ track('giveaway_popup_signup_submit', {slug:_gwPendingSlug, email_domain: email.split('@')[1]||''}); }catch(e){}
+    }
+  }catch(e){}
+
   const { data, error } = await db.auth.signUp({
     email,
     password: pass,
@@ -6759,6 +6775,14 @@ async function doAuthSignup() {
       status: 'active'
     }, { onConflict: 'email', ignoreDuplicates: false }).then(()=>{}).catch(()=>{});
   } catch(e){}
+
+  // Giveaway: signup OK, abre Instagram em nova aba (não espera email confirmation)
+  if(_gwPendingSlug && _gwPendingIg && data?.user){
+    try{ localStorage.setItem('mc_gw_entered_'+_gwPendingSlug,'1'); }catch(e){}
+    try{ track('giveaway_popup_instagram_open', {slug:_gwPendingSlug, via:'signup_complete'}); }catch(e){}
+    try{ sessionStorage.removeItem('mc_gw_pending_signup'); sessionStorage.removeItem('mc_gw_pending_ig'); }catch(e){}
+    setTimeout(()=>{ try{ window.open(_gwPendingIg,'_blank','noopener'); }catch(e){} }, 800);
+  }
 
   // If session returned directly, login immediately
   if (data.session) {
