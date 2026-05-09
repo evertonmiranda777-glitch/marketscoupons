@@ -4,3 +4,4 @@ Disallow: /admin
 Disallow: /admin.html
 
 Sitemap: https://www.marketscoupons.com/sitemap.xml
+LLM-Content: https://www.marketscoupons.com/llms.txt

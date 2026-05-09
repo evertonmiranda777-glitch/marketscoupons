@@ -1,0 +1,72 @@
+# Markets Coupons
+
+> Markets Coupons is a comparison and discount platform for prop trading firms (futures and forex). Active users can compare 12 prop firms side-by-side, copy exclusive coupon codes, read educational guides, and access daily market analysis tools. Site is EN-default with mirrors in PT, ES, FR, IT, DE and AR.
+
+## Prop Firm Pages
+
+Each firm page is a single-page overlay with full pricing tables, drawdown rules, profit split, payout rules, platforms, leverage, news-trading rules, day-1 payout policy, plus the active coupon (when applicable) and direct affiliate link to the firm.
+
+- [Apex Trader Funding](https://www.marketscoupons.com/apex): One of the largest US futures prop firms. Aggressive scaling, 100% profit split up to $25k/account then 90%, no time limit on evaluations.
+- [Bulenox](https://www.marketscoupons.com/bulenox): Futures prop firm with simplified rules. Pass evaluation in as few as 1 day, no consistency rule.
+- [FTMO](https://www.marketscoupons.com/ftmo): Largest and most established Forex prop firm (founded 2015, 3.5M+ clients). Two-step evaluation, up to 90% profit split.
+- [Take Profit Trader (TPT)](https://www.marketscoupons.com/tpt): Day-1 payouts, no activation fee. Futures only.
+- [FundedNext](https://www.marketscoupons.com/fn): Forex and Futures challenges, profit split up to 95%, 15% performance bonus.
+- [Earn2Trade (E2T)](https://www.marketscoupons.com/e2t): Education-first futures firm, scaling up to $400K.
+- [The5ers](https://www.marketscoupons.com/the5ers): Funding traders since 2016, six different programs covering CFDs and Futures.
+- [Funding Pips](https://www.marketscoupons.com/fundingpips): Four evaluation programs ranging from instant funding (Zero) to affordable 2-step.
+- [BrightFunded](https://www.marketscoupons.com/brightfunded): Two-step challenge, profit split up to 100%, no consistency rules.
+- [E8 Markets](https://www.marketscoupons.com/e8): $5K to $500K accounts across Forex, Futures, and Crypto. Two product lines: Signature and 8-Eval.
+- [City Traders Imperium (CTI)](https://www.marketscoupons.com/cti): Five evaluation programs with profit split up to 100%.
+- [TradeDay](https://www.marketscoupons.com/tradeday): Chicago-based futures prop firm with 80+ years of trading-floor experience behind the team.
+
+## Blog
+
+In-depth articles on prop-firm strategy, methodology, and trader psychology. All published in English at `/blog/<slug>`.
+
+- [Best Prop Firms 2026: Complete Guide to Choose the Right One](https://www.marketscoupons.com/blog/best-prop-firms-2026-guide): Comparative overview of the top prop firms, criteria for picking based on style and capital goals.
+- [From $50K to $300K: Prop Firm Scaling Plans Compared](https://www.marketscoupons.com/blog/from-50k-to-300k-scaling-plans): Side-by-side breakdown of scaling rules across major firms.
+- [Trading in 3+ Prop Firms Simultaneously: Professional Setup](https://www.marketscoupons.com/blog/trading-3-prop-firms-simultaneously): Practical guide to running multiple funded accounts at once — risk allocation, journaling, capital strategy.
+- [Multi-Accounting in Prop Firms: Rules, Risks, and Strategies](https://www.marketscoupons.com/blog/multi-accounting-prop-firms-risks-rules): What is allowed, what gets accounts banned, and how firms detect violations.
+- [The Wyckoff Method: Complete Guide from Foundation to Modern Application](https://www.marketscoupons.com/blog/wyckoff-method-complete-guide): Long-form treatment of accumulation/distribution phases, composite operator, modern application.
+- [Volume Price Analysis: The Anna Coulling Guide](https://www.marketscoupons.com/blog/volume-price-analysis-guide): VPA method explained from first principles, with chart-reading framework.
+- [Elliott Wave Theory: Simplified Guide for Traders](https://www.marketscoupons.com/blog/elliott-wave-theory-guide): Five-wave impulses, three-wave corrections, and practical labeling rules.
+- [Fibonacci for Traders: From Basics to Advanced](https://www.marketscoupons.com/blog/fibonacci-trading-complete-guide): Retracement and extension levels, confluence with structure.
+
+## Educational Guides
+
+Five canonical long-form guides, each available in seven languages (PT, EN, ES, FR, IT, DE, AR). URLs follow the pattern `/<lang>/guides/<slug>` (e.g. `/en/guides/o-que-e-uma-prop-firm`).
+
+- [What Is a Prop Firm](https://www.marketscoupons.com/en/guides/o-que-e-uma-prop-firm): How proprietary trading firms work, business model, who they fund, fees vs payouts.
+- [How to Pass the Challenge](https://www.marketscoupons.com/en/guides/como-passar-no-desafio): Mechanics of evaluation phases, profit targets, common failure modes.
+- [Drawdown Management](https://www.marketscoupons.com/en/guides/gerenciamento-drawdown): Trailing vs static drawdown, end-of-day vs intraday, account preservation rules.
+- [Position Sizing](https://www.marketscoupons.com/en/guides/position-sizing): Risk per trade, account-size mapping, contract/lot calculations.
+- [How to Withdraw Profits](https://www.marketscoupons.com/en/guides/como-sacar-lucros): Payout cycles, minimum days, methods, hold-back percentages by firm.
+
+## Firm Comparison Pages
+
+132 head-to-head comparison pages at `/compare/<firm-a>-vs-<firm-b>`, covering every pair among the 12 listed firms in both directions. Each page details pricing, drawdown, profit split, payout speed, platforms, news-trading rules and leverage side-by-side.
+
+- [Apex vs Bulenox](https://www.marketscoupons.com/compare/apex-vs-bulenox)
+- [Apex vs FTMO](https://www.marketscoupons.com/compare/apex-vs-ftmo)
+- [Apex vs TPT](https://www.marketscoupons.com/compare/apex-vs-tpt)
+- [FTMO vs FundedNext](https://www.marketscoupons.com/compare/ftmo-vs-fn)
+- [Bulenox vs Apex](https://www.marketscoupons.com/compare/bulenox-vs-apex)
+- (full list available at `/compare/`)
+
+## Trading Tools
+
+Free analysis utilities for active traders. Some require account login.
+
+- [Daily Market Analysis](https://www.marketscoupons.com/analysis): Daily macro + technical analysis covering ES, NQ, YM, RTY futures and major forex pairs. Updated each trading session.
+- [GEX / Gamma Exposure](https://www.marketscoupons.com/gamma): Live gamma-exposure dashboard for 12 major US tickers, sourced from CBOE options data.
+- [Economic Calendar](https://www.marketscoupons.com/calendar): Filtered economic calendar focused on US 3-star events relevant to futures traders, with pre-event alerts.
+- [Pro Tools](https://www.marketscoupons.com/pro): Gated VIP tools (heat map, position calculators, additional analysis) — unlocked after one approved purchase via affiliate.
+
+## Account & Policy
+
+- [Privacy Policy](https://www.marketscoupons.com/privacy): GDPR + LGPD compliant, scoped for global EU/US users.
+- [Terms of Service](https://www.marketscoupons.com/terms): Site usage terms, affiliate disclosure, no-financial-advice disclaimer.
+
+## International Mirrors
+
+The same content is available in Portuguese (`/pt`), Spanish (`/es`), French (`/fr`), Italian (`/it`), German (`/de`), and Arabic (`/ar`). Translations are managed via a centralized i18n table; firm pricing and coupon data are identical across languages.
