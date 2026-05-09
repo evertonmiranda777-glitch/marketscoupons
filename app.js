@@ -308,6 +308,13 @@ function track(event, params={}) {
   const ts = new Date().toISOString();
   const consentOk = localStorage.getItem('mc-cookies-consent') === 'accepted';
 
+  // Anti-canibalização do popup giveaway: marca flags de intent de compra
+  try{
+    if((event==='checkout_click' || event==='coupon_copy') && params.firm_id){
+      sessionStorage.setItem('mc_'+event.replace('checkout_click','checkout_clicked').replace('coupon_copy','coupon_copied')+'_'+params.firm_id,'1');
+    }
+  }catch(e){}
+
   // Generate event_id for FB deduplication (browser fbq + server CAPI) and GA4 transaction_id
   const eid = typeof crypto!=='undefined'&&crypto.randomUUID ? crypto.randomUUID() : 'e'+Date.now()+Math.random().toString(36).slice(2,10);
   window._lastTrackId = eid;
@@ -3946,6 +3953,8 @@ function cpCoupon(code,firmId,loc){
   }catch(e){showToast(msg);}
   const f=FIRMS.find(x=>x.id===firmId);
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
+  // Anti-canibalização do popup giveaway: marca intent de compra
+  try{ if(firmId) sessionStorage.setItem('mc_coupon_copied_'+firmId,'1'); }catch(e){}
   track('coupon_copy',{coupon_code:code,firm_id:firmId,firm_name:f?.name,discount:f?.discount,location:loc,source:_src});
   if(typeof fbq==='function') fbq('trackCustom','CopyCode',{content_ids:[firmId],content_name:f?.name||firmId,content_category:'firm',coupon:code,value:_fbVal(f),currency:'USD'},{eventID:window._lastTrackId+'_CopyCode'});
   if(typeof gtag==='function') gtag('event','copy_coupon',{item_id:firmId,coupon:code,source:_src});
@@ -7961,6 +7970,23 @@ async function maybeShowGiveaway(triggerFirmId, triggerType){
   if(gwAlreadyEntered(gw.slug)) return;
   if(gwSeenThisSession(gw.slug)) return;
   if(gwClosedRecently(gw.slug, gw.reshow_after_close_days||7)) return;
+
+  // ANTI-CANIBALIZAÇÃO (2026-05-09):
+  // 1. Se user já copiou cupom da firma do giveaway nesta sessão → tem intent de compra alta, NÃO mostrar
+  try{
+    if(sessionStorage.getItem('mc_coupon_copied_'+gw.firm_id)) return;
+  }catch(e){}
+  // 2. Se user já clicou checkout da firma → NÃO mostrar
+  try{
+    if(sessionStorage.getItem('mc_checkout_clicked_'+gw.firm_id)) return;
+  }catch(e){}
+  // 3. Só mostra a partir do 2º firm_open na mesma sessão (1ª vez é "exploração", 2ª é "considerando")
+  try{
+    const opens = parseInt(sessionStorage.getItem('mc_firm_opens_'+gw.firm_id)||'0',10) + 1;
+    sessionStorage.setItem('mc_firm_opens_'+gw.firm_id, String(opens));
+    if(opens < 2) return; // primeira vez não mostra
+  }catch(e){}
+
   setTimeout(()=>showGiveaway(gw, triggerType), gw.delay_ms||3000);
 }
 
