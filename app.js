@@ -1141,6 +1141,9 @@ function applyTranslations() {
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
   });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+  });
 }
 function updateTVWidgets(lang) {
   const hmF = document.getElementById('heatmap-frame');
@@ -7963,18 +7966,43 @@ async function maybeShowGiveaway(triggerFirmId, triggerType){
 
 function showGiveaway(gw, trigger){
   const bd = document.getElementById('gw-bd'); if(!bd) return;
-  document.querySelector('[data-gw="title"]').innerHTML = gw.prize_label || 'Win a free Evaluation';
-  document.querySelector('[data-gw="disclaimer"]').innerHTML = '<strong>What you win:</strong> '+(gw.prize_disclaimer||'');
+  // Aplicar i18n nos elementos com data-i18n (pill, draw_date label, how_to_enter, cta, free_entry, maybe_later)
+  if (typeof applyTranslations === 'function') applyTranslations();
+  // Title: usa i18n key específica por firma se existir, senão fallback pro prize_label do DB
+  const titleKey = 'gw_title_' + (gw.firm_id || '').toLowerCase();
+  const titleI18n = (typeof t === 'function') ? t(titleKey) : null;
+  const titleEl = document.querySelector('[data-gw="title"]');
+  if(titleEl) titleEl.innerHTML = (titleI18n && titleI18n !== titleKey) ? titleI18n : (gw.prize_label || 'Win a free Evaluation');
+  // Subtitle: i18n genérica
+  const subEl = document.querySelector('[data-gw="sub"]');
+  if(subEl) subEl.innerHTML = (typeof t === 'function') ? t('gw_subtitle') : '3 accounts. Free entry. Your shot at funded.';
+  // Disclaimer: i18n específica por firma se existir, senão DB
+  const disclKey = 'gw_disclaimer_' + (gw.firm_id || '').toLowerCase();
+  const disclI18n = (typeof t === 'function') ? t(disclKey) : null;
+  const disclText = (disclI18n && disclI18n !== disclKey) ? disclI18n : (gw.prize_disclaimer || '');
+  const whatYouWin = (typeof t === 'function') ? t('gw_what_you_win') : 'What you win';
+  document.querySelector('[data-gw="disclaimer"]').innerHTML = '<strong>'+whatYouWin+':</strong> '+disclText;
   const heroImg = document.getElementById('gw-hero');
   if(heroImg && gw.hero_image){ heroImg.src = gw.hero_image; heroImg.alt = gw.prize_label?.replace(/<[^>]+>/g,'') || 'Giveaway prize'; }
   if(gw.draw_date){
     const d = new Date(gw.draw_date+'T12:00:00');
-    document.getElementById('gw-date').textContent = d.toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
+    const langMap = {pt:'pt-BR',en:'en-US',es:'es-ES',fr:'fr-FR',it:'it-IT',de:'de-DE',ar:'ar-SA'};
+    const locale = langMap[_currentLang] || 'en-US';
+    document.getElementById('gw-date').textContent = d.toLocaleDateString(locale, {month:'long',day:'numeric',year:'numeric'});
   }
   const stepsEl = document.getElementById('gw-steps');
-  stepsEl.innerHTML = (gw.steps||[]).map((s,i)=>`<li class="gw-stp"><span class="gw-stp-n">${i+1}</span><span>${s.text}</span></li>`).join('');
+  // Steps: tenta i18n key gw_step1..gw_step4, senão usa do DB
+  stepsEl.innerHTML = (gw.steps||[]).map((s,i)=>{
+    const stepKey = 'gw_step' + (i+1);
+    const stepI18n = (typeof t === 'function') ? t(stepKey) : null;
+    const txt = (stepI18n && stepI18n !== stepKey) ? stepI18n : s.text;
+    return `<li class="gw-stp"><span class="gw-stp-n">${i+1}</span><span>${txt}</span></li>`;
+  }).join('');
   const cta = document.getElementById('gw-cta');
-  if(cta && gw.cta_label) cta.textContent = gw.cta_label;
+  if(cta){
+    const ctaI18n = (typeof t === 'function') ? t('gw_cta') : null;
+    cta.textContent = (ctaI18n && ctaI18n !== 'gw_cta') ? ctaI18n : (gw.cta_label || 'Sign up & enter the giveaway');
+  }
   bd.dataset.slug = gw.slug;
   bd.dataset.instagram = gw.instagram_url || '';
   bd.classList.add('show');

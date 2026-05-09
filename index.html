@@ -4449,11 +4449,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- GIVEAWAY POPUP -->
 <div class="gw-bd" id="gw-bd" onclick="if(event.target===this)closeGiveaway('outside')">
   <div class="gw-md" role="dialog" aria-labelledby="gw-title" aria-modal="true">
-    <button class="gw-x" onclick="closeGiveaway('x')" aria-label="Close giveaway popup">
+    <button class="gw-x" onclick="closeGiveaway('x')" data-i18n-aria="gw_close_aria" aria-label="Close giveaway popup">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="gw-h">
-      <div class="gw-pill">Live giveaway</div>
+      <div class="gw-pill" data-i18n="gw_pill">Live giveaway</div>
       <h2 id="gw-title" class="gw-t" data-gw="title">Win a free <em>Apex Evaluation</em></h2>
       <p class="gw-s" data-gw="sub">3 accounts. Free entry. Your shot at funded.</p>
     </div>
@@ -4462,13 +4462,13 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <p class="gw-pr" data-gw="disclaimer"></p>
       <div class="gw-dl">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="gw-dl-l">Draw date</span>
+        <span class="gw-dl-l" data-i18n="gw_draw_date">Draw date</span>
         <span class="gw-dl-v" id="gw-date"></span>
       </div>
-      <h3 class="gw-st-t">How to enter</h3>
+      <h3 class="gw-st-t" data-i18n="gw_how_to_enter">How to enter</h3>
       <ol class="gw-sts" id="gw-steps"></ol>
-      <button class="gw-cta" id="gw-cta" onclick="giveawayCtaClick()">Sign up &amp; enter the giveaway</button>
-      <div class="gw-ft">100% free to enter · No purchase required<br><button onclick="closeGiveaway('later')">Maybe later</button></div>
+      <button class="gw-cta" id="gw-cta" onclick="giveawayCtaClick()" data-i18n="gw_cta">Sign up &amp; enter the giveaway</button>
+      <div class="gw-ft"><span data-i18n="gw_free_entry">100% free to enter · No purchase required</span><br><button onclick="closeGiveaway('later')" data-i18n="gw_maybe_later">Maybe later</button></div>
     </div>
   </div>
 </div>
