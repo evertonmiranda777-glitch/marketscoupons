@@ -83,15 +83,22 @@ firms.forEach(slug => {
   }));
 });
 
-// ── Compare pages (132) ──
+// ── Compare pages (132 PT + ate 132x6 traducoes) ──
 const compares = lsHtml('compare');
 compares.forEach(slug => {
-  entries.push(urlEntry({
-    loc: `${SITE}/${slug}`,
-    changefreq: 'weekly',
-    priority: '0.85',
-    alternates: [{ lang: 'pt-BR', url: `${SITE}/${slug}` }],
-  }));
+  const alts = [{ lang: 'pt-BR', url: `${SITE}/${slug}` }];
+  for (const lng of LANGS) {
+    if (fs.existsSync(path.join(ROOT, lng, 'compare', `${slug}.html`))) {
+      alts.push({ lang: lng, url: `${SITE}/${lng}/${slug}` });
+    }
+  }
+  alts.push({ lang: 'x-default', url: `${SITE}/${slug}` });
+  entries.push(urlEntry({ loc: `${SITE}/${slug}`, changefreq: 'weekly', priority: '0.85', alternates: alts }));
+  for (const lng of LANGS) {
+    if (fs.existsSync(path.join(ROOT, lng, 'compare', `${slug}.html`))) {
+      entries.push(urlEntry({ loc: `${SITE}/${lng}/${slug}`, changefreq: 'weekly', priority: '0.75', alternates: alts }));
+    }
+  }
 });
 
 // ── Guides (PT + EN como exemplos) ──
