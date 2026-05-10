@@ -16,30 +16,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Max avatar rotation — uma roupa por dia, ciclo determinístico (sem repetir até cobrir todo pool)
 var MAX_DAILY_AVATARS = [
-  'img/bot/Daily/max-bot-techbro-v2_1.png',
-  'img/bot/Daily/max-bot-streetwear-v5_1.png',
-  'img/bot/Daily/max-bot-techbro-v3_1.png',
-  'img/bot/Daily/max-bot-summer-v2_1.png',
-  'img/bot/Daily/max-bot-blazer_1.png',
-  'img/bot/Daily/max-bot-golf_1.png',
-  'img/bot/Daily/max-bot-varsity-v2_1.png',
-  'img/bot/Daily/max-bot-varsity-v3_2.png',
-  'img/bot/Daily/max-bot-hoodie-v4_2.png',
-  'img/bot/Daily/max-bot-techbro-cap_2.png'
+  '/img/bot/Daily/max-bot-techbro-v2_1.png',
+  '/img/bot/Daily/max-bot-streetwear-v5_1.png',
+  '/img/bot/Daily/max-bot-techbro-v3_1.png',
+  '/img/bot/Daily/max-bot-summer-v2_1.png',
+  '/img/bot/Daily/max-bot-blazer_1.png',
+  '/img/bot/Daily/max-bot-golf_1.png',
+  '/img/bot/Daily/max-bot-varsity-v2_1.png',
+  '/img/bot/Daily/max-bot-varsity-v3_2.png',
+  '/img/bot/Daily/max-bot-hoodie-v4_2.png',
+  '/img/bot/Daily/max-bot-techbro-cap_2.png'
 ];
 var MAX_PJ_AVATARS = [
-  'img/bot/Pj/max-bot-hulk_1.png',
-  'img/bot/Pj/max-bot-spidey_1.png',
-  'img/bot/Pj/max-bot-prada_1.png',
-  'img/bot/Pj/max-bot-gucci-v2_1.png',
-  'img/bot/Pj/max-bot-lv-v2_1.png',
-  'img/bot/Pj/max-bot-lacoste-v4_1.png',
-  'img/bot/Pj/max-bot-hulk-pj_1.png',
-  'img/bot/Pj/max-bot-hulk-tee_1.png',
-  'img/bot/Pj/max-bot-spidey-suit-v3_1.png',
-  'img/bot/Pj/max-bot-spidey-pj-cream-v5_2.png',
-  'img/bot/Pj/max-bot-sulley-pj_1.png',
-  'img/bot/Pj/max-bot-mike-pj_1.png'
+  '/img/bot/Pj/max-bot-hulk_1.png',
+  '/img/bot/Pj/max-bot-spidey_1.png',
+  '/img/bot/Pj/max-bot-prada_1.png',
+  '/img/bot/Pj/max-bot-gucci-v2_1.png',
+  '/img/bot/Pj/max-bot-lv-v2_1.png',
+  '/img/bot/Pj/max-bot-lacoste-v4_1.png',
+  '/img/bot/Pj/max-bot-hulk-pj_1.png',
+  '/img/bot/Pj/max-bot-hulk-tee_1.png',
+  '/img/bot/Pj/max-bot-spidey-suit-v3_1.png',
+  '/img/bot/Pj/max-bot-spidey-pj-cream-v5_2.png',
+  '/img/bot/Pj/max-bot-sulley-pj_1.png',
+  '/img/bot/Pj/max-bot-mike-pj_1.png'
 ];
 function pickMaxAvatar() {
   var now = new Date();
