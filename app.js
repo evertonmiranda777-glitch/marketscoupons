@@ -2377,7 +2377,7 @@ async function renderBlog(){
 
     try {
       const {data} = await db.from('blog_posts')
-        .select('slug,title,excerpt,level,category,created_at,read_time,lang,article_group')
+        .select('slug,title,excerpt,level,category,created_at,read_time,lang,article_group,cover_url')
         .eq('lang', curLang)
         .eq('active', true)
         .order('created_at',{ascending:false});
