@@ -11,6 +11,8 @@
 
 **Codewords:** "stop" / "preguiça" → para tudo, confessa o que cortou, refaz.
 
+**REGRA DURA pós-deploy (2026-05-10):** SQL retornar OK ≠ feature funcionando. SEMPRE abrir URL renderizada via `curl -s 'site.com/path?v=$(date +%s)'` ou Playwright (`mcp__playwright__browser_navigate` + `browser_evaluate`) ANTES de declarar pronto. Bug `cover_url` faltando no SELECT seria pego em 1 curl — não foi.
+
 ## Visão geral
 
 Site de cupons de **prop firms** de trading. Compara firmas, oferece cupons, fidelidade, blog, guias, calculadoras, análise diária. Deploy estático no Vercel.
@@ -113,6 +115,28 @@ Mudança visual significativa = preview HTML standalone em `data/preview/<featur
 
 ### Validate-email — fallback permissivo
 `validateEmailMx()` em app.js retorna `{valid:true}` em erro de rede/500. Melhor aceitar email duvidoso ocasional do que bloquear todos por infra própria. Conectado em `doAuthSignup` antes do `db.auth.signUp` — bloqueia disposable/no_mx/invalid_format com mensagens i18n por reason (`ve_*`).
+
+### URLs absolutas obrigatórias (canônico 2026-05-10)
+TODO asset path deve ter `/` prefix. **NUNCA** `'img/X'`, `'fonts/X'`, `src="app.js"`. Sempre `'/img/X'`, `'/fonts/X'`, `src="/app.js"`. Em `/es/blog` ou qualquer `/<lang>/path`, browser resolve relativo como `/es/img/X` = 404 → site quebra. Aplica em: index.html, app.js, i18n.js, js/*.js, cms_firms.icon_url/bg_image, blog_posts.cover_url.
+
+### Compare pages multi-lang (canônico 2026-05-10)
+- 132 PT em `/compare/X-vs-Y.html` (root URL `/X-vs-Y`)
+- 6 langs em `/<lang>/compare/X-vs-Y.html` (URL `/<lang>/X-vs-Y`)
+- vercel.json: route `/(en|es|fr|de|it|ar)/(firm)-vs-(firm)` → `/<lang>/compare/X-vs-Y.html`
+- Total 924 paginas. Sitemap inclui hreflang completo.
+- Re-traduzir: `node scripts/translate-compare-pages.mjs <lang>` (paralelo, Vertex AI Gemini)
+
+### blog_posts schema (canônico 2026-05-10)
+- UNIQUE constraint mudou de `(slug)` pra `(slug, lang)` — permite mesmo slug em N idiomas
+- `cover_url` HÁ DE estar no SELECT do front (app.js:2380). Sem ele, blog cards caem em SVG fallback.
+- 70 artigos = 10 PT × 7 langs. Heros em `/img/blog-heros/SLUG.jpg` (não Supabase storage).
+
+### Vertex AI Gemini pra texto (canônico 2026-05-10)
+- Endpoint: `https://aiplatform.googleapis.com/v1/publishers/google/models/{model}:generateContent?key={KEY}`
+- REQUER `contents:[{role:'user', parts:[{text:'...'}]}]`
+- Funciona MESMO com `generativelanguage.googleapis.com` bloqueado (memória `hardening_2026_04_27`)
+- Modelos: `gemini-2.5-flash` (rápido, 60s/30k chars), `gemini-2.5-pro` (artigos longos com chunking, mais lento)
+- Custo: ~$0.50 / 60 traduções de 20k chars
 
 ### Tracking — code-primary (NÃO mexer sem ler tudo)
 GA4 (`G-CZ3L00NY77`) + FB Pixel (`813048241061812`) carregados direto no `loadTracking()`. GTM **DESATIVADO** desde 2026-04-12 (sobrescrevia `window.gtag`). `track(event, params)` em app.js = fonte única → Supabase `events` + dataLayer + `gtag()` direto + `fbq()` direto + Facebook CAPI server-side. Todos com `event_id` UUID pra dedupe. NUNCA chamar gtag/fbq direto sem `track()`. Funil 4 etapas (firmas): firm_detail_open → coupon_copy → checkout_click → Lead. Spy: `?spy=1`.
