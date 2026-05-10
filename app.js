@@ -663,10 +663,10 @@ const FIRMS=[];
 
 /* ═══ FIRM DETAIL — Background images & About data ═══ */
 const FIRM_BG={
-  apex:'img/apex-bg.webp',bulenox:'img/bulenox-bg.webp',ftmo:'img/ftmo-bg.webp',
-  tpt:'img/tpt-bg.webp',fn:'img/fn-bg.webp',e2t:'img/e2t-bg.webp',
-  the5ers:'img/the5ers-bg.webp',fundingpips:'img/fundingpips-bg.webp',brightfunded:'img/brightfunded-bg.webp',
-  e8:'img/e8-bg.jpeg',cti:'img/cti-bg.jpeg',tradeday:'img/tradeday-bg.png'
+  apex:'/img/apex-bg.webp',bulenox:'/img/bulenox-bg.webp',ftmo:'/img/ftmo-bg.webp',
+  tpt:'/img/tpt-bg.webp',fn:'/img/fn-bg.webp',e2t:'/img/e2t-bg.webp',
+  the5ers:'/img/the5ers-bg.webp',fundingpips:'/img/fundingpips-bg.webp',brightfunded:'/img/brightfunded-bg.webp',
+  e8:'/img/e8-bg.jpeg',cti:'/img/cti-bg.jpeg',tradeday:'/img/tradeday-bg.png'
 };
 const FIRM_ABOUT={
   apex:{about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
@@ -710,8 +710,8 @@ const FIRM_ABOUT={
 
 /* PLATFORM DETAIL DATA — checkout overlay for partner platforms */
 const PLAT_BG={
-  tradingview:'img/tradingview-bg.webp',
-  ninjatrader:'img/ninjatrader-bg.webp'
+  tradingview:'/img/tradingview-bg.webp',
+  ninjatrader:'/img/ninjatrader-bg.webp'
 };
 const PLAT_DETAIL={
   tradingview:{
@@ -2403,55 +2403,55 @@ function _renderBlogGrid(){
 
 // Capas SVG unicas por tema (match parcial no slug)
 const _BLOG_COVER_MAP = [
-  ['wyckoff',        'img/blog/wyckoff.svg'],
-  ['elliott',        'img/blog/elliott.svg'],
-  ['ondas',          'img/blog/elliott.svg'],
-  ['vagues',         'img/blog/elliott.svg'],
-  ['wellen',         'img/blog/elliott.svg'],
-  ['fibonacci',      'img/blog/fibonacci.svg'],
-  ['volume-pre',     'img/blog/vpa.svg'],
-  ['anna-coulling',  'img/blog/vpa.svg'],
-  ['volumen-preis',  'img/blog/vpa.svg'],
-  ['analyse-volume', 'img/blog/vpa.svg'],
-  ['analisis-volumen','img/blog/vpa.svg'],
-  ['analisi-volume', 'img/blog/vpa.svg'],
-  ['drawdown',       'img/blog/drawdown.svg'],
-  ['trailing',       'img/blog/drawdown.svg'],
-  ['risco',          'img/blog/risk-management.svg'],
-  ['risk',           'img/blog/risk-management.svg'],
-  ['risiko',         'img/blog/risk-management.svg'],
-  ['risque',         'img/blog/risk-management.svg'],
-  ['gestion-riesgo', 'img/blog/risk-management.svg'],
-  ['gestione-rischio','img/blog/risk-management.svg'],
-  ['gerenciamento',  'img/blog/risk-management.svg'],
-  ['gestao-de-risco','img/blog/risk-management.svg'],
-  ['melhores-prop',  'img/blog/best-prop-firms.svg'],
-  ['mejores-prop',   'img/blog/best-prop-firms.svg'],
-  ['best-prop',      'img/blog/best-prop-firms.svg'],
-  ['meilleures-prop','img/blog/best-prop-firms.svg'],
-  ['beste-prop',     'img/blog/best-prop-firms.svg'],
-  ['migliori-prop',  'img/blog/best-prop-firms.svg'],
-  ['como-passar-avaliacao','img/blog/how-to-pass.svg'],
-  ['how-to-pass',    'img/blog/how-to-pass.svg'],
-  ['como-pasar',     'img/blog/how-to-pass.svg'],
-  ['reussir',        'img/blog/how-to-pass.svg'],
-  ['bewertung',      'img/blog/how-to-pass.svg'],
-  ['superare',       'img/blog/how-to-pass.svg'],
-  ['sua-primeira',   'img/blog/first-prop-firm.svg'],
-  ['desafio-10',     'img/blog/challenge-10-days.svg'],
-  ['como-passar-desafio','img/blog/challenge-10-days.svg'],
-  ['multi-account',  'img/blog/multi-account.svg'],
-  ['scaling',        'img/blog/scaling.svg'],
-  ['50k-para-300k',  'img/blog/scaling.svg'],
-  ['operando-3',     'img/blog/multi-desk.svg'],
-  ['fiscal',         'img/blog/tax.svg'],
+  ['wyckoff',        '/img/blog/wyckoff.svg'],
+  ['elliott',        '/img/blog/elliott.svg'],
+  ['ondas',          '/img/blog/elliott.svg'],
+  ['vagues',         '/img/blog/elliott.svg'],
+  ['wellen',         '/img/blog/elliott.svg'],
+  ['fibonacci',      '/img/blog/fibonacci.svg'],
+  ['volume-pre',     '/img/blog/vpa.svg'],
+  ['anna-coulling',  '/img/blog/vpa.svg'],
+  ['volumen-preis',  '/img/blog/vpa.svg'],
+  ['analyse-volume', '/img/blog/vpa.svg'],
+  ['analisis-volumen','/img/blog/vpa.svg'],
+  ['analisi-volume', '/img/blog/vpa.svg'],
+  ['drawdown',       '/img/blog/drawdown.svg'],
+  ['trailing',       '/img/blog/drawdown.svg'],
+  ['risco',          '/img/blog/risk-management.svg'],
+  ['risk',           '/img/blog/risk-management.svg'],
+  ['risiko',         '/img/blog/risk-management.svg'],
+  ['risque',         '/img/blog/risk-management.svg'],
+  ['gestion-riesgo', '/img/blog/risk-management.svg'],
+  ['gestione-rischio','/img/blog/risk-management.svg'],
+  ['gerenciamento',  '/img/blog/risk-management.svg'],
+  ['gestao-de-risco','/img/blog/risk-management.svg'],
+  ['melhores-prop',  '/img/blog/best-prop-firms.svg'],
+  ['mejores-prop',   '/img/blog/best-prop-firms.svg'],
+  ['best-prop',      '/img/blog/best-prop-firms.svg'],
+  ['meilleures-prop','/img/blog/best-prop-firms.svg'],
+  ['beste-prop',     '/img/blog/best-prop-firms.svg'],
+  ['migliori-prop',  '/img/blog/best-prop-firms.svg'],
+  ['como-passar-avaliacao','/img/blog/how-to-pass.svg'],
+  ['how-to-pass',    '/img/blog/how-to-pass.svg'],
+  ['como-pasar',     '/img/blog/how-to-pass.svg'],
+  ['reussir',        '/img/blog/how-to-pass.svg'],
+  ['bewertung',      '/img/blog/how-to-pass.svg'],
+  ['superare',       '/img/blog/how-to-pass.svg'],
+  ['sua-primeira',   '/img/blog/first-prop-firm.svg'],
+  ['desafio-10',     '/img/blog/challenge-10-days.svg'],
+  ['como-passar-desafio','/img/blog/challenge-10-days.svg'],
+  ['multi-account',  '/img/blog/multi-account.svg'],
+  ['scaling',        '/img/blog/scaling.svg'],
+  ['50k-para-300k',  '/img/blog/scaling.svg'],
+  ['operando-3',     '/img/blog/multi-desk.svg'],
+  ['fiscal',         '/img/blog/tax.svg'],
 ];
 
 function _getBlogCoverImg(slug){
   for(const [key, img] of _BLOG_COVER_MAP){
     if(slug.includes(key)) return img;
   }
-  return 'img/blog/wyckoff.svg';
+  return '/img/blog/wyckoff.svg';
 }
 
 function _renderBlogCards(g, posts){
@@ -4483,7 +4483,7 @@ function qreset(){qA={};qStep=0;renderQuiz();track('quiz_reset');}
 const PLATFORMS_LANGS = {
   pt: [
     {
-      id: 'tradingview', name: 'TradingView', icon_url: 'img/Plataformas/icone tradingview.png', type: 'Gráficos & Análise',
+      id: 'tradingview', name: 'TradingView', icon_url: '/img/Plataformas/icone tradingview.png', type: 'Gráficos & Análise',
       color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
       discount: 17, dtype: 'plano anual', coupon: null,
       link: 'https://tradingview.com/?aff_id=164855',
@@ -4492,7 +4492,7 @@ const PLATFORMS_LANGS = {
       highlight: true, badge: '17% OFF Anual',
     },
     {
-      id: 'rithmic', name: 'Rithmic', icon_url: 'img/Plataformas/icone rithmic.png', type: 'Execução de Ordens',
+      id: 'rithmic', name: 'Rithmic', icon_url: '/img/Plataformas/icone rithmic.png', type: 'Execução de Ordens',
       color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
       discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
       desc: 'Feed de dados e execução de ordens de baixa latência para futuros. Padrão da indústria de prop firms (Apex, Bulenox, E2T).',
@@ -4500,7 +4500,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Padrão Prop Firms',
     },
     {
-      id: 'ninjatrader', name: 'NinjaTrader', icon_url: 'img/Plataformas/icone ninjatrader.png', type: 'Plataforma de Trading',
+      id: 'ninjatrader', name: 'NinjaTrader', icon_url: '/img/Plataformas/icone ninjatrader.png', type: 'Plataforma de Trading',
       color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
       discount: 0, dtype: '', coupon: null, link: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
       desc: 'Plataforma gratuita para futuros com backtesting avançado, automação e marketplace de indicadores. Aceita pela maioria das prop firms.',
@@ -4508,7 +4508,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Grátis disponível',
     },
     {
-      id: 'tradovate', name: 'Tradovate', icon_url: 'img/Plataformas/tradovate.png', type: 'Plataforma de Trading',
+      id: 'tradovate', name: 'Tradovate', icon_url: '/img/Plataformas/tradovate.png', type: 'Plataforma de Trading',
       color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
       discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
       desc: 'Plataforma baseada em nuvem para futuros. Excelente interface, dados integrados e suporte a múltiplos dispositivos.',
@@ -4516,7 +4516,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Cloud-based',
     },
     {
-      id: 'mt5', name: 'MetaTrader 5', icon_url: 'img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
+      id: 'mt5', name: 'MetaTrader 5', icon_url: '/img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
       color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
       discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
       desc: 'Plataforma padrão do mercado Forex. Indicadores técnicos, EAs, backtesting e suporte à maioria das prop firms de Forex.',
@@ -4524,7 +4524,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Padrão Forex',
     },
     {
-      id: 'wealthcharts', name: 'WealthCharts', icon_url: 'img/Plataformas/icone wealthcharts.png', type: 'Gráficos & Análise',
+      id: 'wealthcharts', name: 'WealthCharts', icon_url: '/img/Plataformas/icone wealthcharts.png', type: 'Gráficos & Análise',
       color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
       discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
       desc: 'Plataforma de gráficos e análise usada pela Apex Trader Funding. Copy trading, indicadores de order flow e análise de mercado.',
@@ -4534,7 +4534,7 @@ const PLATFORMS_LANGS = {
   ],
   en: [
     {
-      id: 'tradingview', name: 'TradingView', icon_url: 'img/Plataformas/icone tradingview.png', type: 'Charts & Analysis',
+      id: 'tradingview', name: 'TradingView', icon_url: '/img/Plataformas/icone tradingview.png', type: 'Charts & Analysis',
       color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
       discount: 17, dtype: 'annual plan', coupon: null,
       link: 'https://tradingview.com/?aff_id=164855',
@@ -4543,7 +4543,7 @@ const PLATFORMS_LANGS = {
       highlight: true, badge: '17% OFF Annual',
     },
     {
-      id: 'rithmic', name: 'Rithmic', icon_url: 'img/Plataformas/icone rithmic.png', type: 'Order Execution',
+      id: 'rithmic', name: 'Rithmic', icon_url: '/img/Plataformas/icone rithmic.png', type: 'Order Execution',
       color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
       discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
       desc: 'Low-latency data feed and order execution for futures. Industry standard for prop firms (Apex, Bulenox, E2T).',
@@ -4551,7 +4551,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Prop Firms Standard',
     },
     {
-      id: 'ninjatrader', name: 'NinjaTrader', icon_url: 'img/Plataformas/icone ninjatrader.png', type: 'Trading Platform',
+      id: 'ninjatrader', name: 'NinjaTrader', icon_url: '/img/Plataformas/icone ninjatrader.png', type: 'Trading Platform',
       color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
       discount: 0, dtype: '', coupon: null, link: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
       desc: 'Free futures platform with advanced backtesting, automation and indicators marketplace. Accepted by most prop firms.',
@@ -4559,7 +4559,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Free available',
     },
     {
-      id: 'tradovate', name: 'Tradovate', icon_url: 'img/Plataformas/tradovate.png', type: 'Trading Platform',
+      id: 'tradovate', name: 'Tradovate', icon_url: '/img/Plataformas/tradovate.png', type: 'Trading Platform',
       color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
       discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
       desc: 'Cloud-based futures platform. Excellent interface, integrated data and multi-device support.',
@@ -4567,7 +4567,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Cloud-based',
     },
     {
-      id: 'mt5', name: 'MetaTrader 5', icon_url: 'img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
+      id: 'mt5', name: 'MetaTrader 5', icon_url: '/img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
       color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
       discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
       desc: 'Standard Forex market platform. Technical indicators, EAs, backtesting and support for most Forex prop firms.',
@@ -4575,7 +4575,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Forex Standard',
     },
     {
-      id: 'wealthcharts', name: 'WealthCharts', icon_url: 'img/Plataformas/icone wealthcharts.png', type: 'Charts & Analysis',
+      id: 'wealthcharts', name: 'WealthCharts', icon_url: '/img/Plataformas/icone wealthcharts.png', type: 'Charts & Analysis',
       color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
       discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
       desc: 'Charting and analysis platform used by Apex Trader Funding. Copy trading, order flow indicators and market analysis.',
@@ -4585,7 +4585,7 @@ const PLATFORMS_LANGS = {
   ],
   es: [
     {
-      id: 'tradingview', name: 'TradingView', icon_url: 'img/Plataformas/icone tradingview.png', type: 'Gráficos & Análisis',
+      id: 'tradingview', name: 'TradingView', icon_url: '/img/Plataformas/icone tradingview.png', type: 'Gráficos & Análisis',
       color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
       discount: 17, dtype: 'plan anual', coupon: null,
       link: 'https://tradingview.com/?aff_id=164855',
@@ -4594,7 +4594,7 @@ const PLATFORMS_LANGS = {
       highlight: true, badge: '17% OFF Anual',
     },
     {
-      id: 'rithmic', name: 'Rithmic', icon_url: 'img/Plataformas/icone rithmic.png', type: 'Ejecución de Órdenes',
+      id: 'rithmic', name: 'Rithmic', icon_url: '/img/Plataformas/icone rithmic.png', type: 'Ejecución de Órdenes',
       color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
       discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
       desc: 'Feed de datos y ejecución de órdenes de baja latencia para futuros. Estándar de la industria de prop firms.',
@@ -4602,7 +4602,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Estándar Prop Firms',
     },
     {
-      id: 'ninjatrader', name: 'NinjaTrader', icon_url: 'img/Plataformas/icone ninjatrader.png', type: 'Plataforma de Trading',
+      id: 'ninjatrader', name: 'NinjaTrader', icon_url: '/img/Plataformas/icone ninjatrader.png', type: 'Plataforma de Trading',
       color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
       discount: 0, dtype: '', coupon: null, link: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
       desc: 'Plataforma gratuita para futuros con backtesting avanzado, automatización y marketplace de indicadores.',
@@ -4610,7 +4610,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Gratis disponible',
     },
     {
-      id: 'tradovate', name: 'Tradovate', icon_url: 'img/Plataformas/tradovate.png', type: 'Plataforma de Trading',
+      id: 'tradovate', name: 'Tradovate', icon_url: '/img/Plataformas/tradovate.png', type: 'Plataforma de Trading',
       color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
       discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
       desc: 'Plataforma en la nube para futuros. Excelente interfaz, datos integrados y soporte multi-dispositivo.',
@@ -4618,7 +4618,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Cloud-based',
     },
     {
-      id: 'mt5', name: 'MetaTrader 5', icon_url: 'img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
+      id: 'mt5', name: 'MetaTrader 5', icon_url: '/img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
       color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
       discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
       desc: 'Plataforma estándar del mercado Forex. Indicadores técnicos, EAs, backtesting y soporte para prop firms de Forex.',
@@ -4626,7 +4626,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Estándar Forex',
     },
     {
-      id: 'wealthcharts', name: 'WealthCharts', icon_url: 'img/Plataformas/icone wealthcharts.png', type: 'Gráficos & Análisis',
+      id: 'wealthcharts', name: 'WealthCharts', icon_url: '/img/Plataformas/icone wealthcharts.png', type: 'Gráficos & Análisis',
       color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
       discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
       desc: 'Plataforma de gráficos y análisis usada por Apex. Copy trading, indicadores de order flow y análisis de mercado.',
@@ -4636,7 +4636,7 @@ const PLATFORMS_LANGS = {
   ],
   it: [
     {
-      id: 'tradingview', name: 'TradingView', icon_url: 'img/Plataformas/icone tradingview.png', type: 'Grafici & Analisi',
+      id: 'tradingview', name: 'TradingView', icon_url: '/img/Plataformas/icone tradingview.png', type: 'Grafici & Analisi',
       color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
       discount: 17, dtype: 'piano annuale', coupon: null,
       link: 'https://tradingview.com/?aff_id=164855',
@@ -4645,7 +4645,7 @@ const PLATFORMS_LANGS = {
       highlight: true, badge: '17% OFF Annuale',
     },
     {
-      id: 'rithmic', name: 'Rithmic', icon_url: 'img/Plataformas/icone rithmic.png', type: 'Esecuzione Ordini',
+      id: 'rithmic', name: 'Rithmic', icon_url: '/img/Plataformas/icone rithmic.png', type: 'Esecuzione Ordini',
       color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
       discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
       desc: 'Feed dati ed esecuzione ordini a bassa latenza per futures. Standard del settore prop firm.',
@@ -4653,7 +4653,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Standard Prop Firms',
     },
     {
-      id: 'ninjatrader', name: 'NinjaTrader', icon_url: 'img/Plataformas/icone ninjatrader.png', type: 'Piattaforma di Trading',
+      id: 'ninjatrader', name: 'NinjaTrader', icon_url: '/img/Plataformas/icone ninjatrader.png', type: 'Piattaforma di Trading',
       color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
       discount: 0, dtype: '', coupon: null, link: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
       desc: 'Piattaforma gratuita per futures con backtesting avanzato, automazione e marketplace di indicatori.',
@@ -4661,7 +4661,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Gratis disponibile',
     },
     {
-      id: 'tradovate', name: 'Tradovate', icon_url: 'img/Plataformas/tradovate.png', type: 'Piattaforma di Trading',
+      id: 'tradovate', name: 'Tradovate', icon_url: '/img/Plataformas/tradovate.png', type: 'Piattaforma di Trading',
       color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
       discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
       desc: 'Piattaforma cloud per futures. Eccellente interfaccia, dati integrati e supporto multi-dispositivo.',
@@ -4669,7 +4669,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Cloud-based',
     },
     {
-      id: 'mt5', name: 'MetaTrader 5', icon_url: 'img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
+      id: 'mt5', name: 'MetaTrader 5', icon_url: '/img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
       color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
       discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
       desc: 'Piattaforma standard del mercato Forex. Indicatori tecnici, EA, backtesting e supporto per prop firm Forex.',
@@ -4677,7 +4677,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Standard Forex',
     },
     {
-      id: 'wealthcharts', name: 'WealthCharts', icon_url: 'img/Plataformas/icone wealthcharts.png', type: 'Grafici & Analisi',
+      id: 'wealthcharts', name: 'WealthCharts', icon_url: '/img/Plataformas/icone wealthcharts.png', type: 'Grafici & Analisi',
       color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
       discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
       desc: 'Piattaforma di grafici e analisi usata da Apex. Copy trading, indicatori di order flow e analisi di mercato.',
@@ -4687,7 +4687,7 @@ const PLATFORMS_LANGS = {
   ],
   fr: [
     {
-      id: 'tradingview', name: 'TradingView', icon_url: 'img/Plataformas/icone tradingview.png', type: 'Graphiques & Analyse',
+      id: 'tradingview', name: 'TradingView', icon_url: '/img/Plataformas/icone tradingview.png', type: 'Graphiques & Analyse',
       color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
       discount: 17, dtype: 'plan annuel', coupon: null,
       link: 'https://tradingview.com/?aff_id=164855',
@@ -4696,7 +4696,7 @@ const PLATFORMS_LANGS = {
       highlight: true, badge: '17% OFF Annuel',
     },
     {
-      id: 'rithmic', name: 'Rithmic', icon_url: 'img/Plataformas/icone rithmic.png', type: 'Exécution d\'Ordres',
+      id: 'rithmic', name: 'Rithmic', icon_url: '/img/Plataformas/icone rithmic.png', type: 'Exécution d\'Ordres',
       color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
       discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
       desc: 'Flux de données et exécution d\'ordres à faible latence pour les futures. Standard de l\'industrie des prop firms.',
@@ -4704,7 +4704,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Standard Prop Firms',
     },
     {
-      id: 'ninjatrader', name: 'NinjaTrader', icon_url: 'img/Plataformas/icone ninjatrader.png', type: 'Plateforme de Trading',
+      id: 'ninjatrader', name: 'NinjaTrader', icon_url: '/img/Plataformas/icone ninjatrader.png', type: 'Plateforme de Trading',
       color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
       discount: 0, dtype: '', coupon: null, link: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
       desc: 'Plateforme gratuite pour les futures avec backtesting avancé, automatisation et marketplace d\'indicateurs.',
@@ -4712,7 +4712,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Gratuit disponible',
     },
     {
-      id: 'tradovate', name: 'Tradovate', icon_url: 'img/Plataformas/tradovate.png', type: 'Plateforme de Trading',
+      id: 'tradovate', name: 'Tradovate', icon_url: '/img/Plataformas/tradovate.png', type: 'Plateforme de Trading',
       color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
       discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
       desc: 'Plateforme cloud pour les futures. Excellente interface, données intégrées et support multi-appareils.',
@@ -4720,7 +4720,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Cloud-based',
     },
     {
-      id: 'mt5', name: 'MetaTrader 5', icon_url: 'img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
+      id: 'mt5', name: 'MetaTrader 5', icon_url: '/img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
       color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
       discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
       desc: 'Plateforme standard du marché Forex. Indicateurs techniques, EAs, backtesting et support pour les prop firms Forex.',
@@ -4728,7 +4728,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Standard Forex',
     },
     {
-      id: 'wealthcharts', name: 'WealthCharts', icon_url: 'img/Plataformas/icone wealthcharts.png', type: 'Graphiques & Analyse',
+      id: 'wealthcharts', name: 'WealthCharts', icon_url: '/img/Plataformas/icone wealthcharts.png', type: 'Graphiques & Analyse',
       color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
       discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
       desc: 'Plateforme de graphiques et d\'analyse utilisée par Apex. Copy trading, indicateurs de flux d\'ordres et analyse de marché.',
@@ -4738,7 +4738,7 @@ const PLATFORMS_LANGS = {
   ],
   de: [
     {
-      id: 'tradingview', name: 'TradingView', icon_url: 'img/Plataformas/icone tradingview.png', type: 'Charts & Analyse',
+      id: 'tradingview', name: 'TradingView', icon_url: '/img/Plataformas/icone tradingview.png', type: 'Charts & Analyse',
       color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
       discount: 17, dtype: 'Jahresplan', coupon: null,
       link: 'https://tradingview.com/?aff_id=164855',
@@ -4747,7 +4747,7 @@ const PLATFORMS_LANGS = {
       highlight: true, badge: '17% RABATT Jährlich',
     },
     {
-      id: 'rithmic', name: 'Rithmic', icon_url: 'img/Plataformas/icone rithmic.png', type: 'Orderausführung',
+      id: 'rithmic', name: 'Rithmic', icon_url: '/img/Plataformas/icone rithmic.png', type: 'Orderausführung',
       color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
       discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
       desc: 'Niedriglatenz-Datenfeed und Orderausführung für Futures. Branchenstandard für Prop Firms.',
@@ -4755,7 +4755,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Prop Firms Standard',
     },
     {
-      id: 'ninjatrader', name: 'NinjaTrader', icon_url: 'img/Plataformas/icone ninjatrader.png', type: 'Trading-Plattform',
+      id: 'ninjatrader', name: 'NinjaTrader', icon_url: '/img/Plataformas/icone ninjatrader.png', type: 'Trading-Plattform',
       color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
       discount: 0, dtype: '', coupon: null, link: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
       desc: 'Kostenlose Futures-Plattform mit erweitertem Backtesting, Automatisierung und Indikator-Marktplatz.',
@@ -4763,7 +4763,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Kostenlos verfügbar',
     },
     {
-      id: 'tradovate', name: 'Tradovate', icon_url: 'img/Plataformas/tradovate.png', type: 'Trading-Plattform',
+      id: 'tradovate', name: 'Tradovate', icon_url: '/img/Plataformas/tradovate.png', type: 'Trading-Plattform',
       color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
       discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
       desc: 'Cloud-basierte Futures-Plattform. Exzellente Benutzeroberfläche, integrierte Daten und Multi-Device-Support.',
@@ -4771,7 +4771,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Cloud-based',
     },
     {
-      id: 'mt5', name: 'MetaTrader 5', icon_url: 'img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
+      id: 'mt5', name: 'MetaTrader 5', icon_url: '/img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
       color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
       discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
       desc: 'Standard-Forex-Marktplattform. Technische Indikatoren, EAs, Backtesting und Unterstützung für Forex-Prop-Firms.',
@@ -4779,7 +4779,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Forex-Standard',
     },
     {
-      id: 'wealthcharts', name: 'WealthCharts', icon_url: 'img/Plataformas/icone wealthcharts.png', type: 'Charts & Analyse',
+      id: 'wealthcharts', name: 'WealthCharts', icon_url: '/img/Plataformas/icone wealthcharts.png', type: 'Charts & Analyse',
       color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
       discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
       desc: 'Chart- und Analyseplattform von Apex Trader Funding. Copy Trading, Order-Flow-Indikatoren und Marktanalyse.',
@@ -4789,7 +4789,7 @@ const PLATFORMS_LANGS = {
   ],
   ar: [
     {
-      id: 'tradingview', name: 'TradingView', icon_url: 'img/Plataformas/icone tradingview.png', type: 'الرسوم البيانية والتحليل',
+      id: 'tradingview', name: 'TradingView', icon_url: '/img/Plataformas/icone tradingview.png', type: 'الرسوم البيانية والتحليل',
       color: '#2962FF', bg: 'rgba(41,98,255,0.12)', icon: 'TV',
       discount: 17, dtype: 'خطة سنوية', coupon: null,
       link: 'https://tradingview.com/?aff_id=164855',
@@ -4798,7 +4798,7 @@ const PLATFORMS_LANGS = {
       highlight: true, badge: '17% خصم سنوي',
     },
     {
-      id: 'rithmic', name: 'Rithmic', icon_url: 'img/Plataformas/icone rithmic.png', type: 'تنفيذ الأوامر',
+      id: 'rithmic', name: 'Rithmic', icon_url: '/img/Plataformas/icone rithmic.png', type: 'تنفيذ الأوامر',
       color: '#F97316', bg: 'rgba(249,115,22,0.12)', icon: 'R',
       discount: 0, dtype: '', coupon: null, link: 'https://rithmic.com',
       desc: 'تغذية بيانات وتنفيذ أوامر منخفض الكمون للعقود الآجلة. معيار صناعة شركات Prop.',
@@ -4806,7 +4806,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'معيار Prop Firms',
     },
     {
-      id: 'ninjatrader', name: 'NinjaTrader', icon_url: 'img/Plataformas/icone ninjatrader.png', type: 'منصة تداول',
+      id: 'ninjatrader', name: 'NinjaTrader', icon_url: '/img/Plataformas/icone ninjatrader.png', type: 'منصة تداول',
       color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', icon: 'NT',
       discount: 0, dtype: '', coupon: null, link: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
       desc: 'منصة مجانية للعقود الآجلة مع اختبار متقدم وأتمتة وسوق مؤشرات.',
@@ -4814,7 +4814,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'متاح مجاناً',
     },
     {
-      id: 'tradovate', name: 'Tradovate', icon_url: 'img/Plataformas/tradovate.png', type: 'منصة تداول',
+      id: 'tradovate', name: 'Tradovate', icon_url: '/img/Plataformas/tradovate.png', type: 'منصة تداول',
       color: '#06B6D4', bg: 'rgba(6,182,212,0.12)', icon: 'TV',
       discount: 0, dtype: '', coupon: null, link: 'https://tradovate.com',
       desc: 'منصة سحابية للعقود الآجلة. واجهة ممتازة وبيانات متكاملة ودعم متعدد الأجهزة.',
@@ -4822,7 +4822,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'Cloud-based',
     },
     {
-      id: 'mt5', name: 'MetaTrader 5', icon_url: 'img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
+      id: 'mt5', name: 'MetaTrader 5', icon_url: '/img/Plataformas/icone mt5.png', type: 'Forex & CFDs',
       color: '#22C55E', bg: 'rgba(34,197,94,0.12)', icon: 'M5',
       discount: 0, dtype: '', coupon: null, link: 'https://metatrader5.com',
       desc: 'منصة السوق الفوركسي القياسية. مؤشرات تقنية وEAs واختبار وسطاء Prop Forex.',
@@ -4830,7 +4830,7 @@ const PLATFORMS_LANGS = {
       highlight: false, badge: 'معيار فوركس',
     },
     {
-      id: 'wealthcharts', name: 'WealthCharts', icon_url: 'img/Plataformas/icone wealthcharts.png', type: 'الرسوم البيانية والتحليل',
+      id: 'wealthcharts', name: 'WealthCharts', icon_url: '/img/Plataformas/icone wealthcharts.png', type: 'الرسوم البيانية والتحليل',
       color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: 'WC',
       discount: 0, dtype: '', coupon: null, link: 'https://wealthcharts.com',
       desc: 'منصة رسوم بيانية وتحليل تستخدمها Apex. تداول نسخ ومؤشرات تدفق الأوامر وتحليل السوق.',
@@ -6579,8 +6579,8 @@ let _authReadyPromise = null;
 let _userHasAccess = false; // cached: user has pro access (sub, loyalty, vip, trial)
 let _authGroup = 'login';
 let _authSlide = 0;
-const _authLoginBgs = ['img/auth-bg-1.webp','img/auth-bg-4.webp','img/auth-bg-3.webp','img/auth-bg-2.webp'];
-const _authSignupBgs = ['img/auth-bg-5.webp','img/auth-bg-6.webp','img/auth-bg-7.webp','img/auth-bg-8.webp','img/auth-bg-5.webp'];
+const _authLoginBgs = ['/img/auth-bg-1.webp','/img/auth-bg-4.webp','/img/auth-bg-3.webp','/img/auth-bg-2.webp'];
+const _authSignupBgs = ['/img/auth-bg-5.webp','/img/auth-bg-6.webp','/img/auth-bg-7.webp','/img/auth-bg-8.webp','/img/auth-bg-5.webp'];
 
 function openAuthModal(type) {
   closeAuthModals();
