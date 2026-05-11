@@ -679,7 +679,7 @@ const FIRM_ABOUT={
     types:['1-Step Challenge','2-Step Challenge'],plans:{'1-Step Challenge':[{s:'10K',d:'€79',o:'—'},{s:'25K',d:'€199',o:'—'},{s:'50K',d:'€319',o:'—'},{s:'100K',d:'€499',o:'—',pop:1},{s:'200K',d:'€999',o:'—'}],'2-Step Challenge':[{s:'10K',d:'€79',o:'—'},{s:'25K',d:'€199',o:'—'},{s:'50K',d:'€319',o:'—'},{s:'100K',d:'€499',o:'—',pop:1},{s:'200K',d:'€999',o:'—'}]},
     includes:['Free Trial ilimitado','90% split de lucro','Suporte 20 idiomas','Scaling até $2M','$500M+ pagos','Sem limite de tempo']},
   tpt:{about:'Fundada em <b>2021</b> por James Sixsmith (ex-jogador profissional de hockey). Taxa de sucesso anual de <b>20.37%</b>. Saque desde o <b>dia 1</b>, sem taxa de ativação.',highlights:[{val:'20.4%',label:'Taxa de sucesso'},{val:'Dia 1',label:'Primeiro saque'},{val:'$0',label:'Taxa ativação'}],
-    types:['EOD Drawdown'],plans:{'EOD Drawdown':[{s:'25K',d:'$90',o:'$180'},{s:'50K',d:'$102',o:'$204'},{s:'75K',d:'$147',o:'$294'},{s:'100K',d:'$198',o:'$396',pop:1},{s:'150K',d:'$216',o:'$432'}]},
+    types:['EOD Drawdown'],plans:{'EOD Drawdown':[{s:'25K',d:'$75',o:'$150'},{s:'50K',d:'$85',o:'$170'},{s:'75K',d:'$122',o:'$245'},{s:'100K',d:'$165',o:'$330',pop:1},{s:'150K',d:'$180',o:'$360'}]},
     includes:['Saque desde dia 1','Sem taxa de ativação','Sem Daily Loss Limit','Saque sem janela fixa','EOD Drawdown']},
   fn:{about:'Fundada em <b>2022</b> nos Emirados Árabes. <b>Prop Firm do Ano</b> (Finance Magnates 2025). Mais de <b>423K+ contas</b> e payout garantido em 24h.',highlights:[{val:'$285M+',label:'Pagos a traders'},{val:'108K+',label:'Traders pagos'},{val:'24h',label:'Payout garantido'}],
     types:['Stellar 2-Step','Stellar 1-Step','Stellar Lite','Futures Bolt','Futures Rapid','Futures Legacy'],plans:{'Stellar 2-Step':[{s:'$6K',d:'$48.99',o:'$69.99'},{s:'$15K',d:'$83.99',o:'$119.99'},{s:'$25K',d:'$132.99',o:'$189.99'},{s:'$50K',d:'$188.99',o:'$269.99',pop:1},{s:'$100K',d:'$349.99',o:'$499.99'}],'Stellar 1-Step':[{s:'$6K',d:'$65.99',o:'—'},{s:'$15K',d:'$130.99',o:'—'},{s:'$25K',d:'$170.99',o:'—'},{s:'$50K',d:'$219.99',o:'—',pop:1},{s:'$100K',d:'$449.99',o:'—'},{s:'$200K',d:'$1,099.99',o:'—'}],'Stellar Lite':[{s:'$5K',d:'$32',o:'—'},{s:'$10K',d:'$58',o:'—'},{s:'$25K',d:'$159',o:'—'},{s:'$50K',d:'$229',o:'—',pop:1},{s:'$100K',d:'$399',o:'—'},{s:'$200K',d:'$799',o:'—'}],'Futures Bolt':[{s:'$50K',d:'~$199',o:'—',pop:1}],'Futures Rapid':[{s:'$25K',d:'~$99',o:'—'},{s:'$50K',d:'~$159',o:'—',pop:1},{s:'$100K',d:'~$279',o:'—'}],'Futures Legacy':[{s:'$25K',d:'~$79',o:'—'},{s:'$50K',d:'~$119',o:'—',pop:1},{s:'$100K',d:'~$349',o:'—'}]},
@@ -4088,7 +4088,7 @@ async function loadFirmsFromSupabase() {
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
       // Fallback: try localStorage cache
-      const cached = localStorage.getItem('mc_firms_cache_v5');
+      const cached = localStorage.getItem('mc_firms_cache_v6');
       if (cached && FIRMS.length === 0) {
         try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e){}
       }
@@ -4161,7 +4161,7 @@ async function loadFirmsFromSupabase() {
     initCmp();
 
     // Cache firms in localStorage for offline fallback
-    try { localStorage.setItem('mc_firms_cache_v5', JSON.stringify(FIRMS)); } catch(e){}
+    try { localStorage.setItem('mc_firms_cache_v6', JSON.stringify(FIRMS)); } catch(e){}
 
     // Retry opening firm overlay if dedicated page loaded before FIRMS arrived
     if(window._dedicatedFirmSlug && !document.getElementById('fd-overlay')?.classList.contains('show') && !document.getElementById('drw')?.classList.contains('open')){
@@ -4171,7 +4171,7 @@ async function loadFirmsFromSupabase() {
   } catch(e) {
     // Supabase unavailable — try localStorage cache
     console.warn('[MC] Supabase firms unavailable, trying cache');
-    const cached = localStorage.getItem('mc_firms_cache_v5');
+    const cached = localStorage.getItem('mc_firms_cache_v6');
     if (cached && FIRMS.length === 0) {
       try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e2){}
     }
@@ -7058,7 +7058,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if('scrollRestoration' in history) history.scrollRestoration='manual';
   // Preload FIRMS from localStorage cache BEFORE sync boot (avoids empty-state flash on /firm-slug refresh)
   if(FIRMS.length===0){
-    try{ const cached=localStorage.getItem('mc_firms_cache_v5'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
+    try{ const cached=localStorage.getItem('mc_firms_cache_v6'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
   }
   // Detectar idioma e aplicar traduções
   initLang();
