@@ -13,6 +13,10 @@
 
 **REGRA DURA pós-deploy (2026-05-10):** SQL retornar OK ≠ feature funcionando. SEMPRE abrir URL renderizada via `curl -s 'site.com/path?v=$(date +%s)'` ou Playwright (`mcp__playwright__browser_navigate` + `browser_evaluate`) ANTES de declarar pronto. Bug `cover_url` faltando no SELECT seria pego em 1 curl — não foi.
 
+**REGRA Telegram (2026-05-11):** TG NÃO é canal de status de progresso. Use SOMENTE quando user explicitamente fora do PC ou em momentos críticos (alerta, falha, conclusão de job longo agendado). Default: status no chat do Claude Code.
+
+**REGRA não inflar features (2026-05-11):** Antes de chamar view/função de "ROAS real" / "venda-a-venda" / similar — LER definição SQL primeiro. `v_attribution_campaign_30d` é RATEIO PROPORCIONAL (clicks da campaign ÷ total clicks × sales do dia), NÃO matching individual. Matcher venda-a-venda REAL = `attribution-matcher` cron 5h30 BRT em `affiliate_conversions` (que só popula desde fix de constraint 2026-05-11).
+
 ## Visão geral
 
 Site de cupons de **prop firms** de trading. Compara firmas, oferece cupons, fidelidade, blog, guias, calculadoras, análise diária. Deploy estático no Vercel.
