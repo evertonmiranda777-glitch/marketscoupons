@@ -142,7 +142,7 @@ BULENOX (Futures) — coupon MARKET89, 89% OFF lifetime. 90% split (first $10K a
 
 FTMO (Forex) — no coupon, free trial available. 90% split. Fixed DD -3% daily / -10% total. Target 10%. MT4/MT5/cTrader. 1-step and 2-step challenges from €79. Scaling to $2M. Since 2015, $500M+ paid, 3.5M clients. News trading NOT allowed. Consistency: 50% Best Day Rule. Trustpilot 4.8 (41k).
 
-TAKE PROFIT TRADER (Futures) — coupon MARKET40, 40% OFF. 90% split. EOD trailing DD. 15+ platforms (NinjaTrader, TradingView, Tradovate, Rithmic). Day-1 payouts, no activation fee, no daily loss limit, instant withdrawals. Min 5 days. Prices from 25K $90. Trustpilot 4.4 (8.6k).
+TAKE PROFIT TRADER (Futures) — coupon MARKET40, 50% OFF. 90% split. EOD trailing DD. 15+ platforms (NinjaTrader, TradingView, Tradovate, Rithmic). Day-1 payouts, no activation fee, no daily loss limit, instant withdrawals. Min 5 days. Prices from 25K $90. Trustpilot 4.4 (8.6k).
 
 FUNDEDNEXT (Forex + Futures) — coupon FNF30, 30% OFF. 95% split. Fixed DD -5%/-10%. Target 8%/5%. MT4/MT5/cTrader/Match-Trader/Rithmic. Guaranteed 24h payout. Scaling to $4M. 15% reward in challenge phase. Trustpilot 4.5 (64.4k).
 
