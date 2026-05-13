@@ -2280,6 +2280,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="cr-layout">
         <!-- CONTROLS -->
         <div class="cr-controls">
+          <div class="cr-field"><label>Modo</label>
+            <div class="cr-format-pills">
+              <div class="cr-fmt active" onclick="setCrMode('single',this)"><div class="nm">Firma única</div></div>
+              <div class="cr-fmt" onclick="setCrMode('top3',this)"><div class="nm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>Top 3 Cupons</div></div>
+            </div>
+          </div>
           <div class="cr-field"><label>Formato</label>
             <div class="cr-format-pills">
               <div class="cr-fmt active" onclick="setCrFormat('feed',this)"><div class="nm">Feed</div><div class="sz">1080×1350</div></div>
@@ -2292,8 +2298,24 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <div class="cr-fmt" onclick="setCrLang('en',this)"><div class="nm">English</div></div>
             </div>
           </div>
-          <div class="cr-field"><label>Firma</label>
+          <div class="cr-field" id="cr-field-single"><label>Firma</label>
             <select id="cr-firm" onchange="updateCrPreview()"><option value="">Selecione uma firma</option></select>
+          </div>
+          <div class="cr-field" id="cr-field-top3" style="display:none;"><label>Top 3 firmas (escolha 3)</label>
+            <select id="cr-firm-1" onchange="updateCrPreview()" style="margin-bottom:6px;"></select>
+            <select id="cr-firm-2" onchange="updateCrPreview()" style="margin-bottom:6px;"></select>
+            <select id="cr-firm-3" onchange="updateCrPreview()"></select>
+          </div>
+          <div class="cr-field" id="cr-field-bg" style="display:none;"><label>Background</label>
+            <select id="cr-bg" onchange="updateCrPreview()">
+              <option value="">Preto puro</option>
+              <option value="/img/Criativo/dark-stripes.jpg">Dark Stripes</option>
+              <option value="/img/Criativo/dark-1.jpg">Dark Texture</option>
+              <option value="/img/Criativo/gpt-dark.png">GPT Dark</option>
+              <option value="/img/Criativo/asx11.jpg">ASX</option>
+              <option value="/img/Criativo/huji25.jpg">Huji</option>
+              <option value="/img/Criativo/liquid-marble.jpg">Liquid Marble</option>
+            </select>
           </div>
           <div class="cr-field"><label>Informacoes visiveis</label>
             <div class="cr-checks">
@@ -3177,6 +3199,8 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <div class="tg-card" style="padding:16px 20px;">
             <div class="tg-card-title">Criativos (PNG — atualizado diariamente)</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;">
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('top3-creative-pt')" style="background:rgba(240,180,41,.18);border-color:rgba(240,180,41,.5);color:#F0B429;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>Top 3 PT</button>
+              <button class="tg-qa-btn" onclick="tgShowStaticPng('top3-creative-en')" style="background:rgba(240,180,41,.18);border-color:rgba(240,180,41,.5);color:#F0B429;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>Top 3 EN</button>
               <button class="tg-qa-btn" onclick="tgShowStaticPng('firms')" style="background:rgba(245,197,24,.12);border-color:rgba(245,197,24,.4);color:#f5c518;">Firms</button>
               <button class="tg-qa-btn" onclick="tgShowStaticPng('gamma')" style="background:rgba(0,220,130,.1);border-color:rgba(0,220,130,.4);color:#00dc82;">Gamma</button>
               <button class="tg-qa-btn" onclick="tgShowStaticPng('analysis')" style="background:rgba(100,180,255,.1);border-color:rgba(100,180,255,.4);color:#80c8ff;">Analysis</button>
@@ -3187,8 +3211,8 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <div id="tg-static-png-wrap" style="background:#0b0f16;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
               <span style="color:rgba(255,255,255,.4);font-size:13px;">Clique num botão para ver o criativo</span>
             </div>
-            <button id="tg-download-png" class="tg-qa-btn" onclick="tgDownloadPng()" style="display:none;width:100%;margin-top:8px;text-align:center;background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.3);color:#80c8ff;">
-              💾 Salvar PNG
+            <button id="tg-download-png" class="tg-qa-btn" onclick="tgDownloadPng()" style="display:none;width:100%;margin-top:8px;text-align:center;background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.3);color:#80c8ff;display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Salvar PNG
             </button>
           </div>
         </div><!-- /tg-preview-wrap -->
@@ -7295,7 +7319,7 @@ const INST_TEMPLATES = {
   'site-invite': {
     color: '#FF6F00',
     image: '',
-    subject: { pt:'Conta de $25K por $19,90 — cupom exclusivo', en:'$25K account for $19.90 — exclusive coupon', es:'Cuenta de $25K por $19,90 — cupón exclusivo', fr:'Compte de $25K pour $19,90 — coupon exclusif', de:'$25K Konto für $19,90 — exklusiver Gutschein', it:'Conto da $25K a $19,90 — coupon esclusivo', ar:'حساب $25K بسعر $19.90 — كوبون حصري' },
+    subject: { pt:'Conta de $25K por $24,90 — cupom exclusivo', en:'$25K account for $24.90 — exclusive coupon', es:'Cuenta de $25K por $24,90 — cupón exclusivo', fr:'Compte de $25K pour $24,90 — coupon exclusif', de:'$25K Konto für $24,90 — exklusiver Gutschein', it:'Conto da $25K a $24,90 — coupon esclusivo', ar:'حساب $25K بسعر $24.90 — كوبون حصري' },
     preheader: { pt:'Apex 90% off, Bulenox 89% off. Cupom aplicado automaticamente. Sem cadastro de cartão.', en:'Apex 90% off, Bulenox 89% off. Coupon applied automatically. No credit card required.', es:'Apex 90% off, Bulenox 89% off. Cupón aplicado automáticamente. Sin tarjeta de crédito.', fr:'Apex 90% off, Bulenox 89% off. Coupon appliqué automatiquement. Sans carte bancaire.', de:'Apex 90% off, Bulenox 89% off. Gutschein automatisch angewendet. Keine Kreditkarte nötig.', it:'Apex 90% off, Bulenox 89% off. Coupon applicato automaticamente. Nessuna carta di credito.', ar:'Apex 90% خصم، Bulenox 89% خصم. الكوبون يُطبق تلقائياً. بدون بطاقة ائتمان.' },
     greeting: { pt:'', en:'', es:'', fr:'', de:'', it:'', ar:'' },
     icon: '',
@@ -7999,7 +8023,7 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
           </tr></table>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:0.5px solid #222;">
             <tr><td width="60" style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">${T({pt:'Desconto',en:'Discount',es:'Descuento'})}</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">89%</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">40%</td></tr>
-            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">100K</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">$39.90</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">$23.65</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">$198</td></tr>
+            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">100K</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">$44.90</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">$23.65</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">$198</td></tr>
             <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">Drawdown</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">EOD</td></tr>
             <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">Split</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">80%</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">80%</td></tr>
           </table>
@@ -8615,11 +8639,31 @@ function buildWhitePromoHtml(f, lang='pt'){
   const fullStars = Math.floor(tpScore);
   const starsHtml = '<span style="color:'+color+';font-size:12px;">' + '&#9733;'.repeat(fullStars) + '&#9734;'.repeat(5-fullStars) + '</span>';
 
+  // Compacta valores longos pra não quebrar no card 33%
+  function compactStatValue(v) {
+    if (!v) return '—';
+    return String(v)
+      .replace(/De US\$\s?/gi, '')
+      .replace(/Até US\$\s?/gi, '')
+      .replace(/\bUS\$\s?/g, '$')
+      .replace(/\s*a\s*-?\s*\$/gi, '–$')
+      .replace(/\s*to\s*-?\s*\$/gi, '–$')
+      .replace(/\bpor trilha de\s*/gi, ' trail ')
+      .replace(/\bper trail of\s*/gi, ' trail ')
+      .replace(/\bpor trail de\s*/gi, ' trail ')
+      .replace(/\.000\b/g, 'K')
+      .replace(/\.500\b/g, '.5K')
+      .replace(/\b1500\b/g, '1.5K')
+      .replace(/\b4500\b/g, '4.5K')
+      .replace(/\s+trail\s*$/i, ' trail')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  }
   // Metrics 3-col
   const metrics = [
-    {label:'PROFIT SPLIT', value:f.split||'—', vc:GREEN},
-    {label:(etL.profit_target||'META DE LUCRO').toUpperCase(), value:f.target||'—', vc:color},
-    {label:'DRAWDOWN', value:f.dd_pct||'—', vc:'#ef4444'},
+    {label:'PROFIT SPLIT', value:compactStatValue(f.split||'—'), vc:GREEN},
+    {label:(etL.profit_target||'META DE LUCRO').toUpperCase(), value:compactStatValue(f.target||'—'), vc:color},
+    {label:'DRAWDOWN', value:compactStatValue(f.dd_pct||'—'), vc:'#ef4444'},
   ];
 
   // Price rows — 5 columns: Conta | Intraday | era | EOD | era
@@ -8785,11 +8829,11 @@ a{text-decoration:none;}
       <!-- Metrics 3-col -->
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
         <tr>
-          ${metrics.map(m => `<td width="33%" style="padding:0 4px;">
+          ${metrics.map(m => `<td width="33%" style="padding:0 3px;vertical-align:top;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f7f7;border-radius:6px;border:1px solid #eee;" role="presentation">
-              <tr><td style="padding:8px;text-align:center;">
-                <div style="color:#888;font-size:9px;letter-spacing:0.05em;margin-bottom:2px;font-family:${FI};">${m.label}</div>
-                <div style="color:${m.vc};font-size:15px;font-weight:700;font-family:${FI};">${m.value}</div>
+              <tr><td style="padding:10px 6px;text-align:center;height:60px;vertical-align:middle;">
+                <div style="color:#888;font-size:9px;letter-spacing:0.04em;margin-bottom:4px;font-family:${FI};text-transform:uppercase;line-height:1.2;">${m.label}</div>
+                <div style="color:${m.vc};font-size:13px;font-weight:700;font-family:${FI};line-height:1.25;word-wrap:break-word;">${m.value}</div>
               </td></tr>
             </table>
           </td>`).join('')}
@@ -12631,6 +12675,98 @@ function exportCadastrosCSV() {
 // ─── CRIATIVOS TAB ────────────────────────────────────────────────────────
 let _crFormat = 'feed'; // feed=1080x1350, story=1080x1920
 let _crLang = 'pt';     // pt or en — language of the creative output
+let _crMode = 'single'; // single (1 firma) or top3 (3 firmas top 3 layout)
+
+function setCrMode(mode, btn) {
+  _crMode = mode;
+  const pills = btn.parentElement;
+  pills.querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('cr-field-single').style.display = mode === 'single' ? '' : 'none';
+  document.getElementById('cr-field-top3').style.display = mode === 'top3' ? '' : 'none';
+  document.getElementById('cr-field-bg').style.display = mode === 'top3' ? '' : 'none';
+  if (mode === 'top3') populateCrTop3Selects();
+  updateCrPreview();
+}
+
+function populateCrTop3Selects() {
+  const opts = (_firmsCache||[]).map(f => `<option value="${f.id}">${f.name}</option>`).join('');
+  const defaults = ['apex','bulenox','tpt'];
+  ['cr-firm-1','cr-firm-2','cr-firm-3'].forEach((sid,i) => {
+    const sel = document.getElementById(sid);
+    if (!sel) return;
+    if (!sel.options.length) { sel.innerHTML = opts; sel.value = defaults[i] || ''; }
+  });
+}
+
+// Cores accent por firma (fallback gold)
+const CR_FIRM_ACCENTS = {
+  apex:'#F0B429', bulenox:'#7AD9E3', tpt:'#C084FC',
+  fn:'#06B6D4', e2t:'#F59E0B', the5ers:'#10B981', fundingpips:'#6366F1',
+  brightfunded:'#00C9A7', e8:'#FF4400', cti:'#0A74DA', tradeday:'#0EA5E9', ftmo:'#1976D2'
+};
+
+function renderCrTop3() {
+  const ids = ['cr-firm-1','cr-firm-2','cr-firm-3'].map(s => document.getElementById(s)?.value).filter(Boolean);
+  const firms = ids.map(id => _firmsCache.find(f => f.id === id)).filter(Boolean);
+  if (!firms.length) return '<div style="color:#fff;padding:60px;text-align:center;">Escolha 3 firmas</div>';
+
+  const isPt = _crLang === 'pt';
+  const isStory = _crFormat === 'story';
+  const h1 = isPt ? `Cupons <em style="color:#F0B429;font-style:normal;">exclusivos</em> para prop firms` : `<em style="color:#F0B429;font-style:normal;">Exclusive</em> coupons for prop firms`;
+  const trustFirms = isPt ? '12 Firmas+' : '12 Firms+';
+  const trustOff = isPt ? 'Até 90% OFF' : 'Up to 90% OFF';
+  const trustUpd = isPt ? 'Atualizado hoje' : 'Updated today';
+  const pillLbl = isPt ? 'CUPOM EXCLUSIVO' : 'EXCLUSIVE COUPON';
+  const hint = isPt ? `Toque na firma, copie o cupom e use no <span style="color:#F0B429;font-weight:600;">checkout</span>.` : `Tap the firm, copy the coupon, and use it at <span style="color:#F0B429;font-weight:600;">checkout</span>.`;
+
+  const cards = firms.map(f => {
+    const acc = CR_FIRM_ACCENTS[f.id] || '#F0B429';
+    // Display names — sem abreviação. TPT vira "TakeProfit", etc
+    const CR_DISPLAY_NAMES = { apex:'Apex', bulenox:'Bulenox', tpt:'TakeProfit', fn:'FundedNext', e2t:'Earn2Trade', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded', e8:'E8 Markets', cti:'CTI', tradeday:'TradeDay', ftmo:'FTMO' };
+    const shortName = CR_DISPLAY_NAMES[f.id] || f.short_name || f.name.split(' ')[0];
+    return `<div style="display:flex;align-items:center;gap:24px;padding:30px 36px;background:linear-gradient(180deg,#0e141d 0%,#080c11 100%);border:1px solid rgba(255,255,255,.06);border-radius:22px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(80% 100% at 100% 0%, ${acc}14, transparent 60%);pointer-events:none;"></div>
+      <div style="width:108px;height:108px;border-radius:18px;background:#0a0a0a;border:1px solid rgba(255,255,255,.06);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;z-index:1;">
+        <img src="${f.icon_url || `/img/Firms/${f.id}.png`}" alt="${shortName}" style="width:88%;height:88%;object-fit:contain;">
+      </div>
+      <div style="font-size:54px;font-weight:800;letter-spacing:-1px;color:#fff;min-width:230px;position:relative;z-index:1;">${shortName}</div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:14px 24px;border:1.5px dashed ${acc};border-radius:16px;background:rgba(0,0,0,.18);position:relative;z-index:1;">
+        <div style="font-size:14px;font-weight:700;color:#9aa3b2;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">${pillLbl}</div>
+        <div style="font-size:30px;font-weight:800;letter-spacing:2px;color:${acc};">${f.coupon || '—'}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;position:relative;z-index:1;">
+        <div style="font-size:72px;font-weight:900;letter-spacing:-2px;line-height:1;color:${acc};">${f.discount}<span style="font-size:50px;font-weight:800;vertical-align:top;">%</span></div>
+        <div style="font-size:18px;font-weight:700;color:#7a8392;letter-spacing:2px;margin-top:4px;">OFF</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const gap = isStory ? '32px' : '24px';
+  const justify = isStory ? 'center' : 'flex-start';
+  const padTop = isStory ? '70px' : '78px';
+  const bgUrl = document.getElementById('cr-bg')?.value || '';
+  const bgLayer = bgUrl
+    ? `<div style="position:absolute;inset:0;background:url('${bgUrl}') center/cover #000;"></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.75));"></div>`
+    : `<div style="position:absolute;inset:0;background:#000;"></div><div style="position:absolute;inset:0;background:radial-gradient(ellipse 100% 60% at 50% 0%, rgba(240,180,41,.04), transparent 70%),radial-gradient(ellipse 80% 60% at 100% 100%, rgba(120,180,200,.04), transparent 70%);"></div>`;
+  return `${bgLayer}
+  <div style="position:relative;width:1080px;height:${isStory?1920:1350}px;padding:${padTop} 70px 70px;display:flex;flex-direction:column;justify-content:${justify};color:#fff;font-family:'Inter',sans-serif;">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:34px;">
+        <svg width="54" height="54" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="lgCR" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lgCR)" stroke-width="2.6" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lgCR)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lgCR)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2.4" fill="url(#lgCR)"/></svg>
+        <div style="font-size:32px;font-weight:800;letter-spacing:-.5px;"><span style="color:#F0B429;">Markets</span> <span>Coupons</span></div>
+      </div>
+      <h1 style="font-size:60px;font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:32px;">${h1}</h1>
+      <div style="display:flex;align-items:center;justify-content:center;gap:34px;">
+        <div style="display:inline-flex;align-items:center;gap:9px;font-size:22px;font-weight:600;color:#cdd5e0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00b67a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${trustFirms}</div>
+        <div style="display:inline-flex;align-items:center;gap:9px;font-size:22px;font-weight:600;color:#cdd5e0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00b67a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${trustOff}</div>
+        <div style="display:inline-flex;align-items:center;gap:9px;font-size:22px;font-weight:600;color:#cdd5e0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00b67a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${trustUpd}</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:${gap};margin-top:46px;">${cards}</div>
+    <div style="text-align:center;font-size:24px;color:#9aa3b2;font-weight:500;margin-top:28px;">${hint}</div>
+  </div>`;
+}
 
 const CR_LABELS = {
   pt: { exclusive_coupon:'CUPOM EXCLUSIVO', use_coupon:'USE O CUPOM NO CHECKOUT', reviews:'Avaliações',
@@ -12696,9 +12832,7 @@ async function initCriativos() {
 
 function setCrLang(lang, btn) {
   _crLang = lang;
-  // Update active pill — language pills are in the 2nd .cr-format-pills
-  const pills = document.querySelectorAll('.cr-controls .cr-format-pills');
-  if (pills[1]) pills[1].querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
+  if (btn && btn.parentElement) btn.parentElement.querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   updateCrPreview();
 }
@@ -12768,8 +12902,8 @@ async function copyFirmCopyToClipboard() {
 
 function setCrFormat(fmt, btn) {
   _crFormat = fmt;
-  const pills = document.querySelectorAll('.cr-controls .cr-format-pills');
-  if (pills[0]) pills[0].querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
+  // Scope to btn's parent (not by index — index quebra quando adiciona novos pills)
+  if (btn && btn.parentElement) btn.parentElement.querySelectorAll('.cr-fmt').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   const canvas = document.getElementById('cr-canvas');
   canvas.style.width = '1080px';
@@ -12800,6 +12934,13 @@ function updateCrPreview() {
   const L = CR_LABELS[_crLang] || CR_LABELS.pt;
 
   if (!content) return;
+
+  // Top 3 mode — substitui canvas inteiro
+  if (_crMode === 'top3') {
+    if (bgImg) bgImg.style.backgroundImage = '';
+    content.innerHTML = renderCrTop3();
+    return;
+  }
 
   if (firm) {
     // checkout bg (tenta webp, png, jpeg)
@@ -14054,7 +14195,8 @@ function tgShowStaticPng(kind) {
   const fileMap = {
     firms:'firms-creative.png', gamma:'gamma-creative.png',
     analysis:'analysis-creative.png', calendar:'calendar-creative.png',
-    'evento-001':'evento-001-creative.png', 'evento-002':'evento-002-creative.png'
+    'evento-001':'evento-001-creative.png', 'evento-002':'evento-002-creative.png',
+    'top3-creative-pt':'top3-creative-pt.png', 'top3-creative-en':'top3-creative-en.png'
   };
   const url = '/img/' + (fileMap[kind] || kind + '-creative.png') + '?t=' + t;
   wrap.innerHTML = '<span style="color:rgba(255,255,255,.5);font-size:13px;">Carregando...</span>';
