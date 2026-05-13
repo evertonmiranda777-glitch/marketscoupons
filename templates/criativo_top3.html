@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Top 3 Coupons</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+html,body{width:1080px;height:1350px;background:#000;color:#fff;font-family:'Inter',sans-serif;overflow:hidden;}
+.bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 100% 60% at 50% 0%, rgba(240,180,41,.04), transparent 70%),
+  radial-gradient(ellipse 80% 60% at 100% 100%, rgba(120,180,200,.04), transparent 70%),
+  #000;}
+.bg::before{content:'';position:absolute;inset:0;background-image:
+  repeating-linear-gradient(135deg, transparent 0px, transparent 90px, rgba(255,255,255,.012) 90px, rgba(255,255,255,.012) 92px);}
+.bg::after{content:'';position:absolute;inset:0;background-image:
+  linear-gradient(135deg, transparent 35%, rgba(255,255,255,.022) 40%, transparent 45%),
+  linear-gradient(135deg, transparent 55%, rgba(255,255,255,.018) 60%, transparent 65%);}
+
+.wrap{position:relative;width:1080px;height:1350px;padding:78px 70px 70px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:34px;}
+.brand-icon{width:54px;height:54px;}
+.brand-text{font-size:32px;font-weight:800;letter-spacing:-.5px;}
+.brand-text .m{color:#F0B429;}
+.brand-text .c{color:#fff;}
+.h1{font-size:60px;font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:32px;}
+.h1 em{color:#F0B429;font-style:normal;}
+.trust{display:flex;align-items:center;justify-content:center;gap:34px;}
+.trust-item{display:inline-flex;align-items:center;gap:11px;font-size:28px;font-weight:600;color:#cdd5e0;}
+.trust-check{width:30px;height:30px;flex-shrink:0;color:#00b67a;}
+
+/* Cards */
+.cards{display:flex;flex-direction:column;gap:24px;margin-top:46px;}
+.fc{display:flex;align-items:center;gap:24px;padding:30px 36px;background:linear-gradient(180deg,#0e141d 0%,#080c11 100%);border:1px solid rgba(255,255,255,.06);border-radius:22px;position:relative;overflow:hidden;}
+.fc::before{content:'';position:absolute;inset:0;background:radial-gradient(80% 100% at 100% 0%, var(--acc-glow,rgba(240,180,41,.06)), transparent 60%);pointer-events:none;}
+.fc-logo{width:108px;height:108px;border-radius:18px;background:#0a0a0a;border:1px solid rgba(255,255,255,.06);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.fc-logo img{width:88%;height:88%;object-fit:contain;}
+.fc-name{font-size:54px;font-weight:800;letter-spacing:-1px;color:#fff;flex:0 0 auto;min-width:230px;}
+.fc-pill{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 24px;border:1.5px dashed var(--acc-border,#F0B429);border-radius:16px;background:rgba(0,0,0,.18);}
+.fc-pill-label{font-size:14px;font-weight:700;color:#9aa3b2;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.fc-pill-code{font-size:30px;font-weight:800;letter-spacing:2px;color:var(--acc,#F0B429);}
+.fc-disc{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;}
+.fc-disc-num{font-size:72px;font-weight:900;letter-spacing:-2px;line-height:1;color:var(--acc,#F0B429);}
+.fc-disc-num .pct{font-size:50px;font-weight:800;vertical-align:top;}
+.fc-disc-lbl{font-size:18px;font-weight:700;color:#7a8392;letter-spacing:2px;margin-top:4px;}
+
+/* Apex — gold */
+.fc.apex{--acc:#F0B429;--acc-border:#F0B429;--acc-glow:rgba(240,180,41,.08);}
+/* Bulenox — cyan */
+.fc.bulenox{--acc:#7AD9E3;--acc-border:#7AD9E3;--acc-glow:rgba(122,217,227,.08);}
+/* TPT — purple */
+.fc.tpt{--acc:#C084FC;--acc-border:#C084FC;--acc-glow:rgba(192,132,252,.08);}
+
+/* Footer hint */
+.hint{text-align:center;font-size:30px;color:#9aa3b2;font-weight:500;margin-top:32px;letter-spacing:-.2px;}
+.hint .ck{color:#F0B429;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="header">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 50 50" fill="none">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs>
+        <path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lg)" stroke-width="2.6" fill="none"/>
+        <path d="M14 33V20l11 8" stroke="url(#lg)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M36 33V20l-11 8" stroke="url(#lg)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="25" cy="14" r="2.4" fill="url(#lg)"/>
+      </svg>
+      <div class="brand-text"><span class="m">Markets</span> <span class="c">Coupons</span></div>
+    </div>
+    <h1 class="h1" data-i18n="h1"></h1>
+    <div class="trust">
+      <div class="trust-item"><svg class="trust-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="trust_firms"></span></div>
+      <div class="trust-item"><svg class="trust-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="trust_off"></span></div>
+      <div class="trust-item"><svg class="trust-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="trust_updated"></span></div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="fc apex">
+      <div class="fc-logo"><img src="/img/Firms/apex.png" alt="Apex"></div>
+      <div class="fc-name">Apex</div>
+      <div class="fc-pill">
+        <div class="fc-pill-label" data-i18n="pill_label"></div>
+        <div class="fc-pill-code" data-firm="apex" data-field="coupon">MARKET</div>
+      </div>
+      <div class="fc-disc">
+        <div class="fc-disc-num"><span data-firm="apex" data-field="discount">90</span><span class="pct">%</span></div>
+        <div class="fc-disc-lbl">OFF</div>
+      </div>
+    </div>
+
+    <div class="fc bulenox">
+      <div class="fc-logo"><img src="/img/Firms/bulenox.png" alt="Bulenox"></div>
+      <div class="fc-name">Bulenox</div>
+      <div class="fc-pill">
+        <div class="fc-pill-label" data-i18n="pill_label"></div>
+        <div class="fc-pill-code" data-firm="bulenox" data-field="coupon">MARKET89</div>
+      </div>
+      <div class="fc-disc">
+        <div class="fc-disc-num"><span data-firm="bulenox" data-field="discount">89</span><span class="pct">%</span></div>
+        <div class="fc-disc-lbl">OFF</div>
+      </div>
+    </div>
+
+    <div class="fc tpt">
+      <div class="fc-logo"><img src="/img/Firms/tpt.png" alt="TakeProfit"></div>
+      <div class="fc-name">TakeProfit</div>
+      <div class="fc-pill">
+        <div class="fc-pill-label" data-i18n="pill_label"></div>
+        <div class="fc-pill-code" data-firm="tpt" data-field="coupon">MARKET40</div>
+      </div>
+      <div class="fc-disc">
+        <div class="fc-disc-num"><span data-firm="tpt" data-field="discount">50</span><span class="pct">%</span></div>
+        <div class="fc-disc-lbl">OFF</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint" data-i18n-html="hint"></div>
+</div>
+
+<script>
+const I18N = {
+  pt: {
+    h1: 'Cupons <em>exclusivos</em> para prop firms',
+    trust_firms: '12 Firmas+',
+    trust_off: 'Até 90% OFF',
+    trust_updated: 'Atualizado hoje',
+    pill_label: 'CUPOM EXCLUSIVO',
+    hint: 'Toque na firma, copie o cupom e use no <span class="ck">checkout</span>.'
+  },
+  en: {
+    h1: '<em>Exclusive</em> coupons for prop firms',
+    trust_firms: '12 Firms+',
+    trust_off: 'Up to 90% OFF',
+    trust_updated: 'Updated today',
+    pill_label: 'EXCLUSIVE COUPON',
+    hint: 'Tap the firm, copy the coupon, and use it at <span class="ck">checkout</span>.'
+  }
+};
+function applyLang(lang) {
+  const dict = I18N[lang] || I18N.en;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (dict[k] != null) el.innerHTML = dict[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const k = el.getAttribute('data-i18n-html');
+    if (dict[k] != null) el.innerHTML = dict[k];
+  });
+}
+// Default PT — render script will call setLang(lang) externally
+const params = new URLSearchParams(location.search);
+applyLang(params.get('lang') || 'pt');
+window.setLang = applyLang;
+</script>
+</body>
+</html>
