@@ -7751,74 +7751,77 @@ function buildUrgentDealHtml(t, lang){
 }
 
 function buildTop3CardsHtml(t, lang){
-  const F = "Arial,sans-serif";
-  const dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const ano = new Date().getFullYear();
   const gt = (obj) => obj?.[lang] || obj?.en || obj?.pt || '';
   const C = t.color || '#F0B429';
   const SAV = gt(t.savings_label);
   const CPN = gt(t.coupon_label);
+  const SHORT_NAMES = { apex:'Apex · 100K', bulenox:'Bulenox · 100K', tpt:'TakeProfit · 100K' };
 
-  const cardsHtml = (t.firms||[]).map(f => `
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:14px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;"><tr>
-      <td width="64" style="padding:16px 0 16px 18px;vertical-align:middle;">
-        <img src="https://www.marketscoupons.com/img/Firms/${f.id}.png" alt="${f.name}" width="48" height="48" style="display:block;background:#0a0d14;border-radius:10px;padding:6px;">
+  const cardsHtml = (t.firms||[]).map(f => {
+    const shortName = SHORT_NAMES[f.id] || f.name;
+    return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;background:#fafafa;border:1px solid #e5e7eb;border-left:4px solid ${f.accent};border-radius:10px;"><tr>
+      <td width="60" valign="middle" style="padding:14px 0 14px 14px;width:60px;">
+        <img src="https://www.marketscoupons.com/img/Firms/${f.id}.png" alt="" width="44" height="44" style="display:block;background:#0a0d14;border-radius:8px;border:0;">
       </td>
-      <td style="padding:16px 14px;vertical-align:middle;">
-        <div style="font-family:${F};font-size:17px;font-weight:800;color:#1a1a1a;letter-spacing:-.3px;line-height:1.1;">${f.name}</div>
-        <div style="margin-top:10px;font-size:13px;line-height:1;font-family:${F};">
-          <span style="color:#9aa3b2;text-decoration:line-through;font-weight:600;">${f.price_full}</span>
-          <span style="color:#9aa3b2;margin:0 6px;">&rarr;</span>
-          <span style="color:${f.accent};font-weight:800;font-size:18px;">${f.price_disc}</span>
+      <td valign="middle" style="padding:14px 14px 14px 12px;">
+        <div style="font-size:15px;font-weight:800;color:#111;letter-spacing:-.2px;line-height:1.2;">${shortName}</div>
+        <div style="margin-top:5px;font-size:13px;color:#374151;line-height:1.3;">
+          <span style="color:#9ca3af;text-decoration:line-through;">${f.price_full}</span>
+          &rarr;
+          <strong style="color:${f.accent};font-size:15px;">${f.price_disc}</strong>
+          <strong style="color:#DC2626;margin-left:4px;">&minus;${f.off}%</strong>
         </div>
-        <div style="margin-top:6px;font-size:11px;color:#10B981;font-weight:700;letter-spacing:.3px;font-family:${F};">${SAV}${f.savings} &middot; ${CPN} ${f.coupon}</div>
+        <div style="margin-top:4px;font-size:11px;color:#10B981;font-weight:700;">${SAV}${f.savings} · ${CPN} <span style="font-family:Courier,monospace;letter-spacing:.5px;">${f.coupon}</span></div>
       </td>
-      <td width="64" align="right" style="padding:16px 18px 16px 0;vertical-align:middle;">
-        <div style="font-family:${F};font-size:24px;font-weight:900;color:#DC2626;line-height:1;letter-spacing:-.5px;">&minus;${f.off}%</div>
-      </td>
-    </tr></table>`).join('');
+    </tr></table>`;
+  }).join('');
+
+  const tagline = ({pt:'Top 3 cupons hoje',en:'Top 3 coupons today',es:'Top 3 cupones hoy',fr:'Top 3 coupons aujourd\'hui',de:'Top 3 Gutscheine heute',it:'Top 3 coupon oggi',ar:'أفضل 3 كوبونات اليوم'})[lang] || 'Top 3 coupons today';
+  const teamLine = ({pt:'Equipe Markets Coupons',en:'Markets Coupons Team',es:'Equipo Markets Coupons',fr:'Équipe Markets Coupons',de:'Markets Coupons Team',it:'Team Markets Coupons',ar:'فريق Markets Coupons'})[lang] || 'Markets Coupons Team';
 
   return `<!DOCTYPE html>
-<html dir="${dir}" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<style>html,body{margin:0!important;padding:0!important;background:#f0f0f0!important;}table{border-spacing:0;border-collapse:collapse;}</style></head>
-<body style="margin:0;padding:0;background:#f0f0f0;font-family:${F};color:#1a1a1a;">
-<div style="display:none;max-height:0;overflow:hidden;font-size:1px;color:#f0f0f0;opacity:0;">${gt(t.preheader)}</div>
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0f0f0"><tr><td align="center" style="padding:32px 16px;">
-<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e0e0e0;">
-  <tr><td style="padding:26px 40px 22px;text-align:center;border-bottom:1px solid #f0f0f0;">
-    <span style="font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-.5px;">Markets <span style="color:${C};">Coupons</span></span>
+<html lang="${lang}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="only light"><meta name="supported-color-schemes" content="only light">
+<title>Markets Coupons</title>
+<style>:root{color-scheme:light only;}html,body{margin:0!important;padding:0!important;background-color:#f4f5f7!important;}</style>
+</head><body style="margin:0;padding:0;background:#f4f5f7;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#111;">
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;color:#f4f5f7;opacity:0;">${gt(t.preheader)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f5f7;padding:24px 0;"><tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.08);">
+  <tr><td style="padding:28px 32px 20px;text-align:center;">
+    <span style="font-size:22px;font-weight:800;color:#1a1a1a;">Markets <span style="color:${C};">Coupons</span></span>
+    <div style="margin-top:8px;font-size:11px;color:#6b7480;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;">${tagline}</div>
   </td></tr>
-  <tr><td height="4" bgcolor="#DC2626" style="background:#DC2626;font-size:0;line-height:0;">&nbsp;</td></tr>
-  <tr><td bgcolor="#0a0d14" style="background:#0a0d14;padding:48px 40px 42px;text-align:center;">
-    <div style="display:inline-block;padding:6px 14px;background:rgba(220,38,38,.14);border:1px solid rgba(220,38,38,.4);border-radius:99px;font-size:11px;font-weight:800;color:#fca5a5;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:18px;">${gt(t.hero_pill)}</div>
-    <h1 style="margin:0 0 14px;font-size:32px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.7px;">${gt(t.hero_h1)}</h1>
-    <p style="margin:0;font-size:14px;color:#b8c5d6;line-height:1.55;">${gt(t.hero_sub)}</p>
+  <tr><td style="height:3px;background:linear-gradient(90deg,transparent,#DC2626,transparent);"></td></tr>
+  <tr><td style="background:#000;padding:44px 32px 38px;text-align:center;">
+    <div style="display:inline-block;padding:6px 16px;background:rgba(220,38,38,.14);border:1px solid rgba(220,38,38,.4);border-radius:99px;font-size:11px;font-weight:800;letter-spacing:2px;color:#fca5a5;text-transform:uppercase;margin-bottom:18px;">${gt(t.hero_pill)}</div>
+    <h1 style="margin:0 0 14px;font-size:28px;font-weight:900;line-height:1.15;color:#fff;letter-spacing:-.7px;">${gt(t.hero_h1)}</h1>
+    <p style="margin:0;font-size:14px;color:#b8c5d6;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;">${gt(t.hero_sub)}</p>
   </td></tr>
-  <tr><td height="4" bgcolor="#DC2626" style="background:#DC2626;font-size:0;line-height:0;">&nbsp;</td></tr>
-  <tr><td style="padding:32px 28px 18px;background:#fff;">
+  <tr><td style="height:3px;background:linear-gradient(90deg,transparent,#DC2626,transparent);"></td></tr>
+  <tr><td style="padding:32px 32px 8px;">
     ${cardsHtml}
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;background:#ecfdf5;border:1px solid #10B981;border-radius:14px;"><tr>
-      <td style="padding:20px 22px;text-align:center;">
-        <div style="font-size:11px;font-weight:800;color:#10B981;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">${gt(t.total_label)}</div>
-        <div style="font-size:36px;font-weight:900;color:#10B981;letter-spacing:-1px;line-height:1;">${t.total_value}</div>
-        <div style="margin-top:6px;font-size:12px;color:#3a3f4a;">${gt(t.total_sub)}</div>
-      </td>
-    </tr></table>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
-      <table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:linear-gradient(135deg,${C},#D97706);border-radius:50px;">
-        <a href="${t.cta_url}" style="display:inline-block;padding:16px 40px;font-size:15px;font-weight:800;color:#0a0a0a;text-decoration:none;letter-spacing:.3px;">${gt(t.cta)}</a>
-      </td></tr></table>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ecfdf5;border:1px solid #10B981;border-radius:12px;margin:18px 0 24px;"><tr><td style="padding:18px 20px;text-align:center;">
+      <div style="font-size:11px;font-weight:800;color:#10B981;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">${gt(t.total_label)}</div>
+      <div style="font-size:32px;font-weight:900;color:#10B981;letter-spacing:-1px;line-height:1;">${t.total_value}</div>
+      <div style="margin-top:6px;font-size:12px;color:#3a3f4a;">${gt(t.total_sub)}</div>
     </td></tr></table>
-    <p style="margin:18px 0 0;font-size:11px;color:#9aa3b2;text-align:center;line-height:1.5;">${gt(t.disclaimer)}</p>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:30px;border-top:1px solid #f0f0f0;"><tr valign="middle">
-      <td width="44" style="padding-top:20px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:linear-gradient(135deg,${C},#D97706);border-radius:50%;width:38px;height:38px;text-align:center;"><span style="font-size:16px;font-weight:800;color:#0a0a0a;line-height:38px;display:block;">L</span></td></tr></table></td>
-      <td style="padding:20px 0 0 12px;"><div style="font-size:13px;font-weight:700;color:#1a1a1a;">Lara</div><div style="font-size:11px;color:#888;">Equipe Markets Coupons</div></td>
-    </tr></table>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;"><tr><td align="center">
+      <a href="${t.cta_url}" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#c8941a,${C},#f5d060,${C},#c8941a);color:#0d141c;font-size:15px;font-weight:800;text-decoration:none;border-radius:50px;letter-spacing:.3px;box-shadow:0 8px 24px rgba(240,180,41,.3);">${gt(t.cta)}</a>
+    </td></tr></table>
+    <p style="margin:0 0 28px;font-size:12px;color:#9ca3af;text-align:center;line-height:1.6;">${gt(t.disclaimer)}</p>
   </td></tr>
-  <tr><td bgcolor="#f7f7f7" style="background:#f7f7f7;padding:22px 40px;text-align:center;border-top:1px solid #e0e0e0;">
-    <p style="font-size:11px;color:#aaa;line-height:1.7;margin:0;">Markets Coupons &middot; <a href="#" style="color:#aaa;text-decoration:underline;">Descadastrar</a></p>
+  <tr><td style="padding:0 32px;"><div style="border-top:1px solid #e5e7eb;"></div></td></tr>
+  <tr><td style="padding:22px 32px 26px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td style="vertical-align:middle;padding-right:14px;"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,${C},#ff8c00);text-align:center;line-height:44px;font-size:17px;font-weight:800;color:#fff;">L</div></td>
+    <td style="vertical-align:middle;"><div style="font-size:14px;font-weight:700;color:#111;">Lara</div><div style="font-size:12px;color:#6b7480;">${teamLine}</div></td>
+  </tr></table></td></tr>
+  <tr><td style="background:#fafafa;padding:22px 32px;text-align:center;border-top:1px solid #e5e7eb;">
+    <p style="margin:0;font-size:11px;color:#9ca3af;line-height:1.6;">&copy; ${ano} Markets Coupons</p>
   </td></tr>
-</table>
-</td></tr></table>
+</table></td></tr></table>
 </body></html>`;
 }
 
