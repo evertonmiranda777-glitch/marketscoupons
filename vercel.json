@@ -58,6 +58,8 @@
     { "src": "/gamma", "dest": "/gex.html" },
     { "src": "/(en|es|fr|de|it|ar)/gamma", "dest": "/gex.html" },
     { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/coupons", "dest": "/coupons.html" },
+    { "src": "/(en|es|fr|de|it|ar)/coupons", "dest": "/coupons.html?lang=$1" },
     { "src": "/risk-disclosure", "dest": "/risk-disclosure.html" },
     { "src": "/declaracao-de-risco", "dest": "/risk-disclosure.html" },
     { "src": "/go", "dest": "/go.html" },
