@@ -1244,6 +1244,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div class="tpl-card" onclick="loadQuickTemplate('indicators')"><div class="tpl-card-icon">FT</div><div class="tpl-card-text"><div class="tpl-card-name">Ferramentas</div><div class="tpl-card-hook">Ferramentas de trading</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')"><div class="tpl-card-icon">BG</div><div class="tpl-card-text"><div class="tpl-card-name">Blog &amp; Guias</div><div class="tpl-card-hook">Conteudo educacional</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('ultimas-horas')"><div class="tpl-card-icon">UH</div><div class="tpl-card-text"><div class="tpl-card-name">Últimas Horas</div><div class="tpl-card-hook">Urgência de promoção</div></div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('top3')"><div class="tpl-card-icon">T3</div><div class="tpl-card-text"><div class="tpl-card-name">Top 3 Cupons</div><div class="tpl-card-hook">Apex · Bulenox · TakeProfit</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('giveaway-apex-may26')"><div class="tpl-card-icon">SR</div><div class="tpl-card-text"><div class="tpl-card-name">Sorteio Apex</div><div class="tpl-card-hook">Giveaway 3 contas · 12/05</div></div></div>
    </div>
    <div class="tpl-section-title">Promos por Firma</div>
@@ -7444,6 +7445,37 @@ const INST_TEMPLATES = {
       cta: fillAll(cta),
     };
   })(),
+  'top3': {
+    color: '#F0B429',
+    subject: { pt:'Os 3 cupons mais usados do site agora', en:'The 3 most-used coupons on the site right now', es:'Los 3 cupones más usados del sitio ahora', fr:'Les 3 coupons les plus utilisés sur le site', de:'Die 3 meistgenutzten Gutscheine der Seite', it:'I 3 coupon più usati del sito ora', ar:'أكثر 3 كوبونات استخداماً على الموقع الآن' },
+    preheader: { pt:'Apex 90%, Bulenox 89%, TakeProfit 50%. Cupom aplicado automático.', en:'Apex 90%, Bulenox 89%, TakeProfit 50%. Coupon applied automatically.', es:'Apex 90%, Bulenox 89%, TakeProfit 50%. Cupón aplicado automáticamente.', fr:'Apex 90%, Bulenox 89%, TakeProfit 50%. Coupon appliqué automatiquement.', de:'Apex 90%, Bulenox 89%, TakeProfit 50%. Gutschein automatisch angewendet.', it:'Apex 90%, Bulenox 89%, TakeProfit 50%. Coupon applicato automaticamente.', ar:'Apex 90%، Bulenox 89%، TakeProfit 50%. الكوبون يُطبق تلقائياً.' },
+    title: { pt:'Os 3 cupons mais usados<br>do site agora', en:'The 3 most-used coupons<br>on the site right now', es:'Los 3 cupones más usados<br>del sitio ahora', fr:'Les 3 coupons les plus<br>utilisés sur le site', de:'Die 3 meistgenutzten<br>Gutscheine der Seite', it:'I 3 coupon più usati<br>del sito ora', ar:'أكثر 3 كوبونات<br>استخداماً على الموقع' },
+    body: {
+      pt:'Acabei de atualizar a página de cupons. Esses 3 são os que <b>mais convertem hoje</b> — desconto direto, sem cadastro de cartão pra ver os preços.',
+      en:'Just refreshed the coupons page. These 3 are the ones that <b>convert the most today</b> — straight discount, no credit card to peek at the prices.',
+      es:'Acabo de actualizar la página de cupones. Estos 3 son los que <b>más convierten hoy</b> — descuento directo, sin tarjeta para ver los precios.',
+      fr:'Je viens de mettre à jour la page des coupons. Ces 3 sont ceux qui <b>convertissent le plus aujourd\'hui</b> — réduction directe, sans carte bancaire.',
+      de:'Habe gerade die Gutscheinseite aktualisiert. Diese 3 konvertieren <b>heute am besten</b> — direkter Rabatt, keine Kreditkarte zum Anschauen.',
+      it:'Ho appena aggiornato la pagina dei coupon. Questi 3 sono quelli che <b>convertono di più oggi</b> — sconto diretto, senza carta per vedere i prezzi.',
+      ar:'حدّثت صفحة الكوبونات للتو. هذه الـ 3 الأعلى <b>تحويلاً اليوم</b> — خصم مباشر بدون بطاقة لرؤية الأسعار.',
+    },
+    features: {
+      pt:['Apex Trader Funding — 90% OFF · cupom MARKET','Bulenox — 89% OFF · cupom MARKET89','TakeProfit Trader — 50% OFF · cupom MARKET40','Cupom aplicado automático no checkout','Preços por tamanho de conta sem cadastro'],
+      en:['Apex Trader Funding — 90% OFF · coupon MARKET','Bulenox — 89% OFF · coupon MARKET89','TakeProfit Trader — 50% OFF · coupon MARKET40','Coupon applied automatically at checkout','Prices per account size, no signup needed'],
+      es:['Apex Trader Funding — 90% OFF · cupón MARKET','Bulenox — 89% OFF · cupón MARKET89','TakeProfit Trader — 50% OFF · cupón MARKET40','Cupón aplicado automáticamente en checkout','Precios por tamaño de cuenta sin registro'],
+      fr:['Apex Trader Funding — 90% OFF · coupon MARKET','Bulenox — 89% OFF · coupon MARKET89','TakeProfit Trader — 50% OFF · coupon MARKET40','Coupon appliqué automatiquement au checkout','Prix par taille de compte sans inscription'],
+      de:['Apex Trader Funding — 90% OFF · Gutschein MARKET','Bulenox — 89% OFF · Gutschein MARKET89','TakeProfit Trader — 50% OFF · Gutschein MARKET40','Gutschein automatisch beim Checkout angewendet','Preise pro Kontogröße ohne Anmeldung'],
+      it:['Apex Trader Funding — 90% OFF · coupon MARKET','Bulenox — 89% OFF · coupon MARKET89','TakeProfit Trader — 50% OFF · coupon MARKET40','Coupon applicato automaticamente al checkout','Prezzi per dimensione conto senza registrazione'],
+      ar:['Apex Trader Funding — 90% خصم · كوبون MARKET','Bulenox — 89% خصم · كوبون MARKET89','TakeProfit Trader — 50% خصم · كوبون MARKET40','الكوبون يُطبق تلقائياً عند الدفع','الأسعار حسب حجم الحساب بدون تسجيل'],
+    },
+    cta: { pt:'VER OS 3 CUPONS', en:'SEE THE 3 COUPONS', es:'VER LOS 3 CUPONES', fr:'VOIR LES 3 COUPONS', de:'DIE 3 GUTSCHEINE ANSEHEN', it:'VEDI I 3 COUPON', ar:'شاهد الكوبونات الثلاثة' },
+    highlight: {
+      label: { pt:'Atualizado hoje', en:'Updated today', es:'Actualizado hoy', fr:'Mis à jour aujourd\'hui', de:'Heute aktualisiert', it:'Aggiornato oggi', ar:'محدث اليوم' },
+      title: { pt:'Apex 100K por <b style="color:{C}">$44,90</b>', en:'Apex 100K for <b style="color:{C}">$44.90</b>', es:'Apex 100K por <b style="color:{C}">$44,90</b>', fr:'Apex 100K pour <b style="color:{C}">$44,90</b>', de:'Apex 100K für <b style="color:{C}">$44,90</b>', it:'Apex 100K a <b style="color:{C}">$44,90</b>', ar:'Apex 100K بسعر <b style="color:{C}">$44.90</b>' },
+      sub: { pt:'Cupom <b>MARKET</b> — 90% OFF aplicado automaticamente', en:'Coupon <b>MARKET</b> — 90% OFF applied automatically', es:'Cupón <b>MARKET</b> — 90% OFF aplicado automáticamente', fr:'Coupon <b>MARKET</b> — 90% OFF appliqué automatiquement', de:'Gutschein <b>MARKET</b> — 90% OFF automatisch angewendet', it:'Coupon <b>MARKET</b> — 90% OFF applicato automaticamente', ar:'كوبون <b>MARKET</b> — 90% خصم يُطبق تلقائياً' },
+    },
+  },
+
   // ═══ GIVEAWAY: para duplicar pra próximo sorteio, copia esse bloco e ajusta firm/drawDate/heroImage/postLink ═══
   // Site é EN-default — caixas traduzem automaticamente. Tudo em inglês pra consistência.
   'giveaway-apex-may26': (() => {
