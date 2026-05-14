@@ -9640,7 +9640,7 @@ async function sendEmailsSmtp(){
   }
   const langSummary = Object.entries(langGroups).map(([k,v])=>`${k}:${v.length}`).join(', ');
 
-  if(!confirm(`Enviar para ${leads.length.toLocaleString()} destinatarios via Brevo?\n\nIdiomas: ${langSummary}${isMultilang ? '\nHTML multilingue — cada um recebe no seu idioma.' : ''}`)) return;
+  if(!confirm(`Enviar para ${leads.length.toLocaleString()} destinatarios via Resend (auto fallback Brevo)?\n\nIdiomas: ${langSummary}${isMultilang ? '\nHTML multilingue — cada um recebe no seu idioma.' : ''}`)) return;
 
   const btn = document.querySelector('[onclick="sendEmailsSmtp()"]');
   if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
@@ -9982,7 +9982,7 @@ async function resumeEmailQueue(){
       recipients_emails: (batch||[]).map(l=>l.email).filter(Boolean),
       status: totalFailed===0 ? 'sent' : 'partial',
       sent_by: 'admin',
-      provider: 'brevo',
+      provider: 'auto',
       brevo_response: { sent: totalSent, failed: totalFailed, batch: `${start+1}-${end}` },
     });
 
@@ -10148,7 +10148,7 @@ async function runAutoQueue(){
         recipients_emails: allAttempted,
         status: failed===0 ? 'sent' : 'partial',
         sent_by: 'admin',
-        provider: 'brevo',
+        provider: 'auto',
         brevo_response: { sent, failed, batches: batchCount, seconds: elapsed, mode: 'auto' },
       });
       clearEmailQueue();
@@ -10173,7 +10173,7 @@ async function runAutoQueue(){
         recipients_emails: allAttempted,
         status: 'partial',
         sent_by: 'admin',
-        provider: 'brevo',
+        provider: 'auto',
         brevo_response: { sent, failed, batches: batchCount, mode: 'auto-paused' },
       });
     }
@@ -10210,7 +10210,7 @@ async function sendTestEmail(){
     const data=await resp.json();
     if(data.success){
       toast(`Teste enviado para ${user.email}!`);
-      await db.from('email_logs').insert({campaign_name:'[TESTE] '+subj.slice(0,45),subject:'[TESTE] '+subj,recipients:1,recipients_emails:[user.email],status:'sent',sent_by:'admin',provider:'brevo',brevo_response:{sent:1,failed:0,type:'test'}});
+      await db.from('email_logs').insert({campaign_name:'[TESTE] '+subj.slice(0,45),subject:'[TESTE] '+subj,recipients:1,recipients_emails:[user.email],status:'sent',sent_by:'admin',provider:'auto',brevo_response:{sent:1,failed:0,type:'test'}});
       await loadEmailStats();
     }
     else toast('Erro: '+(data.error||'falha no envio'),'error');
@@ -10241,7 +10241,7 @@ async function sendSingleEmail(){
     const data=await resp.json();
     if(data.success){
       toast(`Email enviado para ${email}!`);
-      await db.from('email_logs').insert({campaign_name:subj.slice(0,50),subject:subj,recipients:1,recipients_emails:[email],status:'sent',sent_by:'admin',provider:'brevo',brevo_response:{sent:1,failed:0,type:'single',to:email}});
+      await db.from('email_logs').insert({campaign_name:subj.slice(0,50),subject:subj,recipients:1,recipients_emails:[email],status:'sent',sent_by:'admin',provider:'auto',brevo_response:{sent:1,failed:0,type:'single',to:email}});
       await loadEmailStats();
     }
     else toast('Erro: '+(data.error||'falha no envio'),'error');
