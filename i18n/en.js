@@ -139,7 +139,7 @@ window.I18N.en = {
     fd_step2_cta:'2. Click the button and apply the coupon at checkout',
     fd_step2_cta_text:'Click the button and apply the coupon at checkout',
     fd_cupom_hint:'Apply the coupon at checkout to secure your discount',
-    fd_comecar:'Start Evaluation',
+    fd_comecar:'Buy with Discount',
     fd_incluso_plano:'Included in the plan',
     home_titulo:'Best Prop Firm Coupons',
     home_sub:'Compare prices, copy exclusive coupons, and save up to 90% at the world\'s largest prop firms.',
