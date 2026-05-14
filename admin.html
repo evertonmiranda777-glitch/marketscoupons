@@ -12725,9 +12725,9 @@ function renderCrTop3() {
     // Display names — sem abreviação. TPT vira "TakeProfit", etc
     const CR_DISPLAY_NAMES = { apex:'Apex', bulenox:'Bulenox', tpt:'TakeProfit', fn:'FundedNext', e2t:'Earn2Trade', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded', e8:'E8 Markets', cti:'CTI', tradeday:'TradeDay', ftmo:'FTMO' };
     const shortName = CR_DISPLAY_NAMES[f.id] || f.short_name || f.name.split(' ')[0];
-    return `<div style="display:flex;align-items:center;gap:24px;padding:30px 36px;background:#000;border:1.5px solid rgba(255,255,255,.18);border-radius:22px;position:relative;overflow:hidden;">
+    return `<div style="display:flex;align-items:center;gap:24px;padding:30px 36px;background:#000;border:2.5px solid rgba(255,255,255,.42);border-radius:22px;position:relative;overflow:hidden;">
       <div style="position:absolute;inset:0;background:radial-gradient(80% 100% at 100% 0%, ${acc}12, transparent 60%);pointer-events:none;"></div>
-      <div style="width:108px;height:108px;border-radius:18px;background:#000;border:1.5px solid rgba(255,255,255,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;z-index:1;">
+      <div style="width:108px;height:108px;border-radius:18px;background:#000;border:2.5px solid rgba(255,255,255,.42);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;z-index:1;">
         <img src="${f.icon_url || `/img/Firms/${f.id}.png`}" alt="${shortName}" style="width:88%;height:88%;object-fit:contain;">
       </div>
       <div style="font-size:54px;font-weight:800;letter-spacing:-1px;color:#fff;min-width:230px;position:relative;z-index:1;">${shortName}</div>
