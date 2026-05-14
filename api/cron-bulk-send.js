@@ -256,20 +256,22 @@ module.exports = async (req, res) => {
       // trava nesse idioma pra evitar mismatch subject/body em templates single-lang.
       const _tpl = _RENDER_TPLS[campaign];
       const lang = (_tpl && _tpl.forceLang) ? _tpl.forceLang : (sub.lang || 'en');
-      const html = renderInstHtml(campaign, lang, buildUnsubUrl(sub.email, lang));
+      const subToken = Buffer.from(String(sub.email).toLowerCase().trim()).toString('base64').replace(/=+$/,'');
+      const html = renderInstHtml(campaign, lang, buildUnsubUrl(sub.email, lang)).replace(/\{SUB\}/g, encodeURIComponent(subToken));
       const subject = getSubject(campaign, lang);
       if (!html) { failed++; failedEmails.push(sub.email); continue; }
 
       const rec = { email: sub.email, name: sub.name, lang, campaign };
       let ok = false;
       try {
-        if (brevoBudget > 0) {
-          ok = await sendViaBrevo(rec, subject, html, buildUnsubUrl(sub.email, lang));
-          if (ok) { brevoSent++; brevoBudget--; }
-        }
-        if (!ok && resendBudget > 0) {
+        // Resend PRIMARY (pós-crise spam 13/05) — Brevo fallback
+        if (resendBudget > 0) {
           ok = await sendViaResend(rec, subject, html, buildUnsubUrl(sub.email, lang));
           if (ok) { resendSent2++; resendBudget--; }
+        }
+        if (!ok && brevoBudget > 0) {
+          ok = await sendViaBrevo(rec, subject, html, buildUnsubUrl(sub.email, lang));
+          if (ok) { brevoSent++; brevoBudget--; }
         }
         if (!ok && sgBudget > 0 && SG_KEY) {
           ok = await sendViaSendGrid(rec, subject, html, buildUnsubUrl(sub.email, lang));

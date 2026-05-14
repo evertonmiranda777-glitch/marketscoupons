@@ -615,6 +615,19 @@ const utm = {
 };
 try{localStorage.setItem('mc_attribution', JSON.stringify({...utm, ts: Date.now()}));}catch(e){}
 
+// Subscriber tracking (vem do email com ?s=<base64_email>) — persiste 30d pra atribuir clicks subsequentes
+let subscriberB64 = null;
+try {
+  const fromUrl = qp.get('s');
+  if (fromUrl) {
+    subscriberB64 = fromUrl;
+    localStorage.setItem('mc_sub_b64', JSON.stringify({ s: fromUrl, ts: Date.now() }));
+  } else {
+    const stored = JSON.parse(localStorage.getItem('mc_sub_b64') || 'null');
+    if (stored && (Date.now() - stored.ts) < 30*86400000) subscriberB64 = stored.s;
+  }
+} catch(e){}
+
 // ─── sub_id (keyword) cascade — igual tracking.js do site ───
 function _sanitize(s){return String(s||'').toLowerCase().replace(/[^a-z0-9_\-]/g,'_').slice(0,100);}
 function _isMetaMacro(v){if(!v||typeof v!=='string')return false;const s=v.trim();return /^__.+__$/.test(s)||/\{\{.+\}\}/.test(s)||/^\{[^{}]+\}$/.test(s);}
@@ -651,7 +664,7 @@ function trackEvent(event, params={}){
       body: JSON.stringify({
         session_id: sessionId, event, firm_id: params.firm_id||null, coupon_code: params.coupon_code||null,
         page_name: params.page_name||'lp_coupons', utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
-        params: { ...utm, ...params, anon_id: anonId, event_id: eid, lang: LANG }
+        params: { ...utm, ...params, anon_id: anonId, event_id: eid, lang: LANG, sub_b64: subscriberB64 }
       }), keepalive: true
     }).catch(()=>{});
   } catch(e){}
@@ -666,7 +679,7 @@ function trackEvent(event, params={}){
           event_id: eid, fbclid: utm.fbclid, utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
           utm_term: utm.utm_term, utm_content: utm.utm_content,
           page_url: location.href, landing_page: location.pathname, referrer: document.referrer || null,
-          raw: { lang: LANG, location: 'lp_coupons', user_agent: navigator.userAgent.slice(0,200) }
+          raw: { lang: LANG, location: 'lp_coupons', user_agent: navigator.userAgent.slice(0,200), sub_b64: subscriberB64 }
         }), keepalive: true
       }).catch(()=>{});
     } catch(e){}

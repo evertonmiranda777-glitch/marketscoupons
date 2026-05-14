@@ -340,11 +340,13 @@ module.exports = async (req, res) => {
     const finalSubject = subject
       .replace(/{nome}/g, recipient.name || 'Trader')
       .replace(/{email}/g, recipient.email || '');
+    const subToken = recipient.email ? Buffer.from(String(recipient.email).toLowerCase().trim()).toString('base64').replace(/=+$/,'') : '';
     const finalHtmlRaw = (htmlContent || textToHtml(textContent))
       .replace(/{nome}/g, recipient.name || 'Trader')
       .replace(/{email}/g, recipient.email || '')
       .replace(/{cupom}/g, recipient.cupom || '')
       .replace(/{firma}/g, recipient.firma || '')
+      .replace(/{SUB}/g, encodeURIComponent(subToken))
       .replace(/{link}/g, tagUrl('https://www.marketscoupons.com'));
     const finalHtml = tagHtml(finalHtmlRaw);
 
