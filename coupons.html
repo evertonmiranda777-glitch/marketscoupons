@@ -36,7 +36,7 @@ fbq('track','PageView');
   --gold:#F0B429;--orange:#ff8c00;--green:#00b67a;--red:#EF4444;
   --t1:#EDF2F7;--t2:#B8C5D6;--t3:#8A98AE;
 }
-html,body{background:var(--bg);color:var(--t1);font-family:var(--f);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+html,body{background:var(--bg);color:var(--t1);font-family:var(--f);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body{padding:0 0 24px;background:radial-gradient(ellipse at top,#0e1622 0%,#07090D 60%)}
 html[dir="rtl"] body{direction:rtl}
 a{color:inherit;text-decoration:none}
@@ -49,11 +49,11 @@ body.has-promo-topbar{padding-top:var(--promo-h,40px)}
 .lang-pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--t2);font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;cursor:pointer;font-family:inherit;transition:all .15s}
 .lang-pill:hover{background:rgba(240,180,41,.12);border-color:rgba(240,180,41,.35);color:#fff}
 .lang-pill.active{background:rgba(240,180,41,.18);border-color:var(--gold);color:var(--gold)}
-.hero{padding:20px 16px 18px;text-align:center;max-width:560px;margin:0 auto}
-.hero-logo{display:inline-flex;align-items:center;gap:8px;font-size:20px;letter-spacing:-.02em;color:#fff;margin-bottom:14px;font-weight:400}
+.hero{padding:30px 24px 24px;text-align:center;max-width:560px;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-logo{display:inline-flex;align-items:center;gap:8px;font-size:20px;letter-spacing:-.02em;color:#fff;margin-bottom:18px;font-weight:400}
 .hero-logo em{color:var(--gold);font-style:normal;font-weight:700}
 .hero-logo svg{width:26px;height:26px}
-.hero h1{font-size:clamp(24px,5vw,42px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px;color:var(--t1);text-shadow:0 4px 24px rgba(0,0,0,.5)}
+.hero h1{font-size:clamp(22px,6vw,40px);font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:14px;color:var(--t1);text-shadow:0 4px 24px rgba(0,0,0,.5);overflow-wrap:break-word;word-wrap:break-word;hyphens:auto;max-width:100%}
 .hero h1 em{background:linear-gradient(135deg,#00dc82,#5dffb4,#00dc82);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;filter:drop-shadow(0 4px 24px rgba(0,220,130,.4))}
 .hero h1 b{color:var(--gold)}
 .hero p{font-size:14px;color:var(--t2);max-width:420px;margin:0 auto;line-height:1.6}
