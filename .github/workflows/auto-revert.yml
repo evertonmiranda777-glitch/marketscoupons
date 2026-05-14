@@ -16,7 +16,8 @@ jobs:
       # Confirma 3x que está down antes de reverter (evita falso positivo)
       health_urls: |
         https://www.marketscoupons.com|Markets Coupons
-        https://www.marketscoupons.com/apex|Começar
+        https://www.marketscoupons.com/coupons|Markets
+        https://www.marketscoupons.com/apex|Comprar
         https://www.marketscoupons.com/app.js|MarketsCoupons
     secrets:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

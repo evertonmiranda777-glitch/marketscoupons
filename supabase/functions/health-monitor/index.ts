@@ -17,6 +17,7 @@ const TELEGRAM_ADMIN_CHAT_ID = Deno.env.get("TELEGRAM_ADMIN_CHAT_ID") || "";
 
 const TARGETS = [
   { url: "https://www.marketscoupons.com",          must_contain: "Markets Coupons" },
+  { url: "https://www.marketscoupons.com/coupons",   must_contain: "Markets" },
   { url: "https://www.marketscoupons.com/apex",      must_contain: "Apex" },
   { url: "https://www.marketscoupons.com/app.js",    must_contain: "MarketsCoupons" },
 ];
