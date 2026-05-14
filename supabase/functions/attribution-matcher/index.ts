@@ -133,7 +133,29 @@ serve(async (req) => {
     if (upErr) return json({ error: "upsert_failed", message: upErr.message, partial: matched }, 500);
   }
 
-  return json({ ok: true, scanned: todo.length, matched, inserts: inserts.length });
+  // CRÍTICO: escreve sub_id de volta em affiliate_conversions pra notificações Telegram saberem a keyword
+  // (antes só ficava em coupon_attributions, conversions.sub_id ficava NULL pra sempre)
+  let backfilled = 0;
+  for (const ins of inserts) {
+    const subId = ins.utm_campaign || ins.fbclid || null;
+    // Procura utm_term/keyword no click original
+    const { data: clickData } = await sb
+      .from("coupon_clicks")
+      .select("utm_term, utm_campaign, utm_content")
+      .eq("id", ins.click_id)
+      .single();
+    const realSubId = clickData?.utm_term || clickData?.utm_campaign || clickData?.utm_content || subId;
+    if (realSubId) {
+      const { error: updErr } = await sb
+        .from("affiliate_conversions")
+        .update({ sub_id: realSubId })
+        .eq("id", ins.conversion_id)
+        .is("sub_id", null);
+      if (!updErr) backfilled++;
+    }
+  }
+
+  return json({ ok: true, scanned: todo.length, matched, inserts: inserts.length, sub_id_backfilled: backfilled });
 });
 
 function json(obj: any, status = 200) {
