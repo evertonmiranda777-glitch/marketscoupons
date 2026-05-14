@@ -1,4 +1,4 @@
-// Vercel Serverless Function — Send emails via Brevo + Resend (round-robin fallback)
+// Vercel Serverless Function — Send emails via Resend (primary, pago) + Brevo (fallback) + SendGrid (final fallback)
 // POST /api/send-email
 // Body: { to: [{email, name}], subject, htmlContent, sender?: {name, email}, tags?: [], provider?: 'brevo'|'resend'|'auto' }
 
@@ -357,25 +357,26 @@ module.exports = async (req, res) => {
       } else if (useProvider === 'sendgrid') {
         result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
       } else {
-        // Auto: Brevo → Resend → SendGrid (escalada ~495/dia: 295+100+100)
-        if (brevoBudget > 0 && BREVO_KEY) {
-          result = await sendViaBrevo(recipient, finalSubject, finalHtml);
-          if (result.status === 'sent') brevoBudget--;
-          if (result.status === 'failed' && RESEND_KEY && resendBudget > 0) {
-            console.log(`[AUTO] Brevo errored for ${recipient.email}, falling back to Resend`);
-            result = await sendViaResend(recipient, finalSubject, finalHtml);
-            if (result.status === 'sent') resendBudget--;
+        // Auto: Resend (pago, dominio aquecido) → Brevo (fallback) → SendGrid (fallback final)
+        // ORDEM CRITICA: Resend FIRST pos-crise spam 13/05/2026 — Brevo causava queda em quarentena
+        if (resendBudget > 0 && RESEND_KEY) {
+          result = await sendViaResend(recipient, finalSubject, finalHtml);
+          if (result.status === 'sent') resendBudget--;
+          if (result.status === 'failed' && BREVO_KEY && brevoBudget > 0) {
+            console.log(`[AUTO] Resend errored for ${recipient.email}, falling back to Brevo`);
+            result = await sendViaBrevo(recipient, finalSubject, finalHtml);
+            if (result.status === 'sent') brevoBudget--;
           }
           if (result.status === 'failed' && SG_KEY && sendgridBudget > 0) {
-            console.log(`[AUTO] Resend errored for ${recipient.email}, falling back to SendGrid`);
+            console.log(`[AUTO] Brevo errored for ${recipient.email}, falling back to SendGrid`);
             result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
             if (result.status === 'sent') sendgridBudget--;
           }
-        } else if (resendBudget > 0 && RESEND_KEY) {
-          result = await sendViaResend(recipient, finalSubject, finalHtml);
-          if (result.status === 'sent') resendBudget--;
+        } else if (brevoBudget > 0 && BREVO_KEY) {
+          result = await sendViaBrevo(recipient, finalSubject, finalHtml);
+          if (result.status === 'sent') brevoBudget--;
           if (result.status === 'failed' && SG_KEY && sendgridBudget > 0) {
-            console.log(`[AUTO] Resend errored for ${recipient.email}, falling back to SendGrid`);
+            console.log(`[AUTO] Brevo errored for ${recipient.email}, falling back to SendGrid`);
             result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
             if (result.status === 'sent') sendgridBudget--;
           }
