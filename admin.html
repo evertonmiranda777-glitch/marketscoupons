@@ -6797,7 +6797,7 @@ const EMAIL_I18N = {
     intro: 'A <b>{firm}</b> está com <b>{discount}% de desconto{lt}</b>. Veja todos os detalhes abaixo e comece agora mesmo.',
     exclusive_coupon: 'CUPOM EXCLUSIVO',
     coupon_hint: 'Copie o cupom e cole no checkout',
-    auto_discount: 'Desconto aplicado automaticamente pelo nosso link',
+    auto_discount: 'Sem cupom · use nosso link de afiliado, confira o preço no checkout',
     account_rules: 'REGRAS DA CONTA',
     min_days: 'Dias Mínimos', eval_days: 'Período Avaliação', profit_target: 'Meta de Lucro',
     max_dd: 'Max Drawdown', dd_type: 'Tipo Drawdown', profit_split: 'Profit Split',
@@ -6822,7 +6822,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> is offering <b>{discount}% OFF{lt}</b>. See all the details below and get started now.',
     exclusive_coupon: 'EXCLUSIVE COUPON',
     coupon_hint: 'Copy the coupon and paste at checkout',
-    auto_discount: 'Discount applied automatically through our link',
+    auto_discount: 'No coupon · use our affiliate link, confirm the price at checkout',
     account_rules: 'ACCOUNT RULES',
     min_days: 'Min. Days', eval_days: 'Eval Period', profit_target: 'Profit Target',
     max_dd: 'Max Drawdown', dd_type: 'Drawdown Type', profit_split: 'Profit Split',
@@ -6847,7 +6847,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> ofrece <b>{discount}% de descuento{lt}</b>. Mira todos los detalles abajo y empieza ahora.',
     exclusive_coupon: 'CUPON EXCLUSIVO',
     coupon_hint: 'Copia el cupon y pegalo en el checkout',
-    auto_discount: 'Descuento aplicado automaticamente por nuestro enlace',
+    auto_discount: 'Sin cupón · usa nuestro enlace de afiliado, confirma el precio en el checkout',
     account_rules: 'REGLAS DE CUENTA',
     min_days: 'Dias Minimos', eval_days: 'Periodo Evaluacion', profit_target: 'Meta de Ganancia',
     max_dd: 'Max Drawdown', dd_type: 'Tipo Drawdown', profit_split: 'Profit Split',
@@ -6872,7 +6872,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> propose <b>{discount}% de reduction{lt}</b>. Decouvrez tous les details ci-dessous et commencez maintenant.',
     exclusive_coupon: 'COUPON EXCLUSIF',
     coupon_hint: 'Copiez le coupon et collez-le au checkout',
-    auto_discount: 'Reduction appliquee automatiquement via notre lien',
+    auto_discount: 'Pas de coupon · utilisez notre lien d\'affiliation, confirmez le prix au checkout',
     account_rules: 'REGLES DU COMPTE',
     min_days: 'Jours Min.', eval_days: 'Periode Evaluation', profit_target: 'Objectif Profit',
     max_dd: 'Max Drawdown', dd_type: 'Type Drawdown', profit_split: 'Profit Split',
@@ -6897,7 +6897,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> bietet <b>{discount}% Rabatt{lt}</b>. Alle Details unten — jetzt starten.',
     exclusive_coupon: 'EXKLUSIVER GUTSCHEIN',
     coupon_hint: 'Gutschein kopieren und beim Checkout einfugen',
-    auto_discount: 'Rabatt wird automatisch uber unseren Link angewendet',
+    auto_discount: 'Kein Gutschein · nutze unseren Affiliate-Link, prufe den Preis beim Checkout',
     account_rules: 'KONTOREGELN',
     min_days: 'Min. Tage', eval_days: 'Bewertungszeitraum', profit_target: 'Gewinnziel',
     max_dd: 'Max Drawdown', dd_type: 'Drawdown-Typ', profit_split: 'Profit Split',
@@ -6922,7 +6922,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> offre <b>{discount}% di sconto{lt}</b>. Tutti i dettagli qui sotto — inizia subito.',
     exclusive_coupon: 'COUPON ESCLUSIVO',
     coupon_hint: 'Copia il coupon e incollalo al checkout',
-    auto_discount: 'Sconto applicato automaticamente tramite il nostro link',
+    auto_discount: 'Nessun coupon · usa il nostro link affiliato, conferma il prezzo al checkout',
     account_rules: 'REGOLE CONTO',
     min_days: 'Giorni Min.', eval_days: 'Periodo Valutazione', profit_target: 'Obiettivo Profitto',
     max_dd: 'Max Drawdown', dd_type: 'Tipo Drawdown', profit_split: 'Profit Split',
@@ -6947,7 +6947,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> تقدم <b>خصم {discount}%{lt}</b>. شاهد كل التفاصيل ادناه وابدا الان.',
     exclusive_coupon: 'كوبون حصري',
     coupon_hint: 'انسخ الكوبون والصقه عند الدفع',
-    auto_discount: 'الخصم يطبق تلقائيا عبر رابطنا',
+    auto_discount: 'بدون كوبون · استخدم رابط الإحالة وتأكد من السعر عند الدفع',
     account_rules: 'قواعد الحساب',
     min_days: 'الحد الادنى للايام', eval_days: 'فترة التقييم', profit_target: 'هدف الربح',
     max_dd: 'Max Drawdown', dd_type: 'نوع Drawdown', profit_split: 'Profit Split',
@@ -7321,18 +7321,18 @@ const INST_TEMPLATES = {
     color: '#FF6F00',
     image: '',
     subject: { pt:'Conta de $25K por $24,90 — cupom exclusivo', en:'$25K account for $24.90 — exclusive coupon', es:'Cuenta de $25K por $24,90 — cupón exclusivo', fr:'Compte de $25K pour $24,90 — coupon exclusif', de:'$25K Konto für $24,90 — exklusiver Gutschein', it:'Conto da $25K a $24,90 — coupon esclusivo', ar:'حساب $25K بسعر $24.90 — كوبون حصري' },
-    preheader: { pt:'Apex 90% off, Bulenox 89% off. Cupom aplicado automaticamente. Sem cadastro de cartão.', en:'Apex 90% off, Bulenox 89% off. Coupon applied automatically. No credit card required.', es:'Apex 90% off, Bulenox 89% off. Cupón aplicado automáticamente. Sin tarjeta de crédito.', fr:'Apex 90% off, Bulenox 89% off. Coupon appliqué automatiquement. Sans carte bancaire.', de:'Apex 90% off, Bulenox 89% off. Gutschein automatisch angewendet. Keine Kreditkarte nötig.', it:'Apex 90% off, Bulenox 89% off. Coupon applicato automaticamente. Nessuna carta di credito.', ar:'Apex 90% خصم، Bulenox 89% خصم. الكوبون يُطبق تلقائياً. بدون بطاقة ائتمان.' },
+    preheader: { pt:'Apex 90% off, Bulenox 89% off. Copie no site e use no checkout. Sem cadastro de cartão.', en:'Apex 90% off, Bulenox 89% off. Copy on the site, paste at checkout. No credit card required.', es:'Apex 90% off, Bulenox 89% off. Cópialo y úsalo en el checkout. Sin tarjeta de crédito.', fr:'Apex 90% off, Bulenox 89% off. À copier et coller au checkout. Sans carte bancaire.', de:'Apex 90% off, Bulenox 89% off. Kopieren und beim Checkout einfügen. Keine Kreditkarte nötig.', it:'Apex 90% off, Bulenox 89% off. Copia e incolla al checkout. Nessuna carta di credito.', ar:'Apex 90% خصم، Bulenox 89% خصم. انسخه واستخدمه عند الدفع. بدون بطاقة ائتمان.' },
     greeting: { pt:'', en:'', es:'', fr:'', de:'', it:'', ar:'' },
     icon: '',
     title: { pt:'', en:'', es:'', fr:'', de:'', it:'', ar:'' },
     body: {
-      pt:'Reunimos cupons exclusivos negociados direto com as firmas — até 90% de desconto na sua avaliação. Tudo verificado, atualizado diariamente e aplicado automaticamente no checkout.',
-      en:'We gather exclusive coupons negotiated directly with firms — up to 90% off your evaluation. All verified, updated daily and applied automatically at checkout.',
-      es:'Reunimos cupones exclusivos negociados directamente con las firmas — hasta 90% de descuento en tu evaluación. Todo verificado, actualizado diariamente y aplicado automáticamente en el checkout.',
-      fr:'On réunit des coupons exclusifs négociés directement avec les firmes — jusqu\'à 90% de réduction sur votre évaluation. Tout vérifié, mis à jour quotidiennement et appliqué automatiquement au checkout.',
-      de:'Wir sammeln exklusive Gutscheine direkt mit den Firmen verhandelt — bis zu 90% Rabatt auf deine Evaluierung. Alles verifiziert, täglich aktualisiert und automatisch beim Checkout angewendet.',
-      it:'Raccogliamo coupon esclusivi negoziati direttamente con le firme — fino al 90% di sconto sulla tua valutazione. Tutto verificato, aggiornato quotidianamente e applicato automaticamente al checkout.',
-      ar:'نجمع كوبونات حصرية تم التفاوض عليها مباشرة مع الشركات — خصم يصل إلى 90% على تقييمك. كل شيء موثق ومحدث يومياً ويُطبق تلقائياً عند الدفع.'
+      pt:'Reunimos cupons exclusivos negociados direto com as firmas — até 90% de desconto na sua avaliação. Tudo verificado e atualizado diariamente. Copie no site e cole no checkout da firma.',
+      en:'We gather exclusive coupons negotiated directly with firms — up to 90% off your evaluation. All verified and updated daily. Copy on the site and paste at the firm checkout.',
+      es:'Reunimos cupones exclusivos negociados directamente con las firmas — hasta 90% de descuento en tu evaluación. Todo verificado y actualizado diariamente. Cópialo en el sitio y pégalo en el checkout.',
+      fr:'On réunit des coupons exclusifs négociés directement avec les firmes — jusqu\'à 90% de réduction sur votre évaluation. Tout vérifié et mis à jour quotidiennement. Copiez sur le site et collez au checkout.',
+      de:'Wir sammeln exklusive Gutscheine direkt mit den Firmen verhandelt — bis zu 90% Rabatt auf deine Evaluierung. Alles verifiziert und täglich aktualisiert. Auf der Seite kopieren und beim Checkout einfügen.',
+      it:'Raccogliamo coupon esclusivi negoziati direttamente con le firme — fino al 90% di sconto sulla tua valutazione. Tutto verificato e aggiornato quotidianamente. Copia dal sito e incolla al checkout.',
+      ar:'نجمع كوبونات حصرية تم التفاوض عليها مباشرة مع الشركات — خصم يصل إلى 90% على تقييمك. كل شيء موثق ومحدث يومياً. انسخ من الموقع والصق عند الدفع.'
     },
     features: {
       pt:['11+ Prop Firms com cupons exclusivos','Comparador lado a lado com Trustpilot real','Análise diária às 6h — ES, NQ, Ouro, Petróleo','Heatmap, Calendário Econômico e Calculadoras','Blog educacional do iniciante ao avançado'],
@@ -7895,7 +7895,7 @@ function buildInstitutionalHtml(name, lang='pt'){
       m3v:'11+', m3l:{pt:'Prop Firms',en:'Prop Firms',es:'Prop Firms',fr:'Prop Firms',de:'Prop Firms',it:'Prop Firms',ar:'Prop Firms'},
       hlLabel:{pt:'Melhor oferta do momento',en:'Best deal right now',es:'Mejor oferta del momento',fr:'Meilleure offre',de:'Bestes Angebot',it:'Migliore offerta',ar:'أفضل عرض الآن'},
       hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
-      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF aplicado automáticamente en el checkout',fr:'Coupon <strong>MARKET89</strong> — 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong> — 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong> — 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong> — 89% OFF يُطبق تلقائياً'}
+      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF · copie no site e use no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF · copy on the site, paste at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF · cópialo y úsalo en el checkout',fr:'Coupon <strong>MARKET89</strong> — 89% OFF · à copier et coller au checkout',de:'Gutschein <strong>MARKET89</strong> — 89% OFF · kopieren und beim Checkout einfügen',it:'Coupon <strong>MARKET89</strong> — 89% OFF · copia e incolla al checkout',ar:'كوبون <strong>MARKET89</strong> — 89% OFF · انسخه واستخدمه عند الدفع'}
     },
     'welcome': {
       color:'#ff8c00', hlBg:'#fff4e6', hlBorder:'#ffcc80', hlSub:'#aa7030',
@@ -7907,7 +7907,7 @@ function buildInstitutionalHtml(name, lang='pt'){
       m3v:'6+', m3l:{pt:'Ferramentas',en:'Tools',es:'Herramientas',fr:'Outils',de:'Tools',it:'Strumenti',ar:'أدوات'},
       hlLabel:{pt:'Comece por aqui',en:'Start here',es:'Empieza aquí',fr:'Commencez ici',de:'Starte hier',it:'Inizia qui',ar:'ابدأ من هنا'},
       hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
-      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF aplicado automáticamente',fr:'Coupon <strong>MARKET89</strong> — 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong> — 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong> — 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong> — 89% OFF يُطبق تلقائياً'}
+      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF · copie no site e use no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF · copy on the site, paste at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF · cópialo y úsalo en el checkout',fr:'Coupon <strong>MARKET89</strong> — 89% OFF · à copier et coller au checkout',de:'Gutschein <strong>MARKET89</strong> — 89% OFF · kopieren und beim Checkout einfügen',it:'Coupon <strong>MARKET89</strong> — 89% OFF · copia e incolla al checkout',ar:'كوبون <strong>MARKET89</strong> — 89% OFF · انسخه واستخدمه عند الدفع'}
     },
     'loyalty': {
       color:'#a855f7', hlBg:'#f5f0ff', hlBorder:'#d4bfff', hlSub:'#6b4fa8',
@@ -8074,7 +8074,7 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
         </td></tr>
         <tr><td bgcolor="#ffffff" style="background-color:#ffffff;padding:14px 16px;height:100px;vertical-align:top;" height="100">
           <p style="font-family:${F};font-size:13px;font-weight:700;color:#1a1a1a;margin:0 0 5px;">${T({pt:'Ofertas e Cupons — 11+ Firmas',en:'Deals & Coupons — 11+ Firms',es:'Ofertas y Cupones — 11+ Firmas'})}</p>
-          <p style="font-family:${F};font-size:11px;color:#888;line-height:1.55;margin:0;">${T({pt:'Cupons verificados e atualizados diariamente. Aplicados automaticamente no checkout.',en:'Verified coupons updated daily. Applied automatically at checkout.',es:'Cupones verificados y actualizados diariamente.'})}</p>
+          <p style="font-family:${F};font-size:11px;color:#888;line-height:1.55;margin:0;">${T({pt:'Cupons verificados e atualizados diariamente. Copie no site e use no checkout da firma.',en:'Verified coupons updated daily. Copy on the site and paste at the firm checkout.',es:'Cupones verificados y actualizados diariamente. Cópialos en el sitio y úsalos en el checkout.'})}</p>
         </td></tr>
       </table>
     </td>
@@ -13117,7 +13117,7 @@ function renderHeroPremium(firm, content, L) {
     } else {
       const GREEN = '#10B981';
       h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
-      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Desconto aplicado automaticamente via link':'Discount auto-applied via link'}</span></div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Sem cupom · use nosso link de afiliado':'No coupon · use our affiliate link'}</span></div>`;
     }
   }
 
@@ -14575,7 +14575,7 @@ async function tgPreviewFlashPromo(){
     const discountLabel = isLifetime ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
     const couponLine = firm.coupon
       ? `🎟 Code: <code>${firm.coupon}</code>`
-      : `🔗 No code needed — discount applied automatically`;
+      : `🔗 No code needed — use our affiliate link`;
     const urgency = document.getElementById('tg-flash-urgency')?.value || '';
     const text =
       `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
