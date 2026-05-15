@@ -77,12 +77,8 @@
     { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar)/?$", "dest": "/index.html" },
     { "src": "/(apex|bulenox|ftmo|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" },
-    { "src": "/(.*)-vs-takeprofit", "dest": "/compare/$1-vs-tpt.html" },
-    { "src": "/takeprofit-vs-(.*)", "dest": "/compare/tpt-vs-$1.html" },
-    { "src": "/(en|es|fr|de|it|ar)/(.*)-vs-takeprofit", "dest": "/$1/compare/$2-vs-tpt.html" },
-    { "src": "/(en|es|fr|de|it|ar)/takeprofit-vs-(.*)", "dest": "/$1/compare/tpt-vs-$2.html" },
-    { "src": "/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/compare/$1-vs-$2.html" },
-    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/$1/compare/$2-vs-$3.html" }
+    { "src": "/(apex|bulenox|ftmo|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/compare/$1-vs-$2.html" },
+    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/$1/compare/$2-vs-$3.html" }
   ],
   "headers": [
     {
