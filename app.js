@@ -5137,14 +5137,12 @@ function renderCal() {
     return;
   }
 
-  // Current time in ET for "now" line
+  // Current time em UTC (e.t está armazenado em UTC, comparação tem que ser em UTC)
   const nowUTC = new Date();
-  const etH = (nowUTC.getUTCHours() - 4 + 24) % 24;
-  const nowHHMM = etH.toString().padStart(2,'0') + ':' + nowUTC.getUTCMinutes().toString().padStart(2,'0');
+  const nowHHMM = nowUTC.getUTCHours().toString().padStart(2,'0') + ':' + nowUTC.getUTCMinutes().toString().padStart(2,'0');
 
-  // Find next upcoming high-impact event (for highlight) — search today first, then future days
-  const etNow = new Date(nowUTC.getTime() - 4*60*60*1000);
-  const todayStr = etNow.toISOString().slice(0,10);
+  // Find next upcoming high-impact event (search today first, then future days)
+  const todayStr = nowUTC.toISOString().slice(0,10);
   let nextHiId = null;
   for(const e of calEvents){
     if(e.imp !== 'h' || e.t === '—') continue;
