@@ -1,0 +1,866 @@
+- generic [active] [ref=e1]:
+  - navigation "Main navigation" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4] [cursor=pointer]:
+        - img [ref=e5]
+        - generic [ref=e10]:
+          - emphasis [ref=e11]: Markets
+          - text: Coupons
+      - generic [ref=e13]:
+        - img
+        - textbox "Firmen, Anleitungen, Tools suchen..." [ref=e14]
+      - generic [ref=e15]:
+        - generic [ref=e17] [cursor=pointer]: DE
+        - generic [ref=e18]:
+          - button "Anmelden" [ref=e19] [cursor=pointer]
+          - button "Registrieren" [ref=e20] [cursor=pointer]
+    - generic [ref=e22]:
+      - button "Angebote" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+        - text: Angebote
+      - button "Firmen" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: Firmen
+      - button "Plattformen" [ref=e30] [cursor=pointer]:
+        - img [ref=e31]
+        - text: Plattformen
+      - button "Indikatoren" [ref=e33] [cursor=pointer]:
+        - img [ref=e34]
+        - text: Indikatoren
+      - button "Vergleichen" [ref=e36] [cursor=pointer]:
+        - img [ref=e37]
+        - text: Vergleichen
+      - button "Wirtschaftskalender" [ref=e38] [cursor=pointer]:
+        - img [ref=e39]
+        - text: Wirtschaftskalender
+      - button "Heatmap" [ref=e41] [cursor=pointer]:
+        - img [ref=e42]
+        - text: Heatmap
+      - button "Tägliche Analyse" [ref=e47] [cursor=pointer]:
+        - img [ref=e48]
+        - text: Tägliche Analyse
+      - button "Gamma (GEX)" [ref=e51] [cursor=pointer]:
+        - img [ref=e52]
+        - text: Gamma (GEX)
+      - button "Guides" [ref=e56] [cursor=pointer]:
+        - img [ref=e57]
+        - text: Guides
+      - button "Blog" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+        - text: Blog
+      - button "Position Size" [ref=e64] [cursor=pointer]:
+        - img [ref=e65]
+        - text: Position Size
+      - button "Quiz" [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+        - text: Quiz
+      - button "Awards" [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+        - text: Awards
+      - button "Live Room" [ref=e75] [cursor=pointer]:
+        - img [ref=e76]
+        - text: Live Room
+  - generic [ref=e79]:
+    - generic [ref=e80]:
+      - generic [ref=e81]:
+        - text: Markets
+        - emphasis [ref=e82]: Coupons
+      - button "Fechar menu" [ref=e83] [cursor=pointer]
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - generic [ref=e86]: Willkommen bei Markets Coupons
+        - button "Bei Konto anmelden" [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+          - generic [ref=e91]: Bei Konto anmelden
+        - button "Konto erstellen" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+          - generic [ref=e96]: Konto erstellen
+      - generic [ref=e97]: Startseite
+      - button "Angebote & Gutscheine" [ref=e98] [cursor=pointer]
+      - generic [ref=e99]: Firmen
+      - button "Alle Firmen anzeigen" [ref=e100] [cursor=pointer]
+      - button "Unternehmen vergleichen" [ref=e101] [cursor=pointer]
+      - button "Quiz – welche Firma?" [ref=e102] [cursor=pointer]
+      - generic [ref=e103]: Werkzeuge
+      - button "Positionsgröße" [ref=e104] [cursor=pointer]
+      - button "Wirtschaftskalender" [ref=e105] [cursor=pointer]
+      - button "Heatmap" [ref=e106] [cursor=pointer]
+      - button "Tägliche Marktanalyse" [ref=e107] [cursor=pointer]
+      - button "Gamma Exposure (GEX)" [ref=e108] [cursor=pointer]
+      - button "Indikatoren" [ref=e109] [cursor=pointer]
+      - generic [ref=e110]: Plattformen
+      - button "Handelsplattformen" [ref=e111] [cursor=pointer]
+      - generic [ref=e112]: Lernen
+      - button "Guides & Educação" [ref=e113] [cursor=pointer]
+      - button "Blog" [ref=e114] [cursor=pointer]
+      - generic [ref=e115]: Live & mehr
+      - button "Live Room" [ref=e116] [cursor=pointer]
+      - generic [ref=e117]: Sprache
+      - generic [ref=e118]:
+        - button "🇧🇷 PT" [ref=e119] [cursor=pointer]
+        - button "🇺🇸 EN" [ref=e120] [cursor=pointer]
+        - button "🇪🇸 ES" [ref=e121] [cursor=pointer]
+        - button "🇮🇹 IT" [ref=e122] [cursor=pointer]
+        - button "🇫🇷 FR" [ref=e123] [cursor=pointer]
+        - button "🇩🇪 DE" [ref=e124] [cursor=pointer]
+        - button "🇸🇦 AR" [ref=e125] [cursor=pointer]
+      - link "Bei Telegram anmelden" [ref=e126] [cursor=pointer]:
+        - /url: https://t.me/marketcouponss
+        - generic [ref=e127]: Bei Telegram anmelden
+      - generic [ref=e128]: Konto
+  - text: ★ ★ ★
+  - generic [ref=e130]:
+    - complementary [ref=e131]:
+      - generic [ref=e132]:
+        - generic [ref=e133]: Markt
+        - generic [ref=e134]:
+          - checkbox "Futures" [checked] [ref=e135]
+          - generic [ref=e136] [cursor=pointer]: Futures
+        - generic [ref=e137]:
+          - checkbox "Forex" [checked] [ref=e138]
+          - generic [ref=e139] [cursor=pointer]: Forex
+      - separator [ref=e140]
+      - generic [ref=e141]:
+        - generic [ref=e142]: Rabatt
+        - generic [ref=e143]:
+          - checkbox "+80%" [checked] [ref=e144]
+          - generic [ref=e145] [cursor=pointer]: +80%
+        - generic [ref=e146]:
+          - checkbox "50–80%" [checked] [ref=e147]
+          - generic [ref=e148] [cursor=pointer]: 50–80%
+        - generic [ref=e149]:
+          - checkbox "Unter 50 %" [checked] [ref=e150]
+          - generic [ref=e151] [cursor=pointer]: Unter 50 %
+      - separator [ref=e152]
+      - generic [ref=e153]:
+        - generic [ref=e154]: Eigenschaften
+        - generic [ref=e155]:
+          - checkbox "Lebensdauer" [ref=e156]
+          - generic [ref=e157] [cursor=pointer]: Lebensdauer
+        - generic [ref=e158]:
+          - checkbox "Handelsnachrichten" [ref=e159]
+          - generic [ref=e160] [cursor=pointer]: Handelsnachrichten
+        - generic [ref=e161]:
+          - checkbox "Auslosung am 1." [ref=e162]
+          - generic [ref=e163] [cursor=pointer]: Auslosung am 1.
+      - separator [ref=e164]
+      - generic [ref=e165]:
+        - generic [ref=e166]: Meine Favoriten
+        - generic [ref=e167]:
+          - checkbox "Nur Favoriten" [ref=e168]
+          - generic [ref=e169] [cursor=pointer]: Nur Favoriten
+      - button "Filter löschen" [ref=e170] [cursor=pointer]
+    - main [ref=e171]:
+      - textbox "Prop Firm suchen..." [ref=e173]
+      - generic [ref=e174]:
+        - generic [ref=e175]:
+          - text: Anzeigen
+          - strong [ref=e176]: "12"
+          - text: Firmen
+        - combobox [ref=e177]:
+          - option "Höhere Bewertung" [selected]
+          - option "Größter Rabatt"
+          - option "Weitere Bewertungen"
+          - option "Name A–Z"
+      - generic [ref=e178]:
+        - generic [ref=e179] [cursor=pointer]:
+          - generic:
+            - img "Bulenox" [ref=e181]
+            - generic:
+              - generic: Bulenox
+              - generic:
+                - generic [ref=e182]: Futures
+                - generic [ref=e183]: "Beste Aufteilung: 90 %"
+          - generic [ref=e184]:
+            - generic [ref=e185]: 89%
+            - generic [ref=e186]: DESC
+          - generic [ref=e187]:
+            - generic [ref=e188]: 90%
+            - generic [ref=e189]: Split
+          - generic [ref=e190]:
+            - generic [ref=e191]: "4.8"
+            - generic [ref=e192]: Rating
+          - generic [ref=e193]:
+            - generic [ref=e194]: 1.5K
+            - generic [ref=e195]: Reviews
+          - link "4.8 1.5K" [ref=e197]:
+            - /url: https://www.trustpilot.com/review/bulenox.com
+            - img [ref=e198]
+            - generic [ref=e200]: "4.8"
+            - generic [ref=e201]: 1.5K
+          - generic [ref=e204]:
+            - generic [ref=e205]: MARKET89
+            - button "Kopieren" [ref=e206]
+          - generic [ref=e207]:
+            - button "0" [ref=e208]:
+              - img [ref=e209]
+              - generic [ref=e211]: "0"
+            - button "Tarife anzeigen" [ref=e212]
+        - generic [ref=e213] [cursor=pointer]:
+          - generic:
+            - img "FTMO" [ref=e215]
+            - generic:
+              - generic: FTMO
+              - generic:
+                - generic [ref=e216]: Forex
+                - generic [ref=e217]: Forex-Marktführer
+          - generic [ref=e218]:
+            - generic [ref=e219]: 19%
+            - generic [ref=e220]: DESC
+          - generic [ref=e221]:
+            - generic [ref=e222]: 90%
+            - generic [ref=e223]: Split
+          - generic [ref=e224]:
+            - generic [ref=e225]: "4.8"
+            - generic [ref=e226]: Rating
+          - generic [ref=e227]:
+            - generic [ref=e228]: 41.1K
+            - generic [ref=e229]: Reviews
+          - link "4.8 41.1K" [ref=e231]:
+            - /url: https://www.trustpilot.com/review/ftmo.com
+            - img [ref=e232]
+            - generic [ref=e234]: "4.8"
+            - generic [ref=e235]: 41.1K
+          - generic [ref=e236]:
+            - button "0" [ref=e237]:
+              - img [ref=e238]
+              - generic [ref=e240]: "0"
+            - button "Tarife anzeigen" [ref=e241]
+        - generic [ref=e242] [cursor=pointer]:
+          - generic:
+            - img "Earn2Trade" [ref=e244]
+            - generic:
+              - generic: Earn2Trade
+              - generic:
+                - generic [ref=e245]: Futures
+                - generic [ref=e246]: Skalierung auf 400.000 $
+          - generic [ref=e247]:
+            - generic [ref=e248]: 50%
+            - generic [ref=e249]: DESC
+          - generic [ref=e250]:
+            - generic [ref=e251]: 80%
+            - generic [ref=e252]: Split
+          - generic [ref=e253]:
+            - generic [ref=e254]: "4.7"
+            - generic [ref=e255]: Rating
+          - generic [ref=e256]:
+            - generic [ref=e257]: 4.7K
+            - generic [ref=e258]: Reviews
+          - link "4.7 4.7K" [ref=e260]:
+            - /url: https://www.trustpilot.com/review/www.earn2trade.com
+            - img [ref=e261]
+            - generic [ref=e263]: "4.7"
+            - generic [ref=e264]: 4.7K
+          - generic [ref=e267]:
+            - generic [ref=e268]: MARKETSCOUPO…
+            - button "Kopieren" [ref=e269]
+          - generic [ref=e270]:
+            - button "0" [ref=e271]:
+              - img [ref=e272]
+              - generic [ref=e274]: "0"
+            - button "Tarife anzeigen" [ref=e275]
+        - generic [ref=e276] [cursor=pointer]:
+          - generic:
+            - img "The5ers" [ref=e278]
+            - generic:
+              - generic: The5ers
+              - generic:
+                - generic [ref=e279]: Forex/Futuros
+                - generic [ref=e280]: Seit 2016
+          - generic [ref=e281]:
+            - generic [ref=e282]: 10%
+            - generic [ref=e283]: DESC
+          - generic [ref=e284]:
+            - generic [ref=e285]: 100%
+            - generic [ref=e286]: Split
+          - generic [ref=e287]:
+            - generic [ref=e288]: "4.7"
+            - generic [ref=e289]: Rating
+          - generic [ref=e290]:
+            - generic [ref=e291]: 22.6K
+            - generic [ref=e292]: Reviews
+          - link "4.7 22.6K" [ref=e294]:
+            - /url: https://www.trustpilot.com/review/the5ers.com
+            - img [ref=e295]
+            - generic [ref=e297]: "4.7"
+            - generic [ref=e298]: 22.6K
+          - generic [ref=e301]:
+            - generic [ref=e302]: MARKET
+            - button "Kopieren" [ref=e303]
+          - generic [ref=e304]:
+            - button "0" [ref=e305]:
+              - img [ref=e306]
+              - generic [ref=e308]: "0"
+            - button "Tarife anzeigen" [ref=e309]
+        - generic [ref=e310] [cursor=pointer]:
+          - generic:
+            - img "TradeDay" [ref=e312]
+            - generic:
+              - generic: TradeDay
+              - generic [ref=e313]: Futures
+          - generic [ref=e314]:
+            - generic [ref=e315]: 30%
+            - generic [ref=e316]: DESC
+          - generic [ref=e317]:
+            - generic [ref=e318]: 80-95%
+            - generic [ref=e319]: Split
+          - generic [ref=e320]:
+            - generic [ref=e321]: "4.6"
+            - generic [ref=e322]: Rating
+          - generic [ref=e323]:
+            - generic [ref=e324]: 1.4K
+            - generic [ref=e325]: Reviews
+          - link "4.6 1.4K" [ref=e327]:
+            - /url: https://www.trustpilot.com/review/tradeday.com
+            - img [ref=e328]
+            - generic [ref=e330]: "4.6"
+            - generic [ref=e331]: 1.4K
+          - generic [ref=e334]:
+            - generic [ref=e335]: MARKETS
+            - button "Kopieren" [ref=e336]
+          - generic [ref=e337]:
+            - button "0" [ref=e338]:
+              - img [ref=e339]
+              - generic [ref=e341]: "0"
+            - button "Tarife anzeigen" [ref=e342]
+        - generic [ref=e343] [cursor=pointer]:
+          - generic:
+            - img "FundedNext" [ref=e345]
+            - generic:
+              - generic: FundedNext
+              - generic:
+                - generic [ref=e346]: Forex/Futuros
+                - generic [ref=e347]: Weitere Bewertungen
+          - generic [ref=e348]:
+            - generic [ref=e349]: 50%
+            - generic [ref=e350]: DESC
+          - generic [ref=e351]:
+            - generic [ref=e352]: 80%
+            - generic [ref=e353]: Split
+          - generic [ref=e354]:
+            - generic [ref=e355]: "4.5"
+            - generic [ref=e356]: Rating
+          - generic [ref=e357]:
+            - generic [ref=e358]: 63.7K
+            - generic [ref=e359]: Reviews
+          - link "4.5 63.7K" [ref=e361]:
+            - /url: https://www.trustpilot.com/review/fundednext.com
+            - img [ref=e362]
+            - generic [ref=e364]: "4.5"
+            - generic [ref=e365]: 63.7K
+          - generic [ref=e368]:
+            - generic [ref=e369]: FAST50
+            - button "Kopieren" [ref=e370]
+          - generic [ref=e371]:
+            - button "0" [ref=e372]:
+              - img [ref=e373]
+              - generic [ref=e375]: "0"
+            - button "Tarife anzeigen" [ref=e376]
+        - generic [ref=e377] [cursor=pointer]:
+          - generic:
+            - img "Funding Pips" [ref=e379]
+            - generic:
+              - generic: Funding Pips
+              - generic:
+                - generic [ref=e380]: Forex
+                - generic [ref=e381]: $200M+ Ausgezahlt
+          - generic [ref=e382]:
+            - generic [ref=e383]: 20%
+            - generic [ref=e384]: DESC
+          - generic [ref=e385]:
+            - generic [ref=e386]: 100%
+            - generic [ref=e387]: Split
+          - generic [ref=e388]:
+            - generic [ref=e389]: "4.5"
+            - generic [ref=e390]: Rating
+          - generic [ref=e391]:
+            - generic [ref=e392]: 51.3K
+            - generic [ref=e393]: Reviews
+          - link "4.5 51.3K" [ref=e395]:
+            - /url: https://www.trustpilot.com/review/fundingpips.com
+            - img [ref=e396]
+            - generic [ref=e398]: "4.5"
+            - generic [ref=e399]: 51.3K
+          - generic [ref=e402]:
+            - generic [ref=e403]: HELLO
+            - button "Kopieren" [ref=e404]
+          - generic [ref=e405]:
+            - button "0" [ref=e406]:
+              - img [ref=e407]
+              - generic [ref=e409]: "0"
+            - button "Tarife anzeigen" [ref=e410]
+        - generic [ref=e411] [cursor=pointer]:
+          - generic:
+            - img "BrightFunded" [ref=e413]
+            - generic:
+              - generic: BrightFunded
+              - generic:
+                - generic [ref=e414]: Forex
+                - generic [ref=e415]: 24h-Auszahlung
+          - generic [ref=e416]:
+            - generic [ref=e417]: 15%
+            - generic [ref=e418]: DESC
+          - generic [ref=e419]:
+            - generic [ref=e420]: 100%
+            - generic [ref=e421]: Split
+          - generic [ref=e422]:
+            - generic [ref=e423]: "4.5"
+            - generic [ref=e424]: Rating
+          - generic [ref=e425]:
+            - generic [ref=e426]: "528"
+            - generic [ref=e427]: Reviews
+          - link "4.5 528" [ref=e429]:
+            - /url: https://www.trustpilot.com/review/brightfunded.com
+            - img [ref=e430]
+            - generic [ref=e432]: "4.5"
+            - generic [ref=e433]: "528"
+          - generic [ref=e436]:
+            - generic [ref=e437]: CLNLTPXTT4SO…
+            - button "Kopieren" [ref=e438]
+          - generic [ref=e439]:
+            - button "0" [ref=e440]:
+              - img [ref=e441]
+              - generic [ref=e443]: "0"
+            - button "Tarife anzeigen" [ref=e444]
+        - generic [ref=e445] [cursor=pointer]:
+          - generic:
+            - img "Apex Trader Funding" [ref=e447]
+            - generic:
+              - generic: Apex Trader Funding
+              - generic:
+                - generic [ref=e448]: Futures
+                - generic [ref=e449]: Größter Rabatt
+          - generic [ref=e450]:
+            - generic [ref=e451]: 90%
+            - generic [ref=e452]: DESC
+          - generic [ref=e453]:
+            - generic [ref=e454]: 100% até $25k / 90%
+            - generic [ref=e455]: Split
+          - generic [ref=e456]:
+            - generic [ref=e457]: "4.4"
+            - generic [ref=e458]: Rating
+          - generic [ref=e459]:
+            - generic [ref=e460]: 18.4K
+            - generic [ref=e461]: Reviews
+          - link "4.4 18.4K" [ref=e463]:
+            - /url: https://www.trustpilot.com/review/apextraderfunding.com
+            - img [ref=e464]
+            - generic [ref=e466]: "4.4"
+            - generic [ref=e467]: 18.4K
+          - generic [ref=e470]:
+            - generic [ref=e471]: MARKET
+            - button "Kopieren" [ref=e472]
+          - generic [ref=e473]:
+            - button "0" [ref=e474]:
+              - img [ref=e475]
+              - generic [ref=e477]: "0"
+            - button "Tarife anzeigen" [ref=e478]
+        - generic [ref=e479] [cursor=pointer]:
+          - generic:
+            - img "Take Profit Trader" [ref=e481]
+            - generic:
+              - generic: Take Profit Trader
+              - generic [ref=e482]: Futures
+          - generic [ref=e483]:
+            - generic [ref=e484]: 50%
+            - generic [ref=e485]: DESC
+          - generic [ref=e486]:
+            - generic [ref=e487]: 80%
+            - generic [ref=e488]: Split
+          - generic [ref=e489]:
+            - generic [ref=e490]: "4.4"
+            - generic [ref=e491]: Rating
+          - generic [ref=e492]:
+            - generic [ref=e493]: 8.8K
+            - generic [ref=e494]: Reviews
+          - link "4.4 8.8K" [ref=e496]:
+            - /url: https://www.trustpilot.com/review/takeprofittrader.com
+            - img [ref=e497]
+            - generic [ref=e499]: "4.4"
+            - generic [ref=e500]: 8.8K
+          - generic [ref=e503]:
+            - generic [ref=e504]: MARKET40
+            - button "Kopieren" [ref=e505]
+          - generic [ref=e506]:
+            - button "0" [ref=e507]:
+              - img [ref=e508]
+              - generic [ref=e510]: "0"
+            - button "Tarife anzeigen" [ref=e511]
+        - generic [ref=e512] [cursor=pointer]:
+          - generic:
+            - img "E8 Markets" [ref=e514]
+            - generic:
+              - generic: E8 Markets
+              - generic:
+                - generic [ref=e515]: Forex
+                - generic [ref=e516]: DD Flexível
+          - generic [ref=e517]:
+            - generic [ref=e518]: 10%
+            - generic [ref=e519]: DESC
+          - generic [ref=e520]:
+            - generic [ref=e521]: 80%
+            - generic [ref=e522]: Split
+          - generic [ref=e523]:
+            - generic [ref=e524]: "4.4"
+            - generic [ref=e525]: Rating
+          - generic [ref=e526]:
+            - generic [ref=e527]: 3.2K
+            - generic [ref=e528]: Reviews
+          - link "4.4 3.2K" [ref=e530]:
+            - /url: https://www.trustpilot.com/review/e8markets.com
+            - img [ref=e531]
+            - generic [ref=e533]: "4.4"
+            - generic [ref=e534]: 3.2K
+          - generic [ref=e537]:
+            - generic [ref=e538]: MARKET
+            - button "Kopieren" [ref=e539]
+          - generic [ref=e540]:
+            - button "0" [ref=e541]:
+              - img [ref=e542]
+              - generic [ref=e544]: "0"
+            - button "Tarife anzeigen" [ref=e545]
+        - generic [ref=e546] [cursor=pointer]:
+          - generic:
+            - img "City Traders Imperium" [ref=e548]
+            - generic:
+              - generic: City Traders Imperium
+              - generic:
+                - generic [ref=e549]: Forex
+                - generic [ref=e550]: VIP Program
+          - generic [ref=e551]:
+            - generic [ref=e552]: 30%
+            - generic [ref=e553]: DESC
+          - generic [ref=e554]:
+            - generic [ref=e555]: 100%
+            - generic [ref=e556]: Split
+          - generic [ref=e557]:
+            - generic [ref=e558]: "4.3"
+            - generic [ref=e559]: Rating
+          - generic [ref=e560]:
+            - generic [ref=e561]: 1.7K
+            - generic [ref=e562]: Reviews
+          - link "4.3 1.7K" [ref=e564]:
+            - /url: https://www.trustpilot.com/review/citytradersimperium.com
+            - img [ref=e565]
+            - generic [ref=e567]: "4.3"
+            - generic [ref=e568]: 1.7K
+          - generic [ref=e571]:
+            - generic [ref=e572]: MAY30
+            - button "Kopieren" [ref=e573]
+          - generic [ref=e574]:
+            - button "0" [ref=e575]:
+              - img [ref=e576]
+              - generic [ref=e578]: "0"
+            - button "Tarife anzeigen" [ref=e579]
+  - generic [ref=e582]:
+    - generic [ref=e586]:
+      - generic [ref=e587]:
+        - generic [ref=e588]:
+          - img "Apex Trader Funding" [ref=e590]
+          - generic [ref=e591]:
+            - generic [ref=e592]: Apex Trader Funding
+            - generic [ref=e593]: Futures
+        - generic [ref=e594]:
+          - generic [ref=e595]: 90% OFF
+          - generic [ref=e596]: RABATT LIFETIME
+        - generic [ref=e597] [cursor=pointer]:
+          - generic [ref=e598]: "4.4"
+          - generic [ref=e599]:
+            - generic [ref=e600]: Ausgezeichnet
+            - generic [ref=e601]:
+              - generic [ref=e602]: ★
+              - generic [ref=e603]: ★
+              - generic [ref=e604]: ★
+              - generic [ref=e605]: ★
+              - generic [ref=e606]: ☆
+            - generic [ref=e607]: 18.382 Bewertungen auf Trustpilot
+        - generic [ref=e608]:
+          - generic [ref=e609]: Über die Firma
+          - generic [ref=e610]: Gegründet 2021 von Darrell Martin in Austin, Texas. Apex ist die 6. meistgesuchte Prop-Firm weltweit mit 4.2M monatlichen Besuchen. Genehmigungsrate von 15-20% — 2x der Branchendurchschnitt.
+          - generic [ref=e611]:
+            - generic [ref=e612]:
+              - generic [ref=e613]: $721M+
+              - generic [ref=e614]: An Trader ausgezahlt
+            - generic [ref=e615]:
+              - generic [ref=e616]: $85M+
+              - generic [ref=e617]: Letzte 90 Tage
+            - generic [ref=e618]:
+              - generic [ref=e619]: 100%
+              - generic [ref=e620]: Vom Gewinn (2026)
+      - generic [ref=e621]:
+        - generic [ref=e622]:
+          - generic [ref=e623]: Profit Split
+          - generic [ref=e624]: 100% até $25k / 90%
+        - generic [ref=e625]:
+          - generic [ref=e626]: Gewinnziel
+          - generic [ref=e627]: 8%
+        - generic [ref=e628]:
+          - generic [ref=e629]: Drawdown
+          - generic [ref=e630]: "-$1K a -$4K trail"
+        - generic [ref=e631]:
+          - generic [ref=e632]: Mindestanzahl an Tagen
+          - generic [ref=e633]: "8"
+        - generic [ref=e634]:
+          - generic [ref=e635]: Scaling
+          - generic [ref=e636]: Ja
+        - generic [ref=e637]:
+          - generic [ref=e638]: Bewertungsfrist
+          - generic [ref=e639]: Ohne Begrenzung
+        - generic [ref=e640]:
+          - generic [ref=e641]: News Trading
+          - generic [ref=e642]: Ja
+        - generic [ref=e643]:
+          - generic [ref=e644]: Day 1 Payout
+          - generic [ref=e645]: Ja
+        - generic [ref=e646]:
+          - generic [ref=e647]: Hebelwirkung
+          - generic [ref=e648]: $10k–$300k margin
+        - generic [ref=e649]:
+          - generic [ref=e650]: Konsistenz
+          - generic [ref=e651]: Nicht erforderlich
+        - generic [ref=e652]:
+          - generic [ref=e653]: Auszahlung
+          - generic [ref=e654]: 5 Tage
+        - generic [ref=e655]:
+          - generic [ref=e656]: Max Konten
+          - generic [ref=e657]: "20"
+    - generic [ref=e659]:
+      - button "✕" [ref=e660] [cursor=pointer]
+      - generic [ref=e661]:
+        - generic [ref=e662]:
+          - generic [ref=e663]: Konfigurieren Sie Ihr Konto
+          - generic [ref=e664]: Wählen Sie Typ, Plattform und Größe. Wenden Sie den Gutschein an der offiziellen Kasse an.
+        - generic [ref=e665]:
+          - generic [ref=e666]: Kontotyp
+          - generic [ref=e668]:
+            - button "Intraday Trail" [ref=e669] [cursor=pointer]
+            - button "EOD Trail" [ref=e670] [cursor=pointer]
+        - generic [ref=e671]:
+          - generic [ref=e672]: Plattform
+          - generic [ref=e674]:
+            - button "Rithmic" [ref=e675] [cursor=pointer]
+            - button "Tradovate" [ref=e676] [cursor=pointer]
+            - button "NinjaTrader" [ref=e677] [cursor=pointer]
+            - button "WealthCharts" [ref=e678] [cursor=pointer]
+        - generic [ref=e679]:
+          - generic [ref=e680]: Kontogröße
+          - generic [ref=e682]:
+            - button "25K" [ref=e683] [cursor=pointer]
+            - button "50K" [ref=e684] [cursor=pointer]
+            - button "100K POPULAR" [ref=e685] [cursor=pointer]
+            - button "150K" [ref=e686] [cursor=pointer]
+        - generic [ref=e687]:
+          - generic [ref=e689]:
+            - generic [ref=e690]: 25K
+            - generic [ref=e691]: Intraday Trail
+          - generic [ref=e692]:
+            - generic [ref=e693]: $24.90
+            - generic [ref=e694]: $249
+            - generic [ref=e695]: Ersparnis $224.10
+        - generic [ref=e696]:
+          - generic [ref=e697]:
+            - generic [ref=e698]: "1"
+            - generic [ref=e699]: Kopieren Sie den exklusiven Gutschein
+          - generic [ref=e700]:
+            - generic [ref=e701]:
+              - generic [ref=e702]: Exklusiver Gutschein
+              - generic [ref=e703]: MARKET
+            - button "Kopieren" [ref=e704] [cursor=pointer]
+          - generic [ref=e705]:
+            - generic [ref=e706]: "2"
+            - generic [ref=e707]: Klicken Sie auf die Schaltfläche und wenden Sie den Gutschein an der Kasse an
+          - button "Mit Rabatt kaufen →" [ref=e708] [cursor=pointer]
+        - generic [ref=e709]:
+          - generic [ref=e710]: Im Plan enthalten
+          - generic [ref=e711]:
+            - generic [ref=e712]: Kein tägliches Verlustlimit
+            - generic [ref=e713]: Keine Scaling-Regeln
+            - generic [ref=e714]: NinjaTrader-Lizenz
+            - generic [ref=e715]: Echtzeit-Daten
+            - generic [ref=e716]: Copy Trader (WealthCharts)
+            - generic [ref=e717]: 24/7 Support
+        - generic [ref=e718]:
+          - img [ref=e719]
+          - generic [ref=e721]:
+            - strong [ref=e722]: "fee_inclui:"
+            - text: fee_avaliacao.
+            - strong [ref=e723]: "fee_nao_inclui:"
+            - text: fee_taxa_ativacao.
+  - button "✕" [ref=e728] [cursor=pointer]
+  - contentinfo [ref=e730]:
+    - generic [ref=e731]:
+      - generic [ref=e732]:
+        - generic [ref=e733]:
+          - img [ref=e734]
+          - emphasis [ref=e739]: Markets
+          - text: Coupons
+        - paragraph [ref=e740]: Geprüfte Gutscheine für die besten Prop Firms. Professionelle Tools für Futures- und Devisenhändler.
+        - generic [ref=e741]:
+          - generic [ref=e742]: Newsletter
+          - generic [ref=e743]: Erhalte jede Woche die besten Prop Firm Angebote und Tipps.
+          - generic [ref=e744]:
+            - textbox "seu@email.com" [ref=e745]
+            - button "Abonnieren" [ref=e746] [cursor=pointer]
+        - generic [ref=e747]:
+          - link "Telegram" [ref=e748] [cursor=pointer]:
+            - /url: https://t.me/marketcouponss
+            - img [ref=e750]
+          - link "Instagram" [ref=e752] [cursor=pointer]:
+            - /url: https://www.instagram.com/marketscoupons
+            - img [ref=e754]
+          - link "Facebook" [ref=e756] [cursor=pointer]:
+            - /url: https://www.facebook.com/marketscoupons/
+            - img [ref=e758]
+      - generic [ref=e760]:
+        - heading "Prop Firms" [level=2] [ref=e761]
+        - link "Apex Trader Funding" [ref=e762] [cursor=pointer]:
+          - /url: https://apextraderfunding.com/member/aff/go/evertonmiranda
+        - link "Bulenox" [ref=e763] [cursor=pointer]:
+          - /url: https://bulenox.com/member/aff/go/marketcoupons
+        - link "FTMO" [ref=e764] [cursor=pointer]:
+          - /url: https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP
+        - link "FundedNext" [ref=e765] [cursor=pointer]:
+          - /url: https://fundednext.com/?fpr=everton33
+        - link "Take Profit Trader" [ref=e766] [cursor=pointer]:
+          - /url: https://takeprofittrader.com/?referralCode=MARKET40
+        - link "Earn2Trade" [ref=e767] [cursor=pointer]:
+          - /url: https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14
+      - generic [ref=e768]:
+        - heading "Werkzeuge" [level=2] [ref=e769]
+        - link "Position Size" [ref=e770] [cursor=pointer]:
+          - /url: /calculator
+        - link "Firmen-Quiz" [ref=e771] [cursor=pointer]:
+          - /url: /quiz
+        - link "Vergleichstool" [ref=e772] [cursor=pointer]:
+          - /url: /compare
+        - link "Kalender" [ref=e773] [cursor=pointer]:
+          - /url: /calendar
+        - link "Indikatoren" [ref=e774] [cursor=pointer]:
+          - /url: /indicators
+        - link "Gamma (GEX)" [ref=e775] [cursor=pointer]:
+          - /url: /gamma
+      - generic [ref=e776]:
+        - heading "Links" [level=2] [ref=e777]
+        - link "Telegram" [ref=e778] [cursor=pointer]:
+          - /url: https://t.me/marketcouponss
+        - link "Instagram" [ref=e779] [cursor=pointer]:
+          - /url: https://www.instagram.com/marketscoupons
+        - link "Guides" [ref=e780] [cursor=pointer]:
+          - /url: /guides
+        - link "Blog" [ref=e781] [cursor=pointer]:
+          - /url: /blog
+        - link "Live Room" [ref=e782] [cursor=pointer]:
+          - /url: /live
+        - link "FAQ" [ref=e783] [cursor=pointer]:
+          - /url: /#faq
+      - generic [ref=e784]:
+        - heading "Rechtliches" [level=2] [ref=e785]
+        - link "Datenschutzrichtlinie" [ref=e786] [cursor=pointer]:
+          - /url: /privacy
+        - link "Nutzungsbedingungen" [ref=e787] [cursor=pointer]:
+          - /url: /terms
+        - link "Cookie-Richtlinie" [ref=e788] [cursor=pointer]:
+          - /url: /privacy#cookies
+    - generic [ref=e789]:
+      - text: Alle Informationen dienen ausschließlich zu Bildungszwecken. Gutscheine können sich ändern. Der Handel ist mit Risiken verbunden. Bedingungen, Preise und Vorteile können jederzeit ohne vorherige Ankündigung geändert werden. © 2025 Markets Coupons.
+      - generic [ref=e790]:
+        - link "Datenschutzrichtlinie" [ref=e791] [cursor=pointer]:
+          - /url: /privacy
+        - link "Nutzungsbedingungen" [ref=e792] [cursor=pointer]:
+          - /url: /terms
+        - link "Cookie-Richtlinie" [ref=e793] [cursor=pointer]:
+          - /url: /privacy#cookies
+    - generic [ref=e794]:
+      - generic [ref=e795]:
+        - strong [ref=e796]: "Risikoerklärung:"
+        - paragraph [ref=e797]: Der Handel mit Futures und Forex birgt erhebliche Risiken und ist nicht für jeden Anleger geeignet. Ein Anleger könnte potenziell alles oder mehr als die ursprüngliche Investition verlieren. Risikokapital ist Geld, das verloren werden kann, ohne die finanzielle Sicherheit zu gefährden. Nur Risikokapital sollte für den Handel verwendet werden. Vergangene Ergebnisse sind nicht unbedingt ein Hinweis auf zukünftige Ergebnisse.
+      - generic [ref=e798]:
+        - strong [ref=e799]: "Erklärung zu simulierten Ergebnissen:"
+        - paragraph [ref=e800]: Simulierte Ergebnisse weisen viele inhärente Einschränkungen auf. Es sollte nicht davon ausgegangen werden, dass ein Konto ähnliche Ergebnisse wie die gezeigten erzielen wird. Es gibt häufig deutliche Unterschiede zwischen simulierten und tatsächlichen Ergebnissen. Simulierter Handel beinhaltet kein finanzielles Risiko.
+      - generic [ref=e801]:
+        - strong [ref=e802]: "Offenlegung von Erfahrungsberichten:"
+        - paragraph [ref=e803]: Die auf dieser Website erscheinenden Erfahrungsberichte sind möglicherweise nicht repräsentativ für andere Kunden und stellen keine Garantie für zukünftige Leistung oder Erfolg dar.
+      - generic [ref=e804]:
+        - strong [ref=e805]: "Offenlegung des Live-Trading-Raums:"
+        - paragraph [ref=e806]: Diese Präsentation dient ausschließlich Bildungszwecken und die geäußerten Meinungen sind ausschließlich die des Moderators. Alle vorgestellten Trades sollten als hypothetisch betrachtet werden und sollten nicht als replizierbar in einem echten Handelskonto erwartet werden.
+  - button "Abrir chat com Max" [ref=e807] [cursor=pointer]:
+    - generic [ref=e808]: "1"
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - img "Max"
+        - generic:
+          - generic: Max
+          - generic: Online
+      - button "✕"
+    - generic:
+      - generic:
+        - generic:
+          - text: Hey, Trader! 👊
+          - text: Bevor wir loslegen, wie soll ich dich nennen?
+          - text: Ich bin
+          - strong: Max
+          - text: . Ich helfe dir mit allem rund um Prop Firms, Coupons und Regeln — auch mit denen, die fast keiner liest.
+          - text: Wähl eine Option unten oder tipp deine Frage ein 🚀
+        - generic: jetzt
+    - generic:
+      - button "Welche Prop Firm ist die beste für mich?"
+      - button "Gibt es gerade einen Rabatt-Coupon?"
+      - button "Wie bestehe ich die Evaluation?"
+      - button "Was sind die wichtigsten Regeln?"
+    - generic:
+      - textbox "Tipp deine Frage..."
+      - button "Enviar mensagem":
+        - img
+  - article [ref=e809]:
+    - heading [level=1] [ref=e810]: Apex Trader Funding — 90% OFF Coupon Code MARKET
+    - paragraph [ref=e811]: Fundada em 2021 por Darrell Martin em Austin, Texas. A Apex é a 6ª prop firm mais buscada do mundo com 4.2M de visitas mensais. Taxa de aprovação de 15-20% — 2x a média do setor.
+    - heading [level=2] [ref=e812]: Apex Trader Funding Plans & Prices
+    - list [ref=e813]:
+      - listitem [ref=e814]:
+        - text: "25K: $24.90"
+        - deletion [ref=e815]: $249
+      - listitem [ref=e816]:
+        - text: "50K: $29.90"
+        - deletion [ref=e817]: $299
+      - listitem [ref=e818]:
+        - text: "100K: $44.90"
+        - deletion [ref=e819]: $449
+      - listitem [ref=e820]:
+        - text: "150K: $69.90"
+        - deletion [ref=e821]: $699
+    - heading [level=2] [ref=e822]: Key Features
+    - paragraph [ref=e823]: No daily loss limit, No scaling rules, Payout in 5 days, Up to 20 accounts, No recurring fees
+    - paragraph [ref=e824]: "Platforms: Rithmic, Tradovate, NinjaTrader, WealthCharts"
+    - paragraph [ref=e825]: "Profit Split: 100% até $25k / 90% | Drawdown: Trailing/EOD | Rating: 4.4/5 (18382 reviews)"
+    - paragraph [ref=e826]:
+      - text: Use coupon code
+      - strong [ref=e827]: MARKET
+      - text: for 90% discount.
+    - heading [level=2] [ref=e828]: Compare with Other Prop Firms
+    - list [ref=e829]:
+      - listitem [ref=e830]:
+        - link [ref=e831] [cursor=pointer]:
+          - /url: /bulenox
+          - text: Bulenox — 89% OFF (4.8/5)
+      - listitem [ref=e832]:
+        - link [ref=e833] [cursor=pointer]:
+          - /url: /ftmo
+          - text: FTMO (4.8/5)
+      - listitem [ref=e834]:
+        - link [ref=e835] [cursor=pointer]:
+          - /url: /tpt
+          - text: Take Profit Trader — 50% OFF (4.4/5)
+      - listitem [ref=e836]:
+        - link [ref=e837] [cursor=pointer]:
+          - /url: /fn
+          - text: FundedNext — 50% OFF (4.5/5)
+      - listitem [ref=e838]:
+        - link [ref=e839] [cursor=pointer]:
+          - /url: /e2t
+          - text: Earn2Trade — 50% OFF (4.7/5)
+    - paragraph [ref=e840]:
+      - link [ref=e841] [cursor=pointer]:
+        - /url: /
+        - text: View all prop firm coupons on MarketsCoupons
