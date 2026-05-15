@@ -7083,10 +7083,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   // Revelar body — mas NÃO se é firma dedicada (overlay abrirá e revelará depois)
   if(!_isFirmPage) document.body.style.opacity='1';
-  // Preload firm background images
-  // Lazy preload firm backgrounds — defer to idle time
-  if('requestIdleCallback' in window) requestIdleCallback(()=>{Object.values(FIRM_BG).forEach(url=>{const img=new Image();img.src=url;});});
-  else setTimeout(()=>{Object.values(FIRM_BG).forEach(url=>{const img=new Image();img.src=url;});},5000);
+  // REMOVIDO 2026-05-15: prefetch dos 12 bg files queimava 12-13MB no LCP (5MB tradeday + 3MB cti + ...).
+  // User só abre 1 firma — não vale carregar 12. Bg agora baixa on-demand quando openD() roda.
   // Render com dados hardcoded primeiro (UI imediata)
   renderHome();
   applyF();
