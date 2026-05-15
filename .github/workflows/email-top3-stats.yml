@@ -1,0 +1,78 @@
+name: Top 3 Stats (relatório pós-disparo)
+
+# Roda 4h depois do ramp diário pra relatar opens/clicks por idioma.
+# Lê resend_events + coupon_clicks. Manda relatório no Telegram.
+
+on:
+  schedule:
+    # 18:00 UTC = 15:00 BRT (4h depois do ramp das 14h UTC)
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Query opens/clicks últimas 4h e envia relatório
+        env:
+          SUPABASE_URL: https://qfwhduvutfumsaxnuofa.supabase.co
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          SINCE=$(date -u -d "4 hours ago" -Iseconds)
+
+          # Conta opens/clicks/deliveries por tipo nas últimas 4h
+          STATS=$(curl -s "${SUPABASE_URL}/rest/v1/rpc/top3_stats_4h" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "{}")
+          echo "STATS: $STATS"
+
+          # Fallback: query direta nas events tables
+          DELIVERED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.delivered&created_at=gte.${SINCE}&select=email" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" -H "Prefer: count=exact" -I | grep -i content-range | cut -d/ -f2 | tr -d '\r')
+          OPENED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.opened&created_at=gte.${SINCE}&select=email" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" -H "Prefer: count=exact" -I | grep -i content-range | cut -d/ -f2 | tr -d '\r')
+          CLICKED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.clicked&created_at=gte.${SINCE}&select=email" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" -H "Prefer: count=exact" -I | grep -i content-range | cut -d/ -f2 | tr -d '\r')
+          BOUNCED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.bounced&created_at=gte.${SINCE}&select=email" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" -H "Prefer: count=exact" -I | grep -i content-range | cut -d/ -f2 | tr -d '\r')
+
+          DELIVERED=${DELIVERED:-0}
+          OPENED=${OPENED:-0}
+          CLICKED=${CLICKED:-0}
+          BOUNCED=${BOUNCED:-0}
+
+          OPEN_RATE=0
+          CLICK_RATE=0
+          if [ "$DELIVERED" -gt 0 ]; then
+            OPEN_RATE=$(awk "BEGIN{printf \"%.1f\", $OPENED*100/$DELIVERED}")
+            CLICK_RATE=$(awk "BEGIN{printf \"%.1f\", $CLICKED*100/$DELIVERED}")
+          fi
+
+          # Top 5 emails que clicaram (preview de quem engajou)
+          CLICKED_LIST=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.clicked&created_at=gte.${SINCE}&select=email,created_at&order=created_at.desc&limit=5" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" | python3 -c "import sys,json;d=json.load(sys.stdin);print('%0A'.join(['• '+x['email'] for x in d]))" 2>/dev/null || echo "(sem dados)")
+
+          # Affinity por firma (quem clicou em qual firma na LP nas últimas 4h)
+          AFFINITY=$(curl -s "${SUPABASE_URL}/rest/v1/v_subscriber_firm_affinity?last_click=gte.${SINCE}&select=subscriber_email,firm_id,clicks&order=clicks.desc&limit=10" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" | python3 -c "import sys,json;d=json.load(sys.stdin);print('%0A'.join(['• '+x['subscriber_email']+' → '+x['firm_id']+' ('+str(x['clicks'])+'x)' for x in d]))" 2>/dev/null || echo "(sem clicks ainda)")
+
+          MSG="📊 <b>Top 3 Stats — últimas 4h</b>%0A%0A"
+          MSG+="📬 Entregues: <b>$DELIVERED</b>%0A"
+          MSG+="👁 Abriram: <b>$OPENED</b> (${OPEN_RATE}%)%0A"
+          MSG+="🖱 Clicaram CTA: <b>$CLICKED</b> (${CLICK_RATE}%)%0A"
+          MSG+="❌ Bounces: <b>$BOUNCED</b>%0A%0A"
+          MSG+="<b>Últimos 5 que clicaram CTA:</b>%0A${CLICKED_LIST}%0A%0A"
+          MSG+="<b>Quem clicou em qual firma na LP:</b>%0A${AFFINITY}"
+
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d "chat_id=${TG_CHAT}" \
+            -d "parse_mode=HTML" \
+            -d "disable_web_page_preview=true" \
+            --data-urlencode "text=$MSG" > /dev/null
+
+          echo "Report sent. Delivered=$DELIVERED Opened=$OPENED Clicked=$CLICKED"

@@ -1,0 +1,118 @@
+name: Top 3 Ramp (auto-disparo diário)
+
+# Disparo automático do email top3 com volume crescente seguindo régua aprovada
+# user 14/05/2026 22:01 BRT. Para domínio recuperar pós-crise spam 13/05.
+#
+# Régua (dias relativos ao START 2026-05-15):
+#  D+0 (15/05): 500
+#  D+1 (16/05): 1000
+#  D+2 (17/05): 2000
+#  D+3 (18/05): 3500
+#  D+4 (19/05): 5000
+#  D+5 a D+10: 10000 cada (até esgotar)
+#
+# Para sozinho quando audiência esgotar.
+
+on:
+  schedule:
+    # 14:00 UTC = 11:00 BRT (horario comercial Brasil)
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+    inputs:
+      override_batch:
+        description: 'Forçar batch size (deixa vazio pra usar régua diária)'
+        required: false
+
+concurrency:
+  group: email-top3-ramp
+  cancel-in-progress: false
+
+jobs:
+  ramp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Calcula batch do dia
+        id: calc
+        run: |
+          START_DATE="2026-05-15"
+          TODAY=$(date -u +%Y-%m-%d)
+          DAYS_OFFSET=$(( ( $(date -u -d "$TODAY" +%s) - $(date -u -d "$START_DATE" +%s) ) / 86400 ))
+          echo "TODAY=$TODAY"
+          echo "DAYS_OFFSET=$DAYS_OFFSET"
+
+          # Régua
+          if [ "$DAYS_OFFSET" -lt 0 ]; then BATCH=0
+          elif [ "$DAYS_OFFSET" -eq 0 ]; then BATCH=500
+          elif [ "$DAYS_OFFSET" -eq 1 ]; then BATCH=1000
+          elif [ "$DAYS_OFFSET" -eq 2 ]; then BATCH=2000
+          elif [ "$DAYS_OFFSET" -eq 3 ]; then BATCH=3500
+          elif [ "$DAYS_OFFSET" -eq 4 ]; then BATCH=5000
+          elif [ "$DAYS_OFFSET" -le 10 ]; then BATCH=10000
+          else BATCH=0
+          fi
+
+          # Override manual via workflow_dispatch
+          if [ -n "${{ github.event.inputs.override_batch }}" ]; then
+            BATCH=${{ github.event.inputs.override_batch }}
+          fi
+
+          echo "batch=$BATCH" >> $GITHUB_OUTPUT
+          echo "days_offset=$DAYS_OFFSET" >> $GITHUB_OUTPUT
+          echo "BATCH DE HOJE: $BATCH"
+
+      - name: Notifica Telegram (pré-batch)
+        if: steps.calc.outputs.batch != '0'
+        run: |
+          BATCH="${{ steps.calc.outputs.batch }}"
+          DAYS="${{ steps.calc.outputs.days_offset }}"
+          MSG="🚀 <b>Top 3 ramp D+$DAYS</b>%0ADisparando $BATCH emails em 30s%0ACampaign: top3 · audience: engaged + others (received-top3 deduplicado)%0AProvider: Resend primary"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "parse_mode=HTML" \
+            -d "text=$MSG" > /dev/null
+
+      - name: Aguarda 30s (janela pra você cancelar via Telegram cancel)
+        if: steps.calc.outputs.batch != '0'
+        run: sleep 30
+
+      - name: Health pre-check (Resend rate + /coupons up)
+        if: steps.calc.outputs.batch != '0'
+        run: |
+          COUPONS=$(curl -s -o /dev/null -w "%{http_code}" https://www.marketscoupons.com/coupons)
+          if [ "$COUPONS" != "200" ]; then
+            echo "❌ /coupons NÃO está 200 (status=$COUPONS). Abortando."
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d "text=❌ Top3 ramp ABORTADO: /coupons retornou $COUPONS"
+            exit 1
+          fi
+          echo "✅ /coupons 200 OK"
+
+      - name: Dispara batch top3
+        if: steps.calc.outputs.batch != '0'
+        id: send
+        run: |
+          BATCH="${{ steps.calc.outputs.batch }}"
+          RESP=$(curl -s -X POST "https://www.marketscoupons.com/api/cron-bulk-send" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"campaign\":\"top3\",\"batchSize\":$BATCH}")
+          echo "RESPONSE: $RESP"
+          echo "resp=$RESP" >> $GITHUB_OUTPUT
+
+      - name: Notifica Telegram (pós-batch)
+        if: steps.calc.outputs.batch != '0' && always()
+        run: |
+          BATCH="${{ steps.calc.outputs.batch }}"
+          DAYS="${{ steps.calc.outputs.days_offset }}"
+          RESP='${{ steps.send.outputs.resp }}'
+          MSG="✅ <b>Top 3 ramp D+$DAYS concluído</b>%0ABatch alvo: $BATCH%0AResposta API:%0A<code>$(echo $RESP | head -c 400)</code>"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "parse_mode=HTML" \
+            -d "text=$MSG" > /dev/null
+
+      - name: Skip se fora da régua
+        if: steps.calc.outputs.batch == '0'
+        run: echo "Fora da janela de ramp (D+${{ steps.calc.outputs.days_offset }}). Nada a fazer."
