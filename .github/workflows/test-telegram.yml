@@ -1,0 +1,16 @@
+name: Test Telegram
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+          TOK="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          CHAT="${{ secrets.TELEGRAM_CHAT_ID }}"
+          echo "tok_len=${#TOK} chat_len=${#CHAT}"
+          if [ -z "$TOK" ]; then echo "TOKEN EMPTY"; exit 1; fi
+          RESP=$(curl -s -X POST "https://api.telegram.org/bot${TOK}/sendMessage" \
+            -d "chat_id=${CHAT}" \
+            --data-urlencode "text=[TESTE] Telegram do GitHub Actions OK $(date)")
+          echo "Resp: $RESP"
