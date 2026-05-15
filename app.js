@@ -3990,7 +3990,7 @@ const CHECKOUT_FIRMS=[
    includes:['Day-1 payouts','No activation fee','No Daily Loss Limit','Immediate withdrawals','Up to 3 PRO resets','15+ platforms available'],
    types:['EOD Drawdown'],platforms:['NinjaTrader','TradingView','Tradovate','Rithmic','Quantower','MotiveWave'],
    plansByType:{
-     'EOD Drawdown':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$150',disc:'$90',featured:false},{size:'50K',capital:'$50,000',goal:'$2,500',maxDD:'$2,000',orig:'$170',disc:'$102',featured:false},{size:'75K',capital:'$75,000',goal:'$4,250',maxDD:'$2,750',orig:'$245',disc:'$147',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$330',disc:'$198',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$360',disc:'$216',featured:false}]
+     'EOD Drawdown':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$150',disc:'$75',featured:false},{size:'50K',capital:'$50,000',goal:'$2,500',maxDD:'$2,000',orig:'$170',disc:'$85',featured:false},{size:'75K',capital:'$75,000',goal:'$4,250',maxDD:'$2,750',orig:'$245',disc:'$122',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$330',disc:'$165',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$360',disc:'$180',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://takeprofittrader.com/?referralCode=MARKET40'},
   {id:'fn',name:'FundedNext',short:'FundedNext',coupon:'APRIL20',discount:'30%',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',
@@ -4088,7 +4088,7 @@ async function loadFirmsFromSupabase() {
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
       // Fallback: try localStorage cache
-      const cached = localStorage.getItem('mc_firms_cache_v6');
+      const cached = localStorage.getItem('mc_firms_cache_v7');
       if (cached && FIRMS.length === 0) {
         try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e){}
       }
@@ -4161,7 +4161,7 @@ async function loadFirmsFromSupabase() {
     initCmp();
 
     // Cache firms in localStorage for offline fallback
-    try { localStorage.setItem('mc_firms_cache_v6', JSON.stringify(FIRMS)); } catch(e){}
+    try { localStorage.setItem('mc_firms_cache_v7', JSON.stringify(FIRMS)); } catch(e){}
 
     // Retry opening firm overlay if dedicated page loaded before FIRMS arrived
     if(window._dedicatedFirmSlug && !document.getElementById('fd-overlay')?.classList.contains('show') && !document.getElementById('drw')?.classList.contains('open')){
@@ -4171,7 +4171,7 @@ async function loadFirmsFromSupabase() {
   } catch(e) {
     // Supabase unavailable — try localStorage cache
     console.warn('[MC] Supabase firms unavailable, trying cache');
-    const cached = localStorage.getItem('mc_firms_cache_v6');
+    const cached = localStorage.getItem('mc_firms_cache_v7');
     if (cached && FIRMS.length === 0) {
       try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e2){}
     }
@@ -7058,7 +7058,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if('scrollRestoration' in history) history.scrollRestoration='manual';
   // Preload FIRMS from localStorage cache BEFORE sync boot (avoids empty-state flash on /firm-slug refresh)
   if(FIRMS.length===0){
-    try{ const cached=localStorage.getItem('mc_firms_cache_v6'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
+    try{ const cached=localStorage.getItem('mc_firms_cache_v7'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
   }
   // Detectar idioma e aplicar traduções
   initLang();
