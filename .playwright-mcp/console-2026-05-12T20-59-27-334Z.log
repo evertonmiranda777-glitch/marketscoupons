@@ -1,0 +1,239 @@
+[    3072ms] [ERROR] Failed to load resource: net::ERR_INSUFFICIENT_RESOURCES @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[   12381ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com'). @ https://www.youtube.com/s/player/74be5b62/www-widgetapi.vflset/www-widgetapi.js:209
+[   15634ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.godaddy.com/pt-br/offers/godaddy?isc=sem3year&currencyType=BRL&countryview=1&cdtl=c_17623636235.g_190072463409.k_aud-2308571845822:kwd-88659201.a_780257388670.d_c.ctv_g&bnb=b&gad_source=1&gad_campaignid=17623636235&gbraid=0AAAAAD_AGdxLC-dD5ePjq1_VdT_nkqTQG&gclid=CjwKCAjwn4vQBhBsEiwAq3hhN8ldAkxU0m4pP5UTvQp5-ynfZ0zb0NTL9dvvvhzW75-9q7UrfZDECBoCDRMQAvD_BwE:0
+[   16481ms] [ERROR] Error resolving from component map (LocalizedUrl) @ https://www.godaddy.com/storefront-assets/10069/_next/static/chunks/pages/_app-c50949885cff234d.js:0
+[   16673ms] Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at oa (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:48168)
+    at Oo (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:78126)
+    at Si (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:121135)
+    at ys (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:108510)
+    at gs (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:108438)
+    at hs (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:108301)
+    at rs (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:103466)
+    at w (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:1:1856)
+    at MessagePort.P (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:1:2388)
+[   16674ms] Error: Minified React error #423; visit https://reactjs.org/docs/error-decoder.html?invariant=423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at Si (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:120618)
+    at ys (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:108510)
+    at gs (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:108438)
+    at hs (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:108301)
+    at ls (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:105136)
+    at rs (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:10:103692)
+    at w (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:1:1856)
+    at MessagePort.P (https://img6.wsimg.com/ux-assets/react/18/react-dom.umd.js:1:2388)
+[   21690ms] [WARNING] <link rel=preload> must have a valid `as` value @ https://sso.godaddy.com/?realm=idp&app=venture-redirector&path=%2F%3Freferrer%3Dsso:148
+[   22425ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.godaddy.com') does not match the recipient window's origin ('https://sso.godaddy.com'). @ https://img6.wsimg.com/identity-static-assets/sso-auth/_next/static/chunks/pages/_app-87cfd0b8d28f6c4f.js:0
+[   22427ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.godaddy.com') does not match the recipient window's origin ('https://sso.godaddy.com'). @ https://img6.wsimg.com/identity-static-assets/sso-auth/_next/static/chunks/pages/_app-87cfd0b8d28f6c4f.js:0
+[   22496ms] [WARNING] Could not determine a CSP API key; experimentation events are disabled. You must provide either a cspKey or env config property. @ https://img6.wsimg.com/hivemind/hivemind-3.1.9.js:7
+[   22571ms] [LOG] No experiments or labels provided @ https://img6.wsimg.com/hivemind/hivemind-3.1.9.js:7
+[   22598ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.godaddy.com') does not match the recipient window's origin ('https://sso.godaddy.com'). @ https://img6.wsimg.com/identity-static-assets/sso-auth/_next/static/chunks/pages/_app-87cfd0b8d28f6c4f.js:0
+[   22644ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "username"): (More info: https://goo.gl/9p2vKq) %o @ https://sso.godaddy.com/?realm=idp&app=venture-redirector&path=%2F%3Freferrer%3Dsso:0
+[   27267ms] [LOG] %c%s color: red; background: yellow; font-size: 24px; AVISO @ https://www.gstatic.com/_/mss/boq-identity/_/js/k=boq-identity.AccountsSignInUi.pt_BR.XO03rYNxHLM.es5.O/am=iW8AAACEQhQhA4Dx_38DAAggiA74ngVoAoQMAAAAAAAAAABYAAAAjQ/d=1/excm=_b,_tp,accountchooserview/ed=1/dg=0/wt=2/ujg=1/rs=AOaEmlFqThwO5rX5KvZjhWnRXXXfazFTlQ/dti=1/m=_b,_tp:545
+[   27267ms] [LOG] %c%s font-size: 18px; O uso deste console pode permitir que invasores falsifiquem sua identidade para roubar informações por meio de um ataque chamado Self-XSS.
+Não insira nem cole códigos que você não conheça. @ https://www.gstatic.com/_/mss/boq-identity/_/js/k=boq-identity.AccountsSignInUi.pt_BR.XO03rYNxHLM.es5.O/am=iW8AAACEQhQhA4Dx_38DAAggiA74ngVoAoQMAAAAAAAAAABYAAAAjQ/d=1/excm=_b,_tp,accountchooserview/ed=1/dg=0/wt=2/ujg=1/rs=AOaEmlFqThwO5rX5KvZjhWnRXXXfazFTlQ/dti=1/m=_b,_tp:545
+[   39526ms] [ERROR] Unable to process {schema: set_config, data: Object} 
+
+  @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   40293ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://99705dc0-841a-4166-aa8e-120c364d7822.reamaze.godaddy.com/api/v2/conversations?filter=unread&page=1&count_per_page=1&counts_only=true:0
+[   40869ms] [LOG] No navigation header found @ https://dashboard.godaddy.com/venture?ventureId=22f32de2-b22a-4487-b58b-18302addc068&itc=vh_ventureredirect&referrer=venture-redirector:1380
+[   41380ms] Error: Minified React error #421; visit https://reactjs.org/docs/error-decoder.html?invariant=421 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82525
+    at Fl (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82799)
+    at wu (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:124333)
+    at ys (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111604)
+    at vs (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111532)
+    at ms (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111395)
+    at ls (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:108536)
+    at ja (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:49601)
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114977
+    at Es (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114982)
+[   41381ms] Error: Minified React error #421; visit https://reactjs.org/docs/error-decoder.html?invariant=421 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82525
+    at Fl (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82799)
+    at wu (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:124333)
+    at ys (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111604)
+    at vs (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111532)
+    at ms (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111395)
+    at ls (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:108536)
+    at ja (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:49601)
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114977
+    at Es (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114982)
+[   41382ms] Error: Minified React error #421; visit https://reactjs.org/docs/error-decoder.html?invariant=421 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82525
+    at Fl (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82799)
+    at wu (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:124333)
+    at ys (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111604)
+    at vs (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111532)
+    at ms (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111395)
+    at ls (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:108536)
+    at ja (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:49601)
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114977
+    at Es (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114982)
+[   41597ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'getIntlString' Value: 'function () { [native code] }' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'appConfig' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'ssoCallback' Value: 'function i(e,{serverContext:{req:t,res:n}}){const{response:{status:i}={}}=e;if(401===i||403===i)return t?(0,s.Z)(t,n):(0,r.Z)(e);o.Z.log("Unhandled error sent to the isomorphic SSO redirect.",e)}' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'onClose' Value: '()=>s?.(!1)' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'ventureId' Value: 'null' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'onPostUpgradeCallback' Value: '()=>{setTimeout((()=>{const t=e.getState(),n=(({cohortId:e,launchURL:t,wamAccountId:n,ventureId:r})=>{if(e===i.mI&&t&&n){const e=new URL(t);return e.searchParams.set("account_uid",n),e.searchParams.set("path","edit"),e.toString()}return r?`/venture/setup/website?ventureId=${r}`:"/venture/setup/website"})({cohortId:(0,o.M2)(t,a.MUSE_DPP_POST_PURCHASE_RETENTION),launchURL:(0,s.Ti)(t),wamAccountId:(0,u.ZzJ)(t),ventureId:(0,u.MT)(t)||(0,u.n4Q)(t)?.id});window.location.replace(n)}),2e3)}' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'onPostUpgradeSuccessClick' Value: '()=>{setTimeout((()=>{const t=e.getState(),n=(({cohortId:e,launchURL:t,wamAccountId:n,ventureId:r})=>{if(e===i.mI&&t&&n){const e=new URL(t);return e.searchParams.set("account_uid",n),e.searchParams.set("path","edit"),e.toString()}return r?`/venture/setup/website?ventureId=${r}`:"/venture/setup/website"})({cohortId:(0,o.M2)(t,a.MUSE_DPP_POST_PURCHASE_RETENTION),launchURL:(0,s.Ti)(t),wamAccountId:(0,u.ZzJ)(t),ventureId:(0,u.MT)(t)||(0,u.n4Q)(t)?.id});window.location.replace(n)}),2e3)}' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'apmClient' Value: 'null' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41598ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'i18nContent' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   41760ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://poynt.godaddy.com/api/v2/ventures/22f32de2-b22a-4487-b58b-18302addc068/payLinks:0
+[   41853ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://poynt.godaddy.com/api/v2/ventures/22f32de2-b22a-4487-b58b-18302addc068/business?includeFields=attributes:0
+[   41911ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://blog.apps.godaddy.com/v1/website/99705dc0-841a-4166-aa8e-120c364d7822/blog/posts?pageItems=1:0
+[   41935ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://productivity.api.godaddy.com/api/shopper/llcconsolidated/ventures/22f32de2-b22a-4487-b58b-18302addc068:0
+[   42031ms] [ERROR] SCC Library has already been loaded on page @ https://img1.wsimg.com/signals/js/clients/tcc/tcc.min.js:0
+[   42067ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   42069ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'hasMultipleWebsites' Value: 'null' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   42073ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   42254ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://gem.godaddy.com/api/v3/go/entity/99705dc0-841a-4166-aa8e-120c364d7822:0
+[   42549ms] [WARNING] An error occurred! For more details, see the full error text at https://go.apollo.dev/c/err#%7B%22version%22%3A%223.14.0%22%2C%22message%22%3A15%2C%22args%22%3A%5B%22product%22%2C%22Project%22%2C%22either%20ensure%20all%20objects%20of%20type%20DomainProduct%20have%20an%20ID%20or%20a%20custom%20merge%20function%2C%20or%20%22%2C%22Project.product%22%2C%22%7B%5Cn%20%20%5C%22__typename%5C%22%3A%20%5C%22DomainProduct%5C%22%2C%5Cn%20%20%5C%22type%5C%22%3A%20%5C%22domain%5C%22%5Cn%7D%22%2C%22%7B%5Cn%20%20%5C%22__typename%5C%22%3A%20%5C%22DomainProduct%5C%22%5Cn%7D%22%5D%7D @ https://img1.wsimg.com/ceph-p3-01/vnext-dashboard-assets/static/_next/static/chunks/pages/_app-61c97b3f4dcdd341.js:22
+[   42550ms] [WARNING] An error occurred! For more details, see the full error text at https://go.apollo.dev/c/err#%7B%22version%22%3A%223.14.0%22%2C%22message%22%3A15%2C%22args%22%3A%5B%22profile%22%2C%22Venture%22%2C%22either%20ensure%20all%20objects%20of%20type%20VentureProfile%20have%20an%20ID%20or%20a%20custom%20merge%20function%2C%20or%20%22%2C%22Venture.profile%22%2C%22%7B%5Cn%20%20%5C%22__typename%5C%22%3A%20%5C%22VentureProfile%5C%22%2C%5Cn%20%20%5C%22aapOnboarded%5C%22%3A%20false%2C%5Cn%20%20%5C%22aiOnboarded%5C%22%3A%20true%2C%5Cn%20%20%5C%22aiOnboardedAt%5C%22%3A%20%5C%222025-09-08T18%3A15%3A20.375Z%5C%22%2C%5Cn%20%20%5C%22category%5C%22%3A%20%5C%22coming_soon%5C%22%2C%5Cn%20%20%5C%22lastVisited%5C%22%3A%20%5C%222026-04-29T20%3A58%3A07.508Z%5C%22%2C%5Cn%20%20%5C%22numVisits%5C%22%3A%203%2C%5Cn%20%20%5C%22metadata%5C%22%3A%20%7B%5Cn%20%20%20%20%5C%22__typename%5C%22%3A%20%5C%22ProfileMetadata%5C%22%2C%5Cn%20%20%20%20%5C%22createdAt%5C%22%3A%20%5C%222025-09-08T18%3A15%3A15.096Z%5C%22%2C%5Cn%20%20%20%20%5C%22updatedAt%5C%22%3A%20%5C%222026-04-29T20%3A58%3A11.318Z%5C%22%5Cn%20%20%7D%2C%5Cn%20%20%5C%22name%5C%22%3A%20%5C%22marketscoupons.com%5C%22%5Cn%7D%22%2C%22%7B%5Cn%20%20%5C%22__typename%5C%22%3A%20%5C%22VentureProfile%5C%22%2C%5Cn%20%20%5C%22inferred%5C%22%3A%20%7B%5Cn%20%20%20%20%5C%22__typename%5C%22%3A%20%5C%22ProfileInferredData%5C%22%2C%5Cn%20%20%20%20%5C%22name%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22vertical%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22personalityKeywords%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22businessStyles%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22tagLines%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22description%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22websiteNeedsStore%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22websiteNeedsAppointments%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22fullWebsiteHeadline%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22fullWebsiteSubhead%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22fullWebsiteCTA%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22logoUrl%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22photoKeywords%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22photoKeywordPhrases%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22status%5C%22%3A%20null%2C%5Cn%20%20%20%20%5C%22brands%5C%22%3A%20null%5Cn%20%20%7D%5Cn%7D%22%5D%7D @ https://img1.wsimg.com/ceph-p3-01/vnext-dashboard-assets/static/_next/static/chunks/pages/_app-61c97b3f4dcdd341.js:22
+[   43058ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://blog.apps.godaddy.com/v1/website/99705dc0-841a-4166-aa8e-120c364d7822/blog/posts?pageItems=1:0
+[   43115ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[   43430ms] [WARNING] An error occurred! For more details, see the full error text at https://go.apollo.dev/c/err#%7B%22version%22%3A%223.14.0%22%2C%22message%22%3A15%2C%22args%22%3A%5B%22venture%22%2C%22Query%22%2C%22either%20ensure%20all%20objects%20of%20type%20Venture%20have%20an%20ID%20or%20a%20custom%20merge%20function%2C%20or%20%22%2C%22Query.venture%22%2C%22%7B%5Cn%20%20%5C%22__typename%5C%22%3A%20%5C%22Venture%5C%22%2C%5Cn%20%20%5C%22profile%5C%22%3A%20%7B%5Cn%20%20%20%20%5C%22__typename%5C%22%3A%20%5C%22VentureProfile%5C%22%2C%5Cn%20%20%20%20%5C%22inferred%5C%22%3A%20%7B%5Cn%20%20%20%20%20%20%5C%22__typename%5C%22%3A%20%5C%22ProfileInferredData%5C%22%2C%5Cn%20%20%20%20%20%20%5C%22name%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22vertical%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22personalityKeywords%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22businessStyles%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22tagLines%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22description%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22websiteNeedsStore%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22websiteNeedsAppointments%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22fullWebsiteHeadline%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22fullWebsiteSubhead%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22fullWebsiteCTA%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22logoUrl%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22photoKeywords%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22photoKeywordPhrases%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22status%5C%22%3A%20null%2C%5Cn%20%20%20%20%20%20%5C%22brands%5C%22%3A%20null%5Cn%20%20%20%20%7D%2C%5Cn%20%20%20%20%5C%22aapOnboarded%5C%22%3A%20false%2C%5Cn%20%20%20%20%5C%22aiOnboarded%5C%22%3A%20true%2C%5Cn%20%20%20%20%5C%22aiOnboardedAt%5C%22%3A%20%5C%222025-09-08T18%3A15%3A20.375Z%5C%22%2C%5Cn%20%20%20%20%5C%22category%5C%22%3A%20%5C%22coming_soon%5C%22%2C%5Cn%20%20%20%20%5C%22lastVisited%5C%22%3A%20%5C%222026-05-12T21%3A00%3A08.579Z%5C%22%2C%5Cn%20%20%20%20%5C%22numVisits%5C%22%3A%204%5Cn%20%20%7D%5Cn%7D%22%2C%22%7B%5Cn%20%20%5C%22__typename%5C%22%3A%20%5C%22Venture%5C%22%2C%5Cn%20%20%5C%22projects%5C%22%3A%20%5B%5Cn%20%20%20%20%7B%5Cn%20%20%20%20%20%20%5C%22__typename%5C%22%3A%20%5C%22Project%5C%22%2C%5Cn%20%20%20%20%20%20%5C%22group%5C%22%3A%20%5C%22domain%5C%22%5Cn%20%20%20%20%7D%2C%5Cn%20%20%20%20%7B%5Cn%20%20%20%20%20%20%5C%22__typename%5C%22%3A%20%5C%22Project%5C%22%2C%5Cn%20%20%20%20%20%20%5C%22group%5C%22%3A%20%5C%22vnext%5C%22%5Cn%20%20%20%20%7D%5Cn%20%20%5D%5Cn%7D%22%5D%7D @ https://img1.wsimg.com/ceph-p3-01/vnext-dashboard-assets/static/_next/static/chunks/pages/_app-61c97b3f4dcdd341.js:22
+[   51154ms] [LOG] Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm @ https://img1.wsimg.com/ceph-p3-01/vnext-dashboard-assets/static/_next/static/chunks/pages/_app-61c97b3f4dcdd341.js:22
+[   99827ms] [ERROR] Unable to process {schema: set_config, data: Object} 
+
+  @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  100299ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://99705dc0-841a-4166-aa8e-120c364d7822.reamaze.godaddy.com/api/v2/conversations?filter=unread&page=1&count_per_page=1&counts_only=true:0
+[  100877ms] [LOG] No navigation header found @ https://dashboard.godaddy.com/venture?ventureId=22f32de2-b22a-4487-b58b-18302addc068&itc=vh_ventureredirect&referrer=venture-redirector:1380
+[  101618ms] [ERROR] SCC Library has already been loaded on page @ https://img1.wsimg.com/signals/js/clients/tcc/tcc.min.js:0
+[  102060ms] Error: Minified React error #421; visit https://reactjs.org/docs/error-decoder.html?invariant=421 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82525
+    at Fl (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82799)
+    at wu (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:124333)
+    at ys (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111604)
+    at vs (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111532)
+    at ms (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111395)
+    at ls (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:108536)
+    at ja (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:49601)
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114977
+    at Es (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114982)
+[  102062ms] Error: Minified React error #421; visit https://reactjs.org/docs/error-decoder.html?invariant=421 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82525
+    at Fl (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:82799)
+    at wu (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:124333)
+    at ys (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111604)
+    at vs (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111532)
+    at ms (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:111395)
+    at ls (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:108536)
+    at ja (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:49601)
+    at https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114977
+    at Es (https://img6.wsimg.com/wrhs-next/f8b5d874f1671ae61892070d5180d05e/vendor.min.js:2:114982)
+[  102077ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://blog.apps.godaddy.com/v1/website/99705dc0-841a-4166-aa8e-120c364d7822/blog/posts?pageItems=1:0
+[  102096ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://gem.godaddy.com/api/v3/go/entity/99705dc0-841a-4166-aa8e-120c364d7822:0
+[  102243ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://poynt.godaddy.com/api/v2/ventures/22f32de2-b22a-4487-b58b-18302addc068/business?includeFields=attributes:0
+[  102454ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://productivity.api.godaddy.com/api/shopper/llcconsolidated/ventures/22f32de2-b22a-4487-b58b-18302addc068:0
+[  102614ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'getIntlString' Value: 'function () { [native code] }' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102615ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'appConfig' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102615ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'ssoCallback' Value: 'function i(e,{serverContext:{req:t,res:n}}){const{response:{status:i}={}}=e;if(401===i||403===i)return t?(0,s.Z)(t,n):(0,r.Z)(e);o.Z.log("Unhandled error sent to the isomorphic SSO redirect.",e)}' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102615ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'onClose' Value: '()=>s?.(!1)' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102615ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'ventureId' Value: 'null' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102615ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'onPostUpgradeCallback' Value: '()=>{setTimeout((()=>{const t=e.getState(),n=(({cohortId:e,launchURL:t,wamAccountId:n,ventureId:r})=>{if(e===i.mI&&t&&n){const e=new URL(t);return e.searchParams.set("account_uid",n),e.searchParams.set("path","edit"),e.toString()}return r?`/venture/setup/website?ventureId=${r}`:"/venture/setup/website"})({cohortId:(0,o.M2)(t,a.MUSE_DPP_POST_PURCHASE_RETENTION),launchURL:(0,s.Ti)(t),wamAccountId:(0,u.ZzJ)(t),ventureId:(0,u.MT)(t)||(0,u.n4Q)(t)?.id});window.location.replace(n)}),2e3)}' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102615ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'onPostUpgradeSuccessClick' Value: '()=>{setTimeout((()=>{const t=e.getState(),n=(({cohortId:e,launchURL:t,wamAccountId:n,ventureId:r})=>{if(e===i.mI&&t&&n){const e=new URL(t);return e.searchParams.set("account_uid",n),e.searchParams.set("path","edit"),e.toString()}return r?`/venture/setup/website?ventureId=${r}`:"/venture/setup/website"})({cohortId:(0,o.M2)(t,a.MUSE_DPP_POST_PURCHASE_RETENTION),launchURL:(0,s.Ti)(t),wamAccountId:(0,u.ZzJ)(t),ventureId:(0,u.MT)(t)||(0,u.n4Q)(t)?.id});window.location.replace(n)}),2e3)}' Type: 'function'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102615ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'apmClient' Value: 'null' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  102616ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'i18nContent' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  103047ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://poynt.godaddy.com/api/v2/ventures/22f32de2-b22a-4487-b58b-18302addc068/payLinks:0
+[  103293ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://blog.apps.godaddy.com/v1/website/99705dc0-841a-4166-aa8e-120c364d7822/blog/posts?pageItems=1:0
+[  103352ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  103360ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'hasMultipleWebsites' Value: 'null' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  103367ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  103837ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://blog.apps.godaddy.com/v1/website/99705dc0-841a-4166-aa8e-120c364d7822/blog/posts?pageItems=1:0
+[  104415ms] [LOG] data = {standardEventName: PageView, tagIds: Array(5), eventName: standard, advancedMatching: false, includeTcf: false} @ https://img1.wsimg.com/tagging/js/g.js?p=GTM-5WB8X7D&l=_wGtmDataLayer:982
+[  105588ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://blog.apps.godaddy.com/v1/website/99705dc0-841a-4166-aa8e-120c364d7822/blog/posts?pageItems=1:0
+[  105996ms] [ERROR] Attestation check for Attribution Reporting on https://ara.paa-reporting-advertising.amazon failed. @ https://dashboard.godaddy.com/venture?ventureId=22f32de2-b22a-4487-b58b-18302addc068&itc=vh_ventureredirect&referrer=venture-redirector:0
+[  106071ms] [ERROR] Attestation check for Shared Storage on https://ara.paa-reporting-advertising.amazon failed. @ https://dashboard.godaddy.com/venture?ventureId=22f32de2-b22a-4487-b58b-18302addc068&itc=vh_ventureredirect&referrer=venture-redirector:0
+[  106306ms] [ERROR] Failed to load resource: the server responded with a status of 451 () @ https://idsync.rlcdn.com/380609.gif?gdpr=0&partner_uid=Vf33dVqp9n5O-aIlV__qIlKko3RO_aIlVqo3cMlr:0
+[  106344ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://blog.apps.godaddy.com/v1/website/99705dc0-841a-4166-aa8e-120c364d7822/blog/posts?pageItems=1:0
+[  106405ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  111299ms] [LOG] Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm @ https://img1.wsimg.com/ceph-p3-01/vnext-dashboard-assets/static/_next/static/chunks/pages/_app-61c97b3f4dcdd341.js:22
+[  127561ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://99705dc0-841a-4166-aa8e-120c364d7822.reamaze.godaddy.com/api/v2/conversations?filter=unread&page=1&count_per_page=1&counts_only=true:0
+[  128413ms] [LOG] data = {standardEventName: PageView, tagIds: Array(5), eventName: standard, advancedMatching: false, includeTcf: false} @ https://img1.wsimg.com/tagging/js/g.js?p=GTM-5WB8X7D&l=_wGtmDataLayer:982
+[  128845ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  128847ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  128849ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  129817ms] [ERROR] Attestation check for Attribution Reporting on https://ara.paa-reporting-advertising.amazon failed. @ https://dcc.godaddy.com/control/portfolio/marketscoupons.com/settings?ventureId=22f32de2-b22a-4487-b58b-18302addc068&ua_placement=shared_header:0
+[  130003ms] [ERROR] Attestation check for Shared Storage on https://ara.paa-reporting-advertising.amazon failed. @ https://dcc.godaddy.com/control/portfolio/marketscoupons.com/settings?ventureId=22f32de2-b22a-4487-b58b-18302addc068&ua_placement=shared_header:0
+[  130173ms] [WARNING] TypeError: Cannot read properties of undefined (reading 'load')
+    at runIntercept (https://rs.fullstory.com/rec/integrations?OrgId=YKBRC&isInFrame=false&isNative=false:278:15)
+    at https://rs.fullstory.com/rec/integrations?OrgId=YKBRC&isInFrame=false&isNative=false:304:5
+    at https://rs.fullstory.com/rec/integrations?OrgId=YKBRC&isInFrame=false&isNative=false:318:3 @ https://edge.fullstory.com/s/fs.js:3
+[  130675ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'emailFreeTrialStatus' Value: 'null' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  166866ms] [WARNING] WARN: A component changed from uncontrolled to controlled. @ https://edge.fullstory.com/s/fs.js:3
+[  167411ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'products' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  167413ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'products' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[  167816ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[  168236ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[  232538ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[  240526ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://99705dc0-841a-4166-aa8e-120c364d7822.reamaze.godaddy.com/api/v2/conversations?filter=unread&page=1&count_per_page=1&counts_only=true:0

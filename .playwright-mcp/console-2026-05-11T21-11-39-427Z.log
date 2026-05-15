@@ -1,0 +1,15 @@
+[     310ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://takeprofittrader.com/styles.css:0
+[    1712ms] [LOG] [Browser Translate] Loading translation for lang: en from /assets/i18n/en.20122025.json using [TransferState] @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[    1921ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://takeprofittrader.com/identity/accounts/refresh-token:0
+[    2560ms] [LOG] 📦 Loaded Home Page module: @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[    6747ms] [ERROR] Failed to load resource: the server responded with a status of 429 () @ https://o4509235904053249.ingest.us.sentry.io/api/4509271227695104/envelope/?sentry_version=7&sentry_key=f4bd696bb24d0e087ebc29dd964f123f&sentry_client=sentry.javascript.angular%2F9.47.1:0
+[    7545ms] [LOG] runPoptinNow @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[    7547ms] [LOG] poptinInit loading @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[    7680ms] [LOG] initiatePullPoptinsRequest() @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[    7757ms] [WARNING] Failed to execute 'write' on 'Document': It isn't possible to write into a document from an asynchronously-loaded external script unless it is explicitly opened. @ https://seal-centralflorida.bbb.org/inc/legacy.js:0
+[    9370ms] [LOG] %c [UTS] [fp] init color: green; @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[   10185ms] [LOG] %c [UTS] [fp]: 7b6a194b815db7e8481e5a44af2bde85 color: green; @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[   10766ms] [LOG] %c [UTS] [gusid]: HB-ET_753880a16a8bfd00b547e858eedfa29049ada24a667c73c668d2966e85e8179d color: green; @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[   11891ms] [LOG] %c [UTS] [pc] color: green; @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[   14899ms] [LOG] %c [UTS] [_fbp_c] ; _fbp=fb.1.1778533903265.174235578311533194,;,fb.1.1778533903265.174235578311533194 color: green; @ https://takeprofittrader.com/chunk-23TJMN73.js:401
+[   15196ms] [LOG] %c [UTS] [pcu]. color: green; @ https://takeprofittrader.com/chunk-23TJMN73.js:401

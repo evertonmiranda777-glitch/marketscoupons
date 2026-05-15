@@ -1,0 +1,164 @@
+- generic [active]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - complementary [ref=e4]:
+        - button "evertonmiranda777" [ref=e6] [cursor=pointer]:
+          - generic [ref=e11]: evertonmiranda777
+          - img [ref=e13]
+        - navigation [ref=e16]:
+          - list [ref=e17]:
+            - listitem [ref=e18]:
+              - link "Emails" [ref=e19] [cursor=pointer]:
+                - /url: /emails
+                - text: Emails
+            - listitem [ref=e21]:
+              - link "Broadcasts" [ref=e22] [cursor=pointer]:
+                - /url: /broadcasts
+                - text: Broadcasts
+            - listitem [ref=e24]:
+              - link "Automations" [ref=e25] [cursor=pointer]:
+                - /url: /automations
+                - text: Automations
+            - listitem [ref=e27]:
+              - link "Templates" [ref=e28] [cursor=pointer]:
+                - /url: /templates
+                - text: Templates
+            - listitem [ref=e30]:
+              - link "Audience" [ref=e31] [cursor=pointer]:
+                - /url: /audience
+                - text: Audience
+            - listitem [ref=e33]:
+              - link "Metrics" [ref=e34] [cursor=pointer]:
+                - /url: /metrics
+                - text: Metrics
+            - listitem [ref=e36]:
+              - link "Domains" [ref=e37] [cursor=pointer]:
+                - /url: /domains
+                - text: Domains
+            - listitem [ref=e39]:
+              - link "Logs" [ref=e40] [cursor=pointer]:
+                - /url: /logs
+                - text: Logs
+            - listitem [ref=e42]:
+              - link "API keys" [ref=e43] [cursor=pointer]:
+                - /url: /api-keys
+                - text: API keys
+            - listitem [ref=e45]:
+              - link "Webhooks" [ref=e46] [cursor=pointer]:
+                - /url: /webhooks
+                - text: Webhooks
+            - listitem [ref=e48]:
+              - link "Settings" [ref=e49] [cursor=pointer]:
+                - /url: /settings
+                - text: Settings
+        - button "evertonmiranda777@gmail.com" [ref=e51] [cursor=pointer]:
+          - generic [ref=e55]: evertonmiranda777@gmail.com
+          - img [ref=e57]
+    - generic [ref=e61]:
+      - generic [ref=e63]:
+        - button "Feedback F" [ref=e64] [cursor=pointer]:
+          - generic [ref=e65]: Feedback
+          - generic [ref=e67]: F
+        - link "Help" [ref=e68] [cursor=pointer]:
+          - /url: /help
+        - link "Docs" [ref=e69] [cursor=pointer]:
+          - /url: https://resend.com/docs
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - heading "Metrics" [level=1] [ref=e72]
+          - generic [ref=e73]:
+            - combobox [ref=e74] [cursor=pointer]:
+              - generic [ref=e75]:
+                - generic [ref=e76]: All domains
+                - img [ref=e77]
+            - button "Last 15 days" [ref=e79] [cursor=pointer]:
+              - generic [ref=e80]: Last 15 days
+              - img [ref=e82]
+        - generic [ref=e84]:
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e88]:
+                - paragraph [ref=e90]: Emails
+                - paragraph [ref=e94]: Deliverability Rate
+              - button "All Events" [ref=e97] [cursor=pointer]:
+                - generic [ref=e98]: All Events
+                - img [ref=e100]
+            - table [ref=e107]:
+              - rowgroup [ref=e108]:
+                - row [ref=e109]:
+                  - cell [ref=e110]
+                  - cell [ref=e113]
+                - row [ref=e116]:
+                  - cell [ref=e117]
+                  - cell [ref=e120]
+                - row [ref=e123]:
+                  - cell [ref=e124]
+                  - cell [ref=e127]
+          - generic [ref=e130]:
+            - generic [ref=e133]:
+              - img [ref=e134] [cursor=pointer]
+              - generic [ref=e136]:
+                - paragraph [ref=e137]: Bounce rate
+                - paragraph [ref=e138]: 0%
+              - table [ref=e144]:
+                - rowgroup [ref=e145]:
+                  - row [ref=e146]:
+                    - cell [ref=e147]
+                    - cell [ref=e150]
+                  - row [ref=e153]:
+                    - cell [ref=e154]
+                    - cell [ref=e157]
+                  - row [ref=e160]:
+                    - cell [ref=e161]
+                    - cell [ref=e164]
+            - generic [ref=e169]:
+              - img [ref=e170] [cursor=pointer]
+              - generic [ref=e172]:
+                - paragraph [ref=e173]: Complain rate
+                - paragraph [ref=e174]: 0%
+              - table [ref=e180]:
+                - rowgroup [ref=e181]:
+                  - row [ref=e182]:
+                    - cell [ref=e183]
+                    - cell [ref=e186]
+                  - row [ref=e189]:
+                    - cell [ref=e190]
+                    - cell [ref=e193]
+                  - row [ref=e196]:
+                    - cell [ref=e197]
+                    - cell [ref=e200]
+          - generic [ref=e204]:
+            - generic [ref=e207]:
+              - img [ref=e208] [cursor=pointer]
+              - paragraph [ref=e211]: Open Rate
+              - table [ref=e218]:
+                - rowgroup [ref=e219]:
+                  - row [ref=e220]:
+                    - cell [ref=e221]
+                    - cell [ref=e224]
+                  - row [ref=e227]:
+                    - cell [ref=e228]
+                    - cell [ref=e231]
+                  - row [ref=e234]:
+                    - cell [ref=e235]
+                    - cell [ref=e238]
+            - generic [ref=e243]:
+              - img [ref=e244] [cursor=pointer]
+              - generic [ref=e246]:
+                - paragraph [ref=e247]: Click Rate
+                - paragraph [ref=e248]: 0%
+              - table [ref=e253]:
+                - rowgroup [ref=e254]:
+                  - row [ref=e255]:
+                    - cell [ref=e256]
+                    - cell [ref=e259]
+                  - row [ref=e262]:
+                    - cell [ref=e263]
+                    - cell [ref=e266]
+                  - row [ref=e269]:
+                    - cell [ref=e270]
+                    - cell [ref=e273]
+          - generic [ref=e276]: Data is updated every 15 minutes.
+  - region "Notifications alt+T"
+  - img
+  - alert [ref=e277]

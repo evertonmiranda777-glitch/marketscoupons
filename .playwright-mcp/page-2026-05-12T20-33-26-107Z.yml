@@ -1,0 +1,323 @@
+- generic:
+  - generic:
+    - generic:
+      - navigation:
+        - complementary:
+          - generic:
+            - button:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - img
+                      - text: e
+                  - generic:
+                    - generic: evertonmiranda777
+              - generic:
+                - img
+          - navigation:
+            - list:
+              - listitem:
+                - link:
+                  - /url: /emails
+                  - generic:
+                    - img
+                  - text: Emails
+              - listitem:
+                - link:
+                  - /url: /broadcasts
+                  - generic:
+                    - img
+                  - text: Broadcasts
+              - listitem:
+                - link:
+                  - /url: /automations
+                  - generic:
+                    - img
+                  - text: Automations
+              - listitem:
+                - link:
+                  - /url: /templates
+                  - generic:
+                    - img
+                  - text: Templates
+              - listitem:
+                - link:
+                  - /url: /audience
+                  - generic:
+                    - img
+                  - text: Audience
+              - listitem:
+                - link:
+                  - /url: /metrics
+                  - generic:
+                    - img
+                  - text: Metrics
+              - listitem:
+                - link:
+                  - /url: /domains
+                  - generic:
+                    - img
+                  - text: Domains
+              - listitem:
+                - link:
+                  - /url: /logs
+                  - generic:
+                    - img
+                  - text: Logs
+              - listitem:
+                - link:
+                  - /url: /api-keys
+                  - generic:
+                    - img
+                  - text: API keys
+              - listitem:
+                - link:
+                  - /url: /webhooks
+                  - generic:
+                    - img
+                  - text: Webhooks
+              - listitem:
+                - link:
+                  - /url: /settings
+                  - generic:
+                    - img
+                  - text: Settings
+          - button:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: e
+                - generic: evertonmiranda777@gmail.com
+            - generic:
+              - img
+      - generic:
+        - generic:
+          - generic:
+            - button:
+              - generic: Feedback
+              - generic:
+                - generic: F
+            - link:
+              - /url: /help
+              - text: Help
+            - link:
+              - /url: https://resend.com/docs
+              - text: Docs
+        - generic:
+          - generic:
+            - heading [level=1]: Metrics
+            - generic:
+              - combobox:
+                - generic:
+                  - generic: All domains
+                  - img
+              - button:
+                - generic: Last 15 days
+                - generic:
+                  - img
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Emails
+                      - paragraph: 23,852
+                    - generic:
+                      - paragraph: Deliverability Rate
+                      - paragraph: 96.47%
+                  - button [expanded]:
+                    - generic: Opened
+                    - generic:
+                      - img
+                - generic:
+                  - generic:
+                    - generic:
+                      - application:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: Apr, 28
+                            - generic:
+                              - generic: Apr, 29
+                            - generic:
+                              - generic: Apr, 30
+                            - generic:
+                              - generic: May, 01
+                            - generic:
+                              - generic: May, 02
+                            - generic:
+                              - generic: May, 03
+                            - generic:
+                              - generic: May, 04
+                            - generic:
+                              - generic: May, 05
+                            - generic:
+                              - generic: May, 06
+                            - generic:
+                              - generic: May, 07
+                            - generic:
+                              - generic: May, 08
+                            - generic:
+                              - generic: May, 09
+                            - generic:
+                              - generic: May, 10
+                            - generic:
+                              - generic: May, 11
+                            - generic:
+                              - generic: May, 12
+                - generic:
+                  - generic:
+                    - generic:
+                      - table:
+                        - rowgroup:
+                          - row:
+                            - cell:
+                              - text: marketscoupons.com
+                              - generic: (23,852)
+                            - cell
+            - generic:
+              - generic:
+                - generic:
+                  - img
+                  - generic:
+                    - paragraph: Bounce rate
+                    - paragraph: 3.53%
+                  - generic:
+                    - generic:
+                      - generic:
+                        - application:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic: 0%
+                              - generic:
+                                - generic: 2%
+                              - generic:
+                                - generic: 4%
+                              - generic:
+                                - generic: 6%
+                              - generic:
+                                - generic: 8%
+                              - generic:
+                                - generic: 10%
+                            - generic:
+                              - generic:
+                                - generic: Apr, 28
+                              - generic:
+                                - generic: May, 03
+                              - generic:
+                                - generic: May, 08
+                            - generic: RISK
+                    - generic:
+                      - generic:
+                        - generic:
+                          - table:
+                            - rowgroup:
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: /emails?statuses=bounced&startDate=2026-04-28&endDate=2026-05-12
+                                      - text: Transient
+                                - cell:
+                                  - generic:
+                                    - generic: "495"
+                                    - generic: 58.72%
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: /emails?statuses=bounced&startDate=2026-04-28&endDate=2026-05-12
+                                      - text: Permanent
+                                - cell:
+                                  - generic:
+                                    - generic: "345"
+                                    - generic: 40.93%
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: /emails?statuses=bounced&startDate=2026-04-28&endDate=2026-05-12
+                                      - text: Undetermined
+                                - cell:
+                                  - generic:
+                                    - generic: "3"
+                                    - generic: 0.36%
+              - generic:
+                - generic:
+                  - img
+                  - generic:
+                    - paragraph: Complain rate
+                    - paragraph: 0.04%
+                  - generic:
+                    - generic:
+                      - generic:
+                        - application:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic: 0%
+                              - generic:
+                                - generic: 0.05%
+                              - generic:
+                                - generic: 0.1%
+                              - generic:
+                                - generic: 0.15%
+                              - generic:
+                                - generic: 0.2%
+                            - generic:
+                              - generic:
+                                - generic: Apr, 28
+                              - generic:
+                                - generic: May, 03
+                              - generic:
+                                - generic: May, 08
+                            - generic: RISK
+                    - generic:
+                      - generic:
+                        - generic:
+                          - table:
+                            - rowgroup:
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: /emails?statuses=complained&startDate=2026-04-28&endDate=2026-05-12
+                                      - text: Complained
+                                - cell:
+                                  - generic:
+                                    - generic: "10"
+                                    - generic: 0.04%
+            - generic:
+              - text: Data is updated every 15 minutes. Last updated
+              - generic: 5:32 PM.
+  - region "Notifications alt+T"
+  - alert
+  - generic: May, 08
+  - menu "Opened" [ref=e674]:
+    - menuitem "All Events" [ref=e627] [cursor=pointer]:
+      - generic [ref=e630]: All Events
+    - separator [ref=e633]
+    - menuitem "Received" [ref=e634] [cursor=pointer]:
+      - generic [ref=e637]: Received
+    - menuitem "Delivered" [ref=e638] [cursor=pointer]:
+      - generic [ref=e641]: Delivered
+    - menuitem "Opened" [active] [ref=e642] [cursor=pointer]:
+      - generic [ref=e645]: Opened
+      - img [ref=e675]
+    - menuitem "Clicked" [ref=e646] [cursor=pointer]:
+      - generic [ref=e649]: Clicked
+    - menuitem "Bounced" [ref=e650] [cursor=pointer]:
+      - generic [ref=e653]: Bounced
+    - menuitem "Complained" [ref=e654] [cursor=pointer]:
+      - generic [ref=e657]: Complained
+    - menuitem "Unsubscribed" [ref=e658] [cursor=pointer]:
+      - generic [ref=e661]: Unsubscribed
+    - menuitem "Delivery delayed" [ref=e662] [cursor=pointer]:
+      - generic [ref=e665]: Delivery delayed
+    - menuitem "Failed" [ref=e666] [cursor=pointer]:
+      - generic [ref=e669]: Failed
+    - menuitem "Suppressed" [ref=e670] [cursor=pointer]:
+      - generic [ref=e673]: Suppressed

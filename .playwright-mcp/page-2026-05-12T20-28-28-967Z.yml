@@ -1,0 +1,153 @@
+- generic [active]:
+  - generic:
+    - generic:
+      - navigation:
+        - complementary:
+          - generic:
+            - button:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - img
+                      - text: e
+                  - generic:
+                    - generic: evertonmiranda777
+              - generic:
+                - img
+          - navigation:
+            - list:
+              - listitem:
+                - link:
+                  - /url: /emails
+                  - generic:
+                    - img
+                  - text: Emails
+              - listitem:
+                - link:
+                  - /url: /broadcasts
+                  - generic:
+                    - img
+                  - text: Broadcasts
+              - listitem:
+                - link:
+                  - /url: /automations
+                  - generic:
+                    - img
+                  - text: Automations
+              - listitem:
+                - link:
+                  - /url: /templates
+                  - generic:
+                    - img
+                  - text: Templates
+              - listitem:
+                - link:
+                  - /url: /audience
+                  - generic:
+                    - img
+                  - text: Audience
+              - listitem:
+                - link:
+                  - /url: /metrics
+                  - generic:
+                    - img
+                  - text: Metrics
+              - listitem:
+                - link:
+                  - /url: /domains
+                  - generic:
+                    - img
+                  - text: Domains
+              - listitem:
+                - link:
+                  - /url: /logs
+                  - generic:
+                    - img
+                  - text: Logs
+              - listitem:
+                - link:
+                  - /url: /api-keys
+                  - generic:
+                    - img
+                  - text: API keys
+              - listitem:
+                - link:
+                  - /url: /webhooks
+                  - generic:
+                    - img
+                  - text: Webhooks
+              - listitem:
+                - link:
+                  - /url: /settings
+                  - generic:
+                    - img
+                  - text: Settings
+          - button:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: e
+                - generic: evertonmiranda777@gmail.com
+            - generic:
+              - img
+      - generic:
+        - generic:
+          - generic:
+            - button:
+              - generic: Feedback
+              - generic:
+                - generic: F
+            - link:
+              - /url: /help
+              - text: Help
+            - link:
+              - /url: https://resend.com/docs/dashboard/webhooks/introduction
+              - text: Docs
+        - generic:
+          - generic:
+            - heading [level=1]: Webhooks
+            - generic:
+              - button:
+                - generic:
+                  - img
+                - generic: Add webhook
+              - button:
+                - generic:
+                  - img
+          - generic:
+            - generic:
+              - generic:
+                - heading [level=2]: No webhooks yet
+                - generic: Configure a webhook to receive real-time updates about email events.
+                - generic:
+                  - button [expanded]:
+                    - generic:
+                      - img
+                    - generic: Add webhook
+  - region "Notifications alt+T"
+  - alert
+  - dialog "Add webhook" [ref=e438]:
+    - heading "Add webhook" [level=2] [ref=e439]
+    - generic [ref=e440]:
+      - generic [ref=e441]:
+        - generic [ref=e442]: Endpoint URL
+        - textbox "Endpoint URL" [ref=e444]:
+          - /placeholder: https://
+      - generic [ref=e445]:
+        - generic [ref=e446]: Select events to listen
+        - combobox [ref=e447] [cursor=pointer]:
+          - generic [ref=e448]:
+            - generic [ref=e449]: Select events...
+            - img [ref=e450]
+      - generic [ref=e452]:
+        - button "Add Ctrl ↩" [disabled] [ref=e453]:
+          - generic [ref=e454]: Add
+          - generic [ref=e455]:
+            - generic [ref=e456]: Ctrl
+            - generic [ref=e457]: ↩
+        - button "Cancel Esc" [ref=e458] [cursor=pointer]:
+          - generic [ref=e459]: Cancel
+          - generic [ref=e461]: Esc
+    - button "Close dialog" [ref=e462] [cursor=pointer]:
+      - img [ref=e463]

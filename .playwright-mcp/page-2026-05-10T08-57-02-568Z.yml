@@ -1,0 +1,245 @@
+- generic [active] [ref=e1]:
+  - navigation "Main navigation" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4] [cursor=pointer]:
+        - img [ref=e5]
+        - generic [ref=e10]:
+          - emphasis [ref=e11]: Markets
+          - text: Coupons
+      - generic [ref=e13]:
+        - img
+        - textbox "البحث عن شركات، أدلة، أدوات..." [ref=e14]
+      - generic [ref=e15]:
+        - generic [ref=e17] [cursor=pointer]: AR
+        - generic [ref=e18]:
+          - button "دخول" [ref=e19] [cursor=pointer]
+          - button "التسجيل" [ref=e20] [cursor=pointer]
+    - generic [ref=e22]:
+      - button "العروض" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+        - text: العروض
+      - button "Firms" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: Firms
+      - button "المنصات" [ref=e30] [cursor=pointer]:
+        - img [ref=e31]
+        - text: المنصات
+      - button "المؤشرات" [ref=e33] [cursor=pointer]:
+        - img [ref=e34]
+        - text: المؤشرات
+      - button "مقارنة" [ref=e36] [cursor=pointer]:
+        - img [ref=e37]
+        - text: مقارنة
+      - button "التقويم الاقتصادي" [ref=e38] [cursor=pointer]:
+        - img [ref=e39]
+        - text: التقويم الاقتصادي
+      - button "خريطة الحرارة" [ref=e41] [cursor=pointer]:
+        - img [ref=e42]
+        - text: خريطة الحرارة
+      - button "التحليل اليومي" [ref=e47] [cursor=pointer]:
+        - img [ref=e48]
+        - text: التحليل اليومي
+      - button "Gamma (GEX)" [ref=e51] [cursor=pointer]:
+        - img [ref=e52]
+        - text: Gamma (GEX)
+      - button "Guides" [ref=e56] [cursor=pointer]:
+        - img [ref=e57]
+        - text: Guides
+      - button "مدونة" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+        - text: مدونة
+      - button "Position Size" [ref=e64] [cursor=pointer]:
+        - img [ref=e65]
+        - text: Position Size
+      - button "Quiz" [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+        - text: Quiz
+      - button "Awards" [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+        - text: Awards
+      - button "Live Room" [ref=e75] [cursor=pointer]:
+        - img [ref=e76]
+        - text: Live Room
+  - generic [ref=e79]:
+    - generic [ref=e80]:
+      - generic [ref=e81]:
+        - text: Markets
+        - emphasis [ref=e82]: Coupons
+      - button "Fechar menu" [ref=e83] [cursor=pointer]
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - generic [ref=e86]: مرحباً بك في Markets Coupons
+        - button "تسجيل الدخول إلى الحساب" [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+          - generic [ref=e91]: تسجيل الدخول إلى الحساب
+        - button "إنشاء حساب" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+          - generic [ref=e96]: إنشاء حساب
+      - generic [ref=e97]: الرئيسية
+      - button "العروض والكوبونات" [ref=e98] [cursor=pointer]
+      - generic [ref=e99]: الشركات
+      - button "عرض جميع الشركات" [ref=e100] [cursor=pointer]
+      - button "مقارنة الشركات" [ref=e101] [cursor=pointer]
+      - button "اختبار — أي شركة؟" [ref=e102] [cursor=pointer]
+      - generic [ref=e103]: الأدوات
+      - button "حجم المركز" [ref=e104] [cursor=pointer]
+      - button "التقويم الاقتصادي" [ref=e105] [cursor=pointer]
+      - button "خريطة الحرارة" [ref=e106] [cursor=pointer]
+      - button "التحليل اليومي للسوق" [ref=e107] [cursor=pointer]
+      - button "Gamma Exposure (GEX)" [ref=e108] [cursor=pointer]
+      - button "المؤشرات" [ref=e109] [cursor=pointer]
+      - generic [ref=e110]: المنصات
+      - button "منصات التداول" [ref=e111] [cursor=pointer]
+      - generic [ref=e112]: التعلم
+      - button "الأدلة والتعليم" [ref=e113] [cursor=pointer]
+      - button "مدونة" [ref=e114] [cursor=pointer]
+      - generic [ref=e115]: البث المباشر والمزيد
+      - button "Live Room" [ref=e116] [cursor=pointer]
+      - generic [ref=e117]: اللغة
+      - generic [ref=e118]:
+        - button "🇧🇷 PT" [ref=e119] [cursor=pointer]
+        - button "🇺🇸 EN" [ref=e120] [cursor=pointer]
+        - button "🇪🇸 ES" [ref=e121] [cursor=pointer]
+        - button "🇮🇹 IT" [ref=e122] [cursor=pointer]
+        - button "🇫🇷 FR" [ref=e123] [cursor=pointer]
+        - button "🇩🇪 DE" [ref=e124] [cursor=pointer]
+        - button "🇸🇦 AR" [ref=e125] [cursor=pointer]
+      - link "تسجيل الدخول إلى Telegram" [ref=e126] [cursor=pointer]:
+        - /url: https://t.me/marketcouponss
+        - generic [ref=e127]: تسجيل الدخول إلى Telegram
+      - generic [ref=e128]: حساب
+  - text: ★ ★ ★
+  - generic [ref=e130]:
+    - generic [ref=e132]: مدونة
+    - generic [ref=e133]:
+      - button "الكل" [ref=e134] [cursor=pointer]
+      - button "مبتدئ" [ref=e135] [cursor=pointer]
+      - button "متوسط" [ref=e136] [cursor=pointer]
+      - button "محترف" [ref=e137] [cursor=pointer]
+  - button "✕" [ref=e143] [cursor=pointer]
+  - contentinfo [ref=e145]:
+    - generic [ref=e146]:
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - img [ref=e149]
+          - emphasis [ref=e154]: Markets
+          - text: Coupons
+        - paragraph [ref=e155]: كوبونات تم التحقق منها لأفضل Prop Firms. أدوات احترافية لمتداولي العقود الآجلة والفوركس.
+        - generic [ref=e156]:
+          - generic [ref=e157]: النشرة الإخبارية
+          - generic [ref=e158]: احصل على أفضل عروض وتوصيات Prop Firms كل أسبوع.
+          - generic [ref=e159]:
+            - textbox "seu@email.com" [ref=e160]
+            - button "اشترك" [ref=e161] [cursor=pointer]
+        - generic [ref=e162]:
+          - link "Telegram" [ref=e163] [cursor=pointer]:
+            - /url: https://t.me/marketcouponss
+            - img [ref=e165]
+          - link "Instagram" [ref=e167] [cursor=pointer]:
+            - /url: https://www.instagram.com/marketscoupons
+            - img [ref=e169]
+          - link "Facebook" [ref=e171] [cursor=pointer]:
+            - /url: https://www.facebook.com/marketscoupons/
+            - img [ref=e173]
+      - generic [ref=e175]:
+        - heading "Prop Firms" [level=2] [ref=e176]
+        - link "Apex Trader Funding" [ref=e177] [cursor=pointer]:
+          - /url: https://apextraderfunding.com/member/aff/go/evertonmiranda
+        - link "Bulenox" [ref=e178] [cursor=pointer]:
+          - /url: https://bulenox.com/member/aff/go/marketcoupons
+        - link "FTMO" [ref=e179] [cursor=pointer]:
+          - /url: https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP
+        - link "FundedNext" [ref=e180] [cursor=pointer]:
+          - /url: https://fundednext.com/?fpr=everton33
+        - link "Take Profit Trader" [ref=e181] [cursor=pointer]:
+          - /url: https://takeprofittrader.com/?referralCode=MARKET40
+        - link "Earn2Trade" [ref=e182] [cursor=pointer]:
+          - /url: https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14
+      - generic [ref=e183]:
+        - heading "الأدوات" [level=2] [ref=e184]
+        - link "Position Size" [ref=e185] [cursor=pointer]:
+          - /url: /calculator
+        - link "اختبار التوقيع" [ref=e186] [cursor=pointer]:
+          - /url: /quiz
+        - link "مقارن" [ref=e187] [cursor=pointer]:
+          - /url: /compare
+        - link "التقويم" [ref=e188] [cursor=pointer]:
+          - /url: /calendar
+        - link "المؤشرات" [ref=e189] [cursor=pointer]:
+          - /url: /indicators
+        - link "Gamma (GEX)" [ref=e190] [cursor=pointer]:
+          - /url: /gamma
+      - generic [ref=e191]:
+        - heading "روابط" [level=2] [ref=e192]
+        - link "Telegram" [ref=e193] [cursor=pointer]:
+          - /url: https://t.me/marketcouponss
+        - link "Instagram" [ref=e194] [cursor=pointer]:
+          - /url: https://www.instagram.com/marketscoupons
+        - link "الأدلة" [ref=e195] [cursor=pointer]:
+          - /url: /guides
+        - link "Blog" [ref=e196] [cursor=pointer]:
+          - /url: /blog
+        - link "Live Room" [ref=e197] [cursor=pointer]:
+          - /url: /live
+        - link "FAQ" [ref=e198] [cursor=pointer]:
+          - /url: /#faq
+      - generic [ref=e199]:
+        - heading "قانوني" [level=2] [ref=e200]
+        - link "سياسة الخصوصية" [ref=e201] [cursor=pointer]:
+          - /url: /privacy
+        - link "شروط الاستخدام" [ref=e202] [cursor=pointer]:
+          - /url: /terms
+        - link "سياسة ملفات تعريف الارتباط" [ref=e203] [cursor=pointer]:
+          - /url: /privacy#cookies
+    - generic [ref=e204]:
+      - text: جميع المعلومات مقدمة لأغراض تعليمية. القسائم قابلة للتغيير. التداول ينطوي على مخاطر. يمكن تغيير الشروط والأسعار والمزايا في أي وقت دون إشعار مسبق. © 2025 Markets Coupons.
+      - generic [ref=e205]:
+        - link "سياسة الخصوصية" [ref=e206] [cursor=pointer]:
+          - /url: /privacy
+        - link "شروط الاستخدام" [ref=e207] [cursor=pointer]:
+          - /url: /terms
+        - link "سياسة ملفات تعريف الارتباط" [ref=e208] [cursor=pointer]:
+          - /url: /privacy#cookies
+    - generic [ref=e209]:
+      - generic [ref=e210]:
+        - strong [ref=e211]: "إفصاح المخاطر:"
+        - paragraph [ref=e212]: ينطوي تداول العقود الآجلة والفوركس على مخاطر كبيرة وليس مناسبًا لكل مستثمر. قد يخسر المستثمر كل أو أكثر من الاستثمار الأولي. رأس المال المعرض للمخاطر هو المال الذي يمكن خسارته دون المساس بالأمان المالي. يجب استخدام رأس المال المعرض للمخاطر فقط للتداول. الأداء السابق لا يعكس بالضرورة النتائج المستقبلية.
+      - generic [ref=e213]:
+        - strong [ref=e214]: "إفصاح النتائج الافتراضية:"
+        - paragraph [ref=e215]: النتائج المحققة في المحاكاة لديها العديد من القيود المتأصلة. لا ينبغي الافتراض أن أي حساب سيحقق نتائج مماثلة لتلك المعروضة. هناك فروقات متكررة بين النتائج المحاكاة والحقيقية. التداول المحاكى لا ينطوي على مخاطر مالية.
+      - generic [ref=e216]:
+        - strong [ref=e217]: "إفصاح الشهادات:"
+        - paragraph [ref=e218]: قد لا تكون الشهادات الظاهرة على هذا الموقع ممثلة لعملاء آخرين ولا تشكل ضمانًا للأداء أو النجاح المستقبلي.
+      - generic [ref=e219]:
+        - strong [ref=e220]: "إفصاح غرفة التداول المباشر:"
+        - paragraph [ref=e221]: هذا العرض مخصص للأغراض التعليمية فقط والآراء المعبر عنها هي حصريًا للمقدم. جميع الصفقات المعروضة يجب اعتبارها افتراضية ولا ينبغي توقع تكرارها في حساب تداول حقيقي.
+  - button "Abrir chat com Max" [ref=e222] [cursor=pointer]:
+    - generic [ref=e223]: "1"
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - img "Max"
+        - generic:
+          - generic: Max
+          - generic: متصل
+      - button "✕"
+    - generic:
+      - generic:
+        - generic:
+          - text: أهلاً يا تريدر! 👊
+          - text: قبل ما نبدأ، تحب أناديك إزاي؟
+          - text: أنا
+          - strong: Max
+          - text: . أقدر أساعدك في كل حاجة عن شركات البروب، الكوبونات والقواعد، حتى اللي محدش بيقراها.
+          - text: اختار خيار تحت أو اكتب سؤالك 🚀
+        - generic: الآن
+    - generic:
+      - button "إيه أحسن شركة بروب ليا؟"
+      - button "فيه كوبون خصم دلوقتي؟"
+      - button "إزاي أعدّي التقييم؟"
+      - button "إيه أهم القواعد؟"
+    - generic:
+      - textbox "اكتب سؤالك..."
+      - button "Enviar mensagem":
+        - img

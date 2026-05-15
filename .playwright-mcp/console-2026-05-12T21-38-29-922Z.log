@@ -1,0 +1,52 @@
+[    3546ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[    3548ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[    3549ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'data' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[    3920ms] [ERROR] Access to fetch at 'https://notifications-api.godaddy.com/v1/assets/px-assets-notifications?domainName=marketscoupons.com' from origin 'https://dcc.godaddy.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://dcc.godaddy.com/control/dnsmanagement?domainName=marketscoupons.com:0
+[    3921ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://notifications-api.godaddy.com/v1/assets/px-assets-notifications?domainName=marketscoupons.com:0
+[    4412ms] [LOG] data = {standardEventName: PageView, tagIds: Array(5), eventName: standard, advancedMatching: false, includeTcf: false} @ https://edge.fullstory.com/s/fs.js:3
+[    4590ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'products' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[    4595ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'products' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[    4596ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'products' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[    4605ms] [ERROR] Invalid key/value pair found in Traffic's custom properties (tData). Objects, arrays, and functions are not supported.
+
+Key: 'products' Value: '[object Object]' Type: 'object'. @ https://img6.wsimg.com/wrhs-next/b50c40b809a99b32b67cc2f11b98796d/scc-gd-c1.min.js:0
+[    5109ms] [LOG] Adding event listener for recommendationsLoaded @ https://edge.fullstory.com/s/fs.js:3
+[    5110ms] [LOG] Calling handlePrefetch @ https://edge.fullstory.com/s/fs.js:3
+[    5380ms] [LOG] Recommendations assets loaded {version: 2fe94db48f76a2a61946033d46b96ef57a7c508c, placementKey: dns-management-domains, appKey: dcc-control, component: nextSteps} @ https://edge.fullstory.com/s/fs.js:3
+[    5436ms] [LOG] Calling handleLoad @ https://edge.fullstory.com/s/fs.js:3
+[    5574ms] [ERROR] Attestation check for Attribution Reporting on https://ara.paa-reporting-advertising.amazon failed. @ https://dcc.godaddy.com/control/dnsmanagement?domainName=marketscoupons.com:0
+[    5596ms] [ERROR] Attestation check for Shared Storage on https://ara.paa-reporting-advertising.amazon failed. @ https://dcc.godaddy.com/control/dnsmanagement?domainName=marketscoupons.com:0
+[    5599ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[    7075ms] [LOG] Recommendations visual complete @ https://edge.fullstory.com/s/fs.js:3
+[   68319ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[   69548ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[  164324ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[  165682ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[  167205ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3
+[  167849ms] [WARNING] [@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution @ https://edge.fullstory.com/s/fs.js:3

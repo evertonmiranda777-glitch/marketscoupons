@@ -1,0 +1,1825 @@
+- generic [active] [ref=e1]:
+  - generic "Live chat button":
+    - generic [ref=e3] [cursor=pointer]:
+      - generic: Live Chat
+  - generic [ref=e8]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: New
+      - generic [ref=e14]: 1-Step FTMO Challenge
+      - link "Start now" [ref=e15] [cursor=pointer]:
+        - /url: https://trader.ftmo.com/start-challenge
+        - text: Start now
+        - img [ref=e16]
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - link "FTMO — back to homepage" [ref=e22] [cursor=pointer]:
+            - /url: https://ftmo.com/en/
+            - img "FTMO" [ref=e23]
+          - list [ref=e25]:
+            - listitem [ref=e26]:
+              - button "FTMO Challenge" [ref=e27] [cursor=pointer]:
+                - generic [ref=e28]: FTMO Challenge
+                - img [ref=e29]
+            - listitem [ref=e31]:
+              - button "Trading" [ref=e32] [cursor=pointer]:
+                - generic [ref=e33]: Trading
+                - img [ref=e34]
+            - listitem [ref=e36]:
+              - link "FAQ" [ref=e37] [cursor=pointer]:
+                - /url: /en/faq/
+            - listitem [ref=e38]:
+              - link "Blog" [ref=e39] [cursor=pointer]:
+                - /url: /en/blog/
+            - listitem [ref=e40]:
+              - button "Academy" [ref=e41] [cursor=pointer]:
+                - generic [ref=e42]: Academy
+                - img [ref=e43]
+            - listitem [ref=e45]:
+              - button "About" [ref=e46] [cursor=pointer]:
+                - generic [ref=e47]: About
+                - img [ref=e48]
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - button [ref=e54] [cursor=pointer]:
+              - img [ref=e55]
+            - button "en EN" [ref=e61] [cursor=pointer]:
+              - img "en" [ref=e62]
+              - generic [ref=e63]: EN
+          - generic [ref=e65]:
+            - link "Log In" [ref=e67] [cursor=pointer]:
+              - /url: https://trader.ftmo.com
+              - generic [ref=e68]: Log In
+            - link "Get Started" [ref=e70] [cursor=pointer]:
+              - /url: https://trader.ftmo.com/start-challenge
+              - generic [ref=e71]: Get Started
+    - main [ref=e72]:
+      - generic [ref=e73]:
+        - img "FTMO hero image" [ref=e75]
+        - generic [ref=e76]:
+          - generic [ref=e78]: Modern Prop Trading — Since 2015
+          - heading "Grow & Monetize Your Demo Trading" [level=1] [ref=e79]:
+            - text: Grow & Monetize
+            - text: Your Demo Trading
+          - paragraph [ref=e80]: Improve your trading skills on our simulated platform and earn rewards
+          - generic [ref=e81]:
+            - link "FTMO Challenge" [ref=e82] [cursor=pointer]:
+              - /url: https://trader.ftmo.com/start-challenge
+              - generic [ref=e83]: FTMO Challenge
+            - link "Free Trial" [ref=e84] [cursor=pointer]:
+              - /url: https://trader.ftmo.com/free-trial
+              - generic [ref=e85]: Free Trial
+          - iframe [ref=e88]:
+            - generic [ref=f33e2]:
+              - link "Trustpilot reviews" [ref=f33e3] [cursor=pointer]:
+                - /url: https://www.trustpilot.com/review/ftmo.com?utm_medium=trustbox&utm_source=MicroCombo
+                - generic [ref=f33e4]: Excellent
+                - img "4.8 out of 5 star rating on Trustpilot" [ref=f33e9]
+                - generic [ref=f33e29]:
+                  - generic [ref=f33e30]:
+                    - strong [ref=f33e31]: 42,647
+                    - text: reviews on
+                  - img "Trustpilot" [ref=f33e35]
+              - generic [ref=f33e39]: Rated Excellent. 4.8 out of 5. 42647 reviews on Trustpilot
+              - generic [ref=f33e40]: Click to view the company's Trustpilot profile
+          - generic [ref=e89]:
+            - generic [ref=e94]:
+              - img [ref=e97]
+              - generic [ref=e100]:
+                - heading "1-Step FTMO Challenge $100K Special Offer" [level=3] [ref=e101]:
+                  - text: 1-Step FTMO Challenge
+                  - text: $100K Special Offer
+                - paragraph [ref=e102]: Take your 1–Step to gain your FTMO Account.
+                - link "Claim 10% Off" [ref=e104] [cursor=pointer]:
+                  - /url: https://trader.ftmo.com/start-challenge
+                  - generic [ref=e105]: Claim 10% Off
+            - img "Discount Badge" [ref=e107]
+          - generic [ref=e108]:
+            - generic [ref=e109]:
+              - img "EY" [ref=e111]
+              - img "Forbes" [ref=e113]
+            - list [ref=e116]:
+              - listitem [ref=e117]:
+                - img [ref=e118]
+                - text: Up to $200,000 FTMO Account
+              - listitem [ref=e121]:
+                - img [ref=e122]
+                - text: Support in 20 Languages
+              - listitem [ref=e125]:
+                - img [ref=e126]
+                - text: 3 Trading Platforms
+      - generic [ref=e130]:
+        - heading "Why People Choose FTMO" [level=3] [ref=e131]
+        - generic [ref=e132]:
+          - img "Why FTMO" [ref=e134]
+          - img [ref=e135]
+          - img [ref=e138]
+          - img "Why FTMO" [ref=e142]
+          - generic [ref=e145]:
+            - text: More Power, Less Risk
+            - generic [ref=e146]: Up to $200K simulated capital
+        - generic [ref=e147]:
+          - generic [ref=e148]:
+            - img [ref=e150]
+            - generic [ref=e152]:
+              - heading "Rewards" [level=3] [ref=e153]
+              - paragraph [ref=e154]: Fast and easy rewards withdrawals
+          - generic [ref=e155]:
+            - img [ref=e157]
+            - generic [ref=e160]:
+              - heading "Advanced Support" [level=3] [ref=e161]
+              - paragraph [ref=e162]: Dedicated support via Live chat, email, or WhatsApp
+          - generic [ref=e163]:
+            - img [ref=e165]
+            - generic [ref=e167]:
+              - heading "Tools & Services" [level=3] [ref=e168]
+              - paragraph [ref=e169]: Tailored tools & services to support your growth
+          - generic [ref=e170]:
+            - img [ref=e172]
+            - generic [ref=e174]:
+              - heading "Free Trial" [level=3] [ref=e175]
+              - paragraph [ref=e176]: As many Free Trials as you need
+      - generic [ref=e177]:
+        - generic [ref=e179]:
+          - heading "Choose Your FTMO Challenge" [level=2] [ref=e180]
+          - paragraph [ref=e181]: Complete FTMO’s Trading Objectives to become eligible to gain your demo FTMO Account.
+        - generic [ref=e183]:
+          - generic [ref=e186]:
+            - button "2-Step Standard 2-Phase" [ref=e187] [cursor=pointer]:
+              - img [ref=e189]
+              - generic [ref=e192]:
+                - generic [ref=e193]: 2-Step
+                - generic [ref=e194]: Standard 2-Phase
+            - button "New 1-Step Single step to FTMO Account" [ref=e195] [cursor=pointer]:
+              - generic [ref=e196]: New
+              - img [ref=e198]
+              - generic [ref=e201]:
+                - generic [ref=e202]: 1-Step
+                - generic [ref=e203]: Single step to FTMO Account
+          - generic [ref=e207]:
+            - generic [ref=e208]:
+              - button "USD flag USD" [ref=e209] [cursor=pointer]:
+                - img "USD flag" [ref=e210]
+                - generic [ref=e211]: USD
+              - button "GBP flag GBP" [ref=e212] [cursor=pointer]:
+                - img "GBP flag" [ref=e213]
+                - generic [ref=e214]: GBP
+              - button "EUR flag EUR" [ref=e215] [cursor=pointer]:
+                - img "EUR flag" [ref=e216]
+                - generic [ref=e217]: EUR
+              - button "More" [ref=e218] [cursor=pointer]:
+                - img [ref=e219]
+                - generic [ref=e221]: More
+            - generic [ref=e222]:
+              - generic [ref=e224]:
+                - switch "Use setting" [ref=e225] [cursor=pointer]:
+                  - generic [ref=e226]: Use setting
+                - generic [ref=e227] [cursor=pointer]: Show Numbers
+              - button "Show Phases" [ref=e229] [cursor=pointer]:
+                - img [ref=e230]
+                - generic [ref=e234]: Show Phases
+          - generic [ref=e238]:
+            - generic [ref=e239]:
+              - generic [ref=e240]:
+                - generic [ref=e242]:
+                  - img [ref=e243]
+                  - generic [ref=e245]: Profit Target
+                - generic [ref=e246]:
+                  - img [ref=e247]
+                  - generic [ref=e249]: Max Daily Loss
+                - generic [ref=e250]:
+                  - img [ref=e251]
+                  - generic [ref=e253]: Max Loss
+                - generic [ref=e254]:
+                  - img [ref=e255]
+                  - generic [ref=e257]: Min Trading days
+                - generic [ref=e258]:
+                  - img [ref=e259]
+                  - generic [ref=e261]: Trading Period
+                - generic [ref=e262]:
+                  - img [ref=e263]
+                  - generic [ref=e265]: Refund
+                - generic [ref=e266]:
+                  - img [ref=e267]
+                  - generic [ref=e269]: Rewards
+              - generic [ref=e270]: One-time refundable fee from
+            - generic [ref=e271]:
+              - generic [ref=e272]:
+                - generic [ref=e273]:
+                  - generic [ref=e274]:
+                    - generic [ref=e275]: Account
+                    - generic [ref=e276]: $200,000
+                  - generic [ref=e282]:
+                    - generic [ref=e284]:
+                      - generic [ref=e285]:
+                        - generic [ref=e286]: Phase 1
+                        - generic [ref=e287]: Phase 2
+                      - generic [ref=e288]:
+                        - generic [ref=e289]: 10%
+                        - generic [ref=e290]: 5%
+                    - generic [ref=e292]: 5%
+                    - generic [ref=e294]: 10%
+                    - generic [ref=e296]: 4 days
+                    - generic [ref=e298]: Unlimited
+                    - generic [ref=e300]:
+                      - generic [ref=e301]: "Yes"
+                      - generic [ref=e302]: 100%
+                    - generic [ref=e305]: up to 90%
+                  - generic [ref=e308]:
+                    - generic [ref=e310]: €1 080
+                    - link "Start now" [ref=e311] [cursor=pointer]:
+                      - /url: https://trader.ftmo.com/start-challenge/
+                - generic [ref=e312]:
+                  - generic [ref=e313]: €12 234
+                  - generic [ref=e314]:
+                    - generic [ref=e315]: Avg. Reward
+                    - img [ref=e317]
+              - generic [ref=e319]:
+                - generic [ref=e320]:
+                  - generic [ref=e322]: Best value
+                  - img "Popular"
+                  - generic [ref=e323]:
+                    - generic [ref=e324]: Account
+                    - generic [ref=e325]: $100,000
+                  - generic [ref=e331]:
+                    - generic [ref=e333]:
+                      - generic [ref=e334]:
+                        - generic [ref=e335]: Phase 1
+                        - generic [ref=e336]: Phase 2
+                      - generic [ref=e337]:
+                        - generic [ref=e338]: 10%
+                        - generic [ref=e339]: 5%
+                    - generic [ref=e341]: 5%
+                    - generic [ref=e343]: 10%
+                    - generic [ref=e345]: 4 days
+                    - generic [ref=e347]: Unlimited
+                    - generic [ref=e349]:
+                      - generic [ref=e350]: "Yes"
+                      - generic [ref=e351]: 100%
+                    - generic [ref=e354]: up to 90%
+                  - generic [ref=e357]:
+                    - generic [ref=e358]:
+                      - img [ref=e359]
+                      - generic [ref=e361]: €439
+                      - generic [ref=e362]: €540
+                    - link "Start now" [ref=e363] [cursor=pointer]:
+                      - /url: https://trader.ftmo.com/start-challenge/
+                - generic [ref=e364]:
+                  - generic [ref=e365]: €5 957
+                  - generic [ref=e366]:
+                    - generic [ref=e367]: Avg. Reward
+                    - img [ref=e369]
+              - generic [ref=e371]:
+                - generic [ref=e372]:
+                  - generic [ref=e373]:
+                    - generic [ref=e374]: Account
+                    - generic [ref=e375]: $50,000
+                  - generic [ref=e381]:
+                    - generic [ref=e383]:
+                      - generic [ref=e384]:
+                        - generic [ref=e385]: Phase 1
+                        - generic [ref=e386]: Phase 2
+                      - generic [ref=e387]:
+                        - generic [ref=e388]: 10%
+                        - generic [ref=e389]: 5%
+                    - generic [ref=e391]: 5%
+                    - generic [ref=e393]: 10%
+                    - generic [ref=e395]: 4 days
+                    - generic [ref=e397]: Unlimited
+                    - generic [ref=e399]:
+                      - generic [ref=e400]: "Yes"
+                      - generic [ref=e401]: 100%
+                    - generic [ref=e404]: up to 90%
+                  - generic [ref=e407]:
+                    - generic [ref=e409]: €345
+                    - link "Start now" [ref=e410] [cursor=pointer]:
+                      - /url: https://trader.ftmo.com/start-challenge/
+                - generic [ref=e411]:
+                  - generic [ref=e412]: €2 805
+                  - generic [ref=e413]:
+                    - generic [ref=e414]: Avg. Reward
+                    - img [ref=e416]
+              - generic [ref=e418]:
+                - generic [ref=e419]:
+                  - generic [ref=e420]:
+                    - generic [ref=e421]: Account
+                    - generic [ref=e422]: $25,000
+                  - generic [ref=e428]:
+                    - generic [ref=e430]:
+                      - generic [ref=e431]:
+                        - generic [ref=e432]: Phase 1
+                        - generic [ref=e433]: Phase 2
+                      - generic [ref=e434]:
+                        - generic [ref=e435]: 10%
+                        - generic [ref=e436]: 5%
+                    - generic [ref=e438]: 5%
+                    - generic [ref=e440]: 10%
+                    - generic [ref=e442]: 4 days
+                    - generic [ref=e444]: Unlimited
+                    - generic [ref=e446]:
+                      - generic [ref=e447]: "Yes"
+                      - generic [ref=e448]: 100%
+                    - generic [ref=e451]: up to 90%
+                  - generic [ref=e454]:
+                    - generic [ref=e456]: €250
+                    - link "Start now" [ref=e457] [cursor=pointer]:
+                      - /url: https://trader.ftmo.com/start-challenge/
+                - generic [ref=e458]:
+                  - generic [ref=e459]: €1 431
+                  - generic [ref=e460]:
+                    - generic [ref=e461]: Avg. Reward
+                    - img [ref=e463]
+              - generic [ref=e465]:
+                - generic [ref=e466]:
+                  - generic [ref=e467]:
+                    - generic [ref=e468]: Account
+                    - generic [ref=e469]: $10,000
+                  - generic [ref=e475]:
+                    - generic [ref=e477]:
+                      - generic [ref=e478]:
+                        - generic [ref=e479]: Phase 1
+                        - generic [ref=e480]: Phase 2
+                      - generic [ref=e481]:
+                        - generic [ref=e482]: 10%
+                        - generic [ref=e483]: 5%
+                    - generic [ref=e485]: 5%
+                    - generic [ref=e487]: 10%
+                    - generic [ref=e489]: 4 days
+                    - generic [ref=e491]: Unlimited
+                    - generic [ref=e493]:
+                      - generic [ref=e494]: "Yes"
+                      - generic [ref=e495]: 100%
+                    - generic [ref=e498]: up to 90%
+                  - generic [ref=e501]:
+                    - generic [ref=e503]: €89
+                    - link "Start now" [ref=e504] [cursor=pointer]:
+                      - /url: https://trader.ftmo.com/start-challenge/
+                - generic [ref=e505]:
+                  - generic [ref=e506]: €680
+                  - generic [ref=e507]:
+                    - generic [ref=e508]: Avg. Reward
+                    - img [ref=e510]
+          - generic [ref=e513]:
+            - generic [ref=e514]: "You will also get access to:"
+            - generic [ref=e515]:
+              - generic [ref=e516]:
+                - img [ref=e517]
+                - generic [ref=e519]: FTMO Academy
+              - generic [ref=e520]:
+                - img [ref=e521]
+                - generic [ref=e523]: Psychology Course
+              - generic [ref=e524]:
+                - img [ref=e525]
+                - generic [ref=e527]: Account MetriX
+              - generic [ref=e528]:
+                - img [ref=e529]
+                - generic [ref=e531]: Economic Calendar
+              - generic [ref=e532]:
+                - img [ref=e533]
+                - generic [ref=e535]: Equity Simulator
+              - generic [ref=e536]:
+                - img [ref=e537]
+                - generic [ref=e539]: Trading Journal
+              - generic [ref=e540]:
+                - img [ref=e541]
+                - generic [ref=e543]: News Indicator
+      - generic [ref=e550]:
+        - generic [ref=e552]:
+          - heading "Trusted by Millions of Traders" [level=2] [ref=e553]
+          - generic [ref=e554]:
+            - generic [ref=e555]:
+              - generic [ref=e556]: 3.5M+
+              - generic [ref=e557]: Customers worldwide
+            - generic [ref=e558]:
+              - generic [ref=e559]: $500M+
+              - generic [ref=e560]: Paid in rewards worldwide
+            - generic [ref=e561]:
+              - generic [ref=e562]: 140+
+              - generic [ref=e563]: Countries served
+        - region [ref=e566]:
+          - generic [ref=e567]:
+            - group [ref=e568]:
+              - generic [ref=e569]:
+                - generic [ref=e573]:
+                  - img [ref=e574]
+                  - generic [ref=e576]: YouTube • 193K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e577]:
+                - generic [ref=e578]:
+                  - generic [ref=e581]: Choon Chiat
+                  - generic [ref=e582]: Malaysia
+                - separator [ref=e583]
+                - generic [ref=e584]:
+                  - generic [ref=e585]:
+                    - generic [ref=e586]: Rewards Earned
+                    - generic [ref=e587]: $30,182
+                  - generic [ref=e588]:
+                    - generic [ref=e589]: Trading Style
+                    - generic [ref=e590]: Scalper
+            - group [ref=e591]:
+              - generic [ref=e592]:
+                - generic [ref=e596]:
+                  - img [ref=e597]
+                  - generic [ref=e599]: YouTube • 37K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e600]:
+                - generic [ref=e601]:
+                  - generic [ref=e604]: Ugnius
+                  - generic [ref=e605]: Lithuania
+                - separator [ref=e606]
+                - generic [ref=e607]:
+                  - generic [ref=e608]:
+                    - generic [ref=e609]: Rewards Earned
+                    - generic [ref=e610]: $99,706
+                  - generic [ref=e611]:
+                    - generic [ref=e612]: Trading Style
+                    - generic [ref=e613]: Day trader
+            - group [ref=e614]:
+              - generic [ref=e615]:
+                - generic [ref=e619]:
+                  - img [ref=e620]
+                  - generic [ref=e622]: YouTube • 119K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e623]:
+                - generic [ref=e624]:
+                  - generic [ref=e627]: Richard
+                  - generic [ref=e628]: Canada
+                - separator [ref=e629]
+                - generic [ref=e630]:
+                  - generic [ref=e631]:
+                    - generic [ref=e632]: Rewards Earned
+                    - generic [ref=e633]: $32,500
+                  - generic [ref=e634]:
+                    - generic [ref=e635]: Trading Style
+                    - generic [ref=e636]: Swing trader
+            - group [ref=e637]:
+              - generic [ref=e638]:
+                - generic [ref=e642]:
+                  - img [ref=e643]
+                  - generic [ref=e645]: YouTube • 350K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e646]:
+                - generic [ref=e647]:
+                  - generic [ref=e650]: Paul
+                  - generic [ref=e651]: USA
+                - separator [ref=e652]
+                - generic [ref=e653]:
+                  - generic [ref=e654]:
+                    - generic [ref=e655]: Rewards Earned
+                    - generic [ref=e656]: $500,180
+                  - generic [ref=e657]:
+                    - generic [ref=e658]: Trading Style
+                    - generic [ref=e659]: Scalper
+            - group "1 of 11" [ref=e660]:
+              - generic [ref=e661]:
+                - generic [ref=e665]:
+                  - img [ref=e666]
+                  - generic [ref=e668]: YouTube • 81K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e669]:
+                - generic [ref=e670]:
+                  - generic [ref=e673]: Maik
+                  - generic [ref=e674]: Germany
+                - separator [ref=e675]
+                - generic [ref=e676]:
+                  - generic [ref=e677]:
+                    - generic [ref=e678]: Rewards Earned
+                    - generic [ref=e679]: $114,907
+                  - generic [ref=e680]:
+                    - generic [ref=e681]: Trading Style
+                    - generic [ref=e682]: Swing trader
+            - group "2 of 11" [ref=e683]:
+              - generic [ref=e684]:
+                - generic [ref=e688]:
+                  - img [ref=e689]
+                  - generic [ref=e691]: YouTube • 62K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e692]:
+                - generic [ref=e693]:
+                  - generic [ref=e696]: Cinthya
+                  - generic [ref=e697]: Ecuador
+                - separator [ref=e698]
+                - generic [ref=e699]:
+                  - generic [ref=e700]:
+                    - generic [ref=e701]: Rewards Earned
+                    - generic [ref=e702]: $41,018
+                  - generic [ref=e703]:
+                    - generic [ref=e704]: Trading Style
+                    - generic [ref=e705]: Day trader
+            - group "3 of 11" [ref=e706]:
+              - generic [ref=e707]:
+                - generic [ref=e711]:
+                  - img [ref=e712]
+                  - generic [ref=e714]: YouTube • 56K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e715]:
+                - generic [ref=e716]:
+                  - generic [ref=e719]: Bjorn
+                  - generic [ref=e720]: Belgium
+                - separator [ref=e721]
+                - generic [ref=e722]:
+                  - generic [ref=e723]:
+                    - generic [ref=e724]: Rewards Earned
+                    - generic [ref=e725]: $40,931
+                  - generic [ref=e726]:
+                    - generic [ref=e727]: Trading Style
+                    - generic [ref=e728]: Swing trader
+            - group [ref=e729]:
+              - generic [ref=e730]:
+                - generic [ref=e734]:
+                  - img [ref=e735]
+                  - generic [ref=e737]: YouTube • 66K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e738]:
+                - generic [ref=e739]:
+                  - generic [ref=e742]: Tarhata
+                  - generic [ref=e743]: USA
+                - separator [ref=e744]
+                - generic [ref=e745]:
+                  - generic [ref=e746]:
+                    - generic [ref=e747]: Rewards Earned
+                    - generic [ref=e748]: $25,607
+                  - generic [ref=e749]:
+                    - generic [ref=e750]: Trading Style
+                    - generic [ref=e751]: Day trader
+            - group [ref=e752]:
+              - generic [ref=e753]:
+                - generic [ref=e757]:
+                  - img [ref=e758]
+                  - generic [ref=e760]: YouTube • 459K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e761]:
+                - generic [ref=e762]:
+                  - generic [ref=e765]: Pepijn
+                  - generic [ref=e766]: The Netherlands
+                - separator [ref=e767]
+                - generic [ref=e768]:
+                  - generic [ref=e769]:
+                    - generic [ref=e770]: Rewards Earned
+                    - generic [ref=e771]: $76,000
+                  - generic [ref=e772]:
+                    - generic [ref=e773]: Trading Style
+                    - generic [ref=e774]: Scalper
+            - group [ref=e775]:
+              - generic [ref=e776]:
+                - generic [ref=e780]:
+                  - img [ref=e781]
+                  - generic [ref=e783]: YouTube • 83K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e784]:
+                - generic [ref=e785]:
+                  - generic [ref=e788]: Andi
+                  - generic [ref=e789]: United Kingdom
+                - separator [ref=e790]
+                - generic [ref=e791]:
+                  - generic [ref=e792]:
+                    - generic [ref=e793]: Rewards Earned
+                    - generic [ref=e794]: $37,676
+                  - generic [ref=e795]:
+                    - generic [ref=e796]: Trading Style
+                    - generic [ref=e797]: Day trader
+            - group [ref=e798]:
+              - generic [ref=e799]:
+                - generic [ref=e803]:
+                  - img [ref=e804]
+                  - generic [ref=e806]: YouTube • 46K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e807]:
+                - generic [ref=e808]:
+                  - generic [ref=e811]: Fabian
+                  - generic [ref=e812]: USA
+                - separator [ref=e813]
+                - generic [ref=e814]:
+                  - generic [ref=e815]:
+                    - generic [ref=e816]: Rewards Earned
+                    - generic [ref=e817]: $96,649
+                  - generic [ref=e818]:
+                    - generic [ref=e819]: Trading Style
+                    - generic [ref=e820]: Scalper
+            - group [ref=e821]:
+              - generic [ref=e822]:
+                - generic [ref=e826]:
+                  - img [ref=e827]
+                  - generic [ref=e829]: YouTube • 193K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e830]:
+                - generic [ref=e831]:
+                  - generic [ref=e834]: Choon Chiat
+                  - generic [ref=e835]: Malaysia
+                - separator [ref=e836]
+                - generic [ref=e837]:
+                  - generic [ref=e838]:
+                    - generic [ref=e839]: Rewards Earned
+                    - generic [ref=e840]: $30,182
+                  - generic [ref=e841]:
+                    - generic [ref=e842]: Trading Style
+                    - generic [ref=e843]: Scalper
+            - group [ref=e844]:
+              - generic [ref=e845]:
+                - generic [ref=e849]:
+                  - img [ref=e850]
+                  - generic [ref=e852]: YouTube • 37K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e853]:
+                - generic [ref=e854]:
+                  - generic [ref=e857]: Ugnius
+                  - generic [ref=e858]: Lithuania
+                - separator [ref=e859]
+                - generic [ref=e860]:
+                  - generic [ref=e861]:
+                    - generic [ref=e862]: Rewards Earned
+                    - generic [ref=e863]: $99,706
+                  - generic [ref=e864]:
+                    - generic [ref=e865]: Trading Style
+                    - generic [ref=e866]: Day trader
+            - group [ref=e867]:
+              - generic [ref=e868]:
+                - generic [ref=e872]:
+                  - img [ref=e873]
+                  - generic [ref=e875]: YouTube • 119K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e876]:
+                - generic [ref=e877]:
+                  - generic [ref=e880]: Richard
+                  - generic [ref=e881]: Canada
+                - separator [ref=e882]
+                - generic [ref=e883]:
+                  - generic [ref=e884]:
+                    - generic [ref=e885]: Rewards Earned
+                    - generic [ref=e886]: $32,500
+                  - generic [ref=e887]:
+                    - generic [ref=e888]: Trading Style
+                    - generic [ref=e889]: Swing trader
+            - group [ref=e890]:
+              - generic [ref=e891]:
+                - generic [ref=e895]:
+                  - img [ref=e896]
+                  - generic [ref=e898]: YouTube • 350K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e899]:
+                - generic [ref=e900]:
+                  - generic [ref=e903]: Paul
+                  - generic [ref=e904]: USA
+                - separator [ref=e905]
+                - generic [ref=e906]:
+                  - generic [ref=e907]:
+                    - generic [ref=e908]: Rewards Earned
+                    - generic [ref=e909]: $500,180
+                  - generic [ref=e910]:
+                    - generic [ref=e911]: Trading Style
+                    - generic [ref=e912]: Scalper
+            - group [ref=e913]:
+              - generic [ref=e914]:
+                - generic [ref=e918]:
+                  - img [ref=e919]
+                  - generic [ref=e921]: YouTube • 81K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e922]:
+                - generic [ref=e923]:
+                  - generic [ref=e926]: Maik
+                  - generic [ref=e927]: Germany
+                - separator [ref=e928]
+                - generic [ref=e929]:
+                  - generic [ref=e930]:
+                    - generic [ref=e931]: Rewards Earned
+                    - generic [ref=e932]: $114,907
+                  - generic [ref=e933]:
+                    - generic [ref=e934]: Trading Style
+                    - generic [ref=e935]: Swing trader
+            - group [ref=e936]:
+              - generic [ref=e937]:
+                - generic [ref=e941]:
+                  - img [ref=e942]
+                  - generic [ref=e944]: YouTube • 62K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e945]:
+                - generic [ref=e946]:
+                  - generic [ref=e949]: Cinthya
+                  - generic [ref=e950]: Ecuador
+                - separator [ref=e951]
+                - generic [ref=e952]:
+                  - generic [ref=e953]:
+                    - generic [ref=e954]: Rewards Earned
+                    - generic [ref=e955]: $41,018
+                  - generic [ref=e956]:
+                    - generic [ref=e957]: Trading Style
+                    - generic [ref=e958]: Day trader
+            - group [ref=e959]:
+              - generic [ref=e960]:
+                - generic [ref=e964]:
+                  - img [ref=e965]
+                  - generic [ref=e967]: YouTube • 56K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e968]:
+                - generic [ref=e969]:
+                  - generic [ref=e972]: Bjorn
+                  - generic [ref=e973]: Belgium
+                - separator [ref=e974]
+                - generic [ref=e975]:
+                  - generic [ref=e976]:
+                    - generic [ref=e977]: Rewards Earned
+                    - generic [ref=e978]: $40,931
+                  - generic [ref=e979]:
+                    - generic [ref=e980]: Trading Style
+                    - generic [ref=e981]: Swing trader
+            - group [ref=e982]:
+              - generic [ref=e983]:
+                - generic [ref=e987]:
+                  - img [ref=e988]
+                  - generic [ref=e990]: YouTube • 66K Views
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e991]:
+                - generic [ref=e992]:
+                  - generic [ref=e995]: Tarhata
+                  - generic [ref=e996]: USA
+                - separator [ref=e997]
+                - generic [ref=e998]:
+                  - generic [ref=e999]:
+                    - generic [ref=e1000]: Rewards Earned
+                    - generic [ref=e1001]: $25,607
+                  - generic [ref=e1002]:
+                    - generic [ref=e1003]: Trading Style
+                    - generic [ref=e1004]: Day trader
+      - generic [ref=e1007]:
+        - iframe [ref=e1009]:
+          - generic [ref=f34e2]:
+            - link "Trustpilot reviews. Rated Excellent. 4.8 out of 5. Based on 42,647 reviews on Trustpilot. Click to view Trustpilot profile." [ref=f34e4] [cursor=pointer]:
+              - /url: https://www.trustpilot.com/review/ftmo.com?utm_medium=trustbox&utm_source=Grid
+              - generic [ref=f34e5]: Excellent
+              - img "4.8 out of 5 star rating on Trustpilot" [ref=f34e10]
+              - generic [ref=f34e30]:
+                - generic [ref=f34e32]:
+                  - text: Rated 4.8 / 5 based on
+                  - strong [ref=f34e33]: 42,647 reviews
+                  - text: "on"
+                - img "Trustpilot" [ref=f34e37]
+            - generic [ref=f34e41]:
+              - generic [ref=f34e42]: Showing our 4 & 5 star reviews
+              - list [ref=f34e44]:
+                - listitem [ref=f34e45]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e51]
+                  - generic [ref=f34e71]:
+                    - generic [ref=f34e72]: Review by
+                    - generic [ref=f34e73]: Tiên Mỹ,
+                    - generic [ref=f34e74]: 21 minutes ago
+                  - generic [ref=f34e75]: I never leave any good review for…
+                  - generic [ref=f34e76]: I never leave any good review for anything but have to do this for ftmo. The payout was really fast and the procedure was clear. Everything went smooth. I have my first payout in 2 days only. Kind of surprise. Thanks ftmo.
+                - listitem [ref=f34e77]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e83]
+                  - generic [ref=f34e103]:
+                    - generic [ref=f34e104]: Review by
+                    - generic [ref=f34e105]: Atquiya rahaman,
+                    - generic [ref=f34e106]: 52 minutes ago
+                  - generic [ref=f34e107]: On time rewards without any hassle… 💯…
+                  - generic [ref=f34e108]: On time rewards without any hassle… 💯 recommend this prop firm
+                - listitem [ref=f34e109]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e115]
+                  - generic [ref=f34e135]:
+                    - generic [ref=f34e136]: Review by
+                    - generic [ref=f34e137]: customer,
+                    - generic [ref=f34e138]: 52 minutes ago
+                  - generic [ref=f34e139]: Second Payout
+                  - generic [ref=f34e141]:
+                    - text: I am a funded FTMO trader who have just withdraw my second payout and I am proud to share my experience with the public. In addition, I am confident to state that FTMO is a reputable prop firm.
+                    - text: Thank you, FTMO.
+                - listitem [ref=f34e142]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e148]
+                  - generic [ref=f34e168]:
+                    - generic [ref=f34e169]: Review by
+                    - generic [ref=f34e170]: Ebrar,
+                    - generic [ref=f34e171]: 1 hour ago
+                  - generic [ref=f34e172]: Lightning Fast Payout and Flawless Process
+                  - generic [ref=f34e173]: My experience with FTMO has been outstanding from start to finish. The payout process, including the initial fee refund, was incredibly fast and processed without a single issue via Skrill. Everything was handled with the utmost professionalism and transparency. I encountered zero problems. I highly recommend FTMO to any serious trader looking for a reliable and efficient prop trading firm.
+                  - button "Read more" [ref=f34e174] [cursor=pointer]
+                - listitem [ref=f34e175]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e181]
+                  - generic [ref=f34e201]:
+                    - generic [ref=f34e202]: Review by
+                    - generic [ref=f34e203]: Simon Richer,
+                    - generic [ref=f34e204]: 3 hours ago
+                  - generic [ref=f34e205]: They have great support
+                  - generic [ref=f34e206]: "They have great support, a good feedback, clear rules that they respect too, and most importantly : They pay. They are the number 1 prop firm for a reason after all."
+                - listitem [ref=f34e207]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e213]
+                  - generic [ref=f34e233]:
+                    - generic [ref=f34e234]: Review by
+                    - generic [ref=f34e235]: customer,
+                    - generic [ref=f34e236]: 3 hours ago
+                  - generic [ref=f34e237]: Pay out and flexible deal for errors in…
+                  - generic [ref=f34e239]:
+                    - text: Pay out and flexible deal for errors in trading account make me happy.
+                    - text: One of the most trustable platform of trading in the world.
+                - listitem [ref=f34e240]:
+                  - generic [ref=f34e242]:
+                    - img "5 out of 5 star rating on Trustpilot" [ref=f34e246]
+                    - link "Verified review. Click to learn more about review types" [ref=f34e269] [cursor=pointer]:
+                      - /url: https://help.trustpilot.com/s/article/How-do-reviews-get-on-Trustpilot?language=en_US
+                      - generic [ref=f34e270]:
+                        - img [ref=f34e274]
+                        - generic [ref=f34e276]: Verified
+                  - generic [ref=f34e277]:
+                    - generic [ref=f34e278]: Review by
+                    - generic [ref=f34e279]: Tarik Lebdaoui,
+                    - generic [ref=f34e280]: 4 hours ago
+                  - generic [ref=f34e281]: Great app
+                  - generic [ref=f34e282]: Great app, great costumer service. none comparable
+                - listitem [ref=f34e283]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e289]
+                  - generic [ref=f34e309]:
+                    - generic [ref=f34e310]: Review by
+                    - generic [ref=f34e311]: Jean Pierre .,
+                    - generic [ref=f34e312]: 4 hours ago
+                  - generic [ref=f34e313]: Great simple task to complete
+                  - generic [ref=f34e314]: Great simple task to complete
+                - listitem [ref=f34e315]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e321]
+                  - generic [ref=f34e341]:
+                    - generic [ref=f34e342]: Review by
+                    - generic [ref=f34e343]: Inspecta Gadget,
+                    - generic [ref=f34e344]: 6 hours ago
+                  - generic [ref=f34e345]: Arguably the best firm,everything is so…
+                  - generic [ref=f34e346]: Arguably the best firm,everything is so smooth.
+                - listitem [ref=f34e347]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e353]
+                  - generic [ref=f34e373]:
+                    - generic [ref=f34e374]: Review by
+                    - generic [ref=f34e375]: Youness Labouiti,
+                    - generic [ref=f34e376]: 6 hours ago
+                  - generic [ref=f34e377]: Great and fast service
+                  - generic [ref=f34e378]: Great and fast service
+                - listitem [ref=f34e379]:
+                  - generic [ref=f34e381]:
+                    - img "5 out of 5 star rating on Trustpilot" [ref=f34e385]
+                    - link "Verified review. Click to learn more about review types" [ref=f34e408] [cursor=pointer]:
+                      - /url: https://help.trustpilot.com/s/article/How-do-reviews-get-on-Trustpilot?language=en_US
+                      - generic [ref=f34e409]:
+                        - img [ref=f34e413]
+                        - generic [ref=f34e415]: Verified
+                  - generic [ref=f34e416]:
+                    - generic [ref=f34e417]: Review by
+                    - generic [ref=f34e418]: Christoph Ludwig,
+                    - generic [ref=f34e419]: 6 hours ago
+                  - generic [ref=f34e420]: good performance
+                  - generic [ref=f34e421]: all my accounts work well as they should
+                - listitem [ref=f34e422]:
+                  - generic [ref=f34e424]:
+                    - img "5 out of 5 star rating on Trustpilot" [ref=f34e428]
+                    - link "Verified review. Click to learn more about review types" [ref=f34e451] [cursor=pointer]:
+                      - /url: https://help.trustpilot.com/s/article/How-do-reviews-get-on-Trustpilot?language=en_US
+                      - generic [ref=f34e452]:
+                        - img [ref=f34e456]
+                        - generic [ref=f34e458]: Verified
+                  - generic [ref=f34e459]:
+                    - generic [ref=f34e460]: Review by
+                    - generic [ref=f34e461]: customer,
+                    - generic [ref=f34e462]: 6 hours ago
+                  - generic [ref=f34e463]: My experience with FTMO
+                  - generic [ref=f34e465]:
+                    - text: My experience with FTMO has been really good so far. The whole process feels professional and well organized, and I like that the rules are clear from the beginning.
+                    - text: What I appreciate most is that FTMO encourages disciplined trading and proper risk management instead of chasing unrealistic profits. The Challenge and Verification phases were not easy, but they helped me become more patient, focused, and consistent as a trader.
+                    - text: Overall, it has been a great learning experience, and I believe FTMO gives traders a genuine opportunity to grow and improve in a professional trading environment
+                  - button "Read more" [ref=f34e466] [cursor=pointer]
+                - listitem [ref=f34e467]:
+                  - generic [ref=f34e469]:
+                    - img "5 out of 5 star rating on Trustpilot" [ref=f34e473]
+                    - link "Verified review. Click to learn more about review types" [ref=f34e496] [cursor=pointer]:
+                      - /url: https://help.trustpilot.com/s/article/How-do-reviews-get-on-Trustpilot?language=en_US
+                      - generic [ref=f34e497]:
+                        - img [ref=f34e501]
+                        - generic [ref=f34e503]: Verified
+                  - generic [ref=f34e504]:
+                    - generic [ref=f34e505]: Review by
+                    - generic [ref=f34e506]: adonias diaz,
+                    - generic [ref=f34e507]: 6 hours ago
+                  - generic [ref=f34e508]: Thank you for your assistance and for…
+                  - generic [ref=f34e509]: Thank you for your assistance and for taking the time to help me today. I appreciate the support and professionalism from the FTMO team.
+                - listitem [ref=f34e510]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e516]
+                  - generic [ref=f34e536]:
+                    - generic [ref=f34e537]: Review by
+                    - generic [ref=f34e538]: Muhammad Salman,
+                    - generic [ref=f34e539]: 7 hours ago
+                  - generic [ref=f34e540]: Very fast service
+                  - generic [ref=f34e541]: Very fast service
+                - listitem [ref=f34e542]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e548]
+                  - generic [ref=f34e568]:
+                    - generic [ref=f34e569]: Review by
+                    - generic [ref=f34e570]: Hassan elkarni,
+                    - generic [ref=f34e571]: 7 hours ago
+                  - generic [ref=f34e572]: One of the best propfirm
+                  - generic [ref=f34e573]: One of the best propfirm
+                - listitem [ref=f34e574]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e580]
+                  - generic [ref=f34e600]:
+                    - generic [ref=f34e601]: Review by
+                    - generic [ref=f34e602]: Dmitry,
+                    - generic [ref=f34e603]: 9 hours ago
+                  - generic [ref=f34e604]: I had good experience with FTMO
+                  - generic [ref=f34e605]: I had a very good experience with FTMO. The payout process was smooth and I received my reward without any issues. The support team was responsive and professional, and the platform/interface is easy to use. Rules are clear and the overall experience has been great so far. Looking forward to continuing with FTMO.
+                  - button "Read more" [ref=f34e606] [cursor=pointer]
+                - listitem [ref=f34e607]:
+                  - generic [ref=f34e609]:
+                    - img "5 out of 5 star rating on Trustpilot" [ref=f34e613]
+                    - link "Verified review. Click to learn more about review types" [ref=f34e636] [cursor=pointer]:
+                      - /url: https://help.trustpilot.com/s/article/How-do-reviews-get-on-Trustpilot?language=en_US
+                      - generic [ref=f34e637]:
+                        - img [ref=f34e641]
+                        - generic [ref=f34e643]: Verified
+                  - generic [ref=f34e644]:
+                    - generic [ref=f34e645]: Review by
+                    - generic [ref=f34e646]: Ivan,
+                    - generic [ref=f34e647]: 9 hours ago
+                  - generic [ref=f34e648]: Perfect platform to be a professional…
+                  - generic [ref=f34e649]: Perfect platform to be a professional and disciplined trader
+                - listitem [ref=f34e650]:
+                  - generic [ref=f34e652]:
+                    - img "5 out of 5 star rating on Trustpilot" [ref=f34e656]
+                    - link "Verified review. Click to learn more about review types" [ref=f34e679] [cursor=pointer]:
+                      - /url: https://help.trustpilot.com/s/article/How-do-reviews-get-on-Trustpilot?language=en_US
+                      - generic [ref=f34e680]:
+                        - img [ref=f34e684]
+                        - generic [ref=f34e686]: Verified
+                  - generic [ref=f34e687]:
+                    - generic [ref=f34e688]: Review by
+                    - generic [ref=f34e689]: customer,
+                    - generic [ref=f34e690]: 9 hours ago
+                  - generic [ref=f34e691]: Title
+                  - generic [ref=f34e693]:
+                    - text: "Title: Good customer service and trusted platform"
+                    - text: I had a good experience with this company. Their customer service was helpful and responded quickly whenever I needed support. The payment process was smooth, and I found the platform trustworthy and easy to use. Overall, the service was reliable, and I would recommend it to others based on my experience.
+                  - button "Read more" [ref=f34e694] [cursor=pointer]
+                - listitem [ref=f34e695]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e701]
+                  - generic [ref=f34e721]:
+                    - generic [ref=f34e722]: Review by
+                    - generic [ref=f34e723]: Semir Bajrektarevic,
+                    - generic [ref=f34e724]: 10 hours ago
+                  - generic [ref=f34e725]: Excellent experience with FTMO
+                  - generic [ref=f34e726]: FTMO is very profesional and trustworthly company.the platform is easy to use,payouts are fast and customer support is always helpful and responsive.I had great experience with the evaluation process and everything was transparent from the beginning.I would definetly recommend FTMO to other traders looking for a reliable prop firm.
+                  - button "Read more" [ref=f34e727] [cursor=pointer]
+                - listitem [ref=f34e728]:
+                  - img "5 out of 5 star rating on Trustpilot" [ref=f34e734]
+                  - generic [ref=f34e754]:
+                    - generic [ref=f34e755]: Review by
+                    - generic [ref=f34e756]: Harvey,
+                    - generic [ref=f34e757]: 10 hours ago
+                  - generic [ref=f34e758]: Reliable Payout with Excellent Support
+                  - generic [ref=f34e759]: Payout was processed on time and exactly as stated. Support team answered my questions clearly and politely. Very good experience with FTMO.
+        - link "Show more on Trustpilot" [ref=e1011] [cursor=pointer]:
+          - /url: https://www.trustpilot.com/review/ftmo.com
+          - generic [ref=e1012]: Show more on Trustpilot
+          - img [ref=e1013]
+      - generic [ref=e1019]:
+        - heading "How It Works" [level=2] [ref=e1021]
+        - generic [ref=e1022]:
+          - generic [ref=e1023]:
+            - generic [ref=e1025]:
+              - img [ref=e1026]
+              - generic [ref=e1029]:
+                - generic [ref=e1030]: Evaluation Process
+                - heading "Prove your skills" [level=3] [ref=e1031]
+              - paragraph [ref=e1033]: Prove your skills in a 1‑Step FTMO Challenge or 2‑Step Evaluation Process and gain your FTMO Account.
+            - img [ref=e1036]
+          - generic [ref=e1039]:
+            - generic [ref=e1041]:
+              - img [ref=e1042]
+              - generic [ref=e1045]:
+                - generic [ref=e1046]: FTMO Account
+                - heading "Earn real-money rewards" [level=3] [ref=e1047]
+              - paragraph [ref=e1049]: Trade in a simulated environment and earn performance-based rewards.
+            - img [ref=e1052]
+          - generic [ref=e1057]:
+            - img [ref=e1058]
+            - generic [ref=e1061]:
+              - generic [ref=e1062]: Premium Programme
+              - heading "Achieve More. Gain More." [level=3] [ref=e1063]:
+                - text: Achieve More.
+                - text: Gain More.
+            - paragraph [ref=e1065]:
+              - text: Access exclusive benefits with Premium Programme and Quantlane by FTMO.
+              - link "Learn more" [ref=e1066] [cursor=pointer]:
+                - /url: /en/premium-programme/
+        - generic [ref=e1068]:
+          - link "Start FTMO Challenge" [ref=e1069] [cursor=pointer]:
+            - /url: https://trader.ftmo.com/start-challenge
+          - link "How it works" [ref=e1070] [cursor=pointer]:
+            - /url: /en/how-it-works/
+      - generic [ref=e1073]:
+        - generic [ref=e1074]:
+          - heading "We Support Major Platforms" [level=3] [ref=e1075]
+          - paragraph [ref=e1076]: At FTMO, we want to give you options. That’s why we offer the flexibility to tailor your experience and choose between MT4, MT5 and cTrader. Pick the professional trading platform that suits you best.
+          - link "Show more" [ref=e1078] [cursor=pointer]:
+            - /url: /en/ftmo-trading-platforms/
+            - generic [ref=e1079]: Show more
+        - generic [ref=e1080]:
+          - img "Platforms"
+      - generic [ref=e1088]:
+        - generic [ref=e1089]:
+          - heading "Elevate Your Trading with FTMO" [level=2] [ref=e1090]
+          - paragraph [ref=e1091]: Learn with FTMO Academy, gain inspiration from our YouTube channel and connect with thousands of traders on Discord. Join our trading community!
+        - generic [ref=e1092]:
+          - generic [ref=e1094]:
+            - generic [ref=e1095]:
+              - img [ref=e1096]
+              - text: Academy
+            - heading "Expand Your Trading Knowledge With FTMO Academy" [level=2] [ref=e1099]
+            - paragraph [ref=e1100]: Enhance your knowledge and learn to understand your ups and downs with our Psychology Course.
+            - list [ref=e1101]:
+              - listitem [ref=e1102]:
+                - img [ref=e1104]
+                - generic [ref=e1107]: Expand your trading knowledge
+              - listitem [ref=e1108]:
+                - img [ref=e1110]
+                - generic [ref=e1113]: Perfect for beginners and intermediate traders
+              - listitem [ref=e1114]:
+                - img [ref=e1116]
+                - generic [ref=e1119]: Includes the Trading Psychology Course
+            - link "Start course" [ref=e1121] [cursor=pointer]:
+              - /url: https://academy.ftmo.com/psychology-course/
+              - img [ref=e1122]
+              - generic [ref=e1124]: Start course
+          - generic [ref=e1125]:
+            - generic: Your browser does not support the video tag.
+            - img [ref=e1126]
+          - img [ref=e1130]
+      - generic [ref=e1134]:
+        - generic [ref=e1135]:
+          - generic:
+            - img "Discord"
+            - generic:
+              - img "Discord"
+          - generic [ref=e1136]:
+            - generic [ref=e1137]:
+              - img [ref=e1138]
+              - generic [ref=e1140]: 100K+
+              - text: Awesome members
+            - heading "Join Our FTMO Discord. Trade Smarter. Together." [level=3] [ref=e1141]
+            - paragraph [ref=e1142]: Share in our trading community and get inspired.
+            - link "Start the chat" [ref=e1144] [cursor=pointer]:
+              - /url: https://discord.com/invite/8j7r5XaaW6
+              - generic [ref=e1145]: Start the chat
+        - generic [ref=e1146]:
+          - generic:
+            - img "Youtube"
+            - generic [ref=e1147]:
+              - generic: Your browser does not support the video tag.
+          - generic [ref=e1148]:
+            - generic [ref=e1149]:
+              - img [ref=e1150]
+              - generic [ref=e1152]: 400K
+              - text: Subscribers
+            - heading "Watch. Learn. Trade" [level=3] [ref=e1153]
+            - paragraph [ref=e1154]: Get inspired by the stories of successful traders. Learn about trading psychology and stay connected for more trading content!
+            - link "FTMO on Youtube" [ref=e1155] [cursor=pointer]:
+              - /url: https://www.youtube.com/@FTMOcom
+              - generic [ref=e1156]: FTMO on Youtube
+      - generic [ref=e1158]:
+        - generic [ref=e1159]:
+          - img "People" [ref=e1160]
+          - generic [ref=e1161]:
+            - heading "People of FTMO" [level=2] [ref=e1162]
+            - paragraph [ref=e1163]: Our modern prop firm grew from a handful of young day traders, including the future founders who pursued the idea in 2015.
+            - generic [ref=e1164]:
+              - link "About Us" [ref=e1165] [cursor=pointer]:
+                - /url: /en/about/
+                - generic [ref=e1166]: About Us
+              - link "Careers" [ref=e1167] [cursor=pointer]:
+                - /url: https://careers.ftmo.com/en/
+                - generic [ref=e1168]: Careers
+                - img [ref=e1169]
+        - generic [ref=e1172]:
+          - generic [ref=e1173]:
+            - img [ref=e1174]
+            - generic [ref=e1178]:
+              - paragraph [ref=e1179]:
+                - img [ref=e1180]
+                - text: Since
+              - paragraph [ref=e1183]: "2015"
+          - generic [ref=e1184]:
+            - img [ref=e1185]
+            - generic [ref=e1189]:
+              - paragraph [ref=e1190]:
+                - img [ref=e1191]
+                - text: Team Members
+              - paragraph [ref=e1193]: 300+
+          - generic [ref=e1194]:
+            - img [ref=e1195]
+            - generic [ref=e1199]:
+              - paragraph [ref=e1200]:
+                - img [ref=e1201]
+                - text: Countries Served
+              - paragraph [ref=e1203]: 140+
+      - generic [ref=e1205]:
+        - generic:
+          - img "Support"
+          - region [ref=e1211]:
+            - generic [ref=e1212]:
+              - tabpanel [ref=e1213]:
+                - generic [ref=e1214]:
+                  - img [ref=e1217]
+                  - generic [ref=e1218]: Arabic
+              - tabpanel [ref=e1219]:
+                - generic [ref=e1220]:
+                  - img [ref=e1223]
+                  - generic [ref=e1224]: Czech
+              - tabpanel [ref=e1225]:
+                - generic [ref=e1226]:
+                  - img [ref=e1229]
+                  - generic [ref=e1230]: Spanish
+              - tabpanel [ref=e1231]:
+                - generic [ref=e1232]:
+                  - img [ref=e1235]
+                  - generic [ref=e1236]: French
+              - tabpanel [ref=e1237]:
+                - generic [ref=e1238]:
+                  - img [ref=e1241]
+                  - generic [ref=e1242]: German
+              - tabpanel [ref=e1243]:
+                - generic [ref=e1244]:
+                  - img [ref=e1247]
+                  - generic [ref=e1248]: Hebrew
+              - tabpanel [ref=e1249]:
+                - generic [ref=e1250]:
+                  - img [ref=e1253]
+                  - generic [ref=e1254]: Italian
+              - tabpanel [ref=e1255]:
+                - generic [ref=e1256]:
+                  - img [ref=e1259]
+                  - generic [ref=e1260]: Japanese
+              - tabpanel [ref=e1261]:
+                - generic [ref=e1262]:
+                  - img [ref=e1265]
+                  - generic [ref=e1266]: Polish
+              - tabpanel "10 of 10" [ref=e1267]:
+                - generic [ref=e1268]:
+                  - img "Portuguese" [ref=e1271]
+                  - generic [ref=e1272]: Portuguese
+              - tabpanel "1 of 10" [ref=e1273]:
+                - generic [ref=e1274]:
+                  - img "Arabic" [ref=e1277]
+                  - generic [ref=e1278]: Arabic
+              - tabpanel "2 of 10" [ref=e1279]:
+                - generic [ref=e1280]:
+                  - img "Czech" [ref=e1283]
+                  - generic [ref=e1284]: Czech
+              - tabpanel [ref=e1285]:
+                - generic [ref=e1286]:
+                  - img [ref=e1289]
+                  - generic [ref=e1290]: Spanish
+              - tabpanel [ref=e1291]:
+                - generic [ref=e1292]:
+                  - img [ref=e1295]
+                  - generic [ref=e1296]: French
+              - tabpanel [ref=e1297]:
+                - generic [ref=e1298]:
+                  - img [ref=e1301]
+                  - generic [ref=e1302]: German
+              - tabpanel [ref=e1303]:
+                - generic [ref=e1304]:
+                  - img [ref=e1307]
+                  - generic [ref=e1308]: Hebrew
+              - tabpanel [ref=e1309]:
+                - generic [ref=e1310]:
+                  - img [ref=e1313]
+                  - generic [ref=e1314]: Italian
+              - tabpanel [ref=e1315]:
+                - generic [ref=e1316]:
+                  - img [ref=e1319]
+                  - generic [ref=e1320]: Japanese
+              - tabpanel [ref=e1321]:
+                - generic [ref=e1322]:
+                  - img [ref=e1325]
+                  - generic [ref=e1326]: Polish
+              - tabpanel [ref=e1327]:
+                - generic [ref=e1328]:
+                  - img [ref=e1331]
+                  - generic [ref=e1332]: Portuguese
+              - tabpanel [ref=e1333]:
+                - generic [ref=e1334]:
+                  - img [ref=e1337]
+                  - generic [ref=e1338]: Arabic
+              - tabpanel [ref=e1339]:
+                - generic [ref=e1340]:
+                  - img [ref=e1343]
+                  - generic [ref=e1344]: Czech
+              - tabpanel [ref=e1345]:
+                - generic [ref=e1346]:
+                  - img [ref=e1349]
+                  - generic [ref=e1350]: Spanish
+              - tabpanel [ref=e1351]:
+                - generic [ref=e1352]:
+                  - img [ref=e1355]
+                  - generic [ref=e1356]: French
+              - tabpanel [ref=e1357]:
+                - generic [ref=e1358]:
+                  - img [ref=e1361]
+                  - generic [ref=e1362]: German
+              - tabpanel [ref=e1363]:
+                - generic [ref=e1364]:
+                  - img [ref=e1367]
+                  - generic [ref=e1368]: Hebrew
+              - tabpanel [ref=e1369]:
+                - generic [ref=e1370]:
+                  - img [ref=e1373]
+                  - generic [ref=e1374]: Italian
+              - tabpanel [ref=e1375]:
+                - generic [ref=e1376]:
+                  - img [ref=e1379]
+                  - generic [ref=e1380]: Japanese
+              - tabpanel [ref=e1381]:
+                - generic [ref=e1382]:
+                  - img [ref=e1385]
+                  - generic [ref=e1386]: Polish
+              - tabpanel [ref=e1387]:
+                - generic [ref=e1388]:
+                  - img [ref=e1391]
+                  - generic [ref=e1392]: Portuguese
+            - tablist "Select a slide to show":
+              - tab "Go to slide 1" [selected]
+              - tab "Go to slide 2"
+              - tab "Go to slide 3"
+              - tab "Go to slide 4"
+              - tab "Go to slide 5"
+              - tab "Go to slide 6"
+              - tab "Go to slide 7"
+              - tab "Go to slide 8"
+              - tab "Go to slide 9"
+              - tab "Go to slide 10"
+          - region [ref=e1398]:
+            - generic [ref=e1399]:
+              - tabpanel [ref=e1400]:
+                - generic [ref=e1401]:
+                  - img [ref=e1404]
+                  - generic [ref=e1405]: Russian
+              - tabpanel [ref=e1406]:
+                - generic [ref=e1407]:
+                  - img [ref=e1410]
+                  - generic [ref=e1411]: Serbian
+              - tabpanel [ref=e1412]:
+                - generic [ref=e1413]:
+                  - img [ref=e1416]
+                  - generic [ref=e1417]: Swahili
+              - tabpanel [ref=e1418]:
+                - generic [ref=e1419]:
+                  - img [ref=e1422]
+                  - generic [ref=e1423]: Philipino
+              - tabpanel [ref=e1424]:
+                - generic [ref=e1425]:
+                  - img [ref=e1428]
+                  - generic [ref=e1429]: Turkish
+              - tabpanel [ref=e1430]:
+                - generic [ref=e1431]:
+                  - img [ref=e1434]
+                  - generic [ref=e1435]: Ukrainian
+              - tabpanel [ref=e1436]:
+                - generic [ref=e1437]:
+                  - img [ref=e1440]
+                  - generic [ref=e1441]: English
+              - tabpanel [ref=e1442]:
+                - generic [ref=e1443]:
+                  - img [ref=e1446]
+                  - generic [ref=e1447]: Vietnamese
+              - tabpanel [ref=e1448]:
+                - generic [ref=e1449]:
+                  - img [ref=e1452]
+                  - generic [ref=e1453]: Romanian
+              - tabpanel "10 of 10" [ref=e1454]:
+                - generic [ref=e1455]:
+                  - img "Swedish" [ref=e1458]
+                  - generic [ref=e1459]: Swedish
+              - tabpanel "1 of 10" [ref=e1460]:
+                - generic [ref=e1461]:
+                  - img "Russian" [ref=e1464]
+                  - generic [ref=e1465]: Russian
+              - tabpanel "2 of 10" [ref=e1466]:
+                - generic [ref=e1467]:
+                  - img "Serbian" [ref=e1470]
+                  - generic [ref=e1471]: Serbian
+              - tabpanel [ref=e1472]:
+                - generic [ref=e1473]:
+                  - img [ref=e1476]
+                  - generic [ref=e1477]: Swahili
+              - tabpanel [ref=e1478]:
+                - generic [ref=e1479]:
+                  - img [ref=e1482]
+                  - generic [ref=e1483]: Philipino
+              - tabpanel [ref=e1484]:
+                - generic [ref=e1485]:
+                  - img [ref=e1488]
+                  - generic [ref=e1489]: Turkish
+              - tabpanel [ref=e1490]:
+                - generic [ref=e1491]:
+                  - img [ref=e1494]
+                  - generic [ref=e1495]: Ukrainian
+              - tabpanel [ref=e1496]:
+                - generic [ref=e1497]:
+                  - img [ref=e1500]
+                  - generic [ref=e1501]: English
+              - tabpanel [ref=e1502]:
+                - generic [ref=e1503]:
+                  - img [ref=e1506]
+                  - generic [ref=e1507]: Vietnamese
+              - tabpanel [ref=e1508]:
+                - generic [ref=e1509]:
+                  - img [ref=e1512]
+                  - generic [ref=e1513]: Romanian
+              - tabpanel [ref=e1514]:
+                - generic [ref=e1515]:
+                  - img [ref=e1518]
+                  - generic [ref=e1519]: Swedish
+              - tabpanel [ref=e1520]:
+                - generic [ref=e1521]:
+                  - img [ref=e1524]
+                  - generic [ref=e1525]: Russian
+              - tabpanel [ref=e1526]:
+                - generic [ref=e1527]:
+                  - img [ref=e1530]
+                  - generic [ref=e1531]: Serbian
+              - tabpanel [ref=e1532]:
+                - generic [ref=e1533]:
+                  - img [ref=e1536]
+                  - generic [ref=e1537]: Swahili
+              - tabpanel [ref=e1538]:
+                - generic [ref=e1539]:
+                  - img [ref=e1542]
+                  - generic [ref=e1543]: Philipino
+              - tabpanel [ref=e1544]:
+                - generic [ref=e1545]:
+                  - img [ref=e1548]
+                  - generic [ref=e1549]: Turkish
+              - tabpanel [ref=e1550]:
+                - generic [ref=e1551]:
+                  - img [ref=e1554]
+                  - generic [ref=e1555]: Ukrainian
+              - tabpanel [ref=e1556]:
+                - generic [ref=e1557]:
+                  - img [ref=e1560]
+                  - generic [ref=e1561]: English
+              - tabpanel [ref=e1562]:
+                - generic [ref=e1563]:
+                  - img [ref=e1566]
+                  - generic [ref=e1567]: Vietnamese
+              - tabpanel [ref=e1568]:
+                - generic [ref=e1569]:
+                  - img [ref=e1572]
+                  - generic [ref=e1573]: Romanian
+              - tabpanel [ref=e1574]:
+                - generic [ref=e1575]:
+                  - img [ref=e1578]
+                  - generic [ref=e1579]: Swedish
+            - tablist "Select a slide to show":
+              - tab "Go to slide 1" [selected]
+              - tab "Go to slide 2"
+              - tab "Go to slide 3"
+              - tab "Go to slide 4"
+              - tab "Go to slide 5"
+              - tab "Go to slide 6"
+              - tab "Go to slide 7"
+              - tab "Go to slide 8"
+              - tab "Go to slide 9"
+              - tab "Go to slide 10"
+          - img [ref=e1580]
+          - generic [ref=e1584]:
+            - generic [ref=e1585]:
+              - heading "60+" [level=2] [ref=e1586]
+              - generic [ref=e1587]:
+                - text: Customer
+                - text: Team Members
+            - generic [ref=e1588]:
+              - heading "20" [level=2] [ref=e1589]
+              - generic [ref=e1590]:
+                - text: Languages
+                - text: Spoken
+        - generic [ref=e1591]:
+          - generic [ref=e1592]:
+            - img [ref=e1595]
+            - generic [ref=e1597]: Available 24/7
+          - generic [ref=e1598]:
+            - heading "Customer Support" [level=2] [ref=e1599]
+            - paragraph [ref=e1600]: Our dedicated in-house customer support team is available 24/7. We provide assistance in 20 languages. We ensure fast and reliable support to help you whenever you need it.
+          - generic [ref=e1601]:
+            - link "Chat with us" [ref=e1602] [cursor=pointer]:
+              - /url: https://ftmo.ladesk.com/scripts/inline_chat.php?cwid=4ig96k9v
+              - img [ref=e1604]
+              - generic [ref=e1607]: Chat with us
+              - img [ref=e1608]
+            - link "Start the chat" [ref=e1611] [cursor=pointer]:
+              - /url: https://api.whatsapp.com/send?phone=420910920310
+              - img [ref=e1613]
+              - generic [ref=e1616]: Start the chat
+              - img [ref=e1617]
+          - generic [ref=e1622]:
+            - link "E-mail support@ftmo.com" [ref=e1623] [cursor=pointer]:
+              - /url: mailto:support@ftmo.com
+              - generic [ref=e1624]: E-mail
+              - generic [ref=e1625]: support@ftmo.com
+            - link "Phone +420 910 920 310" [ref=e1626] [cursor=pointer]:
+              - /url: tel:00420910920310
+              - generic [ref=e1627]: Phone
+              - generic [ref=e1628]: +420 910 920 310
+          - link "Show All Contacts" [ref=e1630] [cursor=pointer]:
+            - /url: /en/contact/
+            - text: Show All Contacts
+            - img [ref=e1632]
+      - generic [ref=e1642]:
+        - generic [ref=e1643]:
+          - heading "Frequently Asked Questions" [level=2] [ref=e1644]
+          - paragraph [ref=e1645]: Find your answers here.
+        - generic [ref=e1646]:
+          - generic [ref=e1647]:
+            - region [ref=e1648]:
+              - button "How to start?" [ref=e1649] [cursor=pointer]:
+                - img [ref=e1651]
+                - generic [ref=e1653]: How to start?
+            - region [ref=e1654]:
+              - button "I have successfully passed, what to do now?" [ref=e1655] [cursor=pointer]:
+                - img [ref=e1657]
+                - generic [ref=e1659]: I have successfully passed, what to do now?
+            - region [ref=e1660]:
+              - button "Can I trade news?" [ref=e1661] [cursor=pointer]:
+                - img [ref=e1663]
+                - generic [ref=e1665]: Can I trade news?
+          - generic [ref=e1666]:
+            - region [ref=e1667]:
+              - button "How do I become an FTMO Trader?" [ref=e1668] [cursor=pointer]:
+                - img [ref=e1670]
+                - generic [ref=e1672]: How do I become an FTMO Trader?
+            - region [ref=e1673]:
+              - button "Can I modify my platform or account type?" [ref=e1674] [cursor=pointer]:
+                - img [ref=e1676]
+                - generic [ref=e1678]: Can I modify my platform or account type?
+            - region [ref=e1679]:
+              - button "Do I have to close my positions overnight or before the weekend?" [ref=e1680] [cursor=pointer]:
+                - img [ref=e1682]
+                - generic [ref=e1684]: Do I have to close my positions overnight or before the weekend?
+        - paragraph [ref=e1685]:
+          - text: Can’t find the answer you’re looking for?
+          - link "Show all FAQs" [ref=e1686] [cursor=pointer]:
+            - /url: /en/faq/
+          - text: .
+      - generic [ref=e1688]:
+        - generic [ref=e1689]:
+          - generic [ref=e1691]:
+            - generic [ref=e1692]: Start Your FTMO Challenge Today
+            - list [ref=e1693]:
+              - listitem [ref=e1694]:
+                - img [ref=e1696]
+                - generic [ref=e1699]: As many Free Trials as you need
+              - listitem [ref=e1700]:
+                - img [ref=e1702]
+                - generic [ref=e1705]: Up to $200,000 FTMO account
+              - listitem [ref=e1706]:
+                - img [ref=e1708]
+                - generic [ref=e1711]: No time limit
+            - generic [ref=e1712]:
+              - link "FTMO Challenge" [ref=e1713] [cursor=pointer]:
+                - /url: https://trader.ftmo.com/start-challenge
+                - generic [ref=e1714]: FTMO Challenge
+              - link "Free Trial" [ref=e1715] [cursor=pointer]:
+                - /url: https://trader.ftmo.com/free-trial
+                - generic [ref=e1716]: Free Trial
+          - generic:
+            - img "Start Challenge"
+        - generic [ref=e1718]:
+          - generic [ref=e1719]:
+            - generic:
+              - img "Technolgy Fast"
+              - img "Forbes"
+              - img "FMLS 2023"
+              - img "EY"
+            - generic [ref=e1720]:
+              - paragraph [ref=e1721]: Worldwide Reviews
+              - iframe [ref=e1723]:
+                - generic [ref=f35e2]:
+                  - link "Trustpilot reviews" [ref=f35e3] [cursor=pointer]:
+                    - /url: https://www.trustpilot.com/review/ftmo.com?utm_medium=trustbox&utm_source=MicroCombo
+                    - generic [ref=f35e4]: Excellent
+                    - img "4.8 out of 5 star rating on Trustpilot" [ref=f35e9]
+                    - generic [ref=f35e29]:
+                      - generic [ref=f35e30]:
+                        - strong [ref=f35e31]: 42,647
+                        - text: reviews on
+                      - img "Trustpilot" [ref=f35e35]
+                  - generic [ref=f35e39]: Rated Excellent. 4.8 out of 5. 42647 reviews on Trustpilot
+                  - generic [ref=f35e40]: Click to view the company's Trustpilot profile
+          - generic [ref=e1724]:
+            - generic [ref=e1725]:
+              - generic [ref=e1726]: Prove Your Skills with a Trusted Firm
+              - generic [ref=e1727]: We've been empowering traders since 2015. Join them now!
+            - generic [ref=e1728]:
+              - generic [ref=e1729]:
+                - generic [ref=e1730]: 3.5M+
+                - generic [ref=e1731]: Customers worldwide
+              - generic [ref=e1732]:
+                - generic [ref=e1733]: $500M+
+                - generic [ref=e1734]: Paid in rewards worldwide
+              - generic [ref=e1735]:
+                - generic [ref=e1736]: 4.8/5
+                - generic [ref=e1737]: Trustpilot
+      - generic [ref=e1738]:
+        - img
+    - contentinfo [ref=e1739]:
+      - generic [ref=e1741]:
+        - generic [ref=e1742]:
+          - link "FTMO — back to homepage" [ref=e1743] [cursor=pointer]:
+            - /url: https://ftmo.com/en/
+            - img "FTMO" [ref=e1744]
+          - generic [ref=e1745]:
+            - link "Discord — FTMO" [ref=e1746] [cursor=pointer]:
+              - /url: https://discord.com/invite/8j7r5XaaW6
+              - img [ref=e1747]
+            - link "Youtube — FTMO" [ref=e1749] [cursor=pointer]:
+              - /url: https://www.youtube.com/@FTMOcom
+              - img [ref=e1750]
+            - link "Instagram — FTMO" [ref=e1752] [cursor=pointer]:
+              - /url: https://instagram.com/ftmocom/
+              - img [ref=e1753]
+            - link "Facebook — FTMO" [ref=e1755] [cursor=pointer]:
+              - /url: https://facebook.com/ftmocom/
+              - img [ref=e1756]
+            - link "X — FTMO" [ref=e1758] [cursor=pointer]:
+              - /url: https://x.com/FTMO_com
+              - img [ref=e1759]
+            - link "Linkedin — FTMO" [ref=e1761] [cursor=pointer]:
+              - /url: https://www.linkedin.com/company/ftmo/
+              - img [ref=e1762]
+        - generic [ref=e1765]:
+          - generic [ref=e1766]:
+            - generic [ref=e1767]:
+              - generic [ref=e1768]:
+                - generic [ref=e1769]: Support
+                - img [ref=e1772]
+              - list [ref=e1775]:
+                - listitem [ref=e1776]:
+                  - img [ref=e1777]
+                  - link "Chat with us" [ref=e1780] [cursor=pointer]:
+                    - /url: https://ftmo.ladesk.com/scripts/inline_chat.php?cwid=4ig96k9v
+                - listitem [ref=e1781]:
+                  - img [ref=e1782]
+                  - link "Start the chat" [ref=e1786] [cursor=pointer]:
+                    - /url: https://api.whatsapp.com/send?phone=420910920310
+                - listitem [ref=e1787]:
+                  - img [ref=e1788]
+                  - link "support@ftmo.com" [ref=e1792] [cursor=pointer]:
+                    - /url: mailto:support@ftmo.com
+                - listitem [ref=e1793]:
+                  - img [ref=e1794]
+                  - link "+420 910 920 310" [ref=e1797] [cursor=pointer]:
+                    - /url: tel:00420910920310
+            - generic [ref=e1800]:
+              - generic [ref=e1801]: Address
+              - generic [ref=e1803]:
+                - paragraph [ref=e1804]: FTMO
+                - paragraph [ref=e1805]: Quadrio offices
+                - paragraph [ref=e1806]: Purkynova 2121/3
+                - paragraph [ref=e1807]: 110 00 Prague
+                - paragraph [ref=e1808]: Czech Republic
+          - generic [ref=e1810]:
+            - generic [ref=e1811]: Top Searches
+            - list [ref=e1813]:
+              - listitem [ref=e1814]:
+                - img [ref=e1815]
+                - link "FAQ" [ref=e1819] [cursor=pointer]:
+                  - /url: /en/faq/
+              - listitem [ref=e1820]:
+                - img [ref=e1821]
+                - link "Support" [ref=e1825] [cursor=pointer]:
+                  - /url: /en/contact/
+              - listitem [ref=e1826]:
+                - img [ref=e1827]
+                - link "How It Works" [ref=e1831] [cursor=pointer]:
+                  - /url: /en/how-it-works/
+              - listitem [ref=e1832]:
+                - img [ref=e1833]
+                - link "Affiliate Programme" [ref=e1837] [cursor=pointer]:
+                  - /url: /en/affiliate-programme/
+              - listitem [ref=e1838]:
+                - img [ref=e1839]
+                - link "Press Kit" [ref=e1843] [cursor=pointer]:
+                  - /url: /en/press-kit/
+              - listitem [ref=e1844]:
+                - img [ref=e1845]
+                - link "FTMO Merchandise" [ref=e1849] [cursor=pointer]:
+                  - /url: https://shop.ftmo.com/
+          - generic [ref=e1853]:
+            - generic [ref=e1854]: FTMO Challenge
+            - list [ref=e1856]:
+              - listitem [ref=e1857]:
+                - link "How It Works" [ref=e1858] [cursor=pointer]:
+                  - /url: /en/how-it-works/
+              - listitem [ref=e1859]:
+                - link "Pricing" [ref=e1860] [cursor=pointer]:
+                  - /url: /en/#pricing
+              - listitem [ref=e1861]:
+                - link "FTMO Free Trial" [ref=e1862] [cursor=pointer]:
+                  - /url: /en/ftmo-free-trial/
+              - listitem [ref=e1863]:
+                - link "Scaling Plan" [ref=e1864] [cursor=pointer]:
+                  - /url: /en/reward-growth-and-scaling-plan/
+              - listitem [ref=e1865]:
+                - link "Premium Programme" [ref=e1866] [cursor=pointer]:
+                  - /url: /en/premium-programme/
+              - listitem [ref=e1867]:
+                - link "Trading Objectives" [ref=e1868] [cursor=pointer]:
+                  - /url: /en/trading-objectives/
+              - listitem [ref=e1869]:
+                - 'link "FTMO Challenge: 1-Step" [ref=e1870] [cursor=pointer]':
+                  - /url: /en/1-step-challenge/
+              - listitem [ref=e1871]:
+                - 'link "FTMO Challenge: 2-Step" [ref=e1872] [cursor=pointer]':
+                  - /url: /en/2-step-challenge/
+              - listitem [ref=e1873]:
+                - link "Comparison Table" [ref=e1874] [cursor=pointer]:
+                  - /url: /en/comparison-table/
+          - generic [ref=e1876]:
+            - generic [ref=e1877]: Trading
+            - list [ref=e1879]:
+              - listitem [ref=e1880]:
+                - link "Forbidden Trading Practices" [ref=e1881] [cursor=pointer]:
+                  - /url: /en/forbidden-trading-practices/
+              - listitem [ref=e1882]:
+                - link "Tools Overview" [ref=e1883] [cursor=pointer]:
+                  - /url: /en/trading-tools-and-services/
+              - listitem [ref=e1884]:
+                - link "Performance Coaches" [ref=e1885] [cursor=pointer]:
+                  - /url: /en/performance-coaching/
+              - listitem [ref=e1886]:
+                - link "Leaderboard" [ref=e1887] [cursor=pointer]:
+                  - /url: /en/leaderboard/
+              - listitem [ref=e1888]:
+                - link "Economic Calendar" [ref=e1889] [cursor=pointer]:
+                  - /url: /en/calendar/
+              - listitem [ref=e1890]:
+                - link "Tradable Symbols" [ref=e1891] [cursor=pointer]:
+                  - /url: /en/symbols/
+              - listitem [ref=e1892]:
+                - link "Trading Updates" [ref=e1893] [cursor=pointer]:
+                  - /url: /en/trading-updates/
+              - listitem [ref=e1894]:
+                - link "Trading Platforms" [ref=e1895] [cursor=pointer]:
+                  - /url: /en/trading-platforms/
+              - listitem [ref=e1896]:
+                - link "FTMO Academy" [ref=e1897] [cursor=pointer]:
+                  - /url: https://academy.ftmo.com/
+              - listitem [ref=e1898]:
+                - link "Blog" [ref=e1899] [cursor=pointer]:
+                  - /url: /en/blog/
+          - generic [ref=e1901]:
+            - generic [ref=e1902]: About
+            - list [ref=e1904]:
+              - listitem [ref=e1905]:
+                - link "Press releases" [ref=e1906] [cursor=pointer]:
+                  - /url: /en/press-releases/
+              - listitem [ref=e1907]:
+                - link "Press Kit" [ref=e1908] [cursor=pointer]:
+                  - /url: /en/press-kit/
+              - listitem [ref=e1909]:
+                - link "About Us" [ref=e1910] [cursor=pointer]:
+                  - /url: /en/about/
+              - listitem [ref=e1911]:
+                - link "Contact Us" [ref=e1912] [cursor=pointer]:
+                  - /url: /en/contact/
+              - listitem [ref=e1913]:
+                - link "Awards" [ref=e1914] [cursor=pointer]:
+                  - /url: /en/ftmo-awards/
+              - listitem [ref=e1915]:
+                - link "Affiliate Programme" [ref=e1916] [cursor=pointer]:
+                  - /url: /en/affiliate-programme/
+              - listitem [ref=e1917]:
+                - link "Testimonials" [ref=e1918] [cursor=pointer]:
+                  - /url: /en/testimonials/
+              - listitem [ref=e1919]:
+                - link "Careers" [ref=e1920] [cursor=pointer]:
+                  - /url: https://careers.ftmo.com/en/
+              - listitem [ref=e1921]:
+                - link "FTMO Shop" [ref=e1922] [cursor=pointer]:
+                  - /url: https://shop.ftmo.com/
+              - listitem [ref=e1923]:
+                - link "FAQ" [ref=e1924] [cursor=pointer]:
+                  - /url: /en/faq/
+      - generic [ref=e1926]:
+        - generic [ref=e1927]:
+          - generic [ref=e1928]:
+            - generic [ref=e1929]: Get Exclusive FTMO Insights
+            - generic [ref=e1930]:
+              - generic [ref=e1931]:
+                - img [ref=e1932]
+                - generic [ref=e1935]: Expert Trading Insights
+              - generic [ref=e1936]:
+                - img [ref=e1937]
+                - generic [ref=e1940]: Latest Updates
+              - generic [ref=e1941]:
+                - img [ref=e1942]
+                - generic [ref=e1945]: Special Offers
+          - generic [ref=e1947]:
+            - textbox "Email" [ref=e1948]
+            - button "Subscribe" [ref=e1949] [cursor=pointer]:
+              - generic [ref=e1950]: Subscribe
+        - generic [ref=e1952]: All information provided on this site is intended solely for educational purposes related to trading on financial markets and does not serve in any way as a specific investment recommendation, business recommendation, investment opportunity analysis or similar general recommendation regarding the trading of investment instruments. FTMO only provides services of simulated trading and educational tools for traders. The information on this site is not directed at residents in any country or jurisdiction where such distribution or use would be contrary to local laws or regulations. FTMO companies do not act as a broker and do not accept any deposits. The offered technical solution for the FTMO platforms and data feed is powered by liquidity providers.
+        - generic [ref=e1954]:
+          - link "Mastercard Visa Discover DinersClub ApplePay GooglePay Skrill" [ref=e1955] [cursor=pointer]:
+            - /url: https://ftmo.com/en/faq/what-payment-methods-are-available
+            - generic [ref=e1956]:
+              - generic:
+                - img "Mastercard"
+              - generic:
+                - img "Visa"
+              - generic:
+                - img "Discover"
+              - generic:
+                - img "DinersClub"
+              - generic:
+                - img "ApplePay"
+              - generic:
+                - img "GooglePay"
+              - generic:
+                - img "Skrill"
+          - generic:
+            - link "Download FTMO on the App Store":
+              - /url: https://apps.apple.com/bn/app/ftmo/id1564950829
+              - img "Download on the App Store"
+            - link "Get FTMO on Google Play":
+              - /url: https://play.google.com/store/apps/details?id=com.ftmo.trader&hl=en
+              - img "Get it on Google Play"
+        - generic [ref=e1960]:
+          - list [ref=e1961]:
+            - listitem [ref=e1962]: 2026 © Copyright
+            - listitem [ref=e1963]:
+              - button "Cookie settings" [ref=e1964] [cursor=pointer]
+            - listitem [ref=e1965]:
+              - link "Cookies" [ref=e1966] [cursor=pointer]:
+                - /url: /en/cookies/
+            - listitem [ref=e1967]:
+              - link "Imprint" [ref=e1968] [cursor=pointer]:
+                - /url: /en/imprint/
+            - listitem [ref=e1969]:
+              - link "Terms & Conditions" [ref=e1970] [cursor=pointer]:
+                - /url: /en/terms-and-conditions/
+            - listitem [ref=e1971]:
+              - link "Privacy Policy" [ref=e1972] [cursor=pointer]:
+                - /url: /en/privacy-policy/
+          - generic [ref=e1973]:
+            - generic [ref=e1974]:
+              - generic [ref=e1975]: Made with
+              - img [ref=e1976]
+              - generic [ref=e1978]: for trading
+            - generic [ref=e1980]:
+              - generic [ref=e1981]: "Region:"
+              - generic [ref=e1982]:
+                - combobox "Select region" [ref=e1983] [cursor=pointer]:
+                  - option "Global" [selected]
+                  - option "United States"
+                  - option "Australia"
+                - generic:
+                  - img
+    - paragraph [ref=e1986]:
+      - text: Please note that all accounts we provide to our clients are demo accounts with fictitious funds and any trading is in a simulated environment only. For more information, please feel free to visit our
+      - link "FAQ" [ref=e1987] [cursor=pointer]:
+        - /url: https://ftmo.com/en/faq/
+      - text: section.
+      - button "Ok, I understand." [ref=e1988] [cursor=pointer]
+  - generic [ref=e1989]:
+    - generic [ref=e1990]: This website uses cookies to improve user experience and to create personalized content.
+    - generic [ref=e1991]:
+      - link "Read more" [ref=e1992] [cursor=pointer]:
+        - /url: https://ftmo.com/en/cookies/
+      - button "OK" [ref=e1993] [cursor=pointer]

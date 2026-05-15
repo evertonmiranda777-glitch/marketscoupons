@@ -1,0 +1,159 @@
+- generic:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - complementary [ref=e4]:
+        - button "e evertonmiranda777" [ref=e6] [cursor=pointer]:
+          - generic [ref=e8]:
+            - generic [ref=e10]:
+              - img [ref=e11]
+              - text: e
+            - generic [ref=e26]: evertonmiranda777
+          - img [ref=e28]
+        - navigation [ref=e31]:
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - link "Emails" [ref=e34] [cursor=pointer]:
+                - /url: /emails
+                - img [ref=e36]
+                - text: Emails
+            - listitem [ref=e42]:
+              - link "Broadcasts" [ref=e43] [cursor=pointer]:
+                - /url: /broadcasts
+                - img [ref=e45]
+                - text: Broadcasts
+            - listitem [ref=e51]:
+              - link "Automations" [ref=e52] [cursor=pointer]:
+                - /url: /automations
+                - img [ref=e54]
+                - text: Automations
+            - listitem [ref=e66]:
+              - link "Templates" [ref=e67] [cursor=pointer]:
+                - /url: /templates
+                - img [ref=e69]
+                - text: Templates
+            - listitem [ref=e75]:
+              - link "Audience" [ref=e76] [cursor=pointer]:
+                - /url: /audience
+                - img [ref=e78]
+                - text: Audience
+            - listitem [ref=e94]:
+              - link "Metrics" [ref=e95] [cursor=pointer]:
+                - /url: /metrics
+                - img [ref=e97]
+                - text: Metrics
+            - listitem [ref=e107]:
+              - link "Domains" [ref=e108] [cursor=pointer]:
+                - /url: /domains
+                - img [ref=e110]
+                - text: Domains
+            - listitem [ref=e116]:
+              - link "Logs" [ref=e117] [cursor=pointer]:
+                - /url: /logs
+                - img [ref=e119]
+                - text: Logs
+            - listitem [ref=e129]:
+              - link "API keys" [ref=e130] [cursor=pointer]:
+                - /url: /api-keys
+                - img [ref=e132]
+                - text: API keys
+            - listitem [ref=e140]:
+              - link "Webhooks" [ref=e141] [cursor=pointer]:
+                - /url: /webhooks
+                - img [ref=e143]
+                - text: Webhooks
+            - listitem [ref=e152]:
+              - link "Settings" [ref=e153] [cursor=pointer]:
+                - /url: /settings
+                - img [ref=e155]
+                - text: Settings
+        - button "e evertonmiranda777@gmail.com" [ref=e165] [cursor=pointer]:
+          - generic [ref=e167]:
+            - generic [ref=e169]: e
+            - generic [ref=e170]: evertonmiranda777@gmail.com
+          - img [ref=e172]
+    - generic [ref=e176]:
+      - generic [ref=e178]:
+        - button "Feedback F" [ref=e179] [cursor=pointer]:
+          - generic [ref=e180]: Feedback
+          - generic [ref=e182]: F
+        - link "Help" [ref=e183] [cursor=pointer]:
+          - /url: /help
+        - link "Docs" [ref=e184] [cursor=pointer]:
+          - /url: https://resend.com/docs/dashboard/domains/introduction
+      - generic [ref=e185]:
+        - generic [ref=e186]:
+          - generic [ref=e187]:
+            - img [ref=e188]
+            - img [ref=e216]
+          - generic [ref=e219]:
+            - heading "New tracking subdomain" [level=1] [ref=e220]
+            - text: Track every click with automatic URL redirection
+        - generic [ref=e224]:
+          - generic [ref=e230]:
+            - heading "Details" [level=3] [ref=e232]
+            - paragraph [ref=e233]: All email links will be securely redirected through this domain before reaching their destination.
+            - generic [ref=e235]:
+              - generic [ref=e236]:
+                - generic [ref=e237]:
+                  - generic [ref=e238]:
+                    - generic [ref=e239]:
+                      - generic [ref=e240]: Subdomain
+                      - img [ref=e241]
+                    - textbox "links" [ref=e244]
+                  - generic [ref=e245]:
+                    - generic [ref=e246]: Domain
+                    - generic [ref=e247]:
+                      - img "São Paulo" [ref=e249]
+                      - textbox [ref=e250]: marketscoupons.com
+                - generic [ref=e251]:
+                  - button "Tracking options" [expanded] [ref=e252] [cursor=pointer]:
+                    - generic [ref=e253]:
+                      - img [ref=e254]
+                      - text: Tracking options
+                  - generic [ref=e257]:
+                    - generic [ref=e258]:
+                      - checkbox "Enable click tracking" [checked] [ref=e259]:
+                        - generic:
+                          - img
+                      - checkbox [checked]
+                      - generic [ref=e260]: Enable click tracking
+                    - generic [ref=e261]:
+                      - generic [ref=e262]:
+                        - checkbox "Enable open tracking" [checked] [active] [ref=e263]:
+                          - generic:
+                            - img
+                        - checkbox [checked]
+                        - generic [ref=e264]: Enable open tracking
+                      - generic [ref=e265]:
+                        - text: Open tracking can produce inaccurate results. Learn more and consider
+                        - link "if open tracking is right for you" [ref=e266] [cursor=pointer]:
+                          - /url: https://resend.com/docs/knowledge-base/why-are-my-open-rates-not-accurate
+                        - text: .
+                - button "Add domain" [disabled] [ref=e268]:
+                  - img [ref=e270]
+                  - generic [ref=e271]: Add domain
+              - generic [ref=e275]:
+                - generic [ref=e277]:
+                  - img "Domain logo" [ref=e297]
+                  - generic [ref=e282]:
+                    - generic [ref=e283]:
+                      - generic [ref=e284]: Your Name
+                      - generic [ref=e285]:
+                        - text: <youremail@
+                        - generic [ref=e286]: marketscoupons.com
+                        - text: ">"
+                    - generic [ref=e287]:
+                      - generic [ref=e288]: to me
+                      - img [ref=e289]
+                - generic [ref=e291]:
+                  - generic [ref=e292]: Hi!
+                  - generic [ref=e293]: "Your link: example.com"
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - heading "DNS Record" [level=3]
+  - region "Notifications alt+T"
+  - img
+  - alert [ref=e294]

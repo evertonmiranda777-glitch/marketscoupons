@@ -1,0 +1,55 @@
+- generic [active] [ref=e1]:
+  - main [ref=e6]:
+    - generic [ref=e8]:
+      - generic [ref=e10]:
+        - link "Company Logo" [ref=e11] [cursor=pointer]:
+          - /url: /
+          - img "Company Logo" [ref=e12]
+        - heading "WELCOME TO CITY TRADERS IMPERIUM | CTI" [level=1] [ref=e14]:
+          - text: WELCOME TO
+          - text: CITY TRADERS IMPERIUM | CTI
+      - generic [ref=e16]:
+        - paragraph [ref=e17]:
+          - text: Already have an account?
+          - link "Login" [ref=e18] [cursor=pointer]:
+            - /url: /user-auth/login
+        - generic [ref=e19]:
+          - heading "Sign up" [level=3] [ref=e20]
+          - generic [ref=e22]:
+            - generic [ref=e23]:
+              - generic [ref=e26]:
+                - generic [ref=e27]: First Name*
+                - textbox "First Name*" [ref=e31]:
+                  - /placeholder: First Name
+              - generic [ref=e34]:
+                - generic [ref=e35]: Last Name*
+                - textbox "Last Name*" [ref=e39]:
+                  - /placeholder: Last Name
+              - generic [ref=e42]:
+                - generic [ref=e43]: Country*
+                - generic [ref=e49]:
+                  - combobox "Country*" [ref=e51] [cursor=pointer]
+                  - generic [ref=e52]: Country of Residence
+              - generic [ref=e55]:
+                - generic [ref=e56]: Email*
+                - textbox "Email*" [ref=e60]:
+                  - /placeholder: Email
+              - generic [ref=e63]:
+                - generic [ref=e64]: Password*
+                - textbox "Password*" [ref=e68]:
+                  - /placeholder: Password
+              - group [ref=e71]:
+                - generic [ref=e73] [cursor=pointer]:
+                  - generic [ref=e74]:
+                    - checkbox "By continuing I agree to the Terms and Conditions and Privacy Policy."
+                  - generic [ref=e77]:
+                    - text: By continuing I agree to the
+                    - link "Terms and Conditions" [ref=e78]:
+                      - /url: https://citytradersimperium.com/terms-conditions-of-service
+                    - text: and
+                    - link "Privacy Policy." [ref=e79]:
+                      - /url: https://citytradersimperium.com/privacy-policy
+            - button "SIGN UP FOR FREE" [ref=e81] [cursor=pointer]:
+              - generic [ref=e82]: SIGN UP FOR FREE
+  - iframe [ref=e83]:
+    

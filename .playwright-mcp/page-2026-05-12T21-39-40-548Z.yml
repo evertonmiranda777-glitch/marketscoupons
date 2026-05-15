@@ -1,0 +1,400 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main"
+      - generic [ref=e4]: Skip to main content
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - button [ref=e157] [cursor=pointer]
+        - link "GoDaddy" [ref=e9] [cursor=pointer]:
+          - /url: https://venture-redirector.godaddy.com/
+          - figure "GoDaddy" [ref=e10]:
+            - img [ref=e11]
+        - list [ref=e13]:
+          - listitem [ref=e159]:
+            - generic [ref=e160]: MANAGE
+          - listitem [ref=e14]:
+            - link "Portfolio" [ref=e15] [cursor=pointer]:
+              - /url: https://dcc.godaddy.com/control/portfolio
+              - generic [ref=e20]: Portfolio
+          - listitem [ref=e21]:
+            - link "DNS" [ref=e22] [cursor=pointer]:
+              - /url: https://dcc.godaddy.com/control/dnsmanagement
+              - generic [ref=e27]: DNS
+          - listitem [ref=e28]:
+            - link "Transfers" [ref=e29] [cursor=pointer]:
+              - /url: https://dcc.godaddy.com/control/transfers
+              - generic [ref=e34]: Transfers
+          - listitem [ref=e35]:
+            - button "Services" [ref=e36] [cursor=pointer]:
+              - generic [ref=e41]: Services
+            - list:
+              - listitem [ref=e43]:
+                - link "DNS Hosting" [ref=e44] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/dnshosting
+                  - generic [ref=e47]: DNS Hosting
+              - listitem [ref=e48]:
+                - link "Domain Broker" [ref=e49] [cursor=pointer]:
+                  - /url: https://dbs.godaddy.com/
+                  - generic [ref=e52]: Domain Broker
+              - listitem [ref=e162]:
+                - link "Pre-Registration" [ref=e163] [cursor=pointer]:
+                  - /url: https://preregistration.godaddy.com/
+                  - generic [ref=e166]: Pre-Registration
+              - listitem [ref=e58]:
+                - link "Block" [ref=e59] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/blocks
+                  - generic [ref=e62]: Block
+              - listitem [ref=e63]:
+                - link "Negotiations" [ref=e64] [cursor=pointer]:
+                  - /url: https://aftermarket.godaddy.com/negotiations
+                  - generic [ref=e67]: Negotiations
+          - listitem [ref=e96]:
+            - button "Settings" [ref=e97] [cursor=pointer]:
+              - generic [ref=e102]: Settings
+            - list:
+              - listitem [ref=e104]:
+                - link "Delegate Access" [ref=e105] [cursor=pointer]:
+                  - /url: https://sso.godaddy.com/access
+                  - generic [ref=e108]: Delegate Access
+              - listitem [ref=e109]:
+                - link "DNS Templates" [ref=e110] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/dns/templates
+                  - generic [ref=e113]: DNS Templates
+              - listitem [ref=e114]:
+                - link "Exported Lists" [ref=e115] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/exported-lists
+                  - generic [ref=e118]: Exported Lists
+          - listitem [ref=e119]:
+            - link "Activity Log" [ref=e120] [cursor=pointer]:
+              - /url: https://dcc.godaddy.com/control/activity/log
+              - generic [ref=e125]: Activity Log
+          - listitem [ref=e168]
+          - listitem [ref=e169]:
+            - generic [ref=e170]: BUY AND SELL
+          - listitem [ref=e171]:
+            - link "Afternic" [ref=e172] [cursor=pointer]:
+              - /url: https://www.afternic.com/dashboard?itc=dcc_portfolio_afternic
+              - generic [ref=e177]: Afternic
+          - listitem [ref=e178]:
+            - link "Auctions" [ref=e179] [cursor=pointer]:
+              - /url: https://auctions.godaddy.com/beta?itc=dcc_portfolio_auctions
+              - generic [ref=e184]: Auctions
+          - listitem [ref=e185]:
+            - link "Domain Parking" [ref=e186] [cursor=pointer]:
+              - /url: https://www.godaddy.com/domain-parking/dashboard?itc=dcc_portfolio_parking
+              - generic [ref=e191]: Domain Parking
+          - listitem [ref=e192]
+          - listitem [ref=e193]:
+            - generic [ref=e194]: LEARN
+          - listitem [ref=e195]:
+            - link "Domain Academy" [ref=e196] [cursor=pointer]:
+              - /url: https://community.godaddy.com/s/domain-academy?itc=dcc_portfolio_domain_academy
+              - generic [ref=e201]: Domain Academy
+      - generic [ref=e126]:
+        - link "Help Center" [ref=e127] [cursor=pointer]:
+          - /url: https://www.godaddy.com/help
+          - generic [ref=e128]: Help Center
+        - button "App Switcher" [ref=e130] [cursor=pointer]
+        - button "Customer Info" [ref=e132] [cursor=pointer]:
+          - generic [ref=e202]: EM
+        - link "Empty Cart" [ref=e207] [cursor=pointer]:
+          - /url: https://www.godaddy.com/pricing
+          - generic "Empty Cart" [ref=e208]
+  - main [ref=e135]:
+    - generic [ref=e139]:
+      - heading "DNS Management" [level=1] [ref=e142]
+      - alert "Your domain is in demand" [ref=e211]:
+        - generic [ref=e214]:
+          - button "Close" [ref=e216] [cursor=pointer]
+          - heading "Your domain is in demand" [level=2] [ref=e218]
+          - generic [ref=e220]:
+            - text: Other GoDaddy customers are searching for
+            - strong [ref=e221]: marketscoupons.com
+            - text: "! Add Domain Protection to ensure you don't lose this popular domain."
+          - group [ref=e222]:
+            - button "Add Protection" [ref=e224] [cursor=pointer]:
+              - generic: Add Protection
+      - generic [ref=e144]:
+        - heading "marketscoupons.com" [level=2] [ref=e145]
+        - generic [ref=e146]:
+          - button "Domain Settings" [ref=e147] [cursor=pointer]:
+            - generic: Domain Settings
+          - link "Use My Domain" [ref=e148] [cursor=pointer]:
+            - /url: https://start.godaddy.com/?domainName=marketscoupons.com&domainCount=1&domainConnect=true&itc=dcc_usemydomain_airo
+            - generic [ref=e149]: Use My Domain
+          - button "Select a different domain" [ref=e150] [cursor=pointer]:
+            - generic: Select a different domain
+      - generic [ref=e225]:
+        - navigation [ref=e226]:
+          - tablist "Navigation" [ref=e228]:
+            - tab "DNS Records" [selected] [ref=e229] [cursor=pointer]
+            - tab "Forwarding" [ref=e230] [cursor=pointer]
+            - tab "Nameservers" [ref=e231] [cursor=pointer]
+            - tab "Premium DNS" [ref=e232] [cursor=pointer]
+            - tab "Hostnames" [ref=e233] [cursor=pointer]
+            - tab "DNSSEC" [ref=e234] [cursor=pointer]
+            - tab "Crypto Wallet" [ref=e235] [cursor=pointer]
+        - tabpanel "DNS Records" [ref=e236]:
+          - generic [ref=e238]:
+            - alert "Domain configuration changes underway" [ref=e240]:
+              - generic [ref=e243]:
+                - button "Close" [ref=e245] [cursor=pointer]
+                - heading "Domain configuration changes underway" [level=2] [ref=e247]
+                - generic [ref=e248]: You've just completed an update to your domain. Based on its protection level, here's a quick way to boost security.
+                - group [ref=e249]:
+                  - button "Add Protection" [ref=e251] [cursor=pointer]:
+                    - generic: Add Protection
+            - generic [ref=e253]:
+              - generic [ref=e254]:
+                - heading "Add a new record" [level=5] [ref=e255]
+                - paragraph [ref=e256]:
+                  - link "DNS records" [ref=e257] [cursor=pointer]:
+                    - /url: https://www.godaddy.com/help/a-665?plid=1
+                    - generic [ref=e258]: DNS records
+                  - text: define how your domain behaves, like showing your website content and delivering your email.
+                - button "Add New Record" [ref=e259] [cursor=pointer]:
+                  - generic: Add New Record
+              - generic [ref=e260]:
+                - generic [ref=e261]: Powered by Airo
+                - generic [ref=e263]:
+                  - heading "Connect Your Domain in Minutes" [level=5] [ref=e264]
+                  - paragraph [ref=e265]: Set up your domain with your website, email, or social media profile faster than ever with GoDaddy Airo.
+                  - button "Connect Domain" [ref=e267] [cursor=pointer]:
+                    - generic: Connect Domain
+              - generic [ref=e268]:
+                - heading "Easily verify domain ownership" [level=5] [ref=e269]
+                - paragraph [ref=e270]: Need to verify ownership of your domain to connect to an external service? We've made it easier than ever.
+                - button "Verify Domain Ownership" [ref=e271] [cursor=pointer]:
+                  - generic: Verify Domain Ownership
+              - generic [ref=e272]:
+                - generic [ref=e273]:
+                  - generic [ref=e274]:
+                    - heading "Create MX records" [level=5] [ref=e275]
+                    - paragraph [ref=e276]: Quickly create MX records to connect your domain with email services.
+                  - img [ref=e278]
+                - button "Create Now" [ref=e301] [cursor=pointer]:
+                  - generic: Create Now
+            - generic [ref=e302]:
+              - group [ref=e305]:
+                - generic [ref=e306]:
+                  - button "Filters" [ref=e307] [cursor=pointer]:
+                    - generic: Filters
+                  - button "Actions" [ref=e309] [cursor=pointer]:
+                    - generic: Actions
+              - generic [ref=e674]:
+                - table [ref=e675]:
+                  - rowgroup [ref=e676]:
+                    - row "Type Click here for more information Name Click here for more information Data Click here for more information TTL Click here for more information Delete Edit" [ref=e677]:
+                      - columnheader [ref=e678]
+                      - columnheader "Type Click here for more information" [ref=e679]:
+                        - generic [ref=e680]:
+                          - text: Type
+                          - button "Click here for more information" [ref=e683] [cursor=pointer]
+                      - columnheader "Name Click here for more information" [ref=e684]:
+                        - generic [ref=e685]:
+                          - text: Name
+                          - button "Click here for more information" [ref=e688] [cursor=pointer]
+                      - columnheader "Data Click here for more information" [ref=e689]:
+                        - generic [ref=e690]:
+                          - text: Data
+                          - button "Click here for more information" [ref=e693] [cursor=pointer]
+                      - columnheader "TTL Click here for more information" [ref=e694]:
+                        - generic [ref=e695]:
+                          - text: TTL
+                          - button "Click here for more information" [ref=e698] [cursor=pointer]
+                      - columnheader "Delete" [ref=e699]:
+                        - generic [ref=e701]: Delete
+                      - columnheader "Edit" [ref=e702]:
+                        - generic [ref=e704]: Edit
+                  - rowgroup [ref=e705]:
+                    - row "cname url1662 sendgrid.net. 1 Hour Delete Edit" [ref=e706]:
+                      - cell [ref=e707]:
+                        - checkbox [ref=e710] [cursor=pointer]
+                      - cell "cname" [ref=e711]
+                      - cell "url1662" [ref=e712]
+                      - cell "sendgrid.net." [ref=e713]
+                      - cell "1 Hour" [ref=e714]
+                      - cell "Delete" [ref=e715]:
+                        - button "Delete" [ref=e716] [cursor=pointer]
+                      - cell "Edit" [ref=e717]:
+                        - button "Edit" [ref=e718] [cursor=pointer]
+                    - row "cname www 414242cbbbc422b5.vercel-dns-017.com. 1 Hour Delete Edit" [ref=e719]:
+                      - cell [ref=e720]:
+                        - checkbox [ref=e723] [cursor=pointer]
+                      - cell "cname" [ref=e724]
+                      - cell "www" [ref=e725]
+                      - cell "414242cbbbc422b5.vercel-dns-017.com." [ref=e726]
+                      - cell "1 Hour" [ref=e727]
+                      - cell "Delete" [ref=e728]:
+                        - button "Delete" [ref=e729] [cursor=pointer]
+                      - cell "Edit" [ref=e730]:
+                        - button "Edit" [ref=e731] [cursor=pointer]
+                    - row "cname _domainconnect _domainconnect.gd.domaincontrol.com. 1 Hour Delete Edit" [ref=e732]:
+                      - cell [ref=e733]:
+                        - checkbox [ref=e736] [cursor=pointer]
+                      - cell "cname" [ref=e737]
+                      - cell "_domainconnect" [ref=e738]
+                      - cell "_domainconnect.gd.domaincontrol.com." [ref=e739]
+                      - cell "1 Hour" [ref=e740]
+                      - cell "Delete" [ref=e741]:
+                        - button "Delete" [ref=e742] [cursor=pointer]
+                      - cell "Edit" [ref=e743]:
+                        - button "Edit" [ref=e744] [cursor=pointer]
+                    - 'row "soa @ Primary nameserver: ns77.domaincontrol.com. 1 Hour Delete Edit" [ref=e745]':
+                      - cell [ref=e746]:
+                        - checkbox [disabled] [ref=e749]
+                      - cell "soa" [ref=e750]
+                      - cell "@" [ref=e751]
+                      - 'cell "Primary nameserver: ns77.domaincontrol.com." [ref=e752]'
+                      - cell "1 Hour" [ref=e753]
+                      - cell "Delete" [ref=e754]:
+                        - button "Delete" [disabled] [ref=e755]
+                      - cell "Edit" [ref=e756]:
+                        - button "Edit" [disabled] [ref=e757]
+                    - 'row "mx send feedback-smtp.sa-east-1.amazonses.com. (Priority: 10) 1 Hour Delete Edit" [ref=e758]':
+                      - cell [ref=e759]:
+                        - checkbox [ref=e762] [cursor=pointer]
+                      - cell "mx" [ref=e763]
+                      - cell "send" [ref=e764]
+                      - 'cell "feedback-smtp.sa-east-1.amazonses.com. (Priority: 10)" [ref=e765]'
+                      - cell "1 Hour" [ref=e766]
+                      - cell "Delete" [ref=e767]:
+                        - button "Delete" [ref=e768] [cursor=pointer]
+                      - cell "Edit" [ref=e769]:
+                        - button "Edit" [ref=e770] [cursor=pointer]
+                    - row "txt @ brevo-code:0022812ae325389a5fbbf1e4bb788232 1 Hour Delete Edit" [ref=e771]:
+                      - cell [ref=e772]:
+                        - checkbox [ref=e775] [cursor=pointer]
+                      - cell "txt" [ref=e776]
+                      - cell "@" [ref=e777]
+                      - cell "brevo-code:0022812ae325389a5fbbf1e4bb788232" [ref=e778]
+                      - cell "1 Hour" [ref=e779]
+                      - cell "Delete" [ref=e780]:
+                        - button "Delete" [ref=e781] [cursor=pointer]
+                      - cell "Edit" [ref=e782]:
+                        - button "Edit" [ref=e783] [cursor=pointer]
+                    - row "txt resend._domainkey p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDN52MEwf7Cw9xHwNsgVgHeGqt3t1NPuoo9gQgFY9O6reEFWUhyJjX9xJbMsmF4U92ThdtEeKHZaHPEM0WV9OPCOj/JfjEJPs06m4aa0tjsUNXh1g5YG5LVGqdN/jghqhBeay/EskDxpSHWwOOaqM078ZcqJjplGU6BxfSp/wSrBwIDAQAB 1 Hour Delete Edit" [ref=e784]:
+                      - cell [ref=e785]:
+                        - checkbox [ref=e788] [cursor=pointer]
+                      - cell "txt" [ref=e789]
+                      - cell "resend._domainkey" [ref=e790]
+                      - cell "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDN52MEwf7Cw9xHwNsgVgHeGqt3t1NPuoo9gQgFY9O6reEFWUhyJjX9xJbMsmF4U92ThdtEeKHZaHPEM0WV9OPCOj/JfjEJPs06m4aa0tjsUNXh1g5YG5LVGqdN/jghqhBeay/EskDxpSHWwOOaqM078ZcqJjplGU6BxfSp/wSrBwIDAQAB" [ref=e791]
+                      - cell "1 Hour" [ref=e792]
+                      - cell "Delete" [ref=e793]:
+                        - button "Delete" [ref=e794] [cursor=pointer]
+                      - cell "Edit" [ref=e795]:
+                        - button "Edit" [ref=e796] [cursor=pointer]
+                    - row "txt send v=spf1 include:amazonses.com ~all 1 Hour Delete Edit" [ref=e797]:
+                      - cell [ref=e798]:
+                        - checkbox [ref=e801] [cursor=pointer]
+                      - cell "txt" [ref=e802]
+                      - cell "send" [ref=e803]
+                      - cell "v=spf1 include:amazonses.com ~all" [ref=e804]
+                      - cell "1 Hour" [ref=e805]
+                      - cell "Delete" [ref=e806]:
+                        - button "Delete" [ref=e807] [cursor=pointer]
+                      - cell "Edit" [ref=e808]:
+                        - button "Edit" [ref=e809] [cursor=pointer]
+                    - row "txt _dmarc v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net; 1 Hour Delete Edit" [ref=e810]:
+                      - cell [ref=e811]:
+                        - checkbox [ref=e814] [cursor=pointer]
+                      - cell "txt" [ref=e815]
+                      - cell "_dmarc" [ref=e816]
+                      - cell "v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net;" [ref=e817]
+                      - cell "1 Hour" [ref=e818]
+                      - cell "Delete" [ref=e819]:
+                        - button "Delete" [ref=e820] [cursor=pointer]
+                      - cell "Edit" [ref=e821]:
+                        - button "Edit" [ref=e822] [cursor=pointer]
+                - generic [ref=e823]:
+                  - list [ref=e824]:
+                    - listitem [ref=e825]:
+                      - button "Go to first page" [ref=e826] [cursor=pointer]
+                    - listitem [ref=e827]:
+                      - button "Go to previous page" [ref=e828] [cursor=pointer]
+                    - listitem [ref=e829]:
+                      - button "1" [ref=e830] [cursor=pointer]:
+                        - generic: "1"
+                    - listitem [ref=e831]:
+                      - button "2" [ref=e832] [cursor=pointer]:
+                        - generic: "2"
+                    - listitem [ref=e833]:
+                      - button "Go to next page" [disabled] [ref=e834]
+                    - listitem [ref=e835]:
+                      - button "Go to last page" [disabled] [ref=e836]
+                  - combobox "Menu" [ref=e838]:
+                    - button "Menu Options" [ref=e839] [cursor=pointer]:
+                      - button [ref=e840]
+                      - generic [ref=e843]: "10"
+        - generic [ref=e504]:
+          - img [ref=e506]
+          - generic [ref=e570]:
+            - generic [ref=e571]: Set up your free social media subdomain!
+            - generic [ref=e572]:
+              - text: Your domain comes with free, customizable subdomains
+              - text: such as facebook.marketscoupons.com to link to your social media page.
+            - generic [ref=e575]:
+              - generic [ref=e576]:
+                - generic [ref=e580]: Improved SEO
+                - generic [ref=e581]: Social subdomains can help your website rank higher in search engines.
+              - generic [ref=e582]:
+                - generic [ref=e586]: Promote your social page
+                - generic [ref=e588]: Anybody visiting your social subdomain such as facebook.marketscoupons.com will see your social media page.
+              - generic [ref=e589]:
+                - generic [ref=e593]: Add to your main domain
+                - generic [ref=e595]: Creating a social subdomain won't affect anything currently connected to marketscoupons.com.
+            - generic [ref=e596]: "Choose a platform to start:"
+            - generic [ref=e597]:
+              - button "Instagram" [ref=e598] [cursor=pointer]:
+                - generic: Instagram
+              - button "Facebook" [ref=e599] [cursor=pointer]:
+                - generic: Facebook
+              - button "Yelp" [ref=e600] [cursor=pointer]:
+                - generic: Yelp
+              - button "Google" [ref=e601] [cursor=pointer]:
+                - generic: Google
+              - button "Other" [ref=e602] [cursor=pointer]:
+                - generic: Other
+      - generic [ref=e613]:
+        - generic [ref=e615]:
+          - img "create_a_website_wordpress_5-4" [ref=e618]
+          - generic [ref=e620]:
+            - paragraph [ref=e621]:
+              - generic [ref=e622]: HIGHLY CUSTOMIZABLE
+            - heading "Managed WordPress" [level=4] [ref=e623]:
+              - generic [ref=e624]: Managed WordPress
+            - paragraph [ref=e625]: We make it easier to create, launch, and manage your WordPress site.
+            - generic [ref=e626]:
+              - list
+            - group [ref=e630]:
+              - button "Explore Plans" [ref=e632] [cursor=pointer]:
+                - generic: Explore Plans
+        - generic [ref=e634]:
+          - img "security-web-hosting-5_4" [ref=e637]
+          - generic [ref=e639]:
+            - paragraph [ref=e640]:
+              - generic [ref=e641]: ADVANCED USERS
+            - heading "Web Hosting" [level=4] [ref=e642]:
+              - generic [ref=e643]: Web Hosting
+            - paragraph [ref=e644]: From personal sites to high-performance sites, get web hosting you can trust.
+            - generic [ref=e645]:
+              - list
+            - group [ref=e649]:
+              - button "Explore Plans" [ref=e651] [cursor=pointer]:
+                - generic: Explore Plans
+        - generic [ref=e653]:
+          - img "create-my-website-dify-5_4" [ref=e656]
+          - generic [ref=e658]:
+            - paragraph [ref=e659]:
+              - generic [ref=e660]: DONE FOR YOU
+            - heading "Web Design Services" [level=1] [ref=e661]:
+              - generic [ref=e662]: Web Design Services
+            - paragraph [ref=e663]: Hire an expert to build your website, and get up to 2.9x more website traffic
+            - generic [ref=e664]:
+              - list
+            - group [ref=e668]:
+              - link "Learn More" [ref=e670] [cursor=pointer]:
+                - /url: https://www.godaddy.com/websites/web-design
+                - generic [ref=e671]: Learn More
+  - alert [ref=e673]

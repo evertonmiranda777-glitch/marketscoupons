@@ -1,0 +1,79 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - combobox [expanded] [ref=e5] [cursor=pointer]:
+        - img "country flag" [ref=e6]
+        - generic [ref=e7]: PT
+      - generic [ref=e9]:
+        - img "FTMO" [ref=e11]
+        - generic [ref=e12]:
+          - generic [ref=e14]:
+            - heading "Iniciar sessão na FTMO" [level=1] [ref=e15]
+            - generic [ref=e16]:
+              - text: Ainda não tem um perfil?
+              - link "Crie um perfil" [ref=e17] [cursor=pointer]:
+                - /url: /auth/realms/FTMO-Global/login-actions/registration?client_id=ftmo-trader&tab_id=SEtldVkfDDU&client_data=eyJydSI6Imh0dHBzOi8vdHJhZGVyLmZ0bW8uY29tL2FwaS9hdXRoL2NhbGxiYWNrIiwicnQiOiJjb2RlIiwic3QiOiI3ZDE0NDk1Ny0yY2FjLTQyZGUtODMzMi0zNWEwMTQwNDQ3MjcifQ
+            - generic [ref=e18]:
+              - generic [ref=e19]:
+                - generic [ref=e20]: Apresentamos o 1-Step FTMO Challenge
+                - generic [ref=e21]: Inicia sessão para começar
+              - button [ref=e22] [cursor=pointer]
+              - text: Novo
+            - generic [ref=e24]:
+              - generic [ref=e25]:
+                - generic [ref=e26]: E-mail
+                - textbox "E-mail" [active] [ref=e27]
+              - generic [ref=e28]:
+                - generic [ref=e29]: Palavra-passe
+                - generic [ref=e30]:
+                  - textbox "Palavra-passe" [ref=e31]
+                  - button [ref=e32] [cursor=pointer]:
+                    - generic [ref=e33]: 
+              - generic [ref=e35]:
+                - generic [ref=e36] [cursor=pointer]:
+                  - checkbox "Lembrar-me" [ref=e37]
+                  - generic [ref=e38]: Lembrar-me
+                - link "Esqueceu-se da palavra-passe?" [ref=e39] [cursor=pointer]:
+                  - /url: /auth/realms/FTMO-Global/login-actions/reset-credentials?client_id=ftmo-trader&tab_id=SEtldVkfDDU&client_data=eyJydSI6Imh0dHBzOi8vdHJhZGVyLmZ0bW8uY29tL2FwaS9hdXRoL2NhbGxiYWNrIiwicnQiOiJjb2RlIiwic3QiOiI3ZDE0NDk1Ny0yY2FjLTQyZGUtODMzMi0zNWEwMTQwNDQ3MjcifQ
+              - button "Iniciar sessão" [ref=e41] [cursor=pointer]
+            - generic [ref=e42]:
+              - generic [ref=e43]: ou
+              - generic [ref=e44]:
+                - button "google-logo Continuar com Google" [ref=e45] [cursor=pointer]:
+                  - img "google-logo" [ref=e46]
+                  - text: Continuar com Google
+                - button "facebook-logo Continuar com Facebook" [ref=e47] [cursor=pointer]:
+                  - img "facebook-logo" [ref=e48]
+                  - text: Continuar com Facebook
+                - button "apple-logo Continuar com Apple" [ref=e49] [cursor=pointer]:
+                  - img "apple-logo" [ref=e50]
+                  - text: Continuar com Apple
+          - link "Definições de cookies" [ref=e52] [cursor=pointer]:
+            - /url: "#"
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - img "FTMO" [ref=e57]
+        - generic [ref=e58]:
+          - heading "Líder" [level=6] [ref=e59]
+          - generic [ref=e60]: A FTMO é uma empresa líder em Prop Trading Moderno fundada em 2015
+      - generic [ref=e61]:
+        - img "FTMO" [ref=e63]
+        - generic [ref=e64]:
+          - heading "Plataformas de Trading" [level=6] [ref=e65]
+          - generic [ref=e66]: Todas as principais plataformas de trading disponíveis
+      - generic [ref=e67]:
+        - img "FTMO" [ref=e69]
+        - generic [ref=e70]:
+          - heading "3 milhões de clientes" [level=6] [ref=e71]
+          - generic [ref=e72]: Confiada por mais de 3 milhões de clientes em todo o mundo
+  - generic [ref=e76]:
+    - generic [ref=e77]:
+      - img [ref=e78]
+      - heading "Cookies acceptance" [level=3] [ref=e80]
+      - paragraph [ref=e81]:
+        - text: For a better user experience, please accept essential, analytical and marketing cookies to collect data for personalised content. This includes the transfer of personal data to countries outside of EU.
+        - link "Read more" [ref=e82] [cursor=pointer]:
+          - /url: https://ftmo.oanda.com/cookies/
+    - generic [ref=e83]:
+      - button "Accept All" [ref=e84] [cursor=pointer]
+      - button "Preferences" [ref=e85] [cursor=pointer]

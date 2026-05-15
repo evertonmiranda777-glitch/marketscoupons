@@ -1,0 +1,141 @@
+- generic [active]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - complementary [ref=e4]:
+        - button "e evertonmiranda777" [ref=e181] [cursor=pointer]:
+          - generic [ref=e8]:
+            - generic [ref=e182]:
+              - img [ref=e183]
+              - text: e
+            - generic [ref=e11]: evertonmiranda777
+          - img [ref=e13]
+        - navigation [ref=e16]:
+          - list [ref=e17]:
+            - listitem [ref=e18]:
+              - link "Emails" [ref=e19] [cursor=pointer]:
+                - /url: /emails
+                - img [ref=e198]
+                - text: Emails
+            - listitem [ref=e21]:
+              - link "Broadcasts" [ref=e22] [cursor=pointer]:
+                - /url: /broadcasts
+                - img [ref=e205]
+                - text: Broadcasts
+            - listitem [ref=e24]:
+              - link "Automations" [ref=e25] [cursor=pointer]:
+                - /url: /automations
+                - img [ref=e212]
+                - text: Automations
+            - listitem [ref=e27]:
+              - link "Templates" [ref=e28] [cursor=pointer]:
+                - /url: /templates
+                - img [ref=e225]
+                - text: Templates
+            - listitem [ref=e30]:
+              - link "Audience" [ref=e31] [cursor=pointer]:
+                - /url: /audience
+                - img [ref=e232]
+                - text: Audience
+            - listitem [ref=e33]:
+              - link "Metrics" [ref=e34] [cursor=pointer]:
+                - /url: /metrics
+                - img [ref=e249]
+                - text: Metrics
+            - listitem [ref=e36]:
+              - link "Domains" [ref=e37] [cursor=pointer]:
+                - /url: /domains
+                - img [ref=e260]
+                - text: Domains
+            - listitem [ref=e39]:
+              - link "Logs" [ref=e40] [cursor=pointer]:
+                - /url: /logs
+                - img [ref=e267]
+                - text: Logs
+            - listitem [ref=e42]:
+              - link "API keys" [ref=e43] [cursor=pointer]:
+                - /url: /api-keys
+                - img [ref=e278]
+                - text: API keys
+            - listitem [ref=e45]:
+              - link "Webhooks" [ref=e46] [cursor=pointer]:
+                - /url: /webhooks
+                - img [ref=e287]
+                - text: Webhooks
+            - listitem [ref=e48]:
+              - link "Settings" [ref=e49] [cursor=pointer]:
+                - /url: /settings
+                - img [ref=e297]
+                - text: Settings
+        - button "e evertonmiranda777@gmail.com" [ref=e307] [cursor=pointer]:
+          - generic [ref=e53]:
+            - generic [ref=e308]: e
+            - generic [ref=e55]: evertonmiranda777@gmail.com
+          - img [ref=e57]
+    - generic [ref=e61]:
+      - generic [ref=e63]:
+        - button "Feedback F" [ref=e64] [cursor=pointer]:
+          - generic [ref=e65]: Feedback
+          - generic [ref=e67]: F
+        - link "Help" [ref=e68] [cursor=pointer]:
+          - /url: /help
+        - link "Docs" [ref=e69] [cursor=pointer]:
+          - /url: https://resend.com/docs/dashboard/domains/introduction
+      - generic [ref=e70]:
+        - generic [ref=e361]:
+          - generic [ref=e362]:
+            - generic [ref=e363]:
+              - img [ref=e364]
+              - img [ref=e392]
+            - generic [ref=e394]:
+              - text: Domain
+              - heading "marketscoupons.com" [level=1] [ref=e395]
+            - generic [ref=e396]:
+              - button "Open API drawer" [ref=e397] [cursor=pointer]:
+                - img [ref=e399]
+              - button "More actions" [ref=e409] [cursor=pointer]:
+                - img [ref=e410]
+          - generic [ref=e414]:
+            - generic [ref=e415]:
+              - generic [ref=e416]: Created
+              - time [ref=e419]: about 1 month ago
+            - generic [ref=e420]:
+              - generic [ref=e421]: Status
+              - generic [ref=e423]: verified
+            - generic [ref=e424]:
+              - generic [ref=e425]: Provider
+              - generic [ref=e426]:
+                - img [ref=e427]
+                - link "GoDaddy" [ref=e430] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/dnsmanagement?domainName=marketscoupons.com
+            - generic [ref=e431]:
+              - generic [ref=e432]: Region
+              - generic [ref=e433]:
+                - img "sa-east-1" [ref=e434]
+                - generic [ref=e435]:
+                  - text: São Paulo
+                  - generic [ref=e436]: (sa-east-1)
+          - alert [ref=e438]:
+            - img [ref=e440]
+            - paragraph [ref=e446]: "Domain verified: Your domain is ready to send emails."
+        - generic [ref=e448]:
+          - tablist [ref=e449]:
+            - tab "Records" [ref=e450] [cursor=pointer]
+            - tab "Configuration" [selected] [ref=e451] [cursor=pointer]
+          - tabpanel "Configuration" [ref=e452]:
+            - generic [ref=e453]:
+              - heading "Configuration" [level=3] [ref=e456]
+              - generic [ref=e457]:
+                - generic [ref=e458]:
+                  - heading "Enable tracking metrics" [level=2] [ref=e459]
+                  - text: To track clicks and email opens, configure a custom tracking subdomain to let those links match your sending domain and improve deliverability.
+                  - link "Configure" [ref=e461] [cursor=pointer]:
+                    - /url: /domains/14393235-807a-4fdf-b759-cb08c13492a7/tracking
+                - generic [ref=e462]:
+                  - heading "TLS (Transport Layer Security)" [level=2] [ref=e463]
+                  - text: "\"Opportunistic TLS\" means that it always attempts to make a secure connection to the receiving mail server. If it can't establish a secure connection, it sends the message unencrypted. \"Enforced TLS\" on the other hand, requires that the email communication must use TLS no matter what."
+                  - combobox [ref=e465] [cursor=pointer]:
+                    - generic: Opportunistic
+                    - img [ref=e466]
+  - region "Notifications alt+T"
+  - img
+  - alert [ref=e360]: marketscoupons.com · Domains · Resend

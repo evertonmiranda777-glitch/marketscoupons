@@ -1,0 +1,1007 @@
+- generic [active] [ref=e1]:
+  - dialog "This website uses cookies" [ref=e2]:
+    - generic [ref=e3]:
+      - tablist [ref=e5]:
+        - tab "Consent" [selected] [ref=e6] [cursor=pointer]
+        - tab "Details" [ref=e7] [cursor=pointer]
+        - tab "About" [ref=e8] [cursor=pointer]
+      - tabpanel "Consent" [ref=e10]:
+        - generic [ref=e12]:
+          - heading "This website uses cookies" [level=2] [ref=e13]
+          - generic [ref=e14]: This website uses cookies to ensure you get the best experience.
+      - button "OK" [ref=e19] [cursor=pointer]
+  - generic [ref=e21]:
+    - generic [ref=e22]:
+      - generic [ref=e25]:
+        - generic [ref=e29]:
+          - paragraph [ref=e31]:
+            - text: "Existing Customer Promo:"
+            - strong [ref=e32]: 10% OFF
+          - generic [ref=e34] [cursor=pointer]:
+            - button [ref=e36]
+            - paragraph [ref=e38]: "Code: BF10"
+            - img [ref=e41]
+        - generic [ref=e46]:
+          - paragraph [ref=e48]:
+            - text: "New Customer Promo:"
+            - strong [ref=e49]: 15% OFF
+          - generic [ref=e51] [cursor=pointer]:
+            - button [ref=e53]
+            - paragraph [ref=e55]: "Code: NEW15"
+            - img [ref=e58]
+      - navigation [ref=e62]:
+        - generic [ref=e64]:
+          - link [ref=e66] [cursor=pointer]:
+            - /url: ./
+          - generic [ref=e68]:
+            - paragraph [ref=e72] [cursor=pointer]: Como Funciona
+            - link "Trade2Earn" [ref=e76] [cursor=pointer]:
+              - /url: ./trade-to-earn
+              - paragraph [ref=e78]: Trade2Earn
+            - link "FAQ" [ref=e80] [cursor=pointer]:
+              - /url: https://help.brightfunded.com/en/
+              - paragraph [ref=e82]: FAQ
+            - link "Avaliações" [ref=e84] [cursor=pointer]:
+              - /url: ./brightfunded-reviews
+              - paragraph [ref=e86]: Avaliações
+            - paragraph [ref=e90] [cursor=pointer]: Trading
+            - paragraph [ref=e96] [cursor=pointer]: Sobre
+          - generic [ref=e99]:
+            - paragraph [ref=e108] [cursor=pointer]: PT
+            - generic [ref=e115] [cursor=pointer]:
+              - paragraph [ref=e117]: Obter Financiamento
+              - generic [ref=e118]:
+                - img [ref=e121]
+                - img [ref=e125]
+            - paragraph [ref=e132] [cursor=pointer]: Login
+    - generic:
+      - generic:
+        - generic:
+          - paragraph: Formulário de Lead Magnet Aqui
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+    - main [ref=e134]:
+      - generic [ref=e135]:
+        - img "Background circle pattern" [ref=e140]
+        - img "Line Pattern" [ref=e144]
+        - img "Background Illustration" [ref=e148]
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - paragraph [ref=e159]: MetaTrader 5 Disponível
+              - generic [ref=e160]:
+                - generic [ref=e162]:
+                  - heading "FINANCIAMOS TRADERS" [level=1] [ref=e164]
+                  - generic [ref=e166]:
+                    - img "Glowing candlestick chart icon representing market analysis." [ref=e170]
+                    - img "Glowing upward arrow icon symbolizing trading growth or profit." [ref=e174]
+                  - generic [ref=e176]: ATÉ 400K
+                - paragraph [ref=e179]: Prove suas habilidades de trading em nossa avaliação. Seja financiado com até 400K. Mantenha até 100% dos seus lucros — pagos em dinheiro real
+            - generic [ref=e180]:
+              - paragraph [ref=e190]: 15% de Lucro na Fase do Desafio
+              - paragraph [ref=e200]: Pagamentos Garantidos em 24 Horas
+              - paragraph [ref=e210]: Receba Pagamento a Cada 7 Dias
+            - generic [ref=e216] [cursor=pointer]:
+              - paragraph [ref=e218]: Obter Financiamento
+              - generic [ref=e219]:
+                - img [ref=e222]
+                - img [ref=e226]
+          - generic [ref=e230]:
+            - link [ref=e232] [cursor=pointer]:
+              - /url: https://propfirmmatch.com/prop-firms/brightfunded
+              - img [ref=e234]
+            - img [ref=e238]
+            - img [ref=e241]
+        - list [ref=e253]:
+          - listitem [ref=e254]:
+            - generic [ref=e261]:
+              - paragraph [ref=e263]:
+                - generic [ref=e264]: $48,699.77
+              - paragraph [ref=e267]: Ender
+          - listitem [ref=e270]:
+            - generic [ref=e277]:
+              - paragraph [ref=e279]:
+                - generic [ref=e280]: $38,963.33
+              - paragraph [ref=e283]: Abdurrahman
+          - listitem [ref=e286]:
+            - generic [ref=e293]:
+              - paragraph [ref=e295]:
+                - generic [ref=e296]: $40,360.36
+              - paragraph [ref=e299]: Esad
+          - listitem [ref=e302]:
+            - generic [ref=e309]:
+              - paragraph [ref=e311]:
+                - generic [ref=e312]: $19,158.13
+              - paragraph [ref=e315]: Jordy
+          - listitem [ref=e318]:
+            - generic [ref=e325]:
+              - paragraph [ref=e327]:
+                - generic [ref=e328]: $18,547.62
+              - paragraph [ref=e331]: Manjinder
+          - listitem [ref=e334]:
+            - generic [ref=e341]:
+              - paragraph [ref=e343]:
+                - generic [ref=e344]: $18,504.38
+              - paragraph [ref=e347]: Marko
+          - listitem [ref=e350]:
+            - generic [ref=e357]:
+              - paragraph [ref=e359]:
+                - generic [ref=e360]: $17,824.21
+              - paragraph [ref=e363]: David
+          - listitem [ref=e366]:
+            - generic [ref=e373]:
+              - paragraph [ref=e375]:
+                - generic [ref=e376]: $12,888.00
+              - paragraph [ref=e379]: Omid
+          - listitem [ref=e382]:
+            - generic [ref=e389]:
+              - paragraph [ref=e391]:
+                - generic [ref=e392]: $11,737.35
+              - paragraph [ref=e395]: Maarten
+          - listitem [ref=e398]:
+            - generic [ref=e405]:
+              - paragraph [ref=e407]:
+                - generic [ref=e408]: $12,993.94
+              - paragraph [ref=e411]: Matias
+          - listitem [ref=e414]:
+            - generic [ref=e421]:
+              - paragraph [ref=e423]:
+                - generic [ref=e424]: $12,213.05
+              - paragraph [ref=e427]: Braden
+          - listitem [ref=e430]:
+            - generic [ref=e437]:
+              - paragraph [ref=e439]:
+                - generic [ref=e440]: $11,019.13
+              - paragraph [ref=e443]: Susmoko
+          - listitem [ref=e446]:
+            - generic [ref=e453]:
+              - paragraph [ref=e455]:
+                - generic [ref=e456]: $9,237.17
+              - paragraph [ref=e459]: Kyrylo
+          - listitem [ref=e462]:
+            - generic [ref=e469]:
+              - paragraph [ref=e471]:
+                - generic [ref=e472]: $48,699.77
+              - paragraph [ref=e475]: Ender
+          - listitem [ref=e478]:
+            - generic [ref=e485]:
+              - paragraph [ref=e487]:
+                - generic [ref=e488]: $38,963.33
+              - paragraph [ref=e491]: Abdurrahman
+          - listitem [ref=e494]:
+            - generic [ref=e501]:
+              - paragraph [ref=e503]:
+                - generic [ref=e504]: $40,360.36
+              - paragraph [ref=e507]: Esad
+          - listitem [ref=e510]:
+            - generic [ref=e517]:
+              - paragraph [ref=e519]:
+                - generic [ref=e520]: $19,158.13
+              - paragraph [ref=e523]: Jordy
+          - listitem [ref=e526]:
+            - generic [ref=e533]:
+              - paragraph [ref=e535]:
+                - generic [ref=e536]: $18,547.62
+              - paragraph [ref=e539]: Manjinder
+          - listitem [ref=e542]:
+            - generic [ref=e549]:
+              - paragraph [ref=e551]:
+                - generic [ref=e552]: $18,504.38
+              - paragraph [ref=e555]: Marko
+          - listitem [ref=e558]:
+            - generic [ref=e565]:
+              - paragraph [ref=e567]:
+                - generic [ref=e568]: $17,824.21
+              - paragraph [ref=e571]: David
+          - listitem [ref=e574]:
+            - generic [ref=e581]:
+              - paragraph [ref=e583]:
+                - generic [ref=e584]: $12,888.00
+              - paragraph [ref=e587]: Omid
+          - listitem [ref=e590]:
+            - generic [ref=e597]:
+              - paragraph [ref=e599]:
+                - generic [ref=e600]: $11,737.35
+              - paragraph [ref=e603]: Maarten
+          - listitem [ref=e606]:
+            - generic [ref=e613]:
+              - paragraph [ref=e615]:
+                - generic [ref=e616]: $12,993.94
+              - paragraph [ref=e619]: Matias
+          - listitem [ref=e622]:
+            - generic [ref=e629]:
+              - paragraph [ref=e631]:
+                - generic [ref=e632]: $12,213.05
+              - paragraph [ref=e635]: Braden
+          - listitem [ref=e638]:
+            - generic [ref=e645]:
+              - paragraph [ref=e647]:
+                - generic [ref=e648]: $11,019.13
+              - paragraph [ref=e651]: Susmoko
+          - listitem [ref=e654]:
+            - generic [ref=e661]:
+              - paragraph [ref=e663]:
+                - generic [ref=e664]: $9,237.17
+              - paragraph [ref=e667]: Kyrylo
+          - listitem [ref=e670]:
+            - generic [ref=e677]:
+              - paragraph [ref=e679]:
+                - generic [ref=e680]: $48,699.77
+              - paragraph [ref=e683]: Ender
+          - listitem [ref=e686]:
+            - generic [ref=e693]:
+              - paragraph [ref=e695]:
+                - generic [ref=e696]: $38,963.33
+              - paragraph [ref=e699]: Abdurrahman
+          - listitem [ref=e702]:
+            - generic [ref=e709]:
+              - paragraph [ref=e711]:
+                - generic [ref=e712]: $40,360.36
+              - paragraph [ref=e715]: Esad
+          - listitem [ref=e718]:
+            - generic [ref=e725]:
+              - paragraph [ref=e727]:
+                - generic [ref=e728]: $19,158.13
+              - paragraph [ref=e731]: Jordy
+          - listitem [ref=e734]:
+            - generic [ref=e741]:
+              - paragraph [ref=e743]:
+                - generic [ref=e744]: $18,547.62
+              - paragraph [ref=e747]: Manjinder
+          - listitem [ref=e750]:
+            - generic [ref=e757]:
+              - paragraph [ref=e759]:
+                - generic [ref=e760]: $18,504.38
+              - paragraph [ref=e763]: Marko
+          - listitem [ref=e766]:
+            - generic [ref=e773]:
+              - paragraph [ref=e775]:
+                - generic [ref=e776]: $17,824.21
+              - paragraph [ref=e779]: David
+          - listitem [ref=e782]:
+            - generic [ref=e789]:
+              - paragraph [ref=e791]:
+                - generic [ref=e792]: $12,888.00
+              - paragraph [ref=e795]: Omid
+          - listitem [ref=e798]:
+            - generic [ref=e805]:
+              - paragraph [ref=e807]:
+                - generic [ref=e808]: $11,737.35
+              - paragraph [ref=e811]: Maarten
+          - listitem [ref=e814]:
+            - generic [ref=e821]:
+              - paragraph [ref=e823]:
+                - generic [ref=e824]: $12,993.94
+              - paragraph [ref=e827]: Matias
+          - listitem [ref=e830]:
+            - generic [ref=e837]:
+              - paragraph [ref=e839]:
+                - generic [ref=e840]: $12,213.05
+              - paragraph [ref=e843]: Braden
+          - listitem [ref=e846]:
+            - generic [ref=e853]:
+              - paragraph [ref=e855]:
+                - generic [ref=e856]: $11,019.13
+              - paragraph [ref=e859]: Susmoko
+          - listitem [ref=e862]:
+            - generic [ref=e869]:
+              - paragraph [ref=e871]:
+                - generic [ref=e872]: $9,237.17
+              - paragraph [ref=e875]: Kyrylo
+      - generic [ref=e881]:
+        - generic [ref=e885]:
+          - generic [ref=e886]:
+            - generic [ref=e887]:
+              - generic [ref=e888]:
+                - paragraph [ref=e891]: $
+                - paragraph [ref=e894]:
+                  - generic [ref=e895]: "13.5"
+              - paragraph [ref=e898]:
+                - generic [ref=e899]: Milhão+
+            - paragraph [ref=e901]: Pago Aos Traders da BrightFunded
+          - img [ref=e904]
+          - img [ref=e908]
+        - generic [ref=e910]:
+          - generic [ref=e913]:
+            - paragraph [ref=e916]: 27,500+
+            - paragraph [ref=e918]: Traders Ativos
+          - generic [ref=e921]:
+            - paragraph [ref=e924]: 24h
+            - paragraph [ref=e926]: Processamento de Pagamento Garantido
+          - generic [ref=e929]:
+            - paragraph [ref=e932]: 150+
+            - paragraph [ref=e934]: Instrumentos Disponíveis
+      - generic [ref=e936]:
+        - generic [ref=e938]:
+          - generic [ref=e939]:
+            - heading "O que nos separa" [level=2] [ref=e941]
+            - paragraph [ref=e943]:
+              - generic [ref=e944]: Nós Separados
+          - paragraph [ref=e946]: Os principais motivos pelos quais os Traders escolhem negociar com BrightFunded.
+        - generic [ref=e949]:
+          - generic [ref=e950]:
+            - generic [ref=e956]:
+              - paragraph [ref=e958]: 15% de Lucro na Fase do Desafio
+              - paragraph [ref=e960]: Ganhe 15% de participação nos lucros sobre todos os resultados obtidos na Fase de Avaliação!
+            - generic [ref=e965]:
+              - paragraph [ref=e967]: Pagamentos Relâmpago
+              - paragraph [ref=e969]: Aproveite os Pagamentos Mais Rápidos da Indústria — Garantidos em 24 Horas!
+            - generic [ref=e974]:
+              - paragraph [ref=e976]: Pagamentos Semanais
+              - paragraph [ref=e978]: Receba os lucros da sua Conta Financiada semanalmente!
+          - img [ref=e981]
+          - generic [ref=e982]:
+            - generic [ref=e987]:
+              - paragraph [ref=e989]:
+                - text: Escala Ilimitada ->
+                - text: Até 100 Profit Split
+              - paragraph [ref=e991]: Mostre consistência e escala para Unlimited Account Size com Pagamentos de 100%!
+            - generic [ref=e996]:
+              - paragraph [ref=e998]: Trade2Earn
+              - paragraph [ref=e1000]: Ganhe Recompensas de Fidelidade em cada transação que realizar e desbloqueie Avaliações Gratuitas!
+            - generic [ref=e1005]:
+              - paragraph [ref=e1007]: Sem Regras de Consistência
+              - paragraph [ref=e1009]: Comercialize Livremente com Tranquilidade e sem Regras de Consistência a qualquer momento!
+      - generic [ref=e1011]:
+        - generic [ref=e1012]:
+          - paragraph [ref=e1017]:
+            - generic [ref=e1018]: PLATAFORMAS DE TRADING
+          - heading "Plataformas de Trading Disponíveis" [level=2] [ref=e1020]
+        - generic [ref=e1021]:
+          - generic [ref=e1023]:
+            - generic [ref=e1024]:
+              - img [ref=e1027]
+              - paragraph [ref=e1031]:
+                - text: Experimente a Elite Trading com a precisão e velocidade do cTrader.
+                - link "Saiba Mais" [ref=e1032] [cursor=pointer]:
+                  - /url: ./trading-platforms
+            - img "laptop mostrando a plataforma de negociação cTrader" [ref=e1037]
+          - generic [ref=e1039]:
+            - generic [ref=e1040]:
+              - generic [ref=e1041]:
+                - paragraph [ref=e1046]:
+                  - generic [ref=e1047]: MT5
+                - paragraph [ref=e1050]: Novo
+              - paragraph [ref=e1053]:
+                - text: Impulsione Seu Trading com a Velocidade e Confiabilidade do MT5.
+                - link "Saiba Mais" [ref=e1054] [cursor=pointer]:
+                  - /url: ./trading-platforms
+            - img "laptop mostrando a plataforma de negociação MT5" [ref=e1059]
+          - generic [ref=e1061]:
+            - generic [ref=e1062]:
+              - img [ref=e1065]
+              - paragraph [ref=e1069]:
+                - text: Comercialize de Forma Inteligente com as Ferramentas Avançadas & Precisão do DXtrade.
+                - link "Saiba Mais" [ref=e1070] [cursor=pointer]:
+                  - /url: ./trading-platforms
+            - img "laptop mostrando a plataforma de negociação DX Trade" [ref=e1075]
+      - generic [ref=e1077]:
+        - paragraph [ref=e1083]:
+          - generic [ref=e1084]: ESTAMOS EM DESTAQUE EM
+        - generic [ref=e1085]:
+          - link [ref=e1086] [cursor=pointer]:
+            - /url: https://finance.yahoo.com/news/brightfunded-launches-proprietary-backend-dashboard-140000879.html
+          - link [ref=e1088] [cursor=pointer]:
+            - /url: https://www.thewhig.com/newsfile/198434-brightfunded-launches-proprietary-backend-dashboard-technology-a-new-era-in-trading-evaluation
+          - link [ref=e1091] [cursor=pointer]:
+            - /url: https://www.benzinga.com/pressreleases/24/02/37241339/brightfunded-launches-proprietary-backend-dashboard-technology-a-new-era-in-trading-evaluation
+          - link [ref=e1093] [cursor=pointer]:
+            - /url: https://financialpost.com/newsfile/198434-brightfunded-launches-proprietary-backend-dashboard-technology-a-new-era-in-trading-evaluation
+          - link [ref=e1095] [cursor=pointer]:
+            - /url: https://www.digitaljournal.com/pr/news/newsfile/brightfunded-launches-proprietary-backend-dashboard-1611513737.html
+          - link "StreetInsider.com" [ref=e1099] [cursor=pointer]:
+            - /url: https://www.streetinsider.com/Newsfile/BrightFunded+Launches+Proprietary+Backend+Dashbo[%E2%80%A6]echnology%3A+A+New+Era+in+Trading+Evaluation/22808129.html
+            - paragraph [ref=e1101]: StreetInsider.com
+      - generic [ref=e1103]:
+        - generic [ref=e1104]:
+          - paragraph [ref=e1108]:
+            - generic [ref=e1109]: Sua Jornada
+          - generic [ref=e1110]:
+            - heading "Como funciona?" [level=2] [ref=e1112]
+            - paragraph [ref=e1114]: É simples. Nós lhe damos uma conta demo de trading para provar suas habilidades em nossa Avaliação. Após concluir com sucesso a Avaliação, você ganha dinheiro real.
+        - generic [ref=e1115]:
+          - generic [ref=e1116]:
+            - paragraph [ref=e1121]: Passo 1
+            - generic [ref=e1122]:
+              - img "Ilustração BG" [ref=e1126]
+              - img [ref=e1129]
+              - img "avaliação e verificação ilustração" [ref=e1134]
+            - generic [ref=e1135]:
+              - paragraph [ref=e1138]: Fase de Avaliação
+              - generic [ref=e1139]:
+                - paragraph [ref=e1142]: Complete A Avaliação
+                - paragraph [ref=e1145]: Conclui a tua Avaliação selecionada ao atingir os Objetivos de Lucro exigidos, mantendo-te dentro dos limites definidos de Drawdown Diário e Drawdown Total.
+          - img [ref=e1149]
+          - img [ref=e1154]
+          - generic [ref=e1156]:
+            - paragraph [ref=e1161]: Passo 2
+            - img "ilustração mostrando saldo da conta" [ref=e1166]
+            - generic [ref=e1167]:
+              - paragraph [ref=e1170]: Fase Financiada
+              - generic [ref=e1171]:
+                - paragraph [ref=e1174]: Ganhe como um Trader Financiado
+                - paragraph [ref=e1177]: Após concluir a Avaliação, você se torna um Trader Financiado. Você recebe uma nova conta demo de trading onde pode ganhar até 100% dos lucros em dinheiro real.
+          - generic [ref=e1178]:
+            - paragraph [ref=e1183]: Passo 3
+            - img "Imagem de pop up de pagamento" [ref=e1188]
+            - generic [ref=e1190]:
+              - paragraph [ref=e1193]:
+                - generic [ref=e1194]: Pagamento
+              - generic [ref=e1195]:
+                - paragraph [ref=e1198]: Receba Seu Pagamento
+                - paragraph [ref=e1201]: Receba seu Pagamento dos Lucros da sua Conta Financiada em até 7 dias após do seu primeiro trade na sua Conta Financiada. Desfrute de Pagamentos Rápidos através do seu Método de Pagamento preferido.
+      - generic [ref=e1202]:
+        - img "Desfoque de gradiente de fundo" [ref=e1206]
+        - generic [ref=e1209]:
+          - generic [ref=e1210]:
+            - paragraph [ref=e1215]:
+              - generic [ref=e1216]: escolha sua JORNADA
+            - generic [ref=e1217]:
+              - heading "Sua Jornada de Financiamento Começa Aqui" [level=2] [ref=e1219]
+              - paragraph [ref=e1221]: Escolha o plano de conta que melhor se adapta ao seu estilo de negociação, objetivos e preferências pessoais — e Obtenha Financiamento Hoje!
+          - generic [ref=e1224]:
+            - generic [ref=e1225]:
+              - generic [ref=e1226]:
+                - generic [ref=e1227]:
+                  - paragraph [ref=e1233] [cursor=pointer]: 1-Passo
+                  - generic [ref=e1235] [cursor=pointer]:
+                    - generic [ref=e1237]:
+                      - paragraph [ref=e1239]: 2-Passo -
+                      - generic [ref=e1241]:
+                        - paragraph [ref=e1242]: Brilhante
+                        - paragraph: Brilhante
+                    - paragraph [ref=e1245]: Preço mais baixo
+                  - paragraph [ref=e1251] [cursor=pointer]: 2-Passo - Clássico
+                - generic [ref=e1252]:
+                  - paragraph [ref=e1258] [cursor=pointer]: $5,000
+                  - paragraph [ref=e1264] [cursor=pointer]: $10,000
+                  - paragraph [ref=e1270] [cursor=pointer]: $25,000
+                  - paragraph [ref=e1276] [cursor=pointer]: $50,000
+                  - generic [ref=e1278] [cursor=pointer]:
+                    - paragraph [ref=e1281]: Mais Popular
+                    - paragraph [ref=e1285]: $100,000
+                  - paragraph [ref=e1291] [cursor=pointer]: $200,000
+              - img [ref=e1294]
+            - generic [ref=e1295]:
+              - generic [ref=e1297]:
+                - generic [ref=e1298]:
+                  - generic [ref=e1299]:
+                    - img [ref=e1302]
+                    - paragraph [ref=e1305]:
+                      - text: "Existing Customer Promo:"
+                      - strong [ref=e1307]: 10% OFF
+                  - generic [ref=e1309] [cursor=pointer]:
+                    - button [ref=e1311]
+                    - generic [ref=e1312]:
+                      - paragraph [ref=e1314]: "Code: BF10"
+                      - img [ref=e1317]
+                - generic [ref=e1319]:
+                  - generic [ref=e1320]:
+                    - img [ref=e1323]
+                    - paragraph [ref=e1326]:
+                      - text: "New Customer Promo:"
+                      - strong [ref=e1328]: 15% OFF
+                  - generic [ref=e1330] [cursor=pointer]:
+                    - button [ref=e1332]
+                    - generic [ref=e1333]:
+                      - paragraph [ref=e1335]: "Code: NEW15"
+                      - img [ref=e1338]
+              - generic [ref=e1341]:
+                - generic [ref=e1342]:
+                  - generic [ref=e1343]:
+                    - paragraph [ref=e1348]: Passo 1
+                    - paragraph [ref=e1352]: Passo 2
+                    - paragraph [ref=e1356]:
+                      - generic [ref=e1357]: Fase Financiada
+                  - generic [ref=e1358]:
+                    - generic [ref=e1359]:
+                      - generic [ref=e1361]:
+                        - paragraph [ref=e1363]: Período de Trading
+                        - img [ref=e1368] [cursor=pointer]
+                      - paragraph [ref=e1374]: Ilimitado
+                      - paragraph [ref=e1379]: Ilimitado
+                      - paragraph [ref=e1384]: Indefinido
+                    - generic [ref=e1385]:
+                      - generic [ref=e1387]:
+                        - paragraph [ref=e1389]: Min. Trading Days
+                        - img [ref=e1394] [cursor=pointer]
+                      - paragraph [ref=e1400]: 5 Dias
+                      - paragraph [ref=e1405]: 5 Dias
+                      - paragraph [ref=e1410]: "-"
+                    - generic [ref=e1411]:
+                      - generic [ref=e1413]:
+                        - paragraph [ref=e1415]: Perda Máx. Diária
+                        - img [ref=e1420] [cursor=pointer]
+                      - paragraph [ref=e1426]: $5,000
+                      - paragraph [ref=e1431]: $5,000
+                      - paragraph [ref=e1436]: $5,000
+                    - generic [ref=e1437]:
+                      - generic [ref=e1439]:
+                        - paragraph [ref=e1441]: Perda Máxima Geral
+                        - img [ref=e1446] [cursor=pointer]
+                      - paragraph [ref=e1452]: $10,000
+                      - paragraph [ref=e1457]: $10,000
+                      - paragraph [ref=e1462]: $10,000
+                    - generic [ref=e1463]:
+                      - generic [ref=e1465]:
+                        - paragraph [ref=e1467]: Profit Target
+                        - img [ref=e1472] [cursor=pointer]
+                      - paragraph [ref=e1478]: $10,000
+                      - paragraph [ref=e1483]: $5,000
+                      - paragraph [ref=e1488]: "-"
+                    - generic [ref=e1489]:
+                      - generic [ref=e1491]:
+                        - paragraph [ref=e1493]: BrightFunded Tokens
+                        - img [ref=e1498] [cursor=pointer]
+                      - paragraph [ref=e1504]: Sim
+                      - paragraph [ref=e1509]: Sim
+                      - paragraph [ref=e1514]: Sim
+                    - generic [ref=e1515]:
+                      - generic [ref=e1517]:
+                        - paragraph [ref=e1519]: Refundable Fee
+                        - img [ref=e1524] [cursor=pointer]
+                      - paragraph [ref=e1530]: €497
+                      - paragraph [ref=e1535]: Free
+                      - paragraph [ref=e1540]: Free
+                - img [ref=e1543]
+                - generic [ref=e1545]:
+                  - generic [ref=e1546]:
+                    - img [ref=e1549]
+                    - paragraph [ref=e1552]: Sem Regras de Consistência
+                  - generic [ref=e1553]:
+                    - img [ref=e1556]
+                    - paragraph [ref=e1559]: MetaTrader 5 Disponível
+                  - generic [ref=e1560]:
+                    - img [ref=e1563]
+                    - paragraph [ref=e1566]: Suporte Rápido ao Vivo 24/7
+                - generic [ref=e1572]:
+                  - generic [ref=e1573]:
+                    - paragraph [ref=e1575]: $100,000
+                    - paragraph [ref=e1578]: Passo 2 - Clássico
+                  - generic [ref=e1579]:
+                    - generic [ref=e1580]:
+                      - paragraph [ref=e1582]: "Preço:"
+                      - paragraph [ref=e1584]: €497
+                    - generic [ref=e1589] [cursor=pointer]:
+                      - paragraph [ref=e1591]: Obter Financiamento
+                      - generic [ref=e1592]:
+                        - img [ref=e1595]
+                        - img [ref=e1599]
+              - generic [ref=e1601]:
+                - paragraph [ref=e1603]: "Opções de Pagamento:"
+                - generic [ref=e1604]:
+                  - img [ref=e1609]
+                  - img [ref=e1614]
+                  - paragraph [ref=e1626]:
+                    - generic [ref=e1627]: +
+      - generic [ref=e1629]:
+        - generic [ref=e1630]:
+          - paragraph [ref=e1635]:
+            - generic [ref=e1636]: NOSSOS BENEFÍCIOS
+          - generic [ref=e1637]:
+            - heading "Por Que os Traders Amam BrightFunded?" [level=2] [ref=e1639]
+            - paragraph [ref=e1641]: BrightFunded oferece a experiência de prop trading mais bem avaliada da indústria.
+        - generic [ref=e1642]:
+          - generic [ref=e1643]:
+            - generic [ref=e1653]:
+              - paragraph [ref=e1656]: Autêntica Expertise em Trading
+              - paragraph [ref=e1659]: BrightFunded é liderado e orientado por Profissionais de Bancos Centrais, Principais Brokers e Top Prop Firms.
+            - generic [ref=e1669]:
+              - paragraph [ref=e1672]: Spread Competitivo & Alta Alavancagem
+              - paragraph [ref=e1674]: Negocie com spreads a partir de 0.0 Pips e até 1:100 de Alavancagem.
+          - generic [ref=e1675]:
+            - generic [ref=e1699]:
+              - paragraph [ref=e1702]: Multi-Asset Trading
+              - paragraph [ref=e1704]: Negocie forex, ativos digitais, índices e commodities com precisão.
+            - generic [ref=e1732]:
+              - paragraph [ref=e1735]: Melhores Plataformas de Trading
+              - paragraph [ref=e1737]:
+                - text: Comercie nas plataformas de trading mais populares do setor — incluindo
+                - strong [ref=e1738]: MetaTrader 5.
+            - generic [ref=e1744]:
+              - paragraph [ref=e1747]: Suporte Rápido ao Vivo 24/7
+              - paragraph [ref=e1749]: Suporte Pessoal ao Vivo 24/7 com respostas em segundos.
+      - generic [ref=e1752]:
+        - generic [ref=e1753]:
+          - img "Mapa mundial mostrando a localização do escritório da brightfunded" [ref=e1758]
+          - generic [ref=e1760]:
+            - generic [ref=e1761]:
+              - paragraph [ref=e1765]:
+                - generic [ref=e1766]: Equipe Global
+              - generic [ref=e1767]:
+                - heading "Presença Global, Equipe Dedicada" [level=2] [ref=e1769]
+                - paragraph [ref=e1772]:
+                  - text: BrightFunded é impulsionada por uma equipe global de mais de 30 profissionais dedicados com vasta experiência em Bancos Centrais e nas principais trading firms do mundo.
+                  - link "Descubra mais sobre nós." [ref=e1773] [cursor=pointer]:
+                    - /url: ./about
+            - generic [ref=e1774]:
+              - generic [ref=e1775]:
+                - paragraph [ref=e1778]:
+                  - generic [ref=e1779]: 30+
+                - paragraph [ref=e1782]: Profissionais Dedicados
+              - generic [ref=e1783]:
+                - paragraph [ref=e1786]:
+                  - generic [ref=e1787]: "3"
+                - paragraph [ref=e1790]: Escritórios Globais
+              - generic [ref=e1791]:
+                - paragraph [ref=e1794]:
+                  - generic [ref=e1795]: 24/7
+                - paragraph [ref=e1798]: Suporte ao Cliente
+        - generic [ref=e1799]:
+          - paragraph [ref=e1809]: "Sede: Dubai, Emirados Árabes Unidos"
+          - generic [ref=e1810]:
+            - generic [ref=e1814] [cursor=pointer]:
+              - img [ref=e1817]
+              - paragraph [ref=e1820]: O Escritório Satélite de Varsóvia, Polônia, é gerido pelo Parceiro Oficial da BrightFunded na Polônia.
+            - paragraph [ref=e1830]: "Escritórios Satélites: Amsterdã, Países Baixos & Varsóvia, Polônia (Warsaw UNIT)"
+          - paragraph [ref=e1840]: Nosso Conselho de Assessores
+      - generic [ref=e1843]:
+        - paragraph [ref=e1847]:
+          - generic [ref=e1848]: PAGAMENTOS
+        - generic [ref=e1849]:
+          - heading "Alcançar o Sucesso Financeiro" [level=2] [ref=e1851]
+          - paragraph [ref=e1853]: Confira alguns Pagamentos incríveis dos traders da BrightFunded! Você também poderia ser destacado aqui!
+      - generic [ref=e1875]:
+        - generic [ref=e1876]:
+          - paragraph [ref=e1881]:
+            - generic [ref=e1882]: Pagamentos Rápidos
+          - generic [ref=e1883]:
+            - heading "Pagamentos Relâmpago" [level=2] [ref=e1885]
+            - paragraph [ref=e1887]: Experimente a velocidade e confiabilidade de nossos famosos Pagamentos Ultra-Rápidos, preferidos por inúmeros traders em todo o mundo. Rápido, Fácil e Sem Complicações para você como trader.
+        - generic [ref=e1888]:
+          - generic [ref=e1889]:
+            - generic [ref=e1890]:
+              - img "visual mostrando lucros disponíveis para retirada" [ref=e1895]
+              - generic [ref=e1896]:
+                - paragraph [ref=e1899]: Processo Simples de Pagamento
+                - paragraph [ref=e1902]: Peça facilmente seu pagamento no seu dashboard.
+            - generic [ref=e1903]:
+              - img "3d moeda usdc" [ref=e1908]
+              - generic [ref=e1909]:
+                - paragraph [ref=e1912]: Pagamento de Ativo Digital
+                - paragraph [ref=e1915]: Nós apoiamos Pagamentos diretos via USDC, recebidos instantaneamente na sua carteira.
+            - generic [ref=e1916]:
+              - img "homem segurando seu laptop" [ref=e1921]
+              - generic [ref=e1926]:
+                - paragraph [ref=e1929]: Transferência Bancária
+                - paragraph [ref=e1932]: Receba pagamentos através de nossos Parceiros Bancários Confiáveis.
+          - generic [ref=e1939]:
+            - generic [ref=e1940]:
+              - paragraph [ref=e1943]:
+                - generic [ref=e1944]: 4h
+              - paragraph [ref=e1947]: Tempo Médio de Pagamento
+            - generic [ref=e1948]:
+              - paragraph [ref=e1951]:
+                - generic [ref=e1952]: 100%
+              - paragraph [ref=e1955]: Profit Split
+            - generic [ref=e1956]:
+              - paragraph [ref=e1959]:
+                - generic [ref=e1960]: 24/7
+              - paragraph [ref=e1963]: Suporte ao Cliente
+          - generic [ref=e1984]:
+            - generic [ref=e1985]:
+              - generic [ref=e1986]:
+                - paragraph [ref=e1989]: $
+                - paragraph [ref=e1992]:
+                  - generic [ref=e1993]: "13.5"
+              - paragraph [ref=e1996]:
+                - generic [ref=e1997]: Milhão+
+            - generic [ref=e1998]:
+              - paragraph [ref=e2001]: Total de Pagamentos
+              - paragraph [ref=e2004]: Junte-se a milhares de traders que já receberam um Pagamento da BrightFunded . O seu pode ser o próximo!
+      - generic [ref=e2010]:
+        - generic [ref=e2012]:
+          - paragraph [ref=e2016]: AVALIAÇÕES
+          - generic [ref=e2017]:
+            - heading "Ouça Dos Nossos Traders" [level=2] [ref=e2019]
+            - paragraph [ref=e2021]: Traders reais. Histórias reais. Veja o que traders reais como você estão dizendo sobre nossa Prop Firm Líder na Indústria.
+        - generic [ref=e2030]:
+          - link "For start they don't have... What can I say other than that this prop firm blows the rest out of the park. With extensive experience of prop firms over the last few years, I've not found one that even comes close to this one and it goes to show just how disreputable alot of the others are when Brightfunded does what they do. Phase 2 credentials immediately upon passing phase 1, funded account credentials the next day and most importantly… Robert W" [ref=e2032] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/reviews/683fa788287d400e8c0ddd43
+            - generic [ref=e2036]:
+              - img [ref=e2039]
+              - generic [ref=e2041]:
+                - paragraph [ref=e2043]: For start they don't have...
+                - paragraph [ref=e2046]: What can I say other than that this prop firm blows the rest out of the park. With extensive experience of prop firms over the last few years, I've not found one that even comes close to this one and it goes to show just how disreputable alot of the others are when Brightfunded does what they do. Phase 2 credentials immediately upon passing phase 1, funded account credentials the next day and most importantly…
+              - paragraph [ref=e2050]: Robert W
+          - link "Prop firm that doesn’t try to scam you Perfect example of a prop firm that is made for traders. No scammy trading rules, everything is made clear on their website. 8% profit target with a max daily loss of 5% and an overall max loss of 10% is perfectly reasonable. Also it is a fixed max drawdown, not a trailing drawdown like some other shitty prop firms. The few rules Brightfunded has just make sense to improve your risk management.... Marius" [ref=e2055] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/users/5e9f289cfa5117760e5cd5e0
+            - generic [ref=e2059]:
+              - img [ref=e2062]
+              - generic [ref=e2064]:
+                - paragraph [ref=e2066]: Prop firm that doesn’t try to scam you
+                - paragraph [ref=e2069]: Perfect example of a prop firm that is made for traders. No scammy trading rules, everything is made clear on their website. 8% profit target with a max daily loss of 5% and an overall max loss of 10% is perfectly reasonable. Also it is a fixed max drawdown, not a trailing drawdown like some other shitty prop firms. The few rules Brightfunded has just make sense to improve your risk management....
+              - paragraph [ref=e2073]: Marius
+          - link "Exceptional Experience with Bright Funded I’ve been trading with “Bright Funded” for the past three months, and I’m thoroughly impressed. Their platform is transparent, their payouts are reliable, and they’ve stayed true to every promise they’ve made. Zero complaints so far just a seamless, professional experience. For aspiring traders looking for a trustworthy prop firm, Bright Funded... Irfan Haider" [ref=e2078] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/reviews/681319f382544527e7f74034
+            - generic [ref=e2082]:
+              - img [ref=e2085]
+              - generic [ref=e2087]:
+                - paragraph [ref=e2089]: Exceptional Experience with Bright Funded
+                - paragraph [ref=e2092]: I’ve been trading with “Bright Funded” for the past three months, and I’m thoroughly impressed. Their platform is transparent, their payouts are reliable, and they’ve stayed true to every promise they’ve made. Zero complaints so far just a seamless, professional experience. For aspiring traders looking for a trustworthy prop firm, Bright Funded...
+              - paragraph [ref=e2096]: Irfan Haider
+          - 'link "First withdrawal: One of the best in the market Hello Brightfunded team, I just want to take a moment to say thank you for the perfect service you provide. The customer support and there speed are on another level in the Prop Firm industry. So fast and willing to help!!!! I have bought 5 challenges and got 2 payouts. All my payouts are paid smooth and within 8 hours from request. I believe brightfunded will be a top player soon!!!! Enz prop trades" [ref=e2101] [cursor=pointer]':
+            - /url: https://www.trustpilot.com/reviews/67e72248ecb6d2c0e289933a
+            - generic [ref=e2105]:
+              - img [ref=e2108]
+              - generic [ref=e2110]:
+                - paragraph [ref=e2112]: "First withdrawal: One of the best in the market"
+                - paragraph [ref=e2115]: Hello Brightfunded team, I just want to take a moment to say thank you for the perfect service you provide. The customer support and there speed are on another level in the Prop Firm industry. So fast and willing to help!!!! I have bought 5 challenges and got 2 payouts. All my payouts are paid smooth and within 8 hours from request. I believe brightfunded will be a top player soon!!!!
+              - paragraph [ref=e2119]: Enz prop trades
+          - link "huge thank you to BrightFunded for my… huge thank you to BrightFunded for my 6th payout from the same account! Their efficiency and reliability continue to impress me. I received my payout in less than 14 hours, proving once again that they are one of the best in the industry. BrightFunded is truly setting the standard for prop firms! Highly recommended💙💯 Asiya Haruna Muhammad" [ref=e2124] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/reviews/67d5d3fdf3f6ebbbe0c504cc
+            - generic [ref=e2128]:
+              - img [ref=e2131]
+              - generic [ref=e2133]:
+                - paragraph [ref=e2135]: huge thank you to BrightFunded for my…
+                - paragraph [ref=e2138]: huge thank you to BrightFunded for my 6th payout from the same account! Their efficiency and reliability continue to impress me. I received my payout in less than 14 hours, proving once again that they are one of the best in the industry. BrightFunded is truly setting the standard for prop firms! Highly recommended💙💯
+              - paragraph [ref=e2142]: Asiya Haruna Muhammad
+      - generic [ref=e2150]:
+        - generic [ref=e2152]:
+          - paragraph [ref=e2156]:
+            - generic [ref=e2157]: Testemunhos
+          - generic [ref=e2158]:
+            - heading "Testemunhos em Vídeo" [level=2] [ref=e2160]
+            - paragraph [ref=e2162]: Não confie apenas em avaliações escritas. Assista e ouça testemunhos em vídeo de verdadeiros traders da BrightFunded que estão prosperando conosco.
+        - generic [ref=e2171]:
+          - generic [ref=e2179] [cursor=pointer]:
+            - paragraph [ref=e2182]: Florian
+            - paragraph [ref=e2187]: $105,002.21
+          - generic [ref=e2197] [cursor=pointer]:
+            - paragraph [ref=e2200]: Jordy
+            - paragraph [ref=e2205]: $24,827.20
+          - generic [ref=e2215] [cursor=pointer]:
+            - paragraph [ref=e2218]: Emre
+            - paragraph [ref=e2223]: $6,067.04
+          - generic [ref=e2233] [cursor=pointer]:
+            - paragraph [ref=e2236]: Dave
+            - paragraph [ref=e2241]: $11,827.43
+          - generic [ref=e2251] [cursor=pointer]:
+            - paragraph [ref=e2254]: Bahadir
+            - paragraph [ref=e2259]: $11,858.71
+          - generic [ref=e2269] [cursor=pointer]:
+            - paragraph [ref=e2272]: Frandy
+            - paragraph [ref=e2277]: $5,959.37
+          - generic [ref=e2287] [cursor=pointer]:
+            - paragraph [ref=e2290]: Gijs
+            - paragraph [ref=e2295]: $7,920.14
+          - generic [ref=e2305] [cursor=pointer]:
+            - paragraph [ref=e2308]: Daniel
+            - paragraph [ref=e2313]: $9,576.27
+          - generic [ref=e2323] [cursor=pointer]:
+            - paragraph [ref=e2326]: Mohammed
+            - paragraph [ref=e2331]: $4,254.82
+          - generic [ref=e2341] [cursor=pointer]:
+            - paragraph [ref=e2344]: Ahmed
+            - paragraph [ref=e2349]: $4,125.75
+          - generic [ref=e2359] [cursor=pointer]:
+            - paragraph [ref=e2362]: Gary
+            - paragraph [ref=e2367]: $829.68
+          - generic [ref=e2377] [cursor=pointer]:
+            - paragraph [ref=e2380]: Muhammed
+            - paragraph [ref=e2385]: $920,47
+          - generic [ref=e2395] [cursor=pointer]:
+            - paragraph [ref=e2398]: Indy
+            - paragraph [ref=e2403]: $674.47
+      - generic [ref=e2408]:
+        - generic [ref=e2409]:
+          - generic [ref=e2411]:
+            - generic [ref=e2412]:
+              - img [ref=e2415]
+              - generic [ref=e2417]:
+                - generic [ref=e2418]:
+                  - heading "Podcast" [level=2] [ref=e2421]
+                  - paragraph [ref=e2424]:
+                    - generic [ref=e2425]: Entrevistas
+                - paragraph [ref=e2428]: Todo mês, nosso Podcast Traders Roundtable reúne figuras de destaque do mundo do trading para discutir as últimas percepções, tendências e estratégias do setor. Confira nossos últimos episódios aqui!
+            - generic [ref=e2429]:
+              - link "Assista Agora" [ref=e2431] [cursor=pointer]:
+                - /url: https://www.youtube.com/@BrightFunded
+                - generic [ref=e2434]:
+                  - paragraph [ref=e2436]: Assista Agora
+                  - img [ref=e2439]
+              - link "Ouça Agora" [ref=e2443] [cursor=pointer]:
+                - /url: https://open.spotify.com/show/12Kz6Zf2iMcbAwQQ02uprT?si=38a0f8be8daa4be3
+                - generic [ref=e2444]:
+                  - img [ref=e2447]
+                  - paragraph [ref=e2450]: Ouça Agora
+          - link [ref=e2456] [cursor=pointer]:
+            - /url: https://www.youtube.com/watch?v=t2rzLdfFHdc
+        - generic [ref=e2465]:
+          - generic [ref=e2466]:
+            - heading "Episódios" [level=3] [ref=e2469]
+            - link "Ver Mais" [ref=e2471] [cursor=pointer]:
+              - /url: https://www.youtube.com/@BrightFunded
+              - paragraph [ref=e2474]: Ver Mais
+          - generic [ref=e2479]:
+            - link [ref=e2482] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=wLAWzw3T7lU
+            - link [ref=e2490] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=cOgwXiJcDBg
+            - link [ref=e2498] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=rFUJxlTc-ME
+      - generic [ref=e2505]:
+        - generic [ref=e2506]:
+          - generic [ref=e2507]:
+            - paragraph [ref=e2511]:
+              - generic [ref=e2512]: Trade2Earn
+            - generic [ref=e2513]:
+              - heading "Descubra Nosso Programa de Fidelidade" [level=2] [ref=e2515]
+              - paragraph [ref=e2517]: "Na BrightFunded, acreditamos que você deve ser recompensado por seu compromisso e dedicação diários ao trading, independentemente de seus resultados. É por isso que desenvolvemos o conceito inovador de fidelidade: Trade2Earn."
+          - generic [ref=e2518]:
+            - paragraph [ref=e2525] [cursor=pointer]: Obter Financiamento
+            - link "Saiba mais" [ref=e2530] [cursor=pointer]:
+              - /url: ./trade-to-earn
+              - paragraph [ref=e2533]: Saiba mais
+        - generic [ref=e2539]:
+          - generic [ref=e2545]:
+            - paragraph [ref=e2548]: Trade
+            - paragraph [ref=e2551]: Cada negociação, lucrativa ou perdedora, gera BrightFunded Tokens como recompensa. Cada fase do processo de Avaliação participa do Trade2Earn.
+          - img [ref=e2555]
+          - img [ref=e2560]
+          - generic [ref=e2567]:
+            - paragraph [ref=e2570]: Ganhe
+            - paragraph [ref=e2573]: À medida que você navega na sua jornada de trading, os BrightFunded Tokens acumulam-se com base no volume (lotes) que você negocia, acumulando-se em sua carteira no dashboard.
+          - generic [ref=e2579]:
+            - paragraph [ref=e2582]: Gastar
+            - paragraph [ref=e2585]: Use seus BrightFunded Tokens em vantagens de trading para aumentar seus Pagamentos ou aproveite Avaliações Gratuitas! Pronto para elevar sua jornada?
+      - generic [ref=e2590]:
+        - generic [ref=e2591]:
+          - img "imagem de mídia social de membro da equipe" [ref=e2599]
+          - img "Imagem de mídia social dos membros da equipe" [ref=e2605]
+        - generic [ref=e2606]:
+          - generic [ref=e2607]:
+            - paragraph [ref=e2610]: Seja Parte Da Revolução E Junte-se Ao Nosso Equipe Global
+            - generic [ref=e2625]:
+              - paragraph [ref=e2628]:
+                - generic [ref=e2629]: 30+
+              - paragraph [ref=e2632]: Profissionais Dedicados em Todo o Mundo
+          - link "Sobre BrightFunded" [ref=e2635] [cursor=pointer]:
+            - /url: ./about
+            - paragraph [ref=e2640]: Sobre BrightFunded
+      - generic [ref=e2646]:
+        - img "Imagem de fundo de torus circular" [ref=e2652]
+        - generic [ref=e2654]:
+          - generic [ref=e2655]:
+            - heading "Obtenha Financiamento com" [level=3] [ref=e2658]
+            - heading "a Prop Firm Mais Confiável" [level=3] [ref=e2662]:
+              - generic [ref=e2663]: a Prop Firm Mais Confiável
+          - generic [ref=e2669] [cursor=pointer]:
+            - paragraph [ref=e2671]: Obter Financiamento
+            - generic [ref=e2672]:
+              - img [ref=e2675]
+              - img [ref=e2679]
+    - contentinfo [ref=e2684]:
+      - generic [ref=e2685]:
+        - img [ref=e2688]
+        - generic [ref=e2689]:
+          - generic [ref=e2690]:
+            - generic [ref=e2691]:
+              - img [ref=e2694]
+              - generic [ref=e2696]:
+                - link [ref=e2698] [cursor=pointer]:
+                  - /url: https://x.com/BrightFunded
+                - link [ref=e2701] [cursor=pointer]:
+                  - /url: https://www.instagram.com/brightfunded
+                - link [ref=e2704] [cursor=pointer]:
+                  - /url: https://www.facebook.com/BrightFunded/
+                - link [ref=e2707] [cursor=pointer]:
+                  - /url: https://discord.com/invite/fKzFHQKD4s
+                - link [ref=e2710] [cursor=pointer]:
+                  - /url: https://t.me/BrightFundedOfficialTelegram
+                - link [ref=e2713] [cursor=pointer]:
+                  - /url: https://www.youtube.com/@BrightFunded
+                - link [ref=e2716] [cursor=pointer]:
+                  - /url: https://www.tiktok.com/@brightfunded.com
+                - link [ref=e2719] [cursor=pointer]:
+                  - /url: https://www.reddit.com/user/BrightFunded
+                  - img [ref=e2722]
+            - link "Suporte no Whatsapp" [ref=e2725] [cursor=pointer]:
+              - /url: https://api.whatsapp.com/message/L64CBBD57QZTM1?autoload=1&app_absent=0
+              - generic [ref=e2726]:
+                - img [ref=e2729]
+                - paragraph [ref=e2732]: Suporte no Whatsapp
+          - generic [ref=e2733]:
+            - generic [ref=e2734]:
+              - paragraph [ref=e2736]: Suporte
+              - link "Whatsapp" [ref=e2738] [cursor=pointer]:
+                - /url: https://api.whatsapp.com/message/L64CBBD57QZTM1?autoload=1&app_absent=0
+                - paragraph [ref=e2740]: Whatsapp
+              - link "Contato" [ref=e2742] [cursor=pointer]:
+                - /url: ./contact
+                - paragraph [ref=e2744]: Contato
+              - link "Blog" [ref=e2746] [cursor=pointer]:
+                - /url: ./blog
+                - paragraph [ref=e2748]: Blog
+            - generic [ref=e2749]:
+              - paragraph [ref=e2751]: Empresa
+              - link "Trade2Earn" [ref=e2753] [cursor=pointer]:
+                - /url: ./trade-to-earn
+                - paragraph [ref=e2755]: Trade2Earn
+              - link "Sobre Nós" [ref=e2757] [cursor=pointer]:
+                - /url: ./about
+                - paragraph [ref=e2759]: Sobre Nós
+              - link "Our Partners" [ref=e2761] [cursor=pointer]:
+                - /url: ./official-partners
+                - paragraph [ref=e2763]: Our Partners
+            - generic [ref=e2764]:
+              - paragraph [ref=e2766]: Links Principais
+              - paragraph [ref=e2768]:
+                - link "Programa de Afiliados" [ref=e2769] [cursor=pointer]:
+                  - /url: ./affiliate-program
+              - link "Careers" [ref=e2771] [cursor=pointer]:
+                - /url: ./career
+                - paragraph [ref=e2773]: Careers
+              - link "FAQ" [ref=e2775] [cursor=pointer]:
+                - /url: https://help.brightfunded.com/en/
+                - paragraph [ref=e2777]: FAQ
+            - generic [ref=e2778]:
+              - paragraph [ref=e2780]: Prop Firms
+              - paragraph [ref=e2782]:
+                - link "Melhores Prop Firms" [ref=e2783] [cursor=pointer]:
+                  - /url: ./best-prop-firms
+              - paragraph [ref=e2785]:
+                - link "Melhores Forex Prop Firms" [ref=e2786] [cursor=pointer]:
+                  - /url: ./best-forex-prop-firms
+              - paragraph [ref=e2788]:
+                - link "Melhores Prop Firms de Ativos Digitais" [ref=e2789] [cursor=pointer]:
+                  - /url: ./best-crypto-prop-firms
+        - generic [ref=e2790]:
+          - generic [ref=e2791]:
+            - paragraph [ref=e2793]: © 2025 BrightFunded
+            - generic [ref=e2794]:
+              - paragraph [ref=e2796]:
+                - link "Termos & Condições" [ref=e2797] [cursor=pointer]:
+                  - /url: ./terms-conditions
+              - paragraph [ref=e2799]:
+                - link "Política de Privacidade" [ref=e2800] [cursor=pointer]:
+                  - /url: ./privacy-policy
+          - paragraph [ref=e2804] [cursor=pointer]: Todas as informações fornecidas neste site destinam-se exclusivamente a fins de estudo relacionados ao trading nos mercados financeiros e não servem de forma alguma como uma recomendação específica de investimento, recomendação de negócios, análise de oportunidade de investimento ou recomendação geral semelhante em relação ao comércio de instrumentos de investimento.
+  - img [ref=e2811]
+  - img [ref=e2813]
+  - img [ref=e2814]
+  - img [ref=e2817]
+  - img [ref=e2818]
+  - img [ref=e2835]
+  - img [ref=e2839]
+  - img [ref=e2867]
+  - img [ref=e2897]
+  - img [ref=e2925]
+  - img [ref=e2953]
+  - img [ref=e2981]
+  - img [ref=e2983]
+  - img [ref=e2986]
+  - img [ref=e2991]
+  - img [ref=e2993]
+  - img [ref=e2998]
+  - img [ref=e3008]
+  - img [ref=e3012]
+  - img [ref=e3015]
+  - img [ref=e3016]
+  - img [ref=e3017]
+  - img [ref=e3019]
+  - img [ref=e3023]
+  - img [ref=e3027]
+  - img [ref=e3031]
+  - img [ref=e3033]
+  - img [ref=e3037]
+  - img [ref=e3042]
+  - img [ref=e3043]
+  - img [ref=e3045]
+  - img [ref=e3047]
+  - img [ref=e3049]
+  - img [ref=e3053]
+  - img [ref=e3056]
+  - img [ref=e3072]
+  - img [ref=e3080]
+  - img [ref=e3084]
+  - img [ref=e3086]
+  - img [ref=e3087]
+  - img [ref=e3102]
+  - img [ref=e3106]
+  - img [ref=e3108]
+  - iframe [ref=e3110]:
+    

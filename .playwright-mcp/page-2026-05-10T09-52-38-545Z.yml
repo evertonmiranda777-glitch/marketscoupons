@@ -1,0 +1,238 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "Markets Coupons" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - link "← العودة إلى الرئيسية" [ref=e4] [cursor=pointer]:
+      - /url: /
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]: مقارنة شركات Prop Firms 2026
+      - heading "FTMO vs FundedNext" [level=1] [ref=e8]:
+        - text: FTMO
+        - generic [ref=e9]: vs
+        - text: FundedNext
+      - paragraph [ref=e10]: تحليل جنبًا إلى جنب لشركتي Prop Firms. حساب البدء من 55.99 دولارًا.
+    - generic [ref=e11]:
+      - article [ref=e12]:
+        - img "شعار FTMO" [ref=e13]
+        - generic [ref=e14]: FTMO
+        - generic [ref=e15]: Forex
+        - generic [ref=e16]: 19% OFF
+        - generic [ref=e17]: best value
+        - generic [ref=e18]:
+          - generic [ref=e19]: Forex
+          - generic [ref=e20]: Free Trial
+          - generic [ref=e21]: 90% Split
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - strong [ref=e24]: 90%
+            - text: split
+          - generic [ref=e25]:
+            - strong [ref=e26]: 79.00 دولار
+            - text: سعر البدء
+          - strong [ref=e28]: 4.8 ★
+        - link "الوصول إلى FTMO ←" [ref=e29] [cursor=pointer]:
+          - /url: https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP
+      - generic [ref=e30]: VS
+      - article [ref=e31]:
+        - img "شعار FundedNext" [ref=e32]
+        - generic [ref=e33]: FundedNext
+        - generic [ref=e34]: Forex/Futuros
+        - generic [ref=e35]: 40% OFF
+        - generic [ref=e36]: تحدي واحد
+        - generic [ref=e37]:
+          - generic [ref=e38]: Forex
+          - generic [ref=e39]: Futuros
+          - generic [ref=e40]: Payout 24h
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - strong [ref=e43]: 95%
+            - text: split
+          - generic [ref=e44]:
+            - strong [ref=e45]: 55.99 دولار
+            - text: سعر البدء
+          - strong [ref=e47]: 4.5 ★
+        - link "الوصول إلى FundedNext ←" [ref=e48] [cursor=pointer]:
+          - /url: https://fundednext.com/?fpr=everton33
+        - generic [ref=e49]:
+          - text: "كوبون:"
+          - strong [ref=e50]: APRIL20
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e53]: ★★★★½
+        - generic [ref=e54]:
+          - generic [ref=e55]: "4.8"
+          - generic [ref=e56]: 41.073 مراجعة · Trustpilot
+      - generic [ref=e57]:
+        - generic [ref=e58]: ★★★★½
+        - generic [ref=e59]:
+          - generic [ref=e60]: "4.5"
+          - generic [ref=e61]: 63.736 مراجعة · Trustpilot
+    - generic [ref=e62]:
+      - generic [ref=e63]: جنبًا إلى جنب
+      - heading "FTMO vs FundedNext — مقارنة" [level=2] [ref=e64]
+      - paragraph [ref=e65]: كل فئة تُظهر الفائز بين الشركتين.
+    - generic [ref=e66]:
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - text: الخصم
+          - generic [ref=e69]: مقدار الخصم من السعر الأصلي
+        - generic [ref=e70]:
+          - generic [ref=e72]: 19% best value
+          - generic [ref=e73]: vs
+          - generic [ref=e74]:
+            - generic [ref=e75]: 40% تحدي واحد
+            - generic [ref=e76]: ✓ الفائز
+      - generic [ref=e77]:
+        - generic [ref=e78]:
+          - text: الحساب الأصغر
+          - generic [ref=e79]: السعر النهائي مع الكوبون (أرخص سعر دخول)
+        - generic [ref=e80]:
+          - generic [ref=e82]: $79.00
+          - generic [ref=e83]: vs
+          - generic [ref=e84]:
+            - generic [ref=e85]: $55.99
+            - generic [ref=e86]: ✓ الفائز
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - text: Profit Split
+          - generic [ref=e89]: كم يبقى من الربح للمتداول
+        - generic [ref=e90]:
+          - generic [ref=e92]: 90%
+          - generic [ref=e93]: vs
+          - generic [ref=e95]: 95%
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - text: Drawdown
+          - generic [ref=e98]: نوع حد الخسارة
+        - generic [ref=e99]:
+          - generic [ref=e101]: Fixed
+          - generic [ref=e102]: vs
+          - generic [ref=e104]: Fixed
+      - generic [ref=e105]:
+        - generic [ref=e106]: DD Limit
+        - generic [ref=e107]:
+          - generic [ref=e109]: "-3% / -10%"
+          - generic [ref=e110]: vs
+          - generic [ref=e112]: "-5% / -10%"
+      - generic [ref=e113]:
+        - generic [ref=e114]: Profit Target
+        - generic [ref=e115]:
+          - generic [ref=e117]: 10%
+          - generic [ref=e118]: vs
+          - generic [ref=e120]: 8% / 5%
+      - generic [ref=e121]:
+        - generic [ref=e122]: Min. Days
+        - generic [ref=e123]:
+          - generic [ref=e125]: —
+          - generic [ref=e126]: vs
+          - generic [ref=e128]: "5"
+      - generic [ref=e129]:
+        - generic [ref=e130]: News Trading
+        - generic [ref=e131]:
+          - generic [ref=e133]: ✗ محظور
+          - generic [ref=e134]: vs
+          - generic [ref=e135]:
+            - generic [ref=e136]: ✓ مسموح به
+            - generic [ref=e137]: ✓ الفائز
+      - generic [ref=e138]:
+        - generic [ref=e139]: Day-1 Payout
+        - generic [ref=e140]:
+          - generic [ref=e142]: ✗ لا
+          - generic [ref=e143]: vs
+          - generic [ref=e144]:
+            - generic [ref=e145]: ✓ نعم
+            - generic [ref=e146]: ✓ الفائز
+      - generic [ref=e147]:
+        - generic [ref=e148]: Scaling
+        - generic [ref=e149]:
+          - generic [ref=e151]: حتى 2 مليون دولار
+          - generic [ref=e152]: vs
+          - generic [ref=e154]: حتى 4 مليون دولار
+      - generic [ref=e155]:
+        - generic [ref=e156]: المنصات
+        - generic [ref=e157]:
+          - generic [ref=e159]: MT4, MT5, cTrader
+          - generic [ref=e160]: vs
+          - generic [ref=e162]: MT4, MT5, cTrader...
+      - generic [ref=e163]:
+        - generic [ref=e164]:
+          - text: Trustpilot
+          - generic [ref=e165]: السمعة الحقيقية
+        - generic [ref=e166]:
+          - generic [ref=e167]:
+            - generic [ref=e168]: 4.8 (41.073)
+            - generic [ref=e169]: ✓ الفائز
+          - generic [ref=e170]: vs
+          - generic [ref=e172]: 4.5 (63.736)
+    - generic [ref=e173]:
+      - generic [ref=e174]: من يجب أن يختار
+      - heading "لمن كل شركة أفضل" [level=2] [ref=e175]
+    - generic [ref=e176]:
+      - article [ref=e177]:
+        - generic [ref=e178]:
+          - text: اختر
+          - generic [ref=e179]: FTMO
+          - text: إذا كنت...
+        - list [ref=e180]:
+          - listitem [ref=e181]: ✓ تقدر سمعة Trustpilot (4.8 ★)
+      - article [ref=e182]:
+        - generic [ref=e183]:
+          - text: اختر
+          - generic [ref=e184]: FundedNext
+          - text: إذا كنت...
+        - list [ref=e185]:
+          - listitem [ref=e186]: ✓ تحتاج إلى payout في Day-1
+          - listitem [ref=e187]: ✓ تتداول أثناء الأخبار
+          - listitem [ref=e188]: ✓ ترغب في البدء برأس مال قليل (ابتداءً من 55.99 دولارًا)
+          - listitem [ref=e189]: ✓ تفضل خصمًا أكبر (40% OFF)
+    - generic [ref=e190]:
+      - generic [ref=e191]: الأسئلة الشائعة
+      - heading "FTMO vs FundedNext — الأسئلة الشائعة" [level=2] [ref=e192]
+    - generic [ref=e193]:
+      - group [ref=e194]:
+        - 'generic "? أيهما أفضل: FTMO أم FundedNext؟" [ref=e195]'
+      - group [ref=e196]:
+        - generic "? كم تكلفة حساب FTMO مقابل FundedNext؟" [ref=e197]
+      - group [ref=e198]:
+        - generic "? هل تسمح FTMO أو FundedNext بتداول الأخبار؟" [ref=e199]
+      - group [ref=e200]:
+        - generic "? كم من الوقت يستغرق سحب الأرباح في FTMO و FundedNext؟" [ref=e201]
+      - group [ref=e202]:
+        - generic "? هل يمكنني امتلاك حساب في الشركتين في نفس الوقت؟" [ref=e203]
+    - generic [ref=e204]:
+      - generic [ref=e205]: مقارنات أخرى
+      - heading "قارن أيضًا" [level=2] [ref=e206]
+    - generic [ref=e207]:
+      - link "FTMO vs Apex" [ref=e208] [cursor=pointer]:
+        - /url: /ar/apex-vs-ftmo
+      - link "FTMO vs Bulenox" [ref=e209] [cursor=pointer]:
+        - /url: /ar/bulenox-vs-ftmo
+      - link "FTMO vs TPT" [ref=e210] [cursor=pointer]:
+        - /url: /ar/ftmo-vs-tpt
+      - link "FTMO vs E2T" [ref=e211] [cursor=pointer]:
+        - /url: /ar/ftmo-vs-e2t
+      - link "FTMO vs The5ers" [ref=e212] [cursor=pointer]:
+        - /url: /ar/ftmo-vs-the5ers
+      - link "FTMO vs FPips" [ref=e213] [cursor=pointer]:
+        - /url: /ar/ftmo-vs-fundingpips
+      - link "FTMO vs BFunded" [ref=e214] [cursor=pointer]:
+        - /url: /ar/ftmo-vs-brightfunded
+      - link "FTMO vs E8" [ref=e215] [cursor=pointer]:
+        - /url: /ar/ftmo-vs-e8
+    - generic [ref=e216]:
+      - link "هل أنت مستعد للبدء؟ FTMO 19% OFF" [ref=e217] [cursor=pointer]:
+        - /url: https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP
+        - generic [ref=e218]: هل أنت مستعد للبدء؟
+        - generic [ref=e219]: FTMO
+        - generic [ref=e220]: 19% OFF
+      - link "هل أنت مستعد للبدء؟ FundedNext 40% OFF · كوبون APRIL20" [ref=e221] [cursor=pointer]:
+        - /url: https://fundednext.com/?fpr=everton33
+        - generic [ref=e222]: هل أنت مستعد للبدء؟
+        - generic [ref=e223]: FundedNext
+        - generic [ref=e224]: 40% OFF · كوبون APRIL20
+    - contentinfo [ref=e225]:
+      - link "marketscoupons.com" [ref=e226] [cursor=pointer]:
+        - /url: /
+      - text: · مقارنة تم إنشاؤها من بيانات رسمية وتم تحديثها في 02/05/2026
+      - paragraph [ref=e227]: قد تتغير الكوبونات والشروط. يرجى التأكيد عند الدفع في الشركة. تتلقى Markets Coupons عمولة تابعة على المشتريات التي تتم عبر الروابط أعلاه — بدون تكلفة إضافية عليك.

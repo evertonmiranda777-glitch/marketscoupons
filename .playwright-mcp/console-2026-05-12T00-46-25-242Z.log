@@ -1,0 +1,4 @@
+[   27840ms] TypeError: Cannot read properties of null (reading 'textContent')
+    at https://www.marketscoupons.com/coupons?v=test1:497:30
+[   45877ms] TypeError: Cannot read properties of null (reading 'textContent')
+    at https://www.marketscoupons.com/coupons?v=test1:497:30

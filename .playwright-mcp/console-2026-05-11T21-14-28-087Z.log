@@ -1,0 +1,4 @@
+[    1410ms] [LOG]  Initializing Smart Data Protector @ https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js:0
+[    1668ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F953697411%3Fapp_id%3D122963&dntp=1&display_name=Vimeo&url=https%3A%2F%2Fvimeo.com%2F953697411%3Fshare%3Dcopy&image=http%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1864169692-02b9ecd3f5c81a5e64786972f43d8e73149b0b6ac14fb8df614f8885fc2fd6d6-d_1280&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=vimeo:6
+[    3625ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 561895981550599. @ https://connect.facebook.net/en_US/fbevents.js:181
+[   50700ms] [LOG]  Initializing Smart Data Protector @ https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js:0

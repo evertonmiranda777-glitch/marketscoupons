@@ -1,0 +1,1059 @@
+- generic [active] [ref=e1]:
+  - dialog "This website uses cookies" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]:
+        - img "logo" [ref=e7]
+        - link "Cookiebot by Usercentrics - opens in a new window" [ref=e8] [cursor=pointer]:
+          - /url: https://www.cookiebot.com/en/what-is-behind-powered-by-cookiebot/?utm_source=banner_cb&utm_medium=referral&utm_content=v2
+          - img [ref=e9]
+      - tabpanel "Consent" [ref=e36]:
+        - generic [ref=e38]:
+          - heading "This website uses cookies" [level=2] [ref=e39]
+          - generic [ref=e40]: We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services.
+        - generic [ref=e41]:
+          - group "Consent Selection" [ref=e47]:
+            - generic [ref=e48]: Consent Selection
+            - generic [ref=e49]:
+              - generic [ref=e50]:
+                - strong [ref=e52]: Necessary
+                - generic [ref=e53]:
+                  - checkbox "Necessary" [checked] [disabled]
+              - generic [ref=e54]:
+                - strong [ref=e56] [cursor=pointer]: Preferences
+                - switch "Preferences" [checked] [ref=e58] [cursor=pointer]
+              - generic [ref=e59]:
+                - strong [ref=e61] [cursor=pointer]: Statistics
+                - switch "Statistics" [checked] [ref=e63] [cursor=pointer]
+              - generic [ref=e64]:
+                - strong [ref=e66] [cursor=pointer]: Marketing
+                - switch "Marketing" [checked] [ref=e68] [cursor=pointer]
+          - link "Show details" [ref=e70] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=e74]:
+        - button "Allow all" [ref=e75] [cursor=pointer]
+        - button "Allow selection" [ref=e76] [cursor=pointer]
+        - button "Deny" [ref=e77] [cursor=pointer]
+  - banner [ref=e78]:
+    - navigation [ref=e81]:
+      - link "10 Years Anniversary Logo" [ref=e83] [cursor=pointer]:
+        - /url: /
+        - img "10 Years Anniversary Logo" [ref=e84]
+      - generic [ref=e86]:
+        - button "Get Funded" [ref=e87]:
+          - text: Get Funded
+          - img [ref=e88]
+        - button "Learn to Trade" [ref=e90]:
+          - text: Learn to Trade
+          - img [ref=e91]
+        - button "Meet The5ers" [ref=e93]:
+          - text: Meet The5ers
+          - img [ref=e94]
+        - button "Get Engaged" [ref=e96]:
+          - text: Get Engaged
+          - img [ref=e97]
+        - link "10 Year Anniversary" [ref=e99] [cursor=pointer]:
+          - /url: /10-year-anniversary/
+        - button [ref=e101] [cursor=pointer]:
+          - img [ref=e102]
+      - generic [ref=e104]:
+        - link "Futures New" [ref=e107] [cursor=pointer]:
+          - /url: /futures/
+          - generic [ref=e108]: Futures
+          - generic [ref=e109]: New
+        - link "Get Funded" [ref=e110] [cursor=pointer]:
+          - /url: https://hub.the5ers.com/
+          - generic [ref=e111]: Get Funded
+          - img [ref=e112]
+  - generic [ref=e114]:
+    - generic [ref=e117]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - paragraph [ref=e122]: since 2016
+            - heading "Turning your passion into a trading career" [level=2] [ref=e123]
+            - paragraph [ref=e124]: Get qualified by a private equity fund and manage up to $4,000,000!
+          - link "Get Funded" [ref=e126] [cursor=pointer]:
+            - /url: https://hub.the5ers.com/
+            - generic [ref=e127]: Get Funded
+            - img [ref=e128]
+          - generic [ref=e130]:
+            - link "Trustpilot" [ref=e132] [cursor=pointer]:
+              - /url: https://www.trustpilot.com/review/the5ers.com
+            - link "propfirm" [ref=e134] [cursor=pointer]:
+              - /url: https://propfirmmatch.com/prop-firms/the-5-ers
+              - img "propfirm"
+          - link [ref=e135] [cursor=pointer]:
+            - /url: https://propfirmmatch.com/prop-firms/the-5-ers
+        - link [ref=e138] [cursor=pointer]:
+          - /url: /10-year-anniversary/
+          - iframe [ref=e139]:
+            
+      - generic [ref=e141]:
+        - img "a8eff0caa8eb2356ab5619309_FXStreet (1370 x 160 px) 3" [ref=e143]
+        - img "Another-Great-Review-by-TalkMarkets-on-HelloWoofy 2" [ref=e145]
+        - img "logo-fxmag-bez-tla 2" [ref=e147]
+        - img "moneyshowcom 2" [ref=e149]
+        - img "Investing.com_Logo 2" [ref=e151]
+        - img "FXEmpire_Logo 2" [ref=e153]
+        - img "white-full-logo 1" [ref=e155]
+        - img "Group 1272628599" [ref=e157]
+        - img "image (19) 1" [ref=e159]
+        - img "a8eff0caa8eb2356ab5619309_FXStreet (1370 x 160 px) 3" [ref=e161]
+        - img "Another-Great-Review-by-TalkMarkets-on-HelloWoofy 2" [ref=e163]
+        - img "logo-fxmag-bez-tla 2" [ref=e165]
+        - img "moneyshowcom 2" [ref=e167]
+        - img "Investing.com_Logo 2" [ref=e169]
+        - img "FXEmpire_Logo 2" [ref=e171]
+        - img "white-full-logo 1" [ref=e173]
+        - img "Group 1272628599" [ref=e175]
+        - img "image (19) 1" [ref=e177]
+    - generic [ref=e178]:
+      - generic [ref=e181]:
+        - heading "You’ve got what it takes to become an Elite Trader." [level=2] [ref=e183]
+        - generic [ref=e184]:
+          - generic [ref=e185]:
+            - img "Fair Play First" [ref=e187]
+            - heading "Fair Play First" [level=4] [ref=e188]
+            - paragraph [ref=e189]: A commitment to honesty, clarity, and full transparency in everything we do.
+          - generic [ref=e190]:
+            - img "Prime Trading Conditions" [ref=e192]
+            - heading "Prime Trading Conditions" [level=4] [ref=e193]
+            - paragraph [ref=e194]: Scale up to $4M in funded trading with industry-leading spreads.
+          - generic [ref=e195]:
+            - img "24/7 Support & Guidance" [ref=e197]
+            - heading "24/7 Support & Guidance" [level=4] [ref=e198]
+            - paragraph [ref=e199]: We’re here to make you a better trader, day in and day out.
+      - generic [ref=e201]:
+        - generic [ref=e202]:
+          - generic [ref=e203]:
+            - generic [ref=e204]:
+              - paragraph [ref=e205]: Trader stories
+              - heading "Real Traders. Real Results." [level=2] [ref=e206]
+              - paragraph [ref=e207]: Meet the traders who transformed their trading journey with our funding programs and turned skill into real results.
+            - generic [ref=e209]:
+              - button "Go to slide 1" [ref=e210] [cursor=pointer]
+              - button "Go to slide 2" [ref=e211] [cursor=pointer]
+              - button "Go to slide 3" [ref=e212] [cursor=pointer]
+              - button "Go to slide 4" [ref=e213] [cursor=pointer]
+              - button "Go to slide 5" [ref=e214] [cursor=pointer]
+              - button "Go to slide 6" [ref=e215] [cursor=pointer]
+              - button "Go to slide 7" [ref=e216] [cursor=pointer]
+              - button "Go to slide 8" [ref=e217] [cursor=pointer]
+              - button "Go to slide 9" [ref=e218] [cursor=pointer]
+              - button "Go to slide 10" [ref=e219] [cursor=pointer]
+          - generic [ref=e224]:
+            - generic [ref=e227]:
+              - img "Sandrina R." [ref=e229]
+              - heading "Sandrina R." [level=6] [ref=e230]
+              - paragraph [ref=e231]: Payouts of 20,116
+            - generic [ref=e234]:
+              - img "Rob D." [ref=e236]
+              - heading "Rob D." [level=6] [ref=e237]
+              - paragraph [ref=e238]: Payouts of $13776
+            - generic [ref=e241]:
+              - img "Adam B." [ref=e243]
+              - heading "Adam B." [level=6] [ref=e244]
+              - paragraph [ref=e245]: Payouts of $4871
+            - generic [ref=e248]:
+              - img "Dimitrios H." [ref=e250]
+              - heading "Dimitrios H." [level=6] [ref=e251]
+              - paragraph [ref=e252]: Payouts of $15,315
+            - generic [ref=e255]:
+              - img "Leandro G." [ref=e257]
+              - heading "Leandro G." [level=6] [ref=e258]
+              - paragraph [ref=e259]: Payouts of $3,507
+            - generic [ref=e262]:
+              - img "Furkan K." [ref=e264]
+              - heading "Furkan K." [level=6] [ref=e265]
+              - paragraph [ref=e266]: Payouts of $20,206
+            - generic [ref=e269]:
+              - img "Griff Z." [ref=e271]
+              - heading "Griff Z." [level=6] [ref=e272]
+              - paragraph [ref=e273]: Payouts of $7,191
+            - generic [ref=e276]:
+              - img "Alexandre T." [ref=e278]
+              - heading "Alexandre T." [level=6] [ref=e279]
+              - paragraph [ref=e280]: Payouts of $21,769
+            - generic [ref=e283]:
+              - img "Davide M." [ref=e285]
+              - heading "Davide M." [level=6] [ref=e286]
+              - paragraph [ref=e287]: Payouts of $9,752
+            - generic [ref=e290]:
+              - img "Majd H." [ref=e292]
+              - heading "Majd H." [level=6] [ref=e293]
+              - paragraph [ref=e294]: Payouts of $36,005
+            - generic [ref=e297]:
+              - img "Sandrina R." [ref=e299]
+              - heading "Sandrina R." [level=6] [ref=e300]
+              - paragraph [ref=e301]: Payouts of 20,116
+            - generic [ref=e304]:
+              - img "Rob D." [ref=e306]
+              - heading "Rob D." [level=6] [ref=e307]
+              - paragraph [ref=e308]: Payouts of $13776
+            - generic [ref=e311]:
+              - img "Adam B." [ref=e313]
+              - heading "Adam B." [level=6] [ref=e314]
+              - paragraph [ref=e315]: Payouts of $4871
+            - generic [ref=e318]:
+              - img "Dimitrios H." [ref=e320]
+              - heading "Dimitrios H." [level=6] [ref=e321]
+              - paragraph [ref=e322]: Payouts of $15,315
+            - generic [ref=e325]:
+              - img "Leandro G." [ref=e327]
+              - heading "Leandro G." [level=6] [ref=e328]
+              - paragraph [ref=e329]: Payouts of $3,507
+            - generic [ref=e332]:
+              - img "Furkan K." [ref=e334]
+              - heading "Furkan K." [level=6] [ref=e335]
+              - paragraph [ref=e336]: Payouts of $20,206
+            - generic [ref=e339]:
+              - img "Griff Z." [ref=e341]
+              - heading "Griff Z." [level=6] [ref=e342]
+              - paragraph [ref=e343]: Payouts of $7,191
+            - generic [ref=e346]:
+              - img "Alexandre T." [ref=e348]
+              - heading "Alexandre T." [level=6] [ref=e349]
+              - paragraph [ref=e350]: Payouts of $21,769
+            - generic [ref=e353]:
+              - img "Davide M." [ref=e355]
+              - heading "Davide M." [level=6] [ref=e356]
+              - paragraph [ref=e357]: Payouts of $9,752
+            - generic [ref=e360]:
+              - img "Majd H." [ref=e362]
+              - heading "Majd H." [level=6] [ref=e363]
+              - paragraph [ref=e364]: Payouts of $36,005
+            - generic [ref=e367]:
+              - img "Sandrina R." [ref=e369]
+              - heading "Sandrina R." [level=6] [ref=e370]
+              - paragraph [ref=e371]: Payouts of 20,116
+            - generic [ref=e374]:
+              - img "Rob D." [ref=e376]
+              - heading "Rob D." [level=6] [ref=e377]
+              - paragraph [ref=e378]: Payouts of $13776
+            - generic [ref=e381]:
+              - img "Adam B." [ref=e383]
+              - heading "Adam B." [level=6] [ref=e384]
+              - paragraph [ref=e385]: Payouts of $4871
+            - generic [ref=e388]:
+              - img "Dimitrios H." [ref=e390]
+              - heading "Dimitrios H." [level=6] [ref=e391]
+              - paragraph [ref=e392]: Payouts of $15,315
+            - generic [ref=e395]:
+              - img "Leandro G." [ref=e397]
+              - heading "Leandro G." [level=6] [ref=e398]
+              - paragraph [ref=e399]: Payouts of $3,507
+            - generic [ref=e402]:
+              - img "Furkan K." [ref=e404]
+              - heading "Furkan K." [level=6] [ref=e405]
+              - paragraph [ref=e406]: Payouts of $20,206
+            - generic [ref=e409]:
+              - img "Griff Z." [ref=e411]
+              - heading "Griff Z." [level=6] [ref=e412]
+              - paragraph [ref=e413]: Payouts of $7,191
+            - generic [ref=e416]:
+              - img "Alexandre T." [ref=e418]
+              - heading "Alexandre T." [level=6] [ref=e419]
+              - paragraph [ref=e420]: Payouts of $21,769
+            - generic [ref=e423]:
+              - img "Davide M." [ref=e425]
+              - heading "Davide M." [level=6] [ref=e426]
+              - paragraph [ref=e427]: Payouts of $9,752
+            - generic [ref=e430]:
+              - img "Majd H." [ref=e432]
+              - heading "Majd H." [level=6] [ref=e433]
+              - paragraph [ref=e434]: Payouts of $36,005
+        - generic [ref=e435]:
+          - generic [ref=e436]:
+            - heading "Design your trading journey" [level=2] [ref=e437]
+            - paragraph [ref=e438]: Choose the best program for your skill level and trading style.
+            - generic [ref=e439]:
+              - button "CFDs" [ref=e440] [cursor=pointer]
+              - button "Futures" [ref=e441] [cursor=pointer]
+          - generic [ref=e442]:
+            - generic [ref=e443]:
+              - button "1 STEP Hyper growth" [ref=e444]:
+                - paragraph [ref=e445]: 1 STEP
+                - paragraph [ref=e447]: Hyper growth
+              - button "2 STEPS High Stakes" [ref=e448]:
+                - paragraph [ref=e449]: 2 STEPS
+                - paragraph [ref=e451]: High Stakes
+              - button "3 STEPS Bootcamp" [ref=e452]:
+                - paragraph [ref=e453]: 3 STEPS
+                - paragraph [ref=e455]: Bootcamp
+            - generic [ref=e456]:
+              - generic [ref=e457]:
+                - generic [ref=e458]:
+                  - button "$5K" [ref=e459]:
+                    - generic [ref=e460]: $5K
+                  - button "$10K" [ref=e461]:
+                    - generic [ref=e462]: $10K
+                  - button "$20K" [ref=e463]:
+                    - generic [ref=e464]: $20K
+                - generic [ref=e465]:
+                  - button "US USD" [ref=e466]:
+                    - img "US" [ref=e468]
+                    - generic [ref=e469]: USD
+                  - button "EU EUR" [ref=e470]:
+                    - img "EU" [ref=e472]
+                    - generic [ref=e473]: EUR
+                  - button "GB GBP" [ref=e474]:
+                    - img "GB" [ref=e476]
+                    - generic [ref=e477]: GBP
+                  - button "IN INR" [ref=e478]:
+                    - img "IN" [ref=e480]
+                    - generic [ref=e481]: INR
+              - generic [ref=e482]:
+                - button "Pro Growth" [ref=e483] [cursor=pointer]:
+                  - generic [ref=e484]: Pro Growth
+                - button "Hyper Growth" [ref=e485] [cursor=pointer]:
+                  - generic [ref=e486]: Hyper Growth
+              - generic [ref=e487]:
+                - generic [ref=e489]:
+                  - generic [ref=e490]:
+                    - generic [ref=e491]: Step 1
+                    - generic [ref=e492]: Funded Trader
+                  - generic [ref=e493]:
+                    - generic [ref=e494]:
+                      - generic [ref=e495]: Evaluation Target
+                      - generic [ref=e496]: 10%
+                      - generic [ref=e497]: 10%
+                    - generic [ref=e498]:
+                      - generic [ref=e499]: Stop Out Level
+                      - generic [ref=e500]: 6%
+                      - generic [ref=e501]: 6%
+                    - generic [ref=e502]:
+                      - generic [ref=e503]: Daily Loss
+                      - generic [ref=e504]: 3%
+                      - generic [ref=e505]: 3%
+                    - generic [ref=e506]:
+                      - generic [ref=e507]: Profit Split
+                      - generic [ref=e508]: Up to 100%
+                      - generic [ref=e509]: Up to 100%
+                    - generic [ref=e510]:
+                      - generic [ref=e511]: Time Limit
+                      - generic [ref=e512]: Unlimited
+                      - generic [ref=e513]: Unlimited
+                    - generic [ref=e514]:
+                      - generic [ref=e515]: Leverage
+                      - generic [ref=e516]: 1:30
+                      - generic [ref=e517]: 1:30
+                    - generic [ref=e518]:
+                      - generic [ref=e519]: One Time Fee
+                      - generic [ref=e520]: $74
+                      - generic [ref=e521]: "-"
+                    - generic [ref=e522]:
+                      - generic [ref=e523]: Bonuses
+                      - generic [ref=e524]: "-"
+                      - generic [ref=e525]: From $15
+                    - generic [ref=e526]:
+                      - generic [ref=e527]: Minimum profitable days
+                      - generic [ref=e528]: "3"
+                      - generic [ref=e529]: "-"
+                - link "Start Now" [ref=e532] [cursor=pointer]:
+                  - /url: https://hub.the5ers.com/quick-purchase?programId=65f043433083668c146b59c5&currency=USD
+                  - generic [ref=e533]: Start Now
+      - generic [ref=e536]:
+        - generic [ref=e539]:
+          - paragraph [ref=e540]: About us
+          - heading "A proven, certified, undisputed leader in funded trading" [level=2] [ref=e541]
+          - paragraph [ref=e542]: The5ers is an established and highly respected industry player, with a proven track record of delivering for traders.
+        - generic [ref=e546]:
+          - generic [ref=e547]: 336K
+          - generic [ref=e548]: Funded Traders
+        - generic [ref=e552]:
+          - generic [ref=e553]: "10"
+          - generic [ref=e554]: Years Active
+        - generic [ref=e558]:
+          - generic [ref=e559]: "149"
+          - generic [ref=e560]: Employees in 23 countries
+      - generic [ref=e563]:
+        - generic [ref=e564]:
+          - paragraph [ref=e565]: Payouts
+          - heading "Our users enjoy fast and reliable payouts" [level=2] [ref=e566]
+          - paragraph [ref=e567]: We have a strict 'no nonsense' policy when it comes to paying out. If you've earned it, it's yours.
+        - generic [ref=e568]:
+          - generic [ref=e569]:
+            - generic [ref=e570]: "0"
+            - generic [ref=e571]: Traders Worldwide
+          - generic [ref=e572]:
+            - generic [ref=e573]: "0"
+            - generic [ref=e574]: 16י Avg Payout Time
+          - generic [ref=e575]:
+            - generic [ref=e576]: "0"
+            - generic [ref=e577]: Monthly zero-fuss payouts
+      - generic [ref=e579]:
+        - generic [ref=e580]:
+          - generic [ref=e581]:
+            - paragraph [ref=e582]: Program advantages
+            - heading "Everything you need to succeed (and a whole lot more)" [level=2] [ref=e583]
+          - generic [ref=e584]:
+            - generic [ref=e585]:
+              - img "Instant, simple payouts" [ref=e587]
+              - heading "Instant, simple payouts" [level=4] [ref=e588]
+            - generic [ref=e589]:
+              - img "Fastest growth plans" [ref=e591]
+              - heading "Fastest growth plans" [level=4] [ref=e592]
+            - generic [ref=e593]:
+              - img "Free educational resources" [ref=e595]
+              - heading "Free educational resources" [level=4] [ref=e596]
+            - generic [ref=e597]:
+              - img "Transparent one-time fees" [ref=e599]
+              - heading "Transparent one-time fees" [level=4] [ref=e600]
+        - generic [ref=e601]:
+          - generic [ref=e603]:
+            - generic [ref=e604]:
+              - paragraph [ref=e605]: Academy
+              - heading "Learn from the best. Become the best." [level=2] [ref=e606]
+              - paragraph [ref=e607]: "All the resources you need to unlock your true potential: classes, webinars, courses, and weekly sessions with our trading masterminds."
+            - link "Go To Academy" [ref=e608] [cursor=pointer]:
+              - /url: /academy/
+              - generic [ref=e609]: Go To Academy
+              - img [ref=e610]
+          - img "Academy instructors" [ref=e613]
+        - generic [ref=e614]:
+          - generic [ref=e616]:
+            - generic [ref=e617]:
+              - paragraph [ref=e618]: Supportive community
+              - heading "Join a Network of Real Traders" [level=2] [ref=e619]
+              - paragraph [ref=e620]: Share your journey with fellow enthusiasts in our Discord, virtual events, and in-person meetups.
+            - link "Connect Now" [ref=e621] [cursor=pointer]:
+              - /url: /community/
+              - generic [ref=e622]: Connect Now
+              - img [ref=e623]
+          - img "Community" [ref=e626]
+      - generic [ref=e629]:
+        - generic [ref=e630]:
+          - paragraph [ref=e631]: Trading Conditions
+          - heading "We've Got The Best Trading Conditions. No Gimmicks." [level=2] [ref=e632]
+          - paragraph [ref=e633]: With exceptional trading conditions and industry-best spreads, The5ers is simply the best place to trade forex, metals, or indices.
+        - generic [ref=e635]:
+          - generic [ref=e636]:
+            - button "All" [ref=e637]
+            - button "Forex" [ref=e638]
+            - button "Commodities" [ref=e639]
+            - button "Indices" [ref=e640]
+            - button "Crypto" [ref=e641]
+          - generic [ref=e643]:
+            - generic [ref=e644]: Symbol
+            - generic [ref=e645]: Bid
+            - generic [ref=e646]: Ask
+            - generic [ref=e647] [cursor=pointer]:
+              - text: Spread
+              - img [ref=e648]
+            - generic [ref=e654]: EURUSD
+            - generic [ref=e655]: "1.17810"
+            - generic [ref=e656]: "1.17843"
+            - generic [ref=e657]: "0.00033"
+            - link "Start" [ref=e658] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e659]: Start
+              - img [ref=e660]
+            - generic [ref=e665]: GBPUSD
+            - generic [ref=e666]: "1.36066"
+            - generic [ref=e667]: "1.36165"
+            - generic [ref=e668]: "0.00099"
+            - link "Start" [ref=e669] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e670]: Start
+              - img [ref=e671]
+            - generic [ref=e676]: USDCHF
+            - generic [ref=e677]: "0.77719"
+            - generic [ref=e678]: "0.77846"
+            - generic [ref=e679]: "0.00127"
+            - link "Start" [ref=e680] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e681]: Start
+              - img [ref=e682]
+            - generic [ref=e687]: USDJPY
+            - generic [ref=e688]: "157.159"
+            - generic [ref=e689]: "157.213"
+            - generic [ref=e690]: "0.054"
+            - link "Start" [ref=e691] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e692]: Start
+              - img [ref=e693]
+            - generic [ref=e698]: XAUUSD
+            - generic [ref=e699]: "4722.51"
+            - generic [ref=e700]: "4730.49"
+            - generic [ref=e701]: "7.98"
+            - link "Start" [ref=e702] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e703]: Start
+              - img [ref=e704]
+            - generic [ref=e709]: XAGUSD
+            - generic [ref=e710]: "86.090"
+            - generic [ref=e711]: "86.110"
+            - generic [ref=e712]: "0.020"
+            - link "Start" [ref=e713] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e714]: Start
+              - img [ref=e715]
+            - generic [ref=e720]: BTCUSD
+            - generic [ref=e721]: "81693.138"
+            - generic [ref=e722]: "81696.399"
+            - generic [ref=e723]: "3.261"
+            - link "Start" [ref=e724] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e725]: Start
+              - img [ref=e726]
+            - generic [ref=e731]: ETHUSD
+            - generic [ref=e732]: "2338.846"
+            - generic [ref=e733]: "2339.424"
+            - generic [ref=e734]: "0.578"
+            - link "Start" [ref=e735] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e736]: Start
+              - img [ref=e737]
+            - generic [ref=e742]: SP500
+            - generic [ref=e743]: "7411.0"
+            - generic [ref=e744]: "7411.5"
+            - generic [ref=e745]: "0.5"
+            - link "Start" [ref=e746] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e747]: Start
+              - img [ref=e748]
+            - generic [ref=e753]: NAS100
+            - generic [ref=e754]: "29288.1"
+            - generic [ref=e755]: "29289.3"
+            - generic [ref=e756]: "1.2"
+            - link "Start" [ref=e757] [cursor=pointer]:
+              - /url: https://hub.the5ers.com/
+              - generic [ref=e758]: Start
+              - img [ref=e759]
+          - generic [ref=e761]:
+            - paragraph [ref=e762]: Showing 1 to 10 of 40 markets
+            - generic [ref=e763]:
+              - button "Previous page" [disabled] [ref=e764]:
+                - img [ref=e765]
+              - button "1" [ref=e767]
+              - button "2" [ref=e768]
+              - button "3" [ref=e769]
+              - button "4" [ref=e770]
+              - button "Next page" [ref=e771]:
+                - img [ref=e772]
+      - generic [ref=e776]:
+        - generic [ref=e777]:
+          - heading "The5ers reviews" [level=2] [ref=e779]
+          - generic [ref=e780]:
+            - link "Trustpilot" [ref=e782] [cursor=pointer]:
+              - /url: https://www.trustpilot.com/review/the5ers.com
+            - link "propfirm" [ref=e785] [cursor=pointer]:
+              - /url: https://propfirmmatch.com/prop-firms/the-5-ers
+              - img "propfirm"
+        - generic [ref=e786]:
+          - generic [ref=e788]:
+            - generic [ref=e790]:
+              - generic [ref=e791]:
+                - img "Quote icon" [ref=e793]
+                - generic [ref=e794]:
+                  - heading "Building Long Term Consistency with The5ers" [level=3] [ref=e795]
+                  - paragraph [ref=e797]: I already got paid a few times and my account was scaled from 100k to 125k, so I’m grateful for that. The scale up system is actually one of the reasons I stay motivated to trade properly and stay consistent. It makes me focus more on discipline instead of trying to make fast profits.
+              - generic [ref=e798]:
+                - paragraph [ref=e799]: Genta, 3 days ago
+                - img "Review Source" [ref=e801]
+            - generic [ref=e803]:
+              - generic [ref=e804]:
+                - img "Quote icon" [ref=e806]
+                - generic [ref=e807]:
+                  - heading "The 5ers stands out" [level=3] [ref=e808]
+                  - paragraph [ref=e810]: The 5ers stands out for its transparency and unique growth plans. The dashboard is highly intuitive, and the spreads are among the best I’ve seen in the prop firm industry. Their support team is quick to help, making the entire trading journey very smooth.
+              - generic [ref=e811]:
+                - paragraph [ref=e812]: AJAY KUMAR MAURYA, 8 days ago
+                - img "Review Source" [ref=e814]
+            - generic [ref=e816]:
+              - generic [ref=e817]:
+                - img "Quote icon" [ref=e819]
+                - generic [ref=e820]:
+                  - heading "Undoubtedly a top-tier choice" [level=3] [ref=e821]
+                  - paragraph [ref=e823]: The5ers is undoubtedly a top-tier choice for any serious trader. Having been a trusted prop firm for almost 10 years, their longevity in the industry speaks volumes about their reliability and integrity. Highly recommended!
+              - generic [ref=e824]:
+                - paragraph [ref=e825]: Farhan, 16 days ago
+                - img "Review Source" [ref=e827]
+            - generic [ref=e829]:
+              - generic [ref=e830]:
+                - img "Quote icon" [ref=e832]
+                - generic [ref=e833]:
+                  - heading "Got funded without any problem" [level=3] [ref=e834]
+                  - paragraph [ref=e836]: Got funded without any problem, lets see how rest things goes, hope there will be no unpleasant experiences.
+              - generic [ref=e837]:
+                - paragraph [ref=e838]: Nur Shakil, 25 days ago
+                - img "Review Source" [ref=e840]
+            - generic [ref=e842]:
+              - generic [ref=e843]:
+                - img "Quote icon" [ref=e845]
+                - generic [ref=e846]:
+                  - heading "good platform accross all funded firms" [level=3] [ref=e847]
+                  - paragraph [ref=e850]: The 5ers is a good platform accross all funded firms,no strict rules,best customer care,payout no issue and best dashboard with solid tracking system
+              - generic [ref=e851]:
+                - paragraph [ref=e852]: Rudra, 29 days ago
+                - img "Review Source" [ref=e854]
+            - generic [ref=e856]:
+              - generic [ref=e857]:
+                - img "Quote icon" [ref=e859]
+                - generic [ref=e860]:
+                  - heading "5ers is definitely one of the top prop…" [level=3] [ref=e861]
+                  - paragraph [ref=e863]: I like the rule that you have to make at least 0.5% profit over three days. This ensures that you can’t just complete the challenge in one go—you have to trade consistently.
+              - generic [ref=e864]:
+                - paragraph [ref=e865]: Ioannis, 1 month ago
+                - img "Review Source" [ref=e867]
+            - generic [ref=e869]:
+              - generic [ref=e870]:
+                - img "Quote icon" [ref=e872]
+                - generic [ref=e873]:
+                  - heading "Excellent Experience with The5ers" [level=3] [ref=e874]
+                  - paragraph [ref=e876]: What I appreciate most is the stable trading environment, with rules that are easy to understand and build trust. This is a suitable platform for anyone who wants to develop their trading seriously and sustainably.
+              - generic [ref=e877]:
+                - paragraph [ref=e878]: Tien Dao Pham, 1 month ago
+                - img "Review Source" [ref=e880]
+            - generic [ref=e882]:
+              - generic [ref=e883]:
+                - img "Quote icon" [ref=e885]
+                - generic [ref=e886]:
+                  - heading "you will definitely get your payout" [level=3] [ref=e887]
+                  - paragraph [ref=e890]: One of best and trustworthy propfirm. just follow the rules and guidelines, you will definitely get your payout. no nonsense like other propfirms. I got my first payout of 3824 $
+              - generic [ref=e891]:
+                - paragraph [ref=e892]: Sudheesh, 1 month ago
+                - img "Review Source" [ref=e894]
+            - generic [ref=e896]:
+              - generic [ref=e897]:
+                - img "Quote icon" [ref=e899]
+                - generic [ref=e900]:
+                  - heading "Best prop firm in the market no cap" [level=3] [ref=e901]
+                  - article "Review" [ref=e904]:
+                    - generic [ref=e906]: Godswill best costumer service ever, take care mate! Best prop firm in the market no cap
+              - generic [ref=e907]:
+                - paragraph [ref=e908]: Riccardo Zaccaro, 1 month ago
+                - img "Review Source" [ref=e910]
+            - generic [ref=e912]:
+              - generic [ref=e913]:
+                - img "Quote icon" [ref=e915]
+                - generic [ref=e916]:
+                  - heading "A world-leading and constantly innovating funding fund." [level=3] [ref=e917]
+                  - paragraph [ref=e919]: This is the 8th time I’ve received funding from The5ers, and I highly appreciate their reputation and customer service.
+              - generic [ref=e920]:
+                - paragraph [ref=e921]: Hong Nguyen Van, 2 months ago
+                - img "Review Source" [ref=e923]
+            - generic [ref=e925]:
+              - generic [ref=e926]:
+                - img "Quote icon" [ref=e928]
+                - generic [ref=e929]:
+                  - heading "+10 years experience" [level=3] [ref=e930]
+                  - paragraph [ref=e933]: The 5%ers is the best prop firm that i have ever seen their dash board payout process ,customer service agent are soo good they have +10 years experience in this market
+              - generic [ref=e934]:
+                - paragraph [ref=e935]: Elias, 2 months ago
+                - img "Review Source" [ref=e937]
+            - generic [ref=e939]:
+              - generic [ref=e940]:
+                - img "Quote icon" [ref=e942]
+                - generic [ref=e943]:
+                  - heading "5ers is the best" [level=3] [ref=e944]
+                  - paragraph [ref=e946]: I have used many prop firms so far 5ers is the best.
+              - generic [ref=e947]:
+                - paragraph [ref=e948]: irshad nahar, 2 months ago
+                - img "Review Source" [ref=e950]
+            - generic [ref=e952]:
+              - generic [ref=e953]:
+                - img "Quote icon" [ref=e955]
+                - generic [ref=e956]:
+                  - heading "Seamless payout of $322.42!" [level=3] [ref=e957]
+                  - paragraph [ref=e959]: Big thanks to @The5ers for the seamless payout of $322.42! It’s great to work with a prop firm that truly supports its traders’ growth and delivers on its promises
+              - generic [ref=e960]:
+                - paragraph [ref=e961]: Gedeon, 2 months ago
+                - img "Review Source" [ref=e963]
+            - generic [ref=e965]:
+              - generic [ref=e966]:
+                - img "Quote icon" [ref=e968]
+                - generic [ref=e969]:
+                  - heading "Highly recommended firm" [level=3] [ref=e970]
+                  - paragraph [ref=e972]: If you need reliable firm with transparency in rules and timely payouts, then the5ers is Highly recommended firm..
+              - generic [ref=e973]:
+                - paragraph [ref=e974]: Hassan Nawaz, 3 months ago
+                - img "Review Source" [ref=e976]
+            - generic [ref=e978]:
+              - generic [ref=e979]:
+                - img "Quote icon" [ref=e981]
+                - generic [ref=e982]:
+                  - heading "customer support is unreal.." [level=3] [ref=e983]
+                  - generic [ref=e984]:
+                    - paragraph [ref=e987]: I like everything about The5ers, the customer support is unreal..
+                    - generic [ref=e989]:
+                      - button
+              - generic [ref=e990]:
+                - paragraph [ref=e991]: dyerz, 3 months ago
+                - img "Review Source" [ref=e993]
+            - generic [ref=e995]:
+              - generic [ref=e996]:
+                - img "Quote icon" [ref=e998]
+                - generic [ref=e999]:
+                  - heading "Bestest customer support" [level=3] [ref=e1000]
+                  - paragraph [ref=e1003]: Best propfirm, bestest customer support, overall best and no.1 propfirm for me. Trader friendly rule and no hidden rule simple and clean no consistency which is absolutely best.
+              - generic [ref=e1004]:
+                - paragraph [ref=e1005]: Vinay, 3 months ago
+                - img "Review Source" [ref=e1007]
+            - generic [ref=e1009]:
+              - generic [ref=e1010]:
+                - img "Quote icon" [ref=e1012]
+                - generic [ref=e1013]:
+                  - heading "responds like a thunder" [level=3] [ref=e1014]
+                  - article "Review" [ref=e1017]:
+                    - generic [ref=e1019]: Great 👍 and reliable prop firm that responds like a thunder
+              - generic [ref=e1020]:
+                - paragraph [ref=e1021]: ajisudan yerima, 3 months ago
+                - img "Review Source" [ref=e1023]
+            - generic [ref=e1025]:
+              - generic [ref=e1026]:
+                - img "Quote icon" [ref=e1028]
+                - generic [ref=e1029]:
+                  - heading "the one that pays on time" [level=3] [ref=e1030]
+                  - paragraph [ref=e1032]: My favorite prop firm is the one that pays on time, supports traders, and keeps rules fair. Trust and consistency matter most.
+              - generic [ref=e1033]:
+                - paragraph [ref=e1034]: Manoj kumar, 3 months ago
+                - img "Review Source" [ref=e1036]
+            - generic [ref=e1038]:
+              - generic [ref=e1039]:
+                - img "Quote icon" [ref=e1041]
+                - generic [ref=e1042]:
+                  - heading "5 ers its an amazing firm" [level=3] [ref=e1043]
+                  - paragraph [ref=e1047]: My experience with 5 ers is just top notch.
+              - generic [ref=e1048]:
+                - paragraph [ref=e1049]: Mohammed Rizin, 3 months ago
+                - img "Review Source" [ref=e1051]
+            - generic [ref=e1053]:
+              - generic [ref=e1054]:
+                - img "Quote icon" [ref=e1056]
+                - generic [ref=e1057]:
+                  - heading "Dedicated and responsive support team" [level=3] [ref=e1058]
+                  - paragraph [ref=e1061]: very trusted prop firm, 5ers is definitely one of the most trader friendly funding programs out there, Clear rules, real risk management, and legit growth paths.
+              - generic [ref=e1062]:
+                - paragraph [ref=e1063]: Truong, 3 months ago
+                - img "Review Source" [ref=e1065]
+            - generic [ref=e1067]:
+              - generic [ref=e1068]:
+                - img "Quote icon" [ref=e1070]
+                - generic [ref=e1071]:
+                  - heading "I recently withdrew my second payout" [level=3] [ref=e1072]
+                  - paragraph [ref=e1074]: I recently withdrew my second payout from The5ers, and I couldn’t be happier with my experience. As a day trader, execution speed is crucial, and theirs is consistently excellent with minimal slippage—even during volatile sessions. The support team is top-notch; they’re responsive, knowledgeable, and always go the extra mile to help.
+              - generic [ref=e1075]:
+                - paragraph [ref=e1076]: Abdoulé Moustapha, 4 months ago
+                - img "Review Source" [ref=e1078]
+            - generic [ref=e1080]:
+              - generic [ref=e1081]:
+                - img "Quote icon" [ref=e1083]
+                - generic [ref=e1084]:
+                  - heading "Best choice out there" [level=3] [ref=e1085]
+                  - paragraph [ref=e1087]: When it comes to a reliable and affordable propfirm 5%ers is the best choice out there
+              - generic [ref=e1088]:
+                - paragraph [ref=e1089]: Saji V, 4 months ago
+                - img "Review Source" [ref=e1091]
+            - generic [ref=e1093]:
+              - generic [ref=e1094]:
+                - img "Quote icon" [ref=e1096]
+                - generic [ref=e1097]:
+                  - heading "Absolutely flawless experience" [level=3] [ref=e1098]
+                  - paragraph [ref=e1100]: Absolutely flawless experience from purchasing the account to trading conditions and payout process.If there was one thing they could improve, it would be removing the three minimum profitable days and replacing with more total trading days.
+              - generic [ref=e1101]:
+                - paragraph [ref=e1102]: Nikolay M, 4 months ago
+                - img "Review Source" [ref=e1104]
+            - generic [ref=e1106]:
+              - generic [ref=e1107]:
+                - img "Quote icon" [ref=e1109]
+                - generic [ref=e1110]:
+                  - heading "Simply the best" [level=3] [ref=e1111]
+                  - generic [ref=e1112]:
+                    - paragraph [ref=e1113]: Their support team always listens up
+                    - paragraph [ref=e1114]:
+                      - text: Recently i made the second account using my other gmail
+                      - text: According to thier rules i should have only one since i immediately contacted them
+                      - text: Not only they helped me in removing other email also refunded the amount of the account
+                      - text: Dashboard issue solved immediately for which my account was terminated
+                    - paragraph [ref=e1115]: And many more examples while scaling my account they helped me
+                    - paragraph [ref=e1116]: I wanted to write review after atleast 2 months so i had great experience with them so far
+              - generic [ref=e1117]:
+                - paragraph [ref=e1118]: Guru Raj, 4 months ago
+                - img "Review Source" [ref=e1120]
+            - generic [ref=e1122]:
+              - generic [ref=e1123]:
+                - img "Quote icon" [ref=e1125]
+                - generic [ref=e1126]:
+                  - heading "The new dashboard is amazing" [level=3] [ref=e1127]
+                  - paragraph [ref=e1130]: The new dashboard is amazing, graphic design good, fast account creditials after payment , tight spreads almost zero in some sessions like NY overlap, customer service is always open.
+              - generic [ref=e1131]:
+                - paragraph [ref=e1132]: Black, 5 months ago
+                - img "Review Source" [ref=e1134]
+            - generic [ref=e1136]:
+              - generic [ref=e1137]:
+                - img "Quote icon" [ref=e1139]
+                - generic [ref=e1140]:
+                  - heading "The most trustworthy prop in the industry" [level=3] [ref=e1141]
+                  - paragraph [ref=e1143]: The most trustworthy prop in the industry, thank you 5ers for all your support and making this trading journey great for all traders
+              - generic [ref=e1144]:
+                - paragraph [ref=e1145]: Yazan Abumuslem, 6 months ago
+                - img "Review Source" [ref=e1147]
+            - generic [ref=e1149]:
+              - generic [ref=e1150]:
+                - img "Quote icon" [ref=e1152]
+                - generic [ref=e1153]:
+                  - heading "Highly customer based" [level=3] [ref=e1154]
+                  - paragraph [ref=e1156]: To be honest it’s my best experience with propfirm. Highly customer based. They are highly available in social networks or by mail in case of troubles. No hidden rules, not so expensive. The possibility to buy a small challenge (5k) with a small amount of money is a game changer for me because you can learn to trade easily and test both emotions and strategies.
+              - generic [ref=e1157]:
+                - paragraph [ref=e1158]: Gabriel, 6 months ago
+                - img "Review Source" [ref=e1160]
+            - generic [ref=e1162]:
+              - generic [ref=e1163]:
+                - img "Quote icon" [ref=e1165]
+                - generic [ref=e1166]:
+                  - heading "TOP!" [level=3] [ref=e1167]
+                  - paragraph [ref=e1169]: I’ve recently received my funded account and everything has been smooth so far. The support team is fast and responsive, always ready to help whenever needed. No issues at all — everything is working perfectly. Great experience up to now!
+              - generic [ref=e1170]:
+                - paragraph [ref=e1171]: Marco Totaro, 9 months ago
+                - img "Review Source" [ref=e1173]
+            - generic [ref=e1175]:
+              - generic [ref=e1176]:
+                - img "Quote icon" [ref=e1178]
+                - generic [ref=e1179]:
+                  - heading "This is the best-funded account I’ve ever had" [level=3] [ref=e1180]
+                  - paragraph [ref=e1182]:
+                    - text: I’ve tried other funded accounts,but I didn’t find the right support and often faced technical difficulties.
+                    - text: The customer service here is fast and friendly,and I worked through several trials to succeed .Resilience is the key.
+              - generic [ref=e1183]:
+                - paragraph [ref=e1184]: mohsen shahrisvand, 9 months ago
+                - img "Review Source" [ref=e1186]
+          - generic [ref=e1187]:
+            - button "Go to item 1" [ref=e1188]
+            - button "Go to item 2" [ref=e1189]
+            - button "Go to item 3" [ref=e1190]
+            - button "Go to item 4" [ref=e1191]
+            - button "Go to item 5" [ref=e1192]
+            - button "Go to item 6" [ref=e1193]
+            - button "Go to item 7" [ref=e1194]
+            - button "Go to item 8" [ref=e1195]
+            - button "Go to item 9" [ref=e1196]
+            - button "Go to item 10" [ref=e1197]
+            - button "Go to item 11" [ref=e1198]
+            - button "Go to item 12" [ref=e1199]
+            - button "Go to item 13" [ref=e1200]
+            - button "Go to item 14" [ref=e1201]
+            - button "Go to item 15" [ref=e1202]
+            - button "Go to item 16" [ref=e1203]
+            - button "Go to item 17" [ref=e1204]
+            - button "Go to item 18" [ref=e1205]
+            - button "Go to item 19" [ref=e1206]
+            - button "Go to item 20" [ref=e1207]
+            - button "Go to item 21" [ref=e1208]
+            - button "Go to item 22" [ref=e1209]
+            - button "Go to item 23" [ref=e1210]
+            - button "Go to item 24" [ref=e1211]
+            - button "Go to item 25" [ref=e1212]
+            - button "Go to item 26" [ref=e1213]
+            - button "Go to item 27" [ref=e1214]
+            - button "Go to item 28" [ref=e1215]
+            - button "Go to item 29" [ref=e1216]
+  - contentinfo [ref=e1217]:
+    - generic [ref=e1219]:
+      - generic [ref=e1220]:
+        - paragraph [ref=e1221]: Join us
+        - heading "The Secret of Getting Ahead is Getting Started." [level=2] [ref=e1222]
+      - link "Get Funded" [ref=e1223] [cursor=pointer]:
+        - /url: https://hub.the5ers.com/
+        - generic [ref=e1224]: Get Funded
+        - img [ref=e1225]
+      - generic [ref=e1227]:
+        - paragraph [ref=e1228]: Subscribe for the latest updates and exclusive promotions
+        - generic [ref=e1229]:
+          - generic [ref=e1230]:
+            - textbox "Email" [ref=e1231]
+            - button "Subscribe" [ref=e1232]:
+              - img [ref=e1233]
+          - generic [ref=e1235]:
+            - generic [ref=e1236] [cursor=pointer]:
+              - checkbox "I agree to receive marketing communications." [ref=e1237]
+              - generic [ref=e1238]: I agree to receive marketing communications.
+            - generic [ref=e1240]:
+              - generic [ref=e1241]: You can unsubscribe at any time.
+              - link "More information" [ref=e1242] [cursor=pointer]:
+                - /url: https://the5ers.com/privacy-policy/
+    - generic [ref=e1243]:
+      - generic [ref=e1244]:
+        - link "10 Years Anniversary Logo" [ref=e1245] [cursor=pointer]:
+          - /url: /
+          - img "10 Years Anniversary Logo" [ref=e1246]
+        - generic [ref=e1248]:
+          - generic [ref=e1249]: Part of 5% group-
+          - generic [ref=e1250]:
+            - link [ref=e1251] [cursor=pointer]:
+              - /url: https://tradethepool.com/
+            - link [ref=e1252] [cursor=pointer]:
+              - /url: https://tradedelicious.com/
+            - link [ref=e1253] [cursor=pointer]:
+              - /url: https://tsgbrokers.com/
+            - link [ref=e1254] [cursor=pointer]:
+              - /url: https://the5ers.com/futures/
+      - generic [ref=e1255]:
+        - generic [ref=e1256]:
+          - generic [ref=e1257]:
+            - generic [ref=e1258]:
+              - paragraph [ref=e1260]: Turn your trading passion into your trading career
+              - generic [ref=e1261]:
+                - generic [ref=e1262]:
+                  - generic [ref=e1263]: "CFD’s:"
+                  - generic [ref=e1264]:
+                    - link [ref=e1265] [cursor=pointer]:
+                      - /url: https://x.com/the5erstrading
+                    - link [ref=e1266] [cursor=pointer]:
+                      - /url: https://www.instagram.com/the.5ers/
+                    - link [ref=e1267] [cursor=pointer]:
+                      - /url: https://www.youtube.com/channel/UCyvjJo0YumXPtxc_FlKWcBQ
+                    - link [ref=e1268] [cursor=pointer]:
+                      - /url: https://www.facebook.com/the5ersproptrading/
+                    - link [ref=e1269] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/company/10584892/
+                    - link [ref=e1270] [cursor=pointer]:
+                      - /url: https://hub.the5ers.com/
+                    - link [ref=e1271] [cursor=pointer]:
+                      - /url: https://www.tradingview.com/u/the5erstrading/
+                    - link [ref=e1272] [cursor=pointer]:
+                      - /url: https://stocktwits.com/THE5ERS
+                - link "Trustpilot Reviews" [ref=e1276] [cursor=pointer]:
+                  - /url: https://www.trustpilot.com/review/the5ers.com?utm_campaign=free&utm_medium=trustbox&utm_source=TrustBoxBasic
+                  - img "Trustpilot Reviews" [ref=e1277]
+                - generic [ref=e1279]:
+                  - generic [ref=e1280]: "FUTURES :"
+                  - generic [ref=e1281]:
+                    - link [ref=e1282] [cursor=pointer]:
+                      - /url: https://x.com/The5ersFutures
+                    - link [ref=e1283] [cursor=pointer]:
+                      - /url: https://www.tiktok.com/@the5ersfutures
+                    - link [ref=e1284] [cursor=pointer]:
+                      - /url: https://www.instagram.com/5ersfutures/
+                    - link [ref=e1285] [cursor=pointer]:
+                      - /url: https://www.youtube.com/channel/UCEPKWIz6WN-rlANZhpXWVsA
+              - link "Add The5ers as a preferred source on Google" [ref=e1287] [cursor=pointer]:
+                - /url: https://www.google.com/preferences/source?q=https://the5ers.com
+                - img [ref=e1288]:
+                  - img [ref=e1291]
+                  - generic [ref=e1297]:
+                    - generic [ref=e1298]: Add as a preferred
+                    - generic [ref=e1299]: source on Google
+            - generic [ref=e1300]:
+              - generic [ref=e1301]:
+                - heading "Get funded" [level=3] [ref=e1302]
+                - list [ref=e1303]:
+                  - listitem [ref=e1304]:
+                    - link "1 Step | Hyper Growth" [ref=e1305] [cursor=pointer]:
+                      - /url: /hyper-growth/
+                  - listitem [ref=e1306]:
+                    - link "2 Step | High Stakes" [ref=e1307] [cursor=pointer]:
+                      - /url: /high-stakes/
+                  - listitem [ref=e1308]:
+                    - link "3 Step | Bootcamp" [ref=e1309] [cursor=pointer]:
+                      - /url: /bootcamp/
+                  - listitem [ref=e1310]:
+                    - link "Futures" [ref=e1311] [cursor=pointer]:
+                      - /url: /futures/
+                  - listitem [ref=e1312]:
+                    - link "Stock Trading" [ref=e1313] [cursor=pointer]:
+                      - /url: https://tradethepool.com/
+              - generic [ref=e1314]:
+                - heading "Learn to trade" [level=3] [ref=e1315]
+                - list [ref=e1316]:
+                  - listitem [ref=e1317]:
+                    - link "Blog" [ref=e1318] [cursor=pointer]:
+                      - /url: /blog/
+                  - listitem [ref=e1319]:
+                    - link "Academy" [ref=e1320] [cursor=pointer]:
+                      - /url: /academy/
+                  - listitem [ref=e1321]:
+                    - link "Performance Coach" [ref=e1322] [cursor=pointer]:
+                      - /url: /performance-coach/
+                  - listitem [ref=e1323]:
+                    - link "Forex To Futures" [ref=e1324] [cursor=pointer]:
+                      - /url: /forex-to-futures/
+                  - listitem [ref=e1325]:
+                    - link "Stocks To Futures" [ref=e1326] [cursor=pointer]:
+                      - /url: /stocks-to-futures/
+              - generic [ref=e1327]:
+                - heading "Tools" [level=3] [ref=e1328]
+                - list [ref=e1329]:
+                  - listitem [ref=e1330]:
+                    - link "News Sentiment" [ref=e1331] [cursor=pointer]:
+                      - /url: /news-sentiment/
+                  - listitem [ref=e1332]:
+                    - link "Economic Forex Calendar" [ref=e1333] [cursor=pointer]:
+                      - /url: /economic-forex-calendar/
+                  - listitem [ref=e1334]:
+                    - link "Trading Assets Specifications" [ref=e1335] [cursor=pointer]:
+                      - /url: /asset-specifications/
+                  - listitem [ref=e1336]:
+                    - link "Indicators" [ref=e1337] [cursor=pointer]:
+                      - /url: /downloads/
+                  - listitem [ref=e1338]:
+                    - link "Charts" [ref=e1339] [cursor=pointer]:
+                      - /url: /charts/
+              - generic [ref=e1340]:
+                - heading "Meet the5ers" [level=3] [ref=e1341]
+                - list [ref=e1342]:
+                  - listitem [ref=e1343]:
+                    - link "Company" [ref=e1344] [cursor=pointer]:
+                      - /url: /about-the5ers/
+                  - listitem [ref=e1345]:
+                    - link "Community" [ref=e1346] [cursor=pointer]:
+                      - /url: /community/
+                  - listitem [ref=e1347]:
+                    - link "Careers" [ref=e1348] [cursor=pointer]:
+                      - /url: https://lp.the5ers.com/
+                  - listitem [ref=e1349]:
+                    - link "The5ers partners" [ref=e1350] [cursor=pointer]:
+                      - /url: /partners/
+                  - listitem [ref=e1351]:
+                    - link "Webinars" [ref=e1352] [cursor=pointer]:
+                      - /url: /webinars-live-events/
+                  - listitem [ref=e1353]:
+                    - link "Contest" [ref=e1354] [cursor=pointer]:
+                      - /url: /trading-competition/
+                  - listitem [ref=e1355]:
+                    - link "Refer a trader" [ref=e1356] [cursor=pointer]:
+                      - /url: /refer-a-trader/
+                  - listitem [ref=e1357]:
+                    - link "Press Room" [ref=e1358] [cursor=pointer]:
+                      - /url: /press-room/
+                  - listitem [ref=e1359]:
+                    - link "Press Kit" [ref=e1360] [cursor=pointer]:
+                      - /url: /press-kit/
+                  - listitem [ref=e1361]:
+                    - link "FAQs" [ref=e1362] [cursor=pointer]:
+                      - /url: /faqs/
+                  - listitem [ref=e1363]:
+                    - link "Futures FAQs" [ref=e1364] [cursor=pointer]:
+                      - /url: https://futures-help.the5ers.com/futures/
+              - generic [ref=e1365]:
+                - heading "Get in touch!" [level=3] [ref=e1366]
+                - generic [ref=e1367]:
+                  - button "Send email" [ref=e1369] [cursor=pointer]:
+                    - img [ref=e1370]
+                    - generic [ref=e1373]: Send email
+                  - button "Start chat" [ref=e1374] [cursor=pointer]:
+                    - img [ref=e1375]
+                    - generic [ref=e1377]: Start chat
+          - generic [ref=e1378]:
+            - paragraph
+            - generic [ref=e1379]:
+              - link "Privacy Policy" [ref=e1380] [cursor=pointer]:
+                - /url: /privacy-policy/
+              - link "Terms & Conditions" [ref=e1381] [cursor=pointer]:
+                - /url: /terms-and-conditions/
+              - link "The 5%ers Cookie Policy" [ref=e1382] [cursor=pointer]:
+                - /url: /cookie-policy/
+              - link "Copyright Infringement Policy" [ref=e1383] [cursor=pointer]:
+                - /url: /copyright-infringement-policy/
+              - link "AML Policy" [ref=e1384] [cursor=pointer]:
+                - /url: /aml-policy/
+              - link "Prohibited Trading Practices" [ref=e1385] [cursor=pointer]:
+                - /url: https://help.the5ers.com/prohibited-trading-practices/
+        - generic [ref=e1386]:
+          - heading "Website disclaimers" [level=3] [ref=e1387]
+          - paragraph [ref=e1388]: "Five Percent Online Ltd. (“We”, “Our”, “Us”, or “Company”) operates as a proprietary trading firm. The Company is not a custodian, exchange, financial institution, trading platform, fiduciary or insurance business outside the purview of financial regulatory authorities. “The5%ers” is a brand name operated by the Company. All trading activities conducted through the Company Hub are executed in a simulated environment. Users should be aware that the trading results in this environment do not reflect real trading outcomes. The simulated trading environment in the Hub is designed for educational and evaluation purposes only. The “funds” provided to you for the evaluation are fictitious, do not represent any currency, and that you have no right to possess those fictitious funds beyond the scope of their use within the Hub and for the sole purpose of the evaluation, and in particular that they may not and cannot be used for any actual trading and that you are not entitled to any payment or other right in or of those funds. Becoming a funded user is not guaranteed. The eligibility for becoming a funded user is contingent upon meeting specific performance criteria and compliance with the Company’s evaluation processes. Not all users will qualify for funded accounts, and past performance in the simulated environment is not indicative of future success. All content published and distributed by Us and Our affiliates is to be treated as general information only. None of the information provided contained herein is intended as (a) investment advice, (b) an offer or solicitation of an offer to buy or sell, or (c) a recommendation, endorsement, or sponsorship of any security, company, or fund. Testimonials appearing on the website may not be representative of other clients or customers and is not a guarantee of future performance or success. Use of the information contained on the website is at your own risk and the Company and its partners, representatives, agents, employees, and contractors assume no responsibility or liability for any use or misuse of such information. Hypothetical or simulated performance results have certain limitations. Unlike an actual performance record, simulated results do not represent actual trading. Also, because the trades have not actually been executed, the results may have under-or-over compensated for the impact, if any, of certain market factors, such as lack of liquidity. Simulated trading programs, in general, are also subject to the fact that they are designed with the benefit of hindsight. No representation is being made that any account will or is likely to achieve profit or losses similar to those shown. Please note that Our Services are not available in certain jurisdictions, including but not limited to: Afghanistan, Belarus, Burundi, Central African Republic, Cuba, Congo Republic, Crimea, Democratic Republic of Congo, Eritrea, Guinea, Guinea-Bissau, Iraq, Iran, Israel, Laos, Lebanon, Liberia, Libya, Myanmar, North Korea, Palestinian Territory, Papua New Guinea, Russia, South Sudan, Sudan, Somalia, Syria, Vanuatu, Venezuela, and Yemen (the “Forbidden Territories”). Accessing or attempting to use Our Services from a Forbidden Territory is strictly prohibited."
+        - generic [ref=e1389]: This website is operated by FIVE PERCENT ONLINE LTD, a company registered in UK with company number 12553363 and registered office at Enstar House, 168, Praed Street, London, United Kingdom, W2 1RH. Five Percent Online LTD - Copyright © 2026.
+        - heading "THE5ERS" [level=2] [ref=e1390]
+  - iframe [ref=e1391]:
+    
+  - alert [ref=e1392]

@@ -1,0 +1,312 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - text: 
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link [ref=e7] [cursor=pointer]:
+          - /url: https://bulenox.com
+          - img [ref=e8]
+        - generic:
+          - navigation:
+            - list:
+              - listitem [ref=e9] [cursor=pointer]:
+                - link "Home" [ref=e10]:
+                  - /url: https://bulenox.com
+              - listitem [ref=e11] [cursor=pointer]:
+                - link "Quick Start" [ref=e12]:
+                  - /url: https://bulenox.com/start/
+              - listitem [ref=e13] [cursor=pointer]:
+                - link "Blog" [ref=e14]:
+                  - /url: https://bulenox.com/blog/
+              - listitem [ref=e15] [cursor=pointer]:
+                - link "Help Center" [ref=e16]:
+                  - /url: https://bulenox.com/help/
+              - listitem [ref=e17] [cursor=pointer]:
+                - link "Contact" [ref=e18]:
+                  - /url: https://bulenox.com/contact/
+          - navigation [ref=e19]:
+            - list:
+              - listitem [ref=e20] [cursor=pointer]:
+                - link "EN " [ref=e21]:
+                  - /url: "#"
+              - listitem [ref=e22] [cursor=pointer]:
+                - link "Login" [ref=e23]:
+                  - /url: https://bulenox.com/member/login
+    - navigation [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26]: Menu
+        - generic [ref=e27] [cursor=pointer]: 
+      - list [ref=e28]:
+        - listitem [ref=e29]:
+          - link "Home" [ref=e30] [cursor=pointer]:
+            - /url: https://bulenox.com
+        - listitem [ref=e31]:
+          - link "Quick start" [ref=e32] [cursor=pointer]:
+            - /url: https://bulenox.com/start/
+        - listitem [ref=e33]:
+          - link "Blog" [ref=e34] [cursor=pointer]:
+            - /url: https://bulenox.com/blog/
+        - listitem [ref=e35]:
+          - link "Help" [ref=e36] [cursor=pointer]:
+            - /url: https://bulenox.com/help/
+        - listitem [ref=e37]:
+          - link "Contact" [ref=e38] [cursor=pointer]:
+            - /url: https://bulenox.com/contact/
+        - separator [ref=e39]
+        - listitem [ref=e40]:
+          - generic [ref=e41]: EN
+          - generic [ref=e42] [cursor=pointer]: 
+          - list:
+            - listitem [ref=e43]:
+              - link "RU" [ref=e44] [cursor=pointer]:
+                - /url: https://bulenox.com/ru/
+              - link "FR" [ref=e45] [cursor=pointer]:
+                - /url: https://bulenox.com/fr/
+              - link "ES" [ref=e46] [cursor=pointer]:
+                - /url: https://bulenox.com/es/
+        - listitem [ref=e47]:
+          - link "Login" [ref=e48] [cursor=pointer]:
+            - /url: https://bulenox.com/member/login
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - heading "INVEST IN YOURSELF" [level=1] [ref=e51]:
+          - generic [ref=e52]:
+            - text: INVEST IN
+            - text: YOURSELF
+        - generic [ref=e53]: A platform for traders selection and training.
+        - link "More details" [ref=e54] [cursor=pointer]:
+          - /url: https://bulenox.com/start
+        - link "Join now" [ref=e55] [cursor=pointer]:
+          - /url: https://bulenox.com/member/signup
+      - img [ref=e56]
+    - article [ref=e60]:
+      - generic [ref=e62]:
+        - heading "The Ecosystem of Trader Development. Trade Without Risk Your Own Capital." [level=2] [ref=e63]
+        - paragraph [ref=e64]: You are only one step away from success.
+      - generic [ref=e70]:
+        - img "Trading terminal" [ref=e72]
+        - generic [ref=e73]:
+          - heading "Qualification Account" [level=2] [ref=e74]
+          - paragraph [ref=e75]: Our goal is to find and financially support talented traders. We strive to provide all the necessary tools to transform the passion for trading into a stable joint business.
+          - paragraph [ref=e76]: "Demonstrate your trading skills. Focus on your own strategy and market vision. Prove yourself as a responsible and disciplined trader, whose practical experience is trustworthy. To do this, you must:"
+          - list [ref=e77]:
+            - listitem [ref=e78]:
+              - img [ref=e79]
+              - text: Register and create a personal account
+            - listitem [ref=e80]:
+              - img [ref=e81]
+              - text: Choose one of the account size
+            - listitem [ref=e82]:
+              - img [ref=e83]
+              - text: Start trading on a Qualification Account
+            - listitem [ref=e84]:
+              - img [ref=e85]
+              - text: Follow the rules and show the result
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - heading "Master Account" [level=2] [ref=e88]
+          - paragraph [ref=e89]: We know how a lack of capital limits the ability to make the right trading decisions. To reach your full potential, we provide full support and expert supervision.
+          - paragraph [ref=e90]: There is no better motivation than a stable, mutually beneficial relationship that ensures personal and financial growth. This is how we help professionals move forward and conquer new heights.
+          - list [ref=e91]:
+            - listitem [ref=e92]:
+              - img [ref=e93]
+              - text: Trade your own plan from day one
+            - listitem [ref=e94]:
+              - img [ref=e95]
+              - text: Get your first $10,000 without commissions
+            - listitem [ref=e96]:
+              - img [ref=e97]
+              - text: Earn up to 90% of your profits
+            - listitem [ref=e98]:
+              - img [ref=e99]
+              - text: Use the trading terminal for free
+        - img "Prop trading" [ref=e101]
+    - generic [ref=e103]:
+      - generic [ref=e111]:
+        - heading "Account Tiers" [level=2] [ref=e112]
+        - paragraph [ref=e113]: Choose the account size that fits your strategy.
+      - generic [ref=e116]:
+        - generic [ref=e118]:
+          - generic [ref=e122]:
+            - generic [ref=e123]: $25,000
+            - generic [ref=e124]:
+              - img [ref=e125]
+              - text: Max 3 contracts
+            - generic [ref=e126]:
+              - img [ref=e127]
+              - text: Profit target $1,500
+            - generic [ref=e128]:
+              - img [ref=e129]
+              - text: Drawdown up to $1,500
+            - generic [ref=e130]:
+              - img [ref=e131]
+              - text: First $10,000 100%
+            - generic [ref=e132]: $145/month
+            - generic [ref=e133]: "Opt 1: No Scaling Account"
+            - link "SELECT" [ref=e135] [cursor=pointer]:
+              - /url: https://bulenox.com/member/buy/XmYUhXXvx1ud
+            - 'link "Or Opt 2: EOD Account" [ref=e137] [cursor=pointer]':
+              - /url: https://bulenox.com/member/buy/gaYjK4hbWZVH
+          - generic [ref=e141]:
+            - generic [ref=e142]: $50,000
+            - generic [ref=e143]:
+              - img [ref=e144]
+              - text: Max 7 contracts
+            - generic [ref=e145]:
+              - img [ref=e146]
+              - text: Profit target $3,000
+            - generic [ref=e147]:
+              - img [ref=e148]
+              - text: Drawdown up to $2,500
+            - generic [ref=e149]:
+              - img [ref=e150]
+              - text: First $10,000 100%
+            - generic [ref=e151]: $175 $125/month
+            - generic [ref=e152]: "(Coupon: \"$50OFF\")"
+            - generic [ref=e153]: "Opt 1: No Scaling Account"
+            - link "SELECT" [ref=e155] [cursor=pointer]:
+              - /url: https://bulenox.com/member/buy/0bT4YXXXHKC8
+            - 'link "Or Opt 2: EOD Account" [ref=e157] [cursor=pointer]':
+              - /url: https://bulenox.com/member/buy/SO2xo1C8RMiR
+          - generic [ref=e161]:
+            - generic [ref=e162]: $100,000
+            - generic [ref=e163]:
+              - img [ref=e164]
+              - text: Max 12 contracts
+            - generic [ref=e165]:
+              - img [ref=e166]
+              - text: Profit target $6,000
+            - generic [ref=e167]:
+              - img [ref=e168]
+              - text: Drawdown up to $3,000
+            - generic [ref=e169]:
+              - img [ref=e170]
+              - text: First $10,000 100%
+            - generic [ref=e171]: $215 $155/month
+            - generic [ref=e172]: "(Coupon: \"$60OFF\")"
+            - generic [ref=e173]: "Opt 1: No Scaling Account"
+            - link "SELECT" [ref=e175] [cursor=pointer]:
+              - /url: https://bulenox.com/member/buy/T4Lmwnn9yBzB
+            - 'link "Or Opt 2: EOD Account" [ref=e177] [cursor=pointer]':
+              - /url: https://bulenox.com/member/buy/X16PzRq0l1Gf
+          - generic [ref=e181]:
+            - generic [ref=e182]: $150,000
+            - generic [ref=e183]:
+              - img [ref=e184]
+              - text: Max 15 contracts
+            - generic [ref=e185]:
+              - img [ref=e186]
+              - text: Profit target $9,000
+            - generic [ref=e187]:
+              - img [ref=e188]
+              - text: Drawdown up to $4,500
+            - generic [ref=e189]:
+              - img [ref=e190]
+              - text: First $10,000 100%
+            - generic [ref=e191]: $325/month
+            - generic [ref=e192]: "Opt 1: No Scaling Account"
+            - link "SELECT" [ref=e194] [cursor=pointer]:
+              - /url: https://bulenox.com/member/buy/GhglNC59Ffdl
+            - 'link "Or Opt 2: EOD Account" [ref=e196] [cursor=pointer]':
+              - /url: https://bulenox.com/member/buy/hX4U32Jsgrh6
+          - generic [ref=e200]:
+            - generic [ref=e201]: $250,000
+            - generic [ref=e202]:
+              - img [ref=e203]
+              - text: Max 25 contracts
+            - generic [ref=e204]:
+              - img [ref=e205]
+              - text: Profit target $15,000
+            - generic [ref=e206]:
+              - img [ref=e207]
+              - text: Drawdown up to $5,500
+            - generic [ref=e208]:
+              - img [ref=e209]
+              - text: First $10,000 100%
+            - generic [ref=e210]: $535/month
+            - generic [ref=e211]: "Opt 1: No Scaling Account"
+            - link "SELECT" [ref=e213] [cursor=pointer]:
+              - /url: https://bulenox.com/member/buy/LZyTKrCf9Gx3
+            - 'link "Or Opt 2: EOD Account" [ref=e215] [cursor=pointer]':
+              - /url: https://bulenox.com/member/buy/N3eDYQd3rQF2
+        - button [ref=e216] [cursor=pointer]
+      - paragraph [ref=e224]:
+        - text: Want to try it? Start with your
+        - link "Rithmic 14 day Free Trial" [ref=e225] [cursor=pointer]:
+          - /url: https://bulenox.com/member/buy/R5ahM0Y0CWvA
+    - article [ref=e229]:
+      - generic [ref=e230]:
+        - generic [ref=e238]:
+          - heading "Why Traders Choose Us" [level=2] [ref=e239]
+          - paragraph [ref=e240]: Advantages of doing business with our company.
+        - generic [ref=e243]:
+          - generic [ref=e245]:
+            - img [ref=e246]
+            - generic [ref=e247]: Global Access
+            - generic [ref=e248]: There are no borders for us! It doesn't matter where you are. We work with traders all over the world.
+          - generic [ref=e250]:
+            - img [ref=e251]
+            - generic [ref=e252]: Limited Risk
+            - generic [ref=e253]: Don't risk your own capital! Your risk is limited by the terms of the selected account size.
+          - generic [ref=e255]:
+            - img [ref=e256]
+            - generic [ref=e257]: Flexible Terms
+            - generic [ref=e258]: Take the opportunity! Trade without any restrictions and at any time. Use your own plan.
+          - generic [ref=e260]:
+            - img [ref=e261]
+            - generic [ref=e262]: Loyal Approach
+            - generic [ref=e263]: The highest payouts! The lowest cost of resets and the ability to have multiple accounts at the same time.
+        - generic [ref=e264]:
+          - img "Trader" [ref=e266]
+          - generic [ref=e269]:
+            - heading "\"The most important investment you can make is to invest in yourself.\" – Warren Buffett" [level=2] [ref=e273]
+            - paragraph [ref=e277]: Trading is the whole financial world and there is no better time than now to become a part of it.
+            - link "Join now" [ref=e280] [cursor=pointer]:
+              - /url: https://bulenox.com/member/signup
+    - contentinfo [ref=e282]:
+      - generic [ref=e284]:
+        - generic [ref=e285]:
+          - list [ref=e288]:
+            - listitem [ref=e289]:
+              - link "Home" [ref=e290] [cursor=pointer]:
+                - /url: https://bulenox.com/
+            - listitem [ref=e291]:
+              - link "Quick Start" [ref=e292] [cursor=pointer]:
+                - /url: https://bulenox.com/start/
+            - listitem [ref=e293]:
+              - link "Blog" [ref=e294] [cursor=pointer]:
+                - /url: https://bulenox.com/blog/
+            - listitem [ref=e295]:
+              - link "Help Center" [ref=e296] [cursor=pointer]:
+                - /url: https://bulenox.com/help/
+            - listitem [ref=e297]:
+              - link "Contact" [ref=e298] [cursor=pointer]:
+                - /url: https://bulenox.com/contact/
+          - list [ref=e301]:
+            - listitem [ref=e302]:
+              - link "Privacy Policy" [ref=e303] [cursor=pointer]:
+                - /url: https://bulenox.com/wa-data/public/site/data/bulenox.com/Privacy_Policy.pdf
+            - listitem [ref=e304]:
+              - link "Terms of Use" [ref=e305] [cursor=pointer]:
+                - /url: https://bulenox.com/wa-data/public/site/data/bulenox.com/Terms_of_Use.pdf
+            - listitem [ref=e306]:
+              - link "Risk Disclosure" [ref=e307] [cursor=pointer]:
+                - /url: https://bulenox.com/wa-data/public/site/data/bulenox.com/Risk_Disclosure.pdf
+            - listitem [ref=e308]:
+              - link "Affiliate Program" [ref=e309] [cursor=pointer]:
+                - /url: https://bulenox.com/member/aff/signup
+          - list [ref=e312]:
+            - listitem [ref=e313]: Bulenox LLC
+            - listitem [ref=e314]: 1201 N Orange St, Suite 7149
+            - listitem [ref=e315]: Wilmington, DE 19801
+        - generic [ref=e317]:
+          - text: Futures and options trading has large potential rewards, but also large potential risk. You must be aware of the risks and be willing to accept them in order to invest in the futures and options markets. Don’t trade with money you can’t afford to lose. This website is neither a solicitation nor an offer to buy or sell futures and options. No representation is being made that any account will or is likely to achieve profits or losses similar to those discussed on this website. The past performance of any trading system or methodology is not necessarily indicative of future results.
+          - text: CFTC RULE 4.41 – Hypothetical or simulated performance results have certain inherent limitations. Unlike an actual performance record, simulated results do not represent actual trading. Also, since the trades have not actually been executed, the results may have under- or over-compensated for the impact, if any, of certain market factors, such as lack of liquidity. Simulated trading programs in general are also subject to the fact that they are designed with the benefit of hindsight. No representation is being made that any account will or is likely to achieve profits or losses similar to those shown.
+        - generic [ref=e320]: © 2025 Bulenox. All rights reserved.
+    - dialog [active] [ref=e321]:
+      - document:
+        - generic [ref=e324]:
+          - generic [ref=e325]: This website uses cookies to personalize content and analyse traffic in order to offer you a better experience.
+          - link "I accept" [ref=e327] [cursor=pointer]:
+            - /url: "#a"
+  - button

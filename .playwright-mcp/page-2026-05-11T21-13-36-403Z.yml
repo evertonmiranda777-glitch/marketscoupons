@@ -1,0 +1,326 @@
+- generic [active] [ref=e1]:
+  - generic "Live chat button":
+    - generic [ref=e3] [cursor=pointer]:
+      - generic: Live Chat
+  - generic [ref=e8]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: New
+      - generic [ref=e14]: 1-Step FTMO Challenge
+      - link "Start now" [ref=e15] [cursor=pointer]:
+        - /url: https://trader.ftmo.com/start-challenge
+        - text: Start now
+        - img [ref=e16]
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - link "FTMO — back to homepage" [ref=e22] [cursor=pointer]:
+            - /url: https://ftmo.com/en/
+            - img "FTMO" [ref=e23]
+          - list [ref=e25]:
+            - listitem [ref=e26]:
+              - button "FTMO Challenge" [ref=e27] [cursor=pointer]:
+                - generic [ref=e28]: FTMO Challenge
+                - img [ref=e29]
+            - listitem [ref=e31]:
+              - button "Trading" [ref=e32] [cursor=pointer]:
+                - generic [ref=e33]: Trading
+                - img [ref=e34]
+            - listitem [ref=e36]:
+              - link "FAQ" [ref=e37] [cursor=pointer]:
+                - /url: /en/faq/
+            - listitem [ref=e38]:
+              - link "Blog" [ref=e39] [cursor=pointer]:
+                - /url: /en/blog/
+            - listitem [ref=e40]:
+              - button "Academy" [ref=e41] [cursor=pointer]:
+                - generic [ref=e42]: Academy
+                - img [ref=e43]
+            - listitem [ref=e45]:
+              - button "About" [ref=e46] [cursor=pointer]:
+                - generic [ref=e47]: About
+                - img [ref=e48]
+        - generic [ref=e50]:
+          - button [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+          - generic [ref=e60]:
+            - link "Log In" [ref=e62] [cursor=pointer]:
+              - /url: https://trader.ftmo.com
+              - generic [ref=e63]: Log In
+            - link "Get Started" [ref=e65] [cursor=pointer]:
+              - /url: https://trader.ftmo.com/start-challenge
+              - generic [ref=e66]: Get Started
+    - main [ref=e67]:
+      - generic [ref=e70]:
+        - img [ref=e71]
+        - generic [ref=e72]:
+          - paragraph [ref=e73]: "404: Page not found"
+          - paragraph [ref=e74]: The requested URL is unavailable or has been moved.
+        - link "Back to Home Page" [ref=e75] [cursor=pointer]:
+          - /url: https://ftmo.com/en/
+          - generic [ref=e76]: Back to Home Page
+    - contentinfo [ref=e77]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - link "FTMO — back to homepage" [ref=e81] [cursor=pointer]:
+            - /url: https://ftmo.com/en/
+            - img "FTMO" [ref=e82]
+          - generic [ref=e83]:
+            - link "Discord — FTMO" [ref=e84] [cursor=pointer]:
+              - /url: https://discord.com/invite/8j7r5XaaW6
+              - img [ref=e85]
+            - link "Youtube — FTMO" [ref=e87] [cursor=pointer]:
+              - /url: https://www.youtube.com/@FTMOcom
+              - img [ref=e88]
+            - link "Instagram — FTMO" [ref=e90] [cursor=pointer]:
+              - /url: https://instagram.com/ftmocom/
+              - img [ref=e91]
+            - link "Facebook — FTMO" [ref=e93] [cursor=pointer]:
+              - /url: https://facebook.com/ftmocom/
+              - img [ref=e94]
+            - link "X — FTMO" [ref=e96] [cursor=pointer]:
+              - /url: https://x.com/FTMO_com
+              - img [ref=e97]
+            - link "Linkedin — FTMO" [ref=e99] [cursor=pointer]:
+              - /url: https://www.linkedin.com/company/ftmo/
+              - img [ref=e100]
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - generic [ref=e106]:
+                - generic [ref=e107]: Support
+                - img [ref=e110]
+              - list [ref=e113]:
+                - listitem [ref=e114]:
+                  - img [ref=e115]
+                  - link "Chat with us" [ref=e118] [cursor=pointer]:
+                    - /url: https://ftmo.ladesk.com/scripts/inline_chat.php?cwid=4ig96k9v
+                - listitem [ref=e119]:
+                  - img [ref=e120]
+                  - link "Start the chat" [ref=e124] [cursor=pointer]:
+                    - /url: https://api.whatsapp.com/send?phone=420910920310
+                - listitem [ref=e125]:
+                  - img [ref=e126]
+                  - link "support@ftmo.com" [ref=e130] [cursor=pointer]:
+                    - /url: mailto:support@ftmo.com
+                - listitem [ref=e131]:
+                  - img [ref=e132]
+                  - link "+420 910 920 310" [ref=e135] [cursor=pointer]:
+                    - /url: tel:00420910920310
+            - generic [ref=e138]:
+              - generic [ref=e139]: Address
+              - generic [ref=e141]:
+                - paragraph [ref=e142]: FTMO
+                - paragraph [ref=e143]: Quadrio offices
+                - paragraph [ref=e144]: Purkynova 2121/3
+                - paragraph [ref=e145]: 110 00 Prague
+                - paragraph [ref=e146]: Czech Republic
+          - generic [ref=e148]:
+            - generic [ref=e149]: Top Searches
+            - list [ref=e151]:
+              - listitem [ref=e152]:
+                - img [ref=e153]
+                - link "FAQ" [ref=e157] [cursor=pointer]:
+                  - /url: /en/faq/
+              - listitem [ref=e158]:
+                - img [ref=e159]
+                - link "Support" [ref=e163] [cursor=pointer]:
+                  - /url: /en/contact/
+              - listitem [ref=e164]:
+                - img [ref=e165]
+                - link "How It Works" [ref=e169] [cursor=pointer]:
+                  - /url: /en/how-it-works/
+              - listitem [ref=e170]:
+                - img [ref=e171]
+                - link "Affiliate Programme" [ref=e175] [cursor=pointer]:
+                  - /url: /en/affiliate-programme/
+              - listitem [ref=e176]:
+                - img [ref=e177]
+                - link "Press Kit" [ref=e181] [cursor=pointer]:
+                  - /url: /en/press-kit/
+              - listitem [ref=e182]:
+                - img [ref=e183]
+                - link "FTMO Merchandise" [ref=e187] [cursor=pointer]:
+                  - /url: https://shop.ftmo.com/
+          - generic [ref=e191]:
+            - generic [ref=e192]: FTMO Challenge
+            - list [ref=e194]:
+              - listitem [ref=e195]:
+                - link "How It Works" [ref=e196] [cursor=pointer]:
+                  - /url: /en/how-it-works/
+              - listitem [ref=e197]:
+                - link "Pricing" [ref=e198] [cursor=pointer]:
+                  - /url: /en/#pricing
+              - listitem [ref=e199]:
+                - link "FTMO Free Trial" [ref=e200] [cursor=pointer]:
+                  - /url: /en/ftmo-free-trial/
+              - listitem [ref=e201]:
+                - link "Scaling Plan" [ref=e202] [cursor=pointer]:
+                  - /url: /en/reward-growth-and-scaling-plan/
+              - listitem [ref=e203]:
+                - link "Premium Programme" [ref=e204] [cursor=pointer]:
+                  - /url: /en/premium-programme/
+              - listitem [ref=e205]:
+                - link "Trading Objectives" [ref=e206] [cursor=pointer]:
+                  - /url: /en/trading-objectives/
+              - listitem [ref=e207]:
+                - 'link "FTMO Challenge: 1-Step" [ref=e208] [cursor=pointer]':
+                  - /url: /en/1-step-challenge/
+              - listitem [ref=e209]:
+                - 'link "FTMO Challenge: 2-Step" [ref=e210] [cursor=pointer]':
+                  - /url: /en/2-step-challenge/
+              - listitem [ref=e211]:
+                - link "Comparison Table" [ref=e212] [cursor=pointer]:
+                  - /url: /en/comparison-table/
+          - generic [ref=e214]:
+            - generic [ref=e215]: Trading
+            - list [ref=e217]:
+              - listitem [ref=e218]:
+                - link "Forbidden Trading Practices" [ref=e219] [cursor=pointer]:
+                  - /url: /en/forbidden-trading-practices/
+              - listitem [ref=e220]:
+                - link "Tools Overview" [ref=e221] [cursor=pointer]:
+                  - /url: /en/trading-tools-and-services/
+              - listitem [ref=e222]:
+                - link "Performance Coaches" [ref=e223] [cursor=pointer]:
+                  - /url: /en/performance-coaching/
+              - listitem [ref=e224]:
+                - link "Leaderboard" [ref=e225] [cursor=pointer]:
+                  - /url: /en/leaderboard/
+              - listitem [ref=e226]:
+                - link "Economic Calendar" [ref=e227] [cursor=pointer]:
+                  - /url: /en/calendar/
+              - listitem [ref=e228]:
+                - link "Tradable Symbols" [ref=e229] [cursor=pointer]:
+                  - /url: /en/symbols/
+              - listitem [ref=e230]:
+                - link "Trading Updates" [ref=e231] [cursor=pointer]:
+                  - /url: /en/trading-updates/
+              - listitem [ref=e232]:
+                - link "Trading Platforms" [ref=e233] [cursor=pointer]:
+                  - /url: /en/trading-platforms/
+              - listitem [ref=e234]:
+                - link "FTMO Academy" [ref=e235] [cursor=pointer]:
+                  - /url: https://academy.ftmo.com/
+              - listitem [ref=e236]:
+                - link "Blog" [ref=e237] [cursor=pointer]:
+                  - /url: /en/blog/
+          - generic [ref=e239]:
+            - generic [ref=e240]: About
+            - list [ref=e242]:
+              - listitem [ref=e243]:
+                - link "Press releases" [ref=e244] [cursor=pointer]:
+                  - /url: /en/press-releases/
+              - listitem [ref=e245]:
+                - link "Press Kit" [ref=e246] [cursor=pointer]:
+                  - /url: /en/press-kit/
+              - listitem [ref=e247]:
+                - link "About Us" [ref=e248] [cursor=pointer]:
+                  - /url: /en/about/
+              - listitem [ref=e249]:
+                - link "Contact Us" [ref=e250] [cursor=pointer]:
+                  - /url: /en/contact/
+              - listitem [ref=e251]:
+                - link "Awards" [ref=e252] [cursor=pointer]:
+                  - /url: /en/ftmo-awards/
+              - listitem [ref=e253]:
+                - link "Affiliate Programme" [ref=e254] [cursor=pointer]:
+                  - /url: /en/affiliate-programme/
+              - listitem [ref=e255]:
+                - link "Testimonials" [ref=e256] [cursor=pointer]:
+                  - /url: /en/testimonials/
+              - listitem [ref=e257]:
+                - link "Careers" [ref=e258] [cursor=pointer]:
+                  - /url: https://careers.ftmo.com/en/
+              - listitem [ref=e259]:
+                - link "FTMO Shop" [ref=e260] [cursor=pointer]:
+                  - /url: https://shop.ftmo.com/
+              - listitem [ref=e261]:
+                - link "FAQ" [ref=e262] [cursor=pointer]:
+                  - /url: /en/faq/
+      - generic [ref=e264]:
+        - generic [ref=e265]:
+          - generic [ref=e266]:
+            - generic [ref=e267]: Get Exclusive FTMO Insights
+            - generic [ref=e268]:
+              - generic [ref=e269]:
+                - img [ref=e270]
+                - generic [ref=e273]: Expert Trading Insights
+              - generic [ref=e274]:
+                - img [ref=e275]
+                - generic [ref=e278]: Latest Updates
+              - generic [ref=e279]:
+                - img [ref=e280]
+                - generic [ref=e283]: Special Offers
+          - generic [ref=e285]:
+            - textbox "Email" [ref=e286]
+            - button "Subscribe" [ref=e287] [cursor=pointer]:
+              - generic [ref=e288]: Subscribe
+        - generic [ref=e290]: All information provided on this site is intended solely for educational purposes related to trading on financial markets and does not serve in any way as a specific investment recommendation, business recommendation, investment opportunity analysis or similar general recommendation regarding the trading of investment instruments. FTMO only provides services of simulated trading and educational tools for traders. The information on this site is not directed at residents in any country or jurisdiction where such distribution or use would be contrary to local laws or regulations. FTMO companies do not act as a broker and do not accept any deposits. The offered technical solution for the FTMO platforms and data feed is powered by liquidity providers.
+        - generic [ref=e292]:
+          - link "Mastercard Visa Discover DinersClub ApplePay GooglePay Skrill" [ref=e293] [cursor=pointer]:
+            - /url: https://ftmo.com/en/faq/what-payment-methods-are-available
+            - generic [ref=e294]:
+              - generic:
+                - img "Mastercard"
+              - generic:
+                - img "Visa"
+              - generic:
+                - img "Discover"
+              - generic:
+                - img "DinersClub"
+              - generic:
+                - img "ApplePay"
+              - generic:
+                - img "GooglePay"
+              - generic:
+                - img "Skrill"
+          - generic:
+            - link "Download FTMO on the App Store":
+              - /url: https://apps.apple.com/bn/app/ftmo/id1564950829
+              - img "Download on the App Store"
+            - link "Get FTMO on Google Play":
+              - /url: https://play.google.com/store/apps/details?id=com.ftmo.trader&hl=en
+              - img "Get it on Google Play"
+        - generic [ref=e298]:
+          - list [ref=e299]:
+            - listitem [ref=e300]: 2026 © Copyright
+            - listitem [ref=e301]:
+              - button "Cookie settings" [ref=e302] [cursor=pointer]
+            - listitem [ref=e303]:
+              - link "Cookies" [ref=e304] [cursor=pointer]:
+                - /url: /en/cookies/
+            - listitem [ref=e305]:
+              - link "Imprint" [ref=e306] [cursor=pointer]:
+                - /url: /en/imprint/
+            - listitem [ref=e307]:
+              - link "Terms & Conditions" [ref=e308] [cursor=pointer]:
+                - /url: /en/terms-and-conditions/
+            - listitem [ref=e309]:
+              - link "Privacy Policy" [ref=e310] [cursor=pointer]:
+                - /url: /en/privacy-policy/
+          - generic [ref=e311]:
+            - generic [ref=e312]:
+              - generic [ref=e313]: Made with
+              - img [ref=e314]
+              - generic [ref=e316]: for trading
+            - generic [ref=e318]:
+              - generic [ref=e319]: "Region:"
+              - generic [ref=e320]:
+                - combobox "Select region" [ref=e321] [cursor=pointer]:
+                  - option "Global" [selected]
+                  - option "United States"
+                  - option "Australia"
+                - generic:
+                  - img
+    - paragraph [ref=e324]:
+      - text: Please note that all accounts we provide to our clients are demo accounts with fictitious funds and any trading is in a simulated environment only. For more information, please feel free to visit our
+      - link "FAQ" [ref=e325] [cursor=pointer]:
+        - /url: https://ftmo.com/en/faq/
+      - text: section.
+      - button "Ok, I understand." [ref=e326] [cursor=pointer]
+  - generic [ref=e327]:
+    - generic [ref=e328]: This website uses cookies to improve user experience and to create personalized content.
+    - generic [ref=e329]:
+      - link "Read more" [ref=e330] [cursor=pointer]:
+        - /url: https://ftmo.com/en/cookies/
+      - button "OK" [ref=e331] [cursor=pointer]

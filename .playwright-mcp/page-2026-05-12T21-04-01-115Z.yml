@@ -1,0 +1,110 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+      - generic [ref=e4]: Skip to main content
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - link "GoDaddy" [ref=e9] [cursor=pointer]:
+          - /url: https://venture-redirector.godaddy.com/
+          - figure "GoDaddy" [ref=e10]:
+            - img [ref=e11]
+        - list [ref=e13]:
+          - listitem [ref=e14]:
+            - link "Portfolio" [ref=e15] [cursor=pointer]:
+              - /url: https://dcc.godaddy.com/control/portfolio
+              - generic [ref=e20]: Portfolio
+          - listitem [ref=e21]:
+            - link "DNS" [ref=e22] [cursor=pointer]:
+              - /url: /control/dnsmanagement
+              - generic [ref=e27]: DNS
+          - listitem [ref=e28]:
+            - link "Transfers" [ref=e29] [cursor=pointer]:
+              - /url: https://dcc.godaddy.com/control/transfers
+              - generic [ref=e34]: Transfers
+          - listitem [ref=e35]:
+            - button "Services" [ref=e36] [cursor=pointer]:
+              - generic [ref=e41]: Services
+            - list:
+              - listitem [ref=e43]:
+                - link "DNS Hosting" [ref=e44] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/dnshosting
+                  - generic [ref=e47]: DNS Hosting
+              - listitem [ref=e48]:
+                - link "Domain Broker" [ref=e49] [cursor=pointer]:
+                  - /url: https://dbs.godaddy.com
+                  - generic [ref=e52]: Domain Broker
+              - listitem [ref=e53]:
+                - link "Pre-registration" [ref=e54] [cursor=pointer]:
+                  - /url: https://preregistration.godaddy.com
+                  - generic [ref=e57]: Pre-registration
+              - listitem [ref=e58]:
+                - link "Block" [ref=e59] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/blocks
+                  - generic [ref=e62]: Block
+              - listitem [ref=e63]:
+                - link "Negotiations" [ref=e64] [cursor=pointer]:
+                  - /url: https://aftermarket.godaddy.com/negotiations
+                  - generic [ref=e67]: Negotiations
+          - listitem [ref=e68]:
+            - button "Investor Central" [ref=e69] [cursor=pointer]:
+              - generic [ref=e74]: Investor Central
+            - list:
+              - listitem [ref=e76]:
+                - link "Auctions" [ref=e77] [cursor=pointer]:
+                  - /url: https://www.auctions.godaddy.com?itc=dcc_portfolio_auctions
+                  - generic [ref=e80]: Auctions
+              - listitem [ref=e81]:
+                - link "Afternic" [ref=e82] [cursor=pointer]:
+                  - /url: https://sso.godaddy.com/federate/afternic?path=/dashboard/activity?itc=dcc_portfolio_afternic
+                  - generic [ref=e85]: Afternic
+              - listitem [ref=e86]:
+                - link "Domain Parking" [ref=e87] [cursor=pointer]:
+                  - /url: https://www.godaddy.com/domain-parking/dashboard?itc=dcc_portfolio_parking
+                  - generic [ref=e90]: Domain Parking
+              - listitem [ref=e91]:
+                - link "Domain Academy" [ref=e92] [cursor=pointer]:
+                  - /url: https://community.godaddy.com/s/domain-academy?itc=dcc_portfolio_domain_academy
+                  - generic [ref=e95]: Domain Academy
+          - listitem [ref=e96]:
+            - button "Settings" [ref=e97] [cursor=pointer]:
+              - generic [ref=e102]: Settings
+            - list:
+              - listitem [ref=e104]:
+                - link "Delegate Access" [ref=e105] [cursor=pointer]:
+                  - /url: https://account.godaddy.com/access
+                  - generic [ref=e108]: Delegate Access
+              - listitem [ref=e109]:
+                - link "DNS Templates" [ref=e110] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/dns/templates
+                  - generic [ref=e113]: DNS Templates
+              - listitem [ref=e114]:
+                - link "Exported Lists" [ref=e115] [cursor=pointer]:
+                  - /url: https://dcc.godaddy.com/control/exported-lists
+                  - generic [ref=e118]: Exported Lists
+          - listitem [ref=e119]:
+            - link "Activity Log" [ref=e120] [cursor=pointer]:
+              - /url: https://dcc.godaddy.com/control/activity/log
+              - generic [ref=e125]: Activity Log
+      - generic [ref=e126]:
+        - link "Help Center" [ref=e127] [cursor=pointer]:
+          - /url: https://www.godaddy.com/help
+          - generic [ref=e128]: Help Center
+        - button "App Switcher" [ref=e130] [cursor=pointer]
+        - button "Customer Info" [ref=e132] [cursor=pointer]
+  - main [ref=e135]:
+    - generic [ref=e139]:
+      - heading "DNS Management" [level=1] [ref=e142]
+      - generic [ref=e144]:
+        - heading "marketscoupons.com" [level=2] [ref=e145]
+        - generic [ref=e146]:
+          - button "Domain Settings" [ref=e147] [cursor=pointer]:
+            - generic: Domain Settings
+          - link "Use My Domain" [ref=e148] [cursor=pointer]:
+            - /url: https://start.godaddy.com/?domainName=marketscoupons.com&domainCount=1&domainConnect=true&itc=dcc_usemydomain_airo
+            - generic [ref=e149]: Use My Domain
+          - button "Select a different domain" [ref=e150] [cursor=pointer]:
+            - generic: Select a different domain
+      - generic [ref=e152]:
+        - status "Your content is loading" [ref=e153]
+        - paragraph [ref=e156]: We're loading your DNS settings...

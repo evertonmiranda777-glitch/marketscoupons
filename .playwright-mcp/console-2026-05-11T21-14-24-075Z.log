@@ -1,0 +1,13 @@
+[     364ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://e8markets.com/d/MARKET:0
+[    3350ms] [WARNING] [Meta pixel] 963769275003279 is unavailable on this website due to it's traffic permission settings. Go to https://www.facebook.com/business/help/572690630080597 to learn more. @ https://connect.facebook.net/en_US/fbevents.js:181
+[    3566ms] TypeError: e.getUserProperties is not a function
+    at W (https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:14635)
+    at t.setSessionId (https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:206711)
+    at t.<anonymous> (https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:208427)
+    at https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:2650
+    at Object.next (https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:2755)
+    at https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:1599
+    at new Promise (<anonymous>)
+    at a (https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:1347)
+    at t.process (https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:208103)
+    at t.<anonymous> (https://cdn.amplitude.com/libs/analytics-browser-2.39.0-min.js.gz:1:17688)

@@ -1,0 +1,22 @@
+[      89ms] [WARNING] track insert error: TypeError: Failed to fetch @ https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js:1
+[      90ms] [WARNING] track insert error: TypeError: Failed to fetch @ https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js:1
+[     120ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/fonts/inter-latin.woff2:0
+[     130ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/img/site-bg.webp:0
+[     131ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/js/page-boot.js?v=20260427:0
+[     131ms] [ERROR] Refused to execute script from 'https://www.marketscoupons.com/es/js/page-boot.js?v=20260427' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled. @ https://www.marketscoupons.com/es/blog?v=test1:0
+[     168ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/js/og-lang.js?v=20260427:0
+[     168ms] [ERROR] Refused to execute script from 'https://www.marketscoupons.com/es/js/og-lang.js?v=20260427' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled. @ https://www.marketscoupons.com/es/blog?v=test1:4505
+[     169ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/js/tracking-init.js?v=20260427:0
+[     169ms] [ERROR] Refused to execute script from 'https://www.marketscoupons.com/es/js/tracking-init.js?v=20260427' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled. @ https://www.marketscoupons.com/es/blog?v=test1:4505
+[     169ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/js/sentry-init.js?v=20260427:0
+[     169ms] [ERROR] Refused to execute script from 'https://www.marketscoupons.com/es/js/sentry-init.js?v=20260427' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled. @ https://www.marketscoupons.com/es/blog?v=test1:4505
+[     169ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/i18n.js?v=20260423:0
+[     169ms] [ERROR] Refused to execute script from 'https://www.marketscoupons.com/es/i18n.js?v=20260423' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled. @ https://www.marketscoupons.com/es/blog?v=test1:4505
+[     186ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/app.js?v=20260423:0
+[     186ms] [ERROR] Refused to execute script from 'https://www.marketscoupons.com/es/app.js?v=20260423' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled. @ https://www.marketscoupons.com/es/blog?v=test1:4505
+[     212ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/img/bot/Daily/max-bot-techbro-v2_1.webp:0
+[     291ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/es/blog?v=test1:0
+[     292ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/es/blog?v=test1:0
+[     292ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/es/blog?v=test1:0
+[     364ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/img/favicon.png:0
+[     384ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.marketscoupons.com/es/img/favicon.svg:0
