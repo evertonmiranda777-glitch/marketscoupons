@@ -4930,7 +4930,7 @@ let calEvents = [];   // raw events with ET times
 let _calRefreshTimer = null;
 let _calLang = '';
 let _calLastUpdate = null;
-let _calTz = 'ET';    // current timezone
+let _calTz = 'local'; // current timezone — auto-detect via browser (igual investing.com)
 let _calCdTimer = null; // countdown interval
 
 // ── Timezone ──
