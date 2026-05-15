@@ -5055,7 +5055,7 @@ async function loadCalendar(silent) {
     if (!data.events?.length) throw new Error('No events');
 
     // High-impact US events that Trading Economics under-rates vs Investing.com
-    const _calBoost = /\b(non.?farm|nfp|payroll|cpi\b|inflation rate|ppi\b|producer price|retail sales|gdp |initial jobless|philadelph|philly fed|ism |fomc|fed.*rate|interest rate decision|core pce|pce price|consumer confidence|durable goods|s&p global.*pmi|adp employment|housing starts|building permits|michigan consumer|jolts|import price|export price|employment cost|trade balance)\b/i;
+    const _calBoost = /\b(non.?farm|nfp|payroll|cpi\b|inflation rate|ppi\b|producer price|retail sales|gdp |initial jobless|philadelph|philly fed|ism |fomc|fed.*rate|interest rate decision|core pce|pce price|consumer confidence|durable goods|s&p global.*pmi|adp employment|housing starts|building permits|michigan consumer|jolts|import price|export price|employment cost|trade balance|industrial production|baker hughes|empire state|capacity utilization|crude oil inventories|api crude|cftc)\b/i;
 
     calEvents = data.events.map(ev => {
       const dateStr = ev.date || '';
