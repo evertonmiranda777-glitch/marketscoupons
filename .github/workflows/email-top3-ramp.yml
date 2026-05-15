@@ -107,20 +107,33 @@ jobs:
 
       - name: Telegram pré-batch
         if: steps.calc.outputs.batch != '0'
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          MODE="${{ steps.calc.outputs.mode }}"
-          BATCH="${{ steps.calc.outputs.batch }}"
-          DAYS="${{ steps.calc.outputs.days_offset }}"
-          REASON="${{ steps.calc.outputs.reason }}"
-          DELIVERED="${{ steps.calc.outputs.delivered }}"
-          OPENED="${{ steps.calc.outputs.opened }}"
-          BOUNCED="${{ steps.calc.outputs.bounced }}"
-          ICON="🚀"; if [ "$MODE" = "safe" ]; then ICON="🐢"; fi
-          MSG="${ICON} <b>Top 3 ramp D+$DAYS — modo $MODE</b>%0ABatch: <b>$BATCH</b>%0AMotivo: <i>$REASON</i>%0A%0AOntem: $OPENED/$DELIVERED opens · $BOUNCED bounces%0A%0ADispara em 30s. Cancela aqui se precisar."
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d "parse_mode=HTML" \
-            --data-urlencode "text=$MSG" > /dev/null
+          node -e "
+            const mode = '${{ steps.calc.outputs.mode }}';
+            const batch = '${{ steps.calc.outputs.batch }}';
+            const days = '${{ steps.calc.outputs.days_offset }}';
+            const reason = '${{ steps.calc.outputs.reason }}';
+            const opened = parseInt('${{ steps.calc.outputs.opened }}') || 0;
+            const delivered = parseInt('${{ steps.calc.outputs.delivered }}') || 0;
+            const bounced = parseInt('${{ steps.calc.outputs.bounced }}') || 0;
+            const openRate = delivered > 0 ? Math.round(opened*100/delivered) : 0;
+            const icon = mode === 'safe' ? '🐢' : '🚀';
+            const text = icon + ' Top 3 — Dia ' + days + ' (modo ' + mode + ')\n\n' +
+              '📧 Vou disparar: ' + batch + ' emails\n' +
+              '📝 Motivo: ' + reason + '\n\n' +
+              (delivered > 0
+                ? '📊 Stats ontem: ' + opened + '/' + delivered + ' abriram (' + openRate + '%), ' + bounced + ' bounces\n\n'
+                : '') +
+              '⏱ Dispara em 30s. Se precisar cancelar, ignore essa msg e me chame.';
+            fetch('https://api.telegram.org/bot' + process.env.TG_TOKEN + '/sendMessage', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json; charset=utf-8' },
+              body: JSON.stringify({ chat_id: process.env.TG_CHAT, text })
+            }).then(r => r.json()).then(r => console.log(r.ok ? 'sent' : JSON.stringify(r)));
+          "
 
       - name: Aguarda 30s (janela de cancelamento)
         if: steps.calc.outputs.batch != '0'
@@ -153,17 +166,37 @@ jobs:
 
       - name: Telegram pós-batch
         if: steps.calc.outputs.batch != '0' && always()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          MODE="${{ steps.calc.outputs.mode }}"
-          BATCH="${{ steps.calc.outputs.batch }}"
-          DAYS="${{ steps.calc.outputs.days_offset }}"
-          RESP='${{ steps.send.outputs.resp }}'
-          SHORT=$(echo "$RESP" | head -c 350)
-          MSG="✅ <b>Top 3 ramp D+$DAYS [$MODE] concluído</b>%0AAlvo: $BATCH%0A%0A<code>$SHORT</code>"
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d "parse_mode=HTML" \
-            --data-urlencode "text=$MSG" > /dev/null
+          node -e "
+            const mode = '${{ steps.calc.outputs.mode }}';
+            const batch = '${{ steps.calc.outputs.batch }}';
+            const days = '${{ steps.calc.outputs.days_offset }}';
+            let resp = {}, sent=0, failed=0, eligible=0, brevoSent=0, resendSent=0, sgSent=0, deadline=false;
+            try { resp = JSON.parse(\`${{ steps.send.outputs.resp }}\`);
+              sent = resp.sent || 0; failed = resp.failed || 0; eligible = resp.eligible || 0;
+              brevoSent = resp.brevoSent || 0; resendSent = resp.resendSent || 0; sgSent = resp.sgSent || 0;
+              deadline = resp.stopped_by_deadline || false;
+            } catch(e) {}
+            const skipped = eligible > 0 ? Math.max(0, batch - eligible) : 0;
+            let text = '✅ Top 3 — Dia ' + days + ' concluído\n\n' +
+              '📧 Enviados: ' + sent + ' / ' + eligible + ' elegíveis (alvo era ' + batch + ')\n';
+            if (skipped > 0) text += '⏭ Pulados (já receberam): ' + skipped + '\n';
+            if (failed > 0) text += '❌ Falharam: ' + failed + '\n';
+            text += '\n📮 Por provedor:\n' +
+              '  • Resend: ' + resendSent + ' (principal)\n' +
+              '  • Brevo: ' + brevoSent + '\n' +
+              '  • SendGrid: ' + sgSent + '\n';
+            if (deadline) text += '\n⚠ Parado por timeout — sobrou audiência. Próximo run pega o resto.';
+            text += '\n\nStats de abertura/cliques chegam em ~4h.';
+            fetch('https://api.telegram.org/bot' + process.env.TG_TOKEN + '/sendMessage', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json; charset=utf-8' },
+              body: JSON.stringify({ chat_id: process.env.TG_CHAT, text })
+            }).then(r => r.json()).then(r => console.log(r.ok ? 'sent' : JSON.stringify(r)));
+          "
 
       - name: Fora da janela
         if: steps.calc.outputs.batch == '0'
