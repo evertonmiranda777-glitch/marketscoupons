@@ -2954,7 +2954,10 @@ function toggleFirmsSb(){
 /* Drawer state for inline checkout */
 const _drwState = {};
 
-const _firmPageSlugs=['apex','bulenox','ftmo','tpt','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'];
+const _firmPageSlugs=['apex','bulenox','ftmo','tpt','takeprofit','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'];
+// Map slug aliases → firm id real
+const _slugToFirmId = { takeprofit: 'tpt' };
+const _firmIdToSlug = { tpt: 'takeprofit' }; // firm id → URL slug canonical
 // Lazy load overlay data (about_html, detail_plans, bg_image) for a single firm
 const _overlayLoaded = {};
 async function loadFirmOverlayData(id) {
@@ -3034,7 +3037,9 @@ function openD(id){
   // Clean URL: /apex instead of #firm/apex for firms with dedicated pages
   const _curPath=location.pathname.replace(/^\//,'').replace(/\/$/,'');
   if(_firmPageSlugs.includes(id)){
-    if(_curPath!==id) history.pushState({firmPage:id},'','/'+id);
+    // Use canonical slug (tpt → takeprofit) na URL
+    const _urlSlug = _firmIdToSlug[id] || id;
+    if(_curPath!==_urlSlug) history.pushState({firmPage:_urlSlug},'','/'+_urlSlug);
   } else {
     history.replaceState(null,'','#firm/'+id);
   }
@@ -7106,15 +7111,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Abrir overlay da firma IMEDIATAMENTE com dados hardcoded (antes de qualquer await)
   if(_isFirmPage){
-    window._dedicatedFirmSlug=_earlySlug;
-    setFirmSEO(_earlySlug);
+    // Resolve aliases: takeprofit→tpt
+    const _resolvedId = _slugToFirmId[_earlySlug] || _earlySlug;
+    window._dedicatedFirmSlug=_resolvedId;
+    setFirmSEO(_resolvedId);
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     const pg=document.getElementById('page-firms');if(pg)pg.classList.add('active');
     document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.p==='firms'));
     window.scrollTo(0,0);
-    openD(_earlySlug);
+    openD(_resolvedId);
     // If FIRMS not loaded yet, keep body hidden until retry in loadCmsFirms.
-    if(FIRMS.find(x=>x.id===_earlySlug)) document.body.style.opacity='1';
+    if(FIRMS.find(x=>x.id===_resolvedId)) document.body.style.opacity='1';
     else setTimeout(()=>{document.body.style.opacity='1';},2500); // safety fallback
   } else if(location.hash.startsWith('#firm/')){
     const _hFirmId=location.hash.replace('#firm/','');

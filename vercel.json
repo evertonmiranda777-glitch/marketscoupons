@@ -51,10 +51,10 @@
     { "source": "/terms-of-service", "destination": "/terms", "permanent": true },
     { "source": "/terms-and-conditions", "destination": "/terms", "permanent": true },
     { "source": "/termos-de-uso", "destination": "/terms", "permanent": true },
-    { "source": "/takeprofit", "destination": "/tpt", "permanent": true },
-    { "source": "/:lang(en|es|fr|de|it|ar)/takeprofit", "destination": "/:lang/tpt", "permanent": true },
-    { "source": "/takeprofit-vs-:other", "destination": "/tpt-vs-:other", "permanent": true },
-    { "source": "/:other-vs-takeprofit", "destination": "/:other-vs-tpt", "permanent": true }
+    { "source": "/tpt", "destination": "/takeprofit", "permanent": true },
+    { "source": "/:lang(en|es|fr|de|it|ar)/tpt", "destination": "/:lang/takeprofit", "permanent": true },
+    { "source": "/tpt-vs-:other", "destination": "/takeprofit-vs-:other", "permanent": true },
+    { "source": "/:other-vs-tpt", "destination": "/:other-vs-takeprofit", "permanent": true }
   ],
   "routes": [
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },
@@ -77,8 +77,12 @@
     { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|tpt|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar)/?$", "dest": "/index.html" },
     { "src": "/(apex|bulenox|ftmo|tpt|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" },
-    { "src": "/(apex|bulenox|ftmo|tpt|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|tpt|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/compare/$1-vs-$2.html" },
-    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|tpt|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|tpt|takeprofit|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/$1/compare/$2-vs-$3.html" }
+    { "src": "/(.*)-vs-takeprofit", "dest": "/compare/$1-vs-tpt.html" },
+    { "src": "/takeprofit-vs-(.*)", "dest": "/compare/tpt-vs-$1.html" },
+    { "src": "/(en|es|fr|de|it|ar)/(.*)-vs-takeprofit", "dest": "/$1/compare/$2-vs-tpt.html" },
+    { "src": "/(en|es|fr|de|it|ar)/takeprofit-vs-(.*)", "dest": "/$1/compare/tpt-vs-$2.html" },
+    { "src": "/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/compare/$1-vs-$2.html" },
+    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|tpt|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/$1/compare/$2-vs-$3.html" }
   ],
   "headers": [
     {
