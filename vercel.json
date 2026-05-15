@@ -50,7 +50,11 @@
     { "source": "/politica-de-privacidade", "destination": "/privacy", "permanent": true },
     { "source": "/terms-of-service", "destination": "/terms", "permanent": true },
     { "source": "/terms-and-conditions", "destination": "/terms", "permanent": true },
-    { "source": "/termos-de-uso", "destination": "/terms", "permanent": true }
+    { "source": "/termos-de-uso", "destination": "/terms", "permanent": true },
+    { "source": "/takeprofit", "destination": "/tpt", "permanent": true },
+    { "source": "/(en|es|fr|de|it|ar)/takeprofit", "destination": "/:1/tpt", "permanent": true },
+    { "source": "/takeprofit-vs-:other", "destination": "/tpt-vs-:other", "permanent": true },
+    { "source": "/:other-vs-takeprofit", "destination": "/:other-vs-tpt", "permanent": true }
   ],
   "routes": [
     { "src": "/blog/(pt|en|es|fr|de|it|ar)/([^/]+)", "dest": "/blog.html" },

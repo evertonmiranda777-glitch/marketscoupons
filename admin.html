@@ -1806,7 +1806,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Upload Manual (Apex / TPT — firmas com 2FA)</div>
+        <div class="sec-title" style="font-size:14px;">Upload Manual (Apex / TakeProfit — firmas com 2FA)</div>
       </div>
       <div class="chart-card" style="padding:16px;">
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
@@ -6274,7 +6274,7 @@ async function getEmailFirms(){
 
 async function renderEmailFirmaChips(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TPT',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TakeProfit',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI'};
 
   // Import firma chips
   const importEl = document.getElementById('import-firma-chips');
@@ -6363,7 +6363,7 @@ let _eaCampaigns = [];
 
 async function eaInit(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TPT',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TakeProfit',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
   const el = document.getElementById('ea-firma-chips');
   if(el){
     el.innerHTML = `<button class="ea-period-btn sel" onclick="eaSetTag('',this)">Todas</button>` +
@@ -8114,7 +8114,7 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
             <td width="60">&nbsp;</td>
             <td align="center" style="font-family:${F};font-size:9px;font-weight:700;color:#ff8c00;">Apex</td>
             <td align="center" style="font-family:${F};font-size:9px;font-weight:700;color:#ff8c00;">Bulenox</td>
-            <td align="center" style="font-family:${F};font-size:9px;font-weight:700;color:#ff8c00;">TPT</td>
+            <td align="center" style="font-family:${F};font-size:9px;font-weight:700;color:#ff8c00;">TakeProfit</td>
           </tr><tr>
             <td>&nbsp;</td>
             <td align="center" style="font-family:${F};font-size:7px;color:#555;">4.4/17K</td>
@@ -10767,7 +10767,7 @@ function openFirmModal(id) {
     <div class="modal-grid">
       <div class="modal-field"><label>ID (unico)</label><input type="text" id="fm-id" value="${f.id||''}" ${isNew?'':'readonly'} style="${isNew?'':'opacity:.5;'}"></div>
       <div class="modal-field"><label>Nome</label><input type="text" id="fm-name" value="${f.name||''}"></div>
-      <div class="modal-field"><label>Nome Curto</label><input type="text" id="fm-short" value="${f.short_name||''}" placeholder="Ex: TPT"></div>
+      <div class="modal-field"><label>Nome Curto</label><input type="text" id="fm-short" value="${f.short_name||''}" placeholder="Ex: TakeProfit"></div>
       <div class="modal-field"><label>Tipo</label><select id="fm-type"><option ${f.type==='Futuros'?'selected':''}>Futuros</option><option ${f.type==='Forex'?'selected':''}>Forex</option></select></div>
       <div class="modal-field"><label>Desconto %</label><input type="number" id="fm-discount" value="${f.discount||0}" min="0" max="100" style="font-size:18px;font-weight:800;color:var(--gold);"></div>
       <div class="modal-field"><label>Cupom</label><input type="text" id="fm-coupon" value="${f.coupon||''}" style="font-family:monospace;font-size:14px;font-weight:700;text-transform:uppercase;"></div>
@@ -12822,7 +12822,7 @@ function renderCrTop3() {
 
   const cards = firms.map(f => {
     const acc = CR_FIRM_ACCENTS[f.id] || '#F0B429';
-    // Display names — sem abreviação. TPT vira "TakeProfit", etc
+    // Display names — sem abreviação. TakeProfit (interno: tpt) vira "TakeProfit", etc
     const CR_DISPLAY_NAMES = { apex:'Apex', bulenox:'Bulenox', tpt:'TakeProfit', fn:'FundedNext', e2t:'Earn2Trade', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded', e8:'E8 Markets', cti:'CTI', tradeday:'TradeDay', ftmo:'FTMO' };
     const shortName = CR_DISPLAY_NAMES[f.id] || f.short_name || f.name.split(' ')[0];
     return `<div style="display:flex;align-items:center;gap:20px;padding:30px 28px;background:#000;border:2.5px solid rgba(255,255,255,.42);border-radius:22px;position:relative;overflow:hidden;">
