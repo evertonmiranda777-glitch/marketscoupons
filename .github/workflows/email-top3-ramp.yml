@@ -1,26 +1,25 @@
-name: Top 3 Ramp (auto-disparo diário)
+name: Top 3 Ramp (auto-disparo híbrido adaptativo)
 
-# Disparo automático do email top3 com volume crescente seguindo régua aprovada
-# user 14/05/2026 22:01 BRT. Para domínio recuperar pós-crise spam 13/05.
+# Modo HÍBRIDO (C aprovado 14/05/2026 22h BRT):
+# - DEFAULT agressivo (5 dias até 25k pra pegar a promo)
+# - Se stats de ontem ruins (open<25% OU bounce>2%) → recua pra modo seguro (7 dias)
+# - Telegram avisa o modo escolhido a cada dia
 #
-# Régua (dias relativos ao START 2026-05-15):
-#  D+0 (15/05): 500
-#  D+1 (16/05): 1000
-#  D+2 (17/05): 2000
-#  D+3 (18/05): 3500
-#  D+4 (19/05): 5000
-#  D+5 a D+10: 10000 cada (até esgotar)
+# Régua AGRESSIVA (5 dias):     D+0:500   D+1:2000  D+2:5000  D+3:7500  D+4:10000
+# Régua SEGURA (7 dias):        D+0:500   D+1:1000  D+2:2000  D+3:3500  D+4:5000  D+5:10000  D+6:10000
 #
-# Para sozinho quando audiência esgotar.
+# START_DATE: 2026-05-15
 
 on:
   schedule:
-    # 14:00 UTC = 11:00 BRT (horario comercial Brasil)
-    - cron: '0 14 * * *'
+    - cron: '0 14 * * *'  # 14h UTC = 11h BRT
   workflow_dispatch:
     inputs:
+      force_mode:
+        description: 'aggressive | safe | (vazio = auto)'
+        required: false
       override_batch:
-        description: 'Forçar batch size (deixa vazio pra usar régua diária)'
+        description: 'Forçar batch específico (ignora régua)'
         required: false
 
 concurrency:
@@ -32,64 +31,113 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Calcula batch do dia
+      - name: Calcula dia + lê stats de ontem
         id: calc
+        env:
+          SUPABASE_URL: https://qfwhduvutfumsaxnuofa.supabase.co
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           START_DATE="2026-05-15"
           TODAY=$(date -u +%Y-%m-%d)
+          YESTERDAY_START=$(date -u -d "$TODAY -1 day" -Iseconds)
+          YESTERDAY_END=$(date -u -d "$TODAY" -Iseconds)
           DAYS_OFFSET=$(( ( $(date -u -d "$TODAY" +%s) - $(date -u -d "$START_DATE" +%s) ) / 86400 ))
-          echo "TODAY=$TODAY"
-          echo "DAYS_OFFSET=$DAYS_OFFSET"
 
-          # Régua
-          if [ "$DAYS_OFFSET" -lt 0 ]; then BATCH=0
-          elif [ "$DAYS_OFFSET" -eq 0 ]; then BATCH=500
-          elif [ "$DAYS_OFFSET" -eq 1 ]; then BATCH=1000
-          elif [ "$DAYS_OFFSET" -eq 2 ]; then BATCH=2000
-          elif [ "$DAYS_OFFSET" -eq 3 ]; then BATCH=3500
-          elif [ "$DAYS_OFFSET" -eq 4 ]; then BATCH=5000
-          elif [ "$DAYS_OFFSET" -le 10 ]; then BATCH=10000
-          else BATCH=0
+          echo "TODAY=$TODAY DAYS_OFFSET=$DAYS_OFFSET"
+
+          # Lê stats de ontem (resend_events)
+          DELIVERED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.delivered&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
+            -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}" -H "Prefer: count=exact" -I 2>/dev/null | grep -i content-range | cut -d/ -f2 | tr -d '\r\n')
+          OPENED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.opened&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
+            -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}" -H "Prefer: count=exact" -I 2>/dev/null | grep -i content-range | cut -d/ -f2 | tr -d '\r\n')
+          BOUNCED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.bounced&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
+            -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}" -H "Prefer: count=exact" -I 2>/dev/null | grep -i content-range | cut -d/ -f2 | tr -d '\r\n')
+
+          DELIVERED=${DELIVERED:-0}
+          OPENED=${OPENED:-0}
+          BOUNCED=${BOUNCED:-0}
+
+          # Decide modo
+          MODE="aggressive"
+          REASON="default (sem dados ontem ou D+0)"
+          if [ "$DAYS_OFFSET" -gt 0 ] && [ "$DELIVERED" -gt 50 ]; then
+            OPEN_RATE_INT=$(awk "BEGIN{printf \"%d\", $OPENED*100/$DELIVERED}")
+            BOUNCE_RATE_INT=$(awk "BEGIN{printf \"%d\", $BOUNCED*100/$DELIVERED}")
+            echo "Ontem: delivered=$DELIVERED opened=$OPENED (${OPEN_RATE_INT}%) bounced=$BOUNCED (${BOUNCE_RATE_INT}%)"
+            if [ "$OPEN_RATE_INT" -lt 25 ] || [ "$BOUNCE_RATE_INT" -gt 2 ]; then
+              MODE="safe"
+              REASON="open=${OPEN_RATE_INT}% bounce=${BOUNCE_RATE_INT}% ontem (gatilho: open<25 OU bounce>2)"
+            else
+              REASON="stats ontem OK (open=${OPEN_RATE_INT}% bounce=${BOUNCE_RATE_INT}%)"
+            fi
           fi
 
-          # Override manual via workflow_dispatch
+          # Override manual
+          if [ -n "${{ github.event.inputs.force_mode }}" ]; then
+            MODE="${{ github.event.inputs.force_mode }}"
+            REASON="forçado manualmente"
+          fi
+
+          # Régua por modo
+          if [ "$MODE" = "aggressive" ]; then
+            case $DAYS_OFFSET in
+              0) BATCH=500 ;; 1) BATCH=2000 ;; 2) BATCH=5000 ;; 3) BATCH=7500 ;; 4) BATCH=10000 ;; *) BATCH=0 ;;
+            esac
+          else
+            case $DAYS_OFFSET in
+              0) BATCH=500 ;; 1) BATCH=1000 ;; 2) BATCH=2000 ;; 3) BATCH=3500 ;; 4) BATCH=5000 ;; 5|6) BATCH=10000 ;; *) BATCH=0 ;;
+            esac
+          fi
+
+          if [ "$DAYS_OFFSET" -lt 0 ]; then BATCH=0; fi
+
           if [ -n "${{ github.event.inputs.override_batch }}" ]; then
             BATCH=${{ github.event.inputs.override_batch }}
+            REASON="batch forçado"
           fi
 
           echo "batch=$BATCH" >> $GITHUB_OUTPUT
+          echo "mode=$MODE" >> $GITHUB_OUTPUT
+          echo "reason=$REASON" >> $GITHUB_OUTPUT
           echo "days_offset=$DAYS_OFFSET" >> $GITHUB_OUTPUT
-          echo "BATCH DE HOJE: $BATCH"
+          echo "delivered=$DELIVERED" >> $GITHUB_OUTPUT
+          echo "opened=$OPENED" >> $GITHUB_OUTPUT
+          echo "bounced=$BOUNCED" >> $GITHUB_OUTPUT
+          echo "DECISÃO: D+$DAYS_OFFSET mode=$MODE batch=$BATCH ($REASON)"
 
-      - name: Notifica Telegram (pré-batch)
+      - name: Telegram pré-batch
         if: steps.calc.outputs.batch != '0'
         run: |
+          MODE="${{ steps.calc.outputs.mode }}"
           BATCH="${{ steps.calc.outputs.batch }}"
           DAYS="${{ steps.calc.outputs.days_offset }}"
-          MSG="🚀 <b>Top 3 ramp D+$DAYS</b>%0ADisparando $BATCH emails em 30s%0ACampaign: top3 · audience: engaged + others (received-top3 deduplicado)%0AProvider: Resend primary"
+          REASON="${{ steps.calc.outputs.reason }}"
+          DELIVERED="${{ steps.calc.outputs.delivered }}"
+          OPENED="${{ steps.calc.outputs.opened }}"
+          BOUNCED="${{ steps.calc.outputs.bounced }}"
+          ICON="🚀"; if [ "$MODE" = "safe" ]; then ICON="🐢"; fi
+          MSG="${ICON} <b>Top 3 ramp D+$DAYS — modo $MODE</b>%0ABatch: <b>$BATCH</b>%0AMotivo: <i>$REASON</i>%0A%0AOntem: $OPENED/$DELIVERED opens · $BOUNCED bounces%0A%0ADispara em 30s. Cancela aqui se precisar."
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d "parse_mode=HTML" \
-            -d "text=$MSG" > /dev/null
+            --data-urlencode "text=$MSG" > /dev/null
 
-      - name: Aguarda 30s (janela pra você cancelar via Telegram cancel)
+      - name: Aguarda 30s (janela de cancelamento)
         if: steps.calc.outputs.batch != '0'
         run: sleep 30
 
-      - name: Health pre-check (Resend rate + /coupons up)
+      - name: Health pre-check (/coupons 200)
         if: steps.calc.outputs.batch != '0'
         run: |
           COUPONS=$(curl -s -o /dev/null -w "%{http_code}" https://www.marketscoupons.com/coupons)
           if [ "$COUPONS" != "200" ]; then
-            echo "❌ /coupons NÃO está 200 (status=$COUPONS). Abortando."
             curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
               -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
               -d "text=❌ Top3 ramp ABORTADO: /coupons retornou $COUPONS"
             exit 1
           fi
-          echo "✅ /coupons 200 OK"
 
-      - name: Dispara batch top3
+      - name: Dispara batch
         if: steps.calc.outputs.batch != '0'
         id: send
         run: |
@@ -99,20 +147,24 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{\"campaign\":\"top3\",\"batchSize\":$BATCH}")
           echo "RESPONSE: $RESP"
-          echo "resp=$RESP" >> $GITHUB_OUTPUT
+          echo "resp<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESP" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Notifica Telegram (pós-batch)
+      - name: Telegram pós-batch
         if: steps.calc.outputs.batch != '0' && always()
         run: |
+          MODE="${{ steps.calc.outputs.mode }}"
           BATCH="${{ steps.calc.outputs.batch }}"
           DAYS="${{ steps.calc.outputs.days_offset }}"
           RESP='${{ steps.send.outputs.resp }}'
-          MSG="✅ <b>Top 3 ramp D+$DAYS concluído</b>%0ABatch alvo: $BATCH%0AResposta API:%0A<code>$(echo $RESP | head -c 400)</code>"
+          SHORT=$(echo "$RESP" | head -c 350)
+          MSG="✅ <b>Top 3 ramp D+$DAYS [$MODE] concluído</b>%0AAlvo: $BATCH%0A%0A<code>$SHORT</code>"
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d "parse_mode=HTML" \
-            -d "text=$MSG" > /dev/null
+            --data-urlencode "text=$MSG" > /dev/null
 
-      - name: Skip se fora da régua
+      - name: Fora da janela
         if: steps.calc.outputs.batch == '0'
-        run: echo "Fora da janela de ramp (D+${{ steps.calc.outputs.days_offset }}). Nada a fazer."
+        run: echo "Nada a fazer (D+${{ steps.calc.outputs.days_offset }} fora da régua)"
