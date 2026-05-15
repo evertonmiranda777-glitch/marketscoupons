@@ -110,7 +110,7 @@ async function sendViaResend(rec, subject, html, unsubUrl) {
       from: 'Lara | Markets Coupons <lara@marketscoupons.com>',
       to: [rec.email], subject, html,
       headers: { 'List-Unsubscribe': listUnsub, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' },
-      tags: [{ name: 'tag', value: 'inst-' + rec.campaign }, { name: 'lang', value: rec.lang }, { name: 'tag', value: 'cron' }],
+      tags: [{ name: 'campaign', value: 'inst-' + rec.campaign }, { name: 'lang', value: rec.lang }, { name: 'source', value: 'cron' }],
     }),
   });
   return r.ok;
