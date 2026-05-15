@@ -169,17 +169,21 @@ jobs:
         env:
           TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RESP_JSON: ${{ steps.send.outputs.resp }}
+          MODE: ${{ steps.calc.outputs.mode }}
+          BATCH: ${{ steps.calc.outputs.batch }}
+          DAYS: ${{ steps.calc.outputs.days_offset }}
         run: |
-          node -e "
-            const mode = '${{ steps.calc.outputs.mode }}';
-            const batch = '${{ steps.calc.outputs.batch }}';
-            const days = '${{ steps.calc.outputs.days_offset }}';
+          node <<'EOF'
+            const batch = parseInt(process.env.BATCH) || 0;
+            const days = process.env.DAYS;
             let resp = {}, sent=0, failed=0, eligible=0, brevoSent=0, resendSent=0, sgSent=0, deadline=false;
-            try { resp = JSON.parse(\`${{ steps.send.outputs.resp }}\`);
+            try {
+              resp = JSON.parse(process.env.RESP_JSON || '{}');
               sent = resp.sent || 0; failed = resp.failed || 0; eligible = resp.eligible || 0;
               brevoSent = resp.brevoSent || 0; resendSent = resp.resendSent || 0; sgSent = resp.sgSent || 0;
               deadline = resp.stopped_by_deadline || false;
-            } catch(e) {}
+            } catch(e) { console.log('parse err:', e.message, 'raw:', process.env.RESP_JSON); }
             const skipped = eligible > 0 ? Math.max(0, batch - eligible) : 0;
             let text = '✅ Top 3 — Dia ' + days + ' concluído\n\n' +
               '📧 Enviados: ' + sent + ' / ' + eligible + ' elegíveis (alvo era ' + batch + ')\n';
@@ -196,7 +200,7 @@ jobs:
               headers: { 'Content-Type': 'application/json; charset=utf-8' },
               body: JSON.stringify({ chat_id: process.env.TG_CHAT, text })
             }).then(r => r.json()).then(r => console.log(r.ok ? 'sent' : JSON.stringify(r)));
-          "
+          EOF
 
       - name: Fora da janela
         if: steps.calc.outputs.batch == '0'
