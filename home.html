@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <script>(function(){var s=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').split('/').filter(Boolean)[0]||'';if(['apex','bulenox','ftmo','tpt','takeprofit','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'].indexOf(s)>-1){var st=document.createElement('style');st.textContent='body{opacity:0;transition:opacity .2s ease}';document.head.appendChild(st);}})();</script>
-<link rel="preload" href="/img/site-bg.webp" as="image" type="image/webp" fetchpriority="high">
-<link rel="preload" href="/img/site-bg-mobile.webp" as="image" type="image/webp" media="(max-width:900px)" fetchpriority="high">
-<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" href="/img/site-bg.webp" as="image" type="image/webp">
+<link rel="preload" href="/img/site-bg-mobile.webp" as="image" type="image/webp" media="(max-width:900px)">
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://qfwhduvutfumsaxnuofa.supabase.co" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -282,9 +282,7 @@
      pra users incognito porque scripts async não carregavam antes do app.js
      usar I18N.en. Voltou pra i18n.js sync defer (arquivo único 433kb) até
      refatorar com hardening apropriado. -->
-<script>window.I18N=window.I18N||{};</script>
-<script defer src="/i18n-en.js?v=20260518"></script>
-<script>(function(){try{var l=localStorage.getItem('mc_lang')||((navigator.language||'').toLowerCase().slice(0,2));if(l&&l!=='en'&&/^(pt|es|it|fr|de|ar)$/.test(l)){var b=document.createElement('script');b.src='/i18n-'+l+'.js?v=20260518';b.defer=true;document.head.appendChild(b);}}catch(_){}})();</script>
+<script defer src="/i18n.js?v=20260423"></script>
 <script defer src="/app.js?v=20260423"></script>
 <!-- TRACKING ENGINE -->
 <style>
@@ -1875,8 +1873,8 @@ html:has(.drw.open){overflow:hidden!important;}
 
 /* ═══ PROMO TOP BAR (global — gold bg, black + white text, live-countdown style) ═══ */
 .promo-topbar{position:fixed;top:0;left:0;right:0;z-index:1002;display:flex;align-items:center;justify-content:center;gap:24px;padding:9px 20px;background:linear-gradient(90deg,#C49412 0%,#F0B429 50%,#C49412 100%);color:#000;font-size:13px;font-weight:800;letter-spacing:.3px;box-shadow:0 2px 12px rgba(0,0,0,.4);overflow-x:auto;white-space:nowrap;scrollbar-width:none;border-bottom:1px solid rgba(0,0,0,.2);}
-body.has-promo-topbar #nav{top:var(--promo-h,42px);}
-body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,42px));}
+body.has-promo-topbar #nav{top:var(--promo-h,36px);}
+body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,36px));}
 .promo-topbar::-webkit-scrollbar{display:none;}
 .promo-topbar .pt-item{display:inline-flex;align-items:center;gap:12px;}
 .promo-topbar .pt-headline{color:#000;font-weight:800;cursor:pointer;}
@@ -1895,8 +1893,6 @@ body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,42px))
   .promo-topbar .pt-headline{white-space:normal;text-align:center;font-size:12px;line-height:1.2;}
   .promo-topbar .pt-clock{gap:5px;}
   .promo-topbar .pt-suf{font-size:9px;}
-  body.has-promo-topbar #nav{top:var(--promo-h,99px);}
-  body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,99px));}
 }
 .promo-pill{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;margin:12px 0;background:linear-gradient(90deg,#C49412 0%,#F0B429 50%,#C49412 100%);border:1px solid rgba(0,0,0,.25);border-radius:10px;font-size:13px;font-weight:800;color:#000;letter-spacing:.3px;box-shadow:0 4px 14px rgba(240,180,41,.3);flex-wrap:wrap;}
 .promo-pill .pp-label{display:inline-flex;align-items:center;gap:8px;}
@@ -2800,8 +2796,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 </style>
 <script src="/js/page-boot.js?v=20260427"></script>
 </head>
-<body class="has-promo-topbar" style="opacity:0">
-<script>(function(){try{if(localStorage.getItem('mc_promo_off')==='1')document.body.classList.remove('has-promo-topbar');}catch(_){}})();</script>
+<body style="opacity:0">
 
 <!-- GTM noscript removed — tracking loaded dynamically after cookie consent -->
 
