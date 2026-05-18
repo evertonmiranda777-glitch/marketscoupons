@@ -62,10 +62,23 @@ async function syncAccount(acct: string, days: number) {
   }
 
   return all.map((r: any) => {
-    const convs = (r.actions || []).find((a: any) =>
-      ["purchase","offsite_conversion.fb_pixel_purchase","complete_registration"].includes(a.action_type)
+    // Agrega TODOS os action_types relevantes (lead, purchase, complete_registration).
+    // Antes filtrava só purchase/complete_registration → campanhas [LEAD] vinham 0.
+    // Soma valores em vez de pegar só o primeiro match — uma adset pode ter lead+purchase.
+    const LEAD_LIKE = new Set([
+      "lead",
+      "offsite_conversion.fb_pixel_lead",
+      "purchase",
+      "offsite_conversion.fb_pixel_purchase",
+      "complete_registration",
+      "offsite_conversion.fb_pixel_complete_registration",
+    ]);
+    const convsTotal = (r.actions || [])
+      .filter((a: any) => LEAD_LIKE.has(a.action_type))
+      .reduce((acc: number, a: any) => acc + (Number(a.value) || 0), 0);
+    const convVal = (r.action_values || []).find((a: any) =>
+      ["purchase","offsite_conversion.fb_pixel_purchase"].includes(a.action_type)
     );
-    const convVal = (r.action_values || []).find((a: any) => a.action_type === "purchase");
     return {
       date: r.date_start,
       platform: "meta",
@@ -77,7 +90,7 @@ async function syncAccount(acct: string, days: number) {
       spend: Number(r.spend) || 0,
       impressions: Number(r.impressions) || 0,
       clicks: Number(r.clicks) || 0,
-      conversions: convs ? Number(convs.value) : 0,
+      conversions: convsTotal,
       conversion_value: convVal ? Number(convVal.value) : 0,
       currency: accountCurrency,
       firm_id: null,
