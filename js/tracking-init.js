@@ -3,10 +3,17 @@
 // Carrega só após cookie consent (mc-cookies-consent === 'accepted').
 window.dataLayer = window.dataLayer || [];
 
-function loadTracking() {
-  if (window._trackingLoaded) return;
-  window._trackingLoaded = true;
-  // GA4
+// fbq stub: enfileira chamadas pré-load (track/init de app.js continuam funcionando)
+(function(f,b){
+  if (f.fbq) return;
+  var n = f.fbq = function(){ n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments); };
+  if (!f._fbq) f._fbq = n;
+  n.push = n; n.loaded = false; n.version = '2.0'; n.queue = [];
+})(window, document);
+
+function loadGA4() {
+  if (window._ga4Loaded) return;
+  window._ga4Loaded = true;
   var gs = document.createElement('script');
   gs.async = true;
   gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-CZ3L00NY77';
@@ -15,17 +22,17 @@ function loadTracking() {
   window.gtag = function () { dataLayer.push(arguments); };
   gtag('js', new Date());
   gtag('config', 'G-CZ3L00NY77');
-  // Facebook Pixel
-  !function (f, b, e, v, n, t, s) {
-    if (f.fbq) return;
-    n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
-    if (!f._fbq) f._fbq = n;
-    n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
-    t = b.createElement(e); t.async = !0; t.src = v;
-    s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
-  }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-  // Advanced Matching: external_id estavel pra anonimos (90% do trafego pago).
-  // Sem isso, EMQ trava em ~5/10. App.js re-inicia com em/ph/fn quando user loga.
+}
+
+function loadFbPixel() {
+  if (window._fbPixelLoaded) return;
+  window._fbPixelLoaded = true;
+  // Carrega fbevents.js só agora (ate aqui fbq era stub que enfileirou chamadas)
+  var t = document.createElement('script');
+  t.async = true;
+  t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(t, s);
   var _anon = '';
   try {
     _anon = localStorage.getItem('mc_anon') || '';
@@ -36,6 +43,27 @@ function loadTracking() {
   } catch (e) {}
   fbq('init', '813048241061812', _anon ? { external_id: _anon } : {});
   fbq('track', 'PageView');
+}
+
+function loadTracking() {
+  if (window._trackingLoaded) return;
+  window._trackingLoaded = true;
+  // GA4 imediato (script pequeno, sem regressão visível)
+  loadGA4();
+  // FB Pixel adiado: idle callback ou 2.5s fallback ou 1ª interação. PageView ainda conta.
+  var fired = false;
+  var fire = function(){ if (fired) return; fired = true; loadFbPixel(); };
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(fire, { timeout: 2500 });
+  } else {
+    setTimeout(fire, 2500);
+  }
+  // Flush em qualquer interação (não espera idle se user já mexeu)
+  ['pointerdown','touchstart','scroll','keydown'].forEach(function(ev){
+    addEventListener(ev, fire, { once: true, passive: true });
+  });
+  // Garante flush se user sair antes
+  addEventListener('pagehide', fire);
 }
 window.loadTracking = loadTracking;
 
