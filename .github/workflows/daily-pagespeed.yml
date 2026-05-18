@@ -9,7 +9,8 @@ concurrency:
   group: daily-pagespeed
   cancel-in-progress: true
 permissions:
-  contents: read
+  contents: write
+  actions: write
 
 jobs:
   audit:
