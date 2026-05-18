@@ -1156,7 +1156,17 @@ function updateTVWidgets(lang) {
   const hmF = document.getElementById('heatmap-frame');
   if(hmF) loadHeatmap(hmF.dataset.source||'SPX500');
 }
-function setL(lang,flag,code){
+function _loadLangChunk(lang){
+  if (window.I18N && window.I18N[lang]) return Promise.resolve();
+  return new Promise((resolve)=>{
+    var s=document.createElement('script');
+    s.src='/i18n-'+lang+'.js?v=20260518';
+    s.onload=resolve; s.onerror=()=>resolve();
+    document.head.appendChild(s);
+  });
+}
+async function setL(lang,flag,code){
+  await _loadLangChunk(lang);
   _currentLang = lang;
   localStorage.setItem('mc_lang', lang);
   document.getElementById('l-flag').textContent=flag;

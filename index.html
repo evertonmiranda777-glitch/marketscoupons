@@ -282,7 +282,7 @@
      pra users incognito porque scripts async não carregavam antes do app.js
      usar I18N.en. Voltou pra i18n.js sync defer (arquivo único 433kb) até
      refatorar com hardening apropriado. -->
-<script defer src="/i18n.js?v=20260423"></script>
+<script>(function(){var l='en';try{var s=localStorage.getItem('mc_lang');if(s&&/^(pt|en|es|it|fr|de|ar)$/.test(s))l=s;else{var n=(navigator.language||'en').toLowerCase().slice(0,2);if(/^(pt|en|es|it|fr|de|ar)$/.test(n))l=n;}}catch(_){}window.I18N=window.I18N||{};var a=document.createElement('script');a.src='/i18n-en.js?v=20260518';a.defer=true;document.head.appendChild(a);if(l!=='en'){var b=document.createElement('script');b.src='/i18n-'+l+'.js?v=20260518';b.defer=true;document.head.appendChild(b);}})();</script>
 <script defer src="/app.js?v=20260423"></script>
 <!-- TRACKING ENGINE -->
 <style>
@@ -2798,7 +2798,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 </style>
 <script src="/js/page-boot.js?v=20260427"></script>
 </head>
-<body class="has-promo-topbar" style="opacity:0">
+<body class="has-promo-topbar">
 <script>(function(){try{if(localStorage.getItem('mc_promo_off')==='1')document.body.classList.remove('has-promo-topbar');}catch(_){}})();</script>
 
 <!-- GTM noscript removed — tracking loaded dynamically after cookie consent -->
