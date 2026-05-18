@@ -156,7 +156,8 @@ body.has-promo-topbar{padding-top:var(--promo-h,40px)}
 }
 </style>
 </head>
-<body>
+<body class="has-promo-topbar">
+<script>(function(){try{if(localStorage.getItem('mc_promo_off')==='1')document.body.classList.remove('has-promo-topbar');}catch(_){}})();</script>
 
 <div id="promo-topbar" class="promo-topbar" style="display:none;"></div>
 

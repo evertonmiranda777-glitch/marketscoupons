@@ -2627,7 +2627,12 @@ if(!window._promoTimerInterval){
 function renderPromoTopbar(){
   const bar = document.getElementById('promo-topbar');
   if(!bar) return;
-  const hideBar = () => { bar.style.display='none'; bar.innerHTML=''; document.body.classList.remove('has-promo-topbar'); document.documentElement.style.removeProperty('--promo-h'); };
+  const hideBar = () => {
+    bar.style.display='none'; bar.innerHTML='';
+    document.body.classList.remove('has-promo-topbar');
+    document.documentElement.style.removeProperty('--promo-h');
+    try { localStorage.setItem('mc_promo_off', '1'); } catch(_) {}
+  };
   // Master toggle via site_settings
   const enabled = (typeof _siteSettings !== 'undefined' && _siteSettings?.promo_topbar_enabled !== undefined) ? _siteSettings.promo_topbar_enabled === 'true' : true;
   if(!enabled){ hideBar(); return; }
@@ -2650,6 +2655,7 @@ function renderPromoTopbar(){
     </div>${i<active.length-1?'<span class="pt-sep">•</span>':''}`;
   }).join('');
   document.body.classList.add('has-promo-topbar');
+  try { localStorage.removeItem('mc_promo_off'); } catch(_) {}
   requestAnimationFrame(()=>{
     const h = bar.offsetHeight;
     if(h) document.documentElement.style.setProperty('--promo-h', h+'px');

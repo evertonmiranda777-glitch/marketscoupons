@@ -1,7 +1,7 @@
 /* ═══ PROMO TOP BAR (compartilhado entre index.html e coupons.html) ═══ */
 .promo-topbar{position:fixed;top:0;left:0;right:0;z-index:1002;display:flex;align-items:center;justify-content:center;gap:24px;padding:9px 20px;background:linear-gradient(90deg,#C49412 0%,#F0B429 50%,#C49412 100%);color:#000;font-size:13px;font-weight:800;letter-spacing:.3px;box-shadow:0 2px 12px rgba(0,0,0,.4);overflow-x:auto;white-space:nowrap;scrollbar-width:none;border-bottom:1px solid rgba(0,0,0,.2);}
-body.has-promo-topbar #nav{top:var(--promo-h,36px);}
-body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,36px));}
+body.has-promo-topbar #nav{top:var(--promo-h,48px);}
+body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,48px));}
 .promo-topbar::-webkit-scrollbar{display:none;}
 .promo-topbar .pt-item{display:inline-flex;align-items:center;gap:12px;}
 .promo-topbar .pt-headline{color:#000;font-weight:800;cursor:pointer;}
@@ -20,4 +20,7 @@ body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,36px))
   .promo-topbar .pt-headline{white-space:normal;text-align:center;font-size:12px;line-height:1.2;}
   .promo-topbar .pt-clock{gap:5px;}
   .promo-topbar .pt-suf{font-size:9px;}
+  /* Mobile default reserva 99px (flex-direction:column dobra altura) — evita CLS no 1º paint antes do JS calcular */
+  body.has-promo-topbar #nav{top:var(--promo-h,99px);}
+  body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,99px));}
 }
