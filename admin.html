@@ -12235,9 +12235,13 @@ async function renderTrackingPage(){
           <td style="padding:10px 14px;text-align:right;color:var(--gold);">${tot.slow} (${totSlowPct}%)</td>
           <td style="padding:10px 14px;text-align:right;color:#EF4444;">${tot.abandoned} (${totAbPct}%)</td>
         </tr>`;
+      const _firmDisplayName = (id) => {
+        const map = { tpt:'TakeProfit', fn:'FundedNext', cti:'City Traders Imperium', e2t:'Earn2Trade', e8:'E8 Markets', ftmo:'FTMO', apex:'Apex', bulenox:'Bulenox', tradeday:'TradeDay', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded' };
+        return map[id] || (id.charAt(0).toUpperCase() + id.slice(1));
+      };
       rows.forEach(r => {
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,.05);">
-          <td style="padding:10px 14px;font-weight:600;text-transform:capitalize;">${r.id}</td>
+          <td style="padding:10px 14px;font-weight:600;">${_firmDisplayName(r.id)}</td>
           <td style="padding:10px 14px;text-align:right;">${r.total}</td>
           <td style="padding:10px 14px;text-align:right;color:${r.avgMs>5000?'#EF4444':r.avgMs>2000?'var(--gold)':'#22C55E'};">${r.avgMs}ms</td>
           <td style="padding:10px 14px;text-align:right;color:#22C55E;">${r.fast} (${r.fastPct.toFixed(1)}%)</td>
