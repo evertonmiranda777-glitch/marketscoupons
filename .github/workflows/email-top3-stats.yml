@@ -32,15 +32,15 @@ jobs:
                 const cr = r.headers.get('content-range') || '';
                 return parseInt(cr.split('/')[1]) || 0;
               }
-              const delivered = await count('email.delivered');
-              const opened = await count('email.opened');
-              const clicked = await count('email.clicked');
-              const bounced = await count('email.bounced');
+              const delivered = await count('delivered');
+              const opened = await count('opened');
+              const clicked = await count('clicked');
+              const bounced = await count('bounced');
               const openRate = delivered > 0 ? Math.round(opened*100/delivered) : 0;
               const clickRate = delivered > 0 ? Math.round(clicked*100/delivered) : 0;
 
               // Top 5 que clicaram CTA
-              const ck = await fetch(SB + '/rest/v1/resend_events?event_type=eq.email.clicked&created_at=gte.' + since + '&select=email,created_at&order=created_at.desc&limit=5', { headers });
+              const ck = await fetch(SB + '/rest/v1/resend_events?event_type=eq.clicked&created_at=gte.' + since + '&select=email,created_at&order=created_at.desc&limit=5', { headers });
               const clickedRows = ck.ok ? await ck.json() : [];
               const clickedList = clickedRows.length ? clickedRows.map(x => '• ' + x.email).join('\n') : '(ninguém ainda)';
 

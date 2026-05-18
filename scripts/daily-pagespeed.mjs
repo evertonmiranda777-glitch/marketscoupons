@@ -16,8 +16,8 @@ const SB_URL = process.env.SUPABASE_URL;
 const SB_SK  = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const TG_TOK = process.env.TELEGRAM_BOT_TOKEN;
 const TG_CHT = process.env.TELEGRAM_CHAT_ID;
-const REGRESSION_THRESHOLD = 10;
-const REVERT_THRESHOLD = 25;
+const REGRESSION_THRESHOLD = 8;
+const REVERT_THRESHOLD = 15;
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname).replace(/^\/([A-Z]):/i,'$1:'),'..');
 

@@ -46,11 +46,11 @@ jobs:
           echo "TODAY=$TODAY DAYS_OFFSET=$DAYS_OFFSET"
 
           # Lê stats de ontem (resend_events)
-          DELIVERED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.delivered&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
+          DELIVERED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.delivered&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
             -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}" -H "Prefer: count=exact" -I 2>/dev/null | grep -i content-range | cut -d/ -f2 | tr -d '\r\n')
-          OPENED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.opened&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
+          OPENED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.opened&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
             -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}" -H "Prefer: count=exact" -I 2>/dev/null | grep -i content-range | cut -d/ -f2 | tr -d '\r\n')
-          BOUNCED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.email.bounced&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
+          BOUNCED=$(curl -s "${SUPABASE_URL}/rest/v1/resend_events?event_type=eq.bounced&created_at=gte.${YESTERDAY_START}&created_at=lt.${YESTERDAY_END}&select=email" \
             -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}" -H "Prefer: count=exact" -I 2>/dev/null | grep -i content-range | cut -d/ -f2 | tr -d '\r\n')
 
           DELIVERED=${DELIVERED:-0}
