@@ -274,8 +274,7 @@
 <script src="/js/tracking-init.js?v=20260427" defer></script>
 
 <!-- SUPABASE CLIENT -->
-<script defer src="https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js" crossorigin="anonymous"></script>
-<script defer src="/js/sentry-init.js?v=20260427"></script>
+<script>(function(){var fired=false;function load(){if(fired)return;fired=true;var s=document.createElement('script');s.src='https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js';s.crossOrigin='anonymous';s.onload=function(){var i=document.createElement('script');i.src='/js/sentry-init.js?v=20260518';document.head.appendChild(i);};document.head.appendChild(s);}if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:5000});}else{setTimeout(load,3500);}['pointerdown','touchstart','scroll','keydown'].forEach(function(e){addEventListener(e,load,{once:true,passive:true});});addEventListener('error',load,{once:true});addEventListener('unhandledrejection',load,{once:true});})();</script>
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.1" integrity="sha384-6uukdHiftld8tJvsEnb1GXdOm6/h98QIKjmAy6BI4WpoHahjbaBL8IVhavKP2sxI" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.3.3/dist/purify.min.js" integrity="sha384-pcBjnGbkyKeOXaoFkmJiuR9E08/6gkmus6/Strimnxtl3uk0Hx23v345pWyC/MMr" crossorigin="anonymous"></script>
 <!-- ROLLBACK 2026-05-06: i18n split (i18n/loader.js) tava deixando site preto
