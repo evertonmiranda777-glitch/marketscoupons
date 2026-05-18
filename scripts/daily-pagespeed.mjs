@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // Daily PageSpeed audit + auto-fix
 // 1) Roda PageSpeed mobile/desktop pra URL principal
-// 2) Salva em pagespeed_runs
-// 3) Compara com baseline (media 7d)
-// 4) Se regressao severa: aplica auto-fixes seguros, commit, deploy
-// 5) Sempre manda relatorio Telegram
+// 2) Salva em pagespeed_runs (com quality_flag pra filtrar anomalias do baseline)
+// 3) Compara com baseline = min(P75_14d, max_7d) filtrando quality_flag='ok'
+// 4) 4 niveis: OK / OBSERVACAO / REGRESSION (auto-fix) / REVERT (auto-revert)
+//    + alerta CRITICO independente se score < 50 (com cooldown via pagespeed_alert_state)
+// 5) Telegram silencioso se OK (heartbeat segunda), sempre fala em queda
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -16,8 +17,16 @@ const SB_URL = process.env.SUPABASE_URL;
 const SB_SK  = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const TG_TOK = process.env.TELEGRAM_BOT_TOKEN;
 const TG_CHT = process.env.TELEGRAM_CHAT_ID;
-const REGRESSION_THRESHOLD = 8;
-const REVERT_THRESHOLD = 15;
+
+const DROP_OBSERVATION = 5;    // 📉 informa, sem ação
+const DROP_REGRESSION  = 8;    // ⚠️ auto-fix
+const DROP_REVERT      = 15;   // 🚨 auto-revert
+const CRITICAL_SCORE   = 50;   // 🚨 alerta absoluto (independente de baseline)
+const BASELINE_FALLBACK = 65;
+const MIN_BASELINE_SAMPLES = 4;
+const COOLDOWN_DEGRADE_PTS = 5; // re-alerta crítico se piorar >=5pts no mesmo dia
+const RESET_SCORE = 55;        // score >= reset → limpa cooldown
+const NOTIFY_ON_OK = false;    // heartbeat semanal cobre o "tá tudo bem"
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname).replace(/^\/([A-Z]):/i,'$1:'),'..');
 
@@ -49,7 +58,6 @@ async function runPSI(strategy) {
   execSync(`npx --yes lighthouse@12 ${flags}`, { stdio: 'pipe' });
   const j = JSON.parse(fs.readFileSync(tmpFile, 'utf8'));
   fs.unlinkSync(tmpFile);
-  // lighthouse CLI direct output has same schema as lighthouseResult inside PSI
   return parsePSI(strategy, { lighthouseResult: j });
 }
 
@@ -85,20 +93,73 @@ async function sbInsert(rows) {
   if (!r.ok) console.warn('sb insert failed', r.status, await r.text());
 }
 
+// Calcula baseline = min(P75_14d, max_7d) filtrando quality_flag='ok'.
+// Se < MIN_BASELINE_SAMPLES runs ok em 14d, retorna fallback + warning.
+//
+// TODO: detectar baseline drift — se >=3 runs consecutivos com score
+// abaixo do P25 dos últimos 30 dias (ok-only), disparar TG manual
+// "baseline pode estar virando, investigar manualmente"
 async function getBaseline(strategy) {
-  const since = new Date(Date.now() - 7*24*3600*1000).toISOString();
+  const since14 = new Date(Date.now() - 14*24*3600*1000).toISOString();
   const u = new URL(`${SB_URL}/rest/v1/pagespeed_runs`);
-  u.searchParams.set('select','perf_score,lcp_ms,cls');
-  u.searchParams.set('strategy',`eq.${strategy}`);
-  u.searchParams.set('url',`eq.${SITE_URL}`);
-  u.searchParams.set('created_at',`gte.${since}`);
-  u.searchParams.set('limit','30');
+  u.searchParams.set('select', 'perf_score,created_at');
+  u.searchParams.set('strategy', `eq.${strategy}`);
+  u.searchParams.set('quality_flag', 'eq.ok');
+  u.searchParams.set('created_at', `gte.${since14}`);
+  u.searchParams.set('order', 'created_at.desc');
+  u.searchParams.set('limit', '100');
+  const r = await fetch(u.href, { headers: { apikey: SB_SK, Authorization: `Bearer ${SB_SK}` }});
+  if (!r.ok) {
+    console.warn(`[baseline ${strategy}] fetch failed ${r.status}, fallback ${BASELINE_FALLBACK}`);
+    return { value: BASELINE_FALLBACK, source: 'fallback_fetch_error', n: 0, p75_14d: null, max_7d: null };
+  }
+  const all = await r.json();
+  if (all.length < MIN_BASELINE_SAMPLES) {
+    console.warn(`[baseline ${strategy}] WARNING: apenas ${all.length} runs ok em 14d (< ${MIN_BASELINE_SAMPLES}), fallback ${BASELINE_FALLBACK}`);
+    return { value: BASELINE_FALLBACK, source: 'fallback_insufficient_samples', n: all.length, p75_14d: null, max_7d: null };
+  }
+  // P75 via nearest-rank (sem interpolação — preserva valores reais do dataset)
+  const sorted14 = all.map(x => x.perf_score).sort((a,b) => a-b);
+  const p75Idx = Math.ceil(sorted14.length * 0.75) - 1;
+  const p75_14d = sorted14[Math.max(0, p75Idx)];
+  // Max dos 7d
+  const cutoff7 = Date.now() - 7*24*3600*1000;
+  const last7 = all.filter(x => new Date(x.created_at).getTime() >= cutoff7);
+  const max_7d = last7.length ? Math.max(...last7.map(x => x.perf_score)) : p75_14d;
+  const baseline = Math.min(p75_14d, max_7d);
+  return { value: baseline, source: 'calculated', n: all.length, p75_14d, max_7d };
+}
+
+async function getAlertState(strategy) {
+  const u = new URL(`${SB_URL}/rest/v1/pagespeed_alert_state`);
+  u.searchParams.set('select', '*');
+  u.searchParams.set('strategy', `eq.${strategy}`);
   const r = await fetch(u.href, { headers: { apikey: SB_SK, Authorization: `Bearer ${SB_SK}` }});
   if (!r.ok) return null;
   const arr = await r.json();
-  if (!arr.length) return null;
-  const avg = arr.reduce((a,x)=>a+(x.perf_score||0),0) / arr.length;
-  return { perf_avg: Math.round(avg), n: arr.length };
+  return arr[0] || null;
+}
+async function updateAlertState(strategy, payload) {
+  await fetch(`${SB_URL}/rest/v1/pagespeed_alert_state?strategy=eq.${strategy}`, {
+    method: 'PATCH',
+    headers: { apikey: SB_SK, Authorization: `Bearer ${SB_SK}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+    body: JSON.stringify({ ...payload, updated_at: new Date().toISOString() }),
+  });
+}
+// Reset idempotente: filtra last_critical_alert_at IS NOT NULL no PATCH → no-op se já limpo
+async function resetAlertState(strategy) {
+  await fetch(`${SB_URL}/rest/v1/pagespeed_alert_state?strategy=eq.${strategy}&last_critical_alert_at=not.is.null`, {
+    method: 'PATCH',
+    headers: { apikey: SB_SK, Authorization: `Bearer ${SB_SK}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+    body: JSON.stringify({ last_critical_alert_at: null, last_critical_alert_score: null, updated_at: new Date().toISOString() }),
+  });
+}
+function shouldFireCritical(state, score) {
+  if (!state || !state.last_critical_alert_at) return true; // primeira vez
+  const sameDay = state.last_critical_alert_at.slice(0,10) === new Date().toISOString().slice(0,10);
+  if (!sameDay) return true; // dia novo
+  if (score < (state.last_critical_alert_score - COOLDOWN_DEGRADE_PTS)) return true; // piorou >=5pts
+  return false; // cooldown ativo
 }
 
 function autoFixHtml() {
@@ -172,6 +233,108 @@ async function triggerAutoRevert() {
   return r.ok;
 }
 
+function classify(score, baseline) {
+  const drop = baseline.value - score;
+  const isCritical = score < CRITICAL_SCORE;
+  let level, emoji;
+  if (drop >= DROP_REVERT)         { level = 'REVERT';      emoji = '🚨'; }
+  else if (drop >= DROP_REGRESSION){ level = 'REGRESSION';  emoji = '⚠️'; }
+  else if (drop >= DROP_OBSERVATION){ level = 'OBSERVATION'; emoji = '📉'; }
+  else                              { level = 'OK';          emoji = '✅'; }
+  return { drop, level, emoji, isCritical };
+}
+
+function tgTemplate(strategy, m, baseline, c, runUrl, asCritical) {
+  const head = asCritical
+    ? `🚨 <b>CRÍTICO ABSOLUTO</b> — ${strategy}`
+    : c.level === 'REVERT'
+      ? `🚨 <b>AUTO-REVERT disparado</b> — ${strategy}`
+      : c.level === 'REGRESSION'
+        ? `⚠️ <b>Regressão — auto-fix tentado</b> — ${strategy}`
+        : c.level === 'OBSERVATION'
+          ? `📉 <b>Queda detectada (sem ação automática)</b> — ${strategy}`
+          : `✅ <b>PageSpeed OK</b> — ${strategy}`;
+  return `${head}
+Score: <b>${m.perf_score}/100</b>  LCP ${(m.lcp_ms/1000).toFixed(1)}s  CLS ${m.cls}  TBT ${m.tbt_ms}ms
+Baseline: ${baseline.value} (${baseline.source}, n=${baseline.n}, P75₁₄=${baseline.p75_14d ?? '—'}, max₇=${baseline.max_7d ?? '—'})
+Drop: ${c.drop > 0 ? '−' + c.drop : '+' + (-c.drop)}pts
+Run: ${runUrl}`;
+}
+
+// Processa uma strategy (mobile|desktop). Retorna { msgs, actions, level, critFired, fixes }.
+//
+// Tabela-verdade do envio TG (próxima pessoa lendo: NÃO MEXE sem entender):
+//
+// critFired  level         NOTIFY_ON_OK  isMonday  → mensagens enviadas
+// false      OK            false         false     → []                              (silencioso, default)
+// false      OK            false         true      → [OK]                            (heartbeat segunda)
+// false      OK            true          *         → [OK]                            (modo "notify all" ligado)
+// false      OBSERVATION   *             *         → [OBSERVATION]                   (sempre fala em queda)
+// false      REGRESSION    *             *         → [REGRESSION, action]            (sempre fala + ação)
+// false      REVERT        *             *         → [REVERT, action]                (sempre fala + ação)
+// true       OK            *             *         → [CRITICAL]                      (raro: baseline puxado, score<50, drop pequeno)
+// true       OBSERVATION   *             *         → [CRITICAL, OBSERVATION]         (raro: score<50, drop 5-7)
+// true       REGRESSION    *             *         → [CRITICAL, REGRESSION, action]  (score<50 E drop 8-14)
+// true       REVERT        *             *         → [CRITICAL, action]              (score<50 E drop>=15 — caso 16/05)
+//                                                                                     suprime REVERT redundante (ação cobre)
+async function processStrategy(strategy, m, runUrl) {
+  const baseline = await getBaseline(strategy);
+  const state    = await getAlertState(strategy);
+  const c        = classify(m.perf_score, baseline);
+
+  // Ajuste 1: calcular critFired ANTES de qualquer mutação no state
+  const critFired = c.isCritical && shouldFireCritical(state, m.perf_score);
+
+  // Cooldown state mutation (EXCLUSIVO via if/else if):
+  // - score >= RESET (55): reset idempotente (no-op se já limpo)
+  // - critFired: persiste novo estado
+  // c.isCritical implica score < 50 < 55, então as duas branches são mutuamente exclusivas
+  if (m.perf_score >= RESET_SCORE) {
+    if (state?.last_critical_alert_at) await resetAlertState(strategy);
+  } else if (critFired) {
+    await updateAlertState(strategy, {
+      last_critical_alert_at: new Date().toISOString(),
+      last_critical_alert_score: m.perf_score,
+    });
+  }
+
+  // Ações automáticas (REVERT e REGRESSION são exclusivas via if/else)
+  const actions = [];
+  let fixes = [];
+  if (c.level === 'REVERT') {
+    const ok = await triggerAutoRevert();
+    actions.push(ok ? 'auto-revert disparado' : 'auto-revert falhou');
+  } else if (c.level === 'REGRESSION') {
+    fixes = autoFixHtml();
+    if (fixes.length) {
+      if (commit(fixes)) actions.push(`auto-fix aplicado: ${fixes.length} arquivo(s)`);
+      else actions.push('auto-fix tentado mas commit falhou');
+    } else {
+      actions.push('regressão detectada — nenhum fix automático aplicável, intervenção manual necessária');
+    }
+  }
+
+  // Montagem das mensagens (ver tabela-verdade acima)
+  const msgs = [];
+  const isMonday = new Date().getUTCDay() === 1;
+
+  if (critFired) msgs.push(tgTemplate(strategy, m, baseline, c, runUrl, true));
+
+  if (c.level === 'OK') {
+    if (!critFired && (NOTIFY_ON_OK || isMonday)) {
+      msgs.push(tgTemplate(strategy, m, baseline, c, runUrl, false));
+    }
+  } else if (c.level === 'REVERT' && critFired) {
+    // Crítico já cobriu — não duplica REVERT, só mostra ação abaixo
+  } else {
+    msgs.push(tgTemplate(strategy, m, baseline, c, runUrl, false));
+  }
+
+  if (actions.length) msgs.push(`<b>Ação ${strategy}:</b> ${actions.join(' + ')}`);
+
+  return { msgs, actions, level: c.level, critFired, fixes };
+}
+
 (async () => {
   console.log('PSI run start', new Date().toISOString());
   const [m, d] = await Promise.all([runPSI('mobile'), runPSI('desktop')]);
@@ -180,30 +343,29 @@ async function triggerAutoRevert() {
     { url: SITE_URL, ...d }
   ]);
 
-  const baseM = await getBaseline('mobile');
-  const drop = baseM ? baseM.perf_avg - m.perf_score : 0;
+  const runUrl = process.env.GITHUB_RUN_ID
+    ? `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+    : '(local)';
 
-  let action = 'nenhuma';
-  let fixes = [];
-  if (baseM && drop >= REVERT_THRESHOLD) {
-    const ok = await triggerAutoRevert();
-    action = ok ? 'auto-revert disparado' : 'auto-revert falhou';
-  } else if (baseM && drop >= REGRESSION_THRESHOLD) {
-    fixes = autoFixHtml();
-    if (fixes.length) {
-      if (commit(fixes)) action = `auto-fix aplicado: ${fixes.length} arquivo(s)`;
-      else action = 'auto-fix tentado mas commit falhou';
-    } else action = 'regressao detectada mas nenhum fix automatico aplicavel';
+  // Ajuste 2: Serializado pra evitar contenção de writes em pagespeed_alert_state
+  // e tornar logs determinísticos (mobile antes de desktop). Custo: ~200ms/dia.
+  const resM = await processStrategy('mobile', m, runUrl);
+  const resD = await processStrategy('desktop', d, runUrl);
+
+  const allMsgs = [
+    `<b>PageSpeed Daily ${new Date().toISOString().slice(0,10)}</b>`,
+    ...resM.msgs,
+    ...resD.msgs,
+  ];
+
+  // Se TODAS as strategies estão silenciadas (sem crítico, sem heartbeat), pula TG
+  const allSilent = resM.msgs.length === 0 && resD.msgs.length === 0;
+  if (!allSilent) {
+    await tg(allMsgs.join('\n\n'));
+  } else {
+    console.log('all silent OK (no critical, no heartbeat) — TG skipped');
   }
-
-  const msg =
-`<b>PageSpeed Daily ${new Date().toISOString().slice(0,10)}</b>
-Mobile: <b>${m.perf_score}/100</b>  LCP ${(m.lcp_ms/1000).toFixed(1)}s  CLS ${m.cls}
-Desktop: <b>${d.perf_score}/100</b>  LCP ${(d.lcp_ms/1000).toFixed(1)}s  CLS ${d.cls}
-Baseline 7d (mobile): ${baseM?.perf_avg ?? 'sem dados'}  drop: ${drop}
-Acao: ${action}${fixes.length?'\n'+fixes.join('\n'):''}`;
-  await tg(msg);
-  console.log(msg);
+  console.log(allMsgs.join('\n\n'));
 })().catch(async (e) => {
   console.error(e);
   await tg(`<b>PageSpeed Daily ERRO</b>\n${e.message}`);
