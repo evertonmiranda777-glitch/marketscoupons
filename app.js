@@ -538,13 +538,46 @@ function setTrackingGeo(geo){
   });
 }
 
+// Lê fbp do cookie + monta fbc do fbclid (mantém EMQ alto mesmo quando Pixel ainda não setou _fbc)
+function _getFbAttribution() {
+  try {
+    const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
+    const fbp = ck._fbp || null;
+    let fbc = ck._fbc || null;
+    if (!fbc) {
+      // Lê fbclid da URL atual OU do localStorage (persistido pelo tracking.js em mc_attribution)
+      let fbclid = new URLSearchParams(location.search).get('fbclid');
+      if (!fbclid) {
+        try {
+          const att = JSON.parse(localStorage.getItem('mc_attribution') || '{}');
+          fbclid = att.fbclid || null;
+        } catch(_) {}
+      }
+      if (fbclid) {
+        fbc = `fb.1.${Date.now()}.${fbclid}`;
+        // Persiste cookie pra próximas chamadas da mesma sessão (90 dias)
+        try { document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`; } catch(_) {}
+      }
+    }
+    return { fbp, fbc };
+  } catch(_) { return { fbp: null, fbc: null }; }
+}
+
+// Anon ID estável (já setado em tracking-init.js). Usado como external_id quando user não logado.
+function _getAnonId() {
+  try { return localStorage.getItem('mc_anon') || null; } catch(_) { return null; }
+}
+
 // Facebook CAPI — fire-and-forget server-side event
 function _sendCAPI(event, params, eid, ts) {
   // GDPR/LGPD: block server-side tracking without consent
   if (localStorage.getItem('mc-cookies-consent') !== 'accepted') return;
   try {
-    const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
+    const { fbp, fbc } = _getFbAttribution();
+    const anon_id = _getAnonId();
     const user = typeof currentUser!=='undefined' ? currentUser : null;
+    // external_id: prefere user.id (logado); fallback pra anon_id (cobre 90% do tráfego pago)
+    const external_id = user?.id || anon_id || '';
     fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/facebook-capi', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
@@ -555,11 +588,14 @@ function _sendCAPI(event, params, eid, ts) {
           event_id: eid,
           ts,
           url: location.href,
-          fbp: ck._fbp || '',
-          fbc: ck._fbc || '',
-          em: user?.email || '',
-          external_id: user?.id || '',
-          fn: user?.user_metadata?.full_name || '',
+          fbp: fbp || '',
+          fbc: fbc || '',
+          em: params.em || user?.email || '',
+          ph: params.ph || user?.user_metadata?.phone || '',
+          external_id,
+          anon_id: anon_id || '',
+          fn: params.fn || user?.user_metadata?.full_name || '',
+          ln: params.ln || '',
           country: user?.user_metadata?.country || '',
           firm_id: params.firm_id || null,
           firm_name: params.firm_name || null,
@@ -6321,7 +6357,7 @@ async function registerLoyalty() {
   saveLead({ name, email, tool: 'loyalty' });
   renderLoyaltyPage();
   showToast(t('toast_bem_vindo') + name + '!');
-  track('loyalty_register', { name, email });
+  track('loyalty_register', { name, email, em: email, fn: name, content_name:'Loyalty Program', content_category:'loyalty' });
   if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'Loyalty Program',content_category:'loyalty',value:0,currency:'USD',status:true},{eventID:window._lastTrackId+'_CompleteRegistration'});
   if(typeof gtag==='function') gtag('event','sign_up',{method:'loyalty'});
 }
@@ -6834,7 +6870,7 @@ async function doAuthSignup() {
   if (data.session) {
     closeAuthModals();
     await loadUserSession(data.user);
-    track('user_signup', { method: 'email' });
+    track('user_signup', { method: 'email', em: email, fn: name, content_name:'MarketsCoupons Account', content_category:'signup' });
     if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'MarketsCoupons Account',content_category:'signup',value:0,currency:'USD',status:true},{eventID:window._lastTrackId+'_CompleteRegistration'});
     if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
     _cemPendingEmail = email;
@@ -6856,7 +6892,7 @@ async function doAuthSignup() {
     }
     closeAuthModals();
     await loadUserSession(loginData.user);
-    track('user_signup', { method: 'email' });
+    track('user_signup', { method: 'email', em: email, fn: name, content_name:'MarketsCoupons Account', content_category:'signup' });
     if(typeof fbq==='function') fbq('track','CompleteRegistration',{content_name:'MarketsCoupons Account',content_category:'signup',value:0,currency:'USD',status:true},{eventID:window._lastTrackId+'_CompleteRegistration'});
     if(typeof gtag==='function') gtag('event','sign_up',{method:'email'});
     _cemPendingEmail = email;
@@ -7832,7 +7868,7 @@ async function subscribeNewsletter(e){
     msg.style.color = '#4ade80';
     msg.textContent = t('ft_newsletter_ok') || 'Done! You\'ll receive our best deals.';
     input.value = '';
-    track('newsletter_subscribe', { lang: lang });
+    track('newsletter_subscribe', { lang: lang, em: email, content_name:'Newsletter', content_category:'newsletter' });
   } catch(err) {
     msg.style.display = 'block';
     msg.style.color = '#ef4444';
