@@ -1,9 +1,9 @@
 name: Email auto-dispatch (cron diário)
 
 on:
-  schedule:
-    # 11:00 UTC = 08:00 BRT — dispara ~400 emails/dia
-    - cron: '0 11 * * *'
+  # schedule disabled 2026-05-18: user cancelou Resend, sem provider de envio
+  # schedule:
+  #   - cron: '0 11 * * *'
   workflow_dispatch:
     inputs:
       campaign:

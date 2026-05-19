@@ -11,8 +11,9 @@ name: Top 3 Ramp (auto-disparo híbrido adaptativo)
 # START_DATE: 2026-05-15
 
 on:
-  schedule:
-    - cron: '0 14 * * *'  # 14h UTC = 11h BRT
+  # schedule disabled 2026-05-18: user cancelou Resend, sem provider de envio
+  # schedule:
+  #   - cron: '0 14 * * *'  # 14h UTC = 11h BRT
   workflow_dispatch:
     inputs:
       force_mode:
