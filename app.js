@@ -539,24 +539,28 @@ function setTrackingGeo(geo){
 }
 
 // Lê fbp do cookie + monta fbc do fbclid (mantém EMQ alto mesmo quando Pixel ainda não setou _fbc)
+// PRIORIZA fbclid da URL: ad novo deve sobrescrever attribution antiga (regra Meta)
 function _getFbAttribution() {
   try {
     const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
     const fbp = ck._fbp || null;
-    let fbc = ck._fbc || null;
-    if (!fbc) {
-      // Lê fbclid da URL atual OU do localStorage (persistido pelo tracking.js em mc_attribution)
-      let fbclid = new URLSearchParams(location.search).get('fbclid');
-      if (!fbclid) {
+    const urlFbclid = new URLSearchParams(location.search).get('fbclid');
+    let fbc;
+    if (urlFbclid) {
+      // URL tem fbclid → sempre sobrescreve cookie (ad mais recente ganha)
+      fbc = `fb.1.${Date.now()}.${urlFbclid}`;
+      try { document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`; } catch(_) {}
+    } else {
+      // Sem fbclid na URL: usa cookie existente OU mc_attribution localStorage
+      fbc = ck._fbc || null;
+      if (!fbc) {
         try {
           const att = JSON.parse(localStorage.getItem('mc_attribution') || '{}');
-          fbclid = att.fbclid || null;
+          if (att.fbclid) {
+            fbc = `fb.1.${Date.now()}.${att.fbclid}`;
+            try { document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`; } catch(_) {}
+          }
         } catch(_) {}
-      }
-      if (fbclid) {
-        fbc = `fb.1.${Date.now()}.${fbclid}`;
-        // Persiste cookie pra próximas chamadas da mesma sessão (90 dias)
-        try { document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`; } catch(_) {}
       }
     }
     return { fbp, fbc };

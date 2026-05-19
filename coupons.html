@@ -655,6 +655,23 @@ function injectKeyword(url, firmId){
   return cleaned + sep + 'keyword=' + encodeURIComponent(kw) + hash;
 }
 
+// FB attribution helper (mesma lógica do app.js, inline aqui pq coupons.html é standalone)
+function _fbAttr(){
+  try {
+    const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
+    const fbp = ck._fbp || null;
+    const urlFbclid = new URLSearchParams(location.search).get('fbclid');
+    let fbc;
+    if (urlFbclid) {
+      fbc = `fb.1.${Date.now()}.${urlFbclid}`;
+      try { document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`; } catch(_){}
+    } else {
+      fbc = ck._fbc || null;
+    }
+    return { fbp, fbc };
+  } catch(_){ return { fbp:null, fbc:null }; }
+}
+
 function trackEvent(event, params={}){
   const eid = uuid();
   // events table — analytics geral
@@ -667,6 +684,26 @@ function trackEvent(event, params={}){
         page_name: params.page_name||'lp_coupons', utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
         params: { ...utm, ...params, anon_id: anonId, event_id: eid, lang: LANG, sub_b64: subscriberB64 }
       }), keepalive: true
+    }).catch(()=>{});
+  } catch(e){}
+  // Facebook CAPI server-side (fire-and-forget — paralelo, não bloqueia UX)
+  try {
+    const { fbp, fbc } = _fbAttr();
+    fetch(SB_URL+'/functions/v1/facebook-capi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ua: navigator.userAgent, events: [{
+        event, event_id: eid, ts: new Date().toISOString(), url: location.href,
+        fbp: fbp||'', fbc: fbc||'',
+        external_id: anonId || '', anon_id: anonId || '',
+        firm_id: params.firm_id||null,
+        content_name: params.firm_name||params.content_name||null,
+        content_ids: params.firm_id?[params.firm_id]:null,
+        content_type: 'product',
+        value: params.value||0, currency: 'USD',
+        coupon: params.coupon_code||null,
+      }]}),
+      keepalive: true
     }).catch(()=>{});
   } catch(e){}
   // coupon_clicks — feeds atribuicao venda-a-venda (igual app.js:356)

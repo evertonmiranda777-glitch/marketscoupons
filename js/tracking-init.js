@@ -48,27 +48,15 @@ function loadFbPixel() {
 function loadTracking() {
   if (window._trackingLoaded) return;
   window._trackingLoaded = true;
-  // GA4 imediato (script pequeno, sem regressão visível)
   loadGA4();
-  // FB Pixel adiado: SÓ após window.load (LCP/TBT já medidos) + idle. PageView ainda conta.
+  // FB Pixel: load + 1.5s setTimeout determinístico (requestIdleCallback travava em headless/audits).
+  // Total max: load + 1.5s = ~3s. PageView dispara após esse delay.
   var fired = false;
   var fire = function(){ if (fired) return; fired = true; loadFbPixel(); };
-  var armed = false;
-  var arm = function(){
-    if (armed) return; armed = true;
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(fire, { timeout: 3000 });
-    } else {
-      setTimeout(fire, 1500);
-    }
-  };
-  // Dispara o arm SÓ quando load completar (assim PSI nunca pega FB no caminho crítico)
-  if (document.readyState === 'complete') {
-    setTimeout(arm, 1500);
-  } else {
-    addEventListener('load', function(){ setTimeout(arm, 1500); }, { once: true });
-  }
-  // Interação do user destrava na hora (sem esperar load+idle)
+  var arm = function(){ setTimeout(fire, 1500); };
+  if (document.readyState === 'complete') arm();
+  else addEventListener('load', arm, { once: true });
+  // Interação do user destrava na hora (sem esperar 1.5s)
   ['pointerdown','touchstart','scroll','keydown'].forEach(function(ev){
     addEventListener(ev, fire, { once: true, passive: true });
   });
