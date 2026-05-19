@@ -393,67 +393,71 @@ function track(event, params={}) {
   // GDPR/LGPD: only send to third-party trackers if consent accepted (or consent event itself)
   if (!consentOk && event !== 'cookie_consent') return;
 
-  // 3. GTM dataLayer — enrich with event_id + commerce context for GTM variables (GA4/FB/etc tags)
+  // 3. GTM dataLayer — ÚNICA fonte pra GA4 + Meta Pixel + Google Ads.
+  // GTM consome esse push e dispara tags (Pixel base, GA4 event, Ads conversion).
+  // SEM gtag()/fbq() direto — lint do CI bloqueia. Histórico: 2026-04-12 já quebrou
+  // (memória feedback_tracking_saga). Disciplina = dataLayer-only.
+  //
+  // Mapeamento canonical → GA4/Meta standard (GTM faz a tradução via Lookup Table):
+  //   coupon_copy          → add_to_cart / AddToCart
+  //   checkout_click       → begin_checkout / InitiateCheckout
+  //   firm_detail_open     → view_item / ViewContent
+  //   user_signup          → sign_up / CompleteRegistration
+  //   loyalty_register     → sign_up / CompleteRegistration
+  //   newsletter_subscribe → subscribe / Subscribe
+  //   generate_lead        → generate_lead / Lead
+  //   purchase             → purchase / Purchase
+  //   page_view            → page_view / PageView
   window.dataLayer = window.dataLayer || [];
+  const _fb = _getFbAttribution();
+  const _anonId = _getAnonId();
+  const _user = typeof currentUser!=='undefined' ? currentUser : null;
   window.dataLayer.push({
     event,
-    event_id:     eid,
-    firm_id:      params.firm_id || null,
+    event_id: eid,                  // MESMO eid vai pro CAPI logo abaixo → Meta dedup Pixel × CAPI
+    timestamp: ts,
+    // user_data (Meta Advanced Matching + GA4 user_id)
+    user_data: {
+      external_id: _user?.id || _anonId || null,
+      em:          params.em || _user?.email || null,
+      ph:          params.ph || null,
+      fn:          params.fn || _user?.user_metadata?.full_name?.split(' ')[0] || null,
+      ln:          params.ln || null,
+      anon_id:     _anonId,
+      fbp:         _fb.fbp || null,
+      fbc:         _fb.fbc || null,
+    },
+    // ecommerce schema (GA4 enhanced ecommerce)
+    ecommerce: {
+      currency: params.currency || 'USD',
+      value:    params.value || 0,
+      items:    params.firm_id ? [{
+        item_id:   params.firm_id,
+        item_name: params.firm_name || params.content_name || params.firm_id,
+        item_category: 'prop_firm',
+        coupon:    params.coupon_code || params.coupon || null,
+        quantity:  1,
+        price:     params.value || 0,
+      }] : (params.items || []),
+    },
+    // Campos pra Meta Pixel (custom_data via GTM)
     content_ids:  params.content_ids || (params.firm_id ? [params.firm_id] : null),
     content_name: params.content_name || params.firm_name || params.page_name || null,
     content_type: params.content_type || (params.firm_id ? 'product' : null),
-    value:        params.value || 0,
-    currency:     params.currency || 'USD',
-    num_items:    params.num_items || null,
+    content_category: params.content_category || null,
     coupon:       params.coupon_code || params.coupon || null,
+    firm_id:      params.firm_id || null,
+    page_name:    params.page_name || null,
+    // UTM (GTM pode usar pra source/medium dimensions)
+    utm_source:   _src,
+    utm_medium:   _med,
+    utm_campaign: _cmp,
+    // Spread params extras no final (eventos custom passam dados específicos)
     ...params,
-    timestamp:    ts,
   });
 
-  // Eventos onde chamadas inline gtag/fbq já disparam com params ricos de ecommerce.
-  // Track() NÃO faz fan-out pra gtag/fbq nestes casos pra evitar duplicação no GA4/FB.
-  // (Supabase/cache/queue/dataLayer/CAPI continuam disparando normalmente)
-  const INLINE_HANDLED = new Set([
-    'page_view','firm_detail_open','guide_read','coupon_copy','checkout_click','purchase',
-    'calc_unlocked','quiz_complete','tool_lead_capture',
-    'loyalty_register','loyalty_proof_submitted','user_login','user_signup'
-  ]);
-  const skipBrowserPixels = INLINE_HANDLED.has(event);
-
-  // 4. GA4 direto — garante que TODO evento chegue ao GA4 com event_id
-  // (inline gtag calls existentes continuam funcionando pra enviar com params de ecommerce ricos)
-  if (typeof gtag === 'function' && !skipBrowserPixels) {
-    try {
-      const gaParams = {
-        event_id: eid,
-        firm_id:  params.firm_id || undefined,
-        page_name: params.page_name || params.page || undefined,
-        coupon: params.coupon_code || params.coupon || undefined,
-        value: typeof params.value === 'number' ? params.value : undefined,
-        currency: params.currency || (typeof params.value === 'number' ? 'USD' : undefined),
-        transaction_id: params.transaction_id || undefined,
-      };
-      // Inclui params extras (exceto campos internos/grandes)
-      for (const k in params) {
-        if (k === 'items' || k === 'content_ids' || k === 'email' || k === 'phone') continue;
-        if (gaParams[k] === undefined && params[k] != null) {
-          const v = params[k];
-          if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
-            gaParams[k] = typeof v === 'string' ? v.slice(0, 100) : v;
-          }
-        }
-      }
-      gtag('event', event, gaParams);
-    } catch(e) { console.warn('gtag dispatch error:', e); }
-  }
-
-  // 5. Facebook Pixel — DESATIVADO no track() fan-out.
-  // Eventos standard (PageView, ViewContent, InitiateCheckout, Purchase, Lead, CopyCode)
-  // são disparados inline com items array. Eventos custom (scroll_depth, menu_toggle, etc)
-  // NÃO vão pro FB Pixel — pollui dashboard sem valor pra otimização de ads.
-  // Se precisar de algum custom específico no FB, chamar fbq diretamente no call site.
-
-  // 6. Facebook Conversions API (server-side — bypasses ad blockers)
+  // 4. Facebook Conversions API server-side (bypassa ad blockers) — MESMO event_id do dataLayer
+  // Dedup Pixel browser × CAPI: GTM dispara Pixel com event_id=eid, CAPI envia event_id=eid → Meta soma 1.
   _sendCAPI(event, params, eid, ts);
 }
 
@@ -502,39 +506,40 @@ async function _sha256(str){
     return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
   } catch(e) { return ''; }
 }
-// Call when user logs in — enables GA4 Enhanced Conversions and FB Advanced Matching
+// Call when user logs in — enables GA4 Enhanced Conversions + FB Advanced Matching via GTM dataLayer
+// (sem gtag/fbq direto — GTM consome user_data e Pixel/GA4 hash automaticamente)
 async function setTrackingUser(user){
   if(!user||localStorage.getItem('mc-cookies-consent')!=='accepted') return;
   const email = user.email || '';
   const phone = user.user_metadata?.phone || '';
   const fn    = user.user_metadata?.full_name || '';
-  const [em_h, ph_h, fn_h] = await Promise.all([_sha256(email), _sha256(phone), _sha256(fn)]);
-  // GA4 Enhanced Conversions (hashed)
-  if(typeof gtag==='function') {
-    gtag('set','user_data',{
-      sha256_email_address: em_h || undefined,
-      sha256_phone_number:  ph_h || undefined,
-    });
-    gtag('set','user_properties',{
-      user_id:     user.id || '',
+  // Push pra dataLayer — GTM tem variável "user_data" que lê desse stack e injeta no Pixel base + GA4 config
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'user_identified',
+    user_data: {
+      external_id: user.id || null,
+      em:          email || null,
+      ph:          phone || null,
+      fn:          fn.split(' ')[0] || null,
+      ln:          fn.split(' ').slice(1).join(' ') || null,
       plan:        user.user_metadata?.plan || 'free',
       loyalty_tier:user.user_metadata?.loyalty_tier || 'none',
-      country:     user.user_metadata?.country || (_geo&&_geo.geo_country) || '',
-    });
-    gtag('config','G-CZ3L00NY77',{ user_id: user.id || undefined });
-  }
-  // FB Pixel Advanced Matching (plain — FB hashes server-side; for browser, pass non-hashed in init)
-  if(typeof fbq==='function' && email) {
-    fbq('init','813048241061812',{em:email, ph:phone, fn:fn, external_id:user.id||''});
-  }
+      country:     user.user_metadata?.country || (_geo&&_geo.geo_country) || null,
+    },
+  });
 }
-// Call when geo detected (enriches even anonymous users)
+// Call when geo detected (enriches even anonymous users) — via dataLayer
 function setTrackingGeo(geo){
-  if(!geo||typeof gtag!=='function') return;
-  gtag('set','user_properties',{
-    country:  geo.geo_country || '',
-    region:   geo.geo_region || '',
-    timezone: geo.geo_timezone || '',
+  if(!geo) return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'geo_resolved',
+    geo: {
+      country:  geo.geo_country || null,
+      region:   geo.geo_region || null,
+      timezone: geo.geo_timezone || null,
+    },
   });
 }
 

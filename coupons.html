@@ -13,19 +13,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/promo-bar.css">
 
-<!-- GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-CZ3L00NY77"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-CZ3L00NY77', { page_location: location.href, page_title: 'LP Coupons' });
-
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','813048241061812');
-fbq('track','PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=813048241061812&ev=PageView&noscript=1"/></noscript>
+<!-- GTM (substitui GA4 + Meta Pixel inline). Tags configuradas no container, não no código. -->
+<script src="/js/tracking-init.js?v=20260519"></script>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -65,6 +55,50 @@ body.has-promo-topbar{padding-top:var(--promo-h,99px)}
 .trust{display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 16px 16px;margin:0 auto;max-width:560px;flex-wrap:wrap}
 .trust-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t3);font-weight:600}
 .trust-item svg{width:12px;height:12px;color:var(--green)}
+
+/* === Stats bar (4 números fortes) === */
+.stats-bar{max-width:560px;margin:8px auto 0;padding:0 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat-cell{background:rgba(13,20,28,.55);border:1px solid var(--b1);border-radius:10px;padding:10px 6px;text-align:center}
+.stat-cell .v{font-size:18px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-.5px}
+.stat-cell .l{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-top:4px;line-height:1.2}
+@media(min-width:560px){.stat-cell .v{font-size:22px}.stat-cell .l{font-size:10px}}
+
+/* === Chips features === */
+.chips{max-width:560px;margin:14px auto 0;padding:0 12px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.chip{display:flex;align-items:center;gap:8px;background:rgba(13,20,28,.55);border:1px solid var(--b1);border-radius:10px;padding:10px 12px;font-size:12px;font-weight:600;color:var(--t1)}
+.chip svg{width:16px;height:16px;color:var(--gold);flex-shrink:0}
+.chip-txt{line-height:1.25}
+
+/* === Como funciona (3 steps) === */
+.how{max-width:560px;margin:28px auto 0;padding:0 12px}
+.how-title{font-size:14px;font-weight:800;color:var(--t1);text-align:center;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.how-step{background:linear-gradient(180deg,rgba(13,20,28,.7),rgba(11,19,24,.5));border:1px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center;position:relative}
+.how-num{position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,var(--gold),#c8941a);color:#0a0d14;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.how-step svg{width:22px;height:22px;color:var(--gold);margin:6px auto 8px;display:block}
+.how-step-h{font-size:11.5px;font-weight:700;color:var(--t1);line-height:1.25;margin-bottom:3px}
+.how-step-s{font-size:10px;color:var(--t3);line-height:1.3;font-weight:500}
+@media(min-width:560px){.how-step{padding:18px 12px}.how-step-h{font-size:13px}.how-step-s{font-size:11px}}
+
+/* === Social proof === */
+.proof{max-width:560px;margin:28px auto 0;padding:18px 14px;background:linear-gradient(180deg,rgba(0,182,122,.06),rgba(0,182,122,.02));border:1px solid rgba(0,182,122,.22);border-radius:12px;text-align:center}
+.proof-stars{font-size:22px;color:#00b67a;letter-spacing:2px;line-height:1}
+.proof-rating{font-size:28px;font-weight:900;color:var(--t1);letter-spacing:-1px;margin-top:6px;line-height:1}
+.proof-rating em{color:#00b67a;font-style:normal}
+.proof-sub{font-size:11.5px;color:var(--t3);margin-top:6px;font-weight:600}
+.proof-logo{display:inline-block;font-size:11px;color:#00b67a;font-weight:800;margin-top:8px;letter-spacing:.5px}
+
+/* === Newsletter rodapé === */
+.nl-box{max-width:560px;margin:28px auto 0;padding:18px 14px;background:rgba(13,20,28,.55);border:1px solid var(--b1);border-radius:12px;text-align:center}
+.nl-title{font-size:13px;font-weight:800;color:var(--t1);margin-bottom:4px;letter-spacing:.3px}
+.nl-sub{font-size:11px;color:var(--t3);margin-bottom:12px}
+.nl-row{display:flex;gap:6px;max-width:380px;margin:0 auto}
+.nl-input{flex:1;background:rgba(7,9,13,.7);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none}
+.nl-input:focus{border-color:var(--gold)}
+.nl-btn{padding:10px 16px;background:linear-gradient(90deg,#c8941a,var(--gold));color:#0a0d14;border:none;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;font-family:inherit}
+.nl-btn:disabled{opacity:.5;cursor:not-allowed}
+.nl-msg{font-size:11px;color:#00b67a;font-weight:600;margin-top:8px;display:none}
+.nl-msg.err{color:var(--red)}
 
 .firms-list{max-width:560px;margin:0 auto;padding:0 12px;display:flex;flex-direction:column;gap:14px}
 
@@ -186,13 +220,67 @@ body.has-promo-topbar{padding-top:var(--promo-h,99px)}
   <p data-i18n="hero_sub"></p>
 </header>
 
-<div class="trust">
-  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span data-i18n="trust_top3"></span></div>
-  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span data-i18n="trust_off"></span></div>
-  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span data-i18n="trust_updated"></span></div>
+<!-- Stats bar (4 números fortes — substitui trust antigo) -->
+<div class="stats-bar">
+  <div class="stat-cell"><div class="v">12</div><div class="l" data-i18n="stat_firms">Firmas</div></div>
+  <div class="stat-cell"><div class="v">90%</div><div class="l" data-i18n="stat_off">Off Max</div></div>
+  <div class="stat-cell"><div class="v" data-i18n="stat_free_v">Grátis</div><div class="l" data-i18n="stat_free_l">Sempre</div></div>
+  <div class="stat-cell"><div class="v" data-i18n="stat_nosignup_v">0</div><div class="l" data-i18n="stat_nosignup_l">Cadastro</div></div>
 </div>
 
+<!-- Chips features (4 cards) -->
+<div class="chips">
+  <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 1 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg><span class="chip-txt" data-i18n="chip_exclusive">Cupons exclusivos</span></div>
+  <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="chip-txt" data-i18n="chip_verified">Verificado diariamente</span></div>
+  <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="chip-txt" data-i18n="chip_langs">7 idiomas</span></div>
+  <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="chip-txt" data-i18n="chip_nosignup">Sem cadastro</span></div>
+</div>
+
+<!-- Como funciona (3 steps) -->
+<section class="how">
+  <div class="how-title" data-i18n="how_title">Como funciona</div>
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-num">1</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <div class="how-step-h" data-i18n="how_1_h">Escolha a firma</div>
+      <div class="how-step-s" data-i18n="how_1_s">Compare 12 firmas top</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">2</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <div class="how-step-h" data-i18n="how_2_h">Copie o cupom</div>
+      <div class="how-step-s" data-i18n="how_2_s">1 clique no botão</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">3</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+      <div class="how-step-h" data-i18n="how_3_h">Compre c/ desconto</div>
+      <div class="how-step-s" data-i18n="how_3_s">Até 90% OFF</div>
+    </div>
+  </div>
+</section>
+
 <section class="firms-list" id="firms-list"></section>
+
+<!-- Social proof -->
+<section class="proof">
+  <div class="proof-stars">★★★★★</div>
+  <div class="proof-rating"><em>4.7</em>/5</div>
+  <div class="proof-sub" data-i18n="proof_sub">Média Trustpilot das 12 firmas que listamos</div>
+  <div class="proof-logo">Trustpilot</div>
+</section>
+
+<!-- Newsletter capture (rodapé) -->
+<section class="nl-box">
+  <div class="nl-title" data-i18n="nl_title">Receba cupons exclusivos no email</div>
+  <div class="nl-sub" data-i18n="nl_sub">Avisos quando uma firma soltar promo nova. Sem spam.</div>
+  <div class="nl-row">
+    <input type="email" id="nl-email" class="nl-input" placeholder="seu@email.com" autocomplete="email">
+    <button id="nl-btn" class="nl-btn" onclick="submitNewsletter()" data-i18n="nl_btn">Receber</button>
+  </div>
+  <div class="nl-msg" id="nl-msg"></div>
+</section>
 
 <section class="see-all">
   <a class="see-all-btn" href="/firms?utm_source=instagram&utm_medium=bio&utm_campaign=ig_bio_all">
@@ -229,7 +317,12 @@ const I18N = {
     see_all_firms: 'Ver todas as 12 firmas no site',
     risk_warning: 'Aviso de risco',
     risk_text: 'Operar futuros, forex e CFDs envolve risco substancial e pode resultar em perdas. Conteúdo do Markets Coupons é educacional, não é recomendação de investimento. Recebemos comissão de afiliados quando você usa nossos cupons. Leia a <a href="/risk-disclosure">declaração de risco completa</a>.',
-    terms: 'Termos', privacy: 'Privacidade', risk: 'Risco'
+    terms: 'Termos', privacy: 'Privacidade', risk: 'Risco',
+    stat_firms: 'Firmas', stat_off: 'Off Máx', stat_free_v: 'Grátis', stat_free_l: 'Sempre', stat_nosignup_v: '0', stat_nosignup_l: 'Cadastro',
+    chip_exclusive: 'Cupons exclusivos', chip_verified: 'Verificado diariamente', chip_langs: '7 idiomas', chip_nosignup: 'Sem cadastro',
+    how_title: 'Como funciona', how_1_h: 'Escolha a firma', how_1_s: 'Compare 12 firmas top', how_2_h: 'Copie o cupom', how_2_s: '1 clique no botão', how_3_h: 'Compre c/ desconto', how_3_s: 'Até 90% OFF',
+    proof_sub: 'Média Trustpilot das firmas que listamos',
+    nl_title: 'Receba cupons exclusivos no email', nl_sub: 'Avisos quando uma firma soltar promo nova. Sem spam.', nl_btn: 'Receber', nl_ok: 'Inscrito! 🎉', nl_err: 'Email inválido', nl_done: '✓'
   },
   en: {
     hero_title: 'Save up to <em>90% OFF</em> at the best prop firms',
@@ -244,7 +337,12 @@ const I18N = {
     see_all_firms: 'See all 12 firms on the site',
     risk_warning: 'Risk warning',
     risk_text: 'Trading futures, forex and CFDs involves substantial risk and may result in losses. Markets Coupons content is educational, not investment advice. We earn affiliate commission when you use our coupons. Read the <a href="/risk-disclosure">complete risk disclosure</a>.',
-    terms: 'Terms', privacy: 'Privacy', risk: 'Risk'
+    terms: 'Terms', privacy: 'Privacy', risk: 'Risk',
+    stat_firms: 'Firms', stat_off: 'Max Off', stat_free_v: 'Free', stat_free_l: 'Always', stat_nosignup_v: '0', stat_nosignup_l: 'Sign-up',
+    chip_exclusive: 'Exclusive coupons', chip_verified: 'Verified daily', chip_langs: '7 languages', chip_nosignup: 'No sign-up',
+    how_title: 'How it works', how_1_h: 'Pick the firm', how_1_s: 'Compare 12 top firms', how_2_h: 'Copy the coupon', how_2_s: '1-click button', how_3_h: 'Buy with discount', how_3_s: 'Up to 90% OFF',
+    proof_sub: 'Trustpilot average of firms we list',
+    nl_title: 'Get exclusive coupons by email', nl_sub: 'Alerts when a firm drops a new promo. No spam.', nl_btn: 'Subscribe', nl_ok: 'Subscribed! 🎉', nl_err: 'Invalid email', nl_done: '✓'
   },
   es: {
     hero_title: 'Ahorra hasta <em>90% OFF</em> en las mejores Prop Firms',
@@ -259,7 +357,12 @@ const I18N = {
     see_all_firms: 'Ver las 12 firmas en el sitio',
     risk_warning: 'Aviso de riesgo',
     risk_text: 'Operar futuros, forex y CFDs implica un riesgo sustancial y puede resultar en pérdidas. El contenido de Markets Coupons es educativo, no es asesoramiento de inversión. Recibimos comisión de afiliados cuando usas nuestros cupones. Lee la <a href="/risk-disclosure">declaración de riesgo completa</a>.',
-    terms: 'Términos', privacy: 'Privacidad', risk: 'Riesgo'
+    terms: 'Términos', privacy: 'Privacidad', risk: 'Riesgo',
+    stat_firms: 'Firmas', stat_off: 'Off Máx', stat_free_v: 'Gratis', stat_free_l: 'Siempre', stat_nosignup_v: '0', stat_nosignup_l: 'Registro',
+    chip_exclusive: 'Cupones exclusivos', chip_verified: 'Verificado a diario', chip_langs: '7 idiomas', chip_nosignup: 'Sin registro',
+    how_title: 'Cómo funciona', how_1_h: 'Elige la firma', how_1_s: 'Compara 12 firmas top', how_2_h: 'Copia el cupón', how_2_s: '1 clic en el botón', how_3_h: 'Compra c/ descuento', how_3_s: 'Hasta 90% OFF',
+    proof_sub: 'Promedio Trustpilot de las firmas que listamos',
+    nl_title: 'Recibe cupones exclusivos por email', nl_sub: 'Avisos cuando una firma lance promo nueva. Sin spam.', nl_btn: 'Suscribirme', nl_ok: '¡Suscrito! 🎉', nl_err: 'Email inválido', nl_done: '✓'
   },
   it: {
     hero_title: 'Risparmia fino al <em>90% OFF</em> sulle migliori Prop Firms',
@@ -274,7 +377,12 @@ const I18N = {
     see_all_firms: 'Vedi tutte le 12 firm sul sito',
     risk_warning: 'Avviso di rischio',
     risk_text: 'Il trading di futures, forex e CFD comporta rischi sostanziali e può causare perdite. I contenuti di Markets Coupons sono educativi, non consigli di investimento. Riceviamo commissioni di affiliazione quando usi i nostri coupon. Leggi la <a href="/risk-disclosure">informativa completa sui rischi</a>.',
-    terms: 'Termini', privacy: 'Privacy', risk: 'Rischio'
+    terms: 'Termini', privacy: 'Privacy', risk: 'Rischio',
+    stat_firms: 'Firm', stat_off: 'Off Max', stat_free_v: 'Gratis', stat_free_l: 'Sempre', stat_nosignup_v: '0', stat_nosignup_l: 'Registrazione',
+    chip_exclusive: 'Coupon esclusivi', chip_verified: 'Verificato ogni giorno', chip_langs: '7 lingue', chip_nosignup: 'Senza registrazione',
+    how_title: 'Come funziona', how_1_h: 'Scegli la firm', how_1_s: 'Confronta 12 firm top', how_2_h: 'Copia il coupon', how_2_s: '1 clic sul pulsante', how_3_h: 'Acquista c/ sconto', how_3_s: 'Fino al 90% OFF',
+    proof_sub: 'Media Trustpilot delle firm che elenchiamo',
+    nl_title: 'Ricevi coupon esclusivi via email', nl_sub: 'Avvisi quando una firm rilascia nuova promo. Niente spam.', nl_btn: 'Iscriviti', nl_ok: 'Iscritto! 🎉', nl_err: 'Email non valida', nl_done: '✓'
   },
   fr: {
     hero_title: 'Économisez jusqu\'à <em>90% OFF</em> sur les meilleures Prop Firms',
@@ -289,7 +397,12 @@ const I18N = {
     see_all_firms: 'Voir les 12 firmes sur le site',
     risk_warning: 'Avertissement de risque',
     risk_text: 'Trader des futures, du forex et des CFD implique un risque substantiel et peut entraîner des pertes. Le contenu de Markets Coupons est éducatif, pas un conseil d\'investissement. Nous recevons une commission d\'affilié lorsque vous utilisez nos coupons. Lisez la <a href="/risk-disclosure">déclaration de risque complète</a>.',
-    terms: 'Conditions', privacy: 'Confidentialité', risk: 'Risque'
+    terms: 'Conditions', privacy: 'Confidentialité', risk: 'Risque',
+    stat_firms: 'Firmes', stat_off: 'Off Max', stat_free_v: 'Gratuit', stat_free_l: 'Toujours', stat_nosignup_v: '0', stat_nosignup_l: 'Inscription',
+    chip_exclusive: 'Coupons exclusifs', chip_verified: 'Vérifié quotidien', chip_langs: '7 langues', chip_nosignup: 'Sans inscription',
+    how_title: 'Comment ça marche', how_1_h: 'Choisis la firme', how_1_s: 'Compare 12 firmes top', how_2_h: 'Copie le coupon', how_2_s: '1 clic sur le bouton', how_3_h: 'Achète avec remise', how_3_s: 'Jusqu\'à 90% OFF',
+    proof_sub: 'Moyenne Trustpilot des firmes listées',
+    nl_title: 'Recevez des coupons exclusifs par email', nl_sub: 'Alertes nouvelles promos. Pas de spam.', nl_btn: 'S\'abonner', nl_ok: 'Abonné ! 🎉', nl_err: 'Email invalide', nl_done: '✓'
   },
   de: {
     hero_title: 'Sparen Sie bis zu <em>90% OFF</em> bei den besten Prop Firms',
@@ -304,7 +417,12 @@ const I18N = {
     see_all_firms: 'Alle 12 Firmen auf der Website ansehen',
     risk_warning: 'Risikohinweis',
     risk_text: 'Der Handel mit Futures, Forex und CFDs birgt erhebliche Risiken und kann zu Verlusten führen. Markets Coupons-Inhalte sind Bildungsmaterial, keine Anlageberatung. Wir erhalten Affiliate-Provision, wenn Sie unsere Coupons verwenden. Lesen Sie die <a href="/risk-disclosure">vollständige Risikoerklärung</a>.',
-    terms: 'AGB', privacy: 'Datenschutz', risk: 'Risiko'
+    terms: 'AGB', privacy: 'Datenschutz', risk: 'Risiko',
+    stat_firms: 'Firmen', stat_off: 'Max Off', stat_free_v: 'Gratis', stat_free_l: 'Immer', stat_nosignup_v: '0', stat_nosignup_l: 'Registrierung',
+    chip_exclusive: 'Exklusive Coupons', chip_verified: 'Täglich geprüft', chip_langs: '7 Sprachen', chip_nosignup: 'Ohne Registrierung',
+    how_title: 'So funktioniert\'s', how_1_h: 'Firma wählen', how_1_s: 'Vergleiche 12 Top-Firmen', how_2_h: 'Coupon kopieren', how_2_s: '1-Klick Button', how_3_h: 'Mit Rabatt kaufen', how_3_s: 'Bis zu 90% OFF',
+    proof_sub: 'Trustpilot-Durchschnitt der gelisteten Firmen',
+    nl_title: 'Exklusive Coupons per E-Mail', nl_sub: 'Hinweise bei neuen Promos. Kein Spam.', nl_btn: 'Abonnieren', nl_ok: 'Abonniert! 🎉', nl_err: 'Ungültige E-Mail', nl_done: '✓'
   },
   ar: {
     hero_title: 'وفر حتى <em>90% OFF</em> على أفضل Prop Firms',
@@ -319,7 +437,12 @@ const I18N = {
     see_all_firms: 'عرض جميع الشركات الـ12 على الموقع',
     risk_warning: 'تحذير المخاطر',
     risk_text: 'تداول العقود الآجلة والفوركس والـ CFDs ينطوي على مخاطر كبيرة وقد يؤدي إلى خسائر. محتوى Markets Coupons تعليمي وليس نصيحة استثمارية. نحصل على عمولة عند استخدامك لكوبوناتنا. اقرأ <a href="/risk-disclosure">بيان المخاطر الكامل</a>.',
-    terms: 'الشروط', privacy: 'الخصوصية', risk: 'المخاطر'
+    terms: 'الشروط', privacy: 'الخصوصية', risk: 'المخاطر',
+    stat_firms: 'شركات', stat_off: 'أقصى خصم', stat_free_v: 'مجاناً', stat_free_l: 'دائماً', stat_nosignup_v: '0', stat_nosignup_l: 'تسجيل',
+    chip_exclusive: 'كوبونات حصرية', chip_verified: 'محقق يومياً', chip_langs: '7 لغات', chip_nosignup: 'بدون تسجيل',
+    how_title: 'كيف يعمل', how_1_h: 'اختر الشركة', how_1_s: 'قارن 12 شركة', how_2_h: 'انسخ الكوبون', how_2_s: 'نقرة واحدة', how_3_h: 'اشترِ بخصم', how_3_s: 'حتى 90% خصم',
+    proof_sub: 'متوسط Trustpilot للشركات المدرجة',
+    nl_title: 'احصل على كوبونات حصرية بالبريد', nl_sub: 'تنبيهات عروض جديدة. بدون إزعاج.', nl_btn: 'اشترك', nl_ok: 'تم الاشتراك! 🎉', nl_err: 'بريد غير صالح', nl_done: '✓'
   }
 };
 
@@ -545,17 +668,12 @@ function renderFirms() {
         btn.style.borderColor = 'rgba(0,182,122,.55)';
         btn.style.color = '#00b67a';
         setTimeout(() => { btn.textContent = original; btn.style.background=''; btn.style.borderColor=''; btn.style.color=''; }, 1800);
-        const cpEid = trackEvent('coupon_copy', { firm_id: firm.id, coupon_code: firm.coupon, location: 'lp_coupons' });
-        try { if (typeof gtag === 'function') gtag('event','copy_coupon',{ item_id: firm.id, coupon: firm.coupon, source: 'instagram_bio' }); } catch(e){}
-        // FB Pixel — híbrido: AddToCart (otimização rápida Meta) + CopyCode (paridade site)
-        try { if (typeof fbq === 'function') {
-          const plans = firm.plans[state.type];
-          const plan = plans[state.sizeIdx] || plans[0];
-          const value = parseFloat((plan.disc || '').replace(/[^\d.]/g,'')) || 0;
-          const payload = { content_ids:[firm.id], content_name: firm.name, content_category:'firm', content_type:'product', coupon: firm.coupon, value, currency:'USD' };
-          fbq('track','AddToCart', payload, { eventID: cpEid+'_AddToCart' });
-          fbq('trackCustom','CopyCode', payload, { eventID: cpEid+'_CopyCode' });
-        } } catch(e){}
+        // trackEvent() já faz dataLayer.push + CAPI. GTM consome dataLayer e dispara Pixel/GA4.
+        // Mapping configurado no GTM: coupon_copy → AddToCart (Pixel) + add_to_cart (GA4).
+        const plans = firm.plans[state.type];
+        const plan = plans[state.sizeIdx] || plans[0];
+        const value = parseFloat((plan.disc || '').replace(/[^\d.]/g,'')) || 0;
+        trackEvent('coupon_copy', { firm_id: firm.id, firm_name: firm.name, coupon_code: firm.coupon, value, location: 'lp_coupons' });
       }).catch(err => {
         console.error('copy failed:', err);
         btn.textContent = '!';
@@ -563,16 +681,11 @@ function renderFirms() {
       });
     });
 
-    // CTA click — track and fire pixels (mesmos eventos do site)
+    // CTA click — trackEvent faz dataLayer.push + CAPI. GTM mapeia: checkout_click → InitiateCheckout + Lead (Pixel) + begin_checkout (GA4).
     card.querySelector('.fr-cta').addEventListener('click', () => {
       const plans = firm.plans[state.type];
       const plan = plans[state.sizeIdx] || plans[0];
-      const eid = trackEvent('checkout_click', { firm_id: firm.id, firm_name: firm.name, coupon_code: firm.coupon, plan_size: plan.size, plan_type: state.type, location: 'lp_coupons' });
-      try { if (typeof fbq === 'function') {
-        fbq('track','InitiateCheckout',{ content_ids:[firm.id], content_name: firm.name, currency:'USD' },{eventID:eid+'_IC'});
-        fbq('track','Lead',{ content_ids:[firm.id], content_name: firm.name, currency:'USD' },{eventID:eid+'_Lead'});
-      } } catch(e){}
-      try { if (typeof gtag === 'function') gtag('event','begin_checkout',{ currency:'USD', items:[{item_id:firm.id, item_name:firm.name, quantity:1}], coupon:firm.coupon }); } catch(e){}
+      trackEvent('checkout_click', { firm_id: firm.id, firm_name: firm.name, coupon_code: firm.coupon, plan_size: plan.size, plan_type: state.type, location: 'lp_coupons' });
     });
   });
 }
@@ -674,7 +787,9 @@ function _fbAttr(){
 
 function trackEvent(event, params={}){
   const eid = uuid();
-  // events table — analytics geral
+  const ts = new Date().toISOString();
+  const { fbp, fbc } = _fbAttr();
+  // 1. Supabase events table — first-party analytics (sem consent gate, é nosso)
   try {
     fetch(SB_URL+'/rest/v1/events', {
       method: 'POST',
@@ -686,14 +801,34 @@ function trackEvent(event, params={}){
       }), keepalive: true
     }).catch(()=>{});
   } catch(e){}
-  // Facebook CAPI server-side (fire-and-forget — paralelo, não bloqueia UX)
+  // 2. GTM dataLayer (única fonte pra Pixel + GA4 + Google Ads — GTM faz mapping standard)
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event,
+    event_id: eid,
+    timestamp: ts,
+    user_data: { external_id: anonId, anon_id: anonId, fbp: fbp||null, fbc: fbc||null },
+    ecommerce: {
+      currency: 'USD',
+      value: params.value || 0,
+      items: params.firm_id ? [{ item_id: params.firm_id, item_name: params.firm_name||params.firm_id, item_category: 'prop_firm', coupon: params.coupon_code||null, quantity: 1, price: params.value || 0 }] : [],
+    },
+    firm_id: params.firm_id || null,
+    content_ids: params.firm_id ? [params.firm_id] : null,
+    content_name: params.firm_name || null,
+    content_type: 'product',
+    coupon: params.coupon_code || null,
+    utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
+    page_name: params.page_name || 'lp_coupons',
+    location: params.location || null,
+  });
+  // 3. Facebook CAPI server-side (MESMO event_id do dataLayer → Meta dedupa Pixel browser × CAPI)
   try {
-    const { fbp, fbc } = _fbAttr();
     fetch(SB_URL+'/functions/v1/facebook-capi', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ua: navigator.userAgent, events: [{
-        event, event_id: eid, ts: new Date().toISOString(), url: location.href,
+        event, event_id: eid, ts, url: location.href,
         fbp: fbp||'', fbc: fbc||'',
         external_id: anonId || '', anon_id: anonId || '',
         firm_id: params.firm_id||null,
@@ -782,6 +917,36 @@ function tickPromo(){
     t.querySelector('[data-u="m"]').textContent = String(m).padStart(2,'0');
     t.querySelector('[data-u="s"]').textContent = String(s).padStart(2,'0');
   });
+}
+
+// ─── newsletter handler ───
+async function submitNewsletter(){
+  const inp = document.getElementById('nl-email');
+  const btn = document.getElementById('nl-btn');
+  const msg = document.getElementById('nl-msg');
+  const email = (inp?.value||'').trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.textContent = T.nl_err || 'Email inválido';
+    msg.className = 'nl-msg err'; msg.style.display = 'block';
+    return;
+  }
+  btn.disabled = true; btn.textContent = '...';
+  try {
+    await fetch(SB_URL+'/rest/v1/email_subscribers', {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer '+SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=ignore-duplicates' },
+      body: JSON.stringify({ email, name: '', source: 'lp_coupons', lang: LANG, tags: ['newsletter','lp_coupons'], status: 'active' })
+    });
+    trackEvent('newsletter_subscribe', { em: email, lang: LANG, content_name: 'LP Coupons Newsletter', location: 'lp_coupons_footer' });
+    inp.value = '';
+    msg.textContent = T.nl_ok || 'Inscrito!';
+    msg.className = 'nl-msg'; msg.style.display = 'block';
+    btn.textContent = T.nl_done || '✓';
+  } catch(e) {
+    msg.textContent = T.nl_err || 'Erro';
+    msg.className = 'nl-msg err'; msg.style.display = 'block';
+    btn.disabled = false; btn.textContent = T.nl_btn || 'Receber';
+  }
 }
 
 // ─── boot ───

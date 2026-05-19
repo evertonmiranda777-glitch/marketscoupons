@@ -1,69 +1,40 @@
-// TRACKING INIT — GA4 direto + Facebook Pixel. Sem GTM (GTM sobrescrevia
-// window.gtag com alias dataLayer.push e quebrava gtag('event',...) custom).
-// Carrega só após cookie consent (mc-cookies-consent === 'accepted').
+// GTM bootstrap + Consent Mode v2 — single source of truth pra tracking
+// Tags GA4 / Meta Pixel / Google Ads = configuradas no GTM (não no código).
+// Regra dura: NUNCA chamar gtag() ou fbq() direto fora deste arquivo. Use track() em app.js.
+// Histórico do erro 2026-04-12: GTM sobrescrevia gtag() e quebrava events custom.
+// Solução: GTM container + dataLayer-only + Consent Mode v2.
+
+// TODO: substituir GTM-XXXXXXX pelo container ID do Claude do tráfego depois que ele me passar.
+var GTM_ID = 'GTM-XXXXXXX';
+
+// 1. dataLayer init (PRECISA ser criado ANTES do GTM snippet senão eventos pré-load somem)
 window.dataLayer = window.dataLayer || [];
 
-// fbq stub: enfileira chamadas pré-load (track/init de app.js continuam funcionando)
-(function(f,b){
-  if (f.fbq) return;
-  var n = f.fbq = function(){ n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments); };
-  if (!f._fbq) f._fbq = n;
-  n.push = n; n.loaded = false; n.version = '2.0'; n.queue = [];
-})(window, document);
+// 2. gtag() shim — Consent Mode v2 e config tags do GTM esperam window.gtag existir
+//    Esse gtag SÓ enfileira no dataLayer. Não faz fan-out. GTM consome dataLayer e dispara tags.
+window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
 
-function loadGA4() {
-  if (window._ga4Loaded) return;
-  window._ga4Loaded = true;
-  var gs = document.createElement('script');
-  gs.async = true;
-  gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-CZ3L00NY77';
-  document.head.appendChild(gs);
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function () { dataLayer.push(arguments); };
-  gtag('js', new Date());
-  gtag('config', 'G-CZ3L00NY77');
-}
+// 3. Consent Mode v2 — default DENIED (GDPR/LGPD baseline)
+//    acceptCookies() em app.js dispara 'update' com 'granted' depois do user aceitar.
+gtag('consent', 'default', {
+  ad_storage:           'denied',
+  analytics_storage:    'denied',
+  ad_user_data:         'denied',
+  ad_personalization:   'denied',
+  functionality_storage:'granted',
+  security_storage:     'granted',
+  wait_for_update:      2000, // 2s pra acceptCookies disparar antes do GTM enviar evento
+});
 
-function loadFbPixel() {
-  if (window._fbPixelLoaded) return;
-  window._fbPixelLoaded = true;
-  // Carrega fbevents.js só agora (ate aqui fbq era stub que enfileirou chamadas)
-  var t = document.createElement('script');
-  t.async = true;
-  t.src = 'https://connect.facebook.net/en_US/fbevents.js';
-  var s = document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(t, s);
-  var _anon = '';
-  try {
-    _anon = localStorage.getItem('mc_anon') || '';
-    if (!_anon) {
-      _anon = (crypto.randomUUID && crypto.randomUUID()) || (Date.now()+'_'+Math.random().toString(36).slice(2));
-      localStorage.setItem('mc_anon', _anon);
-    }
-  } catch (e) {}
-  fbq('init', '813048241061812', _anon ? { external_id: _anon } : {});
-  fbq('track', 'PageView');
-}
-
-function loadTracking() {
-  if (window._trackingLoaded) return;
-  window._trackingLoaded = true;
-  loadGA4();
-  // FB Pixel: load + 1.5s setTimeout determinístico (requestIdleCallback travava em headless/audits).
-  // Total max: load + 1.5s = ~3s. PageView dispara após esse delay.
-  var fired = false;
-  var fire = function(){ if (fired) return; fired = true; loadFbPixel(); };
-  var arm = function(){ setTimeout(fire, 1500); };
-  if (document.readyState === 'complete') arm();
-  else addEventListener('load', arm, { once: true });
-  // Interação do user destrava na hora (sem esperar 1.5s)
-  ['pointerdown','touchstart','scroll','keydown'].forEach(function(ev){
-    addEventListener(ev, fire, { once: true, passive: true });
-  });
-  // Flush se user sair antes
-  addEventListener('pagehide', fire);
-}
-window.loadTracking = loadTracking;
-
-// Auto-load se já consentido
-if (localStorage.getItem('mc-cookies-consent') === 'accepted') loadTracking();
+// 4. GTM snippet (carregamento eager — paid traffic precisa de Pixel firing ASAP).
+//    GTM Tag "Meta Pixel Base" + "GA4 Config" carregam dentro do container.
+(function(w,d,s,l,i){
+  w[l] = w[l] || [];
+  w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+  var f = d.getElementsByTagName(s)[0];
+  var j = d.createElement(s);
+  var dl = l != 'dataLayer' ? '&l=' + l : '';
+  j.async = true;
+  j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+  f.parentNode.insertBefore(j, f);
+})(window, document, 'script', 'dataLayer', GTM_ID);
