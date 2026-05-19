@@ -38,6 +38,7 @@ const EVENT_MAP: Record<string, string[]> = {
   'loyalty_proof_submitted':['SubmitApplication'],
   'pro_checkout_click':     ['InitiateCheckout'],
   'pro_purchase':           ['Purchase'],
+  'newsletter_subscribe':   ['Subscribe'],
 };
 
 // === Normalizadores por tipo de campo (Meta CAPI spec) ===
