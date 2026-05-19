@@ -3,8 +3,8 @@ name: Top 3 Stats (relatório pós-disparo)
 # Roda 4h depois do ramp diário pra relatar opens/clicks por idioma.
 
 on:
-  schedule:
-    - cron: '0 18 * * *'  # 18:00 UTC = 15:00 BRT
+  # schedule disabled 2026-05-18: user não quer notif TG de email
+  # - cron: '0 18 * * *'  # 18:00 UTC = 15:00 BRT
   workflow_dispatch:
 
 jobs:

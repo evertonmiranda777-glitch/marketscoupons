@@ -106,7 +106,8 @@ jobs:
           echo "DECISÃO: D+$DAYS_OFFSET mode=$MODE batch=$BATCH ($REASON)"
 
       - name: Telegram pré-batch
-        if: steps.calc.outputs.batch != '0'
+        if: false  # disabled 2026-05-18: user não quer notif TG de email
+
         env:
           TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -165,7 +166,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Telegram pós-batch
-        if: steps.calc.outputs.batch != '0' && always()
+        if: false  # disabled 2026-05-18: user não quer notif TG de email
         env:
           TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
