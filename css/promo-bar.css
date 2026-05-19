@@ -12,15 +12,16 @@ body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,42px))
 .promo-topbar .pt-suf{color:#F0B429;font-size:10px;font-weight:700;text-transform:uppercase;}
 .promo-topbar .pt-sep{opacity:.5;color:#000;margin:0 4px;font-weight:900;}
 @media (max-width:760px){
-  .promo-topbar{font-size:11px;gap:8px;padding:8px 10px;flex-direction:column;align-items:center;justify-content:center;white-space:normal;overflow-x:hidden;}
-  .promo-topbar .pt-num{font-size:12px;line-height:1;}
-  .promo-topbar .pt-unit{padding:3px 7px;gap:2px;}
-  .promo-topbar .pt-item{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;}
+  /* Mobile compacto: cada firma em UMA linha horizontal, 2 firmas empilhadas = ~64px total (era ~140px) */
+  .promo-topbar{font-size:10.5px;gap:4px;padding:5px 10px;flex-direction:column;align-items:stretch;justify-content:center;white-space:nowrap;overflow-x:hidden;}
+  .promo-topbar .pt-item{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;width:100%;}
+  .promo-topbar .pt-headline{white-space:nowrap;text-align:left;font-size:11px;line-height:1;font-weight:800;}
+  .promo-topbar .pt-clock{gap:4px;}
+  .promo-topbar .pt-unit{padding:2px 5px;gap:1px;}
+  .promo-topbar .pt-num{font-size:11px;line-height:1;}
+  .promo-topbar .pt-suf{font-size:8px;}
   .promo-topbar .pt-sep{display:none;}
-  .promo-topbar .pt-headline{white-space:normal;text-align:center;font-size:12px;line-height:1.2;}
-  .promo-topbar .pt-clock{gap:5px;}
-  .promo-topbar .pt-suf{font-size:9px;}
-  /* Mobile default reserva 99px (flex-direction:column dobra altura) — evita CLS no 1º paint antes do JS calcular */
-  body.has-promo-topbar #nav{top:var(--promo-h,99px);}
-  body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,99px));}
+  /* Default reserva 64px mobile (2 firmas × ~30px linha) — evita CLS no 1º paint */
+  body.has-promo-topbar #nav{top:var(--promo-h,64px);}
+  body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,64px));}
 }
