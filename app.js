@@ -1382,8 +1382,14 @@ function setFirmSEO(id){
 function acceptCookies(){
   localStorage.setItem('mc-cookies-consent','accepted');
   const banner=document.getElementById('ck-banner'); if(banner) banner.style.display='none';
-  // loadTracking() removida — tracking carrega direto no boot desde refactor 2026-04-12 (GTM desativado)
+  // Dispara loadTracking() agora (carrega GA4 + arma FB Pixel) — antes ficava parado se 1ª visita sem consent
+  if (typeof loadTracking === 'function') loadTracking();
   track('cookie_consent',{action:'accepted'});
+  // Page_view RETROATIVO: dispara CAPI pro page atual (track inicial rolou ANTES do consent → CAPI foi bloqueado)
+  try {
+    const page = sessionStorage.getItem('mc_page') || (typeof _pageFromPath === 'function' ? _pageFromPath() : '') || 'home';
+    track('page_view', { page_name: page, retroactive: true });
+  } catch(_){}
 }
 function rejectCookies(){
   localStorage.setItem('mc-cookies-consent','rejected');
