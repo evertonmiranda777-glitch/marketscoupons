@@ -5294,26 +5294,48 @@ async function loadAccuracyBadge(){
   }catch(e){}
 }
 
-// ═══ PRO ACCESS CHECK (subscription + loyalty + vip + trial) ═══
+// ═══ PRO ACCESS CHECK (vip + loyalty + 5min preview) ═══
+// Trial v2 (2026-05-18): timer de 5 min inicia QUANDO user entra em Análise Diária
+// (não da criação da conta). Anon e logado compartilham mesmo timer local (mc_da_preview_start).
+const DA_PREVIEW_MS = 5 * 60 * 1000; // 5 minutos
+
+function _daPreviewRemaining(){
+  try {
+    const s = parseInt(localStorage.getItem('mc_da_preview_start') || '0', 10);
+    if (!s) return DA_PREVIEW_MS; // ainda não iniciou (não entrou na análise)
+    const elapsed = Date.now() - s;
+    return Math.max(0, DA_PREVIEW_MS - elapsed);
+  } catch(_) { return DA_PREVIEW_MS; }
+}
+
+function _daPreviewStartIfNeeded(){
+  try {
+    if (!localStorage.getItem('mc_da_preview_start')) {
+      localStorage.setItem('mc_da_preview_start', String(Date.now()));
+    }
+  } catch(_) {}
+}
+
+function _daPreviewActive(){
+  try {
+    const s = parseInt(localStorage.getItem('mc_da_preview_start') || '0', 10);
+    if (!s) return false; // nunca iniciou — gate fechado até entrar na Análise
+    return (Date.now() - s) < DA_PREVIEW_MS;
+  } catch(_) { return false; }
+}
+
 async function checkProAccess(){
   if(!currentUser||!currentProfile) return false;
-  // VIP
+  // VIP (admin liberou)
   if(currentProfile.analysis_vip===true) return true;
-  // Trial: 3 days
-  const createdAt=new Date(currentProfile.created_at||currentUser.created_at);
-  const diffDays=Math.floor((new Date()-createdAt)/(1000*60*60*24));
-  if(diffDays<3) return true;
-  // Active subscription
-  try{
-    const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
-    if(data&&data.length>0) return true;
-  }catch(e){}
   // Loyalty: approved proof
   try{
     const email=currentProfile.email||currentUser.email;
     const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
     if(data&&data.length>0) return true;
   }catch(e){}
+  // Preview 5min (timer só inicia ao entrar em Análise Diária)
+  if(_daPreviewActive()) return true;
   return false;
 }
 
@@ -5342,10 +5364,10 @@ function _pgProCard(src){
   `</div>`;
 }
 
-// User logado sem acesso — fidelidade primário + Pro secundário
+// User logado sem acesso — só fidelidade (Pro pago removido 2026-05-18, volta depois)
 function buildProGate(mode){
   const head = mode==='compact' ? '' :
-    `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_CLOCK}</div><h2 class="da-gate-title">${t('pro_gate_logged_title')||'Seu trial expirou'}</h2><p class="da-gate-subtitle">${t('pro_gate_logged_sub')||'Continue acessando Análise + GEX + Live Room.'}</p></div>`;
+    `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_CLOCK}</div><h2 class="da-gate-title">${t('pro_gate_logged_title')||'Seu preview acabou'}</h2><p class="da-gate-subtitle">${t('pro_gate_logged_sub')||'Continue acessando Análise + GEX + Live Room.'}</p></div>`;
   return head+
     `<div class="pg-stack">`+
       `<div class="pg-card pg-card-primary">`+
@@ -5353,26 +5375,24 @@ function buildProGate(mode){
         `<p class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre uma avaliação com cupom Markets e ative sua fidelidade.'}</p>`+
         `<button class="pg-btn pg-btn-gold" onclick="track('gate_loyalty_click',{src:'pro_gate_logged'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
       `</div>`+
-      _pgProCard('pro_gate_logged')+
     `</div>`;
 }
 
-// Visitante anônimo — 3 caminhos
+// Visitante anônimo — 2 caminhos (Pro pago removido)
 function buildProGateAnon(){
-  return `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_STAR}</div><h2 class="da-gate-title">${t('pro_gate_title')}</h2><p class="da-gate-subtitle">${t('pro_gate_anon_sub')||'3 formas — escolha a sua.'}</p></div>`+
+  return `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_STAR}</div><h2 class="da-gate-title">${t('pro_gate_title')}</h2><p class="da-gate-subtitle">${t('pro_gate_anon_sub')||'Escolha como começar.'}</p></div>`+
     `<div class="pg-stack">`+
       `<div class="pg-card pg-card-primary">`+
         `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_USER}</span><span class="pg-card-title">${t('da_gate_btn_login')||'Criar conta grátis'}</span></div>`+
-        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'3 dias de acesso liberados — sem cartão.'}</p>`+
+        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'Preview de 5 min — sem cartão.'}</p>`+
         `<button class="pg-btn pg-btn-gold" onclick="track('gate_signup_click',{src:'pro_gate_anon'});openAuthModal('signup')">${t('pro_gate_signup_cta')||'Criar conta grátis →'}</button>`+
       `</div>`+
-      `<div class="pg-divider-or">${t('pro_gate_or_path')||'OU continue sem pagar via'}</div>`+
+      `<div class="pg-divider-or">${t('pro_gate_or_path')||'OU desbloqueie via'}</div>`+
       `<div class="pg-card pg-card-secondary">`+
         `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_GIFT}</span><span class="pg-card-title">${t('pro_gate_loyalty_title')||'Programa de fidelidade'}</span></div>`+
         `<p class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre uma avaliação com cupom Markets e ative sua fidelidade.'}</p>`+
         `<button class="pg-btn pg-btn-glass" onclick="track('gate_loyalty_click',{src:'pro_gate_anon'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
       `</div>`+
-      _pgProCard('pro_gate_anon')+
     `</div>`;
 }
 
@@ -5483,28 +5503,38 @@ async function checkProBadge(){
 let _previewCountdown=null;
 const PREVIEW_BANNER_ID='mc-preview-banner';
 function startPreviewTimer(gateId,wrapId,wrapClass){
-  const KEY='mc_preview_start';
+  // Preview v2 (2026-05-18): 5 min, key unificada com user logado (mc_da_preview_start)
+  // Inicia APENAS quando user entra em Análise Diária (não em GEX)
+  const KEY='mc_da_preview_start';
+  const DUR=5*60; // segundos
+  const isAnaliseDiaria = gateId === 'da-gate';
   const stored=localStorage.getItem(KEY);
   const now=Date.now();
-  if(!stored) localStorage.setItem(KEY,now);
+  // Em GEX, NÃO inicia timer — só herda se já rodando
+  if(!stored){
+    if(!isAnaliseDiaria){
+      // GEX sem timer rodando → gate fechado direto
+      removePreviewBanner();
+      showPreviewGate(gateId,wrapId,wrapClass);
+      return;
+    }
+    localStorage.setItem(KEY,now);
+  }
   const start=parseInt(stored||now,10);
   const elapsed=Math.floor((now-start)/1000);
-  if(elapsed>=60){removePreviewBanner();showPreviewGate(gateId,wrapId,wrapClass);return;}
+  if(elapsed>=DUR){removePreviewBanner();showPreviewGate(gateId,wrapId,wrapClass);return;}
   // Still within 60s — show content, start countdown
   const wrap=document.getElementById(wrapId);
   if(wrap) wrap.classList.remove(wrapClass);
   const gate=document.getElementById(gateId);
   if(gate){gate.innerHTML='';gate.style.display='none';}
   if(_previewCountdown) clearInterval(_previewCountdown);
-  showPreviewBanner(60-elapsed);
-  // Store current gate info so interval can close the right gate
-  const _gateId=gateId,_wrapId=wrapId,_wrapClass=wrapClass;
+  showPreviewBanner(DUR-elapsed);
   _previewCountdown=setInterval(()=>{
-    const rem=60-Math.floor((Date.now()-start)/1000);
+    const rem=DUR-Math.floor((Date.now()-start)/1000);
     if(rem<=0){
       clearInterval(_previewCountdown);
       removePreviewBanner();
-      // Close ALL gated sections (user might have switched pages)
       showPreviewGate('da-gate','da-wrap-inner','da-wrap-gated');
       showPreviewGate('gx-gate','gx-wrap-inner','gx-wrap-gated');
       return;
@@ -5512,8 +5542,10 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
     const modalOpen=document.getElementById('login-overlay')?.classList.contains('show');
     if(!_isGatedPage()||modalOpen){removePreviewBanner();return;}
     const el=document.getElementById(PREVIEW_BANNER_ID);
-    if(el){const s=el.querySelector('.pvw-time');if(s)s.textContent=rem+'s';}
-    else showPreviewBanner(rem);
+    // Mostra MM:SS no banner (era só "60s")
+    const min=Math.floor(rem/60),sec=rem%60,fmt=`${min}:${String(sec).padStart(2,'0')}`;
+    if(el){const s=el.querySelector('.pvw-time');if(s)s.textContent=fmt;}
+    else showPreviewBanner(fmt);
   },1000);
 }
 function _isGatedPage(){const p=sessionStorage.getItem('mc_page')||_pageFromPath()||location.hash.replace('#','');const pg=document.getElementById('page-'+p);return (p==='analise'||p==='gamma')&&pg&&pg.classList.contains('active');}
@@ -5525,7 +5557,7 @@ function showPreviewBanner(secs){
   bar.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,rgba(240,180,41,.95),rgba(200,148,26,.95));color:#07090D;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 -4px 20px rgba(0,0,0,.3);';
   bar.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#07090D" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
     <span>${t('preview_banner_text')}</span>
-    <span class="pvw-time" style="background:#07090D;color:var(--gold);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:800;min-width:32px;text-align:center;">${secs}s</span>
+    <span class="pvw-time" style="background:#07090D;color:var(--gold);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:800;min-width:42px;text-align:center;">${typeof secs==='string'?secs:secs+'s'}</span>
     <button onclick="openAuthModal('signup')" style="background:#07090D;color:var(--gold);border:none;padding:6px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-left:8px;">${t('da_gate_btn_login')}</button>`;
   document.body.appendChild(bar);
 }
@@ -5561,37 +5593,7 @@ async function checkAnalysisGate(){
     return;
   }
 
-  // Trial: 3 dias após criação da conta
-  const createdAt=new Date(currentProfile.created_at||currentUser.created_at);
-  const now=new Date();
-  const diffDays=Math.floor((now-createdAt)/(1000*60*60*24));
-  if(diffDays<3){
-    wrap.classList.remove('da-wrap-gated');
-    gate.innerHTML='';
-    // Mostrar badge de trial
-    const meta=document.getElementById('da-meta');
-    if(meta){
-      const remaining=Math.max(1,Math.min(3,3-diffDays));
-      const trialText=t('da_gate_trial').replace('{days}',remaining);
-      if(!meta.querySelector('.da-trial-badge')){
-        meta.insertAdjacentHTML('beforeend',`<span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">${trialText}</span>`);
-      }
-    }
-    return;
-  }
-
-  // Active subscription
-  try{
-    const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
-    if(data&&data.length>0){
-      _userHasAccess=true;
-      wrap.classList.remove('da-wrap-gated');
-      gate.innerHTML='';
-      return;
-    }
-  }catch(e){}
-
-  // Fidelidade: tem comprovante aprovado
+  // Fidelidade: tem comprovante aprovado (acesso permanente, sem timer)
   try{
     const email=currentProfile.email||currentUser.email;
     const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
@@ -5602,6 +5604,33 @@ async function checkAnalysisGate(){
       return;
     }
   }catch(e){}
+
+  // Preview 5 min — timer inicia AGORA (logado sem loyalty entrou em Análise Diária)
+  _daPreviewStartIfNeeded();
+  if(_daPreviewActive()){
+    wrap.classList.remove('da-wrap-gated');
+    gate.innerHTML='';
+    const meta=document.getElementById('da-meta');
+    if(meta && !meta.querySelector('.da-trial-badge')){
+      meta.insertAdjacentHTML('beforeend',`<span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">— —</span>`);
+    }
+    const badge = meta?.querySelector('.da-trial-badge');
+    const updateBadge = () => {
+      const ms = _daPreviewRemaining();
+      if (ms <= 0) {
+        if (_previewCountdown) clearInterval(_previewCountdown);
+        renderAnalysisGate();
+        return;
+      }
+      const min = Math.floor(ms / 60000);
+      const sec = Math.floor((ms % 60000) / 1000);
+      if (badge) badge.textContent = `Preview: ${min}:${String(sec).padStart(2,'0')}`;
+    };
+    updateBadge();
+    if (_previewCountdown) clearInterval(_previewCountdown);
+    _previewCountdown = setInterval(updateBadge, 1000);
+    return;
+  }
 
   // Sem acesso → gate com opções (fidelidade + assinatura)
   wrap.classList.add('da-wrap-gated');
@@ -7572,16 +7601,27 @@ async function checkGEXGate(){
     _userHasAccess=true;
     wrap.classList.remove('gx-wrap-gated');
     gate.innerHTML='';
-    // Show trial badge if in trial period
-    const createdAt=new Date(currentProfile.created_at||currentUser.created_at);
-    const diffDays=Math.floor((new Date()-createdAt)/(1000*60*60*24));
-    if(diffDays<3){
+    // Badge preview compartilhado (timer setado em Análise Diária)
+    if(_daPreviewActive()){
       const gxDate=document.getElementById('gx-date');
       if(gxDate&&!gxDate.querySelector('.da-trial-badge')){
-        const remaining=Math.max(1,Math.min(3,3-diffDays));
-        const trialText=t('da_gate_trial').replace('{days}',remaining);
-        gxDate.insertAdjacentHTML('beforeend',` <span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">${trialText}</span>`);
+        gxDate.insertAdjacentHTML('beforeend',` <span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">— —</span>`);
       }
+      const badge = gxDate?.querySelector('.da-trial-badge');
+      const updateGexBadge = () => {
+        const ms = _daPreviewRemaining();
+        if (ms <= 0) {
+          if (_previewCountdown) clearInterval(_previewCountdown);
+          checkGEXGate();
+          return;
+        }
+        const min = Math.floor(ms / 60000);
+        const sec = Math.floor((ms % 60000) / 1000);
+        if (badge) badge.textContent = `Preview: ${min}:${String(sec).padStart(2,'0')}`;
+      };
+      updateGexBadge();
+      if (_previewCountdown) clearInterval(_previewCountdown);
+      _previewCountdown = setInterval(updateGexBadge, 1000);
     }
     return;
   }
