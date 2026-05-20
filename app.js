@@ -1386,16 +1386,9 @@ function setFirmSEO(id){
 function acceptCookies(){
   localStorage.setItem('mc-cookies-consent','accepted');
   const banner=document.getElementById('ck-banner'); if(banner) banner.style.display='none';
-  // Consent Mode v2 — update granted via dataLayer (GTM tag "Consent Mode v2 - Update" consome)
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: 'consent_update',
-    ad_storage: 'granted',
-    analytics_storage: 'granted',
-    ad_user_data: 'granted',
-    ad_personalization: 'granted',
-  });
-  // gtag shim — Consent Mode native API que GTM intercepta
+  // Consent Mode v2 — ÚNICO formato que o GTM reconhece: comando nativo gtag('consent','update').
+  // O shim gtag em tracking-init.js faz dataLayer.push(arguments) → empurra ['consent','update',{...}] cru.
+  // NÃO usar dataLayer.push({event:'consent_update'}) — Consent Mode ignora esse formato.
   if (typeof gtag === 'function') {
     gtag('consent', 'update', {
       ad_storage: 'granted',
@@ -1404,6 +1397,10 @@ function acceptCookies(){
       ad_personalization: 'granted',
     });
   }
+  // Evento separado pro GTM re-disparar tags Pixel Base / GA4 Config que estavam consent-blocked.
+  // (tags devem ter trigger Custom Event 'consent_granted' além do Initialization)
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'consent_granted' });
   track('cookie_consent',{action:'accepted'});
   // Page_view RETROATIVO: dispara CAPI pro page atual (track inicial rolou ANTES do consent → CAPI foi bloqueado)
   try {

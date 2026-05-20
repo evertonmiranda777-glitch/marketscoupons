@@ -14,7 +14,13 @@
 <link rel="stylesheet" href="/css/promo-bar.css">
 
 <!-- GTM (substitui GA4 + Meta Pixel inline). Tags configuradas no container, não no código. -->
-<script src="/js/tracking-init.js?v=20260519"></script>
+<script src="/js/tracking-init.js?v=20260520"></script>
+<script>
+/* /coupons = LP de tráfego pago, sem banner de consent. User já consentiu na plataforma do ad.
+   Consent granted automático — mesma lógica que removeu o banner daqui. */
+gtag('consent','update',{ad_storage:'granted',analytics_storage:'granted',ad_user_data:'granted',ad_personalization:'granted'});
+window.dataLayer.push({event:'consent_granted'});
+</script>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJGTVX8G" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <style>
