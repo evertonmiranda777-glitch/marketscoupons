@@ -189,54 +189,11 @@ function shouldFireCritical(state, score) {
   return false; // cooldown ativo
 }
 
-function autoFixHtml() {
-  const fixes = [];
-  const htmlFiles = ['index.html','admin.html'];
-  for (const f of htmlFiles) {
-    const fp = path.join(ROOT, f);
-    if (!fs.existsSync(fp)) continue;
-    let html = fs.readFileSync(fp, 'utf8');
-    const before = html;
-
-    // Regra 1: <img sem loading=lazy → add lazy + decoding=async
-    html = html.replace(/<img\b((?:(?!loading=)(?!>).)*?)>/g, (m, attrs) => {
-      if (/\bsrc\s*=/.test(attrs) && !/loading\s*=/.test(attrs)) {
-        let a = attrs;
-        if (!/decoding\s*=/.test(a)) a += ' decoding="async"';
-        a += ' loading="lazy"';
-        return `<img${a}>`;
-      }
-      return m;
-    });
-
-    if (html !== before) {
-      fs.writeFileSync(fp, html, 'utf8');
-      fixes.push(`${f}: lazy/decoding adicionado`);
-    }
-  }
-  return fixes;
-}
-
-function deployVercel() {
-  try {
-    const tok = process.env.VERCEL_TOKEN;
-    if (!tok) return 'sem VERCEL_TOKEN, deploy pulado';
-    execSync(`npx --yes vercel --prod --yes --token=${tok}`, { cwd: ROOT, stdio: 'pipe', env: { ...process.env, CI: '1' }});
-    return 'deploy ok';
-  } catch (e) { return `deploy falhou: ${e.message.slice(0,200)}`; }
-}
-
-function commit(fixes) {
-  try {
-    execSync('git config user.name "github-actions[bot]"', { cwd: ROOT });
-    execSync('git config user.email "github-actions[bot]@users.noreply.github.com"', { cwd: ROOT });
-    execSync('git add index.html admin.html', { cwd: ROOT });
-    const msg = `chore(perf): auto-fix PageSpeed regression\n\n${fixes.join('\n')}`;
-    execSync(`git commit -m "${msg.replace(/"/g,'\\"')}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push', { cwd: ROOT, stdio: 'pipe' });
-    return true;
-  } catch (e) { console.warn('commit falhou', e.message); return false; }
-}
+// Auto-fix (autoFixHtml/commit) e auto-revert REMOVIDOS 2026-05-20 a pedido do Everton.
+// Motivo: medição lixo de runner do GitHub Actions disparava ação automática em
+// deploy/código (revert errado, commit automático). Agora o monitor SÓ mede, salva
+// no Supabase e avisa no Telegram em queda real — nenhuma ação automática. Decisão
+// do que fazer é manual. Ver memória feedback_pagespeed_runner_ruido.
 
 async function tg(msg) {
   if (!TG_TOK || !TG_CHT) { console.log(msg); return; }
@@ -247,17 +204,6 @@ async function tg(msg) {
       body: JSON.stringify({ chat_id: TG_CHT, text: msg, parse_mode: 'HTML', disable_web_page_preview: true })
     });
   } catch {}
-}
-
-async function triggerAutoRevert() {
-  const tok = process.env.GITHUB_TOKEN;
-  if (!tok) return false;
-  const r = await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/dispatches`, {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${tok}`, 'Accept': 'application/vnd.github+json' },
-    body: JSON.stringify({ event_type: 'prod-down', client_payload: { reason: 'pagespeed-regression' }})
-  });
-  return r.ok;
 }
 
 function classify(score, baseline) {
@@ -275,9 +221,9 @@ function tgTemplate(strategy, m, baseline, c, runUrl, asCritical) {
   const head = asCritical
     ? `🚨 <b>CRÍTICO ABSOLUTO</b> — ${strategy}`
     : c.level === 'REVERT'
-      ? `🚨 <b>AUTO-REVERT disparado</b> — ${strategy}`
+      ? `🚨 <b>Queda forte — revisar manualmente</b> — ${strategy}`
       : c.level === 'REGRESSION'
-        ? `⚠️ <b>Regressão — auto-fix tentado</b> — ${strategy}`
+        ? `⚠️ <b>Regressão — revisar manualmente</b> — ${strategy}`
         : c.level === 'OBSERVATION'
           ? `📉 <b>Queda detectada (sem ação automática)</b> — ${strategy}`
           : `✅ <b>PageSpeed OK</b> — ${strategy}`;
@@ -324,20 +270,11 @@ async function processStrategy(strategy, m, runUrl, baseline) {
     });
   }
 
-  // Ações automáticas (REVERT e REGRESSION são exclusivas via if/else)
+  // Sem ação automática (auto-revert/auto-fix removidos 2026-05-20). Só sinaliza
+  // pra revisão manual — a queda já foi confirmada por best-of-3 em measureStrategy.
   const actions = [];
-  let fixes = [];
-  if (c.level === 'REVERT') {
-    const ok = await triggerAutoRevert();
-    actions.push(ok ? 'auto-revert disparado' : 'auto-revert falhou');
-  } else if (c.level === 'REGRESSION') {
-    fixes = autoFixHtml();
-    if (fixes.length) {
-      if (commit(fixes)) actions.push(`auto-fix aplicado: ${fixes.length} arquivo(s)`);
-      else actions.push('auto-fix tentado mas commit falhou');
-    } else {
-      actions.push('regressão detectada — nenhum fix automático aplicável, intervenção manual necessária');
-    }
+  if (c.level === 'REVERT' || c.level === 'REGRESSION') {
+    actions.push('queda confirmada (best-of-3) — REVISAR MANUALMENTE. Sem ação automática.');
   }
 
   // Montagem das mensagens (ver tabela-verdade acima)
@@ -358,7 +295,7 @@ async function processStrategy(strategy, m, runUrl, baseline) {
 
   if (actions.length) msgs.push(`<b>Ação ${strategy}:</b> ${actions.join(' + ')}`);
 
-  return { msgs, actions, level: c.level, critFired, fixes };
+  return { msgs, actions, level: c.level, critFired };
 }
 
 (async () => {
