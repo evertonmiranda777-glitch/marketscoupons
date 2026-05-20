@@ -5463,13 +5463,13 @@ async function checkProBadge(){
     return;
   }
   try{
-    let isPro=false;
+    let isPro=false, hasSub=false;
     // Check VIP flag
     if(currentProfile?.analysis_vip===true) isPro=true;
-    // Check active subscription
-    if(!isPro){
+    // Check active subscription (plano pago Stripe — dormente desde 2026-05-18)
+    {
       const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
-      if(data&&data.length>0) isPro=true;
+      if(data&&data.length>0){ isPro=true; hasSub=true; }
     }
     // Check approved loyalty proof
     if(!isPro){
@@ -5478,7 +5478,8 @@ async function checkProBadge(){
       if(data&&data.length>0) isPro=true;
     }
     if(badge)badge.style.display=isPro?'flex':'none';
-    if(manageBtn)manageBtn.style.display=isPro?'block':'none';
+    // "Gerenciar assinatura" só pra quem TEM assinatura Stripe — loyalty/VIP não tem portal
+    if(manageBtn)manageBtn.style.display=hasSub?'block':'none';
     // Update panel Pro status
     const panelPro=document.getElementById('up-pro-status');
     if(panelPro) panelPro.style.display=isPro?'block':'none';
