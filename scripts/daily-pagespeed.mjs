@@ -66,17 +66,44 @@ function parsePSI(strategy, j) {
   const cats = lh.categories || {};
   const audits = lh.audits || {};
   const num = (k) => Math.round(Number(audits[k]?.numericValue) || 0);
+  const lcp = num('largest-contentful-paint');
+  const cls = Number(audits['cumulative-layout-shift']?.numericValue || 0);
   return {
     strategy,
     perf_score: Math.round((cats.performance?.score || 0) * 100),
     fcp_ms: num('first-contentful-paint'),
-    lcp_ms: num('largest-contentful-paint'),
-    cls: Number(audits['cumulative-layout-shift']?.numericValue || 0).toFixed(3),
+    lcp_ms: lcp,
+    cls: cls.toFixed(3),
     tbt_ms: num('total-blocking-time'),
     speed_index_ms: num('speed-index'),
     total_bytes: num('total-byte-weight'),
+    // quality_flag: métrica fisicamente improvável = runner sobrecarregado mediu lixo.
+    // getBaseline filtra eq.ok → anomalia não entra no baseline. (2026-05-20: runner
+    // mediu CLS 0.754 / LCP 7.2s num site que estava CLS 0 / LCP 1s.)
+    quality_flag: (lcp > 15000 || cls > 0.5) ? 'anomaly' : 'ok',
     raw: { fetch_time: lh.fetchTime, version: lh.lighthouseVersion }
   };
+}
+
+// Mede uma strategy com proteção anti-ruído. O runner do GitHub Actions é
+// compartilhado e às vezes mede LIXO (2026-05-20: mobile 39/CLS .754/LCP 7.2s num
+// site que estava CLS 0/LCP 1s → auto-revert disparou errado e reverteu deploy bom).
+// Se a 1ª medição parece REVERT/REGRESSION, re-mede até 3x e fica com o MELHOR score.
+// Regressão real sobrevive às 3 medições; ruído de runner não.
+async function measureStrategy(strategy, baseline) {
+  let best = await runPSI(strategy);
+  let attempts = 1;
+  while (attempts < 3) {
+    const c = classify(best.perf_score, baseline);
+    if (c.level !== 'REVERT' && c.level !== 'REGRESSION') break;
+    console.log(`[${strategy}] medição ${attempts}=${best.perf_score}/100 (${c.level}) — re-medindo (anti-ruído)`);
+    const again = await runPSI(strategy);
+    attempts++;
+    if (again.perf_score > best.perf_score) best = again;
+  }
+  if (attempts > 1) console.log(`[${strategy}] best-of-${attempts} = ${best.perf_score}/100`);
+  best._attempts = attempts;
+  return best;
 }
 
 async function sbInsert(rows) {
@@ -277,8 +304,7 @@ Run: ${runUrl}`;
 // true       REGRESSION    *             *         → [CRITICAL, REGRESSION, action]  (score<50 E drop 8-14)
 // true       REVERT        *             *         → [CRITICAL, action]              (score<50 E drop>=15 — caso 16/05)
 //                                                                                     suprime REVERT redundante (ação cobre)
-async function processStrategy(strategy, m, runUrl) {
-  const baseline = await getBaseline(strategy);
+async function processStrategy(strategy, m, runUrl, baseline) {
   const state    = await getAlertState(strategy);
   const c        = classify(m.perf_score, baseline);
 
@@ -337,10 +363,18 @@ async function processStrategy(strategy, m, runUrl) {
 
 (async () => {
   console.log('PSI run start', new Date().toISOString());
-  const [m, d] = await Promise.all([runPSI('mobile'), runPSI('desktop')]);
+  // Baseline buscado ANTES de medir — measureStrategy usa pra decidir se re-mede.
+  const blM = await getBaseline('mobile');
+  const blD = await getBaseline('desktop');
+  const [m, d] = await Promise.all([
+    measureStrategy('mobile', blM),
+    measureStrategy('desktop', blD),
+  ]);
+  // _attempts é interno (não é coluna) — remove antes do insert.
+  const stripInternal = ({ _attempts, ...rest }) => rest;
   await sbInsert([
-    { url: SITE_URL, ...m },
-    { url: SITE_URL, ...d }
+    { url: SITE_URL, ...stripInternal(m) },
+    { url: SITE_URL, ...stripInternal(d) }
   ]);
 
   const runUrl = process.env.GITHUB_RUN_ID
@@ -349,8 +383,8 @@ async function processStrategy(strategy, m, runUrl) {
 
   // Ajuste 2: Serializado pra evitar contenção de writes em pagespeed_alert_state
   // e tornar logs determinísticos (mobile antes de desktop). Custo: ~200ms/dia.
-  const resM = await processStrategy('mobile', m, runUrl);
-  const resD = await processStrategy('desktop', d, runUrl);
+  const resM = await processStrategy('mobile', m, runUrl, blM);
+  const resD = await processStrategy('desktop', d, runUrl, blD);
 
   const allMsgs = [
     `<b>PageSpeed Daily ${new Date().toISOString().slice(0,10)}</b>`,
