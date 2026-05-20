@@ -1307,7 +1307,9 @@ function initLang() {
   // Se o idioma ainda não está carregado, busca o chunk e re-aplica tudo ao chegar.
   if(_currentLang!=='en' && !(window.I18N && window.I18N[_currentLang])){
     _loadLangChunk(_currentLang).then(()=>{
-      try{ applyTranslations(); }catch(_){}
+      // re-roda initLang inteiro (traduções + meta tags title/description) — sem
+      // recursão: o chunk já está em window.I18N, então este bloco é pulado.
+      try{ initLang(); }catch(_){}
       try{ if(typeof checkAnalysisGate==='function') checkAnalysisGate(); }catch(_){}
       try{ if(typeof checkGEXGate==='function') checkGEXGate(); }catch(_){}
     });
