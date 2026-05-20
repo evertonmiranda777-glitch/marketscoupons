@@ -1,8 +1,10 @@
 name: Weekly Firm Monitor
 
 on:
-  schedule:
-    - cron: '0 9 * * 1'  # Monday 09:00 UTC
+  # schedule PAUSADO 2026-05-20 — Everton pausou tudo que dispara no grupo Telegram
+  # (vai reformular o que enviar). Pra religar, descomentar o cron.
+  # schedule:
+  #   - cron: '0 9 * * 1'  # Monday 09:00 UTC
   workflow_dispatch:
 
 

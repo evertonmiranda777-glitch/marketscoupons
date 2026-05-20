@@ -1,8 +1,10 @@
 name: Daily PageSpeed Audit
 
 on:
-  schedule:
-    - cron: '0 7 * * *'  # 04:00 BRT = 07:00 UTC, todo dia
+  # schedule PAUSADO 2026-05-20 — Everton pausou tudo que dispara no grupo Telegram
+  # (vai reformular o que enviar). Pra religar, descomentar o cron.
+  # schedule:
+  #   - cron: '0 7 * * *'  # 04:00 BRT = 07:00 UTC, todo dia
   workflow_dispatch:
 
 concurrency:

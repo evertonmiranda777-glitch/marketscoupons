@@ -1,8 +1,10 @@
 name: Apex Daily Promo Monitor
 
 on:
-  schedule:
-    - cron: '0 4 * * *'  # 04:00 UTC = 01:00 BRT
+  # schedule PAUSADO 2026-05-20 — Everton pausou tudo que dispara no grupo Telegram
+  # (vai reformular o que enviar). Pra religar, descomentar o cron.
+  # schedule:
+  #   - cron: '0 4 * * *'  # 04:00 UTC = 01:00 BRT
   workflow_dispatch:
 
 
