@@ -15,7 +15,7 @@
 
 <!-- GTM (substitui GA4 + Meta Pixel inline). Tags configuradas no container, não no código. -->
 <script src="/js/tracking-init.js?v=20260519"></script>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJGTVX8G" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -865,10 +865,11 @@ function trackEvent(event, params={}){
       items: params.firm_id ? [{ item_id: params.firm_id, item_name: params.firm_name||params.firm_id, item_category: 'prop_firm', coupon: params.coupon_code||null, quantity: 1, price: params.value || 0 }] : [],
     },
     firm_id: params.firm_id || null,
+    firm_name: params.firm_name || null,
+    coupon_code: params.coupon_code || null,
     content_ids: params.firm_id ? [params.firm_id] : null,
     content_name: params.firm_name || null,
     content_type: 'product',
-    coupon: params.coupon_code || null,
     utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
     page_name: params.page_name || 'lp_coupons',
     location: params.location || null,
