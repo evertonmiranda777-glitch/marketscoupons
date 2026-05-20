@@ -915,7 +915,7 @@ function trackEvent(event, params={}){
       }).catch(()=>{});
     } catch(e){}
   }
-  try { if (typeof gtag === 'function') gtag('event', event, { firm_id: params.firm_id, coupon: params.coupon_code, source: 'instagram_bio' }); } catch(e){}
+  // GA4/Pixel disparam via tags GTM que escutam o dataLayer.push acima — sem gtag('event') direto (era double-push)
   return eid;
 }
 
