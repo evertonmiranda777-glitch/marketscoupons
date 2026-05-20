@@ -1302,6 +1302,16 @@ function initLang() {
     const ogUrl=document.querySelector('meta[property="og:url"]');
     if(ogUrl) ogUrl.content='https://www.marketscoupons.com/'+_langPath[0]+'/';
   }
+  // Race fix i18n: o chunk i18n-<lang>.js é injetado async → pode não ter chegado
+  // quando initLang roda → 1ª render sai em EN (ex: gate da Análise em inglês com BR).
+  // Se o idioma ainda não está carregado, busca o chunk e re-aplica tudo ao chegar.
+  if(_currentLang!=='en' && !(window.I18N && window.I18N[_currentLang])){
+    _loadLangChunk(_currentLang).then(()=>{
+      try{ applyTranslations(); }catch(_){}
+      try{ if(typeof checkAnalysisGate==='function') checkAnalysisGate(); }catch(_){}
+      try{ if(typeof checkGEXGate==='function') checkGEXGate(); }catch(_){}
+    });
+  }
 }
 
 /* ─── SEO: Dynamic meta tags + Schema for dedicated firm pages ─── */
@@ -5354,19 +5364,10 @@ function _daPreviewActive(){
   } catch(_) { return false; }
 }
 
+// Acesso a Análise Diária / GEX = só ter conta (modelo 2026-05-20: cadastro libera
+// o site todo; só o Live Room continua exigindo fidelidade — gate próprio).
 async function checkProAccess(){
-  if(!currentUser||!currentProfile) return false;
-  // VIP (admin liberou)
-  if(currentProfile.analysis_vip===true) return true;
-  // Loyalty: approved proof
-  try{
-    const email=currentProfile.email||currentUser.email;
-    const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
-    if(data&&data.length>0) return true;
-  }catch(e){}
-  // Preview 5min (timer só inicia ao entrar em Análise Diária)
-  if(_daPreviewActive()) return true;
-  return false;
+  return !!(currentUser && currentProfile);
 }
 
 // P1 v2 — Pro Gate 3 caminhos
@@ -5394,22 +5395,28 @@ function buildProGate(mode){
     `</div>`;
 }
 
-// Visitante anônimo — 2 caminhos (Pro pago removido)
-function buildProGateAnon(){
-  return `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_STAR}</div><h2 class="da-gate-title">${t('pro_gate_title')}</h2><p class="da-gate-subtitle">${t('pro_gate_anon_sub')||'Escolha como começar.'}</p></div>`+
+// Visitante anônimo. ctx='live' → Live Room (cadastro + fidelidade, 2 cards).
+// Senão (Análise/GEX/resto) → SÓ cadastro: criar conta grátis libera tudo
+// (modelo 2026-05-20 — só o Live Room continua exigindo fidelidade).
+function buildProGateAnon(ctx){
+  const isLive = ctx==='live';
+  let html = `<div class="da-gate-head"><div class="da-gate-icon">${isLive?PG_ICO_GIFT:PG_ICO_USER}</div><h2 class="da-gate-title">${t('pro_gate_title')||'Crie sua conta grátis'}</h2><p class="da-gate-subtitle">${t('pro_gate_anon_sub')||'Crie sua conta grátis para continuar.'}</p></div>`+
     `<div class="pg-stack">`+
       `<div class="pg-card pg-card-primary">`+
         `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_USER}</span><span class="pg-card-title">${t('da_gate_btn_login')||'Criar conta grátis'}</span></div>`+
-        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'Preview de 5 min — sem cartão.'}</p>`+
+        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'Sem cartão. Acesso imediato a Análise Diária, GEX e tudo no site.'}</p>`+
         `<button class="pg-btn pg-btn-gold" onclick="track('gate_signup_click',{src:'pro_gate_anon'});openAuthModal('signup')">${t('pro_gate_signup_cta')||'Criar conta grátis →'}</button>`+
-      `</div>`+
-      `<div class="pg-divider-or">${t('pro_gate_or_path')||'OU desbloqueie via'}</div>`+
+      `</div>`;
+  // Live Room é a ÚNICA área que precisa de fidelidade — só aqui o card aparece.
+  if(isLive){
+    html += `<div class="pg-divider-or">${t('pro_gate_or_path')||'E pra entrar no Live Room VIP'}</div>`+
       `<div class="pg-card pg-card-secondary">`+
         `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_GIFT}</span><span class="pg-card-title">${t('pro_gate_loyalty_title')||'Programa de fidelidade'}</span></div>`+
         `<p class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre uma avaliação com cupom Markets e ative sua fidelidade.'}</p>`+
-        `<button class="pg-btn pg-btn-glass" onclick="track('gate_loyalty_click',{src:'pro_gate_anon'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
-      `</div>`+
-    `</div>`;
+        `<button class="pg-btn pg-btn-glass" onclick="track('gate_loyalty_click',{src:'pro_gate_anon_live'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
+      `</div>`;
+  }
+  return html + `</div>`;
 }
 
 async function startCheckout(){
@@ -5595,59 +5602,13 @@ async function checkAnalysisGate(){
     return;
   }
 
-  // Logged in — cancel any preview timer/banner
+  // Logado = acesso total a Análise Diária (cadastro libera — modelo 2026-05-20).
+  // Sem checagem de fidelidade nem preview: ter conta já basta.
   removePreviewBanner();
   if(_previewCountdown){clearInterval(_previewCountdown);_previewCountdown=null;}
-
-  // VIP (admin liberou) → acesso total
-  if(currentProfile.analysis_vip===true) {
-    wrap.classList.remove('da-wrap-gated');
-    gate.innerHTML='';
-    return;
-  }
-
-  // Fidelidade: tem comprovante aprovado (acesso permanente, sem timer)
-  try{
-    const email=currentProfile.email||currentUser.email;
-    const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
-    if(data&&data.length>0){
-      _userHasAccess=true;
-      wrap.classList.remove('da-wrap-gated');
-      gate.innerHTML='';
-      return;
-    }
-  }catch(e){}
-
-  // Preview 5 min — timer inicia AGORA (logado sem loyalty entrou em Análise Diária)
-  _daPreviewStartIfNeeded();
-  if(_daPreviewActive()){
-    wrap.classList.remove('da-wrap-gated');
-    gate.innerHTML='';
-    const meta=document.getElementById('da-meta');
-    if(meta && !meta.querySelector('.da-trial-badge')){
-      meta.insertAdjacentHTML('beforeend',`<span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">— —</span>`);
-    }
-    const badge = meta?.querySelector('.da-trial-badge');
-    const updateBadge = () => {
-      const ms = _daPreviewRemaining();
-      if (ms <= 0) {
-        if (_previewCountdown) clearInterval(_previewCountdown);
-        renderAnalysisGate();
-        return;
-      }
-      const min = Math.floor(ms / 60000);
-      const sec = Math.floor((ms % 60000) / 1000);
-      if (badge) badge.textContent = `Preview: ${min}:${String(sec).padStart(2,'0')}`;
-    };
-    updateBadge();
-    if (_previewCountdown) clearInterval(_previewCountdown);
-    _previewCountdown = setInterval(updateBadge, 1000);
-    return;
-  }
-
-  // Sem acesso → gate com opções (fidelidade + assinatura)
-  wrap.classList.add('da-wrap-gated');
-  gate.innerHTML=buildProGate();
+  _userHasAccess=true;
+  wrap.classList.remove('da-wrap-gated');
+  gate.innerHTML='';
 }
 
 function daT(v){if(!v)return'';if(typeof v==='string')return v;return v[_currentLang]||v.pt||v.en||Object.values(v)[0]||'';}
@@ -6096,7 +6057,7 @@ function showLiveGatePreview(){
   const hasToken=!!localStorage.getItem('mc-user-auth');
   if(!hasToken){
     if(staticEl) staticEl.style.display='none';
-    contentEl.innerHTML=buildProGateAnon();
+    contentEl.innerHTML=buildProGateAnon('live');
   } else {
     if(staticEl) staticEl.style.display='';
     contentEl.innerHTML=`<div class="lg-loading"><span>${t('live_checking_access')||'Checking access...'}</span></div>`;
@@ -6145,7 +6106,7 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
   if(!isAuthed()){
     // Not logged in or unverified — show full Pro gate, hide static header
     if(staticEl) staticEl.style.display='none';
-    contentEl.innerHTML=buildProGateAnon();
+    contentEl.innerHTML=buildProGateAnon('live');
   } else {
     // Logged in, no access — show Pro gate with checkout, hide static header
     if(staticEl) staticEl.style.display='none';
@@ -7600,33 +7561,11 @@ async function checkGEXGate(){
   removePreviewBanner();
   if(_previewCountdown){clearInterval(_previewCountdown);_previewCountdown=null;}
 
-  const hasAccess=await checkProAccess();
-  if(hasAccess){
+  // Logado = acesso ao GEX (cadastro libera — modelo 2026-05-20).
+  if(await checkProAccess()){
     _userHasAccess=true;
     wrap.classList.remove('gx-wrap-gated');
     gate.innerHTML='';
-    // Badge preview compartilhado (timer setado em Análise Diária)
-    if(_daPreviewActive()){
-      const gxDate=document.getElementById('gx-date');
-      if(gxDate&&!gxDate.querySelector('.da-trial-badge')){
-        gxDate.insertAdjacentHTML('beforeend',` <span class="da-trial-badge" style="margin-left:12px;font-size:11px;color:var(--gold);background:rgba(240,180,41,.1);padding:3px 10px;border-radius:20px;">— —</span>`);
-      }
-      const badge = gxDate?.querySelector('.da-trial-badge');
-      const updateGexBadge = () => {
-        const ms = _daPreviewRemaining();
-        if (ms <= 0) {
-          if (_previewCountdown) clearInterval(_previewCountdown);
-          checkGEXGate();
-          return;
-        }
-        const min = Math.floor(ms / 60000);
-        const sec = Math.floor((ms % 60000) / 1000);
-        if (badge) badge.textContent = `Preview: ${min}:${String(sec).padStart(2,'0')}`;
-      };
-      updateGexBadge();
-      if (_previewCountdown) clearInterval(_previewCountdown);
-      _previewCountdown = setInterval(updateGexBadge, 1000);
-    }
     return;
   }
 
