@@ -88,6 +88,20 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
   .how-step-s{font-size:12px}
 }
 
+/* === Banner "tem mais no site" — discreto entre firmas e proof === */
+.more{max-width:536px;width:calc(100% - 24px);margin:24px auto 0;padding:18px 16px;background:linear-gradient(180deg,rgba(107,182,201,.05),rgba(13,20,28,.6));border:1px solid var(--b1);border-radius:12px;text-align:center;box-sizing:border-box;position:relative;overflow:hidden}
+.more::before{content:'';position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 0%,rgba(107,182,201,.10),transparent 70%);pointer-events:none}
+.more > *{position:relative;z-index:1}
+.more-h{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:.2px;margin-bottom:4px}
+.more-h em{color:var(--gold);font-style:normal}
+.more-sub{font-size:11px;color:var(--t3);margin-bottom:14px}
+.more-feats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+.more-feat{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2);font-weight:600;text-align:left}
+.more-feat svg{width:14px;height:14px;color:#6BB6C9;flex-shrink:0}
+.more-cta{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:rgba(107,182,201,.10);color:#6BB6C9;border:1px solid rgba(107,182,201,.38);border-radius:8px;padding:9px 18px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.3px;transition:.15s ease}
+.more-cta:hover{background:rgba(107,182,201,.18);border-color:rgba(107,182,201,.55);color:#fff}
+@media(min-width:560px){.more-feats{grid-template-columns:repeat(4,1fr)}.more-feat{justify-content:center;text-align:center;flex-direction:column;gap:4px}.more-feat svg{width:18px;height:18px}}
+
 /* === Social proof — alinhado à largura dos cards firma (536px = 560 - padding 12x2) === */
 .proof{max-width:536px;width:calc(100% - 24px);margin:24px auto 0;padding:18px 14px;background:linear-gradient(180deg,rgba(13,20,28,.7),rgba(11,19,24,.5));border:1px solid var(--b1);border-radius:12px;text-align:center;box-sizing:border-box}
 .proof-stars{font-size:22px;color:#00b67a;letter-spacing:2px;line-height:1}
@@ -277,6 +291,22 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 
 <section class="firms-list" id="firms-list"></section>
 
+<!-- Banner "tem mais no site" — revela que Markets Coupons é mais que cupons -->
+<section class="more">
+  <div class="more-h" data-i18n-html="more_h">Markets Coupons é <em>mais que cupons</em></div>
+  <div class="more-sub" data-i18n="more_sub">Site completo com ferramentas pra trader</div>
+  <div class="more-feats">
+    <div class="more-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span data-i18n="more_f1">Análises diárias</span></div>
+    <div class="more-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="more_f2">GEX & Indicadores</span></div>
+    <div class="more-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="more_f3">Calendário econômico</span></div>
+    <div class="more-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg><span data-i18n="more_f4">Live Room VIP</span></div>
+  </div>
+  <a href="/?utm_source=lp_coupons&utm_medium=more_cta&utm_campaign=site_explore" class="more-cta" onclick="trackEvent('lp_explore_site',{location:'lp_coupons_more'})">
+    <span data-i18n="more_cta">Explorar site completo</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</section>
+
 <!-- Social proof -->
 <section class="proof">
   <div class="proof-stars">★★★★★</div>
@@ -336,7 +366,8 @@ const I18N = {
     chip_exclusive: 'Cupons exclusivos', chip_verified: 'Verificado diariamente', chip_langs: '7 idiomas', chip_nosignup: 'Sem cadastro',
     how_title: 'Como funciona', how_1_h: 'Escolha a firma', how_1_s: 'Compare 12 firmas top', how_2_h: 'Copie o cupom', how_2_s: '1 clique no botão', how_3_h: 'Compre c/ desconto', how_3_s: 'Até 90% OFF',
     proof_sub: 'Média Trustpilot das firmas que listamos',
-    nl_title: 'Receba cupons exclusivos no email', nl_sub: 'Avisos quando uma firma soltar promo nova. Sem spam.', nl_btn: 'Receber', nl_ok: 'Inscrito! 🎉', nl_err: 'Email inválido', nl_done: '✓'
+    nl_title: 'Receba cupons exclusivos no email', nl_sub: 'Avisos quando uma firma soltar promo nova. Sem spam.', nl_btn: 'Receber', nl_ok: 'Inscrito! 🎉', nl_err: 'Email inválido', nl_done: '✓',
+    more_h: 'Markets Coupons é <em>mais que cupons</em>', more_sub: 'Site completo com ferramentas pra trader', more_f1: 'Análises diárias', more_f2: 'GEX & Indicadores', more_f3: 'Calendário econômico', more_f4: 'Live Room VIP', more_cta: 'Explorar site completo'
   },
   en: {
     hero_title: 'Save up to <em>90% OFF</em> at the best prop firms',
@@ -356,7 +387,8 @@ const I18N = {
     chip_exclusive: 'Exclusive coupons', chip_verified: 'Verified daily', chip_langs: '7 languages', chip_nosignup: 'No sign-up',
     how_title: 'How it works', how_1_h: 'Pick the firm', how_1_s: 'Compare 12 top firms', how_2_h: 'Copy the coupon', how_2_s: '1-click button', how_3_h: 'Buy with discount', how_3_s: 'Up to 90% OFF',
     proof_sub: 'Trustpilot average of firms we list',
-    nl_title: 'Get exclusive coupons by email', nl_sub: 'Alerts when a firm drops a new promo. No spam.', nl_btn: 'Subscribe', nl_ok: 'Subscribed! 🎉', nl_err: 'Invalid email', nl_done: '✓'
+    nl_title: 'Get exclusive coupons by email', nl_sub: 'Alerts when a firm drops a new promo. No spam.', nl_btn: 'Subscribe', nl_ok: 'Subscribed! 🎉', nl_err: 'Invalid email', nl_done: '✓',
+    more_h: 'Markets Coupons is <em>more than coupons</em>', more_sub: 'Full site with trader tools', more_f1: 'Daily analysis', more_f2: 'GEX & Indicators', more_f3: 'Economic calendar', more_f4: 'VIP Live Room', more_cta: 'Explore full site'
   },
   es: {
     hero_title: 'Ahorra hasta <em>90% OFF</em> en las mejores Prop Firms',
@@ -376,7 +408,8 @@ const I18N = {
     chip_exclusive: 'Cupones exclusivos', chip_verified: 'Verificado a diario', chip_langs: '7 idiomas', chip_nosignup: 'Sin registro',
     how_title: 'Cómo funciona', how_1_h: 'Elige la firma', how_1_s: 'Compara 12 firmas top', how_2_h: 'Copia el cupón', how_2_s: '1 clic en el botón', how_3_h: 'Compra c/ descuento', how_3_s: 'Hasta 90% OFF',
     proof_sub: 'Promedio Trustpilot de las firmas que listamos',
-    nl_title: 'Recibe cupones exclusivos por email', nl_sub: 'Avisos cuando una firma lance promo nueva. Sin spam.', nl_btn: 'Suscribirme', nl_ok: '¡Suscrito! 🎉', nl_err: 'Email inválido', nl_done: '✓'
+    nl_title: 'Recibe cupones exclusivos por email', nl_sub: 'Avisos cuando una firma lance promo nueva. Sin spam.', nl_btn: 'Suscribirme', nl_ok: '¡Suscrito! 🎉', nl_err: 'Email inválido', nl_done: '✓',
+    more_h: 'Markets Coupons es <em>más que cupones</em>', more_sub: 'Sitio completo con herramientas para trader', more_f1: 'Análisis diarios', more_f2: 'GEX e indicadores', more_f3: 'Calendario económico', more_f4: 'Live Room VIP', more_cta: 'Explorar sitio completo'
   },
   it: {
     hero_title: 'Risparmia fino al <em>90% OFF</em> sulle migliori Prop Firms',
@@ -396,7 +429,8 @@ const I18N = {
     chip_exclusive: 'Coupon esclusivi', chip_verified: 'Verificato ogni giorno', chip_langs: '7 lingue', chip_nosignup: 'Senza registrazione',
     how_title: 'Come funziona', how_1_h: 'Scegli la firm', how_1_s: 'Confronta 12 firm top', how_2_h: 'Copia il coupon', how_2_s: '1 clic sul pulsante', how_3_h: 'Acquista c/ sconto', how_3_s: 'Fino al 90% OFF',
     proof_sub: 'Media Trustpilot delle firm che elenchiamo',
-    nl_title: 'Ricevi coupon esclusivi via email', nl_sub: 'Avvisi quando una firm rilascia nuova promo. Niente spam.', nl_btn: 'Iscriviti', nl_ok: 'Iscritto! 🎉', nl_err: 'Email non valida', nl_done: '✓'
+    nl_title: 'Ricevi coupon esclusivi via email', nl_sub: 'Avvisi quando una firm rilascia nuova promo. Niente spam.', nl_btn: 'Iscriviti', nl_ok: 'Iscritto! 🎉', nl_err: 'Email non valida', nl_done: '✓',
+    more_h: 'Markets Coupons è <em>più che coupon</em>', more_sub: 'Sito completo con strumenti per trader', more_f1: 'Analisi giornaliere', more_f2: 'GEX e indicatori', more_f3: 'Calendario economico', more_f4: 'Live Room VIP', more_cta: 'Esplora sito completo'
   },
   fr: {
     hero_title: 'Économisez jusqu\'à <em>90% OFF</em> sur les meilleures Prop Firms',
@@ -416,7 +450,8 @@ const I18N = {
     chip_exclusive: 'Coupons exclusifs', chip_verified: 'Vérifié quotidien', chip_langs: '7 langues', chip_nosignup: 'Sans inscription',
     how_title: 'Comment ça marche', how_1_h: 'Choisis la firme', how_1_s: 'Compare 12 firmes top', how_2_h: 'Copie le coupon', how_2_s: '1 clic sur le bouton', how_3_h: 'Achète avec remise', how_3_s: 'Jusqu\'à 90% OFF',
     proof_sub: 'Moyenne Trustpilot des firmes listées',
-    nl_title: 'Recevez des coupons exclusifs par email', nl_sub: 'Alertes nouvelles promos. Pas de spam.', nl_btn: 'S\'abonner', nl_ok: 'Abonné ! 🎉', nl_err: 'Email invalide', nl_done: '✓'
+    nl_title: 'Recevez des coupons exclusifs par email', nl_sub: 'Alertes nouvelles promos. Pas de spam.', nl_btn: 'S\'abonner', nl_ok: 'Abonné ! 🎉', nl_err: 'Email invalide', nl_done: '✓',
+    more_h: 'Markets Coupons est <em>plus que des coupons</em>', more_sub: 'Site complet avec outils pour traders', more_f1: 'Analyses quotidiennes', more_f2: 'GEX & indicateurs', more_f3: 'Calendrier économique', more_f4: 'Live Room VIP', more_cta: 'Explorer le site complet'
   },
   de: {
     hero_title: 'Sparen Sie bis zu <em>90% OFF</em> bei den besten Prop Firms',
@@ -436,7 +471,8 @@ const I18N = {
     chip_exclusive: 'Exklusive Coupons', chip_verified: 'Täglich geprüft', chip_langs: '7 Sprachen', chip_nosignup: 'Ohne Registrierung',
     how_title: 'So funktioniert\'s', how_1_h: 'Firma wählen', how_1_s: 'Vergleiche 12 Top-Firmen', how_2_h: 'Coupon kopieren', how_2_s: '1-Klick Button', how_3_h: 'Mit Rabatt kaufen', how_3_s: 'Bis zu 90% OFF',
     proof_sub: 'Trustpilot-Durchschnitt der gelisteten Firmen',
-    nl_title: 'Exklusive Coupons per E-Mail', nl_sub: 'Hinweise bei neuen Promos. Kein Spam.', nl_btn: 'Abonnieren', nl_ok: 'Abonniert! 🎉', nl_err: 'Ungültige E-Mail', nl_done: '✓'
+    nl_title: 'Exklusive Coupons per E-Mail', nl_sub: 'Hinweise bei neuen Promos. Kein Spam.', nl_btn: 'Abonnieren', nl_ok: 'Abonniert! 🎉', nl_err: 'Ungültige E-Mail', nl_done: '✓',
+    more_h: 'Markets Coupons ist <em>mehr als Coupons</em>', more_sub: 'Komplette Website mit Trader-Tools', more_f1: 'Tägliche Analysen', more_f2: 'GEX & Indikatoren', more_f3: 'Wirtschaftskalender', more_f4: 'VIP Live Room', more_cta: 'Komplette Website erkunden'
   },
   ar: {
     hero_title: 'وفر حتى <em>90% OFF</em> على أفضل Prop Firms',
@@ -456,7 +492,8 @@ const I18N = {
     chip_exclusive: 'كوبونات حصرية', chip_verified: 'محقق يومياً', chip_langs: '7 لغات', chip_nosignup: 'بدون تسجيل',
     how_title: 'كيف يعمل', how_1_h: 'اختر الشركة', how_1_s: 'قارن 12 شركة', how_2_h: 'انسخ الكوبون', how_2_s: 'نقرة واحدة', how_3_h: 'اشترِ بخصم', how_3_s: 'حتى 90% خصم',
     proof_sub: 'متوسط Trustpilot للشركات المدرجة',
-    nl_title: 'احصل على كوبونات حصرية بالبريد', nl_sub: 'تنبيهات عروض جديدة. بدون إزعاج.', nl_btn: 'اشترك', nl_ok: 'تم الاشتراك! 🎉', nl_err: 'بريد غير صالح', nl_done: '✓'
+    nl_title: 'احصل على كوبونات حصرية بالبريد', nl_sub: 'تنبيهات عروض جديدة. بدون إزعاج.', nl_btn: 'اشترك', nl_ok: 'تم الاشتراك! 🎉', nl_err: 'بريد غير صالح', nl_done: '✓',
+    more_h: 'Markets Coupons <em>أكثر من مجرد كوبونات</em>', more_sub: 'موقع كامل بأدوات للمتداول', more_f1: 'تحليلات يومية', more_f2: 'GEX والمؤشرات', more_f3: 'التقويم الاقتصادي', more_f4: 'غرفة VIP المباشرة', more_cta: 'استكشاف الموقع الكامل'
   }
 };
 
