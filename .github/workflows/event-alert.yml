@@ -5,9 +5,12 @@ name: Event Alert (US hours only)
 # GitHub Actions tava falhando "Waiting for runner" por sobrecarga,
 # gerando emails de failure desnecessários.
 on:
-  schedule:
-    # */10 min, 12-22 UTC (= 8h-18h EDT / 7h-17h EST), weekdays
-    - cron: '*/10 12-22 * * 1-5'
+  # SCHEDULE PAUSADO 2026-05-20 a pedido do Everton — alertas de evento econômico
+  # no Telegram estavam indo pro privado dele com imagem ruim. Pra religar,
+  # descomentar o bloco schedule abaixo.
+  # schedule:
+  #   # */10 min, 12-22 UTC (= 8h-18h EDT / 7h-17h EST), weekdays
+  #   - cron: '*/10 12-22 * * 1-5'
   workflow_dispatch:
 
 permissions:
