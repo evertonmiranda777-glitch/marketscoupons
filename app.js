@@ -5064,33 +5064,30 @@ function calConvertTime(hhmm){
   return {display:String(Math.floor(converted)).padStart(2,'0')+':'+String(mm).padStart(2,'0'), label:_calTz};
 }
 
+// HH:MM em UTC → HH:MM em ET (site exibe ET). -4 (EDT) consistente com o resto do calendário.
+function calUtcToET(hhmm){
+  if(!/^\d{1,2}:\d{2}$/.test(hhmm||'')) return hhmm;
+  const [h,m] = hhmm.split(':').map(Number);
+  return String((h-4+24)%24).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
+
 // ── Countdown timer for next high-impact event ──
 function calUpdateCountdown(){
   const bar = document.getElementById('cal-countdown-bar');
   if(!bar) return;
-  const now = new Date();
-  const etNow = new Date(now.getTime() - 4*60*60*1000);
-  const todayStr = etNow.toISOString().slice(0,10);
-  const etH = (now.getUTCHours() - 4 + 24) % 24;
-  const etM = now.getUTCMinutes();
-  const etS = now.getUTCSeconds();
-  const nowSec = etH*3600 + etM*60 + etS;
-
-  // Find next upcoming high-impact event today
-  let nextEv = null;
-  let nextSec = Infinity;
+  // e.t e e.dateStr estão em UTC (API retorna UTC) — comparar via timestamp absoluto.
+  // Bug corrigido 2026-05-20: antes tratava e.t como ET → countdown 4h errado (FOMC 5h48m vs 1h45m real).
+  const now = Date.now();
+  let nextEv = null, nextTs = Infinity;
   for(const e of calEvents){
-    if(e.dateStr !== todayStr || e.imp !== 'h' || e.t === '—') continue;
-    const [h,m] = e.t.split(':').map(Number);
-    if(isNaN(h)) continue;
-    const evSec = h*3600 + m*60;
-    if(evSec > nowSec && evSec < nextSec){ nextSec = evSec; nextEv = e; }
+    if(e.imp !== 'h' || e.t === '—' || !e.dateStr || !/^\d{1,2}:\d{2}$/.test(e.t)) continue;
+    const ts = Date.parse(e.dateStr + 'T' + e.t + ':00Z');
+    if(isNaN(ts) || ts <= now) continue;
+    if(ts < nextTs){ nextTs = ts; nextEv = e; }
   }
-  if(!nextEv){
-    bar.style.display = 'none';
-    return;
-  }
-  const diff = nextSec - nowSec;
+  // só mostra se o próximo evento de alto impacto for nas próximas 24h
+  if(!nextEv || (nextTs - now) > 24*3600*1000){ bar.style.display = 'none'; return; }
+  const diff = Math.floor((nextTs - now)/1000);
   const dH = Math.floor(diff/3600);
   const dM = Math.floor((diff%3600)/60);
   const dS = diff%60;
@@ -5162,7 +5159,7 @@ async function loadCalendar(silent) {
       let imp = 'l';
       if (rawImp >= 3) imp = 'h';
       else if (rawImp >= 2) imp = 'm';
-      // Convert 12h → 24h (all times stored as ET 24h)
+      // Convert 12h → 24h. Horários da API são UTC — conversão pra ET/local é em calConvertTime / calUtcToET.
       let t24 = ev.time || '—';
       if (t24 !== '—') {
         const m = t24.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
@@ -5626,7 +5623,7 @@ function _renderDaEvents(a){
       const cc=CUR_COLORS[e.cur]||{bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
       const actStr = e.actual!=='—' ? ` → <b style="color:var(--green);">${e.actual}</b>` : '';
       return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
-        <span style="font-size:10px;color:var(--t2);min-width:38px;">${e.t} ET</span>
+        <span style="font-size:10px;color:var(--t2);min-width:38px;">${calUtcToET(e.t)} ET</span>
         <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:${cc.bg};color:${cc.c};">${e.cur}</span>
         <span style="font-size:11px;color:var(--t1);">${e.ev}${actStr}</span>
         ${e.fore!=='—'?`<span style="font-size:10px;color:var(--t2);">(${t('da_previsao')}: ${e.fore})</span>`:''}
