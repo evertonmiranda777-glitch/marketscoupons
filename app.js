@@ -568,7 +568,14 @@ function setTrackingGeo(geo){
 function _getFbAttribution() {
   try {
     const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
-    const fbp = ck._fbp || null;
+    // fbp: o Pixel seta _fbp, mas carrega lazy (requestIdleCallback) → eventos cedo
+    // (page_view no load) saíam sem fbp. Semeia 1x no formato canônico fb.1.{ts}.{rand};
+    // quando o Pixel carrega ele reusa o cookie existente. Garante fbp em TODO evento CAPI.
+    let fbp = ck._fbp || null;
+    if (!fbp) {
+      fbp = `fb.1.${Date.now()}.${Math.floor(Math.random()*1e10)}`;
+      try { document.cookie = `_fbp=${fbp}; path=/; max-age=7776000; SameSite=Lax`; } catch(_) {}
+    }
     let fbc = ck._fbc || null;
     const urlFbclid = new URLSearchParams(location.search).get('fbclid');
     // Reconstrói só se: (a) cookie ausente, ou (b) URL tem fbclid diferente do cookie (ad novo).
@@ -642,13 +649,12 @@ function _sendCAPI(event, params, eid, ts) {
 }
 
 // Helper: extract price value from firm for FB Pixel enrichment
-function _fbVal(f,size){
-  if(!f||!f.prices) return 0;
-  const p=size?f.prices.find(x=>x.a===size):f.prices[0];
-  if(!p) return 0;
-  const s=p.n||p.o||'';
-  const n=parseFloat(s.replace(/[^0-9.]/g,''));
-  return isNaN(n)?0:n;
+// Valor de conversão (Lead/CAPI) = $3.00 flat por Lead (decidido c/ Everton 2026-05-20).
+// Comissão é 10% da venda mas varia muito por plano; Everton optou por valor fixo.
+// Constante — NUNCA 0: a Meta acusava "Lead sem value" quando isso devolvia 0.
+// Mantém a assinatura (f,size) pois callers passam args — JS ignora os extras.
+function _fbVal(){
+  return 3.00;
 }
 
 // Single source of truth for plan prices: Supabase FIRMS[].prices with hardcoded fallback.

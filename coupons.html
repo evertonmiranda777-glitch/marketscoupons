@@ -741,7 +741,8 @@ function renderFirms() {
     card.querySelector('.fr-cta').addEventListener('click', () => {
       const plans = firm.plans[state.type];
       const plan = plans[state.sizeIdx] || plans[0];
-      trackEvent('checkout_click', { firm_id: firm.id, firm_name: firm.name, coupon_code: firm.coupon, plan_size: plan.size, plan_type: state.type, location: 'lp_coupons' });
+      // value $3.00 flat por Lead (decidido c/ Everton 2026-05-20) — Meta acusava Lead sem value
+      trackEvent('checkout_click', { firm_id: firm.id, firm_name: firm.name, coupon_code: firm.coupon, plan_size: plan.size, plan_type: state.type, value: 3.00, currency: 'USD', location: 'lp_coupons' });
     });
   });
 }
@@ -830,7 +831,12 @@ function injectKeyword(url, firmId){
 function _fbAttr(){
   try {
     const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
-    const fbp = ck._fbp || null;
+    // fbp: semeia 1x se o cookie não existe (Pixel lazy) — cobre eventos cedo na CAPI.
+    let fbp = ck._fbp || null;
+    if (!fbp) {
+      fbp = `fb.1.${Date.now()}.${Math.floor(Math.random()*1e10)}`;
+      try { document.cookie = `_fbp=${fbp}; path=/; max-age=7776000; SameSite=Lax`; } catch(_){}
+    }
     let fbc = ck._fbc || null;
     const urlFbclid = new URLSearchParams(location.search).get('fbclid');
     if (urlFbclid && (!fbc || !fbc.endsWith('.' + urlFbclid))) {
