@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <script>(function(){var s=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').split('/').filter(Boolean)[0]||'';if(['apex','bulenox','ftmo','tpt','takeprofit','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'].indexOf(s)>-1){var st=document.createElement('style');st.textContent='body{opacity:0;transition:opacity .2s ease}';document.head.appendChild(st);}})();</script>
-<link rel="preload" href="/img/site-bg.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="/img/site-bg.webp" as="image" type="image/webp" media="(min-width:901px)" fetchpriority="high">
 <link rel="preload" href="/img/site-bg-mobile.webp" as="image" type="image/webp" media="(max-width:900px)" fetchpriority="high">
 <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -3537,12 +3537,14 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
   </div>
   <div class="up-card">
    <h3 data-i18n="painel_alterar_senha">Alterar Senha</h3>
-   <div class="auth-field"><label data-i18n="painel_senha_atual">Senha Atual</label><div style="position:relative;"><input type="password" id="up-pass-current"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <div class="auth-field"><label data-i18n="painel_nova_senha">Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-new" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <div class="auth-field"><label data-i18n="painel_confirmar_senha">Confirmar Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-confirm" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <button class="auth-btn" onclick="changePassword()" data-i18n="painel_btn_alterar_senha">Alterar Senha</button>
+   <form onsubmit="event.preventDefault();changePassword();return false;" autocomplete="off">
+   <div class="auth-field"><label data-i18n="painel_senha_atual">Senha Atual</label><div style="position:relative;"><input type="password" id="up-pass-current" autocomplete="current-password"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_nova_senha">Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-new" minlength="6" autocomplete="new-password"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_confirmar_senha">Confirmar Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-confirm" minlength="6" autocomplete="new-password"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <button class="auth-btn" type="submit" data-i18n="painel_btn_alterar_senha">Alterar Senha</button>
    <div class="auth-error" id="up-pass-error" style="margin-top:8px;"></div>
    <div class="auth-success" id="up-pass-ok" style="margin-top:8px;" data-i18n="painel_senha_alterada">Senha alterada com sucesso!</div>
+   </form>
   </div>
   <div class="up-card">
    <h3 data-i18n="painel_resumo">Resumo</h3>
