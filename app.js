@@ -5019,7 +5019,7 @@ const CAL_API = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-
 const CAL_TZ_OFFSETS = {ET:-4,CT:-5,PT:-7,UTC:0,GMT:0,CET:1,JST:9,BRT:-3};
 
 let calFilterCur = 'all';
-let calFilterImp = 'all';
+let calFilterImp = new Set(); // multi-select de impacto: vazio = todos; pode ter 'h','m','l' juntos
 let calEvents = [];   // raw events with ET times
 let _calRefreshTimer = null;
 let _calLang = '';
@@ -5053,7 +5053,8 @@ function calConvertTime(hhmm){
     const localOffset = -now.getTimezoneOffset() / 60; // offset local em horas vs UTC
     let lh = hh + localOffset;
     if(lh < 0) lh += 24; if(lh >= 24) lh -= 24;
-    const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace(/_/g,' ');
+    let tzName = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace(/_/g,' ');
+    if(tzName==='Sao Paulo') tzName='São Paulo';
     return {display:String(Math.floor(lh)).padStart(2,'0')+':'+String(mm).padStart(2,'0'), label:tzName};
   }
   const offset = CAL_TZ_OFFSETS[_calTz];
@@ -5105,13 +5106,17 @@ function calStartCountdown(){
 // ── Filters ──
 function calFilter(filter, btn) {
   track('calendar_filter',{filter});
-  if (filter === 'all') { calFilterCur = 'all'; calFilterImp = 'all'; }
-  else if (filter === 'h' || filter === 'm' || filter === 'l') { calFilterImp = calFilterImp === filter ? 'all' : filter; }
+  if (filter === 'all') { calFilterCur = 'all'; calFilterImp.clear(); }
+  else if (filter === 'h' || filter === 'm' || filter === 'l') {
+    // multi-select: 3★ e 2★ (e 1★) podem ficar selecionados juntos — mostra a união
+    if (calFilterImp.has(filter)) calFilterImp.delete(filter); else calFilterImp.add(filter);
+  }
   else { calFilterCur = calFilterCur === filter ? 'all' : filter; }
-  document.querySelectorAll('.cal-f').forEach(b => {
+  // escopo #cal-filters — não tocar nos botões .cal-f do heatmap
+  document.querySelectorAll('#cal-filters .cal-f').forEach(b => {
     const f = b.getAttribute('data-filter');
-    if (f === 'all') b.classList.toggle('active', calFilterCur === 'all' && calFilterImp === 'all');
-    else if (f === 'h' || f === 'm' || f === 'l') b.classList.toggle('active', calFilterImp === f);
+    if (f === 'all') b.classList.toggle('active', calFilterCur === 'all' && calFilterImp.size === 0);
+    else if (f === 'h' || f === 'm' || f === 'l') b.classList.toggle('active', calFilterImp.has(f));
     else b.classList.toggle('active', calFilterCur === f);
   });
   renderCal();
@@ -5215,7 +5220,7 @@ function renderCal() {
   if (!el) return;
   let events = calEvents;
   if (calFilterCur !== 'all') events = events.filter(e => e.cur === calFilterCur);
-  if (calFilterImp !== 'all') events = events.filter(e => e.imp === calFilterImp);
+  if (calFilterImp.size) events = events.filter(e => calFilterImp.has(e.imp));
   const searchEl = document.getElementById('cal-search');
   const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
   if (q) events = events.filter(e => e.ev.toLowerCase().includes(q) || e.cur.toLowerCase().includes(q) || (e.ref||'').toLowerCase().includes(q));
