@@ -143,7 +143,13 @@ TODO asset path deve ter `/` prefix. **NUNCA** `'img/X'`, `'fonts/X'`, `src="app
 - Custo: ~$0.50 / 60 traduções de 20k chars
 
 ### Tracking — GTM dataLayer-only (NÃO mexer sem ler tudo)
-Migrado pra **GTM-WJGTVX8G** em 2026-05-20. `track(event,params)` em app.js + `trackEvent()` em coupons.html = fonte única → `dataLayer.push({event,event_id,user_data,ecommerce,firm_id,firm_name,coupon_code,content_*})` + `_sendCAPI()` server-side (mesmo `event_id` pra dedup Pixel×CAPI). GTM consome dataLayer e dispara tags GA4 (`G-CZ3L00NY77`) + Meta Pixel (`813048241061812`) + Google Ads. **NUNCA chamar `gtag('event',...)` ou `fbq(...)` direto** — só `dataLayer.push`. Exceção: `gtag('consent','default'/'update',...)` (Consent Mode v2, não é evento). Snippet GTM em `js/tracking-init.js` (shim `window.gtag` = `dataLayer.push(arguments)`). Pixel dispara no trigger `page_view` (carrega event_id); `consent_granted` NÃO serve de trigger. `/coupons` = consent granted automático (sem banner). Funil firmas: firm_detail_open → coupon_copy → checkout_click → Lead. Detalhe: `memory/project_gtm_tracking_2026_05_20.md`.
+Migrado pra **GTM-WJGTVX8G** em 2026-05-20. `track(event,params)` em app.js + `trackEvent()` em coupons.html = fonte única → `dataLayer.push({event,event_id,user_data,ecommerce,firm_id,firm_name,coupon_code,content_*})` + `_sendCAPI()` server-side (mesmo `event_id` pra dedup Pixel×CAPI). GTM consome dataLayer e dispara tags GA4 (`G-CZ3L00NY77`) + Meta Pixel (`813048241061812`) + Google Ads. **NUNCA chamar `gtag('event',...)` ou `fbq(...)` direto** — só `dataLayer.push`. Exceção: `gtag('consent','default'/'update',...)` (Consent Mode v2, não é evento). Snippet GTM em `js/tracking-init.js` (shim `window.gtag` = `dataLayer.push(arguments)`). Pixel dispara no trigger `page_view` (carrega event_id); `consent_granted` NÃO serve de trigger. `/coupons` = consent granted automático (sem banner). Funil firmas: firm_detail_open → coupon_copy → checkout_click → Lead.
+
+**GA4 só com o funil (2026-05-20):** allowlist `GA4_FUNNEL` em `track()`/`trackEvent()` — SÓ evento de funil entra no dataLayer, com nome PADRÃO GA4 (view_item/add_to_cart/begin_checkout/sign_up/subscribe/generate_lead/purchase/page_view). Instrumentação interna (tab_hidden, bot_*, js_error, quiz_*…) fica só no Supabase. Adicionar evento de funil novo = pôr na `GA4_FUNNEL` dos 2 arquivos.
+
+**fbc/fbp/value CAPI (2026-05-20):** `_getFbAttribution()`/`_fbAttr()` priorizam cookie `_fbc`/`_fbp` (Pixel seta certo). fbc só reconstrói se cookie ausente ou fbclid novo — NUNCA `Date.now()` por evento (timestamp instável = Meta acusa "fbc modificado"). fbp semeado se ausente. Lead value = **$3.00 flat** (`_fbVal()` retorna 3.00), nunca 0. Detalhe: `memory/feedback_fbc_timestamp_estavel.md`.
+
+Detalhe geral: `memory/project_gtm_tracking_2026_05_20.md`.
 
 ## Deploy
 
