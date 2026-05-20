@@ -1711,7 +1711,7 @@ html:has(.drw.open){overflow:hidden!important;}
 .da-gate{display:none;position:absolute;top:30px;left:50%;transform:translateX(-50%);z-index:10;background:linear-gradient(180deg,#0B1318 0%,#07090D 100%);border:1px solid var(--gold);border-radius:16px;padding:32px 28px;text-align:center;max-width:420px;width:90%;box-shadow:0 0 0 1px rgba(74,144,164,.08) inset,0 1px 0 rgba(180,230,235,.08) inset,0 12px 30px -12px rgba(0,0,0,.6),0 8px 32px rgba(0,0,0,.5);}
 .da-wrap-gated .da-gate{display:block;}
 .gx-wrap-inner{position:relative;}
-.gx-wrap-gated #gx-grid,.gx-wrap-gated .gx-loading-box{filter:blur(8px);pointer-events:none;user-select:none;}
+.gx-wrap-gated #gx-grid,.gx-wrap-gated .gx-loading-box,.gx-wrap-gated .gx-ticker-bar,.gx-wrap-gated .gx-exp-bar,.gx-wrap-gated .gx-view-tabs{filter:blur(8px);pointer-events:none;user-select:none;}
 .gx-wrap-gated #gx-gate{display:block;}
 .da-gate-icon{width:48px;height:48px;border-radius:14px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
 .da-gate-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:8px;}
@@ -3843,9 +3843,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <div class="gx-updated" id="gx-date" data-i18n="gx_loading">Carregando dados...</div>
       <div class="gx-schedule" style="font-size:12px;color:var(--t2);margin-top:4px;" data-i18n="gx_schedule">Atualizada todos os dias úteis às 5:00 AM ET.</div>
     </div>
+    <div class="gx-wrap-inner" id="gx-wrap-inner">
     <div class="gx-ticker-bar" id="gx-ticker-bar"></div>
     <div class="gx-exp-bar" id="gx-exp-bar"></div>
-    <div class="gx-wrap-inner" id="gx-wrap-inner">
     <div class="gx-loading-box" id="gx-loading">
       <div class="ar-spinner" style="width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div>
       <div data-i18n="gx_carregando">Carregando dados...</div>
