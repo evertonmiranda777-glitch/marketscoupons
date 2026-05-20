@@ -5353,23 +5353,9 @@ const PG_ICO_STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const PG_ICO_CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
 const PG_CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 
-function _pgProCard(src){
-  const action = src==='pro_gate_anon' ? "openAuthModal('signup')" : 'startCheckout()';
-  return `<div class="pg-card pg-card-pro">`+
-    `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_STAR}</span><span class="pg-card-title">${t('pro_gate_pro_title')||'Acesso direto, sem fidelidade'}</span></div>`+
-    `<p class="pg-card-sub">${t('pro_gate_pro_sub')||'Plano premium pra pular a etapa.'}</p>`+
-    `<div class="pg-pro-perks">`+
-      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b1')}</div>`+
-      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b2')}</div>`+
-      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b3')}</div>`+
-      `<div class="pg-pro-perk">${PG_CHK}${t('pro_b4')}</div>`+
-    `</div>`+
-    `<button class="pg-pro-cta" onclick="track('gate_pro_click',{src:'${src}'});${action}">`+
-      `<span class="pg-pro-cta-label">${t('pro_gate_pro_cta_label')||'Assinar Pro'}</span>`+
-      `<span class="pg-pro-cta-price">$9.99 / ${t('pro_month')}</span>`+
-    `</button>`+
-  `</div>`;
-}
+// _pgProCard removido 2026-05-20 — plano pago Pro fora do ar. Motor Stripe (startCheckout/
+// openStripePortal/edge functions) mantido dormente pra reativar depois. Pra voltar o card,
+// reescrever aqui e re-plugar em buildProGate/buildProGateAnon.
 
 // User logado sem acesso — só fidelidade (Pro pago removido 2026-05-18, volta depois)
 function buildProGate(mode){
@@ -6052,7 +6038,7 @@ function autoDetectDDI() {
 let _liveCountdownInterval=null;
 function _startLiveCountdown(){
   if(_liveCountdownInterval) clearInterval(_liveCountdownInterval);
-  const target=new Date('2026-05-18T13:30:00Z').getTime(); // 9:30 ET = 13:30 UTC
+  const target=new Date('2026-06-01T13:30:00Z').getTime(); // 01/06/2026 · 9:30 ET = 13:30 UTC
   function _update(){
     const now=Date.now();
     const diff=target-now;
