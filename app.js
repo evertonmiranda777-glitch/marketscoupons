@@ -6959,6 +6959,8 @@ function updateAuthUI(loggedIn) {
     document.getElementById('up-avatar').textContent = initial;
     document.getElementById('up-name').textContent = currentProfile.full_name || t('painel_user_fallback') || 'User';
     document.getElementById('up-email').textContent = currentProfile.email;
+    // username oculto do form de troca de senha — gerenciador de senha precisa pra parear credencial
+    { const _un=document.getElementById('up-pass-uname'); if(_un) _un.value=currentProfile.email||''; }
     // Fase C — prefill 12 campos (cascata pra default country: profile → IP → 'BR')
     const _setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
     const defaultCountry = currentProfile.country
