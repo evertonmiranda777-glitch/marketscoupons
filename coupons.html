@@ -824,18 +824,18 @@ function injectKeyword(url, firmId){
   return cleaned + sep + 'keyword=' + encodeURIComponent(kw) + hash;
 }
 
-// FB attribution helper (mesma lógica do app.js, inline aqui pq coupons.html é standalone)
+// FB attribution helper (mesma lógica do app.js, inline aqui pq coupons.html é standalone).
+// Cookie _fbc é a fonte canônica (Pixel seta com ts estável). Só reconstrói se cookie
+// ausente OU URL tem fbclid novo. Nunca por-evento — Date.now() variável = "fbc modificado".
 function _fbAttr(){
   try {
     const ck = document.cookie.split(';').reduce((o,c)=>{const [k,...v]=c.trim().split('=');o[k]=v.join('=');return o;},{});
     const fbp = ck._fbp || null;
+    let fbc = ck._fbc || null;
     const urlFbclid = new URLSearchParams(location.search).get('fbclid');
-    let fbc;
-    if (urlFbclid) {
+    if (urlFbclid && (!fbc || !fbc.endsWith('.' + urlFbclid))) {
       fbc = `fb.1.${Date.now()}.${urlFbclid}`;
       try { document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`; } catch(_){}
-    } else {
-      fbc = ck._fbc || null;
     }
     return { fbp, fbc };
   } catch(_){ return { fbp:null, fbc:null }; }
