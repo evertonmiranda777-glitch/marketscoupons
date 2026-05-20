@@ -841,6 +841,14 @@ function _fbAttr(){
   } catch(_){ return { fbp:null, fbc:null }; }
 }
 
+// GA4 funnel allowlist: nome interno → nome PADRÃO GA4. SÓ esses vão pro dataLayer.
+// LP-specific (lp_plan_select/lp_type_select/lp_explore_site/see_all_firms_click) = só Supabase.
+const GA4_FUNNEL = {
+  page_view:            'page_view',
+  coupon_copy:          'add_to_cart',
+  checkout_click:       'begin_checkout',
+  newsletter_subscribe: 'subscribe',
+};
 function trackEvent(event, params={}){
   const eid = uuid();
   const ts = new Date().toISOString();
@@ -857,28 +865,32 @@ function trackEvent(event, params={}){
       }), keepalive: true
     }).catch(()=>{});
   } catch(e){}
-  // 2. GTM dataLayer (única fonte pra Pixel + GA4 + Google Ads — GTM faz mapping standard)
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event,
-    event_id: eid,
-    timestamp: ts,
-    user_data: { external_id: anonId, anon_id: anonId, fbp: fbp||null, fbc: fbc||null },
-    ecommerce: {
-      currency: 'USD',
-      value: params.value || 0,
-      items: params.firm_id ? [{ item_id: params.firm_id, item_name: params.firm_name||params.firm_id, item_category: 'prop_firm', coupon: params.coupon_code||null, quantity: 1, price: params.value || 0 }] : [],
-    },
-    firm_id: params.firm_id || null,
-    firm_name: params.firm_name || null,
-    coupon_code: params.coupon_code || null,
-    content_ids: params.firm_id ? [params.firm_id] : null,
-    content_name: params.firm_name || null,
-    content_type: 'product',
-    utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
-    page_name: params.page_name || 'lp_coupons',
-    location: params.location || null,
-  });
+  // 2. GTM dataLayer — SÓ eventos de funil (allowlist), nome PADRÃO GA4. 1 nome por ação.
+  // Eventos de LP (lp_plan_select etc) ficam só no Supabase acima — não poluem o GA4.
+  const _ga4Event = GA4_FUNNEL[event];
+  if (_ga4Event) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: _ga4Event,
+      event_id: eid,
+      timestamp: ts,
+      user_data: { external_id: anonId, anon_id: anonId, fbp: fbp||null, fbc: fbc||null },
+      ecommerce: {
+        currency: 'USD',
+        value: params.value || 0,
+        items: params.firm_id ? [{ item_id: params.firm_id, item_name: params.firm_name||params.firm_id, item_category: 'prop_firm', coupon: params.coupon_code||null, quantity: 1, price: params.value || 0 }] : [],
+      },
+      firm_id: params.firm_id || null,
+      firm_name: params.firm_name || null,
+      coupon_code: params.coupon_code || null,
+      content_ids: params.firm_id ? [params.firm_id] : null,
+      content_name: params.firm_name || null,
+      content_type: 'product',
+      utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
+      page_name: params.page_name || 'lp_coupons',
+      location: params.location || null,
+    });
+  }
   // 3. Facebook CAPI server-side (MESMO event_id do dataLayer → Meta dedupa Pixel browser × CAPI)
   try {
     fetch(SB_URL+'/functions/v1/facebook-capi', {

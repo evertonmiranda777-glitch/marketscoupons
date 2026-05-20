@@ -302,6 +302,27 @@ function rateLimit(key, cooldownMs) {
   return true;
 }
 
+// ─── GA4 funnel allowlist: nome interno do site → nome PADRÃO GA4 ───
+// SÓ esses eventos vão pro dataLayer (logo, pro GA4 + Meta Pixel via GTM).
+// Todo o resto (instrumentação interna: tab_hidden, idle, bot_*, js_error,
+// quiz_*, scroll_depth, drawer_select, etc) fica SÓ no Supabase — não polui o GA4.
+// 1 nome por ação. Coordenado com o container GTM-WJGTVX8G (triggers nesses nomes).
+const GA4_FUNNEL = {
+  page_view:               'page_view',
+  firm_detail_open:        'view_item',
+  platform_detail_open:    'view_item',
+  coupon_copy:             'add_to_cart',
+  copy_coupon:             'add_to_cart',   // variante legada — mesmo destino
+  checkout_click:          'begin_checkout',
+  loyalty_checkout_click:  'begin_checkout',
+  platform_checkout_click: 'begin_checkout',
+  user_signup:             'sign_up',
+  loyalty_register:        'sign_up',
+  newsletter_subscribe:    'subscribe',
+  tool_lead_capture:       'generate_lead',
+  purchase:                'purchase',
+};
+
 // Central tracking — Supabase + GTM + GA4 + Facebook Pixel + CAPI + localStorage cache
 // Event priority: CAPI (server-side, ad-blocker-proof) > Supabase (first-party) > browser pixels
 function track(event, params={}) {
@@ -394,68 +415,62 @@ function track(event, params={}) {
   if (!consentOk && event !== 'cookie_consent') return;
 
   // 3. GTM dataLayer — ÚNICA fonte pra GA4 + Meta Pixel + Google Ads.
-  // GTM consome esse push e dispara tags (Pixel base, GA4 event, Ads conversion).
-  // SEM gtag()/fbq() direto — lint do CI bloqueia. Histórico: 2026-04-12 já quebrou
-  // (memória feedback_tracking_saga). Disciplina = dataLayer-only.
-  //
-  // Mapeamento canonical → GA4/Meta standard (GTM faz a tradução via Lookup Table):
-  //   coupon_copy          → add_to_cart / AddToCart
-  //   checkout_click       → begin_checkout / InitiateCheckout
-  //   firm_detail_open     → view_item / ViewContent
-  //   user_signup          → sign_up / CompleteRegistration
-  //   loyalty_register     → sign_up / CompleteRegistration
-  //   newsletter_subscribe → subscribe / Subscribe
-  //   generate_lead        → generate_lead / Lead
-  //   purchase             → purchase / Purchase
-  //   page_view            → page_view / PageView
-  window.dataLayer = window.dataLayer || [];
-  const _fb = _getFbAttribution();
-  const _anonId = _getAnonId();
-  const _user = typeof currentUser!=='undefined' ? currentUser : null;
-  window.dataLayer.push({
-    event,
-    event_id: eid,                  // MESMO eid vai pro CAPI logo abaixo → Meta dedup Pixel × CAPI
-    timestamp: ts,
-    // user_data (Meta Advanced Matching + GA4 user_id)
-    user_data: {
-      external_id: _user?.id || _anonId || null,
-      em:          params.em || _user?.email || null,
-      ph:          params.ph || null,
-      fn:          params.fn || _user?.user_metadata?.full_name?.split(' ')[0] || null,
-      ln:          params.ln || null,
-      anon_id:     _anonId,
-      fbp:         _fb.fbp || null,
-      fbc:         _fb.fbc || null,
-    },
-    // ecommerce schema (GA4 enhanced ecommerce)
-    ecommerce: {
-      currency: params.currency || 'USD',
-      value:    params.value || 0,
-      items:    params.firm_id ? [{
-        item_id:   params.firm_id,
-        item_name: params.firm_name || params.content_name || params.firm_id,
-        item_category: 'prop_firm',
-        coupon:    params.coupon_code || params.coupon || null,
-        quantity:  1,
-        price:     params.value || 0,
-      }] : (params.items || []),
-    },
-    // Campos pra Meta Pixel + GTM dlv legacy (firm_id/firm_name/coupon_code/page_name)
-    content_ids:  params.content_ids || (params.firm_id ? [params.firm_id] : null),
-    content_name: params.content_name || params.firm_name || params.page_name || null,
-    content_type: params.content_type || (params.firm_id ? 'product' : null),
-    content_category: params.content_category || null,
-    firm_id:      params.firm_id || null,
-    firm_name:    params.firm_name || null,
-    coupon_code:  params.coupon_code || params.coupon || null,
-    page_name:    params.page_name || null,
-    // UTM (GTM pode usar pra source/medium dimensions)
-    utm_source:   _src,
-    utm_medium:   _med,
-    utm_campaign: _cmp,
-    // Spread params extras no final (eventos custom passam dados específicos)
-    ...params,
-  });
+  // SÓ eventos de funil (allowlist GA4_FUNNEL) chegam aqui. O nome empurrado é o
+  // PADRÃO GA4 (1 nome por ação) — o site faz a tradução, não o GTM. Instrumentação
+  // interna (tab_hidden, idle, bot_*, js_error, quiz_*, drawer_select, scroll_depth…)
+  // NÃO entra no dataLayer — fica só no Supabase acima. Mantém GA4 limpo (~6-8 eventos).
+  // SEM gtag()/fbq() direto — disciplina dataLayer-only (memória feedback_tracking_saga).
+  const _ga4Event = GA4_FUNNEL[event];
+  if (_ga4Event) {
+    window.dataLayer = window.dataLayer || [];
+    const _fb = _getFbAttribution();
+    const _anonId = _getAnonId();
+    const _user = typeof currentUser!=='undefined' ? currentUser : null;
+    window.dataLayer.push({
+      event:    _ga4Event,            // nome PADRÃO GA4 (view_item/add_to_cart/begin_checkout/…)
+      event_id: eid,                  // MESMO eid vai pro CAPI logo abaixo → Meta dedup Pixel × CAPI
+      timestamp: ts,
+      // user_data (Meta Advanced Matching + GA4 user_id)
+      user_data: {
+        external_id: _user?.id || _anonId || null,
+        em:          params.em || _user?.email || null,
+        ph:          params.ph || null,
+        fn:          params.fn || _user?.user_metadata?.full_name?.split(' ')[0] || null,
+        ln:          params.ln || null,
+        anon_id:     _anonId,
+        fbp:         _fb.fbp || null,
+        fbc:         _fb.fbc || null,
+      },
+      // ecommerce schema (GA4 enhanced ecommerce)
+      ecommerce: {
+        currency: params.currency || 'USD',
+        value:    params.value || 0,
+        items:    params.firm_id ? [{
+          item_id:   params.firm_id,
+          item_name: params.firm_name || params.content_name || params.firm_id,
+          item_category: 'prop_firm',
+          coupon:    params.coupon_code || params.coupon || null,
+          quantity:  1,
+          price:     params.value || 0,
+        }] : (params.items || []),
+      },
+      // Campos pra Meta Pixel + GTM dlv legacy (firm_id/firm_name/coupon_code/page_name)
+      content_ids:  params.content_ids || (params.firm_id ? [params.firm_id] : null),
+      content_name: params.content_name || params.firm_name || params.page_name || null,
+      content_type: params.content_type || (params.firm_id ? 'product' : null),
+      content_category: params.content_category || null,
+      firm_id:      params.firm_id || null,
+      firm_name:    params.firm_name || null,
+      coupon_code:  params.coupon_code || params.coupon || null,
+      page_name:    params.page_name || null,
+      // UTM (GTM pode usar pra source/medium dimensions)
+      utm_source:   _src,
+      utm_medium:   _med,
+      utm_campaign: _cmp,
+      // Spread params extras no final (eventos custom passam dados específicos)
+      ...params,
+    });
+  }
 
   // 4. Facebook Conversions API server-side (bypassa ad blockers) — MESMO event_id do dataLayer
   // Dedup Pixel browser × CAPI: GTM dispara Pixel com event_id=eid, CAPI envia event_id=eid → Meta soma 1.
