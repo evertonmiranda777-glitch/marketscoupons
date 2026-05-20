@@ -1397,12 +1397,9 @@ function acceptCookies(){
       ad_personalization: 'granted',
     });
   }
-  // Evento separado pro GTM re-disparar tags Pixel Base / GA4 Config que estavam consent-blocked.
-  // (tags devem ter trigger Custom Event 'consent_granted' além do Initialization)
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: 'consent_granted' });
   track('cookie_consent',{action:'accepted'});
-  // Page_view RETROATIVO: dispara CAPI pro page atual (track inicial rolou ANTES do consent → CAPI foi bloqueado)
+  // Page_view RETROATIVO pós-consent: track inicial rolou ANTES do consent (CAPI bloqueado).
+  // Esse page_view carrega event_id → Meta Pixel Base (trigger page_view) dispara com dedup vs CAPI.
   try {
     const page = sessionStorage.getItem('mc_page') || (typeof _pageFromPath === 'function' ? _pageFromPath() : '') || 'home';
     track('page_view', { page_name: page, retroactive: true });
