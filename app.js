@@ -1443,6 +1443,8 @@ function acceptCookies(){
 function rejectCookies(){
   localStorage.setItem('mc-cookies-consent','rejected');
   document.getElementById('ck-banner').style.display='none';
+  // registra a recusa pra MEDIR a taxa real (antes não media — só 'accepted' era trackeado)
+  try { track('cookie_consent',{action:'rejected'}); } catch(_){}
 }
 function showCookieBanner(){
   if(!localStorage.getItem('mc-cookies-consent')){
