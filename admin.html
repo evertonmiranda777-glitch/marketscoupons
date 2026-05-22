@@ -1775,20 +1775,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Série temporal (comissão USD/dia)</div>
-      </div>
-      <div class="chart-card" style="padding:16px;">
-        <canvas id="fin-chart" height="90"></canvas>
-      </div>
-
-      <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Últimas vendas individuais</div>
-      </div>
-      <div class="chart-card" style="padding:0;overflow:hidden;">
-        <div class="data-table-wrap"><table class="data-table" id="fin-leads-tbl"></table></div>
-      </div>
-
-      <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">ROAS Real por Campanha</div>
         <div class="sec-actions">
           <button class="btn-secondary" onclick="runAttributionMatcher(this)">Rodar Matcher</button>
@@ -1797,6 +1783,13 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Cruza gasto Meta Ads (por utm_campaign) com vendas reais das firmas atribuídas via click de cupom. Matcher roda diariamente 05h30 BRT — botão força execução imediata.</div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="fin-roas-real"></table></div>
+      </div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Últimas vendas individuais</div>
+      </div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="fin-leads-tbl"></table></div>
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
@@ -3934,25 +3927,6 @@ async function renderFinanceiro(){
       const ago = r.last ? Math.round((Date.now()-new Date(r.last).getTime())/86400000)+'d' : '—';
       return `<tr><td><b>${r.firm_id.toUpperCase()}</b></td><td>${r.tx}</td><td>${fmtUSD(r.com)}</td><td>${r.clicks_all} / ${r.clicks_uniq}</td><td>${cvr}</td><td>${r.last||'—'} (${ago})</td></tr>`;
     }).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:24px;">Nenhum dado ainda. Instale a extensão ou faça upload CSV.</td></tr>'}</tbody>`;
-
-  // Gráfico série temporal
-  const byDate = {};
-  stats.forEach(r => {
-    byDate[r.date] = (byDate[r.date]||0) + Number(r.commission||0);
-  });
-  const sortedDates = Object.keys(byDate).sort();
-  const canvas = document.getElementById('fin-chart');
-  if (canvas && sortedDates.length && window.Chart) {
-    if (_finChart) _finChart.destroy();
-    _finChart = new Chart(canvas.getContext('2d'), {
-      type:'line',
-      data:{
-        labels: sortedDates,
-        datasets:[{ label:'Comissão (USD)', data: sortedDates.map(d=>byDate[d]), borderColor:'#F0B429', backgroundColor:'rgba(240,180,41,.15)', fill:true, tension:.3 }]
-      },
-      options:{ responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
-    });
-  }
 
   // Leads individuais
   const leadsTbl = document.getElementById('fin-leads-tbl');
