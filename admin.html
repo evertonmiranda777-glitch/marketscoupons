@@ -3296,7 +3296,7 @@ function applyCustomDateRange() {
   const s = document.getElementById('gdb-start').value;
   const e = document.getElementById('gdb-end').value;
   if (!s || !e) return;
-  globalDateStart = new Date(s).toISOString();
+  globalDateStart = new Date(s + 'T00:00:00').toISOString();
   globalDateEnd = new Date(e + 'T23:59:59').toISOString();
   document.querySelectorAll('.gdb-pill').forEach(b => b.classList.remove('active'));
   document.getElementById('gdb-active').textContent = `${s} a ${e}`;
@@ -3858,8 +3858,12 @@ async function renderFinanceiro(){
   // Filtro global: since/until em ISO (created_at) ou YYYY-MM-DD (date)
   const sinceIso = globalDateStart || new Date(0).toISOString();
   const untilIso = globalDateEnd || new Date().toISOString();
-  const sinceDate = sinceIso.slice(0,10);
-  const untilDate = untilIso.slice(0,10);
+  // ad_spend_daily.date / affiliate_daily_stats.date são DATE de calendário local.
+  // NÃO usar slice(0,10) do ISO UTC: em fuso negativo (BRT -3) o fim-de-dia rola pro
+  // dia seguinte (21/05 23:59 BRT = 22/05 02:59 UTC) → puxava gasto do dia errado.
+  const _localDay = iso => { const d = new Date(iso); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+  const sinceDate = _localDay(sinceIso);
+  const untilDate = _localDay(untilIso);
   const days = Math.max(1, Math.ceil((new Date(untilIso) - new Date(sinceIso)) / 86400000));
 
   let statsQ = db.from('affiliate_daily_stats').select('*').gte('date', sinceDate).lte('date', untilDate).order('date',{ascending:false});
