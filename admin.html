@@ -4069,8 +4069,9 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const revBRL = a.revenueUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (revBRL/spendBRL) : null;
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
+    const lucroBRL = revBRL - spendBRL;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
-    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, avgConf };
+    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf };
   }).filter(r => r.sales > 0).sort((x,y) => (y.roas||-1) - (x.roas||-1));
 
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -4078,11 +4079,12 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
 
   tbl.innerHTML = `
     <thead><tr>
-      <th>Campanha</th><th>Gasto</th><th>Cliques Ads</th><th>Vendas Reais</th><th>Receita</th><th>ROAS</th><th>CAC</th><th>Confiança</th>
+      <th>Campanha</th><th>Gasto</th><th>Cliques Ads</th><th>Vendas Reais</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th>
     </tr></thead>
     <tbody>${rows.length ? rows.map(r=>{
       const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
       const roasColor = r.roas == null ? 'var(--t3)' : r.roas >= 2 ? '#10B981' : r.roas >= 1 ? '#F0B429' : '#EF4444';
+      const lucroColor = r.lucroBRL > 0 ? '#10B981' : r.lucroBRL < 0 ? '#EF4444' : 'var(--t3)';
       return `<tr>
         <td><b>${r.campaign}</b></td>
         <td>${fmtBRL(r.spendBRL)}</td>
@@ -4090,10 +4092,11 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <td>${r.sales}</td>
         <td>${r.sales ? fmtUSD(r.revenueUSD) + '<div style="font-size:10px;color:var(--t3);">≈ '+fmtBRL(r.revBRL)+'</div>' : '—'}</td>
         <td style="color:${roasColor};font-weight:700;">${r.roas!=null ? r.roas.toFixed(2)+'x' : '—'}</td>
+        <td style="color:${lucroColor};font-weight:700;">${(r.lucroBRL>=0?'+':'')+fmtBRL(r.lucroBRL)}</td>
         <td>${r.cac ? fmtBRL(r.cac) : '—'}</td>
         <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>` : '—'}</td>
       </tr>`;
-    }).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma atribuição ainda. Rode o matcher depois que houver vendas reais + clicks de cupom com utm_campaign.</td></tr>'}</tbody>`;
+    }).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma atribuição ainda. Rode o matcher depois que houver vendas reais + clicks de cupom com utm_campaign.</td></tr>'}</tbody>`;
 }
 
 // Ranking de Vendas por Local + Horário — geo do clique de cupom atribuído à venda real
