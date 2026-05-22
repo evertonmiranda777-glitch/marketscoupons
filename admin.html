@@ -1788,7 +1788,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Ranking de Vendas por Local + Horário</div>
       </div>
-      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">País + estado + cidade + horário (BRT) das vendas reais, juntos na mesma linha, com ticket médio (receita ÷ vendas). Ordenado por nº de vendas — o topo são os melhores alvos pra concentrar verba; ticket alto = região que compra conta cara. Geo coletado desde 22/05/2026; vendas anteriores ficam sem geo.</div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">País + estado + cidade + horário (BRT) das vendas reais, juntos na mesma linha. Comissão em USD (moeda das firmas), R$ na linha de apoio. Ordenado por nº de vendas — o topo são os melhores alvos pra concentrar verba; comissão média mais alta = região que compra conta maior. Geo coletado desde 22/05/2026; vendas anteriores ficam sem geo.</div>
       <div id="fin-geo-nota" style="font-size:11px;color:var(--gold);margin:-4px 0 10px;"></div>
       <div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:14px;">
         <div class="data-table-wrap" style="max-height:440px;overflow-y:auto;"><table class="data-table" id="fin-geo-combo"></table></div>
@@ -1810,7 +1810,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">ROAS por Keyword (Apex/Bulenox — atribuição 1:1)</div>
       </div>
-      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Dados coletados da página Keywords do painel da firma (via extensão Chrome). utm_campaign vira <code>keyword</code> no link afiliado → firma mostra vendas por campanha. Cruza com gasto Meta Ads por utm_campaign.</div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Dados coletados da página Keywords do painel da firma (via extensão Chrome). utm_campaign vira <code>keyword</code> no link afiliado → firma mostra vendas por campanha. Cruza com gasto Meta Ads por utm_campaign. Vendas/comissão são o <b>período do filtro</b> (diff dos snapshots cumulativos do painel).</div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="fin-roas-keywords"></table></div>
       </div>
@@ -3961,28 +3961,33 @@ async function renderFinanceiro(){
 async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
   const tbl = document.getElementById('fin-roas-keywords');
   if (!tbl) return;
-  const [kwRes, spendRes] = await Promise.all([
-    db.from('affiliate_keyword_stats').select('firm_id,keyword,clicks,unique_clicks,leads,sales,commission,currency,snapshot_date').gte('snapshot_date', sinceDate).lte('snapshot_date', untilDate),
+  // affiliate_keyword_stats = valores CUMULATIVOS (lifetime) do painel Apex/Bulenox.
+  // Pra refletir o filtro de data: diff entre o último snapshot DENTRO do range e o
+  // último snapshot ANTES do range. Sem o diff a tabela mostraria sempre o total
+  // all-time e mudar a data não veria o criativo que vendeu no período.
+  const kwCols = 'firm_id,keyword,clicks,leads,sales,commission,snapshot_date';
+  const [endRes, baseRes, spendRes] = await Promise.all([
+    db.from('affiliate_keyword_stats').select(kwCols).gte('snapshot_date', sinceDate).lte('snapshot_date', untilDate).order('snapshot_date',{ascending:false}),
+    db.from('affiliate_keyword_stats').select(kwCols).lt('snapshot_date', sinceDate).order('snapshot_date',{ascending:false}),
     db.from('ad_spend_daily').select('campaign_name,spend,currency,clicks').gte('date', sinceDate).lte('date', untilDate)
   ]);
-  const kws = kwRes.data || [];
   const spend = spendRes.data || [];
-
-  // Agregar keywords por (firm_id + keyword) — pega ultimo snapshot (valores sao cumulativos no painel amember)
-  const latestByKey = {};
-  kws.forEach(k => {
-    const key = k.firm_id + '::' + k.keyword;
-    if (!latestByKey[key] || k.snapshot_date > latestByKey[key].snapshot_date) latestByKey[key] = k;
-  });
+  // ordem desc + primeira escrita vence = snapshot mais recente por chave
+  const endByKey = {}, baseByKey = {};
+  (endRes.data||[]).forEach(k => { const key=k.firm_id+'::'+k.keyword; if(!endByKey[key]) endByKey[key]=k; });
+  (baseRes.data||[]).forEach(k => { const key=k.firm_id+'::'+k.keyword; if(!baseByKey[key]) baseByKey[key]=k; });
   const byKw = {};
-  Object.values(latestByKey).forEach(k => {
-    const kw = (k.keyword||'').toLowerCase();
+  Object.keys(endByKey).forEach(key => {
+    const e = endByKey[key], b = baseByKey[key];
+    // atividade do período = cumulativo no fim do range − cumulativo antes do range
+    const diff = f => Math.max(0, Number(e[f]||0) - Number(b ? b[f]||0 : 0));
+    const kw = (e.keyword||'').toLowerCase();
     if (!byKw[kw]) byKw[kw] = { keyword:kw, firms:[], clicks:0, leads:0, sales:0, commissionUSD:0 };
-    byKw[kw].firms.push(k.firm_id);
-    byKw[kw].clicks += Number(k.clicks||0);
-    byKw[kw].leads += Number(k.leads||0);
-    byKw[kw].sales += Number(k.sales||0);
-    byKw[kw].commissionUSD += Number(k.commission||0);
+    byKw[kw].firms.push(e.firm_id);
+    byKw[kw].clicks += diff('clicks');
+    byKw[kw].leads += diff('leads');
+    byKw[kw].sales += diff('sales');
+    byKw[kw].commissionUSD += diff('commission');
   });
 
   // Agregar spend por campaign_name.lowercase (igual ao formato mcBuildKeyword que normaliza)
@@ -4117,35 +4122,40 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
   }
   const pais={}, estado={}, cidade={}, hora={}, combo={};
   let comGeo=0, semGeo=0;
-  const acc=(o,k,rev)=>{ if(!k) return; if(!o[k]) o[k]={v:0,r:0}; o[k].v++; o[k].r+=rev; };
+  const acc=(o,k,usd,brl)=>{ if(!k) return; if(!o[k]) o[k]={v:0,u:0,r:0}; o[k].v++; o[k].u+=usd; o[k].r+=brl; };
   attrs.forEach(a=>{
     const c = clk[a.click_id];
-    const rev = (Number(a.amount)||0) * (a.currency==='BRL'?1:fxUSDtoBRL);
+    const amt = Number(a.amount)||0;
+    const isBRL = a.currency==='BRL';
+    const usd = isBRL ? amt/(fxUSDtoBRL||1) : amt;
+    const brl = isBRL ? amt : amt*fxUSDtoBRL;
     if(!c || !c.country){ semGeo++; return; }
     comGeo++;
-    acc(pais, c.country, rev);
-    acc(estado, c.region ? c.country+' · '+c.region : null, rev);
-    acc(cidade, c.city ? c.city+' · '+(c.region||c.country) : null, rev);
+    acc(pais, c.country, usd, brl);
+    acc(estado, c.region ? c.country+' · '+c.region : null, usd, brl);
+    acc(cidade, c.city ? c.city+' · '+(c.region||c.country) : null, usd, brl);
     if(a.click_ts){
       const ms = new Date(a.click_ts).getTime() + (Number(a.hours_to_sale)||0)*3600000;
       const hr = String(new Date(ms).getHours()).padStart(2,'0')+':00';
-      acc(hora, hr, rev);
+      acc(hora, hr, usd, brl);
       const key = c.country+'|'+(c.region||'')+'|'+(c.city||'')+'|'+hr;
-      if(!combo[key]) combo[key]={pais:c.country, estado:c.region||'—', cidade:c.city||'—', hora:hr, v:0, r:0};
-      combo[key].v++; combo[key].r+=rev;
+      if(!combo[key]) combo[key]={pais:c.country, estado:c.region||'—', cidade:c.city||'—', hora:hr, v:0, u:0, r:0};
+      combo[key].v++; combo[key].u+=usd; combo[key].r+=brl;
     }
   });
+  const fmtUSD = v=>'$'+Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v=>'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const money = (usd,brl)=>`<b>${fmtUSD(usd)}</b><div style="font-size:10px;color:var(--t3);">≈ ${fmtBRL(brl)}</div>`;
   const rollup=(col1,obj)=>{
     const e=Object.entries(obj).sort((x,y)=>y[1].v-x[1].v);
-    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Ticket médio</th><th>Receita</th></tr></thead>`;
+    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Comissão média</th><th>Comissão</th></tr></thead>`;
     if(!e.length) return head+'<tbody><tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Sem dados ainda.</td></tr></tbody>';
-    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td>${fmtBRL(d.r/d.v)}</td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>';
+    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td>${money(d.u/d.v,d.r/d.v)}</td><td>${money(d.u,d.r)}</td></tr>`).join('')+'</tbody>';
   };
   const comboRows = Object.values(combo).sort((x,y)=>y.v-x.v);
-  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th>Horário</th><th>Vendas</th><th>Ticket médio</th><th>Receita</th></tr></thead>';
+  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th>Horário</th><th>Vendas</th><th>Comissão média</th><th>Comissão</th></tr></thead>';
   elCombo.innerHTML = cHead + (comboRows.length
-    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td>${fmtBRL(d.r/d.v)}</td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>'
+    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td>${money(d.u/d.v,d.r/d.v)}</td><td>${money(d.u,d.r)}</td></tr>`).join('')+'</tbody>'
     : '<tbody><tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</td></tr></tbody>');
   elP.innerHTML = rollup('País', pais);
   elE.innerHTML = rollup('Estado', estado);
