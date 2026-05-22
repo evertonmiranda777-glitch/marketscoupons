@@ -1780,7 +1780,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           <button class="btn-secondary" onclick="runAttributionMatcher(this)">Rodar Matcher</button>
         </div>
       </div>
-      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Cruza gasto Meta Ads (por utm_campaign) com vendas reais das firmas atribuídas via click de cupom. Matcher roda diariamente 05h30 BRT — botão força execução imediata.</div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Cruza gasto Meta Ads (por utm_campaign) com vendas reais das firmas atribuídas via click de cupom. Matcher roda diariamente 05h30 BRT — botão força execução imediata. <b style="color:var(--t2);">Mostra só campanhas que registraram venda.</b></div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="fin-roas-real"></table></div>
       </div>
@@ -4055,7 +4055,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
     return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, avgConf };
-  }).sort((x,y) => (y.roas||-1) - (x.roas||-1));
+  }).filter(r => r.sales > 0).sort((x,y) => (y.roas||-1) - (x.roas||-1));
 
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
