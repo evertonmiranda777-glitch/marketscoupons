@@ -1786,11 +1786,14 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Vendas por País / Estado / Cidade</div>
+        <div class="sec-title" style="font-size:14px;">Ranking de Vendas por Local + Horário</div>
       </div>
-      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Geo das vendas reais (do clique de cupom atribuído) — ranking pra saber onde investir e em que horário. Coleta de geo começou em 22/05/2026; vendas anteriores ficam sem geo.</div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">País + estado + cidade + horário (BRT) das vendas reais, juntos na mesma linha, com ticket médio (receita ÷ vendas). Ordenado por nº de vendas — o topo são os melhores alvos pra concentrar verba; ticket alto = região que compra conta cara. Geo coletado desde 22/05/2026; vendas anteriores ficam sem geo.</div>
       <div id="fin-geo-nota" style="font-size:11px;color:var(--gold);margin:-4px 0 10px;"></div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+      <div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:14px;">
+        <div class="data-table-wrap" style="max-height:440px;overflow-y:auto;"><table class="data-table" id="fin-geo-combo"></table></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
         <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-pais"></table></div></div>
         <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-estado"></table></div></div>
         <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-cidade"></table></div></div>
@@ -4093,11 +4096,12 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     }).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma atribuição ainda. Rode o matcher depois que houver vendas reais + clicks de cupom com utm_campaign.</td></tr>'}</tbody>`;
 }
 
-// Vendas por País / Estado / Cidade — geo do clique de cupom atribuído à venda real
+// Ranking de Vendas por Local + Horário — geo do clique de cupom atribuído à venda real
 async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
-  const elP=document.getElementById('fin-geo-pais'), elE=document.getElementById('fin-geo-estado'),
+  const elCombo=document.getElementById('fin-geo-combo'),
+        elP=document.getElementById('fin-geo-pais'), elE=document.getElementById('fin-geo-estado'),
         elC=document.getElementById('fin-geo-cidade'), elH=document.getElementById('fin-geo-hora');
-  if(!elP) return;
+  if(!elCombo) return;
   const attrRes = await db.from('coupon_attributions')
     .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale')
     .gte('sale_date', sinceDate).lte('sale_date', untilDate);
@@ -4108,7 +4112,7 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const r = await db.from('coupon_clicks').select('id,country,region,city').in('id', clickIds.slice(i,i+200));
     (r.data||[]).forEach(c=>{ clk[c.id]=c; });
   }
-  const pais={}, estado={}, cidade={}, hora={};
+  const pais={}, estado={}, cidade={}, hora={}, combo={};
   let comGeo=0, semGeo=0;
   const acc=(o,k,rev)=>{ if(!k) return; if(!o[k]) o[k]={v:0,r:0}; o[k].v++; o[k].r+=rev; };
   attrs.forEach(a=>{
@@ -4121,20 +4125,29 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     acc(cidade, c.city ? c.city+' · '+(c.region||c.country) : null, rev);
     if(a.click_ts){
       const ms = new Date(a.click_ts).getTime() + (Number(a.hours_to_sale)||0)*3600000;
-      acc(hora, String(new Date(ms).getHours()).padStart(2,'0')+'h', rev);
+      const hr = String(new Date(ms).getHours()).padStart(2,'0')+':00';
+      acc(hora, hr, rev);
+      const key = c.country+'|'+(c.region||'')+'|'+(c.city||'')+'|'+hr;
+      if(!combo[key]) combo[key]={pais:c.country, estado:c.region||'—', cidade:c.city||'—', hora:hr, v:0, r:0};
+      combo[key].v++; combo[key].r+=rev;
     }
   });
   const fmtBRL = v=>'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const build=(col1,obj)=>{
+  const rollup=(col1,obj)=>{
     const e=Object.entries(obj).sort((x,y)=>y[1].v-x[1].v);
-    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Receita</th></tr></thead>`;
-    if(!e.length) return head+'<tbody><tr><td colspan="3" style="text-align:center;color:var(--t3);padding:20px;">Sem dados ainda.</td></tr></tbody>';
-    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>';
+    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Ticket médio</th><th>Receita</th></tr></thead>`;
+    if(!e.length) return head+'<tbody><tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Sem dados ainda.</td></tr></tbody>';
+    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td>${fmtBRL(d.r/d.v)}</td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>';
   };
-  elP.innerHTML = build('País', pais);
-  elE.innerHTML = build('Estado', estado);
-  elC.innerHTML = build('Cidade', cidade);
-  elH.innerHTML = build('Horário da venda', hora);
+  const comboRows = Object.values(combo).sort((x,y)=>y.v-x.v);
+  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th>Horário</th><th>Vendas</th><th>Ticket médio</th><th>Receita</th></tr></thead>';
+  elCombo.innerHTML = cHead + (comboRows.length
+    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td>${fmtBRL(d.r/d.v)}</td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>'
+    : '<tbody><tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</td></tr></tbody>');
+  elP.innerHTML = rollup('País', pais);
+  elE.innerHTML = rollup('Estado', estado);
+  elC.innerHTML = rollup('Cidade', cidade);
+  elH.innerHTML = rollup('Horário', hora);
   const nota=document.getElementById('fin-geo-nota');
   if(nota) nota.textContent = (comGeo+semGeo)>0
     ? `${comGeo} de ${comGeo+semGeo} vendas com geo${semGeo?' — '+semGeo+' sem (antes de 22/05)':''}.`
