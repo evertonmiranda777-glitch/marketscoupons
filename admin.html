@@ -1788,7 +1788,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Ranking de Vendas por Local + Horário</div>
       </div>
-      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">País + estado + cidade + horário (BRT) das vendas reais, juntos na mesma linha. Comissão em USD (moeda das firmas), R$ na linha de apoio. Ordenado por nº de vendas — o topo são os melhores alvos pra concentrar verba; comissão média mais alta = região que compra conta maior. Geo coletado desde 22/05/2026; vendas anteriores ficam sem geo.</div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">País + estado + cidade + horário (BRT) das vendas reais, juntos na mesma linha. Comissão em US$ (moeda das firmas) e R$ lado a lado. Ordenado por nº de vendas — o topo são os melhores alvos pra concentrar verba. Geo coletado desde 22/05/2026; vendas anteriores ficam sem geo.</div>
       <div id="fin-geo-nota" style="font-size:11px;color:var(--gold);margin:-4px 0 10px;"></div>
       <div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:14px;">
         <div class="data-table-wrap" style="max-height:440px;overflow-y:auto;"><table class="data-table" id="fin-geo-combo"></table></div>
@@ -4145,17 +4145,16 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
   });
   const fmtUSD = v=>'$'+Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v=>'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const money = (usd,brl)=>`<b>${fmtUSD(usd)}</b><div style="font-size:10px;color:var(--t3);">≈ ${fmtBRL(brl)}</div>`;
   const rollup=(col1,obj)=>{
     const e=Object.entries(obj).sort((x,y)=>y[1].v-x[1].v);
-    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Comissão média</th><th>Comissão</th></tr></thead>`;
+    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>`;
     if(!e.length) return head+'<tbody><tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Sem dados ainda.</td></tr></tbody>';
-    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td>${money(d.u/d.v,d.r/d.v)}</td><td>${money(d.u,d.r)}</td></tr>`).join('')+'</tbody>';
+    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>';
   };
   const comboRows = Object.values(combo).sort((x,y)=>y.v-x.v);
-  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th>Horário</th><th>Vendas</th><th>Comissão média</th><th>Comissão</th></tr></thead>';
+  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th>Horário</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>';
   elCombo.innerHTML = cHead + (comboRows.length
-    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td>${money(d.u/d.v,d.r/d.v)}</td><td>${money(d.u,d.r)}</td></tr>`).join('')+'</tbody>'
+    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>'
     : '<tbody><tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</td></tr></tbody>');
   elP.innerHTML = rollup('País', pais);
   elE.innerHTML = rollup('Estado', estado);
