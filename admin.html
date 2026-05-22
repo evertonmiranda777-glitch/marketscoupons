@@ -1786,6 +1786,18 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Vendas por País / Estado / Cidade</div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Geo das vendas reais (do clique de cupom atribuído) — ranking pra saber onde investir e em que horário. Coleta de geo começou em 22/05/2026; vendas anteriores ficam sem geo.</div>
+      <div id="fin-geo-nota" style="font-size:11px;color:var(--gold);margin:-4px 0 10px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-pais"></table></div></div>
+        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-estado"></table></div></div>
+        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-cidade"></table></div></div>
+        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-hora"></table></div></div>
+      </div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Últimas vendas individuais</div>
       </div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
@@ -3940,6 +3952,7 @@ async function renderFinanceiro(){
   // ROAS Real por Campanha
   renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur);
   renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur);
+  renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL);
 }
 
 async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
@@ -4078,6 +4091,54 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>` : '—'}</td>
       </tr>`;
     }).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma atribuição ainda. Rode o matcher depois que houver vendas reais + clicks de cupom com utm_campaign.</td></tr>'}</tbody>`;
+}
+
+// Vendas por País / Estado / Cidade — geo do clique de cupom atribuído à venda real
+async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
+  const elP=document.getElementById('fin-geo-pais'), elE=document.getElementById('fin-geo-estado'),
+        elC=document.getElementById('fin-geo-cidade'), elH=document.getElementById('fin-geo-hora');
+  if(!elP) return;
+  const attrRes = await db.from('coupon_attributions')
+    .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale')
+    .gte('sale_date', sinceDate).lte('sale_date', untilDate);
+  const attrs = attrRes.data || [];
+  const clickIds = [...new Set(attrs.map(a=>a.click_id).filter(Boolean))];
+  const clk = {};
+  for(let i=0;i<clickIds.length;i+=200){
+    const r = await db.from('coupon_clicks').select('id,country,region,city').in('id', clickIds.slice(i,i+200));
+    (r.data||[]).forEach(c=>{ clk[c.id]=c; });
+  }
+  const pais={}, estado={}, cidade={}, hora={};
+  let comGeo=0, semGeo=0;
+  const acc=(o,k,rev)=>{ if(!k) return; if(!o[k]) o[k]={v:0,r:0}; o[k].v++; o[k].r+=rev; };
+  attrs.forEach(a=>{
+    const c = clk[a.click_id];
+    const rev = (Number(a.amount)||0) * (a.currency==='BRL'?1:fxUSDtoBRL);
+    if(!c || !c.country){ semGeo++; return; }
+    comGeo++;
+    acc(pais, c.country, rev);
+    acc(estado, c.region ? c.country+' · '+c.region : null, rev);
+    acc(cidade, c.city ? c.city+' · '+(c.region||c.country) : null, rev);
+    if(a.click_ts){
+      const ms = new Date(a.click_ts).getTime() + (Number(a.hours_to_sale)||0)*3600000;
+      acc(hora, String(new Date(ms).getHours()).padStart(2,'0')+'h', rev);
+    }
+  });
+  const fmtBRL = v=>'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const build=(col1,obj)=>{
+    const e=Object.entries(obj).sort((x,y)=>y[1].v-x[1].v);
+    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Receita</th></tr></thead>`;
+    if(!e.length) return head+'<tbody><tr><td colspan="3" style="text-align:center;color:var(--t3);padding:20px;">Sem dados ainda.</td></tr></tbody>';
+    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>';
+  };
+  elP.innerHTML = build('País', pais);
+  elE.innerHTML = build('Estado', estado);
+  elC.innerHTML = build('Cidade', cidade);
+  elH.innerHTML = build('Horário da venda', hora);
+  const nota=document.getElementById('fin-geo-nota');
+  if(nota) nota.textContent = (comGeo+semGeo)>0
+    ? `${comGeo} de ${comGeo+semGeo} vendas com geo${semGeo?' — '+semGeo+' sem (antes de 22/05)':''}.`
+    : '';
 }
 
 async function runAttributionMatcher(btn){
