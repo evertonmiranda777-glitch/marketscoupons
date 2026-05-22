@@ -349,8 +349,9 @@ function track(event, params={}) {
     referrer:     document.referrer || MC_ATTR.referrer || null,
     path:         location.pathname || null,
     landing_page: MC_ATTR.landing_page || null,
-    country:      (window._geo && window._geo.country) || null,
-    region:       (window._geo && window._geo.region) || null,
+    country:      (_geo && _geo.geo_country) || null,
+    region:       (_geo && _geo.geo_region) || null,
+    city:         (_geo && _geo.geo_city) || null,
     fbclid:       MC_ATTR.fbclid || null,
     gclid:        MC_ATTR.gclid || null,
     ttclid:       MC_ATTR.ttclid || null,
@@ -396,8 +397,9 @@ function track(event, params={}) {
         landing_page: MC_ATTR.landing_page || null,
         page_url: location.pathname + location.search,
         user_agent: navigator.userAgent,
-        country: (window._geo && window._geo.country) || null,
-        region: (window._geo && window._geo.region) || null,
+        country: (_geo && _geo.geo_country) || null,
+        region: (_geo && _geo.geo_region) || null,
+        city: (_geo && _geo.geo_city) || null,
       };
       db.from('coupon_clicks').insert(click).then(r=>{ if(r.error) console.warn('coupon_clicks insert:', r.error.message); });
     } catch(e) { console.warn('coupon_clicks error:', e); }

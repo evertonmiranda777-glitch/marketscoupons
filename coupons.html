@@ -786,6 +786,16 @@ const utm = {
 };
 try{localStorage.setItem('mc_attribution', JSON.stringify({...utm, ts: Date.now()}));}catch(e){}
 
+// Geo do visitante (ipinfo, cache de sessão) — alimenta coupon_clicks p/ painel Vendas por País/Cidade
+let _lpGeo = null;
+try{ const _g = sessionStorage.getItem('mc_geo'); if(_g) _lpGeo = JSON.parse(_g); }catch(e){}
+if(!_lpGeo){
+  fetch('https://ipinfo.io/json').then(r=>r.json()).then(d=>{
+    _lpGeo = { geo_country:d.country||'', geo_region:d.region||'', geo_city:d.city||'', geo_timezone:d.timezone||'' };
+    try{ sessionStorage.setItem('mc_geo', JSON.stringify(_lpGeo)); }catch(e){}
+  }).catch(()=>{ _lpGeo = {}; });
+}
+
 // Subscriber tracking (vem do email com ?s=<base64_email>) — persiste 30d pra atribuir clicks subsequentes
 let subscriberB64 = null;
 try {
@@ -927,6 +937,7 @@ function trackEvent(event, params={}){
           event_id: eid, fbclid: utm.fbclid, utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
           utm_term: utm.utm_term, utm_content: utm.utm_content,
           page_url: location.href, landing_page: location.pathname, referrer: document.referrer || null,
+          country: (_lpGeo&&_lpGeo.geo_country)||null, region: (_lpGeo&&_lpGeo.geo_region)||null, city: (_lpGeo&&_lpGeo.geo_city)||null,
           raw: { lang: LANG, location: 'lp_coupons', user_agent: navigator.userAgent.slice(0,200), sub_b64: subscriberB64 }
         }), keepalive: true
       }).catch(()=>{});
