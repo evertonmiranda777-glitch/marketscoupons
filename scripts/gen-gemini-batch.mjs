@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const root = path.join(path.dirname(__filename), '..');
-const KEY = 'AQ.Ab8RN6KiWD4OdlqKN7tzLEMgUHKfmoncwNEztIcHD_8wxwE1Mg';
+const KEY = process.env.GEMINI_API_KEY || (() => { throw new Error('GEMINI_API_KEY env required'); })();
 const MODEL = 'gemini-3-pro-image-preview';
 const outDir = path.join(root, 'img/guides-edu/gemini-pro');
 fs.mkdirSync(outDir, { recursive: true });
