@@ -1,0 +1,67 @@
+{
+  "name": "Markets Coupons — Prop Firm Deals",
+  "short_name": "Markets Coupons",
+  "description": "Cupons exclusivos das melhores prop firms, análise diária, calendário econômico e GEX.",
+  "start_url": "/?utm_source=pwa&utm_medium=homescreen",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0A0D14",
+  "theme_color": "#0A0D14",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    {
+      "src": "/img/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cupons",
+      "short_name": "Cupons",
+      "description": "Cupons ativos das prop firms",
+      "url": "/coupons?utm_source=pwa&utm_medium=shortcut&utm_campaign=coupons",
+      "icons": [{ "src": "/img/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Análise Diária",
+      "short_name": "Análise",
+      "description": "Análise SPX/NDX do dia",
+      "url": "/analysis?utm_source=pwa&utm_medium=shortcut&utm_campaign=analysis",
+      "icons": [{ "src": "/img/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Calendário Econômico",
+      "short_name": "Calendário",
+      "description": "Eventos econômicos do dia",
+      "url": "/calendar?utm_source=pwa&utm_medium=shortcut&utm_campaign=calendar",
+      "icons": [{ "src": "/img/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "GEX / Gamma",
+      "short_name": "GEX",
+      "description": "Gamma exposure levels",
+      "url": "/gamma?utm_source=pwa&utm_medium=shortcut&utm_campaign=gex",
+      "icons": [{ "src": "/img/pwa/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}
