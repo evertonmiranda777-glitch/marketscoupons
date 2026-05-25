@@ -186,28 +186,41 @@
   }
 
   // UI hook: botão no mobile menu pra ativar/desativar push.
-  // Mostra só se suporte existe; texto reflete o estado.
+  // Labels self-contained pra evitar dependência do sistema i18n do site.
+  const PUSH_LABELS = {
+    pt: { enable:'Ativar notificações', disable:'Desativar notificações', ok:'Pronto! Você receberá notificações.', off:'Notificações desativadas.', denied:'Permissão negada. Habilite nas configurações do navegador.', error:'Erro' },
+    en: { enable:'Enable notifications', disable:'Disable notifications', ok:'Done! You will receive notifications.', off:'Notifications disabled.', denied:'Permission denied. Enable in browser settings.', error:'Error' },
+    es: { enable:'Activar notificaciones', disable:'Desactivar notificaciones', ok:'¡Listo! Recibirás notificaciones.', off:'Notificaciones desactivadas.', denied:'Permiso denegado. Habilita en la configuración del navegador.', error:'Error' },
+    it: { enable:'Attiva notifiche', disable:'Disattiva notifiche', ok:'Fatto! Riceverai notifiche.', off:'Notifiche disattivate.', denied:'Permesso negato. Abilita nelle impostazioni del browser.', error:'Errore' },
+    fr: { enable:'Activer les notifications', disable:'Désactiver les notifications', ok:'Prêt ! Vous recevrez des notifications.', off:'Notifications désactivées.', denied:'Permission refusée. Activez dans les paramètres du navigateur.', error:'Erreur' },
+    de: { enable:'Benachrichtigungen aktivieren', disable:'Benachrichtigungen deaktivieren', ok:'Fertig! Sie erhalten Benachrichtigungen.', off:'Benachrichtigungen deaktiviert.', denied:'Berechtigung verweigert. Aktivieren Sie in den Browser-Einstellungen.', error:'Fehler' },
+    ar: { enable:'تفعيل الإشعارات', disable:'إيقاف الإشعارات', ok:'تم! ستتلقى الإشعارات.', off:'تم إيقاف الإشعارات.', denied:'تم رفض الإذن. فعّله من إعدادات المتصفح.', error:'خطأ' }
+  };
+  function pushL() {
+    let lang = 'en';
+    try { lang = (localStorage.getItem('mc_lang') || 'en').slice(0,2); } catch (_) {}
+    return PUSH_LABELS[lang] || PUSH_LABELS.en;
+  }
   function refreshPushButton() {
     const btn = document.getElementById('mm-push-toggle');
     if (!btn) return;
     if (!window.MC_PWA.pushSupported) { btn.style.display = 'none'; return; }
     btn.style.display = '';
     const label = btn.querySelector('span');
-    if (label) {
-      if (window.MC_PWA.hasPushSubscription) label.textContent = (window.t && window.t('push_disable')) || 'Desativar notificações';
-      else label.textContent = (window.t && window.t('push_enable')) || 'Ativar notificações';
-    }
+    const L = pushL();
+    if (label) label.textContent = window.MC_PWA.hasPushSubscription ? L.disable : L.enable;
   }
 
   window.mcTogglePush = async function () {
+    const L = pushL();
     if (window.MC_PWA.hasPushSubscription) {
       const r = await window.MC_PWA.unsubscribePush();
-      if (r.ok) alert((window.t && window.t('push_disabled_ok')) || 'Notificações desativadas.');
+      if (r.ok) alert(L.off);
     } else {
       const r = await window.MC_PWA.subscribePush();
-      if (r.ok) alert((window.t && window.t('push_enabled_ok')) || 'Pronto! Você receberá notificações.');
-      else if (r.reason === 'permission_denied') alert((window.t && window.t('push_denied')) || 'Permissão negada. Habilite nas configurações do navegador.');
-      else alert((window.t && window.t('push_error')) || ('Erro: ' + (r.reason || 'unknown')));
+      if (r.ok) alert(L.ok);
+      else if (r.reason === 'permission_denied') alert(L.denied);
+      else alert(L.error + ': ' + (r.reason || 'unknown'));
     }
     refreshPushButton();
   };
