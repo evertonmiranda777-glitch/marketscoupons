@@ -2081,11 +2081,13 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 /* BOT */
 .bot-fab{
  position:fixed;bottom:22px;right:22px;z-index:950;
- width:84px;height:84px;border:none;background:transparent;
+ width:140px;height:140px;border:none;background:transparent;
  cursor:pointer;padding:0;display:flex;
  transition:transform .3s;
  filter:drop-shadow(0 8px 20px rgba(240,180,41,.45)) drop-shadow(0 0 12px rgba(240,180,41,.35));
 }
+/* Esconde promo-topbar quando chat Max está aberto — evita tampar o header */
+body:has(.bot-win.open) .promo-topbar{display:none !important;}
 .bot-fab img{width:100%;height:100%;object-fit:contain;pointer-events:none;animation:max-float 4s ease-in-out infinite;display:block;}
 body:has(.bot-win.open) .bot-fab{display:none !important;}
 .bot-fab:hover{transform:scale(1.08);}
@@ -2267,10 +2269,10 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  .bot-inp{font-size:16px !important;}
  .bq{font-size:12px;padding:9px 10px;}
  body:has(.bot-win.open){overflow:hidden;}
- .bot-fab{bottom:14px;right:14px;width:64px;height:64px;}
+ .bot-fab{bottom:14px;right:14px;width:100px;height:100px;}
  /* Em pages com CTA grande no hero/footer (home, heatmap), recolhe pra cima pra não tampar */
  body[data-page="home"] .bot-fab,
- body[data-page="heatmap"] .bot-fab{bottom:80px;right:12px;width:60px;height:60px;}
+ body[data-page="heatmap"] .bot-fab{bottom:80px;right:12px;width:96px;height:96px;}
  .guides-grid,.blog-grid,.ind-grid,.offers-grid{grid-template-columns:1fr;}
  .blog-filters{padding:0 20px 12px;gap:6px;flex-wrap:wrap;}
  .bf-btn{padding:5px 10px;font-size:11px;}
