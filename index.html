@@ -41,6 +41,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/img/pwa/apple-touch-icon.png">
 <script src="/js/pwa-register.js?v=20260525" defer></script>
 <script src="/js/promo-topbar-fit.js?v=20260525" defer></script>
+<script src="/js/lang-dd-fix.js?v=20260525" defer></script>
 
 <!-- Hreflang: SEO multi-idioma -->
 <link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/">
@@ -428,8 +429,8 @@ img{max-width:100%;}
 }
 .lang-btn:hover{border-color:var(--b2);background:var(--glass-strong);}
 .lang-dd{
- position:absolute;top:100%;right:0;width:156px;padding-top:6px;
- z-index:9999;display:none;
+ position:fixed;top:var(--lang-dd-top,60px);right:var(--lang-dd-right,24px);width:156px;padding-top:6px;
+ z-index:1100;display:none;
 }
 .lang-dd-inner{
  background:rgba(20,27,39,.92);border:1px solid var(--glass-border);border-radius:10px;
@@ -2082,7 +2083,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 
 /* BOT */
 .bot-fab{
- position:fixed;bottom:22px;right:22px;z-index:800;
+ position:fixed;bottom:22px;right:22px;z-index:950;
  width:90px;height:90px;border:none;background:transparent;
  cursor:pointer;padding:0;display:flex;
  transition:transform .3s;
@@ -2099,7 +2100,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 @keyframes max-excited{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-2px) scale(1.03);}}
 .bot-badge{position:absolute;top:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;border:2px solid var(--bg);}
 .bot-win{
- position:fixed;bottom:92px;right:22px;z-index:800;
+ position:fixed;bottom:92px;right:22px;z-index:950;
  width:min(370px,calc(100vw - 32px));
  height:min(540px,calc(100vh - 210px));
  background:var(--sur);border:1px solid var(--b2);border-radius:15px;
