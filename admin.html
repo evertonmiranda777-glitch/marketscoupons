@@ -3937,13 +3937,30 @@ async function renderFinanceiro(){
   let statsQ = db.from('affiliate_daily_stats').select('*').gte('date', sinceDate).lte('date', untilDate).order('date',{ascending:false});
   let leadsQ = db.from('affiliate_conversions').select('*').gte('created_at', sinceIso).lte('created_at', untilIso).order('created_at',{ascending:false}).limit(50);
   let spendQ = db.from('ad_spend_daily').select('*').gte('date', sinceDate).lte('date', untilDate);
-  const [statsRes, leadsRes, spendRes] = await Promise.all([statsQ, leadsQ, spendQ]);
+  // Conversions REAIS por firma no período (fonte da verdade pra contagem de vendas).
+  // affiliate_daily_stats.transactions vem do scraper Markets Monitor que tem bug
+  // — conta 2 quando real é 1 (lê algum contador a mais do painel). Usar
+  // affiliate_conversions.count(*) como single source of truth.
+  let convQ = db.from('affiliate_conversions').select('firm_id,transaction_id').gte('created_at', sinceIso).lte('created_at', untilIso);
+  const [statsRes, leadsRes, spendRes, convRes] = await Promise.all([statsQ, leadsQ, spendQ, convQ]);
   const stats = statsRes.data || [];
   const leads = leadsRes.data || [];
   const spend = spendRes.data || [];
+  const convs = convRes.data || [];
 
-  // KPIs
-  const totTx = stats.reduce((a,r)=>a+(r.transactions||0),0);
+  // Contagem real de vendas por firma (dedup por transaction_id pra segurança)
+  const realTxByFirm = {};
+  const seenTx = new Set();
+  convs.forEach(c => {
+    if (!c.firm_id) return;
+    const k = (c.firm_id||'') + ':' + (c.transaction_id||'');
+    if (seenTx.has(k)) return;
+    seenTx.add(k);
+    realTxByFirm[c.firm_id] = (realTxByFirm[c.firm_id] || 0) + 1;
+  });
+
+  // KPIs — totTx agora usa contagem real de affiliate_conversions
+  const totTx = Object.values(realTxByFirm).reduce((a,n)=>a+n, 0);
   const totCom = stats.reduce((a,r)=>a+Number(r.commission||0),0);
   const totClicksAll = stats.reduce((a,r)=>a+(r.clicks_all||0),0);
   const totClicksUniq = stats.reduce((a,r)=>a+(r.clicks_unique||0),0);
@@ -3985,12 +4002,19 @@ async function renderFinanceiro(){
   stats.forEach(r => {
     const k = r.firm_id;
     if (!byFirm[k]) byFirm[k] = { firm_id:k, tx:0, com:0, clicks_all:0, clicks_uniq:0, last:null };
-    byFirm[k].tx += r.transactions||0;
     byFirm[k].com += Number(r.commission||0);
     byFirm[k].clicks_all += r.clicks_all||0;
     byFirm[k].clicks_uniq += r.clicks_unique||0;
     if (!byFirm[k].last || r.date > byFirm[k].last) byFirm[k].last = r.date;
   });
+  // Sobrescreve .tx com contagem REAL de affiliate_conversions (evita bug do scraper)
+  // Inclui firms que só têm conversions sem stats (fallback)
+  Object.keys(realTxByFirm).forEach(fid => {
+    if (!byFirm[fid]) byFirm[fid] = { firm_id:fid, tx:0, com:0, clicks_all:0, clicks_uniq:0, last:null };
+    byFirm[fid].tx = realTxByFirm[fid];
+  });
+  // Firms em stats mas sem conversions reais ficam com tx=0 (correto — não houve venda raw)
+  Object.values(byFirm).forEach(b => { if (typeof realTxByFirm[b.firm_id] === 'undefined') b.tx = 0; });
   const firmRows = Object.values(byFirm).sort((a,b)=>b.com-a.com);
   const tbl = document.getElementById('fin-firms-tbl');
   tbl.innerHTML = `
