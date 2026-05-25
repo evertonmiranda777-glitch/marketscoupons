@@ -6,17 +6,8 @@
     },
     "api/send-email.js": {
       "maxDuration": 60
-    },
-    "api/cron-bulk-send.js": {
-      "maxDuration": 300
     }
   },
-  "crons": [
-    {
-      "path": "/api/cron-promo",
-      "schedule": "0 12 */3 * *"
-    }
-  ],
   "redirects": [
     {
       "source": "/:path(.*)",

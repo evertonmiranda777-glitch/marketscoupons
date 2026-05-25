@@ -7730,7 +7730,9 @@ function buildGiveawayHtml(t, lang){
 function buildUrgentDealHtml(t, lang){
   const ano = new Date().getFullYear();
   const apexDeadline = t.apexDeadline || '2026-05-08T03:59:00Z';
-  const countdownUrl = `https://www.marketscoupons.com/api/email-image?type=countdown&d=${encodeURIComponent(apexDeadline)}&c=F97316`;
+  // /api/email-image deletado 2026-05-25 (Vercel limit). Templates "últimas horas"
+  // não estão mais em produção. Placeholder evita broken-image em previews.
+  const countdownUrl = `/img/pwa/icon-192.png`;
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="color-scheme" content="only light"><meta name="supported-color-schemes" content="only light">
@@ -14788,6 +14790,10 @@ function setAutoDailyLimit(v){
 
 async function forceCronSend(){
   const btn = document.getElementById('auto-force-btn'); if(!btn) return;
+  // Endpoint /api/cron-bulk-send deletado em 2026-05-25 (Vercel function limit).
+  // User enviando emails manualmente agora. Botão preservado pra não quebrar layout.
+  toast('Envio em massa desativado — use envio manual', 'warn');
+  return;
   // Buscar progresso real ANTES de mostrar prompt
   let elegiveis = '?', jaReceberam = '?';
   try {
