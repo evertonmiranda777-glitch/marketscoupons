@@ -1152,6 +1152,66 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  </div>
  </div>
 
+ <!-- ═══ PUSH NOTIFICATIONS PANEL ═══ -->
+ <div class="ea-panel" style="margin-bottom:16px;">
+   <div class="ea-hdr">
+     <div class="ea-hdr-top">
+       <div class="ea-title">🔔 Push Notifications</div>
+       <div style="display:flex;gap:8px;align-items:center;">
+         <span id="push-subs-count" style="font-size:11px;color:var(--t3);">— inscritos</span>
+         <button class="btn-secondary" style="font-size:10px;padding:5px 12px;" onclick="loadPushCount()">Atualizar</button>
+       </div>
+     </div>
+   </div>
+   <div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+     <div>
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Título *</label>
+       <input id="push-title" type="text" placeholder="🏷️ Apex 90% OFF — última hora" maxlength="60" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;">
+     </div>
+     <div>
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">URL (default /)</label>
+       <input id="push-url" type="text" placeholder="/firms/apex" maxlength="200" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;">
+     </div>
+     <div style="grid-column:1/-1;">
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Corpo</label>
+       <textarea id="push-body" rows="2" placeholder="Termina em 30min — cupom MARKET no checkout" maxlength="160" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;resize:vertical;"></textarea>
+     </div>
+     <div>
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Categoria</label>
+       <select id="push-category" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
+         <option value="">Todas (sem filtro)</option>
+         <option value="promo">Promo (cat_promo)</option>
+         <option value="calendar">Calendário</option>
+         <option value="analysis">Análise diária</option>
+         <option value="gex">GEX</option>
+       </select>
+     </div>
+     <div>
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Firma (opcional)</label>
+       <select id="push-firm" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
+         <option value="">Sem filtro de firma</option>
+         <option value="apex">Apex</option>
+         <option value="bulenox">Bulenox</option>
+         <option value="ftmo">FTMO</option>
+         <option value="tpt">TakeProfit</option>
+         <option value="fn">FundedNext</option>
+         <option value="e2t">Earn2Trade</option>
+         <option value="the5ers">The5ers</option>
+         <option value="fundingpips">FundingPips</option>
+         <option value="brightfunded">BrightFunded</option>
+         <option value="e8">E8</option>
+         <option value="cti">CTI</option>
+         <option value="tradeday">TradeDay</option>
+       </select>
+     </div>
+     <div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;">
+       <button class="btn-secondary" onclick="pushDryRun()">Quantos receberiam? (dry-run)</button>
+       <button class="btn-secondary" onclick="pushSendNow()" style="background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.35);color:var(--gold);">Enviar pra todos elegíveis</button>
+     </div>
+     <div id="push-send-result" style="grid-column:1/-1;font-size:12px;color:var(--t2);min-height:18px;"></div>
+   </div>
+ </div>
+
  <!-- ═══ EMAIL ANALYTICS PANEL ═══ -->
  <div class="ea-panel">
    <div class="ea-hdr">
@@ -6151,6 +6211,63 @@ function toggleEmailLogDrilldown(i){
 }
 
 // ── ONDA 2: Envios de Hoje ──
+// ═══ PUSH NOTIFICATIONS ═══
+async function loadPushCount(){
+  const el = document.getElementById('push-subs-count');
+  if (!el) return;
+  try {
+    const { count, error } = await db.from('push_subscriptions').select('*', { count:'exact', head:true }).eq('active', true);
+    if (error) throw error;
+    el.textContent = (count||0).toLocaleString('pt-BR') + ' inscritos';
+  } catch (e) {
+    el.textContent = 'erro: ' + (e?.message||e);
+  }
+}
+function _pushReadForm(){
+  return {
+    title: document.getElementById('push-title').value.trim(),
+    body: document.getElementById('push-body').value.trim(),
+    url: document.getElementById('push-url').value.trim() || '/',
+    category: document.getElementById('push-category').value || undefined,
+    firm: document.getElementById('push-firm').value || undefined,
+  };
+}
+async function pushDryRun(){
+  const f = _pushReadForm();
+  if (!f.title) { toast('Título obrigatório','error'); return; }
+  const out = document.getElementById('push-send-result'); out.textContent = 'Calculando...';
+  try {
+    const tk = await _adminBearer();
+    const r = await fetch('/api/push?action=send', {
+      method:'POST', headers:{'Content-Type':'application/json', Authorization:'Bearer '+tk},
+      body: JSON.stringify(Object.assign({}, f, { dry_run: true }))
+    });
+    const d = await r.json();
+    if (!r.ok) { out.textContent = '❌ ' + (d.error||r.status); return; }
+    out.innerHTML = `📊 <b>${d.would_send||0}</b> subscribers receberiam essa mensagem com os filtros atuais.`;
+  } catch (e) { out.textContent = '❌ ' + e.message; }
+}
+async function pushSendNow(){
+  const f = _pushReadForm();
+  if (!f.title) { toast('Título obrigatório','error'); return; }
+  if (!confirm(`Enviar push "${f.title}" pra todos elegíveis?\n\nCategoria: ${f.category||'todas'} · Firma: ${f.firm||'todas'}`)) return;
+  const out = document.getElementById('push-send-result'); out.textContent = 'Enviando...';
+  try {
+    const tk = await _adminBearer();
+    const r = await fetch('/api/push?action=send', {
+      method:'POST', headers:{'Content-Type':'application/json', Authorization:'Bearer '+tk},
+      body: JSON.stringify(f)
+    });
+    const d = await r.json();
+    if (!r.ok) { out.textContent = '❌ ' + (d.error||r.status); return; }
+    out.innerHTML = `✅ Enviado: <b>${d.sent}</b> · Falhou: ${d.failed} · Expirados (removidos): ${d.expired} · Total alvo: ${d.total}`;
+    toast(`Push enviado: ${d.sent} de ${d.total}`,'success');
+  } catch (e) { out.textContent = '❌ ' + e.message; }
+}
+window.loadPushCount = loadPushCount;
+window.pushDryRun = pushDryRun;
+window.pushSendNow = pushSendNow;
+
 async function loadEmailToday(){
   try{
     const session = await db.auth.getSession();

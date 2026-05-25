@@ -3,9 +3,22 @@
 //   POST /api/push?action=subscribe   → cria/atualiza subscription
 //   POST /api/push?action=unsubscribe → desativa subscription (soft delete)
 //   POST /api/push?action=prefs       → atualiza categorias/firms
+//   POST /api/push?action=click       → tracking de click em notification
+//   POST /api/push?action=send        → ADMIN: envia push pra filtrados
+
+const webpush = require('web-push');
 
 const SB_URL = process.env.SUPABASE_URL || 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || 'BD5A4Ys4-VdJA5qkkk6s4wgTzTJjrmgEy8XrqvATUnH07wyJrUEJK3sX05cCyxfcLDIjafJePYLODdQC-PkaaGw';
+const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY;
+const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:admin@marketscoupons.com';
+
+if (VAPID_PRIVATE) {
+  try {
+    webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC, VAPID_PRIVATE);
+  } catch (e) { /* fail-safe */ }
+}
 
 function bad(res, code, msg) {
   res.status(code).json({ error: msg });
@@ -109,6 +122,104 @@ module.exports = async (req, res) => {
         `endpoint=eq.${encodeURIComponent(endpoint)}`,
         patch);
       return res.status(200).json({ ok: true });
+    }
+
+    if (action === 'send') {
+      // Admin-only: envia push notification pra subscribers filtrados
+      if (!VAPID_PRIVATE) return bad(res, 500, 'VAPID_PRIVATE_KEY not configured in env');
+
+      // Auth admin: JWT do Supabase via header Authorization: Bearer
+      const authHdr = req.headers.authorization || '';
+      const jwt = authHdr.startsWith('Bearer ') ? authHdr.slice(7) : '';
+      if (!jwt) return bad(res, 401, 'missing admin jwt');
+      // Verifica que é admin via Supabase
+      try {
+        const u = await fetch(`${SB_URL}/auth/v1/user`, {
+          headers: { 'Authorization': `Bearer ${jwt}`, 'apikey': SB_KEY }
+        });
+        if (!u.ok) return bad(res, 401, 'invalid jwt');
+        const user = await u.json();
+        if (!user?.user_metadata?.is_admin && user?.app_metadata?.role !== 'admin' && user?.email !== 'evertonmiranda777@gmail.com') {
+          return bad(res, 403, 'admin only');
+        }
+      } catch (e) {
+        return bad(res, 401, 'jwt verify failed');
+      }
+
+      const {
+        title, body: msgBody, url, icon, image, tag, category,
+        firm, lang_filter, test_endpoint, dry_run
+      } = body || {};
+      if (!title) return bad(res, 400, 'missing title');
+
+      // Monta filtros pra query do Supabase
+      const filters = ['active=eq.true'];
+      if (category) {
+        const catCol = { promo: 'cat_promo', calendar: 'cat_calendar', analysis: 'cat_analysis', gex: 'cat_gex' }[category];
+        if (!catCol) return bad(res, 400, 'invalid category');
+        filters.push(`${catCol}=eq.true`);
+      }
+      if (lang_filter) filters.push(`lang=eq.${encodeURIComponent(lang_filter)}`);
+      if (test_endpoint) filters.push(`endpoint=eq.${encodeURIComponent(test_endpoint)}`);
+
+      const qs = filters.join('&');
+      const r = await fetch(`${SB_URL}/rest/v1/push_subscriptions?${qs}&select=id,endpoint,p256dh,auth,firms,lang`, {
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+      });
+      if (!r.ok) return bad(res, 500, 'failed to load subscriptions');
+      let subs = await r.json();
+
+      // Filtro de firma feito em JS (array contains)
+      if (firm) {
+        subs = subs.filter(s => !Array.isArray(s.firms) || s.firms.length === 0 || s.firms.includes(firm));
+      }
+
+      if (dry_run) {
+        return res.status(200).json({ ok: true, would_send: subs.length, dry_run: true });
+      }
+
+      const payload = JSON.stringify({
+        title,
+        body: msgBody || '',
+        url: url || '/',
+        icon: icon || '/img/pwa/icon-192.png',
+        badge: '/img/pwa/icon-192.png',
+        image,
+        tag: tag || ('mc-' + (category || 'general')),
+        category,
+        event_id: 'push-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8)
+      });
+
+      let sent = 0, failed = 0, expired = 0;
+      const expiredIds = [];
+      for (const s of subs) {
+        try {
+          await webpush.sendNotification(
+            { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },
+            payload
+          );
+          sent++;
+        } catch (err) {
+          if (err.statusCode === 410 || err.statusCode === 404) {
+            expired++;
+            expiredIds.push(s.id);
+          } else {
+            failed++;
+          }
+        }
+      }
+      // Soft-delete expirados
+      if (expiredIds.length > 0) {
+        try {
+          await fetch(`${SB_URL}/rest/v1/push_subscriptions?id=in.(${expiredIds.join(',')})`, {
+            method: 'PATCH',
+            headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ active: false, unsubscribed_at: new Date().toISOString() })
+          });
+        } catch (_) {}
+      }
+
+      return res.status(200).json({ ok: true, total: subs.length, sent, failed, expired });
     }
 
     return bad(res, 400, 'unknown action');
