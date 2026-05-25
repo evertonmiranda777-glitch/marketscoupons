@@ -79,11 +79,64 @@ self.addEventListener('message', (event) => {
   if (event.data === 'skipWaiting') self.skipWaiting();
 });
 
-// Push handlers (Fase 2) — placeholders pra não dar erro se push chegar antes
+// Push handlers — recebe push do servidor e exibe notificação
 self.addEventListener('push', (event) => {
-  // Implementado na Fase 2
+  let payload = {};
+  try {
+    payload = event.data ? event.data.json() : {};
+  } catch (e) {
+    try { payload = { title: 'Markets Coupons', body: event.data?.text() || '' }; } catch (_) {}
+  }
+  const title = payload.title || 'Markets Coupons';
+  const options = {
+    body: payload.body || '',
+    icon: payload.icon || '/img/pwa/icon-192.png',
+    badge: payload.badge || '/img/pwa/icon-192.png',
+    image: payload.image || undefined,
+    tag: payload.tag || 'mc-default',
+    data: { url: payload.url || '/', event_id: payload.event_id || null, category: payload.category || null },
+    requireInteraction: !!payload.requireInteraction,
+    actions: payload.actions || []
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
 });
 
+// Click numa notificação — abre URL e registra evento
 self.addEventListener('notificationclick', (event) => {
-  // Implementado na Fase 2
+  event.notification.close();
+  const data = event.notification.data || {};
+  const url = data.url || '/';
+  event.waitUntil((async () => {
+    // Ping pro endpoint de tracking (best-effort)
+    try {
+      await fetch('/api/push?action=click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event_id: data.event_id, category: data.category, url, ts: Date.now() })
+      });
+    } catch (_) {}
+    // Foca aba existente ou abre nova
+    const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const c of clients) {
+      if (c.url.includes(new URL(url, self.location.origin).pathname) && 'focus' in c) return c.focus();
+    }
+    if (self.clients.openWindow) return self.clients.openWindow(url);
+  })());
+});
+
+// Renovação de subscription (browser pode rodar) — re-sincroniza com servidor
+self.addEventListener('pushsubscriptionchange', (event) => {
+  event.waitUntil((async () => {
+    try {
+      const oldEndpoint = event.oldSubscription?.endpoint;
+      if (oldEndpoint) {
+        await fetch('/api/push?action=unsubscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint: oldEndpoint })
+        });
+      }
+      // O pwa-register.js vai reinscrever na próxima visita
+    } catch (_) {}
+  })());
 });
