@@ -3937,13 +3937,22 @@ async function renderFinanceiro(){
   let statsQ = db.from('affiliate_daily_stats').select('*').gte('date', sinceDate).lte('date', untilDate).order('date',{ascending:false});
   let leadsQ = db.from('affiliate_conversions').select('*').gte('created_at', sinceIso).lte('created_at', untilIso).order('created_at',{ascending:false}).limit(50);
   let spendQ = db.from('ad_spend_daily').select('*').gte('date', sinceDate).lte('date', untilDate);
-  const [statsRes, leadsRes, spendRes] = await Promise.all([statsQ, leadsQ, spendQ]);
+  // Bulenox-only override: scraper Markets Monitor reporta transactions INFLADO
+  // (ex: 2 quando real é 1, mas commission $ bate). User confirmou via print do
+  // painel real 2026-05-25. Pra Bulenox, fonte real = affiliate_conversions.
+  // Apex e outras firms: stats.transactions confiável (painel Apex bate com
+  // scraper). NÃO generalizar — caso a caso.
+  let bulenoxConvQ = db.from('affiliate_conversions').select('transaction_id').eq('firm_id','bulenox').gte('created_at', sinceIso).lte('created_at', untilIso);
+  const [statsRes, leadsRes, spendRes, bulenoxConvRes] = await Promise.all([statsQ, leadsQ, spendQ, bulenoxConvQ]);
   const stats = statsRes.data || [];
   const leads = leadsRes.data || [];
   const spend = spendRes.data || [];
+  const bulenoxConvCount = (bulenoxConvRes.data || []).length;
 
-  // KPIs
-  const totTx = stats.reduce((a,r)=>a+(r.transactions||0),0);
+  // KPIs — totTx soma stats normal, mas troca a parcela Bulenox pelo count real
+  const totTx_raw = stats.reduce((a,r)=>a+(r.transactions||0),0);
+  const bulenoxTxFromStats = stats.filter(r=>r.firm_id==='bulenox').reduce((a,r)=>a+(r.transactions||0),0);
+  const totTx = totTx_raw - bulenoxTxFromStats + bulenoxConvCount;
   const totCom = stats.reduce((a,r)=>a+Number(r.commission||0),0);
   const totClicksAll = stats.reduce((a,r)=>a+(r.clicks_all||0),0);
   const totClicksUniq = stats.reduce((a,r)=>a+(r.clicks_unique||0),0);
@@ -3991,6 +4000,8 @@ async function renderFinanceiro(){
     byFirm[k].clicks_uniq += r.clicks_unique||0;
     if (!byFirm[k].last || r.date > byFirm[k].last) byFirm[k].last = r.date;
   });
+  // Override .tx do Bulenox com count real de affiliate_conversions (scraper infla)
+  if (byFirm.bulenox) byFirm.bulenox.tx = bulenoxConvCount;
   const firmRows = Object.values(byFirm).sort((a,b)=>b.com-a.com);
   const tbl = document.getElementById('fin-firms-tbl');
   tbl.innerHTML = `
