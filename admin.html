@@ -4136,18 +4136,34 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     spendByCamp[k].clicks += Number(s.clicks||0);
   });
 
+  // Fuzzy match: utm_campaign do link pode estar SEM sufixo que campaign_name
+  // tem no Meta (caso comum: duplicar campanha → vira [...][CBO-TESTE], [...][v2]
+  // etc, mas o criativo herda utm antigo do link). Cobre prefixo bidirecional
+  // E exige EXATAMENTE 1 candidato pra evitar atribuir errado entre 2 variantes.
+  const spendKeys = Object.keys(spendByCamp).filter(k => k !== '(sem campaign)');
+  function fuzzyMatchSpend(utmCamp) {
+    if (!utmCamp || utmCamp === '(sem utm)') return null;
+    if (spendByCamp[utmCamp]) return { key: utmCamp, fuzzy: false };
+    const candidates = spendKeys.filter(k => k.startsWith(utmCamp) || utmCamp.startsWith(k));
+    if (candidates.length === 1) return { key: candidates[0], fuzzy: true };
+    return null; // 0 ou 2+ candidatos: não matcha (mostra '—')
+  }
+
   // Merge
   const allCamps = new Set([...Object.keys(byCamp), ...Object.keys(spendByCamp)]);
   const rows = [...allCamps].map(c => {
     const a = byCamp[c] || { sales:0, revenueUSD:0, confs:[] };
-    const s = spendByCamp[c] || { spend:0, clicks:0, currency:spendCur };
+    const matched = fuzzyMatchSpend(c);
+    const s = (matched ? spendByCamp[matched.key] : spendByCamp[c]) || { spend:0, clicks:0, currency:spendCur };
     const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
     const revBRL = a.revenueUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (revBRL/spendBRL) : null;
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
     const lucroBRL = revBRL - spendBRL;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
-    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf };
+    const fuzzy = !!(matched && matched.fuzzy);
+    const matchedName = matched ? matched.key : null;
+    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, fuzzy, matchedName };
   }).filter(r => r.sales > 0).sort((x,y) => (y.roas||-1) - (x.roas||-1));
 
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -4161,8 +4177,9 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
       const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
       const roasColor = r.roas == null ? 'var(--t3)' : r.roas >= 2 ? '#10B981' : r.roas >= 1 ? '#F0B429' : '#EF4444';
       const lucroColor = r.lucroBRL > 0 ? '#10B981' : r.lucroBRL < 0 ? '#EF4444' : 'var(--t3)';
+      const fuzzyBadge = r.fuzzy ? `<span title="Match aproximado: gasto vinculado a '${r.matchedName}' (sufixo extra no Meta)" style="display:inline-block;margin-left:6px;padding:1px 5px;border:1px solid rgba(240,180,41,.35);border-radius:4px;font-size:9px;color:var(--gold);font-weight:600;vertical-align:1px;">≈</span>` : '';
       return `<tr>
-        <td><b>${r.campaign}</b></td>
+        <td><b>${r.campaign}</b>${fuzzyBadge}</td>
         <td>${fmtBRL(r.spendBRL)}</td>
         <td>${r.clicks.toLocaleString('pt-BR')}</td>
         <td>${r.sales}</td>
