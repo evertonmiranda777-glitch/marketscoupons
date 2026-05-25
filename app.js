@@ -1205,7 +1205,12 @@ function detectLang() {
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    const val = t(key);
+    let val = t(key);
+    // Interpolação de placeholders: {name} via data-bot-name
+    const _name = el.getAttribute('data-bot-name');
+    if (_name && typeof val === 'string' && val.indexOf('{name}') !== -1) {
+      val = val.replace(/\{name\}/g, _name);
+    }
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
     else if (el.tagName === 'OPTION') el.textContent = val;
     else {
@@ -6173,8 +6178,10 @@ function toggleBot(){
     if(!name){
       _askingName=true;
     }else if(welcomeEl && botHist.length===0){
-      welcomeEl.innerHTML=(t('bot_welcome_back')||'Fala, {name}!').replace('{name}',name);
-      welcomeEl.removeAttribute('data-i18n');
+      // Mantém data-i18n + data-bot-name pra que setL re-traduza + reinterpola nome
+      welcomeEl.setAttribute('data-i18n','bot_welcome_back');
+      welcomeEl.setAttribute('data-bot-name',name);
+      welcomeEl.innerHTML=(t('bot_welcome_back')||'Fala, {name}!').replace(/\{name\}/g,name);
     }
   }
   track('bot_toggle',{state:botOpen?'open':'close'});
