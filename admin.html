@@ -4096,15 +4096,58 @@ async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
     }).join('') : '<tr><td colspan="10" style="text-align:center;color:var(--t3);padding:24px;">Sem dados de keyword ainda. Abra a página Keywords do painel Apex/Bulenox com a extensão Chrome instalada — os dados vão sincronizar automaticamente.</td></tr>'}</tbody>`;
 }
 
+// Cache de campanhas ATIVAS no Meta (5min) — mapa nome→{id, account_id, status}
+let _activeCampCache = { ts: 0, byName: {} };
+async function fetchActiveCampaigns(){
+  const now = Date.now();
+  if (now - _activeCampCache.ts < 5*60*1000 && Object.keys(_activeCampCache.byName).length) return _activeCampCache.byName;
+  try {
+    const r = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=active', {
+      headers:{ 'Authorization':'Bearer '+SUPABASE_ANON, 'apikey':SUPABASE_ANON }
+    });
+    const d = await r.json();
+    if (!d.ok || !Array.isArray(d.campaigns)) return {};
+    const byName = {};
+    d.campaigns.forEach(c => { byName[c.name] = c; });
+    _activeCampCache = { ts: now, byName };
+    return byName;
+  } catch(e){ console.warn('fetchActiveCampaigns', e); return {}; }
+}
+async function pauseCampaign(campaign_id, name, btn){
+  if (!confirm(`Pausar "${name}" no Meta Ads?\n\nIsso para os anúncios imediatamente. Pode reativar depois pelo gerenciador.`)) return;
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Pausando...';
+  try {
+    const sess = await db.auth.getSession();
+    const tk = sess?.data?.session?.access_token;
+    if (!tk) { alert('Login admin necessário'); return; }
+    const r = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=pause', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+tk, 'apikey':SUPABASE_ANON },
+      body: JSON.stringify({ campaign_id })
+    });
+    const d = await r.json();
+    if (!r.ok || !d.ok) { alert('Erro: '+(d.error||r.status)); return; }
+    btn.textContent = 'PAUSADA';
+    btn.style.color = '#EF4444';
+    _activeCampCache = { ts: 0, byName: {} }; // invalida cache
+    setTimeout(()=> renderFinanceiro(), 800);
+  } catch(e){ alert('Erro: '+e.message); }
+  finally { btn.disabled = false; }
+}
+
 async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur){
   const tbl = document.getElementById('fin-roas-real');
   if (!tbl) return;
-  const [attrRes, spendRes] = await Promise.all([
+  const [attrRes, spendRes, activeByName] = await Promise.all([
     db.from('coupon_attributions').select('conversion_id,confidence,match_type,utm_campaign,utm_source,utm_medium,firm_id,amount,currency,sale_date').gte('sale_date', sinceDate).lte('sale_date', untilDate),
-    db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions').gte('date', sinceDate).lte('date', untilDate)
+    db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions').gte('date', sinceDate).lte('date', untilDate),
+    fetchActiveCampaigns()
   ]);
   const attrs = attrRes.data || [];
   const spend = spendRes.data || [];
+  const showOnlyActive = document.getElementById('fin-roas-only-active');
+  const onlyActive = showOnlyActive ? showOnlyActive.checked : true;
 
   // Group by utm_campaign
   const byCamp = {};
@@ -4127,6 +4170,16 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
 
   // Merge
   const allCamps = new Set([...Object.keys(byCamp), ...Object.keys(spendByCamp)]);
+  // Fuzzy match nome -> active campaign (ad_spend_daily pode ter sufixo [CBO-TESTE] etc)
+  const findActive = (camp) => {
+    if (activeByName[camp]) return activeByName[camp];
+    const lower = camp.toLowerCase();
+    for (const [n, c] of Object.entries(activeByName)) {
+      const nl = n.toLowerCase();
+      if (nl.startsWith(lower) || lower.startsWith(nl) || nl.includes(lower) || lower.includes(nl)) return c;
+    }
+    return null;
+  };
   const rows = [...allCamps].map(c => {
     const a = byCamp[c] || { sales:0, revenueUSD:0, confs:[] };
     const s = spendByCamp[c] || { spend:0, clicks:0, currency:spendCur };
@@ -4136,22 +4189,49 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
     const lucroBRL = revBRL - spendBRL;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
-    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf };
-  }).filter(r => r.sales > 0 && r.spendBRL > 0).sort((x,y) => y.sales - x.sales || (y.roas||-1) - (x.roas||-1));
+    const meta = findActive(c);
+    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, meta };
+  }).filter(r => r.sales > 0 && r.spendBRL > 0 && (!onlyActive || r.meta))
+    .sort((x,y) => y.sales - x.sales || (y.roas||-1) - (x.roas||-1));
 
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 
+  const toggleHtml = `<div style="margin:0 0 10px;font-size:12px;color:var(--t2);">
+    <label style="cursor:pointer;user-select:none;">
+      <input type="checkbox" id="fin-roas-only-active" ${onlyActive?'checked':''} style="vertical-align:middle;margin-right:6px;"> Mostrar só campanhas ATIVAS no Meta
+    </label>
+  </div>`;
+  tbl.insertAdjacentHTML('beforebegin', '');
+  const wrap = tbl.parentElement;
+  const existingToggle = wrap.querySelector('.fin-roas-toggle');
+  if (existingToggle) existingToggle.remove();
+  const toggleEl = document.createElement('div');
+  toggleEl.className = 'fin-roas-toggle';
+  toggleEl.innerHTML = toggleHtml;
+  wrap.insertBefore(toggleEl, tbl);
+  setTimeout(()=>{
+    const cb = document.getElementById('fin-roas-only-active');
+    if (cb && !cb._wired) { cb._wired = true; cb.addEventListener('change', ()=> renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur)); }
+  }, 50);
+
   tbl.innerHTML = `
     <thead><tr>
-      <th>Campanha</th><th>Gasto</th><th>Cliques Ads</th><th>Vendas Reais</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th>
+      <th>Campanha</th><th>Status</th><th>Gasto</th><th>Cliques Ads</th><th>Vendas Reais</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
     </tr></thead>
     <tbody>${rows.length ? rows.map(r=>{
       const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
       const roasColor = r.roas == null ? 'var(--t3)' : r.roas >= 2 ? '#10B981' : r.roas >= 1 ? '#F0B429' : '#EF4444';
       const lucroColor = r.lucroBRL > 0 ? '#10B981' : r.lucroBRL < 0 ? '#EF4444' : 'var(--t3)';
+      const statusCell = r.meta
+        ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:rgba(16,185,129,.15);color:#10B981;font-size:11px;font-weight:600;">ATIVA</span>`
+        : `<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.12);color:#EF4444;font-size:11px;font-weight:600;">INATIVA</span>`;
+      const actionCell = r.meta
+        ? `<button onclick="pauseCampaign('${r.meta.id}', this.dataset.name, this)" data-name="${r.campaign.replace(/"/g,'&quot;')}" style="background:#7f1d1d;color:#fff;border:0;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;">Pausar</button>`
+        : `<span style="color:var(--t3);font-size:11px;">—</span>`;
       return `<tr>
         <td><b>${r.campaign}</b></td>
+        <td>${statusCell}</td>
         <td>${fmtBRL(r.spendBRL)}</td>
         <td>${r.clicks.toLocaleString('pt-BR')}</td>
         <td>${r.sales}</td>
@@ -4160,8 +4240,9 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <td style="color:${lucroColor};font-weight:700;">${(r.lucroBRL>=0?'+':'')+fmtBRL(r.lucroBRL)}</td>
         <td>${r.cac ? fmtBRL(r.cac) : '—'}</td>
         <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>` : '—'}</td>
+        <td>${actionCell}</td>
       </tr>`;
-    }).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma atribuição ainda. Rode o matcher depois que houver vendas reais + clicks de cupom com utm_campaign.</td></tr>'}</tbody>`;
+    }).join('') : '<tr><td colspan="11" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma campanha. ' + (onlyActive ? 'Desmarca "só ativas" pra ver pausadas com venda.' : 'Sem vendas + spend no período.') + '</td></tr>'}</tbody>`;
 }
 
 // Map country/region → IANA timezone pra calcular horário local do click (pra ajustar anúncios)
