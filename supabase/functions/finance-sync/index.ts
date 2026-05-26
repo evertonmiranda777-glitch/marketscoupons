@@ -17,6 +17,34 @@ const FIRM_WHITELIST = new Set([
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+
+  // GET debug: ?debug=today retorna conversions criadas hoje UTC pra apex+bulenox
+  if (req.method === "GET") {
+    const u = new URL(req.url);
+    if (u.searchParams.get("debug") === "today") {
+      const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
+      const today = new Date().toISOString().slice(0,10);
+      const { data, error } = await sb
+        .from("affiliate_conversions")
+        .select("firm_id, transaction_id, amount, status, created_at, raw_payload")
+        .in("firm_id", ["apex","bulenox"])
+        .gte("created_at", today + "T00:00:00Z")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      return json({ ok: !error, today, count: data?.length || 0, rows: data, error: error?.message });
+    }
+    if (u.searchParams.get("debug") === "attr_schema") {
+      const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
+      const { data, error } = await sb
+        .from("coupon_attributions")
+        .select("*")
+        .order("sale_date", { ascending: false })
+        .limit(2);
+      return json({ ok: !error, count: data?.length || 0, sample: data, error: error?.message });
+    }
+    return json({ error: "method_not_allowed" }, 405);
+  }
+
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
   let body: any;
@@ -65,48 +93,75 @@ serve(async (req) => {
       out.rows_saved = normalized.length;
     }
 
-    // Backfill sintético: pra cada dia com transactions > 0, garante que existem N rows
-    // em affiliate_conversions (reais + sintéticas). Idempotente via transaction_id determinístico.
-    // Resolve o caso em que webhook IPN não dispara mas o painel mostra a venda.
+    // Backfill sintetico BATCHED. perTx = (commission - sumReal) / gap (NAO commission/transactions
+    // — antes inflava receita quando havia mix real+synth no mesmo dia).
+    // Sobrescreve synth existentes (ignoreDuplicates:false) pra recalcular amount quando real chegar.
     let synth_created = 0;
-    for (const r of normalized) {
-      const txCount = r.transactions;
-      if (!txCount || txCount < 1) continue;
-      const dayStart = `${r.date}T00:00:00Z`;
-      const dayEnd = `${r.date}T23:59:59Z`;
-      const { count: existingCount } = await sb
+    const daysWithTx = normalized.filter((r: any) => r.transactions > 0);
+    if (daysWithTx.length) {
+      const minDate = daysWithTx.reduce((m: string, r: any) => r.date < m ? r.date : m, daysWithTx[0].date);
+      const maxDate = daysWithTx.reduce((m: string, r: any) => r.date > m ? r.date : m, daysWithTx[0].date);
+      const { data: existing } = await sb
         .from("affiliate_conversions")
-        .select("id", { count: "exact", head: true })
+        .select("transaction_id, amount, created_at")
         .eq("firm_id", firm)
-        .gte("created_at", dayStart)
-        .lte("created_at", dayEnd);
-      const gap = txCount - (existingCount || 0);
-      if (gap <= 0) continue;
-      const perTx = txCount > 0 ? (r.commission / txCount) : 0;
-      const dateNoDash = r.date.replace(/-/g, '');
-      const synths: any[] = [];
-      // Começa o idx a partir de existing + 1 pra não colidir com synthetics já criadas
-      const startIdx = (existingCount || 0) + 1;
-      for (let i = 0; i < gap; i++) {
-        const idx = startIdx + i;
-        const slotMs = Math.floor((idx - 0.5) * 86400000 / txCount); // distribui no dia
-        const ts = new Date(Date.parse(dayStart) + slotMs).toISOString();
-        synths.push({
-          firm_id: firm,
-          event_type: "sale",
-          transaction_id: `synth-${firm}-${dateNoDash}-${String(idx).padStart(3,'0')}`,
-          amount: Number(perTx.toFixed(2)),
-          currency: r.currency || (firm === 'ftmo' ? 'EUR' : 'USD'),
-          status: 'approved',
-          created_at: ts,
-          raw_payload: { synthetic: true, source: 'finance_sync_backfill', from_row: { date: r.date, transactions: txCount, commission: r.commission } }
-        });
+        .gte("created_at", `${minDate}T00:00:00Z`)
+        .lte("created_at", `${maxDate}T23:59:59Z`)
+        .limit(10000);
+      const realByDay: Record<string, { count: number; sumAmount: number }> = {};
+      (existing || []).forEach((e: any) => {
+        if (typeof e.transaction_id === "string" && e.transaction_id.startsWith("synth-")) return; // synth nao conta como real
+        const day = String(e.created_at).slice(0, 10);
+        if (!realByDay[day]) realByDay[day] = { count: 0, sumAmount: 0 };
+        realByDay[day].count++;
+        realByDay[day].sumAmount += Number(e.amount) || 0;
+      });
+      const allSynths: any[] = [];
+      for (const r of daysWithTx) {
+        const real = realByDay[r.date] || { count: 0, sumAmount: 0 };
+        const gap = r.transactions - real.count;
+        if (gap <= 0) continue;
+        const remainingComm = Math.max(0, r.commission - real.sumAmount);
+        const perTx = gap > 0 ? remainingComm / gap : 0;
+        const dateNoDash = r.date.replace(/-/g, '');
+        const dayStartMs = Date.parse(`${r.date}T00:00:00Z`);
+        const startIdx = real.count + 1;
+        for (let i = 0; i < gap; i++) {
+          const idx = startIdx + i;
+          const slotMs = Math.floor((idx - 0.5) * 86400000 / r.transactions);
+          allSynths.push({
+            firm_id: firm,
+            event_type: "sale",
+            transaction_id: `synth-${firm}-${dateNoDash}-${String(idx).padStart(3,'0')}`,
+            amount: Number(perTx.toFixed(2)),
+            currency: r.currency || (firm === 'ftmo' ? 'EUR' : 'USD'),
+            status: 'approved',
+            created_at: new Date(dayStartMs + slotMs).toISOString(),
+            raw_payload: { synthetic: true, source: 'finance_sync_backfill', from_row: { date: r.date, transactions: r.transactions, commission: r.commission, real_count: real.count, real_sum: real.sumAmount } }
+          });
+        }
       }
-      if (synths.length) {
+      for (let i = 0; i < allSynths.length; i += 500) {
+        const chunk = allSynths.slice(i, i + 500);
         const { error: synErr } = await sb
           .from("affiliate_conversions")
-          .upsert(synths, { onConflict: "firm_id,transaction_id", ignoreDuplicates: true });
-        if (!synErr) synth_created += synths.length;
+          .upsert(chunk, { onConflict: "firm_id,transaction_id", ignoreDuplicates: false });
+        if (!synErr) synth_created += chunk.length;
+      }
+      // Propaga amount novo das synth pra coupon_attributions (trigger so dispara em INSERT)
+      if (allSynths.length) {
+        const synthTxIds = allSynths.map(s => s.transaction_id);
+        for (let i = 0; i < synthTxIds.length; i += 200) {
+          const slice = synthTxIds.slice(i, i + 200);
+          const { data: rows } = await sb
+            .from("affiliate_conversions")
+            .select("id, amount, transaction_id")
+            .eq("firm_id", firm)
+            .in("transaction_id", slice);
+          for (const sr of (rows || [])) {
+            await sb.from("coupon_attributions").update({ amount: sr.amount }).eq("conversion_id", sr.id);
+          }
+        }
       }
     }
     if (synth_created) out.synthetic_created = synth_created;
