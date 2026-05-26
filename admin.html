@@ -4120,20 +4120,36 @@ async function pauseCampaign(campaign_id, name, btn){
   try {
     const sess = await db.auth.getSession();
     const tk = sess?.data?.session?.access_token;
-    if (!tk) { alert('Login admin necessário'); return; }
+    if (!tk) { alert('Sessão admin não encontrada. Faça login.'); btn.disabled=false; btn.textContent=orig; return; }
     const r = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=pause', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+tk, 'apikey':SUPABASE_ANON },
       body: JSON.stringify({ campaign_id })
     });
-    const d = await r.json();
-    if (!r.ok || !d.ok) { alert('Erro: '+(d.error||r.status)); return; }
+    const d = await r.json().catch(()=>({}));
+    if (!r.ok || !d.ok) {
+      console.error('pauseCampaign falhou:', { status: r.status, response: d });
+      alert(`Erro ao pausar (${r.status}):\n${JSON.stringify(d, null, 2)}`);
+      btn.disabled=false; btn.textContent=orig;
+      return;
+    }
+    // Sucesso: atualiza visual da linha imediatamente
+    const row = btn.closest('tr');
+    if (row) {
+      const statusCell = row.children[1]; // 2a coluna = Status
+      if (statusCell) statusCell.innerHTML = `<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.15);color:#EF4444;font-size:11px;font-weight:600;">PAUSADA</span>`;
+      row.style.opacity = '0.55';
+    }
     btn.textContent = 'PAUSADA';
+    btn.style.background = '#3a1a1a';
     btn.style.color = '#EF4444';
-    _activeCampCache = { ts: 0, byName: {} }; // invalida cache
-    setTimeout(()=> renderFinanceiro(), 800);
-  } catch(e){ alert('Erro: '+e.message); }
-  finally { btn.disabled = false; }
+    btn.disabled = true;
+    _activeCampCache = { ts: 0, byName: {} }; // invalida cache pra próximo render pegar lista nova
+  } catch(e){
+    console.error(e);
+    alert('Erro: '+e.message);
+    btn.disabled=false; btn.textContent=orig;
+  }
 }
 
 async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur){

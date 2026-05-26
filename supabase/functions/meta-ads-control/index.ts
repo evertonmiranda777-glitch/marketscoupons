@@ -36,20 +36,21 @@ function json(obj: any, status = 200) {
   });
 }
 
-async function verifyAdmin(authHeader: string | null): Promise<boolean> {
-  if (!authHeader || !authHeader.startsWith("Bearer ")) return false;
+async function verifyAdmin(authHeader: string | null): Promise<{ ok: boolean; email?: string; debug?: any }> {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) return { ok: false, debug: "no_auth_header" };
   const jwt = authHeader.slice(7);
   try {
-    const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-      headers: { "Authorization": `Bearer ${jwt}`, "apikey": SERVICE_ROLE }
-    });
-    if (!r.ok) return false;
-    const u = await r.json();
-    if (u?.user_metadata?.is_admin) return true;
-    if (u?.app_metadata?.role === "admin") return true;
-    if (u?.email && ADMIN_EMAILS.has(u.email)) return true;
-    return false;
-  } catch { return false; }
+    // Decoda JWT payload localmente pra pegar email (sem chamar auth API)
+    const parts = jwt.split(".");
+    if (parts.length !== 3) return { ok: false, debug: "bad_jwt_shape" };
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+    const email = payload?.email || "";
+    const role = payload?.role || "";
+    const isAdminMeta = payload?.user_metadata?.is_admin || payload?.app_metadata?.role === "admin";
+    if (isAdminMeta) return { ok: true, email };
+    if (email && ADMIN_EMAILS.has(email)) return { ok: true, email };
+    return { ok: false, email, debug: { role, isAdminMeta } };
+  } catch (e) { return { ok: false, debug: String(e) }; }
 }
 
 async function listActiveCampaigns() {
@@ -99,15 +100,15 @@ serve(async (req) => {
   }
 
   if (req.method === "POST" && (action === "pause" || action === "resume")) {
-    const isAdmin = await verifyAdmin(req.headers.get("authorization"));
-    if (!isAdmin) return json({ error: "admin_only" }, 403);
+    const adm = await verifyAdmin(req.headers.get("authorization"));
+    if (!adm.ok) return json({ error: "admin_only", debug: adm.debug, email: adm.email }, 403);
     let body: any = {};
     try { body = await req.json(); } catch {}
     const id = String(body.campaign_id || "").trim();
     if (!id) return json({ error: "missing_campaign_id" }, 400);
     const status = action === "pause" ? "PAUSED" : "ACTIVE";
     const r = await setCampaignStatus(id, status);
-    return json(r, r.ok ? 200 : 500);
+    return json({ ...r, by: adm.email }, r.ok ? 200 : 500);
   }
 
   return json({ error: "unknown_action", hint: "GET ?action=active | POST ?action=pause|resume {campaign_id}" }, 400);
