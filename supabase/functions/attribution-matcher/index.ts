@@ -13,6 +13,12 @@ const CORS = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
+// Dia BRT (UTC-3) — evita venda 21-23:59 BRT vazar pro dia UTC seguinte
+function brtDayString(iso: string): string {
+  const d = new Date(new Date(iso).getTime() - 3 * 3600000);
+  return d.toISOString().slice(0, 10);
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
 
@@ -116,7 +122,7 @@ serve(async (req) => {
       gclid: click.gclid || null,
       amount: Number(conv.amount) || 0,
       currency: conv.currency || "USD",
-      sale_date: new Date(conv.created_at).toISOString().slice(0, 10),
+      sale_date: brtDayString(conv.created_at),
       click_ts: click.ts,
       hours_to_sale: Number(hoursToSale.toFixed(2)),
       match_type: matchType,

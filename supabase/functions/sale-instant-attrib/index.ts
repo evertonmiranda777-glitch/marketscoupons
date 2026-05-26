@@ -11,6 +11,13 @@ const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const TG_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
 const TG_CHAT  = "1284593409";
 
+// Converte timestamp ISO pra dia BRT (UTC-3). Fix do TZ rollover: vendas 21-23:59 BRT
+// caiam no dia UTC seguinte, sumindo do filtro "hoje" do admin.
+function brtDayString(iso: string): string {
+  const d = new Date(new Date(iso).getTime() - 3 * 3600000);
+  return d.toISOString().slice(0, 10);
+}
+
 async function tg(text: string) {
   if (!TG_TOKEN) return;
   try {
@@ -81,7 +88,7 @@ serve(async (req) => {
       fbclid: bestClick.fbclid || null,
       amount: Number(conv.amount) || 0,
       currency: conv.currency || "USD",
-      sale_date: new Date(conv.created_at).toISOString().slice(0, 10),
+      sale_date: brtDayString(conv.created_at),
       click_ts: bestClick.ts,
       hours_to_sale: Number(((saleTs - new Date(bestClick.ts).getTime()) / 3600000).toFixed(2)),
       match_type: "instant_trigger",
@@ -91,12 +98,12 @@ serve(async (req) => {
   }
 
   // Telegram — vendas reais (webhook IPN) sempre disparam.
-  // Synthetics (backfill do scraper) só disparam se forem do dia corrente — evita spam
+  // Synthetics (backfill do scraper) só disparam se forem do dia corrente BRT — evita spam
   // de 80+ TGs quando faz backfill historico, mas mantem venda-a-venda em tempo real.
   const isSynthetic = typeof conv.transaction_id === "string" && conv.transaction_id.startsWith("synth-");
-  const saleDay = new Date(conv.created_at).toISOString().slice(0, 10);
-  const todayUTC = new Date().toISOString().slice(0, 10);
-  const shouldTG = !isSynthetic || saleDay === todayUTC;
+  const saleDay = brtDayString(conv.created_at);
+  const todayBRT = brtDayString(new Date().toISOString());
+  const shouldTG = !isSynthetic || saleDay === todayBRT;
   if (shouldTG) {
     const firm = (conv.firm_id || "").toUpperCase();
     const amt = Number(conv.amount).toFixed(2);

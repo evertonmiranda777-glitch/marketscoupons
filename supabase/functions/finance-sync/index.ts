@@ -93,28 +93,33 @@ serve(async (req) => {
       out.rows_saved = normalized.length;
     }
 
-    // Backfill sintetico BATCHED. perTx = (commission - sumReal) / gap (NAO commission/transactions
-    // — antes inflava receita quando havia mix real+synth no mesmo dia).
-    // Sobrescreve synth existentes (ignoreDuplicates:false) pra recalcular amount quando real chegar.
+    // Backfill sintetico BATCHED em dia BRT (alinha com sale_date BRT).
+    // perTx = (commission - sumReal) / gap. Sobrescreve synth existentes (ignoreDuplicates:false).
+    // Conta existing por dia BRT: venda 25/05 23:56 BRT = 26/05 02:56 UTC pertence ao dia 25 BRT.
+    const brtDayFromISO = (iso: string) => new Date(new Date(iso).getTime() - 3 * 3600000).toISOString().slice(0, 10);
     let synth_created = 0;
     const daysWithTx = normalized.filter((r: any) => r.transactions > 0);
     if (daysWithTx.length) {
       const minDate = daysWithTx.reduce((m: string, r: any) => r.date < m ? r.date : m, daysWithTx[0].date);
       const maxDate = daysWithTx.reduce((m: string, r: any) => r.date > m ? r.date : m, daysWithTx[0].date);
+      // Janela de busca: -1 dia em UTC do minDate ate +1 dia UTC do maxDate pra capturar vendas
+      // que vazaram do TZ no banco
+      const searchStart = new Date(Date.parse(`${minDate}T00:00:00Z`) - 86400000).toISOString();
+      const searchEnd = new Date(Date.parse(`${maxDate}T23:59:59Z`) + 86400000).toISOString();
       const { data: existing } = await sb
         .from("affiliate_conversions")
         .select("transaction_id, amount, created_at")
         .eq("firm_id", firm)
-        .gte("created_at", `${minDate}T00:00:00Z`)
-        .lte("created_at", `${maxDate}T23:59:59Z`)
+        .gte("created_at", searchStart)
+        .lte("created_at", searchEnd)
         .limit(10000);
       const realByDay: Record<string, { count: number; sumAmount: number }> = {};
       (existing || []).forEach((e: any) => {
-        if (typeof e.transaction_id === "string" && e.transaction_id.startsWith("synth-")) return; // synth nao conta como real
-        const day = String(e.created_at).slice(0, 10);
-        if (!realByDay[day]) realByDay[day] = { count: 0, sumAmount: 0 };
-        realByDay[day].count++;
-        realByDay[day].sumAmount += Number(e.amount) || 0;
+        if (typeof e.transaction_id === "string" && e.transaction_id.startsWith("synth-")) return;
+        const brtDay = brtDayFromISO(e.created_at);
+        if (!realByDay[brtDay]) realByDay[brtDay] = { count: 0, sumAmount: 0 };
+        realByDay[brtDay].count++;
+        realByDay[brtDay].sumAmount += Number(e.amount) || 0;
       });
       const allSynths: any[] = [];
       for (const r of daysWithTx) {
@@ -124,11 +129,14 @@ serve(async (req) => {
         const remainingComm = Math.max(0, r.commission - real.sumAmount);
         const perTx = gap > 0 ? remainingComm / gap : 0;
         const dateNoDash = r.date.replace(/-/g, '');
-        const dayStartMs = Date.parse(`${r.date}T00:00:00Z`);
+        // Coloca synth NOON BRT do dia (= 15:00 UTC) — fica claramente no dia BRT
+        // distribuído entre 09:00-21:00 BRT pra parecer trader em horário comercial
+        const noonBrtMs = Date.parse(`${r.date}T15:00:00Z`);
         const startIdx = real.count + 1;
         for (let i = 0; i < gap; i++) {
           const idx = startIdx + i;
-          const slotMs = Math.floor((idx - 0.5) * 86400000 / r.transactions);
+          // Spread 12h em torno de noon BRT
+          const offsetMs = ((idx - 0.5) * 43200000 / r.transactions) - 21600000;
           allSynths.push({
             firm_id: firm,
             event_type: "sale",
@@ -136,8 +144,8 @@ serve(async (req) => {
             amount: Number(perTx.toFixed(2)),
             currency: r.currency || (firm === 'ftmo' ? 'EUR' : 'USD'),
             status: 'approved',
-            created_at: new Date(dayStartMs + slotMs).toISOString(),
-            raw_payload: { synthetic: true, source: 'finance_sync_backfill', from_row: { date: r.date, transactions: r.transactions, commission: r.commission, real_count: real.count, real_sum: real.sumAmount } }
+            created_at: new Date(noonBrtMs + offsetMs).toISOString(),
+            raw_payload: { synthetic: true, source: 'finance_sync_backfill_v2', from_row: { date: r.date, transactions: r.transactions, commission: r.commission, real_count: real.count, real_sum: real.sumAmount } }
           });
         }
       }
