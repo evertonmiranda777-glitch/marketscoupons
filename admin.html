@@ -4264,7 +4264,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <td style="color:${roasColor};font-weight:700;">${r.roas!=null ? r.roas.toFixed(2)+'x' : '—'}</td>
         <td style="color:${lucroColor};font-weight:700;">${(r.lucroBRL>=0?'+':'')+fmtBRL(r.lucroBRL)}</td>
         <td>${r.cac ? fmtBRL(r.cac) : '—'}</td>
-        <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>` : '—'}</td>
+        <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>${r.avgConf > 0 && r.avgConf < 70 ? ` <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;cursor:help;"><title>Atribuição fraca — confere no Meta Manager antes de pausar</title><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : ''}` : '—'}</td>
         <td>${actionCell}</td>
       </tr>`;
     }).join('') : '<tr><td colspan="11" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma campanha. ' + (onlyActive ? 'Desmarca "só ativas" pra ver pausadas com venda.' : 'Sem vendas + spend no período.') + '</td></tr>'}</tbody>`;
