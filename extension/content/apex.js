@@ -20,8 +20,7 @@ async function mcShouldAutoSync(firmId) {
   return new Promise(resolve => {
     chrome.storage.local.get(['mc_last_sync'], r => {
       const last = (r.mc_last_sync || {})[firmId] || 0;
-      const hoursSince = (Date.now() - last) / 3600000;
-      resolve(hoursSince >= 6);
+      resolve((Date.now() - last) / 60000 >= 30);
     });
   });
 }

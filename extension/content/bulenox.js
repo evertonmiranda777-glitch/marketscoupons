@@ -17,7 +17,7 @@ async function mcShouldAutoSyncBL(firmId) {
   return new Promise(resolve => {
     chrome.storage.local.get(['mc_last_sync'], r => {
       const last = (r.mc_last_sync || {})[firmId] || 0;
-      resolve((Date.now() - last) / 3600000 >= 6);
+      resolve((Date.now() - last) / 60000 >= 30);
     });
   });
 }
@@ -59,6 +59,20 @@ async function mcSyncBulenox(opts = {}) {
   // 2) Fallback: raspa tabela mensal Report
   if (!rows.length) rows = mcScrapeBulenoxTable();
 
+  // 3) Bulenox NÃO expõe transactions/day na tabela nem no CSV — só no Morris.Line chart inline.
+  // Buscamos a página do mês corrente e extraímos y2 (=sales) por dia.
+  try {
+    const chartRows = await mcFetchBulenoxChart();
+    if (chartRows.length) {
+      const byDate = new Map(chartRows.map(r => [r.date, r]));
+      rows = rows.map(r => byDate.has(r.date) ? { ...r, ...byDate.get(r.date) } : r);
+      // Dias do chart que não estavam em rows (CSV vazio mas chart tem dado)
+      for (const cr of chartRows) {
+        if (!rows.find(r => r.date === cr.date)) rows.push(cr);
+      }
+    }
+  } catch (e) { console.warn('[MC] bulenox chart parse erro:', e); }
+
   // 3) NOVO: scrape transactions individuais (vai pra affiliate_conversions)
   const leads = await mcFetchBulenoxTransactions();
 
@@ -78,6 +92,36 @@ async function mcSyncBulenox(opts = {}) {
     mcToastBL('Bulenox: erro — ' + (out.error || '?'));
   }
   return out;
+}
+
+// Bulenox stats page tem Morris.Line chart com {x:ts_ms, y0:unique, y1:all, y2:transactions} por dia.
+// Único lugar onde o painel expõe transactions diárias (tabela/CSV só tem commission+clicks).
+async function mcFetchBulenoxChart() {
+  try {
+    const now = new Date();
+    const my = `${now.getUTCFullYear()}${String(now.getUTCMonth()+1).padStart(2,'0')}`;
+    const r = await fetch(`/member/aff/member/stats?monthyear=${my}`, { credentials: 'include' });
+    if (!r.ok) return [];
+    const html = await r.text();
+    const matches = [...html.matchAll(/new Morris\.Line\((\{[^;]*?\})\);/g)];
+    const parsed = matches.map(m => { try { return JSON.parse(m[1]); } catch { return null; } }).filter(Boolean);
+    const commChart = parsed.find(c => c.labels && c.labels.includes('Commission') && (c.ykeys || []).length === 1);
+    const clkChart = parsed.find(c => (c.ykeys || []).includes('y2'));
+    if (!clkChart || !commChart) return [];
+    const commByTs = {};
+    commChart.data.forEach(p => { commByTs[p.x] = p.y0; });
+    return clkChart.data.map(p => {
+      const d = new Date(p.x);
+      return {
+        date: `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`,
+        granularity: 'day',
+        transactions: Number(p.y2) || 0,
+        commission: Number(commByTs[p.x]) || 0,
+        clicks_unique: Number(p.y0) || 0,
+        clicks_all: Number(p.y1) || 0
+      };
+    }).filter(r => r.transactions || r.commission || r.clicks_all);
+  } catch (e) { return []; }
 }
 
 async function mcFetchBulenoxTransactions() {

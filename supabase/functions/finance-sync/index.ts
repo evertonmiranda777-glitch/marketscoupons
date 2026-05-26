@@ -64,6 +64,52 @@ serve(async (req) => {
       if (error) return json({ error: "upsert_failed", details: error.message }, 500);
       out.rows_saved = normalized.length;
     }
+
+    // Backfill sintético: pra cada dia com transactions > 0, garante que existem N rows
+    // em affiliate_conversions (reais + sintéticas). Idempotente via transaction_id determinístico.
+    // Resolve o caso em que webhook IPN não dispara mas o painel mostra a venda.
+    let synth_created = 0;
+    for (const r of normalized) {
+      const txCount = r.transactions;
+      if (!txCount || txCount < 1) continue;
+      const dayStart = `${r.date}T00:00:00Z`;
+      const dayEnd = `${r.date}T23:59:59Z`;
+      const { count: existingCount } = await sb
+        .from("affiliate_conversions")
+        .select("id", { count: "exact", head: true })
+        .eq("firm_id", firm)
+        .gte("created_at", dayStart)
+        .lte("created_at", dayEnd);
+      const gap = txCount - (existingCount || 0);
+      if (gap <= 0) continue;
+      const perTx = txCount > 0 ? (r.commission / txCount) : 0;
+      const dateNoDash = r.date.replace(/-/g, '');
+      const synths: any[] = [];
+      // Começa o idx a partir de existing + 1 pra não colidir com synthetics já criadas
+      const startIdx = (existingCount || 0) + 1;
+      for (let i = 0; i < gap; i++) {
+        const idx = startIdx + i;
+        const slotMs = Math.floor((idx - 0.5) * 86400000 / txCount); // distribui no dia
+        const ts = new Date(Date.parse(dayStart) + slotMs).toISOString();
+        synths.push({
+          firm_id: firm,
+          event_type: "sale",
+          transaction_id: `synth-${firm}-${dateNoDash}-${String(idx).padStart(3,'0')}`,
+          amount: Number(perTx.toFixed(2)),
+          currency: r.currency || (firm === 'ftmo' ? 'EUR' : 'USD'),
+          status: 'approved',
+          created_at: ts,
+          raw_payload: { synthetic: true, source: 'finance_sync_backfill', from_row: { date: r.date, transactions: txCount, commission: r.commission } }
+        });
+      }
+      if (synths.length) {
+        const { error: synErr } = await sb
+          .from("affiliate_conversions")
+          .upsert(synths, { onConflict: "firm_id,transaction_id", ignoreDuplicates: true });
+        if (!synErr) synth_created += synths.length;
+      }
+    }
+    if (synth_created) out.synthetic_created = synth_created;
   }
 
   if (leads.length) {
