@@ -4015,7 +4015,7 @@ async function renderFinanceiro(){
   // ROAS Real por Campanha
   renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur);
   renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur);
-  renderVendasGeo(sinceIso, untilIso, fxUSDtoBRL);
+  renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL);
 }
 
 async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
@@ -4195,16 +4195,14 @@ function localHourForSale(country, region, saleMs){
 }
 
 // Ranking de Vendas por Local + Horário — geo do clique de cupom atribuído à venda real
-// Filtra por created_at (timestamp ISO) em vez de sale_date (DATE UTC) pra evitar rollover
-// de timezone: venda 25/05 23:56 BRT = 26/05 02:56 UTC -> sale_date=2026-05-26 (errado pra filtro BRT "hoje")
-async function renderVendasGeo(sinceIso, untilIso, fxUSDtoBRL){
+async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
   const elCombo=document.getElementById('fin-geo-combo'),
         elP=document.getElementById('fin-geo-pais'), elE=document.getElementById('fin-geo-estado'),
         elC=document.getElementById('fin-geo-cidade'), elH=document.getElementById('fin-geo-hora');
   if(!elCombo) return;
   const attrRes = await db.from('coupon_attributions')
-    .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale,created_at')
-    .gte('created_at', sinceIso).lte('created_at', untilIso);
+    .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale')
+    .gte('sale_date', sinceDate).lte('sale_date', untilDate);
   const attrs = attrRes.data || [];
   const clickIds = [...new Set(attrs.map(a=>a.click_id).filter(Boolean))];
   const clk = {};
