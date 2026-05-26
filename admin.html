@@ -4209,12 +4209,18 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const e=Object.entries(obj).sort((x,y)=>y[1].v-x[1].v);
     const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>`;
     if(!e.length) return head+'<tbody><tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Sem dados ainda.</td></tr></tbody>';
-    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>';
+    const tV=e.reduce((s,[,d])=>s+d.v,0), tU=e.reduce((s,[,d])=>s+d.u,0), tR=e.reduce((s,[,d])=>s+d.r,0);
+    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+
+      `<tr style="border-top:2px solid rgba(240,180,41,.4);background:rgba(240,180,41,.06);font-weight:700;"><td style="color:var(--gold);">TOTAL</td><td style="color:var(--gold);">${tV}</td><td style="color:var(--gold);">${fmtUSD(tU)}</td><td style="color:var(--gold);">${fmtBRL(tR)}</td></tr>`+
+      '</tbody>';
   };
   const comboRows = Object.values(combo).sort((x,y)=>y.v-x.v);
   const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th>Horário</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>';
+  const cTV=comboRows.reduce((s,d)=>s+d.v,0), cTU=comboRows.reduce((s,d)=>s+d.u,0), cTR=comboRows.reduce((s,d)=>s+d.r,0);
   elCombo.innerHTML = cHead + (comboRows.length
-    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+'</tbody>'
+    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+
+      `<tr style="border-top:2px solid rgba(240,180,41,.4);background:rgba(240,180,41,.06);font-weight:700;"><td colspan="5" style="color:var(--gold);text-align:right;">TOTAL</td><td style="color:var(--gold);">${cTV}</td><td style="color:var(--gold);">${fmtUSD(cTU)}</td><td style="color:var(--gold);">${fmtBRL(cTR)}</td></tr>`+
+      '</tbody>'
     : '<tbody><tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</td></tr></tbody>');
   elP.innerHTML = rollup('País', pais);
   elE.innerHTML = rollup('Estado', estado);

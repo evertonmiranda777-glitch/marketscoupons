@@ -90,9 +90,14 @@ serve(async (req) => {
     }, { onConflict: "conversion_id" });
   }
 
-  // Telegram — skip pra synthetics (backfill do scraper). TG só pra vendas reais (webhook IPN).
+  // Telegram — vendas reais (webhook IPN) sempre disparam.
+  // Synthetics (backfill do scraper) só disparam se forem do dia corrente — evita spam
+  // de 80+ TGs quando faz backfill historico, mas mantem venda-a-venda em tempo real.
   const isSynthetic = typeof conv.transaction_id === "string" && conv.transaction_id.startsWith("synth-");
-  if (!isSynthetic) {
+  const saleDay = new Date(conv.created_at).toISOString().slice(0, 10);
+  const todayUTC = new Date().toISOString().slice(0, 10);
+  const shouldTG = !isSynthetic || saleDay === todayUTC;
+  if (shouldTG) {
     const firm = (conv.firm_id || "").toUpperCase();
     const amt = Number(conv.amount).toFixed(2);
     const hours = bestClick ? ((saleTs - new Date(bestClick.ts).getTime()) / 3600000).toFixed(1) : null;
