@@ -3922,6 +3922,39 @@ async function fetchUSDtoBRL(){
   } catch {}
   return _fxUSDBRL.rate || 5.30;
 }
+// Fetch coupon_attributions com filtro REAL em dia BRT, contornando o fato
+// de sale_date estar em UTC. Expande janela ±1 dia em sale_date e filtra
+// via JS pelo created_at do conversion (TZ-aware). Sem JOIN (não tem FK).
+async function fetchAttributionsBRT(sinceDate, untilDate, selectStr) {
+  const addDays = (yyyy_mm_dd, n) => {
+    const [y,m,d] = yyyy_mm_dd.split('-').map(Number);
+    const dt = new Date(Date.UTC(y, m-1, d + n));
+    return dt.getUTCFullYear()+'-'+String(dt.getUTCMonth()+1).padStart(2,'0')+'-'+String(dt.getUTCDate()).padStart(2,'0');
+  };
+  const expandStart = addDays(sinceDate, -1);
+  const expandEnd = addDays(untilDate, 1);
+  const sel = selectStr || '*';
+  const finalSel = sel.includes('conversion_id') ? sel : sel + ',conversion_id';
+  const [attrRes] = await Promise.all([
+    db.from('coupon_attributions').select(finalSel).gte('sale_date', expandStart).lte('sale_date', expandEnd)
+  ]);
+  const attrsRaw = attrRes.data || [];
+  if (attrsRaw.length === 0) return [];
+  const convIds = [...new Set(attrsRaw.map(a => a.conversion_id).filter(Boolean))];
+  const convMap = {};
+  for (let i=0; i<convIds.length; i+=500) {
+    const r = await db.from('affiliate_conversions').select('id,created_at').in('id', convIds.slice(i, i+500));
+    (r.data||[]).forEach(c => { convMap[c.id] = c.created_at; });
+  }
+  return attrsRaw.filter(a => {
+    const ts = convMap[a.conversion_id];
+    if (!ts) return false;
+    // YYYY-MM-DD no fuso BRT
+    const brt = new Date(ts).toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+    return brt >= sinceDate && brt <= untilDate;
+  });
+}
+
 async function renderFinanceiro(){
   // Filtro global: since/until em ISO (created_at) ou YYYY-MM-DD (date)
   const sinceIso = globalDateStart || new Date(0).toISOString();
@@ -3937,23 +3970,41 @@ async function renderFinanceiro(){
   let statsQ = db.from('affiliate_daily_stats').select('*').gte('date', sinceDate).lte('date', untilDate).order('date',{ascending:false});
   let leadsQ = db.from('affiliate_conversions').select('*').gte('created_at', sinceIso).lte('created_at', untilIso).order('created_at',{ascending:false}).limit(50);
   let spendQ = db.from('ad_spend_daily').select('*').gte('date', sinceDate).lte('date', untilDate);
-  // Bulenox-only override: scraper Markets Monitor reporta transactions INFLADO
-  // (ex: 2 quando real é 1, mas commission $ bate). User confirmou via print do
-  // painel real 2026-05-25. Pra Bulenox, fonte real = affiliate_conversions.
-  // Apex e outras firms: stats.transactions confiável (painel Apex bate com
-  // scraper). NÃO generalizar — caso a caso.
-  let bulenoxConvQ = db.from('affiliate_conversions').select('transaction_id').eq('firm_id','bulenox').gte('created_at', sinceIso).lte('created_at', untilIso);
-  const [statsRes, leadsRes, spendRes, bulenoxConvRes] = await Promise.all([statsQ, leadsQ, spendQ, bulenoxConvQ]);
+  // affiliate_conversions = source of truth pra firms com webhook (Apex+Bulenox).
+  // Stats vem do scraper que usa fuso da firma (US Chicago pra Apex, etc) — não
+  // bate com filtro BRT do admin. Conversions filtradas por created_at + sinceIso
+  // (que JÁ é início do dia BRT em ISO UTC) = números exatos no fuso do user.
+  // Firmas sem webhook (FTMO, TPT, etc) continuam usando stats (única fonte).
+  let convAggQ = db.from('affiliate_conversions').select('firm_id,amount,currency,transaction_id').gte('created_at', sinceIso).lte('created_at', untilIso);
+  const [statsRes, leadsRes, spendRes, convAggRes] = await Promise.all([statsQ, leadsQ, spendQ, convAggQ]);
   const stats = statsRes.data || [];
   const leads = leadsRes.data || [];
   const spend = spendRes.data || [];
-  const bulenoxConvCount = (bulenoxConvRes.data || []).length;
+  const convAggs = convAggRes.data || [];
 
-  // KPIs — totTx soma stats normal, mas troca a parcela Bulenox pelo count real
-  const totTx_raw = stats.reduce((a,r)=>a+(r.transactions||0),0);
-  const bulenoxTxFromStats = stats.filter(r=>r.firm_id==='bulenox').reduce((a,r)=>a+(r.transactions||0),0);
-  const totTx = totTx_raw - bulenoxTxFromStats + bulenoxConvCount;
-  const totCom = stats.reduce((a,r)=>a+Number(r.commission||0),0);
+  // Agregação por firma das conversions reais (single source of truth pra Apex+Bulenox)
+  const convByFirm = {};
+  const seenTx = new Set();
+  convAggs.forEach(c => {
+    if (!c.firm_id) return;
+    const k = (c.firm_id||'') + ':' + (c.transaction_id||'');
+    if (seenTx.has(k)) return;
+    seenTx.add(k);
+    if (!convByFirm[c.firm_id]) convByFirm[c.firm_id] = { tx:0, com:0 };
+    convByFirm[c.firm_id].tx += 1;
+    // amount sempre em USD pra Apex/Bulenox (verificado nas vendas reais)
+    convByFirm[c.firm_id].com += Number(c.amount||0);
+  });
+
+  // KPIs — pra cada firma com conversions, sobrescrever stats. Outras continuam stats.
+  // Acumula em tot* respeitando override.
+  const firmsWithWebhook = Object.keys(convByFirm);
+  const statsExceptWebhook = stats.filter(r => !firmsWithWebhook.includes(r.firm_id));
+  const totTx = Object.values(convByFirm).reduce((a,c)=>a+c.tx,0)
+              + statsExceptWebhook.reduce((a,r)=>a+(r.transactions||0),0);
+  const totCom = Object.values(convByFirm).reduce((a,c)=>a+c.com,0)
+              + statsExceptWebhook.reduce((a,r)=>a+Number(r.commission||0),0);
+  // Cliques: scraper continua única fonte (não temos dado real por click no DB)
   const totClicksAll = stats.reduce((a,r)=>a+(r.clicks_all||0),0);
   const totClicksUniq = stats.reduce((a,r)=>a+(r.clicks_unique||0),0);
   const totSpend = spend.reduce((a,r)=>a+Number(r.spend||0),0);
@@ -4000,8 +4051,13 @@ async function renderFinanceiro(){
     byFirm[k].clicks_uniq += r.clicks_unique||0;
     if (!byFirm[k].last || r.date > byFirm[k].last) byFirm[k].last = r.date;
   });
-  // Override .tx do Bulenox com count real de affiliate_conversions (scraper infla)
-  if (byFirm.bulenox) byFirm.bulenox.tx = bulenoxConvCount;
+  // Override tx + com de firms com webhook (Apex/Bulenox) usando conversions reais
+  // filtradas em fuso BRT. Garante consistência com filtro do admin.
+  firmsWithWebhook.forEach(fid => {
+    if (!byFirm[fid]) byFirm[fid] = { firm_id:fid, tx:0, com:0, clicks_all:0, clicks_uniq:0, last:null };
+    byFirm[fid].tx = convByFirm[fid].tx;
+    byFirm[fid].com = convByFirm[fid].com;
+  });
   const firmRows = Object.values(byFirm).sort((a,b)=>b.com-a.com);
   const tbl = document.getElementById('fin-firms-tbl');
   tbl.innerHTML = `
@@ -4110,11 +4166,10 @@ async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
 async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur){
   const tbl = document.getElementById('fin-roas-real');
   if (!tbl) return;
-  const [attrRes, spendRes] = await Promise.all([
-    db.from('coupon_attributions').select('conversion_id,confidence,match_type,utm_campaign,utm_source,utm_medium,firm_id,amount,currency,sale_date').gte('sale_date', sinceDate).lte('sale_date', untilDate),
+  const [attrs, spendRes] = await Promise.all([
+    fetchAttributionsBRT(sinceDate, untilDate, 'conversion_id,confidence,match_type,utm_campaign,utm_source,utm_medium,firm_id,amount,currency,sale_date'),
     db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions').gte('date', sinceDate).lte('date', untilDate)
   ]);
-  const attrs = attrRes.data || [];
   const spend = spendRes.data || [];
 
   // Group by utm_campaign
@@ -4198,10 +4253,7 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
         elP=document.getElementById('fin-geo-pais'), elE=document.getElementById('fin-geo-estado'),
         elC=document.getElementById('fin-geo-cidade'), elH=document.getElementById('fin-geo-hora');
   if(!elCombo) return;
-  const attrRes = await db.from('coupon_attributions')
-    .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale')
-    .gte('sale_date', sinceDate).lte('sale_date', untilDate);
-  const attrs = attrRes.data || [];
+  const attrs = await fetchAttributionsBRT(sinceDate, untilDate, 'click_id,amount,currency,sale_date,click_ts,hours_to_sale,conversion_id');
   const clickIds = [...new Set(attrs.map(a=>a.click_id).filter(Boolean))];
   const clk = {};
   for(let i=0;i<clickIds.length;i+=200){
