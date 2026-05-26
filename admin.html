@@ -4137,7 +4137,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const lucroBRL = revBRL - spendBRL;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
     return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf };
-  }).filter(r => r.sales > 0).sort((x,y) => (y.roas||-1) - (x.roas||-1));
+  }).filter(r => r.sales > 0 && r.spendBRL > 0).sort((x,y) => (y.roas||-1) - (x.roas||-1));
 
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
