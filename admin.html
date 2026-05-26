@@ -4199,11 +4199,15 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     }
     return null;
   };
-  // E o inverso: dado nome ATIVO, achar variantes no spendByCamp/byCamp (com sufixos diferentes)
-  const findRoasDataForActive = (activeName) => {
+  // Dado nome ATIVO, acha variante em uma map specifica (byCamp OU spendByCamp).
+  // Bug-fix 2026-05-26: utm_campaign de coupon_attributions e campaign_name de
+  // ad_spend_daily podem ter sufixos diferentes ([CBO-TESTE] etc) quando a campanha
+  // foi renomeada apos primeiros clicks. Busca exact primeiro, fuzzy depois.
+  const findKeyInMap = (activeName, m) => {
+    if (m[activeName]) return activeName;
     const al = activeName.toLowerCase();
     let bestKey = null;
-    for (const k of new Set([...Object.keys(byCamp), ...Object.keys(spendByCamp)])) {
+    for (const k of Object.keys(m)) {
       const kl = k.toLowerCase();
       if (kl === al) return k;
       if (al.startsWith(kl) || kl.startsWith(al) || al.includes(kl) || kl.includes(al)) bestKey = k;
@@ -4224,10 +4228,13 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
   }
 
   const rows = [...allCamps].map(c => {
-    // Se onlyActive, c é nome ATIVO direto; busca dados em byCamp/spendByCamp via fuzzy
-    const dataKey = activeByName[c] ? (findRoasDataForActive(c) || c) : c;
-    const a = byCamp[dataKey] || { sales:0, revenueUSD:0, confs:[] };
-    const s = spendByCamp[dataKey] || { spend:0, clicks:0, currency:spendCur, metaPurchases:0, metaLeads:0, metaConvValue:0 };
+    // Se onlyActive, c é nome ATIVO; busca dados em CADA map separadamente (byCamp e spendByCamp
+    // podem ter sufixos diferentes — campanha renomeada no Meta)
+    const isActive = !!activeByName[c];
+    const salesKey = isActive ? (findKeyInMap(c, byCamp) || c) : c;
+    const spendKey = isActive ? (findKeyInMap(c, spendByCamp) || c) : c;
+    const a = byCamp[salesKey] || { sales:0, revenueUSD:0, confs:[] };
+    const s = spendByCamp[spendKey] || { spend:0, clicks:0, currency:spendCur, metaPurchases:0, metaLeads:0, metaConvValue:0 };
     const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
     const revBRL = a.revenueUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (revBRL/spendBRL) : null;
