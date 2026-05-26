@@ -4168,9 +4168,8 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     spendByCamp[k].clicks += Number(s.clicks||0);
   });
 
-  // Merge
-  const allCamps = new Set([...Object.keys(byCamp), ...Object.keys(spendByCamp)]);
-  // Fuzzy match nome -> active campaign (ad_spend_daily pode ter sufixo [CBO-TESTE] etc)
+  // Fuzzy match nome do ROAS (ad_spend_daily) -> active campaign (Meta)
+  // Active pode ter sufixos como [CBO-TESTE] que o ad_spend_daily nem sempre traz.
   const findActive = (camp) => {
     if (activeByName[camp]) return activeByName[camp];
     const lower = camp.toLowerCase();
@@ -4180,19 +4179,45 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     }
     return null;
   };
+  // E o inverso: dado nome ATIVO, achar variantes no spendByCamp/byCamp (com sufixos diferentes)
+  const findRoasDataForActive = (activeName) => {
+    const al = activeName.toLowerCase();
+    let bestKey = null;
+    for (const k of new Set([...Object.keys(byCamp), ...Object.keys(spendByCamp)])) {
+      const kl = k.toLowerCase();
+      if (kl === al) return k;
+      if (al.startsWith(kl) || kl.startsWith(al) || al.includes(kl) || kl.includes(al)) bestKey = k;
+    }
+    return bestKey;
+  };
+
+  // Conjunto base de campanhas a mostrar:
+  // - onlyActive=true: TODAS as 16 ATIVAS (mesmo sem venda) — pra decidir pausar
+  // - onlyActive=false: união de (com venda+spend) + ativas (pra histórico)
+  const allCamps = new Set();
+  if (onlyActive) {
+    Object.keys(activeByName).forEach(n => allCamps.add(n));
+  } else {
+    Object.keys(byCamp).forEach(n => allCamps.add(n));
+    Object.keys(spendByCamp).forEach(n => allCamps.add(n));
+    Object.keys(activeByName).forEach(n => allCamps.add(n));
+  }
+
   const rows = [...allCamps].map(c => {
-    const a = byCamp[c] || { sales:0, revenueUSD:0, confs:[] };
-    const s = spendByCamp[c] || { spend:0, clicks:0, currency:spendCur };
+    // Se onlyActive, c é nome ATIVO direto; busca dados em byCamp/spendByCamp via fuzzy
+    const dataKey = activeByName[c] ? (findRoasDataForActive(c) || c) : c;
+    const a = byCamp[dataKey] || { sales:0, revenueUSD:0, confs:[] };
+    const s = spendByCamp[dataKey] || { spend:0, clicks:0, currency:spendCur };
     const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
     const revBRL = a.revenueUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (revBRL/spendBRL) : null;
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
     const lucroBRL = revBRL - spendBRL;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
-    const meta = findActive(c);
+    const meta = activeByName[c] || findActive(c);
     return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, meta };
-  }).filter(r => r.sales > 0 && r.spendBRL > 0 && (!onlyActive || r.meta))
-    .sort((x,y) => y.sales - x.sales || (y.roas||-1) - (x.roas||-1));
+  }).filter(r => onlyActive ? r.meta : (r.sales > 0 && r.spendBRL > 0))
+    .sort((x,y) => y.sales - x.sales || (y.spendBRL - x.spendBRL) || (y.roas||-1) - (x.roas||-1));
 
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
