@@ -3125,7 +3125,7 @@ function _abPickDefaultSize(planList){
   return planList[0].s;
 }
 
-function openD(id){
+async function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   window._fdOriginPage=_currentPage;
   try{ maybeShowGiveaway(id, 'firm_open'); }catch(e){}
@@ -3144,8 +3144,13 @@ function openD(id){
     };
   }
 
-  // Lazy load overlay data from Supabase (updates hardcoded FIRM_ABOUT in background)
-  loadFirmOverlayData(id);
+  // Lazy load overlay data from Supabase — AWAIT so firms not in FIRM_ABOUT (new firms)
+  // still render the full fd-overlay padrão instead of falling back to the simple drawer.
+  if (window.innerWidth >= 769 && !FIRM_ABOUT[id]) {
+    await loadFirmOverlayData(id);
+  } else {
+    loadFirmOverlayData(id);
+  }
   // Desktop: fullscreen overlay premium | Mobile: drawer lateral
   if (window.innerWidth >= 769 && FIRM_ABOUT[id]) {
     openFD(id, f);
