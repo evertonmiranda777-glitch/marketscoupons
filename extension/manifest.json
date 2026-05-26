@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "MarketsCoupons Sync",
-  "version": "0.2.0",
-  "description": "Sincroniza dados de afiliado das prop firms — daily aggregates + transactions individuais (matcher venda-a-venda).",
-  "permissions": ["storage", "cookies", "activeTab", "scripting"],
+  "version": "0.3.0",
+  "description": "Sincroniza dados de afiliado das prop firms — daily aggregates + transactions individuais (matcher venda-a-venda). v0.3 com keep-alive do service worker.",
+  "permissions": ["storage", "cookies", "activeTab", "scripting", "alarms"],
   "host_permissions": [
     "https://dashboard.apextraderfunding.com/*",
     "https://bulenox.com/*",
