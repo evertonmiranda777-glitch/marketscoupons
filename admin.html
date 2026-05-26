@@ -4015,7 +4015,7 @@ async function renderFinanceiro(){
   // ROAS Real por Campanha
   renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur);
   renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur);
-  renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL);
+  renderVendasGeo(sinceIso, untilIso, fxUSDtoBRL);
 }
 
 async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
@@ -4164,15 +4164,47 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     }).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma atribuição ainda. Rode o matcher depois que houver vendas reais + clicks de cupom com utm_campaign.</td></tr>'}</tbody>`;
 }
 
+// Map country/region → IANA timezone pra calcular horário local do click (pra ajustar anúncios)
+function tzForCountry(c, region){
+  const r = (region||'').toLowerCase();
+  if (c === 'US') {
+    if (/texas|^tx\b|oklahoma|kansas|nebraska|south dakota|north dakota|missouri|^mo\b|iowa|^ia\b|minnesota|^mn\b|wisconsin|^wi\b|illinois|^il\b|arkansas|^ar\b|louisiana|^la\b|mississippi|^ms\b|alabama|^al\b|tennessee|^tn\b/.test(r)) return 'America/Chicago';
+    if (/california|^ca\b|nevada|^nv\b|washington|^wa\b|oregon|^or\b/.test(r)) return 'America/Los_Angeles';
+    if (/arizona|^az\b/.test(r)) return 'America/Phoenix';
+    if (/colorado|^co\b|new mexico|^nm\b|utah|^ut\b|wyoming|^wy\b|montana|^mt\b|idaho|^id\b/.test(r)) return 'America/Denver';
+    if (/alaska|^ak\b/.test(r)) return 'America/Anchorage';
+    if (/hawaii|^hi\b/.test(r)) return 'Pacific/Honolulu';
+    return 'America/New_York';
+  }
+  if (c === 'CA') {
+    if (/british columbia|^bc\b/.test(r)) return 'America/Vancouver';
+    if (/alberta|^ab\b/.test(r)) return 'America/Edmonton';
+    if (/saskatchewan|^sk\b|manitoba|^mb\b/.test(r)) return 'America/Winnipeg';
+    return 'America/Toronto';
+  }
+  const M = {BR:'America/Sao_Paulo',IN:'Asia/Kolkata',GB:'Europe/London',DE:'Europe/Berlin',FR:'Europe/Paris',ES:'Europe/Madrid',IT:'Europe/Rome',PT:'Europe/Lisbon',NL:'Europe/Amsterdam',BE:'Europe/Brussels',IE:'Europe/Dublin',AR:'America/Argentina/Buenos_Aires',MX:'America/Mexico_City',CL:'America/Santiago',CO:'America/Bogota',PE:'America/Lima',AU:'Australia/Sydney',NZ:'Pacific/Auckland',JP:'Asia/Tokyo',CN:'Asia/Shanghai',KR:'Asia/Seoul',TH:'Asia/Bangkok',ID:'Asia/Jakarta',MY:'Asia/Kuala_Lumpur',PH:'Asia/Manila',VN:'Asia/Ho_Chi_Minh',SG:'Asia/Singapore',HK:'Asia/Hong_Kong',TW:'Asia/Taipei',RU:'Europe/Moscow',TR:'Europe/Istanbul',ZA:'Africa/Johannesburg',NG:'Africa/Lagos',EG:'Africa/Cairo',AE:'Asia/Dubai',SA:'Asia/Riyadh',IL:'Asia/Jerusalem',PL:'Europe/Warsaw',CH:'Europe/Zurich',AT:'Europe/Vienna',SE:'Europe/Stockholm',NO:'Europe/Oslo',DK:'Europe/Copenhagen',FI:'Europe/Helsinki',GR:'Europe/Athens',CZ:'Europe/Prague',HU:'Europe/Budapest',RO:'Europe/Bucharest'};
+  return M[c] || null;
+}
+function localHourForSale(country, region, saleMs){
+  const tz = tzForCountry(country, region);
+  if (!tz) return null;
+  try {
+    const fmt = new Intl.DateTimeFormat('en-US', { hour: '2-digit', hour12: false, timeZone: tz });
+    return fmt.format(new Date(saleMs)).replace(/\D/g,'').padStart(2,'0') + ':00';
+  } catch { return null; }
+}
+
 // Ranking de Vendas por Local + Horário — geo do clique de cupom atribuído à venda real
-async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
+// Filtra por created_at (timestamp ISO) em vez de sale_date (DATE UTC) pra evitar rollover
+// de timezone: venda 25/05 23:56 BRT = 26/05 02:56 UTC -> sale_date=2026-05-26 (errado pra filtro BRT "hoje")
+async function renderVendasGeo(sinceIso, untilIso, fxUSDtoBRL){
   const elCombo=document.getElementById('fin-geo-combo'),
         elP=document.getElementById('fin-geo-pais'), elE=document.getElementById('fin-geo-estado'),
         elC=document.getElementById('fin-geo-cidade'), elH=document.getElementById('fin-geo-hora');
   if(!elCombo) return;
   const attrRes = await db.from('coupon_attributions')
-    .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale')
-    .gte('sale_date', sinceDate).lte('sale_date', untilDate);
+    .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale,created_at')
+    .gte('created_at', sinceIso).lte('created_at', untilIso);
   const attrs = attrRes.data || [];
   const clickIds = [...new Set(attrs.map(a=>a.click_id).filter(Boolean))];
   const clk = {};
@@ -4196,10 +4228,11 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     acc(cidade, c.city ? c.city+' · '+(c.region||c.country) : null, usd, brl);
     if(a.click_ts){
       const ms = new Date(a.click_ts).getTime() + (Number(a.hours_to_sale)||0)*3600000;
-      const hr = String(new Date(ms).getHours()).padStart(2,'0')+':00';
-      acc(hora, hr, usd, brl);
-      const key = c.country+'|'+(c.region||'')+'|'+(c.city||'')+'|'+hr;
-      if(!combo[key]) combo[key]={pais:c.country, estado:c.region||'—', cidade:c.city||'—', hora:hr, v:0, u:0, r:0};
+      const hrBRT = String(new Date(ms).getHours()).padStart(2,'0')+':00';
+      const hrLocal = localHourForSale(c.country, c.region, ms) || '—';
+      acc(hora, hrBRT, usd, brl);
+      const key = c.country+'|'+(c.region||'')+'|'+(c.city||'')+'|'+hrBRT;
+      if(!combo[key]) combo[key]={pais:c.country, estado:c.region||'—', cidade:c.city||'—', hora:hrBRT, horaLocal:hrLocal, v:0, u:0, r:0};
       combo[key].v++; combo[key].u+=usd; combo[key].r+=brl;
     }
   });
@@ -4215,13 +4248,13 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
       '</tbody>';
   };
   const comboRows = Object.values(combo).sort((x,y)=>y.v-x.v);
-  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th>Horário</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>';
+  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th title="Horário BRT (do admin)">Hora BRT</th><th title="Horário local do país do click — use pra targetar anúncios no fuso do alvo">Hora Local</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>';
   const cTV=comboRows.reduce((s,d)=>s+d.v,0), cTU=comboRows.reduce((s,d)=>s+d.u,0), cTR=comboRows.reduce((s,d)=>s+d.r,0);
   elCombo.innerHTML = cHead + (comboRows.length
-    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td><b>${d.v}</b></td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+
-      `<tr style="border-top:2px solid rgba(240,180,41,.4);background:rgba(240,180,41,.06);font-weight:700;"><td colspan="5" style="color:var(--gold);text-align:right;">TOTAL</td><td style="color:var(--gold);">${cTV}</td><td style="color:var(--gold);">${fmtUSD(cTU)}</td><td style="color:var(--gold);">${fmtBRL(cTR)}</td></tr>`+
+    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td style="color:var(--gold);"><b>${d.horaLocal||'—'}</b></td><td><b>${d.v}</b></td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+
+      `<tr style="border-top:2px solid rgba(240,180,41,.4);background:rgba(240,180,41,.06);font-weight:700;"><td colspan="6" style="color:var(--gold);text-align:right;">TOTAL</td><td style="color:var(--gold);">${cTV}</td><td style="color:var(--gold);">${fmtUSD(cTU)}</td><td style="color:var(--gold);">${fmtBRL(cTR)}</td></tr>`+
       '</tbody>'
-    : '<tbody><tr><td colspan="8" style="text-align:center;color:var(--t3);padding:24px;">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</td></tr></tbody>');
+    : '<tbody><tr><td colspan="9" style="text-align:center;color:var(--t3);padding:24px;">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</td></tr></tbody>');
   elP.innerHTML = rollup('País', pais);
   elE.innerHTML = rollup('Estado', estado);
   elC.innerHTML = rollup('Cidade', cidade);
