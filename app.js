@@ -2839,7 +2839,7 @@ function renderFirms(list){
       <!-- Col 2: Discount -->
       <div class="fmet"><div class="mv" style="color:var(--green);">${f.discount}%</div><div class="ml">${t('met_desc')}</div></div>
       <!-- Col 3: Split -->
-      <div class="fmet"><div class="mv" style="color:var(--green);">${f.split}</div><div class="ml">Split</div></div>
+      <div class="fmet"><div class="mv" style="color:var(--t2);font-size:12px;font-weight:600;line-height:1.25;">${f.split}</div><div class="ml">Split</div></div>
       <!-- Col 4: Rating -->
       <div class="fmet"><div class="mv">${f.rating}</div><div class="ml">Rating</div></div>
       <!-- Col 5: Reviews -->
@@ -2863,7 +2863,7 @@ function renderFirms(list){
       </div>
       <div class="fr-mets">
         <div class="fr-mets-inner">
-          <div class="fmet"><div class="mv" style="color:var(--green);">${f.split}</div><div class="ml">${t('met_split')}</div></div>
+          <div class="fmet"><div class="mv" style="color:var(--t2);font-size:12px;font-weight:600;line-height:1.25;">${f.split}</div><div class="ml">${t('met_split')}</div></div>
           <div class="fmet"><div class="mv">${f.drawdown||'—'}</div><div class="ml">DRAWDOWN</div></div>
           <div class="fmet"><div class="mv">${f.rating}</div><div class="ml">${t('met_rating')}</div></div>
         </div>
