@@ -114,13 +114,47 @@ serve(async (req) => {
         .lte("created_at", searchEnd)
         .limit(10000);
       const realByDay: Record<string, { count: number; sumAmount: number }> = {};
-      (existing || []).forEach((e: any) => {
-        if (typeof e.transaction_id === "string" && e.transaction_id.startsWith("synth-")) return;
+      const synthByDay: Record<string, { id?: string; transaction_id: string; created_at: string }[]> = {};
+      // Precisa do id pra deletar — refetch com id
+      const { data: existingFull } = await sb
+        .from("affiliate_conversions")
+        .select("id, transaction_id, amount, created_at")
+        .eq("firm_id", firm)
+        .gte("created_at", searchStart)
+        .lte("created_at", searchEnd)
+        .limit(10000);
+      (existingFull || []).forEach((e: any) => {
         const brtDay = brtDayFromISO(e.created_at);
+        if (typeof e.transaction_id === "string" && e.transaction_id.startsWith("synth-")) {
+          if (!synthByDay[brtDay]) synthByDay[brtDay] = [];
+          synthByDay[brtDay].push({ id: e.id, transaction_id: e.transaction_id, created_at: e.created_at });
+          return;
+        }
         if (!realByDay[brtDay]) realByDay[brtDay] = { count: 0, sumAmount: 0 };
         realByDay[brtDay].count++;
         realByDay[brtDay].sumAmount += Number(e.amount) || 0;
       });
+      // Refund cleanup: pra cada dia com synth, mantém só (transactions - real_count) synth.
+      // Excesso = transactions caiu no painel (refund/chargeback). Deleta synth mais recentes.
+      const idsToDelete: string[] = [];
+      for (const r of daysWithTx) {
+        const synth = synthByDay[r.date] || [];
+        const real = realByDay[r.date] || { count: 0, sumAmount: 0 };
+        const keep = Math.max(0, r.transactions - real.count);
+        if (synth.length > keep) {
+          const excess = synth.sort((a,b) => b.created_at.localeCompare(a.created_at)).slice(0, synth.length - keep);
+          excess.forEach(s => s.id && idsToDelete.push(s.id));
+        }
+      }
+      if (idsToDelete.length) {
+        // Delete coupon_attributions referenciando, depois affiliate_conversions
+        for (let i = 0; i < idsToDelete.length; i += 200) {
+          const slice = idsToDelete.slice(i, i + 200);
+          await sb.from("coupon_attributions").delete().in("conversion_id", slice);
+          await sb.from("affiliate_conversions").delete().in("id", slice);
+        }
+        out.synth_refund_removed = idsToDelete.length;
+      }
       const allSynths: any[] = [];
       for (const r of daysWithTx) {
         const real = realByDay[r.date] || { count: 0, sumAmount: 0 };
