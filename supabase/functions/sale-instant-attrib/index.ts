@@ -90,19 +90,22 @@ serve(async (req) => {
     }, { onConflict: "conversion_id" });
   }
 
-  // Telegram
-  const firm = (conv.firm_id || "").toUpperCase();
-  const amt = Number(conv.amount).toFixed(2);
-  const hours = bestClick ? ((saleTs - new Date(bestClick.ts).getTime()) / 3600000).toFixed(1) : null;
-  let msg = `<b>[${firm}] VENDA ATRIBUIDA</b>\n+$${amt}\n`;
-  if (subId) {
-    msg += `🎯 Keyword: <code>${subId}</code>\n`;
-    msg += `Click: ${hours}h antes · ${bestClick.utm_source || "?"} / ${bestClick.utm_medium || "?"}\n`;
-    msg += `Confiança: ${bestClick.fbclid ? "alta (fbclid)" : "média"}`;
-  } else {
-    msg += `❌ Sem click recente (7d). Provavelmente organic ou primeira-fonte fora da janela.`;
+  // Telegram — skip pra synthetics (backfill do scraper). TG só pra vendas reais (webhook IPN).
+  const isSynthetic = typeof conv.transaction_id === "string" && conv.transaction_id.startsWith("synth-");
+  if (!isSynthetic) {
+    const firm = (conv.firm_id || "").toUpperCase();
+    const amt = Number(conv.amount).toFixed(2);
+    const hours = bestClick ? ((saleTs - new Date(bestClick.ts).getTime()) / 3600000).toFixed(1) : null;
+    let msg = `<b>[${firm}] VENDA ATRIBUIDA</b>\n+$${amt}\n`;
+    if (subId) {
+      msg += `Keyword: <code>${subId}</code>\n`;
+      msg += `Click: ${hours}h antes · ${bestClick.utm_source || "?"} / ${bestClick.utm_medium || "?"}\n`;
+      msg += `Confianca: ${bestClick.fbclid ? "alta (fbclid)" : "media"}`;
+    } else {
+      msg += `Sem click recente (7d). Provavelmente organic ou primeira-fonte fora da janela.`;
+    }
+    await tg(msg);
   }
-  await tg(msg);
 
   return new Response(JSON.stringify({ ok: true, sub_id: subId, click_id: bestClick?.id || null }), {
     headers: { "Content-Type": "application/json" }
