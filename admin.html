@@ -4157,7 +4157,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
   if (!tbl) return;
   const [attrRes, spendRes, activeByName] = await Promise.all([
     db.from('coupon_attributions').select('conversion_id,confidence,match_type,utm_campaign,utm_source,utm_medium,firm_id,amount,currency,sale_date').gte('sale_date', sinceDate).lte('sale_date', untilDate),
-    db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions,conversions,conversion_value').gte('date', sinceDate).lte('date', untilDate),
+    db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions,conversions,conversion_value,purchases,leads').gte('date', sinceDate).lte('date', untilDate),
     fetchActiveCampaigns()
   ]);
   const attrs = attrRes.data || [];
@@ -4175,14 +4175,16 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     byCamp[camp].confs.push(a.confidence||0);
   });
 
-  // Group spend by campaign_name — inclui conversions reportadas pelo Meta (Pixel)
+  // Group spend by campaign_name — separa LEADS (signups/cadastros) de PURCHASES (vendas reais).
+  // Pra comparar 1:1 com 'Nosso' (vendas atribuidas), so faz sentido usar purchases.
   const spendByCamp = {};
   spend.forEach(s => {
     const k = s.campaign_name || '(sem campaign)';
-    if (!spendByCamp[k]) spendByCamp[k] = { spend:0, clicks:0, currency:s.currency||'USD', metaConvs:0, metaConvValue:0 };
+    if (!spendByCamp[k]) spendByCamp[k] = { spend:0, clicks:0, currency:s.currency||'USD', metaPurchases:0, metaLeads:0, metaConvValue:0 };
     spendByCamp[k].spend += Number(s.spend||0);
     spendByCamp[k].clicks += Number(s.clicks||0);
-    spendByCamp[k].metaConvs += Number(s.conversions||0);
+    spendByCamp[k].metaPurchases += Number(s.purchases||0);
+    spendByCamp[k].metaLeads += Number(s.leads||0);
     spendByCamp[k].metaConvValue += Number(s.conversion_value||0);
   });
 
@@ -4225,7 +4227,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     // Se onlyActive, c é nome ATIVO direto; busca dados em byCamp/spendByCamp via fuzzy
     const dataKey = activeByName[c] ? (findRoasDataForActive(c) || c) : c;
     const a = byCamp[dataKey] || { sales:0, revenueUSD:0, confs:[] };
-    const s = spendByCamp[dataKey] || { spend:0, clicks:0, currency:spendCur, metaConvs:0, metaConvValue:0 };
+    const s = spendByCamp[dataKey] || { spend:0, clicks:0, currency:spendCur, metaPurchases:0, metaLeads:0, metaConvValue:0 };
     const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
     const revBRL = a.revenueUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (revBRL/spendBRL) : null;
@@ -4233,7 +4235,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const lucroBRL = revBRL - spendBRL;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
     const meta = activeByName[c] || findActive(c);
-    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, metaConvs:s.metaConvs, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, meta };
+    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, metaPurchases:s.metaPurchases, metaLeads:s.metaLeads, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, meta };
   }).filter(r => onlyActive ? r.meta : (r.sales > 0 && r.spendBRL > 0))
     .sort((x,y) => y.sales - x.sales || (y.spendBRL - x.spendBRL) || (y.roas||-1) - (x.roas||-1));
 
@@ -4260,7 +4262,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
 
   tbl.innerHTML = `
     <thead><tr>
-      <th>Campanha</th><th>Status</th><th>Gasto</th><th>Cliques Ads</th><th title="Meta: conversões reportadas pelo Pixel · Nosso: vendas atribuídas via click matching">Vendas (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
+      <th>Campanha</th><th>Status</th><th>Gasto</th><th>Cliques Ads</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas. Tag azul 'NL' = N leads/signups reportados, não são vendas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
     </tr></thead>
     <tbody>${rows.length ? rows.map(r=>{
       const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
@@ -4272,8 +4274,10 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
       const actionCell = r.meta
         ? `<button onclick="pauseCampaign('${r.meta.id}', this.dataset.name, this)" data-name="${r.campaign.replace(/"/g,'&quot;')}" style="background:#7f1d1d;color:#fff;border:0;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;">Pausar</button>`
         : `<span style="color:var(--t3);font-size:11px;">—</span>`;
-      const diverged = r.metaConvs > 0 && r.sales === 0;
-      const salesCell = `<span title="Meta Pixel">${r.metaConvs || 0}</span> <span style="color:var(--t3);">/</span> <b style="color:${r.sales>0?'#10B981':'var(--t3)'};" title="Nossa atribuição venda-a-venda">${r.sales}</b>${diverged ? ` <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F0B429" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;cursor:help;"><title>Meta viu conversão mas nosso matcher não casou — não pause ainda</title><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>` : ''}`;
+      // Comparação 1:1: PURCHASES Meta (vendas que o Pixel viu) vs Nosso (atribuição real). LEADS mostrados em badge separada (signups/cadastros, NÃO vendas).
+      const diverged = r.metaPurchases > 0 && r.sales === 0;
+      const leadsTag = r.metaLeads > 0 ? ` <span title="Leads (signups) reportados pelo Meta — não são vendas" style="background:rgba(59,130,246,.15);color:#3B82F6;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600;margin-left:4px;">${r.metaLeads}L</span>` : '';
+      const salesCell = `<span title="Compras (Meta Pixel)">${r.metaPurchases || 0}</span> <span style="color:var(--t3);">/</span> <b style="color:${r.sales>0?'#10B981':'var(--t3)'};" title="Nossa atribuição venda-a-venda">${r.sales}</b>${diverged ? ` <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F0B429" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;cursor:help;"><title>Meta viu COMPRA mas nosso matcher não casou — não pause ainda</title><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>` : ''}${leadsTag}`;
       return `<tr>
         <td><b>${r.campaign}</b></td>
         <td>${statusCell}</td>

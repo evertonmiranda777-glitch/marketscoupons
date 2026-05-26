@@ -62,22 +62,20 @@ async function syncAccount(acct: string, days: number) {
   }
 
   return all.map((r: any) => {
-    // Agrega TODOS os action_types relevantes (lead, purchase, complete_registration).
-    // Antes filtrava só purchase/complete_registration → campanhas [LEAD] vinham 0.
-    // Soma valores em vez de pegar só o primeiro match — uma adset pode ter lead+purchase.
-    const LEAD_LIKE = new Set([
-      "lead",
-      "offsite_conversion.fb_pixel_lead",
-      "purchase",
-      "offsite_conversion.fb_pixel_purchase",
-      "complete_registration",
-      "offsite_conversion.fb_pixel_complete_registration",
-    ]);
-    const convsTotal = (r.actions || [])
-      .filter((a: any) => LEAD_LIKE.has(a.action_type))
+    // Separa LEADS (cadastros/signups) de PURCHASES (vendas reais).
+    // - conversions = total (compat — leads+purchases somados, usado pelo Card Campanhas Meta)
+    // - leads = só action_type lead/fb_pixel_lead/complete_registration
+    // - purchases = só action_type purchase/fb_pixel_purchase
+    // Pra ROAS Real comparar com nossas vendas a fonte certa eh `purchases`.
+    const LEAD_TYPES = new Set(["lead","offsite_conversion.fb_pixel_lead","complete_registration","offsite_conversion.fb_pixel_complete_registration"]);
+    const PURCHASE_TYPES = new Set(["purchase","offsite_conversion.fb_pixel_purchase"]);
+    const sumByTypes = (set: Set<string>) => (r.actions || [])
+      .filter((a: any) => set.has(a.action_type))
       .reduce((acc: number, a: any) => acc + (Number(a.value) || 0), 0);
+    const leads = sumByTypes(LEAD_TYPES);
+    const purchases = sumByTypes(PURCHASE_TYPES);
     const convVal = (r.action_values || []).find((a: any) =>
-      ["purchase","offsite_conversion.fb_pixel_purchase"].includes(a.action_type)
+      PURCHASE_TYPES.has(a.action_type)
     );
     return {
       date: r.date_start,
@@ -90,11 +88,13 @@ async function syncAccount(acct: string, days: number) {
       spend: Number(r.spend) || 0,
       impressions: Number(r.impressions) || 0,
       clicks: Number(r.clicks) || 0,
-      conversions: convsTotal,
+      conversions: leads + purchases,
+      leads,
+      purchases,
       conversion_value: convVal ? Number(convVal.value) : 0,
       currency: accountCurrency,
       firm_id: null,
-      source: "meta_insights_v1",
+      source: "meta_insights_v2",
       raw: r
     };
   });
