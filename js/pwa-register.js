@@ -229,83 +229,12 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', refreshPushButton);
   else setTimeout(refreshPushButton, 500);
 
-  // ==== Install banner (Fase 3) ====
-  const INSTALL_LABELS = {
-    pt: { title: 'Instalar Markets Coupons', body: 'Acesso rápido aos cupons direto do home screen.', cta: 'Instalar', dismiss: 'Agora não' },
-    en: { title: 'Install Markets Coupons', body: 'Quick access to coupons right from your home screen.', cta: 'Install', dismiss: 'Not now' },
-    es: { title: 'Instalar Markets Coupons', body: 'Acceso rápido a los cupones desde la pantalla de inicio.', cta: 'Instalar', dismiss: 'Ahora no' },
-    it: { title: 'Installa Markets Coupons', body: 'Accesso rapido ai coupon dalla home.', cta: 'Installa', dismiss: 'Non ora' },
-    fr: { title: 'Installer Markets Coupons', body: 'Accès rapide aux coupons depuis l’écran d’accueil.', cta: 'Installer', dismiss: 'Plus tard' },
-    de: { title: 'Markets Coupons installieren', body: 'Schneller Zugriff auf Gutscheine vom Startbildschirm.', cta: 'Installieren', dismiss: 'Jetzt nicht' },
-    ar: { title: 'تثبيت Markets Coupons', body: 'وصول سريع للكوبونات من الشاشة الرئيسية.', cta: 'تثبيت', dismiss: 'ليس الآن' }
-  };
-  function installL() {
-    let lang = 'en';
-    try { lang = (localStorage.getItem('mc_lang') || 'en').slice(0,2); } catch (_) {}
-    return INSTALL_LABELS[lang] || INSTALL_LABELS.en;
-  }
-  function shouldShowInstallBanner() {
-    if (isStandalone()) return false;
-    if (!window.MC_INSTALL_PROMPT) return false;
-    try {
-      const snoozed = parseInt(localStorage.getItem('mc_pwa_install_snoozed_until') || '0', 10);
-      if (snoozed && Date.now() < snoozed) return false;
-      const installed = localStorage.getItem('mc_pwa_installed');
-      if (installed === 'yes') return false;
-    } catch (_) {}
-    return true;
-  }
-  function snoozeInstall(days) {
-    try { localStorage.setItem('mc_pwa_install_snoozed_until', String(Date.now() + days * 24 * 60 * 60 * 1000)); } catch (_) {}
-  }
-  function renderInstallBanner() {
-    if (!shouldShowInstallBanner()) return;
-    if (document.getElementById('mc-install-banner')) return;
-    const L = installL();
-    const el = document.createElement('div');
-    el.id = 'mc-install-banner';
-    el.style.cssText = 'position:fixed;left:16px;right:16px;bottom:16px;max-width:480px;margin:0 auto;background:#10151F;border:1px solid rgba(240,180,41,.42);border-radius:14px;padding:16px 18px;z-index:99998;box-shadow:0 12px 40px rgba(0,0,0,.6);font-family:Inter,system-ui,sans-serif;color:#fff;display:flex;align-items:center;gap:14px;animation:mcInstallSlide .25s ease-out';
-    el.innerHTML = `
-      <div style="flex:0 0 44px;width:44px;height:44px;border-radius:10px;background:#F0B429;display:flex;align-items:center;justify-content:center;color:#0A0D14;font-weight:800;font-size:22px">M</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:14px;font-weight:700;color:#F0B429;margin-bottom:2px">${L.title}</div>
-        <div style="font-size:12px;color:#9AA0A8;line-height:1.35">${L.body}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;flex:0 0 auto">
-        <button id="mc-install-cta" style="background:linear-gradient(135deg,#F0B429,#E0A020);color:#0A0D14;border:0;border-radius:8px;padding:9px 16px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">${L.cta}</button>
-        <button id="mc-install-dismiss" style="background:transparent;color:#9AA0A8;border:0;font-size:11px;cursor:pointer;text-decoration:underline">${L.dismiss}</button>
-      </div>
-      <style>@keyframes mcInstallSlide{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}</style>
-    `;
-    document.body.appendChild(el);
-    document.getElementById('mc-install-cta').addEventListener('click', async () => {
-      const p = window.MC_INSTALL_PROMPT;
-      if (!p) { el.remove(); return; }
-      try { p.prompt(); } catch (_) {}
-      try {
-        const r = await p.userChoice;
-        if (r && r.outcome === 'accepted') {
-          try { localStorage.setItem('mc_pwa_installed', 'yes'); } catch (_) {}
-          if (typeof window.track === 'function') window.track('pwa_install_accepted', {});
-        } else {
-          snoozeInstall(7);
-          if (typeof window.track === 'function') window.track('pwa_install_dismissed', { source: 'prompt' });
-        }
-      } catch (_) {}
-      window.MC_INSTALL_PROMPT = null;
-      el.remove();
-    });
-    document.getElementById('mc-install-dismiss').addEventListener('click', () => {
-      snoozeInstall(14);
-      if (typeof window.track === 'function') window.track('pwa_install_dismissed', { source: 'snooze' });
-      el.remove();
-    });
-    if (typeof window.track === 'function') window.track('pwa_install_banner_shown', {});
-  }
-  // Defer banner ~6s so it doesn't compete with LCP / initial scroll
-  window.addEventListener('beforeinstallprompt', function () { setTimeout(renderInstallBanner, 6000); });
-  // Also try after load in case event fired before listener
-  window.addEventListener('load', function () { setTimeout(renderInstallBanner, 6500); });
+  // Install via browser menu only (no auto banner — keep UX clean)
+  // Hide any previously-rendered install banner aggressively
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('mc-install-banner');
+    if (el) el.remove();
+  });
 
   // ==== Update notification (Fase 3) ====
   function showUpdateToast() {
