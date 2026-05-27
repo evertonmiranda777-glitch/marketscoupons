@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Flat Correction (3-3-5)</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Sideways · A and B both 3 waves · C is 5 · most common in Wave 4 positions</text>
+  <g transform="translate(80, 110)">
+    <line x1="0" y1="80" x2="740" y2="80" stroke="rgba(255,255,255,.2)" stroke-dasharray="4,3"/>
+    <line x1="0" y1="240" x2="740" y2="240" stroke="rgba(255,255,255,.2)" stroke-dasharray="4,3"/>
+    <text x="-10" y="84" fill="#9AA0A8" font-size="10" text-anchor="end">range top</text>
+    <text x="-10" y="244" fill="#9AA0A8" font-size="10" text-anchor="end">range bot</text>
+    <path d="M 30 80 L 130 220 L 200 130 L 290 240 L 370 90 L 470 180 L 530 130 L 620 180 L 680 100 L 730 250" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <g font-size="14" font-weight="700" text-anchor="middle">
+      <circle cx="30" cy="80" r="7" fill="#10B981"/><text x="30" y="65" fill="#10B981">top</text>
+      <circle cx="290" cy="240" r="8" fill="#EF4444"/><text x="290" y="260" fill="#EF4444">A</text>
+      <circle cx="370" cy="90" r="8" fill="#F472B6"/><text x="370" y="75" fill="#F472B6">B</text>
+      <circle cx="730" cy="250" r="9" fill="#EF4444" stroke="#fff" stroke-width="2"/><text x="730" y="270" fill="#EF4444">C</text>
+    </g>
+    <text x="180" y="305" fill="#9AA0A8" font-size="11">3-3-5 = sideways consolidation · B often retests A start</text>
+  </g>
+  <text x="450" y="480" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Three sub-types: regular flat (B=100% of A) · expanded flat (B&gt;100%) · running flat (B&gt;100%, C&lt;A)</text>
+</svg>

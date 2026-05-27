@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/>
+      <stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="area" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#F0B429" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#F0B429" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The 0DTE Revolution (2022–2024)</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Share of total SPX option volume that expires the same day</text>
+
+  <!-- Chart area -->
+  <g transform="translate(80, 100)">
+    <!-- Y axis -->
+    <line x1="0" y1="0" x2="0" y2="280" stroke="#3a4050" stroke-width="1"/>
+    <g fill="#9AA0A8" font-size="11" text-anchor="end">
+      <text x="-10" y="6">50%</text>
+      <text x="-10" y="76">40%</text>
+      <text x="-10" y="146">30%</text>
+      <text x="-10" y="216">20%</text>
+      <text x="-10" y="286">10%</text>
+    </g>
+    <!-- gridlines -->
+    <g stroke="#3a4050" stroke-width="0.5" opacity="0.5">
+      <line x1="0" y1="0" x2="760" y2="0"/>
+      <line x1="0" y1="70" x2="760" y2="70"/>
+      <line x1="0" y1="140" x2="760" y2="140"/>
+      <line x1="0" y1="210" x2="760" y2="210"/>
+      <line x1="0" y1="280" x2="760" y2="280"/>
+    </g>
+
+    <!-- X axis -->
+    <line x1="0" y1="280" x2="760" y2="280" stroke="#3a4050" stroke-width="1"/>
+    <g fill="#9AA0A8" font-size="11" text-anchor="middle">
+      <text x="0" y="300">Jan 2022</text>
+      <text x="152" y="300">Jul 2022</text>
+      <text x="304" y="300">Jan 2023</text>
+      <text x="456" y="300">Jul 2023</text>
+      <text x="608" y="300">Jan 2024</text>
+      <text x="760" y="300">Q4 2024</text>
+    </g>
+
+    <!-- Area under curve -->
+    <path d="M 0 245 L 100 240 L 152 230 L 200 195 L 250 165 L 304 130 L 360 100 L 410 80 L 456 70 L 510 60 L 560 52 L 608 40 L 680 32 L 760 25 L 760 280 L 0 280 Z"
+          fill="url(#area)"/>
+
+    <!-- Line -->
+    <path d="M 0 245 L 100 240 L 152 230 L 200 195 L 250 165 L 304 130 L 360 100 L 410 80 L 456 70 L 510 60 L 560 52 L 608 40 L 680 32 L 760 25"
+          fill="none" stroke="#F0B429" stroke-width="3"/>
+
+    <!-- Markers -->
+    <g>
+      <!-- May 2022 CBOE Tue/Thu -->
+      <circle cx="125" cy="237" r="6" fill="#F0B429"/>
+      <line x1="125" y1="237" x2="100" y2="190" stroke="#F0B429" stroke-width="1" opacity="0.6"/>
+      <rect x="20" y="160" width="180" height="36" rx="6" fill="#1A1F2E" stroke="rgba(240,180,41,.4)"/>
+      <text x="110" y="175" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">May 2022</text>
+      <text x="110" y="189" fill="#fff" font-size="10" text-anchor="middle">CBOE adds Tue/Thu expiries</text>
+
+      <!-- Nov 2022 daily -->
+      <circle cx="260" cy="160" r="6" fill="#F0B429"/>
+      <line x1="260" y1="160" x2="280" y2="120" stroke="#F0B429" stroke-width="1" opacity="0.6"/>
+      <rect x="200" y="86" width="180" height="36" rx="6" fill="#1A1F2E" stroke="rgba(240,180,41,.4)"/>
+      <text x="290" y="101" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">Nov 2022</text>
+      <text x="290" y="115" fill="#fff" font-size="10" text-anchor="middle">Daily expiries added</text>
+
+      <!-- Q4 2023 crosses 40% -->
+      <circle cx="510" cy="60" r="7" fill="#F0B429"/>
+      <line x1="510" y1="60" x2="540" y2="30" stroke="#F0B429" stroke-width="1" opacity="0.6"/>
+      <rect x="460" y="-4" width="180" height="36" rx="6" fill="#1A1F2E" stroke="rgba(240,180,41,.6)"/>
+      <text x="550" y="11" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">Q4 2023</text>
+      <text x="550" y="25" fill="#fff" font-size="10" text-anchor="middle">0DTE crosses 40% of volume</text>
+    </g>
+
+    <!-- End-point annotation -->
+    <text x="755" y="15" fill="#F0B429" font-size="13" font-weight="700" text-anchor="end">~50%</text>
+  </g>
+
+  <!-- Bottom callout -->
+  <g transform="translate(80, 430)">
+    <text x="380" y="14" fill="#9AA0A8" font-size="12" text-anchor="middle">
+      What grew: not "options" — same-day expiries specifically. They rebuilt the dealer book and gave charm primacy over gamma.
+    </text>
+  </g>
+</svg>

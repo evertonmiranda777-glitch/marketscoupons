@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/>
+      <stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="green-quad" x1="0" x2="1">
+      <stop offset="0%" stop-color="rgba(16,185,129,0.15)"/>
+      <stop offset="100%" stop-color="rgba(16,185,129,0.05)"/>
+    </linearGradient>
+    <linearGradient id="red-quad" x1="0" x2="1">
+      <stop offset="0%" stop-color="rgba(239,68,68,0.18)"/>
+      <stop offset="100%" stop-color="rgba(239,68,68,0.05)"/>
+    </linearGradient>
+    <linearGradient id="amber-quad" x1="0" x2="1">
+      <stop offset="0%" stop-color="rgba(240,180,41,0.18)"/>
+      <stop offset="100%" stop-color="rgba(240,180,41,0.05)"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="560" fill="url(#bg)"/>
+
+  <text x="450" y="36" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">GEX Regime Cheat Sheet — Strategy × Regime Matrix</text>
+  <text x="450" y="58" fill="#9AA0A8" font-size="13" text-anchor="middle">Running the wrong strategy in the wrong regime is the most expensive lesson in modern markets.</text>
+
+  <!-- Header row -->
+  <g transform="translate(60, 100)">
+    <!-- Empty top-left -->
+    <rect x="0" y="0" width="200" height="60" rx="8" fill="rgba(255,255,255,0.03)"/>
+    <text x="100" y="38" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">Match strategy to regime ↓</text>
+
+    <!-- Positive GEX column -->
+    <rect x="210" y="0" width="280" height="60" rx="8" fill="rgba(16,185,129,0.18)" stroke="#10B981" stroke-width="1.5"/>
+    <text x="350" y="28" fill="#10B981" font-size="15" font-weight="700" text-anchor="middle">POSITIVE GEX</text>
+    <text x="350" y="46" fill="#9AA0A8" font-size="11" text-anchor="middle">Dealers long γ · vol dampened · grindy</text>
+
+    <!-- Negative GEX column -->
+    <rect x="500" y="0" width="280" height="60" rx="8" fill="rgba(239,68,68,0.18)" stroke="#EF4444" stroke-width="1.5"/>
+    <text x="640" y="28" fill="#EF4444" font-size="15" font-weight="700" text-anchor="middle">NEGATIVE GEX</text>
+    <text x="640" y="46" fill="#9AA0A8" font-size="11" text-anchor="middle">Dealers short γ · vol amplified · trendy</text>
+  </g>
+
+  <!-- Row 1: Mean Reversion -->
+  <g transform="translate(60, 175)">
+    <rect x="0" y="0" width="200" height="100" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="100" y="40" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">MEAN REVERSION</text>
+    <text x="100" y="60" fill="#9AA0A8" font-size="11" text-anchor="middle">Fade extremes</text>
+    <text x="100" y="76" fill="#9AA0A8" font-size="11" text-anchor="middle">Sell premium</text>
+    <text x="100" y="92" fill="#9AA0A8" font-size="11" text-anchor="middle">Range scalp</text>
+
+    <!-- Positive + Mean Rev = WORKS -->
+    <rect x="210" y="0" width="280" height="100" rx="8" fill="url(#green-quad)" stroke="#10B981" stroke-width="1.5"/>
+    <text x="350" y="32" fill="#10B981" font-size="16" font-weight="700" text-anchor="middle">THIS WORKS</text>
+    <text x="350" y="56" fill="#fff" font-size="11" text-anchor="middle">Dealer flow agrees with you.</text>
+    <text x="350" y="74" fill="#9AA0A8" font-size="11" text-anchor="middle">Daily ranges compress.</text>
+    <text x="350" y="90" fill="#9AA0A8" font-size="11" text-anchor="middle">Premium sellers eat. Buy-the-dip is real.</text>
+
+    <!-- Negative + Mean Rev = FAILS -->
+    <rect x="500" y="0" width="280" height="100" rx="8" fill="url(#red-quad)" stroke="#EF4444" stroke-width="1.5"/>
+    <text x="640" y="32" fill="#EF4444" font-size="16" font-weight="700" text-anchor="middle">THIS BLOWS UP</text>
+    <text x="640" y="56" fill="#fff" font-size="11" text-anchor="middle">No dealer underneath to absorb selling.</text>
+    <text x="640" y="74" fill="#9AA0A8" font-size="11" text-anchor="middle">Every "fade" runs against you.</text>
+    <text x="640" y="90" fill="#9AA0A8" font-size="11" text-anchor="middle">Premium sellers get carried out.</text>
+  </g>
+
+  <!-- Row 2: Trend / Breakout -->
+  <g transform="translate(60, 290)">
+    <rect x="0" y="0" width="200" height="100" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="100" y="40" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">TREND / BREAKOUT</text>
+    <text x="100" y="60" fill="#9AA0A8" font-size="11" text-anchor="middle">Buy momentum</text>
+    <text x="100" y="76" fill="#9AA0A8" font-size="11" text-anchor="middle">Follow trend</text>
+    <text x="100" y="92" fill="#9AA0A8" font-size="11" text-anchor="middle">Hold winners</text>
+
+    <!-- Positive + Trend = FAILS -->
+    <rect x="210" y="0" width="280" height="100" rx="8" fill="url(#red-quad)" stroke="#EF4444" stroke-width="1.5"/>
+    <text x="350" y="32" fill="#EF4444" font-size="16" font-weight="700" text-anchor="middle">THIS FAILS</text>
+    <text x="350" y="56" fill="#fff" font-size="11" text-anchor="middle">Dealer flow opposes momentum.</text>
+    <text x="350" y="74" fill="#9AA0A8" font-size="11" text-anchor="middle">Breakouts get faded.</text>
+    <text x="350" y="90" fill="#9AA0A8" font-size="11" text-anchor="middle">Death by 1,000 stop-outs.</text>
+
+    <!-- Negative + Trend = WORKS -->
+    <rect x="500" y="0" width="280" height="100" rx="8" fill="url(#green-quad)" stroke="#10B981" stroke-width="1.5"/>
+    <text x="640" y="32" fill="#10B981" font-size="16" font-weight="700" text-anchor="middle">THIS WORKS</text>
+    <text x="640" y="56" fill="#fff" font-size="11" text-anchor="middle">Dealer flow becomes a tailwind.</text>
+    <text x="640" y="74" fill="#9AA0A8" font-size="11" text-anchor="middle">Trends extend longer than "rational".</text>
+    <text x="640" y="90" fill="#9AA0A8" font-size="11" text-anchor="middle">Hold positions through the close.</text>
+  </g>
+
+  <!-- Row 3: Near the flip -->
+  <g transform="translate(60, 405)">
+    <rect x="0" y="0" width="200" height="80" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="100" y="38" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">NEAR GAMMA FLIP</text>
+    <text x="100" y="60" fill="#9AA0A8" font-size="11" text-anchor="middle">Within ±50pts of flip</text>
+
+    <rect x="210" y="0" width="570" height="80" rx="8" fill="url(#amber-quad)" stroke="#F0B429" stroke-width="1.5"/>
+    <text x="495" y="32" fill="#F0B429" font-size="16" font-weight="700" text-anchor="middle">NO TRADE ZONE</text>
+    <text x="495" y="54" fill="#fff" font-size="12" text-anchor="middle">Hedging flow is erratic. Small price moves flip the regime.</text>
+    <text x="495" y="72" fill="#9AA0A8" font-size="11" text-anchor="middle">Stay out, or size down to 25% of normal.</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="450" y="525" fill="#F0B429" font-size="13" font-weight="600" text-anchor="middle" font-style="italic">
+    Check regime FIRST. Then choose strategy. Never the other way around.
+  </text>
+</svg>

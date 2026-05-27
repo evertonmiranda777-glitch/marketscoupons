@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg4" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="520" fill="url(#bg4)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Effort vs Result — The Diagnostic Heart of VPA</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">When the effort doesn't match the result, the hidden side is showing itself.</text>
+
+  <!-- 2x2 quadrant -->
+  <g transform="translate(80, 110)">
+    <!-- Q1 top-left: high effort, low result -->
+    <rect width="370" height="170" rx="12" fill="rgba(239,68,68,.08)" stroke="rgba(239,68,68,.4)"/>
+    <text x="185" y="32" fill="#EF4444" font-size="13" font-weight="700" text-anchor="middle">HIGH EFFORT + LOW RESULT</text>
+    <text x="185" y="55" fill="#fff" font-size="12" text-anchor="middle">= ABSORPTION</text>
+    <text x="185" y="85" fill="#9AA0A8" font-size="11" text-anchor="middle">Big volume bar, small price range.</text>
+    <text x="185" y="103" fill="#9AA0A8" font-size="11" text-anchor="middle">Someone is taking the other side</text>
+    <text x="185" y="121" fill="#9AA0A8" font-size="11" text-anchor="middle">and not letting price move.</text>
+    <text x="185" y="150" fill="#F0B429" font-size="12" font-weight="700" text-anchor="middle">→ Reversal incoming</text>
+
+    <!-- Q2 top-right: high effort, high result -->
+    <rect x="390" y="0" width="370" height="170" rx="12" fill="rgba(16,185,129,.06)" stroke="rgba(16,185,129,.35)"/>
+    <text x="575" y="32" fill="#10B981" font-size="13" font-weight="700" text-anchor="middle">HIGH EFFORT + HIGH RESULT</text>
+    <text x="575" y="55" fill="#fff" font-size="12" text-anchor="middle">= HEALTHY TREND</text>
+    <text x="575" y="85" fill="#9AA0A8" font-size="11" text-anchor="middle">Big volume, big price move.</text>
+    <text x="575" y="103" fill="#9AA0A8" font-size="11" text-anchor="middle">Effort matches result.</text>
+    <text x="575" y="121" fill="#9AA0A8" font-size="11" text-anchor="middle">No hidden side.</text>
+    <text x="575" y="150" fill="#10B981" font-size="12" font-weight="700" text-anchor="middle">→ Continuation likely</text>
+
+    <!-- Q3 bottom-left: low effort, low result -->
+    <rect y="195" width="370" height="170" rx="12" fill="rgba(155,160,168,.04)" stroke="rgba(155,160,168,.25)"/>
+    <text x="185" y="227" fill="#9AA0A8" font-size="13" font-weight="700" text-anchor="middle">LOW EFFORT + LOW RESULT</text>
+    <text x="185" y="250" fill="#fff" font-size="12" text-anchor="middle">= NO INTEREST</text>
+    <text x="185" y="280" fill="#9AA0A8" font-size="11" text-anchor="middle">Small bar, tiny volume.</text>
+    <text x="185" y="298" fill="#9AA0A8" font-size="11" text-anchor="middle">Nobody is showing up.</text>
+    <text x="185" y="316" fill="#9AA0A8" font-size="11" text-anchor="middle">Trend pauses or consolidates.</text>
+    <text x="185" y="345" fill="#F0B429" font-size="12" font-weight="700" text-anchor="middle">→ Wait for signal</text>
+
+    <!-- Q4 bottom-right: low effort, high result -->
+    <rect x="390" y="195" width="370" height="170" rx="12" fill="rgba(240,180,41,.07)" stroke="rgba(240,180,41,.4)"/>
+    <text x="575" y="227" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">LOW EFFORT + HIGH RESULT</text>
+    <text x="575" y="250" fill="#fff" font-size="12" text-anchor="middle">= VACUUM</text>
+    <text x="575" y="280" fill="#9AA0A8" font-size="11" text-anchor="middle">Big price move, tiny volume.</text>
+    <text x="575" y="298" fill="#9AA0A8" font-size="11" text-anchor="middle">No resistance on this side.</text>
+    <text x="575" y="316" fill="#9AA0A8" font-size="11" text-anchor="middle">Path of least resistance.</text>
+    <text x="575" y="345" fill="#F0B429" font-size="12" font-weight="700" text-anchor="middle">→ Trend extending fast</text>
+  </g>
+
+  <text x="450" y="500" fill="#F0B429" font-size="13" font-weight="600" text-anchor="middle" font-style="italic">The only quadrant where you trust the chart at face value is HIGH/HIGH.</text>
+</svg>

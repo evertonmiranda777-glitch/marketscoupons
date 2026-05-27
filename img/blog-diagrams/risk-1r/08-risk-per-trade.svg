@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Risk Per Trade — How Much Is Too Much?</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Risk 0.5-1% per trade. 2%+ kills accounts within one losing streak. Math doesn't care about your feelings.</text>
+  <g transform="translate(80, 110)" font-size="11">
+    <g>
+      <rect width="370" height="120" rx="10" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+      <text x="20" y="28" fill="#10B981" font-size="14" font-weight="700">0.5% risk per trade</text>
+      <text x="20" y="52" fill="#9AA0A8">8 consecutive losses = -4% drawdown</text>
+      <text x="20" y="70" fill="#9AA0A8">Can recover with 4.2% gain · normal trading</text>
+      <text x="20" y="90" fill="#9AA0A8">Win rate needed to grow: 55%+ with 2R wins</text>
+      <text x="20" y="110" fill="#10B981" font-weight="700">Best for: 6+ figure accounts, swing trading</text>
+    </g>
+    <g transform="translate(390, 0)">
+      <rect width="370" height="120" rx="10" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+      <text x="20" y="28" fill="#10B981" font-size="14" font-weight="700">1% risk per trade</text>
+      <text x="20" y="52" fill="#9AA0A8">8 consecutive losses = -8% drawdown</text>
+      <text x="20" y="70" fill="#9AA0A8">Recoverable with 8.7% gain · standard</text>
+      <text x="20" y="90" fill="#9AA0A8">Win rate needed: 50% with 2R wins</text>
+      <text x="20" y="110" fill="#10B981" font-weight="700">Best for: $25K-$100K accounts</text>
+    </g>
+    <g transform="translate(0, 140)">
+      <rect width="370" height="120" rx="10" fill="rgba(240,180,41,.06)" stroke="#F0B429"/>
+      <text x="20" y="28" fill="#F0B429" font-size="14" font-weight="700">2% risk per trade</text>
+      <text x="20" y="52" fill="#9AA0A8">8 consecutive losses = -16% drawdown</text>
+      <text x="20" y="70" fill="#9AA0A8">Needs 19% gain to recover · psychological hell</text>
+      <text x="20" y="90" fill="#9AA0A8">Win rate needed: 60%+ with 2R wins</text>
+      <text x="20" y="110" fill="#F0B429" font-weight="700">For experts only · scaled down</text>
+    </g>
+    <g transform="translate(390, 140)">
+      <rect width="370" height="120" rx="10" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+      <text x="20" y="28" fill="#EF4444" font-size="14" font-weight="700">3-5% risk per trade</text>
+      <text x="20" y="52" fill="#9AA0A8">8 consecutive losses = -24% to -40% DD</text>
+      <text x="20" y="70" fill="#9AA0A8">May never recover · emotion takes over</text>
+      <text x="20" y="90" fill="#9AA0A8">Win rate needed: 70%+ (rare to sustain)</text>
+      <text x="20" y="110" fill="#EF4444" font-weight="700">Account destroyer · cease and desist</text>
+    </g>
+  </g>
+  <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">When in doubt: use 0.5%. You'll trade longer and learn faster than the 2% gambler.</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Drawdown Cheat Sheet</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Print this · keep it next to your trading station · check before every eval purchase</text>
+  <g transform="translate(60, 110)" font-size="12">
+    <rect width="780" height="400" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="780" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700"><text x="20" y="28" fill="#F0B429">Attribute</text><text x="270" y="28" fill="#F0B429">Intraday-trail</text><text x="450" y="28" fill="#F0B429">EOD-trail</text><text x="620" y="28" fill="#F0B429">Static</text></g>
+    <g fill="#9AA0A8" font-size="11">
+      <text x="20" y="70">Trails by</text><text x="270" y="70">tick</text><text x="450" y="70">day close</text><text x="620" y="70" fill="#10B981">never</text>
+      <text x="20" y="98">Locks at target hit</text><text x="270" y="98" fill="#10B981">yes (peak)</text><text x="450" y="98">yes (start)</text><text x="620" y="98">N/A</text>
+      <text x="20" y="126">Best for style</text><text x="270" y="126">scalp</text><text x="450" y="126">day/swing</text><text x="620" y="126">swing/trend</text>
+      <text x="20" y="154">Best instruments</text><text x="270" y="154">MES/MNQ</text><text x="450" y="154">ES/NQ</text><text x="620" y="154">FX/CFDs</text>
+      <text x="20" y="182">Hold overnight?</text><text x="270" y="182" fill="#EF4444">avoid</text><text x="450" y="182" fill="#F0B429">OK</text><text x="620" y="182" fill="#10B981">yes</text>
+      <text x="20" y="210">Tolerates intraday spikes</text><text x="270" y="210" fill="#EF4444">no</text><text x="450" y="210" fill="#10B981">yes</text><text x="620" y="210" fill="#10B981">yes</text>
+      <text x="20" y="238">Eval pass rate</text><text x="270" y="238">~10%</text><text x="450" y="238">~16%</text><text x="620" y="238" fill="#10B981">~22%</text>
+      <text x="20" y="266">Cost ($50K eval)</text><text x="270" y="266" fill="#10B981">$65-170</text><text x="450" y="266">$80-200</text><text x="620" y="266">$150-300</text>
+      <text x="20" y="294">Payout split</text><text x="270" y="294" fill="#10B981">90%</text><text x="450" y="294">80-90%</text><text x="620" y="294">80%</text>
+      <text x="20" y="322">News trading</text><text x="270" y="322" fill="#10B981">allowed</text><text x="450" y="322" fill="#F0B429">restricted</text><text x="620" y="322" fill="#EF4444">forbidden</text>
+      <text x="20" y="350">Top firms</text><text x="270" y="350">Apex</text><text x="450" y="350">Bulenox/TPT</text><text x="620" y="350">FTMO/FundedNext</text>
+    </g>
+  </g>
+</svg>

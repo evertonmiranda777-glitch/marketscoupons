@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Stop Placement — Structure Beats Numbers</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Stops belong at INVALIDATION levels (structure) · NOT round-number ATR multiples</text>
+  <g transform="translate(80, 110)">
+    <rect width="340" height="280" rx="14" fill="rgba(16,185,129,.05)" stroke="#10B981"/>
+    <text x="170" y="32" fill="#10B981" font-size="14" font-weight="700" text-anchor="middle">STRUCTURAL stop</text>
+    <line x1="20" y1="180" x2="320" y2="180" stroke="rgba(16,185,129,.4)" stroke-dasharray="3,3"/>
+    <text x="30" y="174" fill="#10B981" font-size="10">entry pivot</text>
+    <line x1="20" y1="230" x2="320" y2="230" stroke="rgba(239,68,68,.4)" stroke-dasharray="3,3"/>
+    <text x="30" y="244" fill="#EF4444" font-size="10">stop below swing low</text>
+    <path d="M 30 200 L 70 220 L 110 195 L 150 215 L 190 175 L 230 155 L 270 135 L 310 110" fill="none" stroke="#fff" stroke-width="2"/>
+    <text x="170" y="265" fill="#9AA0A8" font-size="11" text-anchor="middle">Aligned with WHERE thesis breaks</text>
+  </g>
+  <g transform="translate(480, 110)">
+    <rect width="340" height="280" rx="14" fill="rgba(239,68,68,.05)" stroke="#EF4444"/>
+    <text x="170" y="32" fill="#EF4444" font-size="14" font-weight="700" text-anchor="middle">ARBITRARY stop</text>
+    <line x1="20" y1="180" x2="320" y2="180" stroke="rgba(239,68,68,.4)" stroke-dasharray="3,3"/>
+    <text x="30" y="174" fill="#EF4444" font-size="10">entry "2 ATR below"</text>
+    <line x1="20" y1="210" x2="320" y2="210" stroke="rgba(239,68,68,.4)" stroke-dasharray="3,3"/>
+    <text x="30" y="224" fill="#EF4444" font-size="10">stop too tight on noise</text>
+    <path d="M 30 200 L 70 220 L 110 195 L 150 215 L 190 175 L 230 155 L 270 135 L 310 110" fill="none" stroke="#fff" stroke-width="2"/>
+    <text x="170" y="245" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">Stopped by noise · thesis still valid</text>
+    <text x="170" y="265" fill="#9AA0A8" font-size="11" text-anchor="middle">Repeated stop-outs on right trades</text>
+  </g>
+  <text x="450" y="465" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Rule: stop placement is set FIRST · position size adjusts to fit · never the other way around</text>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Account Size vs Cost vs Payout</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">$50K is the sweet spot for most traders · larger sizes have diminishing ROI when scaled across accounts</text>
+  <g transform="translate(60, 110)" font-size="12">
+    <rect width="780" height="280" rx="14" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="780" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700">
+      <text x="40" y="28" fill="#F0B429">Size</text>
+      <text x="180" y="28" fill="#F0B429">Cost (sale)</text>
+      <text x="350" y="28" fill="#F0B429">DD</text>
+      <text x="470" y="28" fill="#F0B429">Target</text>
+      <text x="590" y="28" fill="#F0B429">Monthly @ 4%</text>
+    </g>
+    <g fill="#9AA0A8" font-size="12">
+      <text x="40" y="70">$25K</text><text x="180" y="70">$55-85</text><text x="350" y="70">$1,500</text><text x="470" y="70">$1,500</text><text x="590" y="70" fill="#F0B429">$1,000</text>
+      <text x="40" y="100">$50K</text><text x="180" y="100" fill="#10B981">$65-170</text><text x="350" y="100">$2,500</text><text x="470" y="100">$3,000</text><text x="590" y="100" fill="#10B981" font-weight="700">$2,000</text>
+      <text x="40" y="130">$100K</text><text x="180" y="130">$130-360</text><text x="350" y="130">$3,000</text><text x="470" y="130">$6,000</text><text x="590" y="130" fill="#F0B429">$4,000</text>
+      <text x="40" y="160">$150K</text><text x="180" y="160">$200-460</text><text x="350" y="160">$5,000</text><text x="470" y="160">$9,000</text><text x="590" y="160" fill="#F0B429">$6,000</text>
+      <text x="40" y="190">$300K</text><text x="180" y="190">$300-660</text><text x="350" y="190">$7,500</text><text x="470" y="190">$20,000</text><text x="590" y="190" fill="#F472B6">$12,000</text>
+    </g>
+    <text x="40" y="240" fill="#10B981" font-weight="700" font-size="11">Best ROI: $50K · cost lowest · pass rate highest · multi-account friendly</text>
+    <text x="40" y="260" fill="#9AA0A8" font-size="11">$300K is realistic AFTER 6 months funded · NOT a starter account</text>
+  </g>
+  <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Start with $50K. Pass it. Add more $50K. Don't chase $300K before you've passed 2-3 $50K's.</text>
+</svg>

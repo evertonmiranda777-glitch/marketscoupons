@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Trial vs Reset — Restart Cost Math</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Failed an eval? · Resetting costs less than new trial · but only if you fix what broke</text>
+  <g transform="translate(60, 110)" font-size="11">
+    <g><rect width="380" height="240" rx="12" fill="rgba(240,180,41,.06)" stroke="#F0B429"/><text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">NEW TRIAL</text><text x="20" y="56" fill="#9AA0A8">→ Full price ($65-$170 with coupon on Apex $50K)</text><text x="20" y="76" fill="#9AA0A8">→ Starts at $50K equity</text><text x="20" y="96" fill="#9AA0A8">→ Days reset</text><text x="20" y="116" fill="#9AA0A8">→ Profits reset to $0</text><text x="20" y="136" fill="#9AA0A8">→ Clean slate · psychological reset</text><text x="20" y="166" fill="#10B981" font-weight="700">Best for: complete strategy failure</text><text x="20" y="184" fill="#9AA0A8">Use when: you didn't understand the firm rules</text></g>
+    <g transform="translate(400, 0)"><rect width="380" height="240" rx="12" fill="rgba(16,185,129,.06)" stroke="#10B981"/><text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">RESET</text><text x="20" y="56" fill="#9AA0A8">→ Discounted ($25-$45 on Apex)</text><text x="20" y="76" fill="#9AA0A8">→ Starts at $50K equity again</text><text x="20" y="96" fill="#9AA0A8">→ Days reset</text><text x="20" y="116" fill="#9AA0A8">→ Profits reset to $0</text><text x="20" y="136" fill="#9AA0A8">→ Same account credentials</text><text x="20" y="166" fill="#10B981" font-weight="700">Best for: one bad trade · one bad day</text><text x="20" y="184" fill="#9AA0A8">Use when: 95% there but one rule slip</text></g>
+  </g>
+  <g transform="translate(60, 380)">
+    <rect width="780" height="100" rx="10" fill="rgba(244,114,182,.06)" stroke="rgba(244,114,182,.3)"/>
+    <text x="20" y="28" fill="#F472B6" font-size="13" font-weight="700">The honest question</text>
+    <text x="20" y="50" fill="#9AA0A8" font-size="11">If you've failed 3 evals on same firm, the problem isn't the trial · it's your strategy</text>
+    <text x="20" y="66" fill="#9AA0A8" font-size="11">Take 2 weeks off · journal what failed · backtest 100 historical trades · then return</text>
+    <text x="20" y="86" fill="#F472B6" font-size="11" font-weight="700">Cheapest reset: stop trading and fix the system before paying for another eval</text>
+  </g>
+</svg>

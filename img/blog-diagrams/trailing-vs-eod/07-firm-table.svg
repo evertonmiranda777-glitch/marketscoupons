@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Firm-by-Firm Drawdown Type</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Reference table · know what you're paying for before clicking the buy button</text>
+  <g transform="translate(60, 110)" font-size="12">
+    <rect width="780" height="400" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="780" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700">
+      <text x="20" y="28" fill="#F0B429">Firm</text>
+      <text x="200" y="28" fill="#F0B429">Default DD</text>
+      <text x="360" y="28" fill="#F0B429">Alternative</text>
+      <text x="540" y="28" fill="#F0B429">Notes</text>
+    </g>
+    <g fill="#9AA0A8" font-size="11">
+      <text x="20" y="70">Apex</text><text x="200" y="70" fill="#EF4444">Trailing intraday</text><text x="360" y="70">—</text><text x="540" y="70">Locks at PEAK after target</text>
+      <text x="20" y="98">Bulenox</text><text x="200" y="98" fill="#F0B429">Trailing EOD</text><text x="360" y="98" fill="#EF4444">Intraday on PA</text><text x="540" y="98">Easier on eval phase</text>
+      <text x="20" y="126">TopstepTrader</text><text x="200" y="126" fill="#F0B429">Trailing EOD</text><text x="360" y="126">—</text><text x="540" y="126">Combine + Express</text>
+      <text x="20" y="154">TakeProfit</text><text x="200" y="154" fill="#F0B429">Trailing EOD</text><text x="360" y="154">—</text><text x="540" y="154">Lenient news rules</text>
+      <text x="20" y="182">TradeDay</text><text x="200" y="182" fill="#F0B429">Trailing EOD</text><text x="360" y="182" fill="#10B981">Static option</text><text x="540" y="182">Choose at signup</text>
+      <text x="20" y="210">FTMO</text><text x="200" y="210" fill="#10B981">Static</text><text x="360" y="210">—</text><text x="540" y="210">Forex/CFD focused</text>
+      <text x="20" y="238">FundingPips</text><text x="200" y="238" fill="#10B981">Static</text><text x="360" y="238">—</text><text x="540" y="238">Multi-asset</text>
+      <text x="20" y="266">FundedNext</text><text x="200" y="266" fill="#10B981">Static</text><text x="360" y="266">—</text><text x="540" y="266">Swing-friendly</text>
+      <text x="20" y="294">The5ers</text><text x="200" y="294" fill="#10B981">Static</text><text x="360" y="294">—</text><text x="540" y="294">Hyper-scaling plans</text>
+      <text x="20" y="322">BrightFunded</text><text x="200" y="322" fill="#10B981">Static</text><text x="360" y="322">—</text><text x="540" y="322">Up to $1M funded</text>
+      <text x="20" y="350">E8 Funding</text><text x="200" y="350" fill="#10B981">Static</text><text x="360" y="350">—</text><text x="540" y="350">Aggressive payouts</text>
+      <text x="20" y="378">BlueGuardian</text><text x="200" y="378" fill="#F0B429">EOD trail</text><text x="360" y="378">—</text><text x="540" y="378">Mid-tier option</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Prop Firm 1R Math — How to Calibrate</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Drawdown rule determines your 1R · DLL rule determines your daily max-loss limit</text>
+  <g transform="translate(60, 100)" font-size="11">
+    <rect width="780" height="220" rx="14" fill="rgba(240,180,41,.06)" stroke="#F0B429"/>
+    <text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">Apex $50K account example</text>
+    <text x="20" y="58" fill="#9AA0A8">→ Trailing drawdown: $2,500 (5%)</text>
+    <text x="20" y="76" fill="#9AA0A8">→ Daily Loss Limit (DLL): $1,150</text>
+    <text x="20" y="94" fill="#9AA0A8">→ Profit target: $3,000 (6%)</text>
+    <text x="20" y="120" fill="#10B981" font-weight="700">Recommended 1R calibration:</text>
+    <text x="20" y="142" fill="#9AA0A8">→ 1R = $250 (5% of drawdown · 10 losing trades = blown account · ~2% of equity)</text>
+    <text x="20" y="160" fill="#9AA0A8">→ Daily max trades: 3 (DLL/1R = 4.6, leave buffer)</text>
+    <text x="20" y="178" fill="#9AA0A8">→ Profit target hit: 12 winning 1R trades · or 6 winning 2R trades · or 4 winning 3R</text>
+    <text x="20" y="200" fill="#F0B429" font-weight="700">Path to pass: 8-12 trades, avg 2R, 55% win rate · 5-8 trading days</text>
+  </g>
+  <g transform="translate(60, 340)">
+    <rect width="780" height="160" rx="14" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+    <text x="20" y="28" fill="#10B981" font-size="13" font-weight="700">Universal prop firm rule</text>
+    <text x="20" y="54" fill="#9AA0A8">1R = (drawdown allowance ÷ 10) · gives 10 losses of safety before blowing the eval</text>
+    <text x="20" y="74" fill="#9AA0A8">Daily max trades = (DLL ÷ 1R) - 1 · leaves room for slippage</text>
+    <text x="20" y="94" fill="#9AA0A8">Profit target trades = (target ÷ (1R × win rate × avg R won)) · plan the eval before starting</text>
+    <text x="20" y="124" fill="#F0B429" font-weight="700">Plan it backwards: target → R per trade → setups needed → days</text>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Trailing Intraday Math — Step by Step</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Apex $50K example · $2,500 DD trails every tick the equity HIGH advances · ratchets up only</text>
+  <g transform="translate(60, 110)">
+    <line x1="0" y1="60" x2="780" y2="60" stroke="rgba(16,185,129,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="-10" y="64" fill="#10B981" font-size="10" text-anchor="end">peak: $52,000</text>
+    <line x1="0" y1="200" x2="780" y2="200" stroke="rgba(255,255,255,.15)"/>
+    <text x="-10" y="204" fill="#9AA0A8" font-size="10" text-anchor="end">$50,000</text>
+    <line x1="0" y1="280" x2="780" y2="280" stroke="rgba(239,68,68,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="-10" y="284" fill="#EF4444" font-size="10" text-anchor="end">DD: $49,500</text>
+    <path d="M 30 200 L 100 180 L 170 130 L 240 100 L 310 80 L 380 60 L 450 90 L 520 60 L 590 110 L 660 130 L 730 60" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <g font-size="11" font-weight="700">
+      <text x="240" y="86" fill="#10B981">+$500</text>
+      <text x="380" y="46" fill="#10B981">+$2,000 PEAK</text>
+      <text x="520" y="46" fill="#10B981">PEAK locked at $52K</text>
+    </g>
+    <g transform="translate(0, 310)">
+      <rect width="780" height="100" rx="10" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/>
+      <text x="20" y="28" fill="#F0B429" font-size="12" font-weight="700">What happened</text>
+      <text x="20" y="48" fill="#9AA0A8" font-size="11">→ Started at $50,000 · DD = $47,500</text>
+      <text x="20" y="64" fill="#9AA0A8" font-size="11">→ Equity rose to $52,000 (intraday high) · DD trailed to $49,500</text>
+      <text x="20" y="80" fill="#9AA0A8" font-size="11">→ Closed at $51,500 next day · DD stays at $49,500 (peak locked)</text>
+    </g>
+  </g>
+</svg>

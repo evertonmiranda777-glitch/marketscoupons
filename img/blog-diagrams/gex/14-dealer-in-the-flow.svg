@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg14" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <marker id="arr14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#F0B429"/>
+    </marker>
+  </defs>
+  <rect width="900" height="480" fill="url(#bg14)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Dealer in the Flow — A Bookmaker for Risk</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Why the market maker doesn't care which direction the market goes</text>
+
+  <!-- Customer left -->
+  <g transform="translate(60, 220)">
+    <circle cx="50" cy="0" r="42" fill="#1A1F2E" stroke="#3B82F6" stroke-width="2"/>
+    <text x="50" y="6" fill="#3B82F6" font-size="14" font-weight="700" text-anchor="middle">YOU</text>
+    <text x="50" y="72" fill="#9AA0A8" font-size="11" text-anchor="middle">Buy a call</text>
+  </g>
+
+  <!-- Arrow customer to dealer -->
+  <text x="240" y="200" fill="#F0B429" font-size="11" text-anchor="middle" font-weight="600">$ Premium</text>
+  <line x1="170" y1="220" x2="320" y2="220" stroke="#F0B429" stroke-width="2.5" marker-end="url(#arr14)"/>
+  <text x="240" y="245" fill="#9AA0A8" font-size="10" text-anchor="middle" font-style="italic">"I want directional exposure"</text>
+
+  <!-- Dealer center -->
+  <g transform="translate(360, 220)">
+    <circle cx="70" cy="0" r="62" fill="#0F1422" stroke="#F0B429" stroke-width="3"/>
+    <text x="70" y="-6" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">DEALER</text>
+    <text x="70" y="14" fill="#9AA0A8" font-size="10" text-anchor="middle">(market maker)</text>
+    <text x="70" y="100" fill="#fff" font-size="11" text-anchor="middle" font-weight="600">Earns the spread.</text>
+    <text x="70" y="118" fill="#9AA0A8" font-size="10" text-anchor="middle">Never holds direction.</text>
+  </g>
+
+  <!-- Arrow dealer to market -->
+  <text x="630" y="200" fill="#F0B429" font-size="11" text-anchor="middle" font-weight="600">Buys shares</text>
+  <line x1="555" y1="220" x2="715" y2="220" stroke="#F0B429" stroke-width="2.5" marker-end="url(#arr14)"/>
+  <text x="630" y="245" fill="#9AA0A8" font-size="10" text-anchor="middle" font-style="italic">"Neutralize the call I sold"</text>
+
+  <!-- Market right -->
+  <g transform="translate(740, 220)">
+    <rect x="0" y="-50" width="120" height="100" rx="8" fill="#1A1F2E" stroke="#10B981" stroke-width="2"/>
+    <text x="60" y="-2" fill="#10B981" font-size="13" font-weight="700" text-anchor="middle">UNDERLYING</text>
+    <text x="60" y="20" fill="#9AA0A8" font-size="10" text-anchor="middle">(SPX shares)</text>
+    <text x="60" y="80" fill="#9AA0A8" font-size="11" text-anchor="middle">↑ Price moves</text>
+  </g>
+
+  <!-- Bottom takeaway -->
+  <rect x="80" y="400" width="740" height="58" rx="10" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
+  <text x="450" y="425" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">Every option you buy generates a mandatory share trade by the dealer.</text>
+  <text x="450" y="444" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">Multiply by millions of contracts. That is the flow that moves the S&amp;P 500.</text>
+</svg>

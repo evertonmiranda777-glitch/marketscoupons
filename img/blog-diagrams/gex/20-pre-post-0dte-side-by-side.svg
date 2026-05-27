@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg20" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="480" fill="url(#bg20)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Pre-2022 vs Post-2022 — Two Different Markets, Same Index</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">A typical SPX intraday session, before and after daily expirations were introduced</text>
+
+  <!-- LEFT: Pre-2022 (calm/boring) -->
+  <g transform="translate(80, 110)">
+    <rect width="340" height="320" rx="14" fill="rgba(59,130,246,.05)" stroke="rgba(59,130,246,.3)"/>
+    <text x="170" y="32" fill="#3B82F6" font-size="14" font-weight="700" text-anchor="middle">PRE-2022 (boring close)</text>
+    <text x="170" y="50" fill="#9AA0A8" font-size="11" text-anchor="middle">Gamma dominates the dealer book</text>
+
+    <!-- Time axis -->
+    <line x1="20" y1="220" x2="320" y2="220" stroke="rgba(255,255,255,.1)"/>
+    <text x="20" y="240" fill="#9AA0A8" font-size="9">9:30</text>
+    <text x="100" y="240" fill="#9AA0A8" font-size="9">12:00</text>
+    <text x="200" y="240" fill="#9AA0A8" font-size="9">2:30</text>
+    <text x="300" y="240" fill="#9AA0A8" font-size="9">4:00</text>
+
+    <!-- SPX line: gentle drift -->
+    <path d="M 20 180 L 80 175 L 130 178 L 180 173 L 230 175 L 280 172 L 320 175" fill="none" stroke="#3B82F6" stroke-width="2.5"/>
+
+    <text x="170" y="265" fill="#9AA0A8" font-size="11" text-anchor="middle">Average final-hour move:</text>
+    <text x="170" y="298" fill="#fff" font-size="22" font-weight="700" text-anchor="middle">±0.12%</text>
+  </g>
+
+  <!-- RIGHT: Post-2022 (3 PM ramp) -->
+  <g transform="translate(480, 110)">
+    <rect width="340" height="320" rx="14" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.4)" stroke-width="1.5"/>
+    <text x="170" y="32" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">POST-2022 (3 PM ramp)</text>
+    <text x="170" y="50" fill="#9AA0A8" font-size="11" text-anchor="middle">Charm dominates intraday</text>
+
+    <line x1="20" y1="220" x2="320" y2="220" stroke="rgba(255,255,255,.1)"/>
+    <text x="20" y="240" fill="#9AA0A8" font-size="9">9:30</text>
+    <text x="100" y="240" fill="#9AA0A8" font-size="9">12:00</text>
+    <text x="200" y="240" fill="#9AA0A8" font-size="9">2:30</text>
+    <text x="300" y="240" fill="#9AA0A8" font-size="9">4:00</text>
+
+    <!-- SPX line: flat then RAMP after 2:30 -->
+    <path d="M 20 180 L 80 178 L 130 180 L 180 178 L 220 170 L 260 145 L 300 110 L 320 100" fill="none" stroke="#F0B429" stroke-width="2.5"/>
+
+    <!-- Highlight the ramp zone -->
+    <rect x="200" y="80" width="125" height="135" rx="6" fill="rgba(240,180,41,.08)" stroke="rgba(240,180,41,.4)" stroke-dasharray="4,3"/>
+    <text x="262" y="78" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">CHARM ZONE</text>
+
+    <text x="170" y="265" fill="#9AA0A8" font-size="11" text-anchor="middle">Average final-hour move:</text>
+    <text x="170" y="298" fill="#fff" font-size="22" font-weight="700" text-anchor="middle">±0.42%</text>
+  </g>
+
+  <text x="450" y="460" fill="#F0B429" font-size="13" font-style="italic" text-anchor="middle">3.5× more volatility in the last 90 minutes. The flow exists. Your strategy must too.</text>
+</svg>

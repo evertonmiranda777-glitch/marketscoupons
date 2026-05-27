@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">News Trading Rules by Firm</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Many firms instant-fail you for trading during news · know YOUR firm's rule before you click buy</text>
+  <g transform="translate(60, 110)" font-size="11">
+    <g><rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="#EF4444"/><text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">Strict — No news trading allowed</text><text x="20" y="52" fill="#9AA0A8">FTMO, FundedNext, FundingPips, BrightFunded</text><text x="20" y="70" fill="#9AA0A8">Holding during news = potential instant termination</text><text x="20" y="88" fill="#F0B429" font-weight="700">Rule: flatten 2 min before red-news, re-enter 2 min after</text></g>
+    <g transform="translate(400, 0)"><rect width="380" height="100" rx="10" fill="rgba(240,180,41,.06)" stroke="#F0B429"/><text x="20" y="28" fill="#F0B429" font-size="13" font-weight="700">Moderate — Holding restricted</text><text x="20" y="52" fill="#9AA0A8">The5ers, BlueGuardian, AlphaFutures</text><text x="20" y="70" fill="#9AA0A8">Can open but not hold across high-impact news</text><text x="20" y="88" fill="#F0B429" font-weight="700">Rule: NEVER hold over FOMC, CPI, NFP overnight</text></g>
+    <g transform="translate(0, 120)"><rect width="380" height="100" rx="10" fill="rgba(16,185,129,.06)" stroke="#10B981"/><text x="20" y="28" fill="#10B981" font-size="13" font-weight="700">Lenient — News trading allowed</text><text x="20" y="52" fill="#9AA0A8">Apex, Bulenox, TPT, TradeDay (futures-focused)</text><text x="20" y="70" fill="#9AA0A8">No news restriction · gamble at your own risk</text><text x="20" y="88" fill="#F0B429" font-weight="700">Rule: STILL size down 50% on event days</text></g>
+    <g transform="translate(400, 120)"><rect width="380" height="100" rx="10" fill="rgba(244,114,182,.06)" stroke="#F472B6"/><text x="20" y="28" fill="#F472B6" font-size="13" font-weight="700">Special rules — Read fine print</text><text x="20" y="52" fill="#9AA0A8">Some firms: trade allowed if entered 30+ min before</text><text x="20" y="70" fill="#9AA0A8">Some: no restriction on micro-events, only majors</text><text x="20" y="88" fill="#F0B429" font-weight="700">Rule: read terms before each eval</text></g>
+  </g>
+  <g transform="translate(60, 320)">
+    <rect width="780" height="150" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/>
+    <text x="20" y="30" fill="#F0B429" font-size="14" font-weight="700">Major news to avoid (futures)</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">→ FOMC interest rate decision (8 per year, 2:00 PM ET Wednesdays)</text>
+    <text x="20" y="76" fill="#9AA0A8" font-size="11">→ CPI / Core CPI (monthly, 8:30 AM ET)</text>
+    <text x="20" y="94" fill="#9AA0A8" font-size="11">→ NFP / Unemployment (first Friday monthly, 8:30 AM ET)</text>
+    <text x="20" y="112" fill="#9AA0A8" font-size="11">→ EIA Petroleum Status (Wednesdays 10:30 AM ET, for CL only)</text>
+    <text x="20" y="130" fill="#9AA0A8" font-size="11">→ FOMC minutes (3 weeks after meeting, 2:00 PM ET)</text>
+  </g>
+</svg>

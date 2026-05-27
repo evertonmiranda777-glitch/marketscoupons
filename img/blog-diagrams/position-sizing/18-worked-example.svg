@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Full Worked Example — 1 Year of Sizing</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">$10K starting · 1% per trade · 50 trades · realistic compound trajectory</text>
+  <g transform="translate(80, 110)" font-size="12">
+    <rect width="740" height="400" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="740" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700"><text x="20" y="28" fill="#F0B429">Quarter</text><text x="160" y="28" fill="#F0B429">Equity</text><text x="320" y="28" fill="#F0B429">1R risk</text><text x="450" y="28" fill="#F0B429">Trades</text><text x="580" y="28" fill="#F0B429">P&amp;L</text></g>
+    <g fill="#9AA0A8">
+      <text x="20" y="70">Q1 start</text><text x="160" y="70">$10,000</text><text x="320" y="70">$100</text><text x="450" y="70">12 (7W/5L)</text><text x="580" y="70" fill="#10B981">+$640</text>
+      <text x="20" y="98">Q1 end</text><text x="160" y="98">$10,640</text><text x="320" y="98">$106</text><text x="450" y="98">recalibrate</text><text x="580" y="98">—</text>
+      <text x="20" y="126">Q2</text><text x="160" y="126">$10,640</text><text x="320" y="126">$106</text><text x="450" y="126">15 (8W/7L)</text><text x="580" y="126" fill="#10B981">+$724</text>
+      <text x="20" y="154">Q2 end</text><text x="160" y="154">$11,364</text><text x="320" y="154">$114</text><text x="450" y="154">recalibrate</text><text x="580" y="154">—</text>
+      <text x="20" y="182">Q3</text><text x="160" y="182">$11,364</text><text x="320" y="182">$114</text><text x="450" y="182">12 (5W/7L)</text><text x="580" y="182" fill="#EF4444">-$285</text>
+      <text x="20" y="210">Q3 end</text><text x="160" y="210">$11,079</text><text x="320" y="210">$111</text><text x="450" y="210">recalibrate DOWN</text><text x="580" y="210">—</text>
+      <text x="20" y="238">Q4</text><text x="160" y="238">$11,079</text><text x="320" y="238">$111</text><text x="450" y="238">11 (7W/4L)</text><text x="580" y="238" fill="#10B981">+$888</text>
+      <text x="20" y="266">Q4 end</text><text x="160" y="266" fill="#10B981" font-weight="700">$11,967</text><text x="320" y="266">$120</text><text x="450" y="266">YEAR END</text><text x="580" y="266" fill="#10B981" font-weight="700">+$1,967</text>
+    </g>
+    <text x="20" y="320" fill="#10B981" font-weight="700" font-size="11">→ +19.7% annual return · 50 trades · 27 wins / 23 losses · 54% win rate · 1.4 avg R won</text>
+    <text x="20" y="340" fill="#9AA0A8" font-size="11">Sizing scales naturally with equity · DD on Q3 didn't kill the year · positive expectancy compounds</text>
+  </g>
+</svg>

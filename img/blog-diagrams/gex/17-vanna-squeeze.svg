@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg17" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <marker id="arr17" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#10B981"/>
+    </marker>
+  </defs>
+  <rect width="900" height="420" fill="url(#bg17)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Vanna Squeeze — Why Markets Rally on Bad News</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">The mechanic that flips your intuition</text>
+
+  <!-- Step 1: Bad news -->
+  <g transform="translate(80, 130)">
+    <rect width="220" height="200" rx="12" fill="#1A1F2E" stroke="#EF4444"/>
+    <text x="110" y="32" fill="#EF4444" font-size="13" font-weight="700" text-anchor="middle">STEP 1 — FEAR RISES</text>
+    <text x="110" y="68" fill="#fff" font-size="13" text-anchor="middle">Bad news hits.</text>
+    <text x="110" y="90" fill="#fff" font-size="13" text-anchor="middle">VIX spikes ↑↑</text>
+    <text x="110" y="120" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">"This should sell off"</text>
+    <text x="110" y="138" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">(retail thinks)</text>
+    <text x="110" y="172" fill="#9AA0A8" font-size="11" text-anchor="middle">Put deltas become</text>
+    <text x="110" y="187" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">MORE negative</text>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <line x1="305" y1="230" x2="345" y2="230" stroke="#F0B429" stroke-width="2.5" marker-end="url(#arr17)"/>
+
+  <!-- Step 2: Dealer logic -->
+  <g transform="translate(350, 130)">
+    <rect width="220" height="200" rx="12" fill="#1A1F2E" stroke="#F0B429" stroke-width="2"/>
+    <text x="110" y="32" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">STEP 2 — DEALER REACTS</text>
+    <text x="110" y="68" fill="#fff" font-size="12" text-anchor="middle">Dealer is short these puts.</text>
+    <text x="110" y="88" fill="#fff" font-size="12" text-anchor="middle">Existing hedge no longer</text>
+    <text x="110" y="103" fill="#fff" font-size="12" text-anchor="middle">covers new delta.</text>
+    <text x="110" y="135" fill="#9AA0A8" font-size="11" text-anchor="middle">Risk desk demands:</text>
+    <text x="110" y="157" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">"Rebalance NOW"</text>
+    <text x="110" y="185" fill="#9AA0A8" font-size="11" text-anchor="middle">Forced to BUY underlying</text>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <line x1="575" y1="230" x2="615" y2="230" stroke="#F0B429" stroke-width="2.5" marker-end="url(#arr17)"/>
+
+  <!-- Step 3: Counterintuitive rally -->
+  <g transform="translate(620, 130)">
+    <rect width="220" height="200" rx="12" fill="#1A1F2E" stroke="#10B981" stroke-width="2"/>
+    <text x="110" y="32" fill="#10B981" font-size="13" font-weight="700" text-anchor="middle">STEP 3 — MARKET RALLIES</text>
+    <text x="110" y="68" fill="#fff" font-size="13" text-anchor="middle">Dealer buying lifts</text>
+    <text x="110" y="86" fill="#fff" font-size="13" text-anchor="middle">SPY/futures.</text>
+    <text x="110" y="120" fill="#10B981" font-size="13" font-weight="600" text-anchor="middle">↑ Market UP ↑</text>
+    <text x="110" y="148" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">despite bad news,</text>
+    <text x="110" y="163" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">despite rising VIX.</text>
+    <text x="110" y="190" fill="#10B981" font-size="11" text-anchor="middle">CNBC: "Irrational rally"</text>
+  </g>
+
+  <text x="450" y="385" fill="#F0B429" font-size="13" font-style="italic" text-anchor="middle" font-weight="600">It is not irrational. It is vanna — the mechanic CNBC never explains.</text>
+</svg>

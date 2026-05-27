@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg19" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <marker id="arr19" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#EF4444"/>
+    </marker>
+  </defs>
+  <rect width="900" height="460" fill="url(#bg19)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Vol-Control Cascade — Two Sellers Stacked</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Why corrections become crashes — the mechanic Bridgewater documented in 2023</text>
+
+  <!-- Trigger box -->
+  <g transform="translate(80, 110)">
+    <rect width="200" height="80" rx="10" fill="#1A1F2E" stroke="#9AA0A8" stroke-width="1.5"/>
+    <text x="100" y="32" fill="#9AA0A8" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.05em">TRIGGER</text>
+    <text x="100" y="52" fill="#fff" font-size="12" text-anchor="middle">Catalyst arrives</text>
+    <text x="100" y="68" fill="#fff" font-size="12" text-anchor="middle">SPX falls 1-2%</text>
+  </g>
+
+  <!-- Arrow to dealer hedge -->
+  <line x1="285" y1="150" x2="335" y2="150" stroke="#EF4444" stroke-width="2.5" marker-end="url(#arr19)"/>
+
+  <!-- Seller 1: dealer hedge -->
+  <g transform="translate(340, 110)">
+    <rect width="260" height="80" rx="10" fill="rgba(239,68,68,.07)" stroke="#EF4444"/>
+    <text x="130" y="32" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.05em">SELLER #1 — DEALER HEDGE</text>
+    <text x="130" y="52" fill="#fff" font-size="12" text-anchor="middle">Short gamma → sells weakness</text>
+    <text x="130" y="68" fill="#9AA0A8" font-size="11" text-anchor="middle">SPY/futures sold mechanically</text>
+  </g>
+
+  <!-- Arrow to amplification -->
+  <line x1="605" y1="150" x2="655" y2="150" stroke="#EF4444" stroke-width="2.5" marker-end="url(#arr19)"/>
+
+  <!-- Realized vol rises box -->
+  <g transform="translate(660, 110)">
+    <rect width="160" height="80" rx="10" fill="#1A1F2E" stroke="#EF4444"/>
+    <text x="80" y="32" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">RVOL RISES</text>
+    <text x="80" y="52" fill="#fff" font-size="12" text-anchor="middle">Range expands</text>
+    <text x="80" y="68" fill="#fff" font-size="12" text-anchor="middle">Realized > 1σ</text>
+  </g>
+
+  <!-- Down arrow from RVOL to Seller 2 -->
+  <line x1="740" y1="195" x2="740" y2="245" stroke="#EF4444" stroke-width="2.5" marker-end="url(#arr19)"/>
+
+  <!-- Seller 2: vol-control fund -->
+  <g transform="translate(340, 260)">
+    <rect width="400" height="80" rx="10" fill="rgba(239,68,68,.07)" stroke="#EF4444" stroke-width="2"/>
+    <text x="200" y="32" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.05em">SELLER #2 — VOL-CONTROL FUNDS ($300-500B AUM)</text>
+    <text x="200" y="52" fill="#fff" font-size="12" text-anchor="middle">Target fixed vol → must reduce equity exposure</text>
+    <text x="200" y="68" fill="#9AA0A8" font-size="11" text-anchor="middle">Sells SPX/SPY/futures systematically</text>
+  </g>
+
+  <!-- Arrow loop back to TRIGGER (more selling) -->
+  <path d="M 340 300 Q 200 300 180 200 L 180 195" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-dasharray="5,4" marker-end="url(#arr19)"/>
+  <text x="200" y="245" fill="#EF4444" font-size="11" font-style="italic" font-weight="600">feedback loop</text>
+
+  <!-- Outcome -->
+  <g transform="translate(180, 380)">
+    <rect width="540" height="50" rx="10" fill="rgba(127,29,29,.3)" stroke="#EF4444" stroke-width="2"/>
+    <text x="270" y="22" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">RESULT: 1-2% becomes 4-10%. Correction becomes crash.</text>
+    <text x="270" y="40" fill="#FCA5A5" font-size="11" text-anchor="middle" font-style="italic">February 2018 · March 2020 · August 2024</text>
+  </g>
+</svg>

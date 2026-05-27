@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Trail After 1R — Free Trade Protocol</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Move stop to breakeven at +1R · take half off at +2R · trail final 50% by structure</text>
+  <g transform="translate(60, 110)">
+    <line x1="0" y1="280" x2="780" y2="280" stroke="rgba(255,255,255,.15)"/>
+    <line x1="0" y1="220" x2="780" y2="220" stroke="rgba(239,68,68,.3)" stroke-dasharray="4,3"/>
+    <text x="-10" y="224" fill="#EF4444" font-size="10" text-anchor="end">stop -1R</text>
+    <line x1="0" y1="180" x2="780" y2="180" stroke="rgba(255,255,255,.15)" stroke-dasharray="3,3"/>
+    <text x="-10" y="184" fill="#9AA0A8" font-size="10" text-anchor="end">entry</text>
+    <line x1="0" y1="140" x2="780" y2="140" stroke="rgba(16,185,129,.3)" stroke-dasharray="4,3"/>
+    <text x="-10" y="144" fill="#10B981" font-size="10" text-anchor="end">+1R BE</text>
+    <line x1="0" y1="100" x2="780" y2="100" stroke="rgba(16,185,129,.3)" stroke-dasharray="4,3"/>
+    <text x="-10" y="104" fill="#10B981" font-size="10" text-anchor="end">+2R partial</text>
+    <line x1="0" y1="60" x2="780" y2="60" stroke="rgba(16,185,129,.5)" stroke-dasharray="4,3"/>
+    <text x="-10" y="64" fill="#10B981" font-size="10" text-anchor="end">+3R trail</text>
+    <path d="M 30 180 L 100 160 L 170 140 L 240 130 L 310 110 L 380 100 L 450 80 L 520 70 L 590 65 L 660 50 L 730 40" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <g transform="translate(170, 130)"><circle r="6" fill="#10B981"/><text x="0" y="-14" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">+1R · stop → BE</text></g>
+    <g transform="translate(380, 100)"><circle r="6" fill="#10B981"/><text x="0" y="-14" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">+2R · 50% off</text></g>
+    <g transform="translate(730, 40)"><circle r="6" fill="#10B981"/><text x="0" y="-14" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">+5R · trail</text></g>
+  </g>
+  <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Result: ~40% of trades partial out · ~15% trail to 5R+ · "free trade" psychology unlocks holding power</text>
+</svg>

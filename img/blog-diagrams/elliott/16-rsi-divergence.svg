@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Elliott + RSI Divergence — Confirming Wave 5</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">RSI typically peaks during Wave 3 · lower RSI peak on Wave 5 = bearish divergence = reversal incoming</text>
+  <g transform="translate(60, 100)">
+    <text x="0" y="0" fill="#fff" font-size="12" font-weight="700">Price</text>
+    <path d="M 30 200 L 100 150 L 150 180 L 320 80 L 400 130 L 600 50" fill="none" stroke="#fff" stroke-width="2"/>
+    <g font-size="11" font-weight="700" text-anchor="middle">
+      <circle cx="320" cy="80" r="6" fill="#10B981"/><text x="320" y="65" fill="#10B981">W3</text>
+      <circle cx="600" cy="50" r="7" fill="#10B981"/><text x="600" y="35" fill="#10B981">W5 (new high)</text>
+    </g>
+    <line x1="320" y1="80" x2="600" y2="50" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+    <line x1="0" y1="270" x2="780" y2="270" stroke="rgba(255,255,255,.1)"/>
+
+    <text x="0" y="305" fill="#fff" font-size="12" font-weight="700">RSI (14)</text>
+    <line x1="0" y1="350" x2="780" y2="350" stroke="rgba(239,68,68,.3)" stroke-dasharray="3,3"/>
+    <text x="-10" y="354" fill="#EF4444" font-size="10" text-anchor="end">70</text>
+    <path d="M 30 410 L 100 380 L 150 395 L 320 340 L 400 380 L 600 360" fill="none" stroke="#F472B6" stroke-width="2"/>
+    <circle cx="320" cy="340" r="6" fill="#F472B6"/><text x="320" y="325" fill="#F472B6" font-size="11" font-weight="700" text-anchor="middle">RSI peak</text>
+    <circle cx="600" cy="360" r="7" fill="#F472B6"/><text x="600" y="345" fill="#F472B6" font-size="11" font-weight="700" text-anchor="middle">LOWER peak</text>
+    <line x1="320" y1="340" x2="600" y2="360" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="3,3"/>
+  </g>
+  <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Price new high + RSI lower high = textbook Wave 5 divergence. Best counter-trend trigger in Elliott.</text>
+</svg>

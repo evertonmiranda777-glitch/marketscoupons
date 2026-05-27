@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Wave Degree Hierarchy — 9 Nested Levels</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Each wave at one degree consists of 5 (impulse) or 3 (corrective) waves of the next-lower degree</text>
+
+  <g transform="translate(60, 100)" font-size="11">
+    <g><rect width="780" height="40" rx="6" fill="rgba(244,114,182,.07)" stroke="#F472B6"/><text x="20" y="26" fill="#F472B6" font-weight="700">Grand Supercycle</text><text x="200" y="26" fill="#9AA0A8">100+ years · all of stock market history since 1700s</text></g>
+    <g transform="translate(0,48)"><rect width="780" height="40" rx="6" fill="rgba(244,114,182,.07)" stroke="#F472B6"/><text x="20" y="26" fill="#F472B6" font-weight="700">Supercycle</text><text x="200" y="26" fill="#9AA0A8">~40-70 years · major secular bull/bear (1929-1932, 1949-1966)</text></g>
+    <g transform="translate(0,96)"><rect width="780" height="40" rx="6" fill="rgba(240,180,41,.07)" stroke="#F0B429"/><text x="20" y="26" fill="#F0B429" font-weight="700">Cycle</text><text x="200" y="26" fill="#9AA0A8">~5-25 years · economic cycle (2009-2020 bull, 2022 bear)</text></g>
+    <g transform="translate(0,144)"><rect width="780" height="40" rx="6" fill="rgba(240,180,41,.07)" stroke="#F0B429"/><text x="20" y="26" fill="#F0B429" font-weight="700">Primary</text><text x="200" y="26" fill="#9AA0A8">~1-3 years · major intermediate trend (2020 COVID bull, 2022 selloff)</text></g>
+    <g transform="translate(0,192)"><rect width="780" height="40" rx="6" fill="rgba(16,185,129,.07)" stroke="#10B981"/><text x="20" y="26" fill="#10B981" font-weight="700">Intermediate</text><text x="200" y="26" fill="#9AA0A8">~months · the leg you swing trade</text></g>
+    <g transform="translate(0,240)"><rect width="780" height="40" rx="6" fill="rgba(16,185,129,.07)" stroke="#10B981"/><text x="20" y="26" fill="#10B981" font-weight="700">Minor</text><text x="200" y="26" fill="#9AA0A8">~weeks · daily chart waves</text></g>
+    <g transform="translate(0,288)"><rect width="780" height="40" rx="6" fill="rgba(59,130,246,.07)" stroke="#3B82F6"/><text x="20" y="26" fill="#3B82F6" font-weight="700">Minute</text><text x="200" y="26" fill="#9AA0A8">~days · 4H/1H chart waves</text></g>
+    <g transform="translate(0,336)"><rect width="780" height="40" rx="6" fill="rgba(59,130,246,.07)" stroke="#3B82F6"/><text x="20" y="26" fill="#3B82F6" font-weight="700">Minuette</text><text x="200" y="26" fill="#9AA0A8">~hours · intraday 15-min waves</text></g>
+    <g transform="translate(0,384)"><rect width="780" height="40" rx="6" fill="rgba(59,130,246,.07)" stroke="#3B82F6"/><text x="20" y="26" fill="#3B82F6" font-weight="700">Sub-minuette</text><text x="200" y="26" fill="#9AA0A8">~minutes · tick-by-tick waves (scalping degree)</text></g>
+  </g>
+  <text x="450" y="520" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Most retail traders confuse degrees — that's why their counts fail. Pick ONE degree first.</text>
+</svg>

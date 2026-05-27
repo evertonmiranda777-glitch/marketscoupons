@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Consistency Rule — The Quiet Eval Killer</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Best day can't exceed X% of total P&amp;L · stops home-run traders from gambling their way to a pass</text>
+  <g transform="translate(60, 110)" font-size="11">
+    <rect width="780" height="170" rx="14" fill="rgba(240,180,41,.06)" stroke="#F0B429"/>
+    <text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">Example violation</text>
+    <text x="20" y="60" fill="#9AA0A8">Target: 8% on $50K = $4,000 over 5 trading days</text>
+    <text x="20" y="78" fill="#9AA0A8">Day 1: +$3,500 (one massive trade · 87% of total target)</text>
+    <text x="20" y="96" fill="#9AA0A8">Day 2-5: +$500 (small wins to hit target)</text>
+    <text x="20" y="126" fill="#EF4444" font-weight="700">→ Best day = $3,500 = 87% of $4,000 total</text>
+    <text x="20" y="148" fill="#EF4444" font-weight="700">→ Exceeds 30% rule · CONSISTENCY VIOLATED · funded blocked</text>
+  </g>
+  <g transform="translate(60, 300)">
+    <rect width="780" height="170" rx="14" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+    <text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">How to comply</text>
+    <text x="20" y="60" fill="#9AA0A8" font-size="11">→ Spread profits across 7-10 trading days (smaller daily wins)</text>
+    <text x="20" y="78" fill="#9AA0A8" font-size="11">→ If you have a huge day, STOP trading until other days catch up</text>
+    <text x="20" y="96" fill="#9AA0A8" font-size="11">→ Max recommended: any single day = 20% of total target</text>
+    <text x="20" y="126" fill="#10B981" font-weight="700">Rule of thumb: target 1-1.5% per day · 8 days = pass · consistency safe</text>
+    <text x="20" y="148" fill="#9AA0A8" font-size="11">Common rule: best day ≤ 30% of total profit · check YOUR firm's exact %</text>
+  </g>
+</svg>

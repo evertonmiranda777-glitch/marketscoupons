@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Leverage vs Position Size — Different Animals</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Leverage is NOMINAL exposure to capital · position size is RISK to capital · don't confuse them</text>
+  <g transform="translate(60, 110)" font-size="11">
+    <rect width="780" height="200" rx="14" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">Example: NQ futures · $50K account</text>
+    <text x="20" y="58" fill="#9AA0A8">1 NQ contract = $400,000 notional value at 20,000 index price</text>
+    <text x="20" y="76" fill="#9AA0A8">Leverage = $400,000 ÷ $50,000 = 8× leverage on equity</text>
+    <text x="20" y="106" fill="#9AA0A8" font-weight="700">BUT...</text>
+    <text x="20" y="124" fill="#9AA0A8">Stop at 30 pts × $20/pt = $600 risk per contract</text>
+    <text x="20" y="142" fill="#9AA0A8">$600 ÷ $50,000 = 1.2% RISK per contract</text>
+    <text x="20" y="172" fill="#10B981" font-weight="700">8× leverage ≠ 8× risk · only 1.2% risk because stop is small</text>
+  </g>
+  <g transform="translate(60, 330)">
+    <rect width="780" height="140" rx="14" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+    <text x="20" y="32" fill="#EF4444" font-size="14" font-weight="700">When leverage matters</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">→ Flash crashes · stops gap through · then leverage = your damage</text>
+    <text x="20" y="76" fill="#9AA0A8" font-size="11">→ Limit-down moves (circuit breakers) · can't get out at planned stop</text>
+    <text x="20" y="94" fill="#9AA0A8" font-size="11">→ Weekend gaps (futures Sunday open) · gap can be 2-3× normal stop</text>
+    <text x="20" y="124" fill="#EF4444" font-size="11" font-weight="700">Plan: max leverage ≤ 5× equity · multi-contract sizing aware</text>
+  </g>
+</svg>

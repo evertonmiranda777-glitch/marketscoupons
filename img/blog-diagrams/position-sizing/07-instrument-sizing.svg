@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Position Size by Instrument</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">$50K account, 1% risk ($500), typical stop · how many contracts of each instrument</text>
+  <g transform="translate(80, 110)" font-size="12">
+    <rect width="740" height="400" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="740" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700"><text x="20" y="28" fill="#F0B429">Instrument</text><text x="200" y="28" fill="#F0B429">$/pt</text><text x="320" y="28" fill="#F0B429">Stop</text><text x="450" y="28" fill="#F0B429">Risk/contract</text><text x="620" y="28" fill="#F0B429">Size</text></g>
+    <g fill="#9AA0A8">
+      <text x="20" y="70">NQ (full)</text><text x="200" y="70">$20</text><text x="320" y="70">30 pts</text><text x="450" y="70">$600</text><text x="620" y="70" fill="#EF4444" font-weight="700">0 (skip)</text>
+      <text x="20" y="98">MNQ (micro)</text><text x="200" y="98">$2</text><text x="320" y="98">30 pts</text><text x="450" y="98">$60</text><text x="620" y="98" fill="#10B981" font-weight="700">8 contracts</text>
+      <text x="20" y="126">ES (full)</text><text x="200" y="126">$50</text><text x="320" y="126">4 pts</text><text x="450" y="126">$200</text><text x="620" y="126" fill="#10B981" font-weight="700">2 contracts</text>
+      <text x="20" y="154">MES (micro)</text><text x="200" y="154">$5</text><text x="320" y="154">4 pts</text><text x="450" y="154">$20</text><text x="620" y="154" fill="#10B981" font-weight="700">25 contracts</text>
+      <text x="20" y="182">YM</text><text x="200" y="182">$5</text><text x="320" y="182">40 pts</text><text x="450" y="182">$200</text><text x="620" y="182" fill="#10B981" font-weight="700">2 contracts</text>
+      <text x="20" y="210">GC (gold)</text><text x="200" y="210">$10</text><text x="320" y="210">8 pts</text><text x="450" y="210">$80</text><text x="620" y="210" fill="#10B981" font-weight="700">6 contracts</text>
+      <text x="20" y="238">CL (oil)</text><text x="200" y="238">$10</text><text x="320" y="238">0.40 pts</text><text x="450" y="238">$40</text><text x="620" y="238" fill="#10B981" font-weight="700">12 contracts</text>
+      <text x="20" y="266">SPY equity</text><text x="200" y="266">100/share</text><text x="320" y="266">$2</text><text x="450" y="266">$2/share</text><text x="620" y="266" fill="#10B981" font-weight="700">250 shares</text>
+      <text x="20" y="294">EURUSD spot</text><text x="200" y="294">$10/pip</text><text x="320" y="294">30 pips</text><text x="450" y="294">$300</text><text x="620" y="294" fill="#10B981" font-weight="700">0.17 std lot</text>
+      <text x="20" y="322">Options (1 contract)</text><text x="200" y="322">$100</text><text x="320" y="322">$0.50</text><text x="450" y="322">$50</text><text x="620" y="322" fill="#10B981" font-weight="700">10 contracts</text>
+    </g>
+    <text x="20" y="370" fill="#10B981" font-weight="700" font-size="11">Use micros (MES/MNQ) for accounts under $25K · margin-efficient · prevents skipped setups</text>
+  </g>
+</svg>

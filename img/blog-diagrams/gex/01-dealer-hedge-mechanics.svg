@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/>
+      <stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop offset="0%" stop-color="#A0723D"/>
+      <stop offset="100%" stop-color="#F0B429"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" x2="1">
+      <stop offset="0%" stop-color="#7F1D1D"/>
+      <stop offset="100%" stop-color="#EF4444"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" x2="1">
+      <stop offset="0%" stop-color="#065F46"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#F0B429"/>
+    </marker>
+  </defs>
+  <rect width="900" height="520" fill="url(#bg)"/>
+
+  <text x="450" y="38" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">How a Dealer Hedges a Short Put Position</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">A 3-step walkthrough of why GEX-negative regimes amplify volatility</text>
+
+  <!-- Step 1 -->
+  <g transform="translate(40, 100)">
+    <rect width="250" height="380" rx="14" fill="#1A1F2E" stroke="rgba(240,180,41,.25)" stroke-width="1.5"/>
+    <text x="125" y="30" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">STEP 1 — INITIAL TRADE</text>
+    <text x="125" y="58" fill="#fff" font-size="13" text-anchor="middle">Investor buys 100 SPX puts</text>
+    <text x="125" y="78" fill="#9AA0A8" font-size="11" text-anchor="middle">Strike 5,500 · Δ = −0.20</text>
+    <line x1="125" y1="95" x2="125" y2="115" stroke="#F0B429" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="30" y="125" width="190" height="60" rx="8" fill="#0F1422" stroke="#3B82F6"/>
+    <text x="125" y="148" fill="#3B82F6" font-size="12" font-weight="600" text-anchor="middle">DEALER ACTION</text>
+    <text x="125" y="168" fill="#fff" font-size="13" text-anchor="middle">Sells 100 puts</text>
+    <line x1="125" y1="195" x2="125" y2="215" stroke="#F0B429" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="30" y="225" width="190" height="80" rx="8" fill="#0F1422" stroke="url(#red)"/>
+    <text x="125" y="248" fill="#EF4444" font-size="12" font-weight="600" text-anchor="middle">HEDGE</text>
+    <text x="125" y="270" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">SHORT 2,000 shares</text>
+    <text x="125" y="290" fill="#9AA0A8" font-size="11" text-anchor="middle">100 contracts × 100 × 0.20</text>
+    <text x="125" y="345" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">SPX still at 5,500</text>
+    <text x="125" y="362" fill="#10B981" font-size="11" text-anchor="middle">Net delta: NEUTRAL</text>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(325, 100)">
+    <rect width="250" height="380" rx="14" fill="#1A1F2E" stroke="rgba(239,68,68,.35)" stroke-width="1.5"/>
+    <text x="125" y="30" fill="#EF4444" font-size="14" font-weight="700" text-anchor="middle">STEP 2 — PRICE DROPS −$5</text>
+    <text x="125" y="58" fill="#fff" font-size="13" text-anchor="middle">SPX falls to 5,495</text>
+    <text x="125" y="78" fill="#9AA0A8" font-size="11" text-anchor="middle">Put Δ rises to −0.275 (gamma 0.015)</text>
+    <line x1="125" y1="95" x2="125" y2="115" stroke="#F0B429" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="30" y="125" width="190" height="60" rx="8" fill="#0F1422" stroke="#EF4444"/>
+    <text x="125" y="148" fill="#EF4444" font-size="12" font-weight="600" text-anchor="middle">PROBLEM</text>
+    <text x="125" y="168" fill="#fff" font-size="12" text-anchor="middle">Net delta drifted long</text>
+    <line x1="125" y1="195" x2="125" y2="215" stroke="#F0B429" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="30" y="225" width="190" height="80" rx="8" fill="#0F1422" stroke="url(#red)"/>
+    <text x="125" y="248" fill="#EF4444" font-size="12" font-weight="600" text-anchor="middle">RE-HEDGE</text>
+    <text x="125" y="270" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">SELL 750 more</text>
+    <text x="125" y="290" fill="#9AA0A8" font-size="11" text-anchor="middle">100 × 100 × 0.075 = 750</text>
+    <text x="125" y="345" fill="#EF4444" font-size="12" font-weight="700" text-anchor="middle">↓ Sold INTO weakness</text>
+    <text x="125" y="362" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">Amplifies the move down</text>
+  </g>
+
+  <!-- Step 3 -->
+  <g transform="translate(610, 100)">
+    <rect width="250" height="380" rx="14" fill="#1A1F2E" stroke="rgba(16,185,129,.35)" stroke-width="1.5"/>
+    <text x="125" y="30" fill="#10B981" font-size="14" font-weight="700" text-anchor="middle">STEP 3 — PRICE RISES +$10</text>
+    <text x="125" y="58" fill="#fff" font-size="13" text-anchor="middle">SPX recovers to 5,505</text>
+    <text x="125" y="78" fill="#9AA0A8" font-size="11" text-anchor="middle">Put Δ falls to −0.125</text>
+    <line x1="125" y1="95" x2="125" y2="115" stroke="#F0B429" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="30" y="125" width="190" height="60" rx="8" fill="#0F1422" stroke="#10B981"/>
+    <text x="125" y="148" fill="#10B981" font-size="12" font-weight="600" text-anchor="middle">PROBLEM</text>
+    <text x="125" y="168" fill="#fff" font-size="12" text-anchor="middle">Short hedge too large</text>
+    <line x1="125" y1="195" x2="125" y2="215" stroke="#F0B429" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="30" y="225" width="190" height="80" rx="8" fill="#0F1422" stroke="url(#green)"/>
+    <text x="125" y="248" fill="#10B981" font-size="12" font-weight="600" text-anchor="middle">RE-HEDGE</text>
+    <text x="125" y="270" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">BUY 1,500 back</text>
+    <text x="125" y="290" fill="#9AA0A8" font-size="11" text-anchor="middle">100 × 100 × 0.15 = 1,500</text>
+    <text x="125" y="345" fill="#10B981" font-size="12" font-weight="700" text-anchor="middle">↑ Bought INTO strength</text>
+    <text x="125" y="362" fill="#9AA0A8" font-size="11" text-anchor="middle" font-style="italic">Amplifies the move up</text>
+  </g>
+
+  <text x="450" y="510" fill="#F0B429" font-size="13" font-weight="600" text-anchor="middle" font-style="italic">
+    When dealers are SHORT gamma, they SELL weakness and BUY strength — amplifying volatility in both directions.
+  </text>
+</svg>

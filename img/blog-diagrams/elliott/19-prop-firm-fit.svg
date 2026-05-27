@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Elliott on Prop Firm Accounts</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Wave 3 setups fit drawdown rules perfectly · 2-4 setups/month → 8% profit target in 5-8 weeks</text>
+  <g transform="translate(60, 100)">
+    <rect width="780" height="180" rx="12" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+    <text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">Why Elliott fits prop firm rules</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">→ Wave 3 entries have defined stop (below W1 start) — fits any drawdown</text>
+    <text x="20" y="78" fill="#9AA0A8" font-size="11">→ Avg 3-5R per trade — fast path to 8% profit target</text>
+    <text x="20" y="98" fill="#9AA0A8" font-size="11">→ 2-4 setups per month per major index — low trade count fits Apex DLL rules</text>
+    <text x="20" y="118" fill="#9AA0A8" font-size="11">→ Works on NQ, ES, GC, CL, MES, MNQ — all major prop firm symbols</text>
+    <text x="20" y="148" fill="#10B981" font-size="11" font-weight="700">Realistic pass rate with disciplined Elliott: 32-40% (vs 8-12% industry average)</text>
+  </g>
+  <g transform="translate(60, 300)">
+    <rect width="780" height="170" rx="12" fill="rgba(240,180,41,.05)" stroke="#F0B429"/>
+    <text x="20" y="28" fill="#F0B429" font-size="14" font-weight="700">8-week eval plan with Elliott</text>
+    <text x="20" y="54" fill="#9AA0A8" font-size="11">Week 1-2 · Identify Primary degree wave count on NQ + ES daily charts</text>
+    <text x="20" y="72" fill="#9AA0A8" font-size="11">Week 3-5 · Wait for W2 or W4 retracement on 4H · enter on bullish reversal candle</text>
+    <text x="20" y="90" fill="#9AA0A8" font-size="11">Week 6-7 · Trail stop to break-even after 2R · partial at 3R · hold final 50% to 1.618 target</text>
+    <text x="20" y="108" fill="#9AA0A8" font-size="11">Week 8 · If profit target hit, STOP TRADING — preserve the pass</text>
+    <text x="20" y="138" fill="#F0B429" font-size="11" font-weight="700">Target: 2-3 winning W3 trades × 3R = 9% account growth = challenge passed</text>
+  </g>
+</svg>

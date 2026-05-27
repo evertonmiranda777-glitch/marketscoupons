@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Tax &amp; Payout Treatment</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Prop firm payouts = self-employment income · NOT capital gains · plan for higher tax brackets</text>
+  <g transform="translate(60, 110)" font-size="11">
+    <g><rect width="780" height="160" rx="14" fill="rgba(240,180,41,.06)" stroke="#F0B429"/><text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">US tax treatment</text><text x="20" y="58" fill="#9AA0A8">→ Payouts arrive as 1099-MISC (independent contractor income)</text><text x="20" y="78" fill="#9AA0A8">→ Subject to self-employment tax 15.3% + federal 22-37%</text><text x="20" y="98" fill="#9AA0A8">→ No long-term capital gains rate (15-20%) — full income tax</text><text x="20" y="118" fill="#9AA0A8">→ Quarterly estimated taxes required if &gt; $1K/year</text><text x="20" y="148" fill="#F0B429" font-weight="700">Net after-tax on $10K payout: ~$5,500 in 24% bracket</text></g>
+    <g transform="translate(0, 180)"><rect width="780" height="170" rx="14" fill="rgba(16,185,129,.06)" stroke="#10B981"/><text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">Tax planning</text><text x="20" y="58" fill="#9AA0A8">→ Open separate business bank account · simplifies bookkeeping</text><text x="20" y="78" fill="#9AA0A8">→ Track eval costs · platform fees · subscriptions as business expense</text><text x="20" y="98" fill="#9AA0A8">→ Consider LLC after $50K/year for liability protection</text><text x="20" y="118" fill="#9AA0A8">→ Trader Tax Status (mark-to-market) available if full-time</text><text x="20" y="148" fill="#10B981" font-weight="700">Hire a CPA familiar with prop trading · saves more than they cost</text></g>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Static Drawdown — Step by Step</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">FTMO $100K example · $5,000 DD set at $95,000 · NEVER moves regardless of equity growth</text>
+  <g transform="translate(60, 110)">
+    <line x1="0" y1="100" x2="780" y2="100" stroke="rgba(16,185,129,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="-10" y="104" fill="#10B981" font-size="10" text-anchor="end">$110K</text>
+    <line x1="0" y1="200" x2="780" y2="200" stroke="rgba(255,255,255,.15)"/>
+    <text x="-10" y="204" fill="#9AA0A8" font-size="10" text-anchor="end">$100,000</text>
+    <line x1="0" y1="280" x2="780" y2="280" stroke="rgba(239,68,68,.6)" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="-10" y="284" fill="#EF4444" font-size="11" font-weight="700" text-anchor="end">DD FIXED: $95,000</text>
+    <path d="M 30 200 L 100 180 L 170 130 L 240 100 L 310 80 L 380 50 L 450 70 L 520 60 L 590 90 L 660 70 L 730 50" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <text x="730" y="40" fill="#10B981" font-size="11" font-weight="700" text-anchor="end">$110K · $15K buffer to DD</text>
+  </g>
+  <g transform="translate(60, 320)">
+    <rect width="780" height="160" rx="10" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.3)"/>
+    <text x="20" y="28" fill="#10B981" font-size="14" font-weight="700">Why static is the most forgiving</text>
+    <text x="20" y="56" fill="#9AA0A8" font-size="11">→ DD never trails up · buffer grows as you profit</text>
+    <text x="20" y="76" fill="#9AA0A8" font-size="11">→ At $110K equity, you can drawdown $15K before hitting the floor</text>
+    <text x="20" y="96" fill="#9AA0A8" font-size="11">→ Can swing trade without worrying about intraday spikes locking DD</text>
+    <text x="20" y="116" fill="#9AA0A8" font-size="11">→ The downside: bigger DD = bigger psychological tilt risk</text>
+    <text x="20" y="144" fill="#10B981" font-size="11" font-weight="700">Trade-off: forgiving math · usually higher cost · usually lower payout split (80%)</text>
+  </g>
+</svg>

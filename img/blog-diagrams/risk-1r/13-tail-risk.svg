@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Black Swan Tail Risk — When Stops Fail</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Stops don't work in flash crashes, gaps, or limit-down moves · sizing must survive 3R+ tail events</text>
+  <g transform="translate(80, 110)">
+    <rect width="740" height="200" rx="14" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+    <text x="20" y="32" fill="#EF4444" font-size="14" font-weight="700">Historical events stops didn't help</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">May 6, 2010 · Flash Crash · ES futures -7% in 12 minutes · stops triggered 20+ pts beyond level</text>
+    <text x="20" y="76" fill="#9AA0A8" font-size="11">August 24, 2015 · circuit breakers · many equity stops filled at -15% gap open</text>
+    <text x="20" y="94" fill="#9AA0A8" font-size="11">March 16, 2020 · COVID circuit breakers · ES limit-down at -7%, stops queued at next limit</text>
+    <text x="20" y="112" fill="#9AA0A8" font-size="11">August 5, 2024 · Yen carry unwind · NQ -6% premarket · stops at level filled -2% lower</text>
+    <text x="20" y="142" fill="#F0B429" font-size="11" font-weight="700">Lesson: assume 2-3× expected loss in tail events</text>
+    <text x="20" y="162" fill="#9AA0A8" font-size="11">If 1R sizing makes you uncomfortable surviving 3R single-trade loss, you're over-sized</text>
+  </g>
+  <g transform="translate(80, 330)">
+    <rect width="740" height="140" rx="14" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+    <text x="20" y="28" fill="#10B981" font-size="13" font-weight="700">Tail-risk mitigation</text>
+    <text x="20" y="50" fill="#9AA0A8" font-size="11">→ Don't hold large futures positions through FOMC/CPI/NFP overnight without OTM puts</text>
+    <text x="20" y="68" fill="#9AA0A8" font-size="11">→ Reduce size 50% during known event windows (geopolitical, earnings, central bank surprises)</text>
+    <text x="20" y="86" fill="#9AA0A8" font-size="11">→ Keep 3-5% of account in long-vol hedges (VIX calls, OTM SPY puts) as portfolio insurance</text>
+    <text x="20" y="116" fill="#F0B429" font-size="11" font-weight="700">Rule: max position size = ((max tail loss tolerated as % of equity) ÷ 3) × position size</text>
+  </g>
+</svg>

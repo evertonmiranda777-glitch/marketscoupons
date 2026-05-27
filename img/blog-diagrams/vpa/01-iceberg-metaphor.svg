@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg1" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="ice" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#E0E7FF"/>
+      <stop offset="100%" stop-color="#94A3B8"/>
+    </linearGradient>
+    <linearGradient id="iceDeep" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#64748B"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg1)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Price is the Tip. Volume is the Mass.</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Why 90% of traders read only what is visible — and lose to the 10% who read what's underneath</text>
+
+  <!-- Sky -->
+  <rect x="0" y="80" width="900" height="200" fill="rgba(255,255,255,0.02)"/>
+  <!-- Water -->
+  <rect x="0" y="280" width="900" height="240" fill="url(#water)"/>
+  <!-- Water surface line -->
+  <line x1="0" y1="280" x2="900" y2="280" stroke="#3B82F6" stroke-width="2" opacity="0.6"/>
+  <text x="20" y="276" fill="#3B82F6" font-size="11" font-weight="600">Surface = what most traders see</text>
+
+  <!-- Iceberg tip (above water) -->
+  <polygon points="450,140 360,280 540,280" fill="url(#ice)" opacity="0.95"/>
+  <text x="450" y="220" fill="#0A0D14" font-size="13" font-weight="700" text-anchor="middle">PRICE</text>
+  <text x="450" y="240" fill="#0A0D14" font-size="11" text-anchor="middle">(visible)</text>
+
+  <!-- Iceberg base (below water) - massive -->
+  <polygon points="360,280 540,280 670,500 230,500" fill="url(#iceDeep)" opacity="0.85"/>
+  <text x="450" y="360" fill="#fff" font-size="20" font-weight="700" text-anchor="middle">VOLUME</text>
+  <text x="450" y="385" fill="#fff" font-size="12" text-anchor="middle" opacity="0.9">(the mass that decides direction)</text>
+  <text x="450" y="425" fill="#fff" font-size="11" text-anchor="middle" opacity="0.7">where smart money operates</text>
+  <text x="450" y="445" fill="#fff" font-size="11" text-anchor="middle" opacity="0.7">where accumulation is built</text>
+  <text x="450" y="465" fill="#fff" font-size="11" text-anchor="middle" opacity="0.7">where distribution hides</text>
+
+  <!-- Annotation arrows -->
+  <line x1="700" y1="200" x2="555" y2="220" stroke="#9AA0A8" stroke-width="1.5" opacity="0.6"/>
+  <text x="710" y="195" fill="#9AA0A8" font-size="11" font-weight="600">~10% of the truth</text>
+  <text x="710" y="210" fill="#9AA0A8" font-size="10">retail watches this</text>
+
+  <line x1="200" y1="400" x2="240" y2="420" stroke="#9AA0A8" stroke-width="1.5" opacity="0.6"/>
+  <text x="190" y="395" fill="#9AA0A8" font-size="11" font-weight="600" text-anchor="end">~90% of the truth</text>
+  <text x="190" y="410" fill="#9AA0A8" font-size="10" text-anchor="end">professionals read this</text>
+</svg>

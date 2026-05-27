@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Pre-Funded vs Post-Funded DD Changes</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Many firms change DD rules between eval and funded account · know what you're signing up for</text>
+  <g transform="translate(60, 110)" font-size="11">
+    <g><rect width="380" height="160" rx="12" fill="rgba(240,180,41,.06)" stroke="#F0B429"/><text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">EVAL phase</text><text x="20" y="58" fill="#9AA0A8">→ Apex: trailing intraday</text><text x="20" y="78" fill="#9AA0A8">→ Bulenox: trailing EOD</text><text x="20" y="98" fill="#9AA0A8">→ FTMO: static</text><text x="20" y="118" fill="#F0B429" font-weight="700">Same DD type during eval</text><text x="20" y="138" fill="#9AA0A8">Test your strategy against it</text></g>
+    <g transform="translate(400, 0)"><rect width="380" height="160" rx="12" fill="rgba(16,185,129,.06)" stroke="#10B981"/><text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">PA (funded) phase</text><text x="20" y="58" fill="#9AA0A8">→ Apex: STILL trailing intraday</text><text x="20" y="78" fill="#9AA0A8">→ Bulenox: switches to intraday</text><text x="20" y="98" fill="#9AA0A8">→ FTMO: still static</text><text x="20" y="118" fill="#EF4444" font-weight="700">⚠ Bulenox CHANGES post-pass</text><text x="20" y="138" fill="#9AA0A8">Easy eval → harder live</text></g>
+  </g>
+  <g transform="translate(60, 290)">
+    <rect width="780" height="170" rx="12" fill="rgba(239,68,68,.05)" stroke="rgba(239,68,68,.3)"/>
+    <text x="20" y="32" fill="#EF4444" font-size="14" font-weight="700">The trap to avoid</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">→ Many traders pass Bulenox with swing strategy · then lose PA in week 1 because DD now trails intraday</text>
+    <text x="20" y="78" fill="#9AA0A8" font-size="11">→ Read both eval AND PA rules before paying</text>
+    <text x="20" y="98" fill="#9AA0A8" font-size="11">→ Adjust strategy to work under POST-funded rules even during eval</text>
+    <text x="20" y="128" fill="#F0B429" font-size="11" font-weight="700">Best practice: train on the harder of the two rule sets</text>
+  </g>
+</svg>

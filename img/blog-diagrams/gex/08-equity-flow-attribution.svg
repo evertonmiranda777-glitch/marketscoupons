@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg8" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <radialGradient id="goldRad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#F0B429"/>
+      <stop offset="100%" stop-color="#A0723D"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="460" fill="url(#bg8)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Daily U.S. Equity Flow — Who's Actually Moving the Market?</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Estimated attribution of intraday flow on a typical session (excluding open/close auctions)</text>
+
+  <!-- Donut chart -->
+  <g transform="translate(280, 250)">
+    <!-- 90% Dealer hedging - gold arc -->
+    <circle cx="0" cy="0" r="120" fill="none" stroke="url(#goldRad)" stroke-width="50" stroke-dasharray="678.6 75.4" stroke-dashoffset="0" transform="rotate(-90)"/>
+
+    <!-- 4% Retail directional - blue -->
+    <circle cx="0" cy="0" r="120" fill="none" stroke="#3B82F6" stroke-width="50" stroke-dasharray="30.16 723.8" stroke-dashoffset="-678.6" transform="rotate(-90)"/>
+
+    <!-- 3% Institutional - purple -->
+    <circle cx="0" cy="0" r="120" fill="none" stroke="#8B5CF6" stroke-width="50" stroke-dasharray="22.62 731.4" stroke-dashoffset="-708.76" transform="rotate(-90)"/>
+
+    <!-- 2% Passive index - teal -->
+    <circle cx="0" cy="0" r="120" fill="none" stroke="#14B8A6" stroke-width="50" stroke-dasharray="15.08 738.9" stroke-dashoffset="-731.38" transform="rotate(-90)"/>
+
+    <!-- 1% Other - gray -->
+    <circle cx="0" cy="0" r="120" fill="none" stroke="#64748B" stroke-width="50" stroke-dasharray="7.54 746.5" stroke-dashoffset="-746.46" transform="rotate(-90)"/>
+
+    <!-- Center labels -->
+    <text x="0" y="-8" fill="#F0B429" font-size="40" font-weight="800" text-anchor="middle">90%</text>
+    <text x="0" y="18" fill="#9AA0A8" font-size="12" text-anchor="middle">Dealer hedging</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(530, 130)">
+    <g transform="translate(0, 0)">
+      <rect width="22" height="22" rx="3" fill="url(#goldRad)"/>
+      <text x="32" y="11" fill="#fff" font-size="13" font-weight="700">90% — Dealer hedging flow</text>
+      <text x="32" y="28" fill="#9AA0A8" font-size="11" font-style="italic">Mandatory rebalancing from option positions</text>
+    </g>
+    <g transform="translate(0, 60)">
+      <rect width="22" height="22" rx="3" fill="#3B82F6"/>
+      <text x="32" y="11" fill="#fff" font-size="13" font-weight="700">4% — Retail directional</text>
+      <text x="32" y="28" fill="#9AA0A8" font-size="11" font-style="italic">Speculative buying and selling</text>
+    </g>
+    <g transform="translate(0, 120)">
+      <rect width="22" height="22" rx="3" fill="#8B5CF6"/>
+      <text x="32" y="11" fill="#fff" font-size="13" font-weight="700">3% — Institutional repositioning</text>
+      <text x="32" y="28" fill="#9AA0A8" font-size="11" font-style="italic">Hedge funds, mutual funds adjusting</text>
+    </g>
+    <g transform="translate(0, 180)">
+      <rect width="22" height="22" rx="3" fill="#14B8A6"/>
+      <text x="32" y="11" fill="#fff" font-size="13" font-weight="700">2% — Passive index flow</text>
+      <text x="32" y="28" fill="#9AA0A8" font-size="11" font-style="italic">ETF creation/redemption, 401(k) flows</text>
+    </g>
+    <g transform="translate(0, 240)">
+      <rect width="22" height="22" rx="3" fill="#64748B"/>
+      <text x="32" y="11" fill="#fff" font-size="13" font-weight="700">1% — Other</text>
+      <text x="32" y="28" fill="#9AA0A8" font-size="11" font-style="italic">Arbitrage, OTC, misc.</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <rect x="80" y="415" width="740" height="32" rx="8" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
+  <text x="450" y="436" fill="#F0B429" font-size="12" font-weight="600" text-anchor="middle" font-style="italic">When SPX moves on a quiet news day, you are watching forced dealer rebalancing — not opinions.</text>
+</svg>

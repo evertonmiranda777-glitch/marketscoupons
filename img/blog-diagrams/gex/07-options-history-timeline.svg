@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg7" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="volgrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#A0723D" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#F0B429" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="580" fill="url(#bg7)"/>
+
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The 4 Turning Points That Built Modern GEX</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Why the market in 2026 doesn't behave like the market in 2010</text>
+
+  <!-- Main timeline -->
+  <g transform="translate(80, 230)">
+    <line x1="0" y1="0" x2="760" y2="0" stroke="#F0B429" stroke-width="2.5"/>
+
+    <!-- Volume growth curve (bottom) -->
+    <path d="M 0 220 Q 200 218 320 200 T 500 140 T 660 60 T 760 20" fill="none" stroke="url(#volgrad)" stroke-width="3" opacity="0.95"/>
+    <text x="0" y="245" fill="#9AA0A8" font-size="10">~900/day</text>
+    <text x="320" y="220" fill="#9AA0A8" font-size="10">1M/day</text>
+    <text x="500" y="160" fill="#9AA0A8" font-size="10">18M/day</text>
+    <rect x="694" y="22" width="64" height="18" rx="4" fill="#0F1422" stroke="rgba(240,180,41,.4)"/>
+    <text x="726" y="35" fill="#F0B429" font-size="11" font-weight="700" text-anchor="middle">44M+/day</text>
+    <text x="380" y="285" fill="#9AA0A8" font-size="11" font-style="italic" text-anchor="middle">Daily U.S. options volume (1973 → 2026)</text>
+
+    <!-- Milestone 1: 1973 Black-Scholes -->
+    <g transform="translate(20, 0)">
+      <circle cx="0" cy="0" r="9" fill="#0A0D14" stroke="#F0B429" stroke-width="2.5"/>
+      <line x1="0" y1="-12" x2="0" y2="-50" stroke="#F0B429" stroke-width="1" opacity="0.6"/>
+      <rect x="-70" y="-100" width="140" height="48" rx="8" fill="#1A1F2E" stroke="rgba(240,180,41,.4)"/>
+      <text x="0" y="-82" fill="#F0B429" font-size="11" font-weight="700" text-anchor="middle">1973</text>
+      <text x="0" y="-68" fill="#fff" font-size="11" text-anchor="middle">Black-Scholes</text>
+      <text x="0" y="-56" fill="#9AA0A8" font-size="9" text-anchor="middle">CBOE launches</text>
+    </g>
+
+    <!-- 1987 Black Monday -->
+    <g transform="translate(170, 0)">
+      <circle cx="0" cy="0" r="9" fill="#0A0D14" stroke="#EF4444" stroke-width="2.5"/>
+      <line x1="0" y1="12" x2="0" y2="55" stroke="#EF4444" stroke-width="1" opacity="0.6"/>
+      <rect x="-70" y="55" width="140" height="48" rx="8" fill="#1A1F2E" stroke="rgba(239,68,68,.4)"/>
+      <text x="0" y="73" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">1987</text>
+      <text x="0" y="87" fill="#fff" font-size="11" text-anchor="middle">Black Monday</text>
+      <text x="0" y="99" fill="#9AA0A8" font-size="9" text-anchor="middle">Portfolio insurance</text>
+    </g>
+
+    <!-- 2010 Flash Crash -->
+    <g transform="translate(370, 0)">
+      <circle cx="0" cy="0" r="9" fill="#0A0D14" stroke="#EF4444" stroke-width="2.5"/>
+      <line x1="0" y1="-12" x2="0" y2="-50" stroke="#EF4444" stroke-width="1" opacity="0.6"/>
+      <rect x="-70" y="-100" width="140" height="48" rx="8" fill="#1A1F2E" stroke="rgba(239,68,68,.4)"/>
+      <text x="0" y="-82" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">2010</text>
+      <text x="0" y="-68" fill="#fff" font-size="11" text-anchor="middle">Flash Crash</text>
+      <text x="0" y="-56" fill="#9AA0A8" font-size="9" text-anchor="middle">Dealer fragility exposed</text>
+    </g>
+
+    <!-- 2018 Volmageddon -->
+    <g transform="translate(560, 0)">
+      <circle cx="0" cy="0" r="9" fill="#0A0D14" stroke="#EF4444" stroke-width="2.5"/>
+      <line x1="0" y1="12" x2="0" y2="55" stroke="#EF4444" stroke-width="1" opacity="0.6"/>
+      <rect x="-70" y="55" width="140" height="48" rx="8" fill="#1A1F2E" stroke="rgba(239,68,68,.4)"/>
+      <text x="0" y="73" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">2018</text>
+      <text x="0" y="87" fill="#fff" font-size="11" text-anchor="middle">Volmageddon</text>
+      <text x="0" y="99" fill="#9AA0A8" font-size="9" text-anchor="middle">Short-gamma cascade</text>
+    </g>
+
+    <!-- 2022 0DTE Era -->
+    <g transform="translate(720, 0)">
+      <circle cx="0" cy="0" r="10" fill="#F0B429" stroke="#F0B429" stroke-width="2.5"/>
+      <line x1="0" y1="-13" x2="0" y2="-50" stroke="#F0B429" stroke-width="1" opacity="0.8"/>
+      <rect x="-75" y="-100" width="150" height="48" rx="8" fill="#1A1F2E" stroke="rgba(240,180,41,.7)"/>
+      <text x="0" y="-82" fill="#F0B429" font-size="11" font-weight="700" text-anchor="middle">2022</text>
+      <text x="0" y="-68" fill="#fff" font-size="11" text-anchor="middle">0DTE Era begins</text>
+      <text x="0" y="-56" fill="#9AA0A8" font-size="9" text-anchor="middle">Charm dominates gamma</text>
+    </g>
+  </g>
+
+  <!-- Footer takeaway -->
+  <rect x="80" y="535" width="740" height="32" rx="8" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
+  <text x="450" y="556" fill="#F0B429" font-size="12" font-weight="600" text-anchor="middle" font-style="italic">Anyone analyzing the 2026 market with a 2010 mental model is operating with a 16-year handicap.</text>
+</svg>

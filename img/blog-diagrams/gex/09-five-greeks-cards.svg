@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 460" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg9" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="cardG" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.02)"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="460" fill="url(#bg9)"/>
+
+  <text x="500" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The 5 Greeks That Govern Dealer Behavior</text>
+  <text x="500" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Each one with a real-world analogy you'll never forget</text>
+
+  <!-- Card 1: Delta -->
+  <g transform="translate(40, 100)">
+    <rect width="170" height="320" rx="14" fill="url(#cardG)" stroke="rgba(240,180,41,.25)"/>
+    <text x="85" y="36" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="0.08em">DELTA</text>
+    <!-- Steering wheel icon -->
+    <g transform="translate(85, 100)">
+      <circle cx="0" cy="0" r="34" fill="none" stroke="#F0B429" stroke-width="3"/>
+      <circle cx="0" cy="0" r="8" fill="#F0B429"/>
+      <line x1="-34" y1="0" x2="-12" y2="0" stroke="#F0B429" stroke-width="3"/>
+      <line x1="34" y1="0" x2="12" y2="0" stroke="#F0B429" stroke-width="3"/>
+      <line x1="0" y1="-34" x2="0" y2="-12" stroke="#F0B429" stroke-width="3"/>
+    </g>
+    <text x="85" y="180" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">The Steering Wheel</text>
+    <foreignObject x="14" y="200" width="142" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#9AA0A8;font:11px/1.5 Inter,sans-serif;text-align:center">
+        How many shares the dealer must hold <i>right now</i> to be neutral. Set the wheel, drive straight.
+      </div>
+    </foreignObject>
+  </g>
+
+  <!-- Card 2: Gamma -->
+  <g transform="translate(230, 100)">
+    <rect width="170" height="320" rx="14" fill="url(#cardG)" stroke="rgba(240,180,41,.4)" stroke-width="1.5"/>
+    <text x="85" y="36" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="0.08em">GAMMA</text>
+    <!-- Sensitivity/spring icon -->
+    <g transform="translate(85, 100)" stroke="#F0B429" stroke-width="3" fill="none" stroke-linecap="round">
+      <path d="M -30 20 Q -20 -10 -10 20 T 10 20 T 30 20"/>
+      <line x1="-34" y1="28" x2="34" y2="28"/>
+    </g>
+    <text x="85" y="180" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">Wheel Sensitivity</text>
+    <foreignObject x="14" y="200" width="142" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#9AA0A8;font:11px/1.5 Inter,sans-serif;text-align:center">
+        How much the wheel turns per inch of input. High gamma = twitchy car, forced re-hedging on every tick.
+      </div>
+    </foreignObject>
+  </g>
+
+  <!-- Card 3: Vega -->
+  <g transform="translate(420, 100)">
+    <rect width="170" height="320" rx="14" fill="url(#cardG)" stroke="rgba(240,180,41,.25)"/>
+    <text x="85" y="36" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="0.08em">VEGA</text>
+    <!-- Fuel tank icon -->
+    <g transform="translate(85, 100)" stroke="#F0B429" stroke-width="3" fill="none">
+      <rect x="-22" y="-22" width="44" height="40" rx="4"/>
+      <line x1="-15" y1="-12" x2="15" y2="-12"/>
+      <line x1="-15" y1="-2" x2="15" y2="-2"/>
+      <line x1="-15" y1="8" x2="15" y2="8"/>
+      <path d="M 22 -16 L 30 -16 L 30 -8" stroke-width="2.5"/>
+    </g>
+    <text x="85" y="180" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">The Fuel Tank</text>
+    <foreignObject x="14" y="200" width="142" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#9AA0A8;font:11px/1.5 Inter,sans-serif;text-align:center">
+        Fear (IV) rises → tank fills → option value grows. Dealers don't hedge this fully — leaks cause "vol events".
+      </div>
+    </foreignObject>
+  </g>
+
+  <!-- Card 4: Vanna -->
+  <g transform="translate(610, 100)">
+    <rect width="170" height="320" rx="14" fill="url(#cardG)" stroke="rgba(240,180,41,.25)"/>
+    <text x="85" y="36" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="0.08em">VANNA</text>
+    <!-- Wind icon -->
+    <g transform="translate(85, 100)" stroke="#F0B429" stroke-width="3" fill="none" stroke-linecap="round">
+      <path d="M -30 -10 Q -10 -10 0 -20 Q 10 -10 30 -10"/>
+      <path d="M -30 5 Q -10 5 0 -5 Q 10 5 30 5"/>
+      <path d="M -30 20 Q -10 20 0 10 Q 10 20 30 20"/>
+    </g>
+    <text x="85" y="180" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">The Wind</text>
+    <foreignObject x="14" y="200" width="142" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#9AA0A8;font:11px/1.5 Inter,sans-serif;text-align:center">
+        Fear rises → dealer's wheel drifts even without driving input. Why markets rally on bad news.
+      </div>
+    </foreignObject>
+  </g>
+
+  <!-- Card 5: Charm -->
+  <g transform="translate(800, 100)">
+    <rect width="170" height="320" rx="14" fill="url(#cardG)" stroke="rgba(240,180,41,.4)" stroke-width="1.5"/>
+    <text x="85" y="36" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="0.08em">CHARM</text>
+    <!-- Clock/decay icon -->
+    <g transform="translate(85, 100)" stroke="#F0B429" stroke-width="3" fill="none">
+      <circle cx="0" cy="0" r="28"/>
+      <line x1="0" y1="-28" x2="0" y2="-22"/>
+      <line x1="0" y1="0" x2="0" y2="-15" stroke-width="3"/>
+      <line x1="0" y1="0" x2="12" y2="6" stroke-width="2.5"/>
+      <circle cx="0" cy="0" r="2.5" fill="#F0B429" stroke="none"/>
+    </g>
+    <text x="85" y="180" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">The Rust of Time</text>
+    <foreignObject x="14" y="200" width="142" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#9AA0A8;font:11px/1.5 Inter,sans-serif;text-align:center">
+        Time alone changes hedge ratios. Why the 3 PM ramp exists. Dominant Greek on 0DTE since 2022.
+      </div>
+    </foreignObject>
+  </g>
+</svg>

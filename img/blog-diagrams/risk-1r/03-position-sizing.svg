@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Position Sizing Formula — The Only Math That Matters</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Size = (Account × Risk%) ÷ (Stop distance × $ per unit) · always round DOWN</text>
+  <g transform="translate(80, 110)" font-family="JetBrains Mono, monospace">
+    <rect width="740" height="160" rx="14" fill="rgba(240,180,41,.06)" stroke="#F0B429"/>
+    <text x="370" y="50" fill="#F0B429" font-size="16" font-weight="700" text-anchor="middle">SIZE = (ACCOUNT × R%) ÷ (STOP × $perUnit)</text>
+    <text x="370" y="80" fill="#9AA0A8" font-size="12" text-anchor="middle" font-family="Inter">Example: $50K account · 1% risk · stop 20pts on MNQ at $2/pt</text>
+    <text x="370" y="110" fill="#10B981" font-size="14" text-anchor="middle">SIZE = ($50,000 × 0.01) ÷ (20 × $2) = $500 ÷ $40 = 12.5 → 12 contracts</text>
+    <text x="370" y="140" fill="#9AA0A8" font-size="11" text-anchor="middle" font-family="Inter">Total risk: 12 × 20 × $2 = $480 (just under 1R · ROUND DOWN always)</text>
+  </g>
+  <g transform="translate(80, 290)" font-family="Inter">
+    <rect width="740" height="180" rx="14" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+    <text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">By instrument</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">ES (S&amp;P 500 futures) · $50/pt · 1 pt = $50 · 4 pt stop = $200/contract</text>
+    <text x="20" y="76" fill="#9AA0A8" font-size="11">MES (micro ES) · $5/pt · same 4 pt stop = $20/contract</text>
+    <text x="20" y="94" fill="#9AA0A8" font-size="11">NQ · $20/pt · 50 pt stop = $1,000/contract</text>
+    <text x="20" y="112" fill="#9AA0A8" font-size="11">MNQ · $2/pt · same 50 pt stop = $100/contract</text>
+    <text x="20" y="130" fill="#9AA0A8" font-size="11">Equity options · $100/contract premium · stop 50% = $50/contract</text>
+    <text x="20" y="158" fill="#F0B429" font-size="11" font-weight="700">Micros let small accounts size properly — always prefer them under $25K</text>
+  </g>
+</svg>

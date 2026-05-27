@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="520" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Strategy ↔ Drawdown Type Match</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Pick the DD type that matches your strategy · mismatched pair = guaranteed eval failure</text>
+  <g transform="translate(60, 110)" font-size="12">
+    <rect width="780" height="380" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="780" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700">
+      <text x="20" y="28" fill="#F0B429">Strategy</text>
+      <text x="270" y="28" fill="#F0B429">Trailing Intraday</text>
+      <text x="450" y="28" fill="#F0B429">Trailing EOD</text>
+      <text x="620" y="28" fill="#F0B429">Static</text>
+    </g>
+    <g fill="#9AA0A8">
+      <text x="20" y="70">Scalping (5-30 min)</text><text x="270" y="70" fill="#10B981" font-weight="700">★★★</text><text x="450" y="70">★★</text><text x="620" y="70">★</text>
+      <text x="20" y="98">Day trading (1-4h)</text><text x="270" y="98" fill="#10B981" font-weight="700">★★★</text><text x="450" y="98" fill="#F0B429">★★★</text><text x="620" y="98">★★</text>
+      <text x="20" y="126">Swing (1-3 days)</text><text x="270" y="126" fill="#EF4444">★</text><text x="450" y="126" fill="#F0B429">★★★</text><text x="620" y="126" fill="#10B981">★★★</text>
+      <text x="20" y="154">Position (1-2 weeks)</text><text x="270" y="154" fill="#EF4444">✗</text><text x="450" y="154" fill="#F0B429">★★</text><text x="620" y="154" fill="#10B981" font-weight="700">★★★</text>
+      <text x="20" y="182">Trend follow (months)</text><text x="270" y="182" fill="#EF4444">✗</text><text x="450" y="182" fill="#EF4444">★</text><text x="620" y="182" fill="#10B981" font-weight="700">★★★</text>
+      <text x="20" y="210">Mean reversion (intraday)</text><text x="270" y="210" fill="#10B981">★★★</text><text x="450" y="210" fill="#F0B429">★★★</text><text x="620" y="210">★★</text>
+      <text x="20" y="238">Breakout (multi-day)</text><text x="270" y="238" fill="#EF4444">★</text><text x="450" y="238" fill="#F0B429">★★</text><text x="620" y="238" fill="#10B981" font-weight="700">★★★</text>
+      <text x="20" y="266">News fade</text><text x="270" y="266" fill="#F0B429">★★</text><text x="450" y="266" fill="#F0B429">★★★</text><text x="620" y="266" fill="#10B981">★★★</text>
+    </g>
+    <text x="40" y="340" fill="#10B981" font-weight="700" font-size="11">★★★ = ideal · ★★ = workable · ★ = challenging · ✗ = will fail</text>
+  </g>
+</svg>

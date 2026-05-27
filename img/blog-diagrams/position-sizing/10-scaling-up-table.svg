@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Scaling Up — Account Growth Path</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">$5K → $50K → $500K · what each tier looks like in real position size and income</text>
+  <g transform="translate(80, 110)" font-size="12">
+    <rect width="740" height="400" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="740" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700"><text x="20" y="28" fill="#F0B429">Tier</text><text x="160" y="28" fill="#F0B429">Account</text><text x="320" y="28" fill="#F0B429">1R risk</text><text x="450" y="28" fill="#F0B429">Best size</text><text x="600" y="28" fill="#F0B429">Income/mo</text></g>
+    <g fill="#9AA0A8">
+      <text x="20" y="70" fill="#3B82F6" font-weight="700">Beginner</text><text x="160" y="70">$2-5K</text><text x="320" y="70">$20-50</text><text x="450" y="70">MES 1 contract</text><text x="600" y="70">$80-200</text>
+      <text x="20" y="98" fill="#3B82F6" font-weight="700">Beginner+</text><text x="160" y="98">$5-15K</text><text x="320" y="98">$50-150</text><text x="450" y="98">MES/MNQ 1-2</text><text x="600" y="98">$200-600</text>
+      <text x="20" y="126" fill="#10B981" font-weight="700">Standard</text><text x="160" y="126">$25-50K</text><text x="320" y="126">$250-500</text><text x="450" y="126">MES 5 / MNQ 5</text><text x="600" y="126">$1,000-2,000</text>
+      <text x="20" y="154" fill="#10B981" font-weight="700">Established</text><text x="160" y="154">$50-100K</text><text x="320" y="154">$500-1,000</text><text x="450" y="154">ES 1-2 / NQ 1</text><text x="600" y="154">$2,000-4,000</text>
+      <text x="20" y="182" fill="#F0B429" font-weight="700">Scaled</text><text x="160" y="182">$100-250K</text><text x="320" y="182">$1,000-2,500</text><text x="450" y="182">ES 2-3 / NQ 1-2</text><text x="600" y="182">$4,000-8,000</text>
+      <text x="20" y="210" fill="#F0B429" font-weight="700">Pro</text><text x="160" y="210">$250-500K</text><text x="320" y="210">$2,500-5,000</text><text x="450" y="210">ES 5-10 / NQ 3-5</text><text x="600" y="210">$8,000-15,000</text>
+      <text x="20" y="238" fill="#F472B6" font-weight="700">Multi-account pro</text><text x="160" y="238">$500K-$1M</text><text x="320" y="238">$5K-10K</text><text x="450" y="238">10-20 accounts</text><text x="600" y="238" fill="#F472B6" font-weight="700">$15K-30K</text>
+      <text x="20" y="266" fill="#F472B6" font-weight="700">CTA-tier</text><text x="160" y="266">$1M+</text><text x="320" y="266">$10K+</text><text x="450" y="266">Diversified</text><text x="600" y="266" fill="#F472B6" font-weight="700">$30K+</text>
+    </g>
+    <text x="20" y="320" fill="#F0B429" font-weight="700" font-size="11">Promotion rule: graduate tiers only after 3+ months of consistent income at current tier</text>
+    <text x="20" y="340" fill="#9AA0A8" font-size="11">Don't skip tiers · over-leveraging earlier blew more accounts than under-leveraging</text>
+  </g>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Position Size by Stop Distance</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Tighter stops = more contracts · wider stops = fewer contracts · same $ risk always</text>
+  <g transform="translate(80, 110)" font-size="12">
+    <rect width="740" height="320" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="740" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700"><text x="20" y="28" fill="#F0B429">Stop distance</text><text x="220" y="28" fill="#F0B429">Risk/contract</text><text x="400" y="28" fill="#F0B429">Contracts on $50K</text><text x="600" y="28" fill="#F0B429">Note</text></g>
+    <g fill="#9AA0A8">
+      <text x="20" y="70">3 pts NQ</text><text x="220" y="70">$60</text><text x="400" y="70" fill="#10B981">8</text><text x="600" y="70">tight scalp</text>
+      <text x="20" y="98">8 pts NQ</text><text x="220" y="98">$160</text><text x="400" y="98" fill="#10B981">3</text><text x="600" y="98">intraday</text>
+      <text x="20" y="126">15 pts NQ</text><text x="220" y="126">$300</text><text x="400" y="126" fill="#F0B429">1-2</text><text x="600" y="126">structural</text>
+      <text x="20" y="154">30 pts NQ</text><text x="220" y="154">$600</text><text x="400" y="154" fill="#F0B429">0 (use MNQ)</text><text x="600" y="154">swing</text>
+      <text x="20" y="182">50 pts NQ</text><text x="220" y="182">$1,000</text><text x="400" y="182" fill="#EF4444">0 → MNQ</text><text x="600" y="182">multi-day</text>
+      <text x="20" y="210">100 pts NQ</text><text x="220" y="210">$2,000</text><text x="400" y="210" fill="#EF4444">MNQ 2.5</text><text x="600" y="210">weekly</text>
+    </g>
+    <text x="20" y="260" fill="#F0B429" font-weight="700" font-size="11">Same $500 risk · 8 contracts to 2 contracts to MNQ · stop dictates instrument too</text>
+    <text x="20" y="280" fill="#9AA0A8" font-size="11">If formula says 0 contracts · use micros (MES/MNQ) · or skip the setup</text>
+  </g>
+</svg>

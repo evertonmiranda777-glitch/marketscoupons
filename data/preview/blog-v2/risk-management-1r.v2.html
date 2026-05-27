@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The 1R Doctrine — Why Risk Management Is the Only Edge That Compounds | MarketsCoupons</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="The 1R risk management doctrine: how professional traders use R-multiples, the 1% rule, expectancy math, and drawdown control to survive — and compound — for decades.">
+<link rel="canonical" href="https://www.marketscoupons.com/blog/risk-management-1r">
+<meta property="og:title" content="The 1R Doctrine — Risk Management That Actually Compounds">
+<meta property="og:description" content="You can have an 80% accurate strategy and still blow your account. You can have a 40% accurate strategy and grow it 10x. Sizing decides.">
+<meta property="og:image" content="https://www.marketscoupons.com/img/blog-heros/risk-management-1r.jpg">
+<meta property="og:type" content="article">
+<style>
+:root{--accent:#EF4444;--t1:#fff;--t2:#d4d7df;--t3:#9AA0A8;--card:#1A1F2E;--bg:#0A0D14}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--t2);font:17px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;margin:0;padding:40px 20px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font:800 44px/1.15 inherit;color:var(--t1);margin:0 0 14px}
+.subtitle{font-size:22px;color:var(--t2);margin:0 0 14px;line-height:1.4}
+.subtitle b{color:var(--accent)}
+.meta{color:var(--t3);font-size:13px;margin-bottom:32px}
+.lead{font-size:21px;line-height:1.55;color:var(--t1);margin:0 0 32px;padding:26px 30px;border-left:4px solid var(--accent);background:rgba(239,68,68,.07);border-radius:0 12px 12px 0}
+.lead b{color:var(--accent)}
+h2{font:800 32px/1.25 inherit;color:var(--t1);margin:60px 0 18px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08)}
+h3{font:700 23px/1.35 inherit;color:var(--t1);margin:36px 0 14px}
+h4{font:700 13px/1.4 inherit;color:var(--accent);margin:22px 0 8px;letter-spacing:0.05em;text-transform:uppercase}
+p{margin:0 0 18px}b{color:var(--t1);font-weight:600}i{color:var(--t2);font-style:italic}
+ul,ol{margin:0 0 18px;padding-left:22px}li{margin-bottom:8px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px dotted rgba(239,68,68,.45)}
+blockquote{margin:28px 0;padding:22px 28px;background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(239,68,68,.02));border-left:4px solid var(--accent);border-radius:0 12px 12px 0;color:var(--t1)}
+.deep{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:24px 28px;margin:24px 0}
+.deep h4{margin-top:14px}.deep h4:first-child{margin-top:0}
+.hero{margin-bottom:36px;border-radius:16px;overflow:hidden;border:1px solid rgba(239,68,68,.3);aspect-ratio:16/9;background:#0a0d14 url('../../../img/blog-heros/risk-management-1r.jpg') center/cover;position:relative}
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,13,20,.9) 100%)}
+.hero-overlay{position:absolute;left:40px;right:40px;bottom:32px;z-index:2}
+.hero-tag{display:inline-block;padding:6px 14px;border-radius:99px;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.5);color:var(--accent);font-size:11.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+table{width:100%;border-collapse:collapse;margin:20px 0;background:rgba(255,255,255,.025);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+th,td{padding:13px 16px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:15px}
+th{background:rgba(239,68,68,.09);color:var(--accent);font-weight:700;font-size:13.5px;text-transform:uppercase}
+.cta-box{margin:48px 0;padding:32px 36px;background:linear-gradient(135deg,rgba(239,68,68,.16),rgba(239,68,68,.03));border:1.5px solid rgba(239,68,68,.5);border-radius:16px}
+.cta-box h3{margin-top:0;color:var(--accent);font-size:26px}
+hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:48px 0}
+.toc{margin:24px 0 40px;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px}
+.toc strong{color:var(--accent);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;display:block;margin-bottom:12px}
+.toc ol{column-count:2;column-gap:32px;padding-left:18px}.toc li{font-size:14px;margin-bottom:6px}.toc a{border:none}
+.faq-q{font-weight:700;color:var(--accent);margin-top:24px;font-size:17px}.faq-a{margin-top:6px}
+
+figure.diagram{margin:32px 0;padding:0;background:#0F1422;border:1px solid rgba(240,180,41,.18);border-radius:14px;overflow:hidden}
+figure.diagram img{display:block;width:100%;height:auto}
+figure.diagram figcaption{padding:14px 22px;color:var(--t3);font-size:13px;font-style:italic;border-top:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Article","headline":"The 1R Doctrine — Why Risk Management Is the Only Edge That Compounds","description":"Complete risk management framework: R-multiples, the 1% rule, position sizing, stop methodologies, expectancy math, Kelly criterion, drawdown control.","author":{"@type":"Organization","name":"Markets Coupons Research"},"publisher":{"@type":"Organization","name":"Markets Coupons","logo":{"@type":"ImageObject","url":"https://www.marketscoupons.com/img/logo-hexmark.svg"}},"datePublished":"2026-05-26","dateModified":"2026-05-26","image":"https://www.marketscoupons.com/img/blog-heros/risk-management-1r.jpg","mainEntityOfPage":"https://www.marketscoupons.com/blog/risk-management-1r","keywords":"risk management, 1R, position sizing, Kelly criterion, expectancy, drawdown, R-multiple"},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.marketscoupons.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.marketscoupons.com/blog"},{"@type":"ListItem","position":3,"name":"Risk Management 1R"}]},
+{"@type":"HowTo","name":"How to Apply the 1R Doctrine","step":[
+{"@type":"HowToStep","name":"Define your 1R","text":"1R = the dollar amount you risk on a single trade. Standard: 1% of account capital."},
+{"@type":"HowToStep","name":"Calculate position size","text":"Position size = (account × risk_pct) / (entry - stop). Mechanical, not emotional."},
+{"@type":"HowToStep","name":"Place stops at structural invalidation","text":"Stops are defined by structure (support, resistance, ATR), not by account pain tolerance."},
+{"@type":"HowToStep","name":"Track every trade in R-multiples","text":"-1R, -0.5R, +1R, +2R, +3R. Standardized across instruments and account sizes."},
+{"@type":"HowToStep","name":"Calculate expectancy","text":"Expectancy = (win_rate × avg_win_R) - (loss_rate × avg_loss_R). Positive expectancy = mathematical edge."},
+{"@type":"HowToStep","name":"Enforce hard daily limits","text":"Max 3 consecutive losses → stop trading for the day. Max 5% daily account loss → stop trading for the week."}]},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What % should I really risk per trade?","acceptedAnswer":{"@type":"Answer","text":"0.5-1% for new traders. 1-2% for proven traders with verified positive expectancy. Never more than 2% regardless of confidence. Prop firm accounts: 0.25-0.5%."}},
+{"@type":"Question","name":"How do I calculate position size on futures?","acceptedAnswer":{"@type":"Answer","text":"position = risk_$ / (stop_points × $_per_point). Example: $500 risk, 20 point stop on ES ($50/point) = $500 / (20 × $50) = 0.5 contracts. Round down to 0 if not whole."}},
+{"@type":"Question","name":"Should I use a hard stop or mental stop?","acceptedAnswer":{"@type":"Answer","text":"Hard stop (limit order) for beginners and most retail. Mental stop acceptable only for experienced traders with verified discipline. Never use mental stop on options or futures held overnight."}},
+{"@type":"Question","name":"What if my stop gets hit by a wick?","acceptedAnswer":{"@type":"Answer","text":"That's normal market behavior. Solution: place stops further from price (using ATR-based or structure-based methodology). Do not move stops further during the trade — that defeats the entire system."}},
+{"@type":"Question","name":"Is averaging down ever ok?","acceptedAnswer":{"@type":"Answer","text":"Scaling into a planned position at predefined levels = yes, with predefined max total risk. Averaging down on a losing trade hoping for reversal = no, never."}},
+{"@type":"Question","name":"What's the max drawdown I should accept?","acceptedAnswer":{"@type":"Answer","text":"Personal: 15-25% drawdown tolerable mathematically but psychologically extreme. Most retail traders abandon strategies during drawdowns of 10-15%. Prop firm rules typically enforce 4-10% max DD — pick a firm whose rules match your comfort."}},
+{"@type":"Question","name":"How do prop firms calculate drawdown?","acceptedAnswer":{"@type":"Answer","text":"Trailing intraday (Apex), trailing EOD (Bulenox), or static (FTMO Swing). Each has radically different mathematical implications. See our dedicated article on this topic."}},
+{"@type":"Question","name":"Can I scale risk up after wins?","acceptedAnswer":{"@type":"Answer","text":"Yes, with a scaling plan defined in advance. Wrong: 'I had a great month, I'll risk more now.' Right: 'My equity has compounded 20%, my 1% risk is now 20% larger in dollars.' Same ratio, larger units."}},
+{"@type":"Question","name":"How does correlation affect total risk?","acceptedAnswer":{"@type":"Answer","text":"Two long SPX trades + two long NQ trades + one long Russell = effectively one big long. Adjust for this. Total correlated exposure should not exceed 2-3% of capital."}},
+{"@type":"Question","name":"What's a good win rate to aim for?","acceptedAnswer":{"@type":"Answer","text":"Anything 35%+ can be profitable with proper R-multiples. Win rate matters less than average R. A 35% win rate with average 3R win beats a 65% win rate with average 1R win."}},
+{"@type":"Question","name":"Is the 1% rule outdated for small accounts?","acceptedAnswer":{"@type":"Answer","text":"No. 1% of $5K is $50. That's small but mathematically correct. The alternative — risking 5% per trade to 'see meaningful PnL' — guarantees ruin within 20-50 trades."}},
+{"@type":"Question","name":"How do I handle a 5-loss streak?","acceptedAnswer":{"@type":"Answer","text":"Stop trading for the day at 3 losses. If you continued and hit 5: stop trading for the week. Review setups. Resume only after honest evaluation that nothing has changed except variance."}}]}
+]}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero"><div class="hero-overlay"><span class="hero-tag">Markets Coupons Research · Vol. 07</span></div></header>
+
+<h1>The 1R Doctrine — Why Risk Management Is the Only Edge That Compounds</h1>
+<p class="subtitle">You can have an 80% accurate strategy and still blow your account. You can have a 40% accurate strategy and grow it 10x. <b>The variable that decides is how you size, not how you predict.</b></p>
+<p class="meta">By Markets Coupons Research · May 26, 2026 · 45 min read · 9,200 words</p>
+
+<p class="lead">Risk management is the ugliest topic in trading education. It does not promise riches. It does not deliver dopamine. It does not let you brag at parties. <b>It is also the only edge that compounds across decades.</b> Every trader who has survived 20+ years has obsessed over it. Every trader who blew up could explain why they didn't.</p>
+
+<div class="toc">
+<strong>What you will learn</strong>
+<ol>
+<li><a href="#p1">The hierarchy of trading skills</a></li>
+<li><a href="#p2">What is 1R</a></li>
+<li><a href="#p3">The 1% rule (and why 0.5% is often better)</a></li>
+<li><a href="#p4">Position sizing — the formula</a></li>
+<li><a href="#p5">The 4 stop-loss methodologies</a></li>
+<li><a href="#p6">R-multiple trade analysis</a></li>
+<li><a href="#p7">Expectancy — the math of edge</a></li>
+<li><a href="#p8">Drawdown — how much is acceptable</a></li>
+<li><a href="#p9">The Kelly criterion (and why 1/4 Kelly)</a></li>
+<li><a href="#p10">Risk of ruin — quantified</a></li>
+<li><a href="#p11">Psychological capital</a></li>
+<li><a href="#p12">Top 10 risk management mistakes</a></li>
+<li><a href="#p13">Case studies — surviving 2008, 2020, 2022</a></li>
+<li><a href="#p14">The operational risk playbook</a></li>
+<li><a href="#p15">FAQ · Conclusion · Next steps</a></li>
+</ol>
+</div>
+
+<hr>
+
+<h2 id="p1">Part 1 — The Hierarchy of Trading Skills</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/12-trailing-stop.svg" alt="Trail after 1R — move stop to BE at +1R, partial at +2R, trail final 50% by structure" loading="lazy"><figcaption>Trail after 1R — move stop to BE at +1R, partial at +2R, trail final 50% by structure</figcaption></figure>
+
+<p>Trading skills form a pyramid. From bottom to top:</p>
+
+<ol>
+<li><b>Risk management</b> (the foundation that holds everything else up)</li>
+<li><b>Trade management</b> (managing positions while active)</li>
+<li><b>Setup selection</b> (which patterns/setups to trade)</li>
+<li><b>Market view</b> (top-down macro/structural perspective)</li>
+</ol>
+
+<p>Most retail traders build the pyramid upside down. They start with market views ("the Fed will cut rates so I'll buy tech"), apply random setups, manage trades by feel, and treat risk management as an afterthought.</p>
+
+<p>The result is mathematically guaranteed loss. <b>You cannot compensate for poor risk management with better predictions.</b> Mathematically, you can compensate for poor predictions with great risk management.</p>
+
+<blockquote><b>The market does not care how right you are. It pays you for surviving long enough to be right about something.</b> Risk management is what keeps you alive long enough for your edge to express itself.</blockquote>
+
+<hr>
+
+<h2 id="p2">Part 2 — What Is 1R</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/01-r-concept.svg" alt="The 1R concept — your max loss per trade · every win and loss measured in R-multiples" loading="lazy"><figcaption>The 1R concept — your max loss per trade · every win and loss measured in R-multiples</figcaption></figure>
+
+<p>1R = the dollar amount you risk on a single trade. It's the fundamental unit of trading currency.</p>
+
+<p>Example: You have a $50,000 account. You risk 1% per trade. 1R = $500.</p>
+
+<p>Every trade is then measured in R-multiples, not dollars:</p>
+<ul>
+<li>Win of $1,000 = +2R</li>
+<li>Win of $500 = +1R</li>
+<li>Loss of $250 = -0.5R</li>
+<li>Loss of $500 = -1R</li>
+<li>Loss of $1,000 (you let it run) = -2R (mistake)</li>
+</ul>
+
+<p>Why R-multiples matter: they standardize performance across instruments, account sizes, and timeframes. A trader who averages +0.4R per trade is profitable regardless of whether they trade $1K or $1M accounts. The mathematics scale.</p>
+
+<hr>
+
+<h2 id="p3">Part 3 — The 1% Rule</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/08-risk-per-trade.svg" alt="Risk per trade comparison — 0.5%, 1%, 2%, 3%+ · the brutal math of drawdown recovery" loading="lazy"><figcaption>Risk per trade comparison — 0.5%, 1%, 2%, 3%+ · the brutal math of drawdown recovery</figcaption></figure>
+
+<p>Risk no more than 1% of capital per trade. This is the canonical retail rule. Why 1%?</p>
+
+<h3>The math of recovery</h3>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/11-anti-martingale.svg" alt="Anti-martingale vs Martingale — scale UP on wins, DOWN on losses · Livermore principle from 1924" loading="lazy"><figcaption>Anti-martingale vs Martingale — scale UP on wins, DOWN on losses · Livermore principle from 1924</figcaption></figure>
+
+<table>
+<thead><tr><th>Drawdown</th><th>Gain required to recover</th></tr></thead>
+<tbody>
+<tr><td>10%</td><td>11%</td></tr>
+<tr><td>20%</td><td>25%</td></tr>
+<tr><td>30%</td><td>43%</td></tr>
+<tr><td>50%</td><td>100%</td></tr>
+<tr><td>75%</td><td>300%</td></tr>
+<tr><td>90%</td><td>900%</td></tr>
+</tbody>
+</table>
+
+<p>A 50% drawdown requires a 100% gain just to break even. A 90% drawdown requires a 900% gain. These math facts are why position sizing dominates everything else.</p>
+
+<h3>Why 0.5% is often better</h3>
+
+<p>For new traders, 0.5% per trade is mathematically safer. A 20-loss streak at 0.5% = -10% account. At 1% = -20%. At 2% = -40%. New traders underestimate their drawdown probability.</p>
+
+<h3>When 2%+ becomes acceptable</h3>
+
+<p>Only with verified positive expectancy, multi-year track record, and disciplined execution. Even then, most professionals stay at 1% because the marginal compound return from 1% to 2% does not justify the risk.</p>
+
+<hr>
+
+<h2 id="p4">Part 4 — Position Sizing Formula</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/03-position-sizing.svg" alt="Position sizing formula — (Account × R%) ÷ (Stop × $/unit) · always round DOWN" loading="lazy"><figcaption>Position sizing formula — (Account × R%) ÷ (Stop × $/unit) · always round DOWN</figcaption></figure>
+
+<p>The mechanical core of risk management.</p>
+
+<p><b>position_size = (account × risk_pct) / (entry_price − stop_price)</b></p>
+
+<h3>Worked example — Equities</h3>
+<p>Account: $50,000<br>Risk %: 1% = $500<br>Entry: $100<br>Stop: $98<br>Stop distance: $2<br>Position size: $500 / $2 = <b>250 shares</b></p>
+
+<h3>Worked example — Futures (ES)</h3>
+<p>Account: $50,000<br>Risk: $500<br>Entry: ES 5,500<br>Stop: ES 5,495 (5 points stop)<br>$ per point on ES: $50<br>Position size: $500 / (5 × $50) = <b>2 contracts</b></p>
+
+<h3>Worked example — Forex</h3>
+<p>Account: $50,000<br>Risk: $500<br>Entry: EURUSD 1.0900<br>Stop: EURUSD 1.0880 (20 pips)<br>$ per pip per standard lot: $10<br>Position size: $500 / (20 × $10) = <b>2.5 standard lots</b> (round to 2)</p>
+
+<hr>
+
+<h2 id="p5">Part 5 — The 4 Stop-Loss Methodologies</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/07-stop-placement.svg" alt="Stop placement — structural levels beat arbitrary ATR multiples · stop placement first, size second" loading="lazy"><figcaption>Stop placement — structural levels beat arbitrary ATR multiples · stop placement first, size second</figcaption></figure>
+
+<h3>1. Hard stop (limit order in market)</h3>
+<p>Pros: Mechanical. No discretion required. Protects against fast moves.<br>Cons: Can be hit by wicks. Visible in the order book.</p>
+
+<h3>2. Mental stop (price level, no order)</h3>
+<p>Pros: Hidden from market. Flexible.<br>Cons: Requires discipline. Fails when emotion overrides plan. Catastrophic on gaps.</p>
+
+<h3>3. Technical stop (structure-based)</h3>
+<p>Stop just beyond significant support/resistance, swing high/low, or pattern invalidation. The logic: if price reaches that level, the trade thesis is wrong.</p>
+
+<h3>4. Volatility stop (ATR-based)</h3>
+<p>Stop distance = N × ATR(14). Adjusts to market conditions. Wider stop in volatile regimes; tighter in calm regimes.</p>
+
+<p>Most professional retail traders use a hybrid: technical stop with volatility adjustment, placed as a hard stop order.</p>
+
+<hr>
+
+<h2 id="p6">Part 6 — R-Multiple Trade Analysis</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/02-r-multiples.svg" alt="R-multiples outcome table — what -1R, +2R, +5R look like in $ on a $50K account" loading="lazy"><figcaption>R-multiples outcome table — what -1R, +2R, +5R look like in $ on a $50K account</figcaption></figure>
+
+<p>The most underused performance tool in retail trading.</p>
+
+<p>Log every trade in R units instead of dollars. After 50 trades, calculate:</p>
+<ul>
+<li>Win rate (% of trades closed positive)</li>
+<li>Average winning trade in R</li>
+<li>Average losing trade in R</li>
+<li>Cumulative R</li>
+<li>Max R drawdown</li>
+</ul>
+
+<p>Patterns emerge quickly:</p>
+<ul>
+<li>Setup A: 60% win rate, avg +1.2R, avg -1.0R = positive expectancy</li>
+<li>Setup B: 45% win rate, avg +2.5R, avg -1.0R = highly positive expectancy</li>
+<li>Setup C: 70% win rate, avg +0.8R, avg -1.5R = negative expectancy</li>
+</ul>
+
+<p>You would intuitively keep Setup C (high win rate) and drop Setup B (low win rate). The math says drop Setup C and double down on Setup B. <b>R-multiple analysis catches this inversion immediately.</b></p>
+
+<hr>
+
+<h2 id="p7">Part 7 — Expectancy</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/04-expectancy.svg" alt="Expectancy formula — E = (Win% × W̄) - (Loss% × L̄) · scalper vs swing vs retail trap comparison" loading="lazy"><figcaption>Expectancy formula — E = (Win% × W̄) - (Loss% × L̄) · scalper vs swing vs retail trap comparison</figcaption></figure>
+
+<p><b>Expectancy = (win_rate × avg_win_R) − (loss_rate × avg_loss_R)</b></p>
+
+<p>Example: 50% win rate, average win +2R, average loss -1R.<br>Expectancy = (0.5 × 2) - (0.5 × 1) = 1.0 - 0.5 = <b>+0.5R per trade</b>.</p>
+
+<p>This means: over hundreds of trades, you expect +0.5R per trade on average. With 1% risk per trade, that's +0.5% per trade. 100 trades = +50% expected return.</p>
+
+<h3>Why win rate is overrated</h3>
+
+<p>A 30% win rate strategy can be highly profitable if the average win is 5R and the average loss is 1R.<br>Expectancy = (0.3 × 5) - (0.7 × 1) = 1.5 - 0.7 = +0.8R per trade.</p>
+
+<p>A 70% win rate strategy can be unprofitable if the average win is 0.5R and the average loss is 2R.<br>Expectancy = (0.7 × 0.5) - (0.3 × 2) = 0.35 - 0.6 = <b>-0.25R per trade</b>. Negative.</p>
+
+<p>The retail obsession with win rate is one of the most expensive cognitive biases in trading.</p>
+
+<hr>
+
+<h2 id="p8">Part 8 — Drawdown</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/06-equity-curve.svg" alt="Realistic equity curve — 55% win rate, +1.5R/-1R · max DD -7R is typical · most quit during it" loading="lazy"><figcaption>Realistic equity curve — 55% win rate, +1.5R/-1R · max DD -7R is typical · most quit during it</figcaption></figure>
+
+<p>Drawdown is the largest peak-to-valley decline in account equity. It is the single most important metric for evaluating a strategy.</p>
+
+<h3>Acceptable drawdowns</h3>
+
+<ul>
+<li><b>Personal account, new trader</b>: 10-15% max. Beyond this, most quit.</li>
+<li><b>Personal account, proven trader</b>: 20-30%. Still psychologically painful.</li>
+<li><b>Hedge fund</b>: 10-20% max before LP redemptions trigger.</li>
+<li><b>Prop firm rules</b>: 4-10% (varies by firm).</li>
+</ul>
+
+<h3>Recovery time</h3>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/13-tail-risk.svg" alt="Black swan tail risk — stops fail in flash crashes · plan for 2-3× expected loss in tail events" loading="lazy"><figcaption>Black swan tail risk — stops fail in flash crashes · plan for 2-3× expected loss in tail events</figcaption></figure>
+
+<p>Time to recover from drawdown matters more than the drawdown itself. A 20% drawdown that recovers in 3 months is different from a 20% drawdown that takes 18 months. The latter destroys psychological capital.</p>
+
+<hr>
+
+<h2 id="p9">Part 9 — Kelly Criterion</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/10-kelly-criterion.svg" alt="Kelly Criterion vs 1/4-Kelly vs fixed fractional — full Kelly theoretical, 1/4 Kelly used by real money" loading="lazy"><figcaption>Kelly Criterion vs 1/4-Kelly vs fixed fractional — full Kelly theoretical, 1/4 Kelly used by real money</figcaption></figure>
+
+<p>The mathematical optimal bet size for maximizing log-utility.</p>
+
+<p><b>f = (bp − q) / b</b><br>where p = win probability, q = loss probability (1-p), b = win/loss ratio</p>
+
+<h3>Example</h3>
+<p>p = 0.6, q = 0.4, b = 2 (win 2R, lose 1R)<br>f = (2 × 0.6 - 0.4) / 2 = (1.2 - 0.4) / 2 = 0.4 = <b>40%</b></p>
+
+<p>Full Kelly says risk 40% per trade. <b>Don't.</b></p>
+
+<h3>Why 1/4 Kelly in practice</h3>
+
+<p>Full Kelly assumes your win rate and win/loss ratio estimates are exact. They never are. With estimation error, full Kelly produces enormous drawdowns and frequent ruin.</p>
+
+<p>Half Kelly: still very aggressive. 1/4 Kelly: pragmatic compromise between mathematical optimum and real-world variance tolerance.</p>
+
+<p>1/4 Kelly of the example above = 10%. Still aggressive for retail. Most professionals risk 1-2% per trade — well below quarter Kelly.</p>
+
+<hr>
+
+<h2 id="p10">Part 10 — Risk of Ruin</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/05-consecutive-losses.svg" alt="Probability of N consecutive losses by win rate — even 60% win rate has 5% chance of 8 losses in 100 trades" loading="lazy"><figcaption>Probability of N consecutive losses by win rate — even 60% win rate has 5% chance of 8 losses in 100 trades</figcaption></figure>
+
+<p>The probability of losing your entire account given a specific risk per trade and edge.</p>
+
+<table>
+<thead><tr><th>Win rate</th><th>Risk per trade</th><th>Probability of 50% drawdown over 1,000 trades</th></tr></thead>
+<tbody>
+<tr><td>55%</td><td>1%</td><td>~3%</td></tr>
+<tr><td>55%</td><td>2%</td><td>~22%</td></tr>
+<tr><td>55%</td><td>5%</td><td>~88%</td></tr>
+<tr><td>45%</td><td>1%</td><td>~32%</td></tr>
+<tr><td>45%</td><td>2%</td><td>~78%</td></tr>
+<tr><td>45%</td><td>5%</td><td>~99%</td></tr>
+</tbody>
+</table>
+
+<p>The table compresses a brutal truth: risking 5% per trade with anything less than a stellar win rate guarantees ruin within a few hundred trades.</p>
+
+<hr>
+
+<h2 id="p11">Part 11 — Psychological Capital</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/18-psychological.svg" alt="Psychological Drawdown Limit (PDL) — the DD level where YOU stop following the system · find it first" loading="lazy"><figcaption>Psychological Drawdown Limit (PDL) — the DD level where YOU stop following the system · find it first</figcaption></figure>
+
+<p>The hidden risk most frameworks ignore. <b>Confidence is a finite resource.</b></p>
+
+<p>Loss aversion math (Kahneman & Tversky, 1979): losses hurt 2× more than equivalent gains feel good. A -3R losing day creates 2× the psychological damage of a +3R winning day.</p>
+
+<p>Tilt — the degraded decision-making state after losses — is one of the most expensive failures in trading. A trader on tilt makes worse decisions, takes worse trades, and compounds losses rapidly.</p>
+
+<h3>The 3-loss rule</h3>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/09-correlation.svg" alt="Correlation trap — 3 equity index positions = 1 position with 3× sizing risk · hidden leverage" loading="lazy"><figcaption>Correlation trap — 3 equity index positions = 1 position with 3× sizing risk · hidden leverage</figcaption></figure>
+
+<p>After 3 consecutive losses in a day: stop trading. Walk away. Review tomorrow. This single rule has saved more accounts than any technical innovation in trading history.</p>
+
+<hr>
+
+<h2 id="p12">Part 12 — Top 10 Risk Management Mistakes</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/15-mistakes.svg" alt="7 risk management mistakes that kill accounts — and the fix for each" loading="lazy"><figcaption>7 risk management mistakes that kill accounts — and the fix for each</figcaption></figure>
+
+<ol>
+<li>No stop loss</li>
+<li>Moving stops further away when price moves against position</li>
+<li>Averaging into losing positions ("hoping for reversal")</li>
+<li>Position sizing by feel rather than formula</li>
+<li>Risking more after losses (revenge trading)</li>
+<li>Risking less after wins (timidity that misses compound growth)</li>
+<li>Ignoring correlation across positions</li>
+<li>Not tracking R-multiples</li>
+<li>No max daily loss limit</li>
+<li>No max consecutive loss rule</li>
+</ol>
+
+<p>Each of these is responsible for a large fraction of blown accounts. Eliminate all ten and survival rate triples.</p>
+
+<hr>
+
+<h2 id="p13">Part 13 — Case Studies</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/17-monte-carlo.svg" alt="Monte Carlo simulation — 1,000 random equity curves · same edge produces wildly different paths" loading="lazy"><figcaption>Monte Carlo simulation — 1,000 random equity curves · same edge produces wildly different paths</figcaption></figure>
+
+<h3>Case 1 — Renaissance Medallion (1988-present)</h3>
+
+<p>The most successful fund in history averaged ~66% annual returns over 30+ years. Their drawdowns rarely exceeded 5%. The strategy is opaque, but their risk management is publicly documented: small position sizing, rapid trading, mathematical discipline.</p>
+
+<h3>Case 2 — Long-Term Capital Management (1998)</h3>
+
+<p>Two Nobel laureates. Ten PhDs. The most sophisticated risk model on Wall Street. Blew up because they ignored correlation in their risk calculations. The 1998 Russian default created correlations they had not modeled, and their leveraged positions all moved together. <b>$4.6 billion of equity vanished in five weeks.</b></p>
+
+<p>Lesson: model assumptions matter. Correlation kills.</p>
+
+<h3>Case 3 — Trader X, 2020 COVID crash</h3>
+
+<p>Anonymous retail trader profiled in Jack Schwager's series. Had a $250K account at start of February 2020. COVID hit. Most retail traders blew up. Trader X: stopped trading on Feb 25 after a single 2% loss day, did not trade again until March 30, lost only 4% total, and entered the recovery rally with full capital. <b>Discipline saved more than skill.</b></p>
+
+<hr>
+
+<h2 id="p14">Part 14 — The Operational Risk Playbook</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/14-journal-template.svg" alt="R-multiples journal template — track every trade in R units · expectancy emerges from data" loading="lazy"><figcaption>R-multiples journal template — track every trade in R units · expectancy emerges from data</figcaption></figure>
+
+<h3>Pre-trade checklist</h3>
+<ol>
+<li>What setup is this? (Named, in my system.)</li>
+<li>Where is my stop? (Specific price, structural justification.)</li>
+<li>What's my position size? (Calculated mechanically.)</li>
+<li>What's my target? (Specific R-multiple or structural level.)</li>
+<li>What's my max risk? (Should equal 1R.)</li>
+<li>Does this trade fit my correlation budget? (No more than 2-3% total correlated risk.)</li>
+</ol>
+
+<h3>Daily rules</h3>
+<ul>
+<li>Max risk per trade: 1% (or 0.5% if newer trader, 0.25% if prop firm).</li>
+<li>Max trades per day: typically 3-5 for swing, 5-10 for intraday.</li>
+<li>Max consecutive losses: 3 → stop trading.</li>
+<li>Max daily loss: 3-5% → stop trading.</li>
+</ul>
+
+<h3>Weekly rules</h3>
+<ul>
+<li>Max weekly drawdown: 5-8% → review strategy.</li>
+<li>Mandatory journal review.</li>
+<li>Mandatory R-multiple tally.</li>
+</ul>
+
+<h3>Monthly rules</h3>
+<ul>
+<li>Calculate expectancy.</li>
+<li>Drop setups with negative expectancy (sample size 30+).</li>
+<li>Scale up R if account compounded.</li>
+</ul>
+
+<hr>
+
+<h2 id="p15">Frequently Asked Questions</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/19-checklist.svg" alt="10-point pre-trade risk checklist — every box checked → execute · any unchecked → wait" loading="lazy"><figcaption>10-point pre-trade risk checklist — every box checked → execute · any unchecked → wait</figcaption></figure>
+
+<p class="faq-q">What % should I really risk per trade?</p>
+<p class="faq-a">0.5-1% for new traders. 1-2% for proven traders. Never more than 2%. Prop firm: 0.25-0.5%.</p>
+
+<p class="faq-q">How do I calculate position size on futures?</p>
+<p class="faq-a">position = risk_$ / (stop_points × $_per_point). Example: $500 risk, 20pt stop on ES = $500 / (20 × $50) = 0.5 contracts. Round down.</p>
+
+<p class="faq-q">Hard stop or mental stop?</p>
+<p class="faq-a">Hard for retail. Mental only for experienced traders with verified discipline. Never mental on overnight options/futures.</p>
+
+<p class="faq-q">What if my stop gets hit by a wick?</p>
+<p class="faq-a">Use wider stops based on ATR or structure. Do not move stops further during the trade.</p>
+
+<p class="faq-q">Averaging down ever ok?</p>
+<p class="faq-a">Planned scaling at predefined levels: yes. Random averaging into losing trades: never.</p>
+
+<p class="faq-q">Max drawdown to accept?</p>
+<p class="faq-a">Personal: 15-25%. Prop firm: pick a firm matching your tolerance (Apex 4-7% trailing, Bulenox 6-8% EOD, FTMO 10% static).</p>
+
+<p class="faq-q">How do prop firms calculate drawdown?</p>
+<p class="faq-a">Trailing intraday, trailing EOD, or static. See dedicated article on this topic.</p>
+
+<p class="faq-q">Can I scale risk after wins?</p>
+<p class="faq-a">Yes — with a scaling plan. Wrong: emotional sizing-up. Right: equity grew so 1% is now more dollars (same ratio).</p>
+
+<p class="faq-q">How does correlation affect total risk?</p>
+<p class="faq-a">Two SPX + two NQ + one Russell = one big long. Cap total correlated exposure at 2-3%.</p>
+
+<p class="faq-q">Good win rate to aim for?</p>
+<p class="faq-a">35%+ is profitable with proper R. Win rate matters less than average R. 35% win × 3R win beats 65% win × 1R win.</p>
+
+<p class="faq-q">Is 1% rule outdated for small accounts?</p>
+<p class="faq-a">No. 1% of $5K is $50. Mathematically correct. The alternative guarantees ruin.</p>
+
+<p class="faq-q">Handle a 5-loss streak?</p>
+<p class="faq-a">Stop at 3 losses. If continued: stop for week. Review.</p>
+
+<hr>
+
+<h2>Conclusion</h2>
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/20-roadmap.svg" alt="Risk management mastery roadmap — 4 stages from survival to portfolio thinking" loading="lazy"><figcaption>Risk management mastery roadmap — 4 stages from survival to portfolio thinking</figcaption></figure>
+
+<p>Risk management is the most boring topic in trading and the only one that compounds. Master the 1R doctrine. Calculate position size mechanically. Place stops structurally. Track R-multiples religiously. Compute expectancy monthly. Enforce hard daily limits.</p>
+
+<p>Do those six things consistently for twelve months and your survival probability triples. <b>Survival is the prerequisite for everything else.</b></p>
+
+<div class="cta-box">
+<h3>You have the framework. Now you need the right size to apply it.</h3>
+<p>Risk management on a $1K account produces trivial PnL even when executed perfectly. The same management on a $100K funded account produces meaningful compound returns.</p>
+<ol>
+<li><b>Apex Trader Funding</b> — $25K-$300K. Trailing DD. Coupon <b>MARKET</b> for 80% off.</li>
+<li><b>Bulenox</b> — $25K-$250K. Trailing EOD. Coupon <b>MARKET</b> for 80% off.</li>
+<li><b>FTMO Swing</b> — $10K-$200K. Static DD. Best for low-risk discipline.</li>
+</ol>
+<p style="margin-top:18px"><a href="https://www.marketscoupons.com/coupons" style="display:inline-block;padding:12px 24px;background:var(--accent);color:#fff;border-radius:8px;font-weight:700;text-decoration:none">→ Compare all firms</a></p>
+</div>
+
+<hr>
+
+<h3>Internal links
+<figure class="diagram"><img src="/img/blog-diagrams/risk-1r/16-prop-firm-math.svg" alt="Prop firm 1R math — calibrate 1R as drawdown/10 · DLL determines daily max trades · plan eval backwards" loading="lazy"><figcaption>Prop firm 1R math — calibrate 1R as drawdown/10 · DLL determines daily max trades · plan eval backwards</figcaption></figure></h3>
+<ul>
+<li><a href="/blog/position-sizing-scaling">Position Sizing & Scaling</a> — sizing methodology deep dive.</li>
+<li><a href="/blog/trailing-drawdown-vs-eod">Trailing vs EOD Drawdown</a> — prop firm DD math.</li>
+<li><a href="/blog/how-to-pass-prop-firm">How to Pass a Prop Firm</a> — operational playbook.</li>
+</ul>
+
+<h3>Sources</h3>
+<ul>
+<li>Tharp, V. — <i>Trade Your Way to Financial Freedom</i> (1999).</li>
+<li>Douglas, M. — <i>Trading in the Zone</i> (2000).</li>
+<li>Raschke, L. — <i>Street Smarts</i> (1996).</li>
+<li>Kahneman & Tversky — <i>Prospect Theory</i> (1979).</li>
+</ul>
+
+</div>
+</body>
+</html>

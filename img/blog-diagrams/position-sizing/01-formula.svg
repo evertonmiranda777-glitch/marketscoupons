@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="480" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Position Sizing Formula — The Only Math That Matters</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Stop placement first · sizing flows from stop · never the other way around</text>
+  <g transform="translate(80, 110)">
+    <rect width="740" height="120" rx="14" fill="rgba(240,180,41,.06)" stroke="#F0B429"/>
+    <text x="370" y="46" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle" font-family="JetBrains Mono, monospace">SIZE = (ACCOUNT × R%) ÷ (STOP × $ per unit)</text>
+    <text x="370" y="76" fill="#9AA0A8" font-size="11" text-anchor="middle">Always round DOWN · never UP · 12.5 contracts = 12 contracts (never 13)</text>
+    <text x="370" y="100" fill="#9AA0A8" font-size="11" text-anchor="middle">Re-calculate before EVERY trade · account size changes daily</text>
+  </g>
+  <g transform="translate(80, 260)">
+    <rect width="740" height="180" rx="14" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+    <text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">Worked example: $50K account, 1% risk, NQ futures</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">→ Account: $50,000 · Risk: 1% = $500</text>
+    <text x="20" y="78" fill="#9AA0A8" font-size="11">→ Setup: NQ long at 21,450 with stop at 21,420 (30 pts)</text>
+    <text x="20" y="98" fill="#9AA0A8" font-size="11">→ Cost per point: NQ = $20/pt · stop = 30 × $20 = $600 per contract risk</text>
+    <text x="20" y="118" fill="#9AA0A8" font-size="11">→ Size = $500 ÷ $600 = 0.83 contracts → ROUND DOWN to 0 → use MNQ ($2/pt) instead</text>
+    <text x="20" y="138" fill="#10B981" font-size="11" font-weight="700">→ MNQ size = $500 ÷ ($2 × 30) = 8.3 → 8 contracts (risk $480, under 1R)</text>
+  </g>
+</svg>

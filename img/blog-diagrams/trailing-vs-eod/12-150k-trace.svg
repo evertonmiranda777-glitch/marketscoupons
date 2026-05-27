@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">$150K Apex Eval — Trade-by-Trace</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">DD $5K · target $9K · 1R = $1,200 · realistic 11-day pass</text>
+  <g transform="translate(80, 110)" font-size="12">
+    <rect width="740" height="320" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <line x1="0" y1="40" x2="740" y2="40" stroke="rgba(255,255,255,.1)"/>
+    <g font-weight="700"><text x="20" y="28" fill="#F0B429">Day</text><text x="100" y="28" fill="#F0B429">Trades</text><text x="220" y="28" fill="#F0B429">R outcome</text><text x="360" y="28" fill="#F0B429">P&amp;L</text><text x="490" y="28" fill="#F0B429">Equity</text><text x="620" y="28" fill="#F0B429">Buffer</text></g>
+    <g fill="#9AA0A8">
+      <text x="20" y="70">D1</text><text x="100" y="70">2</text><text x="220" y="70" fill="#10B981">+1R, +2R</text><text x="360" y="70" fill="#10B981">+$3,600</text><text x="490" y="70">$153,600</text><text x="620" y="70">$8,600</text>
+      <text x="20" y="98">D2</text><text x="100" y="98">1</text><text x="220" y="98" fill="#EF4444">-1R</text><text x="360" y="98" fill="#EF4444">-$1,200</text><text x="490" y="98">$152,400</text><text x="620" y="98">$7,400</text>
+      <text x="20" y="126">D3</text><text x="100" y="126">2</text><text x="220" y="126" fill="#10B981">+2R, +1R</text><text x="360" y="126" fill="#10B981">+$3,600</text><text x="490" y="126">$156,000</text><text x="620" y="126">$10,400</text>
+      <text x="20" y="154">D4-5</text><text x="100" y="154">0</text><text x="220" y="154">—</text><text x="360" y="154">$0</text><text x="490" y="154">$156,000</text><text x="620" y="154">$10,400</text>
+      <text x="20" y="182">D6</text><text x="100" y="182">1</text><text x="220" y="182" fill="#10B981">+2R</text><text x="360" y="182" fill="#10B981">+$2,400</text><text x="490" y="182">$158,400</text><text x="620" y="182">$12,400</text>
+      <text x="20" y="210">D7</text><text x="100" y="210">1</text><text x="220" y="210" fill="#10B981">+1R</text><text x="360" y="210" fill="#10B981">+$1,200</text><text x="490" y="210" fill="#10B981" font-weight="700">$159,600 PASS</text><text x="620" y="210" fill="#10B981" font-weight="700">LOCKED</text>
+    </g>
+    <text x="20" y="260" fill="#10B981" font-weight="700" font-size="11">→ Target hit day 7 · 6 wins · 1 loss · max DD reached: $1,200 (24% of allowance)</text>
+    <text x="20" y="280" fill="#F0B429" font-size="11">$150K bigger ticket but same approach scales · careful position sizing makes it forgiving</text>
+  </g>
+</svg>

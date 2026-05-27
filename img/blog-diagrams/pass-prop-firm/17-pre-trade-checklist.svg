@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Pre-Trade Checklist — Eval Edition</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">10 boxes · every box checked → execute · any unchecked → wait · the discipline filter</text>
+  <g transform="translate(80, 100)" font-size="12">
+    <g><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">1. Today is a trading day (Mon-Fri, not holiday)</text></g>
+    <g transform="translate(0, 44)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">2. No high-impact news within 30 min</text></g>
+    <g transform="translate(0, 88)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">3. Setup is A-grade (3 confluences)</text></g>
+    <g transform="translate(0, 132)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">4. Stop is at structural invalidation</text></g>
+    <g transform="translate(0, 176)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">5. Position size = 1R (1% of equity)</text></g>
+    <g transform="translate(400, 0)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">6. Target ≥ 2R</text></g>
+    <g transform="translate(400, 44)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">7. Daily DLL has &gt; 1R remaining</text></g>
+    <g transform="translate(400, 88)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">8. Already 0-2 trades today (not 3+)</text></g>
+    <g transform="translate(400, 132)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">9. Within best-time window for asset</text></g>
+    <g transform="translate(400, 176)"><rect width="20" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="3"/><path d="M 4 10 L 9 15 L 16 6" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="34" y="15" fill="#fff" font-weight="700">10. Not revenge trading (after 2 losses)</text></g>
+  </g>
+  <g transform="translate(80, 410)">
+    <rect width="740" height="90" rx="10" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
+    <text x="370" y="34" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">10/10 = ENTER · 9 or less = WAIT</text>
+    <text x="370" y="58" fill="#9AA0A8" font-size="11" text-anchor="middle">Average passing trader executes 8-12 trades in 5-15 trading days during eval</text>
+    <text x="370" y="76" fill="#9AA0A8" font-size="11" text-anchor="middle">Average failing trader executes 30-50 trades in same window · forces edge into noise</text>
+  </g>
+</svg>

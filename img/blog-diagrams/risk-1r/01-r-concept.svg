@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The 1R Concept — Risk as the Universal Unit</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">1R = your max loss per trade. Every win and loss is measured in multiples of 1R.</text>
+  <g transform="translate(60, 110)">
+    <rect width="780" height="180" rx="14" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">Example trade</text>
+    <text x="20" y="60" fill="#9AA0A8" font-size="12">Account: $50,000 · max risk per trade: 1% = $500 = 1R</text>
+    <text x="20" y="82" fill="#9AA0A8" font-size="12">Setup: NQ long at 21,450 · stop at 21,430 (20 pts × $20/pt = $400 risk per contract)</text>
+    <text x="20" y="104" fill="#9AA0A8" font-size="12">Position size: $500 ÷ $400 = 1.25 contracts → ROUND DOWN to 1 contract</text>
+    <text x="20" y="126" fill="#9AA0A8" font-size="12">Target: 21,510 (60 pts up = $1,200 = 3R reward)</text>
+    <text x="20" y="156" fill="#10B981" font-size="13" font-weight="700">Outcome thinking: "this trade is risking 1R to make 3R"</text>
+  </g>
+  <g transform="translate(60, 310)">
+    <rect width="780" height="160" rx="14" fill="rgba(16,185,129,.06)" stroke="#10B981"/>
+    <text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">Why 1R changes everything</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">→ Compares trades across accounts of different sizes (1R is always proportional)</text>
+    <text x="20" y="78" fill="#9AA0A8" font-size="11">→ Forces you to define stop BEFORE entry — sizing depends on stop distance</text>
+    <text x="20" y="98" fill="#9AA0A8" font-size="11">→ Lets you calculate expectancy: win% × avg R won - loss% × avg R lost</text>
+    <text x="20" y="118" fill="#9AA0A8" font-size="11">→ Makes losing trades neutral: "lost 1R" not "lost $487 on NVDA" (emotion-free)</text>
+    <text x="20" y="146" fill="#F0B429" font-size="11" font-weight="700">Goal: 6-8 months of consistent 1R sizing before considering anti-martingale scaling</text>
+  </g>
+</svg>
