@@ -1,14 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 584" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="500" fill="url(#bg)"/>
+  <rect width="900" height="584" fill="url(#bg)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Lock-in Points — When DD Stops Trailing</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Most firms lock DD at peak once profit target hit · the moment your account becomes safer</text>
   <g transform="translate(60, 110)">
     <line x1="0" y1="280" x2="780" y2="280" stroke="rgba(255,255,255,.15)"/>
     <line x1="0" y1="100" x2="780" y2="100" stroke="rgba(16,185,129,.4)" stroke-dasharray="4,3"/>
-    <text x="-10" y="104" fill="#10B981" font-size="10" text-anchor="end">+target $54K</text>
+    <text x="7" y="104" fill="#10B981" font-size="10" text-anchor="end">+target $54K</text>
     <line x1="0" y1="280" x2="780" y2="280" stroke="rgba(255,255,255,.15)"/>
-    <text x="-10" y="284" fill="#9AA0A8" font-size="10" text-anchor="end">start $50K</text>
+    <text x="7" y="284" fill="#9AA0A8" font-size="10" text-anchor="end">start $50K</text>
     <path d="M 30 280 L 100 250 L 170 220 L 240 180 L 310 140 L 380 100 L 450 90 L 520 110 L 590 90 L 660 130 L 730 100" fill="none" stroke="#fff" stroke-width="2.5"/>
     <line x1="380" y1="60" x2="380" y2="320" stroke="#F0B429" stroke-width="2" stroke-dasharray="4,3"/>
     <text x="380" y="50" fill="#F0B429" font-size="12" font-weight="700" text-anchor="middle">TARGET HIT · DD LOCKED</text>

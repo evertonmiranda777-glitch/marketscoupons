@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 564" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg18" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="480" fill="url(#bg18)"/>
+  <rect width="900" height="564" fill="url(#bg18)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Pin Risk — The Catastrophic 0DTE Failure</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">SPX settles AT short strike → uncertain assignment → overnight gap risk you cannot hedge</text>
 
   <g transform="translate(60, 110)">
     <line x1="0" y1="180" x2="780" y2="180" stroke="#F0B429" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="-10" y="184" fill="#F0B429" font-size="11" text-anchor="end">SHORT call 5895</text>
+    <text x="33" y="184" fill="#F0B429" font-size="11" text-anchor="end">SHORT call 5895</text>
 
     <path d="M 30 220 L 100 215 L 170 210 L 240 200 L 310 195 L 380 190 L 450 185 L 520 183 L 590 182 L 660 181 L 730 180" fill="none" stroke="#fff" stroke-width="2.5"/>
 

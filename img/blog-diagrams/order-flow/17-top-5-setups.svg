@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 596" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg17" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="560" fill="url(#bg17)"/>
+  <rect width="900" height="596" fill="url(#bg17)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Top 5 Order Flow Setups — Win Rates</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Backtested on NQ/ES futures Q1 2023 — Q1 2025 (24 months) · ranked by win rate × avg R</text>
 
@@ -42,5 +42,5 @@
     </g>
   </g>
 
-  <text x="450" y="540" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Master setups #1 and #2 first — they account for 60% of profitable order flow opportunities.</text>
+  <text x="450" y="580" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Master setups #1 and #2 first — they account for 60% of profitable order flow opportunities.</text>
 </svg>

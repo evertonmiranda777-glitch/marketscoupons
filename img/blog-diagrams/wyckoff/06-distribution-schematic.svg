@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg6" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="520" fill="url(#bg6)"/>
+  <rect width="900" height="560" fill="url(#bg6)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Distribution Schematic — Mirror with Traps</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Smart money distributing to euphoric retail. UTAD is the Spring's evil twin.</text>
 
@@ -71,16 +71,16 @@
     </g>
 
     <g font-size="11" font-weight="700" text-anchor="middle">
-      <text x="110" y="420" fill="#10B981">PHASE A</text>
-      <text x="110" y="434" fill="#9AA0A8" font-weight="400" font-size="9">trend stops</text>
-      <text x="280" y="420" fill="#F0B429">PHASE B-C</text>
-      <text x="280" y="434" fill="#9AA0A8" font-weight="400" font-size="9">distribution / UTAD trap</text>
-      <text x="540" y="420" fill="#EF4444">PHASE D</text>
-      <text x="540" y="434" fill="#9AA0A8" font-weight="400" font-size="9">supply takes over</text>
-      <text x="720" y="420" fill="#EF4444">PHASE E</text>
-      <text x="720" y="434" fill="#9AA0A8" font-weight="400" font-size="9">markdown</text>
+      <text x="110" y="402" fill="#10B981">PHASE A</text>
+      <text x="110" y="416" fill="#9AA0A8" font-weight="400" font-size="9">trend stops</text>
+      <text x="280" y="402" fill="#F0B429">PHASE B-C</text>
+      <text x="280" y="416" fill="#9AA0A8" font-weight="400" font-size="9">distribution / UTAD trap</text>
+      <text x="540" y="402" fill="#EF4444">PHASE D</text>
+      <text x="540" y="416" fill="#9AA0A8" font-weight="400" font-size="9">supply takes over</text>
+      <text x="720" y="402" fill="#EF4444">PHASE E</text>
+      <text x="720" y="416" fill="#9AA0A8" font-weight="400" font-size="9">markdown</text>
     </g>
   </g>
 
-  <text x="450" y="500" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">UTAD on declining volume + failed retest = the canonical short setup. Win rate ~68%.</text>
+  <text x="450" y="545" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">UTAD on declining volume + failed retest = the canonical short setup. Win rate ~68%.</text>
 </svg>

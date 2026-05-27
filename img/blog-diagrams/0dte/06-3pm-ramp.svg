@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 604" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg6" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="500" fill="url(#bg6)"/>
+  <rect width="900" height="604" fill="url(#bg6)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The 3 PM Ramp — Why SPX Drifts Up Into the Close</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Charm decay forces dealers to buy SPX futures as 0DTE puts lose delta · self-reinforcing rally</text>
 

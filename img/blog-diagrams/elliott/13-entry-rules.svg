@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 634" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="634" fill="url(#bg)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Entry Rules — Where to Press the Trigger</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Wave count alone is academic. These 4 entry zones turn it into actionable, defined-risk trades.</text>
   <g transform="translate(60, 100)" font-size="11">

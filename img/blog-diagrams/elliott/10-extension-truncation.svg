@@ -11,8 +11,8 @@
       <text x="70" y="190" fill="#10B981">1</text><text x="100" y="245" fill="#F0B429">2</text>
       <text x="280" y="45" fill="#10B981">3</text>
     </g>
-    <text x="170" y="240" fill="#10B981" font-weight="700" font-size="11" text-anchor="middle">W3 = 261.8% × W1</text>
-    <text x="170" y="258" fill="#9AA0A8" font-size="10" text-anchor="middle">often subdivides itself</text>
+    <text x="170" y="278" fill="#10B981" font-weight="700" font-size="11" text-anchor="middle">W3 = 261.8% × W1</text>
+    <text x="170" y="294" fill="#9AA0A8" font-size="10" text-anchor="middle">often subdivides itself</text>
   </g>
   <g transform="translate(480, 110)">
     <rect width="340" height="300" rx="14" fill="rgba(239,68,68,.05)" stroke="#EF4444"/>
@@ -23,8 +23,8 @@
       <text x="230" y="65" fill="#10B981">3</text><text x="260" y="145" fill="#F0B429">4</text>
       <text x="290" y="100" fill="#EF4444">5</text>
     </g>
-    <text x="170" y="240" fill="#EF4444" font-weight="700" font-size="11" text-anchor="middle">W5 fails to exceed W3 high</text>
-    <text x="170" y="258" fill="#9AA0A8" font-size="10" text-anchor="middle">major reversal warning</text>
+    <text x="170" y="278" fill="#EF4444" font-weight="700" font-size="11" text-anchor="middle">W5 fails to exceed W3 high</text>
+    <text x="170" y="294" fill="#9AA0A8" font-size="10" text-anchor="middle">major reversal warning</text>
   </g>
   <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Truncated Wave 5 = the strongest reversal signal in Elliott. Look for it after parabolic Wave 3.</text>
 </svg>

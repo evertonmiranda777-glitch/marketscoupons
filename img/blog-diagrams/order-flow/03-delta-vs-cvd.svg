@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 567" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg3" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="520" fill="url(#bg3)"/>
+  <rect width="900" height="567" fill="url(#bg3)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Delta vs Cumulative Volume Delta (CVD)</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Delta per bar = ask − bid · CVD = running sum of all bars · the smart-money compass</text>
 
@@ -37,5 +37,5 @@
     <text x="0" y="450" fill="#9AA0A8" font-size="11">Time →</text>
   </g>
 
-  <text x="450" y="498" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">CVD divergence = the highest-prior order flow reversal signal. Confirmed on NQ futures with 64% win rate.</text>
+  <text x="450" y="553" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">CVD divergence = the highest-prior order flow reversal signal. Confirmed on NQ futures with 64% win rate.</text>
 </svg>

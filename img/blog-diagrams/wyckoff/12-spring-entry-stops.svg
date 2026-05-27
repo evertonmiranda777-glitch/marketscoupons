@@ -8,9 +8,9 @@
     <line x1="0" y1="80" x2="780" y2="80" stroke="rgba(16,185,129,.3)" stroke-dasharray="4,3"/>
     <line x1="0" y1="240" x2="780" y2="240" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,3"/>
     <line x1="0" y1="290" x2="780" y2="290" stroke="rgba(239,68,68,.3)" stroke-dasharray="4,3"/>
-    <text x="-10" y="84" fill="#10B981" font-size="10" text-anchor="end">TARGET (range high)</text>
-    <text x="-10" y="244" fill="#9AA0A8" font-size="10" text-anchor="end">range low</text>
-    <text x="-10" y="294" fill="#EF4444" font-size="10" text-anchor="end">STOP</text>
+    <text x="43" y="84" fill="#10B981" font-size="10" text-anchor="end">TARGET (range high)</text>
+    <text x="43" y="244" fill="#9AA0A8" font-size="10" text-anchor="end">range low</text>
+    <text x="43" y="294" fill="#EF4444" font-size="10" text-anchor="end">STOP</text>
 
     <path d="M 30 200 L 80 220 L 130 180 L 180 230 L 220 285 L 260 250 L 310 220 L 360 180 L 420 140 L 480 100 L 540 90 L 600 85" fill="none" stroke="#fff" stroke-width="2"/>
 

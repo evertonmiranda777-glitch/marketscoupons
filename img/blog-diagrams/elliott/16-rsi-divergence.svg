@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 524" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="500" fill="url(#bg)"/>
+  <rect width="900" height="524" fill="url(#bg)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Elliott + RSI Divergence — Confirming Wave 5</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">RSI typically peaks during Wave 3 · lower RSI peak on Wave 5 = bearish divergence = reversal incoming</text>
   <g transform="translate(60, 100)">
