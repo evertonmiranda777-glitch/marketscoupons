@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="460" fill="url(#bg2)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Three Wyckoff Laws — 1922 Originals</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Every modern framework — VPA, Order Flow, Auction Theory — is a restatement of these three</text>
+
+  <g transform="translate(40, 110)">
+    <rect width="260" height="310" rx="14" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.35)"/>
+    <text x="130" y="40" fill="#F0B429" font-size="16" font-weight="700" text-anchor="middle">1st LAW</text>
+    <text x="130" y="64" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">SUPPLY &amp; DEMAND</text>
+    <text x="130" y="100" fill="#9AA0A8" font-size="12" text-anchor="middle">Price moves because one</text>
+    <text x="130" y="118" fill="#9AA0A8" font-size="12" text-anchor="middle">side has more urgency.</text>
+    <text x="130" y="136" fill="#9AA0A8" font-size="12" text-anchor="middle">Nothing else moves price.</text>
+    <g transform="translate(40, 160)" stroke="#F0B429" stroke-width="2" fill="none">
+      <rect x="0" y="0" width="80" height="60" rx="6"/>
+      <text x="40" y="22" fill="#F0B429" font-size="11" font-weight="700" text-anchor="middle">DEMAND</text>
+      <polygon points="40,30 30,48 50,48" fill="#10B981" stroke="none"/>
+    </g>
+    <g transform="translate(140, 160)" stroke="#F0B429" stroke-width="2" fill="none">
+      <rect x="0" y="0" width="80" height="60" rx="6"/>
+      <text x="40" y="22" fill="#F0B429" font-size="11" font-weight="700" text-anchor="middle">SUPPLY</text>
+      <polygon points="40,48 30,30 50,30" fill="#EF4444" stroke="none"/>
+    </g>
+    <text x="130" y="260" fill="#10B981" font-size="11" font-style="italic" text-anchor="middle">"Read who has urgency,</text>
+    <text x="130" y="278" fill="#10B981" font-size="11" font-style="italic" text-anchor="middle">not who has opinions."</text>
+  </g>
+
+  <g transform="translate(320, 110)">
+    <rect width="260" height="310" rx="14" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.35)"/>
+    <text x="130" y="40" fill="#F0B429" font-size="16" font-weight="700" text-anchor="middle">2nd LAW</text>
+    <text x="130" y="64" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">EFFORT &amp; RESULT</text>
+    <text x="130" y="100" fill="#9AA0A8" font-size="12" text-anchor="middle">Volume = effort.</text>
+    <text x="130" y="118" fill="#9AA0A8" font-size="12" text-anchor="middle">Bar spread = result.</text>
+    <text x="130" y="136" fill="#9AA0A8" font-size="12" text-anchor="middle">Disparity reveals hidden side.</text>
+    <g transform="translate(50, 160)">
+      <rect x="0" y="20" width="30" height="50" fill="#F0B429" opacity="0.8"/>
+      <text x="15" y="88" fill="#9AA0A8" font-size="9" text-anchor="middle">effort</text>
+      <text x="55" y="50" fill="#9AA0A8" font-size="14" text-anchor="middle">≠</text>
+      <rect x="80" y="50" width="30" height="20" fill="#fff" opacity="0.6"/>
+      <text x="95" y="88" fill="#9AA0A8" font-size="9" text-anchor="middle">result</text>
+      <text x="140" y="50" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">ABSORPTION</text>
+    </g>
+    <text x="130" y="260" fill="#10B981" font-size="11" font-style="italic" text-anchor="middle">"Big volume, small bar =</text>
+    <text x="130" y="278" fill="#10B981" font-size="11" font-style="italic" text-anchor="middle">someone is hidden."</text>
+  </g>
+
+  <g transform="translate(600, 110)">
+    <rect width="260" height="310" rx="14" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.35)"/>
+    <text x="130" y="40" fill="#F0B429" font-size="16" font-weight="700" text-anchor="middle">3rd LAW</text>
+    <text x="130" y="64" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">CAUSE &amp; EFFECT</text>
+    <text x="130" y="100" fill="#9AA0A8" font-size="12" text-anchor="middle">Time in sideways range =</text>
+    <text x="130" y="118" fill="#9AA0A8" font-size="12" text-anchor="middle">cause. Size of breakout =</text>
+    <text x="130" y="136" fill="#9AA0A8" font-size="12" text-anchor="middle">proportional effect.</text>
+    <g transform="translate(30, 160)" stroke="#F0B429" stroke-width="2" fill="none">
+      <line x1="0" y1="50" x2="120" y2="50" stroke-dasharray="3,3" opacity="0.5"/>
+      <line x1="0" y1="30" x2="120" y2="30" stroke-dasharray="3,3" opacity="0.5"/>
+      <rect x="0" y="30" width="120" height="20" fill="rgba(240,180,41,.15)" stroke="none"/>
+      <text x="60" y="44" fill="#F0B429" font-size="9" text-anchor="middle">cause (range)</text>
+      <path d="M 120 40 L 200 -10" stroke="#10B981" stroke-width="3" fill="none" marker-end="url(#m1)"/>
+      <text x="170" y="-15" fill="#10B981" font-size="10" font-weight="700">effect</text>
+    </g>
+    <text x="130" y="260" fill="#10B981" font-size="11" font-style="italic" text-anchor="middle">"Long base = big move.</text>
+    <text x="130" y="278" fill="#10B981" font-size="11" font-style="italic" text-anchor="middle">Short base = small move."</text>
+  </g>
+
+  <text x="450" y="445" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Internalize the three. Every chart becomes a series of questions with discoverable answers.</text>
+</svg>

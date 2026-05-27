@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg4" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="480" fill="url(#bg4)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The 4-Phase Cycle — Every Asset, Every Era</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Accumulation → Markup → Distribution → Markdown · Names change, pattern doesn't</text>
+
+  <!-- Cycle circle -->
+  <g transform="translate(450, 280)">
+    <circle r="160" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="2" stroke-dasharray="6,4"/>
+    <!-- 4 phases as quadrants -->
+    <g transform="translate(0, -160)">
+      <circle r="34" fill="#1A1F2E" stroke="#3B82F6" stroke-width="2"/>
+      <text y="-2" fill="#3B82F6" font-size="13" font-weight="700" text-anchor="middle">1</text>
+      <text y="14" fill="#3B82F6" font-size="9" text-anchor="middle">ACCUM</text>
+      <text y="-58" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">ACCUMULATION</text>
+      <text y="-42" fill="#9AA0A8" font-size="10" text-anchor="middle">smart money buys quietly</text>
+    </g>
+    <g transform="translate(160, 0)">
+      <circle r="34" fill="#1A1F2E" stroke="#10B981" stroke-width="2"/>
+      <text y="-2" fill="#10B981" font-size="13" font-weight="700" text-anchor="middle">2</text>
+      <text y="14" fill="#10B981" font-size="9" text-anchor="middle">MARKUP</text>
+      <text x="68" y="-5" fill="#fff" font-size="13" font-weight="700">MARKUP</text>
+      <text x="68" y="11" fill="#9AA0A8" font-size="10">uptrend, no supply</text>
+    </g>
+    <g transform="translate(0, 160)">
+      <circle r="34" fill="#1A1F2E" stroke="#F0B429" stroke-width="2"/>
+      <text y="-2" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">3</text>
+      <text y="14" fill="#F0B429" font-size="9" text-anchor="middle">DISTRIB</text>
+      <text y="60" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">DISTRIBUTION</text>
+      <text y="76" fill="#9AA0A8" font-size="10" text-anchor="middle">smart money sells to euphoric retail</text>
+    </g>
+    <g transform="translate(-160, 0)">
+      <circle r="34" fill="#1A1F2E" stroke="#EF4444" stroke-width="2"/>
+      <text y="-2" fill="#EF4444" font-size="13" font-weight="700" text-anchor="middle">4</text>
+      <text y="14" fill="#EF4444" font-size="9" text-anchor="middle">MARKDN</text>
+      <text x="-68" y="-5" fill="#fff" font-size="13" font-weight="700" text-anchor="end">MARKDOWN</text>
+      <text x="-68" y="11" fill="#9AA0A8" font-size="10" text-anchor="end">downtrend, no demand</text>
+    </g>
+
+    <!-- Arrows showing rotation -->
+    <g fill="none" stroke="#F0B429" stroke-width="2">
+      <path d="M 30 -150 A 160 160 0 0 1 150 -30" marker-end="url(#a1)"/>
+      <path d="M 150 30 A 160 160 0 0 1 30 150" marker-end="url(#a1)"/>
+      <path d="M -30 150 A 160 160 0 0 1 -150 30" marker-end="url(#a1)"/>
+      <path d="M -150 -30 A 160 160 0 0 1 -30 -150" marker-end="url(#a1)"/>
+    </g>
+    <defs>
+      <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#F0B429"/>
+      </marker>
+    </defs>
+
+    <!-- Center label -->
+    <text y="-4" fill="#F0B429" font-size="11" font-weight="700" text-anchor="middle">PHASE FIRST</text>
+    <text y="12" fill="#9AA0A8" font-size="10" text-anchor="middle">strategy second</text>
+  </g>
+
+  <text x="450" y="465" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Identify the phase. Choose the strategy. Never the other way around.</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg17" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg17)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Case Study — SPX March 2009 Accumulation</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">The textbook Spring that launched a 12-year bull market — and how Wyckoff readers caught it</text>
+
+  <g transform="translate(60, 100)">
+    <line x1="0" y1="80" x2="780" y2="80" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,3"/>
+    <line x1="0" y1="280" x2="780" y2="280" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,3"/>
+    <text x="-10" y="84" fill="#9AA0A8" font-size="10" text-anchor="end">range high (~875)</text>
+    <text x="-10" y="284" fill="#9AA0A8" font-size="10" text-anchor="end">range low (~720)</text>
+
+    <path d="M 30 50 L 80 200 L 140 100 L 200 230 L 250 280 L 290 320 L 330 250 L 380 180 L 440 120 L 500 70 L 560 40 L 620 20 L 700 10 L 760 5" fill="none" stroke="#fff" stroke-width="2"/>
+
+    <circle cx="80" cy="200" r="6" fill="#F0B429"/>
+    <text x="80" y="225" fill="#F0B429" font-size="9" font-weight="700" text-anchor="middle">PS Nov'08</text>
+    <circle cx="200" cy="230" r="7" fill="#EF4444"/>
+    <text x="200" y="255" fill="#EF4444" font-size="9" font-weight="700" text-anchor="middle">SC Nov'08</text>
+    <circle cx="250" cy="280" r="6" fill="#F0B429"/>
+    <text x="250" y="305" fill="#F0B429" font-size="9" font-weight="700" text-anchor="middle">ST Jan'09</text>
+    <circle cx="290" cy="320" r="9" fill="#10B981" stroke="#fff" stroke-width="2"/>
+    <text x="290" y="345" fill="#10B981" font-size="9" font-weight="700" text-anchor="middle">SPRING Mar'09</text>
+    <text x="290" y="357" fill="#9AA0A8" font-size="8" text-anchor="middle">SPX 666.79</text>
+    <circle cx="330" cy="250" r="6" fill="#F0B429"/>
+    <text x="330" y="245" fill="#F0B429" font-size="9" font-weight="700" text-anchor="middle">TEST</text>
+    <circle cx="440" cy="120" r="7" fill="#10B981"/>
+    <text x="440" y="110" fill="#10B981" font-size="9" font-weight="700" text-anchor="middle">SOS</text>
+    <circle cx="500" cy="70" r="6" fill="#F0B429"/>
+    <text x="500" y="60" fill="#F0B429" font-size="9" font-weight="700" text-anchor="middle">LPS</text>
+    <circle cx="620" cy="20" r="7" fill="#10B981"/>
+    <text x="620" y="10" fill="#10B981" font-size="9" font-weight="700" text-anchor="middle">JOC</text>
+  </g>
+
+  <g transform="translate(60, 460)">
+    <rect width="780" height="60" rx="10" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.3)"/>
+    <text x="20" y="28" fill="#10B981" font-size="13" font-weight="700">The result</text>
+    <text x="20" y="48" fill="#9AA0A8" font-size="11">SPX rallied from 666.79 → 4,800 (+620%) over the next 12 years. The Spring was visible in real time.</text>
+  </g>
+</svg>

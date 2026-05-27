@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg15" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="580" fill="url(#bg15)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">7 Wyckoff Mistakes That Wreck Accounts</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Pattern recognition without volume confirmation = expensive lessons</text>
+
+  <g transform="translate(60, 100)" font-size="11">
+    <g>
+      <rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.4)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">#1 · Buying every wick below range</text>
+      <text x="20" y="50" fill="#9AA0A8">Not every low is a Spring. Without low-volume confirmation,</text>
+      <text x="20" y="66" fill="#9AA0A8">it's a real breakdown. Volume FIRST, pattern second.</text>
+      <text x="20" y="88" fill="#F0B429" font-weight="700">Fix: require below-avg volume on the break</text>
+    </g>
+    <g transform="translate(400, 0)">
+      <rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.4)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">#2 · Front-running the Test</text>
+      <text x="20" y="50" fill="#9AA0A8">Entering on the Spring close is aggressive. Wait for the Test —</text>
+      <text x="20" y="66" fill="#9AA0A8">no new low, dry volume. Win rate jumps 71% vs 54%.</text>
+      <text x="20" y="88" fill="#F0B429" font-weight="700">Fix: ALWAYS wait for the Test bar</text>
+    </g>
+
+    <g transform="translate(0, 120)">
+      <rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.4)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">#3 · Stops too tight (above the wick)</text>
+      <text x="20" y="50" fill="#9AA0A8">Putting stop AT Spring low gets you stopped by noise on retest.</text>
+      <text x="20" y="66" fill="#9AA0A8">Give it 2-3 ticks of breathing room.</text>
+      <text x="20" y="88" fill="#F0B429" font-weight="700">Fix: stop 2-3 ticks below Spring/above UTAD</text>
+    </g>
+    <g transform="translate(400, 120)">
+      <rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.4)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">#4 · Phase identification by feel</text>
+      <text x="20" y="50" fill="#9AA0A8">"This looks like Phase D" without marking PS, SC, AR, ST first =</text>
+      <text x="20" y="66" fill="#9AA0A8">trading vibes, not Wyckoff.</text>
+      <text x="20" y="88" fill="#F0B429" font-weight="700">Fix: mark every event before naming a phase</text>
+    </g>
+
+    <g transform="translate(0, 240)">
+      <rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.4)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">#5 · Ignoring the wider trend</text>
+      <text x="20" y="50" fill="#9AA0A8">Accumulation inside a major downtrend often fails (re-distribution).</text>
+      <text x="20" y="66" fill="#9AA0A8">Check higher timeframe context first.</text>
+      <text x="20" y="88" fill="#F0B429" font-weight="700">Fix: align with weekly/monthly bias</text>
+    </g>
+    <g transform="translate(400, 240)">
+      <rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.4)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">#6 · Counting unfinished cause</text>
+      <text x="20" y="50" fill="#9AA0A8">P&amp;F count works ONLY after breakout. Counting mid-range gives</text>
+      <text x="20" y="66" fill="#9AA0A8">premature targets that disappoint.</text>
+      <text x="20" y="88" fill="#F0B429" font-weight="700">Fix: count only after SOS / JOC</text>
+    </g>
+
+    <g transform="translate(200, 360)">
+      <rect width="380" height="100" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.4)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">#7 · Holding through SOW after entry</text>
+      <text x="20" y="50" fill="#9AA0A8">Spring works ~71% — but the 29% loser shows Sign of Weakness early.</text>
+      <text x="20" y="66" fill="#9AA0A8">Cut when structure breaks, not when emotion lets you.</text>
+      <text x="20" y="88" fill="#F0B429" font-weight="700">Fix: exit immediately on SOW invalidation</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg5" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="520" fill="url(#bg5)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Accumulation Schematic — 9 Canonical Events</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">The textbook footprint of smart money building a position from exhausted sellers</text>
+
+  <g transform="translate(60, 110)">
+    <!-- Range high/low lines -->
+    <line x1="0" y1="80" x2="780" y2="80" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,3"/>
+    <line x1="0" y1="260" x2="780" y2="260" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,3"/>
+    <text x="-10" y="84" fill="#9AA0A8" font-size="10" text-anchor="end">range high</text>
+    <text x="-10" y="264" fill="#9AA0A8" font-size="10" text-anchor="end">range low</text>
+
+    <!-- Price path through 9 events -->
+    <path d="M 20 60
+             L 70 220
+             L 110 110
+             L 150 250
+             L 200 130
+             L 250 260
+             L 290 280
+             L 340 240
+             L 390 195
+             L 440 165
+             L 490 110
+             L 540 80
+             L 590 100
+             L 640 50
+             L 700 30
+             L 760 10"
+          fill="none" stroke="#fff" stroke-width="2"/>
+
+    <!-- Event markers -->
+    <g font-size="10" font-weight="700" text-anchor="middle">
+      <!-- PS -->
+      <circle cx="70" cy="220" r="6" fill="#F0B429"/>
+      <text x="70" y="207" fill="#F0B429">PS</text>
+      <text x="70" y="312" fill="#9AA0A8" font-size="8" font-weight="400">Preliminary</text>
+      <text x="70" y="322" fill="#9AA0A8" font-size="8" font-weight="400">Support</text>
+
+      <!-- SC -->
+      <circle cx="150" cy="250" r="7" fill="#EF4444"/>
+      <text x="150" y="237" fill="#EF4444">SC</text>
+      <text x="150" y="312" fill="#9AA0A8" font-size="8" font-weight="400">Selling</text>
+      <text x="150" y="322" fill="#9AA0A8" font-size="8" font-weight="400">Climax</text>
+
+      <!-- AR -->
+      <circle cx="200" cy="130" r="6" fill="#F0B429"/>
+      <text x="200" y="117" fill="#F0B429">AR</text>
+      <text x="200" y="312" fill="#9AA0A8" font-size="8" font-weight="400">Auto</text>
+      <text x="200" y="322" fill="#9AA0A8" font-size="8" font-weight="400">Rally</text>
+
+      <!-- ST -->
+      <circle cx="250" cy="260" r="6" fill="#F0B429"/>
+      <text x="250" y="247" fill="#F0B429">ST</text>
+      <text x="250" y="312" fill="#9AA0A8" font-size="8" font-weight="400">Secondary</text>
+      <text x="250" y="322" fill="#9AA0A8" font-size="8" font-weight="400">Test</text>
+
+      <!-- Spring -->
+      <circle cx="290" cy="280" r="8" fill="#10B981" stroke="#fff" stroke-width="2"/>
+      <text x="290" y="267" fill="#10B981">SPRING</text>
+      <text x="290" y="312" fill="#9AA0A8" font-size="8" font-weight="400">final</text>
+      <text x="290" y="322" fill="#9AA0A8" font-size="8" font-weight="400">shake-out</text>
+
+      <!-- Test -->
+      <circle cx="340" cy="240" r="6" fill="#F0B429"/>
+      <text x="340" y="227" fill="#F0B429">TEST</text>
+      <text x="340" y="312" fill="#9AA0A8" font-size="8" font-weight="400">low-vol</text>
+      <text x="340" y="322" fill="#9AA0A8" font-size="8" font-weight="400">retest</text>
+
+      <!-- SOS -->
+      <circle cx="490" cy="110" r="7" fill="#10B981"/>
+      <text x="490" y="97" fill="#10B981">SOS</text>
+      <text x="490" y="312" fill="#9AA0A8" font-size="8" font-weight="400">Sign of</text>
+      <text x="490" y="322" fill="#9AA0A8" font-size="8" font-weight="400">Strength</text>
+
+      <!-- BU/LPS -->
+      <circle cx="590" cy="100" r="6" fill="#F0B429"/>
+      <text x="590" y="87" fill="#F0B429">LPS</text>
+      <text x="590" y="312" fill="#9AA0A8" font-size="8" font-weight="400">Last Pt of</text>
+      <text x="590" y="322" fill="#9AA0A8" font-size="8" font-weight="400">Support</text>
+
+      <!-- JOC -->
+      <circle cx="700" cy="30" r="7" fill="#10B981"/>
+      <text x="700" y="17" fill="#10B981">JOC</text>
+      <text x="700" y="312" fill="#9AA0A8" font-size="8" font-weight="400">Jump Across</text>
+      <text x="700" y="322" fill="#9AA0A8" font-size="8" font-weight="400">the Creek</text>
+    </g>
+
+    <!-- Phase labels at bottom -->
+    <g font-size="11" font-weight="700" text-anchor="middle">
+      <text x="110" y="350" fill="#EF4444">PHASE A</text>
+      <text x="110" y="364" fill="#9AA0A8" font-weight="400" font-size="9">selling stops</text>
+      <text x="280" y="350" fill="#F0B429">PHASE B-C</text>
+      <text x="280" y="364" fill="#9AA0A8" font-weight="400" font-size="9">building / shake-out</text>
+      <text x="540" y="350" fill="#10B981">PHASE D</text>
+      <text x="540" y="364" fill="#9AA0A8" font-weight="400" font-size="9">demand emerges</text>
+      <text x="720" y="350" fill="#10B981">PHASE E</text>
+      <text x="720" y="364" fill="#9AA0A8" font-weight="400" font-size="9">markup begins</text>
+    </g>
+  </g>
+
+  <rect x="80" y="480" width="740" height="30" rx="8" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
+  <text x="450" y="500" fill="#F0B429" font-size="12" font-weight="600" text-anchor="middle" font-style="italic">Spring on lower-than-avg volume + Test confirms = the highest-prior long entry in Wyckoff trading.</text>
+</svg>

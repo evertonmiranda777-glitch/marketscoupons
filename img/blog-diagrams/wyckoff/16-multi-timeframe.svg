@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg16" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg16)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Multi-Timeframe Wyckoff Stack</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Higher timeframe sets context. Lower timeframe gives entry. Never the other way.</text>
+
+  <g transform="translate(60, 100)">
+    <g>
+      <rect width="780" height="100" rx="10" fill="rgba(59,130,246,.05)" stroke="#3B82F6"/>
+      <text x="20" y="28" fill="#3B82F6" font-size="14" font-weight="700">WEEKLY · macro phase</text>
+      <text x="20" y="50" fill="#9AA0A8" font-size="11">Identify which of the 4 phases the asset is in. Accumulation → only longs allowed.</text>
+      <text x="20" y="68" fill="#9AA0A8" font-size="11">Distribution → only shorts. Markup/Markdown → trend-follow with structure.</text>
+      <text x="20" y="88" fill="#3B82F6" font-size="11" font-weight="700">Answer: "What is the trend?"</text>
+    </g>
+
+    <g transform="translate(0, 120)">
+      <rect width="780" height="100" rx="10" fill="rgba(240,180,41,.05)" stroke="#F0B429"/>
+      <text x="20" y="28" fill="#F0B429" font-size="14" font-weight="700">DAILY · range &amp; events</text>
+      <text x="20" y="50" fill="#9AA0A8" font-size="11">Define the trading range on daily. Mark PS, SC, AR, ST, Spring (or PSY, BC, AR, ST, UTAD).</text>
+      <text x="20" y="68" fill="#9AA0A8" font-size="11">Wait for Phase C event. This is where the highest-probability setup forms.</text>
+      <text x="20" y="88" fill="#F0B429" font-size="11" font-weight="700">Answer: "Where is the range?"</text>
+    </g>
+
+    <g transform="translate(0, 240)">
+      <rect width="780" height="100" rx="10" fill="rgba(16,185,129,.05)" stroke="#10B981"/>
+      <text x="20" y="28" fill="#10B981" font-size="14" font-weight="700">1H/15min · entry trigger</text>
+      <text x="20" y="50" fill="#9AA0A8" font-size="11">On the Test bar (lower TF), look for: (a) low volume, (b) no new low/high vs Phase C event,</text>
+      <text x="20" y="68" fill="#9AA0A8" font-size="11">(c) close back inside range. Enter on the close of this bar.</text>
+      <text x="20" y="88" fill="#10B981" font-size="11" font-weight="700">Answer: "When do I press the button?"</text>
+    </g>
+  </g>
+
+  <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">If higher and lower disagree, higher always wins. Wait for alignment.</text>
+</svg>

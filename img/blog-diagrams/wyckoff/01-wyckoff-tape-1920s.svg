@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient>
+    <linearGradient id="sepia" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="#8B6914" stop-opacity="0.5"/><stop offset="100%" stop-color="#F0B429" stop-opacity="0.85"/></linearGradient>
+  </defs>
+  <rect width="900" height="460" fill="url(#bg1)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">From Tape to Algo — Same Pattern, Different Speed</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">1908 Wyckoff at the ticker tape · 2026 algos at the colocation rack — same playbook</text>
+
+  <!-- Divider -->
+  <line x1="450" y1="110" x2="450" y2="380" stroke="rgba(240,180,41,.3)" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- LEFT: 1908 tape -->
+  <g transform="translate(80, 130)">
+    <text x="160" y="0" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="0.1em">1908</text>
+    <text x="160" y="20" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">RICHARD WYCKOFF</text>
+    <text x="160" y="40" fill="#9AA0A8" font-size="11" text-anchor="middle">at the ticker tape</text>
+
+    <!-- Tape machine -->
+    <rect x="60" y="70" width="200" height="100" rx="8" fill="#1A1F2E" stroke="#A0723D" stroke-width="2"/>
+    <circle cx="100" cy="120" r="20" fill="none" stroke="#A0723D" stroke-width="2"/>
+    <circle cx="220" cy="120" r="20" fill="none" stroke="#A0723D" stroke-width="2"/>
+    <!-- Tape strip -->
+    <rect x="-20" y="115" width="360" height="10" fill="url(#sepia)" opacity="0.7"/>
+    <text x="0" y="123" fill="#0A0D14" font-size="7" font-family="monospace">USX 56 7/8 .. NYC 102 1/4 .. STL 38 .. PFD 67 1/2</text>
+
+    <!-- Notes pad -->
+    <rect x="40" y="200" width="240" height="50" rx="4" fill="rgba(160,114,61,.15)" stroke="rgba(160,114,61,.4)"/>
+    <text x="160" y="220" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">"PRICE MOVES BECAUSE</text>
+    <text x="160" y="234" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">SOMEONE HAS URGENCY"</text>
+  </g>
+
+  <!-- RIGHT: 2026 algo -->
+  <g transform="translate(530, 130)">
+    <text x="160" y="0" fill="#10B981" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="0.1em">2026</text>
+    <text x="160" y="20" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">ALGORITHMIC DESK</text>
+    <text x="160" y="40" fill="#9AA0A8" font-size="11" text-anchor="middle">at the colocation rack</text>
+
+    <!-- Server -->
+    <rect x="60" y="70" width="200" height="100" rx="8" fill="#1A1F2E" stroke="#10B981" stroke-width="2"/>
+    <rect x="70" y="80" width="180" height="6" fill="rgba(16,185,129,.3)"/>
+    <rect x="70" y="92" width="180" height="6" fill="rgba(16,185,129,.5)"/>
+    <rect x="70" y="104" width="180" height="6" fill="rgba(16,185,129,.7)"/>
+    <rect x="70" y="116" width="180" height="6" fill="rgba(16,185,129,.5)"/>
+    <rect x="70" y="128" width="180" height="6" fill="rgba(16,185,129,.3)"/>
+    <circle cx="245" cy="155" r="3" fill="#10B981"/>
+    <text x="220" y="158" fill="#10B981" font-size="8" font-family="monospace">ONLINE</text>
+
+    <!-- Algo output -->
+    <rect x="40" y="200" width="240" height="50" rx="4" fill="rgba(16,185,129,.08)" stroke="rgba(16,185,129,.4)"/>
+    <text x="160" y="220" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">"DETECTED ACCUMULATION</text>
+    <text x="160" y="234" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">PATTERN · LONG ES @ 4892"</text>
+  </g>
+
+  <!-- Bottom: unified message -->
+  <rect x="80" y="400" width="740" height="44" rx="10" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
+  <text x="450" y="422" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">Wyckoff trained the strong against the weak. The algos just trained on Wyckoff.</text>
+  <text x="450" y="438" fill="#9AA0A8" font-size="11" text-anchor="middle">Different decade. Same playbook. Faster execution.</text>
+</svg>
