@@ -229,39 +229,11 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', refreshPushButton);
   else setTimeout(refreshPushButton, 500);
 
-  // Install via browser menu only (no auto banner — keep UX clean)
-  // Hide any previously-rendered install banner aggressively
+  // Cleanup: remove any popup/banner/toast residual from prior unauthorized adds
   document.addEventListener('DOMContentLoaded', () => {
-    const el = document.getElementById('mc-install-banner');
-    if (el) el.remove();
-  });
-
-  // ==== Update notification (Fase 3) ====
-  function showUpdateToast() {
-    if (document.getElementById('mc-update-toast')) return;
-    let lang = 'en';
-    try { lang = (localStorage.getItem('mc_lang') || 'en').slice(0,2); } catch (_) {}
-    const UPDATE_TEXT = {
-      pt: { msg: 'Nova versão disponível', cta: 'Atualizar' },
-      en: { msg: 'New version available', cta: 'Update' },
-      es: { msg: 'Nueva versión disponible', cta: 'Actualizar' },
-      it: { msg: 'Nuova versione disponibile', cta: 'Aggiorna' },
-      fr: { msg: 'Nouvelle version disponible', cta: 'Mettre à jour' },
-      de: { msg: 'Neue Version verfügbar', cta: 'Aktualisieren' },
-      ar: { msg: 'إصدار جديد متاح', cta: 'تحديث' }
-    };
-    const T = UPDATE_TEXT[lang] || UPDATE_TEXT.en;
-    const el = document.createElement('div');
-    el.id = 'mc-update-toast';
-    el.style.cssText = 'position:fixed;right:16px;bottom:16px;background:#10151F;border:1px solid rgba(16,185,129,.42);border-radius:10px;padding:12px 16px;z-index:99998;box-shadow:0 8px 32px rgba(0,0,0,.5);font-family:Inter,system-ui,sans-serif;color:#fff;display:flex;align-items:center;gap:12px;font-size:13px';
-    el.innerHTML = `
-      <span>${T.msg}</span>
-      <button style="background:#10B981;color:#0A0D14;border:0;border-radius:6px;padding:6px 12px;font-weight:700;cursor:pointer">${T.cta}</button>
-    `;
-    el.querySelector('button').addEventListener('click', () => { window.location.reload(); });
-    document.body.appendChild(el);
-  }
-  navigator.serviceWorker.addEventListener('controllerchange', function () {
-    showUpdateToast();
+    ['mc-install-banner', 'mc-update-toast'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
   });
 })();
