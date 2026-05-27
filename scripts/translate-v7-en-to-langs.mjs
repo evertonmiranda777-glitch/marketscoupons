@@ -4,17 +4,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const ENV_FILE = path.join(process.env.HOME || process.env.USERPROFILE || '', '.nano-banana', '.env');
+// Load keys from .env.tmp.txt (multiple keys CSV — try first non-revoked AIzaSy)
+const ENV_TMP = path.join(process.cwd(), '.env.tmp.txt');
+let KEY = process.env.GEMINI_API_KEY;
 try {
-  const txt = fs.readFileSync(ENV_FILE, 'utf8');
-  for (const line of txt.split('\n')) {
-    const m = line.match(/^([A-Z_]+)\s*=\s*(.*)$/);
-    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim();
+  const txt = fs.readFileSync(ENV_TMP, 'utf8');
+  const m = txt.match(/GEMINI_API_KEY\s*=\s*"?([^"\n]+)"?/);
+  if (m) {
+    const keys = m[1].split(',').map(s => s.trim()).filter(k => k.startsWith('AIzaSy'));
+    if (keys.length) KEY = keys[0];
   }
 } catch {}
-
-const KEY = process.env.GEMINI_API_KEY;
-if (!KEY) { console.error('GEMINI_API_KEY missing'); process.exit(1); }
+if (!KEY) { console.error('GEMINI_API_KEY missing (check .env.tmp.txt)'); process.exit(1); }
+console.error(`Using key prefix: ${KEY.slice(0,10)}...`);
 
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';

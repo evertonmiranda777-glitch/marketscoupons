@@ -133,6 +133,37 @@ guidesEn.forEach(slug => {
   }));
 });
 
+// ── Blog posts (fetch from Supabase blog_posts) ──
+const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+try {
+  const res = await fetch(`${SB_URL}/rest/v1/blog_posts?active=eq.true&select=slug,lang&order=sort_order.asc`, {
+    headers: { apikey: ANON, Authorization: `Bearer ${ANON}` }
+  });
+  const posts = await res.json();
+  // Group by slug to compute hreflang alternates
+  const bySlug = {};
+  posts.forEach(p => { (bySlug[p.slug] = bySlug[p.slug] || new Set()).add(p.lang); });
+  Object.entries(bySlug).forEach(([slug, langs]) => {
+    const langArr = [...langs];
+    const alts = [];
+    if (langArr.includes('pt')) alts.push({ lang: 'pt-BR', url: `${SITE}/blog/${slug}` });
+    langArr.forEach(l => {
+      if (l === 'pt') return;
+      alts.push({ lang: l, url: `${SITE}/blog/${l}/${slug}` });
+    });
+    if (langArr.includes('pt')) alts.push({ lang: 'x-default', url: `${SITE}/blog/${slug}` });
+    // Emit one URL entry per language variant
+    langArr.forEach(l => {
+      const loc = l === 'pt' ? `${SITE}/blog/${slug}` : `${SITE}/blog/${l}/${slug}`;
+      entries.push(urlEntry({ loc, changefreq: 'monthly', priority: '0.7', alternates: alts.length > 1 ? alts : null }));
+    });
+  });
+  console.error(`Blog posts: ${posts.length} variants across ${Object.keys(bySlug).length} slugs`);
+} catch (e) {
+  console.error('Failed to fetch blog_posts:', e.message);
+}
+
 // ── Composição final ──
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
