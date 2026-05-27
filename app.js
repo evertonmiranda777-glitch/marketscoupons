@@ -4102,11 +4102,11 @@ const CHECKOUT_FIRMS=[
      '2-Step Challenge':[{size:'10K',capital:'€10,000',goal:'€1,000',maxDD:'-10%',orig:'—',disc:'€79',featured:false},{size:'25K',capital:'€25,000',goal:'€2,500',maxDD:'-10%',orig:'—',disc:'€199',featured:false},{size:'50K',capital:'€50,000',goal:'€5,000',maxDD:'-10%',orig:'—',disc:'€319',featured:false},{size:'100K',capital:'€100,000',goal:'€10,000',maxDD:'-10%',orig:'—',disc:'€499',featured:true},{size:'200K',capital:'€200,000',goal:'€20,000',maxDD:'-10%',orig:'—',disc:'€999',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP'},
-  {id:'tpt',name:'Take Profit Trader',short:'TakeProfit',coupon:'MARKET40',discount:'50%',color:'#A855F7',bg:'rgba(168,85,247,0.12)',
+  {id:'tpt',name:'Take Profit Trader',short:'TakeProfit',coupon:'MARKET40',discount:'30%',color:'#A855F7',bg:'rgba(168,85,247,0.12)',
    includes:['Day-1 payouts','No activation fee','No Daily Loss Limit','Immediate withdrawals','Up to 3 PRO resets','15+ platforms available'],
    types:['EOD Drawdown'],platforms:['NinjaTrader','TradingView','Tradovate','Rithmic','Quantower','MotiveWave'],
    plansByType:{
-     'EOD Drawdown':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$150',disc:'$75',featured:false},{size:'50K',capital:'$50,000',goal:'$2,500',maxDD:'$2,000',orig:'$170',disc:'$85',featured:false},{size:'75K',capital:'$75,000',goal:'$4,250',maxDD:'$2,750',orig:'$245',disc:'$122.50',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$330',disc:'$165',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$360',disc:'$180',featured:false}]
+     'EOD Drawdown':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$150',disc:'$105',featured:false},{size:'50K',capital:'$50,000',goal:'$2,500',maxDD:'$2,000',orig:'$170',disc:'$119',featured:false},{size:'75K',capital:'$75,000',goal:'$4,250',maxDD:'$2,750',orig:'$245',disc:'$171.50',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$330',disc:'$231',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$360',disc:'$252',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://takeprofittrader.com/?referralCode=MARKET40'},
   {id:'fn',name:'FundedNext',short:'FundedNext',coupon:'',discount:'25%',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',
