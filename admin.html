@@ -1193,7 +1193,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
          <option value="apex">Apex</option>
          <option value="bulenox">Bulenox</option>
          <option value="ftmo">FTMO</option>
-         <option value="tpt">TakeProfit</option>
          <option value="fn">FundedNext</option>
          <option value="e2t">Earn2Trade</option>
          <option value="the5ers">The5ers</option>
@@ -1306,7 +1305,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      <div class="tpl-card" onclick="loadQuickTemplate('indicators')"><div class="tpl-card-icon">FT</div><div class="tpl-card-text"><div class="tpl-card-name">Ferramentas</div><div class="tpl-card-hook">Ferramentas de trading</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')"><div class="tpl-card-icon">BG</div><div class="tpl-card-text"><div class="tpl-card-name">Blog &amp; Guias</div><div class="tpl-card-hook">Conteudo educacional</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('ultimas-horas')"><div class="tpl-card-icon">UH</div><div class="tpl-card-text"><div class="tpl-card-name">Últimas Horas</div><div class="tpl-card-hook">Urgência de promoção</div></div></div>
-     <div class="tpl-card" onclick="loadQuickTemplate('top3')"><div class="tpl-card-icon">T3</div><div class="tpl-card-text"><div class="tpl-card-name">Top 3 Cupons</div><div class="tpl-card-hook">Apex · Bulenox · TakeProfit</div></div></div>
+     <div class="tpl-card" onclick="loadQuickTemplate('top3')"><div class="tpl-card-icon">T3</div><div class="tpl-card-text"><div class="tpl-card-name">Top 3 Cupons</div><div class="tpl-card-hook">Apex · Bulenox</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('giveaway-apex-may26')"><div class="tpl-card-icon">SR</div><div class="tpl-card-text"><div class="tpl-card-name">Sorteio Apex</div><div class="tpl-card-hook">Giveaway 3 contas · 12/05</div></div></div>
    </div>
    <div class="tpl-section-title">Promos por Firma</div>
@@ -1876,13 +1875,12 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Upload Manual (Apex / TakeProfit — firmas com 2FA)</div>
+        <div class="sec-title" style="font-size:14px;">Upload Manual (Apex — firma com 2FA)</div>
       </div>
       <div class="chart-card" style="padding:16px;">
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
           <select id="fin-up-firm" class="filter-inp" style="font-size:12px;padding:8px 12px;">
             <option value="apex">Apex</option>
-            <option value="tpt">TakeProfitTrader</option>
             <option value="bulenox">Bulenox</option>
             <option value="ftmo">FTMO</option>
           </select>
@@ -2302,7 +2300,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
               <option>Apex Trader Funding</option>
               <option>Bulenox</option>
               <option>FTMO</option>
-              <option>Take Profit Trader</option>
               <option>FundedNext</option>
               <option>Earn2Trade</option>
               <option>The5ers</option>
@@ -3611,7 +3608,6 @@ function ensureDemoData(){
  {event:'checkout_click',params:{firm_id:'bulenox',firm_name:'Bulenox',platform:'NinjaTrader',account_size:'50K',coupon:'MARKET89'}},
  {event:'checkout_firm_sel',params:{firm_id:'ftmo',firm_name:'FTMO',discount:19}},
  {event:'checkout_plat_sel',params:{firm_id:'apex',platform:'Tradovate'}},
- {event:'checkout_size_sel',params:{firm_id:'tpt',platform:'Rithmic',account_size:'100K',price:'$198'}},
  {event:'firm_detail_open',params:{firm_id:'fn',firm_name:'FundedNext'}},
  {event:'page_view',params:{page_name:'firms'}},
  {event:'page_view',params:{page_name:'checkout'}},
@@ -5904,7 +5900,7 @@ async function populateAudienceFirms(){
   const og = document.getElementById('audience-firms'); if(!og) return;
   const FIRMS_LIST = [
     {id:'apex',name:'Apex'}, {id:'bulenox',name:'Bulenox'}, {id:'ftmo',name:'FTMO'},
-    {id:'tpt',name:'Take Profit Trader'}, {id:'fn',name:'FundedNext'}, {id:'e2t',name:'Earn2Trade'},
+    {id:'fn',name:'FundedNext'}, {id:'e2t',name:'Earn2Trade'},
     {id:'the5ers',name:'The5ers'}, {id:'fundingpips',name:'Funding Pips'},
     {id:'brightfunded',name:'BrightFunded'}, {id:'e8',name:'E8 Markets'},
     {id:'cti',name:'City Traders Imperium'}, {id:'tradeday',name:'TradeDay'}
@@ -6130,7 +6126,7 @@ async function getSegmentedLeads(){
  });
  // Firma/tag filter
  if(firmaFilter){
-  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',tpt:'Take Profit Trader',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders Imperium'};
+  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders Imperium'};
   list=list.filter(r=>{
    const rTags = r.tags||[];
    if(!rTags.length) return false;
@@ -6631,7 +6627,7 @@ async function getEmailFirms(){
 
 async function renderEmailFirmaChips(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TakeProfit',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI'};
 
   // Import firma chips
   const importEl = document.getElementById('import-firma-chips');
@@ -6720,7 +6716,7 @@ let _eaCampaigns = [];
 
 async function eaInit(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',tpt:'TakeProfit',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
   const el = document.getElementById('ea-firma-chips');
   if(el){
     el.innerHTML = `<button class="ea-period-btn sel" onclick="eaSetTag('',this)">Todas</button>` +
@@ -6975,7 +6971,7 @@ function eaRenderTable(){
   const rows = sorted.map((c, idx) => {
     const brevo = c.brevo_response || {};
     const subj = c.subject || '';
-    const firmaMatch = subj.match(/\b(Apex|Bulenox|FTMO|FundedNext|Take Profit|Earn2Trade|The5ers|FundingPips|BrightFunded)\b/i);
+    const firmaMatch = subj.match(/\b(Apex|Bulenox|FTMO|FundedNext|Earn2Trade|The5ers|FundingPips|BrightFunded)\b/i);
     const firma = firmaMatch ? firmaMatch[1] : '';
 
     const campDate = new Date(c.created_at);
@@ -7806,14 +7802,13 @@ const INST_TEMPLATES = {
     kind: 'top3-cards',
     color: '#F0B429',
     subject: { pt:'A maioria vai abrir este email tarde demais.', en:'Most people will open this email too late.', es:'La mayoría abrirá este email demasiado tarde.', fr:'La plupart ouvriront cet email trop tard.', de:'Die meisten öffnen diese E-Mail zu spät.', it:'La maggior parte aprirà questa email troppo tardi.', ar:'معظمهم سيفتح هذه الرسالة بعد فوات الأوان.' },
-    preheader: { pt:'Apex 100K $44,90 · Bulenox $23,65 · TakeProfit $231. Cupom no site.', en:'Apex 100K $44.90 · Bulenox $23.65 · TakeProfit $231. Coupon on the site.', es:'Apex 100K $44,90 · Bulenox $23,65 · TakeProfit $231. Cupón en el sitio.', fr:'Apex 100K $44,90 · Bulenox $23,65 · TakeProfit $231. Coupon sur le site.', de:'Apex 100K $44,90 · Bulenox $23,65 · TakeProfit $231. Gutschein auf der Seite.', it:'Apex 100K $44,90 · Bulenox $23,65 · TakeProfit $231. Coupon sul sito.', ar:'Apex 100K $44.90 · Bulenox $23.65 · TakeProfit $231. الكوبون على الموقع.' },
+    preheader: { pt:'Apex 100K $44,90 · Bulenox $23,65. Cupom no site.', en:'Apex 100K $44.90 · Bulenox $23.65. Coupon on the site.', es:'Apex 100K $44,90 · Bulenox $23,65. Cupón en el sitio.', fr:'Apex 100K $44,90 · Bulenox $23,65. Coupon sur le site.', de:'Apex 100K $44,90 · Bulenox $23,65. Gutschein auf der Seite.', it:'Apex 100K $44,90 · Bulenox $23,65. Coupon sul sito.', ar:'Apex 100K $44.90 · Bulenox $23.65. الكوبون على الموقع.' },
     hero_pill: { pt:'Você está pagando 10× a mais?', en:'Are you paying 10× more?', es:'¿Estás pagando 10× más?', fr:'Vous payez 10× plus ?', de:'Zahlst du 10× mehr?', it:'Stai pagando 10× di più?', ar:'هل تدفع 10× أكثر؟' },
     hero_h1: { pt:'Pare de pagar preço cheio<br>nas 3 melhores firmas', en:'Stop paying full price<br>at the 3 best firms', es:'Deja de pagar precio completo<br>en las 3 mejores firmas', fr:'Arrêtez de payer plein tarif<br>chez les 3 meilleures firmes', de:'Hör auf, Vollpreis zu zahlen<br>bei den 3 besten Firmen', it:'Smetti di pagare prezzo pieno<br>nelle 3 migliori firme', ar:'توقف عن دفع السعر الكامل<br>في أفضل 3 شركات' },
     hero_sub: { pt:'Comprando as 3 contas 100K agora você economiza <b style="color:#10B981">$760</b> com esses cupons.', en:'Buying the 3 100K accounts now you save <b style="color:#10B981">$760</b> with these coupons.', es:'Comprando las 3 cuentas 100K ahora ahorras <b style="color:#10B981">$760</b> con estos cupones.', fr:'En achetant les 3 comptes 100K maintenant vous économisez <b style="color:#10B981">$760</b>.', de:'Mit dem Kauf der 3 100K Konten sparst du jetzt <b style="color:#10B981">$760</b>.', it:'Comprando i 3 conti 100K ora risparmi <b style="color:#10B981">$760</b>.', ar:'بشراء حسابات 100K الثلاثة الآن توفر <b style="color:#10B981">$760</b>.' },
     firms: [
       { id:'apex',    name:'Apex Trader Funding · 100K', accent:'#F0B429', off:'90', price_full:'$449', price_disc:'$44,90', savings:'$404,10', coupon:'MARKET' },
       { id:'bulenox', name:'Bulenox · 100K',             accent:'#0891B2', off:'89', price_full:'$215', price_disc:'$23,65', savings:'$191,35', coupon:'MARKET89' },
-      { id:'tpt',     name:'TakeProfit · 100K',          accent:'#A855F7', off:'30', price_full:'$330', price_disc:'$231,00', savings:'$99,00',  coupon:'MARKET40' },
     ],
     savings_label: { pt:'Economia: ', en:'Save: ', es:'Ahorras: ', fr:'Économie : ', de:'Ersparnis: ', it:'Risparmio: ', ar:'وفر: ' },
     coupon_label:  { pt:'cupom', en:'coupon', es:'cupón', fr:'coupon', de:'Gutschein', it:'coupon', ar:'كوبون' },
@@ -8115,7 +8110,7 @@ function buildTop3CardsHtml(t, lang){
   const C = t.color || '#F0B429';
   const SAV = gt(t.savings_label);
   const CPN = gt(t.coupon_label);
-  const SHORT_NAMES = { apex:'Apex · 100K', bulenox:'Bulenox · 100K', tpt:'TakeProfit · 100K' };
+  const SHORT_NAMES = { apex:'Apex · 100K', bulenox:'Bulenox · 100K' };
 
   const cardsHtml = (t.firms||[]).map(f => {
     const shortName = SHORT_NAMES[f.id] || f.name;
@@ -8473,18 +8468,16 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
             <td width="60">&nbsp;</td>
             <td align="center" style="font-family:${F};font-size:9px;font-weight:700;color:#ff8c00;">Apex</td>
             <td align="center" style="font-family:${F};font-size:9px;font-weight:700;color:#ff8c00;">Bulenox</td>
-            <td align="center" style="font-family:${F};font-size:9px;font-weight:700;color:#ff8c00;">TakeProfit</td>
           </tr><tr>
             <td>&nbsp;</td>
             <td align="center" style="font-family:${F};font-size:7px;color:#555;">4.4/17K</td>
             <td align="center" style="font-family:${F};font-size:7px;color:#555;">4.8/1.4K</td>
-            <td align="center" style="font-family:${F};font-size:7px;color:#555;">4.4/8.5K</td>
           </tr></table>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:0.5px solid #222;">
-            <tr><td width="60" style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">${T({pt:'Desconto',en:'Discount',es:'Descuento'})}</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">89%</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">40%</td></tr>
-            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">100K</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">$44.90</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">$23.65</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">$198</td></tr>
-            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">Drawdown</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">EOD</td></tr>
-            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">Split</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">80%</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">80%</td></tr>
+            <tr><td width="60" style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">${T({pt:'Desconto',en:'Discount',es:'Descuento'})}</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">89%</td></tr>
+            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">100K</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">$44.90</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">$23.65</td></tr>
+            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">Drawdown</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">Trail.</td></tr>
+            <tr style="border-top:0.5px solid #1e1e1e;"><td style="font-family:${F};font-size:8px;color:#555;padding:5px 0;">Split</td><td align="center" style="font-family:${F};font-size:8px;color:#ccc;padding:5px 0;">80%</td><td align="center" style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;padding:5px 0;">90%</td></tr>
           </table>
           <table cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;"><tr><td bgcolor="#1a3a20" style="background-color:#1a3a20;border-radius:3px;padding:4px 8px;"><span style="font-family:${F};font-size:8px;color:#4caf70;font-weight:700;">${T({pt:'Vencedor: Bulenox',en:'Winner: Bulenox',es:'Ganador: Bulenox'})}</span></td></tr></table>
         </td></tr>
@@ -11126,7 +11119,7 @@ function openFirmModal(id) {
     <div class="modal-grid">
       <div class="modal-field"><label>ID (unico)</label><input type="text" id="fm-id" value="${f.id||''}" ${isNew?'':'readonly'} style="${isNew?'':'opacity:.5;'}"></div>
       <div class="modal-field"><label>Nome</label><input type="text" id="fm-name" value="${f.name||''}"></div>
-      <div class="modal-field"><label>Nome Curto</label><input type="text" id="fm-short" value="${f.short_name||''}" placeholder="Ex: TakeProfit"></div>
+      <div class="modal-field"><label>Nome Curto</label><input type="text" id="fm-short" value="${f.short_name||''}" placeholder="Ex: Apex"></div>
       <div class="modal-field"><label>Tipo</label><select id="fm-type"><option ${f.type==='Futuros'?'selected':''}>Futuros</option><option ${f.type==='Forex'?'selected':''}>Forex</option></select></div>
       <div class="modal-field"><label>Desconto %</label><input type="number" id="fm-discount" value="${f.discount||0}" min="0" max="100" style="font-size:18px;font-weight:800;color:var(--gold);"></div>
       <div class="modal-field"><label>Cupom</label><input type="text" id="fm-coupon" value="${f.coupon||''}" style="font-family:monospace;font-size:14px;font-weight:700;text-transform:uppercase;"></div>
@@ -12595,7 +12588,7 @@ async function renderTrackingPage(){
           <td style="padding:10px 14px;text-align:right;color:#EF4444;">${tot.abandoned} (${totAbPct}%)</td>
         </tr>`;
       const _firmDisplayName = (id) => {
-        const map = { tpt:'TakeProfit', fn:'FundedNext', cti:'City Traders Imperium', e2t:'Earn2Trade', e8:'E8 Markets', ftmo:'FTMO', apex:'Apex', bulenox:'Bulenox', tradeday:'TradeDay', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded' };
+        const map = { fn:'FundedNext', cti:'City Traders Imperium', e2t:'Earn2Trade', e8:'E8 Markets', ftmo:'FTMO', apex:'Apex', bulenox:'Bulenox', tradeday:'TradeDay', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded' };
         return map[id] || (id.charAt(0).toUpperCase() + id.slice(1));
       };
       rows.forEach(r => {
@@ -13154,7 +13147,7 @@ function setCrMode(mode, btn) {
 
 function populateCrTop3Selects() {
   const opts = (_firmsCache||[]).map(f => `<option value="${f.id}">${f.name}</option>`).join('');
-  const defaults = ['apex','bulenox','tpt'];
+  const defaults = ['apex','bulenox'];
   ['cr-firm-1','cr-firm-2','cr-firm-3'].forEach((sid,i) => {
     const sel = document.getElementById(sid);
     if (!sel) return;
@@ -13164,7 +13157,7 @@ function populateCrTop3Selects() {
 
 // Cores accent por firma (fallback gold)
 const CR_FIRM_ACCENTS = {
-  apex:'#F0B429', bulenox:'#7AD9E3', tpt:'#C084FC',
+  apex:'#F0B429', bulenox:'#7AD9E3',
   fn:'#06B6D4', e2t:'#F59E0B', the5ers:'#10B981', fundingpips:'#6366F1',
   brightfunded:'#00C9A7', e8:'#FF4400', cti:'#0A74DA', tradeday:'#0EA5E9', ftmo:'#1976D2'
 };
@@ -13185,8 +13178,8 @@ function renderCrTop3() {
 
   const cards = firms.map(f => {
     const acc = CR_FIRM_ACCENTS[f.id] || '#F0B429';
-    // Display names — sem abreviação. TakeProfit (interno: tpt) vira "TakeProfit", etc
-    const CR_DISPLAY_NAMES = { apex:'Apex', bulenox:'Bulenox', tpt:'TakeProfit', fn:'FundedNext', e2t:'Earn2Trade', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded', e8:'E8 Markets', cti:'CTI', tradeday:'TradeDay', ftmo:'FTMO' };
+    // Display names — sem abreviação
+    const CR_DISPLAY_NAMES = { apex:'Apex', bulenox:'Bulenox', fn:'FundedNext', e2t:'Earn2Trade', the5ers:'The5ers', fundingpips:'FundingPips', brightfunded:'BrightFunded', e8:'E8 Markets', cti:'CTI', tradeday:'TradeDay', ftmo:'FTMO' };
     const shortName = CR_DISPLAY_NAMES[f.id] || f.short_name || f.name.split(' ')[0];
     return `<div style="display:flex;align-items:center;gap:20px;padding:30px 28px;background:#000;border:2.5px solid rgba(255,255,255,.42);border-radius:22px;position:relative;overflow:hidden;">
       <div style="position:absolute;inset:0;background:radial-gradient(80% 100% at 100% 0%, ${acc}12, transparent 60%);pointer-events:none;"></div>
@@ -13454,7 +13447,6 @@ function renderHeroPremium(firm, content, L) {
     bulenox: 'img/Firms Logos/Bulenox-Logo-1-01-800x207.png',
     tradeday: 'img/Firms Logos/TradeDay.png',
     ftmo: 'img/Firms Logos/FTMO logo - light.png',
-    tpt: 'img/Firms Logos/TakeProfit white logo.svg',
     cti: 'img/Firms Logos/City-Traders-Imperium-Logo-for-Dark-Backgrounds-1-2048x388.png',
     fn: 'img/Firms Logos/FundedNext Monochromatic Logo White 2x.png',
     brightfunded: 'img/Firms Logos/brightfunded logo.svg',

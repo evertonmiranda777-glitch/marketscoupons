@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Markets Coupons — Exclusive prop firm coupons</title>
-<meta name="description" content="Top 3 prop firm coupons: Apex, Bulenox, Take Profit. Up to 90% OFF.">
+<meta name="description" content="Top prop firm coupons: Apex, Bulenox. Up to 90% OFF.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
 <link rel="icon" type="image/png" href="/img/favicon.png">
@@ -554,25 +554,6 @@ const FIRMS = [
     platforms: 'Rithmic · NinjaTrader',
     rules: { pt: ['Passa em 1 dia','Sem regra de consistência','News trading liberado'], en: ['Pass in 1 day','No consistency rule','News trading allowed'] }
   },
-  {
-    id: 'tpt', name: 'Take Profit Trader', logo: '/img/Firms/tpt.webp', coupon: 'MARKET40',
-    discount: '50%', tag: 'fut', rating: '4.7', reviews: '2K',
-    rangeAccounts: '$25K–$150K', split: '90%',
-    url: 'https://takeprofittrader.com/?referralCode=MARKET40',
-    types: ['EOD Drawdown'],
-    plans: {
-      'EOD Drawdown': [
-        {size:'25K', orig:'$150', disc:'$75', target:'$1,500', dd:'EOD $1,500', pos:'3 contracts / 30 micros'},
-        {size:'50K', orig:'$170', disc:'$85', target:'$2,500', dd:'EOD $2,000', pos:'6 contracts / 60 micros'},
-        {size:'75K', orig:'$245', disc:'$122.50', target:'$4,250', dd:'EOD $2,750', pos:'8 contracts / 80 micros'},
-        {size:'100K', orig:'$330', disc:'$165', target:'$6,000', dd:'EOD $3,000', pos:'12 contracts / 120 micros', popular:true},
-        {size:'150K', orig:'$360', disc:'$180', target:'$9,000', dd:'EOD $4,500', pos:'15 contracts / 150 micros'},
-      ]
-    },
-    payouts: 'Day 1',
-    platforms: 'NinjaTrader · TradingView · Tradovate · Rithmic · Quantower · MotiveWave',
-    rules: { pt: ['Sem taxa de ativação','Sem daily loss limit','15+ plataformas'], en: ['No activation fee','No daily loss limit','15+ platforms'] }
-  }
 ];
 
 // ─── i18n ───
@@ -958,7 +939,7 @@ async function loadPromoBar(){
       // Se explicitamente desligado no admin, esconde igual o site
       if (enabled === 'false') return;
     }
-    const url = SB_URL+'/rest/v1/cms_firms?select=id,name,short_name,promo_ends_at&id=in.(apex,bulenox,tpt)&active=eq.true';
+    const url = SB_URL+'/rest/v1/cms_firms?select=id,name,short_name,promo_ends_at&id=in.(apex,bulenox)&active=eq.true';
     const res = await fetch(url, { headers: { apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY } });
     if (!res.ok) return;
     const rows = await res.json();

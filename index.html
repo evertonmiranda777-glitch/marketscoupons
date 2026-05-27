@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<script>(function(){var s=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').split('/').filter(Boolean)[0]||'';if(['apex','bulenox','ftmo','tpt','takeprofit','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'].indexOf(s)>-1){var st=document.createElement('style');st.textContent='body{opacity:0;transition:opacity .2s ease}';document.head.appendChild(st);}})();</script>
+<script>(function(){var s=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').split('/').filter(Boolean)[0]||'';if(['apex','bulenox','ftmo','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'].indexOf(s)>-1){var st=document.createElement('style');st.textContent='body{opacity:0;transition:opacity .2s ease}';document.head.appendChild(st);}})();</script>
 <link rel="preload" href="/img/site-bg.webp" as="image" type="image/webp" media="(min-width:901px)" fetchpriority="high">
 <link rel="preload" href="/img/site-bg-mobile.webp" as="image" type="image/webp" media="(max-width:900px)" fetchpriority="high">
 <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
@@ -16,7 +16,6 @@
 <!-- TLS handshake das firmas e disparado on-hover do botao via JS (rel=preconnect dinamico). -->
 <link rel="dns-prefetch" href="//apextraderfunding.com">
 <link rel="dns-prefetch" href="//bulenox.com">
-<link rel="dns-prefetch" href="//takeprofittrader.com">
 <link rel="dns-prefetch" href="//fundednext.com">
 <link rel="dns-prefetch" href="//app.fundingpips.com">
 <link rel="dns-prefetch" href="//trader.ftmo.com">
@@ -157,7 +156,7 @@
       "name": "Quanto tempo leva para receber o payout?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h. Take Profit Trader permite saque desde o dia 1."
+        "text": "Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h."
       }
     },
     {
@@ -249,19 +248,6 @@
         "availability": "https://schema.org/InStock",
         "seller": { "@type": "Organization", "name": "FundedNext" }
       }
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "item": {
-        "@type": "Offer",
-        "name": "Cupom Take Profit Trader — Desconto Exclusivo",
-        "description": "Desconto exclusivo na Take Profit Trader. Saque desde o dia 1.",
-        "url": "https://www.marketscoupons.com/#firms",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "seller": { "@type": "Organization", "name": "Take Profit Trader" }
-      }
     }
   ]
 }
@@ -271,7 +257,6 @@
 <link rel="dns-prefetch" href="//apextraderfunding.com">
 <link rel="dns-prefetch" href="//bulenox.com">
 <link rel="dns-prefetch" href="//ftmo.com">
-<link rel="dns-prefetch" href="//takeprofittrader.com">
 <link rel="dns-prefetch" href="//fundednext.com">
 <link rel="preconnect" href="https://apextraderfunding.com" crossorigin>
 <link rel="preconnect" href="https://bulenox.com" crossorigin>
@@ -3034,17 +3019,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
            <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">Trailing</span></div>
           </div>
          </div>
-         <div class="mu-cmp-card" style="--acc-rgb:148,163,184;">
-          <img loading="lazy" class="mu-cmp-logo" src="/img/Firms/tpt.webp" alt="TakeProfit" width="32" height="32" decoding="async">
-          <div class="mu-cmp-nm">TakeProfit</div>
-          <div class="mu-cmp-tp">4.4 · 8.5K</div>
-          <div class="mu-cmp-disc">50% OFF</div>
-          <div class="mu-cmp-stats">
-           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">Preço 100K</span><span class="mu-cmp-stat-val">$198</span></div>
-           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">Split</span><span class="mu-cmp-stat-val">80%</span></div>
-           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">EOD</span></div>
-          </div>
-         </div>
         </div>
         <div class="mu-cmp-footer" data-i18n="mu_vencedor_txt"><b>Bulenox</b> — melhor custo-beneficio para 100K</div>
        </div>
@@ -3318,7 +3292,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       </div>
      </div>
 
-     <!-- SIGNUP 5: Comparativo Apex vs TakeProfit vs Bulenox -->
+     <!-- SIGNUP 5: Comparativo Apex vs Bulenox -->
      <div class="auth-slide" data-group="signup" data-slide="4">
       <div class="mu">
        <div class="mu-content">
@@ -3332,14 +3306,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
           </div>
          </div>
          <div class="mu-blog-card">
-          <img loading="lazy" class="mu-blog-thumb" src="/img/Firms/tpt.webp" alt="TakeProfit" width="80" height="80" decoding="async" style="object-fit:contain;background:#0f0f10;padding:6px;">
-          <div class="mu-blog-info">
-           <div class="mu-blog-cat" style="color:#3B82F6;">TakeProfit Trader</div>
-           <div class="mu-blog-t">$99 · Static DD $2K</div>
-           <div class="mu-blog-meta">Sem target · Split 90% · PRO plan</div>
-          </div>
-         </div>
-         <div class="mu-blog-card">
           <img loading="lazy" class="mu-blog-thumb" src="/img/Firms/bulenox.webp" alt="Bulenox" width="80" height="80" decoding="async" style="object-fit:contain;background:#0f0f10;padding:6px;">
           <div class="mu-blog-info">
            <div class="mu-blog-cat" style="color:#10B981;">Bulenox</div>
@@ -3350,14 +3316,14 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
         </div>
        </div>
       </div>
-      <h2 data-i18n="as_s4_h">Qual firma escolher: Apex, TakeProfit ou <span class="gold">Bulenox</span>?</h2>
-      <p data-i18n="as_s4_p">Comparamos as 3 maiores prop firms de futuros lado a lado — preços, drawdown, profit split e veredito por perfil. Tudo em um guia único.</p>
+      <h2 data-i18n="as_s4_h">Qual firma escolher: Apex ou <span class="gold">Bulenox</span>?</h2>
+      <p data-i18n="as_s4_p">Comparamos as 2 maiores prop firms de futuros lado a lado — preços, drawdown, profit split e veredito por perfil.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f1">Apex vs TakeProfit vs Bulenox — comparativo completo</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f1">Apex vs Bulenox — comparativo completo</div>
        <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f2">Veredito objetivo: qual firma combina com seu perfil</div>
        <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f3">Cupons exclusivos já incluídos no guia</div>
       </div>
-      <a href="/guides/comparativo-apex-tpt-bulenox" target="_blank" rel="noopener" class="auth-cta-link" data-i18n="as_s4_cta">Ler comparativo completo</a>
+      <a href="/compare/apex-vs-bulenox" target="_blank" rel="noopener" class="auth-cta-link" data-i18n="as_s4_cta">Ler comparativo completo</a>
      </div>
 
     </div>
@@ -4247,7 +4213,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
                 <option>Apex Trader Funding</option>
                 <option>Bulenox</option>
                 <option>FTMO</option>
-                <option>Take Profit Trader</option>
                 <option>FundedNext</option>
                 <option>Earn2Trade</option>
               </select>
@@ -4294,7 +4259,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
               <div class="pm-item"><strong>Bulenox:</strong> Email "Order Confirmation" com ID do plano</div>
               <div class="pm-item"><strong>FTMO:</strong> Email "Your FTMO Challenge is ready" com numero</div>
               <div class="pm-item"><strong>FundedNext:</strong> Email "Account Activated" com ID</div>
-              <div class="pm-item"><strong>TakeProfit:</strong> Email de confirmacao com numero da avaliacao</div>
               <div class="pm-item"><strong>E2T:</strong> Email "Welcome to Earn2Trade" com ID da conta</div>
             </div>
           </div>
@@ -4380,7 +4344,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <a href="https://bulenox.com/member/aff/go/marketcoupons" target="_blank" rel="noopener noreferrer">Bulenox</a>
  <a href="https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP" target="_blank" rel="noopener noreferrer">FTMO</a>
  <a href="https://fundednext.com/?fpr=everton33" target="_blank" rel="noopener noreferrer">FundedNext</a>
- <a href="https://takeprofittrader.com/?referralCode=MARKET40" target="_blank" rel="noopener noreferrer">Take Profit Trader</a>
  <a href="https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14" target="_blank" rel="noopener noreferrer">Earn2Trade</a>
  </div>
  <div class="fc-col">
