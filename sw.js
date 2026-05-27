@@ -2,12 +2,14 @@
 // Cache conservador: app shell em cache-first, HTML/API sempre network.
 // Push handlers entram na Fase 2.
 
-const SW_VERSION = 'mc-sw-v1-2026-05-25';
-const SHELL_CACHE = 'mc-shell-v1';
-const IMG_CACHE = 'mc-img-v1';
+const SW_VERSION = 'mc-sw-v3-2026-05-27';
+const SHELL_CACHE = 'mc-shell-v3';
+const IMG_CACHE = 'mc-img-v2';
+const OFFLINE_URL = '/offline.html';
 
 const SHELL_ASSETS = [
   '/manifest.json',
+  '/offline.html',
   '/img/pwa/icon-192.png',
   '/img/pwa/icon-512.png',
   '/img/pwa/icon-maskable-512.png',
@@ -38,14 +40,16 @@ self.addEventListener('fetch', (event) => {
   // Same-origin somente
   if (url.origin !== self.location.origin) return;
 
-  // Nunca cachear: HTML, APIs, auth, Supabase, qualquer rota dinâmica
-  if (
-    req.headers.get('accept')?.includes('text/html') ||
-    url.pathname.startsWith('/api/') ||
-    url.pathname.includes('/auth') ||
-    url.pathname.endsWith('.html')
-  ) {
-    return; // browser default network
+  // HTML navigations: network-first with offline fallback
+  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
+    event.respondWith(
+      fetch(req).catch(() => caches.match(OFFLINE_URL).then(r => r || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } })))
+    );
+    return;
+  }
+  // APIs / auth: never cache
+  if (url.pathname.startsWith('/api/') || url.pathname.includes('/auth')) {
+    return;
   }
 
   // Imagens em /img/ → stale-while-revalidate
