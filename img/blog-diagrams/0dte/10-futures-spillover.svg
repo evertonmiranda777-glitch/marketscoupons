@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg10" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg10)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">0DTE Spillover to ES &amp; NQ Futures</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Dealer SPX option hedging happens in ES futures — index futures inherit 0DTE flow patterns</text>
+
+  <g transform="translate(80, 110)">
+    <g>
+      <rect width="220" height="100" rx="10" fill="rgba(59,130,246,.1)" stroke="#3B82F6"/>
+      <text x="110" y="32" fill="#3B82F6" font-size="13" font-weight="700" text-anchor="middle">SPX 0DTE option</text>
+      <text x="110" y="56" fill="#9AA0A8" font-size="11" text-anchor="middle">retail buys 5900 call</text>
+      <text x="110" y="76" fill="#9AA0A8" font-size="11" text-anchor="middle">delta +0.45</text>
+    </g>
+
+    <path d="M 220 60 L 320 60" stroke="#F0B429" stroke-width="2" marker-end="url(#a10)"/>
+
+    <g transform="translate(320, 0)">
+      <rect width="220" height="100" rx="10" fill="rgba(240,180,41,.08)" stroke="#F0B429"/>
+      <text x="110" y="32" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">MM hedges in ES</text>
+      <text x="110" y="56" fill="#9AA0A8" font-size="11" text-anchor="middle">sells 45 ES contracts</text>
+      <text x="110" y="76" fill="#9AA0A8" font-size="11" text-anchor="middle">delta-neutral book</text>
+    </g>
+
+    <path d="M 540 60 L 640 60" stroke="#F0B429" stroke-width="2" marker-end="url(#a10)"/>
+
+    <g transform="translate(640, 0)">
+      <rect width="220" height="100" rx="10" fill="rgba(239,68,68,.08)" stroke="#EF4444"/>
+      <text x="110" y="32" fill="#EF4444" font-size="13" font-weight="700" text-anchor="middle">ES futures drop</text>
+      <text x="110" y="56" fill="#9AA0A8" font-size="11" text-anchor="middle">retail futures traders</text>
+      <text x="110" y="76" fill="#9AA0A8" font-size="11" text-anchor="middle">stopped out</text>
+    </g>
+
+    <defs>
+      <marker id="a10" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#F0B429"/>
+      </marker>
+    </defs>
+
+    <g transform="translate(0, 170)">
+      <rect width="780" height="150" rx="10" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/>
+      <text x="20" y="28" fill="#F0B429" font-size="13" font-weight="700">Why this matters for futures traders</text>
+      <text x="20" y="54" fill="#9AA0A8" font-size="11">→ Choppy moves at 11:00 / 14:30 are dealer hedge prints, not directional bias</text>
+      <text x="20" y="74" fill="#9AA0A8" font-size="11">→ NQ &amp; ES 0DTE-driven prints look identical: 1-2 pt thrust, immediate fade</text>
+      <text x="20" y="94" fill="#9AA0A8" font-size="11">→ If you see violent counter-trend moves on the cash equity close, suspect 0DTE charm flow</text>
+      <text x="20" y="118" fill="#10B981" font-size="11" font-weight="700">Use SpotGamma / Tier1Alpha to track real-time SPX gamma exposure when trading futures</text>
+    </g>
+  </g>
+</svg>

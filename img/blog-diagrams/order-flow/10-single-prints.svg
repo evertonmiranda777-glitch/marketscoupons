@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg10" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg10)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Single Prints — Trapped Liquidity</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Price levels traded only once → the auction skipped them → market will likely fill the gap</text>
+
+  <g transform="translate(280, 100)" font-family="JetBrains Mono, monospace" font-size="11">
+    <text x="170" y="22" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">TPO profile (letter mode)</text>
+
+    <g>
+      <text x="60" y="50" fill="#fff">5880</text><text x="120" y="50" fill="#10B981">L</text>
+      <text x="60" y="68" fill="#fff">5879</text><text x="120" y="68" fill="#10B981">K L</text>
+      <text x="60" y="86" fill="#fff">5878</text><text x="120" y="86" fill="#10B981">J K L M</text>
+      <text x="60" y="104" fill="#EF4444" font-weight="700">5877</text><text x="120" y="104" fill="#EF4444">J</text>
+      <rect x="115" y="92" width="80" height="18" fill="rgba(239,68,68,.12)" stroke="#EF4444" stroke-dasharray="3,2"/>
+      <text x="60" y="122" fill="#EF4444" font-weight="700">5876</text><text x="120" y="122" fill="#EF4444">J</text>
+      <rect x="115" y="110" width="80" height="18" fill="rgba(239,68,68,.12)" stroke="#EF4444" stroke-dasharray="3,2"/>
+      <text x="60" y="140" fill="#fff">5875</text><text x="120" y="140" fill="#10B981">F G H I J</text>
+      <text x="60" y="158" fill="#fff">5874</text><text x="120" y="158" fill="#10B981">E F G H I J</text>
+      <text x="60" y="176" fill="#F0B429" font-weight="700">5873</text><text x="120" y="176" fill="#F0B429">D E F G H I</text>
+      <text x="60" y="194" fill="#fff">5872</text><text x="120" y="194" fill="#10B981">D E F G H</text>
+      <text x="60" y="212" fill="#fff">5871</text><text x="120" y="212" fill="#10B981">C D E</text>
+      <text x="60" y="230" fill="#fff">5870</text><text x="120" y="230" fill="#10B981">B C</text>
+    </g>
+
+    <line x1="225" y1="92" x2="280" y2="92" stroke="#EF4444" stroke-width="2"/>
+    <text x="295" y="96" fill="#EF4444" font-size="11" font-family="Inter" font-weight="700">SINGLE PRINTS</text>
+    <text x="295" y="112" fill="#9AA0A8" font-size="10" font-family="Inter">at 5876-5877 — auction</text>
+    <text x="295" y="124" fill="#9AA0A8" font-size="10" font-family="Inter">skipped these levels</text>
+
+    <text x="295" y="148" fill="#10B981" font-size="11" font-family="Inter" font-weight="700">EXPECTATION</text>
+    <text x="295" y="164" fill="#9AA0A8" font-size="10" font-family="Inter">market will retrace and</text>
+    <text x="295" y="176" fill="#9AA0A8" font-size="10" font-family="Inter">"fill" the singles</text>
+  </g>
+
+  <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Single prints expose where stops/limits never executed. Markets rarely leave them unresolved.</text>
+</svg>

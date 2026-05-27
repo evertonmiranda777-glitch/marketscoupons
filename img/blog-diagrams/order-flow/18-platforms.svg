@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg18" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg18)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Order Flow Platforms — What Actually Works</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Footprint quality depends on tick data quality. Cheap data = lying footprint.</text>
+
+  <g transform="translate(60, 100)" font-size="11">
+    <g>
+      <rect width="380" height="200" rx="12" fill="rgba(16,185,129,.06)" stroke="#10B981" stroke-width="1.5"/>
+      <text x="20" y="28" fill="#10B981" font-size="14" font-weight="700">Bookmap · Sierra Chart · ATAS</text>
+      <text x="20" y="52" fill="#9AA0A8">Direct CME tick feed · sub-millisecond ladder</text>
+      <text x="20" y="72" fill="#9AA0A8">Full DOM depth · heatmap visualization</text>
+      <text x="20" y="92" fill="#9AA0A8">Iceberg/spoof detection built-in</text>
+      <text x="20" y="112" fill="#9AA0A8">Replay at 1× to 1000× speed</text>
+      <text x="20" y="138" fill="#10B981" font-weight="700">Cost: $99-300/month + exchange fees</text>
+      <text x="20" y="158" fill="#9AA0A8">Best for: serious futures traders</text>
+      <text x="20" y="182" fill="#F0B429" font-size="11">Most prop firms include these for free</text>
+    </g>
+
+    <g transform="translate(400, 0)">
+      <rect width="380" height="200" rx="12" fill="rgba(240,180,41,.06)" stroke="#F0B429" stroke-width="1.5"/>
+      <text x="20" y="28" fill="#F0B429" font-size="14" font-weight="700">NinjaTrader · Quantower · Jigsaw</text>
+      <text x="20" y="52" fill="#9AA0A8">Tick-by-tick footprint · solid execution</text>
+      <text x="20" y="72" fill="#9AA0A8">Heatmap and CVD indicators</text>
+      <text x="20" y="92" fill="#9AA0A8">Limited DOM depth in free tier</text>
+      <text x="20" y="112" fill="#9AA0A8">Smaller broker selection</text>
+      <text x="20" y="138" fill="#F0B429" font-weight="700">Cost: free + ~$70/m data, or $1,099 lifetime</text>
+      <text x="20" y="158" fill="#9AA0A8">Best for: prop firm evals, smaller accounts</text>
+      <text x="20" y="182" fill="#F0B429" font-size="11">NinjaTrader is the Apex/Bulenox default</text>
+    </g>
+
+    <g transform="translate(0, 220)">
+      <rect width="780" height="180" rx="12" fill="rgba(239,68,68,.05)" stroke="rgba(239,68,68,.3)"/>
+      <text x="20" y="28" fill="#EF4444" font-size="14" font-weight="700">AVOID for serious order flow</text>
+      <text x="20" y="56" fill="#9AA0A8">• TradingView footprint indicators — they use aggregated 1-sec bars, NOT true tick data. Imbalances are wrong.</text>
+      <text x="20" y="76" fill="#9AA0A8">• Broker-provided "depth" without exchange fees — they show LP quotes only, not full book.</text>
+      <text x="20" y="96" fill="#9AA0A8">• Free crypto exchange order flow — most exchanges hide aggressor side; CVD is inferred and often inverted.</text>
+      <text x="20" y="116" fill="#9AA0A8">• MT4/MT5 forex order flow — there is no centralized tape in forex, so "delta" is broker-specific.</text>
+      <text x="20" y="148" fill="#EF4444" font-weight="700">Rule: if you cannot identify the exchange tick feed source, the order flow is fiction.</text>
+    </g>
+  </g>
+</svg>

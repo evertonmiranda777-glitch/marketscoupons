@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg16" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg16)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">0DTE Risk Management — Non-Negotiable Rules</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Same-day expiry means gamma is huge. One trade can blow a month of premium. Sizing is everything.</text>
+
+  <g transform="translate(60, 100)" font-size="11">
+    <g>
+      <rect width="780" height="90" rx="10" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">1 · Max risk = 1.5% of account per trade</text>
+      <text x="20" y="50" fill="#9AA0A8">$50K account → max $750 per IC · max $375 per straddle. Sizing is the lever, NOT win rate.</text>
+      <text x="20" y="70" fill="#9AA0A8">If you cannot survive 5 max losers in a row, you are over-sized. Period.</text>
+    </g>
+    <g transform="translate(0, 100)">
+      <rect width="780" height="90" rx="10" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">2 · Stop at 3× credit (for IC) or -50% (for debit)</text>
+      <text x="20" y="50" fill="#9AA0A8">No "let it work" past 3× credit. By 3× the structure is gamma-trapped against you.</text>
+      <text x="20" y="70" fill="#9AA0A8">For debit trades (long calls/puts), stop at -50% of premium paid. Decay accelerates.</text>
+    </g>
+    <g transform="translate(0, 200)">
+      <rect width="780" height="90" rx="10" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">3 · One position per session · max two strategies</text>
+      <text x="20" y="50" fill="#9AA0A8">Overlapping positions correlate during stress · 1 IC + 1 directional max</text>
+      <text x="20" y="70" fill="#9AA0A8">Multiple ICs at different strikes look diversified — they aren't. They all crash together.</text>
+    </g>
+    <g transform="translate(0, 300)">
+      <rect width="780" height="90" rx="10" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">4 · NEVER trade FOMC, CPI, NFP days unsized</text>
+      <text x="20" y="50" fill="#9AA0A8">Half-size on event days · zero size on FOMC press conference 14:30 ET</text>
+      <text x="20" y="70" fill="#9AA0A8">Vol can move 5+ points in 2 minutes — gamma exposure becomes lottery</text>
+    </g>
+    <g transform="translate(0, 400)">
+      <rect width="780" height="90" rx="10" fill="rgba(239,68,68,.06)" stroke="#EF4444"/>
+      <text x="20" y="28" fill="#EF4444" font-size="13" font-weight="700">5 · 3 max losses = stop trading for the week</text>
+      <text x="20" y="50" fill="#9AA0A8">3 consecutive losses = thesis broken or regime changed · don't fight it</text>
+      <text x="20" y="70" fill="#9AA0A8">Walk away · review on weekend · come back Monday with fresh model</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg14" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg14)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Initiative vs Responsive Activity</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Auction Market Theory — buyers and sellers come in two flavors. Identify which one, you know the regime.</text>
+
+  <g transform="translate(80, 110)">
+    <rect width="340" height="320" rx="14" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.4)"/>
+    <text x="170" y="32" fill="#10B981" font-size="15" font-weight="700" text-anchor="middle">INITIATIVE</text>
+    <text x="170" y="50" fill="#9AA0A8" font-size="11" text-anchor="middle">enters OUTSIDE value area</text>
+
+    <g transform="translate(140, 80)">
+      <rect width="60" height="14" fill="#10B981" opacity=".4"/>
+      <rect y="14" width="40" height="14" fill="#10B981" opacity=".4"/>
+      <line x1="-10" y1="40" x2="80" y2="40" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="-20" y="44" fill="#3B82F6" font-size="9" text-anchor="end">VAH</text>
+      <rect y="44" width="90" height="14" fill="#10B981" opacity=".6"/>
+      <rect y="60" width="60" height="14" fill="#10B981" opacity=".5"/>
+      <line x1="-10" y1="80" x2="80" y2="80" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="-20" y="84" fill="#3B82F6" font-size="9" text-anchor="end">VAL</text>
+      <rect y="84" width="40" height="14" fill="#10B981" opacity=".4"/>
+    </g>
+
+    <text x="170" y="230" fill="#10B981" font-size="11" font-weight="700" text-anchor="middle">expands the range</text>
+    <text x="170" y="250" fill="#9AA0A8" font-size="11" text-anchor="middle">aggressive · adds new value</text>
+    <text x="170" y="280" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">→ trade with it</text>
+  </g>
+
+  <g transform="translate(480, 110)">
+    <rect width="340" height="320" rx="14" fill="rgba(244,114,182,.05)" stroke="rgba(244,114,182,.4)"/>
+    <text x="170" y="32" fill="#F472B6" font-size="15" font-weight="700" text-anchor="middle">RESPONSIVE</text>
+    <text x="170" y="50" fill="#9AA0A8" font-size="11" text-anchor="middle">enters OUTSIDE value, fades back in</text>
+
+    <g transform="translate(140, 80)">
+      <line x1="-10" y1="0" x2="80" y2="0" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="-20" y="4" fill="#3B82F6" font-size="9" text-anchor="end">VAH</text>
+      <rect width="40" height="14" fill="#F472B6" opacity=".4"/>
+      <rect y="14" width="80" height="14" fill="#F472B6" opacity=".6"/>
+      <rect y="28" width="40" height="14" fill="#F472B6" opacity=".4"/>
+      <line x1="-10" y1="44" x2="80" y2="44" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="-20" y="48" fill="#3B82F6" font-size="9" text-anchor="end">VAL</text>
+    </g>
+
+    <path d="M 220 90 C 240 110 250 130 200 150" fill="none" stroke="#F472B6" stroke-width="2" marker-end="url(#a14)"/>
+
+    <text x="170" y="230" fill="#F472B6" font-size="11" font-weight="700" text-anchor="middle">fades extremes back to value</text>
+    <text x="170" y="250" fill="#9AA0A8" font-size="11" text-anchor="middle">defensive · mean reversion</text>
+    <text x="170" y="280" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">→ fade the extreme</text>
+  </g>
+
+  <defs>
+    <marker id="a14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#F472B6"/>
+    </marker>
+  </defs>
+
+  <text x="450" y="470" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Classify the activity FIRST. Trading initiative as if it were responsive = full account-blow speed run.</text>
+</svg>

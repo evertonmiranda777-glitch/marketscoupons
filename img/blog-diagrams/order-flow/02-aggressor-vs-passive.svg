@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="480" fill="url(#bg2)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Aggressor vs Passive — Who Moves Price?</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Every trade has TWO sides — but only ONE side is aggressive (lifts ask or hits bid). That side moves price.</text>
+
+  <g transform="translate(80, 110)">
+    <rect width="340" height="320" rx="14" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.4)"/>
+    <text x="170" y="32" fill="#10B981" font-size="15" font-weight="700" text-anchor="middle">BUY AGGRESSOR (lifts ask)</text>
+
+    <g transform="translate(50, 60)" font-family="JetBrains Mono, monospace" font-size="13">
+      <text x="0" y="20" fill="#9AA0A8" font-family="Inter" font-size="11">Order book before:</text>
+      <text x="0" y="44" fill="#EF4444">5872.25 · 50 (ask)</text>
+      <text x="0" y="64" fill="#10B981">5872.00 · 80 (bid)</text>
+
+      <line x1="0" y1="80" x2="240" y2="80" stroke="rgba(255,255,255,.1)"/>
+
+      <text x="0" y="105" fill="#fff" font-family="Inter" font-size="11" font-weight="700">MARKET BUY 30 fills @ 5872.25</text>
+
+      <text x="0" y="135" fill="#9AA0A8" font-family="Inter" font-size="11">Order book after:</text>
+      <text x="0" y="159" fill="#EF4444">5872.25 · 20 (ask)</text>
+      <text x="0" y="179" fill="#10B981">5872.00 · 80 (bid)</text>
+
+      <text x="0" y="215" fill="#10B981" font-family="Inter" font-size="12" font-weight="700">→ price prints 5872.25</text>
+      <text x="0" y="232" fill="#10B981" font-family="Inter" font-size="12" font-weight="700">→ 30 to ASK volume</text>
+    </g>
+  </g>
+
+  <g transform="translate(480, 110)">
+    <rect width="340" height="320" rx="14" fill="rgba(239,68,68,.05)" stroke="rgba(239,68,68,.4)"/>
+    <text x="170" y="32" fill="#EF4444" font-size="15" font-weight="700" text-anchor="middle">SELL AGGRESSOR (hits bid)</text>
+
+    <g transform="translate(50, 60)" font-family="JetBrains Mono, monospace" font-size="13">
+      <text x="0" y="20" fill="#9AA0A8" font-family="Inter" font-size="11">Order book before:</text>
+      <text x="0" y="44" fill="#EF4444">5872.25 · 50 (ask)</text>
+      <text x="0" y="64" fill="#10B981">5872.00 · 80 (bid)</text>
+
+      <line x1="0" y1="80" x2="240" y2="80" stroke="rgba(255,255,255,.1)"/>
+
+      <text x="0" y="105" fill="#fff" font-family="Inter" font-size="11" font-weight="700">MARKET SELL 45 hits @ 5872.00</text>
+
+      <text x="0" y="135" fill="#9AA0A8" font-family="Inter" font-size="11">Order book after:</text>
+      <text x="0" y="159" fill="#EF4444">5872.25 · 50 (ask)</text>
+      <text x="0" y="179" fill="#10B981">5872.00 · 35 (bid)</text>
+
+      <text x="0" y="215" fill="#EF4444" font-family="Inter" font-size="12" font-weight="700">→ price prints 5872.00</text>
+      <text x="0" y="232" fill="#EF4444" font-family="Inter" font-size="12" font-weight="700">→ 45 to BID volume</text>
+    </g>
+  </g>
+
+  <text x="450" y="460" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">The aggressor pays the spread. Always. They want execution NOW more than they want a good price.</text>
+</svg>

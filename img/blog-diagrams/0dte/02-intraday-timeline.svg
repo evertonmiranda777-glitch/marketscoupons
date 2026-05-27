@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="480" fill="url(#bg2)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">0DTE Intraday Timeline — 6.5 Hours of Key Events</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Each hour of the SPX session has a distinct 0DTE microstructure regime</text>
+
+  <g transform="translate(60, 140)">
+    <line x1="0" y1="40" x2="780" y2="40" stroke="rgba(240,180,41,.4)" stroke-width="3"/>
+    <g font-size="10" fill="#9AA0A8" text-anchor="middle">
+      <line x1="0" y1="30" x2="0" y2="50" stroke="#F0B429" stroke-width="2"/>
+      <text x="0" y="75">9:30</text>
+      <line x1="195" y1="30" x2="195" y2="50" stroke="#F0B429" stroke-width="2"/>
+      <text x="195" y="75">11:00</text>
+      <line x1="390" y1="30" x2="390" y2="50" stroke="#F0B429" stroke-width="2"/>
+      <text x="390" y="75">12:30</text>
+      <line x1="585" y1="30" x2="585" y2="50" stroke="#F0B429" stroke-width="2"/>
+      <text x="585" y="75">15:00</text>
+      <line x1="780" y1="30" x2="780" y2="50" stroke="#F0B429" stroke-width="2"/>
+      <text x="780" y="75">16:00</text>
+    </g>
+
+    <g font-size="11" font-weight="700" text-anchor="middle">
+      <rect x="0" y="-50" width="195" height="42" rx="6" fill="rgba(239,68,68,.15)" stroke="#EF4444"/>
+      <text x="97" y="-30" fill="#EF4444">OPEN VOL</text>
+      <text x="97" y="-15" fill="#9AA0A8" font-weight="400" font-size="9">overnight gaps · positioning</text>
+
+      <rect x="200" y="-50" width="190" height="42" rx="6" fill="rgba(240,180,41,.15)" stroke="#F0B429"/>
+      <text x="295" y="-30" fill="#F0B429">DRIFT</text>
+      <text x="295" y="-15" fill="#9AA0A8" font-weight="400" font-size="9">low vol · slow gamma decay</text>
+
+      <rect x="395" y="-50" width="190" height="42" rx="6" fill="rgba(59,130,246,.15)" stroke="#3B82F6"/>
+      <text x="490" y="-30" fill="#3B82F6">LUNCH CHOP</text>
+      <text x="490" y="-15" fill="#9AA0A8" font-weight="400" font-size="9">vol crush · IC entry zone</text>
+
+      <rect x="590" y="-50" width="190" height="42" rx="6" fill="rgba(244,114,182,.15)" stroke="#F472B6"/>
+      <text x="685" y="-30" fill="#F472B6">3PM RAMP</text>
+      <text x="685" y="-15" fill="#9AA0A8" font-weight="400" font-size="9">charm flow · pin formation</text>
+    </g>
+
+    <g transform="translate(0, 110)">
+      <text x="0" y="0" fill="#fff" font-size="12" font-weight="700">Gamma exposure (intraday)</text>
+      <path d="M 0 30 L 100 35 L 200 50 L 300 70 L 400 100 L 500 140 L 600 190 L 700 245 L 780 290" fill="none" stroke="#F0B429" stroke-width="2"/>
+      <text x="780" y="20" fill="#F0B429" font-size="10" text-anchor="end">peak near close</text>
+    </g>
+  </g>
+</svg>

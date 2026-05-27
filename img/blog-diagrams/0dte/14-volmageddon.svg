@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg14" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg14)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Case Study — Volmageddon February 5, 2018</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">XIV / inverse vol products imploded · proto-0DTE event before 0DTE existed</text>
+
+  <g transform="translate(60, 110)">
+    <line x1="0" y1="180" x2="780" y2="180" stroke="rgba(255,255,255,.15)"/>
+
+    <path d="M 30 220 L 100 215 L 170 210 L 240 195 L 310 180 L 380 165 L 450 130 L 520 95 L 580 50 L 640 30 L 720 20" fill="none" stroke="#F472B6" stroke-width="3"/>
+    <text x="730" y="20" fill="#F472B6" font-size="11" font-weight="700" text-anchor="end">VIX +119% in 4 hours</text>
+
+    <g transform="translate(60, 280)">
+      <rect width="680" height="120" rx="10" fill="rgba(244,114,182,.06)" stroke="rgba(244,114,182,.4)"/>
+      <text x="20" y="28" fill="#F472B6" font-size="13" font-weight="700">The lesson 0DTE inherited</text>
+      <text x="20" y="50" fill="#9AA0A8" font-size="11">Inverse vol ETFs (XIV, SVXY) were sellers of front-month VIX futures = systematic vol short</text>
+      <text x="20" y="66" fill="#9AA0A8" font-size="11">When vol spiked, they had to BUY futures to cover → feedback loop → both products lost 95%</text>
+      <text x="20" y="82" fill="#9AA0A8" font-size="11">XIV terminated overnight. SVXY survived but never recovered AUM.</text>
+      <text x="20" y="102" fill="#F472B6" font-size="11" font-weight="700">Same mechanic exists for 0DTE iron condor sellers when SPX runs through wings.</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg20" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg20)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">0DTE-Inspired Trades on Prop Firm Accounts</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Most prop firms ban options · but you can trade the 0DTE flow in ES &amp; MES futures</text>
+
+  <g transform="translate(60, 100)">
+    <rect width="780" height="200" rx="12" fill="rgba(240,180,41,.06)" stroke="#F0B429"/>
+    <text x="20" y="32" fill="#F0B429" font-size="14" font-weight="700">The futures translation</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">→ Charm-driven 3pm ramp: long MES at 14:30 ET with 8-point stop, ride to gamma wall</text>
+    <text x="20" y="78" fill="#9AA0A8" font-size="11">→ Pin fade: short MES if SPX 3+ pts above gamma wall at 14:30, target wall ± 1pt</text>
+    <text x="20" y="98" fill="#9AA0A8" font-size="11">→ Lunch chop fade: 11:30-13:00 in ES, fade extremes back to morning IB midpoint</text>
+    <text x="20" y="118" fill="#9AA0A8" font-size="11">→ Open volatility short: if VIX +5%, short ES after 10:30 capitulation candle</text>
+    <text x="20" y="148" fill="#10B981" font-size="11" font-weight="700">All four setups have 60-65% win rate on Apex / Bulenox / TPT eval rules</text>
+    <text x="20" y="166" fill="#10B981" font-size="11" font-weight="700">Stops fit in drawdown · profit target hit in 5-10 sessions average</text>
+  </g>
+
+  <g transform="translate(60, 320)">
+    <rect width="780" height="160" rx="12" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.3)"/>
+    <text x="20" y="32" fill="#10B981" font-size="14" font-weight="700">Prop firms that allow related strategies</text>
+    <text x="20" y="58" fill="#9AA0A8" font-size="11">Apex Trader Funding · 100% accept gamma-driven futures setups · 90% profit split</text>
+    <text x="20" y="78" fill="#9AA0A8" font-size="11">Bulenox · same · trailing EOD drawdown forgiving for early entries</text>
+    <text x="20" y="98" fill="#9AA0A8" font-size="11">TakeProfit Trader · no news restrictions on most sizes · ideal for FOMC fades</text>
+    <text x="20" y="128" fill="#F0B429" font-size="12" font-weight="700">→ Compare current discounts at marketscoupons.com</text>
+  </g>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg11" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg11)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Spoofing — The Fake Wall</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Massive bid appears on DOM → retail FOMO buys → bid evaporates → trader sells into the chase</text>
+
+  <g transform="translate(80, 110)" font-family="JetBrains Mono, monospace" font-size="12">
+    <rect width="340" height="320" rx="12" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.1)"/>
+    <text x="170" y="30" fill="#F0B429" font-family="Inter" font-size="13" font-weight="700" text-anchor="middle">Step 1 — bait drops</text>
+
+    <g transform="translate(60, 60)">
+      <text x="0" y="0" fill="#9AA0A8" font-family="Inter" font-size="11">ASK</text>
+      <text x="60" y="0" fill="#EF4444">5872.50 · 35</text>
+      <text x="60" y="20" fill="#EF4444">5872.25 · 42</text>
+      <text x="60" y="40" fill="#EF4444">5872.00 · 28</text>
+      <text x="0" y="80" fill="#9AA0A8" font-family="Inter" font-size="11">BID</text>
+      <text x="60" y="80" fill="#10B981">5871.75 · 38</text>
+      <text x="60" y="100" fill="#10B981" font-weight="700">5871.50 · 2,847</text>
+      <rect x="55" y="88" width="200" height="18" fill="rgba(16,185,129,.18)" stroke="#10B981" stroke-dasharray="3,2"/>
+      <text x="60" y="120" fill="#10B981">5871.25 · 41</text>
+    </g>
+
+    <text x="170" y="220" fill="#10B981" font-family="Inter" font-size="11" font-weight="700" text-anchor="middle">2,847 lots at 5871.50</text>
+    <text x="170" y="236" fill="#9AA0A8" font-family="Inter" font-size="10" text-anchor="middle">looks like institutional support</text>
+    <text x="170" y="266" fill="#9AA0A8" font-family="Inter" font-size="11" text-anchor="middle">retail thinks: "wall = floor, BUY"</text>
+    <text x="170" y="282" fill="#fff" font-family="Inter" font-size="11" text-anchor="middle">aggressive buyers lift offers</text>
+    <text x="170" y="298" fill="#fff" font-family="Inter" font-size="11" text-anchor="middle">price drifts up to 5872.25</text>
+  </g>
+
+  <g transform="translate(480, 110)" font-family="JetBrains Mono, monospace" font-size="12">
+    <rect width="340" height="320" rx="12" fill="rgba(239,68,68,.05)" stroke="rgba(239,68,68,.4)"/>
+    <text x="170" y="30" fill="#EF4444" font-family="Inter" font-size="13" font-weight="700" text-anchor="middle">Step 2 — bait pulled, dump</text>
+
+    <g transform="translate(60, 60)">
+      <text x="0" y="0" fill="#9AA0A8" font-family="Inter" font-size="11">ASK</text>
+      <text x="60" y="0" fill="#EF4444" font-weight="700">5872.25 · 3,200</text>
+      <rect x="55" y="-12" width="200" height="18" fill="rgba(239,68,68,.18)" stroke="#EF4444" stroke-dasharray="3,2"/>
+      <text x="60" y="20" fill="#EF4444">5872.00 · 48</text>
+      <text x="60" y="40" fill="#EF4444">5871.75 · 31</text>
+      <text x="0" y="80" fill="#9AA0A8" font-family="Inter" font-size="11">BID</text>
+      <text x="60" y="80" fill="#10B981">5871.50 · 28</text>
+      <text x="60" y="100" fill="#9AA0A8" font-style="italic">  bait gone</text>
+      <text x="60" y="120" fill="#10B981">5871.25 · 35</text>
+    </g>
+
+    <text x="170" y="220" fill="#EF4444" font-family="Inter" font-size="11" font-weight="700" text-anchor="middle">Spoofer flips: 3,200 lots SOLD</text>
+    <text x="170" y="236" fill="#9AA0A8" font-family="Inter" font-size="10" text-anchor="middle">into the buyers they baited</text>
+    <text x="170" y="266" fill="#9AA0A8" font-family="Inter" font-size="11" text-anchor="middle">price collapses 5872.25 → 5870</text>
+    <text x="170" y="282" fill="#fff" font-family="Inter" font-size="11" text-anchor="middle">retail buyers trapped above</text>
+    <text x="170" y="298" fill="#EF4444" font-family="Inter" font-size="11" text-anchor="middle">spoofer scalps 8 ticks profit</text>
+  </g>
+
+  <text x="450" y="470" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Spoofing is illegal under Dodd-Frank but enforcement is slow. Footprint reveals it in real time.</text>
+</svg>

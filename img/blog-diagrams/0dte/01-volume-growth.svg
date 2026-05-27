@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg1)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">0DTE Options Volume — From 5% to 50% in 4 Years</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">SPX options expiring same day went from niche to dominant — and rebuilt how markets close</text>
+
+  <g transform="translate(80, 100)">
+    <line x1="0" y1="280" x2="780" y2="280" stroke="rgba(255,255,255,.15)"/>
+    <g font-size="10" fill="#9AA0A8">
+      <text x="-10" y="60" text-anchor="end">50%</text>
+      <text x="-10" y="120" text-anchor="end">40%</text>
+      <text x="-10" y="180" text-anchor="end">30%</text>
+      <text x="-10" y="240" text-anchor="end">20%</text>
+      <text x="-10" y="284" text-anchor="end">10%</text>
+    </g>
+
+    <g>
+      <rect x="40" y="240" width="80" height="40" fill="#3B82F6" opacity=".7"/>
+      <text x="80" y="300" fill="#9AA0A8" font-size="11" text-anchor="middle">2022</text>
+      <text x="80" y="232" fill="#3B82F6" font-size="12" font-weight="700" text-anchor="middle">22%</text>
+
+      <rect x="180" y="170" width="80" height="110" fill="#10B981" opacity=".7"/>
+      <text x="220" y="300" fill="#9AA0A8" font-size="11" text-anchor="middle">2023</text>
+      <text x="220" y="162" fill="#10B981" font-size="12" font-weight="700" text-anchor="middle">39%</text>
+
+      <rect x="320" y="120" width="80" height="160" fill="#F0B429" opacity=".7"/>
+      <text x="360" y="300" fill="#9AA0A8" font-size="11" text-anchor="middle">2024</text>
+      <text x="360" y="112" fill="#F0B429" font-size="12" font-weight="700" text-anchor="middle">45%</text>
+
+      <rect x="460" y="85" width="80" height="195" fill="#F0B429"/>
+      <text x="500" y="300" fill="#9AA0A8" font-size="11" text-anchor="middle">2025</text>
+      <text x="500" y="77" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">48%</text>
+
+      <rect x="600" y="75" width="80" height="205" fill="#F0B429" stroke="#fff" stroke-width="1.5"/>
+      <text x="640" y="300" fill="#9AA0A8" font-size="11" text-anchor="middle">2026</text>
+      <text x="640" y="67" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">52%</text>
+    </g>
+
+    <text x="0" y="335" fill="#9AA0A8" font-size="11">% of SPX options volume that is same-day expiry</text>
+    <text x="0" y="352" fill="#9AA0A8" font-size="10">Source: CBOE Annual Market Stats · SPGI · OCC clearing data</text>
+  </g>
+
+  <text x="450" y="480" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">More than half of SPX option flow now expires the same trading day. The market hasn't been the same.</text>
+</svg>

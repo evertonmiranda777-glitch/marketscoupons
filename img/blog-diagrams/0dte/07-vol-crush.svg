@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg7" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="500" fill="url(#bg7)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Vol Crush Trade — Selling Lunch Volatility</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">11:30 IV spike from morning news fades into noon as volume dies → sell straddles, buy back later</text>
+
+  <g transform="translate(60, 110)">
+    <line x1="0" y1="240" x2="780" y2="240" stroke="rgba(255,255,255,.15)"/>
+    <text x="-10" y="244" fill="#9AA0A8" font-size="10" text-anchor="end">IV %</text>
+
+    <path d="M 30 200 L 80 180 L 130 150 L 180 100 L 230 90 L 280 130 L 330 180 L 380 215 L 430 230 L 480 235 L 530 220 L 580 200 L 630 180 L 680 150 L 730 110" fill="none" stroke="#F472B6" stroke-width="2.5"/>
+
+    <g transform="translate(180, 90)">
+      <circle r="6" fill="#EF4444"/>
+      <text x="0" y="-12" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">IV peak (11:00)</text>
+      <text x="0" y="-26" fill="#9AA0A8" font-size="9" text-anchor="middle">SELL straddle here</text>
+    </g>
+
+    <g transform="translate(455, 235)">
+      <circle r="6" fill="#10B981"/>
+      <text x="0" y="24" fill="#10B981" font-size="11" font-weight="700" text-anchor="middle">IV trough (13:00)</text>
+      <text x="0" y="38" fill="#9AA0A8" font-size="9" text-anchor="middle">BUY back here · close trade</text>
+    </g>
+
+    <g transform="translate(60, 320)">
+      <rect width="680" height="120" rx="10" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
+      <text x="20" y="28" fill="#F0B429" font-size="13" font-weight="700">Expected value math</text>
+      <text x="20" y="50" fill="#9AA0A8" font-size="11">Straddle sold @ IV 18% · gamma scalp 0.05% over 90 min · IV crushes to 14% by 13:00</text>
+      <text x="20" y="66" fill="#9AA0A8" font-size="11">Vega P&amp;L: (18−14) × 0.04 vega = +$0.16/share · Theta P&amp;L over 90min: +$0.08</text>
+      <text x="20" y="82" fill="#9AA0A8" font-size="11">Risk: news spike between 11:00 and 13:00 — use stop at +1× ATR move</text>
+      <text x="20" y="102" fill="#F0B429" font-size="11" font-weight="700">Win rate ~62% · avg profit $0.20/share · loser $0.45/share (asymmetric risk)</text>
+    </g>
+  </g>
+</svg>

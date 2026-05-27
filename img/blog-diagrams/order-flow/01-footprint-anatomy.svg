@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="540" fill="url(#bg1)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Footprint Bar Anatomy — Bid × Ask × Price</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">A single footprint bar = all trades that happened at each price, split by aggressor side</text>
+
+  <g transform="translate(280, 100)" font-family="JetBrains Mono, monospace" font-size="14">
+    <rect width="340" height="380" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.15)"/>
+    <text x="170" y="32" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">ES futures · 1-min bar · 14:32</text>
+
+    <g font-weight="600">
+      <text x="20" y="70" fill="#9AA0A8" font-size="11" font-family="Inter">PRICE</text>
+      <text x="120" y="70" fill="#EF4444" font-size="11" font-family="Inter" text-anchor="middle">BID vol</text>
+      <text x="220" y="70" fill="#10B981" font-size="11" font-family="Inter" text-anchor="middle">ASK vol</text>
+      <text x="310" y="70" fill="#F0B429" font-size="11" font-family="Inter" text-anchor="middle">delta</text>
+    </g>
+
+    <g>
+      <text x="60" y="100" fill="#fff">5872.75</text><text x="120" y="100" fill="#EF4444" text-anchor="middle">8</text><text x="220" y="100" fill="#10B981" text-anchor="middle">142</text><text x="310" y="100" fill="#10B981" text-anchor="middle">+134</text>
+      <text x="60" y="130" fill="#fff">5872.50</text><text x="120" y="130" fill="#EF4444" text-anchor="middle">42</text><text x="220" y="130" fill="#10B981" text-anchor="middle">218</text><text x="310" y="130" fill="#10B981" text-anchor="middle">+176</text>
+      <text x="60" y="160" fill="#fff">5872.25</text><text x="120" y="160" fill="#EF4444" text-anchor="middle">87</text><text x="220" y="160" fill="#10B981" text-anchor="middle">94</text><text x="310" y="160" fill="#9AA0A8" text-anchor="middle">+7</text>
+      <text x="60" y="190" fill="#fff">5872.00</text><text x="120" y="190" fill="#EF4444" text-anchor="middle">156</text><text x="220" y="190" fill="#10B981" text-anchor="middle">68</text><text x="310" y="190" fill="#EF4444" text-anchor="middle">-88</text>
+      <text x="60" y="220" fill="#F0B429" font-weight="700">5871.75</text><text x="120" y="220" fill="#EF4444" text-anchor="middle" font-weight="700">301</text><text x="220" y="220" fill="#10B981" text-anchor="middle" font-weight="700">42</text><text x="310" y="220" fill="#EF4444" text-anchor="middle">-259</text>
+      <text x="60" y="250" fill="#fff">5871.50</text><text x="120" y="250" fill="#EF4444" text-anchor="middle">98</text><text x="220" y="250" fill="#10B981" text-anchor="middle">31</text><text x="310" y="250" fill="#EF4444" text-anchor="middle">-67</text>
+    </g>
+
+    <line x1="20" y1="290" x2="320" y2="290" stroke="rgba(255,255,255,.15)"/>
+    <text x="20" y="316" fill="#fff" font-size="12" font-family="Inter">TOTAL volume: 1,297</text>
+    <text x="20" y="336" fill="#fff" font-size="12" font-family="Inter">BAR delta: <tspan fill="#EF4444">-97</tspan> (slight sell pressure)</text>
+    <text x="20" y="356" fill="#fff" font-size="12" font-family="Inter">POC (Point of Control): <tspan fill="#F0B429">5871.75</tspan></text>
+  </g>
+
+  <g transform="translate(40, 130)" font-family="Inter" font-size="11">
+    <text x="0" y="0" fill="#F0B429" font-size="13" font-weight="700">How to read</text>
+    <text x="0" y="22" fill="#9AA0A8">Each row = a price level</text>
+    <text x="0" y="38" fill="#9AA0A8">Red = aggressive sellers</text>
+    <text x="0" y="54" fill="#9AA0A8">Green = aggressive buyers</text>
+    <text x="0" y="70" fill="#9AA0A8">Delta = ask − bid per row</text>
+    <text x="0" y="86" fill="#9AA0A8">POC = highest-volume price</text>
+    <text x="0" y="110" fill="#10B981" font-weight="700">Reveals WHO traded WHERE</text>
+    <text x="0" y="126" fill="#9AA0A8">not just price &amp; time</text>
+  </g>
+
+  <text x="450" y="515" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">One footprint bar carries 4× more information than the OHLC candle painted on top of it</text>
+</svg>
