@@ -153,17 +153,17 @@ for (const dir of DIRS) {
         }
       }
 
-      // (c) Text-vs-text major overlap (>30%) across different groups
+      // (c) Text-vs-text overlap — ANY two visible labels overlapping is a bug,
+      // regardless of group nesting (two distinct labels must never collide).
       for (let i = 0; i < texts.length; i++) {
         for (let j = i + 1; j < texts.length; j++) {
           const a = texts[i], b = texts[j];
-          if (sameLogicalGroup(a.el, b.el)) continue;
           const ix = Math.min(a.right, b.right) - Math.max(a.x, b.x);
           const iy = Math.min(a.bottom, b.bottom) - Math.max(a.y, b.y);
-          if (ix <= 4 || iy <= 4) continue;
+          if (ix <= 2 || iy <= 2) continue;
           const area = ix * iy;
           const minArea = Math.min(a.w * a.h, b.w * b.h);
-          if (area / minArea > 0.3) {
+          if (area / minArea > 0.15) {
             bugs.push({
               kind: 'text-overlap',
               a: a.txt.slice(0, 30),

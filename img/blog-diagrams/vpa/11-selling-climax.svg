@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg11v" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="480" fill="url(#bg11v)"/>
+  <rect width="900" height="560" fill="url(#bg11v)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Selling Climax — Capitulation in One Bar</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Maximum panic, maximum volume — and smart money buying every share of it.</text>
 
@@ -11,7 +11,7 @@
     <text x="320" y="255" fill="#10B981" font-size="11" font-weight="700">close off the low</text>
     <text x="320" y="271" fill="#9AA0A8" font-size="10">demand stepped in here</text>
 
-    <g transform="translate(40, 330)">
+    <g transform="translate(40, 360)">
       <rect x="0" y="35" width="18" height="25" fill="#EF4444" opacity=".5"/>
       <rect x="40" y="30" width="18" height="30" fill="#EF4444" opacity=".5"/>
       <rect x="80" y="25" width="18" height="35" fill="#EF4444" opacity=".6"/>
@@ -35,5 +35,5 @@
     <text x="20" y="236" fill="#9AA0A8" font-size="11">bottom. That is who you follow.</text>
   </g>
 
-  <text x="450" y="460" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">The climax is not the bottom you fear. It is the bottom you wait for.</text>
+  <text x="450" y="540" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">The climax is not the bottom you fear. It is the bottom you wait for.</text>
 </svg>
