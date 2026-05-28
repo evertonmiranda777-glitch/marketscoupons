@@ -30,6 +30,11 @@ for (const dir of DIRS) {
     total++;
     const fp = path.join(dir, file);
     const svg = fs.readFileSync(fp, 'utf8');
+    // XML validity: raw ampersand breaks <img> rendering (strict XML) even though HTML parsing is lenient
+    const rawAmp = svg.match(/&(?!amp;|lt;|gt;|quot;|apos;|#)/g);
+    if (rawAmp) {
+      issues.push({ file: fp, bugs: [{ kind: 'raw-ampersand', count: rawAmp.length }] });
+    }
     const vbMatch = svg.match(/viewBox="0 0 (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)"/);
     if (!vbMatch) continue;
     const svgFixed = svg.replace(/<svg /, `<svg width="${vbMatch[1]}" height="${vbMatch[2]}" `);
@@ -243,6 +248,7 @@ for (const i of issues) {
     else if (b.kind === 'text-overlap') console.log(`  TEXT overlap "${b.a}" ⇆ "${b.b}" (${b.pct}%)`);
     else if (b.kind === 'text-near-card-bottom') console.log(`  TEXT "${b.text}" too close to card bottom (gap ${b.gap}px)`);
     else if (b.kind === 'text-crosses-card-edge') console.log(`  TEXT "${b.text}" crosses EDGE of card ${b.cardBox} (${b.pct}%)`);
+    else if (b.kind === 'raw-ampersand') console.log(`  RAW & x${b.count} — breaks <img> rendering, escape as &amp;`);
   }
   if (i.bugs.length > 8) console.log(`  ... +${i.bugs.length - 8} more`);
 }
