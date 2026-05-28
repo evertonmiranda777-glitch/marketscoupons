@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg16v" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient>
+    <marker id="m16" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10B981"/></marker>
+  </defs>
+  <rect width="900" height="480" fill="url(#bg16v)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Setup 3 — The Spring and Its Test</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">A false break below support that traps sellers, then a low-volume test confirms the trap.</text>
+
+  <g transform="translate(60, 100)">
+    <line x1="0" y1="160" x2="620" y2="160" stroke="rgba(255,255,255,.18)" stroke-dasharray="4,3"/>
+    <text x="624" y="156" fill="#9AA0A8" font-size="9">range low</text>
+    <path d="M 30 120 L 90 145 L 150 130 L 210 155 L 270 210 L 310 175 L 360 150 L 410 170 L 460 130 L 530 90 L 600 60" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <circle cx="270" cy="210" r="9" fill="#10B981" stroke="#fff" stroke-width="2"/>
+    <text x="270" y="235" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">SPRING (high volume)</text>
+    <circle cx="410" cy="170" r="7" fill="#F0B429"/>
+    <text x="410" y="195" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">TEST (low volume)</text>
+    <line x1="410" y1="170" x2="525" y2="94" stroke="#10B981" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#m16)"/>
+  </g>
+
+  <g transform="translate(60, 360)">
+    <rect width="780" height="100" rx="10" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.3)"/>
+    <text x="20" y="28" fill="#10B981" font-size="13" font-weight="700">Rules</text>
+    <text x="20" y="50" fill="#9AA0A8" font-size="11">ENTRY · on the test bar that revisits the spring area on much lower volume and makes no new low</text>
+    <text x="20" y="68" fill="#9AA0A8" font-size="11">STOP · below the spring low — the absolute invalidation point</text>
+    <text x="20" y="86" fill="#9AA0A8" font-size="11">TARGET · the opposite side of the range · the spring is the single highest-probability Wyckoff long</text>
+  </g>
+</svg>

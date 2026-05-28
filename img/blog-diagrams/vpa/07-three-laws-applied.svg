@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" font-family="Inter, system-ui, sans-serif">
+  <defs><linearGradient id="bg7" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
+  <rect width="900" height="470" fill="url(#bg7)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The Three Wyckoff Laws — In Practice</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Each law becomes a concrete question you ask of every bar on the chart.</text>
+
+  <g transform="translate(40, 100)">
+    <rect width="260" height="300" rx="14" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.35)"/>
+    <text x="130" y="34" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">LAW 1 — Supply/Demand</text>
+    <text x="130" y="58" fill="#fff" font-size="11" text-anchor="middle">Read the bar's close</text>
+    <line x1="30" y1="78" x2="230" y2="78" stroke="rgba(255,255,255,.1)"/>
+    <text x="20" y="106" fill="#9AA0A8" font-size="11">Close near high = demand</text>
+    <text x="20" y="128" fill="#9AA0A8" font-size="11">won the bar.</text>
+    <text x="20" y="156" fill="#9AA0A8" font-size="11">Close near low = supply</text>
+    <text x="20" y="178" fill="#9AA0A8" font-size="11">won the bar.</text>
+    <text x="20" y="210" fill="#10B981" font-size="11" font-weight="700">Ask:</text>
+    <text x="20" y="232" fill="#9AA0A8" font-size="11">Who controlled the close,</text>
+    <text x="20" y="250" fill="#9AA0A8" font-size="11">buyers or sellers?</text>
+    <text x="130" y="285" fill="#F0B429" font-size="11" font-style="italic" text-anchor="middle">The close is the verdict.</text>
+  </g>
+
+  <g transform="translate(320, 100)">
+    <rect width="260" height="300" rx="14" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.35)"/>
+    <text x="130" y="34" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">LAW 2 — Effort/Result</text>
+    <text x="130" y="58" fill="#fff" font-size="11" text-anchor="middle">Compare volume to spread</text>
+    <line x1="30" y1="78" x2="230" y2="78" stroke="rgba(255,255,255,.1)"/>
+    <text x="20" y="106" fill="#9AA0A8" font-size="11">High volume + wide bar =</text>
+    <text x="20" y="128" fill="#9AA0A8" font-size="11">effort matched result.</text>
+    <text x="20" y="156" fill="#9AA0A8" font-size="11">High volume + narrow bar =</text>
+    <text x="20" y="178" fill="#9AA0A8" font-size="11">absorption hiding.</text>
+    <text x="20" y="210" fill="#10B981" font-size="11" font-weight="700">Ask:</text>
+    <text x="20" y="232" fill="#9AA0A8" font-size="11">Did the effort produce</text>
+    <text x="20" y="250" fill="#9AA0A8" font-size="11">the expected move?</text>
+    <text x="130" y="285" fill="#F0B429" font-size="11" font-style="italic" text-anchor="middle">Disparity = the signal.</text>
+  </g>
+
+  <g transform="translate(600, 100)">
+    <rect width="260" height="300" rx="14" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.35)"/>
+    <text x="130" y="34" fill="#F0B429" font-size="14" font-weight="700" text-anchor="middle">LAW 3 — Cause/Effect</text>
+    <text x="130" y="58" fill="#fff" font-size="11" text-anchor="middle">Measure the range width</text>
+    <line x1="30" y1="78" x2="230" y2="78" stroke="rgba(255,255,255,.1)"/>
+    <text x="20" y="106" fill="#9AA0A8" font-size="11">Wide, long base = big</text>
+    <text x="20" y="128" fill="#9AA0A8" font-size="11">cause = big trend ahead.</text>
+    <text x="20" y="156" fill="#9AA0A8" font-size="11">Narrow base = small</text>
+    <text x="20" y="178" fill="#9AA0A8" font-size="11">cause = small move.</text>
+    <text x="20" y="210" fill="#10B981" font-size="11" font-weight="700">Ask:</text>
+    <text x="20" y="232" fill="#9AA0A8" font-size="11">How much cause was</text>
+    <text x="20" y="250" fill="#9AA0A8" font-size="11">built before the move?</text>
+    <text x="130" y="285" fill="#F0B429" font-size="11" font-style="italic" text-anchor="middle">Time builds energy.</text>
+  </g>
+
+  <text x="450" y="450" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Three laws, three questions, asked on every single bar. That is the entire method.</text>
+</svg>

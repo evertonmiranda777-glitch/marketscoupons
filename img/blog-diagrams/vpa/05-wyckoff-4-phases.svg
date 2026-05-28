@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg5" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="480" fill="url(#bg5)"/>
+  <rect width="900" height="520" fill="url(#bg5)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">The 4 Phases of the Market Cycle</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Every asset, every timeframe, every era. The names change. The pattern doesn't.</text>
 
@@ -34,7 +34,7 @@
   </g>
 
   <!-- Bottom: smart money behavior per phase -->
-  <g transform="translate(80, 410)">
+  <g transform="translate(80, 450)">
     <rect width="740" height="50" rx="10" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
     <text x="370" y="22" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">Knowing your phase = knowing your strategy.</text>
     <text x="370" y="40" fill="#9AA0A8" font-size="11" text-anchor="middle">Mean-revert in 1 and 3. Trend-follow in 2 and 4. Never the other way around.</text>

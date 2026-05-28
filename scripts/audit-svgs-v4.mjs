@@ -16,6 +16,7 @@ const DIRS = [
   'img/blog-diagrams/pass-prop-firm',
   'img/blog-diagrams/trailing-vs-eod',
   'img/blog-diagrams/position-sizing',
+  'img/blog-diagrams/vpa',
 ];
 
 const browser = await chromium.launch();

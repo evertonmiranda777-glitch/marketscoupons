@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg15v" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient>
+    <marker id="m15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10B981"/></marker>
+  </defs>
+  <rect width="900" height="480" fill="url(#bg15v)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Setup 2 — The Selling-Climax Reversal</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Buy the test that holds above a climax low on collapsing volume.</text>
+
+  <g transform="translate(60, 100)">
+    <path d="M 30 90 L 90 130 L 150 180 L 210 230 L 240 255 L 270 215 L 330 200 L 380 225 L 420 218 L 480 180 L 560 130" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <circle cx="240" cy="255" r="9" fill="#EF4444" stroke="#fff" stroke-width="2"/>
+    <text x="240" y="280" fill="#EF4444" font-size="10" font-weight="700" text-anchor="middle">selling climax</text>
+    <circle cx="380" cy="225" r="7" fill="#10B981"/>
+    <text x="380" y="250" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">test holds higher</text>
+    <line x1="380" y1="225" x2="475" y2="184" stroke="#10B981" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#m15)"/>
+    <line x1="30" y1="255" x2="560" y2="255" stroke="rgba(239,68,68,.25)" stroke-dasharray="4,3"/>
+    <text x="44" y="250" fill="#9AA0A8" font-size="9">climax low</text>
+  </g>
+
+  <g transform="translate(60, 360)">
+    <rect width="780" height="100" rx="10" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.3)"/>
+    <text x="20" y="28" fill="#10B981" font-size="13" font-weight="700">Rules</text>
+    <text x="20" y="50" fill="#9AA0A8" font-size="11">ENTRY · on the test bar that makes a HIGHER low than the climax, on volume far below the climax bar</text>
+    <text x="20" y="68" fill="#9AA0A8" font-size="11">STOP · below the climax low — if price revisits it, the reversal failed</text>
+    <text x="20" y="86" fill="#9AA0A8" font-size="11">TARGET · the auto-rally high, then the prior range · this is the highest reward-to-risk setup in VPA</text>
+  </g>
+</svg>

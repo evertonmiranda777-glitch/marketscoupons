@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg9v" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient>
+    <marker id="m9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#EF4444"/></marker>
+  </defs>
+  <rect width="900" height="550" fill="url(#bg9v)"/>
+  <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">No-Demand Bar — The Quiet Top Signal</text>
+  <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">An up bar with no buying behind it. The rally is running on fumes.</text>
+
+  <g transform="translate(60, 100)">
+    <path d="M 30 230 L 90 200 L 150 160 L 210 130 L 270 110 L 330 100 L 390 96" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <circle cx="390" cy="96" r="7" fill="#EF4444" stroke="#fff" stroke-width="2"/>
+    <text x="430" y="92" fill="#EF4444" font-size="11" font-weight="700">no-demand bar</text>
+    <text x="430" y="108" fill="#9AA0A8" font-size="10">up bar, narrow, low volume</text>
+
+    <g transform="translate(60, 270)">
+      <rect x="0" y="30" width="18" height="40" fill="#10B981" opacity=".6"/>
+      <rect x="40" y="20" width="18" height="50" fill="#10B981" opacity=".6"/>
+      <rect x="80" y="25" width="18" height="45" fill="#10B981" opacity=".6"/>
+      <rect x="120" y="35" width="18" height="35" fill="#10B981" opacity=".6"/>
+      <rect x="280" y="55" width="18" height="15" fill="#EF4444"/>
+      <text x="289" y="86" fill="#EF4444" font-size="10" text-anchor="middle">dries up</text>
+      <text x="-10" y="50" fill="#9AA0A8" font-size="10" text-anchor="end">volume</text>
+    </g>
+  </g>
+
+  <g transform="translate(60, 478)">
+    <rect width="780" height="60" rx="10" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.3)"/>
+    <text x="20" y="26" fill="#EF4444" font-size="12" font-weight="700">How to trade it</text>
+    <text x="20" y="46" fill="#9AA0A8" font-size="11">Price makes a new high but volume shrinks below the prior two bars. Buyers are gone. Tighten stops or look for shorts on confirmation.</text>
+  </g>
+</svg>
