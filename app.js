@@ -2661,6 +2661,10 @@ function closeBlogArticle(){
   if(hdr)hdr.style.display='';
   if(filters)filters.style.display='';
   history.replaceState({page:'blog'}, '', '/blog');
+  // Scroll back to top of blog section so user lands on the grid, not the footer
+  const blogSec = hdr || document.getElementById('blog-section') || grid;
+  if(blogSec) blogSec.scrollIntoView({behavior:'smooth', block:'start'});
+  else window.scrollTo({top:0, behavior:'smooth'});
 }
 
 /* QUIZ */
