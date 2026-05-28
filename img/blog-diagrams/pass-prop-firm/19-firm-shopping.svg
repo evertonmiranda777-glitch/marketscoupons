@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 516" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="500" fill="url(#bg)"/>
+  <rect width="900" height="516" fill="url(#bg)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Firm Shopping Checklist — Before You Pay</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Don't pick the firm with the biggest sale · pick the one whose rules match YOUR strategy</text>
   <g transform="translate(60, 100)" font-size="11">
@@ -13,5 +13,5 @@
     <g transform="translate(0, 288)"><rect width="780" height="40" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)"/><text x="20" y="26" fill="#F0B429" font-weight="700">7. Reset cost vs new trial (some firms cheaper · check)</text></g>
     <g transform="translate(0, 336)"><rect width="780" height="40" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)"/><text x="20" y="26" fill="#F0B429" font-weight="700">8. Payout reliability (read recent payout-proof posts on r/PropTrading)</text></g>
   </g>
-  <text x="450" y="475" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">All firms have these 8 dimensions · the cheapest firm with bad rules = expensive failure</text>
+  <text x="450" y="500" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">All firms have these 8 dimensions · the cheapest firm with bad rules = expensive failure</text>
 </svg>

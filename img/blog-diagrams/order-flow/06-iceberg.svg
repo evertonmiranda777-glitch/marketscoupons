@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg6" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="500" fill="url(#bg6)"/>
+  <rect width="900" height="520" fill="url(#bg6)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Iceberg Orders — The Hidden Whale</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">A massive order split into small visible chunks. Like an iceberg — you see 10%, 90% sits below.</text>
 
@@ -19,7 +19,7 @@
     <text x="330" y="310" fill="#F0B429" font-size="13" font-weight="700" text-anchor="middle">total true order: 5,000 lots</text>
   </g>
 
-  <g transform="translate(60, 410)">
+  <g transform="translate(60, 430)">
     <rect width="780" height="80" rx="10" fill="rgba(0,180,216,.05)" stroke="rgba(0,180,216,.3)"/>
     <text x="20" y="28" fill="#00B4D8" font-size="13" font-weight="700">How to detect</text>
     <text x="20" y="48" fill="#9AA0A8" font-size="11">Same price level shows huge cumulative volume (e.g. 5,000 lots) but DOM size stayed small (25-50)</text>

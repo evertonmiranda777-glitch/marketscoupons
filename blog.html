@@ -284,6 +284,9 @@ function renderPost(post, slug, blogUrl, T){
         <div class="blog-art-cta-desc">${T.desc}</div>
         <button class="blog-art-cta-btn" onclick="window.location.href='/'">${T.btn}</button>
       </div>
+      <div class="blog-art-back" style="margin:32px 0 8px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="${lang==='pt'?'/blog':'/blog/'+lang}" style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border:1px solid var(--b1);border-radius:10px;color:var(--t1);font-weight:600;font-size:14px;text-decoration:none;background:rgba(255,255,255,.03);transition:.2s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--b1)';this.style.color='var(--t1)'">← ${T.all}</a>
+      </div>
     </div>`;
 }
 

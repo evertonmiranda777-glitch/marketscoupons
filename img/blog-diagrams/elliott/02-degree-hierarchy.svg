@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 564" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="564" fill="url(#bg)"/>
+  <rect width="900" height="580" fill="url(#bg)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Wave Degree Hierarchy — 9 Nested Levels</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Each wave at one degree consists of 5 (impulse) or 3 (corrective) waves of the next-lower degree</text>
 
@@ -15,5 +15,5 @@
     <g transform="translate(0,336)"><rect width="780" height="40" rx="6" fill="rgba(59,130,246,.07)" stroke="#3B82F6"/><text x="20" y="26" fill="#3B82F6" font-weight="700">Minuette</text><text x="200" y="26" fill="#9AA0A8">~hours · intraday 15-min waves</text></g>
     <g transform="translate(0,384)"><rect width="780" height="40" rx="6" fill="rgba(59,130,246,.07)" stroke="#3B82F6"/><text x="20" y="26" fill="#3B82F6" font-weight="700">Sub-minuette</text><text x="200" y="26" fill="#9AA0A8">~minutes · tick-by-tick waves (scalping degree)</text></g>
   </g>
-  <text x="450" y="544" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Most retail traders confuse degrees — that's why their counts fail. Pick ONE degree first.</text>
+  <text x="450" y="560" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Most retail traders confuse degrees — that's why their counts fail. Pick ONE degree first.</text>
 </svg>

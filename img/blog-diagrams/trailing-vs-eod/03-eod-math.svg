@@ -4,12 +4,12 @@
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Trailing EOD Math — Step by Step</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Bulenox $50K example · $2,500 DD trails only on END-OF-DAY equity · intraday spikes ignored</text>
   <g transform="translate(60, 110)">
-    <line x1="0" y1="100" x2="780" y2="100" stroke="rgba(16,185,129,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="34" y="104" fill="#10B981" font-size="10" text-anchor="end">EOD peak: $51,500</text>
-    <line x1="0" y1="200" x2="780" y2="200" stroke="rgba(255,255,255,.15)"/>
-    <text x="34" y="204" fill="#9AA0A8" font-size="10" text-anchor="end">$50,000</text>
-    <line x1="0" y1="290" x2="780" y2="290" stroke="rgba(239,68,68,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="34" y="294" fill="#EF4444" font-size="10" text-anchor="end">DD: $49,000</text>
+    <line x1="100" y1="100" x2="780" y2="100" stroke="rgba(16,185,129,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="90" y="104" fill="#10B981" font-size="10" text-anchor="end">EOD peak: $51,500</text>
+    <line x1="100" y1="200" x2="780" y2="200" stroke="rgba(255,255,255,.15)"/>
+    <text x="90" y="204" fill="#9AA0A8" font-size="10" text-anchor="end">$50,000</text>
+    <line x1="100" y1="290" x2="780" y2="290" stroke="rgba(239,68,68,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="90" y="294" fill="#EF4444" font-size="10" text-anchor="end">DD: $49,000</text>
     <path d="M 30 200 L 100 180 L 170 130 L 240 100 L 310 60 L 380 90 L 450 130 L 520 110 L 590 180 L 660 130 L 730 100" fill="none" stroke="#fff" stroke-width="2.5"/>
     <g font-size="11" font-weight="700">
       <text x="310" y="46" fill="#10B981">intraday $52K (peak)</text>

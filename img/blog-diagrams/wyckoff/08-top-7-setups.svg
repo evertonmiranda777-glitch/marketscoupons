@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 612" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg8" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="580" fill="url(#bg8)"/>
+  <rect width="900" height="612" fill="url(#bg8)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Top 7 Wyckoff Setups — Backtested Win Rates</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Computed across SPX, ES, NQ, major equities 2015-2024 · ranked by win rate × avg R</text>
 
@@ -65,5 +65,5 @@
     </g>
   </g>
 
-  <text x="450" y="560" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Master setups 1-2 first. They carry 70% of profitable Wyckoff opportunities.</text>
+  <text x="450" y="592" fill="#F0B429" font-size="12" font-style="italic" text-anchor="middle">Master setups 1-2 first. They carry 70% of profitable Wyckoff opportunities.</text>
 </svg>
