@@ -3303,12 +3303,14 @@ function fdRenderRight(id, f) {
   }
 
   // Pack toggle (1 conta / 5 contas) — only for firms that offer a 5-pack (e.g. Apex)
+  // _tt: use translation if the key resolves, else fall back (t() returns the key itself when missing)
+  const _tt=(k,fb)=>{const v=t(k);return(!v||v===k)?fb:v;};
   const packSel = st.pack==='5' ? '5' : '1';
   if (firmHas5Pack(id)) {
-    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_qtd_contas')||'Quantidade de contas'}</div>
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_qtd_contas','Quantidade de contas')}</div>
       <div class="fd-pills" style="--cols:2">
-        <button class="fd-pill${packSel==='1'?' sel':''}" style="${packSel==='1'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','1')">${t('fd_pack_1')||'1 conta'}</button>
-        <button class="fd-pill${packSel==='5'?' sel':''}" style="${packSel==='5'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','5')">${t('fd_pack_5')||'5 contas'}</button>
+        <button class="fd-pill${packSel==='1'?' sel':''}" style="${packSel==='1'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','1')">${_tt('fd_pack_1','1 conta')}</button>
+        <button class="fd-pill${packSel==='5'?' sel':''}" style="${packSel==='5'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','5')">${_tt('fd_pack_5','5 contas')}</button>
       </div></div>`;
   }
 
@@ -3329,7 +3331,7 @@ function fdRenderRight(id, f) {
       const perAcctSave = (sNum&&eNum&&sNum>eNum) ? (sNum-eNum).toFixed(2) : null;
       advHtml = `<div class="fd-pack-adv" style="margin-top:8px;padding:8px 12px;border-radius:8px;background:${f.color}10;border:1px solid ${f.color}33;font-size:12px;color:var(--t1);display:flex;align-items:center;gap:8px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${f.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>
-        <span><b>5 contas</b> · <b style="color:${f.color}">${pp.each}</b>/conta${perAcctSave?` — ${t('fd_pack_economia')||'economiza'} ${cur}${perAcctSave}/conta vs avulso`:''}</span></div>`;
+        <span><b>5 contas</b> · <b style="color:${f.color}">${pp.each}</b>/conta${perAcctSave?` — ${_tt('fd_pack_economia','economiza')} ${cur}${perAcctSave}/conta vs avulso`:''}</span></div>`;
     }
     h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
       <div><div class="fd-price-size">${plan.s}${packSel==='5'?' ×5':''}</div><div class="fd-price-type">${st.type}</div></div>
