@@ -5,8 +5,17 @@ import fs from 'node:fs';
 import { createClient } from '@supabase/supabase-js';
 
 const URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
-const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-if (!KEY) { console.error('Missing SUPABASE_SERVICE_ROLE_KEY env'); process.exit(1); }
+function readKey() {
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) return process.env.SUPABASE_SERVICE_ROLE_KEY.trim();
+  for (const f of ['.env.local', '.env.tmp.txt']) {
+    if (!fs.existsSync(f)) continue;
+    const m = fs.readFileSync(f, 'utf8').match(/SUPABASE_SERVICE_ROLE_KEY\s*=\s*"?([^"\s]+)"?/);
+    if (m && m[1]) return m[1].trim();
+  }
+  return null;
+}
+const KEY = readKey();
+if (!KEY) { console.error('Missing SUPABASE_SERVICE_ROLE_KEY (env or .env.local)'); process.exit(1); }
 const db = createClient(URL, KEY, { auth: { persistSession: false } });
 
 const body = fs.readFileSync('data/preview/vpa-v7-en.body.html', 'utf8');

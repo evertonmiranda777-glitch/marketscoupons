@@ -1,0 +1,383 @@
+<style>
+:root{--gold:#F0B429;--t1:#fff;--t2:#d4d7df;--t3:#9AA0A8;--card:#1A1F2E;--bg:#0A0D14;--green:#10B981;--red:#EF4444;--blue:#3B82F6}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--t2);font:17px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;margin:0;padding:40px 20px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font:800 44px/1.15 inherit;color:var(--t1);margin:0 0 14px;letter-spacing:-0.025em}
+.subtitle{font-size:22px;color:var(--t2);margin:0 0 14px;line-height:1.4}
+.subtitle b{color:var(--gold)}
+.meta{color:var(--t3);font-size:13px;margin-bottom:32px}
+.lead{font-size:21px;line-height:1.55;color:var(--t1);margin:0 0 32px;padding:26px 30px;border-left:4px solid var(--gold);background:rgba(240,180,41,.06);border-radius:0 12px 12px 0}
+.lead b{color:var(--gold)}
+h2{font:800 32px/1.25 inherit;color:var(--t1);margin:60px 0 18px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08)}
+h3{font:700 23px/1.35 inherit;color:var(--t1);margin:36px 0 14px}
+h4{font:700 13px/1.4 inherit;color:var(--gold);margin:22px 0 8px;letter-spacing:0.05em;text-transform:uppercase}
+p{margin:0 0 18px}
+b{color:var(--t1);font-weight:600}
+i{color:var(--t2);font-style:italic}
+ul,ol{margin:0 0 18px;padding-left:22px}
+li{margin-bottom:8px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px dotted rgba(240,180,41,.45)}
+a:hover{border-bottom-style:solid}
+blockquote{margin:28px 0;padding:22px 28px;background:linear-gradient(135deg,rgba(240,180,41,.08),rgba(240,180,41,.02));border-left:4px solid var(--gold);border-radius:0 12px 12px 0;color:var(--t1)}
+blockquote b{color:var(--gold)}
+.deep{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:24px 28px;margin:24px 0}
+.deep h4{margin-top:14px}
+.deep h4:first-child{margin-top:0}
+table{width:100%;border-collapse:collapse;margin:20px 0;background:rgba(255,255,255,.025);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+th,td{padding:13px 16px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:15px}
+th{background:rgba(240,180,41,.09);color:var(--gold);font-weight:700;font-size:13.5px;text-transform:uppercase}
+.cta-box{margin:48px 0;padding:32px 36px;background:linear-gradient(135deg,rgba(240,180,41,.16),rgba(240,180,41,.03));border:1.5px solid rgba(240,180,41,.5);border-radius:16px}
+.cta-box h3{margin-top:0;color:var(--gold);font-size:26px}
+.story{margin:32px 0;padding:24px 28px;background:rgba(59,130,246,.05);border-left:3px solid var(--blue);border-radius:0 10px 10px 0}
+.story h4{color:var(--blue)}
+hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:48px 0}
+.toc{margin:24px 0 40px;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px}
+.toc strong{color:var(--gold);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;display:block;margin-bottom:12px}
+.toc ol{column-count:2;column-gap:32px;padding-left:18px}
+.toc li{font-size:14px;margin-bottom:6px}
+.toc a{border:none}
+.faq-q{font-weight:700;color:var(--gold);margin-top:24px;font-size:17px}
+.faq-a{margin-top:6px}
+figure.diagram{margin:32px 0;padding:0;background:#0F1422;border:1px solid rgba(240,180,41,.18);border-radius:14px;overflow:hidden}
+figure.diagram img{display:block;width:100%;height:auto}
+figure.diagram figcaption{padding:14px 22px;color:var(--t3);font-size:13px;font-style:italic;border-top:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+</style>
+
+<p class="lead">El precio es una opinión. <b>El volumen es un hecho.</b> El mercado puede imprimir cualquier precio que quieras en una sola barra — una cinta delgada permite que una orden motivada arrastre la última operación a donde quiera. Pero ese precio no sobrevive sin volumen detrás, y el volumen es el único número del gráfico que nadie puede falsificar. Volume Price Analysis es la disciplina de leer ambos juntos: el movimiento de precio y el esfuerzo que lo produjo. Cuando el esfuerzo y el resultado no coinciden, hay alguien grande escondido en la cinta. Esta guía te enseña a verlo.</p>
+
+<div class="toc">
+  <strong>Lo que vas a aprender</strong>
+  <ol>
+    <li><a href="#p1">El único dato que el mercado no puede falsificar</a></li>
+    <li><a href="#p2">Por qué el volumen importa más que el precio</a></li>
+    <li><a href="#p3">Las tres leyes de Wyckoff sobre las que se construye el VPA</a></li>
+    <li><a href="#p4">Esfuerzo vs. resultado — el corazón del diagnóstico</a></li>
+    <li><a href="#p5">El vocabulario de barras de Coulling</a></li>
+    <li><a href="#p6">Barras de no-demand y no-supply</a></li>
+    <li><a href="#p7">Leer el clímax — capitulación y euforia</a></li>
+    <li><a href="#p8">El ciclo de volumen en cuatro fases</a></li>
+    <li><a href="#p9">Los tres setups de VPA de mayor probabilidad</a></li>
+    <li><a href="#p10">VPA por instrumento — NQ, ES, CL, GC</a></li>
+    <li><a href="#p11">Gestión de riesgo VPA para cuentas de prop firm</a></li>
+    <li><a href="#p12">Cinco errores que destruyen cuentas de VPA</a></li>
+    <li><a href="#p13">Indicadores que complementan el VPA</a></li>
+    <li><a href="#p14">Tu hoja de ruta para dominar el VPA</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<h2 id="p1">El Único Dato que el Mercado No Puede Falsificar</h2>
+
+<p>Abre cualquier gráfico de velas y estás mirando cuatro números por barra: apertura, máximo, mínimo, cierre. Esos cuatro números describen <i>qué</i> hizo el precio. No dicen nada sobre <i>por qué</i> lo hizo, ni si el movimiento es confiable. Una vela de ruptura que cierra en su máximo se ve idéntica tanto si fue impulsada por una avalancha de compra institucional genuina como por un solo algoritmo barriendo un libro delgado a la hora del almuerzo. El precio por sí solo no distingue ambos. Y esa diferencia es la diferencia entre una operación que se sostiene y una que te atrapa.</p>
+
+<p>El volumen es la dimensión que falta. Mide el <b>esfuerzo</b> detrás de cada movimiento de precio — el total de contratos o acciones que cambiaron de manos para producir esa barra. Una barra alcista de rango amplio con volumen enorme cuenta una historia completamente distinta a la misma barra alcista de rango amplio con volumen que se secó en silencio. El precio es el mismo. La intención detrás es opuesta. Volume Price Analysis, o VPA, es la práctica de nunca leer uno sin el otro.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/01-iceberg-metaphor.svg" alt="The iceberg metaphor — what you see on the price chart is the tip; volume reveals the institutional mass beneath the surface." loading="lazy">
+  <figcaption>Lo que ves en el precio es la punta. El volumen revela la masa institucional que se mueve por debajo.</figcaption>
+</figure>
+
+<p>La metáfora que ancla el VPA es el iceberg. La punta visible — la barra de precio — es una fracción pequeña de lo que realmente ocurre. Bajo la línea de flotación está la orden real: la acumulación, la absorción, la distribución ejecutada por participantes lo bastante grandes para mover el mercado, pero lo bastante cuidadosos para no mostrar su mano en el precio. El volumen es el sonar que mapea la parte del iceberg que no puedes ver. Aprende a leerlo y dejarás de reaccionar a la punta para empezar a anticipar la masa.</p>
+
+<p>No es una idea nueva, y por eso precisamente funciona. El marco lo construyó hace un siglo Richard Wyckoff, lo refinó para la era de la pantalla Tom Williams — un ex-trader de sindicato que pasó quince años en el lado institucional observando cómo se comportan de verdad los grandes operadores — y lo popularizó para el trader minorista moderno Anna Coulling, cuyo libro <i>A Complete Guide to Volume Price Analysis</i> convirtió un dialecto profesional en algo que un trader autodidacta puede aprender. Los nombres cambiaron. La mecánica, nunca. La oferta y la demanda siguen moviendo el precio. El esfuerzo todavía tiene que coincidir con el resultado. Y los grandes operadores siguen dejando huellas en el volumen que no pueden borrar.</p>
+
+<h2 id="p2">Por Qué el Volumen Importa Más que el Precio</h2>
+
+<p>Esta es la verdad incómoda que el VPA te obliga a enfrentar: <b>el precio puede fabricarse, el volumen no.</b> Una sola orden grande, colocada en un mercado tranquilo, puede imprimir un nuevo máximo o mínimo que no significa absolutamente nada. Lo vemos cada día en los primeros minutos tras la apertura, en la zona muerta del mediodía y en las horas delgadas de la madrugada. El precio se dispara. Saltan los stops. Y luego el precio retrocede, porque nunca hubo participación real detrás del movimiento. La vela mintió. El volumen — o su ausencia — dijo la verdad todo el tiempo.</p>
+
+<p>Considera la misma ruptura impresa de dos formas. En ambas, el precio empuja decididamente a través de una resistencia clara y cierra por encima. En el gráfico, las velas son gemelas. Pero por debajo, una ruptura ocurrió con volumen que se desplomó al nivel más bajo en una docena de barras, y la otra ocurrió con un repunte de volumen al nivel más alto en semanas. La primera es una trampa: nadie de tamaño quiso esa ruptura, y en pocas barras el precio cae de vuelta a través del nivel y barre los stops de los compradores. La segunda es real: demanda genuina entró a tomar cada contrato en oferta, y el nivel se vuelve soporte.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/06-volume-confirms-price.svg" alt="The same breakout on low volume fails; on high volume it holds. Volume is the answer to the question price asks." loading="lazy">
+  <figcaption>Idénticas en el precio. Opuestas en el resultado. El volumen es la respuesta a la pregunta que hace el precio.</figcaption>
+</figure>
+
+<p>Por eso el trader de VPA trata el precio como pregunta y el volumen como respuesta. El precio pregunta: <i>¿rompimos?</i> El volumen responde: <i>¿alguien lo quiso de verdad?</i> El trader que lee solo el precio se ve forzado a aceptar la ruptura por su valor nominal y se entera por las malas. El trader que lee volumen sabe, en tiempo real y antes del retroceso, en qué ruptura confiar.</p>
+
+<blockquote><b>El reencuadre del profesional:</b> deja de preguntar "¿hacia dónde va el precio?" Empieza a preguntar "¿quién está detrás de este movimiento y tiene tamaño para sostenerlo?" El volumen es el único campo del gráfico que responde a la segunda pregunta.</blockquote>
+
+<p>Hay una segunda razón, más sutil, por la que el volumen supera al precio para el trader de VPA. Los grandes operadores <i>necesitan</i> volumen para hacer su trabajo. Para acumular una posición relevante sin empujar el precio en su contra, un operador tiene que comprar en la oferta — en el miedo, en la venta, en el volumen creado por otros que salen. Para distribuir una posición grande sin hundir el precio en el que venden, tienen que vender en la demanda — en la codicia, en las rupturas, en el volumen creado por otros que persiguen. El operador no puede evitar dejar una firma de volumen, porque el volumen es la materia prima de su operación. Esa firma es lo que aprendes a leer.</p>
+
+<h2 id="p3">Las Tres Leyes de Wyckoff Sobre las que se Construye el VPA</h2>
+
+<p>Toda interpretación moderna del volumen — VPA, order flow, teoría de subastas, lectura de footprint — es una reformulación de tres leyes que Richard Wyckoff articuló en las décadas de 1920 y 1930. Wyckoff no era teórico. Dirigía una correduría, publicaba una carta de mercado leída por cientos de miles, y entrevistó a los grandes operadores de su época — Jesse Livermore entre ellos — para hacer ingeniería inversa de cómo ganaban dinero de verdad. Las tres leyes que destiló son el sistema operativo bajo todo lo que hace el VPA.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/02-5-principles.svg" alt="The five core principles of VPA — supply/demand, effort/result, cause/effect, the composite operator, and phase recognition." loading="lazy">
+  <figcaption>Un siglo de antigüedad y todavía el sistema operativo de todo trader de volumen profesional.</figcaption>
+</figure>
+
+<h3>Ley 1 — Oferta y Demanda</h3>
+
+<p>El precio se mueve por exactamente una razón: un lado lo quiere más que el otro. Cuando la demanda supera a la oferta, el precio sube. Cuando la oferta supera a la demanda, el precio baja. Cuando se equilibran, el precio va de lado. Nada más mueve el precio — ni noticia, ni patrón, ni indicador. Esas cosas importan solo en la medida en que cambian el equilibrio entre oferta y demanda. El trader de VPA lee ese equilibrio directo en el cierre de la barra: un cierre cerca del máximo significa que la demanda ganó la barra; un cierre cerca del mínimo significa que la oferta ganó. El cierre es el veredicto sobre quién controló esa franja de tiempo.</p>
+
+<h3>Ley 2 — Esfuerzo vs. Resultado</h3>
+
+<p>El volumen es esfuerzo. El rango de precio de la barra — su spread — es el resultado. En un mercado sano, ambos coinciden: gran esfuerzo produce gran resultado, pequeño esfuerzo produce pequeño resultado. El momento en que <i>no coinciden</i> es el momento en que el VPA gana su sueldo. Volumen enorme que produce solo un rango minúsculo de precio significa que un participante grande está absorbiendo todo lo que el otro lado lanza. El esfuerzo es enorme; el resultado es nada; la disparidad es la señal de que la tendencia está a punto de fallar. Esta sola ley es el corazón del diagnóstico del método entero, y le dedicaremos una sección completa.</p>
+
+<h3>Ley 3 — Causa y Efecto</h3>
+
+<p>El tiempo que el mercado pasa construyendo una posición — el ancho de su rango de negociación — es la causa. El tamaño del movimiento que sigue es el efecto, y es proporcional. Una base de acumulación larga y ancha produce una tendencia larga y sostenida. Una base corta y estrecha produce un movimiento pequeño y breve. Por eso los traders de VPA son pacientes con los rangos laterales: están leyendo cuánta causa se construye, porque esa causa es un pronóstico de hasta dónde puede llegar la eventual tendencia. Los traders de punto y figura incluso cuentan el rango mecánicamente para proyectar un objetivo. El principio es el mismo: tiempo almacenado como energía, liberado como tendencia.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/07-three-laws-applied.svg" alt="Each Wyckoff law becomes a concrete question you ask of every bar — who won the close, did effort match result, how much cause was built." loading="lazy">
+  <figcaption>Tres leyes, tres preguntas, hechas en cada barra. Ese es el método entero.</figcaption>
+</figure>
+
+<p>Tom Williams añadió una cuarta idea que es más un modelo mental que una ley: el <b>operador compuesto</b>. En lugar de imaginar el mercado como millones de participantes individuales, trata al smart money como un único operador racional con un plan coherente — acumular abajo, marcar al alza, distribuir arriba, marcar a la baja. El operador compuesto es una ficción, pero es útil, porque te obliga a hacer la única pregunta que importa: <i>si yo manejara un libro grande aquí, ¿qué estaría haciendo, y qué huella dejaría?</i></p>
+
+<h2 id="p4">Esfuerzo vs. Resultado — El Corazón del Diagnóstico</h2>
+
+<p>Si aprendes solo una cosa de esta guía, aprende a leer esfuerzo contra resultado. Es el diagnóstico más poderoso del análisis de volumen, y se resuelve en una simple matriz dos por dos. En un eje, el esfuerzo: ¿el volumen fue alto o bajo? En el otro, el resultado: ¿el rango de precio fue amplio o estrecho? Las cuatro combinaciones te dicen casi todo sobre quién está al mando.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/04-effort-vs-result.svg" alt="The effort vs result quadrant — high effort low result is absorption, high effort high result is a healthy trend, and so on." loading="lazy">
+  <figcaption>El único cuadrante en el que confías en el gráfico por su valor nominal es esfuerzo alto con resultado alto.</figcaption>
+</figure>
+
+<div class="deep">
+<h4>Qué es</h4>
+<p>Esfuerzo-vs-resultado es la comparación del volumen de una barra (esfuerzo) con su spread de precio (resultado), leída como una sola señal combinada en lugar de dos hechos separados.</p>
+<h4>Cómo funciona</h4>
+<p>Clasificas cada barra significativa en uno de cuatro estados. Esfuerzo alto con resultado alto es una barra de tendencia sana — el movimiento es real y probablemente continúa. Esfuerzo alto con resultado bajo es absorción — un participante grande está tomando el otro lado y no deja que el precio se mueva, lo que precede a la reversión. Esfuerzo bajo con resultado bajo es desinterés — nadie aparece, y la tendencia se pausa. Esfuerzo bajo con resultado alto es un vacío — el precio se mueve rápido porque no hay oposición en su camino, el camino de menor resistencia.</p>
+<h4>Por qué funciona</h4>
+<p>Funciona porque es pura física. Esfuerzo que no produce resultado significa que una fuerza igual y opuesta lo está cancelando — y en un gráfico de precio, esa fuerza opuesta es siempre una orden grande escondida. No hay otra explicación para volumen alto sin progreso de precio.</p>
+<h4>Cómo aplicarlo</h4>
+<p>En cada barra que destaca — cada repunte de volumen, cada barra inusualmente ancha o estrecha — haz las dos preguntas y colócala en la matriz. Opera con las barras de tendencia sana. Haz fade o quédate fuera en las barras de absorción. Espera a través de las barras de desinterés. Respeta las barras de vacío no poniéndote delante de ellas.</p>
+<h4>El error común</h4>
+<p>Los principiantes ven volumen alto y lo leen automáticamente como confirmación del movimiento. Volumen alto con rango pequeño es lo opuesto a confirmación — es la advertencia de que el movimiento está siendo absorbido.</p>
+<h4>El atajo</h4>
+<p>La señal más rápida es la barra ancha que cierra en medio de su rango con volumen enorme. Eso casi siempre es absorción: el esfuerzo se gastó, el resultado se rechazó, y el cierre te dice que el otro lado ganó.</p>
+<h4>El secreto</h4>
+<p>La absorción al final de una tendencia, en el mayor volumen en semanas, es la señal de reversión de mayor probabilidad en todo el análisis técnico — y es invisible para quien lee solo el precio.</p>
+<h4>El ejemplo real</h4>
+<p>El caso clásico es una tendencia bajista de varias semanas que termina con una barra bajista de volumen enorme cuyo cierre queda bien por encima del mínimo. El esfuerzo (venta de pánico) fue máximo; el resultado (un cierre cerca del mínimo) no se materializó porque un comprador grande absorbió el pánico. Eso es un clímax de venta, y lo cubrimos en detalle abajo.</p>
+<h4>El escenario ideal</h4>
+<p>Esfuerzo-vs-resultado es más nítido en los extremos de un movimiento, donde el agotamiento y la absorción se concentran. Úsalo más agresivamente después de una tendencia extendida, cuando cazas reversiones.</p>
+<h4>El escenario equivocado</h4>
+<p>En el medio muerto de un rango ajustado de bajo volumen, esfuerzo-vs-resultado produce ruido. No hay fuerza dominante para leer. Espera una barra que destaque antes de aplicar la matriz.</p>
+</div>
+
+<h2 id="p5">El Vocabulario de Barras de Coulling</h2>
+
+<p>La contribución de Anna Coulling fue convertir las leyes abstractas en un vocabulario concreto y aprendible de formas de barra. Cada forma, leída junto con su volumen, lleva un mensaje específico sobre quién controló la barra. No necesitas decenas de patrones. Seis formas llevan la abrumadora mayoría de la información que un gráfico de precio puede dar.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/03-volume-bar-anatomy.svg" alt="The anatomy of a volume bar — spread, close position, and volume read together." loading="lazy">
+  <figcaption>Spread, posición del cierre y volumen — las tres lecturas que definen cada barra.</figcaption>
+</figure>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/08-bar-anatomy-vocabulary.svg" alt="Six bar shapes — wide spread up, wide spread down, narrow spread, up bar closing low, down bar closing high, and the pin bar." loading="lazy">
+  <figcaption>Seis formas llevan el noventa por ciento de la información que un gráfico de precio puede dar.</figcaption>
+</figure>
+
+<p>La <b>barra alcista de rango amplio</b> que cierra cerca de su máximo es fuerza directa — la demanda dominó, y con volumen alto confirma un avance sano. La <b>barra bajista de rango amplio</b> que cierra cerca de su mínimo es el espejo: la oferta dominó. Las dos formas más valiosas son las engañosas: la <b>barra alcista que cierra cerca del mínimo</b>, que revela oferta escondida limitando la subida, y la <b>barra bajista que cierra cerca del máximo</b>, que revela demanda escondida absorbiendo la caída. Por último, la <b>barra de pin (mecha)</b> muestra un rechazo — un lado probó un nivel y fue forzado de vuelta, dejando una cola larga.</p>
+
+<p>La disciplina es leer la forma y el volumen como uno solo. Una barra alcista que cierra en el mínimo <i>con volumen bajo</i> es levemente cautelar. La misma forma <i>con volumen muy alto</i> es una advertencia fuerte de que un operador grande vendió en la subida. La forma te da la pregunta; el volumen te da la convicción.</p>
+
+<h2 id="p6">Barras de No-Demand y No-Supply</h2>
+
+<p>Dos barras específicas merecen su propia sección porque son el pan de cada día del VPA práctico. Son silenciosas — fáciles de pasar por alto si solo miras el precio — y marcan los momentos exactos en que un lado del mercado se rindió en silencio.</p>
+
+<h3>La Barra de No-Demand</h3>
+
+<p>Una barra de no-demand es una barra alcista — el precio cerró más alto — pero es estrecha, y crucialmente su volumen es menor que el de las dos barras anteriores. El mercado hizo un nuevo máximo, pero casi nadie participó. En una tendencia alcista que ya lleva tiempo, esa es la primera señal de que la subida corre con el tanque vacío: los compradores que impulsaron la tendencia ya no aparecen. El smart money dejó de comprar, y sin demanda nueva, el precio no se sostiene.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/09-no-demand-bar.svg" alt="A no-demand bar — an up bar on shrinking volume at the top of a rally, signalling buyers are gone." loading="lazy">
+  <figcaption>El precio hace un nuevo máximo, pero el volumen se seca. Los compradores se fueron.</figcaption>
+</figure>
+
+<h3>La Barra de No-Supply</h3>
+
+<p>La barra de no-supply es lo inverso y, para traders de prop firm que cazan entradas de compra, la más útil de las dos. Es una barra bajista — el precio cerró más bajo — estrecha y acompañada de volumen menor que el de las dos barras anteriores. El mercado hizo un nuevo mínimo, pero nadie quiso vender en él. La venta se agotó. Ese es exactamente el test que un operador grande ejecuta antes de empezar una marcación al alza: sondea más abajo para ver si queda oferta, y cuando el volumen en esa sonda se desploma, tiene su respuesta. La próxima barra alcista es tu señal.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/10-no-supply-bar.svg" alt="A no-supply bar — a down bar on collapsing volume, signalling sellers have exhausted and markup may begin." loading="lazy">
+  <figcaption>El precio hace un nuevo mínimo, pero los vendedores se agotaron. El test que el smart money ejecuta antes de la marcación.</figcaption>
+</figure>
+
+<p>El poder de estas dos barras es que son <b>anticipatorias</b>. Aparecen antes de la reversión, no después. Un trader que lee solo el precio ve un nuevo máximo o mínimo y reacciona a él. El trader de VPA ve el colapso de volumen que acompaña ese nuevo extremo y se posiciona por delante del giro.</p>
+
+<h2 id="p7">Leer el Clímax — Capitulación y Euforia</h2>
+
+<p>Si las barras de no-demand y no-supply son las señales silenciosas, el clímax es la ruidosa. Un clímax es la única barra en que una emoción alcanza su máximo — terror en un fondo, codicia en un techo — y en que el smart money toma el otro lado de esa emoción a escala. Los clímax son los puntos de giro más confiables que el VPA identifica, porque exigen que la multitud esté máximamente equivocada exactamente cuando el operador está máximamente activo.</p>
+
+<h3>El Clímax de Venta</h3>
+
+<p>Un clímax de venta es la barra en que el pánico llega al pico. Es la barra bajista más ancha del movimiento, en el mayor volumen en semanas, y — esta es la parte que la separa de la capitulación común — cierra bien por encima de su mínimo. Ese cierre es la huella de la absorción. El minorista lo vendió todo por miedo; un comprador grande se puso debajo y compró cada contrato; y el cierre subiendo desde el mínimo es el rastro visible de esa compra. La barra que parece más aterradora es la que el trader de VPA estaba esperando.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/11-selling-climax.svg" alt="A selling climax — the widest down bar on highest volume, closing well off the low, marking absorption by smart money." loading="lazy">
+  <figcaption>El clímax no es el fondo que temes. Es el fondo que esperas.</figcaption>
+</figure>
+
+<h3>El Clímax de Compra</h3>
+
+<p>El clímax de compra es la imagen espejo y se forma en techos. Es la barra alcista más ancha del avance, en el mayor volumen en semanas, que cierra bien por debajo de su máximo. El minorista persiguió la ruptura con euforia; el operador descargó inventario en esa demanda; y el cierre cayendo desde el máximo es el rastro de esa distribución. La barra que parece más emocionante — el blow-off, la barra del "por fin va a romper" — frecuentemente es el techo.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/12-buying-climax.svg" alt="A buying climax — the widest up bar on highest volume, closing off the high, marking distribution into retail euphoria." loading="lazy">
+  <figcaption>El máximo del clímax no es el techo que persigues. Es el techo al que haces fade.</figcaption>
+</figure>
+
+<p>Un clímax rara vez es el punto de giro exacto por sí solo. Marca el momento de la absorción, pero el smart money normalmente ejecuta un <b>test</b> después para confirmar que el otro lado realmente desapareció — una sonda de vuelta hacia el extremo del clímax con volumen mucho menor. La combinación de clímax más test exitoso es una de las entradas de mayor probabilidad del método entero, y es la base de uno de los tres setups core de abajo.</p>
+
+<h2 id="p8">El Ciclo de Volumen en Cuatro Fases</h2>
+
+<p>Las barras individuales son letras. Las fases son frases. Todo mercado, en todo timeframe, pasa por cuatro fases, y el error más caro que un trader puede cometer es aplicar la táctica equivocada a la fase equivocada — hacer trend-following en un rango, o hacer fade en una tendencia. El reconocimiento de fases del VPA existe para impedir que hagas exactamente eso.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/05-wyckoff-4-phases.svg" alt="The four phases of the market cycle — accumulation, markup, distribution, markdown — with smart money behavior in each." loading="lazy">
+  <figcaption>Revierte a la media en acumulación y distribución. Sigue la tendencia en marcación al alza y a la baja. Nunca al revés.</figcaption>
+</figure>
+
+<p>En la <b>acumulación</b>, el precio va de lado mientras un operador grande compra silenciosamente a vendedores agotados. El volumen muestra repuntes climáticos en las sondas bajistas (el operador comprando el pánico) y volumen menguante en las subidas. En la <b>marcación al alza</b>, el precio sube; una marcación sana muestra volumen creciente en las barras alcistas y volumen encogiéndose en los pullbacks — los tests de no-supply que cubrimos. En la <b>distribución</b>, el precio se agita de lado cerca de los máximos mientras el operador vende en la demanda eufórica; ves volumen alto sin progreso neto. En la <b>marcación a la baja</b>, el precio cae en volumen creciente en las caídas y subidas débiles en el no-demand.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/13-volume-cycle-detail.svg" alt="The volume cycle in detail — how volume behaves through accumulation, markup, distribution and markdown." loading="lazy">
+  <figcaption>Opera con la marcación al alza y a la baja. Espera a través de la acumulación y la distribución. La mayoría de las pérdidas vienen de operar las fases laterales como si fueran tendencias.</figcaption>
+</figure>
+
+<blockquote><b>La única regla que protege tu cuenta:</b> identifica la fase antes de elegir una táctica. La misma barra de no-supply que es una compra perfecta en la acumulación es una trampa mortal en la distribución. Fase primero, señal después.</blockquote>
+
+<h2 id="p9">Los Tres Setups de VPA de Mayor Probabilidad</h2>
+
+<p>La teoría sin una ventaja ejecutable no vale nada. Estos tres setups son donde el VPA se convierte en operaciones. Cada uno tiene una entrada precisa, un stop mecánico y un objetivo definido — que es exactamente lo que exige una cuenta de prop firm, porque cada entrada necesita un punto de invalidación contra el cual dimensionar.</p>
+
+<h3>Setup 1 — El Pullback de No-Supply en la Marcación</h3>
+
+<p>Este es el caballo de batalla. Una vez que una tendencia alcista está confirmada y has localizado el mercado en la fase de marcación, esperas un pullback que produzca una barra de no-supply: una barra bajista estrecha con volumen menor que el de las dos barras anteriores. Entras en el cierre de esa barra. Tu stop queda justo debajo de su mínimo — si el precio quita ese mínimo, la lectura estaba mal y sales por pocos ticks. Tu primer objetivo es el máximo del swing anterior, luego haces trailing con estructura. Como operas <i>con</i> una tendencia establecida y entras en un test de bajo volumen, el win rate es alto y el riesgo es mecánicamente pequeño.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/14-setup-pullback-markup.svg" alt="Setup 1 — buying the no-supply pullback inside a confirmed uptrend, with entry, stop and target rules." loading="lazy">
+  <figcaption>Compra el pullback en el que nadie está vendiendo, dentro de una tendencia alcista establecida.</figcaption>
+</figure>
+
+<h3>Setup 2 — La Reversión de Clímax de Venta</h3>
+
+<p>Este es el setup de mayor relación recompensa-riesgo del VPA, y también el que exige más paciencia. Esperas un clímax de venta genuino — barra bajista más ancha, mayor volumen, cierre por encima del mínimo. <i>No</i> compras el clímax en sí. Esperas el test: una barra posterior que hace un mínimo más alto que el clímax con volumen muy por debajo de la barra del clímax. Entras en ese test, con el stop debajo del mínimo del clímax. Si el precio revisita el mínimo del clímax, la reversión falló. El objetivo es el máximo del auto-rally primero, luego el rango anterior. Atrapar el giro de una tendencia de varias semanas produce relaciones recompensa-riesgo que una entrada de trend-following nunca dará.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/15-setup-climax-reversal.svg" alt="Setup 2 — buying the test that holds above a selling-climax low on collapsing volume." loading="lazy">
+  <figcaption>Compra el test que se sostiene por encima del mínimo del clímax con volumen desplomándose.</figcaption>
+</figure>
+
+<h3>Setup 3 — El Spring y Su Test</h3>
+
+<p>El spring es la reversión-firma de Wyckoff y es VPA puro. El precio hace una ruptura falsa por debajo del soporte de un rango de acumulación — disparando los stops de todos los que compraron el rango y atrapando vendedores nuevos — y luego vuelve dentro con volumen alto. Esa ruptura falsa es el spring. La operación no es el spring en sí, sino el <b>test</b> de él: una revisita de bajo volumen hacia la zona del spring que no hace nuevo mínimo. Entras en ese test, stop debajo del mínimo del spring, y objetivo en el lado opuesto del rango. La trampa del spring es la compra de mayor probabilidad que ofrece el método, porque se construye sobre los stops de otros traders convirtiéndose en tu combustible.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/16-setup-test-after-spring.svg" alt="Setup 3 — the Wyckoff spring and its low-volume test, with entry, stop and target." loading="lazy">
+  <figcaption>Una ruptura falsa por debajo del soporte que atrapa vendedores, luego un test de bajo volumen confirma la trampa.</figcaption>
+</figure>
+
+<h2 id="p10">VPA por Instrumento — NQ, ES, CL, GC</h2>
+
+<p>El VPA depende por completo de la calidad de los datos de volumen, y no todos los mercados producen volumen igualmente honesto. El método funciona mejor en futuros centralizados de alta liquidez, donde cada contrato se negocia por una sola bolsa y el número de volumen refleja la realidad. Funciona peor en mercados fragmentados — acciones de baja capitalización, cualquier cosa con actividad significativa en dark pool o fuera de bolsa — donde una gran parte del volumen real es invisible en tu gráfico.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/17-instrument-application.svg" alt="VPA by instrument — volume quality, the VPA edge, and what to watch out for on NQ, ES, CL, GC and stocks." loading="lazy">
+  <figcaption>Cuanto más centralizado el volumen, más honesta la huella. Los futuros le ganan a las acciones fragmentadas.</figcaption>
+</figure>
+
+<p>Los futuros de Nasdaq (<b>NQ</b>) y S&amp;P 500 (<b>ES</b>) son los instrumentos más limpios para VPA. Están entre los mercados más líquidos de la Tierra, sus libros son profundos, y sus clímax y tests de no-supply imprimen con claridad de libro de texto. El ES en particular produce tests de no-supply hermosos; el NQ se mueve más rápido y exige stops más amplios. El petróleo (<b>CL</b>) da fuertes picos de clímax, pero da latigazos violentos alrededor del informe semanal de inventarios de la EIA, así que respeta la ventana de noticia. El oro (<b>GC</b>) muestra acumulación limpia, pero se adelgaza en la sesión asiática, donde las señales de volumen se vuelven poco confiables. Las acciones individuales son usables en nombres grandes y líquidos, pero ten en cuenta que los prints de dark pool significan que lees un cuadro parcial.</p>
+
+<h2 id="p11">Gestión de Riesgo VPA para Cuentas de Prop Firm</h2>
+
+<p>Una lectura de volumen perfecta en una cuenta reventada paga exactamente nada. Si operas una cuenta de prop firm financiada — Apex, Bulenox, TradeDay, FTMO o cualquier otra — tu ventaja solo vale mientras sobrevivas a la varianza el tiempo suficiente para cobrarla. La buena noticia es que VPA y riesgo disciplinado encajan excepcionalmente bien, porque el VPA naturalmente produce stops ajustados y bien definidos.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/18-risk-vpa-prop.svg" alt="VPA-aware risk for prop accounts — the setup gives a tight stop, the drawdown rule caps the size." loading="lazy">
+  <figcaption>El setup te dice dónde entrar. La regla de drawdown te dice cuánto puedes arriesgar ahí.</figcaption>
+</figure>
+
+<p>Toda entrada de VPA tiene una invalidación mecánica: debajo de la barra de no-supply, debajo del mínimo del spring, debajo del extremo del clímax. Esos stops son típicamente un puñado de ticks, no puntos. Un stop ajustado significa que más contratos caben en el mismo riesgo en dólares — lo que te deja expresar la operación de forma relevante manteniendo la pérdida en dólares pequeña respecto a tu buffer de drawdown. Pero la calidad del setup nunca puede pasar por encima de la regla de dimensionamiento. La disciplina es simple: nunca arriesgues más de uno por ciento de tu saldo, y nunca más de un quinto de tu buffer de drawdown restante, en un solo setup, por perfecta que parezca la lectura.</p>
+
+<div class="deep">
+<h4>El checklist VPA-prop antes de cada entrada</h4>
+<p><b>1. ¿La fase está bien?</b> Marcación al alza para compras, a la baja para ventas. Nunca operes una señal contra la fase activa.</p>
+<p><b>2. ¿Dónde está la invalidación?</b> El stop debe quedar justo más allá del extremo de la barra de señal. Si no puedes definirlo, no tienes operación.</p>
+<p><b>3. ¿El riesgo cabe?</b> El riesgo en dólares en ese stop debe ser menos de uno por ciento del saldo y menos de un quinto del drawdown restante.</p>
+<p><b>4. ¿La noticia está limpia?</b> Sin FOMC, CPI o NFP en los próximos quince minutos. El volumen alrededor de noticia programada está distorsionado y tu lectura se vuelve poco confiable.</p>
+</div>
+
+<p>Si todavía estás eligiendo una firma, el <i>tipo</i> de drawdown importa enormemente para un trader de VPA, porque tus stops son ajustados y tus posiciones pueden ser cortas. Nuestras guías sobre <a href="/blog/trailing-drawdown-vs-eod">trailing vs. drawdown de fin de día</a> y <a href="/blog/how-to-pass-prop-firm">cómo pasar una evaluación de prop firm</a> recorren qué conjunto de reglas conviene a un estilo intradía basado en volumen.</p>
+
+<h2 id="p12">Cinco Errores que Destruyen Cuentas de VPA</h2>
+
+<p>Casi todo fallo en VPA se remonta a una mala lectura de lo que el volumen está diciendo realmente. Estos cinco representan la abrumadora mayoría de ellos.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/19-mistakes.svg" alt="Five mistakes that destroy VPA accounts — treating high volume as confirmation, wrong asset, ignoring phase, forcing setups, using VPA alone." loading="lazy">
+  <figcaption>El VPA es una lente, no una bola de cristal. Lee mal la lente y verás exactamente lo que quieres ver.</figcaption>
+</figure>
+
+<p><b>Error 1 — tratar todo volumen alto como confirmación.</b> El volumen alto puede significar continuación, pero igualmente puede significar absorción y reversión. El cierre, no la barra de volumen sola, te dice cuál. <b>Error 2 — operar VPA en el activo equivocado.</b> El volumen fragmentado da una huella falsa; quédate en futuros líquidos. <b>Error 3 — ignorar la fase.</b> Una barra de no-supply en la distribución es una trampa, no una compra. <b>Error 4 — forzar setups en consolidación.</b> El chop lateral no tiene ventaja; el VPA paga en fases de tendencia, así que espera a través del rango. <b>Error 5 — usar VPA como indicador aislado.</b> El VPA lee la intención magníficamente, pero no, por sí solo, cronometra entradas precisas; combínalo con estructura y un nivel.</p>
+
+<h2 id="p13">Indicadores que Complementan el VPA</h2>
+
+<p>El VPA es un marco de lectura, no un sistema de trading completo, y combina mejor con herramientas que confirman la historia que el volumen está contando que con las que pelean con ella. El objetivo es confluencia, no desorden — dos o tres lecturas corroborantes, nunca una pantalla llena de osciladores retrasados.</p>
+
+<ul>
+  <li><b>Precio Medio Ponderado por Volumen (VWAP)</b> — el benchmark institucional. Un test de no-supply que se sostiene por encima del VWAP es mucho más fuerte que uno por debajo, porque los grandes players que usan el VWAP como referencia están de tu lado.</li>
+  <li><b>Market profile / volume profile</b> — muestra dónde se negoció realmente el volumen, no solo cuánto. Un spring que salta de un nodo de alto volumen (un punto de control) lleva más peso.</li>
+  <li><b>Volumen relativo (RVOL)</b> — cuantifica volumen "alto" y "bajo" objetivamente contra la media de ese horario del día, quitando la adivinanza de la identificación de clímax.</li>
+  <li><b>Estructura simple</b> — máximos y mínimos de swing, líneas de tendencia y soportes/resistencias obvios. El VPA te dice la intención; la estructura te dice el nivel donde esa intención se probará.</li>
+</ul>
+
+<p>Para la microestructura más profunda detrás de la barra de volumen — quién fue el agresor en cada operación, dónde ocurre la absorción tick a tick — el siguiente paso natural es la lectura de order flow y footprint, cubierta en nuestra guía complementaria sobre <a href="/blog/order-flow-footprint">order flow y footprint charts</a>. Y la estructura clásica de la que descienden las fases del VPA está expuesta por completo en nuestra guía del <a href="/blog/wyckoff-method-2026">método Wyckoff</a>.</p>
+
+<h2 id="p14">Tu Hoja de Ruta para Dominar el VPA</h2>
+
+<p>El VPA es una habilidad de reconocimiento de patrones, y el reconocimiento de patrones se construye con repetición deliberada, no con lectura. Esta es la secuencia que convierte la teoría de arriba en una lectura confiable. No te saltes etapas; cada una es la base de la siguiente.</p>
+
+<figure class="diagram">
+  <img src="/img/blog-diagrams/vpa/20-roadmap.svg" alt="The VPA mastery roadmap — four stages from reading single bars to running a full volume-based playbook." loading="lazy">
+  <figcaption>Domina la barra antes que la fase, la fase antes que el setup, el setup antes que el tamaño.</figcaption>
+</figure>
+
+<p>Pasa las primeras dos semanas leyendo barras individuales — anota cien de ellas sin operar, hasta que las barras de rango amplio, no-demand y no-supply te salten a la vista de inmediato. Pasa las semanas tres a seis aprendiendo a localizar la fase en el gráfico diario antes de tocar el intradía. Pasa los dos meses siguientes operando los tres setups en simulación, un setup a la vez, cincuenta operaciones registradas en cada uno, hasta tener una ventaja documentada. Solo entonces, a partir del mes cuatro, ejecuta el playbook completo en una cuenta financiada — combinando VPA con estructura y riesgo, y dimensionando por drawdown en lugar de por convicción. Los traders que revientan cuentas son casi siempre los que saltaron directo a la etapa cuatro.</p>
+
+<div class="cta-box">
+<h3>Opera la lectura en una cuenta financiada</h3>
+<p>El VPA te da la entrada y la invalidación. Una cuenta de prop firm financiada te da el capital para expresarla sin arriesgar el tuyo. Rastreamos cupones de descuento verificados en las principales prop firms de futuros — Apex, Bulenox, TradeDay y más — para que financies la estrategia por menos. <a href="/#firms">Compara las firmas y consigue un cupón</a> antes de tu próxima evaluación.</p>
+</div>
+
+<h2 id="faq">Preguntas Frecuentes</h2>
+
+<p class="faq-q">¿Qué es Volume Price Analysis en términos simples?</p>
+<p class="faq-a">VPA es la práctica de leer una barra de precio junto con su volumen para juzgar si un movimiento es genuino. El precio te dice qué pasó; el volumen te dice si alguien de tamaño realmente lo quiso. Cuando el esfuerzo (volumen) y el resultado (rango de precio) no coinciden, un participante grande escondido está actuando.</p>
+
+<p class="faq-q">¿VPA es lo mismo que Wyckoff?</p>
+<p class="faq-a">Están profundamente relacionados. El VPA se construye sobre las tres leyes de Wyckoff (oferta/demanda, esfuerzo/resultado, causa/efecto) y su ciclo de acumulación–marcación–distribución–marcación a la baja. Tom Williams y Anna Coulling adaptaron el marco institucional de Wyckoff a un método legible en pantalla, barra a barra. Piensa en el VPA como Wyckoff aplicado al nivel de la barra individual.</p>
+
+<p class="faq-q">¿VPA funciona en acciones o solo en futuros?</p>
+<p class="faq-a">Funciona mejor en futuros centralizados de alta liquidez (ES, NQ, CL, GC) donde el número de volumen es honesto. Puede usarse en acciones grandes y líquidas, pero el order flow fragmentado y los prints de dark pool significan que parte del volumen real es invisible, debilitando la señal. Evita por completo las small-caps delgadas.</p>
+
+<p class="faq-q">¿Cuál es el mejor timeframe para VPA?</p>
+<p class="faq-a">El VPA es fractal y funciona en cualquier timeframe, pero la práctica más limpia es leer la fase en un timeframe mayor (diario o 4 horas) y ejecutar en uno menor (15 minutos o 5 minutos). El timeframe mayor te mantiene del lado correcto del ciclo; el menor cronometra la entrada.</p>
+
+<p class="faq-q">¿Qué es una barra de no-supply y por qué importa?</p>
+<p class="faq-a">Una barra de no-supply es una barra bajista estrecha cuyo volumen es menor que el de las dos barras anteriores. Significa que los vendedores se agotaron — nadie quiere vender en el nuevo mínimo. Es el test que el smart money ejecuta antes de una marcación al alza, y por eso es una de las señales de entrada de compra más confiables del método.</p>
+
+<p class="faq-q">¿Cómo difiere un clímax de venta de la venta común?</p>
+<p class="faq-a">Un clímax de venta es la barra bajista más ancha del movimiento, en el mayor volumen en semanas, que cierra bien por encima del mínimo. El cierre subiendo desde el mínimo es la huella de un comprador grande absorbiendo el pánico. La venta común cierra en su mínimo sin absorción. El clímax marca capitulación y el inicio de la acumulación; la venta común es solo continuación.</p>
+
+<p class="faq-q">¿Puedo operar VPA solo con un indicador de volumen estándar?</p>
+<p class="faq-a">Sí. El método core no necesita nada más que un gráfico de precio con el histograma de volumen debajo. Las herramientas de volumen relativo y el VWAP te ayudan a cuantificar "alto" y "bajo" objetivamente, y los footprint charts añaden detalle tick a tick, pero son mejoras, no requisitos. La disciplina de leer spread, cierre y volumen juntos es toda la base.</p>
+
+<p class="faq-q">¿Cuánto tiempo lleva aprender VPA?</p>
+<p class="faq-a">Leer barras individuales lleva unas semanas de práctica deliberada. Leer fases de forma confiable lleva uno a dos meses. Construir una ventaja documentada y operada con los setups lleva varios meses de simulación. La mayoría de los traders que fallaron no carecían de habilidad — se saltaron la repetición y fueron directo a arriesgar capital real.</p>
+
+<p class="faq-q">¿VPA funciona en mercados rápidos, movidos por noticias?</p>
+<p class="faq-a">El volumen alrededor de noticia programada de alto impacto (FOMC, CPI, NFP, EIA para petróleo) está distorsionado y la lectura se vuelve poco confiable en los minutos alrededor de la publicación. El enfoque profesional es quedarse fuera durante el evento y retomar la lectura cuando el volumen se normaliza. El VPA es una herramienta para la subasta normal de dos lados, no para el caos de un pico de dato.</p>
+
+<p class="faq-q">¿VPA basta por sí solo, o necesito otras herramientas?</p>
+<p class="faq-a">El VPA lee la intención mejor que cualquier herramienta aislada, pero es un marco de lectura en lugar de un sistema mecánico completo. Combínalo con estructura simple de mercado (niveles de swing, soporte y resistencia) para definir dónde se probará la intención, y riesgo disciplinado para sobrevivir a la varianza. VPA más estructura más riesgo es un enfoque completo; VPA solo es la mitad de uno.</p>
+
+<hr>
+
+<p>El volumen es el único campo honesto del gráfico. El precio puede ser empujado por una sola orden motivada; el volumen refleja el esfuerzo genuino de todos los que participaron, y los grandes operadores no pueden hacer su trabajo sin dejar una firma en él. Aprende a leer el esfuerzo contra el resultado, localiza la fase antes de elegir una táctica, espera el test de no-supply o la reversión de clímax o el spring, y dimensiona cada entrada contra su stop mecánico y tu regla de drawdown. Hazlo de forma consistente y dejarás de perseguir la punta visible del iceberg para empezar a operar la masa que hay debajo — que es exactamente lo que los operadores del otro lado de tus operaciones han estado haciendo todo el tiempo.</p>
