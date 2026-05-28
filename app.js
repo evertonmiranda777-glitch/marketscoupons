@@ -3312,15 +3312,16 @@ function fdRenderRight(id, f) {
   const packSel = st.pack==='5' ? '5' : '1';
   const variantSel = st.variant==='nofee' ? 'nofee' : 'std';
   // Variant toggle (Standard / No Activation Fee) — mirrors Apex
+  const _newB = `<span style="margin-left:7px;font-size:8.5px;font-weight:800;letter-spacing:.4px;color:${f.color};background:${f.color}1A;border:1px solid ${f.color}40;padding:1px 6px;border-radius:5px;text-transform:uppercase;vertical-align:middle">${_tt('fd_badge_new','Novo')}</span>`;
   if (firmHasNoFee(id)) {
-    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_taxa','Taxa de ativação')}</div>
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_taxa','Taxa de ativação')}${_newB}</div>
       <div class="fd-pills" style="--cols:2">
         <button class="fd-pill${variantSel==='std'?' sel':''}" style="${variantSel==='std'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','variant','std')">${_tt('fd_var_std','Standard')}</button>
         <button class="fd-pill${variantSel==='nofee'?' sel':''}" style="${variantSel==='nofee'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','variant','nofee')">${_tt('fd_var_nofee','Sem taxa de ativação')}</button>
       </div></div>`;
   }
   if (firmHas5Pack(id)) {
-    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_qtd_contas','Quantidade de contas')}</div>
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_qtd_contas','Quantidade de contas')}${_newB}</div>
       <div class="fd-pills" style="--cols:2">
         <button class="fd-pill${packSel==='1'?' sel':''}" style="${packSel==='1'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','1')">${_tt('fd_pack_1','1 conta')}</button>
         <button class="fd-pill${packSel==='5'?' sel':''}" style="${packSel==='5'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','5')">${_tt('fd_pack_5','5 contas')}</button>

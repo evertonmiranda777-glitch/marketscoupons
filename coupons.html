@@ -164,6 +164,7 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 /* Interactive plan picker */
 .fr-picker{padding:0 14px 8px}
 .fr-pills-label{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin:8px 0 6px}
+.fr-new-badge{margin-left:6px;font-size:8.5px;font-weight:800;letter-spacing:.4px;color:#ff8c00;background:rgba(255,140,0,.12);border:1px solid rgba(255,140,0,.4);padding:1px 6px;border-radius:5px;vertical-align:middle}
 .fr-pills{display:flex;gap:6px;flex-wrap:wrap;padding-top:12px}
 .fr-pill{position:relative;flex:1;min-width:0;background:rgba(13,20,28,.6);border:1px solid var(--b1);color:var(--t2);font-family:var(--f);font-size:11px;font-weight:700;padding:9px 6px;border-radius:8px;cursor:pointer;text-align:center;transition:all .15s ease;letter-spacing:.3px}
 .fr-pill:hover{border-color:var(--b2);color:#fff}
@@ -361,7 +362,7 @@ const I18N = {
     accounts: 'Contas', reviews: 'reviews', split: 'Split',
     pill_type: 'Tipo', pill_size: 'Tamanho',
     pill_pack: 'Quantidade', pack_1: '1 conta', pack_5: '5 contas', pack_accounts: 'contas', pack_each: 'conta', pack_save: 'economiza', pack_vs: 'vs avulso',
-    pill_var: 'Taxa de ativação', var_std: 'Padrão', var_nofee: 'Sem taxa de ativação', var_na: 'Indisponível', var_na_note: 'Pack de 5 sem taxa de ativação não disponível neste plano.',
+    pill_var: 'Taxa de ativação', var_std: 'Padrão', var_nofee: 'Sem taxa de ativação', var_na: 'Indisponível', var_na_note: 'Pack de 5 sem taxa de ativação não disponível neste plano.', badge_new: 'Novo',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Payouts', plan_platforms: 'Plataformas',
     per_month: '/mês', popular: 'POPULAR', promo_ends: 'Termina em:',
     copy: 'Copiar', copied: 'Copiado!', see_plans: 'Comprar com desconto',
@@ -384,7 +385,7 @@ const I18N = {
     accounts: 'Accounts', reviews: 'reviews', split: 'Split',
     pill_type: 'Type', pill_size: 'Size',
     pill_pack: 'Quantity', pack_1: '1 account', pack_5: '5 accounts', pack_accounts: 'accounts', pack_each: 'account', pack_save: 'save', pack_vs: 'vs single',
-    pill_var: 'Activation fee', var_std: 'Standard', var_nofee: 'No activation fee', var_na: 'Unavailable', var_na_note: '5-pack with no activation fee not available on this plan.',
+    pill_var: 'Activation fee', var_std: 'Standard', var_nofee: 'No activation fee', var_na: 'Unavailable', var_na_note: '5-pack with no activation fee not available on this plan.', badge_new: 'New',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Payouts', plan_platforms: 'Platforms',
     per_month: '/mo', popular: 'POPULAR', promo_ends: 'Ends in:',
     copy: 'Copy', copied: 'Copied!', see_plans: 'Buy with discount',
@@ -407,7 +408,7 @@ const I18N = {
     accounts: 'Cuentas', reviews: 'reseñas', split: 'Split',
     pill_type: 'Tipo', pill_size: 'Tamaño',
     pill_pack: 'Cantidad', pack_1: '1 cuenta', pack_5: '5 cuentas', pack_accounts: 'cuentas', pack_each: 'cuenta', pack_save: 'ahorra', pack_vs: 'vs individual',
-    pill_var: 'Tarifa de activación', var_std: 'Estándar', var_nofee: 'Sin tarifa de activación', var_na: 'No disponible', var_na_note: 'Pack de 5 sin tarifa de activación no disponible en este plan.',
+    pill_var: 'Tarifa de activación', var_std: 'Estándar', var_nofee: 'Sin tarifa de activación', var_na: 'No disponible', var_na_note: 'Pack de 5 sin tarifa de activación no disponible en este plan.', badge_new: 'Nuevo',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Pagos', plan_platforms: 'Plataformas',
     per_month: '/mes', popular: 'POPULAR', promo_ends: 'Termina en:',
     copy: 'Copiar', copied: '¡Copiado!', see_plans: 'Comprar con descuento',
@@ -430,7 +431,7 @@ const I18N = {
     accounts: 'Conti', reviews: 'recensioni', split: 'Split',
     pill_type: 'Tipo', pill_size: 'Dimensione',
     pill_pack: 'Quantità', pack_1: '1 account', pack_5: '5 account', pack_accounts: 'account', pack_each: 'account', pack_save: 'risparmia', pack_vs: 'vs singolo',
-    pill_var: 'Quota di attivazione', var_std: 'Standard', var_nofee: 'Senza quota di attivazione', var_na: 'Non disponibile', var_na_note: 'Pacchetto da 5 senza quota di attivazione non disponibile per questo piano.',
+    pill_var: 'Quota di attivazione', var_std: 'Standard', var_nofee: 'Senza quota di attivazione', var_na: 'Non disponibile', var_na_note: 'Pacchetto da 5 senza quota di attivazione non disponibile per questo piano.', badge_new: 'Nuovo',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Payout', plan_platforms: 'Piattaforme',
     per_month: '/mese', popular: 'POPOLARE', promo_ends: 'Finisce in:',
     copy: 'Copia', copied: 'Copiato!', see_plans: 'Acquista con sconto',
@@ -454,7 +455,7 @@ const I18N = {
     pill_type: 'Type', pill_size: 'Taille',
     pill_pack: 'Quantité', pack_1: '1 compte', pack_5: '5 comptes', pack_accounts: 'comptes', pack_each: 'compte', pack_save: 'économisez', pack_vs: 'vs unité',
     pill_var: "Frais d'activation", var_std: 'Standard', var_nofee: "Sans frais d'activation", var_na: 'Indisponible', var_na_note: "Pack de 5 sans frais d'activation non disponible sur ce plan.",
-    plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Paiements', plan_platforms: 'Plateformes',
+    plan_target: 'Profit Target', badge_new: 'Nouveau', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Paiements', plan_platforms: 'Plateformes',
     per_month: '/mois', popular: 'POPULAIRE', promo_ends: 'Se termine dans:',
     copy: 'Copier', copied: 'Copié !', see_plans: 'Acheter avec remise',
     see_all_firms: 'Voir les 17 firmes sur le site',
@@ -476,7 +477,7 @@ const I18N = {
     accounts: 'Konten', reviews: 'Bewertungen', split: 'Split',
     pill_type: 'Typ', pill_size: 'Größe',
     pill_pack: 'Anzahl', pack_1: '1 Konto', pack_5: '5 Konten', pack_accounts: 'Konten', pack_each: 'Konto', pack_save: 'spare', pack_vs: 'vs einzeln',
-    pill_var: 'Aktivierungsgebühr', var_std: 'Standard', var_nofee: 'Ohne Aktivierungsgebühr', var_na: 'Nicht verfügbar', var_na_note: '5er-Pack ohne Aktivierungsgebühr für diesen Plan nicht verfügbar.',
+    pill_var: 'Aktivierungsgebühr', var_std: 'Standard', var_nofee: 'Ohne Aktivierungsgebühr', var_na: 'Nicht verfügbar', var_na_note: '5er-Pack ohne Aktivierungsgebühr für diesen Plan nicht verfügbar.', badge_new: 'Neu',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Auszahlungen', plan_platforms: 'Plattformen',
     per_month: '/Monat', popular: 'BELIEBT', promo_ends: 'Endet in:',
     copy: 'Kopieren', copied: 'Kopiert!', see_plans: 'Mit Rabatt kaufen',
@@ -499,7 +500,7 @@ const I18N = {
     accounts: 'الحسابات', reviews: 'تقييمات', split: 'تقسيم',
     pill_type: 'النوع', pill_size: 'الحجم',
     pill_pack: 'الكمية', pack_1: 'حساب واحد', pack_5: '5 حسابات', pack_accounts: 'حسابات', pack_each: 'حساب', pack_save: 'وفّر', pack_vs: 'مقابل الفردي',
-    pill_var: 'رسوم التفعيل', var_std: 'قياسي', var_nofee: 'بدون رسوم تفعيل', var_na: 'غير متاح', var_na_note: 'باقة 5 بدون رسوم تفعيل غير متاحة في هذه الخطة.',
+    pill_var: 'رسوم التفعيل', var_std: 'قياسي', var_nofee: 'بدون رسوم تفعيل', var_na: 'غير متاح', var_na_note: 'باقة 5 بدون رسوم تفعيل غير متاحة في هذه الخطة.', badge_new: 'جديد',
     plan_target: 'هدف الربح', plan_dd: 'سحب', plan_pos: 'الحد الأقصى', plan_payouts: 'المدفوعات', plan_platforms: 'المنصات',
     per_month: '/شهر', popular: 'الأكثر شيوعاً', promo_ends: 'ينتهي خلال:',
     copy: 'نسخ', copied: 'تم النسخ!', see_plans: 'اشترِ بخصم',
@@ -649,13 +650,13 @@ function renderFirms() {
         <div class="fr-pills-label">${T.pill_size}</div>
         <div class="fr-pills" data-pills="size"></div>
         ${hasVar ? `
-          <div class="fr-pills-label">${T.pill_var || 'Taxa de ativação'}</div>
+          <div class="fr-pills-label">${T.pill_var || 'Taxa de ativação'}<span class="fr-new-badge">${T.badge_new || 'Novo'}</span></div>
           <div class="fr-pills" data-pills="variant">
             <button class="fr-pill" data-var="std">${T.var_std || 'Padrão'}</button>
             <button class="fr-pill" data-var="nofee">${T.var_nofee || 'Sem taxa de ativação'}</button>
           </div>` : ''}
         ${hasPack ? `
-          <div class="fr-pills-label">${T.pill_pack || 'Quantidade'}</div>
+          <div class="fr-pills-label">${T.pill_pack || 'Quantidade'}<span class="fr-new-badge">${T.badge_new || 'Novo'}</span></div>
           <div class="fr-pills" data-pills="pack">
             <button class="fr-pill" data-pack="1">${T.pack_1 || '1 conta'}</button>
             <button class="fr-pill" data-pack="5">${T.pack_5 || '5 contas'}</button>
