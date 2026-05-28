@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 522" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="522" fill="url(#bg)"/>
+  <rect width="900" height="600" fill="url(#bg)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Psychological Drawdown Limit (PDL)</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">The drawdown at which YOU stop following your system · find this number BEFORE you hit it</text>
   <g transform="translate(60, 110)">
@@ -15,7 +15,7 @@
     <circle cx="700" cy="380" r="8" fill="#EF4444"/>
     <text x="700" y="395" fill="#EF4444" font-size="11" font-weight="700" text-anchor="middle">if you didn't stop · revenge</text>
   </g>
-  <g transform="translate(60, 430)">
+  <g transform="translate(60, 520)">
     <rect width="780" height="60" rx="10" fill="rgba(240,180,41,.06)" stroke="rgba(240,180,41,.3)"/>
     <text x="20" y="26" fill="#F0B429" font-size="13" font-weight="700">The rule</text>
     <text x="20" y="46" fill="#9AA0A8" font-size="11">Set PDL at 50% of your max acceptable drawdown · stop trading · review for 1 week · come back smaller</text>

@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" font-family="Inter, system-ui, sans-serif">
   <defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0F1422"/><stop offset="100%" stop-color="#070B14"/></linearGradient></defs>
-  <rect width="900" height="500" fill="url(#bg)"/>
+  <rect width="900" height="600" fill="url(#bg)"/>
   <text x="450" y="40" fill="#F0B429" font-size="22" font-weight="700" text-anchor="middle">Recovery From Mid-Eval Drawdown</text>
   <text x="450" y="62" fill="#9AA0A8" font-size="13" text-anchor="middle">Lost -3R on day 2? · Cut size by 50% · trade only A setups · the path back is slower but real</text>
   <g transform="translate(60, 110)">
@@ -14,7 +14,7 @@
     <g transform="translate(310, 260)"><circle r="6" fill="#F0B429"/><text x="0" y="-10" fill="#F0B429" font-size="10" font-weight="700" text-anchor="middle">size cut 50%</text></g>
     <g transform="translate(730, 100)"><circle r="9" fill="#10B981" stroke="#fff" stroke-width="2"/><text x="0" y="-15" fill="#10B981" font-size="11" font-weight="700" text-anchor="middle">day 14: PASS</text></g>
   </g>
-  <g transform="translate(60, 410)">
+  <g transform="translate(60, 500)">
     <rect width="780" height="80" rx="10" fill="rgba(16,185,129,.05)" stroke="rgba(16,185,129,.3)"/>
     <text x="20" y="28" fill="#10B981" font-size="13" font-weight="700">Recovery protocol</text>
     <text x="20" y="50" fill="#9AA0A8" font-size="11">→ Cut size 50% after -2R · cut to 25% after -3R · re-scale up only after +2R consecutive</text>

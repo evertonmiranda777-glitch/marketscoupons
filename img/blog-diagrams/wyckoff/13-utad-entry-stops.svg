@@ -6,7 +6,7 @@
 
   <g transform="translate(60, 100)">
     <line x1="0" y1="60" x2="780" y2="60" stroke="rgba(239,68,68,.3)" stroke-dasharray="4,3"/>
-    <line x1="0" y1="110" x2="780" y2="110" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,3"/>
+    <line x1="0" y1="110" x2="340" y2="110" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,3"/>
     <line x1="0" y1="270" x2="780" y2="270" stroke="rgba(16,185,129,.3)" stroke-dasharray="4,3"/>
     <text x="39" y="64" fill="#EF4444" font-size="10" text-anchor="end">STOP</text>
     <text x="39" y="114" fill="#9AA0A8" font-size="10" text-anchor="end">range high</text>
