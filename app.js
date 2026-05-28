@@ -662,10 +662,10 @@ function _fbVal(){
 // Single source of truth for plan prices: Supabase FIRMS[].prices with hardcoded fallback.
 // Lookup is fuzzy: exact size match first, then numeric match (25K ≈ TCP25 ≈ $25K).
 // For dual-type firms (e.g. Apex Intraday/EOD), typeIdx selects n/n2 and o/o2.
-function getPlanPrice(firmId, typeName, sizeStr){
+function getPlanPrice(firmId, typeName, sizeStr, pack){
   const numOf = s => { const m = (s||'').replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m?parseFloat(m[1]):null; };
   // Start with hardcoded fallback from FIRM_ABOUT (used while Supabase is loading or if it fails)
-  let d='', o='';
+  let d='', o='', each='';
   const fa = (typeof FIRM_ABOUT!=='undefined') && FIRM_ABOUT[firmId];
   if(fa && fa.plans && fa.plans[typeName]){
     const hp = fa.plans[typeName].find(p=>p.s===sizeStr);
@@ -698,7 +698,18 @@ function getPlanPrice(firmId, typeName, sizeStr){
       }
     }
     if(match){
-      if(hasDual){
+      const isEod = hasDual && typeIdx!==0;
+      if(pack==='5'){
+        // 5-pack fields: n5/o5/e5 (type idx 0) · n52/o52/e52 (eod)
+        const n5 = isEod ? match.n52 : match.n5;
+        const o5 = isEod ? match.o52 : match.o5;
+        const e5 = isEod ? match.e52 : match.e5;
+        if(n5){ d = n5; o = o5||''; each = e5||''; }
+        else { // no 5-pack data → fall back to single
+          d = (isEod ? (match.n2||match.n) : match.n) || d;
+          o = (isEod ? (match.o2||match.o) : match.o) || o;
+        }
+      } else if(hasDual){
         d = (typeIdx===0 ? match.n : (match.n2||match.n)) || d;
         o = (typeIdx===0 ? match.o : (match.o2||match.o)) || o;
       } else {
@@ -707,7 +718,12 @@ function getPlanPrice(firmId, typeName, sizeStr){
       }
     }
   }
-  return { d, o };
+  return { d, o, each };
+}
+// Does this firm offer a 5-account pack? (drives the pack toggle UI)
+function firmHas5Pack(firmId){
+  const f = (typeof FIRMS!=='undefined') && FIRMS.find(x=>x.id===firmId);
+  return !!(f && f.prices && f.prices.some(p=>p.n5||p.n52));
 }
 
 // Geo: fetch once per session, enrich events
@@ -3286,18 +3302,39 @@ function fdRenderRight(id, f) {
       <div class="fd-sizes" style="--cols:${sc}">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="fdSel('${id}','size','${p.s}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
+  // Pack toggle (1 conta / 5 contas) — only for firms that offer a 5-pack (e.g. Apex)
+  const packSel = st.pack==='5' ? '5' : '1';
+  if (firmHas5Pack(id)) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${t('fd_qtd_contas')||'Quantidade de contas'}</div>
+      <div class="fd-pills" style="--cols:2">
+        <button class="fd-pill${packSel==='1'?' sel':''}" style="${packSel==='1'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','1')">${t('fd_pack_1')||'1 conta'}</button>
+        <button class="fd-pill${packSel==='5'?' sel':''}" style="${packSel==='5'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','pack','5')">${t('fd_pack_5')||'5 contas'}</button>
+      </div></div>`;
+  }
+
   // Price card — getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
   const plan = plans?.find(p=>p.s===st.size)||plans?.[0];
   if (plan) {
-    const pp = getPlanPrice(id, st.type, plan.s);
+    const pp = getPlanPrice(id, st.type, plan.s, packSel);
     const oNum = parseFloat((pp.o||'').replace(/[^0-9.]/g,''));
     const dNum = parseFloat((pp.d||'').replace(/[^0-9.]/g,''));
     const cur = (pp.d||'').match(/[€$]/)?.[0]||'$';
     const save = oNum&&dNum&&pp.o!=='—' ? (oNum-dNum).toFixed(2) : null;
+    // 5-pack advantage: per-account price vs single
+    let advHtml = '';
+    if (packSel==='5' && pp.each) {
+      const single = getPlanPrice(id, st.type, plan.s, '1');
+      const sNum = parseFloat((single.d||'').replace(/[^0-9.]/g,''));
+      const eNum = parseFloat((pp.each||'').replace(/[^0-9.]/g,''));
+      const perAcctSave = (sNum&&eNum&&sNum>eNum) ? (sNum-eNum).toFixed(2) : null;
+      advHtml = `<div class="fd-pack-adv" style="margin-top:8px;padding:8px 12px;border-radius:8px;background:${f.color}10;border:1px solid ${f.color}33;font-size:12px;color:var(--t1);display:flex;align-items:center;gap:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${f.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>
+        <span><b>5 contas</b> · <b style="color:${f.color}">${pp.each}</b>/conta${perAcctSave?` — ${t('fd_pack_economia')||'economiza'} ${cur}${perAcctSave}/conta vs avulso`:''}</span></div>`;
+    }
     h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
-      <div><div class="fd-price-size">${plan.s}</div><div class="fd-price-type">${st.type}</div></div>
+      <div><div class="fd-price-size">${plan.s}${packSel==='5'?' ×5':''}</div><div class="fd-price-type">${st.type}</div></div>
       <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color}">${pp.d}</div>${pp.o&&pp.o!=='—'?`<div class="fd-price-old">${pp.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
-    </div>`;
+    </div>${advHtml}`;
   }
 
   // Promo countdown (if active)
