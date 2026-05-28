@@ -662,10 +662,10 @@ function _fbVal(){
 // Single source of truth for plan prices: Supabase FIRMS[].prices with hardcoded fallback.
 // Lookup is fuzzy: exact size match first, then numeric match (25K ≈ TCP25 ≈ $25K).
 // For dual-type firms (e.g. Apex Intraday/EOD), typeIdx selects n/n2 and o/o2.
-function getPlanPrice(firmId, typeName, sizeStr, pack){
+function getPlanPrice(firmId, typeName, sizeStr, pack, variant){
   const numOf = s => { const m = (s||'').replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m?parseFloat(m[1]):null; };
   // Start with hardcoded fallback from FIRM_ABOUT (used while Supabase is loading or if it fails)
-  let d='', o='', each='';
+  let d='', o='', each='', unavailable=false;
   const fa = (typeof FIRM_ABOUT!=='undefined') && FIRM_ABOUT[firmId];
   if(fa && fa.plans && fa.plans[typeName]){
     const hp = fa.plans[typeName].find(p=>p.s===sizeStr);
@@ -699,31 +699,35 @@ function getPlanPrice(firmId, typeName, sizeStr, pack){
     }
     if(match){
       const isEod = hasDual && typeIdx!==0;
-      if(pack==='5'){
-        // 5-pack fields: n5/o5/e5 (type idx 0) · n52/o52/e52 (eod)
-        const n5 = isEod ? match.n52 : match.n5;
-        const o5 = isEod ? match.o52 : match.o5;
-        const e5 = isEod ? match.e52 : match.e5;
-        if(n5){ d = n5; o = o5||''; each = e5||''; }
-        else { // no 5-pack data → fall back to single
-          d = (isEod ? (match.n2||match.n) : match.n) || d;
-          o = (isEod ? (match.o2||match.o) : match.o) || o;
-        }
-      } else if(hasDual){
-        d = (typeIdx===0 ? match.n : (match.n2||match.n)) || d;
-        o = (typeIdx===0 ? match.o : (match.o2||match.o)) || o;
+      const naf = variant==='nofee';   // No Activation Fee variant
+      const five = pack==='5';
+      // Pick field keys for [type][variant][pack]. na* = no-activation prefix.
+      let dk, ok, ek=null;
+      if(five){
+        if(isEod){ dk=naf?'na52':'n52'; ok=naf?'na52o':'o52'; ek=naf?'na52e':'e52'; }
+        else     { dk=naf?'na5':'n5';   ok=naf?'na5o':'o5';   ek=naf?'na5e':'e5'; }
       } else {
-        d = match.n || d;
-        o = match.o || o;
+        if(isEod){ dk=naf?'na2':'n2'; ok=naf?'nao2':'o2'; }
+        else     { dk=naf?'na':'n';   ok=naf?'nao':'o'; }
       }
+      const dv = match[dk];
+      if(dv){ d=dv; o=match[ok]||''; each = ek?(match[ek]||''):''; }
+      else if(naf || five){ // combo not offered (e.g. EOD 100K/150K No-Activation 5-pack)
+        d=''; o=''; each=''; unavailable=true;
+      } else if(!hasDual){ d = match.n || d; o = match.o || o; }
     }
   }
-  return { d, o, each };
+  return { d, o, each, unavailable };
 }
 // Does this firm offer a 5-account pack? (drives the pack toggle UI)
 function firmHas5Pack(firmId){
   const f = (typeof FIRMS!=='undefined') && FIRMS.find(x=>x.id===firmId);
   return !!(f && f.prices && f.prices.some(p=>p.n5||p.n52));
+}
+// Does this firm offer a No-Activation-Fee variant? (drives the Standard/No-Activation toggle)
+function firmHasNoFee(firmId){
+  const f = (typeof FIRMS!=='undefined') && FIRMS.find(x=>x.id===firmId);
+  return !!(f && f.prices && f.prices.some(p=>p.na||p.na2));
 }
 
 // Geo: fetch once per session, enrich events
@@ -3306,6 +3310,15 @@ function fdRenderRight(id, f) {
   // _tt: use translation if the key resolves, else fall back (t() returns the key itself when missing)
   const _tt=(k,fb)=>{const v=t(k);return(!v||v===k)?fb:v;};
   const packSel = st.pack==='5' ? '5' : '1';
+  const variantSel = st.variant==='nofee' ? 'nofee' : 'std';
+  // Variant toggle (Standard / No Activation Fee) — mirrors Apex
+  if (firmHasNoFee(id)) {
+    h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_taxa','Taxa de ativação')}</div>
+      <div class="fd-pills" style="--cols:2">
+        <button class="fd-pill${variantSel==='std'?' sel':''}" style="${variantSel==='std'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','variant','std')">${_tt('fd_var_std','Standard')}</button>
+        <button class="fd-pill${variantSel==='nofee'?' sel':''}" style="${variantSel==='nofee'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="fdSel('${id}','variant','nofee')">${_tt('fd_var_nofee','Sem taxa de ativação')}</button>
+      </div></div>`;
+  }
   if (firmHas5Pack(id)) {
     h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_qtd_contas','Quantidade de contas')}</div>
       <div class="fd-pills" style="--cols:2">
@@ -3317,15 +3330,21 @@ function fdRenderRight(id, f) {
   // Price card — getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
   const plan = plans?.find(p=>p.s===st.size)||plans?.[0];
   if (plan) {
-    const pp = getPlanPrice(id, st.type, plan.s, packSel);
+    const pp = getPlanPrice(id, st.type, plan.s, packSel, variantSel);
+    if (pp.unavailable) {
+      h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
+        <div><div class="fd-price-size">${plan.s} ×5</div><div class="fd-price-type">${st.type}</div></div>
+        <div class="fd-price-right" style="max-width:170px"><div style="font-size:12px;color:var(--t2);line-height:1.4">${_tt('fd_combo_na','Pack de 5 não disponível neste plano sem taxa. Use 1 conta ou Standard.')}</div></div>
+      </div>`;
+    } else {
     const oNum = parseFloat((pp.o||'').replace(/[^0-9.]/g,''));
     const dNum = parseFloat((pp.d||'').replace(/[^0-9.]/g,''));
     const cur = (pp.d||'').match(/[€$]/)?.[0]||'$';
     const save = oNum&&dNum&&pp.o!=='—' ? (oNum-dNum).toFixed(2) : null;
-    // 5-pack advantage: per-account price vs single
+    // 5-pack advantage: per-account price vs single (same variant)
     let advHtml = '';
     if (packSel==='5' && pp.each) {
-      const single = getPlanPrice(id, st.type, plan.s, '1');
+      const single = getPlanPrice(id, st.type, plan.s, '1', variantSel);
       const sNum = parseFloat((single.d||'').replace(/[^0-9.]/g,''));
       const eNum = parseFloat((pp.each||'').replace(/[^0-9.]/g,''));
       const perAcctSave = (sNum&&eNum&&sNum>eNum) ? (sNum-eNum).toFixed(2) : null;
@@ -3334,9 +3353,10 @@ function fdRenderRight(id, f) {
         <span><b>5 contas</b> · <b style="color:${f.color}">${pp.each}</b>/conta${perAcctSave?` — ${_tt('fd_pack_economia','economiza')} ${cur}${perAcctSave}/conta vs avulso`:''}</span></div>`;
     }
     h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
-      <div><div class="fd-price-size">${plan.s}${packSel==='5'?' ×5':''}</div><div class="fd-price-type">${st.type}</div></div>
+      <div><div class="fd-price-size">${plan.s}${packSel==='5'?' ×5':''}</div><div class="fd-price-type">${st.type}${variantSel==='nofee'?' · '+_tt('fd_var_nofee','Sem taxa'):''}</div></div>
       <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color}">${pp.d}</div>${pp.o&&pp.o!=='—'?`<div class="fd-price-old">${pp.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
     </div>${advHtml}`;
+    }
   }
 
   // Promo countdown (if active)
