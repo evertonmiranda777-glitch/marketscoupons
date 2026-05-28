@@ -3348,9 +3348,10 @@ function fdRenderRight(id, f) {
       const sNum = parseFloat((single.d||'').replace(/[^0-9.]/g,''));
       const eNum = parseFloat((pp.each||'').replace(/[^0-9.]/g,''));
       const perAcctSave = (sNum&&eNum&&sNum>eNum) ? (sNum-eNum).toFixed(2) : null;
-      advHtml = `<div class="fd-pack-adv" style="margin-top:8px;padding:8px 12px;border-radius:8px;background:${f.color}10;border:1px solid ${f.color}33;font-size:12px;color:var(--t1);display:flex;align-items:center;gap:8px;">
+      const _cta = _tt('fd_pack_conta','conta');
+      advHtml = `<div class="fd-pack-adv" style="margin:10px 0 14px;padding:8px 12px;border-radius:8px;background:${f.color}10;border:1px solid ${f.color}33;font-size:12px;color:var(--t1);display:flex;align-items:center;gap:8px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${f.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>
-        <span><b>5 contas</b> · <b style="color:${f.color}">${pp.each}</b>/conta${perAcctSave?` — ${_tt('fd_pack_economia','economiza')} ${cur}${perAcctSave}/conta vs avulso`:''}</span></div>`;
+        <span><b>${_tt('fd_pack_5','5 contas')}</b> · <b style="color:${f.color}">${pp.each}</b>/${_cta}${perAcctSave?` — ${_tt('fd_pack_economia','economiza')} ${cur}${perAcctSave}/${_cta} ${_tt('fd_pack_vs','vs avulso')}`:''}</span></div>`;
     }
     h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
       <div><div class="fd-price-size">${plan.s}${packSel==='5'?' ×5':''}</div><div class="fd-price-type">${st.type}${variantSel==='nofee'?' · '+_tt('fd_var_nofee','Sem taxa'):''}</div></div>
