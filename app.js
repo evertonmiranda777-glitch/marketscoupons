@@ -2633,13 +2633,17 @@ async function openBlogArticle(slug){
     const dateStr = post.created_at ? new Date(post.created_at).toLocaleDateString(_dtLocale,{day:'2-digit',month:'long',year:'numeric'}) : '';
     const coverHtml = post.cover_url ? `<div class="blog-art-cover"><img src="${post.cover_url}" alt=""></div>` : '';
     const authorHtml = post.author ? `<span class="blog-art-author">${post.author}</span> · ` : '';
+    const backLabel = t('blog_voltar')||'Back to Blog';
     art.innerHTML=`
-      <button class="blog-back" onclick="closeBlogArticle()">&larr; ${t('blog_voltar')||'Back to Blog'}</button>
+      <button class="blog-back" onclick="closeBlogArticle()">&larr; ${backLabel}</button>
       ${coverHtml}
       <div class="blog-art-level" style="background:${lvl.bg};color:${lvl.color};">${t(lvl.key)}</div>
       <div class="blog-art-title">${DOMPurify.sanitize(post.title)}</div>
       <div class="blog-art-meta">${authorHtml}<span>${dateStr}</span>${post.read_time?' · <span>'+post.read_time+'</span>':''}</div>
-      <div class="blog-art-body">${DOMPurify.sanitize(post.body||'')}</div>`;
+      <div class="blog-art-body">${DOMPurify.sanitize(post.body||'')}</div>
+      <div class="blog-art-end" style="margin:40px 0 8px;display:flex;justify-content:center;flex-wrap:wrap;gap:12px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);">
+        <button onclick="closeBlogArticle()" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.03);color:#E6EAF2;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;transition:.2s;" onmouseover="this.style.borderColor='#F0B429';this.style.color='#F0B429'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">&larr; ${backLabel}</button>
+      </div>`;
   } catch(e){
     art.innerHTML='<div style="color:var(--t2);padding:40px 0;">'+t('err_blog_post')+'</div>';
   }
