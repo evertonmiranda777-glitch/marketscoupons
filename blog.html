@@ -246,6 +246,26 @@ function updateSEO(post, slug, blogUrl, lang){
       {'@type':'ListItem',position:3,name:post.title,item:url}
     ]
   });
+
+  // FAQPage JSON-LD — parsed from .faq-q / .faq-a pairs in the body
+  let faqEl = document.getElementById('jsonld-faq');
+  try {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = post.body || '';
+    const qs = [...tmp.querySelectorAll('.faq-q')];
+    const faqs = qs.map(q=>{
+      let a = q.nextElementSibling;
+      while(a && !a.classList.contains('faq-a')) a = a.nextElementSibling;
+      return a ? {q:q.textContent.trim(), a:a.textContent.trim()} : null;
+    }).filter(Boolean);
+    if(faqs.length >= 2){
+      if(!faqEl){faqEl=document.createElement('script');faqEl.type='application/ld+json';faqEl.id='jsonld-faq';document.head.appendChild(faqEl);}
+      faqEl.textContent = JSON.stringify({
+        '@context':'https://schema.org','@type':'FAQPage',
+        mainEntity: faqs.map(f=>({'@type':'Question',name:f.q,acceptedAnswer:{'@type':'Answer',text:f.a}}))
+      });
+    } else if(faqEl){ faqEl.remove(); }
+  } catch(e){ if(faqEl) faqEl.remove(); }
 }
 
 function renderPost(post, slug, blogUrl, T){
