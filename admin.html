@@ -1847,17 +1847,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Ranking de Vendas por Local + Horário</div>
       </div>
-      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">País + estado + cidade + horário (BRT) das vendas reais, juntos na mesma linha. Comissão em US$ (moeda das firmas) e R$ lado a lado. Ordenado por nº de vendas — o topo são os melhores alvos pra concentrar verba. Geo coletado desde 22/05/2026; vendas anteriores ficam sem geo.</div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Países rankeados por nº de vendas reais. Clique num país pra abrir suas cidades. Cada linha mostra comissão US$ (moeda das firmas) + R$ e o horário-pico de venda (BRT e local do alvo — use pra targetar anúncios). Geo coletado desde 22/05/2026; vendas anteriores ficam sem geo.</div>
       <div id="fin-geo-nota" style="font-size:11px;color:var(--gold);margin:-4px 0 10px;"></div>
-      <div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:14px;">
-        <div class="data-table-wrap" style="max-height:440px;overflow-y:auto;"><table class="data-table" id="fin-geo-combo"></table></div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
-        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-pais"></table></div></div>
-        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-estado"></table></div></div>
-        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-cidade"></table></div></div>
-        <div class="chart-card" style="padding:0;overflow:hidden;"><div class="data-table-wrap"><table class="data-table" id="fin-geo-hora"></table></div></div>
-      </div>
+      <div id="fin-geo-tree"></div>
 
       <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Últimas vendas individuais</div>
@@ -4328,11 +4320,10 @@ function localHourForSale(country, region, saleMs){
 }
 
 // Ranking de Vendas por Local + Horário — geo do clique de cupom atribuído à venda real
+const GEO_COUNTRY_NAMES={BR:'Brasil',US:'EUA',AR:'Argentina',FR:'França',DE:'Alemanha',IT:'Itália',ES:'Espanha',GB:'Reino Unido',CA:'Canadá',PT:'Portugal',MX:'México',CO:'Colômbia',CL:'Chile',PE:'Peru',UY:'Uruguai',PY:'Paraguai',JP:'Japão',CN:'China',IN:'Índia',AE:'Emirados Árabes',AU:'Austrália',NL:'Holanda',CH:'Suíça',ZA:'África do Sul',NG:'Nigéria',TR:'Turquia'};
 async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
-  const elCombo=document.getElementById('fin-geo-combo'),
-        elP=document.getElementById('fin-geo-pais'), elE=document.getElementById('fin-geo-estado'),
-        elC=document.getElementById('fin-geo-cidade'), elH=document.getElementById('fin-geo-hora');
-  if(!elCombo) return;
+  const elTree=document.getElementById('fin-geo-tree');
+  if(!elTree) return;
   const attrRes = await db.from('coupon_attributions')
     .select('click_id,amount,currency,sale_date,click_ts,hours_to_sale')
     .gte('sale_date', sinceDate).lte('sale_date', untilDate);
@@ -4343,9 +4334,9 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const r = await db.from('coupon_clicks').select('id,country,region,city').in('id', clickIds.slice(i,i+200));
     (r.data||[]).forEach(c=>{ clk[c.id]=c; });
   }
-  const pais={}, estado={}, cidade={}, hora={}, combo={};
+  // Hierarchical tree: country -> { v,u,r, cities:{cityKey:{v,u,r,region,city}}, hoursBRT:{}, hoursLocal:{} }
+  const tree={};
   let comGeo=0, semGeo=0;
-  const acc=(o,k,usd,brl)=>{ if(!k) return; if(!o[k]) o[k]={v:0,u:0,r:0}; o[k].v++; o[k].u+=usd; o[k].r+=brl; };
   attrs.forEach(a=>{
     const c = clk[a.click_id];
     const amt = Number(a.amount)||0;
@@ -4354,42 +4345,69 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const brl = isBRL ? amt : amt*fxUSDtoBRL;
     if(!c || !c.country){ semGeo++; return; }
     comGeo++;
-    acc(pais, c.country, usd, brl);
-    acc(estado, c.region ? c.country+' · '+c.region : null, usd, brl);
-    acc(cidade, c.city ? c.city+' · '+(c.region||c.country) : null, usd, brl);
+    const t = tree[c.country] || (tree[c.country]={v:0,u:0,r:0,cities:{},hoursBRT:{},hoursLocal:{}});
+    t.v++; t.u+=usd; t.r+=brl;
+    const cName = c.city || '(sem cidade)';
+    const ckey = cName+'|'+(c.region||'');
+    const cy = t.cities[ckey] || (t.cities[ckey]={v:0,u:0,r:0,city:cName,region:c.region||''});
+    cy.v++; cy.u+=usd; cy.r+=brl;
     if(a.click_ts){
       const ms = new Date(a.click_ts).getTime() + (Number(a.hours_to_sale)||0)*3600000;
       const hrBRT = String(new Date(ms).getHours()).padStart(2,'0')+':00';
-      const hrLocal = localHourForSale(c.country, c.region, ms) || '—';
-      acc(hora, hrBRT, usd, brl);
-      const key = c.country+'|'+(c.region||'')+'|'+(c.city||'')+'|'+hrBRT;
-      if(!combo[key]) combo[key]={pais:c.country, estado:c.region||'—', cidade:c.city||'—', hora:hrBRT, horaLocal:hrLocal, v:0, u:0, r:0};
-      combo[key].v++; combo[key].u+=usd; combo[key].r+=brl;
+      t.hoursBRT[hrBRT]=(t.hoursBRT[hrBRT]||0)+1;
+      const hrLocal = localHourForSale(c.country, c.region, ms);
+      if(hrLocal) t.hoursLocal[hrLocal]=(t.hoursLocal[hrLocal]||0)+1;
     }
   });
   const fmtUSD = v=>'$'+Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v=>'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const rollup=(col1,obj)=>{
-    const e=Object.entries(obj).sort((x,y)=>y[1].v-x[1].v);
-    const head=`<thead><tr><th>${col1}</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>`;
-    if(!e.length) return head+'<tbody><tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Sem dados ainda.</td></tr></tbody>';
-    const tV=e.reduce((s,[,d])=>s+d.v,0), tU=e.reduce((s,[,d])=>s+d.u,0), tR=e.reduce((s,[,d])=>s+d.r,0);
-    return head+'<tbody>'+e.map(([k,d])=>`<tr><td><b>${k}</b></td><td>${d.v}</td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+
-      `<tr style="border-top:2px solid rgba(240,180,41,.4);background:rgba(240,180,41,.06);font-weight:700;"><td style="color:var(--gold);">TOTAL</td><td style="color:var(--gold);">${tV}</td><td style="color:var(--gold);">${fmtUSD(tU)}</td><td style="color:var(--gold);">${fmtBRL(tR)}</td></tr>`+
-      '</tbody>';
-  };
-  const comboRows = Object.values(combo).sort((x,y)=>y.v-x.v);
-  const cHead='<thead><tr><th>#</th><th>País</th><th>Estado</th><th>Cidade</th><th title="Horário BRT (do admin)">Hora BRT</th><th title="Horário local do país do click — use pra targetar anúncios no fuso do alvo">Hora Local</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>';
-  const cTV=comboRows.reduce((s,d)=>s+d.v,0), cTU=comboRows.reduce((s,d)=>s+d.u,0), cTR=comboRows.reduce((s,d)=>s+d.r,0);
-  elCombo.innerHTML = cHead + (comboRows.length
-    ? '<tbody>'+comboRows.slice(0,80).map((d,i)=>`<tr><td>${i+1}</td><td><b>${d.pais}</b></td><td>${d.estado}</td><td>${d.cidade}</td><td><b>${d.hora}</b></td><td style="color:var(--gold);"><b>${d.horaLocal||'—'}</b></td><td><b>${d.v}</b></td><td><b>${fmtUSD(d.u)}</b></td><td>${fmtBRL(d.r)}</td></tr>`).join('')+
-      `<tr style="border-top:2px solid rgba(240,180,41,.4);background:rgba(240,180,41,.06);font-weight:700;"><td colspan="6" style="color:var(--gold);text-align:right;">TOTAL</td><td style="color:var(--gold);">${cTV}</td><td style="color:var(--gold);">${fmtUSD(cTU)}</td><td style="color:var(--gold);">${fmtBRL(cTR)}</td></tr>`+
-      '</tbody>'
-    : '<tbody><tr><td colspan="9" style="text-align:center;color:var(--t3);padding:24px;">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</td></tr></tbody>');
-  elP.innerHTML = rollup('País', pais);
-  elE.innerHTML = rollup('Estado', estado);
-  elC.innerHTML = rollup('Cidade', cidade);
-  elH.innerHTML = rollup('Horário', hora);
+  const peak = obj=>{ const e=Object.entries(obj).sort((a,b)=>b[1]-a[1])[0]; return e?{h:e[0],n:e[1]}:null; };
+  const countries = Object.entries(tree).sort((a,b)=>b[1].v-a[1].v);
+  const grandV=countries.reduce((s,[,t])=>s+t.v,0), grandU=countries.reduce((s,[,t])=>s+t.u,0), grandR=countries.reduce((s,[,t])=>s+t.r,0);
+  const rankColor=i=>i===0?'var(--gold)':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--t3)';
+
+  if(!countries.length){
+    elTree.innerHTML='<div class="chart-card" style="padding:24px;text-align:center;color:var(--t3);">Sem vendas com geo ainda — preenche conforme novas vendas entram (geo desde 22/05).</div>';
+  } else {
+    elTree.innerHTML = countries.map(([code,t],i)=>{
+      const name = GEO_COUNTRY_NAMES[code]||code;
+      const pBRT = peak(t.hoursBRT), pLoc = peak(t.hoursLocal);
+      const cityRows = Object.values(t.cities).sort((a,b)=>b.v-a.v).map(cy=>{
+        const cityLabel = cy.city + (cy.region?` · ${cy.region}`:'');
+        const pct=(cy.v/t.v*100).toFixed(0);
+        return `<tr>
+          <td style="padding-left:18px;color:var(--t1);">${cityLabel}</td>
+          <td style="text-align:right;font-variant-numeric:tabular-nums;"><b>${cy.v}</b></td>
+          <td style="width:90px;"><div style="background:rgba(255,255,255,.05);border-radius:3px;height:14px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:#3D4F63;"></div></div></td>
+          <td style="text-align:right;font-variant-numeric:tabular-nums;color:var(--green);">${fmtUSD(cy.u)}</td>
+          <td style="text-align:right;font-variant-numeric:tabular-nums;color:var(--t2);">${fmtBRL(cy.r)}</td>
+        </tr>`;
+      }).join('');
+      const horaChip = pBRT
+        ? `<span style="font-size:11px;color:var(--t3);">pico <b style="color:var(--t1);">${pBRT.h}</b> BRT${pLoc?` · <b style="color:var(--gold);">${pLoc.h}</b> local`:''}</span>`
+        : '<span style="font-size:11px;color:var(--t3);">—</span>';
+      return `<details class="geo-ctry" ${i===0?'open':''} style="background:var(--card,#10151F);border:1px solid rgba(255,255,255,.08);border-radius:10px;margin-bottom:8px;overflow:hidden;">
+        <summary style="list-style:none;cursor:pointer;padding:12px 16px;display:grid;grid-template-columns:30px 1fr auto auto auto;gap:14px;align-items:center;">
+          <span style="font-weight:700;font-size:15px;color:${rankColor(i)};text-align:center;">${i+1}</span>
+          <span style="display:flex;flex-direction:column;gap:2px;"><b style="font-size:14px;color:var(--t1);">${name}</b>${horaChip}</span>
+          <span style="text-align:right;"><b style="font-size:15px;color:var(--gold);font-variant-numeric:tabular-nums;">${t.v}</b><div style="font-size:10px;color:var(--t3);">vendas</div></span>
+          <span style="text-align:right;min-width:96px;"><b style="color:var(--green);font-variant-numeric:tabular-nums;">${fmtUSD(t.u)}</b><div style="font-size:10px;color:var(--t3);">US$</div></span>
+          <span style="text-align:right;min-width:110px;"><b style="color:var(--t2);font-variant-numeric:tabular-nums;">${fmtBRL(t.r)}</b><div style="font-size:10px;color:var(--t3);">R$</div></span>
+        </summary>
+        <div style="border-top:1px solid rgba(255,255,255,.06);padding:4px 10px 8px;">
+          <table class="data-table" style="width:100%;"><thead><tr>
+            <th style="padding-left:18px;">Cidade</th><th style="text-align:right;">Vendas</th><th></th><th style="text-align:right;">US$</th><th style="text-align:right;">R$</th>
+          </tr></thead><tbody>${cityRows}</tbody></table>
+        </div>
+      </details>`;
+    }).join('') +
+    `<div style="display:grid;grid-template-columns:30px 1fr auto auto auto;gap:14px;align-items:center;padding:12px 16px;margin-top:4px;background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.35);border-radius:10px;font-weight:700;">
+      <span></span><span style="color:var(--gold);">TOTAL — ${countries.length} ${countries.length===1?'país':'países'}</span>
+      <span style="text-align:right;color:var(--gold);font-variant-numeric:tabular-nums;">${grandV}<div style="font-size:10px;font-weight:400;">vendas</div></span>
+      <span style="text-align:right;color:var(--gold);font-variant-numeric:tabular-nums;min-width:96px;">${fmtUSD(grandU)}<div style="font-size:10px;font-weight:400;">US$</div></span>
+      <span style="text-align:right;color:var(--gold);font-variant-numeric:tabular-nums;min-width:110px;">${fmtBRL(grandR)}<div style="font-size:10px;font-weight:400;">R$</div></span>
+    </div>`;
+  }
   const nota=document.getElementById('fin-geo-nota');
   if(nota) nota.textContent = (comGeo+semGeo)>0
     ? `${comGeo} de ${comGeo+semGeo} vendas com geo${semGeo?' — '+semGeo+' sem (antes de 22/05)':''}.`
