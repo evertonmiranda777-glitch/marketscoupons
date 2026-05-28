@@ -1,6 +1,6 @@
 # Markets Coupons
 
-> Markets Coupons is a comparison and discount platform for prop trading firms (futures and forex). Active users can compare 12 prop firms side-by-side, copy exclusive coupon codes, read educational guides, and access daily market analysis tools. Site is EN-default with mirrors in PT, ES, FR, IT, DE and AR.
+> Markets Coupons is a comparison and discount platform for prop trading firms (futures and forex). Active users can compare 17 prop firms side-by-side, copy exclusive coupon codes, read educational guides, and access daily market analysis tools. Site is EN-default with mirrors in PT, ES, FR, IT, DE and AR.
 
 ## Prop Firm Pages
 
