@@ -4390,6 +4390,18 @@ function tzForCountry(c, region){
   const M = {BR:'America/Sao_Paulo',IN:'Asia/Kolkata',GB:'Europe/London',DE:'Europe/Berlin',FR:'Europe/Paris',ES:'Europe/Madrid',IT:'Europe/Rome',PT:'Europe/Lisbon',NL:'Europe/Amsterdam',BE:'Europe/Brussels',IE:'Europe/Dublin',AR:'America/Argentina/Buenos_Aires',MX:'America/Mexico_City',CL:'America/Santiago',CO:'America/Bogota',PE:'America/Lima',AU:'Australia/Sydney',NZ:'Pacific/Auckland',JP:'Asia/Tokyo',CN:'Asia/Shanghai',KR:'Asia/Seoul',TH:'Asia/Bangkok',ID:'Asia/Jakarta',MY:'Asia/Kuala_Lumpur',PH:'Asia/Manila',VN:'Asia/Ho_Chi_Minh',SG:'Asia/Singapore',HK:'Asia/Hong_Kong',TW:'Asia/Taipei',RU:'Europe/Moscow',TR:'Europe/Istanbul',ZA:'Africa/Johannesburg',NG:'Africa/Lagos',EG:'Africa/Cairo',AE:'Asia/Dubai',SA:'Asia/Riyadh',IL:'Asia/Jerusalem',PL:'Europe/Warsaw',CH:'Europe/Zurich',AT:'Europe/Vienna',SE:'Europe/Stockholm',NO:'Europe/Oslo',DK:'Europe/Copenhagen',FI:'Europe/Helsinki',GR:'Europe/Athens',CZ:'Europe/Prague',HU:'Europe/Budapest',RO:'Europe/Bucharest'};
   return M[c] || null;
 }
+function localDayHourForSale(country, region, saleMs){
+  const tz = tzForCountry(country, region);
+  if (!tz) return null;
+  try {
+    const fmt = new Intl.DateTimeFormat('en-US', { weekday:'short', hour:'2-digit', hour12:false, timeZone: tz });
+    const parts = fmt.formatToParts(new Date(saleMs));
+    const wd = parts.find(p=>p.type==='weekday')?.value || 'Sun';
+    const hr = parseInt((parts.find(p=>p.type==='hour')?.value || '0').replace(/\D/g,''), 10) || 0;
+    const dowMap = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+    return { dow: dowMap[wd] ?? 0, hour: hr };
+  } catch { return null; }
+}
 function localHourForSale(country, region, saleMs){
   const tz = tzForCountry(country, region);
   if (!tz) return null;
@@ -4425,7 +4437,7 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const brl = isBRL ? amt : amt*fxUSDtoBRL;
     if(!c || !c.country){ semGeo++; return; }
     comGeo++;
-    const t = tree[c.country] || (tree[c.country]={v:0,u:0,r:0,regions:{},hoursBRT:{},hoursLocal:{}});
+    const t = tree[c.country] || (tree[c.country]={v:0,u:0,r:0,regions:{},hoursBRT:{},hoursLocal:{},heat:Array.from({length:7},()=>new Array(24).fill(0))});
     t.v++; t.u+=usd; t.r+=brl;
     const rName = c.region || '(sem estado)';
     const rg = t.regions[rName] || (t.regions[rName]={v:0,u:0,r:0,cities:{}});
@@ -4439,6 +4451,8 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
       t.hoursBRT[hrBRT]=(t.hoursBRT[hrBRT]||0)+1;
       const hrLocal = localHourForSale(c.country, c.region, saleMs);
       if(hrLocal){ t.hoursLocal[hrLocal]=(t.hoursLocal[hrLocal]||0)+1; cy.hours[hrLocal]=(cy.hours[hrLocal]||0)+1; }
+      const dh = localDayHourForSale(c.country, c.region, saleMs);
+      if(dh){ const row=(dh.dow+6)%7; t.heat[row][dh.hour]++; }
     }
   });
   const fmtUSD = v=>'$'+Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -4473,6 +4487,30 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
             <td style="text-align:right;font-weight:700;color:var(--t2);font-variant-numeric:tabular-nums;">${fmtBRL(rg.r)}</td>
           </tr>${cities}`;
       }).join('');
+      // Heatmap dia × hora (fuso do alvo)
+      const _days = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+      const _heatTotal = t.heat.flat().reduce((s,n)=>s+n,0);
+      const _heatMax = Math.max(1, ...t.heat.flat());
+      let heatHtml = '';
+      if(_heatTotal>0){
+        const _hdr = Array.from({length:24},(_,h)=>`<span style="text-align:center;color:var(--t3);font-size:9px;">${String(h).padStart(2,'0')}</span>`).join('');
+        const _rows = _days.map((d,di)=>{
+          const cells = t.heat[di].map(n=>{
+            const a = n>0 ? (0.08 + 0.82*(n/_heatMax)) : 0;
+            const bg = n>0 ? `rgba(240,180,41,${a.toFixed(2)})` : 'rgba(255,255,255,.025)';
+            const col = a>0.5 ? '#0A0D14' : (n>0?'var(--t1)':'var(--t3)');
+            return `<span style="background:${bg};color:${col};text-align:center;padding:5px 0;border-radius:3px;font-weight:${n>0?'700':'400'};font-size:10px;font-variant-numeric:tabular-nums;">${n||''}</span>`;
+          }).join('');
+          return `<span style="color:var(--t3);font-size:10px;align-self:center;text-align:right;padding-right:8px;font-weight:600;">${d}</span>${cells}`;
+        }).join('');
+        heatHtml = `<div style="margin-top:12px;padding:0 16px 4px;">
+          <div style="font-size:11px;color:var(--t3);margin-bottom:6px;">Mapa de vendas — <b style="color:var(--t2);">dia × hora</b> no <b style="color:var(--gold);">fuso do alvo</b>. Mais dourado = mais vendas. Use no agendamento do Meta.</div>
+          <div style="display:grid;grid-template-columns:36px repeat(24,minmax(0,1fr));gap:2px;">
+            <span></span>${_hdr}
+            ${_rows}
+          </div>
+        </div>`;
+      }
       const horaChip = pLoc
         ? `<span style="font-size:11px;color:var(--t3);">melhor horário <b style="color:var(--gold);">${pLoc.h}</b> <span style="color:var(--gold);opacity:.8;">fuso do alvo</span>${pBRT?` · ${pBRT.h} BRT`:''}</span>`
         : (pBRT?`<span style="font-size:11px;color:var(--t3);">pico <b style="color:var(--t1);">${pBRT.h}</b> BRT</span>`:'<span style="font-size:11px;color:var(--t3);">—</span>');
@@ -4489,6 +4527,7 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
           <table class="data-table" style="width:100%;"><thead><tr>
             <th style="padding-left:16px;">Estado / Cidade · Horários</th><th style="text-align:right;">Vendas</th><th style="text-align:right;">US$</th><th style="text-align:right;">R$</th>
           </tr></thead><tbody>${cityRows}</tbody></table>
+          ${heatHtml}
         </div>
       </details>`;
     }).join('') +
