@@ -4425,7 +4425,7 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const brl = isBRL ? amt : amt*fxUSDtoBRL;
     if(!c || !c.country){ semGeo++; return; }
     comGeo++;
-    const t = tree[c.country] || (tree[c.country]={v:0,u:0,r:0,regions:{},hoursBRT:{},hoursLocal:{}});
+    const t = tree[c.country] || (tree[c.country]={v:0,u:0,r:0,regions:{},hoursBRT:{},hoursLocal:{},sales:[]});
     t.v++; t.u+=usd; t.r+=brl;
     const rName = c.region || '(sem estado)';
     const rg = t.regions[rName] || (t.regions[rName]={v:0,u:0,r:0,cities:{}});
@@ -4433,13 +4433,15 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const cName = c.city || '(sem cidade)';
     const cy = rg.cities[cName] || (rg.cities[cName]={v:0,u:0,r:0});
     cy.v++; cy.u+=usd; cy.r+=brl;
+    let saleMs=null, hrLocalExact=null;
     if(a.click_ts){
-      const ms = new Date(a.click_ts).getTime() + (Number(a.hours_to_sale)||0)*3600000;
-      const hrBRT = String(new Date(ms).getHours()).padStart(2,'0')+':00';
+      saleMs = new Date(a.click_ts).getTime() + (Number(a.hours_to_sale)||0)*3600000;
+      const hrBRT = String(new Date(saleMs).getHours()).padStart(2,'0')+':00';
       t.hoursBRT[hrBRT]=(t.hoursBRT[hrBRT]||0)+1;
-      const hrLocal = localHourForSale(c.country, c.region, ms);
-      if(hrLocal) t.hoursLocal[hrLocal]=(t.hoursLocal[hrLocal]||0)+1;
+      const hrLocal = localHourForSale(c.country, c.region, saleMs);
+      if(hrLocal){ t.hoursLocal[hrLocal]=(t.hoursLocal[hrLocal]||0)+1; hrLocalExact=hrLocal; }
     }
+    t.sales.push({ ms:saleMs, localH:hrLocalExact, city:cName, usd, brl });
   });
   const fmtUSD = v=>'$'+Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v=>'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -4470,6 +4472,17 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
             <td style="text-align:right;font-weight:700;color:var(--t2);font-variant-numeric:tabular-nums;">${fmtBRL(rg.r)}</td>
           </tr>${cities}`;
       }).join('');
+      const salesArr = (t.sales||[]).slice().sort((a,b)=>(b.ms||0)-(a.ms||0));
+      const salesRows = salesArr.map(s=>{
+        let dataBRT='—';
+        if(s.ms){ const d=new Date(s.ms); dataBRT = String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+        return `<tr>
+            <td style="padding-left:16px;color:var(--t2);font-variant-numeric:tabular-nums;">${dataBRT}<span style="color:var(--t3);font-size:10px;"> BRT</span></td>
+            <td style="color:var(--gold);font-variant-numeric:tabular-nums;">${s.localH||'—'}</td>
+            <td style="color:var(--t2);">${s.city}</td>
+            <td style="text-align:right;color:var(--green);font-variant-numeric:tabular-nums;">${fmtUSD(s.usd)}</td>
+          </tr>`;
+      }).join('');
       const horaChip = pLoc
         ? `<span style="font-size:11px;color:var(--t3);">melhor horário <b style="color:var(--gold);">${pLoc.h}</b> <span style="color:var(--gold);opacity:.8;">fuso do alvo</span>${pBRT?` · ${pBRT.h} BRT`:''}</span>`
         : (pBRT?`<span style="font-size:11px;color:var(--t3);">pico <b style="color:var(--t1);">${pBRT.h}</b> BRT</span>`:'<span style="font-size:11px;color:var(--t3);">—</span>');
@@ -4485,6 +4498,10 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
           <table class="data-table" style="width:100%;"><thead><tr>
             <th style="padding-left:16px;">Estado / Cidade</th><th style="text-align:right;">Vendas</th><th style="text-align:right;">US$</th><th style="text-align:right;">R$</th>
           </tr></thead><tbody>${cityRows}</tbody></table>
+          <div style="margin:12px 0 4px;padding-left:16px;font-size:11px;color:var(--t3);">Horários das compras — hora <b style="color:var(--t2);">BRT</b> + <b style="color:var(--gold);">hora no fuso do alvo</b> (use essa no agendamento do Meta)</div>
+          <table class="data-table" style="width:100%;"><thead><tr>
+            <th style="padding-left:16px;">Data / Hora (BRT)</th><th>Hora alvo</th><th>Cidade</th><th style="text-align:right;">US$</th>
+          </tr></thead><tbody>${salesRows||'<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:12px;">Sem horário (vendas antigas sem click_ts)</td></tr>'}</tbody></table>
         </div>
       </details>`;
     }).join('') +
