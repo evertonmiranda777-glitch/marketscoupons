@@ -1874,6 +1874,14 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div id="fin-geo-tree"></div>
 
       <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Ranking de Criativos (por venda real)</div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Criativos (<code>utm_term</code>) rankeados por nº de vendas reais, atribuição 1:1 (click de cupom → venda da firma). Comissão US$ + R$. Mesmo período do filtro. <b style="color:var(--t2);">É o mesmo criativo que chega no Telegram da venda.</b></div>
+      <div class="chart-card" style="padding:0;overflow:hidden;">
+        <div class="data-table-wrap"><table class="data-table" id="fin-criativos-tbl"></table></div>
+      </div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Últimas vendas individuais</div>
       </div>
       <div class="chart-card" style="padding:0;overflow:hidden;">
@@ -4026,6 +4034,56 @@ async function renderFinanceiro(){
   renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur);
   renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur);
   renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL);
+  renderCriativosRanking(sinceDate, untilDate, fxUSDtoBRL);
+}
+
+// Ranking de Criativos (utm_term) por venda real — atribuição 1:1 click→venda, igual ao geo
+async function renderCriativosRanking(sinceDate, untilDate, fxUSDtoBRL){
+  const tbl = document.getElementById('fin-criativos-tbl');
+  if(!tbl) return;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const head = '<thead><tr><th>#</th><th>Criativo (utm_term)</th><th>Firma</th><th>Vendas</th><th>Comissão US$</th><th>Comissão R$</th></tr></thead>';
+  try{
+    const attrRes = await db.from('coupon_attributions')
+      .select('click_id,amount,currency,sale_date')
+      .gte('sale_date', sinceDate).lte('sale_date', untilDate);
+    const attrs = attrRes.data || [];
+    const clickIds = [...new Set(attrs.map(a=>a.click_id).filter(Boolean))];
+    const clk = {};
+    for(let i=0;i<clickIds.length;i+=200){
+      const r = await db.from('coupon_clicks').select('id,utm_term,firm_id').in('id', clickIds.slice(i,i+200));
+      (r.data||[]).forEach(c=>{ clk[c.id]=c; });
+    }
+    const map = {}; let semCriativo=0;
+    attrs.forEach(a=>{
+      const c = clk[a.click_id];
+      const term = (c && c.utm_term) ? c.utm_term.trim() : '';
+      const amt = Number(a.amount)||0;
+      const isBRL = a.currency==='BRL';
+      const usd = isBRL ? amt/(fxUSDtoBRL||1) : amt;
+      const brl = isBRL ? amt : amt*fxUSDtoBRL;
+      if(!term){ semCriativo++; return; }
+      const m = map[term] || (map[term]={v:0,u:0,r:0,firms:{}});
+      m.v++; m.u+=usd; m.r+=brl;
+      if(c.firm_id) m.firms[c.firm_id]=(m.firms[c.firm_id]||0)+1;
+    });
+    const rows = Object.entries(map).map(([term,m])=>({term,...m})).sort((a,b)=>b.v-a.v);
+    if(!rows.length){
+      tbl.innerHTML = head + '<tbody><tr><td colspan="6" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma venda com criativo no período.</td></tr></tbody>';
+      return;
+    }
+    const fmtUSD = n => '$'+n.toFixed(2);
+    const fmtBRL = n => 'R$'+n.toFixed(2).replace('.',',');
+    const body = rows.map((r,i)=>{
+      const firm = Object.entries(r.firms).sort((a,b)=>b[1]-a[1])[0];
+      const firmLbl = firm ? firm[0].toUpperCase() : '—';
+      return `<tr><td>${i+1}</td><td style="max-width:300px;word-break:break-word">${esc(r.term)}</td><td>${firmLbl}</td><td><b>${r.v}</b></td><td>${fmtUSD(r.u)}</td><td style="color:var(--gold)">${fmtBRL(r.r)}</td></tr>`;
+    }).join('');
+    const note = semCriativo ? `<tr><td colspan="6" style="text-align:center;color:var(--t3);font-size:10px;padding:8px;">${semCriativo} venda(s) sem criativo (sem utm_term) não listadas.</td></tr>` : '';
+    tbl.innerHTML = head + '<tbody>' + body + note + '</tbody>';
+  }catch(e){
+    tbl.innerHTML = head + `<tbody><tr><td colspan="6" style="text-align:center;color:#ef4444;padding:16px;">Erro: ${esc(e.message||e)}</td></tr></tbody>`;
+  }
 }
 
 async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
