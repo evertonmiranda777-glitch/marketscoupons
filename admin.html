@@ -4437,7 +4437,7 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
     const brl = isBRL ? amt : amt*fxUSDtoBRL;
     if(!c || !c.country){ semGeo++; return; }
     comGeo++;
-    const t = tree[c.country] || (tree[c.country]={v:0,u:0,r:0,regions:{},hoursBRT:{},hoursLocal:{}});
+    const t = tree[c.country] || (tree[c.country]={v:0,u:0,r:0,regions:{},hoursBRT:{},hoursLocal:{},heat:Array.from({length:7},()=>new Array(24).fill(0))});
     t.v++; t.u+=usd; t.r+=brl;
     const rName = c.region || '(sem estado)';
     const rg = t.regions[rName] || (t.regions[rName]={v:0,u:0,r:0,cities:{}});
@@ -4451,6 +4451,8 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
       t.hoursBRT[hrBRT]=(t.hoursBRT[hrBRT]||0)+1;
       const hrLocal = localHourForSale(c.country, c.region, saleMs);
       if(hrLocal){ t.hoursLocal[hrLocal]=(t.hoursLocal[hrLocal]||0)+1; cy.hours[hrLocal]=(cy.hours[hrLocal]||0)+1; }
+      const dh = localDayHourForSale(c.country, c.region, saleMs);
+      if(dh){ const row=(dh.dow+6)%7; t.heat[row][dh.hour]++; }
     }
   });
   const fmtUSD = v=>'$'+Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -4499,6 +4501,31 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
           </tr>${cities}`;
       }).join('');
       const hoursLegend = `<tr><td colspan="4" style="padding:8px 16px 2px 34px;"><div style="display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:2px;font-size:9px;color:var(--t2);text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.4px;">${Array.from({length:24},(_,h)=>`<span>${String(h).padStart(2,'0')}</span>`).join('')}</div></td></tr>`;
+      // Painel completo: dia x hora (7 x 24) ao fim do pais
+      const _days = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+      const _heatTotal = t.heat.flat().reduce((s,n)=>s+n,0);
+      const _heatMax = Math.max(1, ...t.heat.flat());
+      let heatHtml = '';
+      if(_heatTotal>0){
+        const _hdr = Array.from({length:24},(_,h)=>`<span style="text-align:center;color:var(--t2);font-size:9.5px;font-variant-numeric:tabular-nums;letter-spacing:.4px;">${String(h).padStart(2,'0')}</span>`).join('');
+        const _rows = _days.map((d,di)=>{
+          const cells = t.heat[di].map(n=>{
+            if(n>0){
+              const a = 0.55 + 0.45*(n/_heatMax);
+              return `<span style="background:rgba(240,180,41,${a.toFixed(2)});color:#0A0D14;border:1px solid rgba(240,180,41,.85);text-align:center;padding:5px 0;border-radius:3px;font-weight:800;font-size:10.5px;font-variant-numeric:tabular-nums;">${n}</span>`;
+            }
+            return `<span style="background:transparent;border:1px solid rgba(107,182,201,.18);text-align:center;padding:5px 0;border-radius:3px;"></span>`;
+          }).join('');
+          return `<span style="color:var(--t3);font-size:10px;align-self:center;text-align:right;padding-right:8px;font-weight:600;">${d}</span>${cells}`;
+        }).join('');
+        heatHtml = `<div style="margin-top:14px;padding:0 16px 4px;">
+          <div style="font-size:11px;color:var(--t3);margin-bottom:6px;">Painel completo — <b style="color:var(--t2);">dia da semana × hora</b> no <b style="color:var(--gold);">fuso do alvo</b>. Mais dourado = mais vendas. Use no agendamento do Meta.</div>
+          <div style="display:grid;grid-template-columns:38px repeat(24,minmax(0,1fr));gap:2px;">
+            <span></span>${_hdr}
+            ${_rows}
+          </div>
+        </div>`;
+      }
       const horaChip = pLoc
         ? `<span style="font-size:11px;color:var(--t3);">melhor horário <b style="color:var(--gold);">${pLoc.h}</b> <span style="color:var(--gold);opacity:.8;">fuso do alvo</span>${pBRT?` · ${pBRT.h} BRT`:''}</span>`
         : (pBRT?`<span style="font-size:11px;color:var(--t3);">pico <b style="color:var(--t1);">${pBRT.h}</b> BRT</span>`:'<span style="font-size:11px;color:var(--t3);">—</span>');
@@ -4514,6 +4541,7 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
           <table class="data-table" style="width:100%;"><thead><tr>
             <th style="padding-left:16px;">Estado / Cidade</th><th style="text-align:right;">Vendas</th><th style="text-align:right;">US$</th><th style="text-align:right;">R$</th>
           </tr></thead><tbody>${hoursLegend}${cityRows}</tbody></table>
+          ${heatHtml}
         </div>
       </details>`;
     }).join('') +
