@@ -4470,16 +4470,13 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
       const pBRT = peak(t.hoursBRT), pLoc = peak(t.hoursLocal);
       const regionsArr = Object.entries(t.regions).sort((a,b)=>b[1].v-a[1].v);
       const cityRows = regionsArr.map(([rName,rg])=>{
-        const cities = Object.entries(rg.cities).sort((a,b)=>b[1].v-a[1].v).map(([cName,cy])=>{
-          const hrs = Object.entries(cy.hours||{}).sort((a,b)=>b[1]-a[1]).map(([h,n])=>`${h}<span style="opacity:.55">×${n}</span>`).join('&nbsp;&nbsp;');
-          const hrsChip = hrs ? `<span style="margin-left:10px;color:var(--gold);font-size:10.5px;font-variant-numeric:tabular-nums;">${hrs}</span>` : '';
-          return `<tr>
-            <td style="padding-left:34px;color:var(--t2);">${cName}${hrsChip}</td>
+        const cities = Object.entries(rg.cities).sort((a,b)=>b[1].v-a[1].v).map(([cName,cy])=>`
+          <tr>
+            <td style="padding-left:34px;color:var(--t2);">${cName}</td>
             <td style="text-align:right;font-variant-numeric:tabular-nums;"><b>${cy.v}</b></td>
             <td style="text-align:right;font-variant-numeric:tabular-nums;color:var(--green);">${fmtUSD(cy.u)}</td>
             <td style="text-align:right;font-variant-numeric:tabular-nums;color:var(--t2);">${fmtBRL(cy.r)}</td>
-          </tr>`;
-        }).join('');
+          </tr>`).join('');
         return `<tr style="background:rgba(255,255,255,.035);">
             <td style="padding-left:16px;font-weight:700;color:var(--t1);">${rName}</td>
             <td style="text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;">${rg.v}</td>
@@ -4493,13 +4490,14 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
       const _heatMax = Math.max(1, ...t.heat.flat());
       let heatHtml = '';
       if(_heatTotal>0){
-        const _hdr = Array.from({length:24},(_,h)=>`<span style="text-align:center;color:var(--t3);font-size:9px;">${String(h).padStart(2,'0')}</span>`).join('');
+        const _hdr = Array.from({length:24},(_,h)=>`<span style="text-align:center;color:var(--t2);font-size:9.5px;font-variant-numeric:tabular-nums;letter-spacing:.4px;">${String(h).padStart(2,'0')}</span>`).join('');
         const _rows = _days.map((d,di)=>{
           const cells = t.heat[di].map(n=>{
-            const a = n>0 ? (0.08 + 0.82*(n/_heatMax)) : 0;
-            const bg = n>0 ? `rgba(240,180,41,${a.toFixed(2)})` : 'rgba(255,255,255,.025)';
-            const col = a>0.5 ? '#0A0D14' : (n>0?'var(--t1)':'var(--t3)');
-            return `<span style="background:${bg};color:${col};text-align:center;padding:5px 0;border-radius:3px;font-weight:${n>0?'700':'400'};font-size:10px;font-variant-numeric:tabular-nums;">${n||''}</span>`;
+            if(n>0){
+              const a = 0.55 + 0.45*(n/_heatMax);
+              return `<span style="background:rgba(240,180,41,${a.toFixed(2)});color:#0A0D14;border:1px solid rgba(240,180,41,.85);text-align:center;padding:5px 0;border-radius:3px;font-weight:800;font-size:10.5px;font-variant-numeric:tabular-nums;">${n}</span>`;
+            }
+            return `<span style="background:transparent;border:1px solid rgba(107,182,201,.18);text-align:center;padding:5px 0;border-radius:3px;"></span>`;
           }).join('');
           return `<span style="color:var(--t3);font-size:10px;align-self:center;text-align:right;padding-right:8px;font-weight:600;">${d}</span>${cells}`;
         }).join('');
@@ -4523,9 +4521,8 @@ async function renderVendasGeo(sinceDate, untilDate, fxUSDtoBRL){
           <span style="text-align:right;min-width:110px;"><b style="color:var(--t2);font-variant-numeric:tabular-nums;">${fmtBRL(t.r)}</b><div style="font-size:10px;color:var(--t3);">R$</div></span>
         </summary>
         <div style="border-top:1px solid rgba(255,255,255,.06);padding:4px 10px 8px;">
-          <div style="padding:2px 16px 6px;font-size:10.5px;color:var(--t3);">Ao lado da cidade, em <b style="color:var(--gold);">dourado</b>: horários das compras agrupados (fuso do alvo) — <code>HH:00×nº</code>. Use no agendamento do Meta.</div>
           <table class="data-table" style="width:100%;"><thead><tr>
-            <th style="padding-left:16px;">Estado / Cidade · Horários</th><th style="text-align:right;">Vendas</th><th style="text-align:right;">US$</th><th style="text-align:right;">R$</th>
+            <th style="padding-left:16px;">Estado / Cidade</th><th style="text-align:right;">Vendas</th><th style="text-align:right;">US$</th><th style="text-align:right;">R$</th>
           </tr></thead><tbody>${cityRows}</tbody></table>
           ${heatHtml}
         </div>
