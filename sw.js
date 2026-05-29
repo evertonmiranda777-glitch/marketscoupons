@@ -2,7 +2,7 @@
 // Cache conservador: app shell em cache-first, HTML/API sempre network.
 // Push handlers entram na Fase 2.
 
-const SW_VERSION = 'mc-sw-v3-2026-05-27';
+const SW_VERSION = 'mc-sw-v4-2026-05-29';
 const SHELL_CACHE = 'mc-shell-v3';
 const IMG_CACHE = 'mc-img-v2';
 const OFFLINE_URL = '/offline.html';

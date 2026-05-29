@@ -192,21 +192,22 @@ module.exports = async (req, res) => {
 
       let sent = 0, failed = 0, expired = 0;
       const expiredIds = [];
-      for (const s of subs) {
-        try {
-          await webpush.sendNotification(
+      // Envia em lotes paralelos pra não estourar o timeout da função (doutrina: chunkar sempre).
+      const CHUNK = 100;
+      for (let i = 0; i < subs.length; i += CHUNK) {
+        const batch = subs.slice(i, i + CHUNK);
+        const results = await Promise.allSettled(batch.map(s =>
+          webpush.sendNotification(
             { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },
             payload
-          );
-          sent++;
-        } catch (err) {
-          if (err.statusCode === 410 || err.statusCode === 404) {
-            expired++;
-            expiredIds.push(s.id);
-          } else {
-            failed++;
-          }
-        }
+          )
+        ));
+        results.forEach((r, j) => {
+          if (r.status === 'fulfilled') { sent++; return; }
+          const code = r.reason && r.reason.statusCode;
+          if (code === 410 || code === 404) { expired++; expiredIds.push(batch[j].id); }
+          else { failed++; }
+        });
       }
       // Soft-delete expirados
       if (expiredIds.length > 0) {

@@ -229,11 +229,72 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', refreshPushButton);
   else setTimeout(refreshPushButton, 500);
 
-  // Cleanup: remove any popup/banner/toast residual from prior unauthorized adds
-  document.addEventListener('DOMContentLoaded', () => {
-    ['mc-install-banner', 'mc-update-toast'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.remove();
+  // ─── Install app (menu mobile #mm-install-app) ───
+  const INSTALL_LABELS = {
+    pt:'Instalar app', en:'Install app', es:'Instalar app', it:'Installa app',
+    fr:"Installer l'app", de:'App installieren', ar:'تثبيت التطبيق'
+  };
+  function installL() {
+    let lang = 'en';
+    try { lang = (localStorage.getItem('mc_lang') || 'en').slice(0,2); } catch (_) {}
+    return INSTALL_LABELS[lang] || INSTALL_LABELS.en;
+  }
+  function refreshInstallButton() {
+    const btn = document.getElementById('mm-install-app');
+    if (!btn) return;
+    const show = !!window.MC_INSTALL_PROMPT && !isStandalone();
+    btn.style.display = show ? '' : 'none';
+    const label = btn.querySelector('span');
+    if (label) label.textContent = installL();
+  }
+  window.mcInstallApp = async function () {
+    const e = window.MC_INSTALL_PROMPT;
+    if (!e) return;
+    try {
+      e.prompt();
+      const choice = await e.userChoice;
+      if (typeof window.track === 'function') window.track('pwa_install_prompt', { outcome: choice && choice.outcome });
+    } catch (_) {}
+    window.MC_INSTALL_PROMPT = null;
+    refreshInstallButton();
+  };
+  document.addEventListener('DOMContentLoaded', refreshInstallButton);
+  setTimeout(refreshInstallButton, 600);
+
+  // ─── Toast de atualização (nova versão do SW assumiu) ───
+  const UPDATE_LABELS = {
+    pt:{ msg:'Nova versão disponível', btn:'Atualizar' }, en:{ msg:'New version available', btn:'Update' },
+    es:{ msg:'Nueva versión disponible', btn:'Actualizar' }, it:{ msg:'Nuova versione disponibile', btn:'Aggiorna' },
+    fr:{ msg:'Nouvelle version disponible', btn:'Mettre à jour' }, de:{ msg:'Neue Version verfügbar', btn:'Aktualisieren' },
+    ar:{ msg:'إصدار جديد متاح', btn:'تحديث' }
+  };
+  function updateL() {
+    let lang = 'en';
+    try { lang = (localStorage.getItem('mc_lang') || 'en').slice(0,2); } catch (_) {}
+    return UPDATE_LABELS[lang] || UPDATE_LABELS.en;
+  }
+  let _updateToastShown = false;
+  function showUpdateToast() {
+    if (_updateToastShown || document.getElementById('mc-update-toast')) return;
+    _updateToastShown = true;
+    const L = updateL();
+    const t = document.createElement('div');
+    t.id = 'mc-update-toast';
+    t.setAttribute('role', 'status');
+    t.style.cssText = 'position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:100000;display:flex;align-items:center;gap:12px;background:#10151F;border:1px solid rgba(240,180,41,.4);border-radius:12px;padding:11px 14px;box-shadow:0 10px 40px rgba(0,0,0,.5);font-family:Inter,system-ui,sans-serif;max-width:92vw;';
+    t.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0B429" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>'
+      + '<span style="color:#E8EDF2;font-size:13px;font-weight:600">' + L.msg + '</span>'
+      + '<button id="mc-update-btn" style="margin-left:4px;background:linear-gradient(135deg,#F0B429,#D99A1E);color:#0A0D14;border:0;border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">' + L.btn + '</button>';
+    document.body.appendChild(t);
+    document.getElementById('mc-update-btn').addEventListener('click', function () {
+      try { if (typeof window.track === 'function') window.track('pwa_update_applied', {}); } catch (_) {}
+      location.reload();
     });
+  }
+  // sw.js faz skipWaiting+clients.claim → controllerchange dispara quando a nova versão assume.
+  // Só mostra o toast se já havia controller (update real), não na 1ª visita.
+  const _hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (_hadController) showUpdateToast();
   });
 })();
