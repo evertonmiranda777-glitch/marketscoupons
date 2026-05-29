@@ -1164,6 +1164,28 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
    </div>
    <div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+     <div style="grid-column:1/-1;display:flex;gap:8px;align-items:flex-end;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.22);border-radius:8px;padding:8px 10px;">
+       <div style="flex:1;">
+         <label style="font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">Assunto pronto</label>
+         <select id="push-preset" onchange="applyPushPreset()" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(240,180,41,.3);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
+           <option value="">— escolher assunto —</option>
+           <option value="apex_nofee">Apex — sem taxa de ativação</option>
+           <option value="apex_lasthours">Apex — 90% OFF últimas horas</option>
+           <option value="top3">Top 3 cupons da semana</option>
+           <option value="newfirm">Nova firma / cupom novo</option>
+           <option value="analysis">Análise diária no ar</option>
+           <option value="calendar">Calendário — alto impacto hoje</option>
+           <option value="gex">GEX — níveis do dia</option>
+         </select>
+       </div>
+       <div style="width:80px;">
+         <label style="font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">Idioma</label>
+         <select id="push-preset-lang" onchange="applyPushPreset()" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(240,180,41,.3);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
+           <option value="en">EN</option>
+           <option value="pt">PT</option>
+         </select>
+       </div>
+     </div>
      <div>
        <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Título *</label>
        <input id="push-title" type="text" placeholder="🏷️ Apex 90% OFF — última hora" maxlength="60" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;">
@@ -6459,6 +6481,50 @@ async function pushSendNow(){
     toast(`Push enviado: ${d.sent} de ${d.total}`,'success');
   } catch (e) { out.textContent = '❌ ' + e.message; }
 }
+// Assuntos prontos de push (EN + PT). Preenchem título/corpo/url/categoria/firma.
+const PUSH_PRESETS = {
+  apex_nofee: {
+    en: { title:'Apex now with no activation fee', body:'New: a funded Apex account with no activation fee on payout. See pricing — code MARKET.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Apex agora sem taxa de ativação', body:'Nova opção: conta Apex sem taxa de ativação ao ser aprovado. Veja os preços — cupom MARKET.', url:'/coupons', category:'promo', firm:'apex' }
+  },
+  apex_lasthours: {
+    en: { title:'Apex 90% OFF — last hours', body:'Up to 90% off Apex evaluations, ending soon. Use code MARKET at checkout.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Apex 90% OFF — últimas horas', body:'Até 90% off nas avaliações Apex, acaba em breve. Cupom MARKET no checkout.', url:'/coupons', category:'promo', firm:'apex' }
+  },
+  top3: {
+    en: { title:"This week's top 3 coupons", body:'The 3 best prop firm deals right now — verified and active. Tap to see.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Top 3 cupons da semana', body:'Os 3 melhores cupons de prop firm agora — verificados e ativos. Toque pra ver.', url:'/coupons', category:'promo', firm:'' }
+  },
+  newfirm: {
+    en: { title:'New firm added', body:'A new prop firm just landed with an exclusive coupon. Check it out.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Nova firma no ar', body:'Acabou de entrar uma prop firm nova com cupom exclusivo. Confira.', url:'/coupons', category:'promo', firm:'' }
+  },
+  analysis: {
+    en: { title:"Today's market analysis is live", body:'SPX & NDX analysis for today is ready. Tap to read.', url:'/analysis', category:'analysis', firm:'' },
+    pt: { title:'Análise do dia no ar', body:'A análise de SPX e NDX de hoje está pronta. Toque pra ler.', url:'/analysis', category:'analysis', firm:'' }
+  },
+  calendar: {
+    en: { title:'High-impact events today', body:'Key economic events coming up today. Check the calendar.', url:'/calendar', category:'calendar', firm:'' },
+    pt: { title:'Eventos de alto impacto hoje', body:'Eventos econômicos importantes hoje. Veja o calendário.', url:'/calendar', category:'calendar', firm:'' }
+  },
+  gex: {
+    en: { title:"Today's GEX levels", body:'Gamma exposure levels for SPX are updated. Tap to view.', url:'/gamma', category:'gex', firm:'' },
+    pt: { title:'Níveis de GEX do dia', body:'Os níveis de gamma exposure do SPX estão atualizados. Toque pra ver.', url:'/gamma', category:'gex', firm:'' }
+  }
+};
+function applyPushPreset(){
+  const key = document.getElementById('push-preset').value;
+  if (!key) return;
+  const lang = document.getElementById('push-preset-lang').value || 'en';
+  const p = (PUSH_PRESETS[key] && (PUSH_PRESETS[key][lang] || PUSH_PRESETS[key].en));
+  if (!p) return;
+  document.getElementById('push-title').value = p.title;
+  document.getElementById('push-body').value = p.body;
+  document.getElementById('push-url').value = p.url;
+  document.getElementById('push-category').value = p.category || '';
+  document.getElementById('push-firm').value = p.firm || '';
+}
+window.applyPushPreset = applyPushPreset;
 window.loadPushCount = loadPushCount;
 window.pushDryRun = pushDryRun;
 window.pushSendNow = pushSendNow;
