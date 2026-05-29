@@ -189,6 +189,12 @@ Objeto `const I18N = {...}` em index.html. 7 idiomas: pt, en, es, it, fr, de, ar
 
 Conteúdo institucional pra aprovação **sempre em PT primeiro**, traduz só após OK.
 
+### 🚨 Arquivo i18n VIVO = `i18n-<lang>.js` na RAIZ (com hífen), 2026-05-28
+O site carrega `i18n-en.js` etc da **raiz** (uma linha JSON minificada). A pasta `i18n/<lang>.js` é **loader MORTO** (não carregado). Editar a pasta NÃO tem efeito. Ordem: split file raiz → **tabela Supabase `i18n` SOBRESCREVE** (se a key existe lá, atualizar a tabela também). Confirmar qual arquivo o site carrega antes de editar. Detalhe em memória `i18n-3-camadas`. Catálogo = **17 firmas** (não 12/6+).
+
+### Apex — 4 dimensões de preço (canônico 2026-05-28)
+type (Intraday/EOD) × size × **variant (Standard / Sem taxa de ativação)** × **pack (1/5 contas)**. `getPlanPrice(id,type,size,pack,variant)`; `firmHas5Pack`/`firmHasNoFee` disparam toggles; campos cms `n/o`,`n2/o2`,`n5/o5/e5`,`na*`,`na5*` etc. EOD 100K/150K 5-pack sem-taxa = N/A. Espelhar site (app.js fd-overlay) **e** `coupons.html`.
+
 ## Padrões de adição
 
 ### Firma nova
