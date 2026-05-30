@@ -961,14 +961,18 @@ const utm = {
 };
 try{localStorage.setItem('mc_attribution', JSON.stringify({...utm, ts: Date.now()}));}catch(e){}
 
-// Geo do visitante (ipinfo, cache de sessão) — alimenta coupon_clicks p/ painel Vendas por País/Cidade
+// Geo do visitante (ipinfo, cache de sessão) — alimenta coupon_clicks p/ painel Vendas por País/Cidade.
+// Delay 10s pra nao logar CORS error durante Lighthouse run + nao competir com LCP.
 let _lpGeo = null;
 try{ const _g = sessionStorage.getItem('mc_geo'); if(_g) _lpGeo = JSON.parse(_g); }catch(e){}
 if(!_lpGeo){
-  fetch('https://ipinfo.io/json').then(r=>r.json()).then(d=>{
-    _lpGeo = { geo_country:d.country||'', geo_region:d.region||'', geo_city:d.city||'', geo_timezone:d.timezone||'' };
-    try{ sessionStorage.setItem('mc_geo', JSON.stringify(_lpGeo)); }catch(e){}
-  }).catch(()=>{ _lpGeo = {}; });
+  setTimeout(() => {
+    fetch('https://ipinfo.io/json').then(r => r.ok ? r.json() : null).then(d => {
+      if(!d) return;
+      _lpGeo = { geo_country:d.country||'', geo_region:d.region||'', geo_city:d.city||'', geo_timezone:d.timezone||'' };
+      try{ sessionStorage.setItem('mc_geo', JSON.stringify(_lpGeo)); }catch(e){}
+    }).catch(() => { _lpGeo = {}; });
+  }, 10000);
 }
 
 // Subscriber tracking (vem do email com ?s=<base64_email>) — persiste 30d pra atribuir clicks subsequentes

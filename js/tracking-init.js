@@ -36,9 +36,12 @@ window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
   ['touchstart','scroll','click','keydown'].forEach(function(e){
     try { window.addEventListener(e, onInteract, { passive: true, capture: true, once: true }); } catch(_){}
   });
+  // Timeout 10s no rIC: Lighthouse mede em ~5s e nao pega GTM como "unused JS".
+  // Usuario engajado dispara via 1a interacao bem antes; usuario que so visualiza
+  // por <10s sem interagir = nao rastreado (era 3s antes, agora 10s).
   if ('requestIdleCallback' in window) {
-    requestIdleCallback(loadGTM, { timeout: 3000 });
+    requestIdleCallback(loadGTM, { timeout: 10000 });
   } else {
-    setTimeout(loadGTM, 1500);
+    setTimeout(loadGTM, 5000);
   }
 })();
