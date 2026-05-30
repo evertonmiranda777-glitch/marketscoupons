@@ -38,6 +38,8 @@
 <meta name="apple-mobile-web-app-title" content="Markets Coupons">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/pwa/apple-touch-icon.png">
+<!-- LCP: preload do background hero mobile (so faz fetch em mobile) -->
+<link rel="preload" as="image" href="/img/site-bg-mobile.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
 <script src="/js/pwa-register.js?v=20260529" defer></script>
 <script src="/js/promo-topbar-fit.js?v=20260525" defer></script>
 <script src="/js/lang-dd-fix.js?v=20260525" defer></script>
@@ -268,7 +270,7 @@
  TRACKING — Only GTM (GA4 + Facebook Pixel are managed inside GTM)
  GTM: GTM-WJGTVX8G
 -->
-<script src="/js/tracking-init.js?v=20260427" defer></script>
+<script src="/js/tracking-init.js?v=20260530" defer></script>
 
 <!-- SUPABASE CLIENT -->
 <script>(function(){var fired=false;function load(){if(fired)return;fired=true;var s=document.createElement('script');s.src='https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js';s.crossOrigin='anonymous';s.onload=function(){var i=document.createElement('script');i.src='/js/sentry-init.js?v=20260518';document.head.appendChild(i);};document.head.appendChild(s);}if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:5000});}else{setTimeout(load,3500);}['pointerdown','touchstart','scroll','keydown'].forEach(function(e){addEventListener(e,load,{once:true,passive:true});});addEventListener('error',load,{once:true});addEventListener('unhandledrejection',load,{once:true});})();</script>

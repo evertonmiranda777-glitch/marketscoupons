@@ -13,14 +13,32 @@ window.dataLayer = window.dataLayer || [];
 //    Esse gtag SÓ enfileira no dataLayer. Não faz fan-out. GTM consome dataLayer e dispara tags.
 window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
 
-// 3. GTM snippet (carregamento eager — paid traffic precisa de Pixel firing ASAP).
-(function(w,d,s,l,i){
-  w[l] = w[l] || [];
-  w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-  var f = d.getElementsByTagName(s)[0];
-  var j = d.createElement(s);
-  var dl = l != 'dataLayer' ? '&l=' + l : '';
-  j.async = true;
-  j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-  f.parentNode.insertBefore(j, f);
-})(window, document, 'script', 'dataLayer', GTM_ID);
+// 3. GTM snippet — carregamento LAZY (v2 2026-05-30: requestIdleCallback + 1ª interação).
+//    Antes era eager e bloqueava TBT mobile (~2s). Agora dispara só quando main thread libera
+//    ou na 1ª interação (touch/scroll/click), o que vier primeiro. Timeout 3s como fallback.
+//    Atribuição CAPI preservada via event_id (Pixel disparando 1s depois não perde venda).
+(function(){
+  var loaded = false;
+  function loadGTM(){
+    if (loaded) return;
+    loaded = true;
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    var f = document.getElementsByTagName('script')[0];
+    var j = document.createElement('script');
+    j.async = true;
+    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
+    f.parentNode.insertBefore(j, f);
+    ['touchstart','scroll','click','keydown'].forEach(function(e){
+      try { window.removeEventListener(e, onInteract, true); } catch(_){}
+    });
+  }
+  function onInteract(){ loadGTM(); }
+  ['touchstart','scroll','click','keydown'].forEach(function(e){
+    try { window.addEventListener(e, onInteract, { passive: true, capture: true, once: true }); } catch(_){}
+  });
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadGTM, { timeout: 3000 });
+  } else {
+    setTimeout(loadGTM, 1500);
+  }
+})();
