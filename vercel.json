@@ -54,6 +54,7 @@
     { "src": "/declaracao-de-risco", "dest": "/risk-disclosure.html" },
     { "src": "/go", "dest": "/go.html" },
     { "src": "/go/(.*)", "dest": "/go.html?firm=$1" },
+    { "src": "/aff/go/(.*)", "dest": "/go.html?firm=$1" },
     { "src": "/email-confirm", "dest": "/api/welcome-email" },
     { "src": "/guides/([a-z0-9-]+)", "dest": "/guides/$1.html" },
     { "src": "/pt/guides/([a-z0-9-]+)", "dest": "/guides/$1.html" },

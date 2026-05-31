@@ -33,7 +33,8 @@ window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
     });
   }
   function onInteract(){ loadGTM(); }
-  ['touchstart','scroll','click','keydown'].forEach(function(e){
+  // Interacao: dispara o GTM imediato (incl. pagehide/visibilitychange pra capturar user que sai antes do timeout — memoria feedback_fb_pixel_lazy_load)
+  ['touchstart','scroll','click','keydown','pointerdown','pagehide','visibilitychange'].forEach(function(e){
     try { window.addEventListener(e, onInteract, { passive: true, capture: true, once: true }); } catch(_){}
   });
   // Timeout 10s no rIC: Lighthouse mede em ~5s e nao pega GTM como "unused JS".
