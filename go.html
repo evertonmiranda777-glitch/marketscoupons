@@ -96,6 +96,11 @@ h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;
 (function(){
   var p = new URLSearchParams(location.search);
   var firmId = (p.get('firm')||'').toLowerCase();
+  // Fallback: rewrite Vercel /go/<firm> ou /aff/go/<firm> nao popula query no browser
+  if (!firmId) {
+    var m = location.pathname.match(/\/(?:aff\/)?go\/([a-z0-9_-]+)/i);
+    if (m) firmId = m[1].toLowerCase();
+  }
   var to = p.get('to') || '';
   var coupon = p.get('coupon') || '';
   var firmName = p.get('name') || '';
