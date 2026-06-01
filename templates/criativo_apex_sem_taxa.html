@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Apex Sem Taxa — Markets Coupons</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;background:#000;font-family:'Inter',sans-serif;color:#fff;overflow:hidden}
+body{
+  position:relative;
+  background:
+    radial-gradient(ellipse 1200px 800px at 70% 30%, rgba(245,165,18,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 900px 600px at 30% 80%, rgba(245,165,18,.10) 0%, transparent 60%),
+    radial-gradient(ellipse 1400px 1000px at 50% 50%, rgba(20,12,8,1) 0%, #000 80%);
+}
+
+/* particle layer */
+.particles{position:absolute;inset:0;background-image:
+  radial-gradient(1.5px 1.5px at 8% 12%, rgba(245,180,80,.7) 0%, transparent 100%),
+  radial-gradient(1px 1px at 18% 28%, rgba(245,180,80,.5) 0%, transparent 100%),
+  radial-gradient(2px 2px at 88% 22%, rgba(245,180,80,.8) 0%, transparent 100%),
+  radial-gradient(1px 1px at 72% 8%, rgba(245,180,80,.4) 0%, transparent 100%),
+  radial-gradient(1.5px 1.5px at 12% 60%, rgba(245,180,80,.65) 0%, transparent 100%),
+  radial-gradient(1px 1px at 92% 70%, rgba(245,180,80,.5) 0%, transparent 100%),
+  radial-gradient(2px 2px at 28% 88%, rgba(245,180,80,.7) 0%, transparent 100%),
+  radial-gradient(1px 1px at 68% 92%, rgba(245,180,80,.45) 0%, transparent 100%),
+  radial-gradient(1.5px 1.5px at 45% 38%, rgba(245,180,80,.55) 0%, transparent 100%),
+  radial-gradient(1px 1px at 58% 78%, rgba(245,180,80,.4) 0%, transparent 100%);
+  z-index:1;
+}
+
+/* arc lines (subtle) */
+.arc{position:absolute;inset:0;z-index:1;background:
+  radial-gradient(ellipse 600px 200px at 100% 50%, transparent 65%, rgba(245,165,18,.25) 67%, transparent 70%),
+  radial-gradient(ellipse 800px 280px at 0% 60%, transparent 70%, rgba(245,165,18,.15) 72%, transparent 75%);
+  opacity:.6;
+}
+
+.wrap{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:80px 70px 60px;text-align:center}
+
+/* Top: Markets Coupons logo */
+.brand{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:60px}
+.brand svg{width:48px;height:48px}
+.brand-txt{font-size:32px;font-weight:600;letter-spacing:-.5px}
+.brand-txt b{color:#F0B429;font-weight:800}
+
+/* Apex logo (text-based since brand garbling) */
+.firm-logo{margin-bottom:42px;display:flex;align-items:center;justify-content:center;gap:18px}
+.firm-logo svg{width:90px;height:90px}
+.firm-name{font-family:'Inter',sans-serif;font-weight:900;font-size:42px;line-height:1;letter-spacing:1px;text-transform:uppercase}
+.firm-name span{display:block;font-size:16px;font-weight:600;letter-spacing:4px;color:#888;margin-top:8px}
+.firm-tm{font-size:18px;color:#888;vertical-align:top;margin-left:6px}
+
+/* Title */
+.title{font-size:52px;font-weight:800;letter-spacing:-1px;margin-bottom:48px;line-height:1.1}
+.title em{font-style:normal;color:#F0B429;font-weight:900}
+
+/* Plan rows */
+.plans{display:flex;flex-direction:column;gap:16px;margin-bottom:36px}
+.row{
+  position:relative;
+  display:grid;
+  grid-template-columns: 180px 1px 1fr;
+  align-items:center;
+  gap:0;
+  background:rgba(0,0,0,.45);
+  border:1.5px solid rgba(245,165,18,.55);
+  border-radius:16px;
+  padding:22px 28px;
+}
+.row.popular{
+  border-color:#F0B429;
+  background:linear-gradient(135deg, rgba(240,180,41,.12), rgba(0,0,0,.55));
+  box-shadow:0 0 32px rgba(240,180,41,.18), inset 0 0 0 1px rgba(240,180,41,.3);
+}
+.row .size{font-size:54px;font-weight:900;color:#F0B429;text-align:left;letter-spacing:-1px}
+.row .sep{width:1.5px;background:rgba(245,165,18,.4);height:60%;justify-self:center}
+.row .right{text-align:left;padding-left:32px;display:flex;align-items:center;gap:24px}
+.row .price{font-size:48px;font-weight:900;color:#fff;letter-spacing:-1px;flex-shrink:0}
+.row .desc{font-size:22px;font-weight:700;color:rgba(255,255,255,.92);letter-spacing:.5px;text-transform:uppercase}
+
+.popular-badge{
+  position:absolute;
+  top:-14px;left:50%;transform:translateX(-50%);
+  background:#F0B429;color:#0A0D14;
+  font-size:13px;font-weight:900;letter-spacing:1.5px;
+  padding:5px 16px;border-radius:6px;
+}
+
+/* 5-pack note */
+.pack-note{font-size:22px;color:rgba(255,255,255,.92);margin-bottom:42px;font-weight:600}
+.pack-note em{font-style:normal;color:#F0B429;font-weight:800}
+
+/* CTA coupon */
+.cta-label{font-size:22px;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:2.5px;margin-bottom:18px;text-transform:uppercase}
+.coupon-box{
+  border:2.5px dashed #F0B429;
+  border-radius:18px;
+  padding:32px 60px;
+  margin-bottom:24px;
+  background:rgba(240,180,41,.06);
+  display:flex;align-items:center;justify-content:center;gap:24px
+}
+.coupon-box .code{font-size:80px;font-weight:900;color:#F0B429;letter-spacing:6px}
+
+.cta-sub{font-size:20px;color:rgba(255,255,255,.55);margin-bottom:auto;font-weight:500}
+
+/* Disclaimer */
+.disc{font-size:11.5px;color:rgba(255,255,255,.28);line-height:1.5;margin-top:30px;letter-spacing:.2px}
+</style>
+</head>
+<body>
+<div class="particles"></div>
+<div class="arc"></div>
+
+<div class="wrap">
+
+  <!-- Brand: Markets Coupons -->
+  <div class="brand">
+    <svg viewBox="0 0 40 40"><polygon points="20,3 36,12 36,28 20,37 4,28 4,12" fill="none" stroke="#F0B429" stroke-width="2.5"/><text x="20" y="26" text-anchor="middle" fill="#F0B429" font-size="20" font-weight="900" font-family="Inter,sans-serif">M</text></svg>
+    <div class="brand-txt">Markets <b>Coupons</b></div>
+  </div>
+
+  <!-- Firm: Apex Trader Funding -->
+  <div class="firm-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18 L9 4 L12 11 L15 4 L21 18 M7.5 14 L16.5 14"/></svg>
+    <div class="firm-name">APEX<br>TRADER<br>FUNDING<span class="firm-tm" id="firm-tm">®</span></div>
+  </div>
+
+  <!-- Title -->
+  <h1 class="title" id="title">Evaluation Accounts with <em>90% OFF</em></h1>
+
+  <!-- Plan rows -->
+  <div class="plans">
+    <div class="row">
+      <div class="size">25K</div>
+      <div class="sep"></div>
+      <div class="right"><div class="price">$69</div><div class="desc" id="desc-no-fee-1">No Activation Fee</div></div>
+    </div>
+    <div class="row">
+      <div class="size">50K</div>
+      <div class="sep"></div>
+      <div class="right"><div class="price">$79</div><div class="desc">No Activation Fee</div></div>
+    </div>
+    <div class="row popular">
+      <div class="popular-badge" id="popular-label">POPULAR</div>
+      <div class="size">100K</div>
+      <div class="sep"></div>
+      <div class="right"><div class="price">$109</div><div class="desc">No Activation Fee</div></div>
+    </div>
+    <div class="row">
+      <div class="size">150K</div>
+      <div class="sep"></div>
+      <div class="right"><div class="price">$169</div><div class="desc">No Activation Fee</div></div>
+    </div>
+  </div>
+
+  <!-- Pack note -->
+  <div class="pack-note" id="pack-note">New 5 account pack starting at <em>$295</em> &middot; No activation fee</div>
+
+  <!-- CTA -->
+  <div class="cta-label" id="cta-label">Use Code</div>
+  <div class="coupon-box"><div class="code" id="coupon-code">MARKET</div></div>
+  <div class="cta-sub" id="cta-sub">Click the button and apply the coupon at checkout</div>
+
+  <!-- Disclaimer -->
+  <div class="disc" id="disclaimer">Trading futures involves substantial risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade futures, carefully consider your investment objectives, level of experience, and risk appetite. The possibility exists that you could sustain a loss of some or all of your initial investment and therefore you should not invest money that you cannot afford to lose. See https://www.marketscoupons.com/risk-disclosure for more.</div>
+
+</div>
+
+<script>
+// Multi-language via ?lang=en|pt|es|fr|it|de|ar
+(function(){
+  const I18N = {
+    en: {
+      title: 'Evaluation Accounts with <em>90% OFF</em>',
+      noFee: 'No Activation Fee',
+      popular: 'POPULAR',
+      packNote: 'New 5 account pack starting at <em>$295</em> &middot; No activation fee',
+      ctaLabel: 'Use Code',
+      ctaSub: 'Click the button and apply the coupon at checkout'
+    },
+    pt: {
+      title: 'Contas de Avaliação com <em>90% OFF</em>',
+      noFee: 'Sem Taxa de Ativação',
+      popular: 'POPULAR',
+      packNote: 'Novo pack de 5 contas a partir de <em>$295</em> &middot; Sem taxa de ativação',
+      ctaLabel: 'Use o Cupom',
+      ctaSub: 'Clique no botão e aplique o cupom no checkout'
+    },
+    es: {
+      title: 'Cuentas de Evaluación con <em>90% OFF</em>',
+      noFee: 'Sin Tasa de Activación',
+      popular: 'POPULAR',
+      packNote: 'Nuevo pack de 5 cuentas desde <em>$295</em> &middot; Sin tasa de activación',
+      ctaLabel: 'Usa el Cupón',
+      ctaSub: 'Haz clic en el botón y aplica el cupón en el checkout'
+    },
+    fr: {
+      title: 'Comptes d\'Évaluation avec <em>90% DE RÉDUCTION</em>',
+      noFee: 'Sans frais d\'activation',
+      popular: 'POPULAIRE',
+      packNote: 'Nouveau pack de 5 comptes à partir de <em>$295</em> &middot; Sans frais d\'activation',
+      ctaLabel: 'Utilisez le Code',
+      ctaSub: 'Cliquez sur le bouton et appliquez le coupon au checkout'
+    },
+    it: {
+      title: 'Conti di Valutazione con <em>90% OFF</em>',
+      noFee: 'Senza Costo di Attivazione',
+      popular: 'POPOLARE',
+      packNote: 'Nuovo pacchetto da 5 conti a partire da <em>$295</em> &middot; Senza costo di attivazione',
+      ctaLabel: 'Usa il Coupon',
+      ctaSub: 'Clicca sul pulsante e applica il coupon al checkout'
+    },
+    de: {
+      title: 'Bewertungskonten mit <em>90% RABATT</em>',
+      noFee: 'Ohne Aktivierungsgebühr',
+      popular: 'BELIEBT',
+      packNote: '5er-Konto-Pack ab <em>$295</em> &middot; Ohne Aktivierungsgebühr',
+      ctaLabel: 'Gutscheincode',
+      ctaSub: 'Klicke auf den Button und wende den Gutschein im Checkout an'
+    },
+    ar: {
+      title: 'حسابات تقييم بخصم <em>90%</em>',
+      noFee: 'بدون رسوم تفعيل',
+      popular: 'الأكثر شعبية',
+      packNote: 'باقة 5 حسابات تبدأ من <em>295$</em> &middot; بدون رسوم تفعيل',
+      ctaLabel: 'استخدم الكود',
+      ctaSub: 'انقر على الزر وطبق الكوبون عند الدفع'
+    }
+  };
+  const params = new URLSearchParams(location.search);
+  const lang = (params.get('lang') || 'en').toLowerCase();
+  const t = I18N[lang] || I18N.en;
+  document.getElementById('title').innerHTML = t.title;
+  document.querySelectorAll('.desc').forEach(el => el.textContent = t.noFee);
+  document.getElementById('popular-label').textContent = t.popular;
+  document.getElementById('pack-note').innerHTML = t.packNote;
+  document.getElementById('cta-label').textContent = t.ctaLabel;
+  document.getElementById('cta-sub').textContent = t.ctaSub;
+  if (lang === 'ar') document.documentElement.dir = 'rtl';
+})();
+</script>
+
+</body></html>
