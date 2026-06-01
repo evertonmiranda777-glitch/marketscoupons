@@ -696,6 +696,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta nta-cms" onclick="adminGo('conteudo',this)">Conteúdo</button>
  <button class="nta nta-cms" onclick="adminGo('indicadores',this)">Indicadores</button>
  <button class="nta nta-cms" onclick="adminGo('telegram',this)">Telegram</button>
+ <button class="nta nta-cms" onclick="adminGo('criativos',this)">Criativos</button>
  <button class="nta nta-cms" onclick="adminGo('site',this)">Site</button>
  <button class="nta nta-cms" onclick="adminGo('config',this)">Config</button>
  </div>
@@ -740,6 +741,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta nta-cms" onclick="adminGoMobile('conteudo',this)">Conteúdo</button>
   <button class="nta nta-cms" onclick="adminGoMobile('indicadores',this)">Indicadores</button>
   <button class="nta nta-cms" onclick="adminGoMobile('telegram',this)">Telegram</button>
+  <button class="nta nta-cms" onclick="adminGoMobile('criativos',this)">Criativos</button>
   <button class="nta nta-cms" onclick="adminGoMobile('site',this)">Site</button>
   <button class="nta nta-cms" onclick="adminGoMobile('config',this)">Config</button>
  </div>
@@ -3660,7 +3662,8 @@ const _unifiedTabs = {
   'monetizacao': [{id:'pro',label:'Pro'},{id:'loyalty',label:'Fidelidade'}],
   'firmas':      [{id:'cms-firms',label:'Firmas'},{id:'cms-settings',label:'Preços & Cupons'}],
   'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
-  'telegram':    [{id:'telegram',label:'Telegram'},{id:'criativos',label:'Criativos'}],
+  'telegram':    [{id:'telegram',label:'Telegram'}],
+  'criativos':   [{id:'criativos',label:'Criativos'}],
   'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-firmas',label:'Firmas'},{id:'site-plataformas',label:'Plataformas'},{id:'site-indicadores',label:'Indicadores'},{id:'site-calendario',label:'Calendário'},{id:'site-analise',label:'Análise'},{id:'site-gamma',label:'Gamma'},{id:'site-calc',label:'Calculadora'},{id:'site-quiz',label:'Quiz'},{id:'site-live',label:'Live Room'},{id:'site-fidelidade',label:'Fidelidade'},{id:'site-footer',label:'Footer'},{id:'site-tema',label:'Cores / Tema'},{id:'site-logo',label:'Logo'}],
   'config':      [{id:'cms-texts',label:'Textos'},{id:'i18n-editor',label:'Traduções (I18N)'},{id:'firmt-editor',label:'Traduções Firmas'}]
 };
