@@ -665,7 +665,7 @@ const FIRMS = [
     id: 'fn', name: 'FundedNext', logo: '/img/Firms/108/fn.webp', coupon: 'FLEX',
     discount: '47%', tag: 'fut', rating: '4.5', reviews: '30K',
     rangeAccounts: '$6K–$200K', split: '95%',
-    url: 'https://fundednext.com/?fpr=everton33&keyword=fb_ig_bio_fn',
+    url: 'https://fundednext.com/?fpr=everton33',
     types: ['Stellar 2-Step', 'Futures Flex'],
     plans: {
       'Stellar 2-Step': [
@@ -1002,17 +1002,24 @@ function buildKeyword(firmId){
   if(source && !_isMetaMacro(source) && source!=='instagram') return _sanitize(source);
   return 'fb_ig_bio_'+firmId;
 }
-// Injeta keyword nos URLs das firmas que suportam (Apex/Bulenox via amember)
+// Injeta sub_id nos URLs das firmas que suportam:
+// - Apex/Bulenox (amember): &keyword=<sub_id> aparece na pagina Keywords do painel
+// - FundedNext (FirstPromoter): &fpr_t=<sub_id> aparece em Reports -> Sub-Ids
 function injectKeyword(url, firmId){
-  if(!url || (!url.includes('apextraderfunding.com') && !url.includes('bulenox.com'))) return url;
+  if(!url) return url;
+  let paramName = null;
+  if (url.includes('apextraderfunding.com') || url.includes('bulenox.com')) paramName = 'keyword';
+  else if (url.includes('fundednext.com')) paramName = 'fpr_t';
+  if (!paramName) return url;
   const kw = buildKeyword(firmId);
   const hashIdx = url.indexOf('#');
   const before = hashIdx>=0 ? url.slice(0,hashIdx) : url;
   const hash = hashIdx>=0 ? url.slice(hashIdx) : '';
-  // Remove keyword existente (idempotente)
-  const cleaned = before.replace(/([?&])keyword=[^&]*&?/g,'$1').replace(/[?&]$/,'');
+  // Remove o param existente (idempotente)
+  const re = new RegExp('([?&])' + paramName + '=[^&]*&?','g');
+  const cleaned = before.replace(re,'$1').replace(/[?&]$/,'');
   const sep = cleaned.indexOf('?')>=0 ? '&' : '?';
-  return cleaned + sep + 'keyword=' + encodeURIComponent(kw) + hash;
+  return cleaned + sep + paramName + '=' + encodeURIComponent(kw) + hash;
 }
 
 // FB attribution helper (mesma lógica do app.js, inline aqui pq coupons.html é standalone).

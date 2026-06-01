@@ -24,9 +24,13 @@
   const TRACKING_ENABLED = true;
   if (!TRACKING_ENABLED) return;
 
+  // Cada entrada: { match: substring no href, param: nome do query param que o painel afiliado le }
+  // - Apex/Bulenox (amember): &keyword=<sub_id> aparece na pagina Keywords do painel
+  // - FundedNext (FirstPromoter): &fpr_t=<sub_id> aparece em Reports -> Sub-Ids
   const AFFILIATE_MATCHES = [
-    'apextraderfunding.com/member/aff/go/evertonmiranda',
-    'bulenox.com/member/aff/go/marketcoupons'
+    { match: 'apextraderfunding.com/member/aff/go/evertonmiranda', param: 'keyword' },
+    { match: 'bulenox.com/member/aff/go/marketcoupons', param: 'keyword' },
+    { match: 'fundednext.com/?fpr=everton33', param: 'fpr_t' }
   ];
 
   const STORAGE_KEY = 'mc_attribution';
@@ -133,8 +137,11 @@
   function injectKeyword(url) {
     try {
       if (!url || typeof url !== 'string') return url;
-      if (!isAffiliateLink(url)) return url;
-      if (/[?&]keyword=/.test(url)) return url; // idempotent
+      const cfg = matchAffiliate(url);
+      if (!cfg) return url;
+      // idempotent: ja tem o param que esse afiliado le? nao duplica
+      const re = new RegExp('[?&]' + cfg.param + '=');
+      if (re.test(url)) return url;
 
       const kw = buildKeyword(readAttribution());
       if (!kw) return url;
@@ -143,23 +150,24 @@
       const beforeHash = hashIdx >= 0 ? url.slice(0, hashIdx) : url;
       const hash       = hashIdx >= 0 ? url.slice(hashIdx)    : '';
       const sep = beforeHash.indexOf('?') >= 0 ? '&' : '?';
-      const newUrl = beforeHash + sep + 'keyword=' + encodeURIComponent(kw) + hash;
+      const newUrl = beforeHash + sep + cfg.param + '=' + encodeURIComponent(kw) + hash;
 
       const host = (beforeHash.split('/')[2] || '').replace(/^www\./, '');
-      log('keyword ' + kw + ' applied to ' + host);
+      log(cfg.param + '=' + kw + ' applied to ' + host);
       return newUrl;
     } catch (e) { return url; }
   }
 
-  function isAffiliateLink(href) {
+  function matchAffiliate(href) {
     try {
-      if (typeof href !== 'string') return false;
+      if (typeof href !== 'string') return null;
       for (let i = 0; i < AFFILIATE_MATCHES.length; i++) {
-        if (href.indexOf(AFFILIATE_MATCHES[i]) >= 0) return true;
+        if (href.indexOf(AFFILIATE_MATCHES[i].match) >= 0) return AFFILIATE_MATCHES[i];
       }
-      return false;
-    } catch (e) { return false; }
+      return null;
+    } catch (e) { return null; }
   }
+  function isAffiliateLink(href) { return !!matchAffiliate(href); }
 
   // ─── Step 5a: Delegated click listener on <a> tags ───
   function handleClick(e) {
