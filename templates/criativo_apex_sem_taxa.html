@@ -34,7 +34,9 @@ body{
   opacity:.6;
 }
 
-.wrap{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:80px 70px 60px;text-align:center}
+.wrap{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100%;padding:60px 70px;text-align:center}
+.wrap > *{width:100%}
+.bottom-disc{position:absolute;left:70px;right:70px;bottom:40px;width:auto !important}
 
 /* Top: Markets Coupons logo */
 .brand{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:60px}
@@ -53,29 +55,27 @@ body{
 .title{font-size:52px;font-weight:800;letter-spacing:-1px;margin-bottom:48px;line-height:1.1}
 .title em{font-style:normal;color:#F0B429;font-weight:900}
 
-/* Plan rows */
-.plans{display:flex;flex-direction:column;gap:16px;margin-bottom:36px}
+/* Plan rows: 3 colunas separadas por | finos */
+.plans{display:flex;flex-direction:column;gap:14px;margin-bottom:36px}
 .row{
   position:relative;
   display:grid;
-  grid-template-columns: 180px 1px 1fr;
+  grid-template-columns: 160px 1px 140px 1px 1fr;
   align-items:center;
-  gap:0;
   background:rgba(0,0,0,.45);
-  border:1.5px solid rgba(245,165,18,.55);
-  border-radius:16px;
-  padding:22px 28px;
+  border:1.8px solid rgba(245,165,18,.55);
+  border-radius:14px;
+  padding:18px 0;
 }
 .row.popular{
   border-color:#F0B429;
   background:linear-gradient(135deg, rgba(240,180,41,.12), rgba(0,0,0,.55));
   box-shadow:0 0 32px rgba(240,180,41,.18), inset 0 0 0 1px rgba(240,180,41,.3);
 }
-.row .size{font-size:54px;font-weight:900;color:#F0B429;text-align:left;letter-spacing:-1px}
-.row .sep{width:1.5px;background:rgba(245,165,18,.4);height:60%;justify-self:center}
-.row .right{text-align:left;padding-left:32px;display:flex;align-items:center;gap:24px}
-.row .price{font-size:48px;font-weight:900;color:#fff;letter-spacing:-1px;flex-shrink:0}
-.row .desc{font-size:22px;font-weight:700;color:rgba(255,255,255,.92);letter-spacing:.5px;text-transform:uppercase}
+.row .size{font-size:50px;font-weight:900;color:#F0B429;text-align:center;letter-spacing:-1px;line-height:1}
+.row .sep{width:1.5px;background:rgba(245,165,18,.55);height:50%;justify-self:center}
+.row .price{font-size:44px;font-weight:900;color:#fff;letter-spacing:-1px;text-align:center;line-height:1}
+.row .desc{font-size:20px;font-weight:700;color:rgba(255,255,255,.92);letter-spacing:.5px;text-transform:uppercase;text-align:center;padding:0 8px}
 
 .popular-badge{
   position:absolute;
@@ -119,10 +119,9 @@ body{
     <div class="brand-txt">Markets <b>Coupons</b></div>
   </div>
 
-  <!-- Firm: Apex Trader Funding -->
+  <!-- Logo COMPLETA Apex (wide, branca sobre fundo dark) -->
   <div class="firm-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18 L9 4 L12 11 L15 4 L21 18 M7.5 14 L16.5 14"/></svg>
-    <div class="firm-name">APEX<br>TRADER<br>FUNDING<span class="firm-tm" id="firm-tm">®</span></div>
+    <img src="/img/Firms%20Logos/apex-logo-wide-light.png" alt="Apex Trader Funding" style="width:520px;height:auto;display:block;margin:0 auto" crossorigin="anonymous">
   </div>
 
   <!-- Title -->
@@ -133,23 +132,31 @@ body{
     <div class="row">
       <div class="size">25K</div>
       <div class="sep"></div>
-      <div class="right"><div class="price">$69</div><div class="desc" id="desc-no-fee-1">No Activation Fee</div></div>
+      <div class="price">$69</div>
+      <div class="sep"></div>
+      <div class="desc">No Activation Fee</div>
     </div>
     <div class="row">
       <div class="size">50K</div>
       <div class="sep"></div>
-      <div class="right"><div class="price">$79</div><div class="desc">No Activation Fee</div></div>
+      <div class="price">$79</div>
+      <div class="sep"></div>
+      <div class="desc">No Activation Fee</div>
     </div>
     <div class="row popular">
       <div class="popular-badge" id="popular-label">POPULAR</div>
       <div class="size">100K</div>
       <div class="sep"></div>
-      <div class="right"><div class="price">$109</div><div class="desc">No Activation Fee</div></div>
+      <div class="price">$109</div>
+      <div class="sep"></div>
+      <div class="desc">No Activation Fee</div>
     </div>
     <div class="row">
       <div class="size">150K</div>
       <div class="sep"></div>
-      <div class="right"><div class="price">$169</div><div class="desc">No Activation Fee</div></div>
+      <div class="price">$169</div>
+      <div class="sep"></div>
+      <div class="desc">No Activation Fee</div>
     </div>
   </div>
 
@@ -161,8 +168,8 @@ body{
   <div class="coupon-box"><div class="code" id="coupon-code">MARKET</div></div>
   <div class="cta-sub" id="cta-sub">Click the button and apply the coupon at checkout</div>
 
-  <!-- Disclaimer -->
-  <div class="disc" id="disclaimer">Trading futures involves substantial risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade futures, carefully consider your investment objectives, level of experience, and risk appetite. The possibility exists that you could sustain a loss of some or all of your initial investment and therefore you should not invest money that you cannot afford to lose. See https://www.marketscoupons.com/risk-disclosure for more.</div>
+  <!-- Disclaimer (posicao absoluta, fora do fluxo de centralizacao) -->
+  <div class="disc bottom-disc" id="disclaimer">Trading futures involves substantial risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade futures, carefully consider your investment objectives, level of experience, and risk appetite. The possibility exists that you could sustain a loss of some or all of your initial investment and therefore you should not invest money that you cannot afford to lose. See https://www.marketscoupons.com/risk-disclosure for more.</div>
 
 </div>
 
