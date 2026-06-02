@@ -6921,7 +6921,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     checkAnalysisGate();
     if(_gexLoaded) checkGEXGate();
     if(_pageFromPath()==='live'||location.hash==='#live') checkLoyaltyAndShowLive();
-    renderLoyaltyPage();
+    // renderLoyaltyPage removed 2026-06-02 (loyalty desligado)
   });
 
   // Auto-copy coupon from email link (?copy=CODE)
@@ -7023,11 +7023,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadDailyAnalysis();
   loadGEX();
 
-  // Carregar fidelidade do membro logado (se tiver email salvo)
-  const cachedMember = getLoyaltyMember();
-  if (cachedMember?.email) {
-    await loadLoyaltyFromSupabase(cachedMember.email);
-  }
+  // Loyalty removed 2026-06-02
   // Wait for auth to finish before initializing favorites
   await _authPromise;
   await initFavs();
