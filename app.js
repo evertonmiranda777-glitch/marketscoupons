@@ -854,7 +854,7 @@ const PLAT_DETAIL={
 };
 
 /* FIRM DATA TRANSLATIONS — translates PT firm data to all languages */
-const _ftL=['en','es','fr','it','de','ar'];
+const _ftL=['en','es','fr','it','de','ar','id'];
 const FIRM_T={
 // Scaling
 'Sim':['Yes','Sí','Oui','Sì','Ja','نعم'],
@@ -1062,24 +1062,33 @@ const FIRM_T={
 'Margens intraday baixas':['Low intraday margins','Márgenes intraday bajos','Marges intraday basses','Margini intraday bassi','Niedrige Intraday-Margen','هوامش يومية منخفضة'],
 // PLAT_DETAIL — dtype
 'plano anual':['annual plan','plan anual','plan annuel','piano annuale','Jahresplan','خطة سنوية'],
-// Consistency values
-'Not required':['Não exige','No requiere','Non requise','Non richiesta','Nicht erforderlich','غير مطلوب'],
-'50% Best Day':['50% Melhor Dia','50% Mejor Día','50% Meilleur Jour','50% Miglior Giorno','50% Bester Tag','50% أفضل يوم'],
-'40%':['40%','40%','40%','40%','40%','40%'],
-'Yes':['Sim','Sí','Oui','Sì','Ja','نعم'],
+// Consistency values (pos: EN, ES, FR, IT, DE, AR, ID)
+'Not required':['Not required','No requiere','Non requise','Non richiesta','Nicht erforderlich','غير مطلوب','Tidak diperlukan'],
+'50% Best Day':['50% Best Day','50% Mejor Día','50% Meilleur Jour','50% Miglior Giorno','50% Bester Tag','50% أفضل يوم','50% Hari Terbaik'],
+'40%':['40%','40%','40%','40%','40%','40%','40%'],
+'Yes':['Yes','Sí','Oui','Sì','Ja','نعم','Ya'],
 // Payout speed values
-'5 days':['5 dias','5 días','5 jours','5 giorni','5 Tage','5 أيام'],
-'Weekly':['Semanal','Semanal','Hebdomadaire','Settimanale','Wöchentlich','أسبوعي'],
-'Instant':['Instantâneo','Instantáneo','Instantané','Istantaneo','Sofort','فوري'],
-'14 days':['14 dias','14 días','14 jours','14 giorni','14 Tage','14 يوم'],
-'24h':['24h','24h','24h','24h','24h','24 ساعة'],
-'Monthly':['Mensal','Mensual','Mensuel','Mensile','Monatlich','شهري'],
-'16h avg':['16h média','16h promedio','16h moyenne','16h media','16h Durchschn.','16 ساعة متوسط'],
-'On Demand':['Sob Demanda','Bajo Demanda','Sur Demande','Su Richiesta','Auf Anfrage','عند الطلب'],
-'Bi-weekly':['Quinzenal','Quincenal','Bimensuel','Bisettimanale','Zweiwöchentlich','نصف شهري'],
-'3 days':['3 dias','3 días','3 jours','3 giorni','3 Tage','3 أيام'],
+'5 days':['5 days','5 días','5 jours','5 giorni','5 Tage','5 أيام','5 hari'],
+'Weekly':['Weekly','Semanal','Hebdomadaire','Settimanale','Wöchentlich','أسبوعي','Mingguan'],
+'Instant':['Instant','Instantáneo','Instantané','Istantaneo','Sofort','فوري','Instan'],
+'14 days':['14 days','14 días','14 jours','14 giorni','14 Tage','14 يوم','14 hari'],
+'24h':['24h','24h','24h','24h','24h','24 ساعة','24j'],
+'Monthly':['Monthly','Mensual','Mensuel','Mensile','Monatlich','شهري','Bulanan'],
+'16h avg':['16h avg','16h promedio','16h moyenne','16h media','16h Durchschn.','16 ساعة متوسط','16j rata-rata'],
+'On Demand':['On Demand','Bajo Demanda','Sur Demande','Su Richiesta','Auf Anfrage','عند الطلب','Sesuai Permintaan'],
+'Bi-weekly':['Bi-weekly','Quincenal','Bimensuel','Bisettimanale','Zweiwöchentlich','نصف شهري','Dwi-mingguan'],
+'3 days':['3 days','3 días','3 jours','3 giorni','3 Tage','3 أيام','3 hari'],
+'Day 1':['Day 1','Día 1','Jour 1','Giorno 1','Tag 1','اليوم 1','Hari 1'],
+'Broker-backed':['Broker-backed','Apoyado por broker','Soutenu par courtier','Sostenuto da broker','Broker-gestützt','مدعوم من وسيط','Didukung broker'],
+'Same day / sub-second':['Same day / sub-second','Mismo día / sub-seg','Même jour / sous-sec','Stesso giorno / sub-sec','Selber Tag / sub-Sek.','نفس اليوم','Hari sama / sub-detik'],
+'~5hr avg':['~5hr avg','~5h prom.','~5h moy.','~5h media','~5h Durch.','~5س متوسط','~5j rata-rata'],
+// Scaling values
+'Up to $400K':['Up to $400K','Hasta $400K',"Jusqu'à $400K",'Fino a $400K','Bis $400K','حتى $400K','Hingga $400K'],
+'Up to $2M':['Up to $2M','Hasta $2M',"Jusqu'à $2M",'Fino a $2M','Bis $2M','حتى $2M','Hingga $2M'],
+'Up to $4M':['Up to $4M','Hasta $4M',"Jusqu'à $4M",'Fino a $4M','Bis $4M','حتى $4M','Hingga $4M'],
+'Up to $1M':['Up to $1M','Hasta $1M',"Jusqu'à $1M",'Fino a $1M','Bis $1M','حتى $1M','Hingga $1M'],
 };
-function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='pt')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
+function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='en')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
 
 /* NAV */
 // Page ID → clean URL slug mapping
@@ -3261,7 +3270,7 @@ function openFD(id, f) {
     <div class="fd-stat"><div class="fd-stat-label">News Trading</div><div class="fd-stat-val ${f.newsTrading?'g':'r'}">${f.newsTrading?t('drw_sim'):t('drw_nao')}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">Day 1 Payout</div><div class="fd-stat-val ${f.day1Payout?'g':'r'}">${f.day1Payout?t('drw_sim'):t('drw_nao')}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_alavancagem')}</div><div class="fd-stat-val">${f.leverage||'—'}</div></div>
-    <div class="fd-stat"><div class="fd-stat-label">${t('drw_consistencia')}</div><div class="fd-stat-val ${f.consistency==='Não exige'||!f.consistency?'g':'y'}">${tf(f.consistency)||t('drw_nao_exige')}</div></div>
+    <div class="fd-stat"><div class="fd-stat-label">${t('drw_consistencia')}</div><div class="fd-stat-val ${f.consistency==='Not required'||f.consistency==='Não exige'||!f.consistency?'g':'y'}">${tf(f.consistency)||t('drw_nao_exige')}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_payout')}</div><div class="fd-stat-val b">${tf(f.payoutSpeed)||'—'}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_max_contas')}</div><div class="fd-stat-val b">${f.maxAccounts||'—'}</div></div>
   </div>`;
