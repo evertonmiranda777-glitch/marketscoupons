@@ -30,7 +30,9 @@
   const AFFILIATE_MATCHES = [
     { match: 'apextraderfunding.com/member/aff/go/evertonmiranda', param: 'keyword' },
     { match: 'bulenox.com/member/aff/go/marketcoupons', param: 'keyword' },
-    { match: 'fundednext.com/?fpr=everton33', param: 'fpr_t' }
+    { match: 'fundednext.com/?fpr=everton33', param: 'fpr_t' },
+    { match: 'tradeday.com/?a_aid=marketscoupons', param: 'data1' },
+    { match: 'goatfundedfutures.com/sign-up?referral_id=MARKET', param: 'sub_id' }
   ];
 
   const STORAGE_KEY = 'mc_attribution';

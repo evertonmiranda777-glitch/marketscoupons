@@ -6302,7 +6302,7 @@ async function getSegmentedLeads(){
  });
  // Firma/tag filter
  if(firmaFilter){
-  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders Imperium',tradeday:'TradeDay'};
+  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders Imperium',tradeday:'TradeDay',blueguardian:'Blue Guardian',toponefutures:'Top One Futures',aquafutures:'Aqua Futures',blueberryfutures:'Blueberry Futures',alphafutures:'Alpha Futures',futureselite:'Futures Elite',goat:'Goat Funded Futures'};
   list=list.filter(r=>{
    const rTags = r.tags||[];
    if(!rTags.length) return false;
@@ -6847,7 +6847,7 @@ async function getEmailFirms(){
 
 async function renderEmailFirmaChips(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI',tradeday:'TDay'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI',tradeday:'TDay',blueguardian:'BG',toponefutures:'T1F',aquafutures:'Aqua',blueberryfutures:'BBerry',alphafutures:'Alpha',futureselite:'FE',goat:'Goat'};
 
   // Import firma chips
   const importEl = document.getElementById('import-firma-chips');
@@ -6936,7 +6936,7 @@ let _eaCampaigns = [];
 
 async function eaInit(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI',tradeday:'TDay'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI',tradeday:'TDay',blueguardian:'BG',toponefutures:'T1F',aquafutures:'Aqua',blueberryfutures:'BBerry',alphafutures:'Alpha',futureselite:'FE',goat:'Goat'};
   const el = document.getElementById('ea-firma-chips');
   if(el){
     el.innerHTML = `<button class="ea-period-btn sel" onclick="eaSetTag('',this)">Todas</button>` +
