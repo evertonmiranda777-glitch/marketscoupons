@@ -65,21 +65,28 @@ LANGS.forEach(lang => {
 // ── Páginas core (PT + 6 idiomas) ──
 const corePages = [
   'firms', 'compare', 'calendar', 'heatmap', 'analise', 'gamma',
-  'guides', 'blog', 'live', 'quiz', 'awards', 'painel', 'loyalty',
-  'calculator', 'privacy', 'terms',
+  'guides', 'blog', 'live', 'quiz', 'awards', 'painel',
+  'calculator', 'privacy', 'terms', 'coupons',
 ];
 corePages.forEach(p => {
   entries.push(urlEntry({ loc: `${SITE}/${p}`, priority: '0.6' }));
 });
 
-// ── Firm landings (12) ──
-const firms = lsHtml('firms');
+// ── Firm landings (SPA routes via cms_firms) ──
+const SB_URL_F = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+const ANON_F = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+let firms = [];
+try {
+  const r = await fetch(`${SB_URL_F}/rest/v1/cms_firms?active=eq.true&select=id&order=sort_order.asc`, {
+    headers: { apikey: ANON_F, Authorization: `Bearer ${ANON_F}` }
+  });
+  firms = (await r.json()).map(f => f.id);
+} catch (e) { console.error('firms fetch fail:', e.message); }
 firms.forEach(slug => {
   entries.push(urlEntry({
     loc: `${SITE}/${slug}`,
     changefreq: 'weekly',
     priority: '0.9',
-    alternates: [{ lang: 'pt-BR', url: `${SITE}/${slug}` }],
   }));
 });
 
