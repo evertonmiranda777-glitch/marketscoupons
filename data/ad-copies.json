@@ -1,0 +1,214 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-06-02",
+    "purpose": "Texto de anúncios Meta/Google pra tráfego pago multi-país. 4 ângulos × 8 langs. Cada copy tem: headline (40 char max), primary_text (125 char ideal), description (30 char), cta.",
+    "angles": {
+      "off": "% off principal - hero gigante (ex: 90% OFF prop firms)",
+      "nofee": "Sem taxa de ativação - compliance + economia',",
+      "pack5": "Pack 5 contas / promo limitada - urgência",
+      "day1": "Day 1 payout / saque rápido - benefício imediato"
+    },
+    "usage": "Copy nos formatos Meta exige - encurta no Manager se passar limite. CTAs: 'Saiba mais', 'Comprar agora', 'Ver oferta'."
+  },
+  "off": {
+    "pt": {
+      "headline": "Cupons exclusivos pra prop firms",
+      "primary_text": "Pegue até 90% OFF nas principais prop firms. Cupom aplicado, sem cadastro, atualizado hoje.",
+      "description": "Até 90% OFF",
+      "cta": "Ver cupons"
+    },
+    "en": {
+      "headline": "Exclusive prop firm coupons",
+      "primary_text": "Get up to 90% OFF on top prop firms. Coupon applied, no sign-up needed, updated today.",
+      "description": "Up to 90% OFF",
+      "cta": "See coupons"
+    },
+    "es": {
+      "headline": "Cupones exclusivos para prop firms",
+      "primary_text": "Obtén hasta 90% OFF en las mejores prop firms. Cupón aplicado, sin registro, actualizado hoy.",
+      "description": "Hasta 90% OFF",
+      "cta": "Ver cupones"
+    },
+    "it": {
+      "headline": "Coupon esclusivi per prop firm",
+      "primary_text": "Ottieni fino al 90% OFF sulle migliori prop firm. Coupon applicato, senza registrazione, aggiornato oggi.",
+      "description": "Fino al 90% OFF",
+      "cta": "Vedi coupon"
+    },
+    "fr": {
+      "headline": "Coupons exclusifs prop firms",
+      "primary_text": "Obtenez jusqu'à 90% de réduction sur les meilleures prop firms. Coupon appliqué, sans inscription, mis à jour aujourd'hui.",
+      "description": "Jusqu'à 90% OFF",
+      "cta": "Voir les coupons"
+    },
+    "de": {
+      "headline": "Exklusive Prop-Firma-Coupons",
+      "primary_text": "Bis zu 90% Rabatt bei Top-Prop-Firmen. Coupon angewendet, keine Anmeldung, heute aktualisiert.",
+      "description": "Bis zu 90% OFF",
+      "cta": "Coupons ansehen"
+    },
+    "ar": {
+      "headline": "كوبونات حصرية لشركات Prop",
+      "primary_text": "احصل على خصم يصل إلى 90% على أفضل شركات Prop. كوبون مطبَّق، بدون تسجيل، محدث اليوم.",
+      "description": "خصم حتى 90%",
+      "cta": "عرض الكوبونات"
+    },
+    "id": {
+      "headline": "Kupon eksklusif prop firms",
+      "primary_text": "Dapatkan diskon hingga 90% di prop firm teratas. Kupon diterapkan, tanpa daftar, diperbarui hari ini.",
+      "description": "Hingga 90% OFF",
+      "cta": "Lihat kupon"
+    }
+  },
+  "nofee": {
+    "pt": {
+      "headline": "Sem taxa de ativação ao passar",
+      "primary_text": "Passou na avaliação? Comece a operar sem pagar nada a mais. $0 taxa de ativação nas firmas selecionadas.",
+      "description": "$0 ativação",
+      "cta": "Ver firmas"
+    },
+    "en": {
+      "headline": "No activation fee when funded",
+      "primary_text": "Passed your evaluation? Start trading with $0 activation fee. Selected prop firms with no extra charge after passing.",
+      "description": "$0 activation",
+      "cta": "See firms"
+    },
+    "es": {
+      "headline": "Sin tarifa de activación al ser fundado",
+      "primary_text": "¿Pasaste la evaluación? Comienza a operar sin tarifa de activación. Firmas seleccionadas sin cobro extra al ser fundado.",
+      "description": "$0 activación",
+      "cta": "Ver firmas"
+    },
+    "it": {
+      "headline": "Senza costo di attivazione quando finanziato",
+      "primary_text": "Hai superato la valutazione? Inizia a operare senza costo di attivazione. Firm selezionate, nessun costo extra al finanziamento.",
+      "description": "$0 attivazione",
+      "cta": "Vedi firm"
+    },
+    "fr": {
+      "headline": "Sans frais d'activation au financement",
+      "primary_text": "Évaluation réussie? Commencez à trader sans frais d'activation. Firmes sélectionnées, aucun frais supplémentaire au financement.",
+      "description": "$0 activation",
+      "cta": "Voir les firmes"
+    },
+    "de": {
+      "headline": "Keine Aktivierungsgebühr bei Finanzierung",
+      "primary_text": "Bewertung bestanden? Starte ohne Aktivierungsgebühr. Ausgewählte Firmen ohne Zusatzkosten nach dem Bestehen.",
+      "description": "$0 Aktivierung",
+      "cta": "Firmen ansehen"
+    },
+    "ar": {
+      "headline": "بدون رسوم تفعيل عند التمويل",
+      "primary_text": "اجتزت التقييم؟ ابدأ التداول بدون رسوم تفعيل. شركات مختارة بدون رسوم إضافية بعد النجاح.",
+      "description": "تفعيل مجاني",
+      "cta": "عرض الشركات"
+    },
+    "id": {
+      "headline": "Tanpa biaya aktivasi setelah lulus",
+      "primary_text": "Lulus evaluasi? Mulai trading tanpa biaya aktivasi. Firma terpilih tanpa biaya tambahan setelah lulus.",
+      "description": "$0 aktivasi",
+      "cta": "Lihat firma"
+    }
+  },
+  "pack5": {
+    "pt": {
+      "headline": "Pack 5 contas - máxima economia",
+      "primary_text": "Compre 5 contas Apex de uma vez e economize por unidade. Promoção limitada com cupom MARKET.",
+      "description": "5 contas - 1 cupom",
+      "cta": "Comprar pack"
+    },
+    "en": {
+      "headline": "5-Account Pack - max savings",
+      "primary_text": "Buy 5 Apex accounts at once and save per unit. Limited promo with MARKET coupon.",
+      "description": "5 accounts - 1 coupon",
+      "cta": "Buy pack"
+    },
+    "es": {
+      "headline": "Pack 5 cuentas - máximo ahorro",
+      "primary_text": "Compra 5 cuentas Apex de una vez y ahorra por unidad. Promo limitada con cupón MARKET.",
+      "description": "5 cuentas - 1 cupón",
+      "cta": "Comprar pack"
+    },
+    "it": {
+      "headline": "Pack 5 conti - massimo risparmio",
+      "primary_text": "Compra 5 conti Apex in una volta e risparmia per unità. Promo limitata con coupon MARKET.",
+      "description": "5 conti - 1 coupon",
+      "cta": "Compra pack"
+    },
+    "fr": {
+      "headline": "Pack 5 comptes - économie max",
+      "primary_text": "Achetez 5 comptes Apex en une fois et économisez par unité. Promo limitée avec coupon MARKET.",
+      "description": "5 comptes - 1 coupon",
+      "cta": "Acheter le pack"
+    },
+    "de": {
+      "headline": "5-Konten-Paket - maximale Ersparnis",
+      "primary_text": "Kaufe 5 Apex-Konten auf einmal und spare pro Einheit. Begrenzte Aktion mit MARKET-Coupon.",
+      "description": "5 Konten - 1 Coupon",
+      "cta": "Paket kaufen"
+    },
+    "ar": {
+      "headline": "حزمة 5 حسابات - أقصى توفير",
+      "primary_text": "اشترِ 5 حسابات Apex مرة واحدة ووفِّر لكل وحدة. عرض محدود مع كوبون MARKET.",
+      "description": "5 حسابات - كوبون 1",
+      "cta": "شراء الحزمة"
+    },
+    "id": {
+      "headline": "Paket 5 akun - hemat maksimal",
+      "primary_text": "Beli 5 akun Apex sekaligus dan hemat per unit. Promo terbatas dengan kupon MARKET.",
+      "description": "5 akun - 1 kupon",
+      "cta": "Beli paket"
+    }
+  },
+  "day1": {
+    "pt": {
+      "headline": "Saque desde o Dia 1",
+      "primary_text": "Pague, passe e saque já no primeiro dia. Sem regra de consistência. Cupom exclusivo aplicado.",
+      "description": "Day 1 Payout",
+      "cta": "Ver oferta"
+    },
+    "en": {
+      "headline": "Payout from Day 1",
+      "primary_text": "Pay, pass, withdraw on day one. No consistency rule. Exclusive coupon applied.",
+      "description": "Day 1 Payout",
+      "cta": "See offer"
+    },
+    "es": {
+      "headline": "Saca desde el Día 1",
+      "primary_text": "Paga, pasa y saca el primer día. Sin regla de consistencia. Cupón exclusivo aplicado.",
+      "description": "Day 1 Payout",
+      "cta": "Ver oferta"
+    },
+    "it": {
+      "headline": "Payout dal Giorno 1",
+      "primary_text": "Paga, supera e prelevia il primo giorno. Nessuna regola di consistenza. Coupon esclusivo applicato.",
+      "description": "Day 1 Payout",
+      "cta": "Vedi offerta"
+    },
+    "fr": {
+      "headline": "Retrait dès le Jour 1",
+      "primary_text": "Payez, réussissez, retirez dès le premier jour. Sans règle de consistance. Coupon exclusif appliqué.",
+      "description": "Day 1 Payout",
+      "cta": "Voir l'offre"
+    },
+    "de": {
+      "headline": "Auszahlung ab Tag 1",
+      "primary_text": "Bezahle, bestehe, ziehe am ersten Tag aus. Keine Konsistenzregel. Exklusiver Coupon angewendet.",
+      "description": "Day 1 Payout",
+      "cta": "Angebot ansehen"
+    },
+    "ar": {
+      "headline": "السحب من اليوم الأول",
+      "primary_text": "ادفع، انجح، اسحب في اليوم الأول. بدون قاعدة اتساق. كوبون حصري مطبَّق.",
+      "description": "سحب اليوم 1",
+      "cta": "عرض المنتج"
+    },
+    "id": {
+      "headline": "Tarik mulai Hari 1",
+      "primary_text": "Bayar, lulus, tarik di hari pertama. Tanpa aturan konsistensi. Kupon eksklusif diterapkan.",
+      "description": "Day 1 Payout",
+      "cta": "Lihat penawaran"
+    }
+  }
+}

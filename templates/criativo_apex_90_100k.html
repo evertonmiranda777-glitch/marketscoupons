@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>100K — Markets Coupons</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html{width:100vw;height:100vh;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center}
+body{width:1080px;height:1920px;background:#000;font-family:'Inter',sans-serif;color:#fff;overflow:hidden;transform-origin:center center;flex-shrink:0}
+
+/* BG dramatic (matches Canva visual) */
+body{position:relative;
+  background:
+    radial-gradient(2px 2px at 8% 12%, rgba(255,215,100,.85) 0%, transparent 100%),
+    radial-gradient(3px 3px at 92% 22%, rgba(255,215,100,.7) 0%, transparent 100%),
+    radial-gradient(2px 2px at 88% 65%, rgba(255,215,100,.6) 0%, transparent 100%),
+    radial-gradient(3px 3px at 12% 58%, rgba(255,215,100,.5) 0%, transparent 100%),
+    radial-gradient(2px 2px at 25% 80%, rgba(255,215,100,.7) 0%, transparent 100%),
+    radial-gradient(2px 2px at 75% 85%, rgba(255,215,100,.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 38%, rgba(255,215,100,.55) 0%, transparent 100%),
+    radial-gradient(70px 70px at 5% 25%, rgba(240,180,41,.28) 0%, transparent 70%),
+    radial-gradient(90px 90px at 95% 70%, rgba(240,180,41,.32) 0%, transparent 70%),
+    radial-gradient(50px 50px at 18% 85%, rgba(240,180,41,.22) 0%, transparent 70%),
+    radial-gradient(60px 60px at 90% 35%, rgba(240,180,41,.26) 0%, transparent 70%),
+    radial-gradient(ellipse 1300px 1700px at 50% 50%, #161208 0%, #050405 80%);
+}
+body::after{
+  content:'';position:absolute;inset:0;z-index:0;opacity:.45;pointer-events:none;
+  background:
+    radial-gradient(ellipse 1500px 100px at -10% 35%, transparent 38%, rgba(240,180,41,.65) 50%, transparent 62%),
+    radial-gradient(ellipse 1500px 80px at 110% 65%, transparent 38%, rgba(240,180,41,.55) 50%, transparent 62%);
+}
+
+.canvas{position:relative;z-index:2;width:1080px;height:1920px}
+
+/* Brand Markets (mesma logo do gerador antigo admin) */
+.brand-row{position:absolute;left:50%;top:475px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:3}
+.brand-row svg{width:50px;height:50px;display:block}
+.brand-row .t1{font-size:36px;font-weight:800;letter-spacing:-.3px;white-space:nowrap}
+.brand-row .t2{font-size:36px;font-weight:600;color:#fff;letter-spacing:-.3px;white-space:nowrap}
+
+/* Firm logo WIDE (PDF mostra logo centralizada y~520) */
+.firm-row{position:absolute;left:50%;top:600px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;z-index:3;width:100%}
+.firm-row img{max-width:620px;max-height:200px;width:auto;height:auto;display:block;object-fit:contain}
+
+/* Title "Evaluation Accounts" (PDF y=625 → 833 px) */
+.title{position:absolute;left:0;right:0;top:910px;text-align:center;font-size:66px;font-weight:600;color:#fff;letter-spacing:-.3px;z-index:3}
+
+/* Big size "$100.000" (PDF y=763 → 1017 px, fs=100 → 133 px) */
+.size-big{position:absolute;left:0;right:0;top:1040px;text-align:center;font-size:148px;font-weight:900;color:#F0B429;letter-spacing:-3px;line-height:1;z-index:3}
+
+/* BOX GOLD OUTLINE (precos centro do box y~1220) */
+.price-box{position:absolute;left:50px;right:50px;top:1300px;border:3px solid #F0B429;border-radius:22px;padding:46px 60px 38px;z-index:3;background:rgba(0,0,0,.15)}
+.price-row{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.price-orig{font-size:72px;font-weight:900;color:#fff;text-decoration:line-through;text-decoration-color:#ff3030;text-decoration-thickness:5px;letter-spacing:-1px}
+.price-final{font-size:120px;font-weight:900;color:#F0B429;letter-spacing:-2px;line-height:1}
+.discount-badge{display:inline-flex;align-items:baseline;gap:6px;padding:16px 26px;border-radius:14px;background:#F0B429}
+.discount-badge .pct{font-size:62px;font-weight:900;color:#fff;line-height:1;letter-spacing:-1px}
+.discount-badge .lbl{font-size:22px;font-weight:800;color:#fff;letter-spacing:1px}
+
+/* Apply code dentro do mesmo box */
+.code-row{margin-top:30px;text-align:center;font-size:40px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.code-row b{font-weight:900;letter-spacing:2px;padding:0 8px;color:#F0B429}
+
+/* Disclaimer (PDF y=1087-1106 → ~1450 px) */
+.disc{position:absolute;left:60px;right:60px;top:1820px;font-size:14px;font-weight:400;color:rgba(255,255,255,.55);line-height:1.4;text-align:center;z-index:3}
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="brand-row">
+    <svg id="brand-svg" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#F0B429" stroke-width="2.4" fill="none"/>
+      <path d="M14 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <span class="t1" id="brand-t1">Markets</span><span class="t2">Coupons</span>
+  </div>
+
+  <div class="firm-row">
+    <img id="firm-logo" src="/img/Firms%20Logos/apex-logo-wide-light.png" alt="" crossorigin="anonymous">
+  </div>
+
+  <h1 class="title" id="title">Evaluation Accounts</h1>
+
+  <div class="size-big" id="size-big">$100.000</div>
+
+  <div class="price-box">
+    <div class="price-row">
+      <span class="price-orig" id="price-orig">$449</span>
+      <span class="price-final" id="price-final">$44.90</span>
+      <span class="discount-badge" id="discount-badge">
+        <span class="pct" id="discount-pct">-90%</span>
+        <span class="lbl">OFF</span>
+      </span>
+    </div>
+    <div class="code-row" id="code-row">Apply code <b id="coupon-code">MARKET</b> at checkout</div>
+  </div>
+
+  <div class="disc" id="disclaimer">Trading futures involves substantial risk. Past performance does not guarantee future results. Read the full disclosure at marketscoupons.com/risk-disclosure</div>
+</div>
+
+<script>
+// Auto-scale body 1080x1920 pra caber no viewport
+function _scaleCanvas(){
+  const s = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+  document.body.style.transform = `scale(${s})`;
+}
+window.addEventListener('resize', _scaleCanvas);
+window.addEventListener('load', _scaleCanvas);
+_scaleCanvas();
+
+(function(){
+  const I18N = {
+    en: { title:'Evaluation Accounts', applyL:'Apply code', applyR:'at checkout', disc:'Trading futures involves substantial risk. Past performance does not guarantee future results. Read the full disclosure at marketscoupons.com/risk-disclosure' },
+    pt: { title:'Contas de Avaliação', applyL:'Use o cupom', applyR:'no checkout', disc:'Operar futuros envolve risco substancial. Desempenho passado não garante resultados futuros. Leia o disclosure completo em marketscoupons.com/risk-disclosure' },
+    es: { title:'Cuentas de Evaluación', applyL:'Usa el cupón', applyR:'en el checkout', disc:'Operar futuros implica riesgo sustancial. El desempeño pasado no garantiza resultados futuros. Lee el disclosure completo en marketscoupons.com/risk-disclosure' },
+    fr: { title:'Comptes d\'Évaluation', applyL:'Utilisez le code', applyR:'au checkout', disc:'Le trading sur futures comporte des risques substantiels. Les performances passées ne garantissent pas les résultats futurs.' },
+    it: { title:'Conti di Valutazione', applyL:'Usa il codice', applyR:'al checkout', disc:'Il trading sui futures comporta rischi sostanziali.' },
+    de: { title:'Bewertungskonten', applyL:'Code', applyR:'beim Checkout anwenden', disc:'Der Handel mit Futures birgt erhebliche Risiken.' },
+    ar: { title:'حسابات تقييم', applyL:'استخدم الكود', applyR:'عند الدفع', disc:'تداول العقود الآجلة ينطوي على مخاطر كبيرة.' },
+    id: { title:'Akun Evaluasi', applyL:'Gunakan kode', applyR:'di checkout', disc:'Trading futures melibatkan risiko substansial. Kinerja masa lalu tidak menjamin hasil masa depan. Baca disclosure lengkap di marketscoupons.com/risk-disclosure' }
+  };
+  const params = new URLSearchParams(location.search);
+  const lang = (params.get('lang') || 'en').toLowerCase();
+  const t = I18N[lang] || I18N.en;
+  const get = (k, def) => params.get(k) || def;
+
+  const d = {
+    firm_logo:  get('firm_logo', '/img/Firms%20Logos/apex-logo-wide-light.png'),
+    accent:     get('accent', '#F0B429'),
+    size:       get('size', '$100.000'),
+    price_orig: get('price_orig', '$449'),
+    price_final:get('price_final', '$44.90'),
+    discount:   get('discount', '90'),
+    coupon:     get('coupon', 'MARKET')
+  };
+
+  // Apply text
+  document.getElementById('firm-logo').src = d.firm_logo;
+  document.getElementById('title').textContent = t.title;
+  document.getElementById('size-big').textContent = d.size;
+  document.getElementById('price-orig').textContent = d.price_orig;
+  document.getElementById('price-final').textContent = d.price_final;
+  document.getElementById('discount-pct').textContent = '-' + d.discount + '%';
+  document.getElementById('code-row').innerHTML =
+    `${t.applyL} <b style="color:${d.accent}">${d.coupon}</b> ${t.applyR}`;
+  document.getElementById('disclaimer').textContent = t.disc;
+  if (lang === 'ar') document.documentElement.dir = 'rtl';
+
+  // Apply accent color
+  const accent = d.accent;
+  // Brand logo OUTLINE (igual gerador antigo admin): hex + M tudo stroke accent
+  document.getElementById('brand-t1').style.color = accent;
+  document.querySelectorAll('#brand-svg path').forEach(p => p.setAttribute('stroke', accent));
+  document.getElementById('size-big').style.color = accent;
+  document.getElementById('size-big').style.textShadow = `0 0 40px ${accent}55`;
+  document.getElementById('price-final').style.color = accent;
+  // -X% OFF badge: fundo accent SÓLIDO + texto branco
+  document.getElementById('discount-badge').style.background = accent;
+  // Box gold outline
+  document.querySelector('.price-box').style.borderColor = accent;
+  // Apply code MARKET: cor accent
+  document.querySelector('.code-row b').style.color = accent;
+})();
+</script>
+</body></html>
