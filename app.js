@@ -793,10 +793,16 @@ const FIRM_ABOUT={
   tradeday:{about:'Founded in <b>Chicago, Illinois</b>. TradeDay trades <b>futures only</b> on CME, CBOT, NYMEX and COMEX exchanges. Highlights: <b>Day 1 Payout</b>, <b>no consistency rule</b> and progressive split up to <b>95%</b>. Approval rate of <b>28.2%</b> (Oct 2023 – Mar 2024) — above industry average.',highlights:[{val:'Day 1',label:'First payout'},{val:'95%',label:'Max split'},{val:'28.2%',label:'Approval rate'}],
     types:['Intraday','EOD','Static'],plans:{'Intraday':[{s:'50K',d:'$87.50',o:'$125'},{s:'100K',d:'$140',o:'$200',pop:1},{s:'150K',d:'$210',o:'$300'}],'EOD':[{s:'50K',d:'$122.50',o:'$175'},{s:'100K',d:'$192.50',o:'$275',pop:1},{s:'150K',d:'$262.50',o:'$375'}],'Static':[{s:'50K',d:'$115.50',o:'$165'},{s:'100K',d:'$175',o:'$250',pop:1},{s:'150K',d:'$245',o:'$350'}]},
     includes:['No consistency rule','Day 1 Payout','Split up to 95%','No activation fee (SAVE30)','Futures CME/CBOT/NYMEX/COMEX','24/7 support']},
-  goat:{about:'Goat Funded Futures (GFF) is a <b>futures-only prop firm</b> operated by WITI LIMITED (Hong Kong). Trade <b>CME, COMEX, NYMEX and CBOT</b> with up to <b>$750K</b> in funded capital. <b>$20M+ paid out</b> across the brand. <b>$0 activation fee</b> on EOD plans after passing.',
+  goat:{about:'Goat Funded Futures (GFF) is a <b>futures-only prop firm</b> operated by WITI LIMITED (Hong Kong). Trade <b>CME, COMEX, NYMEX and CBOT</b> with up to <b>$750K</b> in funded capital. <b>$20M+ paid out</b> across the brand. <b>4 plan types</b>: EOD, Sprint, Instant, Pro. <b>$0 activation fee</b> after passing.',
     highlights:[{val:'$20M+',label:'Paid to traders'},{val:'$750K',label:'Max account'},{val:'$0',label:'Activation fee'}],
-    types:['EOD'],plans:{'EOD':[{s:'50K',d:'$69',o:'$134'},{s:'100K',d:'$132',o:'$264',pop:1},{s:'150K',d:'$185',o:'$374'}]},
-    includes:['$0 activation fee','EOD Trailing drawdown','No time limit','No daily loss (evaluation)','Up to 12 mini / 120 micro contracts','Min $500 payout','Payouts every 7 winning days','CME/COMEX/NYMEX/CBOT']}
+    types:['EOD','Sprint','Instant','Pro'],
+    plans:{
+      'EOD':[{s:'50K',d:'$69',o:'$134'},{s:'100K',d:'$132',o:'$264',pop:1},{s:'150K',d:'$185',o:'$374'}],
+      'Sprint':[{s:'25K',d:'$64'},{s:'50K',d:'$93'},{s:'100K',d:'$140',pop:1}],
+      'Instant':[{s:'25K',d:'$192',o:'$384'},{s:'50K',d:'$277',o:'$554',pop:1},{s:'75K',d:'$382',o:'$764'},{s:'100K',d:'$489',o:'$978'},{s:'150K',d:'$624',o:'$1248'}],
+      'Pro':[{s:'50K',d:'$95'},{s:'100K',d:'$149',pop:1},{s:'150K',d:'$289'}]
+    },
+    includes:['$0 activation fee','100% split first $10K then 90%','Up to $750K funded','No time limit','News trading allowed (eval)','Min $500 payout','4 plan types: EOD/Sprint/Instant/Pro','CME/COMEX/NYMEX/CBOT']}
 
 };
 
@@ -4257,9 +4263,12 @@ const CHECKOUT_FIRMS=[
    buildUrl:(size,type,plat)=>'https://www.tradeday.com/?a_aid=marketscoupons'},
   {id:'goat',name:'Goat Funded Futures',short:'Goat',coupon:'MARKET',discount:'50%',color:'#FFB800',bg:'rgba(255,184,0,0.12)',
    includes:['$0 activation fee after passing','100% profit split first $10K','Payouts in 2 business days','No daily loss (evaluation)','News trading allowed','Up to $750K funded'],
-   types:['EOD'],platforms:['NinjaTrader','Tradovate','Quantower','CQG'],
+   types:['EOD','Sprint','Instant','Pro'],platforms:['NinjaTrader','Tradovate','Quantower','CQG'],
    plansByType:{
-     'EOD':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 trail',orig:'$134',disc:'$69',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 trail',orig:'$264',disc:'$132',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500 trail',orig:'$374',disc:'$185',featured:false}]
+     'EOD':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 trail',orig:'$134',disc:'$69',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 trail',orig:'$264',disc:'$132',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500 trail',orig:'$374',disc:'$185',featured:false}],
+     'Sprint':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,000 trail',orig:'—',disc:'$64',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 trail',orig:'—',disc:'$93',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 trail',orig:'—',disc:'$140',featured:true}],
+     'Instant':[{size:'25K',capital:'$25,000',goal:'$1,750',maxDD:'$1,250 trail',orig:'$384',disc:'$192',featured:false},{size:'50K',capital:'$50,000',goal:'$3,500',maxDD:'$2,500 trail',orig:'$554',disc:'$277',featured:true},{size:'75K',capital:'$75,000',goal:'$5,250',maxDD:'$3,750 trail',orig:'$764',disc:'$382',featured:false},{size:'100K',capital:'$100,000',goal:'$7,000',maxDD:'$5,000 trail',orig:'$978',disc:'$489',featured:false},{size:'150K',capital:'$150,000',goal:'$10,500',maxDD:'$7,500 trail',orig:'$1,248',disc:'$624',featured:false}],
+     'Pro':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'EOD',orig:'—',disc:'$95',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'EOD',orig:'—',disc:'$149',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'EOD',orig:'—',disc:'$289',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://app.goatfundedfutures.com/sign-up?referral_id=MARKET'}
 ];
