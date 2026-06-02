@@ -792,7 +792,11 @@ const FIRM_ABOUT={
     includes:['5 evaluation programs','VIP Program: Bronze, Silver, Gold','Free 1-on-1 coaching','Achievement certificate','Split up to 100%','Scaling available']},
   tradeday:{about:'Founded in <b>Chicago, Illinois</b>. TradeDay trades <b>futures only</b> on CME, CBOT, NYMEX and COMEX exchanges. Highlights: <b>Day 1 Payout</b>, <b>no consistency rule</b> and progressive split up to <b>95%</b>. Approval rate of <b>28.2%</b> (Oct 2023 – Mar 2024) — above industry average.',highlights:[{val:'Day 1',label:'First payout'},{val:'95%',label:'Max split'},{val:'28.2%',label:'Approval rate'}],
     types:['Intraday','EOD','Static'],plans:{'Intraday':[{s:'50K',d:'$87.50',o:'$125'},{s:'100K',d:'$140',o:'$200',pop:1},{s:'150K',d:'$210',o:'$300'}],'EOD':[{s:'50K',d:'$122.50',o:'$175'},{s:'100K',d:'$192.50',o:'$275',pop:1},{s:'150K',d:'$262.50',o:'$375'}],'Static':[{s:'50K',d:'$115.50',o:'$165'},{s:'100K',d:'$175',o:'$250',pop:1},{s:'150K',d:'$245',o:'$350'}]},
-    includes:['No consistency rule','Day 1 Payout','Split up to 95%','No activation fee (SAVE30)','Futures CME/CBOT/NYMEX/COMEX','24/7 support']}
+    includes:['No consistency rule','Day 1 Payout','Split up to 95%','No activation fee (SAVE30)','Futures CME/CBOT/NYMEX/COMEX','24/7 support']},
+  goat:{about:'Goat Funded Futures (GFF) is a <b>futures-only prop firm</b> operated by WITI LIMITED (Hong Kong). Trade <b>CME, COMEX, NYMEX and CBOT</b> with up to <b>$750K</b> in funded capital. <b>$20M+ paid out</b> across the brand. <b>$0 activation fee</b> on EOD plans after passing.',
+    highlights:[{val:'$20M+',label:'Paid to traders'},{val:'$750K',label:'Max account'},{val:'$0',label:'Activation fee'}],
+    types:['EOD'],plans:{'EOD':[{s:'50K',d:'$69',o:'$134'},{s:'100K',d:'$132',o:'$264',pop:1},{s:'150K',d:'$185',o:'$374'}]},
+    includes:['$0 activation fee','EOD Trailing drawdown','No time limit','No daily loss (evaluation)','Up to 12 mini / 120 micro contracts','Min $500 payout','Payouts every 7 winning days','CME/COMEX/NYMEX/CBOT']}
 
 };
 
