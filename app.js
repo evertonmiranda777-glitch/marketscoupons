@@ -3104,7 +3104,7 @@ function toggleFirmsSb(){
 /* Drawer state for inline checkout */
 const _drwState = {};
 
-const _firmPageSlugs=['apex','bulenox','ftmo','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday'];
+const _firmPageSlugs=['apex','bulenox','ftmo','fn','e2t','the5ers','fundingpips','brightfunded','e8','cti','tradeday','blueguardian','toponefutures','aquafutures','blueberryfutures','alphafutures','futureselite','goat'];
 const _slugToFirmId = {};
 const _firmIdToSlug = {};
 // Lazy load overlay data (about_html, detail_plans, bg_image) for a single firm
