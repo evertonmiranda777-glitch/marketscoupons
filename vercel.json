@@ -61,11 +61,11 @@
     { "src": "/(en|es|fr|de|it|ar|id)/guides/([a-z0-9-]+)", "dest": "/$1/guides/$2.html" },
     { "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar|id)/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms)", "dest": "/index.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/index.html" },
+    { "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar|id)/?$", "dest": "/index.html" },
-    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/index.html" },
-    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/compare/$1-vs-$2.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/$1/compare/$2-vs-$3.html" }
+    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat)", "dest": "/index.html" },
+    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat)", "dest": "/compare/$1-vs-$2.html" },
+    { "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat)", "dest": "/$1/compare/$2-vs-$3.html" }
   ],
   "headers": [
     {
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "source": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)",
+      "source": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
