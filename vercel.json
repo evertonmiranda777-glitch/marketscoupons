@@ -61,11 +61,11 @@
     { "src": "/(en|es|fr|de|it|ar)/guides/([a-z0-9-]+)", "dest": "/$1/guides/$2.html" },
     { "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar)/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms)", "dest": "/index.html" },
-    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" },
+    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/index.html" },
     { "src": "/(en|es|fr|de|it|ar)/?$", "dest": "/index.html" },
-    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/index.html" },
-    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/compare/$1-vs-$2.html" },
-    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)", "dest": "/$1/compare/$2-vs-$3.html" }
+    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/index.html" },
+    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/compare/$1-vs-$2.html" },
+    { "src": "/(en|es|fr|de|it|ar)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)", "dest": "/$1/compare/$2-vs-$3.html" }
   ],
   "headers": [
     {
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "source": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday)",
+      "source": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
@@ -190,7 +190,7 @@
         { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
         { "key": "Permissions-Policy", "value": "accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), interest-cohort=(), magnetometer=(), microphone=(), midi=(), payment=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://s3.tradingview.com https://browser.sentry-cdn.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: blob:; connect-src 'self' https://qfwhduvutfumsaxnuofa.supabase.co https://*.supabase.co https://ipinfo.io https://viacep.com.br https://api.zippopotam.us https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.anthropic.com https://api.brevo.com https://connect.facebook.net https://www.facebook.com https://*.doubleclick.net https://*.sentry.io https://*.ingest.sentry.io https://browser.sentry-cdn.com https://*.run.app https://*.conversionsapigateway.com https://cdn.jsdelivr.net; frame-src https://www.tradingview-widget.com https://s.tradingview.com https://s3.tradingview.com https://www.tradingview.com https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" }
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://s3.tradingview.com https://browser.sentry-cdn.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://qfwhduvutfumsaxnuofa.supabase.co https://*.supabase.co https://ipinfo.io https://viacep.com.br https://api.zippopotam.us https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.anthropic.com https://api.brevo.com https://connect.facebook.net https://www.facebook.com https://*.doubleclick.net https://*.sentry.io https://*.ingest.sentry.io https://browser.sentry-cdn.com https://*.run.app https://*.conversionsapigateway.com https://cdn.jsdelivr.net; frame-src https://www.tradingview-widget.com https://s.tradingview.com https://s3.tradingview.com https://www.tradingview.com https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" }
       ]
     }
   ]
