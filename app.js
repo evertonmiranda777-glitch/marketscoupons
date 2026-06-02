@@ -4250,7 +4250,14 @@ const CHECKOUT_FIRMS=[
      'EOD':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 EOD',orig:'$175',disc:'$122.50',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 EOD',orig:'$275',disc:'$192.50',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,000 EOD',orig:'$375',disc:'$262.50',featured:false}],
      'Static':[{size:'50K',capital:'$50,000',goal:'$1,500',maxDD:'$500 static',orig:'$165',disc:'$115.50',featured:false},{size:'100K',capital:'$100,000',goal:'$2,500',maxDD:'$750 static',orig:'$250',disc:'$175',featured:true},{size:'150K',capital:'$150,000',goal:'$3,750',maxDD:'$1,000 static',orig:'$350',disc:'$245',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://www.tradeday.com/?a_aid=marketscoupons'}
+   buildUrl:(size,type,plat)=>'https://www.tradeday.com/?a_aid=marketscoupons'},
+  {id:'goat',name:'Goat Funded Futures',short:'Goat',coupon:'MARKET',discount:'50%',color:'#FFB800',bg:'rgba(255,184,0,0.12)',
+   includes:['$0 activation fee after passing','100% profit split first $10K','Payouts in 2 business days','No daily loss (evaluation)','News trading allowed','Up to $750K funded'],
+   types:['EOD'],platforms:['NinjaTrader','Tradovate','Quantower','CQG'],
+   plansByType:{
+     'EOD':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 trail',orig:'$134',disc:'$69',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 trail',orig:'$264',disc:'$132',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500 trail',orig:'$374',disc:'$185',featured:false}]
+   },
+   buildUrl:(size,type,plat)=>'https://app.goatfundedfutures.com/sign-up?referral_id=MARKET'}
 ];
 
 let achActiveFirm='apex';
