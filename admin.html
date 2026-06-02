@@ -13732,10 +13732,13 @@ function renderHeroPremium(firm, content, L) {
     fundingpips: 'img/Firms Logos/fundingpips-logo.svg',
     e2t: 'img/Firms Logos/earn2trade white.svg',
     the5ers: 'img/Firms Logos/logo-white-est.png',
-    goat: 'img/Firms/Goat Funded Futures.png',
-    // 6 firmas sem wordmark wide oficial — fallback para icon_url (108px)
-    blueguardian: '', toponefutures: '', aquafutures: '',
-    blueberryfutures: '', alphafutures: '', futureselite: ''
+    goat: 'img/Firms Logos/Goat Funded Futures.png',
+    blueguardian: 'img/Firms Logos/Blue Guardian.svg',
+    toponefutures: 'img/Firms Logos/Top One Futures.svg',
+    aquafutures: 'img/Firms Logos/Aqua Future.svg',
+    blueberryfutures: 'img/Firms Logos/Blueberry Futures.svg',
+    alphafutures: 'img/Firms Logos/Alpha-Future.svg',
+    futureselite: 'img/Firms Logos/Futures Elite.svg'
   };
   const logoSrc = FIRM_WORDMARK[firm.id] || firm.icon_url || '';
   h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.onerror=null;this.src='${firm.icon_url||''}';this.style.maxWidth='220px';"></div>`;
