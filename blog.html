@@ -217,7 +217,7 @@ function updateSEO(post, slug, blogUrl, lang){
   const ptUrl = SITE+'/blog/'+baseSlug;
   const hlPt = document.getElementById('hl-pt'); if(hlPt) hlPt.href = ptUrl;
   const hlX = document.getElementById('hl-x'); if(hlX) hlX.href = ptUrl;
-  ['en','es','fr','de','it','ar'].forEach(l=>{
+  ['en','es','fr','de','it','ar','id'].forEach(l=>{
     const el = document.getElementById('hl-'+l);
     if(el) el.href = SITE+'/blog/'+l+'/'+baseSlug;
   });
@@ -310,7 +310,7 @@ function renderPost(post, slug, blogUrl, T){
     </div>`;
 }
 
-const LANGS_VALID = ['pt','en','es','fr','de','it','ar'];
+const LANGS_VALID = ['pt','en','es','fr','de','it','ar','id'];
 const CTA_I18N = {
   pt:{title:'Economize na Sua Próxima Avaliação',desc:'Cupons exclusivos de até 90% OFF nas melhores prop firms do mercado.',btn:'Ver Cupons →',back:'Blog',coupons:'Ver Cupons',share:'Compartilhar:',copy:'Copiar link',copied:'Copiado!',loading:'Carregando artigo...',notfound:'Post não encontrado',notfounddesc:'O artigo não existe ou foi removido.',all:'Ver todos os artigos',error:'Erro ao carregar',retry:'Tentar novamente',read:'de leitura'},
   en:{title:'Save on Your Next Evaluation',desc:'Exclusive coupons up to 90% OFF on the best prop firms.',btn:'View Coupons →',back:'Blog',coupons:'View Coupons',share:'Share:',copy:'Copy link',copied:'Copied!',loading:'Loading article...',notfound:'Post not found',notfounddesc:'This article does not exist or was removed.',all:'See all articles',error:'Error loading',retry:'Try again',read:'read'},

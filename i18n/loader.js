@@ -1,7 +1,7 @@
 // i18n loader — detecta idioma + carrega só EN (fallback) + idioma ativo (-300kb).
 // Dispara evento mc-i18n-ready quando pronto. App.js espera antes de renderHome.
 (function() {
-  const PATH_LANGS = ['en', 'es', 'fr', 'de', 'it', 'ar'];
+  const PATH_LANGS = ['en','es','fr','de','it','ar','id'];
 
   function detectLang() {
     // 1) URL path /en/, /es/apex etc

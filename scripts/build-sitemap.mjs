@@ -23,7 +23,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://www.marketscoupons.com';
 const NOW = new Date().toISOString().slice(0, 10);
-const LANGS = ['en', 'es', 'fr', 'de', 'it', 'ar'];
+const LANGS = ['en','es','fr','de','it','ar','id'];
 
 function urlEntry({ loc, changefreq = 'weekly', priority = '0.7', lastmod = NOW, alternates = null }) {
   const altLines = alternates ? alternates.map(a => `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${a.url}"/>`).join('\n') : '';
@@ -127,7 +127,7 @@ guidesEn.forEach(slug => {
     { lang: 'pt-BR', url: `${SITE}/pt/guides/${slug}` },
   ];
   // Tenta alternates noutros idiomas
-  ['es', 'fr', 'de', 'it', 'ar'].forEach(l => {
+  ['es', 'fr', 'de', 'it', 'ar', 'id'].forEach(l => {
     if (fs.existsSync(path.join(ROOT, l, 'guides', `${slug}.html`))) {
       alts.push({ lang: l, url: `${SITE}/${l}/guides/${slug}` });
     }

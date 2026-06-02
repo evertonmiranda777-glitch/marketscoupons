@@ -1083,11 +1083,13 @@ function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='pt')ret
 
 /* NAV */
 // Page ID → clean URL slug mapping
-const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel',loyalty:'loyalty','pro-success':'pro-success',calc:'calculator',privacy:'privacy',terms:'terms'};
+const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel','pro-success':'pro-success',calc:'calculator',privacy:'privacy',terms:'terms'};
 const SLUG_PAGES=Object.fromEntries(Object.entries(PAGE_SLUGS).map(([k,v])=>[v,k]));
 function _pageUrl(page){const s=PAGE_SLUGS[page];return s?'/'+s:'/';}
 function _pageFromPath(){const p=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').replace(/^\//,'').replace(/\/$/,'');return SLUG_PAGES[p]||'';}
 function go(page, skipPush){
+  // Loyalty removido (2026-06): redireciona qualquer chamada residual
+  if (page === 'loyalty') page = (window.currentUser ? 'painel' : 'home');
   // Limpa timers de página anterior pra evitar memory leak
   if (_currentPage === 'calendar' && page !== 'calendar') {
     if (_calRefreshTimer) { clearInterval(_calRefreshTimer); _calRefreshTimer = null; }
@@ -1106,7 +1108,6 @@ function go(page, skipPush){
   if(page!=='analise'&&page!=='gamma') removePreviewBanner();
   if(page==='live'){ if(_authLoaded) checkLoyaltyAndShowLive(); else showLiveGatePreview(); }
   if(page==='analise' && _authLoaded) checkAnalysisGate();
-  if(page==='loyalty') renderLoyaltyPage();
   if(page==='painel' && !isAuthed() && _authLoaded) { if(!currentUser) openAuthModal('login'); else showConfirmEmailModal('pending'); go('home'); return; }
   if(page==='painel' && !isAuthed() && !_authLoaded) { _authReadyPromise?.then(()=>{ if(!isAuthed()){ if(!currentUser) openAuthModal('login'); else showConfirmEmailModal('pending'); go('home'); } }); }
   if(page==='gamma') loadGEX();
@@ -1192,7 +1193,7 @@ function t(key) {
 }
 function detectLang() {
   // Priority 1: URL path language (/en/, /es/apex, etc.)
-  const _pathLangs=['en','es','fr','de','it','ar'];
+  const _pathLangs=['en','es','fr','de','it','ar','id'];
   const _pathParts=location.pathname.split('/').filter(Boolean);
   if(_pathParts.length>0 && _pathLangs.includes(_pathParts[0])){
     localStorage.setItem('mc_lang',_pathParts[0]);
@@ -1318,7 +1319,7 @@ function initLang() {
   if(twDesc) twDesc.content = t('meta_og_description');
   // Update canonical for language path URLs (/en/, /es/, etc.)
   const _langPath=location.pathname.split('/').filter(Boolean);
-  const _isLangPage=['en','es','fr','de','it','ar'].includes(_langPath[0])&&_langPath.length===1;
+  const _isLangPage=['en','es','fr','de','it','ar','id'].includes(_langPath[0])&&_langPath.length===1;
   if(_isLangPage){
     const canon=document.querySelector('link[rel="canonical"]');
     if(canon) canon.href='https://www.marketscoupons.com/'+_langPath[0]+'/';
@@ -5454,42 +5455,31 @@ const PG_CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 // openStripePortal/edge functions) mantido dormente pra reativar depois. Pra voltar o card,
 // reescrever aqui e re-plugar em buildProGate/buildProGateAnon.
 
-// User logado sem acesso — só fidelidade (Pro pago removido 2026-05-18, volta depois)
+// User logado sem acesso (loyalty removido 2026-06): so cadastro libera tudo.
+// Esse caso so ocorre se usuario nao confirmou email. Manda confirmar.
 function buildProGate(mode){
   const head = mode==='compact' ? '' :
-    `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_CLOCK}</div><h2 class="da-gate-title">${t('pro_gate_logged_title')||'Seu preview acabou'}</h2><p class="da-gate-subtitle">${t('pro_gate_logged_sub')||'Continue acessando Análise + GEX + Live Room.'}</p></div>`;
+    `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_USER}</div><h2 class="da-gate-title">${t('pro_gate_confirm_title')||'Confirme seu e-mail'}</h2><p class="da-gate-subtitle">${t('pro_gate_confirm_sub')||'Confirme seu e-mail para acessar.'}</p></div>`;
   return head+
     `<div class="pg-stack">`+
       `<div class="pg-card pg-card-primary">`+
-        `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_GIFT}</span><span class="pg-card-title">${t('pro_gate_loyalty_logged_title')||'Acesso grátis com fidelidade'}</span></div>`+
-        `<p class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre uma avaliação com cupom Markets e ative sua fidelidade.'}</p>`+
-        `<button class="pg-btn pg-btn-gold" onclick="track('gate_loyalty_click',{src:'pro_gate_logged'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
+        `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_USER}</span><span class="pg-card-title">${t('pro_gate_confirm_cta')||'Verificar e-mail'}</span></div>`+
+        `<p class="pg-card-sub">${t('pro_gate_confirm_text')||'Reenvie o link de confirmação para liberar acesso.'}</p>`+
+        `<button class="pg-btn pg-btn-gold" onclick="showConfirmEmailModal('pending')">${t('pro_gate_confirm_btn')||'Reenviar confirmação'}</button>`+
       `</div>`+
     `</div>`;
 }
 
-// Visitante anônimo. ctx='live' → Live Room (cadastro + fidelidade, 2 cards).
-// Senão (Análise/GEX/resto) → SÓ cadastro: criar conta grátis libera tudo
-// (modelo 2026-05-20 — só o Live Room continua exigindo fidelidade).
+// Visitante anonimo: cadastro gratuito libera tudo (analise, GEX, Live Room).
 function buildProGateAnon(ctx){
-  const isLive = ctx==='live';
-  let html = `<div class="da-gate-head"><div class="da-gate-icon">${isLive?PG_ICO_GIFT:PG_ICO_USER}</div><h2 class="da-gate-title">${t('pro_gate_title')||'Crie sua conta grátis'}</h2><p class="da-gate-subtitle">${t('pro_gate_anon_sub')||'Crie sua conta grátis para continuar.'}</p></div>`+
+  return `<div class="da-gate-head"><div class="da-gate-icon">${PG_ICO_USER}</div><h2 class="da-gate-title">${t('pro_gate_title')||'Crie sua conta grátis'}</h2><p class="da-gate-subtitle">${t('pro_gate_anon_sub')||'Crie sua conta grátis para continuar.'}</p></div>`+
     `<div class="pg-stack">`+
       `<div class="pg-card pg-card-primary">`+
         `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_USER}</span><span class="pg-card-title">${t('da_gate_btn_login')||'Criar conta grátis'}</span></div>`+
-        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'Sem cartão. Acesso imediato a Análise Diária, GEX e tudo no site.'}</p>`+
+        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'Sem cartão. Acesso imediato a Análise Diária, GEX, Live Room e tudo no site.'}</p>`+
         `<button class="pg-btn pg-btn-gold" onclick="track('gate_signup_click',{src:'pro_gate_anon'});openAuthModal('signup')">${t('pro_gate_signup_cta')||'Criar conta grátis →'}</button>`+
-      `</div>`;
-  // Live Room é a ÚNICA área que precisa de fidelidade — só aqui o card aparece.
-  if(isLive){
-    html += `<div class="pg-divider-or">${t('pro_gate_or_path')||'E pra entrar no Live Room VIP'}</div>`+
-      `<div class="pg-card pg-card-secondary">`+
-        `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_GIFT}</span><span class="pg-card-title">${t('pro_gate_loyalty_title')||'Programa de fidelidade'}</span></div>`+
-        `<p class="pg-card-sub">${t('pro_gate_loyalty_sub')||'Compre uma avaliação com cupom Markets e ative sua fidelidade.'}</p>`+
-        `<button class="pg-btn pg-btn-glass" onclick="track('gate_loyalty_click',{src:'pro_gate_anon_live'});go('loyalty')">${t('pro_gate_loyalty_cta')||'Ver firmas com cupom'}</button>`+
-      `</div>`;
-  }
-  return html + `</div>`;
+      `</div>`+
+    `</div>`;
 }
 
 async function startCheckout(){
@@ -6096,7 +6086,7 @@ function autoDetectDDI() {
 let _liveCountdownInterval=null;
 function _startLiveCountdown(){
   if(_liveCountdownInterval) clearInterval(_liveCountdownInterval);
-  const target=new Date('2026-06-01T13:30:00Z').getTime(); // 01/06/2026 · 9:30 ET = 13:30 UTC
+  const target=new Date('2026-06-08T13:30:00Z').getTime(); // 08/06/2026 · 9:30 ET = 13:30 UTC
   function _update(){
     const now=Date.now();
     const diff=target-now;
@@ -6137,54 +6127,28 @@ function showLiveGatePreview(){
   }
 }
 
+// Live Room gate (loyalty removido 2026-06): apenas exige cadastro+email verificado.
 async function checkLoyaltyAndShowLive(forceCheck = false) {
   const gateEl = document.getElementById('live-gate');
   const roomEl = document.getElementById('live-room');
   const contentEl = document.getElementById('live-gate-content');
   if(!gateEl||!roomEl) return;
 
-  // Check access: VIP, subscription, or 1 approved loyalty proof
-  let hasAccess = false;
-  if(currentUser && currentProfile){
-    if(currentProfile.analysis_vip===true) hasAccess=true;
-    if(!hasAccess){
-      try{
-        const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
-        if(data&&data.length>0) hasAccess=true;
-      }catch(e){}
-    }
-    if(!hasAccess){
-      const history=getLoyaltyHistory();
-      const approved=history.filter(h=>h.status==='approved').length;
-      if(approved>=1) hasAccess=true;
-    }
-  }
-
-  if(hasAccess){
+  if (isAuthed()) {
     gateEl.classList.add('hide');
     roomEl.classList.remove('hide');
-    document.getElementById('lv-viewers').textContent=Math.floor(Math.random()*40+10);
-    // Countdown to April 20, 2026
+    const vv=document.getElementById('lv-viewers'); if(vv) vv.textContent=Math.floor(Math.random()*40+10);
     _startLiveCountdown();
     return;
   }
 
-  // Blocked — show gate
+  // Anonymous: show signup gate
   gateEl.classList.remove('hide');
   roomEl.classList.add('hide');
-
   if(!contentEl) return;
   const staticEl=document.getElementById('live-gate-static');
-
-  if(!isAuthed()){
-    // Not logged in or unverified — show full Pro gate, hide static header
-    if(staticEl) staticEl.style.display='none';
-    contentEl.innerHTML=buildProGateAnon('live');
-  } else {
-    // Logged in, no access — show Pro gate with checkout, hide static header
-    if(staticEl) staticEl.style.display='none';
-    contentEl.innerHTML=buildProGate('compact');
-  }
+  if(staticEl) staticEl.style.display='none';
+  contentEl.innerHTML=buildProGateAnon('live');
 }
 
 /* BOT */
@@ -6374,322 +6338,8 @@ function toggleAlert(i){const alerts=JSON.parse(localStorage.getItem('mc_alerts'
 function deleteAlert(i){const alerts=JSON.parse(localStorage.getItem('mc_alerts')||'[]');const deleted=alerts[i];alerts.splice(i,1);localStorage.setItem('mc_alerts',JSON.stringify(alerts));document.getElementById('tm-body').innerHTML=renderToolContent('alerts');track('alert_delete',{symbol:deleted?.sym});}
 function renderNinjaPack(){return`<div class="vip-box"><div style="font-size:18px;font-weight:700;margin-bottom:6px;">NinjaTrader Pack — 15 Indicadores</div><div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:16px;">Pack exclusivo para traders de prop firms. NinjaTrader 8. Inclui setup e video tutorial.</div><div class="vip-features"><div class="vip-feat">PropFirm DrawdownGuard</div><div class="vip-feat">DailyTarget Tracker</div><div class="vip-feat">OrderFlow Delta</div><div class="vip-feat">Session VWAP</div><div class="vip-feat">EntryZone Finder</div><div class="vip-feat">NewsFilter</div><div class="vip-feat">RiskManager automatico</div><div class="vip-feat">+ 8 indicadores adicionais</div></div><button class="dl-btn" onclick="showToast('Arquivo em preparacao. Voce recebera por e-mail!')">Baixar NinjaTrader Pack</button></div>`;}
 
-/* LOYALTY — Supabase */
-/* LOYALTY — tiers removed, simple 1-approved-purchase gate for Live Room + Daily Analysis + GEX */
-
-// Cache local para fidelidade (evita múltiplas chamadas ao Supabase)
-let _loyaltyCache = { member: null, history: [], pending: [], loaded: false };
-
-async function loadLoyaltyFromSupabase(email) {
-  if (!email) return;
-  try {
-    const [mRes, pRes] = await Promise.all([
-      db.from('loyalty_members').select('*').eq('email', email).maybeSingle(),
-      db.from('loyalty_proofs').select('*').eq('member_email', email).order('created_at', { ascending: false }),
-    ]);
-    if (mRes.data) _loyaltyCache.member = { name: mRes.data.name, email: mRes.data.email, ts: mRes.data.created_at };
-    if (pRes.data) {
-      _loyaltyCache.history = pRes.data.filter(p => p.status !== 'pending').map(p => ({
-        id: p.id, member: p.member_email, name: p.member_name, firma: p.firma,
-        size: p.plan_size, orderNumber: p.order_number, coupon: p.coupon_used,
-        value: p.purchase_value, status: p.status, ts: p.created_at,
-      }));
-      _loyaltyCache.pending = pRes.data.filter(p => p.status === 'pending').map(p => ({
-        id: p.id, member: p.member_email, name: p.member_name, firma: p.firma,
-        size: p.plan_size, orderNumber: p.order_number, coupon: p.coupon_used,
-        value: p.purchase_value, status: 'pending', ts: p.created_at,
-      }));
-    }
-    _loyaltyCache.loaded = true;
-    // Persist cache to localStorage for offline/gate check
-    localStorage.setItem('mc_loyalty_member',  JSON.stringify(_loyaltyCache.member));
-    localStorage.setItem('mc_loyalty_history',  JSON.stringify(_loyaltyCache.history));
-    localStorage.setItem('mc_loyalty_pending',  JSON.stringify(_loyaltyCache.pending));
-  } catch(e) {}
-}
-
-function getLoyaltyMember()  {
-  if (_loyaltyCache.member) return _loyaltyCache.member;
-  return JSON.parse(localStorage.getItem('mc_loyalty_member')||'null');
-}
-function getLoyaltyHistory() {
-  if (_loyaltyCache.loaded) return _loyaltyCache.history;
-  return JSON.parse(localStorage.getItem('mc_loyalty_history')||'[]');
-}
-function getLoyaltyPending() {
-  if (_loyaltyCache.loaded) return _loyaltyCache.pending;
-  return JSON.parse(localStorage.getItem('mc_loyalty_pending')||'[]');
-}
-/* LOYALTY — tiers removed: getTier/getNextTier deleted */
-
-async function registerLoyalty() {
-  const name  = document.getElementById('ly-name')?.value.trim();
-  const email = document.getElementById('ly-email')?.value.trim();
-  if (!name || !email) { showToast(t('toast_preencha_nome_email')); return; }
-  try {
-    await db.from('loyalty_members').upsert({ name, email }, { onConflict: 'email' });
-  } catch(e) {}
-  // Update cache
-  _loyaltyCache.member = { name, email, ts: new Date().toISOString() };
-  localStorage.setItem('mc_loyalty_member', JSON.stringify(_loyaltyCache.member));
-  saveLead({ name, email, tool: 'loyalty' });
-  renderLoyaltyPage();
-  showToast(t('toast_bem_vindo') + name + '!');
-  track('loyalty_register', { name, email, em: email, fn: name, content_name:'Loyalty Program', content_category:'loyalty' });
-}
-
-async function submitProof() {
-  if (!rateLimit('submitProof', 10000)) { showToast(t('toast_aguarde')); return; }
-  if (currentUser && !isAuthed()) { showConfirmEmailModal('pending'); return; }
-  const member = getLoyaltyMember();
-  if (!member) { showToast(t('toast_cadastro_primeiro')); return; }
-  const firma       = document.getElementById('pf-firma')?.value;
-  const size        = document.getElementById('pf-size')?.value;
-  const orderNumber = (document.getElementById('pf-order')?.value||'').trim();
-  if (!firma)       { showToast(t('toast_selecione_firma'));      return; }
-  if (!size)        { showToast(t('toast_selecione_tamanho'));        return; }
-  if (!orderNumber) { showToast(t('toast_informe_pedido')); return; }
-
-  // Check duplicate
-  const all = [...getLoyaltyPending(), ...getLoyaltyHistory()];
-  if (all.find(e => e.orderNumber === orderNumber)) {
-    showToast(t('toast_pedido_duplicado')); return;
-  }
-
-  // Upload file to Supabase Storage if exists
-  let file_url = null;
-  if (proofFileData?.data) {
-    try {
-      const base64  = proofFileData.data.split(',')[1];
-      const byteArr = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-      const path    = `proofs/${member.email.replace('@','_')}/${orderNumber}_${proofFileData.name}`;
-      const { data: upData } = await db.storage.from('loyalty-proofs').upload(path, byteArr, {
-        contentType: proofFileData.type, upsert: true
-      });
-      if (upData) {
-        const { data: urlData } = db.storage.from('loyalty-proofs').getPublicUrl(path);
-        file_url = urlData?.publicUrl || null;
-      }
-    } catch(e) {}
-  }
-
-  const proof = {
-    member_email:   member.email,
-    member_name:    member.name,
-    firma,
-    plan_size:      size,
-    order_number:   orderNumber,
-    purchase_date:  document.getElementById('pf-date')?.value || null,
-    coupon_used:    (document.getElementById('pf-coupon')?.value||'').trim().toUpperCase() || null,
-    purchase_value: (document.getElementById('pf-value')?.value||'').trim() || null,
-    file_name:      proofFileData?.name || null,
-    file_url,
-    status: 'pending',
-  };
-
-  let insertedId = null;
-  try {
-    const { data: inserted } = await db.from('loyalty_proofs').insert(proof).select('id').maybeSingle();
-    insertedId = inserted?.id;
-  } catch(e) {
-    showToast(t('toast_send_error')||'Error sending. Try again.'); return;
-  }
-
-  // Update local cache
-  _loyaltyCache.pending.unshift({ ...proof, id: insertedId||'local_'+Date.now(), orderNumber, ts: new Date().toISOString() });
-  localStorage.setItem('mc_loyalty_pending', JSON.stringify(_loyaltyCache.pending));
-
-  ['pf-firma','pf-size','pf-order','pf-date','pf-coupon','pf-value'].forEach(id=>{
-    const el = document.getElementById(id); if(el) el.value='';
-  });
-  removeProofFile();
-  renderLoyaltyPage();
-  showToast(t('toast_comprovante_enviado'));
-  track('loyalty_proof_submitted', { firma, size, orderNumber, member: member.email });
-
-  // Trigger AI validation in background
-  if(insertedId){
-    try{
-      const sess = await db.auth.getSession();
-      const token = sess?.data?.session?.access_token;
-      const resp = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/validate-loyalty-proof', {
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+(token||'')},
-        body:JSON.stringify({proof_id:insertedId})
-      });
-      const result = await resp.json();
-      if(result.status==='approved'){
-        showToast(t('toast_comprovante_aprovado'));
-        // Move from pending to history in cache
-        _loyaltyCache.pending = _loyaltyCache.pending.filter(p=>p.id!==insertedId);
-        _loyaltyCache.history.unshift({...proof, id:insertedId, status:'approved', ai_reason:result.ai_reason});
-        localStorage.setItem('mc_loyalty_pending',JSON.stringify(_loyaltyCache.pending));
-        localStorage.setItem('mc_loyalty_history',JSON.stringify(_loyaltyCache.history));
-        renderLoyaltyPage();
-        checkAnalysisGate();
-      } else if(result.status==='rejected'){
-        showToast(t('toast_comprovante_nao_aprovado')+(result.ai_reason||''));
-      } else {
-        showToast(t('toast_comprovante_analise'));
-      }
-    }catch(e){ /* AI validation failed silently, admin will review manually */ }
-  }
-}
-function renderPainelLoyalty(){
-  const el = document.getElementById('painel-loyalty-body');
-  if(!el || !currentUser) return;
-
-  // Auto-register in loyalty if not yet (using existing profile data)
-  if(!getLoyaltyMember()){
-    const name = currentProfile?.full_name || currentUser.email.split('@')[0];
-    const email = currentUser.email;
-    localStorage.setItem('mc_loyalty_member', JSON.stringify({name, email, registered_at: new Date().toISOString()}));
-  }
-
-  const history = getLoyaltyHistory();
-  const approved = history.filter(h=>h.status==='approved').length;
-  const faltam = Math.max(0, 1 - approved);
-  const liveUnlocked = approved >= 1;
-  const progressPct = Math.min(100, Math.round(approved/1*100));
-
-  el.innerHTML=`
-    <!-- Progresso -->
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
-      <div style="font-size:13px;font-weight:700;">${liveUnlocked
-        ? '<span style="color:var(--green);">✓ '+t('loyalty_desbloqueado')+'</span>'
-        : '<span style="color:var(--gold);">'+faltam+' '+t('loyalty_faltam_suf')+'</span>'}</div>
-      <div style="font-size:12px;color:var(--t3);font-weight:600;">${approved} ${t('loyalty_validada')}</div>
-    </div>
-    <div style="background:var(--card2);border-radius:6px;height:10px;overflow:hidden;margin-bottom:20px;">
-      <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,var(--gold),var(--gold-hover));border-radius:6px;transition:.4s;"></div>
-    </div>
-
-    <!-- Benefícios -->
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;">O que você desbloqueia</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:20px;">
-      <div style="background:var(--card2);border:1px solid ${liveUnlocked?'rgba(34,197,94,.3)':'var(--b1)'};border-radius:8px;padding:12px;text-align:center;">
-        <div style="margin-bottom:4px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${liveUnlocked?'var(--green)':'var(--t2)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
-        <div style="font-size:12px;font-weight:700;color:${liveUnlocked?'var(--green)':'var(--t1)'};">${liveUnlocked?'✓ ':''} Live Room VIP</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Operações ao vivo</div>
-      </div>
-      <div style="background:var(--card2);border:1px solid ${liveUnlocked?'rgba(34,197,94,.3)':'var(--b1)'};border-radius:8px;padding:12px;text-align:center;">
-        <div style="margin-bottom:4px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${liveUnlocked?'var(--green)':'var(--t2)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
-        <div style="font-size:12px;font-weight:700;color:${liveUnlocked?'var(--green)':'var(--t1)'};">${liveUnlocked?'✓ ':''} Sorteios</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Contas financiadas</div>
-      </div>
-      <div style="background:var(--card2);border:1px solid ${liveUnlocked?'rgba(34,197,94,.3)':'var(--b1)'};border-radius:8px;padding:12px;text-align:center;">
-        <div style="margin-bottom:4px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${liveUnlocked?'var(--green)':'var(--t2)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-        <div style="font-size:12px;font-weight:700;color:${liveUnlocked?'var(--green)':'var(--t1)'};">${liveUnlocked?'✓ ':''} Indicadores</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Ferramentas premium</div>
-      </div>
-    </div>
-
-    <!-- Como funciona -->
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;">Como funciona</div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
-      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
-        <span style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</span>
-        Compre qualquer prop firm usando nosso <strong style="color:var(--t1);">link ou cupom exclusivo</strong>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
-        <span style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</span>
-        Envie o comprovante (print do email ou PDF de confirmação)
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
-        <span style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:#07090D;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</span>
-        Nossa equipe valida em até <strong style="color:var(--t1);">48 horas</strong>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2);">
-        <span style="width:22px;height:22px;border-radius:50%;background:${liveUnlocked?'var(--green)':'var(--b2)'};color:${liveUnlocked?'#07090D':'var(--t3)'};font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</span>
-        Com <strong style="color:var(--t1);">1 compra validada</strong> → acesso ao Live Room VIP e benefícios
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <button class="lrf-btn" onclick="go('loyalty')" style="width:100%;padding:13px;">
-      ${approved>0?'Enviar novo comprovante →':'Enviar meu primeiro comprovante →'}
-    </button>
-    ${approved>0?`<button onclick="go('loyalty')" style="width:100%;margin-top:8px;background:transparent;border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);">${t('toast_ver_historico')}</button>`:''}`;
-}
-
-function renderLoyaltyPage(){
-  const member=getLoyaltyMember(), history=getLoyaltyHistory(), pending=getLoyaltyPending();
-  const approved=history.filter(h=>h.status==='approved').length;
-  const ms=document.getElementById('loyalty-my-section'); if(!ms) return;
-
-  if(!currentUser){
-    ms.innerHTML=`<div class="loyalty-register-form">
-      <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <div class="lrf-title">${t('loyalty_crie_conta')}</div>
-      <div class="lrf-sub">${t('loyalty_crie_sub')}</div>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
-        <button class="lrf-btn" onclick="openAuthModal('signup')">${t('loyalty_btn_cadastrar')}</button>
-        <button class="lrf-btn" style="background:transparent;border:1px solid var(--b2);color:var(--t2);" onclick="openAuthModal('login')">${t('loyalty_btn_login')}</button>
-      </div>
-    </div>`;
-    document.getElementById('loyalty-proof-section').style.display='none';
-    document.getElementById('loyalty-history-wrap').style.display='none';
-    return;
-  }
-  if(!member){
-    ms.innerHTML=`<div class="loyalty-register-form">
-      <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
-      <div class="lrf-title">Ativar programa de fidelidade</div>
-      <div class="lrf-sub">Confirme seus dados para começar a registrar compras e acumular benefícios VIP.</div>
-      <div class="lrf-grid">
-        <div class="lrf-field"><label>Nome</label><input type="text" id="ly-name" placeholder="Seu nome" value="${currentProfile?.full_name||''}"></div>
-        <div class="lrf-field"><label>E-mail</label><input type="email" id="ly-email" placeholder="seu@email.com" value="${currentUser.email||''}"></div>
-      </div>
-      <button class="lrf-btn" onclick="registerLoyalty()">Ativar meu programa →</button>
-    </div>`;
-    document.getElementById('loyalty-proof-section').style.display='none';
-    document.getElementById('loyalty-history-wrap').style.display='none';
-    return;
-  }
-
-  const pendingCount = pending.filter(p=>p.status==='pending').length;
-  const faltam = Math.max(0, 1 - approved);
-  const progressPct = Math.min(100, Math.round(approved/1*100));
-  const liveUnlocked = approved >= 1;
-
-  ms.innerHTML=`<div class="loyalty-my-card">
-    <div class="lmc-top">
-      <div>
-        <div class="lmc-name">${escHtml(member.name)}</div>
-        <div style="font-size:12px;color:var(--t2);margin-top:2px;">${escHtml(member.email)}</div>
-      </div>
-      <div style="padding:4px 12px;border-radius:6px;background:${liveUnlocked?'rgba(34,197,94,.12)':'var(--gbg)'};color:${liveUnlocked?'var(--green)':'var(--gold)'};font-size:11px;font-weight:700;">
-        ${liveUnlocked?'✓ '+t('loyalty_desbloqueado'):faltam+' '+t('loyalty_faltam')}
-      </div>
-    </div>
-    <div class="lmc-stats">
-      <div class="lmc-stat"><div class="lmc-stat-lbl">${t('loyalty_validadas')}</div><div class="lmc-stat-val" style="color:var(--green);">${approved}</div></div>
-      <div class="lmc-stat"><div class="lmc-stat-lbl">${t('loyalty_em_analise')}</div><div class="lmc-stat-val" style="color:var(--gold);">${pendingCount}</div></div>
-      <div class="lmc-stat"><div class="lmc-stat-lbl">Live Room</div><div class="lmc-stat-val" style="font-size:12px;font-weight:700;color:${liveUnlocked?'var(--green)':'var(--t3)'};">${liveUnlocked?t('loyalty_liberado'):t('loyalty_bloqueado')}</div></div>
-    </div>
-    <div style="margin-top:12px;">
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:5px;">
-        <span>${approved}/1 ${t('loyalty_compra_validada')}</span>
-        <span>${liveUnlocked?t('loyalty_acesso_liberado'):faltam+' '+t('loyalty_faltam')}</span>
-      </div>
-      <div class="lmc-progress-wrap"><div class="lmc-progress-bar" style="width:${progressPct}%;background:${liveUnlocked?'var(--green)':'var(--gold)'};"></div></div>
-    </div>
-    ${pendingCount>0?`<div class="pending-notice" style="margin-top:12px;"><div style="width:18px;height:18px;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><strong>${pendingCount} comprovante(s) em análise.</strong> Validação em até 48 horas.</div></div>`:''}
-    ${liveUnlocked?`<button onclick="go('live')" style="width:100%;margin-top:14px;padding:11px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;">Acessar Live Room VIP →</button>`:''}
-  </div>`;
-
-  document.getElementById('loyalty-proof-section').style.display='block';
-  document.getElementById('loyalty-history-wrap').style.display='block';
-  const allEntries=[...pending,...history].sort((a,b)=>new Date(b.ts)-new Date(a.ts));
-  const tbl=document.getElementById('loyalty-history-tbl');
-  if(tbl)tbl.innerHTML=allEntries.length
-    ?`<thead><tr><th>${t('loy_col_date')||'Date'}</th><th>${t('loy_col_firm')||'Firm'}</th><th>${t('loy_col_plan')||'Plan'}</th><th>${t('loy_col_coupon')||'Coupon'}</th><th>${t('loy_col_order')||'Order #'}</th><th>${t('loy_col_status')||'Status'}</th></tr></thead><tbody>${allEntries.map(h=>`<tr><td style="color:var(--t2);">${new Date(h.ts).toLocaleDateString((_currentLang==='en'?'en-US':_currentLang==='es'?'es-ES':'pt-BR'))}</td><td style="font-weight:600;">${escHtml(h.firma)}</td><td><span style="background:var(--gbg);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;">${escHtml(h.size)}</span></td><td style="font-size:11px;font-family:monospace;">${escHtml(h.coupon)}</td><td style="font-size:11px;color:var(--t2);">${escHtml(h.orderNumber)}</td><td><span class="${h.status==='approved'?'status-approved':h.status==='rejected'?'status-rejected':'status-pending'}">${h.status==='approved'?(t('loy_status_approved')||'Validated'):h.status==='rejected'?(t('loy_status_rejected')||'Rejected'):(t('loy_status_pending')||'Under review')}</span></td></tr>`).join('')}</tbody>`
-    :`<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--t2);">${t('loy_no_entries')||'No purchases registered yet.'}</td></tr>`;
-}
-let proofFileData=null;
-function handleProofFile(input){const file=input.files[0];if(!file){proofFileData=null;return;}if(file.size>5*1024*1024){showToast(t('toast_file_too_large')||'File too large. Max 5MB.');input.value='';return;}if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(file.type)){showToast(t('toast_file_format_invalid')||'Invalid format. JPG, PNG or PDF.');input.value='';return;}const reader=new FileReader();reader.onload=(e)=>{proofFileData={name:file.name,size:file.size,type:file.type,data:e.target.result};const area=document.getElementById('proof-upload-area');const preview=document.getElementById('pf-file-preview');if(area)area.classList.add('has-file');if(preview){preview.style.display='block';preview.innerHTML=`<div class="pua-preview"><div><div class="pua-preview-name">${escHtml(file.name)}</div><div class="pua-preview-size">${(file.size/1024).toFixed(0)} KB</div></div><button class="pua-remove" onclick="event.stopPropagation();removeProofFile()">x</button></div>`;}const ico=document.getElementById('pua-icon');if(ico)ico.style.display='none';};reader.readAsDataURL(file);}
-function removeProofFile(){proofFileData=null;const fi=document.getElementById('pf-file');if(fi)fi.value='';const prev=document.getElementById('pf-file-preview');if(prev)prev.style.display='none';const area=document.getElementById('proof-upload-area');if(area)area.classList.remove('has-file');const ico=document.getElementById('pua-icon');if(ico)ico.style.display='block';}
-function registerLoyaltyClick(size,plat,type,firm){track('loyalty_checkout_click',{size,plat,type,firm});}
+// Stub no-op: loyalty removido 2026-06, mantido pra nao quebrar callsites residuais
+function registerLoyaltyClick(){}
 
 /* INIT */
 /* ══════════════════════════════════════════════════════════════════════════
@@ -7193,7 +6843,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Ativar página correta ANTES de renderizar (evita flash da home)
   // Detect dedicated firm page BEFORE revealing body (avoid flash)
   const _pathParts=location.pathname.split('/').filter(Boolean);
-  const _pathLangs=['en','es','fr','de','it','ar'];
+  const _pathLangs=['en','es','fr','de','it','ar','id'];
   const _earlySlug=_pathLangs.includes(_pathParts[0])?(_pathParts[1]||''):(_pathParts[0]||'');
   const _isFirmPage=_firmPageSlugs.includes(_earlySlug);
   const _initPage = _pageFromPath() || location.hash.replace('#','') || (function(){try{return sessionStorage.getItem('mc_page')||'';}catch(e){return '';}}());
@@ -8075,6 +7725,7 @@ function gwSeenThisSession(slug){
 }
 
 async function maybeShowGiveaway(triggerFirmId, triggerType){
+  return; // Giveaway popup desativado 2026-06 (preventivo Apex affiliate compliance)
   if(currentProfile && currentProfile.is_admin) return;
   const gw = await loadActiveGiveaway();
   if(!gw) return;

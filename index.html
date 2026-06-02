@@ -52,6 +52,7 @@
 <link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/">
 <link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/">
 <link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/">
+<link rel="alternate" hreflang="id" href="https://www.marketscoupons.com/id/">
 <link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/">
 
 <!-- Open Graph -->
@@ -159,14 +160,6 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "O que é o programa de fidelidade?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Nosso programa de fidelidade recompensa membros com benefícios exclusivos por compras validadas. Com 1 compra aprovada você desbloqueia o Live Room VIP."
       }
     },
     {
@@ -282,7 +275,7 @@
      refatorar com hardening apropriado. -->
 <script>window.I18N=window.I18N||{};</script>
 <script defer src="/i18n-en.js?v=20260521"></script>
-<script>(function(){try{var l=localStorage.getItem('mc_lang')||((navigator.language||'').toLowerCase().slice(0,2));if(l&&l!=='en'&&/^(pt|es|it|fr|de|ar)$/.test(l)){var b=document.createElement('script');b.src='/i18n-'+l+'.js?v=20260520';b.defer=true;document.head.appendChild(b);}}catch(_){}})();</script>
+<script>(function(){try{var l=localStorage.getItem('mc_lang')||((navigator.language||'').toLowerCase().slice(0,2));if(l&&l!=='en'&&/^(pt|es|it|fr|de|ar|id)$/.test(l)){var b=document.createElement('script');b.src='/i18n-'+l+'.js?v=20260520';b.defer=true;document.head.appendChild(b);}}catch(_){}})();</script>
 <script defer src="/app.js?v=20260423"></script>
 <!-- TRACKING ENGINE -->
 <style>
@@ -1003,29 +996,6 @@ img{max-width:100%;}
 .tp-stars{color:var(--tp-green);font-size:11px;letter-spacing:1px;}
 .tp-info{font-size:9px;color:var(--t3);}
 .tp-info b{color:var(--tp-green);}
-
-/* LOYALTY BANNER */
-.loyalty-banner{display:flex;align-items:center;gap:28px;margin:40px auto;max-width:900px;background:linear-gradient(180deg,#0B1318 0%,#07090D 100%);border:1px solid rgba(107,182,201,.22);border-radius:14px;padding:28px 32px;position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(74,144,164,.08) inset,0 1px 0 rgba(180,230,235,.08) inset,0 12px 30px -12px rgba(0,0,0,.6);}
-.loyalty-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(107,182,201,.08),transparent);}
-.lb-left{display:flex;align-items:flex-start;gap:16px;flex:1;min-width:0;}
-.lb-icon{width:44px;height:44px;border-radius:12px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.lb-icon svg{width:22px;height:22px;}
-.lb-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px;margin-bottom:6px;}
-.lb-sub{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:14px;}
-.lb-steps{display:flex;gap:16px;flex-wrap:wrap;}
-.lb-step{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--t2);}
-.lb-num{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(240,180,41,.4);flex-shrink:0;}
-.lb-right{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:160px;}
-.lb-cta{padding:12px 20px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--f);transition:.25s;text-align:center;animation:shimmer 3s ease infinite;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(240,180,41,.2);}
-.lb-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent 50%);pointer-events:none;}
-.lb-cta:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(240,180,41,.3);}
-.lb-cta-sec{padding:10px 24px;background:rgba(107,182,201,.08);color:#fff;border:1px solid rgba(107,182,201,.18);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:.25s;white-space:nowrap;text-align:center;}
-.lb-cta-sec:hover{border-color:rgba(255,255,255,.15);background:rgba(107,182,201,.08);}
-@media(max-width:700px){
-  .loyalty-banner{flex-direction:column;padding:20px;gap:16px;align-items:stretch;margin-left:16px;margin-right:16px;}
-  .lb-right{flex-direction:row;min-width:0;}
-  .lb-cta,.lb-cta-sec{flex:1;padding:10px 8px;font-size:12px;}
-}
 
 /* AWARDS PAGE */
 .awards-wrap{max-width:1100px;margin:0 auto;padding:40px 24px;}
@@ -2154,43 +2124,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* GIVEAWAY POPUP */
-.gw-bd{position:fixed;inset:0;background:rgba(8,12,18,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:99998;display:none;align-items:center;justify-content:center;padding:20px;animation:gwFadeIn .25s ease;}
-.gw-bd.show{display:flex;}
-@keyframes gwFadeIn{from{opacity:0}to{opacity:1}}
-@keyframes gwSlideUp{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes gwPulse{0%,100%{box-shadow:0 0 0 0 rgba(240,180,41,.5)}50%{box-shadow:0 0 0 12px rgba(240,180,41,0)}}
-@keyframes gwBlink{0%,100%{opacity:1}50%{opacity:.3}}
-.gw-md{position:relative;max-width:420px;width:100%;background:#000;border:1px solid rgba(240,180,41,.25);border-radius:18px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 60px rgba(240,180,41,.12);animation:gwSlideUp .35s cubic-bezier(.16,1,.3,1);max-height:92vh;overflow-y:auto;}
-.gw-x{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#cbd0d8;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;z-index:10;}
-.gw-x:hover{background:rgba(255,255,255,.16);color:#fff;transform:rotate(90deg);}
-.gw-x svg{width:16px;height:16px;}
-.gw-h{background:#000;padding:22px 20px 18px;text-align:center;border-bottom:1px solid rgba(240,180,41,.15);position:relative;overflow:hidden;}
-.gw-h::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(240,180,41,.18) 0%,transparent 60%);pointer-events:none;}
-.gw-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(240,180,41,.14);border:1px solid rgba(240,180,41,.35);color:#f0b429;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;position:relative;z-index:1;}
-.gw-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:#f0b429;box-shadow:0 0 10px #f0b429;animation:gwBlink 1.5s infinite;}
-.gw-t{font-size:21px;font-weight:800;line-height:1.2;margin:0 0 6px;color:#fff;position:relative;z-index:1;white-space:nowrap;}
-.gw-t em{color:#f0b429;font-style:normal;}
-.gw-s{font-size:13px;color:#cbd0d8;margin:0;position:relative;z-index:1;line-height:1.4;white-space:nowrap;}
-.gw-img{padding:14px 16px 0;text-align:center;}
-.gw-img img{max-width:100%;height:auto;border-radius:12px;display:block;margin:0 auto;border:1px solid rgba(240,180,41,.25);box-shadow:0 8px 24px rgba(0,0,0,.4);}
-.gw-b{padding:6px 20px 18px;}
-.gw-pr{text-align:center;font-size:12px;color:#8590a3;margin:0 0 14px;line-height:1.45;}
-.gw-pr strong{color:#fff;font-weight:700;}
-.gw-dl{background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.2);border-radius:10px;padding:10px 12px;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-size:12.5px;}
-.gw-dl svg{width:18px;height:18px;color:#f0b429;flex-shrink:0;}
-.gw-dl-l{color:#8590a3;font-weight:600;}
-.gw-dl-v{color:#fff;font-weight:700;margin-left:auto;}
-.gw-st-t{font-size:11px;font-weight:700;color:#f0b429;letter-spacing:1.2px;text-transform:uppercase;margin:0 0 10px;}
-.gw-sts{list-style:none;padding:0;margin:0 0 14px;}
-.gw-stp{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12.5px;color:#cbd0d8;line-height:1.45;}
-.gw-stp:last-child{border-bottom:none;}
-.gw-stp-n{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(240,180,41,.15);border:1px solid rgba(240,180,41,.35);color:#f0b429;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
-.gw-stp strong{color:#fff;font-weight:700;}
-.gw-cta{display:block;width:100%;background:linear-gradient(90deg,#c8941a 0%,#f0b429 50%,#c8941a 100%);background-size:200% 100%;color:#fff;border:none;border-radius:10px;padding:12px 18px;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;text-align:center;transition:.25s;letter-spacing:.3px;animation:gwPulse 2s infinite;font-family:inherit;}
-.gw-cta:hover{transform:translateY(-2px);background-position:100% 0;box-shadow:0 12px 24px rgba(240,180,41,.35);}
-.gw-ft{text-align:center;font-size:11px;color:#6b7280;margin-top:14px;line-height:1.5;}
-.gw-ft button{color:#8590a3;text-decoration:underline;cursor:pointer;background:none;border:none;font-size:11px;padding:0;font-family:inherit;}
-@media(max-width:480px){.gw-md{max-width:100%;}.gw-h{padding:18px 16px 14px;}.gw-t{font-size:18px;}.gw-img{padding:12px 12px 0;}.gw-b{padding:6px 16px 14px;}}
 
 /* RESPONSIVE */
 @media(max-width:960px){
@@ -2515,46 +2448,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .ach-inc-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);}
 .ach-inc-item::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;}
 
-/* ═══ LOYALTY PROGRAM ═══ */
-.loyalty-page{padding:24px;max-width:760px;margin:0 auto;}
-.loyalty-hero{text-align:center;padding:32px 0 40px;}
-.loyalty-hero h2{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px;}
-.loyalty-hero p{font-size:14px;color:var(--t2);max-width:480px;margin:0 auto;line-height:1.7;}
-.loyalty-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px;}
-.tier-card{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;transition:.2s;}
-.tier-card.active-tier{border-color:var(--gold);background:var(--gbg);}
-.tier-icon{width:44px;height:44px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;}
-.tier-name{font-size:13px;font-weight:700;margin-bottom:3px;}
-.tier-req{font-size:10px;color:var(--t3);margin-bottom:10px;}
-.tier-benefits{text-align:left;}
-.tier-benefit{font-size:11px;color:var(--t2);padding:3px 0;display:flex;align-items:center;gap:5px;}
-.tier-benefit::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;}
-.loyalty-my-card{background:var(--card2);border:1px solid var(--b2);border-radius:12px;padding:24px;margin-bottom:24px;}
-.lmc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
-.lmc-name{font-size:15px;font-weight:700;}
-.lmc-tier{padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
-.lmc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
-.lmc-stat{background:var(--card);border-radius:7px;padding:12px;text-align:center;}
-.lmc-stat-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
-.lmc-stat-val{font-size:20px;font-weight:700;}
-.lmc-progress-wrap{background:var(--b1);border-radius:4px;height:6px;overflow:hidden;}
-.lmc-progress-bar{height:100%;border-radius:4px;background:var(--gold);transition:width 1s ease;}
-.lmc-progress-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-top:5px;}
-.loyalty-history{background:var(--card);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
-.lh-hd{padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;}
-.lh-title{font-size:13px;font-weight:600;}
-.loyalty-register-form{background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:24px;text-align:center;margin-bottom:24px;}
-.lrf-title{font-size:16px;font-weight:700;margin-bottom:6px;}
-.lrf-sub{font-size:13px;color:var(--t2);margin-bottom:18px;line-height:1.6;}
-.lrf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;margin-bottom:14px;}
-.lrf-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
-.lrf-field input{width:100%;padding:9px 11px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;transition:.2s;}
-.lrf-field input:focus{border-color:var(--gold);}
-.lrf-btn{padding:11px 28px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-family:var(--f);font-size:14px;font-weight:700;cursor:pointer;transition:.2s;}
-.lrf-btn:hover{background:var(--gold-hover);}
-@media(max-width:700px){.loyalty-tiers{grid-template-columns:1fr 1fr;}.lmc-stats{grid-template-columns:1fr 1fr;}.lrf-grid{grid-template-columns:1fr;}.loyalty-benefits-grid{grid-template-columns:1fr 1fr!important;}}
-@media(max-width:400px){.loyalty-benefits-grid{grid-template-columns:1fr!important;}}
-@media(max-width:400px){.loyalty-tiers{grid-template-columns:1fr;}}
 
 /* ═══ FIRM TABS ═══ */
 .ach-firm-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:20px 0 24px;border-bottom:1px solid rgba(107,182,201,.18);margin-bottom:28px;}
@@ -2567,57 +2460,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .ach-type-tab{padding:10px 18px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:10px;font-family:var(--f);font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;transition:.25s;}
 .ach-type-tab:hover{border-color:rgba(107,182,201,.08);color:#fff;}
 .ach-type-tab.active{color:var(--gold);border-color:rgba(240,180,41,.25);background:rgba(240,180,41,.06);}
-
-/* ═══ LOYALTY PROOF SYSTEM ═══ */
-.proof-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:24px;margin-bottom:20px;}
-.proof-card-title{font-size:15px;font-weight:700;letter-spacing:-.2px;margin-bottom:5px;}
-.proof-card-sub{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:20px;}
-.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
-.proof-field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
-.proof-field input,.proof-field select{width:100%;padding:9px 11px;background:var(--card2);border:1px solid var(--b1);border-radius:7px;color:var(--t1);font-family:var(--f);font-size:13px;outline:none;transition:.2s;}
-.proof-field input:focus,.proof-field select:focus{border-color:var(--gold);}
-.proof-field select option{background:var(--card2);}
-
-/* Upload area */
-.proof-upload-area{
-  border:2px dashed var(--b2);border-radius:10px;padding:28px;text-align:center;
-  cursor:pointer;transition:.2s;margin-bottom:16px;
-  background:var(--card2);
-}
-.proof-upload-area:hover{border-color:var(--gold);background:rgba(240,180,41,.03);}
-.proof-upload-area.has-file{border-color:var(--green);background:rgba(34,197,94,.04);}
-.pua-icon{font-size:28px;font-weight:300;color:var(--t3);margin-bottom:8px;line-height:1;}
-.pua-title{font-size:13px;font-weight:600;color:var(--t2);margin-bottom:4px;}
-.pua-sub{font-size:11px;color:var(--t3);line-height:1.5;}
-.pua-preview{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--gnbg);border:1px solid rgba(34,197,94,.3);border-radius:8px;margin-top:10px;}
-.pua-preview-name{font-size:12px;font-weight:600;color:var(--green);}
-.pua-preview-size{font-size:10px;color:var(--t3);margin-top:1px;}
-.pua-remove{background:none;border:none;color:var(--t3);font-size:14px;cursor:pointer;margin-left:auto;}
-.pua-remove:hover{color:var(--red);}
-
-/* How-to methods */
-.proof-methods{background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:14px;margin-bottom:16px;}
-.pm-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:10px;}
-.pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.pm-item{font-size:11px;color:var(--t2);padding:5px 8px;background:var(--card);border-radius:5px;border:1px solid var(--b1);line-height:1.5;}
-.pm-item strong{color:var(--t1);}
-
-/* Submit button */
-.proof-submit-btn{width:100%;padding:13px;background:var(--gold);color:#07090D;border:none;border-radius:8px;font-family:var(--f);font-size:14px;font-weight:800;cursor:pointer;transition:.2s;}
-.proof-submit-btn:hover{background:var(--gold-hover);}
-.proof-submit-btn:disabled{opacity:.4;cursor:default;}
-.proof-note{font-size:10px;color:var(--t3);text-align:center;margin-top:8px;line-height:1.5;}
-
-/* Status badges */
-.status-pending{background:rgba(240,180,41,.12);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
-.status-approved{background:var(--gnbg);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
-.status-rejected{background:var(--rbg);color:var(--red);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
-
-/* Pending notice */
-.pending-notice{display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.2);border-radius:8px;margin-bottom:14px;font-size:12px;color:var(--t2);}
-.pending-notice strong{color:var(--gold);}
-
-@media(max-width:600px){.proof-grid{grid-template-columns:1fr;}.pm-grid{grid-template-columns:1fr;}}
 
 /* ============ TEAL NEBULA SKIN — section cards ============ */
 /* Deep navy gradient + cyan border + inset reflection,
@@ -2660,10 +2502,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .cmp-winner-banner,
 .tool-card,
 .tier-card,
-.loyalty-my-card,
-.loyalty-history,
-.loyalty-register-form,
-.proof-card,
 .da-disclaimer{
   background:linear-gradient(180deg,#0B1318 0%,#07090D 100%) !important;
   border:1px solid rgba(107,182,201,.22) !important;
@@ -2705,10 +2543,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .cmp-winner-banner > *,
 .tool-card > *,
 .tier-card > *,
-.loyalty-my-card > *,
-.loyalty-history > *,
-.loyalty-register-form > *,
-.proof-card > *,
 .da-gate > *{position:relative;z-index:1;}
 .hero-tg-cta:hover,
 .plat-card:hover,
@@ -2803,6 +2637,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .pg-pro-cta-label{font-size:13px;font-weight:700;color:var(--t1);transition:color .2s;}
 .pg-pro-cta-price{font-size:13px;font-weight:800;color:var(--gold);transition:color .2s;}
 @media(max-width:520px){.pg-card{padding:14px 14px 12px;}.pg-card-sub{margin-left:42px;font-size:12px;}.pg-pro-perks{grid-template-columns:1fr;gap:6px;margin-left:42px;}.pg-pro-cta{padding:10px 14px;}.pg-btn-gold{font-size:13px;padding:12px 14px;}}
+
 </style>
 <script src="/js/page-boot.js?v=20260427"></script>
 </head>
@@ -2833,6 +2668,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <div class="lang-opt" onclick="setL('fr','','FR')"> Français</div>
  <div class="lang-opt" onclick="setL('de','','DE')"> Deutsch</div>
  <div class="lang-opt" onclick="setL('ar','','AR')"> عربي</div>
+ <div class="lang-opt" onclick="setL('id','','ID')"> Bahasa Indonesia</div>
  </div></div>
  </div>
  <!-- Auth buttons (logged out) -->
@@ -2927,6 +2763,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <button class="mm-flag" onclick="setL('fr','','FR');closeMM()">FR</button>
  <button class="mm-flag" onclick="setL('de','','DE');closeMM()">DE</button>
  <button class="mm-flag" onclick="setL('ar','','AR');closeMM()">AR</button>
+ <button class="mm-flag" onclick="setL('id','','ID');closeMM()">ID</button>
  </div>
  <a href="https://t.me/marketcouponss" target="_blank" rel="noopener noreferrer"><div class="mm-tg" data-i18n="mm_telegram"> Entrar no Telegram</div></a>
  <div class="mm-sec" data-i18n="mm_sec_conta">Conta</div>
@@ -3076,7 +2913,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
        </div>
       </div>
       <h2 data-i18n="as_l2_h">Live Room <span class="purple">VIP</span> e indicadores exclusivos</h2>
-      <p data-i18n="as_l2_p">Acesse conteúdo exclusivo e indicadores profissionais desbloqueados pelo programa de fidelidade. Compre usando nosso cupom e entre no VIP.</p>
+      <p data-i18n="as_l2_p">Acesse conteúdo exclusivo, análise diária, GEX e indicadores profissionais. Cadastro gratuito.</p>
       <div class="auth-features">
        <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f1">Sessões exclusivas para membros VIP</div>
        <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f2">Indicadores exclusivos para membros VIP</div>
@@ -3196,7 +3033,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <div class="auth-features">
        <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f1">Heatmap real do TradingView com dados ao vivo</div>
        <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f2">4 mercados: S&amp;P 500, Nasdaq 100, Global, Cripto</div>
-       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f3">Indicadores profissionais desbloqueados por fidelidade</div>
+       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f3">Indicadores profissionais (em breve)</div>
       </div>
      </div>
 
@@ -3393,7 +3230,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
      <span data-i18n="auth_google_signup">Cadastrar com Google</span>
     </button>
     <div class="auth-divider" data-i18n="auth_ou_email">ou cadastre-se com e-mail</div>
-    <div class="auth-required-note" data-i18n="signup_dados_reais">Para participar das promoções e sorteios precisamos dos seus dados reais e seu melhor email.</div>
+    <div class="auth-required-note" data-i18n="signup_dados_reais">Precisamos do seu nome e melhor email para enviar as ofertas exclusivas e novidades.</div>
     <div class="auth-row">
      <div class="auth-field"><label data-i18n="signup_first_name">Nome</label><input type="text" id="auth-signup-first" name="given-name" autocomplete="given-name" placeholder="João"></div>
      <div class="auth-field"><label data-i18n="signup_last_name">Sobrenome</label><input type="text" id="auth-signup-last" name="family-name" autocomplete="family-name" placeholder="Silva"></div>
@@ -3548,11 +3385,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
   </div>
  </div>
 
- <!-- FIDELIDADE NO PAINEL -->
- <div class="up-card" style="margin:0 auto;max-width:860px;width:100%;" id="painel-loyalty-card">
-   <h3><span data-i18n="painel_fidelidade">Programa de Fidelidade</span></h3>
-   <div id="painel-loyalty-body"></div>
- </div>
 </div>
 
 <!-- HOME -->
@@ -3585,26 +3417,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <div class="offers-grid" id="home-offers"></div>
  </div>
 
- <!-- BANNER FIDELIDADE -->
- <div class="loyalty-banner">
-   <div class="lb-left">
-     <div class="lb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
-     <div style="min-width:0;">
-       <div class="lb-title" data-i18n="lb_title">Programa de Fidelidade</div>
-       <div class="lb-sub" data-i18n="lb_sub">Compre via nosso link ou cupom, envie o comprovante e desbloqueie <strong>Live Room VIP</strong>, sorteios de contas e indicadores exclusivos.</div>
-       <div class="lb-steps">
-         <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step1">Cadastre-se</span></div>
-         <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step2">Compre com cupom</span></div>
-         <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step3">Envie comprovante</span></div>
-         <div class="lb-step"><span class="lb-num"></span><span data-i18n="lb_step4">Acesso VIP</span></div>
-       </div>
-     </div>
-   </div>
-   <div class="lb-right">
-     <button class="lb-cta" data-i18n="lb_btn_cadastrar" onclick="openAuthModal('signup')">Cadastrar-se →</button>
-     <button class="lb-cta-sec" data-i18n="lb_btn_beneficios" onclick="currentUser?go('painel'):go('loyalty')">Ver benefícios</button>
-   </div>
- </div>
 </div>
 
 <!-- FIRMS -->
@@ -3721,12 +3533,12 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
   <div class="ind-page">
     <div class="ind-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 5-9"/></svg></div>
     <h2 class="ind-title" data-i18n="ind_em_breve_titulo">Novo conceito de indicadores chegando em breve</h2>
-    <p class="ind-sub" data-i18n="ind_em_breve_texto">Estamos desenvolvendo indicadores exclusivos com uma abordagem totalmente nova. Acesso será reservado para membros VIP do nosso programa de fidelidade.</p>
+    <p class="ind-sub" data-i18n="ind_em_breve_texto">Estamos desenvolvendo indicadores exclusivos com uma abordagem totalmente nova. Acesso reservado para usuários cadastrados.</p>
     <div class="ind-box">
       <div class="ind-box-label" data-i18n="ind_em_breve_como">Como garantir acesso</div>
-      <p class="ind-box-text" data-i18n="ind_em_breve_passos">Participe do programa de fidelidade, use nossos cupons nas suas compras e, ao ser validado, você terá acesso exclusivo assim que lançarmos.</p>
+      <p class="ind-box-text" data-i18n="ind_em_breve_passos">Crie sua conta gratuita no Markets Coupons e você terá acesso aos indicadores assim que lançarmos.</p>
     </div>
-    <button class="ind-cta" onclick="go('loyalty')" data-i18n="ind_em_breve_btn">Participar do programa de fidelidade</button>
+    <button class="ind-cta" onclick="currentUser?go('panel'):openAuthModal('signup')" data-i18n="ind_em_breve_btn">Criar conta gratuita</button>
   </div>
 </div>
 
@@ -4000,7 +3812,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
    <div id="live-gate-static">
     <div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
     <h2 style="font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;" data-i18n="live_titulo">Live Trading Room</h2>
-    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px;" data-i18n="live_hero_desc">Conteúdo exclusivo em tempo real para assinantes Pro e membros do programa de fidelidade.</p>
+    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px;" data-i18n="live_hero_desc">Conteúdo exclusivo em tempo real para usuários cadastrados.</p>
    </div>
    <div id="live-gate-content"></div>
   </div>
@@ -4156,133 +3968,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 </div>
 
 <!-- FOOTER -->
-
-<!-- ═══════════ LOYALTY ═══════════ -->
-<div class="page" id="page-loyalty">
-  <div class="loyalty-page">
-
-    <div class="loyalty-hero">
-      <h2 data-i18n="loyalty_hero_titulo">Programa de Fidelidade</h2>
-      <p data-i18n="loyalty_hero_desc">Compre pela Markets Coupons usando nosso cupom, envie o comprovante e desbloqueie acesso ao Live Room VIP, sorteios de avaliações, indicadores e muito mais.</p>
-    </div>
-
-    <!-- BENEFITS CARDS -->
-    <div class="loyalty-benefits-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
-      <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit1_titulo">Live Room VIP</div>
-        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit1_sub">Conteúdo exclusivo em tempo real</div>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit2_titulo">Sorteios de Avaliações</div>
-        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit2_sub">Contas financiadas sorteadas</div>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit3_titulo">Indicadores Exclusivos</div>
-        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit3_sub">Ferramentas premium desbloqueadas</div>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;"></div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-i18n="loyalty_benefit4_titulo">Mais benefícios em breve</div>
-        <div style="font-size:11px;color:var(--t2);" data-i18n="loyalty_benefit4_sub">Programa em expansão contínua</div>
-      </div>
-    </div>
-
-    <!-- REQUIREMENT BANNER -->
-    <div style="background:var(--gbg);border:1px solid var(--gbr);border-radius:10px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-      <div style="font-size:24px;"></div>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:2px;" data-i18n="loyalty_como_titulo">Como participar</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.6;" data-i18n="loyalty_como_desc">Compre qualquer prop firm pelo nosso link ou cupom → envie o comprovante → nossa equipe valida em até 48h → acesso ao Live Room VIP liberado com 1 compra validada.</div>
-      </div>
-    </div>
-
-    <!-- MY CARD + SUBMIT PROOF (shown if registered) -->
-    <div id="loyalty-my-section"></div>
-
-    <!-- SUBMIT PROOF FORM (shown after register) -->
-    <div id="loyalty-proof-section" style="display:none;">
-      <div class="proof-card">
-        <div class="proof-card-title" data-i18n="proof_titulo">Registrar Compra</div>
-        <div class="proof-card-sub" data-i18n="proof_sub">Comprou usando nosso cupom ou link? Envie o comprovante abaixo. Nossa equipe valida em até 48 horas e credita os pontos automaticamente.</div>
-        <div class="proof-form">
-          <div class="proof-grid">
-            <div class="proof-field">
-              <label data-i18n="proof_label_firma">Prop Firm</label>
-              <select id="pf-firma">
-                <option value="">Selecionar...</option>
-                <option>Apex Trader Funding</option>
-                <option>Bulenox</option>
-                <option>FTMO</option>
-                <option>FundedNext</option>
-                <option>Earn2Trade</option>
-              </select>
-            </div>
-            <div class="proof-field">
-              <label data-i18n="proof_label_size">Tamanho da Conta</label>
-              <select id="pf-size">
-                <option value="">Selecionar...</option>
-                <option>25K</option><option>50K</option><option>75K</option>
-                <option>100K</option><option>150K</option><option>200K</option><option>250K</option>
-              </select>
-            </div>
-            <div class="proof-field">
-              <label data-i18n="proof_label_order">Número do Pedido</label>
-              <input type="text" id="pf-order" placeholder="Ex: ATF-2025-123456">
-            </div>
-            <div class="proof-field">
-              <label data-i18n="proof_label_date">Data da Compra</label>
-              <input type="date" id="pf-date">
-            </div>
-            <div class="proof-field">
-              <label data-i18n="proof_label_coupon">Cupom Utilizado</label>
-              <input type="text" id="pf-coupon" placeholder="Ex: MARKET89">
-            </div>
-            <div class="proof-field">
-              <label data-i18n="proof_label_value">Valor Pago</label>
-              <input type="text" id="pf-value" placeholder="Ex: $19.25">
-            </div>
-          </div>
-
-          <!-- PROOF UPLOAD -->
-          <div class="proof-upload-area" id="proof-upload-area" onclick="document.getElementById('pf-file').click()">
-            <div class="pua-icon" id="pua-icon">+</div>
-            <div class="pua-title" data-i18n="proof_upload_titulo">Clique para anexar o comprovante</div>
-            <div class="pua-sub" data-i18n="proof_upload_sub">Print da confirmação, PDF do recibo ou screenshot do email — JPG, PNG ou PDF até 5MB</div>
-            <input type="file" id="pf-file" accept="image/*,.pdf" style="display:none;" onchange="handleProofFile(this)">
-            <div id="pf-file-preview" style="display:none;"></div>
-          </div>
-
-          <div class="proof-methods">
-            <div class="pm-title" data-i18n="proof_como_titulo">Como obter o comprovante em cada firma:</div>
-            <div class="pm-grid">
-              <div class="pm-item"><strong>Apex:</strong> Email de confirmacao com numero do pedido "ATF-..."</div>
-              <div class="pm-item"><strong>Bulenox:</strong> Email "Order Confirmation" com ID do plano</div>
-              <div class="pm-item"><strong>FTMO:</strong> Email "Your FTMO Challenge is ready" com numero</div>
-              <div class="pm-item"><strong>FundedNext:</strong> Email "Account Activated" com ID</div>
-              <div class="pm-item"><strong>E2T:</strong> Email "Welcome to Earn2Trade" com ID da conta</div>
-            </div>
-          </div>
-
-          <button class="proof-submit-btn" onclick="submitProof()" data-i18n="proof_btn_enviar">Enviar comprovante para validação</button>
-          <div class="proof-note" data-i18n="proof_nota">A pontuação será creditada em até 48 horas após validação da nossa equipe.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HISTORY TABLE -->
-    <div class="loyalty-history" id="loyalty-history-wrap" style="display:none;">
-      <div class="lh-hd">
-        <div class="lh-title" data-i18n="loyalty_hist_titulo">Histórico de compras</div>
-        <div style="font-size:11px;color:var(--t3);" data-i18n="loyalty_hist_sub">Apenas compras validadas contam para o seu nível</div>
-      </div>
-      <table class="data-table" id="loyalty-history-tbl" style="font-size:12px;"></table>
-    </div>
-
-  </div>
-</div>
 
 <!-- PRIVACY POLICY -->
 <div class="page" id="page-privacy">
@@ -4443,32 +4128,6 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 
 <div class="toast" id="toast"></div>
 
-<!-- GIVEAWAY POPUP -->
-<div class="gw-bd" id="gw-bd" onclick="if(event.target===this)closeGiveaway('outside')">
-  <div class="gw-md" role="dialog" aria-labelledby="gw-title" aria-modal="true">
-    <button class="gw-x" onclick="closeGiveaway('x')" data-i18n-aria="gw_close_aria" aria-label="Close giveaway popup">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
-    <div class="gw-h">
-      <div class="gw-pill" data-i18n="gw_pill">Sorteio ao vivo</div>
-      <h2 id="gw-title" class="gw-t" data-gw="title">Win a free <em>Apex Evaluation</em></h2>
-      <p class="gw-s" data-gw="sub">3 accounts. Free entry. Your shot at funded.</p>
-    </div>
-    <div class="gw-img"><img id="gw-hero" src="" alt="Giveaway"></div>
-    <div class="gw-b">
-      <p class="gw-pr" data-gw="disclaimer"></p>
-      <div class="gw-dl">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="gw-dl-l" data-i18n="gw_draw_date">Data do sorteio</span>
-        <span class="gw-dl-v" id="gw-date"></span>
-      </div>
-      <h3 class="gw-st-t" data-i18n="gw_how_to_enter">Como participar</h3>
-      <ol class="gw-sts" id="gw-steps"></ol>
-      <button class="gw-cta" id="gw-cta" onclick="giveawayCtaClick()" data-i18n="gw_cta">Sign up &amp; enter the giveaway</button>
-      <div class="gw-ft"><span data-i18n="gw_free_entry">100% grátis · Sem compra obrigatória</span><br><button onclick="closeGiveaway('later')" data-i18n="gw_maybe_later">Mais tarde</button></div>
-    </div>
-  </div>
-</div>
 
 <!-- B.3.2 — Confirm Email Modal -->
 <div class="auth-overlay confirm-email-overlay" id="confirm-email-overlay" style="display:none;">

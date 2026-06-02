@@ -15,6 +15,7 @@
 <link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/coupons?lang=fr">
 <link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/coupons?lang=de">
 <link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/coupons?lang=ar">
+<link rel="alternate" hreflang="id" href="https://www.marketscoupons.com/coupons?lang=id">
 <link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/coupons">
 
 <!-- Open Graph -->
@@ -321,6 +322,7 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
   <button class="lang-pill" data-lang="fr" onclick="switchLang('fr')">FR</button>
   <button class="lang-pill" data-lang="de" onclick="switchLang('de')">DE</button>
   <button class="lang-pill" data-lang="ar" onclick="switchLang('ar')">AR</button>
+  <button class="lang-pill" data-lang="id" onclick="switchLang('id')">ID</button>
 </div>
 
 <header class="hero">
@@ -608,6 +610,8 @@ const I18N = {
     more_h: 'Markets Coupons <em>أكثر من مجرد كوبونات</em>', more_sub: 'موقع كامل بأدوات للمتداولين', more_f1: 'تحليلات يومية', more_f2: 'GEX والمؤشرات', more_f3: 'التقويم الاقتصادي', more_f4: 'غرفة VIP المباشرة', more_cta: 'استكشاف الموقع الكامل'
   }
 };
+// Indonesian fallback → English (translate properly in next phase)
+I18N.id = I18N.en;
 
 // Firm catalogue with full plan data
 const FIRMS = [

@@ -2369,6 +2369,17 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="sec-hdr">
         <div class="sec-title">Criativos — Gerador de Anuncios</div>
       </div>
+
+      <!-- CANVA TEMPLATES SECTION -->
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title">Templates Canva (Markets Coupons)</div>
+        <div style="font-size:12px;color:var(--t3);">Cada template puxa o PNG oficial do seu Canva. Clique no idioma pra baixar.</div>
+      </div>
+      <div id="canva-templates-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:32px;"></div>
+
+      <div class="sec-hdr">
+        <div class="sec-title" style="font-size:14px;color:var(--t3);">Gerador antigo (firma única / Top 3)</div>
+      </div>
       <div class="cr-layout">
         <!-- CONTROLS -->
         <div class="cr-controls">
@@ -6291,7 +6302,7 @@ async function getSegmentedLeads(){
  });
  // Firma/tag filter
  if(firmaFilter){
-  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders Imperium'};
+  const firmaNames={apex:'Apex',bulenox:'Bulenox',e2t:'Earn2Trade',fn:'FundedNext',fundingpips:'Funding Pips',brightfunded:'BrightFunded',ftmo:'FTMO',the5ers:'The5ers',e8:'E8 Markets',cti:'City Traders Imperium',tradeday:'TradeDay'};
   list=list.filter(r=>{
    const rTags = r.tags||[];
    if(!rTags.length) return false;
@@ -6322,7 +6333,7 @@ async function getSegmentedLeads(){
 function langFromCode(idioma){
  if(!idioma) return 'en';
  const code=idioma.toLowerCase().split('-')[0];
- return ['pt','en','es','fr','de','it','ar'].includes(code)?code:'en';
+ return ['pt','en','es','fr','de','it','ar','id'].includes(code)?code:'en';
 }
 
 async function updateDestCount(){
@@ -6836,7 +6847,7 @@ async function getEmailFirms(){
 
 async function renderEmailFirmaChips(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI',tradeday:'TDay'};
 
   // Import firma chips
   const importEl = document.getElementById('import-firma-chips');
@@ -6925,7 +6936,7 @@ let _eaCampaigns = [];
 
 async function eaInit(){
   const firms = await getEmailFirms();
-  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF'};
+  const shortNames = {apex:'Apex',bulenox:'Bulenox',ftmo:'FTMO',fn:'FN',e2t:'E2T',the5ers:'5ers',fundingpips:'FPips',brightfunded:'BF',e8:'E8',cti:'CTI',tradeday:'TDay'};
   const el = document.getElementById('ea-firma-chips');
   if(el){
     el.innerHTML = `<button class="ea-period-btn sel" onclick="eaSetTag('',this)">Todas</button>` +
@@ -7312,7 +7323,7 @@ async function loadQuickTemplate(name){
   if((name === 'site-invite' || name === 'ultimas-horas') && tpl.features){
     const firms = await getEmailFirms();
     const topFirms = firms.filter(f => f.discount > 0).sort((a,b) => b.discount - a.discount).slice(0, 4);
-    const _langs = ['pt','en','es','fr','de','it','ar'];
+    const _langs = ['pt','en','es','fr','de','it','ar','id'];
     const moreLabel = {pt:'E muito mais...',en:'And much more...',es:'Y mucho mas...',fr:'Et bien plus...',de:'Und vieles mehr...',it:'E molto altro...',ar:'والمزيد...'};
     const couponLabel = {pt:'cupom',en:'coupon',es:'cupon',fr:'coupon',de:'Gutschein',it:'coupon',ar:'كوبون'};
     _langs.forEach(lang => {
@@ -7995,7 +8006,7 @@ const INST_TEMPLATES = {
     const subj = 'Final hours: Apex 90% and Bulenox 89% — ends today';
     const pre  = 'Use coupons MARKET and MARKET89 at checkout. After today, full price returns. No extensions.';
     const cta  = 'View Deals';
-    const langs = ['pt','en','es','fr','de','it','ar'];
+    const langs = ['pt','en','es','fr','de','it','ar','id'];
     const fillAll = (v) => Object.fromEntries(langs.map(l => [l, v]));
     return {
       kind: 'urgent-deal',
@@ -8035,7 +8046,7 @@ const INST_TEMPLATES = {
     const subj = 'You\'re in — 3 Apex Evaluation Accounts giveaway';
     const pre = '3 chances to win an Apex Trader Funding evaluation account — 100% free to enter';
     const cta = 'Enter the Giveaway';
-    const langs = ['pt','en','es','fr','de','it','ar'];
+    const langs = ['pt','en','es','fr','de','it','ar','id'];
     const fillAll = (v) => Object.fromEntries(langs.map(l => [l, v]));
     return {
       kind: 'giveaway',
@@ -13474,7 +13485,65 @@ const CR_PERKS_PT = {
   '24/7 support':'Suporte 24/7'
 };
 
+// Templates Canva (Markets Coupons) — exportados via MCP Canva.
+// Por enquanto todos os idiomas apontam pro PNG master (EN). Quando user duplicar no Canva nas outras linguas, atualizamos cada lang aqui.
+const CANVA_TEMPLATES = [
+  { id:'apex_90_new',   nome:'Apex 90% New Version', file:'apex-90-new-version.png' },
+  { id:'apex_pack_5',   nome:'Apex Pack 5x50K',      file:'apex-pack-5x.png' },
+  { id:'apex_sem_taxa', nome:'Apex Sem Taxa (4 planos)', file:'apex-sem-taxa.png' },
+  { id:'bulenox_89',    nome:'Bulenox 89% MARKET89', file:'bulenox-89-premium.png' },
+  { id:'apex_90_100k',  nome:'Apex 100K $44.90',     file:'apex-90-100k.png' },
+  { id:'apex_90_50k',   nome:'Apex 50K $24.90',      file:'apex-90-50k.png' },
+];
+const CANVA_LANGS = ['pt','en','es','it','fr','de','ar'];
+function _canvaPngUrl(tmpl, lang){
+  // Padrao: /img/Criativo/Canva-export/<file>  ou  /img/Criativo/Canva-export/<basename>-<lang>.png se existir versao localizada
+  const base = tmpl.file.replace(/\.png$/i, '');
+  return `/img/Criativo/Canva-export/${base}-${lang}.png`;
+}
+function _canvaPngMaster(tmpl){
+  return `/img/Criativo/Canva-export/${tmpl.file}`;
+}
+function renderCanvaTemplatesGrid(){
+  const grid = document.getElementById('canva-templates-grid');
+  if (!grid) return;
+  grid.innerHTML = CANVA_TEMPLATES.map(t => `
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;">
+      <img src="${_canvaPngMaster(t)}" alt="${t.nome}" style="width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:10px;background:#000;" loading="lazy">
+      <div style="font-size:14px;font-weight:700;color:var(--t1);">${t.nome}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;">
+        ${CANVA_LANGS.map(l => `<button onclick="downloadCanvaPng('${t.id}','${l}',this)" title="Baixar ${l.toUpperCase()}" style="padding:6px 10px;background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.35);border-radius:6px;color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;text-transform:uppercase;">${l}</button>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+async function downloadCanvaPng(tmplId, lang, btn){
+  const t = CANVA_TEMPLATES.find(x => x.id === tmplId);
+  if (!t) return;
+  const localized = _canvaPngUrl(t, lang);
+  const master = _canvaPngMaster(t);
+  // Tenta versao localizada; se nao existe (404), cai pro master
+  let url = localized;
+  try {
+    const head = await fetch(localized, { method:'HEAD' });
+    if (!head.ok) url = master;
+  } catch(_){ url = master; }
+  // Trigger download
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${t.id}-${lang}.png`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = '✓';
+    setTimeout(() => { btn.textContent = orig; }, 1200);
+  }
+}
+
 async function initCriativos() {
+  renderCanvaTemplatesGrid();
   const sel = document.getElementById('cr-firm');
   // Fetch firms from Supabase if cache is empty
   if (!_firmsCache.length) {
