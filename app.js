@@ -4269,7 +4269,7 @@ async function loadFirmsFromSupabase() {
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
       // Fallback: try localStorage cache
-      const cached = localStorage.getItem('mc_firms_cache_v8');
+      const cached = localStorage.getItem('mc_firms_cache_v9');
       if (cached && FIRMS.length === 0) {
         try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e){}
       }
@@ -4342,7 +4342,7 @@ async function loadFirmsFromSupabase() {
     initCmp();
 
     // Cache firms in localStorage for offline fallback
-    try { localStorage.setItem('mc_firms_cache_v8', JSON.stringify(FIRMS)); } catch(e){}
+    try { localStorage.setItem('mc_firms_cache_v9', JSON.stringify(FIRMS)); } catch(e){}
 
     // Retry opening firm overlay if dedicated page loaded before FIRMS arrived
     if(window._dedicatedFirmSlug && !document.getElementById('fd-overlay')?.classList.contains('show') && !document.getElementById('drw')?.classList.contains('open')){
@@ -4352,7 +4352,7 @@ async function loadFirmsFromSupabase() {
   } catch(e) {
     // Supabase unavailable — try localStorage cache
     console.warn('[MC] Supabase firms unavailable, trying cache');
-    const cached = localStorage.getItem('mc_firms_cache_v8');
+    const cached = localStorage.getItem('mc_firms_cache_v9');
     if (cached && FIRMS.length === 0) {
       try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e2){}
     }
@@ -6843,7 +6843,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if('scrollRestoration' in history) history.scrollRestoration='manual';
   // Preload FIRMS from localStorage cache BEFORE sync boot (avoids empty-state flash on /firm-slug refresh)
   if(FIRMS.length===0){
-    try{ const cached=localStorage.getItem('mc_firms_cache_v8'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
+    try{ const cached=localStorage.getItem('mc_firms_cache_v9'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
   }
   // Detectar idioma e aplicar traduções
   initLang();
