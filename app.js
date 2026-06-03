@@ -2889,14 +2889,14 @@ function renderHome(){
         ${f.trustpilot?`<a class="oc2-rating oc2-rating-tp" href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="event.stopPropagation();event.preventDefault();openTpPopup('${tpUrl}')" aria-label="Trustpilot ${tpScore} / 5">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="#00B67A" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
           <span class="oc2-rating-score" style="color:#00B67A;">${tpScore}</span>
-          <span class="oc2-rating-meta">${tpReviews} · Trustpilot</span>
+          <span class="oc2-rating-meta">${tpReviews} Trustpilot</span>
         </a>`:`<div class="oc2-rating oc2-rating-empty"><span class="oc2-rating-meta">Trustpilot indisponível</span></div>`}
         <span class="oc2-rating-div"></span>
         <a class="oc2-rating oc2-rating-mc" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)" aria-label="Markets Coupons rating">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
           ${internalCount > 0
-            ? `<span class="oc2-rating-score" style="color:#F0B429;">${internalRating.toFixed(1)}</span><span class="oc2-rating-meta">${internalCount.toLocaleString()} · Markets</span>`
-            : `<span class="oc2-rating-score" style="color:#F0B429;">—</span><span class="oc2-rating-meta">Avaliar · Markets</span>`}
+            ? `<span class="oc2-rating-score" style="color:#F0B429;">${internalRating.toFixed(1)}</span><span class="oc2-rating-meta">${internalCount.toLocaleString()} · MarketsCoupons Reviews</span>`
+            : `<span class="oc2-rating-score" style="color:#F0B429;">—</span><span class="oc2-rating-meta">MarketsCoupons Reviews</span>`}
         </a>
       </div>
 
