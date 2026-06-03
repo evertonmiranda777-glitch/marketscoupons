@@ -4256,7 +4256,7 @@ const CHECKOUT_FIRMS=[
      'Futures Rebate':[{size:'$25K',capital:'$25,000',goal:'$1,500',maxDD:'-4%',orig:'—',disc:'$150',featured:false},{size:'$50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'—',disc:'$299',featured:true}]
    },
    buildUrl:(size,type,plat)=>'https://www.the5ers.com/?afmc=19jp'},
-  {id:'fundingpips',name:'Funding Pips',short:'FundingPips',coupon:null,discount:'20%',color:'#6366F1',bg:'rgba(99,102,241,0.12)',
+  {id:'fundingpips',name:'Funding Pips',short:'FundingPips',coupon:'HELLO',discount:'20%',color:'#6366F1',bg:'rgba(99,102,241,0.12)',
    includes:['Up to 100% profit split','Weekly/Bi-weekly/On Demand payouts','Leverage up to 1:100','No time limit','Swap Free add-on (+10%)'],
    types:['Zero','1-Step','2-Step','Pro'],platforms:['MT5','Match-Trader','cTrader'],
    plansByType:{
