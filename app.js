@@ -1114,10 +1114,12 @@ function dualRatingPill(f){
   const mcClick = `event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)`;
   const tpClick = tp ? `event.stopPropagation();event.preventDefault();openTpPopup('${tpUrl}')` : '';
   return `
-    <div style="display:flex;align-items:stretch;width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:9px;margin:8px 0 4px;overflow:hidden;font-size:11px;color:#fff;white-space:nowrap;">
-      ${tp?`<a href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="${tpClick}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;text-decoration:none;color:#fff;min-width:0;">${star('#00b67a')}<b style="color:#00b67a;">${tpScore}</b><span style="color:rgba(255,255,255,.65);">Trustpilot</span></a>`:`<span style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;color:rgba(255,255,255,.4);min-width:0;">${star('#00b67a')}<span>Trustpilot —</span></span>`}
-      <span style="width:1px;background:rgba(255,255,255,.12);flex-shrink:0;"></span>
-      <a href="#" onclick="${mcClick}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;text-decoration:none;color:#fff;min-width:0;">${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span></a>
+    <div style="display:flex;justify-content:center;margin:8px 0 4px;">
+      <div style="display:inline-flex;align-items:stretch;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:9px;overflow:hidden;font-size:11px;color:#fff;white-space:nowrap;max-width:100%;">
+        ${tp?`<a href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="${tpClick}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#00b67a')}<b style="color:#00b67a;">${tpScore}</b><span style="color:rgba(255,255,255,.65);">Trustpilot</span></a>`:`<span style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;color:rgba(255,255,255,.4);flex-shrink:0;">${star('#00b67a')}<span>Trustpilot —</span></span>`}
+        <span style="width:1px;background:rgba(255,255,255,.12);flex-shrink:0;"></span>
+        <a href="#" onclick="${mcClick}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span></a>
+      </div>
     </div>`;
 }
 
