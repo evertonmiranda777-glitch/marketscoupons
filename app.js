@@ -2861,21 +2861,79 @@ function renderHome(){
   const g=document.getElementById('home-offers');if(!g)return;
   const h1=document.getElementById('hero-h1');if(h1 && _currentLang && _currentLang!=='en')h1.innerHTML=t('hero_titulo');
   const shd=document.getElementById('home-sec-hd');if(shd)shd.innerHTML=t('home_melhores_ofertas');
-  g.innerHTML=[...FIRMS].sort((a,b)=>b.discount-a.discount).map(f=>`
-    <div class="oc">
-      <div class="oc-top" onclick="openD('${f.id}')" style="cursor:pointer;">
-        <div class="oc-left">${firmIco(f,'44px','14px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
-        <div><div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div></div>
+  g.innerHTML=[...FIRMS].sort((a,b)=>b.discount-a.discount).map(f=>{
+    const tpScore = f.trustpilot ? f.trustpilot.score : null;
+    const tpReviews = f.trustpilot ? (f.trustpilot.reviews>=1000?(f.trustpilot.reviews/1000).toFixed(1)+'K':f.trustpilot.reviews.toLocaleString()) : null;
+    const tpUrl = f.trustpilot?.url || '';
+    const internalRating = f.internalRating || 0;
+    const internalCount = f.internalReviews || 0;
+    const typeLabel = f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type;
+    return `
+    <article class="oc2" style="--firm-c:${f.color}" data-firm="${f.id}">
+      <span class="oc2-ribbon"></span>
+      <header class="oc2-head" onclick="openD('${f.id}')">
+        <div class="oc2-head-l">
+          ${firmIco(f,'48px','12px')}
+          <div class="oc2-id">
+            <div class="oc2-type-pre">${typeLabel}</div>
+            <div class="oc2-name">${f.name}</div>
+          </div>
+        </div>
+        <div class="oc2-disc-block">
+          <div class="oc2-disc-num">${f.discount}</div>
+          <div class="oc2-disc-label"><span>%</span><span>OFF</span></div>
+        </div>
+      </header>
+
+      <div class="oc2-ratings">
+        ${f.trustpilot?`<a class="oc2-rating oc2-rating-tp" href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="event.stopPropagation();event.preventDefault();openTpPopup('${tpUrl}')" aria-label="Trustpilot ${tpScore} / 5">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#00B67A" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <span class="oc2-rating-score" style="color:#00B67A;">${tpScore}</span>
+          <span class="oc2-rating-meta">${tpReviews} · Trustpilot</span>
+        </a>`:`<div class="oc2-rating oc2-rating-empty"><span class="oc2-rating-meta">Trustpilot indisponível</span></div>`}
+        <span class="oc2-rating-div"></span>
+        <a class="oc2-rating oc2-rating-mc" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)" aria-label="Markets Coupons rating">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          ${internalCount > 0
+            ? `<span class="oc2-rating-score" style="color:#F0B429;">${internalRating.toFixed(1)}</span><span class="oc2-rating-meta">${internalCount.toLocaleString()} · Markets</span>`
+            : `<span class="oc2-rating-score" style="color:#F0B429;">—</span><span class="oc2-rating-meta">Avaliar · Markets</span>`}
+        </a>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0 4px;">
-        ${f.trustpilot?`<a class="oc-tp-badge" href="${f.trustpilot.url}" rel="nofollow noopener" target="_blank" onclick="event.stopPropagation();event.preventDefault();openTpPopup('${f.trustpilot.url}')" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,182,122,.10);border:1px solid rgba(0,182,122,.3);border-radius:8px;padding:5px 10px;text-decoration:none;font-size:12px;color:#fff;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#00b67a"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><b style="color:#00b67a;">${f.trustpilot.score}</b><span style="color:rgba(255,255,255,.6);">${(f.trustpilot.reviews>=1000?(f.trustpilot.reviews/1000).toFixed(1)+'K':f.trustpilot.reviews.toLocaleString())} Trustpilot</span></a>`:''}
-        ${mcRatingBadge(f)}
-      </div>
-      ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
-      <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">${t('offers_desconto_exclusivo')}</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
-      <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
-      <button class="offer-cta" onclick="openD('${f.id}');track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">${t('home_ver_planos')}</button>
-    </div>`).join('');
+
+      ${f.coupon
+        ? `<div class="oc2-coupon" data-has-coupon>
+            <div class="oc2-coupon-meta">
+              <span class="oc2-coupon-bracket">[</span>
+              <span class="oc2-coupon-label">Cupom Exclusivo</span>
+              <span class="oc2-coupon-bracket">]</span>
+            </div>
+            <div class="oc2-coupon-row">
+              <code class="oc2-coupon-code">${f.coupon}</code>
+              <button class="oc2-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')" aria-label="Copiar cupom ${f.coupon}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copiar</span>
+              </button>
+            </div>
+            <div class="oc2-coupon-hint">${t('firms_hint_cupom')}</div>
+          </div>`
+        : `<div class="oc2-coupon oc2-coupon-link">
+            <div class="oc2-coupon-meta">
+              <span class="oc2-coupon-bracket" style="color:rgba(34,197,94,.6);">[</span>
+              <span class="oc2-coupon-label" style="color:rgba(34,197,94,.85);">Desconto Automático</span>
+              <span class="oc2-coupon-bracket" style="color:rgba(34,197,94,.6);">]</span>
+            </div>
+            <div class="oc2-coupon-row">
+              <code class="oc2-coupon-code" style="color:#22C55E;font-size:13px;letter-spacing:.05em;">✓ Aplicado via link</code>
+            </div>
+            <div class="oc2-coupon-hint">Sem cupom — desconto já incluso</div>
+          </div>`}
+
+      <button class="oc2-cta" onclick="openD('${f.id}');track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">
+        <span>${t('home_ver_planos')}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="oc2-cta-arrow"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </article>`;
+  }).join('');
 }
 
 /* FIRMS */

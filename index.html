@@ -277,8 +277,8 @@
 <script defer src="/i18n-en.js?v=20260521"></script>
 <script>(function(){try{var l=localStorage.getItem('mc_lang')||((navigator.language||'').toLowerCase().slice(0,2));if(l&&l!=='en'&&/^(pt|es|it|fr|de|ar|id)$/.test(l)){var b=document.createElement('script');b.src='/i18n-'+l+'.js?v=20260520';b.defer=true;document.head.appendChild(b);}}catch(_){}})();</script>
 <link rel="stylesheet" href="/css/reviews.css?v=20260603">
-<script defer src="/js/reviews.js?v=20260603"></script>
-<script defer src="/app.js?v=20260603-mc3"></script>
+<script defer src="/js/reviews.js?v=20260603-i18n"></script>
+<script defer src="/app.js?v=20260603-mc4"></script>
 <!-- TRACKING ENGINE -->
 <style>
 @font-face{font-family:'Inter';font-style:normal;font-weight:300 800;font-display:optional;src:url('/fonts/inter-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
@@ -937,6 +937,57 @@ img{max-width:100%;}
 .cnt strong{color:#fff;}
 .sort-sel{padding:6px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:rgba(255,255,255,.6);font-family:var(--f);font-size:12px;outline:none;}
 .firms-list{display:flex;flex-direction:column;gap:10px;}
+
+/* ─── OC2: HOME OFFER CARD — editorial financial premium ─── */
+.oc2{position:relative;background:linear-gradient(165deg,#0F151B 0%,#07090D 100%);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:18px 22px 16px;overflow:hidden;transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s;box-shadow:0 1px 0 rgba(255,255,255,.03) inset,0 16px 32px -16px rgba(0,0,0,.7);display:flex;flex-direction:column;gap:14px;font-family:var(--f);}
+.oc2::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(75% 55% at 100% 0%,var(--firm-c) 0%,transparent 62%);opacity:.05;z-index:0;}
+.oc2 > *{position:relative;z-index:1;}
+.oc2:hover{transform:translateY(-2px);border-color:rgba(240,180,41,.22);box-shadow:0 0 0 1px rgba(240,180,41,.12) inset,0 1px 0 rgba(255,255,255,.05) inset,0 24px 40px -16px rgba(0,0,0,.85),0 0 32px -16px var(--firm-c);}
+.oc2-ribbon{position:absolute;left:0;top:18px;bottom:18px;width:3px;background:var(--firm-c);border-radius:0 3px 3px 0;box-shadow:0 0 14px var(--firm-c);z-index:2;}
+.oc2-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;cursor:pointer;}
+.oc2-head-l{display:flex;align-items:center;gap:12px;min-width:0;flex:1;}
+.oc2-id{min-width:0;}
+.oc2-type-pre{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:2px;}
+.oc2-name{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.oc2-disc-block{display:flex;align-items:baseline;gap:5px;flex-shrink:0;}
+.oc2-disc-num{font-size:42px;font-weight:800;color:var(--firm-c);letter-spacing:-.045em;line-height:1;font-feature-settings:'tnum';filter:drop-shadow(0 4px 20px color-mix(in srgb, var(--firm-c) 32%, transparent));}
+.oc2-disc-label{display:flex;flex-direction:column;align-items:flex-start;gap:1px;color:rgba(255,255,255,.55);font-weight:700;}
+.oc2-disc-label span:first-child{font-size:14px;color:var(--firm-c);line-height:1;}
+.oc2-disc-label span:last-child{font-size:9px;letter-spacing:.13em;text-transform:uppercase;line-height:1;}
+
+.oc2-ratings{display:grid;grid-template-columns:1fr 1px 1fr;align-items:stretch;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;}
+.oc2-rating{display:flex;align-items:center;gap:7px;padding:9px 12px;font-size:11px;text-decoration:none;color:#fff;transition:background .15s;min-width:0;}
+.oc2-rating-tp:hover{background:rgba(0,182,122,.06);}
+.oc2-rating-mc:hover{background:rgba(240,180,41,.06);}
+.oc2-rating-score{font-weight:700;font-size:13px;line-height:1;letter-spacing:-.01em;flex-shrink:0;}
+.oc2-rating-meta{color:rgba(255,255,255,.52);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em;}
+.oc2-rating-div{width:1px;align-self:stretch;background:linear-gradient(180deg,transparent 0%,rgba(255,255,255,.10) 30%,rgba(255,255,255,.10) 70%,transparent 100%);}
+.oc2-rating-empty{opacity:.5;cursor:default;}
+.oc2-rating-empty .oc2-rating-meta{font-style:italic;}
+
+.oc2-coupon{background:linear-gradient(180deg,rgba(240,180,41,.05) 0%,rgba(240,180,41,.02) 100%);border:1px dashed rgba(240,180,41,.32);border-radius:12px;padding:11px 14px 10px;}
+.oc2-coupon-meta{display:flex;align-items:center;gap:5px;margin-bottom:5px;}
+.oc2-coupon-bracket{font-family:'SF Mono','Menlo','Consolas',monospace;color:rgba(240,180,41,.55);font-size:11px;font-weight:600;}
+.oc2-coupon-label{font-size:9px;font-weight:700;letter-spacing:.18em;color:rgba(240,180,41,.85);text-transform:uppercase;}
+.oc2-coupon-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.oc2-coupon-code{font-family:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;font-size:18px;font-weight:700;color:#F0B429;letter-spacing:.06em;text-transform:uppercase;line-height:1.1;font-feature-settings:'ss01';}
+.oc2-coupon-copy{display:inline-flex;align-items:center;gap:5px;background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.32);color:#F0B429;font-family:var(--f);font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;transition:all .15s;}
+.oc2-coupon-copy:hover{background:#F0B429;color:#07090D;border-color:#F0B429;transform:translateY(-1px);}
+.oc2-coupon-hint{font-size:10px;color:rgba(255,255,255,.38);margin-top:6px;letter-spacing:.02em;}
+.oc2-coupon-link{border-color:rgba(34,197,94,.3);background:linear-gradient(180deg,rgba(34,197,94,.04) 0%,rgba(34,197,94,.015) 100%);}
+
+.oc2-cta{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(180deg,#FCD34D 0%,#F0B429 55%,#D97706 100%);color:#07090D;font-family:var(--f);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:13px 18px;border-radius:10px;cursor:pointer;border:none;width:100%;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 18px -6px rgba(240,180,41,.5),0 1px 0 rgba(255,255,255,.35) inset;}
+.oc2-cta:hover{transform:translateY(-1.5px);box-shadow:0 10px 24px -6px rgba(240,180,41,.65),0 1px 0 rgba(255,255,255,.45) inset;}
+.oc2-cta-arrow{transition:transform .2s;}
+.oc2-cta:hover .oc2-cta-arrow{transform:translateX(4px);}
+@media (max-width:600px){
+  .oc2{padding:16px 18px 14px;gap:12px;}
+  .oc2-disc-num{font-size:36px;}
+  .oc2-coupon-code{font-size:15px;}
+  .oc2-name{font-size:14px;}
+  .oc2-rating-meta{font-size:10px;}
+}
+
 /* FIRM CARDS — desktop horizontal row */
 .fr{
   background:linear-gradient(180deg,#0B1318 0%,#07090D 100%);
