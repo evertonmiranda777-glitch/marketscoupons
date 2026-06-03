@@ -691,26 +691,32 @@ const FIRMS = [
   {
     id: 'fn', name: 'FundedNext', logo: '/img/Firms/108/fn.webp', coupon: 'FLEX',
     discount: '47%', tag: 'fut', rating: '4.5', reviews: '30K',
-    rangeAccounts: '$6K–$200K', split: '95%',
+    rangeAccounts: '$25K–$150K', split: '90%',
     url: 'https://fundednext.com/futures?fpr=everton33',
-    types: ['Stellar 2-Step', 'Futures Flex'],
+    types: ['Flex', 'Legacy', 'Rapid', 'Bolt'],
     plans: {
-      'Stellar 2-Step': [
-        {size:'$6K', orig:'$69.99', disc:'$48.99', target:'$480 (8%)', dd:'-$600 (10%)', pos:'1:100 leverage'},
-        {size:'$15K', orig:'$119.99', disc:'$83.99', target:'$1,200 (8%)', dd:'-$1,500 (10%)', pos:'1:100 leverage'},
-        {size:'$25K', orig:'$189.99', disc:'$132.99', target:'$2,000 (8%)', dd:'-$2,500 (10%)', pos:'1:100 leverage'},
-        {size:'$50K', orig:'$269.99', disc:'$188.99', target:'$4,000 (8%)', dd:'-$5,000 (10%)', pos:'1:100 leverage', popular:true},
-        {size:'$100K', orig:'$499.99', disc:'$349.99', target:'$8,000 (8%)', dd:'-$10,000 (10%)', pos:'1:100 leverage'},
+      'Flex': [
+        {size:'$50K', orig:'$133.99', disc:'$69.99', target:'$2,500', dd:'EOD $1,500', pos:'3 minis / 30 micros', consistency:'40%'},
+        {size:'$100K', orig:'$249.99', disc:'$129.99', target:'$5,000', dd:'EOD $2,500', pos:'5 minis / 50 micros', consistency:'40%', popular:true},
+        {size:'$150K', orig:'$483.99', disc:'$249.99', target:'$8,000', dd:'EOD $4,000', pos:'8 minis / 80 micros', consistency:'40%'},
       ],
-      'Futures Flex': [
-        {size:'$50K', orig:'$133.99', disc:'$71.01', target:'$2,500', dd:'EOD $1,500', pos:'3 minis / 30 micros'},
-        {size:'$100K', orig:'$249.99', disc:'$132.49', target:'$5,000', dd:'EOD $2,500', pos:'5 minis / 50 micros', popular:true},
-        {size:'$150K', orig:'$483.99', disc:'$256.51', target:'$8,000', dd:'EOD $4,000', pos:'8 minis / 80 micros'},
+      'Legacy': [
+        {size:'$25K', orig:'$79.99', disc:'$47.99', target:'$1,250', dd:'EOD $1,000', pos:'2 minis / 20 micros', consistency:'40%', popular:true},
+        {size:'$50K', orig:'$149.99', disc:'$89.99', target:'$3,000', dd:'EOD $2,000', pos:'3 minis / 30 micros', consistency:'40%'},
+        {size:'$100K', orig:'$249.99', disc:'$149.99', target:'$6,000', dd:'EOD $3,000', pos:'5 minis / 50 micros', consistency:'40%'},
+      ],
+      'Rapid': [
+        {size:'$25K', orig:'$99.99', disc:'$59.99', target:'$1,500', dd:'EOD $1,000', pos:'2 minis / 10 micros', consistency:'40%', popular:true},
+        {size:'$50K', orig:'$199.99', disc:'$119.99', target:'$3,000', dd:'EOD $2,000', pos:'3 minis / 15 micros', consistency:'40%'},
+        {size:'$100K', orig:'$279.99', disc:'$167.99', target:'$5,000', dd:'EOD $2,500', pos:'5 minis / 25 micros', consistency:'40%'},
+      ],
+      'Bolt': [
+        {size:'$50K', orig:'$99.99', disc:'$59.99', target:'$3,000', dd:'EOD $2,000 (Daily $1,000)', pos:'3 minis / 9 micros', consistency:'40%', popular:true},
       ]
     },
-    payouts: { pt: '24h garantido', en: '24h guaranteed', es: '24h garantizado', it: '24h garantito', fr: '24h garanti', de: '24h garantiert', ar: 'مضمون خلال 24 ساعة' },
-    platforms: 'MT4 · MT5 · cTrader · Rithmic',
-    rules: { pt: ['Payout garantido em 24h','Sem limite de tempo','15% de bônus na avaliação','Split até 95%'], en: ['Guaranteed 24h payout','No time limit','15% reward in challenge','Up to 95% split'] }
+    payouts: { pt: '24h garantido', en: '24h guaranteed', es: '24h garantizado', it: '24h garantito', fr: '24h garanti', de: '24h garantiert', ar: 'مضمون خلال 24 ساعة', id: 'Dijamin 24 jam' },
+    platforms: 'NinjaTrader · Tradovate · Quantower · Rithmic',
+    rules: { pt: ['Sem taxa de ativação','Payout garantido em 24h','Profit split até 90%','Cupom FLEX: 47% off em Flex, 40% nos demais'], en: ['No activation fee','24h guaranteed payout','Profit split up to 90%','FLEX coupon: 47% off Flex, 40% off others'] }
   },
 ];
 
