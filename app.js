@@ -2865,6 +2865,10 @@ function renderHome(){
         <div class="oc-left">${firmIco(f,'44px','14px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div></div>
       </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0 4px;">
+        ${f.trustpilot?`<a class="oc-tp-badge" href="${f.trustpilot.url}" rel="nofollow noopener" target="_blank" onclick="event.stopPropagation();event.preventDefault();openTpPopup('${f.trustpilot.url}')" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,182,122,.10);border:1px solid rgba(0,182,122,.3);border-radius:8px;padding:5px 10px;text-decoration:none;font-size:12px;color:#fff;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#00b67a"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><b style="color:#00b67a;">${f.trustpilot.score}</b><span style="color:rgba(255,255,255,.6);">${(f.trustpilot.reviews>=1000?(f.trustpilot.reviews/1000).toFixed(1)+'K':f.trustpilot.reviews.toLocaleString())} Trustpilot</span></a>`:''}
+        ${mcRatingBadge(f)}
+      </div>
       ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
       <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">${t('offers_desconto_exclusivo')}</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
       <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
