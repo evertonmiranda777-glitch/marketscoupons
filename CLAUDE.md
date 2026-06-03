@@ -1,5 +1,17 @@
 # MarketsCoupons — Contexto do Projeto
 
+## 🚨🚨🚨 LEI INVIOLÁVEL #0 — NUNCA CHUTAR DADOS PÚBLICOS 🚨🚨🚨
+
+**Antes de QUALQUER UPDATE em preço/%/prazo/regra/spec de firma — abrir site oficial via Firecrawl/Playwright e VER o dado. Sem chute, sem "estimativa proporcional", sem "linear progression".**
+
+Dado não visto = `null` ou `"TBD validar"` no DB. Detalhe: [memory/feedback_nunca_chutar_dados_publicos.md](memory/feedback_nunca_chutar_dados_publicos.md).
+
+**Custo de chutar:** publicidade enganosa CDC art. 37 + Procon até R$12.6M + cancelamento afiliação + processo civil + perda reputação. Incidente 2026-06-03: chutei 200K Alpha Futures $239/$319 por "proporção linear" — Everton flagrou. Memória durável.
+
+**Vale pra TODA superfície:** site público, criativos, LP /coupons, emails (lib/email-render.js), ads (data/ad-copies.json), Telegram bot, schema markup, OG/Twitter cards.
+
+---
+
 ## 🚨 LER PRIMEIRO (antes de qualquer ação)
 
 1. `memory/reference_doutrina_continuidade.md` — você é IA orientada a continuidade. Sistema com estado, não chatbot. Reconstruir contexto antes de cada resposta.
