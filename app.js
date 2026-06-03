@@ -2913,7 +2913,7 @@ function renderFirms(list){
       <!-- Col 5: Reviews -->
       <div class="fmet"><div class="mv">${tpCount||f.reviews?.toLocaleString()||'—'}</div><div class="ml">Reviews</div></div>
       <!-- Col 6: Trustpilot -->
-      <div class="fr-tp-col" onclick="event.stopPropagation()">${f.trustpilot?`<a class="fr-tp-mini" href="${f.trustpilot.url}" rel="nofollow noopener" target="_blank" onclick="event.preventDefault();openTpPopup('${f.trustpilot.url}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="#00b67a" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span class="fr-tp-score">${f.trustpilot.score}</span><span class="fr-tp-count">${tpCount}</span></a>`:''}</div>
+      <div class="fr-tp-col" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">${f.trustpilot?`<a class="fr-tp-mini" href="${f.trustpilot.url}" rel="nofollow noopener" target="_blank" onclick="event.preventDefault();openTpPopup('${f.trustpilot.url}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="#00b67a" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span class="fr-tp-score">${f.trustpilot.score}</span><span class="fr-tp-count">${tpCount}</span></a>`:''}${mcRatingBadge(f)}</div>
       <!-- Col 7: Coupon -->
       <div class="fr-coupon-col" onclick="event.stopPropagation()">
         ${f.coupon?`<div class="fr-coupon-box"><div class="fr-coupon-box-row"><span class="fr-coupon-box-code">${shortCode(f.coupon)}</span><button class="fr-coupon-box-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button></div></div>`:''}
