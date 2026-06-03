@@ -1105,17 +1105,23 @@ function mcRatingBadge(f){
   if(!f) return '';
   const count = f.internalReviews || 0;
   const rating = f.internalRating || 0;
+  // Helper: t() retorna a key quando nao tem traducao — usar fallback nesse caso
+  const _T = (k, fb) => { const v = t(k); return (!v || v === k) ? fb : v; };
+  const langPT = (_currentLang === 'pt' || !_currentLang);
+  const beFirst = _T('mc_be_first', langPT ? 'Seja o primeiro a avaliar' : 'Be the first to review');
+  const reviewS = _T('mc_review', langPT ? 'avaliação' : 'review');
+  const reviewP = _T('mc_reviews', langPT ? 'avaliações' : 'reviews');
   if (count === 0) {
     return `<a class="mc-badge mc-badge-empty" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
       <span class="mc-badge-stars">☆☆☆☆☆</span>
-      <span class="mc-badge-info">${t('mc_be_first')||'Seja o primeiro a avaliar'} no <b>Markets Coupons</b></span>
+      <span class="mc-badge-info">${beFirst} no <b>Markets Coupons</b></span>
     </a>`;
   }
   const stars = Math.round(rating);
   return `<a class="mc-badge" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
     <span class="mc-badge-label">${rating.toFixed(1)}</span>
     <span class="mc-badge-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
-    <span class="mc-badge-info">${count.toLocaleString()} ${count===1?(t('mc_review')||'avaliação'):(t('mc_reviews')||'avaliações')} no <b>Markets Coupons</b></span>
+    <span class="mc-badge-info">${count.toLocaleString()} ${count===1?reviewS:reviewP} no <b>Markets Coupons</b></span>
   </a>`;
 }
 
