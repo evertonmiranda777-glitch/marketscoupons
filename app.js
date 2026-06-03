@@ -3311,7 +3311,8 @@ function openFD(id, f) {
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_max_contas')}</div><div class="fd-stat-val b">${f.maxAccounts||'—'}</div></div>
   </div>`;
   // Reviews section — mount lazy depois do paint inicial (não bloqueia overlay)
-  const _revTitle = (function(){ const v = t('drw_avaliacoes'); return (!v || v === 'drw_avaliacoes') ? (_currentLang==='en'?'User Reviews':'Avaliações de Traders') : v; })();
+  const _revTitleMap = {pt:'Avaliações de Traders',en:'Trader Reviews',es:'Reseñas de Traders',it:'Recensioni dei Trader',fr:'Avis des Traders',de:'Trader-Bewertungen',ar:'تقييمات المتداولين',id:'Ulasan Trader'};
+  const _revTitle = _revTitleMap[_currentLang] || _revTitleMap.en;
   L += `<div class="fd-section fd-reviews-section" style="margin-top:22px;padding-top:24px;border-top:2px solid rgba(240,180,41,.25);"><div class="fd-section-title" style="font-size:20px;font-weight:800;color:#F0B429;margin-bottom:14px;">⭐ ${_revTitle}</div><div id="fd-reviews-mount"></div></div>`;
   document.getElementById('fd-left').innerHTML = L;
 
