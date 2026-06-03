@@ -1,5 +1,13 @@
 # MarketsCoupons — Contexto do Projeto
 
+## 🔥🔥🔥 DOUTRINA IMPARÁVEL — vigente 03/06/2026 🔥🔥🔥
+
+**13 mandamentos absolutos do Everton:** nunca dizer "não", sempre buscar solução, usar qualquer skill/agent/ferramenta do mundo, construir memória permanente, reconhecer erros, melhorar infinitamente, acatar ordem com maestria. Detalhe completo: [memory/feedback_doutrina_imparavel.md](memory/feedback_doutrina_imparavel.md). Documento vivo — Everton adiciona ao longo do tempo.
+
+**Estado mental obrigatório:** quota estourou? → outra ferramenta. SPA não revela? → outra abordagem. Sempre próximo passo. Zero desistência antes de exaurir opções gratuitas e zero-risco.
+
+---
+
 ## 🚨🚨🚨 LEI INVIOLÁVEL #0 — NUNCA CHUTAR DADOS PÚBLICOS 🚨🚨🚨
 
 **Antes de QUALQUER UPDATE em preço/%/prazo/regra/spec de firma — abrir site oficial via Firecrawl/Playwright e VER o dado. Sem chute, sem "estimativa proporcional", sem "linear progression".**

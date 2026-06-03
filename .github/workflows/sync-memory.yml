@@ -1,0 +1,33 @@
+name: Sync Claude Memory to Supabase
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * *'  # diário 7h UTC = 4h BRT
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Note about cross-machine sync
+        run: |
+          echo "Este job só rebuilda a estrutura permanente — o sync REAL do disco local"
+          echo "do Claude roda quando o script é executado na máquina do Everton."
+          echo "GH Actions só serve pra: (1) garantir tabela existe, (2) snapshot remoto."
+
+      - name: Verify Supabase table exists
+        env:
+          SR: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+        run: |
+          if [ -z "$SR" ]; then
+            echo "SUPABASE_SERVICE_ROLE secret missing — pulando"
+            exit 0
+          fi
+          curl -s "https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/claude_memory_backup?select=count&limit=1" \
+            -H "apikey: $SR" -H "Authorization: Bearer $SR" \
+            -H "Prefer: count=exact" -I | grep -i 'content-range' || true
