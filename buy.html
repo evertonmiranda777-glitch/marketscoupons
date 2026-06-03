@@ -182,9 +182,30 @@ html,body{width:100%;height:100%;background:#0a0d14;color:#fff;font-family:'Inte
     });
   } catch(e){}
 
-  // Redirect after small delay (500ms — UX visivel + tracking completa)
+  // Propagar sub-id keyword (vem de /buy/<firm>?keyword=X) pra preservar atribuicao granular do criativo
+  // FN (FirstPromoter) usa &fpr_t=, TradeDay (PostAffPro) usa &data1=, Apex/Bulenox usam &keyword=
+  // mas Apex/Bulenox NAO passam por aqui (SKIP_LIST), entao tratamos so FN/TradeDay/outras
+  let destUrl = firm.link;
+  const inboundKw = (new URLSearchParams(location.search)).get('keyword');
+  if (inboundKw) {
+    try {
+      let paramName = null;
+      if (destUrl.includes('fundednext.com')) paramName = 'fpr_t';
+      else if (destUrl.includes('tradeday.com')) paramName = 'data1';
+      // Outras firmas: nao injeta (cada plataforma tem seu sub-id schema)
+      if (paramName) {
+        const hashIdx = destUrl.indexOf('#');
+        const before = hashIdx>=0 ? destUrl.slice(0,hashIdx) : destUrl;
+        const hash = hashIdx>=0 ? destUrl.slice(hashIdx) : '';
+        const sep = before.includes('?') ? '&' : '?';
+        destUrl = before + sep + paramName + '=' + encodeURIComponent(inboundKw) + hash;
+      }
+    } catch(e){}
+  }
+
+  // Redirect after small delay (700ms — UX visivel + tracking completa)
   setTimeout(() => {
-    location.href = firm.link;
+    location.href = destUrl;
   }, 700);
 })();
 </script>

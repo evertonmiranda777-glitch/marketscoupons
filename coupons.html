@@ -824,7 +824,7 @@ function renderFirms() {
       </div>
       <div class="fr-bottom">
         <div class="fr-coupon"><div class="fr-coupon-code">${firm.coupon}</div><button class="fr-coupon-copy">${T.copy}</button></div>
-        <a class="fr-cta" href="${injectKeyword(firm.url, firm.id)}" target="_blank" rel="noopener">${T.see_plans} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+        <a class="fr-cta" href="${getBuyUrl(firm)}" target="_blank" rel="noopener">${T.see_plans} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
       </div>
     `;
     container.appendChild(card);
@@ -1031,6 +1031,15 @@ function buildKeyword(firmId){
 // Injeta sub_id nos URLs das firmas que suportam:
 // - Apex/Bulenox (amember): &keyword=<sub_id> aparece na pagina Keywords do painel
 // - FundedNext (FirstPromoter): &fpr_t=<sub_id> aparece em Reports -> Sub-Ids
+/* Buy CTA: Apex/Bulenox vao DIRETO (preserva injectKeyword). TradeDay/FN/outras passam por /buy/<firm-id> que track + redirect mantendo atribuicao + sub-id. */
+function getBuyUrl(firm){
+  if(!firm || !firm.id) return '#';
+  // Apex e Bulenox: link direto (decisao Everton 2026-06-03 - nao mexer)
+  if (firm.id === 'apex' || firm.id === 'bulenox') return injectKeyword(firm.url, firm.id);
+  // Outras: /buy/<id> + sub_id keyword pra propagacao downstream
+  const kw = buildKeyword(firm.id);
+  return `/buy/${firm.id}` + (kw ? `?keyword=${encodeURIComponent(kw)}` : '');
+}
 function injectKeyword(url, firmId){
   if(!url) return url;
   let paramName = null;
