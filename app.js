@@ -1100,6 +1100,25 @@ const FIRM_T={
 };
 function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='en')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
 
+/* MC Rating badge — exibido logo abaixo do Trustpilot. Mostra apenas se houver reviews; senão CTA "Avalie primeiro". */
+function mcRatingBadge(f){
+  if(!f) return '';
+  const count = f.internalReviews || 0;
+  const rating = f.internalRating || 0;
+  if (count === 0) {
+    return `<a class="mc-badge mc-badge-empty" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
+      <span class="mc-badge-stars">☆☆☆☆☆</span>
+      <span class="mc-badge-info">${t('mc_be_first')||'Seja o primeiro a avaliar'} no <b>Markets Coupons</b></span>
+    </a>`;
+  }
+  const stars = Math.round(rating);
+  return `<a class="mc-badge" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
+    <span class="mc-badge-label">${rating.toFixed(1)}</span>
+    <span class="mc-badge-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
+    <span class="mc-badge-info">${count.toLocaleString()} ${count===1?(t('mc_review')||'avaliação'):(t('mc_reviews')||'avaliações')} no <b>Markets Coupons</b></span>
+  </a>`;
+}
+
 /* NAV */
 // Page ID → clean URL slug mapping
 const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel','pro-success':'pro-success',calc:'calculator',privacy:'privacy',terms:'terms'};
@@ -2903,6 +2922,7 @@ function renderFirms(list){
       <!-- Mobile: card layout (hidden on desktop, shown on <=960px) -->
       <div class="fr-left">
         ${f.trustpilot?`<a class="tp-badge" href="${f.trustpilot.url}" rel="nofollow noopener" target="_blank" onclick="event.preventDefault();event.stopPropagation();openTpPopup('${f.trustpilot.url}')"><span class="tp-label">${t('tp_excellent')}</span><span class="tp-stars">${'★'.repeat(tpStars)}</span><span class="tp-info">${f.trustpilot.reviews.toLocaleString()} ${t('tp_reviews_on')} <b>Trustpilot</b></span></a>`:''}
+        ${mcRatingBadge(f)}
       </div>
       <div class="fr-mets">
         <div class="fr-mets-inner">
@@ -3879,8 +3899,9 @@ function openDrw(id, f, cf) {
       <div class="fd-stars">${Array(5).fill(0).map((_,i)=>`<span class="fd-tp-star">${i<tpS?'★':'☆'}</span>`).join('')}</div>
       <div class="fd-reviews">${(f.trustpilot?.reviews||f.reviews||0).toLocaleString()} ${t('tp_reviews_on')} <b style="color:var(--tp-green)">Trustpilot</b></div>
     </div>
-  </div>`;
-  html+=`<div class="fd-about" style="margin-top:0;margin-bottom:14px;">
+  </div>
+  <div style="margin-top:8px;">${mcRatingBadge(f)}</div>`;
+  html+=`<div class="fd-about" style="margin-top:14px;margin-bottom:14px;">
     <div class="fd-about-title">${t('fd_sobre_firma')}</div>
     <div class="fd-about-text">${tf(f.desc)||'—'}</div>
   </div>`;
@@ -4295,7 +4316,7 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,internal_rating,internal_reviews_count')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
@@ -4334,6 +4355,8 @@ async function loadFirmsFromSupabase() {
         maxAccounts: f.max_accounts || null,
         promo_ends_at: f.promo_ends_at || null,
         show_promo_on_checkout: f.show_promo_on_checkout || false,
+        internalRating: parseFloat(f.internal_rating) || 0,
+        internalReviews: parseInt(f.internal_reviews_count) || 0,
       };
       if (f.trustpilot_url) {
         firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };
