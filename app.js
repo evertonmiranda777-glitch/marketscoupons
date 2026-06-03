@@ -1101,6 +1101,26 @@ const FIRM_T={
 function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='en')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
 
 /* MC Rating badge — exibido logo abaixo do Trustpilot. Mostra apenas se houver reviews; senão CTA "Avalie primeiro". */
+function dualRatingPill(f){
+  if(!f) return '';
+  const tp = f.trustpilot;
+  const tpScore = tp ? tp.score : null;
+  const tpCount = tp ? (tp.reviews>=1000?(tp.reviews/1000).toFixed(1)+'K':tp.reviews.toLocaleString()) : null;
+  const tpUrl = tp ? tp.url : '';
+  const mcCount = f.internalReviews || 0;
+  const mcRating = f.internalRating || 0;
+  const mcDisplay = mcCount === 0 ? '—' : mcRating.toFixed(1);
+  const star = (color) => `<svg width="12" height="12" viewBox="0 0 24 24" fill="${color}" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+  const mcClick = `event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)`;
+  const tpClick = tp ? `event.stopPropagation();event.preventDefault();openTpPopup('${tpUrl}')` : '';
+  return `
+    <div style="display:inline-flex;align-items:stretch;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:10px;margin:8px 0 4px;overflow:hidden;font-size:12px;color:#fff;white-space:nowrap;max-width:100%;">
+      ${tp?`<a href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="${tpClick}" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#00b67a')}<b style="color:#00b67a;">${tpScore}</b><span style="color:rgba(255,255,255,.65);">${tpCount} Trustpilot</span></a>`:`<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;color:rgba(255,255,255,.4);flex-shrink:0;">${star('#00b67a')}<span>Trustpilot —</span></span>`}
+      <span style="width:1px;background:rgba(255,255,255,.12);flex-shrink:0;"></span>
+      <a href="#" onclick="${mcClick}" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span></a>
+    </div>`;
+}
+
 function mcRatingBadge(f){
   if(!f) return '';
   const count = f.internalReviews || 0;
@@ -2860,10 +2880,7 @@ function renderHome(){
         <div class="oc-left">${firmIco(f,'44px','14px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
         <div><div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div></div>
       </div>
-      <div style="display:flex;gap:6px;flex-wrap:nowrap;align-items:center;margin:8px 0 4px;">
-        ${f.trustpilot?`<a class="oc-tp-badge" href="${f.trustpilot.url}" rel="nofollow noopener" target="_blank" onclick="event.stopPropagation();event.preventDefault();openTpPopup('${f.trustpilot.url}')" style="display:inline-flex;align-items:center;gap:5px;background:rgba(0,182,122,.10);border:1px solid rgba(0,182,122,.3);border-radius:8px;padding:4px 8px;text-decoration:none;font-size:11px;color:#fff;flex-shrink:0;white-space:nowrap;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#00b67a" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><b style="color:#00b67a;">${f.trustpilot.score}</b><span style="color:rgba(255,255,255,.6);">Trustpilot</span></a>`:''}
-        ${mcRatingBadge(f)}
-      </div>
+      ${dualRatingPill(f)}
       ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
       <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">${t('offers_desconto_exclusivo')}</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
       <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
