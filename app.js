@@ -4324,12 +4324,12 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,internal_rating,internal_reviews_count')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,trustpilot_status,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,internal_rating,internal_reviews_count')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
       // Fallback: try localStorage cache
-      const cached = localStorage.getItem('mc_firms_cache_v12');
+      const cached = localStorage.getItem('mc_firms_cache_v13');
       if (cached && FIRMS.length === 0) {
         try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e){}
       }
@@ -4366,8 +4366,11 @@ async function loadFirmsFromSupabase() {
         internalRating: parseFloat(f.internal_rating) || 0,
         internalReviews: parseInt(f.internal_reviews_count) || 0,
       };
-      if (f.trustpilot_url) {
+      firm.trustpilotStatus = f.trustpilot_status || 'active';
+      if (f.trustpilot_url && firm.trustpilotStatus !== 'suspended') {
         firm.trustpilot = { score: parseFloat(f.trustpilot_score)||firm.rating, reviews: parseInt(f.trustpilot_reviews)||firm.reviews, url: f.trustpilot_url };
+      } else if (firm.trustpilotStatus === 'suspended' && f.trustpilot_url) {
+        firm.trustpilotSuspended = { url: f.trustpilot_url, reviews: parseInt(f.trustpilot_reviews)||parseInt(f.reviews)||0 };
       }
       FIRMS.push(firm);
 
@@ -4404,7 +4407,7 @@ async function loadFirmsFromSupabase() {
     initCmp();
 
     // Cache firms in localStorage for offline fallback
-    try { localStorage.setItem('mc_firms_cache_v12', JSON.stringify(FIRMS)); } catch(e){}
+    try { localStorage.setItem('mc_firms_cache_v13', JSON.stringify(FIRMS)); } catch(e){}
 
     // Retry opening firm overlay if dedicated page loaded before FIRMS arrived
     if(window._dedicatedFirmSlug && !document.getElementById('fd-overlay')?.classList.contains('show') && !document.getElementById('drw')?.classList.contains('open')){
@@ -4414,7 +4417,7 @@ async function loadFirmsFromSupabase() {
   } catch(e) {
     // Supabase unavailable — try localStorage cache
     console.warn('[MC] Supabase firms unavailable, trying cache');
-    const cached = localStorage.getItem('mc_firms_cache_v12');
+    const cached = localStorage.getItem('mc_firms_cache_v13');
     if (cached && FIRMS.length === 0) {
       try { const arr = JSON.parse(cached); arr.forEach(f => FIRMS.push(f)); } catch(e2){}
     }
@@ -6905,7 +6908,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if('scrollRestoration' in history) history.scrollRestoration='manual';
   // Preload FIRMS from localStorage cache BEFORE sync boot (avoids empty-state flash on /firm-slug refresh)
   if(FIRMS.length===0){
-    try{ const cached=localStorage.getItem('mc_firms_cache_v12'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
+    try{ const cached=localStorage.getItem('mc_firms_cache_v13'); if(cached){ const arr=JSON.parse(cached); arr.forEach(f=>FIRMS.push(f)); } }catch(e){}
   }
   // Detectar idioma e aplicar traduções
   initLang();

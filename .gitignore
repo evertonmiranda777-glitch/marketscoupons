@@ -35,3 +35,4 @@ Thumbs.db
 *~
 .tmp/
 .env.local
+.playwright-mcp/
