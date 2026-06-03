@@ -697,6 +697,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta nta-cms" onclick="adminGo('indicadores',this)">Indicadores</button>
  <button class="nta nta-cms" onclick="adminGo('telegram',this)">Telegram</button>
  <button class="nta nta-cms" onclick="adminGo('criativos',this)">Criativos</button>
+ <button class="nta nta-cms" onclick="adminGo('reviews',this)">Reviews</button>
  <button class="nta nta-cms" onclick="adminGo('site',this)">Site</button>
  <button class="nta nta-cms" onclick="adminGo('config',this)">Config</button>
  </div>
@@ -3323,6 +3324,38 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div><!-- /tg-layout -->
     </div><!-- /page-telegram -->
 
+    <div class="admin-page" id="page-reviews">
+      <div class="sec-hdr">
+        <div class="sec-title">Avaliações de Usuários</div>
+        <div style="font-size:13px;color:var(--t3);margin-top:4px;">Reviews postados por traders cadastrados. Excluir reviews agressivas mantém histórico (soft-delete + motivo).</div>
+      </div>
+
+      <div style="display:flex;gap:12px;margin:18px 0;flex-wrap:wrap;align-items:center;">
+        <label style="font-size:12px;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Filtro:</label>
+        <select id="rv-firm" onchange="loadAdminReviews()" style="padding:8px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:var(--t1);border-radius:8px;font-family:inherit;font-size:13px;">
+          <option value="">Todas firmas</option>
+        </select>
+        <select id="rv-status" onchange="loadAdminReviews()" style="padding:8px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:var(--t1);border-radius:8px;font-family:inherit;font-size:13px;">
+          <option value="active">Ativas</option>
+          <option value="deleted">Excluídas</option>
+          <option value="all">Todas</option>
+        </select>
+        <select id="rv-rating" onchange="loadAdminReviews()" style="padding:8px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:var(--t1);border-radius:8px;font-family:inherit;font-size:13px;">
+          <option value="">Qualquer rating</option>
+          <option value="5">5 estrelas</option>
+          <option value="4">4 estrelas</option>
+          <option value="3">3 estrelas</option>
+          <option value="2">2 estrelas</option>
+          <option value="1">1 estrela</option>
+        </select>
+        <span id="rv-count" style="margin-left:auto;font-size:12px;color:var(--t3);"></span>
+      </div>
+
+      <div id="rv-list" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="padding:30px;text-align:center;color:var(--t3);font-size:13px;">Carregando…</div>
+      </div>
+    </div><!-- /page-reviews -->
+
  </div><!-- admin-body -->
 </div><!-- admin-app -->
 
@@ -3675,6 +3708,7 @@ const _unifiedTabs = {
   'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
   'telegram':    [{id:'telegram',label:'Telegram'}],
   'criativos':   [{id:'criativos',label:'Criativos'}],
+  'reviews':     [{id:'reviews',label:'Avaliações'}],
   'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-firmas',label:'Firmas'},{id:'site-plataformas',label:'Plataformas'},{id:'site-indicadores',label:'Indicadores'},{id:'site-calendario',label:'Calendário'},{id:'site-analise',label:'Análise'},{id:'site-gamma',label:'Gamma'},{id:'site-calc',label:'Calculadora'},{id:'site-quiz',label:'Quiz'},{id:'site-live',label:'Live Room'},{id:'site-fidelidade',label:'Fidelidade'},{id:'site-footer',label:'Footer'},{id:'site-tema',label:'Cores / Tema'},{id:'site-logo',label:'Logo'}],
   'config':      [{id:'cms-texts',label:'Textos'},{id:'i18n-editor',label:'Traduções (I18N)'},{id:'firmt-editor',label:'Traduções Firmas'}]
 };
@@ -3915,6 +3949,7 @@ function renderPage(p){
     case 'cms-guides':     renderCmsGuides(); break;
     case 'cms-blog':       renderCmsBlog(); break;
     case 'criativos':      initCriativos(); break;
+    case 'reviews':        initReviewsAdmin(); break;
     case 'telegram':       initTelegramSection(); break;
     case 'cms-faq':        renderCmsFaq(); break;
     case 'site-hero':      loadSiteHero(); break;
@@ -13540,6 +13575,109 @@ async function downloadCanvaPng(tmplId, lang, btn){
     btn.textContent = '✓';
     setTimeout(() => { btn.textContent = orig; }, 1200);
   }
+}
+
+/* ─── REVIEWS ADMIN ─── soft-delete + audit log + filtros */
+let _rvFirms = [];
+async function initReviewsAdmin(){
+  // Populate firm select
+  const sel = document.getElementById('rv-firm');
+  if (sel.options.length <= 1) {
+    if (!_rvFirms.length) {
+      const r = await db.from('cms_firms').select('id,name').order('sort_order');
+      _rvFirms = r.data || [];
+    }
+    _rvFirms.forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f.id; opt.textContent = f.name;
+      sel.appendChild(opt);
+    });
+  }
+  loadAdminReviews();
+}
+
+async function loadAdminReviews(){
+  const firmFilter = document.getElementById('rv-firm').value;
+  const statusFilter = document.getElementById('rv-status').value;
+  const ratingFilter = document.getElementById('rv-rating').value;
+
+  let q = db.from('firm_reviews').select('*').order('created_at',{ascending:false}).limit(200);
+  if (firmFilter) q = q.eq('firm_id', firmFilter);
+  if (statusFilter === 'active') q = q.is('deleted_at', null);
+  else if (statusFilter === 'deleted') q = q.not('deleted_at','is',null);
+  if (ratingFilter) {
+    const r = parseInt(ratingFilter, 10);
+    q = q.gte('rating', r-0.5).lt('rating', r+0.5);
+  }
+  const { data, error } = await q;
+  const list = document.getElementById('rv-list');
+  if (error || !data) {
+    list.innerHTML = `<div style="padding:30px;text-align:center;color:#EF4444;">Erro ao carregar: ${escHtml(error?.message||'desconhecido')}</div>`;
+    return;
+  }
+  document.getElementById('rv-count').textContent = `${data.length} ${data.length===1?'review':'reviews'}`;
+  if (!data.length) {
+    list.innerHTML = '<div style="padding:30px;text-align:center;color:var(--t3);">Nenhuma review com esses filtros.</div>';
+    return;
+  }
+  const firmMap = {}; _rvFirms.forEach(f => firmMap[f.id] = f.name);
+  list.innerHTML = data.map(r => renderRvCard(r, firmMap)).join('');
+}
+
+function renderRvCard(r, firmMap){
+  const isDeleted = !!r.deleted_at;
+  const stars = '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5-Math.round(r.rating));
+  const date = new Date(r.created_at).toLocaleString('pt-BR');
+  const deletedInfo = isDeleted ? `<div style="background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.3);padding:8px 12px;border-radius:8px;margin-top:10px;font-size:12px;color:#FCA5A5;">
+    🗑️ Excluída em ${new Date(r.deleted_at).toLocaleString('pt-BR')} ${r.deleted_reason ? '· Motivo: ' + escHtml(r.deleted_reason) : ''}
+  </div>` : '';
+  return `<div class="rv-card" style="background:${isDeleted?'rgba(239,68,68,.04)':'rgba(255,255,255,.04)'};border:1px solid ${isDeleted?'rgba(239,68,68,.2)':'rgba(255,255,255,.10)'};border-radius:12px;padding:18px 20px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+      <div style="font-weight:700;color:#F0B429;">${stars}</div>
+      <div style="font-size:13px;font-weight:700;">${escHtml(firmMap[r.firm_id] || r.firm_id)}</div>
+      <div style="font-size:11px;color:var(--t3);">user ${escHtml(String(r.user_id).slice(0,8))}…</div>
+      <div style="font-size:11px;color:var(--t3);margin-left:auto;">${escHtml(date)}</div>
+    </div>
+    ${r.title ? `<div style="font-weight:700;font-size:14px;margin-bottom:6px;">${escHtml(r.title)}</div>` : ''}
+    <div style="font-size:13px;color:var(--t1);line-height:1.55;white-space:pre-wrap;">${escHtml(r.body)}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+      ${r.account_size?`<span style="font-size:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:3px 9px;border-radius:99px;color:var(--t2);">${escHtml(r.account_size)}</span>`:''}
+      ${r.program?`<span style="font-size:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:3px 9px;border-radius:99px;color:var(--t2);">${escHtml(r.program)}</span>`:''}
+      ${r.reached_payout===true?`<span style="font-size:11px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);padding:3px 9px;border-radius:99px;color:#10B981;">✓ Payout</span>`:''}
+      <span style="font-size:11px;color:var(--t3);margin-left:auto;">▲ ${r.upvote_count||0} útil${(r.upvote_count||0)===1?'':'s'}</span>
+    </div>
+    ${deletedInfo}
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      ${isDeleted
+        ? `<button onclick="restoreReview('${r.id}')" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.4);color:#10B981;padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-family:inherit;font-weight:600;">↩ Restaurar</button>`
+        : `<button onclick="deleteReviewWithReason('${r.id}')" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:#FCA5A5;padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-family:inherit;font-weight:600;">🗑️ Excluir</button>`
+      }
+    </div>
+  </div>`;
+}
+
+async function deleteReviewWithReason(id){
+  const reason = prompt('Motivo da exclusão (vai pro audit log):\n(Ex: linguagem ofensiva, falsa, contra termos)');
+  if (!reason || reason.trim().length < 3) { alert('Motivo é obrigatório (min 3 chars)'); return; }
+  const u = (await db.auth.getUser()).data?.user;
+  const { error } = await db.from('firm_reviews').update({
+    deleted_at: new Date().toISOString(),
+    deleted_by: u?.id,
+    deleted_reason: reason.trim()
+  }).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  loadAdminReviews();
+}
+
+async function restoreReview(id){
+  if (!confirm('Restaurar essa review? Voltará a aparecer no site.')) return;
+  const { error } = await db.from('firm_reviews').update({
+    deleted_at: null,
+    deleted_by: null,
+    deleted_reason: null
+  }).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  loadAdminReviews();
 }
 
 async function initCriativos() {
