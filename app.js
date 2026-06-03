@@ -1111,20 +1111,13 @@ function mcRatingBadge(f){
   const beFirst = _T('mc_be_first', langPT ? 'Seja o primeiro a avaliar' : 'Be the first to review');
   const reviewS = _T('mc_review', langPT ? 'avaliação' : 'review');
   const reviewP = _T('mc_reviews', langPT ? 'avaliações' : 'reviews');
+  const _href = `onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)"`;
+  const _style = `style="display:inline-flex;align-items:center;gap:6px;background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.3);border-radius:8px;padding:5px 10px;text-decoration:none;font-size:12px;color:#fff;"`;
+  const _svg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
   if (count === 0) {
-    const beFirstShort = _T('mc_be_first_short', langPT ? 'Avalie' : 'Rate');
-    return `<a class="mc-badge mc-badge-empty" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)" style="display:inline-flex;align-items:center;gap:6px;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.22);border-radius:8px;padding:5px 10px;text-decoration:none;font-size:12px;color:#fff;">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-      <span style="color:#F0B429;font-weight:600;">${beFirstShort}</span>
-      <span style="color:rgba(255,255,255,.55);">Markets</span>
-    </a>`;
+    return `<a class="mc-badge mc-badge-empty" href="#" ${_href} ${_style}>${_svg}<b style="color:#F0B429;">—</b><span style="color:rgba(255,255,255,.6);">MarketsCoupons Reviews</span></a>`;
   }
-  const stars = Math.round(rating);
-  return `<a class="mc-badge" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
-    <span class="mc-badge-label">${rating.toFixed(1)}</span>
-    <span class="mc-badge-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
-    <span class="mc-badge-info">${count.toLocaleString()} ${count===1?reviewS:reviewP} <b>Markets Coupons</b></span>
-  </a>`;
+  return `<a class="mc-badge" href="#" ${_href} ${_style}>${_svg}<b style="color:#F0B429;">${rating.toFixed(1)}</b><span style="color:rgba(255,255,255,.6);">${count.toLocaleString()} MarketsCoupons Reviews</span></a>`;
 }
 
 /* NAV */
