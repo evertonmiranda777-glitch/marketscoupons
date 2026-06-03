@@ -4256,7 +4256,7 @@ const CHECKOUT_FIRMS=[
      'Futures Rebate':[{size:'$25K',capital:'$25,000',goal:'$1,500',maxDD:'-4%',orig:'—',disc:'$150',featured:false},{size:'$50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'—',disc:'$299',featured:true}]
    },
    buildUrl:(size,type,plat)=>'https://www.the5ers.com/?afmc=19jp'},
-  {id:'fundingpips',name:'Funding Pips',short:'FundingPips',coupon:'HELLO',discount:'20%',color:'#6366F1',bg:'rgba(99,102,241,0.12)',
+  {id:'fundingpips',name:'Funding Pips',short:'FundingPips',coupon:null,discount:'20%',color:'#6366F1',bg:'rgba(99,102,241,0.12)',
    includes:['Up to 100% profit split','Weekly/Bi-weekly/On Demand payouts','Leverage up to 1:100','No time limit','Swap Free add-on (+10%)'],
    types:['Zero','1-Step','2-Step','Pro'],platforms:['MT5','Match-Trader','cTrader'],
    plansByType:{
@@ -4281,7 +4281,7 @@ const CHECKOUT_FIRMS=[
      'E8 One':[{size:'$5K',capital:'$5,000',goal:'$450',maxDD:'-6%',orig:'$60',disc:'$54',featured:false},{size:'$10K',capital:'$10,000',goal:'$900',maxDD:'-6%',orig:'$90',disc:'$81',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,250',maxDD:'-6%',orig:'$170',disc:'$153',featured:false},{size:'$50K',capital:'$50,000',goal:'$4,500',maxDD:'-6%',orig:'$260',disc:'$234',featured:false},{size:'$100K',capital:'$100,000',goal:'$9,000',maxDD:'-6%',orig:'$488',disc:'$439.20',featured:true},{size:'$200K',capital:'$200,000',goal:'$18,000',maxDD:'-6%',orig:'$929',disc:'$836.10',featured:false},{size:'$400K',capital:'$400,000',goal:'$36,000',maxDD:'-6%',orig:'$1,799',disc:'$1,619.10',featured:false},{size:'$500K',capital:'$500,000',goal:'$45,000',maxDD:'-6%',orig:'$2,299',disc:'$2,069.10',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://e8markets.com/d/MARKET'},
-  {id:'cti',name:'City Traders Imperium',short:'CTI',coupon:'APR30',discount:'30%',color:'#0A74DA',bg:'rgba(10,116,218,0.12)',
+  {id:'cti',name:'City Traders Imperium',short:'CTI',coupon:null,discount:'30%',color:'#0A74DA',bg:'rgba(10,116,218,0.12)',
    includes:['5 evaluation programs','Up to 100% profit share','CTI Academy Access','No time limit','3-Step starts at $1','Instant funding available'],
    types:['1-Step','2-Step','3-Step (Direct)','Instant Funding','Pro Trader'],platforms:['Match-Trader'],
    plansByType:{
