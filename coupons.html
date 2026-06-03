@@ -454,7 +454,7 @@ const I18N = {
     trust_top3: 'Top 4 firmas', trust_off: 'Sem taxa de ativação', trust_updated: 'Atualizado hoje',
     tag_fut: 'Futuros', off: 'OFF',
     accounts: 'Contas', reviews: 'reviews', split: 'Split',
-    pill_type: 'Tipo', pill_size: 'Tamanho',
+    pill_type: 'Tipo', pill_size: 'Tamanho', pill_account: 'Tipo de conta',
     pill_pack: 'Quantidade', pack_1: '1 conta', pack_5: '5 contas', pack_accounts: 'contas', pack_each: 'conta', pack_save: 'economiza', pack_vs: 'vs avulso',
     pill_var: 'Taxa de ativação', var_std: 'Padrão', var_nofee: 'Sem taxa de ativação', var_na: 'Indisponível', var_na_note: 'Pack de 5 sem taxa de ativação não disponível neste plano.', badge_new: 'Novo',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Payouts', plan_platforms: 'Plataformas',
@@ -477,7 +477,7 @@ const I18N = {
     trust_top3: 'Top 4 firms', trust_off: 'No activation fee', trust_updated: 'Updated today',
     tag_fut: 'Futures', off: 'OFF',
     accounts: 'Accounts', reviews: 'reviews', split: 'Split',
-    pill_type: 'Type', pill_size: 'Size',
+    pill_type: 'Type', pill_size: 'Size', pill_account: 'Account type',
     pill_pack: 'Quantity', pack_1: '1 account', pack_5: '5 accounts', pack_accounts: 'accounts', pack_each: 'account', pack_save: 'save', pack_vs: 'vs single',
     pill_var: 'Activation fee', var_std: 'Standard', var_nofee: 'No activation fee', var_na: 'Unavailable', var_na_note: '5-pack with no activation fee not available on this plan.', badge_new: 'New',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Payouts', plan_platforms: 'Platforms',
@@ -500,7 +500,7 @@ const I18N = {
     trust_top3: 'Top 4 firmas', trust_off: 'Sin tarifa de activación', trust_updated: 'Actualizado hoy',
     tag_fut: 'Futuros', off: 'OFF',
     accounts: 'Cuentas', reviews: 'reseñas', split: 'Split',
-    pill_type: 'Tipo', pill_size: 'Tamaño',
+    pill_type: 'Tipo', pill_size: 'Tamaño', pill_account: 'Tipo de cuenta',
     pill_pack: 'Cantidad', pack_1: '1 cuenta', pack_5: '5 cuentas', pack_accounts: 'cuentas', pack_each: 'cuenta', pack_save: 'ahorra', pack_vs: 'vs individual',
     pill_var: 'Tarifa de activación', var_std: 'Estándar', var_nofee: 'Sin tarifa de activación', var_na: 'No disponible', var_na_note: 'Pack de 5 sin tarifa de activación no disponible en este plan.', badge_new: 'Nuevo',
     plan_target: 'Profit Target', plan_dd: 'Drawdown', plan_pos: 'Max Position', plan_payouts: 'Pagos', plan_platforms: 'Plataformas',
@@ -670,17 +670,18 @@ const FIRMS = [
     discount: '50%', tag: 'fut', rating: '4.6', reviews: '1.3K',
     rangeAccounts: '$50K–$150K', split: '90%',
     url: 'https://www.tradeday.com/?a_aid=marketscoupons&utm_source=marketscoupons&utm_medium=bio&utm_campaign=ig_bio_tradeday',
+    accountTypes: ['QuickPay', 'FastPass'],
     types: ['Intraday', 'End of Day'],
     plans: {
       'Intraday': [
-        {size:'50K', orig:'$125', disc:'$62', target:'$3,000', dd:'Trail $2,000', pos:'5 contracts (50 micros)'},
-        {size:'100K', orig:'$230', disc:'$115', target:'$6,000', dd:'Trail $3,000', pos:'10 contracts (50 micros)', popular:true},
-        {size:'150K', orig:'$350', disc:'$175', target:'$9,000', dd:'Trail $4,500', pos:'15 contracts (50 micros)'},
+        {size:'50K', orig:'$125', disc:'$62', target:'$3,000', dd:'Trail $2,000', pos:'5 contracts (50 micros)', resets:'$60', consistency:'30%', minDays:'5'},
+        {size:'100K', orig:'$230', disc:'$115', target:'$6,000', dd:'Trail $3,000', pos:'10 contracts (50 micros)', resets:'$110', consistency:'30%', minDays:'5', popular:true},
+        {size:'150K', orig:'$350', disc:'$175', target:'$9,000', dd:'Trail $4,500', pos:'15 contracts (50 micros)', resets:'$165', consistency:'30%', minDays:'5'},
       ],
       'End of Day': [
-        {size:'50K', orig:'$175', disc:'$87', target:'$3,000', dd:'EOD $2,000', pos:'5 contracts (50 micros)'},
-        {size:'100K', orig:'$285', disc:'$142', target:'$6,000', dd:'EOD $3,000', pos:'10 contracts (50 micros)', popular:true},
-        {size:'150K', orig:'$395', disc:'$197', target:'$9,000', dd:'EOD $4,500', pos:'15 contracts (50 micros)'},
+        {size:'50K', orig:'$175', disc:'$87', target:'$3,000', dd:'EOD $2,000', pos:'5 contracts (50 micros)', resets:'$85', consistency:'30%', minDays:'5'},
+        {size:'100K', orig:'$285', disc:'$142', target:'$6,000', dd:'EOD $3,000', pos:'10 contracts (50 micros)', resets:'$135', consistency:'30%', minDays:'5', popular:true},
+        {size:'150K', orig:'$395', disc:'$197', target:'$9,000', dd:'EOD $4,500', pos:'15 contracts (50 micros)', resets:'$185', consistency:'30%', minDays:'5'},
       ],
     },
     payouts: { pt: 'Dia 1', en: 'Day 1', es: 'Día 1', it: 'Giorno 1', fr: 'Jour 1', de: 'Tag 1', ar: 'اليوم الأول' },
@@ -762,10 +763,11 @@ function getLocalized(field) {
 function renderFirms() {
   const container = document.getElementById('firms-list');
   FIRMS.forEach(firm => {
-    const state = { type: firm.types[0], sizeIdx: firm.plans[firm.types[0]].findIndex(p => p.popular), pack: '1', variant: 'std' };
+    const state = { type: firm.types[0], sizeIdx: firm.plans[firm.types[0]].findIndex(p => p.popular), pack: '1', variant: 'std', accountType: firm.accountTypes?.[0] || null };
     if (state.sizeIdx < 0) state.sizeIdx = 0;
     const hasPack = Object.values(firm.plans).some(arr => arr.some(p => p.p5));
     const hasVar = Object.values(firm.plans).some(arr => arr.some(p => p.na));
+    const hasAccTypes = Array.isArray(firm.accountTypes) && firm.accountTypes.length > 1;
     const card = document.createElement('div');
     card.className = 'fr';
     card.dataset.firm = firm.id;
@@ -784,6 +786,11 @@ function renderFirms() {
         <div><div class="v gold">★ ${firm.rating}</div><div class="l">${firm.reviews} ${T.reviews}</div></div>
       </div>
       <div class="fr-picker">
+        ${hasAccTypes ? `
+          <div class="fr-pills-label">${T.pill_account || 'Tipo de conta'}</div>
+          <div class="fr-pills" data-pills="acctype">
+            ${firm.accountTypes.map(a => `<button class="fr-pill" data-acc="${a}">${a}</button>`).join('')}
+          </div>` : ''}
         ${firm.types.length > 1 ? `
           <div class="fr-pills-label">${T.pill_type}</div>
           <div class="fr-pills" data-pills="type">
@@ -844,9 +851,10 @@ function renderFirms() {
       sizesEl.querySelectorAll('.fr-pill').forEach(b => {
         b.addEventListener('click', () => { state.sizeIdx = parseInt(b.dataset.idx, 10); refresh(); trackEvent('lp_plan_select', { firm_id: firm.id, plan_size: plans[state.sizeIdx].size, plan_type: state.type }); });
       });
-      // pack + variant pills active
+      // pack + variant + accountType pills active
       if (hasPack) card.querySelectorAll('[data-pills="pack"] .fr-pill').forEach(b => b.classList.toggle('active', b.dataset.pack === state.pack));
       if (hasVar) card.querySelectorAll('[data-pills="variant"] .fr-pill').forEach(b => b.classList.toggle('active', b.dataset.var === state.variant));
+      if (hasAccTypes) card.querySelectorAll('[data-pills="acctype"] .fr-pill').forEach(b => b.classList.toggle('active', b.dataset.acc === state.accountType));
       // detail (variant + pack aware)
       const naf = state.variant === 'nofee';
       const use5 = state.pack === '5';
@@ -908,6 +916,11 @@ function renderFirms() {
     // pack pill clicks (1 conta / 5 contas)
     card.querySelectorAll('[data-pills="pack"] .fr-pill').forEach(b => {
       b.addEventListener('click', () => { state.pack = b.dataset.pack; refresh(); trackEvent('lp_pack_select', { firm_id: firm.id, pack: state.pack }); });
+    });
+
+    // account type pill clicks (QuickPay / FastPass) — cosmetico, nao muda preco
+    card.querySelectorAll('[data-pills="acctype"] .fr-pill').forEach(b => {
+      b.addEventListener('click', () => { state.accountType = b.dataset.acc; refresh(); trackEvent('lp_acctype_select', { firm_id: firm.id, account_type: state.accountType }); });
     });
 
     refresh();
