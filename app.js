@@ -1110,14 +1110,14 @@ function dualRatingPill(f){
   const mcCount = f.internalReviews || 0;
   const mcRating = f.internalRating || 0;
   const mcDisplay = mcCount === 0 ? '0' : mcRating.toFixed(1);
-  const star = (color) => `<svg width="12" height="12" viewBox="0 0 24 24" fill="${color}" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+  const star = (color) => `<svg width="10" height="10" viewBox="0 0 24 24" fill="${color}" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
   const mcClick = `event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)`;
   const tpClick = tp ? `event.stopPropagation();event.preventDefault();openTpPopup('${tpUrl}')` : '';
   return `
-    <div style="display:inline-flex;align-items:stretch;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:10px;margin:8px 0 4px;overflow:hidden;font-size:12px;color:#fff;white-space:nowrap;max-width:100%;">
-      ${tp?`<a href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="${tpClick}" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#00b67a')}<b style="color:#00b67a;">${tpScore}</b><span style="color:rgba(255,255,255,.65);">Trustpilot</span></a>`:`<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;color:rgba(255,255,255,.4);flex-shrink:0;">${star('#00b67a')}<span>Trustpilot —</span></span>`}
+    <div style="display:inline-flex;align-items:stretch;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:8px;margin:8px 0 4px;overflow:hidden;font-size:10px;color:#fff;white-space:nowrap;max-width:100%;">
+      ${tp?`<a href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="${tpClick}" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#00b67a')}<b style="color:#00b67a;">${tpScore}</b><span style="color:rgba(255,255,255,.65);">Trustpilot</span></a>`:`<span style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;color:rgba(255,255,255,.4);flex-shrink:0;">${star('#00b67a')}<span>Trustpilot —</span></span>`}
       <span style="width:1px;background:rgba(255,255,255,.12);flex-shrink:0;"></span>
-      <a href="#" onclick="${mcClick}" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span></a>
+      <a href="#" onclick="${mcClick}" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span></a>
     </div>`;
 }
 
