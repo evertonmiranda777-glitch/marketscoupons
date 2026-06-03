@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Redirecionando…</title>
+<meta name="robots" content="noindex,nofollow">
+<!-- Apex/Bulenox skip-list: estas 2 não passam por /buy/ (decisão Everton 2026-06-03) -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#0a0d14;color:#fff;font-family:'Inter',-apple-system,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.box{max-width:480px;padding:36px 28px;text-align:center}
+.logo-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px}
+.logo-icon{width:32px;height:32px}
+.logo-txt{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.logo-txt em{color:#F0B429;font-style:normal}
+.spinner{width:54px;height:54px;border:3px solid rgba(240,180,41,.18);border-top-color:#F0B429;border-radius:50%;margin:0 auto 26px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.firm-name{font-size:22px;font-weight:800;margin-bottom:10px;color:#F0B429}
+.msg{font-size:15px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:18px}
+.coupon-box{background:rgba(240,180,41,.08);border:1.5px dashed rgba(240,180,41,.4);border-radius:12px;padding:14px 18px;margin:14px 0 22px;font-size:13px;color:#F0B429}
+.coupon-box .code{font-size:22px;font-weight:900;letter-spacing:2px;display:block;margin-top:4px}
+.hint{font-size:13px;color:rgba(255,255,255,.5);line-height:1.5;margin-top:22px}
+.hint b{color:#fff;font-weight:700}
+.fallback-link{display:inline-block;margin-top:18px;color:#F0B429;font-size:13px;text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo-wrap">
+    <svg class="logo-icon" viewBox="0 0 50 50" fill="none"><path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="#F0B429" stroke-width="2.4" fill="none"/><path d="M14 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M36 33V20L25 28" stroke="#F0B429" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <div class="logo-txt">Markets<em>Coupons</em></div>
+  </div>
+  <div class="spinner"></div>
+  <div class="firm-name" id="firm-name">Carregando…</div>
+  <div class="msg" id="msg">Você será redirecionado em instantes.</div>
+  <div class="coupon-box" id="coupon-box" style="display:none">
+    <span>CUPOM EXCLUSIVO</span>
+    <span class="code" id="coupon-code"></span>
+    <span style="font-size:11px;color:rgba(255,255,255,.6);display:block;margin-top:6px">✓ Copiado para a área de transferência</span>
+  </div>
+  <div class="hint" id="hint" style="display:none">
+    Quando a página da firma carregar, clique em <b>GET FUNDED / SIGN UP / BUY</b> e cole o cupom no checkout.
+  </div>
+  <a class="fallback-link" id="fallback-link" style="display:none" href="#">Não foi redirecionado? Clique aqui</a>
+</div>
+
+<script>
+(async function(){
+  // ───────────────────────────────────────────────────────────
+  // /buy/<firm-id> — redirect intermediário SEM perder atribuição
+  // - Track event 'firm_buy_click' no Supabase (intenção de compra)
+  // - Meta CAPI InitiateCheckout (melhora signal pros ads)
+  // - Auto-copy cupom pra clipboard
+  // - window.location.href pro link original do Supabase (cookie afiliado set pelo domain da firma)
+  // - Apex/Bulenox SKIP (decisão Everton 2026-06-03) — vão direto sem passar por aqui
+  // ───────────────────────────────────────────────────────────
+
+  const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+  const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+
+  // SAFETY: Apex/Bulenox NUNCA passam por aqui (Everton ordem 2026-06-03)
+  const SKIP_LIST = ['apex','bulenox'];
+
+  // Get firm id from URL: /buy/X ou ?firm=X
+  const path = location.pathname.split('/').filter(Boolean);
+  let firmId = '';
+  if (path[0] === 'buy' && path[1]) firmId = path[1].toLowerCase();
+  else firmId = (new URLSearchParams(location.search)).get('firm')?.toLowerCase() || '';
+
+  if (!firmId) {
+    document.getElementById('msg').textContent = 'Firma não especificada. Volte ao site.';
+    setTimeout(()=>location.href='/', 2000);
+    return;
+  }
+
+  // SKIP guard pra Apex/Bulenox: redireciona pro firm overlay nativo (mantém comportamento atual)
+  if (SKIP_LIST.includes(firmId)) {
+    location.href = '/' + firmId;
+    return;
+  }
+
+  // Get firm from cache primeiro (já populado no site principal), fallback Supabase
+  let firm = null;
+  try {
+    const cached = localStorage.getItem('mc_firms_cache_v12');
+    if (cached) {
+      const arr = JSON.parse(cached);
+      firm = arr.find(f => f.id === firmId);
+    }
+  } catch(e){}
+
+  if (!firm) {
+    try {
+      const r = await fetch(`${SB_URL}/rest/v1/cms_firms?id=eq.${firmId}&select=id,name,link,coupon,discount,color&limit=1`, {
+        headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON }
+      });
+      const data = await r.json();
+      firm = data[0];
+    } catch(e){}
+  }
+
+  if (!firm || !firm.link) {
+    document.getElementById('msg').textContent = 'Firma não encontrada. Volte ao site.';
+    setTimeout(()=>location.href='/firms', 2500);
+    return;
+  }
+
+  // Update UI
+  document.getElementById('firm-name').textContent = firm.name || firmId;
+  document.getElementById('msg').textContent = `Indo pra ${firm.name}…`;
+
+  // Apply firm color
+  if (firm.color) {
+    document.documentElement.style.setProperty('--accent', firm.color);
+    document.querySelectorAll('.spinner').forEach(s => s.style.borderTopColor = firm.color);
+    document.getElementById('firm-name').style.color = firm.color;
+  }
+
+  // Show coupon + auto-copy
+  if (firm.coupon) {
+    document.getElementById('coupon-code').textContent = firm.coupon;
+    document.getElementById('coupon-box').style.display = 'block';
+    try { await navigator.clipboard.writeText(firm.coupon); } catch(e){}
+    document.getElementById('hint').style.display = 'block';
+  }
+
+  // Fallback link visible
+  const fb = document.getElementById('fallback-link');
+  fb.href = firm.link;
+  fb.style.display = 'inline-block';
+
+  // ─── Track event (no-block) ───
+  try {
+    // 1. Internal Supabase event
+    fetch(`${SB_URL}/rest/v1/events`, {
+      method: 'POST',
+      headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: 'firm_buy_click',
+        session_id: (function(){ try { return sessionStorage.getItem('mc_sid') || ('sid_'+Date.now()+'_'+Math.random().toString(36).slice(2,8)); } catch(e){ return null; } })(),
+        params: {
+          firm_id: firm.id,
+          firm_name: firm.name,
+          coupon: firm.coupon,
+          discount: firm.discount,
+          url_dest: firm.link,
+          page_name: 'buy_intermediate',
+          referrer: document.referrer || null
+        }
+      }),
+      keepalive: true,
+    }).catch(()=>{});
+
+    // 2. Meta CAPI InitiateCheckout (via existing /api/capi endpoint)
+    fetch('/api/capi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event_name: 'InitiateCheckout',
+        event_id: 'buy_' + firm.id + '_' + Date.now(),
+        custom_data: {
+          content_type: 'product',
+          content_ids: [firm.id],
+          content_name: firm.name,
+          currency: 'USD',
+          value: 3.00,
+        }
+      }),
+      keepalive: true,
+    }).catch(()=>{});
+
+    // 3. GA4 + Meta Pixel via dataLayer (consent granted on this page)
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      event: 'begin_checkout',
+      firm_id: firm.id,
+      firm_name: firm.name,
+      coupon_code: firm.coupon,
+      value: 3.00,
+      currency: 'USD'
+    });
+  } catch(e){}
+
+  // Redirect after small delay (500ms — UX visivel + tracking completa)
+  setTimeout(() => {
+    location.href = firm.link;
+  }, 700);
+})();
+</script>
+</body>
+</html>
