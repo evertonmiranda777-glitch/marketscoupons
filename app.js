@@ -1112,9 +1112,11 @@ function mcRatingBadge(f){
   const reviewS = _T('mc_review', langPT ? 'avaliação' : 'review');
   const reviewP = _T('mc_reviews', langPT ? 'avaliações' : 'reviews');
   if (count === 0) {
-    return `<a class="mc-badge mc-badge-empty" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
-      <span class="mc-badge-stars">☆☆☆☆☆</span>
-      <span class="mc-badge-info">${beFirst} <b>Markets Coupons</b></span>
+    const beFirstShort = _T('mc_be_first_short', langPT ? 'Avalie' : 'Rate');
+    return `<a class="mc-badge mc-badge-empty" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)" style="display:inline-flex;align-items:center;gap:6px;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.22);border-radius:8px;padding:5px 10px;text-decoration:none;font-size:12px;color:#fff;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+      <span style="color:#F0B429;font-weight:600;">${beFirstShort}</span>
+      <span style="color:rgba(255,255,255,.55);">Markets</span>
     </a>`;
   }
   const stars = Math.round(rating);
