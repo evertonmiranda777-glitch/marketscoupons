@@ -3284,7 +3284,18 @@ function openFD(id, f) {
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_payout')}</div><div class="fd-stat-val b">${tf(f.payoutSpeed)||'—'}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_max_contas')}</div><div class="fd-stat-val b">${f.maxAccounts||'—'}</div></div>
   </div>`;
+  // Reviews section — mount lazy depois do paint inicial (não bloqueia overlay)
+  L += `<div class="fd-section fd-reviews-section"><div class="fd-section-title">${t('drw_avaliacoes')||'Avaliações de usuários'}</div><div id="fd-reviews-mount" style="margin-top:8px"></div></div>`;
   document.getElementById('fd-left').innerHTML = L;
+
+  // Lazy mount reviews UI
+  setTimeout(() => {
+    try {
+      if (window.MCReviews && document.getElementById('fd-reviews-mount')) {
+        MCReviews.mount(id, document.getElementById('fd-reviews-mount'), f.name);
+      }
+    } catch(e){ console.warn('reviews mount fail', e); }
+  }, 200);
 
   // ── RIGHT: Checkout ──
   fdRenderRight(id, f);

@@ -1,0 +1,72 @@
+/* Reviews UI — MarketsCoupons */
+.mcr-container{font-family:'Inter',sans-serif;color:#fff}
+.mcr-loading{padding:40px;text-align:center;color:rgba(255,255,255,.55);font-size:14px}
+.mcr-empty{padding:30px;text-align:center;color:rgba(255,255,255,.55);background:rgba(255,255,255,.03);border-radius:12px;font-size:14px}
+
+/* Stats header */
+.mcr-stats{display:grid;grid-template-columns:200px 1fr;gap:30px;padding:24px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:14px;margin-bottom:24px}
+.mcr-stats-left{text-align:center;border-right:1px solid rgba(255,255,255,.08);padding-right:24px}
+.mcr-avg{font-size:54px;font-weight:900;color:#F0B429;line-height:1}
+.mcr-stars{margin:8px 0}
+.mcr-total{font-size:13px;color:rgba(255,255,255,.6)}
+.mcr-stats-right{display:flex;flex-direction:column;gap:6px;justify-content:center}
+.mcr-dist-row{display:grid;grid-template-columns:30px 1fr 40px;align-items:center;gap:10px;font-size:13px}
+.mcr-dist-lbl{color:rgba(255,255,255,.75)}
+.mcr-dist-bar{background:rgba(255,255,255,.08);height:8px;border-radius:4px;overflow:hidden}
+.mcr-dist-fill{background:linear-gradient(90deg,#F0B429,#FCD34D);height:100%;border-radius:4px;transition:width .3s}
+.mcr-dist-cnt{color:rgba(255,255,255,.55);text-align:right;font-size:12px}
+
+/* Form */
+.mcr-section{margin-bottom:26px}
+.mcr-section-title{font-size:18px;font-weight:800;margin-bottom:14px;color:#fff}
+.mcr-form{background:rgba(240,180,41,.04);border:1px solid rgba(240,180,41,.20);border-radius:14px;padding:22px}
+.mcr-form-title{font-size:16px;font-weight:700;color:#F0B429;margin-bottom:16px}
+.mcr-form-row{margin-bottom:14px}
+.mcr-form-row label{display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.mcr-form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mcr-input,.mcr-textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 12px;color:#fff;font-family:inherit;font-size:14px}
+.mcr-input:focus,.mcr-textarea:focus{outline:none;border-color:#F0B429;background:rgba(0,0,0,.45)}
+.mcr-textarea{resize:vertical;min-height:90px;line-height:1.5}
+.mcr-rate-pick{display:flex;gap:6px;cursor:pointer;font-size:32px;user-select:none}
+.mcr-rate-star{color:rgba(255,255,255,.15);transition:color .15s}
+.mcr-rate-star.on{color:#F0B429}
+.mcr-rate-pick:hover .mcr-rate-star{color:rgba(240,180,41,.5)}
+.mcr-rate-pick:hover .mcr-rate-star:hover ~ .mcr-rate-star{color:rgba(255,255,255,.15)}
+.mcr-form-actions{display:flex;align-items:center;gap:14px;margin-top:18px}
+.mcr-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;transition:all .15s;font-family:inherit}
+.mcr-btn:hover{background:rgba(255,255,255,.14)}
+.mcr-btn-primary{background:#F0B429;color:#0a0d14;border-color:#F0B429}
+.mcr-btn-primary:hover{background:#FCD34D}
+.mcr-btn-primary:disabled{opacity:.6;cursor:wait}
+.mcr-form-msg{font-size:13px;font-weight:600}
+
+/* CTA login */
+.mcr-cta-login{background:rgba(240,180,41,.04);border:1px dashed rgba(240,180,41,.4);border-radius:14px;padding:30px;text-align:center}
+.mcr-cta-login .mcr-btn{margin-top:14px;background:#F0B429;color:#0a0d14;border-color:#F0B429}
+
+/* Review cards */
+.mcr-list{display:flex;flex-direction:column;gap:14px}
+.mcr-review{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px 20px}
+.mcr-review-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.mcr-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#F0B429,#D97706);color:#0a0d14;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.mcr-rev-meta{flex:1}
+.mcr-rev-name{font-weight:700;font-size:14px;color:#fff}
+.mcr-rev-time{font-size:11px;color:rgba(255,255,255,.5)}
+.mcr-rev-rating{display:flex;align-items:center;font-size:14px;color:#F0B429;font-weight:700}
+.mcr-rev-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
+.mcr-rev-body{font-size:14px;color:rgba(255,255,255,.85);line-height:1.55;margin-bottom:12px;white-space:pre-wrap}
+.mcr-rev-context{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.mcr-tag{font-size:11px;color:rgba(255,255,255,.75);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:4px 10px;border-radius:99px}
+.mcr-tag-good{color:#10B981;border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.08)}
+.mcr-tag-neutral{color:rgba(255,255,255,.5)}
+.mcr-rev-actions{display:flex;gap:10px;font-size:12px}
+.mcr-upvote{background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);padding:5px 12px;border-radius:6px;cursor:pointer;font-family:inherit}
+.mcr-upvote:hover{border-color:#F0B429;color:#F0B429}
+.mcr-upvote.voted{background:rgba(240,180,41,.12);border-color:#F0B429;color:#F0B429}
+
+/* Mobile */
+@media(max-width:680px){
+  .mcr-stats{grid-template-columns:1fr;gap:18px}
+  .mcr-stats-left{border-right:0;border-bottom:1px solid rgba(255,255,255,.08);padding-right:0;padding-bottom:18px}
+  .mcr-form-grid{grid-template-columns:1fr}
+}
