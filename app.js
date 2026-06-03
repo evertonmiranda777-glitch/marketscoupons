@@ -1114,14 +1114,14 @@ function mcRatingBadge(f){
   if (count === 0) {
     return `<a class="mc-badge mc-badge-empty" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
       <span class="mc-badge-stars">☆☆☆☆☆</span>
-      <span class="mc-badge-info">${beFirst} no <b>Markets Coupons</b></span>
+      <span class="mc-badge-info">${beFirst} <b>Markets Coupons</b></span>
     </a>`;
   }
   const stars = Math.round(rating);
   return `<a class="mc-badge" href="#" onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)">
     <span class="mc-badge-label">${rating.toFixed(1)}</span>
     <span class="mc-badge-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
-    <span class="mc-badge-info">${count.toLocaleString()} ${count===1?reviewS:reviewP} no <b>Markets Coupons</b></span>
+    <span class="mc-badge-info">${count.toLocaleString()} ${count===1?reviewS:reviewP} <b>Markets Coupons</b></span>
   </a>`;
 }
 
