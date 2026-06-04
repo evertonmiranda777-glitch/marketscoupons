@@ -1,11 +1,11 @@
 name: Email auto-dispatch (cron diário)
 
 on:
-  # Re-habilitado 2026-06-03: 3 providers free configurados (Brevo + Resend + SendGrid).
-  # Cascata em api/send-email.js: Resend -> Brevo -> SendGrid. Total ~300/dia free.
-  # Roda 11h UTC (8h BRT) — fora pico US/EU pra melhor deliverability.
-  schedule:
-    - cron: '0 11 * * *'
+  # DESABILITADO PERMANENTE 2026-06-03 — decisao do user.
+  # ZERO automatismo de campanha. Envio so manual via admin UI (botao "Enviar agora").
+  # Welcome email transacional CONTINUA real-time via SQL trigger Supabase (nao depende deste workflow).
+  # schedule:
+  #   - cron: '0 11 * * *'
   workflow_dispatch:
     inputs:
       campaign:

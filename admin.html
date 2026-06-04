@@ -1394,9 +1394,18 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <span style="color:var(--b3);">·</span>
        <span style="color:var(--gold);display:inline-flex;align-items:center;gap:4px;" title="5 emails Brevo reservados pra welcome/confirm de novos cadastros — não consumidos pelo bulk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>+5 reservados pra transacional</span>
      </div>
-     <div style="display:flex;gap:8px;flex-wrap:wrap;">
+     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
        <button class="btn-secondary" onclick="showCampaignHistory()" style="padding:8px 14px;font-size:12px;">Ver histórico</button>
-       <button id="auto-force-btn" onclick="forceCronSend()" style="padding:8px 14px;background:linear-gradient(135deg,#F0B429,#D97706);border:none;color:#07090D;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 4 20 12 6 20"/></svg>Enviar <span id="auto-force-qty">500</span> agora</button>
+       <select id="auto-force-campaign" style="padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:inherit;font-size:12px;cursor:pointer;">
+         <option value="site-invite">site-invite</option>
+         <option value="top3">top3</option>
+         <option value="ultimas-horas">ultimas-horas</option>
+         <option value="loyalty">loyalty</option>
+         <option value="indicators">indicators</option>
+         <option value="blog-guides">blog-guides</option>
+       </select>
+       <input id="auto-force-qty-input" type="number" min="1" max="500" value="250" style="width:80px;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:inherit;font-size:12px;text-align:center;" title="Quantidade de emails (max 500/dia somando Brevo+Resend+SendGrid)">
+       <button id="auto-force-btn" onclick="forceCronSend()" style="padding:8px 14px;background:linear-gradient(135deg,#F0B429,#D97706);border:none;color:#07090D;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 4 20 12 6 20"/></svg>Enviar agora</button>
        <button id="auto-toggle-btn" onclick="toggleAutoEmail()" style="padding:8px 14px;background:transparent;border:1px solid rgba(239,68,68,.32);color:var(--red);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Pausar</button>
      </div>
    </div>
@@ -15496,48 +15505,38 @@ function setAutoDailyLimit(v){
 
 async function forceCronSend(){
   const btn = document.getElementById('auto-force-btn'); if(!btn) return;
-  // Endpoint /api/cron-bulk-send deletado em 2026-05-25 (Vercel function limit).
-  // User enviando emails manualmente agora. Botão preservado pra não quebrar layout.
-  toast('Envio em massa desativado — use envio manual', 'warn');
-  return;
-  // Buscar progresso real ANTES de mostrar prompt
+  const campaign = (document.getElementById('auto-force-campaign')?.value || 'site-invite').trim();
+  const qtyInput = document.getElementById('auto-force-qty-input');
+  const batchSize = Math.max(1, Math.min(500, parseInt(qtyInput?.value, 10) || 250));
+  // Buscar progresso real ANTES de confirmar
   let elegiveis = '?', jaReceberam = '?';
   try {
     const tk0 = await _adminBearer();
     const pr = await fetch('/api/brevo-stats?type=campaigns_progress', { headers:{ Authorization:'Bearer '+tk0 } });
     const pd = await pr.json();
-    const camp = (pd.campaigns||[]).find(c => c.campaign_key === 'site-invite');
+    const camp = (pd.campaigns||[]).find(c => c.campaign_key === campaign);
     if (camp) {
       jaReceberam = (camp.received_count||0).toLocaleString('pt-BR');
       elegiveis = (camp.pending_estimate||0).toLocaleString('pt-BR');
     }
   } catch {}
-  const defaultQty = parseInt(localStorage.getItem('mc-auto-daily-limit'),10) || 500;
-  const batchStr = prompt(
-    `ENVIAR AGORA — campanha site-invite\n\n`+
-    `Já receberam (NÃO recebem de novo): ${jaReceberam}\n`+
-    `Elegíveis agora (sem tag received-site-invite): ${elegiveis}\n\n`+
-    `Quantos enviar? (max 500/dia somando os 3 providers)`,
-    String(defaultQty)
-  );
-  if(batchStr===null) return;
-  const batchSize = Math.max(1, Math.min(500, parseInt(batchStr,10) || defaultQty));
-  if(!confirm(`Disparar ${batchSize} emails AGORA?\n\nDedup garantido: query filtra tags=not.cs.{received-site-invite}. Quem ESTÁ na lista de "já receberam" (${jaReceberam}) é excluído antes de qualquer envio.`)) return;
+  if(!confirm(`Disparar ${batchSize} emails de "${campaign}" AGORA?\n\nJá receberam (NÃO recebem de novo): ${jaReceberam}\nElegíveis: ${elegiveis}\n\nDedup automático: filtra received-${campaign}.\nLimite ~500/dia (Brevo 295 + Resend 100 + SendGrid 100).`)) return;
   btn.disabled = true; const old = btn.innerHTML; btn.innerHTML = 'Enviando...';
   try{
     const tk = await _adminBearer();
-    const r = await fetch('/api/cron-bulk-send', {
+    // Endpoint atual: /api/send-email?action=cron-bulk (integrado pra evitar Vercel function limit).
+    // Auth: usa CRON_SECRET via header X-Cron-Secret (admin precisa fornecer JWT tambem como bypass)
+    const r = await fetch('/api/send-email?action=cron-bulk', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', Authorization: 'Bearer ' + tk },
-      body: JSON.stringify({ campaign:'site-invite', batchSize })
+      body: JSON.stringify({ campaign, batchSize, _admin_bypass: true })
     });
     const data = await r.json();
     if(!r.ok){ toast('Falha: '+(data.error||r.status), 'error'); return; }
-    if(data.skipped){ toast('Pulou: '+data.reason, 'warn'); return; }
-    if(data.message==='Daily quota exhausted'){ toast('Quota diária esgotada. Tente amanhã.','warn'); return; }
-    if(data.message==='No eligible subscribers'){ toast('Nenhum subscriber pendente.','warn'); return; }
-    toast(`${data.sent||0} enviados (${data.failed||0} falhas) · Brevo:${data.brevoSent||0} Resend:${data.resendSent||0} SendGrid:${data.sgSent||0}`);
-    await loadAutoStatus();
+    if(data.message==='no_eligible_recipients'){ toast(`Sem elegiveis pra "${campaign}". ${data.already_received||0} ja receberam.`,'warn'); return; }
+    if(data.error==='unknown_campaign'){ toast(`Campanha "${campaign}" nao existe. Disponiveis: ${(data.available||[]).join(', ')}`,'error'); return; }
+    toast(`${data.sent||0} enviados (${data.failed||0} falhas, ${data.skipped||0} pulados)`,'success');
+    if(typeof loadAutoStatus==='function') await loadAutoStatus();
     if(typeof loadEmailToday==='function') await loadEmailToday();
     if(typeof loadCampaignsProgress==='function') await loadCampaignsProgress();
   } catch(e){ toast('Erro: '+e.message,'error'); }

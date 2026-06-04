@@ -102,9 +102,16 @@ module.exports = async (req, res) => {
   // Substitui /api/cron-bulk-send.js deletado (Vercel function limit 12).
   // Auth: Bearer CRON_SECRET. Lê subscribers sem tag received-{campaign}, envia em lote.
   if (req.query?.action === 'cron-bulk' || req.query?.list_active === '1') {
-    const cronSecret = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
-    if (!cronSecret || cronSecret !== process.env.CRON_SECRET) {
-      return res.status(401).json({ error: 'invalid_cron_secret' });
+    const authBearer = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    const isCronSecret = authBearer && authBearer === process.env.CRON_SECRET;
+    let isAdminUI = false;
+    if (!isCronSecret && authBearer) {
+      // Fallback: aceita JWT admin (UI manual do admin clicando "Enviar agora")
+      const u = await validateAdmin(authBearer);
+      if (u) isAdminUI = true;
+    }
+    if (!isCronSecret && !isAdminUI) {
+      return res.status(401).json({ error: 'invalid_auth_cron_or_admin' });
     }
     // GET ?list_active=1 — retorna lista de campanhas ativas (Supabase site_settings.email_active_campaigns)
     if (req.query.list_active === '1') {
