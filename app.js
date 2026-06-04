@@ -5109,11 +5109,13 @@ function renderPlatforms() {
     <div class="plat-card${p.highlight?' plat-card-featured':''}">
       ${p.highlight ? `<div class="plat-banner"><span class="plat-banner-text">${t('plat_oferta_excl')} — ${p.discount}% OFF</span></div>` : ''}
       <div class="plat-card-top">
+        ${p.id === 'ninjatrader' && p.link ? `<a href="${p.link}" target="_blank" rel="noopener" onclick="track('platform_logo_click',{platform:'ninjatrader'})" style="text-decoration:none;display:contents;color:inherit;" title="NinjaTrader">` : ''}
         <div class="plat-logo" style="background:${p.bg};color:${p.color};">${p.icon_url?`<img src="${p.icon_url}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;">`:p.icon}</div>
         <div>
           <div class="plat-name">${p.name}</div>
           <div class="plat-type">${p.type}</div>
         </div>
+        ${p.id === 'ninjatrader' && p.link ? `</a>` : ''}
         ${p.discount > 0 && !p.highlight ? `<div class="plat-badge" style="background:rgba(240,180,41,.06);color:var(--gold);border:1px solid rgba(240,180,41,.15);">${p.discount}% OFF</div>` : p.badge ? `<div class="plat-badge" style="background:${p.bg};color:${p.color};border:1px solid ${p.color}30;">${p.badge}</div>` : ''}
       </div>
       <div class="plat-body">
