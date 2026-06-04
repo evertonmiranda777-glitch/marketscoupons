@@ -10272,7 +10272,7 @@ async function sendEmailsSmtp(){
     if(sp('sp-counter')) sp('sp-counter').textContent = `${sent.toLocaleString('pt-BR')} / ${totalLeads.toLocaleString('pt-BR')}`;
     if(sp('sp-bar')) sp('sp-bar').style.width = pct + '%';
     if(sp('sp-rate')) sp('sp-rate').textContent = `${rate.toLocaleString('pt-BR')} / min`;
-    if(sp('sp-eta')) sp('sp-eta').textContent = remaining > 0 ? etaText : '✓ done';
+    if(sp('sp-eta')) sp('sp-eta').textContent = remaining > 0 ? etaText : 'concluído';
     if(sp('sp-sent')) sp('sp-sent').textContent = sent.toLocaleString('pt-BR');
     if(sp('sp-failed')) sp('sp-failed').textContent = failed.toLocaleString('pt-BR');
     if(sp('sp-providers')) sp('sp-providers').textContent = `${_liveProviders.brevo}·${_liveProviders.resend}·${_liveProviders.sendgrid}`;
@@ -10280,7 +10280,7 @@ async function sendEmailsSmtp(){
   };
   const finalizeProgress = (sent, failed) => {
     hideSpinner();
-    if(sp('sp-status-label')) sp('sp-status-label').textContent = failed === 0 ? '✓ Concluído' : (sent === 0 ? '✗ Falhou' : '⚠ Parcial');
+    if(sp('sp-status-label')) sp('sp-status-label').textContent = failed === 0 ? 'Concluído' : (sent === 0 ? 'Falhou' : 'Parcial');
     if(sp('sp-status-label')) sp('sp-status-label').style.color = failed === 0 ? 'var(--green)' : (sent === 0 ? 'var(--red)' : 'var(--gold)');
   };
   showProgress();
@@ -13643,7 +13643,7 @@ function renderRvCard(r, firmMap){
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
       ${r.account_size?`<span style="font-size:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:3px 9px;border-radius:99px;color:var(--t2);">${escHtml(r.account_size)}</span>`:''}
       ${r.program?`<span style="font-size:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:3px 9px;border-radius:99px;color:var(--t2);">${escHtml(r.program)}</span>`:''}
-      ${r.reached_payout===true?`<span style="font-size:11px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);padding:3px 9px;border-radius:99px;color:#10B981;">✓ Payout</span>`:''}
+      ${r.reached_payout===true?`<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);padding:3px 9px;border-radius:99px;color:#10B981;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Payout</span>`:''}
       <span style="font-size:11px;color:var(--t3);margin-left:auto;">▲ ${r.upvote_count||0} útil${(r.upvote_count||0)===1?'':'s'}</span>
     </div>
     ${deletedInfo}
