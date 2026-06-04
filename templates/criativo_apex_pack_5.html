@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Apex Pack 5 — Markets Coupons</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
+body{position:relative;background-size:1080px 1920px;background-repeat:no-repeat;background-position:top left;}
+</style>
+</head>
+<body>
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const lang = (params.get('lang') || 'en').toLowerCase();
+  const variant = params.get('v') || '';
+  const base = 'apex-pack-5x';
+  const tries = [];
+  if (variant) tries.push(`${base}-${variant}-${lang}`);
+  tries.push(`${base}-${lang}`);
+  tries.push(base);
+  (async function(){
+    for (const name of tries) {
+      const url = `/img/Criativo/Canva-export/${name}.png`;
+      try { const r = await fetch(url,{method:'HEAD'}); if (r.ok){ document.body.style.backgroundImage=`url('${url}')`; return; } } catch(_){}
+    }
+  })();
+})();
+</script>
+</body></html>

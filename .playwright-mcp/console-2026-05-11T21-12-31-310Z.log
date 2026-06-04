@@ -1,5 +1,0 @@
-[    3046ms] [LOG] CleverTap [1778533954355]: CleverTap info: 545: Null value for key 'utmSource' was removed @ https://d2r1yp2w7bby2u.cloudfront.net/js/clevertap.min.js:14
-[    3047ms] [LOG] CleverTap [1778533954356]: CleverTap info: 545: Null value for key 'utmMedium' was removed @ https://d2r1yp2w7bby2u.cloudfront.net/js/clevertap.min.js:14
-[    3047ms] [LOG] CleverTap [1778533954356]: CleverTap info: 545: Null value for key 'utmCampaign' was removed @ https://d2r1yp2w7bby2u.cloudfront.net/js/clevertap.min.js:14
-[    3696ms] [ERROR] Failed to load resource: the server responded with a status of 422 () @ https://api.fundednext.com/api/affiliate/lander-content:0
-[    6360ms] [ERROR] Failed to load resource: net::ERR_CERT_COMMON_NAME_INVALID @ https://t.fundednext.com/v1/lst/universal-script?ph=6939e2cc6569e9b3a61df11433288c339a2455066972e3042699a36c2c908899&tag=!clicked&ref_url=https://fundednext.com/pt?fpr=everton33:0

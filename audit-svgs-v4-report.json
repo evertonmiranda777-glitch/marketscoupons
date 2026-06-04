@@ -1,0 +1,70 @@
+{
+  "total": 180,
+  "issues": [
+    {
+      "file": "img\\blog-diagrams\\wyckoff\\06-distribution-schematic.svg",
+      "bugs": [
+        {
+          "kind": "text-overlap",
+          "a": "Secondary",
+          "b": "Upthrust After",
+          "pct": 19
+        }
+      ]
+    },
+    {
+      "file": "img\\blog-diagrams\\order-flow\\01-footprint-anatomy.svg",
+      "bugs": [
+        {
+          "kind": "text-overlap",
+          "a": "5872.00",
+          "b": "156",
+          "pct": 24
+        },
+        {
+          "kind": "text-overlap",
+          "a": "5871.75",
+          "b": "301",
+          "pct": 24
+        }
+      ]
+    },
+    {
+      "file": "img\\blog-diagrams\\elliott\\15-btc-cycle.svg",
+      "bugs": [
+        {
+          "kind": "text-overlap",
+          "a": "$3,200 · Dec 2018",
+          "b": "$13.8K Jun 2019",
+          "pct": 29
+        },
+        {
+          "kind": "text-overlap",
+          "a": "$13.8K Jun 2019",
+          "b": "$3.8K Mar 2020",
+          "pct": 17
+        },
+        {
+          "kind": "text-overlap",
+          "a": "W2 retraced 78.6% of W1 (deep)",
+          "b": "BTC waves don't follow stock F",
+          "pct": 24
+        }
+      ]
+    },
+    {
+      "file": "img\\blog-diagrams\\risk-1r\\06-equity-curve.svg",
+      "bugs": [
+        {
+          "kind": "text-overlap",
+          "a": "trade #",
+          "b": "What you survive",
+          "pct": 23
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "text-overlap": 7
+  }
+}

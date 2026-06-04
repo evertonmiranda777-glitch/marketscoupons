@@ -1,7 +1,0 @@
-[    3593ms] TypeError: Cannot read properties of null (reading 'parentElement')
-    at https://ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP:233:56
-[    3921ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gw2.ftmo.com/tracker/public/v1/track:0
-[    4140ms] Uncaught TypeError: Cannot read properties of undefined (reading 'unshift')
-    at <anonymous> (https://www.clarity.ms/tag/uet/134608174?insights=1:0:522)
-    at <anonymous> (https://www.clarity.ms/tag/uet/134608174?insights=1:0:567)
-[    4198ms] [WARNING] Error CL001: Multiple Clarity tags detected. @ https://scripts.clarity.ms/0.8.59/clarity.js:1

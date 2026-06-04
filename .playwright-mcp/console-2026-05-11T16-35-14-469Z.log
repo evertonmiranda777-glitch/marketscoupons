@@ -1,7 +1,0 @@
-[     649ms] [WARNING] track insert error: TypeError: Failed to fetch @ https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js:1
-[    1797ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/tpt?v=verify50:0
-[    1798ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/tpt?v=verify50:0
-[    1798ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/tpt?v=verify50:0
-[ 2161632ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/events:0
-[ 2161636ms] [WARNING] track insert error: TypeError: Failed to fetch @ https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js:1
-[ 2161640ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/facebook-capi:0

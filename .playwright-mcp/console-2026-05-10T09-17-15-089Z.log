@@ -1,4 +1,0 @@
-[     906ms] [WARNING] track insert error: TypeError: Failed to fetch @ https://browser.sentry-cdn.com/8.50.0/bundle.tracing.min.js:1
-[    1111ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/fr/blog?v=test:0
-[    1111ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/fr/blog?v=test:0
-[    1111ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://www.marketscoupons.com/fr/blog?v=test:0
