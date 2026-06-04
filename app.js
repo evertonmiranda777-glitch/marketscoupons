@@ -5114,7 +5114,7 @@ function renderPlatforms() {
           <div class="plat-name">${p.name}</div>
           <div class="plat-type">${p.type}</div>
         </div>
-        ${p.discount > 0 ? `<div class="plat-badge" style="background:rgba(240,180,41,.06);color:var(--gold);border:1px solid rgba(240,180,41,.15);">${p.discount}% OFF</div>` : p.badge ? `<div class="plat-badge" style="background:${p.bg};color:${p.color};border:1px solid ${p.color}30;">${p.badge}</div>` : ''}
+        ${p.discount > 0 && !p.highlight ? `<div class="plat-badge" style="background:rgba(240,180,41,.06);color:var(--gold);border:1px solid rgba(240,180,41,.15);">${p.discount}% OFF</div>` : p.badge ? `<div class="plat-badge" style="background:${p.bg};color:${p.color};border:1px solid ${p.color}30;">${p.badge}</div>` : ''}
       </div>
       <div class="plat-body">
         <div class="plat-sec-label">SOBRE</div>
