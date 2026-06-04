@@ -96,19 +96,96 @@ async function validateAdmin(jwt) {
 }
 
 module.exports = async (req, res) => {
-  if (applyCors(req, res, { methods: 'POST, OPTIONS' })) return;
+  if (applyCors(req, res, { methods: 'POST, GET, OPTIONS' })) return;
+
+  // ─── CRON BULK SEND ROUTE (?action=cron-bulk) ───
+  // Substitui /api/cron-bulk-send.js deletado (Vercel function limit 12).
+  // Auth: Bearer CRON_SECRET. Lê subscribers sem tag received-{campaign}, envia em lote.
+  if (req.query?.action === 'cron-bulk' || req.query?.list_active === '1') {
+    const cronSecret = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    if (!cronSecret || cronSecret !== process.env.CRON_SECRET) {
+      return res.status(401).json({ error: 'invalid_cron_secret' });
+    }
+    // GET ?list_active=1 — retorna lista de campanhas ativas (Supabase site_settings.email_active_campaigns)
+    if (req.query.list_active === '1') {
+      try {
+        const subKey = SUPABASE_SERVICE_KEY || SUPABASE_KEY;
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?key=eq.email_active_campaigns&select=value`,
+          { headers: { apikey: subKey, Authorization: `Bearer ${subKey}` } });
+        if (!r.ok) return res.status(200).send('site-invite');
+        const rows = await r.json();
+        return res.status(200).send(rows[0]?.value || 'site-invite');
+      } catch { return res.status(200).send('site-invite'); }
+    }
+    // POST ?action=cron-bulk — dispara campanha
+    if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
+    const { campaign, batchSize } = req.body || {};
+    if (!campaign) return res.status(400).json({ error: 'missing_campaign' });
+    const N = Math.min(parseInt(batchSize, 10) || 250, 500);
+    const subKey = SUPABASE_SERVICE_KEY || SUPABASE_KEY;
+    try {
+      // 1. Buscar subscribers sem tag received-{campaign} + confirmed + nao unsubscribed
+      const tag = `received-${campaign}`;
+      const url = `${SUPABASE_URL}/rest/v1/email_subscribers?confirmed=eq.true&unsubscribed=eq.false&select=email,name&order=created_at.asc&limit=${N}`;
+      const r = await fetch(url, { headers: { apikey: subKey, Authorization: `Bearer ${subKey}` } });
+      if (!r.ok) return res.status(500).json({ error: 'fetch_subscribers_failed', status: r.status });
+      const all = await r.json();
+      // Filtrar quem ja tem received-{campaign} (filtragem em memoria)
+      const emails = all.map(s => (s.email||'').toLowerCase().trim()).filter(Boolean);
+      const already = await fetchAlreadyTagged(emails, campaign);
+      const recipients = all.filter(s => !already.has((s.email||'').toLowerCase().trim()));
+      if (!recipients.length) {
+        return res.status(200).json({ ok: true, campaign, message: 'no_eligible_recipients', total_subs: all.length, already_received: already.size });
+      }
+      // 2. Renderizar HTML do template via lib/email-render.js
+      let renderInstHtml, INST_TEMPLATES;
+      try {
+        const lib = require('../lib/email-render.js');
+        renderInstHtml = lib.renderInstHtml;
+        INST_TEMPLATES = lib.INST_TEMPLATES;
+      } catch (e) {
+        return res.status(500).json({ error: 'render_lib_missing', detail: e.message });
+      }
+      const tpl = INST_TEMPLATES?.[campaign];
+      if (!tpl) return res.status(400).json({ error: 'unknown_campaign', campaign, available: Object.keys(INST_TEMPLATES||{}) });
+      // 3. Renderizar HTML + subject (lang default 'en')
+      const lang = 'en';
+      const html = renderInstHtml(tpl, lang);
+      const subjectStr = (typeof tpl.subject === 'object' ? (tpl.subject[lang] || tpl.subject.en) : tpl.subject) || 'MarketsCoupons';
+      // 4. Enviar em chunks de 50 chamando a propria send-email logica interna (loop)
+      // Aqui, simplificadamente, retornamos a quantidade que seria enviada — o envio real
+      // delega pra mesma function via fetch interno (loop pequeno aceitavel)
+      // 4. Reescreve req.body + flag bypass admin pra delegar pra rotina principal abaixo
+      req.body = {
+        to: recipients.slice(0, 50).map(s => ({ email: s.email, name: s.name || 'Trader' })),
+        subject: subjectStr,
+        htmlContent: html,
+        tags: [`inst-${campaign}`],
+        campaign,
+      };
+      req._cronAuthorized = true;
+      // Continua execucao do handler normal abaixo (envio + dedup auto + logging)
+      // Nao retorna aqui — fall through pra rotina principal
+    } catch (e) {
+      return res.status(500).json({ error: 'cron_bulk_failed', detail: e.message });
+    }
+  }
+
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
 
   // Auth: validate JWT and verify admin role PRIMEIRO (bypassa rate limit pra admin)
-  const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
-  const admin = await validateAdmin(auth);
+  // Bypass quando vier do cron handler interno (action=cron-bulk autorizado por CRON_SECRET)
+  let admin = req._cronAuthorized ? { id: 'cron', cron: true } : null;
   if (!admin) {
-    // Não-admin: aplica rate limit anti-abuse (30/min por IP)
-    if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
-    return res.status(403).json({ error: 'Forbidden: admin access required' });
+    const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    admin = await validateAdmin(auth);
+    if (!admin) {
+      if (!rateLimitIp(req, 30)) return res.status(429).json({ error: 'rate_limit' });
+      return res.status(403).json({ error: 'Forbidden: admin access required' });
+    }
   }
   // Admin autenticado: rate limit MUITO maior (200/min) — disparo de 23k em chunks de 200 = ~120 calls
   if (!rateLimitIp(req, 200)) return res.status(429).json({ error: 'rate_limit_admin', detail: 'Even admin limited at 200/min — slow down or chunk larger' });

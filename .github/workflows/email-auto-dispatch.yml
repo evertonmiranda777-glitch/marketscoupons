@@ -1,9 +1,11 @@
 name: Email auto-dispatch (cron diário)
 
 on:
-  # schedule disabled 2026-05-18: user cancelou Resend, sem provider de envio
-  # schedule:
-  #   - cron: '0 11 * * *'
+  # Re-habilitado 2026-06-03: 3 providers free configurados (Brevo + Resend + SendGrid).
+  # Cascata em api/send-email.js: Resend -> Brevo -> SendGrid. Total ~300/dia free.
+  # Roda 11h UTC (8h BRT) — fora pico US/EU pra melhor deliverability.
+  schedule:
+    - cron: '0 11 * * *'
   workflow_dispatch:
     inputs:
       campaign:
