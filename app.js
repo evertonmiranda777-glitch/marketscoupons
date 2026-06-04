@@ -3331,7 +3331,7 @@ function openFD(id, f) {
   // Reviews section — mount lazy depois do paint inicial (não bloqueia overlay)
   const _revTitleMap = {pt:'Avaliações de Traders',en:'Trader Reviews',es:'Reseñas de Traders',it:'Recensioni dei Trader',fr:'Avis des Traders',de:'Trader-Bewertungen',ar:'تقييمات المتداولين',id:'Ulasan Trader'};
   const _revTitle = _revTitleMap[_currentLang] || _revTitleMap.en;
-  L += `<div class="fd-section fd-reviews-section" style="margin-top:22px;padding-top:24px;border-top:2px solid rgba(240,180,41,.25);"><div class="fd-section-title" style="font-size:20px;font-weight:800;color:#F0B429;margin-bottom:14px;">⭐ ${_revTitle}</div><div id="fd-reviews-mount"></div></div>`;
+  L += `<div class="fd-section fd-reviews-section" style="margin-top:22px;padding-top:24px;border-top:2px solid rgba(240,180,41,.25);"><div class="fd-section-title" style="font-size:20px;font-weight:800;color:#F0B429;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>${_revTitle}</div><div id="fd-reviews-mount"></div></div>`;
   document.getElementById('fd-left').innerHTML = L;
 
   // Lazy mount reviews UI
