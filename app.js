@@ -5105,7 +5105,10 @@ function getPlatforms() { return PLATFORMS_LANGS[_currentLang] || PLATFORMS_LANG
 function renderPlatforms() {
   const g = document.getElementById('plat-grid');
   if (!g) return;
-  g.innerHTML = getPlatforms().map(p => `
+  // Whitelist: somente plataformas com parceria/patrocinio ativo aparecem.
+  // Pra adicionar uma nova: incluir o id aqui. Pra desativar: remover.
+  const PLAT_ACTIVE = new Set(['ninjatrader','tradingview']);
+  g.innerHTML = getPlatforms().filter(p => PLAT_ACTIVE.has(p.id)).map(p => `
     <div class="plat-card${p.highlight?' plat-card-featured':''}">
       ${p.highlight ? `<div class="plat-banner"><span class="plat-banner-text">${t('plat_oferta_excl')} — ${p.discount}% OFF</span></div>` : ''}
       <div class="plat-card-top">
