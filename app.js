@@ -1260,15 +1260,18 @@ function detectLang() {
     localStorage.setItem('mc_lang',_pathParts[0]);
     return _pathParts[0];
   }
+  // Whitelist de idiomas suportados (chunks /i18n-X.js existem) — usado em vez de I18N[X]
+  // porque chunks sao carregados dinamicamente apos init.
+  const _SUPPORTED = new Set(['en','pt','es','it','fr','de','ar','id']);
   // Priority 2: URL query param (?lang=en)
   const _qLang=new URLSearchParams(location.search).get('lang');
-  if(_qLang && I18N[_qLang]) return _qLang;
+  if(_qLang && _SUPPORTED.has(_qLang)) return _qLang;
   // Priority 3: Hash param (#lang=en)
   const _hMatch=location.hash.match(/lang=(\w+)/);
-  if(_hMatch && I18N[_hMatch[1]]) return _hMatch[1];
+  if(_hMatch && _SUPPORTED.has(_hMatch[1])) return _hMatch[1];
   // Priority 4: Saved preference
   const saved = localStorage.getItem('mc_lang');
-  if (saved && I18N[saved]) return saved;
+  if (saved && _SUPPORTED.has(saved)) return saved;
   // Priority 5: Browser language
   const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
   if (nav.startsWith('en')) return 'en';
@@ -1278,6 +1281,7 @@ function detectLang() {
   if (nav.startsWith('fr')) return 'fr';
   if (nav.startsWith('de')) return 'de';
   if (nav.startsWith('ar')) return 'ar';
+  if (nav.startsWith('id')) return 'id';
   return 'en';
 }
 function applyTranslations() {
