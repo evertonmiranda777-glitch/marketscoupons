@@ -4353,9 +4353,15 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     Object.keys(activeByName).forEach(n => allCamps.add(n));
   }
 
-  const rows = [...allCamps].map(c => {
-    // Se onlyActive, c é nome ATIVO; busca dados em CADA map separadamente (byCamp e spendByCamp
-    // podem ter sufixos diferentes — campanha renomeada no Meta)
+  // Construir TODAS as linhas (sem filtro). Depois separamos em 2 grupos:
+  // 1) Ativas no Meta agora -> mesa principal
+  // 2) Inativas mas com dados no periodo selecionado -> mesa abaixo (pra ver o que funcionou)
+  const allCampsForRows = new Set();
+  Object.keys(byCamp).forEach(n => allCampsForRows.add(n));
+  Object.keys(spendByCamp).forEach(n => allCampsForRows.add(n));
+  Object.keys(activeByName).forEach(n => allCampsForRows.add(n));
+
+  const allRows = [...allCampsForRows].map(c => {
     const isActive = !!activeByName[c];
     const salesKey = isActive ? (findKeyInMap(c, byCamp) || c) : c;
     const spendKey = isActive ? (findKeyInMap(c, spendByCamp) || c) : c;
@@ -4369,8 +4375,14 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
     const meta = activeByName[c] || findActive(c);
     return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, metaPurchases:s.metaPurchases, metaLeads:s.metaLeads, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, meta };
-  }).filter(r => onlyActive ? r.meta : (r.sales > 0 && r.spendBRL > 0))
-    .sort((x,y) => y.sales - x.sales || (y.spendBRL - x.spendBRL) || (y.roas||-1) - (x.roas||-1));
+  }).sort((x,y) => y.sales - x.sales || (y.spendBRL - x.spendBRL) || (y.roas||-1) - (x.roas||-1));
+
+  // Ativas: tem r.meta (existe no Meta agora) — respeita filtro original
+  // Inativas: sem r.meta E tem (sales > 0 OU spendBRL > 0) no periodo (mostra o que rodou+gerou dado)
+  const rows = onlyActive
+    ? allRows.filter(r => r.meta)
+    : allRows.filter(r => r.meta && (r.sales > 0 || r.spendBRL > 0));
+  const inactiveRows = allRows.filter(r => !r.meta && (r.sales > 0 || r.spendBRL > 0));
 
   const fmtUSD = v => '$' + Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -4425,6 +4437,48 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <td>${actionCell}</td>
       </tr>`;
     }).join('') : '<tr><td colspan="11" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma campanha. ' + (onlyActive ? 'Desmarca "só ativas" pra ver pausadas com venda.' : 'Sem vendas + spend no período.') + '</td></tr>'}</tbody>`;
+
+  // === Seção INATIVAS (abaixo das ativas, mesmas colunas) ===
+  // Mostra campanhas pausadas/inexistentes no Meta atual que tiveram venda ou gasto no periodo selecionado.
+  // Ajuda a ver "o que funcionou" mesmo após pausar.
+  const existingInactive = wrap.querySelector('.fin-roas-inactive-block');
+  if (existingInactive) existingInactive.remove();
+  if (inactiveRows.length) {
+    const inactiveHtml = `
+    <div class="fin-roas-inactive-block" style="margin-top:24px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;">Campanhas Inativas</div>
+        <span style="font-size:11px;color:var(--t3);">— pausadas/removidas no Meta com dados no período (${inactiveRows.length})</span>
+      </div>
+      <table class="data" style="width:100%;font-size:12px;border-collapse:collapse;">
+        <thead><tr>
+          <th>Campanha</th><th>Status</th><th>Gasto</th><th>Cliques Ads</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
+        </tr></thead>
+        <tbody>${inactiveRows.map(r => {
+          const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
+          const roasColor = r.roas == null ? 'var(--t3)' : r.roas >= 2 ? '#10B981' : r.roas >= 1 ? '#F0B429' : '#EF4444';
+          const lucroColor = r.lucroBRL > 0 ? '#10B981' : r.lucroBRL < 0 ? '#EF4444' : 'var(--t3)';
+          const diverged = r.metaPurchases > 0 && r.sales === 0;
+          const leadsTag = r.metaLeads > 0 ? ` <span style="background:rgba(59,130,246,.15);color:#3B82F6;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600;margin-left:4px;">${r.metaLeads}L</span>` : '';
+          const salesCell = `<span title="Compras (Meta Pixel)">${r.metaPurchases || 0}</span> <span style="color:var(--t3);">/</span> <b style="color:${r.sales>0?'#10B981':'var(--t3)'};">${r.sales}</b>${leadsTag}`;
+          return `<tr style="opacity:.85;">
+            <td><b>${r.campaign}</b></td>
+            <td><span style="display:inline-block;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.12);color:#EF4444;font-size:11px;font-weight:600;">INATIVA</span></td>
+            <td>${fmtBRL(r.spendBRL)}</td>
+            <td>${r.clicks.toLocaleString('pt-BR')}</td>
+            <td>${salesCell}</td>
+            <td>${r.sales ? fmtUSD(r.revenueUSD) + '<div style="font-size:10px;color:var(--t3);">≈ '+fmtBRL(r.revBRL)+'</div>' : '—'}</td>
+            <td style="color:${roasColor};font-weight:700;">${r.roas!=null ? r.roas.toFixed(2)+'x' : '—'}</td>
+            <td style="color:${lucroColor};font-weight:700;">${(r.lucroBRL>=0?'+':'')+fmtBRL(r.lucroBRL)}</td>
+            <td>${r.cac ? fmtBRL(r.cac) : '—'}</td>
+            <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>` : '—'}</td>
+            <td><span style="color:var(--t3);font-size:11px;">—</span></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>`;
+    tbl.insertAdjacentHTML('afterend', inactiveHtml);
+  }
 }
 
 // Map country/region → IANA timezone pra calcular horário local do click (pra ajustar anúncios)
