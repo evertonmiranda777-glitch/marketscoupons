@@ -4306,9 +4306,10 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
   const spendByCamp = {};
   spend.forEach(s => {
     const k = s.campaign_name || '(sem campaign)';
-    if (!spendByCamp[k]) spendByCamp[k] = { spend:0, clicks:0, currency:s.currency||'USD', metaPurchases:0, metaLeads:0, metaConvValue:0 };
+    if (!spendByCamp[k]) spendByCamp[k] = { spend:0, clicks:0, impressions:0, currency:s.currency||'USD', metaPurchases:0, metaLeads:0, metaConvValue:0 };
     spendByCamp[k].spend += Number(s.spend||0);
     spendByCamp[k].clicks += Number(s.clicks||0);
+    spendByCamp[k].impressions += Number(s.impressions||0);
     spendByCamp[k].metaPurchases += Number(s.purchases||0);
     spendByCamp[k].metaLeads += Number(s.leads||0);
     spendByCamp[k].metaConvValue += Number(s.conversion_value||0);
@@ -4366,15 +4367,16 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const salesKey = isActive ? (findKeyInMap(c, byCamp) || c) : c;
     const spendKey = isActive ? (findKeyInMap(c, spendByCamp) || c) : c;
     const a = byCamp[salesKey] || { sales:0, revenueUSD:0, confs:[] };
-    const s = spendByCamp[spendKey] || { spend:0, clicks:0, currency:spendCur, metaPurchases:0, metaLeads:0, metaConvValue:0 };
+    const s = spendByCamp[spendKey] || { spend:0, clicks:0, impressions:0, currency:spendCur, metaPurchases:0, metaLeads:0, metaConvValue:0 };
     const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
     const revBRL = a.revenueUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (revBRL/spendBRL) : null;
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
     const lucroBRL = revBRL - spendBRL;
+    const cpmBRL = s.impressions > 0 && spendBRL > 0 ? (spendBRL / s.impressions) * 1000 : null;
     const avgConf = a.confs.length ? Math.round(a.confs.reduce((x,y)=>x+y,0)/a.confs.length) : 0;
     const meta = activeByName[c] || findActive(c);
-    return { campaign:c, spendBRL, clicks:s.clicks, sales:a.sales, metaPurchases:s.metaPurchases, metaLeads:s.metaLeads, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, meta };
+    return { campaign:c, spendBRL, clicks:s.clicks, impressions:s.impressions, cpmBRL, sales:a.sales, metaPurchases:s.metaPurchases, metaLeads:s.metaLeads, revenueUSD:a.revenueUSD, revBRL, roas, cac, lucroBRL, avgConf, meta };
   }).sort((x,y) => y.sales - x.sales || (y.spendBRL - x.spendBRL) || (y.roas||-1) - (x.roas||-1));
 
   // Ativas: tem r.meta (existe no Meta agora) — respeita filtro original
@@ -4407,7 +4409,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
 
   tbl.innerHTML = `
     <thead><tr>
-      <th>Campanha</th><th>Status</th><th>Gasto</th><th>Cliques Ads</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas. Tag azul 'NL' = N leads/signups reportados, não são vendas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
+      <th>Campanha</th><th>Status</th><th>Gasto</th><th title="Custo por Mil Impressões (Meta)">CPM</th><th>Cliques Ads</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas. Tag azul 'NL' = N leads/signups reportados, não são vendas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
     </tr></thead>
     <tbody>${rows.length ? rows.map(r=>{
       const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
@@ -4427,6 +4429,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <td><b>${r.campaign}</b></td>
         <td>${statusCell}</td>
         <td>${fmtBRL(r.spendBRL)}</td>
+        <td title="${r.impressions ? r.impressions.toLocaleString('pt-BR')+' impressões' : 'sem impressões'}">${r.cpmBRL!=null ? fmtBRL(r.cpmBRL) : '—'}</td>
         <td>${r.clicks.toLocaleString('pt-BR')}</td>
         <td>${salesCell}</td>
         <td>${r.sales ? fmtUSD(r.revenueUSD) + '<div style="font-size:10px;color:var(--t3);">≈ '+fmtBRL(r.revBRL)+'</div>' : '—'}</td>
@@ -4436,7 +4439,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>${r.avgConf > 0 && r.avgConf < 70 ? ` <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;cursor:help;"><title>Atribuição fraca — confere no Meta Manager antes de pausar</title><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : ''}` : '—'}</td>
         <td>${actionCell}</td>
       </tr>`;
-    }).join('') : '<tr><td colspan="11" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma campanha. ' + (onlyActive ? 'Desmarca "só ativas" pra ver pausadas com venda.' : 'Sem vendas + spend no período.') + '</td></tr>'}</tbody>`;
+    }).join('') : '<tr><td colspan="12" style="text-align:center;color:var(--t3);padding:24px;">Nenhuma campanha. ' + (onlyActive ? 'Desmarca "só ativas" pra ver pausadas com venda.' : 'Sem vendas + spend no período.') + '</td></tr>'}</tbody>`;
 
   // === Seção INATIVAS (abaixo das ativas, mesmas colunas) ===
   // Mostra campanhas pausadas/inexistentes no Meta atual que tiveram venda ou gasto no periodo selecionado.
@@ -4452,7 +4455,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
       </div>
       <table class="data" style="width:100%;font-size:12px;border-collapse:collapse;">
         <thead><tr>
-          <th>Campanha</th><th>Status</th><th>Gasto</th><th>Cliques Ads</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
+          <th>Campanha</th><th>Status</th><th>Gasto</th><th title="Custo por Mil Impressões (Meta)">CPM</th><th>Cliques Ads</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
         </tr></thead>
         <tbody>${inactiveRows.map(r => {
           const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
@@ -4465,6 +4468,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
             <td><b>${r.campaign}</b></td>
             <td><span style="display:inline-block;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.12);color:#EF4444;font-size:11px;font-weight:600;">INATIVA</span></td>
             <td>${fmtBRL(r.spendBRL)}</td>
+            <td title="${r.impressions ? r.impressions.toLocaleString('pt-BR')+' impressões' : 'sem impressões'}">${r.cpmBRL!=null ? fmtBRL(r.cpmBRL) : '—'}</td>
             <td>${r.clicks.toLocaleString('pt-BR')}</td>
             <td>${salesCell}</td>
             <td>${r.sales ? fmtUSD(r.revenueUSD) + '<div style="font-size:10px;color:var(--t3);">≈ '+fmtBRL(r.revBRL)+'</div>' : '—'}</td>
