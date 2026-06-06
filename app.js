@@ -6838,7 +6838,7 @@ function updateAuthUI(loggedIn) {
     _setVal('up-edit-state',    currentProfile.state);
     // B.6 — render pills firmas favoritas pré-selecionadas
     renderFirmPillsInto('up-edit-firm-pills', currentProfile.favorite_firms || []);
-    renderPainelLoyalty();
+    // renderPainelLoyalty() removido 2026-06-06 — loyalty desligado, ref orfa virou Sentry alert
   }
 }
 
