@@ -219,7 +219,7 @@ fetch(SB_URL+'/rest/v1/cms_firms?select=id,name,type,color,bg,icon,icon_url,rati
     return `<article class="fc">
       ${i < 3 ? `<div class="fc-rank">#${i+1}</div>` : ''}
       <div class="fc-hd">
-        ${f.icon_url ? `<img src="/${f.icon_url}" alt="${f.name}" class="fc-logo" loading="lazy">` : `<div class="fc-logo" style="display:flex;align-items:center;justify-content:center;font-weight:800;color:${f.color||'#F0B429'}">${f.name.charAt(0)}</div>`}
+        ${f.icon_url ? `<img src="${f.icon_url.startsWith('/')?f.icon_url:'/'+f.icon_url}" alt="${f.name}" class="fc-logo" loading="lazy">` : `<div class="fc-logo" style="display:flex;align-items:center;justify-content:center;font-weight:800;color:${f.color||'#F0B429'}">${f.name.charAt(0)}</div>`}
         <div>
           <div class="fc-name">${f.name}</div>
           <div class="fc-tags"><span class="fc-tag">${f.type||'Trading'}</span></div>
