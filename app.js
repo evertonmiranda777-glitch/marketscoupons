@@ -1480,6 +1480,41 @@ function setFirmSEO(id){
       {'@type':'ListItem',position:3,name:f.name,item:'https://www.marketscoupons.com/'+id}
     ]
   });
+  // Inject FAQPage schema (SEO rich snippet — alto impacto CTR)
+  // Perguntas geradas a partir de dados reais da firma. Google indexa FAQ rich result.
+  let faqEl=document.getElementById('seo-firm-faq');
+  if(!faqEl){faqEl=document.createElement('script');faqEl.type='application/ld+json';faqEl.id='seo-firm-faq';document.head.appendChild(faqEl);}
+  const _faqMinPrice = minPrice || '$0';
+  const _faqQs = [
+    {
+      q: `What is the ${f.name} coupon?`,
+      a: hasCoupon ? `Use code ${f.coupon} at ${f.name} checkout to save ${f.discount}% on your evaluation account. Verified daily on MarketsCoupons.` : `${f.name} discount is automatically applied via the affiliate link on MarketsCoupons — no coupon code required.`
+    },
+    {
+      q: `How much does ${f.name} cost?`,
+      a: `${f.name} evaluation accounts start at ${_faqMinPrice}${hasCoupon ? ` after the ${f.discount}% off coupon` : ''}. Sizes available: ${(f.prices||[]).slice(0,5).map(p=>p.size||p.s).filter(Boolean).join(', ') || 'multiple sizes'}.`
+    },
+    {
+      q: `What is the ${f.name} profit split?`,
+      a: `${f.name} profit split is ${f.split || 'up to 90%'}, paid out ${(f.day1Payout || f.day1_payout) ? 'starting Day 1 after funded' : 'on a regular payout schedule'}.`
+    },
+    {
+      q: `What is the ${f.name} drawdown rule?`,
+      a: `${f.name} drawdown is ${f.drawdown || f.ddPct || f.dd_pct || 'firm-specific'}. ${f.newsTrading||f.news_trading ? 'News trading is allowed.' : 'Check news trading rules before evaluation.'}`
+    },
+    {
+      q: `Which platforms does ${f.name} support?`,
+      a: `${f.name} supports ${(Array.isArray(f.platforms)?f.platforms:String(f.platforms||'').split(',')).filter(Boolean).join(', ') || 'major trading platforms'}.`
+    },
+    {
+      q: `Is the ${f.name} coupon legit?`,
+      a: `Yes. MarketsCoupons negotiates exclusive coupons directly with prop firms${f.trustpilot ? ` and tracks Trustpilot ratings (${f.trustpilot.score}/5 with ${f.trustpilot.reviews?.toLocaleString?.()||f.trustpilot.reviews} reviews)` : ''}. All coupons are verified daily.`
+    }
+  ];
+  faqEl.textContent=JSON.stringify({
+    '@context':'https://schema.org','@type':'FAQPage',
+    mainEntity:_faqQs.map(qa=>({'@type':'Question',name:qa.q,acceptedAnswer:{'@type':'Answer',text:qa.a}}))
+  });
   // Inject SEO-visible content for crawlers (hidden from users, visible in DOM)
   let seoBlock=document.getElementById('seo-firm-content');
   if(!seoBlock){
