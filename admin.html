@@ -4455,20 +4455,19 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
       </div>
       <table class="data" style="width:100%;font-size:12px;border-collapse:collapse;">
         <thead><tr>
-          <th>Campanha</th><th>Status</th><th>Gasto</th><th title="Custo por Mil Impressões (Meta)">CPM</th><th>Cliques Ads</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th><th>Ação</th>
+          <th>Campanha</th><th>Status</th><th title="Gasto e CPM (passe o mouse pra ver impressões)">Gasto · CPM</th><th>Cliques</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th>
         </tr></thead>
         <tbody>${inactiveRows.map(r => {
           const confColor = r.avgConf >= 90 ? '#10B981' : r.avgConf >= 70 ? '#F0B429' : r.avgConf >= 50 ? '#F97316' : '#EF4444';
           const roasColor = r.roas == null ? 'var(--t3)' : r.roas >= 2 ? '#10B981' : r.roas >= 1 ? '#F0B429' : '#EF4444';
           const lucroColor = r.lucroBRL > 0 ? '#10B981' : r.lucroBRL < 0 ? '#EF4444' : 'var(--t3)';
-          const diverged = r.metaPurchases > 0 && r.sales === 0;
           const leadsTag = r.metaLeads > 0 ? ` <span style="background:rgba(59,130,246,.15);color:#3B82F6;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600;margin-left:4px;">${r.metaLeads}L</span>` : '';
           const salesCell = `<span title="Compras (Meta Pixel)">${r.metaPurchases || 0}</span> <span style="color:var(--t3);">/</span> <b style="color:${r.sales>0?'#10B981':'var(--t3)'};">${r.sales}</b>${leadsTag}`;
+          const gastoCpm = `${fmtBRL(r.spendBRL)}<div style="font-size:10px;color:var(--t3);" title="${r.impressions ? r.impressions.toLocaleString('pt-BR')+' impressões' : 'sem impressões'}">CPM ${r.cpmBRL!=null ? fmtBRL(r.cpmBRL) : '—'}</div>`;
           return `<tr style="opacity:.85;">
             <td><b>${r.campaign}</b></td>
             <td><span style="display:inline-block;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.12);color:#EF4444;font-size:11px;font-weight:600;">INATIVA</span></td>
-            <td>${fmtBRL(r.spendBRL)}</td>
-            <td title="${r.impressions ? r.impressions.toLocaleString('pt-BR')+' impressões' : 'sem impressões'}">${r.cpmBRL!=null ? fmtBRL(r.cpmBRL) : '—'}</td>
+            <td>${gastoCpm}</td>
             <td>${r.clicks.toLocaleString('pt-BR')}</td>
             <td>${salesCell}</td>
             <td>${r.sales ? fmtUSD(r.revenueUSD) + '<div style="font-size:10px;color:var(--t3);">≈ '+fmtBRL(r.revBRL)+'</div>' : '—'}</td>
@@ -4476,12 +4475,109 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
             <td style="color:${lucroColor};font-weight:700;">${(r.lucroBRL>=0?'+':'')+fmtBRL(r.lucroBRL)}</td>
             <td>${r.cac ? fmtBRL(r.cac) : '—'}</td>
             <td>${r.avgConf ? `<span style="color:${confColor};font-weight:600;">${r.avgConf}%</span>` : '—'}</td>
-            <td><span style="color:var(--t3);font-size:11px;">—</span></td>
           </tr>`;
         }).join('')}</tbody>
       </table>
     </div>`;
     tbl.insertAdjacentHTML('afterend', inactiveHtml);
+  }
+
+  // === Bloco 'Origem por plataforma' (FB / IG / AN) — fetch ao vivo do Meta API ===
+  renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL);
+}
+
+// Origem por plataforma — chama edge function meta-ads-control?action=breakdown
+// Mostra split FB vs IG vs Audience Network por campanha no periodo selecionado.
+async function renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL){
+  const wrap = document.getElementById('fin-roas-real')?.closest('.card') || document.body;
+  const existing = wrap.querySelector('.fin-roas-origem-block');
+  if (existing) existing.remove();
+
+  const block = document.createElement('div');
+  block.className = 'fin-roas-origem-block';
+  block.style.marginTop = '24px';
+  block.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;">Origem por plataforma</div>
+      <span style="font-size:11px;color:var(--t3);">— de onde veio cada venda (FB / Instagram / Audience Network) no período</span>
+    </div>
+    <div class="fin-roas-origem-body" style="font-size:12px;color:var(--t3);padding:12px;border:1px dashed rgba(255,255,255,.08);border-radius:8px;">Carregando do Meta…</div>
+  `;
+  const inactive = wrap.querySelector('.fin-roas-inactive-block');
+  if (inactive) inactive.insertAdjacentElement('afterend', block);
+  else wrap.appendChild(block);
+
+  const body = block.querySelector('.fin-roas-origem-body');
+  try {
+    const r = await fetch(`https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=breakdown&since=${sinceDate}&until=${untilDate}`, {
+      headers: { 'Authorization':'Bearer '+SUPABASE_ANON, 'apikey':SUPABASE_ANON }
+    });
+    const d = await r.json();
+    if (!d.ok || !Array.isArray(d.campaigns)) {
+      body.innerHTML = `<span style="color:#EF4444;">Falha ao consultar Meta: ${d.error || 'sem dados'}</span>`;
+      return;
+    }
+    if (!d.campaigns.length) {
+      body.innerHTML = '<span>Sem dados de plataforma no período.</span>';
+      return;
+    }
+    // Ordena: maior gasto total primeiro
+    const camps = d.campaigns.map(c => {
+      const fb = c.platforms.facebook || {};
+      const ig = c.platforms.instagram || {};
+      const an = c.platforms.audience_network || {};
+      const ms = c.platforms.messenger || {};
+      const fbSpend = (fb.spend||0) + (ms.spend||0);
+      const total = fbSpend + (ig.spend||0) + (an.spend||0);
+      return { ...c, fb, ig, an, ms, fbSpend, total };
+    }).sort((a,b) => b.total - a.total);
+
+    const rows = camps.map(c => {
+      const fbBRL = c.fbSpend * fxUSDtoBRL;
+      const igBRL = (c.ig.spend||0) * fxUSDtoBRL;
+      const anBRL = (c.an.spend||0) * fxUSDtoBRL;
+      const totalBRL = c.total * fxUSDtoBRL;
+      const pct = (v) => c.total > 0 ? Math.round((v/c.total)*100) : 0;
+      const fbPct = pct(c.fbSpend), igPct = pct(c.ig.spend||0), anPct = pct(c.an.spend||0);
+      const fbPurch = (c.fb.purchases||0) + (c.ms.purchases||0);
+      const igPurch = c.ig.purchases || 0;
+      const anPurch = c.an.purchases || 0;
+      const winner = (igPct >= 50 && igPurch >= fbPurch) ? 'IG' : (fbPct >= 50 ? 'FB' : '—');
+      const winnerColor = winner === 'IG' ? '#E1306C' : winner === 'FB' ? '#1877F2' : 'var(--t3)';
+      return `<tr>
+        <td><b style="font-size:11px;">${c.campaign_name}</b></td>
+        <td style="color:#1877F2;font-weight:600;">${fmtBRL(fbBRL)}<div style="font-size:10px;color:var(--t3);">${fbPct}% · ${fbPurch} compras</div></td>
+        <td style="color:#E1306C;font-weight:600;">${fmtBRL(igBRL)}<div style="font-size:10px;color:var(--t3);">${igPct}% · ${igPurch} compras</div></td>
+        <td style="color:var(--t3);">${anBRL > 0 ? fmtBRL(anBRL)+`<div style="font-size:10px;">${anPct}% · ${anPurch}c</div>` : '—'}</td>
+        <td style="font-weight:700;">${fmtBRL(totalBRL)}</td>
+        <td><span style="display:inline-block;padding:2px 8px;border-radius:10px;background:${winnerColor}22;color:${winnerColor};font-size:11px;font-weight:700;">${winner}</span></td>
+      </tr>`;
+    }).join('');
+
+    // Totais agregados (top KPI)
+    const tot = camps.reduce((a,c) => ({
+      fb: a.fb + c.fbSpend, ig: a.ig + (c.ig.spend||0), an: a.an + (c.an.spend||0),
+      fbP: a.fbP + (c.fb.purchases||0) + (c.ms.purchases||0),
+      igP: a.igP + (c.ig.purchases||0), anP: a.anP + (c.an.purchases||0)
+    }), {fb:0,ig:0,an:0,fbP:0,igP:0,anP:0});
+    const totSpend = tot.fb + tot.ig + tot.an;
+    const fbShare = totSpend ? Math.round(tot.fb/totSpend*100) : 0;
+    const igShare = totSpend ? Math.round(tot.ig/totSpend*100) : 0;
+    const anShare = totSpend ? Math.round(tot.an/totSpend*100) : 0;
+
+    body.innerHTML = `
+      <div style="display:flex;gap:16px;margin-bottom:12px;font-size:11px;flex-wrap:wrap;">
+        <div><b style="color:#1877F2;">Facebook</b>: ${fmtBRL(tot.fb*fxUSDtoBRL)} · ${fbShare}% · ${tot.fbP} compras</div>
+        <div><b style="color:#E1306C;">Instagram</b>: ${fmtBRL(tot.ig*fxUSDtoBRL)} · ${igShare}% · ${tot.igP} compras</div>
+        ${tot.an > 0 ? `<div><b style="color:var(--t3);">Audience Net.</b>: ${fmtBRL(tot.an*fxUSDtoBRL)} · ${anShare}% · ${tot.anP} compras</div>` : ''}
+      </div>
+      <table class="data" style="width:100%;font-size:11px;border-collapse:collapse;">
+        <thead><tr><th>Campanha</th><th>Facebook</th><th>Instagram</th><th>Audience</th><th>Total</th><th>Ganhador</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  } catch (e) {
+    body.innerHTML = `<span style="color:#EF4444;">Erro: ${e.message || e}</span>`;
   }
 }
 

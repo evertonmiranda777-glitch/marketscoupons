@@ -1,7 +1,8 @@
-// Meta Ads Control — lista campanhas ativas + pausa/reativa
-// GET  ?action=active            → [{id,name,status,effective_status,daily_budget}]
-// POST ?action=pause body={id}   → set status=PAUSED
-// POST ?action=resume body={id}  → set status=ACTIVE
+// Meta Ads Control — lista campanhas ativas + pausa/reativa + breakdown FB/IG
+// GET  ?action=active                       → [{id,name,status,effective_status,daily_budget}]
+// GET  ?action=breakdown&since=&until=      → split por publisher_platform (FB/IG/AN) por campanha
+// POST ?action=pause body={id}              → set status=PAUSED
+// POST ?action=resume body={id}             → set status=ACTIVE
 //
 // Acao destrutiva (pause/resume) exige Authorization: Bearer <admin_jwt>.
 // Verifica via Supabase Auth user_metadata.is_admin OU email allowlist.
@@ -77,6 +78,63 @@ async function listActiveCampaigns() {
   return { ok: true, count: out.length, campaigns: out };
 }
 
+// Insights agregados por campanha × publisher_platform (FB/IG) no periodo.
+// Periodo aceita: ?since=YYYY-MM-DD&until=YYYY-MM-DD (default: ultimos 30d).
+async function breakdownByPlatform(since: string, until: string) {
+  if (!META_TOKEN || !ACCOUNT_IDS.length) return { error: "missing_secrets" };
+  const fields = ["campaign_id","campaign_name","spend","impressions","clicks","actions","action_values"].join(",");
+  const PURCHASE_TYPES = new Set(["purchase","offsite_conversion.fb_pixel_purchase"]);
+  const LEAD_TYPES = new Set(["lead","offsite_conversion.fb_pixel_lead","complete_registration","offsite_conversion.fb_pixel_complete_registration"]);
+
+  // mapa campaign_id -> { name, platforms: { facebook:{...}, instagram:{...}, audience_network:{...} } }
+  const agg = new Map<string, any>();
+
+  for (const acct of ACCOUNT_IDS) {
+    const api = `https://graph.facebook.com/v21.0/${acct}/insights` +
+      `?fields=${fields}` +
+      `&level=campaign` +
+      `&breakdowns=publisher_platform` +
+      `&time_range=${encodeURIComponent(JSON.stringify({ since, until }))}` +
+      `&limit=500&access_token=${META_TOKEN}`;
+
+    let next: string | null = api;
+    let safety = 0;
+    while (next && safety < 20) {
+      safety++;
+      const r = await fetch(next);
+      const j = await r.json();
+      if (!r.ok) return { error: "meta_api_error", account: acct, details: j };
+      for (const row of (j.data || [])) {
+        const cid = row.campaign_id;
+        if (!cid) continue;
+        const plat = row.publisher_platform || "other";
+        const sumByTypes = (set: Set<string>) => (row.actions || [])
+          .filter((a: any) => set.has(a.action_type))
+          .reduce((acc: number, a: any) => acc + (Number(a.value) || 0), 0);
+        const purchases = sumByTypes(PURCHASE_TYPES);
+        const leads = sumByTypes(LEAD_TYPES);
+        const purchVal = (row.action_values || []).find((a: any) => PURCHASE_TYPES.has(a.action_type));
+
+        if (!agg.has(cid)) {
+          agg.set(cid, { campaign_id: cid, campaign_name: row.campaign_name || cid, platforms: {} });
+        }
+        const c = agg.get(cid);
+        c.platforms[plat] = {
+          spend: Number(row.spend) || 0,
+          impressions: Number(row.impressions) || 0,
+          clicks: Number(row.clicks) || 0,
+          purchases,
+          leads,
+          purchase_value: purchVal ? Number(purchVal.value) : 0
+        };
+      }
+      next = j.paging?.next || null;
+    }
+  }
+
+  return { ok: true, since, until, campaigns: Array.from(agg.values()) };
+}
+
 async function setCampaignStatus(campaign_id: string, status: "ACTIVE" | "PAUSED") {
   const r = await fetch(`https://graph.facebook.com/v21.0/${campaign_id}`, {
     method: "POST",
@@ -96,6 +154,15 @@ serve(async (req) => {
 
   if (req.method === "GET" && action === "active") {
     const r = await listActiveCampaigns();
+    return json(r);
+  }
+
+  if (req.method === "GET" && action === "breakdown") {
+    const today = new Date().toISOString().slice(0,10);
+    const def = new Date(Date.now() - 30*86400000).toISOString().slice(0,10);
+    const since = url.searchParams.get("since") || def;
+    const until = url.searchParams.get("until") || today;
+    const r = await breakdownByPlatform(since, until);
     return json(r);
   }
 
