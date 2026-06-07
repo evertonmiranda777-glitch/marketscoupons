@@ -4489,6 +4489,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
 // Origem por plataforma — chama edge function meta-ads-control?action=breakdown
 // Mostra split FB vs IG vs Audience Network por campanha no periodo selecionado.
 async function renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL){
+  const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   const wrap = document.getElementById('fin-roas-real')?.closest('.card') || document.body;
   const existing = wrap.querySelector('.fin-roas-origem-block');
   if (existing) existing.remove();
