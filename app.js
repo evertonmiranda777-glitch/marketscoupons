@@ -4312,7 +4312,7 @@ const CHECKOUT_FIRMS=[
      'Futures Basecamp':[{size:'$25K',capital:'$25,000',goal:'$1,500',maxDD:'-4%',orig:'—',disc:'$50',featured:false},{size:'$50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'—',disc:'$99',featured:true}],
      'Futures Rebate':[{size:'$25K',capital:'$25,000',goal:'$1,500',maxDD:'-4%',orig:'—',disc:'$150',featured:false},{size:'$50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'—',disc:'$299',featured:true}]
    },
-   buildUrl:(size,type,plat)=>'https://www.the5ers.com/?afmc=19jp'},
+   buildUrl:(size,type,plat)=>'https://www.the5ers.com/programs/?afmc=19jp'},
   {id:'fundingpips',name:'Funding Pips',short:'FundingPips',coupon:'HELLO',discount:'20%',color:'#6366F1',bg:'rgba(99,102,241,0.12)',
    includes:['Up to 100% profit split','Weekly/Bi-weekly/On Demand payouts','Leverage up to 1:100','No time limit','Swap Free add-on (+10%)'],
    types:['Zero','1-Step','2-Step','Pro'],platforms:['MT5','Match-Trader','cTrader'],
@@ -4357,7 +4357,7 @@ const CHECKOUT_FIRMS=[
      'EOD':[{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000 EOD',orig:'$175',disc:'$122.50',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000 EOD',orig:'$275',disc:'$192.50',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,000 EOD',orig:'$375',disc:'$262.50',featured:false}],
      'Static':[{size:'50K',capital:'$50,000',goal:'$1,500',maxDD:'$500 static',orig:'$165',disc:'$115.50',featured:false},{size:'100K',capital:'$100,000',goal:'$2,500',maxDD:'$750 static',orig:'$250',disc:'$175',featured:true},{size:'150K',capital:'$150,000',goal:'$3,750',maxDD:'$1,000 static',orig:'$350',disc:'$245',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://www.tradeday.com/?a_aid=marketscoupons'},
+   buildUrl:(size,type,plat)=>'https://www.tradeday.com/?a_aid=marketscoupons#pricing'},
   {id:'goat',name:'Goat Funded Futures',short:'Goat',coupon:'MARKET',discount:'50%',color:'#FFB800',bg:'rgba(255,184,0,0.12)',
    includes:['$0 activation fee after passing','100% profit split first $10K','Payouts in 2 business days','No daily loss (evaluation)','News trading allowed','Up to $750K funded'],
    types:['EOD','Sprint','Instant','Pro'],platforms:['NinjaTrader','Tradovate','Quantower','CQG'],
