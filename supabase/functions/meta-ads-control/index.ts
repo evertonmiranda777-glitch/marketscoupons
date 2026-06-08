@@ -59,23 +59,33 @@ async function listActiveCampaigns() {
     return { error: "missing_secrets" };
   }
   const out: any[] = [];
+  const errors: any[] = [];
   for (const acct of ACCOUNT_IDS) {
     let next: string | null =
       `https://graph.facebook.com/v21.0/${acct}/campaigns` +
       `?fields=id,name,status,effective_status,daily_budget,lifetime_budget,objective` +
       `&effective_status=["ACTIVE","IN_PROCESS"]` +
       `&limit=200&access_token=${META_TOKEN}`;
-    while (next) {
-      const r = await fetch(next);
-      const j = await r.json();
-      if (!r.ok) return { error: "meta_api_error", account: acct, details: j };
-      (j.data || []).forEach((c: any) => out.push({ ...c, account_id: acct }));
-      next = j.paging?.next || null;
-      if (out.length > 1000) break;
+    let skipped = false;
+    while (next && !skipped) {
+      try {
+        const r = await fetch(next);
+        const j = await r.json();
+        if (!r.ok) {
+          errors.push({ account: acct, error: j?.error?.message || "meta_api_error", code: j?.error?.code });
+          skipped = true;
+          break;
+        }
+        (j.data || []).forEach((c: any) => out.push({ ...c, account_id: acct }));
+        next = j.paging?.next || null;
+        if (out.length > 1000) break;
+      } catch (e) {
+        errors.push({ account: acct, error: String(e) });
+        skipped = true;
+      }
     }
   }
-  // So as efetivamente ATIVAS no feed
-  return { ok: true, count: out.length, campaigns: out };
+  return { ok: true, count: out.length, campaigns: out, errors: errors.length ? errors : undefined };
 }
 
 // Insights agregados por campanha × publisher_platform (FB/IG) no periodo.
@@ -88,6 +98,7 @@ async function breakdownByPlatform(since: string, until: string) {
 
   // mapa campaign_id -> { name, platforms: { facebook:{...}, instagram:{...}, audience_network:{...} } }
   const agg = new Map<string, any>();
+  const errors: any[] = [];
 
   for (const acct of ACCOUNT_IDS) {
     const api = `https://graph.facebook.com/v21.0/${acct}/insights` +
@@ -99,11 +110,16 @@ async function breakdownByPlatform(since: string, until: string) {
 
     let next: string | null = api;
     let safety = 0;
-    while (next && safety < 20) {
+    let skipped = false;
+    while (next && safety < 20 && !skipped) {
       safety++;
       const r = await fetch(next);
       const j = await r.json();
-      if (!r.ok) return { error: "meta_api_error", account: acct, details: j };
+      if (!r.ok) {
+        errors.push({ account: acct, error: j?.error?.message || "meta_api_error", code: j?.error?.code });
+        skipped = true;
+        break;
+      }
       for (const row of (j.data || [])) {
         const cid = row.campaign_id;
         if (!cid) continue;
@@ -132,7 +148,7 @@ async function breakdownByPlatform(since: string, until: string) {
     }
   }
 
-  return { ok: true, since, until, campaigns: Array.from(agg.values()) };
+  return { ok: true, since, until, campaigns: Array.from(agg.values()), errors: errors.length ? errors : undefined };
 }
 
 // Insights por campanha × publisher_platform × platform_position no periodo.
@@ -143,6 +159,7 @@ async function breakdownByPlacement(since: string, until: string) {
   const PURCHASE_TYPES = new Set(["purchase","offsite_conversion.fb_pixel_purchase"]);
   const LEAD_TYPES = new Set(["lead","offsite_conversion.fb_pixel_lead","complete_registration","offsite_conversion.fb_pixel_complete_registration"]);
   const rows: any[] = [];
+  const errors: any[] = [];
 
   for (const acct of ACCOUNT_IDS) {
     const api = `https://graph.facebook.com/v21.0/${acct}/insights` +
@@ -153,11 +170,16 @@ async function breakdownByPlacement(since: string, until: string) {
       `&limit=500&access_token=${META_TOKEN}`;
     let next: string | null = api;
     let safety = 0;
-    while (next && safety < 30) {
+    let skipped = false;
+    while (next && safety < 30 && !skipped) {
       safety++;
       const r = await fetch(next);
       const j = await r.json();
-      if (!r.ok) return { error: "meta_api_error", account: acct, details: j };
+      if (!r.ok) {
+        errors.push({ account: acct, error: j?.error?.message || "meta_api_error", code: j?.error?.code });
+        skipped = true;
+        break;
+      }
       for (const row of (j.data || [])) {
         const sumByTypes = (set: Set<string>) => (row.actions || [])
           .filter((a: any) => set.has(a.action_type))
@@ -181,7 +203,7 @@ async function breakdownByPlacement(since: string, until: string) {
       next = j.paging?.next || null;
     }
   }
-  return { ok: true, since, until, rows };
+  return { ok: true, since, until, rows, errors: errors.length ? errors : undefined };
 }
 
 async function setCampaignStatus(campaign_id: string, status: "ACTIVE" | "PAUSED") {
