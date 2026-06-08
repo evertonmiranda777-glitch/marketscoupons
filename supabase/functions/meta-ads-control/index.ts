@@ -135,6 +135,55 @@ async function breakdownByPlatform(since: string, until: string) {
   return { ok: true, since, until, campaigns: Array.from(agg.values()) };
 }
 
+// Insights por campanha × publisher_platform × platform_position no periodo.
+// Devolve cada linha de placement (ex: Instagram Reels, Facebook Feed) com gasto/compras/valor.
+async function breakdownByPlacement(since: string, until: string) {
+  if (!META_TOKEN || !ACCOUNT_IDS.length) return { error: "missing_secrets" };
+  const fields = ["campaign_id","campaign_name","spend","impressions","clicks","actions","action_values"].join(",");
+  const PURCHASE_TYPES = new Set(["purchase","offsite_conversion.fb_pixel_purchase"]);
+  const LEAD_TYPES = new Set(["lead","offsite_conversion.fb_pixel_lead","complete_registration","offsite_conversion.fb_pixel_complete_registration"]);
+  const rows: any[] = [];
+
+  for (const acct of ACCOUNT_IDS) {
+    const api = `https://graph.facebook.com/v21.0/${acct}/insights` +
+      `?fields=${fields}` +
+      `&level=campaign` +
+      `&breakdowns=publisher_platform,platform_position` +
+      `&time_range=${encodeURIComponent(JSON.stringify({ since, until }))}` +
+      `&limit=500&access_token=${META_TOKEN}`;
+    let next: string | null = api;
+    let safety = 0;
+    while (next && safety < 30) {
+      safety++;
+      const r = await fetch(next);
+      const j = await r.json();
+      if (!r.ok) return { error: "meta_api_error", account: acct, details: j };
+      for (const row of (j.data || [])) {
+        const sumByTypes = (set: Set<string>) => (row.actions || [])
+          .filter((a: any) => set.has(a.action_type))
+          .reduce((acc: number, a: any) => acc + (Number(a.value) || 0), 0);
+        const purchases = sumByTypes(PURCHASE_TYPES);
+        const leads = sumByTypes(LEAD_TYPES);
+        const purchVal = (row.action_values || []).find((a: any) => PURCHASE_TYPES.has(a.action_type));
+        rows.push({
+          campaign_id: row.campaign_id,
+          campaign_name: row.campaign_name || row.campaign_id,
+          publisher_platform: row.publisher_platform || "other",
+          platform_position: row.platform_position || "other",
+          spend: Number(row.spend) || 0,
+          impressions: Number(row.impressions) || 0,
+          clicks: Number(row.clicks) || 0,
+          purchases,
+          leads,
+          purchase_value: purchVal ? Number(purchVal.value) : 0
+        });
+      }
+      next = j.paging?.next || null;
+    }
+  }
+  return { ok: true, since, until, rows };
+}
+
 async function setCampaignStatus(campaign_id: string, status: "ACTIVE" | "PAUSED") {
   const r = await fetch(`https://graph.facebook.com/v21.0/${campaign_id}`, {
     method: "POST",
@@ -163,6 +212,15 @@ serve(async (req) => {
     const since = url.searchParams.get("since") || def;
     const until = url.searchParams.get("until") || today;
     const r = await breakdownByPlatform(since, until);
+    return json(r);
+  }
+
+  if (req.method === "GET" && action === "placements") {
+    const today = new Date().toISOString().slice(0,10);
+    const def = new Date(Date.now() - 30*86400000).toISOString().slice(0,10);
+    const since = url.searchParams.get("since") || def;
+    const until = url.searchParams.get("until") || today;
+    const r = await breakdownByPlacement(since, until);
     return json(r);
   }
 

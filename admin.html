@@ -4492,6 +4492,8 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
 
   // === Bloco 'Origem por plataforma' (FB / IG / AN) — fetch ao vivo do Meta API ===
   renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL);
+  // === Bloco 'Posicionamentos' (Reels/Feed/Stories) — fetch ao vivo do Meta API ===
+  renderRoasPlacements(sinceDate, untilDate, fxUSDtoBRL);
 }
 
 // Origem por plataforma — chama edge function meta-ads-control?action=breakdown
@@ -4580,6 +4582,129 @@ async function renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL){
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
+    `;
+  } catch (e) {
+    body.innerHTML = `<span style="color:#EF4444;">Erro: ${e.message || e}</span>`;
+  }
+}
+
+// Posicionamentos (Reels/Feed/Stories) — chama meta-ads-control?action=placements
+// 2 visualizacoes: top agregado (somando todas as campanhas) + por campanha so com venda.
+async function renderRoasPlacements(sinceDate, untilDate, fxUSDtoBRL){
+  const fmtBRL = v => 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const wrap = document.getElementById('fin-roas-real')?.closest('.card') || document.body;
+  const existing = wrap.querySelector('.fin-roas-placements-block');
+  if (existing) existing.remove();
+
+  const block = document.createElement('div');
+  block.className = 'fin-roas-placements-block';
+  block.style.marginTop = '24px';
+  block.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;">Posicionamentos</div>
+      <span style="font-size:11px;color:var(--t3);">— Reels / Feed / Stories no período (Meta API ao vivo)</span>
+    </div>
+    <div class="fin-roas-placements-body" style="font-size:12px;color:var(--t3);padding:12px;border:1px dashed rgba(255,255,255,.08);border-radius:8px;">Carregando do Meta…</div>
+  `;
+  const origem = wrap.querySelector('.fin-roas-origem-block');
+  if (origem) origem.insertAdjacentElement('afterend', block);
+  else wrap.appendChild(block);
+
+  const body = block.querySelector('.fin-roas-placements-body');
+  try {
+    const r = await fetch(`https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=placements&since=${sinceDate}&until=${untilDate}`, {
+      headers: { 'Authorization':'Bearer '+SUPABASE_ANON, 'apikey':SUPABASE_ANON }
+    });
+    const d = await r.json();
+    if (!d.ok || !Array.isArray(d.rows)) {
+      body.innerHTML = `<span style="color:#EF4444;">Falha ao consultar Meta: ${d.error || 'sem dados'}</span>`;
+      return;
+    }
+    if (!d.rows.length) {
+      body.innerHTML = '<span>Sem dados de posicionamento no período.</span>';
+      return;
+    }
+    // Nomes amigaveis e cores por plataforma
+    const platLabel = (p) => p === 'facebook' ? 'Facebook' : p === 'instagram' ? 'Instagram' : p === 'audience_network' ? 'Audience Net.' : p === 'messenger' ? 'Messenger' : p;
+    const posLabel = (p) => {
+      const m = {
+        'feed':'Feed','instream_video':'Vídeo','story':'Stories','reels':'Reels','marketplace':'Marketplace',
+        'profile_feed':'Perfil','search':'Busca','video_feeds':'Feed de Vídeo','facebook_reels':'Reels',
+        'instagram_reels':'Reels','instagram_stories':'Stories','instagram_profile_feed':'Perfil',
+        'instagram_search':'Busca','classic':'Inbox','messenger_home':'Home','rewarded_video':'Rewarded',
+        'biz_disco_feed':'Discovery','an_classic':'Classic'
+      };
+      return m[p] || p;
+    };
+    const platColor = (p) => p === 'facebook' ? '#1877F2' : p === 'instagram' ? '#E1306C' : p === 'messenger' ? '#0078FF' : 'var(--t3)';
+
+    // === 1) Top agregado (todas campanhas somadas) ===
+    const aggMap = new Map();
+    d.rows.forEach(r => {
+      const k = `${r.publisher_platform}|${r.platform_position}`;
+      if (!aggMap.has(k)) aggMap.set(k, { plat:r.publisher_platform, pos:r.platform_position, spend:0, purchases:0, value:0, clicks:0 });
+      const a = aggMap.get(k);
+      a.spend += r.spend; a.purchases += r.purchases; a.value += r.purchase_value; a.clicks += r.clicks;
+    });
+    const topAgg = Array.from(aggMap.values()).sort((a,b) => b.purchases - a.purchases || b.value - a.value);
+
+    const topRows = topAgg.map(a => {
+      const spendBRL = a.spend * fxUSDtoBRL;
+      const valBRL = a.value * fxUSDtoBRL;
+      const roas = a.spend > 0 ? (a.value / a.spend) : null;
+      const roasColor = roas == null ? 'var(--t3)' : roas >= 2 ? '#10B981' : roas >= 1 ? '#F0B429' : '#EF4444';
+      return `<tr>
+        <td><span style="color:${platColor(a.plat)};font-weight:700;">${platLabel(a.plat)}</span> · ${posLabel(a.pos)}</td>
+        <td style="text-align:center;font-weight:700;color:${a.purchases>0?'#10B981':'var(--t3)'};">${a.purchases}</td>
+        <td>${valBRL > 0 ? fmtBRL(valBRL) : '—'}</td>
+        <td>${fmtBRL(spendBRL)}</td>
+        <td style="color:${roasColor};font-weight:700;">${roas != null ? roas.toFixed(2)+'x' : '—'}</td>
+      </tr>`;
+    }).join('');
+
+    // === 2) Por campanha (so rows com venda) ===
+    const withSales = d.rows.filter(r => r.purchases > 0).sort((a,b) => b.purchases - a.purchases || b.purchase_value - a.purchase_value);
+    const camprows = withSales.map(r => {
+      const spendBRL = r.spend * fxUSDtoBRL;
+      const valBRL = r.purchase_value * fxUSDtoBRL;
+      const roas = r.spend > 0 ? (r.purchase_value / r.spend) : null;
+      const roasColor = roas == null ? 'var(--t3)' : roas >= 2 ? '#10B981' : roas >= 1 ? '#F0B429' : '#EF4444';
+      return `<tr>
+        <td><b style="font-size:11px;">${r.campaign_name}</b></td>
+        <td><span style="color:${platColor(r.publisher_platform)};font-weight:700;">${platLabel(r.publisher_platform)}</span> · ${posLabel(r.platform_position)}</td>
+        <td style="text-align:center;font-weight:700;color:#10B981;">${r.purchases}</td>
+        <td>${fmtBRL(valBRL)}</td>
+        <td>${fmtBRL(spendBRL)}</td>
+        <td style="color:${roasColor};font-weight:700;">${roas != null ? roas.toFixed(2)+'x' : '—'}</td>
+      </tr>`;
+    }).join('');
+
+    body.innerHTML = `
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Top placements (todas campanhas)</div>
+      <table class="fin-grid" style="margin-bottom:16px;">
+        <thead><tr>
+          <th>Posicionamento</th>
+          <th style="text-align:center;">Vendas</th>
+          <th>Valor</th>
+          <th>Gasto</th>
+          <th>ROAS</th>
+        </tr></thead>
+        <tbody>${topRows}</tbody>
+      </table>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Por campanha (só com venda) · ${withSales.length} ${withSales.length===1?'linha':'linhas'}</div>
+      ${withSales.length ? `
+        <table class="fin-grid">
+          <thead><tr>
+            <th>Campanha</th>
+            <th>Posicionamento</th>
+            <th style="text-align:center;">Vendas</th>
+            <th>Valor</th>
+            <th>Gasto</th>
+            <th>ROAS</th>
+          </tr></thead>
+          <tbody>${camprows}</tbody>
+        </table>
+      ` : '<div style="font-size:11px;color:var(--t3);">Sem vendas atribuídas a placement específico no período.</div>'}
     `;
   } catch (e) {
     body.innerHTML = `<span style="color:#EF4444;">Erro: ${e.message || e}</span>`;
