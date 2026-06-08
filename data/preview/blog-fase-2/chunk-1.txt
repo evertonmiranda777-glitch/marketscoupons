@@ -1,0 +1,73 @@
+<style>
+:root{--gold:#F0B429;--apex:#F97316;--bulenox:#A855F7;--t1:#fff;--t2:#d4d7df;--t3:#9AA0A8;--card:#1A1F2E;--bg:#0A0D14;--green:#10B981;--red:#EF4444;--blue:#3B82F6}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--t2);font:17px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;margin:0;padding:40px 20px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font:800 44px/1.15 inherit;color:var(--t1);margin:0 0 14px;letter-spacing:-0.025em}
+.subtitle{font-size:22px;color:var(--t2);margin:0 0 14px;line-height:1.4}
+.subtitle b{color:var(--gold)}
+.meta{color:var(--t3);font-size:13px;margin-bottom:32px}
+.lead{font-size:21px;line-height:1.55;color:var(--t1);font-weight:500;margin:0 0 32px;padding:24px;background:linear-gradient(135deg,rgba(249,115,22,.08),rgba(168,85,247,.08));border-left:3px solid var(--gold);border-radius:8px}
+h2{font:700 30px/1.25 inherit;color:var(--t1);margin:48px 0 18px;letter-spacing:-0.015em}
+h3{font:700 22px/1.3 inherit;color:var(--t1);margin:32px 0 12px}
+p{margin:0 0 18px}
+.callout{background:var(--card);border-left:3px solid var(--gold);padding:18px 22px;border-radius:8px;margin:24px 0;color:var(--t1)}
+.callout-warn{border-left-color:var(--red)}
+.callout-good{border-left-color:var(--green)}
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px;background:var(--card);border-radius:8px;overflow:hidden;font-variant-numeric:tabular-nums}
+th{background:rgba(255,255,255,.05);color:var(--t1);font-weight:700;text-align:left;padding:14px 16px;font-size:13px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.08)}
+td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+.win-apex{color:var(--apex);font-weight:700}
+.win-bul{color:var(--bulenox);font-weight:700}
+.tie{color:var(--t3);font-weight:600}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin:32px 0}
+.cta-btn{flex:1;min-width:280px;background:linear-gradient(135deg,var(--apex),#EA580C);color:#07090D;font-weight:800;text-align:center;padding:18px 24px;border-radius:12px;text-decoration:none;font-size:16px;transition:.25s;box-shadow:0 4px 16px rgba(249,115,22,.25)}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(249,115,22,.4)}
+.cta-btn.bul{background:linear-gradient(135deg,var(--bulenox),#7C3AED);box-shadow:0 4px 16px rgba(168,85,247,.25)}
+.cta-btn.bul:hover{box-shadow:0 8px 28px rgba(168,85,247,.4)}
+.cta-coupon{font-size:11px;opacity:.85;display:block;margin-top:4px;letter-spacing:.5px;text-transform:uppercase}
+.tldr{background:linear-gradient(135deg,rgba(240,180,41,.08),rgba(16,185,129,.05));border:1px solid rgba(240,180,41,.2);border-radius:12px;padding:24px;margin:32px 0}
+.tldr h3{margin-top:0;color:var(--gold)}
+.tldr ul{margin:0;padding-left:20px}
+.tldr li{margin-bottom:10px}
+.faq-item{background:var(--card);border-radius:8px;padding:18px 22px;margin:14px 0}
+.faq-q{color:var(--t1);font-weight:700;font-size:18px;margin:0 0 8px}
+.faq-a{margin:0;color:var(--t2)}
+.score-bar{display:flex;align-items:center;gap:12px;margin:8px 0}
+.score-bar-bg{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:4px}
+.score-num{font-weight:700;color:var(--t1);min-width:42px;text-align:right}
+.hero-svg{width:100%;height:auto;max-height:280px;margin-bottom:32px;border-radius:12px;background:linear-gradient(135deg,#0F1419,#1A1F2E)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(240,180,41,.3);transition:.2s}
+a:hover{color:var(--t1);border-bottom-color:var(--gold)}
+.firm-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--card);border-radius:10px;margin:12px 0}
+.firm-logo{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:18px}
+.firm-meta{flex:1}
+.firm-name{font-weight:700;color:var(--t1);font-size:16px}
+.firm-spec{color:var(--t3);font-size:13px;margin-top:2px}
+.kbd{background:rgba(255,255,255,.08);padding:2px 8px;border-radius:4px;font-family:ui-monospace,monospace;font-size:14px;color:var(--gold);font-weight:600}
+</style>
+
+<div class="wrap">
+<svg class="hero-svg" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="apexg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F97316"/><stop offset="1" stop-color="#EA580C"/></linearGradient>
+<linearGradient id="bulg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A855F7"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+</defs>
+<rect x="60" y="60" width="320" height="160" rx="16" fill="url(#apexg)" opacity=".15" stroke="#F97316" stroke-width="2"/>
+<rect x="420" y="60" width="320" height="160" rx="16" fill="url(#bulg)" opacity=".15" stroke="#A855F7" stroke-width="2"/>
+<text x="220" y="120" text-anchor="middle" font-family="Inter,sans-serif" font-size="36" font-weight="800" fill="#F97316">APEX</text>
+<text x="220" y="160" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" font-weight="600" fill="#fff" opacity=".7">Trader Funding</text>
+<text x="220" y="195" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#F97316">90% OFF • MARKET</text>
+<text x="580" y="120" text-anchor="middle" font-family="Inter,sans-serif" font-size="36" font-weight="800" fill="#A855F7">BULENOX</text>
+<text x="580" y="160" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" font-weight="600" fill="#fff" opacity=".7">Funded Trader</text>
+<text x="580" y="195" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#A855F7">89% OFF • MARKET89</text>
+<text x="400" y="145" text-anchor="middle" font-family="Inter,sans-serif" font-size="48" font-weight="900" fill="#F0B429">VS</text>
+</svg>
+
+<h1>Apex vs Bulenox: Qual Vale Mais em 2026?</h1>
+<p class="subtitle">As duas maiores prop firms de futuros americanas comparadas <b>plano por plano</b>, com dados reais de Trustpilot, drawdown, payout e cupons exclusivos.</p>
+<p class="meta">Atualizado em 8 de junho de 2026 · 15 min de leitura · Markets Coupons Team</p>
+
+<div class="lead">Ap

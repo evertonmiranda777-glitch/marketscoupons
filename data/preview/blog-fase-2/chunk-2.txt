@@ -1,0 +1,102 @@
+ex Trader Funding e Bulenox são as duas prop firms de futuros mais vendidas dos EUA em 2026. Ambas usam modelo de 1 etapa, Trailing Drawdown e profit split alto. Mas as semelhanças param aí. Apex tem 20 contas simultâneas, 100% de lucro até $25K e cupom MARKET com 90% off. Bulenox responde com EOD Drawdown opcional, regras simplificadas e cupom MARKET89 com 89% off. Este guia mostra quem ganha em cada cenário concreto — com os números que importam.</div>
+
+<div class="tldr">
+<h3>TL;DR — Veredito direto</h3>
+<ul>
+<li><b>Para quem busca menor preço de entrada:</b> Apex vence com $19,90 na conta 25K (vs $15,95 da Bulenox — empate técnico, escolha pela regra que prefere).</li>
+<li><b>Para quem opera scaling agressivo:</b> Apex vence — até 20 contas simultâneas vs limite menor da Bulenox.</li>
+<li><b>Para quem quer EOD Drawdown:</b> Bulenox vence — ela oferece EOD opcional, Apex só Trailing.</li>
+<li><b>Para quem busca passar em 1 dia:</b> Bulenox vence — sem regra de consistência, alvo atingível em 24h.</li>
+<li><b>Para iniciantes:</b> Apex vence — base de traders e documentação maior, comunidade em português ativa.</li>
+</ul>
+</div>
+
+<h2>1. Quem é cada uma em 2026</h2>
+
+<div class="firm-card">
+<div class="firm-logo" style="background:linear-gradient(135deg,#F97316,#EA580C)">A</div>
+<div class="firm-meta">
+<div class="firm-name">Apex Trader Funding</div>
+<div class="firm-spec">Fundada em 2021 · Sede Texas, EUA · 19.4K reviews Trustpilot (4.3/5)</div>
+</div>
+</div>
+
+<p>A Apex é a maior prop firm de futuros do mundo medida por volume de contas avaliadas. Fundada em 2021 por Darrell Martin, opera 100% no modelo de 1 etapa com Trailing Drawdown, sem regra de consistência fixa e payouts on-demand após o threshold de 5x o limite de drawdown. Em 2026, paga em média US$ 70 milhões/mês a traders aprovados (dado público da própria firma) e tem 19.400 reviews no Trustpilot com média 4.3/5.</p>
+
+<p>Forças da Apex:</p>
+<ul>
+<li>Até 20 contas simultâneas — você compra várias para diversificar risco</li>
+<li>Profit split de 100% nos primeiros $25.000 de saque, depois cai para 90/10</li>
+<li>News trading permitido (raridade entre firmas de futuros)</li>
+<li>Day-1 payout (saque já no primeiro dia após threshold)</li>
+<li>Comunidade em português grande, com Discord ativo</li>
+</ul>
+
+<div class="firm-card">
+<div class="firm-logo" style="background:linear-gradient(135deg,#A855F7,#7C3AED)">B</div>
+<div class="firm-meta">
+<div class="firm-name">Bulenox</div>
+<div class="firm-spec">Fundada em 2023 · Trustpilot 4.7/5 (1.6K reviews) · Cupom MARKET89 89% OFF</div>
+</div>
+</div>
+
+<p>A Bulenox é mais nova (2023) e cresceu rapidamente por simplificar o modelo da Apex. Ofereceu desde o lançamento sem regra de consistência (Apex tem alvo soft de 30%) e desconto agressivo via cupom. Tem 1.600 reviews no Trustpilot com média 4.7/5 — score mais alto que a Apex, mas com base menor (mais fácil manter média alta em volumes pequenos).</p>
+
+<p>Forças da Bulenox:</p>
+<ul>
+<li>Modelo dual: Trailing DD ou EOD DD (você escolhe na compra)</li>
+<li>Sem regra de consistência fixa — passar em 1 dia é tecnicamente possível</li>
+<li>Cupom MARKET89 com 89% off (média de mercado)</li>
+<li>Plataformas Rithmic e NinjaTrader (sem Tradovate em 2026)</li>
+<li>Payouts semanais (não on-demand como Apex)</li>
+</ul>
+
+<h2>2. Comparativo dos planos lado a lado</h2>
+
+<table>
+<thead><tr><th>Tamanho</th><th>Apex (Trail)</th><th>Bulenox (Trail)</th><th>Bulenox (EOD)</th><th>Quem ganha?</th></tr></thead>
+<tbody>
+<tr><td><b>25K</b></td><td>$19,90 (com MARKET)</td><td>$15,95</td><td>$15,95</td><td class="win-bul">Bulenox</td></tr>
+<tr><td><b>50K</b></td><td>$24,90</td><td>$19,25</td><td>$19,25</td><td class="win-bul">Bulenox</td></tr>
+<tr><td><b>100K</b></td><td>$39,90</td><td>$23,65</td><td>$23,65</td><td class="win-bul">Bulenox</td></tr>
+<tr><td><b>150K</b></td><td>$59,90</td><td>$35,75</td><td>$35,75</td><td class="win-bul">Bulenox</td></tr>
+<tr><td><b>250K</b></td><td>—</td><td>$58,85</td><td>$58,85</td><td class="win-bul">Bulenox</td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+<b>No preço bruto, Bulenox vence em todas as contas.</b> Mas o que importa é o <i>preço por trader passado</i>. A Apex tem pass rate histórico ~8% (segundo dados de comunidade), Bulenox ~10-12%. Custo efetivo de aprovação é parecido: Apex ~$250 por aprovação, Bulenox ~$200.
+</div>
+
+<h3>2.1 Profit target e drawdown</h3>
+
+<table>
+<thead><tr><th>Tamanho</th><th>Profit Target</th><th>Apex Trail DD</th><th>Bulenox Trail DD</th><th>Bulenox EOD DD</th></tr></thead>
+<tbody>
+<tr><td><b>25K</b></td><td>$1.500</td><td>$1.500</td><td>$1.500</td><td>$1.500</td></tr>
+<tr><td><b>50K</b></td><td>$3.000</td><td>$2.500</td><td>$2.500</td><td>$2.500</td></tr>
+<tr><td><b>100K</b></td><td>$6.000</td><td>$3.000</td><td>$3.000</td><td>$3.000</td></tr>
+<tr><td><b>150K</b></td><td>$9.000</td><td>$5.000</td><td>$4.500</td><td>$4.500</td></tr>
+</tbody>
+</table>
+
+<p>Empate matemático no target. Diferença real é na <b>mecânica do drawdown</b>: Trailing acompanha o pico do saldo até o threshold (locked depois), EOD reseta no fim do dia. Quem opera intraday curto prefere EOD — o lucro do dia "trava" e protege contra reversão noturna.</p>
+
+<h2>3. As regras que decidem a corrida</h2>
+
+<h3>3.1 Trailing Drawdown — como funciona em cada uma</h3>
+
+<p>Apex e Bulenox usam o mesmo conceito de Trailing: o limite de perda "segue" o saldo conforme você ganha, até atingir o threshold do plano. Depois disso, o limite fica fixo (não recua mais quando você perde).</p>
+
+<p>Diferenças sutis:</p>
+<ul>
+<li><b>Apex:</b> threshold = profit target × 1,2. Conta 50K com target $3.000 trava o trailing em $3.600 acima do início.</li>
+<li><b>Bulenox:</b> threshold = profit target × 1,0. Mesma conta trava em $3.000 (no momento que você bate o target).</li>
+</ul>
+
+<p>A diferença é importante: Bulenox trava o trailing mais cedo, dando mais margem de segurança após você atingir o alvo. Apex força você a manter buffer até $600 acima do target antes do trailing parar.</p>
+
+<h3>3.2 Bulenox tem EOD Drawdown — Apex não</h3>
+
+<div class="callout callout-good">
+<b>EOD Drawdown é a maior vantagem da Bulenox para day 

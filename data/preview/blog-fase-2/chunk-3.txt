@@ -1,0 +1,85 @@
+traders.</b> Em vez de o limite seguir o saldo em tempo real, ele recalcula só no fim do dia. Você pode passar por uma queda intraday violenta e, se fechar o dia em ganho, o limite só sobe daí. Apex obriga você a operar com trailing real-time.
+</div>
+
+<h3>3.3 Consistency rule — ambas relaxadas</h3>
+
+<p>Apex tem "consistência sugerida" de 30%: o maior dia de lucro não deve passar 30% do total acumulado. Não é hard rule, mas pode atrasar payout. Bulenox simplesmente não tem essa regra — você pode ter 1 dia de US$ 3.000 em US$ 5.000 e ainda sacar normalmente.</p>
+
+<p>Na prática: <b>Bulenox é mais permissiva</b> para quem aproveita um dia de mercado raro com tudo. Apex força distribuir o lucro.</p>
+
+<h3>3.4 News trading — ponto da Apex</h3>
+
+<p>Apex permite news trading sem restrição. Bulenox tem restrição de ±5 minutos em torno de news de alto impacto (NFP, CPI, FOMC). Pra quem opera fluxo de dados macro, Apex tem vantagem clara.</p>
+
+<h2>4. Profit split e payouts</h2>
+
+<table>
+<thead><tr><th>Métrica</th><th>Apex</th><th>Bulenox</th></tr></thead>
+<tbody>
+<tr><td>Profit split inicial</td><td class="win-apex">100% até $25K</td><td>90%</td></tr>
+<tr><td>Profit split pós-$25K</td><td>90/10</td><td>90%</td></tr>
+<tr><td>Frequência de payout</td><td class="win-apex">On-demand (Day-1)</td><td>Semanal</td></tr>
+<tr><td>Mínimo de payout</td><td>$500</td><td>$1.000</td></tr>
+<tr><td>Métodos</td><td>Wire, Deel, Rise</td><td>Wire, Deel</td></tr>
+<tr><td>KYC adicional</td><td>>$10K/mês</td><td>>$5K/mês</td></tr>
+</tbody>
+</table>
+
+<p>Apex vence no início (100% dos primeiros $25K é uma vantagem matemática real), mas Bulenox empata na média longa (90% flat). A diferença decisiva é a frequência: <b>Apex paga on-demand, Bulenox espera segunda-feira</b>. Para quem reinveste rapidamente em mais contas, Day-1 da Apex é crucial.</p>
+
+<h2>5. Trustpilot e reputação real</h2>
+
+<div style="display:flex;gap:16px;margin:20px 0;flex-wrap:wrap">
+<div style="flex:1;min-width:240px;background:var(--card);padding:18px;border-radius:10px">
+<div style="font-size:13px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Apex Trader Funding</div>
+<div style="font-size:36px;font-weight:800;color:var(--apex);margin:4px 0">4.3<span style="font-size:18px;color:var(--t3);font-weight:600">/5</span></div>
+<div style="color:var(--t2);font-size:14px">19.400 reviews · Trustpilot verificado</div>
+<div class="score-bar"><span style="font-size:12px;color:var(--t3);width:70px">Suporte</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:82%;background:var(--apex)"></div></div><span class="score-num">8.2</span></div>
+<div class="score-bar"><span style="font-size:12px;color:var(--t3);width:70px">Payout</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:89%;background:var(--apex)"></div></div><span class="score-num">8.9</span></div>
+<div class="score-bar"><span style="font-size:12px;color:var(--t3);width:70px">Regras</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:76%;background:var(--apex)"></div></div><span class="score-num">7.6</span></div>
+</div>
+<div style="flex:1;min-width:240px;background:var(--card);padding:18px;border-radius:10px">
+<div style="font-size:13px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Bulenox</div>
+<div style="font-size:36px;font-weight:800;color:var(--bulenox);margin:4px 0">4.7<span style="font-size:18px;color:var(--t3);font-weight:600">/5</span></div>
+<div style="color:var(--t2);font-size:14px">1.600 reviews · Trustpilot verificado</div>
+<div class="score-bar"><span style="font-size:12px;color:var(--t3);width:70px">Suporte</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:91%;background:var(--bulenox)"></div></div><span class="score-num">9.1</span></div>
+<div class="score-bar"><span style="font-size:12px;color:var(--t3);width:70px">Payout</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:86%;background:var(--bulenox)"></div></div><span class="score-num">8.6</span></div>
+<div class="score-bar"><span style="font-size:12px;color:var(--t3);width:70px">Regras</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:var(--bulenox)"></div></div><span class="score-num">8.8</span></div>
+</div>
+</div>
+
+<p>Bulenox tem score maior (4.7 vs 4.3), mas com base 12× menor. Apex sustenta 4.3 com 19.400 reviews — estatisticamente mais confiável. Reviews negativas mais comuns:</p>
+
+<ul>
+<li><b>Apex:</b> tempo de espera no suporte (24-48h em volume alto), regras de scaling pouco claras pra novatos.</li>
+<li><b>Bulenox:</b> restrição em news trading, ausência de Tradovate (algumas reclamações de quem queria migrar).</li>
+</ul>
+
+<h2>6. Plataformas e ecossistema técnico</h2>
+
+<table>
+<thead><tr><th>Plataforma</th><th>Apex</th><th>Bulenox</th></tr></thead>
+<tbody>
+<tr><td>Rithmic</td><td>✅</td><td>✅</td></tr>
+<tr><td>Tradovate</td><td>✅</td><td>❌</td></tr>
+<tr><td>NinjaTrader</td><td>✅</td><td>✅</td></tr>
+<tr><td>TradingView</td><td>✅</td><td>❌</td></tr>
+<tr><td>Jigsaw</td><td>✅</td><td>❌</td></tr>
+</tbody>
+</table>
+
+<p>Apex ganha por margem grande no ecossistema técnico — suporta 5 plataformas contra 2 da Bulenox. Para quem já opera no Tradovate ou TradingView, isso pode ser decisivo. Quem usa NinjaTrader ou Rithmic puros, empate.</p>
+
+<h2>7. Cupons exclusivos — onde encontrar 90% off</h2>
+
+<p>Ambas as firmas têm cupom permanente via Markets Coupons:</p>
+
+<ul>
+<li><b>Apex:</b> use o cupom <span class="kbd">MARKET</span> no checkout — 90% off em qualquer plano de avaliação. Aplica automaticamente quando você acessa pelo nosso link.</li>
+<li><b>Bulenox:</b> use o cupom <span class="kbd">MARKET89</span> — 89% off em qualquer plano.</li>
+</ul>
+
+<p>Importante: cupons públicos que aparecem no site da firma podem reduzir ou zerar a comissão do afiliado. Use sempre os cupons exclusivos via links abaixo para garantir o desconto sem prejudicar quem produz o conteúdo gratuito.</p>
+
+<div class="cta">
+<a href="https://apextraderfunding.com/member/aff/go/evertonmiranda?keyword=blog_apex_vs_bulenox#products" class="cta-btn" rel="sponsored noopener" targ
