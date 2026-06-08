@@ -166,6 +166,13 @@ a{text-decoration:none;color:inherit;}
 .data-table tr:last-child td{border-bottom:none;}
 .td-badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
 
+/* Excel-like grid pra tabelas do Financeiro — bordas em todas as células, zebra striping, números tabulares */
+.fin-grid{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;border:1px solid rgba(255,255,255,.10);}
+.fin-grid th{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;padding:8px 10px;text-align:left;font-weight:700;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);white-space:nowrap;}
+.fin-grid td{padding:7px 10px;border:1px solid rgba(255,255,255,.06);vertical-align:middle;}
+.fin-grid tbody tr:nth-child(even) td{background:rgba(255,255,255,.015);}
+.fin-grid tbody tr:hover td{background:rgba(240,180,41,.06);}
+
 /* SECTION HDR */
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
 .sec-title{font-size:18px;font-weight:800;letter-spacing:-.5px;border-left:3px solid var(--gold);padding-left:12px;}
@@ -4281,6 +4288,7 @@ async function pauseCampaign(campaign_id, name, btn){
 async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoBRL, spendCur){
   const tbl = document.getElementById('fin-roas-real');
   if (!tbl) return;
+  tbl.classList.add('fin-grid');
   const [attrRes, spendRes, activeByName] = await Promise.all([
     db.from('coupon_attributions').select('conversion_id,confidence,match_type,utm_campaign,utm_source,utm_medium,firm_id,amount,currency,sale_date').gte('sale_date', sinceDate).lte('sale_date', untilDate),
     db.from('ad_spend_daily').select('campaign_name,campaign_id,spend,currency,clicks,impressions,conversions,conversion_value,purchases,leads').gte('date', sinceDate).lte('date', untilDate),
@@ -4453,7 +4461,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
         <div style="font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;">Campanhas Inativas</div>
         <span style="font-size:11px;color:var(--t3);">— pausadas/removidas no Meta com dados no período (${inactiveRows.length})</span>
       </div>
-      <table class="data" style="width:100%;font-size:12px;border-collapse:collapse;">
+      <table class="fin-grid">
         <thead><tr>
           <th>Campanha</th><th>Status</th><th title="Gasto e CPM (passe o mouse pra ver impressões)">Gasto · CPM</th><th>Cliques</th><th title="Compras (Meta Pixel) / Nossas vendas atribuídas">Compras (Meta / Nosso)</th><th>Receita</th><th>ROAS</th><th>Lucro</th><th>CAC</th><th>Confiança</th>
         </tr></thead>
@@ -4562,7 +4570,7 @@ async function renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL){
         <div><b style="color:#1877F2;">Facebook</b>: ${tot.fbP} vendas · ${fmtBRL(tot.fbV*fxUSDtoBRL)}</div>
         <div><b style="color:#E1306C;">Instagram</b>: ${tot.igP} vendas · ${fmtBRL(tot.igV*fxUSDtoBRL)}</div>
       </div>
-      <table class="data" style="width:100%;font-size:12px;border-collapse:collapse;">
+      <table class="fin-grid">
         <thead><tr>
           <th>Campanha</th>
           <th style="text-align:center;">Vendas Facebook</th>
