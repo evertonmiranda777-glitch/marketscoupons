@@ -4534,46 +4534,42 @@ async function renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL){
     }).sort((a,b) => b.total - a.total);
 
     const rows = camps.map(c => {
-      const fbBRL = c.fbSpend * fxUSDtoBRL;
-      const igBRL = (c.ig.spend||0) * fxUSDtoBRL;
-      const anBRL = (c.an.spend||0) * fxUSDtoBRL;
-      const totalBRL = c.total * fxUSDtoBRL;
-      const pct = (v) => c.total > 0 ? Math.round((v/c.total)*100) : 0;
-      const fbPct = pct(c.fbSpend), igPct = pct(c.ig.spend||0), anPct = pct(c.an.spend||0);
       const fbPurch = (c.fb.purchases||0) + (c.ms.purchases||0);
       const igPurch = c.ig.purchases || 0;
-      const anPurch = c.an.purchases || 0;
-      const winner = (igPct >= 50 && igPurch >= fbPurch) ? 'IG' : (fbPct >= 50 ? 'FB' : '—');
-      const winnerColor = winner === 'IG' ? '#E1306C' : winner === 'FB' ? '#1877F2' : 'var(--t3)';
+      const fbValBRL = ((c.fb.purchase_value||0) + (c.ms.purchase_value||0)) * fxUSDtoBRL;
+      const igValBRL = (c.ig.purchase_value||0) * fxUSDtoBRL;
+      const fbColor = fbPurch > 0 ? '#1877F2' : 'var(--t3)';
+      const igColor = igPurch > 0 ? '#E1306C' : 'var(--t3)';
       return `<tr>
         <td><b style="font-size:11px;">${c.campaign_name}</b></td>
-        <td style="color:#1877F2;font-weight:600;">${fmtBRL(fbBRL)}<div style="font-size:10px;color:var(--t3);">${fbPct}% · ${fbPurch} compras</div></td>
-        <td style="color:#E1306C;font-weight:600;">${fmtBRL(igBRL)}<div style="font-size:10px;color:var(--t3);">${igPct}% · ${igPurch} compras</div></td>
-        <td style="color:var(--t3);">${anBRL > 0 ? fmtBRL(anBRL)+`<div style="font-size:10px;">${anPct}% · ${anPurch}c</div>` : '—'}</td>
-        <td style="font-weight:700;">${fmtBRL(totalBRL)}</td>
-        <td><span style="display:inline-block;padding:2px 8px;border-radius:10px;background:${winnerColor}22;color:${winnerColor};font-size:11px;font-weight:700;">${winner}</span></td>
+        <td style="color:${fbColor};font-weight:700;text-align:center;">${fbPurch}</td>
+        <td style="color:${igColor};font-weight:700;text-align:center;">${igPurch}</td>
+        <td style="color:${fbColor};font-weight:600;">${fbValBRL > 0 ? fmtBRL(fbValBRL) : '—'}</td>
+        <td style="color:${igColor};font-weight:600;">${igValBRL > 0 ? fmtBRL(igValBRL) : '—'}</td>
       </tr>`;
     }).join('');
 
-    // Totais agregados (top KPI)
+    // Totais agregados — só Vendas + Valor por plataforma (sem gasto/share)
     const tot = camps.reduce((a,c) => ({
-      fb: a.fb + c.fbSpend, ig: a.ig + (c.ig.spend||0), an: a.an + (c.an.spend||0),
       fbP: a.fbP + (c.fb.purchases||0) + (c.ms.purchases||0),
-      igP: a.igP + (c.ig.purchases||0), anP: a.anP + (c.an.purchases||0)
-    }), {fb:0,ig:0,an:0,fbP:0,igP:0,anP:0});
-    const totSpend = tot.fb + tot.ig + tot.an;
-    const fbShare = totSpend ? Math.round(tot.fb/totSpend*100) : 0;
-    const igShare = totSpend ? Math.round(tot.ig/totSpend*100) : 0;
-    const anShare = totSpend ? Math.round(tot.an/totSpend*100) : 0;
+      igP: a.igP + (c.ig.purchases||0),
+      fbV: a.fbV + (c.fb.purchase_value||0) + (c.ms.purchase_value||0),
+      igV: a.igV + (c.ig.purchase_value||0)
+    }), {fbP:0,igP:0,fbV:0,igV:0});
 
     body.innerHTML = `
-      <div style="display:flex;gap:16px;margin-bottom:12px;font-size:11px;flex-wrap:wrap;">
-        <div><b style="color:#1877F2;">Facebook</b>: ${fmtBRL(tot.fb*fxUSDtoBRL)} · ${fbShare}% · ${tot.fbP} compras</div>
-        <div><b style="color:#E1306C;">Instagram</b>: ${fmtBRL(tot.ig*fxUSDtoBRL)} · ${igShare}% · ${tot.igP} compras</div>
-        ${tot.an > 0 ? `<div><b style="color:var(--t3);">Audience Net.</b>: ${fmtBRL(tot.an*fxUSDtoBRL)} · ${anShare}% · ${tot.anP} compras</div>` : ''}
+      <div style="display:flex;gap:18px;margin-bottom:12px;font-size:12px;flex-wrap:wrap;">
+        <div><b style="color:#1877F2;">Facebook</b>: ${tot.fbP} vendas · ${fmtBRL(tot.fbV*fxUSDtoBRL)}</div>
+        <div><b style="color:#E1306C;">Instagram</b>: ${tot.igP} vendas · ${fmtBRL(tot.igV*fxUSDtoBRL)}</div>
       </div>
-      <table class="data" style="width:100%;font-size:11px;border-collapse:collapse;">
-        <thead><tr><th>Campanha</th><th>Facebook</th><th>Instagram</th><th>Audience</th><th>Total</th><th>Ganhador</th></tr></thead>
+      <table class="data" style="width:100%;font-size:12px;border-collapse:collapse;">
+        <thead><tr>
+          <th>Campanha</th>
+          <th style="text-align:center;">Vendas Facebook</th>
+          <th style="text-align:center;">Vendas Instagram</th>
+          <th>Valor Facebook</th>
+          <th>Valor Instagram</th>
+        </tr></thead>
         <tbody>${rows}</tbody>
       </table>
     `;
