@@ -54,6 +54,20 @@
       "mainEntityOfPage": "https://www.marketscoupons.com/guides/position-sizing"
     },
     {
+      "@type": "HowTo",
+      "@id": "https://www.marketscoupons.com/guides/position-sizing#howto",
+      "name": "Como calcular Position Sizing em Prop Firm",
+      "description": "Método em 5 passos para dimensionar posições em contas Prop Firm de Futuros e Forex sem violar drawdown.",
+      "totalTime": "PT15M",
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "Defina seu risco por operação em percentual", "text": "Risco padrão: 0,5% a 1% do saldo por trade. Em conta de US$ 50.000, isso é US$ 250 a US$ 500. Nunca varie esse percentual baseado em emoção ou sequência." },
+        { "@type": "HowToStep", "position": 2, "name": "Aplique a fórmula universal de dimensionamento", "text": "Tamanho = (Risco em USD) / (Distância do stop em ticks × Valor do tick). Exemplo MNQ: stop de 20 ticks × US$ 0,50/tick = US$ 10/contrato. Risco US$ 250 → 25 micro contratos." },
+        { "@type": "HowToStep", "position": 3, "name": "Ajuste por instrumento (Futuros vs Forex)", "text": "Futuros: use micros (MNQ, MES, MGC) em contas pequenas pra precisão. Forex: lote padrão = 100K USD, micro = 1K. Calcule pips × valor do pip vs risco em USD." },
+        { "@type": "HowToStep", "position": 4, "name": "Reduza tamanho quando drawdown floor está perto", "text": "Se margem até Trailing DD < 3× seu risco normal, dimensione com 50% do tamanho. Sobrevivência > velocidade." },
+        { "@type": "HowToStep", "position": 5, "name": "Padronize com planilha ou indicador no chart", "text": "Tenha tabela pronta de tamanho de posição por par/saldo/stop. Decisão de tamanho NÃO é discricionária — calcular na hora gera erro." }
+      ]
+    },
+    {
       "@type": "FAQPage",
       "mainEntity": [
         {
