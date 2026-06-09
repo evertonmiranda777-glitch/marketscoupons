@@ -105,10 +105,11 @@ module.exports = async (req, res) => {
       return res.status(502).json({ error: `HCTI ${hctiResp.status}: ${errText.slice(0, 200)}` });
     }
 
-    const { url } = await hctiResp.json();
-    if (!url) return res.status(502).json({ error: 'HCTI returned no url' });
+    const hctiData = await hctiResp.json();
+    const imgUrl = hctiData?.url;
+    if (!imgUrl) return res.status(502).json({ error: 'HCTI returned no url' });
 
-    const imgResp = await fetch(url);
+    const imgResp = await fetch(imgUrl);
     if (!imgResp.ok) {
       return res.status(502).json({ error: `image fetch ${imgResp.status}` });
     }
