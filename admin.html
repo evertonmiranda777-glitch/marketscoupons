@@ -677,7 +677,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('analytics',this)">Analytics</button>
  <button class="nta" onclick="adminGo('usuarios',this)">Usuários</button>
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
- <button class="nta" onclick="adminGo('sorteios',this)">Sorteios</button>
  <button class="nta" onclick="adminGo('monetizacao',this)">Monetização<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
  <button class="nta" onclick="adminGo('financeiro',this)">Financeiro</button>
  </div>
@@ -1691,68 +1690,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  </div><!-- /page-email -->
 
 <!-- SORTEIOS -->
-<div class="admin-page" id="page-sorteios">
-  <div style="padding:20px 24px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div>
-        <h2 style="margin:0;font-size:20px;font-weight:700;color:var(--t1);">Sorteios</h2>
-        <div style="font-size:12px;color:var(--t3);margin-top:4px;">Gerencie giveaways exibidos no popup do site. Lógica e métricas em <code style="background:rgba(240,180,41,.1);padding:2px 6px;border-radius:4px;">/admin#sorteios</code>.</div>
-      </div>
-      <button class="btn-primary" onclick="openGwForm()" style="padding:8px 16px;font-size:13px;">+ Novo sorteio</button>
-    </div>
-
-    <!-- KPIs -->
-    <div id="gw-kpis" class="stats-grid" style="margin-bottom:18px;">
-      <div class="stat-card"><div class="stat-label">Sorteios ativos</div><div class="stat-value" id="gw-kpi-active">—</div></div>
-      <div class="stat-card"><div class="stat-label" id="gw-kpi-shown-l">Impressões · 7d</div><div class="stat-value" id="gw-kpi-shown">—</div></div>
-      <div class="stat-card"><div class="stat-label" id="gw-kpi-clicks-l">CTA clicks · 7d</div><div class="stat-value" id="gw-kpi-clicks">—</div></div>
-      <div class="stat-card"><div class="stat-label" id="gw-kpi-conv-l">Conversão signup · 7d</div><div class="stat-value" id="gw-kpi-conv">—</div></div>
-    </div>
-
-    <!-- Lista -->
-    <div style="background:var(--card);border:1px solid var(--b1);border-radius:12px;overflow:hidden;">
-      <div style="padding:14px 16px;border-bottom:1px solid var(--b1);font-weight:700;font-size:13px;color:var(--t1);">Lista de sorteios</div>
-      <div id="gw-list" style="padding:8px;font-size:13px;color:var(--t2);">Carregando...</div>
-    </div>
-
-    <!-- Form modal -->
-    <div id="gw-form-ov" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);" onclick="if(event.target===this)closeGwForm()">
-      <div style="background:#0a0d14;border:1px solid var(--b1);border-radius:12px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;">
-        <div style="padding:16px 20px;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center;">
-          <h3 style="margin:0;font-size:16px;color:var(--t1);" id="gw-form-title">Novo sorteio</h3>
-          <button onclick="closeGwForm()" style="background:none;border:none;color:var(--t2);font-size:20px;cursor:pointer;">×</button>
-        </div>
-        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px;">
-          <input type="hidden" id="gw-f-id">
-          <div><label class="lf-l">Slug (único, ex: apex-jun-2026)</label><input class="lf-i" id="gw-f-slug" placeholder="apex-jun-2026"></div>
-          <div><label class="lf-l">Firma (id em cms_firms)</label><input class="lf-i" id="gw-f-firm" placeholder="apex"></div>
-          <div><label class="lf-l">Título do prêmio (HTML permitido)</label><input class="lf-i" id="gw-f-prize" placeholder="Win a free <em>Apex Evaluation</em>"></div>
-          <div><label class="lf-l">Hero image URL</label><input class="lf-i" id="gw-f-hero" placeholder="https://...img/email-giveaway-apex-tickets.jpg"></div>
-          <div><label class="lf-l">Data do sorteio</label><input class="lf-i" type="date" id="gw-f-date"></div>
-          <div><label class="lf-l">URL do post Instagram</label><input class="lf-i" id="gw-f-ig" placeholder="https://www.instagram.com/p/XXXX/"></div>
-          <div><label class="lf-l">Disclaimer do prêmio</label><textarea class="lf-i" id="gw-f-disc" rows="2" placeholder="What you win: the Evaluation phase only..."></textarea></div>
-          <div><label class="lf-l">Steps (JSON array de {text})</label><textarea class="lf-i" id="gw-f-steps" rows="6" placeholder='[{"text":"Follow @marketscoupons"}]'></textarea></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <label style="display:flex;align-items:center;gap:8px;color:var(--t2);font-size:12px;"><input type="checkbox" id="gw-f-firm-open" checked> Trigger ao abrir firma</label>
-            <label style="display:flex;align-items:center;gap:8px;color:var(--t2);font-size:12px;"><input type="checkbox" id="gw-f-coupon"> Trigger ao copiar cupom</label>
-            <label style="display:flex;align-items:center;gap:8px;color:var(--t2);font-size:12px;"><input type="checkbox" id="gw-f-checkout"> Trigger ao abrir checkout</label>
-            <label style="display:flex;align-items:center;gap:8px;color:var(--t2);font-size:12px;"><input type="checkbox" id="gw-f-global"> Trigger global (todo home)</label>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div><label class="lf-l">Delay (ms)</label><input class="lf-i" type="number" id="gw-f-delay" value="3000"></div>
-            <div><label class="lf-l">Re-show após fechar (dias)</label><input class="lf-i" type="number" id="gw-f-reshow" value="7"></div>
-          </div>
-          <label style="display:flex;align-items:center;gap:8px;color:var(--t2);font-size:12px;"><input type="checkbox" id="gw-f-active" checked> Ativo</label>
-          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px;">
-            <button class="btn-secondary" onclick="closeGwForm()">Cancelar</button>
-            <button class="btn-primary" onclick="saveGw()">Salvar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div><!-- /page-sorteios -->
 
 
 <!-- LEAD DETAIL MODAL -->
@@ -1768,88 +1705,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
 
     <!-- ══ LOYALTY VALIDATION ══ -->
-    <div class="admin-page" id="page-loyalty">
-      <div class="sec-hdr">
-        <div class="sec-title">Programa de Fidelidade — Validacao</div>
-        <div class="sec-actions">
-          <button class="btn-secondary" onclick="refreshLoyaltyAdmin()">Atualizar</button>
-          <button class="btn-secondary" onclick="exportLoyaltyCSV()">Exportar CSV</button>
-        </div>
-      </div>
-
-      <!-- KPIs -->
-      <div class="stats-grid" id="loyalty-kpis" style="margin-bottom:20px;"></div>
-
-      <!-- TABS: Pendente / Aprovado / Recusado -->
-      <div style="display:flex;gap:8px;margin-bottom:16px;">
-        <button class="btn-primary" id="ltab-pending"  onclick="setLoyaltyTab('pending')">Em análise</button>
-        <button class="btn-secondary" id="ltab-approved" onclick="setLoyaltyTab('approved')">Aprovados</button>
-        <button class="btn-secondary" id="ltab-rejected" onclick="setLoyaltyTab('rejected')">Recusados</button>
-      </div>
-
-      <div class="chart-card" style="padding:0;overflow:hidden;">
-        <div class="data-table-wrap">
-          <table class="data-table" id="loyalty-proofs-tbl"></table>
-        </div>
-      </div>
-    </div>
 
 
 
     <!-- ══ PRO & ASSINATURAS ══ -->
-    <div class="admin-page" id="page-pro">
-      <div class="sec-hdr">
-        <div class="sec-title">Pro & Assinaturas</div>
-        <div class="sec-actions">
-          <button class="btn-secondary" onclick="renderProPage()">Atualizar</button>
-        </div>
-      </div>
-
-      <!-- KPIs -->
-      <div class="stats-grid" id="pro-kpis"></div>
-
-      <!-- Funil Pro -->
-      <div class="charts-grid" style="margin-bottom:20px;">
-        <div class="chart-card">
-          <div class="cc-hd"><div><div class="cc-title">Funil Pro</div><div class="cc-sub">Eventos de conversão</div></div></div>
-          <div id="pro-funnel"></div>
-        </div>
-        <div class="chart-card">
-          <div class="cc-hd"><div><div class="cc-title">Eventos Pro (14 dias)</div><div class="cc-sub">Checkout e conversão</div></div></div>
-          <div class="chart-wrap"><canvas id="chart-pro-funnel"></canvas></div>
-        </div>
-      </div>
-
-      <!-- Tabela Assinantes Stripe -->
-      <div class="sec-hdr" style="margin-top:20px;">
-        <div class="sec-title" style="font-size:14px;">Assinantes Stripe</div>
-      </div>
-      <div class="chart-card" style="padding:0;overflow:hidden;">
-        <div class="data-table-wrap"><table class="data-table" id="pro-subs-tbl"></table></div>
-      </div>
-
-      <!-- VIP Manual -->
-      <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">VIP Manual</div>
-      </div>
-      <div class="chart-card" style="padding:16px;">
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
-          <input type="email" id="pro-vip-email" placeholder="usuario@email.com" class="filter-inp" style="width:280px;">
-          <button class="btn-primary" onclick="grantVip()" style="font-size:12px;padding:7px 16px;">Liberar VIP</button>
-          <span id="pro-vip-msg" style="font-size:11px;"></span>
-        </div>
-        <div class="data-table-wrap"><table class="data-table" id="pro-vip-tbl"></table></div>
-        <div id="pro-vip-empty" style="padding:16px;text-align:center;color:var(--t3);font-size:12px;display:none;">Nenhum usuário VIP manual.</div>
-      </div>
-
-      <!-- Acesso Fidelidade -->
-      <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Acesso via Fidelidade</div>
-      </div>
-      <div class="chart-card" style="padding:0;overflow:hidden;">
-        <div class="data-table-wrap"><table class="data-table" id="pro-loyalty-tbl"></table></div>
-      </div>
-    </div>
 
     <!-- ══ FINANCEIRO — conversoes reais + ads ══ -->
     <div class="admin-page" id="page-financeiro">
@@ -2842,34 +2701,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
     </div>
 
     <!-- ══ SITE: FIDELIDADE ══ -->
-    <div class="admin-page" id="page-site-fidelidade">
-      <div class="sec-hdr">
-        <div class="sec-title">Programa de Fidelidade — Textos</div>
-        <div class="sec-actions">
-          <a href="https://www.marketscoupons.com" target="_blank" class="btn-secondary" style="text-decoration:none;">Ver no site ↗</a>
-          <button class="btn-secondary" onclick="adminGo('site')">Voltar</button>
-          <button class="btn-primary" onclick="saveSiteSection('fidelidade')">Salvar</button>
-        </div>
-      </div>
-      <div class="chart-card">
-        <div class="ec-field"><label>Título</label><input id="ss-loyalty_hero_titulo" class="filter-inp" style="width:100%;"></div>
-        <div class="ec-field"><label>Descrição</label><textarea id="ss-loyalty_hero_desc" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
-        <div style="font-size:14px;font-weight:700;color:var(--gold);margin:16px 0 12px;">4 Benefícios</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div class="ec-field"><label>Benefício 1 — Título</label><input id="ss-loyalty_benefit1_titulo" class="filter-inp" style="width:100%;"></div>
-          <div class="ec-field"><label>Benefício 1 — Subtítulo</label><input id="ss-loyalty_benefit1_sub" class="filter-inp" style="width:100%;"></div>
-          <div class="ec-field"><label>Benefício 2 — Título</label><input id="ss-loyalty_benefit2_titulo" class="filter-inp" style="width:100%;"></div>
-          <div class="ec-field"><label>Benefício 2 — Subtítulo</label><input id="ss-loyalty_benefit2_sub" class="filter-inp" style="width:100%;"></div>
-          <div class="ec-field"><label>Benefício 3 — Título</label><input id="ss-loyalty_benefit3_titulo" class="filter-inp" style="width:100%;"></div>
-          <div class="ec-field"><label>Benefício 3 — Subtítulo</label><input id="ss-loyalty_benefit3_sub" class="filter-inp" style="width:100%;"></div>
-          <div class="ec-field"><label>Benefício 4 — Título</label><input id="ss-loyalty_benefit4_titulo" class="filter-inp" style="width:100%;"></div>
-          <div class="ec-field"><label>Benefício 4 — Subtítulo</label><input id="ss-loyalty_benefit4_sub" class="filter-inp" style="width:100%;"></div>
-        </div>
-        <div style="font-size:14px;font-weight:700;color:var(--gold);margin:16px 0 12px;">Como Participar</div>
-        <div class="ec-field"><label>Título</label><input id="ss-loyalty_como_titulo" class="filter-inp" style="width:100%;"></div>
-        <div class="ec-field"><label>Descrição</label><textarea id="ss-loyalty_como_desc" class="filter-inp" rows="2" style="width:100%;resize:vertical;"></textarea></div>
-      </div>
-    </div>
 
     <!-- ══ SITE: FOOTER ══ -->
     <div class="admin-page" id="page-site-footer">
@@ -3709,13 +3540,12 @@ function ensureDemoData(){
 const _unifiedTabs = {
   'analytics':   [{id:'tracking',label:'Tracking'},{id:'events',label:'Eventos'},{id:'geo',label:'Geo'}],
   'usuarios':    [{id:'leads',label:'Leads'},{id:'cadastros',label:'Cadastros'}],
-  'monetizacao': [{id:'pro',label:'Pro'},{id:'loyalty',label:'Fidelidade'}],
   'firmas':      [{id:'cms-firms',label:'Firmas'},{id:'cms-settings',label:'Preços & Cupons'}],
   'conteudo':    [{id:'cms-blog',label:'Blog'},{id:'cms-guides',label:'Guias'},{id:'cms-faq',label:'FAQ'}],
   'telegram':    [{id:'telegram',label:'Telegram'}],
   'criativos':   [{id:'criativos',label:'Criativos'}],
   'reviews':     [{id:'reviews',label:'Avaliações'}],
-  'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-firmas',label:'Firmas'},{id:'site-plataformas',label:'Plataformas'},{id:'site-indicadores',label:'Indicadores'},{id:'site-calendario',label:'Calendário'},{id:'site-analise',label:'Análise'},{id:'site-gamma',label:'Gamma'},{id:'site-calc',label:'Calculadora'},{id:'site-quiz',label:'Quiz'},{id:'site-live',label:'Live Room'},{id:'site-fidelidade',label:'Fidelidade'},{id:'site-footer',label:'Footer'},{id:'site-tema',label:'Cores / Tema'},{id:'site-logo',label:'Logo'}],
+  'site':        [{id:'site-hero',label:'Home / Hero'},{id:'site-nav',label:'Navegação'},{id:'site-ofertas',label:'Ofertas'},{id:'site-firmas',label:'Firmas'},{id:'site-plataformas',label:'Plataformas'},{id:'site-indicadores',label:'Indicadores'},{id:'site-calendario',label:'Calendário'},{id:'site-analise',label:'Análise'},{id:'site-gamma',label:'Gamma'},{id:'site-calc',label:'Calculadora'},{id:'site-quiz',label:'Quiz'},{id:'site-live',label:'Live Room'},{id:'site-footer',label:'Footer'},{id:'site-tema',label:'Cores / Tema'},{id:'site-logo',label:'Logo'}],
   'config':      [{id:'cms-texts',label:'Textos'},{id:'i18n-editor',label:'Traduções (I18N)'},{id:'firmt-editor',label:'Traduções Firmas'}]
 };
 // Reverse map: sub-page → parent unified tab
@@ -3945,9 +3775,6 @@ function renderPage(p){
         loadAutoStatus();
       }, 30000);
       break;
-    case 'loyalty':        setTimeout(renderLoyaltyAdmin, 60); break;
-    case 'sorteios':       loadGwAdmin(); break;
-    case 'pro':            renderProPage(); break;
     case 'tracking':       getEvents().then(()=>renderTrackingPage()); if(!_ga4Cache) fetchGA4Geo(); break;
     case 'financeiro':     renderFinanceiro(); break;
     case 'cms-firms':      renderCmsFirms(); break;
@@ -15761,140 +15588,6 @@ async function toggleAutoEmail(){
 }
 
 /* ============= SORTEIOS (giveaways) ============= */
-async function loadGwAdmin(){
-  await Promise.all([loadGwList(), loadGwKpis()]);
-}
-
-async function loadGwList(){
-  const list = document.getElementById('gw-list');
-  if(!list) return;
-  list.innerHTML = '<div style="padding:14px;color:var(--t3);">Carregando...</div>';
-  try{
-    const { data, error } = await db.from('giveaways').select('*').order('created_at',{ascending:false});
-    if(error) throw error;
-    if(!data || !data.length){ list.innerHTML = '<div style="padding:14px;color:var(--t3);">Nenhum sorteio criado ainda. Clique em "Novo sorteio".</div>'; return; }
-    list.innerHTML = data.map(g => {
-      const dt = g.draw_date ? new Date(g.draw_date+'T12:00:00').toLocaleDateString('pt-BR') : '—';
-      const status = g.active ? '<span style="background:rgba(16,185,129,.12);color:#10b981;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;">ATIVO</span>' : '<span style="background:rgba(255,255,255,.06);color:var(--t3);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;">inativo</span>';
-      return `<div style="padding:14px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:14px;">
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><strong style="color:var(--t1);">${g.slug}</strong> ${status}</div>
-          <div style="font-size:11px;color:var(--t3);">Firma: ${g.firm_id} · Sorteio: ${dt} · IG: ${g.instagram_url?'<a href="'+g.instagram_url+'" target="_blank" style="color:var(--gold);">post</a>':'—'}</div>
-        </div>
-        <button class="btn-secondary" style="font-size:11px;padding:5px 10px;" onclick='openGwForm(${JSON.stringify(g).replace(/'/g,"&#39;")})'>Editar</button>
-        <button class="btn-secondary" style="font-size:11px;padding:5px 10px;" onclick="toggleGwActive('${g.id}', ${!g.active})">${g.active?'Pausar':'Ativar'}</button>
-        <button class="btn-secondary" style="font-size:11px;padding:5px 10px;color:#ef4444;" onclick="deleteGw('${g.id}','${g.slug}')">Excluir</button>
-      </div>`;
-    }).join('');
-  }catch(e){ list.innerHTML = '<div style="padding:14px;color:#ef4444;">Erro: '+e.message+'</div>'; }
-}
-
-async function loadGwKpis(){
-  try{
-    // Usa o filtro global de datas do topbar
-    const startISO = globalDateStart;
-    const endISO = globalDateEnd;
-    const buildQuery = (eventName) => {
-      let q = db.from('events').select('id',{count:'exact',head:true}).eq('event', eventName);
-      if(startISO) q = q.gte('created_at', startISO);
-      if(endISO)   q = q.lte('created_at', endISO);
-      return q;
-    };
-    const [activeRes, shownRes, clicksRes, signupsRes] = await Promise.all([
-      db.from('giveaways').select('id',{count:'exact',head:true}).eq('active',true),
-      buildQuery('giveaway_popup_shown'),
-      buildQuery('giveaway_popup_cta_click'),
-      buildQuery('giveaway_popup_signup_complete'),
-    ]);
-    const shown = shownRes?.count ?? 0;
-    const clicks = clicksRes?.count ?? 0;
-    const signups = signupsRes?.count ?? 0;
-    document.getElementById('gw-kpi-active').textContent = activeRes?.count ?? 0;
-    document.getElementById('gw-kpi-shown').textContent = shown;
-    document.getElementById('gw-kpi-clicks').textContent = clicks;
-    document.getElementById('gw-kpi-conv').textContent = clicks ? Math.round(signups*100/clicks)+'%' : '—';
-    // Atualiza labels dos cards refletindo o range ativo
-    const rangeLabel = (document.getElementById('gdb-active')?.textContent || '7d').trim();
-    const lShown = document.getElementById('gw-kpi-shown-l');
-    const lClicks = document.getElementById('gw-kpi-clicks-l');
-    const lConv = document.getElementById('gw-kpi-conv-l');
-    if(lShown) lShown.textContent = 'Impressões · ' + rangeLabel;
-    if(lClicks) lClicks.textContent = 'CTA clicks · ' + rangeLabel;
-    if(lConv) lConv.textContent = 'Conversão signup · ' + rangeLabel;
-  }catch(e){ console.warn('gw kpis', e); }
-}
-
-function openGwForm(g){
-  const ov = document.getElementById('gw-form-ov'); if(!ov) return;
-  document.getElementById('gw-form-title').textContent = g?.id ? 'Editar sorteio' : 'Novo sorteio';
-  document.getElementById('gw-f-id').value = g?.id || '';
-  document.getElementById('gw-f-slug').value = g?.slug || '';
-  document.getElementById('gw-f-firm').value = g?.firm_id || '';
-  document.getElementById('gw-f-prize').value = g?.prize_label || '';
-  document.getElementById('gw-f-hero').value = g?.hero_image || '';
-  document.getElementById('gw-f-date').value = g?.draw_date || '';
-  document.getElementById('gw-f-ig').value = g?.instagram_url || '';
-  document.getElementById('gw-f-disc').value = g?.prize_disclaimer || '';
-  document.getElementById('gw-f-steps').value = g?.steps ? JSON.stringify(g.steps, null, 2) : '[\n  {"text":"Follow <strong>@marketscoupons</strong> on Instagram"},\n  {"text":"<strong>Sign up</strong> on the website"},\n  {"text":"<strong>Like</strong> the giveaway post"},\n  {"text":"<strong>Tag trader friends</strong> in the comments"}\n]';
-  document.getElementById('gw-f-firm-open').checked = g ? !!g.show_on_firm_open : true;
-  document.getElementById('gw-f-coupon').checked = !!g?.show_on_coupon_copy;
-  document.getElementById('gw-f-checkout').checked = !!g?.show_on_checkout;
-  document.getElementById('gw-f-global').checked = !!g?.show_global;
-  document.getElementById('gw-f-delay').value = g?.delay_ms ?? 3000;
-  document.getElementById('gw-f-reshow').value = g?.reshow_after_close_days ?? 7;
-  document.getElementById('gw-f-active').checked = g ? !!g.active : true;
-  ov.style.display = 'flex';
-}
-function closeGwForm(){ const ov=document.getElementById('gw-form-ov'); if(ov) ov.style.display='none'; }
-
-async function saveGw(){
-  let steps;
-  try{ steps = JSON.parse(document.getElementById('gw-f-steps').value); if(!Array.isArray(steps)) throw new Error('Steps deve ser array'); }
-  catch(e){ alert('JSON dos steps inválido: '+e.message); return; }
-  const payload = {
-    slug: document.getElementById('gw-f-slug').value.trim(),
-    firm_id: document.getElementById('gw-f-firm').value.trim(),
-    prize_label: document.getElementById('gw-f-prize').value,
-    hero_image: document.getElementById('gw-f-hero').value.trim(),
-    draw_date: document.getElementById('gw-f-date').value,
-    instagram_url: document.getElementById('gw-f-ig').value.trim(),
-    prize_disclaimer: document.getElementById('gw-f-disc').value,
-    steps: steps,
-    show_on_firm_open: document.getElementById('gw-f-firm-open').checked,
-    show_on_coupon_copy: document.getElementById('gw-f-coupon').checked,
-    show_on_checkout: document.getElementById('gw-f-checkout').checked,
-    show_global: document.getElementById('gw-f-global').checked,
-    delay_ms: parseInt(document.getElementById('gw-f-delay').value,10) || 3000,
-    reshow_after_close_days: parseInt(document.getElementById('gw-f-reshow').value,10) || 7,
-    active: document.getElementById('gw-f-active').checked,
-    updated_at: new Date().toISOString()
-  };
-  if(!payload.slug || !payload.firm_id || !payload.prize_label || !payload.draw_date){ alert('Preencha slug, firma, prêmio e data'); return; }
-  const id = document.getElementById('gw-f-id').value;
-  try{
-    if(id){
-      const { error } = await db.from('giveaways').update(payload).eq('id', id);
-      if(error) throw error;
-    } else {
-      const { error } = await db.from('giveaways').insert([payload]);
-      if(error) throw error;
-    }
-    toast('Sorteio salvo');
-    closeGwForm();
-    loadGwAdmin();
-  }catch(e){ alert('Erro ao salvar: '+e.message); }
-}
-
-async function toggleGwActive(id, newState){
-  try{ await db.from('giveaways').update({active:newState, updated_at:new Date().toISOString()}).eq('id', id); toast(newState?'Ativado':'Pausado'); loadGwAdmin(); }
-  catch(e){ alert('Erro: '+e.message); }
-}
-
-async function deleteGw(id, slug){
-  if(!confirm('Excluir sorteio "'+slug+'"? Não pode ser desfeito.')) return;
-  try{ await db.from('giveaways').delete().eq('id', id); toast('Excluído'); loadGwAdmin(); }
-  catch(e){ alert('Erro: '+e.message); }
-}
 
 </script>
 </body>

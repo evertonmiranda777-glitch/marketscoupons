@@ -206,6 +206,31 @@ async function breakdownByPlacement(since: string, until: string) {
   return { ok: true, since, until, rows, errors: errors.length ? errors : undefined };
 }
 
+// Lista TODAS as contas de anuncio que o token tem acesso (via /me/adaccounts).
+// Util pra descobrir contas que existem no BM mas nao estao na env META_AD_ACCOUNT_IDS.
+async function listAllAccessibleAccounts() {
+  if (!META_TOKEN) return { error: "missing_token" };
+  const out: any[] = [];
+  let next: string | null = `https://graph.facebook.com/v21.0/me/adaccounts?fields=id,account_id,name,account_status,currency&limit=200&access_token=${META_TOKEN}`;
+  while (next) {
+    const r = await fetch(next);
+    const j = await r.json();
+    if (!r.ok) return { error: "meta_api_error", details: j };
+    (j.data || []).forEach((a: any) => out.push(a));
+    next = j.paging?.next || null;
+    if (out.length > 1000) break;
+  }
+  const configured = new Set(ACCOUNT_IDS);
+  const annotated = out.map(a => ({
+    id: a.id,
+    name: a.name,
+    status: a.account_status,
+    currency: a.currency,
+    configured: configured.has(a.id)
+  }));
+  return { ok: true, total: annotated.length, configured: ACCOUNT_IDS, accounts: annotated };
+}
+
 async function setCampaignStatus(campaign_id: string, status: "ACTIVE" | "PAUSED") {
   const r = await fetch(`https://graph.facebook.com/v21.0/${campaign_id}`, {
     method: "POST",
@@ -235,6 +260,10 @@ serve(async (req) => {
     const until = url.searchParams.get("until") || today;
     const r = await breakdownByPlatform(since, until);
     return json(r);
+  }
+
+  if (req.method === "GET" && action === "all_accounts") {
+    return json(await listAllAccessibleAccounts());
   }
 
   if (req.method === "GET" && action === "placements") {
