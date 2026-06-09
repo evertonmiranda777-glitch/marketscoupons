@@ -38,11 +38,22 @@ module.exports = async (req, res) => {
 
   // Auth gate: admin JWT OU service_role (pra automacao chamar)
   const serviceAuth = req.headers['x-service-auth'] || '';
-  const isService = serviceAuth && process.env.SUPABASE_SERVICE_ROLE_KEY && serviceAuth === process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const expected = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  const isService = serviceAuth && expected && serviceAuth === expected;
   if (!isService) {
     const jwt = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
     const admin = await validateAdmin(jwt);
-    if (!admin) return res.status(403).json({ error: 'Forbidden: admin access required' });
+    if (!admin) return res.status(403).json({
+      error: 'Forbidden: admin access required',
+      debug: {
+        has_service_auth_header: !!serviceAuth,
+        service_auth_len: serviceAuth.length,
+        expected_env_present: !!expected,
+        expected_len: expected.length,
+        first8_match: serviceAuth.slice(0,8) === expected.slice(0,8),
+        last8_match: serviceAuth.slice(-8) === expected.slice(-8),
+      }
+    });
   }
 
   try {
