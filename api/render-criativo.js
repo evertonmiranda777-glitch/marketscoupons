@@ -6,6 +6,10 @@
 // AUTH: requires admin JWT (validates against profiles.is_admin in Supabase).
 // HCTI is a paid API; without auth this endpoint could be abused to drain quota.
 
+// Vercel Hobby caps Serverless at 60s. Pago Pro caps em 300s. Setado em 60s pra
+// nao explodir limite. Telegram-creative tem retry interno (3x) se essa falhar.
+module.exports.config = { maxDuration: 60 };
+
 const { applyCors } = require('./_cors.js');
 const { rateLimitIp } = require('./_ratelimit.js');
 const { safeError } = require('./_safe-error.js');
@@ -66,12 +70,14 @@ module.exports = async (req, res) => {
 
     if (url) {
       // Modo URL: HCTI carrega a pagina e screenshota
+      // ms_delay reduzido pra 800ms (era 1500) — pagina criativo-render.html ja seta
+      // data-ready=true rapido, nao precisa esperar 1.5s + render HCTI.
       hctiBody = {
         url,
         viewport_width: width,
         viewport_height: height,
         device_scale: 1,
-        ms_delay: 1500,
+        ms_delay: 800,
         selector: '#cr-canvas',
       };
     } else {
