@@ -37,6 +37,14 @@ Dado não visto = `null` ou `"TBD validar"` no DB. Detalhe: [memory/feedback_nun
 
 **REGRA não inflar features (2026-05-11):** Antes de chamar view/função de "ROAS real" / "venda-a-venda" / similar — LER definição SQL primeiro. `v_attribution_campaign_30d` é RATEIO PROPORCIONAL (clicks da campaign ÷ total clicks × sales do dia), NÃO matching individual. Matcher venda-a-venda REAL = `attribution-matcher` cron 5h30 BRT em `affiliate_conversions` (que só popula desde fix de constraint 2026-05-11).
 
+**REGRA Top 3 email (2026-06-09):** template `top3` em INST_TEMPLATES é SAGRADO. Sempre as 3 firmas top do momento (Apex + Bulenox + TradeDay no padrão atual). NÃO inflar com variants, NÃO substituir firmas sem ordem direta. Pra mostrar opções de Apex (Pack 5x, Sem Taxa), usar `buildWhitePromoHtml` que tem seção "MAIS OPÇÕES" condicional (renderiza só se `prices[].n5` ou `prices[].na` existirem). Template existe em admin.html (envio manual) E lib/email-render.js (cron-bulk) — atualizar nos dois.
+
+**REGRA bug visual (2026-06-09):** print mostrando dropdown branco/UI quebrada/cor errada = ajustar CSS, NÃO deletar a feature. Detalhes em `memory/feedback_ajustar_css_nao_deletar.md`. Quase apaguei aba Reviews por confundir.
+
+**REGRA case-sensitivity (2026-06-09):** arquivos em `img/Firms/` precisam ter o EXATO `firm.id` lowercase (`tradeday.png`, `e8.png`, `goat.png`). Templates usam `${f.id}.png` — Linux Vercel case-sensitive quebra com `Tradeday.png`/`E8 Markets.png`. `git config core.ignorecase=false` setado no projeto previne regressão.
+
+**REGRA cooldown email (2026-06-09):** dedup de templates institucionais NÃO é mais pra sempre. Usa `email_logs.template_slug` + janela configurável (input "Cooldown" no admin, default 7d). Tag Brevo `received-{slug}` ainda grava mas não bloqueia. Pra reenviar: ajustar input no admin.
+
 ## Visão geral
 
 Site de cupons de **prop firms** de trading. Compara firmas, oferece cupons, fidelidade, blog, guias, calculadoras, análise diária. Deploy estático no Vercel.
