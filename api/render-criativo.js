@@ -69,15 +69,16 @@ module.exports = async (req, res) => {
     let hctiBody;
 
     if (url) {
-      // Modo URL: HCTI carrega a pagina e screenshota
-      // ms_delay reduzido pra 800ms (era 1500) — pagina criativo-render.html ja seta
-      // data-ready=true rapido, nao precisa esperar 1.5s + render HCTI.
+      // Modo URL: HCTI carrega a pagina e screenshota.
+      // ms_delay 2000ms: 800ms deu IMAGEM PRETA (screenshot antes do JS popular
+      // o canvas). 1500ms funcionava mas borderline. 2000ms eh seguro e ainda
+      // cabe no Vercel 60s timeout (HCTI rende em ~30s normal).
       hctiBody = {
         url,
         viewport_width: width,
         viewport_height: height,
         device_scale: 1,
-        ms_delay: 800,
+        ms_delay: 2000,
         selector: '#cr-canvas',
       };
     } else {
