@@ -4292,7 +4292,7 @@ const CHECKOUT_FIRMS=[
      'Rapid (Futures)':[{size:'25K',capital:'$25,000',goal:'$2,000',maxDD:'-4%',orig:'$89.99',disc:'$67.49',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'$159.99',disc:'$119.99',featured:true},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'-4%',orig:'$279.99',disc:'$209.99',featured:false}],
      'Legacy (Futures)':[{size:'25K',capital:'$25,000',goal:'$2,000',maxDD:'-4%',orig:'$79.99',disc:'$59.99',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'$149.99',disc:'$112.49',featured:true},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'-4%',orig:'$249.99',disc:'$187.49',featured:false}]
    },
-   buildUrl:(size,type,plat)=>'https://fundednext.com/?fpr=everton33'},
+   buildUrl:(size,type,plat)=>'https://fundednext.com/futures?fpr=everton33'},
   {id:'e2t',name:'Earn2Trade',short:'E2T',coupon:'MARKETSCOUPONS',discount:'60%',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',
    includes:['Free NinjaTrader/Finamark license','Free Journalytix license','Free reset when rebilled','Scaling up to $400K','Education catalog included'],
    types:['Trader Career Path','Gauntlet Mini'],platforms:['Rithmic','NinjaTrader','Finamark','Tradovate','TradingView'],

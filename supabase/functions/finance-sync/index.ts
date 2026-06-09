@@ -156,12 +156,20 @@ serve(async (req) => {
         out.synth_refund_removed = idsToDelete.length;
       }
       const allSynths: any[] = [];
+      // Dia BRT atual — não criar synths pro dia em andamento (espalharia em horários futuros e infla
+      // dashboards de campanha com vendas em horas que ainda não chegaram). Markets Monitor cobre vendas
+      // reais em tempo real; o gap do dia atual fica pra o cron noturno preencher quando o dia fechar.
+      const todayBrt = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
       for (const r of daysWithTx) {
+        if (r.date === todayBrt) continue;
         const real = realByDay[r.date] || { count: 0, sumAmount: 0 };
         const gap = r.transactions - real.count;
         if (gap <= 0) continue;
         const remainingComm = Math.max(0, r.commission - real.sumAmount);
-        const perTx = gap > 0 ? remainingComm / gap : 0;
+        // FIX 2026-06-09: nao criar synth com amount=0 (MM ja capturou commission suficiente,
+        // synth $0 vira fantasma que infla contagem de vendas no painel sem agregar valor).
+        if (remainingComm <= 0) continue;
+        const perTx = remainingComm / gap;
         const dateNoDash = r.date.replace(/-/g, '');
         // Coloca synth NOON BRT do dia (= 15:00 UTC) — fica claramente no dia BRT
         // distribuído entre 09:00-21:00 BRT pra parecer trader em horário comercial
