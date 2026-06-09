@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Criativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0a0d14;font-family:'Inter',sans-serif;}
+body{padding:0;}
+.cr-canvas{position:relative;overflow:hidden;font-family:'Inter',sans-serif;color:#fff;}
+.cr-canvas-bg{position:absolute;inset:0;background:#060810;}
+.cr-canvas-img{position:absolute;inset:0;background-size:cover;background-position:center;}
+.cr-canvas-ov{position:absolute;inset:0;background:transparent;}
+.cr-canvas-content{position:relative;z-index:2;height:100%;width:100%;box-sizing:border-box;}
+.cr-inner{width:100%;height:100%;position:relative;}
+.cr-mc-outer{position:absolute;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:center;gap:12px;}
+.cr-mc-outer svg{width:42px;height:42px;}
+.cr-mc-outer .txt{color:#fff;font-size:28px;font-weight:600;letter-spacing:-.3px;}
+.cr-mc-outer .txt b{font-weight:800;}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.top{top:60px;}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.bot{bottom:60px;}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.bot .txt{font-size:20px;color:rgba(255,255,255,.8);}
+.cr-canvas[data-fmt="feed"] .cr-mc-outer.bot svg{width:32px;height:32px;}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.top{top:120px;}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.bot{bottom:120px;}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.bot .txt{font-size:22px;color:rgba(255,255,255,.8);}
+.cr-canvas[data-fmt="story"] .cr-mc-outer.bot svg{width:34px;height:34px;}
+.cr-hp-card{position:absolute;width:960px;height:960px;inset:0;margin:auto;z-index:2;background:linear-gradient(180deg, rgba(20,28,42,.80) 0%, rgba(14,20,32,.92) 100%);backdrop-filter:blur(3px) saturate(1.15);-webkit-backdrop-filter:blur(3px) saturate(1.15);border-radius:28px;padding:44px 56px 36px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;overflow:hidden;}
+.cr-hp-card::after{content:"";position:absolute;inset:0;border-radius:28px;pointer-events:none;}
+.cr-hp-logo{width:100%;max-width:680px;height:140px;margin-top:8px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;}
+.cr-hp-logo img{height:100%;width:auto;max-width:100%;object-fit:contain;}
+.cr-hp-type{color:rgba(255,255,255,.45);font-size:14px;font-weight:600;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;}
+.cr-hp-disc{font-family:'Inter',sans-serif;font-weight:900;line-height:.9;letter-spacing:-4px;font-size:140px;margin-bottom:6px;display:inline-flex;align-items:baseline;gap:16px;}
+.cr-hp-disc .off{background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+.cr-hp-dtype{font-size:14px;font-weight:700;letter-spacing:7px;text-transform:uppercase;margin-bottom:22px;}
+.cr-hp-cplabel{color:rgba(255,255,255,.6);font-size:16px;font-weight:500;letter-spacing:5px;text-transform:uppercase;margin-bottom:10px;}
+.cr-hp-cpbox{padding:14px 40px;border-radius:12px;margin-bottom:20px;}
+.cr-hp-cpcode{font-size:52px;font-weight:900;letter-spacing:3px;line-height:1;}
+.cr-hp-tp{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;padding:10px 20px;}
+.cr-hp-tp .stars{color:#00B67A;font-size:36px;letter-spacing:3px;line-height:1;}
+.cr-hp-tp .score{color:#fff;font-size:32px;font-weight:800;}
+.cr-hp-tp .sep{color:rgba(255,255,255,.55);font-size:22px;}
+.cr-hp-tp .count{color:#fff;font-size:22px;font-weight:600;}
+.cr-hp-tp .brand{color:#fff;font-size:22px;font-weight:800;letter-spacing:.3px;}
+.cr-hp-tp .brand::before{content:"★";color:#00B67A;margin-right:5px;font-size:20px;}
+.cr-hp-prices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%;max-width:780px;}
+.cr-hp-pc{position:relative;border-radius:14px;background:rgba(0,0,0,.35);padding:22px 16px 14px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.cr-hp-pc .size-pill{position:absolute;top:-14px;left:50%;transform:translateX(-50%);color:#0A1118;font-size:17px;font-weight:800;letter-spacing:1px;padding:5px 18px;border-radius:10px;white-space:nowrap;}
+.cr-hp-pc .new{color:#fff;font-size:38px;font-weight:800;line-height:1;letter-spacing:-.5px;}
+.cr-hp-pc .sub{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+.cr-hp-pc .old{color:rgba(255,255,255,.4);text-decoration:line-through;}
+.cr-hp-pc .save{color:#22C55E;font-weight:700;}
+</style>
+</head>
+<body>
+<div id="cr-canvas" class="cr-canvas" data-fmt="feed" style="width:1080px;height:1350px;">
+  <div class="cr-canvas-bg"></div>
+  <div class="cr-canvas-img" id="cr-canvas-img"></div>
+  <div class="cr-canvas-ov"></div>
+  <div class="cr-canvas-content" id="cr-canvas-content"></div>
+</div>
+<script>
+const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+
+const params = new URLSearchParams(location.search);
+const firmId = params.get('firm') || 'apex';
+let _crLang = params.get('lang') || 'pt';
+let _crFormat = params.get('format') || 'feed';
+
+const canvas = document.getElementById('cr-canvas');
+canvas.setAttribute('data-fmt', _crFormat);
+canvas.style.width = '1080px';
+canvas.style.height = (_crFormat === 'story' ? 1920 : 1350) + 'px';
+
+function escHtml(s){ if(s==null) return '—'; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function crChk(){ return true; }
+
+const CR_LABELS = {
+  pt: { exclusive_coupon:'CUPOM EXCLUSIVO', use_coupon:'USE O CUPOM NO CHECKOUT', off:'OFF', futuros:'FUTUROS', forex:'FOREX' },
+  en: { exclusive_coupon:'EXCLUSIVE COUPON', use_coupon:'USE THE COUPON AT CHECKOUT', off:'OFF', futuros:'FUTURES', forex:'FOREX' }
+};
+
+function renderHeroPremium(firm, content, L) {
+  const color = firm.color || '#F0B429';
+  const dtype = (firm.discount_type || firm.dtype || 'lifetime');
+  const ftype = (firm.type||'').toLowerCase();
+  const firmTypeLabel = ftype==='futuros' ? (L.futuros || 'Futures Prop Firm') : ftype==='forex' ? (L.forex || 'Forex Prop Firm') : firm.type||'';
+  const prices = firm.prices || [];
+  const coupon = firm.coupon || '';
+  const rating = firm.rating || firm.trustpilot_score || 0;
+  const reviews = firm.trustpilot_reviews || firm.reviews || 0;
+  const dtypeMap = {
+    pt: { lifetime:'DESCONTO LIFETIME', promo:'DESCONTO PROMOCIONAL', '1 desafio':'DESCONTO 1º DESAFIO', easter:'DESCONTO DE PÁSCOA', gratis:'GRÁTIS', 'new customer':'DESCONTO NOVO CLIENTE', april:'DESCONTO DE ABRIL' },
+    en: { lifetime:'LIFETIME DISCOUNT', promo:'PROMO DISCOUNT', '1 desafio':'1 CHALLENGE DISCOUNT', easter:'EASTER DISCOUNT', gratis:'FREE', 'new customer':'NEW CUSTOMER DISCOUNT', april:'APRIL DISCOUNT' }
+  };
+  const dtypeLabel = (dtypeMap[_crLang]||dtypeMap.en)[dtype.toLowerCase()] || dtype.toUpperCase();
+  const mcSvg = (stroke) => `<svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25 3L45 14.5V35.5L25 47L5 35.5V14.5Z" stroke="${stroke}" stroke-width="2.4" fill="none"/><path d="M14 33V20L25 28" stroke="${stroke}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M36 33V20L25 28" stroke="${stroke}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+  let h = '<div class="cr-inner">';
+  h += `<div class="cr-mc-outer top">${mcSvg(color)}<div class="txt" style="--accent:${color};"><b style="color:${color};">Markets</b> Coupons</div></div>`;
+  const cardStyle = `border:1.5px solid ${color}99;box-shadow:0 40px 100px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);`;
+  const cardAfter = `<style>#cr-canvas .cr-hp-card::after{background:radial-gradient(ellipse 80% 50% at 50% 0%, ${color}33 0%, transparent 60%);}</style>`;
+  h += cardAfter + `<div class="cr-hp-card" style="${cardStyle}">`;
+  const FIRM_WORDMARK = {
+    apex: '/img/Firms Logos/apex-logo-wide-light.png',
+    bulenox: '/img/Firms Logos/Bulenox-Logo-1-01-800x207.png',
+    tradeday: '/img/Firms Logos/TradeDay.png',
+    ftmo: '/img/Firms Logos/FTMO logo - light.png',
+    cti: '/img/Firms Logos/City-Traders-Imperium-Logo-for-Dark-Backgrounds-1-2048x388.png',
+    fn: '/img/Firms Logos/FundedNext Monochromatic Logo White 2x.png',
+    brightfunded: '/img/Firms Logos/brightfunded logo.svg',
+    e8: '/img/Firms Logos/e8markets logo.svg',
+    fundingpips: '/img/Firms Logos/fundingpips-logo.svg',
+    e2t: '/img/Firms Logos/earn2trade white.svg',
+    the5ers: '/img/Firms Logos/logo-white-est.png',
+    goat: '/img/Firms Logos/Goat Funded Futures.png',
+    blueguardian: '/img/Firms Logos/Blue Guardian.svg',
+    toponefutures: '/img/Firms Logos/Top One Futures.svg',
+    aquafutures: '/img/Firms Logos/Aqua Future.svg',
+    blueberryfutures: '/img/Firms Logos/Blueberry Futures.svg',
+    alphafutures: '/img/Firms Logos/Alpha-Future.svg',
+    futureselite: '/img/Firms Logos/Futures Elite.svg'
+  };
+  const logoSrc = FIRM_WORDMARK[firm.id] || ('/' + (firm.icon_url||'').replace(/^\//,''));
+  h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.style.maxWidth='220px';"></div>`;
+  h += `<div class="cr-hp-type">${escHtml(firmTypeLabel)}</div>`;
+  if (crChk() && firm.discount) {
+    h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
+    h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
+  }
+  if (crChk()) {
+    if (coupon) {
+      h += `<div class="cr-hp-cplabel">${L.exclusive_coupon}</div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${color}8C;background:linear-gradient(180deg, ${color}26, ${color}14);"><div class="cr-hp-cpcode" style="color:${color};">${escHtml(coupon)}</div></div>`;
+    } else {
+      const GREEN = '#10B981';
+      h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;">✓</span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Sem cupom · use nosso link':'No coupon · use our link'}</span></div>`;
+    }
+  }
+  if (crChk() && rating) {
+    const score = (+rating).toFixed(1);
+    const cnt = reviews ? reviews.toLocaleString(_crLang==='pt'?'pt-BR':'en-US') : '';
+    h += `<div class="cr-hp-tp"><span class="stars">★★★★★</span><span class="score">${score}</span><span class="sep">·</span><span class="count">${cnt} ${_crLang==='pt'?'avaliações em':'reviews on'}</span><span class="brand">Trustpilot</span></div>`;
+  }
+  if (crChk() && prices.length) {
+    const top4 = prices.slice(0, 4);
+    h += `<div class="cr-hp-prices">`;
+    top4.forEach(p => {
+      const newP = p.n || '—';
+      const oldP = (p.o && p.o !== '—') ? p.o : '';
+      let saveTxt = '';
+      if (oldP) {
+        const n = parseFloat(String(newP).replace(/[^0-9.]/g,''));
+        const o = parseFloat(String(oldP).replace(/[^0-9.]/g,''));
+        if (n && o && o>n) saveTxt = `${_crLang==='pt'?'Economize':'Save'} $${Math.round(o-n)}`;
+      }
+      const size = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
+      h += `<div class="cr-hp-pc" style="border:1.5px solid ${color}B3;background:linear-gradient(180deg, ${color}14 0%, rgba(0,0,0,.35) 100%);">
+        <div class="size-pill" style="background:${color};box-shadow:0 2px 6px rgba(0,0,0,.35);">${escHtml(size)}</div>
+        <div class="new">${escHtml(newP)}</div>
+        ${oldP ? `<div class="sub"><span class="old">${escHtml(oldP)}</span>${saveTxt?`<span class="save">${saveTxt}</span>`:''}</div>` : ''}
+      </div>`;
+    });
+    h += `</div>`;
+  }
+  h += `</div>`;
+  const botTxt = _crFormat==='story' ? 'marketscoupons.com · Swipe Up' : 'marketscoupons.com';
+  h += `<div class="cr-mc-outer bot"><div class="txt">${botTxt}</div></div>`;
+  h += '</div>';
+  content.innerHTML = h;
+}
+
+async function loadAndRender(){
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/cms_firms?id=eq.${firmId}&select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const rows = await r.json();
+    const firm = rows[0];
+    if (!firm) { document.body.innerHTML = '<div style="color:#fff;padding:40px;font-size:24px;">Firma não encontrada: ' + firmId + '</div>'; return; }
+    const bgImg = document.getElementById('cr-canvas-img');
+    bgImg.style.backgroundImage = `url('/img/${firm.id}-bg.webp'),url('/img/${firm.id}-bg.png'),url('/img/${firm.id}-bg.jpeg')`;
+    renderHeroPremium(firm, document.getElementById('cr-canvas-content'), CR_LABELS[_crLang] || CR_LABELS.pt);
+    await new Promise(res => setTimeout(res, 500));
+    document.documentElement.setAttribute('data-ready', 'true');
+  } catch(e) {
+    document.body.innerHTML = '<div style="color:#f00;padding:40px;font-size:24px;">Erro: ' + e.message + '</div>';
+  }
+}
+loadAndRender();
+</script>
+</body></html>
