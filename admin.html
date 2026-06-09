@@ -1485,6 +1485,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <input type="number" id="em-daily-limit" value="500" min="1" max="100000" style="width:90px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;" onchange="emailDailyLimit=parseInt(this.value)||500;updateDailyLimitUI();updateDestCount();">
        <span id="daily-limit-info" style="font-size:10px;color:var(--t3);display:none;"></span>
      </div>
+     <div style="display:flex;align-items:center;gap:8px;" title="Quantos dias precisa esperar antes do mesmo lead receber este template de novo. 7 = libera reenvio semanal. 30 = mensal.">
+       <label for="em-cooldown-days" style="white-space:nowrap;">Cooldown:</label>
+       <input type="number" id="em-cooldown-days" value="7" min="1" max="365" style="width:70px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;" onchange="updateDestCount();">
+       <span style="font-size:10px;color:var(--t3);">dias</span>
+     </div>
    </div>
 
    <!-- Painel de progresso LIVE durante o disparo (escondido até clicar Enviar) -->
@@ -6454,24 +6459,36 @@ async function getSegmentedLeads(){
    return firmaFilter.some(id=>rTags.includes(id)||rTags.some(t=>t.toLowerCase()===(firmaNames[id]||'').toLowerCase()));
   });
  }
- // DEDUP CLIENT-SIDE: se template institucional selecionado, exclui quem já tem tag received-{template}
- // Espelha o dedup server-side de api/send-email.js — mostra dest count REAL antes de clicar Enviar
+ // DEDUP CLIENT-SIDE com COOLDOWN configuravel (default 7 dias).
+ // Em vez de excluir pra sempre (tag Brevo), consulta email_logs.template_slug + created_at:
+ // se lead ja recebeu o mesmo template_slug HA MENOS DE X DIAS, dedup.
+ // Apos X dias, libera reenvio. Tag Brevo continua sendo gravada mas nao bloqueia mais.
  try {
   const tplName = window._instTemplateName;
   if (tplName && emailIsHtml) {
-   const dedupTag = 'received-' + tplName;
+   const cooldownDays = parseInt(document.getElementById('em-cooldown-days')?.value || '7', 10) || 7;
+   const sinceIso = new Date(Date.now() - cooldownDays*86400000).toISOString();
+   const { data: recentLogs } = await db.from('email_logs')
+    .select('recipients_emails,created_at')
+    .eq('template_slug', tplName)
+    .gte('created_at', sinceIso)
+    .order('created_at', { ascending: false });
+   const recentEmails = new Set();
+   (recentLogs || []).forEach(row => {
+    (row.recipients_emails || []).forEach(e => e && recentEmails.add(String(e).toLowerCase()));
+   });
    const before = list.length;
-   list = list.filter(r => !((r.tags || []).includes(dedupTag)));
+   list = list.filter(r => !recentEmails.has(String(r.email || '').toLowerCase()));
    const filtered = before - list.length;
    if (filtered > 0) {
-    window._lastDedupFiltered = { template: tplName, count: filtered };
+    window._lastDedupFiltered = { template: tplName, count: filtered, cooldown_days: cooldownDays };
    } else {
     window._lastDedupFiltered = null;
    }
   } else {
    window._lastDedupFiltered = null;
   }
- } catch(e){}
+ } catch(e){ console.error('dedup cooldown error', e); window._lastDedupFiltered = null; }
  return list;
 }
 
@@ -10533,6 +10550,7 @@ async function sendEmailsSmtp(){
       subject: subject,
       recipients: leads.length,
       recipients_emails: (leads||[]).map(l=>l.email).filter(Boolean),
+      template_slug: (window._instTemplateName||null),
       status: totalFailed===0 ? 'sent' : (totalSent===0 ? 'failed' : 'partial'),
       sent_by: 'admin',
       provider: 'auto',
@@ -10730,6 +10748,7 @@ async function resumeEmailQueue(){
       subject: q.subject,
       recipients: batch.length,
       recipients_emails: (batch||[]).map(l=>l.email).filter(Boolean),
+      template_slug: (window._instTemplateName||null),
       status: totalFailed===0 ? 'sent' : 'partial',
       sent_by: 'admin',
       provider: 'auto',
@@ -10896,6 +10915,7 @@ async function runAutoQueue(){
         subject: qq.subject,
         recipients: sent+failed,
         recipients_emails: allAttempted,
+      template_slug: (window._instTemplateName||null),
         status: failed===0 ? 'sent' : 'partial',
         sent_by: 'admin',
         provider: 'auto',
@@ -10921,6 +10941,7 @@ async function runAutoQueue(){
         subject: qq.subject,
         recipients: sent+failed,
         recipients_emails: allAttempted,
+      template_slug: (window._instTemplateName||null),
         status: 'partial',
         sent_by: 'admin',
         provider: 'auto',
