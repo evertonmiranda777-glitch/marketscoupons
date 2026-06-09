@@ -7215,11 +7215,11 @@ async function eaRefresh(){
     if(matchingLogs.length){
       const localSum = matchingLogs.reduce((acc,c)=>{
         const r = c.brevo_response || {};
-        // Conta sent (real, dos logs) — não providers_breakdown (bugado)
-        const sent = parseInt(r.sent, 10) || 0;
+        // FONTE DE VERDADE: c.recipients (intent real) — não brevo_response.sent que so conta Brevo
+        // (Resend/SendGrid fallback ficavam zerados, gerando 55 em vez de 217 reais).
+        const sent = c.recipients || parseInt(r.sent, 10) || 0;
         acc.totalSent += sent;
         const pb = r.providers_breakdown || {};
-        // breakdown só pra display informacional (ainda que possa estar incorreto)
         acc.brevo += (pb.brevo || 0);
         acc.resend += (pb.resend || 0);
         acc.sendgrid += (pb.sendgrid || 0);
