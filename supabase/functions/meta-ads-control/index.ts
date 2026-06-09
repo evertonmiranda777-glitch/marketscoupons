@@ -22,11 +22,41 @@ const RAW_IDS =
   Deno.env.get("META_AD_ACCOUNT_IDS") ||
   Deno.env.get("META_AD_ACCOUNT_ID") ||
   "";
-const ACCOUNT_IDS = RAW_IDS
+const ENV_ACCOUNT_IDS = RAW_IDS
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean)
   .map((id) => (id.startsWith("act_") ? id : `act_${id}`));
+
+// Auto-discovery: descobre TODAS contas que o token tem acesso (via /me/adaccounts).
+// Cache de 10min pra nao bater Meta API toda vez.
+// Fallback pra ENV_ACCOUNT_IDS se discovery falhar.
+let _acctCache: { ts: number; ids: string[] } = { ts: 0, ids: [] };
+async function getAccountIds(): Promise<string[]> {
+  const now = Date.now();
+  if (now - _acctCache.ts < 10 * 60 * 1000 && _acctCache.ids.length) return _acctCache.ids;
+  if (!META_TOKEN) return ENV_ACCOUNT_IDS;
+  try {
+    const ids: string[] = [];
+    let next: string | null = `https://graph.facebook.com/v21.0/me/adaccounts?fields=id,account_status&limit=200&access_token=${META_TOKEN}`;
+    while (next) {
+      const r = await fetch(next);
+      const j = await r.json();
+      if (!r.ok) break;
+      (j.data || []).forEach((a: any) => { if (a.id && a.account_status === 1) ids.push(a.id); });
+      next = j.paging?.next || null;
+      if (ids.length > 100) break;
+    }
+    if (ids.length) {
+      _acctCache = { ts: now, ids };
+      return ids;
+    }
+  } catch {}
+  return ENV_ACCOUNT_IDS;
+}
+
+// Compat: codigo que usa ACCOUNT_IDS direto segue OK porque chamamos getAccountIds() nas funcoes.
+const ACCOUNT_IDS = ENV_ACCOUNT_IDS;
 
 const ADMIN_EMAILS = new Set(["evertonmiranda777@gmail.com"]);
 
@@ -55,12 +85,12 @@ async function verifyAdmin(authHeader: string | null): Promise<{ ok: boolean; em
 }
 
 async function listActiveCampaigns() {
-  if (!META_TOKEN || !ACCOUNT_IDS.length) {
-    return { error: "missing_secrets" };
-  }
+  if (!META_TOKEN) return { error: "missing_token" };
+  const accts = await getAccountIds();
+  if (!accts.length) return { error: "no_accounts" };
   const out: any[] = [];
   const errors: any[] = [];
-  for (const acct of ACCOUNT_IDS) {
+  for (const acct of accts) {
     let next: string | null =
       `https://graph.facebook.com/v21.0/${acct}/campaigns` +
       `?fields=id,name,status,effective_status,daily_budget,lifetime_budget,objective` +
@@ -91,16 +121,17 @@ async function listActiveCampaigns() {
 // Insights agregados por campanha × publisher_platform (FB/IG) no periodo.
 // Periodo aceita: ?since=YYYY-MM-DD&until=YYYY-MM-DD (default: ultimos 30d).
 async function breakdownByPlatform(since: string, until: string) {
-  if (!META_TOKEN || !ACCOUNT_IDS.length) return { error: "missing_secrets" };
+  if (!META_TOKEN) return { error: "missing_token" };
+  const accts = await getAccountIds();
+  if (!accts.length) return { error: "no_accounts" };
   const fields = ["campaign_id","campaign_name","spend","impressions","clicks","actions","action_values"].join(",");
   const PURCHASE_TYPES = new Set(["purchase","offsite_conversion.fb_pixel_purchase"]);
   const LEAD_TYPES = new Set(["lead","offsite_conversion.fb_pixel_lead","complete_registration","offsite_conversion.fb_pixel_complete_registration"]);
 
-  // mapa campaign_id -> { name, platforms: { facebook:{...}, instagram:{...}, audience_network:{...} } }
   const agg = new Map<string, any>();
   const errors: any[] = [];
 
-  for (const acct of ACCOUNT_IDS) {
+  for (const acct of accts) {
     const api = `https://graph.facebook.com/v21.0/${acct}/insights` +
       `?fields=${fields}` +
       `&level=campaign` +
@@ -154,14 +185,16 @@ async function breakdownByPlatform(since: string, until: string) {
 // Insights por campanha × publisher_platform × platform_position no periodo.
 // Devolve cada linha de placement (ex: Instagram Reels, Facebook Feed) com gasto/compras/valor.
 async function breakdownByPlacement(since: string, until: string) {
-  if (!META_TOKEN || !ACCOUNT_IDS.length) return { error: "missing_secrets" };
+  if (!META_TOKEN) return { error: "missing_token" };
+  const accts = await getAccountIds();
+  if (!accts.length) return { error: "no_accounts" };
   const fields = ["campaign_id","campaign_name","spend","impressions","clicks","actions","action_values"].join(",");
   const PURCHASE_TYPES = new Set(["purchase","offsite_conversion.fb_pixel_purchase"]);
   const LEAD_TYPES = new Set(["lead","offsite_conversion.fb_pixel_lead","complete_registration","offsite_conversion.fb_pixel_complete_registration"]);
   const rows: any[] = [];
   const errors: any[] = [];
 
-  for (const acct of ACCOUNT_IDS) {
+  for (const acct of accts) {
     const api = `https://graph.facebook.com/v21.0/${acct}/insights` +
       `?fields=${fields}` +
       `&level=campaign` +

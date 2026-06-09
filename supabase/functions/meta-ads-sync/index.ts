@@ -19,11 +19,36 @@ const RAW_IDS =
   Deno.env.get("META_AD_ACCOUNT_IDS") ||
   Deno.env.get("META_AD_ACCOUNT_ID") ||
   "";
-const ACCOUNT_IDS = RAW_IDS
+const ENV_ACCOUNT_IDS = RAW_IDS
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean)
   .map((id) => (id.startsWith("act_") ? id : `act_${id}`));
+
+// Auto-discovery: usa TODAS contas que o token tem acesso (via /me/adaccounts),
+// fallback pra env se discovery falhar. Cache 10min.
+let _acctCache: { ts: number; ids: string[] } = { ts: 0, ids: [] };
+async function getAccountIds(): Promise<string[]> {
+  const now = Date.now();
+  if (now - _acctCache.ts < 10 * 60 * 1000 && _acctCache.ids.length) return _acctCache.ids;
+  if (!META_TOKEN) return ENV_ACCOUNT_IDS;
+  try {
+    const ids: string[] = [];
+    let next: string | null = `https://graph.facebook.com/v21.0/me/adaccounts?fields=id,account_status&limit=200&access_token=${META_TOKEN}`;
+    while (next) {
+      const r = await fetch(next);
+      const j = await r.json();
+      if (!r.ok) break;
+      (j.data || []).forEach((a: any) => { if (a.id && a.account_status === 1) ids.push(a.id); });
+      next = j.paging?.next || null;
+      if (ids.length > 100) break;
+    }
+    if (ids.length) { _acctCache = { ts: now, ids }; return ids; }
+  } catch {}
+  return ENV_ACCOUNT_IDS;
+}
+
+const ACCOUNT_IDS = ENV_ACCOUNT_IDS;
 
 async function syncAccount(acct: string, days: number) {
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
@@ -106,14 +131,18 @@ serve(async (req) => {
   const url = new URL(req.url);
   const days = Math.min(parseInt(url.searchParams.get("days") || "7"), 90);
 
-  if (!META_TOKEN || !ACCOUNT_IDS.length) {
-    return json({ error: "missing_secrets", note: "Set META_ADS_TOKEN and META_AD_ACCOUNT_IDS" }, 500);
+  if (!META_TOKEN) {
+    return json({ error: "missing_token", note: "Set META_ADS_TOKEN" }, 500);
+  }
+  const accts = await getAccountIds();
+  if (!accts.length) {
+    return json({ error: "no_accounts", note: "Token sem acesso a nenhuma conta ad" }, 500);
   }
 
   const perAccount: Record<string, { rows: number; spend: number; error?: string }> = {};
   let allRows: any[] = [];
 
-  for (const acct of ACCOUNT_IDS) {
+  for (const acct of accts) {
     try {
       const rows = await syncAccount(acct, days);
       allRows = allRows.concat(rows);
@@ -124,7 +153,7 @@ serve(async (req) => {
   }
 
   if (!allRows.length) {
-    return json({ ok: true, rows: 0, accounts: ACCOUNT_IDS, perAccount, note: "no_insights_returned" });
+    return json({ ok: true, rows: 0, accounts: accts, perAccount, note: "no_insights_returned" });
   }
 
   const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
@@ -135,7 +164,7 @@ serve(async (req) => {
   if (error) return json({ error: "upsert_failed", details: error.message }, 500);
 
   const totalSpend = allRows.reduce((a, r) => a + r.spend, 0);
-  return json({ ok: true, rows: allRows.length, days, accounts: ACCOUNT_IDS, total_spend: totalSpend, perAccount });
+  return json({ ok: true, rows: allRows.length, days, accounts: accts, total_spend: totalSpend, perAccount });
 });
 
 function json(obj: any, status = 200) {
