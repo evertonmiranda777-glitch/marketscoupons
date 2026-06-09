@@ -4914,11 +4914,8 @@ async function renderAlerts(){
   const todayStr = now.toISOString().slice(0,10);
   const hour = (now.getUTCHours() - 3 + 24) % 24; // BRT approx
 
-  // 1. Loyalty pending (red)
-  try {
-    const {data,count} = await db.from('loyalty_proofs').select('id',{count:'exact',head:true}).eq('status','pending');
-    _alertCache.pending = count || 0;
-  } catch(e){}
+  // 1. Loyalty pending (red) — DESATIVADO (loyalty removido 02/jun) — query órfã esgotava Disk IO
+  _alertCache.pending = 0;
   if(_alertCache.pending > 0){
     banners.push(`<div class="alert-banner alert-red">
       <span class="ab-icon">&#9679;</span>
@@ -12606,20 +12603,9 @@ async function pollForUpdates() {
     const { data: freshEvents } = await db.from('events').select('*').order('created_at', { ascending: false }).limit(2000);
     if(freshEvents) localStorage.setItem('mc_events', JSON.stringify(freshEvents));
   } catch(e) {}
-  // Update alert banners + loyalty badge if on overview
+  // Update alert banners (loyalty badge DESATIVADO — query órfã esgotava Disk IO)
   const activePage = document.querySelector('.admin-page.active')?.id?.replace('page-','');
   if(activePage === 'overview') renderAlerts();
-  else {
-    // Still update loyalty badge even if not on overview
-    try {
-      const {count} = await db.from('loyalty_proofs').select('id',{count:'exact',head:true}).eq('status','pending');
-      _alertCache.pending = count || 0;
-      ['loyalty-badge','loyalty-badge-m'].forEach(id=>{
-        const el=document.getElementById(id);
-        if(el){ if(_alertCache.pending>0){el.textContent=_alertCache.pending;el.style.display='';} else{el.style.display='none';} }
-      });
-    } catch(e){}
-  }
 }
 
 /* Initialize polling and notifications */
@@ -13332,16 +13318,15 @@ async function renderCouponAttribution(sinceIso, untilIso){
 
 // ─── PRO & ASSINATURAS ───────────────────────────────────────────────────
 async function renderProPage(){
-  // 1. Load data in parallel
-  const [subsRes, vipRes, loyaltyRes, eventsAll] = await Promise.all([
+  // 1. Load data in parallel — loyalty_proofs query removida (loyalty desativado 02/jun)
+  const [subsRes, vipRes, eventsAll] = await Promise.all([
     db.from('subscriptions').select('*,profiles!inner(email,full_name)').order('created_at',{ascending:false}),
     db.from('profiles').select('id,email,full_name,updated_at').eq('analysis_vip',true).order('updated_at',{ascending:false}),
-    db.from('loyalty_proofs').select('member_email,member_name,firma,created_at').eq('status','approved').order('created_at',{ascending:false}),
     Promise.resolve(getEventsSync()),
   ]);
   const subs = subsRes.data || [];
   const vips = vipRes.data || [];
-  const loyaltyApproved = loyaltyRes.data || [];
+  const loyaltyApproved = [];
 
   // Unique loyalty emails with access
   const loyaltyEmails = [...new Set(loyaltyApproved.map(p=>p.member_email))];
