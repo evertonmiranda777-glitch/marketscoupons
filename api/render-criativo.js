@@ -70,15 +70,14 @@ module.exports = async (req, res) => {
 
     if (url) {
       // Modo URL: HCTI carrega a pagina e screenshota.
-      // ms_delay 2000ms: 800ms deu IMAGEM PRETA (screenshot antes do JS popular
-      // o canvas). 1500ms funcionava mas borderline. 2000ms eh seguro e ainda
-      // cabe no Vercel 60s timeout (HCTI rende em ~30s normal).
+      // ms_delay 1500ms (estado original que funcionava). Tentei 800 → imagem
+      // preta; 2000 OK mas margem desnecessaria. Mantido 1500 como sempre foi.
       hctiBody = {
         url,
         viewport_width: width,
         viewport_height: height,
         device_scale: 1,
-        ms_delay: 2000,
+        ms_delay: 1500,
         selector: '#cr-canvas',
       };
     } else {
