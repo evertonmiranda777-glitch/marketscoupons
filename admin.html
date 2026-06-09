@@ -8174,6 +8174,7 @@ const INST_TEMPLATES = {
     firms: [
       { id:'apex',    name:'Apex Trader Funding · 100K', accent:'#F0B429', off:'90', price_full:'$399', price_disc:'$39,90', savings:'$359,10', coupon:'MARKET' },
       { id:'bulenox', name:'Bulenox · 100K',             accent:'#0891B2', off:'89', price_full:'$215', price_disc:'$23,65', savings:'$191,35', coupon:'MARKET89' },
+      { id:'tradeday', name:'TradeDay · 100K',           accent:'#F59E0B', off:'50', price_full:'$285', price_disc:'$142,00', savings:'$143,00', coupon:'MARKETS' },
     ],
     savings_label: { pt:'Economia: ', en:'Save: ', es:'Ahorras: ', fr:'Économie : ', de:'Ersparnis: ', it:'Risparmio: ', ar:'وفر: ' },
     coupon_label:  { pt:'cupom', en:'coupon', es:'cupón', fr:'coupon', de:'Gutschein', it:'coupon', ar:'كوبون' },
@@ -9460,6 +9461,10 @@ function buildWhitePromoHtml(f, lang='pt'){
   function compactStatValue(v) {
     if (!v) return '—';
     return String(v)
+      // PROFIT SPLIT: "100% up to $25K / 90%" → "100%/90%"
+      .replace(/(\d+%)\s*up\s+to\s+\$?\d+\.?\d*K?\s*\/\s*(\d+%)/gi, '$1/$2')
+      .replace(/(\d+%)\s*até\s+\$?\d+\.?\d*K?\s*\/\s*(\d+%)/gi, '$1/$2')
+      // Limpeza geral
       .replace(/De US\$\s?/gi, '')
       .replace(/Até US\$\s?/gi, '')
       .replace(/\bUS\$\s?/g, '$')
@@ -9472,7 +9477,10 @@ function buildWhitePromoHtml(f, lang='pt'){
       .replace(/\.500\b/g, '.5K')
       .replace(/\b1500\b/g, '1.5K')
       .replace(/\b4500\b/g, '4.5K')
-      .replace(/\s+trail\s*$/i, ' trail')
+      // DRAWDOWN: "-$1K–$4K trail" → "$1K-$4K Trail" (mais legível)
+      .replace(/^-\$/, '$')
+      .replace(/–/g, '-')
+      .replace(/\s+trail\s*$/i, ' Trail')
       .replace(/\s{2,}/g, ' ')
       .trim();
   }
