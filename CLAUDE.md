@@ -45,6 +45,8 @@ Dado não visto = `null` ou `"TBD validar"` no DB. Detalhe: [memory/feedback_nun
 
 **REGRA cooldown email (2026-06-09):** dedup de templates institucionais NÃO é mais pra sempre. Usa `email_logs.template_slug` + janela configurável (input "Cooldown" no admin, default 7d). Tag Brevo `received-{slug}` ainda grava mas não bloqueia. Pra reenviar: ajustar input no admin.
 
+**REGRA EN-default LEI (2026-06-09):** site é americano. TODO conteúdo público novo (caption Telegram, push, email default, criativos, OG cards, social copy) sai em INGLÊS. Admin é PT (privado). Detalhes em `memory/feedback_site_en_default.md`. Custou retrabalho no telegram-creative v1-v8 que tinha caption em PT.
+
 ## Visão geral
 
 Site de cupons de **prop firms** de trading. Compara firmas, oferece cupons, fidelidade, blog, guias, calculadoras, análise diária. Deploy estático no Vercel.
