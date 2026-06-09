@@ -9663,6 +9663,49 @@ a{text-decoration:none;}
         </td></tr>
       </table>` : ''}
 
+      <!-- ═══ MAIS OPÇÕES (Pack 5 contas / Sem Taxa de Ativação) — só Apex hoje tem esses campos ═══ -->
+      ${(() => {
+        const hasPack5 = prices.some(p => p.n5);
+        const hasNoFee = prices.some(p => p.na);
+        if (!hasPack5 && !hasNoFee) return '';
+        const labels = {
+          pt:{title:'MAIS OPÇÕES',pack5:'Pack 5 contas',pack5_sub:'cada conta',nofee:'Sem taxa de ativação',nofee_pack5:'Pack 5 · Sem taxa',each:'/conta',from:'de'},
+          en:{title:'MORE OPTIONS',pack5:'5-account pack',pack5_sub:'per account',nofee:'No activation fee',nofee_pack5:'5-pack · No activation fee',each:'/account',from:'from'},
+          es:{title:'MÁS OPCIONES',pack5:'Pack 5 cuentas',pack5_sub:'por cuenta',nofee:'Sin tarifa de activación',nofee_pack5:'Pack 5 · Sin tarifa',each:'/cuenta',from:'desde'},
+          it:{title:'ALTRE OPZIONI',pack5:'Pack 5 conti',pack5_sub:'per conto',nofee:'Senza quota di attivazione',nofee_pack5:'Pack 5 · Senza quota',each:'/conto',from:'da'},
+          fr:{title:'PLUS D\'OPTIONS',pack5:'Pack 5 comptes',pack5_sub:'par compte',nofee:'Sans frais d\'activation',nofee_pack5:'Pack 5 · Sans frais',each:'/compte',from:'à partir de'},
+          de:{title:'MEHR OPTIONEN',pack5:'5er-Pack',pack5_sub:'pro Konto',nofee:'Ohne Aktivierungsgebühr',nofee_pack5:'5er · Ohne Gebühr',each:'/Konto',from:'ab'},
+          ar:{title:'خيارات إضافية',pack5:'باقة 5 حسابات',pack5_sub:'لكل حساب',nofee:'بدون رسوم تفعيل',nofee_pack5:'باقة 5 · بدون رسوم',each:'/حساب',from:'من'}
+        };
+        const Lx = labels[lang] || labels.pt;
+        const rowsHtml = prices.slice(0,4).map((p, i) => {
+          const cleanA = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
+          const bg = i%2===0 ? '#ffffff' : '#f9f9f9';
+          const pack5Cell = p.n5 ? `<div style="color:${color};font-weight:700;font-size:12px;font-family:${FI};">${p.n5}</div><div style="color:#888;font-size:9px;font-family:${FI};">${p.e5?p.e5+' '+Lx.each:''}</div>` : '<span style="color:#ddd;">—</span>';
+          const nofeeCell = p.na ? `<div style="color:${color};font-weight:700;font-size:12px;font-family:${FI};">${p.na}</div>${p.nao?`<div style="color:#bbb;font-size:9px;text-decoration:line-through;font-family:${FI};">${p.nao}</div>`:''}` : '<span style="color:#ddd;">—</span>';
+          return `<tr style="background-color:${bg};">
+            <td style="padding:6px 8px;color:${DARK};font-weight:600;font-size:12px;border-bottom:1px solid #f0f0f0;font-family:${FI};white-space:nowrap;">${cleanA}</td>
+            ${hasPack5 ? `<td style="padding:6px 8px;text-align:center;border-bottom:1px solid #f0f0f0;font-family:${FI};">${pack5Cell}</td>` : ''}
+            ${hasNoFee ? `<td style="padding:6px 8px;text-align:center;border-bottom:1px solid #f0f0f0;font-family:${FI};">${nofeeCell}</td>` : ''}
+          </tr>`;
+        }).join('');
+        return `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;" role="presentation">
+          <tr><td style="padding:0 0 8px;">
+            <div style="color:#888;font-size:10px;letter-spacing:0.08em;font-family:${FI};">${Lx.title}</div>
+          </td></tr>
+          <tr><td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-size:12px;" role="presentation">
+              <tr style="background-color:${DARK};">
+                <td style="padding:6px 8px;color:#fff;font-weight:600;border-radius:6px 0 0 0;font-family:${FI};">${etL.col_account||'Conta'}</td>
+                ${hasPack5 ? `<td style="padding:6px;text-align:center;color:${color};font-weight:600;font-family:${FI};">${Lx.pack5}</td>` : ''}
+                ${hasNoFee ? `<td style="padding:6px;text-align:center;color:${color};font-weight:600;border-radius:0 6px 0 0;font-family:${FI};">${Lx.nofee}</td>` : ''}
+              </tr>
+              ${rowsHtml}
+            </table>
+          </td></tr>
+        </table>`;
+      })()}
+
       <!-- Coupon -->
       ${f.coupon ? `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1.5px dashed ${color};border-radius:8px;margin-bottom:12px;" role="presentation">
         <tr><td bgcolor="#fff9f5" style="background-color:#fff9f5;padding:12px;text-align:center;">
