@@ -26,6 +26,8 @@
     { "source": "/firms/e8.html", "destination": "/e8", "permanent": true },
     { "source": "/firms/cti.html", "destination": "/cti", "permanent": true },
     { "source": "/firms/tradeday.html", "destination": "/tradeday", "permanent": true },
+    { "source": "/volume-filter", "destination": "/volumefilter-landing.html", "permanent": false },
+    { "source": "/volumefilter", "destination": "/volumefilter-landing.html", "permanent": false },
     { "source": "/t/coupons", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=coupons", "permanent": false },
     { "source": "/t/analysis", "destination": "/analysis?utm_source=telegram&utm_medium=social&utm_campaign=analysis", "permanent": false },
     { "source": "/t/gex", "destination": "/gamma?utm_source=telegram&utm_medium=social&utm_campaign=gex", "permanent": false },

@@ -1,0 +1,31 @@
+========================================
+VolumeFilter v1.0 - Markets Coupons
+========================================
+
+INSTALACAO RAPIDA (recomendado):
+1. Abra o NinjaTrader 8
+2. Menu: Tools -> Import -> NinjaScript Add-On
+3. Selecione este arquivo .zip
+4. Confirme - o NinjaTrader importa e compila automaticamente
+5. Abra um grafico -> Indicators (Ctrl+I) -> procure "VolumeFilter" -> Add
+6. Ctrl+S no Control Center para salvar o workspace
+
+INSTALACAO MANUAL (caso o Import nao funcione):
+1. Extraia este .zip em uma pasta temporaria
+2. Copie o arquivo:
+   bin/Custom/Indicators/VolumeFilter.cs
+   Para:
+   Documents/NinjaTrader 8/bin/Custom/Indicators/
+3. No NinjaTrader: F11 (NinjaScript Editor) -> F5 (Compile)
+4. Adicione no grafico normalmente
+
+VALIDADE:
+Esta versao funciona ate 31/12/2026.
+Apos essa data, sera mostrado aviso de renovacao no grafico.
+Para renovar: marketscoupons.com
+
+SUPORTE:
+Comunidade Telegram: t.me/marketcouponss
+Site: marketscoupons.com
+
+========================================
