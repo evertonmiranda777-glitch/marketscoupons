@@ -13,6 +13,15 @@ using NinjaTrader.NinjaScript;
 using NinjaTrader.NinjaScript.DrawingTools;
 #endregion
 
+namespace NinjaTrader.NinjaScript
+{
+    public enum IdiomaVolume
+    {
+        Portugues,
+        English
+    }
+}
+
 namespace NinjaTrader.NinjaScript.Indicators
 {
     public class VolumeFilter : Indicator
@@ -37,7 +46,7 @@ namespace NinjaTrader.NinjaScript.Indicators
         {
             if (State == State.SetDefaults)
             {
-                Description = "Volume colorido + media movel. Verde=alto, cinza=medio, vermelho=baixo.";
+                Description = "Volume colorido + media movel / Colored volume + moving average. Verde/Green=alto/high, cinza/gray=medio/avg, vermelho/red=baixo/low.";
                 Name = "VolumeFilter";
                 Calculate = Calculate.OnPriceChange;
                 IsOverlay = false;
@@ -48,6 +57,7 @@ namespace NinjaTrader.NinjaScript.Indicators
 
                 Period = 20;
                 Multiplier = 1.5;
+                Idioma = IdiomaVolume.Portugues;
 
                 AddPlot(new Stroke(Brushes.Gray, 2), PlotStyle.Bar, "Volume");
                 AddPlot(new Stroke(Brushes.Yellow, 2), PlotStyle.Line, "Media");
@@ -66,12 +76,17 @@ namespace NinjaTrader.NinjaScript.Indicators
 
         protected override void OnBarUpdate()
         {
-            // Checagem de expiracao
+            // Checagem de expiracao / Expiration check
             if (DateTime.Now > ExpiraEm)
             {
+                string msgExpirado = Idioma == IdiomaVolume.Portugues
+                    ? "VolumeFilter expirou em " + ExpiraEm.ToString("dd/MM/yyyy") + Environment.NewLine +
+                      "Renove em: marketscoupons.com"
+                    : "VolumeFilter expired on " + ExpiraEm.ToString("MM/dd/yyyy") + Environment.NewLine +
+                      "Renew at: marketscoupons.com";
+
                 Draw.TextFixed(this, "VolumeFilterExpirado",
-                    "VolumeFilter expirou em " + ExpiraEm.ToString("dd/MM/yyyy") + Environment.NewLine +
-                    "Renove em: marketscoupons.com",
+                    msgExpirado,
                     TextPosition.Center,
                     Brushes.OrangeRed,
                     new SimpleFont("Consolas", 14) { Bold = true },
@@ -106,13 +121,16 @@ namespace NinjaTrader.NinjaScript.Indicators
         #region Properties
         [NinjaScriptProperty]
         [Range(2, 100)]
-        [Display(Name = "Periodo da media", Order = 1, GroupName = "Parametros")]
+        [Display(Name = "Periodo da media / Avg period", Order = 1, GroupName = "Parametros / Parameters")]
         public int Period { get; set; }
 
         [NinjaScriptProperty]
         [Range(1.0, 5.0)]
-        [Display(Name = "Multiplicador (volume alto)", Description = "Volume precisa ser N x a media para ser considerado alto", Order = 2, GroupName = "Parametros")]
+        [Display(Name = "Multiplicador / Multiplier", Description = "Volume precisa ser N x a media para ser alto / Volume must be N x average to be high", Order = 2, GroupName = "Parametros / Parameters")]
         public double Multiplier { get; set; }
+
+        [Display(Name = "Idioma / Language", Description = "Idioma das mensagens / Message language", Order = 3, GroupName = "Parametros / Parameters")]
+        public IdiomaVolume Idioma { get; set; }
 
         [Browsable(false)]
         [XmlIgnore]
