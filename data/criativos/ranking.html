@@ -66,7 +66,7 @@
   .period { font-size: 18px; color: #8A93A8; letter-spacing: .04em; text-transform: uppercase; font-weight: 600; }
 
   /* ===== HEADER ===== */
-  .header { padding: 22px 56px 16px; }
+  .header { padding: 22px 56px 20px; }
   .header-eyebrow {
     font-size: 14px; color: #22D67C; letter-spacing: .25em; text-transform: uppercase; margin-bottom: 10px;
   }
@@ -78,7 +78,6 @@
     background: linear-gradient(90deg, #F0B429 0%, #FCD34D 60%, #F0B429 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .header-sub { font-size: 20px; color: #8A93A8; margin-top: 12px; line-height: 1.4; white-space: nowrap; }
 
   /* ===== PÓDIO ===== */
   .podium { display: grid; grid-template-columns: 1fr 1.18fr 1fr; gap: 16px; padding: 2px 48px 8px; align-items: end; }
@@ -145,7 +144,7 @@
   .pod-bronze .pod-coupon { background: rgba(217,119,6,.18); color: #FBBF24; border: 1px solid rgba(217,119,6,.45); }
 
   /* ===== LISTA 4-10 ===== */
-  .list { padding: 2px 56px 300px; display: grid; gap: 3px; }
+  .list { padding: 6px 56px 280px; display: grid; gap: 4px; }
   .row {
     display: grid;
     grid-template-columns: 46px 68px 1fr auto auto;
@@ -259,7 +258,6 @@
   <div class="header">
     <div class="header-eyebrow" id="eyebrow">—</div>
     <h1 id="title">—</h1>
-    <div class="header-sub" id="subtitle">—</div>
   </div>
 
   <!-- Pódio Top 3 -->
@@ -539,7 +537,6 @@ async function init() {
   // i18n base
   document.getElementById('eyebrow').textContent = T[`eyebrow_${type}`] || T.eyebrow_futures;
   document.getElementById('title').innerHTML = T[`title_${type}`] || T.title_futures;
-  document.getElementById('subtitle').textContent = T.subtitle;
   document.getElementById('period').textContent = formatPeriod(weekStart, lang).toUpperCase();
   document.getElementById('headline').innerHTML = T.headline;
   document.getElementById('note').innerHTML = T.note;
