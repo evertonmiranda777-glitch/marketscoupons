@@ -2424,7 +2424,14 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
             <label style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);">Inicio da semana</label>
             <input type="date" id="bs-week" onchange="bsUpdatePreview()" class="filter-inp" style="width:100%;margin-top:6px;">
           </div>
-          <div style="padding:12px;background:rgba(34,214,124,.06);border:1px solid rgba(34,214,124,.18);border-radius:8px;margin-top:18px;">
+          <div style="padding:12px;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.25);border-radius:8px;margin-top:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <div style="font-size:11px;font-weight:700;color:var(--gold);">Caption pronta (cola no IG)</div>
+              <button onclick="bsCopyCaption()" style="font-size:10px;padding:3px 9px;background:var(--gold);color:#0a0d14;border:none;border-radius:5px;cursor:pointer;font-weight:700;">COPIAR</button>
+            </div>
+            <div id="bs-caption-display" style="font-size:12px;color:var(--t1);line-height:1.5;">—</div>
+          </div>
+          <div style="padding:12px;background:rgba(34,214,124,.06);border:1px solid rgba(34,214,124,.18);border-radius:8px;margin-top:12px;">
             <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;">URL atual</div>
             <div id="bs-url-display" style="font-size:10px;color:var(--t2);font-family:monospace;word-break:break-all;line-height:1.4;">—</div>
           </div>
@@ -12055,6 +12062,53 @@ function bsBuildUrl(p){
   const base = location.origin + '/criativos/ranking';
   return `${base}?type=${p.type}&lang=${p.lang}&bg=${p.bg}&week=${p.week}&t=${Date.now()}`;
 }
+function bsCaptionFor(type, lang, weekISO){
+  const start = new Date(weekISO + 'T00:00:00');
+  const end = new Date(start.getTime() + 6 * 86400000);
+  const localeMap = { en:'en-US', pt:'pt-BR', es:'es-ES', it:'it-IT', fr:'fr-FR', de:'de-DE', ar:'ar-SA', id:'id-ID' };
+  const locale = localeMap[lang] || 'en-US';
+  const opts = { month: 'short', day: 'numeric' };
+  const dates = `${start.toLocaleDateString(locale, opts)} – ${end.toLocaleDateString(locale, opts)}`;
+  const emoji = type === 'forex' ? '💱' : (type === 'all' ? '🏆' : '📊');
+  const T = {
+    en: { futures: `Weekly Futures Best Sellers through Markets Coupons for ${dates} ${emoji}`,
+          forex:   `Weekly Forex Best Sellers through Markets Coupons for ${dates} ${emoji}`,
+          all:     `Weekly Best Sellers through Markets Coupons for ${dates} ${emoji}` },
+    pt: { futures: `Best Sellers Semanais de Futuros via Markets Coupons para ${dates} ${emoji}`,
+          forex:   `Best Sellers Semanais de Forex via Markets Coupons para ${dates} ${emoji}`,
+          all:     `Best Sellers Semanais via Markets Coupons para ${dates} ${emoji}` },
+    es: { futures: `Best Sellers Semanales de Futuros en Markets Coupons del ${dates} ${emoji}`,
+          forex:   `Best Sellers Semanales de Forex en Markets Coupons del ${dates} ${emoji}`,
+          all:     `Best Sellers Semanales en Markets Coupons del ${dates} ${emoji}` },
+    it: { futures: `Best Sellers Settimanali di Futures su Markets Coupons per ${dates} ${emoji}`,
+          forex:   `Best Sellers Settimanali di Forex su Markets Coupons per ${dates} ${emoji}`,
+          all:     `Best Sellers Settimanali su Markets Coupons per ${dates} ${emoji}` },
+    fr: { futures: `Best Sellers Hebdomadaires Futures sur Markets Coupons pour ${dates} ${emoji}`,
+          forex:   `Best Sellers Hebdomadaires Forex sur Markets Coupons pour ${dates} ${emoji}`,
+          all:     `Best Sellers Hebdomadaires sur Markets Coupons pour ${dates} ${emoji}` },
+    de: { futures: `Wöchentliche Futures Bestseller auf Markets Coupons für ${dates} ${emoji}`,
+          forex:   `Wöchentliche Forex Bestseller auf Markets Coupons für ${dates} ${emoji}`,
+          all:     `Wöchentliche Bestseller auf Markets Coupons für ${dates} ${emoji}` },
+    ar: { futures: `الأكثر مبيعاً أسبوعياً لـFutures على Markets Coupons للفترة ${dates} ${emoji}`,
+          forex:   `الأكثر مبيعاً أسبوعياً لـForex على Markets Coupons للفترة ${dates} ${emoji}`,
+          all:     `الأكثر مبيعاً أسبوعياً على Markets Coupons للفترة ${dates} ${emoji}` },
+    id: { futures: `Best Sellers Mingguan Futures di Markets Coupons untuk ${dates} ${emoji}`,
+          forex:   `Best Sellers Mingguan Forex di Markets Coupons untuk ${dates} ${emoji}`,
+          all:     `Best Sellers Mingguan di Markets Coupons untuk ${dates} ${emoji}` },
+  };
+  return (T[lang] || T.en)[type] || (T[lang] || T.en).futures;
+}
+function bsUpdateCaption(){
+  const p = bsCurrentParams();
+  const cap = bsCaptionFor(p.type, p.lang, p.week);
+  const el = document.getElementById('bs-caption-display');
+  if (el) el.textContent = cap;
+}
+function bsCopyCaption(){
+  const p = bsCurrentParams();
+  const cap = bsCaptionFor(p.type, p.lang, p.week);
+  navigator.clipboard.writeText(cap).then(() => toast('Caption copiada!')).catch(() => alert(cap));
+}
 function bsUpdatePreview(){
   const p = bsCurrentParams();
   const url = bsBuildUrl(p);
@@ -12062,6 +12116,7 @@ function bsUpdatePreview(){
   if (iframe) iframe.src = url;
   const disp = document.getElementById('bs-url-display');
   if (disp) disp.textContent = url.replace(/&t=\d+/, '');
+  bsUpdateCaption();
 }
 function bsCopyUrl(){
   const p = bsCurrentParams();
