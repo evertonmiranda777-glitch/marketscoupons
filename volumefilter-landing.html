@@ -1,708 +1,1198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>VolumeFilter — Free NinjaTrader 8 Indicator | Markets Coupons</title>
-<meta name="description" content="VolumeFilter — free NinjaTrader 8 indicator to spot institutional volume blocks in real time. Drop your email, get the .zip in your inbox. 2-click install.">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<meta name="theme-color" content="#07090D">
-<link rel="canonical" href="https://www.marketscoupons.com/volume-filter">
-<link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/volume-filter">
-<link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/volume-filter?lang=pt">
-<link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/volume-filter?lang=es">
-<link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/volume-filter?lang=it">
-<link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/volume-filter?lang=fr">
-<link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/volume-filter?lang=de">
-<link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/volume-filter?lang=ar">
-<link rel="alternate" hreflang="id" href="https://www.marketscoupons.com/volume-filter?lang=id">
-<link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/volume-filter">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VolumeFilter — indicador grátis para NinjaTrader 8 que pinta o volume em 3 cores e mostra se o movimento tem agressão real. Markets Coupons.">
+<meta name="theme-color" content="#0A0D14">
+<title>VolumeFilter — Veja a força do volume antes do trade | Markets Coupons</title>
 
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.marketscoupons.com/volume-filter">
-<meta property="og:title" content="VolumeFilter — Free NinjaTrader 8 Indicator">
-<meta property="og:description" content="Spot institutional volume blocks in real time. Free .zip download — 2-click install on NinjaTrader 8.">
-<meta property="og:site_name" content="Markets Coupons">
-<meta property="og:locale" content="en_US">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="VolumeFilter — Free NinjaTrader 8 Indicator">
-<meta name="twitter:description" content="Spot institutional volume blocks in real time. Free .zip download.">
-
-<link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
-<link rel="icon" type="image/png" href="/img/favicon.png">
-<link rel="apple-touch-icon" href="/img/pwa/apple-touch-icon.png">
-
-<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin>
 <style>
-@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/inter-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/inter-latin-ext.woff2') format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}
-
-:root{
-  --bg:#07090D;
-  --bg2:#0A0D14;
-  --sur:#10151F;
-  --card:rgba(13,20,28,.78);
-  --b1:rgba(107,182,201,.14);
-  --b2:rgba(107,182,201,.22);
-  --t1:#E8ECF1;
-  --t2:#9CA3AF;
-  --t3:#6B7480;
-  --gold:#F0B429;
-  --green:#10B981;
-  --cyan:#6BB6C9;
-  --f:'Inter',Helvetica,Arial,sans-serif;
+:root {
+  --bg: #0A0D14;
+  --bg-2: #0F1320;
+  --bg-3: #161B2D;
+  --border: #1F2638;
+  --border-strong: #2A3450;
+  --text: #E6E9F2;
+  --text-dim: #8A93A8;
+  --text-faded: #5A6378;
+  --green: #22D67C;
+  --green-dim: #1B9E5C;
+  --gray-bar: #4A5468;
+  --red: #E14B4B;
+  --amber: #F5B544;
+  --accent: #22D67C;
+  --shadow-glow: 0 0 60px rgba(34, 214, 124, 0.12);
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--t1);font-family:var(--f);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-body{overflow-x:hidden;}
-html[dir="rtl"] body{text-align:right;}
-a{color:inherit;text-decoration:none;}
-img{max-width:100%;display:block;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-/* Header */
-.hdr{position:sticky;top:0;z-index:100;background:rgba(7,9,13,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--b1);}
-.hdr-wrap{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
-.logo{display:inline-flex;align-items:center;gap:0;font-size:20px;font-weight:800;letter-spacing:-.3px;color:var(--t1);}
-.logo .l-coupons{color:var(--gold);margin-left:4px;}
-.hdr-right{display:flex;align-items:center;gap:14px;}
-.lang-row{display:flex;gap:4px;}
-.lang-pill{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);background:transparent;border:1px solid var(--b1);border-radius:6px;padding:5px 8px;cursor:pointer;transition:.2s;}
-.lang-pill:hover{color:var(--t1);border-color:var(--b2);}
-.lang-pill.active{color:#0A0D14;background:var(--gold);border-color:var(--gold);}
-.hdr-cta{display:none;align-items:center;gap:6px;padding:9px 16px;background:var(--green);color:#fff;border-radius:8px;font-size:13px;font-weight:700;}
-.hdr-cta:hover{background:#0ea571;}
-@media(min-width:720px){.hdr-cta{display:inline-flex;}}
-
-/* Hero */
-.hero{padding:60px 22px 70px;max-width:1100px;margin:0 auto;text-align:center;position:relative;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--green);margin-bottom:22px;}
-.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
-.hero h1{font-size:42px;font-weight:800;line-height:1.1;letter-spacing:-1px;margin:0 0 18px;color:var(--t1);}
-.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold),#f5d060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-sub{font-size:17px;line-height:1.6;color:var(--t2);max-width:620px;margin:0 auto 32px;}
-.hero-form{display:flex;gap:10px;max-width:520px;margin:0 auto 14px;padding:7px;background:var(--card);border:1px solid var(--b2);border-radius:14px;}
-.hero-form input{flex:1;padding:14px 16px;background:transparent;border:none;color:var(--t1);font-size:15px;font-family:var(--f);outline:none;}
-.hero-form input::placeholder{color:var(--t3);}
-.hero-form button{padding:14px 24px;background:linear-gradient(90deg,#0ea571,var(--green));color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(16,185,129,.25);font-family:var(--f);white-space:nowrap;}
-.hero-form button:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(16,185,129,.36);}
-.hero-form button:disabled{opacity:.7;cursor:not-allowed;}
-.hero-micro{font-size:12px;color:var(--t3);margin:0 auto;max-width:480px;line-height:1.5;}
-.hero-micro b{color:var(--t2);}
-@media(max-width:600px){
-  .hero{padding:40px 18px 50px;}
-  .hero h1{font-size:30px;}
-  .hero-sub{font-size:15px;}
-  .hero-form{flex-direction:column;padding:6px;}
-  .hero-form button{width:100%;justify-content:center;}
+/* ===== TOP TICKER (decorativo, vibe terminal) ===== */
+.ticker {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  padding: 8px 0;
+}
+.ticker-track {
+  display: inline-flex;
+  gap: 48px;
+  white-space: nowrap;
+  animation: scroll 60s linear infinite;
+  padding-left: 100%;
+}
+.ticker-item .up { color: var(--green); }
+.ticker-item .down { color: var(--red); }
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
 }
 
-/* Trust strip */
-.trust-strip{max-width:1100px;margin:0 auto;padding:0 22px 50px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.ts-item{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:18px 14px;text-align:center;}
-.ts-icon{color:var(--gold);margin:0 auto 8px;}
-.ts-h{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px;}
-.ts-s{font-size:11px;color:var(--t3);line-height:1.4;}
-@media(max-width:680px){.trust-strip{grid-template-columns:repeat(2,1fr);}}
+/* ===== HEADER ===== */
+.header {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 13, 20, 0.85);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+.logo svg { flex-shrink: 0; }
+.logo em { color: #F0B429; font-style: normal; font-weight: 700; }
+.header-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  transition: all 0.2s;
+}
+.header-cta:hover { color: var(--green); border-color: var(--green); }
 
-/* Section base */
-.section{max-width:1100px;margin:0 auto;padding:60px 22px;}
-.section-eyebrow{display:inline-block;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.18);padding:6px 12px;border-radius:6px;margin-bottom:14px;}
-.section h2{font-size:32px;font-weight:800;letter-spacing:-.6px;line-height:1.2;margin:0 0 14px;color:var(--t1);}
-.section h2 em{font-style:normal;background:linear-gradient(90deg,var(--gold),#f5d060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.section-sub{font-size:15px;color:var(--t2);line-height:1.7;max-width:680px;margin:0 0 36px;}
-.section-head-center{text-align:center;}
-.section-head-center .section-sub{margin:0 auto 36px;}
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  padding: 80px 0 100px;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(34, 214, 124, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  background: rgba(34, 214, 124, 0.08);
+  border: 1px solid rgba(34, 214, 124, 0.25);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 28px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  animation: fadeUp 0.6s ease-out;
+}
+.hero-tag .dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  max-width: 900px;
+  animation: fadeUp 0.7s ease-out 0.1s backwards;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--green);
+  position: relative;
+  display: inline-block;
+}
+.hero h1 em::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 4px;
+  width: 100%; height: 3px;
+  background: var(--green);
+  opacity: 0.3;
+}
+.hero-sub {
+  font-size: clamp(16px, 2vw, 19px);
+  color: var(--text-dim);
+  max-width: 640px;
+  margin-bottom: 40px;
+  animation: fadeUp 0.7s ease-out 0.2s backwards;
+}
+.hero-sub strong { color: var(--text); font-weight: 600; }
 
-/* What you get */
-.wyg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-.wyg-card{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:24px;}
-.wyg-icon{width:40px;height:40px;border-radius:10px;background:rgba(16,185,129,.12);color:var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
-.wyg-h{font-size:16px;font-weight:700;color:var(--t1);margin:0 0 6px;}
-.wyg-p{font-size:13px;color:var(--t2);line-height:1.6;margin:0;}
-@media(max-width:600px){.wyg-grid{grid-template-columns:1fr;}}
+.hero-form {
+  display: flex;
+  gap: 12px;
+  max-width: 520px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.7s ease-out 0.3s backwards;
+}
+@media (max-width: 600px) {
+  .hero-form { flex-direction: column; }
+}
+.hero-form input {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 16px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.2s;
+}
+.hero-form input::placeholder { color: var(--text-faded); }
+.hero-form input:focus {
+  border-color: var(--green);
+  background: var(--bg-3);
+}
+.btn-cta {
+  background: var(--green);
+  color: #06140C;
+  border: none;
+  padding: 16px 28px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  box-shadow: 0 0 0 0 rgba(34, 214, 124, 0.5);
+}
+.btn-cta:hover {
+  background: #2BE588;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(34, 214, 124, 0.35);
+}
+.hero-micro {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-faded);
+  animation: fadeUp 0.7s ease-out 0.4s backwards;
+}
+.hero-micro span { color: var(--text-dim); margin: 0 8px; }
 
-/* Install steps */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.step{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:24px;position:relative;}
-.step-n{position:absolute;top:-12px;left:24px;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#0A0D14;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;}
-.step h4{font-size:15px;font-weight:700;color:var(--t1);margin:10px 0 6px;}
-.step p{font-size:13px;color:var(--t2);line-height:1.55;margin:0;}
-@media(max-width:780px){.steps{grid-template-columns:1fr;}}
+/* ===== HERO MOCKUP (terminal de gráfico) ===== */
+.hero-mockup {
+  margin-top: 64px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-glow);
+  animation: fadeUp 0.8s ease-out 0.5s backwards;
+}
+.mockup-bar {
+  background: var(--bg-3);
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.mockup-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.mockup-dot.red { background: #E14B4B; }
+.mockup-dot.amber { background: #F5B544; }
+.mockup-dot.green { background: #22D67C; }
+.mockup-bar .symbol { margin-left: 16px; font-weight: 700; color: var(--text); }
+.mockup-bar .price { margin-left: auto; color: var(--green); }
+.mockup-body {
+  padding: 32px 18px 24px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 18px;
+  min-height: 320px;
+}
+/* Mini chart de candles SVG */
+.mockup-chart svg { width: 100%; height: 200px; }
+/* Linha de barras de volume (a estrela do indicador) */
+.mockup-volume {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 70px;
+  padding: 0 4px;
+}
+.vbar {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  opacity: 0.95;
+  transition: transform 0.2s;
+}
+.vbar.gray { background: var(--gray-bar); }
+.vbar.green { background: var(--green); box-shadow: 0 0 8px rgba(34, 214, 124, 0.4); }
+.vbar.red { background: var(--red); opacity: 0.7; }
+.vol-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-faded);
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+}
 
-/* FAQ */
-.faq-list{display:flex;flex-direction:column;gap:10px;}
-.faq{background:var(--card);border:1px solid var(--b1);border-radius:10px;overflow:hidden;}
-.faq summary{padding:18px 22px;font-size:14px;font-weight:700;color:var(--t1);cursor:pointer;position:relative;list-style:none;padding-right:48px;}
-.faq summary::-webkit-details-marker{display:none;}
-.faq summary::after{content:'+';position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--gold);font-weight:300;transition:transform .25s;}
-.faq[open] summary::after{transform:translateY(-50%) rotate(45deg);}
-.faq-body{padding:0 22px 18px;font-size:13.5px;color:var(--t2);line-height:1.65;}
+/* ===== SECTIONS ===== */
+section { padding: 100px 0; }
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+.section-lede {
+  font-size: 18px;
+  color: var(--text-dim);
+  max-width: 640px;
+  margin-bottom: 48px;
+}
 
-/* CTA final */
-.cta-final{background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(13,20,28,.5));border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:70px 22px;text-align:center;}
-.cta-final-inner{max-width:680px;margin:0 auto;}
-.cta-final h2{font-size:30px;font-weight:800;letter-spacing:-.6px;color:var(--t1);margin:0 0 12px;}
-.cta-final h2 em{font-style:normal;color:var(--green);}
-.cta-final p{font-size:15px;color:var(--t2);line-height:1.6;margin:0 auto 28px;max-width:480px;}
-.cta-final .hero-form{margin:0 auto 14px;}
+/* ===== PAIN BLOCK ===== */
+.pain {
+  background: linear-gradient(180deg, transparent, rgba(225, 75, 75, 0.03));
+  border-top: 1px solid var(--border);
+}
+.pain-list {
+  list-style: none;
+  display: grid;
+  gap: 16px;
+  max-width: 720px;
+}
+.pain-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 22px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 16px;
+  color: var(--text);
+}
+.pain-list li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--red);
+  border-radius: 50%;
+  margin-top: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--red);
+}
 
-/* Footer */
-.ft{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 22px;}
-.ft-wrap{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:18px;}
-.ft-links{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;}
-.ft-links a{color:var(--t2);transition:color .2s;}
-.ft-links a:hover{color:var(--gold);}
-.ft-cr{font-size:12px;color:var(--t3);}
+/* ===== HOW IT WORKS — 3 CARDS ===== */
+.how {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+@media (max-width: 800px) {
+  .how-grid { grid-template-columns: 1fr; }
+}
+.how-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px 28px;
+  position: relative;
+  transition: all 0.3s;
+}
+.how-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
+}
+.how-card .bar-demo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 80px;
+  margin-bottom: 24px;
+}
+.how-card .bar-demo .vbar { width: 14px; border-radius: 2px 2px 0 0; height: 60%; }
+.how-card.green { border-color: rgba(34, 214, 124, 0.3); }
+.how-card.green .bar-demo .featured { background: var(--green); height: 100%; box-shadow: 0 0 12px rgba(34, 214, 124, 0.5); }
+.how-card.gray .bar-demo .featured { background: var(--gray-bar); height: 100%; }
+.how-card.red .bar-demo .featured { background: var(--red); height: 100%; opacity: 0.7; }
+.how-card .bar-demo .vbar:not(.featured) { background: var(--border); }
+.how-card h3 {
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.how-card.green h3 { color: var(--green); }
+.how-card.red h3 { color: var(--red); }
+.how-card .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-faded);
+  margin-bottom: 16px;
+}
+.how-card p { color: var(--text-dim); font-size: 15px; line-height: 1.6; }
 
-/* Form states */
-.form-msg{display:block;margin-top:10px;font-size:13px;font-weight:600;}
-.form-msg.ok{color:var(--green);}
-.form-msg.err{color:#EF4444;}
+/* ===== BENEFITS ===== */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+@media (max-width: 700px) { .benefits-grid { grid-template-columns: 1fr; } }
+.benefit {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 26px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  transition: all 0.2s;
+}
+.benefit:hover { border-color: var(--green); }
+.benefit .icon {
+  width: 38px;
+  height: 38px;
+  background: rgba(34, 214, 124, 0.12);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--green);
+}
+.benefit h4 { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+.benefit p { color: var(--text-dim); font-size: 14px; line-height: 1.55; }
+
+/* ===== STATS BAR ===== */
+.stats {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 56px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+@media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; } }
+.stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 42px);
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ===== OFFER ===== */
+.offer-card {
+  background: linear-gradient(180deg, var(--bg-2), var(--bg-3));
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 48px;
+  max-width: 720px;
+  margin: 48px auto 0;
+  position: relative;
+  overflow: hidden;
+}
+.offer-card::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+@media (max-width: 600px) { .offer-card { padding: 32px 24px; } }
+.offer-list { list-style: none; margin: 24px 0 32px; display: grid; gap: 14px; }
+.offer-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 16px;
+}
+.offer-list .check {
+  width: 22px; height: 22px;
+  background: rgba(34, 214, 124, 0.15);
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.offer-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-faded);
+  border-top: 1px dashed var(--border-strong);
+  padding-top: 20px;
+}
+
+/* ===== FAQ / OBJEÇÕES ===== */
+.faq-list { max-width: 760px; display: grid; gap: 12px; margin-top: 40px; }
+.faq-item {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item[open] { border-color: var(--border-strong); }
+.faq-item summary {
+  padding: 20px 24px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  list-style: none;
+  transition: color 0.2s;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  color: var(--green);
+  transition: transform 0.2s;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:hover { color: var(--green); }
+.faq-body {
+  padding: 0 24px 22px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ===== CTA FINAL ===== */
+.cta-final {
+  text-align: center;
+  background: linear-gradient(180deg, var(--bg), var(--bg-2));
+  border-top: 1px solid var(--border);
+  padding: 100px 0;
+}
+.cta-final h2 {
+  font-weight: 800;
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 720px;
+  margin: 0 auto 20px;
+}
+.cta-final h2 em { color: var(--green); font-style: normal; }
+.cta-final p { color: var(--text-dim); font-size: 17px; max-width: 480px; margin: 0 auto 32px; }
+.cta-final .hero-form { margin: 0 auto 16px; }
+.cta-final .hero-micro { display: block; }
+
+/* ===== PS BOX ===== */
+.ps {
+  max-width: 720px;
+  margin: 64px auto 0;
+  background: var(--bg-3);
+  border-left: 3px solid var(--green);
+  border-radius: 4px;
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.ps strong { color: var(--green); font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; }
+
+/* ===== FOOTER ===== */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-faded);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer a { color: var(--text-dim); text-decoration: none; margin-left: 20px; }
+.footer a:hover { color: var(--green); }
+.risk-disclaimer {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--border);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-faded);
+  max-width: 900px;
+}
 </style>
-
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"VolumeFilter","operatingSystem":"NinjaTrader 8","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free NinjaTrader 8 indicator that filters candles by volume to spot institutional blocks in real time.","author":{"@type":"Organization","name":"Markets Coupons","url":"https://www.marketscoupons.com"},"url":"https://www.marketscoupons.com/volume-filter"}
-</script>
 </head>
 <body>
 
-<header class="hdr">
-  <div class="hdr-wrap">
-    <a href="/" class="logo">Markets<span class="l-coupons">Coupons</span></a>
-    <div class="hdr-right">
-      <div class="lang-row">
-        <button class="lang-pill" data-lang="pt" onclick="switchLang('pt')">PT</button>
-        <button class="lang-pill" data-lang="en" onclick="switchLang('en')">EN</button>
-        <button class="lang-pill" data-lang="es" onclick="switchLang('es')">ES</button>
-        <button class="lang-pill" data-lang="it" onclick="switchLang('it')">IT</button>
-        <button class="lang-pill" data-lang="fr" onclick="switchLang('fr')">FR</button>
-        <button class="lang-pill" data-lang="de" onclick="switchLang('de')">DE</button>
-        <button class="lang-pill" data-lang="ar" onclick="switchLang('ar')">AR</button>
-        <button class="lang-pill" data-lang="id" onclick="switchLang('id')">ID</button>
-      </div>
-      <a href="#cta-final" class="hdr-cta" data-i18n="hdr_cta">⬇ Get free</a>
-    </div>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="hero-eyebrow"><span class="hero-dot"></span><span data-i18n="hero_badge">Free download · NinjaTrader 8</span></div>
-  <h1 data-i18n-html="hero_title">Spot <em>institutional volume</em> in real time</h1>
-  <p class="hero-sub" data-i18n="hero_sub">VolumeFilter marks every candle that breaks the average volume on your chart. Identify aggression zones and institutional blocks in seconds — no math, no setup curve.</p>
-  <form class="hero-form" id="form-hero" data-form="volumefilter-lead" novalidate>
-    <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" data-i18n-ph="email_ph">
-    <button type="submit" class="btn-cta">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      <span data-i18n="form_btn">I want VolumeFilter</span>
-    </button>
-  </form>
-  <p class="hero-micro" data-i18n-html="hero_micro"><b>How it works:</b> drop your email above, the .zip arrives in your inbox in seconds. 2-click install on NinjaTrader 8.</p>
-</section>
-
-<div class="trust-strip">
-  <div class="ts-item">
-    <div class="ts-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-    <div class="ts-h" data-i18n="ts1_h">2-click install</div>
-    <div class="ts-s" data-i18n="ts1_s">Tools → Import. No coding.</div>
-  </div>
-  <div class="ts-item">
-    <div class="ts-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-    <div class="ts-h" data-i18n="ts2_h">100% free</div>
-    <div class="ts-s" data-i18n="ts2_s">Lifetime, no card, no trial.</div>
-  </div>
-  <div class="ts-item">
-    <div class="ts-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-    <div class="ts-h" data-i18n="ts3_h">Valid until 2026</div>
-    <div class="ts-s" data-i18n="ts3_s">Free renew via the site.</div>
-  </div>
-  <div class="ts-item">
-    <div class="ts-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
-    <div class="ts-h" data-i18n="ts4_h">Community</div>
-    <div class="ts-s" data-i18n="ts4_s">Telegram support, traders online.</div>
+<!-- TICKER DECORATIVO -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">NQ <span class="up">+0.42%</span></span>
+    <span class="ticker-item">ES <span class="up">+0.31%</span></span>
+    <span class="ticker-item">CL <span class="down">-1.20%</span></span>
+    <span class="ticker-item">GC <span class="up">+0.15%</span></span>
+    <span class="ticker-item">VolumeFilter <span class="up">v1.0</span></span>
+    <span class="ticker-item">NQ <span class="up">+0.42%</span></span>
+    <span class="ticker-item">ES <span class="up">+0.31%</span></span>
+    <span class="ticker-item">CL <span class="down">-1.20%</span></span>
+    <span class="ticker-item">GC <span class="up">+0.15%</span></span>
+    <span class="ticker-item">VolumeFilter <span class="up">v1.0</span></span>
   </div>
 </div>
 
-<section class="section">
-  <div class="section-head-center">
-    <div class="section-eyebrow" data-i18n="wyg_eyebrow">What you get</div>
-    <h2 data-i18n-html="wyg_h">More than an indicator — a <em>real edge</em></h2>
-    <p class="section-sub" data-i18n="wyg_sub">VolumeFilter is the same tool used by traders inside our community. Comes pre-configured and ready to plug into any chart.</p>
+<!-- HEADER -->
+<header class="header">
+  <div class="container header-inner">
+    <a href="https://www.marketscoupons.com" class="logo"><svg width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="vflg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#vflg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#vflg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#vflg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#vflg)"/></svg><span><em>Markets</em> Coupons</span></a>
+    <a href="#cta-final" class="header-cta">⬇ Baixar grátis</a>
   </div>
-  <div class="wyg-grid">
-    <div class="wyg-card">
-      <div class="wyg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div>
-      <div class="wyg-h" data-i18n="wyg1_h">Above-average volume bars</div>
-      <p class="wyg-p" data-i18n="wyg1_p">Colors every candle where volume breaks the configurable threshold. Institutional aggression becomes visible.</p>
-    </div>
-    <div class="wyg-card">
-      <div class="wyg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-      <div class="wyg-h" data-i18n="wyg2_h">Fully customizable</div>
-      <p class="wyg-p" data-i18n="wyg2_p">Threshold, period, colors and opacity — adjust everything from the Indicator panel without touching code.</p>
-    </div>
-    <div class="wyg-card">
-      <div class="wyg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-      <div class="wyg-h" data-i18n="wyg3_h">Zero-friction install</div>
-      <p class="wyg-p" data-i18n="wyg3_p">Ready-to-import .zip — NinjaTrader 8 unpacks and compiles automatically. No tutorials needed.</p>
-    </div>
-    <div class="wyg-card">
-      <div class="wyg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <div class="wyg-h" data-i18n="wyg4_h">Telegram community</div>
-      <p class="wyg-p" data-i18n="wyg4_p">Got stuck? Drop a message in our Telegram — traders and the dev team reply fast.</p>
-    </div>
-  </div>
-</section>
+</header>
 
-<section class="section">
-  <div class="section-head-center">
-    <div class="section-eyebrow" data-i18n="inst_eyebrow">Installation</div>
-    <h2 data-i18n-html="inst_h">Up and running in <em>2 minutes</em></h2>
-    <p class="section-sub" data-i18n="inst_sub">Receive the file by email and follow these 3 steps. No coding, no setup.</p>
-  </div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-n">1</div>
-      <h4 data-i18n="step1_h">Download the .zip</h4>
-      <p data-i18n="step1_p">The download link arrives in your email seconds after you sign up. Save the .zip anywhere — no need to extract, NinjaTrader imports it directly.</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">
+      <span class="dot"></span>
+      Indicador grátis para NinjaTrader 8
     </div>
-    <div class="step">
-      <div class="step-n">2</div>
-      <h4 data-i18n="step2_h">Open NinjaTrader 8</h4>
-      <p data-i18n="step2_p">In Control Center, click <b>Tools → Import → NinjaScript Add-On</b>. Select the downloaded .zip. It compiles automatically.</p>
-    </div>
-    <div class="step">
-      <div class="step-n">3</div>
-      <h4 data-i18n="step3_h">Add to your chart</h4>
-      <p data-i18n="step3_p">Open any chart, press <b>Ctrl+I</b>, search "VolumeFilter" and Add. Adjust the threshold from the panel. Done.</p>
-    </div>
-  </div>
-</section>
 
-<section class="section">
-  <div class="section-head-center">
-    <div class="section-eyebrow" data-i18n="faq_eyebrow">FAQ</div>
-    <h2 data-i18n="faq_h">Common questions</h2>
-  </div>
-  <div class="faq-list">
-    <details class="faq">
-      <summary data-i18n="faq1_q">Is it really free?</summary>
-      <div class="faq-body" data-i18n="faq1_a">Yes. No card required, no trial, no upsell. Drop your email, get the .zip. Valid until 31/12/2026 — free renewal afterwards via the same email.</div>
-    </details>
-    <details class="faq">
-      <summary data-i18n="faq2_q">Is it hard to install?</summary>
-      <div class="faq-body" data-i18n-html="faq2_a">No. You download the .zip, open NinjaTrader and click <b>Tools → Import → NinjaScript Add-On</b>. Select the file. That's it. 2 clicks. Comes pre-compiled.</div>
-    </details>
-    <details class="faq">
-      <summary data-i18n="faq3_q">Will you spam my inbox?</summary>
-      <div class="faq-body" data-i18n="faq3_a">No. You get 1 email with the download link, then only weekly updates with new indicators and exclusive coupons. Unsubscribe with 1 click, anytime.</div>
-    </details>
-    <details class="faq">
-      <summary data-i18n="faq4_q">What if it doesn't work on my NinjaTrader?</summary>
-      <div class="faq-body" data-i18n-html="faq4_a">Tested on NT8 v8.1+. If you have an older version, update it free at <a href="https://ninjatrader.com" style="color:var(--gold);">ninjatrader.com</a>. Still stuck? Hit the Telegram — we'll get you up.</div>
-    </details>
-    <details class="faq">
-      <summary data-i18n="faq5_q">Why give a paid indicator for free?</summary>
-      <div class="faq-body" data-i18n="faq5_a">We want you trying our tools. Once you see the value, you'll stick around for the coupons, daily analysis and exclusive indicators. It's a long-game.</div>
-    </details>
-  </div>
-</section>
+    <h1>Veja a <em>força do volume</em> antes de entrar no trade.</h1>
 
-<section class="cta-final" id="cta-final">
-  <div class="cta-final-inner">
-    <h2 data-i18n-html="ctaf_h">Stop guessing where the <em>institutional flow</em> is</h2>
-    <p data-i18n="ctaf_p">Drop your best email below. We send the download link and the install guide instantly.</p>
-    <form class="hero-form" id="form-final" data-form="volumefilter-lead" novalidate>
-      <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" data-i18n-ph="email_ph">
-      <button type="submit" class="btn-cta">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span data-i18n="form_btn">I want VolumeFilter</span>
-      </button>
+    <p class="hero-sub">
+      O volume nativo do NinjaTrader é uma barra cinza monocromática. Ele te mostra <strong>quantidade</strong>, não <strong>força</strong>. O VolumeFilter pinta cada candle em 3 cores e mostra, em 1 olhada, se o movimento tem agressão real ou é fake.
+    </p>
+
+    <form class="hero-form" id="form-hero" data-form="volumefilter-lead">
+      <input type="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+      <button type="submit" class="btn-cta">⬇ Quero o VolumeFilter</button>
     </form>
-    <p class="hero-micro" data-i18n-html="ctaf_micro"><b>1 email</b> · <b>0 spam</b> · <b>Unsubscribe with 1 click</b></p>
+    <p class="hero-micro">Grátis até 31/12/2026 <span>·</span> Sem cartão <span>·</span> Instalação em 2 cliques</p>
+
+    <!-- MOCKUP TERMINAL -->
+    <div class="hero-mockup">
+      <div class="mockup-bar">
+        <span class="mockup-dot red"></span>
+        <span class="mockup-dot amber"></span>
+        <span class="mockup-dot green"></span>
+        <span class="symbol">NQ 06-26 · 5min</span>
+        <span class="price">29,432.50 ▲ +0.42%</span>
+      </div>
+      <div class="mockup-body">
+        <!-- Mini candles SVG -->
+        <div class="mockup-chart">
+          <svg viewBox="0 0 600 180" preserveAspectRatio="none">
+            <!-- grid -->
+            <line x1="0" y1="45" x2="600" y2="45" stroke="#1F2638" stroke-dasharray="2,4"/>
+            <line x1="0" y1="90" x2="600" y2="90" stroke="#1F2638" stroke-dasharray="2,4"/>
+            <line x1="0" y1="135" x2="600" y2="135" stroke="#1F2638" stroke-dasharray="2,4"/>
+            <!-- candles (20 candles, mistura) -->
+            <g stroke-width="1.2">
+              <!-- Each candle: line (wick) + rect (body). x is centered every 30px -->
+              <line x1="15" y1="100" x2="15" y2="140" stroke="#E14B4B"/><rect x="9" y="110" width="12" height="25" fill="#E14B4B"/>
+              <line x1="45" y1="95" x2="45" y2="135" stroke="#22D67C"/><rect x="39" y="100" width="12" height="22" fill="#22D67C"/>
+              <line x1="75" y1="85" x2="75" y2="125" stroke="#22D67C"/><rect x="69" y="90" width="12" height="22" fill="#22D67C"/>
+              <line x1="105" y1="80" x2="105" y2="115" stroke="#22D67C"/><rect x="99" y="85" width="12" height="20" fill="#22D67C"/>
+              <line x1="135" y1="78" x2="135" y2="108" stroke="#E14B4B"/><rect x="129" y="82" width="12" height="18" fill="#E14B4B"/>
+              <line x1="165" y1="70" x2="165" y2="105" stroke="#22D67C"/><rect x="159" y="75" width="12" height="22" fill="#22D67C"/>
+              <line x1="195" y1="65" x2="195" y2="95" stroke="#22D67C"/><rect x="189" y="68" width="12" height="22" fill="#22D67C"/>
+              <line x1="225" y1="58" x2="225" y2="92" stroke="#22D67C"/><rect x="219" y="62" width="12" height="25" fill="#22D67C"/>
+              <line x1="255" y1="55" x2="255" y2="85" stroke="#22D67C"/><rect x="249" y="58" width="12" height="20" fill="#22D67C"/>
+              <line x1="285" y1="50" x2="285" y2="78" stroke="#22D67C"/><rect x="279" y="53" width="12" height="20" fill="#22D67C"/>
+              <line x1="315" y1="48" x2="315" y2="72" stroke="#E14B4B"/><rect x="309" y="53" width="12" height="15" fill="#E14B4B"/>
+              <line x1="345" y1="52" x2="345" y2="80" stroke="#E14B4B"/><rect x="339" y="58" width="12" height="18" fill="#E14B4B"/>
+              <line x1="375" y1="60" x2="375" y2="92" stroke="#E14B4B"/><rect x="369" y="65" width="12" height="22" fill="#E14B4B"/>
+              <line x1="405" y1="68" x2="405" y2="98" stroke="#22D67C"/><rect x="399" y="72" width="12" height="20" fill="#22D67C"/>
+              <line x1="435" y1="65" x2="435" y2="95" stroke="#22D67C"/><rect x="429" y="70" width="12" height="20" fill="#22D67C"/>
+              <line x1="465" y1="58" x2="465" y2="92" stroke="#22D67C"/><rect x="459" y="62" width="12" height="22" fill="#22D67C"/>
+              <line x1="495" y1="50" x2="495" y2="85" stroke="#22D67C"/><rect x="489" y="55" width="12" height="25" fill="#22D67C"/>
+              <line x1="525" y1="45" x2="525" y2="78" stroke="#22D67C"/><rect x="519" y="50" width="12" height="22" fill="#22D67C"/>
+              <line x1="555" y1="42" x2="555" y2="72" stroke="#22D67C"/><rect x="549" y="46" width="12" height="20" fill="#22D67C"/>
+              <line x1="585" y1="40" x2="585" y2="68" stroke="#22D67C"/><rect x="579" y="44" width="12" height="18" fill="#22D67C"/>
+            </g>
+          </svg>
+        </div>
+        <!-- Volume bars (estrela do indicador) -->
+        <div>
+          <div class="mockup-volume">
+            <div class="vbar gray" style="height:30%"></div>
+            <div class="vbar gray" style="height:35%"></div>
+            <div class="vbar gray" style="height:28%"></div>
+            <div class="vbar gray" style="height:40%"></div>
+            <div class="vbar red" style="height:22%"></div>
+            <div class="vbar green" style="height:75%"></div>
+            <div class="vbar green" style="height:90%"></div>
+            <div class="vbar green" style="height:95%"></div>
+            <div class="vbar green" style="height:80%"></div>
+            <div class="vbar gray" style="height:45%"></div>
+            <div class="vbar red" style="height:25%"></div>
+            <div class="vbar red" style="height:18%"></div>
+            <div class="vbar red" style="height:22%"></div>
+            <div class="vbar gray" style="height:38%"></div>
+            <div class="vbar green" style="height:70%"></div>
+            <div class="vbar green" style="height:85%"></div>
+            <div class="vbar green" style="height:92%"></div>
+            <div class="vbar green" style="height:78%"></div>
+            <div class="vbar green" style="height:88%"></div>
+            <div class="vbar green" style="height:95%"></div>
+          </div>
+          <div class="vol-label">
+            <span>VolumeFilter(NQ, 5min, 1.5, 20)</span>
+            <span>vol: 9.4k · média: 5.2k · razão: 1.81x</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<footer class="ft">
-  <div class="ft-wrap">
-    <div class="ft-cr" data-i18n-html="ft_cr">© 2026 Markets Coupons · Educational / affiliate platform</div>
-    <div class="ft-links">
-      <a href="/" data-i18n="ft_home">Home</a>
-      <a href="/coupons" data-i18n="ft_coupons">Coupons</a>
-      <a href="/indicators" data-i18n="ft_indicators">Indicators</a>
-      <a href="https://t.me/marketcouponss" data-i18n="ft_telegram">Telegram</a>
-      <a href="/privacy" data-i18n="ft_privacy">Privacy</a>
-      <a href="/terms" data-i18n="ft_terms">Terms</a>
+<!-- PAIN -->
+<section class="pain">
+  <div class="container">
+    <div class="section-tag">// O problema</div>
+    <h2 class="section-title">Você já operou um movimento que parecia forte e morreu na sua cara?</h2>
+
+    <ul class="pain-list">
+      <li>Comprou o rompimento e o candle virou no mesmo segundo.</li>
+      <li>Entrou na tendência e o preço lateralizou por 40 minutos.</li>
+      <li>Stop levou tudo num dia que tinha "volume gigante" no eixo.</li>
+      <li>Olha o volume nativo e não consegue distinguir candle de força de candle de absorção.</li>
+      <li>Sai do trade, vê o gráfico depois e percebe que o sinal estava ali — você só não enxergou.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <div class="section-tag">// Como funciona</div>
+    <h2 class="section-title">3 cores. 1 olhada. Decisão direta.</h2>
+    <p class="section-lede">
+      O VolumeFilter compara cada candle com a média do volume dos últimos 20 períodos e pinta a barra de uma cor única — você não precisa calcular nada.
+    </p>
+
+    <div class="how-grid">
+      <div class="how-card green">
+        <div class="bar-demo">
+          <div class="vbar"></div>
+          <div class="vbar"></div>
+          <div class="vbar featured"></div>
+          <div class="vbar"></div>
+          <div class="vbar"></div>
+        </div>
+        <h3>VERDE</h3>
+        <div class="label">volume ≥ 1.5x média</div>
+        <p>Agressão real. Tem comprador (ou vendedor) institucional empurrando o preço de verdade. Esse é o candle que confirma entrada.</p>
+      </div>
+
+      <div class="how-card gray">
+        <div class="bar-demo">
+          <div class="vbar"></div>
+          <div class="vbar"></div>
+          <div class="vbar featured"></div>
+          <div class="vbar"></div>
+          <div class="vbar"></div>
+        </div>
+        <h3 style="color: var(--text);">CINZA</h3>
+        <div class="label">volume dentro do normal</div>
+        <p>Mercado respirando. Não confirma nada — pode ser absorção, pode ser indefinição. Sinal pra esperar a próxima.</p>
+      </div>
+
+      <div class="how-card red">
+        <div class="bar-demo">
+          <div class="vbar"></div>
+          <div class="vbar featured"></div>
+          <div class="vbar"></div>
+          <div class="vbar"></div>
+          <div class="vbar"></div>
+        </div>
+        <h3>VERMELHO</h3>
+        <div class="label">volume abaixo da média</div>
+        <p>Movimento sem combustível. Se aparecer no fim de uma tendência, é exaustão. Em rompimento, é fake — não vai longe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section>
+  <div class="container">
+    <div class="section-tag">// O que muda na sua operação</div>
+    <h2 class="section-title">Pare de adivinhar. Comece a ler.</h2>
+
+    <div class="benefits-grid">
+      <div class="benefit">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <div>
+          <h4>Evite fake breakouts</h4>
+          <p>Rompimento sem barra verde é armadilha. Você enxerga isso antes de clicar no Buy.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div>
+          <h4>Confirme entradas com agressão</h4>
+          <p>Só entra quando o candle de gatilho vem com volume verde. Filtro brutal contra entrada precipitada.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg>
+        </div>
+        <div>
+          <h4>Identifique exaustão antes do mercado</h4>
+          <p>Quando o volume vira vermelho no fim da tendência, você sabe que tá perdendo combustível.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div>
+          <h4>Filtre dias laterais sem operar</h4>
+          <p>Várias barras cinzas e vermelhas seguidas = dia morto. Fecha o gráfico e poupa o emocional.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <h4>Pare de operar contra o fluxo</h4>
+          <p>Volume verde do lado oposto = institucional contra você. O indicador avisa antes do prejuízo.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+        </div>
+        <div>
+          <h4>Leitura instantânea</h4>
+          <p>Sem precisar olhar 3 painéis. As cores fazem o trabalho. Mobile-friendly se você opera pelo celular.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div>
+        <div class="stat-num">17+</div>
+        <div class="stat-label">Prop firms parceiras</div>
+      </div>
+      <div>
+        <div class="stat-num">$721M+</div>
+        <div class="stat-label">Pagos a traders</div>
+      </div>
+      <div>
+        <div class="stat-num">210K+</div>
+        <div class="stat-label">Avaliações Awards 2026</div>
+      </div>
+      <div>
+        <div class="stat-num">7</div>
+        <div class="stat-label">Idiomas suportados</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section>
+  <div class="container">
+    <div class="section-tag" style="text-align: center;">// A oferta</div>
+    <h2 class="section-title" style="text-align: center; margin-left: auto; margin-right: auto;">O que você recebe agora — de graça.</h2>
+
+    <div class="offer-card">
+      <ul class="offer-list">
+        <li><span class="check">✓</span> <span><strong>VolumeFilter</strong> — indicador NinjaTrader 8 (.zip pronto pra importar)</span></li>
+        <li><span class="check">✓</span> <span><strong>Guia rápido em PDF</strong> — instalação passo-a-passo + "5 padrões que o VolumeFilter revela na prática"</span></li>
+        <li><span class="check">✓</span> <span><strong>Acesso antecipado ao Programa VIP</strong> — você é avisado primeiro quando os indicadores PRO lançarem</span></li>
+      </ul>
+      <div class="offer-meta">
+        Validade: 31/12/2026 · Após esse prazo, o indicador continua instalado, mas mostra aviso de renovação. <br>
+        Sem trava agressiva. Sem cobrança automática. Sem cartão.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container">
+    <div class="section-tag">// Perguntas e objeções</div>
+    <h2 class="section-title">Tira as dúvidas antes de baixar.</h2>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Vai dar trabalho instalar?</summary>
+        <div class="faq-body">
+          Não. Você baixa o arquivo .zip, abre o NinjaTrader e vai em <strong>Tools → Import → NinjaScript Add-On</strong>. Seleciona o arquivo. Acabou. 2 cliques. Já vem compilado e pronto pra adicionar no gráfico. <strong>O PDF que você recebe junto tem o passo-a-passo com screenshots</strong> — se travar em alguma parte, é só seguir as imagens.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Eu já tenho volume no NinjaTrader nativo. Pra que outro?</summary>
+        <div class="faq-body">
+          O nativo te mostra <strong>quantidade absoluta</strong>. O VolumeFilter te mostra <strong>força relativa</strong> — comparado com a média móvel dos últimos 20 candles. É a diferença entre "tem volume" e "tem volume <strong>acima do normal pra esse momento</strong>". Pra confirmar agressão real, só o segundo importa.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Indicador grátis deve ser ruim, né?</summary>
+        <div class="faq-body">
+          É <strong>amostra estratégica</strong>. A gente vai lançar uma linha de indicadores PRO pro programa VIP do Markets Coupons. O VolumeFilter é o "porta-aberta" — funcional de verdade, sem versão capada. Quem gostar, vai querer o resto.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Vão me encher o email de spam?</summary>
+        <div class="faq-body">
+          Você recebe <strong>1 email de confirmação</strong>, o link de download, e depois só novidades de indicadores e cupons exclusivos — no máximo <strong>1 email por semana</strong>. Descadastra com 1 clique. Sempre.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Tenho NinjaTrader na versão grátis (Sim). Funciona?</summary>
+        <div class="faq-body">
+          Funciona. O VolumeFilter roda em qualquer NinjaTrader 8 — inclusive na versão Sim. Você não precisa de licença paga pra usar.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Funciona em qual ativo?</summary>
+        <div class="faq-body">
+          Qualquer instrumento que tenha volume real: NQ, ES, CL, GC, mini-índice (WIN/WDO), forex, ações, cripto. Onde houver volume, o filtro funciona.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Posso usar em prop firm?</summary>
+        <div class="faq-body">
+          Sim. Indicador customizado é permitido em <strong>todas as prop firms que aceitam NinjaTrader</strong> (Apex, Bulenox, Earn2Trade, TradeDay, FundedNext via NT, etc).
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Vai funcionar depois de 31/12/2026?</summary>
+        <div class="faq-body">
+          O indicador continua instalado, mas mostra um aviso de renovação no painel. A versão v2 (paga, com novas funcionalidades) será lançada antes do vencimento, e quem pegou a v1 grátis tem prioridade.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALAÇÃO PASSO A PASSO -->
+<section class="install">
+  <div class="container">
+    <div class="section-tag">// Instalação</div>
+    <h2 class="section-title">2 cliques. 90 segundos. Tá rodando.</h2>
+    <p class="section-lede">
+      Depois de confirmar seu email, você recebe o link do .zip + o PDF com tudo isso visualizado. <strong>Não tem complicação</strong>.
+    </p>
+
+    <ol class="steps">
+      <li>
+        <div class="step-num mono">01</div>
+        <div class="step-body">
+          <h4>Baixe o arquivo .zip</h4>
+          <p>Link de download chega no seu email assim que você confirmar o cadastro. Salva onde quiser — não precisa extrair, o NinjaTrader importa o zip direto.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num mono">02</div>
+        <div class="step-body">
+          <h4>Abra o NinjaTrader 8 e vá no menu Tools</h4>
+          <p>No menu superior do NinjaTrader, clica em <code>Tools → Import → NinjaScript Add-On</code>. Uma janela vai abrir pra você selecionar arquivo.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num mono">03</div>
+        <div class="step-body">
+          <h4>Selecione o arquivo .zip baixado</h4>
+          <p>Aponta pro arquivo que você baixou. O NinjaTrader importa, compila e instala automaticamente. Pode aparecer "Restart required" — se aparecer, fecha e abre o NT.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num mono">04</div>
+        <div class="step-body">
+          <h4>Adicione no gráfico</h4>
+          <p>Abre qualquer gráfico, clica em <code>Indicators</code> (atalho: Ctrl+I), procura por <strong>VolumeFilter</strong> na lista, clica em <code>Add</code>. Pronto — barras coloridas no painel inferior.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num mono">05</div>
+        <div class="step-body">
+          <h4>Salve o workspace</h4>
+          <p><code>Ctrl+S</code> no Control Center. Da próxima vez que abrir o NinjaTrader, o VolumeFilter já vai estar no gráfico, do jeito que você deixou.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="install-note">
+      <strong class="mono" style="color: var(--green);">// IMPORTANTE</strong>
+      <p>Tudo isso (com screenshots reais de cada tela) está dentro do <strong>PDF que você recebe junto com o indicador</strong>. Imprime, salva no desktop ou abre no celular enquanto instala. Sem mistério.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.install { border-top: 1px solid var(--border); }
+.steps {
+  list-style: none;
+  display: grid;
+  gap: 20px;
+  margin: 48px 0 32px;
+  max-width: 820px;
+}
+.steps li {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  transition: all 0.25s;
+  position: relative;
+}
+.steps li:hover {
+  border-color: var(--green);
+  transform: translateX(4px);
+}
+.step-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--green);
+  background: rgba(34, 214, 124, 0.08);
+  border: 1px solid rgba(34, 214, 124, 0.25);
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+}
+.step-body h4 {
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.step-body p {
+  color: var(--text-dim);
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+.step-body code {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--green);
+}
+.install-note {
+  max-width: 820px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--green);
+  border-radius: 8px;
+  padding: 20px 24px;
+  font-size: 14.5px;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+.install-note strong.mono {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.install-note p { margin: 0; }
+.install-note strong { color: var(--text); }
+@media (max-width: 600px) {
+  .steps li { padding: 20px; gap: 16px; flex-direction: column; }
+  .step-num { width: 48px; height: 48px; font-size: 22px; }
+}
+</style>
+
+<!-- CTA FINAL -->
+<section class="cta-final" id="cta-final">
+  <div class="container">
+    <h2>Pare de adivinhar. <em>Comece a ver.</em></h2>
+    <p>Coloca seu melhor email aí embaixo. A gente envia o link de download e o guia PDF na hora.</p>
+
+    <form class="hero-form" id="form-final" data-form="volumefilter-lead">
+      <input type="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+      <button type="submit" class="btn-cta">⬇ Quero o VolumeFilter</button>
+    </form>
+    <p class="hero-micro">Sem cartão <span>·</span> Sem pegadinha <span>·</span> Descadastro em 1 clique</p>
+
+    <div class="ps">
+      <strong>PS</strong><br>
+      Esse indicador faz parte de uma nova linha de ferramentas em desenvolvimento pro <strong style="color: var(--text);">programa VIP do Markets Coupons</strong>. Os próximos vão ser pagos. Esse aqui é a sua chance de testar a qualidade do que vem por aí — sem custo, sem compromisso.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>© 2026 Markets Coupons · VolumeFilter v1.0</div>
+      <nav>
+        <a href="https://www.marketscoupons.com">Site principal</a>
+        <a href="https://www.marketscoupons.com/privacy">Privacidade</a>
+        <a href="https://www.marketscoupons.com/terms">Termos</a>
+        <a href="https://t.me/marketcouponss">Telegram</a>
+      </nav>
+    </div>
+
+    <div class="risk-disclaimer">
+      <strong style="color: var(--text-dim);">Aviso de risco:</strong> A negociação de futuros e forex envolve riscos substanciais e não é adequada para todos os investidores. Resultados passados não garantem resultados futuros. Capital de risco é o dinheiro que pode ser perdido sem comprometer a segurança financeira. O conteúdo é exclusivamente educacional e informativo — não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Opere apenas com capital de risco.
     </div>
   </div>
 </footer>
 
+<!-- ===== JS (capture de form — placeholder pro backend) ===== -->
 <script>
-// ─── i18n ───
-const I18N = {
-  pt: {
-    hdr_cta:"⬇ Pegar grátis",
-    hero_badge:"Download grátis · NinjaTrader 8",
-    hero_title:"Veja o <em>volume institucional</em> em tempo real",
-    hero_sub:"O VolumeFilter destaca todo candle que quebra a média de volume no seu gráfico. Identifique zonas de agressão e blocos institucionais em segundos — sem cálculo, sem curva de setup.",
-    hero_micro:"<b>Como funciona:</b> coloca seu email aí em cima, o .zip cai na sua caixa em segundos. Instalação 2 cliques no NinjaTrader 8.",
-    email_ph:"seu@email.com",
-    form_btn:"Quero o VolumeFilter",
-    ts1_h:"Instala em 2 cliques", ts1_s:"Tools → Import. Sem código.",
-    ts2_h:"100% grátis", ts2_s:"Vitalício, sem cartão, sem trial.",
-    ts3_h:"Validade até 2026", ts3_s:"Renovação grátis pelo site.",
-    ts4_h:"Comunidade", ts4_s:"Suporte no Telegram, traders online.",
-    wyg_eyebrow:"O que você ganha", wyg_h:"Mais que um indicador — um <em>edge de verdade</em>",
-    wyg_sub:"O VolumeFilter é a mesma ferramenta usada pelos traders dentro da nossa comunidade. Vem pré-configurado e pronto pra plugar em qualquer gráfico.",
-    wyg1_h:"Candles de volume acima da média", wyg1_p:"Pinta cada candle onde o volume quebra o threshold configurável. Agressão institucional fica visível.",
-    wyg2_h:"Totalmente customizável", wyg2_p:"Threshold, período, cores e opacidade — ajusta tudo pelo painel do indicador sem mexer em código.",
-    wyg3_h:"Instalação zero-atrito", wyg3_p:".zip pronto pra importar — o NinjaTrader 8 descompacta e compila automaticamente. Sem tutorial.",
-    wyg4_h:"Comunidade Telegram", wyg4_p:"Travou? Manda mensagem no Telegram — traders e o time de dev respondem rápido.",
-    inst_eyebrow:"Instalação", inst_h:"Funcionando em <em>2 minutos</em>",
-    inst_sub:"Receba o arquivo por email e siga estes 3 passos. Sem código, sem setup.",
-    step1_h:"Baixe o .zip", step1_p:"O link de download chega no seu email segundos depois do cadastro. Salva o .zip onde quiser — não precisa extrair, o NinjaTrader importa direto.",
-    step2_h:"Abra o NinjaTrader 8", step2_p:"No Control Center, clique <b>Tools → Import → NinjaScript Add-On</b>. Seleciona o .zip baixado. Compila automaticamente.",
-    step3_h:"Adicione no gráfico", step3_p:"Abre qualquer gráfico, aperta <b>Ctrl+I</b>, procura \"VolumeFilter\" e Add. Ajusta o threshold pelo painel. Pronto.",
-    faq_eyebrow:"FAQ", faq_h:"Dúvidas comuns",
-    faq1_q:"É realmente grátis?", faq1_a:"Sim. Sem cartão, sem trial, sem upsell. Coloca o email, baixa o .zip. Validade até 31/12/2026 — renovação grátis pelo mesmo email depois disso.",
-    faq2_q:"É difícil instalar?", faq2_a:"Não. Você baixa o .zip, abre o NinjaTrader e vai em <b>Tools → Import → NinjaScript Add-On</b>. Seleciona o arquivo. Acabou. 2 cliques. Já vem compilado.",
-    faq3_q:"Vão me encher de spam?", faq3_a:"Não. Você recebe 1 email com o link, depois só novidades semanais com indicadores novos e cupons exclusivos. Descadastra com 1 clique, sempre.",
-    faq4_q:"E se não funcionar no meu NinjaTrader?", faq4_a:"Testado no NT8 v8.1+. Se você tem versão mais antiga, atualiza grátis em <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. Travou? Bate no Telegram que a gente resolve.",
-    faq5_q:"Por que dar um indicador pago de graça?", faq5_a:"A gente quer você testando nossas ferramentas. Quando você ver o valor, vai ficar pelos cupons, análise diária e indicadores exclusivos. É jogo longo.",
-    ctaf_h:"Pare de adivinhar onde tá o <em>fluxo institucional</em>",
-    ctaf_p:"Coloca seu melhor email aí embaixo. A gente envia o link de download e o guia de instalação na hora.",
-    ctaf_micro:"<b>1 email</b> · <b>0 spam</b> · <b>Descadastra com 1 clique</b>",
-    ft_cr:"© 2026 Markets Coupons · Plataforma educacional / afiliada",
-    ft_home:"Início", ft_coupons:"Cupons", ft_indicators:"Indicadores", ft_telegram:"Telegram", ft_privacy:"Privacidade", ft_terms:"Termos",
-    msg_invalid:"Email inválido", msg_rate:"Aguarda uns segundos", msg_err:"Erro — tenta de novo", msg_net:"Erro de conexão", msg_ok:"✓ Verifica seu email"
-  },
-  en: {
-    hdr_cta:"⬇ Get free",
-    hero_badge:"Free download · NinjaTrader 8",
-    hero_title:"Spot <em>institutional volume</em> in real time",
-    hero_sub:"VolumeFilter marks every candle that breaks the average volume on your chart. Identify aggression zones and institutional blocks in seconds — no math, no setup curve.",
-    hero_micro:"<b>How it works:</b> drop your email above, the .zip arrives in your inbox in seconds. 2-click install on NinjaTrader 8.",
-    email_ph:"your@email.com",
-    form_btn:"I want VolumeFilter",
-    ts1_h:"2-click install", ts1_s:"Tools → Import. No coding.",
-    ts2_h:"100% free", ts2_s:"Lifetime, no card, no trial.",
-    ts3_h:"Valid until 2026", ts3_s:"Free renew via the site.",
-    ts4_h:"Community", ts4_s:"Telegram support, traders online.",
-    wyg_eyebrow:"What you get", wyg_h:"More than an indicator — a <em>real edge</em>",
-    wyg_sub:"VolumeFilter is the same tool used by traders inside our community. Comes pre-configured and ready to plug into any chart.",
-    wyg1_h:"Above-average volume bars", wyg1_p:"Colors every candle where volume breaks the configurable threshold. Institutional aggression becomes visible.",
-    wyg2_h:"Fully customizable", wyg2_p:"Threshold, period, colors and opacity — adjust everything from the Indicator panel without touching code.",
-    wyg3_h:"Zero-friction install", wyg3_p:"Ready-to-import .zip — NinjaTrader 8 unpacks and compiles automatically. No tutorials needed.",
-    wyg4_h:"Telegram community", wyg4_p:"Got stuck? Drop a message in our Telegram — traders and the dev team reply fast.",
-    inst_eyebrow:"Installation", inst_h:"Up and running in <em>2 minutes</em>",
-    inst_sub:"Receive the file by email and follow these 3 steps. No coding, no setup.",
-    step1_h:"Download the .zip", step1_p:"The download link arrives in your email seconds after you sign up. Save the .zip anywhere — no need to extract, NinjaTrader imports it directly.",
-    step2_h:"Open NinjaTrader 8", step2_p:"In Control Center, click <b>Tools → Import → NinjaScript Add-On</b>. Select the downloaded .zip. It compiles automatically.",
-    step3_h:"Add to your chart", step3_p:"Open any chart, press <b>Ctrl+I</b>, search \"VolumeFilter\" and Add. Adjust the threshold from the panel. Done.",
-    faq_eyebrow:"FAQ", faq_h:"Common questions",
-    faq1_q:"Is it really free?", faq1_a:"Yes. No card required, no trial, no upsell. Drop your email, get the .zip. Valid until 31/12/2026 — free renewal afterwards via the same email.",
-    faq2_q:"Is it hard to install?", faq2_a:"No. You download the .zip, open NinjaTrader and click <b>Tools → Import → NinjaScript Add-On</b>. Select the file. That's it. 2 clicks. Comes pre-compiled.",
-    faq3_q:"Will you spam my inbox?", faq3_a:"No. You get 1 email with the download link, then only weekly updates with new indicators and exclusive coupons. Unsubscribe with 1 click, anytime.",
-    faq4_q:"What if it doesn't work on my NinjaTrader?", faq4_a:"Tested on NT8 v8.1+. If you have an older version, update it free at <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. Still stuck? Hit the Telegram — we'll get you up.",
-    faq5_q:"Why give a paid indicator for free?", faq5_a:"We want you trying our tools. Once you see the value, you'll stick around for the coupons, daily analysis and exclusive indicators. It's a long-game.",
-    ctaf_h:"Stop guessing where the <em>institutional flow</em> is",
-    ctaf_p:"Drop your best email below. We send the download link and the install guide instantly.",
-    ctaf_micro:"<b>1 email</b> · <b>0 spam</b> · <b>Unsubscribe with 1 click</b>",
-    ft_cr:"© 2026 Markets Coupons · Educational / affiliate platform",
-    ft_home:"Home", ft_coupons:"Coupons", ft_indicators:"Indicators", ft_telegram:"Telegram", ft_privacy:"Privacy", ft_terms:"Terms",
-    msg_invalid:"Invalid email", msg_rate:"Wait a few seconds", msg_err:"Error — try again", msg_net:"Connection error", msg_ok:"✓ Check your email"
-  },
-  es: {
-    hdr_cta:"⬇ Obtener gratis",
-    hero_badge:"Descarga gratis · NinjaTrader 8",
-    hero_title:"Detecta el <em>volumen institucional</em> en tiempo real",
-    hero_sub:"VolumeFilter marca cada vela que rompe el volumen promedio en tu gráfico. Identifica zonas de agresión y bloques institucionales en segundos — sin cálculos, sin curva de aprendizaje.",
-    hero_micro:"<b>Cómo funciona:</b> escribe tu email arriba, el .zip llega a tu bandeja en segundos. Instalación 2 clics en NinjaTrader 8.",
-    email_ph:"tu@email.com",
-    form_btn:"Quiero VolumeFilter",
-    ts1_h:"Instala en 2 clics", ts1_s:"Tools → Import. Sin código.",
-    ts2_h:"100% gratis", ts2_s:"Vitalicio, sin tarjeta, sin prueba.",
-    ts3_h:"Válido hasta 2026", ts3_s:"Renovación gratis por el sitio.",
-    ts4_h:"Comunidad", ts4_s:"Soporte en Telegram, traders online.",
-    wyg_eyebrow:"Lo que recibes", wyg_h:"Más que un indicador — una <em>ventaja real</em>",
-    wyg_sub:"VolumeFilter es la misma herramienta usada por los traders dentro de nuestra comunidad. Viene preconfigurado y listo para añadir a cualquier gráfico.",
-    wyg1_h:"Velas de volumen sobre el promedio", wyg1_p:"Colorea cada vela donde el volumen rompe el umbral configurable. La agresión institucional se vuelve visible.",
-    wyg2_h:"Totalmente personalizable", wyg2_p:"Umbral, período, colores y opacidad — ajusta todo desde el panel del indicador sin tocar código.",
-    wyg3_h:"Instalación sin fricción", wyg3_p:".zip listo para importar — NinjaTrader 8 descomprime y compila automáticamente. Sin tutoriales.",
-    wyg4_h:"Comunidad Telegram", wyg4_p:"¿Atascado? Manda mensaje en nuestro Telegram — traders y el equipo dev responden rápido.",
-    inst_eyebrow:"Instalación", inst_h:"Listo en <em>2 minutos</em>",
-    inst_sub:"Recibe el archivo por email y sigue estos 3 pasos. Sin código, sin setup.",
-    step1_h:"Descarga el .zip", step1_p:"El link de descarga llega a tu email segundos después del registro. Guarda el .zip donde quieras — no necesita extraerse, NinjaTrader lo importa directo.",
-    step2_h:"Abre NinjaTrader 8", step2_p:"En Control Center, clic en <b>Tools → Import → NinjaScript Add-On</b>. Selecciona el .zip descargado. Compila automáticamente.",
-    step3_h:"Añádelo al gráfico", step3_p:"Abre cualquier gráfico, presiona <b>Ctrl+I</b>, busca \"VolumeFilter\" y Add. Ajusta el umbral desde el panel. Listo.",
-    faq_eyebrow:"FAQ", faq_h:"Preguntas frecuentes",
-    faq1_q:"¿Es realmente gratis?", faq1_a:"Sí. Sin tarjeta, sin prueba, sin upsell. Pon el email, baja el .zip. Válido hasta 31/12/2026 — renovación gratis después por el mismo email.",
-    faq2_q:"¿Es difícil instalar?", faq2_a:"No. Bajas el .zip, abres NinjaTrader y vas a <b>Tools → Import → NinjaScript Add-On</b>. Selecciona el archivo. Listo. 2 clics. Viene compilado.",
-    faq3_q:"¿Vais a llenarme la bandeja de spam?", faq3_a:"No. Recibes 1 email con el link, luego solo novedades semanales con indicadores y cupones exclusivos. Te das de baja con 1 clic, siempre.",
-    faq4_q:"¿Y si no funciona en mi NinjaTrader?", faq4_a:"Probado en NT8 v8.1+. Si tienes versión más antigua, actualiza gratis en <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. ¿Atascado? Escríbenos al Telegram.",
-    faq5_q:"¿Por qué dar un indicador de pago gratis?", faq5_a:"Queremos que pruebes nuestras herramientas. Cuando veas el valor, te quedas por los cupones, análisis diario e indicadores exclusivos. Es juego largo.",
-    ctaf_h:"Deja de adivinar dónde está el <em>flujo institucional</em>",
-    ctaf_p:"Pon tu mejor email abajo. Te enviamos el link de descarga y la guía de instalación al instante.",
-    ctaf_micro:"<b>1 email</b> · <b>0 spam</b> · <b>Date de baja con 1 clic</b>",
-    ft_cr:"© 2026 Markets Coupons · Plataforma educacional / afiliada",
-    ft_home:"Inicio", ft_coupons:"Cupones", ft_indicators:"Indicadores", ft_telegram:"Telegram", ft_privacy:"Privacidad", ft_terms:"Términos",
-    msg_invalid:"Email inválido", msg_rate:"Espera unos segundos", msg_err:"Error — intenta de nuevo", msg_net:"Error de conexión", msg_ok:"✓ Revisa tu email"
-  },
-  it: {
-    hdr_cta:"⬇ Ottieni gratis",
-    hero_badge:"Download gratis · NinjaTrader 8",
-    hero_title:"Individua il <em>volume istituzionale</em> in tempo reale",
-    hero_sub:"VolumeFilter evidenzia ogni candela che supera il volume medio sul tuo grafico. Identifica zone di aggressione e blocchi istituzionali in secondi — senza calcoli, senza curva di apprendimento.",
-    hero_micro:"<b>Come funziona:</b> inserisci la tua email sopra, lo .zip arriva in casella in pochi secondi. Installazione 2 clic su NinjaTrader 8.",
-    email_ph:"la-tua@email.com",
-    form_btn:"Voglio VolumeFilter",
-    ts1_h:"Installazione in 2 clic", ts1_s:"Tools → Import. Niente codice.",
-    ts2_h:"100% gratis", ts2_s:"A vita, niente carta, niente trial.",
-    ts3_h:"Valido fino al 2026", ts3_s:"Rinnovo gratuito dal sito.",
-    ts4_h:"Comunità", ts4_s:"Supporto Telegram, trader online.",
-    wyg_eyebrow:"Cosa ottieni", wyg_h:"Più di un indicatore — un <em>vantaggio reale</em>",
-    wyg_sub:"VolumeFilter è lo stesso strumento usato dai trader nella nostra comunità. Arriva preconfigurato e pronto da inserire in qualsiasi grafico.",
-    wyg1_h:"Candele di volume sopra la media", wyg1_p:"Colora ogni candela in cui il volume supera la soglia configurabile. L'aggressione istituzionale diventa visibile.",
-    wyg2_h:"Completamente personalizzabile", wyg2_p:"Soglia, periodo, colori e opacità — regola tutto dal pannello dell'indicatore senza toccare codice.",
-    wyg3_h:"Installazione senza attriti", wyg3_p:".zip pronto da importare — NinjaTrader 8 scompatta e compila automaticamente. Nessun tutorial.",
-    wyg4_h:"Comunità Telegram", wyg4_p:"Bloccato? Scrivi sul Telegram — trader e team dev rispondono velocemente.",
-    inst_eyebrow:"Installazione", inst_h:"Operativo in <em>2 minuti</em>",
-    inst_sub:"Ricevi il file via email e segui questi 3 passi. Niente codice, niente setup.",
-    step1_h:"Scarica lo .zip", step1_p:"Il link di download arriva nella tua email pochi secondi dopo la registrazione. Salva lo .zip dove vuoi — non serve estrarlo, NinjaTrader lo importa direttamente.",
-    step2_h:"Apri NinjaTrader 8", step2_p:"Nel Control Center, clicca <b>Tools → Import → NinjaScript Add-On</b>. Seleziona lo .zip scaricato. Compila automaticamente.",
-    step3_h:"Aggiungilo al grafico", step3_p:"Apri qualsiasi grafico, premi <b>Ctrl+I</b>, cerca \"VolumeFilter\" e Add. Regola la soglia dal pannello. Fatto.",
-    faq_eyebrow:"FAQ", faq_h:"Domande frequenti",
-    faq1_q:"È davvero gratis?", faq1_a:"Sì. Niente carta, niente trial, niente upsell. Inserisci l'email, scarica lo .zip. Valido fino al 31/12/2026 — rinnovo gratuito poi dalla stessa email.",
-    faq2_q:"È difficile installare?", faq2_a:"No. Scarichi lo .zip, apri NinjaTrader e vai su <b>Tools → Import → NinjaScript Add-On</b>. Seleziona il file. Fine. 2 clic. Arriva precompilato.",
-    faq3_q:"Mi riempirete la casella di spam?", faq3_a:"No. Ricevi 1 email con il link, poi solo novità settimanali con nuovi indicatori e coupon esclusivi. Disiscriviti con 1 clic, sempre.",
-    faq4_q:"E se non funziona sul mio NinjaTrader?", faq4_a:"Testato su NT8 v8.1+. Se hai una versione più vecchia, aggiorna gratis su <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. Bloccato? Scrivi sul Telegram.",
-    faq5_q:"Perché regalare un indicatore a pagamento?", faq5_a:"Vogliamo che tu provi i nostri strumenti. Quando vedi il valore, resti per i coupon, l'analisi quotidiana e gli indicatori esclusivi. È un gioco lungo.",
-    ctaf_h:"Smettila di indovinare dov'è il <em>flusso istituzionale</em>",
-    ctaf_p:"Inserisci la tua email migliore qui sotto. Ti inviamo subito il link di download e la guida di installazione.",
-    ctaf_micro:"<b>1 email</b> · <b>0 spam</b> · <b>Disiscriviti con 1 clic</b>",
-    ft_cr:"© 2026 Markets Coupons · Piattaforma educational / affiliata",
-    ft_home:"Home", ft_coupons:"Coupon", ft_indicators:"Indicatori", ft_telegram:"Telegram", ft_privacy:"Privacy", ft_terms:"Termini",
-    msg_invalid:"Email non valida", msg_rate:"Aspetta qualche secondo", msg_err:"Errore — riprova", msg_net:"Errore di connessione", msg_ok:"✓ Controlla la tua email"
-  },
-  fr: {
-    hdr_cta:"⬇ Obtenir gratuit",
-    hero_badge:"Téléchargement gratuit · NinjaTrader 8",
-    hero_title:"Repérez le <em>volume institutionnel</em> en temps réel",
-    hero_sub:"VolumeFilter signale chaque bougie qui dépasse le volume moyen sur votre graphique. Identifiez zones d'agression et blocs institutionnels en quelques secondes — sans calcul, sans courbe d'apprentissage.",
-    hero_micro:"<b>Comment ça marche :</b> entrez votre email ci-dessus, le .zip arrive dans votre boîte en quelques secondes. Installation 2 clics sur NinjaTrader 8.",
-    email_ph:"votre@email.com",
-    form_btn:"Je veux VolumeFilter",
-    ts1_h:"Installation 2 clics", ts1_s:"Tools → Import. Sans code.",
-    ts2_h:"100% gratuit", ts2_s:"À vie, sans carte, sans essai.",
-    ts3_h:"Valide jusqu'en 2026", ts3_s:"Renouvellement gratuit via le site.",
-    ts4_h:"Communauté", ts4_s:"Support Telegram, traders en ligne.",
-    wyg_eyebrow:"Ce que vous obtenez", wyg_h:"Plus qu'un indicateur — un <em>vrai avantage</em>",
-    wyg_sub:"VolumeFilter est le même outil utilisé par les traders dans notre communauté. Préconfiguré et prêt à ajouter sur n'importe quel graphique.",
-    wyg1_h:"Bougies au volume supérieur à la moyenne", wyg1_p:"Colore chaque bougie où le volume dépasse le seuil configurable. L'agression institutionnelle devient visible.",
-    wyg2_h:"Entièrement personnalisable", wyg2_p:"Seuil, période, couleurs et opacité — ajustez tout depuis le panneau de l'indicateur sans toucher au code.",
-    wyg3_h:"Installation sans friction", wyg3_p:".zip prêt à importer — NinjaTrader 8 décompresse et compile automatiquement. Pas de tutoriel.",
-    wyg4_h:"Communauté Telegram", wyg4_p:"Bloqué ? Envoyez un message sur notre Telegram — traders et équipe dev répondent vite.",
-    inst_eyebrow:"Installation", inst_h:"Opérationnel en <em>2 minutes</em>",
-    inst_sub:"Recevez le fichier par email et suivez ces 3 étapes. Sans code, sans setup.",
-    step1_h:"Téléchargez le .zip", step1_p:"Le lien de téléchargement arrive dans votre email quelques secondes après l'inscription. Enregistrez le .zip où vous voulez — pas besoin d'extraire, NinjaTrader l'importe directement.",
-    step2_h:"Ouvrez NinjaTrader 8", step2_p:"Dans le Control Center, cliquez <b>Tools → Import → NinjaScript Add-On</b>. Sélectionnez le .zip téléchargé. Compile automatiquement.",
-    step3_h:"Ajoutez-le au graphique", step3_p:"Ouvrez n'importe quel graphique, appuyez sur <b>Ctrl+I</b>, cherchez \"VolumeFilter\" et Add. Ajustez le seuil dans le panneau. Terminé.",
-    faq_eyebrow:"FAQ", faq_h:"Questions fréquentes",
-    faq1_q:"C'est vraiment gratuit ?", faq1_a:"Oui. Sans carte, sans essai, sans upsell. Mettez l'email, téléchargez le .zip. Valide jusqu'au 31/12/2026 — renouvellement gratuit ensuite via le même email.",
-    faq2_q:"C'est dur à installer ?", faq2_a:"Non. Vous téléchargez le .zip, ouvrez NinjaTrader et allez dans <b>Tools → Import → NinjaScript Add-On</b>. Sélectionnez le fichier. Voilà. 2 clics. Vient précompilé.",
-    faq3_q:"Vous allez me spammer ?", faq3_a:"Non. Vous recevez 1 email avec le lien, puis seulement des nouveautés hebdo avec indicateurs et coupons exclusifs. Désabonnement en 1 clic, toujours.",
-    faq4_q:"Et si ça ne marche pas sur mon NinjaTrader ?", faq4_a:"Testé sur NT8 v8.1+. Si vous avez une version plus ancienne, mettez à jour gratuitement sur <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. Bloqué ? Écrivez sur le Telegram.",
-    faq5_q:"Pourquoi donner un indicateur payant gratuitement ?", faq5_a:"On veut que vous testiez nos outils. Quand vous verrez la valeur, vous resterez pour les coupons, l'analyse quotidienne et les indicateurs exclusifs. C'est du long terme.",
-    ctaf_h:"Arrêtez de deviner où est le <em>flux institutionnel</em>",
-    ctaf_p:"Mettez votre meilleur email ci-dessous. On envoie le lien de téléchargement et le guide d'installation immédiatement.",
-    ctaf_micro:"<b>1 email</b> · <b>0 spam</b> · <b>Désabonnement en 1 clic</b>",
-    ft_cr:"© 2026 Markets Coupons · Plateforme éducative / affiliée",
-    ft_home:"Accueil", ft_coupons:"Coupons", ft_indicators:"Indicateurs", ft_telegram:"Telegram", ft_privacy:"Confidentialité", ft_terms:"Conditions",
-    msg_invalid:"Email invalide", msg_rate:"Attendez quelques secondes", msg_err:"Erreur — réessayez", msg_net:"Erreur de connexion", msg_ok:"✓ Vérifiez votre email"
-  },
-  de: {
-    hdr_cta:"⬇ Kostenlos holen",
-    hero_badge:"Kostenloser Download · NinjaTrader 8",
-    hero_title:"Erkenne <em>institutionelles Volumen</em> in Echtzeit",
-    hero_sub:"VolumeFilter markiert jede Kerze, die das durchschnittliche Volumen auf deinem Chart durchbricht. Identifiziere Aggressionszonen und institutionelle Blöcke in Sekunden — keine Mathematik, keine Setup-Kurve.",
-    hero_micro:"<b>So funktioniert's:</b> trag deine Email oben ein, die .zip kommt in Sekunden in deinen Posteingang. 2-Klick-Installation auf NinjaTrader 8.",
-    email_ph:"deine@email.com",
-    form_btn:"Ich will VolumeFilter",
-    ts1_h:"2-Klick-Installation", ts1_s:"Tools → Import. Kein Coding.",
-    ts2_h:"100% kostenlos", ts2_s:"Lebenslang, keine Karte, kein Trial.",
-    ts3_h:"Gültig bis 2026", ts3_s:"Kostenlose Verlängerung über die Seite.",
-    ts4_h:"Community", ts4_s:"Telegram-Support, Trader online.",
-    wyg_eyebrow:"Was du bekommst", wyg_h:"Mehr als ein Indikator — ein <em>echter Edge</em>",
-    wyg_sub:"VolumeFilter ist dasselbe Tool, das von Tradern in unserer Community verwendet wird. Kommt vorkonfiguriert und bereit für jeden Chart.",
-    wyg1_h:"Volumen-Kerzen über dem Durchschnitt", wyg1_p:"Färbt jede Kerze, in der das Volumen den konfigurierbaren Schwellenwert überschreitet. Institutionelle Aggression wird sichtbar.",
-    wyg2_h:"Vollständig anpassbar", wyg2_p:"Schwellenwert, Zeitraum, Farben und Deckkraft — alles im Indikator-Panel anpassen, ohne Code zu berühren.",
-    wyg3_h:"Reibungslose Installation", wyg3_p:"Importbereite .zip — NinjaTrader 8 entpackt und kompiliert automatisch. Keine Tutorials nötig.",
-    wyg4_h:"Telegram-Community", wyg4_p:"Festgefahren? Schreib auf Telegram — Trader und Dev-Team antworten schnell.",
-    inst_eyebrow:"Installation", inst_h:"Läuft in <em>2 Minuten</em>",
-    inst_sub:"Erhalte die Datei per Email und folge diesen 3 Schritten. Kein Code, kein Setup.",
-    step1_h:"Lade die .zip herunter", step1_p:"Der Download-Link kommt Sekunden nach der Anmeldung in deine Email. Speichere die .zip wo du willst — kein Entpacken nötig, NinjaTrader importiert sie direkt.",
-    step2_h:"Öffne NinjaTrader 8", step2_p:"Im Control Center klick <b>Tools → Import → NinjaScript Add-On</b>. Wähle die heruntergeladene .zip. Kompiliert automatisch.",
-    step3_h:"Zum Chart hinzufügen", step3_p:"Öffne einen beliebigen Chart, drücke <b>Ctrl+I</b>, suche \"VolumeFilter\" und Add. Schwellenwert im Panel anpassen. Fertig.",
-    faq_eyebrow:"FAQ", faq_h:"Häufige Fragen",
-    faq1_q:"Ist es wirklich kostenlos?", faq1_a:"Ja. Keine Karte nötig, kein Trial, kein Upsell. Email eingeben, .zip herunterladen. Gültig bis 31/12/2026 — danach kostenlose Verlängerung über dieselbe Email.",
-    faq2_q:"Ist die Installation schwer?", faq2_a:"Nein. Du lädst die .zip herunter, öffnest NinjaTrader und gehst auf <b>Tools → Import → NinjaScript Add-On</b>. Datei wählen. Fertig. 2 Klicks. Kommt vorkompiliert.",
-    faq3_q:"Werdet ihr meinen Posteingang spammen?", faq3_a:"Nein. Du bekommst 1 Email mit dem Link, dann nur wöchentliche Updates mit neuen Indikatoren und exklusiven Coupons. Abmelden mit 1 Klick, immer.",
-    faq4_q:"Was, wenn's auf meinem NinjaTrader nicht funktioniert?", faq4_a:"Getestet auf NT8 v8.1+. Hast du eine ältere Version, kostenloses Update auf <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. Festgefahren? Schreib uns auf Telegram.",
-    faq5_q:"Warum einen kostenpflichtigen Indikator kostenlos geben?", faq5_a:"Wir wollen, dass du unsere Tools ausprobierst. Wenn du den Wert siehst, bleibst du für die Coupons, tägliche Analyse und exklusive Indikatoren. Langfristiges Spiel.",
-    ctaf_h:"Hör auf zu raten, wo der <em>institutionelle Flow</em> ist",
-    ctaf_p:"Trag deine beste Email unten ein. Wir senden Download-Link und Installations-Guide sofort.",
-    ctaf_micro:"<b>1 Email</b> · <b>0 Spam</b> · <b>Abmelden mit 1 Klick</b>",
-    ft_cr:"© 2026 Markets Coupons · Bildungs- / Affiliate-Plattform",
-    ft_home:"Start", ft_coupons:"Coupons", ft_indicators:"Indikatoren", ft_telegram:"Telegram", ft_privacy:"Datenschutz", ft_terms:"AGB",
-    msg_invalid:"Ungültige Email", msg_rate:"Warte ein paar Sekunden", msg_err:"Fehler — versuche es erneut", msg_net:"Verbindungsfehler", msg_ok:"✓ Prüfe deine Email"
-  },
-  ar: {
-    hdr_cta:"⬇ احصل مجاناً",
-    hero_badge:"تحميل مجاني · NinjaTrader 8",
-    hero_title:"اكتشف <em>الحجم المؤسسي</em> في الوقت الفعلي",
-    hero_sub:"يضع VolumeFilter علامة على كل شمعة تكسر متوسط الحجم على الرسم البياني. حدد مناطق العدوان والكتل المؤسسية في ثوانٍ — بدون حسابات، بدون منحنى تعلم.",
-    hero_micro:"<b>كيف يعمل:</b> ضع بريدك أعلاه، يصل ملف .zip إلى صندوقك في ثوانٍ. تثبيت بنقرتين على NinjaTrader 8.",
-    email_ph:"your@email.com",
-    form_btn:"أريد VolumeFilter",
-    ts1_h:"تثبيت بنقرتين", ts1_s:"Tools → Import. بدون برمجة.",
-    ts2_h:"مجاني 100%", ts2_s:"مدى الحياة، بدون بطاقة، بدون تجربة.",
-    ts3_h:"صالح حتى 2026", ts3_s:"تجديد مجاني عبر الموقع.",
-    ts4_h:"مجتمع", ts4_s:"دعم تلغرام، متداولون متصلون.",
-    wyg_eyebrow:"ما ستحصل عليه", wyg_h:"أكثر من مؤشر — <em>ميزة حقيقية</em>",
-    wyg_sub:"VolumeFilter هو نفس الأداة المستخدمة من قبل المتداولين في مجتمعنا. يأتي مكوّن مسبقاً وجاهز للإضافة إلى أي رسم بياني.",
-    wyg1_h:"شموع الحجم فوق المتوسط", wyg1_p:"يلوّن كل شمعة يتجاوز فيها الحجم العتبة القابلة للتكوين. يصبح العدوان المؤسسي مرئياً.",
-    wyg2_h:"قابل للتخصيص بالكامل", wyg2_p:"العتبة، الفترة، الألوان والشفافية — اضبط كل شيء من لوحة المؤشر دون لمس الكود.",
-    wyg3_h:"تثبيت بدون احتكاك", wyg3_p:"ملف .zip جاهز للاستيراد — يقوم NinjaTrader 8 بفك الضغط والتجميع تلقائياً. لا حاجة لدروس.",
-    wyg4_h:"مجتمع تلغرام", wyg4_p:"عالق؟ أرسل رسالة على تلغرام — المتداولون وفريق التطوير يردون بسرعة.",
-    inst_eyebrow:"التثبيت", inst_h:"يعمل في <em>دقيقتين</em>",
-    inst_sub:"تلقى الملف عبر البريد واتبع هذه الخطوات الثلاث. بدون كود، بدون إعداد.",
-    step1_h:"حمّل ملف .zip", step1_p:"يصل رابط التحميل إلى بريدك ثوانٍ بعد التسجيل. احفظ الـ .zip حيثما تريد — لا حاجة لاستخراجه، NinjaTrader يستورده مباشرة.",
-    step2_h:"افتح NinjaTrader 8", step2_p:"في Control Center، انقر <b>Tools → Import → NinjaScript Add-On</b>. اختر الـ .zip المحمّل. يتم التجميع تلقائياً.",
-    step3_h:"أضفه إلى الرسم البياني", step3_p:"افتح أي رسم، اضغط <b>Ctrl+I</b>، ابحث عن \"VolumeFilter\" واضغط Add. اضبط العتبة من اللوحة. تم.",
-    faq_eyebrow:"FAQ", faq_h:"أسئلة شائعة",
-    faq1_q:"هل هو مجاني فعلاً؟", faq1_a:"نعم. بدون بطاقة، بدون تجربة، بدون بيع إضافي. ضع البريد، حمّل الـ .zip. صالح حتى 31/12/2026 — تجديد مجاني بعدها عبر نفس البريد.",
-    faq2_q:"هل التثبيت صعب؟", faq2_a:"لا. تحمّل الـ .zip، تفتح NinjaTrader وتذهب إلى <b>Tools → Import → NinjaScript Add-On</b>. اختر الملف. انتهى. نقرتان. يأتي مجمّعاً مسبقاً.",
-    faq3_q:"هل ستملأون بريدي بالإزعاج؟", faq3_a:"لا. تتلقى رسالة واحدة بالرابط، ثم فقط مستجدات أسبوعية بمؤشرات جديدة وكوبونات حصرية. إلغاء الاشتراك بنقرة واحدة، دائماً.",
-    faq4_q:"ماذا لو لم يعمل على NinjaTrader؟", faq4_a:"مختبر على NT8 v8.1+. إذا كانت لديك نسخة أقدم، حدّث مجاناً من <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. عالق؟ اكتب على تلغرام.",
-    faq5_q:"لماذا تعطون مؤشراً مدفوعاً مجاناً؟", faq5_a:"نريدك تجرّب أدواتنا. عندما ترى القيمة، ستبقى للكوبونات والتحليل اليومي والمؤشرات الحصرية. لعبة طويلة المدى.",
-    ctaf_h:"توقف عن تخمين أين <em>التدفق المؤسسي</em>",
-    ctaf_p:"ضع أفضل بريد لك أدناه. نرسل رابط التحميل ودليل التثبيت فوراً.",
-    ctaf_micro:"<b>1 بريد</b> · <b>0 إزعاج</b> · <b>إلغاء بنقرة واحدة</b>",
-    ft_cr:"© 2026 Markets Coupons · منصة تعليمية / تابعة",
-    ft_home:"الرئيسية", ft_coupons:"كوبونات", ft_indicators:"مؤشرات", ft_telegram:"تلغرام", ft_privacy:"الخصوصية", ft_terms:"الشروط",
-    msg_invalid:"بريد غير صالح", msg_rate:"انتظر بضع ثوانٍ", msg_err:"خطأ — حاول مرة أخرى", msg_net:"خطأ اتصال", msg_ok:"✓ تحقق من بريدك"
-  },
-  id: {
-    hdr_cta:"⬇ Dapat gratis",
-    hero_badge:"Unduh gratis · NinjaTrader 8",
-    hero_title:"Lihat <em>volume institusional</em> secara real-time",
-    hero_sub:"VolumeFilter menandai setiap candle yang menembus volume rata-rata di chart Anda. Identifikasi zona agresi dan blok institusional dalam hitungan detik — tanpa rumus, tanpa kurva pembelajaran.",
-    hero_micro:"<b>Cara kerja:</b> masukkan email di atas, file .zip masuk ke inbox dalam hitungan detik. Instalasi 2 klik di NinjaTrader 8.",
-    email_ph:"email@anda.com",
-    form_btn:"Saya mau VolumeFilter",
-    ts1_h:"Instalasi 2 klik", ts1_s:"Tools → Import. Tanpa coding.",
-    ts2_h:"100% gratis", ts2_s:"Selamanya, tanpa kartu, tanpa trial.",
-    ts3_h:"Berlaku hingga 2026", ts3_s:"Perpanjangan gratis lewat situs.",
-    ts4_h:"Komunitas", ts4_s:"Dukungan Telegram, trader online.",
-    wyg_eyebrow:"Yang Anda dapatkan", wyg_h:"Lebih dari indikator — <em>edge sungguhan</em>",
-    wyg_sub:"VolumeFilter adalah alat yang sama digunakan trader di komunitas kami. Sudah terkonfigurasi dan siap dipasang ke chart manapun.",
-    wyg1_h:"Candle volume di atas rata-rata", wyg1_p:"Mewarnai setiap candle di mana volume menembus threshold yang dapat dikonfigurasi. Agresi institusional jadi terlihat.",
-    wyg2_h:"Sepenuhnya dapat disesuaikan", wyg2_p:"Threshold, periode, warna dan opacity — atur semua dari panel indikator tanpa menyentuh kode.",
-    wyg3_h:"Instalasi tanpa hambatan", wyg3_p:".zip siap impor — NinjaTrader 8 ekstrak dan kompilasi otomatis. Tanpa tutorial.",
-    wyg4_h:"Komunitas Telegram", wyg4_p:"Mentok? Kirim pesan di Telegram — trader dan tim dev balas cepat.",
-    inst_eyebrow:"Instalasi", inst_h:"Siap pakai dalam <em>2 menit</em>",
-    inst_sub:"Terima file via email dan ikuti 3 langkah ini. Tanpa kode, tanpa setup.",
-    step1_h:"Unduh .zip", step1_p:"Link unduhan masuk ke email Anda hitungan detik setelah daftar. Simpan .zip di mana saja — tidak perlu ekstrak, NinjaTrader impor langsung.",
-    step2_h:"Buka NinjaTrader 8", step2_p:"Di Control Center, klik <b>Tools → Import → NinjaScript Add-On</b>. Pilih .zip yang diunduh. Compile otomatis.",
-    step3_h:"Tambahkan ke chart", step3_p:"Buka chart manapun, tekan <b>Ctrl+I</b>, cari \"VolumeFilter\" dan Add. Atur threshold dari panel. Selesai.",
-    faq_eyebrow:"FAQ", faq_h:"Pertanyaan umum",
-    faq1_q:"Benar-benar gratis?", faq1_a:"Ya. Tanpa kartu, tanpa trial, tanpa upsell. Masukkan email, unduh .zip. Berlaku hingga 31/12/2026 — perpanjangan gratis setelahnya via email yang sama.",
-    faq2_q:"Sulit menginstal?", faq2_a:"Tidak. Anda unduh .zip, buka NinjaTrader dan masuk ke <b>Tools → Import → NinjaScript Add-On</b>. Pilih file. Selesai. 2 klik. Sudah ter-compile.",
-    faq3_q:"Apakah inbox saya akan penuh spam?", faq3_a:"Tidak. Anda terima 1 email dengan link, lalu hanya update mingguan dengan indikator baru dan kupon eksklusif. Berhenti berlangganan 1 klik, kapan saja.",
-    faq4_q:"Bagaimana jika tidak jalan di NinjaTrader saya?", faq4_a:"Diuji di NT8 v8.1+. Jika punya versi lebih lama, update gratis di <a href=\"https://ninjatrader.com\" style=\"color:var(--gold);\">ninjatrader.com</a>. Mentok? Tulis di Telegram.",
-    faq5_q:"Kenapa berikan indikator berbayar gratis?", faq5_a:"Kami ingin Anda mencoba alat kami. Saat Anda lihat nilainya, Anda akan bertahan untuk kupon, analisis harian dan indikator eksklusif. Permainan jangka panjang.",
-    ctaf_h:"Berhenti menebak di mana <em>arus institusional</em>",
-    ctaf_p:"Masukkan email terbaik Anda di bawah. Kami kirim link unduhan dan panduan instalasi langsung.",
-    ctaf_micro:"<b>1 email</b> · <b>0 spam</b> · <b>Berhenti 1 klik</b>",
-    ft_cr:"© 2026 Markets Coupons · Platform edukasi / afiliasi",
-    ft_home:"Beranda", ft_coupons:"Kupon", ft_indicators:"Indikator", ft_telegram:"Telegram", ft_privacy:"Privasi", ft_terms:"Syarat",
-    msg_invalid:"Email tidak valid", msg_rate:"Tunggu beberapa detik", msg_err:"Error — coba lagi", msg_net:"Error koneksi", msg_ok:"✓ Periksa email Anda"
-  }
-};
-
-function detectLang() {
-  try {
-    const qs = new URLSearchParams(location.search).get('lang');
-    if (qs && I18N[qs]) return qs;
-    const stored = localStorage.getItem('mc_lang');
-    if (stored && I18N[stored]) return stored;
-  } catch(e) {}
-  const nav = (navigator.language || 'en').toLowerCase().split('-')[0];
-  return I18N[nav] ? nav : 'en';
-}
-const LANG = detectLang();
-const T = I18N[LANG] || I18N.en;
-
-function switchLang(lang) {
-  if (!I18N[lang]) return;
-  try { localStorage.setItem('mc_lang', lang); } catch(e) {}
-  const url = new URL(location.href);
-  url.searchParams.set('lang', lang);
-  location.href = url.toString();
-}
-window.switchLang = switchLang;
-
-function applyStaticI18n() {
-  document.documentElement.lang = LANG;
-  document.documentElement.dir = (LANG === 'ar') ? 'rtl' : 'ltr';
-  document.querySelectorAll('.lang-pill').forEach(el => {
-    el.classList.toggle('active', el.dataset.lang === LANG);
-  });
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const k = el.getAttribute('data-i18n');
-    if (T[k] != null) el.textContent = T[k];
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const k = el.getAttribute('data-i18n-html');
-    if (T[k] != null) el.innerHTML = T[k];
-  });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-    const k = el.getAttribute('data-i18n-ph');
-    if (T[k] != null) el.setAttribute('placeholder', T[k]);
-  });
-  // Title + meta description per lang
-  const titles = {
-    pt:"VolumeFilter — Indicador Grátis NinjaTrader 8 | Markets Coupons",
-    en:"VolumeFilter — Free NinjaTrader 8 Indicator | Markets Coupons",
-    es:"VolumeFilter — Indicador Gratis NinjaTrader 8 | Markets Coupons",
-    it:"VolumeFilter — Indicatore Gratuito NinjaTrader 8 | Markets Coupons",
-    fr:"VolumeFilter — Indicateur Gratuit NinjaTrader 8 | Markets Coupons",
-    de:"VolumeFilter — Kostenloser NinjaTrader 8 Indikator | Markets Coupons",
-    ar:"VolumeFilter — مؤشر NinjaTrader 8 مجاني | Markets Coupons",
-    id:"VolumeFilter — Indikator Gratis NinjaTrader 8 | Markets Coupons"
-  };
-  if (titles[LANG]) document.title = titles[LANG];
-}
-
-applyStaticI18n();
-
-// ─── Form submit ───
 document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(form => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const emailEl = form.querySelector('input[name="email"]');
-    const email = emailEl.value.trim();
+    const email = form.querySelector('input[name="email"]').value.trim();
     const btn = form.querySelector('button');
-    const originalText = btn.querySelector('span').textContent;
-    const spanEl = btn.querySelector('span');
+    const originalText = btn.textContent;
 
     if (!email || !email.includes('@')) {
-      spanEl.textContent = T.msg_invalid || 'Invalid email';
-      setTimeout(() => { spanEl.textContent = originalText; }, 2000);
+      btn.textContent = 'Email inválido';
+      setTimeout(() => btn.textContent = originalText, 2000);
       return;
     }
 
-    spanEl.textContent = '...';
+    btn.textContent = 'Enviando...';
     btn.disabled = true;
 
     try {
@@ -712,7 +1202,6 @@ document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(form =>
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          lang: LANG,
           utm_source: urlParams.get('utm_source') || 'volumefilter-landing',
           utm_campaign: urlParams.get('utm_campaign') || 'volumefilter-lead',
         }),
@@ -721,23 +1210,28 @@ document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(form =>
 
       if (!res.ok || !data.ok) {
         const errCode = data.error || 'erro';
-        if (errCode === 'invalid_email') spanEl.textContent = T.msg_invalid;
-        else if (errCode === 'rate_limit') spanEl.textContent = T.msg_rate;
-        else spanEl.textContent = T.msg_err;
+        if (errCode === 'invalid_email') {
+          btn.textContent = 'Email inválido';
+        } else if (errCode === 'rate_limit') {
+          btn.textContent = 'Aguarde uns segundos';
+        } else {
+          btn.textContent = 'Erro — tenta de novo';
+        }
         btn.disabled = false;
-        setTimeout(() => { spanEl.textContent = originalText; }, 2500);
+        setTimeout(() => { btn.textContent = originalText; }, 2500);
         return;
       }
 
-      spanEl.textContent = T.msg_ok;
+      btn.textContent = '✓ Verifica seu email';
       btn.style.background = 'var(--green)';
 
+      // Tracking
       if (typeof gtag !== 'undefined') gtag('event', 'lead_volumefilter', { method: 'email' });
       if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'volumefilter' });
     } catch (err) {
-      spanEl.textContent = T.msg_net;
+      btn.textContent = 'Erro de conexão';
       btn.disabled = false;
-      setTimeout(() => { spanEl.textContent = originalText; }, 2500);
+      setTimeout(() => { btn.textContent = originalText; }, 2500);
     }
   });
 });

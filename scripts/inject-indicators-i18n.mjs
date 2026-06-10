@@ -1,0 +1,158 @@
+// One-shot injector for /indicators i18n keys into i18n-<lang>.js split files
+import fs from 'node:fs';
+
+const keys = {
+  pt: {
+    ind_hub_eyebrow: 'Indicadores Markets Coupons',
+    ind_hub_title: 'Ferramentas <em>profissionais</em> pra sua mesa',
+    ind_hub_sub: 'Indicadores customizados pra NinjaTrader e outras plataformas. Pegue grátis, instale em 2 cliques.',
+    ind_vf_tag: 'GRÁTIS',
+    ind_vf_desc: 'Filtre candles pelo volume e identifique blocos institucionais em tempo real. Plug & play em qualquer gráfico.',
+    ind_vf_b1: 'Destaca candles com volume acima da média',
+    ind_vf_b2: 'Totalmente customizável (threshold, cores, opacidade)',
+    ind_vf_b3: 'Pacote .zip pronto pra importar — 2 cliques',
+    ind_vf_b4: 'Suporte na comunidade Telegram',
+    ind_vf_cta: 'Baixar grátis',
+    ind_vf_more: 'Ver detalhes',
+    ind_soon_tag: 'EM BREVE',
+    ind_soon_title: 'Mais indicadores chegando',
+    ind_soon_desc: 'Estamos preparando uma suíte completa de indicadores profissionais exclusivos. Acesso liberado pra membros do programa de fidelidade.',
+    ind_soon_cta: 'Entrar no programa de fidelidade',
+  },
+  en: {
+    ind_hub_eyebrow: 'Markets Coupons Indicators',
+    ind_hub_title: 'Professional <em>tools</em> for your desk',
+    ind_hub_sub: 'Custom indicators for NinjaTrader and other platforms. Get them free, install in 2 clicks.',
+    ind_vf_tag: 'FREE',
+    ind_vf_desc: 'Filter candles by volume and spot institutional blocks in real time. Plug & play on any chart.',
+    ind_vf_b1: 'Highlights candles with above-average volume',
+    ind_vf_b2: 'Fully customizable (threshold, colors, opacity)',
+    ind_vf_b3: 'Ready-to-import .zip — 2-click install',
+    ind_vf_b4: 'Telegram community support',
+    ind_vf_cta: 'Download free',
+    ind_vf_more: 'View details',
+    ind_soon_tag: 'COMING SOON',
+    ind_soon_title: 'More indicators coming',
+    ind_soon_desc: 'We are building a full suite of exclusive professional indicators. Access unlocked for members of our loyalty program.',
+    ind_soon_cta: 'Join the loyalty program',
+  },
+  es: {
+    ind_hub_eyebrow: 'Indicadores Markets Coupons',
+    ind_hub_title: 'Herramientas <em>profesionales</em> para tu mesa',
+    ind_hub_sub: 'Indicadores personalizados para NinjaTrader y otras plataformas. Gratis, instala en 2 clics.',
+    ind_vf_tag: 'GRATIS',
+    ind_vf_desc: 'Filtra velas por volumen y detecta bloques institucionales en tiempo real. Plug & play en cualquier gráfico.',
+    ind_vf_b1: 'Resalta velas con volumen sobre la media',
+    ind_vf_b2: 'Totalmente personalizable (umbral, colores, opacidad)',
+    ind_vf_b3: 'Paquete .zip listo para importar — 2 clics',
+    ind_vf_b4: 'Soporte en la comunidad de Telegram',
+    ind_vf_cta: 'Descargar gratis',
+    ind_vf_more: 'Ver detalles',
+    ind_soon_tag: 'PRÓXIMAMENTE',
+    ind_soon_title: 'Más indicadores en camino',
+    ind_soon_desc: 'Estamos preparando una suite completa de indicadores profesionales exclusivos. Acceso para miembros del programa de fidelidad.',
+    ind_soon_cta: 'Unirme al programa de fidelidad',
+  },
+  it: {
+    ind_hub_eyebrow: 'Indicatori Markets Coupons',
+    ind_hub_title: 'Strumenti <em>professionali</em> per il tuo desk',
+    ind_hub_sub: 'Indicatori personalizzati per NinjaTrader e altre piattaforme. Gratis, installi in 2 clic.',
+    ind_vf_tag: 'GRATIS',
+    ind_vf_desc: 'Filtra le candele per volume e individua i blocchi istituzionali in tempo reale. Plug & play su qualsiasi grafico.',
+    ind_vf_b1: 'Evidenzia candele con volume sopra la media',
+    ind_vf_b2: 'Completamente personalizzabile (soglia, colori, opacità)',
+    ind_vf_b3: 'Pacchetto .zip pronto da importare — 2 clic',
+    ind_vf_b4: 'Supporto nella community Telegram',
+    ind_vf_cta: 'Scarica gratis',
+    ind_vf_more: 'Vedi dettagli',
+    ind_soon_tag: 'IN ARRIVO',
+    ind_soon_title: 'Altri indicatori in arrivo',
+    ind_soon_desc: 'Stiamo preparando una suite completa di indicatori professionali esclusivi. Accesso per i membri del programma fedeltà.',
+    ind_soon_cta: 'Unisciti al programma fedeltà',
+  },
+  fr: {
+    ind_hub_eyebrow: 'Indicateurs Markets Coupons',
+    ind_hub_title: 'Outils <em>professionnels</em> pour votre desk',
+    ind_hub_sub: "Indicateurs personnalisés pour NinjaTrader et autres plateformes. Gratuits, installation en 2 clics.",
+    ind_vf_tag: 'GRATUIT',
+    ind_vf_desc: 'Filtrez les bougies par volume et repérez les blocs institutionnels en temps réel. Plug & play sur tout graphique.',
+    ind_vf_b1: 'Met en évidence les bougies à volume supérieur à la moyenne',
+    ind_vf_b2: 'Entièrement personnalisable (seuil, couleurs, opacité)',
+    ind_vf_b3: 'Paquet .zip prêt à importer — 2 clics',
+    ind_vf_b4: 'Support sur la communauté Telegram',
+    ind_vf_cta: 'Télécharger gratuit',
+    ind_vf_more: 'Voir détails',
+    ind_soon_tag: 'BIENTÔT',
+    ind_soon_title: "Plus d'indicateurs à venir",
+    ind_soon_desc: "Nous préparons une suite complète d'indicateurs professionnels exclusifs. Accès aux membres du programme de fidélité.",
+    ind_soon_cta: 'Rejoindre le programme de fidélité',
+  },
+  de: {
+    ind_hub_eyebrow: 'Markets Coupons Indikatoren',
+    ind_hub_title: '<em>Professionelle</em> Tools für Ihren Desk',
+    ind_hub_sub: 'Custom-Indikatoren für NinjaTrader und andere Plattformen. Kostenlos, Installation in 2 Klicks.',
+    ind_vf_tag: 'KOSTENLOS',
+    ind_vf_desc: 'Filtere Kerzen nach Volumen und erkenne institutionelle Blöcke in Echtzeit. Plug & Play auf jedem Chart.',
+    ind_vf_b1: 'Hebt Kerzen mit überdurchschnittlichem Volumen hervor',
+    ind_vf_b2: 'Vollständig anpassbar (Schwelle, Farben, Deckkraft)',
+    ind_vf_b3: 'Importfertiges .zip — 2-Klick-Installation',
+    ind_vf_b4: 'Support in der Telegram-Community',
+    ind_vf_cta: 'Kostenlos herunterladen',
+    ind_vf_more: 'Details anzeigen',
+    ind_soon_tag: 'DEMNÄCHST',
+    ind_soon_title: 'Weitere Indikatoren in Kürze',
+    ind_soon_desc: 'Wir bauen eine vollständige Suite exklusiver professioneller Indikatoren. Zugang für Mitglieder des Treueprogramms.',
+    ind_soon_cta: 'Treueprogramm beitreten',
+  },
+  ar: {
+    ind_hub_eyebrow: 'مؤشرات Markets Coupons',
+    ind_hub_title: 'أدوات <em>احترافية</em> لمكتبك',
+    ind_hub_sub: 'مؤشرات مخصصة لـ NinjaTrader ومنصات أخرى. مجانية، التثبيت في نقرتين.',
+    ind_vf_tag: 'مجاني',
+    ind_vf_desc: 'فلترة الشموع حسب الحجم واكتشاف الكتل المؤسسية في الوقت الحقيقي. تشغيل فوري على أي رسم بياني.',
+    ind_vf_b1: 'يبرز الشموع ذات الحجم فوق المتوسط',
+    ind_vf_b2: 'قابل للتخصيص بالكامل (العتبة، الألوان، الشفافية)',
+    ind_vf_b3: 'حزمة .zip جاهزة للاستيراد — تثبيت بنقرتين',
+    ind_vf_b4: 'دعم في مجتمع تليجرام',
+    ind_vf_cta: 'تنزيل مجاني',
+    ind_vf_more: 'عرض التفاصيل',
+    ind_soon_tag: 'قريباً',
+    ind_soon_title: 'المزيد من المؤشرات قادمة',
+    ind_soon_desc: 'نقوم ببناء مجموعة كاملة من المؤشرات الاحترافية الحصرية. الوصول لأعضاء برنامج الولاء.',
+    ind_soon_cta: 'الانضمام لبرنامج الولاء',
+  },
+  id: {
+    ind_hub_eyebrow: 'Indikator Markets Coupons',
+    ind_hub_title: 'Alat <em>profesional</em> untuk meja Anda',
+    ind_hub_sub: 'Indikator kustom untuk NinjaTrader dan platform lain. Gratis, instal dalam 2 klik.',
+    ind_vf_tag: 'GRATIS',
+    ind_vf_desc: 'Filter candle berdasarkan volume dan deteksi blok institusional secara real-time. Plug & play di chart apa pun.',
+    ind_vf_b1: 'Menyoroti candle dengan volume di atas rata-rata',
+    ind_vf_b2: 'Sepenuhnya dapat dikustomisasi (threshold, warna, opasitas)',
+    ind_vf_b3: 'Paket .zip siap impor — instalasi 2 klik',
+    ind_vf_b4: 'Dukungan di komunitas Telegram',
+    ind_vf_cta: 'Unduh gratis',
+    ind_vf_more: 'Lihat detail',
+    ind_soon_tag: 'SEGERA HADIR',
+    ind_soon_title: 'Indikator lain akan datang',
+    ind_soon_desc: 'Kami sedang membangun rangkaian indikator profesional eksklusif. Akses untuk anggota program loyalitas.',
+    ind_soon_cta: 'Gabung program loyalitas',
+  },
+};
+
+for (const [lang, kv] of Object.entries(keys)) {
+  const path = `i18n-${lang}.js`;
+  let s = fs.readFileSync(path, 'utf8');
+  // Match object literal at end (allow trailing `;` and whitespace)
+  const m = s.match(/(\{[\s\S]*\})(\s*;?\s*)$/);
+  if (!m) { console.warn(`SKIP ${path}: no obj literal`); continue; }
+  const obj = m[1];
+  let inserts = '';
+  for (const [k, v] of Object.entries(kv)) {
+    inserts += `,${JSON.stringify(k)}:${JSON.stringify(v)}`;
+  }
+  const newObj = obj.slice(0, -1) + inserts + '}';
+  const newS = s.slice(0, m.index) + newObj + s.slice(m.index + obj.length);
+  fs.writeFileSync(path, newS, 'utf8');
+  console.log(`${path}: +${Object.keys(kv).length} keys`);
+}
