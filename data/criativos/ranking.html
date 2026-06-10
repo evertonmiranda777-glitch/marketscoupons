@@ -14,7 +14,16 @@
     position: relative;
     overflow: hidden;
     color: #E6E9F2;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
   }
+  .canvas > .topbar,
+  .canvas > .header,
+  .canvas > .podium,
+  .canvas > .list,
+  .canvas > .footer { position: relative; z-index: 1; }
+  .list { overflow: hidden; }
+  .footer { align-self: end; }
 
   /* === PRESETS DE BACKGROUND (.bg-{preset}) === */
   .canvas.bg-dark-gold {
@@ -66,7 +75,7 @@
   .period { font-size: 18px; color: #8A93A8; letter-spacing: .04em; text-transform: uppercase; font-weight: 600; }
 
   /* ===== HEADER ===== */
-  .header { padding: 34px 56px 18px; }
+  .header { padding: 28px 56px 44px; }
   .header-eyebrow {
     font-size: 14px; color: #22D67C; letter-spacing: .25em; text-transform: uppercase; margin-bottom: 10px;
   }
@@ -86,13 +95,13 @@
     background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
     border: 1px solid rgba(255,255,255,.08);
     border-radius: 22px;
-    padding: 8px 18px 20px;
+    padding: 20px 18px 20px;
     text-align: center;
     backdrop-filter: blur(6px);
   }
   .pod-rank {
-    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-    width: 38px; height: 38px; border-radius: 50%;
+    position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     color: #0a0d14;
     box-shadow: 0 4px 14px rgba(0,0,0,.4);
@@ -100,7 +109,7 @@
   .pod-rank svg { display: block; }
   .pod-card .pod-icon {
     width: 108px; height: 108px; border-radius: 22px;
-    margin: 56px auto 14px;
+    margin: 8px auto 14px;
     overflow: hidden;
     background: #fff;
     box-shadow: 0 8px 26px rgba(0,0,0,.4);
@@ -144,7 +153,7 @@
   .pod-bronze .pod-coupon { background: rgba(217,119,6,.18); color: #FBBF24; border: 1px solid rgba(217,119,6,.45); }
 
   /* ===== LISTA 4-10 ===== */
-  .list { padding: 6px 56px 280px; display: grid; gap: 5px; }
+  .list { padding: 12px 56px 18px; display: grid; gap: 6px; align-content: start; }
   .row {
     display: grid;
     grid-template-columns: 46px 68px 1fr auto auto;
