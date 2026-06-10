@@ -1550,6 +1550,14 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
         });
         const j = await r.json().catch(() => ({}));
         if (!r.ok || !j.ok) {
+          if (j.error === 'not_subscribed') {
+            alert(t.reviews_not_subscribed || 'Pra avaliar você precisa primeiro baixar o indicador.');
+            submit.disabled = false; submit.textContent = orig;
+            // scroll back to the hero form (top of page) onde tem cadastro
+            document.querySelector('#form-hero input[name="email"]')?.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+          }
           submit.textContent = t.reviews_err || 'Erro, tenta de novo';
           submit.disabled = false; setTimeout(() => submit.textContent = orig, 2500);
           return;

@@ -241,6 +241,26 @@ async function handleReviewPost(req, res) {
   if (!isValidEmail(email)) return res.status(400).json({ ok: false, error: 'invalid_email' });
   if (!rating || rating < 1 || rating > 5) return res.status(400).json({ ok: false, error: 'invalid_rating' });
 
+  // GATE: só aceita avaliação se o email JÁ está cadastrado na lista do VolumeFilter
+  // (passou pelo lead-magnet = baixou o indicador).
+  // Sem isso, qualquer um inflaria a média com email aleatório.
+  try {
+    const checkUrl = `${SUPABASE_URL}/rest/v1/email_subscribers?select=email&email=eq.${encodeURIComponent(email)}&tags=cs.{volumefilter-lead}&limit=1`;
+    const checkResp = await fetch(checkUrl, {
+      headers: { apikey: SK || SUPABASE_KEY, Authorization: `Bearer ${SK || SUPABASE_KEY}` },
+    });
+    if (!checkResp.ok) {
+      console.error('[volumefilter review] subscriber check failed', checkResp.status);
+      return res.status(500).json({ ok: false, error: 'subscriber_check_failed' });
+    }
+    const rows = await checkResp.json().catch(() => []);
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return res.status(403).json({ ok: false, error: 'not_subscribed' });
+    }
+  } catch (e) {
+    return safeError(res, 500, 'subscriber_check_failed', e);
+  }
+
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.headers['x-real-ip'] || '';
   const ua = String(req.headers['user-agent'] || '').slice(0, 200);
 
