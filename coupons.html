@@ -646,10 +646,10 @@ const FIRMS = [
         {size:'150K', orig:'$599', disc:'$59.90', na:'$169', nao:'$1690', p5:'$245', p5o:'$2450', e5:'$49', na5:'$795', na5o:'$7950', na5e:'$159', target:'$9,000', dd:'Trail $5,000', pos:'17 contracts (170 micros)'},
       ],
       'End of Day': [
-        {size:'25K', orig:'$199', disc:'$19.90', na:'$69', nao:'$690', p5:'$85', p5o:'$850', e5:'$17', na5:'$295', na5o:'$2950', na5e:'$59', target:'$1,500', dd:'EOD $1,500', pos:'4 contracts (40 micros)'},
-        {size:'50K', orig:'$249', disc:'$24.90', na:'$79', nao:'$790', p5:'$95', p5o:'$950', e5:'$19', na5:'$345', na5o:'$3450', na5e:'$69', target:'$3,000', dd:'EOD $2,500', pos:'10 contracts (100 micros)'},
-        {size:'100K', orig:'$399', disc:'$39.90', na:'$109', nao:'$1090', p5:'$175', p5o:'$1750', e5:'$35', na5:'$495', na5o:'$4950', na5e:'$99', target:'$6,000', dd:'EOD $3,000', pos:'14 contracts (140 micros)', popular:true},
-        {size:'150K', orig:'$599', disc:'$59.90', na:'$169', nao:'$1690', p5:'$245', p5o:'$2450', e5:'$49', na5:'$795', na5o:'$7950', na5e:'$159', target:'$9,000', dd:'EOD $5,000', pos:'17 contracts (170 micros)'},
+        {size:'25K', orig:'$390', disc:'$39', na:'$89', nao:'$890', p5:'$175', p5o:'$1750', e5:'$35', na5:'$395', na5o:'$3950', na5e:'$79', target:'$1,500', dd:'EOD $1,500', pos:'4 contracts (40 micros)'},
+        {size:'50K', orig:'$450', disc:'$45', na:'$109', nao:'$1090', p5:'$195', p5o:'$1950', e5:'$39', na5:'$445', na5o:'$4450', na5e:'$89', target:'$3,000', dd:'EOD $2,500', pos:'10 contracts (100 micros)'},
+        {size:'100K', orig:'$590', disc:'$59', na:'', nao:'', p5:'$275', p5o:'$2750', e5:'$55', na5:'', na5o:'', na5e:'', target:'$6,000', dd:'EOD $3,000', pos:'14 contracts (140 micros)', popular:true},
+        {size:'150K', orig:'$1090', disc:'$109', na:'', nao:'', p5:'$495', p5o:'$4950', e5:'$99', na5:'', na5o:'', na5e:'', target:'$9,000', dd:'EOD $5,000', pos:'17 contracts (170 micros)'},
       ]
     },
     payouts: { pt: '8 dias mín.', en: '8 days min.', es: '8 días mín.', it: '8 giorni min.', fr: '8 jours min.', de: '8 Tage min.', ar: '٨ أيام كحد أدنى' },
@@ -909,7 +909,7 @@ function renderFirms() {
         discEl.textContent = T.var_na || 'Indisponível';
         discEl.style.fontSize = '17px';
         if (perEl) perEl.style.display = 'none';
-        if (advEl) { advEl.style.display = 'block'; advEl.textContent = T.var_na_note || 'Pack de 5 sem taxa de ativação não disponível neste plano.'; }
+        if (advEl) { advEl.style.display = 'block'; advEl.textContent = use5 ? (T.var_na_note || 'Pack de 5 sem taxa de ativação não disponível neste plano.') : (T.var_na_single || 'Variante sem taxa de ativação não disponível neste tamanho.'); }
       } else {
         discEl.style.fontSize = '';
         origEl.textContent = dispOrig || '';
