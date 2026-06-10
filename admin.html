@@ -2377,6 +2377,66 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
           </div>
         </div>
       </div>
+
+      <!-- ══ BEST SELLERS RANKING (Top 10 com Max) ══ -->
+      <div class="sec-hdr" style="margin-top:36px;">
+        <div class="sec-title">Best Sellers, Ranking Top 10 (com Max)</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="bsCopyUrl()">Copiar URL</button>
+          <button class="btn-primary" onclick="bsGeneratePng()" id="bs-gen-btn">⬇ Gerar PNG</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:flex-start;">
+        <div class="chart-card" style="padding:18px;">
+          <div class="cr-field" style="margin-bottom:14px;">
+            <label style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);">Tipo</label>
+            <select id="bs-type" onchange="bsUpdatePreview()" class="filter-inp" style="width:100%;margin-top:6px;">
+              <option value="futures">Futures</option>
+              <option value="forex">Forex</option>
+              <option value="all">Geral (Top 10)</option>
+            </select>
+          </div>
+          <div class="cr-field" style="margin-bottom:14px;">
+            <label style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);">Idioma</label>
+            <select id="bs-lang" onchange="bsUpdatePreview()" class="filter-inp" style="width:100%;margin-top:6px;">
+              <option value="en">English</option>
+              <option value="pt">Portugues</option>
+              <option value="es">Espanol</option>
+              <option value="it">Italiano</option>
+              <option value="fr">Francais</option>
+              <option value="de">Deutsch</option>
+              <option value="ar">Arabic</option>
+              <option value="id">Indonesia</option>
+            </select>
+          </div>
+          <div class="cr-field" style="margin-bottom:14px;">
+            <label style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);">Background</label>
+            <select id="bs-bg" onchange="bsUpdatePreview()" class="filter-inp" style="width:100%;margin-top:6px;">
+              <option value="dark-gold">Dark Gold (default)</option>
+              <option value="midnight-blue">Midnight Blue</option>
+              <option value="sunset-urgency">Sunset Urgency</option>
+              <option value="forest-green">Forest Green</option>
+              <option value="royal-purple">Royal Purple</option>
+              <option value="monochrome-dark">Monochrome Dark</option>
+            </select>
+          </div>
+          <div class="cr-field" style="margin-bottom:14px;">
+            <label style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);">Inicio da semana</label>
+            <input type="date" id="bs-week" onchange="bsUpdatePreview()" class="filter-inp" style="width:100%;margin-top:6px;">
+          </div>
+          <div style="padding:12px;background:rgba(34,214,124,.06);border:1px solid rgba(34,214,124,.18);border-radius:8px;margin-top:18px;">
+            <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;">URL atual</div>
+            <div id="bs-url-display" style="font-size:10px;color:var(--t2);font-family:monospace;word-break:break-all;line-height:1.4;">—</div>
+          </div>
+          <button class="btn-secondary" onclick="bsGenerateAllLangs()" style="width:100%;margin-top:14px;">⬇ Gerar 8 idiomas (zip)</button>
+        </div>
+        <div class="chart-card" style="padding:0;overflow:hidden;background:#06080F;">
+          <div style="padding:12px 16px;background:var(--card);border-bottom:1px solid var(--b1);font-size:11px;color:var(--t2);">Preview ao vivo (1080×1350, escala 50%)</div>
+          <div style="width:540px;height:675px;overflow:hidden;margin:20px auto;border-radius:14px;box-shadow:0 14px 30px rgba(0,0,0,.5);">
+            <iframe id="bs-preview" src="" style="width:1080px;height:1350px;border:0;transform:scale(0.5);transform-origin:top left;"></iframe>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- CADASTROS -->
@@ -3824,7 +3884,7 @@ function renderPage(p){
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
     case 'cms-blog':       renderCmsBlog(); break;
-    case 'criativos':      initCriativos(); break;
+    case 'criativos':      initCriativos(); try { bsInit(); } catch(_) {} break;
     case 'reviews':        initReviewsAdmin(); break;
     case 'telegram':       initTelegramSection(); break;
     case 'cms-faq':        renderCmsFaq(); break;
@@ -11976,6 +12036,105 @@ function saveIndicator(idx) {
   saveCmsData('indicators',tools);closeCmsModal();renderCmsIndicators();toast(idx>=0?'Ferramenta atualizada!':'Nova ferramenta adicionada!');
 }
 function toggleIndicator(idx){const tools=getCmsData('indicators',DEFAULT_INDICATORS);tools[idx].active=!tools[idx].active;saveCmsData('indicators',tools);renderCmsIndicators();}
+
+/* ══ BEST SELLERS RANKING (Top 10 com Max) ══ */
+function bsCurrentParams(){
+  const type = document.getElementById('bs-type')?.value || 'futures';
+  const lang = document.getElementById('bs-lang')?.value || 'en';
+  const bg = document.getElementById('bs-bg')?.value || 'dark-gold';
+  const week = document.getElementById('bs-week')?.value || bsCurrentMonday();
+  return { type, lang, bg, week };
+}
+function bsCurrentMonday(){
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(d.setDate(diff)).toISOString().slice(0,10);
+}
+function bsBuildUrl(p){
+  const base = location.origin + '/criativos/ranking';
+  return `${base}?type=${p.type}&lang=${p.lang}&bg=${p.bg}&week=${p.week}&t=${Date.now()}`;
+}
+function bsUpdatePreview(){
+  const p = bsCurrentParams();
+  const url = bsBuildUrl(p);
+  const iframe = document.getElementById('bs-preview');
+  if (iframe) iframe.src = url;
+  const disp = document.getElementById('bs-url-display');
+  if (disp) disp.textContent = url.replace(/&t=\d+/, '');
+}
+function bsCopyUrl(){
+  const p = bsCurrentParams();
+  const url = bsBuildUrl(p).replace(/&t=\d+/, '');
+  navigator.clipboard.writeText(url).then(() => toast('URL copiada!')).catch(() => alert(url));
+}
+async function bsGeneratePng(){
+  const btn = document.getElementById('bs-gen-btn');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Gerando...';
+  try {
+    const p = bsCurrentParams();
+    const url = bsBuildUrl(p).replace(/&t=\d+/, '');
+    const sess = await db.auth.getSession();
+    const tk = sess?.data?.session?.access_token;
+    if (!tk) { alert('Sem autenticacao'); return; }
+    const r = await fetch('/api/render-criativo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${tk}` },
+      body: JSON.stringify({ url, width: 1080, height: 1350 })
+    });
+    if (!r.ok) {
+      const txt = await r.text().catch(() => '');
+      alert('Erro ao gerar PNG: ' + txt.slice(0, 200));
+      return;
+    }
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `best-sellers-${p.type}-${p.lang}-${p.bg}-${p.week}.png`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast('PNG gerado!');
+  } catch (e) {
+    console.error('[bs gen]', e);
+    alert('Erro: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+async function bsGenerateAllLangs(){
+  const langs = ['en','pt','es','it','fr','de','ar','id'];
+  if (!confirm(`Gerar ${langs.length} PNGs (1 por idioma)? Pode demorar ~1min.`)) return;
+  const sess = await db.auth.getSession();
+  const tk = sess?.data?.session?.access_token;
+  if (!tk) { alert('Sem autenticacao'); return; }
+  const base = bsCurrentParams();
+  for (const lang of langs) {
+    const p = { ...base, lang };
+    const url = bsBuildUrl(p).replace(/&t=\d+/, '');
+    try {
+      const r = await fetch('/api/render-criativo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${tk}` },
+        body: JSON.stringify({ url, width: 1080, height: 1350 })
+      });
+      if (!r.ok) { console.warn('skip', lang, r.status); continue; }
+      const blob = await r.blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `best-sellers-${p.type}-${lang}-${p.bg}-${p.week}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+      await new Promise(r => setTimeout(r, 600));
+    } catch (e) { console.warn('err', lang, e); }
+  }
+  toast('Concluido: 8 PNGs baixados');
+}
+// Inicializa quando entra na aba
+function bsInit(){
+  const w = document.getElementById('bs-week');
+  if (w && !w.value) w.value = bsCurrentMonday();
+  bsUpdatePreview();
+}
 
 /* ══ GUIDES ══ */
 let _adminGuides=[];
