@@ -106,6 +106,7 @@
     box-shadow: 0 8px 26px rgba(0,0,0,.4);
   }
   .pod-card .pod-icon img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .pod-card .pod-icon .logo-fallback { width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg,#F0B429,#D97706); color: #fff; font-size: 38px; font-weight: 900; }
   .pod-card .pod-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; letter-spacing: -.01em; }
   .pod-card .pod-discount { font-size: 26px; font-weight: 800; line-height: 1; margin: 8px 0 4px; }
   .pod-card .pod-ctx { font-size: 12px; color: #8A93A8; margin-bottom: 14px; }
@@ -161,6 +162,7 @@
     overflow: hidden;
   }
   .row-icon img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .row-icon .logo-fallback { width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg,#F0B429,#D97706); color: #fff; font-size: 20px; font-weight: 900; }
   .row-name { display: flex; flex-direction: column; }
   .row-name b { font-size: 17px; font-weight: 700; color: #fff; }
   .row-name span { font-size: 12px; color: #8A93A8; margin-top: 2px; }
@@ -459,6 +461,12 @@ function logoUrl(firm) {
   return `/img/Firms/${firm.id}.webp`;
 }
 
+function buildLogoHTML(firm) {
+  const letter = (firm.short_name || firm.name || '?').charAt(0).toUpperCase();
+  const url = logoUrl(firm);
+  return `<img src="${url}" alt="${firm.short_name || firm.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="logo-fallback" style="display:none;">${letter}</div>`;
+}
+
 function trophySVG() {
   return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"/></svg>`;
 }
@@ -497,7 +505,7 @@ function renderPodium(top3) {
     return `
       <div class="pod-card ${klass}">
         <div class="pod-rank">${trophySVG()}</div>
-        <div class="pod-icon"><img src="${logoUrl(firm)}" alt="${firm.short_name || firm.name}" onerror="this.style.display='none'"></div>
+        <div class="pod-icon">${buildLogoHTML(firm)}</div>
         <div class="pod-name">${firm.short_name || firm.name}</div>
         <div class="pod-discount">${firm.discount}% OFF</div>
         <div class="pod-ctx">${ctxLabel(firm)}</div>
@@ -514,7 +522,7 @@ function renderList(rows) {
     return `
       <div class="row">
         <div class="row-rank">${rank}</div>
-        <div class="row-icon"><img src="${logoUrl(firm)}" alt="${firm.short_name || firm.name}" onerror="this.style.display='none'"></div>
+        <div class="row-icon">${buildLogoHTML(firm)}</div>
         <div class="row-name"><b>${firm.short_name || firm.name}</b><span>${ctxLabel(firm)}</span></div>
         <div class="row-discount">${firm.discount}% OFF</div>
         ${firm.coupon ? `<div class="row-coupon">${firm.coupon}</div>` : '<div></div>'}
