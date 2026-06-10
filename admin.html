@@ -2160,6 +2160,44 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="indicators-tbl"></table></div>
       </div>
+
+      <!-- ══ VOLUMEFILTER, leads & reviews ══ -->
+      <div class="sec-hdr" style="margin-top:32px;">
+        <div class="sec-title">VolumeFilter, Cadastros & Avaliações</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="vfAdmExport()">⬇ Exportar CSV</button>
+          <button class="btn-secondary" onclick="vfAdmRefresh()">Atualizar</button>
+        </div>
+      </div>
+      <div class="stats-grid" style="margin-bottom:16px;">
+        <div class="stat-card"><div class="stat-label">Cadastros totais</div><div class="stat-value" id="vf-stat-total">—</div><div class="stat-sub" id="vf-stat-sub">—</div></div>
+        <div class="stat-card"><div class="stat-label">Hoje</div><div class="stat-value" id="vf-stat-today">—</div><div class="stat-sub">últimas 24h</div></div>
+        <div class="stat-card"><div class="stat-label">Últimos 7 dias</div><div class="stat-value" id="vf-stat-7d">—</div><div class="stat-sub" id="vf-stat-7d-sub">—</div></div>
+        <div class="stat-card"><div class="stat-label">Avaliações</div><div class="stat-value" id="vf-stat-reviews">—</div><div class="stat-sub" id="vf-stat-reviews-sub">—</div></div>
+      </div>
+      <div class="chart-card" style="padding:16px;margin-bottom:16px;">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+          <input type="text" id="vf-search" class="filter-inp" placeholder="Buscar email..." onkeyup="if(event.key==='Enter')vfAdmRefresh()" style="flex:1;min-width:180px;">
+          <select id="vf-lang-filter" class="filter-inp" onchange="vfAdmRefresh()">
+            <option value="">Todos idiomas</option>
+            <option value="pt">PT</option><option value="en">EN</option><option value="es">ES</option><option value="it">IT</option><option value="fr">FR</option><option value="de">DE</option><option value="ar">AR</option><option value="id">ID</option>
+          </select>
+          <span style="font-size:11px;color:var(--t2);" id="vf-meta">—</span>
+        </div>
+        <div class="data-table-wrap"><table class="data-table" id="vf-list-tbl"></table></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:11px;color:var(--t2);">
+          <span id="vf-page-info">—</span>
+          <div style="display:flex;gap:5px;">
+            <button class="btn-secondary" id="vf-prev" onclick="vfAdmPage(-1)" style="font-size:11px;padding:4px 10px;">← Anterior</button>
+            <button class="btn-secondary" id="vf-next" onclick="vfAdmPage(1)" style="font-size:11px;padding:4px 10px;">Próxima →</button>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:16px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;">Distribuição por idioma e fonte</div>
+        <div id="vf-byLang" style="font-size:12px;color:var(--t2);margin-bottom:8px;">—</div>
+        <div id="vf-bySource" style="font-size:12px;color:var(--t2);">—</div>
+      </div>
     </div>
 
     <!-- ══ CMS: GUIDES ══ -->
@@ -11812,6 +11850,8 @@ async function deleteFirm(id) {
 
 /* ══ INDICATORS ══ */
 function renderCmsIndicators() {
+  // dispara o painel VolumeFilter ao entrar na aba
+  try { vfAdmRefresh(); } catch (_) {}
   const tools = getCmsData('indicators', DEFAULT_INDICATORS);
   const tbl = document.getElementById('indicators-tbl');
   if(!tbl) return;
@@ -11827,6 +11867,86 @@ function renderCmsIndicators() {
         <button class="toggle-btn ${t.active?'on':'off'}" onclick="toggleIndicator(${i})"></button>
       </div></td>
     </tr>`).join('')}</tbody>`;
+}
+
+/* ══ VOLUMEFILTER, leads & reviews admin panel ══ */
+let _vfOffset = 0; let _vfLimit = 50; let _vfTotal = 0;
+async function _vfAuthHeaders(){
+  const sess = await db.auth.getSession();
+  const tk = sess?.data?.session?.access_token;
+  if (!tk) throw new Error('not authenticated');
+  return { 'Authorization': `Bearer ${tk}` };
+}
+async function vfAdmLoadStats(){
+  try {
+    const h = await _vfAuthHeaders();
+    const r = await fetch('/api/leads/volumefilter?action=admin-stats', { headers: h });
+    if (!r.ok) { document.getElementById('vf-stat-total').textContent='?'; return; }
+    const d = await r.json();
+    const L = d.leads || {}; const R = d.reviews || {};
+    document.getElementById('vf-stat-total').textContent = (L.total || 0).toLocaleString('pt-BR');
+    document.getElementById('vf-stat-sub').textContent = `${L.last30 || 0} nos últimos 30 dias`;
+    document.getElementById('vf-stat-today').textContent = (L.today || 0).toLocaleString('pt-BR');
+    document.getElementById('vf-stat-7d').textContent = (L.last7 || 0).toLocaleString('pt-BR');
+    const totalSafe = L.total || 1;
+    document.getElementById('vf-stat-7d-sub').textContent = `${Math.round((L.last7 || 0) / totalSafe * 100)}% do total`;
+    document.getElementById('vf-stat-reviews').textContent = (R.total || 0).toLocaleString('pt-BR');
+    document.getElementById('vf-stat-reviews-sub').textContent = R.total ? `★ ${R.avg_rating || 0} média` : 'sem avaliações ainda';
+    const langStr = Object.entries(L.by_lang || {}).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<b>${k.toUpperCase()}</b> ${v}`).join(' · ') || '—';
+    const srcStr = Object.entries(L.by_source || {}).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>`<b>${k}</b> ${v}`).join(' · ') || '—';
+    document.getElementById('vf-byLang').innerHTML = `<span style="color:var(--t3);">Por idioma:</span> ${langStr}`;
+    document.getElementById('vf-bySource').innerHTML = `<span style="color:var(--t3);">Por fonte:</span> ${srcStr}`;
+  } catch (e) { console.error('[vf stats]', e); }
+}
+async function vfAdmLoadList(){
+  try {
+    const h = await _vfAuthHeaders();
+    const q = document.getElementById('vf-search')?.value.trim() || '';
+    const lang = document.getElementById('vf-lang-filter')?.value || '';
+    const qs = new URLSearchParams({ action: 'admin-list', limit: _vfLimit, offset: _vfOffset });
+    if (q) qs.set('q', q); if (lang) qs.set('lang', lang);
+    const r = await fetch(`/api/leads/volumefilter?${qs}`, { headers: h });
+    if (!r.ok) { document.getElementById('vf-list-tbl').innerHTML = '<tbody><tr><td colspan="4">Erro ao carregar</td></tr></tbody>'; return; }
+    const d = await r.json();
+    _vfTotal = d.total || 0;
+    const items = d.items || [];
+    const fmtDate = iso => { try { return new Date(iso).toLocaleString('pt-BR'); } catch { return iso; } };
+    const tbl = document.getElementById('vf-list-tbl');
+    if (!items.length) {
+      tbl.innerHTML = '<thead><tr><th>Email</th><th>Idioma</th><th>Fonte</th><th>Cadastro</th></tr></thead><tbody><tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Nenhum cadastro com esses filtros.</td></tr></tbody>';
+    } else {
+      tbl.innerHTML = `<thead><tr><th>Email</th><th>Idioma</th><th>Fonte</th><th>Cadastro</th></tr></thead>
+        <tbody>${items.map(it => `<tr>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">${it.email}</td>
+          <td><span style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;background:var(--bbg);color:var(--blue);">${(it.lang || 'pt').toUpperCase()}</span></td>
+          <td style="font-size:11px;color:var(--t2);">${it.source || '—'}</td>
+          <td style="font-size:11px;color:var(--t2);">${fmtDate(it.created_at)}</td>
+        </tr>`).join('')}</tbody>`;
+    }
+    document.getElementById('vf-meta').textContent = `Mostrando ${items.length} de ${_vfTotal.toLocaleString('pt-BR')}`;
+    const from = _vfOffset + 1; const to = Math.min(_vfOffset + items.length, _vfTotal);
+    document.getElementById('vf-page-info').textContent = _vfTotal ? `Registros ${from}–${to} de ${_vfTotal}` : '—';
+    document.getElementById('vf-prev').disabled = _vfOffset === 0;
+    document.getElementById('vf-next').disabled = _vfOffset + items.length >= _vfTotal;
+  } catch (e) { console.error('[vf list]', e); }
+}
+function vfAdmPage(dir){ _vfOffset = Math.max(0, _vfOffset + dir * _vfLimit); vfAdmLoadList(); }
+function vfAdmRefresh(){ _vfOffset = 0; vfAdmLoadStats(); vfAdmLoadList(); }
+async function vfAdmExport(){
+  try {
+    const sess = await db.auth.getSession();
+    const tk = sess?.data?.session?.access_token;
+    if (!tk) { alert('Não autenticado'); return; }
+    // Endpoint manda CSV inline; pra forçar download, abrimos com fetch -> blob.
+    const r = await fetch('/api/leads/volumefilter?action=admin-export', { headers: { 'Authorization': `Bearer ${tk}` } });
+    if (!r.ok) { alert('Falha ao exportar'); return; }
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `volumefilter-leads-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  } catch (e) { console.error('[vf export]', e); alert('Erro: ' + e.message); }
 }
 
 function openIndicatorModal(idx) {

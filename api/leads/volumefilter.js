@@ -3,6 +3,9 @@
 //  - POST (default): captura lead, manda email com link do .zip
 //  - GET  ?action=reviews: lista reviews { avg, count, items[] }
 //  - POST ?action=review: cria nova review
+//  - GET  ?action=admin-stats  (auth admin JWT): totais leads/reviews
+//  - GET  ?action=admin-list   (auth admin JWT): lista paginada de leads
+//  - GET  ?action=admin-export (auth admin JWT): CSV de todos os leads
 //
 // Consolidado num arquivo só pra economizar slot de Vercel Function (limite Hobby).
 
@@ -266,6 +269,132 @@ async function handleReviewPost(req, res) {
   }
 }
 
+// ----- Admin handlers ---------------------------------------------------
+
+async function validateAdmin(jwt) {
+  if (!jwt || jwt.length < 50) return null;
+  try {
+    const resp = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { 'Authorization': `Bearer ${jwt}`, 'apikey': SUPABASE_KEY }
+    });
+    if (!resp.ok) return null;
+    const user = await resp.json();
+    if (!user?.id) return null;
+    const profileResp = await fetch(
+      `${SUPABASE_URL}/rest/v1/profiles?id=eq.${user.id}&is_admin=eq.true&select=id`,
+      { headers: { 'Authorization': `Bearer ${SK || jwt}`, 'apikey': SK || SUPABASE_KEY } }
+    );
+    if (!profileResp.ok) return null;
+    const profiles = await profileResp.json();
+    return (profiles && profiles.length > 0) ? user : null;
+  } catch { return null; }
+}
+
+function getAuthJwt(req) {
+  const h = req.headers['authorization'] || req.headers['Authorization'] || '';
+  return h.startsWith('Bearer ') ? h.slice(7) : '';
+}
+
+// Lista todos os email_subscribers com tag 'volumefilter-lead'
+async function fetchAllVfLeads() {
+  if (!SK) return [];
+  const out = [];
+  let offset = 0;
+  const PAGE = 1000;
+  while (true) {
+    const url = `${SUPABASE_URL}/rest/v1/email_subscribers?select=email,lang,source,tags,created_at&tags=cs.{volumefilter-lead}&order=created_at.desc&limit=${PAGE}&offset=${offset}`;
+    const r = await fetch(url, { headers: { apikey: SK, Authorization: `Bearer ${SK}` } });
+    if (!r.ok) break;
+    const rows = await r.json();
+    out.push(...rows);
+    if (rows.length < PAGE) break;
+    offset += PAGE;
+  }
+  return out;
+}
+
+async function fetchAllVfReviews() {
+  const key = SK || SUPABASE_KEY;
+  const url = `${SUPABASE_URL}/rest/v1/indicator_reviews?indicator_slug=eq.${INDICATOR_SLUG}&select=name,email,rating,message,lang,created_at&order=created_at.desc&limit=2000`;
+  const r = await fetch(url, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+  if (!r.ok) return [];
+  return r.json().catch(() => []);
+}
+
+async function handleAdminStats(req, res) {
+  const user = await validateAdmin(getAuthJwt(req));
+  if (!user) return res.status(401).json({ ok: false, error: 'unauthorized' });
+
+  const [leads, reviews] = await Promise.all([fetchAllVfLeads(), fetchAllVfReviews()]);
+
+  const byLang = {};
+  const bySource = {};
+  let today = 0, last7 = 0, last30 = 0;
+  const now = Date.now();
+  for (const l of leads) {
+    const lang = l.lang || 'pt';
+    byLang[lang] = (byLang[lang] || 0) + 1;
+    const src = l.source || 'unknown';
+    bySource[src] = (bySource[src] || 0) + 1;
+    const ts = new Date(l.created_at).getTime();
+    if (now - ts < 86400000) today++;
+    if (now - ts < 7 * 86400000) last7++;
+    if (now - ts < 30 * 86400000) last30++;
+  }
+
+  const ratings = reviews.map(r => r.rating || 0);
+  const avgRating = ratings.length ? +(ratings.reduce((s, x) => s + x, 0) / ratings.length).toFixed(2) : 0;
+
+  return res.status(200).json({
+    ok: true,
+    leads: { total: leads.length, today, last7, last30, by_lang: byLang, by_source: bySource },
+    reviews: { total: reviews.length, avg_rating: avgRating },
+  });
+}
+
+async function handleAdminList(req, res) {
+  const user = await validateAdmin(getAuthJwt(req));
+  if (!user) return res.status(401).json({ ok: false, error: 'unauthorized' });
+
+  const url = new URL(req.url, 'http://x');
+  const limit = Math.min(parseInt(url.searchParams.get('limit') || '50', 10), 500);
+  const offset = parseInt(url.searchParams.get('offset') || '0', 10);
+  const lang = url.searchParams.get('lang') || '';
+  const search = url.searchParams.get('q') || '';
+
+  let qs = `select=email,lang,source,tags,created_at&tags=cs.{volumefilter-lead}&order=created_at.desc&limit=${limit}&offset=${offset}`;
+  if (lang && ['pt','en','es','it','fr','de','ar','id'].includes(lang)) qs += `&lang=eq.${lang}`;
+  if (search) qs += `&email=ilike.*${encodeURIComponent(search.toLowerCase())}*`;
+
+  const fetchUrl = `${SUPABASE_URL}/rest/v1/email_subscribers?${qs}`;
+  const r = await fetch(fetchUrl, {
+    headers: { apikey: SK || SUPABASE_KEY, Authorization: `Bearer ${SK || SUPABASE_KEY}`, Prefer: 'count=exact' }
+  });
+  if (!r.ok) return res.status(500).json({ ok: false, error: 'fetch_failed' });
+
+  const items = await r.json();
+  const contentRange = r.headers.get('content-range') || '';
+  const total = parseInt(contentRange.split('/')[1] || '0', 10);
+
+  return res.status(200).json({ ok: true, items, total, limit, offset });
+}
+
+async function handleAdminExport(req, res) {
+  const user = await validateAdmin(getAuthJwt(req));
+  if (!user) return res.status(401).json({ ok: false, error: 'unauthorized' });
+
+  const leads = await fetchAllVfLeads();
+  const csvEsc = s => `"${String(s ?? '').replace(/"/g, '""')}"`;
+  const header = 'email,lang,source,created_at\n';
+  const body = leads.map(l => [l.email, l.lang || 'pt', l.source || '', l.created_at].map(csvEsc).join(',')).join('\n');
+  const csv = header + body;
+
+  const fname = `volumefilter-leads-${new Date().toISOString().slice(0,10)}.csv`;
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="${fname}"`);
+  return res.status(200).send(csv);
+}
+
 module.exports = async (req, res) => {
   if (applyCors(req, res, { methods: 'GET, POST, OPTIONS' })) return;
 
@@ -273,6 +402,9 @@ module.exports = async (req, res) => {
   const action = url.searchParams.get('action') || '';
 
   if (req.method === 'GET' && action === 'reviews') return handleReviewsGet(req, res);
+  if (req.method === 'GET' && action === 'admin-stats') return handleAdminStats(req, res);
+  if (req.method === 'GET' && action === 'admin-list') return handleAdminList(req, res);
+  if (req.method === 'GET' && action === 'admin-export') return handleAdminExport(req, res);
   if (req.method === 'POST' && action === 'review') return handleReviewPost(req, res);
   if (req.method === 'POST') {
     if (!rateLimitIp(req, 6)) return res.status(429).json({ ok: false, error: 'rate_limit' });
