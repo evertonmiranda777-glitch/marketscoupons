@@ -7,6 +7,14 @@
 <meta name="theme-color" content="#0A0D14">
 <title>VolumeFilter, Veja a força do volume antes do trade | Markets Coupons</title>
 
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.marketscoupons.com/volumefilter">
+<meta property="og:title" content="VolumeFilter, indicador grátis pra NinjaTrader 8">
+<meta property="og:description" content="Pinta o volume em 3 cores e mostra se o movimento tem agressão real. Instala em 2 cliques, 90 segundos.">
+<meta property="og:image" content="https://www.marketscoupons.com/img/volumefilter-hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.marketscoupons.com/img/volumefilter-hero.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -272,6 +280,7 @@ body {
 .mockup-dot.green { background: #22D67C; }
 .mockup-bar .symbol { margin-left: 16px; font-weight: 700; color: var(--text); }
 .mockup-bar .price { margin-left: auto; color: var(--green); }
+.hero-mockup-img { display: block; width: 100%; height: auto; background: #000; }
 .mockup-body {
   padding: 32px 18px 24px;
   display: grid;
@@ -691,79 +700,16 @@ section { padding: 100px 0; }
     </form>
     <p class="hero-micro">Grátis até 31/12/2026 <span>·</span> Sem cartão <span>·</span> Instalação em 2 cliques</p>
 
-    <!-- MOCKUP TERMINAL -->
+    <!-- HERO IMAGE: print real do VolumeFilter rodando no NinjaTrader 8 -->
     <div class="hero-mockup">
       <div class="mockup-bar">
         <span class="mockup-dot red"></span>
         <span class="mockup-dot amber"></span>
         <span class="mockup-dot green"></span>
-        <span class="symbol">NQ 06-26 · 5min</span>
-        <span class="price">29,432.50 ▲ +0.42%</span>
+        <span class="symbol">NinjaTrader 8 · VolumeFilter v1.0</span>
+        <span class="price">ao vivo</span>
       </div>
-      <div class="mockup-body">
-        <!-- Mini candles SVG -->
-        <div class="mockup-chart">
-          <svg viewBox="0 0 600 180" preserveAspectRatio="none">
-            <!-- grid -->
-            <line x1="0" y1="45" x2="600" y2="45" stroke="#1F2638" stroke-dasharray="2,4"/>
-            <line x1="0" y1="90" x2="600" y2="90" stroke="#1F2638" stroke-dasharray="2,4"/>
-            <line x1="0" y1="135" x2="600" y2="135" stroke="#1F2638" stroke-dasharray="2,4"/>
-            <!-- candles (20 candles, mistura) -->
-            <g stroke-width="1.2">
-              <!-- Each candle: line (wick) + rect (body). x is centered every 30px -->
-              <line x1="15" y1="100" x2="15" y2="140" stroke="#E14B4B"/><rect x="9" y="110" width="12" height="25" fill="#E14B4B"/>
-              <line x1="45" y1="95" x2="45" y2="135" stroke="#22D67C"/><rect x="39" y="100" width="12" height="22" fill="#22D67C"/>
-              <line x1="75" y1="85" x2="75" y2="125" stroke="#22D67C"/><rect x="69" y="90" width="12" height="22" fill="#22D67C"/>
-              <line x1="105" y1="80" x2="105" y2="115" stroke="#22D67C"/><rect x="99" y="85" width="12" height="20" fill="#22D67C"/>
-              <line x1="135" y1="78" x2="135" y2="108" stroke="#E14B4B"/><rect x="129" y="82" width="12" height="18" fill="#E14B4B"/>
-              <line x1="165" y1="70" x2="165" y2="105" stroke="#22D67C"/><rect x="159" y="75" width="12" height="22" fill="#22D67C"/>
-              <line x1="195" y1="65" x2="195" y2="95" stroke="#22D67C"/><rect x="189" y="68" width="12" height="22" fill="#22D67C"/>
-              <line x1="225" y1="58" x2="225" y2="92" stroke="#22D67C"/><rect x="219" y="62" width="12" height="25" fill="#22D67C"/>
-              <line x1="255" y1="55" x2="255" y2="85" stroke="#22D67C"/><rect x="249" y="58" width="12" height="20" fill="#22D67C"/>
-              <line x1="285" y1="50" x2="285" y2="78" stroke="#22D67C"/><rect x="279" y="53" width="12" height="20" fill="#22D67C"/>
-              <line x1="315" y1="48" x2="315" y2="72" stroke="#E14B4B"/><rect x="309" y="53" width="12" height="15" fill="#E14B4B"/>
-              <line x1="345" y1="52" x2="345" y2="80" stroke="#E14B4B"/><rect x="339" y="58" width="12" height="18" fill="#E14B4B"/>
-              <line x1="375" y1="60" x2="375" y2="92" stroke="#E14B4B"/><rect x="369" y="65" width="12" height="22" fill="#E14B4B"/>
-              <line x1="405" y1="68" x2="405" y2="98" stroke="#22D67C"/><rect x="399" y="72" width="12" height="20" fill="#22D67C"/>
-              <line x1="435" y1="65" x2="435" y2="95" stroke="#22D67C"/><rect x="429" y="70" width="12" height="20" fill="#22D67C"/>
-              <line x1="465" y1="58" x2="465" y2="92" stroke="#22D67C"/><rect x="459" y="62" width="12" height="22" fill="#22D67C"/>
-              <line x1="495" y1="50" x2="495" y2="85" stroke="#22D67C"/><rect x="489" y="55" width="12" height="25" fill="#22D67C"/>
-              <line x1="525" y1="45" x2="525" y2="78" stroke="#22D67C"/><rect x="519" y="50" width="12" height="22" fill="#22D67C"/>
-              <line x1="555" y1="42" x2="555" y2="72" stroke="#22D67C"/><rect x="549" y="46" width="12" height="20" fill="#22D67C"/>
-              <line x1="585" y1="40" x2="585" y2="68" stroke="#22D67C"/><rect x="579" y="44" width="12" height="18" fill="#22D67C"/>
-            </g>
-          </svg>
-        </div>
-        <!-- Volume bars (estrela do indicador) -->
-        <div>
-          <div class="mockup-volume">
-            <div class="vbar gray" style="height:30%"></div>
-            <div class="vbar gray" style="height:35%"></div>
-            <div class="vbar gray" style="height:28%"></div>
-            <div class="vbar gray" style="height:40%"></div>
-            <div class="vbar red" style="height:22%"></div>
-            <div class="vbar green" style="height:75%"></div>
-            <div class="vbar green" style="height:90%"></div>
-            <div class="vbar green" style="height:95%"></div>
-            <div class="vbar green" style="height:80%"></div>
-            <div class="vbar gray" style="height:45%"></div>
-            <div class="vbar red" style="height:25%"></div>
-            <div class="vbar red" style="height:18%"></div>
-            <div class="vbar red" style="height:22%"></div>
-            <div class="vbar gray" style="height:38%"></div>
-            <div class="vbar green" style="height:70%"></div>
-            <div class="vbar green" style="height:85%"></div>
-            <div class="vbar green" style="height:92%"></div>
-            <div class="vbar green" style="height:78%"></div>
-            <div class="vbar green" style="height:88%"></div>
-            <div class="vbar green" style="height:95%"></div>
-          </div>
-          <div class="vol-label">
-            <span>VolumeFilter(NQ, 5min, 1.5, 20)</span>
-            <span>vol: 9.4k · média: 5.2k · razão: 1.81x</span>
-          </div>
-        </div>
-      </div>
+      <img src="/img/volumefilter-hero.png" alt="VolumeFilter rodando no NinjaTrader 8: candles do NQ + barras de volume verde/cinza/vermelha + média móvel amarela" class="hero-mockup-img" loading="eager" fetchpriority="high">
     </div>
   </div>
 </section>
