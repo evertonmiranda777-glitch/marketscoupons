@@ -2288,6 +2288,42 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .ind-cta{display:inline-flex;align-items:center;justify-content:center;padding:14px 32px;border:none;border-radius:12px;font-family:var(--f);font-size:14px;font-weight:800;color:#030507;cursor:pointer;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3s ease infinite;box-shadow:0 4px 24px rgba(240,180,41,.2);transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
 .ind-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent 50%);pointer-events:none;}
 .ind-cta:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(240,180,41,.3);}
+/* INDICATORS HUB v2 (VolumeFilter + Em breve) */
+.ind-hub{max-width:920px;margin:0 auto;padding:60px 20px 80px;}
+.ind-hub-head{text-align:center;margin-bottom:36px;}
+.ind-hub-eyebrow{display:inline-block;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(240,180,41,.1);padding:6px 14px;border-radius:20px;margin-bottom:14px;}
+.ind-hub-title{font-size:34px;font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.15;margin:0 0 10px;}
+.ind-hub-title em{font-style:normal;background:linear-gradient(90deg,var(--gold),#f5d060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ind-hub-sub{font-size:14px;color:var(--t2);line-height:1.6;margin:0 auto;max-width:560px;}
+.ind-card{background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:16px;padding:28px;margin-bottom:18px;position:relative;}
+.ind-card-featured{border-color:rgba(16,185,129,.35);background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(13,20,28,.85));}
+.ind-card-tag{position:absolute;top:18px;right:18px;background:#10B981;color:#fff;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:4px 10px;border-radius:6px;}
+.ind-card-platform{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--t2);background:rgba(255,255,255,.04);border:1px solid rgba(107,182,201,.15);padding:5px 11px;border-radius:6px;margin-bottom:14px;}
+.ind-card-platform svg{color:var(--gold);}
+.ind-card-title{font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;margin:0 0 8px;}
+.ind-card-desc{font-size:14px;color:var(--t2);line-height:1.65;margin:0 0 18px;}
+.ind-card-bullets{list-style:none;padding:0;margin:0 0 24px;}
+.ind-card-bullets li{font-size:13px;color:var(--t1);line-height:1.55;padding:6px 0;display:flex;align-items:flex-start;gap:8px;}
+.ind-check{color:#10B981;font-weight:800;flex-shrink:0;font-size:12px;margin-top:2px;}
+.ind-card-cta-row{display:flex;gap:10px;flex-wrap:wrap;}
+.ind-card-cta{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border:none;border-radius:10px;font-size:14px;font-weight:800;color:#fff;cursor:pointer;background:linear-gradient(90deg,#0ea571,#10B981);text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(16,185,129,.22);}
+.ind-card-cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(16,185,129,.34);}
+.ind-card-cta-secondary{display:inline-flex;align-items:center;padding:13px 22px;border:1px solid rgba(107,182,201,.22);border-radius:10px;font-size:13px;font-weight:600;color:var(--t1);text-decoration:none;transition:background .2s;background:rgba(255,255,255,.02);}
+.ind-card-cta-secondary:hover{background:rgba(255,255,255,.06);}
+.ind-card-soon{background:rgba(13,20,28,.5);border-style:dashed;opacity:.85;}
+.ind-card-tag-soon{display:inline-block;background:rgba(107,182,201,.12);color:var(--cyan,#6BB6C9);font-size:10px;font-weight:800;letter-spacing:1.2px;padding:4px 10px;border-radius:6px;margin-bottom:12px;}
+.ind-card-title-soon{font-size:18px;font-weight:700;color:var(--t1);margin:0 0 8px;}
+.ind-card-desc-soon{font-size:13px;color:var(--t2);line-height:1.6;margin:0 0 18px;}
+.ind-card-cta-soon{display:inline-block;padding:11px 22px;border:1px solid rgba(240,180,41,.4);border-radius:10px;font-size:13px;font-weight:700;color:var(--gold);background:rgba(240,180,41,.08);cursor:pointer;transition:background .2s;}
+.ind-card-cta-soon:hover{background:rgba(240,180,41,.16);}
+@media (max-width:600px){
+  .ind-hub{padding:40px 16px 60px;}
+  .ind-hub-title{font-size:26px;}
+  .ind-card{padding:22px 18px;}
+  .ind-card-title{font-size:22px;}
+  .ind-card-cta-row{flex-direction:column;}
+  .ind-card-cta,.ind-card-cta-secondary{width:100%;justify-content:center;}
+}
 /* TOOL MODAL */
 .tool-ov{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:.3s;}
 .tool-ov.open{opacity:1;pointer-events:all;}
@@ -3532,15 +3568,42 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 
 <!-- INDICATORS HUB -->
 <div class="page" id="page-indicators">
-  <div class="ind-page">
-    <div class="ind-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 5-9"/></svg></div>
-    <h2 class="ind-title" data-i18n="ind_em_breve_titulo">Novo conceito de indicadores chegando em breve</h2>
-    <p class="ind-sub" data-i18n="ind_em_breve_texto">Estamos desenvolvendo indicadores exclusivos com uma abordagem totalmente nova. Acesso será reservado para membros VIP do nosso programa de fidelidade.</p>
-    <div class="ind-box">
-      <div class="ind-box-label" data-i18n="ind_em_breve_como">Como garantir acesso</div>
-      <p class="ind-box-text" data-i18n="ind_em_breve_passos">Participe do programa de fidelidade, use nossos cupons nas suas compras e, ao ser validado, você terá acesso exclusivo assim que lançarmos.</p>
+  <div class="ind-hub">
+    <div class="ind-hub-head">
+      <div class="ind-hub-eyebrow" data-i18n="ind_hub_eyebrow">Indicadores Markets Coupons</div>
+      <h2 class="ind-hub-title" data-i18n="ind_hub_title">Ferramentas <em>profissionais</em> pra sua mesa</h2>
+      <p class="ind-hub-sub" data-i18n="ind_hub_sub">Indicadores customizados pra NinjaTrader e outras plataformas. Pegue grátis, instale em 2 cliques.</p>
     </div>
-    <button class="ind-cta" onclick="currentUser?go('panel'):openAuthModal('signup')" data-i18n="ind_em_breve_btn">Participar do programa de fidelidade</button>
+
+    <div class="ind-card ind-card-featured">
+      <div class="ind-card-tag" data-i18n="ind_vf_tag">GRÁTIS</div>
+      <div class="ind-card-platform">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+        <span>NinjaTrader 8</span>
+      </div>
+      <h3 class="ind-card-title">VolumeFilter</h3>
+      <p class="ind-card-desc" data-i18n="ind_vf_desc">Filtre candles pelo volume e identifique blocos institucionais em tempo real. Plug & play no gráfico.</p>
+      <ul class="ind-card-bullets">
+        <li data-i18n="ind_vf_b1"><span class="ind-check">✓</span> Marca candles com volume acima da média</li>
+        <li data-i18n="ind_vf_b2"><span class="ind-check">✓</span> Customizável (threshold, cores, opacidade)</li>
+        <li data-i18n="ind_vf_b3"><span class="ind-check">✓</span> Pacote .zip pronto pra importar — 2 cliques</li>
+        <li data-i18n="ind_vf_b4"><span class="ind-check">✓</span> Suporte na comunidade Telegram</li>
+      </ul>
+      <div class="ind-card-cta-row">
+        <a href="/volume-filter" class="ind-card-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-i18n="ind_vf_cta">Baixar grátis</span>
+        </a>
+        <a href="/volume-filter#cta-final" class="ind-card-cta-secondary" data-i18n="ind_vf_more">Ver detalhes</a>
+      </div>
+    </div>
+
+    <div class="ind-card ind-card-soon">
+      <div class="ind-card-tag-soon" data-i18n="ind_soon_tag">EM BREVE</div>
+      <h3 class="ind-card-title-soon" data-i18n="ind_soon_title">Mais indicadores chegando</h3>
+      <p class="ind-card-desc-soon" data-i18n="ind_soon_desc">Estamos preparando uma suíte completa de indicadores exclusivos com abordagem profissional. Acesso liberado pra membros do programa de fidelidade.</p>
+      <button class="ind-card-cta-soon" onclick="currentUser?go('panel'):openAuthModal('signup')" data-i18n="ind_soon_cta">Entrar no programa de fidelidade</button>
+    </div>
   </div>
 </div>
 
