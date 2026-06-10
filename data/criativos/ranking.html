@@ -239,7 +239,7 @@
 </head>
 <body>
 
-<div class="canvas" id="canvas">
+<div class="canvas" id="cr-canvas">
   <!-- Top Bar -->
   <div class="topbar">
     <div class="brand">
@@ -534,7 +534,7 @@ function renderList(rows) {
 
 async function init() {
   // Apply background preset
-  document.getElementById('canvas').classList.add(`bg-${bg}`);
+  document.getElementById('cr-canvas').classList.add(`bg-${bg}`);
 
   // i18n base
   document.getElementById('eyebrow').textContent = T[`eyebrow_${type}`] || T.eyebrow_futures;
