@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" id="vfHtml">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="VolumeFilter, indicador grátis para NinjaTrader 8 que pinta o volume em 3 cores e mostra se o movimento tem agressão real. Markets Coupons.">
+<meta name="description" id="vfMetaDesc" content="VolumeFilter, indicador grátis para NinjaTrader 8 que pinta o volume em 3 cores e mostra se o movimento tem agressão real. Markets Coupons.">
 <meta name="theme-color" content="#0A0D14">
-<title>VolumeFilter, Veja a força do volume antes do trade | Markets Coupons</title>
+<title id="vfTitle">VolumeFilter, Veja a força do volume antes do trade | Markets Coupons</title>
+<link rel="alternate" hreflang="pt" href="https://www.marketscoupons.com/volumefilter">
+<link rel="alternate" hreflang="en" href="https://www.marketscoupons.com/en/volumefilter">
+<link rel="alternate" hreflang="es" href="https://www.marketscoupons.com/es/volumefilter">
+<link rel="alternate" hreflang="it" href="https://www.marketscoupons.com/it/volumefilter">
+<link rel="alternate" hreflang="fr" href="https://www.marketscoupons.com/fr/volumefilter">
+<link rel="alternate" hreflang="de" href="https://www.marketscoupons.com/de/volumefilter">
+<link rel="alternate" hreflang="ar" href="https://www.marketscoupons.com/ar/volumefilter">
+<link rel="alternate" hreflang="id" href="https://www.marketscoupons.com/id/volumefilter">
+<link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/volumefilter">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.marketscoupons.com/volumefilter">
@@ -649,32 +658,51 @@ section { padding: 100px 0; }
 }
 .ps strong { color: var(--green); font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; }
 
-/* ===== FOOTER ===== */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 40px 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--text-faded);
+/* ===== HEADER RIGHT (lang switcher + CTA) ===== */
+.header-right { display: flex; align-items: center; gap: 14px; }
+.lang-switcher { display: flex; gap: 2px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 999px; padding: 3px; }
+.lang-switcher button { background: transparent; border: 0; color: var(--text-faded); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; padding: 5px 9px; border-radius: 999px; cursor: pointer; transition: all 0.18s; }
+.lang-switcher button:hover { color: var(--text); }
+.lang-switcher button.active { background: var(--green); color: #06140C; }
+@media (max-width: 820px) {
+  .lang-switcher { padding: 2px; }
+  .lang-switcher button { padding: 4px 7px; font-size: 9.5px; }
 }
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
+@media (max-width: 600px) {
+  .header-right { flex-direction: column-reverse; align-items: flex-end; gap: 8px; }
+  .lang-switcher button { padding: 3px 6px; font-size: 9px; }
 }
-.footer a { color: var(--text-dim); text-decoration: none; margin-left: 20px; }
-.footer a:hover { color: var(--green); }
-.risk-disclaimer {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px dashed var(--border);
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--text-faded);
-  max-width: 900px;
+
+/* ===== FOOTER (padrão site Markets Coupons) ===== */
+.vf-ft { background: #07090D; border-top: 1px solid var(--border); padding: 56px 0 28px; color: var(--text-dim); font-family: 'Inter', sans-serif; }
+.vf-ft-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+.vf-ft-brand { max-width: 320px; }
+.vf-ft-logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 400; color: #fff; margin-bottom: 14px; letter-spacing: -0.02em; }
+.vf-ft-logo em { color: #F0B429; font-style: normal; font-weight: 700; }
+.vf-ft-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.65; margin: 0 0 20px; }
+.vf-ft-soc { display: flex; gap: 10px; }
+.vf-ft-soc a { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--border); color: var(--text-dim); transition: all 0.2s; }
+.vf-ft-soc a:hover { color: #F0B429; border-color: rgba(240, 180, 41, 0.4); background: rgba(240, 180, 41, 0.06); }
+.vf-ft-soc svg { width: 16px; height: 16px; }
+.vf-ft-col h4 { font-size: 11px; font-weight: 800; color: #fff; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 14px; font-family: 'JetBrains Mono', monospace; }
+.vf-ft-col a { display: block; font-size: 13.5px; color: var(--text-dim); text-decoration: none; padding: 4px 0; transition: color 0.15s; }
+.vf-ft-col a:hover { color: #F0B429; }
+.vf-ft-bot { padding-top: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-faded); line-height: 1.65; text-align: center; }
+.vf-risk { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--border); font-size: 11px; line-height: 1.7; color: var(--text-faded); max-width: 1100px; margin-left: auto; margin-right: auto; text-align: justify; }
+.vf-risk strong { color: var(--text-dim); }
+@media (max-width: 900px) {
+  .vf-ft-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .vf-ft-brand { grid-column: 1 / -1; max-width: 100%; }
 }
+@media (max-width: 540px) {
+  .vf-ft { padding: 40px 0 20px; }
+  .vf-ft-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
+
+/* RTL adjustments */
+html[dir="rtl"] .vf-ft-col a, html[dir="rtl"] .vf-ft-desc { text-align: right; }
+html[dir="rtl"] .hero h1, html[dir="rtl"] .hero-sub, html[dir="rtl"] .section-title, html[dir="rtl"] .section-lede, html[dir="rtl"] .section-tag { text-align: right; }
+html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
 </style>
 </head>
 <body>
@@ -699,7 +727,12 @@ section { padding: 100px 0; }
 <header class="header">
   <div class="container header-inner">
     <a href="https://www.marketscoupons.com" class="logo"><svg width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="vflg" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#vflg)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#vflg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#vflg)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#vflg)"/></svg><span><em>Markets</em> Coupons</span></a>
-    <a href="/volumefilter" class="header-cta" onclick="event.preventDefault();document.getElementById('cta-final').scrollIntoView({behavior:'smooth'});history.replaceState(null,'','/volumefilter');">⬇ Baixar grátis</a>
+    <div class="header-right">
+      <div class="lang-switcher" id="vfLangSw">
+        <button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="it">IT</button><button data-lang="fr">FR</button><button data-lang="de">DE</button><button data-lang="ar">AR</button><button data-lang="id">ID</button>
+      </div>
+      <a href="/volumefilter" class="header-cta" onclick="event.preventDefault();document.getElementById('cta-final').scrollIntoView({behavior:'smooth'});" data-i18n="nav_cta">⬇ Baixar grátis</a>
+    </div>
   </div>
 </header>
 
@@ -708,20 +741,20 @@ section { padding: 100px 0; }
   <div class="container">
     <div class="hero-tag">
       <span class="dot"></span>
-      Indicador grátis para NinjaTrader 8
+      <span data-i18n="hero_tag">Indicador grátis para NinjaTrader 8</span>
     </div>
 
-    <h1>Veja a <em>força do volume</em> antes de entrar no trade.</h1>
+    <h1><span data-i18n="hero_h1_a">Veja a</span> <em data-i18n="hero_h1_em">força do volume</em> <span data-i18n="hero_h1_b">antes de entrar no trade.</span></h1>
 
-    <p class="hero-sub">
+    <p class="hero-sub" data-i18n="hero_sub" data-i18n-html="1">
       O volume nativo do NinjaTrader é uma barra cinza monocromática. Ele te mostra <strong>quantidade</strong>, não <strong>força</strong>. O VolumeFilter pinta cada candle em 3 cores e mostra, em 1 olhada, se o movimento tem agressão real ou é fake.
     </p>
 
     <form class="hero-form" id="form-hero" data-form="volumefilter-lead">
-      <input type="email" name="email" placeholder="seu@email.com" required autocomplete="email">
-      <button type="submit" class="btn-cta">⬇ Quero o VolumeFilter</button>
+      <input type="email" name="email" placeholder="seu@email.com" data-i18n-ph="hero_input_ph" required autocomplete="email">
+      <button type="submit" class="btn-cta" data-i18n="hero_btn">⬇ Quero o VolumeFilter</button>
     </form>
-    <p class="hero-micro">Grátis até 31/12/2026 <span>·</span> Sem cartão <span>·</span> Instalação em 2 cliques</p>
+    <p class="hero-micro" data-i18n="hero_micro">Grátis até 31/12/2026 · Sem cartão · Instalação em 2 cliques</p>
 
     <!-- HERO IMAGE: print real do VolumeFilter rodando no NinjaTrader 8 -->
     <div class="hero-mockup">
@@ -729,8 +762,8 @@ section { padding: 100px 0; }
         <span class="mockup-dot red"></span>
         <span class="mockup-dot amber"></span>
         <span class="mockup-dot green"></span>
-        <span class="symbol">NinjaTrader 8 · VolumeFilter v1.0</span>
-        <span class="price">ao vivo</span>
+        <span class="symbol" data-i18n="mockup_bar_left">NinjaTrader 8 · VolumeFilter v1.0</span>
+        <span class="price" data-i18n="mockup_bar_right">ao vivo</span>
       </div>
       <img src="/img/volumefilter-hero.png" alt="VolumeFilter rodando no NinjaTrader 8: candles do NQ + barras de volume verde/cinza/vermelha + média móvel amarela" class="hero-mockup-img" loading="eager" fetchpriority="high">
     </div>
@@ -740,15 +773,15 @@ section { padding: 100px 0; }
 <!-- PAIN -->
 <section class="pain">
   <div class="container">
-    <div class="section-tag">// O problema</div>
-    <h2 class="section-title">Você já operou um movimento que parecia forte e morreu na sua cara?</h2>
+    <div class="section-tag" data-i18n="pain_tag">// O problema</div>
+    <h2 class="section-title" data-i18n="pain_title">Você já operou um movimento que parecia forte e morreu na sua cara?</h2>
 
     <ul class="pain-list">
-      <li>Comprou o rompimento e o candle virou no mesmo segundo.</li>
-      <li>Entrou na tendência e o preço lateralizou por 40 minutos.</li>
-      <li>Stop levou tudo num dia que tinha "volume gigante" no eixo.</li>
-      <li>Olha o volume nativo e não consegue distinguir candle de força de candle de absorção.</li>
-      <li>Sai do trade, vê o gráfico depois e percebe que o sinal estava ali, você só não enxergou.</li>
+      <li data-i18n="pain_1">Comprou o rompimento e o candle virou no mesmo segundo.</li>
+      <li data-i18n="pain_2">Entrou na tendência e o preço lateralizou por 40 minutos.</li>
+      <li data-i18n="pain_3">Stop levou tudo num dia que tinha "volume gigante" no eixo.</li>
+      <li data-i18n="pain_4">Olha o volume nativo e não consegue distinguir candle de força de candle de absorção.</li>
+      <li data-i18n="pain_5">Sai do trade, vê o gráfico depois e percebe que o sinal estava ali, você só não enxergou.</li>
     </ul>
   </div>
 </section>
@@ -756,9 +789,9 @@ section { padding: 100px 0; }
 <!-- HOW IT WORKS -->
 <section class="how">
   <div class="container">
-    <div class="section-tag">// Como funciona</div>
-    <h2 class="section-title">3 cores. 1 olhada. Decisão direta.</h2>
-    <p class="section-lede">
+    <div class="section-tag" data-i18n="how_tag">// Como funciona</div>
+    <h2 class="section-title" data-i18n="how_title">3 cores. 1 olhada. Decisão direta.</h2>
+    <p class="section-lede" data-i18n="how_lede">
       O VolumeFilter compara cada candle com a média do volume dos últimos 20 períodos e pinta a barra de uma cor única, você não precisa calcular nada.
     </p>
 
@@ -771,9 +804,9 @@ section { padding: 100px 0; }
           <div class="vbar"></div>
           <div class="vbar"></div>
         </div>
-        <h3>VERDE</h3>
-        <div class="label">volume ≥ 1.5x média</div>
-        <p>Agressão real. Tem comprador (ou vendedor) institucional empurrando o preço de verdade. Esse é o candle que confirma entrada.</p>
+        <h3 data-i18n="how_green_h">VERDE</h3>
+        <div class="label" data-i18n="how_green_label">volume ≥ 1.5x média</div>
+        <p data-i18n="how_green_p">Agressão real. Tem comprador (ou vendedor) institucional empurrando o preço de verdade. Esse é o candle que confirma entrada.</p>
       </div>
 
       <div class="how-card gray">
@@ -784,9 +817,9 @@ section { padding: 100px 0; }
           <div class="vbar"></div>
           <div class="vbar"></div>
         </div>
-        <h3 style="color: var(--text);">CINZA</h3>
-        <div class="label">volume dentro do normal</div>
-        <p>Mercado respirando. Não confirma nada, pode ser absorção, pode ser indefinição. Sinal pra esperar a próxima.</p>
+        <h3 style="color: var(--text);" data-i18n="how_gray_h">CINZA</h3>
+        <div class="label" data-i18n="how_gray_label">volume dentro do normal</div>
+        <p data-i18n="how_gray_p">Mercado respirando. Não confirma nada, pode ser absorção, pode ser indefinição. Sinal pra esperar a próxima.</p>
       </div>
 
       <div class="how-card red">
@@ -797,9 +830,9 @@ section { padding: 100px 0; }
           <div class="vbar"></div>
           <div class="vbar"></div>
         </div>
-        <h3>VERMELHO</h3>
-        <div class="label">volume abaixo da média</div>
-        <p>Movimento sem combustível. Se aparecer no fim de uma tendência, é exaustão. Em rompimento, é fake, não vai longe.</p>
+        <h3 data-i18n="how_red_h">VERMELHO</h3>
+        <div class="label" data-i18n="how_red_label">volume abaixo da média</div>
+        <p data-i18n="how_red_p">Movimento sem combustível. Se aparecer no fim de uma tendência, é exaustão. Em rompimento, é fake, não vai longe.</p>
       </div>
     </div>
   </div>
@@ -808,8 +841,8 @@ section { padding: 100px 0; }
 <!-- BENEFITS -->
 <section>
   <div class="container">
-    <div class="section-tag">// O que muda na sua operação</div>
-    <h2 class="section-title">Pare de adivinhar. Comece a ler.</h2>
+    <div class="section-tag" data-i18n="benefits_tag">// O que muda na sua operação</div>
+    <h2 class="section-title" data-i18n="benefits_title">Pare de adivinhar. Comece a ler.</h2>
 
     <div class="benefits-grid">
       <div class="benefit">
@@ -817,8 +850,8 @@ section { padding: 100px 0; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
         </div>
         <div>
-          <h4>Evite fake breakouts</h4>
-          <p>Rompimento sem barra verde é armadilha. Você enxerga isso antes de clicar no Buy.</p>
+          <h4 data-i18n="benefits_1_h">Evite fake breakouts</h4>
+          <p data-i18n="benefits_1_p">Rompimento sem barra verde é armadilha. Você enxerga isso antes de clicar no Buy.</p>
         </div>
       </div>
       <div class="benefit">
@@ -826,8 +859,8 @@ section { padding: 100px 0; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
         <div>
-          <h4>Confirme entradas com agressão</h4>
-          <p>Só entra quando o candle de gatilho vem com volume verde. Filtro brutal contra entrada precipitada.</p>
+          <h4 data-i18n="benefits_2_h">Confirme entradas com agressão</h4>
+          <p data-i18n="benefits_2_p">Só entra quando o candle de gatilho vem com volume verde. Filtro brutal contra entrada precipitada.</p>
         </div>
       </div>
       <div class="benefit">
@@ -835,8 +868,8 @@ section { padding: 100px 0; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg>
         </div>
         <div>
-          <h4>Identifique exaustão antes do mercado</h4>
-          <p>Quando o volume vira vermelho no fim da tendência, você sabe que tá perdendo combustível.</p>
+          <h4 data-i18n="benefits_3_h">Identifique exaustão antes do mercado</h4>
+          <p data-i18n="benefits_3_p">Quando o volume vira vermelho no fim da tendência, você sabe que tá perdendo combustível.</p>
         </div>
       </div>
       <div class="benefit">
@@ -844,8 +877,8 @@ section { padding: 100px 0; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
         <div>
-          <h4>Filtre dias laterais sem operar</h4>
-          <p>Várias barras cinzas e vermelhas seguidas = dia morto. Fecha o gráfico e poupa o emocional.</p>
+          <h4 data-i18n="benefits_4_h">Filtre dias laterais sem operar</h4>
+          <p data-i18n="benefits_4_p">Várias barras cinzas e vermelhas seguidas = dia morto. Fecha o gráfico e poupa o emocional.</p>
         </div>
       </div>
       <div class="benefit">
@@ -853,8 +886,8 @@ section { padding: 100px 0; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <div>
-          <h4>Pare de operar contra o fluxo</h4>
-          <p>Volume verde do lado oposto = institucional contra você. O indicador avisa antes do prejuízo.</p>
+          <h4 data-i18n="benefits_5_h">Pare de operar contra o fluxo</h4>
+          <p data-i18n="benefits_5_p">Volume verde do lado oposto = institucional contra você. O indicador avisa antes do prejuízo.</p>
         </div>
       </div>
       <div class="benefit">
@@ -862,8 +895,8 @@ section { padding: 100px 0; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
         </div>
         <div>
-          <h4>Leitura instantânea</h4>
-          <p>Sem precisar olhar 3 painéis. As cores fazem o trabalho. Mobile-friendly se você opera pelo celular.</p>
+          <h4 data-i18n="benefits_6_h">Leitura instantânea</h4>
+          <p data-i18n="benefits_6_p">Sem precisar olhar 3 painéis. As cores fazem o trabalho. Mobile-friendly se você opera pelo celular.</p>
         </div>
       </div>
     </div>
@@ -875,20 +908,20 @@ section { padding: 100px 0; }
   <div class="container">
     <div class="stats-grid">
       <div>
-        <div class="stat-num">17+</div>
-        <div class="stat-label">Prop firms parceiras</div>
+        <div class="stat-num" data-i18n="stats_1_n">17+</div>
+        <div class="stat-label" data-i18n="stats_1_l">Prop firms parceiras</div>
       </div>
       <div>
-        <div class="stat-num">$721M+</div>
-        <div class="stat-label">Pagos a traders</div>
+        <div class="stat-num" data-i18n="stats_2_n">$721M+</div>
+        <div class="stat-label" data-i18n="stats_2_l">Pagos a traders</div>
       </div>
       <div>
-        <div class="stat-num">210K+</div>
-        <div class="stat-label">Avaliações Awards 2026</div>
+        <div class="stat-num" data-i18n="stats_3_n">210K+</div>
+        <div class="stat-label" data-i18n="stats_3_l">Avaliações Awards 2026</div>
       </div>
       <div>
-        <div class="stat-num">7</div>
-        <div class="stat-label">Idiomas suportados</div>
+        <div class="stat-num" data-i18n="stats_4_n">8</div>
+        <div class="stat-label" data-i18n="stats_4_l">Idiomas suportados</div>
       </div>
     </div>
   </div>
@@ -897,16 +930,16 @@ section { padding: 100px 0; }
 <!-- OFFER -->
 <section>
   <div class="container">
-    <div class="section-tag" style="text-align: center;">// A oferta</div>
-    <h2 class="section-title" style="text-align: center; margin-left: auto; margin-right: auto;">O que você recebe agora, de graça.</h2>
+    <div class="section-tag" style="text-align: center;" data-i18n="offer_tag">// A oferta</div>
+    <h2 class="section-title" style="text-align: center; margin-left: auto; margin-right: auto;" data-i18n="offer_title">O que você recebe agora, de graça.</h2>
 
     <div class="offer-card">
       <ul class="offer-list">
-        <li><span class="check">✓</span> <span><strong>VolumeFilter</strong>, indicador NinjaTrader 8 (.zip pronto pra importar)</span></li>
-        <li><span class="check">✓</span> <span><strong>Guia rápido em PDF</strong>, instalação passo-a-passo + "5 padrões que o VolumeFilter revela na prática"</span></li>
-        <li><span class="check">✓</span> <span><strong>Acesso antecipado ao Programa VIP</strong>, você é avisado primeiro quando os indicadores PRO lançarem</span></li>
+        <li><span class="check">✓</span> <span data-i18n="offer_1" data-i18n-html="1"><strong>VolumeFilter</strong>, indicador NinjaTrader 8 (.zip pronto pra importar)</span></li>
+        <li><span class="check">✓</span> <span data-i18n="offer_2" data-i18n-html="1"><strong>Guia rápido em PDF</strong>, instalação passo-a-passo + "5 padrões que o VolumeFilter revela na prática"</span></li>
+        <li><span class="check">✓</span> <span data-i18n="offer_3" data-i18n-html="1"><strong>Acesso antecipado ao Programa VIP</strong>, você é avisado primeiro quando os indicadores PRO lançarem</span></li>
       </ul>
-      <div class="offer-meta">
+      <div class="offer-meta" data-i18n="offer_meta" data-i18n-html="1">
         Validade: 31/12/2026 · Após esse prazo, o indicador continua instalado, mas mostra aviso de renovação. <br>
         Sem trava agressiva. Sem cobrança automática. Sem cartão.
       </div>
@@ -917,65 +950,18 @@ section { padding: 100px 0; }
 <!-- FAQ -->
 <section>
   <div class="container">
-    <div class="section-tag">// Perguntas e objeções</div>
-    <h2 class="section-title">Tira as dúvidas antes de baixar.</h2>
+    <div class="section-tag" data-i18n="faq_tag">// Perguntas e objeções</div>
+    <h2 class="section-title" data-i18n="faq_title">Tira as dúvidas antes de baixar.</h2>
 
     <div class="faq-list">
-      <details class="faq-item">
-        <summary>Vai dar trabalho instalar?</summary>
-        <div class="faq-body">
-          Não. Você baixa o arquivo .zip, abre o NinjaTrader e vai em <strong>Tools → Import → NinjaScript Add-On</strong>. Seleciona o arquivo. Acabou. 2 cliques. Já vem compilado e pronto pra adicionar no gráfico. <strong>O PDF que você recebe junto tem o passo-a-passo com screenshots</strong>, se travar em alguma parte, é só seguir as imagens.
-        </div>
-      </details>
-
-      <details class="faq-item">
-        <summary>Eu já tenho volume no NinjaTrader nativo. Pra que outro?</summary>
-        <div class="faq-body">
-          O nativo te mostra <strong>quantidade absoluta</strong>. O VolumeFilter te mostra <strong>força relativa</strong>, comparado com a média móvel dos últimos 20 candles. É a diferença entre "tem volume" e "tem volume <strong>acima do normal pra esse momento</strong>". Pra confirmar agressão real, só o segundo importa.
-        </div>
-      </details>
-
-      <details class="faq-item">
-        <summary>Indicador grátis deve ser ruim, né?</summary>
-        <div class="faq-body">
-          É <strong>amostra estratégica</strong>. A gente vai lançar uma linha de indicadores PRO pro programa VIP do Markets Coupons. O VolumeFilter é o "porta-aberta", funcional de verdade, sem versão capada. Quem gostar, vai querer o resto.
-        </div>
-      </details>
-
-      <details class="faq-item">
-        <summary>Vão me encher o email de spam?</summary>
-        <div class="faq-body">
-          Você recebe <strong>1 email de confirmação</strong>, o link de download, e depois só novidades de indicadores e cupons exclusivos, no máximo <strong>1 email por semana</strong>. Descadastra com 1 clique. Sempre.
-        </div>
-      </details>
-
-      <details class="faq-item">
-        <summary>Tenho NinjaTrader na versão grátis (Sim). Funciona?</summary>
-        <div class="faq-body">
-          Funciona. O VolumeFilter roda em qualquer NinjaTrader 8, inclusive na versão Sim. Você não precisa de licença paga pra usar.
-        </div>
-      </details>
-
-      <details class="faq-item">
-        <summary>Funciona em qual ativo?</summary>
-        <div class="faq-body">
-          Qualquer instrumento que tenha volume real: NQ, ES, CL, GC, mini-índice (WIN/WDO), forex, ações, cripto. Onde houver volume, o filtro funciona.
-        </div>
-      </details>
-
-      <details class="faq-item">
-        <summary>Posso usar em prop firm?</summary>
-        <div class="faq-body">
-          Sim. Indicador customizado é permitido em <strong>todas as prop firms que aceitam NinjaTrader</strong> (Apex, Bulenox, Earn2Trade, TradeDay, FundedNext via NT, etc).
-        </div>
-      </details>
-
-      <details class="faq-item">
-        <summary>Vai funcionar depois de 31/12/2026?</summary>
-        <div class="faq-body">
-          O indicador continua instalado, mas mostra um aviso de renovação no painel. A versão v2 (paga, com novas funcionalidades) será lançada antes do vencimento, e quem pegou a v1 grátis tem prioridade.
-        </div>
-      </details>
+      <details class="faq-item"><summary data-i18n="faq_q1">Vai dar trabalho instalar?</summary><div class="faq-body" data-i18n="faq_a1" data-i18n-html="1">Não. Você baixa o arquivo .zip, abre o NinjaTrader e vai em <strong>Tools → Import → NinjaScript Add-On</strong>. Seleciona o arquivo. Acabou. 2 cliques. Já vem compilado e pronto pra adicionar no gráfico. <strong>O PDF que você recebe junto tem o passo-a-passo com screenshots</strong>, se travar em alguma parte, é só seguir as imagens.</div></details>
+      <details class="faq-item"><summary data-i18n="faq_q2">Eu já tenho volume no NinjaTrader nativo. Pra que outro?</summary><div class="faq-body" data-i18n="faq_a2" data-i18n-html="1">O nativo te mostra <strong>quantidade absoluta</strong>. O VolumeFilter te mostra <strong>força relativa</strong>, comparado com a média móvel dos últimos 20 candles. É a diferença entre "tem volume" e "tem volume <strong>acima do normal pra esse momento</strong>". Pra confirmar agressão real, só o segundo importa.</div></details>
+      <details class="faq-item"><summary data-i18n="faq_q3">Indicador grátis deve ser ruim, né?</summary><div class="faq-body" data-i18n="faq_a3" data-i18n-html="1">É <strong>amostra estratégica</strong>. A gente vai lançar uma linha de indicadores PRO pro programa VIP do Markets Coupons. O VolumeFilter é o "porta-aberta", funcional de verdade, sem versão capada. Quem gostar, vai querer o resto.</div></details>
+      <details class="faq-item"><summary data-i18n="faq_q4">Vão me encher o email de spam?</summary><div class="faq-body" data-i18n="faq_a4" data-i18n-html="1">Você recebe <strong>1 email de confirmação</strong>, o link de download, e depois só novidades de indicadores e cupons exclusivos, no máximo <strong>1 email por semana</strong>. Descadastra com 1 clique. Sempre.</div></details>
+      <details class="faq-item"><summary data-i18n="faq_q5">Tenho NinjaTrader na versão grátis (Sim). Funciona?</summary><div class="faq-body" data-i18n="faq_a5">Funciona. O VolumeFilter roda em qualquer NinjaTrader 8, inclusive na versão Sim. Você não precisa de licença paga pra usar.</div></details>
+      <details class="faq-item"><summary data-i18n="faq_q6">Funciona em qual ativo?</summary><div class="faq-body" data-i18n="faq_a6">Qualquer instrumento que tenha volume real: NQ, ES, CL, GC, mini-índice (WIN/WDO), forex, ações, cripto. Onde houver volume, o filtro funciona.</div></details>
+      <details class="faq-item"><summary data-i18n="faq_q7">Posso usar em prop firm?</summary><div class="faq-body" data-i18n="faq_a7" data-i18n-html="1">Sim. Indicador customizado é permitido em <strong>todas as prop firms que aceitam NinjaTrader</strong> (Apex, Bulenox, Earn2Trade, TradeDay, FundedNext via NT, etc).</div></details>
+      <details class="faq-item"><summary data-i18n="faq_q8">Vai funcionar depois de 31/12/2026?</summary><div class="faq-body" data-i18n="faq_a8">O indicador continua instalado, mas mostra um aviso de renovação no painel. A versão v2 (paga, com novas funcionalidades) será lançada antes do vencimento, e quem pegou a v1 grátis tem prioridade.</div></details>
     </div>
   </div>
 </section>
@@ -983,53 +969,23 @@ section { padding: 100px 0; }
 <!-- INSTALAÇÃO PASSO A PASSO -->
 <section class="install">
   <div class="container">
-    <div class="section-tag">// Instalação</div>
-    <h2 class="section-title">2 cliques. 90 segundos. Tá rodando.</h2>
-    <p class="section-lede">
+    <div class="section-tag" data-i18n="install_tag">// Instalação</div>
+    <h2 class="section-title" data-i18n="install_title">2 cliques. 90 segundos. Tá rodando.</h2>
+    <p class="section-lede" data-i18n="install_lede" data-i18n-html="1">
       Depois de confirmar seu email, você recebe o link do .zip + o PDF com tudo isso visualizado. <strong>Não tem complicação</strong>.
     </p>
 
     <ol class="steps">
-      <li>
-        <div class="step-num mono">01</div>
-        <div class="step-body">
-          <h4>Baixe o arquivo .zip</h4>
-          <p>Link de download chega no seu email assim que você confirmar o cadastro. Salva onde quiser, não precisa extrair, o NinjaTrader importa o zip direto.</p>
-        </div>
-      </li>
-      <li>
-        <div class="step-num mono">02</div>
-        <div class="step-body">
-          <h4>Abra o NinjaTrader 8 e vá no menu Tools</h4>
-          <p>No menu superior do NinjaTrader, clica em <code>Tools → Import → NinjaScript Add-On</code>. Uma janela vai abrir pra você selecionar arquivo.</p>
-        </div>
-      </li>
-      <li>
-        <div class="step-num mono">03</div>
-        <div class="step-body">
-          <h4>Selecione o arquivo .zip baixado</h4>
-          <p>Aponta pro arquivo que você baixou. O NinjaTrader importa, compila e instala automaticamente. Pode aparecer "Restart required", se aparecer, fecha e abre o NT.</p>
-        </div>
-      </li>
-      <li>
-        <div class="step-num mono">04</div>
-        <div class="step-body">
-          <h4>Adicione no gráfico</h4>
-          <p>Abre qualquer gráfico, clica em <code>Indicators</code> (atalho: Ctrl+I), procura por <strong>VolumeFilter</strong> na lista, clica em <code>Add</code>. Pronto, barras coloridas no painel inferior.</p>
-        </div>
-      </li>
-      <li>
-        <div class="step-num mono">05</div>
-        <div class="step-body">
-          <h4>Salve o workspace</h4>
-          <p><code>Ctrl+S</code> no Control Center. Da próxima vez que abrir o NinjaTrader, o VolumeFilter já vai estar no gráfico, do jeito que você deixou.</p>
-        </div>
-      </li>
+      <li><div class="step-num mono">01</div><div class="step-body"><h4 data-i18n="install_s1_h">Baixe o arquivo .zip</h4><p data-i18n="install_s1_p">Link de download chega no seu email assim que você confirmar o cadastro. Salva onde quiser, não precisa extrair, o NinjaTrader importa o zip direto.</p></div></li>
+      <li><div class="step-num mono">02</div><div class="step-body"><h4 data-i18n="install_s2_h">Abra o NinjaTrader 8 e vá no menu Tools</h4><p data-i18n="install_s2_p" data-i18n-html="1">No menu superior do NinjaTrader, clica em <code>Tools → Import → NinjaScript Add-On</code>. Uma janela vai abrir pra você selecionar arquivo.</p></div></li>
+      <li><div class="step-num mono">03</div><div class="step-body"><h4 data-i18n="install_s3_h">Selecione o arquivo .zip baixado</h4><p data-i18n="install_s3_p">Aponta pro arquivo que você baixou. O NinjaTrader importa, compila e instala automaticamente. Pode aparecer "Restart required", se aparecer, fecha e abre o NT.</p></div></li>
+      <li><div class="step-num mono">04</div><div class="step-body"><h4 data-i18n="install_s4_h">Adicione no gráfico</h4><p data-i18n="install_s4_p" data-i18n-html="1">Abre qualquer gráfico, clica em <code>Indicators</code> (atalho: Ctrl+I), procura por <strong>VolumeFilter</strong> na lista, clica em <code>Add</code>. Pronto, barras coloridas no painel inferior.</p></div></li>
+      <li><div class="step-num mono">05</div><div class="step-body"><h4 data-i18n="install_s5_h">Salve o workspace</h4><p data-i18n="install_s5_p" data-i18n-html="1"><code>Ctrl+S</code> no Control Center. Da próxima vez que abrir o NinjaTrader, o VolumeFilter já vai estar no gráfico, do jeito que você deixou.</p></div></li>
     </ol>
 
     <div class="install-note">
-      <strong class="mono" style="color: var(--green);">// IMPORTANTE</strong>
-      <p>Tudo isso (com screenshots reais de cada tela) está dentro do <strong>PDF que você recebe junto com o indicador</strong>. Imprime, salva no desktop ou abre no celular enquanto instala. Sem mistério.</p>
+      <strong class="mono" style="color: var(--green);" data-i18n="install_important">// IMPORTANTE</strong>
+      <p data-i18n="install_note" data-i18n-html="1">Tudo isso (com screenshots reais de cada tela) está dentro do <strong>PDF que você recebe junto com o indicador</strong>. Imprime, salva no desktop ou abre no celular enquanto instala. Sem mistério.</p>
     </div>
   </div>
 </section>
@@ -1121,57 +1077,166 @@ section { padding: 100px 0; }
 <!-- CTA FINAL -->
 <section class="cta-final" id="cta-final">
   <div class="container">
-    <h2>Pare de operar no escuro. <em>Comece a ver o que realmente importa.</em></h2>
-    <p>Basta adicionar o seu melhor e-mail abaixo e você receberá, na hora, o link para download e o guia em PDF.</p>
+    <h2><span data-i18n="cta_title_a">Pare de operar no escuro.</span> <em data-i18n="cta_title_em">Comece a ver o que realmente importa.</em></h2>
+    <p data-i18n="cta_p">Basta adicionar o seu melhor e-mail abaixo e você receberá, na hora, o link para download e o guia em PDF.</p>
 
     <form class="hero-form" id="form-final" data-form="volumefilter-lead">
-      <input type="email" name="email" placeholder="seu@email.com" required autocomplete="email">
-      <button type="submit" class="btn-cta">⬇ Quero o VolumeFilter</button>
+      <input type="email" name="email" placeholder="seu@email.com" data-i18n-ph="hero_input_ph" required autocomplete="email">
+      <button type="submit" class="btn-cta" data-i18n="hero_btn">⬇ Quero o VolumeFilter</button>
     </form>
-    <p class="hero-micro">Sem cartão <span>·</span> Sem pegadinha <span>·</span> Descadastro em 1 clique</p>
+    <p class="hero-micro" data-i18n="cta_micro">Sem cartão · Sem pegadinha · Descadastro em 1 clique</p>
 
-    <div class="ps">
+    <div class="ps" data-i18n="cta_ps" data-i18n-html="1">
       <strong>PS</strong><br>
       Esse indicador faz parte de uma nova linha de ferramentas em desenvolvimento pro <strong style="color: var(--text);">programa VIP do Markets Coupons</strong>. Os próximos vão ser pagos. Esse aqui é a sua chance de testar a qualidade do que vem por aí, sem custo, sem compromisso.
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="footer">
+<!-- FOOTER (padrão site Markets Coupons) -->
+<footer class="vf-ft">
   <div class="container">
-    <div class="footer-inner">
-      <div>© 2026 Markets Coupons · VolumeFilter v1.0</div>
-      <nav>
-        <a href="https://www.marketscoupons.com">Site principal</a>
-        <a href="https://www.marketscoupons.com/privacy">Privacidade</a>
-        <a href="https://www.marketscoupons.com/terms">Termos</a>
+    <div class="vf-ft-grid">
+      <div class="vf-ft-brand">
+        <div class="vf-ft-logo">
+          <svg width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="vflg2" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#vflg2)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#vflg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#vflg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#vflg2)"/></svg>
+          <span><em>Markets</em> Coupons</span>
+        </div>
+        <p class="vf-ft-desc" data-i18n="ft_desc">Cupons verificados pras melhores prop firms. Ferramentas profissionais pra traders de futuros e forex.</p>
+        <div class="vf-ft-soc">
+          <a href="https://t.me/marketcouponss" target="_blank" rel="noopener" title="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg></a>
+          <a href="https://www.instagram.com/marketscoupons" target="_blank" rel="noopener" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.facebook.com/marketscoupons/" target="_blank" rel="noopener" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        </div>
+      </div>
+      <div class="vf-ft-col">
+        <h4 data-i18n="ft_col_firms">Prop Firms</h4>
+        <a href="https://www.marketscoupons.com/apex">Apex Trader Funding</a>
+        <a href="https://www.marketscoupons.com/bulenox">Bulenox</a>
+        <a href="https://www.marketscoupons.com/ftmo">FTMO</a>
+        <a href="https://www.marketscoupons.com/fn">FundedNext</a>
+        <a href="https://www.marketscoupons.com/tradeday">TradeDay</a>
+        <a href="https://www.marketscoupons.com/the5ers">The5ers</a>
+        <a href="https://www.marketscoupons.com/fundingpips">Funding Pips</a>
+      </div>
+      <div class="vf-ft-col">
+        <h4 data-i18n="ft_col_tools">Ferramentas</h4>
+        <a href="https://www.marketscoupons.com/indicators" data-i18n="ft_indicators">Indicadores</a>
+        <a href="https://www.marketscoupons.com/quiz" data-i18n="ft_quiz">Quiz de Firma</a>
+        <a href="https://www.marketscoupons.com/compare" data-i18n="ft_compare">Comparador</a>
+        <a href="https://www.marketscoupons.com/calendar" data-i18n="ft_calendar">Calendário</a>
+        <a href="https://www.marketscoupons.com/gamma" data-i18n="ft_gamma">Gamma (GEX)</a>
+        <a href="https://www.marketscoupons.com/calculator" data-i18n="ft_position">Position Size</a>
+      </div>
+      <div class="vf-ft-col">
+        <h4 data-i18n="ft_col_links">Links</h4>
+        <a href="https://www.marketscoupons.com/guides" data-i18n="ft_guides">Guias</a>
+        <a href="https://www.marketscoupons.com/blog" data-i18n="ft_blog">Blog</a>
+        <a href="https://www.marketscoupons.com/live" data-i18n="ft_live">Live Room</a>
+        <a href="https://www.marketscoupons.com/#faq" data-i18n="ft_faq">FAQ</a>
         <a href="https://t.me/marketcouponss">Telegram</a>
-      </nav>
+        <a href="https://www.instagram.com/marketscoupons">Instagram</a>
+      </div>
+      <div class="vf-ft-col">
+        <h4 data-i18n="ft_col_legal">Legal</h4>
+        <a href="https://www.marketscoupons.com/privacy" data-i18n="ft_privacy">Privacidade</a>
+        <a href="https://www.marketscoupons.com/terms" data-i18n="ft_terms">Termos</a>
+        <a href="https://www.marketscoupons.com/privacy#cookies" data-i18n="ft_cookies">Cookies</a>
+      </div>
     </div>
 
-    <div class="risk-disclaimer">
-      <strong style="color: var(--text-dim);">Aviso de risco:</strong> A negociação de futuros e forex envolve riscos substanciais e não é adequada para todos os investidores. Resultados passados não garantem resultados futuros. Capital de risco é o dinheiro que pode ser perdido sem comprometer a segurança financeira. O conteúdo é exclusivamente educacional e informativo, não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Opere apenas com capital de risco.
+    <div class="vf-ft-bot">
+      <span data-i18n="ft_legal">Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. Termos, preços e benefícios podem ser alterados a qualquer momento sem aviso prévio. © 2026 Markets Coupons.</span>
+    </div>
+
+    <div class="vf-risk">
+      <strong data-i18n="risk_label">Aviso de risco:</strong> <span data-i18n="risk_text">A negociação de futuros e forex envolve riscos substanciais e não é adequada pra todos os investidores. Resultados passados não garantem resultados futuros. Capital de risco é o dinheiro que pode ser perdido sem comprometer a segurança financeira. O conteúdo é exclusivamente educacional e informativo, não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Opere apenas com capital de risco.</span>
     </div>
   </div>
 </footer>
 
-<!-- ===== JS (capture de form, placeholder pro backend) ===== -->
+<!-- ===== i18n loader ===== -->
+<script src="/volumefilter-i18n.js"></script>
+<script>
+(function(){
+  const SUPPORTED = ['pt','en','es','it','fr','de','ar','id'];
+  function detectLang(){
+    // 1) URL prefix /en/, /es/ etc
+    const m = location.pathname.match(/^\/([a-z]{2})(?:\/|$)/);
+    if (m && SUPPORTED.includes(m[1])) return m[1];
+    // 2) URL ?lang=
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p && SUPPORTED.includes(p)) return p;
+    // 3) localStorage
+    try { const ls = localStorage.getItem('vf_lang'); if (ls && SUPPORTED.includes(ls)) return ls; } catch(e){}
+    // 4) navigator
+    const n = (navigator.language || 'pt').toLowerCase().slice(0,2);
+    if (SUPPORTED.includes(n)) return n;
+    return 'en'; // default to EN for global audience
+  }
+  function applyLang(lang){
+    if (!window.VF_I18N || !window.VF_I18N[lang]) return;
+    const D = window.VF_I18N[lang];
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    // title + meta
+    if (D.page_title) document.getElementById('vfTitle').textContent = D.page_title;
+    if (D.page_desc) document.getElementById('vfMetaDesc').setAttribute('content', D.page_desc);
+    // text nodes
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const val = D[key];
+      if (val == null) return;
+      if (el.hasAttribute('data-i18n-html')) el.innerHTML = val;
+      else el.textContent = val;
+    });
+    // placeholders
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const val = D[el.getAttribute('data-i18n-ph')];
+      if (val != null) el.setAttribute('placeholder', val);
+    });
+    // lang switcher state
+    document.querySelectorAll('#vfLangSw button').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    try { localStorage.setItem('vf_lang', lang); } catch(e){}
+    window.VF_LANG = lang;
+  }
+  function init(){
+    const lang = detectLang();
+    applyLang(lang);
+    document.querySelectorAll('#vfLangSw button').forEach(b => {
+      b.addEventListener('click', () => {
+        const newLang = b.dataset.lang;
+        applyLang(newLang);
+        // update URL: /volumefilter or /<lang>/volumefilter
+        const newPath = newLang === 'pt' ? '/volumefilter' : `/${newLang}/volumefilter`;
+        history.replaceState(null, '', newPath);
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+<!-- ===== JS (capture de form) ===== -->
 <script>
 document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(form => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const T = (window.VF_I18N && window.VF_I18N[window.VF_LANG || 'pt']) || {};
     const email = form.querySelector('input[name="email"]').value.trim();
     const btn = form.querySelector('button');
     const originalText = btn.textContent;
 
     if (!email || !email.includes('@')) {
-      btn.textContent = 'Email inválido';
+      btn.textContent = T.js_invalid || 'Email inválido';
       setTimeout(() => btn.textContent = originalText, 2000);
       return;
     }
 
-    btn.textContent = 'Enviando...';
+    btn.textContent = T.js_sending || 'Enviando...';
     btn.disabled = true;
 
     try {
@@ -1181,6 +1246,7 @@ document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(form =>
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
+          lang: window.VF_LANG || 'pt',
           utm_source: urlParams.get('utm_source') || 'volumefilter-landing',
           utm_campaign: urlParams.get('utm_campaign') || 'volumefilter-lead',
         }),
@@ -1189,26 +1255,21 @@ document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(form =>
 
       if (!res.ok || !data.ok) {
         const errCode = data.error || 'erro';
-        if (errCode === 'invalid_email') {
-          btn.textContent = 'Email inválido';
-        } else if (errCode === 'rate_limit') {
-          btn.textContent = 'Aguarde uns segundos';
-        } else {
-          btn.textContent = 'Erro, tenta de novo';
-        }
+        if (errCode === 'invalid_email') btn.textContent = T.js_invalid || 'Email inválido';
+        else if (errCode === 'rate_limit') btn.textContent = T.js_rate || 'Aguarde uns segundos';
+        else btn.textContent = T.js_err || 'Erro, tenta de novo';
         btn.disabled = false;
         setTimeout(() => { btn.textContent = originalText; }, 2500);
         return;
       }
 
-      btn.textContent = '✓ Verifica seu email';
+      btn.textContent = T.js_success || '✓ Verifica seu email';
       btn.style.background = 'var(--green)';
 
-      // Tracking
       if (typeof gtag !== 'undefined') gtag('event', 'lead_volumefilter', { method: 'email' });
       if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'volumefilter' });
     } catch (err) {
-      btn.textContent = 'Erro de conexão';
+      btn.textContent = T.js_conn || 'Erro de conexão';
       btn.disabled = false;
       setTimeout(() => { btn.textContent = originalText; }, 2500);
     }

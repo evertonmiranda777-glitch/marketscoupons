@@ -58,6 +58,7 @@
     { "src": "/highest-rated-prop-firms", "dest": "/best.html" },
     { "src": "/coupons", "dest": "/coupons.html" },
     { "src": "/volumefilter", "dest": "/volumefilter-landing.html" },
+    { "src": "/(en|es|fr|de|it|ar|id)/volumefilter", "dest": "/volumefilter-landing.html" },
     { "src": "/(en|es|fr|de|it|ar|id)/coupons", "dest": "/coupons.html?lang=$1" },
     { "src": "/risk-disclosure", "dest": "/risk-disclosure.html" },
     { "src": "/declaracao-de-risco", "dest": "/risk-disclosure.html" },

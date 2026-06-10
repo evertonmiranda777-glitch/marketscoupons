@@ -78,6 +78,7 @@ module.exports = async (req, res) => {
 
   const utm_source = String(body.utm_source || 'volumefilter-landing').slice(0, 80);
   const utm_campaign = String(body.utm_campaign || 'volumefilter-lead').slice(0, 80);
+  const lang = ['pt','en','es','it','fr','de','ar','id'].includes(body.lang) ? body.lang : 'pt';
 
   try {
     // 1) Upsert em email_subscribers
@@ -89,9 +90,9 @@ module.exports = async (req, res) => {
     };
     const upsertBody = {
       email,
-      lang: 'pt',
+      lang,
       source: utm_source,
-      tags: ['volumefilter-lead', utm_campaign],
+      tags: ['volumefilter-lead', utm_campaign, `lang-${lang}`],
     };
     const upsertResp = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?on_conflict=email`, {
       method: 'POST',
