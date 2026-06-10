@@ -320,11 +320,15 @@ section { padding: 100px 0; }
 .section-title {
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size: clamp(28px, 4vw, 48px);
-  line-height: 1.1;
+  font-size: clamp(22px, 3.2vw, 40px);
+  line-height: 1.15;
   letter-spacing: -0.02em;
   margin-bottom: 24px;
-  max-width: 720px;
+  max-width: 100%;
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .section-title { white-space: normal; font-size: clamp(20px, 5.5vw, 30px); }
 }
 .section-lede {
   font-size: 18px;
