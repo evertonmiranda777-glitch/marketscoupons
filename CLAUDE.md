@@ -47,6 +47,12 @@ Dado não visto = `null` ou `"TBD validar"` no DB. Detalhe: [memory/feedback_nun
 
 **REGRA EN-default LEI (2026-06-09):** site é americano. TODO conteúdo público novo (caption Telegram, push, email default, criativos, OG cards, social copy) sai em INGLÊS. Admin é PT (privado). Detalhes em `memory/feedback_site_en_default.md`. Custou retrabalho no telegram-creative v1-v8 que tinha caption em PT.
 
+**REGRA LP nova = parte do site (2026-06-10):** toda landing nova nasce com header logo SVG hexágono+M dourado padrão + footer 4 colunas (Prop Firms/Ferramentas/Links/Legal) + i18n 8 idiomas (PT/EN/ES/IT/FR/DE/AR/ID) via `<slug>-i18n.js` + lang switcher + hreflang completo + RTL automático pra árabe + rotas Vercel `/(en|es|fr|de|it|ar|id)/<slug>`. NÃO criar LP self-contained "que parece de outro site". Detalhe: `memory/feedback_lp_padrao_site_obrigatorio.md`. Custou refatorar `/volumefilter` em 2 sessões.
+
+**REGRA em-dash proibido (2026-06-10):** NUNCA usar " — " (em-dash com espaços) em conteúdo público. Substituir por ", " ou "." conforme contexto. En-dash "–" em ranges ($25K–$150K) OK. Script massa: `scripts/remove-em-dash.mjs`. Detalhe: `memory/feedback_em_dash_proibido.md`.
+
+**REGRA API consolidação (2026-06-10):** Vercel Hobby = 12 functions. Antes de criar `.js` novo em `/api`, contar `find api -name "*.js" -not -name "_*"`. Se ≥12, consolidar nova action em arquivo de feature existente com `?action=X`. Ex: `/api/leads/volumefilter` tem lead + reviews lista + reviews post no mesmo arquivo. Detalhe: `memory/feedback_consolidar_api_em_acoes.md`.
+
 ## Visão geral
 
 Site de cupons de **prop firms** de trading. Compara firmas, oferece cupons, fidelidade, blog, guias, calculadoras, análise diária. Deploy estático no Vercel.
