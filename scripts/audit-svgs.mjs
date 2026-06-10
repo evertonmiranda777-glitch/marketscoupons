@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SVG auditor — programmatic check via headless browser (chromium via Playwright)
+// SVG auditor, programmatic check via headless browser (chromium via Playwright)
 // Detects: viewBox overflow, text overlap, elements clipped
 import fs from 'node:fs';
 import path from 'node:path';

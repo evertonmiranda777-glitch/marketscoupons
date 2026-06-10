@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Markets Coupons">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Position Sizing in Prop Firms — Complete Guide 2026">
+<meta name="twitter:title" content="Position Sizing in Prop Firms, Complete Guide 2026">
 <meta name="twitter:description" content="Universal sizing formula, contracts per account, adapted Kelly, and realistic scaling in Prop Firm.">
 <meta name="twitter:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g4-bridge.png">
 <meta name="author" content="Markets Coupons Team">
@@ -68,28 +68,28 @@
         },
         {
           "@type": "Question",
-          "name": "Fixed or percentage position — which to use?",
+          "name": "Fixed or percentage position, which to use?",
           "acceptedAnswer": { "@type": "Answer", "text": "In a Prop Firm, a percentage position (fixed fractional: 0.5% to 1% of the balance) outperforms a fixed position in most scenarios because it adjusts automatically as you win or lose. A fixed position in absolute value (e.g., always 2 contracts) only works well in accounts already stabilized after the floor. Before the floor, percentage is mathematically safer." }
         },
         {
           "@type": "Question",
           "name": "How to calculate lot size in FTMO or The5%ers?",
-          "acceptedAnswer": { "@type": "Answer", "text": "In Forex, the formula is: lot = (risk in US$) ÷ (distance to loss limit in pips × pip value). In an FTMO 100K account with a risk per trade of US$ 500 and a distance of 20 pips to your exit point, the lot size is 500 ÷ (20 × 10) = 2.5 mini lots. Always round down (2 lots) — rounding up is what turns a correct thesis into a Drawdown violation over 30 trades." }
+          "acceptedAnswer": { "@type": "Answer", "text": "In Forex, the formula is: lot = (risk in US$) ÷ (distance to loss limit in pips × pip value). In an FTMO 100K account with a risk per trade of US$ 500 and a distance of 20 pips to your exit point, the lot size is 500 ÷ (20 × 10) = 2.5 mini lots. Always round down (2 lots), rounding up is what turns a correct thesis into a Drawdown violation over 30 trades." }
         },
         {
           "@type": "Question",
           "name": "Does Kelly Criterion work in a Prop Firm?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Pure Kelly kills funded accounts. The original formula (f = (bp - q) / b) assumes infinite capital and total tolerance for drawdown — two things a Prop Firm doesn't give you. In practice, traders who use Kelly in a funded account apply fractional Kelly: half or a quarter of the size the formula suggests. If Kelly says 4%, you trade 1%. This preserves the statistical advantage without blowing up the account in a normal losing streak." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Pure Kelly kills funded accounts. The original formula (f = (bp - q) / b) assumes infinite capital and total tolerance for drawdown, two things a Prop Firm doesn't give you. In practice, traders who use Kelly in a funded account apply fractional Kelly: half or a quarter of the size the formula suggests. If Kelly says 4%, you trade 1%. This preserves the statistical advantage without blowing up the account in a normal losing streak." }
         },
         {
           "@type": "Question",
           "name": "Can I increase size after winning a lot?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Increasing size after a winning streak is the #1 mistake that kills funded accounts. A 5-win streak doesn't increase the probability of the sixth — it decreases it (mean reversion). The consensual rule: never increase size before the drawdown floor locks. After the floor, gradual increases (25% at a time, not doubling), only after 2 weeks of consistency at the new size." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Increasing size after a winning streak is the #1 mistake that kills funded accounts. A 5-win streak doesn't increase the probability of the sixth, it decreases it (mean reversion). The consensual rule: never increase size before the drawdown floor locks. After the floor, gradual increases (25% at a time, not doubling), only after 2 weeks of consistency at the new size." }
         },
         {
           "@type": "Question",
           "name": "What is the difference between fixed fractional and fixed ratio?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Fixed fractional always trades with the same percentage of the balance (e.g., 1%) — size goes up and down with the balance. Fixed ratio uses a delta: every US$ X of accumulated profit releases +1 contract. Fractional is smoother and more reactive; ratio grows faster in winning accounts but punishes more in wavering accounts. In a Prop Firm, fractional is more suitable because it automatically protects itself during a drawdown." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Fixed fractional always trades with the same percentage of the balance (e.g., 1%), size goes up and down with the balance. Fixed ratio uses a delta: every US$ X of accumulated profit releases +1 contract. Fractional is smoother and more reactive; ratio grows faster in winning accounts but punishes more in wavering accounts. In a Prop Firm, fractional is more suitable because it automatically protects itself during a drawdown." }
         },
         {
           "@type": "Question",
@@ -182,7 +182,7 @@ footer.site-footer a:hover{color:var(--accent)}
       <span class="logo-mark">M</span>
       <span class="logo-txt">Markets<b>Coupons</b></span>
     </a>
-    <a href="/guides" class="nav-back" aria-label="Close — Guides"><span class="x">×</span>Close</a>
+    <a href="/guides" class="nav-back" aria-label="Close, Guides"><span class="x">×</span>Close</a>
   </div>
 </nav>
 
@@ -202,11 +202,11 @@ footer.site-footer a:hover{color:var(--accent)}
   <article id="content">
 <span class="badge">Complete Guide · Risk &amp; Math</span>
 <h1>Position Sizing in Prop Firms: The Complete Position Sizing Guide for 2026</h1>
-<p><em>Last updated: April 20, 2026 — 20 min read</em></p>
-<p><img src="/img/guides-edu/gemini-pro/hero-g4-bridge.png" alt="Position Sizing in Prop Firms — bridge between initial and scaled account, cinematic blue precision lighting"></p>
+<p><em>Last updated: April 20, 2026, 20 min read</em></p>
+<p><img src="/img/guides-edu/gemini-pro/hero-g4-bridge.png" alt="Position Sizing in Prop Firms, bridge between initial and scaled account, cinematic blue precision lighting"></p>
 
 <blockquote>
-<p><strong>TL;DR</strong> — <strong>Position sizing</strong> (position sizing) is the true driver of longevity in a <strong>Prop Firm</strong>. It's not who has the best setup that lasts 12 months in a funded account — it's who has the best sizing. This guide explains the universal formula (risk % × account ÷ distance to loss limit), the concrete table of contracts per account size in Futures, Forex lot calculation, the fallacy of comparing percentages between 25K, 50K, and 100K, how to apply Kelly Criterion without blowing up the account, the 3 schools (fixed fractional, fixed ratio, anti-martingale), size adjustment as you move up the <em>drawdown floor</em>, realistic Apex 25K to 300K scaling via payout reinvestment, management across multiple parallel accounts, and the 3 fatal mistakes that kill funded traders. By the end, you will have an executable protocol to size each trade in any firm, in any market.</p>
+<p><strong>TL;DR</strong>, <strong>Position sizing</strong> (position sizing) is the true driver of longevity in a <strong>Prop Firm</strong>. It's not who has the best setup that lasts 12 months in a funded account, it's who has the best sizing. This guide explains the universal formula (risk % × account ÷ distance to loss limit), the concrete table of contracts per account size in Futures, Forex lot calculation, the fallacy of comparing percentages between 25K, 50K, and 100K, how to apply Kelly Criterion without blowing up the account, the 3 schools (fixed fractional, fixed ratio, anti-martingale), size adjustment as you move up the <em>drawdown floor</em>, realistic Apex 25K to 300K scaling via payout reinvestment, management across multiple parallel accounts, and the 3 fatal mistakes that kill funded traders. By the end, you will have an executable protocol to size each trade in any firm, in any market.</p>
 </blockquote>
 
 <table>
@@ -228,10 +228,10 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>What is position sizing and why it's the true driver of longevity</h2>
-<p>Beginner traders confuse <strong>position sizing</strong> with "bet size." It's not that. Position sizing is the mathematical decision, made <em>before</em> opening any trade, of how much capital will be exposed to a single thesis — expressed in contracts, lots, or financial units. It's the parameter that transforms a statistical advantage into a surviving account, or a funded corpse.</p>
-<p>The importance becomes clear when you separate the two variables of any trading outcome: (1) expectation per trade, which depends on the method/setup; (2) number of trades until the account blows up, which depends almost exclusively on position sizing. Two traders with the same method can have opposite results — one lasts months funded, the other burns out in 4 days — simply because they size differently.</p>
+<p>Beginner traders confuse <strong>position sizing</strong> with "bet size." It's not that. Position sizing is the mathematical decision, made <em>before</em> opening any trade, of how much capital will be exposed to a single thesis, expressed in contracts, lots, or financial units. It's the parameter that transforms a statistical advantage into a surviving account, or a funded corpse.</p>
+<p>The importance becomes clear when you separate the two variables of any trading outcome: (1) expectation per trade, which depends on the method/setup; (2) number of trades until the account blows up, which depends almost exclusively on position sizing. Two traders with the same method can have opposite results, one lasts months funded, the other burns out in 4 days, simply because they size differently.</p>
 <p>In a <strong>Prop Firm</strong>, the asymmetry is even more brutal: the trader does not have infinite capital and does not have elastic tolerance for <strong>Drawdown</strong>. There is a contractual, programmatic floor, applied by the system. This completely changes the math of sizing. A formula that works in a personal account can be suicidal in a funded account, because a personal account allows you to survive -40% and come back; a <strong>Prop Firm</strong> closes you out at -5%.</p>
-<p>Aggregated data from communities like Prop Reviews show that <strong>over 70% of failures in 2026 are rooted in wrong sizing, not wrong setup</strong>. The setup might be perfect; if the size is too large for the account's loss limit, a single normal market fluctuation will take you down. It's the opposite of what beginners believe — they think they "got the analysis right" and lost; the truth is that <strong>the size didn't fit the available risk</strong>.</p>
+<p>Aggregated data from communities like Prop Reviews show that <strong>over 70% of failures in 2026 are rooted in wrong sizing, not wrong setup</strong>. The setup might be perfect; if the size is too large for the account's loss limit, a single normal market fluctuation will take you down. It's the opposite of what beginners believe, they think they "got the analysis right" and lost; the truth is that <strong>the size didn't fit the available risk</strong>.</p>
 
 <hr>
 
@@ -249,7 +249,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <li><strong>Distance to Loss Limit</strong>: the distance, in points/pips/ticks, between the entry price and the level where you exit if the thesis fails. This determines the actual loss per unit.</li>
 </ul>
 
-<p><strong>Futures example:</strong> Apex 50K account (balance US$ 50,000), 1% risk (US$ 500), trading ES with a 5-point distance to your exit level (1 ES point = US$ 50 in mini, US$ 5 in micro). In mini: 500 ÷ (5 × 50) = 2 maximum contracts. In micro: 500 ÷ (5 × 5) = 20 maximum contracts. Note that the formula doesn't tell you that you <em>must</em> trade 20 micros — it tells you that you <em>cannot exceed</em> that.</p>
+<p><strong>Futures example:</strong> Apex 50K account (balance US$ 50,000), 1% risk (US$ 500), trading ES with a 5-point distance to your exit level (1 ES point = US$ 50 in mini, US$ 5 in micro). In mini: 500 ÷ (5 × 50) = 2 maximum contracts. In micro: 500 ÷ (5 × 5) = 20 maximum contracts. Note that the formula doesn't tell you that you <em>must</em> trade 20 micros, it tells you that you <em>cannot exceed</em> that.</p>
 
 <p><strong>Forex example:</strong> FTMO 100K account, 0.5% risk (US$ 500), trading EURUSD with a 25-pip distance. Pip value in mini lot = US$ 10. Maximum lot = 500 ÷ (25 × 10) = 2 mini lots.</p>
 
@@ -258,7 +258,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>Position sizing in Futures: contracts per account size</h2>
-<p>The table below consolidates the surviving standard in 2026 — how much to trade in each account size, separating micro and mini, before and after the <em>drawdown floor</em> locks.</p>
+<p>The table below consolidates the surviving standard in 2026, how much to trade in each account size, separating micro and mini, before and after the <em>drawdown floor</em> locks.</p>
 
 <table>
 <thead>
@@ -275,13 +275,13 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <p>Three important takeaways from this table:</p>
 
-<p><strong>First:</strong> the jump between "before" and "after" the floor is real but modest — generally +50% to +100%, not 5x. Those who triple their size after the floor are violating the "gradual increase" rule and usually return to square one in 2 weeks.</p>
+<p><strong>First:</strong> the jump between "before" and "after" the floor is real but modest, generally +50% to +100%, not 5x. Those who triple their size after the floor are violating the "gradual increase" rule and usually return to square one in 2 weeks.</p>
 
 <p><strong>Second:</strong> micros are mathematically superior for learning. A mini ES at 5 points = US$ 250 risk; a micro MES at 5 points = US$ 25. The granularity allows for fine sizing adjustments that mini does not. For a 25K or 50K account, always starting with micros is the path of least error cost.</p>
 
-<p><strong>Third:</strong> the difference between 50K and 100K is not "double the contracts." It's about +50% to +75%, because the <strong>Drawdown</strong> limit does not double linearly — and because the psychological risk of trading a larger size doubles before the balance does.</p>
+<p><strong>Third:</strong> the difference between 50K and 100K is not "double the contracts." It's about +50% to +75%, because the <strong>Drawdown</strong> limit does not double linearly, and because the psychological risk of trading a larger size doubles before the balance does.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/contracts-per-size.png" alt="Contracts per account size — visual table showing micro and mini Futures in 25K, 50K, 100K, 150K and 300K, with before and after the drawdown floor"></p>
+<p><img src="/img/guides-edu/gemini-pro/contracts-per-size.png" alt="Contracts per account size, visual table showing micro and mini Futures in 25K, 50K, 100K, 150K and 300K, with before and after the drawdown floor"></p>
 
 <hr>
 
@@ -299,27 +299,27 @@ footer.site-footer a:hover{color:var(--accent)}
 <p><strong>Maximum Lot = Risk in US$ ÷ (Distance in pips × Pip Value)</strong></p>
 </blockquote>
 
-<p><strong>Example:</strong> FTMO 100K with a Static Drawdown of 10% (US$ 10,000), Daily Loss of 5% (US$ 5,000). You set a personal daily cap at 50% of the Daily Loss = US$ 2,500. Divide by 5 possible trades per day = US$ 500 risk per trade. With a 30-pip distance to your exit point in EURUSD, the maximum lot size is 500 ÷ (30 × 10) = 1.67 mini lots — which rounds down to <strong>1 mini lot</strong>. Always round down.</p>
+<p><strong>Example:</strong> FTMO 100K with a Static Drawdown of 10% (US$ 10,000), Daily Loss of 5% (US$ 5,000). You set a personal daily cap at 50% of the Daily Loss = US$ 2,500. Divide by 5 possible trades per day = US$ 500 risk per trade. With a 30-pip distance to your exit point in EURUSD, the maximum lot size is 500 ÷ (30 × 10) = 1.67 mini lots, which rounds down to <strong>1 mini lot</strong>. Always round down.</p>
 
-<p>The Forex trap is psychological leverage. The platform allows you to open 5 mini lots or even 1 standard lot in a 100K account. This <em>does not</em> mean you should — it just means it's technically possible. In a <strong>Prop Firm</strong>, the real limit is the Drawdown, not the available margin. Trading 5 mini lots with a 30-pip stop = US$ 1,500 risk per trade = 30% of the Daily Loss in a single trade. Reset math.</p>
+<p>The Forex trap is psychological leverage. The platform allows you to open 5 mini lots or even 1 standard lot in a 100K account. This <em>does not</em> mean you should, it just means it's technically possible. In a <strong>Prop Firm</strong>, the real limit is the Drawdown, not the available margin. Trading 5 mini lots with a 30-pip stop = US$ 1,500 risk per trade = 30% of the Daily Loss in a single trade. Reset math.</p>
 
 <hr>
 
 <h2>The mistake of comparing percentages between 25K, 50K, and 100K</h2>
 <p>A conceptual mistake that beginner traders make all the time is comparing balance percentages between different sized accounts and concluding that "they are equivalent." They are not. This is the <em>fallacy of nominal percentage</em> in a <strong>Prop Firm</strong>.</p>
 
-<p>Example of flawed reasoning: "1% in a 25K account is US$ 250, 1% in a 100K account is US$ 1,000 — same percentage, same rule, same relative risk." Mathematically, the balance scales. In practice, <strong>it does not scale</strong> for three reasons:</p>
+<p>Example of flawed reasoning: "1% in a 25K account is US$ 250, 1% in a 100K account is US$ 1,000, same percentage, same rule, same relative risk." Mathematically, the balance scales. In practice, <strong>it does not scale</strong> for three reasons:</p>
 
 <h3>Reason 1: The fixed cost of slippage and commissions does not scale</h3>
-<p>A round-trip in ES costs about US$ 4 in commission + about 0.25 points (US$ 12.50) in average slippage during liquid hours. In a 25K account risking US$ 250, these costs eat up 6.6% of the risk. In a 100K account risking US$ 1,000, the same costs are only 1.65% of the risk. The larger account is 4x more efficient per trade — even before the trade result.</p>
+<p>A round-trip in ES costs about US$ 4 in commission + about 0.25 points (US$ 12.50) in average slippage during liquid hours. In a 25K account risking US$ 250, these costs eat up 6.6% of the risk. In a 100K account risking US$ 1,000, the same costs are only 1.65% of the risk. The larger account is 4x more efficient per trade, even before the trade result.</p>
 
 <h3>Reason 2: The Drawdown does not scale linearly with the balance</h3>
-<p>Apex 25K has a US$ 1,500 trailing; Apex 100K has a US$ 3,000 trailing. The balance increased 4x, the trailing increased 2x. This means that the relative safety margin <em>shrinks</em> as you go up — Drawdown/Balance is 6% in the 25K and only 3% in the 100K. Larger accounts are mathematically <em>tighter</em> on margin, not looser.</p>
+<p>Apex 25K has a US$ 1,500 trailing; Apex 100K has a US$ 3,000 trailing. The balance increased 4x, the trailing increased 2x. This means that the relative safety margin <em>shrinks</em> as you go up, Drawdown/Balance is 6% in the 25K and only 3% in the 100K. Larger accounts are mathematically <em>tighter</em> on margin, not looser.</p>
 
 <h3>Reason 3: The target and goal remain in absolute value</h3>
 <p>Passing an Apex 100K requires an 8% target (US$ 8,000). Passing a 25K requires 8% (US$ 2,000). In <em>time to reach the target</em> trading with the same contract size, it's almost equivalent. But the continuous risk of violation is different, because the locked Drawdown is different.</p>
 
-<p>The conclusion is counter-intuitive: small accounts are not "easier," they are just cheaper. Large accounts are not "easier," they are just more expensive. The correct sizing strategy is never a universal fixed percentage — it is a function of the specific (Balance, Drawdown) pair of that account.</p>
+<p>The conclusion is counter-intuitive: small accounts are not "easier," they are just cheaper. Large accounts are not "easier," they are just more expensive. The correct sizing strategy is never a universal fixed percentage, it is a function of the specific (Balance, Drawdown) pair of that account.</p>
 
 <hr>
 
@@ -335,7 +335,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Ten percent. In an Apex 50K account, that would be US$ 5,000 risk per trade. <strong>The Drawdown is US$ 2,500</strong>. Pure Kelly, applied to a funded account, breaks the account in A SINGLE losing trade. Why? Because Kelly assumes infinite capital and total tolerance for drawdown. A Prop Firm gives you neither.</p>
 
 <h3>The solution: Fractional Kelly</h3>
-<p>Professional traders have been using "fractional Kelly" for decades — trading with a fraction of what Kelly suggests. Common conventions:</p>
+<p>Professional traders have been using "fractional Kelly" for decades, trading with a fraction of what Kelly suggests. Common conventions:</p>
 <ul>
 <li><strong>Half Kelly (50%):</strong> half the suggested size. Still aggressive.</li>
 <li><strong>Quarter Kelly (25%):</strong> a quarter of the suggested. Sensible standard in a personal market.</li>
@@ -355,31 +355,31 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Always trades with the same percentage of the balance (e.g., 1%). Size in absolute value varies with balance: US$ 500 in a US$ 50K account, US$ 450 if the balance drops to US$ 45K, US$ 550 if it rises to US$ 55K. Reactive, smooth, automatically defends during a drawdown. <strong>It is the most suitable for a Prop Firm</strong> because it self-protects as the account shrinks.</p>
 
 <h3>Fixed Ratio</h3>
-<p>Developed by Ryan Jones. Each delta (e.g., US$ 2,000 of accumulated profit) releases +1 contract/lot. Grows faster than fractional in winning accounts, because the increase is discrete and not smooth. But it punishes more in wavering accounts because it doesn't reduce when you lose — it only goes up. <strong>Unsuitable for a Prop Firm</strong> due to asymmetry (rises in uptrends, doesn't fall in downtrends = Drawdown shortens).</p>
+<p>Developed by Ryan Jones. Each delta (e.g., US$ 2,000 of accumulated profit) releases +1 contract/lot. Grows faster than fractional in winning accounts, because the increase is discrete and not smooth. But it punishes more in wavering accounts because it doesn't reduce when you lose, it only goes up. <strong>Unsuitable for a Prop Firm</strong> due to asymmetry (rises in uptrends, doesn't fall in downtrends = Drawdown shortens).</p>
 
 <h3>Anti-Martingale</h3>
-<p>Increases size after a win, reduces after a loss. It's the opposite logic of Martingale (which doubles after a loss). Mathematically superior to Martingale, but still prone to "increasing at the top" — mistake #1 in a funded account. <strong>Partial use in a Prop Firm</strong>: only increase after 2 weeks of consistency, never after a good day.</p>
+<p>Increases size after a win, reduces after a loss. It's the opposite logic of Martingale (which doubles after a loss). Mathematically superior to Martingale, but still prone to "increasing at the top", mistake #1 in a funded account. <strong>Partial use in a Prop Firm</strong>: only increase after 2 weeks of consistency, never after a good day.</p>
 
 <p><strong>Practical recommendation:</strong> in a <strong>Prop Firm</strong>, <em>fixed fractional</em> at 0.5% to 1% until the drawdown floor locks. After the floor, a smooth transition to <em>moderate</em> anti-martingale: +25% in size every 2 consistent weeks, never +100%.</p>
 
 <hr>
 
 <h2>Adjusting sizing as you move up the drawdown floor</h2>
-<p>The Drawdown Management in Prop Firms guide explains in detail the concept of <em>drawdown floor</em> — the point where Apex's Trailing Drawdown locks and becomes static. Here, we're interested in how sizing should change in each phase of the cycle.</p>
+<p>The Drawdown Management in Prop Firms guide explains in detail the concept of <em>drawdown floor</em>, the point where Apex's Trailing Drawdown locks and becomes static. Here, we're interested in how sizing should change in each phase of the cycle.</p>
 
-<h3>Phase 1 — Pre-floor (balance below initial + trailing + US$ 100)</h3>
+<h3>Phase 1, Pre-floor (balance below initial + trailing + US$ 100)</h3>
 <p>Survival mode. Absolute minimum size. In Apex 50K: 1 mini ES or 3 micros per trade, maximum risk 0.5% of balance (US$ 250). Total focus on not dragging the floor down with you. Only trade A+ setups, never A-.</p>
 
-<h3>Phase 2 — Active floor, newly locked account</h3>
-<p>Transition moment. Size increases gradually: +25% per week, at most. From 1 mini to "1 mini sometimes 2" as very high-quality setups appear. Risk can rise to 0.75% of the balance. Still maximum discipline — this is when many think "I've passed the hard part" and give back the gains.</p>
+<h3>Phase 2, Active floor, newly locked account</h3>
+<p>Transition moment. Size increases gradually: +25% per week, at most. From 1 mini to "1 mini sometimes 2" as very high-quality setups appear. Risk can rise to 0.75% of the balance. Still maximum discipline, this is when many think "I've passed the hard part" and give back the gains.</p>
 
-<h3>Phase 3 — Stabilized account (2+ weeks post-floor)</h3>
-<p>Building mode. Standard size: 2 minis or 8 micros in 50K. 1% risk of balance. A+ and A- setups accepted. Here, moderate anti-martingale begins — increases after proven consistency, never after a big day.</p>
+<h3>Phase 3, Stabilized account (2+ weeks post-floor)</h3>
+<p>Building mode. Standard size: 2 minis or 8 micros in 50K. 1% risk of balance. A+ and A- setups accepted. Here, moderate anti-martingale begins, increases after proven consistency, never after a big day.</p>
 
-<h3>Phase 4 — Performance Account / funded account</h3>
+<h3>Phase 4, Performance Account / funded account</h3>
 <p>The cycle restarts, but now paying for real. Reverting to Phase 1 sizing in the first 3 weeks is the golden rule. Many traders who pass the challenge fail in the first week of being funded by maintaining Phase 3 size in an account that doesn't yet have the <em>safety net</em> locked.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/slow-vs-fast.png" alt="Slow vs aggressive growth — two balance curves showing that conservative sizing outperforms aggressive sizing over 12 months"></p>
+<p><img src="/img/guides-edu/gemini-pro/slow-vs-fast.png" alt="Slow vs aggressive growth, two balance curves showing that conservative sizing outperforms aggressive sizing over 12 months"></p>
 
 <blockquote>
 <p><strong>Practical rule:</strong> the correct sizing in each phase is 50% more conservative than logic pushes you to use. If your mind says "you can do 2 contracts," trade 1. If it says "you can do 3," trade 2. The behavioral bias in a funded account is always upwards; compensating it downwards is what survives.</p>
@@ -388,7 +388,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>Aggressive vs conservative scaling: the ROI math over 12 months</h2>
-<p>A didactic comparison between two hypothetical traders, same method, same accuracy, same setup — only the sizing differs.</p>
+<p>A didactic comparison between two hypothetical traders, same method, same accuracy, same setup, only the sizing differs.</p>
 
 <table>
 <thead>
@@ -425,7 +425,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Legitimate way to trade multiple accounts: account A at NY open in ES, account B mid-session in NQ, account C at close in GC. Different times and assets = independent strategies, permitted. Each account with individually calculated sizing.</p>
 
 <h3>Rule 4: Cognitive correlation exists even without copy</h3>
-<p>Even when trading staggered accounts, the mindset is the same. A bad day in one account contaminates the others. Pragmatic rule: if account A lost today, reduce size by 25% in B and C. The correlation between accounts of the same trader is high even without copy — because the operator doesn't change between them.</p>
+<p>Even when trading staggered accounts, the mindset is the same. A bad day in one account contaminates the others. Pragmatic rule: if account A lost today, reduce size by 25% in B and C. The correlation between accounts of the same trader is high even without copy, because the operator doesn't change between them.</p>
 
 <h3>Rule 5: Prioritization order in reduction</h3>
 <p>When you need to reduce exposure (bad day, bad week), first reduce the account with the lowest safety margin. Keep the comfortable accounts trading normally, protect the tight ones in defensive mode.</p>
@@ -452,7 +452,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <h4>Months 10 to 12</h4>
 <p>Passes both 100K accounts. Final portfolio: 3×25K + 2×50K + 2×100K = <strong>US$ 375,000 notional</strong>. Quarterly payout: US$ 9,000+. Zero reinvestment in the first 3 passes; after month 4, the cost of new accounts came from payouts, not out of pocket.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="Realistic Apex scaling — 12-month timeline showing composition of 25K + 50K + 100K accounts until reaching US$ 375,000 notional"></p>
+<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="Realistic Apex scaling, 12-month timeline showing composition of 25K + 50K + 100K accounts until reaching US$ 375,000 notional"></p>
 
 <p>The essential point: the trader never needed to increase the sizing per account above the standard. Each account individually traded as if it were the only one. The scale came from the <strong>number of units</strong>, not the <strong>size of the unit</strong>. It's the difference between sustainable and fragile.</p>
 
@@ -463,9 +463,9 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <p>Numerical example: 10% monthly ROI on 1 50K account = US$ 5,000/month. The same 10% on 5 50K accounts traded in parallel = US$ 25,000/month. The difference is multiplicative. But the second situation requires 5x greater discipline, because the 5 Drawdowns run in parallel and cognitive fatigue is real.</p>
 
-<p>The compound effect works if — and only if — the sizing per account remains conservative. Increasing sizing to "take advantage of scale" breaks the logic. What scales is the number of accounts; the size within each remains fixed. This counter-intuits most traders, who want to "increase the bet" as they gain confidence.</p>
+<p>The compound effect works if, and only if, the sizing per account remains conservative. Increasing sizing to "take advantage of scale" breaks the logic. What scales is the number of accounts; the size within each remains fixed. This counter-intuits most traders, who want to "increase the bet" as they gain confidence.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="Compound effect — graph showing how the composition of multiple small accounts outperforms the linear growth of a large account over 24 months"></p>
+<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="Compound effect, graph showing how the composition of multiple small accounts outperforms the linear growth of a large account over 24 months"></p>
 
 <blockquote>
 <p><strong>Practical insight:</strong> the trader who multiplies by 10 in 24 months never did it by doubling in one account. They did it by trading the same size in 10 accounts, built one by one with reinvested payouts. Arithmetic growth in size, geometric in units.</p>
@@ -476,15 +476,15 @@ footer.site-footer a:hover{color:var(--accent)}
 <h2>The 3 fatal sizing mistakes that kill funded traders</h2>
 
 <h3>Mistake 1: Increasing size after a loss</h3>
-<p>The instinct is to compensate — "I lost US$ 300, next trade I'll double to recover quickly." It's the entry point to Martingale, and it's the fastest path to Drawdown violation. A sequence of 3 losses with increasing sizing breaks the Daily Loss in an afternoon. The inverse rule: <strong>after a loss, the next trade starts with 50% of the normal size</strong>, and only returns to normal after 2 winning trades.</p>
+<p>The instinct is to compensate, "I lost US$ 300, next trade I'll double to recover quickly." It's the entry point to Martingale, and it's the fastest path to Drawdown violation. A sequence of 3 losses with increasing sizing breaks the Daily Loss in an afternoon. The inverse rule: <strong>after a loss, the next trade starts with 50% of the normal size</strong>, and only returns to normal after 2 winning trades.</p>
 
 <h3>Mistake 2: Decreasing size after a gain</h3>
 <p>The opposite of Mistake 1 but also common, rooted in the fear of "giving back profits." Traders cut sizing after a big gain, miss the next opportunity, and the net result of the sequence is smaller than it would be with consistent sizing. The statistical advantage of the method only manifests in volume; reducing after a gain is self-sabotaging the method. The rule: <strong>the size after a gain is the same as before a gain</strong>. Only change in cycles, not in individual trades.</p>
 
 <h3>Mistake 3: Increasing size "because the setup is obvious"</h3>
-<p>The trade seems perfect, the reading is clear, the temptation to double the size is enormous. This is precisely when the brain is most calibrated to make mistakes. An "obvious" setup is usually market consensus — and consensus is what reverses. The rule: <strong>never alter sizing in the heat of the moment</strong>. The size was defined before the platform opened; it does not change until the platform closes.</p>
+<p>The trade seems perfect, the reading is clear, the temptation to double the size is enormous. This is precisely when the brain is most calibrated to make mistakes. An "obvious" setup is usually market consensus, and consensus is what reverses. The rule: <strong>never alter sizing in the heat of the moment</strong>. The size was defined before the platform opened; it does not change until the platform closes.</p>
 
-<p>These three mistakes, combined, account for most Drawdown violations in 2026. It's not the method, it's not the market, it's not the firm — it's the trader altering sizing in emotional response to recent results. The antidote is always the same: <strong>sizing is decided by protocol, not by trade</strong>.</p>
+<p>These three mistakes, combined, account for most Drawdown violations in 2026. It's not the method, it's not the market, it's not the firm, it's the trader altering sizing in emotional response to recent results. The antidote is always the same: <strong>sizing is decided by protocol, not by trade</strong>.</p>
 
 <hr>
 
@@ -518,6 +518,6 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <h2>Related Guides</h2>
 <ul>
-<li><a href="/guides/o-que-e-uma-prop-firm">What is a Prop Firm</a> — Model, payouts, and history of the allocated capital market</li>
+<li><a href="/guides/o-que-e-uma-prop-firm">What is a Prop Firm</a>, Model, payouts, and history of the allocated capital market</li>
 <li><a href="/guides/como-passar
 <div class="guide-back-cta" style="margin:40px 0 8px;display:flex;justify-content:center"><a href="/en/guides" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#E6EAF2;font-weight:600;font-size:15px;text-decoration:none;background:rgba(255,255,255,.03);transition:.2s" onmouseover="this.style.borderColor='#F0B429';this.style.color='#F0B429'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">← See all guides</a></div>

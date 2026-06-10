@@ -19,7 +19,7 @@ function isAllowedOrigin(origin) {
   return getAllowed().includes(origin);
 }
 
-// Aplica CORS. Retorna true se já respondeu (OPTIONS preflight) — handler deve retornar.
+// Aplica CORS. Retorna true se já respondeu (OPTIONS preflight), handler deve retornar.
 function applyCors(req, res, opts = {}) {
   const methods = opts.methods || 'POST, OPTIONS';
   const headers = opts.headers || 'Content-Type, Authorization';

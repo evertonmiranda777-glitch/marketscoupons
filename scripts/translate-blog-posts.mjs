@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * translate-blog-posts.mjs — Traduz posts PT-only do blog_posts via Gemini 2.5 Flash.
+ * translate-blog-posts.mjs, Traduz posts PT-only do blog_posts via Gemini 2.5 Flash.
  *
  * Uso:
  *   node scripts/translate-blog-posts.mjs                      # todos faltantes
@@ -32,7 +32,7 @@ if (!GEMINI_KEY) { console.error('GEMINI_API_KEY missing'); process.exit(1); }
 if (!SR) { console.error('SUPABASE_SERVICE_ROLE missing in env'); process.exit(1); }
 
 const MODEL = 'gemini-2.5-flash';
-// Vertex AI endpoint (a key restrita pos-hardening 2026-04-27 — generativelanguage.googleapis.com bloqueada)
+// Vertex AI endpoint (a key restrita pos-hardening 2026-04-27, generativelanguage.googleapis.com bloqueada)
 const API = `https://aiplatform.googleapis.com/v1/publishers/google/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
 
 const LANGS = {
@@ -155,7 +155,7 @@ async function translatePost(ptPost, targetLang) {
   if (!newSlug) throw new Error(`no ${targetLang} slug for ${ptPost.slug}`);
 
   if (await postExists(newSlug, targetLang)) {
-    console.log(`  [SKIP] ${newSlug} (${targetLang}) — already exists`);
+    console.log(`  [SKIP] ${newSlug} (${targetLang}), already exists`);
     return null;
   }
 

@@ -1,8 +1,8 @@
-# B.4 — Proposta de Diff: Form de Signup Expandido
+# B.4, Proposta de Diff: Form de Signup Expandido
 
 **Data:** 2026-04-29
-**Fase:** B.4 (Fix #1.6 — Match Quality CAPI series)
-**Status:** PROPOSTA — aguardando OK do user antes de aplicar.
+**Fase:** B.4 (Fix #1.6, Match Quality CAPI series)
+**Status:** PROPOSTA, aguardando OK do user antes de aplicar.
 
 ---
 
@@ -16,7 +16,7 @@
 - Senha
 - Telefone (placeholder `+55 11 99999-9999`, sem validação por país)
 - Cidade + Estado (row, ambos `<input>` texto livre)
-- País — `<select>` com **labels em português** (`value="Brasil"`, `value="Estados Unidos"`, ...) — ❌ **incompatível com helper B.5** que espera ISO-2 (`BR`, `US`)
+- País, `<select>` com **labels em português** (`value="Brasil"`, `value="Estados Unidos"`, ...), ❌ **incompatível com helper B.5** que espera ISO-2 (`BR`, `US`)
 - Botão "Criar Conta"
 - Switch login + footer privacy/terms
 
@@ -34,15 +34,15 @@
 - Valida só `name+email+pass` obrigatórios e senha ≥6 chars
 - Chama `validateEmailMx` (B.3.2.1) ✅ já conectado
 - Submete `signUp` com `data: { full_name, phone, city, state, country }` em `raw_user_meta_data`
-- Trigger `handle_new_user` (B.1/B.3.3) já espera os 14 campos novos — falta o form mandar
+- Trigger `handle_new_user` (B.1/B.3.3) já espera os 14 campos novos, falta o form mandar
 
 **Helpers já disponíveis:**
-- `validatePhone(raw)` — só conta dígitos (7-15), não valida E.164 nem por país
-- `_phoneMinDigits` — map de `+55 → 10, +1 → 10, ...` já definido
-- `_emailFormatRe` — regex format
-- `validateEmailMx` — server validation
-- `fetchAddressByZip(zip, country)` — B.5, espera `country` ISO-2
-- `_geo.geo_country` — country code ISO-2 do IP (ipinfo)
+- `validatePhone(raw)`, só conta dígitos (7-15), não valida E.164 nem por país
+- `_phoneMinDigits`, map de `+55 → 10, +1 → 10, ...` já definido
+- `_emailFormatRe`, regex format
+- `validateEmailMx`, server validation
+- `fetchAddressByZip(zip, country)`, B.5, espera `country` ISO-2
+- `_geo.geo_country`, country code ISO-2 do IP (ipinfo)
 
 ---
 
@@ -51,7 +51,7 @@
 ### 2.1 HTML do form (`index.html:3262-3299` rewrite)
 
 ```html
-<!-- SIGNUP FORM (B.4 — expandido) -->
+<!-- SIGNUP FORM (B.4, expandido) -->
 <div class="auth-form" id="auth-signup-form" style="display:none;">
   <div class="auth-form-title" data-i18n="signup_titulo_new">Criar Conta</div>
   <div class="auth-sub" data-i18n="signup_subtitulo">Desbloqueie oportunidades ilimitadas no trading.</div>
@@ -102,7 +102,7 @@
     <input type="date" id="auth-signup-birthday" max="2008-01-01">
   </div>
 
-  <!-- 7. País (DROPDOWN ISO-2 — não mais labels em PT) -->
+  <!-- 7. País (DROPDOWN ISO-2, não mais labels em PT) -->
   <div class="auth-field">
     <label data-i18n="signup_pais">País</label>
     <select id="auth-signup-country" onchange="onCountryChange()">
@@ -186,12 +186,12 @@
 .auth-terms-row a:hover{text-decoration:underline;}
 ```
 
-### 2.3 JS — novas funções e revisão de `doAuthSignup`
+### 2.3 JS, novas funções e revisão de `doAuthSignup`
 
 **Inserir em `app.js` (próximo a `validateEmailMx` ~5459):**
 
 ```js
-// B.4 — country → state dropdown options
+// B.4, country → state dropdown options
 const STATES_BR = [['AC','Acre'],['AL','Alagoas'],['AP','Amapá'],['AM','Amazonas'],['BA','Bahia'],['CE','Ceará'],['DF','Distrito Federal'],['ES','Espírito Santo'],['GO','Goiás'],['MA','Maranhão'],['MT','Mato Grosso'],['MS','Mato Grosso do Sul'],['MG','Minas Gerais'],['PA','Pará'],['PB','Paraíba'],['PR','Paraná'],['PE','Pernambuco'],['PI','Piauí'],['RJ','Rio de Janeiro'],['RN','Rio Grande do Norte'],['RS','Rio Grande do Sul'],['RO','Rondônia'],['RR','Roraima'],['SC','Santa Catarina'],['SP','São Paulo'],['SE','Sergipe'],['TO','Tocantins']];
 const STATES_US = [['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','District of Columbia'],['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']];
 
@@ -239,7 +239,7 @@ function renderStateField(country) {
   let inner;
   if (country === 'BR' || country === 'US') {
     const list = country === 'BR' ? STATES_BR : STATES_US;
-    inner = `<select id="auth-signup-state"><option value="">--</option>${list.map(([c,n])=>`<option value="${c}">${c} — ${n}</option>`).join('')}</select>`;
+    inner = `<select id="auth-signup-state"><option value="">--</option>${list.map(([c,n])=>`<option value="${c}">${c}, ${n}</option>`).join('')}</select>`;
   } else {
     inner = '<input type="text" id="auth-signup-state" placeholder="State / Region">';
   }
@@ -329,7 +329,7 @@ async function doAuthSignup() {
   const btn = document.getElementById('signup-btn');
   btn.disabled = true; btn.textContent = t('auth_validando_email')||'Validating email...';
 
-  // B.3.2.1 — email validation
+  // B.3.2.1, email validation
   const validation = await validateEmailMx(email);
   if (validation && validation.valid === false) {
     btn.disabled = false; btn.textContent = t('auth_btn_criar');
@@ -415,9 +415,9 @@ ES/FR/DE/IT/AR seguem mesmo padrão. **Total: 17 chaves × 7 idiomas = 119 entri
 
 ## 4. Breaking changes esperados
 
-1. **`document.getElementById('auth-signup-name')` deixa de existir** — busca por callers no codebase (caller único é `doAuthSignup` que será reescrito).
-2. **`document.getElementById('auth-signup-country').value` antes era "Brasil"/"Estados Unidos"** → agora ISO-2 ("BR"/"US"). Qualquer caller fora do `doAuthSignup` que dependia da string em PT vai quebrar. **Audit:** grep por `auth-signup-country` mostra que só `doAuthSignup` lê esse valor — sem outros callers.
-3. **Estado vai como código ISO** (SP, NY, ...) em vez de texto livre quando BR/US — aumenta Match Quality CAPI mas pode quebrar dashboards admin que filtram por nome completo do estado. **Mitigação:** trigger / coluna no DB já é texto livre, aceita ambos. Dashboards eventualmente precisarão atualizar lookup pra aceitar siglas.
+1. **`document.getElementById('auth-signup-name')` deixa de existir**, busca por callers no codebase (caller único é `doAuthSignup` que será reescrito).
+2. **`document.getElementById('auth-signup-country').value` antes era "Brasil"/"Estados Unidos"** → agora ISO-2 ("BR"/"US"). Qualquer caller fora do `doAuthSignup` que dependia da string em PT vai quebrar. **Audit:** grep por `auth-signup-country` mostra que só `doAuthSignup` lê esse valor, sem outros callers.
+3. **Estado vai como código ISO** (SP, NY, ...) em vez de texto livre quando BR/US, aumenta Match Quality CAPI mas pode quebrar dashboards admin que filtram por nome completo do estado. **Mitigação:** trigger / coluna no DB já é texto livre, aceita ambos. Dashboards eventualmente precisarão atualizar lookup pra aceitar siglas.
 
 ---
 
@@ -429,7 +429,7 @@ ES/FR/DE/IT/AR seguem mesmo padrão. **Total: 17 chaves × 7 idiomas = 119 entri
 | 2 | Submit com todos os 14 campos preenchidos | ✅ todos chegam em raw_user_meta_data, trigger insere completo |
 | 3 | CEP BR `01310-100` (country=BR) → blur | endereço="Avenida Paulista", cidade="São Paulo", state="SP" auto-preenchidos |
 | 4 | ZIP US `90210` (country=US) → blur | city="Beverly Hills", state dropdown US seleciona "CA"; address vazio (user preenche) |
-| 5 | CEP `00000-000` (country=BR) → blur | mensagem erro "CEP não encontrado, preencha manualmente" — form NÃO trava |
+| 5 | CEP `00000-000` (country=BR) → blur | mensagem erro "CEP não encontrado, preencha manualmente", form NÃO trava |
 | 6 | Country muda BR → US → AR | dropdown estado vira US dropdown; depois vira input texto; placeholder phone muda |
 | 7 | Telefone `(11) 99999-9999` (country=BR) → submit | normalizePhoneE164 → `+5511999999999` no DB |
 | 8 | Birthday `2010-01-01` (15 anos) → submit | erro "Você deve ter 18 anos ou mais"; signUp não chamado |
@@ -446,8 +446,8 @@ ES/FR/DE/IT/AR seguem mesmo padrão. **Total: 17 chaves × 7 idiomas = 119 entri
 **Decisões pra você confirmar:**
 
 1. **Country=Brasil em users existentes:** os 14 users legacy têm `country='Brasil'` (string PT). Migração: SQL UPDATE pra converter pra ISO-2? Ou deixa misto e aceita no admin? Sugestão: deixa, dashboards eventualmente filtram por ambos.
-2. **CSP `accent-color` em checkbox:** usa `var(--gold)` — funciona em browsers modernos. IE11/legacy ignora silenciosamente (irrelevante).
-3. **CEP debounce vs blur:** propus `onblur`. Alternativa: `oninput` + debounce 500ms (dispara enquanto user digita). Blur é mais conservador (só dispara quando user sai do campo) — sugiro manter blur.
+2. **CSP `accent-color` em checkbox:** usa `var(--gold)`, funciona em browsers modernos. IE11/legacy ignora silenciosamente (irrelevante).
+3. **CEP debounce vs blur:** propus `onblur`. Alternativa: `oninput` + debounce 500ms (dispara enquanto user digita). Blur é mais conservador (só dispara quando user sai do campo), sugiro manter blur.
 4. **Lista de países do dropdown:** propus 26 países cobrindo LATAM + Europa principal + AU/JP/CA. **Outro** vira `value="OTHER"` (helper rejeita com `unsupported_country` de propósito). Quer expandir? Reduzir? Reordenar?
 5. **`max="2008-01-01"` no input date:** trava picker do browser em datas que dariam <18 anos (defesa em profundidade complementar à validação JS). Quer mexer?
 

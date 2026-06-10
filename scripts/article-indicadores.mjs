@@ -11,16 +11,16 @@ const meta = {
   lang: 'pt',
   icon: '📈',
   author: 'Markets Coupons',
-  excerpt: 'Indicadores técnicos não são oráculos — são lentes. Cada um responde uma pergunta diferente: tendência, momentum, volatilidade, volume, sobrecompra. Este guia cobre os 12 indicadores que toda mesa profissional usa, quando usar cada um, e por que combinar mais de 3 vira ruído.',
+  excerpt: 'Indicadores técnicos não são oráculos, são lentes. Cada um responde uma pergunta diferente: tendência, momentum, volatilidade, volume, sobrecompra. Este guia cobre os 12 indicadores que toda mesa profissional usa, quando usar cada um, e por que combinar mais de 3 vira ruído.',
   cover_url: cdn(slug, 'hero.jpeg')
 };
 
 const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="Indicadores técnicos sobrepostos em gráfico - médias móveis, RSI e Bollinger Bands">
 
-<h2>Indicador Não é Oráculo — É Lente</h2>
+<h2>Indicador Não é Oráculo, É Lente</h2>
 <p>Quem entra na análise técnica imagina indicadores como botões mágicos: aplica RSI, vira semáforo verde/vermelho, opera. Em três meses, conta zerada. A razão: <strong>indicador não diz pra onde o mercado vai. Indicador descreve o que o mercado está fazendo</strong>. Saber a diferença entre as duas frases separa amadores de profissionais.</p>
-<p>Cada indicador responde uma pergunta específica. RSI: o ativo está sobrecomprado ou sobrevendido em termos relativos? Médias móveis: qual é a tendência dominante? Bollinger Bands: a volatilidade está expandindo ou contraindo? Volume: há convicção institucional por trás desse movimento? Misturar perguntas — ou tentar responder a mesma pergunta com cinco indicadores diferentes — é o que gera o "spaghetti chart" que mata contas.</p>
+<p>Cada indicador responde uma pergunta específica. RSI: o ativo está sobrecomprado ou sobrevendido em termos relativos? Médias móveis: qual é a tendência dominante? Bollinger Bands: a volatilidade está expandindo ou contraindo? Volume: há convicção institucional por trás desse movimento? Misturar perguntas, ou tentar responder a mesma pergunta com cinco indicadores diferentes, é o que gera o "spaghetti chart" que mata contas.</p>
 <p>Este guia cobre os 12 indicadores mais usados pelos traders profissionais, agrupados por <strong>categoria de pergunta</strong>. A regra de ouro: use no máximo 1 indicador de cada categoria, totalizando no máximo 3-4 simultâneos. Mais que isso é decoração, não análise.</p>
 
 <div class="callout callout-gold">
@@ -33,7 +33,7 @@ const body = `
 <table>
 <thead><tr><th>Categoria</th><th>Pergunta que responde</th><th>Exemplos</th><th>Quando usar</th></tr></thead>
 <tbody>
-<tr><td><strong>Tendência</strong></td><td>O mercado tem direção dominante?</td><td>Médias móveis (SMA, EMA), MACD, ADX</td><td>Sempre — primeira leitura do dia</td></tr>
+<tr><td><strong>Tendência</strong></td><td>O mercado tem direção dominante?</td><td>Médias móveis (SMA, EMA), MACD, ADX</td><td>Sempre, primeira leitura do dia</td></tr>
 <tr><td><strong>Momentum</strong></td><td>A tendência está acelerando ou desacelerando?</td><td>RSI, Estocástico, ROC</td><td>Pra detectar exaustão e divergências</td></tr>
 <tr><td><strong>Volatilidade</strong></td><td>O range de preço está se expandindo ou contraindo?</td><td>Bollinger Bands, ATR, Keltner Channels</td><td>Pra dimensionar stops e detectar squeeze</td></tr>
 <tr><td><strong>Volume</strong></td><td>Há convicção institucional por trás do movimento?</td><td>OBV, VWAP, Volume Profile, Cumulative Delta</td><td>Pra confirmar rompimentos e detectar absorção</td></tr>
@@ -41,8 +41,8 @@ const body = `
 </tbody>
 </table>
 
-<h2>1. Médias Móveis (SMA &amp; EMA) — A Base de Tudo</h2>
-<p>A média móvel simples (SMA) calcula o preço médio dos últimos N períodos. A exponencial (EMA) dá peso maior aos preços mais recentes. São os indicadores mais antigos e mais úteis — quase todo trader profissional tem pelo menos uma na tela.</p>
+<h2>1. Médias Móveis (SMA &amp; EMA), A Base de Tudo</h2>
+<p>A média móvel simples (SMA) calcula o preço médio dos últimos N períodos. A exponencial (EMA) dá peso maior aos preços mais recentes. São os indicadores mais antigos e mais úteis, quase todo trader profissional tem pelo menos uma na tela.</p>
 
 <table>
 <thead><tr><th>Período</th><th>Uso</th><th>Quem opera com</th></tr></thead>
@@ -65,21 +65,21 @@ const body = `
 <strong>Setup canônico:</strong> em tendência de alta clara (preço &gt; EMA 20 &gt; EMA 50), comprar pullbacks que toquem a EMA 20 com volume decrescente. Stop abaixo da mínima do pullback. Alvo: extensão da última pernada.
 </div>
 
-<h2>2. MACD — Confluência de Tendência e Momentum</h2>
+<h2>2. MACD, Confluência de Tendência e Momentum</h2>
 <p>Moving Average Convergence Divergence. Calcula a diferença entre EMA 12 e EMA 26, plota essa diferença (linha MACD), adiciona uma EMA 9 dessa diferença (linha de sinal), e mostra a diferença entre as duas como histograma.</p>
-<p>Em uma frase: o MACD é uma forma elegante de combinar duas perguntas — qual a tendência e qual o momentum dela.</p>
+<p>Em uma frase: o MACD é uma forma elegante de combinar duas perguntas, qual a tendência e qual o momentum dela.</p>
 
 <table>
 <thead><tr><th>Sinal MACD</th><th>Significado</th><th>Confiabilidade</th></tr></thead>
 <tbody>
 <tr><td>MACD cruza pra cima da linha de sinal</td><td>Momentum bullish iniciando</td><td>Média (muitos sinais falsos em range)</td></tr>
-<tr><td>MACD cruza acima de zero</td><td>Tendência bullish confirmada</td><td>Alta — filtra ranges</td></tr>
-<tr><td>Divergência bullish (preço fundo menor, MACD fundo maior)</td><td>Reversão potencial</td><td>Alta — sinal clássico de virada</td></tr>
+<tr><td>MACD cruza acima de zero</td><td>Tendência bullish confirmada</td><td>Alta, filtra ranges</td></tr>
+<tr><td>Divergência bullish (preço fundo menor, MACD fundo maior)</td><td>Reversão potencial</td><td>Alta, sinal clássico de virada</td></tr>
 <tr><td>Histograma diminuindo em alta</td><td>Momentum bullish enfraquecendo</td><td>Útil pra antecipar pullback</td></tr>
 </tbody>
 </table>
 
-<h2>3. RSI — O Termômetro do Momentum</h2>
+<h2>3. RSI, O Termômetro do Momentum</h2>
 <p>Relative Strength Index, criado por Welles Wilder em 1978. Mede a velocidade e magnitude das mudanças de preço numa escala de 0-100.</p>
 
 <div class="mini-ui">
@@ -106,8 +106,8 @@ const body = `
 <table>
 <thead><tr><th>Leitura RSI</th><th>Interpretação</th><th>Cuidado</th></tr></thead>
 <tbody>
-<tr><td>RSI &gt; 70</td><td>Sobrecompra — pullback provável</td><td>Em tendência forte, RSI pode ficar sobrecomprado por dias</td></tr>
-<tr><td>RSI &lt; 30</td><td>Sobrevenda — repique provável</td><td>Em queda forte, fica sobrevendido por muito tempo</td></tr>
+<tr><td>RSI &gt; 70</td><td>Sobrecompra, pullback provável</td><td>Em tendência forte, RSI pode ficar sobrecomprado por dias</td></tr>
+<tr><td>RSI &lt; 30</td><td>Sobrevenda, repique provável</td><td>Em queda forte, fica sobrevendido por muito tempo</td></tr>
 <tr><td>Divergência bullish (preço cai, RSI sobe)</td><td>Reversão de baixa</td><td>Confirme com volume + estrutura</td></tr>
 <tr><td>Divergência bearish (preço sobe, RSI cai)</td><td>Reversão de alta</td><td>Confirme com volume + estrutura</td></tr>
 <tr><td>RSI cruza acima de 50</td><td>Bias bullish ativado</td><td>Pode falsear em range</td></tr>
@@ -118,8 +118,8 @@ const body = `
 <strong>Erro #1 com RSI:</strong> shortar só porque "RSI passou de 70". Em onda 3 de Elliott, o ativo pode ficar acima de 70 por semanas. Use RSI pra confirmar setup, não pra entrar contra-tendência.
 </div>
 
-<h2>4. Estocástico — Sensível, Mas Útil</h2>
-<p>Compara o close atual com o range high-low de N períodos. Mais sensível que RSI — gera mais sinais, com mais ruído.</p>
+<h2>4. Estocástico, Sensível, Mas Útil</h2>
+<p>Compara o close atual com o range high-low de N períodos. Mais sensível que RSI, gera mais sinais, com mais ruído.</p>
 <p>Configuração padrão: %K = 14, %D = 3 (suavização). Linhas oscilam entre 0 e 100.</p>
 <ul>
 <li>Acima de 80: sobrecompra</li>
@@ -129,53 +129,53 @@ const body = `
 </ul>
 <p>Trader profissional usa Estocástico principalmente em <strong>mercados em range</strong> (não em tendência forte). Em tendência, dá muitos sinais falsos.</p>
 
-<h2>5. Bollinger Bands — Volatilidade Visual</h2>
+<h2>5. Bollinger Bands, Volatilidade Visual</h2>
 <p>Criadas por John Bollinger em 1980. Consistem em uma média móvel central (SMA 20 padrão) e duas bandas afastadas em 2 desvios-padrão acima e abaixo.</p>
 
 <table>
 <thead><tr><th>Padrão</th><th>Significado</th><th>Setup</th></tr></thead>
 <tbody>
-<tr><td><strong>Bands squeeze</strong> (bandas se aproximando)</td><td>Volatilidade comprimindo — explosão iminente</td><td>Aguarde rompimento de uma das bandas com volume</td></tr>
-<tr><td><strong>Bands expansion</strong> (bandas se afastando)</td><td>Volatilidade alta — tendência forte</td><td>Opere a favor da tendência</td></tr>
+<tr><td><strong>Bands squeeze</strong> (bandas se aproximando)</td><td>Volatilidade comprimindo, explosão iminente</td><td>Aguarde rompimento de uma das bandas com volume</td></tr>
+<tr><td><strong>Bands expansion</strong> (bandas se afastando)</td><td>Volatilidade alta, tendência forte</td><td>Opere a favor da tendência</td></tr>
 <tr><td><strong>Walking the band</strong> (preço gruda na banda superior/inferior)</td><td>Tendência muito forte</td><td>Não shorte. Espere pullback pra média central.</td></tr>
 <tr><td><strong>M-top / W-bottom</strong></td><td>Reversão clássica</td><td>Topo duplo na banda superior + queda = short. Inverso pra long.</td></tr>
 </tbody>
 </table>
 
 <div class="callout callout-blue">
-<strong>Estatística Bollinger:</strong> com bandas em 2 desvios-padrão, ~95% dos preços devem ficar dentro das bandas. Toques nas bandas são "extremos estatísticos" — não significa reversão automática, mas chama atenção.
+<strong>Estatística Bollinger:</strong> com bandas em 2 desvios-padrão, ~95% dos preços devem ficar dentro das bandas. Toques nas bandas são "extremos estatísticos", não significa reversão automática, mas chama atenção.
 </div>
 
-<h2>6. ATR — A Medida de Volatilidade que Todo Trader Deveria Usar</h2>
-<p>Average True Range. Mede a média de quanto o preço se movimenta em N períodos. Não diz direção — diz amplitude. Crítico pra dimensionar stops.</p>
+<h2>6. ATR, A Medida de Volatilidade que Todo Trader Deveria Usar</h2>
+<p>Average True Range. Mede a média de quanto o preço se movimenta em N períodos. Não diz direção, diz amplitude. Crítico pra dimensionar stops.</p>
 
 <h3>Aplicação prática em prop firm</h3>
 <p>Você está operando NQ no 5 minutos. ATR(14) atual = 18 pontos. Stop padrão: 1.5× ATR = 27 pontos. Alvo mínimo: 2× stop = 54 pontos. Position size: ajustada pra que esses 27 pontos representem &lt;= 0.5% da conta.</p>
 <p>Sem ATR, traders usam stops fixos (ex: "sempre 20 pontos"). Em dia de baixa volatilidade, isso é stop largo demais. Em dia de alta, é stop apertado demais. Resultado em ambos: subótimo.</p>
 
 <div class="callout callout-green">
-<strong>Regra do ATR:</strong> sempre dimensione seu stop em múltiplos de ATR (1× a 2×), não em valores fixos. O mercado dita o tamanho — você só obedece.
+<strong>Regra do ATR:</strong> sempre dimensione seu stop em múltiplos de ATR (1× a 2×), não em valores fixos. O mercado dita o tamanho, você só obedece.
 </div>
 
-<h2>7. Volume — A Verdade por Trás de Cada Movimento</h2>
-<p>Volume é o indicador mais subutilizado por iniciantes e mais respeitado por profissionais. Anna Coulling dedicou um livro inteiro pra ele (VPA — Volume Price Analysis). A regra fundamental: <strong>movimento sem volume é movimento sem convicção</strong>.</p>
+<h2>7. Volume, A Verdade por Trás de Cada Movimento</h2>
+<p>Volume é o indicador mais subutilizado por iniciantes e mais respeitado por profissionais. Anna Coulling dedicou um livro inteiro pra ele (VPA, Volume Price Analysis). A regra fundamental: <strong>movimento sem volume é movimento sem convicção</strong>.</p>
 
 <table>
 <thead><tr><th>Padrão</th><th>Leitura</th></tr></thead>
 <tbody>
-<tr><td>Alta com volume crescente</td><td>Compradores ativos — tendência saudável</td></tr>
-<tr><td>Alta com volume decrescente</td><td>Subida sem convicção — provável reversão</td></tr>
-<tr><td>Queda com volume crescente</td><td>Vendedores ativos — queda real</td></tr>
-<tr><td>Queda com volume decrescente</td><td>Vendedores cansando — possível fundo</td></tr>
-<tr><td>Climax volume (volume gigantesco)</td><td>Capitulação ou euforia — possível ponto de virada</td></tr>
+<tr><td>Alta com volume crescente</td><td>Compradores ativos, tendência saudável</td></tr>
+<tr><td>Alta com volume decrescente</td><td>Subida sem convicção, provável reversão</td></tr>
+<tr><td>Queda com volume crescente</td><td>Vendedores ativos, queda real</td></tr>
+<tr><td>Queda com volume decrescente</td><td>Vendedores cansando, possível fundo</td></tr>
+<tr><td>Climax volume (volume gigantesco)</td><td>Capitulação ou euforia, possível ponto de virada</td></tr>
 </tbody>
 </table>
 
-<h2>8. OBV — On-Balance Volume</h2>
+<h2>8. OBV, On-Balance Volume</h2>
 <p>Soma volume nos dias de alta, subtrai nos dias de baixa. Acumula em série temporal. Inventado por Joe Granville em 1963.</p>
 <p>O ouro do OBV: <strong>divergências</strong>. Preço fazendo nova máxima mas OBV em máxima menor = volume não está suportando o preço = topo provável. Funcionado por 60+ anos.</p>
 
-<h2>9. VWAP — O Nível que as Instituições Olham</h2>
+<h2>9. VWAP, O Nível que as Instituições Olham</h2>
 <p>Volume Weighted Average Price. Média ponderada pelo volume desde o open da sessão. Reseta diariamente.</p>
 <p>VWAP é literalmente o nível que algoritmos institucionais usam pra benchmark de execução: se compraram acima, "fizeram preço ruim". Por isso, em mercados de futuros, VWAP age como suporte/resistência institucional.</p>
 
@@ -185,12 +185,12 @@ const body = `
 <tr><td>Preço acima da VWAP em tendência de alta</td><td>Pullback pra VWAP = compra (com confirmação de volume)</td></tr>
 <tr><td>Preço abaixo da VWAP em tendência de baixa</td><td>Repique pra VWAP = venda</td></tr>
 <tr><td>Preço cruza VWAP com volume forte</td><td>Mudança de bias intraday</td></tr>
-<tr><td>Preço retorna à VWAP várias vezes</td><td>Mercado em range — VWAP é o equilíbrio</td></tr>
+<tr><td>Preço retorna à VWAP várias vezes</td><td>Mercado em range, VWAP é o equilíbrio</td></tr>
 </tbody>
 </table>
 
-<h2>10. ADX — Mede a Força da Tendência</h2>
-<p>Average Directional Index. Não diz direção — diz se há tendência forte ou se o mercado está em range. Escala 0-100.</p>
+<h2>10. ADX, Mede a Força da Tendência</h2>
+<p>Average Directional Index. Não diz direção, diz se há tendência forte ou se o mercado está em range. Escala 0-100.</p>
 <ul>
 <li>ADX &lt; 20: mercado em range, evite operar tendência</li>
 <li>ADX 20-40: tendência se desenvolvendo</li>
@@ -202,8 +202,8 @@ const body = `
 <strong>Filtro ADX:</strong> antes de qualquer setup de tendência (médias móveis cruzando, MACD positivo), confirme ADX &gt; 25. Setups de tendência em ADX baixo geram stops sequenciais.
 </div>
 
-<h2>11. Fibonacci Retracement — Math do Comportamento Coletivo</h2>
-<p>Tecnicamente Fibonacci é uma ferramenta de S/R, não um indicador. Mas é tão usado que entrou na lista. Os níveis 23.6%, 38.2%, 50%, 61.8% e 78.6% (calculados sobre uma pernada definida) servem como pontos de reação por dois motivos: (a) algoritmos institucionais são programados pra agir ali; (b) a profecia auto-realizadora — todo mundo opera os mesmos níveis.</p>
+<h2>11. Fibonacci Retracement, Math do Comportamento Coletivo</h2>
+<p>Tecnicamente Fibonacci é uma ferramenta de S/R, não um indicador. Mas é tão usado que entrou na lista. Os níveis 23.6%, 38.2%, 50%, 61.8% e 78.6% (calculados sobre uma pernada definida) servem como pontos de reação por dois motivos: (a) algoritmos institucionais são programados pra agir ali; (b) a profecia auto-realizadora, todo mundo opera os mesmos níveis.</p>
 
 <table>
 <thead><tr><th>Nível</th><th>Função típica</th></tr></thead>
@@ -211,14 +211,14 @@ const body = `
 <tr><td>23.6%</td><td>Pullback raso, sinal de tendência muito forte</td></tr>
 <tr><td>38.2%</td><td>Pullback comum em tendência saudável</td></tr>
 <tr><td>50%</td><td>Não é Fibonacci tecnicamente, mas é usado por convenção</td></tr>
-<tr><td>61.8%</td><td>"Golden ratio" — o nível mais respeitado</td></tr>
-<tr><td>78.6%</td><td>Pullback profundo — última zona antes de invalidar tendência</td></tr>
+<tr><td>61.8%</td><td>"Golden ratio", o nível mais respeitado</td></tr>
+<tr><td>78.6%</td><td>Pullback profundo, última zona antes de invalidar tendência</td></tr>
 </tbody>
 </table>
 
-<h2>12. Volume Profile — A Distribuição que Importa</h2>
-<p>Diferente de volume tradicional (que mostra volume por tempo), Volume Profile mostra volume por <strong>nível de preço</strong>. Identifica POC (Point of Control — preço com mais volume), VAH (Value Area High) e VAL (Value Area Low).</p>
-<p>Volume Profile é a ferramenta que separa traders de futuros profissionais dos amadores. POC age como ímã: o preço tende a retornar a ele com regularidade impressionante. VAH/VAL definem o "valor" da sessão — fora desse range, o mercado é considerado em "preço aceitável apenas em condições anormais".</p>
+<h2>12. Volume Profile, A Distribuição que Importa</h2>
+<p>Diferente de volume tradicional (que mostra volume por tempo), Volume Profile mostra volume por <strong>nível de preço</strong>. Identifica POC (Point of Control, preço com mais volume), VAH (Value Area High) e VAL (Value Area Low).</p>
+<p>Volume Profile é a ferramenta que separa traders de futuros profissionais dos amadores. POC age como ímã: o preço tende a retornar a ele com regularidade impressionante. VAH/VAL definem o "valor" da sessão, fora desse range, o mercado é considerado em "preço aceitável apenas em condições anormais".</p>
 
 <h2>Como Combinar Indicadores Sem Virar Ruído</h2>
 <p>A regra dos profissionais: <strong>1 indicador de tendência + 1 de momentum + 1 de volume</strong>. Total: 3. Adicionar mais é decoração visual.</p>
@@ -236,26 +236,26 @@ const body = `
 <h2>Erros Mais Comuns com Indicadores</h2>
 
 <h3>Sobrepor 5+ indicadores na tela</h3>
-<p>Cada indicador adicional dilui a leitura. Iniciantes acham que mais é melhor — não é. Os melhores traders do mundo operam com 1-3 indicadores e muita leitura de price action.</p>
+<p>Cada indicador adicional dilui a leitura. Iniciantes acham que mais é melhor, não é. Os melhores traders do mundo operam com 1-3 indicadores e muita leitura de price action.</p>
 
 <h3>Operar contra-tendência só por sinal de RSI/Estocástico</h3>
-<p>"RSI 75, vou vender." Não funciona em onda 3 ou em mercado de tendência forte. Indicadores de momentum oscilam — não significa reversão automática.</p>
+<p>"RSI 75, vou vender." Não funciona em onda 3 ou em mercado de tendência forte. Indicadores de momentum oscilam, não significa reversão automática.</p>
 
 <h3>Ignorar contexto de mercado</h3>
 <p>RSI cruzando 30 em mercado em range (ADX baixo) = sinal forte. RSI cruzando 30 em queda forte (ADX alto) = sinal fraco, mercado pode continuar caindo.</p>
 
 <h3>Mudar de indicador a cada drawdown</h3>
-<p>"Vou trocar RSI por Estocástico." Não. Indicador não é o problema — sua leitura é. Domine 3 indicadores profundamente em vez de superficialmente em 15.</p>
+<p>"Vou trocar RSI por Estocástico." Não. Indicador não é o problema, sua leitura é. Domine 3 indicadores profundamente em vez de superficialmente em 15.</p>
 
 <h3>Não testar em backtest antes</h3>
 <p>Cada indicador tem parâmetros (períodos, suavização). Antes de usar em conta real, teste com 6 meses de dados históricos no instrumento que opera. Se o setup não foi lucrativo no histórico, não vai ser no presente.</p>
 
 <div class="callout callout-red">
-<strong>Erro mais caro:</strong> usar indicadores como única ferramenta sem entender a estrutura de mercado por trás. Indicadores derivam do preço — se você lê o preço bem, indicadores são confirmação. Se você ignora o preço e lê só indicadores, está olhando pra sombra em vez do objeto.
+<strong>Erro mais caro:</strong> usar indicadores como única ferramenta sem entender a estrutura de mercado por trás. Indicadores derivam do preço, se você lê o preço bem, indicadores são confirmação. Se você ignora o preço e lê só indicadores, está olhando pra sombra em vez do objeto.
 </div>
 
-<h2>Indicadores e Prop Firm — A Disciplina dos 3</h2>
-<p>Trader em conta de prop firm tem regra apertada: drawdown 8%, perda diária 5%, regras de news. Indicadores ajudam — mas só se usados disciplinadamente.</p>
+<h2>Indicadores e Prop Firm, A Disciplina dos 3</h2>
+<p>Trader em conta de prop firm tem regra apertada: drawdown 8%, perda diária 5%, regras de news. Indicadores ajudam, mas só se usados disciplinadamente.</p>
 <p><strong>Tendência principal no diário</strong> (SMA 50/200) dita o sentido único de operação do dia. Em SMA 50 acima da SMA 200, só procure long. Em SMA 50 abaixo, só short. Brigar contra a estrutura macro mata conta.</p>
 <p><strong>RSI no time-frame de operação</strong> (15min ou 5min) ajuda a evitar entrar em sobrecompra/sobrevenda extremas. Setup forte? Confirme que RSI não está em zona de extremo perigoso (sobre 80 ou abaixo de 20).</p>
 <p><strong>VWAP intraday</strong> é seu nível de referência o dia inteiro. Above VWAP = bias bullish. Below = bearish. Cruzou? Algo mudou.</p>
@@ -280,13 +280,13 @@ const body = `
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>Technical Analysis of the Financial Markets</strong> — John J. Murphy. A bíblia do iniciante. Cobre todos os indicadores em profundidade.</li>
-<li><strong>Technical Analysis Explained</strong> — Martin J. Pring. Versão mais avançada e contextual.</li>
-<li><strong>New Concepts in Technical Trading Systems</strong> — J. Welles Wilder. Original do RSI, ATR e ADX.</li>
-<li><strong>Bollinger on Bollinger Bands</strong> — John Bollinger. Pelo próprio criador das bandas.</li>
-<li><strong>Trading for a Living</strong> — Alexander Elder. Tripé indicadores + risco + psicologia.</li>
-<li><strong>A Complete Guide to Volume Price Analysis</strong> — Anna Coulling. Volume como indicador-mor.</li>
-<li><strong>Encyclopedia of Chart Patterns</strong> — Thomas Bulkowski. Estatísticas frias de cada padrão.</li>
+<li><strong>Technical Analysis of the Financial Markets</strong>, John J. Murphy. A bíblia do iniciante. Cobre todos os indicadores em profundidade.</li>
+<li><strong>Technical Analysis Explained</strong>, Martin J. Pring. Versão mais avançada e contextual.</li>
+<li><strong>New Concepts in Technical Trading Systems</strong>, J. Welles Wilder. Original do RSI, ATR e ADX.</li>
+<li><strong>Bollinger on Bollinger Bands</strong>, John Bollinger. Pelo próprio criador das bandas.</li>
+<li><strong>Trading for a Living</strong>, Alexander Elder. Tripé indicadores + risco + psicologia.</li>
+<li><strong>A Complete Guide to Volume Price Analysis</strong>, Anna Coulling. Volume como indicador-mor.</li>
+<li><strong>Encyclopedia of Chart Patterns</strong>, Thomas Bulkowski. Estatísticas frias de cada padrão.</li>
 </ul>
 
 <hr>

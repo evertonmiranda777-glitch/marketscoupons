@@ -56,7 +56,7 @@ async function mcSyncE8(opts = {}) {
     mcToastE8(`E8: snap=${!!snapshot}, ${leads.length} leads`);
     await mcMarkE8('e8');
   } else {
-    mcToastE8('E8: erro — ' + (out.error || '?'));
+    mcToastE8('E8: erro, ' + (out.error || '?'));
   }
   return out;
 }

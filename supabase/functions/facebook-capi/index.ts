@@ -1,7 +1,7 @@
 // ============================================================================
-// facebook-capi v6 — B.7 server-side enrichment (profile lookup + IP fallback)
+// facebook-capi v6, B.7 server-side enrichment (profile lookup + IP fallback)
 // Date:  2026-04-29
-// Phase: B.7 (Fix #1.6 — última peça Match Quality CAPI)
+// Phase: B.7 (Fix #1.6, última peça Match Quality CAPI)
 //
 // Mudanças v5 → v6:
 //   - Lookup server-side em public.profiles (cache por request)
@@ -129,7 +129,7 @@ Deno.serve(async (req: Request) => {
   const userAgent = body.ua || req.headers.get('user-agent') || '';
   const ip = ipEnrich(req);
 
-  // Cache de profile por request — 1 lookup por external_id mesmo com N eventos
+  // Cache de profile por request, 1 lookup por external_id mesmo com N eventos
   const profileCache = new Map<string, any>();
   const getProfile = async (userId: string) => {
     if (!userId) return null;
@@ -168,7 +168,7 @@ Deno.serve(async (req: Request) => {
     if (ev.fbp) userData.fbp = ev.fbp;
     if (ev.fbc) userData.fbc = ev.fbc;
 
-    // setIf — só adiciona a chave se valor existir após normalização (Meta rejeita vazios)
+    // setIf, só adiciona a chave se valor existir após normalização (Meta rejeita vazios)
     const setIf = async (key: string, val: string, normalizer: (s: string) => string) => {
       const h = await hashIfPresent(val, normalizer);
       if (h) userData[key] = [h];

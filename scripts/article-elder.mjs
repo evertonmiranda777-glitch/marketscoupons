@@ -11,7 +11,7 @@ const meta = {
   lang: 'pt',
   icon: '🎯',
   author: 'Markets Coupons',
-  excerpt: 'Alexander Elder transformou o ensino de trading com o conceito dos 3 M\\u2019s — Mind, Method, Money. Este guia desenvolve cada pilar com aplicação concreta em prop firms: a psicologia que separa o profissional, o sistema Triple Screen, e a gestão monetária que permite sobreviver 1.000 trades.',
+  excerpt: 'Alexander Elder transformou o ensino de trading com o conceito dos 3 M\\u2019s, Mind, Method, Money. Este guia desenvolve cada pilar com aplicação concreta em prop firms: a psicologia que separa o profissional, o sistema Triple Screen, e a gestão monetária que permite sobreviver 1.000 trades.',
   cover_url: cdn(slug, 'hero.jpeg')
 };
 
@@ -19,15 +19,15 @@ const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="Tripé Mente-Método-Dinheiro de Alexander Elder">
 
 <h2>O Psiquiatra que Virou Trader e Mudou a Indústria</h2>
-<p>Alexander Elder nasceu na Estônia, fugiu da União Soviética nos anos 70, virou psiquiatra em New York, e nas horas vagas começou a operar mercados. A combinação inusitada — psicologia clínica + análise técnica disciplinada — produziu o livro mais influente sobre trading dos últimos 30 anos: <em>Trading for a Living</em> (1993).</p>
+<p>Alexander Elder nasceu na Estônia, fugiu da União Soviética nos anos 70, virou psiquiatra em New York, e nas horas vagas começou a operar mercados. A combinação inusitada, psicologia clínica + análise técnica disciplinada, produziu o livro mais influente sobre trading dos últimos 30 anos: <em>Trading for a Living</em> (1993).</p>
 <p>Antes de Elder, a literatura era dividida em dois mundos: o lado técnico (Murphy, Edwards &amp; Magee) que ensinava padrões e indicadores, e o lado psicológico (livros pop sobre mentalidade) que falava de "discipline yourself". Os dois mundos não conversavam. Elder unificou: trader profissional precisa de <strong>três pilares</strong> simultâneos, e fraqueza em qualquer um deles destrói a conta.</p>
-<p>Esses três pilares — que ficaram conhecidos como os 3M ou "Three M's of Trading" — são <strong>Mind, Method, Money</strong>: psicologia, sistema, gestão. Não dois. Não quatro. Três. E os três interconectados.</p>
+<p>Esses três pilares, que ficaram conhecidos como os 3M ou "Three M's of Trading", são <strong>Mind, Method, Money</strong>: psicologia, sistema, gestão. Não dois. Não quatro. Três. E os três interconectados.</p>
 
 <div class="callout callout-gold">
-<strong>Princípio fundador de Elder:</strong> "Falhar em qualquer um dos três M's leva ao fracasso. A maioria dos traders fracassa porque foca em apenas um — geralmente Method (qual indicador usar?) — e ignora os outros dois. Sucesso vem de equilíbrio, não de obsessão pelo método perfeito."
+<strong>Princípio fundador de Elder:</strong> "Falhar em qualquer um dos três M's leva ao fracasso. A maioria dos traders fracassa porque foca em apenas um, geralmente Method (qual indicador usar?), e ignora os outros dois. Sucesso vem de equilíbrio, não de obsessão pelo método perfeito."
 </div>
 
-<h2>Os 3 M's — A Estrutura Conceitual Completa</h2>
+<h2>Os 3 M's, A Estrutura Conceitual Completa</h2>
 
 <table>
 <thead><tr><th>Pilar</th><th>Pergunta que responde</th><th>Risco se ausente</th></tr></thead>
@@ -38,7 +38,7 @@ const body = `
 </tbody>
 </table>
 
-<h2>Pilar 1 — MIND: A Psicologia do Trader Profissional</h2>
+<h2>Pilar 1, MIND: A Psicologia do Trader Profissional</h2>
 <p>Elder dedica os primeiros capítulos do livro inteiramente à mente. Por quê? Porque é o pilar mais subestimado e o mais letal. Todo trader que quebra a conta dirá depois: "minha estratégia era boa, mas eu não consegui seguir". Tradução: faltou Mind.</p>
 
 <h3>As 4 emoções que destroem traders</h3>
@@ -48,7 +48,7 @@ const body = `
 <tbody>
 <tr><td><strong>Medo</strong></td><td>Sair do trade no primeiro abaló. Não entrar mesmo com sinal claro.</td><td>Stop pré-definido em ponto técnico. Confiança vem de plano, não de "feeling".</td></tr>
 <tr><td><strong>Ganância</strong></td><td>Mover alvo "só mais um pouquinho". Aumentar posição depois de ganho.</td><td>Alvo fixo no plano. Position size constante (não escalar pós-vitória).</td></tr>
-<tr><td><strong>Esperança</strong></td><td>Não fechar perda — "vai voltar". Ignorar invalidação técnica.</td><td>Stop físico, automático. Sem mental stop.</td></tr>
+<tr><td><strong>Esperança</strong></td><td>Não fechar perda, "vai voltar". Ignorar invalidação técnica.</td><td>Stop físico, automático. Sem mental stop.</td></tr>
 <tr><td><strong>Vingança</strong> (revanche)</td><td>Após perda, abrir trade não-planejado pra "recuperar". Aumenta tamanho.</td><td>Limite diário absoluto. Atingiu? Fecha tudo. Sem exceção.</td></tr>
 </tbody>
 </table>
@@ -63,7 +63,7 @@ const body = `
 <h3>O sinal interno mais importante</h3>
 <p>Elder ensina que antes de cada trade, o trader deve fazer uma pergunta: <strong>"estou operando porque o setup apareceu, ou porque minha emoção quer ação?"</strong>. Resposta: setup. Sempre setup. Se a emoção fala mais alto, é sinal pra ficar fora.</p>
 
-<h2>Pilar 2 — METHOD: O Sistema Triple Screen</h2>
+<h2>Pilar 2, METHOD: O Sistema Triple Screen</h2>
 <p>Elder criou e popularizou o método <em>Triple Screen</em>, que se tornou referência mundial. A ideia é simples e poderosa: <strong>três timeframes diferentes, cada um respondendo uma pergunta</strong>.</p>
 
 <div class="mini-ui">
@@ -99,40 +99,40 @@ const body = `
 <p style="text-align:center;color:#8590a3;font-size:13px;margin:8px 0 0;">Triple Screen: tendência (macro) → onda (operacional) → entrada (micro). Operações sempre na direção do Screen 1.</p>
 </div>
 
-<h3>Screen 1 — A Tendência (timeframe maior)</h3>
+<h3>Screen 1, A Tendência (timeframe maior)</h3>
 <p>Define a direção. Use indicador de tendência (MACD ou EMA). Se Screen 1 está bullish, você só procura long no Screen 2. Se bearish, só short. Mercado sem direção clara (Screen 1 ambíguo) = não opera.</p>
 <p>Elder usa principalmente o histograma do MACD e a EMA 13 como filtros de tendência no diário (para swing trader) ou no 1h (para day trader).</p>
 
-<h3>Screen 2 — A Onda (timeframe médio)</h3>
-<p>Identifica pullbacks contra a tendência principal. Use oscilador (RSI, Stochastic, Force Index). Em tendência de alta, espere oscilador chegar em zona de sobrevenda — é o pullback que vai te dar entrada barata.</p>
+<h3>Screen 2, A Onda (timeframe médio)</h3>
+<p>Identifica pullbacks contra a tendência principal. Use oscilador (RSI, Stochastic, Force Index). Em tendência de alta, espere oscilador chegar em zona de sobrevenda, é o pullback que vai te dar entrada barata.</p>
 
-<h3>Screen 3 — A Entrada (timeframe menor)</h3>
+<h3>Screen 3, A Entrada (timeframe menor)</h3>
 <p>Refina o timing. Aqui você usa breakout do range do dia ou do dia anterior. Trailing stop entra em ação. Ordem é colocada com base em estrutura, não em palpite.</p>
 
 <div class="callout callout-blue">
 <strong>O poder do Triple Screen:</strong> filtra ~70% dos trades ruins simplesmente porque exige confluência de 3 timeframes. Trader que opera em apenas um timeframe vê "setups" em ranges sem direção. Trader Triple Screen só age quando há alinhamento.
 </div>
 
-<h2>Pilar 3 — MONEY: As Regras Inquebráveis de Gestão</h2>
+<h2>Pilar 3, MONEY: As Regras Inquebráveis de Gestão</h2>
 <p>Elder estabelece duas regras matemáticas absolutas, conhecidas como "regra do 2% e do 6%":</p>
 
 <table>
 <thead><tr><th>Regra</th><th>Limite</th><th>Lógica</th></tr></thead>
 <tbody>
 <tr><td><strong>Regra dos 2%</strong></td><td>Nunca arriscar mais de 2% do capital em um único trade</td><td>Permite até 50 perdas seguidas antes de zerar a conta. Alguma proteção contra azar matemático.</td></tr>
-<tr><td><strong>Regra dos 6%</strong></td><td>Se acumular -6% no mês, pare de operar pelo resto do mês</td><td>Drawdown profundo é sinal de algo errado — sistema, mercado, mente. Reset obrigatório.</td></tr>
+<tr><td><strong>Regra dos 6%</strong></td><td>Se acumular -6% no mês, pare de operar pelo resto do mês</td><td>Drawdown profundo é sinal de algo errado, sistema, mercado, mente. Reset obrigatório.</td></tr>
 </tbody>
 </table>
 
-<h3>Para prop firms — adaptação</h3>
+<h3>Para prop firms, adaptação</h3>
 <p>Em prop firms (Apex 8% drawdown, FTMO 10%, etc), as regras de Elder precisam ser adaptadas pra serem ainda mais conservadoras:</p>
 
 <table>
 <thead><tr><th>Cenário</th><th>Risco por trade recomendado</th><th>Limite mensal</th></tr></thead>
 <tbody>
-<tr><td>Apex 50K (drawdown $2.500)</td><td>0.5% ($250)</td><td>3% ($1.500) — pausa se atingir</td></tr>
-<tr><td>FTMO Challenge 100K (drawdown 10%)</td><td>0.5% ($500)</td><td>4% ($4.000) — pausa</td></tr>
-<tr><td>Bulenox 100K (drawdown $5.000)</td><td>0.5% ($500)</td><td>3% ($3.000) — pausa</td></tr>
+<tr><td>Apex 50K (drawdown $2.500)</td><td>0.5% ($250)</td><td>3% ($1.500), pausa se atingir</td></tr>
+<tr><td>FTMO Challenge 100K (drawdown 10%)</td><td>0.5% ($500)</td><td>4% ($4.000), pausa</td></tr>
+<tr><td>Bulenox 100K (drawdown $5.000)</td><td>0.5% ($500)</td><td>3% ($3.000), pausa</td></tr>
 </tbody>
 </table>
 
@@ -148,9 +148,9 @@ const body = `
 <thead><tr><th>Padrão Force Index</th><th>Interpretação</th></tr></thead>
 <tbody>
 <tr><td>Força positiva crescente</td><td>Tendência de alta saudável</td></tr>
-<tr><td>Força positiva decrescente (preço subindo)</td><td>Divergência bearish — tendência cansando</td></tr>
+<tr><td>Força positiva decrescente (preço subindo)</td><td>Divergência bearish, tendência cansando</td></tr>
 <tr><td>Força negativa crescente em magnitude</td><td>Tendência de baixa forte</td></tr>
-<tr><td>Força negativa diminuindo (preço caindo)</td><td>Divergência bullish — fundo se aproximando</td></tr>
+<tr><td>Força negativa diminuindo (preço caindo)</td><td>Divergência bullish, fundo se aproximando</td></tr>
 </tbody>
 </table>
 
@@ -163,13 +163,13 @@ const body = `
 <tr><td>Como reage a 5 perdas seguidas?</td><td>Quer "recuperar" rapidamente</td><td>Para de operar, revisa journal, espera reset emocional</td></tr>
 <tr><td>Como reage a 5 ganhos seguidos?</td><td>Aumenta posição, vira "trader genial"</td><td>Mantém position size, reconhece que é variância normal</td></tr>
 <tr><td>O que faz quando não há setup?</td><td>Força um trade pra "não perder o dia"</td><td>Não opera. Espera ou usa o tempo pra revisar</td></tr>
-<tr><td>Como decide tamanho de posição?</td><td>"Achei que ia subir mais" — aumenta</td><td>Calcula com fórmula, sempre. Sem exceção.</td></tr>
+<tr><td>Como decide tamanho de posição?</td><td>"Achei que ia subir mais", aumenta</td><td>Calcula com fórmula, sempre. Sem exceção.</td></tr>
 <tr><td>Stop foi tocado, e logo depois mercado virou. Reação?</td><td>Frustração, tentativa de re-entrar emocionalmente</td><td>"Próximo trade." Stop tocado é regra cumprida.</td></tr>
 </tbody>
 </table>
 
 <h2>Como Construir um Journal Estilo Elder</h2>
-<p>Elder enfatiza fortemente o journal — chama de "diário do trader" — como ferramenta clínica. Cada trade tem que ser registrado com profundidade emocional, não apenas técnica.</p>
+<p>Elder enfatiza fortemente o journal, chama de "diário do trader", como ferramenta clínica. Cada trade tem que ser registrado com profundidade emocional, não apenas técnica.</p>
 
 <div class="callout callout-green">
 <strong>Modelo de entrada de journal Elder:</strong>
@@ -193,7 +193,7 @@ const body = `
 <tr><td><strong>Trader analítico</strong></td><td>Foco no método. Estuda gráficos, indicadores, padrões.</td><td>Média se ignora Mind/Money. Alta se equilibra.</td></tr>
 <tr><td><strong>Trader emocional</strong></td><td>Opera por instinto, "sentimento de mercado".</td><td>Baixa. Variância destruidora.</td></tr>
 <tr><td><strong>Trader mecânico</strong></td><td>Sistema rígido, sem espaço pra discricionariedade.</td><td>Alta se sistema é sólido. Baixa se o sistema é frágil ao mercado.</td></tr>
-<tr><td><strong>Trader profissional</strong></td><td>Equilibra os 3M. Disciplinado, sistemático, gestor de risco.</td><td>Alta — trader sustentável.</td></tr>
+<tr><td><strong>Trader profissional</strong></td><td>Equilibra os 3M. Disciplinado, sistemático, gestor de risco.</td><td>Alta, trader sustentável.</td></tr>
 </tbody>
 </table>
 
@@ -210,7 +210,7 @@ const body = `
 <ul>
 <li>Triple Screen aplicado: Screen 1 dá direção, Screen 2 espera pullback, Screen 3 cronometra entrada</li>
 <li>Cada trade documentado: setup, justificativa, screenshot</li>
-<li>Sem desvio do plano. Setup novo? Anotar pra revisar depois — não operar agora.</li>
+<li>Sem desvio do plano. Setup novo? Anotar pra revisar depois, não operar agora.</li>
 </ul>
 
 <h3>Pós-mercado (Money + Mind)</h3>
@@ -239,11 +239,11 @@ const body = `
 </div>
 
 <h2>Por Que Elder Continua Relevante 30 Anos Depois</h2>
-<p>Mercados evoluíram radicalmente desde 1993. Algoritmos dominam, dark pools existem, decimalização mudou microestrutura. Mas a estrutura fundamental — humano operando capital em ambiente de incerteza — não mudou. E é exatamente onde Elder foca.</p>
+<p>Mercados evoluíram radicalmente desde 1993. Algoritmos dominam, dark pools existem, decimalização mudou microestrutura. Mas a estrutura fundamental, humano operando capital em ambiente de incerteza, não mudou. E é exatamente onde Elder foca.</p>
 <p>Quem aplica os 3M hoje, em 2025, opera prop firms americanas com a mesma vantagem que traders de ações em New York tinham nos anos 90. A vantagem nunca foi a tecnologia. A vantagem é equilibrar os três pilares enquanto a maioria foca em apenas um.</p>
 
 <h2>O Que Muda na Sua Mesa Amanhã</h2>
-<p><strong>Primeiro:</strong> você vai parar de tratar disciplina como "vou tentar". Vai começar a tratá-la como Mind — o pilar 1, sem o qual os outros dois não funcionam. Vai ler psicologia tanto quanto técnica.</p>
+<p><strong>Primeiro:</strong> você vai parar de tratar disciplina como "vou tentar". Vai começar a tratá-la como Mind, o pilar 1, sem o qual os outros dois não funcionam. Vai ler psicologia tanto quanto técnica.</p>
 <p><strong>Segundo:</strong> Triple Screen vai virar sua rotina. 3 timeframes, sempre. Em direção da tendência principal, com pullback no operacional, com timing no menor.</p>
 <p><strong>Terceiro:</strong> regra dos 6% vai virar sagrada. Se atingir limite mensal, fechou. Próximo mês começa zerado emocionalmente.</p>
 
@@ -262,13 +262,13 @@ const body = `
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>Trading for a Living</strong> — Alexander Elder. O original. Leitura obrigatória.</li>
-<li><strong>Come Into My Trading Room</strong> — Alexander Elder. Continuação com mais foco em sistema.</li>
-<li><strong>The New Trading for a Living</strong> — Alexander Elder (2014). Atualização do clássico para mercados modernos.</li>
-<li><strong>Trading in the Zone</strong> — Mark Douglas. Complementa o pilar Mind.</li>
-<li><strong>The Daily Trading Coach</strong> — Brett Steenbarger. 101 lições de psicologia aplicada.</li>
-<li><strong>Market Wizards</strong> — Jack Schwager. Como os melhores aplicam (mesmo que sem chamar) os 3M.</li>
-<li><strong>The Disciplined Trader</strong> — Mark Douglas. Antecessor de "Trading in the Zone".</li>
+<li><strong>Trading for a Living</strong>, Alexander Elder. O original. Leitura obrigatória.</li>
+<li><strong>Come Into My Trading Room</strong>, Alexander Elder. Continuação com mais foco em sistema.</li>
+<li><strong>The New Trading for a Living</strong>, Alexander Elder (2014). Atualização do clássico para mercados modernos.</li>
+<li><strong>Trading in the Zone</strong>, Mark Douglas. Complementa o pilar Mind.</li>
+<li><strong>The Daily Trading Coach</strong>, Brett Steenbarger. 101 lições de psicologia aplicada.</li>
+<li><strong>Market Wizards</strong>, Jack Schwager. Como os melhores aplicam (mesmo que sem chamar) os 3M.</li>
+<li><strong>The Disciplined Trader</strong>, Mark Douglas. Antecessor de "Trading in the Zone".</li>
 </ul>
 
 <hr>

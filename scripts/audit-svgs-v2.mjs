@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SVG audit v2 — detects text-vs-rect AND text-vs-line overlaps (not just text-vs-text)
+// SVG audit v2, detects text-vs-rect AND text-vs-line overlaps (not just text-vs-text)
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';

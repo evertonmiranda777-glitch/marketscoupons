@@ -1,4 +1,4 @@
-// health-monitor — pinga URLs criticas do site, conta falhas consecutivas, dispara
+// health-monitor, pinga URLs criticas do site, conta falhas consecutivas, dispara
 // repository_dispatch no GitHub quando 3 falhas seguidas (auto-revert via GH Action).
 //
 // Cron: roda a cada 5min via pg_cron + supabase.cron schedule.
@@ -94,7 +94,7 @@ serve(async (_req) => {
     if (newFailCount >= FAIL_THRESHOLD && !triggeredRevert) {
       triggeredRevert = true;
       const reason = `${t.url} ${r.reason} (${newFailCount}x consecutive)`;
-      await notifyTelegram(`🚨 <b>marketscoupons</b> down — disparando auto-revert%0A%0AURL: ${t.url}%0AReason: ${r.reason}%0AConsecutive fails: ${newFailCount}`);
+      await notifyTelegram(`🚨 <b>marketscoupons</b> down, disparando auto-revert%0A%0AURL: ${t.url}%0AReason: ${r.reason}%0AConsecutive fails: ${newFailCount}`);
       try {
         await triggerAutoRevert(reason);
         await notifyTelegram(`✅ Auto-revert disparado no GitHub. Aguardando workflow.`);

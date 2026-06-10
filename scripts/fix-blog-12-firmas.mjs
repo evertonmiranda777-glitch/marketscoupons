@@ -16,7 +16,7 @@ const db = createClient(SUPABASE_URL, KEY);
 
 // Word per lang: pt/es=firmas, en=firms, it=aziende, fr=entreprises, de=firmen
 const PATTERNS = [
-  // (regex, replacement) — \b boundaries where useful
+  // (regex, replacement), \b boundaries where useful
   [/\b12 firmas\b/g, '17 firmas'],
   [/\b12 firms\b/g, '17 firms'],
   [/\b12 aziende\b/g, '17 aziende'],

@@ -21,7 +21,7 @@ body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,42px))
   .promo-topbar .pt-num{font-size:11px;line-height:1;}
   .promo-topbar .pt-suf{font-size:8px;}
   .promo-topbar .pt-sep{display:none;}
-  /* Default reserva 64px mobile (2 firmas × ~30px linha) — evita CLS no 1º paint */
+  /* Default reserva 64px mobile (2 firmas × ~30px linha), evita CLS no 1º paint */
   body.has-promo-topbar #nav{top:var(--promo-h,64px);}
   body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,64px));}
 }

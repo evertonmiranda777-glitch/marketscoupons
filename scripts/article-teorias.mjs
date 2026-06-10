@@ -11,7 +11,7 @@ const meta = {
   lang: 'pt',
   icon: '🧠',
   author: 'Markets Coupons',
-  excerpt: 'Como mercados realmente funcionam? Random Walk diz que são imprevisíveis. EMH diz que são eficientes. Behavioral Finance diz que são humanos. Wyckoff diz que são manipulados. Cada teoria explica uma fatia da realidade — e o trader profissional usa todas.',
+  excerpt: 'Como mercados realmente funcionam? Random Walk diz que são imprevisíveis. EMH diz que são eficientes. Behavioral Finance diz que são humanos. Wyckoff diz que são manipulados. Cada teoria explica uma fatia da realidade, e o trader profissional usa todas.',
   cover_url: cdn(slug, 'hero.jpeg')
 };
 
@@ -19,16 +19,16 @@ const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="Estátua de touro e urso simbolizando teorias de mercado">
 
 <h2>Por Que Entender Teoria de Mercado Importa Para Quem Opera</h2>
-<p>Trader iniciante não tem paciência pra teoria. "Quero é setup que funciona, não filosofia." Compreensível — mas equivocado. Teoria de mercado não é decoração acadêmica. É o <strong>frame mental que dita quais perguntas você faz e quais setups você aceita</strong>.</p>
-<p>Quem acredita que mercados são totalmente aleatórios (Random Walk puro) não pode operar análise técnica — seria autocontraditório. Quem acredita em eficiência total (EMH) não pode operar valor — preço já reflete tudo. Quem acredita só em fundamentos ignora 50% do mercado moderno (algorítmico, especulativo). Quem acredita só em behavioral finance ignora dados duros.</p>
+<p>Trader iniciante não tem paciência pra teoria. "Quero é setup que funciona, não filosofia." Compreensível, mas equivocado. Teoria de mercado não é decoração acadêmica. É o <strong>frame mental que dita quais perguntas você faz e quais setups você aceita</strong>.</p>
+<p>Quem acredita que mercados são totalmente aleatórios (Random Walk puro) não pode operar análise técnica, seria autocontraditório. Quem acredita em eficiência total (EMH) não pode operar valor, preço já reflete tudo. Quem acredita só em fundamentos ignora 50% do mercado moderno (algorítmico, especulativo). Quem acredita só em behavioral finance ignora dados duros.</p>
 <p>O profissional <strong>compõe</strong> teorias. Sabe quando cada uma se aplica. Random Walk explica curtíssimo prazo. EMH descreve ações large cap em estado normal. Behavioral Finance domina momentos de stress. Wyckoff/Order Flow dão visão de microestrutura. Conhecer todas é o que separa trader sofisticado de amador com indicador.</p>
 
 <div class="callout callout-gold">
 <strong>Princípio fundamental:</strong> nenhuma teoria de mercado é completamente certa. Cada uma captura uma dimensão da realidade. Trader maduro escolhe a teoria certa para o regime atual do mercado, e troca conforme o regime muda.
 </div>
 
-<h2>Teoria de Dow — A Avó de Toda Análise Técnica</h2>
-<p>Charles Dow, fundador do Wall Street Journal, escreveu uma série de editoriais entre 1899 e 1902 que viraram a base da análise técnica moderna. Ele não chamava de "Teoria de Dow" — esse nome foi dado depois pelos seus seguidores William Hamilton e Robert Rhea.</p>
+<h2>Teoria de Dow, A Avó de Toda Análise Técnica</h2>
+<p>Charles Dow, fundador do Wall Street Journal, escreveu uma série de editoriais entre 1899 e 1902 que viraram a base da análise técnica moderna. Ele não chamava de "Teoria de Dow", esse nome foi dado depois pelos seus seguidores William Hamilton e Robert Rhea.</p>
 
 <h3>Os 6 princípios de Dow</h3>
 
@@ -48,7 +48,7 @@ const body = `
 <strong>Por que Dow ainda importa em 2025:</strong> os 6 princípios são tão atemporais que viraram a base de Wyckoff, Elliott, e até de modelos quantitativos modernos. Cada framework moderno é uma evolução de Dow, não substituição.
 </div>
 
-<h2>Random Walk Theory — Os Mercados Sao Aleatórios?</h2>
+<h2>Random Walk Theory, Os Mercados Sao Aleatórios?</h2>
 <p>Em 1973, Burton Malkiel publicou <em>A Random Walk Down Wall Street</em>, popularizando a ideia de que <strong>movimentos de preço de curto prazo são aleatórios e impossíveis de prever</strong>. A tese: cada novo preço reflete informação nova que chegou ao mercado, e como informação chega aleatoriamente, preços andam aleatoriamente.</p>
 
 <h3>O que Random Walk acerta</h3>
@@ -69,8 +69,8 @@ const body = `
 <strong>Implicação prática:</strong> Random Walk é boa aproximação para curtíssimo prazo (segundos a minutos) mas inadequada para swing/position trading. Quem opera intraday em time-frames muito curtos está literalmente lutando contra ruído. Quem opera tendência em diário ou semanal está jogando contra um sistema com padrões reais.
 </div>
 
-<h2>Efficient Market Hypothesis (EMH) — Tudo Já Está No Preço?</h2>
-<p>Eugene Fama publicou em 1970 a EMH em três versões — fraca, semi-forte e forte. Tese central: <strong>preço atual reflete toda informação disponível, e portanto vencer o mercado consistentemente é impossível</strong>.</p>
+<h2>Efficient Market Hypothesis (EMH), Tudo Já Está No Preço?</h2>
+<p>Eugene Fama publicou em 1970 a EMH em três versões, fraca, semi-forte e forte. Tese central: <strong>preço atual reflete toda informação disponível, e portanto vencer o mercado consistentemente é impossível</strong>.</p>
 
 <table>
 <thead><tr><th>Forma</th><th>O que diz</th><th>Implicação</th></tr></thead>
@@ -86,14 +86,14 @@ const body = `
 
 <h3>Por que EMH não é totalmente verdadeira</h3>
 <ul>
-<li>Bolhas e crashes existem (Dotcom 2000, Subprime 2008, Crypto 2021) — incompatível com eficiência total</li>
+<li>Bolhas e crashes existem (Dotcom 2000, Subprime 2008, Crypto 2021), incompatível com eficiência total</li>
 <li>Estratégias quantitativas com edge real existem e geram retorno (Renaissance, Two Sigma, Citadel)</li>
 <li>Comportamentos de manada e overreaction são bem documentados</li>
 <li>Liquidez fragmentada e venues múltiplos criam ineficiências exploráveis</li>
 </ul>
 
-<h2>Behavioral Finance — Mercados São Humanos</h2>
-<p>Daniel Kahneman e Amos Tversky, ao desenvolver Prospect Theory nos anos 70, lançaram as bases da Behavioral Finance. Tese: <strong>investidores não são racionais — são sistematicamente enviesados, e esses vieses geram padrões previsíveis no mercado</strong>.</p>
+<h2>Behavioral Finance, Mercados São Humanos</h2>
+<p>Daniel Kahneman e Amos Tversky, ao desenvolver Prospect Theory nos anos 70, lançaram as bases da Behavioral Finance. Tese: <strong>investidores não são racionais, são sistematicamente enviesados, e esses vieses geram padrões previsíveis no mercado</strong>.</p>
 
 <table>
 <thead><tr><th>Viés</th><th>Como aparece no mercado</th><th>Exploração</th></tr></thead>
@@ -111,8 +111,8 @@ const body = `
 <strong>Aplicação prática:</strong> grandes movimentos do mercado quase sempre tem componente comportamental. Bull market top tem euforia. Bear market bottom tem capitulação. Trader que conhece esses sinais consegue se posicionar contra a manada nos extremos.
 </div>
 
-<h2>Reflexive Theory — A Visão de Soros</h2>
-<p>George Soros, em <em>The Alchemy of Finance</em> (1987), propôs sua Teoria da Reflexividade. Tese central: <strong>preços não apenas refletem fundamentos — eles INFLUENCIAM fundamentos, criando feedback loops que distorcem ambos</strong>.</p>
+<h2>Reflexive Theory, A Visão de Soros</h2>
+<p>George Soros, em <em>The Alchemy of Finance</em> (1987), propôs sua Teoria da Reflexividade. Tese central: <strong>preços não apenas refletem fundamentos, eles INFLUENCIAM fundamentos, criando feedback loops que distorcem ambos</strong>.</p>
 
 <h3>O loop reflexivo em ação</h3>
 <ol>
@@ -131,11 +131,11 @@ const body = `
 </div>
 
 <h2>Wyckoff e a Teoria do Composite Man</h2>
-<p>Wyckoff propôs uma visão diferente: mercado não é eficiente nem aleatório. Mercado é <strong>manipulado por uma minoria com capital concentrado</strong> — o que ele chamou de "Composite Man".</p>
+<p>Wyckoff propôs uma visão diferente: mercado não é eficiente nem aleatório. Mercado é <strong>manipulado por uma minoria com capital concentrado</strong>, o que ele chamou de "Composite Man".</p>
 <p>O Composite Man (que hoje seria a soma de hedge funds, prop houses, market makers e algoritmos institucionais) tem objetivos claros: acumular barato, distribuir caro. Pra fazer isso, precisa enganar o varejo. Cria padrões que parecem alta quando ele está vendendo, e parecem baixa quando ele está comprando.</p>
-<p>Wyckoff é a teoria mais cética e provavelmente a mais útil pra trader operacional. Não opera contra a manada — opera com o Composite Man. Lê suas pegadas no volume e no preço.</p>
+<p>Wyckoff é a teoria mais cética e provavelmente a mais útil pra trader operacional. Não opera contra a manada, opera com o Composite Man. Lê suas pegadas no volume e no preço.</p>
 
-<h2>Adaptive Markets Hypothesis (AMH) — A Síntese de Lo</h2>
+<h2>Adaptive Markets Hypothesis (AMH), A Síntese de Lo</h2>
 <p>Andrew Lo, do MIT, propôs em 2004 a AMH como tentativa de reconciliar EMH com Behavioral Finance. Tese: <strong>mercados são parcialmente eficientes, mas a eficiência muda no tempo conforme participantes aprendem e se adaptam</strong>.</p>
 
 <table>
@@ -180,7 +180,7 @@ const body = `
 </ul>
 
 <div class="callout callout-gold">
-<strong>O insight final:</strong> teorias de mercado não são apostas — são lentes. Cada uma mostra um aspecto diferente da realidade. Trader que usa só uma é como observador de elefante com venda nos olhos: descreve só o que toca.
+<strong>O insight final:</strong> teorias de mercado não são apostas, são lentes. Cada uma mostra um aspecto diferente da realidade. Trader que usa só uma é como observador de elefante com venda nos olhos: descreve só o que toca.
 </div>
 
 <h2>Aplicação Em Prop Firm</h2>
@@ -193,7 +193,7 @@ const body = `
 <li><strong>AMH:</strong> testa estratégia regularmente. Setup que funcionava 6 meses atrás pode estar morto. Adapte.</li>
 </ol>
 
-<p>EMH e Random Walk são úteis pra entender por que <strong>scalping em time-frames muito curtos</strong> raramente funciona — você está literalmente operando ruído. Reflexive Theory é útil pra entender por que tech stocks podem ficar inflados anos antes de corrigir.</p>
+<p>EMH e Random Walk são úteis pra entender por que <strong>scalping em time-frames muito curtos</strong> raramente funciona, você está literalmente operando ruído. Reflexive Theory é útil pra entender por que tech stocks podem ficar inflados anos antes de corrigir.</p>
 
 <h2>Os Erros Filosóficos Que Custam Dinheiro</h2>
 
@@ -201,7 +201,7 @@ const body = `
 <p>Errado. Manipulação cria padrões. Padrões são oportunidades. Wyckoff é exatamente sobre operar A FAVOR dos manipuladores institucionais.</p>
 
 <h3>"Mercado é totalmente aleatório, análise técnica é mito"</h3>
-<p>Parcialmente verdade — em time-frames muito curtos. Mas tendências, momentum e padrões existem em horizons mais longos. Random Walk puro contradiz décadas de evidência empírica de momentum profitable.</p>
+<p>Parcialmente verdade, em time-frames muito curtos. Mas tendências, momentum e padrões existem em horizons mais longos. Random Walk puro contradiz décadas de evidência empírica de momentum profitable.</p>
 
 <h3>"Preço já desconta tudo, vou indexar"</h3>
 <p>Aceitável como filosofia de longo prazo (e Bogle prova que funciona). Mas não é estratégia de trading. Trader ativo está apostando em ineficiências exploráveis.</p>
@@ -213,11 +213,11 @@ const body = `
 <p>Para investimento de longo prazo, faz sentido. Para trading de curto prazo (prop firm), fundamentos não dão timing. Fundamentalismo puro em day trading = quebrar conta.</p>
 
 <h2>Por Que Vale a Pena Estudar Teoria</h2>
-<p>Trader que ignora teoria tem framework mental empobrecido. Sob estresse — drawdown grande, perda emocional — sem teoria, ele racionaliza com dados aleatórios. Cada perda vira "azar" ou "manipulação". Cada ganho vira "habilidade".</p>
+<p>Trader que ignora teoria tem framework mental empobrecido. Sob estresse, drawdown grande, perda emocional, sem teoria, ele racionaliza com dados aleatórios. Cada perda vira "azar" ou "manipulação". Cada ganho vira "habilidade".</p>
 <p>Trader com teoria contextualizada sabe quando suas perdas vêm de operar contra Random Walk (intraday excessivo), quando vêm de ignorar Behavioral (operar no extremo emocional), quando vêm de não respeitar Dow (operar contra tendência primária). Diagnóstico é o primeiro passo do tratamento.</p>
 
 <h2>O Que Muda na Sua Mesa Amanhã</h2>
-<p><strong>Primeiro:</strong> você vai entender por que alguns dias o mercado parece "normal" (eficiente, comportado) e outros parecem "loucos" (volatilidade extrema, narrativa irracional). Não é coincidência — é regime mudando. Adapte estratégia.</p>
+<p><strong>Primeiro:</strong> você vai entender por que alguns dias o mercado parece "normal" (eficiente, comportado) e outros parecem "loucos" (volatilidade extrema, narrativa irracional). Não é coincidência, é regime mudando. Adapte estratégia.</p>
 <p><strong>Segundo:</strong> você vai parar de ver "manipulação" como problema e começar a ver como oportunidade. Manipulação cria padrões. Padrões são edge.</p>
 <p><strong>Terceiro:</strong> você vai aceitar que nenhuma teoria é completa. Vai compor lentes conforme contexto. Em mercado normal, EMH governa. Em crise, behavioral domina. Em bolha, reflexive captura. Saber qual usar quando é o último nível de sofisticação.</p>
 
@@ -236,13 +236,13 @@ const body = `
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>The Stock Market Barometer</strong> — William Hamilton (1922). Versão prática de Dow.</li>
-<li><strong>A Random Walk Down Wall Street</strong> — Burton Malkiel. Random Walk em sua forma mais didática.</li>
-<li><strong>Thinking, Fast and Slow</strong> — Daniel Kahneman. Behavioral Finance accessível.</li>
-<li><strong>The Alchemy of Finance</strong> — George Soros. Reflexive Theory pelo criador.</li>
-<li><strong>Adaptive Markets</strong> — Andrew Lo. AMH formalizada.</li>
-<li><strong>The Wyckoff Method</strong> — material original de Wyckoff. Composite Man pelo criador.</li>
-<li><strong>Misbehaving</strong> — Richard Thaler. História da Behavioral Economics.</li>
+<li><strong>The Stock Market Barometer</strong>, William Hamilton (1922). Versão prática de Dow.</li>
+<li><strong>A Random Walk Down Wall Street</strong>, Burton Malkiel. Random Walk em sua forma mais didática.</li>
+<li><strong>Thinking, Fast and Slow</strong>, Daniel Kahneman. Behavioral Finance accessível.</li>
+<li><strong>The Alchemy of Finance</strong>, George Soros. Reflexive Theory pelo criador.</li>
+<li><strong>Adaptive Markets</strong>, Andrew Lo. AMH formalizada.</li>
+<li><strong>The Wyckoff Method</strong>, material original de Wyckoff. Composite Man pelo criador.</li>
+<li><strong>Misbehaving</strong>, Richard Thaler. História da Behavioral Economics.</li>
 </ul>
 
 <hr>

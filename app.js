@@ -1,5 +1,5 @@
 var _currentPage = 'home';
-// ─── TRACKING SPY (dev) — ativa com ?spy=1 na URL ───
+// ─── TRACKING SPY (dev), ativa com ?spy=1 na URL ───
 (function(){try{
   if(!new URLSearchParams(location.search).has('spy'))return;
   const hits={ga4:[],fb:[]};
@@ -23,7 +23,7 @@ var _currentPage = 'home';
     const osb=navigator.sendBeacon.bind(navigator);
     navigator.sendBeacon=function(u,d){
       capture(u||'');
-      // Se for POST com body, GA4 manda múltiplos eventos num só beacon — tenta parsear
+      // Se for POST com body, GA4 manda múltiplos eventos num só beacon, tenta parsear
       try{
         if(d && typeof d==='string' && (u.includes('google-analytics.com')||u.includes('/g/collect'))){
           d.split('\n').forEach(line=>{
@@ -89,7 +89,7 @@ const MC_SESSION = sessionStorage.getItem('mc_sid') || (()=>{
   return id;
 })();
 
-// Decode recursivo de UTMs — Meta as vezes manda double-encoded (%255B -> %5B -> [).
+// Decode recursivo de UTMs, Meta as vezes manda double-encoded (%255B -> %5B -> [).
 // URLSearchParams decodifica 1x; se o valor ainda parece encoded, decodifica de novo
 // ate estabilizar. Failsafe: se decode falhar, retorna o ultimo valor valido.
 function safeDecodeUtm(s){
@@ -108,7 +108,7 @@ const MC_UTM = (()=>{
   if (stored) return JSON.parse(stored);
   const p = new URLSearchParams(window.location.search);
   const _g = (k) => safeDecodeUtm(p.get(k) || '');
-  // Detect Telegram referrer (t.me, web.telegram.org) — auto-tag as social/telegram
+  // Detect Telegram referrer (t.me, web.telegram.org), auto-tag as social/telegram
   const ref = document.referrer || '';
   let refHost = '';
   try { refHost = ref ? new URL(ref).hostname : ''; } catch(_) {}
@@ -127,7 +127,7 @@ const MC_UTM = (()=>{
   return utm;
 })();
 
-// Anonymous ID persistente (1 ano) — sobrevive entre sessoes, pra atribuicao campanha→cupom→venda
+// Anonymous ID persistente (1 ano), sobrevive entre sessoes, pra atribuicao campanha→cupom→venda
 const MC_ANON = (()=>{
   let a = localStorage.getItem('mc_anon');
   if (!a) {
@@ -137,7 +137,7 @@ const MC_ANON = (()=>{
   return a;
 })();
 
-// Attribution first-touch (janela 7 dias) — pra linkar campanha Meta/Google ao click de cupom
+// Attribution first-touch (janela 7 dias), pra linkar campanha Meta/Google ao click de cupom
 const MC_ATTR = (()=>{
   const p = new URLSearchParams(window.location.search);
   const _g = (k) => safeDecodeUtm(p.get(k) || '');
@@ -165,11 +165,11 @@ const MC_ATTR = (()=>{
 })();
 
 // Apex: roteia 100% via /member/aff/go/evertonmiranda (homepage #products) pra garantir
-// cookie afiliado. Deep-link de plano nao e possivel — amember reescreve URL no redirect.
+// cookie afiliado. Deep-link de plano nao e possivel, amember reescreve URL no redirect.
 // Bug historico: usar dashboard.apextraderfunding.com/signup/...?referralCode= NAO seta
 // cookie e gera "vendas sem click" no painel (ex: 3 vendas / 1 click em 2026-04-29).
 //
-// Sub_id (?keyword=) injection movido pra tracking.js em 2026-04-30 — unifica Apex+Bulenox
+// Sub_id (?keyword=) injection movido pra tracking.js em 2026-04-30, unifica Apex+Bulenox
 // com cascata utm_term > utm_campaign > fbclid > utm_source > mcsite.
 
 // Append query params ANTES do hash (#fragment).
@@ -195,7 +195,7 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
   // Validação inicial: URL precisa ser string válida
   if (!finalUrl || typeof finalUrl !== 'string' || !/^https?:\/\//.test(finalUrl)) {
     try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'invalid_url', err: 'url_missing_or_invalid', url: String(finalUrl).slice(0,120) }); } catch(e){}
-    // Sem URL não tem o que abrir — retorna em vez de window.location undefined
+    // Sem URL não tem o que abrir, retorna em vez de window.location undefined
     return;
   }
   // Inject sub_id (?keyword=fb_<adname>) ANTES do redirect.
@@ -230,28 +230,28 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
     try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'overlay_render', err: _safeErr(e) }); } catch{}
   }
 
-  // Track inicio com keepalive — não perde se user fechar muito rápido.
+  // Track inicio com keepalive, não perde se user fechar muito rápido.
   try {
     if (typeof track === 'function') track('firm_redirect', {firm_id:firmId, firm_name:firmName, coupon_code:coupon||null, to_url:finalUrl});
   } catch(e){}
 
-  // Fallback CTA aparece após 5s — recupera abandono em conexão lenta / Instagram in-app
+  // Fallback CTA aparece após 5s, recupera abandono em conexão lenta / Instagram in-app
   let fbTimer = null, panicTimer = null;
   try {
     fbTimer = setTimeout(() => {
       const fb = document.getElementById('mc-redirect-fallback');
       const sub = document.getElementById('mc-redirect-sub');
       if (fb) fb.style.display = '';
-      if (sub) sub.textContent = 'Demorou mais que o normal — toque no botão pra abrir manualmente';
+      if (sub) sub.textContent = 'Demorou mais que o normal, toque no botão pra abrir manualmente';
     }, 5000);
-    // Após 12s mostra "algo deu errado" — page provavelmente bloqueada (in-app browsers, etc)
+    // Após 12s mostra "algo deu errado", page provavelmente bloqueada (in-app browsers, etc)
     panicTimer = setTimeout(() => {
       const sub = document.getElementById('mc-redirect-sub');
-      if (sub) { sub.textContent = '⚠ Não carregou — tente abrir manualmente ou fora do app do Instagram/TikTok'; sub.style.color = '#EF4444'; }
+      if (sub) { sub.textContent = '⚠ Não carregou, tente abrir manualmente ou fora do app do Instagram/TikTok'; sub.style.color = '#EF4444'; }
     }, 12000);
   } catch(e){}
 
-  // Unload listener — fetch keepalive + connection type pra distinguir 4G ruim de desinteresse
+  // Unload listener, fetch keepalive + connection type pra distinguir 4G ruim de desinteresse
   try {
     const onPageHide = () => {
       try { if (fbTimer) clearTimeout(fbTimer); if (panicTimer) clearTimeout(panicTimer); } catch(e){}
@@ -282,7 +282,7 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
   } catch(e){
     try { if (typeof track === 'function') track('firm_redirect_failed', { firm_id: firmId, stage: 'unload_listener', err: _safeErr(e) }); } catch{}
   }
-  // Redirect final — captura exceção raríssima de browser bloqueado/CSP
+  // Redirect final, captura exceção raríssima de browser bloqueado/CSP
   try {
     window.location.href = finalUrl;
   } catch(e){
@@ -305,14 +305,14 @@ function rateLimit(key, cooldownMs) {
 // ─── GA4 funnel allowlist: nome interno do site → nome PADRÃO GA4 ───
 // SÓ esses eventos vão pro dataLayer (logo, pro GA4 + Meta Pixel via GTM).
 // Todo o resto (instrumentação interna: tab_hidden, idle, bot_*, js_error,
-// quiz_*, scroll_depth, drawer_select, etc) fica SÓ no Supabase — não polui o GA4.
+// quiz_*, scroll_depth, drawer_select, etc) fica SÓ no Supabase, não polui o GA4.
 // 1 nome por ação. Coordenado com o container GTM-WJGTVX8G (triggers nesses nomes).
 const GA4_FUNNEL = {
   page_view:               'page_view',
   firm_detail_open:        'view_item',
   platform_detail_open:    'view_item',
   coupon_copy:             'add_to_cart',
-  copy_coupon:             'add_to_cart',   // variante legada — mesmo destino
+  copy_coupon:             'add_to_cart',   // variante legada, mesmo destino
   checkout_click:          'begin_checkout',
   loyalty_checkout_click:  'begin_checkout',
   platform_checkout_click: 'begin_checkout',
@@ -323,7 +323,7 @@ const GA4_FUNNEL = {
   purchase:                'purchase',
 };
 
-// Central tracking — Supabase + GTM + GA4 + Facebook Pixel + CAPI + localStorage cache
+// Central tracking, Supabase + GTM + GA4 + Facebook Pixel + CAPI + localStorage cache
 // Event priority: CAPI (server-side, ad-blocker-proof) > Supabase (first-party) > browser pixels
 function track(event, params={}) {
   const ts = new Date().toISOString();
@@ -340,7 +340,7 @@ function track(event, params={}) {
   const eid = typeof crypto!=='undefined'&&crypto.randomUUID ? crypto.randomUUID() : 'e'+Date.now()+Math.random().toString(36).slice(2,10);
   window._lastTrackId = eid;
 
-  // 1. Supabase (analytics persistente com UTM) — first-party, always allowed
+  // 1. Supabase (analytics persistente com UTM), first-party, always allowed
   // Atribuicao: fallback MC_UTM (sessao) -> MC_ATTR (localStorage 7d) pra nao perder campanha em sessao 2+
   const _src = MC_UTM.utm_source   || MC_ATTR.utm_source   || '';
   const _med = MC_UTM.utm_medium   || MC_ATTR.utm_medium   || '';
@@ -356,7 +356,7 @@ function track(event, params={}) {
     gclid:        MC_ATTR.gclid || null,
     ttclid:       MC_ATTR.ttclid || null,
     anon_id:      MC_ANON,
-    // A/B test "default size" — A=control (menor), B=treatment (popular). Estável por sessão.
+    // A/B test "default size", A=control (menor), B=treatment (popular). Estável por sessão.
     ab_default_size: (typeof _abDefaultSizeVariant === 'function') ? _abDefaultSizeVariant() : null,
   };
   const row = {
@@ -374,7 +374,7 @@ function track(event, params={}) {
     db.from('events').insert(row).then(r=>{ if(r.error){ console.warn('track insert error:', r.error.message); _trackEnqueue(row); } });
   } catch(e) { console.warn('track error:', e); _trackEnqueue(row); }
 
-  // 1b. coupon_clicks — atribuicao campanha→cupom pra fechar loop com venda real da firma
+  // 1b. coupon_clicks, atribuicao campanha→cupom pra fechar loop com venda real da firma
   if (event === 'copy_coupon' || event === 'coupon_copy') {
     try {
       const click = {
@@ -416,12 +416,12 @@ function track(event, params={}) {
   // GDPR/LGPD: only send to third-party trackers if consent accepted (or consent event itself)
   if (!consentOk && event !== 'cookie_consent') return;
 
-  // 3. GTM dataLayer — ÚNICA fonte pra GA4 + Meta Pixel + Google Ads.
+  // 3. GTM dataLayer, ÚNICA fonte pra GA4 + Meta Pixel + Google Ads.
   // SÓ eventos de funil (allowlist GA4_FUNNEL) chegam aqui. O nome empurrado é o
-  // PADRÃO GA4 (1 nome por ação) — o site faz a tradução, não o GTM. Instrumentação
+  // PADRÃO GA4 (1 nome por ação), o site faz a tradução, não o GTM. Instrumentação
   // interna (tab_hidden, idle, bot_*, js_error, quiz_*, drawer_select, scroll_depth…)
-  // NÃO entra no dataLayer — fica só no Supabase acima. Mantém GA4 limpo (~6-8 eventos).
-  // SEM gtag()/fbq() direto — disciplina dataLayer-only (memória feedback_tracking_saga).
+  // NÃO entra no dataLayer, fica só no Supabase acima. Mantém GA4 limpo (~6-8 eventos).
+  // SEM gtag()/fbq() direto, disciplina dataLayer-only (memória feedback_tracking_saga).
   const _ga4Event = GA4_FUNNEL[event];
   if (_ga4Event) {
     window.dataLayer = window.dataLayer || [];
@@ -474,7 +474,7 @@ function track(event, params={}) {
     });
   }
 
-  // 4. Facebook Conversions API server-side (bypassa ad blockers) — MESMO event_id do dataLayer
+  // 4. Facebook Conversions API server-side (bypassa ad blockers), MESMO event_id do dataLayer
   // Dedup Pixel browser × CAPI: GTM dispara Pixel com event_id=eid, CAPI envia event_id=eid → Meta soma 1.
   _sendCAPI(event, params, eid, ts);
 }
@@ -506,7 +506,7 @@ window.addEventListener('pagehide', ()=>{
     if(!q.length) return;
     const url = SUPABASE_URL + '/rest/v1/events';
     const blob = new Blob([JSON.stringify(q)], {type:'application/json'});
-    // sendBeacon can't set auth headers — use fetch with keepalive instead
+    // sendBeacon can't set auth headers, use fetch with keepalive instead
     fetch(url, {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Prefer':'return=minimal'},
@@ -524,14 +524,14 @@ async function _sha256(str){
     return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
   } catch(e) { return ''; }
 }
-// Call when user logs in — enables GA4 Enhanced Conversions + FB Advanced Matching via GTM dataLayer
-// (sem gtag/fbq direto — GTM consome user_data e Pixel/GA4 hash automaticamente)
+// Call when user logs in, enables GA4 Enhanced Conversions + FB Advanced Matching via GTM dataLayer
+// (sem gtag/fbq direto, GTM consome user_data e Pixel/GA4 hash automaticamente)
 async function setTrackingUser(user){
   if(!user||localStorage.getItem('mc-cookies-consent')!=='accepted') return;
   const email = user.email || '';
   const phone = user.user_metadata?.phone || '';
   const fn    = user.user_metadata?.full_name || '';
-  // Push pra dataLayer — GTM tem variável "user_data" que lê desse stack e injeta no Pixel base + GA4 config
+  // Push pra dataLayer, GTM tem variável "user_data" que lê desse stack e injeta no Pixel base + GA4 config
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     event: 'user_identified',
@@ -547,7 +547,7 @@ async function setTrackingUser(user){
     },
   });
 }
-// Call when geo detected (enriches even anonymous users) — via dataLayer
+// Call when geo detected (enriches even anonymous users), via dataLayer
 function setTrackingGeo(geo){
   if(!geo) return;
   window.dataLayer = window.dataLayer || [];
@@ -561,7 +561,7 @@ function setTrackingGeo(geo){
   });
 }
 
-// Lê fbp/fbc do cookie. O cookie _fbc é a fonte CANÔNICA — o Pixel da Meta o seta no
+// Lê fbp/fbc do cookie. O cookie _fbc é a fonte CANÔNICA, o Pixel da Meta o seta no
 // formato certo (fb.1.{ts}.{fbclid}) com timestamp ESTÁVEL. Só reconstruímos quando o
 // cookie não existe, ou quando a URL traz um fbclid genuinamente novo (ad mais recente).
 // NUNCA reconstruir por evento: Date.now() a cada chamada gera fbc com timestamp variável
@@ -604,7 +604,7 @@ function _getAnonId() {
   try { return localStorage.getItem('mc_anon') || null; } catch(_) { return null; }
 }
 
-// Facebook CAPI — fire-and-forget server-side event
+// Facebook CAPI, fire-and-forget server-side event
 function _sendCAPI(event, params, eid, ts) {
   // GDPR/LGPD: block server-side tracking without consent
   if (localStorage.getItem('mc-cookies-consent') !== 'accepted') return;
@@ -653,8 +653,8 @@ function _sendCAPI(event, params, eid, ts) {
 // Helper: extract price value from firm for FB Pixel enrichment
 // Valor de conversão (Lead/CAPI) = $3.00 flat por Lead (decidido c/ Everton 2026-05-20).
 // Comissão é 10% da venda mas varia muito por plano; Everton optou por valor fixo.
-// Constante — NUNCA 0: a Meta acusava "Lead sem value" quando isso devolvia 0.
-// Mantém a assinatura (f,size) pois callers passam args — JS ignora os extras.
+// Constante, NUNCA 0: a Meta acusava "Lead sem value" quando isso devolvia 0.
+// Mantém a assinatura (f,size) pois callers passam args, JS ignora os extras.
 function _fbVal(){
   return 3.00;
 }
@@ -749,10 +749,10 @@ async function fetchGeo() {
 }
 
 // ─── MAIN APP ───
-/* DATA — Firms loaded from Supabase (cms_firms), cached in localStorage for offline fallback */
+/* DATA, Firms loaded from Supabase (cms_firms), cached in localStorage for offline fallback */
 const FIRMS=[];
 
-/* ═══ FIRM DETAIL — Background images & About data ═══ */
+/* ═══ FIRM DETAIL, Background images & About data ═══ */
 const FIRM_BG={
   apex:'/img/apex-bg.webp',bulenox:'/img/bulenox-bg.webp',ftmo:'/img/ftmo-bg.webp',
   fn:'/img/fn-bg.webp',e2t:'/img/e2t-bg.webp',
@@ -760,10 +760,10 @@ const FIRM_BG={
   e8:'/img/e8-bg.webp',cti:'/img/cti-bg.webp',tradeday:'/img/tradeday-bg.webp'
 };
 const FIRM_ABOUT={
-  apex:{about:'Founded in <b>2021</b> by Darrell Martin in Austin, Texas. Apex is the <b>6th most searched prop firm worldwide</b> with 4.2M monthly visits. Approval rate of <b>15-20%</b> — 2x the industry average.',highlights:[{val:'$721M+',label:'Paid to traders'},{val:'$85M+',label:'Last 90 days'},{val:'100%',label:'Of profit (2026)'}],
+  apex:{about:'Founded in <b>2021</b> by Darrell Martin in Austin, Texas. Apex is the <b>6th most searched prop firm worldwide</b> with 4.2M monthly visits. Approval rate of <b>15-20%</b>, 2x the industry average.',highlights:[{val:'$721M+',label:'Paid to traders'},{val:'$85M+',label:'Last 90 days'},{val:'100%',label:'Of profit (2026)'}],
     types:['Intraday Trail','EOD Trail'],plans:{'Intraday Trail':[{s:'25K',d:'$19.90',o:'$199'},{s:'50K',d:'$24.90',o:'$249'},{s:'100K',d:'$39.90',o:'$399',pop:1},{s:'150K',d:'$59.90',o:'$599'}],'EOD Trail':[{s:'25K',d:'$29.90',o:'$299'},{s:'50K',d:'$34.90',o:'$349'},{s:'100K',d:'$59.90',o:'$599',pop:1},{s:'150K',d:'$79.90',o:'$799'}]},
     includes:['No daily loss limit','No scaling rule','NinjaTrader license','Real-time data','Copy Trader (WealthCharts)','24/7 support']},
-  bulenox:{about:'Founded in <b>2022</b>. <b>500%</b> year-over-year traffic growth. Simplified rules — possible to pass in <b>1 day</b>, no consistency rule.',highlights:[{val:'90%',label:'Profit Split'},{val:'1 day',label:'To pass'},{val:'$0',label:'Monthly fee'}],
+  bulenox:{about:'Founded in <b>2022</b>. <b>500%</b> year-over-year traffic growth. Simplified rules, possible to pass in <b>1 day</b>, no consistency rule.',highlights:[{val:'90%',label:'Profit Split'},{val:'1 day',label:'To pass'},{val:'$0',label:'Monthly fee'}],
     types:['Trailing DD','EOD DD'],plans:{'Trailing DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$58.85',o:'$535'}],'EOD DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$58.85',o:'$535'}]},
     includes:['Pass in 1 day','No consistency rule','News trading allowed','Weekly payouts','14-day free trial']},
   ftmo:{about:'Founded in <b>2015</b> in Prague, Czech Republic. FTMO is the <b>largest Forex prop firm in the world</b>. Over <b>3.5M clients</b> in 140+ countries. Team of 300+ professionals.',highlights:[{val:'$500M+',label:'Paid to traders'},{val:'3.5M+',label:'Clients'},{val:'10 years',label:'In the market'}],
@@ -772,7 +772,7 @@ const FIRM_ABOUT={
   fn:{about:'Founded in <b>2022</b> in the United Arab Emirates. <b>Prop Firm of the Year</b> (Finance Magnates 2025). Over <b>423K+ accounts</b> with guaranteed 24h payout.',highlights:[{val:'$285M+',label:'Paid to traders'},{val:'108K+',label:'Traders paid'},{val:'24h',label:'Guaranteed payout'}],
     types:['Stellar 2-Step','Stellar 1-Step','Stellar Lite','Futures Bolt','Futures Rapid','Futures Legacy'],plans:{'Stellar 2-Step':[{s:'$6K',d:'$52.49',o:'$69.99'},{s:'$15K',d:'$89.99',o:'$119.99'},{s:'$25K',d:'$142.49',o:'$189.99'},{s:'$50K',d:'$202.49',o:'$269.99',pop:1},{s:'$100K',d:'$374.99',o:'$499.99'}],'Stellar 1-Step':[{s:'$6K',d:'$65.99',o:'—'},{s:'$15K',d:'$130.99',o:'—'},{s:'$25K',d:'$170.99',o:'—'},{s:'$50K',d:'$219.99',o:'—',pop:1},{s:'$100K',d:'$449.99',o:'—'},{s:'$200K',d:'$1,099.99',o:'—'}],'Stellar Lite':[{s:'$5K',d:'$32',o:'—'},{s:'$10K',d:'$58',o:'—'},{s:'$25K',d:'$159',o:'—'},{s:'$50K',d:'$229',o:'—',pop:1},{s:'$100K',d:'$399',o:'—'},{s:'$200K',d:'$799',o:'—'}],'Futures Bolt':[{s:'$50K',d:'~$199',o:'—',pop:1}],'Futures Rapid':[{s:'$25K',d:'~$99',o:'—'},{s:'$50K',d:'~$159',o:'—',pop:1},{s:'$100K',d:'~$279',o:'—'}],'Futures Legacy':[{s:'$25K',d:'~$79',o:'—'},{s:'$50K',d:'~$119',o:'—',pop:1},{s:'$100K',d:'~$349',o:'—'}]},
     includes:['Guaranteed 24h payout','No time limit','$1K late compensation','Up to 90% split','Scaling up to $4M','15% reward in challenge']},
-  e2t:{about:'Founded in <b>2016</b>, celebrating <b>10 years</b> in 2026. Focus on education and development. Approval rate of <b>10.42%</b> — above industry average. Scaling up to $400K.',highlights:[{val:'10 years',label:'In the market'},{val:'$400K',label:'Max scaling'},{val:'10.4%',label:'Approval rate'}],
+  e2t:{about:'Founded in <b>2016</b>, celebrating <b>10 years</b> in 2026. Focus on education and development. Approval rate of <b>10.42%</b>, above industry average. Scaling up to $400K.',highlights:[{val:'10 years',label:'In the market'},{val:'$400K',label:'Max scaling'},{val:'10.4%',label:'Approval rate'}],
     types:['Trader Career Path','Gauntlet Mini'],plans:{'Trader Career Path':[{s:'TCP25',d:'$60',o:'$150'},{s:'TCP50',d:'$76',o:'$190'},{s:'TCP100',d:'$140',o:'$350',pop:1}],'Gauntlet Mini':[{s:'50K',d:'$68',o:'$170'},{s:'100K',d:'$126',o:'$315',pop:1},{s:'150K',d:'$150',o:'$375'},{s:'200K',d:'$220',o:'$550'}]},
     includes:['Free Journalytix','Free reset','Free NT/Finamark','Scaling up to $400K','No monthly fee']},
   the5ers:{about:'Founded in <b>2016</b> by Saul Lokier in Raanana, Israel. One of the <b>oldest active prop firms</b>. Scaling up to <b>$4M</b> and profit split up to 100%.',highlights:[{val:'$43M+',label:'Paid to traders'},{val:'30K+',label:'Payouts made'},{val:'$4M',label:'Max scaling'}],
@@ -790,7 +790,7 @@ const FIRM_ABOUT={
   cti:{about:'Founded in <b>2018</b> in the United Kingdom. City Traders Imperium (CTI) offers <b>5 evaluation programs</b> with split up to <b>100%</b>. Awarded: <b>Best MatchTrader Prop Firm 2025</b>, Top Choice for Traders 2025, Most Trusted Prop Firm 2025.',highlights:[{val:'100%',label:'Max split'},{val:'5',label:'Programs'},{val:'$1',label:'Min entry'}],
     types:['1-Step','2-Step','3-Step','Instant','Instant Pro'],plans:{'1-Step':[{s:'$2.5K',d:'$27',o:'$39'},{s:'$5K',d:'$41',o:'$59'},{s:'$10K',d:'$76',o:'$109'},{s:'$25K',d:'$139',o:'$199',pop:1},{s:'$50K',d:'$280',o:'$399'},{s:'$100K',d:'$412',o:'$589'}],'2-Step':[{s:'$2.5K',d:'$34',o:'$49'},{s:'$5K',d:'$48',o:'$69'},{s:'$10K',d:'$97',o:'$139'},{s:'$25K',d:'$174',o:'$249',pop:1},{s:'$50K',d:'$314',o:'$449'},{s:'$100K',d:'$482',o:'$689'}],'3-Step':[{s:'$2.5K',d:'$1',o:'—'},{s:'$5K',d:'$2',o:'—'},{s:'$10K',d:'$4',o:'—'},{s:'$25K',d:'$10',o:'—',pop:1},{s:'$50K',d:'$20',o:'—'},{s:'$100K',d:'$40',o:'—'}],'Instant':[{s:'$2.5K',d:'$62',o:'$89'},{s:'$5K',d:'$111',o:'$159'},{s:'$10K',d:'$216',o:'$309'},{s:'$20K',d:'$391',o:'$559',pop:1},{s:'$40K',d:'$741',o:'$1,059'},{s:'$80K',d:'$1,315',o:'$1,879'}],'Instant Pro':[{s:'$5K',d:'$263',o:'$329'},{s:'$10K',d:'$527',o:'$659'},{s:'$20K',d:'$1,055',o:'$1,319',pop:1},{s:'$40K',d:'$2,111',o:'$2,639'},{s:'$80K',d:'$4,223',o:'$5,279'}]},
     includes:['5 evaluation programs','VIP Program: Bronze, Silver, Gold','Free 1-on-1 coaching','Achievement certificate','Split up to 100%','Scaling available']},
-  tradeday:{about:'Founded in <b>Chicago, Illinois</b>. TradeDay trades <b>futures only</b> on CME, CBOT, NYMEX and COMEX exchanges. Highlights: <b>Day 1 Payout</b>, <b>no consistency rule</b> and progressive split up to <b>95%</b>. Approval rate of <b>28.2%</b> (Oct 2023 – Mar 2024) — above industry average.',highlights:[{val:'Day 1',label:'First payout'},{val:'95%',label:'Max split'},{val:'28.2%',label:'Approval rate'}],
+  tradeday:{about:'Founded in <b>Chicago, Illinois</b>. TradeDay trades <b>futures only</b> on CME, CBOT, NYMEX and COMEX exchanges. Highlights: <b>Day 1 Payout</b>, <b>no consistency rule</b> and progressive split up to <b>95%</b>. Approval rate of <b>28.2%</b> (Oct 2023 – Mar 2024), above industry average.',highlights:[{val:'Day 1',label:'First payout'},{val:'95%',label:'Max split'},{val:'28.2%',label:'Approval rate'}],
     types:['Intraday','EOD','Static'],plans:{'Intraday':[{s:'50K',d:'$87.50',o:'$125'},{s:'100K',d:'$140',o:'$200',pop:1},{s:'150K',d:'$210',o:'$300'}],'EOD':[{s:'50K',d:'$122.50',o:'$175'},{s:'100K',d:'$192.50',o:'$275',pop:1},{s:'150K',d:'$262.50',o:'$375'}],'Static':[{s:'50K',d:'$115.50',o:'$165'},{s:'100K',d:'$175',o:'$250',pop:1},{s:'150K',d:'$245',o:'$350'}]},
     includes:['No consistency rule','Day 1 Payout','Split up to 95%','No activation fee (SAVE30)','Futures CME/CBOT/NYMEX/COMEX','24/7 support']},
   goat:{about:'Goat Funded Futures (GFF) is a <b>futures-only prop firm</b> operated by WITI LIMITED (Hong Kong). Trade <b>CME, COMEX, NYMEX and CBOT</b> with up to <b>$750K</b> in funded capital. <b>$20M+ paid out</b> across the brand. <b>4 plan types</b>: EOD, Sprint, Instant, Pro. <b>$0 activation fee</b> after passing.',
@@ -806,7 +806,7 @@ const FIRM_ABOUT={
 
 };
 
-/* PLATFORM DETAIL DATA — checkout overlay for partner platforms */
+/* PLATFORM DETAIL DATA, checkout overlay for partner platforms */
 const PLAT_BG={
   tradingview:'/img/tradingview-bg.webp',
   ninjatrader:'/img/ninjatrader-bg.webp'
@@ -863,7 +863,7 @@ const PLAT_DETAIL={
   }
 };
 
-/* FIRM DATA TRANSLATIONS — translates PT firm data to all languages */
+/* FIRM DATA TRANSLATIONS, translates PT firm data to all languages */
 const _ftL=['en','es','fr','it','de','ar','id'];
 const FIRM_T={
 // Scaling
@@ -962,12 +962,12 @@ const FIRM_T={
 'Para passar':['To pass','Para aprobar','Pour réussir','Per superare','Zum Bestehen','للاجتياز'],
 'Taxa mensal':['Monthly fee','Tarifa mensual','Frais mensuel','Tariffa mensile','Monatliche Gebühr','رسوم شهرية'],
 // FIRM_ABOUT.about texts
-'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.':['Founded in <b>2021</b> by Darrell Martin in Austin, Texas. Apex is the <b>6th most searched prop firm worldwide</b> with 4.2M monthly visits. <b>15-20%</b> approval rate — 2x the industry average.','Fundada en <b>2021</b> por Darrell Martin en Austin, Texas. Apex es la <b>6ª prop firm más buscada del mundo</b> con 4.2M de visitas mensuales. Tasa de aprobación de <b>15-20%</b> — 2x el promedio del sector.','Fondée en <b>2021</b> par Darrell Martin à Austin, Texas. Apex est la <b>6e prop firm la plus recherchée au monde</b> avec 4.2M de visites mensuelles. Taux d\'approbation de <b>15-20%</b> — 2x la moyenne du secteur.','Fondata nel <b>2021</b> da Darrell Martin ad Austin, Texas. Apex è la <b>6ª prop firm più cercata al mondo</b> con 4.2M di visite mensili. Tasso di approvazione del <b>15-20%</b> — 2x la media del settore.','Gegründet <b>2021</b> von Darrell Martin in Austin, Texas. Apex ist die <b>6. meistgesuchte Prop-Firm weltweit</b> mit 4.2M monatlichen Besuchen. Genehmigungsrate von <b>15-20%</b> — 2x der Branchendurchschnitt.','تأسست في <b>2021</b> بواسطة داريل مارتن في أوستن، تكساس. Apex هي <b>سادس أكثر شركة تداول ممول بحثاً في العالم</b> مع 4.2 مليون زيارة شهرية. معدل موافقة <b>15-20%</b> — ضعف متوسط القطاع.'],
-'Fundada em <b>2022</b>. Crescimento de <b>500%</b> em tráfego ano a ano. Regras simplificadas — possível passar em <b>1 dia</b>, sem regra de consistência.':['Founded in <b>2022</b>. <b>500%</b> traffic growth year-over-year. Simplified rules — pass in <b>1 day</b>, no consistency rule.','Fundada en <b>2022</b>. Crecimiento de <b>500%</b> en tráfico año a año. Reglas simplificadas — posible aprobar en <b>1 día</b>, sin regla de consistencia.','Fondée en <b>2022</b>. Croissance de <b>500%</b> du trafic d\'une année sur l\'autre. Règles simplifiées — possible de réussir en <b>1 jour</b>, sans règle de consistance.','Fondata nel <b>2022</b>. Crescita del traffico del <b>500%</b> anno su anno. Regole semplificate — possibile superare in <b>1 giorno</b>, senza regola di coerenza.','Gegründet <b>2022</b>. <b>500%</b> Traffic-Wachstum im Jahresvergleich. Vereinfachte Regeln — in <b>1 Tag</b> bestehen, keine Konsistenzregel.','تأسست في <b>2022</b>. نمو في حركة المرور بنسبة <b>500%</b> سنوياً. قواعد مبسطة — يمكن اجتيازها في <b>يوم واحد</b>، بدون قاعدة اتساق.'],
+'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b>, 2x a média do setor.':['Founded in <b>2021</b> by Darrell Martin in Austin, Texas. Apex is the <b>6th most searched prop firm worldwide</b> with 4.2M monthly visits. <b>15-20%</b> approval rate, 2x the industry average.','Fundada en <b>2021</b> por Darrell Martin en Austin, Texas. Apex es la <b>6ª prop firm más buscada del mundo</b> con 4.2M de visitas mensuales. Tasa de aprobación de <b>15-20%</b>, 2x el promedio del sector.','Fondée en <b>2021</b> par Darrell Martin à Austin, Texas. Apex est la <b>6e prop firm la plus recherchée au monde</b> avec 4.2M de visites mensuelles. Taux d\'approbation de <b>15-20%</b>, 2x la moyenne du secteur.','Fondata nel <b>2021</b> da Darrell Martin ad Austin, Texas. Apex è la <b>6ª prop firm più cercata al mondo</b> con 4.2M di visite mensili. Tasso di approvazione del <b>15-20%</b>, 2x la media del settore.','Gegründet <b>2021</b> von Darrell Martin in Austin, Texas. Apex ist die <b>6. meistgesuchte Prop-Firm weltweit</b> mit 4.2M monatlichen Besuchen. Genehmigungsrate von <b>15-20%</b>, 2x der Branchendurchschnitt.','تأسست في <b>2021</b> بواسطة داريل مارتن في أوستن، تكساس. Apex هي <b>سادس أكثر شركة تداول ممول بحثاً في العالم</b> مع 4.2 مليون زيارة شهرية. معدل موافقة <b>15-20%</b>, ضعف متوسط القطاع.'],
+'Fundada em <b>2022</b>. Crescimento de <b>500%</b> em tráfego ano a ano. Regras simplificadas, possível passar em <b>1 dia</b>, sem regra de consistência.':['Founded in <b>2022</b>. <b>500%</b> traffic growth year-over-year. Simplified rules, pass in <b>1 day</b>, no consistency rule.','Fundada en <b>2022</b>. Crecimiento de <b>500%</b> en tráfico año a año. Reglas simplificadas, posible aprobar en <b>1 día</b>, sin regla de consistencia.','Fondée en <b>2022</b>. Croissance de <b>500%</b> du trafic d\'une année sur l\'autre. Règles simplifiées, possible de réussir en <b>1 jour</b>, sans règle de consistance.','Fondata nel <b>2022</b>. Crescita del traffico del <b>500%</b> anno su anno. Regole semplificate, possibile superare in <b>1 giorno</b>, senza regola di coerenza.','Gegründet <b>2022</b>. <b>500%</b> Traffic-Wachstum im Jahresvergleich. Vereinfachte Regeln, in <b>1 Tag</b> bestehen, keine Konsistenzregel.','تأسست في <b>2022</b>. نمو في حركة المرور بنسبة <b>500%</b> سنوياً. قواعد مبسطة, يمكن اجتيازها في <b>يوم واحد</b>، بدون قاعدة اتساق.'],
 'Fundada em <b>2015</b> em Praga, República Tcheca. A FTMO é a <b>maior prop firm de Forex do mundo</b>. Mais de <b>3.5M de clientes</b> em 140+ países. Equipe de 300+ profissionais.':['Founded in <b>2015</b> in Prague, Czech Republic. FTMO is the <b>world\'s largest Forex prop firm</b>. Over <b>3.5M clients</b> in 140+ countries. Team of 300+ professionals.','Fundada en <b>2015</b> en Praga, República Checa. FTMO es la <b>mayor prop firm de Forex del mundo</b>. Más de <b>3.5M de clientes</b> en 140+ países. Equipo de 300+ profesionales.','Fondée en <b>2015</b> à Prague, République tchèque. FTMO est la <b>plus grande prop firm Forex au monde</b>. Plus de <b>3.5M de clients</b> dans 140+ pays. Équipe de 300+ professionnels.','Fondata nel <b>2015</b> a Praga, Repubblica Ceca. FTMO è la <b>più grande prop firm Forex al mondo</b>. Oltre <b>3.5M di clienti</b> in 140+ paesi. Team di 300+ professionisti.','Gegründet <b>2015</b> in Prag, Tschechische Republik. FTMO ist die <b>größte Forex-Prop-Firm der Welt</b>. Über <b>3.5M Kunden</b> in 140+ Ländern. Team von 300+ Fachleuten.','تأسست في <b>2015</b> في براغ، جمهورية التشيك. FTMO هي <b>أكبر شركة تداول ممول للفوركس في العالم</b>. أكثر من <b>3.5 مليون عميل</b> في 140+ دولة. فريق من 300+ محترف.'],
 'Fundada em <b>2021</b> por James Sixsmith (ex-jogador profissional de hockey). Taxa de sucesso anual de <b>20.37%</b>. Saque desde o <b>dia 1</b>, sem taxa de ativação.':['Founded in <b>2021</b> by James Sixsmith (former professional hockey player). Annual success rate of <b>20.37%</b>. Withdrawal from <b>day 1</b>, no activation fee.','Fundada en <b>2021</b> por James Sixsmith (ex jugador profesional de hockey). Tasa de éxito anual de <b>20.37%</b>. Retiro desde el <b>día 1</b>, sin tarifa de activación.','Fondée en <b>2021</b> par James Sixsmith (ancien joueur de hockey professionnel). Taux de réussite annuel de <b>20.37%</b>. Retrait dès le <b>jour 1</b>, sans frais d\'activation.','Fondata nel <b>2021</b> da James Sixsmith (ex giocatore professionista di hockey). Tasso di successo annuale del <b>20.37%</b>. Prelievo dal <b>giorno 1</b>, senza commissione di attivazione.','Gegründet <b>2021</b> von James Sixsmith (ehemaliger Profi-Hockeyspieler). Jährliche Erfolgsquote von <b>20.37%</b>. Auszahlung ab <b>Tag 1</b>, keine Aktivierungsgebühr.','تأسست في <b>2021</b> بواسطة جيمس سيكسميث (لاعب هوكي محترف سابق). معدل نجاح سنوي <b>20.37%</b>. سحب من <b>اليوم الأول</b>، بدون رسوم تفعيل.'],
 'Fundada em <b>2022</b> nos Emirados Árabes. <b>Prop Firm do Ano</b> (Finance Magnates 2025). Mais de <b>200K traders ativos</b> e payout garantido em 24h.':['Founded in <b>2022</b> in the UAE. <b>Prop Firm of the Year</b> (Finance Magnates 2025). Over <b>200K active traders</b> and guaranteed 24h payout.','Fundada en <b>2022</b> en Emiratos Árabes. <b>Prop Firm del Año</b> (Finance Magnates 2025). Más de <b>200K traders activos</b> y pago garantizado en 24h.','Fondée en <b>2022</b> aux Émirats arabes unis. <b>Prop Firm de l\'Année</b> (Finance Magnates 2025). Plus de <b>200K traders actifs</b> et paiement garanti sous 24h.','Fondata nel <b>2022</b> negli Emirati Arabi. <b>Prop Firm dell\'Anno</b> (Finance Magnates 2025). Oltre <b>200K trader attivi</b> e pagamento garantito in 24h.','Gegründet <b>2022</b> in den VAE. <b>Prop-Firm des Jahres</b> (Finance Magnates 2025). Über <b>200K aktive Trader</b> und garantierte 24h-Auszahlung.','تأسست في <b>2022</b> في الإمارات العربية المتحدة. <b>شركة التداول الممول للعام</b> (Finance Magnates 2025). أكثر من <b>200 ألف متداول نشط</b> ودفع مضمون خلال 24 ساعة.'],
-'Fundada em <b>2016</b>, celebrando <b>10 anos</b> em 2026. Foco em educação e desenvolvimento. Taxa de aprovação de <b>10.42%</b> — acima da média do setor. Escalamento até $400K.':['Founded in <b>2016</b>, celebrating <b>10 years</b> in 2026. Focus on education and development. <b>10.42%</b> approval rate — above the industry average. Scaling up to $400K.','Fundada en <b>2016</b>, celebrando <b>10 años</b> en 2026. Enfoque en educación y desarrollo. Tasa de aprobación de <b>10.42%</b> — por encima del promedio del sector. Escalamiento hasta $400K.','Fondée en <b>2016</b>, célébrant <b>10 ans</b> en 2026. Accent sur l\'éducation et le développement. Taux d\'approbation de <b>10.42%</b> — au-dessus de la moyenne du secteur. Scaling jusqu\'à $400K.','Fondata nel <b>2016</b>, celebra <b>10 anni</b> nel 2026. Focus su educazione e sviluppo. Tasso di approvazione del <b>10.42%</b> — sopra la media del settore. Scaling fino a $400K.','Gegründet <b>2016</b>, feiert <b>10 Jahre</b> in 2026. Fokus auf Bildung und Entwicklung. Genehmigungsrate von <b>10.42%</b> — über dem Branchendurchschnitt. Scaling bis $400K.','تأسست في <b>2016</b>، تحتفل بـ <b>10 سنوات</b> في 2026. التركيز على التعليم والتطوير. معدل موافقة <b>10.42%</b> — أعلى من متوسط القطاع. تصعيد حتى $400K.'],
+'Fundada em <b>2016</b>, celebrando <b>10 anos</b> em 2026. Foco em educação e desenvolvimento. Taxa de aprovação de <b>10.42%</b>, acima da média do setor. Escalamento até $400K.':['Founded in <b>2016</b>, celebrating <b>10 years</b> in 2026. Focus on education and development. <b>10.42%</b> approval rate, above the industry average. Scaling up to $400K.','Fundada en <b>2016</b>, celebrando <b>10 años</b> en 2026. Enfoque en educación y desarrollo. Tasa de aprobación de <b>10.42%</b>, por encima del promedio del sector. Escalamiento hasta $400K.','Fondée en <b>2016</b>, célébrant <b>10 ans</b> en 2026. Accent sur l\'éducation et le développement. Taux d\'approbation de <b>10.42%</b>, au-dessus de la moyenne du secteur. Scaling jusqu\'à $400K.','Fondata nel <b>2016</b>, celebra <b>10 anni</b> nel 2026. Focus su educazione e sviluppo. Tasso di approvazione del <b>10.42%</b>, sopra la media del settore. Scaling fino a $400K.','Gegründet <b>2016</b>, feiert <b>10 Jahre</b> in 2026. Fokus auf Bildung und Entwicklung. Genehmigungsrate von <b>10.42%</b>, über dem Branchendurchschnitt. Scaling bis $400K.','تأسست في <b>2016</b>، تحتفل بـ <b>10 سنوات</b> في 2026. التركيز على التعليم والتطوير. معدل موافقة <b>10.42%</b>, أعلى من متوسط القطاع. تصعيد حتى $400K.'],
 'Fundada em <b>2016</b> por Saul Lokier em Raanana, Israel. Uma das <b>mais antigas prop firms</b> em atividade. Scaling até <b>$4M</b> e profit split até 100%.':['Founded in <b>2016</b> by Saul Lokier in Raanana, Israel. One of the <b>oldest active prop firms</b>. Scaling up to <b>$4M</b> and profit split up to 100%.','Fundada en <b>2016</b> por Saul Lokier en Raanana, Israel. Una de las <b>prop firms más antiguas</b> en actividad. Scaling hasta <b>$4M</b> y profit split hasta 100%.','Fondée en <b>2016</b> par Saul Lokier à Raanana, Israël. L\'une des <b>plus anciennes prop firms</b> en activité. Scaling jusqu\'à <b>$4M</b> et profit split jusqu\'à 100%.','Fondata nel <b>2016</b> da Saul Lokier a Raanana, Israele. Una delle <b>prop firm più antiche</b> in attività. Scaling fino a <b>$4M</b> e profit split fino al 100%.','Gegründet <b>2016</b> von Saul Lokier in Raanana, Israel. Eine der <b>ältesten aktiven Prop-Firms</b>. Scaling bis <b>$4M</b> und Profit Split bis 100%.','تأسست في <b>2016</b> بواسطة شاؤول لوكير في رعنانا، إسرائيل. واحدة من <b>أقدم شركات التداول الممول</b> النشطة. تصعيد حتى <b>$4M</b> وتقسيم أرباح حتى 100%.'],
 'Fundada em <b>2022</b> por Khaled Ayesh em Dubai. <b>2M+ de traders</b> no mundo. Uma das mesas mais populares com pagamentos rápidos e split flexível até 100%.':['Founded in <b>2022</b> by Khaled Ayesh in Dubai. <b>2M+ traders</b> worldwide. One of the most popular firms with fast payments and flexible split up to 100%.','Fundada en <b>2022</b> por Khaled Ayesh en Dubái. <b>2M+ de traders</b> en el mundo. Una de las mesas más populares con pagos rápidos y split flexible hasta 100%.','Fondée en <b>2022</b> par Khaled Ayesh à Dubaï. <b>2M+ de traders</b> dans le monde. L\'une des firmes les plus populaires avec paiements rapides et split flexible jusqu\'à 100%.','Fondata nel <b>2022</b> da Khaled Ayesh a Dubai. <b>2M+ di trader</b> nel mondo. Una delle firme più popolari con pagamenti rapidi e split flessibile fino al 100%.','Gegründet <b>2022</b> von Khaled Ayesh in Dubai. <b>2M+ Trader</b> weltweit. Eine der beliebtesten Firmen mit schnellen Zahlungen und flexiblem Split bis 100%.','تأسست في <b>2022</b> بواسطة خالد عايش في دبي. <b>2 مليون+ متداول</b> حول العالم. واحدة من أشهر الشركات مع دفعات سريعة وتقسيم مرن حتى 100%.'],
 'Fundada em <b>2022</b> na Holanda por Jelle Dijkstra. <b>20K+ traders</b>. Programa Trade2Earn (pontos por operar). Payout em <b>24h</b> com ciclo de 7 dias.':['Founded in <b>2022</b> in the Netherlands by Jelle Dijkstra. <b>20K+ traders</b>. Trade2Earn program (points for trading). <b>24h</b> payout with 7-day cycle.','Fundada en <b>2022</b> en Holanda por Jelle Dijkstra. <b>20K+ traders</b>. Programa Trade2Earn (puntos por operar). Pago en <b>24h</b> con ciclo de 7 días.','Fondée en <b>2022</b> aux Pays-Bas par Jelle Dijkstra. <b>20K+ traders</b>. Programme Trade2Earn (points pour trader). Paiement sous <b>24h</b> avec cycle de 7 jours.','Fondata nel <b>2022</b> nei Paesi Bassi da Jelle Dijkstra. <b>20K+ trader</b>. Programma Trade2Earn (punti per operare). Pagamento in <b>24h</b> con ciclo di 7 giorni.','Gegründet <b>2022</b> in den Niederlanden von Jelle Dijkstra. <b>20K+ Trader</b>. Trade2Earn-Programm (Punkte für Handel). <b>24h</b>-Auszahlung mit 7-Tage-Zyklus.','تأسست في <b>2022</b> في هولندا بواسطة جيلي ديكسترا. <b>20 ألف+ متداول</b>. برنامج Trade2Earn (نقاط للتداول). دفع خلال <b>24 ساعة</b> مع دورة 7 أيام.'],
@@ -989,19 +989,19 @@ const FIRM_T={
 '90% split de lucro':['90% profit split','90% split de beneficio','90% split de profit','90% split del profitto','90% Gewinn-Split','90% تقسيم أرباح'],
 '$500M+ pagos':['$500M+ paid out','$500M+ pagados','$500M+ versés','$500M+ pagati','$500M+ ausgezahlt','$500M+ مدفوعة'],
 'Sem regra de escalamento':['No scaling rules','Sin regla de escalamiento','Sans règle de scaling','Nessuna regola di scaling','Keine Scaling-Regeln','بدون قواعد تصعيد'],
-// PLAT_DETAIL — about texts (updated with richer data)
+// PLAT_DETAIL, about texts (updated with richer data)
 'Fundada em <b>2011</b> nos EUA. A plataforma de gráficos <b>mais usada do mundo</b> com <b>50M+ de usuários</b> em 190+ países. Indicadores profissionais, alertas avançados, screener e a maior comunidade de traders do mundo. <b>Pine Script</b> para criar indicadores customizados.':['Founded in <b>2011</b> in the USA. The <b>world\'s most used</b> charting platform with <b>50M+ users</b> in 190+ countries. Professional indicators, advanced alerts, screener and the world\'s largest trader community. <b>Pine Script</b> for custom indicators.','Fundada en <b>2011</b> en EE.UU. La plataforma de gráficos <b>más usada del mundo</b> con <b>50M+ de usuarios</b> en 190+ países. Indicadores profesionales, alertas avanzadas, screener y la mayor comunidad de traders del mundo. <b>Pine Script</b> para indicadores personalizados.','Fondée en <b>2011</b> aux États-Unis. La plateforme de graphiques <b>la plus utilisée au monde</b> avec <b>50M+ d\'utilisateurs</b> dans 190+ pays. Indicateurs professionnels, alertes avancées, screener et la plus grande communauté de traders. <b>Pine Script</b> pour indicateurs personnalisés.','Fondata nel <b>2011</b> negli USA. La piattaforma di grafici <b>più usata al mondo</b> con <b>50M+ di utenti</b> in 190+ paesi. Indicatori professionali, avvisi avanzati, screener e la più grande comunità di trader. <b>Pine Script</b> per indicatori personalizzati.','Gegründet <b>2011</b> in den USA. Die <b>weltweit meistgenutzte</b> Charting-Plattform mit <b>50M+ Nutzern</b> in 190+ Ländern. Professionelle Indikatoren, erweiterte Benachrichtigungen, Screener und die größte Trader-Community. <b>Pine Script</b> für benutzerdefinierte Indikatoren.','تأسست في <b>2011</b> في الولايات المتحدة. منصة الرسوم البيانية <b>الأكثر استخداماً في العالم</b> مع <b>50 مليون+ مستخدم</b> في 190+ دولة. مؤشرات احترافية، تنبيهات متقدمة، فاحص وأكبر مجتمع متداولين. <b>Pine Script</b> لمؤشرات مخصصة.'],
 'Fundada em <b>2003</b> por Raymond Deux em Denver, Colorado (HQ em Chicago). <b>500K+ usuários</b> em 150+ países. Adquiriu a <b>Tradovate</b> em 2023. Aceita pela <b>maioria das Prop Firms</b> de futuros.':['Founded in <b>2003</b> by Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ users</b> in 150+ countries. Acquired <b>Tradovate</b> in 2023. Accepted by <b>most futures Prop Firms</b>.','Fundada en <b>2003</b> por Raymond Deux en Denver, Colorado (HQ en Chicago). <b>500K+ usuarios</b> en 150+ países. Adquirió <b>Tradovate</b> en 2023. Aceptada por la <b>mayoría de las Prop Firms</b> de futuros.','Fondée en <b>2003</b> par Raymond Deux à Denver, Colorado (siège à Chicago). <b>500K+ utilisateurs</b> dans 150+ pays. Acquisition de <b>Tradovate</b> en 2023. Acceptée par la <b>plupart des Prop Firms</b> futures.','Fondata nel <b>2003</b> da Raymond Deux a Denver, Colorado (sede a Chicago). <b>500K+ utenti</b> in 150+ paesi. Acquisizione di <b>Tradovate</b> nel 2023. Accettata dalla <b>maggior parte delle Prop Firms</b> futures.','Gegründet <b>2003</b> von Raymond Deux in Denver, Colorado (HQ in Chicago). <b>500K+ Nutzer</b> in 150+ Ländern. Übernahme von <b>Tradovate</b> 2023. Von den <b>meisten Futures Prop Firms</b> akzeptiert.','تأسست في <b>2003</b> بواسطة ريموند دو في دنفر، كولورادو (المقر في شيكاغو). <b>500 ألف+ مستخدم</b> في 150+ دولة. استحوذت على <b>Tradovate</b> في 2023. مقبولة من <b>معظم شركات Prop</b> للعقود الآجلة.'],
-// PLAT_DETAIL — credit text
+// PLAT_DETAIL, credit text
 'Ao assinar pela Markets Coupons, você recebe <b>$15 de crédito</b> na sua conta TradingView.':['By subscribing through Markets Coupons, you get <b>$15 credit</b> on your TradingView account.','Al suscribirte por Markets Coupons, recibes <b>$15 de crédito</b> en tu cuenta TradingView.','En vous abonnant via Markets Coupons, vous recevez <b>15$ de crédit</b> sur votre compte TradingView.','Iscrivendoti tramite Markets Coupons, ricevi <b>$15 di credito</b> sul tuo account TradingView.','Wenn Sie sich über Markets Coupons anmelden, erhalten Sie <b>$15 Guthaben</b> auf Ihrem TradingView-Konto.','عند الاشتراك عبر Markets Coupons، تحصل على <b>رصيد $15</b> في حسابك على TradingView.'],
-// PLAT_DETAIL — highlight labels
+// PLAT_DETAIL, highlight labels
 'Usuários':['Users','Usuarios','Utilisateurs','Utenti','Nutzer','المستخدمون'],
 'OFF Anual':['OFF Annual','OFF Anual','OFF Annuel','OFF Annuale','RABATT Jährlich','خصم سنوي'],
 'Crédito na conta':['Account credit','Crédito en la cuenta','Crédit sur le compte','Credito sul conto','Kontoguthaben','رصيد في الحساب'],
 'Plano disponível':['Plan available','Plan disponible','Plan disponible','Piano disponibile','Plan verfügbar','خطة متاحة'],
 'Automação':['Automation','Automatización','Automatisation','Automazione','Automatisierung','الأتمتة'],
 'Anos no mercado':['Years in market','Años en el mercado','Ans sur le marché','Anni nel mercato','Jahre im Markt','سنوات في السوق'],
-// PLAT_DETAIL — plan feature lines
+// PLAT_DETAIL, plan feature lines
 '2 gráficos/aba · 5 indicadores · 40 alertas':['2 charts/tab · 5 indicators · 40 alerts','2 gráficos/pestaña · 5 indicadores · 40 alertas','2 graphiques/onglet · 5 indicateurs · 40 alertes','2 grafici/tab · 5 indicatori · 40 avvisi','2 Charts/Tab · 5 Indikatoren · 40 Alarme','2 رسم بياني/علامة · 5 مؤشرات · 40 تنبيه'],
 '4 gráficos/aba · 10 indicadores · 200 alertas':['4 charts/tab · 10 indicators · 200 alerts','4 gráficos/pestaña · 10 indicadores · 200 alertas','4 graphiques/onglet · 10 indicateurs · 200 alertes','4 grafici/tab · 10 indicatori · 200 avvisi','4 Charts/Tab · 10 Indikatoren · 200 Alarme','4 رسم بياني/علامة · 10 مؤشرات · 200 تنبيه'],
 '8 gráficos/aba · 25 indicadores · 800 alertas':['8 charts/tab · 25 indicators · 800 alerts','8 gráficos/pestaña · 25 indicadores · 800 alertas','8 graphiques/onglet · 25 indicateurs · 800 alertes','8 grafici/tab · 25 indicatori · 800 avvisi','8 Charts/Tab · 25 Indikatoren · 800 Alarme','8 رسم بياني/علامة · 25 مؤشر · 800 تنبيه'],
@@ -1009,14 +1009,14 @@ const FIRM_T={
 'Dados EOD gratuitos':['Free EOD data','Datos EOD gratuitos','Données EOD gratuites','Dati EOD gratuiti','Kostenlose EOD-Daten','بيانات EOD مجانية'],
 'Dados em tempo real inclusos':['Real-time data included','Datos en tiempo real incluidos','Données en temps réel incluses','Dati in tempo reale inclusi','Echtzeit-Daten inklusive','بيانات فورية مضمنة'],
 'Licença vitalícia + dados real-time':['Lifetime license + real-time data','Licencia vitalicia + datos real-time','Licence à vie + données temps réel','Licenza a vita + dati real-time','Lebenslange Lizenz + Echtzeit-Daten','ترخيص مدى الحياة + بيانات فورية'],
-// NinjaTrader — new includes & highlights
+// NinjaTrader, new includes & highlights
 'Usuários ativos':['Active users','Usuarios activos','Utilisateurs actifs','Utenti attivi','Aktive Nutzer','المستخدمون النشطون'],
 'SuperDOM + Order Flow+':['SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+','SuperDOM + Order Flow+'],
 '100+ indicadores nativos':['100+ native indicators','100+ indicadores nativos','100+ indicateurs natifs','100+ indicatori nativi','100+ native Indikatoren','100+ مؤشر أصلي'],
 'Automação NinjaScript (C#)':['NinjaScript automation (C#)','Automatización NinjaScript (C#)','Automatisation NinjaScript (C#)','Automazione NinjaScript (C#)','NinjaScript-Automatisierung (C#)','أتمتة NinjaScript (C#)'],
 'Strategy Analyzer (backtest)':['Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (backtest)','Strategy Analyzer (Backtest)','Strategy Analyzer (اختبار)'],
 'ATM Strategies':['ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies','ATM Strategies'],
-// TradingView — extra includes
+// TradingView, extra includes
 'Paper Trading (simulação)':['Paper Trading (simulation)','Paper Trading (simulación)','Paper Trading (simulation)','Paper Trading (simulazione)','Paper Trading (Simulation)','تداول تجريبي (محاكاة)'],
 'Watchlists ilimitadas':['Unlimited watchlists','Watchlists ilimitadas','Watchlists illimitées','Watchlist illimitate','Unbegrenzte Watchlists','قوائم مراقبة غير محدودة'],
 'Sync multi-dispositivo':['Multi-device sync','Sync multi-dispositivo','Sync multi-appareils','Sync multi-dispositivo','Multi-Geräte-Sync','مزامنة متعددة الأجهزة'],
@@ -1025,7 +1025,7 @@ const FIRM_T={
 'Replay de mercado':['Market replay','Replay de mercado','Replay de marché','Replay di mercato','Markt-Replay','إعادة تشغيل السوق'],
 'Heatmaps de mercado':['Market heatmaps','Heatmaps de mercado','Heatmaps de marché','Heatmap di mercato','Markt-Heatmaps','خرائط حرارية للسوق'],
 'Suporte por chat':['Chat support','Soporte por chat','Support par chat','Supporto via chat','Chat-Support','دعم عبر الدردشة'],
-// NinjaTrader — extra includes
+// NinjaTrader, extra includes
 'Chart Trader (visual)':['Chart Trader (visual)','Chart Trader (visual)','Chart Trader (visuel)','Chart Trader (visuale)','Chart Trader (visuell)','Chart Trader (مرئي)'],
 'Market Analyzer (scanner)':['Market Analyzer (scanner)','Market Analyzer (escáner)','Market Analyzer (scanner)','Market Analyzer (scanner)','Market Analyzer (Scanner)','Market Analyzer (ماسح)'],
 'Aceita por 10+ Prop Firms':['Accepted by 10+ Prop Firms','Aceptada por 10+ Prop Firms','Acceptée par 10+ Prop Firms','Accettata da 10+ Prop Firms','Von 10+ Prop Firms akzeptiert','مقبولة من 10+ شركات Prop'],
@@ -1049,11 +1049,11 @@ const FIRM_T={
 'Automação':['Automation','Automatización','Automatisation','Automazione','Automatisierung','الأتمتة'],
 'Apex, Bulenox, Topstep +7':['Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7','Apex, Bulenox, Topstep +7'],
 'Marketplace':['Marketplace','Marketplace','Marketplace','Marketplace','Marktplatz','السوق'],
-// PLAT_DETAIL — type labels
+// PLAT_DETAIL, type labels
 'Anual (17% OFF)':['Annual (17% OFF)','Anual (17% OFF)','Annuel (17% OFF)','Annuale (17% OFF)','Jährlich (17% RABATT)','سنوي (17% خصم)'],
 'Mensal':['Monthly','Mensual','Mensuel','Mensile','Monatlich','شهري'],
 'Plataforma':['Platform','Plataforma','Plateforme','Piattaforma','Plattform','منصة'],
-// PLAT_DETAIL — includes
+// PLAT_DETAIL, includes
 'Sem anúncios':['No ads','Sin anuncios','Sans publicités','Senza pubblicità','Ohne Werbung','بدون إعلانات'],
 'Volume Profile':['Volume Profile','Volume Profile','Volume Profile','Volume Profile','Volume Profile','Volume Profile'],
 'Timeframes customizados':['Custom timeframes','Timeframes personalizados','Timeframes personnalisés','Timeframe personalizzati','Benutzerdefinierte Timeframes','أطر زمنية مخصصة'],
@@ -1070,7 +1070,7 @@ const FIRM_T={
 'Suporte 24/5':['24/5 support','Soporte 24/5','Support 24/5','Supporto 24/5','24/5 Support','دعم 24/5'],
 'Market Replay':['Market Replay','Market Replay','Market Replay','Market Replay','Market Replay','Market Replay'],
 'Margens intraday baixas':['Low intraday margins','Márgenes intraday bajos','Marges intraday basses','Margini intraday bassi','Niedrige Intraday-Margen','هوامش يومية منخفضة'],
-// PLAT_DETAIL — dtype
+// PLAT_DETAIL, dtype
 'plano anual':['annual plan','plan anual','plan annuel','piano annuale','Jahresplan','خطة سنوية'],
 // Consistency values (pos: EN, ES, FR, IT, DE, AR, ID)
 'Not required':['Not required','No requiere','Non requise','Non richiesta','Nicht erforderlich','غير مطلوب','Tidak diperlukan'],
@@ -1100,7 +1100,7 @@ const FIRM_T={
 };
 function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='en')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
 
-/* MC Rating badge — exibido logo abaixo do Trustpilot. Mostra apenas se houver reviews; senão CTA "Avalie primeiro". */
+/* MC Rating badge, exibido logo abaixo do Trustpilot. Mostra apenas se houver reviews; senão CTA "Avalie primeiro". */
 function dualRatingPill(f){
   if(!f) return '';
   const tp = f.trustpilot;
@@ -1127,7 +1127,7 @@ function mcRatingBadge(f){
   if(!f) return '';
   const count = f.internalReviews || 0;
   const rating = f.internalRating || 0;
-  // Helper: t() retorna a key quando nao tem traducao — usar fallback nesse caso
+  // Helper: t() retorna a key quando nao tem traducao, usar fallback nesse caso
   const _T = (k, fb) => { const v = t(k); return (!v || v === k) ? fb : v; };
   const langPT = (_currentLang === 'pt' || !_currentLang);
   const beFirst = _T('mc_be_first', langPT ? 'Seja o primeiro a avaliar' : 'Be the first to review');
@@ -1260,7 +1260,7 @@ function detectLang() {
     localStorage.setItem('mc_lang',_pathParts[0]);
     return _pathParts[0];
   }
-  // Whitelist de idiomas suportados (chunks /i18n-X.js existem) — usado em vez de I18N[X]
+  // Whitelist de idiomas suportados (chunks /i18n-X.js existem), usado em vez de I18N[X]
   // porque chunks sao carregados dinamicamente apos init.
   const _SUPPORTED = new Set(['en','pt','es','it','fr','de','ar','id']);
   // Priority 2: URL query param (?lang=en)
@@ -1396,7 +1396,7 @@ function initLang() {
   // Se o idioma ainda não está carregado, busca o chunk e re-aplica tudo ao chegar.
   if(_currentLang!=='en' && !(window.I18N && window.I18N[_currentLang])){
     _loadLangChunk(_currentLang).then(()=>{
-      // re-roda initLang inteiro (traduções + meta tags title/description) — sem
+      // re-roda initLang inteiro (traduções + meta tags title/description), sem
       // recursão: o chunk já está em window.I18N, então este bloco é pulado.
       try{ initLang(); }catch(_){}
       try{ if(typeof checkAnalysisGate==='function') checkAnalysisGate(); }catch(_){}
@@ -1407,13 +1407,13 @@ function initLang() {
 
 /* ─── SEO: Dynamic meta tags + Schema for dedicated firm pages ─── */
 const FIRM_SEO_META={
-  pt:{title:'{name} Cupom — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Planos e Avaliação | MarketsCoupons',desc:'Economize até {discount}% na {name} com o cupom exclusivo {coupon}. Planos a partir de {minPrice}. Trustpilot {rating}/5 ({reviews} avaliações).',descNoCoupon:'{name}: planos a partir de {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} avaliações). Compare e escolha.',og:'Cupom exclusivo {name} com até {discount}% OFF. Código {coupon}. Compare planos, preços e avaliações no MarketsCoupons.'},
-  en:{title:'{name} Coupon — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Plans & Review | MarketsCoupons',desc:'Save up to {discount}% on {name} with exclusive coupon code {coupon}. Plans from {minPrice}. Trustpilot {rating}/5 ({reviews} reviews).',descNoCoupon:'{name}: plans from {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} reviews). Compare and choose.',og:'Exclusive {name} coupon with up to {discount}% OFF. Code {coupon}. Compare plans, prices and reviews on MarketsCoupons.'},
-  es:{title:'{name} Cupón — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Planes y Reseña | MarketsCoupons',desc:'Ahorra hasta {discount}% en {name} con el cupón exclusivo {coupon}. Planes desde {minPrice}. Trustpilot {rating}/5 ({reviews} reseñas).',descNoCoupon:'{name}: planes desde {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} reseñas). Compara y elige.',og:'Cupón exclusivo {name} con hasta {discount}% OFF. Código {coupon}. Compara planes, precios y reseñas en MarketsCoupons.'},
-  it:{title:'{name} Coupon — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Piani e Recensione | MarketsCoupons',desc:'Risparmia fino al {discount}% su {name} con il coupon esclusivo {coupon}. Piani da {minPrice}. Trustpilot {rating}/5 ({reviews} recensioni).',descNoCoupon:'{name}: piani da {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} recensioni). Confronta e scegli.',og:'Coupon esclusivo {name} con fino al {discount}% OFF. Codice {coupon}. Confronta piani, prezzi e recensioni su MarketsCoupons.'},
-  fr:{title:'{name} Coupon — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Plans et Avis | MarketsCoupons',desc:'Économisez jusqu\'à {discount}% sur {name} avec le coupon exclusif {coupon}. Plans à partir de {minPrice}. Trustpilot {rating}/5 ({reviews} avis).',descNoCoupon:'{name}: plans à partir de {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} avis). Comparez et choisissez.',og:'Coupon exclusif {name} avec jusqu\'à {discount}% OFF. Code {coupon}. Comparez plans, prix et avis sur MarketsCoupons.'},
-  de:{title:'{name} Gutschein — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — Pläne & Bewertung | MarketsCoupons',desc:'Sparen Sie bis zu {discount}% bei {name} mit dem exklusiven Gutschein {coupon}. Pläne ab {minPrice}. Trustpilot {rating}/5 ({reviews} Bewertungen).',descNoCoupon:'{name}: Pläne ab {minPrice}, {split} Profit Split. Trustpilot {rating}/5 ({reviews} Bewertungen). Vergleichen und wählen.',og:'Exklusiver {name} Gutschein mit bis zu {discount}% OFF. Code {coupon}. Vergleichen Sie Pläne, Preise und Bewertungen auf MarketsCoupons.'},
-  ar:{title:'{name} كوبون — {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name} — الخطط والمراجعة | MarketsCoupons',desc:'وفر حتى {discount}% على {name} مع كوبون حصري {coupon}. خطط تبدأ من {minPrice}. Trustpilot {rating}/5 ({reviews} تقييم).',descNoCoupon:'{name}: خطط تبدأ من {minPrice}، {split} profit split. Trustpilot {rating}/5 ({reviews} تقييم). قارن واختر.',og:'كوبون حصري {name} مع خصم يصل إلى {discount}%. الكود {coupon}. قارن الخطط والأسعار والتقييمات على MarketsCoupons.'}
+  pt:{title:'{name} Cupom, {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name}, Planos e Avaliação | MarketsCoupons',desc:'Economize até {discount}% na {name} com o cupom exclusivo {coupon}. Planos a partir de {minPrice}. Trustpilot {rating}/5 ({reviews} avaliações).',descNoCoupon:'{name}: planos a partir de {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} avaliações). Compare e escolha.',og:'Cupom exclusivo {name} com até {discount}% OFF. Código {coupon}. Compare planos, preços e avaliações no MarketsCoupons.'},
+  en:{title:'{name} Coupon, {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name}, Plans & Review | MarketsCoupons',desc:'Save up to {discount}% on {name} with exclusive coupon code {coupon}. Plans from {minPrice}. Trustpilot {rating}/5 ({reviews} reviews).',descNoCoupon:'{name}: plans from {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} reviews). Compare and choose.',og:'Exclusive {name} coupon with up to {discount}% OFF. Code {coupon}. Compare plans, prices and reviews on MarketsCoupons.'},
+  es:{title:'{name} Cupón, {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name}, Planes y Reseña | MarketsCoupons',desc:'Ahorra hasta {discount}% en {name} con el cupón exclusivo {coupon}. Planes desde {minPrice}. Trustpilot {rating}/5 ({reviews} reseñas).',descNoCoupon:'{name}: planes desde {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} reseñas). Compara y elige.',og:'Cupón exclusivo {name} con hasta {discount}% OFF. Código {coupon}. Compara planes, precios y reseñas en MarketsCoupons.'},
+  it:{title:'{name} Coupon, {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name}, Piani e Recensione | MarketsCoupons',desc:'Risparmia fino al {discount}% su {name} con il coupon esclusivo {coupon}. Piani da {minPrice}. Trustpilot {rating}/5 ({reviews} recensioni).',descNoCoupon:'{name}: piani da {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} recensioni). Confronta e scegli.',og:'Coupon esclusivo {name} con fino al {discount}% OFF. Codice {coupon}. Confronta piani, prezzi e recensioni su MarketsCoupons.'},
+  fr:{title:'{name} Coupon, {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name}, Plans et Avis | MarketsCoupons',desc:'Économisez jusqu\'à {discount}% sur {name} avec le coupon exclusif {coupon}. Plans à partir de {minPrice}. Trustpilot {rating}/5 ({reviews} avis).',descNoCoupon:'{name}: plans à partir de {minPrice}, {split} profit split. Trustpilot {rating}/5 ({reviews} avis). Comparez et choisissez.',og:'Coupon exclusif {name} avec jusqu\'à {discount}% OFF. Code {coupon}. Comparez plans, prix et avis sur MarketsCoupons.'},
+  de:{title:'{name} Gutschein, {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name}, Pläne & Bewertung | MarketsCoupons',desc:'Sparen Sie bis zu {discount}% bei {name} mit dem exklusiven Gutschein {coupon}. Pläne ab {minPrice}. Trustpilot {rating}/5 ({reviews} Bewertungen).',descNoCoupon:'{name}: Pläne ab {minPrice}, {split} Profit Split. Trustpilot {rating}/5 ({reviews} Bewertungen). Vergleichen und wählen.',og:'Exklusiver {name} Gutschein mit bis zu {discount}% OFF. Code {coupon}. Vergleichen Sie Pläne, Preise und Bewertungen auf MarketsCoupons.'},
+  ar:{title:'{name} كوبون, {discount}% OFF | {coupon} | MarketsCoupons',titleNoCoupon:'{name}, الخطط والمراجعة | MarketsCoupons',desc:'وفر حتى {discount}% على {name} مع كوبون حصري {coupon}. خطط تبدأ من {minPrice}. Trustpilot {rating}/5 ({reviews} تقييم).',descNoCoupon:'{name}: خطط تبدأ من {minPrice}، {split} profit split. Trustpilot {rating}/5 ({reviews} تقييم). قارن واختر.',og:'كوبون حصري {name} مع خصم يصل إلى {discount}%. الكود {coupon}. قارن الخطط والأسعار والتقييمات على MarketsCoupons.'}
 };
 function setFirmSEO(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
@@ -1456,7 +1456,7 @@ function setFirmSEO(id){
   const schema={
     '@context':'https://schema.org',
     '@type':'Product',
-    name:f.name+(hasCoupon?' — '+f.discount+'% OFF Coupon':''),
+    name:f.name+(hasCoupon?', '+f.discount+'% OFF Coupon':''),
     description:desc,
     image:'https://www.marketscoupons.com/'+f.icon_url,
     url:'https://www.marketscoupons.com/'+id,
@@ -1480,7 +1480,7 @@ function setFirmSEO(id){
       {'@type':'ListItem',position:3,name:f.name,item:'https://www.marketscoupons.com/'+id}
     ]
   });
-  // Inject FAQPage schema (SEO rich snippet — alto impacto CTR)
+  // Inject FAQPage schema (SEO rich snippet, alto impacto CTR)
   // Perguntas geradas a partir de dados reais da firma. Google indexa FAQ rich result.
   let faqEl=document.getElementById('seo-firm-faq');
   if(!faqEl){faqEl=document.createElement('script');faqEl.type='application/ld+json';faqEl.id='seo-firm-faq';document.head.appendChild(faqEl);}
@@ -1488,7 +1488,7 @@ function setFirmSEO(id){
   const _faqQs = [
     {
       q: `What is the ${f.name} coupon?`,
-      a: hasCoupon ? `Use code ${f.coupon} at ${f.name} checkout to save ${f.discount}% on your evaluation account. Verified daily on MarketsCoupons.` : `${f.name} discount is automatically applied via the affiliate link on MarketsCoupons — no coupon code required.`
+      a: hasCoupon ? `Use code ${f.coupon} at ${f.name} checkout to save ${f.discount}% on your evaluation account. Verified daily on MarketsCoupons.` : `${f.name} discount is automatically applied via the affiliate link on MarketsCoupons, no coupon code required.`
     },
     {
       q: `How much does ${f.name} cost?`,
@@ -1529,7 +1529,7 @@ function setFirmSEO(id){
   const perksText=(f.perks||[]).join(', ');
   const platsText=(f.platforms||[]).join(', ');
   const pricesHtml=(f.prices||[]).map(p=>'<li>'+escHtml(p.a)+': '+escHtml(p.n)+(p.o&&p.o!=='—'?' <del>'+escHtml(p.o)+'</del>':'')+'</li>').join('');
-  seoBlock.innerHTML='<h1>'+escHtml(f.name)+(hasCoupon?' — '+f.discount+'% OFF Coupon Code '+escHtml(f.coupon):'')+'</h1>'
+  seoBlock.innerHTML='<h1>'+escHtml(f.name)+(hasCoupon?', '+f.discount+'% OFF Coupon Code '+escHtml(f.coupon):'')+'</h1>'
     +'<p>'+escHtml(aboutText)+'</p>'
     +'<h2>'+escHtml(f.name)+' Plans & Prices</h2><ul>'+pricesHtml+'</ul>'
     +'<h2>Key Features</h2><p>'+escHtml(perksText)+'</p>'
@@ -1537,7 +1537,7 @@ function setFirmSEO(id){
     +'<p>Profit Split: '+escHtml(f.split)+' | Drawdown: '+escHtml(f.drawdown)+' | Rating: '+f.rating+'/5 ('+f.reviews+' reviews)</p>'
     +(hasCoupon?'<p>Use coupon code <strong>'+escHtml(f.coupon)+'</strong> for '+f.discount+'% discount.</p>':'')
     +'<h2>Compare with Other Prop Firms</h2><ul>'
-    +FIRMS.filter(x=>x.id!==id&&x.id!==f.id).slice(0,5).map(x=>'<li><a href="/'+x.id+'">'+escHtml(x.name)+(x.coupon?' — '+x.discount+'% OFF':'')+' ('+x.rating+'/5)</a></li>').join('')
+    +FIRMS.filter(x=>x.id!==id&&x.id!==f.id).slice(0,5).map(x=>'<li><a href="/'+x.id+'">'+escHtml(x.name)+(x.coupon?', '+x.discount+'% OFF':'')+' ('+x.rating+'/5)</a></li>').join('')
     +'</ul>'
     +'<p><a href="/">View all prop firm coupons on MarketsCoupons</a></p>';
 }
@@ -1545,9 +1545,9 @@ function setFirmSEO(id){
 function acceptCookies(){
   localStorage.setItem('mc-cookies-consent','accepted');
   const banner=document.getElementById('ck-banner'); if(banner) banner.style.display='none';
-  // Consent Mode v2 — ÚNICO formato que o GTM reconhece: comando nativo gtag('consent','update').
+  // Consent Mode v2, ÚNICO formato que o GTM reconhece: comando nativo gtag('consent','update').
   // O shim gtag em tracking-init.js faz dataLayer.push(arguments) → empurra ['consent','update',{...}] cru.
-  // NÃO usar dataLayer.push({event:'consent_update'}) — Consent Mode ignora esse formato.
+  // NÃO usar dataLayer.push({event:'consent_update'}), Consent Mode ignora esse formato.
   if (typeof gtag === 'function') {
     gtag('consent', 'update', {
       ad_storage: 'granted',
@@ -1567,7 +1567,7 @@ function acceptCookies(){
 function rejectCookies(){
   localStorage.setItem('mc-cookies-consent','rejected');
   document.getElementById('ck-banner').style.display='none';
-  // registra a recusa pra MEDIR a taxa real (antes não media — só 'accepted' era trackeado)
+  // registra a recusa pra MEDIR a taxa real (antes não media, só 'accepted' era trackeado)
   try { track('cookie_consent',{action:'rejected'}); } catch(_){}
 }
 function showCookieBanner(){
@@ -1587,9 +1587,9 @@ function firmIco(f,size='38px',fontSize='14px'){
   return `<div style="width:${size};height:${size};border-radius:8px;background:${f.bg};color:${f.color};display:flex;align-items:center;justify-content:center;font-size:${fontSize};font-weight:800;flex-shrink:0;">${f.icon}</div>`;
 }
 
-/* GUIDES — Supabase-powered */
+/* GUIDES, Supabase-powered */
 let _guidesCache=[];
-/* FIRM REVIEWS — static, 11 firms × 7 langs (covers in img/guides/<slug>-cover-<lang>.png) */
+/* FIRM REVIEWS, static, 11 firms × 7 langs (covers in img/guides/<slug>-cover-<lang>.png) */
 const FIRM_REVIEWS = [
   {id:'apex',         name:'Apex Trader Funding',      slug:'apex-trader-funding-review'},
   {id:'ftmo',         name:'FTMO',                     slug:'ftmo-review'},
@@ -1716,7 +1716,7 @@ const BLOG_POSTS = [
     titleKey:'blog1_titulo', excerptKey:'blog1_excerpt', dataKey:'blog1_data', readMin:12,
     content:`
 <h2>O Que é Uma Prop Firm e Por Que Você Deveria Considerar</h2>
-<p>Uma prop firm (proprietary trading firm) é uma empresa que <strong>empresta capital para traders operarem</strong>. Você não precisa arriscar seu próprio dinheiro — paga uma taxa de avaliação, passa no desafio, e recebe uma conta financiada que pode chegar a <strong>$300.000 ou mais</strong>.</p>
+<p>Uma prop firm (proprietary trading firm) é uma empresa que <strong>empresta capital para traders operarem</strong>. Você não precisa arriscar seu próprio dinheiro, paga uma taxa de avaliação, passa no desafio, e recebe uma conta financiada que pode chegar a <strong>$300.000 ou mais</strong>.</p>
 <p>Em 2025, o mercado de prop firms movimenta bilhões de dólares. Só a Apex Trader Funding já pagou mais de <strong>$360 milhões em payouts</strong> desde sua fundação. A FTMO ultrapassou <strong>$200 milhões distribuídos</strong>.</p>
 
 <div class="callout callout-tip"><strong>Por que isso importa para você:</strong> Com R$100-300 (em promoção), você pode acessar uma conta de $50.000-$150.000 em futuros. Sem prop firm, você precisaria de pelo menos R$50.000 na conta da corretora para operar 1 contrato de mini ES.</div>
@@ -1746,7 +1746,7 @@ const BLOG_POSTS = [
 
 <div class="callout"><strong>Dica MarketsCoupons:</strong> Nunca pague preço cheio. As promoções acontecem quase toda semana, especialmente nas firms de futuros. Acompanhe nossas ofertas para pegar o melhor momento.</div>
 
-<h2>O Processo do Desafio — Passo a Passo</h2>
+<h2>O Processo do Desafio, Passo a Passo</h2>
 <ol>
 <li><strong>Escolha a firma e conta:</strong> Comece com $50K em futuros ou $25K em forex. Não vá direto para contas grandes.</li>
 <li><strong>Entenda as regras:</strong> Cada firma tem meta de lucro (geralmente 6-8%) e limite de drawdown (trailing ou fixo).</li>
@@ -1763,10 +1763,10 @@ const BLOG_POSTS = [
 <p>Regra de ouro: <strong>nunca arrisque mais de 1-2% do drawdown por trade</strong>. Em uma conta de $50K com $2.500 de drawdown, isso significa no máximo $25-50 de risco por operação.</p>
 
 <h3>3. Operar notícias econômicas</h3>
-<p>CPI, FOMC, NFP — esses eventos geram volatilidade extrema. Até traders experientes evitam. <strong>Iniciantes devem ficar de fora.</strong></p>
+<p>CPI, FOMC, NFP, esses eventos geram volatilidade extrema. Até traders experientes evitam. <strong>Iniciantes devem ficar de fora.</strong></p>
 
 <h3>4. Trocar de estratégia toda semana</h3>
-<p>Escolha UMA estratégia, opere ela por pelo menos 30 dias no simulador. Não existe estratégia perfeita — existe consistência.</p>
+<p>Escolha UMA estratégia, opere ela por pelo menos 30 dias no simulador. Não existe estratégia perfeita, existe consistência.</p>
 
 <h3>5. Não testar no simulador primeiro</h3>
 <p>Todas as plataformas (NinjaTrader, Rithmic, TradingView) oferecem conta demo gratuita. Use por pelo menos 2-4 semanas antes de pagar qualquer avaliação.</p>
@@ -1774,8 +1774,8 @@ const BLOG_POSTS = [
 <h2>Qual Firma Escolher Como Primeiro Desafio</h2>
 <p>Para quem está começando, recomendamos:</p>
 <ul>
-<li><strong>Futuros:</strong> Apex $50K — sem prazo para completar, drawdown end-of-day, promoções frequentes de 80-90% OFF</li>
-<li><strong>Forex:</strong> FundedNext $15K Express — preço acessível, processo simples, profit split de 80%</li>
+<li><strong>Futuros:</strong> Apex $50K, sem prazo para completar, drawdown end-of-day, promoções frequentes de 80-90% OFF</li>
+<li><strong>Forex:</strong> FundedNext $15K Express, preço acessível, processo simples, profit split de 80%</li>
 </ul>
 <p>Comece pequeno, prove para si mesmo que consegue ser consistente, e depois escale para contas maiores.</p>
 `
@@ -1792,9 +1792,9 @@ const BLOG_POSTS = [
 <p>Existem dois tipos principais, e entender a diferença entre eles pode ser a diferença entre passar ou perder sua avaliação.</p>
 
 <h2>Trailing Drawdown (Drawdown Móvel)</h2>
-<p>O trailing drawdown <strong>acompanha seu maior lucro</strong>. Conforme você ganha, o piso sobe junto — mas nunca desce.</p>
+<p>O trailing drawdown <strong>acompanha seu maior lucro</strong>. Conforme você ganha, o piso sobe junto, mas nunca desce.</p>
 
-<h3>Exemplo Prático — Apex $50K</h3>
+<h3>Exemplo Prático, Apex $50K</h3>
 <table>
 <thead><tr><th>Situação</th><th>Saldo</th><th>Maior Saldo</th><th>Piso Drawdown</th><th>Espaço Disponível</th></tr></thead>
 <tbody>
@@ -1806,12 +1806,12 @@ const BLOG_POSTS = [
 </tbody>
 </table>
 
-<div class="callout callout-tip"><strong>Detalhe crucial da Apex:</strong> Na Apex, o trailing drawdown é <strong>End-of-Day (EOD)</strong> — ele só atualiza no fechamento do dia. Isso significa que durante o dia você pode ter lucros flutuantes sem que o piso suba. Na Bulenox, o trailing é <strong>intraday</strong> — o piso sobe em tempo real, tick a tick.</div>
+<div class="callout callout-tip"><strong>Detalhe crucial da Apex:</strong> Na Apex, o trailing drawdown é <strong>End-of-Day (EOD)</strong>, ele só atualiza no fechamento do dia. Isso significa que durante o dia você pode ter lucros flutuantes sem que o piso suba. Na Bulenox, o trailing é <strong>intraday</strong>, o piso sobe em tempo real, tick a tick.</div>
 
 <h2>Static Drawdown (Drawdown Fixo)</h2>
 <p>O drawdown fixo <strong>nunca se move</strong>. Se começou em $47.500, fica em $47.500 para sempre, não importa quanto você ganhe.</p>
 
-<h3>Exemplo Prático — FTMO $50K</h3>
+<h3>Exemplo Prático, FTMO $50K</h3>
 <table>
 <thead><tr><th>Situação</th><th>Saldo</th><th>Piso Drawdown</th><th>Espaço Disponível</th></tr></thead>
 <tbody>
@@ -1848,7 +1848,7 @@ const BLOG_POSTS = [
 <h2>Estratégia Para Não Violar o Drawdown</h2>
 <h3>A Regra dos 1%</h3>
 <p>Nunca arrisque mais de 1% do seu drawdown disponível por operação.</p>
-<pre>Conta $50K Apex — Drawdown: $2.500
+<pre>Conta $50K Apex, Drawdown: $2.500
 Risco por trade: $2.500 × 1% = $25
 Com 1 micro ES (MES): stop de 5 pontos ($25)
 Com 1 mini ES (ES): stop de 0.5 ponto ($25)</pre>
@@ -1870,10 +1870,10 @@ Com 1 mini ES (ES): stop de 0.5 ponto ($25)</pre>
     titleKey:'blog3_titulo', excerptKey:'blog3_excerpt', dataKey:'blog3_data', readMin:11,
     content:`
 <h2>Por Que 80% dos Traders Falham no Desafio</h2>
-<p>Não é por falta de estratégia. É por falta de <strong>gerenciamento de risco</strong>. O desafio de uma prop firm não testa se você é um gênio do mercado — testa se você consegue <strong>proteger capital enquanto lucra de forma consistente</strong>.</p>
+<p>Não é por falta de estratégia. É por falta de <strong>gerenciamento de risco</strong>. O desafio de uma prop firm não testa se você é um gênio do mercado, testa se você consegue <strong>proteger capital enquanto lucra de forma consistente</strong>.</p>
 <p>De acordo com dados públicos da FTMO, apenas <strong>~10-15% dos traders passam</strong> na primeira tentativa. Mas dos que passam, mais de 60% usam regras simples de risco.</p>
 
-<h2>O Framework R:R — A Base de Tudo</h2>
+<h2>O Framework R:R, A Base de Tudo</h2>
 <p>R:R é a relação risco/recompensa. Se você arrisca $25 para ganhar $50, seu R:R é 1:2.</p>
 
 <h3>Por que 1:2 é o mínimo aceitável</h3>
@@ -1888,16 +1888,16 @@ Com 1 mini ES (ES): stop de 0.5 ponto ($25)</pre>
 
 <div class="callout callout-tip"><strong>Insight:</strong> Com R:R de 1:2, você pode errar 60% das vezes e AINDA assim lucrar. Isso tira a pressão de "acertar todas" e permite operar com calma.</div>
 
-<h2>Position Sizing — O Calculador que Salva Contas</h2>
+<h2>Position Sizing, O Calculador que Salva Contas</h2>
 <p>Nunca calcule "de cabeça" quantos contratos operar. Use a fórmula:</p>
 <pre>Contratos = Risco por trade ÷ (Stop em pontos × Valor do tick)
 
-Exemplo — ES (S&P 500 Mini):
+Exemplo, ES (S&P 500 Mini):
 Drawdown: $2.500 | Risco por trade: 1% = $25
 Stop: 2 pontos = $100 por contrato
 Contratos: $25 ÷ $100 = 0.25 → Use MES (micro)
 
-Exemplo — MES (Micro E-mini):
+Exemplo, MES (Micro E-mini):
 $25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
 
 <h2>O Plano de Trading Diário (Template Pronto)</h2>
@@ -1945,7 +1945,7 @@ $25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
 </table>
 <p><strong>Meta atingida: $3.000 (6%)</strong> com risco controlado. Média de $200/dia, 2 trades/dia, sem dia com perda maior que $200.</p>
 
-<div class="callout"><strong>Chave do sucesso:</strong> Não tente fazer $3.000 em um dia. Faça $150-300 por dia, de forma consistente. O tempo está do seu lado — na Apex não tem prazo.</div>
+<div class="callout"><strong>Chave do sucesso:</strong> Não tente fazer $3.000 em um dia. Faça $150-300 por dia, de forma consistente. O tempo está do seu lado, na Apex não tem prazo.</div>
 `
   },
 
@@ -1958,17 +1958,17 @@ $25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
     titleKey:'blog4_titulo', excerptKey:'blog4_excerpt', dataKey:'blog4_data', readMin:14,
     content:`
 <h2>A Mentalidade de 10 Dias</h2>
-<p>Passar no desafio de uma prop firm não é sobre velocidade — é sobre <strong>eficiência calculada</strong>. Mas se você tem uma estratégia testada e disciplina, 10 dias úteis é totalmente possível. Veja o plano.</p>
+<p>Passar no desafio de uma prop firm não é sobre velocidade, é sobre <strong>eficiência calculada</strong>. Mas se você tem uma estratégia testada e disciplina, 10 dias úteis é totalmente possível. Veja o plano.</p>
 
 <h2>Antes de Começar: Os Pré-Requisitos</h2>
 <ul>
-<li><strong>Pelo menos 30 dias de operação lucrativa no simulador</strong> — se você não é consistente no demo, não será no desafio</li>
+<li><strong>Pelo menos 30 dias de operação lucrativa no simulador</strong>, se você não é consistente no demo, não será no desafio</li>
 <li><strong>Estratégia definida:</strong> critérios de entrada, proteção, alvo, horários. Tudo escrito.</li>
 <li><strong>Win rate mínimo de 45% com R:R de 1:2</strong> ou 35% com R:R de 1:3</li>
 <li><strong>Journal de trading</strong> com pelo menos 50 operações registradas</li>
 </ul>
 
-<h2>O Plano de 10 Dias — Fase por Fase</h2>
+<h2>O Plano de 10 Dias, Fase por Fase</h2>
 
 <h3>Dias 1-3: Fase de Aquecimento (Meta: +30% do objetivo)</h3>
 <p>Opere com <strong>tamanho mínimo</strong>. O objetivo é pegar o ritmo, não bater meta.</p>
@@ -1989,7 +1989,7 @@ $25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
 </ul>
 
 <h3>Dias 7-9: Fase de Conclusão (Meta: +30% restante)</h3>
-<p>Volte ao tamanho conservador. Você está perto — <strong>não é hora de arriscar</strong>.</p>
+<p>Volte ao tamanho conservador. Você está perto, <strong>não é hora de arriscar</strong>.</p>
 <ul>
 <li>Volte para 1-2 MES</li>
 <li>1-2 trades/dia</li>
@@ -2011,7 +2011,7 @@ $25 ÷ $10 (2 pontos × $5/ponto) = 2.5 → Use 2 MES</pre>
 <li>Alvo: 1.5x a 2x o tamanho do range</li>
 </ol>
 
-<h3>Exemplo Real — ES (S&P 500)</h3>
+<h3>Exemplo Real, ES (S&P 500)</h3>
 <pre>Range 15min: 5.450,00 - 5.455,00 (5 pontos)
 Rompimento para cima: Compra em 5.455,25
 Stop: 5.449,75 (5.5 pontos = $275 por ES)
@@ -2043,7 +2043,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 <h3>O que FAZER:</h3>
 <ul>
 <li>Fechar a plataforma por pelo menos 1 hora</li>
-<li>Rever os trades — o setup era válido? A execução foi correta?</li>
+<li>Rever os trades, o setup era válido? A execução foi correta?</li>
 <li>Se o setup era válido, é variância normal. Se não era, anote no journal.</li>
 <li>Considere voltar só na sessão da tarde, ou encerrar o dia</li>
 </ul>
@@ -2075,7 +2075,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 
 <h2>Como o Trailing Drawdown Realmente Funciona (Detalhes que Ninguém Explica)</h2>
 
-<h3>End-of-Day (EOD) — Apex, TopStep, Tradeify</h3>
+<h3>End-of-Day (EOD), Apex, TopStep, Tradeify</h3>
 <p>O trailing EOD só atualiza no <strong>fechamento do dia de trading</strong> (17:00 ET para futuros CME). Isso significa:</p>
 <ul>
 <li>Se você abriu $500 no lucro intraday mas fechou o dia com +$100, o piso só sobe $100</li>
@@ -2083,7 +2083,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 <li>Você pode scalpar agressivamente intraday sem medo do piso subir a cada tick</li>
 </ul>
 
-<h3>Intraday (Real-Time) — Bulenox</h3>
+<h3>Intraday (Real-Time), Bulenox</h3>
 <p>O trailing intraday acompanha o <strong>maior saldo em tempo real</strong>, tick a tick:</p>
 <ul>
 <li>Se sua conta bateu $51.000 por 1 segundo, o piso subiu para $48.500</li>
@@ -2105,9 +2105,9 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 <tr><td><strong>Fim do dia</strong></td><td><strong>+$460</strong></td><td>—</td><td><strong>$47.960</strong></td><td><strong>$48.460</strong></td></tr>
 </tbody>
 </table>
-<p>O trader terminou +$460. Com EOD, drawdown disponível: $2.500. Com intraday, drawdown disponível: <strong>$2.000</strong>. Diferença de $500 — 20% a menos de espaço.</p>
+<p>O trader terminou +$460. Com EOD, drawdown disponível: $2.500. Com intraday, drawdown disponível: <strong>$2.000</strong>. Diferença de $500, 20% a menos de espaço.</p>
 
-<h2>Static Drawdown — Quando Ele Brilha</h2>
+<h2>Static Drawdown, Quando Ele Brilha</h2>
 <p>O drawdown fixo é matematicamente mais favorável quanto mais você lucra:</p>
 
 <table>
@@ -2132,7 +2132,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 </tbody>
 </table>
 
-<h2>O Fator Preço — Análise Custo-Benefício</h2>
+<h2>O Fator Preço, Análise Custo-Benefício</h2>
 <p>Static drawdown geralmente significa avaliação mais cara:</p>
 <table>
 <thead><tr><th>Tipo</th><th>Firma</th><th>Preço ($50K)</th><th>Drawdown</th><th>Custo por $ de Drawdown</th></tr></thead>
@@ -2144,7 +2144,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 </table>
 <p>Em termos de custo-benefício puro, as firms de futuros com promoção são imbatíveis. Mas o drawdown estático da FTMO oferece mais margem de erro.</p>
 
-<div class="callout"><strong>Conclusão prática:</strong> Se você é scalper de futuros, vá de Apex (EOD trailing + preço baixo). Se é day trader de forex que segura posições por horas, vá de FTMO (static + mais espaço). Se quer o melhor dos dois mundos, a Apex trava o trailing em $50K depois de lucrar $2.500 — efetivamente vira static.</div>
+<div class="callout"><strong>Conclusão prática:</strong> Se você é scalper de futuros, vá de Apex (EOD trailing + preço baixo). Se é day trader de forex que segura posições por horas, vá de FTMO (static + mais espaço). Se quer o melhor dos dois mundos, a Apex trava o trailing em $50K depois de lucrar $2.500, efetivamente vira static.</div>
 `
   },
   {
@@ -2166,7 +2166,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 <li>Pode operar múltiplas contas simultâneas</li>
 <li>Regra: posições NÃO podem ser opostas entre contas (ex: long em uma, short em outra)</li>
 <li>Todas as contas devem estar no mesmo nome/CPF</li>
-<li>Não é permitido "flipping" — abrir e fechar contas rapidamente para abusar de promoções</li>
+<li>Não é permitido "flipping", abrir e fechar contas rapidamente para abusar de promoções</li>
 </ul>
 
 <h3>Bulenox</h3>
@@ -2233,8 +2233,8 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 
 <div class="callout callout-warn"><strong>O que NÃO fazer:</strong><br>
 • Abrir 10 contas de uma vez na promoção sem ter consistência<br>
-• Usar contas diferentes para hedge (long em uma, short em outra) — isso viola os termos de quase todas as firms<br>
-• Compartilhar contas com outras pessoas — rastreiam IP e dispositivo<br>
+• Usar contas diferentes para hedge (long em uma, short em outra), isso viola os termos de quase todas as firms<br>
+• Compartilhar contas com outras pessoas, rastreiam IP e dispositivo<br>
 • Usar bots/copy trade entre contas sem verificar se é permitido (Apex proíbe)</div>
 
 <h2>Matemática do Multi-Accounting</h2>
@@ -2249,7 +2249,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 </tbody>
 </table>
 
-<div class="callout callout-tip"><strong>Realidade:</strong> Com 5 contas Apex em promoção (~$100 total) e 2% de lucro mensal consistente, você pode faturar quase $4.000/mês (~R$20.000). Mas isso REQUER consistência provada — nunca comece com 5 contas se não tem pelo menos 3 meses de resultado positivo em 1 conta.</div>
+<div class="callout callout-tip"><strong>Realidade:</strong> Com 5 contas Apex em promoção (~$100 total) e 2% de lucro mensal consistente, você pode faturar quase $4.000/mês (~R$20.000). Mas isso REQUER consistência provada, nunca comece com 5 contas se não tem pelo menos 3 meses de resultado positivo em 1 conta.</div>
 `
   },
 
@@ -2350,10 +2350,10 @@ Monitor 3: Plataforma Firma 3 (FTMO/MT5) + Calendário econômico</pre>
 <h3>Enquadramento Tributário</h3>
 <ul>
 <li><strong>Para Pessoa Física:</strong> Tributação pelo Carnê-Leão mensal, com alíquotas progressivas de IR (até 27,5%)</li>
-<li><strong>Para Pessoa Jurídica (MEI/ME):</strong> Pode ser mais vantajoso dependendo do faturamento — veja análise abaixo</li>
+<li><strong>Para Pessoa Jurídica (MEI/ME):</strong> Pode ser mais vantajoso dependendo do faturamento, veja análise abaixo</li>
 </ul>
 
-<h2>Carnê-Leão — O Passo a Passo</h2>
+<h2>Carnê-Leão, O Passo a Passo</h2>
 
 <h3>1. Recebimento do Payout</h3>
 <p>Você recebe via Rise (antigo Deel), PayPal, Wise ou crypto. O valor precisa ser convertido para Reais pela cotação do <strong>dólar PTAX de venda do último dia útil da primeira quinzena do mês anterior ao recebimento</strong>.</p>
@@ -2378,7 +2378,7 @@ Rendimento em R$: R$10.400
 IR = R$10.400 × 27,5% - R$896 = R$1.964
 Líquido: R$10.400 - R$1.964 = R$8.436</pre>
 
-<h2>Pessoa Jurídica — Vale a Pena?</h2>
+<h2>Pessoa Jurídica, Vale a Pena?</h2>
 
 <h3>Opção 1: MEI (Microempreendedor Individual)</h3>
 <ul>
@@ -2450,7 +2450,7 @@ Líquido: R$10.400 - R$1.964 = R$8.436</pre>
     titleKey:'blog9_titulo', excerptKey:'blog9_excerpt', dataKey:'blog9_data', readMin:13,
     content:`
 <h2>O Que São Scaling Plans</h2>
-<p>Scaling plans são programas onde a prop firm <strong>aumenta o tamanho da sua conta</strong> baseado no seu desempenho consistente. Começou com $50K, pode chegar a $150K, $300K ou até mais — sem pagar novas avaliações.</p>
+<p>Scaling plans são programas onde a prop firm <strong>aumenta o tamanho da sua conta</strong> baseado no seu desempenho consistente. Começou com $50K, pode chegar a $150K, $300K ou até mais, sem pagar novas avaliações.</p>
 <p>Nem toda firma oferece, e as regras variam muito. Veja o comparativo completo.</p>
 
 <h2>Scaling Plans por Firma (Atualizado 2025)</h2>
@@ -2504,7 +2504,7 @@ Líquido: R$10.400 - R$1.964 = R$8.436</pre>
 <table>
 <thead><tr><th>Requisito</th><th>Detalhes</th></tr></thead>
 <tbody>
-<tr><td>Scaling</td><td>Programa "Progression" — aumenta poder de compra gradualmente</td></tr>
+<tr><td>Scaling</td><td>Programa "Progression", aumenta poder de compra gradualmente</td></tr>
 <tr><td>Início</td><td>$50K com 2 contratos max</td></tr>
 <tr><td>Progressão</td><td>Aumenta 1 contrato a cada milestone de lucro</td></tr>
 <tr><td>Alternativa</td><td>Até 5 contas simultâneas</td></tr>
@@ -3152,13 +3152,13 @@ function applyF(){
   let list=FIRMS.filter(f=>{
     if(favOnly && !_favs.has(f.id)) return false;
     if(q && !f.name.toLowerCase().includes(q) && !f.type.toLowerCase().includes(q)) return false;
-    // Mercado — só filtrar se pelo menos um está marcado
+    // Mercado, só filtrar se pelo menos um está marcado
     const anyMkt=fFut||fFx;
     if(anyMkt){
       if(f.type==='Futuros' && !fFut) return false;
       if(f.type==='Forex' && !fFx) return false;
     }
-    // Desconto — só filtrar se pelo menos um está marcado
+    // Desconto, só filtrar se pelo menos um está marcado
     const d=f.discount;
     const anyDisc=dH||dM||dL;
     if(anyDisc){
@@ -3225,9 +3225,9 @@ async function loadFirmOverlayData(id) {
 }
 
 // ─── A/B TEST: default size na pill de planos ───
-// A (control) = primeiro plano (firstPlans[0]) — comportamento atual
+// A (control) = primeiro plano (firstPlans[0]), comportamento atual
 // B (treatment) = plano popular (pop:1) se existir, senão fallback A
-// Hash estável do session id pra 50/50 — variante NÃO muda durante a sessão.
+// Hash estável do session id pra 50/50, variante NÃO muda durante a sessão.
 function _abDefaultSizeVariant(){
   try {
     if (window._abVariantCache) return window._abVariantCache;
@@ -3268,7 +3268,7 @@ async function openD(id){
     };
   }
 
-  // Lazy load overlay data from Supabase — AWAIT so firms not in FIRM_ABOUT (new firms)
+  // Lazy load overlay data from Supabase, AWAIT so firms not in FIRM_ABOUT (new firms)
   // still render the full fd-overlay padrão instead of falling back to the simple drawer.
   if (window.innerWidth >= 769 && !FIRM_ABOUT[id]) {
     await loadFirmOverlayData(id);
@@ -3367,7 +3367,7 @@ function openFD(id, f) {
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_payout')}</div><div class="fd-stat-val b">${tf(f.payoutSpeed)||'—'}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_max_contas')}</div><div class="fd-stat-val b">${f.maxAccounts||'—'}</div></div>
   </div>`;
-  // Reviews section — mount lazy depois do paint inicial (não bloqueia overlay)
+  // Reviews section, mount lazy depois do paint inicial (não bloqueia overlay)
   const _revTitleMap = {pt:'Avaliações de Traders',en:'Trader Reviews',es:'Reseñas de Traders',it:'Recensioni dei Trader',fr:'Avis des Traders',de:'Trader-Bewertungen',ar:'تقييمات المتداولين',id:'Ulasan Trader'};
   const _revTitle = _revTitleMap[_currentLang] || _revTitleMap.en;
   L += `<div class="fd-section fd-reviews-section" style="margin-top:22px;padding-top:24px;border-top:2px solid rgba(240,180,41,.25);"><div class="fd-section-title" style="font-size:20px;font-weight:800;color:#F0B429;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>${_revTitle}</div><div id="fd-reviews-mount"></div></div>`;
@@ -3422,12 +3422,12 @@ function fdRenderRight(id, f) {
       <div class="fd-sizes" style="--cols:${sc}">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="fdSel('${id}','size','${p.s}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
-  // Pack toggle (1 conta / 5 contas) — only for firms that offer a 5-pack (e.g. Apex)
+  // Pack toggle (1 conta / 5 contas), only for firms that offer a 5-pack (e.g. Apex)
   // _tt: use translation if the key resolves, else fall back (t() returns the key itself when missing)
   const _tt=(k,fb)=>{const v=t(k);return(!v||v===k)?fb:v;};
   const packSel = st.pack==='5' ? '5' : '1';
   const variantSel = st.variant==='nofee' ? 'nofee' : 'std';
-  // Variant toggle (Standard / No Activation Fee) — mirrors Apex
+  // Variant toggle (Standard / No Activation Fee), mirrors Apex
   const _newB = `<span style="margin-left:7px;font-size:8.5px;font-weight:800;letter-spacing:.4px;color:${f.color};background:${f.color}1A;border:1px solid ${f.color}40;padding:1px 6px;border-radius:5px;text-transform:uppercase;vertical-align:middle">${_tt('fd_badge_new','Novo')}</span>`;
   if (firmHasNoFee(id)) {
     h += `<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_taxa','Taxa de ativação')}${_newB}</div>
@@ -3444,7 +3444,7 @@ function fdRenderRight(id, f) {
       </div></div>`;
   }
 
-  // Price card — getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
+  // Price card, getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
   const plan = plans?.find(p=>p.s===st.size)||plans?.[0];
   if (plan) {
     const pp = getPlanPrice(id, st.type, plan.s, packSel, variantSel);
@@ -3468,7 +3468,7 @@ function fdRenderRight(id, f) {
       const _cta = _tt('fd_pack_conta','conta');
       advHtml = `<div class="fd-pack-adv" style="margin:10px 0 14px;padding:8px 12px;border-radius:8px;background:${f.color}10;border:1px solid ${f.color}33;font-size:12px;color:var(--t1);display:flex;align-items:center;gap:8px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${f.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>
-        <span><b>${_tt('fd_pack_5','5 contas')}</b> · <b style="color:${f.color}">${pp.each}</b>/${_cta}${perAcctSave?` — ${_tt('fd_pack_economia','economiza')} ${cur}${perAcctSave}/${_cta} ${_tt('fd_pack_vs','vs avulso')}`:''}</span></div>`;
+        <span><b>${_tt('fd_pack_5','5 contas')}</b> · <b style="color:${f.color}">${pp.each}</b>/${_cta}${perAcctSave?`, ${_tt('fd_pack_economia','economiza')} ${cur}${perAcctSave}/${_cta} ${_tt('fd_pack_vs','vs avulso')}`:''}</span></div>`;
     }
     h += `<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
       <div><div class="fd-price-size">${plan.s}${packSel==='5'?' ×5':''}</div><div class="fd-price-type">${st.type}${variantSel==='nofee'?' · '+_tt('fd_var_nofee','Sem taxa'):''}</div></div>
@@ -3505,7 +3505,7 @@ function fdRenderRight(id, f) {
   if (f.hasActivationFee) {
     h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho de conta)'}.</span></div>`;
   } else {
-    h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong> — ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
+    h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong>, ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
   }
 
   document.getElementById('fd-right').innerHTML = h;
@@ -3531,7 +3531,7 @@ function fdGo(id) {
   if (cf) {
     let url = cf.buildUrl(st.size||'',st.type||'',st.plat||'');
     url = _appendQuery(url, 'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+id+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase());
-    // Clipboard automatico removido — gerava prompt mobile e nao agregava (user nem via).
+    // Clipboard automatico removido, gerava prompt mobile e nao agregava (user nem via).
     track('checkout_click',{firm_id:id,firm_name:f?.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f?.coupon||'parceiro',source:_src,value:_fbVal(f,st.size),currency:'USD'});
     registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f?.name||'');
     mcOpenFirm(id, url, f?.coupon, f?.name);
@@ -3587,7 +3587,7 @@ function fdGoCheckout(fId){
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   let url=cf.buildUrl(st.size||'',st.type||'',st.plat||'');
   url = _appendQuery(url, 'utm_source=marketscoupons&utm_medium=detail&utm_campaign='+fId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase());
-  // Clipboard automatico removido — redirect limpo
+  // Clipboard automatico removido, redirect limpo
   track('checkout_click',{firm_id:fId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src,value:_fbVal(f,st.size),currency:'USD'});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
   mcOpenFirm(fId, url, f.coupon, f.name);
@@ -3636,7 +3636,7 @@ function openPD(id) {
     </div>`;
   }
 
-  // $15 credit badge (TradingView exclusive — inline with discount)
+  // $15 credit badge (TradingView exclusive, inline with discount)
   if (pd.credit) {
     L += `<div style="display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:10px 16px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:10px;">
       <div style="font-size:20px;font-weight:800;color:var(--gold);white-space:nowrap;">+$15</div>
@@ -4023,7 +4023,7 @@ function drwRenderCk(id, f) {
       <div class="fd-sizes" style="--cols:${sc}">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="_fdState['${id}'].size='${p.s}';drwRenderCk('${id}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
-  // Price card — getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
+  // Price card, getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
   const plan=plans?.find(p=>p.s===st.size)||plans?.[0];
   if(plan){
     const pp=getPlanPrice(id, st.type, plan.s);
@@ -4065,7 +4065,7 @@ function drwRenderCk(id, f) {
   if (f.hasActivationFee) {
     h += `<div class="fd-fee-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${t('fee_inclui')||'Inclui'}:</strong> ${t('fee_avaliacao')||'avaliação'}. <strong>${t('fee_nao_inclui')||'Não inclui'}:</strong> ${t('fee_taxa_ativacao')||'taxa de ativação (paga ao passar, varia por tamanho de conta)'}.</span></div>`;
   } else {
-    h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong> — ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
+    h += `<div class="fd-fee-note fd-fee-note-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polyline points="20 6 9 17 4 12"/></svg><span><strong>${t('fee_sem_taxa')||'Sem taxa de ativação'}</strong>, ${t('fee_passou_opera')||'passou na avaliação, já opera'}.</span></div>`;
   }
 
   document.getElementById('drw-ck-'+id).innerHTML=h;
@@ -4101,7 +4101,7 @@ function drwGoCheckout(firmId) {
   const st = _drwState[firmId] || {};
   let url = cf.buildUrl(st.size||'', st.type||'', st.plat||'');
   url = _appendQuery(url, 'utm_source=marketscoupons&utm_medium=drawer&utm_campaign='+firmId+'_'+(st.size||'').replace(/[^a-z0-9]/gi,'_').toLowerCase());
-  // Clipboard automatico removido — redirect limpo
+  // Clipboard automatico removido, redirect limpo
   const _src=window._dedicatedFirmSlug?'dedicated':'homepage';
   track('checkout_click',{firm_id:firmId,firm_name:f.name,platform:st.plat,type:st.type,account_size:st.size,coupon:f.coupon||'parceiro',source:_src,value:_fbVal(f,st.size),currency:'USD'});
   registerLoyaltyClick(st.size||'',st.plat||'',st.type||'',f.name);
@@ -4110,7 +4110,7 @@ function drwGoCheckout(firmId) {
 
 function closeD(){if(window._dedicatedFirmSlug){history.back();return;}document.getElementById('ov').classList.remove('open');document.getElementById('drw').classList.remove('open');document.getElementById('fd-overlay')?.classList.remove('show');document.querySelectorAll('.fr').forEach(r=>r.classList.remove('active'));document.body.style.overflow='';const p=location.pathname.replace(/^\//,'').replace(/\/$/,'');if(_firmPageSlugs.includes(p)){history.back();}else{if(location.hash.startsWith('#firm/'))history.replaceState(null,'',location.pathname+location.search);if(window._fdOriginPage)go(window._fdOriginPage,true);}}
 
-/* TRUSTPILOT POPUP (window.open — Trustpilot blocks iframes) */
+/* TRUSTPILOT POPUP (window.open, Trustpilot blocks iframes) */
 function openTpPopup(url) {
   track('trustpilot_click',{url});
   try {
@@ -4435,7 +4435,7 @@ async function loadFirmsFromSupabase() {
     });
 
     // Sync non-price CHECKOUT_FIRMS fields (discount label, coupon, platforms)
-    // Prices are NOT synced in-place anymore — getPlanPrice() reads from FIRMS[].prices
+    // Prices are NOT synced in-place anymore, getPlanPrice() reads from FIRMS[].prices
     // on each render, avoiding race conditions and stale-overwrite bugs.
     CHECKOUT_FIRMS.forEach(cf => {
       const firm = FIRMS.find(x => x.id === cf.id);
@@ -4472,7 +4472,7 @@ async function loadFirmsFromSupabase() {
       document.body.style.opacity='1';
     }
   } catch(e) {
-    // Supabase unavailable — try localStorage cache
+    // Supabase unavailable, try localStorage cache
     console.warn('[MC] Supabase firms unavailable, trying cache');
     const cached = localStorage.getItem('mc_firms_cache_v13');
     if (cached && FIRMS.length === 0) {
@@ -4733,7 +4733,7 @@ async function unlockCalc(){
   document.getElementById('calc-gate').style.display='none';
   document.getElementById('calc-content').style.display='block';
   track('calc_unlocked',{name,email});
-  // Removido fbq Lead + gtag generate_lead — tool unlock NÃO é candidato a compra.
+  // Removido fbq Lead + gtag generate_lead, tool unlock NÃO é candidato a compra.
   // Inflava denominador Lead ~30x (4994 leads vs 160 IC) tanto em Meta quanto GA4.
   // Evento interno calc_unlocked segue rastreado em Supabase pra analytics próprios.
 }
@@ -4774,7 +4774,7 @@ function qfinish(){
     if(!rec)return;
     document.getElementById('q-res-content').innerHTML=`<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec,'28px','11px')} ${rec.name}</span></div><div class="qr-desc">${(I18N[_currentLang]?.['firm_desc_'+rec.id]||I18N.pt['firm_desc_'+rec.id]||rec.desc||'')}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
     track('quiz_complete',{recommended_firm:rec.id,market_pref:market,priority});
-    // Removido fbq Lead — quiz não indica intenção de compra. Inflava denominador.
+    // Removido fbq Lead, quiz não indica intenção de compra. Inflava denominador.
   },300);
 }
 function qreset(){qA={};qStep=0;renderQuiz();track('quiz_reset');}
@@ -5149,7 +5149,7 @@ function renderPlatforms() {
   const PLAT_ACTIVE = new Set(['ninjatrader','tradingview']);
   g.innerHTML = getPlatforms().filter(p => PLAT_ACTIVE.has(p.id)).map(p => `
     <div class="plat-card${p.highlight?' plat-card-featured':''}">
-      ${p.highlight ? `<div class="plat-banner"><span class="plat-banner-text">${t('plat_oferta_excl')} — ${p.discount}% OFF</span></div>` : ''}
+      ${p.highlight ? `<div class="plat-banner"><span class="plat-banner-text">${t('plat_oferta_excl')}, ${p.discount}% OFF</span></div>` : ''}
       <div class="plat-card-top">
         ${p.id === 'ninjatrader' && p.link ? `<a href="${p.link}" target="_blank" rel="noopener" onclick="track('platform_logo_click',{platform:'ninjatrader'})" style="text-decoration:none;display:contents;color:inherit;" title="NinjaTrader">` : ''}
         <div class="plat-logo" style="background:${p.bg};color:${p.color};">${p.icon_url?`<img src="${p.icon_url}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;">`:p.icon}</div>
@@ -5230,7 +5230,7 @@ let calEvents = [];   // raw events with ET times
 let _calRefreshTimer = null;
 let _calLang = '';
 let _calLastUpdate = null;
-let _calTz = 'local'; // current timezone — auto-detect via browser (igual investing.com)
+let _calTz = 'local'; // current timezone, auto-detect via browser (igual investing.com)
 let _calCdTimer = null; // countdown interval
 
 // ── Timezone ──
@@ -5282,7 +5282,7 @@ function calUtcToET(hhmm){
 function calUpdateCountdown(){
   const bar = document.getElementById('cal-countdown-bar');
   if(!bar) return;
-  // e.t e e.dateStr estão em UTC (API retorna UTC) — comparar via timestamp absoluto.
+  // e.t e e.dateStr estão em UTC (API retorna UTC), comparar via timestamp absoluto.
   // Bug corrigido 2026-05-20: antes tratava e.t como ET → countdown 4h errado (FOMC 5h48m vs 1h45m real).
   const now = Date.now();
   let nextEv = null, nextTs = Infinity;
@@ -5314,11 +5314,11 @@ function calFilter(filter, btn) {
   track('calendar_filter',{filter});
   if (filter === 'all') { calFilterCur = 'all'; calFilterImp.clear(); }
   else if (filter === 'h' || filter === 'm' || filter === 'l') {
-    // multi-select: 3★ e 2★ (e 1★) podem ficar selecionados juntos — mostra a união
+    // multi-select: 3★ e 2★ (e 1★) podem ficar selecionados juntos, mostra a união
     if (calFilterImp.has(filter)) calFilterImp.delete(filter); else calFilterImp.add(filter);
   }
   else { calFilterCur = calFilterCur === filter ? 'all' : filter; }
-  // escopo #cal-filters — não tocar nos botões .cal-f do heatmap
+  // escopo #cal-filters, não tocar nos botões .cal-f do heatmap
   document.querySelectorAll('#cal-filters .cal-f').forEach(b => {
     const f = b.getAttribute('data-filter');
     if (f === 'all') b.classList.toggle('active', calFilterCur === 'all' && calFilterImp.size === 0);
@@ -5370,7 +5370,7 @@ async function loadCalendar(silent) {
       let imp = 'l';
       if (rawImp >= 3) imp = 'h';
       else if (rawImp >= 2) imp = 'm';
-      // Convert 12h → 24h. Horários da API são UTC — conversão pra ET/local é em calConvertTime / calUtcToET.
+      // Convert 12h → 24h. Horários da API são UTC, conversão pra ET/local é em calConvertTime / calUtcToET.
       let t24 = ev.time || '—';
       if (t24 !== '—') {
         const m = t24.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
@@ -5460,10 +5460,10 @@ function renderCal() {
     let nowInserted = false;
     const items = groups[day];
     return `<div class="cal-date-group">
-      <div class="cal-date-label">${day === 'Hoje' ? t('cal_hoje') + ' — ' + new Date().toLocaleDateString(_currentLang||'en',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : day === 'Amanhã' ? t('cal_amanha') : t('cal_esta_semana')}</div>
+      <div class="cal-date-label">${day === 'Hoje' ? t('cal_hoje') + ', ' + new Date().toLocaleDateString(_currentLang||'en',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : day === 'Amanhã' ? t('cal_amanha') : t('cal_esta_semana')}</div>
       ${items.map((e) => {
         const cc = CUR_COLORS[e.cur] || {bg:'rgba(74,85,104,.2)',c:'var(--t2)'};
-        const flag = ''; // flags don't render on Windows — keep text only
+        const flag = ''; // flags don't render on Windows, keep text only
         const actVal = parseFloat((e.actual||'').replace(/[^0-9.\-]/g,''));
         const foreVal = parseFloat((e.fore||'').replace(/[^0-9.\-]/g,''));
         const actClass = (e.actual !== '—' && !isNaN(actVal) && !isNaN(foreVal)) ? (actVal > foreVal ? 'cal-act-up' : actVal < foreVal ? 'cal-act-dn' : '') : '';
@@ -5569,25 +5569,25 @@ function _daPreviewStartIfNeeded(){
 function _daPreviewActive(){
   try {
     const s = parseInt(localStorage.getItem('mc_da_preview_start') || '0', 10);
-    if (!s) return false; // nunca iniciou — gate fechado até entrar na Análise
+    if (!s) return false; // nunca iniciou, gate fechado até entrar na Análise
     return (Date.now() - s) < DA_PREVIEW_MS;
   } catch(_) { return false; }
 }
 
 // Acesso a Análise Diária / GEX = só ter conta (modelo 2026-05-20: cadastro libera
-// o site todo; só o Live Room continua exigindo fidelidade — gate próprio).
+// o site todo; só o Live Room continua exigindo fidelidade, gate próprio).
 async function checkProAccess(){
   return !!(currentUser && currentProfile);
 }
 
-// P1 v2 — Pro Gate 3 caminhos
+// P1 v2, Pro Gate 3 caminhos
 const PG_ICO_USER='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>';
 const PG_ICO_GIFT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
 const PG_ICO_STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
 const PG_ICO_CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
 const PG_CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 
-// _pgProCard removido 2026-05-20 — plano pago Pro fora do ar. Motor Stripe (startCheckout/
+// _pgProCard removido 2026-05-20, plano pago Pro fora do ar. Motor Stripe (startCheckout/
 // openStripePortal/edge functions) mantido dormente pra reativar depois. Pra voltar o card,
 // reescrever aqui e re-plugar em buildProGate/buildProGateAnon.
 
@@ -5695,7 +5695,7 @@ async function checkProBadge(){
     let isPro=false, hasSub=false;
     // Check VIP flag
     if(currentProfile?.analysis_vip===true) isPro=true;
-    // Check active subscription (plano pago Stripe — dormente desde 2026-05-18)
+    // Check active subscription (plano pago Stripe, dormente desde 2026-05-18)
     {
       const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
       if(data&&data.length>0){ isPro=true; hasSub=true; }
@@ -5707,7 +5707,7 @@ async function checkProBadge(){
       if(data&&data.length>0) isPro=true;
     }
     if(badge)badge.style.display=isPro?'flex':'none';
-    // "Gerenciar assinatura" só pra quem TEM assinatura Stripe — loyalty/VIP não tem portal
+    // "Gerenciar assinatura" só pra quem TEM assinatura Stripe, loyalty/VIP não tem portal
     if(manageBtn)manageBtn.style.display=hasSub?'block':'none';
     // Update panel Pro status
     const panelPro=document.getElementById('up-pro-status');
@@ -5729,7 +5729,7 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
   const isAnaliseDiaria = gateId === 'da-gate';
   const stored=localStorage.getItem(KEY);
   const now=Date.now();
-  // Em GEX, NÃO inicia timer — só herda se já rodando
+  // Em GEX, NÃO inicia timer, só herda se já rodando
   if(!stored){
     if(!isAnaliseDiaria){
       // GEX sem timer rodando → gate fechado direto
@@ -5742,7 +5742,7 @@ function startPreviewTimer(gateId,wrapId,wrapClass){
   const start=parseInt(stored||now,10);
   const elapsed=Math.floor((now-start)/1000);
   if(elapsed>=DUR){removePreviewBanner();showPreviewGate(gateId,wrapId,wrapClass);return;}
-  // Still within 60s — show content, start countdown
+  // Still within 60s, show content, start countdown
   const wrap=document.getElementById(wrapId);
   if(wrap) wrap.classList.remove(wrapClass);
   const gate=document.getElementById(gateId);
@@ -5801,7 +5801,7 @@ async function checkAnalysisGate(){
     return;
   }
 
-  // Logado = acesso total a Análise Diária (cadastro libera — modelo 2026-05-20).
+  // Logado = acesso total a Análise Diária (cadastro libera, modelo 2026-05-20).
   // Sem checagem de fidelidade nem preview: ter conta já basta.
   removePreviewBanner();
   if(_previewCountdown){clearInterval(_previewCountdown);_previewCountdown=null;}
@@ -5851,7 +5851,7 @@ function renderDailyCards(items){
     let timeStr='';
     if(items[0].created_at){
       const upd=new Date(items[0].created_at);
-      timeStr=' — '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
+      timeStr=', '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
     }
     meta.innerHTML=`<span><span class="analise-meta-dot"></span> ${t('da_atualizado')} ${dateStr}${timeStr}</span><span id="da-accuracy"></span>`;
     loadAccuracyBadge();
@@ -5897,7 +5897,7 @@ function renderDailyCards(items){
 }
 
 /* LEAD / UNLOCK */
-/* ── DATA LAYER — Supabase + localStorage cache ── */
+/* ── DATA LAYER, Supabase + localStorage cache ── */
 
 // ── Validação de email e telefone ──
 const _emailFormatRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -5909,7 +5909,7 @@ function validatePhone(raw) {
   return digits.length >= 7 && digits.length <= 15;
 }
 
-// B.4 — country/state/zip/phone/birthday helpers
+// B.4, country/state/zip/phone/birthday helpers
 const STATES_BR = [['AC','Acre'],['AL','Alagoas'],['AP','Amapá'],['AM','Amazonas'],['BA','Bahia'],['CE','Ceará'],['DF','Distrito Federal'],['ES','Espírito Santo'],['GO','Goiás'],['MA','Maranhão'],['MT','Mato Grosso'],['MS','Mato Grosso do Sul'],['MG','Minas Gerais'],['PA','Pará'],['PB','Paraíba'],['PR','Paraná'],['PE','Pernambuco'],['PI','Piauí'],['RJ','Rio de Janeiro'],['RN','Rio Grande do Norte'],['RS','Rio Grande do Sul'],['RO','Rondônia'],['RR','Roraima'],['SC','Santa Catarina'],['SP','São Paulo'],['SE','Sergipe'],['TO','Tocantins']];
 const STATES_US = [['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','District of Columbia'],['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']];
 
@@ -5948,7 +5948,7 @@ function validateBirthdayAdult(iso) {
   return age >= 18;
 }
 
-// Genéricos (recebem prefixo de IDs, reutilizados por signup e painel — Fase C)
+// Genéricos (recebem prefixo de IDs, reutilizados por signup e painel, Fase C)
 function renderStateFieldFor(prefix, country) {
   const wrap = document.getElementById(prefix + '-state-wrap');
   if (!wrap) return;
@@ -5957,7 +5957,7 @@ function renderStateFieldFor(prefix, country) {
   let inner;
   if (country === 'BR' || country === 'US') {
     const list = country === 'BR' ? STATES_BR : STATES_US;
-    inner = `<select id="${prefix}-state"><option value="">--</option>${list.map(([c,n])=>`<option value="${c}">${c} — ${n}</option>`).join('')}</select>`;
+    inner = `<select id="${prefix}-state"><option value="">--</option>${list.map(([c,n])=>`<option value="${c}">${c}, ${n}</option>`).join('')}</select>`;
   } else {
     inner = `<input type="text" id="${prefix}-state" placeholder="State / Region">`;
   }
@@ -6000,7 +6000,7 @@ async function onZipBlurFor(prefix) {
   }
 }
 
-// Wrappers compat (mantém callsites HTML existentes — onclick="onZipBlur()" etc)
+// Wrappers compat (mantém callsites HTML existentes, onclick="onZipBlur()" etc)
 function renderStateField(country)  { renderStateFieldFor('auth-signup', country); }
 function onCountryChange()          { onCountryChangeFor('auth-signup'); }
 function onZipBlur()                { return onZipBlurFor('auth-signup'); }
@@ -6027,7 +6027,7 @@ function initSignupForm() {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   B.6 — Complete Profile + Nickname (modal CP + nickname OAuth)
+   B.6, Complete Profile + Nickname (modal CP + nickname OAuth)
    ══════════════════════════════════════════════════════════════════════════ */
 const FIRM_SLUGS = ['apex','brightfunded','bulenox','cti','e2t','e8','fn','ftmo','fundingpips','the5ers','tradeday'];
 const FIRM_LABELS = {
@@ -6071,7 +6071,7 @@ async function validateEmailMx(email) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   GEOCODER — B.5 fetch address by ZIP/CEP (ViaCEP BR + Zippopotam fallback)
+   GEOCODER, B.5 fetch address by ZIP/CEP (ViaCEP BR + Zippopotam fallback)
    Cache em memória por sessão. Helper standalone, não conectado ao form ainda.
    ══════════════════════════════════════════════════════════════════════════ */
 const _zipCache = new Map();
@@ -6152,7 +6152,7 @@ async function saveLead(data) {
     ts: new Date().toISOString(),
   };
 
-  // 1. Supabase (primary — dados seguros no servidor)
+  // 1. Supabase (primary, dados seguros no servidor)
   try {
     await db.from('leads').upsert(payload, { onConflict: 'email', ignoreDuplicates: false });
   } catch(e) {}
@@ -6179,11 +6179,11 @@ async function saveLead(data) {
 
   localStorage.setItem('mc_unlocked_' + data.tool, '1');
   track('tool_lead_capture', { tool: data.tool, email: data.email, name: data.name });
-  // Removido fbq Lead + gtag generate_lead — tool unlock genérico não é compra.
+  // Removido fbq Lead + gtag generate_lead, tool unlock genérico não é compra.
 }
 function isUnlocked(t) { return localStorage.getItem('mc_unlocked_' + t) === '1'; }
 
-/* LIVE ROOM — DDI auto-detect */
+/* LIVE ROOM, DDI auto-detect */
 function updateWaPlaceholder() {
   const ddi = document.getElementById('lv-ddi')?.value || '+55';
   const inp = document.getElementById('lv-whatsapp');
@@ -6289,7 +6289,7 @@ async function checkLoyaltyAndShowLive(forceCheck = false) {
 
 /* BOT */
 let botOpen=false;
-// BOT_SYSTEM moved server-side to api/bot.js — never expose prompt to client
+// BOT_SYSTEM moved server-side to api/bot.js, never expose prompt to client
 const BOT_STORE_KEY='mc_bot_hist';
 const BOT_TTL=48*60*60*1000; // 48h
 function loadBotHist(){
@@ -6349,26 +6349,26 @@ function toggleBot(){
 function openBot(){botOpen=false;toggleBot();}
 const BOT_QUICK_ANSWERS={
   'bot_q_coupons':{
-    pt:`Sim! Esses são os cupons ativos agora:\n\n**APEX** — cupom **MARKET** → 90% OFF vitalício (25K sai por $19.90)\n**BULENOX** — cupom **MARKET89** → 89% OFF vitalício (25K sai por $15.95)\n**EARN2TRADE** — cupom **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT** — cupom **FLEX** → 47% OFF\n**CTI** — cupom **APR30** → 30% OFF\n**FUNDINGPIPS** — cupom **HELLO** → 20% OFF\n**BRIGHTFUNDED** — cupom na aba Firmas → 20% OFF\n**E8 MARKETS** — cupom **MARKET** → 10% OFF\n**FTMO** e **THE5ERS** não tem cupom, mas oferecem trial grátis.\n\nTodos na aba **Ofertas** com link direto.`,
-    en:`Yes! Here are the active coupons right now:\n\n**APEX** — coupon **MARKET** → 90% OFF lifetime (25K for $19.90)\n**BULENOX** — coupon **MARKET89** → 89% OFF lifetime (25K for $15.95)\n**EARN2TRADE** — coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT** — coupon **FLEX** → 47% OFF\n**CTI** — coupon **APR30** → 30% OFF\n**FUNDINGPIPS** — coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED** — coupon on Firms tab → 20% OFF\n**E8 MARKETS** — coupon **MARKET** → 10% OFF\n**FTMO** and **THE5ERS** have no coupon but offer a free trial.\n\nAll on the **Offers** tab with direct links.`,
-    es:`¡Sí! Estos son los cupones activos ahora:\n\n**APEX** — cupón **MARKET** → 90% OFF vitalicio (25K por $19.90)\n**BULENOX** — cupón **MARKET89** → 89% OFF vitalicio\n**EARN2TRADE** — cupón **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT** — cupón **FLEX** → 47% OFF\n**CTI** — cupón **APR30** → 30% OFF\n**FUNDINGPIPS** — cupón **HELLO** → 20% OFF\n**BRIGHTFUNDED** — cupón en pestaña Firmas → 20% OFF\n**E8 MARKETS** — cupón **MARKET** → 10% OFF\n**FTMO** y **THE5ERS** no tienen cupón pero ofrecen prueba gratis.\n\nTodo en la pestaña **Ofertas**.`,
-    it:`Sì! Ecco i coupon attivi adesso:\n\n**APEX** — coupon **MARKET** → 90% OFF a vita (25K a $19.90)\n**BULENOX** — coupon **MARKET89** → 89% OFF a vita\n**EARN2TRADE** — coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT** — coupon **FLEX** → 47% OFF\n**CTI** — coupon **APR30** → 30% OFF\n**FUNDINGPIPS** — coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED** — coupon nella scheda Firme → 20% OFF\n**E8 MARKETS** — coupon **MARKET** → 10% OFF\n**FTMO** e **THE5ERS** non hanno coupon ma offrono prova gratuita.\n\nTutto nella scheda **Offerte**.`,
-    fr:`Oui ! Voici les coupons actifs maintenant :\n\n**APEX** — coupon **MARKET** → 90% OFF à vie (25K à $19.90)\n**BULENOX** — coupon **MARKET89** → 89% OFF à vie\n**EARN2TRADE** — coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT** — coupon **FLEX** → 47% OFF\n**CTI** — coupon **APR30** → 30% OFF\n**FUNDINGPIPS** — coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED** — coupon dans l'onglet Firmes → 20% OFF\n**E8 MARKETS** — coupon **MARKET** → 10% OFF\n**FTMO** et **THE5ERS** n'ont pas de coupon mais offrent un essai gratuit.\n\nTout dans l'onglet **Offres**.`,
-    de:`Ja! Hier sind die aktiven Coupons:\n\n**APEX** — Coupon **MARKET** → 90% OFF lebenslang (25K für $19.90)\n**BULENOX** — Coupon **MARKET89** → 89% OFF lebenslang\n**EARN2TRADE** — Coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT** — Coupon **FLEX** → 47% OFF\n**CTI** — Coupon **APR30** → 30% OFF\n**FUNDINGPIPS** — Coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED** — Coupon im Tab Firmen → 20% OFF\n**E8 MARKETS** — Coupon **MARKET** → 10% OFF\n**FTMO** und **THE5ERS** haben keinen Coupon, bieten aber eine kostenlose Testversion.\n\nAlles im Tab **Angebote**.`,
-    ar:`نعم! هذه الكوبونات النشطة الآن:\n\n**APEX** — كوبون **MARKET** → 90% خصم مدى الحياة (25K بـ $19.90)\n**BULENOX** — كوبون **MARKET89** → 89% خصم مدى الحياة\n**EARN2TRADE** — كوبون **MARKETSCOUPONS** → 60% خصم\n**FUNDEDNEXT** — كوبون **FLEX** → 30% خصم\n**CTI** — كوبون **APR30** → 30% خصم\n**FUNDINGPIPS** — كوبون **HELLO** → 20% خصم\n**BRIGHTFUNDED** — كوبون في تبويب الشركات → 20% خصم\n**E8 MARKETS** — كوبون **MARKET** → 10% خصم\n**FTMO** و **THE5ERS** بدون كوبون لكن يوفرون تجربة مجانية.\n\nالكل في تبويب **العروض**.`
+    pt:`Sim! Esses são os cupons ativos agora:\n\n**APEX**, cupom **MARKET** → 90% OFF vitalício (25K sai por $19.90)\n**BULENOX**, cupom **MARKET89** → 89% OFF vitalício (25K sai por $15.95)\n**EARN2TRADE**, cupom **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, cupom **FLEX** → 47% OFF\n**CTI**, cupom **APR30** → 30% OFF\n**FUNDINGPIPS**, cupom **HELLO** → 20% OFF\n**BRIGHTFUNDED**, cupom na aba Firmas → 20% OFF\n**E8 MARKETS**, cupom **MARKET** → 10% OFF\n**FTMO** e **THE5ERS** não tem cupom, mas oferecem trial grátis.\n\nTodos na aba **Ofertas** com link direto.`,
+    en:`Yes! Here are the active coupons right now:\n\n**APEX**, coupon **MARKET** → 90% OFF lifetime (25K for $19.90)\n**BULENOX**, coupon **MARKET89** → 89% OFF lifetime (25K for $15.95)\n**EARN2TRADE**, coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, coupon **FLEX** → 47% OFF\n**CTI**, coupon **APR30** → 30% OFF\n**FUNDINGPIPS**, coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, coupon on Firms tab → 20% OFF\n**E8 MARKETS**, coupon **MARKET** → 10% OFF\n**FTMO** and **THE5ERS** have no coupon but offer a free trial.\n\nAll on the **Offers** tab with direct links.`,
+    es:`¡Sí! Estos son los cupones activos ahora:\n\n**APEX**, cupón **MARKET** → 90% OFF vitalicio (25K por $19.90)\n**BULENOX**, cupón **MARKET89** → 89% OFF vitalicio\n**EARN2TRADE**, cupón **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, cupón **FLEX** → 47% OFF\n**CTI**, cupón **APR30** → 30% OFF\n**FUNDINGPIPS**, cupón **HELLO** → 20% OFF\n**BRIGHTFUNDED**, cupón en pestaña Firmas → 20% OFF\n**E8 MARKETS**, cupón **MARKET** → 10% OFF\n**FTMO** y **THE5ERS** no tienen cupón pero ofrecen prueba gratis.\n\nTodo en la pestaña **Ofertas**.`,
+    it:`Sì! Ecco i coupon attivi adesso:\n\n**APEX**, coupon **MARKET** → 90% OFF a vita (25K a $19.90)\n**BULENOX**, coupon **MARKET89** → 89% OFF a vita\n**EARN2TRADE**, coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, coupon **FLEX** → 47% OFF\n**CTI**, coupon **APR30** → 30% OFF\n**FUNDINGPIPS**, coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, coupon nella scheda Firme → 20% OFF\n**E8 MARKETS**, coupon **MARKET** → 10% OFF\n**FTMO** e **THE5ERS** non hanno coupon ma offrono prova gratuita.\n\nTutto nella scheda **Offerte**.`,
+    fr:`Oui ! Voici les coupons actifs maintenant :\n\n**APEX**, coupon **MARKET** → 90% OFF à vie (25K à $19.90)\n**BULENOX**, coupon **MARKET89** → 89% OFF à vie\n**EARN2TRADE**, coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, coupon **FLEX** → 47% OFF\n**CTI**, coupon **APR30** → 30% OFF\n**FUNDINGPIPS**, coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, coupon dans l'onglet Firmes → 20% OFF\n**E8 MARKETS**, coupon **MARKET** → 10% OFF\n**FTMO** et **THE5ERS** n'ont pas de coupon mais offrent un essai gratuit.\n\nTout dans l'onglet **Offres**.`,
+    de:`Ja! Hier sind die aktiven Coupons:\n\n**APEX**, Coupon **MARKET** → 90% OFF lebenslang (25K für $19.90)\n**BULENOX**, Coupon **MARKET89** → 89% OFF lebenslang\n**EARN2TRADE**, Coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, Coupon **FLEX** → 47% OFF\n**CTI**, Coupon **APR30** → 30% OFF\n**FUNDINGPIPS**, Coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, Coupon im Tab Firmen → 20% OFF\n**E8 MARKETS**, Coupon **MARKET** → 10% OFF\n**FTMO** und **THE5ERS** haben keinen Coupon, bieten aber eine kostenlose Testversion.\n\nAlles im Tab **Angebote**.`,
+    ar:`نعم! هذه الكوبونات النشطة الآن:\n\n**APEX**, كوبون **MARKET** → 90% خصم مدى الحياة (25K بـ $19.90)\n**BULENOX**, كوبون **MARKET89** → 89% خصم مدى الحياة\n**EARN2TRADE**, كوبون **MARKETSCOUPONS** → 60% خصم\n**FUNDEDNEXT**, كوبون **FLEX** → 30% خصم\n**CTI**, كوبون **APR30** → 30% خصم\n**FUNDINGPIPS**, كوبون **HELLO** → 20% خصم\n**BRIGHTFUNDED**, كوبون في تبويب الشركات → 20% خصم\n**E8 MARKETS**, كوبون **MARKET** → 10% خصم\n**FTMO** و **THE5ERS** بدون كوبون لكن يوفرون تجربة مجانية.\n\nالكل في تبويب **العروض**.`
   },
   'bot_q_firm':{
-    pt:`Depende do teu perfil. Vou direto ao ponto:\n\n**Futures com maior desconto?** Apex — cupom **MARKET**, 90% OFF vitalício. 25K por $19.90. 100% profit split.\n\n**Forex com melhor split?** FundedNext — 95% split, cupom **FLEX** 47% OFF. Ou The5ers — 100% split, scaling até $4M.\n\n**Menor preço pra começar?** CTI tem conta de $1. Bulenox 25K por $15.95.\n\n**Sem regra de consistência?** Bulenox e Apex.\n\n**Pra decidir melhor:** vai na aba **Quiz** (6 perguntas e te recomendo a ideal) ou **Comparator** pra colocar lado a lado.`,
-    en:`Depends on your profile. Straight to the point:\n\n**Futures with biggest discount?** Apex — coupon **MARKET**, 90% OFF lifetime. 25K for $19.90. 100% profit split.\n\n**Forex with best split?** FundedNext — 95% split, coupon **FLEX** 47% OFF. Or The5ers — 100% split, scaling to $4M.\n\n**Cheapest to start?** CTI has a $1 account. Bulenox 25K for $15.95.\n\n**No consistency rule?** Bulenox and Apex.\n\n**To decide better:** go to the **Quiz** tab (6 questions, I'll recommend the best fit) or **Comparator** to compare side by side.`,
-    es:`Depende de tu perfil. Directo al grano:\n\n**Futures con mayor descuento?** Apex — cupón **MARKET**, 90% OFF vitalicio. 25K por $19.90. 100% profit split.\n\n**Forex con mejor split?** FundedNext — 95% split, cupón **FLEX** 47% OFF. O The5ers — 100% split, scaling hasta $4M.\n\n**Más barato para empezar?** CTI tiene cuenta de $1. Bulenox 25K por $15.95.\n\n**Sin regla de consistencia?** Bulenox y Apex.\n\n**Para decidir mejor:** ve a la pestaña **Quiz** o al **Comparador**.`,
-    it:`Dipende dal tuo profilo. Dritto al punto:\n\n**Futures con più sconto?** Apex — coupon **MARKET**, 90% OFF a vita. 25K a $19.90. 100% profit split.\n\n**Forex con miglior split?** FundedNext — 95% split, coupon **FLEX** 47% OFF. O The5ers — 100% split, scaling fino a $4M.\n\n**Più economico per iniziare?** CTI ha un conto da $1. Bulenox 25K a $15.95.\n\n**Senza regola di consistenza?** Bulenox e Apex.\n\n**Per decidere meglio:** vai alla scheda **Quiz** o al **Comparatore**.`,
-    fr:`Ça dépend de ton profil. Droit au but :\n\n**Futures avec plus de réduction ?** Apex — coupon **MARKET**, 90% OFF à vie. 25K à $19.90. 100% profit split.\n\n**Forex avec meilleur split ?** FundedNext — 95% split, coupon **FLEX** 47% OFF. Ou The5ers — 100% split, scaling jusqu'à $4M.\n\n**Le moins cher pour démarrer ?** CTI a un compte à $1. Bulenox 25K à $15.95.\n\n**Sans règle de consistance ?** Bulenox et Apex.\n\n**Pour mieux choisir :** va dans l'onglet **Quiz** ou le **Comparateur**.`,
-    de:`Kommt auf dein Profil an. Direkt zur Sache:\n\n**Futures mit größtem Rabatt?** Apex — Coupon **MARKET**, 90% OFF lebenslang. 25K für $19.90. 100% Profit Split.\n\n**Forex mit bestem Split?** FundedNext — 95% Split, Coupon **FLEX** 47% OFF. Oder The5ers — 100% Split, Scaling bis $4M.\n\n**Am günstigsten starten?** CTI hat ein Konto ab $1. Bulenox 25K für $15.95.\n\n**Ohne Konsistenzregel?** Bulenox und Apex.\n\n**Für bessere Entscheidung:** geh zum **Quiz**-Tab oder zum **Vergleich**.`,
-    ar:`يعتمد على ملفك. مباشرة للنقطة:\n\n**عقود مستقبلية بأكبر خصم؟** Apex — كوبون **MARKET**، 90% خصم مدى الحياة. 25K بـ $19.90.\n\n**فوركس بأفضل سبليت؟** FundedNext — 95% سبليت، كوبون **FLEX** 30% خصم. أو The5ers — 100% سبليت.\n\n**أرخص للبداية؟** CTI حساب بـ $1. Bulenox 25K بـ $15.95.\n\n**بدون قاعدة اتساق؟** Bulenox و Apex.\n\n**لاتخاذ قرار أفضل:** روح تبويب **الاختبار** أو **المقارنة**.`
+    pt:`Depende do teu perfil. Vou direto ao ponto:\n\n**Futures com maior desconto?** Apex, cupom **MARKET**, 90% OFF vitalício. 25K por $19.90. 100% profit split.\n\n**Forex com melhor split?** FundedNext, 95% split, cupom **FLEX** 47% OFF. Ou The5ers, 100% split, scaling até $4M.\n\n**Menor preço pra começar?** CTI tem conta de $1. Bulenox 25K por $15.95.\n\n**Sem regra de consistência?** Bulenox e Apex.\n\n**Pra decidir melhor:** vai na aba **Quiz** (6 perguntas e te recomendo a ideal) ou **Comparator** pra colocar lado a lado.`,
+    en:`Depends on your profile. Straight to the point:\n\n**Futures with biggest discount?** Apex, coupon **MARKET**, 90% OFF lifetime. 25K for $19.90. 100% profit split.\n\n**Forex with best split?** FundedNext, 95% split, coupon **FLEX** 47% OFF. Or The5ers, 100% split, scaling to $4M.\n\n**Cheapest to start?** CTI has a $1 account. Bulenox 25K for $15.95.\n\n**No consistency rule?** Bulenox and Apex.\n\n**To decide better:** go to the **Quiz** tab (6 questions, I'll recommend the best fit) or **Comparator** to compare side by side.`,
+    es:`Depende de tu perfil. Directo al grano:\n\n**Futures con mayor descuento?** Apex, cupón **MARKET**, 90% OFF vitalicio. 25K por $19.90. 100% profit split.\n\n**Forex con mejor split?** FundedNext, 95% split, cupón **FLEX** 47% OFF. O The5ers, 100% split, scaling hasta $4M.\n\n**Más barato para empezar?** CTI tiene cuenta de $1. Bulenox 25K por $15.95.\n\n**Sin regla de consistencia?** Bulenox y Apex.\n\n**Para decidir mejor:** ve a la pestaña **Quiz** o al **Comparador**.`,
+    it:`Dipende dal tuo profilo. Dritto al punto:\n\n**Futures con più sconto?** Apex, coupon **MARKET**, 90% OFF a vita. 25K a $19.90. 100% profit split.\n\n**Forex con miglior split?** FundedNext, 95% split, coupon **FLEX** 47% OFF. O The5ers, 100% split, scaling fino a $4M.\n\n**Più economico per iniziare?** CTI ha un conto da $1. Bulenox 25K a $15.95.\n\n**Senza regola di consistenza?** Bulenox e Apex.\n\n**Per decidere meglio:** vai alla scheda **Quiz** o al **Comparatore**.`,
+    fr:`Ça dépend de ton profil. Droit au but :\n\n**Futures avec plus de réduction ?** Apex, coupon **MARKET**, 90% OFF à vie. 25K à $19.90. 100% profit split.\n\n**Forex avec meilleur split ?** FundedNext, 95% split, coupon **FLEX** 47% OFF. Ou The5ers, 100% split, scaling jusqu'à $4M.\n\n**Le moins cher pour démarrer ?** CTI a un compte à $1. Bulenox 25K à $15.95.\n\n**Sans règle de consistance ?** Bulenox et Apex.\n\n**Pour mieux choisir :** va dans l'onglet **Quiz** ou le **Comparateur**.`,
+    de:`Kommt auf dein Profil an. Direkt zur Sache:\n\n**Futures mit größtem Rabatt?** Apex, Coupon **MARKET**, 90% OFF lebenslang. 25K für $19.90. 100% Profit Split.\n\n**Forex mit bestem Split?** FundedNext, 95% Split, Coupon **FLEX** 47% OFF. Oder The5ers, 100% Split, Scaling bis $4M.\n\n**Am günstigsten starten?** CTI hat ein Konto ab $1. Bulenox 25K für $15.95.\n\n**Ohne Konsistenzregel?** Bulenox und Apex.\n\n**Für bessere Entscheidung:** geh zum **Quiz**-Tab oder zum **Vergleich**.`,
+    ar:`يعتمد على ملفك. مباشرة للنقطة:\n\n**عقود مستقبلية بأكبر خصم؟** Apex, كوبون **MARKET**، 90% خصم مدى الحياة. 25K بـ $19.90.\n\n**فوركس بأفضل سبليت؟** FundedNext, 95% سبليت، كوبون **FLEX** 30% خصم. أو The5ers, 100% سبليت.\n\n**أرخص للبداية؟** CTI حساب بـ $1. Bulenox 25K بـ $15.95.\n\n**بدون قاعدة اتساق؟** Bulenox و Apex.\n\n**لاتخاذ قرار أفضل:** روح تبويب **الاختبار** أو **المقارنة**.`
   },
   'bot_q_risk':{
-    pt:`As dicas mais importantes pra passar na avaliação:\n\n**1. Gestão de risco acima de tudo.** Use a aba **Position Size Calculator** pra calcular o lote certo. Nunca arrisque mais de 1-2% por trade.\n\n**2. Conheça as regras da sua firma.** Cada uma tem drawdown diferente (trailing, EOD, fixo). Se não souber a diferença, vai na aba **Guides**.\n\n**3. Tenha um plano antes de operar.** Horários, ativos, setup — tudo definido antes de abrir o trade. Sem improviso.\n\n**4. Não tente fazer a meta em 1 dia.** Consistência vale mais que um trade home run. Várias firmas exigem mínimo de dias.\n\n**5. Fique atento ao calendário econômico.** Eventos 3 estrelas movem o mercado. Use a aba **Economic Calendar** pra não ser pego de surpresa.\n\nA aba **Guides** tem material completo sobre cada tópico.`,
-    en:`Key tips to pass the evaluation:\n\n**1. Risk management above all.** Use the **Position Size Calculator** tab to calculate the right lot size. Never risk more than 1-2% per trade.\n\n**2. Know your firm's rules.** Each one has different drawdown (trailing, EOD, fixed). Check the **Guides** tab if unsure.\n\n**3. Have a plan before trading.** Hours, assets, setup — all defined before opening a trade. No improvising.\n\n**4. Don't try to hit the target in 1 day.** Consistency matters more than a home run trade. Many firms require minimum days.\n\n**5. Watch the economic calendar.** 3-star events move the market. Use the **Economic Calendar** tab to stay prepared.\n\nThe **Guides** tab has complete material on each topic.`,
+    pt:`As dicas mais importantes pra passar na avaliação:\n\n**1. Gestão de risco acima de tudo.** Use a aba **Position Size Calculator** pra calcular o lote certo. Nunca arrisque mais de 1-2% por trade.\n\n**2. Conheça as regras da sua firma.** Cada uma tem drawdown diferente (trailing, EOD, fixo). Se não souber a diferença, vai na aba **Guides**.\n\n**3. Tenha um plano antes de operar.** Horários, ativos, setup, tudo definido antes de abrir o trade. Sem improviso.\n\n**4. Não tente fazer a meta em 1 dia.** Consistência vale mais que um trade home run. Várias firmas exigem mínimo de dias.\n\n**5. Fique atento ao calendário econômico.** Eventos 3 estrelas movem o mercado. Use a aba **Economic Calendar** pra não ser pego de surpresa.\n\nA aba **Guides** tem material completo sobre cada tópico.`,
+    en:`Key tips to pass the evaluation:\n\n**1. Risk management above all.** Use the **Position Size Calculator** tab to calculate the right lot size. Never risk more than 1-2% per trade.\n\n**2. Know your firm's rules.** Each one has different drawdown (trailing, EOD, fixed). Check the **Guides** tab if unsure.\n\n**3. Have a plan before trading.** Hours, assets, setup, all defined before opening a trade. No improvising.\n\n**4. Don't try to hit the target in 1 day.** Consistency matters more than a home run trade. Many firms require minimum days.\n\n**5. Watch the economic calendar.** 3-star events move the market. Use the **Economic Calendar** tab to stay prepared.\n\nThe **Guides** tab has complete material on each topic.`,
     es:`Tips clave para pasar la evaluación:\n\n**1. Gestión de riesgo ante todo.** Usa la pestaña **Position Size**. Nunca arriesgues más del 1-2% por trade.\n\n**2. Conoce las reglas de tu firma.** Cada una tiene drawdown diferente. Revisa la pestaña **Guías**.\n\n**3. Ten un plan antes de operar.** Sin improvisar.\n\n**4. No intentes la meta en 1 día.** Consistencia > home run.\n\n**5. Vigila el calendario económico.** Eventos 3 estrellas mueven el mercado. Usa **Calendario Económico**.\n\nLa pestaña **Guías** tiene material completo.`,
     it:`Consigli chiave per superare la valutazione:\n\n**1. Gestione del rischio prima di tutto.** Usa la scheda **Position Size Calculator**. Mai rischiare più dell'1-2% per trade.\n\n**2. Conosci le regole della tua firma.** Ogni una ha drawdown diverso. Controlla la scheda **Guide**.\n\n**3. Avere un piano prima di operare.** Niente improvvisazione.\n\n**4. Non cercare di raggiungere il target in 1 giorno.** La consistenza vale più di un trade da home run.\n\n**5. Controlla il calendario economico.** Eventi 3 stelle muovono il mercato.\n\nLa scheda **Guide** ha materiale completo.`,
     fr:`Conseils clés pour réussir l'évaluation :\n\n**1. Gestion du risque avant tout.** Utilise l'onglet **Position Size Calculator**. Ne risque jamais plus de 1-2% par trade.\n\n**2. Connais les règles de ta firme.** Chaque une a un drawdown différent. Vérifie l'onglet **Guides**.\n\n**3. Aie un plan avant de trader.** Pas d'improvisation.\n\n**4. Ne tente pas le target en 1 jour.** La consistance vaut plus qu'un home run.\n\n**5. Surveille le calendrier économique.** Les événements 3 étoiles bougent le marché.\n\nL'onglet **Guides** a du matériel complet.`,
@@ -6376,13 +6376,13 @@ const BOT_QUICK_ANSWERS={
     ar:`نصائح أساسية لاجتياز التقييم:\n\n**1. إدارة المخاطر فوق كل شيء.** استخدم تبويب **حاسبة حجم المركز**. لا تخاطر بأكثر من 1-2% في كل صفقة.\n\n**2. اعرف قواعد شركتك.** كل واحدة لها drawdown مختلف. راجع تبويب **الأدلة**.\n\n**3. خطط قبل التداول.** بدون ارتجال.\n\n**4. لا تحاول تحقيق الهدف في يوم واحد.** الاتساق أهم.\n\n**5. راقب التقويم الاقتصادي.** أحداث 3 نجوم تحرك السوق.\n\nتبويب **الأدلة** فيه محتوى كامل.`
   },
   'bot_q_tips':{
-    pt:`As regras variam por firma, mas essas são universais — quebre uma e perde a conta:\n\n**1. Drawdown máximo.** Pode ser trailing (acompanha seu lucro), EOD (calcula no fim do dia) ou fixo. Entenda qual a sua firma usa. Perde a conta se ultrapassar.\n\n**2. Meta de lucro.** Geralmente 6-10% do tamanho da conta. Sem atingir, não passa.\n\n**3. Dias mínimos de trading.** Apex: 1 dia. Earn2Trade: 10 dias. Não adianta bater a meta em 1 trade se a firma exige 10 dias.\n\n**4. Proibições comuns:** copy trading entre contas, arbitragem de latência, manipulação de mercado. Cada firma tem sua lista.\n\n**5. News trading.** Apex e Bulenox permitem. FTMO e Earn2Trade **não**. Operar em CPI/NFP sem saber disso = ban.\n\nNa aba **Firms**, cada firma tem todas as regras detalhadas.`,
-    en:`Rules vary by firm, but these are universal — break one and you lose the account:\n\n**1. Max drawdown.** Can be trailing (follows your profit), EOD (calculated at end of day), or fixed. Understand which your firm uses. Exceeding it = account lost.\n\n**2. Profit target.** Usually 6-10% of account size. Must hit it to pass.\n\n**3. Minimum trading days.** Apex: 1 day. Earn2Trade: 10 days No point hitting target in 1 trade if firm requires 10 days.\n\n**4. Common bans:** copy trading between accounts, latency arbitrage, market manipulation.\n\n**5. News trading.** Apex and Bulenox allow it. FTMO and Earn2Trade **don't**. Trading CPI/NFP without knowing this = ban.\n\nOn the **Firms** tab, each firm has all rules detailed.`,
-    es:`Las reglas varían por firma, pero estas son universales — rompe una y pierdes la cuenta:\n\n**1. Drawdown máximo.** Trailing, EOD o fijo. Entiende cuál usa tu firma.\n\n**2. Meta de lucro.** Generalmente 6-10%. Sin alcanzarla, no pasas.\n\n**3. Días mínimos.** Apex: 1. Earn2Trade: 10.\n\n**4. Prohibiciones:** copy trading, arbitraje de latencia, manipulación.\n\n**5. News trading.** Apex y Bulenox sí. FTMO y Earn2Trade **no**.\n\nEn la pestaña **Firmas** están todas las reglas detalladas.`,
-    it:`Le regole variano per firma, ma queste sono universali — violane una e perdi il conto:\n\n**1. Drawdown massimo.** Può essere trailing, EOD o fisso. Capire quale usa la tua firma.\n\n**2. Target di profitto.** Di solito 6-10%. Devi raggiungerlo per passare.\n\n**3. Giorni minimi.** Apex: 1. Earn2Trade: 10.\n\n**4. Divieti comuni:** copy trading, arbitraggio di latenza, manipolazione.\n\n**5. News trading.** Apex e Bulenox lo permettono. FTMO e Earn2Trade **no**.\n\nNella scheda **Firme** ci sono tutte le regole dettagliate.`,
-    fr:`Les règles varient par firme, mais celles-ci sont universelles — enfreindre une et tu perds le compte :\n\n**1. Drawdown maximum.** Trailing, EOD ou fixe. Comprends lequel ta firme utilise.\n\n**2. Objectif de profit.** Généralement 6-10%. Tu dois l'atteindre pour passer.\n\n**3. Jours minimum.** Apex : 1. Earn2Trade : 10.\n\n**4. Interdictions :** copy trading, arbitrage de latence, manipulation.\n\n**5. News trading.** Apex et Bulenox oui. FTMO et Earn2Trade **non**.\n\nDans l'onglet **Firmes** tu trouveras toutes les règles détaillées.`,
-    de:`Regeln variieren pro Firma, aber diese sind universal — brich eine und du verlierst das Konto:\n\n**1. Maximales Drawdown.** Trailing, EOD oder fest. Verstehe, welches deine Firma nutzt.\n\n**2. Gewinnziel.** Meist 6-10%. Musst es erreichen.\n\n**3. Mindesttage.** Apex: 1. Earn2Trade: 10.\n\n**4. Verbote:** Copy Trading, Latenz-Arbitrage, Manipulation.\n\n**5. News Trading.** Apex und Bulenox ja. FTMO und Earn2Trade **nein**.\n\nIm Tab **Firmen** findest du alle Regeln im Detail.`,
-    ar:`القواعد تختلف حسب الشركة، لكن هذه عالمية — اكسر واحدة وتخسر الحساب:\n\n**1. أقصى drawdown.** Trailing أو EOD أو ثابت. افهم أي نوع تستخدمه شركتك.\n\n**2. هدف الربح.** عادة 6-10%. لازم توصله.\n\n**3. أيام تداول minimum.** Apex: 1. Earn2Trade: 10.\n\n**4. ممنوعات:** copy trading، latency arbitrage، تلاعب بالسوق.\n\n**5. News trading.** Apex و Bulenox يسمحون. FTMO و Earn2Trade **لا**.\n\nفي تبويب **الشركات** كل القواعد بالتفصيل.`
+    pt:`As regras variam por firma, mas essas são universais, quebre uma e perde a conta:\n\n**1. Drawdown máximo.** Pode ser trailing (acompanha seu lucro), EOD (calcula no fim do dia) ou fixo. Entenda qual a sua firma usa. Perde a conta se ultrapassar.\n\n**2. Meta de lucro.** Geralmente 6-10% do tamanho da conta. Sem atingir, não passa.\n\n**3. Dias mínimos de trading.** Apex: 1 dia. Earn2Trade: 10 dias. Não adianta bater a meta em 1 trade se a firma exige 10 dias.\n\n**4. Proibições comuns:** copy trading entre contas, arbitragem de latência, manipulação de mercado. Cada firma tem sua lista.\n\n**5. News trading.** Apex e Bulenox permitem. FTMO e Earn2Trade **não**. Operar em CPI/NFP sem saber disso = ban.\n\nNa aba **Firms**, cada firma tem todas as regras detalhadas.`,
+    en:`Rules vary by firm, but these are universal, break one and you lose the account:\n\n**1. Max drawdown.** Can be trailing (follows your profit), EOD (calculated at end of day), or fixed. Understand which your firm uses. Exceeding it = account lost.\n\n**2. Profit target.** Usually 6-10% of account size. Must hit it to pass.\n\n**3. Minimum trading days.** Apex: 1 day. Earn2Trade: 10 days No point hitting target in 1 trade if firm requires 10 days.\n\n**4. Common bans:** copy trading between accounts, latency arbitrage, market manipulation.\n\n**5. News trading.** Apex and Bulenox allow it. FTMO and Earn2Trade **don't**. Trading CPI/NFP without knowing this = ban.\n\nOn the **Firms** tab, each firm has all rules detailed.`,
+    es:`Las reglas varían por firma, pero estas son universales, rompe una y pierdes la cuenta:\n\n**1. Drawdown máximo.** Trailing, EOD o fijo. Entiende cuál usa tu firma.\n\n**2. Meta de lucro.** Generalmente 6-10%. Sin alcanzarla, no pasas.\n\n**3. Días mínimos.** Apex: 1. Earn2Trade: 10.\n\n**4. Prohibiciones:** copy trading, arbitraje de latencia, manipulación.\n\n**5. News trading.** Apex y Bulenox sí. FTMO y Earn2Trade **no**.\n\nEn la pestaña **Firmas** están todas las reglas detalladas.`,
+    it:`Le regole variano per firma, ma queste sono universali, violane una e perdi il conto:\n\n**1. Drawdown massimo.** Può essere trailing, EOD o fisso. Capire quale usa la tua firma.\n\n**2. Target di profitto.** Di solito 6-10%. Devi raggiungerlo per passare.\n\n**3. Giorni minimi.** Apex: 1. Earn2Trade: 10.\n\n**4. Divieti comuni:** copy trading, arbitraggio di latenza, manipolazione.\n\n**5. News trading.** Apex e Bulenox lo permettono. FTMO e Earn2Trade **no**.\n\nNella scheda **Firme** ci sono tutte le regole dettagliate.`,
+    fr:`Les règles varient par firme, mais celles-ci sont universelles, enfreindre une et tu perds le compte :\n\n**1. Drawdown maximum.** Trailing, EOD ou fixe. Comprends lequel ta firme utilise.\n\n**2. Objectif de profit.** Généralement 6-10%. Tu dois l'atteindre pour passer.\n\n**3. Jours minimum.** Apex : 1. Earn2Trade : 10.\n\n**4. Interdictions :** copy trading, arbitrage de latence, manipulation.\n\n**5. News trading.** Apex et Bulenox oui. FTMO et Earn2Trade **non**.\n\nDans l'onglet **Firmes** tu trouveras toutes les règles détaillées.`,
+    de:`Regeln variieren pro Firma, aber diese sind universal, brich eine und du verlierst das Konto:\n\n**1. Maximales Drawdown.** Trailing, EOD oder fest. Verstehe, welches deine Firma nutzt.\n\n**2. Gewinnziel.** Meist 6-10%. Musst es erreichen.\n\n**3. Mindesttage.** Apex: 1. Earn2Trade: 10.\n\n**4. Verbote:** Copy Trading, Latenz-Arbitrage, Manipulation.\n\n**5. News Trading.** Apex und Bulenox ja. FTMO und Earn2Trade **nein**.\n\nIm Tab **Firmen** findest du alle Regeln im Detail.`,
+    ar:`القواعد تختلف حسب الشركة، لكن هذه عالمية, اكسر واحدة وتخسر الحساب:\n\n**1. أقصى drawdown.** Trailing أو EOD أو ثابت. افهم أي نوع تستخدمه شركتك.\n\n**2. هدف الربح.** عادة 6-10%. لازم توصله.\n\n**3. أيام تداول minimum.** Apex: 1. Earn2Trade: 10.\n\n**4. ممنوعات:** copy trading، latency arbitrage، تلاعب بالسوق.\n\n**5. News trading.** Apex و Bulenox يسمحون. FTMO و Earn2Trade **لا**.\n\nفي تبويب **الشركات** كل القواعد بالتفصيل.`
   }
 };
 function getQuickAnswer(qKey){
@@ -6468,18 +6468,18 @@ function exportJournal(){const trades=JSON.parse(localStorage.getItem('mc_journa
 function renderBacktester(){const r=JSON.parse(localStorage.getItem('mc_bt_results')||'null');return`<div style="margin-bottom:16px;"><div style="font-size:13px;font-weight:600;margin-bottom:12px;">Configurar Estrategia</div><div class="inp-row"><div style="flex:1;min-width:110px;"><div style="font-size:10px;color:var(--t3);margin-bottom:4px;">Win Rate (%)</div><input class="inp-sm" id="bt-wr" type="number" value="55" style="width:100%;"></div><div style="flex:1;min-width:110px;"><div style="font-size:10px;color:var(--t3);margin-bottom:4px;">Risco ($)</div><input class="inp-sm" id="bt-risk" type="number" value="200" style="width:100%;"></div><div style="flex:1;min-width:110px;"><div style="font-size:10px;color:var(--t3);margin-bottom:4px;">Retorno ($)</div><input class="inp-sm" id="bt-rew" type="number" value="400" style="width:100%;"></div><div style="flex:1;min-width:110px;"><div style="font-size:10px;color:var(--t3);margin-bottom:4px;">N. Trades</div><input class="inp-sm" id="bt-n" type="number" value="100" style="width:100%;"></div></div><button class="btn-sm" onclick="runBacktest()" style="margin-top:8px;">Simular Estrategia</button></div>${r?renderBTResults(r):'<div style="text-align:center;padding:24px;color:var(--t3);">Configure os parametros e clique em Simular</div>'}`;}
 function runBacktest(){const wr=parseFloat(document.getElementById('bt-wr')?.value)/100||.55;const risk=parseFloat(document.getElementById('bt-risk')?.value)||200;const rew=parseFloat(document.getElementById('bt-rew')?.value)||400;const n=parseInt(document.getElementById('bt-n')?.value)||100;let bal=100000;const equity=[100000];let maxBal=100000,maxDD=0,wins=0;for(let i=0;i<n;i++){const win=Math.random()<wr;bal+=win?rew:-risk;if(win)wins++;equity.push(Math.max(0,bal));maxBal=Math.max(maxBal,bal);maxDD=Math.max(maxDD,(maxBal-bal)/maxBal*100);}const r={equity,wins,n,finalBal:bal,maxDD,profitFactor:(wins*rew)/((n-wins)*risk),rr:(rew/risk).toFixed(2),wr:(wr*100).toFixed(0)};localStorage.setItem('mc_bt_results',JSON.stringify(r));document.getElementById('tm-body').innerHTML=renderToolContent('backtester');track('backtest_run',{win_rate:r.wr,trades:n,profit_factor:r.profitFactor.toFixed(2)});}
 function renderBTResults(r){const pnl=r.finalBal-100000;const pts=r.equity;const minE=Math.min(...pts),maxE=Math.max(...pts),range=maxE-minE||1,h=140,w=pts.length;return`<div class="bt-stat-grid"><div class="tool-card"><div class="tc-lbl">P&L Final</div><div class="tc-val ${pnl>=0?'g':'r'}">${pnl>=0?'+':''}$${Math.abs(pnl).toLocaleString()}</div></div><div class="tool-card"><div class="tc-lbl">Win Rate</div><div class="tc-val">${r.wr}%</div></div><div class="tool-card"><div class="tc-lbl">Profit Factor</div><div class="tc-val ${r.profitFactor>=1?'g':'r'}">${r.profitFactor.toFixed(2)}</div></div><div class="tool-card"><div class="tc-lbl">Max Drawdown</div><div class="tc-val r">${r.maxDD.toFixed(1)}%</div></div></div><div style="margin-top:14px;"><div style="font-size:11px;color:var(--t3);margin-bottom:6px;">Curva de Equidade Simulada</div><div style="background:var(--card);border:1px solid var(--b1);border-radius:8px;padding:12px;overflow:hidden;"><svg viewBox="0 0 400 ${h}" style="width:100%;height:${h}px;"><defs><linearGradient id="btG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${pnl>=0?'#22C55E':'#EF4444'}" stop-opacity=".3"/><stop offset="100%" stop-color="${pnl>=0?'#22C55E':'#EF4444'}" stop-opacity="0"/></linearGradient></defs><polyline points="${pts.map((v,i)=>`${(i/(w-1)*400).toFixed(1)},${((1-(v-minE)/range)*h).toFixed(0)}`).join(' ')}" fill="none" stroke="${pnl>=0?'#22C55E':'#EF4444'}" stroke-width="2"/><polygon points="0,${h} ${pts.map((v,i)=>`${(i/(w-1)*400).toFixed(1)},${((1-(v-minE)/range)*h).toFixed(0)}`).join(' ')} 400,${h}" fill="url(#btG)"/></svg></div></div>`;}
-function renderAlerts(){const alerts=JSON.parse(localStorage.getItem('mc_alerts')||'[]');return`<div style="margin-bottom:14px;"><div style="font-size:13px;font-weight:600;margin-bottom:10px;">Criar Novo Alerta</div><div class="inp-row"><select class="inp-sm" id="al-type" style="max-width:150px;"><option value="price">Preco acima de</option><option value="price_below">Preco abaixo de</option><option value="dd">Drawdown atingiu</option></select><input class="inp-sm" id="al-sym" placeholder="Simbolo" style="max-width:110px;"><input class="inp-sm" id="al-val" type="number" placeholder="Valor" style="max-width:100px;"><select class="inp-sm" id="al-ch" style="max-width:130px;"><option>Telegram</option><option>E-mail</option></select><button class="btn-sm" onclick="addAlert()">Criar Alerta</button></div></div>${alerts.length?alerts.map((a,i)=>`<div class="alert-item"><div class="ai-left"><div class="ai-name">${escHtml(a.sym)} — ${a.type==='price'?'Acima de':'Abaixo de'} $${a.val}</div><div class="ai-cond">${escHtml(a.channel)}</div></div><div style="display:flex;align-items:center;gap:8px;"><button class="ai-toggle ${a.active?'on':'off'}" onclick="toggleAlert(${i})"></button><button onclick="deleteAlert(${i})" style="background:none;border:none;color:var(--t3);cursor:pointer;">x</button></div></div>`).join(''):'<div style="text-align:center;padding:24px;color:var(--t3);">Nenhum alerta configurado ainda.</div>'}`;}
+function renderAlerts(){const alerts=JSON.parse(localStorage.getItem('mc_alerts')||'[]');return`<div style="margin-bottom:14px;"><div style="font-size:13px;font-weight:600;margin-bottom:10px;">Criar Novo Alerta</div><div class="inp-row"><select class="inp-sm" id="al-type" style="max-width:150px;"><option value="price">Preco acima de</option><option value="price_below">Preco abaixo de</option><option value="dd">Drawdown atingiu</option></select><input class="inp-sm" id="al-sym" placeholder="Simbolo" style="max-width:110px;"><input class="inp-sm" id="al-val" type="number" placeholder="Valor" style="max-width:100px;"><select class="inp-sm" id="al-ch" style="max-width:130px;"><option>Telegram</option><option>E-mail</option></select><button class="btn-sm" onclick="addAlert()">Criar Alerta</button></div></div>${alerts.length?alerts.map((a,i)=>`<div class="alert-item"><div class="ai-left"><div class="ai-name">${escHtml(a.sym)}, ${a.type==='price'?'Acima de':'Abaixo de'} $${a.val}</div><div class="ai-cond">${escHtml(a.channel)}</div></div><div style="display:flex;align-items:center;gap:8px;"><button class="ai-toggle ${a.active?'on':'off'}" onclick="toggleAlert(${i})"></button><button onclick="deleteAlert(${i})" style="background:none;border:none;color:var(--t3);cursor:pointer;">x</button></div></div>`).join(''):'<div style="text-align:center;padding:24px;color:var(--t3);">Nenhum alerta configurado ainda.</div>'}`;}
 function addAlert(){const type=document.getElementById('al-type')?.value;const sym=(document.getElementById('al-sym')?.value||'').trim().toUpperCase();const val=document.getElementById('al-val')?.value;const channel=document.getElementById('al-ch')?.value;if(!sym||!val){showToast(t('toast_preencha_simbolo_valor'));return;}const alerts=JSON.parse(localStorage.getItem('mc_alerts')||'[]');alerts.push({type,sym,val:parseFloat(val),channel,active:true,ts:new Date().toISOString()});localStorage.setItem('mc_alerts',JSON.stringify(alerts));document.getElementById('tm-body').innerHTML=renderToolContent('alerts');showToast(t('toast_alerta_criado'));track('alert_create',{type,symbol:sym,value:parseFloat(val),channel});}
 function toggleAlert(i){const alerts=JSON.parse(localStorage.getItem('mc_alerts')||'[]');if(alerts[i])alerts[i].active=!alerts[i].active;localStorage.setItem('mc_alerts',JSON.stringify(alerts));document.getElementById('tm-body').innerHTML=renderToolContent('alerts');track('alert_toggle',{symbol:alerts[i]?.sym,active:alerts[i]?.active});}
 function deleteAlert(i){const alerts=JSON.parse(localStorage.getItem('mc_alerts')||'[]');const deleted=alerts[i];alerts.splice(i,1);localStorage.setItem('mc_alerts',JSON.stringify(alerts));document.getElementById('tm-body').innerHTML=renderToolContent('alerts');track('alert_delete',{symbol:deleted?.sym});}
-function renderNinjaPack(){return`<div class="vip-box"><div style="font-size:18px;font-weight:700;margin-bottom:6px;">NinjaTrader Pack — 15 Indicadores</div><div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:16px;">Pack exclusivo para traders de prop firms. NinjaTrader 8. Inclui setup e video tutorial.</div><div class="vip-features"><div class="vip-feat">PropFirm DrawdownGuard</div><div class="vip-feat">DailyTarget Tracker</div><div class="vip-feat">OrderFlow Delta</div><div class="vip-feat">Session VWAP</div><div class="vip-feat">EntryZone Finder</div><div class="vip-feat">NewsFilter</div><div class="vip-feat">RiskManager automatico</div><div class="vip-feat">+ 8 indicadores adicionais</div></div><button class="dl-btn" onclick="showToast('Arquivo em preparacao. Voce recebera por e-mail!')">Baixar NinjaTrader Pack</button></div>`;}
+function renderNinjaPack(){return`<div class="vip-box"><div style="font-size:18px;font-weight:700;margin-bottom:6px;">NinjaTrader Pack, 15 Indicadores</div><div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:16px;">Pack exclusivo para traders de prop firms. NinjaTrader 8. Inclui setup e video tutorial.</div><div class="vip-features"><div class="vip-feat">PropFirm DrawdownGuard</div><div class="vip-feat">DailyTarget Tracker</div><div class="vip-feat">OrderFlow Delta</div><div class="vip-feat">Session VWAP</div><div class="vip-feat">EntryZone Finder</div><div class="vip-feat">NewsFilter</div><div class="vip-feat">RiskManager automatico</div><div class="vip-feat">+ 8 indicadores adicionais</div></div><button class="dl-btn" onclick="showToast('Arquivo em preparacao. Voce recebera por e-mail!')">Baixar NinjaTrader Pack</button></div>`;}
 
 // Stub no-op: loyalty removido 2026-06, mantido pra nao quebrar callsites residuais
 function registerLoyaltyClick(){}
 
 /* INIT */
 /* ══════════════════════════════════════════════════════════════════════════
-   AUTH SYSTEM — Supabase Auth + profiles
+   AUTH SYSTEM, Supabase Auth + profiles
    ══════════════════════════════════════════════════════════════════════════ */
 let currentUser = null;
 let currentProfile = null;
@@ -6650,7 +6650,7 @@ async function doAuthSignup() {
   const btn = document.getElementById('signup-btn');
   btn.disabled = true; btn.textContent = t('auth_validando_email')||'Validating email...';
 
-  // B.3.2.1 — server-side email validation (DNS MX + disposable + cache, fallback permissivo)
+  // B.3.2.1, server-side email validation (DNS MX + disposable + cache, fallback permissivo)
   const validation = await validateEmailMx(email);
   if (validation && validation.valid === false) {
     btn.disabled = false; btn.textContent = t('auth_btn_criar');
@@ -6762,7 +6762,7 @@ async function doLogout() {
   _loggingOut = true;
   // 1. Tentar signOut via Supabase API (with 3s timeout to avoid hang)
   try { await Promise.race([db.auth.signOut(), new Promise(r => setTimeout(r, 3000))]); } catch(e) {}
-  // 2. Limpar manualmente APENAS a chave do user (NUNCA tocar em mc-admin-auth nem sb-* genéricos — quebra sessão do admin no mesmo browser)
+  // 2. Limpar manualmente APENAS a chave do user (NUNCA tocar em mc-admin-auth nem sb-* genéricos, quebra sessão do admin no mesmo browser)
   try {
     localStorage.removeItem('mc-user-auth');
     sessionStorage.removeItem('mc-user-auth');
@@ -6818,9 +6818,9 @@ function updateAuthUI(loggedIn) {
     document.getElementById('up-avatar').textContent = initial;
     document.getElementById('up-name').textContent = currentProfile.full_name || t('painel_user_fallback') || 'User';
     document.getElementById('up-email').textContent = currentProfile.email;
-    // username oculto do form de troca de senha — gerenciador de senha precisa pra parear credencial
+    // username oculto do form de troca de senha, gerenciador de senha precisa pra parear credencial
     { const _un=document.getElementById('up-pass-uname'); if(_un) _un.value=currentProfile.email||''; }
-    // Fase C — prefill 12 campos (cascata pra default country: profile → IP → 'BR')
+    // Fase C, prefill 12 campos (cascata pra default country: profile → IP → 'BR')
     const _setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
     const defaultCountry = currentProfile.country
       || (typeof _geo !== 'undefined' && _geo && _geo.geo_country ? _geo.geo_country.toUpperCase() : '')
@@ -6836,9 +6836,9 @@ function updateAuthUI(loggedIn) {
     _setVal('up-edit-country',  defaultCountry);
     renderStateFieldFor('up-edit', defaultCountry);
     _setVal('up-edit-state',    currentProfile.state);
-    // B.6 — render pills firmas favoritas pré-selecionadas
+    // B.6, render pills firmas favoritas pré-selecionadas
     renderFirmPillsInto('up-edit-firm-pills', currentProfile.favorite_firms || []);
-    // renderPainelLoyalty() removido 2026-06-06 — loyalty desligado, ref orfa virou Sentry alert
+    // renderPainelLoyalty() removido 2026-06-06, loyalty desligado, ref orfa virou Sentry alert
   }
 }
 
@@ -6898,7 +6898,7 @@ async function saveProfile() {
   const phoneE164 = phone ? normalizePhoneE164(phone, country) : '';
   const fullName  = `${first} ${last}`.trim() || (currentProfile && currentProfile.full_name) || '';
 
-  // B.6 — firmas favoritas (sanitizadas vs whitelist)
+  // B.6, firmas favoritas (sanitizadas vs whitelist)
   const favFirms = getSelectedFirmsFrom('up-edit-firm-pills').filter(f => FIRM_SLUGS.includes(f));
 
   const updates = {
@@ -6925,7 +6925,7 @@ async function saveProfile() {
   track('profile_updated');
 }
 
-// Check existing session on load (with 6s timeout — recreates client if stuck)
+// Check existing session on load (with 6s timeout, recreates client if stuck)
 async function checkAuthSession() {
   try {
     const sessionPromise = db.auth.getSession();
@@ -6974,7 +6974,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   // Detectar idioma e aplicar traduções
   initLang();
-  // Load CMS overrides (texts, FAQ) — single Promise.all, one renderFaq call
+  // Load CMS overrides (texts, FAQ), single Promise.all, one renderFaq call
   Promise.all([loadCmsTexts(), loadCmsFaq(), loadI18nFromSupabase(), loadFirmTFromSupabase()]).then(() => { applyTranslations(); renderFaq(); });
   // Ativar página correta ANTES de renderizar (evita flash da home)
   // Detect dedicated firm page BEFORE revealing body (avoid flash)
@@ -6990,10 +6990,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     go('home', true);
   }
-  // Revelar body — mas NÃO se é firma dedicada (overlay abrirá e revelará depois)
+  // Revelar body, mas NÃO se é firma dedicada (overlay abrirá e revelará depois)
   if(!_isFirmPage) document.body.style.opacity='1';
   // REMOVIDO 2026-05-15: prefetch dos 12 bg files queimava 12-13MB no LCP (5MB tradeday + 3MB cti + ...).
-  // User só abre 1 firma — não vale carregar 12. Bg agora baixa on-demand quando openD() roda.
+  // User só abre 1 firma, não vale carregar 12. Bg agora baixa on-demand quando openD() roda.
   // Render com dados hardcoded primeiro (UI imediata)
   renderHome();
   applyF();
@@ -7292,7 +7292,7 @@ function renderGEXHeatmap(){
     const names={ES:'S&P 500',NQ:'Nasdaq 100',SPY:'SPY',QQQ:'QQQ',AAPL:'AAPL',TSLA:'TSLA',NVDA:'NVDA',MSFT:'MSFT',AMZN:'AMZN',META:'META',GOOGL:'GOOGL',GLD:'GLD'};
 
     return`<div class="gx-hm-wrap">
-      <div class="gx-hm-title">${item.ticker} <small>${names[item.ticker]||''} — Spot: ${gxFmt(spot)}</small></div>
+      <div class="gx-hm-title">${item.ticker} <small>${names[item.ticker]||''}, Spot: ${gxFmt(spot)}</small></div>
       <div class="gx-hm-grid" style="grid-template-columns:auto repeat(${bd.length},1fr);">
         <div class="gx-hm-hdr">Strike</div>
         ${expHeaders}
@@ -7346,7 +7346,7 @@ function renderGEXVanna(){
     const charmDir=tC>0?t('gx_charm_increasing'):t('gx_charm_decaying');
 
     return`<div class="gx-vc-wrap">
-      <div class="gx-vc-title">${item.ticker} <small>${names[item.ticker]||''} — Spot: ${gxFmt(spot)}</small></div>
+      <div class="gx-vc-title">${item.ticker} <small>${names[item.ticker]||''}, Spot: ${gxFmt(spot)}</small></div>
       <div class="gx-vc-totals">
         <div class="gx-vc-total"><span class="dot vanna"></span> Vanna: ${tV>0?'+':''}${tV}M <small style="color:var(--t3);">${vannaDir}</small></div>
         <div class="gx-vc-total"><span class="dot charm"></span> Charm: ${tC>0?'+':''}${tC}M <small style="color:var(--t3);">${charmDir}</small></div>
@@ -7416,11 +7416,11 @@ async function checkGEXGate(){
     return;
   }
 
-  // Logged in — cancel any preview timer/banner
+  // Logged in, cancel any preview timer/banner
   removePreviewBanner();
   if(_previewCountdown){clearInterval(_previewCountdown);_previewCountdown=null;}
 
-  // Logado = acesso ao GEX (cadastro libera — modelo 2026-05-20).
+  // Logado = acesso ao GEX (cadastro libera, modelo 2026-05-20).
   if(await checkProAccess()){
     _userHasAccess=true;
     wrap.classList.remove('gx-wrap-gated');
@@ -7448,7 +7448,7 @@ function renderGEX(items){
       let timeStr='';
       if(items[0].updated_at){
         const upd=new Date(items[0].updated_at);
-        timeStr=' — '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
+        timeStr=', '+upd.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'})+' ET';
       }
       el.innerHTML=t('gx_updated_prefix')+' <strong>'+ds+'</strong>'+timeStr;
     }
@@ -7531,7 +7531,7 @@ function renderGEX(items){
     }
     const levelTags=allTags.map(t=>`<div class="gx-row-tag ${t.cls}" style="top:${Math.round(t.tagPx-8)}px;">${t.label}</div>`).join('');
 
-    // Spot price line — find closest row
+    // Spot price line, find closest row
     let spotIdx=0,spotMinD=Infinity;
     reversedStrikes.forEach((s,i)=>{const d=Math.abs(s.strike-Math.round(spot));if(d<spotMinD){spotMinD=d;spotIdx=i;}});
     const spotPx=spotIdx*ROW_H+ROW_H/2;
@@ -7619,7 +7619,7 @@ function renderGEX(items){
     if(secs>0 && secs%30===0) track('engagement_time',{seconds:secs,page:_currentPage||'home'});
   },30000);
 
-  // 3. Session end (beforeunload) — time on site
+  // 3. Session end (beforeunload), time on site
   window.addEventListener('beforeunload',function(){
     const total=_engTotal+(_engVisible?Date.now()-_engStart:0);
     track('session_end',{total_seconds:Math.round(total/1000),pages_viewed:window._pagesViewed||1});
@@ -7723,7 +7723,7 @@ async function subscribeNewsletter(e){
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   CONFIRM EMAIL MODAL — B.3.2 (Fix #1.6)
+   CONFIRM EMAIL MODAL, B.3.2 (Fix #1.6)
    ══════════════════════════════════════════════════════════════════════════ */
 let _cemRateInterval = null;
 let _cemPendingEmail = null;
@@ -7952,7 +7952,7 @@ async function giveawayCtaClick(){
   const elapsed = _gwShownAt ? Math.round((Date.now()-_gwShownAt)/1000) : 0;
   try{ track('giveaway_popup_cta_click', {slug, time_to_click_s:elapsed}); }catch(e){}
   if(currentUser && currentProfile){
-    // Já logado — só marca tag e abre Instagram
+    // Já logado, só marca tag e abre Instagram
     try{
       await db.from('email_subscribers').upsert({email: currentUser.email, tags:['received-giveaway-'+slug, 'giveaway-entered']}, {onConflict:'email'});
     }catch(e){}
@@ -7962,7 +7962,7 @@ async function giveawayCtaClick(){
     if(igUrl) window.open(igUrl,'_blank','noopener');
     return;
   }
-  // Não logado — abre signup. Tag será adicionada após confirmação.
+  // Não logado, abre signup. Tag será adicionada após confirmação.
   try{ sessionStorage.setItem('mc_gw_pending_signup', slug); }catch(e){}
   try{ sessionStorage.setItem('mc_gw_pending_ig', igUrl||''); }catch(e){}
   bd?.classList.remove('show');

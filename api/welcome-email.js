@@ -1,9 +1,9 @@
-// Vercel Serverless — Send welcome email + email confirmation (B.3.1 extended)
+// Vercel Serverless, Send welcome email + email confirmation (B.3.1 extended)
 // 3 modos:
-//   1) POST { email, name, lang }                    — legacy welcome (backward compat)
-//   2) POST { record:{...} }                         — webhook auth on email-confirmed
-//   3) POST { action:'send_confirm', email, name, lang, [resend:true] } — envia email de confirmação
-//   4) GET  /email-confirm?token=xxx                 — confirma email + magic link auto-login
+//   1) POST { email, name, lang }                   , legacy welcome (backward compat)
+//   2) POST { record:{...} }                        , webhook auth on email-confirmed
+//   3) POST { action:'send_confirm', email, name, lang, [resend:true] }, envia email de confirmação
+//   4) GET  /email-confirm?token=xxx                , confirma email + magic link auto-login
 const crypto = require('crypto');
 const { sign: signUnsub } = require('./unsubscribe.js');
 const { applyCors } = require('./_cors.js');
@@ -19,13 +19,13 @@ const INST_WELCOME = {
   subject: { pt:'Bom te ter aqui, Trader', en:'Good to have you here, Trader', es:'Que bueno tenerte aqui, Trader', fr:'Content de vous avoir, Trader', de:'Schon, dass du da bist, Trader', it:'Bello averti qui, Trader', ar:'سعداء بوجودك هنا' },
   preheader: { pt:'Cupons exclusivos negociados direto com as firmas. Até 90% off. Tudo num só lugar.', en:'Exclusive coupons negotiated directly with firms. Up to 90% off. All in one place.', es:'Cupones exclusivos negociados directo con las firmas. Hasta 90% off. Todo en un lugar.', fr:'Coupons exclusifs négociés directement avec les firmes. Jusqu\'à 90% de réduction. Tout au même endroit.', de:'Exklusive Gutscheine direkt mit den Firmen verhandelt. Bis zu 90% Rabatt. Alles an einem Ort.', it:'Coupon esclusivi negoziati direttamente con le firme. Fino al 90% di sconto. Tutto in un unico posto.', ar:'كوبونات حصرية تم التفاوض عليها مباشرة مع الشركات. خصم يصل إلى 90%. كل شيء في مكان واحد.' },
   body: {
-    pt:'Aqui você encontra <b>cupons verificados, comparador de firmas, análise diária e calculadoras</b> — tudo num só lugar, atualizado todos os dias. Comece conhecendo as ofertas em destaque.',
-    en:'Here you\'ll find <b>verified coupons, firm comparator, daily analysis and calculators</b> — all in one place, updated daily. Start by checking the featured deals.',
-    es:'Aqui encontras <b>cupones verificados, comparador de firmas, analisis diario y calculadoras</b> — todo en un solo lugar, actualizado todos los dias. Empieza por las ofertas destacadas.',
-    fr:'Ici vous trouverez <b>coupons vérifiés, comparateur de firmes, analyse quotidienne et calculatrices</b> — tout au même endroit, mis à jour chaque jour. Commencez par les offres phares.',
-    de:'Hier findest du <b>verifizierte Gutscheine, Firmen-Vergleich, tägliche Analyse und Rechner</b> — alles an einem Ort, täglich aktualisiert. Starte mit den Top-Angeboten.',
-    it:'Qui trovi <b>coupon verificati, comparatore di firme, analisi quotidiana e calcolatrici</b> — tutto in un unico posto, aggiornato ogni giorno. Inizia dalle offerte in evidenza.',
-    ar:'هنا تجد <b>كوبونات موثقة، مقارن شركات، تحليل يومي وحاسبات</b> — كل شيء في مكان واحد، محدث يومياً. ابدأ بالعروض المميزة.'
+    pt:'Aqui você encontra <b>cupons verificados, comparador de firmas, análise diária e calculadoras</b>, tudo num só lugar, atualizado todos os dias. Comece conhecendo as ofertas em destaque.',
+    en:'Here you\'ll find <b>verified coupons, firm comparator, daily analysis and calculators</b>, all in one place, updated daily. Start by checking the featured deals.',
+    es:'Aqui encontras <b>cupones verificados, comparador de firmas, analisis diario y calculadoras</b>, todo en un solo lugar, actualizado todos los dias. Empieza por las ofertas destacadas.',
+    fr:'Ici vous trouverez <b>coupons vérifiés, comparateur de firmes, analyse quotidienne et calculatrices</b>, tout au même endroit, mis à jour chaque jour. Commencez par les offres phares.',
+    de:'Hier findest du <b>verifizierte Gutscheine, Firmen-Vergleich, tägliche Analyse und Rechner</b>, alles an einem Ort, täglich aktualisiert. Starte mit den Top-Angeboten.',
+    it:'Qui trovi <b>coupon verificati, comparatore di firme, analisi quotidiana e calcolatrici</b>, tutto in un unico posto, aggiornato ogni giorno. Inizia dalle offerte in evidenza.',
+    ar:'هنا تجد <b>كوبونات موثقة، مقارن شركات، تحليل يومي وحاسبات</b>, كل شيء في مكان واحد، محدث يومياً. ابدأ بالعروض المميزة.'
   },
   cta: { pt:'CONHECER O SITE', en:'VISIT THE SITE', es:'CONOCER EL SITIO', fr:'DECOUVRIR LE SITE', de:'WEBSITE BESUCHEN', it:'VISITA IL SITO', ar:'زيارة الموقع' },
   footer: { pt:'Você está recebendo este email porque se cadastrou na Markets Coupons.', en:'You are receiving this email because you signed up at Markets Coupons.', es:'Estás recibiendo este email porque te registraste en Markets Coupons.', fr:'Vous recevez cet email car vous vous êtes inscrit sur Markets Coupons.', de:'Sie erhalten diese E-Mail, weil Sie sich bei Markets Coupons angemeldet haben.', it:'Ricevi questa email perché ti sei iscritto a Markets Coupons.', ar:'تتلقى هذا البريد لأنك سجلت في Markets Coupons.' },
@@ -42,7 +42,7 @@ const PCFG = {
   m3v:'6+', m3l:{pt:'Ferramentas',en:'Tools',es:'Herramientas',fr:'Outils',de:'Tools',it:'Strumenti',ar:'أدوات'},
   hlLabel:{pt:'Comece por aqui',en:'Start here',es:'Empieza aquí',fr:'Commencez ici',de:'Starte hier',it:'Inizia qui',ar:'ابدأ من هنا'},
   hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
-  hlSubTxt:{pt:'Cupom <strong>MARKET89</strong> — 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong> — 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong> — 89% OFF aplicado automáticamente',fr:'Coupon <strong>MARKET89</strong> — 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong> — 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong> — 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong> — 89% OFF يُطبق تلقائياً'}
+  hlSubTxt:{pt:'Cupom <strong>MARKET89</strong>, 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong>, 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong>, 89% OFF aplicado automáticamente',fr:'Coupon <strong>MARKET89</strong>, 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong>, 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong>, 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong>, 89% OFF يُطبق تلقائياً'}
 };
 
 function buildUnsubUrl(email, lang){
@@ -202,7 +202,7 @@ async function markReceived(email) {
   } catch {}
 }
 
-// ═══ B.3.1 — Email confirmation helpers ═══
+// ═══ B.3.1, Email confirmation helpers ═══
 
 async function generateConfirmToken(email) {
   if (!SK) return null;
@@ -340,7 +340,7 @@ function buildConfirmHtml(lang, name, link) {
   <!-- Linha #eee -->
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;"><tr><td height="1" style="background-color:#eee;font-size:0;line-height:0;">&nbsp;</td></tr></table>
 
-  <!-- Assinatura Lara — avatar gradient azul -->
+  <!-- Assinatura Lara, avatar gradient azul -->
   <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr>
     <td width="40" valign="top" style="padding-right:12px;">
       <table cellpadding="0" cellspacing="0" border="0"><tr>
@@ -371,10 +371,10 @@ async function sendConfirmEmail(email, name, lang, token) {
   const link = `${APP_URL}/email-confirm?token=${encodeURIComponent(token)}`;
   const html = buildConfirmHtml(lang, name, link);
   const subjects = {
-    pt:'Confirme seu email — Markets Coupons', en:'Confirm your email — Markets Coupons',
-    es:'Confirma tu email — Markets Coupons', fr:'Confirmez votre email — Markets Coupons',
-    de:'Bestätigen Sie Ihre E-Mail — Markets Coupons', it:'Conferma la tua email — Markets Coupons',
-    ar:'أكد بريدك الإلكتروني — Markets Coupons',
+    pt:'Confirme seu email, Markets Coupons', en:'Confirm your email, Markets Coupons',
+    es:'Confirma tu email, Markets Coupons', fr:'Confirmez votre email, Markets Coupons',
+    de:'Bestätigen Sie Ihre E-Mail, Markets Coupons', it:'Conferma la tua email, Markets Coupons',
+    ar:'أكد بريدك الإلكتروني, Markets Coupons',
   };
   const subject = subjects[lang] || subjects.en;
   const BREVO_KEY = process.env.BREVO_API_KEY;
@@ -429,7 +429,7 @@ async function handleSendConfirm(req, res, body) {
   const result = await sendConfirmEmail(email, name || 'Trader', langCode, token);
 
   // RLS em email_logs exige service_role pra INSERT (anon falha silencioso).
-  // Sem service_role configurado, log perde — mas o envio do email ja rolou OK.
+  // Sem service_role configurado, log perde, mas o envio do email ja rolou OK.
   fetch(`${SUPABASE_URL}/rest/v1/email_logs`, {
     method:'POST',
     headers:{ apikey:SK||SUPABASE_KEY, Authorization:`Bearer ${SK||SUPABASE_KEY}`, 'Content-Type':'application/json', Prefer:'return=minimal' },
@@ -474,7 +474,7 @@ async function handleConfirmGet(req, res) {
       if (rows && rows[0]) {
         profileEmail = rows[0].email;
       } else {
-        // 0 rows updated — investigar
+        // 0 rows updated, investigar
         const check = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email_verification_token=eq.${encodeURIComponent(token)}&select=email,email_verified,email_verification_expires_at`, {
           headers:{ apikey:SK, Authorization:`Bearer ${SK}` },
         });

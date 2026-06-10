@@ -82,7 +82,7 @@ RULES:
 - Preserve ALL HTML tags exactly (do not change tag names, attributes, classes, ids)
 - Preserve <img>, <figure>, <svg>, JSON-LD <script> blocks UNCHANGED
 - Preserve technical terms verbatim: Prop Firm, Profit Split, Drawdown, Lifetime, Spring, UTAD, Wyckoff, SOS, LPS, JOC, 1R, POC, VAH, VAL, CVD, GEX, 0DTE, Elliott, ATR
-- Output ONLY translated HTML — no commentary, no markdown fences
+- Output ONLY translated HTML, no commentary, no markdown fences
 
 TITLE: ${title}
 

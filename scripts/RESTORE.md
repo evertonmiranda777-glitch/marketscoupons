@@ -29,14 +29,14 @@ curl -s "https://qfwhduvutfumsaxnuofa.supabase.co/storage/v1/object/backups/${DA
 
 ## Pra restaurar dados
 
-**Antes de qualquer restore — sempre fazer backup do estado atual primeiro:**
+**Antes de qualquer restore, sempre fazer backup do estado atual primeiro:**
 
 ```bash
 # Trigger backup manual no GitHub Actions
 gh workflow run backup-supabase.yml
 ```
 
-### Opção A — restore parcial (linhas específicas)
+### Opção A, restore parcial (linhas específicas)
 
 Edita o JSON baixado, mantém só as linhas que quer restaurar, depois faz upsert via REST:
 
@@ -49,7 +49,7 @@ curl -X POST "https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/cms_firms" \
   -d @cms_firms.json
 ```
 
-### Opção B — restore completo (substitui tudo da tabela)
+### Opção B, restore completo (substitui tudo da tabela)
 
 ⚠️ **Destrutivo.** Confirme com Everton antes:
 

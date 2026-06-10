@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build-compare-pages.mjs — Gera páginas /{firmA}-vs-{firmB} a partir de cms_firms.
+ * build-compare-pages.mjs, Gera páginas /{firmA}-vs-{firmB} a partir de cms_firms.
  *
  * PADRÃO PREMIUM (per memory feedback_padrao_premium_default.md):
  * - Hero 2-col com bg image branded por firma + logo grande + accent color
@@ -91,7 +91,7 @@ function genPage(a, b, allFirms) {
     return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
   };
 
-  // Comparison categories — pares de stats com winner badge
+  // Comparison categories, pares de stats com winner badge
   const categories = [
     { key: 'discount', label: 'Desconto', valA: `${a.discount}% ${a.discount_type || ''}`.trim(), valB: `${b.discount}% ${b.discount_type || ''}`.trim(), winner: wDisc, hint: 'Quanto OFF do preço original' },
     { key: 'price', label: 'Conta menor', valA: minA ? `$${minA.toFixed(2)}` : '—', valB: minB ? `$${minB.toFixed(2)}` : '—', winner: wPrice, hint: 'Preço final c/ cupom (entrada mais barata)' },
@@ -107,7 +107,7 @@ function genPage(a, b, allFirms) {
     { key: 'rating', label: 'Trustpilot', valA: `${a.trustpilot_score || a.rating || '—'} (${(a.trustpilot_reviews || a.reviews || 0).toLocaleString('pt-BR')})`, valB: `${b.trustpilot_score || b.rating || '—'} (${(b.trustpilot_reviews || b.reviews || 0).toLocaleString('pt-BR')})`, winner: wRating, hint: 'Reputação real' },
   ];
 
-  // Personas — copy persuasivo per perfil
+  // Personas, copy persuasivo per perfil
   const buildPersonas = () => {
     const lines = [];
     // Persona 1: Quem deve A
@@ -151,7 +151,7 @@ function genPage(a, b, allFirms) {
     },
     {
       q: `Posso ter conta nas duas firmas ao mesmo tempo?`,
-      a: `Sim, é permitido ter conta em prop firms diferentes ao mesmo tempo (multi-prop). Algumas firmas restringem múltiplas contas DENTRO da mesma firma — confirme as regras de cada uma antes de comprar.`
+      a: `Sim, é permitido ter conta em prop firms diferentes ao mesmo tempo (multi-prop). Algumas firmas restringem múltiplas contas DENTRO da mesma firma, confirme as regras de cada uma antes de comprar.`
     },
   ];
 
@@ -170,12 +170,12 @@ function genPage(a, b, allFirms) {
     ]
   };
 
-  // Internal links — outras combos com firma A e firma B
+  // Internal links, outras combos com firma A e firma B
   const otherCombos = allFirms
     .filter(f => f.id !== a.id && f.id !== b.id)
     .slice(0, 8)
     .map(f => {
-      // Slug ordering by sort_order — use whichever comes first
+      // Slug ordering by sort_order, use whichever comes first
       const lhs = f.sort_order < a.sort_order ? f.id : a.id;
       const rhs = f.sort_order < a.sort_order ? a.id : f.id;
       return `<a class="cmp-link" href="/${lhs}-vs-${rhs}">${esc(shortA)} <span style="opacity:.6">vs</span> ${esc(f.short_name || f.name.split(' ')[0])}</a>`;
@@ -250,7 +250,7 @@ img{max-width:100%;display:block}
 
 .cmp-wrap{max-width:1100px;margin:0 auto;padding:0 20px}
 
-/* HERO — 2 col side-by-side, bg branded */
+/* HERO, 2 col side-by-side, bg branded */
 .cmp-hero{padding:56px 0 28px;text-align:center;animation:fadeUp .5s ease}
 .cmp-hero-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:700;margin-bottom:14px}
 .cmp-h1{font-size:clamp(28px,5.5vw,48px);font-weight:900;letter-spacing:-0.025em;line-height:1.1;margin-bottom:10px}
@@ -309,7 +309,7 @@ img{max-width:100%;display:block}
 .cat-badge{position:absolute;top:-9px;right:8px;font-size:9px;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--c);color:#0d141c;text-transform:uppercase;letter-spacing:.6px}
 .cat-vs{color:var(--t3);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px}
 
-/* Personas — quem deve escolher cada uma */
+/* Personas, quem deve escolher cada uma */
 .personas{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
 @media(max-width:760px){.personas{grid-template-columns:1fr}}
 .persona{position:relative;background:var(--card);border:1px solid color-mix(in srgb,var(--c) 22%,var(--b1));border-radius:14px;padding:22px 20px;overflow:hidden}
@@ -427,7 +427,7 @@ img{max-width:100%;display:block}
   <!-- COMPARISON CATEGORIES -->
   <section class="cmp-sec">
     <div class="cmp-sec-eyebrow">Lado a lado</div>
-    <h2 class="cmp-sec-h2">${esc(shortA)} vs ${esc(shortB)} — Comparação</h2>
+    <h2 class="cmp-sec-h2">${esc(shortA)} vs ${esc(shortB)}, Comparação</h2>
     <p class="cmp-sec-sub">Cada categoria mostra o vencedor entre as duas firmas.</p>
   </section>
   <div class="cats">${renderCategories}</div>
@@ -457,7 +457,7 @@ img{max-width:100%;display:block}
   <!-- FAQ visível -->
   <section class="cmp-sec">
     <div class="cmp-sec-eyebrow">Perguntas frequentes</div>
-    <h2 class="cmp-sec-h2">${esc(shortA)} vs ${esc(shortB)} — FAQ</h2>
+    <h2 class="cmp-sec-h2">${esc(shortA)} vs ${esc(shortB)}, FAQ</h2>
   </section>
   <div class="faqs">
     ${faqs.map(f => `<details class="faq"><summary class="faq-q">${esc(f.q)}</summary><div class="faq-a">${esc(f.a)}</div></details>`).join('')}
@@ -486,7 +486,7 @@ img{max-width:100%;display:block}
 
   <footer class="cmp-foot">
     <a href="/">marketscoupons.com</a> · Comparativo gerado de dados oficiais e atualizado em ${new Date().toLocaleDateString('pt-BR')}
-    <p class="cmp-foot-disc">Cupons e condições podem mudar. Confirme no checkout da firma. Markets Coupons recebe comissão de afiliado em compras feitas via links acima — sem custo adicional pra você.</p>
+    <p class="cmp-foot-disc">Cupons e condições podem mudar. Confirme no checkout da firma. Markets Coupons recebe comissão de afiliado em compras feitas via links acima, sem custo adicional pra você.</p>
   </footer>
 
 </div>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * translate.js — MarketsCoupons Auto-Translator
+ * translate.js, MarketsCoupons Auto-Translator
  *
  * Traduz automaticamente todas as strings PT do index.html para
  * EN, ES, IT, FR, DE, AR via DeepL API.
@@ -165,7 +165,7 @@ async function main() {
     () => replacement
   );
 
-  if (newHtml === html) throw new Error('❌ Substituição falhou — bloco I18N não foi atualizado');
+  if (newHtml === html) throw new Error('❌ Substituição falhou, bloco I18N não foi atualizado');
 
   fs.writeFileSync(FILE, newHtml, 'utf-8');
 

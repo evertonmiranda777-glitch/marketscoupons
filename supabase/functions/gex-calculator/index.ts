@@ -181,7 +181,7 @@ function calculateGEX(spot: number, options: OptionRecord[], filterExp?: string)
   const gexValues = strikes.map(k => gexMap[k]);
   const totalGex = gexValues.reduce((a, b) => a + b, 0);
 
-  // Zero Gamma / Gamma Flip — where net GEX crosses zero, closest to spot
+  // Zero Gamma / Gamma Flip, where net GEX crosses zero, closest to spot
   let zeroGamma = spot;
   let bestDist = Infinity;
   for (let i = 0; i < strikes.length - 1; i++) {

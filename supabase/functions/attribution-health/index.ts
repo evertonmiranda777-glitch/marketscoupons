@@ -1,4 +1,4 @@
-// attribution-health — verifica integridade do tracking de atribuição
+// attribution-health, verifica integridade do tracking de atribuição
 // Roda a cada 1h via pg_cron. Aciona Telegram se algo quebrar.
 //
 // Verificações:
@@ -143,7 +143,7 @@ serve(async (_req) => {
 
   // Disparar Telegram se houve alerts críticos ou warns relevantes
   if (alerts.length) {
-    let msg = `<b>🔴 attribution-health</b> — ${alerts.length} problema(s)\n\n`;
+    let msg = `<b>🔴 attribution-health</b>, ${alerts.length} problema(s)\n\n`;
     for (const a of alerts) {
       msg += `<b>${a.check_name}</b> [${a.severity}]\n<code>${JSON.stringify(a.detail).slice(0,300)}</code>\n\n`;
     }

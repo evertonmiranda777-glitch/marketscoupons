@@ -11,16 +11,16 @@ const meta = {
   lang: 'pt',
   icon: '📋',
   author: 'Markets Coupons',
-  excerpt: 'Trader profissional não opera por intuição. Opera por plano. Este guia mostra os 12 elementos que todo plano de trading precisa ter — do critério de entrada ao risco por trade ao journal — com templates práticos para prop firm.',
+  excerpt: 'Trader profissional não opera por intuição. Opera por plano. Este guia mostra os 12 elementos que todo plano de trading precisa ter, do critério de entrada ao risco por trade ao journal, com templates práticos para prop firm.',
   cover_url: cdn(slug, 'hero.jpeg')
 };
 
 const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="Documento de plano de trading com setup, regras de risco e checklist">
 
-<h2>Por Que 95% dos Traders Não Têm Plano — e Por Que Isso os Mata</h2>
+<h2>Por Que 95% dos Traders Não Têm Plano, e Por Que Isso os Mata</h2>
 <p>Pergunte a 10 traders iniciantes se eles têm plano escrito. 9 dirão que "têm na cabeça". O décimo terá um documento de 200 páginas que nunca lê. Ambos vão quebrar a conta.</p>
-<p>O plano "na cabeça" é um mito conveniente. Sob estresse — e mercado em movimento é estresse — o cérebro humano prioriza emoções (medo, ganância, esperança) sobre lógica. Sem plano físico, escrito, revisado regularmente, decisões viram torcida. E torcida não se sustenta em 1.000 trades.</p>
+<p>O plano "na cabeça" é um mito conveniente. Sob estresse, e mercado em movimento é estresse, o cérebro humano prioriza emoções (medo, ganância, esperança) sobre lógica. Sem plano físico, escrito, revisado regularmente, decisões viram torcida. E torcida não se sustenta em 1.000 trades.</p>
 <p>Plano de trading não é burocracia. É o <strong>contrato que você assina consigo mesmo antes do mercado abrir</strong>. Cada elemento existe pra impedir você de fazer a besteira que faria sem ele.</p>
 
 <div class="callout callout-gold">
@@ -47,7 +47,7 @@ const body = `
 </tbody>
 </table>
 
-<h2>1. Objetivos — Por Que Você Opera</h2>
+<h2>1. Objetivos, Por Que Você Opera</h2>
 <p>Sem objetivo claro, todo trade vira "vamos ver no que dá". Objetivo precisa ser SMART: Específico, Mensurável, Atingível, Relevante, Temporal.</p>
 
 <h3>Objetivos ruins</h3>
@@ -68,7 +68,7 @@ const body = `
 <strong>Foco em processo, não resultado:</strong> nas primeiras fases, o objetivo deve ser <em>seguir o plano</em>, não <em>ganhar dinheiro</em>. Resultado financeiro é consequência. Trader que foca em resultado força trades. Trader que foca em processo passa por avaliação.
 </div>
 
-<h2>2. Mercados e Instrumentos — Foco Não é Limite, é Vantagem</h2>
+<h2>2. Mercados e Instrumentos, Foco Não é Limite, é Vantagem</h2>
 <p>Trader iniciante quer operar tudo. Trader profissional escolhe 1-3 instrumentos e domina. Profundidade vence amplitude.</p>
 
 <table>
@@ -80,13 +80,13 @@ const body = `
 </tbody>
 </table>
 
-<h2>3. Timeframes — A Hierarquia que Ninguém Pode Ignorar</h2>
+<h2>3. Timeframes, A Hierarquia que Ninguém Pode Ignorar</h2>
 <p>Trader profissional opera em <strong>3 timeframes simultâneos</strong>:</p>
 
 <table>
 <thead><tr><th>Tipo</th><th>Função</th><th>Exemplo (day trader)</th></tr></thead>
 <tbody>
-<tr><td><strong>Macro</strong></td><td>Direção principal — onde estamos no ciclo</td><td>1h ou 4h</td></tr>
+<tr><td><strong>Macro</strong></td><td>Direção principal, onde estamos no ciclo</td><td>1h ou 4h</td></tr>
 <tr><td><strong>Operacional</strong></td><td>Onde os setups acontecem</td><td>15min</td></tr>
 <tr><td><strong>Micro</strong></td><td>Refina o timing de entrada</td><td>5min ou 1min</td></tr>
 </tbody>
@@ -94,13 +94,13 @@ const body = `
 
 <p>Regra fundamental: <strong>operacional sempre a favor do macro</strong>. Macro em alta? Operacional só procura long. Brigar contra essa hierarquia é a maneira mais rápida de zerar conta.</p>
 
-<h2>4. Critério de Entrada — A Definição Operacional do Setup</h2>
-<p>"Vou comprar quando o gráfico mostrar força" — isso NÃO é critério de entrada. É torcida com vocabulário técnico.</p>
+<h2>4. Critério de Entrada, A Definição Operacional do Setup</h2>
+<p>"Vou comprar quando o gráfico mostrar força", isso NÃO é critério de entrada. É torcida com vocabulário técnico.</p>
 <p>Critério de entrada precisa ser <strong>binário</strong>: ou os elementos estão presentes ou não estão. Sem subjetividade.</p>
 
 <h3>Exemplo de critério bem definido</h3>
 <div class="callout callout-green">
-<strong>Setup #1 — Pullback no Markup (long):</strong>
+<strong>Setup #1, Pullback no Markup (long):</strong>
 <ul style="margin-top:8px;">
 <li>(a) Diário: SMA 50 acima da SMA 200 (regime bull)</li>
 <li>(b) 1h: preço acima da EMA 20</li>
@@ -113,13 +113,13 @@ const body = `
 Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 </div>
 
-<h2>5. Critério de Saída — A Outra Metade do Trade</h2>
+<h2>5. Critério de Saída, A Outra Metade do Trade</h2>
 <p>Saída é onde a maioria dos planos falha. Trader define entrada com cuidado mas "sai quando achar que tá bom". Não vai funcionar.</p>
 
 <table>
 <thead><tr><th>Tipo de saída</th><th>Quando usar</th><th>Como definir</th></tr></thead>
 <tbody>
-<tr><td><strong>Stop-loss inicial</strong></td><td>Sempre</td><td>Ponto técnico (abaixo de S/R, da no-supply, etc) — não palpite</td></tr>
+<tr><td><strong>Stop-loss inicial</strong></td><td>Sempre</td><td>Ponto técnico (abaixo de S/R, da no-supply, etc), não palpite</td></tr>
 <tr><td><strong>Take-profit fixo</strong></td><td>Setups com alvo definível (extensão Fib, próximo S/R)</td><td>RR mínimo 2:1</td></tr>
 <tr><td><strong>Trailing stop</strong></td><td>Setups de continuação em tendência forte</td><td>1.5× ATR(14) abaixo da máxima recente</td></tr>
 <tr><td><strong>Saída parcial</strong></td><td>Setups com 2 alvos (T1 / T2)</td><td>Fecha 50% no T1, deixa 50% rodar com trailing</td></tr>
@@ -127,7 +127,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 </tbody>
 </table>
 
-<h2>6. Gerenciamento de Risco — O Pilar que Sustenta Tudo</h2>
+<h2>6. Gerenciamento de Risco, O Pilar que Sustenta Tudo</h2>
 
 <table>
 <thead><tr><th>Limite</th><th>Valor recomendado</th><th>Razão</th></tr></thead>
@@ -144,7 +144,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <strong>Regra absoluta:</strong> ao bater perda diária máxima, FECHA tudo e desliga a tela. Não importa que o setup "perfeito" apareça. Não importa o "feeling". Mercado abre amanhã. Sua conta TEM que abrir amanhã.
 </div>
 
-<h2>7. Position Sizing — A Matemática que Decide Antes do Mercado</h2>
+<h2>7. Position Sizing, A Matemática que Decide Antes do Mercado</h2>
 <p>Tamanho de posição não é "intuição". É cálculo:</p>
 <p style="background:#1a1f2c;padding:14px;border-radius:8px;font-family:monospace;font-size:14px;">
 <strong>Contracts = (Account × Risk%) / (Stop Pontos × $/Ponto)</strong>
@@ -163,8 +163,8 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <strong>Use a fórmula religiosamente.</strong> Calcule antes de cada trade. Não estime. Não "ah, vou de 3 mesmo". A fórmula te protege contra você mesmo.
 </div>
 
-<h2>8. Stop-Loss — Onde Tudo Começa</h2>
-<p>Stop não é "o preço onde paro de aceitar perda". Stop é "o preço onde minha tese sobre o mercado fica matematicamente errada". Diferença filosófica enorme — e financeira ainda maior.</p>
+<h2>8. Stop-Loss, Onde Tudo Começa</h2>
+<p>Stop não é "o preço onde paro de aceitar perda". Stop é "o preço onde minha tese sobre o mercado fica matematicamente errada". Diferença filosófica enorme, e financeira ainda maior.</p>
 
 <table>
 <thead><tr><th>Tipo de stop</th><th>Onde colocar</th><th>Quando usar</th></tr></thead>
@@ -184,7 +184,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <li><strong>Stop muito apertado</strong> (&lt; 0.5× ATR). Vira ruído normal stopando você.</li>
 </ul>
 
-<h2>9. Rotina Diária — A Disciplina que Ninguém Vê</h2>
+<h2>9. Rotina Diária, A Disciplina que Ninguém Vê</h2>
 
 <table>
 <thead><tr><th>Momento</th><th>Atividade</th><th>Tempo</th></tr></thead>
@@ -198,7 +198,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 </tbody>
 </table>
 
-<h2>10. Regras de Filtro — Quando NÃO Operar</h2>
+<h2>10. Regras de Filtro, Quando NÃO Operar</h2>
 <p>Trader profissional não opera todo dia. Filtros eliminam dias estatisticamente ruins:</p>
 
 <table>
@@ -209,7 +209,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <tr><td>Já bateu perda diária máxima</td><td>FECHA tudo, desliga</td></tr>
 <tr><td>Sem dormir bem (&lt; 6h) ou estado emocional alterado</td><td>NÃO opera</td></tr>
 <tr><td>Não consegue ler o mercado claramente</td><td>NÃO opera. "Não entendo" é sinal pra ficar fora.</td></tr>
-<tr><td>Operou perdendo última hora — quer "recuperar"</td><td>NÃO opera. Mentalidade de revanche destroi.</td></tr>
+<tr><td>Operou perdendo última hora, quer "recuperar"</td><td>NÃO opera. Mentalidade de revanche destroi.</td></tr>
 <tr><td>Volume muito baixo (sexta tarde, feriado americano, véspera)</td><td>NÃO opera. Slippage e ranges erráticos.</td></tr>
 </tbody>
 </table>
@@ -218,7 +218,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <strong>Os 7 NÃO acima são absolutos.</strong> Se um deles está presente, fora. Trader que abre exceção pra um, abre pra todos. E quem abre pra todos, perde tudo.
 </div>
 
-<h2>11. Journal de Trades — O Espelho que Não Mente</h2>
+<h2>11. Journal de Trades, O Espelho que Não Mente</h2>
 <p>Sem journal, você não sabe o que funciona e o que não funciona. Cada trade precisa ser registrado com:</p>
 
 <table>
@@ -241,7 +241,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 </table>
 
 <div class="callout callout-blue">
-<strong>Ferramentas pra journal:</strong> TraderVue, TradesViz (planos pagos), Notion ou planilha Google (grátis). O importante não é a ferramenta — é a disciplina de fazer todo dia.
+<strong>Ferramentas pra journal:</strong> TraderVue, TradesViz (planos pagos), Notion ou planilha Google (grátis). O importante não é a ferramenta, é a disciplina de fazer todo dia.
 </div>
 
 <h2>12. Revisão e Evolução do Plano</h2>
@@ -259,9 +259,9 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <h2>Template de Plano de Trading Para Prop Firm</h2>
 
 <div class="callout callout-gold">
-<strong>Plano base — Prop Firm Apex 50K Funded:</strong><br><br>
+<strong>Plano base, Prop Firm Apex 50K Funded:</strong><br><br>
 <strong>1. Objetivo:</strong> Atingir profit target de $3.000 em 30-60 dias respeitando drawdown de $2.500.<br><br>
-<strong>2. Mercado:</strong> NQ (E-mini Nasdaq) — micros (MNQ) primeiros 50 trades, depois mini.<br><br>
+<strong>2. Mercado:</strong> NQ (E-mini Nasdaq), micros (MNQ) primeiros 50 trades, depois mini.<br><br>
 <strong>3. Timeframes:</strong> Macro 1h, Operacional 15min, Micro 5min.<br><br>
 <strong>4. Setup principal:</strong> Pullback no markup (regras 7 itens acima).<br><br>
 <strong>5. Saídas:</strong> Stop estrutural; alvo extensão Fib 1.272 ou +50 ticks; trailing 1.5× ATR após +30 ticks.<br><br>
@@ -280,7 +280,7 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <p>"Operar com disciplina, gestão de risco e psicologia controlada." Lindo. Inútil. Plano precisa ser específico ao ponto de outra pessoa conseguir executar.</p>
 
 <h3>Critérios subjetivos disfarçados de objetivos</h3>
-<p>"Comprar quando o gráfico mostrar força" — não é critério. "Comprar quando preço fizer pullback de 50% pra EMA 20 com volume decrescente e RSI &gt;40" — é critério.</p>
+<p>"Comprar quando o gráfico mostrar força", não é critério. "Comprar quando preço fizer pullback de 50% pra EMA 20 com volume decrescente e RSI &gt;40", é critério.</p>
 
 <h3>Não revisar</h3>
 <p>Plano escrito uma vez e nunca lido vira ficção. Toda semana, releia 5 minutos. Toda mês, revise estatística. Toda trimestre, ajuste.</p>
@@ -292,13 +292,13 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 <p>Plano que diz só quando entrar é metade do plano. A outra metade é quando ficar fora. Se seu plano não tem 5+ filtros de "não", está incompleto.</p>
 
 <div class="callout callout-red">
-<strong>Erro fatal:</strong> ter o plano e ignorar quando o mercado "parece bom demais pra perder a oportunidade". Esse momento — o do "FOMO setup que não está no plano" — é exatamente onde a maioria das contas morre.
+<strong>Erro fatal:</strong> ter o plano e ignorar quando o mercado "parece bom demais pra perder a oportunidade". Esse momento, o do "FOMO setup que não está no plano", é exatamente onde a maioria das contas morre.
 </div>
 
 <h2>O Que Muda na Sua Mesa Amanhã</h2>
 <p><strong>Primeiro:</strong> você vai escrever seu plano. De verdade. Em arquivo físico (Notion, Google Doc, papel). Vai parecer trabalho. Vai parecer chato. Em 90 dias, vai te separar dos amadores que ainda operam por intuição.</p>
 <p><strong>Segundo:</strong> você vai começar journal. Cada trade, mesmo os perdedores. Especialmente os perdedores. Em 100 trades, padrões de comportamento vão emergir que você não imaginava.</p>
-<p><strong>Terceiro:</strong> você vai operar menos. Filtros eliminam dias. Filtros eliminam setups ambíguos. Você vai descobrir que operava o triplo do que devia — e isso era o problema.</p>
+<p><strong>Terceiro:</strong> você vai operar menos. Filtros eliminam dias. Filtros eliminam setups ambíguos. Você vai descobrir que operava o triplo do que devia, e isso era o problema.</p>
 
 <div class="callout callout-gold">
 <strong>Checklist final do plano:</strong>
@@ -318,13 +318,13 @@ Se TODOS os 7 critérios estão presentes: entra. Se UM falta: não entra.
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>Trading in the Zone</strong> — Mark Douglas. A psicologia por trás de seguir um plano.</li>
-<li><strong>The Disciplined Trader</strong> — Mark Douglas. Antecessor de "Trading in the Zone" — mais técnico em disciplina.</li>
-<li><strong>The Daily Trading Coach</strong> — Brett Steenbarger. 101 lições aplicáveis ao trabalho diário.</li>
-<li><strong>Trading for a Living</strong> — Alexander Elder. Tripé sistema + risco + psicologia.</li>
-<li><strong>Best Loser Wins</strong> — Tom Hougaard. Sobre psicologia de perda profissional.</li>
-<li><strong>Market Wizards</strong> — Jack Schwager. Os melhores traders do mundo descrevem seus planos.</li>
-<li><strong>The Inner Voice of Trading</strong> — Michael Martin. A relação entre disciplina interna e plano externo.</li>
+<li><strong>Trading in the Zone</strong>, Mark Douglas. A psicologia por trás de seguir um plano.</li>
+<li><strong>The Disciplined Trader</strong>, Mark Douglas. Antecessor de "Trading in the Zone", mais técnico em disciplina.</li>
+<li><strong>The Daily Trading Coach</strong>, Brett Steenbarger. 101 lições aplicáveis ao trabalho diário.</li>
+<li><strong>Trading for a Living</strong>, Alexander Elder. Tripé sistema + risco + psicologia.</li>
+<li><strong>Best Loser Wins</strong>, Tom Hougaard. Sobre psicologia de perda profissional.</li>
+<li><strong>Market Wizards</strong>, Jack Schwager. Os melhores traders do mundo descrevem seus planos.</li>
+<li><strong>The Inner Voice of Trading</strong>, Michael Martin. A relação entre disciplina interna e plano externo.</li>
 </ul>
 
 <hr>

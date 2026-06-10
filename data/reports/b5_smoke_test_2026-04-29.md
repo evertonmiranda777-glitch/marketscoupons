@@ -1,10 +1,10 @@
-# B.5 — Smoke Test Report (Geocoder helper `fetchAddressByZip`)
+# B.5, Smoke Test Report (Geocoder helper `fetchAddressByZip`)
 
 **Data:** 2026-04-29
 **Commit:** `5d0adf5` (rebased → `5370d4e`)
 **Método:** Node v24.14.1 com fetch nativo, lógica do helper extraída literal de `app.js` (paridade 1:1 com prod), executando contra APIs reais de produção (ViaCEP + Zippopotam).
 **Runner:** `.tmp/b5_smoke.mjs`
-**Status final:** ✅ **APROVADO — 9/9 PASS**
+**Status final:** ✅ **APROVADO, 9/9 PASS**
 
 ---
 
@@ -27,7 +27,7 @@
 ## Validações específicas
 
 - **Normalização BR:** `01310-100` e `01310100` resolvem pro mesmo `cacheKey "BR:01310100"`. Caso #2 retornou em 0ms confirmando que o helper deduplica via Map antes de chamar API.
-- **Short-circuit pré-fetch:** caso #4 (BR com 4 dígitos) retornou em 0ms — `_normalizeZip` removeu não-dígitos e o branch `if (norm.length !== 8)` cortou antes do fetch. Confirma proteção contra calls inválidas.
+- **Short-circuit pré-fetch:** caso #4 (BR com 4 dígitos) retornou em 0ms, `_normalizeZip` removeu não-dígitos e o branch `if (norm.length !== 8)` cortou antes do fetch. Confirma proteção contra calls inválidas.
 - **Fallback Zippopotam:** casos 5/6/7/8 cobriram US, MX, PT e país fake. 4/4 normalizados pro formato unificado.
 - **404 → `zip_not_found`:** caso #8 confirmou que Zippopotam 404 mapeia corretamente pro erro semântico.
 - **Cache hit <5ms:** target era <5ms; obtido **0.03ms** (167× mais rápido). Pass com folga.
@@ -38,7 +38,7 @@
 
 Pontos que o form vai precisar decidir ao consumir o helper:
 
-1. **`state` vs `state_full` pra display:** caso #6 retornou `state:"DIF"` (sigla interna do Zippopotam — não-padrão; comum seria "CMX"/"CDMX"). Caso #7 retornou `state:"11"` (código numérico de distrito de Portugal). Decisão sugerida: **mostrar `state_full` pro user** (sempre legível) e **enviar `state` pra CAPI** (mantém a abreviação que a Meta usa pra hash).
+1. **`state` vs `state_full` pra display:** caso #6 retornou `state:"DIF"` (sigla interna do Zippopotam, não-padrão; comum seria "CMX"/"CDMX"). Caso #7 retornou `state:"11"` (código numérico de distrito de Portugal). Decisão sugerida: **mostrar `state_full` pro user** (sempre legível) e **enviar `state` pra CAPI** (mantém a abreviação que a Meta usa pra hash).
 2. **`address` vazio em Zippopotam:** APIs internacionais não retornam logradouro. Form precisa deixar campo `address` editável e pré-preenchido com `''`. User digita rua/número manualmente quando o país não é BR.
 3. **Latência 1ª call:** ViaCEP 385-530ms, Zippopotam 19-112ms. Spinner deve aparecer no campo após blur do CEP, esconder quando resolve. Cache subsequente é instantâneo.
 4. **Detectar país automaticamente:** form precisa puxar `country` de `window._geo.geo_country` no boot OU do dropdown selecionado. Ambas opções já existem no estado atual.

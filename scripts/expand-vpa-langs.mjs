@@ -31,7 +31,7 @@ afterTocItem('p1', B.toc.lineage);
 afterTocItem('p2', B.toc.analogies);
 afterTocItem('p7', B.toc.psych);
 afterTocItem('p9', B.toc.walkthrough);
-afterTocItem('p9', B.toc.cases);   // inserted after p9 too; will sit before p10 entry — adjust order below
+afterTocItem('p9', B.toc.cases);   // inserted after p9 too; will sit before p10 entry, adjust order below
 afterTocItem('p12', B.toc.myths);
 afterTocItem('p13', B.toc.manage);
 afterTocItem('p13', B.toc.hacks);

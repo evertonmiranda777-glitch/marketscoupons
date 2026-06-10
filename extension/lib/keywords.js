@@ -1,5 +1,5 @@
 // Shared Keywords page scraper para amember (Apex, Bulenox).
-// Pagina tipica: /aff/member/keywords — tabela com colunas:
+// Pagina tipica: /aff/member/keywords, tabela com colunas:
 //   keyword | clicks | unique clicks | leads/signups | sales/transactions | commission
 // Nomes variam um pouco; a deteccao e por substring case-insensitive.
 

@@ -10,7 +10,7 @@
 //   - profiles (usuários autenticados)
 //   - blog_posts + cms_guides (conteúdo)
 //   - firm_translations (dados firma multilíngue)
-//   - events (últimos 30 dias — full table seria gigante)
+//   - events (últimos 30 dias, full table seria gigante)
 //
 // Output: backups/YYYY-MM-DD/<table>.json (JSON pretty-printed)
 // Retenção: deleta backups com mais de 30 dias.
@@ -164,7 +164,7 @@ async function main() {
       summary.push(`${t.name}: ${data.length} rows, ${(bytes/1024).toFixed(1)} KB`);
       console.log(`[backup] ✅ ${t.name} (${data.length} rows, ${(bytes/1024).toFixed(1)} KB)`);
     } catch (e) {
-      summary.push(`${t.name}: FAILED — ${e.message}`);
+      summary.push(`${t.name}: FAILED, ${e.message}`);
       console.error(`[backup] ❌ ${t.name}:`, e.message);
     }
   }

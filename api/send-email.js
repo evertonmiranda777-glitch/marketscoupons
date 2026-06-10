@@ -1,4 +1,4 @@
-// Vercel Serverless Function — Send emails via Resend (primary, pago) + Brevo (fallback) + SendGrid (final fallback)
+// Vercel Serverless Function, Send emails via Resend (primary, pago) + Brevo (fallback) + SendGrid (final fallback)
 // POST /api/send-email
 // Body: { to: [{email, name}], subject, htmlContent, sender?: {name, email}, tags?: [], provider?: 'brevo'|'resend'|'auto' }
 
@@ -113,7 +113,7 @@ module.exports = async (req, res) => {
     if (!isCronSecret && !isAdminUI) {
       return res.status(401).json({ error: 'invalid_auth_cron_or_admin' });
     }
-    // GET ?list_active=1 — retorna lista de campanhas ativas (Supabase site_settings.email_active_campaigns)
+    // GET ?list_active=1, retorna lista de campanhas ativas (Supabase site_settings.email_active_campaigns)
     if (req.query.list_active === '1') {
       try {
         const subKey = SUPABASE_SERVICE_KEY || SUPABASE_KEY;
@@ -124,7 +124,7 @@ module.exports = async (req, res) => {
         return res.status(200).send(rows[0]?.value || 'site-invite');
       } catch { return res.status(200).send('site-invite'); }
     }
-    // POST ?action=cron-bulk — dispara campanha
+    // POST ?action=cron-bulk, dispara campanha
     if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
     const { campaign, batchSize } = req.body || {};
     if (!campaign) return res.status(400).json({ error: 'missing_campaign' });
@@ -160,7 +160,7 @@ module.exports = async (req, res) => {
       const html = renderInstHtml(tpl, lang);
       const subjectStr = (typeof tpl.subject === 'object' ? (tpl.subject[lang] || tpl.subject.en) : tpl.subject) || 'MarketsCoupons';
       // 4. Enviar em chunks de 50 chamando a propria send-email logica interna (loop)
-      // Aqui, simplificadamente, retornamos a quantidade que seria enviada — o envio real
+      // Aqui, simplificadamente, retornamos a quantidade que seria enviada, o envio real
       // delega pra mesma function via fetch interno (loop pequeno aceitavel)
       // 4. Reescreve req.body + flag bypass admin pra delegar pra rotina principal abaixo
       req.body = {
@@ -172,7 +172,7 @@ module.exports = async (req, res) => {
       };
       req._cronAuthorized = true;
       // Continua execucao do handler normal abaixo (envio + dedup auto + logging)
-      // Nao retorna aqui — fall through pra rotina principal
+      // Nao retorna aqui, fall through pra rotina principal
     } catch (e) {
       return res.status(500).json({ error: 'cron_bulk_failed', detail: e.message });
     }
@@ -194,8 +194,8 @@ module.exports = async (req, res) => {
       return res.status(403).json({ error: 'Forbidden: admin access required' });
     }
   }
-  // Admin autenticado: rate limit MUITO maior (200/min) — disparo de 23k em chunks de 200 = ~120 calls
-  if (!rateLimitIp(req, 200)) return res.status(429).json({ error: 'rate_limit_admin', detail: 'Even admin limited at 200/min — slow down or chunk larger' });
+  // Admin autenticado: rate limit MUITO maior (200/min), disparo de 23k em chunks de 200 = ~120 calls
+  if (!rateLimitIp(req, 200)) return res.status(429).json({ error: 'rate_limit_admin', detail: 'Even admin limited at 200/min, slow down or chunk larger' });
 
   // Input validation
   const contentLength = parseInt(req.headers['content-length'] || '0', 10);
@@ -350,7 +350,7 @@ module.exports = async (req, res) => {
   const useProvider = provider || 'auto';
   const SG_KEY = process.env.SENDGRID_API_KEY;
 
-  // Reserva 5 em Brevo (transacionais — welcome tenta Brevo primeiro).
+  // Reserva 5 em Brevo (transacionais, welcome tenta Brevo primeiro).
   // Bulk: ~295 Brevo + ~100 Resend + ~100 SendGrid = ~495/dia.
   const BREVO_RESERVE = 5;
   let brevoBudget = Infinity;
@@ -444,7 +444,7 @@ module.exports = async (req, res) => {
         result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
       } else {
         // Auto: Resend (pago, dominio aquecido) → Brevo (fallback) → SendGrid (fallback final)
-        // ORDEM CRITICA: Resend FIRST pos-crise spam 13/05/2026 — Brevo causava queda em quarentena
+        // ORDEM CRITICA: Resend FIRST pos-crise spam 13/05/2026, Brevo causava queda em quarentena
         if (resendBudget > 0 && RESEND_KEY) {
           result = await sendViaResend(recipient, finalSubject, finalHtml);
           if (result.status === 'sent') resendBudget--;
@@ -470,7 +470,7 @@ module.exports = async (req, res) => {
           result = await sendViaSendGrid(recipient, finalSubject, finalHtml);
           if (result.status === 'sent') sendgridBudget--;
         } else {
-          result = { email: recipient.email, status: 'skipped', provider: 'auto', response: { error: 'Daily quota hit (Brevo+Resend+SendGrid) — resumes tomorrow' } };
+          result = { email: recipient.email, status: 'skipped', provider: 'auto', response: { error: 'Daily quota hit (Brevo+Resend+SendGrid), resumes tomorrow' } };
         }
       }
     } catch (err) {
@@ -478,7 +478,7 @@ module.exports = async (req, res) => {
     }
     results.push(result);
 
-    // Auto-tag em email_subscribers se envio bem-sucedido — colecta promise pra await NO FINAL
+    // Auto-tag em email_subscribers se envio bem-sucedido, colecta promise pra await NO FINAL
     // (fire-and-forget não funciona em Vercel serverless: handler return mata in-flight network)
     if (result.status === 'sent' && campaignKey) {
       tagPromises.push(appendCampaignTag(result.email, campaignKey).catch(() => null));

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * translate-guides-edu.mjs — Traduz guias educacionais (G1-G5) via Gemini 2.5 Flash.
+ * translate-guides-edu.mjs, Traduz guias educacionais (G1-G5) via Gemini 2.5 Flash.
  *
  * Uso:
  *   node scripts/translate-guides-edu.mjs             # traduz todos os faltantes

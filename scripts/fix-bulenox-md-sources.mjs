@@ -20,7 +20,7 @@ const FILES = [
 
 // Language-agnostic patterns (code spans, fee numbers in table cells, etc)
 const REPLACEMENTS = [
-  // Coupon code spans — always the same
+  // Coupon code spans, always the same
   [/`\$50OFF`/g, '`MARKET89`'],
   [/`\$60OFF`/g, '`MARKET89`'],
   [/\$50OFF\s*\/\s*\$60OFF/g, 'MARKET89 89% off'],
@@ -60,7 +60,7 @@ for (const rel of FILES) {
   }
   if (src !== before) {
     fs.writeFileSync(file, src);
-    console.log(`✓ ${rel} — ${fileCount} replacements`);
+    console.log(`✓ ${rel}, ${fileCount} replacements`);
     totalFiles++;
     totalReplacements += fileCount;
   } else {

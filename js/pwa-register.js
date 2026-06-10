@@ -1,11 +1,11 @@
-// Markets Coupons — PWA registration + Push subscribe (Fase 1+2)
+// Markets Coupons, PWA registration + Push subscribe (Fase 1+2)
 // Registra service worker, expõe window.MC_PWA.subscribePush() pra UI.
 
 (function () {
   'use strict';
   if (!('serviceWorker' in navigator)) return;
 
-  // VAPID public key (pode ser pública — só assina o servidor)
+  // VAPID public key (pode ser pública, só assina o servidor)
   const VAPID_PUBLIC = 'BD5A4Ys4-VdJA5qkkk6s4wgTzTJjrmgEy8XrqvATUnH07wyJrUEJK3sX05cCyxfcLDIjafJePYLODdQC-PkaaGw';
 
   let _swReg = null;

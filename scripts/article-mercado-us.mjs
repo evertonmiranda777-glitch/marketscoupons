@@ -11,7 +11,7 @@ const meta = {
   lang: 'pt',
   icon: '🇺🇸',
   author: 'Markets Coupons',
-  excerpt: 'O mercado americano é o mais profundo, líquido e regulado do mundo. Para o trader brasileiro de prop firm, conhecer NYSE, Nasdaq, CME, sessões, fuso horário, eventos macro e impostos não é detalhe — é a diferença entre passar avaliação e ser eliminado por operar fora de sessão.',
+  excerpt: 'O mercado americano é o mais profundo, líquido e regulado do mundo. Para o trader brasileiro de prop firm, conhecer NYSE, Nasdaq, CME, sessões, fuso horário, eventos macro e impostos não é detalhe, é a diferença entre passar avaliação e ser eliminado por operar fora de sessão.',
   cover_url: cdn(slug, 'hero.jpeg')
 };
 
@@ -19,19 +19,19 @@ const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="Skyline de Wall Street com gráficos sobrepostos representando mercado americano">
 
 <h2>Por Que o Mercado Americano Domina o Trading Mundial</h2>
-<p>Quando se fala em "mercado financeiro" no jornal, quase sempre o assunto é o mercado americano. Não é exagero: <strong>os EUA representam ~50% do valor de mercado global de ações</strong>, abrigam as duas maiores bolsas do mundo (NYSE e Nasdaq), o maior mercado de futuros (CME), e a moeda de reserva global (USD). Pra trader profissional — especialmente em prop firm — entender as engrenagens desse mercado é mais importante que dominar qualquer indicador técnico.</p>
+<p>Quando se fala em "mercado financeiro" no jornal, quase sempre o assunto é o mercado americano. Não é exagero: <strong>os EUA representam ~50% do valor de mercado global de ações</strong>, abrigam as duas maiores bolsas do mundo (NYSE e Nasdaq), o maior mercado de futuros (CME), e a moeda de reserva global (USD). Pra trader profissional, especialmente em prop firm, entender as engrenagens desse mercado é mais importante que dominar qualquer indicador técnico.</p>
 <p>Para o trader brasileiro, há três motivos práticos pra focar no mercado americano:</p>
 <ol>
 <li><strong>Liquidez incomparável.</strong> Você pode operar 1.000 contratos de NQ ou ES sem mover o mercado. No mini-índice da B3 (WIN), volumes muito menores já causam slippage.</li>
 <li><strong>Volatilidade controlada e previsível.</strong> NQ e ES têm sessões de "horário nobre" claras, eventos macro previsíveis (calendário Fed, NFP, CPI), e movimentos consistentes.</li>
-<li><strong>Prop firms aceitam.</strong> Apex, Bulenox, FTMO, FundedNext — quase todas as principais firmas operam com instrumentos americanos. Você está disputando o mesmo mercado dos traders globais.</li>
+<li><strong>Prop firms aceitam.</strong> Apex, Bulenox, FTMO, FundedNext, quase todas as principais firmas operam com instrumentos americanos. Você está disputando o mesmo mercado dos traders globais.</li>
 </ol>
 
 <div class="callout callout-gold">
-<strong>Princípio fundamental:</strong> mercado americano não dorme — mas tem horário nobre. Operar fora dele é como dirigir contra a mão. Conhecer a estrutura de sessões é a primeira vantagem competitiva real.
+<strong>Princípio fundamental:</strong> mercado americano não dorme, mas tem horário nobre. Operar fora dele é como dirigir contra a mão. Conhecer a estrutura de sessões é a primeira vantagem competitiva real.
 </div>
 
-<h2>As Bolsas Americanas — NYSE, Nasdaq e CME</h2>
+<h2>As Bolsas Americanas, NYSE, Nasdaq e CME</h2>
 
 <table>
 <thead><tr><th>Bolsa</th><th>Foco</th><th>Volume diário</th><th>Maiores ativos</th></tr></thead>
@@ -46,7 +46,7 @@ const body = `
 
 <p>Pra trader de prop firm focado em futuros, o universo é principalmente CME. Pra trader de ações, NYSE + Nasdaq.</p>
 
-<h2>Os Índices Americanos — O Que Realmente São</h2>
+<h2>Os Índices Americanos, O Que Realmente São</h2>
 <p>Não confunda índice com bolsa. Bolsa é o local de negociação. Índice é uma cesta de ações que mede algo. Os 4 que importam:</p>
 
 <table>
@@ -60,11 +60,11 @@ const body = `
 </table>
 
 <div class="callout callout-blue">
-<strong>O índice mais usado em prop firm:</strong> ES (S&amp;P 500) por ter o volume mais limpo e o comportamento mais previsível. NQ (Nasdaq) por ter mais volatilidade — bom pra day trade. CL (petróleo) e GC (ouro) entram como diversificação.
+<strong>O índice mais usado em prop firm:</strong> ES (S&amp;P 500) por ter o volume mais limpo e o comportamento mais previsível. NQ (Nasdaq) por ter mais volatilidade, bom pra day trade. CL (petróleo) e GC (ouro) entram como diversificação.
 </div>
 
-<h2>Sessões de Trading — A Anatomia do Dia</h2>
-<p>Mercado americano tem três fases distintas durante o dia. Conhecer cada uma é fundamental — algumas são oportunidade, outras são armadilha.</p>
+<h2>Sessões de Trading, A Anatomia do Dia</h2>
+<p>Mercado americano tem três fases distintas durante o dia. Conhecer cada uma é fundamental, algumas são oportunidade, outras são armadilha.</p>
 
 <table>
 <thead><tr><th>Sessão</th><th>Horário (ET)</th><th>Horário (BRT)</th><th>Característica</th></tr></thead>
@@ -76,7 +76,7 @@ const body = `
 </tbody>
 </table>
 
-<h3>Os "Power Hours" — quando profissionais operam</h3>
+<h3>Os "Power Hours", quando profissionais operam</h3>
 <p>Dentro da cash session, há janelas onde a liquidez e o "movimento real" se concentram:</p>
 <ul>
 <li><strong>9:30-10:30 ET</strong> (1ª hora): Open volatility. Preço se "estabiliza" após primeira reação. Setups limpos.</li>
@@ -90,7 +90,7 @@ const body = `
 <strong>Regra de ouro pra prop firm:</strong> opere preferencialmente na 1ª hora (9:30-10:30 ET) e na última hora (15:00-16:00 ET). Tem mais setups limpos, RR melhor, e menos manipulação. O resto do dia é "esperar oportunidade", não "forçar trade".
 </div>
 
-<h2>Fuso Horário — A Confusão que Custa Caro</h2>
+<h2>Fuso Horário, A Confusão que Custa Caro</h2>
 <p>EUA têm 4 fusos principais: ET (Eastern Time), CT, MT, PT. Bolsas operam em ET. Brasil opera em BRT (UTC-3). A diferença muda 2 vezes por ano por causa do horário de verão americano (DST).</p>
 
 <table>
@@ -101,7 +101,7 @@ const body = `
 </tbody>
 </table>
 
-<p>Para evitar erros, configure sua plataforma de trading em ET sempre. Não tente "calcular mentalmente" — é fonte de erros bobos que custam dinheiro.</p>
+<p>Para evitar erros, configure sua plataforma de trading em ET sempre. Não tente "calcular mentalmente", é fonte de erros bobos que custam dinheiro.</p>
 
 <h2>Os Eventos Macro Que Movem o Mercado</h2>
 <p>Há eventos com impacto previsível e datas fixas. Trader profissional sabe a agenda do mês inteiro de cor. Os mais importantes:</p>
@@ -123,12 +123,12 @@ const body = `
 <strong>Regra crítica:</strong> em prop firms (Apex, Bulenox, FTMO), operar durante FOMC, NFP ou CPI é proibido OU não conta para a meta de lucro. Sempre verifique o calendário antes de abrir posição. 5 minutos antes do evento, fora.
 </div>
 
-<h2>Futuros vs Ações — Para Onde o Trader Brasileiro Deve Ir</h2>
+<h2>Futuros vs Ações, Para Onde o Trader Brasileiro Deve Ir</h2>
 
 <table>
 <thead><tr><th>Aspecto</th><th>Ações americanas</th><th>Futuros (ES, NQ, CL, GC)</th></tr></thead>
 <tbody>
-<tr><td><strong>Capital mínimo</strong></td><td>$25k (regra do PDT — Pattern Day Trader)</td><td>$5-10k em prop firm; pessoal $500 em micros</td></tr>
+<tr><td><strong>Capital mínimo</strong></td><td>$25k (regra do PDT, Pattern Day Trader)</td><td>$5-10k em prop firm; pessoal $500 em micros</td></tr>
 <tr><td><strong>Alavancagem</strong></td><td>2-4x (regulada)</td><td>30-50x natural (margin baixo)</td></tr>
 <tr><td><strong>Imposto Brasil</strong></td><td>15% sobre ganhos &gt; R$35k/mês (declaração mensal)</td><td>15% (tributação simples para residente)</td></tr>
 <tr><td><strong>Liquidez</strong></td><td>Variável (top 100 ações são ótimas)</td><td>ES, NQ líquidos 24h</td></tr>
@@ -140,7 +140,7 @@ const body = `
 
 <p>Pra prop firm trading: futuros vencem com folga. Pra investimento de longo prazo ou especulação direcional em empresas: ações.</p>
 
-<h2>O Universo de Futuros — Especificações Técnicas</h2>
+<h2>O Universo de Futuros, Especificações Técnicas</h2>
 
 <table>
 <thead><tr><th>Símbolo</th><th>Nome</th><th>Tick</th><th>$/tick</th><th>Margin (intraday em prop)</th></tr></thead>
@@ -157,7 +157,7 @@ const body = `
 </tbody>
 </table>
 
-<h3>Os Micros — Onde Iniciantes Devem Começar</h3>
+<h3>Os Micros, Onde Iniciantes Devem Começar</h3>
 <p>Cada futuro tem versão Micro com 1/10 do tamanho. MES (Micro S&amp;P), MNQ (Micro Nasdaq), MGC (Micro Gold), MCL (Micro Crude). Tick value reduzido pra $0.50-$1.00. Permite testar estratégias com risco baixíssimo antes de escalar para os mini.</p>
 
 <div class="callout callout-blue">
@@ -193,7 +193,7 @@ const body = `
 <tr><td><strong>Take profit</strong></td><td>Ordem que captura lucro em alvo</td></tr>
 <tr><td><strong>Margin</strong></td><td>Capital exigido pra abrir/manter posição</td></tr>
 <tr><td><strong>Slippage</strong></td><td>Diferença entre preço esperado e executado</td></tr>
-<tr><td><strong>Leverage</strong></td><td>Alavancagem — multiplicador da exposição</td></tr>
+<tr><td><strong>Leverage</strong></td><td>Alavancagem, multiplicador da exposição</td></tr>
 <tr><td><strong>P&amp;L</strong> (Profit and Loss)</td><td>Resultado financeiro da operação</td></tr>
 <tr><td><strong>Drawdown</strong></td><td>Perda máxima desde o pico</td></tr>
 <tr><td><strong>Position size</strong></td><td>Quantidade de contratos por trade</td></tr>
@@ -203,12 +203,12 @@ const body = `
 <h2>Tributação Para Trader Brasileiro Operando Mercado Americano</h2>
 
 <h3>Operando via prop firm</h3>
-<p>Em prop firm (Apex, Bulenox, FTMO), você não tem capital próprio em risco — você opera capital da firma e recebe payout sobre o lucro. Tributação no Brasil:</p>
+<p>Em prop firm (Apex, Bulenox, FTMO), você não tem capital próprio em risco, você opera capital da firma e recebe payout sobre o lucro. Tributação no Brasil:</p>
 <ul>
 <li>Payouts são considerados <strong>renda</strong> (não ganho de capital)</li>
 <li>Recolhimento via <strong>Carnê-Leão</strong> (mensal)</li>
 <li>Alíquotas progressivas: 0% até R$2.112 / 7.5% até R$2.826 / 15% até R$3.751 / 22.5% até R$4.664 / 27.5% acima</li>
-<li>Pode considerar como Pessoa Jurídica via PJ (Lucro Presumido) — tributação ~15%</li>
+<li>Pode considerar como Pessoa Jurídica via PJ (Lucro Presumido), tributação ~15%</li>
 </ul>
 
 <h3>Operando capital próprio em corretora americana</h3>
@@ -256,10 +256,10 @@ const body = `
 <p>$2.50 ida + $2.50 volta = $5 por contrato. Day trader fazendo 20 trades/dia = $100 em custos. Em conta de $50k, isso é 0.2% ao dia, 4% ao mês. Brutal.</p>
 
 <div class="callout callout-red">
-<strong>Erro mais caro:</strong> tratar mercado americano como se fosse o brasileiro com símbolos diferentes. Estrutura de sessão, comportamento de volume, regulação, eventos macro — tudo é distinto. Adaptar leitura é obrigatório.
+<strong>Erro mais caro:</strong> tratar mercado americano como se fosse o brasileiro com símbolos diferentes. Estrutura de sessão, comportamento de volume, regulação, eventos macro, tudo é distinto. Adaptar leitura é obrigatório.
 </div>
 
-<h2>Caminho do Iniciante — Roadmap dos Primeiros 90 Dias</h2>
+<h2>Caminho do Iniciante, Roadmap dos Primeiros 90 Dias</h2>
 
 <table>
 <thead><tr><th>Período</th><th>Foco</th><th>Meta</th></tr></thead>
@@ -274,7 +274,7 @@ const body = `
 <h2>O Que Muda na Sua Mesa Amanhã</h2>
 <p><strong>Primeiro:</strong> você vai parar de operar fora do horário nobre. 9:30-11:30 ET e 15:00-16:00 ET. O resto é "esperar oportunidade", não "forçar trade". Sua taxa de acerto vai subir só por isso.</p>
 <p><strong>Segundo:</strong> calendário econômico vira leitura matinal obrigatória. Em dias de FOMC ou NFP, você não opera. Pronto. Não há "talvez". Sua conta agradece.</p>
-<p><strong>Terceiro:</strong> você vai começar em micros. Não importa quanto capital tem disponível. Os primeiros 100 trades em MES ou MNQ. Risco de aprendizado é o mais barato que existe — não pague esse aprendizado em mini.</p>
+<p><strong>Terceiro:</strong> você vai começar em micros. Não importa quanto capital tem disponível. Os primeiros 100 trades em MES ou MNQ. Risco de aprendizado é o mais barato que existe, não pague esse aprendizado em mini.</p>
 
 <div class="callout callout-gold">
 <strong>Checklist diário do trader US (cole na mesa):</strong>
@@ -282,22 +282,22 @@ const body = `
 <li>1. Que horas abre o mercado hoje em BRT? (verificar DST)</li>
 <li>2. Calendário econômico: tem evento crítico? Em qual horário?</li>
 <li>3. Earnings hoje? Quais ações? Pré ou pós?</li>
-<li>4. SMA 50/200 do diário do meu instrumento — em qual lado?</li>
+<li>4. SMA 50/200 do diário do meu instrumento, em qual lado?</li>
 <li>5. Sessão asiática trouxe gap? De quanto?</li>
 <li>6. Power hours: 9:30-10:30 e 15:00-16:00 ET</li>
-<li>7. Vai operar fora? Aceite que está em modo "exception" — RR pior</li>
+<li>7. Vai operar fora? Aceite que está em modo "exception", RR pior</li>
 </ul>
 </div>
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>Market Wizards</strong> — Jack Schwager. Entrevistas com os melhores traders dos EUA.</li>
-<li><strong>Trading in the Zone</strong> — Mark Douglas. Psicologia aplicada ao mercado americano.</li>
-<li><strong>Reminiscences of a Stock Operator</strong> — Edwin Lefèvre. Clássico sobre Jesse Livermore na NYSE de 1900.</li>
-<li><strong>The Intelligent Investor</strong> — Benjamin Graham. Para quem quer também investir em ações.</li>
-<li><strong>Day Trading and Swing Trading the Currency Market</strong> — Kathy Lien. Forex em horário americano.</li>
-<li><strong>One Up on Wall Street</strong> — Peter Lynch. Cultura de investimento americano.</li>
-<li><strong>Liar's Poker</strong> — Michael Lewis. Para entender Wall Street por dentro (literário).</li>
+<li><strong>Market Wizards</strong>, Jack Schwager. Entrevistas com os melhores traders dos EUA.</li>
+<li><strong>Trading in the Zone</strong>, Mark Douglas. Psicologia aplicada ao mercado americano.</li>
+<li><strong>Reminiscences of a Stock Operator</strong>, Edwin Lefèvre. Clássico sobre Jesse Livermore na NYSE de 1900.</li>
+<li><strong>The Intelligent Investor</strong>, Benjamin Graham. Para quem quer também investir em ações.</li>
+<li><strong>Day Trading and Swing Trading the Currency Market</strong>, Kathy Lien. Forex em horário americano.</li>
+<li><strong>One Up on Wall Street</strong>, Peter Lynch. Cultura de investimento americano.</li>
+<li><strong>Liar's Poker</strong>, Michael Lewis. Para entender Wall Street por dentro (literário).</li>
 </ul>
 
 <hr>

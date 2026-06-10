@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Markets Coupons">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Drawdown Management in Prop Firms — The Definitive Guide 2026">
+<meta name="twitter:title" content="Drawdown Management in Prop Firms, The Definitive Guide 2026">
 <meta name="twitter:description" content="The 3 types of Drawdown, Apex's floor, firm comparison, and the cruel math of recovery.">
 <meta name="twitter:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g3-neardeath.png">
 <meta name="author" content="Markets Coupons Team">
@@ -59,7 +59,7 @@
         {
           "@type": "Question",
           "name": "What is Drawdown in a Prop Firm?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Drawdown is the maximum accumulated loss limit that the firm allows before closing your account. In an Apex 50K account with a Trailing Drawdown of US$ 2,500, your balance can never fall US$ 2,500 below the historical peak — if it does, the account is immediately closed, even if the balance is still above the initial value. It's the metric the firm uses to measure if you are a financial risk to its capital." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Drawdown is the maximum accumulated loss limit that the firm allows before closing your account. In an Apex 50K account with a Trailing Drawdown of US$ 2,500, your balance can never fall US$ 2,500 below the historical peak, if it does, the account is immediately closed, even if the balance is still above the initial value. It's the metric the firm uses to measure if you are a financial risk to its capital." }
         },
         {
           "@type": "Question",
@@ -69,7 +69,7 @@
         {
           "@type": "Question",
           "name": "How do I calculate my daily risk limit?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Consensus rule: your daily loss ceiling should be 30% to 50% of the firm's Daily Loss Limit. In an Apex 50K with a Daily Loss of US$ 1,500, your personal ceiling should be US$ 450 to US$ 750 — upon reaching it, you close the platform and do not trade anymore for the day. This creates a 2x safety margin between your limit and the firm's, sufficient to absorb slippage, spread, and an execution error." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Consensus rule: your daily loss ceiling should be 30% to 50% of the firm's Daily Loss Limit. In an Apex 50K with a Daily Loss of US$ 1,500, your personal ceiling should be US$ 450 to US$ 750, upon reaching it, you close the platform and do not trade anymore for the day. This creates a 2x safety margin between your limit and the firm's, sufficient to absorb slippage, spread, and an execution error." }
         },
         {
           "@type": "Question",
@@ -94,7 +94,7 @@
         {
           "@type": "Question",
           "name": "Is Drawdown per account or per trader?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Per account in most firms. In Apex, each of your accounts has its own independent Drawdown — if one blows up, the others continue. In FTMO, each account is also isolated. The exception is the copy trade violation rule: if you trade the same strategy on 2 accounts simultaneously and one of them blows up, the firm may close all accounts under your name for policy violation, not for Drawdown itself." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Per account in most firms. In Apex, each of your accounts has its own independent Drawdown, if one blows up, the others continue. In FTMO, each account is also isolated. The exception is the copy trade violation rule: if you trade the same strategy on 2 accounts simultaneously and one of them blows up, the firm may close all accounts under your name for policy violation, not for Drawdown itself." }
         }
       ]
     }
@@ -182,7 +182,7 @@ footer.site-footer a:hover{color:var(--accent)}
       <span class="logo-mark">M</span>
       <span class="logo-txt">Markets<b>Coupons</b></span>
     </a>
-    <a href="/guides" class="nav-back" aria-label="Close — Guides"><span class="x">×</span>Close</a>
+    <a href="/guides" class="nav-back" aria-label="Close, Guides"><span class="x">×</span>Close</a>
   </div>
 </nav>
 
@@ -202,11 +202,11 @@ footer.site-footer a:hover{color:var(--accent)}
   <article id="content">
 <span class="badge">Definitive Guide · Risk</span>
 <h1>Drawdown Management in Prop Firms: The Definitive Guide to Survival in 2026</h1>
-<p><em>Last updated: April 20, 2026 — 18 min read</em></p>
-<p><img src="/img/guides-edu/gemini-pro/hero-g3-neardeath.png" alt="Drawdown Management — balance curve near the limit, red line, cinematic tension lighting"></p>
+<p><em>Last updated: April 20, 2026, 18 min read</em></p>
+<p><img src="/img/guides-edu/gemini-pro/hero-g3-neardeath.png" alt="Drawdown Management, balance curve near the limit, red line, cinematic tension lighting"></p>
 
 <blockquote>
-<p><strong>TL;DR</strong> — <strong>Drawdown</strong> is what separates those who last months in a funded account from those who burn through their challenge fee in 3 days. It's not a technical detail: it's the main metric every <strong>Prop Firm</strong> uses to decide if you stay or go. This guide explains the exact mechanics of the 3 types (static, trailing EOD, and trailing intraday), the concept of <em>drawdown floor</em> that saves Apex accounts, compares the rules of Apex, FTMO, Bulenox, FundingPips, The5%ers, and E8, shows the cruel math of recovery (why -50% requires +100% to get back), teaches the safety margin formula before each trade, and defines the personal <em>circuit breaker</em>. By the end, you will have a concrete protocol to protect your account in any firm, in any market.</p>
+<p><strong>TL;DR</strong>, <strong>Drawdown</strong> is what separates those who last months in a funded account from those who burn through their challenge fee in 3 days. It's not a technical detail: it's the main metric every <strong>Prop Firm</strong> uses to decide if you stay or go. This guide explains the exact mechanics of the 3 types (static, trailing EOD, and trailing intraday), the concept of <em>drawdown floor</em> that saves Apex accounts, compares the rules of Apex, FTMO, Bulenox, FundingPips, The5%ers, and E8, shows the cruel math of recovery (why -50% requires +100% to get back), teaches the safety margin formula before each trade, and defines the personal <em>circuit breaker</em>. By the end, you will have a concrete protocol to protect your account in any firm, in any market.</p>
 </blockquote>
 
 <table>
@@ -228,10 +228,10 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>What is Drawdown and why it kills 90% of accounts</h2>
-<p>Before any technical discussion, a direct definition: <strong>Drawdown</strong> is the maximum accumulated loss limit that the firm accepts before closing your account. Translating to everyday terms: in an Apex 50K account with a Trailing Drawdown of US$ 2,500, your balance can never be more than US$ 2,500 below that account's historical peak. Touching this limit even once — even for 1 second, even with a price <em>wick</em> — closes everything. No warning, no appeal, no "just one more chance".</p>
-<p>Why does it kill 90% of accounts? Because most traders operate thinking about profit ("how much do I need to earn to hit the target") while the firm is measuring exactly the opposite ("how much can this trader lose before becoming a loss for our capital"). These are inverse metrics. While you look at the top of the ladder, Drawdown is looking at the floor — and it's the floor that decides if the ladder still exists.</p>
-<p>Aggregated data from communities like Prop Reviews and MyFxBook show that <strong>about 80% of failures in 2026 are caused directly or indirectly by Drawdown violation</strong> — whether it's the total Max Drawdown or the Daily Loss (which is a short-window Drawdown). The rest is divided among Consistency Rule, <em>news trading</em>, and contractual violations.</p>
-<p>The implication is clear: if you want to last, Drawdown needs to be the first thing you calculate before each trade — not the target, not the setup, not the asset. First the floor, then the ceiling.</p>
+<p>Before any technical discussion, a direct definition: <strong>Drawdown</strong> is the maximum accumulated loss limit that the firm accepts before closing your account. Translating to everyday terms: in an Apex 50K account with a Trailing Drawdown of US$ 2,500, your balance can never be more than US$ 2,500 below that account's historical peak. Touching this limit even once, even for 1 second, even with a price <em>wick</em>, closes everything. No warning, no appeal, no "just one more chance".</p>
+<p>Why does it kill 90% of accounts? Because most traders operate thinking about profit ("how much do I need to earn to hit the target") while the firm is measuring exactly the opposite ("how much can this trader lose before becoming a loss for our capital"). These are inverse metrics. While you look at the top of the ladder, Drawdown is looking at the floor, and it's the floor that decides if the ladder still exists.</p>
+<p>Aggregated data from communities like Prop Reviews and MyFxBook show that <strong>about 80% of failures in 2026 are caused directly or indirectly by Drawdown violation</strong>, whether it's the total Max Drawdown or the Daily Loss (which is a short-window Drawdown). The rest is divided among Consistency Rule, <em>news trading</em>, and contractual violations.</p>
+<p>The implication is clear: if you want to last, Drawdown needs to be the first thing you calculate before each trade, not the target, not the setup, not the asset. First the floor, then the ceiling.</p>
 
 <hr>
 
@@ -251,12 +251,12 @@ footer.site-footer a:hover{color:var(--accent)}
 <p><strong>Where it dominates:</strong> Apex (EOD option), Bulenox, part of Take Profit Trader.</p>
 
 <h3>3. Trailing Intraday</h3>
-<p>The cruelest model. The floor moves up in real-time, with each new balance peak during the session — including with floating profits (<em>unrealized P&L</em>). In an Apex 50K Intraday account with a trailing of US$ 2,500: you enter a trade, the floating profit reaches +US$ 1,500 (momentary balance US$ 51,500), then returns to zero. Your absolute floor has become US$ 49,000, even if you closed the trade at breakeven.</p>
-<p><strong>Advantage:</strong> almost none for the trader — it's the firm protecting itself to the maximum.</p>
+<p>The cruelest model. The floor moves up in real-time, with each new balance peak during the session, including with floating profits (<em>unrealized P&L</em>). In an Apex 50K Intraday account with a trailing of US$ 2,500: you enter a trade, the floating profit reaches +US$ 1,500 (momentary balance US$ 51,500), then returns to zero. Your absolute floor has become US$ 49,000, even if you closed the trade at breakeven.</p>
+<p><strong>Advantage:</strong> almost none for the trader, it's the firm protecting itself to the maximum.</p>
 <p><strong>Disadvantage:</strong> brutally punishes those who hold profits and don't realize them. An "almost perfect" trade that reverses at the last second can close your account, even if it ends at zero.</p>
 <p><strong>Where it dominates:</strong> Apex (Intraday option), Topstep.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/dd-types-by-firm.png" alt="Comparison of the 3 Drawdown types by firm — Static, Trailing EOD and Trailing Intraday with numerical examples"></p>
+<p><img src="/img/guides-edu/gemini-pro/dd-types-by-firm.png" alt="Comparison of the 3 Drawdown types by firm, Static, Trailing EOD and Trailing Intraday with numerical examples"></p>
 
 <h3>The Daily Loss Limit is a short-window Drawdown</h3>
 <p>Along with the three main ones, there is the <strong>Daily Loss Limit</strong>: a 24-hour loss ceiling. In an Apex 50K, it is approximately US$ 1,500. Hitting it on a single day closes the account, even if the total Max Drawdown is still far away. It's a "daily Drawdown", identical in function, with a 1-trading-session window.</p>
@@ -265,11 +265,11 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <h2>The drawdown floor: the concept that saves Apex accounts</h2>
 <p>Here's a concept that almost no one explains properly and that literally saves thousands of Apex accounts every month: the <strong>drawdown floor</strong>. It's the point at which the Trailing Drawdown locks and becomes static.</p>
-<p>At Apex, the mechanism works like this: in a 50K account with a trailing of US$ 2,500, the floor starts at US$ 47,500 (US$ 50,000 initial minus the trailing). As you gain, the floor moves up. When your balance reaches <strong>US$ 52,600</strong> (the initial value + trailing + US$ 100 buffer), the floor permanently locks at US$ 50,000 — the initial balance. From that moment on, the Trailing Drawdown no longer moves up, even if your balance reaches US$ 60,000.</p>
+<p>At Apex, the mechanism works like this: in a 50K account with a trailing of US$ 2,500, the floor starts at US$ 47,500 (US$ 50,000 initial minus the trailing). As you gain, the floor moves up. When your balance reaches <strong>US$ 52,600</strong> (the initial value + trailing + US$ 100 buffer), the floor permanently locks at US$ 50,000, the initial balance. From that moment on, the Trailing Drawdown no longer moves up, even if your balance reaches US$ 60,000.</p>
 <p>The impact of this is enormous. Before the floor, any balance pullback drags you towards the limit in real-time. After the floor, you have an absolute cushion: the balance can fluctuate between US$ 60,000 and US$ 50,000, and the account is protected. This is the moment the account "breathes" for the first time.</p>
-<p>The obvious strategy — and one that experienced traders apply — is to <strong>trade more aggressively only after activating the floor</strong>. Before it, minimum size, maximum discipline. After it, you finally have room to make mistakes without dying.</p>
+<p>The obvious strategy, and one that experienced traders apply, is to <strong>trade more aggressively only after activating the floor</strong>. Before it, minimum size, maximum discipline. After it, you finally have room to make mistakes without dying.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/dd-floor.png" alt="Drawdown floor explained — graph with balance line rising and drawdown floor locking at US$ 50,000"></p>
+<p><img src="/img/guides-edu/gemini-pro/dd-floor.png" alt="Drawdown floor explained, graph with balance line rising and drawdown floor locking at US$ 50,000"></p>
 
 <blockquote>
 <p><strong>Practical rule:</strong> in any Apex account, treat the value "initial balance + trailing + US$ 100" as the most important checkpoint of your cycle. Until reached, you are in survival mode. After reaching it, you are in building mode. Do not confuse the two phases.</p>
@@ -299,7 +299,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>The cruel math of recovery</h2>
-<p>There is a table that every <strong>Prop Firm</strong> trader should have printed next to their monitor. It shows the percentage gain needed to recover a loss — and the numbers are not intuitive.</p>
+<p>There is a table that every <strong>Prop Firm</strong> trader should have printed next to their monitor. It shows the percentage gain needed to recover a loss, and the numbers are not intuitive.</p>
 
 <table>
 <thead>
@@ -317,10 +317,10 @@ footer.site-footer a:hover{color:var(--accent)}
 </tbody>
 </table>
 
-<p>The formula is simple: gain needed = loss ÷ (1 - loss). But the impact is brutal. A 20% loss is not offset by a 20% gain — you need 25% because the base capital is smaller. Losing half the account requires <strong>doubling</strong> what's left.</p>
+<p>The formula is simple: gain needed = loss ÷ (1 - loss). But the impact is brutal. A 20% loss is not offset by a 20% gain, you need 25% because the base capital is smaller. Losing half the account requires <strong>doubling</strong> what's left.</p>
 <p>Translating to <strong>Prop Firm</strong>: in an Apex 50K, if you lose US$ 2,000 (40% of your trailing of US$ 2,500), the balance drops to US$ 48,000. To return to the starting point, you need to gain US$ 2,000 trading with the same size. If your routine was 4 trades a day yielding US$ 100 each, that's 20 days trading without error. Twenty days. Without error. The math favors those who don't fall, not those who rise.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/recovery-math.png" alt="Recovery math — visual table showing that losing 50% requires gaining 100% to return to the initial balance"></p>
+<p><img src="/img/guides-edu/gemini-pro/recovery-math.png" alt="Recovery math, visual table showing that losing 50% requires gaining 100% to return to the initial balance"></p>
 
 <blockquote>
 <p><strong>Practical conclusion:</strong> the greatest financial asset of a Prop Firm trader is not the signal they discovered, it's the day they didn't trade. Avoiding a 20% drop is worth more than hitting a 20% trade, because the first saves you 25% of recovery effort, the second only compensates the other if the effort has already been made.</p>
@@ -329,10 +329,10 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>How to calculate your safety margin before each trade</h2>
-<p>The safety margin is the distance between where you are and where the firm closes you — expressed in dollars or percentage. Calculating it before each trade is the most important habit of a funded trader.</p>
+<p>The safety margin is the distance between where you are and where the firm closes you, expressed in dollars or percentage. Calculating it before each trade is the most important habit of a funded trader.</p>
 
 <h3>Step 1: identify where you are</h3>
-<p>Current balance. Not yesterday's closing balance, not the balance after the last trade — the balance now, including floating profit or loss. In Trailing Intraday, it includes the momentary peak of the session.</p>
+<p>Current balance. Not yesterday's closing balance, not the balance after the last trade, the balance now, including floating profit or loss. In Trailing Intraday, it includes the momentary peak of the session.</p>
 
 <h3>Step 2: identify where the floor is</h3>
 <p>The absolute value of Max Drawdown and Daily Loss. In an Apex 50K that has already reached a peak of US$ 51,800 today, the intraday floor is US$ 49,300 (US$ 51,800 - US$ 2,500). The Daily Loss floor depends on the day's opening balance.</p>
@@ -341,7 +341,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Safety margin = Current balance - Floor. In the example above: US$ 51,800 - US$ 49,300 = <strong>US$ 2,500 margin</strong>.</p>
 
 <h3>Step 4: apply the divisor of 5</h3>
-<p>Pragmatic rule: the risk of the next trade cannot be greater than <strong>1/5 of the safety margin</strong>. In the example, maximum risk = US$ 500. This divisor exists because you need to withstand at least 5 consecutive losing trades — a statistically common scenario in 20-day cycles — without hitting the floor.</p>
+<p>Pragmatic rule: the risk of the next trade cannot be greater than <strong>1/5 of the safety margin</strong>. In the example, maximum risk = US$ 500. This divisor exists because you need to withstand at least 5 consecutive losing trades, a statistically common scenario in 20-day cycles, without hitting the floor.</p>
 
 <h3>Step 5: always round down</h3>
 <p>If the calculation yields 1.7 contracts, trade 1. If the calculation yields 3 mini lots, trade 2. Rounding up is what turns a correct thesis into a Drawdown violation over 30 trades.</p>
@@ -351,11 +351,11 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>The personal circuit breaker: stop rules</h2>
-<p>The firm's limits (Max Drawdown, Daily Loss) are the absolute wall. Traders who last months in a funded account never get close to this wall — they stop much earlier, at self-imposed personal limits. This is called the <strong>personal circuit breaker</strong>.</p>
+<p>The firm's limits (Max Drawdown, Daily Loss) are the absolute wall. Traders who last months in a funded account never get close to this wall, they stop much earlier, at self-imposed personal limits. This is called the <strong>personal circuit breaker</strong>.</p>
 <p>The logic is simple: an electronic market has circuit breakers (automatic stops at 7%, 13%, 20% drops) to prevent panic from feeding itself. The trader needs the same mechanism, because psychologically the temptation to "recover on the next trade" grows exponentially as the loss increases.</p>
 
 <h3>Rule 1: daily loss ceiling at 50% of Daily Loss</h3>
-<p>If the firm's Daily Loss is US$ 1,500, your personal ceiling is US$ 750. Upon reaching it, you close the platform for the rest of the day. This rule protects both the Daily Loss and the Max Drawdown — because it limits the contribution of each bad day to the accumulated drawdown.</p>
+<p>If the firm's Daily Loss is US$ 1,500, your personal ceiling is US$ 750. Upon reaching it, you close the platform for the rest of the day. This rule protects both the Daily Loss and the Max Drawdown, because it limits the contribution of each bad day to the accumulated drawdown.</p>
 
 <h3>Rule 2: stop after 3 consecutive losing trades</h3>
 <p>Regardless of the amount, 3 <em>losses</em> in sequence = close the platform, even if it's only 10:30 AM. Three consecutive losses mean that the market reading is wrong today, or the emotional state is already compromised. Forcing a fourth trade almost always leads to failure.</p>
@@ -369,13 +369,13 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>Intraday Drawdown: why it causes more failures than total Drawdown</h2>
-<p>Of the three types of Drawdown, Trailing Intraday is the one that causes the most traders to fail — and for a specific reason that few people articulate: it punishes unrealized profits. In an Intraday model, the worst possible trade is one that goes to +80% of the target and returns to zero. Psychologically, you "lost nothing". In terms of Drawdown, you just pushed your floor up by 80% of the target — without having captured a single dollar.</p>
+<p>Of the three types of Drawdown, Trailing Intraday is the one that causes the most traders to fail, and for a specific reason that few people articulate: it punishes unrealized profits. In an Intraday model, the worst possible trade is one that goes to +80% of the target and returns to zero. Psychologically, you "lost nothing". In terms of Drawdown, you just pushed your floor up by 80% of the target, without having captured a single dollar.</p>
 <p>This mechanism creates two traps:</p>
-<p><strong>Trap 1 — the "almost" trade:</strong> you enter, profit goes to +US$ 800, you hold expecting +US$ 1,000, it reverses, closes at breakeven. The trade cost nothing in realized P&L, but your floor moved up US$ 800. Repeat 3 times a day and the Max Drawdown became a wall 2 trades away.</p>
-<p><strong>Trap 2 — the late mental stop:</strong> the trade turns against you, you "know" where you want to exit, but at the exit price the spread widened and you lost an additional US$ 200 beyond what was planned. In Trailing Intraday, these extra US$ 200 count against the floor updated by the floating peak, not against the balance at the start of the day.</p>
+<p><strong>Trap 1, the "almost" trade:</strong> you enter, profit goes to +US$ 800, you hold expecting +US$ 1,000, it reverses, closes at breakeven. The trade cost nothing in realized P&L, but your floor moved up US$ 800. Repeat 3 times a day and the Max Drawdown became a wall 2 trades away.</p>
+<p><strong>Trap 2, the late mental stop:</strong> the trade turns against you, you "know" where you want to exit, but at the exit price the spread widened and you lost an additional US$ 200 beyond what was planned. In Trailing Intraday, these extra US$ 200 count against the floor updated by the floating peak, not against the balance at the start of the day.</p>
 <p>The countermeasure is behavioral: in an Intraday account, <strong>take partial profit at +50% of the target</strong>. Half the position exits, the rest manages. This limits the floor's rise to 50% of the movement instead of 100%, exponentially reducing risk in sensitive accounts.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/trailing-vs-static.png" alt="Trailing vs Static — side-by-side visual comparison showing how the same movement impacts each model"></p>
+<p><img src="/img/guides-edu/gemini-pro/trailing-vs-static.png" alt="Trailing vs Static, side-by-side visual comparison showing how the same movement impacts each model"></p>
 
 <hr>
 
@@ -383,22 +383,22 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Not every bad day is terminal. Some are market calibration, others are temporary excess volatility. But there are structural triggers that indicate when a bad day is turning into an irreversible fall. Recognizing these triggers is the difference between losing 1% and losing the account.</p>
 
 <h3>Trigger 1: third entry attempt on the same setup</h3>
-<p>You saw a setup, entered, stop. Entered again, stop. Entered a third time. If you're already thinking about the fourth, the setup doesn't exist today — you're forcing a thesis. Three attempts on the same losing setup is an automatic stop trigger.</p>
+<p>You saw a setup, entered, stop. Entered again, stop. Entered a third time. If you're already thinking about the fourth, the setup doesn't exist today, you're forcing a thesis. Three attempts on the same losing setup is an automatic stop trigger.</p>
 
 <h3>Trigger 2: increasing size after a loss</h3>
 <p>You were trading 2 contracts, lost. The next trade you open with 3 "to recover faster". This is the exact trigger that turns -US$ 400 into -US$ 2,500 in two trades. If you caught yourself increasing size after a loss, close the platform without a second thought.</p>
 
 <h3>Trigger 3: trade outside the written plan</h3>
-<p>You opened a trade that wasn't in your pre-session plan. "An opportunity appeared." Consistent traders recognize: an opportunity outside the plan is emotional projection 80% of the time. If the first trade outside the plan lost, the second almost always loses too — because your mind has already gone off track.</p>
+<p>You opened a trade that wasn't in your pre-session plan. "An opportunity appeared." Consistent traders recognize: an opportunity outside the plan is emotional projection 80% of the time. If the first trade outside the plan lost, the second almost always loses too, because your mind has already gone off track.</p>
 
 <h3>Trigger 4: perceived cortisol</h3>
-<p>Your hands are sweating, your heart is racing, you're looking at the chart with anger. This is cortisol — and cortisol doesn't trade the market. Close the platform, walk for 20 minutes, come back tomorrow. No trade is worth pursuing in that state.</p>
+<p>Your hands are sweating, your heart is racing, you're looking at the chart with anger. This is cortisol, and cortisol doesn't trade the market. Close the platform, walk for 20 minutes, come back tomorrow. No trade is worth pursuing in that state.</p>
 
 <h3>Trigger 5: you lost track of P&L</h3>
-<p>If you don't know offhand how much you're losing or gaining today, you've stopped trading and become a gambler. The solution is literal: close the platform, get a pen and paper, write down the P&L trade by trade. Almost always the number is worse than you thought — and that alone ends the day.</p>
+<p>If you don't know offhand how much you're losing or gaining today, you've stopped trading and become a gambler. The solution is literal: close the platform, get a pen and paper, write down the P&L trade by trade. Almost always the number is worse than you thought, and that alone ends the day.</p>
 
 <blockquote>
-<p><strong>Warning:</strong> if 2 or more of the above triggers are active simultaneously, you are already in a fall zone. It doesn't matter what the chart is showing — the problem is no longer the market, it's your mind. Close everything. The account will wait for you tomorrow; a blown account will not.</p>
+<p><strong>Warning:</strong> if 2 or more of the above triggers are active simultaneously, you are already in a fall zone. It doesn't matter what the chart is showing, the problem is no longer the market, it's your mind. Close everything. The account will wait for you tomorrow; a blown account will not.</p>
 </blockquote>
 
 <hr>

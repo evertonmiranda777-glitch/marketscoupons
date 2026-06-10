@@ -1,5 +1,5 @@
-// Vercel Edge Function — OG image for social sharing
-// GET /api/og-image — matches checkout/email design system
+// Vercel Edge Function, OG image for social sharing
+// GET /api/og-image, matches checkout/email design system
 
 import { ImageResponse } from '@vercel/og';
 
@@ -87,7 +87,7 @@ export default async function handler() {
               ],
             },
           },
-          // ══════ RIGHT COLUMN — Top firms ══════
+          // ══════ RIGHT COLUMN, Top firms ══════
           {
             type: 'div', props: {
               style: { display: 'flex', flexDirection: 'column', width: '360px', flexShrink: 0 },

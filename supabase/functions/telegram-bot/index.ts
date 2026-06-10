@@ -11,7 +11,7 @@ function siteLink(path = "", campaign = "general") {
   return `${base}${base.includes("?") ? "&" : "?"}utm_source=telegram&utm_medium=referral&utm_campaign=${campaign}`;
 }
 
-// Rota curta para Telegram — /t/<slug> redireciona com UTMs (vercel.json)
+// Rota curta para Telegram, /t/<slug> redireciona com UTMs (vercel.json)
 function tgLink(slug: string) {
   return `https://${SITE_URL}/t/${slug}`;
 }
@@ -40,12 +40,12 @@ async function sendMessage(text: string, buttons?: Array<Array<{text:string;url:
 
 async function sendPhoto(photoUrl: string, caption: string, buttons?: Array<Array<{text:string;url:string}>>): Promise<number | null> {
   try {
-    // Fetch bytes ourselves — Telegram URL-fetch has ~5s timeout and CDN can stall
+    // Fetch bytes ourselves, Telegram URL-fetch has ~5s timeout and CDN can stall
     const imgRes = await fetch(photoUrl);
     if (!imgRes.ok) { console.error("sendPhoto: failed to fetch image", imgRes.status); return null; }
     const imgBlob = await imgRes.blob();
 
-    // Telegram caption limit is 1024 chars — trim if needed
+    // Telegram caption limit is 1024 chars, trim if needed
     const cap = caption.length > 1020 ? caption.slice(0, 1020) + "…" : caption;
 
     const form = new FormData();
@@ -147,7 +147,7 @@ async function handleCoupons(db: ReturnType<typeof createClient>) {
     const label = dtype === "lifetime" ? "LIFETIME" : "OFF";
     const name = f.short_name || f.name;
     const couponLine = f.coupon ? `Code: <code>${f.coupon}</code>` : `No code needed`;
-    return `<b>${name}</b> — ${f.discount}% ${label}\n${couponLine}`;
+    return `<b>${name}</b>, ${f.discount}% ${label}\n${couponLine}`;
   });
 
   const header = isForex ? "Today's Forex Prop Firm Deals" : "Today's Futures Prop Firm Deals";
@@ -223,8 +223,8 @@ async function handleGex(db: ReturnType<typeof createClient>) {
   const caption =
     `🎯 <b>Gamma Exposure (GEX)</b>\n` +
     `<b>${data.ticker} ${tickerNames[data.ticker] || data.ticker}</b>\n\n` +
-    `<b>Put Wall</b>: ${fmt(data.put_wall)} — Support\n` +
-    `<b>Call Wall</b>: ${fmt(data.call_wall)} — Resistance\n\n` +
+    `<b>Put Wall</b>: ${fmt(data.put_wall)}, Support\n` +
+    `<b>Call Wall</b>: ${fmt(data.call_wall)}, Resistance\n\n` +
     `🎯 ${tgLink("gex")}`;
 
   const photoUrl = `https://${SITE_URL}/img/gamma-creative.png?t=${Date.now()}`;
@@ -256,7 +256,7 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
     return { sent: false, reason: "calendar_fetch_error" };
   }
 
-  // Filter ★★★ events — USD (US) only, max 3
+  // Filter ★★★ events, USD (US) only, max 3
   const highImpact = events.filter((e) => {
     const imp = Number(e.importance ?? e.impact ?? e.stars ?? 0);
     const cur = (e.currency ?? e.country ?? "").toUpperCase();
@@ -299,7 +299,7 @@ async function handleCalendarDaily(db: ReturnType<typeof createClient>) {
   const lines = highImpact.map((ev) => {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const et = utcStrToEt(ev.time ?? ev.datetime ?? "");
-    return `🔴 ${et ? et + " — " : ""}<b>${name}</b>`;
+    return `🔴 ${et ? et + ", " : ""}<b>${name}</b>`;
   });
 
   const caption =
@@ -413,7 +413,7 @@ async function handleCalendarAlert(db: ReturnType<typeof createClient>) {
   for (const ev of upcoming) {
     const name = ev.title ?? ev.name ?? ev.event ?? "Economic Event";
     const timeStr = ev.time ?? ev.datetime ?? "";
-    // Display em ET (horário do mercado US — onde o evento acontece).
+    // Display em ET (horário do mercado US, onde o evento acontece).
     // API retorna UTC; convertemos pra ET pra mostrar.
     function utcToEt(s: string): string {
       if (!s) return "";
@@ -483,7 +483,7 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
       `👉 ${tgLink("pro")}`;
   } else {
     text =
-      `💰 <b>Loyalty Program — Earn Points</b>\n\n` +
+      `💰 <b>Loyalty Program, Earn Points</b>\n\n` +
       `Shop through our links and earn loyalty points!\n\n` +
       `🎁 Points unlock: exclusive perks, bigger discounts, priority access\n` +
       `📊 Track your points in your dashboard\n\n` +
@@ -517,36 +517,36 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     : `🔗 Desconto aplicado automaticamente`;
   const couponEn = firm.coupon
     ? `🎟 Code: <code>${firm.coupon}</code>`
-    : `🔗 No code needed — discount applied automatically`;
+    : `🔗 No code needed, discount applied automatically`;
 
   const discountPt =
     firm.discount_type === "lifetime" ? `${firm.discount}% OFF (vitalício!)` : `${firm.discount}% OFF`;
   const discountEn =
     firm.discount_type === "lifetime" ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
 
-  // 48h countdown — ends at now + 48h
+  // 48h countdown, ends at now + 48h
   const endsAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
   const endsLabelPt = endsAt.toLocaleString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) + " UTC";
   const endsLabelEn = endsAt.toUTCString().replace(":00 GMT", " UTC");
 
-  // Dedicated firm page — clean URL, UTMs inferred from t.me referrer on the site
+  // Dedicated firm page, clean URL, UTMs inferred from t.me referrer on the site
   const checkoutUrl = `https://${SITE_URL}/${firm.id}`;
 
   const text =
-    `⚡ <b>Flash Deal — ${firm.name}</b>\n\n` +
+    `⚡ <b>Flash Deal, ${firm.name}</b>\n\n` +
     `🇧🇷 <b>PT</b>\n` +
     `🔥 ${discountPt}\n` +
     couponPt + `\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    `⏰ <b>Termina em 48h</b> — ${endsLabelPt}\n` +
+    `⏰ <b>Termina em 48h</b>, ${endsLabelPt}\n` +
     `\n━━━━━━━━━━\n\n` +
     `🇺🇸 <b>EN</b>\n` +
     `🔥 ${discountEn}\n` +
     couponEn + `\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    `⏰ <b>Ends in 48h</b> — ${endsLabelEn}\n` +
+    `⏰ <b>Ends in 48h</b>, ${endsLabelEn}\n` +
     (urgency ? `\n${urgency}\n` : "") +
     `\n👉 <a href="${checkoutUrl}"><b>Garantir oferta / Get Deal</b></a>`;
 
@@ -562,7 +562,7 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
 async function handlePromoReminder(db: ReturnType<typeof createClient>) {
   const now = Date.now();
   const THRESHOLDS = [48, 24, 2]; // horas
-  const WINDOW_MIN = 30; // janela de +/- 30min em volta do threshold — cron roda de hora em hora
+  const WINDOW_MIN = 30; // janela de +/- 30min em volta do threshold, cron roda de hora em hora
 
   const { data: firms, error } = await db
     .from("cms_firms")
@@ -608,7 +608,7 @@ async function handlePromoReminder(db: ReturnType<typeof createClient>) {
       const couponEn = firm.coupon ? `🎟 Code: <code>${firm.coupon}</code>` : `🔗 No code needed`;
 
       const checkoutUrl = `https://${SITE_URL}/${firm.id}`;
-      const promoLabel = firm.promo_label ? ` — ${firm.promo_label}` : "";
+      const promoLabel = firm.promo_label ? `, ${firm.promo_label}` : "";
 
       const text =
         `${th === 2 ? "🚨" : th === 24 ? "🔥" : "⚡"} <b>${firm.name}${promoLabel}</b>\n\n` +

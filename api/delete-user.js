@@ -1,6 +1,6 @@
-// Vercel Serverless — Delete a user (3 modos auth)
+// Vercel Serverless, Delete a user (3 modos auth)
 // MODES (autenticacao via Authorization header OU body):
-//   1) Self-delete:   Authorization: Bearer <user-jwt>           — apaga a propria conta
+//   1) Self-delete:   Authorization: Bearer <user-jwt>          , apaga a propria conta
 //   2) Admin via JWT: Authorization: Bearer <admin-jwt> + body{email}
 //                     valida profile.is_admin=true → apaga qualquer user
 //   3) Admin via env (legacy): body{email, adminToken} === ADMIN_DELETE_TOKEN
@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
   const authHdr = req.headers.authorization || req.headers.Authorization || '';
   const callerJwt = authHdr.startsWith('Bearer ') ? authHdr.slice(7) : null;
 
-  // Path 1+2: caller JWT presente — validar e checar se é admin (se quer apagar outro)
+  // Path 1+2: caller JWT presente, validar e checar se é admin (se quer apagar outro)
   if (callerJwt) {
     let caller;
     try {
@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
       email = caller.email;
       mode = 'self';
     } else {
-      // Admin-via-JWT — valida is_admin no profile do caller
+      // Admin-via-JWT, valida is_admin no profile do caller
       const profResp = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${caller.id}&select=is_admin`, { headers: H });
       const profs = profResp.ok ? await profResp.json() : [];
       if (!profs[0]?.is_admin) return res.status(403).json({ error: 'Not an admin' });

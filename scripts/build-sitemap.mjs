@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build-sitemap.mjs — Regenera sitemap.xml com TODAS as URLs estáticas.
+ * build-sitemap.mjs, Regenera sitemap.xml com TODAS as URLs estáticas.
  *
  * Lê:
  * - firms/*.html → /apex, /bulenox, etc (12)

@@ -25,7 +25,7 @@ In-depth articles on prop-firm strategy, methodology, and trader psychology. All
 
 - [Best Prop Firms 2026: Complete Guide to Choose the Right One](https://www.marketscoupons.com/blog/best-prop-firms-2026-guide): Comparative overview of the top prop firms, criteria for picking based on style and capital goals.
 - [From $50K to $300K: Prop Firm Scaling Plans Compared](https://www.marketscoupons.com/blog/from-50k-to-300k-scaling-plans): Side-by-side breakdown of scaling rules across major firms.
-- [Trading in 3+ Prop Firms Simultaneously: Professional Setup](https://www.marketscoupons.com/blog/trading-3-prop-firms-simultaneously): Practical guide to running multiple funded accounts at once — risk allocation, journaling, capital strategy.
+- [Trading in 3+ Prop Firms Simultaneously: Professional Setup](https://www.marketscoupons.com/blog/trading-3-prop-firms-simultaneously): Practical guide to running multiple funded accounts at once, risk allocation, journaling, capital strategy.
 - [Multi-Accounting in Prop Firms: Rules, Risks, and Strategies](https://www.marketscoupons.com/blog/multi-accounting-prop-firms-risks-rules): What is allowed, what gets accounts banned, and how firms detect violations.
 - [The Wyckoff Method: Complete Guide from Foundation to Modern Application](https://www.marketscoupons.com/blog/wyckoff-method-complete-guide): Long-form treatment of accumulation/distribution phases, composite operator, modern application.
 - [Volume Price Analysis: The Anna Coulling Guide](https://www.marketscoupons.com/blog/volume-price-analysis-guide): VPA method explained from first principles, with chart-reading framework.
@@ -60,7 +60,7 @@ Free analysis utilities for active traders. Some require account login.
 - [Daily Market Analysis](https://www.marketscoupons.com/analysis): Daily macro + technical analysis covering ES, NQ, YM, RTY futures and major forex pairs. Updated each trading session.
 - [GEX / Gamma Exposure](https://www.marketscoupons.com/gamma): Live gamma-exposure dashboard for 12 major US tickers, sourced from CBOE options data.
 - [Economic Calendar](https://www.marketscoupons.com/calendar): Filtered economic calendar focused on US 3-star events relevant to futures traders, with pre-event alerts.
-- [Pro Tools](https://www.marketscoupons.com/pro): Gated VIP tools (heat map, position calculators, additional analysis) — unlocked after one approved purchase via affiliate.
+- [Pro Tools](https://www.marketscoupons.com/pro): Gated VIP tools (heat map, position calculators, additional analysis), unlocked after one approved purchase via affiliate.
 
 ## Account & Policy
 

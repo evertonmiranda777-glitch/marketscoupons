@@ -1,4 +1,4 @@
-// Vercel Serverless — Bulk MX record validation
+// Vercel Serverless, Bulk MX record validation
 // POST /api/validate-mx
 // Body: { domains: ["gmail.com", "hotmail.com", ...] }
 // Returns: { results: { "gmail.com": true, "fakeemail.xyz": false, ... } }

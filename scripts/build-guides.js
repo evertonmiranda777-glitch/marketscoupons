@@ -139,13 +139,13 @@ function template({ fm, bodyHtml, schema, lang, slug, alts, otherLangs }) {
 
   const hreflang   = buildHreflang(alts, lang);
 
-  // OTHER-FIRM SWITCHER — shows sibling firms in the same language
+  // OTHER-FIRM SWITCHER, shows sibling firms in the same language
   const switchHtml = Object.entries(FIRM_SWITCH_LABELS)
     .filter(([s]) => s !== slug)
     .map(([s, lbl]) => `<a class="gswitch" href="${langPath(lang, s)}">${lbl}</a>`)
     .join('');
 
-  // LANGUAGE SWITCHER — only langs that actually exist for this slug
+  // LANGUAGE SWITCHER, only langs that actually exist for this slug
   const langHtml = otherLangs
     .map(l => `<a class="lswitch" href="${langPath(l, slug)}" hreflang="${l}">${LANG_NAMES[l] || l}</a>`)
     .join('');

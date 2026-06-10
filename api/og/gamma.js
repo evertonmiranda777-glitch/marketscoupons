@@ -1,4 +1,4 @@
-// Vercel Edge Function — Telegram creative for Gamma Exposure
+// Vercel Edge Function, Telegram creative for Gamma Exposure
 // GET /api/og/gamma  → 1080x1350 PNG
 // POC: hardcoded data. TODO: wire to Supabase gex_data table.
 
@@ -33,7 +33,7 @@ const HEX_URL = `data:image/svg+xml;utf8,${encodeURIComponent(HEX_SVG)}`;
 
 // ───────── POC data ─────────
 const DATA = {
-  updatedLabel: 'Monday, April 13, 2026 — 04:27 ET',
+  updatedLabel: 'Monday, April 13, 2026, 04:27 ET',
   es: { price: '6,817', zeroGamma: '6,795', putWall: '6,800', callWall: '7,000', hvl: '7,000', volTrigger: '7,000', maxPain: '6,815', total: '+6962M' },
   nq: { price: '25,116', zeroGamma: '25,017', putWall: '25,000', callWall: '25,500', hvl: '24,100', volTrigger: '24,100', maxPain: '24,300' },
 };
@@ -46,7 +46,7 @@ const DATA = {
 const CHART_W = 950;
 const CHART_H = 530;
 
-// [y, label, barW, fillRGBA]  — left number + horizontal bar
+// [y, label, barW, fillRGBA] , left number + horizontal bar
 const ES_BARS = [
   [6,  '7,450', 145, 'rgba(0,220,130,.82)'],
   [21, '7,400', 102, 'rgba(0,220,130,.74)'],
@@ -90,7 +90,7 @@ const ES_LINES = [
   [355, '#f5c518', 0.55],
 ];
 
-// Key price labels (colored) — these overlay on left axis with color emphasis
+// Key price labels (colored), these overlay on left axis with color emphasis
 // y uses the SVG text baseline reference; we'll convert to top in HTML
 const ES_KEY_LABELS = [
   { y: 164, text: '7,000', color: '#ff5050', weight: 700 },
@@ -381,7 +381,7 @@ export default async function handler() {
             borderBottom: '1px solid rgba(255,255,255,0.06)',
           },
           [
-            span({ fontSize: '12px', fontWeight: 700, letterSpacing: '.5px', textTransform: 'uppercase', color: T1 }, 'Gamma Exposure — ES S&P 500'),
+            span({ fontSize: '12px', fontWeight: 700, letterSpacing: '.5px', textTransform: 'uppercase', color: T1 }, 'Gamma Exposure, ES S&P 500'),
             row({}, [
               span({ fontSize: '11px', color: 'rgba(255,255,255,.36)' }, 'Total: '),
               span({ fontSize: '11px', color: GREEN, fontWeight: 700, marginLeft: '4px' }, DATA.es.total),
@@ -417,7 +417,7 @@ export default async function handler() {
     // ── NQ DIVIDER ──
     const nqDiv = row({ alignItems: 'center', gap: '10px', marginBottom: '7px' }, [
       div({ flex: 1, height: '1px', backgroundColor: 'rgba(255,255,255,.07)' }),
-      span({ fontSize: '13px', fontWeight: 800, color: NQ_COL }, 'NQ — Nasdaq 100 Futures'),
+      span({ fontSize: '13px', fontWeight: 800, color: NQ_COL }, 'NQ, Nasdaq 100 Futures'),
       div({ flex: 1, height: '1px', backgroundColor: 'rgba(255,255,255,.07)' }),
     ]);
 

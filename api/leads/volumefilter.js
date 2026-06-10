@@ -21,7 +21,7 @@ function isValidEmail(s) {
 }
 
 function buildEmailHtml(email) {
-  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>VolumeFilter — Markets Coupons</title></head>
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>VolumeFilter, Markets Coupons</title></head>
 <body style="margin:0;padding:0;background:#f4f6f8;font-family:'Inter',Helvetica,Arial,sans-serif;color:#0a0d14;">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f8;padding:24px 0;"><tr><td align="center">
   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.08);">
@@ -31,7 +31,7 @@ function buildEmailHtml(email) {
     <tr><td style="padding:36px 36px 12px;">
       <div style="display:inline-block;background:#e6f7f1;color:#10b981;padding:5px 11px;border-radius:9px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px;">VOLUMEFILTER PRONTO</div>
       <h1 style="margin:6px 0 14px;font-size:26px;line-height:1.25;font-weight:800;color:#0a0d14;">Aqui está o seu indicador, Trader</h1>
-      <p style="margin:0 0 22px;font-size:15px;line-height:1.6;color:#374151;">Você cadastrou o email <strong>${email}</strong> pra receber o VolumeFilter. Baixe o arquivo <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13px;">.zip</code> abaixo e siga as instruções no LEIA-ME.txt — instalação leva 2 cliques no NinjaTrader 8.</p>
+      <p style="margin:0 0 22px;font-size:15px;line-height:1.6;color:#374151;">Você cadastrou o email <strong>${email}</strong> pra receber o VolumeFilter. Baixe o arquivo <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13px;">.zip</code> abaixo e siga as instruções no LEIA-ME.txt, instalação leva 2 cliques no NinjaTrader 8.</p>
     </td></tr>
     <tr><td style="padding:0 36px;text-align:center;">
       <a href="${DOWNLOAD_URL}" style="display:inline-block;padding:16px 42px;background:#10b981;color:#fff;font-size:16px;font-weight:800;text-decoration:none;border-radius:10px;letter-spacing:.2px;box-shadow:0 4px 14px rgba(16,185,129,.35);">⬇ Baixar VolumeFilter (.zip)</a>
@@ -49,14 +49,14 @@ function buildEmailHtml(email) {
       </div>
     </td></tr>
     <tr><td style="padding:18px 36px 8px;">
-      <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7480;">Travou? Manda mensagem na comunidade <a href="https://t.me/marketcouponss" style="color:#0a74da;text-decoration:underline;">t.me/marketcouponss</a> — tem trader online sempre.</p>
+      <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7480;">Travou? Manda mensagem na comunidade <a href="https://t.me/marketcouponss" style="color:#0a74da;text-decoration:underline;">t.me/marketcouponss</a>, tem trader online sempre.</p>
     </td></tr>
     <tr><td style="padding:24px 36px 28px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
       <td style="vertical-align:middle;padding-right:14px;"><div style="width:42px;height:42px;border-radius:50%;background:#ff8c00;text-align:center;line-height:42px;font-size:16px;font-weight:800;color:#fff;">L</div></td>
       <td style="vertical-align:middle;"><div style="font-size:14px;font-weight:700;color:#0a0d14;">Lara</div><div style="font-size:12px;color:#6b7480;">Markets Coupons</div></td>
     </tr></table></td></tr>
     <tr><td style="background:#fafafa;padding:20px 32px;text-align:center;border-top:1px solid #e5e7eb;">
-      <p style="margin:0 0 8px;font-size:11px;color:#9ca3af;line-height:1.6;">Você está recebendo este email porque pediu o VolumeFilter em marketscoupons.com.<br>Markets Coupons é plataforma educacional/afiliada — não somos broker, FCM ou consultor registrado.</p>
+      <p style="margin:0 0 8px;font-size:11px;color:#9ca3af;line-height:1.6;">Você está recebendo este email porque pediu o VolumeFilter em marketscoupons.com.<br>Markets Coupons é plataforma educacional/afiliada, não somos broker, FCM ou consultor registrado.</p>
       <p style="margin:8px 0 0;font-size:11px;color:#9ca3af;">© ${new Date().getFullYear()} Markets Coupons</p>
     </td></tr>
   </table>
@@ -101,13 +101,13 @@ module.exports = async (req, res) => {
     if (!upsertResp.ok && upsertResp.status !== 409) {
       const errTxt = await upsertResp.text();
       console.error('[volumefilter] supabase upsert failed', upsertResp.status, errTxt);
-      // não aborta — segue pro envio do email mesmo assim
+      // não aborta, segue pro envio do email mesmo assim
     }
 
     // 2) Send email via Brevo (fallback Resend)
     const BREVO_KEY = process.env.BREVO_API_KEY;
     const RESEND_KEY = process.env.RESEND_API_KEY;
-    const subject = 'Seu VolumeFilter chegou — Markets Coupons';
+    const subject = 'Seu VolumeFilter chegou, Markets Coupons';
     const htmlContent = buildEmailHtml(email);
 
     let sent = false;

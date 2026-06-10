@@ -55,7 +55,7 @@ async function mcSyncCTI(opts = {}) {
     mcToastCTI(`CTI: snap=${!!snapshot}, ${leads.length} leads`);
     await mcMarkCTI('cti');
   } else {
-    mcToastCTI('CTI: erro — ' + (out.error || '?'));
+    mcToastCTI('CTI: erro, ' + (out.error || '?'));
   }
   return out;
 }

@@ -56,7 +56,7 @@ async function mcSyncFN(opts = {}) {
     mcToastFN(`FN: ${rows.length} dias, ${leads.length} leads, snapshot=${!!snapshot}`);
     await mcMarkSyncFN('fn');
   } else {
-    mcToastFN('FN: erro — ' + (out.error || '?'));
+    mcToastFN('FN: erro, ' + (out.error || '?'));
   }
   return out;
 }

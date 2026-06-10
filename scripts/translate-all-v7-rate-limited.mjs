@@ -106,7 +106,7 @@ let totalSuccess = 0, totalFailed = 0;
 for (const slug of SLUGS) {
   console.error(`\n========== ${slug} ==========`);
   const en = await fetchEN(slug);
-  if (!en) { console.error(`  EN missing — skip`); continue; }
+  if (!en) { console.error(`  EN missing, skip`); continue; }
 
   for (const [lang, langName] of Object.entries(LANGS)) {
     // Skip if already exists with 20+ SVGs AND active

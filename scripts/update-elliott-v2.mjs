@@ -17,7 +17,7 @@ const body = extractBody(html);
 console.log(`Body: ${body.length} · SVGs: ${(body.match(/figure class="diagram"/g) || []).length}`);
 const post = {
   slug: 'elliott-wave-practical', lang: 'en',
-  title: 'Elliott Wave Practical — How to Read 5-3 Structures Without Losing Your Mind',
+  title: 'Elliott Wave Practical, How to Read 5-3 Structures Without Losing Your Mind',
   category: 'Technical Analysis', level: 'advanced', read_time: '54 min', icon: '🌊',
   cover_url: 'https://www.marketscoupons.com/img/blog-heros/elliott-wave-practical.jpg',
   excerpt: 'The disciplined trader\'s guide to Elliott Wave: the 3 rules, Fibonacci targets, corrective patterns, real-time labeling, and a step-by-step trading system.',

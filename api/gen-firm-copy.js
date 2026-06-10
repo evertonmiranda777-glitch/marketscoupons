@@ -1,4 +1,4 @@
-// Vercel Serverless — Gera copy Instagram pra firma via Gemini 2.5 Flash
+// Vercel Serverless, Gera copy Instagram pra firma via Gemini 2.5 Flash
 // POST /api/gen-firm-copy { firmId, lang? }
 // Uso: admin Criativos tab
 
@@ -36,7 +36,7 @@ function buildPrompt(firm, langName, template = 'institucional') {
   const scalingNorm = normalizeScaling(firm.scaling);
   const reviewsFmt = fmtReviews(firm.trustpilot_reviews, langCodeEarly);
   const tp = firm.trustpilot_score ? `Trustpilot ${firm.trustpilot_score}/5 com ${reviewsFmt || firm.trustpilot_reviews || '?'} reviews` : '';
-  const couponLine = firm.coupon ? `CUPOM: ${firm.coupon} — ${firm.discount}% OFF${firm.discount_type ? ` (${firm.discount_type})` : ''}` : (firm.discount ? `${firm.discount}% OFF aplicado automático via link (sem cupom)` : '');
+  const couponLine = firm.coupon ? `CUPOM: ${firm.coupon}, ${firm.discount}% OFF${firm.discount_type ? ` (${firm.discount_type})` : ''}` : (firm.discount ? `${firm.discount}% OFF aplicado automático via link (sem cupom)` : '');
 
   const sortedPrices = Array.isArray(firm.prices) && firm.prices.length
     ? [...firm.prices].sort((a, b) => {
@@ -103,7 +103,7 @@ Você tem a estratégia, nós temos o capital. A Bulenox oferece avaliações co
 
 Aproveite as condições atuais para iniciar sua avaliação:
 ✅ Planos a partir de $19.25 (taxa de avaliação).
-✅ Drawdown estático sem trailing — limites previsíveis.
+✅ Drawdown estático sem trailing, limites previsíveis.
 ✅ Plataformas: Tradovate, NinjaTrader e Rithmic incluído.
 ✅ Sem regra de consistência e payout semanal.
 
@@ -117,20 +117,20 @@ Garanta sua vaga e comece a operar com escala.
 
 ---
 
-EXEMPLO INSTITUCIONAL 3 (FTMO, sem cupom — desconto via link):
+EXEMPLO INSTITUCIONAL 3 (FTMO, sem cupom, desconto via link):
 Opere com o Capital da FTMO: Avaliações de Forex com Histórico Comprovado
 
 Você tem a estratégia, nós temos o capital. A FTMO é uma das maiores empresas de prop trading de forex do mercado, com mais de €500 milhões pagos a traders desde 2015.
 
 Aproveite as condições atuais via nosso link:
-✅ Desafios a partir de €79 (10K) — desconto aplicado automático.
+✅ Desafios a partir de €79 (10K), desconto aplicado automático.
 ✅ Drawdown estático -10%, sem trailing.
 ✅ Plataformas: MT4, MT5 e cTrader nativos.
 ✅ Profit split de 90% após o funding.
 
 Junte-se a uma comunidade com mais de 41 mil avaliações no Trustpilot (nota 4.8/5).
 
-Sem cupom — desconto aplicado automático no link.
+Sem cupom, desconto aplicado automático no link.
 
 Garanta sua vaga e comece a operar com escala.
 
@@ -209,7 +209,7 @@ Milhares de traders já passaram nas avaliações conosco.
 
 Confira nossos reviews no Trustpilot (4.8/5 com 41 mil avaliações) e veja por que somos referência.
 
-Sem cupom — desconto aplicado automático no link.
+Sem cupom, desconto aplicado automático no link.
 
 Clique no link e escolha seu plano.
 
@@ -218,7 +218,7 @@ Clique no link e escolha seu plano.
 
   const FEW_SHOT_PT = template === 'promocional' ? FEW_SHOT_PROMOCIONAL_PT : FEW_SHOT_INSTITUCIONAL_PT;
 
-  // ====== TEMPLATE INSTITUCIONAL — EN ======
+  // ====== TEMPLATE INSTITUCIONAL, EN ======
   const FEW_SHOT_INSTITUCIONAL_EN = `
 INSTITUTIONAL EXAMPLE 1 (Apex):
 Trade with APEX Capital: Futures Evaluations with Special Conditions
@@ -247,7 +247,7 @@ You bring the strategy, we provide the capital. Bulenox offers evaluations with 
 
 Take advantage of our current conditions to start your evaluation:
 ✅ Plans starting at $19.25 (evaluation fee).
-✅ Static drawdown without trailing — predictable limits.
+✅ Static drawdown without trailing, predictable limits.
 ✅ Platforms: Tradovate, NinjaTrader and Rithmic included.
 ✅ No consistency rule and weekly payout.
 
@@ -267,21 +267,21 @@ Trade with FTMO Capital: Forex Evaluations with Proven Track Record
 You bring the strategy, we provide the capital. FTMO is one of the largest forex prop trading firms, with over €500 million paid to traders since 2015.
 
 Take advantage of our current conditions via our link:
-✅ Challenges starting at €79 (10K) — discount auto-applied.
+✅ Challenges starting at €79 (10K), discount auto-applied.
 ✅ Static drawdown -10%, no trailing.
 ✅ Platforms: MT4, MT5 and cTrader native.
 ✅ 90% profit split after funding.
 
 Join a community with over 41,000 Trustpilot reviews (rating 4.8/5).
 
-No coupon — discount auto-applied via link.
+No coupon, discount auto-applied via link.
 
 Secure your spot and start trading with scale.
 
 #ftmo #propfirm #propfirmtrading #forex #trader #trading #forextrading #mt5 #ctrader #eurusd #gbpusd #xauusd
 `;
 
-  // ====== TEMPLATE PROMOCIONAL — EN ======
+  // ====== TEMPLATE PROMOCIONAL, EN ======
   const FEW_SHOT_PROMOCIONAL_EN = `
 PROMOTIONAL EXAMPLE 1 (Apex):
 🚀 Capital Scale for Futures Traders: 90% OFF on APEX
@@ -352,7 +352,7 @@ Thousands of traders have already scaled their operations with us.
 
 Check our reviews on Trustpilot and see why we're a global reference.
 
-No coupon — discount auto-applied via link.
+No coupon, discount auto-applied via link.
 
 Click the link below and choose your plan.
 
@@ -361,7 +361,7 @@ Click the link below and choose your plan.
 
   const FEW_SHOT_EN = template === 'promocional' ? FEW_SHOT_PROMOCIONAL_EN : FEW_SHOT_INSTITUCIONAL_EN;
 
-  // ====== TEMPLATE INSTITUCIONAL — ES ======
+  // ====== TEMPLATE INSTITUCIONAL, ES ======
   const FEW_SHOT_INSTITUCIONAL_ES = `
 EJEMPLO INSTITUCIONAL 1 (Apex):
 Opera con el Capital de APEX: Evaluaciones de Futuros con Condiciones Especiales
@@ -390,7 +390,7 @@ Tú tienes la estrategia, nosotros el capital. Bulenox ofrece evaluaciones con r
 
 Aprovecha nuestras condiciones actuales para iniciar tu evaluación:
 ✅ Planes desde $19.25 (tasa de evaluación).
-✅ Drawdown estático sin trailing — límites predecibles.
+✅ Drawdown estático sin trailing, límites predecibles.
 ✅ Plataformas: Tradovate, NinjaTrader y Rithmic incluido.
 ✅ Sin regla de consistencia y payout semanal.
 
@@ -410,21 +410,21 @@ Opera con el Capital de FTMO: Evaluaciones de Forex con Historial Comprobado
 Tú tienes la estrategia, nosotros el capital. FTMO ofrece la infraestructura que necesitas para escalar tus operaciones de forex con respaldo de más de €500 millones pagados a traders desde 2015.
 
 Aprovecha las condiciones actuales vía nuestro enlace:
-✅ Desafíos desde €79 (10K) — descuento aplicado automático.
+✅ Desafíos desde €79 (10K), descuento aplicado automático.
 ✅ Drawdown estático -10%, sin trailing.
 ✅ Plataformas: MT4, MT5 y cTrader nativos.
 ✅ Profit split del 90% después del funding.
 
 Únete a una comunidad con más de 41 mil reseñas en Trustpilot (calificación 4.8/5).
 
-Sin cupón — descuento aplicado automático en el enlace.
+Sin cupón, descuento aplicado automático en el enlace.
 
 Asegura tu lugar y comienza a operar con escala.
 
 #ftmo #propfirm #propfirmtrading #forex #trader #trading #tradingforex #mt5 #ctrader #eurusd #gbpusd #xauusd
 `;
 
-  // ====== TEMPLATE PROMOCIONAL — ES ======
+  // ====== TEMPLATE PROMOCIONAL, ES ======
   const FEW_SHOT_PROMOCIONAL_ES = `
 EJEMPLO PROMOCIONAL 1 (Apex):
 🚀 Escala de Capital para Traders de Futuros: 90% OFF en APEX
@@ -495,7 +495,7 @@ Miles de traders ya escalaron sus operaciones con nosotros.
 
 Revisa nuestras reseñas en Trustpilot y descubre por qué somos referencia global.
 
-Sin cupón — descuento aplicado automático en el enlace.
+Sin cupón, descuento aplicado automático en el enlace.
 
 Haz clic en el enlace y elige tu plan.
 
@@ -506,12 +506,12 @@ Haz clic en el enlace y elige tu plan.
 
   const fewShot = langCode === 'pt' ? FEW_SHOT_PT : (langCode === 'es' ? FEW_SHOT_ES : FEW_SHOT_EN);
 
-  return `# 🌐 IDIOMA DO OUTPUT (CRÍTICO — LEIA ANTES DE QUALQUER COISA)
+  return `# 🌐 IDIOMA DO OUTPUT (CRÍTICO, LEIA ANTES DE QUALQUER COISA)
 TODO o texto da caption final DEVE ser escrito em **${langName}** (código: ${langCode}).
 - Se ${langCode}=pt: PT-BR neutro (sem gírias pesadas).
 - Se ${langCode}=en: US English direto, sem traduzir literalmente do PT.
 - Se ${langCode}=es: español neutro (es-LA), sem misturar com português.
-NÃO importa que as INSTRUÇÕES abaixo estejam em PT — elas são só pra você seguir. O OUTPUT FINAL é em ${langName}.
+NÃO importa que as INSTRUÇÕES abaixo estejam em PT, elas são só pra você seguir. O OUTPUT FINAL é em ${langName}.
 Os exemplos few-shot (mais abaixo) ESTÃO no idioma correto (${langCode}). Use-os como referência de tom e estrutura.
 
 # PAPEL
@@ -523,15 +523,15 @@ Markets Coupons = afiliada de prop firms. Caption vai pro Instagram (orgânico) 
 # OBJETIVO DA CAPTION
 Listar BENEFÍCIOS REAIS da firma + DESCONTO em vigor (cupom + preços com âncora) de forma que o trader veja valor concreto e clique no link da bio. Estilo: promo direta, não advertorial.
 
-# COMPLIANCE META ADS (CRÍTICO — viole = caption rejeitada)
+# COMPLIANCE META ADS (CRÍTICO, viole = caption rejeitada)
 - ZERO promessa de retorno: "você vai lucrar", "fique rico", "renda garantida", "results guaranteed", "make money fast", "you'll profit"
-- ZERO storytelling de dor: "estourou X contas?", "cansado de Y?", "quebrei minha conta" — proibido
+- ZERO storytelling de dor: "estourou X contas?", "cansado de Y?", "quebrei minha conta", proibido
 - ZERO antes/depois de capital ou resultado financeiro
 - ZERO urgência fake ("últimas horas!", "só hoje!") a não ser que seja REAL e datada
 - ZERO superlativos vazios sobre lifestyle ("transforme sua vida", "realize seus sonhos")
 - OK: features técnicas (DD, split, payout days, plataformas), preços com desconto, cupom, "scale to bigger plans" (sem prometer dinheiro), Trustpilot, número de reviews
 
-# FIRMA (fonte única — ZERO invenção, só use o que está aqui)
+# FIRMA (fonte única, ZERO invenção, só use o que está aqui)
 - Nome: ${firm.name} (short: ${firm.short_name || firm.name})
 - Tipo: ${firm.type || 'Prop firm'}
 - ${couponLine}
@@ -546,11 +546,11 @@ ${cheapest ? `- ÂNCORA BAIXA (use esta): ${cheapest.a} por ${cheapest.n}${cheap
 ${priciest && priciest !== cheapest ? `- DECOY ALTO (menciona pra tornar a âncora baixa trivial): ${priciest.a} custa ${priciest.n}` : ''}
 - Perks DISPONÍVEIS (só cite o que tá aqui): ${perks}
 - Prova social: ${tp}
-- News trading permitido: ${firm.news_trading === true ? 'SIM' : firm.news_trading === false ? 'NÃO' : 'não informado — NÃO mencione'}
-- Day-1 payout: ${firm.day1_payout === true ? 'SIM' : firm.day1_payout === false ? 'NÃO' : 'não informado — NÃO mencione'}
-- Descrição (USE APENAS PARA CONTEXTO INTERNO — NUNCA COPIE/COLE NO OUTPUT): ${firm.description || ''}
+- News trading permitido: ${firm.news_trading === true ? 'SIM' : firm.news_trading === false ? 'NÃO' : 'não informado, NÃO mencione'}
+- Day-1 payout: ${firm.day1_payout === true ? 'SIM' : firm.day1_payout === false ? 'NÃO' : 'não informado, NÃO mencione'}
+- Descrição (USE APENAS PARA CONTEXTO INTERNO, NUNCA COPIE/COLE NO OUTPUT): ${firm.description || ''}
 
-# ❌ ZERO INVENÇÃO — regra sagrada
+# ❌ ZERO INVENÇÃO, regra sagrada
 Cada número, regra, perk e benefício na caption TEM que existir nos dados acima. Se não tá listado, NÃO EXISTE. Não infere ("provavelmente tem"), não deduz ("firma grande deve ter"), não copia de outra firma do few-shot.
 Exemplos proibidos de invenção:
   - Dizer "sem limite diário" se news_trading/perks não citam explicitamente.
@@ -560,10 +560,10 @@ Exemplos proibidos de invenção:
 Se você não tem o dado, ESCOLHE OUTRO BULLET dos disponíveis. Não inventa pra preencher.
 
 # 🔁 CADA DADO APARECE 1× SÓ
-Scaling, split, DD, payout, escala-até — cada um pode aparecer UMA VEZ na caption inteira. Se escala até $X já apareceu no bullet 1, NÃO repete no 4. Duplicação = rejeitado.
+Scaling, split, DD, payout, escala-até, cada um pode aparecer UMA VEZ na caption inteira. Se escala até $X já apareceu no bullet 1, NÃO repete no 4. Duplicação = rejeitado.
 
 # 🪞 COERÊNCIA NARRATIVA
-A firma sendo vendida nesta caption é **${firm.name}**. Se o hook usa mecanismo "saí de X pra cá", X PRECISA ser outra firma (genérica "firma antiga" / "outra firma" se não quiser nomear). NUNCA "Estourei na ${firm.name}. Aí achei a ${firm.name}" — destrói credibilidade.
+A firma sendo vendida nesta caption é **${firm.name}**. Se o hook usa mecanismo "saí de X pra cá", X PRECISA ser outra firma (genérica "firma antiga" / "outra firma" se não quiser nomear). NUNCA "Estourei na ${firm.name}. Aí achei a ${firm.name}", destrói credibilidade.
 
 # TEMPLATE EM USO: ${template === 'promocional' ? 'PROMOCIONAL (🚀 + pergunta retórica + 🔹 bullets)' : 'INSTITUCIONAL (header descritivo + tagline + ✅ bullets)'}
 
@@ -576,26 +576,26 @@ Siga EXATAMENTE a estrutura dos exemplos few-shot abaixo. Adapte os DADOS pra fi
 
 # ESTRUTURA DO TEMPLATE INSTITUCIONAL (use SE template=institucional)
 1. **Header descritivo:** "Opere com o Capital da [FIRMA]: [Subtítulo descritivo do que diferencia]"
-2. **Tagline corporativa (FRASE FIXA):** começa SEMPRE com "Você tem a estratégia, nós temos o capital." Depois conecta com pitch da firma usando UM destes verbos: "oferece a infraestrutura que você precisa para escalar suas operações...", "disponibiliza o capital institucional para...", "estrutura avaliações que permitem [trader acessar maior capital / acessar contas até $X]". JAMAIS começa com "A [FIRMA] é uma das maiores...". JAMAIS copia o campo "Descrição" da firma — esse campo é só pra você entender o contexto, NUNCA aparece no output.
+2. **Tagline corporativa (FRASE FIXA):** começa SEMPRE com "Você tem a estratégia, nós temos o capital." Depois conecta com pitch da firma usando UM destes verbos: "oferece a infraestrutura que você precisa para escalar suas operações...", "disponibiliza o capital institucional para...", "estrutura avaliações que permitem [trader acessar maior capital / acessar contas até $X]". JAMAIS começa com "A [FIRMA] é uma das maiores...". JAMAIS copia o campo "Descrição" da firma, esse campo é só pra você entender o contexto, NUNCA aparece no output.
 3. **Lead-in:** "Aproveite nossas condições atuais para iniciar sua avaliação:" (ou variação se sem cupom: "Aproveite as condições via nosso link:")
 4. **Bullets ✅ (3-4 items):** preço, drawdown+regras, plataformas, perks-relief
 5. **Prova social:** "Junte-se a uma comunidade com mais de [N] avaliações positivas no Trustpilot (Nota [X]/5)."
-6. **Cupom:** "Use o cupom: [CODE]" OU "Sem cupom — desconto aplicado automático no link."
+6. **Cupom:** "Use o cupom: [CODE]" OU "Sem cupom, desconto aplicado automático no link."
 7. **CTA:** "Garanta sua vaga e comece a operar com escala."
 8. **Hashtags:** linha de hashtags
 
 # ESTRUTURA DO TEMPLATE PROMOCIONAL (use SE template=promocional)
 1. **Header com 🚀:** "🚀 Escala de Capital para Traders de [Futuros/Forex]: [DESC]% OFF na [FIRMA]"
-2. **Pergunta retórica (FRASE FIXA):** "Trader, por que limitar seus ganhos ao tamanho do seu capital pessoal?" (essa frase é literal — não reescreve, não adapta, não troca palavra. Cola igual nos exemplos.)
+2. **Pergunta retórica (FRASE FIXA):** "Trader, por que limitar seus ganhos ao tamanho do seu capital pessoal?" (essa frase é literal, não reescreve, não adapta, não troca palavra. Cola igual nos exemplos.)
 3. **Pitch da promo:** "A [FIRMA] está liberando um desconto exclusivo de [DESC]% para novas avaliações de [futuros/forex]. É a sua chance de acessar contas de [tier menor] a [tier maior] com [diferencial: 'o menor custo do mercado' / 'condições competitivas' / 'regras simplificadas']." JAMAIS copia o campo "Descrição".
 4. **Subtítulo:** "O que diferencia a [FIRMA]:"
 5. **Bullets 🔹 (4-5 items):** payouts/regras, drawdown, regras-relief, profit split, plataforma se relevante
 6. **Prova social parágrafo:** "Milhares de traders já escalaram suas operações conosco." + linha em branco + "Confira nossos reviews no Trustpilot e veja por que somos referência global."
-7. **Cupom:** "Insira o cupom: [CODE]" OU "Sem cupom — desconto aplicado automático no link."
+7. **Cupom:** "Insira o cupom: [CODE]" OU "Sem cupom, desconto aplicado automático no link."
 8. **CTA:** "Clique no link e escolha seu plano."
 9. **Hashtags:** linha de hashtags
 
-# EXEMPLOS DE REFERÊNCIA — clone EXATAMENTE a estrutura, troque DADOS pela firma atual
+# EXEMPLOS DE REFERÊNCIA, clone EXATAMENTE a estrutura, troque DADOS pela firma atual
 ${fewShot}
 
 # DADOS DA FIRMA PRA USAR (lista pra você consultar enquanto adapta o exemplo)
@@ -612,11 +612,11 @@ Use APENAS dessa whitelist (NÃO invente, NÃO use #lifestyle/#motivation/#succe
 ${suggestedHashtags}
 
 # REGRAS DURAS (viole qualquer uma = rejeitado)
-✅ OBRIGATÓRIO: replicar EXATAMENTE a voz, ordem dos blocos, emojis e frase-chave do template em uso (${template === 'promocional' ? 'PROMOCIONAL' : 'INSTITUCIONAL'}). Os exemplos few-shot SÃO o template — não recrie estrutura, só substitua os dados.
+✅ OBRIGATÓRIO: replicar EXATAMENTE a voz, ordem dos blocos, emojis e frase-chave do template em uso (${template === 'promocional' ? 'PROMOCIONAL' : 'INSTITUCIONAL'}). Os exemplos few-shot SÃO o template, não recrie estrutura, só substitua os dados.
 
 ❌ NUNCA:
   - **Misturar templates:** se template=institucional, NÃO use 🚨/🔥/🎟/💥 do promocional antigo. Se template=promocional, NÃO use estrutura puramente institucional.
-  - **Estrutura de "8 blocos com 🚨/🔥/🎟/💰/⚡/🚀/💥"** — esse padrão antigo está APOSENTADO. Use só os 2 templates novos.
+  - **Estrutura de "8 blocos com 🚨/🔥/🎟/💰/⚡/🚀/💥"**, esse padrão antigo está APOSENTADO. Use só os 2 templates novos.
   - **Inventar dados:** cada número/regra/perk DEVE estar nos dados da firma acima. Se não tem, omite.
   - **Promessa de retorno** (Meta Ads BAN): "você vai lucrar", "ganhe X", "fique rico", "renda passiva", "results guaranteed", "you'll profit"
   - **Lifestyle vazio**: "transforme sua vida", "realize seus sonhos", "eleve seu jogo"

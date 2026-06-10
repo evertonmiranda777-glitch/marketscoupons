@@ -45,7 +45,7 @@ for (const file of targets) {
   let html = fs.readFileSync(file, 'utf8');
   const before = html;
 
-  // Replace CSS for .nav-back (and hover) — covers both old one-liner forms
+  // Replace CSS for .nav-back (and hover), covers both old one-liner forms
   html = html.replace(
     /\.nav-back\{[^}]*\}\s*\.nav-back:hover\{[^}]*\}/,
     NEW_CSS
@@ -54,7 +54,7 @@ for (const file of targets) {
   // Replace anchor markup
   html = html.replace(
     /<a href="[^"]*" class="nav-back"[^>]*>[^<]*<\/a>/,
-    `<a href="${href}" class="nav-back" aria-label="${closeLabel} — ${guidesLabel}"><span class="x">×</span>${closeLabel}</a>`
+    `<a href="${href}" class="nav-back" aria-label="${closeLabel}, ${guidesLabel}"><span class="x">×</span>${closeLabel}</a>`
   );
 
   if (html !== before) {

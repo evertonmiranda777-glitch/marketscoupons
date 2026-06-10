@@ -2,7 +2,7 @@
 // One-shot: fix Bulenox guide prices across 7 langs to reflect MARKET89 (89% off)
 // Sticker: 25K=$145, 50K=$175, 100K=$215, 150K=$325, 250K=$535
 // MARKET89 (pay 11%): 25K=$15.95, 50K=$19.25, 100K=$23.65, 150K=$35.75, 250K=$58.85
-// Only 50K and 100K had wrong stickers ($125/$155 — those were post-partial-coupon prices, NOT real sticker)
+// Only 50K and 100K had wrong stickers ($125/$155, those were post-partial-coupon prices, NOT real sticker)
 
 import fs from 'fs';
 import path from 'path';
@@ -23,12 +23,12 @@ const FILES = [
 
 // Patterns language-agnostic (don't depend on currency format)
 const GLOBAL_REPLACEMENTS = [
-  // Coupon codes — same across all langs
+  // Coupon codes, same across all langs
   [/<code>\$50OFF<\/code>/g, '<code>MARKET89</code>'],
   [/<code>\$60OFF<\/code>/g, '<code>MARKET89</code>'],
   [/`\$50OFF`/g, '`MARKET89`'],
   [/`\$60OFF`/g, '`MARKET89`'],
-  // Fix the wrong sticker prices — these were the post-partial-coupon bulenox prices, not real stickers
+  // Fix the wrong sticker prices, these were the post-partial-coupon bulenox prices, not real stickers
   // The real stickers ARE $175 and $215
 ];
 
@@ -87,8 +87,8 @@ for (const rel of FILES) {
     const newFeeStr = fmtNum(p.newFee, fmt);
     const stickerStr = fmtNum(p.sticker, fmt);
 
-    // Pattern 1: "$125/mo" (was $175) — for 50K/100K which had wrong stickers
-    // The "was $175" / "was $215" is already the correct sticker — keep it, just update the discounted price
+    // Pattern 1: "$125/mo" (was $175), for 50K/100K which had wrong stickers
+    // The "was $175" / "was $215" is already the correct sticker, keep it, just update the discounted price
     if (p.oldFee !== p.sticker) {
       const re = new RegExp(
         `<strong>${fmt.cur}${oldFeeStr.replace(/[.]/g, '\\.')}${fmt.per}</strong>\\s*\\(${fmt.was}\\s+${fmt.cur}${stickerStr.replace(/[.]/g, '\\.')}\\)`,
@@ -96,7 +96,7 @@ for (const rel of FILES) {
       );
       src = src.replace(re, `<strong>${fmt.curOut}${newFeeStr}${fmt.per}</strong> (${fmt.was} ${fmt.curOut}${stickerStr})`);
     } else {
-      // Pattern 2: "$145/mo" alone (no coupon) — for 25K/150K/250K
+      // Pattern 2: "$145/mo" alone (no coupon), for 25K/150K/250K
       // Match the full cell + adjacent "—" coupon cell, replace both
       const re = new RegExp(
         `<td><strong>${fmt.cur}${oldFeeStr.replace(/[.]/g, '\\.')}${fmt.per}</strong></td>\\s*\\n?\\s*<td>—</td>`,

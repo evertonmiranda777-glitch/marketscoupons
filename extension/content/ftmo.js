@@ -34,7 +34,7 @@ async function mcSyncFTMO(opts = {}) {
   const leads = mcScrapeFTMOLeads();
 
   if (!snapshot && !leads.length) {
-    mcToastFT('FTMO: sem dados — abra Affiliate Section -> Dashboard');
+    mcToastFT('FTMO: sem dados, abra Affiliate Section -> Dashboard');
     return { ok:false };
   }
 
@@ -48,7 +48,7 @@ async function mcSyncFTMO(opts = {}) {
     mcToastFT(`FTMO: snapshot + ${leads.length} leads sincronizado`);
     await mcMarkSyncFT('ftmo');
   } else {
-    mcToastFT('FTMO: erro — ' + (out.error || '?'));
+    mcToastFT('FTMO: erro, ' + (out.error || '?'));
   }
   return out;
 }

@@ -38,7 +38,7 @@ for (const issue of report.issues) {
     }
   }
 
-  // Pattern A — extend viewBox bottom
+  // Pattern A, extend viewBox bottom
   if (maxOverflowY > vbH) {
     const newH = Math.ceil(maxOverflowY + 14);
     svg = svg.replace(/viewBox="0 0 (\d+) \d+(?:\.\d+)?"/, `viewBox="0 0 $1 ${newH}"`);
@@ -57,7 +57,7 @@ for (const issue of report.issues) {
     modified = true;
   }
 
-  // Pattern B — left label overflow (x="-10" or "-20" with anchor=end). Add 10 to negative anchor x values.
+  // Pattern B, left label overflow (x="-10" or "-20" with anchor=end). Add 10 to negative anchor x values.
   if (issue.overflow) {
     for (const o of issue.overflow) {
       if (o.side === 'L' && o.tag === 'text' && o.x < 0) {

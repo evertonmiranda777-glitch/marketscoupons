@@ -55,7 +55,7 @@ async function mcSyncE2T(opts = {}) {
     mcToastE2T(`E2T: ${rows.length} dias, ${leads.length} leads, snapshot=${!!snapshot}`);
     await mcMarkSyncE2T('e2t');
   } else {
-    mcToastE2T('E2T: erro — ' + (out.error || '?'));
+    mcToastE2T('E2T: erro, ' + (out.error || '?'));
   }
   return out;
 }

@@ -10,7 +10,7 @@ const SUB_HEAD = { apikey: SK, Authorization: `Bearer ${SK}` };
 
 // Tags Brevo associadas com a campanha site-invite
 const TAGS_OF_INTEREST = ['site-invite', 'invite-site'];
-// Subjects que indicam site-invite — TODOS os 7 idiomas
+// Subjects que indicam site-invite, TODOS os 7 idiomas
 const SUBJECT_PATTERNS = [
   /\$25K account for \$19\.90/i,        // EN
   /Conta de \$25K por \$19/i,           // PT

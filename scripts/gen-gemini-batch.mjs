@@ -17,13 +17,13 @@ const buildPrompt = ({ guide, title, composition, nazmulRef }) => {
   const cn = ACCENT_NAME[guide];
   return `Editorial pitch-deck cover in the EXACT visual style of ref-image-1 (Nazmul Hossan ${nazmulRef}). Critical requirements:
 
-COMPOSITION — recreate the layout of ref-image-2 pixel-accurately:
+COMPOSITION, recreate the layout of ref-image-2 pixel-accurately:
 ${composition}
 
-ATMOSPHERE — match ref-image-1 exactly:
+ATMOSPHERE, match ref-image-1 exactly:
 - 70% of canvas is DEEP BLACK negative space (#0A0A0F), ONLY the subject is illuminated
 - Single cinematic light source casting long soft shadows
-- ${cn} ${c} accent ONLY on key elements (outlines, pills, hero numbers/values) — never fill the whole frame
+- ${cn} ${c} accent ONLY on key elements (outlines, pills, hero numbers/values), never fill the whole frame
 - Secondary text in cool off-white / pale gray on deep black
 - Subtle film grain, moody editorial magazine-spread mood
 
@@ -36,7 +36,7 @@ const jobs = [
   { slug: 'hero-g1-deal', guide: 'G1', nazmulRef: 'cardan-c', aesthetic: 'cardan-c.jpg', content: 'nazmul-hero-g1-deal.png',
     title: 'Hero · The Deal',
     composition: `1. Thin orange outlined pill at TOP: "WHY PROP FIRMS EXIST" (JetBrains Mono, uppercase, letter-spaced)
-2. Central DOUBLE-CARD stack (Nazmul A5 signature): BACK ghost card offset 10px down-right (barely visible, dim orange outline on near-black), FRONT hero card on top showing "$50K + YOU" — "$50K" left with "FIRM'S CAPITAL" label, bold "+" separator, "YOU" right with "TRADER SKILL" label
+2. Central DOUBLE-CARD stack (Nazmul A5 signature): BACK ghost card offset 10px down-right (barely visible, dim orange outline on near-black), FRONT hero card on top showing "$50K + YOU", "$50K" left with "FIRM'S CAPITAL" label, bold "+" separator, "YOU" right with "TRADER SKILL" label
 3. Thin orange outlined pill at BOTTOM: "80/20 SPLIT · CONTRACT"
 4. Faint horizontal orange light-bloom behind the hero card` },
 
@@ -92,18 +92,18 @@ const jobs = [
   { slug: 'money-flow', guide: 'G1', nazmulRef: 'chaintools', aesthetic: 'chaintools.jpg', content: 'nazmul-money-flow.png',
     title: 'Money Flow',
     composition: `1. Single focal: a premium BLACK CREDIT CARD mockup floating with slight 3D rotation, chrome chip realistic, contactless icon, "MarketsCoupons" wordmark subtle
-2. Massive balance "$2,400.00" overlapping the card — "$2,400" bold white, ".00" in ORANGE accent
+2. Massive balance "$2,400.00" overlapping the card, "$2,400" bold white, ".00" in ORANGE accent
 3. Side-light from the right casting long soft shadow to the left
 4. Orange diagonal light-bloom background gesture
-5. ONE focal only (the card) — rest is deep black negative space` },
+5. ONE focal only (the card), rest is deep black negative space` },
 
   { slug: 'global-map', guide: 'G1', nazmulRef: 'heliomove', aesthetic: 'heliomove.jpg', content: 'nazmul-global-map.png',
     title: 'Global Map',
     composition: `1. Small orange pill top: "3 REGIONS · 250+ FIRMS"
 2. Minimalist world-map silhouette (dark-on-dark), with 3 illuminated orange cluster points labeled:
-   - "North America — Apex / Bulenox / Topstep · Futures"
-   - "Europe — FTMO / The5ers / E8 · FX+CFD"
-   - "MENA + Asia — FundingPips / Blueberry · Global FX"
+   - "North America, Apex / Bulenox / Topstep · Futures"
+   - "Europe, FTMO / The5ers / E8 · FX+CFD"
+   - "MENA + Asia, FundingPips / Blueberry · Global FX"
 3. Bottom badge: "250+ FIRMS · $10B+ FUNDED"
 4. Architectonic scale, orange glow only on active clusters` },
 
@@ -140,7 +140,7 @@ const jobs = [
     composition: `1. Small emerald pill top: "REVERSE MATH · $3K TARGET"
 2. CENTERED TYPOGRAPHIC EQUATION working backward from target, premium Fraunces serif:
    "$3,000 target" → "÷ 20 trades" → "= $150 avg win" → "R:R 1:3" → "Risk $50/trade"
-3. The FINAL step "Risk $50/trade" is wrapped in a SOLID emerald pill — the hero result
+3. The FINAL step "Risk $50/trade" is wrapped in a SOLID emerald pill, the hero result
 4. Equation arranged on horizontal editorial baseline, generous whitespace` },
 
   { slug: 'rules-dashboard', guide: 'G2', nazmulRef: 'fynex-fintech', aesthetic: 'fynex-fintech.jpg', content: 'nazmul-rules-dashboard.png',
@@ -177,7 +177,7 @@ const jobs = [
     title: 'Recovery Math',
     composition: `1. Small red pill top: "LOSS → RECOVERY NEEDED"
 2. ASYMMETRIC CURVE CHART with 4 plotted points, rising dramatically right-upward
-3. Left legend stack — 4 labeled pills with color gradient:
+3. Left legend stack, 4 labeled pills with color gradient:
    - GREEN pill: "−10% → +11%"
    - AMBER pill: "−25% → +33%"
    - ORANGE pill: "−50% → +100%"
@@ -205,7 +205,7 @@ const jobs = [
   { slug: 'contracts-per-size', guide: 'G4', nazmulRef: 'chaintools', aesthetic: 'chaintools.jpg', content: 'nazmul-contracts-per-size.png',
     title: 'Contracts per Size',
     composition: `1. Small blue pill top: "SAME RULE · 1% · 8 TICKS · $5"
-2. BAR CHART — 4 ascending 3D blue bars left to right:
+2. BAR CHART, 4 ascending 3D blue bars left to right:
    Bar 1: "1×" label above, "$25K" below (smallest)
    Bar 2: "2×" / "$50K"
    Bar 3: "3×" / "$100K"
@@ -220,7 +220,7 @@ const jobs = [
    - Green smooth steady rise
    - Orange volatile roller-coaster
    - Red crash-and-burn
-3. TOP-RIGHT legend stack — 3 pills with dark bg + accent outline:
+3. TOP-RIGHT legend stack, 3 pills with dark bg + accent outline:
    - Emerald pill: "1% · +34%"
    - Orange pill: "3% · +52% vol"
    - Red pill: "10% · BUSTED"

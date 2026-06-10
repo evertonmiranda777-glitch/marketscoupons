@@ -19,17 +19,17 @@ if (!KEY) { console.error('Missing SUPABASE_SERVICE_ROLE_KEY'); process.exit(1);
 const db = createClient(URL, KEY, { auth: { persistSession: false } });
 
 const META = {
-  pt: { title: 'Volume Price Analysis (VPA) — Como Ler a Intenção Institucional em Cada Barra', read_time: '32 min',
+  pt: { title: 'Volume Price Analysis (VPA), Como Ler a Intenção Institucional em Cada Barra', read_time: '32 min',
         excerpt: 'O guia completo de VPA com base em Wyckoff, Tom Williams e Anna Coulling: esforço vs. resultado, barras de no-supply e clímax, o ciclo de quatro fases, três setups de alta probabilidade e gestão de risco para prop firms.' },
-  es: { title: 'Volume Price Analysis (VPA) — Cómo Leer la Intención Institucional en Cada Barra', read_time: '32 min',
+  es: { title: 'Volume Price Analysis (VPA), Cómo Leer la Intención Institucional en Cada Barra', read_time: '32 min',
         excerpt: 'La guía completa de VPA basada en Wyckoff, Tom Williams y Anna Coulling: esfuerzo vs. resultado, barras de no-supply y clímax, el ciclo de cuatro fases, tres setups de alta probabilidad y gestión de riesgo para prop firms.' },
-  it: { title: 'Volume Price Analysis (VPA) — Come Leggere l’Intenzione Istituzionale in Ogni Barra', read_time: '32 min',
+  it: { title: 'Volume Price Analysis (VPA), Come Leggere l’Intenzione Istituzionale in Ogni Barra', read_time: '32 min',
         excerpt: 'La guida completa al VPA basata su Wyckoff, Tom Williams e Anna Coulling: sforzo vs. risultato, barre di no-supply e climax, il ciclo a quattro fasi, tre setup ad alta probabilità e gestione del rischio per le prop firm.' },
-  fr: { title: 'Volume Price Analysis (VPA) — Lire l’Intention Institutionnelle dans Chaque Barre', read_time: '32 min',
+  fr: { title: 'Volume Price Analysis (VPA), Lire l’Intention Institutionnelle dans Chaque Barre', read_time: '32 min',
         excerpt: 'Le guide complet du VPA fondé sur Wyckoff, Tom Williams et Anna Coulling : effort vs. résultat, barres de no-supply et climax, le cycle en quatre phases, trois setups à forte probabilité et gestion du risque pour les prop firms.' },
-  de: { title: 'Volume Price Analysis (VPA) — Die institutionelle Absicht in jeder Kerze lesen', read_time: '32 min',
+  de: { title: 'Volume Price Analysis (VPA), Die institutionelle Absicht in jeder Kerze lesen', read_time: '32 min',
         excerpt: 'Der komplette VPA-Leitfaden auf Basis von Wyckoff, Tom Williams und Anna Coulling: Aufwand vs. Ergebnis, No-Supply- und Klimax-Kerzen, der Vier-Phasen-Zyklus, drei Setups mit hoher Trefferquote und Risikomanagement für Prop Firms.' },
-  ar: { title: 'تحليل السعر والحجم (VPA) — كيف تقرأ النية المؤسسية في كل شمعة', read_time: '32 min',
+  ar: { title: 'تحليل السعر والحجم (VPA), كيف تقرأ النية المؤسسية في كل شمعة', read_time: '32 min',
         excerpt: 'الدليل الكامل لـ VPA المبني على ويكوف وتوم ويليامز وآنا كولينغ: الجهد مقابل النتيجة، شمعات الذروة، دورة المراحل الأربع، وإدارة المخاطر لشركات التمويل.' },
 };
 

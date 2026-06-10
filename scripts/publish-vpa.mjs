@@ -21,7 +21,7 @@ const db = createClient(URL, KEY, { auth: { persistSession: false } });
 const body = fs.readFileSync('data/preview/vpa-v7-en.body.html', 'utf8');
 
 const row = {
-  title: 'Volume Price Analysis (VPA) — How to Read Institutional Intent in Every Bar',
+  title: 'Volume Price Analysis (VPA), How to Read Institutional Intent in Every Bar',
   slug: 'vpa-volume-price-analysis',
   category: 'Technical Analysis',
   level: 'intermediate',

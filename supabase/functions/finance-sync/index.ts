@@ -71,7 +71,7 @@ serve(async (req) => {
     const normalized = rows
       // Drop monthly summary rows from affiliate panels (Apex/Bulenox CSV includes them).
       // They have granularity='month' and date=firstDayOfMonth, which collides with the day-1 daily row
-      // under the (firm_id,date) upsert key — corrupting the day-1 value with the full month total.
+      // under the (firm_id,date) upsert key, corrupting the day-1 value with the full month total.
       .filter(r => r && r.date && r.granularity !== 'month')
       .map(r => ({
         firm_id: firm,
@@ -115,7 +115,7 @@ serve(async (req) => {
         .limit(10000);
       const realByDay: Record<string, { count: number; sumAmount: number }> = {};
       const synthByDay: Record<string, { id?: string; transaction_id: string; created_at: string }[]> = {};
-      // Precisa do id pra deletar — refetch com id
+      // Precisa do id pra deletar, refetch com id
       const { data: existingFull } = await sb
         .from("affiliate_conversions")
         .select("id, transaction_id, amount, created_at")
@@ -156,7 +156,7 @@ serve(async (req) => {
         out.synth_refund_removed = idsToDelete.length;
       }
       const allSynths: any[] = [];
-      // Dia BRT atual — não criar synths pro dia em andamento (espalharia em horários futuros e infla
+      // Dia BRT atual, não criar synths pro dia em andamento (espalharia em horários futuros e infla
       // dashboards de campanha com vendas em horas que ainda não chegaram). Markets Monitor cobre vendas
       // reais em tempo real; o gap do dia atual fica pra o cron noturno preencher quando o dia fechar.
       const todayBrt = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
@@ -171,7 +171,7 @@ serve(async (req) => {
         if (remainingComm <= 0) continue;
         const perTx = remainingComm / gap;
         const dateNoDash = r.date.replace(/-/g, '');
-        // Coloca synth NOON BRT do dia (= 15:00 UTC) — fica claramente no dia BRT
+        // Coloca synth NOON BRT do dia (= 15:00 UTC), fica claramente no dia BRT
         // distribuído entre 09:00-21:00 BRT pra parecer trader em horário comercial
         const noonBrtMs = Date.parse(`${r.date}T15:00:00Z`);
         const startIdx = real.count + 1;

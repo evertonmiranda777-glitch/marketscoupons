@@ -1,4 +1,4 @@
-// Token bucket rate limiter — in-memory por instância serverless.
+// Token bucket rate limiter, in-memory por instância serverless.
 // Cold starts limpam o state, então é defesa best-effort contra abuse, não anti-DDoS de produção.
 // Pra controle real seria preciso Upstash Redis ou Vercel KV.
 

@@ -96,7 +96,7 @@ async function measureStrategy(strategy, baseline) {
   while (attempts < 3) {
     const c = classify(best.perf_score, baseline);
     if (c.level !== 'REVERT' && c.level !== 'REGRESSION') break;
-    console.log(`[${strategy}] medição ${attempts}=${best.perf_score}/100 (${c.level}) — re-medindo (anti-ruído)`);
+    console.log(`[${strategy}] medição ${attempts}=${best.perf_score}/100 (${c.level}), re-medindo (anti-ruído)`);
     const again = await runPSI(strategy);
     attempts++;
     if (again.perf_score > best.perf_score) best = again;
@@ -123,7 +123,7 @@ async function sbInsert(rows) {
 // Calcula baseline = min(P75_14d, max_7d) filtrando quality_flag='ok'.
 // Se < MIN_BASELINE_SAMPLES runs ok em 14d, retorna fallback + warning.
 //
-// TODO: detectar baseline drift — se >=3 runs consecutivos com score
+// TODO: detectar baseline drift, se >=3 runs consecutivos com score
 // abaixo do P25 dos últimos 30 dias (ok-only), disparar TG manual
 // "baseline pode estar virando, investigar manualmente"
 async function getBaseline(strategy) {
@@ -145,7 +145,7 @@ async function getBaseline(strategy) {
     console.warn(`[baseline ${strategy}] WARNING: apenas ${all.length} runs ok em 14d (< ${MIN_BASELINE_SAMPLES}), fallback ${BASELINE_FALLBACK}`);
     return { value: BASELINE_FALLBACK, source: 'fallback_insufficient_samples', n: all.length, p75_14d: null, max_7d: null };
   }
-  // P75 via nearest-rank (sem interpolação — preserva valores reais do dataset)
+  // P75 via nearest-rank (sem interpolação, preserva valores reais do dataset)
   const sorted14 = all.map(x => x.perf_score).sort((a,b) => a-b);
   const p75Idx = Math.ceil(sorted14.length * 0.75) - 1;
   const p75_14d = sorted14[Math.max(0, p75Idx)];
@@ -192,7 +192,7 @@ function shouldFireCritical(state, score) {
 // Auto-fix (autoFixHtml/commit) e auto-revert REMOVIDOS 2026-05-20 a pedido do Everton.
 // Motivo: medição lixo de runner do GitHub Actions disparava ação automática em
 // deploy/código (revert errado, commit automático). Agora o monitor SÓ mede, salva
-// no Supabase e avisa no Telegram em queda real — nenhuma ação automática. Decisão
+// no Supabase e avisa no Telegram em queda real, nenhuma ação automática. Decisão
 // do que fazer é manual. Ver memória feedback_pagespeed_runner_ruido.
 
 async function tg(msg) {
@@ -219,14 +219,14 @@ function classify(score, baseline) {
 
 function tgTemplate(strategy, m, baseline, c, runUrl, asCritical) {
   const head = asCritical
-    ? `🚨 <b>CRÍTICO ABSOLUTO</b> — ${strategy}`
+    ? `🚨 <b>CRÍTICO ABSOLUTO</b>, ${strategy}`
     : c.level === 'REVERT'
-      ? `🚨 <b>Queda forte — revisar manualmente</b> — ${strategy}`
+      ? `🚨 <b>Queda forte, revisar manualmente</b>, ${strategy}`
       : c.level === 'REGRESSION'
-        ? `⚠️ <b>Regressão — revisar manualmente</b> — ${strategy}`
+        ? `⚠️ <b>Regressão, revisar manualmente</b>, ${strategy}`
         : c.level === 'OBSERVATION'
-          ? `📉 <b>Queda detectada (sem ação automática)</b> — ${strategy}`
-          : `✅ <b>PageSpeed OK</b> — ${strategy}`;
+          ? `📉 <b>Queda detectada (sem ação automática)</b>, ${strategy}`
+          : `✅ <b>PageSpeed OK</b>, ${strategy}`;
   return `${head}
 Score: <b>${m.perf_score}/100</b>  LCP ${(m.lcp_ms/1000).toFixed(1)}s  CLS ${m.cls}  TBT ${m.tbt_ms}ms
 Baseline: ${baseline.value} (${baseline.source}, n=${baseline.n}, P75₁₄=${baseline.p75_14d ?? '—'}, max₇=${baseline.max_7d ?? '—'})
@@ -248,7 +248,7 @@ Run: ${runUrl}`;
 // true       OK            *             *         → [CRITICAL]                      (raro: baseline puxado, score<50, drop pequeno)
 // true       OBSERVATION   *             *         → [CRITICAL, OBSERVATION]         (raro: score<50, drop 5-7)
 // true       REGRESSION    *             *         → [CRITICAL, REGRESSION, action]  (score<50 E drop 8-14)
-// true       REVERT        *             *         → [CRITICAL, action]              (score<50 E drop>=15 — caso 16/05)
+// true       REVERT        *             *         → [CRITICAL, action]              (score<50 E drop>=15, caso 16/05)
 //                                                                                     suprime REVERT redundante (ação cobre)
 async function processStrategy(strategy, m, runUrl, baseline) {
   const state    = await getAlertState(strategy);
@@ -271,10 +271,10 @@ async function processStrategy(strategy, m, runUrl, baseline) {
   }
 
   // Sem ação automática (auto-revert/auto-fix removidos 2026-05-20). Só sinaliza
-  // pra revisão manual — a queda já foi confirmada por best-of-3 em measureStrategy.
+  // pra revisão manual, a queda já foi confirmada por best-of-3 em measureStrategy.
   const actions = [];
   if (c.level === 'REVERT' || c.level === 'REGRESSION') {
-    actions.push('queda confirmada (best-of-3) — REVISAR MANUALMENTE. Sem ação automática.');
+    actions.push('queda confirmada (best-of-3), REVISAR MANUALMENTE. Sem ação automática.');
   }
 
   // Montagem das mensagens (ver tabela-verdade acima)
@@ -288,7 +288,7 @@ async function processStrategy(strategy, m, runUrl, baseline) {
       msgs.push(tgTemplate(strategy, m, baseline, c, runUrl, false));
     }
   } else if (c.level === 'REVERT' && critFired) {
-    // Crítico já cobriu — não duplica REVERT, só mostra ação abaixo
+    // Crítico já cobriu, não duplica REVERT, só mostra ação abaixo
   } else {
     msgs.push(tgTemplate(strategy, m, baseline, c, runUrl, false));
   }
@@ -300,14 +300,14 @@ async function processStrategy(strategy, m, runUrl, baseline) {
 
 (async () => {
   console.log('PSI run start', new Date().toISOString());
-  // Baseline buscado ANTES de medir — measureStrategy usa pra decidir se re-mede.
+  // Baseline buscado ANTES de medir, measureStrategy usa pra decidir se re-mede.
   const blM = await getBaseline('mobile');
   const blD = await getBaseline('desktop');
   const [m, d] = await Promise.all([
     measureStrategy('mobile', blM),
     measureStrategy('desktop', blD),
   ]);
-  // _attempts é interno (não é coluna) — remove antes do insert.
+  // _attempts é interno (não é coluna), remove antes do insert.
   const stripInternal = ({ _attempts, ...rest }) => rest;
   await sbInsert([
     { url: SITE_URL, ...stripInternal(m) },
@@ -334,7 +334,7 @@ async function processStrategy(strategy, m, runUrl, baseline) {
   if (!allSilent) {
     await tg(allMsgs.join('\n\n'));
   } else {
-    console.log('all silent OK (no critical, no heartbeat) — TG skipped');
+    console.log('all silent OK (no critical, no heartbeat), TG skipped');
   }
   console.log(allMsgs.join('\n\n'));
 })().catch(async (e) => {

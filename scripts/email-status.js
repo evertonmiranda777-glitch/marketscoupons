@@ -1,4 +1,4 @@
-// One-shot diagnóstico de email — quem recebeu o quê, quando.
+// One-shot diagnóstico de email, quem recebeu o quê, quando.
 // Uso: gh workflow run email-status.yml + ler logs do run
 
 import { setTimeout as sleep } from 'timers/promises';
@@ -47,7 +47,7 @@ async function main() {
     }
   }
 
-  console.log('\n=== 3. email_subscribers — counts por status ===');
+  console.log('\n=== 3. email_subscribers, counts por status ===');
   const allSubs = await fetchAll('email_subscribers?select=status,created_at,sent_count,last_sent_at,tags');
   if (allSubs) {
     console.log(`Total subscribers: ${allSubs.length}`);

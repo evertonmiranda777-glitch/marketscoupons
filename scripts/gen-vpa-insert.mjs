@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 const body = fs.readFileSync('data/preview/vpa-v7-en.body.html','utf8');
 if (body.includes('$vpa$')) throw new Error('delimiter collision');
-const title = 'Volume Price Analysis (VPA) — How to Read Institutional Intent in Every Bar';
+const title = 'Volume Price Analysis (VPA), How to Read Institutional Intent in Every Bar';
 const excerpt = 'The complete VPA guide built on Wyckoff, Tom Williams and Anna Coulling: effort vs result, no-supply and climax bars, the four-phase cycle, three high-probability setups, and prop-firm risk.';
 const sql = `INSERT INTO blog_posts (title, slug, category, level, read_time, body, excerpt, icon, active, ai_generated, sort_order, lang, cover_url, author)
 VALUES (

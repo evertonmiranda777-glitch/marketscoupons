@@ -3,13 +3,13 @@
  * sync-memory-to-supabase.mjs
  *
  * Backup PERMANENTE das memórias do Claude pro Supabase.
- * Roda quando salvar memória — ou em cron diário.
+ * Roda quando salvar memória, ou em cron diário.
  * Mandamento #12 da DOUTRINA IMPARÁVEL.
  *
  * Lê: C:/Users/evert/.claude/projects/c--Users-evert-Downloads-marketscoupons-repo/memory/*.md
  * Escreve: tabela claude_memory_backup no Supabase
  *
- * Idempotente — só upsert se content_hash mudou.
+ * Idempotente, só upsert se content_hash mudou.
  *
  * Usage:
  *   SUPABASE_SERVICE_ROLE=... node scripts/sync-memory-to-supabase.mjs

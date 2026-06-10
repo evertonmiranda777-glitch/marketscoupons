@@ -867,7 +867,7 @@
           "pct": 100
         },
         {
-          "text": "Real selling — flee",
+          "text": "Real selling, flee",
           "with": "rect",
           "textPos": "(301,383) 98x14",
           "pct": 100
@@ -1194,7 +1194,7 @@
           "pct": 100
         },
         {
-          "text": "STOP · 2-3 ticks below Spring low — invalidation level",
+          "text": "STOP · 2-3 ticks below Spring low, invalidation level",
           "with": "rect",
           "textPos": "(80,463) 280x14",
           "pct": 100
@@ -1282,7 +1282,7 @@
           "pct": 100
         },
         {
-          "text": "• 2-4 trades/week — well under DLL limit",
+          "text": "• 2-4 trades/week, well under DLL limit",
           "with": "rect",
           "textPos": "(80,167) 215x14",
           "pct": 100
@@ -1294,7 +1294,7 @@
           "pct": 100
         },
         {
-          "text": "• Targets are 3-4R — fast 8% profit pull",
+          "text": "• Targets are 3-4R, fast 8% profit pull",
           "with": "rect",
           "textPos": "(80,207) 207x14",
           "pct": 100
@@ -1324,7 +1324,7 @@
           "pct": 100
         },
         {
-          "text": "• 20+ trades/day — slippage compounds",
+          "text": "• 20+ trades/day, slippage compounds",
           "with": "rect",
           "textPos": "(490,147) 215x14",
           "pct": 100
@@ -1533,7 +1533,7 @@
           "pct": 100
         },
         {
-          "text": "Spring works ~71% — but the 29% loser shows Sign of Weakness",
+          "text": "Spring works ~71%, but the 29% loser shows Sign of Weakness",
           "with": "rect",
           "textPos": "(280,499) 375x14",
           "pct": 100
@@ -2872,7 +2872,7 @@
           "pct": 100
         },
         {
-          "text": "Tape replay reveals the refill pattern — most platforms flag",
+          "text": "Tape replay reveals the refill pattern, most platforms flag",
           "with": "rect",
           "textPos": "(80,463) 425x14",
           "pct": 100
@@ -2931,13 +2931,13 @@
           "pct": 100
         },
         {
-          "text": "POC · price magnet — if open above, expect pull DOWN to it ·",
+          "text": "POC · price magnet, if open above, expect pull DOWN to it ·",
           "with": "rect",
           "textPos": "(80,447) 497x14",
           "pct": 100
         },
         {
-          "text": "VAH/VAL · value area edges — outside = imbalance, inside = b",
+          "text": "VAH/VAL · value area edges, outside = imbalance, inside = b",
           "with": "rect",
           "textPos": "(80,463) 511x14",
           "pct": 100
@@ -3066,7 +3066,7 @@
           "pct": 100
         },
         {
-          "text": "at 5876-5877 — auction",
+          "text": "at 5876-5877, auction",
           "with": "rect",
           "textPos": "(575,202) 114x12",
           "pct": 100
@@ -3101,7 +3101,7 @@
       "file": "img\\blog-diagrams\\order-flow\\11-spoofing.svg",
       "overlaps": [
         {
-          "text": "Step 1 — bait drops",
+          "text": "Step 1, bait drops",
           "with": "rect",
           "textPos": "(190,127) 121x16",
           "pct": 100
@@ -3233,7 +3233,7 @@
           "pct": 100
         },
         {
-          "text": "Step 2 — bait pulled, dump",
+          "text": "Step 2, bait pulled, dump",
           "with": "rect",
           "textPos": "(565,127) 169x16",
           "pct": 100
@@ -3429,7 +3429,7 @@
       "file": "img\\blog-diagrams\\order-flow\\13-cvd-divergence.svg",
       "overlaps": [
         {
-          "text": "BULLISH DIVERGENCE — buy setup",
+          "text": "BULLISH DIVERGENCE, buy setup",
           "with": "rect",
           "textPos": "(60,87) 224x16",
           "pct": 100
@@ -3453,7 +3453,7 @@
           "pct": 100
         },
         {
-          "text": "BEARISH DIVERGENCE — sell setup",
+          "text": "BEARISH DIVERGENCE, sell setup",
           "with": "rect",
           "textPos": "(490,87) 224x16",
           "pct": 100
@@ -3892,25 +3892,25 @@
           "pct": 100
         },
         {
-          "text": "• TradingView footprint indicators — they use aggregated 1-s",
+          "text": "• TradingView footprint indicators, they use aggregated 1-s",
           "with": "rect",
           "textPos": "(80,365) 583x14",
           "pct": 100
         },
         {
-          "text": "• Broker-provided \"depth\" without exchange fees — they show ",
+          "text": "• Broker-provided \"depth\" without exchange fees, they show ",
           "with": "rect",
           "textPos": "(80,385) 482x14",
           "pct": 100
         },
         {
-          "text": "• Free crypto exchange order flow — most exchanges hide aggr",
+          "text": "• Free crypto exchange order flow, most exchanges hide aggr",
           "with": "rect",
           "textPos": "(80,405) 573x14",
           "pct": 100
         },
         {
-          "text": "• MT4/MT5 forex order flow — there is no centralized tape in",
+          "text": "• MT4/MT5 forex order flow, there is no centralized tape in",
           "with": "rect",
           "textPos": "(80,425) 501x14",
           "pct": 100
@@ -4187,7 +4187,7 @@
       "file": "img\\blog-diagrams\\0dte\\03-four-actors.svg",
       "overlaps": [
         {
-          "text": "2 · INCOME FUNDS — premium sellers",
+          "text": "2 · INCOME FUNDS, premium sellers",
           "with": "rect",
           "textPos": "(480,118) 259x17",
           "pct": 100
@@ -4229,7 +4229,7 @@
           "pct": 100
         },
         {
-          "text": "3 · RETAIL — lottery tickets",
+          "text": "3 · RETAIL, lottery tickets",
           "with": "rect",
           "textPos": "(80,328) 184x17",
           "pct": 100
@@ -4271,7 +4271,7 @@
           "pct": 100
         },
         {
-          "text": "4 · MARKET MAKERS — delta-hedged",
+          "text": "4 · MARKET MAKERS, delta-hedged",
           "with": "rect",
           "textPos": "(480,328) 259x17",
           "pct": 100
@@ -4460,7 +4460,7 @@
           "pct": 100
         },
         {
-          "text": "2. Dealers were short delta to hedge those puts — they buy S",
+          "text": "2. Dealers were short delta to hedge those puts, they buy S",
           "with": "rect",
           "textPos": "(140,545) 428x14",
           "pct": 100
@@ -4525,7 +4525,7 @@
           "pct": 100
         },
         {
-          "text": "Risk: news spike between 11:00 and 13:00 — use stop at +1× A",
+          "text": "Risk: news spike between 11:00 and 13:00, use stop at +1× A",
           "with": "rect",
           "textPos": "(140,501) 370x14",
           "pct": 100
@@ -5177,7 +5177,7 @@
           "pct": 100
         },
         {
-          "text": "SpotGamma/Tier1Alpha — identify gamma wall, zero gamma, key ",
+          "text": "SpotGamma/Tier1Alpha, identify gamma wall, zero gamma, key ",
           "with": "rect",
           "textPos": "(120,207) 376x14",
           "pct": 100
@@ -5308,7 +5308,7 @@
           "pct": 100
         },
         {
-          "text": "Multiple ICs at different strikes look diversified — they ar",
+          "text": "Multiple ICs at different strikes look diversified, they ar",
           "with": "rect",
           "textPos": "(80,359) 442x14",
           "pct": 100
@@ -5326,7 +5326,7 @@
           "pct": 100
         },
         {
-          "text": "Vol can move 5+ points in 2 minutes — gamma exposure becomes",
+          "text": "Vol can move 5+ points in 2 minutes, gamma exposure becomes",
           "with": "rect",
           "textPos": "(80,459) 383x14",
           "pct": 100
@@ -5503,7 +5503,7 @@
           "pct": 100
         },
         {
-          "text": "72% win rate looks safe — until the 28% takes 7× the size of",
+          "text": "72% win rate looks safe, until the 28% takes 7× the size of",
           "with": "rect",
           "textPos": "(480,259) 363x14",
           "pct": 100
@@ -5705,7 +5705,7 @@
           "pct": 100
         },
         {
-          "text": "IMPULSE (5 waves) — main trend",
+          "text": "IMPULSE (5 waves), main trend",
           "with": "rect",
           "textPos": "(208,102) 194x15",
           "pct": 100
@@ -6625,7 +6625,7 @@
           "pct": 100
         },
         {
-          "text": "Stick to #1 and #2 — they cover 70% of profitable Elliott op",
+          "text": "Stick to #1 and #2, they cover 70% of profitable Elliott op",
           "with": "rect",
           "textPos": "(252,528) 396x15",
           "pct": 100
@@ -6791,25 +6791,25 @@
           "pct": 100
         },
         {
-          "text": "→ Wave 3 entries have defined stop (below W1 start) — fits a",
+          "text": "→ Wave 3 entries have defined stop (below W1 start), fits a",
           "with": "rect",
           "textPos": "(80,147) 387x14",
           "pct": 100
         },
         {
-          "text": "→ Avg 3-5R per trade — fast path to 8% profit target",
+          "text": "→ Avg 3-5R per trade, fast path to 8% profit target",
           "with": "rect",
           "textPos": "(80,167) 274x14",
           "pct": 100
         },
         {
-          "text": "→ 2-4 setups per month per major index — low trade count fit",
+          "text": "→ 2-4 setups per month per major index, low trade count fit",
           "with": "rect",
           "textPos": "(80,187) 410x14",
           "pct": 100
         },
         {
-          "text": "→ Works on NQ, ES, GC, CL, MES, MNQ — all major prop firm sy",
+          "text": "→ Works on NQ, ES, GC, CL, MES, MNQ, all major prop firm sy",
           "with": "rect",
           "textPos": "(80,207) 366x14",
           "pct": 100
@@ -6845,7 +6845,7 @@
           "pct": 100
         },
         {
-          "text": "Week 8 · If profit target hit, STOP TRADING — preserve the p",
+          "text": "Week 8 · If profit target hit, STOP TRADING, preserve the p",
           "with": "rect",
           "textPos": "(80,397) 334x14",
           "pct": 100
@@ -6987,7 +6987,7 @@
           "pct": 100
         },
         {
-          "text": "→ Forces you to define stop BEFORE entry — sizing depends on",
+          "text": "→ Forces you to define stop BEFORE entry, sizing depends on",
           "with": "rect",
           "textPos": "(80,377) 407x14",
           "pct": 100
@@ -7321,7 +7321,7 @@
           "pct": 100
         },
         {
-          "text": "Micros let small accounts size properly — always prefer them",
+          "text": "Micros let small accounts size properly, always prefer them",
           "with": "rect",
           "textPos": "(100,437) 395x14",
           "pct": 100
@@ -7780,7 +7780,7 @@
           "pct": 100
         },
         {
-          "text": "Most quit during the trade 28-44 drawdown — that's where edg",
+          "text": "Most quit during the trade 28-44 drawdown, that's where edg",
           "with": "rect",
           "textPos": "(80,467) 400x14",
           "pct": 100
@@ -8905,7 +8905,7 @@
           "pct": 100
         },
         {
-          "text": "\"It'll come back\" — 1R becomes 3R loss, blowing the math.",
+          "text": "\"It'll come back\", 1R becomes 3R loss, blowing the math.",
           "with": "rect",
           "textPos": "(480,139) 305x14",
           "pct": 100
@@ -9914,7 +9914,7 @@
       "file": "img\\blog-diagrams\\pass-prop-firm\\06-news-rules.svg",
       "overlaps": [
         {
-          "text": "Moderate — Holding restricted",
+          "text": "Moderate, Holding restricted",
           "with": "rect",
           "textPos": "(480,125) 194x16",
           "pct": 100
@@ -9938,7 +9938,7 @@
           "pct": 100
         },
         {
-          "text": "Lenient — News trading allowed",
+          "text": "Lenient, News trading allowed",
           "with": "rect",
           "textPos": "(80,245) 203x16",
           "pct": 100
@@ -9962,7 +9962,7 @@
           "pct": 100
         },
         {
-          "text": "Special rules — Read fine print",
+          "text": "Special rules, Read fine print",
           "with": "rect",
           "textPos": "(480,245) 194x16",
           "pct": 100
@@ -14240,7 +14240,7 @@
       "file": "img\\blog-diagrams\\position-sizing\\02-fixed-pct-vs-dollar.svg",
       "overlaps": [
         {
-          "text": "FIXED % — Right",
+          "text": "FIXED %, Right",
           "with": "rect",
           "textPos": "(593,128) 116x17",
           "pct": 100

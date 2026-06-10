@@ -55,7 +55,7 @@ function htmlPage(lang, kind){
   const body = ok ? L.body : '';
   return `<!DOCTYPE html><html lang="${lang}"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${L.title} — Markets Coupons</title>
+<title>${L.title}, Markets Coupons</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,'Segoe UI',Roboto,Inter,sans-serif;background:#07090D;color:#EDF2F7;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}

@@ -1,4 +1,4 @@
-// GTM bootstrap — container Markets Coupons GTM-WJGTVX8G
+// GTM bootstrap, container Markets Coupons GTM-WJGTVX8G
 // Tags GA4 / Meta Pixel / Google Ads / Consent Mode v2 = configuradas no GTM (não no código).
 // Regra dura: NUNCA chamar gtag() ou fbq() direto fora deste arquivo. Use track() em app.js.
 // Histórico do erro 2026-04-12: GTM sobrescrevia gtag() e quebrava events custom.
@@ -9,11 +9,11 @@ var GTM_ID = 'GTM-WJGTVX8G';
 // 1. dataLayer init (PRECISA ser criado ANTES do GTM snippet senão eventos pré-load somem)
 window.dataLayer = window.dataLayer || [];
 
-// 2. gtag() shim — Consent Mode v2 (tag "Consent Mode v2 - Default Denied" do GTM gerencia defaults).
+// 2. gtag() shim, Consent Mode v2 (tag "Consent Mode v2 - Default Denied" do GTM gerencia defaults).
 //    Esse gtag SÓ enfileira no dataLayer. Não faz fan-out. GTM consome dataLayer e dispara tags.
 window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
 
-// 3. GTM snippet — carregamento LAZY (v2 2026-05-30: requestIdleCallback + 1ª interação).
+// 3. GTM snippet, carregamento LAZY (v2 2026-05-30: requestIdleCallback + 1ª interação).
 //    Antes era eager e bloqueava TBT mobile (~2s). Agora dispara só quando main thread libera
 //    ou na 1ª interação (touch/scroll/click), o que vier primeiro. Timeout 3s como fallback.
 //    Atribuição CAPI preservada via event_id (Pixel disparando 1s depois não perde venda).
@@ -33,7 +33,7 @@ window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
     });
   }
   function onInteract(){ loadGTM(); }
-  // Interacao: dispara o GTM imediato (incl. pagehide/visibilitychange pra capturar user que sai antes do timeout — memoria feedback_fb_pixel_lazy_load)
+  // Interacao: dispara o GTM imediato (incl. pagehide/visibilitychange pra capturar user que sai antes do timeout, memoria feedback_fb_pixel_lazy_load)
   ['touchstart','scroll','click','keydown','pointerdown','pagehide','visibilitychange'].forEach(function(e){
     try { window.addEventListener(e, onInteract, { passive: true, capture: true, once: true }); } catch(_){}
   });

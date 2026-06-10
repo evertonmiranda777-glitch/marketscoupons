@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Markets Coupons">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Position Sizing in Prop Firms — Vollständiger Leitfaden 2026">
+<meta name="twitter:title" content="Position Sizing in Prop Firms, Vollständiger Leitfaden 2026">
 <meta name="twitter:description" content="Universelle Bemessungsformel, Kontrakte pro Konto, angepasstes Kelly und realistische Skalierung in Prop Firm.">
 <meta name="twitter:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g4-bridge.png">
 <meta name="author" content="Markets Coupons Team">
@@ -182,7 +182,7 @@ footer.site-footer a:hover{color:var(--accent)}
       <span class="logo-mark">M</span>
       <span class="logo-txt">Markets<b>Coupons</b></span>
     </a>
-    <a href="/guides" class="nav-back" aria-label="Schließen — Leitfäden"><span class="x">×</span>Schließen</a>
+    <a href="/guides" class="nav-back" aria-label="Schließen, Leitfäden"><span class="x">×</span>Schließen</a>
   </div>
 </nav>
 
@@ -202,11 +202,11 @@ footer.site-footer a:hover{color:var(--accent)}
   <article id="content">
 <span class="badge">Vollständiger Leitfaden · Risiko &amp; Mathematik</span>
 <h1>Position Sizing in Prop Firms: Der vollständige Leitfaden zur Positionsbemessung im Jahr 2026</h1>
-<p><em>Letzte Aktualisierung: 20. April 2026 — 20 Min. Lesezeit</em></p>
-<p><img src="/img/guides-edu/gemini-pro/hero-g4-bridge.png" alt="Position Sizing in Prop Firms — Brücke zwischen Startkonto und skaliertem Konto, präzise blaue Kinobeleuchtung"></p>
+<p><em>Letzte Aktualisierung: 20. April 2026, 20 Min. Lesezeit</em></p>
+<p><img src="/img/guides-edu/gemini-pro/hero-g4-bridge.png" alt="Position Sizing in Prop Firms, Brücke zwischen Startkonto und skaliertem Konto, präzise blaue Kinobeleuchtung"></p>
 
 <blockquote>
-<p><strong>TL;DR</strong> — <strong>Position Sizing</strong> (Positionsbemessung) ist der wahre Treiber für Langlebigkeit in einer <strong>Prop Firm</strong>. Nicht wer das beste Setup hat, überlebt 12 Monate auf einem Funded-Konto – sondern wer die beste Bemessung hat. Dieser Leitfaden erklärt die universelle Formel (Risiko % × Konto ÷ Abstand zum Verlustlimit), die konkrete Tabelle der Kontrakte pro Kontogröße bei Futuros, die Lot-Berechnung im Forex, den Trugschluss des Vergleichs von Prozenten zwischen 25K, 50K und 100K, wie man das Kelly Criterion anwendet, ohne das Konto zu sprengen, die 3 Schulen (Fixed Fractional, Fixed Ratio, Anti-Martingale), die Größenanpassung, wenn Sie im <em>Drawdown Floor</em> aufsteigen, die realistische Skalierung von Apex 25K auf 300K durch Reinvestition von Auszahlungen, das Management mehrerer paralleler Konten und die 3 fatalen Fehler, die Funded-Trader töten. Am Ende haben Sie ein ausführbares Protokoll zur Bemessung jedes Trades in jeder Firma, in jedem Markt.</p>
+<p><strong>TL;DR</strong>, <strong>Position Sizing</strong> (Positionsbemessung) ist der wahre Treiber für Langlebigkeit in einer <strong>Prop Firm</strong>. Nicht wer das beste Setup hat, überlebt 12 Monate auf einem Funded-Konto – sondern wer die beste Bemessung hat. Dieser Leitfaden erklärt die universelle Formel (Risiko % × Konto ÷ Abstand zum Verlustlimit), die konkrete Tabelle der Kontrakte pro Kontogröße bei Futuros, die Lot-Berechnung im Forex, den Trugschluss des Vergleichs von Prozenten zwischen 25K, 50K und 100K, wie man das Kelly Criterion anwendet, ohne das Konto zu sprengen, die 3 Schulen (Fixed Fractional, Fixed Ratio, Anti-Martingale), die Größenanpassung, wenn Sie im <em>Drawdown Floor</em> aufsteigen, die realistische Skalierung von Apex 25K auf 300K durch Reinvestition von Auszahlungen, das Management mehrerer paralleler Konten und die 3 fatalen Fehler, die Funded-Trader töten. Am Ende haben Sie ein ausführbares Protokoll zur Bemessung jedes Trades in jeder Firma, in jedem Markt.</p>
 </blockquote>
 
 <table>
@@ -281,7 +281,7 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <p><strong>Drittens:</strong> Der Unterschied zwischen 50K und 100K ist nicht "die doppelte Anzahl von Kontrakten". Es sind etwa +50% bis +75%, weil das <strong>Drawdown</strong>-Limit nicht linear verdoppelt wird – und weil das psychologische Risiko, eine größere Größe zu handeln, sich vor dem Saldo verdoppelt.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/contracts-per-size.png" alt="Kontrakte pro Kontogröße — visuelle Tabelle, die Micro- und Mini-Futuros in 25K, 50K, 100K, 150K und 300K zeigt, mit vor und nach dem Drawdown Floor"></p>
+<p><img src="/img/guides-edu/gemini-pro/contracts-per-size.png" alt="Kontrakte pro Kontogröße, visuelle Tabelle, die Micro- und Mini-Futuros in 25K, 50K, 100K, 150K und 300K zeigt, mit vor und nach dem Drawdown Floor"></p>
 
 <hr>
 
@@ -367,19 +367,19 @@ footer.site-footer a:hover{color:var(--accent)}
 <h2>Anpassung des Sizing, wenn Sie im Drawdown Floor aufsteigen</h2>
 <p>Der Leitfaden <a href="/guides/gerenciamento-drawdown">Drawdown-Management in Prop Firms</a> erklärt detailliert das Konzept des <em>Drawdown Floor</em> – der Punkt, an dem der Trailing Drawdown von Apex stoppt und statisch wird. Hier geht es darum, wie sich das Sizing in jeder Phase des Zyklus ändern sollte.</p>
 
-<h3>Phase 1 — Vor-Floor (Saldo unter Anfangssaldo + Trailing + 100 US-Dollar)</h3>
+<h3>Phase 1, Vor-Floor (Saldo unter Anfangssaldo + Trailing + 100 US-Dollar)</h3>
 <p>Überlebensmodus. Absolute Mindestgröße. Bei Apex 50K: 1 Mini ES oder 3 Micros pro Trade, maximales Risiko 0,5% des Saldos (250 US-Dollar). Voller Fokus darauf, den Boden nicht mitzuziehen. Nur A+-Setups handeln, niemals A-.</p>
 
-<h3>Phase 2 — Floor aktiv, Konto frisch gesperrt</h3>
+<h3>Phase 2, Floor aktiv, Konto frisch gesperrt</h3>
 <p>Übergangszeit. Die Größe steigt allmählich: maximal +25% pro Woche. Von 1 Mini zu "1 Mini, manchmal 2", wenn sehr hochwertige Setups auftauchen. Das Risiko kann auf 0,75% des Saldos steigen. Immer noch maximale Disziplin – dies ist der Moment, in dem viele denken "Ich habe den schwierigen Teil hinter mir" und die Gewinne wieder abgeben.</p>
 
-<h3>Phase 3 — Konto stabilisiert (2+ Wochen nach Floor)</h3>
+<h3>Phase 3, Konto stabilisiert (2+ Wochen nach Floor)</h3>
 <p>Aufbaumodus. Standardgröße: 2 Minis oder 8 Micros bei 50K. Risiko 1% des Saldos. A+- und A--Setups akzeptiert. Hier beginnt das moderate Anti-Martingale – Erhöhungen nach nachgewiesener Konsistenz, niemals nach einem großen Tag.</p>
 
-<h3>Phase 4 — Performance Account / Funded-Konto</h3>
+<h3>Phase 4, Performance Account / Funded-Konto</h3>
 <p>Der Zyklus beginnt von neuem, aber jetzt zahlt es sich wirklich aus. In den ersten 3 Wochen zum Sizing von Phase 1 zurückzukehren, ist die goldene Regel. Viele Trader, die die Challenge bestehen, scheitern in der ersten Funded-Woche, weil sie die Größe von Phase 3 auf einem Konto beibehalten, das noch kein festgelegtes <em>Safety Net</em> hat.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/slow-vs-fast.png" alt="Langsames vs. aggressives Wachstum — zwei Saldo-Kurven, die zeigen, dass konservatives Sizing aggressives Sizing in 12 Monaten übertrifft"></p>
+<p><img src="/img/guides-edu/gemini-pro/slow-vs-fast.png" alt="Langsames vs. aggressives Wachstum, zwei Saldo-Kurven, die zeigen, dass konservatives Sizing aggressives Sizing in 12 Monaten übertrifft"></p>
 
 <blockquote>
 <p><strong>Praktische Regel:</strong> Das korrekte Sizing in jeder Phase ist 50% konservativer, als es die Logik vorschlägt. Wenn der Kopf sagt "2 Kontrakte sind möglich", handeln Sie 1. Wenn er sagt "3 sind möglich", handeln Sie 2. Die Verhaltensverzerrung auf einem Funded-Konto ist immer nach oben gerichtet; sie nach unten auszugleichen, ist das, was überlebt.</p>
@@ -452,7 +452,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <h4>Monate 10 bis 12</h4>
 <p>Besteht die beiden 100K-Konten. Endgültiges Portfolio: 3×25K + 2×50K + 2×100K = <strong>375.000 US-Dollar nominal</strong>. Quartalsauszahlung: 9.000 US-Dollar+. In den ersten 3 Passagen keine Reinvestition; nach dem Monat 4 wurden die Kosten für neue Konten aus den Auszahlungen bezahlt, nicht aus der eigenen Tasche.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="Realistische Apex-Skalierung — Zeitachse von 12 Monaten, die die Zusammensetzung von 25K + 50K + 100K Konten zeigt, bis 375.000 US-Dollar nominal erreicht sind"></p>
+<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="Realistische Apex-Skalierung, Zeitachse von 12 Monaten, die die Zusammensetzung von 25K + 50K + 100K Konten zeigt, bis 375.000 US-Dollar nominal erreicht sind"></p>
 
 <p>Der wesentliche Punkt: Der Trader musste das Sizing pro Konto nie über den Standard hinaus erhöhen. Jedes Konto wurde einzeln so gehandelt, als wäre es das einzige. Die Skalierung kam von der <strong>Anzahl der Einheiten</strong>, nicht von der <strong>Größe der Einheit</strong>. Das ist der Unterschied zwischen nachhaltig und fragil.</p>
 
@@ -465,7 +465,7 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <p>Der Zinseszinseffekt funktioniert, wenn – und nur wenn – das Sizing pro Konto konservativ bleibt. Das Sizing zu erhöhen, um "die Skalierung zu nutzen", bricht die Logik. Was skaliert, ist die Anzahl der Konten; die Größe innerhalb jedes Kontos bleibt fest. Dies widerspricht der Intuition der meisten Trader, die "den Einsatz erhöhen" wollen, wenn sie Vertrauen gewinnen.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="Zinseszinseffekt — Grafik, die zeigt, wie die Zusammensetzung mehrerer kleiner Konten das lineare Wachstum eines großen Kontos in 24 Monaten übertrifft"></p>
+<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="Zinseszinseffekt, Grafik, die zeigt, wie die Zusammensetzung mehrerer kleiner Konten das lineare Wachstum eines großen Kontos in 24 Monaten übertrifft"></p>
 
 <blockquote>
 <p><strong>Praktische Erkenntnis:</strong> Der Funded-Trader, der sich in 24 Monaten verzehnfacht hat, tat dies nie, indem er die Größe auf einem Konto verdoppelte. Er tat dies, indem er die gleiche Größe auf 10 Konten handelte, die nacheinander mit reinvestierten Auszahlungen aufgebaut wurden. Arithmetisches Wachstum der Größe, geometrisches Wachstum der Einheiten.</p>
@@ -525,10 +525,10 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <h2>Verwandte Leitfäden</h2>
 <ul>
-<li><a href="/guides/o-que-e-uma-prop-firm">Was ist eine Prop Firm</a> — Modell, Auszahlungen und Geschichte des zugewiesenen Kapitalmarktes</li>
-<li><a href="/guides/como-passar-no-desafio">Wie man die Challenge besteht</a> — Die 4 Säulen, tägliche Routine und 90%+ Erfolgsmethode</li>
-<li><a href="/guides/gerenciamento-drawdown">Drawdown-Management</a> — Die 3 Typen, Drawdown Floor, Firmenvergleich und persönlicher Circuit Breaker</li>
-<li><a href="/guides/como-sacar-lucros">Wie man Gewinne abhebt</a> — Auszahlung, Besteuerung und der Weg zur ersten Auszahlung</li>
+<li><a href="/guides/o-que-e-uma-prop-firm">Was ist eine Prop Firm</a>, Modell, Auszahlungen und Geschichte des zugewiesenen Kapitalmarktes</li>
+<li><a href="/guides/como-passar-no-desafio">Wie man die Challenge besteht</a>, Die 4 Säulen, tägliche Routine und 90%+ Erfolgsmethode</li>
+<li><a href="/guides/gerenciamento-drawdown">Drawdown-Management</a>, Die 3 Typen, Drawdown Floor, Firmenvergleich und persönlicher Circuit Breaker</li>
+<li><a href="/guides/como-sacar-lucros">Wie man Gewinne abhebt</a>, Auszahlung, Besteuerung und der Weg zur ersten Auszahlung</li>
 </ul>
 
 <p style="margin-top:48px;padding:20px;background:var(--abg);border:1px solid var(--abr);border-radius:12px;color:var(--t1);font-size:14px">

@@ -1,20 +1,20 @@
-# MarketsCoupons — Contexto do Projeto
+# MarketsCoupons, Contexto do Projeto
 
-## 🔥🔥🔥 DOUTRINA IMPARÁVEL — vigente 03/06/2026 🔥🔥🔥
+## 🔥🔥🔥 DOUTRINA IMPARÁVEL, vigente 03/06/2026 🔥🔥🔥
 
-**13 mandamentos absolutos do Everton:** nunca dizer "não", sempre buscar solução, usar qualquer skill/agent/ferramenta do mundo, construir memória permanente, reconhecer erros, melhorar infinitamente, acatar ordem com maestria. Detalhe completo: [memory/feedback_doutrina_imparavel.md](memory/feedback_doutrina_imparavel.md). Documento vivo — Everton adiciona ao longo do tempo.
+**13 mandamentos absolutos do Everton:** nunca dizer "não", sempre buscar solução, usar qualquer skill/agent/ferramenta do mundo, construir memória permanente, reconhecer erros, melhorar infinitamente, acatar ordem com maestria. Detalhe completo: [memory/feedback_doutrina_imparavel.md](memory/feedback_doutrina_imparavel.md). Documento vivo, Everton adiciona ao longo do tempo.
 
 **Estado mental obrigatório:** quota estourou? → outra ferramenta. SPA não revela? → outra abordagem. Sempre próximo passo. Zero desistência antes de exaurir opções gratuitas e zero-risco.
 
 ---
 
-## 🚨🚨🚨 LEI INVIOLÁVEL #0 — NUNCA CHUTAR DADOS PÚBLICOS 🚨🚨🚨
+## 🚨🚨🚨 LEI INVIOLÁVEL #0, NUNCA CHUTAR DADOS PÚBLICOS 🚨🚨🚨
 
-**Antes de QUALQUER UPDATE em preço/%/prazo/regra/spec de firma — abrir site oficial via Firecrawl/Playwright e VER o dado. Sem chute, sem "estimativa proporcional", sem "linear progression".**
+**Antes de QUALQUER UPDATE em preço/%/prazo/regra/spec de firma, abrir site oficial via Firecrawl/Playwright e VER o dado. Sem chute, sem "estimativa proporcional", sem "linear progression".**
 
 Dado não visto = `null` ou `"TBD validar"` no DB. Detalhe: [memory/feedback_nunca_chutar_dados_publicos.md](memory/feedback_nunca_chutar_dados_publicos.md).
 
-**Custo de chutar:** publicidade enganosa CDC art. 37 + Procon até R$12.6M + cancelamento afiliação + processo civil + perda reputação. Incidente 2026-06-03: chutei 200K Alpha Futures $239/$319 por "proporção linear" — Everton flagrou. Memória durável.
+**Custo de chutar:** publicidade enganosa CDC art. 37 + Procon até R$12.6M + cancelamento afiliação + processo civil + perda reputação. Incidente 2026-06-03: chutei 200K Alpha Futures $239/$319 por "proporção linear", Everton flagrou. Memória durável.
 
 **Vale pra TODA superfície:** site público, criativos, LP /coupons, emails (lib/email-render.js), ads (data/ad-copies.json), Telegram bot, schema markup, OG/Twitter cards.
 
@@ -22,26 +22,26 @@ Dado não visto = `null` ou `"TBD validar"` no DB. Detalhe: [memory/feedback_nun
 
 ## 🚨 LER PRIMEIRO (antes de qualquer ação)
 
-1. `memory/reference_doutrina_continuidade.md` — você é IA orientada a continuidade. Sistema com estado, não chatbot. Reconstruir contexto antes de cada resposta.
-2. `memory/reference_o_que_e_contexto.md` — operacionalização. 4 camadas, ritual início/fim, sinais de perda.
-3. `memory/feedback_modo_trabalho_empresario.md` — 7 regras: ação concreta, reconhecer antes de explicar, modo autônomo, caminhos exatos, memória ativa, PT-BR, codewords stop/preguiça.
-4. `memory/feedback_salvar_a_cada_sessao.md` — toda sessão termina com memória + MEMORY.md + CLAUDE.md atualizados, sem precisar pedir.
-5. `memory/MEMORY.md` — índice de memórias por tema.
-6. `memory/project_backlog_proximos_passos.md` — onde paramos / prioridades.
+1. `memory/reference_doutrina_continuidade.md`, você é IA orientada a continuidade. Sistema com estado, não chatbot. Reconstruir contexto antes de cada resposta.
+2. `memory/reference_o_que_e_contexto.md`, operacionalização. 4 camadas, ritual início/fim, sinais de perda.
+3. `memory/feedback_modo_trabalho_empresario.md`, 7 regras: ação concreta, reconhecer antes de explicar, modo autônomo, caminhos exatos, memória ativa, PT-BR, codewords stop/preguiça.
+4. `memory/feedback_salvar_a_cada_sessao.md`, toda sessão termina com memória + MEMORY.md + CLAUDE.md atualizados, sem precisar pedir.
+5. `memory/MEMORY.md`, índice de memórias por tema.
+6. `memory/project_backlog_proximos_passos.md`, onde paramos / prioridades.
 
 **Codewords:** "stop" / "preguiça" → para tudo, confessa o que cortou, refaz.
 
-**REGRA DURA pós-deploy (2026-05-10):** SQL retornar OK ≠ feature funcionando. SEMPRE abrir URL renderizada via `curl -s 'site.com/path?v=$(date +%s)'` ou Playwright (`mcp__playwright__browser_navigate` + `browser_evaluate`) ANTES de declarar pronto. Bug `cover_url` faltando no SELECT seria pego em 1 curl — não foi.
+**REGRA DURA pós-deploy (2026-05-10):** SQL retornar OK ≠ feature funcionando. SEMPRE abrir URL renderizada via `curl -s 'site.com/path?v=$(date +%s)'` ou Playwright (`mcp__playwright__browser_navigate` + `browser_evaluate`) ANTES de declarar pronto. Bug `cover_url` faltando no SELECT seria pego em 1 curl, não foi.
 
 **REGRA Telegram (2026-05-11):** TG NÃO é canal de status de progresso. Use SOMENTE quando user explicitamente fora do PC ou em momentos críticos (alerta, falha, conclusão de job longo agendado). Default: status no chat do Claude Code.
 
-**REGRA não inflar features (2026-05-11):** Antes de chamar view/função de "ROAS real" / "venda-a-venda" / similar — LER definição SQL primeiro. `v_attribution_campaign_30d` é RATEIO PROPORCIONAL (clicks da campaign ÷ total clicks × sales do dia), NÃO matching individual. Matcher venda-a-venda REAL = `attribution-matcher` cron 5h30 BRT em `affiliate_conversions` (que só popula desde fix de constraint 2026-05-11).
+**REGRA não inflar features (2026-05-11):** Antes de chamar view/função de "ROAS real" / "venda-a-venda" / similar, LER definição SQL primeiro. `v_attribution_campaign_30d` é RATEIO PROPORCIONAL (clicks da campaign ÷ total clicks × sales do dia), NÃO matching individual. Matcher venda-a-venda REAL = `attribution-matcher` cron 5h30 BRT em `affiliate_conversions` (que só popula desde fix de constraint 2026-05-11).
 
-**REGRA Top 3 email (2026-06-09):** template `top3` em INST_TEMPLATES é SAGRADO. Sempre as 3 firmas top do momento (Apex + Bulenox + TradeDay no padrão atual). NÃO inflar com variants, NÃO substituir firmas sem ordem direta. Pra mostrar opções de Apex (Pack 5x, Sem Taxa), usar `buildWhitePromoHtml` que tem seção "MAIS OPÇÕES" condicional (renderiza só se `prices[].n5` ou `prices[].na` existirem). Template existe em admin.html (envio manual) E lib/email-render.js (cron-bulk) — atualizar nos dois.
+**REGRA Top 3 email (2026-06-09):** template `top3` em INST_TEMPLATES é SAGRADO. Sempre as 3 firmas top do momento (Apex + Bulenox + TradeDay no padrão atual). NÃO inflar com variants, NÃO substituir firmas sem ordem direta. Pra mostrar opções de Apex (Pack 5x, Sem Taxa), usar `buildWhitePromoHtml` que tem seção "MAIS OPÇÕES" condicional (renderiza só se `prices[].n5` ou `prices[].na` existirem). Template existe em admin.html (envio manual) E lib/email-render.js (cron-bulk), atualizar nos dois.
 
 **REGRA bug visual (2026-06-09):** print mostrando dropdown branco/UI quebrada/cor errada = ajustar CSS, NÃO deletar a feature. Detalhes em `memory/feedback_ajustar_css_nao_deletar.md`. Quase apaguei aba Reviews por confundir.
 
-**REGRA case-sensitivity (2026-06-09):** arquivos em `img/Firms/` precisam ter o EXATO `firm.id` lowercase (`tradeday.png`, `e8.png`, `goat.png`). Templates usam `${f.id}.png` — Linux Vercel case-sensitive quebra com `Tradeday.png`/`E8 Markets.png`. `git config core.ignorecase=false` setado no projeto previne regressão.
+**REGRA case-sensitivity (2026-06-09):** arquivos em `img/Firms/` precisam ter o EXATO `firm.id` lowercase (`tradeday.png`, `e8.png`, `goat.png`). Templates usam `${f.id}.png`, Linux Vercel case-sensitive quebra com `Tradeday.png`/`E8 Markets.png`. `git config core.ignorecase=false` setado no projeto previne regressão.
 
 **REGRA cooldown email (2026-06-09):** dedup de templates institucionais NÃO é mais pra sempre. Usa `email_logs.template_slug` + janela configurável (input "Cooldown" no admin, default 7d). Tag Brevo `received-{slug}` ainda grava mas não bloqueia. Pra reenviar: ajustar input no admin.
 
@@ -76,47 +76,47 @@ Site de cupons de **prop firms** de trading. Compara firmas, oferece cupons, fid
 - Anon key hardcoded (RLS protege)
 - **Auth storageKey separados:** `mc-user-auth` (index) vs `mc-admin-auth` (admin)
 - Tabelas críticas: `cms_firms`, `cms_guides`, `blog_posts`, `email_subscribers`, `email_logs`, `loyalty_members`, `loyalty_proofs`, `affiliate_daily_stats`, `events`, `i18n`, `firm_translations`, `cms_texts`, `site_settings`
-- **Sempre usar `.maybeSingle()`** (não `.single()` — retorna 406 quando vazio)
+- **Sempre usar `.maybeSingle()`** (não `.single()`, retorna 406 quando vazio)
 
 ## Regras canônicas
 
 ### Compliance legal (CRÍTICO)
 NUNCA usar: "sinais", "entrada", "stop loss", "take profit", "lucro garantido", "trader profissional", "operação ao vivo", "copy trade", "we trade for you". Em copy de Meta Ads também banido: "fique rico", "renda garantida", "you'll profit". Live Room = "conteúdo exclusivo VIP", nunca "sinais".
 
-### Preços de firma — fonte única
+### Preços de firma, fonte única
 `cms_firms.prices` no Supabase é única fonte de verdade. `FIRM_ABOUT`/`CHECKOUT_FIRMS` em app.js = fallback puro. Helper canônico: `getPlanPrice(firmId, typeName, sizeStr)` em app.js:456. Nunca re-introduzir sync destrutivo. Cache localStorage `mc_firms_cache_v3`.
 
-### Welcome email — real-time (RESOLVIDO 2026-04-28)
+### Welcome email, real-time (RESOLVIDO 2026-04-28)
 Trigger SQL `welcome_on_confirm` em `auth.users` dispara `pg_net.http_post` pra `/api/welcome-email` quando email_confirmed_at sai de NULL. Header `X-Webhook-Secret` (env Vercel `WELCOME_HOOK_SECRET`). Idempotente via tag `received-welcome` em email_subscribers. Latência ~2s. Cron horário backup em `.github/workflows/welcome-catchup.yml`.
 
 ### Email cron auto-dispatch
 GitHub Actions cron diário 14h UTC dispara `/api/cron-bulk-send` (campaign=site-invite, batch=400). Auth `Bearer ${CRON_SECRET}`. Filtra por tag `received-{campaign}`. Substitui auto-dispatcher do admin (browser-based).
 
-### INST_TEMPLATES — dual source
-Templates institucionais (welcome, site-invite, loyalty, indicators, blog-guides, ultimas-horas, giveaway-*) vivem em **2 lugares**: `admin.html` (cliente, envio manual) E `lib/email-render.js` (servidor, cron-bulk-send). Adicionar/editar template = update nos dois. Senão overflow da fila não disparar via cron. Subject/preheader em 7 langs; se body builder é hardcoded num idioma, travar `subject` em todos os langs apontando pro mesmo texto pra evitar mismatch (ex: subject EN + corpo PT). Site é EN-default — caixas traduzem auto se preciso, então padrão é EN.
+### INST_TEMPLATES, dual source
+Templates institucionais (welcome, site-invite, loyalty, indicators, blog-guides, ultimas-horas, giveaway-*) vivem em **2 lugares**: `admin.html` (cliente, envio manual) E `lib/email-render.js` (servidor, cron-bulk-send). Adicionar/editar template = update nos dois. Senão overflow da fila não disparar via cron. Subject/preheader em 7 langs; se body builder é hardcoded num idioma, travar `subject` em todos os langs apontando pro mesmo texto pra evitar mismatch (ex: subject EN + corpo PT). Site é EN-default, caixas traduzem auto se preciso, então padrão é EN.
 
 ### profiles RLS bloqueia anon
 `public.profiles` RLS só expõe a própria row. Admin client-side não vê todos signups. Pra audience de email/dashboards, usar `/api/brevo-stats?type=signups_all` (service_role + isAdminJwt guard). `loadAllLeadsOnce` em admin.html: profiles primeiro → email_subscribers (merge tags) → loyalty. Inverter ofusca signups como 'subscriber'.
 
-### Blog — 2 readers + guias = 3 sistemas (canônico 2026-05-27)
-Mudança de UX de leitura de artigo (botão, CTA, share, voltar, layout do corpo) tem que ir nos TRÊS: (1) `blog.html` `renderPost()` — standalone `/blog/<slug>`; (2) `app.js` `openBlogArticle()` — SPA in-page `/blog?a=<slug>`, fecha com `closeBlogArticle()` que DEVE scrollar pro topo; (3) guias estáticos `/guides/*.html` + `<lang>/guides/*.html` (HTML puro). Detalhe: `memory/feedback_dois_readers_blog.md`. ⚠️ Guias traduzidos (en/es/fr/de/it/ar) estão TRUNCADOS (sem `</article>`/`</body>`) — bug de tradução Gemini incompleta, pendente.
+### Blog, 2 readers + guias = 3 sistemas (canônico 2026-05-27)
+Mudança de UX de leitura de artigo (botão, CTA, share, voltar, layout do corpo) tem que ir nos TRÊS: (1) `blog.html` `renderPost()`, standalone `/blog/<slug>`; (2) `app.js` `openBlogArticle()`, SPA in-page `/blog?a=<slug>`, fecha com `closeBlogArticle()` que DEVE scrollar pro topo; (3) guias estáticos `/guides/*.html` + `<lang>/guides/*.html` (HTML puro). Detalhe: `memory/feedback_dois_readers_blog.md`. ⚠️ Guias traduzidos (en/es/fr/de/it/ar) estão TRUNCADOS (sem `</article>`/`</body>`), bug de tradução Gemini incompleta, pendente.
 
-### SVG didático blog — audit v4 obrigatório (canônico 2026-05-27)
+### SVG didático blog, audit v4 obrigatório (canônico 2026-05-27)
 `scripts/audit-svgs-v4.mjs` (Playwright) detecta: line-crosses-text, line-crosses-card, text-overlap, text-near-card-bottom, **text-crosses-card-edge** (texto encavalando borda de card de outro grupo). Usa `sameLogicalGroup()` pra ignorar `<g>` aninhados (tabelas = falso positivo). NUNCA declarar SVG pronto sem rodar e ver `Files with bugs: 0`. Padrão v7 completo: `memory/reference_blog_svg_padrao.md` + `reference_blog_v7_doutrina.md`.
 
-### Blog vs Guias — não duplicar
+### Blog vs Guias, não duplicar
 Antes de criar/manter post, checar se tema já está em `<lang>/guides/`. 5 guias canônicos:
 - `o-que-e-uma-prop-firm` · `como-passar-no-desafio` · `gerenciamento-drawdown` · `position-sizing` · `como-sacar-lucros`
 
 Padrão long-form (ref: Wyckoff PT 28k chars): body 15k+ chars, hero `<img>` embedded ou `cover_url`, read_time honesto (~1min/1.5k chars). Stubs de 3k com read_time inflado = rejeitados.
 
 ### Tradução guias (Gemini 2.5 Flash)
-`scripts/translate-guides-edu.mjs` usa `maxOutputTokens: 65536` + safety `cleaned.length < src.length * 0.85`. NUNCA baixar — HTMLs ~45kb truncam silenciosamente com 32k tokens. Não commitar enquanto job background roda.
+`scripts/translate-guides-edu.mjs` usa `maxOutputTokens: 65536` + safety `cleaned.length < src.length * 0.85`. NUNCA baixar, HTMLs ~45kb truncam silenciosamente com 32k tokens. Não commitar enquanto job background roda.
 
 ### Finance + extensão
 `supabase/functions/finance-sync/index.ts` DEVE filtrar `r.granularity !== 'month'` antes do upsert em `affiliate_daily_stats`. CSV de Apex/Bulenox tem linha "monthly summary" que colide com daily do dia 01 → infla dashboard 2x.
 
-### Firma — accent semântico em ilustração
+### Firma, accent semântico em ilustração
 Imagens de guia de firma usam **cor accent da firma**, NUNCA dourado default:
 | Firma | Accent |
 |---|---|
@@ -126,7 +126,7 @@ Imagens de guia de firma usam **cor accent da firma**, NUNCA dourado default:
 
 **Workflow firma:** reusar `img/<firm>-bg.webp` como hero, logos reais em `img/Plataformas/`, SVG editorial pra diagramas, NUNCA logo fake via IA.
 
-### Guias edu — accent por guia
+### Guias edu, accent por guia
 | Guia | Accent | Semântica |
 |---|---|---|
 | G1 Prop Firm | #F97316 (orange/gold) | premium |
@@ -139,7 +139,7 @@ Imagens de guia de firma usam **cor accent da firma**, NUNCA dourado default:
 Logout user usa `mc-user-auth`, logout admin usa `mc-admin-auth`. Logar/deslogar do admin NÃO afeta sessão user. Listener `onAuthStateChange` com guard `if (_loggingOut) return`. **`isAuthed()` helper** (app.js) = `currentUser && currentProfile && (email_verified===true || is_admin===true)`. Admin tem bypass pra não travar operação interna. Gates de conversão usam `isAuthed()`, não `currentUser` puro.
 
 ### Sistema cores por contexto de email (canônico 2026-04-29)
-🟠 `#ff8c00` ofertas · 🟢 verde blog · 🔴 vermelho urgência · 🔵 `#1976D2` (FTMO) verificação. **Logo "Coupons" SEMPRE laranja `#ff8c00`** independente do contexto — regra fixa de marca.
+🟠 `#ff8c00` ofertas · 🟢 verde blog · 🔴 vermelho urgência · 🔵 `#1976D2` (FTMO) verificação. **Logo "Coupons" SEMPRE laranja `#ff8c00`** independente do contexto, regra fixa de marca.
 
 ### Skeleton canônico de email institucional
 Header `#fff` (logo+tagline) → linha separadora cor temática → hero `#111111` dark (pill+h1 34-38px branco+subtitle) → linha separadora → body `#fff` (saudação Olá+nome → parágrafo → CTA gradient cor temática → fallback → assinatura Lara avatar circular gradient → footer disclaimer). Ref: `api/welcome-email.js` `buildHtml()`+`buildConfirmHtml()`.
@@ -148,13 +148,13 @@ Header `#fff` (logo+tagline) → linha separadora cor temática → hero `#11111
 bg `var(--card)` `#10151F`, border `rgba(107,182,201,.22)`, botão herda `.auth-btn` shimmer gold, texto `var(--t1)`/`t2`/`t3`. Backdrop `rgba(8,12,18,.85) + blur(8px)`. Ref `.cem-*` em `index.html`.
 
 ### Ícones = Feather pattern, ZERO emoji em UI
-Padrão: `viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`. Não usar emoji em modal/card/UI — sempre SVG inline.
+Padrão: `viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`. Não usar emoji em modal/card/UI, sempre SVG inline.
 
 ### Previews visuais antes de prod
 Mudança visual significativa = preview HTML standalone em `data/preview/<feature>.html` com mock + estados → user abre local → aprova → aplica. Previews ficam versionados como referência canônica futura. Ex: `data/preview/modal-confirm-email.html` + `email-confirmation.html`.
 
-### Validate-email — fallback permissivo
-`validateEmailMx()` em app.js retorna `{valid:true}` em erro de rede/500. Melhor aceitar email duvidoso ocasional do que bloquear todos por infra própria. Conectado em `doAuthSignup` antes do `db.auth.signUp` — bloqueia disposable/no_mx/invalid_format com mensagens i18n por reason (`ve_*`).
+### Validate-email, fallback permissivo
+`validateEmailMx()` em app.js retorna `{valid:true}` em erro de rede/500. Melhor aceitar email duvidoso ocasional do que bloquear todos por infra própria. Conectado em `doAuthSignup` antes do `db.auth.signUp`, bloqueia disposable/no_mx/invalid_format com mensagens i18n por reason (`ve_*`).
 
 ### URLs absolutas obrigatórias (canônico 2026-05-10)
 TODO asset path deve ter `/` prefix. **NUNCA** `'img/X'`, `'fonts/X'`, `src="app.js"`. Sempre `'/img/X'`, `'/fonts/X'`, `src="/app.js"`. Em `/es/blog` ou qualquer `/<lang>/path`, browser resolve relativo como `/es/img/X` = 404 → site quebra. Aplica em: index.html, app.js, i18n.js, js/*.js, cms_firms.icon_url/bg_image, blog_posts.cover_url.
@@ -167,7 +167,7 @@ TODO asset path deve ter `/` prefix. **NUNCA** `'img/X'`, `'fonts/X'`, `src="app
 - Re-traduzir: `node scripts/translate-compare-pages.mjs <lang>` (paralelo, Vertex AI Gemini)
 
 ### blog_posts schema (canônico 2026-05-10)
-- UNIQUE constraint mudou de `(slug)` pra `(slug, lang)` — permite mesmo slug em N idiomas
+- UNIQUE constraint mudou de `(slug)` pra `(slug, lang)`, permite mesmo slug em N idiomas
 - `cover_url` HÁ DE estar no SELECT do front (app.js:2380). Sem ele, blog cards caem em SVG fallback.
 - 70 artigos = 10 PT × 7 langs. Heros em `/img/blog-heros/SLUG.jpg` (não Supabase storage).
 
@@ -178,12 +178,12 @@ TODO asset path deve ter `/` prefix. **NUNCA** `'img/X'`, `'fonts/X'`, `src="app
 - Modelos: `gemini-2.5-flash` (rápido, 60s/30k chars), `gemini-2.5-pro` (artigos longos com chunking, mais lento)
 - Custo: ~$0.50 / 60 traduções de 20k chars
 
-### Tracking — GTM dataLayer-only (NÃO mexer sem ler tudo)
-Migrado pra **GTM-WJGTVX8G** em 2026-05-20. `track(event,params)` em app.js + `trackEvent()` em coupons.html = fonte única → `dataLayer.push({event,event_id,user_data,ecommerce,firm_id,firm_name,coupon_code,content_*})` + `_sendCAPI()` server-side (mesmo `event_id` pra dedup Pixel×CAPI). GTM consome dataLayer e dispara tags GA4 (`G-CZ3L00NY77`) + Meta Pixel (`813048241061812`) + Google Ads. **NUNCA chamar `gtag('event',...)` ou `fbq(...)` direto** — só `dataLayer.push`. Exceção: `gtag('consent','default'/'update',...)` (Consent Mode v2, não é evento). Snippet GTM em `js/tracking-init.js` (shim `window.gtag` = `dataLayer.push(arguments)`). Pixel dispara no trigger `page_view` (carrega event_id); `consent_granted` NÃO serve de trigger. `/coupons` = consent granted automático (sem banner). Funil firmas: firm_detail_open → coupon_copy → checkout_click → Lead.
+### Tracking, GTM dataLayer-only (NÃO mexer sem ler tudo)
+Migrado pra **GTM-WJGTVX8G** em 2026-05-20. `track(event,params)` em app.js + `trackEvent()` em coupons.html = fonte única → `dataLayer.push({event,event_id,user_data,ecommerce,firm_id,firm_name,coupon_code,content_*})` + `_sendCAPI()` server-side (mesmo `event_id` pra dedup Pixel×CAPI). GTM consome dataLayer e dispara tags GA4 (`G-CZ3L00NY77`) + Meta Pixel (`813048241061812`) + Google Ads. **NUNCA chamar `gtag('event',...)` ou `fbq(...)` direto**, só `dataLayer.push`. Exceção: `gtag('consent','default'/'update',...)` (Consent Mode v2, não é evento). Snippet GTM em `js/tracking-init.js` (shim `window.gtag` = `dataLayer.push(arguments)`). Pixel dispara no trigger `page_view` (carrega event_id); `consent_granted` NÃO serve de trigger. `/coupons` = consent granted automático (sem banner). Funil firmas: firm_detail_open → coupon_copy → checkout_click → Lead.
 
-**GA4 só com o funil (2026-05-20):** allowlist `GA4_FUNNEL` em `track()`/`trackEvent()` — SÓ evento de funil entra no dataLayer, com nome PADRÃO GA4 (view_item/add_to_cart/begin_checkout/sign_up/subscribe/generate_lead/purchase/page_view). Instrumentação interna (tab_hidden, bot_*, js_error, quiz_*…) fica só no Supabase. Adicionar evento de funil novo = pôr na `GA4_FUNNEL` dos 2 arquivos.
+**GA4 só com o funil (2026-05-20):** allowlist `GA4_FUNNEL` em `track()`/`trackEvent()`, SÓ evento de funil entra no dataLayer, com nome PADRÃO GA4 (view_item/add_to_cart/begin_checkout/sign_up/subscribe/generate_lead/purchase/page_view). Instrumentação interna (tab_hidden, bot_*, js_error, quiz_*…) fica só no Supabase. Adicionar evento de funil novo = pôr na `GA4_FUNNEL` dos 2 arquivos.
 
-**fbc/fbp/value CAPI (2026-05-20):** `_getFbAttribution()`/`_fbAttr()` priorizam cookie `_fbc`/`_fbp` (Pixel seta certo). fbc só reconstrói se cookie ausente ou fbclid novo — NUNCA `Date.now()` por evento (timestamp instável = Meta acusa "fbc modificado"). fbp semeado se ausente. Lead value = **$3.00 flat** (`_fbVal()` retorna 3.00), nunca 0. Detalhe: `memory/feedback_fbc_timestamp_estavel.md`.
+**fbc/fbp/value CAPI (2026-05-20):** `_getFbAttribution()`/`_fbAttr()` priorizam cookie `_fbc`/`_fbp` (Pixel seta certo). fbc só reconstrói se cookie ausente ou fbclid novo, NUNCA `Date.now()` por evento (timestamp instável = Meta acusa "fbc modificado"). fbp semeado se ausente. Lead value = **$3.00 flat** (`_fbVal()` retorna 3.00), nunca 0. Detalhe: `memory/feedback_fbc_timestamp_estavel.md`.
 
 Detalhe geral: `memory/project_gtm_tracking_2026_05_20.md`.
 
@@ -222,7 +222,7 @@ Conteúdo institucional pra aprovação **sempre em PT primeiro**, traduz só ap
 ### 🚨 Arquivo i18n VIVO = `i18n-<lang>.js` na RAIZ (com hífen), 2026-05-28
 O site carrega `i18n-en.js` etc da **raiz** (uma linha JSON minificada). A pasta `i18n/<lang>.js` é **loader MORTO** (não carregado). Editar a pasta NÃO tem efeito. Ordem: split file raiz → **tabela Supabase `i18n` SOBRESCREVE** (se a key existe lá, atualizar a tabela também). Confirmar qual arquivo o site carrega antes de editar. Detalhe em memória `i18n-3-camadas`. Catálogo = **17 firmas** (não 12/6+).
 
-### Apex — 4 dimensões de preço (canônico 2026-05-28)
+### Apex, 4 dimensões de preço (canônico 2026-05-28)
 type (Intraday/EOD) × size × **variant (Standard / Sem taxa de ativação)** × **pack (1/5 contas)**. `getPlanPrice(id,type,size,pack,variant)`; `firmHas5Pack`/`firmHasNoFee` disparam toggles; campos cms `n/o`,`n2/o2`,`n5/o5/e5`,`na*`,`na5*` etc. EOD 100K/150K 5-pack sem-taxa = N/A. Espelhar site (app.js fd-overlay) **e** `coupons.html`.
 
 ## Padrões de adição

@@ -22,11 +22,11 @@ lang: pt-BR
 
 # Apex Trader Funding Review 2026: Regras, Preços, Payouts e Cupom MARKET
 
-*Atualizado em 17 de abril de 2026 — 14 min de leitura*
+*Atualizado em 17 de abril de 2026, 14 min de leitura*
 
-![Apex Trader Funding Review 2026 — hero editorial com gráfico candlestick e destaque laranja](../img/apex-hero.png)
+![Apex Trader Funding Review 2026, hero editorial com gráfico candlestick e destaque laranja](../img/apex-hero.png)
 
-> **Resumo rápido** — A Apex Trader Funding é a maior prop firm de futuros dos EUA, com nota 4,4/5 no Trustpilot e mais de 19.000 reviews. A entrada custa **US$ 19,90 com o cupom lifetime MARKET** (90% de desconto), o Profit Split é de **100%** e os Payouts saem a cada **5 dias úteis de trading**. Os dois pontos que mais derrubam trader iniciante: a **regra de consistência de 50%** e o **Intraday Trailing Drawdown**. Os dois estão detalhados abaixo.
+> **Resumo rápido**, A Apex Trader Funding é a maior prop firm de futuros dos EUA, com nota 4,4/5 no Trustpilot e mais de 19.000 reviews. A entrada custa **US$ 19,90 com o cupom lifetime MARKET** (90% de desconto), o Profit Split é de **100%** e os Payouts saem a cada **5 dias úteis de trading**. Os dois pontos que mais derrubam trader iniciante: a **regra de consistência de 50%** e o **Intraday Trailing Drawdown**. Os dois estão detalhados abaixo.
 
 | Ficha rápida | |
 |---|---|
@@ -51,9 +51,9 @@ lang: pt-BR
 
 A Apex Trader Funding é uma firma de avaliação de traders proprietários sediada no Texas. Ela permite que traders provem sua capacidade em uma conta de futuros simulada e, após passar na avaliação, operem uma **Performance Account (PA) simulada** onde sua performance é espelhada pela mesa de capital da Apex. Cada dólar ganho na PA é pago ao trader, descontada uma taxa única de ativação.
 
-A Apex é uma das prop firms focadas em futuros mais antigas e ativas do mercado. Desde janeiro de 2023 ela paga em média mais de US$ 1 milhão por mês aos clientes — uma das maiores operações de Payout em volume do setor.
+A Apex é uma das prop firms focadas em futuros mais antigas e ativas do mercado. Desde janeiro de 2023 ela paga em média mais de US$ 1 milhão por mês aos clientes, uma das maiores operações de Payout em volume do setor.
 
-Opera no modelo **exclusivo de futuros** — sem forex, sem CFDs, sem cripto à vista. Você opera contratos listados na CME, CBOT, NYMEX, COMEX e EUREX.
+Opera no modelo **exclusivo de futuros**, sem forex, sem CFDs, sem cripto à vista. Você opera contratos listados na CME, CBOT, NYMEX, COMEX e EUREX.
 
 Em **1º de março de 2026**, a Apex lançou um programa redesenhado (conhecido como "All New Apex") com regras simplificadas, matemática de drawdown mais clara, e a regra de consistência de 50% substituindo a regra antiga de 30%. Contas compradas antes de 1º de março de 2026 são **contas legadas** e seguem no conjunto original de regras. Esta review foca no programa **novo**.
 
@@ -62,7 +62,7 @@ Em **1º de março de 2026**, a Apex lançou um programa redesenhado (conhecido 
 O que faz a Apex dominar esse mercado é a combinação de três pontos:
 1. **Preço agressivo** com o cupom lifetime MARKET
 2. **Profit Split de 100%** nas Performance Accounts simuladas (sem divisão com a firma)
-3. **Caminho claro** da avaliação ao Payout — sem revisões discricionárias ocultas
+3. **Caminho claro** da avaliação ao Payout, sem revisões discricionárias ocultas
 
 ---
 
@@ -85,13 +85,13 @@ Com o cupom **MARKET**, as taxas de avaliação saem com cerca de 90% de descont
 
 ### Taxa de ativação
 
-Após passar na avaliação, você paga uma **taxa única de ativação de US$ 85** pra mover pra sua Performance Account. Não é recorrente — paga uma vez só, e a PA fica ativa enquanto não for violada.
+Após passar na avaliação, você paga uma **taxa única de ativação de US$ 85** pra mover pra sua Performance Account. Não é recorrente, paga uma vez só, e a PA fica ativa enquanto não for violada.
 
 Você tem **7 dias** após passar pra ativar a PA. Perdeu essa janela, perdeu a aprovação.
 
 ### Existe taxa de reset?
 
-O novo programa da Apex **não oferece reset** nas avaliações. Se você violar a conta de avaliação, precisa comprar uma nova avaliação. O relógio de 30 dias também não pode ser resetado — se não passar em 30 dias, a avaliação expira.
+O novo programa da Apex **não oferece reset** nas avaliações. Se você violar a conta de avaliação, precisa comprar uma nova avaliação. O relógio de 30 dias também não pode ser resetado, se não passar em 30 dias, a avaliação expira.
 
 Contas legadas (pré 1º de março de 2026) mantêm a opção de **reset por US$ 80**.
 
@@ -108,13 +108,13 @@ O cupom fica atrelado ao afiliado, ou seja, permanece ativo na sua conta pra tod
 
 ## Tipos de Conta: Intraday Trail vs End-of-Day Trail
 
-A Apex deixa você escolher entre duas mecânicas de drawdown. Escolha com cuidado — a errada pro seu estilo te tira da conta mais rápido do que você imagina.
+A Apex deixa você escolher entre duas mecânicas de drawdown. Escolha com cuidado, a errada pro seu estilo te tira da conta mais rápido do que você imagina.
 
 ![Comparação Intraday trailing drawdown vs End-of-Day trailing drawdown](../img/apex-drawdown-diagram.png)
 
 ### Intraday Trailing Drawdown
 
-O **Intraday Trail** ajusta o limite de drawdown em tempo real com base no maior saldo da conta durante a sessão — incluindo **lucro não realizado**.
+O **Intraday Trail** ajusta o limite de drawdown em tempo real com base no maior saldo da conta durante a sessão, incluindo **lucro não realizado**.
 
 **Como funciona:**
 - O limite começa em: saldo inicial − drawdown máximo (ex.: US$ 50.000 − US$ 2.000 = US$ 48.000)
@@ -122,28 +122,28 @@ O **Intraday Trail** ajusta o limite de drawdown em tempo real com base no maior
 - O limite **nunca desce**
 - Se o saldo tocar o limite em qualquer momento, todas as posições são liquidadas automaticamente
 
-**Exemplo — Avaliação 50K Intraday:**
+**Exemplo, Avaliação 50K Intraday:**
 1. Você abre um trade e o saldo chega momentaneamente a US$ 50.900 em lucro não realizado
 2. Novo limite: US$ 50.900 − US$ 2.000 = US$ 48.900
 3. Você fecha o trade em US$ 50.300 (lucro de US$ 300)
-4. O limite fica em US$ 48.900 — não volta pra baixo
+4. O limite fica em US$ 48.900, não volta pra baixo
 5. Se o saldo tocar US$ 48.900 em qualquer momento, a conta é violada
 
 **Quando o trailing para?**
 - **Avaliação (Rithmic e Wealthcharts):** trava quando o saldo atinge meta de lucro + drawdown máx. (pra 50K, são US$ 55.000 → limite fixado em US$ 53.000)
-- **Avaliação (Tradovate):** nunca trava — o trailing segue indefinidamente
+- **Avaliação (Tradovate):** nunca trava, o trailing segue indefinidamente
 - **Performance Account:** trava quando o limite atinge saldo inicial + US$ 100 (pra PA 50K, são US$ 50.100)
 
 O Intraday Trail é punitivo porque o **PnL não realizado conta**. Se você está num trade mostrando US$ 500 de lucro aberto, seu drawdown acabou de apertar US$ 500, mesmo que o trade depois vire pra negativo.
 
 ### End-of-Day (EOD) Trailing Drawdown
 
-O **EOD Trail** só atualiza no fechamento do mercado (16h no horário central dos EUA). Lucro não realizado durante o dia **não** move o limite — só o saldo de fechamento importa.
+O **EOD Trail** só atualiza no fechamento do mercado (16h no horário central dos EUA). Lucro não realizado durante o dia **não** move o limite, só o saldo de fechamento importa.
 
 **Como funciona:**
 - Mesmo limite inicial do Intraday (saldo − drawdown máx.)
 - Às 16h CT, se o saldo de fechamento for maior que qualquer fechamento anterior, o limite sobe
-- Dentro da sessão o limite é fixo — você tem espaço pra respirar
+- Dentro da sessão o limite é fixo, você tem espaço pra respirar
 
 Contas EOD vêm com uma regra extra: o **Daily Loss Limit (DLL)**.
 
@@ -155,7 +155,7 @@ Contas EOD vêm com uma regra extra: o **Daily Loss Limit (DLL)**.
 | 100K | US$ 1.500 |
 | 150K | US$ 2.000 |
 
-Se a perda intraday atingir o DLL, todas as posições são auto-liquidadas e o trading fica pausado até a próxima sessão (reinicia 18h ET). Você não reprova — só fica bloqueado pro resto do dia.
+Se a perda intraday atingir o DLL, todas as posições são auto-liquidadas e o trading fica pausado até a próxima sessão (reinicia 18h ET). Você não reprova, só fica bloqueado pro resto do dia.
 
 ### Qual tipo de drawdown escolher?
 
@@ -167,7 +167,7 @@ Se a perda intraday atingir o DLL, todas as posições são auto-liquidadas e o 
 | Over-trade quando persegue | **EOD** (o DLL te impede de fazer revenge-trade até o zero) |
 | Quer flexibilidade máxima | **Intraday** (sem DLL, sem limite de sessão) |
 
-A maioria dos traders experientes da Apex recomenda **EOD** pra qualquer coisa além de scalping puro. O Intraday Trail foi desenhado pra premiar execução rápida e decisiva — e pra punir hesitação.
+A maioria dos traders experientes da Apex recomenda **EOD** pra qualquer coisa além de scalping puro. O Intraday Trail foi desenhado pra premiar execução rápida e decisiva, e pra punir hesitação.
 
 ---
 
@@ -187,12 +187,12 @@ A escolha mais popular entre traders da Apex. Rithmic é um motor de dados de me
 
 ### Tradovate
 
-Baseado em browser e mobile-first. O Tradovate faz as duas pontas — plataforma e roteamento — sem precisar de front-end separado.
+Baseado em browser e mobile-first. O Tradovate faz as duas pontas, plataforma e roteamento, sem precisar de front-end separado.
 
 **Por que traders escolhem Tradovate:**
 - Sem instalação de software (roda no navegador)
 - App mobile incluso
-- Acesso à EUREX (DAX, Euro Stoxx, Bunds) — a Rithmic não roteia esses na Apex no momento
+- Acesso à EUREX (DAX, Euro Stoxx, Bunds), a Rithmic não roteia esses na Apex no momento
 
 **Observação:** Em avaliações no Tradovate, o Intraday Trailing Drawdown **nunca para de trilhar**. Isso é mais duro que Rithmic/Wealthcharts.
 
@@ -213,7 +213,7 @@ A avaliação é o desafio simulado que você precisa passar antes de rodar uma 
 
 ### Meta de lucro
 
-Você precisa atingir a meta uma vez, em qualquer momento da avaliação. Não precisa fechar o dia acima dela — só precisa tocar.
+Você precisa atingir a meta uma vez, em qualquer momento da avaliação. Não precisa fechar o dia acima dela, só precisa tocar.
 
 - **25K:** US$ 1.500
 - **50K:** US$ 3.000
@@ -248,7 +248,7 @@ Todos os instrumentos da lista oficial da Apex: ES, NQ, YM, RTY, CL, GC, 6E, 6B 
 - Ultrapassar o tamanho máximo de contratos em qualquer momento
 - Usar copy-trade automatizado entre contas da Apex durante a avaliação (só permitido na PA)
 
-Operar notícias é **permitido** — a Apex não restringe trading em eventos econômicos de alto impacto.
+Operar notícias é **permitido**, a Apex não restringe trading em eventos econômicos de alto impacto.
 
 ---
 
@@ -293,7 +293,7 @@ Então: US$ 1.500 ÷ 0,5 = **US$ 3.000 de lucro total mínimo** antes de poder p
 
 ![Escalas da Performance Account 50K da Apex do Level 1 ao Level 4 com progressão de tamanho de contrato e DLL](../img/apex-scaling-tiers.png)
 
-Em Performance Accounts EOD, tanto o **tamanho máximo de contratos** quanto o **Daily Loss Limit** escalam conforme a conta cresce. Esse é o "scaling embutido" da Apex — você não precisa solicitar upgrade.
+Em Performance Accounts EOD, tanto o **tamanho máximo de contratos** quanto o **Daily Loss Limit** escalam conforme a conta cresce. Esse é o "scaling embutido" da Apex, você não precisa solicitar upgrade.
 
 **Tabela de escalas PA 50K EOD:**
 | Faixa de lucro | Máx. contratos | Daily Loss Limit | Nível |
@@ -338,7 +338,7 @@ Os primeiros 5 Payouts numa nova PA são **limitados em US$ 1.500 cada** (pra ma
 
 ### Safety net
 
-Existe uma "rede de segurança" embutida na PA. A PA precisa manter um saldo mínimo acima do saldo inicial antes de qualquer Payout ser solicitado. O safety net escala com o tamanho da conta — aproximadamente saldo inicial + US$ 2.600 na 50K. Consulte o FAQ da Apex pra cifra exata no momento do Payout.
+Existe uma "rede de segurança" embutida na PA. A PA precisa manter um saldo mínimo acima do saldo inicial antes de qualquer Payout ser solicitado. O safety net escala com o tamanho da conta, aproximadamente saldo inicial + US$ 2.600 na 50K. Consulte o FAQ da Apex pra cifra exata no momento do Payout.
 
 ### Métodos de Payout
 
@@ -348,11 +348,11 @@ Existe uma "rede de segurança" embutida na PA. A PA precisa manter um saldo mí
 | **Wise** | 1–2 dias úteis | Varia por país |
 | **Wire transfer** | 3–5 dias úteis | Taxas bancárias |
 
-A Apex tem histórico sólido de pagamento — a base de 19.000+ reviews no Trustpilot é dominada por confirmações positivas de Payout. Atrasos acontecem (geralmente 2–7 dias úteis em semanas de alto volume), mas negações diretas são raras no programa novo. A Apex anuncia explicitamente "**Sem Negações de Payout**" na marca, e o modelo operacional sustenta essa afirmação em contas bem estruturadas.
+A Apex tem histórico sólido de pagamento, a base de 19.000+ reviews no Trustpilot é dominada por confirmações positivas de Payout. Atrasos acontecem (geralmente 2–7 dias úteis em semanas de alto volume), mas negações diretas são raras no programa novo. A Apex anuncia explicitamente "**Sem Negações de Payout**" na marca, e o modelo operacional sustenta essa afirmação em contas bem estruturadas.
 
 ### Máximo de solicitações de Payout por PA
 
-Uma nova PA tem limite de **6 solicitações de Payout**. Depois da 6ª, se a conta estiver saudável, a Apex pode te mover pro programa de **live trading** — onde não há limite de Payout.
+Uma nova PA tem limite de **6 solicitações de Payout**. Depois da 6ª, se a conta estiver saudável, a Apex pode te mover pro programa de **live trading**, onde não há limite de Payout.
 
 ---
 
@@ -361,25 +361,25 @@ Uma nova PA tem limite de **6 solicitações de Payout**. Depois da 6ª, se a co
 Todos os contratos são CME Group ou EUREX. Lista completa dos instrumentos mais operados:
 
 ### Futuros de índices de ações
-- **E-mini S&P 500 (ES)** — US$ 50 por ponto
-- **Micro E-mini S&P 500 (MES)** — US$ 5 por ponto
-- **E-mini Nasdaq-100 (NQ)** — US$ 20 por ponto
-- **Micro E-mini Nasdaq-100 (MNQ)** — US$ 2 por ponto
-- **Mini-Dow (YM)** — US$ 5 por ponto
-- **Micro Dow (MYM)** — US$ 0,50 por ponto
-- **Russell 2000 (RTY)** — US$ 50 por ponto
-- **Micro Russell (M2K)** — US$ 5 por ponto
+- **E-mini S&P 500 (ES)**, US$ 50 por ponto
+- **Micro E-mini S&P 500 (MES)**, US$ 5 por ponto
+- **E-mini Nasdaq-100 (NQ)**, US$ 20 por ponto
+- **Micro E-mini Nasdaq-100 (MNQ)**, US$ 2 por ponto
+- **Mini-Dow (YM)**, US$ 5 por ponto
+- **Micro Dow (MYM)**, US$ 0,50 por ponto
+- **Russell 2000 (RTY)**, US$ 50 por ponto
+- **Micro Russell (M2K)**, US$ 5 por ponto
 
 ### Energia
-- **Crude Oil (CL)** — US$ 1.000 por ponto
-- **Micro Crude (MCL)** — US$ 100 por ponto
-- **Natural Gas (NG)** — US$ 10.000 por ponto
-- **E-mini Natural Gas (QG)** — US$ 2.500 por ponto
+- **Crude Oil (CL)**, US$ 1.000 por ponto
+- **Micro Crude (MCL)**, US$ 100 por ponto
+- **Natural Gas (NG)**, US$ 10.000 por ponto
+- **E-mini Natural Gas (QG)**, US$ 2.500 por ponto
 
-### Metais *(disponibilidade varia — atualmente restrito em alguns contratos COMEX)*
-- **Gold (GC)** — US$ 100 por ponto
-- **Micro Gold (MGC)** — US$ 10 por ponto
-- **Silver (SI)** — US$ 5.000 por ponto
+### Metais *(disponibilidade varia, atualmente restrito em alguns contratos COMEX)*
+- **Gold (GC)**, US$ 100 por ponto
+- **Micro Gold (MGC)**, US$ 10 por ponto
+- **Silver (SI)**, US$ 5.000 por ponto
 
 ### Moedas
 - **Euro FX (6E)**, **British Pound (6B)**, **Japanese Yen (6J)**, **Canadian Dollar (6C)**, **Australian Dollar (6A)**, **Swiss Franc (6S)**
@@ -401,26 +401,26 @@ Todos os contratos são CME Group ou EUREX. Lista completa dos instrumentos mais
 
 ### Prós
 
-- **Desconto lifetime** via cupom MARKET — cerca de 90% off em toda compra, não só na primeira
-- **Profit Split de 100%** — nenhuma fatia é tirada dos ganhos da PA
+- **Desconto lifetime** via cupom MARKET, cerca de 90% off em toda compra, não só na primeira
+- **Profit Split de 100%**, nenhuma fatia é tirada dos ganhos da PA
 - **Mais rápido pra fundar:** passar em 1 dia, ativar no mesmo dia
-- **Sem tempo mínimo pra segurar trades** — scalpers não têm problema
-- **News trading permitido** — sem regra contra operar NFP, FOMC ou CPI
-- **Até 20 contas por trader** — escala horizontal
+- **Sem tempo mínimo pra segurar trades**, scalpers não têm problema
+- **News trading permitido**, sem regra contra operar NFP, FOMC ou CPI
+- **Até 20 contas por trader**, escala horizontal
 - **Liberdade de plataforma:** Rithmic, Tradovate ou Wealthcharts
 - **Histórico de Payouts:** média de mais de US$ 1M/mês pagos a clientes desde 2023
-- **Sem mensalidade** — taxa de avaliação e ativação são ambas únicas
+- **Sem mensalidade**, taxa de avaliação e ativação são ambas únicas
 
 ### Contras
 
-- **Intraday Trailing Drawdown é implacável** — PnL não realizado conta, e violou, saiu, sem reembolso
-- **Regra de consistência de 50% trava Payouts** — um único dia grande pode atrasar o Payout por semanas
-- **Sem opção de reset em contas novas** — uma violação custa a avaliação inteira
-- **Janela de 30 dias de avaliação** — mais curta que o padrão "tempo ilimitado" do setor
-- **Primeiros 5 Payouts limitados a US$ 1.500** — chegar em Payouts grandes leva tempo
-- **Safety net atrasa Payouts iniciais** — saldo mínimo na PA precisa ser mantido
-- **Sistema duplo legado vs novo pode confundir** — contas compradas antes de 1º de março de 2026 seguem regras diferentes
-- **Lista de instrumentos limitada em restrições da COMEX** — disponibilidade de metais flutua
+- **Intraday Trailing Drawdown é implacável**, PnL não realizado conta, e violou, saiu, sem reembolso
+- **Regra de consistência de 50% trava Payouts**, um único dia grande pode atrasar o Payout por semanas
+- **Sem opção de reset em contas novas**, uma violação custa a avaliação inteira
+- **Janela de 30 dias de avaliação**, mais curta que o padrão "tempo ilimitado" do setor
+- **Primeiros 5 Payouts limitados a US$ 1.500**, chegar em Payouts grandes leva tempo
+- **Safety net atrasa Payouts iniciais**, saldo mínimo na PA precisa ser mantido
+- **Sistema duplo legado vs novo pode confundir**, contas compradas antes de 1º de março de 2026 seguem regras diferentes
+- **Lista de instrumentos limitada em restrições da COMEX**, disponibilidade de metais flutua
 
 ---
 
@@ -441,7 +441,7 @@ US$ 19,90 de entrada com MARKET é o menor ponto de entrada sério no trading de
 A maioria das firmas leva 10-25% dos lucros da PA. O Profit Split de 100% nas contas simuladas da Apex é o mais alto que você encontra.
 
 **Quem deveria olhar outras firmas:**
-- Se você prefere forex ou CFDs, a Apex não oferece — considere FTMO ou FundingPips
+- Se você prefere forex ou CFDs, a Apex não oferece, considere FTMO ou FundingPips
 - Se quer avaliação por tempo ilimitado, considere Take Profit Trader (sem limite de tempo)
 - Se o Intraday Trail parece punitivo demais, escolha Apex EOD ou teste o modelo de drawdown estático da Bulenox
 
@@ -453,7 +453,7 @@ A maioria das firmas leva 10-25% dos lucros da PA. O Profit Split de 100% nas co
 A FTMO é focada em forex, com avaliação de 2 fases, Profit Split de 80% e entrada de US$ 155 na conta 10K. A Apex é só futuros, 1 fase, Profit Split 100%, entrada US$ 19,90 (com MARKET). Se você opera futuros, a Apex ganha em preço e split; a FTMO ganha se você precisa de forex.
 
 ### Apex vs Bulenox
-A Bulenox oferece mecânica de avaliação de futuros parecida, mas com opção de **drawdown estático** — sem limite trailing nenhum. Se o Intraday Trail da Apex já te queimou, o drawdown estático da Bulenox vale testar. A Bulenox costuma ter metas de lucro mais altas.
+A Bulenox oferece mecânica de avaliação de futuros parecida, mas com opção de **drawdown estático**, sem limite trailing nenhum. Se o Intraday Trail da Apex já te queimou, o drawdown estático da Bulenox vale testar. A Bulenox costuma ter metas de lucro mais altas.
 
 ### Apex vs Take Profit Trader
 A Take Profit Trader (TPT) oferece tempo ilimitado de avaliação e estrutura parecida de 1 fase. TPT tende a ter regras de consistência mais duras (geralmente 40%) mas sem pressão de tempo. Boa alternativa se você sofre com o relógio de 30 dias da Apex.
@@ -487,7 +487,7 @@ Sim. A Apex libera Payouts em ciclos de 5 dias úteis. Tempo médio de processam
 
 ### Qual é o Profit Split da Apex?
 
-**100%** nas Performance Accounts (simuladas). A Apex não fica com nenhuma fatia dos ganhos da PA — só a taxa única de ativação.
+**100%** nas Performance Accounts (simuladas). A Apex não fica com nenhuma fatia dos ganhos da PA, só a taxa única de ativação.
 
 ### Posso operar notícias na Apex?
 
@@ -503,7 +503,7 @@ Sim, em Performance Accounts. Você pode rodar a mesma estratégia em até 20 PA
 
 ### O que acontece se eu violar a avaliação da Apex?
 
-A conta é reprovada imediatamente e todas as posições abertas são liquidadas. Em contas novas (pós 1º de março de 2026), não há opção de reset — você precisa comprar uma nova avaliação pra tentar de novo. Contas legadas ainda podem ser resetadas por US$ 80.
+A conta é reprovada imediatamente e todas as posições abertas são liquidadas. Em contas novas (pós 1º de março de 2026), não há opção de reset, você precisa comprar uma nova avaliação pra tentar de novo. Contas legadas ainda podem ser resetadas por US$ 80.
 
 ### Tem limite de tempo na Performance Account da Apex?
 
@@ -525,7 +525,7 @@ Acesse [apextraderfunding.com pelo nosso link de afiliado](https://apextraderfun
 
 ### Passo 2: Escolha o tamanho da conta
 
-Pra uma primeira avaliação, a maioria deveria começar com a **conta 50K** — oferece limite de contratos balanceado, meta de lucro de US$ 3.000 alcançável em 5–10 dias úteis, e drawdown máx. de US$ 2.000 que dá espaço pra respirar.
+Pra uma primeira avaliação, a maioria deveria começar com a **conta 50K**, oferece limite de contratos balanceado, meta de lucro de US$ 3.000 alcançável em 5–10 dias úteis, e drawdown máx. de US$ 2.000 que dá espaço pra respirar.
 
 ### Passo 3: Escolha o tipo de drawdown
 
@@ -544,7 +544,7 @@ Confirme que o desconto aparece (o preço da 50K deve cair de US$ 249 pra US$ 24
 
 ### Passo 6: Passe na avaliação
 
-Foque em um instrumento (ES, NQ ou MES são os mais comuns). Bata a meta com ganhos consistentes e moderados em vez de uma única sessão gigante — isso te posiciona pra atender a regra de consistência de 50% quando for pedir o primeiro Payout.
+Foque em um instrumento (ES, NQ ou MES são os mais comuns). Bata a meta com ganhos consistentes e moderados em vez de uma única sessão gigante, isso te posiciona pra atender a regra de consistência de 50% quando for pedir o primeiro Payout.
 
 ### Passo 7: Pague a taxa de ativação de US$ 85 em 7 dias
 
@@ -562,7 +562,7 @@ A Apex Trader Funding é a escolha padrão pra maioria dos novos traders de futu
 
 As duas regras que importam são o **Intraday Trailing Drawdown** (escolha EOD se você segura posições por mais que alguns minutos) e a **regra de consistência de 50%** (dimensione seus dias pra ficar abaixo de 50% do total acumulado). Entenda as duas e a Apex é um dos caminhos mais limpos pra uma conta fundada e Payouts regulares.
 
-Pra traders comparando opções, a combinação de preço, split e histórico da Apex é difícil de bater. Os principais pontos de atenção são a política sem reset em contas novas, o relógio de 30 dias e os tetos iniciais de Payout — nenhum deles é deal-breaker se você planejar.
+Pra traders comparando opções, a combinação de preço, split e histórico da Apex é difícil de bater. Os principais pontos de atenção são a política sem reset em contas novas, o relógio de 30 dias e os tetos iniciais de Payout, nenhum deles é deal-breaker se você planejar.
 
 **Pronto pra começar?** Use o código **MARKET** na [Apex Trader Funding](https://apextraderfunding.com/member/aff/go/evertonmiranda) pra 90% de desconto na sua avaliação.
 

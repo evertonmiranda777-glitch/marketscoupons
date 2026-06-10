@@ -1,4 +1,4 @@
-// /api/push — endpoint multi-ação pra Web Push subscriptions
+// /api/push, endpoint multi-ação pra Web Push subscriptions
 // Actions via querystring:
 //   POST /api/push?action=subscribe   → cria/atualiza subscription
 //   POST /api/push?action=unsubscribe → desativa subscription (soft delete)
@@ -58,7 +58,7 @@ async function sbUpdate(table, filter, patch) {
 }
 
 module.exports = async (req, res) => {
-  // CORS — same-origin via vercel default, sem header explícito
+  // CORS, same-origin via vercel default, sem header explícito
   if (req.method !== 'POST') return bad(res, 405, 'POST only');
 
   const action = (req.query.action || '').toString();

@@ -14,12 +14,12 @@ fs.mkdirSync(outDir, { recursive: true });
 
 const prompt = `Editorial pitch-deck cover in the EXACT visual style of ref-image-1 (Nazmul Hossan cardan-c). Critical requirements:
 
-COMPOSITION — recreate the layout of ref-image-2 pixel-accurately:
+COMPOSITION, recreate the layout of ref-image-2 pixel-accurately:
 1. Thin orange outlined pill at top: "WHY PROP FIRMS EXIST" (JetBrains Mono, uppercase, letter-spacing)
-2. Central DOUBLE-CARD stack (Nazmul A5 signature): a BACK ghost card offset 10px down-right (barely visible, very dim orange outline on near-black), and a FRONT hero card on top showing "$50K + YOU" — "$50K" left side with "FIRM'S CAPITAL" label, bold "+" separator, "YOU" right side with "TRADER SKILL" label. The offset MUST be visible — this is the defining move.
+2. Central DOUBLE-CARD stack (Nazmul A5 signature): a BACK ghost card offset 10px down-right (barely visible, very dim orange outline on near-black), and a FRONT hero card on top showing "$50K + YOU", "$50K" left side with "FIRM'S CAPITAL" label, bold "+" separator, "YOU" right side with "TRADER SKILL" label. The offset MUST be visible, this is the defining move.
 3. Thin orange outlined pill at bottom: "80/20 SPLIT · CONTRACT"
 
-ATMOSPHERE — match ref-image-1 exactly:
+ATMOSPHERE, match ref-image-1 exactly:
 - 70% of canvas is DEEP BLACK negative space (#0A0A0F), ONLY the cards and pills are illuminated
 - Single cinematic light source from the upper-right casting long soft shadows to the lower-left
 - Orange #F97316 accent ONLY on pill outlines, "$50K" number, "+" sign, and a faint horizontal light-bloom behind the hero card

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * translate-coupons-lp-id.mjs — Extrai bloco I18N en {} do coupons.html,
+ * translate-coupons-lp-id.mjs, Extrai bloco I18N en {} do coupons.html,
  * traduz pra Indonesio via Gemini Flash, e substitui o fallback `I18N.id = I18N.en`
  * por um bloco id: real.
  */
@@ -66,7 +66,7 @@ I18N.id = I18N.en;`;
     console.error('Cannot find fallback marker to replace');
     process.exit(1);
   }
-  const idBlock = `// Indonesian (id) — translated via Gemini Flash
+  const idBlock = `// Indonesian (id), translated via Gemini Flash
 I18N.id = ${translated};`;
 
   const newHtml = html.replace(oldFallback, idBlock);

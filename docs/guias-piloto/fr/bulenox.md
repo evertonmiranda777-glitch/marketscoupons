@@ -23,11 +23,11 @@ schema_types: [Article, FAQPage, HowTo, Review]
 
 # Avis Bulenox 2026 : Drawdown Statique sur Futures, Tarifs et Premiers 10K US$ à 100 %
 
-*Dernière mise à jour : 17 avril 2026 — 14 min de lecture*
+*Dernière mise à jour : 17 avril 2026, 14 min de lecture*
 
-![Avis Bulenox 2026 — hero éditorial avec visualisation du floor de drawdown statique](../img/bulenox-hero.png)
+![Avis Bulenox 2026, hero éditorial avec visualisation du floor de drawdown statique](../img/bulenox-hero.png)
 
-> **TL;DR** — Bulenox est une prop firm futures américaine avec un différenciateur structurel unique qui compte plus que n'importe quel coupon : **son drawdown est statique**, pas trailing. Le compte 25K US$ coûte 145 US$/mois avec un profit target de 1 500 US$ et un floor de drawdown statique de 1 500 US$ qui ne bouge jamais. Le profit split est de **100 % sur les premiers 10 000 US$ gagnés**, puis jusqu'à 90 % après. Le score Trustpilot est de **4,8/5 sur 1 557 avis**. Les tarifs sont mensuels (non uniques), et la firm fonctionne exclusivement sur Rithmic. C'est la firm pour les traders fatigués du drawdown trailing d'Apex qui glisse sous leurs pieds.
+> **TL;DR**, Bulenox est une prop firm futures américaine avec un différenciateur structurel unique qui compte plus que n'importe quel coupon : **son drawdown est statique**, pas trailing. Le compte 25K US$ coûte 145 US$/mois avec un profit target de 1 500 US$ et un floor de drawdown statique de 1 500 US$ qui ne bouge jamais. Le profit split est de **100 % sur les premiers 10 000 US$ gagnés**, puis jusqu'à 90 % après. Le score Trustpilot est de **4,8/5 sur 1 557 avis**. Les tarifs sont mensuels (non uniques), et la firm fonctionne exclusivement sur Rithmic. C'est la firm pour les traders fatigués du drawdown trailing d'Apex qui glisse sous leurs pieds.
 
 | Faits Rapides | |
 |---|---|
@@ -52,9 +52,9 @@ schema_types: [Article, FAQPage, HowTo, Review]
 
 ## Qu'est-ce que Bulenox ?
 
-Bulenox est une firm de trading propriétaire axée sur les futures qui a été lancée en 2020 et cible les traders qui veulent une alternative structurellement plus simple aux firms dominantes du futures américain (Apex, TopStep, Take Profit Trader). Son slogan marketing — *« Invest in yourself »* — sous-estime ce qui le distingue des concurrents : Bulenox est l'une des rares prop firms futures sur le marché qui offre un drawdown **statique** au lieu d'un trailing.
+Bulenox est une firm de trading propriétaire axée sur les futures qui a été lancée en 2020 et cible les traders qui veulent une alternative structurellement plus simple aux firms dominantes du futures américain (Apex, TopStep, Take Profit Trader). Son slogan marketing, *« Invest in yourself »*, sous-estime ce qui le distingue des concurrents : Bulenox est l'une des rares prop firms futures sur le marché qui offre un drawdown **statique** au lieu d'un trailing.
 
-L'opération est petite selon les standards du secteur (1 557 avis Trustpilot vs plus de 19 000 pour Apex), mais sa note est identique — **4,8/5** — et le sentiment des avis se regroupe autour de trois thèmes récurrents : payouts rapides, règles propres et support client réactif. C'est une firm de niche avec une base de clients fidèle plutôt qu'un acteur grand public.
+L'opération est petite selon les standards du secteur (1 557 avis Trustpilot vs plus de 19 000 pour Apex), mais sa note est identique, **4,8/5**, et le sentiment des avis se regroupe autour de trois thèmes récurrents : payouts rapides, règles propres et support client réactif. C'est une firm de niche avec une base de clients fidèle plutôt qu'un acteur grand public.
 
 ### La structure Qualification Account et Master Account
 
@@ -70,8 +70,8 @@ Contrairement au modèle à frais unique d'Apex, **Bulenox facture au mois**. Vo
 Les trois raisons structurelles pour lesquelles Bulenox attire une base de clients fidèle :
 
 1. **Drawdown statique.** Votre floor de max loss est fixé le jour où vous ouvrez le compte et ne bouge jamais. Pas de trailing.
-2. **100 % de profit sur les premiers 10 000 US$.** Vos premiers 10K US$ de profit sur le Master Account sont conservés intégralement — pas de split avec la firm.
-3. **News trading autorisé, pas de restrictions de copy-trading, comptes multiples autorisés** — la même flexibilité opérationnelle qu'Apex, sans le stress du drawdown trailing.
+2. **100 % de profit sur les premiers 10 000 US$.** Vos premiers 10K US$ de profit sur le Master Account sont conservés intégralement, pas de split avec la firm.
+3. **News trading autorisé, pas de restrictions de copy-trading, comptes multiples autorisés**, la même flexibilité opérationnelle qu'Apex, sans le stress du drawdown trailing.
 
 ---
 
@@ -83,20 +83,20 @@ Bulenox utilise un modèle d'abonnement mensuel. Vous payez les frais à chaque 
 
 | Compte | Max contrats | Profit target | Drawdown | Frais mensuels | Coupon |
 |---|---|---|---|---|---|
-| **25 000 US$** | 3 | 1 500 US$ | 1 500 US$ statique | **145 US$/mois** | — |
+| **25 000 US$** | 3 | 1 500 US$ | 1 500 US$ statique | **145 US$/mois** |, |
 | **50 000 US$** | 7 | 3 000 US$ | 2 500 US$ statique | **125 US$/mois** (anciennement 175 US$) | `MARKET89` |
 | **100 000 US$** | 12 | 6 000 US$ | 3 000 US$ statique | **155 US$/mois** (anciennement 215 US$) | `MARKET89` |
-| **150 000 US$** | 15 | 9 000 US$ | 4 500 US$ statique | **325 US$/mois** | — |
-| **250 000 US$** | 25 | 15 000 US$ | 5 500 US$ statique | **535 US$/mois** | — |
+| **150 000 US$** | 15 | 9 000 US$ | 4 500 US$ statique | **325 US$/mois** |, |
+| **250 000 US$** | 25 | 15 000 US$ | 5 500 US$ statique | **535 US$/mois** |, |
 
-Les paliers 50K US$ et 100K US$ ont des coupons de réduction persistants — MARKET89 sur le 50K et MARKET89 sur le 100K. Ce sont les deux points d'entrée les plus populaires.
+Les paliers 50K US$ et 100K US$ ont des coupons de réduction persistants, MARKET89 sur le 50K et MARKET89 sur le 100K. Ce sont les deux points d'entrée les plus populaires.
 
 ### Deux options de compte par palier : No Scaling vs EOD
 
 Pour chaque taille de compte, vous choisissez entre deux variantes de produit à l'achat :
 
-- **Option 1 : No Scaling Account** — Votre allocation max de contrats est le nombre complet dès le jour 1 (3 contrats sur le 25K, 7 sur le 50K, etc.). Pas de scaling requis.
-- **Option 2 : EOD Account** — Comportement de drawdown légèrement différent où le calcul du drawdown inclut l'évaluation de fin de journée. Mêmes limites de contrats mais avec la sécurité opérationnelle d'un gel du drawdown basé sur EOD.
+- **Option 1 : No Scaling Account**, Votre allocation max de contrats est le nombre complet dès le jour 1 (3 contrats sur le 25K, 7 sur le 50K, etc.). Pas de scaling requis.
+- **Option 2 : EOD Account**, Comportement de drawdown légèrement différent où le calcul du drawdown inclut l'évaluation de fin de journée. Mêmes limites de contrats mais avec la sécurité opérationnelle d'un gel du drawdown basé sur EOD.
 
 Pour la plupart des traders, l'option No Scaling est le choix évident car elle vous donne votre allocation complète de contrats immédiatement.
 
@@ -117,13 +117,13 @@ La math du coût favorise Apex. La math structurelle (drawdown statique, pas de 
 
 ![Diagramme de comparaison drawdown statique vs drawdown trailing](../img/bulenox-static-vs-trailing.png)
 
-La caractéristique la plus importante de Bulenox — la seule raison pour laquelle la firm existe sur le marché bondé des prop firms futures — est le drawdown statique.
+La caractéristique la plus importante de Bulenox, la seule raison pour laquelle la firm existe sur le marché bondé des prop firms futures, est le drawdown statique.
 
 ### Ce que signifie « drawdown statique »
 
 Un **drawdown statique** est un seuil en dollars fixe depuis votre solde initial du compte qui **ne bouge jamais**, peu importe à quel point vous devenez profitable. Pour le compte de 50K US$, le drawdown est de 2 500 US$, donc le floor reste en permanence à 47 500 US$.
 
-Si votre compte de 50K US$ monte à 60 000 US$, le floor reste à 47 500 US$. Vous avez désormais 12 500 US$ de marge au-dessus de la ligne de drawdown. Sur le drawdown trailing intraday d'Apex, ce plus haut de 60 000 US$ aurait poussé le floor à 57 500 US$ — un seuil bien plus serré.
+Si votre compte de 50K US$ monte à 60 000 US$, le floor reste à 47 500 US$. Vous avez désormais 12 500 US$ de marge au-dessus de la ligne de drawdown. Sur le drawdown trailing intraday d'Apex, ce plus haut de 60 000 US$ aurait poussé le floor à 57 500 US$, un seuil bien plus serré.
 
 ### Pourquoi cela compte
 
@@ -131,7 +131,7 @@ Le drawdown statique change fondamentalement la façon dont vous pouvez gérer l
 
 - **Le coussin de profit est réel.** Une fois que vous avez gagné 5 000 US$, vous avez 5 000 US$ d'assurance. Vous pouvez prendre une journée de drawdown sans craindre que le floor ne se resserre.
 - **La fatigue mentale est plus faible.** Les traders sur drawdown trailing dépensent de la bande passante mentale à suivre où se trouve le floor *en ce moment*. Sur drawdown statique, le floor est un chiffre que vous mémorisez une fois.
-- **Flexibilité stratégique.** Vous pouvez augmenter légèrement la taille sur les setups à forte conviction après avoir construit un buffer, parce que votre buffer est à vous — pas en train de rétrécir dans votre dos.
+- **Flexibilité stratégique.** Vous pouvez augmenter légèrement la taille sur les setups à forte conviction après avoir construit un buffer, parce que votre buffer est à vous, pas en train de rétrécir dans votre dos.
 
 ### Exemple : Bulenox 50K US$ vs Apex 50K US$
 
@@ -147,7 +147,7 @@ Le drawdown statique change fondamentalement la façon dont vous pouvez gérer l
 | Firm | Statut |
 |---|---|
 | **Bulenox** | Solde 49 900 US$ vs floor 47 500 US$. Encore 2 400 US$ de buffer. **OK** |
-| **Apex** | Solde 49 900 US$ vs floor 49 300 US$. **Moins de 600 US$ de buffer — à un mauvais tick d'une infraction.** |
+| **Apex** | Solde 49 900 US$ vs floor 49 300 US$. **Moins de 600 US$ de buffer, à un mauvais tick d'une infraction.** |
 
 La différence se compose sur des semaines et des mois. Le statique est structurellement la mécanique plus facile à trader.
 
@@ -156,7 +156,7 @@ La différence se compose sur des semaines et des mois. Le statique est structur
 Rien n'est gratuit. Les compromis du drawdown statique de Bulenox :
 
 - Le montant du drawdown est plus petit en termes de dollars que la plupart des firms trailing (Bulenox 50K US$ = 2 500 US$ de drawdown ; Apex 50K US$ trailing = 2 000 US$ mais effectivement plus large car il se verrouille à mesure que vous faites du profit)
-- Vous ne pouvez pas utiliser le drawdown comme une « piste » de la même manière — une fois le floor fixé, il reste fixé même si vous perdez tôt
+- Vous ne pouvez pas utiliser le drawdown comme une « piste » de la même manière, une fois le floor fixé, il reste fixé même si vous perdez tôt
 - Les resets ne sont pas aussi indulgents car vous vous réabonnez pour un mois complet
 
 ---
@@ -181,7 +181,7 @@ Pour un trader gagnant 12 000 US$ dans les 3 premiers mois de trading sur Master
 
 Apex affiche « 100 % profit split » et c'est exact sur la structure de compte financé simulé. Le « 100 % sur les premiers 10 000 US$ puis 90 % » de Bulenox est effectivement identique pour la plupart des traders gagnant moins de 10K US$, et légèrement moins généreux pour les traders au-dessus. Pour un trader sur grand compte gagnant 50K US$ sur une année, la différence entre les 100 % d'Apex et les 90 % post-10K de Bulenox est de 4 000 US$.
 
-C'est un chiffre significatif, mais c'est souvent le prix que les traders paient volontairement en échange du drawdown statique — la raison pour laquelle ils ont choisi Bulenox en premier lieu.
+C'est un chiffre significatif, mais c'est souvent le prix que les traders paient volontairement en échange du drawdown statique, la raison pour laquelle ils ont choisi Bulenox en premier lieu.
 
 ### Quand les 100 % sur les premiers 10K se réinitialisent
 
@@ -193,7 +193,7 @@ Le palier 100 % s'applique une fois par Master Account. Si vous enfreignez et de
 
 ![Progression des 5 paliers de compte Bulenox de 25K US$ à 250K US$](../img/bulenox-tiers.png)
 
-Les cinq paliers de compte sont calibrés de sorte que chaque étape double approximativement votre profit target mais ne double pas tout à fait l'allocation de drawdown. C'est important — les comptes plus grands n'obtiennent pas proportionnellement plus de marge de drawdown.
+Les cinq paliers de compte sont calibrés de sorte que chaque étape double approximativement votre profit target mais ne double pas tout à fait l'allocation de drawdown. C'est important, les comptes plus grands n'obtiennent pas proportionnellement plus de marge de drawdown.
 
 ### Qualification Account 25 000 US$
 
@@ -225,7 +225,7 @@ Les cinq paliers de compte sont calibrés de sorte que chaque étape double appr
 - **Profit target :** 9 000 US$ (6 % du compte)
 - **Drawdown :** 4 500 US$ (3 % du compte)
 - **Frais mensuels :** 325 US$
-- **Pour qui :** Traders multi-contrats sérieux. Le saut de frais du 100K au 150K est significatif — vaut la peine seulement si les contrats supplémentaires comptent pour votre stratégie.
+- **Pour qui :** Traders multi-contrats sérieux. Le saut de frais du 100K au 150K est significatif, vaut la peine seulement si les contrats supplémentaires comptent pour votre stratégie.
 
 ### Qualification Account 250 000 US$
 
@@ -233,7 +233,7 @@ Les cinq paliers de compte sont calibrés de sorte que chaque étape double appr
 - **Profit target :** 15 000 US$ (6 % du compte)
 - **Drawdown :** 5 500 US$ (2,2 % du compte)
 - **Frais mensuels :** 535 US$
-- **Pour qui :** Traders futures professionnels gérant des positions de taille institutionnelle. À 25 contrats, c'est un vrai levier — typiquement un trader gérant 5 ES + 5 NQ + positions de spread simultanément.
+- **Pour qui :** Traders futures professionnels gérant des positions de taille institutionnelle. À 25 contrats, c'est un vrai levier, typiquement un trader gérant 5 ES + 5 NQ + positions de spread simultanément.
 
 ---
 
@@ -243,7 +243,7 @@ Les règles du stade de qualification sont conçues pour filtrer les joueurs san
 
 ### Profit target
 
-Atteignez le profit target à tout moment pendant le mois. Une fois atteint et confirmé, vous êtes éligible au Master Account. Vous n'avez pas besoin de tenir le target — il suffit de le toucher sur un trade clôturé.
+Atteignez le profit target à tout moment pendant le mois. Une fois atteint et confirmé, vous êtes éligible au Master Account. Vous n'avez pas besoin de tenir le target, il suffit de le toucher sur un trade clôturé.
 
 ### Floor de drawdown statique
 
@@ -283,7 +283,7 @@ Une fois que vous avez passé la qualification et payé pour le premier mois du 
 
 ### Fréquence des payouts
 
-Les payouts sont demandés à la demande. Bulenox a une réputation de traitement des payouts **le jour même ou le lendemain** — l'un des points saillants dans le corps des avis Trustpilot.
+Les payouts sont demandés à la demande. Bulenox a une réputation de traitement des payouts **le jour même ou le lendemain**, l'un des points saillants dans le corps des avis Trustpilot.
 
 ### Payout minimum
 
@@ -297,13 +297,13 @@ Pas de minimum strict, mais la plupart des traders attendent d'avoir au moins qu
 
 ### La règle du filet de sécurité
 
-Le Master Account maintient une exigence de solde minimum — approximativement `solde initial + montant du drawdown` — en dessous de laquelle les demandes de payout sont suspendues. Pour un Master Account de 50K US$, cela signifie que le solde de votre compte doit être au-dessus de 52 500 US$ pour demander un retrait (ce qui est confortable, car vous avez déjà passé la qualification en faisant 3 000 US$ de profit).
+Le Master Account maintient une exigence de solde minimum, approximativement `solde initial + montant du drawdown`, en dessous de laquelle les demandes de payout sont suspendues. Pour un Master Account de 50K US$, cela signifie que le solde de votre compte doit être au-dessus de 52 500 US$ pour demander un retrait (ce qui est confortable, car vous avez déjà passé la qualification en faisant 3 000 US$ de profit).
 
 ---
 
 ## Plateformes supportées
 
-Bulenox fonctionne exclusivement sur **Rithmic**, qui est un moteur de données de marché et de routage d'ordres — pas une plateforme de trading front-end. Cela signifie que vous pouvez choisir depuis quel front-end trader.
+Bulenox fonctionne exclusivement sur **Rithmic**, qui est un moteur de données de marché et de routage d'ordres, pas une plateforme de trading front-end. Cela signifie que vous pouvez choisir depuis quel front-end trader.
 
 ### Front-ends compatibles via Rithmic
 
@@ -321,7 +321,7 @@ Bulenox fonctionne exclusivement sur **Rithmic**, qui est un moteur de données 
 
 Rithmic est le moteur de routage futures de qualité institutionnelle. C'est le feed à latence la plus basse disponible aux traders retail, c'est la couche de routage utilisée par la plupart des brokers futures professionnels (AMP, Stage 5, Tradovate-via-Rithmic, etc.), et la qualité des données est indiscernable de CME direct.
 
-Pour les traders purs futures, Rithmic est le bon choix. Pour quiconque veut un accès basé navigateur comme Tradovate le propose, Bulenox ne conviendra pas — vous aurez besoin d'Apex ou d'une autre firm compatible Tradovate.
+Pour les traders purs futures, Rithmic est le bon choix. Pour quiconque veut un accès basé navigateur comme Tradovate le propose, Bulenox ne conviendra pas, vous aurez besoin d'Apex ou d'une autre firm compatible Tradovate.
 
 ---
 
@@ -352,7 +352,7 @@ Tous les produits CME Group listés dans la spécification d'instruments de Bule
 ### Crypto (micros seulement)
 - **Micro Bitcoin (MBT)**, **Micro Ether (MET)**
 
-Bulenox **ne** supporte **pas** EUREX (DAX, Bund) — c'est un produit Tradovate-only, et Bulenox est Rithmic-only.
+Bulenox **ne** supporte **pas** EUREX (DAX, Bund), c'est un produit Tradovate-only, et Bulenox est Rithmic-only.
 
 ---
 
@@ -362,26 +362,26 @@ Bulenox **ne** supporte **pas** EUREX (DAX, Bund) — c'est un produit Tradovate
 
 ### Avantages
 
-- **Drawdown statique** — le floor ne bouge jamais, avantage psychologique et tactique
+- **Drawdown statique**, le floor ne bouge jamais, avantage psychologique et tactique
 - **100 % sur les premiers 10 000 US$** de profit Master Account
 - **Réputation de traitement des payouts le jour même** sur Trustpilot
 - **4,8/5 Trustpilot** sur 1 557 avis, sentiment fort sur les payouts et le support
 - **Allocation complète de contrats dès le jour 1** sur la variante No Scaling (pas de grind de scaling-up)
 - **News trading autorisé** sans restrictions
-- **Comptes multiples autorisés** — plusieurs qualifications ou masters en parallèle
-- **Exécution de qualité Rithmic** — données et routage de qualité institutionnelle
+- **Comptes multiples autorisés**, plusieurs qualifications ou masters en parallèle
+- **Exécution de qualité Rithmic**, données et routage de qualité institutionnelle
 - **Coupons persistants MARKET89 89% off** sur les paliers 50K et 100K
 
 ### Inconvénients
 
-- **Abonnement mensuel** (non unique) — les coûts montent si vous prenez plus de 30 jours pour qualifier
-- **Pas de coupon à vie style Apex** — les réductions permanentes ne sont que de 50/60 US$ de moins, pas un pourcentage
+- **Abonnement mensuel** (non unique), les coûts montent si vous prenez plus de 30 jours pour qualifier
+- **Pas de coupon à vie style Apex**, les réductions permanentes ne sont que de 50/60 US$ de moins, pas un pourcentage
 - **Drawdown plus serré en dollars** qu'Apex sur des tailles de compte équivalentes
-- **Rithmic-only** — pas de Tradovate, pas de Wealthcharts, pas de plateforme navigateur
-- **Empreinte opérationnelle plus petite** qu'Apex — moins d'avis, moins de test par le marché
-- **Accès EUREX limité** — DAX, Bund, Euro Stoxx non disponibles
+- **Rithmic-only**, pas de Tradovate, pas de Wealthcharts, pas de plateforme navigateur
+- **Empreinte opérationnelle plus petite** qu'Apex, moins d'avis, moins de test par le marché
+- **Accès EUREX limité**, DAX, Bund, Euro Stoxx non disponibles
 - **L'activation / onboarding peut sembler plus lent** que le modèle d'activation instantanée d'Apex
-- **Plafond de compte max inférieur** — plafond 250K US$ (vs Apex qui autorise 20 comptes simultanés jusqu'à 150K US$ chacun = exposition théorique de 3M US$)
+- **Plafond de compte max inférieur**, plafond 250K US$ (vs Apex qui autorise 20 comptes simultanés jusqu'à 150K US$ chacun = exposition théorique de 3M US$)
 
 ---
 
@@ -394,7 +394,7 @@ Si le trail intraday vous a déjà sorti d'une position profitable, le floor sta
 Le drawdown statique vous permet de dimensionner plus grand après avoir construit un coussin. Cela récompense le scalping basé sur la conviction.
 
 **3. News traders**  
-Permission complète de trader FOMC, CPI, NFP, ISM. La plupart des firms futures restreignent ou interdisent — Bulenox non.
+Permission complète de trader FOMC, CPI, NFP, ISM. La plupart des firms futures restreignent ou interdisent, Bulenox non.
 
 **4. Professionnels multi-comptes**  
 La capacité de gérer 3-5 Master Accounts simultanément, chacun avec son propre floor statique, est une configuration opérationnelle propre.
@@ -467,7 +467,7 @@ Rithmic comme moteur de routage, avec support front-end pour NinjaTrader, Quanto
 Selon les avis Trustpilot, le traitement ACH le jour même ou le lendemain est courant. Les virements bancaires et crypto suivent les timelines bancaires standards.
 
 **Le coupon MARKET89 89% off fonctionne-t-il toujours ?**  
-Ces coupons sont persistants — ils sont disponibles sur la page de tarifs publique de Bulenox depuis plus de 12 mois. Ils s'appliquent au premier mois d'abonnement seulement sur le 50K et le 100K respectivement.
+Ces coupons sont persistants, ils sont disponibles sur la page de tarifs publique de Bulenox depuis plus de 12 mois. Ils s'appliquent au premier mois d'abonnement seulement sur le 50K et le 100K respectivement.
 
 **Puis-je annuler l'abonnement Bulenox ?**  
 Oui. Si vous décidez de ne pas continuer, vous annulez avant la prochaine date de facturation. Pas de contrat, pas de pénalité.
@@ -482,26 +482,26 @@ Non. Bulenox ne rembourse pas les frais d'abonnement de qualification après avo
 
 ## Comment démarrer sur Bulenox : guide en 7 étapes
 
-**Étape 1 — Commencez avec l'essai gratuit Rithmic de 14 jours.**  
-Avant de payer, utilisez l'essai Rithmic gratuit pour vous familiariser avec la plateforme et les feeds d'instruments. La plupart des traders sous-estiment la courbe d'apprentissage de Rithmic — l'essai enlève ce coût.
+**Étape 1, Commencez avec l'essai gratuit Rithmic de 14 jours.**  
+Avant de payer, utilisez l'essai Rithmic gratuit pour vous familiariser avec la plateforme et les feeds d'instruments. La plupart des traders sous-estiment la courbe d'apprentissage de Rithmic, l'essai enlève ce coût.
 
-**Étape 2 — Choisissez votre palier de compte.**  
+**Étape 2, Choisissez votre palier de compte.**  
 Le 50K US$ avec le coupon `MARKET89` est le meilleur point de départ pour la plupart des traders. Le ratio drawdown/compte est de 5 %, ce qui est le plus généreux de la ligne Bulenox.
 
-**Étape 3 — Choisissez No Scaling ou EOD.**  
+**Étape 3, Choisissez No Scaling ou EOD.**  
 Choisissez No Scaling sauf si vous voulez explicitement la sécurité EOD de ne pas avoir de positions ouvertes à la clôture. No Scaling vous donne l'allocation complète de contrats dès le jour 1.
 
-**Étape 4 — Choisissez votre plateforme front-end.**  
+**Étape 4, Choisissez votre plateforme front-end.**  
 NinjaTrader est le défaut (gratuit avec Bulenox). Quantower est un bon second choix pour les traders de ladder/DOM. Testez sur l'essai gratuit avant de vous engager.
 
-**Étape 5 — Démarrez la qualification.**  
+**Étape 5, Démarrez la qualification.**  
 Tradez conservativement pour les 2-3 premières sessions. Concentrez-vous pour atteindre 1/3 à 1/2 du profit target tout en restant bien à l'écart du floor de drawdown statique.
 
-**Étape 6 — Passez la qualification et onboarding au Master Account.**  
+**Étape 6, Passez la qualification et onboarding au Master Account.**  
 Une fois le profit target atteint, Bulenox vous fait passer au Master Account. Finissez toute position ouverte en qualification avant la transition.
 
-**Étape 7 — Construisez les premiers 10 000 US$ à 100 %.**  
-Vos premiers 10K US$ de profit Master Account sont entièrement à vous. Concentrez-vous sur la composition durable plutôt que de chasser un grand chiffre tôt — le palier 100 % est là où vous récupérez le coût de l'abonnement et construisez votre historique de payout.
+**Étape 7, Construisez les premiers 10 000 US$ à 100 %.**  
+Vos premiers 10K US$ de profit Master Account sont entièrement à vous. Concentrez-vous sur la composition durable plutôt que de chasser un grand chiffre tôt, le palier 100 % est là où vous récupérez le coût de l'abonnement et construisez votre historique de payout.
 
 ---
 
@@ -509,17 +509,17 @@ Vos premiers 10K US$ de profit Master Account sont entièrement à vous. Concent
 
 Bulenox est une prop firm futures structurellement simple et bien considérée qui occupe une niche spécifique : **les traders qui veulent un drawdown statique par-dessus tout**. Ce n'est pas le moins cher et ce n'est pas le plus grand, mais elle livre exactement l'ensemble de fonctionnalités dont les clients du drawdown trailing d'Apex se plaignent le plus.
 
-Le compte 50K US$ à 125 US$/mois (avec `MARKET89`) est le sweet spot — assez de contrats pour trader significativement, assez de drawdown pour absorber une mauvaise journée, et le profit share complet à 100 % sur les premiers 10 000 US$ de gains Master Account. La plupart des traders Bulenox restent aux paliers 50K US$ ou 100K US$ et gèrent 2-3 comptes en parallèle.
+Le compte 50K US$ à 125 US$/mois (avec `MARKET89`) est le sweet spot, assez de contrats pour trader significativement, assez de drawdown pour absorber une mauvaise journée, et le profit share complet à 100 % sur les premiers 10 000 US$ de gains Master Account. La plupart des traders Bulenox restent aux paliers 50K US$ ou 100K US$ et gèrent 2-3 comptes en parallèle.
 
-Si le drawdown trailing vous a coûté de l'argent ou du sommeil, Bulenox est le prochain arrêt rationnel. Si vous vous souciez surtout du prix et du choix de plateforme, Apex reste le défaut. Il n'y a pas de réponse unique — il n'y a que les compromis que vous choisissez.
+Si le drawdown trailing vous a coûté de l'argent ou du sommeil, Bulenox est le prochain arrêt rationnel. Si vous vous souciez surtout du prix et du choix de plateforme, Apex reste le défaut. Il n'y a pas de réponse unique, il n'y a que les compromis que vous choisissez.
 
 ---
 
 ## Guides associés
 
-- [Avis Apex Trader Funding 2026](./apex-trader-funding-review) — Futures américains, réduction à vie, 100 % split, drawdown trailing
-- [Avis Take Profit Trader 2026] — Trailing EOD, temps illimité
-- [Avis FTMO 2026](./ftmo-review) — alternative globale multi-actifs, 2-step ou 1-step
+- [Avis Apex Trader Funding 2026](./apex-trader-funding-review), Futures américains, réduction à vie, 100 % split, drawdown trailing
+- [Avis Take Profit Trader 2026], Trailing EOD, temps illimité
+- [Avis FTMO 2026](./ftmo-review), alternative globale multi-actifs, 2-step ou 1-step
 
 ---
 

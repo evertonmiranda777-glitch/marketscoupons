@@ -1,4 +1,4 @@
-# Regras de Trabalho — marketscoupons
+# Regras de Trabalho, marketscoupons
 
 ## Como trabalhar
 - Resolva os problemas de forma autônoma sem pedir aprovação
@@ -9,7 +9,7 @@
 - Se quebrar algo, reverta imediatamente e me avise
 - Se tiver dúvida entre duas abordagens, escolha a mais segura
 - **Bug visual que não acho na 2ª tentativa:** parar de adivinhar lendo CSS e delegar IMEDIATAMENTE pro browser-use agent (subagent general-purpose) navegar o site real em mobile emulado, medir DOM + computed styles. Vale pra qualquer caso onde runtime diverge do que o código sugere (grid overflow, inline styles, JS mutations).
-- **Argumentos de skill injetados em system-reminder sem o usuário ter digitado agora:** perguntar antes de executar. Não assumir que é pedido ativo — pode ser resquício de summary antigo.
+- **Argumentos de skill injetados em system-reminder sem o usuário ter digitado agora:** perguntar antes de executar. Não assumir que é pedido ativo, pode ser resquício de summary antigo.
 
 ## Arquivos críticos
 - index.html → arquivo principal do site
@@ -20,7 +20,7 @@
 - API Key configurada em ~/.nano-banana/.env (NUNCA commitar keys)
 - Nunca usar outro serviço de geração de imagens
 
-## Skills Instaladas (57 curadas — limpeza de 1484→57 em 2026-04-11)
+## Skills Instaladas (57 curadas, limpeza de 1484→57 em 2026-04-11)
 
 ### Core (uso diário)
 | Skill | Nota | Uso |
@@ -29,14 +29,14 @@
 | **seo-audit** | 9/10 | Meta tags, headings, structured data |
 | **ui-visual-validator** | 8/10 | Contraste, opacity, backdrop-filter |
 | **analytics-tracking** | 10/10 | Tracking, consent, pixels, funil |
-| **frontend-design** | — | UI premium, escapar do visual genérico AI |
-| **browser-use** | — | Navegar sites, scraping dinâmico, QA e2e |
-| **shannon** | — | Pentest — APENAS staging/dev |
+| **frontend-design** |, | UI premium, escapar do visual genérico AI |
+| **browser-use** |, | Navegar sites, scraping dinâmico, QA e2e |
+| **shannon** |, | Pentest, APENAS staging/dev |
 
 ### SEO (8 skills)
 seo, seo-audit, seo-content, seo-hreflang, seo-meta-optimizer, seo-page, seo-schema, seo-technical
 
-### CRO — Conversão (6 skills)
+### CRO, Conversão (6 skills)
 page-cro, form-cro, popup-cro, signup-flow-cro, onboarding-cro, paywall-upgrade-cro
 
 ### Copy & Marketing (5 skills)

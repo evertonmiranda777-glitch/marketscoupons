@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 }, false);
 
-// Max avatar rotation — uma roupa por dia, ciclo determinístico (sem repetir até cobrir todo pool)
+// Max avatar rotation, uma roupa por dia, ciclo determinístico (sem repetir até cobrir todo pool)
 var MAX_DAILY_AVATARS = [
   '/img/bot/Daily/max-bot-techbro-v2_1.webp',
   '/img/bot/Daily/max-bot-streetwear-v5_1.webp',

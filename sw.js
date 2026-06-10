@@ -1,4 +1,4 @@
-// Markets Coupons — Service Worker (PWA Fase 1)
+// Markets Coupons, Service Worker (PWA Fase 1)
 // Cache conservador: app shell em cache-first, HTML/API sempre network.
 // Push handlers entram na Fase 2.
 
@@ -83,7 +83,7 @@ self.addEventListener('message', (event) => {
   if (event.data === 'skipWaiting') self.skipWaiting();
 });
 
-// Push handlers — recebe push do servidor e exibe notificação
+// Push handlers, recebe push do servidor e exibe notificação
 self.addEventListener('push', (event) => {
   let payload = {};
   try {
@@ -105,7 +105,7 @@ self.addEventListener('push', (event) => {
   event.waitUntil(self.registration.showNotification(title, options));
 });
 
-// Click numa notificação — abre URL e registra evento
+// Click numa notificação, abre URL e registra evento
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   const data = event.notification.data || {};
@@ -128,7 +128,7 @@ self.addEventListener('notificationclick', (event) => {
   })());
 });
 
-// Renovação de subscription (browser pode rodar) — re-sincroniza com servidor
+// Renovação de subscription (browser pode rodar), re-sincroniza com servidor
 self.addEventListener('pushsubscriptionchange', (event) => {
   event.waitUntil((async () => {
     try {

@@ -1,4 +1,4 @@
-// Meta Ads Control — lista campanhas ativas + pausa/reativa + breakdown FB/IG
+// Meta Ads Control, lista campanhas ativas + pausa/reativa + breakdown FB/IG
 // GET  ?action=active                       → [{id,name,status,effective_status,daily_budget}]
 // GET  ?action=breakdown&since=&until=      → split por publisher_platform (FB/IG/AN) por campanha
 // POST ?action=pause body={id}              → set status=PAUSED

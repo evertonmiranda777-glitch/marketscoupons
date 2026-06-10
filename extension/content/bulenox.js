@@ -59,7 +59,7 @@ async function mcSyncBulenox(opts = {}) {
   // 2) Fallback: raspa tabela mensal Report
   if (!rows.length) rows = mcScrapeBulenoxTable();
 
-  // 3) Bulenox NÃO expõe transactions/day na tabela nem no CSV — só no Morris.Line chart inline.
+  // 3) Bulenox NÃO expõe transactions/day na tabela nem no CSV, só no Morris.Line chart inline.
   // Buscamos a página do mês corrente e extraímos y2 (=sales) por dia.
   try {
     const chartRows = await mcFetchBulenoxChart();
@@ -76,7 +76,7 @@ async function mcSyncBulenox(opts = {}) {
   // 3) NOVO: scrape transactions individuais (vai pra affiliate_conversions)
   const leads = await mcFetchBulenoxTransactions();
 
-  if (!rows.length && !leads.length) { mcToastBL('Bulenox: sem dados — abra /aff/member/stats'); return { ok:false }; }
+  if (!rows.length && !leads.length) { mcToastBL('Bulenox: sem dados, abra /aff/member/stats'); return { ok:false }; }
 
   const out = await mcSendBL({
     firm: 'bulenox',
@@ -89,7 +89,7 @@ async function mcSyncBulenox(opts = {}) {
     mcToastBL(`Bulenox: ${rows.length} dias + ${leads.length} transacoes sincronizadas`);
     await mcMarkSyncBL('bulenox');
   } else {
-    mcToastBL('Bulenox: erro — ' + (out.error || '?'));
+    mcToastBL('Bulenox: erro, ' + (out.error || '?'));
   }
   return out;
 }

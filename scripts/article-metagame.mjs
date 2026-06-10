@@ -19,11 +19,11 @@ const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="Tabuleiro de xadrez sobreposto a gráficos representando metagame de trading">
 
 <h2>O Que É Metagame e Por Que Ele Vence Mecânica Pura</h2>
-<p>Em jogos competitivos — xadrez, pôquer, eSports — existe uma camada acima da mecânica do jogo: o <strong>metagame</strong>. É como você entende o ambiente do jogo, as motivações dos outros jogadores, as regras escritas e não escritas, os padrões emergentes do meta atual. Trader profissional sabe que prop firm trading é jogo competitivo. E como todo jogo competitivo, tem metagame.</p>
+<p>Em jogos competitivos, xadrez, pôquer, eSports, existe uma camada acima da mecânica do jogo: o <strong>metagame</strong>. É como você entende o ambiente do jogo, as motivações dos outros jogadores, as regras escritas e não escritas, os padrões emergentes do meta atual. Trader profissional sabe que prop firm trading é jogo competitivo. E como todo jogo competitivo, tem metagame.</p>
 <p>Trader iniciante foca em mecânica: indicador correto, setup ideal, gestão de stop. Tudo importante. Mas insuficiente. Quem domina mecânica e ignora metagame, opera tecnicamente correto e quebra mesmo assim.</p>
 <p>Metagame em prop firm responde perguntas que mecânica não responde:</p>
 <ul>
-<li>Por que avaliação e funded são jogos diferentes — e por que isso muda a estratégia?</li>
+<li>Por que avaliação e funded são jogos diferentes, e por que isso muda a estratégia?</li>
 <li>Por que a regra de drawdown é mais importante que profit target?</li>
 <li>Por que esperar é uma habilidade tão valiosa quanto operar?</li>
 <li>Por que o "trader certo" perde menos dinheiro que o "trader errado", e isso já é vitória?</li>
@@ -39,16 +39,16 @@ const body = `
 <table>
 <thead><tr><th>Fase</th><th>Objetivo</th><th>Estratégia ótima</th><th>Erro fatal</th></tr></thead>
 <tbody>
-<tr><td><strong>1. Avaliação inicial</strong></td><td>Atingir meta de lucro respeitando drawdown</td><td>Conservador. Trades só A+. Tamanho mínimo.</td><td>Querer "passar rápido" — overtrade fatal</td></tr>
+<tr><td><strong>1. Avaliação inicial</strong></td><td>Atingir meta de lucro respeitando drawdown</td><td>Conservador. Trades só A+. Tamanho mínimo.</td><td>Querer "passar rápido", overtrade fatal</td></tr>
 <tr><td><strong>2. Verificação</strong></td><td>Provar consistência (varia por firma)</td><td>Mesmo estilo da avaliação inicial. Não mudar.</td><td>Mudar estratégia "porque deu certo"</td></tr>
 <tr><td><strong>3. Funded inicial</strong></td><td>Sobreviver os 30 primeiros dias</td><td>Tamanho ainda menor que na avaliação. Foco em payouts pequenos.</td><td>Aumentar agressividade após funded</td></tr>
 <tr><td><strong>4. Funded madura</strong></td><td>Escalar consistentemente</td><td>Aumentar size aos poucos após payouts comprovados</td><td>Pular para size grande após bons resultados</td></tr>
-<tr><td><strong>5. Multi-mesas</strong></td><td>Operar várias funded simultaneamente</td><td>Diversificação por instrumento e horário</td><td>Mesma operação em todas as contas — risco concentrado</td></tr>
+<tr><td><strong>5. Multi-mesas</strong></td><td>Operar várias funded simultaneamente</td><td>Diversificação por instrumento e horário</td><td>Mesma operação em todas as contas, risco concentrado</td></tr>
 </tbody>
 </table>
 
 <div class="callout callout-blue">
-<strong>Insight metagame:</strong> a maioria dos traders aborda fase 3 (funded inicial) com a mentalidade da fase 1 (avaliação) — ou pior, sente que "agora é dinheiro real, posso ser agressivo". Os dois erros são fatais. Funded é mais conservador que avaliação, não menos.
+<strong>Insight metagame:</strong> a maioria dos traders aborda fase 3 (funded inicial) com a mentalidade da fase 1 (avaliação), ou pior, sente que "agora é dinheiro real, posso ser agressivo". Os dois erros são fatais. Funded é mais conservador que avaliação, não menos.
 </div>
 
 <h2>Por Que Avaliação e Funded São Jogos Distintos</h2>
@@ -56,7 +56,7 @@ const body = `
 <table>
 <thead><tr><th>Aspecto</th><th>Avaliação</th><th>Funded</th></tr></thead>
 <tbody>
-<tr><td><strong>Custo de erro</strong></td><td>Re-tentar a $99-$150 (taxa)</td><td>Perder o spot funded — meses de trabalho</td></tr>
+<tr><td><strong>Custo de erro</strong></td><td>Re-tentar a $99-$150 (taxa)</td><td>Perder o spot funded, meses de trabalho</td></tr>
 <tr><td><strong>Pressão emocional</strong></td><td>Alta (medo de não passar)</td><td>Maior (medo de perder funded)</td></tr>
 <tr><td><strong>Duração esperada</strong></td><td>30-60 dias</td><td>Anos (idealmente)</td></tr>
 <tr><td><strong>Foco do trader</strong></td><td>Profit target</td><td>Sustentabilidade + payouts mensais</td></tr>
@@ -105,7 +105,7 @@ const body = `
 <h2>Os 7 Princípios Metagame do Trader de Prop Firm</h2>
 
 <h3>1. Tempo é mais valioso que oportunidade</h3>
-<p>Setup A+ aparece toda semana. Setup A- aparece toda hora. Setup B aparece a cada minuto. Operar setups B perde tempo e capital — e quando o A+ aparecer, você não terá margem mental nem capital pra explorá-lo.</p>
+<p>Setup A+ aparece toda semana. Setup A- aparece toda hora. Setup B aparece a cada minuto. Operar setups B perde tempo e capital, e quando o A+ aparecer, você não terá margem mental nem capital pra explorá-lo.</p>
 
 <h3>2. Drawdown psicológico é pior que financeiro</h3>
 <p>Perder 5% da conta é problema matemático, recuperável. Perder confiança no sistema é problema mental, não recuperável sem reset emocional. Cuide da mente como cuida da conta.</p>
@@ -126,7 +126,7 @@ const body = `
 <p>Apex tem regras únicas (drawdown trailing, scaling, news). FTMO tem outras (drawdown estatístico, profit split). Bulenox outra ainda. Operar todas iguais é como jogar xadrez achando que é damas.</p>
 
 <div class="callout callout-blue">
-<strong>Aplicação prática:</strong> antes de comprar uma avaliação, leia 100% das regras. Anote em folha. Refute mentalmente cada regra. Só compre se aceitar todas. Não é "ah, depois eu vejo". É contrato — e vai ser cobrado em fórmula matemática rígida.
+<strong>Aplicação prática:</strong> antes de comprar uma avaliação, leia 100% das regras. Anote em folha. Refute mentalmente cada regra. Só compre se aceitar todas. Não é "ah, depois eu vejo". É contrato, e vai ser cobrado em fórmula matemática rígida.
 </div>
 
 <h2>Os 5 Erros de Metagame Mais Comuns</h2>
@@ -208,7 +208,7 @@ const body = `
 </div>
 
 <h2>O Que Muda na Sua Mesa Amanhã</h2>
-<p><strong>Primeiro:</strong> você vai parar de pensar em meta de lucro. Vai começar a pensar em "respeitar drawdown". Esse reframe muda completamente sua forma de operar — e seu RR melhora por consequência.</p>
+<p><strong>Primeiro:</strong> você vai parar de pensar em meta de lucro. Vai começar a pensar em "respeitar drawdown". Esse reframe muda completamente sua forma de operar, e seu RR melhora por consequência.</p>
 <p><strong>Segundo:</strong> você vai aceitar que algumas avaliações você não vai passar. E tudo bem. Reset, próxima. Quem trata cada avaliação como "única chance" opera com pressão letal.</p>
 <p><strong>Terceiro:</strong> você vai ver outras vidas que tem ainda. Trader não é "tudo ou nada". É processo de longo prazo. Estresse de "tem que ser hoje" é ilusão. Mercado abre amanhã. Sempre.</p>
 
@@ -216,7 +216,7 @@ const body = `
 <strong>Checklist Metagame antes de cada sessão:</strong>
 <ul style="margin-top:8px;">
 <li>1. Em qual fase do jogo estou? (avaliação, verificação, funded inicial, funded madura)</li>
-<li>2. Qual é o objetivo desta fase? (não é "ganhar muito" — é "sobreviver" ou "consistência")</li>
+<li>2. Qual é o objetivo desta fase? (não é "ganhar muito", é "sobreviver" ou "consistência")</li>
 <li>3. Estou tratando essa fase com a estratégia certa para ela?</li>
 <li>4. Drawdown atual da firma: quanto resta? (essa é a regra real)</li>
 <li>5. Estado emocional: calmo, focado? Sinais de tilt?</li>
@@ -227,13 +227,13 @@ const body = `
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>Best Loser Wins</strong> — Tom Hougaard. A filosofia anti-vitória aplicada a trading.</li>
-<li><strong>Trading in the Zone</strong> — Mark Douglas. A bíblia da mentalidade trader.</li>
-<li><strong>The Inner Voice of Trading</strong> — Michael Martin. Aspectos invisíveis da mentalidade.</li>
-<li><strong>Thinking in Bets</strong> — Annie Duke. Decisões probabilísticas em ambiente incerto.</li>
-<li><strong>Mastering the Trade</strong> — John Carter. Mecânica + metagame day trading.</li>
-<li><strong>Market Mind Games</strong> — Denise Shull. Neurociência aplicada a trading.</li>
-<li><strong>Reminiscences of a Stock Operator</strong> — Edwin Lefèvre. Metagame antes do conceito existir.</li>
+<li><strong>Best Loser Wins</strong>, Tom Hougaard. A filosofia anti-vitória aplicada a trading.</li>
+<li><strong>Trading in the Zone</strong>, Mark Douglas. A bíblia da mentalidade trader.</li>
+<li><strong>The Inner Voice of Trading</strong>, Michael Martin. Aspectos invisíveis da mentalidade.</li>
+<li><strong>Thinking in Bets</strong>, Annie Duke. Decisões probabilísticas em ambiente incerto.</li>
+<li><strong>Mastering the Trade</strong>, John Carter. Mecânica + metagame day trading.</li>
+<li><strong>Market Mind Games</strong>, Denise Shull. Neurociência aplicada a trading.</li>
+<li><strong>Reminiscences of a Stock Operator</strong>, Edwin Lefèvre. Metagame antes do conceito existir.</li>
 </ul>
 
 <hr>

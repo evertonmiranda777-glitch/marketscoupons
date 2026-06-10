@@ -28,7 +28,7 @@ console.log(`Body: ${body.length} chars · SVGs: ${(body.match(/figure class="di
 const post = {
   slug: 'wyckoff-method-2026',
   lang: 'en',
-  title: 'The Wyckoff Method in 2026 — Why a 100-Year-Old Framework Still Predicts Crashes Modern Quants Miss',
+  title: 'The Wyckoff Method in 2026, Why a 100-Year-Old Framework Still Predicts Crashes Modern Quants Miss',
   category: 'Technical Analysis',
   level: 'intermediate',
   read_time: '55 min',

@@ -32,7 +32,7 @@ async function mcSyncTD(opts = {}) {
   if (!onCommissions) {
     await mcTDNavigateToCommissions();
   }
-  // espera tabela renderizar (AJAX) — ate 15s
+  // espera tabela renderizar (AJAX), ate 15s
   for (let i = 0; i < 30; i++) {
     await new Promise(r => setTimeout(r, 500));
     const rows = mcScrapeTDTable();
@@ -43,7 +43,7 @@ async function mcSyncTD(opts = {}) {
 
   const leads = mcScrapeTDTable();
 
-  // painel vazio e cenario legitimo (0 vendas ate agora) — marca sync pra nao loop
+  // painel vazio e cenario legitimo (0 vendas ate agora), marca sync pra nao loop
   if (!leads.length) {
     const bodyText = (document.body.innerText || '').toLowerCase();
     const hasCommissionsTable = [...document.querySelectorAll('table th')].some(th => /commission|amount/i.test(th.textContent || ''));
@@ -80,7 +80,7 @@ async function mcSyncTD(opts = {}) {
     mcToastTD(`TradeDay: ${rows.length} dias, ${leads.length} leads`);
     await mcMarkSyncTD('tradeday');
   } else {
-    mcToastTD('TradeDay: erro — ' + (out.error || '?'));
+    mcToastTD('TradeDay: erro, ' + (out.error || '?'));
   }
   return out;
 }

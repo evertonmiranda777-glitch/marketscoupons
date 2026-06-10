@@ -13,7 +13,7 @@ h = h.replace(
   '$1'
 );
 if (h === before) {
-  console.log('opacity:0 ja removido ou rule mudou — abort');
+  console.log('opacity:0 ja removido ou rule mudou, abort');
   process.exit(0);
 }
 

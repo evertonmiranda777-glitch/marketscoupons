@@ -18,9 +18,9 @@ tags: [brightfunded, prop firm forex, trade2earn, drawdown fixe, mt5]
 
 BrightFunded est une **Prop Firm forex basée à Dubaï** qui s'est taillé une identité distincte sur un marché saturé grâce à trois fonctionnalités inhabituelles dans le secteur : un **drawdown fixe (et non trailing)**, un **programme de fidélité par tokens Trade2Earn** et une **récompense de 15 % sur les profits de la phase d'évaluation** (et pas seulement sur les profits en phase financée). Soutenue par une **équipe internationale de plus de 30 personnes** ayant de l'expérience dans des banques centrales et dans les principales Prop Firms, BrightFunded annonce **plus de 13 M US$ de Payouts totaux aux traders** et opère depuis son siège de Dubaï avec des bureaux satellites à Amsterdam et Varsovie.
 
-L'offre est ciblée : **un seul challenge principal** — le 2-Step Classic Evaluation — avec des tailles de compte allant de **5 000 US$ à 200 000 US$**, scalable jusqu'à **400 000 US$** de capital financé. Le règlement est volontairement simple : **10 % de perte maximale totale**, **5 % de perte maximale journalière**, **objectif de 10 % en Phase 1**, **objectif de 5 % en Phase 2**, **5 jours de trading minimum par phase**, **temps illimité**. Pas de règle de cohérence. Pas de verrous cachés.
+L'offre est ciblée : **un seul challenge principal**, le 2-Step Classic Evaluation, avec des tailles de compte allant de **5 000 US$ à 200 000 US$**, scalable jusqu'à **400 000 US$** de capital financé. Le règlement est volontairement simple : **10 % de perte maximale totale**, **5 % de perte maximale journalière**, **objectif de 10 % en Phase 1**, **objectif de 5 % en Phase 2**, **5 jours de trading minimum par phase**, **temps illimité**. Pas de règle de cohérence. Pas de verrous cachés.
 
-Ce guide détaille chaque palier de prix, chaque règle, et compare BrightFunded à FTMO, FundedNext, FundingPips et The5ers — avec une note honnête sur le statut Trustpilot actuel de la firme.
+Ce guide détaille chaque palier de prix, chaque règle, et compare BrightFunded à FTMO, FundedNext, FundingPips et The5ers, avec une note honnête sur le statut Trustpilot actuel de la firme.
 
 > **Résumé rapide**
 > **Type :** Prop Firm forex (Dubaï, capital simulé, créée en 2022)
@@ -38,13 +38,13 @@ Ce guide détaille chaque palier de prix, chaque règle, et compare BrightFunded
 
 1. [Qu'est-ce que BrightFunded ?](#what-is)
 2. [La structure d'évaluation en 2 étapes](#evaluation)
-3. [Drawdown fixe — la fonctionnalité phare](#fixed-drawdown)
+3. [Drawdown fixe, la fonctionnalité phare](#fixed-drawdown)
 4. [Tarifs (toutes les tailles de compte)](#pricing)
 5. [Profit Split et la récompense de 15 % sur l'évaluation](#profit-split)
 6. [Programme de fidélité Trade2Earn](#trade2earn)
 7. [Scaling jusqu'à 400 000 US$](#scaling)
 8. [Plateformes et levier](#platforms)
-9. [Payouts — garantie 24 h](#payouts)
+9. [Payouts, garantie 24 h](#payouts)
 10. [BrightFunded vs FTMO vs FundingPips](#vs-others)
 11. [Avantages et inconvénients](#pros-cons)
 12. [Comment passer BrightFunded (pas-à-pas)](#how-to-pass)
@@ -55,7 +55,7 @@ Ce guide détaille chaque palier de prix, chaque règle, et compare BrightFunded
 
 ## <a id="what-is"></a>Qu'est-ce que BrightFunded ?
 
-BrightFunded a été lancée en 2022 comme une **Prop Firm moderne** positionnée contre les principaux points de friction du secteur historique : **trailing drawdowns, pièges de cohérence et règles de reset cachées**. La firme fonctionne sur un **modèle de capital simulé** — les traders passent une évaluation en 2 étapes, accèdent à un compte financé en démo et gagnent du cash réel sur des profits simulés jusqu'à un scaling de **400 000 US$**.
+BrightFunded a été lancée en 2022 comme une **Prop Firm moderne** positionnée contre les principaux points de friction du secteur historique : **trailing drawdowns, pièges de cohérence et règles de reset cachées**. La firme fonctionne sur un **modèle de capital simulé**, les traders passent une évaluation en 2 étapes, accèdent à un compte financé en démo et gagnent du cash réel sur des profits simulés jusqu'à un scaling de **400 000 US$**.
 
 Chiffres clés publiés par la firme :
 
@@ -74,43 +74,43 @@ Le pitch : **« Nous vous récompensons pour trader, pas seulement pour gagner. 
 
 ![Phases de l'évaluation 2 étapes BrightFunded](../img/brightfunded-phases.png)
 
-BrightFunded propose un **modèle d'évaluation unique** — le **2-Step Classic**. Voici exactement à quoi il ressemble sur un **compte de 100 000 US$** :
+BrightFunded propose un **modèle d'évaluation unique**, le **2-Step Classic**. Voici exactement à quoi il ressemble sur un **compte de 100 000 US$** :
 
 | Objectif | Step 1 | Step 2 | Phase financée |
 |---|---|---|---|
 | **Période de trading** | Illimitée | Illimitée | Indéterminée |
-| **Jours de trading minimum** | 5 jours | 5 jours | — |
+| **Jours de trading minimum** | 5 jours | 5 jours |, |
 | **Perte journalière maximale** | 5 000 US$ (5 %) | 5 000 US$ (5 %) | 5 000 US$ (5 %) |
 | **Perte totale maximale** | 10 000 US$ (10 %) | 10 000 US$ (10 %) | 10 000 US$ (10 %) |
-| **Objectif de profit** | 10 000 US$ (10 %) | 5 000 US$ (5 %) | — |
+| **Objectif de profit** | 10 000 US$ (10 %) | 5 000 US$ (5 %) |, |
 | **BrightFunded Tokens** | Oui | Oui | Oui |
 
 **Propriétés clés :**
 
 - **Pas de limite de temps** sur les deux phases
 - **Minimum 5 jours de trading par phase** (légèrement plus que les 3 de FundingPips, mais toujours raisonnable)
-- **Drawdown fixe** — le 10 % de perte max est calculé à partir du solde initial, PAS du high watermark
+- **Drawdown fixe**, le 10 % de perte max est calculé à partir du solde initial, PAS du high watermark
 - **Pas de règle de cohérence sur l'évaluation** (rare dans le secteur)
 - **Les tokens s'accumulent pendant l'évaluation** (pas seulement au stade Master)
 
 ---
 
-## <a id="fixed-drawdown"></a>Drawdown fixe — la fonctionnalité phare
+## <a id="fixed-drawdown"></a>Drawdown fixe, la fonctionnalité phare
 
 C'est la différence technique la plus importante de BrightFunded face à des firmes comme FTMO ou FundingPips.
 
-### Fixe vs Trailing — pourquoi c'est important
+### Fixe vs Trailing, pourquoi c'est important
 
-Sur la plupart des Prop Firms, les **pertes journalière et totale** sont calculées à partir de l'**équité pic** (trailing). Si vous êtes à +5 000 US$ sur un compte de 100K et que votre perte totale est de 10 %, votre stop dur est désormais à 95 000 US$ (et non 90 000 US$) — une mauvaise journée efface à la fois les gains et la marge.
+Sur la plupart des Prop Firms, les **pertes journalière et totale** sont calculées à partir de l'**équité pic** (trailing). Si vous êtes à +5 000 US$ sur un compte de 100K et que votre perte totale est de 10 %, votre stop dur est désormais à 95 000 US$ (et non 90 000 US$), une mauvaise journée efface à la fois les gains et la marge.
 
 BrightFunded utilise un **drawdown fixe** : les 10 % de perte totale max (et les 5 % journaliers) sont **toujours calculés à partir du solde initial**. Sur un compte de 100K :
 
-- **Plancher perte max :** 90 000 US$ — ne remonte jamais au fur et à mesure des profits
+- **Plancher perte max :** 90 000 US$, ne remonte jamais au fur et à mesure des profits
 - **Plancher perte journalière max :** se réinitialise à 5 % du solde initial chaque jour
 
 **Pourquoi les traders aiment ça :**
-- Cela ajoute un coussin psychologique — les traders n'ont pas peur de perdre leurs profits accumulés
-- Calculs prévisibles — pas besoin de recalculer en permanence des stops trailing
+- Cela ajoute un coussin psychologique, les traders n'ont pas peur de perdre leurs profits accumulés
+- Calculs prévisibles, pas besoin de recalculer en permanence des stops trailing
 - Plus de marge pour les stratégies swing qui se replient après un gros gagnant
 - Meilleur alignement avec la façon dont les risk managers professionnels pensent le risque de compte
 
@@ -133,8 +133,8 @@ BrightFunded tarifie en **EUR** (la firme est enregistrée à Dubaï mais opère
 
 **Coupons actuellement actifs :**
 
-- **NEW15** — 15 % DE RÉDUCTION (nouveaux clients, premier achat)
-- **BF10** — 10 % DE RÉDUCTION (clients existants, tout achat)
+- **NEW15**, 15 % DE RÉDUCTION (nouveaux clients, premier achat)
+- **BF10**, 10 % DE RÉDUCTION (clients existants, tout achat)
 
 **Mécanique de remboursement :**
 - **Frais du Step 1 remboursables** si vous atteignez la phase financée (la firme appelle cela « Refundable Fee »)
@@ -147,7 +147,7 @@ BrightFunded tarifie en **EUR** (la firme est enregistrée à Dubaï mais opère
 
 ## <a id="profit-split"></a>Profit Split et la récompense de 15 % sur l'évaluation
 
-BrightFunded affiche un **Profit Split jusqu'à 100 %** — le plafond que vous atteignez via le programme de fidélité Trade2Earn. Le split de base en phase financée est compétitif (80 %+) et augmente avec les tokens dépensés.
+BrightFunded affiche un **Profit Split jusqu'à 100 %**, le plafond que vous atteignez via le programme de fidélité Trade2Earn. Le split de base en phase financée est compétitif (80 %+) et augmente avec les tokens dépensés.
 
 ### La récompense de 15 % sur les profits d'évaluation
 
@@ -158,7 +158,7 @@ C'est unique dans le secteur. **Pendant les phases d'évaluation**, BrightFunded
 - Vous passez la Phase 2 avec +5 000 US$ → éligible à 750 US$ (15 %) de récompense d'évaluation
 - Les deux récompenses sont versées avec votre première demande de Payout en phase financée
 
-Sur une évaluation 100K réussie, cela fait **2 250 US$ en bonus cash** avant même d'avoir tradé le compte financé. La plupart des firmes paient zéro sur les profits d'évaluation — c'est un avantage réel.
+Sur une évaluation 100K réussie, cela fait **2 250 US$ en bonus cash** avant même d'avoir tradé le compte financé. La plupart des firmes paient zéro sur les profits d'évaluation, c'est un avantage réel.
 
 ### Split de base en phase financée
 
@@ -170,13 +170,13 @@ Le split de départ en phase financée est de **80 %**, évoluant grâce aux uti
 
 ![Programme de fidélité BrightFunded Trade2Earn](../img/brightfunded-trade2earn.png)
 
-BrightFunded attribue des **BrightFunded Tokens** pour **chaque trade placé** — profitable ou perdant — selon le **volume (lots) tradé**. Le cycle en trois étapes :
+BrightFunded attribue des **BrightFunded Tokens** pour **chaque trade placé**, profitable ou perdant, selon le **volume (lots) tradé**. Le cycle en trois étapes :
 
 ### 1. Trade
 Chaque position que vous ouvrez, en évaluation comme en phase financée, accumule des tokens. Contrairement aux miles aériens ou aux systèmes de cashback, ce n'est pas conditionné au P&L ; vous gagnez sur l'activité. C'est conçu pour encourager un engagement constant plutôt que de miser sur de gros coups.
 
 ### 2. Earn
-Les tokens s'empilent dans le portefeuille de votre dashboard. Plus vous tradez de lots, plus votre solde de tokens grandit vite. Pas de date d'expiration — les tokens sont reportés jusqu'à ce que vous les dépensiez.
+Les tokens s'empilent dans le portefeuille de votre dashboard. Plus vous tradez de lots, plus votre solde de tokens grandit vite. Pas de date d'expiration, les tokens sont reportés jusqu'à ce que vous les dépensiez.
 
 ### 3. Spend
 Échangez vos tokens contre des **avantages de trading** :
@@ -205,7 +205,7 @@ Par rapport aux concurrents :
 - **FTMO** scale à **2 M US$** (plafond plus haut, programme de 2 ans)
 - **The5ers** scale à **4 M US$** (le plus haut du secteur)
 
-Le plafond de 400K de BrightFunded se situe **entre les 3 grosses firmes mid-tier et les firmes haut de gamme historiques**. Pour la plupart des traders, 400K c'est assez d'espace — seuls les 1 à 2 % du haut des traders financés scalent au-delà, quelle que soit la firme.
+Le plafond de 400K de BrightFunded se situe **entre les 3 grosses firmes mid-tier et les firmes haut de gamme historiques**. Pour la plupart des traders, 400K c'est assez d'espace, seuls les 1 à 2 % du haut des traders financés scalent au-delà, quelle que soit la firme.
 
 ---
 
@@ -213,11 +213,11 @@ Le plafond de 400K de BrightFunded se situe **entre les 3 grosses firmes mid-tie
 
 ### Choix entre trois plateformes
 
-**MetaTrader 5 (MT5)** — le standard du secteur. Idéale pour les utilisateurs d'EA et les traders qui veulent un environnement multi-actifs avec carnet d'ordres complet.
+**MetaTrader 5 (MT5)**, le standard du secteur. Idéale pour les utilisateurs d'EA et les traders qui veulent un environnement multi-actifs avec carnet d'ordres complet.
 
-**cTrader** — qualité pro avec carnet d'ordres Level II, types d'ordres avancés et scripting cAlgo. Préférée par les scalpers forex sérieux.
+**cTrader**, qualité pro avec carnet d'ordres Level II, types d'ordres avancés et scripting cAlgo. Préférée par les scalpers forex sérieux.
 
-**DXtrade** — plateforme moderne web-first avec une UI plus propre que MT5. Bonne option pour les traders qui veulent un accès web sans la courbe d'apprentissage de MT5.
+**DXtrade**, plateforme moderne web-first avec une UI plus propre que MT5. Bonne option pour les traders qui veulent un accès web sans la courbe d'apprentissage de MT5.
 
 ### Levier par instrument
 
@@ -233,19 +233,19 @@ Le plafond de 400K de BrightFunded se situe **entre les 3 grosses firmes mid-tie
 
 ### Spread
 
-BrightFunded annonce des **spreads à partir de 0,0 pips** — tarification serrée et compétitive, équivalente à celle d'un broker forex retail de premier plan. C'est important pour les scalpers qui dépendent de spreads serrés pour rentabiliser leurs stratégies tick-level.
+BrightFunded annonce des **spreads à partir de 0,0 pips**, tarification serrée et compétitive, équivalente à celle d'un broker forex retail de premier plan. C'est important pour les scalpers qui dépendent de spreads serrés pour rentabiliser leurs stratégies tick-level.
 
 ---
 
-## <a id="payouts"></a>Payouts — garantie 24 h
+## <a id="payouts"></a>Payouts, garantie 24 h
 
 BrightFunded affiche trois engagements sur les Payouts :
 
-- **Traitement garanti sous 24 heures** — à partir de la soumission de la demande
-- **Éligibilité aux Payouts hebdomadaires** — premier Payout financé 7 jours après le premier trade financé
-- **Plusieurs canaux de paiement** — USDC (instantané vers wallet) + virement bancaire
+- **Traitement garanti sous 24 heures**, à partir de la soumission de la demande
+- **Éligibilité aux Payouts hebdomadaires**, premier Payout financé 7 jours après le premier trade financé
+- **Plusieurs canaux de paiement**, USDC (instantané vers wallet) + virement bancaire
 
-**Le Payout en USDC est un différenciateur** — très peu de Prop Firms paient en stablecoin. Pour les traders dans des pays à banques lentes/chères (LATAM, Asie du Sud-Est, certaines parties de l'Afrique), l'USDC fait passer le délai de Payout de jours à minutes et évite les frais de virement.
+**Le Payout en USDC est un différenciateur**, très peu de Prop Firms paient en stablecoin. Pour les traders dans des pays à banques lentes/chères (LATAM, Asie du Sud-Est, certaines parties de l'Afrique), l'USDC fait passer le délai de Payout de jours à minutes et évite les frais de virement.
 
 Revendication publique : **13 M US$+ de Payouts totaux** traités à ce jour.
 
@@ -283,15 +283,15 @@ Les trois fonctionnent en capital simulé. Les trois ont un historique légitime
 
 ### Avantages
 
-- Drawdown **fixe** (non trailing) — plus favorable aux traders swing et momentum
-- **Récompense de 15 % sur les profits d'évaluation** — unique dans le secteur
-- **Fidélité par tokens Trade2Earn** — récompense l'activité, pas seulement les gains
+- Drawdown **fixe** (non trailing), plus favorable aux traders swing et momentum
+- **Récompense de 15 % sur les profits d'évaluation**, unique dans le secteur
+- **Fidélité par tokens Trade2Earn**, récompense l'activité, pas seulement les gains
 - **Jusqu'à 100 % de Profit Split** atteignable via les tokens
 - **Traitement garanti des Payouts sous 24 heures**
-- Support **Payout en USDC** — retraits instantanés en stablecoin
+- Support **Payout en USDC**, retraits instantanés en stablecoin
 - **Pas de règle de cohérence sur l'évaluation**
 - **Temps illimité** sur les deux phases d'évaluation
-- **Scaling jusqu'à 400 000 US$** — au-dessus de FundingPips/FundedNext
+- **Scaling jusqu'à 400 000 US$**, au-dessus de FundingPips/FundedNext
 - **Trois plateformes** (MT5, cTrader, DXtrade)
 - **Levier 1:100** sur les majeures forex
 - **Payouts hebdomadaires en phase financée** (après hold initial de 7 jours)
@@ -299,60 +299,60 @@ Les trois fonctionnent en capital simulé. Les trois ont un historique légitime
 
 ### Inconvénients
 
-- **Note Trustpilot actuellement indisponible** — signalée par Trustpilot pour vérification des directives. Voir note ci-dessous. (532 avis visibles, majoritairement positifs, mais pas de score agrégé officiel)
-- **Firme plus jeune** (2022) — historique opérationnel plus court que FTMO (2015)
-- **13 M US$ de Payouts totaux** — chiffre public plus petit que FundingPips (200 M+) ou FundedNext (288 M+)
-- **Modèle d'évaluation unique** (2-Step seulement) — pas d'option 1-Step ou Zero comme FundingPips
-- **Tarification en EUR** — petit inconvénient pour les traders USD (frais de conversion possibles)
-- **Pas de futures** — forex + CFDs seulement (ni ES, NQ, CL)
+- **Note Trustpilot actuellement indisponible**, signalée par Trustpilot pour vérification des directives. Voir note ci-dessous. (532 avis visibles, majoritairement positifs, mais pas de score agrégé officiel)
+- **Firme plus jeune** (2022), historique opérationnel plus court que FTMO (2015)
+- **13 M US$ de Payouts totaux**, chiffre public plus petit que FundingPips (200 M+) ou FundedNext (288 M+)
+- **Modèle d'évaluation unique** (2-Step seulement), pas d'option 1-Step ou Zero comme FundingPips
+- **Tarification en EUR**, petit inconvénient pour les traders USD (frais de conversion possibles)
+- **Pas de futures**, forex + CFDs seulement (ni ES, NQ, CL)
 
 ---
 
 ## <a id="how-to-pass"></a>Comment passer BrightFunded (pas-à-pas)
 
-### Étape 1 — Choisissez votre taille de compte
+### Étape 1, Choisissez votre taille de compte
 
-Commencez avec une taille que vous traderiez réellement avec votre propre capital. **50K ou 100K** sont les choix sweet-spot — assez de capital pour que ça compte, prix encore raisonnable à ~289–497 € de base.
+Commencez avec une taille que vous traderiez réellement avec votre propre capital. **50K ou 100K** sont les choix sweet-spot, assez de capital pour que ça compte, prix encore raisonnable à ~289–497 € de base.
 
-### Étape 2 — Appliquez NEW15 (premier achat)
+### Étape 2, Appliquez NEW15 (premier achat)
 
 Entrez **NEW15** au checkout pour **15 % de réduction**. Sur le challenge 100K à 497 €, cela fait 75 € économisés → **entrée à 422 €**.
 
-### Étape 3 — Installez votre plateforme
+### Étape 3, Installez votre plateforme
 
 Téléchargez MT5, cTrader ou DXtrade. Connectez-vous avec les identifiants envoyés par email par BrightFunded après l'achat. Vérifiez le lot sizing avec une micro-position avant de passer en live sur l'évaluation.
 
-### Étape 4 — Respectez le drawdown fixe
+### Étape 4, Respectez le drawdown fixe
 
 Perte journalière max : **5 % (5K US$ sur 100K)**. Perte totale max : **10 % (10K US$ sur 100K)**. Puisque le drawdown est **fixé depuis le solde initial** (non trailing), vous pouvez vous replier en toute sécurité depuis vos gains sans craindre de déclencher un stop high-watermark plus élevé.
 
-### Étape 5 — Atteignez l'objectif Phase 1 (10 %)
+### Étape 5, Atteignez l'objectif Phase 1 (10 %)
 
-+10 000 US$ sur un compte 100K. Visez **1 à 1,5 %/jour** à un rythme régulier — 8 à 10 jours de trading conservateur. Le minimum de 5 jours est un plancher, pas un objectif. N'essayez pas de finir exactement en 5 jours.
++10 000 US$ sur un compte 100K. Visez **1 à 1,5 %/jour** à un rythme régulier, 8 à 10 jours de trading conservateur. Le minimum de 5 jours est un plancher, pas un objectif. N'essayez pas de finir exactement en 5 jours.
 
-### Étape 6 — Passez la Phase 2 (objectif 5 %)
+### Étape 6, Passez la Phase 2 (objectif 5 %)
 
-+5 000 US$ sur un compte 100K. L'objectif Phase 2 est la moitié de la Phase 1 — plus facile mathématiquement, mais ne relâchez pas la discipline de risque. Les mêmes règles de drawdown s'appliquent.
++5 000 US$ sur un compte 100K. L'objectif Phase 2 est la moitié de la Phase 1, plus facile mathématiquement, mais ne relâchez pas la discipline de risque. Les mêmes règles de drawdown s'appliquent.
 
-### Étape 7 — Réclamez la récompense de 15 % sur l'évaluation
+### Étape 7, Réclamez la récompense de 15 % sur l'évaluation
 
 Lors de votre premier Payout en phase financée, BrightFunded ajoute **15 % de vos profits d'évaluation** en cash. Exemple : passage avec +10K Phase 1 / +5K Phase 2 = **2 250 US$ de bonus** au premier Payout financé.
 
-### Étape 8 — Tradez financé, gagnez des tokens, scalez
+### Étape 8, Tradez financé, gagnez des tokens, scalez
 
-Tradez le compte financé. Les tokens s'accumulent à chaque trade. Échangez-les pour des upgrades de split vers 100 %. Après deux cycles profitables, demandez le scaling — le compte grandit par paliers de 25 % vers le plafond de 400K.
+Tradez le compte financé. Les tokens s'accumulent à chaque trade. Échangez-les pour des upgrades de split vers 100 %. Après deux cycles profitables, demandez le scaling, le compte grandit par paliers de 25 % vers le plafond de 400K.
 
 ---
 
 ## <a id="trustpilot-note"></a>Une note sur Trustpilot
 
-Le profil Trustpilot de BrightFunded affiche actuellement le message : *« La note de cette entreprise est indisponible en raison d'une violation de nos directives. »* La page montre toujours **532 avis visibles** — un mélange de 5 étoiles et de 1 étoile — mais aucun score agrégé n'est affiché.
+Le profil Trustpilot de BrightFunded affiche actuellement le message : *« La note de cette entreprise est indisponible en raison d'une violation de nos directives. »* La page montre toujours **532 avis visibles**, un mélange de 5 étoiles et de 1 étoile, mais aucun score agrégé n'est affiché.
 
 **Ce que cela signifie en pratique :**
 
-- Trustpilot retire les notes en étoiles lorsqu'il détecte une activité d'avis suspectée d'être incentivisée ou coordonnée. Ce n'est **pas un jugement sur la légitimité opérationnelle de la firme** — des firmes de tous niveaux de qualité se retrouvent occasionnellement dans cet état pendant que Trustpilot examine leurs pratiques.
+- Trustpilot retire les notes en étoiles lorsqu'il détecte une activité d'avis suspectée d'être incentivisée ou coordonnée. Ce n'est **pas un jugement sur la légitimité opérationnelle de la firme**, des firmes de tous niveaux de qualité se retrouvent occasionnellement dans cet état pendant que Trustpilot examine leurs pratiques.
 - Les **avis eux-mêmes restent lisibles**, et les utilisateurs peuvent se forger leur propre opinion en parcourant le contenu. Les avis positifs insistent sur les Payouts rapides et le drawdown fixe ; les avis négatifs portent surtout sur l'interprétation des règles et les délais de réponse du support client.
-- D'**autres sources** (communautés Discord de traders, reviews YouTube, Reddit r/propfirm) dressent un portrait globalement positif mais pas sans défaut — typique d'une firme jeune (créée en 2022) qui construit encore son track record.
+- D'**autres sources** (communautés Discord de traders, reviews YouTube, Reddit r/propfirm) dressent un portrait globalement positif mais pas sans défaut, typique d'une firme jeune (créée en 2022) qui construit encore son track record.
 
 **Notre avis :** traitez le signalement Trustpilot comme un **voyant jaune, pas un rouge**. Faites votre propre due diligence. Commencez par le compte 5K ou 10K pour valider l'expérience avant de vous engager sur un challenge 100K+. Si le Payout et l'expérience de la plateforme tiennent la route sur un petit test, scalez.
 
@@ -362,7 +362,7 @@ Le profil Trustpilot de BrightFunded affiche actuellement le message : *« La no
 
 ### BrightFunded est-elle légitime ?
 
-BrightFunded est une firme basée à Dubaï, enregistrée et opérant depuis 2022, avec une équipe de 30+ personnes listée publiquement et trois bureaux. La firme rapporte **plus de 13 M US$ de Payouts totaux aux traders** et dispose d'une base visible de 532 avis sur Trustpilot. Cela dit, **Trustpilot a actuellement signalé la note comme indisponible** en attente de vérification — traitez donc la firme comme légitime mais plus jeune que FTMO/FundingPips, et commencez petit pour valider votre propre expérience.
+BrightFunded est une firme basée à Dubaï, enregistrée et opérant depuis 2022, avec une équipe de 30+ personnes listée publiquement et trois bureaux. La firme rapporte **plus de 13 M US$ de Payouts totaux aux traders** et dispose d'une base visible de 532 avis sur Trustpilot. Cela dit, **Trustpilot a actuellement signalé la note comme indisponible** en attente de vérification, traitez donc la firme comme légitime mais plus jeune que FTMO/FundingPips, et commencez petit pour valider votre propre expérience.
 
 ### Quel est le coupon BrightFunded ?
 
@@ -378,7 +378,7 @@ BrightFunded vous paie **15 % de vos profits de phase d'évaluation en cash** lo
 
 ### Que sont les BrightFunded Tokens ?
 
-Des **tokens gagnés par lot tradé** — gagnant ou perdant. Échangez-les pour des upgrades de Profit Split vers 100 %, des évaluations gratuites ou d'autres avantages. Conçus pour récompenser l'activité plutôt que le pur taux de réussite.
+Des **tokens gagnés par lot tradé**, gagnant ou perdant. Échangez-les pour des upgrades de Profit Split vers 100 %, des évaluations gratuites ou d'autres avantages. Conçus pour récompenser l'activité plutôt que le pur taux de réussite.
 
 ### Quel levier BrightFunded propose-t-elle ?
 
@@ -402,16 +402,16 @@ Oui, les expert advisors sont autorisés sur MT5 et cTrader. Les restrictions st
 
 ### Que se passe-t-il si je rate l'évaluation ?
 
-Votre compte d'évaluation est fermé. Achetez un nouveau challenge pour réessayer — ou, si vous avez suffisamment de BrightFunded Tokens accumulés, échangez-les pour une **évaluation gratuite**.
+Votre compte d'évaluation est fermé. Achetez un nouveau challenge pour réessayer, ou, si vous avez suffisamment de BrightFunded Tokens accumulés, échangez-les pour une **évaluation gratuite**.
 
 ---
 
 ## Guides associés sur Markets Coupons
 
-- [Avis FTMO](./ftmo) — challenge forex 2 étapes, vétéran du secteur
-- [Avis FundingPips](./fundingpips) — firme de Dubaï avec parcours Zero/1-Step/2-Step
-- [Avis FundedNext](./fundednext) — garantie Payout 24 h, Stellar Challenge
-- [Avis The5ers](./the5ers) — scaling jusqu'à 4 M US$ de capital forex
+- [Avis FTMO](./ftmo), challenge forex 2 étapes, vétéran du secteur
+- [Avis FundingPips](./fundingpips), firme de Dubaï avec parcours Zero/1-Step/2-Step
+- [Avis FundedNext](./fundednext), garantie Payout 24 h, Stellar Challenge
+- [Avis The5ers](./the5ers), scaling jusqu'à 4 M US$ de capital forex
 
 ---
 

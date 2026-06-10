@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SVG audit v3 — narrowly detects the specific bug: <line> crossing into another container <rect>
+// SVG audit v3, narrowly detects the specific bug: <line> crossing into another container <rect>
 // (the static-math.svg bug pattern)
 import fs from 'node:fs';
 import path from 'node:path';

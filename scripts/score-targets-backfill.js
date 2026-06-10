@@ -98,7 +98,7 @@ async function main() {
     const bullHits = [scoring.bull_t1_hit, scoring.bull_t2_hit].filter(x => x === true).length;
     console.log(`${t.date} ${t.asset}: H=${h.toFixed(2)} L=${l.toFixed(2)} | Bull T ${bullHits}/2 | Stop ${scoring.bull_stop_hit ? 'HIT' : 'ok'}`);
   }
-  console.log(`\nBackfilled ${scored}/${targets.length} (skipped ${skipped} — no candle data).`);
+  console.log(`\nBackfilled ${scored}/${targets.length} (skipped ${skipped}, no candle data).`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

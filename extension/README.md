@@ -1,4 +1,4 @@
-# MarketsCoupons Sync — Extensão Chrome
+# MarketsCoupons Sync, Extensão Chrome
 
 Extensão que sincroniza dados de afiliado das prop firms (Apex, Bulenox, FTMO, etc.) direto do seu browser pro admin do MarketsCoupons.
 

@@ -1,4 +1,4 @@
-// Vercel Serverless — Public email validation (B.2 enhanced)
+// Vercel Serverless, Public email validation (B.2 enhanced)
 // POST /api/validate-email
 // Body: { email: "user@example.com" }
 // Returns: { valid, reason, cached, domain, [soft_fail] }
@@ -28,7 +28,7 @@ try {
   DISPOSABLE_LIST = new Set(raw.domains || []);
 } catch {}
 
-// Hardcoded fallback (defesa em profundidade — top 30 mais comuns)
+// Hardcoded fallback (defesa em profundidade, top 30 mais comuns)
 const DISPOSABLE_HARDCODED = new Set([
   'mailinator.com','guerrillamail.com','tempmail.com','throwaway.email','yopmail.com',
   'sharklasers.com','guerrillamailblock.com','grr.la','guerrillamail.info','guerrillamail.de',
@@ -73,7 +73,7 @@ async function cacheSet(domain, mxValid, isDisposable, reason, ttlDays) {
   } catch {}
 }
 
-// Lazy cleanup — 1% chance, LIMIT 100, async fire-and-forget
+// Lazy cleanup, 1% chance, LIMIT 100, async fire-and-forget
 async function maybeCleanupCache() {
   if (!SH || Math.random() > 0.01) return;
   try {

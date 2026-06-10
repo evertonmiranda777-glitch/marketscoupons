@@ -16,7 +16,7 @@ tags: [city traders imperium, cti, forex prop firm, swing challenge, mt5, cti ac
 
 ![City Traders Imperium CTI prop firm hero illustration](./img/cti-hero.png)
 
-**City Traders Imperium** (CTI) is one of the **oldest surviving retail prop firms** — established in **London in 2018**, now operating from the UAE and recognized as **Best Prop Trading Firm of the Year UAE 2025**. While newer firms lean on flashy rebrands and aggressive discount cycles, CTI has stayed in the game for 7+ years with a deliberate product line, an **in-house trader academy** bundled free with every challenge, and a tiered funded-trader loyalty system (**Bronze → Silver → Gold**) that rewards consistency with progressively better payout terms.
+**City Traders Imperium** (CTI) is one of the **oldest surviving retail prop firms**, established in **London in 2018**, now operating from the UAE and recognized as **Best Prop Trading Firm of the Year UAE 2025**. While newer firms lean on flashy rebrands and aggressive discount cycles, CTI has stayed in the game for 7+ years with a deliberate product line, an **in-house trader academy** bundled free with every challenge, and a tiered funded-trader loyalty system (**Bronze → Silver → Gold**) that rewards consistency with progressively better payout terms.
 
 CTI runs three distinct paths to funded trading: **Standard Challenge** (2-phase classic), **Swing Challenge** (2-phase with overnight and news flexibility), and **Instant Funding** (skip evaluation for a monthly fee). Account sizes range **$2,500 to $100,000**. Platform: **MetaTrader 5**. The offer is focused, the rules are straightforward, and the Trustpilot rating of **4.5 across 1,684 reviews** reflects the kind of slow-grown reputation you don't manufacture overnight.
 
@@ -44,8 +44,8 @@ This guide covers every program, pricing at every account size, the tier system,
 3. [Pricing (All Account Sizes, All Programs)](#pricing)
 4. [Drawdown and Risk Rules](#drawdown)
 5. [Bronze → Silver → Gold Tier System](#tiers)
-6. [The Swing Challenge — Why It Exists](#swing)
-7. [CTI Academy — Education at No Extra Cost](#academy)
+6. [The Swing Challenge, Why It Exists](#swing)
+7. [CTI Academy, Education at No Extra Cost](#academy)
 8. [Instant Funding (Pay-Per-Level Model)](#instant)
 9. [CTI vs FTMO vs The5ers vs FundingPips](#vs-others)
 10. [Pros and Cons](#pros-cons)
@@ -60,7 +60,7 @@ This guide covers every program, pricing at every account size, the tier system,
 
 CTI launched in **London in 2018** as a classical 2-phase forex prop firm. In a 2026 industry full of firms that are 18 months old and a rebrand away from the last venture, CTI's **7+ year track record** is genuinely rare. The firm now operates primarily from the UAE, where it picked up the **UAE Best Prop Trading Firm 2025** award.
 
-The product philosophy is unusual for the segment: **a single asset class (forex), a focused MT5-only platform, and education bundled at no extra cost**. While competitors chase multi-asset expansion (futures + crypto + stocks), CTI has deliberately stayed narrow. The bet is that a forex-first trader with a disciplined swing or day methodology doesn't need five platforms and twelve asset classes — they need one solid evaluation path, clear rules, and progressive rewards for consistency.
+The product philosophy is unusual for the segment: **a single asset class (forex), a focused MT5-only platform, and education bundled at no extra cost**. While competitors chase multi-asset expansion (futures + crypto + stocks), CTI has deliberately stayed narrow. The bet is that a forex-first trader with a disciplined swing or day methodology doesn't need five platforms and twelve asset classes, they need one solid evaluation path, clear rules, and progressive rewards for consistency.
 
 Key numbers:
 
@@ -77,7 +77,7 @@ Key numbers:
 
 ## <a id="programs"></a>The Three Paths: Standard vs Swing vs Instant
 
-![CTI three programs comparison — Standard, Swing, Instant](./img/cti-programs.png)
+![CTI three programs comparison, Standard, Swing, Instant](./img/cti-programs.png)
 
 CTI offers three structurally different ways to reach funded trading. Pick based on your style.
 
@@ -110,7 +110,7 @@ CTI offers three structurally different ways to reach funded trading. Pick based
 **No challenge.** Pay an upfront fee plus a **recurring monthly subscription** per account tier. Start trading a funded account from day 1.
 
 - **Starting price:** **$62** + $10–$40/month depending on tier
-- **Model:** Pay-per-level — monthly fee unlocks and maintains your account tier
+- **Model:** Pay-per-level, monthly fee unlocks and maintains your account tier
 - **Max size:** $80K Instant Funding (and $80K Instant Funding Pro for larger profit share)
 - **Best for:** Experienced traders who've blown their fair share of challenges and want to skip the evaluation grind
 
@@ -154,10 +154,10 @@ All prices below shown **with the APR30 30% off code** vs the rack rate.
 |---|---|---|
 | $2,500 | Small | $10/mo |
 | $5,000 | Low | $20/mo |
-| $10,000 | — | $20/mo |
-| $20,000 | — | $40/mo |
-| $40,000 | — | $40/mo |
-| $80,000 | — | $40/mo |
+| $10,000 |, | $20/mo |
+| $20,000 |, | $40/mo |
+| $40,000 |, | $40/mo |
+| $80,000 |, | $40/mo |
 
 Standard starting at **$27** with **APR30** is one of the cheapest entry points in the industry for a legitimate 7-year-old firm.
 
@@ -168,12 +168,12 @@ Standard starting at **$27** with **APR30** is one of the cheapest entry points 
 CTI's drawdown rules are **static (not trailing)**, which is significantly more forgiving than Apex-style trailing. On a **$100K Standard account**:
 
 - **Starting balance:** $100,000
-- **Daily drawdown threshold:** **$5,000 (5%)** from **end-of-prior-day equity** — end-of-day reset, not trailing intraday high
-- **Total drawdown threshold:** **$10,000 (10%)** from **starting balance** — **static**, does not move up with profits
+- **Daily drawdown threshold:** **$5,000 (5%)** from **end-of-prior-day equity**, end-of-day reset, not trailing intraday high
+- **Total drawdown threshold:** **$10,000 (10%)** from **starting balance**, **static**, does not move up with profits
 
 ### Why static is easier
 
-On a trailing-DD firm, your max loss ceiling rises as you make profit — which sounds fair, but it means **every dollar of profit you book moves your hard stop up toward you**. If you make $3,000 on Monday, your hard stop on Tuesday moved $3,000 closer. Blow one bad session and the profit you made is gone AND you're closer to the wall.
+On a trailing-DD firm, your max loss ceiling rises as you make profit, which sounds fair, but it means **every dollar of profit you book moves your hard stop up toward you**. If you make $3,000 on Monday, your hard stop on Tuesday moved $3,000 closer. Blow one bad session and the profit you made is gone AND you're closer to the wall.
 
 On CTI's **static $10,000 total DD**, your hard stop stays at $90,000 equity forever. Make $3,000, lose $2,500 tomorrow, you still have a full $7,500 buffer.
 
@@ -193,9 +193,9 @@ On CTI's **static $10,000 total DD**, your hard stop stays at $90,000 equity for
 
 ## <a id="tiers"></a>Bronze → Silver → Gold Tier System
 
-![CTI funded trader tier progression — Bronze Silver Gold](./img/cti-tiers.png)
+![CTI funded trader tier progression, Bronze Silver Gold](./img/cti-tiers.png)
 
-Once funded, you enter CTI's **tiered loyalty structure**. Tier is earned through consistency — not bought.
+Once funded, you enter CTI's **tiered loyalty structure**. Tier is earned through consistency, not bought.
 
 ### Bronze (Entry Level Funded)
 
@@ -208,9 +208,9 @@ Everyone starts here after passing.
 
 ### Silver (Consistency-Earned Upgrade)
 
-Promoted after meeting consistency metrics — multiple profitable months with no breaches.
+Promoted after meeting consistency metrics, multiple profitable months with no breaches.
 
-- **Any-Time Payouts (on-demand)** — request whenever, no weekly waiting period
+- **Any-Time Payouts (on-demand)**, request whenever, no weekly waiting period
 - **All Bronze benefits included**
 - **Higher profit split** (commonly 70–80% at Silver)
 - **Premium perks** unlocked
@@ -219,29 +219,29 @@ Promoted after meeting consistency metrics — multiple profitable months with n
 
 Reserved for CTI's best-performing funded traders. This is where the **"up to 100% split"** language lives.
 
-- **Potential 1-Year Monthly Salary** — elite traders can move to a monthly-stipend structure with institutional trading conditions
-- **Institutional Level Trading Conditions** — tighter spreads, priority routing, custom leverage
+- **Potential 1-Year Monthly Salary**, elite traders can move to a monthly-stipend structure with institutional trading conditions
+- **Institutional Level Trading Conditions**, tighter spreads, priority routing, custom leverage
 - **Funding conditions tailored** to your style (higher scaling, higher split)
-- **"Be part of the team"** — CTI explicitly describes Gold as being part of the firm's inner circle
+- **"Be part of the team"**, CTI explicitly describes Gold as being part of the firm's inner circle
 - **All Silver benefits included**
 
 ### What this means in practice
 
-The headline "up to 100% rewards" at CTI is a **Gold-tier benefit**, not an entry-level offer. Most traders at FundedNext (90% flat) or BrightFunded (up to 100% phase-one) will earn a higher split on Day 1. But CTI's **Gold tier offers a monthly salary structure that no other retail prop firm has** — you earn as a firm member, not just as a payout-chasing trader.
+The headline "up to 100% rewards" at CTI is a **Gold-tier benefit**, not an entry-level offer. Most traders at FundedNext (90% flat) or BrightFunded (up to 100% phase-one) will earn a higher split on Day 1. But CTI's **Gold tier offers a monthly salary structure that no other retail prop firm has**, you earn as a firm member, not just as a payout-chasing trader.
 
 This suits a specific profile: the disciplined trader who can grind Bronze → Silver → Gold over 12–18 months and genuinely values the "be part of the team" framing.
 
 ---
 
-## <a id="swing"></a>The Swing Challenge — Why It Exists
+## <a id="swing"></a>The Swing Challenge, Why It Exists
 
 Swing trading (holding positions for days or weeks) is the **orphan strategy** in the prop-firm world. Most 2-phase challenges impose either explicit restrictions ("flat by market close Friday") or soft ones (news-trading bans, profit consistency caps that penalize big swing wins).
 
 CTI's **Swing Challenge** is built around three differences vs Standard:
 
-1. **Overnight hold permitted** — no weekly rollover forced closure
-2. **Weekend hold permitted** — you can leave positions open Friday and come back Monday
-3. **News trading permitted** — including NFP, CPI, FOMC, major central bank releases
+1. **Overnight hold permitted**, no weekly rollover forced closure
+2. **Weekend hold permitted**, you can leave positions open Friday and come back Monday
+3. **News trading permitted**, including NFP, CPI, FOMC, major central bank releases
 
 For traders whose edge requires:
 - **Carry trades** (e.g., AUD/JPY positive carry)
@@ -254,22 +254,22 @@ The Swing product is genuinely differentiated. The only real alternatives at oth
 
 ---
 
-## <a id="academy"></a>CTI Academy — Education at No Extra Cost
+## <a id="academy"></a>CTI Academy, Education at No Extra Cost
 
 ![CTI Academy trading education library](./img/cti-academy.png)
 
-Every CTI challenge purchase unlocks **full access to the CTI Academy** at no additional cost. The Academy is not a generic webinar repository — it's a structured curriculum covering:
+Every CTI challenge purchase unlocks **full access to the CTI Academy** at no additional cost. The Academy is not a generic webinar repository, it's a structured curriculum covering:
 
-- **Forex fundamentals** — currency relationships, central bank policy, macro drivers
-- **Technical analysis** — classical chart patterns, price action, moving averages
-- **SMC (Smart Money Concepts)** — order blocks, fair value gaps, liquidity sweeps
-- **Risk management** — position sizing, Kelly criterion, R-multiple tracking
-- **Trader psychology** — tilt management, revenge-trading avoidance, FOMO discipline
-- **Challenge-specific tactics** — how to structure trades to satisfy CTI's drawdown math
+- **Forex fundamentals**, currency relationships, central bank policy, macro drivers
+- **Technical analysis**, classical chart patterns, price action, moving averages
+- **SMC (Smart Money Concepts)**, order blocks, fair value gaps, liquidity sweeps
+- **Risk management**, position sizing, Kelly criterion, R-multiple tracking
+- **Trader psychology**, tilt management, revenge-trading avoidance, FOMO discipline
+- **Challenge-specific tactics**, how to structure trades to satisfy CTI's drawdown math
 
 **How this compares:** FTMO has a decent journal and Account Analysis service. FundedNext has educational content hidden behind the funded stage. BrightFunded has Trade2Earn tokens but nothing that counts as a curriculum. CTI Academy is the **most complete free-with-purchase educational package** in the retail prop-firm market in 2026.
 
-**Caveat:** the Academy is valuable for beginners and intermediates. If you've been trading forex for 5+ years, the content will be familiar — but you're getting it free either way, so it's not a negative.
+**Caveat:** the Academy is valuable for beginners and intermediates. If you've been trading forex for 5+ years, the content will be familiar, but you're getting it free either way, so it's not a negative.
 
 ---
 
@@ -302,9 +302,9 @@ CTI offers two Instant tiers:
 
 ### Who should not?
 
-- **New traders** — you haven't proven your edge; paying $40/month indefinitely to blow up faster is expensive entertainment
-- **Low-turnover swing traders** — if you hold for weeks, the monthly subscription erodes your edge
-- **Budget-sensitive beginners** — challenges are cheaper initial costs with more upside
+- **New traders**, you haven't proven your edge; paying $40/month indefinitely to blow up faster is expensive entertainment
+- **Low-turnover swing traders**, if you hold for weeks, the monthly subscription erodes your edge
+- **Budget-sensitive beginners**, challenges are cheaper initial costs with more upside
 
 ---
 
@@ -356,24 +356,24 @@ CTI offers two Instant tiers:
 
 ### Pros
 
-- **Since 2018** — one of the longest-running retail prop firms, survived multiple industry shakeouts
-- **Swing Challenge** — explicit overnight/weekend/news permission, rare in the industry
-- **CTI Academy** — structured trading education free with purchase
-- **Bronze → Silver → Gold tiers** — consistency is rewarded with progressively better terms
-- **Gold tier "monthly salary"** — unique structure, no other retail prop firm offers it
-- **UAE Award 2025** — Best Prop Trading Firm of the Year recognition
-- **Static drawdown** (10% total, 5% daily) — no trailing-DD trap
-- **Starting from $27** on $2,500 accounts with APR30 — cheap proof-of-concept entry
-- **Trustpilot 4.5 / 1,684** — strong rating on substantial review volume
+- **Since 2018**, one of the longest-running retail prop firms, survived multiple industry shakeouts
+- **Swing Challenge**, explicit overnight/weekend/news permission, rare in the industry
+- **CTI Academy**, structured trading education free with purchase
+- **Bronze → Silver → Gold tiers**, consistency is rewarded with progressively better terms
+- **Gold tier "monthly salary"**, unique structure, no other retail prop firm offers it
+- **UAE Award 2025**, Best Prop Trading Firm of the Year recognition
+- **Static drawdown** (10% total, 5% daily), no trailing-DD trap
+- **Starting from $27** on $2,500 accounts with APR30, cheap proof-of-concept entry
+- **Trustpilot 4.5 / 1,684**, strong rating on substantial review volume
 
 ### Cons
 
-- **MT5 only** — no cTrader, no MT4, no Match-Trader; platform-diverse traders must adapt
-- **Forex only** — no futures, no stocks, no crypto; single-asset focus is either a pro or con depending on your style
-- **$100K max challenge size** — smaller ceiling than FTMO ($200K), The5ers ($4M scaling), or FundingPips
-- **Instant Funding monthly fee** — recurring $20–$40/month can erode swing-trader margins
-- **Gold tier is aspirational, not default** — "up to 100% split" requires grinding through Bronze and Silver first
-- **Simulated-capital framing** — standard for the industry but means payouts are discretionary (see section below)
+- **MT5 only**, no cTrader, no MT4, no Match-Trader; platform-diverse traders must adapt
+- **Forex only**, no futures, no stocks, no crypto; single-asset focus is either a pro or con depending on your style
+- **$100K max challenge size**, smaller ceiling than FTMO ($200K), The5ers ($4M scaling), or FundingPips
+- **Instant Funding monthly fee**, recurring $20–$40/month can erode swing-trader margins
+- **Gold tier is aspirational, not default**, "up to 100% split" requires grinding through Bronze and Silver first
+- **Simulated-capital framing**, standard for the industry but means payouts are discretionary (see section below)
 - **Consistency rules apply** at the funded stage (typical of the industry, but worth understanding)
 
 ---
@@ -381,12 +381,12 @@ CTI offers two Instant tiers:
 ## <a id="how-to-pass"></a>How to Pass the CTI Challenge (Step-by-Step)
 
 1. **Pick your program.** Standard for classic intraday style. Swing if you hold overnight or trade news. Instant if you want to skip the eval entirely.
-2. **Pick your account size.** Start with $10K or $25K. Don't buy $100K until you've passed a smaller tier — the rules scale identically.
-3. **Apply APR30** at checkout — **30% off**. Valid at the time of this guide's publication.
+2. **Pick your account size.** Start with $10K or $25K. Don't buy $100K until you've passed a smaller tier, the rules scale identically.
+3. **Apply APR30** at checkout, **30% off**. Valid at the time of this guide's publication.
 4. **Install MT5** and log in with credentials CTI emails you.
-5. **Complete the CTI Academy pre-requisites** before placing your first trade. The Academy has specific modules on how to structure trades around CTI's 5%/10% static DD — the 45 minutes it costs you will save multiple failed challenges later.
+5. **Complete the CTI Academy pre-requisites** before placing your first trade. The Academy has specific modules on how to structure trades around CTI's 5%/10% static DD, the 45 minutes it costs you will save multiple failed challenges later.
 6. **Respect the 5% daily DD.** On $100K = $5,000 daily budget. Risk max 1% per trade = $1,000. Five losers = you're out for the day. Two losers + scratch = room left.
-7. **Trade at least 5 trading days per phase.** Not calendar days — trading days where you placed at least one position.
+7. **Trade at least 5 trading days per phase.** Not calendar days, trading days where you placed at least one position.
 8. **Hit Phase 1 target (8% for Standard, 5% for Swing).** Journal every trade.
 9. **Hit Phase 2 target (5% for Standard, 5% for Swing).** Same discipline, lower target.
 10. **Move to Bronze funded tier.** Request your first weekly payout after the first payable period.
@@ -406,7 +406,7 @@ CTI offers two Instant tiers:
 - **Reset / refund policy:** Failed challenges close; no formal reset fee tier
 - **Consistency rules:** Standard industry soft rules apply at the funded stage (best-day-vs-total profit ratio caps)
 
-Payout speed: CTI historically processes within **24–72 hours** of request once approved. The firm's 7-year operating history and $1,684 Trustpilot reviews include many **specific payout proof posts** — the payout reliability is well-documented.
+Payout speed: CTI historically processes within **24–72 hours** of request once approved. The firm's 7-year operating history and $1,684 Trustpilot reviews include many **specific payout proof posts**, the payout reliability is well-documented.
 
 ---
 
@@ -421,9 +421,9 @@ CTI, like FTMO, E8, FundingPips, BrightFunded, and essentially every retail prop
 
 **What this means:** CTI is not a licensed brokerage or prop firm in the traditional institutional sense. It's a **trader-evaluation and profit-sharing service** that reshaped its structure after the 2023–2024 regulatory pressure on the industry to operate transparently as educational/simulation-based.
 
-**Does CTI pay?** Yes — the 7-year operating history, the $1,684 Trustpilot reviews (many citing specific payouts), and the UAE 2025 award all support that legitimate traders get paid. The discretionary-payout clause exists to protect CTI from fraud, rule violations, and abusive behavior — not as a default escape hatch.
+**Does CTI pay?** Yes, the 7-year operating history, the $1,684 Trustpilot reviews (many citing specific payouts), and the UAE 2025 award all support that legitimate traders get paid. The discretionary-payout clause exists to protect CTI from fraud, rule violations, and abusive behavior, not as a default escape hatch.
 
-If you're evaluating CTI against **traditional regulated brokerage capital**, it's not that. If you're evaluating it against FTMO, FundedNext, E8, and BrightFunded — all of which operate on the same simulated-capital model — CTI is competitive and among the older, more stable operators.
+If you're evaluating CTI against **traditional regulated brokerage capital**, it's not that. If you're evaluating it against FTMO, FundedNext, E8, and BrightFunded, all of which operate on the same simulated-capital model, CTI is competitive and among the older, more stable operators.
 
 ---
 
@@ -435,7 +435,7 @@ Yes. Established in London in 2018, operating 7+ years, 4.5 Trustpilot rating on
 
 ### What's the CTI coupon?
 
-**APR30** — 30% off any challenge purchase. Applies across Standard and Swing at all account sizes. Save up to $177 on the $100K Standard tier.
+**APR30**, 30% off any challenge purchase. Applies across Standard and Swing at all account sizes. Save up to $177 on the $100K Standard tier.
 
 ### What's the difference between CTI Standard and Swing?
 
@@ -467,20 +467,20 @@ Yes. Established in London in 2018, operating 7+ years, 4.5 Trustpilot rating on
 
 ### Is the CTI Academy really free?
 
-**Yes — included with any challenge purchase.** Full curriculum covering forex fundamentals, technicals, SMC, risk, and psychology. No upsell.
+**Yes, included with any challenge purchase.** Full curriculum covering forex fundamentals, technicals, SMC, risk, and psychology. No upsell.
 
 ### What happens if I fail a CTI challenge?
 
-The account closes. You purchase a new challenge to try again — no formal reset fee tier, just a new challenge at standard pricing (with APR30 applied if valid).
+The account closes. You purchase a new challenge to try again, no formal reset fee tier, just a new challenge at standard pricing (with APR30 applied if valid).
 
 ---
 
 ## Related Guides on Markets Coupons
 
-- [FTMO Review](./ftmo-review) — 2-step forex challenge, longest-running heavyweight
-- [The5ers Review](./the5ers-review) — $4M Hyper Growth scaling, forex-first
-- [FundingPips Review](./fundingpips-review) — Dubai firm with Zero/1-Step/2-Step paths
-- [BrightFunded Review](./brightfunded-review) — fixed drawdown + Trade2Earn tokens
+- [FTMO Review](./ftmo-review), 2-step forex challenge, longest-running heavyweight
+- [The5ers Review](./the5ers-review), $4M Hyper Growth scaling, forex-first
+- [FundingPips Review](./fundingpips-review), Dubai firm with Zero/1-Step/2-Step paths
+- [BrightFunded Review](./brightfunded-review), fixed drawdown + Trade2Earn tokens
 
 ---
 

@@ -22,22 +22,22 @@ lang: pt-BR
 
 # Earn2Trade Review 2026: Trader Career Path vs Gauntlet Mini
 
-*Atualizado em 17 de abril de 2026 — 13 min de leitura — Por Markets Coupons Team*
+*Atualizado em 17 de abril de 2026, 13 min de leitura, Por Markets Coupons Team*
 
-![Earn2Trade Trader Career Path — hero editorial](../img/e2t-hero.png)
+![Earn2Trade Trader Career Path, hero editorial](../img/e2t-hero.png)
 
-A Earn2Trade é uma das **prop firms de futuros com maior tempo de estrada** do setor — **9+ anos de operação**, **6.400+ traders fundados em 2025** e nota Trustpilot de **4,7 / 5 em 4.751 reviews**. Baseada em Sheridan, Wyoming, é conhecida por duas coisas: onboarding com educação em primeiro lugar (Beginner Crash Course grátis, licença de Journalytix incluída) e um modelo estruturado de **career path** que promove sua conta fundada conforme você saca lucros — sem pedido de scaling manual, sem períodos de espera.
+A Earn2Trade é uma das **prop firms de futuros com maior tempo de estrada** do setor, **9+ anos de operação**, **6.400+ traders fundados em 2025** e nota Trustpilot de **4,7 / 5 em 4.751 reviews**. Baseada em Sheridan, Wyoming, é conhecida por duas coisas: onboarding com educação em primeiro lugar (Beginner Crash Course grátis, licença de Journalytix incluída) e um modelo estruturado de **career path** que promove sua conta fundada conforme você saca lucros, sem pedido de scaling manual, sem períodos de espera.
 
 A Earn2Trade oferece dois produtos principais: o **Trader Career Path®** (TCP), uma avaliação por assinatura com progressão de US$ 25K até US$ 400K fundados, e o **Gauntlet Mini™**, um teste intraday de 10 dias mínimos, de US$ 50K a US$ 200K. A promo atual de **50% off em todas as assinaturas** mais até 35% off em resets faz desse um dos ciclos de desconto mais agressivos que a Earn2Trade já rodou.
 
-Este guia destrincha cada detalhe — preços, mecânica de drawdown, metas de lucro, a escada de progressão, instrumentos permitidos e prós/contras — pra você decidir se a Earn2Trade encaixa no seu estilo de trading antes de pagar a assinatura.
+Este guia destrincha cada detalhe, preços, mecânica de drawdown, metas de lucro, a escada de progressão, instrumentos permitidos e prós/contras, pra você decidir se a Earn2Trade encaixa no seu estilo de trading antes de pagar a assinatura.
 
 > **Resumo Rápido**
 > **Tipo:** Prop firm de futuros (CME, COMEX, NYMEX, CBOT apenas)
 > **Melhor pra:** Traders de futuros disciplinados que valorizam estrutura, educação e um caminho claro de progressão
 > **Profit Split:** Até 80%, escala com upgrades da conta live
 > **Funding máximo:** US$ 200K Gauntlet Mini / US$ 400K Trader Career Path (escalado)
-> **Drawdown:** EOD (End-of-Day) — trailing até o maior fechamento, depois estático
+> **Drawdown:** EOD (End-of-Day), trailing até o maior fechamento, depois estático
 > **Trustpilot:** ★ 4,7 · 4.751 reviews
 > **Oferta ativa:** 50% off em todas as assinaturas + até 35% off em resets
 
@@ -49,8 +49,8 @@ Este guia destrincha cada detalhe — preços, mecânica de drawdown, metas de l
 2. [Trader Career Path vs Gauntlet Mini](#tcp-vs-gauntlet)
 3. [Preços (Todos os Tamanhos)](#pricing)
 4. [Como Funciona o EOD Drawdown](#eod-drawdown)
-5. [Trader Career Path — A Escada de Progressão](#progression-ladder)
-6. [Gauntlet Mini — Teste Intraday de 10 Dias](#gauntlet-mini)
+5. [Trader Career Path, A Escada de Progressão](#progression-ladder)
+6. [Gauntlet Mini, Teste Intraday de 10 Dias](#gauntlet-mini)
 7. [Profit Split e Payouts](#profit-split)
 8. [Plataformas e Data Feeds](#platforms)
 9. [Instrumentos Permitidos (Só Futuros)](#allowed-instruments)
@@ -67,11 +67,11 @@ A Earn2Trade é uma **Prop Firm e empresa de educação pra trader** fundada em 
 
 Números-chave que definem a Earn2Trade em 2026:
 
-- **9+ anos** de operação — uma das prop firms de futuros mais antigas online
+- **9+ anos** de operação, uma das prop firms de futuros mais antigas online
 - **6.400+ traders fundados** só em 2025
 - **4.751 reviews no Trustpilot** com 4,7 / 5 estrelas
-- **8,89% de pass rate** em 2025 (divulgado publicamente — um movimento raro de transparência)
-- **Parceiros em corretoras reais** — não é puro funding simulado, contas live via corretoras reguladas
+- **8,89% de pass rate** em 2025 (divulgado publicamente, um movimento raro de transparência)
+- **Parceiros em corretoras reais**, não é puro funding simulado, contas live via corretoras reguladas
 
 A Earn2Trade se destaca pela transparência. Pouquíssimas prop firms divulgam pass rate. O **Exam Disclaimer** em cada página do site deixa claro que **5,23% dos traders aprovados acabam em conta live** e **18,04% dessas contas live têm pelo menos um saque**. Isso é divulgação honesta e exigida por lei que competidores costumam esconder.
 
@@ -91,7 +91,7 @@ Uma **avaliação por assinatura** sem prazo fixo. Você paga mensalmente até p
 - Assinatura mensal (US$ 150–US$ 350 dependendo do tamanho)
 - Tempo ilimitado pra passar
 - EOD drawdown (mais suave que o Intraday Trailing da Apex)
-- Caminho de scaling automático — sem pedidos de scaling
+- Caminho de scaling automático, sem pedidos de scaling
 - Licença Journalytix grátis + NinjaTrader/Finamark incluídos
 
 ### Gauntlet Mini™
@@ -100,9 +100,9 @@ Um **teste intraday com mínimo de 10 dias** voltado pra day traders que querem 
 
 **Características-chave:**
 - Assinatura mensal ou preço por tentativa
-- Mínimo de 10 dias úteis de trading (não 10 dias corridos — 10 de trading)
+- Mínimo de 10 dias úteis de trading (não 10 dias corridos, 10 de trading)
 - EOD drawdown com daily loss limit
-- Regra da "Progression Ladder" — máx. de contratos por tier de conta
+- Regra da "Progression Ladder", máx. de contratos por tier de conta
 - Sem holding overnight (só intraday)
 
 | Feature | **Trader Career Path** | **Gauntlet Mini** |
@@ -120,7 +120,7 @@ Um **teste intraday com mínimo de 10 dias** voltado pra day traders que querem 
 
 ## <a id="pricing"></a>Preços (Todos os Tamanhos de Conta)
 
-A Earn2Trade usa **assinaturas mensais** (com o desconto atual de 50% off já aplicado). Abaixo estão os preços atuais em abril de 2026 — os preços cheios antes do desconto são o dobro.
+A Earn2Trade usa **assinaturas mensais** (com o desconto atual de 50% off já aplicado). Abaixo estão os preços atuais em abril de 2026, os preços cheios antes do desconto são o dobro.
 
 ### Trader Career Path
 
@@ -147,7 +147,7 @@ Todos os planos TCP incluem: licença NinjaTrader/Finamark grátis, Journalytix 
 - GAU150: US$ 130
 - GAU200: US$ 155
 
-Comparada à Apex (fees de US$ 147–US$ 587 com descontos lifetime) e à TPT (US$ 150–US$ 360/mês com NOFEE40), a Earn2Trade fica no meio. A diferença-chave: os fees da Earn2Trade são **assinaturas mensais**, não deals lifetime one-time — você continua pagando até passar.
+Comparada à Apex (fees de US$ 147–US$ 587 com descontos lifetime) e à TPT (US$ 150–US$ 360/mês com NOFEE40), a Earn2Trade fica no meio. A diferença-chave: os fees da Earn2Trade são **assinaturas mensais**, não deals lifetime one-time, você continua pagando até passar.
 
 ---
 
@@ -158,24 +158,24 @@ Comparada à Apex (fees de US$ 147–US$ 587 com descontos lifetime) e à TPT (U
 O EOD (End-of-Day) drawdown é o **segundo mais suave** modelo de drawdown no setor de prop de futuros (atrás só do estático). Veja como funciona numa conta TCP100 (US$ 100K virtuais, US$ 3K de EOD drawdown):
 
 1. **Início:** Balance = US$ 100.000. Piso do drawdown = US$ 97.000 (balance inicial − US$ 3K).
-2. **Você fecha +US$ 1.500 num dia.** Novo balance = US$ 101.500. O piso sobe pra **US$ 98.500** (US$ 101.500 − US$ 3.000). Mas só no fim do dia — swings intraday não movem o piso.
-3. **Você fecha +US$ 2.000 em outro dia.** Balance = US$ 103.500. O piso se move pra **US$ 100.500**. Atravessou o milestone de "balance inicial" — o piso agora trava em US$ 100.500 pra sempre.
+2. **Você fecha +US$ 1.500 num dia.** Novo balance = US$ 101.500. O piso sobe pra **US$ 98.500** (US$ 101.500 − US$ 3.000). Mas só no fim do dia, swings intraday não movem o piso.
+3. **Você fecha +US$ 2.000 em outro dia.** Balance = US$ 103.500. O piso se move pra **US$ 100.500**. Atravessou o milestone de "balance inicial", o piso agora trava em US$ 100.500 pra sempre.
 4. **Você fecha −US$ 500.** Balance = US$ 103.000. O piso fica em US$ 100.500 (não volta pra baixo).
 
-O piso **só sobe**, e **só atualiza no fechamento de fim-de-dia** — então swings de P&L intraday abaixo do piso não matam sua conta, desde que você feche positivo.
+O piso **só sobe**, e **só atualiza no fechamento de fim-de-dia**, então swings de P&L intraday abaixo do piso não matam sua conta, desde que você feche positivo.
 
 **Regras críticas:**
 - **Equity aberta conta** no cálculo do piso EOD no fechamento da sessão.
-- **O Daily Loss Limit é separado** — uma perda máxima que você pode tomar num único dia útil de trading, calculada sobre equity aberta intraday (esse SIM é intraday).
+- **O Daily Loss Limit é separado**, uma perda máxima que você pode tomar num único dia útil de trading, calculada sobre equity aberta intraday (esse SIM é intraday).
 - **Quando seu balance ultrapassa "balance inicial + EOD drawdown"**, o piso trava no balance inicial.
 
 Isso é notavelmente mais suave que o modelo de **Intraday Trailing** da Apex, onde o piso sobe a cada tick de lucro. Na Earn2Trade dá pra cavalgar drawdowns durante o dia e ainda passar, desde que você feche no verde.
 
 ---
 
-## <a id="progression-ladder"></a>Trader Career Path — A Escada de Progressão
+## <a id="progression-ladder"></a>Trader Career Path, A Escada de Progressão
 
-A feature de destaque do TCP é a **escada automática de progressão** — assim que você passa a avaliação, sua conta recebe upgrade conforme você saca lucros. Sem pedidos de scaling manual, sem esperar 4 meses como na FundedNext.
+A feature de destaque do TCP é a **escada automática de progressão**, assim que você passa a avaliação, sua conta recebe upgrade conforme você saca lucros. Sem pedidos de scaling manual, sem esperar 4 meses como na FundedNext.
 
 Como funciona num TCP100 depois de passar:
 
@@ -188,27 +188,27 @@ Como funciona num TCP100 depois de passar:
 | **Tier 5** | US$ 300.000 | US$ 9.000 | Sacar US$ 18.000+ cumulativos |
 | **Tier 6** | US$ 400.000 | US$ 12.000 | Topo da escada |
 
-**Ponto-chave:** O drawdown é **fixo** (US$ 3K–US$ 12K dependendo do tier), o que significa que depois que você passa um tier, o piso fica estático — seu espaço de trading não encolhe se você crescer a conta além do piso do tier.
+**Ponto-chave:** O drawdown é **fixo** (US$ 3K–US$ 12K dependendo do tier), o que significa que depois que você passa um tier, o piso fica estático, seu espaço de trading não encolhe se você crescer a conta além do piso do tier.
 
 É um design forte de scaling. A Apex exige pedidos manuais de Payout e o scaling é atrelado a milestones de performance. A Earn2Trade simplesmente te promove automaticamente baseado em volume de saque.
 
 ---
 
-## <a id="gauntlet-mini"></a>Gauntlet Mini — Teste Intraday de 10 Dias
+## <a id="gauntlet-mini"></a>Gauntlet Mini, Teste Intraday de 10 Dias
 
 O Gauntlet Mini é o **caminho mais rápido pro funding** da Earn2Trade. Desenhado pra day traders, tem regras mais duras que o TCP, mas pode ser passado em até 2 semanas.
 
 ### Regras Principais
 
-- **10 dias úteis de trading mínimos** — dias efetivos com pelo menos um trade; feriado não conta.
-- **Sem posições overnight** — todos os trades precisam ser fechados antes da abertura da sessão seguinte.
-- **EOD drawdown** — mesma mecânica do TCP.
-- **Daily Loss Limit** — mais apertado que no TCP, calculado sobre equity aberta (intraday).
-- **Progression Ladder (teto de contratos)** — máx. de contratos que você pode segurar baseado no balance atual.
+- **10 dias úteis de trading mínimos**, dias efetivos com pelo menos um trade; feriado não conta.
+- **Sem posições overnight**, todos os trades precisam ser fechados antes da abertura da sessão seguinte.
+- **EOD drawdown**, mesma mecânica do TCP.
+- **Daily Loss Limit**, mais apertado que no TCP, calculado sobre equity aberta (intraday).
+- **Progression Ladder (teto de contratos)**, máx. de contratos que você pode segurar baseado no balance atual.
 
 ### A Progression Ladder (Teto de Contratos)
 
-Num GAU100 (US$ 100K), você pode segurar até **12 contratos** ao mesmo tempo. Violar isso trava sua conta pelo resto do dia de trading (retoma no dia seguinte — conta não é terminada). A escada escala: a conta cai pra um tier menor, o teto também escala pra baixo. Isso força disciplina de position sizing em contas de capital alto.
+Num GAU100 (US$ 100K), você pode segurar até **12 contratos** ao mesmo tempo. Violar isso trava sua conta pelo resto do dia de trading (retoma no dia seguinte, conta não é terminada). A escada escala: a conta cai pra um tier menor, o teto também escala pra baixo. Isso força disciplina de position sizing em contas de capital alto.
 
 ### Profit Goal
 
@@ -231,7 +231,7 @@ A Earn2Trade usa um modelo de conta live em **corretora real**, não funding pur
 
 **Cronograma de Payout:** Saques on-demand da conta live assim que um threshold mínimo é atingido. Payouts em cripto suportados (citado na home). Bank wire e outros métodos via a corretora parceira.
 
-**Distinção importante vs Apex/TPT:** Apex e TPT usam contas fundadas simuladas com sistemas internos de Payout. A Earn2Trade te transita pra uma **conta live em corretora real** — ou seja, a própria corretora cuida de execução e saques. É mais tradicional, mais regulado e mais lento pra processar, mas carrega menos risco de contraparte se uma firma fechar.
+**Distinção importante vs Apex/TPT:** Apex e TPT usam contas fundadas simuladas com sistemas internos de Payout. A Earn2Trade te transita pra uma **conta live em corretora real**, ou seja, a própria corretora cuida de execução e saques. É mais tradicional, mais regulado e mais lento pra processar, mas carrega menos risco de contraparte se uma firma fechar.
 
 ---
 
@@ -245,9 +245,9 @@ A Earn2Trade suporta três plataformas com duas opções de data feed:
 | **Finamark** | Rithmic | UI web limpa, ladder DOM |
 | **Tradovate** | Tradovate | Execução web + mobile rápida, TradingView embutido |
 
-Os custos de data feed são cobertos durante a avaliação (a assinatura já inclui). Tradovate como data feed também desbloqueia **integração com TradingView** pro charting — gráfico no TV, execução no Tradovate.
+Os custos de data feed são cobertos durante a avaliação (a assinatura já inclui). Tradovate como data feed também desbloqueia **integração com TradingView** pro charting, gráfico no TV, execução no Tradovate.
 
-**Não suportados:** MT4, MT5, cTrader, Match-Trader (essas são plataformas de forex/CFD — Earn2Trade é só futuros). Sem Quantower ou MotiveWave. Se você precisa dessas, olha TPT ou Bulenox.
+**Não suportados:** MT4, MT5, cTrader, Match-Trader (essas são plataformas de forex/CFD, Earn2Trade é só futuros). Sem Quantower ou MotiveWave. Se você precisa dessas, olha TPT ou Bulenox.
 
 ---
 
@@ -257,12 +257,12 @@ A Earn2Trade é **rigorosa com instrumentos**: apenas futuros listados na CME, C
 
 **Permitidos:**
 - ES, NQ, YM, RTY (futuros de índices de ações)
-- CL, NG, HO, RB (energia — NYMEX)
-- GC, SI, HG, PA, PL (metais — COMEX)
-- ZB, ZN, ZF, ZT, UB (treasuries — CBOT)
-- ZC, ZS, ZW, ZM (grãos — CBOT)
-- 6E, 6B, 6A, 6J, 6C (futuros de moeda — CME)
-- BTC, MBT, ETH, MET (futuros de cripto — CME)
+- CL, NG, HO, RB (energia, NYMEX)
+- GC, SI, HG, PA, PL (metais, COMEX)
+- ZB, ZN, ZF, ZT, UB (treasuries, CBOT)
+- ZC, ZS, ZW, ZM (grãos, CBOT)
+- 6E, 6B, 6A, 6J, 6C (futuros de moeda, CME)
+- BTC, MBT, ETH, MET (futuros de cripto, CME)
 
 **NÃO permitidos:**
 - Forex spot, ações, opções, CFDs, cripto spot
@@ -285,19 +285,19 @@ A Earn2Trade é **rigorosa com instrumentos**: apenas futuros listados na CME, C
 
 ### Proibido
 
-- **Scalping de alta frequência** — trades abaixo de 1 segundo em sucessão rápida
-- **Latency arbitrage** — explorar lag de feed
-- **Group trading / copiar de sinais externos** — contas precisam ser decisões individuais
+- **Scalping de alta frequência**, trades abaixo de 1 segundo em sucessão rápida
+- **Latency arbitrage**, explorar lag de feed
+- **Group trading / copiar de sinais externos**, contas precisam ser decisões individuais
 - **Exceder a Progression Ladder** no Gauntlet Mini (resulta em travamento diário)
 - **Posições overnight no Gauntlet Mini** (terminação imediata)
-- **Operar instrumentos não permitidos** (CFDs, forex, ações — DQ automático)
+- **Operar instrumentos não permitidos** (CFDs, forex, ações, DQ automático)
 - **Usar peculiaridades do servidor demo** (congelamento de preço, gaps) pra fingir lucros
 
 ### Regras de Disciplina Que Vale Conhecer
 
-- **Pass rate divulgado publicamente** — 8,89% em 2025. Se você não é consistentemente lucrativo na sua própria conta, essa firma não resolve isso.
-- **O modelo de assinatura faz disciplina importar** — meses lentos custam US$ 150–US$ 350 cada. FTMO, FundedNext e Apex são fees one-time; a Earn2Trade sangra se você levar 6 meses pra passar.
-- **Corretora real depois de passar** — isso é positivo pra longevidade, mas significa onboarding mais lento depois de passar (KYC com a corretora leva dias).
+- **Pass rate divulgado publicamente**, 8,89% em 2025. Se você não é consistentemente lucrativo na sua própria conta, essa firma não resolve isso.
+- **O modelo de assinatura faz disciplina importar**, meses lentos custam US$ 150–US$ 350 cada. FTMO, FundedNext e Apex são fees one-time; a Earn2Trade sangra se você levar 6 meses pra passar.
+- **Corretora real depois de passar**, isso é positivo pra longevidade, mas significa onboarding mais lento depois de passar (KYC com a corretora leva dias).
 
 ---
 
@@ -343,26 +343,26 @@ Pra traders de futuros comparando as três principais prop firms dos EUA, aqui v
 
 ### Prós
 
-- **9+ anos de operação** — a prop firm de futuros mais estabelecida ainda ativa
-- **Trustpilot 4,7 / 4.751 reviews** — a maior nota verificada entre prop firms de futuros
-- **Parceiros em corretoras reais** — contas live depois de passar, não só simulado
-- **Scaling automático até US$ 400K** — sem pedidos manuais, progressão embutida
-- **Educação grátis + Journalytix incluído** — outras firmas cobram US$ 50+/mês por journaling equivalente
-- **Divulgação transparente de pass rate** — 8,89% em 2025, publicada publicamente
-- **EOD drawdown** — mais suave que o Intraday Trailing da Apex
+- **9+ anos de operação**, a prop firm de futuros mais estabelecida ainda ativa
+- **Trustpilot 4,7 / 4.751 reviews**, a maior nota verificada entre prop firms de futuros
+- **Parceiros em corretoras reais**, contas live depois de passar, não só simulado
+- **Scaling automático até US$ 400K**, sem pedidos manuais, progressão embutida
+- **Educação grátis + Journalytix incluído**, outras firmas cobram US$ 50+/mês por journaling equivalente
+- **Divulgação transparente de pass rate**, 8,89% em 2025, publicada publicamente
+- **EOD drawdown**, mais suave que o Intraday Trailing da Apex
 - **Payouts em cripto suportados**
 - **Reset grátis ao recobrar** no TCP
 
 ### Contras
 
-- **Modelo de assinatura mensal** — traders lentos sangram dinheiro até passar
-- **Só futuros** — sem forex, ações, cripto spot, CFDs
-- **Gauntlet Mini tem mínimo de 10 dias** — não dá pra passar numa semana
+- **Modelo de assinatura mensal**, traders lentos sangram dinheiro até passar
+- **Só futuros**, sem forex, ações, cripto spot, CFDs
+- **Gauntlet Mini tem mínimo de 10 dias**, não dá pra passar numa semana
 - **Teto de contratos da Progression Ladder** adiciona complexidade pra day trader novo
 - **Onboarding na corretora live acrescenta 3–7 dias** depois de passar (KYC com o parceiro)
 - **Sem execução nativa via TradingView** a não ser que seja no feed Tradovate
-- **Limitado às bolsas do grupo CME** — sem ICE, Eurex
-- **Pass rate é honesto mas baixo** — 8,89% significa que 91% dos compradores nunca são fundados
+- **Limitado às bolsas do grupo CME**, sem ICE, Eurex
+- **Pass rate é honesto mas baixo**, 8,89% significa que 91% dos compradores nunca são fundados
 
 ---
 
@@ -382,7 +382,7 @@ TCP não tem limite de tempo e permite holding overnight; ideal pra traders híb
 
 ### A Earn2Trade permite holding overnight?
 
-No Trader Career Path, sim. No Gauntlet Mini, não — todas as posições precisam ser fechadas antes do fim da sessão.
+No Trader Career Path, sim. No Gauntlet Mini, não, todas as posições precisam ser fechadas antes do fim da sessão.
 
 ### Que instrumentos dá pra operar na Earn2Trade?
 
@@ -390,7 +390,7 @@ Só futuros, listados na CME, COMEX, NYMEX e CBOT. Futuros de índice, energia, 
 
 ### A conta live é uma conta de corretora real?
 
-Sim. Depois de passar, a Earn2Trade te transita pra uma conta live numa corretora parceira (Tradovate, NinjaTrader ou Finamark). É incomum — a maioria das prop firms usa contas fundadas simuladas internamente. O modelo da Earn2Trade adiciona supervisão regulatória, mas também exige KYC na corretora depois de passar.
+Sim. Depois de passar, a Earn2Trade te transita pra uma conta live numa corretora parceira (Tradovate, NinjaTrader ou Finamark). É incomum, a maioria das prop firms usa contas fundadas simuladas internamente. O modelo da Earn2Trade adiciona supervisão regulatória, mas também exige KYC na corretora depois de passar.
 
 ### Quão rápidos são os Payouts da Earn2Trade?
 
@@ -402,7 +402,7 @@ Os Payouts passam pela corretora parceira, então a velocidade depende do proces
 
 ### A Earn2Trade tem cupom?
 
-Sim — a promo atual é 50% off em todas as assinaturas mais até 35% off em resets. Confira a home da Markets Coupons pelo código ativo e o link.
+Sim, a promo atual é 50% off em todas as assinaturas mais até 35% off em resets. Confira a home da Markets Coupons pelo código ativo e o link.
 
 ### Dá pra usar bot de trading na Earn2Trade?
 
@@ -412,10 +412,10 @@ Sim, EAs e estratégias automatizadas são permitidos com declaração. Scalping
 
 ## Guias Relacionados na Markets Coupons
 
-- [Apex Trader Funding Review](./apex-trader-funding-review) — melhor prop firm de futuros pra scalpers intraday
-- [Take Profit Trader Review](./tpt-review) — futuros 1-step com Payouts day-1
-- [Bulenox Review](./bulenox-review) — futuros com Drawdown estático e flexibilidade de news trading
-- [FTMO Review](./ftmo-review) — challenge 2-step de forex, veterana do setor
+- [Apex Trader Funding Review](./apex-trader-funding-review), melhor prop firm de futuros pra scalpers intraday
+- [Take Profit Trader Review](./tpt-review), futuros 1-step com Payouts day-1
+- [Bulenox Review](./bulenox-review), futuros com Drawdown estático e flexibilidade de news trading
+- [FTMO Review](./ftmo-review), challenge 2-step de forex, veterana do setor
 
 ---
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * translate-i18n-id.mjs — Traduz i18n-en.js → i18n-id.js (Bahasa Indonesia)
+ * translate-i18n-id.mjs, Traduz i18n-en.js → i18n-id.js (Bahasa Indonesia)
  * via Gemini 2.5 Flash (Google AI Studio free tier).
  *
  * Preserva:
@@ -27,7 +27,7 @@ const MAX_RETRY = 4;
 const SYSTEM_PROMPT = `You are a professional translator EN → Bahasa Indonesia (id) for a prop trading firm coupon site.
 
 CRITICAL RULES:
-1. NEVER translate these technical terms — keep them in English: "Prop Firm", "Prop Firms", "Profit Split", "Drawdown", "Lifetime", "Trailing", "EOD", "Day 1", "Trustpilot"
+1. NEVER translate these technical terms, keep them in English: "Prop Firm", "Prop Firms", "Profit Split", "Drawdown", "Lifetime", "Trailing", "EOD", "Day 1", "Trustpilot"
 2. PRESERVE all HTML tags exactly: <em>, </em>, <a href="...">, </a>, <strong>, etc.
 3. PRESERVE placeholders verbatim: {name}, {n}, {firm}, %s, %d
 4. PRESERVE all emojis and currency symbols ($, €, £)
@@ -57,7 +57,7 @@ async function translateBatch(batch, attempt = 1) {
   if (r.status === 429 && attempt < MAX_RETRY) {
     const retryDelay = j?.error?.details?.find(d => d['@type']?.includes('RetryInfo'))?.retryDelay;
     const wait = retryDelay ? parseInt(retryDelay) * 1000 + 2000 : Math.min(30000, 5000 * attempt);
-    console.log(`    429 — backoff ${wait}ms (attempt ${attempt+1}/${MAX_RETRY})`);
+    console.log(`    429, backoff ${wait}ms (attempt ${attempt+1}/${MAX_RETRY})`);
     await new Promise(rs => setTimeout(rs, wait));
     return translateBatch(batch, attempt + 1);
   }
@@ -118,10 +118,10 @@ async function main() {
         else idObj[k] = enObj[k]; // fallback if model missed key
       });
       done += slice.length;
-      console.log(`  batch ${Math.floor(i/BATCH_SIZE)+1}/${Math.ceil(toTranslate.length/BATCH_SIZE)} — ${done}/${toTranslate.length} keys`);
+      console.log(`  batch ${Math.floor(i/BATCH_SIZE)+1}/${Math.ceil(toTranslate.length/BATCH_SIZE)}, ${done}/${toTranslate.length} keys`);
       saveProgress();
     } catch (e) {
-      console.error(`  batch failed: ${e.message} — keeping EN fallback for this batch`);
+      console.error(`  batch failed: ${e.message}, keeping EN fallback for this batch`);
       slice.forEach(k => { idObj[k] = enObj[k]; });
       saveProgress();
     }

@@ -55,7 +55,7 @@ async function mcSyncFP(opts = {}) {
     mcToastFP(`FP: snap=${!!snapshot}, ${leads.length} leads`);
     await mcMarkFP('fundingpips');
   } else {
-    mcToastFP('FP: erro — ' + (out.error || '?'));
+    mcToastFP('FP: erro, ' + (out.error || '?'));
   }
   return out;
 }

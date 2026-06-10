@@ -29,7 +29,7 @@ async function mcMarkSyncTPT(firmId) {
 async function mcSyncTPT(opts = {}) {
   const leads = mcScrapeTPTTransactions();
   if (!leads.length) {
-    mcToastTPT('TPT: sem transacoes — abra /affiliate-dashboard/transactions');
+    mcToastTPT('TPT: sem transacoes, abra /affiliate-dashboard/transactions');
     return { ok:false };
   }
 
@@ -53,7 +53,7 @@ async function mcSyncTPT(opts = {}) {
     mcToastTPT(`TPT: ${rows.length} dias + ${leads.length} transacoes`);
     await mcMarkSyncTPT('tpt');
   } else {
-    mcToastTPT('TPT: erro — ' + (out.error || '?'));
+    mcToastTPT('TPT: erro, ' + (out.error || '?'));
   }
   return out;
 }
@@ -158,7 +158,7 @@ function mcTPTParseDate(s) {
   if (m) return `${m[1]}-${m[2]}-${m[3]}`;
   m = /^(\d{1,2})[./\-](\d{1,2})[./\-](\d{4})/.exec(s);
   if (m) {
-    // assumir MM/DD/YYYY (US) — TPT e empresa americana
+    // assumir MM/DD/YYYY (US), TPT e empresa americana
     return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
   }
   // "Apr 1, 2026"

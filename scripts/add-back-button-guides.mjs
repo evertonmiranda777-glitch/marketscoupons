@@ -36,7 +36,7 @@ for (const root of ROOTS) {
     } else if (html.includes('</body>')) {
       html = html.replace('</body>', block + '</body>');
     } else {
-      // truncated file — just append
+      // truncated file, just append
       html = html.trimEnd() + block;
     }
     fs.writeFileSync(fp, html);

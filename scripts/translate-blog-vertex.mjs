@@ -20,7 +20,7 @@ const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
 if (!KEY) {
-  console.error('GEMINI_API_KEY missing — set in ~/.nano-banana/.env');
+  console.error('GEMINI_API_KEY missing, set in ~/.nano-banana/.env');
   process.exit(1);
 }
 

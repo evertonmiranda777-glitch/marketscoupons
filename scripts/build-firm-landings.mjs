@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build-firm-landings.mjs — Gera 12 páginas /firms/{firmId}.html
+ * build-firm-landings.mjs, Gera 12 páginas /firms/{firmId}.html
  *
  * Hoje /apex, /bulenox etc rewriteam pra index.html (client-side routing).
  * Bots veem todos como duplicate content do home → SEO travado em 12 URLs alta intenção.
@@ -39,7 +39,7 @@ if (!SR && !SBP) { console.error('SUPABASE_SERVICE_ROLE ou SUPABASE_ACCESS_TOKEN
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const num = (s) => { const m = String(s ?? '').match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : null; };
-// Safe JSON pra inline em <script type="application/ld+json"> — escape </script>, < e &
+// Safe JSON pra inline em <script type="application/ld+json">, escape </script>, < e &
 const safeJson = (o) => JSON.stringify(o).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 // Img URL com slash garantido (icon_url do CMS pode vir sem leading /)
 const imgUrl = (p) => p ? `https://www.marketscoupons.com${String(p).startsWith('/') ? '' : '/'}${p}` : '';
@@ -107,7 +107,7 @@ function genPage(f, allFirms) {
     { lbl: 'Day-1 Payout', val: f.day1_payout ? '✓ Sim' : '✗ Não', win: !!f.day1_payout },
   ];
 
-  // Plans grid — cada size com preço
+  // Plans grid, cada size com preço
   const plansHtml = (Array.isArray(f.prices) && f.prices.length)
     ? f.prices.map(p => {
         const orig = num(p.o);
@@ -149,7 +149,7 @@ function genPage(f, allFirms) {
     return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
   };
 
-  // FAQ — todos os interpolados de DB passam por esc() pra evitar XSS via CMS field
+  // FAQ, todos os interpolados de DB passam por esc() pra evitar XSS via CMS field
   const eName = esc(f.name);
   const eCoupon = esc(f.coupon || '');
   const eShort = esc(short);
@@ -167,7 +167,7 @@ function genPage(f, allFirms) {
     },
     {
       q: `Quanto custa a conta mais barata na ${f.name}?`,
-      a: `${minPrice ? `A conta mais barata começa em $${minPrice.toFixed(2)} com cupom Markets` : 'Diversos tamanhos de conta disponíveis'}${minOrig && minPrice && minOrig > minPrice ? ` (preço original $${minOrig.toFixed(2)} — você economiza $${(minOrig-minPrice).toFixed(2)})` : ''}.`
+      a: `${minPrice ? `A conta mais barata começa em $${minPrice.toFixed(2)} com cupom Markets` : 'Diversos tamanhos de conta disponíveis'}${minOrig && minPrice && minOrig > minPrice ? ` (preço original $${minOrig.toFixed(2)}, você economiza $${(minOrig-minPrice).toFixed(2)})` : ''}.`
     },
     {
       q: `${short} permite news trading?`,
@@ -541,7 +541,7 @@ async function main() {
     written++;
   }
 
-  console.log(`\nDone — ${written} firm landing pages written to ${OUT_DIR}/`);
+  console.log(`\nDone, ${written} firm landing pages written to ${OUT_DIR}/`);
   console.log(`\nNEXT: update vercel.json rewrite /{firmId} → /firms/{firmId}.html`);
 }
 

@@ -25,7 +25,7 @@ console.log(`Body: ${body.length} · SVGs: ${(body.match(/figure class="diagram"
 
 const post = {
   slug: 'order-flow-footprint', lang: 'en',
-  title: 'Order Flow & Footprint Charts — Reading the Auction at the Bid and Ask in Real Time',
+  title: 'Order Flow & Footprint Charts, Reading the Auction at the Bid and Ask in Real Time',
   category: 'Technical Analysis', level: 'advanced', read_time: '56 min', icon: '🔬',
   cover_url: 'https://www.marketscoupons.com/img/blog-heros/order-flow-footprint.jpg',
   excerpt: 'The complete guide to order flow trading: footprint anatomy, delta divergence, absorption, iceberg detection, and the institutional playbook for reading the tape.',

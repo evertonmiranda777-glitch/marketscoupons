@@ -20,7 +20,7 @@ console.log(`Body: ${body.length} · SVGs: ${(body.match(/figure class="diagram"
 
 const post = {
   slug: '0dte-options-deep-dive', lang: 'en',
-  title: '0DTE Options Deep Dive — How Same-Day Expiries Reshaped Modern Markets',
+  title: '0DTE Options Deep Dive, How Same-Day Expiries Reshaped Modern Markets',
   category: 'Options', level: 'advanced', read_time: '52 min', icon: '⚡',
   cover_url: 'https://www.marketscoupons.com/img/blog-heros/0dte-options-deep-dive.jpg',
   excerpt: 'The definitive guide to 0DTE options: gamma, charm, the 3 PM ramp, iron condors, dealer hedging spillover, and how to trade the flow on prop firm futures accounts.',

@@ -2,7 +2,7 @@
 // Run: node scripts/render-firms-png.js [firms|calendar|gamma|analysis|all]
 //
 // Dynamic data injection: pulls live data from Supabase before screenshot.
-// Required env (optional — falls back to defaults if missing):
+// Required env (optional, falls back to defaults if missing):
 //   SUPABASE_URL, SUPABASE_ANON_KEY
 import { chromium } from 'playwright';
 import { fileURLToPath } from 'url';
@@ -44,7 +44,7 @@ function stars(rating) {
 }
 
 // Apex = âncora fixa (top1 card, best converter). Outras 3 = random deterministico pelo dia.
-// e2t ficou fora do pool (coupon MARKETSCOUPONS estoura o card — ver commit cad75f1).
+// e2t ficou fora do pool (coupon MARKETSCOUPONS estoura o card, ver commit cad75f1).
 const DAILY_ANCHOR = 'apex';
 const FIRM_POOL = ['bulenox','tpt','ftmo','fn','fundingpips','cti','the5ers','brightfunded','e8','tradeday'];
 
@@ -150,7 +150,7 @@ async function injectFirms(page) {
 
 async function injectCalendar(page) {
   // TODO: fetch from economic-calendar edge function and inject events
-  console.log('[calendar] dynamic injection not yet implemented — using static template');
+  console.log('[calendar] dynamic injection not yet implemented, using static template');
 }
 
 async function injectGamma(page) {

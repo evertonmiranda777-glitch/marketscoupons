@@ -1,4 +1,4 @@
-// Vercel Serverless Function — Proxy for Brevo statistics API
+// Vercel Serverless Function, Proxy for Brevo statistics API
 // GET /api/brevo-stats?type=events|report&days=7&tag=promo-apex&offset=0&limit=50
 // Requires admin JWT in Authorization header
 
@@ -29,7 +29,7 @@ async function validateAdmin(jwt) {
     const user = await resp.json();
     if (!user?.id) return null;
     // Usa service_role pra ler is_admin (consistente com cron-bulk-send.isAdminJwt).
-    // Antes usava JWT do user — frágil se RLS futuro esconder is_admin do próprio user.
+    // Antes usava JWT do user, frágil se RLS futuro esconder is_admin do próprio user.
     const SK = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const profileResp = await fetch(
       `${SUPABASE_URL}/rest/v1/profiles?id=eq.${user.id}&is_admin=eq.true&select=id`,
@@ -202,7 +202,7 @@ module.exports = async (req, res) => {
 
   const { type, days, tag, event, offset, limit } = req.query;
 
-  // === type=signups_today — quem cadastrou hoje + status do welcome email ===
+  // === type=signups_today, quem cadastrou hoje + status do welcome email ===
   if (type === 'signups_today') {
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
     try {
@@ -240,7 +240,7 @@ module.exports = async (req, res) => {
     } catch (e) { return res.status(500).json({ error: 'signups_today_failed', detail: e.message }); }
   }
 
-  // === type=signups_all — todos os cadastrados do site (pra audience de email) ===
+  // === type=signups_all, todos os cadastrados do site (pra audience de email) ===
   if (type === 'signups_all') {
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
     try {
@@ -266,7 +266,7 @@ module.exports = async (req, res) => {
     } catch (e) { return res.status(500).json({ error: 'signups_all_failed', detail: e.message }); }
   }
 
-  // === Onda 2: type=email_today — envios de hoje com drilldown ===
+  // === Onda 2: type=email_today, envios de hoje com drilldown ===
   if (type === 'email_today') {
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
     try {
@@ -289,7 +289,7 @@ module.exports = async (req, res) => {
     } catch (e) { return res.status(500).json({ error: 'email_today_failed', detail: e.message }); }
   }
 
-  // === Onda 2: type=campaigns_progress — progresso por campanha (received-X) ===
+  // === Onda 2: type=campaigns_progress, progresso por campanha (received-X) ===
   if (type === 'campaigns_progress') {
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
     try {
@@ -332,7 +332,7 @@ module.exports = async (req, res) => {
     } catch (e) { return res.status(500).json({ error: 'campaigns_progress_failed', detail: e.message }); }
   }
 
-  // === Onda 3: type=health — saúde do envio (bounce rate, complaints, suppression) ===
+  // === Onda 3: type=health, saúde do envio (bounce rate, complaints, suppression) ===
   if (type === 'health') {
     if (!SK_FOR_PAUSE) return res.status(500).json({ error: 'service_role_required' });
     try {

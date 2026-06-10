@@ -1,4 +1,4 @@
-// sale-instant-attrib — chamado pelo trigger SQL quando affiliate_conversions recebe INSERT
+// sale-instant-attrib, chamado pelo trigger SQL quando affiliate_conversions recebe INSERT
 // 1. Roda match contra coupon_clicks dos últimos 7 dias
 // 2. UPDATE affiliate_conversions.sub_id
 // 3. Manda Telegram com a keyword atribuída (substitui mensagem "sem sub_id" do MM)
@@ -97,8 +97,8 @@ serve(async (req) => {
     }, { onConflict: "conversion_id" });
   }
 
-  // Telegram — vendas reais (webhook IPN) sempre disparam.
-  // Synthetics (backfill do scraper) só disparam se forem do dia corrente BRT — evita spam
+  // Telegram, vendas reais (webhook IPN) sempre disparam.
+  // Synthetics (backfill do scraper) só disparam se forem do dia corrente BRT, evita spam
   // de 80+ TGs quando faz backfill historico, mas mantem venda-a-venda em tempo real.
   const isSynthetic = typeof conv.transaction_id === "string" && conv.transaction_id.startsWith("synth-");
   const saleDay = brtDayString(conv.created_at);

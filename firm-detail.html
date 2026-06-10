@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>Firm Detail — Dev Preview</title>
+<title>Firm Detail, Dev Preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -148,7 +148,7 @@ const FIRMS = {
     split:'80%',target:'8%',ddPct:'-5% trail',drawdown:'Trailing/EOD',minDays:1,evalDays:30,scaling:'Sim',
     newsTrading:true,day1Payout:true,
     trustpilot:'https://www.trustpilot.com/review/apextraderfunding.com',
-    about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b> — 2x a média do setor.',
+    about:'Fundada em <b>2021</b> por Darrell Martin em Austin, Texas. A Apex é a <b>6ª prop firm mais buscada do mundo</b> com 4.2M de visitas mensais. Taxa de aprovação de <b>15-20%</b>, 2x a média do setor.',
     highlights:[{val:'$721M+',label:'Pagos a traders'},{val:'$85M+',label:'Últimos 90 dias'},{val:'100%',label:'Do lucro (2026)'}],
     types:['Intraday Trail','EOD Trail'],platforms:['Rithmic','Tradovate','WealthCharts'],
     plans:{
@@ -164,7 +164,7 @@ const FIRMS = {
     split:'90%',target:'Variavel',ddPct:'Por conta',drawdown:'Trailing',minDays:1,evalDays:null,scaling:'Sim',
     newsTrading:true,day1Payout:true,
     trustpilot:'https://www.trustpilot.com/review/bulenox.com',
-    about:'Fundada em <b>2022</b>. Crescimento de <b>500%</b> em tráfego ano a ano. Regras simplificadas — possível passar em <b>1 dia</b>, sem regra de consistência.',
+    about:'Fundada em <b>2022</b>. Crescimento de <b>500%</b> em tráfego ano a ano. Regras simplificadas, possível passar em <b>1 dia</b>, sem regra de consistência.',
     highlights:[{val:'90%',label:'Profit Split'},{val:'1 dia',label:'Para passar'},{val:'$0',label:'Taxa mensal'}],
     types:['Trailing DD','EOD DD'],platforms:['Rithmic','NinjaTrader'],
     plans:{
@@ -213,7 +213,7 @@ const FIRMS = {
     split:'80%',target:'TCP100: $6.000',ddPct:'TCP100: $3.500',drawdown:'EOD Fixed',minDays:15,evalDays:null,scaling:'Até $400K',
     newsTrading:false,day1Payout:false,
     trustpilot:'https://www.trustpilot.com/review/www.earn2trade.com',
-    about:'Fundada em <b>2016</b>, celebrando <b>10 anos</b> em 2026. Foco em educação e desenvolvimento. Taxa de aprovação de <b>10.42%</b> — acima da média do setor. Escalamento até $400K.',
+    about:'Fundada em <b>2016</b>, celebrando <b>10 anos</b> em 2026. Foco em educação e desenvolvimento. Taxa de aprovação de <b>10.42%</b>, acima da média do setor. Escalamento até $400K.',
     highlights:[{val:'10 anos',label:'No mercado'},{val:'$400K',label:'Scaling máximo'},{val:'10.4%',label:'Taxa aprovação'}],
     types:['Trader Career Path','Gauntlet Mini'],platforms:['Rithmic','NinjaTrader','Tradovate'],
     plans:{
@@ -319,7 +319,7 @@ function loadFirm(id) {
   const firstPlans = f.plans[firstType];
   // Default = menor tamanho (firstPlans[0]) pra bater com criativo de trafego pago
   // que mostra preco de entrada baixo. Badge POPULAR no plan.pop continua intacto na
-  // renderizacao — so muda o estado inicial selecionado.
+  // renderizacao, so muda o estado inicial selecionado.
   state.type = firstType;
   state.plat = f.platforms[0];
   state.size = firstPlans[0].s;

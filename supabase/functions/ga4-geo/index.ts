@@ -134,14 +134,14 @@ Deno.serve(async (req: Request) => {
         dimensions: [{ name: 'userGender' }],
         metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
       }),
-      // TIMESERIES — daily users/sessions/new users
+      // TIMESERIES, daily users/sessions/new users
       queryGA4(token, propertyId, {
         dateRanges: [dateRange],
         dimensions: [{ name: 'date' }],
         metrics: [{ name: 'activeUsers' }, { name: 'sessions' }, { name: 'newUsers' }, { name: 'screenPageViews' }],
         orderBys: [{ dimension: { dimensionName: 'date' } }],
       }),
-      // TOP PAGES — most viewed pages
+      // TOP PAGES, most viewed pages
       queryGA4(token, propertyId, {
         dateRanges: [dateRange],
         dimensions: [{ name: 'pagePath' }, { name: 'pageTitle' }],
@@ -149,7 +149,7 @@ Deno.serve(async (req: Request) => {
         orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
         limit: 20,
       }),
-      // SOURCE/MEDIUM — granular attribution
+      // SOURCE/MEDIUM, granular attribution
       queryGA4(token, propertyId, {
         dateRanges: [dateRange],
         dimensions: [{ name: 'sessionSourceMedium' }],
@@ -157,7 +157,7 @@ Deno.serve(async (req: Request) => {
         orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
         limit: 20,
       }),
-      // OVERVIEW — rich totals (single row, no dimensions)
+      // OVERVIEW, rich totals (single row, no dimensions)
       queryGA4(token, propertyId, {
         dateRanges: [dateRange],
         metrics: [
@@ -173,7 +173,7 @@ Deno.serve(async (req: Request) => {
           { name: 'userEngagementDuration' },
         ],
       }),
-      // TOP EVENTS — custom events ranked
+      // TOP EVENTS, custom events ranked
       queryGA4(token, propertyId, {
         dateRanges: [dateRange],
         dimensions: [{ name: 'eventName' }],
@@ -181,7 +181,7 @@ Deno.serve(async (req: Request) => {
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
         limit: 20,
       }),
-      // LANDING PAGES — entry pages
+      // LANDING PAGES, entry pages
       queryGA4(token, propertyId, {
         dateRanges: [dateRange],
         dimensions: [{ name: 'landingPage' }],

@@ -57,7 +57,7 @@ const botFab = await page.evaluate(() => {
   return el ? { src: el.src, complete: el.complete, naturalWidth: el.naturalWidth } : null;
 });
 
-// Try cookies banner — force-hide
+// Try cookies banner, force-hide
 let cookieClicked = false;
 try {
   await page.evaluate(() => {

@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Markets Coupons">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Position Sizing em Prop Firms — Guia Completo 2026">
+<meta name="twitter:title" content="Position Sizing em Prop Firms, Guia Completo 2026">
 <meta name="twitter:description" content="Fórmula universal de dimensionamento, contratos por conta, Kelly adaptado e escala realista em Prop Firm.">
 <meta name="twitter:image" content="https://www.marketscoupons.com/img/guides-edu/gemini-pro/hero-g4-bridge.png">
 <meta name="author" content="Markets Coupons Team">
@@ -64,7 +64,7 @@
         { "@type": "HowToStep", "position": 2, "name": "Aplique a fórmula universal de dimensionamento", "text": "Tamanho = (Risco em USD) / (Distância do stop em ticks × Valor do tick). Exemplo MNQ: stop de 20 ticks × US$ 0,50/tick = US$ 10/contrato. Risco US$ 250 → 25 micro contratos." },
         { "@type": "HowToStep", "position": 3, "name": "Ajuste por instrumento (Futuros vs Forex)", "text": "Futuros: use micros (MNQ, MES, MGC) em contas pequenas pra precisão. Forex: lote padrão = 100K USD, micro = 1K. Calcule pips × valor do pip vs risco em USD." },
         { "@type": "HowToStep", "position": 4, "name": "Reduza tamanho quando drawdown floor está perto", "text": "Se margem até Trailing DD < 3× seu risco normal, dimensione com 50% do tamanho. Sobrevivência > velocidade." },
-        { "@type": "HowToStep", "position": 5, "name": "Padronize com planilha ou indicador no chart", "text": "Tenha tabela pronta de tamanho de posição por par/saldo/stop. Decisão de tamanho NÃO é discricionária — calcular na hora gera erro." }
+        { "@type": "HowToStep", "position": 5, "name": "Padronize com planilha ou indicador no chart", "text": "Tenha tabela pronta de tamanho de posição por par/saldo/stop. Decisão de tamanho NÃO é discricionária, calcular na hora gera erro." }
       ]
     },
     {
@@ -82,28 +82,28 @@
         },
         {
           "@type": "Question",
-          "name": "Posição fixa ou percentual — qual usar?",
+          "name": "Posição fixa ou percentual, qual usar?",
           "acceptedAnswer": { "@type": "Answer", "text": "Em Prop Firm, posição percentual (fixed fractional: 0,5% a 1% do saldo) supera posição fixa na maioria dos cenários porque se ajusta sozinha conforme você ganha ou perde. Posição fixa em valor absoluto (ex.: sempre 2 contratos) só funciona bem em contas já estabilizadas depois do floor. Antes do floor, percentual é matematicamente mais seguro." }
         },
         {
           "@type": "Question",
           "name": "Como calcular lote em FTMO ou The5%ers?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Em Forex, a fórmula é: lote = (risco em US$) ÷ (distância até o limite de perda em pips × valor do pip). Em uma FTMO 100K com risco por operação de US$ 500 e distância de 20 pips para seu ponto de saída, o lote é 500 ÷ (20 × 10) = 2,5 mini lotes. Sempre arredondar para baixo (2 lotes) — arredondar para cima é o que transforma tese correta em violação de Drawdown na soma de 30 operações." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Em Forex, a fórmula é: lote = (risco em US$) ÷ (distância até o limite de perda em pips × valor do pip). Em uma FTMO 100K com risco por operação de US$ 500 e distância de 20 pips para seu ponto de saída, o lote é 500 ÷ (20 × 10) = 2,5 mini lotes. Sempre arredondar para baixo (2 lotes), arredondar para cima é o que transforma tese correta em violação de Drawdown na soma de 30 operações." }
         },
         {
           "@type": "Question",
           "name": "Kelly Criterion funciona em Prop Firm?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Kelly puro mata conta funded. A fórmula original (f = (bp - q) / b) assume capital infinito e tolerância total a drawdown — duas coisas que Prop Firm não te dá. Na prática, traders que usam Kelly em conta funded aplicam Kelly fracionado: metade ou um quarto do tamanho que a fórmula sugere. Se Kelly diz 4%, você opera 1%. Isso preserva a vantagem estatística sem explodir a conta em uma sequência normal de perdas." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Kelly puro mata conta funded. A fórmula original (f = (bp - q) / b) assume capital infinito e tolerância total a drawdown, duas coisas que Prop Firm não te dá. Na prática, traders que usam Kelly em conta funded aplicam Kelly fracionado: metade ou um quarto do tamanho que a fórmula sugere. Se Kelly diz 4%, você opera 1%. Isso preserva a vantagem estatística sem explodir a conta em uma sequência normal de perdas." }
         },
         {
           "@type": "Question",
           "name": "Posso aumentar tamanho depois de ganhar muito?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Aumentar tamanho depois de sequência de ganhos é o erro nº 1 que mata contas funded. Uma sequência de 5 vitórias não aumenta a probabilidade da sexta — ela diminui (reversão à média). A regra consensual: nunca aumentar tamanho antes do drawdown floor travar. Depois do floor, aumento gradual (25% por vez, não dobrar), só depois de 2 semanas de consistência no tamanho novo." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Aumentar tamanho depois de sequência de ganhos é o erro nº 1 que mata contas funded. Uma sequência de 5 vitórias não aumenta a probabilidade da sexta, ela diminui (reversão à média). A regra consensual: nunca aumentar tamanho antes do drawdown floor travar. Depois do floor, aumento gradual (25% por vez, não dobrar), só depois de 2 semanas de consistência no tamanho novo." }
         },
         {
           "@type": "Question",
           "name": "Qual a diferença entre fixed fractional e fixed ratio?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Fixed fractional opera sempre com o mesmo percentual do saldo (ex.: 1%) — tamanho sobe e desce com o saldo. Fixed ratio usa um delta: cada US$ X de lucro acumulado libera +1 contrato. Fractional é mais suave e reativo; ratio cresce mais rápido em contas vencedoras mas pune mais em contas vacilantes. Em Prop Firm, fractional é mais adequado por se proteger automaticamente em drawdown." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Fixed fractional opera sempre com o mesmo percentual do saldo (ex.: 1%), tamanho sobe e desce com o saldo. Fixed ratio usa um delta: cada US$ X de lucro acumulado libera +1 contrato. Fractional é mais suave e reativo; ratio cresce mais rápido em contas vencedoras mas pune mais em contas vacilantes. Em Prop Firm, fractional é mais adequado por se proteger automaticamente em drawdown." }
         },
         {
           "@type": "Question",
@@ -196,7 +196,7 @@ footer.site-footer a:hover{color:var(--accent)}
       <span class="logo-mark">M</span>
       <span class="logo-txt">Markets<b>Coupons</b></span>
     </a>
-    <a href="/guides" class="nav-back" aria-label="Fechar — Guias"><span class="x">×</span>Fechar</a>
+    <a href="/guides" class="nav-back" aria-label="Fechar, Guias"><span class="x">×</span>Fechar</a>
   </div>
 </nav>
 
@@ -216,11 +216,11 @@ footer.site-footer a:hover{color:var(--accent)}
   <article id="content">
 <span class="badge">Guia Completo · Risco &amp; Matemática</span>
 <h1>Position Sizing em Prop Firms: o Guia Completo de Dimensionamento de Posição em 2026</h1>
-<p><em>Última atualização: 20 de abril de 2026 — 20 min de leitura</em></p>
-<p><img src="/img/guides-edu/gemini-pro/hero-g4-bridge.png" alt="Position Sizing em Prop Firms — ponte entre conta inicial e conta escalada, iluminação cinemática azul de precisão"></p>
+<p><em>Última atualização: 20 de abril de 2026, 20 min de leitura</em></p>
+<p><img src="/img/guides-edu/gemini-pro/hero-g4-bridge.png" alt="Position Sizing em Prop Firms, ponte entre conta inicial e conta escalada, iluminação cinemática azul de precisão"></p>
 
 <blockquote>
-<p><strong>TL;DR</strong> — <strong>Position sizing</strong> (dimensionamento de posição) é o verdadeiro driver de longevidade em <strong>Prop Firm</strong>. Não é quem tem o melhor setup que dura 12 meses em conta funded — é quem tem o melhor dimensionamento. Este guia explica a fórmula universal (risco % × conta ÷ distância até o limite de perda), a tabela concreta de contratos por tamanho de conta em futuros, cálculo de lote em forex, a falácia de comparar percentuais entre 25K, 50K e 100K, como aplicar Kelly Criterion sem explodir a conta, as 3 escolas (fixed fractional, fixed ratio, anti-martingale), o ajuste de tamanho conforme você sobe no <em>drawdown floor</em>, escala realista de Apex 25K para 300K via reinvestimento de payouts, gestão em múltiplas contas paralelas e os 3 erros fatais que matam traders funded. Ao final, você terá um protocolo executável para dimensionar cada operação em qualquer firma, em qualquer mercado.</p>
+<p><strong>TL;DR</strong>, <strong>Position sizing</strong> (dimensionamento de posição) é o verdadeiro driver de longevidade em <strong>Prop Firm</strong>. Não é quem tem o melhor setup que dura 12 meses em conta funded, é quem tem o melhor dimensionamento. Este guia explica a fórmula universal (risco % × conta ÷ distância até o limite de perda), a tabela concreta de contratos por tamanho de conta em futuros, cálculo de lote em forex, a falácia de comparar percentuais entre 25K, 50K e 100K, como aplicar Kelly Criterion sem explodir a conta, as 3 escolas (fixed fractional, fixed ratio, anti-martingale), o ajuste de tamanho conforme você sobe no <em>drawdown floor</em>, escala realista de Apex 25K para 300K via reinvestimento de payouts, gestão em múltiplas contas paralelas e os 3 erros fatais que matam traders funded. Ao final, você terá um protocolo executável para dimensionar cada operação em qualquer firma, em qualquer mercado.</p>
 </blockquote>
 
 <table>
@@ -242,10 +242,10 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>O que é position sizing e por que ele é o verdadeiro driver de longevidade</h2>
-<p>Traders iniciantes confundem <strong>position sizing</strong> com "tamanho da aposta". Não é isso. Position sizing é a decisão matemática, tomada <em>antes</em> de abrir qualquer operação, de quanto capital ficará exposto a uma única tese — expressa em contratos, lotes ou unidades financeiras. É o parâmetro que transforma uma vantagem estatística em conta sobrevivente, ou em cadáver funded.</p>
-<p>A importância fica clara quando você separa as duas variáveis de qualquer resultado de trading: (1) expectativa por operação, que depende do método/setup; (2) número de operações até a conta explodir, que depende quase exclusivamente do position sizing. Dois traders com o mesmo método podem ter resultados opostos — um fica meses funded, o outro queima em 4 dias — simplesmente porque dimensionam diferente.</p>
+<p>Traders iniciantes confundem <strong>position sizing</strong> com "tamanho da aposta". Não é isso. Position sizing é a decisão matemática, tomada <em>antes</em> de abrir qualquer operação, de quanto capital ficará exposto a uma única tese, expressa em contratos, lotes ou unidades financeiras. É o parâmetro que transforma uma vantagem estatística em conta sobrevivente, ou em cadáver funded.</p>
+<p>A importância fica clara quando você separa as duas variáveis de qualquer resultado de trading: (1) expectativa por operação, que depende do método/setup; (2) número de operações até a conta explodir, que depende quase exclusivamente do position sizing. Dois traders com o mesmo método podem ter resultados opostos, um fica meses funded, o outro queima em 4 dias, simplesmente porque dimensionam diferente.</p>
 <p>Em <strong>Prop Firm</strong>, a assimetria é ainda mais brutal: o trader não tem capital infinito e não tem tolerância elástica a <strong>Drawdown</strong>. Tem um chão contratual, programático, aplicado por sistema. Isso muda completamente a matemática do sizing. Uma fórmula que funciona em conta própria pode ser suicida em conta funded, porque conta própria te deixa sobreviver a -40% e voltar; <strong>Prop Firm</strong> encerra em -5%.</p>
-<p>Dados agregados de comunidades como Prop Reviews mostram que <strong>mais de 70% das reprovações em 2026 têm raiz em sizing errado</strong>, não em setup errado. O setup pode estar perfeito; se o tamanho é grande demais para o limite de perda da conta, uma única oscilação normal do mercado te derruba. É o oposto do que o iniciante acredita — ele acha que "acertou a análise" e perdeu; a verdade é que <strong>o tamanho não cabia no risco disponível</strong>.</p>
+<p>Dados agregados de comunidades como Prop Reviews mostram que <strong>mais de 70% das reprovações em 2026 têm raiz em sizing errado</strong>, não em setup errado. O setup pode estar perfeito; se o tamanho é grande demais para o limite de perda da conta, uma única oscilação normal do mercado te derruba. É o oposto do que o iniciante acredita, ele acha que "acertou a análise" e perdeu; a verdade é que <strong>o tamanho não cabia no risco disponível</strong>.</p>
 
 <hr>
 
@@ -263,7 +263,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <li><strong>Distância até o limite de perda</strong>: a distância, em pontos/pips/ticks, entre o preço de entrada e o nível onde você sai se a tese falhar. É o que determina a perda real por unidade.</li>
 </ul>
 
-<p><strong>Exemplo em futuros:</strong> conta Apex 50K (saldo US$ 50.000), risco 1% (US$ 500), operando ES com distância de 5 pontos até seu nível de saída (1 ponto ES = US$ 50 em mini, US$ 5 em micro). Em mini: 500 ÷ (5 × 50) = 2 contratos máximos. Em micro: 500 ÷ (5 × 5) = 20 contratos máximos. Note que a fórmula não te diz que você <em>deve</em> operar 20 micros — ela te diz que <em>não pode passar</em> disso.</p>
+<p><strong>Exemplo em futuros:</strong> conta Apex 50K (saldo US$ 50.000), risco 1% (US$ 500), operando ES com distância de 5 pontos até seu nível de saída (1 ponto ES = US$ 50 em mini, US$ 5 em micro). Em mini: 500 ÷ (5 × 50) = 2 contratos máximos. Em micro: 500 ÷ (5 × 5) = 20 contratos máximos. Note que a fórmula não te diz que você <em>deve</em> operar 20 micros, ela te diz que <em>não pode passar</em> disso.</p>
 
 <p><strong>Exemplo em forex:</strong> conta FTMO 100K, risco 0,5% (US$ 500), operando EURUSD com distância de 25 pips. Valor do pip em mini lote = US$ 10. Lote máximo = 500 ÷ (25 × 10) = 2 mini lotes.</p>
 
@@ -272,7 +272,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>Position sizing em futuros: contratos por tamanho de conta</h2>
-<p>A tabela abaixo consolida o padrão sobrevivente em 2026 — quanto operar em cada tamanho de conta, separando micro e mini, antes e depois do <em>drawdown floor</em> travar.</p>
+<p>A tabela abaixo consolida o padrão sobrevivente em 2026, quanto operar em cada tamanho de conta, separando micro e mini, antes e depois do <em>drawdown floor</em> travar.</p>
 
 <table>
 <thead>
@@ -289,13 +289,13 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <p>Três leituras importantes dessa tabela:</p>
 
-<p><strong>Primeira:</strong> o salto entre "antes" e "depois" do floor é real mas modesto — geralmente +50% a +100%, não 5x. Quem triplica tamanho após o floor está violando a regra de "aumento gradual" e costuma voltar à casa de partida em 2 semanas.</p>
+<p><strong>Primeira:</strong> o salto entre "antes" e "depois" do floor é real mas modesto, geralmente +50% a +100%, não 5x. Quem triplica tamanho após o floor está violando a regra de "aumento gradual" e costuma voltar à casa de partida em 2 semanas.</p>
 
 <p><strong>Segunda:</strong> micros são matematicamente superiores para aprendizado. Um mini ES a 5 pontos = US$ 250 de risco; um micro MES a 5 pontos = US$ 25. A granularidade permite ajustes finos de sizing que mini não permite. Para conta 25K ou 50K, começar sempre em micros é o caminho de menor custo de erro.</p>
 
-<p><strong>Terceira:</strong> a diferença entre 50K e 100K não é "o dobro de contratos". É cerca de +50% a +75%, porque o limite de <strong>Drawdown</strong> não dobra linearmente — e porque o risco psicológico de operar tamanho maior dobra antes do saldo.</p>
+<p><strong>Terceira:</strong> a diferença entre 50K e 100K não é "o dobro de contratos". É cerca de +50% a +75%, porque o limite de <strong>Drawdown</strong> não dobra linearmente, e porque o risco psicológico de operar tamanho maior dobra antes do saldo.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/contracts-per-size.png" alt="Contratos por tamanho de conta — tabela visual mostrando micro e mini futuros em 25K, 50K, 100K, 150K e 300K, com antes e depois do drawdown floor"></p>
+<p><img src="/img/guides-edu/gemini-pro/contracts-per-size.png" alt="Contratos por tamanho de conta, tabela visual mostrando micro e mini futuros em 25K, 50K, 100K, 150K e 300K, com antes e depois do drawdown floor"></p>
 
 <hr>
 
@@ -313,27 +313,27 @@ footer.site-footer a:hover{color:var(--accent)}
 <p><strong>Lote máximo = Risco em US$ ÷ (Distância em pips × Valor do pip)</strong></p>
 </blockquote>
 
-<p><strong>Exemplo:</strong> FTMO 100K com Static Drawdown de 10% (US$ 10.000), Daily Loss de 5% (US$ 5.000). Você define teto pessoal diário em 50% do Daily Loss = US$ 2.500. Divide por 5 operações possíveis no dia = US$ 500 de risco por operação. Com distância de 30 pips até seu ponto de saída em EURUSD, o lote máximo é 500 ÷ (30 × 10) = 1,67 mini lotes — que arredonda para <strong>1 mini lote</strong>. Sempre para baixo.</p>
+<p><strong>Exemplo:</strong> FTMO 100K com Static Drawdown de 10% (US$ 10.000), Daily Loss de 5% (US$ 5.000). Você define teto pessoal diário em 50% do Daily Loss = US$ 2.500. Divide por 5 operações possíveis no dia = US$ 500 de risco por operação. Com distância de 30 pips até seu ponto de saída em EURUSD, o lote máximo é 500 ÷ (30 × 10) = 1,67 mini lotes, que arredonda para <strong>1 mini lote</strong>. Sempre para baixo.</p>
 
-<p>A armadilha do forex é a alavancagem psicológica. A plataforma permite que você abra 5 mini lotes ou até 1 standard lot em uma 100K. Isso <em>não</em> significa que você deve — significa apenas que tecnicamente é possível. Em <strong>Prop Firm</strong>, o limite real é o Drawdown, não a margem disponível. Operar 5 mini lotes com stop de 30 pips = US$ 1.500 de risco por operação = 30% do Daily Loss em uma única operação. Matemática de reset.</p>
+<p>A armadilha do forex é a alavancagem psicológica. A plataforma permite que você abra 5 mini lotes ou até 1 standard lot em uma 100K. Isso <em>não</em> significa que você deve, significa apenas que tecnicamente é possível. Em <strong>Prop Firm</strong>, o limite real é o Drawdown, não a margem disponível. Operar 5 mini lotes com stop de 30 pips = US$ 1.500 de risco por operação = 30% do Daily Loss em uma única operação. Matemática de reset.</p>
 
 <hr>
 
 <h2>O erro de comparar porcentagens entre 25K, 50K e 100K</h2>
 <p>Um erro conceitual que o trader iniciante faz o tempo todo é comparar percentuais de saldo entre contas de tamanhos diferentes e concluir que "são equivalentes". Não são. Essa é a <em>falácia do percentual nominal</em> em <strong>Prop Firm</strong>.</p>
 
-<p>Exemplo do raciocínio errado: "1% em conta 25K é US$ 250, 1% em conta 100K é US$ 1.000 — mesmo percentual, mesma regra, mesmo risco relativo." Matematicamente, o saldo escala. Na prática, <strong>não escala</strong> por três razões:</p>
+<p>Exemplo do raciocínio errado: "1% em conta 25K é US$ 250, 1% em conta 100K é US$ 1.000, mesmo percentual, mesma regra, mesmo risco relativo." Matematicamente, o saldo escala. Na prática, <strong>não escala</strong> por três razões:</p>
 
 <h3>Razão 1: o custo fixo de slippage e comissões não escala</h3>
-<p>Um round-trip em ES custa cerca de US$ 4 em comissão + cerca de 0,25 ponto (US$ 12,50) em slippage médio em horário líquido. Em conta 25K arriscando US$ 250, esses custos comem 6,6% do risco. Em conta 100K arriscando US$ 1.000, os mesmos custos são apenas 1,65% do risco. A conta maior é 4x mais eficiente por operação — antes mesmo do resultado do trade.</p>
+<p>Um round-trip em ES custa cerca de US$ 4 em comissão + cerca de 0,25 ponto (US$ 12,50) em slippage médio em horário líquido. Em conta 25K arriscando US$ 250, esses custos comem 6,6% do risco. Em conta 100K arriscando US$ 1.000, os mesmos custos são apenas 1,65% do risco. A conta maior é 4x mais eficiente por operação, antes mesmo do resultado do trade.</p>
 
 <h3>Razão 2: o Drawdown não escala linearmente com o saldo</h3>
-<p>Apex 25K tem trailing de US$ 1.500; Apex 100K tem trailing de US$ 3.000. O saldo aumentou 4x, o trailing aumentou 2x. Isso significa que a margem de segurança relativa <em>encolhe</em> conforme você sobe — Drawdown/Saldo é 6% na 25K e apenas 3% na 100K. Contas maiores são matematicamente <em>mais apertadas</em> em margem, não mais folgadas.</p>
+<p>Apex 25K tem trailing de US$ 1.500; Apex 100K tem trailing de US$ 3.000. O saldo aumentou 4x, o trailing aumentou 2x. Isso significa que a margem de segurança relativa <em>encolhe</em> conforme você sobe, Drawdown/Saldo é 6% na 25K e apenas 3% na 100K. Contas maiores são matematicamente <em>mais apertadas</em> em margem, não mais folgadas.</p>
 
 <h3>Razão 3: o alvo e a meta continuam em valor absoluto</h3>
 <p>Passar uma Apex 100K exige alvo de 8% (US$ 8.000). Passar uma 25K exige 8% (US$ 2.000). Em <em>tempo até atingir o alvo</em> operando com o mesmo tamanho de contrato, é quase equivalente. Mas o risco contínuo de violação é diferente, porque o Drawdown travado é diferente.</p>
 
-<p>A conclusão é contra-intuitiva: contas pequenas não são "mais fáceis", são apenas mais baratas. Contas grandes não são "mais fáceis", são apenas mais caras. A estratégia correta de sizing nunca é um percentual fixo universal — é uma função do par (Saldo, Drawdown) específico daquela conta.</p>
+<p>A conclusão é contra-intuitiva: contas pequenas não são "mais fáceis", são apenas mais baratas. Contas grandes não são "mais fáceis", são apenas mais caras. A estratégia correta de sizing nunca é um percentual fixo universal, é uma função do par (Saldo, Drawdown) específico daquela conta.</p>
 
 <hr>
 
@@ -349,7 +349,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Dez por cento. Em Apex 50K, isso seria US$ 5.000 de risco por operação. <strong>O Drawdown é US$ 2.500</strong>. Kelly puro, aplicado em conta funded, quebra a conta em UMA ÚNICA operação perdedora. Por quê? Porque Kelly assume capital infinito e tolerância total a drawdown. Prop Firm não te dá nenhuma das duas coisas.</p>
 
 <h3>A solução: Kelly fracionado</h3>
-<p>Traders profissionais há décadas usam "fractional Kelly" — operar com uma fração do que Kelly sugere. As convenções comuns:</p>
+<p>Traders profissionais há décadas usam "fractional Kelly", operar com uma fração do que Kelly sugere. As convenções comuns:</p>
 <ul>
 <li><strong>Half Kelly (50%):</strong> metade do tamanho sugerido. Ainda agressivo.</li>
 <li><strong>Quarter Kelly (25%):</strong> um quarto do sugerido. Padrão sensato em mercado próprio.</li>
@@ -369,31 +369,31 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Opera sempre com o mesmo percentual do saldo (ex.: 1%). Tamanho em valor absoluto varia com saldo: US$ 500 em conta US$ 50K, US$ 450 se o saldo cair para US$ 45K, US$ 550 se subir para US$ 55K. Reativo, suave, defende automaticamente em drawdown. <strong>É o mais adequado para Prop Firm</strong> porque se auto-protege conforme a conta encolhe.</p>
 
 <h3>Fixed Ratio</h3>
-<p>Desenvolvido por Ryan Jones. Cada delta (ex.: US$ 2.000 de lucro acumulado) libera +1 contrato/lote. Cresce mais rápido que fractional em contas vencedoras, porque o aumento é discreto e não suave. Mas pune mais em contas vacilantes porque não reduz quando você perde — só sobe. <strong>Inadequado para Prop Firm</strong> pela assimetria (sobe em alta, não desce em baixa = Drawdown encurta).</p>
+<p>Desenvolvido por Ryan Jones. Cada delta (ex.: US$ 2.000 de lucro acumulado) libera +1 contrato/lote. Cresce mais rápido que fractional em contas vencedoras, porque o aumento é discreto e não suave. Mas pune mais em contas vacilantes porque não reduz quando você perde, só sobe. <strong>Inadequado para Prop Firm</strong> pela assimetria (sobe em alta, não desce em baixa = Drawdown encurta).</p>
 
 <h3>Anti-Martingale</h3>
-<p>Aumenta tamanho depois de vitória, reduz depois de derrota. É a lógica oposta da Martingale (que dobra depois de perda). Matematicamente superior a Martingale, mas ainda propensa a "aumentar no topo" — erro nº 1 em conta funded. <strong>Uso parcial em Prop Firm</strong>: aumentar apenas depois de 2 semanas de consistência, nunca depois de um dia bom.</p>
+<p>Aumenta tamanho depois de vitória, reduz depois de derrota. É a lógica oposta da Martingale (que dobra depois de perda). Matematicamente superior a Martingale, mas ainda propensa a "aumentar no topo", erro nº 1 em conta funded. <strong>Uso parcial em Prop Firm</strong>: aumentar apenas depois de 2 semanas de consistência, nunca depois de um dia bom.</p>
 
 <p><strong>Recomendação prática:</strong> em <strong>Prop Firm</strong>, <em>fixed fractional</em> a 0,5% a 1% até o drawdown floor travar. Depois do floor, transição suave para anti-martingale <em>moderada</em>: +25% no tamanho a cada 2 semanas consistentes, nunca +100%.</p>
 
 <hr>
 
 <h2>Ajustando o sizing conforme você sobe no drawdown floor</h2>
-<p>O guia <a href="/guides/gerenciamento-drawdown">Gerenciamento de Drawdown em Prop Firms</a> explica em detalhe o conceito de <em>drawdown floor</em> — o ponto em que o Trailing Drawdown da Apex trava e se torna estático. Aqui interessa como o sizing deve mudar em cada fase do ciclo.</p>
+<p>O guia <a href="/guides/gerenciamento-drawdown">Gerenciamento de Drawdown em Prop Firms</a> explica em detalhe o conceito de <em>drawdown floor</em>, o ponto em que o Trailing Drawdown da Apex trava e se torna estático. Aqui interessa como o sizing deve mudar em cada fase do ciclo.</p>
 
-<h3>Fase 1 — Pré-floor (saldo abaixo de inicial + trailing + US$ 100)</h3>
+<h3>Fase 1, Pré-floor (saldo abaixo de inicial + trailing + US$ 100)</h3>
 <p>Modo sobrevivência. Tamanho mínimo absoluto. Em Apex 50K: 1 mini ES ou 3 micros por operação, risco máximo 0,5% do saldo (US$ 250). Foco total em não puxar o chão junto. Operar setup A+ apenas, nunca A-.</p>
 
-<h3>Fase 2 — Floor ativo, conta recém-travada</h3>
-<p>Momento de transição. Tamanho sobe gradualmente: +25% por semana, no máximo. De 1 mini para "1 mini às vezes 2" conforme setups de altíssima qualidade aparecem. Risco pode subir para 0,75% do saldo. Disciplina ainda máxima — é o momento em que muitos pensam "passei da parte difícil" e devolvem o ganho.</p>
+<h3>Fase 2, Floor ativo, conta recém-travada</h3>
+<p>Momento de transição. Tamanho sobe gradualmente: +25% por semana, no máximo. De 1 mini para "1 mini às vezes 2" conforme setups de altíssima qualidade aparecem. Risco pode subir para 0,75% do saldo. Disciplina ainda máxima, é o momento em que muitos pensam "passei da parte difícil" e devolvem o ganho.</p>
 
-<h3>Fase 3 — Conta estabilizada (2+ semanas pós-floor)</h3>
-<p>Modo construção. Tamanho padrão: 2 minis ou 8 micros em 50K. Risco 1% do saldo. Setups A+ e A- aceitos. Aqui o anti-martingale moderado começa — aumentos após consistência comprovada, nunca após um dia grande.</p>
+<h3>Fase 3, Conta estabilizada (2+ semanas pós-floor)</h3>
+<p>Modo construção. Tamanho padrão: 2 minis ou 8 micros em 50K. Risco 1% do saldo. Setups A+ e A- aceitos. Aqui o anti-martingale moderado começa, aumentos após consistência comprovada, nunca após um dia grande.</p>
 
-<h3>Fase 4 — Performance Account / conta funded</h3>
+<h3>Fase 4, Performance Account / conta funded</h3>
 <p>Ciclo reinicia, mas agora pagando de verdade. Voltar a sizing Fase 1 nas primeiras 3 semanas é a regra de ouro. Muitos traders que passam no desafio quebram na primeira semana de funded por manter o tamanho da Fase 3 em uma conta que ainda não tem o <em>safety net</em> travado.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/slow-vs-fast.png" alt="Crescimento lento vs agressivo — duas curvas de saldo mostrando que sizing conservador supera sizing agressivo em 12 meses"></p>
+<p><img src="/img/guides-edu/gemini-pro/slow-vs-fast.png" alt="Crescimento lento vs agressivo, duas curvas de saldo mostrando que sizing conservador supera sizing agressivo em 12 meses"></p>
 
 <blockquote>
 <p><strong>Regra prática:</strong> o sizing correto em cada fase é 50% mais conservador do que a lógica te empurra a usar. Se a cabeça diz "pode 2 contratos", opere 1. Se diz "pode 3", opere 2. O viés comportamental em conta funded é sempre para cima; compensá-lo para baixo é o que sobrevive.</p>
@@ -402,7 +402,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <hr>
 
 <h2>Scaling agressivo vs conservador: a matemática de ROI em 12 meses</h2>
-<p>Uma comparação didática entre dois traders hipotéticos, mesmo método, mesmo acerto, mesmo setup — só difere o sizing.</p>
+<p>Uma comparação didática entre dois traders hipotéticos, mesmo método, mesmo acerto, mesmo setup, só difere o sizing.</p>
 
 <table>
 <thead>
@@ -439,7 +439,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Forma legítima de operar múltiplas: conta A no abrir de NY em ES, conta B no meio da sessão em NQ, conta C no fechamento em GC. Horários e ativos diferentes = estratégias independentes, permitidas. Cada conta com sizing calculado individualmente.</p>
 
 <h3>Regra 4: correlação cognitiva existe mesmo sem copy</h3>
-<p>Mesmo operando contas defasadas, a cabeça é a mesma. Um dia ruim em uma conta contamina as outras. Regra pragmática: se a conta A perdeu hoje, reduz tamanho em 25% nas B e C. A correlação entre contas do mesmo trader é alta mesmo sem copy — porque o operador não muda entre elas.</p>
+<p>Mesmo operando contas defasadas, a cabeça é a mesma. Um dia ruim em uma conta contamina as outras. Regra pragmática: se a conta A perdeu hoje, reduz tamanho em 25% nas B e C. A correlação entre contas do mesmo trader é alta mesmo sem copy, porque o operador não muda entre elas.</p>
 
 <h3>Regra 5: ordem de priorização em redução</h3>
 <p>Quando precisar reduzir exposição (dia ruim, semana ruim), reduz primeiro a conta com menor margem de segurança. Mantém as contas folgadas operando normal, protege as apertadas em modo defensivo.</p>
@@ -466,7 +466,7 @@ footer.site-footer a:hover{color:var(--accent)}
 <h4>Meses 10 a 12</h4>
 <p>Passa as duas 100K. Portfólio final: 3×25K + 2×50K + 2×100K = <strong>US$ 375.000 nocional</strong>. Payout trimestral: US$ 9.000+. Reinvestimento zero nas primeiras 3 passagens; depois do mês 4 o custo de novas contas saiu dos payouts, não do bolso.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="Escala Apex realista — linha temporal de 12 meses mostrando composição de contas 25K + 50K + 100K até atingir US$ 375.000 nocional"></p>
+<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="Escala Apex realista, linha temporal de 12 meses mostrando composição de contas 25K + 50K + 100K até atingir US$ 375.000 nocional"></p>
 
 <p>O ponto essencial: o trader nunca precisou aumentar o sizing por conta acima do padrão. Cada conta individualmente operada como se fosse a única. A escala veio do <strong>número de unidades</strong>, não do <strong>tamanho da unidade</strong>. É a diferença entre sustentável e frágil.</p>
 
@@ -477,9 +477,9 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <p>Exemplo numérico: 10% de ROI mensal sobre 1 conta 50K = US$ 5.000/mês. O mesmo 10% sobre 5 contas 50K operadas em paralelo = US$ 25.000/mês. A diferença é multiplicativa. Mas a segunda situação exige disciplina 5x maior, porque os 5 Drawdowns correm em paralelo e a fadiga cognitiva é real.</p>
 
-<p>O efeito composto funciona se — e apenas se — o sizing por conta permanece conservador. Aumentar sizing para "aproveitar a escala" quebra a lógica. O que escala é o número de contas; o tamanho dentro de cada uma fica fixo. Isso contraintuiu a maioria dos traders, que querem "aumentar a aposta" conforme ganham confiança.</p>
+<p>O efeito composto funciona se, e apenas se, o sizing por conta permanece conservador. Aumentar sizing para "aproveitar a escala" quebra a lógica. O que escala é o número de contas; o tamanho dentro de cada uma fica fixo. Isso contraintuiu a maioria dos traders, que querem "aumentar a aposta" conforme ganham confiança.</p>
 
-<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="Efeito composto — gráfico mostrando como a composição de múltiplas contas pequenas supera o crescimento linear de uma conta grande em 24 meses"></p>
+<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="Efeito composto, gráfico mostrando como a composição de múltiplas contas pequenas supera o crescimento linear de uma conta grande em 24 meses"></p>
 
 <blockquote>
 <p><strong>Insight prático:</strong> o trader que multiplica por 10 em 24 meses nunca fez isso operando dobro em uma conta. Fez operando o mesmo tamanho em 10 contas, construídas uma a uma com payouts reinvestidos. Crescimento aritmético de tamanho, geométrico de unidades.</p>
@@ -490,15 +490,15 @@ footer.site-footer a:hover{color:var(--accent)}
 <h2>Os 3 erros fatais de sizing que matam traders funded</h2>
 
 <h3>Erro 1: aumentar tamanho depois de perda</h3>
-<p>O instinto é compensar — "perdi US$ 300, próximo trade eu dobro para recuperar rápido". É a porta de entrada da Martingale, e é o caminho mais rápido para violação de Drawdown. Uma sequência de 3 perdas com sizing crescente quebra o Daily Loss em uma tarde. A regra inversa: <strong>após perda, o próximo trade sai com 50% do tamanho normal</strong>, e só volta ao normal depois de 2 operações vencedoras.</p>
+<p>O instinto é compensar, "perdi US$ 300, próximo trade eu dobro para recuperar rápido". É a porta de entrada da Martingale, e é o caminho mais rápido para violação de Drawdown. Uma sequência de 3 perdas com sizing crescente quebra o Daily Loss em uma tarde. A regra inversa: <strong>após perda, o próximo trade sai com 50% do tamanho normal</strong>, e só volta ao normal depois de 2 operações vencedoras.</p>
 
 <h3>Erro 2: diminuir tamanho depois de ganho</h3>
 <p>O oposto do Erro 1 mas também comum, com raiz em medo de "devolver o lucro". Traders cortam sizing após ganho grande, perdem a oportunidade seguinte, e o resultado líquido da sequência é menor do que seria com sizing consistente. A vantagem estatística do método só se manifesta em volume; reduzir após ganho é auto-sabotar o método. A regra: <strong>o tamanho depois de ganho é o mesmo que antes de ganho</strong>. Altere só em ciclos, não em operações.</p>
 
 <h3>Erro 3: aumentar tamanho "porque o setup está óbvio"</h3>
-<p>A operação parece perfeita, a leitura está clara, a tentação de dobrar o tamanho é enorme. É exatamente o momento em que o cérebro está mais calibrado para errar. Setup "óbvio" geralmente é consenso de mercado — e consenso é o que reverte. A regra: <strong>nunca altere sizing no calor do momento</strong>. O tamanho foi definido antes da plataforma abrir; ele não muda até a plataforma fechar.</p>
+<p>A operação parece perfeita, a leitura está clara, a tentação de dobrar o tamanho é enorme. É exatamente o momento em que o cérebro está mais calibrado para errar. Setup "óbvio" geralmente é consenso de mercado, e consenso é o que reverte. A regra: <strong>nunca altere sizing no calor do momento</strong>. O tamanho foi definido antes da plataforma abrir; ele não muda até a plataforma fechar.</p>
 
-<p>Esses três erros, combinados, respondem pela maioria das violações de Drawdown em 2026. Não é o método, não é o mercado, não é a firma — é o trader alterando sizing em resposta emocional a resultados recentes. O antídoto é sempre o mesmo: <strong>sizing é decidido no protocolo, não no trade</strong>.</p>
+<p>Esses três erros, combinados, respondem pela maioria das violações de Drawdown em 2026. Não é o método, não é o mercado, não é a firma, é o trader alterando sizing em resposta emocional a resultados recentes. O antídoto é sempre o mesmo: <strong>sizing é decidido no protocolo, não no trade</strong>.</p>
 
 <hr>
 
@@ -532,17 +532,17 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <h2>Conclusão: sizing é o método</h2>
 <p>Existe uma ilusão persistente entre traders iniciantes de que o método (setup, indicador, leitura de fluxo) é o que decide o resultado. Não é. Em <strong>Prop Firm</strong>, o método é condição necessária, mas <strong>position sizing é condição suficiente</strong>. Dois traders com o mesmo método e sizing diferentes produzem resultados em magnitudes diferentes; dois traders com métodos diferentes e sizing igualmente disciplinado tendem a convergir.</p>
-<p>A fórmula universal — risco percentual × saldo ÷ distância até o limite de perda — cabe em um post-it. Mas aplicá-la antes de cada operação, sem exceção, sem "mas hoje é diferente", sem "o setup está perfeito", é o que separa traders que duram 12 meses em conta funded de traders que duram 12 dias. Sizing é decisão anterior à plataforma abrir; o que acontece depois é só execução.</p>
+<p>A fórmula universal, risco percentual × saldo ÷ distância até o limite de perda, cabe em um post-it. Mas aplicá-la antes de cada operação, sem exceção, sem "mas hoje é diferente", sem "o setup está perfeito", é o que separa traders que duram 12 meses em conta funded de traders que duram 12 dias. Sizing é decisão anterior à plataforma abrir; o que acontece depois é só execução.</p>
 <p>Se este guia te convencer de uma coisa, que seja esta: <strong>o trader funded que multiplica por 10 em 24 meses não aumentou o tamanho; aumentou o número de contas</strong>. Cada conta operada como se fosse a única. Cada Drawdown respeitado como se fosse fatal (é). Cada sizing calculado antes, não durante. Escolha uma firma confiável em <a href="/firms">nossa lista completa</a>, aplique um cupom em <a href="/">marketscoupons.com</a>, comece com uma conta 25K, opere os primeiros 15 dias com um único objetivo: <strong>respeitar o sizing calculado em cada operação, sem exceção</strong>. O resto é consequência.</p>
 
 <hr>
 
 <h2>Guias relacionados</h2>
 <ul>
-<li><a href="/guides/o-que-e-uma-prop-firm">O que é uma Prop Firm</a> — Modelo, payouts e histórico do mercado de capital alocado</li>
-<li><a href="/guides/como-passar-no-desafio">Como Passar no Desafio</a> — Os 4 pilares, rotina diária e método 90%+ de aprovação</li>
-<li><a href="/guides/gerenciamento-drawdown">Gerenciamento de Drawdown</a> — Os 3 tipos, drawdown floor, comparativo por firma e circuit breaker pessoal</li>
-<li><a href="/guides/como-sacar-lucros">Como Sacar seus Lucros</a> — Payout, tributação e o caminho do primeiro saque</li>
+<li><a href="/guides/o-que-e-uma-prop-firm">O que é uma Prop Firm</a>, Modelo, payouts e histórico do mercado de capital alocado</li>
+<li><a href="/guides/como-passar-no-desafio">Como Passar no Desafio</a>, Os 4 pilares, rotina diária e método 90%+ de aprovação</li>
+<li><a href="/guides/gerenciamento-drawdown">Gerenciamento de Drawdown</a>, Os 3 tipos, drawdown floor, comparativo por firma e circuit breaker pessoal</li>
+<li><a href="/guides/como-sacar-lucros">Como Sacar seus Lucros</a>, Payout, tributação e o caminho do primeiro saque</li>
 </ul>
 
 <p style="margin-top:48px;padding:20px;background:var(--abg);border:1px solid var(--abr);border-radius:12px;color:var(--t1);font-size:14px">

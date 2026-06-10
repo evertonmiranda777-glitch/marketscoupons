@@ -1,0 +1,150 @@
+{
+  "Intraday Trail|Standard|25k": {
+    "prices": [
+      "199.00",
+      "19.90",
+      "850.00",
+      "85.00",
+      "17.00"
+    ],
+    "segSnippet": "ct Account Size\n25k\n50k\n100k\n150k\n25K INTRADAY TRAIL\nStarting Capital $25,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n4 mini / 40 micro\nProfit Target\n$1,500\nMax Drawdown\n$1,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$199.00\n$19.90\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "Intraday Trail|Standard|50k": {
+    "prices": [
+      "249.00",
+      "24.90",
+      "950.00",
+      "95.00",
+      "19.00"
+    ],
+    "segSnippet": "ct Account Size\n25k\n50k\n100k\n150k\n50K INTRADAY TRAIL\nStarting Capital $50,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n6 mini / 60 micro\nProfit Target\n$3,000\nMax Drawdown\n$2,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$249.00\n$24.90\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "Intraday Trail|Standard|100k": {
+    "prices": [
+      "399.00",
+      "39.90",
+      "1750.00",
+      "175.00",
+      "35.00"
+    ],
+    "segSnippet": " Account Size\n25k\n50k\n100k\n150k\n100K INTRADAY TRAIL\nStarting Capital $100,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n8 mini / 80 micro\nProfit Target\n$6,000\nMax Drawdown\n$3,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$399.00\n$39.90\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "Intraday Trail|Standard|150k": {
+    "prices": [
+      "599.00",
+      "59.90",
+      "2450.00",
+      "245.00",
+      "49.00"
+    ],
+    "segSnippet": "ccount Size\n25k\n50k\n100k\n150k\n150K INTRADAY TRAIL\nStarting Capital $150,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n12 mini / 120 micro\nProfit Target\n$9,000\nMax Drawdown\n$4,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$599.00\n$59.90\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "Intraday Trail|No Activation Fee|25k": {
+    "prices": [
+      "690.00",
+      "69.00",
+      "2950.00",
+      "295.00",
+      "59.00"
+    ],
+    "segSnippet": "k\n50k\n100k\n150k\n25K NO ACTIVATION FEE INTRADAY TRAIL\nStarting Capital $25,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n4 mini / 40 micro\nProfit Target\n$1,500\nMax Drawdown\n$1,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$690.00\n$69.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "Intraday Trail|No Activation Fee|50k": {
+    "prices": [
+      "790.00",
+      "79.00",
+      "3450.00",
+      "345.00",
+      "69.00"
+    ],
+    "segSnippet": "k\n50k\n100k\n150k\n50K NO ACTIVATION FEE INTRADAY TRAIL\nStarting Capital $50,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n6 mini / 60 micro\nProfit Target\n$3,000\nMax Drawdown\n$2,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$790.00\n$79.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "Intraday Trail|No Activation Fee|100k": {
+    "prices": [
+      "1090.00",
+      "109.00",
+      "4950.00",
+      "495.00",
+      "99.00"
+    ],
+    "segSnippet": "k\n100k\n150k\n100K NO ACTIVATION FEE INTRADAY TRAIL\nStarting Capital $100,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n8 mini / 80 micro\nProfit Target\n$6,000\nMax Drawdown\n$3,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$1090.00\n$109.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "Intraday Trail|No Activation Fee|150k": {
+    "prices": [
+      "1690.00",
+      "169.00",
+      "7950.00",
+      "795.00",
+      "159.00"
+    ],
+    "segSnippet": "100k\n150k\n150K NO ACTIVATION FEE INTRADAY TRAIL\nStarting Capital $150,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n12 mini / 120 micro\nProfit Target\n$9,000\nMax Drawdown\n$4,000\nDrawdown Type\nIntraday Trail\nⓘ\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$1690.00\n$169.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "EOD Trail|Standard|25k": {
+    "prices": [
+      "390.00",
+      "39.00",
+      "1750.00",
+      "175.00",
+      "35.00"
+    ],
+    "segSnippet": "ze\n25k\n50k\n100k\n150k\n25K EOD TRAIL\nStarting Capital $25,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n4 mini / 40 micro\nProfit Target\n$1,500\nMax Drawdown\n$1,000\nDrawdown Type\nEnd Of Day\nⓘ\nDaily Loss Limit\n$500\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$390.00\n$39.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "EOD Trail|Standard|50k": {
+    "prices": [
+      "450.00",
+      "45.00",
+      "1950.00",
+      "195.00",
+      "39.00"
+    ],
+    "segSnippet": "\n25k\n50k\n100k\n150k\n50K EOD TRAIL\nStarting Capital $50,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n6 mini / 60 micro\nProfit Target\n$3,000\nMax Drawdown\n$2,000\nDrawdown Type\nEnd Of Day\nⓘ\nDaily Loss Limit\n$1,000\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$450.00\n$45.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "EOD Trail|Standard|100k": {
+    "prices": [
+      "590.00",
+      "59.00",
+      "2750.00",
+      "275.00",
+      "55.00"
+    ],
+    "segSnippet": "5k\n50k\n100k\n150k\n100K EOD TRAIL\nStarting Capital $100,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n8 mini / 80 micro\nProfit Target\n$6,000\nMax Drawdown\n$3,000\nDrawdown Type\nEnd Of Day\nⓘ\nDaily Loss Limit\n$1,500\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$590.00\n$59.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "EOD Trail|Standard|150k": {
+    "prices": [
+      "1090.00",
+      "109.00",
+      "4950.00",
+      "495.00",
+      "99.00"
+    ],
+    "segSnippet": "0k\n100k\n150k\n150K EOD TRAIL\nStarting Capital $150,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n12 mini / 120 micro\nProfit Target\n$9,000\nMax Drawdown\n$4,000\nDrawdown Type\nEnd Of Day\nⓘ\nDaily Loss Limit\n$2,000\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$1090.00\n$109.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "EOD Trail|No Activation Fee|25k": {
+    "prices": [
+      "890.00",
+      "89.00",
+      "3950.00",
+      "395.00",
+      "79.00"
+    ],
+    "segSnippet": "0k\n25K NO ACTIVATION FEE EOD TRAIL\nStarting Capital $25,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n4 mini / 40 micro\nProfit Target\n$1,500\nMax Drawdown\n$1,000\nDrawdown Type\nEnd Of Day\nⓘ\nDaily Loss Limit\n$500\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$890.00\n$89.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "EOD Trail|No Activation Fee|50k": {
+    "prices": [
+      "1090.00",
+      "109.00",
+      "4450.00",
+      "445.00",
+      "89.00"
+    ],
+    "segSnippet": "0K NO ACTIVATION FEE EOD TRAIL\nStarting Capital $50,000\nACCOUNT RULES\nMin. Days To Pass\n1\nMax Contracts\n6 mini / 60 micro\nProfit Target\n$3,000\nMax Drawdown\n$2,000\nDrawdown Type\nEnd Of Day\nⓘ\nDaily Loss Limit\n$1,000\nScaling\nBuilt-in for PA\nReset Fee\nN/A\nPERFORMANCE ACCOUNT\n▼\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$1090.00\n$109.00\n- (with Coupon Code)\nONE PACK ▲\nONE-TIME FEE. NO REBILL. EVAL ACTIVE FOR 30 DAYS.\nWILL EXPIRE AFTER 30 DAYS. NO RESETS.\n$"
+  },
+  "EOD Trail|No Activation Fee|100k": {
+    "prices": [],
+    "segSnippet": ""
+  },
+  "EOD Trail|No Activation Fee|150k": {
+    "prices": [],
+    "segSnippet": ""
+  }
+}

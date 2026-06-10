@@ -1,4 +1,4 @@
-// MarketsCoupons Sync — background service worker (MV3)
+// MarketsCoupons Sync, background service worker (MV3)
 // Keep-alive agressivo pra impedir Chrome de matar o SW.
 // Estratégia: chrome.alarms periodic (30s) + touch storage + ping fetch leve.
 // Combinado, mantém SW reativo continuamente. SW pode ainda mostrar "inativa"
@@ -24,18 +24,18 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  console.log('[MC] Chrome iniciou — re-armando keep-alive.');
+  console.log('[MC] Chrome iniciou, re-armando keep-alive.');
   ensureKeepAlive();
 });
 
 // Toda vez que o SW carrega (cold start), garante o alarm
 ensureKeepAlive();
 
-// Listener do alarm — operação curta pra manter SW reativo
+// Listener do alarm, operação curta pra manter SW reativo
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === KEEPALIVE_ALARM) {
     const now = Date.now();
-    // Touch storage (operação async leve) — força SW a permanecer awake
+    // Touch storage (operação async leve), força SW a permanecer awake
     chrome.storage.local.set({ mc_last_keepalive: now }, () => {
       // Ping silencioso pra Supabase (apenas pra manter a network connection ativa).
       // Chrome estende lifetime do SW enquanto houver fetch pendente.
@@ -47,7 +47,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
 });
 
-// Listener de mensagens — mantém SW reativo quando popup ou content scripts comunicam
+// Listener de mensagens, mantém SW reativo quando popup ou content scripts comunicam
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg && msg.action === 'ping') {
     sendResponse({ alive: true, ts: Date.now() });
@@ -57,7 +57,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   return false;
 });
 
-// Listener de connect — qualquer port aberto mantém SW vivo
+// Listener de connect, qualquer port aberto mantém SW vivo
 chrome.runtime.onConnect.addListener((port) => {
   port.onDisconnect.addListener(() => {
     // Garante que keep-alive continua após disconnect

@@ -16,11 +16,11 @@ tags: [fundingpips, forex prop firm, mt5, match-trader, 100 leverage]
 
 ![FundingPips Forex Prop Firm Hero-Illustration](../img/fundingpips-hero.png)
 
-FundingPips hat sich in unter drei Jahren vom Newcomer zu **einer der größten Forex-Prop-Firms der Welt** entwickelt — **2.000.000+ Trader**, **über 200 Mio. US$ weltweit an Trader ausgezahlt** und ein Trustpilot-Score von **4,5 von 5 bei 52.513 Bewertungen**. Mit Sitz in Dubai baute die Firma ihren Ruf auf einem klaren Versprechen auf: **null Payout-Ablehnungen**. Wenn du die Ziele erreichst, wirst du bezahlt.
+FundingPips hat sich in unter drei Jahren vom Newcomer zu **einer der größten Forex-Prop-Firms der Welt** entwickelt, **2.000.000+ Trader**, **über 200 Mio. US$ weltweit an Trader ausgezahlt** und ein Trustpilot-Score von **4,5 von 5 bei 52.513 Bewertungen**. Mit Sitz in Dubai baute die Firma ihren Ruf auf einem klaren Versprechen auf: **null Payout-Ablehnungen**. Wenn du die Ziele erreichst, wirst du bezahlt.
 
-Anders als etablierte Firms, die dich in einen einzigen Pfad zwingen, bietet FundingPips **drei Challenge-Formate**: **Zero** (keine Evaluation, direkte Funded-Stage), **1-Step** (einphasig, am schnellsten) und **2-Step** (klassische Student → Practitioner → Master-Leiter). Alle drei führen zum selben Endpunkt — einem **Simulated-Capital-Trading-Account** mit Scaling bis **300.000 US$** und bis zu **100 % Rewards** je nach Payout-Zyklus.
+Anders als etablierte Firms, die dich in einen einzigen Pfad zwingen, bietet FundingPips **drei Challenge-Formate**: **Zero** (keine Evaluation, direkte Funded-Stage), **1-Step** (einphasig, am schnellsten) und **2-Step** (klassische Student → Practitioner → Master-Leiter). Alle drei führen zum selben Endpunkt, einem **Simulated-Capital-Trading-Account** mit Scaling bis **300.000 US$** und bis zu **100 % Rewards** je nach Payout-Zyklus.
 
-Dieser Guide bricht jedes Programm, jede Regel, jeden Preis und jede Plattform herunter — plus wie FundingPips im Vergleich zu FTMO, FundedNext und The5ers abschneidet.
+Dieser Guide bricht jedes Programm, jede Regel, jeden Preis und jede Plattform herunter, plus wie FundingPips im Vergleich zu FTMO, FundedNext und The5ers abschneidet.
 
 > **Kurzfassung**
 > **Typ:** Forex-Prop-Firm (Dubai, Simulated-Capital-Modell)
@@ -37,11 +37,11 @@ Dieser Guide bricht jedes Programm, jede Regel, jeden Preis und jede Plattform h
 
 1. [Was ist FundingPips?](#what-is)
 2. [Die drei Challenge-Typen](#programs)
-3. [2-Step Evaluation — Student, Practitioner, Master](#two-step)
+3. [2-Step Evaluation, Student, Practitioner, Master](#two-step)
 4. [1-Step- und Zero-Programme](#one-step-zero)
 5. [Preise (alle Account-Größen)](#pricing)
 6. [Trading-Ziele und Regeln](#rules)
-7. [Reward-Zyklen — wie du bezahlt wirst](#rewards)
+7. [Reward-Zyklen, wie du bezahlt wirst](#rewards)
 8. [Plattformen und Hebel](#platforms)
 9. [Skalierung bis 300K US$](#scaling)
 10. [FundingPips vs FTMO vs FundedNext](#vs-others)
@@ -54,20 +54,20 @@ Dieser Guide bricht jedes Programm, jede Regel, jeden Preis und jede Plattform h
 
 ## <a id="what-is"></a>Was ist FundingPips?
 
-FundingPips ist eine **in Dubai ansässige Proprietary-Trading-Firm**, die 2022 startete und rasch zu einer der größten Forex-Prop-Firms nach Volumen gewachsen ist. Die Firma betreibt ein **Simulated-Capital-Modell**: Trader bestehen eine Evaluation, um Zugang zur Master-Stage (funded) zu erhalten, wo sie in einer vollständig simulierten Umgebung handeln und echte Rewards auf simulierte Gewinne verdienen. Alle Trades werden in Demo-/Evaluations-Umgebungen ausgeführt — auf Broker-Seite ist kein Kundenkapital im Risiko.
+FundingPips ist eine **in Dubai ansässige Proprietary-Trading-Firm**, die 2022 startete und rasch zu einer der größten Forex-Prop-Firms nach Volumen gewachsen ist. Die Firma betreibt ein **Simulated-Capital-Modell**: Trader bestehen eine Evaluation, um Zugang zur Master-Stage (funded) zu erhalten, wo sie in einer vollständig simulierten Umgebung handeln und echte Rewards auf simulierte Gewinne verdienen. Alle Trades werden in Demo-/Evaluations-Umgebungen ausgeführt, auf Broker-Seite ist kein Kundenkapital im Risiko.
 
 Was FundingPips in einem überfüllten Markt abhebt:
 
 - **2.000.000+ Trader** in 195+ Ländern
 - **Über 200 Mio. US$ weltweit an Trader ausgezahlt** (öffentliche Zahl auf der Homepage)
-- **Null Payout-Ablehnungen** — das Kernversprechen der Firma: Ziele erreichen, bezahlt werden
-- **Drei Evaluations-Pfade** — Zero, 1-Step, 2-Step (die meisten Firms bieten 1 oder 2)
-- **Drei Plattformen** — MetaTrader 5, Match-Trader, cTrader (breiter als die meisten Wettbewerber)
-- **Vier Reward-Zyklen** — Weekly, Bi-weekly, Monthly oder On-demand
+- **Null Payout-Ablehnungen**, das Kernversprechen der Firma: Ziele erreichen, bezahlt werden
+- **Drei Evaluations-Pfade**, Zero, 1-Step, 2-Step (die meisten Firms bieten 1 oder 2)
+- **Drei Plattformen**, MetaTrader 5, Match-Trader, cTrader (breiter als die meisten Wettbewerber)
+- **Vier Reward-Zyklen**, Weekly, Bi-weekly, Monthly oder On-demand
 - **24/7 mehrsprachiger Kundensupport**
 - **Aktive Discord-Community** für Evaluations-Feedback und Marktdiskussionen
 
-Anders als ältere Firms, die stark auf 2-Step-Challenges setzen, gibt FundingPips Tradern eine **Wahl beim Evaluations-Stil** — je nach Erfahrung und Risikotoleranz. Einsteiger nehmen oft 2-Step (kleinere Targets pro Phase). Erfahrene Scalper nehmen 1-Step (schneller). Überzeugte Trader überspringen die Evaluation komplett via Zero.
+Anders als ältere Firms, die stark auf 2-Step-Challenges setzen, gibt FundingPips Tradern eine **Wahl beim Evaluations-Stil**, je nach Erfahrung und Risikotoleranz. Einsteiger nehmen oft 2-Step (kleinere Targets pro Phase). Erfahrene Scalper nehmen 1-Step (schneller). Überzeugte Trader überspringen die Evaluation komplett via Zero.
 
 ---
 
@@ -79,11 +79,11 @@ FundingPips organisiert sein Angebot um **drei Evaluations-Formate**:
 
 ### Zero (Direct Funding)
 
-Der **Zero**-Pfad überspringt die Evaluation komplett. Du zahlst eine höhere Upfront-Gebühr und gehst direkt in eine Funded-Style Master-Stage. Kein Profit Target zu erreichen — einfach innerhalb der Drawdown-Regeln handeln und mit dem nächsten Zyklus Rewards verdienen. Ideal für erfahrene Trader mit nachgewiesener Edge, die den Evaluations-Grind überspringen wollen.
+Der **Zero**-Pfad überspringt die Evaluation komplett. Du zahlst eine höhere Upfront-Gebühr und gehst direkt in eine Funded-Style Master-Stage. Kein Profit Target zu erreichen, einfach innerhalb der Drawdown-Regeln handeln und mit dem nächsten Zyklus Rewards verdienen. Ideal für erfahrene Trader mit nachgewiesener Edge, die den Evaluations-Grind überspringen wollen.
 
 ### 1-Step Evaluation
 
-Einphasige Challenge. Ein Profit Target erreichen (typischerweise **8 %**), den 10 % Max Loss und 5 % Max Daily Loss respektieren — und du gehst direkt zur Master-Stage. Keine zweite Phase. Schneller als 2-Step, günstiger als Zero. Der Sweet Spot für Trader mit Vertrauen in ein 2–4 Wochen langes Evaluations-Fenster.
+Einphasige Challenge. Ein Profit Target erreichen (typischerweise **8 %**), den 10 % Max Loss und 5 % Max Daily Loss respektieren, und du gehst direkt zur Master-Stage. Keine zweite Phase. Schneller als 2-Step, günstiger als Zero. Der Sweet Spot für Trader mit Vertrauen in ein 2–4 Wochen langes Evaluations-Fenster.
 
 ### 2-Step Evaluation (Student → Practitioner → Master)
 
@@ -93,30 +93,30 @@ Der klassische Multi-Phasen-Pfad:
 - **Phase 2 (Practitioner):** 5 % Profit Target
 - **Master (Funded-Stage):** kein Target, einfach Rewards verdienen
 
-Jede Phase hat dieselben 10 % Max Loss und 5 % Max Daily Loss. Minimum 3 profitable Handelstage pro Phase. Günstigster Einstieg pro Dollar Account-Größe — ideal für Einsteiger, die sich Zeit lassen wollen.
+Jede Phase hat dieselben 10 % Max Loss und 5 % Max Daily Loss. Minimum 3 profitable Handelstage pro Phase. Günstigster Einstieg pro Dollar Account-Größe, ideal für Einsteiger, die sich Zeit lassen wollen.
 
 ---
 
-## <a id="two-step"></a>2-Step Evaluation — Student, Practitioner, Master
+## <a id="two-step"></a>2-Step Evaluation, Student, Practitioner, Master
 
 ![FundingPips 2-Step Evaluations-Phasen](../img/fundingpips-phases.png)
 
 Die 2-Step-Struktur ist der Flaggschiff-Pfad von FundingPips und spiegelt das Format von FTMO und FundedNext. So sieht jede Phase auf einem **50.000 US$-Account** exakt aus:
 
-| Ziel | 1 — Student | 2 — Practitioner | 3 — Master |
+| Ziel | 1, Student | 2, Practitioner | 3, Master |
 |---|---|---|---|
-| **Profit Target** | +4.000 US$ (8 %) | +2.500 US$ (5 %) | — |
+| **Profit Target** | +4.000 US$ (8 %) | +2.500 US$ (5 %) |, |
 | **Maximum Loss** | 10 % (−5.000 US$) | 10 % | 10 % |
 | **Maximum Daily Loss** | 5 % (−2.500 US$) | 5 % | 5 % |
-| **Minimum Trading Days** | 3 | 3 | — |
+| **Minimum Trading Days** | 3 | 3 |, |
 | **Hebel** | 1:100 | 1:100 | 1:100 |
 
 **Wichtige Details:**
 
 - **Kein Zeitlimit** auf Evaluations-Phasen (Trader können sich beliebig lange Zeit nehmen)
-- Max Daily Loss resettet um **00:00 Server-Zeit** (GMT+3 im Sommer / GMT+2 im Winter — MT5-Server-Uhr)
+- Max Daily Loss resettet um **00:00 Server-Zeit** (GMT+3 im Sommer / GMT+2 im Winter, MT5-Server-Uhr)
 - Sobald Master erreicht, behältst du den Account, solange der Drawdown nicht gerissen wird
-- **Consistency Rule** gilt auf Master-Stage (der beste Handelstag sollte den Gesamtprofit nicht dominieren — Details variieren, aktuelles FAQ prüfen)
+- **Consistency Rule** gilt auf Master-Stage (der beste Handelstag sollte den Gesamtprofit nicht dominieren, Details variieren, aktuelles FAQ prüfen)
 
 ---
 
@@ -145,7 +145,7 @@ Zero ist teurer im Voraus, aber Trader mit bereits vorhandener Edge finden den R
 
 ## <a id="pricing"></a>Preise (alle Account-Größen)
 
-FundingPips bietet **fünf Account-Größen** über alle drei Programme hinweg. Exakte Preise variieren pro Programm-Typ — 2-Step ist am günstigsten, Zero am teuersten. Hier die Preis-Anker für **FundingPips 2-Step** (Referenz-Preise — immer live auf aktuelle Promos prüfen):
+FundingPips bietet **fünf Account-Größen** über alle drei Programme hinweg. Exakte Preise variieren pro Programm-Typ, 2-Step ist am günstigsten, Zero am teuersten. Hier die Preis-Anker für **FundingPips 2-Step** (Referenz-Preise, immer live auf aktuelle Promos prüfen):
 
 | Account-Größe | Simulated Capital | Referenz-Preis (2-Step) |
 |---|---|---|
@@ -159,7 +159,7 @@ FundingPips bietet **fünf Account-Größen** über alle drei Programme hinweg. 
 
 - **Code HELLO** bringt **20 % Rabatt auf den ersten Kauf** in jeder Programm-Größe
 - **Swap-Free Add-on:** +10 % der Challenge-Gebühr für Overnight-Positionen ohne Zins (nützlich für Swing-Trader auf Islamic Accounts)
-- **FundingPips Pro Tier** verfügbar für erfahrene Trader mit höheren Limits — Sales für Pricing kontaktieren
+- **FundingPips Pro Tier** verfügbar für erfahrene Trader mit höheren Limits, Sales für Pricing kontaktieren
 - Gebühren sind einmalig. Keine Monatsgebühr. Wenn du bestehst und Rewards einsammelst, werden die Gebühren effektiv aus Gewinnen zurückerstattet.
 
 > **Preis-Beispiel:** 50K 2-Step ist 289 US$ Basis → **231 US$ mit Code HELLO**. Wenn du bestehst und 4.000 US$ (8 % Target) auf dem 80 %-Bi-weekly-Zyklus auszahlst, bekommst du 3.200 US$ Rewards auf einen 231 US$-Einstieg. ~13-facher ROI auf die Evaluations-Gebühr.
@@ -168,23 +168,23 @@ FundingPips bietet **fünf Account-Größen** über alle drei Programme hinweg. 
 
 ## <a id="rules"></a>Trading-Ziele und Regeln
 
-Das Regelwerk von FundingPips ist für eine Forex-Prop-Firm **relativ liberal** — besonders im Vergleich zu FTMO. Hier das komplette Ziel-Set:
+Das Regelwerk von FundingPips ist für eine Forex-Prop-Firm **relativ liberal**, besonders im Vergleich zu FTMO. Hier das komplette Ziel-Set:
 
 ### Was du TUN musst
 
-- **Max Loss respektieren** — Account-Equity darf nicht mehr als **10 %** von der Startbalance fallen
-- **Max Daily Loss respektieren** — **5 %** Drawdown von Start-of-Day-Equity; Reset um 00:00 Server-Zeit
+- **Max Loss respektieren**, Account-Equity darf nicht mehr als **10 %** von der Startbalance fallen
+- **Max Daily Loss respektieren**, **5 %** Drawdown von Start-of-Day-Equity; Reset um 00:00 Server-Zeit
 - **Mindestens 3 Tage handeln** auf jeder Evaluations-Phase
-- **Innerhalb der Hebel-Limits bleiben** — 1:100 Forex-Majors
+- **Innerhalb der Hebel-Limits bleiben**, 1:100 Forex-Majors
 
 ### Was du TUN darfst
 
 - **Trades über Nacht halten** (keine Weekend-Hold-Restriktion auf den meisten Programmen)
-- **News traden** — während High-Impact-Events erlaubt
-- **EAs / Algorithmen nutzen** — Expert Advisors mit Common-Sense-Restriktionen erlaubt (keine HFT-Exploit-Bots, keine Arbitrage über Accounts)
+- **News traden**, während High-Impact-Events erlaubt
+- **EAs / Algorithmen nutzen**, Expert Advisors mit Common-Sense-Restriktionen erlaubt (keine HFT-Exploit-Bots, keine Arbitrage über Accounts)
 - **Hedgen** innerhalb des eigenen Accounts (Hedging über mehrere Accounts ist verboten)
 - **Skalieren** über den Scaling-Plan (siehe Sektion unten)
-- **Plattform wählen** — MT5, Match-Trader oder cTrader
+- **Plattform wählen**, MT5, Match-Trader oder cTrader
 
 ### Was VERBOTEN ist
 
@@ -192,17 +192,17 @@ Das Regelwerk von FundingPips ist für eine Forex-Prop-Firm **relativ liberal** 
 - **Latency-Arbitrage / Tick-Scalping-Exploits**
 - **Gruppen-koordiniertes Trading** (Pump-and-Dump-Orchestrierung)
 - **Gambling-Style All-in-Trades**, die den Consistency-Spirit verletzen
-- **Account Sharing** — ein Account pro Trader-Identität
+- **Account Sharing**, ein Account pro Trader-Identität
 
 Das ist ein **flexibleres Regelwerk als bei FTMO** (das Weekend-Holds einschränkt und Consistency-Regeln in der Challenge hat) und **vergleichbar mit FundedNext**.
 
 ---
 
-## <a id="rewards"></a>Reward-Zyklen — wie du bezahlt wirst
+## <a id="rewards"></a>Reward-Zyklen, wie du bezahlt wirst
 
 ![FundingPips Reward-Zyklus-Optionen](../img/fundingpips-rewards.png)
 
-Hier differenziert sich FundingPips von jeder anderen Forex-Prop-Firm. Du **wählst deinen Reward-Zyklus** — je nachdem, wie viel vom Profit Split du behalten willst:
+Hier differenziert sich FundingPips von jeder anderen Forex-Prop-Firm. Du **wählst deinen Reward-Zyklus**, je nachdem, wie viel vom Profit Split du behalten willst:
 
 | Reward-Zyklus | Profit Split | Ideal für |
 |---|---|---|
@@ -217,9 +217,9 @@ Hier differenziert sich FundingPips von jeder anderen Forex-Prop-Firm. Du **wäh
 - On-demand (90 %): 3.600 US$
 - Monthly (100 %): **4.000 US$**
 
-Die meisten Trader entscheiden sich für **Bi-weekly** oder **On-demand** für die optimale Balance. Keine andere große Forex-Prop-Firm bietet dieses Level an Zyklus-Flexibilität — FTMO ist fix auf 80 %/90 % Scaling, FundedNext auf 80 %/90 % (mit Lifetime Reward +20 %).
+Die meisten Trader entscheiden sich für **Bi-weekly** oder **On-demand** für die optimale Balance. Keine andere große Forex-Prop-Firm bietet dieses Level an Zyklus-Flexibilität, FTMO ist fix auf 80 %/90 % Scaling, FundedNext auf 80 %/90 % (mit Lifetime Reward +20 %).
 
-Payouts werden schnell bearbeitet — FundingPips verpflichtet sich öffentlich zu **null Payout-Ablehnungen**, wenn die Ziele erreicht werden.
+Payouts werden schnell bearbeitet, FundingPips verpflichtet sich öffentlich zu **null Payout-Ablehnungen**, wenn die Ziele erreicht werden.
 
 ---
 
@@ -247,7 +247,7 @@ Beliebt bei professionellen Forex-Tradern. Level-II-Order-Book, fortgeschrittene
 | Öl | 1:10 |
 | Crypto-CFDs | 1:2 |
 
-**1:100 Hebel auf Forex-Majors ist großzügig** — höher als The5ers (1:30) und vergleichbar mit FundedNext. Das gibt Day-Tradern und Scalpern Raum, Tight-Stop-Strategien zu fahren, ohne übermäßige Margin zu binden.
+**1:100 Hebel auf Forex-Majors ist großzügig**, höher als The5ers (1:30) und vergleichbar mit FundedNext. Das gibt Day-Tradern und Scalpern Raum, Tight-Stop-Strategien zu fahren, ohne übermäßige Margin zu binden.
 
 ---
 
@@ -265,7 +265,7 @@ Im Vergleich zu anderen Firms:
 - **FundedNext** skaliert bis **300.000 US$** (gleicher Cap wie FundingPips)
 - **FTMO** skaliert bis **2.000.000 US$** (höher, 2-Jahres-Programm)
 
-Für die meisten Retail-Trader sind 300K US$ mehr als genug Simulated Capital. Das Scaling von FundingPips ist **linear und vorhersehbar** — keine versteckten Gates, keine Reset-Gebühren zum Aufstieg.
+Für die meisten Retail-Trader sind 300K US$ mehr als genug Simulated Capital. Das Scaling von FundingPips ist **linear und vorhersehbar**, keine versteckten Gates, keine Reset-Gebühren zum Aufstieg.
 
 ---
 
@@ -301,25 +301,25 @@ Alle drei sind legitim. Wähle das Modell, das zu deinem Stil passt.
 
 ### Vorteile
 
-- ✅ **Drei Evaluations-Pfade** (Zero, 1-Step, 2-Step) — die meisten Firms bieten einen oder zwei
-- ✅ **100 % Profit Split** auf Monthly-Reward-Zyklus — keine andere große Firma erreicht das
-- ✅ **Drei Plattformen** (MT5, Match-Trader, cTrader) — breiter als die meisten Wettbewerber
+- ✅ **Drei Evaluations-Pfade** (Zero, 1-Step, 2-Step), die meisten Firms bieten einen oder zwei
+- ✅ **100 % Profit Split** auf Monthly-Reward-Zyklus, keine andere große Firma erreicht das
+- ✅ **Drei Plattformen** (MT5, Match-Trader, cTrader), breiter als die meisten Wettbewerber
 - ✅ **1:100 Hebel** auf Forex-Majors
-- ✅ **Null Payout-Ablehnungen** — öffentliche Selbstverpflichtung zur Zahlung bei Zielerreichung
+- ✅ **Null Payout-Ablehnungen**, öffentliche Selbstverpflichtung zur Zahlung bei Zielerreichung
 - ✅ **Kein Zeitlimit** auf Evaluations-Phasen
-- ✅ **2 Mio.+ Trader, 200 Mio.+ US$ ausgezahlt** — Skala validiert Legitimität
+- ✅ **2 Mio.+ Trader, 200 Mio.+ US$ ausgezahlt**, Skala validiert Legitimität
 - ✅ **Aktiver Discord + 24/7 mehrsprachiger Support**
 - ✅ **Flexible Reward-Zyklen** (weekly/bi-weekly/on-demand/monthly)
 - ✅ **Code HELLO** für **20 % Rabatt auf den ersten Kauf**
 
 ### Nachteile
 
-- ⛔ **300K US$ Scaling-Cap** — niedriger als FTMO (2 Mio.) und The5ers (4 Mio.)
-- ⛔ **Consistency Rule auf Master-Stage** — aggressive Best-Day-Trader können auf Restriktionen stoßen
-- ⛔ **Swap-Free Add-on kostet extra** (+10 %) — einige Wettbewerber liefern es kostenlos mit
-- ⛔ **Jüngere Marke** (seit 2022) — weniger Betriebshistorie als FTMO (2015)
-- ⛔ **Keine Futures** — nur Forex, Indizes, Rohstoffe, Crypto-CFDs (keine Exchange Futures wie ES/NQ/CL)
-- ⛔ **In Dubai regulatorisch strukturiert** — manche US-Steuer-Trader bevorzugen EU-ansässige Firms für Dokumentation
+- ⛔ **300K US$ Scaling-Cap**, niedriger als FTMO (2 Mio.) und The5ers (4 Mio.)
+- ⛔ **Consistency Rule auf Master-Stage**, aggressive Best-Day-Trader können auf Restriktionen stoßen
+- ⛔ **Swap-Free Add-on kostet extra** (+10 %), einige Wettbewerber liefern es kostenlos mit
+- ⛔ **Jüngere Marke** (seit 2022), weniger Betriebshistorie als FTMO (2015)
+- ⛔ **Keine Futures**, nur Forex, Indizes, Rohstoffe, Crypto-CFDs (keine Exchange Futures wie ES/NQ/CL)
+- ⛔ **In Dubai regulatorisch strukturiert**, manche US-Steuer-Trader bevorzugen EU-ansässige Firms für Dokumentation
 
 ---
 
@@ -341,37 +341,37 @@ Alle drei sind legitim. Wähle das Modell, das zu deinem Stil passt.
 
 ## <a id="how-to-pass"></a>Wie man FundingPips besteht (Schritt für Schritt)
 
-### Schritt 1 — Challenge-Typ wählen
+### Schritt 1, Challenge-Typ wählen
 
 **Einsteiger oder budgetbewusst:** **2-Step** wählen. Kleinere Targets pro Phase (8 % + 5 %), günstigster Preis.
 **Erfahrener Day-Trader:** **1-Step** wählen. Einzelnes 8 %-Target, schneller.
 **Bewiesene Edge, Evaluation überspringen:** **Zero** wählen. Direkt zu Master.
 
-### Schritt 2 — Richtige Account-Größe wählen
+### Schritt 2, Richtige Account-Größe wählen
 
 Nicht übertreiben mit einem 100K-Account, wenn deine echte Edge 10K-Größe hat. Faustregel: starte mit der Größe, die du realistisch mit eigenem Kapital handeln würdest, hättest du es. **50K ist der Sweet Spot** für die meisten fortgeschrittenen Trader.
 
-### Schritt 3 — Code HELLO anwenden
+### Schritt 3, Code HELLO anwenden
 
 **HELLO** beim Checkout eingeben für 20 % Rabatt auf den ersten Kauf. Allein das senkt den 50K 2-Step-Preis von 289 US$ auf 231 US$.
 
-### Schritt 4 — Plattform installieren
+### Schritt 4, Plattform installieren
 
-MT5, cTrader oder Match-Trader herunterladen. Mit den Demo-Credentials einloggen, die FundingPips nach Kauf per Mail schickt. Lot-Sizing testen, bevor ein Live-Evaluations-Trade platziert wird — viele Trader scheitern in Phase 1 an falscher Positionsgrößen-Berechnung beim ersten Einstieg.
+MT5, cTrader oder Match-Trader herunterladen. Mit den Demo-Credentials einloggen, die FundingPips nach Kauf per Mail schickt. Lot-Sizing testen, bevor ein Live-Evaluations-Trade platziert wird, viele Trader scheitern in Phase 1 an falscher Positionsgrößen-Berechnung beim ersten Einstieg.
 
-### Schritt 5 — Daily Loss (5 %) respektieren
+### Schritt 5, Daily Loss (5 %) respektieren
 
-Der 5 %-Daily-Drawdown ist der stille Killer. Auf einem 50K-Account sind das **2.500 US$/Tag max. Loss**. Setze einen harten Stop bei 2.000 US$ als mentalen Trigger — stoppe den Handel für den Tag, wenn du das erreichst.
+Der 5 %-Daily-Drawdown ist der stille Killer. Auf einem 50K-Account sind das **2.500 US$/Tag max. Loss**. Setze einen harten Stop bei 2.000 US$ als mentalen Trigger, stoppe den Handel für den Tag, wenn du das erreichst.
 
-### Schritt 6 — Target treffen, ohne Account zu sprengen
+### Schritt 6, Target treffen, ohne Account zu sprengen
 
-Phase 1: **8 % Target** (+4.000 US$ auf 50K). Phase 2: **5 % Target** (+2.500 US$). Ziele konservativ auf **1 %/Tag** — das ist eine 8-Tage-Phase in stetigem Tempo, mit Puffer für Verlusttage. Nicht in 3 Tagen abschließen wollen.
+Phase 1: **8 % Target** (+4.000 US$ auf 50K). Phase 2: **5 % Target** (+2.500 US$). Ziele konservativ auf **1 %/Tag**, das ist eine 8-Tage-Phase in stetigem Tempo, mit Puffer für Verlusttage. Nicht in 3 Tagen abschließen wollen.
 
-### Schritt 7 — Reward-Zyklus wählen
+### Schritt 7, Reward-Zyklus wählen
 
-Einmal auf Master: Zyklus wählen — weekly (60 %), bi-weekly (80 %), on-demand (90 %) oder monthly (100 %). Die meisten Trader wählen **bi-weekly** für Balance. Festlegen, dieselbe Edge traden, Rewards einsammeln.
+Einmal auf Master: Zyklus wählen, weekly (60 %), bi-weekly (80 %), on-demand (90 %) oder monthly (100 %). Die meisten Trader wählen **bi-weekly** für Balance. Festlegen, dieselbe Edge traden, Rewards einsammeln.
 
-### Schritt 8 — Hochskalieren
+### Schritt 8, Hochskalieren
 
 Nach zwei aufeinanderfolgenden profitablen Payout-Zyklen Scaling anfragen. Kapital wächst +25 % pro Stufe. Weiter Richtung 300K-Cap aufbauen.
 
@@ -385,11 +385,11 @@ Ja. FundingPips operiert seit 2022 aus Dubai, hat **52.513 Trustpilot-Bewertunge
 
 ### Was ist der FundingPips-Coupon-Code?
 
-**Code HELLO** bringt **20 % RABATT** auf den ersten Kauf — egal welche Challenge-Größe oder welcher Typ. Für wiederkehrende Kunden rotierende Saison-Angebote auf der Markets-Coupons-Homepage prüfen.
+**Code HELLO** bringt **20 % RABATT** auf den ersten Kauf, egal welche Challenge-Größe oder welcher Typ. Für wiederkehrende Kunden rotierende Saison-Angebote auf der Markets-Coupons-Homepage prüfen.
 
 ### Was ist der Unterschied zwischen Zero, 1-Step und 2-Step?
 
-**Zero** — keine Evaluation, mehr Upfront zahlen, sofort Master traden. **1-Step** — einzelne Phase (8 % Target), günstiger als Zero. **2-Step** — zwei Phasen (8 % dann 5 %), günstigster, am ähnlichsten zu FTMO.
+**Zero**, keine Evaluation, mehr Upfront zahlen, sofort Master traden. **1-Step**, einzelne Phase (8 % Target), günstiger als Zero. **2-Step**, zwei Phasen (8 % dann 5 %), günstigster, am ähnlichsten zu FTMO.
 
 ### Wie viel Hebel bietet FundingPips?
 
@@ -397,7 +397,7 @@ Ja. FundingPips operiert seit 2022 aus Dubai, hat **52.513 Trustpilot-Bewertunge
 
 ### Kann ich auf FundingPips EAs nutzen?
 
-Ja. Expert Advisors sind auf MT5 und cTrader mit Common-Sense-Restriktionen erlaubt — keine HFT-Exploit-Bots, keine Latency-Arbitrage, kein Copy Trading zwischen Accounts.
+Ja. Expert Advisors sind auf MT5 und cTrader mit Common-Sense-Restriktionen erlaubt, keine HFT-Exploit-Bots, keine Latency-Arbitrage, kein Copy Trading zwischen Accounts.
 
 ### Wie schnell zahlt FundingPips?
 
@@ -413,11 +413,11 @@ FundingPips verpflichtet sich zu **null Payout-Ablehnungen** und bearbeitet Payo
 
 ### Hat FundingPips ein Zeitlimit?
 
-**Nein.** Alle Evaluations-Phasen sind **ohne Zeitlimit**. Handel in deinem eigenen Tempo — kein Druck, in 30 Tagen fertig zu sein.
+**Nein.** Alle Evaluations-Phasen sind **ohne Zeitlimit**. Handel in deinem eigenen Tempo, kein Druck, in 30 Tagen fertig zu sein.
 
 ### Was passiert, wenn ich den Drawdown reiße?
 
-Dein Account wird für diesen Evaluations-Zyklus beendet. Du kannst eine neue Challenge mit frischer Balance kaufen. Keine Übertragung von Verlusten — jedes Mal frischer Start.
+Dein Account wird für diesen Evaluations-Zyklus beendet. Du kannst eine neue Challenge mit frischer Balance kaufen. Keine Übertragung von Verlusten, jedes Mal frischer Start.
 
 ### Kann ich auf FundingPips Futures handeln?
 
@@ -427,10 +427,10 @@ Dein Account wird für diesen Evaluations-Zyklus beendet. Du kannst eine neue Ch
 
 ## Weitere Guides bei Markets Coupons
 
-- [FTMO Review](./ftmo-review) — 2-Step-Forex-Challenge, Branchenveteran
-- [FundedNext Review](./fundednext-review) — 24h-Payout-Garantie, Stellar Challenge
-- [The5ers Review](./the5ers-review) — Skalierung bis 4 Mio. US$, 1/2/3-Step-Programme
-- [Apex Trader Funding Review](./apex-trader-funding-review) — Futures-Prop-Firm, 90 % Lifetime-Coupon
+- [FTMO Review](./ftmo-review), 2-Step-Forex-Challenge, Branchenveteran
+- [FundedNext Review](./fundednext-review), 24h-Payout-Garantie, Stellar Challenge
+- [The5ers Review](./the5ers-review), Skalierung bis 4 Mio. US$, 1/2/3-Step-Programme
+- [Apex Trader Funding Review](./apex-trader-funding-review), Futures-Prop-Firm, 90 % Lifetime-Coupon
 
 ---
 

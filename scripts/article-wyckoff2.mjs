@@ -20,30 +20,30 @@ const body = `
 
 <h2>Por Que Wyckoff Precisou Evoluir</h2>
 <p>O método Wyckoff clássico, desenvolvido nos anos 1930, foi construído para mercados onde a manipulação institucional era visível em barras diárias e volume agregado por sessão. Funcionava bem porque havia tempo para o "Composite Man" se mover lentamente, e suas pegadas ficavam óbvias no gráfico.</p>
-<p>Em 2025, o cenário é radicalmente diferente. Algoritmos de alta frequência executam ordens em microssegundos. Dark pools movimentam 40-50% do volume sem aparecer em tape público. Decimalização permitiu 100x mais granularidade de preço. Order flow se fragmentou entre dezenas de venues. Wyckoff puro ainda funciona — mas perde resolução.</p>
+<p>Em 2025, o cenário é radicalmente diferente. Algoritmos de alta frequência executam ordens em microssegundos. Dark pools movimentam 40-50% do volume sem aparecer em tape público. Decimalização permitiu 100x mais granularidade de preço. Order flow se fragmentou entre dezenas de venues. Wyckoff puro ainda funciona, mas perde resolução.</p>
 <p>Wyckoff 2.0 é o método moderno de aplicar os princípios atemporais (acumulação, distribuição, esforço × resultado, causa × efeito) usando ferramentas tecnológicas que dão visibilidade institucional: <strong>Volume Profile, Cumulative Delta, Order Flow, Footprint Charts</strong>. Mantém a sabedoria antiga, ganha precisão moderna.</p>
 
 <div class="callout callout-gold">
 <strong>Princípio fundamental do Wyckoff 2.0:</strong> os esquemas clássicos (acumulação, markup, distribuição, markdown) continuam válidos. O que muda é a resolução com que você os enxerga. Volume Profile mostra ONDE a acumulação aconteceu (não só quando). Order Flow mostra QUEM comprou (agressivo vs passivo).
 </div>
 
-<h2>O Volume Profile — A Distribuição que Importa</h2>
+<h2>O Volume Profile, A Distribuição que Importa</h2>
 <p>Volume tradicional é por tempo: barra de volume embaixo de cada candle. Volume Profile é por preço: histograma horizontal mostrando quanto volume foi negociado em cada nível. Diferença sutil, impacto enorme.</p>
 
 <table>
 <thead><tr><th>Conceito</th><th>Significado</th><th>Como usar</th></tr></thead>
 <tbody>
-<tr><td><strong>POC</strong> (Point of Control)</td><td>Preço com maior volume negociado no período</td><td>Age como ímã — preço retorna ao POC com regularidade impressionante</td></tr>
+<tr><td><strong>POC</strong> (Point of Control)</td><td>Preço com maior volume negociado no período</td><td>Age como ímã, preço retorna ao POC com regularidade impressionante</td></tr>
 <tr><td><strong>VAH</strong> (Value Area High)</td><td>Topo da zona onde 70% do volume foi negociado</td><td>Resistência institucional</td></tr>
 <tr><td><strong>VAL</strong> (Value Area Low)</td><td>Fundo da zona dos 70%</td><td>Suporte institucional</td></tr>
 <tr><td><strong>HVN</strong> (High Volume Node)</td><td>Nível com pico local de volume</td><td>Suporte/resistência forte</td></tr>
-<tr><td><strong>LVN</strong> (Low Volume Node)</td><td>Nível com pouco volume</td><td>Áreas de "vazio" — preço passa rápido por elas</td></tr>
+<tr><td><strong>LVN</strong> (Low Volume Node)</td><td>Nível com pouco volume</td><td>Áreas de "vazio", preço passa rápido por elas</td></tr>
 <tr><td><strong>Single Print</strong></td><td>Nível atravessado em uma única barra (TPO classic)</td><td>Sinal de forte iniciativa em uma direção</td></tr>
 </tbody>
 </table>
 
 <h3>Como Volume Profile complementa Wyckoff</h3>
-<p>Em Wyckoff clássico, você identifica acumulação observando price action: range, volume nas pernadas, sinais de absorção. Funciona — mas é interpretativo.</p>
+<p>Em Wyckoff clássico, você identifica acumulação observando price action: range, volume nas pernadas, sinais de absorção. Funciona, mas é interpretativo.</p>
 <p>Volume Profile dá precisão cirúrgica. POC dentro de um range Wyckoff = exatamente onde os grandes jogadores acumularam. VAL = o nível onde rompimento bullish vai encontrar primeiro suporte significativo. LVNs entre VAH e a próxima HVN = áreas que o preço cruza rapidamente após rompimento (alvos naturais).</p>
 
 <div class="callout callout-blue">
@@ -79,16 +79,16 @@ const body = `
 </tbody>
 </table>
 
-<h2>Cumulative Delta — Quem Está Atacando, Quem Está Defendendo</h2>
+<h2>Cumulative Delta, Quem Está Atacando, Quem Está Defendendo</h2>
 <p>Em mercados de futuros, cada negócio tem dois lados: alguém estava no <em>bid</em> (passivo, esperando) e alguém estava no <em>ask</em> (agressivo, atravessando). <strong>Cumulative Delta</strong> mede a diferença acumulada: volume comprador agressivo (no ask) menos volume vendedor agressivo (no bid).</p>
 
 <table>
 <thead><tr><th>Padrão</th><th>Interpretação</th></tr></thead>
 <tbody>
-<tr><td>Delta positivo crescente em alta</td><td>Compradores agressivos dominando — tendência genuína</td></tr>
-<tr><td>Delta positivo decrescente em alta (preço sobe)</td><td>Compradores cansando — possível reversão</td></tr>
-<tr><td>Delta negativo em alta</td><td>Tendência de alta com vendedores agressivos — absorção institucional bullish</td></tr>
-<tr><td>Delta positivo em queda</td><td>Tendência de baixa com compradores agressivos — absorção bearish</td></tr>
+<tr><td>Delta positivo crescente em alta</td><td>Compradores agressivos dominando, tendência genuína</td></tr>
+<tr><td>Delta positivo decrescente em alta (preço sobe)</td><td>Compradores cansando, possível reversão</td></tr>
+<tr><td>Delta negativo em alta</td><td>Tendência de alta com vendedores agressivos, absorção institucional bullish</td></tr>
+<tr><td>Delta positivo em queda</td><td>Tendência de baixa com compradores agressivos, absorção bearish</td></tr>
 </tbody>
 </table>
 
@@ -96,10 +96,10 @@ const body = `
 <strong>Insight chave:</strong> divergência entre preço e Cumulative Delta é um dos sinais mais poderosos do mercado moderno. Preço fazendo nova máxima mas delta menor = institucionais distribuindo silenciosamente. Reversão técnica iminente.
 </div>
 
-<h2>Order Flow — A Última Camada de Resolução</h2>
+<h2>Order Flow, A Última Camada de Resolução</h2>
 <p>Order Flow é a leitura tick-by-tick do book: cada negócio executado, cada tamanho, cada lado. Ferramentas como Sierra Chart, ATAS e MotiveWave permitem visualização avançada conhecida como <em>Footprint</em>.</p>
 
-<h3>Footprint Chart — A Vela Sob o Microscópio</h3>
+<h3>Footprint Chart, A Vela Sob o Microscópio</h3>
 <p>Cada candle é "explodido" pra mostrar volume negociado em cada nível de preço dentro da vela, separado por bid/ask. Você vê literalmente onde os compradores foram agressivos vs onde os vendedores foram.</p>
 
 <div class="mini-ui">
@@ -142,13 +142,13 @@ const body = `
 <thead><tr><th>Tipo</th><th>Significado</th><th>Setup gerado</th></tr></thead>
 <tbody>
 <tr><td><strong>Stacked Imbalances</strong> (3+ níveis seguidos)</td><td>Sequência forte de agressão direcional</td><td>Suporte/resistência muito forte. Reteste oferece entrada de baixo risco.</td></tr>
-<tr><td><strong>Imbalance no extremo da vela</strong></td><td>Capitulação ou exaustão</td><td>Reversão potencial — confirme com próxima vela</td></tr>
+<tr><td><strong>Imbalance no extremo da vela</strong></td><td>Capitulação ou exaustão</td><td>Reversão potencial, confirme com próxima vela</td></tr>
 <tr><td><strong>Delta Diverge</strong></td><td>Vela verde mas delta negativo (ou vice-versa)</td><td>Absorção institucional contra a aparência do candle</td></tr>
 </tbody>
 </table>
 
 <h2>O Spring Wyckoff Visto Pelo Order Flow</h2>
-<p>Spring é o sinal Wyckoff mais clássico — falsa quebra abaixo do range que rapidamente reverte. No Order Flow, você consegue ver o "drama" em alta resolução:</p>
+<p>Spring é o sinal Wyckoff mais clássico, falsa quebra abaixo do range que rapidamente reverte. No Order Flow, você consegue ver o "drama" em alta resolução:</p>
 
 <div class="callout callout-green">
 <strong>Sequência de Spring no Order Flow:</strong>
@@ -163,7 +163,7 @@ const body = `
 Sinal extremamente forte de acumulação. Setup long com stop abaixo da mínima do Spring.
 </div>
 
-<h2>Combinando as Três Camadas — A Análise Multi-Resolução</h2>
+<h2>Combinando as Três Camadas, A Análise Multi-Resolução</h2>
 <p>Trader Wyckoff 2.0 olha o mercado em 3 resoluções simultâneas:</p>
 
 <table>
@@ -188,12 +188,12 @@ Sinal extremamente forte de acumulação. Setup long com stop abaixo da mínima 
 <table>
 <thead><tr><th>Ferramenta</th><th>Foco</th><th>Custo mensal</th><th>Curva</th></tr></thead>
 <tbody>
-<tr><td><strong>Sierra Chart</strong></td><td>Order Flow, Footprint, low-latency</td><td>$26-99</td><td>Alta — ferramenta profissional</td></tr>
+<tr><td><strong>Sierra Chart</strong></td><td>Order Flow, Footprint, low-latency</td><td>$26-99</td><td>Alta, ferramenta profissional</td></tr>
 <tr><td><strong>NinjaTrader + Order Flow Plus</strong></td><td>Order Flow integrado</td><td>NT free + $50/mês addon</td><td>Média</td></tr>
 <tr><td><strong>ATAS</strong></td><td>Order Flow exclusivo, Volume Profile</td><td>~$70/mês</td><td>Média</td></tr>
 <tr><td><strong>MotiveWave</strong></td><td>Wyckoff + Elliott + Volume Profile</td><td>$30-100</td><td>Média</td></tr>
-<tr><td><strong>TradingView (Premium)</strong></td><td>Volume Profile básico, sem Order Flow</td><td>$15-60</td><td>Baixa — entrada acessível</td></tr>
-<tr><td><strong>Bookmap</strong></td><td>Heatmap de book de ordens</td><td>$50-150</td><td>Alta — visualização única</td></tr>
+<tr><td><strong>TradingView (Premium)</strong></td><td>Volume Profile básico, sem Order Flow</td><td>$15-60</td><td>Baixa, entrada acessível</td></tr>
+<tr><td><strong>Bookmap</strong></td><td>Heatmap de book de ordens</td><td>$50-150</td><td>Alta, visualização única</td></tr>
 </tbody>
 </table>
 
@@ -201,7 +201,7 @@ Sinal extremamente forte de acumulação. Setup long com stop abaixo da mínima 
 <strong>Recomendação para iniciantes em Wyckoff 2.0:</strong> comece com TradingView Premium pra dominar Volume Profile. Após 6 meses, migre pra Sierra Chart ou ATAS pra Order Flow completo. Pular direto pro avançado é receita pra confusão.
 </div>
 
-<h2>Aplicação em Prop Firm — Vantagens e Cuidados</h2>
+<h2>Aplicação em Prop Firm, Vantagens e Cuidados</h2>
 
 <h3>Vantagens</h3>
 <ul>
@@ -225,7 +225,7 @@ Sinal extremamente forte de acumulação. Setup long com stop abaixo da mínima 
 <p>Order Flow sem contexto Wyckoff é números sem narrativa. Domine os esquemas clássicos primeiro. Depois adicione resolução.</p>
 
 <h3>Operar contra a fase Wyckoff baseado em Order Flow</h3>
-<p>Order Flow positivo em momento de Fase 4 (markdown) não é sinal de comprar — é absorção que vai morrer. Sempre filtre Order Flow pela fase macro.</p>
+<p>Order Flow positivo em momento de Fase 4 (markdown) não é sinal de comprar, é absorção que vai morrer. Sempre filtre Order Flow pela fase macro.</p>
 
 <h3>Confiar em uma única vela com imbalance forte</h3>
 <p>Imbalance solitário não vale muito. Stacked imbalances (3+) ou imbalances combinados com nível Volume Profile valem.</p>
@@ -237,7 +237,7 @@ Sinal extremamente forte de acumulação. Setup long com stop abaixo da mínima 
 <strong>Erro mais caro:</strong> achar que Wyckoff 2.0 elimina necessidade de gestão de risco. Mais resolução não significa mais certeza. Stops, position sizing e regras de drawdown continuam absolutos.
 </div>
 
-<h2>O Trader Wyckoff 2.0 em Ação — Workflow Completo</h2>
+<h2>O Trader Wyckoff 2.0 em Ação, Workflow Completo</h2>
 
 <h3>Pré-mercado</h3>
 <ul>
@@ -258,13 +258,13 @@ Sinal extremamente forte de acumulação. Setup long com stop abaixo da mínima 
 <h3>Pós-mercado</h3>
 <ul>
 <li>Journal: setup foi 3-camadas (Wyckoff + VP + OF) ou só 1-2?</li>
-<li>Identifica setups que NÃO operou — porque não tinham confluência</li>
-<li>Estatística semanal: trades 3-camadas vs 1-camada — qual tem WR melhor?</li>
+<li>Identifica setups que NÃO operou, porque não tinham confluência</li>
+<li>Estatística semanal: trades 3-camadas vs 1-camada, qual tem WR melhor?</li>
 </ul>
 
 <h2>Por Que Vale o Esforço de Aprender Wyckoff 2.0</h2>
 <p>Wyckoff puro é poderoso mas interpretativo. Volume Profile dá precisão estatística. Order Flow dá tempo de antecedência. As três juntas formam o framework mais completo disponível para trader que opera mercado moderno com institucionais.</p>
-<p>Trader que domina Wyckoff 2.0 está literalmente vendo o que algoritmos institucionais veem — porque essas mesmas ferramentas alimentam os algoritmos. Você passa de "operar contra os grandes" pra "operar com eles", mesmo que de forma humilde.</p>
+<p>Trader que domina Wyckoff 2.0 está literalmente vendo o que algoritmos institucionais veem, porque essas mesmas ferramentas alimentam os algoritmos. Você passa de "operar contra os grandes" pra "operar com eles", mesmo que de forma humilde.</p>
 
 <h2>O Que Muda na Sua Mesa Amanhã</h2>
 <p><strong>Primeiro:</strong> você vai começar a olhar Volume Profile em todo gráfico. POC, VAH, VAL viram parte do vocabulário diário. Em 30 dias, você vê o mercado por essas lentes naturalmente.</p>
@@ -286,13 +286,13 @@ Sinal extremamente forte de acumulação. Setup long com stop abaixo da mínima 
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>Wyckoff 2.0: Structures, Volume Profile and Order Flow</strong> — Rubén Villahermosa. O livro que estabeleceu o método moderno.</li>
-<li><strong>Mind Over Markets</strong> — James Dalton. A bíblia do Volume Profile.</li>
-<li><strong>Markets in Profile</strong> — James Dalton. Continuação avançada.</li>
-<li><strong>The Wyckoff Method of Trading and Investing</strong> — Hank Pruden. Wyckoff clássico em formato acadêmico.</li>
-<li><strong>Order Flow Trading for Fun and Profit</strong> — Sam McMahon. Foco prático em Footprint.</li>
-<li><strong>Volume Profile: The Insider's Guide to Trading</strong> — Trader Dale. Aplicação moderna acessível.</li>
-<li><strong>A Complete Guide to Volume Price Analysis</strong> — Anna Coulling. Bridge entre Wyckoff clássico e moderno.</li>
+<li><strong>Wyckoff 2.0: Structures, Volume Profile and Order Flow</strong>, Rubén Villahermosa. O livro que estabeleceu o método moderno.</li>
+<li><strong>Mind Over Markets</strong>, James Dalton. A bíblia do Volume Profile.</li>
+<li><strong>Markets in Profile</strong>, James Dalton. Continuação avançada.</li>
+<li><strong>The Wyckoff Method of Trading and Investing</strong>, Hank Pruden. Wyckoff clássico em formato acadêmico.</li>
+<li><strong>Order Flow Trading for Fun and Profit</strong>, Sam McMahon. Foco prático em Footprint.</li>
+<li><strong>Volume Profile: The Insider's Guide to Trading</strong>, Trader Dale. Aplicação moderna acessível.</li>
+<li><strong>A Complete Guide to Volume Price Analysis</strong>, Anna Coulling. Bridge entre Wyckoff clássico e moderno.</li>
 </ul>
 
 <hr>

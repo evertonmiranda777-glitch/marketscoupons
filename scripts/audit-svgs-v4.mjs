@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SVG audit v4 — catches:
+// SVG audit v4, catches:
 //  (a) <line> crossing through TEXT element (line passes within text bbox)
 //  (b) <line> crossing through <rect> from different group
 //  (c) text-vs-text overlap >30% (the original audit)
@@ -117,7 +117,7 @@ for (const dir of DIRS) {
 
       const bugs = [];
 
-      // (a) Line crossing TEXT — line passes within text bbox vertically
+      // (a) Line crossing TEXT, line passes within text bbox vertically
       for (const l of lines) {
         for (const t of texts) {
           // Skip if same group (intentional)
@@ -153,7 +153,7 @@ for (const dir of DIRS) {
         }
       }
 
-      // (c) Text-vs-text overlap — ANY two visible labels overlapping is a bug,
+      // (c) Text-vs-text overlap, ANY two visible labels overlapping is a bug,
       // regardless of group nesting (two distinct labels must never collide).
       for (let i = 0; i < texts.length; i++) {
         for (let j = i + 1; j < texts.length; j++) {
@@ -198,14 +198,14 @@ for (const dir of DIRS) {
       for (const t of texts) {
         for (const c of cards) {
           if (sameLogicalGroup(t.el, c.el)) continue;
-          // Skip if text fully contained inside card — that's intentional (tables, captions)
+          // Skip if text fully contained inside card, that's intentional (tables, captions)
           const fullyInside = t.x >= c.x - 2 && t.right <= c.right + 2 && t.y >= c.y - 2 && t.bottom <= c.bottom + 2;
           if (fullyInside) continue;
           // Skip if no overlap at all
           const xOv = Math.min(t.right, c.right) - Math.max(t.x, c.x);
           const yOv = Math.min(t.bottom, c.bottom) - Math.max(t.y, c.y);
           if (xOv <= 2 || yOv <= 2) continue;
-          // text crosses an edge — bug
+          // text crosses an edge, bug
           const overlapArea = xOv * yOv;
           const textArea = Math.max(1, t.w * t.h);
           const pct = overlapArea / textArea;
@@ -248,7 +248,7 @@ for (const i of issues) {
     else if (b.kind === 'text-overlap') console.log(`  TEXT overlap "${b.a}" ⇆ "${b.b}" (${b.pct}%)`);
     else if (b.kind === 'text-near-card-bottom') console.log(`  TEXT "${b.text}" too close to card bottom (gap ${b.gap}px)`);
     else if (b.kind === 'text-crosses-card-edge') console.log(`  TEXT "${b.text}" crosses EDGE of card ${b.cardBox} (${b.pct}%)`);
-    else if (b.kind === 'raw-ampersand') console.log(`  RAW & x${b.count} — breaks <img> rendering, escape as &amp;`);
+    else if (b.kind === 'raw-ampersand') console.log(`  RAW & x${b.count}, breaks <img> rendering, escape as &amp;`);
   }
   if (i.bugs.length > 8) console.log(`  ... +${i.bugs.length - 8} more`);
 }

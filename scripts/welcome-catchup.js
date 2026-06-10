@@ -47,7 +47,7 @@ async function sendWelcome(rec) {
 }
 
 async function markReceived(email) {
-  // UPSERT email_subscribers — adiciona tag received-welcome
+  // UPSERT email_subscribers, adiciona tag received-welcome
   const getR = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?email=eq.${encodeURIComponent(email)}&select=tags`, { headers: SUB_HEAD });
   const rows = getR.ok ? await getR.json() : [];
   if (rows.length) {
@@ -85,6 +85,6 @@ async function markReceived(email) {
     }
     await new Promise(r => setTimeout(r, 200));
   }
-  console.log(`[welcome-catchup] done — sent=${sent} failed=${failed}`);
+  console.log(`[welcome-catchup] done, sent=${sent} failed=${failed}`);
   if (failed > 0 && sent === 0) process.exit(1);
 })().catch(e => { console.error('[welcome-catchup] fatal', e); process.exit(1); });

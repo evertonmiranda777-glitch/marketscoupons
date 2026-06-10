@@ -88,7 +88,7 @@ async function syncAccount(acct: string, days: number) {
 
   return all.map((r: any) => {
     // Separa LEADS (cadastros/signups) de PURCHASES (vendas reais).
-    // - conversions = total (compat — leads+purchases somados, usado pelo Card Campanhas Meta)
+    // - conversions = total (compat, leads+purchases somados, usado pelo Card Campanhas Meta)
     // - leads = só action_type lead/fb_pixel_lead/complete_registration
     // - purchases = só action_type purchase/fb_pixel_purchase
     // Pra ROAS Real comparar com nossas vendas a fonte certa eh `purchases`.

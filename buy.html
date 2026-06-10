@@ -48,12 +48,12 @@ html,body{width:100%;height:100%;background:#0a0d14;color:#fff;font-family:'Inte
 <script>
 (async function(){
   // ───────────────────────────────────────────────────────────
-  // /buy/<firm-id> — redirect intermediário SEM perder atribuição
+  // /buy/<firm-id>, redirect intermediário SEM perder atribuição
   // - Track event 'firm_buy_click' no Supabase (intenção de compra)
   // - Meta CAPI InitiateCheckout (melhora signal pros ads)
   // - Auto-copy cupom pra clipboard
   // - window.location.href pro link original do Supabase (cookie afiliado set pelo domain da firma)
-  // - Apex/Bulenox SKIP (decisão Everton 2026-06-03) — vão direto sem passar por aqui
+  // - Apex/Bulenox SKIP (decisão Everton 2026-06-03), vão direto sem passar por aqui
   // ───────────────────────────────────────────────────────────
 
   const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
@@ -203,7 +203,7 @@ html,body{width:100%;height:100%;background:#0a0d14;color:#fff;font-family:'Inte
     } catch(e){}
   }
 
-  // Redirect after small delay (700ms — UX visivel + tracking completa)
+  // Redirect after small delay (700ms, UX visivel + tracking completa)
   setTimeout(() => {
     location.href = destUrl;
   }, 700);

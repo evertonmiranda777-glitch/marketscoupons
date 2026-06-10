@@ -1,5 +1,5 @@
 /**
- * tracking.js — sub_id (keyword) injection for affiliate links
+ * tracking.js, sub_id (keyword) injection for affiliate links
  *
  * Captures UTMs from URL on pageload (TTL 30d, last-touch).
  * On affiliate link click OR window.open(<affiliate>...), injects
@@ -116,7 +116,7 @@
 
   // ─── Step 3: Build keyword from attribution (cascade) ───
   // Rejeita macros Meta não substituídos (ex: __ad_name__, {{campaign.name}}, {ad_name}).
-  // Sem isso, sub_id chegava no painel da firma como 'fb___ad_name__' — inútil pra atribuição.
+  // Sem isso, sub_id chegava no painel da firma como 'fb___ad_name__', inútil pra atribuição.
   function isMetaMacroLiteral(v) {
     if (!v || typeof v !== 'string') return false;
     const s = v.trim();

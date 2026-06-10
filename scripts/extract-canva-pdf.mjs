@@ -23,7 +23,7 @@ console.log('\n## Elementos de texto (x, y, w, h, fontSize, fontName, text):\n')
 
 const items = tc.items.filter(it => it.str && it.str.trim());
 for (const it of items) {
-  // transform: [a, b, c, d, e, f] — escala em a,d, posição em e,f
+  // transform: [a, b, c, d, e, f], escala em a,d, posição em e,f
   const [a, b, c, d, e, f] = it.transform;
   const fontSize = Math.hypot(a, b);
   const x = e;

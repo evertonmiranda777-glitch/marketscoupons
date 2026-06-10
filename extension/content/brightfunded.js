@@ -55,7 +55,7 @@ async function mcSyncBF(opts = {}) {
     mcToastBF(`BF: snap=${!!snapshot}, ${leads.length} leads`);
     await mcMarkBF('brightfunded');
   } else {
-    mcToastBF('BF: erro — ' + (out.error || '?'));
+    mcToastBF('BF: erro, ' + (out.error || '?'));
   }
   return out;
 }

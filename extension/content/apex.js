@@ -37,9 +37,9 @@ async function mcMarkSync(firmId) {
 
 async function mcSyncApex(opts = {}) {
   const affId = mcApexAffId();
-  if (!affId) { mcToast('Apex: nao identificou aff_id — estou logado no painel de afiliado?'); return { ok:false, reason:'no_aff_id' }; }
+  if (!affId) { mcToast('Apex: nao identificou aff_id, estou logado no painel de afiliado?'); return { ok:false, reason:'no_aff_id' }; }
 
-  // 1) Daily aggregates (existente — vai pra affiliate_daily_stats)
+  // 1) Daily aggregates (existente, vai pra affiliate_daily_stats)
   let csvUrl = null;
   document.querySelectorAll('a').forEach(a => {
     const txt = (a.textContent || '').toLowerCase();
@@ -61,7 +61,7 @@ async function mcSyncApex(opts = {}) {
   }
   if (!rows.length) rows = mcScrapeApexTable();
 
-  // 2) Transactions individuais (NOVO — vai pra affiliate_conversions, alimenta matcher)
+  // 2) Transactions individuais (NOVO, vai pra affiliate_conversions, alimenta matcher)
   const leads = await mcFetchApexTransactions(affId);
 
   if (!rows.length && !leads.length) { mcToast('Apex: nenhum dado encontrado'); return { ok:false, reason:'no_data' }; }
@@ -78,7 +78,7 @@ async function mcSyncApex(opts = {}) {
     mcToast(`Apex: ${rows.length} dias + ${leads.length} transacoes sincronizadas`);
     await mcMarkSync('apex');
   } else {
-    mcToast('Apex: erro ao enviar — ' + (out.error || 'desconhecido'));
+    mcToast('Apex: erro ao enviar, ' + (out.error || 'desconhecido'));
   }
   return out;
 }

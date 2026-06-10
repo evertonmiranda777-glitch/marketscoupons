@@ -16,11 +16,11 @@ tags: [fundednext, forex prop firm, stellar challenge, 2-step, profit split]
 
 ![FundedNext Stellar Challenge Hero-Illustration](../img/fundednext-hero.png)
 
-FundedNext ist eine der größten Forex- und CFD-Prop-Firms weltweit mit **über 288,4 Mio. US$ an Payouts an Trader** und mehr als **64.941 verifizierten Trustpilot-Bewertungen im Schnitt von 4,5 Sternen**. Die Firma wurde 2022 gegründet und baute ihren Ruf auf transparenten Regeln, schnellen Payouts und der Stellar Challenge auf — einer 2-Step-Evaluation, die zum Benchmark im Forex-Prop-Segment geworden ist.
+FundedNext ist eine der größten Forex- und CFD-Prop-Firms weltweit mit **über 288,4 Mio. US$ an Payouts an Trader** und mehr als **64.941 verifizierten Trustpilot-Bewertungen im Schnitt von 4,5 Sternen**. Die Firma wurde 2022 gegründet und baute ihren Ruf auf transparenten Regeln, schnellen Payouts und der Stellar Challenge auf, einer 2-Step-Evaluation, die zum Benchmark im Forex-Prop-Segment geworden ist.
 
 Wenn du aus dem Futures-Bereich kommst (Apex, Bulenox, Take Profit Trader) oder von einer klassischen 2-Step-Firm wie FTMO, bietet dir FundedNext Zugang zu **Forex, Metallen, Indizes, Öl und Crypto** mit bis zu **300.000 US$ Buying Power** und einem **95 % Profit Split** mit dem Stellar Lifetime Reward Add-on.
 
-Dieser Guide deckt **jede Regel, jeden Preis, jede Gebühr und jeden Edge Case** ab, den du vor dem Kauf eines Stellar-Challenge-Accounts kennen musst — plus eine ehrliche Einschätzung der Stärken, Schwächen und wie sich FundedNext mit FTMO und anderen Forex-Prop-Firms vergleicht.
+Dieser Guide deckt **jede Regel, jeden Preis, jede Gebühr und jeden Edge Case** ab, den du vor dem Kauf eines Stellar-Challenge-Accounts kennen musst, plus eine ehrliche Einschätzung der Stärken, Schwächen und wie sich FundedNext mit FTMO und anderen Forex-Prop-Firms vergleicht.
 
 > **Kurzfassung**
 > **Typ:** Forex- & CFD-Prop-Firm (2-Step, 1-Step und Instant Funding verfügbar)
@@ -29,7 +29,7 @@ Dieser Guide deckt **jede Regel, jeden Preis, jede Gebühr und jeden Edge Case**
 > **Max. Funding:** 200.000 US$ pro Account, Scaling bis 300.000 US$
 > **Drawdown:** 10 % max. overall / 5 % daily (statisch, balance-basiert)
 > **Trustpilot:** ★ 4,5 · 64.941 Bewertungen
-> **Aktuelles Angebot:** 100 % rückerstattbare Gebühr auf Stellar 2-Step — einmal zahlen, mit dem ersten Payout zurückbekommen
+> **Aktuelles Angebot:** 100 % rückerstattbare Gebühr auf Stellar 2-Step, einmal zahlen, mit dem ersten Payout zurückbekommen
 
 ---
 
@@ -56,7 +56,7 @@ Dieser Guide deckt **jede Regel, jeden Preis, jede Gebühr und jeden Edge Case**
 
 FundedNext ist eine in den VAE ansässige Proprietary-Trading-Firm, die 2022 gegründet wurde und Retail-Tradern simuliertes Kapital zur Verfügung stellt. Nachdem ein Trader die Evaluation (die Stellar Challenge) bestanden hat, erhält er Zugang zu einem „funded" Account und behält einen Prozentsatz der darauf erzielten Gewinne.
 
-Die Firma betreibt drei separate Challenge-Strukturen: **Stellar 2-Step** (das Flaggschiff-Produkt), **Stellar 1-Step** (Single-Phase-Evaluation) und **Stellar Lite** (ein vereinfachter 2-Step mit milderen Regeln). Alle drei führen zum selben Ziel — einem Funded Account mit Payouts alle 14 Tage und Scaling-Potenzial.
+Die Firma betreibt drei separate Challenge-Strukturen: **Stellar 2-Step** (das Flaggschiff-Produkt), **Stellar 1-Step** (Single-Phase-Evaluation) und **Stellar Lite** (ein vereinfachter 2-Step mit milderen Regeln). Alle drei führen zum selben Ziel, einem Funded Account mit Payouts alle 14 Tage und Scaling-Potenzial.
 
 Die zentralen Zahlen, die FundedNext 2026 definieren:
 
@@ -64,9 +64,9 @@ Die zentralen Zahlen, die FundedNext 2026 definieren:
 - **64.941** Trustpilot-Bewertungen bei 4,5 Sternen
 - **5,44 Mio. US$+** tägliches Handelsvolumen auf Funded Accounts
 - **3 Tage** durchschnittliche Payout-Bearbeitungszeit (24-Stunden-Garantie auf Stellar 2-Step)
-- **100 %** rückerstattbare Gebühr — du bekommst deine Challenge-Kosten mit dem ersten Payout zurück
+- **100 %** rückerstattbare Gebühr, du bekommst deine Challenge-Kosten mit dem ersten Payout zurück
 
-Im Gegensatz zu Futures-Firms (Apex, Bulenox) konzentriert sich FundedNext auf **Forex, Rohstoffe, Indizes und Crypto** — den klassischen CFD-Produktmix — und das Trading läuft auf MetaTrader 4/5, cTrader oder Match-Trader statt NinjaTrader oder Tradovate.
+Im Gegensatz zu Futures-Firms (Apex, Bulenox) konzentriert sich FundedNext auf **Forex, Rohstoffe, Indizes und Crypto**, den klassischen CFD-Produktmix, und das Trading läuft auf MetaTrader 4/5, cTrader oder Match-Trader statt NinjaTrader oder Tradovate.
 
 ---
 
@@ -74,13 +74,13 @@ Im Gegensatz zu Futures-Firms (Apex, Bulenox) konzentriert sich FundedNext auf *
 
 Die Stellar Challenge ist FundedNexts Evaluation-Funnel. Hier die 30-Sekunden-Version:
 
-1. **Challenge-Gebühr zahlen** (abhängig von der Account-Größe — ab 49,99 US$ für einen 6K-US$-Account bis 1.049,99 US$ für einen 200K-US$-Account).
-2. **Phase 1 bestehen** — 8 % Profit Target erreichen, ohne 10 % Max Drawdown oder 5 % Daily Loss zu brechen.
-3. **Phase 2 bestehen** — kleineres 5 % Profit Target unter denselben Drawdown-Regeln erreichen.
-4. **Funded Account erhalten** — deine Strategie traden, alle 14 Tage bezahlt werden, 80 % → 90 % des Gewinns behalten.
-5. **Hochskalieren** — alle 4 Monate 50.000 US$ Buying Power dazu, bis du das 300.000-US$-Cap erreichst.
+1. **Challenge-Gebühr zahlen** (abhängig von der Account-Größe, ab 49,99 US$ für einen 6K-US$-Account bis 1.049,99 US$ für einen 200K-US$-Account).
+2. **Phase 1 bestehen**, 8 % Profit Target erreichen, ohne 10 % Max Drawdown oder 5 % Daily Loss zu brechen.
+3. **Phase 2 bestehen**, kleineres 5 % Profit Target unter denselben Drawdown-Regeln erreichen.
+4. **Funded Account erhalten**, deine Strategie traden, alle 14 Tage bezahlt werden, 80 % → 90 % des Gewinns behalten.
+5. **Hochskalieren**, alle 4 Monate 50.000 US$ Buying Power dazu, bis du das 300.000-US$-Cap erreichst.
 
-Der gesamte Funnel läuft auf einem Live-Demo-Server (simulierte Ausführung, echte Marktdaten), du riskierst also kein eigenes Kapital in der Evaluation — nur die Challenge-Gebühr, die **mit dem ersten Payout zu 100 % rückerstattbar** ist.
+Der gesamte Funnel läuft auf einem Live-Demo-Server (simulierte Ausführung, echte Marktdaten), du riskierst also kein eigenes Kapital in der Evaluation, nur die Challenge-Gebühr, die **mit dem ersten Payout zu 100 % rückerstattbar** ist.
 
 ---
 
@@ -92,7 +92,7 @@ FundedNext verkauft aktuell drei Challenge-Modelle. Welches das richtige ist, h�
 
 ### Stellar 2-Step (Flaggschiff)
 
-Die klassische Evaluation. Zwei Phasen, 8 % und 5 % Profit Targets, 10 % overall Drawdown, 5 % daily Drawdown. **Unbegrenzte Trading-Tage, keine Mindest-Tage** — du kannst beide Phasen in einer Woche bestehen, wenn du aggressiv bist. Die beliebteste Option mit der 100 % rückerstattbaren Gebühr + 24-Stunden-Payout-Garantie mit 1.000 US$ Bonus, falls FundedNext die Deadline verpasst.
+Die klassische Evaluation. Zwei Phasen, 8 % und 5 % Profit Targets, 10 % overall Drawdown, 5 % daily Drawdown. **Unbegrenzte Trading-Tage, keine Mindest-Tage**, du kannst beide Phasen in einer Woche bestehen, wenn du aggressiv bist. Die beliebteste Option mit der 100 % rückerstattbaren Gebühr + 24-Stunden-Payout-Garantie mit 1.000 US$ Bonus, falls FundedNext die Deadline verpasst.
 
 ### Stellar 1-Step
 
@@ -104,7 +104,7 @@ Ein milderer 2-Step für Einsteiger: niedrigere Profit Targets, etwas engere Dra
 
 | Challenge | Profit Target | Max DD | Daily DD | Rückerstattbare Gebühr | Ideal für |
 |---|---|---|---|---|---|
-| **Stellar 2-Step** | 8 % + 5 % | 10 % | 5 % | **Ja — 100 %** | Die meisten Trader |
+| **Stellar 2-Step** | 8 % + 5 % | 10 % | 5 % | **Ja, 100 %** | Die meisten Trader |
 | **Stellar 1-Step** | 10 % | 6 % | 3 % | Nein | Swing Trader |
 | **Stellar Lite** | 6 % + 4 % | 8 % | 4 % | Nein | Einsteiger |
 
@@ -125,9 +125,9 @@ FundedNext arbeitet mit einmaligen Flat Fees pro Challenge-Account (keine Monats
 | **100.000 US$** | 529,99 US$ | 10.000 US$ | 5.000 US$ | 8.000 US$ | 5.000 US$ |
 | **200.000 US$** | 1.049,99 US$ | 20.000 US$ | 10.000 US$ | 16.000 US$ | 10.000 US$ |
 
-Die 6K-US$-Stufe ist als günstiger Einstieg gedacht — ideal für Trader, die die Stellar Challenge testen wollen, bevor sie 500 US$+ auf einen 100K-US$-Account setzen. Die 200.000 US$ sind die größte Startgröße; von dort aus bringt dich das Scaling bis auf 300.000 US$.
+Die 6K-US$-Stufe ist als günstiger Einstieg gedacht, ideal für Trader, die die Stellar Challenge testen wollen, bevor sie 500 US$+ auf einen 100K-US$-Account setzen. Die 200.000 US$ sind die größte Startgröße; von dort aus bringt dich das Scaling bis auf 300.000 US$.
 
-**Refund-Mechanik:** Die komplette Challenge-Gebühr wird dir mit deinem **ersten Payout** auf dem Funded Account gutgeschrieben. Zahlst du also 529,99 US$ für den 100K-US$-Account und verdienst deinen ersten Payout von 3.000 US$, bekommst du tatsächlich **3.529,99 US$** — den Gewinn plus deine ursprüngliche Gebühr.
+**Refund-Mechanik:** Die komplette Challenge-Gebühr wird dir mit deinem **ersten Payout** auf dem Funded Account gutgeschrieben. Zahlst du also 529,99 US$ für den 100K-US$-Account und verdienst deinen ersten Payout von 3.000 US$, bekommst du tatsächlich **3.529,99 US$**, den Gewinn plus deine ursprüngliche Gebühr.
 
 ---
 
@@ -142,7 +142,7 @@ Die Stellar 2-Step hat zwei aufeinanderfolgende Phasen. Du musst Phase 1 bestehe
 - **Profit Target:** 8 % des Start-Balance
 - **Max Overall Drawdown:** 10 % des Start-Balance (statisch, balance-basiert)
 - **Max Daily Drawdown:** 5 % des Start-Balance (Reset um 00:00 GMT+3)
-- **Mindest-Trading-Tage:** 0 (kein Minimum — bestehen, so schnell du willst)
+- **Mindest-Trading-Tage:** 0 (kein Minimum, bestehen, so schnell du willst)
 - **Zeitlimit:** Unbegrenzt
 
 Bestehst du Phase 1, wirst du automatisch auf einen frischen Demo-Account mit demselben Balance in Phase 2 verschoben.
@@ -158,7 +158,7 @@ Bestehst du Phase 2, stellt FundedNext innerhalb von 24–48 Stunden deinen Fund
 
 ### Was „statisches Drawdown" bedeutet
 
-FundedNext nutzt **balance-basiertes statisches Drawdown**, kein Trailing. Auf einem 100K-US$-Account liegt der 10 %-Floor bei 90.000 US$ — und er bleibt für immer bei 90.000 US$, egal wie viel Profit du machst. Sobald du profitabel bist, wächst das effektive Polster mit jedem Winning Trade.
+FundedNext nutzt **balance-basiertes statisches Drawdown**, kein Trailing. Auf einem 100K-US$-Account liegt der 10 %-Floor bei 90.000 US$, und er bleibt für immer bei 90.000 US$, egal wie viel Profit du machst. Sobald du profitabel bist, wächst das effektive Polster mit jedem Winning Trade.
 
 Das ist ein großer Vorteil gegenüber Firms mit Trailing Drawdown (Apex, TPT Intraday), wo Gewinne den Drawdown mit nach oben ziehen und der Floor dir beim Wachsen folgt.
 
@@ -168,19 +168,19 @@ Das ist ein großer Vorteil gegenüber Firms mit Trailing Drawdown (Apex, TPT In
 
 Zwei Regeln beenden deine Challenge oder deinen Funded Account sofort:
 
-### 1. Max Overall Drawdown — 10 %
+### 1. Max Overall Drawdown, 10 %
 
-Das Equity darf niemals unter 90 % des Start-Balance fallen. Auf einem 100K-US$-Account liegt der harte Floor bei **90.000 US$**. Triffst du ihn intraday oder am Close, wird der Account terminiert. Das ist statisch — er bewegt sich nicht mit Profiten nach oben.
+Das Equity darf niemals unter 90 % des Start-Balance fallen. Auf einem 100K-US$-Account liegt der harte Floor bei **90.000 US$**. Triffst du ihn intraday oder am Close, wird der Account terminiert. Das ist statisch, er bewegt sich nicht mit Profiten nach oben.
 
-### 2. Max Daily Drawdown — 5 %
+### 2. Max Daily Drawdown, 5 %
 
 Ab dem End-of-Day-Equity um 00:00 GMT+3 darf dein Equity nicht um mehr als 5 % fallen. Auf einem 100K-US$-Account mit gestrigem Close von 102.000 US$ liegt der heutige Floor bei **102.000 US$ – 5.000 US$ = 97.000 US$**. Triffst du ihn, wird der Account terminiert.
 
-**Floating Losses zählen.** FundedNext misst Equity in Echtzeit, inklusive offener Trades. Fällt dein offener P&L auch nur für eine Sekunde unter den Floor — der Account ist gebreached.
+**Floating Losses zählen.** FundedNext misst Equity in Echtzeit, inklusive offener Trades. Fällt dein offener P&L auch nur für eine Sekunde unter den Floor, der Account ist gebreached.
 
 ### Consistency und andere weiche Regeln
 
-Anders als Apex (50 % Consistency bei Payouts) oder TPT (30 % Consistency) hat die Stellar 2-Step **keine Consistency-Regel in den Evaluation-Phasen**. Du kannst 100 % deines Profits in einem einzigen Trade machen und trotzdem bestehen. Consistency-Regeln gelten für bestimmte Add-ons und den Funded Account in begrenzten Fällen — prüfe die jeweilige Produktseite deiner Challenge.
+Anders als Apex (50 % Consistency bei Payouts) oder TPT (30 % Consistency) hat die Stellar 2-Step **keine Consistency-Regel in den Evaluation-Phasen**. Du kannst 100 % deines Profits in einem einzigen Trade machen und trotzdem bestehen. Consistency-Regeln gelten für bestimmte Add-ons und den Funded Account in begrenzten Fällen, prüfe die jeweilige Produktseite deiner Challenge.
 
 ---
 
@@ -196,7 +196,7 @@ Auf dem Standard-Stellar-2-Step-Funded-Account:
 - **Ab Payout Nr. 2:** bis zu **90 % an den Trader** je nach Scaling und Performance
 - **Lifetime Reward Add-on (+20 % Gebühr):** hebt den ersten Payout auf 95 % und lockt 90 %+ bei Folge-Payouts ein
 
-Payouts erfolgen **alle 14 Tage**. Du beantragst den Payout im Dashboard, und FundedNext bearbeitet ihn innerhalb von 24 Stunden auf Stellar 2-Step — oder sie zahlen dir einen **1.000 US$ Bonus** als Kompensation, falls sie es verpassen.
+Payouts erfolgen **alle 14 Tage**. Du beantragst den Payout im Dashboard, und FundedNext bearbeitet ihn innerhalb von 24 Stunden auf Stellar 2-Step, oder sie zahlen dir einen **1.000 US$ Bonus** als Kompensation, falls sie es verpassen.
 
 ### Payout-Methoden
 
@@ -223,7 +223,7 @@ FundedNext verkauft drei optionale Add-ons im Checkout. Sie erhöhen die Challen
 - **Folge-Payouts:** 90 %+ an den Trader
 - **Zahlung:** Instant (24h-Garantie)
 
-Wenn du den Account langfristig halten willst, ist das das wertvollste Add-on. Auf einem 100K-US$-Account mit 5.000 US$/Monat Profit sind 95 % vs 80 % Split zusätzliche 750 US$/Monat — das 100-US$-Add-on amortisiert sich in unter 2 Wochen.
+Wenn du den Account langfristig halten willst, ist das das wertvollste Add-on. Auf einem 100K-US$-Account mit 5.000 US$/Monat Profit sind 95 % vs 80 % Split zusätzliche 750 US$/Monat, das 100-US$-Add-on amortisiert sich in unter 2 Wochen.
 
 ### 150 % Reward (+20 % Gebühr)
 
@@ -249,9 +249,9 @@ Der FundedNext Scaling Plan lässt dich deinen Funded Account alle **4 Monate um
 2. Du musst mindestens **10 % Gesamt-Profit** über diese 4 Monate erwirtschaften.
 3. Du musst einen positiven Balance im Withdrawal-Schedule haben (mindestens 2 erfolgreiche Payouts).
 
-Wenn du die Kriterien erfüllst, reichst du einen Scaling-Antrag ein, und FundedNext erhöht deine Account-Größe. Der Profit Split verbessert sich ebenfalls — Trader, die über 200.000 US$ skalieren, locken typischerweise die 90/10-Stufe dauerhaft ein.
+Wenn du die Kriterien erfüllst, reichst du einen Scaling-Antrag ein, und FundedNext erhöht deine Account-Größe. Der Profit Split verbessert sich ebenfalls, Trader, die über 200.000 US$ skalieren, locken typischerweise die 90/10-Stufe dauerhaft ein.
 
-Scaling ist additiv, nicht stackbar. Du endest nicht mit 6 separaten 50K-US$-Accounts — du endest mit einem größeren Account, was Position Sizing und Risk Management vereinfacht.
+Scaling ist additiv, nicht stackbar. Du endest nicht mit 6 separaten 50K-US$-Accounts, du endest mit einem größeren Account, was Position Sizing und Risk Management vereinfacht.
 
 ---
 
@@ -261,7 +261,7 @@ FundedNext ist explizit darin, was erlaubt ist und was nicht. Verletzt du eine R
 
 ### Erlaubt
 
-- News Trading (nur Stellar 2-Step — Lite beschränkt High-Impact-News um 2 Minuten)
+- News Trading (nur Stellar 2-Step, Lite beschränkt High-Impact-News um 2 Minuten)
 - Wochenend-Holding (Positionen dürfen übers Wochenende offen bleiben)
 - Overnight-Holding
 - EAs und Bots (müssen beim Checkout angegeben werden)
@@ -270,12 +270,12 @@ FundedNext ist explizit darin, was erlaubt ist und was nicht. Verletzt du eine R
 
 ### Verboten
 
-- **Latency Arbitrage** — jede Strategie, die Preisverzögerungen zwischen Brokern oder Feeds ausnutzt
-- **HFT / Ultra-Short Scalping** — Trades unter 1 Minute in hoher Frequenz
-- **Group Trading / Kopieren von externen Signalanbietern** — alle Positionen müssen deine eigene Entscheidung sein
-- **Tick Scalping / Hedging über Trader hinweg** — koordinierte Trades über mehrere FundedNext-Accounts
-- **Martingale-Missbrauch** — Verdoppeln nach Verlusten ohne Risk Management
-- **Reverse Trading / Grid-Missbrauch** — Ausnutzen von Demo-Server-Eigenheiten
+- **Latency Arbitrage**, jede Strategie, die Preisverzögerungen zwischen Brokern oder Feeds ausnutzt
+- **HFT / Ultra-Short Scalping**, Trades unter 1 Minute in hoher Frequenz
+- **Group Trading / Kopieren von externen Signalanbietern**, alle Positionen müssen deine eigene Entscheidung sein
+- **Tick Scalping / Hedging über Trader hinweg**, koordinierte Trades über mehrere FundedNext-Accounts
+- **Martingale-Missbrauch**, Verdoppeln nach Verlusten ohne Risk Management
+- **Reverse Trading / Grid-Missbrauch**, Ausnutzen von Demo-Server-Eigenheiten
 
 Außerdem wichtig: Es gibt eine **harte Stop-Loss-Pflicht bei Swing-Add-ons** und einen Mindest-Stop-Loss von 5 Pips auf bestimmten Crypto-Paaren. Die vollständige Verbotsliste steht in den FundedNext Terms und sollte vor dem Kauf geprüft werden.
 
@@ -285,14 +285,14 @@ Außerdem wichtig: Es gibt eine **harte Stop-Loss-Pflicht bei Swing-Add-ons** un
 
 FundedNext bietet vier Plattformen auf der Stellar Challenge:
 
-- **MetaTrader 4** — klassisch, breit unterstützt, wenigste Order-Typen
-- **MetaTrader 5** — mehr Timeframes, Depth of Market, breitere Asset-Liste
-- **cTrader** — besseres Charting, native Algos (cAlgo), 48 Paare mit engeren Spreads
-- **Match-Trader** — webbasiert, neuer, saubere Mobile-UI
+- **MetaTrader 4**, klassisch, breit unterstützt, wenigste Order-Typen
+- **MetaTrader 5**, mehr Timeframes, Depth of Market, breitere Asset-Liste
+- **cTrader**, besseres Charting, native Algos (cAlgo), 48 Paare mit engeren Spreads
+- **Match-Trader**, webbasiert, neuer, saubere Mobile-UI
 
 Die meisten Trader wählen MT5 oder cTrader. MT4 ist branchenweit rückläufig. Match-Trader gewinnt dank moderner UX an Bedeutung, hat aber eine kleinere Community und weniger EAs.
 
-Anders als Futures-Firms **unterstützt FundedNext keine native TradingView-Execution** — du kannst auf TradingView charten, aber Orders müssen über eine der vier offiziellen Plattformen gehen.
+Anders als Futures-Firms **unterstützt FundedNext keine native TradingView-Execution**, du kannst auf TradingView charten, aber Orders müssen über eine der vier offiziellen Plattformen gehen.
 
 ---
 
@@ -311,7 +311,7 @@ FTMO ist der Branchenveteran (2015 gegründet) und FundedNext der schnell wachse
 | Payout-Schedule | Alle 14 Tage | Alle 14 Tage (on-demand nach Tag 14) |
 | Payout-Geschwindigkeit | 24h-Garantie + 1.000 US$ Bonus | 1–2 Geschäftstage, kein Bonus |
 | Default-Split | 80 % → 90 % | 80 % → 90 % |
-| Rückerstattbare Gebühr | **Ja — 100 %** | **Ja — 100 %** |
+| Rückerstattbare Gebühr | **Ja, 100 %** | **Ja, 100 %** |
 | Max. Account | 200K US$ Start, 300K US$ skaliert | 200K US$ Start, 400K US$ skaliert |
 | Trustpilot | 4,5 / 64.941 Bewertungen | **4,8 / 41.000 Bewertungen** |
 
@@ -329,24 +329,24 @@ Für die meisten neuen Trader ist der Unterschied klein. Beide Firmen sind legit
 
 ### Vorteile
 
-- **100 % rückerstattbare Gebühr** — du bekommst deine Challenge-Kosten mit dem ersten Payout zurück, die Nettokosten sind null, wenn du bestehst
-- **24-Stunden-Payout-Garantie mit 1.000 US$ Bonus** — branchenführendes Payout-SLA auf Stellar 2-Step
-- **Keine Mindest-Trading-Tage** — bestehe die Phasen in deinem eigenen Tempo, keine künstliche Verzögerung
-- **Statisches Drawdown** — keine Trailing-Mathematik, Polster wächst mit Profiten
-- **Hoher Scaling-Cap** — 300.000 US$ insgesamt im Scaling-Programm
+- **100 % rückerstattbare Gebühr**, du bekommst deine Challenge-Kosten mit dem ersten Payout zurück, die Nettokosten sind null, wenn du bestehst
+- **24-Stunden-Payout-Garantie mit 1.000 US$ Bonus**, branchenführendes Payout-SLA auf Stellar 2-Step
+- **Keine Mindest-Trading-Tage**, bestehe die Phasen in deinem eigenen Tempo, keine künstliche Verzögerung
+- **Statisches Drawdown**, keine Trailing-Mathematik, Polster wächst mit Profiten
+- **Hoher Scaling-Cap**, 300.000 US$ insgesamt im Scaling-Programm
 - **Wochenend- und News-Holding erlaubt** auf Stellar 2-Step
-- **95 % Profit Split mit Lifetime Reward** — höchster im Forex-Prop-Segment
-- **288 Mio. US$+ ausgezahlt** — verifizierbare öffentliche Payout-Historie
+- **95 % Profit Split mit Lifetime Reward**, höchster im Forex-Prop-Segment
+- **288 Mio. US$+ ausgezahlt**, verifizierbare öffentliche Payout-Historie
 
 ### Nachteile
 
-- **Trustpilot 4,5 liegt unter FTMOs 4,8** — immer noch exzellent, aber der Marktführer ist voraus
-- **Stellar Lite hat strengere News-Regeln** — High-Impact-News 2 Minuten vor und nach gesperrt
-- **Keine TradingView-Execution** — Charts ja, Orders nein
-- **Payout-Gebühren auf manchen Methoden** — Crypto ist gratis, Banküberweisung kann je nach Region 20–50 US$ kosten
-- **EAs müssen angegeben werden** beim Checkout — nicht angegebene EAs führen zur Account-Terminierung
-- **Consistency-Regeln auf manchen Add-ons** — vor dem Kauf der Kombination die jeweilige Produktseite lesen
-- **Dashboard-UX ist dicht** — viele Features in Sidebar-Menüs gestopft; 10–15 Minuten zum Einarbeiten
+- **Trustpilot 4,5 liegt unter FTMOs 4,8**, immer noch exzellent, aber der Marktführer ist voraus
+- **Stellar Lite hat strengere News-Regeln**, High-Impact-News 2 Minuten vor und nach gesperrt
+- **Keine TradingView-Execution**, Charts ja, Orders nein
+- **Payout-Gebühren auf manchen Methoden**, Crypto ist gratis, Banküberweisung kann je nach Region 20–50 US$ kosten
+- **EAs müssen angegeben werden** beim Checkout, nicht angegebene EAs führen zur Account-Terminierung
+- **Consistency-Regeln auf manchen Add-ons**, vor dem Kauf der Kombination die jeweilige Produktseite lesen
+- **Dashboard-UX ist dicht**, viele Features in Sidebar-Menüs gestopft; 10–15 Minuten zum Einarbeiten
 
 ---
 
@@ -366,7 +366,7 @@ Die 2-Step hat zwei Phasen (8 % dann 5 % Target) mit milderen Drawdowns (10 %/5 
 
 ### Kann ich auf FundedNext einen EA nutzen?
 
-Ja, EAs sind auf der Stellar Challenge erlaubt — aber du musst sie beim Checkout angeben. Nicht angegebene EAs führen zur Account-Terminierung ohne Rückerstattung. Copy Trading von externen Signalanbietern ist verboten.
+Ja, EAs sind auf der Stellar Challenge erlaubt, aber du musst sie beim Checkout angeben. Nicht angegebene EAs führen zur Account-Terminierung ohne Rückerstattung. Copy Trading von externen Signalanbietern ist verboten.
 
 ### Wie schnell zahlt FundedNext aus?
 
@@ -374,7 +374,7 @@ Stellar 2-Step hat eine **24-Stunden-Payout-Garantie** mit 1.000 US$ Bonus, fall
 
 ### Welches Add-on sollte ich kaufen?
 
-Für die meisten Trader ist **Lifetime Reward** (+20 % Gebühr) das beste Preis-Leistungs-Verhältnis — es hebt den ersten Payout auf 95 % und lockt 90 %+ bei Folge-Payouts ein. Wenn du den Account langfristig halten willst, amortisiert sich das Add-on in 1–2 Payout-Zyklen.
+Für die meisten Trader ist **Lifetime Reward** (+20 % Gebühr) das beste Preis-Leistungs-Verhältnis, es hebt den ersten Payout auf 95 % und lockt 90 %+ bei Folge-Payouts ein. Wenn du den Account langfristig halten willst, amortisiert sich das Add-on in 1–2 Payout-Zyklen.
 
 ### Kann ich meinen FundedNext-Account skalieren?
 
@@ -386,20 +386,20 @@ FundedNext fährt das ganze Jahr über Aktionen (typischerweise 10–25 % Rabatt
 
 ### Was passiert, wenn ich eine Regel breche?
 
-Regelverletzungen in der Evaluation führen zum Challenge-Fail ohne Rückerstattung. Regelverletzungen auf dem Funded Account (z. B. Max Drawdown treffen oder Latency Arbitrage nutzen) führen zur Account-Terminierung ohne Payout. Weiche Verstöße (etwa ein versehentliches EA-Flag) werden ggf. im Einzelfall geprüft — Support kontaktieren.
+Regelverletzungen in der Evaluation führen zum Challenge-Fail ohne Rückerstattung. Regelverletzungen auf dem Funded Account (z. B. Max Drawdown treffen oder Latency Arbitrage nutzen) führen zur Account-Terminierung ohne Payout. Weiche Verstöße (etwa ein versehentliches EA-Flag) werden ggf. im Einzelfall geprüft, Support kontaktieren.
 
 ### Ist FundedNext besser als FTMO?
 
-Beide liegen eng beieinander. FundedNext hat schnelleres Payout-SLA (24-Stunden-Garantie), keine Mindest-Trading-Tage und eine günstigere Einstiegsstufe (6.000 US$). FTMO hat einen höheren Trustpilot-Score (4,8), höheren Scaling-Cap (400.000 US$) und einen längeren Track Record seit 2015. Für die meisten Trader funktionieren beide — wähle nach deinen Prioritäten.
+Beide liegen eng beieinander. FundedNext hat schnelleres Payout-SLA (24-Stunden-Garantie), keine Mindest-Trading-Tage und eine günstigere Einstiegsstufe (6.000 US$). FTMO hat einen höheren Trustpilot-Score (4,8), höheren Scaling-Cap (400.000 US$) und einen längeren Track Record seit 2015. Für die meisten Trader funktionieren beide, wähle nach deinen Prioritäten.
 
 ---
 
 ## Verwandte Guides auf Markets Coupons
 
-- [Apex Trader Funding Review](/de/guides/apex-trader-funding-review) — beste Futures Prop Firm für Intraday-Scalper
-- [FTMO Review](/de/guides/ftmo-review) — der Branchenveteran, 2-Step Forex-Challenge
-- [Bulenox Review](/de/guides/bulenox-review) — Futures mit statischem Drawdown und News-Flexibilität
-- [Take Profit Trader Review](/de/guides/take-profit-trader-review) — 1-Step Futures mit Day-1 Payouts
+- [Apex Trader Funding Review](/de/guides/apex-trader-funding-review), beste Futures Prop Firm für Intraday-Scalper
+- [FTMO Review](/de/guides/ftmo-review), der Branchenveteran, 2-Step Forex-Challenge
+- [Bulenox Review](/de/guides/bulenox-review), Futures mit statischem Drawdown und News-Flexibilität
+- [Take Profit Trader Review](/de/guides/take-profit-trader-review), 1-Step Futures mit Day-1 Payouts
 
 ---
 

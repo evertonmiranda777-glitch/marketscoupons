@@ -175,12 +175,12 @@ async function fetchGEX(today:string):Promise<Record<string,string>>{
       var regime=parseFloat(row.total_gex)>=0?"POSITIVO (market makers suprimem volatilidade, dia de range)":"NEGATIVO (market makers amplificam movimentos, dia de tendencia/volatilidade)";
       var ctx="GEX DATA (Gamma Exposure dos market makers - CBOE):\n";
       ctx+="Regime: GEX Total "+row.total_gex+"M = "+regime+"\n";
-      ctx+="Zero Gamma (Gamma Flip): "+row.zero_gamma+" — NIVEL MAIS IMPORTANTE. Acima: market makers compram quedas (suporte). Abaixo: amplificam quedas (perigo).\n";
-      ctx+="Put Wall (suporte forte): "+row.put_wall+" — maior concentracao de puts, market makers compram aqui.\n";
-      ctx+="Call Wall (resistencia forte): "+row.call_wall+" — maior concentracao de calls, market makers vendem aqui.\n";
-      ctx+="HVL (High Volume Level): "+row.hvl+" — preco tende a grudar nesse nivel, maior open interest.\n";
-      ctx+="Vol Trigger: "+row.vol_trigger+" — acima = volatilidade suprimida, abaixo = volatilidade expande.\n";
-      ctx+="Max Pain: "+row.max_pain+" — strike onde opcoes expiram com menor valor, preco gravita pra ca perto do vencimento.\n";
+      ctx+="Zero Gamma (Gamma Flip): "+row.zero_gamma+", NIVEL MAIS IMPORTANTE. Acima: market makers compram quedas (suporte). Abaixo: amplificam quedas (perigo).\n";
+      ctx+="Put Wall (suporte forte): "+row.put_wall+", maior concentracao de puts, market makers compram aqui.\n";
+      ctx+="Call Wall (resistencia forte): "+row.call_wall+", maior concentracao de calls, market makers vendem aqui.\n";
+      ctx+="HVL (High Volume Level): "+row.hvl+", preco tende a grudar nesse nivel, maior open interest.\n";
+      ctx+="Vol Trigger: "+row.vol_trigger+", acima = volatilidade suprimida, abaixo = volatilidade expande.\n";
+      ctx+="Max Pain: "+row.max_pain+", strike onde opcoes expiram com menor valor, preco gravita pra ca perto do vencimento.\n";
       ctx+="Spot: "+row.spot_price;
       gexCtx[t]=ctx;
       console.log("GEX "+t+": zero="+row.zero_gamma+" put="+row.put_wall+" call="+row.call_wall+" total="+row.total_gex+"M");
@@ -297,8 +297,8 @@ ESTRUTURA (3 idiomas: {pt,en,es}). Max 3-4 frases DENSAS por campo:
 3. SCENARIO_BULL: "Gatilho: rompimento acima de X (justificativa). Alvo 1: Y (justificativa). Alvo 2: Z. Stop: W (justificativa). Probabilidade: N%."
 
 REGRAS RIGIDAS DE SIZING (obrigatorias):
-- STOP: distancia trigger→stop DEVE ser >= 1.5 x ATR (ATR ja fornecido acima). Stops apertados demais batem em ruido intraday. ANCORAR o stop num swing low/high estrutural real, EMA50 ou Put/Call Wall — NUNCA num nivel arbitrario "redondo".
-- TRIGGER: NUNCA colocar o trigger exatamente num numero psicologico redondo (26900, 27000, 6600). Usar swing high+1 tick ou swing high-1 tick, ou confirmacao de rompimento (ex: fechamento M15 acima do high). Numeros redondos sao zonas de reversao — mercado respeita e vira.
+- STOP: distancia trigger→stop DEVE ser >= 1.5 x ATR (ATR ja fornecido acima). Stops apertados demais batem em ruido intraday. ANCORAR o stop num swing low/high estrutural real, EMA50 ou Put/Call Wall, NUNCA num nivel arbitrario "redondo".
+- TRIGGER: NUNCA colocar o trigger exatamente num numero psicologico redondo (26900, 27000, 6600). Usar swing high+1 tick ou swing high-1 tick, ou confirmacao de rompimento (ex: fechamento M15 acima do high). Numeros redondos sao zonas de reversao, mercado respeita e vira.
 - ALVO 1: >= 1.5x o risco (trigger-stop). Alvo 2: >= 2.5x. Se a estrutura nao permite essa relacao, PROBABILIDADE cai e confidence tambem.
 - Cada numero deve estar ancorado num nivel estrutural listado (swing, EMA, pivot, GEX). Se for arbitrario, nao usar.`+(gexBlock?" Use Call Wall como resistencia e HVL como referencia.":"")+`
 
@@ -316,7 +316,7 @@ REGRAS RIGIDAS DE SIZING (obrigatorias):
 
 10. MARKET_PHASE: Fase Wyckoff com evidencia do price action.
 
-CAMPOS NUMERICOS OBRIGATORIOS (alem do JSON de texto): extraia os numeros exatos dos cenarios bull e bear. Esses campos sao usados para tracking de acuracia — DEVEM ser numeros puros, sem texto.
+CAMPOS NUMERICOS OBRIGATORIOS (alem do JSON de texto): extraia os numeros exatos dos cenarios bull e bear. Esses campos sao usados para tracking de acuracia, DEVEM ser numeros puros, sem texto.
 
 JSON puro (sem markdown, sem code blocks):
 {"bias":"bullish|bearish|neutral","confidence":1-5,"market_phase":{"pt":"..","en":"..","es":".."},"support_1":"num","support_2":"num","resistance_1":"num","resistance_2":"num","bull_trigger":num,"bull_target_1":num,"bull_target_2":num,"bull_stop":num,"bull_probability":num,"bear_trigger":num,"bear_target_1":num,"bear_target_2":num,"bear_stop":num,"bear_probability":num,"attention_zone":{"pt":"..","en":"..","es":".."},"context":{"pt":"..","en":"..","es":".."},"volume_analysis":{"pt":"..","en":"..","es":".."},"indicators_summary":{"pt":"..","en":"..","es":".."},"scenario_bull":{"pt":"..","en":"..","es":".."},"scenario_bear":{"pt":"..","en":"..","es":".."},"news_impact":{"pt":"..","en":"..","es":".."},"events":{"pt":"..","en":"..","es":".."},"vix_context":{"pt":"..","en":"..","es":".."}}`;

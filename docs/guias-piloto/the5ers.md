@@ -16,11 +16,11 @@ tags: [the5ers, forex prop firm, hyper growth, high stakes challenge, bootcamp]
 
 ![The5ers forex prop firm hero illustration](./img/the5ers-hero.png)
 
-The5ers is one of the **most established forex prop firms in the world** — **10 years in business**, **262,000+ funded traders**, and a Trustpilot score of **4.8 out of 5 across 23,555 reviews**. Founded in 2016 and operating as a private equity fund, The5ers positions itself not as a challenge-style evaluator but as a **capital allocator**: the goal is to scale profitable traders up to **$4 million in funded capital** through a clear, multi-tier program ladder.
+The5ers is one of the **most established forex prop firms in the world**, **10 years in business**, **262,000+ funded traders**, and a Trustpilot score of **4.8 out of 5 across 23,555 reviews**. Founded in 2016 and operating as a private equity fund, The5ers positions itself not as a challenge-style evaluator but as a **capital allocator**: the goal is to scale profitable traders up to **$4 million in funded capital** through a clear, multi-tier program ladder.
 
-Three main programs are available: **Hyper Growth** (1-step, fastest path), **High-Stakes Challenge** (2-step, balanced), and **Bootcamp** (3-step, beginner-friendly). Each delivers the same endpoint — a funded forex account with up to **100% profit split** — but the path and price vary. Traders get a **16-hour average payout time**, transparent one-time fees, and the largest trader-education library in the forex prop space.
+Three main programs are available: **Hyper Growth** (1-step, fastest path), **High-Stakes Challenge** (2-step, balanced), and **Bootcamp** (3-step, beginner-friendly). Each delivers the same endpoint, a funded forex account with up to **100% profit split**, but the path and price vary. Traders get a **16-hour average payout time**, transparent one-time fees, and the largest trader-education library in the forex prop space.
 
-This guide breaks down every program, every tier, every rule, and every cost — plus honest pros/cons and how The5ers compares to FTMO, FundedNext, and other forex prop firms.
+This guide breaks down every program, every tier, every rule, and every cost, plus honest pros/cons and how The5ers compares to FTMO, FundedNext, and other forex prop firms.
 
 > **Quick Summary**
 > **Type:** Forex prop firm (private equity fund, est. 2016)
@@ -37,13 +37,13 @@ This guide breaks down every program, every tier, every rule, and every cost —
 
 1. [What is The5ers?](#what-is-the5ers)
 2. [The Three Programs](#three-programs)
-3. [Hyper Growth — The 1-Step Program](#hyper-growth)
-4. [High-Stakes Challenge — The 2-Step Evaluation](#high-stakes)
-5. [Bootcamp — The Beginner-Friendly Path](#bootcamp)
+3. [Hyper Growth, The 1-Step Program](#hyper-growth)
+4. [High-Stakes Challenge, The 2-Step Evaluation](#high-stakes)
+5. [Bootcamp, The Beginner-Friendly Path](#bootcamp)
 6. [Pricing (All Programs and Sizes)](#pricing)
 7. [Drawdown and Risk Rules](#drawdown)
 8. [Profit Split and Payout Speed](#profit-split)
-9. [Scaling to $4M — How It Works](#scaling)
+9. [Scaling to $4M, How It Works](#scaling)
 10. [Allowed Instruments and Leverage](#instruments)
 11. [Platforms and Trading Conditions](#platforms)
 12. [The5ers vs FTMO vs FundedNext](#vs-others)
@@ -54,7 +54,7 @@ This guide breaks down every program, every tier, every rule, and every cost —
 
 ## <a id="what-is-the5ers"></a>What is The5ers?
 
-The5ers is an **Israeli-founded forex proprietary trading firm** established in 2016. Unlike newer challenge firms that shut down when the math breaks, The5ers operates as a **private equity fund** — real money under management, real trader capital backed by financial infrastructure, and a **10-year operating track record** that makes them one of the three most senior forex prop firms in the market (alongside FTMO and FundingPips).
+The5ers is an **Israeli-founded forex proprietary trading firm** established in 2016. Unlike newer challenge firms that shut down when the math breaks, The5ers operates as a **private equity fund**, real money under management, real trader capital backed by financial infrastructure, and a **10-year operating track record** that makes them one of the three most senior forex prop firms in the market (alongside FTMO and FundingPips).
 
 Key numbers that define The5ers in 2026:
 
@@ -66,7 +66,7 @@ Key numbers that define The5ers in 2026:
 - **$4,000,000** maximum scaled funding per trader
 - **149 employees** across 23 countries
 
-The firm's positioning is clear: **"Turning your passion into a trading career."** The programs are designed with scaling in mind — get funded, stay funded, grow the account step-by-step. The5ers maintains an academy, weekly masterminds, Discord community, and in-person meetups to support traders long-term.
+The firm's positioning is clear: **"Turning your passion into a trading career."** The programs are designed with scaling in mind, get funded, stay funded, grow the account step-by-step. The5ers maintains an academy, weekly masterminds, Discord community, and in-person meetups to support traders long-term.
 
 This positioning (allocator vs evaluator) is the opposite of fast-turn challenge firms like E8 or BrightFunded. Pick The5ers if you want stability; pick a faster firm if you want cheap entry and quick payouts.
 
@@ -74,13 +74,13 @@ This positioning (allocator vs evaluator) is the opposite of fast-turn challenge
 
 ## <a id="three-programs"></a>The Three Programs
 
-![The5ers program comparison — Bootcamp, High-Stakes, Hyper Growth](./img/the5ers-programs.png)
+![The5ers program comparison, Bootcamp, High-Stakes, Hyper Growth](./img/the5ers-programs.png)
 
 The5ers sells three programs at once. You pick one based on your experience level, timeline, and how much you can afford upfront.
 
 ### 1. Hyper Growth (1-Step)
 
-The flagship for experienced traders. Single-phase evaluation, 10% profit target, 6% stop-out, 3% daily loss, **up to 100% profit split**, unlimited time to pass. **$74 entry fee** on the $5K account — the cheapest path to real funded capital in The5ers' catalog.
+The flagship for experienced traders. Single-phase evaluation, 10% profit target, 6% stop-out, 3% daily loss, **up to 100% profit split**, unlimited time to pass. **$74 entry fee** on the $5K account, the cheapest path to real funded capital in The5ers' catalog.
 
 ### 2. High-Stakes Challenge (2-Step)
 
@@ -98,7 +98,7 @@ The beginner-friendly path. Three phases with small profit targets (typically 6%
 
 ---
 
-## <a id="hyper-growth"></a>Hyper Growth — The 1-Step Program
+## <a id="hyper-growth"></a>Hyper Growth, The 1-Step Program
 
 ![The5ers Hyper Growth program flow](./img/the5ers-hsc.png)
 
@@ -117,19 +117,19 @@ Hyper Growth is The5ers' most popular product in 2026. One phase, one target, fu
 
 ### Account Sizes (Hyper Growth)
 
-- **$5,000** — $74 one-time
-- **$10,000** — (varies, mid-range)
-- **$20,000** — (varies, larger)
+- **$5,000**, $74 one-time
+- **$10,000**, (varies, mid-range)
+- **$20,000**, (varies, larger)
 
 After passing, you become a **Funded Trader** with the same rule framework but slightly different targets for scaling (see [Scaling section](#scaling)).
 
 ### Who Hyper Growth is for
 
-Hyper Growth is designed for disciplined forex traders who can hit a 10% target without breaching 6% max drawdown. That's a 1.67:1 profit-to-drawdown ratio — tighter than FTMO's 2:1 (10%/5%) but with a single phase instead of two. If you're consistently profitable and want the fastest path to a funded account without a second round, Hyper Growth is the right pick.
+Hyper Growth is designed for disciplined forex traders who can hit a 10% target without breaching 6% max drawdown. That's a 1.67:1 profit-to-drawdown ratio, tighter than FTMO's 2:1 (10%/5%) but with a single phase instead of two. If you're consistently profitable and want the fastest path to a funded account without a second round, Hyper Growth is the right pick.
 
 ---
 
-## <a id="high-stakes"></a>High-Stakes Challenge — The 2-Step Evaluation
+## <a id="high-stakes"></a>High-Stakes Challenge, The 2-Step Evaluation
 
 The High-Stakes Challenge follows the classic 2-phase model popularized by FTMO and FundedNext. Pay the fee, hit Phase 1 target, hit Phase 2 target, get funded.
 
@@ -152,9 +152,9 @@ The High-Stakes Challenge costs more than Hyper Growth on an apples-to-apples ac
 
 ---
 
-## <a id="bootcamp"></a>Bootcamp — The Beginner-Friendly Path
+## <a id="bootcamp"></a>Bootcamp, The Beginner-Friendly Path
 
-Bootcamp is The5ers' **education-first program**. Three phases with smaller targets, strict risk management rules, and access to the full Academy (classes, webinars, live masterminds). The goal isn't to get funded as fast as possible — it's to **learn how to trade professionally** over 2–6 months.
+Bootcamp is The5ers' **education-first program**. Three phases with smaller targets, strict risk management rules, and access to the full Academy (classes, webinars, live masterminds). The goal isn't to get funded as fast as possible, it's to **learn how to trade professionally** over 2–6 months.
 
 ### Typical Rules
 
@@ -171,13 +171,13 @@ Bootcamp is The5ers' **education-first program**. Three phases with smaller targ
 - Traders who value structured education as much as funding
 - Traders with a small monthly budget who want a long runway
 
-Bootcamp is the slowest path to a funded account, but it's also the one that produces the highest long-term success rate for traders who stick with it. The Academy alone is worth the subscription fee — $500+ worth of trading education included.
+Bootcamp is the slowest path to a funded account, but it's also the one that produces the highest long-term success rate for traders who stick with it. The Academy alone is worth the subscription fee, $500+ worth of trading education included.
 
 ---
 
 ## <a id="pricing"></a>Pricing (All Programs and Sizes)
 
-Pricing varies by program, account size, and currency (USD/EUR/GBP/INR). Here's the Hyper Growth tier as a reference — the most popular and cheapest entry point:
+Pricing varies by program, account size, and currency (USD/EUR/GBP/INR). Here's the Hyper Growth tier as a reference, the most popular and cheapest entry point:
 
 ### Hyper Growth Pricing
 
@@ -189,25 +189,25 @@ Pricing varies by program, account size, and currency (USD/EUR/GBP/INR). Here's 
 
 ### High-Stakes Challenge Pricing (Approximate)
 
-Typically $50–$500 depending on size. Check the live price on the quick-purchase page at The5ers — prices vary with promos.
+Typically $50–$500 depending on size. Check the live price on the quick-purchase page at The5ers, prices vary with promos.
 
 ### Bootcamp Pricing
 
 Monthly subscription model. Lowest entry fee of the three programs; cheapest for long-runway trainees.
 
-**Payment currencies:** USD, EUR, GBP, INR (India direct). Multi-currency pricing is a rare perk — most prop firms charge USD only.
+**Payment currencies:** USD, EUR, GBP, INR (India direct). Multi-currency pricing is a rare perk, most prop firms charge USD only.
 
 ---
 
 ## <a id="drawdown"></a>Drawdown and Risk Rules
 
-The5ers uses **static balance-based drawdown** across all programs. Unlike trailing models (Apex, TPT intraday), your floor doesn't move up with profits — it's set once on the starting balance and stays there.
+The5ers uses **static balance-based drawdown** across all programs. Unlike trailing models (Apex, TPT intraday), your floor doesn't move up with profits, it's set once on the starting balance and stays there.
 
 ### Hyper Growth Specifics
 
 - **Stop-out level:** 6% of initial balance (hard floor, account closes)
 - **Daily loss limit:** 3% of initial balance (resets at broker's daily close)
-- **Floating losses count** — open P&L is measured, not just closed
+- **Floating losses count**, open P&L is measured, not just closed
 
 ### Progression Rules
 
@@ -218,9 +218,9 @@ Once you pass, the rules adjust slightly for the funded account:
 
 ### What kills accounts most often
 
-1. **Hit daily loss** — 3% on a $5K account = only $150 daily loss allowance. Tight.
-2. **Hit stop-out** — 6% = $300 total drawdown on the $5K. Miss a single 6% run and you're out.
-3. **Leverage misuse** — 1:30 is moderate; using the full 1:30 on a major pair with a tight stop can blow through 3% in one candle if spread widens on news.
+1. **Hit daily loss**, 3% on a $5K account = only $150 daily loss allowance. Tight.
+2. **Hit stop-out**, 6% = $300 total drawdown on the $5K. Miss a single 6% run and you're out.
+3. **Leverage misuse**, 1:30 is moderate; using the full 1:30 on a major pair with a tight stop can blow through 3% in one candle if spread widens on news.
 
 **Critical tip:** position-size for ~1% risk per trade max on Hyper Growth. That gives you 3 losses before daily limit, 6 before stop-out.
 
@@ -239,19 +239,19 @@ The5ers' headline numbers on payouts:
 
 - **Initial funded account:** 80% trader / 20% firm
 - **After first payout milestone:** 90% trader / 10% firm
-- **Top scaling tier:** 100% trader (yes, all of it — the firm's model relies on high-performer retention and scaling capital under management)
+- **Top scaling tier:** 100% trader (yes, all of it, the firm's model relies on high-performer retention and scaling capital under management)
 
-The "up to 100%" isn't marketing fluff — traders who scale past $50K–$100K in account size and maintain consistent profitability genuinely reach 100% splits. This is rare in the prop industry; most firms cap at 90%.
+The "up to 100%" isn't marketing fluff, traders who scale past $50K–$100K in account size and maintain consistent profitability genuinely reach 100% splits. This is rare in the prop industry; most firms cap at 90%.
 
 ### Payout Speed
 
 **16-hour average** is industry-leading for forex. FundedNext offers a 24-hour guarantee with a $1K bonus if missed; The5ers doesn't advertise a guarantee but ships faster on average. FTMO processes in 1–2 business days.
 
-Payout methods include **bank wire** and **crypto** (USDT is fastest in practice — same-day once approved).
+Payout methods include **bank wire** and **crypto** (USDT is fastest in practice, same-day once approved).
 
 ---
 
-## <a id="scaling"></a>Scaling to $4M — How It Works
+## <a id="scaling"></a>Scaling to $4M, How It Works
 
 ![The5ers scaling ladder from $5K to $4M](./img/the5ers-scaling.png)
 
@@ -267,7 +267,7 @@ The scaling program is The5ers' unique selling point. Most firms cap at $200K–
 
 ### Why $4M is realistic
 
-The5ers is a **private equity fund**, not an evaluator. Your "funded account" at higher tiers is actual capital they're allocating to your strategy — not simulated execution. This is why they can scale to $4M: the math is capital allocation, not account issuance.
+The5ers is a **private equity fund**, not an evaluator. Your "funded account" at higher tiers is actual capital they're allocating to your strategy, not simulated execution. This is why they can scale to $4M: the math is capital allocation, not account issuance.
 
 Most traders will realistically reach $50K–$500K over 1–3 years. $4M is the theoretical ceiling for top-1% performers.
 
@@ -278,11 +278,11 @@ Most traders will realistically reach $50K–$500K over 1–3 years. $4M is the 
 The5ers supports the classic forex + CFD mix:
 
 **Allowed:**
-- **Forex pairs** — 28+ majors, minors, exotics (EUR/USD, GBP/JPY, AUD/NZD, etc.)
-- **Metals** — XAU/USD (Gold), XAG/USD (Silver)
-- **Indices** — SP500, NAS100, DAX40, FTSE100, Nikkei
-- **Commodities** — Oil futures CFDs, Gas
-- **Crypto CFDs** — BTC/USD, ETH/USD
+- **Forex pairs**, 28+ majors, minors, exotics (EUR/USD, GBP/JPY, AUD/NZD, etc.)
+- **Metals**, XAU/USD (Gold), XAG/USD (Silver)
+- **Indices**, SP500, NAS100, DAX40, FTSE100, Nikkei
+- **Commodities**, Oil futures CFDs, Gas
+- **Crypto CFDs**, BTC/USD, ETH/USD
 
 **Leverage:**
 - **1:30** on forex majors (Hyper Growth)
@@ -293,7 +293,7 @@ Compared to FundedNext (1:100), FTMO (1:100), and most offshore CFD brokers, **1
 
 ### Not Supported
 
-- Futures contracts (ES, NQ, CL, etc.) — these are CFDs on indices/commodities, not exchange futures
+- Futures contracts (ES, NQ, CL, etc.), these are CFDs on indices/commodities, not exchange futures
 - US stocks
 - Exotic pairs beyond the main 28+
 - Over-the-counter binary options
@@ -313,12 +313,12 @@ The5ers supports the standard forex platform stack:
 
 ### Trading Conditions
 
-Live spread data from the homepage (EUR/USD, GBP/USD showing **0.00000 spread** in the live feed — that's not realistic in production; those numbers are probably cached UI glitch, real spreads are typically 0.1–0.5 pips on majors).
+Live spread data from the homepage (EUR/USD, GBP/USD showing **0.00000 spread** in the live feed, that's not realistic in production; those numbers are probably cached UI glitch, real spreads are typically 0.1–0.5 pips on majors).
 
 Realistic conditions:
 - **EUR/USD:** 0.1–0.3 pips typical
 - **XAU/USD:** ~0.30 spread
-- **BTC/USD:** Wider — 1–2 points typical
+- **BTC/USD:** Wider, 1–2 points typical
 
 **Commission:** Varies by tier. Hyper Growth is commission-free on forex; some tiers charge $3–$7 per round-lot.
 
@@ -341,9 +341,9 @@ Head-to-head comparison for forex traders choosing a firm:
 | Best for | Long-term scaling, beginners via Bootcamp | Proven track record | 24h payout guarantee |
 
 **Verdict:**
-- **The5ers** — pick if you want to scale to $4M, want 100% profit split, or value the longest operating track record alongside FTMO.
-- **FTMO** — pick if you want higher leverage (1:100) and the industry's most recognized brand.
-- **FundedNext** — pick if you want the 24-hour payout guarantee and no minimum trading days.
+- **The5ers**, pick if you want to scale to $4M, want 100% profit split, or value the longest operating track record alongside FTMO.
+- **FTMO**, pick if you want higher leverage (1:100) and the industry's most recognized brand.
+- **FundedNext**, pick if you want the 24-hour payout guarantee and no minimum trading days.
 
 ---
 
@@ -353,28 +353,28 @@ Head-to-head comparison for forex traders choosing a firm:
 
 ### Pros
 
-- **10 years in business** — longest-running forex prop firm alongside FTMO
-- **Trustpilot 4.8 / 23,555 reviews** — one of the highest verified scores in forex prop
+- **10 years in business**, longest-running forex prop firm alongside FTMO
+- **Trustpilot 4.8 / 23,555 reviews**, one of the highest verified scores in forex prop
 - **262,000+ funded traders** publicly disclosed
-- **Up to 100% profit split** on Hyper Growth — industry-leading
-- **$4M maximum scaling** — highest cap in forex prop
-- **16-hour avg payout time** — faster than FTMO (1–2 days)
-- **$74 entry on Hyper Growth $5K** — cheapest real-funded path
+- **Up to 100% profit split** on Hyper Growth, industry-leading
+- **$4M maximum scaling**, highest cap in forex prop
+- **16-hour avg payout time**, faster than FTMO (1–2 days)
+- **$74 entry on Hyper Growth $5K**, cheapest real-funded path
 - **Multi-currency pricing** (USD, EUR, GBP, INR)
 - **Free Academy access** (classes, webinars, masterminds)
-- **Real PE fund backing** — not just an evaluator
-- **Bootcamp for beginners** — rare in the industry
+- **Real PE fund backing**, not just an evaluator
+- **Bootcamp for beginners**, rare in the industry
 
 ### Cons
 
-- **Leverage capped at 1:30** on forex — much lower than FTMO (1:100) and FundedNext (1:100)
-- **No futures contracts** — CFDs only, no ES/NQ/CL
-- **Tight daily loss (3%) on small accounts** — $150 daily cap on $5K account is small
-- **Payout guarantee is average, not instant** — 16h is fast but not guaranteed
-- **Pricing varies by region** — India (INR) and EU (EUR) pricing may differ materially
-- **Bootcamp is slow** — 3 phases + education = 2–6 month path
-- **Scaling to $4M takes years** — realistic max for most traders is $100K–$500K in 1–2 years
-- **Dashboard UI is dense** — lots of programs and nested menus
+- **Leverage capped at 1:30** on forex, much lower than FTMO (1:100) and FundedNext (1:100)
+- **No futures contracts**, CFDs only, no ES/NQ/CL
+- **Tight daily loss (3%) on small accounts**, $150 daily cap on $5K account is small
+- **Payout guarantee is average, not instant**, 16h is fast but not guaranteed
+- **Pricing varies by region**, India (INR) and EU (EUR) pricing may differ materially
+- **Bootcamp is slow**, 3 phases + education = 2–6 month path
+- **Scaling to $4M takes years**, realistic max for most traders is $100K–$500K in 1–2 years
+- **Dashboard UI is dense**, lots of programs and nested menus
 
 ---
 
@@ -414,20 +414,20 @@ The5ers runs periodic promotions. Current pricing (Hyper Growth $5K at $74) is a
 
 ### Can I trade futures on The5ers?
 
-No. The5ers is CFD + forex only — no exchange futures (ES, NQ, CL). Use Apex, Bulenox, TPT, or Earn2Trade for futures.
+No. The5ers is CFD + forex only, no exchange futures (ES, NQ, CL). Use Apex, Bulenox, TPT, or Earn2Trade for futures.
 
 ### What happens if I fail the evaluation?
 
-You can reset the challenge for a reduced fee or restart with a new account. The5ers doesn't terminate accounts after a single breach on evaluation — reset options vary by program.
+You can reset the challenge for a reduced fee or restart with a new account. The5ers doesn't terminate accounts after a single breach on evaluation, reset options vary by program.
 
 ---
 
 ## Related Guides on Markets Coupons
 
-- [FTMO Review](./ftmo-review) — 2-step forex challenge, industry veteran
-- [FundedNext Review](./fundednext-review) — 24h payout guarantee, Stellar Challenge
-- [Apex Trader Funding Review](./apex-review) — futures prop firm, 90% lifetime coupon
-- [Earn2Trade Review](./earn2trade-review) — futures TCP scaling to $400K
+- [FTMO Review](./ftmo-review), 2-step forex challenge, industry veteran
+- [FundedNext Review](./fundednext-review), 24h payout guarantee, Stellar Challenge
+- [Apex Trader Funding Review](./apex-review), futures prop firm, 90% lifetime coupon
+- [Earn2Trade Review](./earn2trade-review), futures TCP scaling to $400K
 
 ---
 

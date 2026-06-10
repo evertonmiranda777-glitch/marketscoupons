@@ -11,20 +11,20 @@ const meta = {
   lang: 'pt',
   icon: '📚',
   author: 'Markets Coupons',
-  excerpt: 'Análise técnica não é "ler bola de cristal". É a leitura sistemática do comportamento agregado de quem realmente move o preço — instituições, algoritmos, fundos. Este guia cobre os 7 axiomas fundamentais, os 4 tipos de análise, suportes e resistências, padrões clássicos, e o método de combinação que profissionais usam.',
+  excerpt: 'Análise técnica não é "ler bola de cristal". É a leitura sistemática do comportamento agregado de quem realmente move o preço, instituições, algoritmos, fundos. Este guia cobre os 7 axiomas fundamentais, os 4 tipos de análise, suportes e resistências, padrões clássicos, e o método de combinação que profissionais usam.',
   cover_url: cdn(slug, 'hero.jpeg')
 };
 
 const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="Gráfico de candles com linhas de tendência, suportes e resistências marcados">
 
-<h2>O Que Análise Técnica Realmente É — e o Que Ela Não É</h2>
-<p>Quem chega à análise técnica vindo do hábito de "olhar fundamento" geralmente carrega um preconceito: análise técnica seria meio místico, um joguinho de padrões que "às vezes funciona". Esse preconceito é meio injusto. Não porque análise técnica seja infalível — não é. Mas porque ela <strong>responde uma pergunta diferente</strong> da análise fundamental, e responde bem.</p>
+<h2>O Que Análise Técnica Realmente É, e o Que Ela Não É</h2>
+<p>Quem chega à análise técnica vindo do hábito de "olhar fundamento" geralmente carrega um preconceito: análise técnica seria meio místico, um joguinho de padrões que "às vezes funciona". Esse preconceito é meio injusto. Não porque análise técnica seja infalível, não é. Mas porque ela <strong>responde uma pergunta diferente</strong> da análise fundamental, e responde bem.</p>
 <p>Análise fundamental pergunta: <em>esse ativo está caro ou barato em termos absolutos?</em> Resposta vem de balanço, fluxo de caixa, múltiplos. Análise técnica pergunta: <em>quem está comprando agora? quem está vendendo? em que velocidade? com que convicção?</em> Resposta vem do gráfico, da relação preço-volume, dos níveis-chave que algoritmos respeitam.</p>
 <p>As duas perguntas são complementares. Trader profissional usa fundamental pra decidir <em>o que</em> operar (qual ativo está estruturalmente bem posicionado), e técnica pra decidir <em>quando</em> operar (em que momento entrar, com que stop, com que alvo). Quem usa só uma ou só outra opera com metade das informações.</p>
 
 <div class="callout callout-gold">
-<strong>Princípio fundador (Charles Dow, 1900):</strong> "O preço descontou tudo." Ou seja, qualquer informação relevante — fundamental, macro, sentimento — já está refletida no preço atual. Análise técnica é a leitura desse desconto coletivo. Quem opera técnico bem não está adivinhando — está lendo a memória contábil de milhões de decisões.
+<strong>Princípio fundador (Charles Dow, 1900):</strong> "O preço descontou tudo." Ou seja, qualquer informação relevante, fundamental, macro, sentimento, já está refletida no preço atual. Análise técnica é a leitura desse desconto coletivo. Quem opera técnico bem não está adivinhando, está lendo a memória contábil de milhões de decisões.
 </div>
 
 <h2>Os 7 Axiomas da Análise Técnica</h2>
@@ -33,7 +33,7 @@ const body = `
 <table>
 <thead><tr><th>#</th><th>Axioma</th><th>Implicação prática</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>O preço desconta tudo</td><td>Não tente prever notícias. Olhe a reação ao preço — ela contém a notícia.</td></tr>
+<tr><td>1</td><td>O preço desconta tudo</td><td>Não tente prever notícias. Olhe a reação ao preço, ela contém a notícia.</td></tr>
 <tr><td>2</td><td>Preço se move em tendências</td><td>Identifique a tendência primeiro. Operar contra-tendência tem RR pior.</td></tr>
 <tr><td>3</td><td>Tendências persistem até evidência clara de reversão</td><td>Não saia de uma operação só porque "subiu muito". Saia quando a estrutura quebrar.</td></tr>
 <tr><td>4</td><td>Mercado se move em padrões repetitivos</td><td>Padrões clássicos (cabeça-ombros, triângulos, bandeiras) funcionam porque a psicologia humana é repetitiva.</td></tr>
@@ -60,8 +60,8 @@ const body = `
 <strong>Ordem de leitura recomendada:</strong> Estrutural primeiro (onde estamos?), depois Direcional (pra onde vamos?), depois Momento (com que velocidade?), por último Volumétrica (com que convicção?). Inverter essa ordem é receita pra confusão.
 </div>
 
-<h2>Suportes e Resistências — O Conceito Mais Subestimado</h2>
-<p>Suporte é um nível de preço onde compradores aparecem com força suficiente pra parar a queda. Resistência é o oposto — vendedores aparecem com força suficiente pra parar a alta. Ambos existem porque memória institucional é real: algoritmos lembram desses níveis e operam ativamente neles.</p>
+<h2>Suportes e Resistências, O Conceito Mais Subestimado</h2>
+<p>Suporte é um nível de preço onde compradores aparecem com força suficiente pra parar a queda. Resistência é o oposto, vendedores aparecem com força suficiente pra parar a alta. Ambos existem porque memória institucional é real: algoritmos lembram desses níveis e operam ativamente neles.</p>
 
 <div class="mini-ui">
 <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
@@ -83,7 +83,7 @@ const body = `
 <circle cx="470" cy="180" r="4" fill="#10b981"/>
 <text x="460" y="225" fill="#cbd0d8" font-size="10">Bounce 2</text>
 </svg>
-<p style="text-align:center;color:#8590a3;font-size:13px;margin:8px 0 0;">Range clássico: preço respeita suporte e resistência por múltiplos toques antes de romper. Cada toque adicional fortalece o nível — até que ele quebra com volume.</p>
+<p style="text-align:center;color:#8590a3;font-size:13px;margin:8px 0 0;">Range clássico: preço respeita suporte e resistência por múltiplos toques antes de romper. Cada toque adicional fortalece o nível, até que ele quebra com volume.</p>
 </div>
 
 <h3>Como identificar S/R reais</h3>
@@ -95,9 +95,9 @@ const body = `
 </ul>
 
 <h3>O princípio da inversão</h3>
-<p>Quando uma resistência é rompida com convicção (volume + close acima), ela se torna suporte. E vice-versa. Isso é fundamental: o nível-chave não desaparece após o rompimento — ele muda de função. Esse comportamento é a base de muitos setups de continuação.</p>
+<p>Quando uma resistência é rompida com convicção (volume + close acima), ela se torna suporte. E vice-versa. Isso é fundamental: o nível-chave não desaparece após o rompimento, ele muda de função. Esse comportamento é a base de muitos setups de continuação.</p>
 
-<h2>Tipos de Tendência — e Como Identificar Cada Uma</h2>
+<h2>Tipos de Tendência, e Como Identificar Cada Uma</h2>
 
 <table>
 <thead><tr><th>Tipo</th><th>Características</th><th>Estratégia</th></tr></thead>
@@ -111,7 +111,7 @@ const body = `
 </table>
 
 <h2>Os 5 Padrões Clássicos que Toda Mesa Reconhece</h2>
-<p>Padrões gráficos não são mágica — são a memória visual de comportamentos repetitivos. Os cinco abaixo aparecem com frequência suficiente pra valer a pena conhecer.</p>
+<p>Padrões gráficos não são mágica, são a memória visual de comportamentos repetitivos. Os cinco abaixo aparecem com frequência suficiente pra valer a pena conhecer.</p>
 
 <table>
 <thead><tr><th>Padrão</th><th>Estrutura</th><th>Direção implícita</th><th>Confirmação</th></tr></thead>
@@ -128,7 +128,7 @@ const body = `
 <strong>Aviso importante:</strong> padrões só valem com confirmação. "Está parecendo cabeça-ombros" não é setup. "Cabeça-ombros completou + neckline rompeu com volume 2× a média + retested como resistência" é setup. Sem confirmação, é torcida.
 </div>
 
-<h2>Linhas de Tendência — Mais que Decoração</h2>
+<h2>Linhas de Tendência, Mais que Decoração</h2>
 <p>Linha de tendência é uma reta que conecta múltiplos topos (em queda) ou múltiplos fundos (em alta). É uma das ferramentas mais simples e mais úteis da análise técnica.</p>
 
 <table>
@@ -142,7 +142,7 @@ const body = `
 </tbody>
 </table>
 
-<h2>Candlesticks — A Linguagem Japonesa do Preço</h2>
+<h2>Candlesticks, A Linguagem Japonesa do Preço</h2>
 <p>Velas (candlesticks) foram desenvolvidas no Japão do século 18 por Munehisa Homma pra operar arroz. Cada vela mostra: preço de abertura, fechamento, máxima, mínima do período. Cores indicam direção (verde/branco = alta, vermelho/preto = baixa).</p>
 <p>Padrões de velas isolados ou em sequência produzem sinais. Os mais usados:</p>
 
@@ -158,7 +158,7 @@ const body = `
 </tbody>
 </table>
 
-<h2>Timeframes — A Hierarquia que Importa</h2>
+<h2>Timeframes, A Hierarquia que Importa</h2>
 <p>Trader profissional opera em <strong>3 timeframes simultaneamente</strong>: o macro (define a direção), o operacional (executa as entradas) e o micro (refina o timing).</p>
 
 <table>
@@ -199,7 +199,7 @@ const body = `
 <p>"Eu preciso operar hoje." Não, não precisa. Análise técnica produz 0-3 setups por dia em cada instrumento. Forçar é receita pra drawdown.</p>
 
 <h3>Mudar de timeframe pra justificar trade</h3>
-<p>Você está perdendo no 15min. Você sobe pro 1h pra "ver melhor". Sobe pro 4h pra "validar". Está fugindo. O setup do 15min ou foi válido ou não foi — não muda mudando timeframe.</p>
+<p>Você está perdendo no 15min. Você sobe pro 1h pra "ver melhor". Sobe pro 4h pra "validar". Está fugindo. O setup do 15min ou foi válido ou não foi, não muda mudando timeframe.</p>
 
 <h3>Operar sem stop-loss físico</h3>
 <p>"Vou tirar a perda mentalmente." Não vai. Você vai segurar perda crescente até quebrar conta. Stop tem que estar na corretora, definido antes de entrar.</p>
@@ -211,10 +211,10 @@ const body = `
 <p>Triângulo precisa de pelo menos 4 toques (2 superiores + 2 inferiores). Cabeça-ombros precisa de neckline confirmado. Padrão "parecendo formar" não é padrão.</p>
 
 <div class="callout callout-red">
-<strong>Erro mais comum:</strong> entender análise técnica apenas como "padrões de candle". Padrões são uma camada — análise técnica completa é estrutura + tendência + momentum + volume. Quem reduz a "achar bandeirinha" no gráfico vai perder dinheiro consistentemente.
+<strong>Erro mais comum:</strong> entender análise técnica apenas como "padrões de candle". Padrões são uma camada, análise técnica completa é estrutura + tendência + momentum + volume. Quem reduz a "achar bandeirinha" no gráfico vai perder dinheiro consistentemente.
 </div>
 
-<h2>Análise Técnica em Prop Firm — A Disciplina Sob Pressão</h2>
+<h2>Análise Técnica em Prop Firm, A Disciplina Sob Pressão</h2>
 <p>Trader em conta de prop firm (Apex, Bulenox, FTMO) opera com regras apertadas: 8% drawdown, 5% perda diária, blackout de notícias. Análise técnica te ajuda a:</p>
 <ul>
 <li><strong>Identificar setups de baixo risco:</strong> entradas perto de S/R com stop apertado</li>
@@ -244,13 +244,13 @@ const body = `
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>Technical Analysis of the Financial Markets</strong> — John J. Murphy. A bíblia. Comece por ela.</li>
-<li><strong>Technical Analysis Explained</strong> — Martin Pring. Mais avançado, mas indispensável.</li>
-<li><strong>Encyclopedia of Chart Patterns</strong> — Thomas Bulkowski. Estatísticas frias de cada padrão clássico.</li>
-<li><strong>Japanese Candlestick Charting Techniques</strong> — Steve Nison. Trouxe candles pro Ocidente.</li>
-<li><strong>The Visual Investor</strong> — John J. Murphy. Mais visual, ótimo pra iniciantes.</li>
-<li><strong>Trading for a Living</strong> — Alexander Elder. Tripé técnica + risco + psicologia.</li>
-<li><strong>Trading in the Zone</strong> — Mark Douglas. Sem disciplina, técnica não funciona.</li>
+<li><strong>Technical Analysis of the Financial Markets</strong>, John J. Murphy. A bíblia. Comece por ela.</li>
+<li><strong>Technical Analysis Explained</strong>, Martin Pring. Mais avançado, mas indispensável.</li>
+<li><strong>Encyclopedia of Chart Patterns</strong>, Thomas Bulkowski. Estatísticas frias de cada padrão clássico.</li>
+<li><strong>Japanese Candlestick Charting Techniques</strong>, Steve Nison. Trouxe candles pro Ocidente.</li>
+<li><strong>The Visual Investor</strong>, John J. Murphy. Mais visual, ótimo pra iniciantes.</li>
+<li><strong>Trading for a Living</strong>, Alexander Elder. Tripé técnica + risco + psicologia.</li>
+<li><strong>Trading in the Zone</strong>, Mark Douglas. Sem disciplina, técnica não funciona.</li>
 </ul>
 
 <hr>

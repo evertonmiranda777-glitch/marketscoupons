@@ -47,11 +47,11 @@ html,body{width:1080px;height:1350px;background:#000;color:#fff;font-family:'Int
 .fc-disc-num .pct{font-size:50px;font-weight:800;vertical-align:top;}
 .fc-disc-lbl{font-size:18px;font-weight:700;color:#7a8392;letter-spacing:2px;margin-top:4px;}
 
-/* Apex — gold */
+/* Apex, gold */
 .fc.apex{--acc:#F0B429;--acc-border:#F0B429;--acc-glow:rgba(240,180,41,.08);}
-/* Bulenox — cyan */
+/* Bulenox, cyan */
 .fc.bulenox{--acc:#7AD9E3;--acc-border:#7AD9E3;--acc-glow:rgba(122,217,227,.08);}
-/* TPT — purple */
+/* TPT, purple */
 .fc.tpt{--acc:#C084FC;--acc-border:#C084FC;--acc-glow:rgba(192,132,252,.08);}
 
 /* Footer hint */
@@ -204,7 +204,7 @@ function applyLang(lang) {
     if (dict[k] != null) el.innerHTML = dict[k];
   });
 }
-// Default PT — render script will call setLang(lang) externally
+// Default PT, render script will call setLang(lang) externally
 const params = new URLSearchParams(location.search);
 applyLang(params.get('lang') || 'pt');
 window.setLang = applyLang;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Carregando... — Markets Coupons</title>
+<title>Carregando..., Markets Coupons</title>
 <meta name="description" content="">
 <meta name="robots" content="index,follow">
 <link rel="canonical" id="meta-canonical" href="https://www.marketscoupons.com/">
@@ -195,7 +195,7 @@ function setMeta(sel, attr, val){ const el=document.querySelector(sel); if(el) e
 
 function updateSEO(post, slug, blogUrl, lang){
   const url   = blogUrl || SITE+'/blog/'+slug;
-  const title = post.title+' — Markets Coupons';
+  const title = post.title+', Markets Coupons';
   const desc  = post.excerpt||post.title;
   const ogLang = lang && lang !== 'pt' ? '-'+lang : '';
   const img   = post.cover_image||SITE+'/img/og-cover'+ogLang+'.png';
@@ -247,7 +247,7 @@ function updateSEO(post, slug, blogUrl, lang){
     ]
   });
 
-  // FAQPage JSON-LD — parsed from .faq-q / .faq-a pairs in the body
+  // FAQPage JSON-LD, parsed from .faq-q / .faq-a pairs in the body
   let faqEl = document.getElementById('jsonld-faq');
   try {
     const tmp = document.createElement('div');
@@ -351,7 +351,7 @@ async function init(){
       return;
     }
     if(data===null){
-      document.title = T.notfound+' — Markets Coupons';
+      document.title = T.notfound+', Markets Coupons';
       document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">📭</div><div class="state-title">${T.notfound}</div><div class="state-desc">${T.notfounddesc}</div><button class="state-btn" onclick="window.location.href='/#blog'">${T.all}</button></div>`;
       return;
     }

@@ -13,7 +13,7 @@ const CORS = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-// Dia BRT (UTC-3) — evita venda 21-23:59 BRT vazar pro dia UTC seguinte
+// Dia BRT (UTC-3), evita venda 21-23:59 BRT vazar pro dia UTC seguinte
 function brtDayString(iso: string): string {
   const d = new Date(new Date(iso).getTime() - 3 * 3600000);
   return d.toISOString().slice(0, 10);

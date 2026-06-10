@@ -1,0 +1,162 @@
+{
+  "Intraday Trail|std|1pk|25K": {
+    "plan": "25K · Intraday Trail",
+    "disc": "$19.90",
+    "orig": "$199"
+  },
+  "Intraday Trail|std|1pk|50K": {
+    "plan": "50K · Intraday Trail",
+    "disc": "$24.90",
+    "orig": "$249"
+  },
+  "Intraday Trail|std|1pk|100K": {
+    "plan": "100K · Intraday Trail",
+    "disc": "$39.90",
+    "orig": "$399"
+  },
+  "Intraday Trail|std|1pk|150K": {
+    "plan": "150K · Intraday Trail",
+    "disc": "$59.90",
+    "orig": "$599"
+  },
+  "Intraday Trail|std|5pk|25K": {
+    "plan": "25K ×5 · Intraday Trail",
+    "disc": "$85",
+    "orig": "$850"
+  },
+  "Intraday Trail|std|5pk|50K": {
+    "plan": "50K ×5 · Intraday Trail",
+    "disc": "$95",
+    "orig": "$950"
+  },
+  "Intraday Trail|std|5pk|100K": {
+    "plan": "100K ×5 · Intraday Trail",
+    "disc": "$175",
+    "orig": "$1750"
+  },
+  "Intraday Trail|std|5pk|150K": {
+    "plan": "150K ×5 · Intraday Trail",
+    "disc": "$245",
+    "orig": "$2450"
+  },
+  "Intraday Trail|nofee|1pk|25K": {
+    "plan": "25K · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$69",
+    "orig": "$690"
+  },
+  "Intraday Trail|nofee|1pk|50K": {
+    "plan": "50K · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$79",
+    "orig": "$790"
+  },
+  "Intraday Trail|nofee|1pk|100K": {
+    "plan": "100K · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$109",
+    "orig": "$1090"
+  },
+  "Intraday Trail|nofee|1pk|150K": {
+    "plan": "150K · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$169",
+    "orig": "$1690"
+  },
+  "Intraday Trail|nofee|5pk|25K": {
+    "plan": "25K ×5 · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$295",
+    "orig": "$2950"
+  },
+  "Intraday Trail|nofee|5pk|50K": {
+    "plan": "50K ×5 · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$345",
+    "orig": "$3450"
+  },
+  "Intraday Trail|nofee|5pk|100K": {
+    "plan": "100K ×5 · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$495",
+    "orig": "$4950"
+  },
+  "Intraday Trail|nofee|5pk|150K": {
+    "plan": "150K ×5 · Intraday Trail · Tanpa biaya aktivasi",
+    "disc": "$795",
+    "orig": "$7950"
+  },
+  "End of Day|std|1pk|25K": {
+    "plan": "25K · End of Day",
+    "disc": "$39",
+    "orig": "$390"
+  },
+  "End of Day|std|1pk|50K": {
+    "plan": "50K · End of Day",
+    "disc": "$45",
+    "orig": "$450"
+  },
+  "End of Day|std|1pk|100K": {
+    "plan": "100K · End of Day",
+    "disc": "$59",
+    "orig": "$590"
+  },
+  "End of Day|std|1pk|150K": {
+    "plan": "150K · End of Day",
+    "disc": "$109",
+    "orig": "$1090"
+  },
+  "End of Day|std|5pk|25K": {
+    "plan": "25K ×5 · End of Day",
+    "disc": "$175",
+    "orig": "$1750"
+  },
+  "End of Day|std|5pk|50K": {
+    "plan": "50K ×5 · End of Day",
+    "disc": "$195",
+    "orig": "$1950"
+  },
+  "End of Day|std|5pk|100K": {
+    "plan": "100K ×5 · End of Day",
+    "disc": "$275",
+    "orig": "$2750"
+  },
+  "End of Day|std|5pk|150K": {
+    "plan": "150K ×5 · End of Day",
+    "disc": "$495",
+    "orig": "$4950"
+  },
+  "End of Day|nofee|1pk|25K": {
+    "plan": "25K · End of Day · Tanpa biaya aktivasi",
+    "disc": "$89",
+    "orig": "$890"
+  },
+  "End of Day|nofee|1pk|50K": {
+    "plan": "50K · End of Day · Tanpa biaya aktivasi",
+    "disc": "$109",
+    "orig": "$1090"
+  },
+  "End of Day|nofee|1pk|100K": {
+    "plan": "100K · End of Day · Tanpa biaya aktivasi",
+    "disc": "Tidak tersedia",
+    "orig": "$1090"
+  },
+  "End of Day|nofee|1pk|150K": {
+    "plan": "150K · End of Day · Tanpa biaya aktivasi",
+    "disc": "Tidak tersedia",
+    "orig": "$1090"
+  },
+  "End of Day|nofee|5pk|25K": {
+    "plan": "25K ×5 · End of Day · Tanpa biaya aktivasi",
+    "disc": "$395",
+    "orig": "$3950"
+  },
+  "End of Day|nofee|5pk|50K": {
+    "plan": "50K ×5 · End of Day · Tanpa biaya aktivasi",
+    "disc": "$445",
+    "orig": "$4450"
+  },
+  "End of Day|nofee|5pk|100K": {
+    "plan": "100K ×5 · End of Day · Tanpa biaya aktivasi",
+    "disc": "Tidak tersedia",
+    "orig": "$4450"
+  },
+  "End of Day|nofee|5pk|150K": {
+    "plan": "150K ×5 · End of Day · Tanpa biaya aktivasi",
+    "disc": "Tidak tersedia",
+    "orig": "$4450"
+  }
+}

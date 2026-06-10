@@ -21,11 +21,11 @@ schema_types: [Article, FAQPage, HowTo, Review]
 
 # Apex Trader Funding Review 2026: Rules, Pricing, Payouts & MARKET Discount
 
-*Last updated: April 17, 2026 — 14 min read*
+*Last updated: April 17, 2026, 14 min read*
 
-![Apex Trader Funding Review 2026 — editorial hero with candlestick chart and orange accent](./img/apex-hero.png)
+![Apex Trader Funding Review 2026, editorial hero with candlestick chart and orange accent](./img/apex-hero.png)
 
-> **TL;DR** — Apex Trader Funding is the largest futures-only prop firm in the U.S., rated 4.4/5 on Trustpilot across 19,000+ reviews. The entry plan costs **$19.90 with the MARKET lifetime coupon** (90% off), the profit split is **100%**, and payouts are released every **5 trading days**. The two things that trip up most traders: the **50% consistency rule** and the **intraday trailing drawdown**. Both are explained in detail below.
+> **TL;DR**, Apex Trader Funding is the largest futures-only prop firm in the U.S., rated 4.4/5 on Trustpilot across 19,000+ reviews. The entry plan costs **$19.90 with the MARKET lifetime coupon** (90% off), the profit split is **100%**, and payouts are released every **5 trading days**. The two things that trip up most traders: the **50% consistency rule** and the **intraday trailing drawdown**. Both are explained in detail below.
 
 | Quick Facts | |
 |---|---|
@@ -52,7 +52,7 @@ Apex Trader Funding is a proprietary trading evaluation firm based in Texas. It 
 
 Apex is one of the oldest and most active futures-focused firms in the market. Since January 2023 it has paid out an average of over $1 million per month to customers, making it one of the highest-volume payout operations in the industry.
 
-It operates on a pure **futures-only** model — no forex, no CFDs, no crypto spot. You trade CME, CBOT, NYMEX, COMEX, and EUREX listed contracts.
+It operates on a pure **futures-only** model, no forex, no CFDs, no crypto spot. You trade CME, CBOT, NYMEX, COMEX, and EUREX listed contracts.
 
 On **March 1, 2026**, Apex launched a redesigned program (referred to as the "All New Apex") with simplified rules, clearer drawdown math, and the 50% consistency rule replacing the older 30% rule. Accounts bought before March 1, 2026 are **legacy accounts** and continue on the original rule set. This review focuses on the **new** program.
 
@@ -61,7 +61,7 @@ On **March 1, 2026**, Apex launched a redesigned program (referred to as the "Al
 The reason Apex dominates this market is a combination of three things:
 1. **Aggressive pricing** with the lifetime MARKET coupon
 2. **100% profit split** on simulated funded accounts (no split with the firm)
-3. **A clear path** from evaluation to payout — no hidden discretionary reviews
+3. **A clear path** from evaluation to payout, no hidden discretionary reviews
 
 ---
 
@@ -84,13 +84,13 @@ With the **MARKET** coupon, the evaluation fees are discounted by approximately 
 
 ### Activation fee
 
-After passing the evaluation, you pay a **one-time $85 activation fee** to move to your Performance Account. This is not recurring — you pay it once, and the PA stays active as long as it's not breached.
+After passing the evaluation, you pay a **one-time $85 activation fee** to move to your Performance Account. This is not recurring, you pay it once, and the PA stays active as long as it's not breached.
 
 You have **7 days** from passing the evaluation to activate your PA. Miss that window and you lose the pass.
 
 ### Is there a reset fee?
 
-The new Apex program does **not offer resets** on evaluations. If you breach your evaluation account, you buy a new evaluation. The 30-day evaluation clock is also non-resettable — if you don't pass within 30 days, the evaluation expires.
+The new Apex program does **not offer resets** on evaluations. If you breach your evaluation account, you buy a new evaluation. The 30-day evaluation clock is also non-resettable, if you don't pass within 30 days, the evaluation expires.
 
 Legacy accounts (pre-March 1, 2026) retain the **$80 reset** option.
 
@@ -107,7 +107,7 @@ The coupon is tied to your affiliate, meaning it stays active on your account fo
 
 ## Account Types: Intraday Trail vs End-of-Day Trail
 
-Apex lets you pick between two drawdown mechanics. Choose carefully — the wrong one for your style will take you out of the account faster than you think.
+Apex lets you pick between two drawdown mechanics. Choose carefully, the wrong one for your style will take you out of the account faster than you think.
 
 ![Intraday trailing drawdown vs End-of-Day trailing drawdown comparison diagram](./img/apex-drawdown-diagram.png)
 
@@ -121,28 +121,28 @@ The **Intraday Trail** adjusts your drawdown threshold in real time based on the
 - The threshold **never moves down**
 - If the account balance touches the threshold at any moment, all positions are automatically liquidated
 
-**Example — 50K Intraday Evaluation:**
+**Example, 50K Intraday Evaluation:**
 1. You open a trade and your balance momentarily hits $50,900 on unrealized profit
 2. New threshold: $50,900 − $2,000 = $48,900
 3. You close the trade at $50,300 (profit of $300)
-4. The threshold stays at $48,900 — it doesn't move back down
+4. The threshold stays at $48,900, it doesn't move back down
 5. If your balance ever touches $48,900, the account is breached
 
 **When does the trailing stop?**
 - **Evaluation (Rithmic & Wealthcharts):** Locks when balance reaches profit target + max drawdown (for the 50K, that's $55,000 → threshold fixed at $53,000)
-- **Evaluation (Tradovate):** Never locks — trails indefinitely
+- **Evaluation (Tradovate):** Never locks, trails indefinitely
 - **Performance Account:** Locks when threshold reaches starting balance + $100 (for the 50K PA, that's $50,100)
 
 The Intraday Trail is punishing because **unrealized PnL counts**. If you're in a trade showing $500 in open profit, your drawdown just got $500 tighter even if the trade later goes negative.
 
 ### End-of-Day (EOD) Trailing Drawdown
 
-The **EOD Trail** only updates at market close (4 PM CT). Unrealized profit during the day does **not** move the threshold — only your closing balance matters.
+The **EOD Trail** only updates at market close (4 PM CT). Unrealized profit during the day does **not** move the threshold, only your closing balance matters.
 
 **How it works:**
 - Same starting threshold as Intraday (balance − max drawdown)
 - At 4 PM CT, if your closing balance is higher than any previous close, the threshold moves up
-- Within the session, the threshold is fixed — you have room to breathe
+- Within the session, the threshold is fixed, you have room to breathe
 
 EOD accounts come with an extra rule: a **Daily Loss Limit (DLL)**.
 
@@ -154,7 +154,7 @@ EOD accounts come with an extra rule: a **Daily Loss Limit (DLL)**.
 | 100K | $1,500 |
 | 150K | $2,000 |
 
-If your intraday loss hits the DLL, all positions are auto-liquidated and trading pauses until the next session (resets at 6 PM ET). You don't fail the account — you just get locked out for the day.
+If your intraday loss hits the DLL, all positions are auto-liquidated and trading pauses until the next session (resets at 6 PM ET). You don't fail the account, you just get locked out for the day.
 
 ### Which drawdown type should you pick?
 
@@ -166,7 +166,7 @@ If your intraday loss hits the DLL, all positions are auto-liquidated and tradin
 | You over-trade when chasing | **EOD** (DLL stops you from revenge-trading to zero) |
 | You want maximum flexibility | **Intraday** (no DLL, no session cap) |
 
-Most experienced Apex traders recommend **EOD** for anything beyond pure scalping. The Intraday Trail is designed to reward fast, decisive execution — and to punish hesitation.
+Most experienced Apex traders recommend **EOD** for anything beyond pure scalping. The Intraday Trail is designed to reward fast, decisive execution, and to punish hesitation.
 
 ---
 
@@ -186,12 +186,12 @@ The most popular choice among Apex traders. Rithmic is a market data and routing
 
 ### Tradovate
 
-Browser-based and mobile-first. Tradovate handles both the platform and the routing — no separate front-end needed.
+Browser-based and mobile-first. Tradovate handles both the platform and the routing, no separate front-end needed.
 
 **Why traders pick Tradovate:**
 - No software install (runs in browser)
 - Mobile app included
-- Access to EUREX (DAX, Euro Stoxx, Bunds) — Rithmic does not currently route these on Apex
+- Access to EUREX (DAX, Euro Stoxx, Bunds), Rithmic does not currently route these on Apex
 
 **Caveat:** On Tradovate evaluations, the intraday trailing drawdown **never stops trailing**. That's harsher than Rithmic/Wealthcharts.
 
@@ -212,7 +212,7 @@ The evaluation is the simulated challenge you must pass before running a Perform
 
 ### Profit target
 
-You need to reach the profit target once, at any point during the evaluation. You don't need to close the day above it — you just need to hit it.
+You need to reach the profit target once, at any point during the evaluation. You don't need to close the day above it, you just need to hit it.
 
 - **25K:** $1,500
 - **50K:** $3,000
@@ -247,7 +247,7 @@ All instruments listed on the Apex instrument sheet: ES, NQ, YM, RTY, CL, GC, 6E
 - Exceed max contract size at any moment
 - Use copy-trading automation across Apex accounts during evaluation (permitted only on PA)
 
-News trading is **permitted** — Apex does not restrict trading around high-impact economic events.
+News trading is **permitted**, Apex does not restrict trading around high-impact economic events.
 
 ---
 
@@ -292,7 +292,7 @@ So: $1,500 ÷ 0.5 = **$3,000 minimum total profit** before you can request that 
 
 ![Apex 50K Performance Account scaling tiers from Level 1 to Level 4 with contract size and DLL progression](./img/apex-scaling-tiers.png)
 
-On EOD Performance Accounts, both your **max contract size** and your **Daily Loss Limit** scale up as your account grows. This is Apex's "built-in scaling" — you don't need to apply for an upgrade.
+On EOD Performance Accounts, both your **max contract size** and your **Daily Loss Limit** scale up as your account grows. This is Apex's "built-in scaling", you don't need to apply for an upgrade.
 
 **50K EOD PA tier table:**
 | Profit range | Max contracts | Daily Loss Limit | Tier |
@@ -337,7 +337,7 @@ The first 5 payouts on a new PA are **capped at $1,500 each** (for most account 
 
 ### Safety net
 
-There's a "safety net" built into the PA. Your PA must maintain a minimum balance above the starting balance before any payout can be requested. The safety net scales with account size — roughly starting balance + $2,600 for the 50K. Consult the Apex FAQ for the exact figure at time of payout.
+There's a "safety net" built into the PA. Your PA must maintain a minimum balance above the starting balance before any payout can be requested. The safety net scales with account size, roughly starting balance + $2,600 for the 50K. Consult the Apex FAQ for the exact figure at time of payout.
 
 ### Payout methods
 
@@ -347,11 +347,11 @@ There's a "safety net" built into the PA. Your PA must maintain a minimum balanc
 | **Wise** | 1–2 business days | Varies by country |
 | **Wire transfer** | 3–5 business days | Bank fees apply |
 
-Apex has a track record of paying — the Trustpilot review base of 19,000+ entries is dominated by positive payout confirmations. Delays do happen (usually 2–7 business days during high-volume weeks), but outright denials are rare on the new program. Apex explicitly advertises "**No Payout Denials**" in its branding, and the operational model supports that claim on well-structured accounts.
+Apex has a track record of paying, the Trustpilot review base of 19,000+ entries is dominated by positive payout confirmations. Delays do happen (usually 2–7 business days during high-volume weeks), but outright denials are rare on the new program. Apex explicitly advertises "**No Payout Denials**" in its branding, and the operational model supports that claim on well-structured accounts.
 
 ### Maximum payout requests per PA
 
-A new PA has a cap of **6 payout requests**. After the 6th, if the account is healthy, Apex may move you to their **live trading program** — where there is no payout cap.
+A new PA has a cap of **6 payout requests**. After the 6th, if the account is healthy, Apex may move you to their **live trading program**, where there is no payout cap.
 
 ---
 
@@ -360,25 +360,25 @@ A new PA has a cap of **6 payout requests**. After the 6th, if the account is he
 All contracts are CME Group or EUREX. Full list of frequently traded instruments:
 
 ### Equity index futures
-- **E-mini S&P 500 (ES)** — $50 per point
-- **Micro E-mini S&P 500 (MES)** — $5 per point
-- **E-mini Nasdaq-100 (NQ)** — $20 per point
-- **Micro E-mini Nasdaq-100 (MNQ)** — $2 per point
-- **Mini-Dow (YM)** — $5 per point
-- **Micro Dow (MYM)** — $0.50 per point
-- **Russell 2000 (RTY)** — $50 per point
-- **Micro Russell (M2K)** — $5 per point
+- **E-mini S&P 500 (ES)**, $50 per point
+- **Micro E-mini S&P 500 (MES)**, $5 per point
+- **E-mini Nasdaq-100 (NQ)**, $20 per point
+- **Micro E-mini Nasdaq-100 (MNQ)**, $2 per point
+- **Mini-Dow (YM)**, $5 per point
+- **Micro Dow (MYM)**, $0.50 per point
+- **Russell 2000 (RTY)**, $50 per point
+- **Micro Russell (M2K)**, $5 per point
 
 ### Energy
-- **Crude Oil (CL)** — $1,000 per point
-- **Micro Crude (MCL)** — $100 per point
-- **Natural Gas (NG)** — $10,000 per point
-- **E-mini Natural Gas (QG)** — $2,500 per point
+- **Crude Oil (CL)**, $1,000 per point
+- **Micro Crude (MCL)**, $100 per point
+- **Natural Gas (NG)**, $10,000 per point
+- **E-mini Natural Gas (QG)**, $2,500 per point
 
-### Metals *(availability varies — currently restricted on some COMEX contracts)*
-- **Gold (GC)** — $100 per point
-- **Micro Gold (MGC)** — $10 per point
-- **Silver (SI)** — $5,000 per point
+### Metals *(availability varies, currently restricted on some COMEX contracts)*
+- **Gold (GC)**, $100 per point
+- **Micro Gold (MGC)**, $10 per point
+- **Silver (SI)**, $5,000 per point
 
 ### Currencies
 - **Euro FX (6E)**, **British Pound (6B)**, **Japanese Yen (6J)**, **Canadian Dollar (6C)**, **Australian Dollar (6A)**, **Swiss Franc (6S)**
@@ -400,26 +400,26 @@ All contracts are CME Group or EUREX. Full list of frequently traded instruments
 
 ### Pros
 
-- **Lifetime discount** via the MARKET coupon — roughly 90% off every purchase, not a first-order promo
-- **100% profit split** — no cut taken on PA earnings
+- **Lifetime discount** via the MARKET coupon, roughly 90% off every purchase, not a first-order promo
+- **100% profit split**, no cut taken on PA earnings
 - **Fastest-to-fund:** Pass in 1 day minimum, activate same day
-- **No time minimum to hold trades** — scalpers are fine
-- **News trading permitted** — no rule against trading NFP, FOMC, or CPI
-- **Up to 20 accounts per trader** — scale horizontally
+- **No time minimum to hold trades**, scalpers are fine
+- **News trading permitted**, no rule against trading NFP, FOMC, or CPI
+- **Up to 20 accounts per trader**, scale horizontally
 - **Platform choice:** Rithmic, Tradovate, or Wealthcharts
 - **Track record of payouts:** Averaging over $1M/month to customers since 2023
-- **No ongoing subscription** — evaluation fee and activation fee are both one-time
+- **No ongoing subscription**, evaluation fee and activation fee are both one-time
 
 ### Cons
 
-- **Intraday Trailing Drawdown is unforgiving** — unrealized PnL counts, and once you breach you're out with no refund
-- **50% consistency rule locks payouts** — a single big winning day can delay payouts for weeks
-- **No reset option on new accounts** — one breach costs you the full evaluation fee
-- **30-day evaluation window** — shorter than the industry-standard "unlimited time"
-- **First 5 payouts capped at $1,500** — reaching large payouts takes time
-- **Safety net slows early payouts** — minimum PA balance must be maintained
-- **Legacy vs new dual system can confuse** — accounts bought before March 1, 2026 follow different rules
-- **Limited instrument list during COMEX restrictions** — metals availability fluctuates
+- **Intraday Trailing Drawdown is unforgiving**, unrealized PnL counts, and once you breach you're out with no refund
+- **50% consistency rule locks payouts**, a single big winning day can delay payouts for weeks
+- **No reset option on new accounts**, one breach costs you the full evaluation fee
+- **30-day evaluation window**, shorter than the industry-standard "unlimited time"
+- **First 5 payouts capped at $1,500**, reaching large payouts takes time
+- **Safety net slows early payouts**, minimum PA balance must be maintained
+- **Legacy vs new dual system can confuse**, accounts bought before March 1, 2026 follow different rules
+- **Limited instrument list during COMEX restrictions**, metals availability fluctuates
 
 ---
 
@@ -440,7 +440,7 @@ The $19.90 entry with MARKET is the cheapest serious entry point in futures prop
 Most firms take 10–25% of PA profits. Apex's 100% split on simulated funded accounts is the highest you'll find.
 
 **Who should look elsewhere:**
-- If you prefer forex or CFDs, Apex doesn't offer them — consider FTMO or FundingPips instead
+- If you prefer forex or CFDs, Apex doesn't offer them, consider FTMO or FundingPips instead
 - If you want an unlimited time evaluation, consider Take Profit Trader (no time limit)
 - If the Intraday Trail feels too punishing, pick Apex EOD or try Bulenox's static drawdown model
 
@@ -452,7 +452,7 @@ Most firms take 10–25% of PA profits. Apex's 100% split on simulated funded ac
 FTMO is forex-focused, with a 2-step evaluation, 80% profit split, and $155 entry for the 10K account. Apex is futures-only, 1-step, 100% split, $19.90 entry (with MARKET). If you trade futures, Apex wins on price and split; FTMO wins if you need forex.
 
 ### Apex vs Bulenox
-Bulenox offers similar futures evaluation mechanics but with a **static drawdown** option — no trailing threshold at all. If the Apex Intraday Trail has burned you, Bulenox's static drawdown is worth testing. Bulenox tends to have higher profit targets.
+Bulenox offers similar futures evaluation mechanics but with a **static drawdown** option, no trailing threshold at all. If the Apex Intraday Trail has burned you, Bulenox's static drawdown is worth testing. Bulenox tends to have higher profit targets.
 
 ### Apex vs Take Profit Trader
 Take Profit Trader (TPT) offers unlimited evaluation time and a similar 1-step structure. TPT tends to have stricter consistency rules (often 40%) but no time pressure. Good alternative if you struggle with the 30-day Apex clock.
@@ -502,7 +502,7 @@ Yes, on Performance Accounts. You can run the same strategy on up to 20 PAs via 
 
 ### What happens if I breach my Apex evaluation?
 
-The account fails immediately and all open positions are liquidated. On new accounts (post-March 1, 2026), there is no reset option — you must purchase a new evaluation to try again. Legacy accounts can still be reset for $80.
+The account fails immediately and all open positions are liquidated. On new accounts (post-March 1, 2026), there is no reset option, you must purchase a new evaluation to try again. Legacy accounts can still be reset for $80.
 
 ### Is there a time limit on Apex Performance Accounts?
 
@@ -524,7 +524,7 @@ Go to [apextraderfunding.com via our affiliate link](https://apextraderfunding.c
 
 ### Step 2: Pick your account size
 
-For a first evaluation, most traders should start with the **50K account** — it offers a balanced contract limit, a $3,000 profit target that's reachable in 5–10 trading days, and a $2,000 max drawdown that gives breathing room.
+For a first evaluation, most traders should start with the **50K account**, it offers a balanced contract limit, a $3,000 profit target that's reachable in 5–10 trading days, and a $2,000 max drawdown that gives breathing room.
 
 ### Step 3: Choose drawdown type
 
@@ -543,7 +543,7 @@ Confirm that the discount shows (should drop your 50K price from $249 to $24.90)
 
 ### Step 6: Pass the evaluation
 
-Focus on one instrument (ES, NQ, or MES are the most common). Hit the profit target with consistent, modest gains rather than one oversized session — this positions you to meet the 50% consistency rule when you request your first payout.
+Focus on one instrument (ES, NQ, or MES are the most common). Hit the profit target with consistent, modest gains rather than one oversized session, this positions you to meet the 50% consistency rule when you request your first payout.
 
 ### Step 7: Pay the $85 activation fee within 7 days
 
@@ -561,7 +561,7 @@ Apex Trader Funding is the default choice for most new futures traders in 2026, 
 
 The two rules that matter are the **intraday trailing drawdown** (pick EOD if you hold positions for more than a few minutes) and the **50% consistency rule** (size your days to stay below 50% of your running total). Understand both, and Apex is one of the cleanest paths to a funded account and regular payouts.
 
-For traders comparing options, Apex's combination of price, split, and track record is difficult to match. The main watch-outs are the no-reset policy on new accounts, the 30-day evaluation clock, and the early payout caps — none of which are deal-breakers if you budget for them.
+For traders comparing options, Apex's combination of price, split, and track record is difficult to match. The main watch-outs are the no-reset policy on new accounts, the 30-day evaluation clock, and the early payout caps, none of which are deal-breakers if you budget for them.
 
 **Ready to start?** Use the code **MARKET** at [Apex Trader Funding](https://apextraderfunding.com/member/aff/go/evertonmiranda) for 90% off your evaluation.
 

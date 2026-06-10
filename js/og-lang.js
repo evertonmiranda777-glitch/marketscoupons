@@ -1,5 +1,5 @@
 // Patch og:image / twitter:image com sufixo de idioma (EN/ES/etc).
-// Bots sociais que não executam JS pegam o PT default — comportamento intencional.
+// Bots sociais que não executam JS pegam o PT default, comportamento intencional.
 (function(){
   const p = new URLSearchParams(window.location.search);
   const h = window.location.hash;

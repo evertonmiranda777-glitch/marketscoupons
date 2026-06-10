@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * fix-translations.js — Corrige problemas em traduções do I18N
+ * fix-translations.js, Corrige problemas em traduções do I18N
  * Trabalha diretamente no texto do HTML, fazendo find/replace exato.
  */
 
@@ -59,7 +59,7 @@ entityFixes.forEach(([pattern, replacement]) => {
 // Estas substituições são feitas no bloco de texto
 
 const termFixes = [
-  // "Prop Firm(s)" — ES
+  // "Prop Firm(s)", ES
   [/empresas de gestión de fondos/gi, 'prop firms'],
   [/empresas de gestión de capital/gi, 'prop firms'],
   [/empresas de gestión de carteras/gi, 'prop firms'],
@@ -68,14 +68,14 @@ const termFixes = [
   [/empresa de trading de divisas/gi, 'prop firm forex'],
   [/empresas de prop trading/gi, 'prop firms'],
   [/empresa de prop trading/gi, 'prop firm'],
-  // "Prop Firm(s)" — IT
+  // "Prop Firm(s)", IT
   [/società di trading/gi, 'prop firms'],
   [/società di gestione di portafogli/gi, 'prop firms'],
   [/società di gestione/gi, 'prop firms'],
   [/aziende di trading/gi, 'prop firms'],
   [/azienda di trading/gi, 'prop firm'],
   [/società di prop trading/gi, 'prop firms'],
-  // "Prop Firm(s)" — FR
+  // "Prop Firm(s)", FR
   [/sociétés de trading/gi, 'prop firms'],
   [/société de trading/gi, 'prop firm'],
   [/sociétés de capital-risque/gi, 'prop firms'],
@@ -83,12 +83,12 @@ const termFixes = [
   [/entreprises de trading/gi, 'prop firms'],
   [/entreprise de trading/gi, 'prop firm'],
   [/sociétés de gestion/gi, 'prop firms'],
-  // "Prop Firm(s)" — DE
+  // "Prop Firm(s)", DE
   [/Prop-Firmen/g, 'Prop Firms'],
   [/Prop-Firm\b/g, 'Prop Firm'],
   [/Handelsfirmen/gi, 'Prop Firms'],
   [/Handelsfirma/gi, 'Prop Firm'],
-  // "Prop Firm(s)" — AR
+  // "Prop Firm(s)", AR
   [/شركات التداول/g, 'Prop Firms'],
   [/شركة التداول/g, 'Prop Firm'],
   [/شركات الاستثمار/g, 'Prop Firms'],
@@ -154,4 +154,4 @@ const block3 = html3.substring(html3.indexOf('const I18N = {'), html3.indexOf('l
 const remaining27 = (block3.match(/&#x27;/g) || []).length;
 const remainingAmp = (block3.match(/&amp;/g) || []).length;
 const remainingQuot = (block3.match(/&quot;/g) || []).length;
-console.log(`Restantes — &#x27;: ${remaining27}, &amp;: ${remainingAmp}, &quot;: ${remainingQuot}`);
+console.log(`Restantes, &#x27;: ${remaining27}, &amp;: ${remainingAmp}, &quot;: ${remainingQuot}`);

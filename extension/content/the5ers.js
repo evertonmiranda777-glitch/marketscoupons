@@ -55,7 +55,7 @@ async function mcSync5(opts = {}) {
     mcToast5(`The5ers: snap=${!!snapshot}, ${leads.length} leads`);
     await mcMark5('the5ers');
   } else {
-    mcToast5('The5ers: erro — ' + (out.error || '?'));
+    mcToast5('The5ers: erro, ' + (out.error || '?'));
   }
   return out;
 }

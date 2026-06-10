@@ -3,7 +3,7 @@ import { writeArticle, cdn } from './build-articles.mjs';
 const slug = 'vpa-volume-price-analysis';
 
 const meta = {
-  title: 'VPA — Volume Price Analysis: O Guia Definitivo Inspirado em Anna Coulling',
+  title: 'VPA, Volume Price Analysis: O Guia Definitivo Inspirado em Anna Coulling',
   slug,
   category: 'Análise Técnica',
   level: 'intermediario',
@@ -11,7 +11,7 @@ const meta = {
   lang: 'pt',
   icon: '📊',
   author: 'Markets Coupons',
-  excerpt: 'VPA não é mais um indicador. É a metodologia que Anna Coulling sistematizou a partir de Wyckoff para ler a INTENÇÃO institucional por trás de cada barra. Climaxes, no-supply, no-demand, divergências esforço×resultado, ciclo volumétrico em 4 fases — aplicado a NQ, ES, CL e GC sob a régua de prop firm.',
+  excerpt: 'VPA não é mais um indicador. É a metodologia que Anna Coulling sistematizou a partir de Wyckoff para ler a INTENÇÃO institucional por trás de cada barra. Climaxes, no-supply, no-demand, divergências esforço×resultado, ciclo volumétrico em 4 fases, aplicado a NQ, ES, CL e GC sob a régua de prop firm.',
   cover_url: cdn(slug, 'hero.jpeg')
 };
 
@@ -19,18 +19,18 @@ const body = `
 <img src="${cdn(slug, 'hero.jpeg')}" alt="VPA Volume Price Analysis - barra de candle com volume profile institucional sobreposto">
 
 <h2>O Único Dado que o Mercado Não Consegue Mentir</h2>
-<p>Anna Coulling abre <em>A Complete Guide to Volume Price Analysis</em> com uma provocação que ecoa por todos os 400+ páginas do livro: <strong>preço pode ser manipulado, volume não</strong>. Uma vela de manipulação custa centavos pra ser desenhada. Volume é o registro contábil de quem realmente apareceu pra negociar — e não tem como falsificar isso sem dinheiro real entrando.</p>
+<p>Anna Coulling abre <em>A Complete Guide to Volume Price Analysis</em> com uma provocação que ecoa por todos os 400+ páginas do livro: <strong>preço pode ser manipulado, volume não</strong>. Uma vela de manipulação custa centavos pra ser desenhada. Volume é o registro contábil de quem realmente apareceu pra negociar, e não tem como falsificar isso sem dinheiro real entrando.</p>
 <p>VPA é a leitura sistemática dessa contabilidade. É o método que Richard Wyckoff codificou nos anos 1930 observando os manipuladores da época em Wall Street, e que Coulling modernizou pra mercados eletrônicos com decimalização, dark pools e algoritmos. A essência é a mesma: <strong>cada barra de preço tem uma intenção por trás, e a intenção está escondida no volume</strong>.</p>
 <p>Pra trader de prop firm, VPA não é teoria. É a diferença entre passar uma avaliação respeitando 8% de drawdown e quebrar conta no terceiro pullback "óbvio" que era armadilha institucional. Quem lê volume opera com os grandes. Quem ignora vira liquidez deles.</p>
 
 <div class="callout callout-gold">
-<strong>Princípio fundamental de Coulling:</strong> nunca olhe pra uma barra de preço sem olhar imediatamente pra barra de volume embaixo. As duas SEMPRE contam a mesma história — ou expõem mentira da outra. É essa relação que vai te dizer se aquele rompimento é real ou se você está caindo numa armadilha.
+<strong>Princípio fundamental de Coulling:</strong> nunca olhe pra uma barra de preço sem olhar imediatamente pra barra de volume embaixo. As duas SEMPRE contam a mesma história, ou expõem mentira da outra. É essa relação que vai te dizer se aquele rompimento é real ou se você está caindo numa armadilha.
 </div>
 
 <h2>Por Que Volume Importa Mais que Preço</h2>
-<p>Imagine duas ondas de 2 metros de altura. Uma viaja sobre 50 metros de oceano profundo. A outra avança sobre 30 centímetros de água. Olhando só pra altura, são iguais. Mas a primeira é mar normal e a segunda é tsunami iminente — vai quebrar e devastar.</p>
+<p>Imagine duas ondas de 2 metros de altura. Uma viaja sobre 50 metros de oceano profundo. A outra avança sobre 30 centímetros de água. Olhando só pra altura, são iguais. Mas a primeira é mar normal e a segunda é tsunami iminente, vai quebrar e devastar.</p>
 <p>Coulling usa essa imagem: <strong>preço é a onda. Volume é a profundidade da água por baixo</strong>. Sem o volume você só vê a altura. Não tem como saber se aquele movimento tem sustentação ou se vai colapsar no próximo tick.</p>
-<p>Essa intuição vem de Charles Dow no século XIX, foi formalizada por Wyckoff no método de mesma linhagem, e se mantém matematicamente correta no mercado moderno. A razão é estrutural: pra um movimento de preço se sustentar, ele precisa de <em>liquidez</em> sendo consumida — e liquidez consumida é literalmente o que o volume mede.</p>
+<p>Essa intuição vem de Charles Dow no século XIX, foi formalizada por Wyckoff no método de mesma linhagem, e se mantém matematicamente correta no mercado moderno. A razão é estrutural: pra um movimento de preço se sustentar, ele precisa de <em>liquidez</em> sendo consumida, e liquidez consumida é literalmente o que o volume mede.</p>
 
 <h2>As Três Leis Wyckoff que Toda Análise VPA Aplica</h2>
 <p>Antes de qualquer setup, três leis precisam estar internalizadas. Não são indicadores. São mecânicas. Quem entende essas três muda a forma como lê qualquer gráfico.</p>
@@ -44,18 +44,18 @@ const body = `
 </tbody>
 </table>
 
-<h3>Lei 1 na prática — leitura de barras</h3>
-<p>Você está olhando o gráfico de NQ no 5 minutos. Aparece uma barra de queda forte de 25 pontos. Volume? 8.500 contratos contra média de 4.200. Lei 1 diz: muita oferta. Mas espere — onde fechou? Se o close ficou perto da máxima da barra, não foi oferta vencendo. Foi <em>compra absorvendo a venda</em>. Os 8.500 contratos representam vendedores dumping pra dentro de uma parede de compra institucional. Lei 3 reforça: esforço alto, resultado pequeno. Sinal típico de fundo.</p>
+<h3>Lei 1 na prática, leitura de barras</h3>
+<p>Você está olhando o gráfico de NQ no 5 minutos. Aparece uma barra de queda forte de 25 pontos. Volume? 8.500 contratos contra média de 4.200. Lei 1 diz: muita oferta. Mas espere, onde fechou? Se o close ficou perto da máxima da barra, não foi oferta vencendo. Foi <em>compra absorvendo a venda</em>. Os 8.500 contratos representam vendedores dumping pra dentro de uma parede de compra institucional. Lei 3 reforça: esforço alto, resultado pequeno. Sinal típico de fundo.</p>
 
 <div class="callout callout-blue">
-<strong>Dica de Coulling:</strong> aprenda a ler barras como narrativas. Cada barra tem três pontos críticos — open, close, e a relação com extremos (high/low). Volume modula a intensidade. Uma barra é frase. Sequência de barras é parágrafo. O gráfico inteiro é o livro que o Composite Man está escrevendo.
+<strong>Dica de Coulling:</strong> aprenda a ler barras como narrativas. Cada barra tem três pontos críticos, open, close, e a relação com extremos (high/low). Volume modula a intensidade. Uma barra é frase. Sequência de barras é parágrafo. O gráfico inteiro é o livro que o Composite Man está escrevendo.
 </div>
 
-<h3>Lei 2 na prática — paciência institucional</h3>
-<p>Lei mais subestimada. Mercado não sobe sem motivo. A pernada de 200 pontos no ES que parece "ter saído do nada" foi precedida de 3 semanas em range de 80 pontos onde, dia após dia, o volume nas pernadas de baixa foi caindo e nos repiques foi subindo. Os grandes acumularam. O efeito veio com horário próprio — não com o seu.</p>
+<h3>Lei 2 na prática, paciência institucional</h3>
+<p>Lei mais subestimada. Mercado não sobe sem motivo. A pernada de 200 pontos no ES que parece "ter saído do nada" foi precedida de 3 semanas em range de 80 pontos onde, dia após dia, o volume nas pernadas de baixa foi caindo e nos repiques foi subindo. Os grandes acumularam. O efeito veio com horário próprio, não com o seu.</p>
 
-<h3>Lei 3 na prática — detector de manipulação</h3>
-<p>Lei mais cirúrgica. Cada barra tem volume (esforço) e amplitude (resultado). Quando os dois estão alinhados — volume grande gerando movimento grande — o mercado é honesto. Quando há divergência, alguém está mentindo. E mentira no mercado tem nome: <strong>manipulação ou exaustão</strong>.</p>
+<h3>Lei 3 na prática, detector de manipulação</h3>
+<p>Lei mais cirúrgica. Cada barra tem volume (esforço) e amplitude (resultado). Quando os dois estão alinhados, volume grande gerando movimento grande, o mercado é honesto. Quando há divergência, alguém está mentindo. E mentira no mercado tem nome: <strong>manipulação ou exaustão</strong>.</p>
 
 <div class="mini-ui">
 <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
@@ -71,7 +71,7 @@ const body = `
 </div>
 
 <h2>O Ciclo Volumétrico em Quatro Fases</h2>
-<p>Todo ativo, em qualquer time-frame, atravessa o mesmo ciclo. Não é teoria — é descrição. Você vai ver isso no NQ no diário, no 5 minutos, no 1 minuto. Em altcoin, em ouro, em soja. O que muda é a velocidade. A estrutura é idêntica.</p>
+<p>Todo ativo, em qualquer time-frame, atravessa o mesmo ciclo. Não é teoria, é descrição. Você vai ver isso no NQ no diário, no 5 minutos, no 1 minuto. Em altcoin, em ouro, em soja. O que muda é a velocidade. A estrutura é idêntica.</p>
 
 <div class="mini-ui">
 <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
@@ -92,7 +92,7 @@ const body = `
 <p style="text-align:center;color:#8590a3;font-size:13px;margin:8px 0 0;">O ciclo Wyckoff/VPA completo. Cada fase tem assinatura volumétrica oposta da fase espelho.</p>
 </div>
 
-<h3>Fase 1 — Acumulação</h3>
+<h3>Fase 1, Acumulação</h3>
 <p>Após queda prolongada, ativo entra em range. Aparenta lateralização chata. Pra quem vê só preço, "esperar definir". Pra quem lê volume, é hora de ouro.</p>
 <ul>
 <li>Volume <strong>maior nos repiques</strong> (subidas dentro do range) do que nas pernadas de baixa</li>
@@ -101,7 +101,7 @@ const body = `
 <li>Range vai <strong>se estreitando</strong> com o tempo (volatilidade comprime antes de explodir)</li>
 </ul>
 
-<h3>Fase 2 — Markup</h3>
+<h3>Fase 2, Markup</h3>
 <p>A explosão. Volume expansivo nas barras de alta. Recuos rasos, com volume <strong>decrescente</strong> (sinal clássico de pullback saudável: quem vende é fraco, quem compra é forte).</p>
 <p>Na markup, preço respeita níveis técnicos com precisão quase artística. Médias móveis funcionam. Fibonacci funciona. Retração 38/50/61% segura. Por quê? Porque algoritmos institucionais foram programados pra comprar nesses níveis. A tendência se auto-realiza enquanto a Fase 2 dura.</p>
 
@@ -109,7 +109,7 @@ const body = `
 <strong>Sinal de força máxima:</strong> Fase 2 com pullbacks rasos + volume claramente decrescente em CADA pullback é um dos contextos mais lucrativos de todo o método. Setup: comprar quebra da máxima da última barra do pullback. Stop: abaixo da mínima da mesma barra. RR mínimo: 2:1.
 </div>
 
-<h3>Fase 3 — Distribuição</h3>
+<h3>Fase 3, Distribuição</h3>
 <p>Espelho da acumulação. Range no topo. Aparente lateralização. Mas:</p>
 <ul>
 <li>Volume <strong>maior nas pernadas de baixa</strong> dentro do range</li>
@@ -119,13 +119,13 @@ const body = `
 </ul>
 <p>Distribuição é a fase mais traiçoeira porque a narrativa pública geralmente está no auge da euforia. "Mercado em máxima histórica". "Fundamentos sólidos". Tudo verdade superficialmente. Por baixo, o caminhão está sendo carregado.</p>
 
-<h3>Fase 4 — Markdown</h3>
-<p>Espelho da Fase 2. Volume expansivo nas barras de queda, recuos com volume decrescente. Médias móveis funcionam — agora como resistência. Repiques contra-tendência sangram.</p>
+<h3>Fase 4, Markdown</h3>
+<p>Espelho da Fase 2. Volume expansivo nas barras de queda, recuos com volume decrescente. Médias móveis funcionam, agora como resistência. Repiques contra-tendência sangram.</p>
 <p>Termina quando o volume de venda para de crescer mesmo com novos fundos sendo feitos. Nesse momento, a Fase 1 do próximo ciclo começa a se desenhar.</p>
 
 <img src="${cdn(slug, 'cycle-acumulacao-markup.jpeg')}" alt="Diagrama de transição entre Fase 1 (acumulação) e Fase 2 (markup) com volumes anotados">
 
-<h2>Anatomia das Barras — O Vocabulário Coulling</h2>
+<h2>Anatomia das Barras, O Vocabulário Coulling</h2>
 <p>Não basta saber o ciclo. Tem que ler barra por barra. As que mais importam:</p>
 
 <table>
@@ -133,13 +133,13 @@ const body = `
 <tbody>
 <tr><td><strong>Selling Climax</strong></td><td>Barra grande de queda, volume colossal, close na metade superior</td><td>Capitulação varejo, absorção institucional</td><td>Fim de Fase 4 / início de Fase 1</td></tr>
 <tr><td><strong>Buying Climax</strong></td><td>Barra grande de alta, volume colossal, close na metade inferior</td><td>Distribuição institucional sob euforia retail</td><td>Fim de Fase 2 / início de Fase 3</td></tr>
-<tr><td><strong>No-Supply</strong></td><td>Pequena queda, volume abaixo da média</td><td>Ninguém quer vender — compradores em controle</td><td>Pullback dentro de Fase 2</td></tr>
-<tr><td><strong>No-Demand</strong></td><td>Pequena alta, volume abaixo da média</td><td>Ninguém quer comprar — vendedores vão aparecer</td><td>Repique dentro de Fase 4 ou exaustão de Fase 2</td></tr>
-<tr><td><strong>Stopping Volume</strong></td><td>Movimento forte, volume colossal, close longe do extremo</td><td>Parede institucional absorvendo</td><td>Qualquer fase — sinal de virada</td></tr>
+<tr><td><strong>No-Supply</strong></td><td>Pequena queda, volume abaixo da média</td><td>Ninguém quer vender, compradores em controle</td><td>Pullback dentro de Fase 2</td></tr>
+<tr><td><strong>No-Demand</strong></td><td>Pequena alta, volume abaixo da média</td><td>Ninguém quer comprar, vendedores vão aparecer</td><td>Repique dentro de Fase 4 ou exaustão de Fase 2</td></tr>
+<tr><td><strong>Stopping Volume</strong></td><td>Movimento forte, volume colossal, close longe do extremo</td><td>Parede institucional absorvendo</td><td>Qualquer fase, sinal de virada</td></tr>
 <tr><td><strong>Effort × Result</strong></td><td>Volume alto, amplitude pequena (ou inverso)</td><td>Manipulação ou vácuo de liquidez</td><td>Especialmente perto de níveis-chave</td></tr>
 <tr><td><strong>Spike Bar</strong></td><td>Pavio longo (cima ou baixo) com volume normal-alto</td><td>Stop hunt institucional varrendo liquidez</td><td>Ranges e níveis óbvios de stop</td></tr>
 <tr><td><strong>Wide Spread Up Close</strong></td><td>Range grande de alta, volume crescente, close na máxima</td><td>Demanda real, continuação saudável</td><td>Markup limpo</td></tr>
-<tr><td><strong>Narrow Spread Down</strong></td><td>Pequena queda, volume baixo</td><td>Falta de pressão vendedora — leitura forte de continuação alta</td><td>Pullback de Fase 2</td></tr>
+<tr><td><strong>Narrow Spread Down</strong></td><td>Pequena queda, volume baixo</td><td>Falta de pressão vendedora, leitura forte de continuação alta</td><td>Pullback de Fase 2</td></tr>
 </tbody>
 </table>
 
@@ -159,21 +159,21 @@ const body = `
 </tbody>
 </table>
 
-<h3>Setup 1 detalhado — pullback markup</h3>
+<h3>Setup 1 detalhado, pullback markup</h3>
 <p>O pão com manteiga do trader VPA. Frequência alta, RR favorável, taxa de acerto ~60%.</p>
 <p><strong>Cenário-tipo:</strong> NQ em tendência de alta no diário (Fase 2). No 15 minutos, preço fez nova máxima ontem e agora está fazendo pullback pra média de 20 ou retração de 50% da última pernada. Você vê uma barra de queda PEQUENA com volume claramente abaixo da média (no-supply). A próxima barra abre, vai testar a mínima, mas reverte e fecha forte. Quebra da máxima dessa barra de no-supply = sua entrada.</p>
-<p><strong>Por que funciona:</strong> a barra no-supply te confirma que ninguém quer vender naquele nível. Os algoritmos comprarão lá. Você está entrando exatamente onde a oferta secou — risco mínimo.</p>
+<p><strong>Por que funciona:</strong> a barra no-supply te confirma que ninguém quer vender naquele nível. Os algoritmos comprarão lá. Você está entrando exatamente onde a oferta secou, risco mínimo.</p>
 
-<h3>Setup 2 detalhado — reversão selling climax</h3>
+<h3>Setup 2 detalhado, reversão selling climax</h3>
 <p>Setup raro, mas com RR excepcional. Aparece talvez 2-3 vezes por mês em NQ ou ES no diário.</p>
-<p><strong>Pré-requisito:</strong> queda forte e prolongada (Fase 4 madura). Aparece uma barra de selling climax — amplitude grande de baixa, volume várias vezes a média, close longe da mínima. Não compre na barra do clímax. Espere a confirmação: a próxima ou as próximas barras precisam ser de alta com volume CRESCENTE. Sem volume crescente na confirmação, era só pausa.</p>
+<p><strong>Pré-requisito:</strong> queda forte e prolongada (Fase 4 madura). Aparece uma barra de selling climax, amplitude grande de baixa, volume várias vezes a média, close longe da mínima. Não compre na barra do clímax. Espere a confirmação: a próxima ou as próximas barras precisam ser de alta com volume CRESCENTE. Sem volume crescente na confirmação, era só pausa.</p>
 <p><strong>Por que funciona:</strong> selling climax = capitulação. Os varejistas que ainda estavam segurando finalmente desistiram, dumping suas posições. Os profissionais absorveram. Daí em diante, com varejo fora, a única direção barata pra continuar é... baixo. Mas não tem mais quem venda barato. Resultado: reversão.</p>
 
 <div class="callout callout-blue">
-<strong>Coulling sobre paciência:</strong> "O melhor trader VPA é aquele que consegue olhar 100 barras seguidas e não fazer nada. O setup vai aparecer. Forçar trade em barra ambígua é como apostar no semáforo amarelo — a estatística não te ama."
+<strong>Coulling sobre paciência:</strong> "O melhor trader VPA é aquele que consegue olhar 100 barras seguidas e não fazer nada. O setup vai aparecer. Forçar trade em barra ambígua é como apostar no semáforo amarelo, a estatística não te ama."
 </div>
 
-<h2>VPA Aplicado por Instrumento — NQ, ES, CL e GC</h2>
+<h2>VPA Aplicado por Instrumento, NQ, ES, CL e GC</h2>
 <p>VPA funciona excelente em mercados centralizados com volume reportado de verdade. Falha em forex menores e criptos pequenas. Pra trader de prop firm focado em futuros, esses são os 4 instrumentos onde o método é mais consistente:</p>
 
 <table>
@@ -229,11 +229,11 @@ const body = `
 <table>
 <thead><tr><th>Indicador</th><th>O que mostra</th><th>Como casa com VPA</th></tr></thead>
 <tbody>
-<tr><td><strong>Volume Profile</strong></td><td>Volume negociado por nível de preço, não por tempo</td><td>Identifica POC, VAH, VAL — confirma zonas de acumulação/distribuição</td></tr>
-<tr><td><strong>Cumulative Delta</strong></td><td>Diferença entre volume comprador agressivo (no ask) e vendedor agressivo (no bid)</td><td>Mostra se o volume é compra ou venda real — desambigua absorção</td></tr>
+<tr><td><strong>Volume Profile</strong></td><td>Volume negociado por nível de preço, não por tempo</td><td>Identifica POC, VAH, VAL, confirma zonas de acumulação/distribuição</td></tr>
+<tr><td><strong>Cumulative Delta</strong></td><td>Diferença entre volume comprador agressivo (no ask) e vendedor agressivo (no bid)</td><td>Mostra se o volume é compra ou venda real, desambigua absorção</td></tr>
 <tr><td><strong>OBV</strong> (On-Balance Volume)</td><td>Soma volume nos dias de alta, subtrai nos de baixa</td><td>Divergência OBV vs preço é um dos sinais mais antigos de exaustão</td></tr>
-<tr><td><strong>VWAP</strong></td><td>Média ponderada por volume</td><td>Nível institucional de benchmark — virou suporte/resistência institucional</td></tr>
-<tr><td><strong>Footprint</strong></td><td>Mostra delta + volume por nível dentro de cada candle</td><td>Granularidade máxima — confirma absorção barra a barra</td></tr>
+<tr><td><strong>VWAP</strong></td><td>Média ponderada por volume</td><td>Nível institucional de benchmark, virou suporte/resistência institucional</td></tr>
+<tr><td><strong>Footprint</strong></td><td>Mostra delta + volume por nível dentro de cada candle</td><td>Granularidade máxima, confirma absorção barra a barra</td></tr>
 </tbody>
 </table>
 
@@ -244,7 +244,7 @@ const body = `
 <h2>O Que Muda na Sua Mesa Amanhã</h2>
 <p>Se você chegou até aqui, três coisas já mudaram, mesmo que ainda não pareça:</p>
 <p><strong>Primeiro:</strong> você nunca mais vai olhar uma barra de alta com volume gigantesco da mesma forma. Antes de comprar, vai instintivamente perguntar: onde está o close? No topo do range? Comprador no controle. No meio? Cuidado, alguém vendeu pra dentro. Esse simples reflexo te separa de 80% dos traders varejo.</p>
-<p><strong>Segundo:</strong> consolidações deixaram de ser tédio. Viraram informação rica. Você vai ver onde o volume está crescendo dentro do range — nos repiques (acumulação) ou nas pernadas de baixa (distribuição) — e vai entrar no rompimento com convicção, não com torcida.</p>
+<p><strong>Segundo:</strong> consolidações deixaram de ser tédio. Viraram informação rica. Você vai ver onde o volume está crescendo dentro do range, nos repiques (acumulação) ou nas pernadas de baixa (distribuição), e vai entrar no rompimento com convicção, não com torcida.</p>
 <p><strong>Terceiro:</strong> a tentação de operar TUDO diminui. VPA filtra. Em uma sessão de NQ, talvez só dois ou três setups limpos apareçam. Você vai se recusar a operar o resto. Sua conta vai agradecer.</p>
 
 <div class="callout callout-gold">
@@ -254,22 +254,22 @@ const body = `
 <li>2. Volume médio das últimas 20 barras no time-frame de operação</li>
 <li>3. Existe barra com volume &gt; 1.5× a média nas últimas 10 barras? Onde fechou?</li>
 <li>4. Pullback atual: volume está crescendo ou diminuindo?</li>
-<li>5. Próximo nível-chave (suporte, resistência, VWAP) — preço está chegando com volume crescente ou decrescente?</li>
+<li>5. Próximo nível-chave (suporte, resistência, VWAP), preço está chegando com volume crescente ou decrescente?</li>
 <li>6. Tem evento de notícia nas próximas 30min? Se sim, sai.</li>
 </ul>
 </div>
 
-<p>VPA não é santo graal — não existe. É lente. Mais clara, mais profunda, mais cínica que a maioria das outras lentes disponíveis. Trader com VPA bem internalizado, regras de gestão duras, e disciplina pra esperar — esse trader passa em prop firm. Não é o setup que define quem aprova. É a leitura. E leitura, no mercado moderno, é VPA.</p>
+<p>VPA não é santo graal, não existe. É lente. Mais clara, mais profunda, mais cínica que a maioria das outras lentes disponíveis. Trader com VPA bem internalizado, regras de gestão duras, e disciplina pra esperar, esse trader passa em prop firm. Não é o setup que define quem aprova. É a leitura. E leitura, no mercado moderno, é VPA.</p>
 
 <h2>Leituras Recomendadas</h2>
 <ul>
-<li><strong>A Complete Guide to Volume Price Analysis</strong> — Anna Coulling. O livro mais didático e prático sobre VPA moderno.</li>
-<li><strong>Forex for Beginners</strong> — Anna Coulling. Complementa VPA com aplicação em forex e leitura de tick volume.</li>
-<li><strong>The Wyckoff Method</strong> — material original de Richard D. Wyckoff (anos 1930). Denso, mas é a fonte.</li>
-<li><strong>Trades About to Happen</strong> — David H. Weis. Codificou em gráficos modernos os ensinamentos clássicos.</li>
-<li><strong>Mind Over Markets</strong> — James Dalton. Foco em Market Profile, complementa VPA.</li>
-<li><strong>Trading in the Zone</strong> — Mark Douglas. Sem disciplina psicológica, nenhum framework sobrevive ao primeiro drawdown.</li>
-<li><strong>Volume Profile: The Insider's Guide to Trading</strong> — Trader Dale. Aplicação moderna do Profile + VPA.</li>
+<li><strong>A Complete Guide to Volume Price Analysis</strong>, Anna Coulling. O livro mais didático e prático sobre VPA moderno.</li>
+<li><strong>Forex for Beginners</strong>, Anna Coulling. Complementa VPA com aplicação em forex e leitura de tick volume.</li>
+<li><strong>The Wyckoff Method</strong>, material original de Richard D. Wyckoff (anos 1930). Denso, mas é a fonte.</li>
+<li><strong>Trades About to Happen</strong>, David H. Weis. Codificou em gráficos modernos os ensinamentos clássicos.</li>
+<li><strong>Mind Over Markets</strong>, James Dalton. Foco em Market Profile, complementa VPA.</li>
+<li><strong>Trading in the Zone</strong>, Mark Douglas. Sem disciplina psicológica, nenhum framework sobrevive ao primeiro drawdown.</li>
+<li><strong>Volume Profile: The Insider's Guide to Trading</strong>, Trader Dale. Aplicação moderna do Profile + VPA.</li>
 </ul>
 
 <hr>

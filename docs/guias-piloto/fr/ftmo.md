@@ -23,11 +23,11 @@ schema_types: [Article, FAQPage, HowTo, Review]
 
 # Avis FTMO 2026 : 1-Step vs 2-Step, Règles, Payouts et Scaling Plan
 
-*Dernière mise à jour : 17 avril 2026 — 15 min de lecture*
+*Dernière mise à jour : 17 avril 2026, 15 min de lecture*
 
-![Avis FTMO 2026 — hero éditorial avec visualisation de données forex globales](../img/ftmo-hero.png)
+![Avis FTMO 2026, hero éditorial avec visualisation de données forex globales](../img/ftmo-hero.png)
 
-> **TL;DR** — FTMO est la plus grande prop firm multi-actifs au monde, notée **4,8/5 sur Trustpilot avec plus de 41 000 avis** et active depuis 2015. Le plan d'entrée sur le compte 10K US$ coûte **89 €**, le profit split est **jusqu'à 90 %**, et l'évaluation n'a **aucune limite de temps**. FTMO propose désormais deux voies : le **2-Step Challenge** classique (targets de 10 % puis 5 %) et le nouveau **1-Step Challenge** (cible unique de 10 % avec une max loss de 10 % plus large). Les deux règles qui décident du sort de la plupart des traders : la **max daily loss de 5 %** et la **max overall loss de 10 %**. Les deux sont expliquées en détail ci-dessous.
+> **TL;DR**, FTMO est la plus grande prop firm multi-actifs au monde, notée **4,8/5 sur Trustpilot avec plus de 41 000 avis** et active depuis 2015. Le plan d'entrée sur le compte 10K US$ coûte **89 €**, le profit split est **jusqu'à 90 %**, et l'évaluation n'a **aucune limite de temps**. FTMO propose désormais deux voies : le **2-Step Challenge** classique (targets de 10 % puis 5 %) et le nouveau **1-Step Challenge** (cible unique de 10 % avec une max loss de 10 % plus large). Les deux règles qui décident du sort de la plupart des traders : la **max daily loss de 5 %** et la **max overall loss de 10 %**. Les deux sont expliquées en détail ci-dessous.
 
 | Faits Rapides | |
 |---|---|
@@ -57,16 +57,16 @@ schema_types: [Article, FAQPage, HowTo, Review]
 
 FTMO est une firm d'évaluation de trading propriétaire dont le siège est à Prague, en République tchèque, qui opère depuis 2015. Elle offre aux traders retail un compte simulé pour prouver leurs compétences, et les traders qui passent l'évaluation opèrent un compte démo financé dont la performance est répliquée dans l'opération de capital live de FTMO. Chaque reward versé au trader provient des fonds propres de FTMO.
 
-FTMO est la marque la plus grande du secteur des prop firms en nombre de clients. En 2026, elle rapporte plus de **3,5 millions de clients dans le monde**, avec des rewards cumulatifs versés dépassant **500 millions US$**. Sa page Trustpilot totalise plus de 41 000 avis avec une moyenne de **4,8/5** — l'un des signaux de confiance publics les plus forts du secteur.
+FTMO est la marque la plus grande du secteur des prop firms en nombre de clients. En 2026, elle rapporte plus de **3,5 millions de clients dans le monde**, avec des rewards cumulatifs versés dépassant **500 millions US$**. Sa page Trustpilot totalise plus de 41 000 avis avec une moyenne de **4,8/5**, l'un des signaux de confiance publics les plus forts du secteur.
 
-Contrairement aux firms futures-only américaines (Apex, Bulenox, Take Profit Trader), FTMO est une opération **multi-actifs**. Vous pouvez trader des paires forex, des indices majeurs (NAS100, SPX500, DAX, FTSE, Nikkei), des matières premières (XAU/USD, XAG/USD, WTI, Brent, gaz naturel), de la crypto (BTC, ETH et des altcoins sélectionnés en CFD), des actions individuelles en CFD, et des obligations d'État — le tout depuis un seul compte financé.
+Contrairement aux firms futures-only américaines (Apex, Bulenox, Take Profit Trader), FTMO est une opération **multi-actifs**. Vous pouvez trader des paires forex, des indices majeurs (NAS100, SPX500, DAX, FTSE, Nikkei), des matières premières (XAU/USD, XAG/USD, WTI, Brent, gaz naturel), de la crypto (BTC, ETH et des altcoins sélectionnés en CFD), des actions individuelles en CFD, et des obligations d'État, le tout depuis un seul compte financé.
 
 ### Ce qui distingue FTMO
 
 Les trois éléments qui distinguent FTMO du reste du peloton des prop firms :
 
 1. **Track record.** Dix ans d'opération, l'une des deux seules firms qui a survécu indemne au remaniement réglementaire MetaQuotes / américain de 2024
-2. **Aucune limite de temps sur l'évaluation.** Vous avez un temps illimité pour atteindre le profit target — la seule pression temporelle vient de votre propre discipline
+2. **Aucune limite de temps sur l'évaluation.** Vous avez un temps illimité pour atteindre le profit target, la seule pression temporelle vient de votre propre discipline
 3. **Remboursement des frais au premier payout.** Les frais d'entrée sont remboursés à 100 % lorsque vous demandez votre premier retrait de reward sur le compte financé, rendant le coût effectif d'une évaluation réussie nul
 
 ---
@@ -102,7 +102,7 @@ Le 1-Step a été lancé fin 2025 et utilise le même barème de frais. Vous cho
 
 ### Aucun frais récurrent
 
-FTMO **ne** facture pas d'abonnements mensuels, de frais de données, de frais de plateforme, ni aucun coût récurrent. Vos frais d'évaluation sont le coût total, et ils sont remboursés à votre premier payout réussi — le coût net d'une évaluation passée est donc **nul**.
+FTMO **ne** facture pas d'abonnements mensuels, de frais de données, de frais de plateforme, ni aucun coût récurrent. Vos frais d'évaluation sont le coût total, et ils sont remboursés à votre premier payout réussi, le coût net d'une évaluation passée est donc **nul**.
 
 ---
 
@@ -142,7 +142,7 @@ Le 1-Step est plus rapide à financer mais présente des différences subtiles :
 |---|---|---|
 | Phases | 2 (Challenge + Verification) | 1 (Challenge seul) |
 | Profit target Phase 1 | 10 % | 10 % |
-| Profit target Phase 2 | 5 % | — |
+| Profit target Phase 2 | 5 % |, |
 | Max daily loss | 5 % | 5 % |
 | Max overall loss | 10 % | 10 % |
 | Jours de trading min | 4 par phase (8 au total) | 4 au total |
@@ -160,7 +160,7 @@ Choisissez le **2-Step** si vous voulez le plus de flexibilité (compte Swing, t
 
 ## Règles d'évaluation (Trading Objectives)
 
-FTMO appelle son ensemble de règles les « Trading Objectives ». Ce sont les contraintes strictes que vous devez respecter pendant l'évaluation. Manquer à l'une d'entre elles et le compte est résilié — pas de reset à moins de racheter.
+FTMO appelle son ensemble de règles les « Trading Objectives ». Ce sont les contraintes strictes que vous devez respecter pendant l'évaluation. Manquer à l'une d'entre elles et le compte est résilié, pas de reset à moins de racheter.
 
 ### Profit target
 
@@ -193,7 +193,7 @@ C'est la principale différence opérationnelle entre les deux types de compte.
 
 ### Règle de cohérence (implicite)
 
-FTMO **n'a pas** de pourcentage de cohérence codé en dur comme la règle des 50 % d'Apex. Cependant, le processus de review du compte financé inclut une vérification subjective « trading selon le marché réel » : si vos résultats proviennent massivement d'un seul trade imprudent, l'équipe de compliance peut signaler le payout. En pratique, cela ne se déclenche presque jamais pour les traders avec un risque normal (1-2 % par trade) — cela n'attrape que les joueurs qui risquent plus de 10 % sur une seule position.
+FTMO **n'a pas** de pourcentage de cohérence codé en dur comme la règle des 50 % d'Apex. Cependant, le processus de review du compte financé inclut une vérification subjective « trading selon le marché réel » : si vos résultats proviennent massivement d'un seul trade imprudent, l'équipe de compliance peut signaler le payout. En pratique, cela ne se déclenche presque jamais pour les traders avec un risque normal (1-2 % par trade), cela n'attrape que les joueurs qui risquent plus de 10 % sur une seule position.
 
 ---
 
@@ -201,7 +201,7 @@ FTMO **n'a pas** de pourcentage de cohérence codé en dur comme la règle des 5
 
 ![Diagramme des règles de drawdown FTMO montrant les seuils de 5 % daily loss et 10 % max loss](../img/ftmo-drawdown-diagram.png)
 
-Les règles de drawdown sont la partie la plus incomprise de toute évaluation de prop firm. FTMO utilise un système de drawdown **statique**, qui est plus favorable aux traders qu'un système trailing — mais toujours punitif si vous dimensionnez trop gros.
+Les règles de drawdown sont la partie la plus incomprise de toute évaluation de prop firm. FTMO utilise un système de drawdown **statique**, qui est plus favorable aux traders qu'un système trailing, mais toujours punitif si vous dimensionnez trop gros.
 
 ### Max Daily Loss (5 %)
 
@@ -213,7 +213,7 @@ La daily loss se réinitialise à **minuit CET** (heure serveur de Prague) tous 
 
 ### Max Loss (10 %)
 
-La Max Loss est de 10 % du solde initial du compte. Pour un compte de 100K US$, cela fait 10 000 US$. Ce seuil est **statique** — il ne suit pas votre pic de balance, il ne se met pas à jour à mesure que vous faites du profit. Il reste à `solde initial − 10 %` pour toute la durée de l'évaluation et du compte financé.
+La Max Loss est de 10 % du solde initial du compte. Pour un compte de 100K US$, cela fait 10 000 US$. Ce seuil est **statique**, il ne suit pas votre pic de balance, il ne se met pas à jour à mesure que vous faites du profit. Il reste à `solde initial − 10 %` pour toute la durée de l'évaluation et du compte financé.
 
 Pour un compte de 100K US$ : `100 000 US$ − 10 000 US$ = 90 000 US$`. Si votre equity touche un jour 90 000 US$, le compte est résilié.
 
@@ -221,7 +221,7 @@ Pour un compte de 100K US$ : `100 000 US$ − 10 000 US$ = 90 000 US$`. Si votre
 
 La daily loss et l'overall loss fonctionnent en parallèle. Vous enfreignez celle que vous touchez en premier.
 
-**Exemple — Jour 1 sur un compte de 100K US$ :**
+**Exemple, Jour 1 sur un compte de 100K US$ :**
 - Début : 100 000 US$
 - Equity en milieu de journée : 95 500 US$ (−4,5 % depuis le début)
 - Un autre petit trade perdant : l'equity tombe à 95 000 US$
@@ -230,7 +230,7 @@ La daily loss et l'overall loss fonctionnent en parallèle. Vous enfreignez cell
 Même compte, séquence différente :
 - Clôture Jour 1 : 103 000 US$ (+3 %)
 - Clôture Jour 2 : 92 000 US$ (−11 % depuis le début)
-- Overall loss : 100 000 US$ − 92 000 US$ = 8 000 US$ = **8,0 % — toujours OK sur l'overall**
+- Overall loss : 100 000 US$ − 92 000 US$ = 8 000 US$ = **8,0 %, toujours OK sur l'overall**
 - Mais en intraday au Jour 2, vous êtes descendu de 103K US$ à 92K US$ = −10,7 % en un jour → **INFRACTION daily loss** déclenchée pendant la session
 
 ### Pourquoi FTMO utilise un drawdown statique
@@ -240,7 +240,7 @@ Le drawdown statique est plus favorable que le trailing :
 - Vous pouvez constituer un buffer de profit et ensuite prendre plus de risque plus tard sans que le drawdown ne se resserre sur vous
 - Les erreurs en début d'évaluation font moins mal que sur un compte trailing
 
-Le compromis est que la règle daily loss est relativement agressive — 5 % est plus serré que ce que la plupart des firms autorisent en daily. Cela récompense les traders qui respectent le position sizing et punit le revenge trading.
+Le compromis est que la règle daily loss est relativement agressive, 5 % est plus serré que ce que la plupart des firms autorisent en daily. Cela récompense les traders qui respectent le position sizing et punit le revenge trading.
 
 ---
 
@@ -255,14 +255,14 @@ Techniquement, le FTMO Account est un compte démo simulé. FTMO prend vos trade
 - **Capital de départ :** Même taille que votre évaluation (10K–200K US$)
 - **Profit split :** 80 % de base. Monte à 90 % via le Scaling Plan ou le Premium Programme
 - **Règles de drawdown sur le compte financé :** Mêmes 5 % daily / 10 % max loss (absolu, calculé depuis le solde initial)
-- **Période de trading :** Indéfinie — le compte reste actif tant que vous respectez les règles et montrez une activité régulière
+- **Période de trading :** Indéfinie, le compte reste actif tant que vous respectez les règles et montrez une activité régulière
 - **Activité minimum :** Au moins un trade tous les 30 jours
 
 ### Le Scaling Plan (+25 % tous les 4 mois)
 
 ![Visualisation du FTMO Scaling Plan montrant une croissance du compte de 25 % tous les 4 mois](../img/ftmo-scaling-plan.png)
 
-FTMO récompense les traders constants avec une **mise à niveau automatique de la taille du compte tous les 4 mois** — en supposant que vous atteigniez les exigences :
+FTMO récompense les traders constants avec une **mise à niveau automatique de la taille du compte tous les 4 mois**, en supposant que vous atteigniez les exigences :
 
 - **Exigence :** Au minimum **10 % de profit cumulé** sur votre compte FTMO sur les 4 derniers mois
 - **Exigence :** Au moins 2 des 4 derniers mois doivent être profitables
@@ -293,7 +293,7 @@ Prime et Supreme sont des programmes de reward par paliers pour les traders FTMO
 
 ## Plateformes de trading
 
-FTMO prend en charge quatre plateformes. Votre choix est permanent pour la durée de vie de ce compte d'évaluation — vous ne pouvez pas changer en cours de challenge.
+FTMO prend en charge quatre plateformes. Votre choix est permanent pour la durée de vie de ce compte d'évaluation, vous ne pouvez pas changer en cours de challenge.
 
 ### MetaTrader 4 (MT4)
 
@@ -332,7 +332,7 @@ FTMO propose deux types de compte sur le produit 2-Step. Le compte Swing est con
 ### Compte normal
 
 - **Spreads standards** (parmi les plus serrés du prop trading)
-- **Pas de holding sur le week-end** — toutes les positions doivent être clôturées avant la fermeture du marché vendredi
+- **Pas de holding sur le week-end**, toutes les positions doivent être clôturées avant la fermeture du marché vendredi
 - **Trading restreint pendant les news à fort impact majeurs** (2 minutes avant et après, spécifique à la devise)
 - **Commission plus basse** sur les paires forex
 
@@ -342,7 +342,7 @@ FTMO propose deux types de compte sur le produit 2-Step. Le compte Swing est con
 - **Les positions peuvent être tenues sur les week-ends**
 - **News trading autorisé sans restriction** (pas de blackout de 2 minutes)
 - **Mêmes profit targets et règles de drawdown que Normal**
-- **Disponible uniquement en 2-Step** — le 1-Step n'a pas de variante Swing
+- **Disponible uniquement en 2-Step**, le 1-Step n'a pas de variante Swing
 
 Le compte Swing est le bon choix pour tout trader dont la stratégie nécessite de tenir à travers NFP, CPI, FOMC, ou de garder les trades ouverts du vendredi au lundi. Le spread plus large est le coût de la flexibilité opérationnelle.
 
@@ -356,13 +356,13 @@ FTMO a l'un des mécanismes de payout les plus propres du secteur, avec un track
 
 - **Premier payout :** Disponible après **14 jours** de trading sur le compte financé (période de détention minimum)
 - **Payouts suivants :** À la demande, avec un minimum de 14 jours entre chaque demande de payout
-- **Votre choix d'horaire :** Vous définissez votre propre jour de payout — FTMO ne le dicte pas
+- **Votre choix d'horaire :** Vous définissez votre propre jour de payout, FTMO ne le dicte pas
 
 ### Profit split
 
 - **80 % de base** sur le compte financé
 - **90 %** après le premier palier du Scaling Plan ou le statut Prime
-- **100 % de vos profits pendant le Free Trial et l'évaluation** (ce qui est académique — ceux-ci sont simulés seulement, non payés)
+- **100 % de vos profits pendant le Free Trial et l'évaluation** (ce qui est académique, ceux-ci sont simulés seulement, non payés)
 
 ### Méthodes de payout
 
@@ -418,11 +418,11 @@ BTC/USD, ETH/USD, XRP/USD, LTC/USD, ADA/USD, SOL/USD, DOT/USD, DOGE/USD, et une 
 
 ### Actions (CFD)
 
-50+ actions américaines large-cap (AAPL, MSFT, NVDA, TSLA, META, GOOGL, AMZN, etc.) et certains noms européens. Exécution CFD seulement — pas de propriété réelle des actions.
+50+ actions américaines large-cap (AAPL, MSFT, NVDA, TSLA, META, GOOGL, AMZN, etc.) et certains noms européens. Exécution CFD seulement, pas de propriété réelle des actions.
 
 ### Obligations
 
-U.S. Treasury 10 ans, Bund allemand, Gilts britanniques — principalement pour les traders macro.
+U.S. Treasury 10 ans, Bund allemand, Gilts britanniques, principalement pour les traders macro.
 
 ---
 
@@ -449,26 +449,26 @@ Le news trading est **autorisé** sur les comptes Swing. Sur les comptes Normal,
 ### Avantages
 
 - **Le plus long track record** du secteur (depuis 2015, plus de 500M US$ versés aux traders)
-- **4,8/5 Trustpilot avec plus de 41 000 avis** — le plus haut score de confiance de toute prop firm
-- **Remboursement des frais à 100 %** au premier payout — le coût net d'une évaluation passée est nul
-- **Temps illimité** pour passer l'évaluation — pas de deadline artificielle
+- **4,8/5 Trustpilot avec plus de 41 000 avis**, le plus haut score de confiance de toute prop firm
+- **Remboursement des frais à 100 %** au premier payout, le coût net d'une évaluation passée est nul
+- **Temps illimité** pour passer l'évaluation, pas de deadline artificielle
 - **Multi-actifs** (forex, indices, matières premières, crypto, actions, obligations sur un seul compte)
 - **Jusqu'à 90 % de profit split** via le Scaling Plan
 - **Scaling automatique +25 % tous les 4 mois** sur les comptes constants
-- **Quatre plateformes supportées** — MT4, MT5, cTrader, DXtrade
+- **Quatre plateformes supportées**, MT4, MT5, cTrader, DXtrade
 - **Option compte Swing** pour les news traders et position traders
-- **Live chat 24/5 en 20 langues** — l'une des meilleures opérations de support du prop trading
+- **Live chat 24/5 en 20 langues**, l'une des meilleures opérations de support du prop trading
 
 ### Inconvénients
 
 - **Frais d'entrée plus élevés** que les firms futures américaines (89 € pour 10K US$ vs 19,90 US$ sur Apex 25K)
-- **5 % daily loss sur l'equity** est serré — les pertes flottantes comptent, donc les stratégies volatiles sont stoppées plus rapidement
-- **Pas de réduction cash à vie** — promos occasionnelles mais pas de programme de coupon en rolling
-- **Le 2-Step prend plus de temps** — 8 jours de trading minimum vs 4 en 1-Step (ou 1 jour minimum sur Apex)
-- **Review stricte « trading selon le marché réel »** — vérification de compliance subjective avant le premier payout sur les comptes signalés
-- **Accès américain limité** — FTMO n'intègre pas les traders de tous les états américains en raison de restrictions réglementaires
-- **CFD-only pour les actions et la crypto** — pas de propriété d'actif réelle, frais de financement appliqués sur les holds overnight
-- **Le compte Normal interdit le holding week-end et news** — Swing requis pour ces styles (coûte un spread plus large)
+- **5 % daily loss sur l'equity** est serré, les pertes flottantes comptent, donc les stratégies volatiles sont stoppées plus rapidement
+- **Pas de réduction cash à vie**, promos occasionnelles mais pas de programme de coupon en rolling
+- **Le 2-Step prend plus de temps**, 8 jours de trading minimum vs 4 en 1-Step (ou 1 jour minimum sur Apex)
+- **Review stricte « trading selon le marché réel »**, vérification de compliance subjective avant le premier payout sur les comptes signalés
+- **Accès américain limité**, FTMO n'intègre pas les traders de tous les états américains en raison de restrictions réglementaires
+- **CFD-only pour les actions et la crypto**, pas de propriété d'actif réelle, frais de financement appliqués sur les holds overnight
+- **Le compte Normal interdit le holding week-end et news**, Swing requis pour ces styles (coûte un spread plus large)
 
 ---
 
@@ -488,10 +488,10 @@ Le +25 % automatique tous les 4 mois est une véritable voie vers un capital de 
 
 **Qui devrait chercher ailleurs :**
 
-- Si vous tradez les futures (ES, NQ, CL, GC) — FTMO n'offre pas de vrais futures, seulement des CFDs d'indices. Allez avec Apex ou Bulenox
-- Si vous voulez le point d'entrée le moins cher — Apex avec le coupon MARKET est moins cher sur le 25K US$
-- Si vous voulez aucune review de cohérence du tout — les anciennes versions de FundingPips ou The5ers ont des gates de compliance plus lâches
-- Si vous êtes basé dans certains états américains — vérifiez la liste de juridictions de FTMO avant l'achat
+- Si vous tradez les futures (ES, NQ, CL, GC), FTMO n'offre pas de vrais futures, seulement des CFDs d'indices. Allez avec Apex ou Bulenox
+- Si vous voulez le point d'entrée le moins cher, Apex avec le coupon MARKET est moins cher sur le 25K US$
+- Si vous voulez aucune review de cohérence du tout, les anciennes versions de FundingPips ou The5ers ont des gates de compliance plus lâches
+- Si vous êtes basé dans certains états américains, vérifiez la liste de juridictions de FTMO avant l'achat
 
 ---
 
@@ -515,7 +515,7 @@ Les deux ciblent le même client (retail forex multi-actifs). FundedNext est moi
 
 ### FTMO vs Apex
 
-Classes d'actifs différentes, donc pas en concurrence directe. Si vous êtes trader futures, Apex est le défaut. Si vous tradez forex ou indices, FTMO est le défaut. Un petit nombre de traders utilisent les deux simultanément — Apex pour le scalping ES/NQ de session américaine et FTMO pour le swing EUR/USD overnight.
+Classes d'actifs différentes, donc pas en concurrence directe. Si vous êtes trader futures, Apex est le défaut. Si vous tradez forex ou indices, FTMO est le défaut. Un petit nombre de traders utilisent les deux simultanément, Apex pour le scalping ES/NQ de session américaine et FTMO pour le swing EUR/USD overnight.
 
 ### FTMO vs FundingPips
 
@@ -532,7 +532,7 @@ Oui. FTMO opère depuis 2015, a versé plus de 500M US$ en rewards, maintient 4,
 Le minimum est de 4 jours de trading par phase (soit 8 jours de trading pour le 2-Step, 4 pour le 1-Step). En pratique, la plupart des traders qui passent prennent 2 à 6 semaines sur le 2-Step et 1 à 3 semaines sur le 1-Step.
 
 **Que se passe-t-il si j'échoue au FTMO Challenge ?**  
-Le compte est résilié et les frais sont perdus. Vous pouvez acheter un nouveau challenge à tout moment — FTMO ne restreint pas les tentatives répétées. Il n'y a pas d'option officielle de « reset », mais les frais sont assez bas pour que l'achat d'un nouveau challenge soit généralement moins cher qu'un reset sur de nombreuses autres firms.
+Le compte est résilié et les frais sont perdus. Vous pouvez acheter un nouveau challenge à tout moment, FTMO ne restreint pas les tentatives répétées. Il n'y a pas d'option officielle de « reset », mais les frais sont assez bas pour que l'achat d'un nouveau challenge soit généralement moins cher qu'un reset sur de nombreuses autres firms.
 
 **Puis-je utiliser des expert advisors (EAs) sur FTMO ?**  
 Oui, sur MT4 et MT5. Le copy trading depuis un service de signaux payant n'est pas autorisé, mais vos propres EAs et votre propre copy trading entre vos propres comptes FTMO sont tous deux autorisés.
@@ -562,7 +562,7 @@ FTMO a une opération spécifique aux États-Unis (FTMO US) pour certains états
 Il n'y a pas de plafond sur les gains. Votre part de profit de 80-90 % s'applique à chaque dollar généré. Les traders en haut de la distribution FTMO ont collecté des rewards annuels de plusieurs centaines de milliers de dollars.
 
 **Qu'est-ce que le FTMO Discipline Score ?**  
-Une métrique propriétaire qui évalue votre comportement de gestion des risques pendant l'évaluation. Elle est informative seulement — elle ne bloque pas les passes — mais elle est utilisée pour la qualification au Premium Programme.
+Une métrique propriétaire qui évalue votre comportement de gestion des risques pendant l'évaluation. Elle est informative seulement, elle ne bloque pas les passes, mais elle est utilisée pour la qualification au Premium Programme.
 
 **FTMO paie-t-il de l'argent réel ou simulé ?**  
 De l'argent réel. Les profits générés sur le compte financé simulé sont payés depuis le capital réel de FTMO via virement, Rise, Skrill, Deel, ou cryptomonnaie.
@@ -571,37 +571,37 @@ De l'argent réel. Les profits générés sur le compte financé simulé sont pa
 
 ## Comment démarrer sur FTMO : guide en 8 étapes
 
-**Étape 1 — Essayez d'abord le Free Trial.**  
+**Étape 1, Essayez d'abord le Free Trial.**  
 FTMO propose un Free Trial illimité. Prenez au moins 5 jours de trading dessus pour vous familiariser avec les spreads, l'exécution et les particularités de la plateforme avant de payer pour le vrai challenge.
 
-**Étape 2 — Choisissez votre produit (1-Step ou 2-Step).**  
+**Étape 2, Choisissez votre produit (1-Step ou 2-Step).**  
 Si vous êtes un swing ou position trader discipliné, choisissez 2-Step. Si vous êtes un scalper intraday expérimenté qui veut un minimum de friction, choisissez 1-Step.
 
-**Étape 3 — Choisissez votre taille de compte.**  
-Le palier 100K US$ a le meilleur équilibre entre budget de risque et prix accessible. Le palier 10K US$ est le point d'entrée le moins cher à 89 € — idéal si vous voulez prouver votre stratégie sur FTMO avant de scaler le capital.
+**Étape 3, Choisissez votre taille de compte.**  
+Le palier 100K US$ a le meilleur équilibre entre budget de risque et prix accessible. Le palier 10K US$ est le point d'entrée le moins cher à 89 €, idéal si vous voulez prouver votre stratégie sur FTMO avant de scaler le capital.
 
-**Étape 4 — Choisissez votre plateforme.**  
+**Étape 4, Choisissez votre plateforme.**  
 MT5 est le défaut le plus sûr. Choisissez MT4 seulement si vous avez des EAs legacy. Choisissez cTrader si vous êtes un scalper à spread serré. Choisissez DXtrade si vous voulez un accès navigateur uniquement.
 
-**Étape 5 — Choisissez Normal ou Swing.**  
+**Étape 5, Choisissez Normal ou Swing.**  
 Swing si vous tenez overnight ou tradez les news. Normal si vous clôturez tout en intraday. Swing n'est disponible que sur le 2-Step.
 
-**Étape 6 — Complétez le KYC (FTMO Identity).**  
-Téléchargez une preuve d'identité et un justificatif de domicile. C'est une exigence stricte avant votre premier payout. Faites-le tôt — la vérification peut prendre 24-72 heures.
+**Étape 6, Complétez le KYC (FTMO Identity).**  
+Téléchargez une preuve d'identité et un justificatif de domicile. C'est une exigence stricte avant votre premier payout. Faites-le tôt, la vérification peut prendre 24-72 heures.
 
-**Étape 7 — Tradez l'évaluation.**  
-Tenez-vous à 1-2 % de risque par trade. Respectez religieusement le cap daily de 5 % — c'est la cause n°1 d'échec d'évaluation. Ne chassez pas le profit target ; laissez-le venir à vous.
+**Étape 7, Tradez l'évaluation.**  
+Tenez-vous à 1-2 % de risque par trade. Respectez religieusement le cap daily de 5 %, c'est la cause n°1 d'échec d'évaluation. Ne chassez pas le profit target ; laissez-le venir à vous.
 
-**Étape 8 — Passez, activez et demandez votre premier payout après 14 jours.**  
+**Étape 8, Passez, activez et demandez votre premier payout après 14 jours.**  
 Une fois que vous avez passé la ou les évaluations, signez le FTMO Account Agreement, attendez 14 jours sur le compte financé, et soumettez votre premier retrait. Votre remboursement des frais à 100 % vient avec.
 
 ---
 
 ## Verdict final
 
-FTMO est l'étalon-or du prop trading, point final. Il a le plus long historique opérationnel, le score Trustpilot le plus élevé, la liste d'instruments la plus large, le meilleur choix de plateformes, et le scaling plan le plus généreux du secteur. Ce n'est pas le moins cher, et ce n'est pas le plus rapide à passer — mais c'est le foyer long terme le plus sûr pour le capital financé d'un trader sérieux.
+FTMO est l'étalon-or du prop trading, point final. Il a le plus long historique opérationnel, le score Trustpilot le plus élevé, la liste d'instruments la plus large, le meilleur choix de plateformes, et le scaling plan le plus généreux du secteur. Ce n'est pas le moins cher, et ce n'est pas le plus rapide à passer, mais c'est le foyer long terme le plus sûr pour le capital financé d'un trader sérieux.
 
-La faiblesse de FTMO est que ses gates de discipline sont réels : un 5 % daily loss sur l'equity est serré, la review de cohérence au stade du financement est réelle, et l'accès américain est limité. Aucun de ceux-ci n'est un deal-breaker pour un trader discipliné, mais ce sont des deal-breakers pour les joueurs — ce qui est voulu par design.
+La faiblesse de FTMO est que ses gates de discipline sont réels : un 5 % daily loss sur l'equity est serré, la review de cohérence au stade du financement est réelle, et l'accès américain est limité. Aucun de ceux-ci n'est un deal-breaker pour un trader discipliné, mais ce sont des deal-breakers pour les joueurs, ce qui est voulu par design.
 
 Pour les traders forex et multi-actifs cherchant leur premier (ou meilleur) compte financé, FTMO est la recommandation par défaut. Pour les traders futures américains, Apex est le bon défaut. Pour toute personne n'importe où sur le spectre, faire le Free Trial avant de payer est la seule action avec le plus haut ROI.
 
@@ -609,10 +609,10 @@ Pour les traders forex et multi-actifs cherchant leur premier (ou meilleur) comp
 
 ## Guides associés
 
-- [Avis Apex Trader Funding 2026](./apex-trader-funding-review) — Homologue futures américain, entrée la moins chère, 100 % split
-- [Avis Take Profit Trader 2026] — Futures américains, évaluation illimitée, similaire au style EOD d'Apex
-- [Avis FundedNext 2026] — Le concurrent multi-actifs le plus proche de FTMO, plafond de profit split plus élevé
-- [Avis Bulenox 2026] — Alternative à Apex avec drawdown statique sur futures
+- [Avis Apex Trader Funding 2026](./apex-trader-funding-review), Homologue futures américain, entrée la moins chère, 100 % split
+- [Avis Take Profit Trader 2026], Futures américains, évaluation illimitée, similaire au style EOD d'Apex
+- [Avis FundedNext 2026], Le concurrent multi-actifs le plus proche de FTMO, plafond de profit split plus élevé
+- [Avis Bulenox 2026], Alternative à Apex avec drawdown statique sur futures
 
 ---
 

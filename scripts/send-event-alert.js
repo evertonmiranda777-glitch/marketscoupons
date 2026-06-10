@@ -4,7 +4,7 @@
 //   2) After release (actual appears): delete pre-alert + send "released" alert
 //      with real data, miss/beat/inline badge, and market context explanation.
 //
-// State: .firecrawl/events-sent.json — map { eventId: { preMsgId, released } }
+// State: .firecrawl/events-sent.json, map { eventId: { preMsgId, released } }
 // Env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 // Run: node scripts/send-event-alert.js
 
@@ -29,7 +29,7 @@ const STATE_FILE = path.join(root, '.firecrawl', 'events-sent.json');
 // 2026-05-05: GitHub Actions schedule cron tem throttle pesado (gaps 47-194 min
 // observados em 24h vs declarado */5min). Janela alargada pra 120 min compensa.
 // Trade-off: alert pode chegar até ~2h antes do evento em vez de 5 min, mas
-// chega — antes era miss completo. LEAD_MIN preservado pro display.
+// chega, antes era miss completo. LEAD_MIN preservado pro display.
 const LEAD_MIN = 5;
 const WINDOW = 120; // events scheduled in [+5, +125] min get pre-alerted
 // CUTOFF dinâmico DST-aware: 18:30 ET (sempre) → UTC convertido com offset atual.
@@ -133,7 +133,7 @@ Actual: ${e.actual}, Forecast: ${e.forecast}, Previous: ${e.previous}
 Result: ${result} (actual came in ${dir} expectations).
 
 Write exactly 1-2 sentences (max 180 chars) explaining the market impact. Use trader language. Wrap the most important phrase in <span> tags for highlighting. No disclaimers, no "I think". Example output format:
-Weaker credit demand signals slowdown — watch for <span>CNY pressure</span> and risk-off in Asian markets.`;
+Weaker credit demand signals slowdown, watch for <span>CNY pressure</span> and risk-off in Asian markets.`;
   try {
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -173,13 +173,13 @@ async function renderEvent(event, mode) {
   await page.goto('file://' + tpl.replace(/\\/g, '/'), { waitUntil: 'networkidle' });
 
   if (mode === 'upcoming') {
-    // Template 001 — card horizontal layout
+    // Template 001, card horizontal layout
     await page.evaluate(({ e }) => {
       const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
       const setHTML = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.innerHTML = val; };
 
       // Header label → UPCOMING (usa leadDisplay que pode ser '45 min' ou '2h 15min')
-      set('.ch-label', `High Impact Event — Upcoming in ${e.leadDisplay || (e.leadMin + ' Min')}`);
+      set('.ch-label', `High Impact Event, Upcoming in ${e.leadDisplay || (e.leadMin + ' Min')}`);
       // Make header yellow for upcoming
       const adot = document.querySelector('.adot');
       if (adot) { adot.style.background = '#f5c518'; adot.style.boxShadow = '0 0 10px rgba(245,197,24,.9)'; }
@@ -237,10 +237,10 @@ async function renderEvent(event, mode) {
 
       // Context
       const ctx = document.querySelector('.context');
-      if (ctx) ctx.innerHTML = `Prepare for potential <span>${e.currency} volatility</span> — position before release.`;
+      if (ctx) ctx.innerHTML = `Prepare for potential <span>${e.currency} volatility</span>, position before release.`;
     }, { e: event });
   } else {
-    // Template 002 — vertical centered layout (released)
+    // Template 002, vertical centered layout (released)
     await page.evaluate(({ e }) => {
       const set = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.textContent = val; };
       const setHTML = (sel, val) => { const el = document.querySelector(sel); if (el && val != null) el.innerHTML = val; };
@@ -275,7 +275,7 @@ async function renderEvent(event, mode) {
       }
 
       const albl = document.querySelector('.albl');
-      if (albl) albl.textContent = 'ECONOMIC CALENDAR — RELEASED';
+      if (albl) albl.textContent = 'ECONOMIC CALENDAR, RELEASED';
 
       if (actualCard) {
         const v = actualCard.querySelector('.data-val');
@@ -308,7 +308,7 @@ async function renderEvent(event, mode) {
 
 async function tgSendPhoto(pngPath, caption) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  // Aceita TELEGRAM_CHAT_ID OU TELEGRAM_ADMIN_CHAT_ID — varia conforme onde foi configurado.
+  // Aceita TELEGRAM_CHAT_ID OU TELEGRAM_ADMIN_CHAT_ID, varia conforme onde foi configurado.
   const chat = process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_ADMIN_CHAT_ID;
   if (!token) throw new Error('missing TELEGRAM_BOT_TOKEN env');
   if (!chat) throw new Error('missing TELEGRAM_CHAT_ID/TELEGRAM_ADMIN_CHAT_ID env');
@@ -340,7 +340,7 @@ async function tgDeleteMessage(msgId) {
       body: JSON.stringify({ chat_id: chat, message_id: msgId }),
     });
     const body = await res.text();
-    console.log(`[tg deleteMessage] ${res.status} — ${body.slice(0,120)}`);
+    console.log(`[tg deleteMessage] ${res.status}, ${body.slice(0,120)}`);
   } catch (err) {
     console.error('[tg deleteMessage] failed:', err.message);
   }
@@ -388,7 +388,7 @@ async function tgDeleteMessage(msgId) {
     console.log(`[pre] → ${e.time} ${e.currency} ${e.event} (in ${leadDisplay})`);
     try {
       await renderEvent({ ...e, leadMin: actualLeadMin, leadDisplay, dateFmt: fmtDate(e.date) }, 'upcoming');
-      const msgId = await tgSendPhoto(OUT_PNG, `⏱ ${e.currency} ${e.event} — in ${leadDisplay}`);
+      const msgId = await tgSendPhoto(OUT_PNG, `⏱ ${e.currency} ${e.event}, in ${leadDisplay}`);
       state[id] = { preMsgId: msgId, released: false };
       saveState(state);
     } catch (err) {
@@ -420,7 +420,7 @@ async function tgDeleteMessage(msgId) {
       }, 'released');
       // delete the pre-alert first
       if (st.preMsgId) await tgDeleteMessage(st.preMsgId);
-      await tgSendPhoto(OUT_PNG, `📊 ${e.currency} ${e.event} — ${result.toUpperCase()}`);
+      await tgSendPhoto(OUT_PNG, `📊 ${e.currency} ${e.event}, ${result.toUpperCase()}`);
       state[id] = { preMsgId: null, released: true };
       saveState(state);
     } catch (err) {

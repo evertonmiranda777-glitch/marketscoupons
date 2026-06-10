@@ -121,7 +121,7 @@ function updateI18nJs(src, rows) {
 function updateIndexHtml(src, rows) {
   let out = src;
   let changes = 0;
-  // Tags simples sem nested HTML — limita risco de quebrar markup
+  // Tags simples sem nested HTML, limita risco de quebrar markup
   const SIMPLE_TAGS = ['p', 'span', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'a', 'li', 'small', 'em', 'strong', 'label'];
   for (const row of rows) {
     const ptVal = row.pt;

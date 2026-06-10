@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-// Load keys from .env.tmp.txt (multiple keys CSV — try first non-revoked AIzaSy)
+// Load keys from .env.tmp.txt (multiple keys CSV, try first non-revoked AIzaSy)
 const ENV_TMP = path.join(process.cwd(), '.env.tmp.txt');
 let KEY = process.env.GEMINI_API_KEY;
 try {
@@ -104,7 +104,7 @@ for (const slug of targetSlugs) {
     const t0 = Date.now();
     const tBody = await translate(en.body, LANGS[lang]);
     if (!tBody || tBody.length < en.body.length * 0.4) {
-      console.error(`    skip — output too short (${tBody?.length || 0} vs en ${en.body.length})`);
+      console.error(`    skip, output too short (${tBody?.length || 0} vs en ${en.body.length})`);
       continue;
     }
     const tTitle = await translateField(en.title, LANGS[lang]);
