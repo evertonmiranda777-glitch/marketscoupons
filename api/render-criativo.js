@@ -59,73 +59,139 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'missing html OR url' });
     }
 
-    const userId = process.env.HCTI_USER_ID;
-    const apiKey = process.env.HCTI_API_KEY;
-    if (!userId || !apiKey) {
-      return res.status(500).json({ error: 'HCTI credentials not configured' });
+    // Fallback HCTI se PLAYWRIGHT_DISABLED=1 (kill switch)
+    const usePlaywright = process.env.PLAYWRIGHT_DISABLED !== '1';
+
+    if (usePlaywright) {
+      try {
+        const buf = await renderPlaywright({ html, styles, width, height, origin, url });
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Cache-Control', 'no-store');
+        return res.status(200).send(buf);
+      } catch (e) {
+        console.error('[render-criativo] Playwright failed, falling back to HCTI:', e.message);
+        // Cai pro HCTI fallback abaixo
+      }
     }
 
-    const auth = Buffer.from(`${userId}:${apiKey}`).toString('base64');
-    let hctiBody;
-
-    if (url) {
-      // Modo URL: HCTI carrega a pagina e screenshota.
-      // ms_delay 1500ms (estado original que funcionava). Tentei 800 → imagem
-      // preta; 2000 OK mas margem desnecessaria. Mantido 1500 como sempre foi.
-      hctiBody = {
-        url,
-        viewport_width: width,
-        viewport_height: height,
-        device_scale: 1,
-        ms_delay: 1500,
-        selector: '#cr-canvas',
-      };
-    } else {
-      // Modo HTML legado (admin browser-side)
-      const base = (origin || 'https://www.marketscoupons.com/').replace(/\/$/, '') + '/';
-      const absolutize = (s) => (s || '')
-        .replace(/url\((&quot;|['"]|)\s*(?!https?:|data:|\/\/|#)([^'"&)\s]+)\s*\1\)/g, (_m, q, p) => `url(${q}${base}${p.replace(/^\/+/, '')}${q})`)
-        .replace(/(src|href)=(['"])(?!https?:|data:|\/\/|#|mailto:)([^'"]+)\2/g, (_m, attr, q, p) => `${attr}=${q}${base}${p.replace(/^\/+/, '')}${q}`);
-      const absHtml = absolutize(html);
-      const absStyles = absolutize(styles);
-      const baseCss = `\n*{box-sizing:border-box}\nhtml,body{margin:0;padding:0;background:#060810;font-family:'Inter',sans-serif;}\nbody{width:${width}px;height:${height}px;overflow:hidden;}\n#cr-canvas{margin:0 !important;}\n`;
-      hctiBody = {
-        html: absHtml,
-        css: baseCss + '\n' + (absStyles || ''),
-        google_fonts: 'Inter:400,500,600,700,800,900',
-        viewport_width: width,
-        viewport_height: height,
-        device_scale: 1,
-        ms_delay: 600,
-      };
-    }
-
-    const hctiResp = await fetch('https://hcti.io/v1/image', {
-      method: 'POST',
-      headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(hctiBody),
-    });
-
-    if (!hctiResp.ok) {
-      const errText = await hctiResp.text();
-      console.error('[render-criativo] HCTI error', hctiResp.status, errText);
-      return res.status(502).json({ error: `HCTI ${hctiResp.status}: ${errText.slice(0, 200)}` });
-    }
-
-    const hctiData = await hctiResp.json();
-    const imgUrl = hctiData?.url;
-    if (!imgUrl) return res.status(502).json({ error: 'HCTI returned no url' });
-
-    const imgResp = await fetch(imgUrl);
-    if (!imgResp.ok) {
-      return res.status(502).json({ error: `image fetch ${imgResp.status}` });
-    }
-    const buf = Buffer.from(await imgResp.arrayBuffer());
-
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Cache-Control', 'no-store');
-    return res.status(200).send(buf);
+    // HCTI fallback
+    return await renderHcti(req, res, { html, styles, width, height, origin, url });
   } catch (e) {
     return safeError(res, 500, 'render failed', e);
   }
 };
+
+// ===== Playwright self-hosted (default) =====
+async function renderPlaywright({ html, styles, width, height, origin, url }) {
+  const chromium = require('@sparticuz/chromium');
+  const { chromium: pw } = require('playwright-core');
+
+  const browser = await pw.launch({
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+  });
+
+  try {
+    const ctx = await browser.newContext({
+      viewport: { width: parseInt(width, 10), height: parseInt(height, 10) },
+      deviceScaleFactor: 1,
+    });
+    const page = await ctx.newPage();
+
+    if (url) {
+      // Modo URL: carrega página remota e screenshota o #cr-canvas
+      await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+      const el = await page.$('#cr-canvas');
+      if (!el) throw new Error('selector #cr-canvas not found at url');
+      const buf = await el.screenshot({ type: 'png' });
+      return buf;
+    }
+
+    // Modo HTML inline (legado admin browser-side)
+    const base = (origin || 'https://www.marketscoupons.com/').replace(/\/$/, '') + '/';
+    const absolutize = (s) => (s || '')
+      .replace(/url\((&quot;|['"]|)\s*(?!https?:|data:|\/\/|#)([^'"&)\s]+)\s*\1\)/g, (_m, q, p) => `url(${q}${base}${p.replace(/^\/+/, '')}${q})`)
+      .replace(/(src|href)=(['"])(?!https?:|data:|\/\/|#|mailto:)([^'"]+)\2/g, (_m, attr, q, p) => `${attr}=${q}${base}${p.replace(/^\/+/, '')}${q}`);
+    const absHtml = absolutize(html);
+    const absStyles = absolutize(styles);
+    const baseCss = `*{box-sizing:border-box}html,body{margin:0;padding:0;background:#060810;font-family:'Inter',sans-serif;}body{width:${width}px;height:${height}px;overflow:hidden;}#cr-canvas{margin:0 !important;}`;
+    const full = `<!doctype html><html><head><meta charset="utf-8"><base href="${base}"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>${baseCss}\n${absStyles || ''}</style></head><body>${absHtml}</body></html>`;
+    await page.setContent(full, { waitUntil: 'networkidle', timeout: 30000 });
+    // pequena espera pra fontes/imgs estabilizarem
+    await page.waitForTimeout(600);
+    const el = await page.$('#cr-canvas');
+    const buf = el
+      ? await el.screenshot({ type: 'png' })
+      : await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: parseInt(width, 10), height: parseInt(height, 10) } });
+    return buf;
+  } finally {
+    await browser.close().catch(() => {});
+  }
+}
+
+// ===== HCTI fallback (kept for emergency) =====
+async function renderHcti(req, res, { html, styles, width, height, origin, url }) {
+  const userId = process.env.HCTI_USER_ID;
+  const apiKey = process.env.HCTI_API_KEY;
+  if (!userId || !apiKey) {
+    return res.status(500).json({ error: 'render unavailable (no playwright, no HCTI creds)' });
+  }
+
+  const auth = Buffer.from(`${userId}:${apiKey}`).toString('base64');
+  let hctiBody;
+
+  if (url) {
+    hctiBody = {
+      url,
+      viewport_width: width,
+      viewport_height: height,
+      device_scale: 1,
+      ms_delay: 1500,
+      selector: '#cr-canvas',
+    };
+  } else {
+    const base = (origin || 'https://www.marketscoupons.com/').replace(/\/$/, '') + '/';
+    const absolutize = (s) => (s || '')
+      .replace(/url\((&quot;|['"]|)\s*(?!https?:|data:|\/\/|#)([^'"&)\s]+)\s*\1\)/g, (_m, q, p) => `url(${q}${base}${p.replace(/^\/+/, '')}${q})`)
+      .replace(/(src|href)=(['"])(?!https?:|data:|\/\/|#|mailto:)([^'"]+)\2/g, (_m, attr, q, p) => `${attr}=${q}${base}${p.replace(/^\/+/, '')}${q}`);
+    const absHtml = absolutize(html);
+    const absStyles = absolutize(styles);
+    const baseCss = `\n*{box-sizing:border-box}\nhtml,body{margin:0;padding:0;background:#060810;font-family:'Inter',sans-serif;}\nbody{width:${width}px;height:${height}px;overflow:hidden;}\n#cr-canvas{margin:0 !important;}\n`;
+    hctiBody = {
+      html: absHtml,
+      css: baseCss + '\n' + (absStyles || ''),
+      google_fonts: 'Inter:400,500,600,700,800,900',
+      viewport_width: width,
+      viewport_height: height,
+      device_scale: 1,
+      ms_delay: 600,
+    };
+  }
+
+  const hctiResp = await fetch('https://hcti.io/v1/image', {
+    method: 'POST',
+    headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(hctiBody),
+  });
+
+  if (!hctiResp.ok) {
+    const errText = await hctiResp.text();
+    console.error('[render-criativo] HCTI error', hctiResp.status, errText);
+    return res.status(502).json({ error: `HCTI ${hctiResp.status}: ${errText.slice(0, 200)}` });
+  }
+
+  const hctiData = await hctiResp.json();
+  const imgUrl = hctiData?.url;
+  if (!imgUrl) return res.status(502).json({ error: 'HCTI returned no url' });
+
+  const imgResp = await fetch(imgUrl);
+  if (!imgResp.ok) {
+    return res.status(502).json({ error: `image fetch ${imgResp.status}` });
+  }
+  const buf = Buffer.from(await imgResp.arrayBuffer());
+
+  res.setHeader('Content-Type', 'image/png');
+  res.setHeader('Cache-Control', 'no-store');
+  return res.status(200).send(buf);
+}
