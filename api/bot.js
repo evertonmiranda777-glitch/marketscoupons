@@ -609,6 +609,38 @@ async function handleIgSubscribe(req, res) {
 
 module.exports = async (req, res) => {
   const action = req.query?.action || '';
+
+  // DEBUG: log TODA chamada que chega no /api/bot (qualquer method, sem importar action)
+  // Pra capturar webhook Meta que possa estar chegando sem ?action=ig_webhook
+  try {
+    if (req.method === 'POST' || req.method === 'GET') {
+      await fetch(`${SUPABASE_URL}/rest/v1/ig_webhook_raw_log`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          raw_body: req.method === 'POST' ? (req.body || {}) : { query: req.query || {} },
+          headers: {
+            method: req.method,
+            ua: req.headers['user-agent'],
+            url: req.url,
+            action: action,
+            has_hub_challenge: !!req.query?.['hub.challenge'],
+            xhub_signature: req.headers['x-hub-signature-256']
+          }
+        })
+      });
+    }
+  } catch(e) {}
+
+  // Auto-detect: se chegou POST sem action mas com `entry` no body = é webhook Meta. Desvia.
+  if (req.method === 'POST' && Array.isArray(req.body?.entry) && !action) {
+    return handleIgWebhook(req, res);
+  }
+  // GET com hub.challenge = também webhook verification
+  if (req.method === 'GET' && req.query?.['hub.challenge'] && !action) {
+    return handleIgWebhook(req, res);
+  }
+
   if (action === 'ig_webhook') return handleIgWebhook(req, res);
   if (action === 'ig_subscribe') return handleIgSubscribe(req, res);
   if (action === 'x_daily') return handleXDaily(req, res);
