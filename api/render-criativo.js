@@ -99,7 +99,7 @@ async function renderPlaywright({ html, styles, width, height, origin, url }) {
   chromium.setGraphicsMode = false;
 
   const browser = await pw.launch({
-    args: chromium.args,
+    args: [...chromium.args, '--single-process', '--no-zygote'],
     executablePath: await chromium.executablePath(),
     headless: true,
   });
