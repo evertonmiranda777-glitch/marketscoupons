@@ -678,6 +678,8 @@ async function handleIgPollRun(req, res) {
 
   const TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
   if (!TOKEN) return res.status(503).json({ error: 'no_token' });
+  // RLS nas tabelas ig_* exige service role key (anon é bloqueada)
+  const SK = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_KEY;
   const BASE = 'https://graph.instagram.com/v21.0';
   const maxDm = parseInt(req.query?.max || '5', 10); // cap de DMs por execução (anti-spam)
 
@@ -687,7 +689,7 @@ async function handleIgPollRun(req, res) {
   if (!me.id) return res.status(502).json({ step: 'me', response: me });
 
   const repliesResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies?enabled=eq.true&select=*`, {
-    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    headers: { apikey: SK, Authorization: `Bearer ${SK}` }
   });
   const replies = await repliesResp.json();
   if (!Array.isArray(replies) || !replies.length) return res.status(200).json({ status: 'no_keywords' });
@@ -741,7 +743,7 @@ async function handleIgPollRun(req, res) {
 
       // dedup: já respondeu esse comment_id?
       const dupResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log?comment_id=eq.${encodeURIComponent(commentId)}&select=id&limit=1`, {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+        headers: { apikey: SK, Authorization: `Bearer ${SK}` }
       });
       const dup = await dupResp.json();
       if (Array.isArray(dup) && dup.length) { results.push({ comment: commentId, status: 'already_replied' }); continue; }
@@ -763,7 +765,7 @@ async function handleIgPollRun(req, res) {
 
       await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log`, {
         method: 'POST',
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        headers: { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           comment_id: commentId, ig_user_id: fromUser, post_id: post.id,
           keyword_matched: matched.keyword, reply_id: matched.id, template_used: idx,
