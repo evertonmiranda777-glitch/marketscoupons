@@ -71,6 +71,27 @@
     padding: 28px 56px 14px;
     text-shadow: 0 2px 12px rgba(0,0,0,.8);
   }
+  /* ===== FREE PILL (destaque do oferecimento) ===== */
+  .free-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, var(--green), #16a34a);
+    color: #06080F;
+    font-size: 17px; font-weight: 900;
+    padding: 10px 20px;
+    border-radius: 999px;
+    letter-spacing: .12em; text-transform: uppercase;
+    margin: 0 56px 14px;
+    box-shadow: 0 8px 24px rgba(34,214,124,.4);
+    text-shadow: none;
+  }
+  .free-pill::before {
+    content: '✓'; display: inline-block;
+    width: 22px; height: 22px;
+    background: #06080F; color: var(--green);
+    border-radius: 50%;
+    font-size: 13px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
   .slide-1 .eyebrow { color: #6EE7FF; }
   .slide-2 .eyebrow { color: #FCA5A5; }
   .slide-3 .eyebrow { color: var(--green); }
@@ -224,8 +245,9 @@ const THEMES = {
       brand_sub: 'Free · NinjaTrader 8',
       s1: {
         eyebrow: '// THE FIX',
+        free_pill: '100% FREE · NinjaTrader 8',
         bubble: 'Your native volume is lying to you.',
-        title: 'Read the truth, <em>in 3 colors</em>.'
+        title: 'Meet <em>VolumeFilter</em>.<br>Read the truth, in 3 colors.'
       },
       s2: {
         eyebrow: '// THE PROBLEM',
@@ -244,6 +266,7 @@ const THEMES = {
       },
       s5: {
         eyebrow: '// YOUR CALL',
+        free_pill: '100% FREE · NinjaTrader 8',
         title: 'Free until <em>Dec 31, 2026</em>.<br>Then it\'s gone.',
         action_pre: 'Comment',
         action_word: 'VOLUME',
@@ -281,6 +304,7 @@ function renderSlide(n, theme) {
       ${brand(subBrand)}
       <div class="slide-content">
         <div class="eyebrow">${t.eyebrow}</div>
+        ${t.free_pill ? `<div class="free-pill" style="display:inline-flex; margin:0 auto 14px;">${t.free_pill}</div>` : ''}
         <h1 class="cta-title">${t.title}</h1>
       </div>
       <div class="cta-bottom">
@@ -296,6 +320,7 @@ function renderSlide(n, theme) {
     <div class="bubble">${t.bubble}</div>
     <div class="slide-content">
       <div class="eyebrow">${t.eyebrow}</div>
+      ${t.free_pill ? `<div class="free-pill">${t.free_pill}</div>` : ''}
       <h1 class="slide-title">${t.title}</h1>
     </div>
     ${swipe()}
