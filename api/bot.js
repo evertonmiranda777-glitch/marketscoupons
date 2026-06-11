@@ -381,14 +381,13 @@ async function handleXDaily(req, res) {
     return res.status(200).json({ skip: 'weekend', dow });
   }
 
-  // Pega análise mais recente do asset
-  const today = new Date().toISOString().slice(0,10);
-  const aResp = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?asset=eq.${asset}&date=eq.${today}&select=*&limit=1`, {
+  // Pega análise mais recente do asset (não exige date=today; usa o mais novo)
+  const aResp = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?asset=eq.${asset}&select=*&order=date.desc&limit=1`, {
     headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
   });
   const rows = await aResp.json();
   if (!Array.isArray(rows) || !rows.length) {
-    return res.status(404).json({ error: 'no_analysis_today', asset, date: today });
+    return res.status(404).json({ error: 'no_analysis_yet', asset });
   }
   const a = rows[0];
 
