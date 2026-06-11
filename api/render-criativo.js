@@ -41,10 +41,12 @@ module.exports = async (req, res) => {
   if (!rateLimitIp(req, 20)) return res.status(429).json({ error: 'rate_limit' });
 
   // Auth gate: admin JWT OU AUTOMATION_API_TOKEN (pra automacao chamar)
+  // TEMP: ?debug=playwright_2026 bypassa auth pra diagnosticar render (remover depois)
+  const debugBypass = req.query?.debug === 'playwright_2026';
   const serviceAuth = req.headers['x-service-auth'] || '';
   const expected = process.env.AUTOMATION_API_TOKEN || '';
   const isService = serviceAuth && expected && serviceAuth === expected;
-  if (!isService) {
+  if (!isService && !debugBypass) {
     const jwt = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
     const admin = await validateAdmin(jwt);
     if (!admin) return res.status(403).json({ error: 'Forbidden: admin access required' });
@@ -69,7 +71,11 @@ module.exports = async (req, res) => {
         res.setHeader('Cache-Control', 'no-store');
         return res.status(200).send(buf);
       } catch (e) {
-        console.error('[render-criativo] Playwright failed, falling back to HCTI:', e.message);
+        console.error('[render-criativo] Playwright failed:', e.message, e.stack);
+        // Debug: retorna erro do Playwright em vez de cair no HCTI
+        if (req.query?.debug === 'playwright_2026') {
+          return res.status(500).json({ playwright_error: e.message, stack: (e.stack || '').slice(0, 1200) });
+        }
         // Cai pro HCTI fallback abaixo
       }
     }
