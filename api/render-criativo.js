@@ -41,12 +41,10 @@ module.exports = async (req, res) => {
   if (!rateLimitIp(req, 20)) return res.status(429).json({ error: 'rate_limit' });
 
   // Auth gate: admin JWT OU AUTOMATION_API_TOKEN (pra automacao chamar)
-  // TEMP: ?debug=playwright_2026 bypassa auth pra diagnosticar render (remover depois)
-  const debugBypass = req.query?.debug === 'playwright_2026';
   const serviceAuth = req.headers['x-service-auth'] || '';
   const expected = process.env.AUTOMATION_API_TOKEN || '';
   const isService = serviceAuth && expected && serviceAuth === expected;
-  if (!isService && !debugBypass) {
+  if (!isService) {
     const jwt = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
     const admin = await validateAdmin(jwt);
     if (!admin) return res.status(403).json({ error: 'Forbidden: admin access required' });
@@ -61,22 +59,18 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'missing html OR url' });
     }
 
-    // Fallback HCTI se PLAYWRIGHT_DISABLED=1 (kill switch)
-    const usePlaywright = process.env.PLAYWRIGHT_DISABLED !== '1';
+    // Browserless (default) → HCTI (fallback). Kill switch: BROWSERLESS_DISABLED=1
+    const useBrowserless = process.env.BROWSERLESS_DISABLED !== '1' && process.env.BROWSERLESS_TOKEN;
 
-    if (usePlaywright) {
+    if (useBrowserless) {
       try {
-        const buf = await renderPlaywright({ html, styles, width, height, origin, url });
+        const buf = await renderBrowserless({ html, styles, width, height, origin, url });
         res.setHeader('Content-Type', 'image/png');
         res.setHeader('Cache-Control', 'no-store');
         return res.status(200).send(buf);
       } catch (e) {
-        console.error('[render-criativo] Playwright failed:', e.message, e.stack);
-        // Debug: retorna erro do Playwright em vez de cair no HCTI
-        if (req.query?.debug === 'playwright_2026') {
-          return res.status(500).json({ playwright_error: e.message, stack: (e.stack || '').slice(0, 1200) });
-        }
-        // Cai pro HCTI fallback abaixo
+        console.error('[render-criativo] Browserless failed, fallback HCTI:', e.message);
+        // cai pro HCTI abaixo
       }
     }
 
@@ -87,38 +81,27 @@ module.exports = async (req, res) => {
   }
 };
 
-// ===== Playwright self-hosted (default) =====
-async function renderPlaywright({ html, styles, width, height, origin, url }) {
-  const chromium = require('@sparticuz/chromium');
-  const { chromium: pw } = require('playwright-core');
-
+// ===== Browserless.io (default) =====
+// Usa /screenshot endpoint: manda url OU html, retorna PNG binário direto.
+// Docs: https://docs.browserless.io/http-apis/screenshot
+async function renderBrowserless({ html, styles, width, height, origin, url }) {
+  const token = process.env.BROWSERLESS_TOKEN;
+  const region = process.env.BROWSERLESS_REGION || 'production-sfo'; // sfo/lon/ams
+  const endpoint = `https://${region}.browserless.io/screenshot?token=${encodeURIComponent(token)}`;
   const w = parseInt(width, 10);
   const h = parseInt(height, 10);
 
-  // Desliga WebGL/swiftshader (causa comum de "browser has been closed" em serverless)
-  chromium.setGraphicsMode = false;
-
-  const browser = await pw.launch({
-    args: [...chromium.args, '--single-process', '--no-zygote'],
-    executablePath: await chromium.executablePath(),
-    headless: true,
-  });
-
-  try {
-    const ctx = await browser.newContext({
-      viewport: { width: w, height: h },
-      deviceScaleFactor: 1,
-    });
-    const page = await ctx.newPage();
-
-    if (url) {
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-      const el = await page.$('#cr-canvas');
-      if (!el) throw new Error('selector #cr-canvas not found at url');
-      return await el.screenshot({ type: 'png' });
-    }
-
-    // Modo HTML inline (legado admin browser-side)
+  let payload;
+  if (url) {
+    payload = {
+      url,
+      options: { type: 'png', fullPage: false },
+      viewport: { width: w, height: h, deviceScaleFactor: 1 },
+      gotoOptions: { waitUntil: 'networkidle0', timeout: 30000 },
+      selector: '#cr-canvas',
+      waitForTimeout: 800,
+    };
+  } else {
     const base = (origin || 'https://www.marketscoupons.com/').replace(/\/$/, '') + '/';
     const absolutize = (s) => (s || '')
       .replace(/url\((&quot;|['"]|)\s*(?!https?:|data:|\/\/|#)([^'"&)\s]+)\s*\1\)/g, (_m, q, p) => `url(${q}${base}${p.replace(/^\/+/, '')}${q})`)
@@ -127,15 +110,25 @@ async function renderPlaywright({ html, styles, width, height, origin, url }) {
     const absStyles = absolutize(styles);
     const baseCss = `*{box-sizing:border-box}html,body{margin:0;padding:0;background:#060810;font-family:'Inter',sans-serif;}body{width:${width}px;height:${height}px;overflow:hidden;}#cr-canvas{margin:0 !important;}`;
     const full = `<!doctype html><html><head><meta charset="utf-8"><base href="${base}"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>${baseCss}\n${absStyles || ''}</style></head><body>${absHtml}</body></html>`;
-    await page.setContent(full, { waitUntil: 'networkidle', timeout: 30000 });
-    await page.waitForTimeout(600);
-    const el = await page.$('#cr-canvas');
-    return el
-      ? await el.screenshot({ type: 'png' })
-      : await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: w, height: h } });
-  } finally {
-    await browser.close().catch(() => {});
+    payload = {
+      html: full,
+      options: { type: 'png', fullPage: false },
+      viewport: { width: w, height: h, deviceScaleFactor: 1 },
+      selector: '#cr-canvas',
+      waitForTimeout: 800,
+    };
   }
+
+  const r = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!r.ok) {
+    const errText = await r.text().catch(() => '');
+    throw new Error(`browserless ${r.status}: ${errText.slice(0, 200)}`);
+  }
+  return Buffer.from(await r.arrayBuffer());
 }
 
 // ===== HCTI fallback (kept for emergency) =====
