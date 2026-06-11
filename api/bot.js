@@ -650,6 +650,109 @@ async function handleIgPollTest(req, res) {
   return res.status(200).json(out);
 }
 
+// ===== IG POLLING RUN: lê comentários + manda DM (sem webhook). Cron chama isso. =====
+// Safeguards: keyword match, dedup por comment_id, rate 1/user/24h, opt-out STOP.
+async function handleIgPollRun(req, res) {
+  // Protegido por secret (cron) OU admin. Em teste, ?secret=CRON_SECRET
+  const secret = req.query?.secret || req.headers['x-cron-secret'];
+  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
+    return res.status(403).json({ error: 'forbidden' });
+  }
+
+  const TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
+  if (!TOKEN) return res.status(503).json({ error: 'no_token' });
+  const BASE = 'https://graph.instagram.com/v21.0';
+  const maxDm = parseInt(req.query?.max || '5', 10); // cap de DMs por execução (anti-spam)
+
+  // 1) me + keywords ativas
+  const meResp = await fetch(`${BASE}/me?fields=id,username&access_token=${encodeURIComponent(TOKEN)}`);
+  const me = await meResp.json();
+  if (!me.id) return res.status(502).json({ step: 'me', response: me });
+
+  const repliesResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies?enabled=eq.true&select=*`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+  });
+  const replies = await repliesResp.json();
+  if (!Array.isArray(replies) || !replies.length) return res.status(200).json({ status: 'no_keywords' });
+
+  // 2) media recente (últimos 10 posts)
+  const mediaResp = await fetch(`${BASE}/${me.id}/media?fields=id,comments_count&limit=10&access_token=${encodeURIComponent(TOKEN)}`);
+  const media = await mediaResp.json();
+  if (!media.data) return res.status(502).json({ step: 'media', response: media });
+
+  const results = [];
+  let dmSent = 0;
+
+  for (const post of media.data) {
+    if (dmSent >= maxDm) break;
+    if (!post.comments_count) continue;
+
+    const cResp = await fetch(`${BASE}/${post.id}/comments?fields=id,text,username,from&access_token=${encodeURIComponent(TOKEN)}`);
+    const c = await cResp.json();
+    if (!c.data) continue;
+
+    for (const comment of c.data) {
+      if (dmSent >= maxDm) break;
+      const text = (comment.text || '').trim();
+      const commentId = comment.id;
+      const fromUser = comment.from?.id || comment.username || '';
+      if (!text || !commentId) continue;
+
+      // opt-out STOP
+      if (/\bstop\b|\bparar\b/i.test(text)) continue;
+
+      // match keyword
+      const lower = text.toLowerCase();
+      const matched = replies.find(r => {
+        if (r.post_id && r.post_id !== post.id) return false;
+        const kw = (r.keyword || '').toLowerCase();
+        if (!kw) return false;
+        if (r.match_mode === 'exact') return lower === kw;
+        if (r.match_mode === 'word_boundary') return new RegExp(`\\b${kw}\\b`, 'i').test(text);
+        return lower.includes(kw);
+      });
+      if (!matched) continue;
+
+      // dedup: já respondeu esse comment_id?
+      const dupResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log?comment_id=eq.${encodeURIComponent(commentId)}&select=id&limit=1`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const dup = await dupResp.json();
+      if (Array.isArray(dup) && dup.length) { results.push({ comment: commentId, status: 'already_replied' }); continue; }
+
+      // escolhe template
+      const templates = Array.isArray(matched.reply_templates) ? matched.reply_templates : [];
+      if (!templates.length) continue;
+      const idx = Math.floor(Math.random() * templates.length);
+      const msg = String(templates[idx]).replace(/\{link\}/g, matched.reply_link || '');
+
+      // manda private reply ao comentário
+      const sendResp = await fetch(`${BASE}/${me.id}/messages?access_token=${encodeURIComponent(TOKEN)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipient: { comment_id: commentId }, message: { text: msg + '\n\n— Reply STOP to opt out.' } })
+      });
+      const sendData = await sendResp.json().catch(() => ({}));
+      const sentOk = sendResp.ok && !sendData.error;
+
+      await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          comment_id: commentId, ig_user_id: fromUser, post_id: post.id,
+          keyword_matched: matched.keyword, reply_id: matched.id, template_used: idx,
+          dm_status: sentOk ? 'sent' : 'failed', meta_response: sendData
+        })
+      }).catch(()=>{});
+
+      results.push({ comment: commentId, user: comment.username, keyword: matched.keyword, status: sentOk ? 'sent' : 'failed', error: sentOk ? undefined : sendData });
+      if (sentOk) dmSent++;
+    }
+  }
+
+  return res.status(200).json({ dmSent, results });
+}
+
 module.exports = async (req, res) => {
   const action = req.query?.action || '';
 
@@ -687,6 +790,7 @@ module.exports = async (req, res) => {
   if (action === 'ig_webhook') return handleIgWebhook(req, res);
   if (action === 'ig_subscribe') return handleIgSubscribe(req, res);
   if (action === 'ig_poll_test') return handleIgPollTest(req, res);
+  if (action === 'ig_poll_run') return handleIgPollRun(req, res);
   if (action === 'x_daily') return handleXDaily(req, res);
   if (action === 'x_recap') return handleXRecap(req, res);
 
