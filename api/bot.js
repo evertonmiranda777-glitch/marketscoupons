@@ -763,6 +763,22 @@ async function handleIgPollRun(req, res) {
       const sendData = await sendResp.json().catch(() => ({}));
       const sentOk = sendResp.ok && !sendData.error;
 
+      // ENGAJAMENTO: responde PUBLICAMENTE ao comentário ("sent you a DM 📩")
+      // Gera +comentários no post = algoritmo impulsiona. Só se a DM foi OK.
+      let publicReplyOk = false;
+      const pubReplies = Array.isArray(matched.public_replies) ? matched.public_replies : [];
+      if (sentOk && pubReplies.length) {
+        const pubMsg = String(pubReplies[Math.floor(Math.random() * pubReplies.length)]);
+        try {
+          const prResp = await fetch(`${BASE}/${commentId}/replies?access_token=${encodeURIComponent(TOKEN)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: pubMsg })
+          });
+          publicReplyOk = prResp.ok;
+        } catch {}
+      }
+
       await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log`, {
         method: 'POST',
         headers: { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json' },
@@ -773,7 +789,7 @@ async function handleIgPollRun(req, res) {
         })
       }).catch(()=>{});
 
-      results.push({ comment: commentId, user: comment.username, keyword: matched.keyword, status: sentOk ? 'sent' : 'failed', error: sentOk ? undefined : sendData });
+      results.push({ comment: commentId, user: comment.username, keyword: matched.keyword, status: sentOk ? 'sent' : 'failed', public_reply: publicReplyOk, error: sentOk ? undefined : sendData });
       if (sentOk) dmSent++;
     }
   }

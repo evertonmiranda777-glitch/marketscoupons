@@ -1,0 +1,21 @@
+name: IG Bot Poll (auto-reply DM)
+
+on:
+  schedule:
+    - cron: '*/3 * * * *'   # a cada 3 minutos
+  workflow_dispatch:          # botão manual também
+
+concurrency:
+  group: ig-bot-poll
+  cancel-in-progress: true
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 3
+    steps:
+      - name: Run IG bot polling
+        run: |
+          curl -sS -X GET "https://www.marketscoupons.com/api/bot?action=ig_poll_run&max=10" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"
