@@ -2289,6 +2289,18 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div class="sec-title">Criativos, Gerador de Anuncios</div>
       </div>
 
+      <!-- BOT INSTAGRAM (DM automático por palavra-chave) -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 20px;margin-bottom:18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:700;color:#fff;font-size:15px;margin-bottom:4px;">Bot Instagram, DM automático</div>
+            <div style="font-size:13px;color:#8A93A8;">Lê comentários dos posts e manda DM com link quando alguém comenta a palavra-chave (ex: VOLUME). Roda por polling, sem webhook.</div>
+          </div>
+          <button class="btn-primary" onclick="runIgBot(this)" style="white-space:nowrap;">Rodar bot agora</button>
+        </div>
+        <div id="ig-bot-result" style="margin-top:12px;font-size:13px;color:#8A93A8;display:none;"></div>
+      </div>
+
       <div class="cr-layout">
         <!-- CONTROLS -->
         <div class="cr-controls">
@@ -14537,6 +14549,31 @@ function _unusedOldCreative() {
 
   h += '</div>'; // close cr-inner
   content.innerHTML = h;
+}
+
+async function runIgBot(btn) {
+  const out = document.getElementById('ig-bot-result');
+  btn.textContent = 'Rodando...'; btn.disabled = true;
+  out.style.display = 'block';
+  out.textContent = 'Lendo comentários e enviando DMs...';
+  try {
+    const session = await db.auth.getSession();
+    const token = session?.data?.session?.access_token;
+    const resp = await fetch('/api/bot?action=ig_poll_run&max=5', {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token||''}` }
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || ('HTTP ' + resp.status));
+    const sent = data.dmSent || 0;
+    const lines = (data.results || []).map(r =>
+      `• ${r.user || r.comment}: ${r.keyword ? '['+r.keyword+'] ' : ''}${r.status}`
+    ).join('<br>');
+    out.innerHTML = `<b style="color:#22D67C;">${sent} DM(s) enviada(s).</b><br>${lines || 'Nenhum comentário novo com palavra-chave.'}`;
+  } catch(e) {
+    out.innerHTML = `<b style="color:#EF4444;">Erro:</b> ${e.message}`;
+  }
+  btn.textContent = 'Rodar bot agora'; btn.disabled = false;
 }
 
 async function exportCreative() {

@@ -653,10 +653,25 @@ async function handleIgPollTest(req, res) {
 // ===== IG POLLING RUN: lê comentários + manda DM (sem webhook). Cron chama isso. =====
 // Safeguards: keyword match, dedup por comment_id, rate 1/user/24h, opt-out STOP.
 async function handleIgPollRun(req, res) {
-  // Protegido por secret (cron) OU admin. Em teste, ?secret=CRON_SECRET
+  // Auth: cron secret OU admin JWT (pro botão de teste no admin)
   const secret = req.query?.secret || req.headers['x-cron-secret'];
-  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
-    return res.status(403).json({ error: 'forbidden' });
+  const cronOk = process.env.CRON_SECRET && secret === process.env.CRON_SECRET;
+  if (!cronOk) {
+    const jwt = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    let adminOk = false;
+    if (jwt && jwt.length > 50) {
+      try {
+        const ur = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { Authorization: `Bearer ${jwt}`, apikey: SUPABASE_KEY } });
+        if (ur.ok) {
+          const u = await ur.json();
+          if (u?.id) {
+            const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${u.id}&is_admin=eq.true&select=id`, { headers: { Authorization: `Bearer ${jwt}`, apikey: SUPABASE_KEY } });
+            if (pr.ok) { const rows = await pr.json(); adminOk = Array.isArray(rows) && rows.length > 0; }
+          }
+        }
+      } catch {}
+    }
+    if (!adminOk) return res.status(403).json({ error: 'forbidden' });
   }
 
   const TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
