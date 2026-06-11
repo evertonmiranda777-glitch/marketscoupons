@@ -2,7 +2,8 @@
   "functions": {
     "api/render-criativo.js": {
       "memory": 1024,
-      "maxDuration": 60
+      "maxDuration": 60,
+      "includeFiles": "node_modules/@sparticuz/chromium/bin/**"
     },
     "api/send-email.js": {
       "maxDuration": 60
