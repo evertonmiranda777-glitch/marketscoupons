@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Markets Coupons · Carrossel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F0B429;
+    --gold-light: #FCD34D;
+    --green: #22D67C;
+    --red: #EF4444;
+    --bg: #06080F;
+    --t1: #fff;
+    --t2: #E6E9F2;
+    --t3: #8A93A8;
+  }
+  body { background: #06080F; margin: 0; padding: 0; font-family: 'Inter', sans-serif; color: var(--t2); }
+  .stage { display: flex; flex-direction: column; gap: 24px; padding: 24px; align-items: center; }
+
+  /* ===== SLIDE 1080×1350 (grid travado) ===== */
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    color: var(--t2);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: var(--bg);
+  }
+  .slide::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none; z-index: 0;
+  }
+  .slide > * { position: relative; z-index: 1; }
+
+  /* ===== TOP BAR (mesmo em todos) ===== */
+  .topbar { display: flex; justify-content: space-between; align-items: center; padding: 44px 56px 0; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-logo { width: 38px; height: 38px; }
+  .brand-text { font-size: 22px; font-weight: 400; letter-spacing: -.4px; color: #fff; }
+  .brand-text em { font-style: normal; color: var(--gold); font-weight: 700; }
+  .slide-tag { font-size: 16px; color: var(--t3); letter-spacing: .25em; text-transform: uppercase; font-weight: 600; }
+
+  /* ===== EYEBROW (categoria do slide) ===== */
+  .eyebrow {
+    font-size: 18px; color: var(--green);
+    letter-spacing: .25em; text-transform: uppercase;
+    font-weight: 700;
+    padding: 0 56px;
+    margin-bottom: 18px;
+  }
+
+  /* ===== TÍTULO PRINCIPAL ===== */
+  .slide-title {
+    font-size: 60px; font-weight: 900;
+    line-height: 1.06; letter-spacing: -.03em;
+    color: #fff; margin: 0 0 22px;
+    padding: 0 56px;
+  }
+  .slide-title em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 60%, var(--gold) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .slide-title .accent-green { color: var(--green); }
+  .slide-title .accent-red { color: var(--red); }
+
+  /* ===== CONTEÚDO (área do corpo) ===== */
+  .slide-body { padding: 0 56px; }
+
+  /* ===== MAX MASCOTE (varia por slide) ===== */
+  .max {
+    position: absolute;
+    pointer-events: none;
+  }
+  .max-pose-1 { left: 4%; bottom: 30px; width: 340px; }
+  .max-pose-2 { left: 4%; bottom: 30px; width: 320px; }
+  .max-pose-3 { left: 4%; bottom: 30px; width: 340px; }
+  .max-pose-4 { left: 4%; bottom: 30px; width: 340px; }
+  .max-pose-5 { left: 50%; transform: translateX(-50%); bottom: 60px; width: 380px; }
+  .max img { display: block; width: 100%; height: auto; }
+
+  /* ===== ARROW SWIPE ===== */
+  .swipe {
+    position: absolute; bottom: 36px; right: 40px;
+    width: 64px; height: 32px;
+    border: 1.5px solid var(--gold);
+    border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+  }
+  .swipe svg { width: 22px; height: 22px; }
+
+  /* ===== SLIDE 1 (Hero comparativo) ===== */
+  .slide-1 .hero-compare {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin: 8px 0 18px;
+  }
+  .compare-card {
+    border-radius: 18px;
+    padding: 18px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .compare-card.before { border-color: rgba(239,68,68,.3); }
+  .compare-card.after  { border-color: rgba(34,214,124,.4); background: rgba(34,214,124,.08); }
+  .compare-label {
+    font-size: 14px; font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .compare-card.before .compare-label { color: var(--red); }
+  .compare-card.after  .compare-label { color: var(--green); }
+  .compare-card .chart-mini {
+    display: flex; align-items: flex-end; justify-content: center;
+    gap: 5px; height: 130px;
+    background: rgba(0,0,0,.35);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .compare-card .chart-mini .bar {
+    width: 14px; border-radius: 3px 3px 0 0;
+  }
+  .compare-card.before .bar { background: #6b7280; }
+  .compare-card.after  .bar.g { background: var(--green); }
+  .compare-card.after  .bar.r { background: var(--red); }
+  .compare-card.after  .bar.n { background: #6b7280; }
+  .compare-caption {
+    margin-top: 12px; font-size: 14px; color: var(--t3);
+    line-height: 1.45;
+  }
+
+  .slide-1 .hero-explainer {
+    font-size: 20px; line-height: 1.5;
+    color: var(--t2);
+    margin-top: 8px;
+  }
+  .slide-1 .hero-explainer b { color: #fff; font-weight: 700; }
+
+  /* Slide 1: Max sai do hero pq tem chart comparativo */
+  .slide-1 .max-pose-1 { width: 280px; bottom: 24px; left: 60%; }
+
+  /* ===== SLIDE 2 (Dor) ===== */
+  .slide-2 .pain-list {
+    display: grid; gap: 10px; margin-top: 6px;
+    max-width: 680px; margin-left: auto;
+  }
+  .pain-item {
+    display: grid; grid-template-columns: 44px 1fr;
+    align-items: center; gap: 14px;
+    background: rgba(239,68,68,.08);
+    border: 1px solid rgba(239,68,68,.22);
+    border-radius: 12px;
+    padding: 14px 18px;
+  }
+  .pain-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--red); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800;
+  }
+  .pain-text {
+    font-size: 18px; line-height: 1.4;
+    color: var(--t2);
+  }
+  .slide-2 .max-pose-2 { width: 280px; }
+
+  /* ===== SLIDE 3 (Como funciona) ===== */
+  .slide-3 .colors {
+    display: grid; gap: 12px; max-width: 680px; margin-left: auto;
+  }
+  .color-row {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 16px; align-items: start;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .color-swatch {
+    width: 56px; height: 56px; border-radius: 12px;
+  }
+  .color-swatch.g { background: linear-gradient(135deg, var(--green), #16a34a); }
+  .color-swatch.n { background: linear-gradient(135deg, #9ca3af, #6b7280); }
+  .color-swatch.r { background: linear-gradient(135deg, var(--red), #b91c1c); }
+  .color-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .color-desc  { font-size: 14px; line-height: 1.4; color: var(--t3); }
+  .slide-3 .max-pose-3 { width: 280px; }
+
+  /* ===== SLIDE 4 (Benefícios) ===== */
+  .slide-4 .benefits {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    max-width: 720px; margin-left: auto;
+  }
+  .bn-card {
+    background: rgba(34,214,124,.07);
+    border: 1px solid rgba(34,214,124,.22);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .bn-icon {
+    width: 30px; height: 30px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .bn-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 4px; line-height: 1.2; }
+  .bn-desc  { font-size: 13px; line-height: 1.45; color: var(--t3); }
+  .slide-4 .max-pose-4 { width: 290px; }
+
+  /* ===== SLIDE 5 (CTA) ===== */
+  .slide-5 { grid-template-rows: auto 1fr auto; }
+  .slide-5 .cta-wrap {
+    padding: 0 56px;
+    text-align: center;
+    margin-top: 32px;
+  }
+  .slide-5 .cta-title {
+    font-size: 56px; font-weight: 900;
+    line-height: 1.05; letter-spacing: -.03em;
+    color: #fff; margin: 0 0 30px;
+  }
+  .slide-5 .cta-title em {
+    font-style: normal; color: var(--green);
+  }
+  .slide-5 .cta-action {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #0a0d14;
+    font-size: 22px; font-weight: 800;
+    padding: 18px 38px;
+    border-radius: 999px;
+    letter-spacing: .04em;
+    box-shadow: 0 10px 30px rgba(240,180,41,.35);
+    margin-bottom: 24px;
+  }
+  .slide-5 .cta-action em { font-style: normal; background: rgba(0,0,0,.18); padding: 4px 10px; border-radius: 8px; margin: 0 4px; }
+  .slide-5 .cta-sub {
+    font-size: 18px; line-height: 1.5;
+    color: var(--t2);
+    max-width: 720px; margin: 0 auto;
+  }
+  .slide-5 .cta-handle { color: var(--green); font-weight: 800; }
+  .slide-5 .max-pose-5 { width: 360px; bottom: 64px; }
+
+  /* Slide 5 footer separado */
+  .slide-5 .footer-note {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,.6));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: var(--t3);
+    z-index: 2;
+  }
+  .slide-5 .swipe { display: none; }
+
+  /* Disclaimer rodapé */
+  .disclaimer-foot {
+    position: absolute; bottom: 14px; left: 56px; right: 130px;
+    font-size: 12px; color: rgba(138,147,168,.7);
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+
+<script>
+const QP = new URLSearchParams(location.search);
+const THEME = (QP.get('theme') || 'volumefilter').toLowerCase();
+const LANG = (QP.get('lang') || 'en').toLowerCase();
+const ONLY = QP.get('slide'); // ?slide=1..5 mostra só 1 (pro HCTI selector)
+
+// === Temas (textos por slide) ===
+const THEMES = {
+  volumefilter: {
+    en: {
+      brand_sub: 'Free indicator for NinjaTrader 8',
+      s1: {
+        tag: '// SLIDE 1', eyebrow: '// THE FIX',
+        title: 'See the <em>real volume</em> strength <span class="accent-green">before</span> you enter.',
+        before_label: 'Native NT Volume',
+        after_label: 'VolumeFilter',
+        explainer: 'NinjaTrader\'s native volume is a flat gray bar — it shows <b>quantity, not strength</b>. VolumeFilter paints each candle in 3 colors so you read aggression in 1 glance.'
+      },
+      s2: {
+        tag: '// SLIDE 2', eyebrow: '// THE PROBLEM',
+        title: 'Ever traded a move that <span class="accent-red">looked strong</span> and died in your face?',
+        pains: [
+          'Bought the breakout — candle reversed in the same second.',
+          'Entered the trend — price chopped sideways for 40 minutes.',
+          'The trade went against you on a day with "huge volume" on the axis.',
+          'You can\'t tell a strength candle from an absorption candle.',
+          'You exit, look at the chart later, and realize the signal was there.'
+        ]
+      },
+      s3: {
+        tag: '// SLIDE 3', eyebrow: '// HOW IT WORKS',
+        title: '<em>3 colors.</em> 1 glance. Direct decision.',
+        sub: 'VolumeFilter compares each candle against the 20-period average and paints the bar one solid color.',
+        colors: [
+          { c:'g', title: 'Volume ≥ 1.5× average', desc: 'Real aggression. Institutional buyer/seller is pushing price. This is the candle that confirms entry.' },
+          { c:'n', title: 'Volume within normal range', desc: 'Market breathing. Confirms nothing — could be absorption, could be indecision. Wait for the next one.' },
+          { c:'r', title: 'Volume ≤ 1.5× average', desc: 'No fuel behind the move. End of trend = exhaustion. On a breakout = fake, won\'t go far.' }
+        ]
+      },
+      s4: {
+        tag: '// SLIDE 4', eyebrow: '// WHAT CHANGES',
+        title: 'Stop guessing. <em>Start reading.</em>',
+        benefits: [
+          { title: 'Avoid fake breakouts', desc: 'A green bar is mandatory — see the trap before clicking Buy.' },
+          { title: 'Confirm entries with aggression', desc: 'Only enter when the trigger candle prints green. Brutal filter against impulse entries.' },
+          { title: 'Spot exhaustion before the market', desc: 'When volume turns red at the end of a trend — fuel is gone.' },
+          { title: 'Filter sideways days', desc: 'Multiple gray and red bars in a row = dead day. Close the chart, save your edge.' },
+          { title: 'Read against the flow', desc: 'Green volume on the opposite side = institutional against you. Warns before the loss.' },
+          { title: 'Instant read on mobile', desc: 'No need to scan 3 panels. Colors do the work — phone-friendly.' }
+        ]
+      },
+      s5: {
+        tag: '// SLIDE 5', eyebrow: '// YOUR CALL',
+        title: 'The Volume Filter changes the way you see <em>market opportunities</em>.',
+        action_pre: 'Comment',
+        action_word: 'VOLUME',
+        action_post: 'and I\'ll DM you the link.',
+        sub: 'Free until <b>December 31, 2026</b>. Follow <span class="cta-handle">@marketscoupons</span> for more indicators tested by real traders.'
+      }
+    }
+  }
+};
+
+const POSES = {
+  1: '/img/Max/max-apresentador.png',
+  2: '/img/Max/max-lupa.png',
+  3: '/img/Max/max-apontando.png',
+  4: '/img/Max/max-confiante.png',
+  5: '/img/Max/max-trofeu.png'
+};
+
+function svgArrow() {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>`;
+}
+function brand(sub) {
+  return `<div class="topbar">
+    <div class="brand">
+      <svg class="brand-logo" viewBox="0 0 100 100" fill="none">
+        <polygon points="50,8 90,30 90,70 50,92 10,70 10,30" stroke="#F0B429" stroke-width="6"/>
+        <text x="50" y="62" text-anchor="middle" font-family="Inter" font-weight="900" font-size="44" fill="#F0B429">M</text>
+      </svg>
+      <div class="brand-text">Markets <em>Coupons</em></div>
+    </div>
+    <div class="slide-tag">${sub}</div>
+  </div>`;
+}
+function swipe() { return `<div class="swipe">${svgArrow()}</div>`; }
+
+function genBefore() {
+  // 12 barras cinzas iguais = chato
+  return Array.from({length:12}).map((_,i)=>`<div class="bar" style="height:${50+Math.sin(i)*15}%"></div>`).join('');
+}
+function genAfter() {
+  const heights = [70,55,60,82,90,45,38,65,75,40,52,68];
+  const cls = ['g','n','g','g','g','r','r','n','g','r','n','g'];
+  return heights.map((h,i)=>`<div class="bar ${cls[i]}" style="height:${h}%"></div>`).join('');
+}
+
+function svgBenefit(idx) {
+  const icons = [
+    // 1 shield off (avoid fake)
+    `<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/>`,
+    // 2 check shield
+    `<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/>`,
+    // 3 trending down (exhaustion)
+    `<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/>`,
+    // 4 pause
+    `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`,
+    // 5 alert
+    `<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
+    // 6 smartphone
+    `<rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>`
+  ];
+  return `<svg class="bn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[idx]}</svg>`;
+}
+
+function renderSlide(n, theme) {
+  const t = theme[`s${n}`];
+  const pose = POSES[n];
+  const subBrand = theme.brand_sub || '';
+  let body = '';
+
+  if (n === 1) {
+    body = `
+      <div class="slide-body">
+        ${t.eyebrow ? `<div class="eyebrow">${t.eyebrow}</div>` : ''}
+        <h1 class="slide-title">${t.title}</h1>
+        <div class="hero-compare">
+          <div class="compare-card before">
+            <div class="compare-label">${t.before_label}</div>
+            <div class="chart-mini">${genBefore()}</div>
+            <div class="compare-caption">Same bar everywhere. Useless.</div>
+          </div>
+          <div class="compare-card after">
+            <div class="compare-label">${t.after_label}</div>
+            <div class="chart-mini">${genAfter()}</div>
+            <div class="compare-caption">Green / gray / red. Read in 1 glance.</div>
+          </div>
+        </div>
+        <div class="hero-explainer">${t.explainer}</div>
+      </div>
+    `;
+  } else if (n === 2) {
+    body = `
+      <div class="slide-body">
+        <div class="eyebrow">${t.eyebrow}</div>
+        <h1 class="slide-title">${t.title}</h1>
+        <div class="pain-list">
+          ${t.pains.map((p,i)=>`<div class="pain-item"><div class="pain-num">${i+1}</div><div class="pain-text">${p}</div></div>`).join('')}
+        </div>
+      </div>
+    `;
+  } else if (n === 3) {
+    body = `
+      <div class="slide-body">
+        <div class="eyebrow">${t.eyebrow}</div>
+        <h1 class="slide-title">${t.title}</h1>
+        <div class="hero-explainer" style="margin-bottom:18px;">${t.sub}</div>
+        <div class="colors">
+          ${t.colors.map(c=>`<div class="color-row">
+            <div class="color-swatch ${c.c}"></div>
+            <div><div class="color-title">${c.title}</div><div class="color-desc">${c.desc}</div></div>
+          </div>`).join('')}
+        </div>
+      </div>
+    `;
+  } else if (n === 4) {
+    body = `
+      <div class="slide-body">
+        <div class="eyebrow">${t.eyebrow}</div>
+        <h1 class="slide-title">${t.title}</h1>
+        <div class="benefits">
+          ${t.benefits.map((b,i)=>`<div class="bn-card">${svgBenefit(i)}<div class="bn-title">${b.title}</div><div class="bn-desc">${b.desc}</div></div>`).join('')}
+        </div>
+      </div>
+    `;
+  } else if (n === 5) {
+    body = `
+      <div class="cta-wrap">
+        <div class="eyebrow" style="text-align:center;padding:0;">${t.eyebrow}</div>
+        <h1 class="cta-title">${t.title}</h1>
+        <div class="cta-action">${t.action_pre} <em>${t.action_word}</em> ${t.action_post}</div>
+        <div class="cta-sub">${t.sub}</div>
+      </div>
+    `;
+  }
+
+  const maxHtml = `<div class="max max-pose-${n}"><img src="${pose}" alt="Max"></div>`;
+  const swipeHtml = n < 5 ? swipe() : `<div class="footer-note">Save and Share →</div>`;
+
+  return `<div class="slide slide-${n}" id="cr-slide-${n}">
+    ${brand(subBrand)}
+    ${body}
+    ${maxHtml}
+    ${swipeHtml}
+  </div>`;
+}
+
+function init() {
+  const theme = (THEMES[THEME] && THEMES[THEME][LANG]) || THEMES.volumefilter.en;
+  const stage = document.getElementById('stage');
+  const slides = ONLY ? [parseInt(ONLY,10)] : [1,2,3,4,5];
+  stage.innerHTML = slides.map(n => renderSlide(n, theme)).join('');
+}
+
+init();
+</script>
+</body>
+</html>
