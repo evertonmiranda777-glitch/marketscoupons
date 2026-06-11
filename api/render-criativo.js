@@ -87,31 +87,30 @@ module.exports = async (req, res) => {
   }
 };
 
-// ===== Playwright self-hosted (default) =====
+// ===== Puppeteer self-hosted (default) =====
 async function renderPlaywright({ html, styles, width, height, origin, url }) {
   const chromium = require('@sparticuz/chromium');
-  const { chromium: pw } = require('playwright-core');
+  const puppeteer = require('puppeteer-core');
 
-  const browser = await pw.launch({
-    args: chromium.args,
+  const w = parseInt(width, 10);
+  const h = parseInt(height, 10);
+
+  const browser = await puppeteer.launch({
+    args: [...chromium.args, '--single-process'],
     executablePath: await chromium.executablePath(),
     headless: true,
+    defaultViewport: { width: w, height: h, deviceScaleFactor: 1 },
   });
 
   try {
-    const ctx = await browser.newContext({
-      viewport: { width: parseInt(width, 10), height: parseInt(height, 10) },
-      deviceScaleFactor: 1,
-    });
-    const page = await ctx.newPage();
+    const page = await browser.newPage();
 
     if (url) {
       // Modo URL: carrega página remota e screenshota o #cr-canvas
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+      await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
       const el = await page.$('#cr-canvas');
       if (!el) throw new Error('selector #cr-canvas not found at url');
-      const buf = await el.screenshot({ type: 'png' });
-      return buf;
+      return await el.screenshot({ type: 'png' });
     }
 
     // Modo HTML inline (legado admin browser-side)
@@ -123,14 +122,12 @@ async function renderPlaywright({ html, styles, width, height, origin, url }) {
     const absStyles = absolutize(styles);
     const baseCss = `*{box-sizing:border-box}html,body{margin:0;padding:0;background:#060810;font-family:'Inter',sans-serif;}body{width:${width}px;height:${height}px;overflow:hidden;}#cr-canvas{margin:0 !important;}`;
     const full = `<!doctype html><html><head><meta charset="utf-8"><base href="${base}"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>${baseCss}\n${absStyles || ''}</style></head><body>${absHtml}</body></html>`;
-    await page.setContent(full, { waitUntil: 'networkidle', timeout: 30000 });
-    // pequena espera pra fontes/imgs estabilizarem
-    await page.waitForTimeout(600);
+    await page.setContent(full, { waitUntil: 'networkidle0', timeout: 30000 });
+    await new Promise(r => setTimeout(r, 600));
     const el = await page.$('#cr-canvas');
-    const buf = el
+    return el
       ? await el.screenshot({ type: 'png' })
-      : await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: parseInt(width, 10), height: parseInt(height, 10) } });
-    return buf;
+      : await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: w, height: h } });
   } finally {
     await browser.close().catch(() => {});
   }
