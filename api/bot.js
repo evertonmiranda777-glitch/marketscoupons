@@ -469,11 +469,111 @@ function buildXThread(a) {
   return [t1, t2, t3, t4].filter(t => t && t.trim().length > 0);
 }
 
+// ===== X recap: score público hits/misses do dia anterior =====
+// GET ?action=x_recap&dry=1 — preview · POST ?action=x_recap&secret=... — posta
+async function handleXRecap(req, res) {
+  const isPreview = req.method === 'GET' || req.query?.dry === '1';
+  if (!isPreview) {
+    const secret = req.query?.secret || req.headers['x-cron-secret'];
+    if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
+      return res.status(403).json({ error: 'forbidden' });
+    }
+  }
+
+  // Pega últimos targets scorados (último dia útil, max 5 ativos)
+  const tResp = await fetch(`${SUPABASE_URL}/rest/v1/analysis_targets?scored_at=not.is.null&select=*&order=date.desc&limit=20`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+  });
+  const allTargets = await tResp.json();
+  if (!Array.isArray(allTargets) || !allTargets.length) {
+    return res.status(404).json({ error: 'no_scored_targets' });
+  }
+
+  // Agrupa pela data mais recente (todas do mesmo dia útil)
+  const latestDate = allTargets[0].date;
+  const targets = allTargets.filter(t => t.date === latestDate);
+
+  // Calcula score por ativo
+  const scored = targets.map(t => {
+    let outcome = '➖';
+    let label = 'no trigger';
+    let direction = '';
+    if (t.bull_trigger_hit) {
+      direction = 'bull';
+      if (t.bull_t2_hit) { outcome = '✅✅'; label = 'T2 hit'; }
+      else if (t.bull_t1_hit) { outcome = '✅'; label = 'T1 hit'; }
+      else if (t.bull_stop_hit) { outcome = '❌'; label = 'stop hit'; }
+      else { outcome = '🟡'; label = 'trigger only'; }
+    } else if (t.bear_trigger_hit) {
+      direction = 'bear';
+      if (t.bear_t2_hit) { outcome = '✅✅'; label = 'T2 hit'; }
+      else if (t.bear_t1_hit) { outcome = '✅'; label = 'T1 hit'; }
+      else if (t.bear_stop_hit) { outcome = '❌'; label = 'stop hit'; }
+      else { outcome = '🟡'; label = 'trigger only'; }
+    }
+    return { asset: t.asset, outcome, label, direction, actual_high: t.actual_high, actual_low: t.actual_low };
+  });
+
+  // Stats simples
+  const wins = scored.filter(s => s.outcome.startsWith('✅')).length;
+  const losses = scored.filter(s => s.outcome === '❌').length;
+  const noTrig = scored.filter(s => s.outcome === '➖').length;
+
+  // Monta thread
+  const lines = scored.map(s => `${s.asset} ${s.outcome} ${s.label}${s.direction ? ` (${s.direction})` : ''}`).join('\n');
+  const t1 = `📋 Yesterday's calls · ${latestDate}\n\n${lines}\n\nScore: ${wins}W / ${losses}L / ${noTrig} no trigger`.slice(0, 275);
+  const t2 = `Why this matters:\n\nWe publish the call BEFORE the move and the result AFTER. No edits, no hiding.\n\nFollow @marketscoupons for today's outlook ↓`.slice(0, 275);
+  const t3 = `Today's full thread (4 assets, macro + zones + setups):\n\nmarketscoupons.com/analysis?utm_source=x&utm_medium=recap&utm_campaign=daily_score`.slice(0, 275);
+
+  const thread = [t1, t2, t3];
+
+  if (isPreview) {
+    return res.status(200).json({ date: latestDate, scored, thread, preview: true });
+  }
+
+  const X_BEARER = process.env.X_USER_BEARER_TOKEN;
+  if (!X_BEARER) return res.status(503).json({ error: 'no_x_token' });
+
+  const tweetIds = [];
+  let replyTo = null;
+  let lastResponse = null;
+  for (const text of thread) {
+    const body = { text };
+    if (replyTo) body.reply = { in_reply_to_tweet_id: replyTo };
+    const tr = await fetch('https://api.twitter.com/2/tweets', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${X_BEARER}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    lastResponse = await tr.json().catch(()=>({}));
+    if (!tr.ok || !lastResponse?.data?.id) {
+      await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ post_type:'recap_score', status:'failed', x_response: lastResponse, posted_content: { thread, fail_at_tweet: tweetIds.length } })
+      }).catch(()=>{});
+      return res.status(502).json({ error: 'x_post_failed', failed_at: tweetIds.length, response: lastResponse });
+    }
+    const id = lastResponse.data.id;
+    tweetIds.push(id);
+    replyTo = id;
+    await new Promise(r => setTimeout(r, 800));
+  }
+
+  await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ post_type:'recap_score', thread_root_id: tweetIds[0], thread_tweet_ids: tweetIds, status:'sent', posted_content: { thread, scored, date: latestDate } })
+  }).catch(()=>{});
+
+  return res.status(200).json({ date: latestDate, posted: tweetIds, thread, scored });
+}
+
 module.exports = async (req, res) => {
-  // Branching ?action=ig_webhook → handler IG
   const action = req.query?.action || '';
   if (action === 'ig_webhook') return handleIgWebhook(req, res);
   if (action === 'x_daily') return handleXDaily(req, res);
+  if (action === 'x_recap') return handleXRecap(req, res);
 
   const corsOrigin = getCorsOrigin(req);
   res.setHeader('Access-Control-Allow-Origin', corsOrigin);
