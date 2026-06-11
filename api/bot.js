@@ -797,6 +797,88 @@ async function handleIgPollRun(req, res) {
   return res.status(200).json({ dmSent, debug, results });
 }
 
+// ===== Helper: valida admin JWT =====
+async function isAdminJwt(req) {
+  const jwt = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+  if (!jwt || jwt.length < 50) return false;
+  try {
+    const ur = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { Authorization: `Bearer ${jwt}`, apikey: SUPABASE_KEY } });
+    if (!ur.ok) return false;
+    const u = await ur.json();
+    if (!u?.id) return false;
+    const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${u.id}&is_admin=eq.true&select=id`, { headers: { Authorization: `Bearer ${jwt}`, apikey: SUPABASE_KEY } });
+    if (!pr.ok) return false;
+    const rows = await pr.json();
+    return Array.isArray(rows) && rows.length > 0;
+  } catch { return false; }
+}
+
+// ===== CRUD das automações IG (painel admin) =====
+async function handleIgAdmin(req, res) {
+  if (!(await isAdminJwt(req))) return res.status(403).json({ error: 'forbidden' });
+  const SK = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_KEY;
+  const op = req.query?.op || 'list';
+  const H = { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json' };
+
+  if (op === 'list') {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies?select=*&order=id.asc`, { headers: H });
+    const rows = await r.json();
+    // stats: total DMs por keyword
+    const statsR = await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log?select=keyword_matched,dm_status`, { headers: H });
+    const logs = await statsR.json().catch(() => []);
+    const stats = {};
+    if (Array.isArray(logs)) for (const l of logs) {
+      const k = l.keyword_matched || '?';
+      stats[k] = stats[k] || { sent: 0, failed: 0 };
+      if (l.dm_status === 'sent') stats[k].sent++; else stats[k].failed++;
+    }
+    return res.status(200).json({ rows, stats });
+  }
+
+  if (op === 'save') {
+    const b = req.body || {};
+    const payload = {
+      keyword: String(b.keyword || '').trim().toUpperCase(),
+      reply_templates: Array.isArray(b.reply_templates) ? b.reply_templates : [],
+      public_replies: Array.isArray(b.public_replies) ? b.public_replies : [],
+      reply_link: b.reply_link || null,
+      post_id: b.post_id || null,
+      match_mode: b.match_mode || 'contains',
+      enabled: b.enabled !== false,
+      require_follow: !!b.require_follow,
+      notes: b.notes || null
+    };
+    if (!payload.keyword || !payload.reply_templates.length) {
+      return res.status(400).json({ error: 'keyword e ao menos 1 template sao obrigatorios' });
+    }
+    let r;
+    if (b.id) {
+      r = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies?id=eq.${b.id}`, { method: 'PATCH', headers: { ...H, Prefer: 'return=representation' }, body: JSON.stringify(payload) });
+    } else {
+      r = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies`, { method: 'POST', headers: { ...H, Prefer: 'return=representation' }, body: JSON.stringify(payload) });
+    }
+    const data = await r.json();
+    if (!r.ok) return res.status(500).json({ error: 'save_failed', detail: data });
+    return res.status(200).json({ ok: true, row: Array.isArray(data) ? data[0] : data });
+  }
+
+  if (op === 'toggle') {
+    const id = req.query?.id; const enabled = req.query?.enabled === '1';
+    if (!id) return res.status(400).json({ error: 'missing id' });
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies?id=eq.${id}`, { method: 'PATCH', headers: H, body: JSON.stringify({ enabled }) });
+    return res.status(r.ok ? 200 : 500).json({ ok: r.ok });
+  }
+
+  if (op === 'delete') {
+    const id = req.query?.id;
+    if (!id) return res.status(400).json({ error: 'missing id' });
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies?id=eq.${id}`, { method: 'DELETE', headers: H });
+    return res.status(r.ok ? 200 : 500).json({ ok: r.ok });
+  }
+
+  return res.status(400).json({ error: 'unknown op' });
+}
+
 module.exports = async (req, res) => {
   const action = req.query?.action || '';
 
@@ -835,6 +917,7 @@ module.exports = async (req, res) => {
   if (action === 'ig_subscribe') return handleIgSubscribe(req, res);
   if (action === 'ig_poll_test') return handleIgPollTest(req, res);
   if (action === 'ig_poll_run') return handleIgPollRun(req, res);
+  if (action === 'ig_admin') return handleIgAdmin(req, res);
   if (action === 'x_daily') return handleXDaily(req, res);
   if (action === 'x_recap') return handleXRecap(req, res);
 
