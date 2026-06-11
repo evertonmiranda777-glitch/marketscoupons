@@ -2289,16 +2289,57 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div class="sec-title">Criativos, Gerador de Anuncios</div>
       </div>
 
-      <!-- BOT INSTAGRAM (DM automático por palavra-chave) -->
-      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 20px;margin-bottom:18px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <!-- BOT INSTAGRAM, painel de automações -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;margin-bottom:18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
           <div>
-            <div style="font-weight:700;color:#fff;font-size:15px;margin-bottom:4px;">Bot Instagram, DM automático</div>
-            <div style="font-size:13px;color:#8A93A8;">Lê comentários dos posts e manda DM com link quando alguém comenta a palavra-chave (ex: VOLUME). Roda por polling, sem webhook.</div>
+            <div style="font-weight:700;color:#fff;font-size:16px;margin-bottom:4px;">Bot Instagram, Automações de DM</div>
+            <div style="font-size:13px;color:#8A93A8;">Quem comentar a palavra-chave no post recebe DM automática + resposta pública. Você cria quantas quiser.</div>
           </div>
-          <button class="btn-primary" onclick="runIgBot(this)" style="white-space:nowrap;">Rodar bot agora</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-ghost" onclick="igNewAutomation()" style="white-space:nowrap;">+ Nova automação</button>
+            <button class="btn-primary" onclick="runIgBot(this)" style="white-space:nowrap;">Rodar agora</button>
+          </div>
         </div>
-        <div id="ig-bot-result" style="margin-top:12px;font-size:13px;color:#8A93A8;display:none;"></div>
+        <div id="ig-bot-result" style="margin-bottom:12px;font-size:13px;color:#8A93A8;display:none;"></div>
+        <div id="ig-automations-list" style="display:grid;gap:10px;"></div>
+
+        <!-- Form (oculto até clicar Nova/Editar) -->
+        <div id="ig-form" style="display:none;margin-top:14px;padding:16px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);border-radius:10px;">
+          <input type="hidden" id="igf-id">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="font-size:12px;color:#8A93A8;display:block;margin-bottom:4px;">Palavra-chave (ex: VOLUME)</label>
+              <input id="igf-keyword" class="adm-input" placeholder="VOLUME" style="width:100%;text-transform:uppercase;">
+            </div>
+            <div>
+              <label style="font-size:12px;color:#8A93A8;display:block;margin-bottom:4px;">Link enviado</label>
+              <input id="igf-link" class="adm-input" placeholder="https://www.marketscoupons.com/indicators" style="width:100%;">
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:12px;color:#8A93A8;display:block;margin-bottom:4px;">Mensagens de DM (1 por linha, usa {link} pro link). Várias = rotaciona pra não parecer robô.</label>
+            <textarea id="igf-templates" class="adm-input" rows="4" placeholder="Hello, trader! Here's the link: {link}" style="width:100%;font-family:inherit;"></textarea>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:12px;color:#8A93A8;display:block;margin-bottom:4px;">Respostas públicas no comentário (1 por linha). Gera engajamento. Deixe vazio pra não responder publicamente.</label>
+            <textarea id="igf-public" class="adm-input" rows="3" placeholder="Just sent you a DM 📩" style="width:100%;font-family:inherit;"></textarea>
+          </div>
+          <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+            <label style="font-size:13px;color:#E6E9F2;display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="igf-enabled" checked> Ativa
+            </label>
+            <label style="font-size:13px;color:#E6E9F2;display:flex;align-items:center;gap:8px;cursor:pointer;" title="Só manda o link se a pessoa seguir o perfil">
+              <input type="checkbox" id="igf-follow"> Exigir que siga o perfil (follow-gating)
+            </label>
+            <div style="font-size:12px;color:#8A93A8;">Post: </div>
+            <input id="igf-post" class="adm-input" placeholder="ID do post (vazio = todos)" style="width:200px;font-size:12px;">
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-primary" onclick="igSaveAutomation(this)">Salvar</button>
+            <button class="btn-ghost" onclick="document.getElementById('ig-form').style.display='none'">Cancelar</button>
+          </div>
+        </div>
       </div>
 
       <div class="cr-layout">
@@ -3903,7 +3944,7 @@ function renderPage(p){
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
     case 'cms-blog':       renderCmsBlog(); break;
-    case 'criativos':      initCriativos(); try { bsInit(); } catch(_) {} break;
+    case 'criativos':      initCriativos(); try { bsInit(); } catch(_) {} try { igLoadAutomations(); } catch(_) {} break;
     case 'reviews':        initReviewsAdmin(); break;
     case 'telegram':       initTelegramSection(); break;
     case 'cms-faq':        renderCmsFaq(); break;
@@ -14549,6 +14590,112 @@ function _unusedOldCreative() {
 
   h += '</div>'; // close cr-inner
   content.innerHTML = h;
+}
+
+async function igAuthHeaders() {
+  const session = await db.auth.getSession();
+  const token = session?.data?.session?.access_token;
+  return { 'Authorization': `Bearer ${token||''}`, 'Content-Type': 'application/json' };
+}
+
+async function igLoadAutomations() {
+  const list = document.getElementById('ig-automations-list');
+  if (!list) return;
+  list.innerHTML = '<div style="color:#8A93A8;font-size:13px;">Carregando...</div>';
+  try {
+    const resp = await fetch('/api/bot?action=ig_admin&op=list', { headers: await igAuthHeaders() });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'erro');
+    const rows = data.rows || [];
+    const stats = data.stats || {};
+    if (!rows.length) { list.innerHTML = '<div style="color:#8A93A8;font-size:13px;">Nenhuma automação ainda. Clique "+ Nova automação".</div>'; return; }
+    list.innerHTML = rows.map(r => {
+      const st = stats[r.keyword] || { sent: 0, failed: 0 };
+      const on = r.enabled;
+      return `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+            <span style="font-weight:700;color:#fff;font-size:15px;">${r.keyword}</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:999px;background:${on?'rgba(34,214,124,.15)':'rgba(138,147,168,.15)'};color:${on?'#22D67C':'#8A93A8'};">${on?'ATIVA':'OFF'}</span>
+            ${r.require_follow?'<span style="font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(240,180,41,.15);color:#F0B429;">só seguidores</span>':''}
+          </div>
+          <div style="font-size:12px;color:#8A93A8;">${st.sent} DM(s) enviada(s)${st.failed?` · ${st.failed} falha(s)`:''} · ${(r.reply_templates||[]).length} msg(s)</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick='igToggle(${r.id},${!on})'>${on?'Desligar':'Ligar'}</button>
+          <button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick='igEdit(${JSON.stringify(r).replace(/'/g,"&#39;")})'>Editar</button>
+          <button class="btn-ghost" style="font-size:12px;padding:5px 10px;color:#EF4444;" onclick='igDelete(${r.id},"${r.keyword}")'>Excluir</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML = `<div style="color:#EF4444;font-size:13px;">Erro: ${e.message}</div>`;
+  }
+}
+
+function igNewAutomation() {
+  document.getElementById('igf-id').value = '';
+  document.getElementById('igf-keyword').value = '';
+  document.getElementById('igf-link').value = 'https://www.marketscoupons.com/indicators';
+  document.getElementById('igf-templates').value = '';
+  document.getElementById('igf-public').value = '';
+  document.getElementById('igf-enabled').checked = true;
+  document.getElementById('igf-follow').checked = false;
+  document.getElementById('igf-post').value = '';
+  document.getElementById('ig-form').style.display = 'block';
+}
+
+function igEdit(r) {
+  document.getElementById('igf-id').value = r.id;
+  document.getElementById('igf-keyword').value = r.keyword || '';
+  document.getElementById('igf-link').value = r.reply_link || '';
+  document.getElementById('igf-templates').value = (r.reply_templates || []).join('\n');
+  document.getElementById('igf-public').value = (r.public_replies || []).join('\n');
+  document.getElementById('igf-enabled').checked = r.enabled !== false;
+  document.getElementById('igf-follow').checked = !!r.require_follow;
+  document.getElementById('igf-post').value = r.post_id || '';
+  document.getElementById('ig-form').style.display = 'block';
+  document.getElementById('ig-form').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+async function igSaveAutomation(btn) {
+  const payload = {
+    id: document.getElementById('igf-id').value || undefined,
+    keyword: document.getElementById('igf-keyword').value.trim(),
+    reply_link: document.getElementById('igf-link').value.trim(),
+    reply_templates: document.getElementById('igf-templates').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    public_replies: document.getElementById('igf-public').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    enabled: document.getElementById('igf-enabled').checked,
+    require_follow: document.getElementById('igf-follow').checked,
+    post_id: document.getElementById('igf-post').value.trim() || null
+  };
+  if (!payload.keyword || !payload.reply_templates.length) { toast('Palavra-chave e ao menos 1 mensagem são obrigatórias', 'error'); return; }
+  btn.textContent = 'Salvando...'; btn.disabled = true;
+  try {
+    const resp = await fetch('/api/bot?action=ig_admin&op=save', { method:'POST', headers: await igAuthHeaders(), body: JSON.stringify(payload) });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'erro');
+    toast('Automação salva!');
+    document.getElementById('ig-form').style.display = 'none';
+    igLoadAutomations();
+  } catch(e) { toast('Erro: '+e.message, 'error'); }
+  btn.textContent = 'Salvar'; btn.disabled = false;
+}
+
+async function igToggle(id, enabled) {
+  try {
+    await fetch(`/api/bot?action=ig_admin&op=toggle&id=${id}&enabled=${enabled?1:0}`, { method:'POST', headers: await igAuthHeaders() });
+    igLoadAutomations();
+  } catch(e) { toast('Erro: '+e.message, 'error'); }
+}
+
+async function igDelete(id, kw) {
+  if (!confirm(`Excluir a automação "${kw}"?`)) return;
+  try {
+    await fetch(`/api/bot?action=ig_admin&op=delete&id=${id}`, { method:'POST', headers: await igAuthHeaders() });
+    toast('Excluída');
+    igLoadAutomations();
+  } catch(e) { toast('Erro: '+e.message, 'error'); }
 }
 
 async function runIgBot(btn) {
