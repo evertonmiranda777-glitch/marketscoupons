@@ -96,9 +96,9 @@ async function renderPlaywright({ html, styles, width, height, origin, url }) {
   const h = parseInt(height, 10);
 
   const browser = await puppeteer.launch({
-    args: [...chromium.args, '--single-process'],
+    args: chromium.args,
     executablePath: await chromium.executablePath(),
-    headless: true,
+    headless: chromium.headless,
     defaultViewport: { width: w, height: h, deviceScaleFactor: 1 },
   });
 
