@@ -569,24 +569,25 @@ async function handleXRecap(req, res) {
   return res.status(200).json({ date: latestDate, posted: tweetIds, thread, scored });
 }
 
-// ===== IG subscribe fields (one-shot, abre URL no browser pra ativar) =====
+// ===== IG subscribe fields (Instagram Login direct, NOT via FB Page) =====
 async function handleIgSubscribe(req, res) {
   const TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
   if (!TOKEN) return res.status(503).json({ error: 'no_token' });
 
-  // Lista contas IG conectadas via Login da Empresa
-  const meResp = await fetch(`https://graph.facebook.com/v21.0/me?fields=id,name,user_id&access_token=${encodeURIComponent(TOKEN)}`);
+  const BASE = 'https://graph.instagram.com/v21.0';
+
+  // 1) Identifica conta IG conectada
+  const meResp = await fetch(`${BASE}/me?fields=id,username,user_id&access_token=${encodeURIComponent(TOKEN)}`);
   const meData = await meResp.json();
   if (!meResp.ok || !meData.id) return res.status(502).json({ error: 'me_failed', response: meData });
 
-  const igUserId = meData.id;
+  // 2) Subscreve aos fields
   const fields = 'comments,messages,messaging_postbacks,message_reactions';
-  const subUrl = `https://graph.facebook.com/v21.0/${igUserId}/subscribed_apps?subscribed_fields=${fields}&access_token=${encodeURIComponent(TOKEN)}`;
-  const subResp = await fetch(subUrl, { method: 'POST' });
+  const subResp = await fetch(`${BASE}/${meData.id}/subscribed_apps?subscribed_fields=${fields}&access_token=${encodeURIComponent(TOKEN)}`, { method: 'POST' });
   const subData = await subResp.json();
 
-  // Lista subscriptions atuais pra confirmar
-  const listResp = await fetch(`https://graph.facebook.com/v21.0/${igUserId}/subscribed_apps?access_token=${encodeURIComponent(TOKEN)}`);
+  // 3) Lista subscriptions atuais pra confirmar
+  const listResp = await fetch(`${BASE}/${meData.id}/subscribed_apps?access_token=${encodeURIComponent(TOKEN)}`);
   const listData = await listResp.json();
 
   return res.status(subResp.ok ? 200 : 500).json({
