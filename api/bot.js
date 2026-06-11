@@ -586,24 +586,39 @@ async function handleIgSubscribe(req, res) {
   const BASE = 'https://graph.instagram.com/v21.0';
 
   // 1) Identifica conta IG conectada
-  const meResp = await fetch(`${BASE}/me?fields=id,username,user_id&access_token=${encodeURIComponent(TOKEN)}`);
+  const meResp = await fetch(`${BASE}/me?fields=id,username,user_id,account_type&access_token=${encodeURIComponent(TOKEN)}`);
   const meData = await meResp.json();
   if (!meResp.ok || !meData.id) return res.status(502).json({ error: 'me_failed', response: meData });
 
-  // 2) Subscreve aos fields
-  const fields = 'comments,messages,messaging_postbacks,message_reactions';
-  const subResp = await fetch(`${BASE}/${meData.id}/subscribed_apps?subscribed_fields=${fields}&access_token=${encodeURIComponent(TOKEN)}`, { method: 'POST' });
-  const subData = await subResp.json();
+  // 2) Tenta subscrever com vários conjuntos de fields, vê qual aceita
+  const fieldsAttempts = [
+    'comments,messages,messaging_postbacks,message_reactions',
+    'comments,messages,mentions,messaging_referral',
+    'comments,messages',
+    'comments',
+    'feed,comments,messages',
+    'live_comments,comments,messages',
+    'instagram_manage_comments,instagram_manage_messages'
+  ];
+  const results = [];
+  for (const f of fieldsAttempts) {
+    try {
+      const r = await fetch(`${BASE}/${meData.id}/subscribed_apps?subscribed_fields=${f}&access_token=${encodeURIComponent(TOKEN)}`, { method: 'POST' });
+      const d = await r.json();
+      results.push({ fields: f, ok: r.ok, response: d });
+    } catch(e) {
+      results.push({ fields: f, error: e.message });
+    }
+  }
 
-  // 3) Lista subscriptions atuais pra confirmar
+  // 3) Lista subscriptions atuais
   const listResp = await fetch(`${BASE}/${meData.id}/subscribed_apps?access_token=${encodeURIComponent(TOKEN)}`);
   const listData = await listResp.json();
 
-  return res.status(subResp.ok ? 200 : 500).json({
+  return res.status(200).json({
     me: meData,
-    subscribe_result: subData,
-    current_subscriptions: listData,
-    fields_attempted: fields
+    attempts: results,
+    current_subscriptions: listData
   });
 }
 
