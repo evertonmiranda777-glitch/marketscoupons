@@ -653,10 +653,12 @@ async function handleIgPollTest(req, res) {
 // ===== IG POLLING RUN: lê comentários + manda DM (sem webhook). Cron chama isso. =====
 // Safeguards: keyword match, dedup por comment_id, rate 1/user/24h, opt-out STOP.
 async function handleIgPollRun(req, res) {
+  // dry=diag: só leitura/diagnóstico, NÃO manda DM, sem auth (seguro)
+  const diagMode = req.query?.dry === 'diag';
   // Auth: cron secret OU admin JWT (pro botão de teste no admin)
   const secret = req.query?.secret || req.headers['x-cron-secret'];
   const cronOk = process.env.CRON_SECRET && secret === process.env.CRON_SECRET;
-  if (!cronOk) {
+  if (!cronOk && !diagMode) {
     const jwt = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
     let adminOk = false;
     if (jwt && jwt.length > 50) {
@@ -730,6 +732,12 @@ async function handleIgPollRun(req, res) {
       });
       if (!matched) continue;
       debug.matched++;
+
+      // modo diag: não manda DM, só reporta o que achou
+      if (diagMode) {
+        results.push({ comment: commentId, user: comment.username, text, keyword: matched.keyword, status: 'WOULD_SEND' });
+        continue;
+      }
 
       // dedup: já respondeu esse comment_id?
       const dupResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log?comment_id=eq.${encodeURIComponent(commentId)}&select=id&limit=1`, {
