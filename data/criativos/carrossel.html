@@ -18,16 +18,16 @@
   body { background: #06080F; margin: 0; padding: 0; font-family: 'Inter', sans-serif; color: var(--t2); }
   .stage { display: flex; flex-direction: column; gap: 24px; padding: 24px; align-items: center; }
 
-  /* ===== SLIDE 1080×1350 (grid travado) ===== */
+  /* ===== SLIDE 1080×1350 ===== */
   .slide {
     width: 1080px;
     height: 1350px;
     position: relative;
     overflow: hidden;
     color: var(--t2);
-    display: grid;
-    grid-template-rows: auto 1fr auto;
     background: var(--bg);
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
   }
   .slide::before {
     content: '';
@@ -38,26 +38,66 @@
   }
   .slide > * { position: relative; z-index: 1; }
 
-  /* ===== TOP BAR (mesmo em todos) ===== */
-  .topbar { display: flex; justify-content: space-between; align-items: center; padding: 44px 56px 0; }
+  /* ===== TOP BAR ===== */
+  .topbar { display: flex; justify-content: space-between; align-items: center; padding: 40px 56px 0; }
   .brand { display: flex; align-items: center; gap: 14px; }
-  .brand-logo { width: 38px; height: 38px; }
+  .brand-logo { width: 40px; height: 40px; }
   .brand-text { font-size: 22px; font-weight: 400; letter-spacing: -.4px; color: #fff; }
   .brand-text em { font-style: normal; color: var(--gold); font-weight: 700; }
-  .slide-tag { font-size: 16px; color: var(--t3); letter-spacing: .25em; text-transform: uppercase; font-weight: 600; }
+  .slide-tag { font-size: 15px; color: var(--t3); letter-spacing: .25em; text-transform: uppercase; font-weight: 600; }
 
   /* ===== EYEBROW (categoria do slide) ===== */
   .eyebrow {
     font-size: 18px; color: var(--green);
-    letter-spacing: .25em; text-transform: uppercase;
+    letter-spacing: .28em; text-transform: uppercase;
     font-weight: 700;
-    padding: 0 56px;
-    margin-bottom: 18px;
+    padding: 28px 56px 18px;
   }
 
-  /* ===== TÍTULO PRINCIPAL ===== */
+  /* ===== MAX HOST (Max + balão) ===== */
+  .max-host {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    align-items: end;
+    padding: 0 56px 24px;
+  }
+  .max-host .max-wrap {
+    height: 360px;
+    position: relative;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .max-host .max-wrap img {
+    height: 100%;
+    width: auto;
+    display: block;
+  }
+  .max-host .max-bubble {
+    position: relative;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #0a0d14;
+    padding: 24px 26px;
+    border-radius: 22px;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -.01em;
+    box-shadow: 0 14px 40px rgba(240,180,41,.28);
+    margin-bottom: 60px;
+  }
+  .max-host .max-bubble::before {
+    content: '';
+    position: absolute;
+    left: -14px; bottom: 26px;
+    width: 0; height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 16px solid var(--gold);
+  }
+
+  /* ===== TÍTULO + CORPO ===== */
   .slide-title {
-    font-size: 60px; font-weight: 900;
+    font-size: 52px; font-weight: 900;
     line-height: 1.06; letter-spacing: -.03em;
     color: #fff; margin: 0 0 22px;
     padding: 0 56px;
@@ -69,94 +109,66 @@
   }
   .slide-title .accent-green { color: var(--green); }
   .slide-title .accent-red { color: var(--red); }
-
-  /* ===== CONTEÚDO (área do corpo) ===== */
-  .slide-body { padding: 0 56px; }
-
-  /* ===== MAX MASCOTE (varia por slide) ===== */
-  .max {
-    position: absolute;
-    pointer-events: none;
-  }
-  .max-pose-1 { left: 4%; bottom: 30px; width: 340px; }
-  .max-pose-2 { left: 4%; bottom: 30px; width: 320px; }
-  .max-pose-3 { left: 4%; bottom: 30px; width: 340px; }
-  .max-pose-4 { left: 4%; bottom: 30px; width: 340px; }
-  .max-pose-5 { left: 50%; transform: translateX(-50%); bottom: 60px; width: 380px; }
-  .max img { display: block; width: 100%; height: auto; }
+  .slide-body { padding: 0 56px 30px; }
 
   /* ===== ARROW SWIPE ===== */
   .swipe {
-    position: absolute; bottom: 36px; right: 40px;
+    position: absolute; bottom: 30px; right: 40px;
     width: 64px; height: 32px;
     border: 1.5px solid var(--gold);
     border-radius: 999px;
     display: flex; align-items: center; justify-content: center;
     color: var(--gold);
+    z-index: 3;
   }
   .swipe svg { width: 22px; height: 22px; }
 
-  /* ===== SLIDE 1 (Hero comparativo) ===== */
-  .slide-1 .hero-compare {
+  /* ===== SLIDE 1 — Hero compare ===== */
+  .hero-compare {
     display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    margin: 8px 0 18px;
   }
   .compare-card {
     border-radius: 18px;
     padding: 18px;
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
   }
-  .compare-card.before { border-color: rgba(239,68,68,.3); }
-  .compare-card.after  { border-color: rgba(34,214,124,.4); background: rgba(34,214,124,.08); }
+  .compare-card.before { border-color: rgba(239,68,68,.32); background: rgba(239,68,68,.05); }
+  .compare-card.after  { border-color: rgba(34,214,124,.45); background: rgba(34,214,124,.08); }
   .compare-label {
-    font-size: 14px; font-weight: 800;
+    font-size: 15px; font-weight: 800;
     letter-spacing: .12em; text-transform: uppercase;
     margin-bottom: 12px;
   }
   .compare-card.before .compare-label { color: var(--red); }
   .compare-card.after  .compare-label { color: var(--green); }
-  .compare-card .chart-mini {
+  .chart-mini {
     display: flex; align-items: flex-end; justify-content: center;
-    gap: 5px; height: 130px;
+    gap: 6px; height: 150px;
     background: rgba(0,0,0,.35);
     border-radius: 12px;
-    padding: 12px 14px;
+    padding: 14px;
   }
-  .compare-card .chart-mini .bar {
-    width: 14px; border-radius: 3px 3px 0 0;
-  }
+  .chart-mini .bar { width: 16px; border-radius: 3px 3px 0 0; }
   .compare-card.before .bar { background: #6b7280; }
   .compare-card.after  .bar.g { background: var(--green); }
   .compare-card.after  .bar.r { background: var(--red); }
   .compare-card.after  .bar.n { background: #6b7280; }
   .compare-caption {
-    margin-top: 12px; font-size: 14px; color: var(--t3);
+    margin-top: 14px; font-size: 15px; color: var(--t3);
     line-height: 1.45;
+    font-weight: 600;
   }
 
-  .slide-1 .hero-explainer {
-    font-size: 20px; line-height: 1.5;
-    color: var(--t2);
-    margin-top: 8px;
-  }
-  .slide-1 .hero-explainer b { color: #fff; font-weight: 700; }
-
-  /* Slide 1: Max sai do hero pq tem chart comparativo */
-  .slide-1 .max-pose-1 { width: 280px; bottom: 24px; left: 60%; }
-
-  /* ===== SLIDE 2 (Dor) ===== */
-  .slide-2 .pain-list {
-    display: grid; gap: 10px; margin-top: 6px;
-    max-width: 680px; margin-left: auto;
-  }
+  /* ===== SLIDE 2 — Dor ===== */
+  .pain-list { display: grid; gap: 12px; }
   .pain-item {
-    display: grid; grid-template-columns: 44px 1fr;
-    align-items: center; gap: 14px;
+    display: grid; grid-template-columns: 40px 1fr;
+    align-items: center; gap: 16px;
     background: rgba(239,68,68,.08);
-    border: 1px solid rgba(239,68,68,.22);
-    border-radius: 12px;
-    padding: 14px 18px;
+    border: 1px solid rgba(239,68,68,.25);
+    border-radius: 14px;
+    padding: 16px 20px;
   }
   .pain-num {
     width: 32px; height: 32px; border-radius: 50%;
@@ -164,105 +176,85 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 15px; font-weight: 800;
   }
-  .pain-text {
-    font-size: 18px; line-height: 1.4;
-    color: var(--t2);
-  }
-  .slide-2 .max-pose-2 { width: 280px; }
+  .pain-text { font-size: 19px; line-height: 1.4; color: var(--t2); font-weight: 500; }
 
-  /* ===== SLIDE 3 (Como funciona) ===== */
-  .slide-3 .colors {
-    display: grid; gap: 12px; max-width: 680px; margin-left: auto;
-  }
+  /* ===== SLIDE 3 — Como funciona ===== */
+  .colors { display: grid; gap: 14px; }
   .color-row {
-    display: grid; grid-template-columns: 56px 1fr;
-    gap: 16px; align-items: start;
+    display: grid; grid-template-columns: 64px 1fr;
+    gap: 18px; align-items: start;
     background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.12);
     border-radius: 14px;
-    padding: 14px 16px;
+    padding: 16px 18px;
   }
-  .color-swatch {
-    width: 56px; height: 56px; border-radius: 12px;
-  }
-  .color-swatch.g { background: linear-gradient(135deg, var(--green), #16a34a); }
+  .color-swatch { width: 64px; height: 64px; border-radius: 14px; }
+  .color-swatch.g { background: linear-gradient(135deg, var(--green), #16a34a); box-shadow: 0 0 24px rgba(34,214,124,.35); }
   .color-swatch.n { background: linear-gradient(135deg, #9ca3af, #6b7280); }
-  .color-swatch.r { background: linear-gradient(135deg, var(--red), #b91c1c); }
-  .color-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-  .color-desc  { font-size: 14px; line-height: 1.4; color: var(--t3); }
-  .slide-3 .max-pose-3 { width: 280px; }
+  .color-swatch.r { background: linear-gradient(135deg, var(--red), #b91c1c); box-shadow: 0 0 24px rgba(239,68,68,.3); }
+  .color-title { font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .color-desc  { font-size: 15px; line-height: 1.5; color: var(--t3); }
 
-  /* ===== SLIDE 4 (Benefícios) ===== */
-  .slide-4 .benefits {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    max-width: 720px; margin-left: auto;
-  }
+  /* ===== SLIDE 4 — Benefícios ===== */
+  .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .bn-card {
     background: rgba(34,214,124,.07);
-    border: 1px solid rgba(34,214,124,.22);
+    border: 1px solid rgba(34,214,124,.28);
     border-radius: 14px;
-    padding: 14px 16px;
+    padding: 16px 18px;
   }
-  .bn-icon {
-    width: 30px; height: 30px;
-    color: var(--green);
-    margin-bottom: 8px;
-  }
-  .bn-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 4px; line-height: 1.2; }
-  .bn-desc  { font-size: 13px; line-height: 1.45; color: var(--t3); }
-  .slide-4 .max-pose-4 { width: 290px; }
+  .bn-icon { width: 30px; height: 30px; color: var(--green); margin-bottom: 8px; }
+  .bn-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 6px; line-height: 1.25; }
+  .bn-desc  { font-size: 14px; line-height: 1.45; color: var(--t3); }
 
-  /* ===== SLIDE 5 (CTA) ===== */
+  /* ===== SLIDE 5 — CTA (Max grande centralizado) ===== */
   .slide-5 { grid-template-rows: auto 1fr auto; }
   .slide-5 .cta-wrap {
-    padding: 0 56px;
+    padding: 40px 56px 0;
     text-align: center;
-    margin-top: 32px;
   }
+  .slide-5 .eyebrow { text-align: center; padding: 20px 56px 8px; }
   .slide-5 .cta-title {
     font-size: 56px; font-weight: 900;
     line-height: 1.05; letter-spacing: -.03em;
-    color: #fff; margin: 0 0 30px;
+    color: #fff; margin: 0 0 26px;
   }
-  .slide-5 .cta-title em {
-    font-style: normal; color: var(--green);
-  }
+  .slide-5 .cta-title em { font-style: normal; color: var(--green); }
   .slide-5 .cta-action {
     display: inline-block;
     background: linear-gradient(135deg, var(--gold), var(--gold-light));
     color: #0a0d14;
-    font-size: 22px; font-weight: 800;
-    padding: 18px 38px;
+    font-size: 24px; font-weight: 800;
+    padding: 20px 38px;
     border-radius: 999px;
-    letter-spacing: .04em;
-    box-shadow: 0 10px 30px rgba(240,180,41,.35);
-    margin-bottom: 24px;
+    letter-spacing: .03em;
+    box-shadow: 0 14px 36px rgba(240,180,41,.4);
+    margin-bottom: 28px;
   }
-  .slide-5 .cta-action em { font-style: normal; background: rgba(0,0,0,.18); padding: 4px 10px; border-radius: 8px; margin: 0 4px; }
+  .slide-5 .cta-action em { font-style: normal; background: rgba(0,0,0,.2); padding: 4px 12px; border-radius: 8px; margin: 0 4px; font-weight: 900; }
   .slide-5 .cta-sub {
-    font-size: 18px; line-height: 1.5;
-    color: var(--t2);
-    max-width: 720px; margin: 0 auto;
+    font-size: 19px; line-height: 1.55;
+    color: var(--t2); max-width: 760px; margin: 0 auto;
   }
+  .slide-5 .cta-sub b { color: #fff; font-weight: 800; }
   .slide-5 .cta-handle { color: var(--green); font-weight: 800; }
-  .slide-5 .max-pose-5 { width: 360px; bottom: 64px; }
-
-  /* Slide 5 footer separado */
-  .slide-5 .footer-note {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 60px;
-    background: linear-gradient(180deg, transparent, rgba(0,0,0,.6));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; color: var(--t3);
-    z-index: 2;
+  .slide-5 .max-final {
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 420px; height: 420px;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .slide-5 .max-final img {
+    width: 100%; height: auto;
+    display: block;
   }
   .slide-5 .swipe { display: none; }
-
-  /* Disclaimer rodapé */
-  .disclaimer-foot {
-    position: absolute; bottom: 14px; left: 56px; right: 130px;
-    font-size: 12px; color: rgba(138,147,168,.7);
-    line-height: 1.4;
+  .slide-5 .footer-note {
+    position: absolute; bottom: 24px; left: 0; right: 0;
+    text-align: center;
+    font-size: 14px; color: var(--t3);
+    z-index: 4;
   }
 </style>
 </head>
@@ -273,60 +265,60 @@
 const QP = new URLSearchParams(location.search);
 const THEME = (QP.get('theme') || 'volumefilter').toLowerCase();
 const LANG = (QP.get('lang') || 'en').toLowerCase();
-const ONLY = QP.get('slide'); // ?slide=1..5 mostra só 1 (pro HCTI selector)
+const ONLY = QP.get('slide');
 
-// === Temas (textos por slide) ===
 const THEMES = {
   volumefilter: {
     en: {
-      brand_sub: 'Free indicator for NinjaTrader 8',
+      brand_sub: 'Free indicator · NinjaTrader 8',
       s1: {
-        tag: '// SLIDE 1', eyebrow: '// THE FIX',
-        title: 'See the <em>real volume</em> strength <span class="accent-green">before</span> you enter.',
+        eyebrow: '// THE FIX',
+        max_says: 'Your native volume bar<br>is lying to you.',
+        title: 'Read the truth, <em>in 3 colors</em>.',
         before_label: 'Native NT Volume',
+        before_caption: 'Same gray bar everywhere. Useless.',
         after_label: 'VolumeFilter',
-        explainer: 'NinjaTrader\'s native volume is a flat gray bar — it shows <b>quantity, not strength</b>. VolumeFilter paints each candle in 3 colors so you read aggression in 1 glance.'
+        after_caption: 'Green / gray / red. Read in 1 glance.'
       },
       s2: {
-        tag: '// SLIDE 2', eyebrow: '// THE PROBLEM',
-        title: 'Ever traded a move that <span class="accent-red">looked strong</span> and died in your face?',
+        eyebrow: '// THE PROBLEM',
+        max_says: 'I\'ve seen this exact death<br>a thousand times.',
+        title: 'You bought strength. <span class="accent-red">Got reversed.</span>',
         pains: [
-          'Bought the breakout — candle reversed in the same second.',
+          'Bought the breakout — candle flipped in the same second.',
           'Entered the trend — price chopped sideways for 40 minutes.',
-          'The trade went against you on a day with "huge volume" on the axis.',
-          'You can\'t tell a strength candle from an absorption candle.',
-          'You exit, look at the chart later, and realize the signal was there.'
+          'The move went against you on a "huge volume" day.',
+          'You can\'t tell a strength candle from an absorption candle.'
         ]
       },
       s3: {
-        tag: '// SLIDE 3', eyebrow: '// HOW IT WORKS',
-        title: '<em>3 colors.</em> 1 glance. Direct decision.',
-        sub: 'VolumeFilter compares each candle against the 20-period average and paints the bar one solid color.',
+        eyebrow: '// THE READ',
+        max_says: 'Compare every candle to<br>the 20-period average. That\'s it.',
+        title: '3 colors. 1 glance. <em>Decision.</em>',
         colors: [
-          { c:'g', title: 'Volume ≥ 1.5× average', desc: 'Real aggression. Institutional buyer/seller is pushing price. This is the candle that confirms entry.' },
-          { c:'n', title: 'Volume within normal range', desc: 'Market breathing. Confirms nothing — could be absorption, could be indecision. Wait for the next one.' },
-          { c:'r', title: 'Volume ≤ 1.5× average', desc: 'No fuel behind the move. End of trend = exhaustion. On a breakout = fake, won\'t go far.' }
+          { c:'g', title: 'Volume ≥ 1.5× average', desc: 'Real aggression. Institutional flow pushing price. This is the candle that confirms entry.' },
+          { c:'n', title: 'Volume within normal range', desc: 'Market breathing. Confirms nothing. Wait for the next candle.' },
+          { c:'r', title: 'Volume below average', desc: 'No fuel behind the move. End of trend = exhaustion. On a breakout = fake.' }
         ]
       },
       s4: {
-        tag: '// SLIDE 4', eyebrow: '// WHAT CHANGES',
-        title: 'Stop guessing. <em>Start reading.</em>',
+        eyebrow: '// WHAT CHANGES',
+        max_says: 'Stop guessing.<br>Start filtering like a pro.',
+        title: 'What you <em>start seeing</em>.',
         benefits: [
-          { title: 'Avoid fake breakouts', desc: 'A green bar is mandatory — see the trap before clicking Buy.' },
-          { title: 'Confirm entries with aggression', desc: 'Only enter when the trigger candle prints green. Brutal filter against impulse entries.' },
-          { title: 'Spot exhaustion before the market', desc: 'When volume turns red at the end of a trend — fuel is gone.' },
-          { title: 'Filter sideways days', desc: 'Multiple gray and red bars in a row = dead day. Close the chart, save your edge.' },
-          { title: 'Read against the flow', desc: 'Green volume on the opposite side = institutional against you. Warns before the loss.' },
-          { title: 'Instant read on mobile', desc: 'No need to scan 3 panels. Colors do the work — phone-friendly.' }
+          { title: 'Avoid fake breakouts', desc: 'A green bar is mandatory. See the trap before you click Buy.' },
+          { title: 'Confirm with aggression', desc: 'Only enter when the trigger candle prints green. Brutal anti-impulse filter.' },
+          { title: 'Spot exhaustion first', desc: 'When volume turns red at the end of a trend, the fuel is gone.' },
+          { title: 'Skip the chop days', desc: 'Multiple gray/red bars in a row = dead day. Close the chart, save your edge.' }
         ]
       },
       s5: {
-        tag: '// SLIDE 5', eyebrow: '// YOUR CALL',
-        title: 'The Volume Filter changes the way you see <em>market opportunities</em>.',
+        eyebrow: '// YOUR CALL',
+        title: 'Free until <em>Dec 31, 2026</em>. Then it\'s gone.',
         action_pre: 'Comment',
         action_word: 'VOLUME',
         action_post: 'and I\'ll DM you the link.',
-        sub: 'Free until <b>December 31, 2026</b>. Follow <span class="cta-handle">@marketscoupons</span> for more indicators tested by real traders.'
+        sub: 'Follow <span class="cta-handle">@marketscoupons</span> for more indicators tested by real traders.'
       }
     }
   }
@@ -357,8 +349,14 @@ function brand(sub) {
 }
 function swipe() { return `<div class="swipe">${svgArrow()}</div>`; }
 
+function maxHost(pose, says) {
+  return `<div class="max-host">
+    <div class="max-wrap"><img src="${pose}" alt="Max"></div>
+    <div class="max-bubble">${says}</div>
+  </div>`;
+}
+
 function genBefore() {
-  // 12 barras cinzas iguais = chato
   return Array.from({length:12}).map((_,i)=>`<div class="bar" style="height:${50+Math.sin(i)*15}%"></div>`).join('');
 }
 function genAfter() {
@@ -369,101 +367,71 @@ function genAfter() {
 
 function svgBenefit(idx) {
   const icons = [
-    // 1 shield off (avoid fake)
-    `<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/>`,
-    // 2 check shield
-    `<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/>`,
-    // 3 trending down (exhaustion)
+    `<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><line x1="2" y1="2" x2="22" y2="22"/>`,
+    `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
     `<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/>`,
-    // 4 pause
-    `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`,
-    // 5 alert
-    `<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
-    // 6 smartphone
-    `<rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>`
+    `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`
   ];
-  return `<svg class="bn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[idx]}</svg>`;
+  return `<svg class="bn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${icons[idx]}</svg>`;
 }
 
 function renderSlide(n, theme) {
   const t = theme[`s${n}`];
   const pose = POSES[n];
   const subBrand = theme.brand_sub || '';
-  let body = '';
 
-  if (n === 1) {
-    body = `
-      <div class="slide-body">
-        ${t.eyebrow ? `<div class="eyebrow">${t.eyebrow}</div>` : ''}
-        <h1 class="slide-title">${t.title}</h1>
-        <div class="hero-compare">
-          <div class="compare-card before">
-            <div class="compare-label">${t.before_label}</div>
-            <div class="chart-mini">${genBefore()}</div>
-            <div class="compare-caption">Same bar everywhere. Useless.</div>
-          </div>
-          <div class="compare-card after">
-            <div class="compare-label">${t.after_label}</div>
-            <div class="chart-mini">${genAfter()}</div>
-            <div class="compare-caption">Green / gray / red. Read in 1 glance.</div>
-          </div>
-        </div>
-        <div class="hero-explainer">${t.explainer}</div>
-      </div>
-    `;
-  } else if (n === 2) {
-    body = `
-      <div class="slide-body">
-        <div class="eyebrow">${t.eyebrow}</div>
-        <h1 class="slide-title">${t.title}</h1>
-        <div class="pain-list">
-          ${t.pains.map((p,i)=>`<div class="pain-item"><div class="pain-num">${i+1}</div><div class="pain-text">${p}</div></div>`).join('')}
-        </div>
-      </div>
-    `;
-  } else if (n === 3) {
-    body = `
-      <div class="slide-body">
-        <div class="eyebrow">${t.eyebrow}</div>
-        <h1 class="slide-title">${t.title}</h1>
-        <div class="hero-explainer" style="margin-bottom:18px;">${t.sub}</div>
-        <div class="colors">
-          ${t.colors.map(c=>`<div class="color-row">
-            <div class="color-swatch ${c.c}"></div>
-            <div><div class="color-title">${c.title}</div><div class="color-desc">${c.desc}</div></div>
-          </div>`).join('')}
-        </div>
-      </div>
-    `;
-  } else if (n === 4) {
-    body = `
-      <div class="slide-body">
-        <div class="eyebrow">${t.eyebrow}</div>
-        <h1 class="slide-title">${t.title}</h1>
-        <div class="benefits">
-          ${t.benefits.map((b,i)=>`<div class="bn-card">${svgBenefit(i)}<div class="bn-title">${b.title}</div><div class="bn-desc">${b.desc}</div></div>`).join('')}
-        </div>
-      </div>
-    `;
-  } else if (n === 5) {
-    body = `
+  if (n === 5) {
+    return `<div class="slide slide-5" id="cr-slide-5">
+      ${brand(subBrand)}
       <div class="cta-wrap">
-        <div class="eyebrow" style="text-align:center;padding:0;">${t.eyebrow}</div>
+        <div class="eyebrow">${t.eyebrow}</div>
         <h1 class="cta-title">${t.title}</h1>
         <div class="cta-action">${t.action_pre} <em>${t.action_word}</em> ${t.action_post}</div>
         <div class="cta-sub">${t.sub}</div>
       </div>
-    `;
+      <div class="max-final"><img src="${pose}" alt="Max"></div>
+      <div class="footer-note">Save and Share →</div>
+    </div>`;
   }
 
-  const maxHtml = `<div class="max max-pose-${n}"><img src="${pose}" alt="Max"></div>`;
-  const swipeHtml = n < 5 ? swipe() : `<div class="footer-note">Save and Share →</div>`;
+  let body = '';
+  if (n === 1) {
+    body = `<div class="hero-compare">
+      <div class="compare-card before">
+        <div class="compare-label">${t.before_label}</div>
+        <div class="chart-mini">${genBefore()}</div>
+        <div class="compare-caption">${t.before_caption}</div>
+      </div>
+      <div class="compare-card after">
+        <div class="compare-label">${t.after_label}</div>
+        <div class="chart-mini">${genAfter()}</div>
+        <div class="compare-caption">${t.after_caption}</div>
+      </div>
+    </div>`;
+  } else if (n === 2) {
+    body = `<div class="pain-list">
+      ${t.pains.map((p,i)=>`<div class="pain-item"><div class="pain-num">${i+1}</div><div class="pain-text">${p}</div></div>`).join('')}
+    </div>`;
+  } else if (n === 3) {
+    body = `<div class="colors">
+      ${t.colors.map(c=>`<div class="color-row">
+        <div class="color-swatch ${c.c}"></div>
+        <div><div class="color-title">${c.title}</div><div class="color-desc">${c.desc}</div></div>
+      </div>`).join('')}
+    </div>`;
+  } else if (n === 4) {
+    body = `<div class="benefits">
+      ${t.benefits.map((b,i)=>`<div class="bn-card">${svgBenefit(i)}<div class="bn-title">${b.title}</div><div class="bn-desc">${b.desc}</div></div>`).join('')}
+    </div>`;
+  }
 
   return `<div class="slide slide-${n}" id="cr-slide-${n}">
     ${brand(subBrand)}
-    ${body}
-    ${maxHtml}
-    ${swipeHtml}
+    <div class="eyebrow">${t.eyebrow}</div>
+    ${maxHost(pose, t.max_says)}
+    <h1 class="slide-title">${t.title}</h1>
+    <div class="slide-body">${body}</div>
+    ${swipe()}
   </div>`;
 }
 
