@@ -14,6 +14,8 @@
       "destination": "https://www.marketscoupons.com/:path",
       "permanent": true
     },
+    { "source": "/ind", "destination": "/indicators?utm_source=instagram&utm_medium=manychat&utm_campaign=indicator_download", "permanent": false },
+    { "source": "/buy", "destination": "/coupons?utm_source=instagram&utm_medium=manychat&utm_campaign=coupon_buyer", "permanent": false },
     { "source": "/firms/apex.html", "destination": "/apex", "permanent": true },
     { "source": "/firms/bulenox.html", "destination": "/bulenox", "permanent": true },
     { "source": "/firms/ftmo.html", "destination": "/ftmo", "permanent": true },
