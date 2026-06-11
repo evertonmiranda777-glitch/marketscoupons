@@ -24,238 +24,189 @@
     height: 1350px;
     position: relative;
     overflow: hidden;
-    color: var(--t2);
+    color: #fff;
     background: var(--bg);
-    display: grid;
-    grid-template-rows: auto auto auto 1fr auto;
   }
-  .slide::before {
+
+  /* BG image fullscreen */
+  .slide .bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+  /* Gradient overlay pra dar legibilidade ao texto */
+  .slide .bg::after {
     content: '';
     position: absolute; inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size: 3px 3px;
-    pointer-events: none; z-index: 0;
+    background: linear-gradient(180deg,
+      rgba(6,8,15,.78) 0%,
+      rgba(6,8,15,.25) 30%,
+      rgba(6,8,15,.25) 70%,
+      rgba(6,8,15,.88) 100%);
   }
-  .slide > * { position: relative; z-index: 1; }
+
+  .slide-1 .bg { background-image: url('/img/Max/cena-s1-hero.jpeg'); }
+  .slide-2 .bg { background-image: url('/img/Max/cena-s2-dor.jpeg'); }
+  .slide-3 .bg { background-image: url('/img/Max/cena-s3-funciona.jpeg'); }
+  .slide-4 .bg { background-image: url('/img/Max/cena-s4-beneficios.jpeg'); }
+  .slide-5 .bg { background-image: url('/img/Max/cena-s5-cta.jpeg'); }
+
+  .slide > * { position: relative; z-index: 2; }
 
   /* ===== TOP BAR ===== */
-  .topbar { display: flex; justify-content: space-between; align-items: center; padding: 40px 56px 0; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; padding: 42px 56px 0; }
   .brand { display: flex; align-items: center; gap: 14px; }
-  .brand-logo { width: 40px; height: 40px; }
-  .brand-text { font-size: 22px; font-weight: 400; letter-spacing: -.4px; color: #fff; }
+  .brand-logo { width: 42px; height: 42px; }
+  .brand-text { font-size: 23px; font-weight: 400; letter-spacing: -.4px; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
   .brand-text em { font-style: normal; color: var(--gold); font-weight: 700; }
-  .slide-tag { font-size: 15px; color: var(--t3); letter-spacing: .25em; text-transform: uppercase; font-weight: 600; }
+  .slide-tag { font-size: 15px; color: rgba(255,255,255,.85); letter-spacing: .25em; text-transform: uppercase; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
 
-  /* ===== EYEBROW (categoria do slide) ===== */
+  /* ===== EYEBROW ===== */
   .eyebrow {
-    font-size: 18px; color: var(--green);
-    letter-spacing: .28em; text-transform: uppercase;
-    font-weight: 700;
-    padding: 28px 56px 18px;
-  }
-
-  /* ===== MAX HOST (Max + balão) ===== */
-  .max-host {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 24px;
-    align-items: end;
-    padding: 0 56px 24px;
-  }
-  .max-host .max-wrap {
-    height: 360px;
-    position: relative;
-    display: flex; align-items: flex-end; justify-content: center;
-  }
-  .max-host .max-wrap img {
-    height: 100%;
-    width: auto;
-    display: block;
-  }
-  .max-host .max-bubble {
-    position: relative;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    color: #0a0d14;
-    padding: 24px 26px;
-    border-radius: 22px;
-    font-size: 26px;
+    font-size: 18px;
+    letter-spacing: .3em; text-transform: uppercase;
     font-weight: 800;
-    line-height: 1.25;
-    letter-spacing: -.01em;
-    box-shadow: 0 14px 40px rgba(240,180,41,.28);
-    margin-bottom: 60px;
+    padding: 28px 56px 14px;
+    text-shadow: 0 2px 12px rgba(0,0,0,.8);
   }
-  .max-host .max-bubble::before {
-    content: '';
-    position: absolute;
-    left: -14px; bottom: 26px;
-    width: 0; height: 0;
-    border-top: 12px solid transparent;
-    border-bottom: 12px solid transparent;
-    border-right: 16px solid var(--gold);
-  }
+  .slide-1 .eyebrow { color: #6EE7FF; }
+  .slide-2 .eyebrow { color: #FCA5A5; }
+  .slide-3 .eyebrow { color: var(--green); }
+  .slide-4 .eyebrow { color: var(--gold-light); }
+  .slide-5 .eyebrow { color: var(--gold-light); text-align: center; }
 
-  /* ===== TÍTULO + CORPO ===== */
+  /* ===== TÍTULO ===== */
   .slide-title {
-    font-size: 52px; font-weight: 900;
-    line-height: 1.06; letter-spacing: -.03em;
-    color: #fff; margin: 0 0 22px;
+    font-size: 56px; font-weight: 900;
+    line-height: 1.04; letter-spacing: -.03em;
+    color: #fff; margin: 0;
     padding: 0 56px;
+    text-shadow: 0 4px 24px rgba(0,0,0,.85), 0 0 60px rgba(0,0,0,.6);
   }
   .slide-title em {
     font-style: normal;
     background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 60%, var(--gold) 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .slide-title .accent-green { color: var(--green); }
-  .slide-title .accent-red { color: var(--red); }
-  .slide-body { padding: 0 56px 30px; }
+  .slide-title .green { color: var(--green); }
+  .slide-title .red { color: var(--red); }
+
+  /* ===== BALÃO DO MAX (fala) ===== */
+  .bubble {
+    position: absolute;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #0a0d14;
+    padding: 18px 22px;
+    border-radius: 20px;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -.01em;
+    box-shadow: 0 16px 44px rgba(0,0,0,.6), 0 0 0 6px rgba(240,180,41,.18);
+    max-width: 360px;
+    z-index: 3;
+  }
+  .bubble::before {
+    content: '';
+    position: absolute;
+    width: 0; height: 0;
+  }
+
+  /* Posições do balão por slide (zonas livres da imagem) */
+  .slide-1 .bubble { top: 320px; right: 56px; max-width: 340px; }
+  .slide-1 .bubble::before {
+    left: -14px; top: 28px;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 16px solid var(--gold);
+  }
+  .slide-2 .bubble { top: 340px; right: 56px; max-width: 360px; }
+  .slide-2 .bubble::before {
+    left: -14px; top: 36px;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 16px solid var(--gold);
+  }
+  .slide-3 .bubble { top: 310px; left: 56px; max-width: 340px; }
+  .slide-3 .bubble::before {
+    right: -14px; top: 28px;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 16px solid var(--gold-light);
+  }
+  .slide-4 .bubble { top: 360px; left: 56px; max-width: 340px; }
+  .slide-4 .bubble::before {
+    right: -14px; top: 30px;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 16px solid var(--gold-light);
+  }
+
+  /* ===== HEADLINE/CTA POSITION POR SLIDE ===== */
+  .slide-content {
+    position: absolute;
+    left: 0; right: 0;
+    z-index: 2;
+  }
+  .slide-1 .slide-content { bottom: 80px; }
+  .slide-2 .slide-content { bottom: 80px; }
+  .slide-3 .slide-content { bottom: 80px; }
+  .slide-4 .slide-content { bottom: 80px; }
+  .slide-5 .slide-content { top: 130px; }
 
   /* ===== ARROW SWIPE ===== */
   .swipe {
-    position: absolute; bottom: 30px; right: 40px;
-    width: 64px; height: 32px;
-    border: 1.5px solid var(--gold);
+    position: absolute; bottom: 26px; right: 40px;
+    width: 68px; height: 36px;
+    border: 2px solid var(--gold);
     border-radius: 999px;
     display: flex; align-items: center; justify-content: center;
     color: var(--gold);
-    z-index: 3;
+    background: rgba(0,0,0,.6);
+    backdrop-filter: blur(6px);
+    z-index: 4;
   }
-  .swipe svg { width: 22px; height: 22px; }
+  .swipe svg { width: 24px; height: 24px; }
 
-  /* ===== SLIDE 1 — Hero compare ===== */
-  .hero-compare {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  }
-  .compare-card {
-    border-radius: 18px;
-    padding: 18px;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.1);
-  }
-  .compare-card.before { border-color: rgba(239,68,68,.32); background: rgba(239,68,68,.05); }
-  .compare-card.after  { border-color: rgba(34,214,124,.45); background: rgba(34,214,124,.08); }
-  .compare-label {
-    font-size: 15px; font-weight: 800;
-    letter-spacing: .12em; text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .compare-card.before .compare-label { color: var(--red); }
-  .compare-card.after  .compare-label { color: var(--green); }
-  .chart-mini {
-    display: flex; align-items: flex-end; justify-content: center;
-    gap: 6px; height: 150px;
-    background: rgba(0,0,0,.35);
-    border-radius: 12px;
-    padding: 14px;
-  }
-  .chart-mini .bar { width: 16px; border-radius: 3px 3px 0 0; }
-  .compare-card.before .bar { background: #6b7280; }
-  .compare-card.after  .bar.g { background: var(--green); }
-  .compare-card.after  .bar.r { background: var(--red); }
-  .compare-card.after  .bar.n { background: #6b7280; }
-  .compare-caption {
-    margin-top: 14px; font-size: 15px; color: var(--t3);
-    line-height: 1.45;
-    font-weight: 600;
-  }
-
-  /* ===== SLIDE 2 — Dor ===== */
-  .pain-list { display: grid; gap: 12px; }
-  .pain-item {
-    display: grid; grid-template-columns: 40px 1fr;
-    align-items: center; gap: 16px;
-    background: rgba(239,68,68,.08);
-    border: 1px solid rgba(239,68,68,.25);
-    border-radius: 14px;
-    padding: 16px 20px;
-  }
-  .pain-num {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--red); color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 800;
-  }
-  .pain-text { font-size: 19px; line-height: 1.4; color: var(--t2); font-weight: 500; }
-
-  /* ===== SLIDE 3 — Como funciona ===== */
-  .colors { display: grid; gap: 14px; }
-  .color-row {
-    display: grid; grid-template-columns: 64px 1fr;
-    gap: 18px; align-items: start;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 14px;
-    padding: 16px 18px;
-  }
-  .color-swatch { width: 64px; height: 64px; border-radius: 14px; }
-  .color-swatch.g { background: linear-gradient(135deg, var(--green), #16a34a); box-shadow: 0 0 24px rgba(34,214,124,.35); }
-  .color-swatch.n { background: linear-gradient(135deg, #9ca3af, #6b7280); }
-  .color-swatch.r { background: linear-gradient(135deg, var(--red), #b91c1c); box-shadow: 0 0 24px rgba(239,68,68,.3); }
-  .color-title { font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-  .color-desc  { font-size: 15px; line-height: 1.5; color: var(--t3); }
-
-  /* ===== SLIDE 4 — Benefícios ===== */
-  .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .bn-card {
-    background: rgba(34,214,124,.07);
-    border: 1px solid rgba(34,214,124,.28);
-    border-radius: 14px;
-    padding: 16px 18px;
-  }
-  .bn-icon { width: 30px; height: 30px; color: var(--green); margin-bottom: 8px; }
-  .bn-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 6px; line-height: 1.25; }
-  .bn-desc  { font-size: 14px; line-height: 1.45; color: var(--t3); }
-
-  /* ===== SLIDE 5 — CTA (Max grande centralizado) ===== */
-  .slide-5 { grid-template-rows: auto 1fr auto; }
-  .slide-5 .cta-wrap {
-    padding: 40px 56px 0;
-    text-align: center;
-  }
-  .slide-5 .eyebrow { text-align: center; padding: 20px 56px 8px; }
+  /* ===== SLIDE 5 (CTA) ===== */
   .slide-5 .cta-title {
-    font-size: 56px; font-weight: 900;
+    font-size: 52px; font-weight: 900;
     line-height: 1.05; letter-spacing: -.03em;
-    color: #fff; margin: 0 0 26px;
+    color: #fff; margin: 0 0 28px;
+    padding: 0 56px;
+    text-align: center;
+    text-shadow: 0 4px 24px rgba(0,0,0,.9);
   }
-  .slide-5 .cta-title em { font-style: normal; color: var(--green); }
+  .slide-5 .cta-title em { font-style: normal; color: var(--gold-light); }
   .slide-5 .cta-action {
     display: inline-block;
     background: linear-gradient(135deg, var(--gold), var(--gold-light));
     color: #0a0d14;
-    font-size: 24px; font-weight: 800;
-    padding: 20px 38px;
+    font-size: 22px; font-weight: 800;
+    padding: 18px 36px;
     border-radius: 999px;
     letter-spacing: .03em;
-    box-shadow: 0 14px 36px rgba(240,180,41,.4);
-    margin-bottom: 28px;
+    box-shadow: 0 14px 36px rgba(240,180,41,.5);
   }
-  .slide-5 .cta-action em { font-style: normal; background: rgba(0,0,0,.2); padding: 4px 12px; border-radius: 8px; margin: 0 4px; font-weight: 900; }
-  .slide-5 .cta-sub {
-    font-size: 19px; line-height: 1.55;
-    color: var(--t2); max-width: 760px; margin: 0 auto;
-  }
-  .slide-5 .cta-sub b { color: #fff; font-weight: 800; }
-  .slide-5 .cta-handle { color: var(--green); font-weight: 800; }
-  .slide-5 .max-final {
+  .slide-5 .cta-action em { font-style: normal; background: rgba(0,0,0,.22); padding: 4px 12px; border-radius: 8px; margin: 0 4px; font-weight: 900; }
+  .slide-5 .cta-bottom {
     position: absolute;
-    bottom: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 420px; height: 420px;
-    display: flex; align-items: flex-end; justify-content: center;
-  }
-  .slide-5 .max-final img {
-    width: 100%; height: auto;
-    display: block;
-  }
-  .slide-5 .swipe { display: none; }
-  .slide-5 .footer-note {
-    position: absolute; bottom: 24px; left: 0; right: 0;
+    bottom: 56px; left: 0; right: 0;
     text-align: center;
-    font-size: 14px; color: var(--t3);
     z-index: 4;
   }
+  .slide-5 .cta-sub {
+    font-size: 18px; line-height: 1.5;
+    color: #fff;
+    max-width: 720px; margin: 0 auto 16px;
+    padding: 0 56px;
+    text-shadow: 0 2px 12px rgba(0,0,0,.9);
+  }
+  .slide-5 .cta-sub b { color: var(--gold-light); font-weight: 800; }
+  .slide-5 .cta-handle { color: var(--green); font-weight: 800; }
+  .slide-5 .swipe { display: none; }
 </style>
 </head>
 <body>
@@ -270,66 +221,37 @@ const ONLY = QP.get('slide');
 const THEMES = {
   volumefilter: {
     en: {
-      brand_sub: 'Free indicator · NinjaTrader 8',
+      brand_sub: 'Free · NinjaTrader 8',
       s1: {
         eyebrow: '// THE FIX',
-        max_says: 'Your native volume bar<br>is lying to you.',
-        title: 'Read the truth, <em>in 3 colors</em>.',
-        before_label: 'Native NT Volume',
-        before_caption: 'Same gray bar everywhere. Useless.',
-        after_label: 'VolumeFilter',
-        after_caption: 'Green / gray / red. Read in 1 glance.'
+        bubble: 'Your native volume is lying to you.',
+        title: 'Read the truth, <em>in 3 colors</em>.'
       },
       s2: {
         eyebrow: '// THE PROBLEM',
-        max_says: 'I\'ve seen this exact death<br>a thousand times.',
-        title: 'You bought strength. <span class="accent-red">Got reversed.</span>',
-        pains: [
-          'Bought the breakout — candle flipped in the same second.',
-          'Entered the trend — price chopped sideways for 40 minutes.',
-          'The move went against you on a "huge volume" day.',
-          'You can\'t tell a strength candle from an absorption candle.'
-        ]
+        bubble: "I've seen this exact death a thousand times.",
+        title: 'You bought strength. <span class="red">Got reversed.</span>'
       },
       s3: {
         eyebrow: '// THE READ',
-        max_says: 'Compare every candle to<br>the 20-period average. That\'s it.',
-        title: '3 colors. 1 glance. <em>Decision.</em>',
-        colors: [
-          { c:'g', title: 'Volume ≥ 1.5× average', desc: 'Real aggression. Institutional flow pushing price. This is the candle that confirms entry.' },
-          { c:'n', title: 'Volume within normal range', desc: 'Market breathing. Confirms nothing. Wait for the next candle.' },
-          { c:'r', title: 'Volume below average', desc: 'No fuel behind the move. End of trend = exhaustion. On a breakout = fake.' }
-        ]
+        bubble: 'Compare every candle to the 20-period average. That\'s it.',
+        title: '3 colors. 1 glance. <em>Decision.</em>'
       },
       s4: {
         eyebrow: '// WHAT CHANGES',
-        max_says: 'Stop guessing.<br>Start filtering like a pro.',
-        title: 'What you <em>start seeing</em>.',
-        benefits: [
-          { title: 'Avoid fake breakouts', desc: 'A green bar is mandatory. See the trap before you click Buy.' },
-          { title: 'Confirm with aggression', desc: 'Only enter when the trigger candle prints green. Brutal anti-impulse filter.' },
-          { title: 'Spot exhaustion first', desc: 'When volume turns red at the end of a trend, the fuel is gone.' },
-          { title: 'Skip the chop days', desc: 'Multiple gray/red bars in a row = dead day. Close the chart, save your edge.' }
-        ]
+        bubble: 'Stop guessing. Start filtering like a pro.',
+        title: 'What you <em>start seeing</em>.'
       },
       s5: {
         eyebrow: '// YOUR CALL',
-        title: 'Free until <em>Dec 31, 2026</em>. Then it\'s gone.',
+        title: 'Free until <em>Dec 31, 2026</em>.<br>Then it\'s gone.',
         action_pre: 'Comment',
         action_word: 'VOLUME',
-        action_post: 'and I\'ll DM you the link.',
+        action_post: 'and I\'ll DM the link.',
         sub: 'Follow <span class="cta-handle">@marketscoupons</span> for more indicators tested by real traders.'
       }
     }
   }
-};
-
-const POSES = {
-  1: '/img/Max/max-apresentador.png',
-  2: '/img/Max/max-lupa.png',
-  3: '/img/Max/max-apontando.png',
-  4: '/img/Max/max-confiante.png',
-  5: '/img/Max/max-trofeu.png'
 };
 
 function svgArrow() {
@@ -349,88 +271,33 @@ function brand(sub) {
 }
 function swipe() { return `<div class="swipe">${svgArrow()}</div>`; }
 
-function maxHost(pose, says) {
-  return `<div class="max-host">
-    <div class="max-wrap"><img src="${pose}" alt="Max"></div>
-    <div class="max-bubble">${says}</div>
-  </div>`;
-}
-
-function genBefore() {
-  return Array.from({length:12}).map((_,i)=>`<div class="bar" style="height:${50+Math.sin(i)*15}%"></div>`).join('');
-}
-function genAfter() {
-  const heights = [70,55,60,82,90,45,38,65,75,40,52,68];
-  const cls = ['g','n','g','g','g','r','r','n','g','r','n','g'];
-  return heights.map((h,i)=>`<div class="bar ${cls[i]}" style="height:${h}%"></div>`).join('');
-}
-
-function svgBenefit(idx) {
-  const icons = [
-    `<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><line x1="2" y1="2" x2="22" y2="22"/>`,
-    `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
-    `<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/>`,
-    `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`
-  ];
-  return `<svg class="bn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${icons[idx]}</svg>`;
-}
-
 function renderSlide(n, theme) {
   const t = theme[`s${n}`];
-  const pose = POSES[n];
   const subBrand = theme.brand_sub || '';
 
   if (n === 5) {
     return `<div class="slide slide-5" id="cr-slide-5">
+      <div class="bg"></div>
       ${brand(subBrand)}
-      <div class="cta-wrap">
+      <div class="slide-content">
         <div class="eyebrow">${t.eyebrow}</div>
         <h1 class="cta-title">${t.title}</h1>
-        <div class="cta-action">${t.action_pre} <em>${t.action_word}</em> ${t.action_post}</div>
+      </div>
+      <div class="cta-bottom">
         <div class="cta-sub">${t.sub}</div>
+        <div class="cta-action">${t.action_pre} <em>${t.action_word}</em> ${t.action_post}</div>
       </div>
-      <div class="max-final"><img src="${pose}" alt="Max"></div>
-      <div class="footer-note">Save and Share →</div>
-    </div>`;
-  }
-
-  let body = '';
-  if (n === 1) {
-    body = `<div class="hero-compare">
-      <div class="compare-card before">
-        <div class="compare-label">${t.before_label}</div>
-        <div class="chart-mini">${genBefore()}</div>
-        <div class="compare-caption">${t.before_caption}</div>
-      </div>
-      <div class="compare-card after">
-        <div class="compare-label">${t.after_label}</div>
-        <div class="chart-mini">${genAfter()}</div>
-        <div class="compare-caption">${t.after_caption}</div>
-      </div>
-    </div>`;
-  } else if (n === 2) {
-    body = `<div class="pain-list">
-      ${t.pains.map((p,i)=>`<div class="pain-item"><div class="pain-num">${i+1}</div><div class="pain-text">${p}</div></div>`).join('')}
-    </div>`;
-  } else if (n === 3) {
-    body = `<div class="colors">
-      ${t.colors.map(c=>`<div class="color-row">
-        <div class="color-swatch ${c.c}"></div>
-        <div><div class="color-title">${c.title}</div><div class="color-desc">${c.desc}</div></div>
-      </div>`).join('')}
-    </div>`;
-  } else if (n === 4) {
-    body = `<div class="benefits">
-      ${t.benefits.map((b,i)=>`<div class="bn-card">${svgBenefit(i)}<div class="bn-title">${b.title}</div><div class="bn-desc">${b.desc}</div></div>`).join('')}
     </div>`;
   }
 
   return `<div class="slide slide-${n}" id="cr-slide-${n}">
+    <div class="bg"></div>
     ${brand(subBrand)}
-    <div class="eyebrow">${t.eyebrow}</div>
-    ${maxHost(pose, t.max_says)}
-    <h1 class="slide-title">${t.title}</h1>
-    <div class="slide-body">${body}</div>
+    <div class="bubble">${t.bubble}</div>
+    <div class="slide-content">
+      <div class="eyebrow">${t.eyebrow}</div>
+      <h1 class="slide-title">${t.title}</h1>
+    </div>
     ${swipe()}
   </div>`;
 }
