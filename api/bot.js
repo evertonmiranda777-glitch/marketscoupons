@@ -569,9 +569,38 @@ async function handleXRecap(req, res) {
   return res.status(200).json({ date: latestDate, posted: tweetIds, thread, scored });
 }
 
+// ===== IG subscribe fields (one-shot, abre URL no browser pra ativar) =====
+async function handleIgSubscribe(req, res) {
+  const TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
+  if (!TOKEN) return res.status(503).json({ error: 'no_token' });
+
+  // Lista contas IG conectadas via Login da Empresa
+  const meResp = await fetch(`https://graph.facebook.com/v21.0/me?fields=id,name,user_id&access_token=${encodeURIComponent(TOKEN)}`);
+  const meData = await meResp.json();
+  if (!meResp.ok || !meData.id) return res.status(502).json({ error: 'me_failed', response: meData });
+
+  const igUserId = meData.id;
+  const fields = 'comments,messages,messaging_postbacks,message_reactions';
+  const subUrl = `https://graph.facebook.com/v21.0/${igUserId}/subscribed_apps?subscribed_fields=${fields}&access_token=${encodeURIComponent(TOKEN)}`;
+  const subResp = await fetch(subUrl, { method: 'POST' });
+  const subData = await subResp.json();
+
+  // Lista subscriptions atuais pra confirmar
+  const listResp = await fetch(`https://graph.facebook.com/v21.0/${igUserId}/subscribed_apps?access_token=${encodeURIComponent(TOKEN)}`);
+  const listData = await listResp.json();
+
+  return res.status(subResp.ok ? 200 : 500).json({
+    me: meData,
+    subscribe_result: subData,
+    current_subscriptions: listData,
+    fields_attempted: fields
+  });
+}
+
 module.exports = async (req, res) => {
   const action = req.query?.action || '';
   if (action === 'ig_webhook') return handleIgWebhook(req, res);
+  if (action === 'ig_subscribe') return handleIgSubscribe(req, res);
   if (action === 'x_daily') return handleXDaily(req, res);
   if (action === 'x_recap') return handleXRecap(req, res);
 

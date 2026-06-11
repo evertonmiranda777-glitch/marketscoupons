@@ -1,7 +1,7 @@
 [apex] scraping https://apextraderfunding.com/
-Scrape ID: 019eafb0-2ec6-7110-b905-14f09a6118ed
+Scrape ID: 019eb4d6-4e69-7188-a3e0-e83b9d9e14d6
 
 === REPORT ===
-apex: baseline saved
-(node:18068) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+no changes detected
+(node:25956) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
 (Use `node --trace-deprecation ...` to show where the warning was created)
