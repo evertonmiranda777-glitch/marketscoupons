@@ -221,7 +221,150 @@ BEHAVIOR:
 - Say "não sei" or "I don't know" when uncertain, suggest the relevant tab.
 - Respond in the user's language (Portuguese, English, Spanish, Italian, French, German, Arabic).`;
 
+// ===== IG WEBHOOK (auto-reply DM) =====
+// Verification (GET): Meta envia hub.verify_token, retornamos hub.challenge.
+// Event (POST): comentário em post nosso. Match keyword → DM via Graph API.
+async function handleIgWebhook(req, res) {
+  if (req.method === 'GET') {
+    const mode = req.query['hub.mode'];
+    const token = req.query['hub.verify_token'];
+    const challenge = req.query['hub.challenge'];
+    if (mode === 'subscribe' && token && token === process.env.META_VERIFY_TOKEN) {
+      return res.status(200).send(challenge);
+    }
+    return res.status(403).send('Forbidden');
+  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const body = req.body || {};
+  const PAGE_TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
+  if (!PAGE_TOKEN) return res.status(503).json({ error: 'Bot disabled (no token)' });
+
+  // Meta envia entries com changes (comment) ou messaging (DM)
+  const entries = Array.isArray(body.entry) ? body.entry : [];
+  const results = [];
+  for (const entry of entries) {
+    const changes = entry.changes || [];
+    for (const ch of changes) {
+      if (ch.field !== 'comments') continue;
+      const c = ch.value || {};
+      const commentText = (c.text || '').trim();
+      const commentId = c.id || '';
+      const fromUser = c.from?.id || '';
+      const postId = c.media?.id || '';
+      if (!commentText || !fromUser || !commentId) continue;
+
+      try {
+        const r = await processIgComment({ commentText, commentId, fromUser, postId, PAGE_TOKEN });
+        results.push(r);
+      } catch (e) {
+        results.push({ error: e.message });
+      }
+    }
+  }
+  return res.status(200).json({ processed: results.length, results });
+}
+
+async function processIgComment({ commentText, commentId, fromUser, postId, PAGE_TOKEN }) {
+  // 1) Opt-out check (palavra STOP = registrar e parar)
+  if (/\bstop\b|\bparar\b/i.test(commentText)) {
+    await fetch(`${SUPABASE_URL}/rest/v1/ig_opt_outs`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' },
+      body: JSON.stringify({ ig_user_id: fromUser, reason: 'user_stop_keyword' })
+    }).catch(()=>{});
+    return { user: fromUser, status: 'opted_out' };
+  }
+
+  // 2) Já opted-out? skip
+  const optResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_opt_outs?ig_user_id=eq.${encodeURIComponent(fromUser)}&select=ig_user_id`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+  });
+  const optRows = await optResp.json();
+  if (Array.isArray(optRows) && optRows.length) return { user: fromUser, status: 'previously_opted_out' };
+
+  // 3) Rate limit: máximo 1 DM por user a cada 24h
+  const since = new Date(Date.now() - 24*60*60*1000).toISOString();
+  const recentResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log?ig_user_id=eq.${encodeURIComponent(fromUser)}&sent_at=gte.${since}&select=id&limit=1`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+  });
+  const recent = await recentResp.json();
+  if (Array.isArray(recent) && recent.length) return { user: fromUser, status: 'rate_limited_24h' };
+
+  // 4) Match keyword
+  const repliesResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_auto_replies?enabled=eq.true&select=*`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+  });
+  const replies = await repliesResp.json();
+  if (!Array.isArray(replies) || !replies.length) return { user: fromUser, status: 'no_keywords_configured' };
+
+  const lower = commentText.toLowerCase();
+  const matched = replies.find(r => {
+    if (r.post_id && r.post_id !== postId) return false;
+    const kw = (r.keyword || '').toLowerCase();
+    if (!kw) return false;
+    if (r.match_mode === 'exact') return lower.trim() === kw;
+    if (r.match_mode === 'word_boundary') return new RegExp(`\\b${kw}\\b`, 'i').test(commentText);
+    return lower.includes(kw);
+  });
+  if (!matched) return { user: fromUser, status: 'no_match' };
+
+  // 5) Escolher template aleatório
+  const templates = Array.isArray(matched.reply_templates) ? matched.reply_templates : [];
+  if (!templates.length) return { user: fromUser, status: 'no_templates' };
+  const idx = Math.floor(Math.random() * templates.length);
+  const msg = String(templates[idx]).replace(/\{link\}/g, matched.reply_link || '');
+
+  // 6) Send DM via Meta Graph API
+  const sendUrl = `https://graph.facebook.com/v21.0/me/messages?access_token=${encodeURIComponent(PAGE_TOKEN)}`;
+  const sendBody = {
+    recipient: { comment_id: commentId },  // Private Replies: responde via comment_id, abre janela 24h
+    message: { text: msg + '\n\n— Reply STOP to opt out.' }
+  };
+  const sendResp = await fetch(sendUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(sendBody)
+  });
+  const sendData = await sendResp.json().catch(() => ({}));
+  const sentOk = sendResp.ok && !sendData.error;
+
+  // 7) Log
+  await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      comment_id: commentId,
+      ig_user_id: fromUser,
+      post_id: postId || null,
+      keyword_matched: matched.keyword,
+      reply_id: matched.id,
+      template_used: idx,
+      dm_status: sentOk ? 'sent' : 'failed',
+      meta_response: sendData
+    })
+  }).catch(()=>{});
+
+  // 8) Alerta Telegram em erro
+  if (!sentOk && process.env.TELEGRAM_BOT_TOKEN && process.env.TG_ADMIN_CHAT_ID) {
+    fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: process.env.TG_ADMIN_CHAT_ID,
+        text: `🚨 IG bot falhou\nkeyword: ${matched.keyword}\nuser: ${fromUser}\nerror: ${JSON.stringify(sendData).slice(0,500)}`
+      })
+    }).catch(()=>{});
+  }
+
+  return { user: fromUser, status: sentOk ? 'sent' : 'failed', keyword: matched.keyword };
+}
+
 module.exports = async (req, res) => {
+  // Branching ?action=ig_webhook → handler IG
+  const action = req.query?.action || '';
+  if (action === 'ig_webhook') return handleIgWebhook(req, res);
+
   const corsOrigin = getCorsOrigin(req);
   res.setHeader('Access-Control-Allow-Origin', corsOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
