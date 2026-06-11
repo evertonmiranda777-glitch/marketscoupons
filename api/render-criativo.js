@@ -95,7 +95,7 @@ async function renderPlaywright({ html, styles, width, height, origin, url }) {
   const browser = await pw.launch({
     args: chromium.args,
     executablePath: await chromium.executablePath(),
-    headless: chromium.headless,
+    headless: true,
   });
 
   try {
