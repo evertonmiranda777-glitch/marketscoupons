@@ -328,7 +328,7 @@ async function processIgComment({ commentText, commentId, fromUser, postId, PAGE
   const sendUrl = `https://graph.facebook.com/v21.0/me/messages?access_token=${encodeURIComponent(PAGE_TOKEN)}`;
   const sendBody = {
     recipient: { comment_id: commentId },  // Private Replies: responde via comment_id, abre janela 24h
-    message: { text: msg + '\n\n— Reply STOP to opt out.' }
+    message: { text: msg }
   };
   const sendResp = await fetch(sendUrl, {
     method: 'POST',
@@ -758,7 +758,7 @@ async function handleIgPollRun(req, res) {
       const sendResp = await fetch(`${BASE}/${me.id}/messages?access_token=${encodeURIComponent(TOKEN)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ recipient: { comment_id: commentId }, message: { text: msg + '\n\n— Reply STOP to opt out.' } })
+        body: JSON.stringify({ recipient: { comment_id: commentId }, message: { text: msg } })
       });
       const sendData = await sendResp.json().catch(() => ({}));
       const sentOk = sendResp.ok && !sendData.error;
