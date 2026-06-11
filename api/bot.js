@@ -360,10 +360,121 @@ async function processIgComment({ commentText, commentId, fromUser, postId, PAGE
   return { user: fromUser, status: sentOk ? 'sent' : 'failed', keyword: matched.keyword };
 }
 
+// ===== X (Twitter) auto-post de análise diária =====
+// GET ?action=x_daily&asset=ES&dry=1 — preview (não posta)
+// POST ?action=x_daily&secret=... — posta de verdade (cron protected)
+async function handleXDaily(req, res) {
+  const isPreview = req.method === 'GET' || req.query?.dry === '1';
+  if (!isPreview) {
+    const secret = req.query?.secret || req.headers['x-cron-secret'];
+    if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
+      return res.status(403).json({ error: 'forbidden' });
+    }
+  }
+
+  // Rotação semanal: seg ES, ter NQ, qua GC, qui CL, sex resumo (ES)
+  const WEEK_ASSETS = { 1:'ES', 2:'NQ', 3:'GC', 4:'CL', 5:'ES' };
+  const dow = new Date().getDay();
+  const asset = (req.query?.asset || WEEK_ASSETS[dow] || 'ES').toUpperCase();
+  if (![0,6].includes(dow) === false && !req.query?.asset) {
+    // sábado/domingo: skip silencioso
+    return res.status(200).json({ skip: 'weekend', dow });
+  }
+
+  // Pega análise mais recente do asset
+  const today = new Date().toISOString().slice(0,10);
+  const aResp = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?asset=eq.${asset}&date=eq.${today}&select=*&limit=1`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+  });
+  const rows = await aResp.json();
+  if (!Array.isArray(rows) || !rows.length) {
+    return res.status(404).json({ error: 'no_analysis_today', asset, date: today });
+  }
+  const a = rows[0];
+
+  // Formata thread (max 280 chars por tweet)
+  const thread = buildXThread(a);
+
+  if (isPreview) {
+    return res.status(200).json({ asset, thread, preview: true });
+  }
+
+  // Postar (precisa OAuth1.0a ou OAuth2 user context — X API exige user token)
+  const X_BEARER = process.env.X_USER_BEARER_TOKEN;
+  if (!X_BEARER) return res.status(503).json({ error: 'no_x_token' });
+
+  const tweetIds = [];
+  let replyTo = null;
+  let lastResponse = null;
+  for (const text of thread) {
+    const body = { text };
+    if (replyTo) body.reply = { in_reply_to_tweet_id: replyTo };
+    const tr = await fetch('https://api.twitter.com/2/tweets', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${X_BEARER}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    lastResponse = await tr.json().catch(()=>({}));
+    if (!tr.ok || !lastResponse?.data?.id) {
+      // log falha
+      await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ post_type:'daily_analysis', asset, status:'failed', x_response: lastResponse, posted_content: { thread, fail_at_tweet: tweetIds.length } })
+      }).catch(()=>{});
+      return res.status(502).json({ error: 'x_post_failed', failed_at: tweetIds.length, response: lastResponse });
+    }
+    const id = lastResponse.data.id;
+    tweetIds.push(id);
+    if (!replyTo) replyTo = id; // primeiro vira root
+    else replyTo = id; // próximo replies pro último (mantém thread linear)
+    // pequena pausa entre tweets pra evitar spam
+    await new Promise(r => setTimeout(r, 800));
+  }
+
+  await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ post_type:'daily_analysis', asset, thread_root_id: tweetIds[0], thread_tweet_ids: tweetIds, status:'sent', posted_content: { thread } })
+  }).catch(()=>{});
+
+  return res.status(200).json({ asset, posted: tweetIds, thread });
+}
+
+function buildXThread(a) {
+  const arrow = (a.bias||'').toLowerCase().includes('bull') ? '↗' : (a.bias||'').toLowerCase().includes('bear') ? '↘' : '➡';
+  const price = a.last_price ? Number(a.last_price).toFixed(2) : '—';
+  const chg = a.change_pct != null ? `${a.change_pct > 0 ? '+' : ''}${Number(a.change_pct).toFixed(2)}%` : '';
+  const conf = a.confidence != null ? `${a.confidence}/10` : '';
+
+  const t1 = `📊 ${a.asset_name || a.asset} Outlook · ${a.date}\n\n${arrow} ${a.bias || 'Neutral'} ${conf ? `(${conf})` : ''}\nLast: ${price} ${chg}\n\nFull thread ↓`.slice(0, 275);
+
+  const ctx = a.context && typeof a.context === 'object' ? (a.context.macro || a.context.summary || JSON.stringify(a.context).slice(0,200)) : '';
+  const t2 = `🌐 Macro\n\n${String(ctx).slice(0, 260)}`.slice(0, 275);
+
+  const zones = [
+    a.support_1 && `S1: ${a.support_1}`,
+    a.support_2 && `S2: ${a.support_2}`,
+    a.resistance_1 && `R1: ${a.resistance_1}`,
+    a.resistance_2 && `R2: ${a.resistance_2}`,
+  ].filter(Boolean).join('\n');
+  const t3 = `🎯 Key zones\n\n${zones || '—'}`.slice(0, 275);
+
+  const bull = a.scenario_bull && typeof a.scenario_bull === 'object' ? (a.scenario_bull.summary || a.scenario_bull.text || '') : '';
+  const bear = a.scenario_bear && typeof a.scenario_bear === 'object' ? (a.scenario_bear.summary || a.scenario_bear.text || '') : '';
+  const t4parts = [];
+  if (bull) t4parts.push(`📈 ${String(bull).slice(0,90)}`);
+  if (bear) t4parts.push(`📉 ${String(bear).slice(0,90)}`);
+  const t4 = `${t4parts.join('\n\n') || 'See full analysis →'}\n\n→ marketscoupons.com/analysis?utm_source=x&utm_medium=daily&utm_campaign=${a.asset}`.slice(0, 275);
+
+  return [t1, t2, t3, t4].filter(t => t && t.trim().length > 0);
+}
+
 module.exports = async (req, res) => {
   // Branching ?action=ig_webhook → handler IG
   const action = req.query?.action || '';
   if (action === 'ig_webhook') return handleIgWebhook(req, res);
+  if (action === 'x_daily') return handleXDaily(req, res);
 
   const corsOrigin = getCorsOrigin(req);
   res.setHeader('Access-Control-Allow-Origin', corsOrigin);
