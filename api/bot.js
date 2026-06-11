@@ -622,6 +622,34 @@ async function handleIgSubscribe(req, res) {
   });
 }
 
+// ===== IG POLLING (READ-ONLY): lê posts + comentários via API. Zero risco, só GET. =====
+async function handleIgPollTest(req, res) {
+  const TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
+  if (!TOKEN) return res.status(503).json({ error: 'no_token' });
+  const BASE = 'https://graph.instagram.com/v21.0';
+
+  const meResp = await fetch(`${BASE}/me?fields=id,username&access_token=${encodeURIComponent(TOKEN)}`);
+  const me = await meResp.json();
+  if (!me.id) return res.status(502).json({ step: 'me', response: me });
+
+  const mediaResp = await fetch(`${BASE}/${me.id}/media?fields=id,caption,timestamp,comments_count,permalink&limit=5&access_token=${encodeURIComponent(TOKEN)}`);
+  const media = await mediaResp.json();
+  if (!media.data) return res.status(502).json({ step: 'media', response: media });
+
+  const out = { me, posts: [] };
+  for (const post of media.data.slice(0, 3)) {
+    const cResp = await fetch(`${BASE}/${post.id}/comments?fields=id,text,username,timestamp,from&access_token=${encodeURIComponent(TOKEN)}`);
+    const c = await cResp.json();
+    out.posts.push({
+      id: post.id,
+      caption: (post.caption || '').slice(0, 60),
+      comments_count: post.comments_count,
+      comments: c.data ? c.data.map(x => ({ id: x.id, text: x.text, user: x.username || x.from?.username })) : c
+    });
+  }
+  return res.status(200).json(out);
+}
+
 module.exports = async (req, res) => {
   const action = req.query?.action || '';
 
@@ -658,6 +686,7 @@ module.exports = async (req, res) => {
 
   if (action === 'ig_webhook') return handleIgWebhook(req, res);
   if (action === 'ig_subscribe') return handleIgSubscribe(req, res);
+  if (action === 'ig_poll_test') return handleIgPollTest(req, res);
   if (action === 'x_daily') return handleXDaily(req, res);
   if (action === 'x_recap') return handleXRecap(req, res);
 
