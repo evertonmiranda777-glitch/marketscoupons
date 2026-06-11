@@ -696,15 +696,17 @@ async function handleIgPollRun(req, res) {
   if (!media.data) return res.status(502).json({ step: 'media', response: media });
 
   const results = [];
+  const debug = { posts_checked: 0, comments_seen: 0, matched: 0 };
   let dmSent = 0;
 
   for (const post of media.data) {
     if (dmSent >= maxDm) break;
-    if (!post.comments_count) continue;
+    debug.posts_checked++;
 
     const cResp = await fetch(`${BASE}/${post.id}/comments?fields=id,text,username,from&access_token=${encodeURIComponent(TOKEN)}`);
     const c = await cResp.json();
     if (!c.data) continue;
+    debug.comments_seen += c.data.length;
 
     for (const comment of c.data) {
       if (dmSent >= maxDm) break;
@@ -727,6 +729,7 @@ async function handleIgPollRun(req, res) {
         return lower.includes(kw);
       });
       if (!matched) continue;
+      debug.matched++;
 
       // dedup: já respondeu esse comment_id?
       const dupResp = await fetch(`${SUPABASE_URL}/rest/v1/ig_dm_log?comment_id=eq.${encodeURIComponent(commentId)}&select=id&limit=1`, {
@@ -765,7 +768,7 @@ async function handleIgPollRun(req, res) {
     }
   }
 
-  return res.status(200).json({ dmSent, results });
+  return res.status(200).json({ dmSent, debug, results });
 }
 
 module.exports = async (req, res) => {
