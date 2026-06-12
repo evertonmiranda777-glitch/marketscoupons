@@ -14632,19 +14632,20 @@ async function loadManyChatStats() {
     const card = (label, val, color) => `<div style="background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px;">
       <div style="font-size:26px;font-weight:800;color:${color||'#fff'};line-height:1;">${val}</div>
       <div style="font-size:12px;color:#8A93A8;margin-top:6px;">${label}</div></div>`;
+    const rev = Number(s.sales_revenue||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
     let html = '';
     html += card('Visitantes do ManyChat', s.total_sessions||0, '#22D67C');
-    html += card('Foram ao Indicador (/ind)', s.download_sessions||0, '#6EE7FF');
     html += card('Foram aos Cupons (/buy)', s.coupon_sessions||0, '#F0B429');
-    html += card('Cupons copiados', s.coupon_copies||0, '#F0B429');
-    html += card('Cliques de checkout', s.checkout_clicks||0, '#22D67C');
+    html += card('Cliques de checkout', s.checkout_clicks||0, '#6EE7FF');
+    html += card('Vendas atribuídas', s.sales_count||0, '#22D67C');
+    html += card('Receita ManyChat', '$'+rev, '#22D67C');
     box.innerHTML = html;
-    if ((s.total_sessions||0) === 0) {
-      box.innerHTML += `<div style="grid-column:1/-1;font-size:12px;color:#8A93A8;margin-top:4px;">Ainda sem cliques no período. Assim que alguém clicar nos links do ManyChat, aparece aqui.</div>`;
+    if ((s.total_sessions||0) === 0 && (s.sales_count||0) === 0) {
+      box.innerHTML += `<div style="grid-column:1/-1;font-size:12px;color:#8A93A8;margin-top:4px;">Ainda sem cliques no período. Assim que alguém clicar nos links do ManyChat, aparece aqui. Vendas aparecem quando a compra cai no painel da firma com sub_id do ManyChat.</div>`;
     }
-    if (Array.isArray(s.by_firm) && s.by_firm.length) {
-      const firms = s.by_firm.map(f => `${f.firm_id}: ${f.clicks}`).join(' · ');
-      box.innerHTML += `<div style="grid-column:1/-1;font-size:13px;color:#E6E9F2;margin-top:8px;"><b>Por firma:</b> ${firms}</div>`;
+    if (Array.isArray(s.sales_by_firm) && s.sales_by_firm.length) {
+      const firms = s.sales_by_firm.map(f => `${f.firm_id}: ${f.vendas} venda(s) ($${Number(f.receita).toFixed(2)})`).join(' · ');
+      box.innerHTML += `<div style="grid-column:1/-1;font-size:13px;color:#E6E9F2;margin-top:8px;"><b>Vendas por firma:</b> ${firms}</div>`;
     }
   } catch(e) {
     box.innerHTML = `<div style="color:#EF4444;font-size:13px;">Erro: ${e.message||e}</div>`;
