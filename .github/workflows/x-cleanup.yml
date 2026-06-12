@@ -1,0 +1,19 @@
+name: Max X Cleanup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Delete recent tweets (clean incomplete thread)
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          echo "Deleting recent tweets from @marketscoupons..."
+          curl -sS -X POST "https://www.marketscoupons.com/api/bot?action=x_cleanup&secret=$CRON_SECRET" -w "\nHTTP %{http_code}\n"
