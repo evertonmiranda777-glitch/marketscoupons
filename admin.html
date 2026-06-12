@@ -2289,6 +2289,24 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         <div class="sec-title">Criativos, Gerador de Anuncios</div>
       </div>
 
+      <!-- TRACKING MANYCHAT -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;margin-bottom:18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
+          <div>
+            <div style="font-weight:700;color:#fff;font-size:16px;margin-bottom:4px;">Tráfego do ManyChat (Instagram)</div>
+            <div style="font-size:13px;color:#8A93A8;">Quem clicou nos links do ManyChat (/ind e /buy). Atualiza sozinho conforme as pessoas clicam.</div>
+          </div>
+          <select id="mc-days" onchange="loadManyChatStats()" class="adm-input" style="width:auto;font-size:13px;">
+            <option value="7">Últimos 7 dias</option>
+            <option value="30" selected>Últimos 30 dias</option>
+            <option value="90">Últimos 90 dias</option>
+          </select>
+        </div>
+        <div id="mc-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+          <div style="color:#8A93A8;font-size:13px;">Carregando...</div>
+        </div>
+      </div>
+
       <!-- BOT INSTAGRAM, painel de automações -->
       <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;margin-bottom:18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
@@ -3944,7 +3962,7 @@ function renderPage(p){
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
     case 'cms-blog':       renderCmsBlog(); break;
-    case 'criativos':      initCriativos(); try { bsInit(); } catch(_) {} try { igLoadAutomations(); } catch(_) {} break;
+    case 'criativos':      initCriativos(); try { bsInit(); } catch(_) {} try { igLoadAutomations(); } catch(_) {} try { loadManyChatStats(); } catch(_) {} break;
     case 'reviews':        initReviewsAdmin(); break;
     case 'telegram':       initTelegramSection(); break;
     case 'cms-faq':        renderCmsFaq(); break;
@@ -14596,6 +14614,37 @@ async function igAuthHeaders() {
   const session = await db.auth.getSession();
   const token = session?.data?.session?.access_token;
   return { 'Authorization': `Bearer ${token||''}`, 'Content-Type': 'application/json' };
+}
+
+async function loadManyChatStats() {
+  const box = document.getElementById('mc-stats');
+  if (!box) return;
+  const days = parseInt(document.getElementById('mc-days')?.value || '30', 10);
+  box.innerHTML = '<div style="color:#8A93A8;font-size:13px;">Carregando...</div>';
+  try {
+    const { data, error } = await db.rpc('manychat_stats', { days_back: days });
+    if (error) throw error;
+    const s = data || {};
+    const card = (label, val, color) => `<div style="background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px;">
+      <div style="font-size:26px;font-weight:800;color:${color||'#fff'};line-height:1;">${val}</div>
+      <div style="font-size:12px;color:#8A93A8;margin-top:6px;">${label}</div></div>`;
+    let html = '';
+    html += card('Visitantes do ManyChat', s.total_sessions||0, '#22D67C');
+    html += card('Foram ao Indicador (/ind)', s.download_sessions||0, '#6EE7FF');
+    html += card('Foram aos Cupons (/buy)', s.coupon_sessions||0, '#F0B429');
+    html += card('Cupons copiados', s.coupon_copies||0, '#F0B429');
+    html += card('Cliques de checkout', s.checkout_clicks||0, '#22D67C');
+    box.innerHTML = html;
+    if ((s.total_sessions||0) === 0) {
+      box.innerHTML += `<div style="grid-column:1/-1;font-size:12px;color:#8A93A8;margin-top:4px;">Ainda sem cliques no período. Assim que alguém clicar nos links do ManyChat, aparece aqui.</div>`;
+    }
+    if (Array.isArray(s.by_firm) && s.by_firm.length) {
+      const firms = s.by_firm.map(f => `${f.firm_id}: ${f.clicks}`).join(' · ');
+      box.innerHTML += `<div style="grid-column:1/-1;font-size:13px;color:#E6E9F2;margin-top:8px;"><b>Por firma:</b> ${firms}</div>`;
+    }
+  } catch(e) {
+    box.innerHTML = `<div style="color:#EF4444;font-size:13px;">Erro: ${e.message||e}</div>`;
+  }
 }
 
 async function igLoadAutomations() {
