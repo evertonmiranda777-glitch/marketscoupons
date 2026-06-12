@@ -395,6 +395,23 @@ async function processIgComment({ commentText, commentId, fromUser, postId, PAGE
 // GET ?action=x_daily&asset=ES&dry=1 — preview (não posta)
 // POST ?action=x_daily&secret=... — posta de verdade (cron protected)
 async function handleXDaily(req, res) {
+  // test_auth=1: valida as credenciais X (GET users/me via OAuth1), SEM postar. Seguro.
+  if (req.query?.test_auth === '1') {
+    const keys = {
+      apiKey: process.env.X_API_KEY, apiSecret: process.env.X_API_SECRET,
+      accessToken: process.env.X_ACCESS_TOKEN, accessSecret: process.env.X_ACCESS_SECRET,
+    };
+    if (!keys.apiKey || !keys.apiSecret || !keys.accessToken || !keys.accessSecret) {
+      return res.status(503).json({ ok: false, error: 'missing_keys', has: {
+        X_API_KEY: !!keys.apiKey, X_API_SECRET: !!keys.apiSecret,
+        X_ACCESS_TOKEN: !!keys.accessToken, X_ACCESS_SECRET: !!keys.accessSecret } });
+    }
+    const url = 'https://api.twitter.com/2/users/me';
+    const r = await fetch(url, { headers: { Authorization: oauth1Header('GET', url, keys) } });
+    const data = await r.json().catch(() => ({}));
+    return res.status(r.ok ? 200 : 401).json({ ok: r.ok, status: r.status, account: data?.data || data });
+  }
+
   const isPreview = req.method === 'GET' || req.query?.dry === '1';
   if (!isPreview) {
     const secret = req.query?.secret || req.headers['x-cron-secret'];
