@@ -454,7 +454,9 @@ async function handleXDaily(req, res) {
 // Thread de 2 tweets: (1) análise (2) disclaimer + cupom + bio.
 function buildXThread(a) {
   const ticker = a.asset;
-  const name = a.asset_name || a.asset;
+  // Nomes em inglês (banco guarda alguns em PT; X é EN-default)
+  const EN_NAMES = { ES: 'S&P 500', NQ: 'Nasdaq 100', GC: 'Gold', CL: 'Crude Oil (WTI)' };
+  const name = EN_NAMES[a.asset] || a.asset_name || a.asset;
   const biasRaw = (a.bias || 'neutral').toLowerCase();
   const dot = biasRaw.includes('bull') ? '🟢' : biasRaw.includes('bear') ? '🔴' : '⚪';
   const biasLabel = biasRaw.includes('bull') ? 'Bullish' : biasRaw.includes('bear') ? 'Bearish' : 'Neutral';
