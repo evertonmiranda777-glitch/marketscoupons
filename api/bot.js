@@ -449,33 +449,41 @@ async function handleXDaily(req, res) {
   return res.status(200).json({ asset, posted: tweetIds, thread });
 }
 
+// Constrói o post de ANALISTA (previsão de mercado, NÃO sinal de trade).
+// Compliant: dá direção/contexto/zonas, sem trigger/target/stop. Cupom como texto + "link in bio".
+// Thread de 2 tweets: (1) análise (2) disclaimer + cupom + bio.
 function buildXThread(a) {
-  const arrow = (a.bias||'').toLowerCase().includes('bull') ? '↗' : (a.bias||'').toLowerCase().includes('bear') ? '↘' : '➡';
-  const price = a.last_price ? Number(a.last_price).toFixed(2) : '—';
+  const ticker = a.asset;
+  const name = a.asset_name || a.asset;
+  const biasRaw = (a.bias || 'neutral').toLowerCase();
+  const dot = biasRaw.includes('bull') ? '🟢' : biasRaw.includes('bear') ? '🔴' : '⚪';
+  const biasLabel = biasRaw.includes('bull') ? 'Bullish' : biasRaw.includes('bear') ? 'Bearish' : 'Neutral';
+  const price = a.last_price ? Number(a.last_price).toFixed(0) : '—';
   const chg = a.change_pct != null ? `${a.change_pct > 0 ? '+' : ''}${Number(a.change_pct).toFixed(2)}%` : '';
   const conf = a.confidence != null ? `${a.confidence}/10` : '';
 
-  const t1 = `📊 ${a.asset_name || a.asset} Outlook · ${a.date}\n\n${arrow} ${a.bias || 'Neutral'} ${conf ? `(${conf})` : ''}\nLast: ${price} ${chg}\n\nFull thread ↓`.slice(0, 275);
+  // Contexto (o "WHY") — extrai EN, pega 1ª frase, limita pra caber
+  let ctx = '';
+  if (a.context && typeof a.context === 'object') ctx = a.context.en || a.context.pt || '';
+  else if (typeof a.context === 'string') ctx = a.context;
+  ctx = String(ctx).replace(/\s+/g, ' ').trim();
+  // 1ª frase (até o 1º ponto seguido de espaço), cap 150
+  const firstSentence = ctx.split(/\.\s/)[0];
+  ctx = (firstSentence.length > 150 ? firstSentence.slice(0, 147) + '...' : firstSentence + (ctx.includes('. ') ? '.' : ''));
 
-  const ctx = a.context && typeof a.context === 'object' ? (a.context.macro || a.context.summary || JSON.stringify(a.context).slice(0,200)) : '';
-  const t2 = `🌐 Macro\n\n${String(ctx).slice(0, 260)}`.slice(0, 275);
+  const sup = [a.support_1, a.support_2].filter(Boolean).join(' / ');
+  const res = [a.resistance_1, a.resistance_2].filter(Boolean).join(' / ');
+  const zonesLine = [sup && `Support ${sup}`, res && `Resistance ${res}`].filter(Boolean).join('  ·  ');
 
-  const zones = [
-    a.support_1 && `S1: ${a.support_1}`,
-    a.support_2 && `S2: ${a.support_2}`,
-    a.resistance_1 && `R1: ${a.resistance_1}`,
-    a.resistance_2 && `R2: ${a.resistance_2}`,
-  ].filter(Boolean).join('\n');
-  const t3 = `🎯 Key zones\n\n${zones || '—'}`.slice(0, 275);
+  // Tweet 1 — análise (cap 280)
+  let t1 = `${dot} ${name} (${ticker}) — ${a.date}\n\n${biasLabel} bias${conf ? ` (${conf})` : ''} · ${price} ${chg}\n\n${ctx}`;
+  if (zonesLine) t1 += `\n\n${zonesLine}`;
+  t1 = t1.slice(0, 280);
 
-  const bull = a.scenario_bull && typeof a.scenario_bull === 'object' ? (a.scenario_bull.summary || a.scenario_bull.text || '') : '';
-  const bear = a.scenario_bear && typeof a.scenario_bear === 'object' ? (a.scenario_bear.summary || a.scenario_bear.text || '') : '';
-  const t4parts = [];
-  if (bull) t4parts.push(`📈 ${String(bull).slice(0,90)}`);
-  if (bear) t4parts.push(`📉 ${String(bear).slice(0,90)}`);
-  const t4 = `${t4parts.join('\n\n') || 'See full analysis →'}\n\n→ marketscoupons.com/analysis?utm_source=x&utm_medium=daily&utm_campaign=${a.asset}`.slice(0, 275);
+  // Tweet 2 — disclaimer + cupom (texto, sem link) + bio
+  const t2 = `Market view, not financial advice. Do your own research.\n\n💰 Trading prop firms? Code MARKET = 90% OFF on Apex.\nAll coupons → link in bio`.slice(0, 280);
 
-  return [t1, t2, t3, t4].filter(t => t && t.trim().length > 0);
+  return [t1, t2];
 }
 
 // ===== X recap: score público hits/misses do dia anterior =====
