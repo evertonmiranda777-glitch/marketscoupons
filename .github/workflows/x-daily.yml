@@ -1,11 +1,16 @@
-name: Max X Daily Thread
+name: Max X Daily Post
 
 on:
   schedule:
-    # 13:00 UTC = 9:00 ET (EDT), ~30min antes da abertura do mercado US. Seg-Sex.
-    # AJUSTAR pro horário real do pipeline daily-analysis se precisar.
-    - cron: '0 13 * * 1-5'
+    # 12:30 UTC = 9:30 BRT = 8:30 ET (EDT, verão) — pre-market briefing, 1h antes do sino. Seg-Sex.
+    # ATENÇÃO horário de verão US: no inverno (EST) isso vira 7:30 ET; revisar 2x/ano.
+    - cron: '30 12 * * 1-5'
   workflow_dispatch:
+    inputs:
+      segment:
+        description: 'Segment: premarket / open / pulse / recap / coupon'
+        default: 'premarket'
+        required: false
 
 concurrency:
   group: x-daily
@@ -16,11 +21,12 @@ permissions:
 jobs:
   post:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
-      - name: Post Max daily thread to X
+      - name: Post Max single post (+ chart) to X
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SEGMENT: ${{ github.event.inputs.segment || 'premarket' }}
         run: |
-          echo "Posting Max daily thread (EN) to X..."
-          curl -sS -X POST "https://www.marketscoupons.com/api/bot?action=x_daily&lang=en&secret=$CRON_SECRET" -w "\nHTTP %{http_code}\n"
+          echo "Posting Max segment=$SEGMENT (EN) to X..."
+          curl -sS -X POST "https://www.marketscoupons.com/api/bot?action=x_daily&lang=en&segment=$SEGMENT&secret=$CRON_SECRET" -w "\nHTTP %{http_code}\n"
