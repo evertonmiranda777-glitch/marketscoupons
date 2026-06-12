@@ -400,8 +400,9 @@ async function handleXDaily(req, res) {
   const ORDER = ['ES','NQ','GC','CL'];
   rows.sort((x,y) => ORDER.indexOf(x.asset) - ORDER.indexOf(y.asset));
 
-  // Formata thread-guia (max 280 chars por tweet)
+  // Formata thread-guia (max 280 chars por tweet) + caption IG (legenda única)
   const thread = buildXGuide(rows, latestDate);
+  const igCaption = buildIGCaption(rows, latestDate);
   const asset = 'guide';
 
   if (isPreview) {
@@ -527,6 +528,39 @@ function buildXGuide(rows, date) {
   tweets.push(`This is why I post the breakdown every morning: bias, support/resistance on ES, NQ, Gold & Oil + macro — so you know if today is attack or observe.\n\n💰 Code MARKET = 90% OFF Apex · coupons in bio\nNot advice.\n— Max, marketscoupons.com`.slice(0,280));
 
   return tweets.filter(t => t && t.trim().length > 0);
+}
+
+// ===== Caption do INSTAGRAM (análise condensada numa legenda única + assinatura Max) =====
+// Mesmo dado real do banco. Foto do Max é a imagem; a análise vai toda na legenda.
+function buildIGCaption(rows, date) {
+  const EN_NAMES = { ES: 'S&P 500', NQ: 'Nasdaq 100', GC: 'Gold', CL: 'Crude Oil' };
+  const byId = {}; rows.forEach(r => byId[r.asset] = r);
+  const j = (o) => (o && typeof o === 'object') ? (o.en || o.pt || '') : (typeof o === 'string' ? o : '');
+  const dot = (b) => { b=(b||'').toLowerCase(); return b.includes('bull')?'🟢':b.includes('bear')?'🔴':'⚪'; };
+  const biasLbl = (b) => { b=(b||'').toLowerCase(); return b.includes('bull')?'Bullish':b.includes('bear')?'Bearish':'Neutral'; };
+  const px = (r) => r?.last_price ? Number(r.last_price).toFixed(r.asset==='CL'?2:0) : '—';
+  const chg = (r) => r?.change_pct!=null ? `${r.change_pct>0?'+':''}${Number(r.change_pct).toFixed(1)}%` : '';
+  const zones = (r) => {
+    const s=[r?.support_1,r?.support_2].filter(Boolean).join('/');
+    const x=[r?.resistance_1,r?.resistance_2].filter(Boolean).join('/');
+    return [s&&`S ${s}`, x&&`R ${x}`].filter(Boolean).join(' · ');
+  };
+  const line = (r) => r ? `${dot(r.bias)} ${EN_NAMES[r.asset]||r.asset} — ${biasLbl(r.bias)} · ${px(r)} ${chg(r)}\n   ${zones(r)}` : '';
+
+  const vix = j(byId.ES?.vix_context).split(/\.\s/)[0];
+
+  const parts = [];
+  parts.push(`📊 Daily Market Outlook · ${date}`);
+  if (vix) parts.push(`\n🌐 ${vix}.`);
+  parts.push(`\n📈 INDICES\n${[line(byId.ES), line(byId.NQ)].filter(Boolean).join('\n')}`);
+  parts.push(`\n🪙 COMMODITIES\n${[line(byId.GC), line(byId.CL)].filter(Boolean).join('\n')}`);
+  parts.push(`\n💡 Trading a prop account today? On high-vol days, trailing-DD traders protect the peak, EOD traders mind the daily floor — and every style wins with fewer, cleaner trades.`);
+  parts.push(`\nThis is why I post the breakdown every morning — so you know if today is attack or observe.`);
+  parts.push(`\n💰 Code MARKET = 90% OFF Apex. All exclusive prop firm coupons at marketscoupons.com`);
+  parts.push(`Market view, not financial advice. Always do your own research.\n— Max`);
+  parts.push(`\n.\n#trading #propfirm #futures #daytrading #SP500 #nasdaq #gold #crudeoil #marketanalysis #tradingfutures #fundedtrader #apextraderfunding`);
+
+  return parts.join('\n');
 }
 
 // Constrói o post de ANALISTA (previsão de mercado, NÃO sinal de trade).
