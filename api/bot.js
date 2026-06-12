@@ -1,6 +1,28 @@
 // Vercel Serverless, Google Gemini 2.5 Flash proxy pro chatbot do site
 // POST /api/bot { messages, lang, traderName?, geo? }
 
+const _crypto = require('crypto');
+
+// Gera header Authorization OAuth 1.0a (HMAC-SHA1) pra X API v2.
+// Body JSON não entra na assinatura; só os params oauth_*.
+function oauth1Header(method, url, keys) {
+  const pe = (s) => encodeURIComponent(s).replace(/[!*'()]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase());
+  const oauth = {
+    oauth_consumer_key: keys.apiKey,
+    oauth_nonce: _crypto.randomBytes(16).toString('hex'),
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+    oauth_token: keys.accessToken,
+    oauth_version: '1.0',
+  };
+  const paramStr = Object.keys(oauth).sort().map(k => `${pe(k)}=${pe(oauth[k])}`).join('&');
+  const baseStr = [method.toUpperCase(), pe(url), pe(paramStr)].join('&');
+  const signingKey = `${pe(keys.apiSecret)}&${pe(keys.accessSecret)}`;
+  const signature = _crypto.createHmac('sha1', signingKey).update(baseStr).digest('base64');
+  const headerParams = { ...oauth, oauth_signature: signature };
+  return 'OAuth ' + Object.keys(headerParams).sort().map(k => `${pe(k)}="${pe(headerParams[k])}"`).join(', ');
+}
+
 const SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
@@ -409,9 +431,16 @@ async function handleXDaily(req, res) {
     return res.status(200).json({ asset, thread, igCaption, preview: true });
   }
 
-  // Postar (precisa OAuth1.0a ou OAuth2 user context — X API exige user token)
-  const X_BEARER = process.env.X_USER_BEARER_TOKEN;
-  if (!X_BEARER) return res.status(503).json({ error: 'no_x_token' });
+  // Postar via OAuth 1.0a (X API v2 exige user context pra POST /tweets)
+  const xKeys = {
+    apiKey: process.env.X_API_KEY,
+    apiSecret: process.env.X_API_SECRET,
+    accessToken: process.env.X_ACCESS_TOKEN,
+    accessSecret: process.env.X_ACCESS_SECRET,
+  };
+  if (!xKeys.apiKey || !xKeys.apiSecret || !xKeys.accessToken || !xKeys.accessSecret) {
+    return res.status(503).json({ error: 'no_x_token' });
+  }
 
   const tweetIds = [];
   let replyTo = null;
@@ -419,9 +448,11 @@ async function handleXDaily(req, res) {
   for (const text of thread) {
     const body = { text };
     if (replyTo) body.reply = { in_reply_to_tweet_id: replyTo };
-    const tr = await fetch('https://api.twitter.com/2/tweets', {
+    const url = 'https://api.twitter.com/2/tweets';
+    const authHeader = oauth1Header('POST', url, xKeys);
+    const tr = await fetch(url, {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${X_BEARER}`, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': authHeader, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
     lastResponse = await tr.json().catch(()=>({}));
