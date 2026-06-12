@@ -409,7 +409,12 @@ async function handleXDaily(req, res) {
     const url = 'https://api.twitter.com/2/users/me';
     const r = await fetch(url, { headers: { Authorization: oauth1Header('GET', url, keys) } });
     const data = await r.json().catch(() => ({}));
-    return res.status(r.ok ? 200 : 401).json({ ok: r.ok, status: r.status, account: data?.data || data });
+    // diagnóstico: comprimento + tem espaço/quebra (sem expor valor)
+    const diag = {};
+    for (const [k,v] of Object.entries(keys)) {
+      diag[k] = { len: (v||'').length, trimmed_len: (v||'').trim().length, first4: (v||'').slice(0,4), has_space: /\s/.test(v||'') };
+    }
+    return res.status(r.ok ? 200 : 401).json({ ok: r.ok, status: r.status, account: data?.data || data, key_diag: diag });
   }
 
   const isPreview = req.method === 'GET' || req.query?.dry === '1';
