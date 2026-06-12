@@ -381,27 +381,28 @@ async function handleXDaily(req, res) {
     }
   }
 
-  // Rotação semanal: seg ES, ter NQ, qua GC, qui CL, sex resumo (ES)
-  const WEEK_ASSETS = { 1:'ES', 2:'NQ', 3:'GC', 4:'CL', 5:'ES' };
-  const dow = new Date().getDay();
-  const asset = (req.query?.asset || WEEK_ASSETS[dow] || 'ES').toUpperCase();
-  if (![0,6].includes(dow) === false && !req.query?.asset) {
-    // sábado/domingo: skip silencioso
-    return res.status(200).json({ skip: 'weekend', dow });
-  }
+  // Thread-guia diária: cobre os 4 ativos da data mais recente
+  // Pega a data mais nova disponível e todos os ativos dela
+  const latResp = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?select=date&order=date.desc&limit=1`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+  });
+  const latRows = await latResp.json();
+  if (!Array.isArray(latRows) || !latRows.length) return res.status(404).json({ error: 'no_analysis_yet' });
+  const latestDate = latRows[0].date;
 
-  // Pega análise mais recente do asset (não exige date=today; usa o mais novo)
-  const aResp = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?asset=eq.${asset}&select=*&order=date.desc&limit=1`, {
+  const aResp = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?date=eq.${latestDate}&select=*`, {
     headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
   });
   const rows = await aResp.json();
-  if (!Array.isArray(rows) || !rows.length) {
-    return res.status(404).json({ error: 'no_analysis_yet', asset });
-  }
-  const a = rows[0];
+  if (!Array.isArray(rows) || !rows.length) return res.status(404).json({ error: 'no_analysis_yet' });
 
-  // Formata thread (max 280 chars por tweet)
-  const thread = buildXThread(a);
+  // Ordena na sequência ES, NQ, GC, CL
+  const ORDER = ['ES','NQ','GC','CL'];
+  rows.sort((x,y) => ORDER.indexOf(x.asset) - ORDER.indexOf(y.asset));
+
+  // Formata thread-guia (max 280 chars por tweet)
+  const thread = buildXGuide(rows, latestDate);
+  const asset = 'guide';
 
   if (isPreview) {
     return res.status(200).json({ asset, thread, preview: true });
@@ -447,6 +448,67 @@ async function handleXDaily(req, res) {
   }).catch(()=>{});
 
   return res.status(200).json({ asset, posted: tweetIds, thread });
+}
+
+// ===== Thread-GUIA diária (robusta, multi-ativo, estilo desk de research) =====
+// Compliant: macro, sentimento, fase de mercado, viés e zonas. SEM sinal (sem entry/target/stop).
+function buildXGuide(rows, date) {
+  const EN_NAMES = { ES: 'S&P 500', NQ: 'Nasdaq 100', GC: 'Gold', CL: 'Crude Oil' };
+  const byId = {}; rows.forEach(r => byId[r.asset] = r);
+  const es = byId.ES, nq = byId.NQ, gc = byId.GC, cl = byId.CL;
+
+  const j = (obj) => (obj && typeof obj === 'object') ? (obj.en || obj.pt || '') : (typeof obj === 'string' ? obj : '');
+  const firstSentence = (s, cap=160) => {
+    s = String(s||'').replace(/\s+/g,' ').trim();
+    const fs = s.split(/\.\s/)[0];
+    return fs.length > cap ? fs.slice(0, cap-3)+'...' : fs + (s.includes('. ')?'.':'');
+  };
+  const dot = (b) => { b=(b||'').toLowerCase(); return b.includes('bull')?'🟢':b.includes('bear')?'🔴':'⚪'; };
+  const biasLbl = (b) => { b=(b||'').toLowerCase(); return b.includes('bull')?'Bullish':b.includes('bear')?'Bearish':'Neutral'; };
+  const px = (r) => r?.last_price ? Number(r.last_price).toFixed(r.asset==='CL'?2:0) : '—';
+  const chg = (r) => r?.change_pct!=null ? `${r.change_pct>0?'+':''}${Number(r.change_pct).toFixed(1)}%` : '';
+  const zones = (r) => {
+    const s=[r?.support_1,r?.support_2].filter(Boolean).join('/');
+    const x=[r?.resistance_1,r?.resistance_2].filter(Boolean).join('/');
+    return [s&&`S ${s}`, x&&`R ${x}`].filter(Boolean).join(' · ');
+  };
+
+  const tweets = [];
+
+  // 1) HOOK
+  tweets.push(`📊 Daily Market Outlook · ${date}\n\nThe macro backdrop + S&P 500, Nasdaq, Gold & Oil.\nWhat's driving today and the levels that matter 🧵👇`.slice(0,280));
+
+  // 2) MACRO / sentimento (usa VIX + market phase do ES)
+  const vix = firstSentence(j(es?.vix_context), 170);
+  const phase = firstSentence(j(es?.market_phase), 90);
+  let t2 = `🌐 The backdrop\n\n${vix}`;
+  if (phase) t2 += `\n\nMarket phase: ${phase}`;
+  tweets.push(t2.slice(0,280));
+
+  // 3) ÍNDICES (ES + NQ)
+  if (es || nq) {
+    let t = `📈 Indices\n`;
+    if (es) t += `\n${dot(es.bias)} S&P 500 — ${biasLbl(es.bias)} · ${px(es)} ${chg(es)}\n${zones(es)}`;
+    if (nq) t += `\n\n${dot(nq.bias)} Nasdaq 100 — ${biasLbl(nq.bias)} · ${px(nq)} ${chg(nq)}\n${zones(nq)}`;
+    tweets.push(t.slice(0,280));
+  }
+
+  // 4) COMMODITIES (GC + CL)
+  if (gc || cl) {
+    let t = `🪙 Commodities\n`;
+    if (gc) t += `\n${dot(gc.bias)} Gold — ${biasLbl(gc.bias)} · ${px(gc)} ${chg(gc)}\n${zones(gc)}`;
+    if (cl) t += `\n\n${dot(cl.bias)} Crude Oil — ${biasLbl(cl.bias)} · ${px(cl)} ${chg(cl)}\n${zones(cl)}`;
+    tweets.push(t.slice(0,280));
+  }
+
+  // 5) BOTTOM LINE (insight do ES — contexto principal)
+  const insight = firstSentence(j(es?.context), 200);
+  if (insight) tweets.push(`🎯 Bottom line\n\n${insight}\n\nVolatility stays elevated — patience over prediction.`.slice(0,280));
+
+  // 6) CTA — disclaimer + cupom (texto) + bio
+  tweets.push(`Market view, not financial advice. Always do your own research.\n\n💰 Trading prop firms? Code MARKET = 90% OFF on Apex.\nAll exclusive coupons → link in bio`.slice(0,280));
+
+  return tweets.filter(t => t && t.trim().length > 0);
 }
 
 // Constrói o post de ANALISTA (previsão de mercado, NÃO sinal de trade).
