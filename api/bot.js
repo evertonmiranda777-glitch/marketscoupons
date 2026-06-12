@@ -445,7 +445,8 @@ async function handleXDaily(req, res) {
   rows.sort((x,y) => ORDER.indexOf(x.asset) - ORDER.indexOf(y.asset));
 
   // Formata thread-guia (max 280 chars por tweet) + caption IG (legenda única)
-  const thread = buildXGuide(rows, latestDate);
+  const lang = (req.query?.lang === 'pt') ? 'pt' : 'en';
+  const thread = buildXGuide(rows, latestDate, lang);
   const igCaption = buildIGCaption(rows, latestDate);
   const asset = 'guide';
 
@@ -506,12 +507,16 @@ async function handleXDaily(req, res) {
 
 // ===== Thread-GUIA diária (robusta, multi-ativo, estilo desk de research) =====
 // Compliant: macro, sentimento, fase de mercado, viés e zonas. SEM sinal (sem entry/target/stop).
-function buildXGuide(rows, date) {
-  const EN_NAMES = { ES: 'S&P 500', NQ: 'Nasdaq 100', GC: 'Gold', CL: 'Crude Oil' };
+function buildXGuide(rows, date, lang = 'en') {
+  const pt = lang === 'pt';
+  const NAMES = pt
+    ? { ES: 'S&P 500', NQ: 'Nasdaq 100', GC: 'Ouro', CL: 'Petróleo WTI' }
+    : { ES: 'S&P 500', NQ: 'Nasdaq 100', GC: 'Gold', CL: 'Crude Oil' };
+  const EN_NAMES = NAMES;
   const byId = {}; rows.forEach(r => byId[r.asset] = r);
   const es = byId.ES, nq = byId.NQ, gc = byId.GC, cl = byId.CL;
 
-  const j = (obj) => (obj && typeof obj === 'object') ? (obj.en || obj.pt || '') : (typeof obj === 'string' ? obj : '');
+  const j = (obj) => (obj && typeof obj === 'object') ? (pt ? (obj.pt || obj.en) : (obj.en || obj.pt)) || '' : (typeof obj === 'string' ? obj : '');
   const firstSentence = (s, cap=160) => {
     s = String(s||'').replace(/\s+/g,' ').trim();
     let fs = s.split(/\.\s/)[0];
@@ -535,50 +540,59 @@ function buildXGuide(rows, date) {
   };
 
   const tweets = [];
+  const biasL = (b) => { b=(b||'').toLowerCase(); if (pt) return b.includes('bull')?'Alta':b.includes('bear')?'Baixa':'Neutro'; return b.includes('bull')?'Bullish':b.includes('bear')?'Bearish':'Neutral'; };
 
   // 1) HOOK
-  tweets.push(`📊 Daily Market Outlook · ${date}\n\nThe macro backdrop + S&P 500, Nasdaq, Gold & Oil.\nWhat's driving today and the levels that matter 🧵👇`.slice(0,280));
+  tweets.push(pt
+    ? `📊 Análise Diária do Mercado · ${date}\n\nO panorama macro + S&P 500, Nasdaq, Ouro e Petróleo.\nO que move o mercado hoje e os níveis que importam 🧵👇`.slice(0,280)
+    : `📊 Daily Market Outlook · ${date}\n\nThe macro backdrop + S&P 500, Nasdaq, Gold & Oil.\nWhat's driving today and the levels that matter 🧵👇`.slice(0,280));
 
   // 2) MACRO / sentimento (usa VIX + market phase do ES)
   const vix = firstSentence(j(es?.vix_context), 170);
   const phase = firstSentence(j(es?.market_phase), 90);
-  let t2 = `🌐 The backdrop\n\n${vix}`;
-  if (phase) t2 += `\n\nMarket phase: ${phase}`;
+  let t2 = pt ? `🌐 O panorama\n\n${vix}` : `🌐 The backdrop\n\n${vix}`;
+  if (phase) t2 += pt ? `\n\nFase de mercado: ${phase}` : `\n\nMarket phase: ${phase}`;
   tweets.push(t2.slice(0,280));
 
   // 3) ÍNDICES (ES + NQ)
   if (es || nq) {
-    let t = `📈 Indices\n`;
-    if (es) t += `\n${dot(es.bias)} S&P 500 — ${biasLbl(es.bias)} · ${px(es)} ${chg(es)}\n${zones(es)}`;
-    if (nq) t += `\n\n${dot(nq.bias)} Nasdaq 100 — ${biasLbl(nq.bias)} · ${px(nq)} ${chg(nq)}\n${zones(nq)}`;
+    let t = pt ? `📈 Índices\n` : `📈 Indices\n`;
+    if (es) t += `\n${dot(es.bias)} ${NAMES.ES} — ${biasL(es.bias)} · ${px(es)} ${chg(es)}\n${zones(es)}`;
+    if (nq) t += `\n\n${dot(nq.bias)} ${NAMES.NQ} — ${biasL(nq.bias)} · ${px(nq)} ${chg(nq)}\n${zones(nq)}`;
     tweets.push(t.slice(0,280));
   }
 
   // 4) COMMODITIES (GC + CL)
   if (gc || cl) {
-    let t = `🪙 Commodities\n`;
-    if (gc) t += `\n${dot(gc.bias)} Gold — ${biasLbl(gc.bias)} · ${px(gc)} ${chg(gc)}\n${zones(gc)}`;
-    if (cl) t += `\n\n${dot(cl.bias)} Crude Oil — ${biasLbl(cl.bias)} · ${px(cl)} ${chg(cl)}\n${zones(cl)}`;
+    let t = pt ? `🪙 Commodities\n` : `🪙 Commodities\n`;
+    if (gc) t += `\n${dot(gc.bias)} ${NAMES.GC} — ${biasL(gc.bias)} · ${px(gc)} ${chg(gc)}\n${zones(gc)}`;
+    if (cl) t += `\n\n${dot(cl.bias)} ${NAMES.CL} — ${biasL(cl.bias)} · ${px(cl)} ${chg(cl)}\n${zones(cl)}`;
     tweets.push(t.slice(0,280));
   }
 
   // 5) RISK NOTE — conecta o contexto do dia com gestão de conta prop (útil, positivo, alinhado com a firma)
-  // Lê o VIX do vix_context pra contextualizar. Educação de gestão de risco, NÃO sinal de trade.
   const vixTxt = j(es?.vix_context);
   const vixMatch = String(vixTxt).match(/VIX\s*(?:at|:)?\s*([\d.]+)/i);
   const vixVal = vixMatch ? parseFloat(vixMatch[1]) : null;
-  // Conta nº de ativos com viés direcional forte (proxy de "dia de movimento")
   const directional = rows.filter(r => /bull|bear/i.test(r.bias||'')).length;
-  let condLine;
-  if (vixVal != null && vixVal >= 20) condLine = `VIX at ${vixVal} = high volatility. Whipsaws punish loose risk management.`;
-  else if (directional >= 3) condLine = `Clear directional tone across markets — strong moves, but chasing late is the trap.`;
-  else condLine = `Mixed, choppy conditions — the kind of day where overtrading quietly kills accounts.`;
-  // Cobre os diferentes tipos de conta/estilo (não só trailing): trailing, EOD, qualquer estilo
-  const riskNote = `💡 Trading prop today? ${condLine}\n\n• Trailing DD → protect your peak, don't give back gains\n• EOD DD → more intraday room, but mind the daily floor\n• Any style → fewer, cleaner trades win on days like this`;
+  let condLine, riskNote;
+  if (pt) {
+    if (vixVal != null && vixVal >= 20) condLine = `VIX em ${vixVal} = alta volatilidade. Whipsaws punem gestão de risco frouxa.`;
+    else if (directional >= 3) condLine = `Direção clara nos mercados — movimentos fortes, mas correr atrás tarde é a armadilha.`;
+    else condLine = `Condições mistas e travadas — o tipo de dia em que o overtrade mata a conta em silêncio.`;
+    riskNote = `💡 Operando conta prop hoje? ${condLine}\n\n• Trailing → proteja seu pico, não devolva o lucro\n• EOD → mais espaço intraday, mas respeite o limite diário\n• Qualquer estilo → menos trades, mais limpos, vencem em dias assim`;
+  } else {
+    if (vixVal != null && vixVal >= 20) condLine = `VIX at ${vixVal} = high volatility. Whipsaws punish loose risk management.`;
+    else if (directional >= 3) condLine = `Clear directional tone across markets — strong moves, but chasing late is the trap.`;
+    else condLine = `Mixed, choppy conditions — the kind of day where overtrading quietly kills accounts.`;
+    riskNote = `💡 Trading prop today? ${condLine}\n\n• Trailing DD → protect your peak, don't give back gains\n• EOD DD → more intraday room, but mind the daily floor\n• Any style → fewer, cleaner trades win on days like this`;
+  }
   tweets.push(riskNote.slice(0,280));
 
   // 6) CTA assinado "Max" — teaser do aprofundamento (cenários + gamma só no site) + cupom + bio
-  tweets.push(`Full breakdown today: bull/bear scenarios + gamma levels (zero gamma, call & put walls) + what to watch — only at marketscoupons.com\n\n💰 Code MARKET = 90% OFF Apex · coupons in bio\nNot advice. — Max`.slice(0,280));
+  tweets.push(pt
+    ? `Análise completa hoje: cenários de alta/baixa + níveis de gamma (zero gamma, call & put walls) + o que observar — só em marketscoupons.com\n\n💰 Cupom MARKET = 90% OFF Apex · cupons na bio\nNão é recomendação. — Max`.slice(0,280)
+    : `Full breakdown today: bull/bear scenarios + gamma levels (zero gamma, call & put walls) + what to watch — only at marketscoupons.com\n\n💰 Code MARKET = 90% OFF Apex · coupons in bio\nNot advice. — Max`.slice(0,280));
 
   return tweets.filter(t => t && t.trim().length > 0);
 }
