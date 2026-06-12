@@ -406,7 +406,7 @@ async function handleXDaily(req, res) {
   const asset = 'guide';
 
   if (isPreview) {
-    return res.status(200).json({ asset, thread, preview: true });
+    return res.status(200).json({ asset, thread, igCaption, preview: true });
   }
 
   // Postar (precisa OAuth1.0a ou OAuth2 user context — X API exige user token)
