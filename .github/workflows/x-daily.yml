@@ -1,0 +1,26 @@
+name: Max X Daily Thread
+
+on:
+  schedule:
+    # 13:00 UTC = 9:00 ET (EDT), ~30min antes da abertura do mercado US. Seg-Sex.
+    # AJUSTAR pro horário real do pipeline daily-analysis se precisar.
+    - cron: '0 13 * * 1-5'
+  workflow_dispatch:
+
+concurrency:
+  group: x-daily
+  cancel-in-progress: false
+permissions:
+  contents: read
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Post Max daily thread to X
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          echo "Posting Max daily thread (EN) to X..."
+          curl -sS -X POST "https://www.marketscoupons.com/api/bot?action=x_daily&lang=en&secret=$CRON_SECRET" -w "\nHTTP %{http_code}\n"
