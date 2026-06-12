@@ -515,14 +515,12 @@ function buildXGuide(rows, date) {
   const vixVal = vixMatch ? parseFloat(vixMatch[1]) : null;
   // Conta nº de ativos com viés direcional forte (proxy de "dia de movimento")
   const directional = rows.filter(r => /bull|bear/i.test(r.bias||'')).length;
-  let riskNote;
-  if (vixVal != null && vixVal >= 20) {
-    riskNote = `💡 Trading a prop account today?\n\nVIX at ${vixVal} = elevated volatility. This is exactly when trailing-drawdown accounts (Apex, etc) get violated.\n\nDays like this reward patience over forcing trades. Protect your peak.`;
-  } else if (directional >= 3) {
-    riskNote = `💡 Trading a prop account today?\n\nClear directional bias across markets — but don't chase. On trailing-drawdown accounts, giving back profit can violate you even while green.\n\nLock your gains, respect your peak.`;
-  } else {
-    riskNote = `💡 Trading a prop account today?\n\nMixed, range-bound conditions. On trailing-drawdown accounts, choppy days are where overtrading quietly kills the account.\n\nFewer, cleaner trades win here.`;
-  }
+  let condLine;
+  if (vixVal != null && vixVal >= 20) condLine = `VIX at ${vixVal} = high volatility. Whipsaws punish loose risk management.`;
+  else if (directional >= 3) condLine = `Clear directional tone across markets — strong moves, but chasing late is the trap.`;
+  else condLine = `Mixed, choppy conditions — the kind of day where overtrading quietly kills accounts.`;
+  // Cobre os diferentes tipos de conta/estilo (não só trailing): trailing, EOD, qualquer estilo
+  const riskNote = `💡 Trading prop today? ${condLine}\n\n• Trailing DD → protect your peak, don't give back gains\n• EOD DD → more intraday room, but mind the daily floor\n• Any style → fewer, cleaner trades win on days like this`;
   tweets.push(riskNote.slice(0,280));
 
   // 6) CTA — disclaimer + cupom (texto) + bio
