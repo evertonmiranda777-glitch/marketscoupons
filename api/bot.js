@@ -460,8 +460,15 @@ function buildXGuide(rows, date) {
   const j = (obj) => (obj && typeof obj === 'object') ? (obj.en || obj.pt || '') : (typeof obj === 'string' ? obj : '');
   const firstSentence = (s, cap=160) => {
     s = String(s||'').replace(/\s+/g,' ').trim();
-    const fs = s.split(/\.\s/)[0];
-    return fs.length > cap ? fs.slice(0, cap-3)+'...' : fs + (s.includes('. ')?'.':'');
+    let fs = s.split(/\.\s/)[0];
+    if (fs.length > cap) {
+      // corta na última palavra completa antes do cap (não no meio da palavra)
+      fs = fs.slice(0, cap-1);
+      const lastSpace = fs.lastIndexOf(' ');
+      if (lastSpace > cap * 0.6) fs = fs.slice(0, lastSpace);
+      return fs.replace(/[,;:\-\s]+$/,'') + '…';
+    }
+    return fs + (s.includes('. ') ? '.' : '');
   };
   const dot = (b) => { b=(b||'').toLowerCase(); return b.includes('bull')?'🟢':b.includes('bear')?'🔴':'⚪'; };
   const biasLbl = (b) => { b=(b||'').toLowerCase(); return b.includes('bull')?'Bullish':b.includes('bear')?'Bearish':'Neutral'; };
