@@ -501,12 +501,25 @@ function buildXGuide(rows, date) {
     tweets.push(t.slice(0,280));
   }
 
-  // 5) BOTTOM LINE (insight do ES — contexto principal)
-  const insight = firstSentence(j(es?.context), 200);
-  if (insight) tweets.push(`🎯 Bottom line\n\n${insight}\n\nVolatility stays elevated — patience over prediction.`.slice(0,280));
+  // 5) RISK NOTE — conecta o contexto do dia com gestão de conta prop (útil, positivo, alinhado com a firma)
+  // Lê o VIX do vix_context pra contextualizar. Educação de gestão de risco, NÃO sinal de trade.
+  const vixTxt = j(es?.vix_context);
+  const vixMatch = String(vixTxt).match(/VIX\s*(?:at|:)?\s*([\d.]+)/i);
+  const vixVal = vixMatch ? parseFloat(vixMatch[1]) : null;
+  // Conta nº de ativos com viés direcional forte (proxy de "dia de movimento")
+  const directional = rows.filter(r => /bull|bear/i.test(r.bias||'')).length;
+  let riskNote;
+  if (vixVal != null && vixVal >= 20) {
+    riskNote = `💡 Trading a prop account today?\n\nVIX at ${vixVal} = elevated volatility. This is exactly when trailing-drawdown accounts (Apex, etc) get violated.\n\nDays like this reward patience over forcing trades. Protect your peak.`;
+  } else if (directional >= 3) {
+    riskNote = `💡 Trading a prop account today?\n\nClear directional bias across markets — but don't chase. On trailing-drawdown accounts, giving back profit can violate you even while green.\n\nLock your gains, respect your peak.`;
+  } else {
+    riskNote = `💡 Trading a prop account today?\n\nMixed, range-bound conditions. On trailing-drawdown accounts, choppy days are where overtrading quietly kills the account.\n\nFewer, cleaner trades win here.`;
+  }
+  tweets.push(riskNote.slice(0,280));
 
   // 6) CTA — disclaimer + cupom (texto) + bio
-  tweets.push(`Market view, not financial advice. Always do your own research.\n\n💰 Trading prop firms? Code MARKET = 90% OFF on Apex.\nAll exclusive coupons → link in bio`.slice(0,280));
+  tweets.push(`Market view, not financial advice. Always do your own research.\n\n💰 Trade prop firms? Code MARKET = 90% OFF on Apex.\nAll exclusive coupons → link in bio`.slice(0,280));
 
   return tweets.filter(t => t && t.trim().length > 0);
 }
