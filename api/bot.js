@@ -524,8 +524,8 @@ function buildXGuide(rows, date) {
   const riskNote = `💡 Trading prop today? ${condLine}\n\n• Trailing DD → protect your peak, don't give back gains\n• EOD DD → more intraday room, but mind the daily floor\n• Any style → fewer, cleaner trades win on days like this`;
   tweets.push(riskNote.slice(0,280));
 
-  // 6) CTA assinado "Max" — valor da análise diária + cupom + bio
-  tweets.push(`This is why I post the breakdown every morning: bias, support/resistance on ES, NQ, Gold & Oil + macro — so you know if today is attack or observe.\n\n💰 Code MARKET = 90% OFF Apex · coupons in bio\nNot advice.\n— Max, marketscoupons.com`.slice(0,280));
+  // 6) CTA assinado "Max" — teaser do aprofundamento (cenários + gamma só no site) + cupom + bio
+  tweets.push(`Full breakdown today: bull/bear scenarios + gamma levels (zero gamma, call & put walls) + what to watch — only at marketscoupons.com\n\n💰 Code MARKET = 90% OFF Apex · coupons in bio\nNot advice. — Max`.slice(0,280));
 
   return tweets.filter(t => t && t.trim().length > 0);
 }
