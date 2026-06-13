@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:1600px; height:900px; font-family:'Inter',sans-serif; background:#0B0E13; overflow:hidden; }
+  .wrap { width:1600px; height:900px; padding:32px 40px; display:flex; flex-direction:column; }
+  .hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .left { display:flex; align-items:center; gap:16px; }
+  .av { width:62px; height:62px; border-radius:14px; object-fit:cover; border:2px solid rgba(240,180,41,.5); }
+  .ttl { font-size:28px; font-weight:800; color:#fff; letter-spacing:-.3px; }
+  .ttl span { color:#7E8AA0; font-weight:600; font-size:20px; }
+  .sub { font-size:14px; color:#F0B429; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin-top:2px; }
+  .right { text-align:right; }
+  .px { font-size:34px; font-weight:900; color:#fff; }
+  .chg { font-size:18px; font-weight:800; color:#26A69A; }
+  #chart { flex:1; border-radius:14px; overflow:hidden; }
+  .ft { display:flex; align-items:center; justify-content:space-between; margin-top:14px; }
+  .ft .site { font-size:18px; font-weight:800; color:#fff; }
+  .ft .site span { color:#F0B429; }
+  .ft .leg { display:flex; gap:24px; font-size:14px; font-weight:600; color:#9AA6B8; }
+  .ft .leg b { color:#F0B429; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div class="left">
+      <img class="av" src="/img/bot/hero/max-hero-chart.png">
+      <div>
+        <div class="ttl">S&amp;P 500 <span>· ES · 5min</span></div>
+        <div class="sub">Max · Daily Market Read · Jun 12</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="px">7,415</div>
+      <div class="chg">+1.7%</div>
+    </div>
+  </div>
+  <div id="chart"></div>
+  <div class="ft">
+    <div class="site">marketscoupons<span>.com</span></div>
+    <div class="leg"><span>— <b>Zero Gamma 7,386</b></span><span>— Call Wall 7,400</span><span>Positive Gamma · shock absorber</span></div>
+  </div>
+</div>
+<script>
+  const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+    width: 1520, height: 660,
+    layout: { background:{color:'#0B0E13'}, textColor:'#9AA6B8', fontFamily:'Inter' },
+    grid: { vertLines:{color:'rgba(255,255,255,.04)'}, horzLines:{color:'rgba(255,255,255,.04)'} },
+    rightPriceScale: { borderColor:'rgba(255,255,255,.1)' },
+    timeScale: { borderColor:'rgba(255,255,255,.1)', timeVisible:true, secondsVisible:false },
+    crosshair: { mode: 0 },
+  });
+  const s = chart.addCandlestickSeries({ upColor:'#26A69A', downColor:'#EF5350', borderVisible:false, wickUpColor:'#26A69A', wickDownColor:'#EF5350' });
+  // candles mock realistas em torno de 7415 (preview do visual; dados reais via Twelve Data na integração)
+  let t = Math.floor(Date.now()/1000) - 78*300; let p = 7368; const data = [];
+  for (let i=0;i<78;i++){ const o=p; const drift=(i/78)*48; const v=(Math.random()-0.42)*9; const c=7368+drift+v; const h=Math.max(o,c)+Math.random()*5; const l=Math.min(o,c)-Math.random()*5; data.push({time:t,open:+o.toFixed(2),high:+h.toFixed(2),low:+l.toFixed(2),close:+c.toFixed(2)}); p=c; t+=300; }
+  s.setData(data);
+  s.createPriceLine({ price:7386, color:'#F0B429', lineWidth:2, lineStyle:2, axisLabelVisible:true, title:'Zero Gamma' });
+  s.createPriceLine({ price:7400, color:'#5BC0EB', lineWidth:1, lineStyle:2, axisLabelVisible:true, title:'Call Wall' });
+  chart.timeScale().fitContent();
+</script>
+</body>
+</html>

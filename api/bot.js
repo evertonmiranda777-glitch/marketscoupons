@@ -392,6 +392,59 @@ async function processIgComment({ commentText, commentId, fromUser, postId, PAGE
 }
 
 // ===== X (Twitter) auto-post de análise diária =====
+// GET ?action=candles&symbol=^GSPC&interval=5m&range=1d — proxy do Yahoo Finance (sem CORS, sem key)
+async function handleCandles(req, res) {
+  const sym = String(req.query?.symbol || '^GSPC').slice(0, 14);
+  const interval = String(req.query?.interval || '5m').slice(0, 5);
+  const range = String(req.query?.range || '1d').slice(0, 5);
+  try {
+    const r = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=${interval}&range=${range}`, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+    const d = await r.json();
+    const r0 = d?.chart?.result?.[0];
+    if (!r0) return res.status(502).json({ error: 'no_data' });
+    const ts = r0.timestamp || [];
+    const q = r0.indicators?.quote?.[0] || {};
+    const candles = [];
+    for (let i = 0; i < ts.length; i++) {
+      const o = q.open?.[i], h = q.high?.[i], l = q.low?.[i], c = q.close?.[i];
+      if (o == null || h == null || l == null || c == null) continue;
+      candles.push({ time: ts[i], open: +o.toFixed(2), high: +h.toFixed(2), low: +l.toFixed(2), close: +c.toFixed(2) });
+    }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'public, max-age=120');
+    return res.status(200).json({ symbol: sym, price: r0.meta?.regularMarketPrice, prevClose: r0.meta?.previousClose, candles });
+  } catch (e) { return res.status(502).json({ error: 'yahoo_fail', detail: String(e.message).slice(0, 120) }); }
+}
+
+// POST ?action=x_cleanup&secret=... — apaga os tweets recentes da conta (limpa thread incompleta)
+async function handleXCleanup(req, res) {
+  const secret = req.query?.secret || req.headers['x-cron-secret'];
+  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) return res.status(403).json({ error: 'forbidden' });
+  const keys = { apiKey: process.env.X_API_KEY, apiSecret: process.env.X_API_SECRET, accessToken: process.env.X_ACCESS_TOKEN, accessSecret: process.env.X_ACCESS_SECRET };
+  if (!keys.apiKey || !keys.accessToken) return res.status(503).json({ error: 'no_x_token' });
+  // 1) user id
+  const meUrl = 'https://api.twitter.com/2/users/me';
+  const meR = await fetch(meUrl, { headers: { Authorization: oauth1Header('GET', meUrl, keys) } });
+  const me = await meR.json().catch(() => ({}));
+  const uid = me?.data?.id;
+  if (!uid) return res.status(502).json({ error: 'no_user', resp: me });
+  // 2) tweets recentes (default ~10, sem query params pra manter OAuth1 simples)
+  const tlUrl = `https://api.twitter.com/2/users/${uid}/tweets`;
+  const tlR = await fetch(tlUrl, { headers: { Authorization: oauth1Header('GET', tlUrl, keys) } });
+  const tl = await tlR.json().catch(() => ({}));
+  const ids = (tl?.data || []).map(t => t.id);
+  const limit = Math.min(ids.length, parseInt(req.query?.max || '20', 10));
+  const deleted = [];
+  for (const id of ids.slice(0, limit)) {
+    const dUrl = `https://api.twitter.com/2/tweets/${id}`;
+    const dR = await fetch(dUrl, { method: 'DELETE', headers: { Authorization: oauth1Header('DELETE', dUrl, keys) } });
+    const dj = await dR.json().catch(() => ({}));
+    deleted.push({ id, ok: dR.ok, deleted: dj?.data?.deleted });
+    await new Promise(r => setTimeout(r, 1500));
+  }
+  return res.status(200).json({ uid, found: ids.length, deleted });
+}
+
 // GET ?action=x_daily&asset=ES&dry=1 — preview (não posta)
 // POST ?action=x_daily&secret=... — posta de verdade (cron protected)
 async function handleXDaily(req, res) {
@@ -444,14 +497,75 @@ async function handleXDaily(req, res) {
   const ORDER = ['ES','NQ','GC','CL'];
   rows.sort((x,y) => ORDER.indexOf(x.asset) - ORDER.indexOf(y.asset));
 
-  // Formata thread-guia (max 280 chars por tweet) + caption IG (legenda única)
+  // GEX real estruturado (tabela gex_levels) pra ES e NQ — alimenta a thread GEX-cêntrica
+  let gex = null;
+  try {
+    const gResp = await fetch(`${SUPABASE_URL}/rest/v1/gex_levels?date=eq.${latestDate}&ticker=in.(ES,NQ)&select=ticker,total_gex,zero_gamma,put_wall,call_wall,hvl`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    });
+    const gRows = await gResp.json();
+    if (Array.isArray(gRows) && gRows.length) { gex = {}; gRows.forEach(g => gex[g.ticker] = g); }
+  } catch (e) { gex = null; }
+
   const lang = (req.query?.lang === 'pt') ? 'pt' : 'en';
-  const thread = buildXGuide(rows, latestDate, lang);
+
+  // ===== MODO POST ÚNICO (segment) — análise de MOMENTO, 1 post curto + chart, NÃO thread =====
+  const segment = req.query?.segment;
+  if (segment) {
+    const r = await genMaxSinglePost(rows, gex, latestDate, lang, segment);
+    // chart real (Yahoo + níveis do banco) pros segments de análise; cupom vai sem imagem
+    const wantChart = segment !== 'coupon' && req.query?.nochart !== '1';
+    const chartUrl = wantChart ? maxChartUrl(gex, latestDate, req.query?.chart_asset || 'ES') : null;
+
+    if (isPreview) {
+      if (req.query?.testrender === '2' && chartUrl) {
+        try { const buf = await renderChartPng(chartUrl); res.setHeader('Content-Type', 'image/png'); res.setHeader('Cache-Control', 'no-store'); return res.status(200).send(buf); }
+        catch (e) { return res.status(502).json({ error: e.message }); }
+      }
+      let render = null;
+      if (req.query?.testrender === '1' && chartUrl) {
+        try { const buf = await renderChartPng(chartUrl); render = { ok: true, bytes: buf.length }; }
+        catch (e) { render = { ok: false, err: e.message }; }
+      }
+      return res.status(200).json({ segment, post: r.post, reason: r.reason, chars: r.post ? r.post.length : 0, chartUrl, render, preview: true });
+    }
+    if (!r.post) return res.status(502).json({ error: 'no_post', reason: r.reason });
+    const xKeys = { apiKey: process.env.X_API_KEY, apiSecret: process.env.X_API_SECRET, accessToken: process.env.X_ACCESS_TOKEN, accessSecret: process.env.X_ACCESS_SECRET };
+    if (!xKeys.apiKey || !xKeys.accessToken) return res.status(503).json({ error: 'no_x_token' });
+
+    // gera imagem + upload (best-effort: se falhar, posta só texto, não bloqueia)
+    let mediaId = null;
+    if (chartUrl) {
+      try { const buf = await renderChartPng(chartUrl); mediaId = await xUploadMedia(buf, xKeys); }
+      catch (e) { console.error('[max] chart/media falhou, posta sem imagem:', e.message); }
+    }
+
+    const purl = 'https://api.twitter.com/2/tweets';
+    const body = { text: r.post };
+    if (mediaId) body.media = { media_ids: [mediaId] };
+    const tr = await fetch(purl, { method: 'POST', headers: { Authorization: oauth1Header('POST', purl, xKeys), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const jr = await tr.json().catch(() => ({}));
+    if (!tr.ok || !jr?.data?.id) return res.status(502).json({ error: 'x_post_failed', response: jr });
+    await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, { method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ post_type: 'single_' + segment, thread_root_id: jr.data.id, status: 'sent', posted_content: { post: r.post, hasImage: !!mediaId } }) }).catch(() => {});
+    return res.status(200).json({ segment, posted: jr.data.id, post: r.post, image: !!mediaId });
+  }
+
+  // Motor de VOZ (Gemini-com-trava) com fallback pro template determinístico
+  const forceEngine = req.query?.engine;
+  let thread = null, engine = 'template', aiReason = 'skipped', aiRaw = null, aiOver = 0;
+  if (forceEngine !== 'template') {
+    try {
+      const ai = await genMaxThreadAI(rows, gex, latestDate, lang);
+      aiReason = ai.reason; aiRaw = ai.raw || null; aiOver = ai.over || 0;
+      if (ai.tweets && ai.tweets.length >= 6) { thread = ai.tweets; engine = 'ai'; }
+    } catch (e) { aiReason = 'err:' + e.message; }
+  }
+  if (!thread) thread = buildXGuide(rows, latestDate, lang, gex);
   const igCaption = buildIGCaption(rows, latestDate);
   const asset = 'guide';
 
   if (isPreview) {
-    return res.status(200).json({ asset, thread, igCaption, preview: true });
+    return res.status(200).json({ asset, engine, ai_reason: aiReason, ai_over: aiOver, ai_raw: aiRaw, thread, igCaption, preview: true });
   }
 
   // Postar via OAuth 1.0a (X API v2 exige user context pra POST /tweets)
@@ -507,7 +621,7 @@ async function handleXDaily(req, res) {
 
 // ===== Thread-GUIA diária (robusta, multi-ativo, estilo desk de research) =====
 // Compliant: macro, sentimento, fase de mercado, viés e zonas. SEM sinal (sem entry/target/stop).
-function buildXGuide(rows, date, lang = 'en') {
+function buildXGuide(rows, date, lang = 'en', gex = null) {
   const pt = lang === 'pt';
   const NAMES = pt
     ? { ES: 'S&P 500', NQ: 'Nasdaq 100', GC: 'Ouro', CL: 'Petróleo WTI' }
@@ -534,14 +648,166 @@ function buildXGuide(rows, date, lang = 'en') {
   const px = (r) => r?.last_price ? Number(r.last_price).toFixed(r.asset==='CL'?2:0) : '—';
   const chg = (r) => r?.change_pct!=null ? `${r.change_pct>0?'+':''}${Number(r.change_pct).toFixed(1)}%` : '';
   const zones = (r) => {
-    const s=[r?.support_1,r?.support_2].filter(Boolean).join('/');
-    const x=[r?.resistance_1,r?.resistance_2].filter(Boolean).join('/');
-    return [s&&`S ${s}`, x&&`R ${x}`].filter(Boolean).join(' · ');
+    const s=[r?.support_1,r?.support_2].filter(Boolean).join(' / ');
+    const x=[r?.resistance_1,r?.resistance_2].filter(Boolean).join(' / ');
+    const supL = pt ? 'Suporte' : 'Support';
+    const resL = pt ? 'Resistencia' : 'Resistance';
+    return [s&&`${supL} ${s}`, x&&`${resL} ${x}`].filter(Boolean).join(' - ');
+  };
+
+  // contexto macro REAL do dia (nunca inventa): detecta siglas de eventos tier-1 no campo events
+  const macroHighlights = () => {
+    const txt = rows.map(r => {
+      const e = r.events;
+      if (!e) return '';
+      if (typeof e === 'object') return `${e.en||''} ${e.pt||''}`;
+      return String(e);
+    }).join(' ').toLowerCase();
+    const found = [];
+    const add = (cond, ptLabel, enLabel) => { if (cond && found.length < 2) found.push(pt?ptLabel:enLabel); };
+    add(/fomc/.test(txt), 'FOMC', 'FOMC');
+    add(/\bcpi\b/.test(txt), 'CPI', 'CPI');
+    add(/\bpce\b/.test(txt), 'PCE', 'PCE');
+    add(/non.?farm|payroll|\bnfp\b/.test(txt), 'payroll', 'NFP');
+    add(/\bppi\b/.test(txt), 'PPI', 'PPI');
+    add(/\becb\b|\bbce\b/.test(txt), 'decisão do BCE', 'ECB decision');
+    add(/fed (rate|funds)|interest rate decision|taxa do fed/.test(txt), 'decisão do Fed', 'Fed decision');
+    add(/\bgdp\b|\bpib\b/.test(txt), 'PIB', 'GDP');
+    add(/retail sales|varejo/.test(txt), 'vendas no varejo', 'retail sales');
+    add(/jobless|desemprego/.test(txt), 'seguro-desemprego', 'jobless claims');
+    return found;
   };
 
   const tweets = [];
   const biasL = (b) => { b=(b||'').toLowerCase(); if (pt) return b.includes('bull')?'Alta':b.includes('bear')?'Baixa':'Neutro'; return b.includes('bull')?'Bullish':b.includes('bear')?'Bearish':'Neutral'; };
+  const macro = macroHighlights();
 
+  // ===== GEX (Gamma Exposure) — dado REAL estruturado da tabela gex_levels (passado via param) =====
+  const esG = gex && gex.ES ? gex.ES : null;
+  const nqG = gex && gex.NQ ? gex.NQ : null;
+  const hasGex = !!(esG && nqG && esG.zero_gamma && nqG.zero_gamma);
+  const regOf = (g) => g ? (parseFloat(g.total_gex) >= 0 ? 'pos' : 'neg') : null;
+  const aboveZG = (r, g) => (r && g && r.last_price!=null && g.zero_gamma!=null) ? (Number(r.last_price) >= Number(g.zero_gamma)) : null;
+
+  if (hasGex) {
+    const esR = regOf(esG), nqR = regOf(nqG);
+    const opp = esR !== nqR; // regimes opostos = hook de contraste
+    const lblPos = pt ? 'GAMMA POSITIVO ✅' : 'POSITIVE GAMMA ✅';
+    const lblNeg = pt ? 'GAMMA NEGATIVO ⚠️' : 'NEGATIVE GAMMA ⚠️';
+    const lbl = (r) => r==='pos' ? lblPos : lblNeg;
+
+    // ---- helpers de zona em linhas separadas (clareza) ----
+    const supList = (r) => [r?.support_1, r?.support_2].filter(Boolean).join(' / ');
+    const resList = (r) => [r?.resistance_1, r?.resistance_2].filter(Boolean).join(' / ');
+
+    // 1) HOOK — explica o comportamento de cada índice já de cara (sem "dois mundos" abstrato)
+    const behPt = (r) => r==='neg' ? 'negativo (estica os movimentos)' : 'positivo (segura o mercado num range)';
+    const behEn = (r) => r==='neg' ? 'negative (stretches the moves)' : 'positive (pins the market in a range)';
+    if (opp) {
+      tweets.push((pt
+        ? `🧵 Dois índices, dois comportamentos opostos hoje.\n\nES (S&P 500): gamma ${behPt(esR)}.\nNQ (Nasdaq): gamma ${behPt(nqR)}.\n\nNão importa a conta que você opera, isso muda seu plano hoje 👇`
+        : `🧵 Two indices, opposite behavior today.\n\nES (S&P 500): gamma ${behEn(esR)}.\nNQ (Nasdaq): gamma ${behEn(nqR)}.\n\nWhatever account you trade, this changes your plan today 👇`).slice(0,280));
+    } else {
+      tweets.push((pt
+        ? `🧵 ES e NQ no mesmo comportamento hoje: gamma ${esR==='neg'?'negativo':'positivo'}.\n\n${esR==='neg'?'Os grandes bancos amplificam os movimentos: dia que estica.':'Os grandes bancos seguram o mercado: dia preso num range.'}\n\nNão importa a conta que você opera, isso muda seu plano hoje 👇`
+        : `🧵 ES and NQ in the same behavior today: ${esR==='neg'?'negative':'positive'} gamma.\n\n${esR==='neg'?'The big banks amplify the moves: a day that stretches.':'The big banks pin the market: a range-bound day.'}\n\nWhatever account you trade, this changes your plan today 👇`).slice(0,280));
+    }
+
+    // 2) PANORAMA — VIX explicado + correlação VIX×índices + macro real do dia
+    const vixTxt2 = j(es?.vix_context);
+    const vm = String(vixTxt2).match(/VIX\s*(?:at|em|:)?\s*([\d.]+)/i);
+    const vixVal = vm ? parseFloat(vm[1]) : null;
+    const vcm = String(vixTxt2).match(/\(([+-][\d.]+%)\)/);
+    const vixChg = vcm ? vcm[1] : '';
+    const vixUp = vixChg.startsWith('+'), vixDown = vixChg.startsWith('-');
+    const vixAmt = vixChg ? vixChg.replace(/[+-]/, '') : '';
+    if (vixVal != null) {
+      const dirPt = vixChg ? `, ${vixUp?'subindo':'recuando'} ${vixAmt}` : '';
+      const dirEn = vixChg ? `, ${vixUp?'up':'down'} ${vixAmt}` : '';
+      const linePt = vixUp ? 'VIX subindo é sinal de mercado nervoso. Quando o medo sobe, os índices costumam cair junto.' : vixDown ? 'VIX recuando é sinal de alívio. Costuma dar fôlego pros índices.' : 'O VIX é o termômetro do medo do mercado.';
+      const lineEn = vixUp ? 'A rising VIX means a nervous market. When fear climbs, the indices usually fall with it.' : vixDown ? 'A falling VIX means relief. It tends to give the indices room.' : 'The VIX is the market’s fear gauge.';
+      const radarPt = macro.length ? `\n\nNo radar hoje: ${macro.join(' e ')}.` : '';
+      const radarEn = macro.length ? `\n\nOn the radar today: ${macro.join(' and ')}.` : '';
+      tweets.push((pt
+        ? `🌐 Antes do gamma, o pano de fundo:\n\nO VIX (termômetro do medo) está em ${vixVal}${dirPt}.\n${linePt}${radarPt}`
+        : `🌐 Before gamma, the backdrop:\n\nThe VIX (the fear gauge) sits at ${vixVal}${dirEn}.\n${lineEn}${radarEn}`).slice(0,280));
+    }
+
+    // 3) O QUE É GAMMA — explicação simples pro leigo
+    tweets.push((pt
+      ? `💡 O que é esse tal de gamma?\n\nÉ a posição dos grandes bancos no mercado de opções. Ela mostra se o dia tende a ter movimento forte ou travado:\n\n• Gamma negativo: os bancos amplificam. Os movimentos esticam.\n• Gamma positivo: os bancos seguram. O mercado fica preso num range.`
+      : `💡 What even is this "gamma"?\n\nIt's where the big banks sit in the options market. It shows whether the day leans toward strong moves or stuck ones:\n\n• Negative gamma: banks amplify. Moves stretch.\n• Positive gamma: banks hold it. The market stays range-bound.`).slice(0,280));
+
+    // 4) ES detalhe (cada termo técnico explicado na hora)
+    const esAbove = aboveZG(es, esG);
+    const esEmoji = esR==='neg' ? '📉' : '📈';
+    const esTailPt = esR==='neg'
+      ? (esAbove ? `Com o preço acima de ${esG.zero_gamma}, fica mais contido. Abaixo, estica.` : `Com o preço abaixo de ${esG.zero_gamma}, o movimento tende a esticar.`)
+      : `Com o preço acima de ${esG.zero_gamma}, o mercado tende a ficar preso entre os níveis.`;
+    const esTailEn = esR==='neg'
+      ? (esAbove ? `With price above ${esG.zero_gamma} it stays contained. Below it, moves stretch.` : `With price below ${esG.zero_gamma}, moves tend to stretch.`)
+      : `With price above ${esG.zero_gamma}, the market tends to stay pinned between the levels.`;
+    tweets.push((pt
+      ? `📉 ES, o S&P 500 (${px(es)}): gamma ${esR==='neg'?'NEGATIVO ⚠️':'POSITIVO ✅'}\n\n• Zero gamma (o nível que vira a chave do dia): ${esG.zero_gamma}\n• Suporte forte (put wall): ${esG.put_wall}\n• Resistência forte (call wall): ${esG.call_wall}\n\n${esTailPt}`
+      : `📉 ES, the S&P 500 (${px(es)}): ${esR==='neg'?'NEGATIVE GAMMA ⚠️':'POSITIVE GAMMA ✅'}\n\n• Zero gamma (the level that flips the day): ${esG.zero_gamma}\n• Strong support (put wall): ${esG.put_wall}\n• Strong resistance (call wall): ${esG.call_wall}\n\n${esTailEn}`).slice(0,280));
+
+    // 5) NQ detalhe
+    const nqAbove = aboveZG(nq, nqG);
+    const nqTailPt = nqR==='pos'
+      ? (nqAbove ? `Com o preço acima de ${nqG.zero_gamma}, o mercado tende a ficar mais preso.` : `Abaixo de ${nqG.zero_gamma}, esse efeito de segurar enfraquece.`)
+      : `Com o preço abaixo de ${nqG.zero_gamma}, o movimento tende a esticar.`;
+    const nqTailEn = nqR==='pos'
+      ? (nqAbove ? `With price above ${nqG.zero_gamma}, the market tends to stay more pinned.` : `Below ${nqG.zero_gamma}, that pinning effect weakens.`)
+      : `With price below ${nqG.zero_gamma}, moves tend to stretch.`;
+    tweets.push((pt
+      ? `📈 NQ, o Nasdaq (${px(nq)}): gamma ${nqR==='neg'?'NEGATIVO ⚠️':'POSITIVO ✅'}\n\n• Zero gamma (vira a chave): ${nqG.zero_gamma}\n• Suporte forte (put wall): ${nqG.put_wall}\n• Resistência forte (call wall): ${nqG.call_wall}\n• Ímã de preço (HVL): ${nqG.hvl}\n\n${nqTailPt}`
+      : `📈 NQ, the Nasdaq (${px(nq)}): ${nqR==='neg'?'NEGATIVE GAMMA ⚠️':'POSITIVE GAMMA ✅'}\n\n• Zero gamma (flips the day): ${nqG.zero_gamma}\n• Strong support (put wall): ${nqG.put_wall}\n• Strong resistance (call wall): ${nqG.call_wall}\n• Price magnet (HVL): ${nqG.hvl}\n\n${nqTailEn}`).slice(0,280));
+
+    // 6) O MESMO número, por estilo (referência, sem ordem de compra/venda)
+    tweets.push((pt
+      ? `👥 O mesmo número, lido por cada estilo (é referência, não recomendação):\n\n• Scalper: ${esG.zero_gamma} é o ponto de virada do intraday no ES.\n• Intraday e EOD: ${esG.put_wall} e ${esG.call_wall} marcam o range provável do dia.\n• Swing e funded: gamma negativo é mais ruído, então precisa de mais espaço.`
+      : `👥 The same number, read by each style (reference, not advice):\n\n• Scalper: ${esG.zero_gamma} is the ES intraday turning point.\n• Intraday and EOD: ${esG.put_wall} and ${esG.call_wall} mark the likely range.\n• Swing and funded: negative gamma is more noise, so give it more room.`).slice(0,280));
+
+    // 7) Gestão de risco por TIPO de conta (linguagem clara, sem gíria)
+    const negDay = esR==='neg';
+    tweets.push((pt
+      ? `🛡 A gestão de risco, por tipo de conta, num dia que ${negDay?'amplifica os movimentos':'prende o mercado'}:\n\n• Trailing: protege o pico. ${negDay?'A amplificação devolve lucro rápido.':'O range testa a paciência.'}\n• EOD: mais folga no intraday, mas não leve perdedora pro fim.\n• Static: respira mais, mas tamanho grande sofre.\n• Funded (que já paga): preserve o saque.`
+      : `🛡 Risk management, by account type, on a day that ${negDay?'amplifies the moves':'pins the market'}:\n\n• Trailing: protects the peak. ${negDay?'Amplification gives gains back fast.':'The range tests your patience.'}\n• EOD: more room intraday, but don't carry a loser to the close.\n• Static: breathes more, but big size suffers.\n• Funded (already paying): protect the payout.`).slice(0,280));
+
+    // 8) COMMODITIES (suporte/resistência em linhas separadas)
+    if (gc || cl) {
+      const blk = (r, namePt, nameEn) => {
+        const nm = pt ? namePt : nameEn;
+        const bias = pt ? biasL(r.bias).toLowerCase() : biasL(r.bias).toLowerCase();
+        const supL = pt ? 'Suporte' : 'Support', resL = pt ? 'Resistência' : 'Resistance';
+        return `${dot(r.bias)} ${nm}, ${pt?'em':''} ${bias} (${px(r)}, ${chg(r)})\n${supL}: ${supList(r)}\n${resL}: ${resList(r)}`;
+      };
+      let t = pt ? `🪙 E as commodities hoje:\n\n` : `🪙 And commodities today:\n\n`;
+      const blocks = [];
+      if (gc) blocks.push(blk(gc, 'Ouro', 'Gold'));
+      if (cl) blocks.push(blk(cl, 'Petróleo', 'Crude Oil'));
+      t += blocks.join('\n\n');
+      tweets.push(t.slice(0,280));
+    }
+
+    // 9) Resumo claro (diz o que cada lado do nível significa)
+    tweets.push((pt
+      ? `📌 Resumindo, pra todo mundo:\n\nNum dia de gamma ${negDay?'negativo':'positivo'}, o ES ${negDay?'não perdoa quem força a mão':'castiga quem persegue movimento'}, seja qual for sua conta.\nO número que decide o dia é ${esG.zero_gamma}: acima dele, o ambiente é de reversão; abaixo, de tendência.`
+      : `📌 To sum up, for everyone:\n\nOn a ${negDay?'negative':'positive'}-gamma day, the ES ${negDay?'punishes whoever forces it':'punishes whoever chases moves'}, whatever your account.\nThe number that decides the day is ${esG.zero_gamma}: above it leans reversal, below it leans trend.`).slice(0,280));
+
+    // 10) CTA + disclaimer (tweet próprio, nunca corta)
+    tweets.push((pt
+      ? `Eu trago essa leitura colada na abertura, pra você não quebrar a conta. A análise completa fica no site, link na bio. Bons trades. 👊\n\nConteúdo educativo, não é recomendação.`
+      : `I bring this read right before the open, so you don't blow the account. The full breakdown lives on the site, link in bio. Good trades. 👊\n\nEducational content, not financial advice.`).slice(0,280));
+    // 11) Cupom + assinatura do Max (tweet próprio, nunca corta)
+    tweets.push((pt
+      ? `💰 Dica de ouro do Max: conta da Apex por $19.90 com o cupom MARKET. 90% de desconto, hoje, o amanhã a Deus pertence. Aproveita, dólar não cai do céu 😅\n\n🦊 Abraço do Max, da marketscoupons. Câmbio, desligo. 📡`
+      : `💰 Gold tip from Max: an Apex account for $19.90 with code MARKET. 90% off, today only, tomorrow's not promised. Grab it, dollars don't fall from the sky 😅\n\n🦊 Catch you later, Max from marketscoupons. Over and out. 📡`).slice(0,280));
+
+    return tweets.filter(t => t && t.trim().length > 0);
+  }
+
+  // ===== FALLBACK (sem GEX no banco): formato clássico desk de research =====
   // 1) HOOK
   tweets.push(pt
     ? `📊 Análise Diária do Mercado · ${date}\n\nO panorama macro + S&P 500, Nasdaq, Ouro e Petróleo.\nO que move o mercado hoje e os níveis que importam 🧵👇`.slice(0,280)
@@ -557,42 +823,46 @@ function buildXGuide(rows, date, lang = 'en') {
   // 3) ÍNDICES (ES + NQ)
   if (es || nq) {
     let t = pt ? `📈 Índices\n` : `📈 Indices\n`;
-    if (es) t += `\n${dot(es.bias)} ${NAMES.ES} — ${biasL(es.bias)} · ${px(es)} ${chg(es)}\n${zones(es)}`;
-    if (nq) t += `\n\n${dot(nq.bias)} ${NAMES.NQ} — ${biasL(nq.bias)} · ${px(nq)} ${chg(nq)}\n${zones(nq)}`;
+    if (es) t += `\n${dot(es.bias)} ${NAMES.ES} · ${biasL(es.bias)} · ${px(es)} ${chg(es)}\n${zones(es)}`;
+    if (nq) t += `\n\n${dot(nq.bias)} ${NAMES.NQ} · ${biasL(nq.bias)} · ${px(nq)} ${chg(nq)}\n${zones(nq)}`;
     tweets.push(t.slice(0,280));
   }
 
   // 4) COMMODITIES (GC + CL)
   if (gc || cl) {
     let t = pt ? `🪙 Commodities\n` : `🪙 Commodities\n`;
-    if (gc) t += `\n${dot(gc.bias)} ${NAMES.GC} — ${biasL(gc.bias)} · ${px(gc)} ${chg(gc)}\n${zones(gc)}`;
-    if (cl) t += `\n\n${dot(cl.bias)} ${NAMES.CL} — ${biasL(cl.bias)} · ${px(cl)} ${chg(cl)}\n${zones(cl)}`;
+    if (gc) t += `\n${dot(gc.bias)} ${NAMES.GC} · ${biasL(gc.bias)} · ${px(gc)} ${chg(gc)}\n${zones(gc)}`;
+    if (cl) t += `\n\n${dot(cl.bias)} ${NAMES.CL} · ${biasL(cl.bias)} · ${px(cl)} ${chg(cl)}\n${zones(cl)}`;
     tweets.push(t.slice(0,280));
   }
 
-  // 5) RISK NOTE — conecta o contexto do dia com gestão de conta prop (útil, positivo, alinhado com a firma)
+  // 5) RISK NOTE
   const vixTxt = j(es?.vix_context);
   const vixMatch = String(vixTxt).match(/VIX\s*(?:at|:)?\s*([\d.]+)/i);
   const vixVal = vixMatch ? parseFloat(vixMatch[1]) : null;
   const directional = rows.filter(r => /bull|bear/i.test(r.bias||'')).length;
   let condLine, riskNote;
   if (pt) {
-    if (vixVal != null && vixVal >= 20) condLine = `VIX em ${vixVal} = alta volatilidade. Whipsaws punem gestão de risco frouxa.`;
-    else if (directional >= 3) condLine = `Direção clara nos mercados — movimentos fortes, mas correr atrás tarde é a armadilha.`;
-    else condLine = `Condições mistas e travadas — o tipo de dia em que o overtrade mata a conta em silêncio.`;
-    riskNote = `💡 Operando conta prop hoje? ${condLine}\n\n• Trailing → proteja seu pico, não devolva o lucro\n• EOD → mais espaço intraday, mas respeite o limite diário\n• Qualquer estilo → menos trades, mais limpos, vencem em dias assim`;
+    if (vixVal != null && vixVal >= 20) condLine = `VIX em ${vixVal} = volatilidade alta, whipsaw pune risco frouxo.`;
+    else if (directional >= 3) condLine = `Direção clara nos mercados, mas correr atrás tarde é a armadilha.`;
+    else condLine = `Mercado travado e misto, o dia em que overtrade mata a conta.`;
+    riskNote = `💡 Operando conta prop hoje? ${condLine}\n\n• Trailing → proteja seu pico, não devolva o lucro\n• EOD → mais espaço intraday, respeite o limite diário\n• Qualquer estilo → menos trades e mais limpos vencem`;
   } else {
-    if (vixVal != null && vixVal >= 20) condLine = `VIX at ${vixVal} = high volatility. Whipsaws punish loose risk management.`;
-    else if (directional >= 3) condLine = `Clear directional tone across markets — strong moves, but chasing late is the trap.`;
-    else condLine = `Mixed, choppy conditions — the kind of day where overtrading quietly kills accounts.`;
-    riskNote = `💡 Trading prop today? ${condLine}\n\n• Trailing DD → protect your peak, don't give back gains\n• EOD DD → more intraday room, but mind the daily floor\n• Any style → fewer, cleaner trades win on days like this`;
+    if (vixVal != null && vixVal >= 20) condLine = `VIX at ${vixVal} = high volatility, whipsaws punish loose risk.`;
+    else if (directional >= 3) condLine = `Clear directional tone, but chasing late is the trap.`;
+    else condLine = `Choppy, mixed tape, the day overtrading quietly kills accounts.`;
+    riskNote = `💡 Trading prop today? ${condLine}\n\n• Trailing → protect your peak, don't give back gains\n• EOD → more intraday room, mind the daily floor\n• Any style → fewer, cleaner trades win`;
   }
   tweets.push(riskNote.slice(0,280));
 
-  // 6) CTA assinado "Max" — teaser do aprofundamento (cenários + gamma só no site) + cupom + bio
-  tweets.push(pt
-    ? `Análise completa hoje: cenários de alta/baixa + níveis de gamma (zero gamma, call & put walls) + o que observar — só em marketscoupons.com\n\n💰 Cupom MARKET = 90% OFF Apex · cupons na bio\nNão é recomendação. — Max`.slice(0,280)
-    : `Full breakdown today: bull/bear scenarios + gamma levels (zero gamma, call & put walls) + what to watch — only at marketscoupons.com\n\n💰 Code MARKET = 90% OFF Apex · coupons in bio\nNot advice. — Max`.slice(0,280));
+  // 6) Assinatura Max
+  if (pt) {
+    let macroLine = macro.length ? `\n\nEm dia de ${macro.join(' + ')}, isso é sobrevivência, não luxo.` : '';
+    tweets.push(`É por isso que solto a leitura toda manhã às 5h30 ET: bias, suportes e resistências de ES, NQ, GC e CL + macro. Pra saber se hoje é atacar ou observar.${macroLine}\n\nCupons na bio. Max da marketscoupons.com, câmbio desligo. 📡`.slice(0,280));
+  } else {
+    let macroLine = macro.length ? `\n\nOn a ${macro.join(' + ')} day, that's survival, not a luxury.` : '';
+    tweets.push(`This is why I drop the read every morning at 5:30am ET: bias, support and resistance on ES, NQ, GC and CL + macro. So you know if today is attack or observe.${macroLine}\n\nCoupons in bio. Max from marketscoupons.com. Over and out. 📡`.slice(0,280));
+  }
 
   return tweets.filter(t => t && t.trim().length > 0);
 }
@@ -608,11 +878,11 @@ function buildIGCaption(rows, date) {
   const px = (r) => r?.last_price ? Number(r.last_price).toFixed(r.asset==='CL'?2:0) : '—';
   const chg = (r) => r?.change_pct!=null ? `${r.change_pct>0?'+':''}${Number(r.change_pct).toFixed(1)}%` : '';
   const zones = (r) => {
-    const s=[r?.support_1,r?.support_2].filter(Boolean).join('/');
-    const x=[r?.resistance_1,r?.resistance_2].filter(Boolean).join('/');
-    return [s&&`S ${s}`, x&&`R ${x}`].filter(Boolean).join(' · ');
+    const s=[r?.support_1,r?.support_2].filter(Boolean).join(' / ');
+    const x=[r?.resistance_1,r?.resistance_2].filter(Boolean).join(' / ');
+    return [s&&`Support ${s}`, x&&`Resistance ${x}`].filter(Boolean).join(' - ');
   };
-  const line = (r) => r ? `${dot(r.bias)} ${EN_NAMES[r.asset]||r.asset} — ${biasLbl(r.bias)} · ${px(r)} ${chg(r)}\n   ${zones(r)}` : '';
+  const line = (r) => r ? `${dot(r.bias)} ${EN_NAMES[r.asset]||r.asset} · ${biasLbl(r.bias)} · ${px(r)} ${chg(r)}\n   ${zones(r)}` : '';
 
   const vix = j(byId.ES?.vix_context).split(/\.\s/)[0];
 
@@ -621,13 +891,308 @@ function buildIGCaption(rows, date) {
   if (vix) parts.push(`\n🌐 ${vix}.`);
   parts.push(`\n📈 INDICES\n${[line(byId.ES), line(byId.NQ)].filter(Boolean).join('\n')}`);
   parts.push(`\n🪙 COMMODITIES\n${[line(byId.GC), line(byId.CL)].filter(Boolean).join('\n')}`);
-  parts.push(`\n💡 Trading a prop account today? On high-vol days, trailing-DD traders protect the peak, EOD traders mind the daily floor — and every style wins with fewer, cleaner trades.`);
-  parts.push(`\nThis is why I post the breakdown every morning — so you know if today is attack or observe.`);
-  parts.push(`\n💰 Code MARKET = 90% OFF Apex. All exclusive prop firm coupons at marketscoupons.com`);
-  parts.push(`Market view, not financial advice. Always do your own research.\n— Max`);
+  parts.push(`\n💡 Trading a prop account today? On high-vol days, trailing-DD traders protect the peak, EOD traders mind the daily floor, and every style wins with fewer, cleaner trades.`);
+  parts.push(`\nThis is why I drop the read every morning at 6am ET, bias + support and resistance on ES, NQ, GC and CL + the macro backdrop. So you know if today is attack or observe.`);
+  parts.push(`\n💰 Code MARKET = 90% OFF on Apex. All exclusive prop firm coupons at marketscoupons.com`);
+  parts.push(`Market view, not financial advice. Always do your own research.\nMax from marketscoupons.com. Over and out. 📡`);
   parts.push(`\n.\n#trading #propfirm #futures #daytrading #SP500 #nasdaq #gold #crudeoil #marketanalysis #tradingfutures #fundedtrader #apextraderfunding`);
 
   return parts.join('\n');
+}
+
+// ===== MOTOR DE VOZ DO MAX (Gemini-com-trava) =====
+// Gera a thread com a VOZ do Max (persona tio Max raposa) a partir dos números REAIS
+// travados do banco. Validação anti-invenção (Lei #0): se citar número não fornecido, descarta.
+async function callGemini(systemText, userText, opts = {}) {
+  const KEYS = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
+  if (!KEYS.length) return null;
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: systemText }] },
+    contents: [{ role: 'user', parts: [{ text: userText }] }],
+    generationConfig: { maxOutputTokens: opts.maxTokens || 2200, temperature: opts.temp ?? 0.85 },
+  });
+  for (let i = 0; i < KEYS.length; i++) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEYS[i]}`;
+    try {
+      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+      const d = await r.json();
+      if (!r.ok) { console.error('[max] gemini', r.status, JSON.stringify(d).slice(0, 200)); continue; }
+      const t = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (t) return t;
+    } catch (e) { console.error('[max] gemini fetch', e.message); continue; }
+  }
+  return null;
+}
+
+function maxVoiceSystem(lang) {
+  if (lang === 'pt') return `Você é o Max, uma RAPOSA mascote 🦊 e analista de mercado da Markets Coupons. Escreve a thread diária do X (Twitter) pra traders de prop firm de TODOS os perfis.
+
+PERSONA: Max, carismático, brasileiro, esperto, honesto. Cutuca o mercado com humor, NUNCA ofende ninguém (muito menos prop firm). Cuida do leitor ("pra você não quebrar a conta"). NUNCA use o termo "tio Max" (vira vício/cansa). Fale como Max, simples.
+
+REGRA DE OURO (NUNCA QUEBRE): use APENAS os números do bloco DADOS DE HOJE. Copie-os EXATOS, sem arredondar. NUNCA invente preço, nível, %, valor ou estatística. Se não está no bloco, não fala.
+RESPEITE O VIÉS: cada ativo tem um viés (alta/baixa/neutro) no bloco. NÃO confunda com a variação do dia, um ativo pode subir no dia e ainda ter viés de baixa. Use o viés fornecido.
+USE O CONTEXTO: você recebe um bloco CONTEXTO DE MERCADO (fase Wyckoff, o que move o mercado hoje, fluxo do smart money, indicadores RSI/MACD/EMA). USE com SUAS palavras pra dar PROFUNDIDADE: fale do que está movendo o mercado, do smart money, do momento técnico. Sem isso a leitura fica rasa e vira piada. NÃO copie o texto cru, traduza pro jeito do Max. NÃO invente números além dos fornecidos.
+
+COMPLIANCE (PROIBIDO): nunca diga "compre/venda/entre/stop/alvo". Nunca fale mal de prop firm. É conteúdo educativo, não sinal de trade. SEMPRE inclua um disclaimer discreto no tweet de CTA (10): "Conteúdo educativo, não é recomendação." (é a norma no X e protege a marca).
+
+VOZ E GÍRIA (coerente, conecta começo e fim):
+- Abre com "Fala, traders." NUNCA "bom dia tropa", "esquizofrênico", "senta que lá vem o fio".
+- Gamma negativo = "jogar gasolina no fogo" (movimento se alimenta). Gamma positivo = "amortecedor" (absorve e segura). Use pra ENSINAR.
+- VIX = "termômetro do medo". zero gamma = "a chave que vira o dia". put wall = "chão forte". call wall = "teto forte". HVL = "ímã de preço".
+- "é leitura, não é dica" (mostra o nível, não manda operar).
+- Divergência ES×NQ só direcional = "quem tá mentindo?". Se concordam na direção mas divergem no gamma, NÃO use isso.
+
+ESTRUTURA (use quantos tweets a análise precisar pra ficar COMPLETA e boa, sem repetir nem encher linguiça; cada tweet com conteúdo real):
+1) Gancho: o fato mais marcante (ex: ES e NQ em regimes opostos). Abre "Fala, traders." Fecha com 👇
+2) Panorama: VIX + o que significa + o que move o mercado HOJE (use o contexto de notícias)
+2b) Leitura institucional: fase de mercado (Wyckoff) + o que o smart money está fazendo + momento dos indicadores (use o CONTEXTO, com suas palavras)
+3) O que é gamma (simples pro leigo)
+4) ES em UM ÚNICO tweet: preço, viés, regime, zero gamma, put wall, call wall + o que significa
+5) NQ em UM ÚNICO tweet: igual
+6) O mesmo nível por estilo (scalper, intraday/EOD, swing/funded) — inclusão, "é leitura não é dica"
+7) Gestão de risco por tipo de conta (trailing, EOD, static, funded) — neutro
+8) Commodities (ouro, petróleo): bias + chão/teto
+9) Resumo honesto pra todos
+10) CTA: "trago essa leitura colada na abertura, pra você não quebrar a conta" + análise completa no site + "link na bio" + "Bons trades. 👊"
+11) Cupom: "💰 Dica de ouro do Max: conta da Apex por $19.90 com o cupom MARKET. 90% de desconto, hoje, o amanhã a Deus pertence. Aproveita, que dólar não cai do céu 😅" e assina "🦊 Abraço do Max, da marketscoupons. Câmbio, desligo. 📡"
+
+FORMATAÇÃO (capriche, dê respiro):
+- Cada tweet CURTO: no MÁXIMO 250 caracteres (deixe folga, conte). Se não couber, QUEBRE em mais tweets. NUNCA estoure nem corte uma frase no meio.
+- Cada ideia na sua linha. Linha em branco entre blocos (título / dados / conclusão). NUNCA amontoe.
+- Emoji funcional no header (📉 📈 🪙 🛡 💡 🌐 👥 📌). 1-2 por tweet.
+
+OBRIGATÓRIO: a thread SÓ termina depois do tweet de CTA E do tweet de cupom+assinatura do Max. NUNCA pare antes do cupom. Sempre entregue a thread INTEIRA.
+
+SAÍDA: só os tweets, um separado do outro por uma linha contendo apenas ===. NÃO numere (o sistema numera). Sem comentários, sem explicação.`;
+
+  return `You are Max, a fox mascot 🦊 and market analyst for Markets Coupons. You write the daily X (Twitter) thread for prop firm traders of EVERY style.
+
+PERSONA: Max, charismatic, sharp, honest. Pokes fun at the market, NEVER offends anyone (especially not a prop firm). Looks out for the reader ("so you don't blow the account"). NEVER use "Uncle Max" (it gets old). Just be Max.
+
+GOLDEN RULE (NEVER BREAK): use ONLY the numbers in the TODAY'S DATA block. Copy them EXACTLY, no rounding. NEVER invent a price, level, %, value or stat. If it's not in the block, don't mention it.
+RESPECT THE BIAS: each asset has a bias (bullish/bearish/neutral) in the block. Do NOT confuse it with the day's change, an asset can be up on the day and still be bearish bias. Use the bias given.
+USE THE CONTEXT: you get a MARKET CONTEXT block (Wyckoff phase, what moves the market today, smart money flow, RSI/MACD/EMA indicators). USE it in YOUR words to add DEPTH: talk about what's moving the market, the smart money, the technical moment. Without it the read is shallow and becomes a joke. Do NOT copy the raw text, translate it to Max's voice. Do NOT invent numbers beyond those provided.
+
+COMPLIANCE (FORBIDDEN): never say "buy/sell/enter/stop/target". Never bash a prop firm. Educational content, not a trade signal. ALWAYS include a discreet disclaimer in the CTA tweet (10): "Educational content, not financial advice." (it's the norm on X and protects the brand).
+
+VOICE (coherent, connect open and close):
+- Open with "What's up, traders." NEVER cheesy "good morning team" type lines.
+- Negative gamma = "pouring fuel on the fire" (moves feed themselves). Positive gamma = "shock absorber" (cushions and pins). Use these to TEACH.
+- VIX = "the fear gauge". zero gamma = "the level that flips the day". put wall = "the floor". call wall = "the ceiling". HVL = "price magnet".
+- "it's a read, not a tip" (you show the level, you don't tell them to trade).
+- ES×NQ divergence only when directional = "which one is lying?". If they agree on direction but differ in gamma, do NOT use that.
+
+STRUCTURE (use as many tweets as the analysis needs to be COMPLETE and good, no repeating or filler; each tweet with real content):
+1) Hook: the most striking fact (e.g. ES and NQ in opposite regimes). Open "What's up, traders." End with 👇
+2) Backdrop: VIX + what it means + what's moving the market TODAY (use the news context)
+2b) Institutional read: market phase (Wyckoff) + what the smart money is doing + indicator momentum (use the CONTEXT, in your words)
+3) What gamma is (simple)
+4) ES in ONE single tweet: price, bias, regime, zero gamma, put wall, call wall + meaning
+5) NQ in ONE single tweet: same
+6) Same level by style (scalper, intraday/EOD, swing/funded) — inclusive, "a read not a tip"
+7) Risk by account type (trailing, EOD, static, funded) — neutral
+8) Commodities (gold, oil): bias + floor/ceiling
+9) Honest recap for everyone
+10) CTA: "I bring this read right before the open, so you don't blow the account" + full analysis on the site + "link in bio" + "Good trades. 👊"
+11) Coupon: "💰 Gold tip from Max: an Apex account for $19.90 with code MARKET. 90% off, today only, tomorrow's not promised. Grab it, dollars don't fall from the sky 😅" then sign "🦊 Catch you later, Max from marketscoupons. Over and out. 📡"
+
+FORMATTING (breathe, don't cram):
+- Each tweet SHORT: MAX 250 characters (leave slack, count). If it doesn't fit, SPLIT into more tweets. NEVER overflow or cut a sentence mid-way.
+- One idea per line. Blank line between blocks (title / data / conclusion). NEVER cram.
+- Functional emoji in the header (📉 📈 🪙 🛡 💡 🌐 👥 📌). 1-2 per tweet.
+
+MANDATORY: the thread only ends after the CTA tweet AND the coupon+signature tweet. NEVER stop before the coupon. Always deliver the WHOLE thread.
+
+OUTPUT: only the tweets, each separated by a line containing only ===. Do NOT number them. No comments, no explanation.`;
+}
+
+function maxMacroDetect(rows, pt) {
+  const txt = rows.map(r => { const e = r.events; return e ? (typeof e === 'object' ? `${e.en||''} ${e.pt||''}` : String(e)) : ''; }).join(' ').toLowerCase();
+  const found = []; const add = (c, p, e) => { if (c && found.length < 2) found.push(pt ? p : e); };
+  add(/fomc/.test(txt), 'FOMC', 'FOMC'); add(/\bcpi\b/.test(txt), 'CPI', 'CPI'); add(/\bpce\b/.test(txt), 'PCE', 'PCE');
+  add(/non.?farm|payroll|\bnfp\b/.test(txt), 'payroll', 'NFP'); add(/\bppi\b/.test(txt), 'PPI', 'PPI');
+  add(/\becb\b|\bbce\b/.test(txt), pt ? 'decisão do BCE' : 'ECB decision', pt ? 'decisão do BCE' : 'ECB decision');
+  add(/jobless|desemprego/.test(txt), pt ? 'seguro-desemprego' : 'jobless claims', pt ? 'seguro-desemprego' : 'jobless claims');
+  return found;
+}
+
+function buildMaxData(rows, gex, date, lang) {
+  const pt = lang === 'pt';
+  const byId = {}; rows.forEach(r => byId[r.asset] = r);
+  const es = byId.ES, nq = byId.NQ, gc = byId.GC, cl = byId.CL;
+  const jx = (o) => (o && typeof o === 'object') ? (o.en || o.pt || '') : String(o || '');
+  const vt = jx(es?.vix_context);
+  const vm = vt.match(/VIX\s*(?:at|em|:)?\s*([\d.]+)/i); const vix = vm ? vm[1] : '';
+  const vcm = vt.match(/\(([+-][\d.]+%)\)/); const vchg = vcm ? vcm[1] : '';
+  const g = (t) => (gex && gex[t]) ? gex[t] : {};
+  const eg = g('ES'), ng = g('NQ');
+  const reg = (gg) => parseFloat(gg.total_gex) >= 0 ? (pt ? 'POSITIVO' : 'POSITIVE') : (pt ? 'NEGATIVO' : 'NEGATIVE');
+  const sr = (r) => [r?.support_1, r?.support_2].filter(Boolean).join('/');
+  const rr = (r) => [r?.resistance_1, r?.resistance_2].filter(Boolean).join('/');
+  const px = (r) => r?.last_price != null ? Number(r.last_price).toFixed(r.asset === 'CL' ? 2 : 0) : '?';
+  const ch = (r) => r?.change_pct != null ? `${r.change_pct > 0 ? '+' : ''}${Number(r.change_pct).toFixed(1)}%` : '';
+  const bs = (r) => { const b = (r?.bias || '').toLowerCase(); if (pt) return b.includes('bull') ? 'viés de ALTA' : b.includes('bear') ? 'viés de BAIXA' : 'viés NEUTRO'; return b.includes('bull') ? 'BULLISH bias' : b.includes('bear') ? 'BEARISH bias' : 'NEUTRAL bias'; };
+  const macro = maxMacroDetect(rows, pt);
+  const L = [];
+  L.push(pt ? `Data: ${date}` : `Date: ${date}`);
+  if (vix) L.push(`VIX: ${vix}${vchg ? ` (${pt ? 'variação' : 'change'} ${vchg})` : ''}`);
+  if (macro.length) L.push(`${pt ? 'Macro no radar' : 'Macro on the radar'}: ${macro.join(', ')}`);
+  if (es && eg.zero_gamma) L.push(`ES (S&P 500): ${pt ? 'preço' : 'price'} ${px(es)} | ${ch(es)} | ${bs(es)} | GAMMA ${reg(eg)} | zero gamma ${eg.zero_gamma} | put wall ${eg.put_wall} | call wall ${eg.call_wall}`);
+  if (nq && ng.zero_gamma) L.push(`NQ (Nasdaq): ${pt ? 'preço' : 'price'} ${px(nq)} | ${ch(nq)} | ${bs(nq)} | GAMMA ${reg(ng)} | zero gamma ${ng.zero_gamma} | put wall ${ng.put_wall} | call wall ${ng.call_wall} | HVL ${ng.hvl}`);
+  if (gc) L.push(`${pt ? 'Ouro' : 'Gold'}: ${pt ? 'preço' : 'price'} ${px(gc)} | ${ch(gc)} | ${bs(gc)} | ${pt ? 'suportes' : 'support'} ${sr(gc)} | ${pt ? 'resistências' : 'resistance'} ${rr(gc)}`);
+  if (cl) L.push(`${pt ? 'Petróleo WTI' : 'Crude Oil (WTI)'}: ${pt ? 'preço' : 'price'} ${px(cl)} | ${ch(cl)} | ${bs(cl)} | ${pt ? 'suportes' : 'support'} ${sr(cl)} | ${pt ? 'resistências' : 'resistance'} ${rr(cl)}`);
+  // CONTEXTO rico do banco: fase Wyckoff, notícias, fluxo institucional (smart money), indicadores — pra leitura COMPLETA, não rasa
+  const ctx = [];
+  const phase = jx(es?.market_phase); if (phase) ctx.push(`${pt ? 'Fase de mercado (Wyckoff)' : 'Market phase (Wyckoff)'}: ${phase}`);
+  const news = jx(es?.news_impact); if (news) ctx.push(`${pt ? 'O que move o mercado hoje' : 'What moves the market today'}: ${news}`);
+  const flowES = jx(es?.volume_analysis); if (flowES) ctx.push(`${pt ? 'Fluxo institucional ES (smart money)' : 'ES institutional flow (smart money)'}: ${flowES}`);
+  const indES = jx(es?.indicators_summary); if (indES) ctx.push(`${pt ? 'Indicadores ES' : 'ES indicators'}: ${indES}`);
+  const flowNQ = jx(nq?.volume_analysis); if (flowNQ) ctx.push(`${pt ? 'Fluxo institucional NQ' : 'NQ institutional flow'}: ${flowNQ}`);
+  if (ctx.length) {
+    L.push('');
+    L.push(pt ? 'CONTEXTO DE MERCADO (do nosso desk, use pra dar PROFUNDIDADE à leitura com suas palavras, NÃO invente números):' : 'MARKET CONTEXT (from our desk, use it to add DEPTH in your words, do NOT invent numbers):');
+    ctx.forEach(c => L.push('- ' + c));
+    L.push('');
+  }
+  L.push(pt ? `Cupom: Apex 25K por $19.90 com o cupom MARKET (90% off)` : `Coupon: Apex 25K for $19.90 with code MARKET (90% off)`);
+  return { block: L.join('\n'), vix, vchg };
+}
+
+// Tudo que EU forneço no bloco é permitido; só fiscaliza número que o Gemini inventar ALÉM disso.
+function maxAllowedNums(block) {
+  const s = new Set(['2026', '2025', '19.90', '90', '5', '30', '280', '25', '50', '100', '150', '24.90', '39.90', '59.90']);
+  const norm = String(block).replace(/(\d)[.,](\d{3})(?!\d)/g, '$1$2');
+  (norm.match(/\d[\d.]*\d|\d/g) || []).forEach(n => { s.add(n); const f = parseFloat(n); if (!isNaN(f)) { s.add(String(f)); s.add(String(Math.round(f))); } });
+  return s;
+}
+
+function maxHasInvention(text, allowed) {
+  const norm = text.replace(/(\d)[.,](\d{3})(?!\d)/g, '$1$2'); // junta separador de milhar
+  const nums = norm.match(/\d[\d.]*\d|\d/g) || [];
+  for (const raw of nums) {
+    const n = parseFloat(raw);
+    if (isNaN(n) || n < 1000) continue; // só fiscaliza níveis (>=1000)
+    if (!allowed.has(raw) && !allowed.has(String(n)) && !allowed.has(String(Math.round(n)))) return raw;
+  }
+  if (/\$\s?\d[\d.,]*\s*(B\b|M\b|bi|bilh|mi|milh|trillion|billion|million|tri)/i.test(text)) return 'big-money';
+  return null;
+}
+
+async function genMaxThreadAI(rows, gex, date, lang) {
+  if (!gex || !gex.ES || !gex.NQ || !gex.ES.zero_gamma || !gex.NQ.zero_gamma) return { tweets: null, reason: 'no-gex' };
+  const { block, vix, vchg } = buildMaxData(rows, gex, date, lang);
+  const sys = maxVoiceSystem(lang);
+  const user = `${lang === 'pt' ? 'DADOS DE HOJE (use SÓ estes números, copie exatos, não invente nenhum outro):' : "TODAY'S DATA (use ONLY these numbers, copy exact, invent none):"}\n${block}\n\n${lang === 'pt' ? 'Gere a thread COMPLETA agora, do gancho até o tweet do cupom e a assinatura do Max. NÃO pare no meio.' : "Generate the COMPLETE thread now, from the hook to the coupon tweet and Max's signature. Do NOT stop midway."}`;
+  // até 2 tentativas: se vier incompleta ou inventando, tenta de novo antes de cair no template
+  let lastReason = 'gemini-null';
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const out = await callGemini(sys, user, { maxTokens: 4096, temp: attempt === 0 ? 0.8 : 0.6 });
+    if (!out) { lastReason = 'gemini-null'; continue; }
+    const allowed = maxAllowedNums(block);
+    const inv = maxHasInvention(out, allowed);
+    if (inv) { lastReason = 'invention:' + inv; continue; }
+    let tweets = out.split(/\n?={3,}\n?/).map(t => t.trim()).filter(Boolean);
+    tweets = tweets.map(t => t.replace(/^\d+\s*[\/.)]\s*/, '').trim()).filter(Boolean);
+    const over = tweets.filter(t => t.length > 280).length;
+    tweets = tweets.map(t => t.slice(0, 280)).filter(Boolean);
+    if (tweets.length < 8) { lastReason = 'too-few:' + tweets.length; continue; }
+    // TRAVA DE COMPLETUDE: thread só é válida com cupom (MARKET) + assinatura do Max
+    const joined = tweets.join('\n');
+    const hasCoupon = /\bMARKET\b/.test(joined);
+    const hasSign = /(câmbio,?\s*desligo|over and out)/i.test(joined);
+    if (!hasCoupon || !hasSign) { lastReason = 'incomplete:' + (hasCoupon ? '' : 'noCoupon') + (hasSign ? '' : 'noSign'); continue; }
+    return { tweets, reason: 'ok', over };
+  }
+  return { tweets: null, reason: lastReason };
+}
+
+// ===== POST ÚNICO do Max (análise de MOMENTO — não thread) =====
+// Cada momento do dia = 1 post curto (<=280). Espaçados ao longo do dia, sem burst.
+function maxSinglePostSystem(lang) {
+  if (lang === 'pt') return `Você é o Max 🦊, analista de mercado da Markets Coupons, postando no X.
+Escreva UM ÚNICO post (NO MÁXIMO 280 caracteres, conte) sobre o momento de mercado pedido. NÃO é thread, é 1 post só.
+
+VOZ: descontraído, esperto, honesto. Pode abrir com "Fala, traders" quando fizer sentido. Gíria real: gamma negativo = "gasolina no fogo", gamma positivo = "amortecedor", VIX = "termômetro do medo". "é leitura, não é dica".
+REGRA DE OURO: use SÓ os números do bloco DADOS. NUNCA invente preço/nível/%/valor. Respeite o VIÉS fornecido (não confunda com a variação do dia).
+COMPLIANCE: nunca "compre/venda/entre/stop/alvo". Nunca fale mal de prop firm. Educativo.
+NUNCA use emoji (zero, em hipótese alguma). No máximo 1 hashtag, ou nenhuma. Texto LIMPO e SÉRIO, estilo análise de verdade (igual os grandes analistas do X).
+SAÍDA: só o texto do post, nada mais (sem aspas, sem rótulo).`;
+  return `You are Max 🦊, market analyst for Markets Coupons, posting on X.
+Write ONE SINGLE post (MAX 280 characters, count) about the requested market moment. NOT a thread, just 1 post.
+
+VOICE: relaxed, sharp, honest. You may open with "What's up, traders" when it fits. Real slang: negative gamma = "fuel on the fire", positive gamma = "shock absorber", VIX = "the fear gauge". "it's a read, not a tip".
+GOLDEN RULE: use ONLY the numbers in the DATA block. NEVER invent a price/level/%/value. Respect the BIAS given (don't confuse it with the day's change).
+COMPLIANCE: never "buy/sell/enter/stop/target". Never bash a prop firm. Educational.
+NEVER use emoji (zero, ever). At most 1 hashtag, or none. CLEAN, SERIOUS text, like real analysis (just like the big X analysts).
+OUTPUT: only the post text, nothing else (no quotes, no label).`;
+}
+
+async function genMaxSinglePost(rows, gex, date, lang, segment) {
+  const pt = lang === 'pt';
+  const { block } = buildMaxData(rows, gex, date, lang);
+  const SEG = {
+    premarket: pt ? 'BRIEFING ANTES DO SINO (o aviso matinal que vicia o trader): em 1 post curto, diga o CLIMA de hoje (VIX + o que move o mercado) e o que ESPERAR por tipo de conta, prático: 1 toque pra quem opera intraday e 1 pra quem opera EOD (com base no gamma/níveis). Fecha com "níveis completos no site, link na bio".' : 'PRE-BELL BRIEFING (the morning heads-up that hooks traders): in 1 short post, give today\'s MOOD (VIX + what moves the market) and what to EXPECT by account type, practical: 1 note for intraday traders and 1 for EOD traders (based on gamma/levels). End with "full levels on the site, link in bio".',
+    open: pt ? 'Os NÍVEIS-CHAVE de hoje: ES e NQ (preço, viés, regime de gamma, zero gamma, paredes). Direto.' : 'Today\'s KEY LEVELS: ES and NQ (price, bias, gamma regime, zero gamma, walls). Straight.',
+    pulse: pt ? 'O PULSO do mercado agora: o que os dados dizem do momento (gamma, VIX, smart money), na leitura do Max.' : 'The market PULSE right now: what the data says about this moment (gamma, VIX, smart money), in Max\'s read.',
+    coupon: pt ? 'Post de OFERTA no estilo do Max: conta da Apex por $19.90 com o cupom MARKET, 90% off, com humor ("dólar não cai do céu"). Cupons na bio.' : 'OFFER post in Max\'s style: Apex account for $19.90 with code MARKET, 90% off, with humor. Coupons in bio.',
+    recap: pt ? 'RECAP do fim do dia: o nível-chave (zero gamma) segurou? Como o mercado se comportou vs o viés. Honesto.' : 'End-of-day RECAP: did the key level (zero gamma) hold? How did the market behave vs the bias. Honest.',
+  };
+  const task = SEG[segment] || (pt ? 'Um post curto com a leitura do mercado hoje.' : 'A short post with today\'s market read.');
+  let lastRaw = null;
+  const sys = maxSinglePostSystem(lang);
+  const user = `${pt ? 'DADOS (use só estes números, não invente):' : 'DATA (use only these numbers, do not invent):'}\n${block}\n\n${pt ? 'Tarefa' : 'Task'}: ${task}\n${pt ? 'Escreva 1 post (máx 280 caracteres).' : 'Write 1 post (max 280 chars).'}`;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const out = await callGemini(sys, user, { maxTokens: 2048, temp: attempt === 0 ? 0.85 : 0.6 });
+    if (!out) continue;
+    const allowed = maxAllowedNums(block);
+    if (maxHasInvention(out, allowed)) continue;
+    let post = out.trim().replace(/^["'`]+|["'`]+$/g, '').split(/\n={3,}\n?/)[0].trim().slice(0, 280);
+    if (post.length >= 20) return { post, reason: 'ok', raw: out.slice(0, 320) };
+    lastRaw = out.slice(0, 320);
+  }
+  return { post: null, reason: 'fail', raw: lastRaw };
+}
+
+// Monta a URL da página do chart (criativos/max-chart.html) com os níveis reais do banco
+function maxChartUrl(gex, date, asset) {
+  const g = gex && gex[asset] ? gex[asset] : null;
+  if (!g || !g.zero_gamma) return null;
+  const META = { ES: { name: 'S&P 500', yf: '^GSPC' }, NQ: { name: 'Nasdaq 100', yf: '^NDX' } };
+  const m = META[asset];
+  if (!m) return null;
+  const p = new URLSearchParams();
+  p.set('asset', asset); p.set('name', m.name); p.set('yf', m.yf); p.set('date', date);
+  if (g.zero_gamma) p.set('gflip', g.zero_gamma);
+  if (g.call_wall) p.set('call', g.call_wall);
+  if (g.put_wall) p.set('put', g.put_wall);
+  if (g.hvl) p.set('key', g.hvl);
+  return `https://www.marketscoupons.com/criativos/max-chart.html?${p.toString()}`;
+}
+
+// Renderiza a página do chart em PNG via Browserless (render-criativo, auth de serviço)
+async function renderChartPng(url) {
+  const token = process.env.AUTOMATION_API_TOKEN;
+  if (!token) throw new Error('no_automation_token');
+  const r = await fetch('https://www.marketscoupons.com/api/render-criativo', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-service-auth': token },
+    body: JSON.stringify({ url, width: 1600, height: 900 }),
+  });
+  if (!r.ok) throw new Error('render_' + r.status + ':' + (await r.text().catch(() => '')).slice(0, 120));
+  const buf = Buffer.from(await r.arrayBuffer());
+  if (buf.length < 5000) throw new Error('render_too_small:' + buf.length);
+  return buf;
+}
+
+// Upload de imagem no X (v1.1 media/upload, multipart) → media_id_string
+async function xUploadMedia(buf, keys) {
+  const url = 'https://upload.twitter.com/1.1/media/upload.json';
+  const form = new FormData();
+  form.append('media', new Blob([buf], { type: 'image/png' }), 'chart.png');
+  const r = await fetch(url, { method: 'POST', headers: { Authorization: oauth1Header('POST', url, keys) }, body: form });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok || !d?.media_id_string) throw new Error('media_upload_' + r.status + ':' + JSON.stringify(d).slice(0, 150));
+  return d.media_id_string;
 }
 
 // Constrói o post de ANALISTA (previsão de mercado, NÃO sinal de trade).
@@ -1088,6 +1653,8 @@ module.exports = async (req, res) => {
   if (action === 'ig_poll_run') return handleIgPollRun(req, res);
   if (action === 'ig_admin') return handleIgAdmin(req, res);
   if (action === 'x_daily') return handleXDaily(req, res);
+  if (action === 'candles') return handleCandles(req, res);
+  if (action === 'x_cleanup') return handleXCleanup(req, res);
   if (action === 'x_recap') return handleXRecap(req, res);
 
   const corsOrigin = getCorsOrigin(req);

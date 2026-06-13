@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1600px; height:900px; font-family:'Inter',sans-serif; background:#0B0E13; overflow:hidden; }
+  #cr-canvas { width:1600px; height:900px; padding:32px 40px; display:flex; flex-direction:column; background:#0B0E13; }
+  .hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .left { display:flex; align-items:center; gap:16px; }
+  .av { width:64px; height:64px; border-radius:14px; object-fit:cover; border:2px solid rgba(240,180,41,.5); background:#11151c; }
+  .ttl { font-size:29px; font-weight:800; color:#fff; letter-spacing:-.3px; }
+  .ttl span { color:#7E8AA0; font-weight:600; font-size:19px; }
+  .sub { font-size:13px; color:#F0B429; font-weight:700; text-transform:uppercase; letter-spacing:1.6px; margin-top:3px; }
+  .right { text-align:right; }
+  .px { font-size:36px; font-weight:900; color:#fff; line-height:1; }
+  .chg { font-size:19px; font-weight:800; margin-top:4px; }
+  .up { color:#26A69A; } .dn { color:#EF5350; }
+  #chart { flex:1; }
+  .ft { display:flex; align-items:center; justify-content:space-between; margin-top:12px; }
+  .ft .site { font-size:18px; font-weight:800; color:#fff; }
+  .ft .site span { color:#F0B429; }
+  .ft .leg { display:flex; gap:22px; font-size:14px; font-weight:600; color:#9AA6B8; }
+  .ft .leg i { font-style:normal; }
+  .ft .leg .g { color:#F0B429; } .ft .leg .c { color:#5BC0EB; } .ft .leg .p { color:#EF5350; }
+</style>
+</head>
+<body>
+<div id="cr-canvas">
+  <div class="hd">
+    <div class="left">
+      <img class="av" id="av" src="/img/bot/max-avatar-blazer.png">
+      <div>
+        <div class="ttl" id="ttl">S&amp;P 500 <span>· ES · 5min</span></div>
+        <div class="sub" id="sub">Max · Daily Market Read</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="px" id="px">—</div>
+      <div class="chg" id="chg"></div>
+    </div>
+  </div>
+  <div id="chart"></div>
+  <div class="ft">
+    <div class="site">marketscoupons<span>.com</span></div>
+    <div class="leg" id="leg"></div>
+  </div>
+</div>
+<script>
+  const P = new URLSearchParams(location.search);
+  const name = P.get('name') || 'S&P 500';
+  const asset = P.get('asset') || 'ES';
+  const yf = P.get('yf') || '^GSPC';
+  const tf = P.get('tf') || '5min';
+  const interval = P.get('interval') || '5m';
+  const num = (k) => { const v = parseFloat(P.get(k)); return isNaN(v) ? 0 : v; };
+  const gflip = num('gflip'), call = num('call'), put = num('put'), key = num('key');
+
+  document.getElementById('ttl').innerHTML = name + ' <span>· ' + asset + ' · ' + tf + '</span>';
+  document.getElementById('sub').textContent = 'Max · Daily Market Read · ' + (P.get('date') || '');
+
+  const fmt = (n) => Number(n).toLocaleString('en-US', { maximumFractionDigits: asset === 'CL' ? 2 : 0 });
+  const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+    width: 1520, height: 700,
+    layout: { background: { color: '#0B0E13' }, textColor: '#9AA6B8', fontFamily: 'Inter' },
+    grid: { vertLines: { color: 'rgba(255,255,255,.04)' }, horzLines: { color: 'rgba(255,255,255,.04)' } },
+    rightPriceScale: { borderColor: 'rgba(255,255,255,.10)' },
+    timeScale: { borderColor: 'rgba(255,255,255,.10)', timeVisible: true, secondsVisible: false },
+    crosshair: { mode: 0 },
+  });
+  const s = chart.addCandlestickSeries({ upColor: '#26A69A', downColor: '#EF5350', borderVisible: false, wickUpColor: '#26A69A', wickDownColor: '#EF5350' });
+
+  const legParts = [];
+  if (gflip) legParts.push('<span class="g">— Gamma Flip ' + fmt(gflip) + '</span>');
+  if (call) legParts.push('<span class="c">— Call Wall ' + fmt(call) + '</span>');
+  if (put) legParts.push('<span class="p">— Put Wall ' + fmt(put) + '</span>');
+  document.getElementById('leg').innerHTML = legParts.join('');
+
+  fetch('/api/bot?action=candles&symbol=' + encodeURIComponent(yf) + '&interval=' + interval + '&range=1d')
+    .then(r => r.json())
+    .then(d => {
+      const candles = (d.candles || []).map(c => ({ time: c.time, open: c.open, high: c.high, low: c.low, close: c.close }));
+      s.setData(candles);
+      const last = candles.length ? candles[candles.length - 1].close : (d.price || 0);
+      const prev = d.prevClose || (candles.length ? candles[0].open : last);
+      const chgPct = prev ? ((last - prev) / prev * 100) : 0;
+      document.getElementById('px').textContent = fmt(last);
+      const chgEl = document.getElementById('chg');
+      chgEl.textContent = (chgPct >= 0 ? '+' : '') + chgPct.toFixed(2) + '%';
+      chgEl.className = 'chg ' + (chgPct >= 0 ? 'up' : 'dn');
+      if (gflip) s.createPriceLine({ price: gflip, color: '#F0B429', lineWidth: 2, lineStyle: 2, axisLabelVisible: true, title: 'Gamma Flip' });
+      if (call) s.createPriceLine({ price: call, color: '#5BC0EB', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: 'Call Wall' });
+      if (put) s.createPriceLine({ price: put, color: '#EF5350', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: 'Put Wall' });
+      if (key) s.createPriceLine({ price: key, color: '#9AA6B8', lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: 'Key Level' });
+      chart.timeScale().fitContent();
+      window.__chartReady = true;
+    })
+    .catch(e => { document.getElementById('px').textContent = 'err'; window.__chartReady = true; });
+</script>
+</body>
+</html>

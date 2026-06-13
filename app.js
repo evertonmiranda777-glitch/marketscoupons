@@ -838,7 +838,9 @@ const PLAT_DETAIL={
       {label:'Alertas',val:'Até 2.000',color:'#EAB308'},
       {label:'Dispositivos',val:'Desktop + Web + Mobile'},
       {label:'Linguagem',val:'Pine Script (própria)'},
-      {label:'Comunidade',val:'50M+ traders ativos',color:'var(--green)'}
+      {label:'Comunidade',val:'50M+ traders ativos',color:'var(--green)'},
+      {label:'Fundada',val:'2011'},
+      {label:'Países',val:'190+',color:'var(--green)'}
     ]
   },
   ninjatrader:{
@@ -858,7 +860,10 @@ const PLAT_DETAIL={
       {label:'Automação',val:'NinjaScript (C#)'},
       {label:'Backtesting',val:'Strategy Analyzer',color:'var(--green)'},
       {label:'Prop Firms',val:'Apex, Bulenox, Topstep +7',color:'var(--green)'},
-      {label:'Marketplace',val:'Milhares de add-ons'}
+      {label:'Marketplace',val:'Milhares de add-ons'},
+      {label:'Usuários',val:'500K+',color:'var(--green)'},
+      {label:'Fundada',val:'2003'},
+      {label:'Dispositivos',val:'Desktop + Web + Mobile'}
     ]
   }
 };
@@ -1041,6 +1046,11 @@ const FIRM_T={
 'Dispositivos':['Devices','Dispositivos','Appareils','Dispositivi','Geräte','الأجهزة'],
 'Linguagem':['Language','Lenguaje','Langage','Linguaggio','Sprache','اللغة'],
 'Pine Script (própria)':['Pine Script (proprietary)','Pine Script (propia)','Pine Script (propriétaire)','Pine Script (proprietario)','Pine Script (proprietär)','Pine Script (خاص)'],
+'Comprar':['Buy','Comprar','Acheter','Acquista','Kaufen','شراء'],
+'Obter':['Get','Obtener','Obtenir','Ottieni','Holen','احصل'],
+'Fundada':['Founded','Fundada','Fondée','Fondata','Gegründet','تأسست'],
+'Países':['Countries','Países','Pays','Paesi','Länder','دول'],
+'Usuários':['Users','Usuarios','Utilisateurs','Utenti','Nutzer','مستخدمون'],
 'Comunidade':['Community','Comunidad','Communauté','Comunità','Community','المجتمع'],
 '50M+ traders ativos':['50M+ active traders','50M+ traders activos','50M+ traders actifs','50M+ trader attivi','50M+ aktive Trader','50 مليون+ متداول نشط'],
 'Exchanges':['Exchanges','Exchanges','Exchanges','Exchanges','Exchanges','البورصات'],
@@ -1099,6 +1109,8 @@ const FIRM_T={
 'Up to $1M':['Up to $1M','Hasta $1M',"Jusqu'à $1M",'Fino a $1M','Bis $1M','حتى $1M','Hingga $1M'],
 };
 function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='en')return s;const r=FIRM_T[s];if(!r)return s;const i=_ftL.indexOf(_currentLang);return i>=0&&r[i]?r[i]:s;}
+// Verbo do CTA por tipo de plano: Lifetime = compra única (Comprar), Free = Obter, resto = Assinar
+function pdVerb(planName){const s=(planName||'').toLowerCase();if(/lifetime|vital/.test(s))return tf('Comprar');if(/^free$|gr[áa]t/.test(s))return tf('Obter');return t('pd_assinar');}
 
 /* MC Rating badge, exibido logo abaixo do Trustpilot. Mostra apenas se houver reviews; senão CTA "Avalie primeiro". */
 function dualRatingPill(f){
@@ -2284,7 +2296,7 @@ Com 2 MES: Risco $55, Alvo $72.50</pre>
 <tr><td>Monitores</td><td>2-3 monitores (1 por firma + gráfico)</td><td>R$2.000-4.000</td></tr>
 <tr><td>Internet</td><td>Fibra 300Mbps+ com backup 4G</td><td>R$200-400/mês</td></tr>
 <tr><td>VPS</td><td>Para firms que exigem baixa latência</td><td>$20-50/mês</td></tr>
-<tr><td>Plataformas</td><td>NinjaTrader (futuros) + MT5 (forex)</td><td>Licença NT: $99/mês ou $1.099 lifetime</td></tr>
+<tr><td>Plataformas</td><td>NinjaTrader (futuros) + MT5 (forex)</td><td>Licença NT: $99/mês ou $1.499 lifetime</td></tr>
 </tbody>
 </table>
 
@@ -3702,19 +3714,19 @@ function pdRenderRight(id, p) {
 
     // Plan features detail line
     if (plan.feat) {
-      h += `<div style="padding:8px 16px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:8px;margin-top:-4px;">
-        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:2px;">${t('pd_detalhes_plano')}</div>
+      h += `<div style="padding:10px 16px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:8px;margin-top:-4px;margin-bottom:14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:3px;">${t('pd_detalhes_plano')}</div>
         <div style="font-size:12px;color:rgba(255,255,255,.8);font-weight:500;">${tf(plan.feat)}</div>
       </div>`;
     }
   }
 
   // CTA
-  h += `<button class="fd-cta" onclick="pdGo('${id}')">${t('pd_assinar')} ${p.name} &#8594;</button>`;
+  h += `<button class="fd-cta" onclick="pdGo('${id}')">${pdVerb(plan?.s)} ${p.name} &#8594;</button>`;
 
   // $15 credit reminder for TradingView (right side)
   if (pd.credit) {
-    h += `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:10px;">
+    h += `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;margin-top:14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:10px;">
       <div style="font-size:22px;font-weight:800;color:#22C55E;white-space:nowrap;">+$15</div>
       <div style="font-size:11px;color:rgba(255,255,255,.6);line-height:1.4;">${t('pd_credit_hint')}</div>
     </div>`;
@@ -3858,7 +3870,7 @@ function pdRenderMobile(id,p){
   }
 
   // CTA
-  h+=`<button class="fd-cta" onclick="pdGo('${id}')">${t('pd_assinar')} ${p.name} &#8594;</button>`;
+  h+=`<button class="fd-cta" onclick="pdGo('${id}')">${pdVerb(plan?.s)} ${p.name} &#8594;</button>`;
 
   // Includes
   if(pd.includes?.length){
