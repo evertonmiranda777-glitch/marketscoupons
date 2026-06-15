@@ -2,19 +2,14 @@
 /**
  * build-compare-pages.mjs, Gera páginas /{firmA}-vs-{firmB} a partir de cms_firms.
  *
- * PADRÃO PREMIUM (per memory feedback_padrao_premium_default.md):
- * - Hero 2-col com bg image branded por firma + logo grande + accent color
- * - Preço cards grandes (não tabela)
- * - Stats grid com vencedor por categoria badge
- * - Trustpilot widget (estrelas + score em destaque)
- * - CTAs gradient gold com shimmer
- * - Recomendação 3 personas
- * - FAQ visível + schema
- * - Internal links network
- * - Mobile-first
+ * MULTI-IDIOMA: as strings visíveis ficam em STR[lang] (PT + ID). Os dados das firmas
+ * vêm do cms_firms (EN-canonical). Adicionar idioma = traduzir o bloco STR.
  *
- * Output: 66 canonical + 66 reverse-redirect em /compare/
- * Usage: node scripts/build-compare-pages.mjs
+ * PADRÃO PREMIUM (per memory feedback_padrao_premium_default.md):
+ * - Hero 2-col branded, preço cards, stats grid c/ vencedor, Trustpilot, personas, FAQ+schema, internal links, mobile-first.
+ *
+ * Output: pt -> /compare/  |  outros -> /{lang}/compare/
+ * Usage: node scripts/build-compare-pages.mjs [lang]   (lang: pt(default) | id)
  */
 
 import fs from 'node:fs';
@@ -24,11 +19,109 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
-const SR = process.env.SUPABASE_SERVICE_ROLE;
+// Carrega .env.local (chave Supabase). Aceita SUPABASE_SERVICE_ROLE ou ..._KEY.
+try {
+  const env = fs.readFileSync(path.join(ROOT, '.env.local'), 'utf8');
+  for (const line of env.split('\n')) {
+    const m = line.match(/^([A-Z_]+)\s*=\s*(.*)$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
+  }
+} catch {}
+
+const SR = process.env.SUPABASE_SERVICE_ROLE || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
-if (!SR) { console.error('SUPABASE_SERVICE_ROLE missing in env'); process.exit(1); }
+if (!SR) { console.error('SUPABASE_SERVICE_ROLE(_KEY) missing in env/.env.local'); process.exit(1); }
+
+const LANG = (process.argv[2] || 'pt').toLowerCase();
+const LOCALES = { pt: { html: 'pt-BR', og: 'pt_BR', num: 'pt-BR' }, id: { html: 'id-ID', og: 'id_ID', num: 'id-ID' } };
+if (!LOCALES[LANG]) { console.error('Lang não suportado:', LANG, '(use pt|id)'); process.exit(1); }
+const LOC = LOCALES[LANG];
+const PFX = LANG === 'pt' ? '' : `/${LANG}`; // prefixo de URL
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+// ─── i18n: todo texto visível, por idioma ───────────────────────────────
+const STR = {
+  pt: {
+    navBack: '← Voltar pra home',
+    title: (sA, sB) => `${sA} vs ${sB} 2026: Comparativo | Markets Coupons`,
+    desc: (a, b) => `Compare ${a.name} e ${b.name}: preços, drawdown, profit split, payout. Cupom exclusivo${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' e ' + b.coupon : ''}.`,
+    heroEyebrow: 'Comparativo Prop Firms 2026',
+    heroSubBase: 'Análise lado a lado das duas prop firms.',
+    heroSubEntry: (v) => ` Conta de entrada a partir de $${v}.`,
+    catLabel: { discount: 'Desconto', price: 'Conta menor', split: 'Profit Split', drawdown: 'Drawdown', dd_pct: 'DD Limit', target: 'Profit Target', min_days: 'Min. Days', news: 'News Trading', day1: 'Day-1 Payout', scaling: 'Scaling', plat: 'Plataformas', rating: 'Trustpilot' },
+    catHint: { discount: 'Quanto OFF do preço original', price: 'Preço final c/ cupom (entrada mais barata)', split: 'Quanto do lucro fica com o trader', drawdown: 'Tipo de limite de perda', rating: 'Reputação real' },
+    allowed: '✓ Permitido', blocked: '✗ Bloqueado', yes: '✓ Sim', no: '✗ Não',
+    winBadge: '✓ Vence',
+    rDay1: 'precisa de payout no Day-1',
+    rNews: 'opera durante notícias',
+    rLowCap: (v) => `quer entrar com pouco capital (a partir de $${v})`,
+    rDisc: (d) => `prioriza maior desconto (${d}% OFF)`,
+    rRep: (s) => `valoriza reputação Trustpilot (${s} ★)`,
+    rFallback: (type, plats) => `prefere ${type || 'esse modelo'} e plataformas como ${plats}`,
+    bcHome: 'Início', bcComp: 'Comparativos',
+    secEyebrow1: 'Lado a lado', secH2_1: (sA, sB) => `${sA} vs ${sB}, Comparação`, secSub1: 'Cada categoria mostra o vencedor entre as duas firmas.',
+    secEyebrow2: 'Quem deve escolher', secH2_2: 'Pra quem cada firma é melhor',
+    personaHead: (name) => `Escolha <span>${name}</span> se você...`,
+    secEyebrow3: 'Perguntas frequentes', secH2_3: (sA, sB) => `${sA} vs ${sB}, FAQ`,
+    secEyebrow4: 'Outros comparativos', secH2_4: 'Compare também',
+    firmCta: (s) => `Acessar ${s} →`,
+    couponLabel: 'Cupom:',
+    tpReviews: (n) => `${n} reviews · Trustpilot`,
+    finalLabel: 'Pronto pra começar?',
+    finalDisc: (d, c) => `${d}% OFF${c ? ` · cupom ${esc(c)}` : ''}`,
+    footUpdated: (date) => `Comparativo gerado de dados oficiais e atualizado em ${date}`,
+    footDisc: 'Cupons e condições podem mudar. Confirme no checkout da firma. Cupons exclusivos e 100% gratuitos, nunca alteram o seu preço no checkout. Somos parceiros oficiais das firmas, e é assim que o portal se mantém grátis pra você.',
+    redirecting: 'Redirecionando para',
+    faqs: (a, b, sA, sB, minA, minB) => [
+      { q: `Qual é melhor: ${a.name} ou ${b.name}?`, a: `Depende do perfil. ${a.name} tem ${a.discount}% off${a.discount_type ? ' ' + a.discount_type : ''} e drawdown ${a.drawdown}. ${b.name} tem ${b.discount}% off${b.discount_type ? ' ' + b.discount_type : ''} e drawdown ${b.drawdown}. ${minA && minB ? `Conta mais barata: ${minA < minB ? a.name : b.name} (a partir de $${(Math.min(minA, minB)).toFixed(2)}).` : ''}` },
+      { q: `Quanto custa a conta de ${sA} vs ${sB}?`, a: `${a.name} começa em ${minA ? '$' + minA.toFixed(2) : '—'}${a.coupon ? ` com cupom ${a.coupon}` : ''}. ${b.name} começa em ${minB ? '$' + minB.toFixed(2) : '—'}${b.coupon ? ` com cupom ${b.coupon}` : ''}.` },
+      { q: `${sA} ou ${sB} permite news trading?`, a: `${a.name} ${a.news_trading ? 'PERMITE' : 'NÃO permite'} operar durante notícias econômicas. ${b.name} ${b.news_trading ? 'PERMITE' : 'NÃO permite'}. ${a.news_trading !== b.news_trading ? `Se você precisa operar news, escolha ${a.news_trading ? a.name : b.name}.` : ''}` },
+      { q: `Quanto tempo pra fazer payout em ${sA} e ${sB}?`, a: `${a.name} ${a.day1_payout ? 'libera payout desde o Day-1' : 'não tem Day-1 payout'}. ${b.name} ${b.day1_payout ? 'libera payout desde o Day-1' : 'não tem Day-1 payout'}.` },
+      { q: `Posso ter conta nas duas firmas ao mesmo tempo?`, a: `Sim, é permitido ter conta em prop firms diferentes ao mesmo tempo (multi-prop). Algumas firmas restringem múltiplas contas DENTRO da mesma firma, confirme as regras de cada uma antes de comprar.` },
+    ],
+  },
+  id: {
+    navBack: '← Kembali ke beranda',
+    title: (sA, sB) => `${sA} vs ${sB} 2026: Perbandingan | Markets Coupons`,
+    desc: (a, b) => `Bandingkan ${a.name} dan ${b.name}: harga, drawdown, profit split, payout. Kupon eksklusif${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' dan ' + b.coupon : ''}.`,
+    heroEyebrow: 'Perbandingan Prop Firm 2026',
+    heroSubBase: 'Analisis berdampingan dari kedua prop firm.',
+    heroSubEntry: (v) => ` Akun awal mulai dari $${v}.`,
+    catLabel: { discount: 'Diskon', price: 'Akun termurah', split: 'Profit Split', drawdown: 'Drawdown', dd_pct: 'DD Limit', target: 'Profit Target', min_days: 'Hari Min.', news: 'News Trading', day1: 'Day-1 Payout', scaling: 'Scaling', plat: 'Platform', rating: 'Trustpilot' },
+    catHint: { discount: 'Berapa OFF dari harga asli', price: 'Harga final dengan kupon (entri termurah)', split: 'Berapa profit yang menjadi milik trader', drawdown: 'Jenis batas kerugian', rating: 'Reputasi nyata' },
+    allowed: '✓ Diizinkan', blocked: '✗ Diblokir', yes: '✓ Ya', no: '✗ Tidak',
+    winBadge: '✓ Menang',
+    rDay1: 'butuh payout di Day-1',
+    rNews: 'trading saat rilis berita',
+    rLowCap: (v) => `ingin mulai dengan modal kecil (mulai dari $${v})`,
+    rDisc: (d) => `mengutamakan diskon terbesar (${d}% OFF)`,
+    rRep: (s) => `menghargai reputasi Trustpilot (${s} ★)`,
+    rFallback: (type, plats) => `lebih menyukai ${type || 'model ini'} dan platform seperti ${plats}`,
+    bcHome: 'Beranda', bcComp: 'Perbandingan',
+    secEyebrow1: 'Berdampingan', secH2_1: (sA, sB) => `${sA} vs ${sB} , Perbandingan`, secSub1: 'Setiap kategori menampilkan pemenang antara kedua firma.',
+    secEyebrow2: 'Siapa yang harus memilih', secH2_2: 'Untuk siapa masing-masing firma lebih cocok',
+    personaHead: (name) => `Pilih <span>${name}</span> jika Anda...`,
+    secEyebrow3: 'Pertanyaan umum', secH2_3: (sA, sB) => `${sA} vs ${sB} , FAQ`,
+    secEyebrow4: 'Perbandingan lainnya', secH2_4: 'Bandingkan juga',
+    firmCta: (s) => `Buka ${s} →`,
+    couponLabel: 'Kupon:',
+    tpReviews: (n) => `${n} ulasan · Trustpilot`,
+    finalLabel: 'Siap memulai?',
+    finalDisc: (d, c) => `${d}% OFF${c ? ` · kupon ${esc(c)}` : ''}`,
+    footUpdated: (date) => `Perbandingan dihasilkan dari data resmi dan diperbarui pada ${date}`,
+    footDisc: 'Kupon dan ketentuan dapat berubah. Konfirmasikan di checkout firma. Kupon eksklusif dan 100% gratis, tidak pernah mengubah harga Anda di checkout. Kami mitra resmi firma, dan begitulah portal ini tetap gratis untuk Anda.',
+    redirecting: 'Mengalihkan ke',
+    faqs: (a, b, sA, sB, minA, minB) => [
+      { q: `Mana yang lebih baik: ${a.name} atau ${b.name}?`, a: `Tergantung profil Anda. ${a.name} punya ${a.discount}% off${a.discount_type ? ' ' + a.discount_type : ''} dan drawdown ${a.drawdown}. ${b.name} punya ${b.discount}% off${b.discount_type ? ' ' + b.discount_type : ''} dan drawdown ${b.drawdown}. ${minA && minB ? `Akun termurah: ${minA < minB ? a.name : b.name} (mulai dari $${(Math.min(minA, minB)).toFixed(2)}).` : ''}` },
+      { q: `Berapa biaya akun ${sA} vs ${sB}?`, a: `${a.name} mulai dari ${minA ? '$' + minA.toFixed(2) : '—'}${a.coupon ? ` dengan kupon ${a.coupon}` : ''}. ${b.name} mulai dari ${minB ? '$' + minB.toFixed(2) : '—'}${b.coupon ? ` dengan kupon ${b.coupon}` : ''}.` },
+      { q: `Apakah ${sA} atau ${sB} mengizinkan news trading?`, a: `${a.name} ${a.news_trading ? 'MENGIZINKAN' : 'TIDAK mengizinkan'} trading saat rilis berita ekonomi. ${b.name} ${b.news_trading ? 'MENGIZINKAN' : 'TIDAK mengizinkan'}. ${a.news_trading !== b.news_trading ? `Jika Anda perlu news trading, pilih ${a.news_trading ? a.name : b.name}.` : ''}` },
+      { q: `Berapa lama untuk payout di ${sA} dan ${sB}?`, a: `${a.name} ${a.day1_payout ? 'melepaskan payout sejak Day-1' : 'tidak punya Day-1 payout'}. ${b.name} ${b.day1_payout ? 'melepaskan payout sejak Day-1' : 'tidak punya Day-1 payout'}.` },
+      { q: `Bisakah saya memiliki akun di kedua firma sekaligus?`, a: `Ya, diperbolehkan memiliki akun di prop firm yang berbeda secara bersamaan (multi-prop). Beberapa firma membatasi banyak akun DI DALAM firma yang sama, konfirmasikan aturan masing-masing sebelum membeli.` },
+    ],
+  },
+};
+const S = STR[LANG];
 
 async function loadFirms() {
   const r = await fetch(`${SB_URL}/rest/v1/cms_firms?active=eq.true&select=*&order=sort_order`, {
@@ -64,22 +157,17 @@ function winner(metric, a, b) {
 function genPage(a, b, allFirms) {
   const minA = priceMin(a.prices);
   const minB = priceMin(b.prices);
-  const minOrigA = priceMinOrig(a.prices);
-  const minOrigB = priceMinOrig(b.prices);
-  const savingsA = minOrigA && minA ? (minOrigA - minA).toFixed(2) : null;
-  const savingsB = minOrigB && minB ? (minOrigB - minB).toFixed(2) : null;
 
   const shortA = a.short_name || a.name.split(' ')[0];
   const shortB = b.short_name || b.name.split(' ')[0];
-  const title = `${shortA} vs ${shortB} 2026: Comparativo | Markets Coupons`;
-  const desc = `Compare ${a.name} e ${b.name}: preços, drawdown, profit split, payout. Cupom exclusivo${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' e ' + b.coupon : ''}.`.slice(0, 160);
+  const title = S.title(shortA, shortB);
+  const desc = S.desc(a, b).slice(0, 160);
   const slugPair = `${a.id}-vs-${b.id}`;
 
   // Stats com vencedor
   const wDisc = winner('discount', a.discount || 0, b.discount || 0);
   const wPrice = winner('price_low', minA, minB);
   const wRating = winner('rating', a.trustpilot_score || a.rating || 0, b.trustpilot_score || b.rating || 0);
-  const wReviews = winner('reviews', a.trustpilot_reviews || a.reviews || 0, b.trustpilot_reviews || b.reviews || 0);
   const wNews = winner('bool', a.news_trading, b.news_trading);
   const wPayout = winner('bool', a.day1_payout, b.day1_payout);
 
@@ -93,67 +181,44 @@ function genPage(a, b, allFirms) {
 
   // Comparison categories, pares de stats com winner badge
   const categories = [
-    { key: 'discount', label: 'Desconto', valA: `${a.discount}% ${a.discount_type || ''}`.trim(), valB: `${b.discount}% ${b.discount_type || ''}`.trim(), winner: wDisc, hint: 'Quanto OFF do preço original' },
-    { key: 'price', label: 'Conta menor', valA: minA ? `$${minA.toFixed(2)}` : '—', valB: minB ? `$${minB.toFixed(2)}` : '—', winner: wPrice, hint: 'Preço final c/ cupom (entrada mais barata)' },
-    { key: 'split', label: 'Profit Split', valA: a.split || '—', valB: b.split || '—', winner: 'tie', hint: 'Quanto do lucro fica com o trader' },
-    { key: 'drawdown', label: 'Drawdown', valA: a.drawdown || '—', valB: b.drawdown || '—', winner: 'tie', hint: 'Tipo de limite de perda' },
-    { key: 'dd_pct', label: 'DD Limit', valA: a.dd_pct || '—', valB: b.dd_pct || '—', winner: 'tie' },
-    { key: 'target', label: 'Profit Target', valA: a.target || '—', valB: b.target || '—', winner: 'tie' },
-    { key: 'min_days', label: 'Min. Days', valA: a.min_days || '—', valB: b.min_days || '—', winner: 'tie' },
-    { key: 'news', label: 'News Trading', valA: a.news_trading ? '✓ Permitido' : '✗ Bloqueado', valB: b.news_trading ? '✓ Permitido' : '✗ Bloqueado', winner: wNews },
-    { key: 'day1', label: 'Day-1 Payout', valA: a.day1_payout ? '✓ Sim' : '✗ Não', valB: b.day1_payout ? '✓ Sim' : '✗ Não', winner: wPayout },
-    { key: 'scaling', label: 'Scaling', valA: a.scaling || '—', valB: b.scaling || '—', winner: 'tie' },
-    { key: 'plat', label: 'Plataformas', valA: (a.platforms || []).slice(0, 3).join(', ') + ((a.platforms || []).length > 3 ? '...' : ''), valB: (b.platforms || []).slice(0, 3).join(', ') + ((b.platforms || []).length > 3 ? '...' : ''), winner: 'tie' },
-    { key: 'rating', label: 'Trustpilot', valA: `${a.trustpilot_score || a.rating || '—'} (${(a.trustpilot_reviews || a.reviews || 0).toLocaleString('pt-BR')})`, valB: `${b.trustpilot_score || b.rating || '—'} (${(b.trustpilot_reviews || b.reviews || 0).toLocaleString('pt-BR')})`, winner: wRating, hint: 'Reputação real' },
+    { key: 'discount', label: S.catLabel.discount, valA: `${a.discount}% ${a.discount_type || ''}`.trim(), valB: `${b.discount}% ${b.discount_type || ''}`.trim(), winner: wDisc, hint: S.catHint.discount },
+    { key: 'price', label: S.catLabel.price, valA: minA ? `$${minA.toFixed(2)}` : '—', valB: minB ? `$${minB.toFixed(2)}` : '—', winner: wPrice, hint: S.catHint.price },
+    { key: 'split', label: S.catLabel.split, valA: a.split || '—', valB: b.split || '—', winner: 'tie', hint: S.catHint.split },
+    { key: 'drawdown', label: S.catLabel.drawdown, valA: a.drawdown || '—', valB: b.drawdown || '—', winner: 'tie', hint: S.catHint.drawdown },
+    { key: 'dd_pct', label: S.catLabel.dd_pct, valA: a.dd_pct || '—', valB: b.dd_pct || '—', winner: 'tie' },
+    { key: 'target', label: S.catLabel.target, valA: a.target || '—', valB: b.target || '—', winner: 'tie' },
+    { key: 'min_days', label: S.catLabel.min_days, valA: a.min_days || '—', valB: b.min_days || '—', winner: 'tie' },
+    { key: 'news', label: S.catLabel.news, valA: a.news_trading ? S.allowed : S.blocked, valB: b.news_trading ? S.allowed : S.blocked, winner: wNews },
+    { key: 'day1', label: S.catLabel.day1, valA: a.day1_payout ? S.yes : S.no, valB: b.day1_payout ? S.yes : S.no, winner: wPayout },
+    { key: 'scaling', label: S.catLabel.scaling, valA: a.scaling || '—', valB: b.scaling || '—', winner: 'tie' },
+    { key: 'plat', label: S.catLabel.plat, valA: (a.platforms || []).slice(0, 3).join(', ') + ((a.platforms || []).length > 3 ? '...' : ''), valB: (b.platforms || []).slice(0, 3).join(', ') + ((b.platforms || []).length > 3 ? '...' : ''), winner: 'tie' },
+    { key: 'rating', label: S.catLabel.rating, valA: `${a.trustpilot_score || a.rating || '—'} (${(a.trustpilot_reviews || a.reviews || 0).toLocaleString(LOC.num)})`, valB: `${b.trustpilot_score || b.rating || '—'} (${(b.trustpilot_reviews || b.reviews || 0).toLocaleString(LOC.num)})`, winner: wRating, hint: S.catHint.rating },
   ];
 
   // Personas, copy persuasivo per perfil
   const buildPersonas = () => {
-    const lines = [];
-    // Persona 1: Quem deve A
     const reasonsA = [];
-    if (a.day1_payout && !b.day1_payout) reasonsA.push('precisa de payout no Day-1');
-    if (a.news_trading && !b.news_trading) reasonsA.push('opera durante notícias');
-    if (minA && minB && minA < minB) reasonsA.push(`quer entrar com pouco capital (a partir de $${minA.toFixed(2)})`);
-    if ((a.discount || 0) > (b.discount || 0)) reasonsA.push(`prioriza maior desconto (${a.discount}% OFF)`);
-    if ((a.trustpilot_score || 0) > (b.trustpilot_score || 0)) reasonsA.push(`valoriza reputação Trustpilot (${a.trustpilot_score} ★)`);
-    if (!reasonsA.length) reasonsA.push(`prefere ${a.type?.toLowerCase() || 'esse modelo'} e plataformas como ${(a.platforms || []).slice(0, 2).join(', ')}`);
+    if (a.day1_payout && !b.day1_payout) reasonsA.push(S.rDay1);
+    if (a.news_trading && !b.news_trading) reasonsA.push(S.rNews);
+    if (minA && minB && minA < minB) reasonsA.push(S.rLowCap(minA.toFixed(2)));
+    if ((a.discount || 0) > (b.discount || 0)) reasonsA.push(S.rDisc(a.discount));
+    if ((a.trustpilot_score || 0) > (b.trustpilot_score || 0)) reasonsA.push(S.rRep(a.trustpilot_score));
+    if (!reasonsA.length) reasonsA.push(S.rFallback(a.type?.toLowerCase(), (a.platforms || []).slice(0, 2).join(', ')));
 
     const reasonsB = [];
-    if (b.day1_payout && !a.day1_payout) reasonsB.push('precisa de payout no Day-1');
-    if (b.news_trading && !a.news_trading) reasonsB.push('opera durante notícias');
-    if (minA && minB && minB < minA) reasonsB.push(`quer entrar com pouco capital (a partir de $${minB.toFixed(2)})`);
-    if ((b.discount || 0) > (a.discount || 0)) reasonsB.push(`prioriza maior desconto (${b.discount}% OFF)`);
-    if ((b.trustpilot_score || 0) > (a.trustpilot_score || 0)) reasonsB.push(`valoriza reputação Trustpilot (${b.trustpilot_score} ★)`);
-    if (!reasonsB.length) reasonsB.push(`prefere ${b.type?.toLowerCase() || 'esse modelo'} e plataformas como ${(b.platforms || []).slice(0, 2).join(', ')}`);
+    if (b.day1_payout && !a.day1_payout) reasonsB.push(S.rDay1);
+    if (b.news_trading && !a.news_trading) reasonsB.push(S.rNews);
+    if (minA && minB && minB < minA) reasonsB.push(S.rLowCap(minB.toFixed(2)));
+    if ((b.discount || 0) > (a.discount || 0)) reasonsB.push(S.rDisc(b.discount));
+    if ((b.trustpilot_score || 0) > (a.trustpilot_score || 0)) reasonsB.push(S.rRep(b.trustpilot_score));
+    if (!reasonsB.length) reasonsB.push(S.rFallback(b.type?.toLowerCase(), (b.platforms || []).slice(0, 2).join(', ')));
 
     return { reasonsA, reasonsB };
   };
   const { reasonsA, reasonsB } = buildPersonas();
 
   // FAQ visível + schema
-  const faqs = [
-    {
-      q: `Qual é melhor: ${a.name} ou ${b.name}?`,
-      a: `Depende do perfil. ${a.name} tem ${a.discount}% off${a.discount_type ? ' ' + a.discount_type : ''} e drawdown ${a.drawdown}. ${b.name} tem ${b.discount}% off${b.discount_type ? ' ' + b.discount_type : ''} e drawdown ${b.drawdown}. ${minA && minB ? `Conta mais barata: ${minA < minB ? a.name : b.name} (a partir de $${(Math.min(minA, minB)).toFixed(2)}).` : ''}`
-    },
-    {
-      q: `Quanto custa a conta de ${shortA} vs ${shortB}?`,
-      a: `${a.name} começa em ${minA ? '$' + minA.toFixed(2) : '—'}${a.coupon ? ` com cupom ${a.coupon}` : ''}. ${b.name} começa em ${minB ? '$' + minB.toFixed(2) : '—'}${b.coupon ? ` com cupom ${b.coupon}` : ''}.`
-    },
-    {
-      q: `${shortA} ou ${shortB} permite news trading?`,
-      a: `${a.name} ${a.news_trading ? 'PERMITE' : 'NÃO permite'} operar durante notícias econômicas. ${b.name} ${b.news_trading ? 'PERMITE' : 'NÃO permite'}. ${a.news_trading !== b.news_trading ? `Se você precisa operar news, escolha ${a.news_trading ? a.name : b.name}.` : ''}`
-    },
-    {
-      q: `Quanto tempo pra fazer payout em ${shortA} e ${shortB}?`,
-      a: `${a.name} ${a.day1_payout ? 'libera payout desde o Day-1' : 'não tem Day-1 payout'}. ${b.name} ${b.day1_payout ? 'libera payout desde o Day-1' : 'não tem Day-1 payout'}.`
-    },
-    {
-      q: `Posso ter conta nas duas firmas ao mesmo tempo?`,
-      a: `Sim, é permitido ter conta em prop firms diferentes ao mesmo tempo (multi-prop). Algumas firmas restringem múltiplas contas DENTRO da mesma firma, confirme as regras de cada uma antes de comprar.`
-    },
-  ];
+  const faqs = S.faqs(a, b, shortA, shortB, minA, minB);
 
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -164,9 +229,9 @@ function genPage(a, b, allFirms) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.marketscoupons.com/' },
-      { '@type': 'ListItem', position: 2, name: 'Comparativos', item: 'https://www.marketscoupons.com/' },
-      { '@type': 'ListItem', position: 3, name: `${shortA} vs ${shortB}`, item: `https://www.marketscoupons.com/${slugPair}` }
+      { '@type': 'ListItem', position: 1, name: S.bcHome, item: 'https://www.marketscoupons.com/' },
+      { '@type': 'ListItem', position: 2, name: S.bcComp, item: 'https://www.marketscoupons.com/' },
+      { '@type': 'ListItem', position: 3, name: `${shortA} vs ${shortB}`, item: `https://www.marketscoupons.com${PFX}/${slugPair}` }
     ]
   };
 
@@ -175,10 +240,9 @@ function genPage(a, b, allFirms) {
     .filter(f => f.id !== a.id && f.id !== b.id)
     .slice(0, 8)
     .map(f => {
-      // Slug ordering by sort_order, use whichever comes first
       const lhs = f.sort_order < a.sort_order ? f.id : a.id;
       const rhs = f.sort_order < a.sort_order ? a.id : f.id;
-      return `<a class="cmp-link" href="/${lhs}-vs-${rhs}">${esc(shortA)} <span style="opacity:.6">vs</span> ${esc(f.short_name || f.name.split(' ')[0])}</a>`;
+      return `<a class="cmp-link" href="${PFX}/${lhs}-vs-${rhs}">${esc(shortA)} <span style="opacity:.6">vs</span> ${esc(f.short_name || f.name.split(' ')[0])}</a>`;
     }).join('');
 
   // Render category cards (mini-UIs com winner badge)
@@ -190,33 +254,36 @@ function genPage(a, b, allFirms) {
       <div class="cat-row">
         <div class="cat-side ${aWin ? 'win' : ''}" style="--c:${a.color}">
           <div class="cat-val">${esc(c.valA)}</div>
-          ${aWin ? '<div class="cat-badge">✓ Vence</div>' : ''}
+          ${aWin ? `<div class="cat-badge">${esc(S.winBadge)}</div>` : ''}
         </div>
         <div class="cat-vs">vs</div>
         <div class="cat-side ${bWin ? 'win' : ''}" style="--c:${b.color}">
           <div class="cat-val">${esc(c.valB)}</div>
-          ${bWin ? '<div class="cat-badge">✓ Vence</div>' : ''}
+          ${bWin ? `<div class="cat-badge">${esc(S.winBadge)}</div>` : ''}
         </div>
       </div>
     </div>`;
   }).join('');
 
+  const heroSub = S.heroSubBase + (minA && minB ? S.heroSubEntry((Math.min(minA, minB)).toFixed(2)) : '');
+
   return `<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="${LOC.html}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="https://www.marketscoupons.com/${slugPair}">
+<link rel="canonical" href="https://www.marketscoupons.com${PFX}/${slugPair}">
 <link rel="alternate" hreflang="pt-BR" href="https://www.marketscoupons.com/${slugPair}">
+<link rel="alternate" hreflang="id-ID" href="https://www.marketscoupons.com/id/${slugPair}">
 <link rel="alternate" hreflang="x-default" href="https://www.marketscoupons.com/${slugPair}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="https://www.marketscoupons.com/${slugPair}">
-<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://www.marketscoupons.com${PFX}/${slugPair}">
+<meta property="og:locale" content="${LOC.og}">
 <meta property="og:image" content="https://www.marketscoupons.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.png">
@@ -355,16 +422,16 @@ img{max-width:100%;display:block}
 <!-- TOP NAV -->
 <nav class="cmp-nav">
   <a class="cmp-nav-logo" href="/">Markets <span>Coupons</span></a>
-  <a class="cmp-nav-back" href="/">← Voltar pra home</a>
+  <a class="cmp-nav-back" href="/">${esc(S.navBack)}</a>
 </nav>
 
 <div class="cmp-wrap">
 
   <!-- HERO -->
   <section class="cmp-hero">
-    <div class="cmp-hero-eyebrow">Comparativo Prop Firms 2026</div>
+    <div class="cmp-hero-eyebrow">${esc(S.heroEyebrow)}</div>
     <h1 class="cmp-h1">${esc(a.name)}<span class="vs">vs</span>${esc(b.name)}</h1>
-    <p class="cmp-sub">Análise lado a lado das duas prop firms. ${minA && minB ? `Conta de entrada a partir de $${(Math.min(minA, minB)).toFixed(2)}.` : ''}</p>
+    <p class="cmp-sub">${esc(heroSub)}</p>
   </section>
 
   <!-- FIRM CARDS -->
@@ -382,8 +449,8 @@ img{max-width:100%;display:block}
         <span><strong>${minA ? '$' + minA.toFixed(2) : '—'}</strong> entry</span>
         <span><strong>${a.trustpilot_score || a.rating || '—'} ★</strong></span>
       </div>
-      <a class="cmp-firm-cta" href="${esc(a.link)}" target="_blank" rel="noopener" data-firm="${esc(a.id)}">Acessar ${esc(shortA)} →</a>
-      ${a.coupon ? `<div class="cmp-firm-coupon">Cupom: <strong>${esc(a.coupon)}</strong></div>` : ''}
+      <a class="cmp-firm-cta" href="${esc(a.link)}" target="_blank" rel="noopener" data-firm="${esc(a.id)}">${esc(S.firmCta(shortA))}</a>
+      ${a.coupon ? `<div class="cmp-firm-coupon">${esc(S.couponLabel)} <strong>${esc(a.coupon)}</strong></div>` : ''}
     </article>
 
     <div class="vs-circle">VS</div>
@@ -401,8 +468,8 @@ img{max-width:100%;display:block}
         <span><strong>${minB ? '$' + minB.toFixed(2) : '—'}</strong> entry</span>
         <span><strong>${b.trustpilot_score || b.rating || '—'} ★</strong></span>
       </div>
-      <a class="cmp-firm-cta" href="${esc(b.link)}" target="_blank" rel="noopener" data-firm="${esc(b.id)}">Acessar ${esc(shortB)} →</a>
-      ${b.coupon ? `<div class="cmp-firm-coupon">Cupom: <strong>${esc(b.coupon)}</strong></div>` : ''}
+      <a class="cmp-firm-cta" href="${esc(b.link)}" target="_blank" rel="noopener" data-firm="${esc(b.id)}">${esc(S.firmCta(shortB))}</a>
+      ${b.coupon ? `<div class="cmp-firm-coupon">${esc(S.couponLabel)} <strong>${esc(b.coupon)}</strong></div>` : ''}
     </article>
   </div>
 
@@ -412,43 +479,43 @@ img{max-width:100%;display:block}
       <div class="cmp-tp-stars">${stars(a.trustpilot_score || a.rating)}</div>
       <div>
         <div class="cmp-tp-score">${a.trustpilot_score || a.rating || '—'}</div>
-        <div class="cmp-tp-meta">${(a.trustpilot_reviews || a.reviews || 0).toLocaleString('pt-BR')} reviews · Trustpilot</div>
+        <div class="cmp-tp-meta">${esc(S.tpReviews((a.trustpilot_reviews || a.reviews || 0).toLocaleString(LOC.num)))}</div>
       </div>
     </div>
     <div class="cmp-tp">
       <div class="cmp-tp-stars">${stars(b.trustpilot_score || b.rating)}</div>
       <div>
         <div class="cmp-tp-score">${b.trustpilot_score || b.rating || '—'}</div>
-        <div class="cmp-tp-meta">${(b.trustpilot_reviews || b.reviews || 0).toLocaleString('pt-BR')} reviews · Trustpilot</div>
+        <div class="cmp-tp-meta">${esc(S.tpReviews((b.trustpilot_reviews || b.reviews || 0).toLocaleString(LOC.num)))}</div>
       </div>
     </div>
   </div>
 
   <!-- COMPARISON CATEGORIES -->
   <section class="cmp-sec">
-    <div class="cmp-sec-eyebrow">Lado a lado</div>
-    <h2 class="cmp-sec-h2">${esc(shortA)} vs ${esc(shortB)}, Comparação</h2>
-    <p class="cmp-sec-sub">Cada categoria mostra o vencedor entre as duas firmas.</p>
+    <div class="cmp-sec-eyebrow">${esc(S.secEyebrow1)}</div>
+    <h2 class="cmp-sec-h2">${esc(S.secH2_1(shortA, shortB))}</h2>
+    <p class="cmp-sec-sub">${esc(S.secSub1)}</p>
   </section>
   <div class="cats">${renderCategories}</div>
 
   <!-- PERSONAS -->
   <section class="cmp-sec">
-    <div class="cmp-sec-eyebrow">Quem deve escolher</div>
-    <h2 class="cmp-sec-h2">Pra quem cada firma é melhor</h2>
+    <div class="cmp-sec-eyebrow">${esc(S.secEyebrow2)}</div>
+    <h2 class="cmp-sec-h2">${esc(S.secH2_2)}</h2>
   </section>
   <div class="personas">
     <article class="persona a">
       <div class="persona-h">
         <img src="https://www.marketscoupons.com/${esc(a.icon_url)}" alt="" width="28" height="28">
-        Escolha <span>${esc(a.name)}</span> se você...
+        ${S.personaHead(esc(a.name))}
       </div>
       <ul>${reasonsA.map(r => `<li>${esc(r)}</li>`).join('')}</ul>
     </article>
     <article class="persona b">
       <div class="persona-h">
         <img src="https://www.marketscoupons.com/${esc(b.icon_url)}" alt="" width="28" height="28">
-        Escolha <span>${esc(b.name)}</span> se você...
+        ${S.personaHead(esc(b.name))}
       </div>
       <ul>${reasonsB.map(r => `<li>${esc(r)}</li>`).join('')}</ul>
     </article>
@@ -456,8 +523,8 @@ img{max-width:100%;display:block}
 
   <!-- FAQ visível -->
   <section class="cmp-sec">
-    <div class="cmp-sec-eyebrow">Perguntas frequentes</div>
-    <h2 class="cmp-sec-h2">${esc(shortA)} vs ${esc(shortB)}, FAQ</h2>
+    <div class="cmp-sec-eyebrow">${esc(S.secEyebrow3)}</div>
+    <h2 class="cmp-sec-h2">${esc(S.secH2_3(shortA, shortB))}</h2>
   </section>
   <div class="faqs">
     ${faqs.map(f => `<details class="faq"><summary class="faq-q">${esc(f.q)}</summary><div class="faq-a">${esc(f.a)}</div></details>`).join('')}
@@ -465,28 +532,28 @@ img{max-width:100%;display:block}
 
   <!-- INTERNAL LINKS NETWORK -->
   <section class="cmp-sec">
-    <div class="cmp-sec-eyebrow">Outros comparativos</div>
-    <h2 class="cmp-sec-h2">Compare também</h2>
+    <div class="cmp-sec-eyebrow">${esc(S.secEyebrow4)}</div>
+    <h2 class="cmp-sec-h2">${esc(S.secH2_4)}</h2>
   </section>
   <div class="cmp-others">${otherCombos}</div>
 
   <!-- FINAL CTAs -->
   <div class="cmp-cta-bottom">
     <a class="cmp-cta-final a" href="${esc(a.link)}" target="_blank" rel="noopener">
-      <div class="cmp-cta-final-label">Pronto pra começar?</div>
+      <div class="cmp-cta-final-label">${esc(S.finalLabel)}</div>
       <div class="cmp-cta-final-name">${esc(a.name)}</div>
-      <div class="cmp-cta-final-disc">${a.discount}% OFF${a.coupon ? ` · cupom ${esc(a.coupon)}` : ''}</div>
+      <div class="cmp-cta-final-disc">${esc(S.finalDisc(a.discount, a.coupon))}</div>
     </a>
     <a class="cmp-cta-final b" href="${esc(b.link)}" target="_blank" rel="noopener">
-      <div class="cmp-cta-final-label">Pronto pra começar?</div>
+      <div class="cmp-cta-final-label">${esc(S.finalLabel)}</div>
       <div class="cmp-cta-final-name">${esc(b.name)}</div>
-      <div class="cmp-cta-final-disc">${b.discount}% OFF${b.coupon ? ` · cupom ${esc(b.coupon)}` : ''}</div>
+      <div class="cmp-cta-final-disc">${esc(S.finalDisc(b.discount, b.coupon))}</div>
     </a>
   </div>
 
   <footer class="cmp-foot">
-    <a href="/">marketscoupons.com</a> · Comparativo gerado de dados oficiais e atualizado em ${new Date().toLocaleDateString('pt-BR')}
-    <p class="cmp-foot-disc">Cupons e condições podem mudar. Confirme no checkout da firma. Markets Coupons recebe comissão de afiliado em compras feitas via links acima, sem custo adicional pra você.</p>
+    <a href="/">marketscoupons.com</a> · ${esc(S.footUpdated(new Date().toLocaleDateString(LOC.num)))}
+    <p class="cmp-foot-disc">${esc(S.footDisc)}</p>
   </footer>
 
 </div>
@@ -496,11 +563,12 @@ img{max-width:100%;display:block}
 }
 
 (async () => {
-  console.log('Loading firms...');
+  console.log(`Loading firms... (lang=${LANG})`);
   const firms = await loadFirms();
+  if (!Array.isArray(firms)) { console.error('Falha ao carregar firmas:', firms); process.exit(1); }
   console.log(`Loaded ${firms.length} firms.`);
 
-  const outDir = path.join(ROOT, 'compare');
+  const outDir = path.join(ROOT, ...(LANG === 'pt' ? ['compare'] : [LANG, 'compare']));
   fs.mkdirSync(outDir, { recursive: true });
 
   let canonicalCount = 0, redirectCount = 0;
@@ -515,10 +583,10 @@ img{max-width:100%;display:block}
       // Reverse: redirect mínimo
       const shortA = a.short_name || a.name.split(' ')[0];
       const shortB = b.short_name || b.name.split(' ')[0];
-      const redirectHtml = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>${esc(shortB)} vs ${esc(shortA)} | Markets Coupons</title><link rel="canonical" href="https://www.marketscoupons.com/${canonicalSlug}"><meta http-equiv="refresh" content="0;url=/${canonicalSlug}"><meta name="robots" content="noindex,follow"></head><body>Redirecionando para <a href="/${canonicalSlug}">${esc(a.name)} vs ${esc(b.name)}</a>...</body></html>`;
+      const redirectHtml = `<!DOCTYPE html><html lang="${LOC.html}"><head><meta charset="UTF-8"><title>${esc(shortB)} vs ${esc(shortA)} | Markets Coupons</title><link rel="canonical" href="https://www.marketscoupons.com${PFX}/${canonicalSlug}"><meta http-equiv="refresh" content="0;url=${PFX}/${canonicalSlug}"><meta name="robots" content="noindex,follow"></head><body>${esc(S.redirecting)} <a href="${PFX}/${canonicalSlug}">${esc(a.name)} vs ${esc(b.name)}</a>...</body></html>`;
       fs.writeFileSync(path.join(outDir, `${reverseSlug}.html`), redirectHtml, 'utf8');
       redirectCount++;
     }
   }
-  console.log(`Generated ${canonicalCount} canonical + ${redirectCount} reverse-redirect pages.`);
+  console.log(`Generated ${canonicalCount} canonical + ${redirectCount} reverse-redirect pages in ${outDir}.`);
 })();
