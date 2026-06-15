@@ -1340,9 +1340,9 @@ async function setL(lang,flag,code){
   document.getElementById('l-flag').textContent=flag;
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
+  // i18n e por idioma: carrega overrides do novo lang ANTES de re-renderizar (cache/guard = rapido)
+  await loadI18nFromSupabase();
   applyTranslations();
-  // i18n agora e por idioma -> ao trocar, re-busca os overrides do novo lang e re-aplica
-  loadI18nFromSupabase().then(()=>{ try{ applyTranslations(); }catch(e){} });
   // If reading a blog article, reload it in the new language
   if(_openBlogSlug && _openBlogGroup){
     db.from('blog_posts').select('slug').eq('article_group',_openBlogGroup).eq('lang',lang).eq('active',true).maybeSingle().then(({data})=>{
@@ -4503,22 +4503,25 @@ async function loadCmsTexts(){
 }
 
 /* ─── Load I18N overrides from Supabase ─── */
+let _i18nLoadedLangs = new Set();
 async function loadI18nFromSupabase(){
   // Egress: busca SO a coluna do idioma atual (antes puxava as 7 langs = 365KB/visita).
-  // _applyI18nRows aplica so a lang presente na row. Cache por idioma. setL re-busca ao trocar.
+  // _applyI18nRows aplica so a lang presente na row. Cache por idioma. Guard evita re-fetch
+  // do mesmo idioma na sessao (switch ida-e-volta = gratis).
   const lang=(typeof _currentLang!=='undefined'&&_currentLang)||'en';
+  if(_i18nLoadedLangs.has(lang)) return;
   try{
     const{data,error}=await db.from('i18n').select('key,'+lang);
     if(error||!data||!data.length){
       const cached=localStorage.getItem('mc_i18n_cache_'+lang);
-      if(cached){try{_applyI18nRows(JSON.parse(cached));}catch(e){}}
+      if(cached){try{_applyI18nRows(JSON.parse(cached));_i18nLoadedLangs.add(lang);}catch(e){}}
       return;
     }
-    _applyI18nRows(data);
+    _applyI18nRows(data); _i18nLoadedLangs.add(lang);
     try{localStorage.setItem('mc_i18n_cache_'+lang,JSON.stringify(data));}catch(e){}
   }catch(e){
     const cached=localStorage.getItem('mc_i18n_cache_'+lang);
-    if(cached){try{_applyI18nRows(JSON.parse(cached));}catch(e2){}}
+    if(cached){try{_applyI18nRows(JSON.parse(cached));_i18nLoadedLangs.add(lang);}catch(e2){}}
   }
 }
 function _applyI18nRows(rows){
