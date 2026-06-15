@@ -287,8 +287,10 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 .see-all-lbl svg{width:18px;height:18px;color:var(--gold)}
 
 .foot{max-width:560px;margin:28px auto 0;padding:0 16px;text-align:center}
-.foot-warn{font-size:10.5px;color:var(--t3);line-height:1.55;padding:12px 14px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.18);border-radius:10px;margin-bottom:12px;text-align:left}
-.foot-warn strong{color:var(--red);font-weight:700;text-transform:uppercase;font-size:9.5px;letter-spacing:.6px;display:block;margin-bottom:4px}
+.foot-warn{font-size:12px;color:var(--t2);line-height:1.6;padding:13px 15px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.22);border-radius:10px;margin-bottom:10px;text-align:left}
+.foot-warn strong{color:var(--red);font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.6px;display:block;margin-bottom:5px}
+.foot-transp{font-size:12px;color:var(--t2);line-height:1.6;padding:13px 15px;background:rgba(107,182,201,.06);border:1px solid rgba(107,182,201,.2);border-radius:10px;margin-bottom:12px;text-align:left}
+.foot-transp strong{color:var(--gold);font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.6px;display:block;margin-bottom:5px}
 .foot-warn a{color:var(--gold);text-decoration:underline}
 .foot-meta{font-size:13px;color:var(--t3);line-height:1.8;padding:12px 0}
 .foot a, .foot-warn a, .foot-meta a{color:var(--t2);text-decoration:underline;display:inline-block;padding:14px 10px;min-height:48px;min-width:48px;line-height:1.2;vertical-align:middle}
@@ -437,6 +439,10 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
     <strong data-i18n="risk_warning"></strong>
     <span data-i18n-html="risk_text"></span>
   </div>
+  <div class="foot-transp">
+    <strong data-i18n="transparency_title"></strong>
+    <span data-i18n="transparency_text"></span>
+  </div>
   <div class="foot-meta">
     © Markets Coupons · <a href="/terms" data-i18n="terms"></a> · <a href="/privacy" data-i18n="privacy"></a> · <a href="/risk-disclosure" data-i18n="risk"></a>
   </div>
@@ -458,7 +464,9 @@ const I18N = {
     copy: 'Copiar', copied: 'Copiado!', see_plans: 'Comprar com desconto',
     see_all_firms: 'Ver todas as 17 firmas no site',
     risk_warning: 'Aviso de risco',
-    risk_text: 'Operar futuros, forex e CFDs envolve risco substancial e pode resultar em perdas. Conteúdo do Markets Coupons é educacional, não é recomendação de investimento. <b>Preços, regras e especificações sujeitos a alteração da firma, sempre confirme no checkout oficial antes de comprar.</b> Recebemos comissão de afiliados quando você usa nossos cupons. Leia a <a href="/risk-disclosure">declaração de risco completa</a>.',
+    risk_text: 'Operar futuros, forex e CFDs envolve risco substancial e pode resultar em perdas. Conteúdo do Markets Coupons é educacional, não é recomendação de investimento. <b>Preços, regras e especificações sujeitos a alteração da firma, sempre confirme no checkout oficial antes de comprar.</b> Leia a <a href="/risk-disclosure">declaração de risco completa</a>.',
+    transparency_title: 'Transparência',
+    transparency_text: 'Comparamos as melhores prop firms e negociamos cupons exclusivos. Quando você usa um cupom, a firma nos paga uma comissão, sem custo extra pra você. É assim que mantemos o portal gratuito.',
     terms: 'Termos', privacy: 'Privacidade', risk: 'Risco',
     stat_firms: 'Firmas', stat_off: 'Off Máx', stat_free_v: 'Grátis', stat_free_l: 'Sempre', stat_nosignup_v: '0', stat_nosignup_l: 'Cadastro',
     chip_exclusive: 'Cupons exclusivos', chip_verified: 'Verificado diariamente', chip_langs: '7 idiomas', chip_nosignup: 'Sem cadastro',
@@ -481,7 +489,9 @@ const I18N = {
     copy: 'Copy', copied: 'Copied!', see_plans: 'Buy with discount',
     see_all_firms: 'See all 17 firms on the site',
     risk_warning: 'Risk warning',
-    risk_text: 'Trading futures, forex and CFDs involves substantial risk and may result in losses. Markets Coupons content is educational, not investment advice. <b>Prices, rules and specifications subject to change by the firm, always confirm at the official checkout before purchasing.</b> We earn affiliate commission when you use our coupons. Read the <a href="/risk-disclosure">complete risk disclosure</a>.',
+    risk_text: 'Trading futures, forex and CFDs involves substantial risk and may result in losses. Markets Coupons content is educational, not investment advice. <b>Prices, rules and specifications subject to change by the firm, always confirm at the official checkout before purchasing.</b> Read the <a href="/risk-disclosure">complete risk disclosure</a>.',
+    transparency_title: 'Transparency',
+    transparency_text: 'We compare the top prop firms and negotiate exclusive coupons. When you use a coupon, the firm pays us a commission, at no extra cost to you. This is how we keep the portal free.',
     terms: 'Terms', privacy: 'Privacy', risk: 'Risk',
     stat_firms: 'Firms', stat_off: 'Max Off', stat_free_v: 'Free', stat_free_l: 'Always', stat_nosignup_v: '0', stat_nosignup_l: 'Sign-up',
     chip_exclusive: 'Exclusive coupons', chip_verified: 'Verified daily', chip_langs: '7 languages', chip_nosignup: 'No sign-up',
@@ -504,7 +514,9 @@ const I18N = {
     copy: 'Copiar', copied: '¡Copiado!', see_plans: 'Comprar con descuento',
     see_all_firms: 'Ver las 17 firmas en el sitio',
     risk_warning: 'Aviso de riesgo',
-    risk_text: 'Operar futuros, forex y CFDs implica un riesgo sustancial y puede resultar en pérdidas. El contenido de Markets Coupons es educativo, no es asesoramiento de inversión. Recibimos comisión de afiliados cuando usas nuestros cupones. Lee la <a href="/risk-disclosure">declaración de riesgo completa</a>.',
+    risk_text: 'Operar futuros, forex y CFDs implica un riesgo sustancial y puede resultar en pérdidas. El contenido de Markets Coupons es educativo, no es asesoramiento de inversión. Lee la <a href="/risk-disclosure">declaración de riesgo completa</a>.',
+    transparency_title: 'Transparencia',
+    transparency_text: 'Comparamos las mejores prop firms y negociamos cupones exclusivos. Cuando usas un cupón, la firma nos paga una comisión, sin coste extra para ti. Así mantenemos el portal gratuito.',
     terms: 'Términos', privacy: 'Privacidad', risk: 'Riesgo',
     stat_firms: 'Firmas', stat_off: 'Off Máx', stat_free_v: 'Gratis', stat_free_l: 'Siempre', stat_nosignup_v: '0', stat_nosignup_l: 'Registro',
     chip_exclusive: 'Cupones exclusivos', chip_verified: 'Verificado a diario', chip_langs: '7 idiomas', chip_nosignup: 'Sin registro',
@@ -527,7 +539,9 @@ const I18N = {
     copy: 'Copia', copied: 'Copiato!', see_plans: 'Acquista con sconto',
     see_all_firms: 'Vedi tutte le 17 firm sul sito',
     risk_warning: 'Avviso di rischio',
-    risk_text: 'Il trading di futures, forex e CFD comporta rischi sostanziali e può causare perdite. I contenuti di Markets Coupons sono educativi, non consigli di investimento. Riceviamo commissioni di affiliazione quando usi i nostri coupon. Leggi la <a href="/risk-disclosure">informativa completa sui rischi</a>.',
+    risk_text: 'Il trading di futures, forex e CFD comporta rischi sostanziali e può causare perdite. I contenuti di Markets Coupons sono educativi, non consigli di investimento. Leggi la <a href="/risk-disclosure">informativa completa sui rischi</a>.',
+    transparency_title: 'Trasparenza',
+    transparency_text: 'Confrontiamo le migliori prop firm e negoziamo coupon esclusivi. Quando usi un coupon, la firma ci paga una commissione, senza costi extra per te. È così che manteniamo il portale gratuito.',
     terms: 'Termini', privacy: 'Privacy', risk: 'Rischio',
     stat_firms: 'Firm', stat_off: 'Off Max', stat_free_v: 'Gratis', stat_free_l: 'Sempre', stat_nosignup_v: '0', stat_nosignup_l: 'Registrazione',
     chip_exclusive: 'Coupon esclusivi', chip_verified: 'Verificato ogni giorno', chip_langs: '7 lingue', chip_nosignup: 'Senza registrazione',
@@ -550,7 +564,9 @@ const I18N = {
     copy: 'Copier', copied: 'Copié !', see_plans: 'Acheter avec remise',
     see_all_firms: 'Voir les 17 firmes sur le site',
     risk_warning: 'Avertissement de risque',
-    risk_text: 'Trader des futures, du forex et des CFD implique un risque substantiel et peut entraîner des pertes. Le contenu de Markets Coupons est éducatif, pas un conseil d\'investissement. Nous recevons une commission d\'affilié lorsque vous utilisez nos coupons. Lisez la <a href="/risk-disclosure">déclaration de risque complète</a>.',
+    risk_text: 'Trader des futures, du forex et des CFD implique un risque substantiel et peut entraîner des pertes. Le contenu de Markets Coupons est éducatif, pas un conseil d\'investissement. Lisez la <a href="/risk-disclosure">déclaration de risque complète</a>.',
+    transparency_title: 'Transparence',
+    transparency_text: 'Nous comparons les meilleures prop firms et négocions des coupons exclusifs. Quand vous utilisez un coupon, la firme nous verse une commission, sans coût supplémentaire pour vous. Voilà comment nous gardons ce portail gratuit.',
     terms: 'Conditions', privacy: 'Confidentialité', risk: 'Risque',
     stat_firms: 'Firmes', stat_off: 'Off Max', stat_free_v: 'Gratuit', stat_free_l: 'Toujours', stat_nosignup_v: '0', stat_nosignup_l: 'Inscription',
     chip_exclusive: 'Coupons exclusifs', chip_verified: 'Vérifié quotidien', chip_langs: '7 langues', chip_nosignup: 'Sans inscription',
@@ -573,7 +589,9 @@ const I18N = {
     copy: 'Kopieren', copied: 'Kopiert!', see_plans: 'Mit Rabatt kaufen',
     see_all_firms: 'Alle 17 Firmen auf der Website ansehen',
     risk_warning: 'Risikohinweis',
-    risk_text: 'Der Handel mit Futures, Forex und CFDs birgt erhebliche Risiken und kann zu Verlusten führen. Markets Coupons-Inhalte sind Bildungsmaterial, keine Anlageberatung. Wir erhalten Affiliate-Provision, wenn Sie unsere Coupons verwenden. Lesen Sie die <a href="/risk-disclosure">vollständige Risikoerklärung</a>.',
+    risk_text: 'Der Handel mit Futures, Forex und CFDs birgt erhebliche Risiken und kann zu Verlusten führen. Markets Coupons-Inhalte sind Bildungsmaterial, keine Anlageberatung. Lesen Sie die <a href="/risk-disclosure">vollständige Risikoerklärung</a>.',
+    transparency_title: 'Transparenz',
+    transparency_text: 'Wir vergleichen die besten Prop Firms und verhandeln exklusive Gutscheine. Wenn Sie einen Gutschein nutzen, zahlt uns die Firma eine Provision, ohne zusätzliche Kosten für Sie. So halten wir das Portal kostenlos.',
     terms: 'AGB', privacy: 'Datenschutz', risk: 'Risiko',
     stat_firms: 'Firmen', stat_off: 'Max Off', stat_free_v: 'Gratis', stat_free_l: 'Immer', stat_nosignup_v: '0', stat_nosignup_l: 'Registrierung',
     chip_exclusive: 'Exklusive Coupons', chip_verified: 'Täglich geprüft', chip_langs: '7 Sprachen', chip_nosignup: 'Ohne Registrierung',
@@ -596,7 +614,9 @@ const I18N = {
     copy: 'نسخ', copied: 'تم النسخ!', see_plans: 'اشترِ بخصم',
     see_all_firms: 'عرض جميع الشركات الـ17 على الموقع',
     risk_warning: 'تحذير المخاطر',
-    risk_text: 'تداول العقود الآجلة والفوركس والـ CFDs ينطوي على مخاطر كبيرة وقد يؤدي إلى خسائر. محتوى Markets Coupons تعليمي وليس نصيحة استثمارية. نحصل على عمولة عند استخدامك لكوبوناتنا. اقرأ <a href="/risk-disclosure">بيان المخاطر الكامل</a>.',
+    risk_text: 'تداول العقود الآجلة والفوركس والـ CFDs ينطوي على مخاطر كبيرة وقد يؤدي إلى خسائر. محتوى Markets Coupons تعليمي وليس نصيحة استثمارية. اقرأ <a href="/risk-disclosure">بيان المخاطر الكامل</a>.',
+    transparency_title: 'الشفافية',
+    transparency_text: 'نقارن أفضل شركات Prop ونتفاوض على كوبونات حصرية. عند استخدامك كوبونًا، تدفع لنا الشركة عمولة دون أي تكلفة إضافية عليك. هكذا نُبقي البوابة مجانية.',
     terms: 'الشروط', privacy: 'الخصوصية', risk: 'المخاطر',
     stat_firms: 'شركات', stat_off: 'أقصى خصم', stat_free_v: 'مجاناً', stat_free_l: 'دائماً', stat_nosignup_v: '0', stat_nosignup_l: 'تسجيل',
     chip_exclusive: 'كوبونات حصرية', chip_verified: 'محقق يومياً', chip_langs: '7 لغات', chip_nosignup: 'بدون تسجيل',
@@ -619,7 +639,9 @@ const I18N = {
     copy: 'Salin', copied: 'Tersalin!', see_plans: 'Beli dengan Diskon',
     see_all_firms: 'Lihat 17 firma di situs lengkap',
     risk_warning: 'Peringatan Risiko',
-    risk_text: 'Trading Futures, Forex, dan CFDs melibatkan risiko substansial dan dapat menyebabkan kerugian. Konten Markets Coupons bersifat edukatif, bukan saran investasi. Kami menerima komisi atas penggunaan kupon kami. Baca <a href="/risk-disclosure">pengungkapan risiko lengkap</a>. Harga, aturan, dan spesifikasi dapat berubah oleh firma, selalu konfirmasi di checkout resmi sebelum membeli.',
+    risk_text: 'Trading Futures, Forex, dan CFDs melibatkan risiko substansial dan dapat menyebabkan kerugian. Konten Markets Coupons bersifat edukatif, bukan saran investasi. Harga, aturan, dan spesifikasi dapat berubah oleh firma, selalu konfirmasi di checkout resmi sebelum membeli. Baca <a href="/risk-disclosure">pengungkapan risiko lengkap</a>.',
+    transparency_title: 'Transparansi',
+    transparency_text: 'Kami membandingkan prop firm terbaik dan menegosiasikan kupon eksklusif. Saat Anda memakai kupon, firma membayar komisi kepada kami, tanpa biaya tambahan. Begitulah kami menjaga portal ini tetap gratis.',
     terms: 'Ketentuan', privacy: 'Privasi', risk: 'Risiko',
     stat_firms: 'firma', stat_off: 'diskon maks', stat_free_v: 'GRATIS', stat_free_l: 'selalu', stat_nosignup_v: '0', stat_nosignup_l: 'pendaftaran',
     chip_exclusive: 'Kupon eksklusif', chip_verified: 'Diverifikasi harian', chip_langs: '8 bahasa', chip_nosignup: 'Tanpa pendaftaran',
