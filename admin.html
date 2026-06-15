@@ -1240,6 +1240,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
      <div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-secondary" onclick="pushDryRun()">Quantos receberiam? (dry-run)</button>
+       <button class="btn-secondary" onclick="pushSendTest()" style="background:rgba(107,182,201,.15);border-color:rgba(107,182,201,.4);color:#6BB6C9;">Enviar teste só pra mim</button>
        <button class="btn-secondary" onclick="pushSendNow()" style="background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.35);color:var(--gold);">Enviar pra todos elegíveis</button>
      </div>
      <div id="push-send-result" style="grid-column:1/-1;font-size:12px;color:var(--t2);min-height:18px;"></div>
@@ -6949,35 +6950,59 @@ async function pushSendNow(){
     toast(`Push enviado: ${d.sent} de ${d.total}`,'success');
   } catch (e) { out.textContent = 'Erro: ' + e.message; }
 }
+// Envia o push SÓ pro device atual (a inscrição deste navegador). Pra testar copy sem incomodar a base.
+async function pushSendTest(){
+  const f = _pushReadForm();
+  if (!f.title) { toast('Título obrigatório','error'); return; }
+  const out = document.getElementById('push-send-result'); out.textContent = 'Pegando este device...';
+  try {
+    if (!('serviceWorker' in navigator)) { out.textContent = 'Este navegador não suporta push.'; return; }
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (!sub) { out.textContent = 'Este device não está inscrito. Ative as notificações no site primeiro (no app instalado).'; return; }
+    out.textContent = 'Enviando teste...';
+    const tk = await _adminBearer();
+    const r = await fetch('/api/push?action=send', {
+      method:'POST', headers:{'Content-Type':'application/json', Authorization:'Bearer '+tk},
+      body: JSON.stringify(Object.assign({}, f, { test_endpoint: sub.endpoint }))
+    });
+    const d = await r.json();
+    if (!r.ok) { out.textContent = 'Erro: ' + (d.error||r.status); return; }
+    if ((d.total||0) === 0) { out.textContent = 'Este device não bateu com nenhuma inscrição ativa (token pode ter trocado). Reative as notificações e tente de novo.'; return; }
+    out.innerHTML = `Teste enviado só pra você: <b>${d.sent}</b> · Falhou: ${d.failed}. Deve chegar em alguns segundos.`;
+    toast('Push de teste enviado pra este device','success');
+  } catch (e) { out.textContent = 'Erro: ' + e.message; }
+}
+window.pushSendTest = pushSendTest;
 // Assuntos prontos de push (EN + PT). Preenchem título/corpo/url/categoria/firma.
 const PUSH_PRESETS = {
   apex_nofee: {
-    en: { title:'Apex now with no activation fee', body:'New: a funded Apex account with no activation fee on payout. See pricing, code MARKET.', url:'/coupons', category:'promo', firm:'apex' },
-    pt: { title:'Apex agora sem taxa de ativação', body:'Nova opção: conta Apex sem taxa de ativação ao ser aprovado. Veja os preços, cupom MARKET.', url:'/coupons', category:'promo', firm:'apex' }
+    en: { title:'Apex: get funded, zero activation fee', body:'New Apex deal, no activation fee on your funded account. Code MARKET locks the discount. See the plans.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Apex: seja aprovado, zero taxa de ativação', body:'Nova condição Apex: conta aprovada sem taxa de ativação. Cupom MARKET garante o desconto. Veja os planos.', url:'/coupons', category:'promo', firm:'apex' }
   },
   apex_lasthours: {
-    en: { title:'Apex 90% OFF, last hours', body:'Up to 90% off Apex evaluations, ending soon. Use code MARKET at checkout.', url:'/coupons', category:'promo', firm:'apex' },
-    pt: { title:'Apex 90% OFF, últimas horas', body:'Até 90% off nas avaliações Apex, acaba em breve. Cupom MARKET no checkout.', url:'/coupons', category:'promo', firm:'apex' }
+    en: { title:'Last hours: Apex up to 90% off', body:'The 90% off on Apex evaluations ends soon. Code MARKET at checkout, full price returns tomorrow.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Últimas horas: Apex até 90% off', body:'O 90% off nas avaliações Apex acaba logo. Cupom MARKET no checkout, amanhã volta o preço cheio.', url:'/coupons', category:'promo', firm:'apex' }
   },
   top3: {
-    en: { title:"This week's top 3 coupons", body:'The 3 best prop firm deals right now, verified and active. Tap to see.', url:'/coupons', category:'promo', firm:'' },
-    pt: { title:'Top 3 cupons da semana', body:'Os 3 melhores cupons de prop firm agora, verificados e ativos. Toque pra ver.', url:'/coupons', category:'promo', firm:'' }
+    en: { title:'The 3 best prop firm deals right now', body:'Verified and active this week, our top 3 coupons with the biggest savings first. Tap to see them.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Os 3 melhores cupons de prop firm agora', body:'Verificados e ativos esta semana, nosso top 3 com a maior economia primeiro. Toque para ver.', url:'/coupons', category:'promo', firm:'' }
   },
   newfirm: {
-    en: { title:'New firm added', body:'A new prop firm just landed with an exclusive coupon. Check it out.', url:'/coupons', category:'promo', firm:'' },
-    pt: { title:'Nova firma no ar', body:'Acabou de entrar uma prop firm nova com cupom exclusivo. Confira.', url:'/coupons', category:'promo', firm:'' }
+    en: { title:'New prop firm just dropped', body:'A new firm landed with an exclusive coupon you won\'t find anywhere else. Be one of the first to grab it.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Entrou prop firm nova', body:'Uma firma nova chegou com cupom exclusivo que você não acha em outro lugar. Seja um dos primeiros.', url:'/coupons', category:'promo', firm:'' }
   },
   analysis: {
-    en: { title:"Today's market analysis is live", body:'SPX & NDX analysis for today is ready. Tap to read.', url:'/analysis', category:'analysis', firm:'' },
-    pt: { title:'Análise do dia no ar', body:'A análise de SPX e NDX de hoje está pronta. Toque pra ler.', url:'/analysis', category:'analysis', firm:'' }
+    en: { title:'SPX & NDX: today\'s levels are live', body:'Key zones, gamma walls and what\'s in play before the open. A 2-minute read to start your day sharp.', url:'/analysis', category:'analysis', firm:'' },
+    pt: { title:'SPX e NDX: os níveis de hoje no ar', body:'Zonas-chave, paredes de gamma e o que está em jogo antes da abertura. 2 minutos pra começar o dia afiado.', url:'/analysis', category:'analysis', firm:'' }
   },
   calendar: {
-    en: { title:'High-impact events today', body:'Key economic events coming up today. Check the calendar.', url:'/calendar', category:'calendar', firm:'' },
-    pt: { title:'Eventos de alto impacto hoje', body:'Eventos econômicos importantes hoje. Veja o calendário.', url:'/calendar', category:'calendar', firm:'' }
+    en: { title:'High-impact events hit today', body:'The economic releases that move markets today, with times and forecasts. Know them before the open.', url:'/calendar', category:'calendar', firm:'' },
+    pt: { title:'Eventos de alto impacto hoje', body:'Os dados econômicos que movem o mercado hoje, com horários e previsões. Saiba antes da abertura.', url:'/calendar', category:'calendar', firm:'' }
   },
   gex: {
-    en: { title:"Today's GEX levels", body:'Gamma exposure levels for SPX are updated. Tap to view.', url:'/gamma', category:'gex', firm:'' },
-    pt: { title:'Níveis de GEX do dia', body:'Os níveis de gamma exposure do SPX estão atualizados. Toque pra ver.', url:'/gamma', category:'gex', firm:'' }
+    en: { title:'Today\'s gamma levels are out', body:'Fresh GEX for SPX, gamma flip, call wall and put wall. See where the magnets sit today. Tap to view.', url:'/gamma', category:'gex', firm:'' },
+    pt: { title:'Os níveis de gamma de hoje saíram', body:'GEX novo do SPX, gamma flip, call wall e put wall. Veja onde estão os ímãs hoje. Toque para ver.', url:'/gamma', category:'gex', firm:'' }
   }
 };
 function applyPushPreset(){
