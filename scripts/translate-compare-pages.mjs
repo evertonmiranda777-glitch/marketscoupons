@@ -20,10 +20,12 @@ try {
   }
 } catch {}
 
-const KEY = process.env.GEMINI_API_KEY;
-if (!KEY) { console.error('GEMINI_API_KEY missing'); process.exit(1); }
+// Chave VIVA = .env.local (marketscoupons-i18n-translate, free tier). A do nano-banana e a revogada.
+const KEY = (fs.readFileSync(path.join(ROOT, '.env.local'), 'utf8').match(/GEMINI_API_KEY=(.+)/) || [])[1]?.trim();
+if (!KEY) { console.error('GEMINI_API_KEY missing in .env.local'); process.exit(1); }
 
-const VERTEX = `https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash:generateContent?key=${KEY}`;
+// Endpoint GRATIS (generativelanguage), nao Vertex pago.
+const VERTEX = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEY}`;
 
 const LANGS = {
   en: { name: 'English', code: 'en', locale: 'en-US' },
@@ -32,19 +34,11 @@ const LANGS = {
   it: { name: 'Italian', code: 'it', locale: 'it-IT' },
   de: { name: 'German', code: 'de', locale: 'de-DE' },
   ar: { name: 'Arabic', code: 'ar', locale: 'ar-SA' },
+  id: { name: 'Indonesian', code: 'id', locale: 'id-ID' },
 };
 
-const TG_BOT = '8733719815:AAGmgFbbBFfcQKuGKeEUZfUtxJcS1YwtwYU';
-const TG_CHAT = '1284593409';
-async function tg(text) {
-  try {
-    await fetch(`https://api.telegram.org/bot${TG_BOT}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: TG_CHAT, text }),
-    });
-  } catch {}
-}
+// TG NAO e canal de status de progresso (regra do projeto). Silenciado: log so no console.
+async function tg(text) { /* no-op de proposito */ }
 
 async function translate(html, langName, langCode, locale) {
   const prompt = `You are a professional translator. Translate the visible TEXT CONTENT of this Brazilian Portuguese HTML page into ${langName}.
@@ -55,7 +49,7 @@ CRITICAL RULES:
 3. NEVER translate technical terms: "Prop Firm", "Profit Split", "Drawdown", "Lifetime", "Day-1 Payout", "Forex", "Futures", "Trustpilot", "Markets Coupons", firm names (Apex, FTMO, Bulenox, etc), coupon codes (MARKET, MARKET89, etc), instrument symbols.
 4. Keep dollar/euro amounts EXACT. Keep all numbers and percentages exact.
 5. Update lang attribute: html lang="pt-BR" -> "${locale}".
-6. Update locale references: pt_BR -> ${langCode === 'en' ? 'en_US' : langCode === 'es' ? 'es_ES' : langCode === 'fr' ? 'fr_FR' : langCode === 'it' ? 'it_IT' : langCode === 'de' ? 'de_DE' : 'ar_SA'}, pt-BR -> ${locale}.
+6. Update locale references: pt_BR -> ${langCode === 'en' ? 'en_US' : langCode === 'es' ? 'es_ES' : langCode === 'fr' ? 'fr_FR' : langCode === 'it' ? 'it_IT' : langCode === 'de' ? 'de_DE' : langCode === 'ar' ? 'ar_SA' : 'id_ID'}, pt-BR -> ${locale}.
 7. Update canonical and alternate URLs: prepend /${langCode}/ to firm-vs-firm path. Example: /apex-vs-bulenox -> /${langCode}/apex-vs-bulenox. Update og:url, hreflang too.
 8. Translate naturally for native ${langName} traders. Idiomatic, not literal.
 9. Output ONLY the full translated HTML. No preamble, no explanation, no markdown fences.
@@ -85,9 +79,9 @@ async function processLang(langCode, lang, files) {
   const outDir = path.join(ROOT, langCode, 'compare');
   fs.mkdirSync(outDir, { recursive: true });
   let done = 0, skipped = 0, failed = 0;
-  // Run 4 in parallel per language to balance speed and rate limits
+  // Free tier = 10 RPM. 2 workers (cada request de pagina grande leva ~10-30s) fica sob 10/min.
   const queue = [...files];
-  const workers = Array(4).fill(0).map(async () => {
+  const workers = Array(2).fill(0).map(async () => {
     while (queue.length) {
       const file = queue.shift();
       if (!file) break;
@@ -97,7 +91,7 @@ async function processLang(langCode, lang, files) {
         continue;
       }
       let attempt = 0;
-      while (attempt < 2) {
+      while (attempt < 5) {
         try {
           attempt++;
           const html = fs.readFileSync(path.join(ROOT, 'compare', file), 'utf8');
@@ -107,11 +101,13 @@ async function processLang(langCode, lang, files) {
           if (done % 10 === 0) console.log(`[${langCode}] ${done}/${files.length}`);
           break;
         } catch (e) {
-          if (attempt >= 2) {
+          const is429 = /\b429\b/.test(e.message);
+          if (attempt >= 5) {
             console.log(`[${langCode}] FAIL ${file}: ${e.message.slice(0, 150)}`);
             failed++;
           } else {
-            await new Promise(r => setTimeout(r, 3000 * attempt));
+            // 429 = rate/minuto: espera ~10s+. Outros erros: backoff curto.
+            await new Promise(r => setTimeout(r, (is429 ? 11000 : 3000) * attempt));
           }
         }
       }
@@ -128,7 +124,8 @@ async function processLang(langCode, lang, files) {
     console.error('Invalid lang:', argLang);
     process.exit(1);
   }
-  const files = fs.readdirSync(path.join(ROOT, 'compare')).filter(f => f.endsWith('.html'));
+  // Conjunto canonico = as 110 que en/compare ja tem (cabe no free tier 250/dia + consistente com as outras langs).
+  const files = fs.readdirSync(path.join(ROOT, 'en', 'compare')).filter(f => f.endsWith('.html'));
   console.log(`Source files: ${files.length}`);
   await tg(`Compare translation start: ${files.length} files x ${Object.keys(targetLangs).length} langs`);
 
