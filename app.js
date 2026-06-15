@@ -1341,6 +1341,8 @@ async function setL(lang,flag,code){
   document.getElementById('l-code').textContent=' '+code;
   document.body.dir=lang==='ar'?'rtl':'ltr';
   applyTranslations();
+  // i18n agora e por idioma -> ao trocar, re-busca os overrides do novo lang e re-aplica
+  loadI18nFromSupabase().then(()=>{ try{ applyTranslations(); }catch(e){} });
   // If reading a blog article, reload it in the new language
   if(_openBlogSlug && _openBlogGroup){
     db.from('blog_posts').select('slug').eq('article_group',_openBlogGroup).eq('lang',lang).eq('active',true).maybeSingle().then(({data})=>{
@@ -4502,17 +4504,20 @@ async function loadCmsTexts(){
 
 /* ─── Load I18N overrides from Supabase ─── */
 async function loadI18nFromSupabase(){
+  // Egress: busca SO a coluna do idioma atual (antes puxava as 7 langs = 365KB/visita).
+  // _applyI18nRows aplica so a lang presente na row. Cache por idioma. setL re-busca ao trocar.
+  const lang=(typeof _currentLang!=='undefined'&&_currentLang)||'en';
   try{
-    const{data,error}=await db.from('i18n').select('key,pt,en,es,fr,it,de,ar');
+    const{data,error}=await db.from('i18n').select('key,'+lang);
     if(error||!data||!data.length){
-      const cached=localStorage.getItem('mc_i18n_cache');
-      if(cached){try{const d=JSON.parse(cached);_applyI18nRows(d);}catch(e){}}
+      const cached=localStorage.getItem('mc_i18n_cache_'+lang);
+      if(cached){try{_applyI18nRows(JSON.parse(cached));}catch(e){}}
       return;
     }
     _applyI18nRows(data);
-    try{localStorage.setItem('mc_i18n_cache',JSON.stringify(data));}catch(e){}
+    try{localStorage.setItem('mc_i18n_cache_'+lang,JSON.stringify(data));}catch(e){}
   }catch(e){
-    const cached=localStorage.getItem('mc_i18n_cache');
+    const cached=localStorage.getItem('mc_i18n_cache_'+lang);
     if(cached){try{_applyI18nRows(JSON.parse(cached));}catch(e2){}}
   }
 }
@@ -4527,15 +4532,17 @@ function _applyI18nRows(rows){
 
 /* ─── Load FIRM_T overrides from Supabase ─── */
 async function loadFirmTFromSupabase(){
+  // Egress: cache-first com validade 24h (traducoes de firma mudam raro). Repeat visit nao re-baixa os 72KB.
   try{
+    const _c=localStorage.getItem('mc_firmt_cache'), _ct=+(localStorage.getItem('mc_firmt_cache_ts')||0);
+    if(_c && (Date.now()-_ct) < 86400000){ try{_applyFirmTRows(JSON.parse(_c)); return;}catch(e){} }
     const{data,error}=await db.from('firm_translations').select('key,en,es,fr,it,de,ar');
     if(error||!data||!data.length){
-      const cached=localStorage.getItem('mc_firmt_cache');
-      if(cached){try{_applyFirmTRows(JSON.parse(cached));}catch(e){}}
+      if(_c){try{_applyFirmTRows(JSON.parse(_c));}catch(e){}}
       return;
     }
     _applyFirmTRows(data);
-    try{localStorage.setItem('mc_firmt_cache',JSON.stringify(data));}catch(e){}
+    try{localStorage.setItem('mc_firmt_cache',JSON.stringify(data));localStorage.setItem('mc_firmt_cache_ts',String(Date.now()));}catch(e){}
   }catch(e){
     const cached=localStorage.getItem('mc_firmt_cache');
     if(cached){try{_applyFirmTRows(JSON.parse(cached));}catch(e2){}}
@@ -7160,7 +7167,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadGuidesFromSupabase();
   renderGuides();
   loadDailyAnalysis();
-  loadGEX();
+  // Egress: GEX (24 dias, ~313KB) so na pagina /gamma, nao em toda visita a home.
+  // Navegar pro /gamma (go() linha ~1186) ja chama loadGEX(); aqui cobre deep-link direto.
+  if(/gamma/.test(location.pathname||'')) loadGEX();
 
   // Loyalty removed 2026-06-02
   // Wait for auth to finish before initializing favorites
