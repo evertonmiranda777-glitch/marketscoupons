@@ -4504,11 +4504,15 @@ async function loadCmsTexts(){
 
 /* ─── Load I18N overrides from Supabase ─── */
 let _i18nLoadedLangs = new Set();
+// Idiomas que EXISTEM como coluna na tabela i18n. 'id' (indonesio) nao tem coluna
+// (sempre foi so arquivo estatico c/ fallback EN) -> consultar daria 400.
+const _I18N_DB_LANGS = ['pt','en','es','fr','it','de','ar'];
 async function loadI18nFromSupabase(){
   // Egress: busca SO a coluna do idioma atual (antes puxava as 7 langs = 365KB/visita).
   // _applyI18nRows aplica so a lang presente na row. Cache por idioma. Guard evita re-fetch
   // do mesmo idioma na sessao (switch ida-e-volta = gratis).
   const lang=(typeof _currentLang!=='undefined'&&_currentLang)||'en';
+  if(!_I18N_DB_LANGS.includes(lang)) return; // ex: 'id' -> so estatico, sem override do banco
   if(_i18nLoadedLangs.has(lang)) return;
   try{
     const{data,error}=await db.from('i18n').select('key,'+lang);
