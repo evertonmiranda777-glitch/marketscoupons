@@ -139,9 +139,14 @@ module.exports = async (req, res) => {
         });
         if (!u.ok) return bad(res, 401, 'invalid jwt');
         const user = await u.json();
-        if (!user?.user_metadata?.is_admin && user?.app_metadata?.role !== 'admin' && user?.email !== 'evertonmiranda777@gmail.com') {
-          return bad(res, 403, 'admin only');
-        }
+        // Admin = profiles.is_admin no BANCO (RLS trava auto-set). NAO usar user_metadata:
+        // o proprio usuario seta user_metadata via auth.updateUser -> privesc. Mesmo padrao
+        // seguro de send-email/brevo-stats/render-criativo.
+        const pr = await fetch(`${SB_URL}/rest/v1/profiles?id=eq.${user.id}&is_admin=eq.true&select=id`, {
+          headers: { 'Authorization': `Bearer ${jwt}`, 'apikey': SB_KEY }
+        });
+        const profs = await pr.json().catch(() => []);
+        if (!Array.isArray(profs) || profs.length === 0) return bad(res, 403, 'admin only');
       } catch (e) {
         return bad(res, 401, 'jwt verify failed');
       }

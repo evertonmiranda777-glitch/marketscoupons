@@ -39,7 +39,10 @@ async function fetchPending() {
 async function sendWelcome(rec) {
   const r = await fetch(`${SITE}/api/welcome-email`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(process.env.CRON_SECRET ? { Authorization: `Bearer ${process.env.CRON_SECRET}` } : {}),
+    },
     body: JSON.stringify(rec),
   });
   const d = await r.json().catch(() => ({}));

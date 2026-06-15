@@ -26,5 +26,6 @@ jobs:
       - name: Run catchup
         env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
           SITE_URL: https://www.marketscoupons.com
         run: node scripts/welcome-catchup.js

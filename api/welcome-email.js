@@ -534,12 +534,20 @@ module.exports = async (req, res) => {
   // Webhook do Supabase: pula rate limit + idempotente. Frontend sem secret: rate limited.
   const HOOK_SECRET = process.env.WELCOME_HOOK_SECRET;
   const isHook = HOOK_SECRET && req.headers['x-webhook-secret'] === HOOK_SECRET;
-  if (!isHook && !rateLimitIp(req, 10)) return res.status(429).json({ error: 'rate_limit' });
+  const CRON_SECRET = process.env.CRON_SECRET;
+  const authHdr = req.headers.authorization || '';
+  const isCron = CRON_SECRET && authHdr === `Bearer ${CRON_SECRET}`;
+  if (!isHook && !isCron && !rateLimitIp(req, 10)) return res.status(429).json({ error: 'rate_limit' });
 
-  // ─── B.3.1 POST handler: send_confirm ───
+  // ─── B.3.1 POST handler: send_confirm (fluxo do proprio usuario no signup, fica aberto) ───
   if (req.body && req.body.action === 'send_confirm') {
     return handleSendConfirm(req, res, req.body);
   }
+
+  // Envio de WELCOME (formato {record} do trigger SQL OU {email} do catchup) exige auth:
+  // webhook secret (trigger) OU CRON_SECRET (catchup GitHub Actions). Fecha o envio
+  // anonimo que permitia email-bombing/abuso de quota.
+  if (!isHook && !isCron) return res.status(403).json({ error: 'forbidden' });
 
   const BREVO_KEY = process.env.BREVO_API_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
