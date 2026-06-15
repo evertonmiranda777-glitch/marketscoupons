@@ -14262,9 +14262,10 @@ async function generateFirmCopy() {
   btn.textContent = 'Gerando...';
   out.value = '';
   try {
+    const _genTk = await _adminBearer();
     const r = await fetch('/api/gen-firm-copy', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + _genTk },
       body: JSON.stringify({ firmId, lang: _crCopyLang, template: _crCopyTmpl || 'institucional' }),
     });
     const data = await r.json();

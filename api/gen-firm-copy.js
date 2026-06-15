@@ -654,6 +654,21 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // Admin-only: chama o Gemini (custa quota). Valida profiles.is_admin no banco
+  // (mesmo padrao seguro de push/send-email/render-criativo). Sem isso, qualquer
+  // um disparava geracao de IA na nossa conta = abuso de custo/quota.
+  const _authHdr = req.headers.authorization || '';
+  const _jwt = _authHdr.startsWith('Bearer ') ? _authHdr.slice(7) : '';
+  if (!_jwt) return res.status(401).json({ error: 'missing admin jwt' });
+  try {
+    const u = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { Authorization: `Bearer ${_jwt}`, apikey: SUPABASE_KEY } });
+    if (!u.ok) return res.status(401).json({ error: 'invalid jwt' });
+    const user = await u.json();
+    const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${user.id}&is_admin=eq.true&select=id`, { headers: { Authorization: `Bearer ${_jwt}`, apikey: SUPABASE_KEY } });
+    const profs = await pr.json().catch(() => []);
+    if (!Array.isArray(profs) || profs.length === 0) return res.status(403).json({ error: 'admin only' });
+  } catch (e) { return res.status(401).json({ error: 'jwt verify failed' }); }
+
   const KEYS = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
   if (!KEYS.length) return res.status(503).json({ error: 'Copy generator unavailable' });
 
