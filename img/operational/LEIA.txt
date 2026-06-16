@@ -1,0 +1,3 @@
+Coloque aqui os prints das operações (trades) pra ilustrar a LP /operational.
+Nomeie como quiser: trade-1.jpg, trade-2.png, resultado-noite.jpg, etc.
+Formatos: jpg / png / webp. O Claude lê daqui e usa na página.
