@@ -1373,10 +1373,9 @@ async function submitNewsletter(){
   }
   btn.disabled = true; btn.textContent = '...';
   try {
-    await fetch(SB_URL+'/rest/v1/email_subscribers', {
-      method: 'POST',
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer '+SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=ignore-duplicates' },
-      body: JSON.stringify({ email, name: '', source: 'lp_coupons', lang: LANG, tags: ['newsletter','lp_coupons'], status: 'active' })
+    await fetch('/api/leads/volumefilter?action=subscribe', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source: 'lp_coupons', tags: ['newsletter','lp_coupons'], lang: LANG })
     });
     trackEvent('newsletter_subscribe', { em: email, lang: LANG, content_name: 'LP Coupons Newsletter', location: 'lp_coupons_footer' });
     inp.value = '';

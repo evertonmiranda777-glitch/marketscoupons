@@ -7754,16 +7754,12 @@ async function subscribeNewsletter(e){
 
   try {
     const lang = _currentLang || 'en';
-    const { error } = await db.from('email_subscribers').upsert({
-      email: email,
-      name: '',
-      source: 'newsletter',
-      lang: lang,
-      tags: ['newsletter','site'],
-      status: 'active'
-    }, { onConflict: 'email', ignoreDuplicates: true });
-
-    if(error) throw error;
+    // via endpoint server-side (RLS bloqueia insert anon direto desde o lockdown)
+    const _r = await fetch('/api/leads/volumefilter?action=subscribe', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, source:'newsletter', tags:['newsletter','site'], lang })
+    });
+    if(!_r.ok) throw new Error('subscribe_failed');
 
     msg.style.display = 'block';
     msg.style.color = '#4ade80';
