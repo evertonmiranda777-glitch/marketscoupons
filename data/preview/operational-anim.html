@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>POC, exemplo animado /operational</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0f17;--card:#10151f;--gold:#F0B429;--green:#10B981;--red:#EF4444;--t1:#EDF2F7;--t2:#B8C5D6;--t3:#8A98AE;--b1:rgba(255,255,255,.10);--f:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--t1);font-family:var(--f);line-height:1.6;-webkit-font-smoothing:antialiased;padding:30px 16px}
+.wrap{max-width:680px;margin:0 auto}
+h1{font-size:22px;margin-bottom:6px}
+.note{color:var(--t3);font-size:13px;margin-bottom:18px}
+.bar{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--card);border:1px solid var(--b1);color:var(--t1);font-family:var(--f);font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;cursor:pointer;transition:.2s}
+.btn:hover{border-color:var(--gold)}
+.btn.on{background:var(--gold);color:#1a1208;border-color:var(--gold)}
+.btn.gold{background:linear-gradient(135deg,#F0B429,#d99a17);color:#1a1208;border:none}
+
+/* ── componente animado ── */
+.anim{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--b1);background:#000;line-height:0}
+.anim img{width:100%;display:block;transform:scale(1.02);transition:transform 6s ease}
+.anim.play img{transform:scale(1.10)} /* Ken Burns */
+.ov{position:absolute;inset:0;pointer-events:none}
+.ov svg{position:absolute;inset:0;width:100%;height:100%}
+/* seta desenhando */
+.draw{stroke:var(--gold);stroke-width:1;fill:none;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120;filter:drop-shadow(0 0 2px rgba(240,180,41,.7))}
+.anim.play .draw{animation:draw 1s ease forwards}
+.anim.play .draw.d2{animation-delay:1.4s}
+.anim.play .draw.d3{animation-delay:2.6s}
+@keyframes draw{to{stroke-dashoffset:0}}
+/* spotlight */
+.spot{position:absolute;border:1.5px solid rgba(240,180,41,.9);border-radius:7px;box-shadow:0 0 0 9999px rgba(5,8,12,.0),0 0 18px rgba(240,180,41,.5) inset;opacity:0;transform:scale(.86);transition:none}
+.anim.play .spot{animation:spot .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:2.4s}
+@keyframes spot{to{opacity:1;transform:scale(1)}}
+/* chips de texto (traduzíveis) */
+.chip{position:absolute;background:rgba(8,12,18,.86);backdrop-filter:blur(6px);border:1px solid rgba(240,180,41,.4);color:#fff;font-size:11.5px;font-weight:600;line-height:1.35;padding:7px 10px;border-radius:9px;max-width:190px;opacity:0;transform:translateY(8px);box-shadow:0 6px 22px rgba(0,0,0,.5)}
+.chip .n{display:inline-flex;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#1a1208;font-size:10px;font-weight:800;align-items:center;justify-content:center;margin-right:6px}
+.anim.play .chip{animation:chip .6s cubic-bezier(.2,.8,.2,1) forwards}
+.anim.play .chip.c1{animation-delay:.3s}
+.anim.play .chip.c2{animation-delay:1.6s}
+.anim.play .chip.c3{animation-delay:2.8s}
+@keyframes chip{to{opacity:1;transform:translateY(0)}}
+.cap{color:var(--t2);font-size:14px;line-height:1.55;margin-top:12px;padding:0 2px}
+.legend{font-size:12px;color:var(--t3);margin-top:24px;border-top:1px solid var(--b1);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Prova de conceito, exemplo animado</h1>
+  <p class="note">Estilo da animação (overlay sobre o gráfico real). Use o botão <b>PT / EN</b> pra ver o texto trocar de idioma. Clique em <b>Repetir</b> pra rodar de novo. <br>Obs: a imagem ainda tem a anotação antiga em inglês gravada , no final eu uso um print limpo seu e só os meus rótulos animados aparecem.</p>
+
+  <div class="bar">
+    <button class="btn on" id="bpt" onclick="setLang('pt')">PT</button>
+    <button class="btn" id="ben" onclick="setLang('en')">EN</button>
+    <button class="btn gold" onclick="replay()">▶ Repetir animação</button>
+  </div>
+
+  <div class="anim play" id="anim">
+    <img src="/img/operational/contexto-compra-aovivo.png" alt="">
+    <div class="ov">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <!-- seta 1: até a média (toque) -->
+        <path class="draw" d="M30 78 C 45 70, 52 60, 60 50"/>
+        <!-- seta 2: aceleração -->
+        <path class="draw d3" d="M66 60 L 80 34"/>
+      </svg>
+      <!-- spotlight na zona de entrada -->
+      <div class="spot" style="left:58%;top:24%;width:26%;height:40%"></div>
+      <!-- chips -->
+      <div class="chip c1" style="left:4%;top:6%" data-pt="<span class='n'>1</span>Médias 9 e 20 alinhadas a favor" data-en="<span class='n'>1</span>9 & 20 moving averages aligned"></div>
+      <div class="chip c2" style="left:30%;top:60%" data-pt="<span class='n'>2</span>Pullback absorvido na 9/20" data-en="<span class='n'>2</span>Pullback absorbed at the 9/20"></div>
+      <div class="chip c3" style="left:60%;top:5%" data-pt="<span class='n'>3</span>Volume confirma, aceleração" data-en="<span class='n'>3</span>Volume confirms, acceleration"></div>
+    </div>
+  </div>
+  <p class="cap" id="cap"></p>
+
+  <p class="legend">Se você aprovar esse estilo, eu: (1) aplico nos seus prints limpos (compra, venda, ao vivo, tela), (2) ligo os rótulos no i18n dos 8 idiomas, (3) a animação roda sozinha quando o card entra na tela e pode repetir.</p>
+</div>
+
+<script>
+var L='pt';
+var CAP={pt:'O preço recua até as médias 9 e 20, é absorvido e defendido, o volume confirma e o movimento acelera na direção da tendência.',
+         en:'Price pulls back to the 9 and 20 moving averages, gets absorbed and defended, volume confirms and the move accelerates with the trend.'};
+function setLang(l){
+  L=l;
+  document.getElementById('bpt').classList.toggle('on',l==='pt');
+  document.getElementById('ben').classList.toggle('on',l==='en');
+  document.documentElement.lang=l;
+  document.querySelectorAll('.chip').forEach(function(c){ c.innerHTML=c.getAttribute('data-'+l); });
+  document.getElementById('cap').textContent=CAP[l];
+}
+function replay(){
+  var a=document.getElementById('anim');
+  a.classList.remove('play'); void a.offsetWidth; a.classList.add('play');
+}
+setLang('pt');
+</script>
+</body>
+</html>
