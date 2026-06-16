@@ -230,7 +230,8 @@ function unlock(e){
   return false;
 }
 // quem já desbloqueou volta e vê o conteúdo direto (sem pedir email de novo)
-try{ if(localStorage.getItem('mc_op_unlocked')==='1'){ const tz=document.getElementById('teaser'); if(tz)tz.style.display='none'; const mm=document.getElementById('method'); if(mm)mm.classList.add('open'); const g=document.querySelector('.gate'); if(g)g.style.display='none'; } }catch(_){}
+// bypass de REVISÃO (só Everton): /operational?ver=oryk destrava sem email e sem gravar lead
+try{ const _rev=new URLSearchParams(location.search).get('ver')==='oryk'; if(_rev||localStorage.getItem('mc_op_unlocked')==='1'){ const tz=document.getElementById('teaser'); if(tz)tz.style.display='none'; const mm=document.getElementById('method'); if(mm)mm.classList.add('open'); const g=document.querySelector('.gate'); if(g)g.style.display='none'; } }catch(_){}
 // ── Galeria de exemplos por contexto (gated) ──
 // Pra ADICIONAR MAIS depois: dropa o .png em img/operational/ e adiciona 1 linha aqui {f:'arquivo.png', c:'sua legenda'}.
 const EXAMPLES = [
