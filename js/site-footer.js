@@ -124,8 +124,7 @@
     e.preventDefault();
     var inp=document.getElementById('mcft-email'), msg=document.getElementById('mcft-msg');
     var em=(inp.value||'').trim(); if(!em||em.indexOf('@')<1) return false;
-    var SB='https://qfwhduvutfumsaxnuofa.supabase.co', AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
-    try{ fetch(SB+'/rest/v1/email_subscribers',{method:'POST',headers:{apikey:AK,Authorization:'Bearer '+AK,'Content-Type':'application/json',Prefer:'resolution=ignore-duplicates'},body:JSON.stringify({email:em,source:'footer',lang:L})}); }catch(_){}
+    try{ fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,source:'footer',tags:['newsletter','footer'],lang:L})}); }catch(_){}
     inp.value=''; msg.textContent=t('nl_ok'); msg.style.display='block';
     return false;
   };

@@ -415,12 +415,46 @@ async function handleAdminExport(req, res) {
   return res.status(200).send(csv);
 }
 
+// Captura genérica de lead (sem enviar email). Usada por /operational e outras LPs.
+async function handleSubscribe(req, res) {
+  let body = req.body;
+  if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
+  body = body || {};
+  // honeypot opcional
+  if (body.website) return res.status(200).json({ ok: true });
+  const email = String(body.email || '').trim().toLowerCase();
+  if (!isValidEmail(email)) return res.status(400).json({ ok: false, error: 'invalid_email' });
+  const lang = ['pt','en','es','it','fr','de','ar','id'].includes(body.lang) ? body.lang : 'en';
+  const source = String(body.source || 'lp').slice(0, 80);
+  let tags = Array.isArray(body.tags) ? body.tags.filter(t => typeof t === 'string').slice(0, 6).map(t => t.slice(0, 40)) : [];
+  if (!tags.length) tags = ['lead'];
+  tags.push(`lang-${lang}`);
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?on_conflict=email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SK || SUPABASE_KEY, 'Authorization': `Bearer ${SK || SUPABASE_KEY}`, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify({ email, lang, source, tags }),
+    });
+    if (!r.ok && r.status !== 409) {
+      console.error('[subscribe] upsert failed', r.status, await r.text().catch(() => ''));
+      return res.status(500).json({ ok: false, error: 'save_failed' });
+    }
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: 'save_failed' });
+  }
+}
+
 module.exports = async (req, res) => {
   if (applyCors(req, res, { methods: 'GET, POST, OPTIONS' })) return;
 
   const url = new URL(req.url, 'http://x');
   const action = url.searchParams.get('action') || '';
 
+  if (req.method === 'POST' && action === 'subscribe') {
+    if (!rateLimitIp(req, 6)) return res.status(429).json({ ok: false, error: 'rate_limit' });
+    return handleSubscribe(req, res);
+  }
   if (req.method === 'GET' && action === 'reviews') return handleReviewsGet(req, res);
   if (req.method === 'GET' && action === 'admin-stats') return handleAdminStats(req, res);
   if (req.method === 'GET' && action === 'admin-list') return handleAdminList(req, res);
