@@ -760,7 +760,7 @@ const FIRM_BG={
   e8:'/img/e8-bg.webp',cti:'/img/cti-bg.webp',tradeday:'/img/tradeday-bg.webp'
 };
 const FIRM_ABOUT={
-  apex:{about:'Founded in <b>2021</b> by Darrell Martin in Austin, Texas. Apex is the <b>6th most searched prop firm worldwide</b> with 4.2M monthly visits. Approval rate of <b>15-20%</b>, 2x the industry average.',highlights:[{val:'$721M+',label:'Paid to traders'},{val:'$85M+',label:'Last 90 days'},{val:'100%',label:'Of profit (2026)'}],
+  apex:{about:'Founded in <b>2021</b> by Darrell Martin in Austin, Texas. Apex is the <b>6th most searched prop firm worldwide</b> with 4.2M monthly visits. Approval rate of <b>15-20%</b>, 2x the industry average.',highlights:[{val:'$821M+',label:'Paid to traders'},{val:'$97M+',label:'Last 90 days'},{val:'100%',label:'Of profit (2026)'}],
     types:['Intraday Trail','EOD Trail'],plans:{'Intraday Trail':[{s:'25K',d:'$19.90',o:'$199'},{s:'50K',d:'$24.90',o:'$249'},{s:'100K',d:'$39.90',o:'$399',pop:1},{s:'150K',d:'$59.90',o:'$599'}],'EOD Trail':[{s:'25K',d:'$29.90',o:'$299'},{s:'50K',d:'$34.90',o:'$349'},{s:'100K',d:'$59.90',o:'$599',pop:1},{s:'150K',d:'$79.90',o:'$799'}]},
     includes:['No daily loss limit','No scaling rule','NinjaTrader license','Real-time data','Copy Trader (WealthCharts)','24/7 support']},
   bulenox:{about:'Founded in <b>2022</b>. <b>500%</b> year-over-year traffic growth. Simplified rules, possible to pass in <b>1 day</b>, no consistency rule.',highlights:[{val:'90%',label:'Profit Split'},{val:'1 day',label:'To pass'},{val:'$0',label:'Monthly fee'}],

@@ -645,7 +645,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
     </div>
     <div class="adm-login-stats">
      <div class="adm-login-stat"><div class="v" style="color:var(--gold);">6+</div><div class="l">Firmas</div></div>
-     <div class="adm-login-stat"><div class="v" style="color:var(--green);">$721M+</div><div class="l">Pagos a traders</div></div>
+     <div class="adm-login-stat"><div class="v" style="color:var(--green);">$821M+</div><div class="l">Pagos a traders</div></div>
      <div class="adm-login-stat"><div class="v">90%</div><div class="l">Max OFF</div></div>
      <div class="adm-login-stat"><div class="v">7</div><div class="l">Idiomas</div></div>
     </div>
@@ -11860,7 +11860,7 @@ function openFirmModal(id) {
     <div class="modal-grid">
       <div class="modal-field modal-full"><label>Imagem de fundo (path)</label><input type="text" id="fm-bg-image" value="${f.bg_image||''}" placeholder="img/apex-bg.webp"></div>
       <div class="modal-field modal-full"><label>About (HTML)</label><textarea id="fm-about-html" rows="4" style="font-size:11px;">${escHtml(f.about_html||'')}</textarea></div>
-      <div class="modal-field modal-full"><label>Highlights (JSON) <span style="font-size:9px;color:var(--t3);">[{"val":"$721M+","label":"Pagos"}]</span></label><textarea id="fm-about-hl" rows="2" style="font-size:11px;font-family:monospace;">${escHtml(f.about_highlights?JSON.stringify(f.about_highlights):'')}</textarea></div>
+      <div class="modal-field modal-full"><label>Highlights (JSON) <span style="font-size:9px;color:var(--t3);">[{"val":"$821M+","label":"Pagos"}]</span></label><textarea id="fm-about-hl" rows="2" style="font-size:11px;font-family:monospace;">${escHtml(f.about_highlights?JSON.stringify(f.about_highlights):'')}</textarea></div>
       <div class="modal-field modal-full"><label>Tipos do overlay (virgula)</label><input type="text" id="fm-detail-types" value="${(f.detail_types||[]).join(', ')}" placeholder="Intraday Trail, EOD Trail"></div>
       <div class="modal-field modal-full"><label>Planos overlay (JSON) <span style="font-size:9px;color:var(--t3);">{"Tipo":[{"s":"25K","d":"$19.90","o":"$199"}]}</span></label><textarea id="fm-detail-plans" rows="4" style="font-size:11px;font-family:monospace;">${escHtml(f.detail_plans?JSON.stringify(f.detail_plans):'')}</textarea></div>
       <div class="modal-field modal-full"><label>Includes overlay (1 por linha)</label><textarea id="fm-detail-includes" rows="3" style="font-size:11px;">${(f.detail_includes||[]).join('\\n')}</textarea></div>
