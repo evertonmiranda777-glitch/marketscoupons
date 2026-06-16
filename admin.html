@@ -3769,13 +3769,20 @@ function _showSubTabBar(parentId, activeSubId){
   });
 }
 
+// Lembra a aba ativa SEM sujar a URL com # (Everton odeia o #criativos).
+// Guarda em localStorage e mantém a barra limpa em /admin.
+function _setAdminTab(p){
+  try{ localStorage.setItem('mc_admin_tab', p); }catch(e){}
+  if(location.hash){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+}
+
 function _switchSub(parentId, subId){
   const subs = _unifiedTabs[parentId];
   if(!subs) return;
   document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+subId).classList.add('active');
   _activeSubPage = subId;
-  location.hash = subId;
+  _setAdminTab(subId);
   _showSubTabBar(parentId, subId);
   renderPage(subId);
 }
@@ -3793,7 +3800,7 @@ function adminGo(page,btn){
     document.getElementById('page-'+firstSub).classList.add('active');
     _activeUnified = page;
     _activeSubPage = firstSub;
-    location.hash = page;
+    _setAdminTab(page);
     _showSubTabBar(page, firstSub);
     renderPage(firstSub);
   } else if(_subToParent[page]){
@@ -3802,7 +3809,7 @@ function adminGo(page,btn){
     document.getElementById('page-'+page).classList.add('active');
     _activeUnified = parent;
     _activeSubPage = page;
-    location.hash = page;
+    _setAdminTab(page);
     // Highlight parent nav button
     const navBtns = [...document.querySelectorAll('.nav-tabs-admin .nta, .nav-tabs-cms .nta')];
     const matchBtn = navBtns.find(b=>b.getAttribute('onclick')?.includes("'"+parent+"'"));
@@ -3814,7 +3821,7 @@ function adminGo(page,btn){
     document.getElementById('page-'+resolvedPage).classList.add('active');
     _activeUnified = page;
     _activeSubPage = resolvedPage;
-    location.hash = page;
+    _setAdminTab(page);
     renderPage(resolvedPage);
   }
 }
@@ -3832,8 +3839,15 @@ function adminGoMobile(page,btn){
 async function initAdmin(){
   await refreshFromSupabase();
 
-  // Restore last active tab from URL hash
-  const savedPage = location.hash.replace('#','');
+  // Restore last active tab from localStorage (URL fica limpa, sem #)
+  let savedPage = '';
+  try{ savedPage = localStorage.getItem('mc_admin_tab') || ''; }catch(e){}
+  // Migra # antigo (bookmark velho) e limpa a barra de endereço
+  if(location.hash){
+    const _h = location.hash.replace('#','');
+    if(_h && !savedPage) savedPage = _h;
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+  }
   // Check if it's a valid page or sub-page
   let startPage = 'overview';
   if(savedPage){

@@ -1156,7 +1156,7 @@ function mcRatingBadge(f){
 
 /* NAV */
 // Page ID → clean URL slug mapping
-const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel','pro-success':'pro-success',calc:'calculator',privacy:'privacy',terms:'terms',app:'app'};
+const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel','pro-success':'pro-success',calc:'calculator',privacy:'privacy',terms:'terms',app:'app',faq:'faq'};
 const SLUG_PAGES=Object.fromEntries(Object.entries(PAGE_SLUGS).map(([k,v])=>[v,k]));
 function _pageUrl(page){const s=PAGE_SLUGS[page];return s?'/'+s:'/';}
 function _pageFromPath(){const p=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').replace(/^\//,'').replace(/\/$/,'');return SLUG_PAGES[p]||'';}
@@ -1493,7 +1493,7 @@ function setFirmSEO(id){
     '@context':'https://schema.org','@type':'BreadcrumbList',
     itemListElement:[
       {'@type':'ListItem',position:1,name:'MarketsCoupons',item:'https://www.marketscoupons.com/'},
-      {'@type':'ListItem',position:2,name:t('nav_firms')||'Firmas',item:'https://www.marketscoupons.com/#firms'},
+      {'@type':'ListItem',position:2,name:t('nav_firms')||'Firmas',item:'https://www.marketscoupons.com/firms'},
       {'@type':'ListItem',position:3,name:f.name,item:'https://www.marketscoupons.com/'+id}
     ]
   });
