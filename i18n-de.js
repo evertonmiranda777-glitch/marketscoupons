@@ -4,3 +4,4 @@ Object.assign(window.I18N.de, {"app_bell_title":"Erhalte die besten Gutscheine v
 Object.assign(window.I18N.de, {"hero_trust_views":"Aufrufe/Mon.","hero_trust_copied":"Gutscheine kopiert/Mon.","hero_trust_off":"Max. Rabatt"});
 Object.assign(window.I18N.de, {"ft_col_top_listas":"Top-Listen","ft_best_overall":"Beste insgesamt","ft_best_futures":"Beste für Futures","ft_best_coupon":"Mit Exklusiv-Gutschein","ft_best_nofee":"Ohne Aktivierungsgebühr","ft_best_cheapest":"Günstigste","ft_best_rated":"Bestbewertet"});
 Object.assign(window.I18N.de, {"quiz_q3_sub":"Das hilft uns, die richtige Prop Firm zu empfehlen.","quiz_q4_sub":"Das hilft uns, die richtige Prop Firm zu empfehlen.","quiz_q5_sub":"Das hilft uns, die richtige Prop Firm zu empfehlen."});
+Object.assign(window.I18N.de, {"ind_soon_cta":"Kostenloses Konto erstellen","ind_soon_desc":"Wir bauen eine komplette Suite exklusiver Profi-Indikatoren. Erstelle dein kostenloses Konto, um zuerst Zugang zu bekommen."});

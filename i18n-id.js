@@ -4,3 +4,4 @@ Object.assign(window.I18N.id, {"app_bell_title":"Dapatkan kupon terbaik sebelum 
 Object.assign(window.I18N.id, {"hero_trust_views":"Tampilan/bln","hero_trust_copied":"Kupon disalin/bln","hero_trust_off":"Diskon Maks"});
 Object.assign(window.I18N.id, {"ft_col_top_listas":"Daftar Teratas","ft_best_overall":"Terbaik Keseluruhan","ft_best_futures":"Terbaik untuk Futures","ft_best_coupon":"Dengan Kupon Eksklusif","ft_best_nofee":"Tanpa Biaya Aktivasi","ft_best_cheapest":"Termurah","ft_best_rated":"Rating Tertinggi"});
 Object.assign(window.I18N.id, {"quiz_q3_sub":"Ini membantu kami merekomendasikan prop firm yang tepat.","quiz_q4_sub":"Ini membantu kami merekomendasikan prop firm yang tepat.","quiz_q5_sub":"Ini membantu kami merekomendasikan prop firm yang tepat."});
+Object.assign(window.I18N.id, {"ind_soon_cta":"Buat akun gratis","ind_soon_desc":"Kami sedang menyiapkan rangkaian lengkap indikator profesional eksklusif. Buat akun gratis untuk akses lebih dulu."});

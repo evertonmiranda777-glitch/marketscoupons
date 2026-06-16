@@ -4,3 +4,4 @@ Object.assign(window.I18N.en, {"app_bell_title":"Get the best coupons before eve
 Object.assign(window.I18N.en, {"hero_trust_views":"Monthly Views","hero_trust_copied":"Coupons Copied/mo","hero_trust_off":"Max Off"});
 Object.assign(window.I18N.en, {"ft_col_top_listas":"Top Lists","ft_best_overall":"Best Overall","ft_best_futures":"Best for Futures","ft_best_coupon":"With Exclusive Coupon","ft_best_nofee":"No Activation Fee","ft_best_cheapest":"Cheapest","ft_best_rated":"Highest Rated"});
 Object.assign(window.I18N.en, {"quiz_q3_sub":"This helps us match you with the right prop firm.","quiz_q4_sub":"This helps us match you with the right prop firm.","quiz_q5_sub":"This helps us match you with the right prop firm."});
+Object.assign(window.I18N.en, {"ind_soon_cta":"Create your free account","ind_soon_desc":"We're building a full suite of exclusive professional indicators. Create your free account to get access first."});

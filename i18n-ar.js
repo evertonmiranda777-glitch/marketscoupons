@@ -4,3 +4,4 @@ Object.assign(window.I18N.ar, {"app_bell_title":"احصل على أفضل الك
 Object.assign(window.I18N.ar, {"hero_trust_views":"مشاهدة شهرياً","hero_trust_copied":"كوبونات منسوخة/شهر","hero_trust_off":"أقصى خصم"});
 Object.assign(window.I18N.ar, {"ft_col_top_listas":"أفضل القوائم","ft_best_overall":"الأفضل عموماً","ft_best_futures":"الأفضل للعقود الآجلة","ft_best_coupon":"بكوبون حصري","ft_best_nofee":"بدون رسوم تفعيل","ft_best_cheapest":"الأرخص","ft_best_rated":"الأعلى تقييماً"});
 Object.assign(window.I18N.ar, {"quiz_q3_sub":"هذا يساعدنا على ترشيح الشركة المناسبة لك.","quiz_q4_sub":"هذا يساعدنا على ترشيح الشركة المناسبة لك.","quiz_q5_sub":"هذا يساعدنا على ترشيح الشركة المناسبة لك."});
+Object.assign(window.I18N.ar, {"ind_soon_cta":"أنشئ حسابك المجاني","ind_soon_desc":"نُجهّز مجموعة كاملة من المؤشرات الاحترافية الحصرية. أنشئ حسابك المجاني للحصول على الوصول أولاً."});

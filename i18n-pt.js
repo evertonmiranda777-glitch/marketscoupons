@@ -4,3 +4,4 @@ Object.assign(window.I18N.pt, {"app_bell_title":"Receba os melhores cupons antes
 Object.assign(window.I18N.pt, {"hero_trust_views":"Acessos/mês","hero_trust_copied":"Cupons copiados/mês","hero_trust_off":"Off Máx"});
 Object.assign(window.I18N.pt, {"ft_col_top_listas":"Top Listas","ft_best_overall":"Melhores no Geral","ft_best_futures":"Melhores p/ Futuros","ft_best_coupon":"Com Cupom Exclusivo","ft_best_nofee":"Sem Taxa de Ativação","ft_best_cheapest":"Mais Baratas","ft_best_rated":"Melhor Avaliadas"});
 Object.assign(window.I18N.pt, {"quiz_q3_sub":"Isso nos ajuda a te indicar a prop firm certa.","quiz_q4_sub":"Isso nos ajuda a te indicar a prop firm certa.","quiz_q5_sub":"Isso nos ajuda a te indicar a prop firm certa."});
+Object.assign(window.I18N.pt, {"ind_soon_cta":"Criar conta grátis","ind_soon_desc":"Estamos preparando uma suíte completa de indicadores profissionais exclusivos. Crie sua conta grátis pra ter acesso primeiro."});
