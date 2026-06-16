@@ -1345,6 +1345,36 @@ trackEvent('page_view', { page_name: 'lp_coupons', lang: LANG });
   }, { passive: true });
 })();
 
+// Comportamento da LP: firmas VISTAS, tempo engajado e resumo na saída. Só Supabase (interno).
+(function lpBehavior(){
+  let activeSec = 0;
+  setInterval(function(){ if (document.visibilityState === 'visible') activeSec++; }, 1000);
+  let maxScroll = 0;
+  window.addEventListener('scroll', function(){
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    if (h > 0) { const p = Math.round(window.scrollY / h * 100); if (p > maxScroll) maxScroll = Math.min(100, p); }
+  }, { passive: true });
+  const seen = new Set();
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting && e.intersectionRatio >= 0.5 && e.target.dataset.firm) {
+          seen.add(e.target.dataset.firm);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.fr[data-firm]').forEach(function(c){ io.observe(c); });
+  }
+  let exited = false;
+  function sendExit(){
+    if (exited) return; exited = true;
+    trackEvent('lp_exit', { seconds: activeSec, max_scroll: maxScroll, firms_seen: seen.size, firms: [...seen] });
+  }
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'hidden') sendExit(); });
+  window.addEventListener('pagehide', sendExit);
+})();
+
 // "Ver todas as firmas", preserva UTMs originais do visitante (não hardcoda instagram)
 (function fixSeeAllLink(){
   const link = document.querySelector('.see-all-btn');
