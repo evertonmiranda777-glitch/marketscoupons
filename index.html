@@ -416,6 +416,19 @@ img{max-width:100%;}
  transition:.25s;
 }
 .lang-btn:hover{border-color:var(--b2);background:var(--glass-strong);}
+.nav-bell{
+ position:relative;display:flex;align-items:center;justify-content:center;
+ width:34px;height:34px;flex-shrink:0;
+ background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;
+ color:var(--t2);cursor:pointer;transition:.25s;
+}
+.nav-bell:hover{border-color:rgba(240,180,41,.5);background:var(--glass-strong);color:var(--gold);}
+.nav-bell svg{width:17px;height:17px;}
+.nav-bell .nb-dot{
+ position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;
+ background:var(--gold);box-shadow:0 0 0 2px var(--bg,#0b0f17);
+}
+@media(max-width:560px){.nav-bell{width:32px;height:32px;}}
 .lang-dd{
  position:fixed;top:var(--lang-dd-top,60px);right:var(--lang-dd-right,24px);width:156px;padding-top:6px;
  z-index:1100;display:none;
@@ -2726,6 +2739,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
   <div class="nav-search-results" id="global-search-results"></div>
  </div>
  <div class="nav-r">
+ <button class="nav-bell" onclick="go('app')" data-i18n-title="app_bell_title" title="Receba os melhores cupons antes de todo mundo" aria-label="App e alertas de cupom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="nb-dot"></span></button>
  <div class="lang-btn" onclick="event.stopPropagation();this.classList.toggle('open')">
  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span id="l-flag"></span><span id="l-code"> EN</span>
  <div class="lang-dd"><div class="lang-dd-inner">
@@ -4314,6 +4328,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <a href="/calendar" onclick="event.preventDefault();go('calendar')" data-i18n="ft_calendario">Calendário</a>
  <a href="/indicators" onclick="event.preventDefault();go('indicators')" data-i18n="ft_indicadores">Indicadores</a>
  <a href="/gamma" onclick="event.preventDefault();go('gamma')" data-i18n="ft_gamma">Gamma (GEX)</a>
+ <a href="/app" onclick="event.preventDefault();go('app')" data-i18n="ft_app">App e Alertas</a>
  </div>
  <div class="fc-col">
  <h2 class="ft-h" data-i18n="ft_col_top_listas">Top Listas</h2>

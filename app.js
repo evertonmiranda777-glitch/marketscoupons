@@ -1319,6 +1319,9 @@ function applyTranslations() {
   document.querySelectorAll('[data-i18n-aria]').forEach(el => {
     el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
   });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+  });
 }
 function updateTVWidgets(lang) {
   const hmF = document.getElementById('heatmap-frame');
