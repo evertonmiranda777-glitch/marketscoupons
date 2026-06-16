@@ -1305,6 +1305,10 @@ function applyTranslations() {
     if (_name && typeof val === 'string' && val.indexOf('{name}') !== -1) {
       val = val.replace(/\{name\}/g, _name);
     }
+    // {n} = nº de firmas ativas, dinâmico (nunca chumbar na mão)
+    if (typeof val === 'string' && val.indexOf('{n}') !== -1) {
+      val = val.replace(/\{n\}/g, (window.FIRMS && FIRMS.length) || 18);
+    }
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
     else if (el.tagName === 'OPTION') el.textContent = val;
     else {
@@ -1322,6 +1326,9 @@ function applyTranslations() {
   document.querySelectorAll('[data-i18n-title]').forEach(el => {
     el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
   });
+  // Números fortes do home, dinâmicos (nº de firmas ativas), nunca chumbados
+  const _fc = ((window.FIRMS && FIRMS.length) || 18) + '+';
+  document.querySelectorAll('.js-firmcount').forEach(el => { el.textContent = _fc; });
 }
 function updateTVWidgets(lang) {
   const hmF = document.getElementById('heatmap-frame');
