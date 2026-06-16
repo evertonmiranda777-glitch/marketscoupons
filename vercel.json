@@ -62,7 +62,6 @@
     { "src": "/cheapest-prop-firms", "dest": "/best.html" },
     { "src": "/highest-rated-prop-firms", "dest": "/best.html" },
     { "src": "/coupons", "dest": "/coupons.html" },
-    { "src": "/operational", "dest": "/operational.html" },
     { "src": "/criativos/ranking", "dest": "/data/criativos/ranking.html" },
     { "src": "/criativos/carrossel", "dest": "/data/criativos/carrossel.html" },
     { "src": "/volumefilter", "dest": "/volumefilter-landing.html" },
