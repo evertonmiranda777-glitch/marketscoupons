@@ -155,8 +155,11 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
   <div class="tf"><div class="h"><b>15 min</b><span class="pill">Monitoro</span></div><div class="d"><code>RSI</code> (marco os 50 pontos, uso o F6) + <code>EMA 9</code> e <code>EMA 21</code>.</div></div>
   <div class="tf"><div class="h"><b>5 min</b><span class="pill">Execução</span></div><div class="d"><code>SMA 20</code> + <code>EMA 9</code> · <code>RSI 14</code> (smooth 3, lines em 30 / 70) · <b>VolumeFilter</b>, eu uso 2: um com <code>size filter 4</code> e o outro com <code>size filter 2</code>.<br><span style="color:var(--t3);font-size:12.5px">RSI: abaixo de 30 = sobrevendido · acima de 70 = sobrecomprado.</span></div></div>
 
+  <!-- tela completa: ilustra os timeframes acima -->
+  <div class="examples" id="ex-tela"></div>
+
   <h2 style="margin-top:24px">Os dois setups</h2>
-  <p class="lead">Leia o alinhamento, e deixe o <b>volume</b> dar a confirmação. E vc vai ver como é simples.</p>
+  <p class="lead">Leia o alinhamento, e deixe o <b>volume</b> dar a confirmação. E vc vai ver como é simples. Os exemplos reais abaixo são gráficos que aconteceram, se vc buscar no seu vai ver como esse movimento é comum, vc só precisa treinar os seus olhos.</p>
 
   <div class="setup buy">
     <div class="st">▲ Procure compra quando</div>
@@ -168,6 +171,8 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
     </ol>
     <div class="warn">⚠ Cuidado com o mercado lateral, ele engana. Espere o mercado tomar uma direção.</div>
   </div>
+  <!-- exemplos ilustrando a COMPRA -->
+  <div class="examples" id="ex-buy"></div>
 
   <div class="setup sell">
     <div class="st">▼ Procure venda quando</div>
@@ -179,10 +184,8 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
     </ol>
     <div class="warn">⚠ Cuidado com o mercado lateral, ele engana. Espere o mercado tomar uma direção.</div>
   </div>
-
-  <h2 style="margin-top:26px">Exemplos reais por contexto</h2>
-  <p class="lead">O setup em gráficos reais. Vou deixar alguns que aconteceram e sempre adicionar mais aqui pra ficar claro. Se vc buscar no seu gráfico vai ver como esse movimento é comum, vc só precisa treinar os seus olhos.</p>
-  <div class="examples" id="examples-grid"></div>
+  <!-- exemplos ilustrando a VENDA -->
+  <div class="examples" id="ex-sell"></div>
 
   <h2 style="margin-top:26px">As ferramentas grátis por trás disso</h2>
   <div class="tools">
@@ -232,19 +235,21 @@ function unlock(e){
 // quem já desbloqueou volta e vê o conteúdo direto (sem pedir email de novo)
 // bypass de REVISÃO (só Everton): /operational?ver=oryk destrava sem email e sem gravar lead
 try{ const _rev=new URLSearchParams(location.search).get('ver')==='oryk'; if(_rev||localStorage.getItem('mc_op_unlocked')==='1'){ const tz=document.getElementById('teaser'); if(tz)tz.style.display='none'; const mm=document.getElementById('method'); if(mm)mm.classList.add('open'); const g=document.querySelector('.gate'); if(g)g.style.display='none'; } }catch(_){}
-// ── Galeria de exemplos por contexto (gated) ──
-// Pra ADICIONAR MAIS depois: dropa o .png em img/operational/ e adiciona 1 linha aqui {f:'arquivo.png', c:'sua legenda'}.
+// ── Exemplos por contexto, cada imagem ILUSTRA a parte do operacional ──
+// Pra ADICIONAR MAIS depois: dropa o .png em img/operational/ e adiciona 1 linha no grupo certo.
+// g:'tela' (junto dos timeframes) · g:'buy' (abaixo da COMPRA) · g:'sell' (abaixo da VENDA)
 const EXAMPLES = [
-  { f:'chart-setup.png',              c:'Meu setup no gráfico de 5 min, cada indicador no lugar.' },
-  { f:'contexto-compra.png',          c:'Contexto de compra, tudo alinhado para cima.' },
-  { f:'contexto-compra-observcao.png',c:'Contexto de compra, o que eu observo antes de entrar.' },
-  { f:'contexto-compra-aovivo.png',   c:'Setup de compra, ao vivo.' },
-  { f:'contexto-venda.png',           c:'Contexto de venda, alinhamento para baixo.' }
-  // { f:'novo-exemplo.png', c:'sua legenda aqui' },
+  { g:'tela', f:'chart-setup.png',               c:'Minha tela completa, todos os timeframes que eu observo (Diário, 60min, 15min e 5min) com cada indicador no lugar.' },
+  { g:'buy',  f:'contexto-compra.png',           c:'Contexto de compra, tudo alinhado para cima.' },
+  { g:'buy',  f:'contexto-compra-observcao.png', c:'Contexto de compra, o que eu observo antes de entrar.' },
+  { g:'buy',  f:'contexto-compra-aovivo.png',    c:'Setup de compra, ao vivo.' },
+  { g:'sell', f:'contexto-venda.png',            c:'Contexto de venda, alinhamento para baixo.' }
+  // { g:'buy', f:'novo-exemplo.png', c:'sua legenda aqui' },
 ];
 (function(){
-  const grid=document.getElementById('examples-grid'); if(!grid)return;
+  const slot={tela:document.getElementById('ex-tela'),buy:document.getElementById('ex-buy'),sell:document.getElementById('ex-sell')};
   EXAMPLES.forEach(ex=>{
+    const grid=slot[ex.g]; if(!grid)return;
     const fig=document.createElement('figure');
     const img=new Image(); img.loading='lazy'; img.alt=ex.c||''; img.src='/img/operational/'+ex.f;
     img.onerror=()=>fig.remove();
