@@ -803,6 +803,9 @@ const FIRMS = [
 // ─── i18n ───
 function detectLang() {
   try {
+    // 1) idioma do path /xx/coupons (sinal mais explícito: a própria URL)
+    const seg = (location.pathname || '').split('/').filter(Boolean)[0];
+    if (seg && I18N[seg]) return seg;
     const qs = new URLSearchParams(location.search).get('lang');
     if (qs && I18N[qs]) return qs;
     const stored = localStorage.getItem('mc_lang');
