@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Como ativar no iPhone (PREVIEW PT) | Markets Coupons</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090D;--card:#10151F;--card2:#141B27;--b1:#1C2535;--b2:#263145;
+  --gold:#F0B429;--gold2:#D99A1E;--green:#10B981;
+  --t1:#EDF2F7;--t2:#B8C5D6;--t3:#8A98AE;
+  --ios-blue:#0A84FF;
+}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(240,180,41,.55)}70%{box-shadow:0 0 0 14px rgba(240,180,41,0)}100%{box-shadow:0 0 0 0 rgba(240,180,41,0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+html,body{background:var(--bg);color:var(--t1);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.pv{background:#7a1f1f;color:#fff;text-align:center;font-size:11px;font-weight:700;padding:4px;letter-spacing:.4px}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+
+.head{text-align:center;padding:48px 0 8px;animation:fadeUp .5s ease}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2.2px;color:var(--gold);font-weight:700;margin-bottom:14px;display:inline-flex;align-items:center;gap:8px}
+.h1{font-size:clamp(26px,5vw,40px);font-weight:900;letter-spacing:-.025em;line-height:1.1;margin-bottom:14px}
+.intro{font-size:14.5px;color:var(--t2);max-width:560px;margin:0 auto}
+.why{display:inline-flex;gap:10px;align-items:flex-start;text-align:left;background:color-mix(in srgb,var(--gold) 8%,var(--card));border:1px solid color-mix(in srgb,var(--gold) 26%,var(--b1));border-radius:12px;padding:13px 16px;margin:22px auto 0;max-width:560px}
+.why svg{color:var(--gold);flex-shrink:0;margin-top:1px}
+.why p{font-size:12.5px;color:var(--t2);line-height:1.5}
+
+/* steps */
+.step{display:grid;grid-template-columns:280px 1fr;gap:34px;align-items:center;padding:40px 0;border-bottom:1px solid var(--b1);animation:fadeUp .6s ease}
+.step:last-child{border-bottom:0}
+@media(max-width:720px){.step{grid-template-columns:1fr;gap:22px;justify-items:center;text-align:center}}
+.step-txt .num{display:inline-flex;align-items:center;gap:10px;margin-bottom:12px}
+.step-txt .num b{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0A0D14;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.step-txt .num span{font-size:11px;text-transform:uppercase;letter-spacing:1.6px;color:var(--t3);font-weight:700}
+.step-txt h3{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+.step-txt p{font-size:14px;color:var(--t2);line-height:1.6;max-width:420px}
+.step-txt .hint{margin-top:10px;font-size:12.5px;color:var(--t3)}
+.step-txt .hint b{color:var(--gold);font-weight:700}
+
+/* ── iPhone frame ── */
+.phone{width:268px;height:560px;border-radius:46px;background:#0a0a0c;padding:11px;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 0 2px #2a2a2e inset;position:relative;flex-shrink:0}
+.screen{width:100%;height:100%;border-radius:36px;overflow:hidden;position:relative;background:#000}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:86px;height:24px;background:#000;border-radius:14px;z-index:30}
+.sb{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:14px 22px 0;font-size:12px;font-weight:700;color:#fff;z-index:20}
+.sb .r{display:flex;gap:5px;align-items:center}
+
+/* annotation */
+.target{position:absolute;border:2.5px solid var(--gold);border-radius:12px;animation:pulse 1.8s infinite;z-index:25}
+.arrow{position:absolute;z-index:26;color:var(--gold)}
+.tagline{position:absolute;z-index:27;background:var(--gold);color:#0A0D14;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+/* destaque ANCORADO no elemento (não em pixel), nunca sai do lugar */
+.anchor{position:relative;z-index:20}
+.anchor .ring{position:absolute;inset:-3px;border:2.6px solid var(--gold);border-radius:13px;animation:pulse 1.8s infinite;pointer-events:none;z-index:28}
+.anchor .tag2{position:absolute;left:50%;transform:translateX(-50%);background:var(--gold);color:#0A0D14;font-size:10px;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;z-index:29;box-shadow:0 5px 14px rgba(0,0,0,.5)}
+.anchor .tag2.below{top:calc(100% + 8px)}
+.anchor .tag2.above{bottom:calc(100% + 8px)}
+
+/* screen 1: safari */
+.s-web{position:absolute;inset:0;background:linear-gradient(180deg,#0B0F16,#07090D)}
+.s-web .miniweb{position:absolute;top:54px;left:0;right:0;bottom:88px;padding:14px}
+.s-web .mh{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:#fff;margin-bottom:14px}
+.s-web .mh i{color:var(--gold)}
+.s-web .mcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;height:62px;margin-bottom:9px}
+.s-web .urlbar{position:absolute;left:14px;right:14px;bottom:54px;height:34px;background:#1c1c1e;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#9b9ba1;font-size:11px;gap:5px}
+.s-web .toolbar{position:absolute;left:0;right:0;bottom:0;height:50px;background:#161618;display:flex;align-items:center;justify-content:space-around;color:#0A84FF}
+.s-web .siteimg{position:absolute;top:46px;left:0;right:0;height:calc(100% - 46px - 88px);width:100%;object-fit:cover;object-position:top center}
+
+/* screen 2: share sheet */
+.s-sheet{position:absolute;inset:0;background:#05070b;overflow:hidden}
+.s-sheet .siteimg2{position:absolute;top:46px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 46px);object-fit:cover;object-position:top center}
+.s-sheet .dim2{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:1}
+.sheet{position:absolute;left:6px;right:6px;bottom:6px;background:#1c1c1e;border-radius:14px;padding:10px;backdrop-filter:blur(8px);z-index:5}
+.sheet .grab{width:36px;height:5px;background:#48484a;border-radius:3px;margin:2px auto 12px}
+.sheet .approw{display:flex;gap:13px;padding:2px 6px 14px;overflow:hidden}
+.sheet .appic{width:46px;flex-shrink:0;text-align:center;color:#fff;font-size:9px}
+.sheet .appic .ic{width:46px;height:46px;border-radius:12px;margin-bottom:4px;background:#3a3a3c}
+.sheet .list{background:#2c2c2e;border-radius:11px;overflow:hidden}
+.sheet .li{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;color:#fff;font-size:13.5px;border-bottom:.5px solid #3a3a3c}
+.sheet .li:last-child{border-bottom:0}
+.sheet .li .ic{width:26px;height:26px;border-radius:6px;background:#48484a;display:flex;align-items:center;justify-content:center}
+.sheet .li.hl{background:rgba(240,180,41,.14)}
+
+/* screen 3: home */
+.s-home{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%,#1d2942,#0a0d18 70%)}
+.s-home .grid{position:absolute;top:74px;left:0;right:0;padding:0 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px 6px}
+.s-home .app{text-align:center;color:#fff;font-size:8.5px;overflow:visible}
+.s-home .app .ic{width:42px;height:42px;border-radius:11px;margin:0 auto 5px;background:rgba(255,255,255,.12)}
+.s-home .app.mc .ic{background:#141418;display:flex;align-items:center;justify-content:center}
+/* callout do ícone real (pro leigo reconhecer) */
+.icon-callout{display:inline-flex;align-items:center;gap:13px;margin-top:14px;background:var(--card);border:1px solid color-mix(in srgb,var(--gold) 32%,var(--b1));border-radius:13px;padding:11px 15px;text-align:left}
+.icon-callout .big-ic{width:52px;height:52px;border-radius:13px;background:#141418;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.icon-callout .cap{font-size:12.5px;color:var(--t2);line-height:1.45}
+.icon-callout .cap b{color:#fff;font-weight:700}
+
+/* screen 4: app + permission */
+.s-app{position:absolute;inset:0;background:#07090D;overflow:hidden}
+.s-app .appimg{position:absolute;top:46px;left:0;right:0;height:calc(100% - 46px);width:100%;object-fit:cover;object-position:top center}
+.s-app .appdim{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.s-app .alert{position:absolute;top:196px;left:34px;right:34px;background:#2c2c2e;border-radius:14px;overflow:hidden;color:#fff;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.7);z-index:10}
+.s-app .alert .body{padding:18px 16px 14px}
+.s-app .alert .body b{font-size:14px;display:block;margin-bottom:5px}
+.s-app .alert .body span{font-size:11.5px;color:#c7c7cc;line-height:1.4}
+.s-app .alert .btns{display:flex;border-top:.5px solid #48484a}
+.s-app .alert .btns div{flex:1;padding:12px;font-size:14px;color:#0A84FF}
+.s-app .alert .btns div:first-child{border-right:.5px solid #48484a}
+.s-app .alert .btns div.bold{font-weight:800}
+
+.done{text-align:center;padding:38px 0 60px}
+.done .chip{display:inline-flex;align-items:center;gap:9px;background:color-mix(in srgb,var(--green) 14%,var(--card));border:1px solid color-mix(in srgb,var(--green) 40%,transparent);color:var(--green);font-size:13px;font-weight:700;padding:11px 18px;border-radius:99px}
+</style>
+</head>
+<body>
+<div class="pv">PREVIEW PT, material de aprovação. data/preview/app-ios-howto.html</div>
+
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2 1.6-3 1.7-3.1-.9-1.3-2.3-1.5-2.8-1.5-1.2-.1-2.3.7-2.9.7s-1.5-.7-2.5-.7c-1.3 0-2.5.7-3.2 1.9-1.3 2.4-.3 5.9 1 7.8.6 1 1.3 2 2.3 2 .9 0 1.3-.6 2.4-.6s1.5.6 2.4.6 1.6-.9 2.3-1.9c.5-.7.7-1.1.7-1.1s-1.4-.5-1.4-2.3zM14.6 6.1c.5-.6.9-1.5.8-2.4-.8 0-1.7.5-2.2 1.1-.5.6-.9 1.5-.8 2.3.9.1 1.7-.4 2.2-1z"/></svg>
+      Ativar no iPhone
+    </div>
+    <h1 class="h1">Receba os cupons em 4 passos</h1>
+    <p class="intro">No iPhone, a Apple só deixa o site te notificar depois que você adiciona ele à tela de início (vira um app). É rápido, segue:</p>
+    <div class="why">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <p>É preciso fazer isso pelo <b style="color:#fff">Safari</b> (não funciona no Chrome do iPhone). Leva menos de 1 minuto e é de graça.</p>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="s-web">
+        <div class="sb"><span>9:41</span><div class="r"><span>5G</span></div></div>
+        <img class="siteimg" src="./site-mobile.jpeg" alt="Markets Coupons no Safari">
+        <div class="urlbar"><svg width="11" height="11" viewBox="0 0 24 24" fill="#9b9ba1"><path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm3 8H9V6a3 3 0 0 1 6 0z"/></svg> marketscoupons.com</div>
+        <div class="toolbar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3a3a3c" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <span class="anchor">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            <span class="ring" style="inset:-8px;border-radius:9px"></span>
+            <span class="tag2 above">toque aqui</span>
+          </span>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>1</b><span>Passo 1 de 4</span></div>
+      <h3>Toque no ícone Compartilhar</h3>
+      <p>Na barra de baixo do Safari, é o quadradinho com uma <b style="color:var(--gold)">seta pra cima</b>, bem no meio.</p>
+      <p class="hint">Se a barra estiver escondida, role a página um pouco pra baixo que ela aparece.</p>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="s-sheet">
+        <img class="siteimg2" src="./site-mobile.jpeg" alt="">
+        <div class="dim2"></div>
+        <div class="sb"><span style="color:#fff">9:41</span><div class="r"><span style="color:#fff">5G</span></div></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="approw">
+            <div class="appic"><div class="ic"></div>AirDrop</div>
+            <div class="appic"><div class="ic"></div>Mensagens</div>
+            <div class="appic"><div class="ic"></div>Mail</div>
+            <div class="appic"><div class="ic"></div>WhatsApp</div>
+          </div>
+          <div class="list">
+            <div class="li"><span>Copiar</span><div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div></div>
+            <div class="li"><span>Adicionar aos Favoritos</span><div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2l3 7 7 .5-5.5 4.5 2 7L12 17l-6.5 4 2-7L2 9.5 9 9z"/></svg></div></div>
+            <div class="li hl anchor"><span style="font-weight:700;color:var(--gold)">Adicionar à Tela de Início</span><div class="ic" style="background:rgba(240,180,41,.25)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F0B429" stroke-width="2.3"><rect x="3" y="3" width="18" height="18" rx="4"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><span class="ring" style="inset:-2px;border-radius:9px"></span><span class="tag2 above">toque nesta opção</span></div>
+            <div class="li"><span>Marcar</span><div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 20l-1.5-1.4C5 13.5 2 10.8 2 7.5 2 5 4 3 6.5 3 8 3 9.4 3.7 12 6c2.6-2.3 4-3 5.5-3C20 3 22 5 22 7.5c0 3.3-3 6-8.5 11z"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>2</b><span>Passo 2 de 4</span></div>
+      <h3>Toque em "Adicionar à Tela de Início"</h3>
+      <p>Role a lista que abriu de baixo até achar essa opção (ícone com um <b style="color:var(--gold)">+</b>). Toque nela e depois em <b style="color:#fff">"Adicionar"</b> no canto.</p>
+      <p class="hint">Pronto: o app vira um ícone na sua tela, igual qualquer outro.</p>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="s-home">
+        <div class="sb"><span style="color:#fff">9:41</span><div class="r"><span style="color:#fff">5G</span></div></div>
+        <div class="grid">
+          <div class="app"><div class="ic"></div>Fotos</div>
+          <div class="app"><div class="ic"></div>Notas</div>
+          <div class="app mc anchor"><div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Markets<span class="ring" style="inset:-3px;border-radius:13px"></span><span class="tag2 below">abra por aqui</span></div>
+          <div class="app"><div class="ic"></div>Clima</div>
+          <div class="app"><div class="ic"></div>Ajustes</div>
+          <div class="app"><div class="ic"></div>App Store</div>
+          <div class="app"><div class="ic"></div>Mapas</div>
+          <div class="app"><div class="ic"></div>Saúde</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>3</b><span>Passo 3 de 4</span></div>
+      <h3>Abra o app pelo novo ícone</h3>
+      <p>Feche o Safari e toque no ícone <b style="color:var(--gold)">MarketsCoupons</b> que apareceu na sua tela de início. É por ele que as notificações funcionam.</p>
+      <p class="hint">Abrir pelo Safari de novo <b>não</b> ativa, tem que ser pelo ícone.</p>
+      <div class="icon-callout">
+        <div class="big-ic"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="cap">Procure por <b>este ícone</b> na sua tela , o nome embaixo é <b>MarketsCoupons</b>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="s-app">
+        <div class="sb"><span style="color:#fff">9:41</span><div class="r"><span style="color:#fff">5G</span></div></div>
+        <img class="appimg" src="./site-mobile.jpeg" alt="Markets Coupons app">
+        <div class="appdim"></div>
+        <div class="alert">
+          <div class="body"><b>"Markets Coupons" deseja enviar notificações</b><span>Avisos, sons e selos podem ser configurados nos Ajustes.</span></div>
+          <div class="btns"><div>Não permitir</div><div class="bold anchor">Permitir<span class="ring" style="inset:0;border-radius:0 0 14px 0"></span><span class="tag2 below">toque em "Permitir"</span></div></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>4</b><span>Passo 4 de 4</span></div>
+      <h3>Toque em "Ativar" e depois "Permitir"</h3>
+      <p>Dentro do app, toque no botão <b style="color:var(--gold)">Ativar notificações</b>. O iPhone vai perguntar, escolha <b style="color:#fff">"Permitir"</b>.</p>
+      <p class="hint">Acabou. Você vai receber um aviso sempre que cair cupom novo ou desconto melhor.</p>
+    </div>
+  </div>
+
+  <div class="done">
+    <div class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Pronto! Notificações ativas no seu iPhone.</div>
+  </div>
+</div>
+</body>
+</html>

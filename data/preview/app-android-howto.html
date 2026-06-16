@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Como ativar no Android (PREVIEW PT) | Markets Coupons</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090D;--card:#10151F;--card2:#141B27;--b1:#1C2535;--b2:#263145;
+  --gold:#F0B429;--gold2:#D99A1E;--green:#10B981;
+  --t1:#EDF2F7;--t2:#B8C5D6;--t3:#8A98AE;
+}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(240,180,41,.55)}70%{box-shadow:0 0 0 14px rgba(240,180,41,0)}100%{box-shadow:0 0 0 0 rgba(240,180,41,0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+html,body{background:var(--bg);color:var(--t1);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.pv{background:#7a1f1f;color:#fff;text-align:center;font-size:11px;font-weight:700;padding:4px;letter-spacing:.4px}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+
+.head{text-align:center;padding:46px 0 6px;animation:fadeUp .5s ease}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2.2px;color:var(--gold);font-weight:700;margin-bottom:14px;display:inline-flex;align-items:center;gap:8px}
+.h1{font-size:clamp(26px,5vw,40px);font-weight:900;letter-spacing:-.025em;line-height:1.1;margin-bottom:14px}
+.intro{font-size:14.5px;color:var(--t2);max-width:580px;margin:0 auto}
+
+/* section divider */
+.sec-band{display:flex;align-items:center;gap:14px;margin:46px 0 6px}
+.sec-band .ln{flex:1;height:1px;background:var(--b1)}
+.sec-band .lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);display:inline-flex;align-items:center;gap:8px}
+.sec-band.alt .lbl{color:var(--t3)}
+.sec-sub{text-align:center;font-size:13px;color:var(--t3);margin-bottom:8px}
+.rec-pill{background:var(--gold);color:#0A0D14;font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.4px}
+
+.step{display:grid;grid-template-columns:268px 1fr;gap:32px;align-items:center;padding:36px 0;border-bottom:1px solid var(--b1);animation:fadeUp .6s ease}
+.step:last-child{border-bottom:0}
+@media(max-width:720px){.step{grid-template-columns:1fr;gap:20px;justify-items:center;text-align:center}}
+.step-txt .num{display:inline-flex;align-items:center;gap:10px;margin-bottom:12px}
+.step-txt .num b{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0A0D14;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.step-txt .num span{font-size:11px;text-transform:uppercase;letter-spacing:1.6px;color:var(--t3);font-weight:700}
+.step-txt h3{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+.step-txt p{font-size:14px;color:var(--t2);line-height:1.6;max-width:430px}
+.step-txt .hint{margin-top:10px;font-size:12.5px;color:var(--t3)}
+.step-txt .hint b{color:var(--gold);font-weight:700}
+
+/* phone frame (Android) */
+.phone{width:262px;height:548px;border-radius:32px;background:#0a0a0c;padding:8px;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 0 2px #2a2a2e inset;position:relative;flex-shrink:0}
+.screen{width:100%;height:100%;border-radius:25px;overflow:hidden;position:relative;background:#000}
+.punch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:8px;height:8px;background:#000;border-radius:50%;z-index:30;box-shadow:0 0 0 2px #161618}
+.sb{position:absolute;top:0;left:0;right:0;height:28px;display:flex;align-items:center;justify-content:space-between;padding:7px 15px 0;font-size:10.5px;font-weight:700;color:#fff;z-index:22}
+
+/* anchored highlight */
+.anchor{position:relative;z-index:20}
+.anchor .ring{position:absolute;inset:-3px;border:2.6px solid var(--gold);border-radius:11px;animation:pulse 1.8s infinite;pointer-events:none;z-index:28}
+.anchor .tag2{position:absolute;left:50%;transform:translateX(-50%);background:var(--gold);color:#0A0D14;font-size:10px;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;z-index:29;box-shadow:0 5px 14px rgba(0,0,0,.5)}
+.anchor .tag2.below{top:calc(100% + 8px)}
+.anchor .tag2.above{bottom:calc(100% + 8px)}
+
+/* Chrome chrome */
+.chrome-top{position:absolute;top:28px;left:0;right:0;height:36px;background:#202124;display:flex;align-items:center;gap:9px;padding:0 11px;z-index:8}
+.chrome-top .home{color:#bdc1c6;flex-shrink:0}
+.chrome-top .url{flex:1;background:#3c4043;border-radius:99px;height:23px;display:flex;align-items:center;justify-content:center;color:#cfd2d6;font-size:10px;gap:5px}
+.chrome-top .dots{color:#e8eaed;flex-shrink:0;font-size:18px;line-height:1;letter-spacing:1px;width:18px;text-align:center}
+.siteimg{position:absolute;top:64px;left:0;right:0;height:calc(100% - 64px);width:100%;object-fit:cover;object-position:top center}
+.dim{position:absolute;top:28px;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:6}
+
+/* Chrome ⋮ menu */
+.cmenu{position:absolute;top:62px;right:8px;width:178px;background:#2c2d30;border-radius:10px;padding:6px 0;z-index:12;box-shadow:0 16px 44px rgba(0,0,0,.6)}
+.cmenu .ci{display:flex;align-items:center;gap:12px;padding:9px 14px;color:#e8eaed;font-size:12px}
+.cmenu .ci svg{color:#9aa0a6;flex-shrink:0}
+.cmenu .ci.hl{background:rgba(240,180,41,.16)}
+
+/* Install dialog */
+.idlg{position:absolute;top:150px;left:18px;right:18px;background:#2d2e30;border-radius:16px;overflow:hidden;color:#e8eaed;box-shadow:0 22px 56px rgba(0,0,0,.65);z-index:12}
+.idlg .it{font-size:13px;font-weight:600;padding:16px 18px 6px}
+.idlg .ib{display:flex;align-items:center;gap:11px;padding:4px 18px 14px}
+.idlg .ib .fav{width:38px;height:38px;border-radius:9px;background:#141418;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.idlg .ib .meta b{font-size:12.5px;display:block;color:#fff}
+.idlg .ib .meta span{font-size:10.5px;color:#9aa0a6}
+.idlg .btns{display:flex;justify-content:flex-end;gap:6px;padding:6px 14px 14px}
+.idlg .btns div{padding:8px 16px;font-size:12.5px;font-weight:700;color:#8ab4f8;border-radius:8px}
+
+/* permission dialog */
+.pdlg{position:absolute;top:96px;left:14px;right:14px;background:#2d2e30;border-radius:14px;overflow:hidden;color:#e8eaed;box-shadow:0 18px 50px rgba(0,0,0,.6);z-index:12}
+.pdlg .dh{display:flex;align-items:center;gap:9px;padding:15px 16px 7px;font-size:12px}
+.pdlg .dh .fav{width:22px;height:22px;border-radius:6px;background:#141418;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pdlg .btns{display:flex;justify-content:flex-end;gap:6px;padding:8px 12px 12px}
+.pdlg .btns div{padding:8px 14px;font-size:12.5px;font-weight:700;color:#8ab4f8;border-radius:8px}
+
+/* home screen */
+.s-home{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%,#241b3e,#0a0d18 70%)}
+.s-home .grid{position:absolute;top:70px;left:0;right:0;padding:0 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px 6px}
+.s-home .app{text-align:center;color:#fff;font-size:8.5px}
+.s-home .app .ic{width:42px;height:42px;border-radius:11px;margin:0 auto 5px;background:rgba(255,255,255,.12)}
+.s-home .app.mc .ic{background:#141418;display:flex;align-items:center;justify-content:center}
+
+/* menu image (path B) */
+.s-menu{position:absolute;inset:0;background:#0b0e14}
+.s-menu .menuimg{position:absolute;top:28px;left:0;right:0;height:calc(100% - 28px);width:100%;object-fit:cover;object-position:top left}
+.s-menu .target{position:absolute;border:2.6px solid var(--gold);border-radius:9px;animation:pulse 1.8s infinite;z-index:25;pointer-events:none}
+.s-menu .tagline{position:absolute;z-index:27;background:var(--gold);color:#0A0D14;font-size:10px;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;box-shadow:0 5px 14px rgba(0,0,0,.5)}
+
+.done{text-align:center;padding:36px 0 60px}
+.done .chip{display:inline-flex;align-items:center;gap:9px;background:color-mix(in srgb,var(--green) 14%,var(--card));border:1px solid color-mix(in srgb,var(--green) 40%,transparent);color:var(--green);font-size:13px;font-weight:700;padding:11px 18px;border-radius:99px}
+.svg-app{width:30px;height:30px}
+</style>
+</head>
+<body>
+<div class="pv">PREVIEW PT , material de aprovação. data/preview/app-android-howto.html</div>
+
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      Ativar no Android
+    </div>
+    <h1 class="h1">Coloque o app na tela e receba os cupons</h1>
+    <p class="intro">No Android você instala o app na tela inicial (igual no iPhone, só que mais fácil) , aí vira um ícone bonito e você recebe as notificações. Quem preferir, dá pra só ativar a notificação no navegador, sem instalar.</p>
+  </div>
+
+  <!-- ════ OPÇÃO 1: INSTALAR NA TELA (recomendado) ════ -->
+  <div class="sec-band">
+    <div class="ln"></div>
+    <div class="lbl"><span class="rec-pill">Recomendado</span> Instalar na tela inicial</div>
+    <div class="ln"></div>
+  </div>
+  <p class="sec-sub">Vira um app de verdade na sua tela. Pelo Chrome:</p>
+
+  <!-- A1 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="punch"></div>
+      <div style="position:absolute;inset:0;background:#07090D">
+        <div class="sb"><span>20:49</span><span>5G</span></div>
+        <div class="chrome-top">
+          <svg class="home" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+          <div class="url"><svg width="9" height="9" viewBox="0 0 24 24" fill="#cfd2d6"><path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm3 8H9V6a3 3 0 0 1 6 0z"/></svg> marketscoupons.com</div>
+          <span class="anchor" style="display:inline-flex"><span class="dots">⋮</span><span class="ring" style="inset:-6px;border-radius:50%"></span><span class="tag2 below" style="left:auto;right:-4px;transform:none">toque aqui</span></span>
+        </div>
+        <img class="siteimg" src="./site-mobile.jpeg" alt="">
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>1</b><span>Passo 1 de 4</span></div>
+      <h3>Toque no menu do Chrome</h3>
+      <p>São os <b style="color:var(--gold)">três pontinhos (⋮)</b> no canto superior direito do navegador.</p>
+    </div>
+  </div>
+
+  <!-- A2 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="punch"></div>
+      <div style="position:absolute;inset:0;background:#07090D">
+        <div class="sb"><span>20:49</span><span>5G</span></div>
+        <div class="chrome-top">
+          <svg class="home" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+          <div class="url">marketscoupons.com</div>
+          <span class="dots">⋮</span>
+        </div>
+        <img class="siteimg" src="./site-mobile.jpeg" alt="">
+        <div class="dim"></div>
+        <div class="cmenu">
+          <div class="ci"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg> Compartilhar…</div>
+          <div class="ci"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Encontrar na página</div>
+          <div class="ci"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/></svg> Traduzir…</div>
+          <div class="ci hl anchor"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F0B429" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> <span style="color:var(--gold);font-weight:700">Adicionar à tela inicial</span><span class="ring" style="inset:0;border-radius:6px"></span><span class="tag2 above">toque aqui</span></div>
+          <div class="ci"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg> Site para computador</div>
+          <div class="ci"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L16 2h-4l-.8 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a7 7 0 0 0 1.7 1L12 22h4"/></svg> Configurações</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>2</b><span>Passo 2 de 4</span></div>
+      <h3>Toque em "Adicionar à tela inicial"</h3>
+      <p>No menu que abriu, role se precisar e toque em <b style="color:var(--gold)">Adicionar à tela inicial</b>.</p>
+    </div>
+  </div>
+
+  <!-- A3 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="punch"></div>
+      <div style="position:absolute;inset:0;background:#07090D">
+        <div class="sb"><span>20:49</span><span>5G</span></div>
+        <img class="siteimg" src="./site-mobile.jpeg" alt="" style="top:28px;height:calc(100% - 28px)">
+        <div class="dim"></div>
+        <div class="idlg">
+          <div class="it">Instalar aplicativo</div>
+          <div class="ib"><div class="fav"><svg class="svg-app" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="meta"><b>Markets Coupons, Prop Firm Deals</b><span>www.marketscoupons.com</span></div></div>
+          <div class="btns"><div>Cancelar</div><div class="anchor" style="color:#8ab4f8">Instalar<span class="ring" style="inset:-3px;border-radius:8px"></span><span class="tag2 below">toque em "Instalar"</span></div></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>3</b><span>Passo 3 de 4</span></div>
+      <h3>Toque em "Instalar"</h3>
+      <p>Aparece o aviso <b>"Markets Coupons, Prop Firm Deals"</b>. Toque em <b style="color:var(--gold)">Instalar</b> , o ícone aparece na sua tela inicial.</p>
+      <p class="hint">Às vezes o Chrome mostra esse aviso <b>sozinho</b> , é só tocar em Instalar.</p>
+    </div>
+  </div>
+
+  <!-- A4 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="punch"></div>
+      <div class="s-home">
+        <div class="sb"><span style="color:#fff">20:49</span><span style="color:#fff">5G</span></div>
+        <div class="grid">
+          <div class="app"><div class="ic"></div>Fotos</div>
+          <div class="app"><div class="ic"></div>Play Store</div>
+          <div class="app mc anchor"><div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Markets<span class="ring" style="inset:-3px;border-radius:13px"></span><span class="tag2 below">abra por aqui</span></div>
+          <div class="app"><div class="ic"></div>Câmera</div>
+          <div class="app"><div class="ic"></div>Ajustes</div>
+          <div class="app"><div class="ic"></div>Chrome</div>
+          <div class="app"><div class="ic"></div>Mensagens</div>
+          <div class="app"><div class="ic"></div>Relógio</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>4</b><span>Passo 4 de 4</span></div>
+      <h3>Abra pelo ícone e ative as notificações</h3>
+      <p>Toque no novo ícone <b style="color:var(--gold)">MarketsCoupons</b> na sua tela. Dentro do app, toque em <b>Ativar notificações</b> e depois em <b>Permitir</b>.</p>
+      <p class="hint">Pronto , app na tela + avisos de cupom novo e desconto melhor.</p>
+    </div>
+  </div>
+
+  <div class="done">
+    <div class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Pronto! App na tela e notificações ativas.</div>
+  </div>
+
+  <!-- ════ OPÇÃO 2: SÓ NOTIFICAÇÃO (sem instalar) ════ -->
+  <div class="sec-band alt">
+    <div class="ln"></div>
+    <div class="lbl">Ou só ativar a notificação (sem instalar)</div>
+    <div class="ln"></div>
+  </div>
+  <p class="sec-sub">Não quer o ícone na tela? Dá pra receber direto no navegador:</p>
+
+  <!-- B1 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="punch"></div>
+      <div class="s-menu">
+        <div class="sb"><span>9:41</span><span>5G</span></div>
+        <img class="menuimg" src="./site-menu.jpeg" alt="Menu do Markets Coupons">
+        <div class="target" id="t1"></div>
+        <div class="tagline" id="g1">toque aqui</div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>1</b><span>Alternativa , passo 1 de 2</span></div>
+      <h3>Abra o menu do site e toque em "Ativar notificações"</h3>
+      <p>No menu (☰) do site, role e toque em <b style="color:var(--gold)">Ativar notificações</b> (o sininho).</p>
+    </div>
+  </div>
+
+  <!-- B2 -->
+  <div class="step">
+    <div class="phone"><div class="screen">
+      <div class="punch"></div>
+      <div style="position:absolute;inset:0;background:#07090D">
+        <img class="siteimg" src="./site-mobile.jpeg" alt="" style="top:28px;height:calc(100% - 28px)">
+        <div class="dim"></div>
+        <div class="sb"><span style="color:#fff">9:41</span><span style="color:#fff">5G</span></div>
+        <div class="pdlg">
+          <div class="dh"><div class="fav"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.4"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><b>marketscoupons.com</b> quer:<br>Mostrar notificações</div></div>
+          <div class="btns"><div>Não permitir</div><div class="anchor" style="color:#8ab4f8">Permitir<span class="ring" style="inset:-3px;border-radius:8px"></span><span class="tag2 below">toque em "Permitir"</span></div></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="step-txt">
+      <div class="num"><b>2</b><span>Alternativa , passo 2 de 2</span></div>
+      <h3>Toque em "Permitir"</h3>
+      <p>O Chrome pergunta se o site pode mostrar notificações. Toque em <b style="color:var(--gold)">Permitir</b> , pronto.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// destaque sobre "Ativar notificações" na imagem do menu (390x844 fixo)
+(function(){
+  var img=document.querySelector('.s-menu .menuimg'); if(!img) return;
+  function place(){
+    var sm=document.querySelector('.s-menu'); var W=sm.clientWidth; var scale=W/390; var topOffset=28;
+    var x=8,y=503,w=160,h=32;
+    var t=document.getElementById('t1'); t.style.left=(x*scale)+'px'; t.style.top=(topOffset+y*scale)+'px'; t.style.width=(w*scale)+'px'; t.style.height=(h*scale)+'px';
+    var g=document.getElementById('g1'); g.style.left=((x+w)*scale+6)+'px'; g.style.top=(topOffset+(y+4)*scale)+'px';
+  }
+  if(img.complete) place(); else img.onload=place;
+  window.addEventListener('resize',place);
+})();
+</script>
+</body>
+</html>

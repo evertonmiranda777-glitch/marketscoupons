@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Banner App , fim da LP (PREVIEW PT v2)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07090D;--card:#10151F;--card2:#141B27;--b1:#1C2535;--gold:#F0B429;--gold2:#D99A1E;--t1:#EDF2F7;--t2:#B8C5D6;--t3:#8A98AE;--green:#10B981}
+@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+html,body{background:var(--bg);color:var(--t1);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.pv{background:#7a1f1f;color:#fff;text-align:center;font-size:11px;font-weight:700;padding:4px;letter-spacing:.4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+.ctxhint{text-align:center;color:var(--t3);font-size:12px;padding:30px 0 10px;letter-spacing:.3px}
+.ctx-cards{display:flex;gap:12px;justify-content:center;opacity:.32;margin-bottom:30px}
+.ctx-cards .cc{width:240px;height:54px;background:var(--card);border:1px solid var(--b1);border-radius:12px}
+@media(max-width:680px){.ctx-cards .cc:nth-child(n+2){display:none}}
+
+/* ── BANNER ── */
+.appban{position:relative;overflow:hidden;border-radius:20px;border:1px solid color-mix(in srgb,var(--gold) 26%,var(--b1));background:
+  radial-gradient(120% 140% at 10% 0%, color-mix(in srgb,var(--gold) 12%,transparent), transparent 55%),
+  linear-gradient(180deg,#0e1320,#0a0e16);
+  padding:24px 28px;display:flex;align-items:center;gap:24px}
+.appban::after{content:"";position:absolute;inset:0;background:radial-gradient(55% 120% at 100% 100%, color-mix(in srgb,var(--gold) 9%,transparent), transparent 60%);pointer-events:none}
+@media(max-width:680px){.appban{flex-direction:column;text-align:center;gap:16px;padding:26px 20px}}
+
+/* ícone quadradinho (estilo .mu-logo da home) */
+.ban-ic{position:relative;flex-shrink:0;width:62px;height:62px;border-radius:15px;background:#0a0d14;border:1px solid color-mix(in srgb,var(--gold) 26%,transparent);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.45),0 0 26px rgba(240,180,41,.14)}
+.ban-ic .badge{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;border-radius:9px;background:#ef4444;border:2px solid #0a0e16;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;padding:0 4px}
+
+.ban-mid{flex:1;position:relative;z-index:1}
+.ban-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;color:var(--gold);font-weight:800;margin-bottom:9px}
+.ban-h{font-size:clamp(20px,3.1vw,25px);font-weight:900;letter-spacing:-.02em;line-height:1.12;margin-bottom:7px}
+.ban-h em{font-style:normal;background:linear-gradient(120deg,var(--gold),#f6d873);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ban-sub{font-size:13.5px;color:var(--t2);max-width:440px;line-height:1.55}
+@media(max-width:680px){.ban-sub{margin:0 auto}}
+
+.ban-cta{position:relative;z-index:1;flex-shrink:0;text-align:center}
+.ban-btn{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:12px;background:linear-gradient(90deg,#c8941a,var(--gold),#f6d066,var(--gold),#c8941a);background-size:200% 100%;animation:shimmer 3.5s ease infinite;color:#0A0D14;font-weight:800;font-size:14.5px;border:0;cursor:pointer;box-shadow:0 10px 28px rgba(240,180,41,.26);text-decoration:none;white-space:nowrap}
+.ban-foot{font-size:11px;color:var(--t3);margin-top:9px}
+
+.disc{text-align:center;color:var(--t3);font-size:11px;padding:26px 0 50px;opacity:.6}
+.alt{max-width:1040px;margin:40px auto 0;padding:18px;border-top:1px dashed var(--b1)}
+.alt h4{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--t3);margin-bottom:10px;text-align:center}
+.alt .opt{font-size:13px;color:var(--t2);text-align:center;margin-bottom:6px}
+.alt .opt b{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="pv">PREVIEW PT v2 , banner de app no FIM da /coupons. data/preview/lp-app-banner.html</div>
+
+<div class="wrap">
+  <div class="ctxhint">↑ (fim da lista de cupons da LP) ↑</div>
+  <div class="ctx-cards"><div class="cc"></div><div class="cc"></div><div class="cc"></div></div>
+
+  <!-- ===== BANNER ===== -->
+  <section class="appban">
+    <div class="ban-ic">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="badge">1</span>
+    </div>
+
+    <div class="ban-mid">
+      <div class="ban-eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Alertas de cupom no app
+      </div>
+      <h2 class="ban-h">O melhor cupom chega <em>primeiro</em> no app</h2>
+      <p class="ban-sub">Te avisamos na hora que sair cupom novo ou o desconto aumentar. Grátis, e você sai quando quiser.</p>
+    </div>
+
+    <div class="ban-cta">
+      <a class="ban-btn" href="/app">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Ativar alertas
+      </a>
+      <div class="ban-foot">iPhone e Android · leva 1 minuto</div>
+    </div>
+  </section>
+
+  <div class="disc">(abaixo continua o rodapé padrão da LP)</div>
+
+  <!-- variações de copy pro Everton escolher (não vai pro site) -->
+  <div class="alt">
+    <h4>Variações de headline pra testar (A/B)</h4>
+    <div class="opt"><b>A , Perda:</b> "Não perca o próximo cupom" <i>(no mock acima)</i></div>
+    <div class="opt"><b>B , Exclusividade:</b> "O melhor cupom chega primeiro no app"</div>
+    <div class="opt"><b>C , Imediatismo:</b> "Cupom novo? Você sabe na hora"</div>
+  </div>
+</div>
+</body>
+</html>
