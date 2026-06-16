@@ -4110,6 +4110,148 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
 </div>
 
+<!-- ===== APP & ALERTS PAGE ===== -->
+<style>
+#page-app{--apg:#F0B429;--apg2:#D99A1E}
+#page-app .ap-wrap{max-width:980px;margin:0 auto;padding:0 20px}
+#page-app .ap-hero{text-align:center;padding:50px 0 20px}
+#page-app .ap-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:2.2px;color:var(--apg);font-weight:800;margin-bottom:14px}
+#page-app .ap-h1{font-size:clamp(28px,5.4vw,44px);font-weight:900;letter-spacing:-.03em;line-height:1.08;margin-bottom:14px;color:#EDF2F7}
+#page-app .ap-h1 em{font-style:normal;background:linear-gradient(120deg,var(--apg),#f6d873);-webkit-background-clip:text;background-clip:text;color:transparent}
+#page-app .ap-sub{font-size:15px;color:#B8C5D6;max-width:560px;margin:0 auto 22px}
+#page-app .ap-cta{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:12px;background:linear-gradient(90deg,#c8941a,var(--apg),#f6d066,var(--apg),#c8941a);background-size:200% 100%;color:#0A0D14;font-weight:800;font-size:15px;border:0;cursor:pointer;box-shadow:0 10px 30px rgba(240,180,41,.25)}
+#page-app .ap-note{margin-top:15px;font-size:12.5px;color:#8A98AE}
+#page-app .ap-benes{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:12px 0 4px}
+@media(max-width:680px){#page-app .ap-benes{grid-template-columns:1fr}}
+#page-app .ap-bene{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:17px}
+#page-app .ap-bene svg{color:var(--apg);margin-bottom:8px}
+#page-app .ap-bene h3{font-size:14px;font-weight:800;margin-bottom:4px;color:#EDF2F7}
+#page-app .ap-bene p{font-size:12.5px;color:#8A98AE;line-height:1.5}
+#page-app .ap-tabs{display:flex;gap:8px;justify-content:center;margin:46px 0 6px;flex-wrap:wrap}
+#page-app .ap-tab{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#B8C5D6;font-size:14px;font-weight:700;cursor:pointer}
+#page-app .ap-tab svg{width:16px;height:16px}
+#page-app .ap-tab.active{background:rgba(240,180,41,.14);border-color:rgba(240,180,41,.5);color:var(--apg)}
+#page-app .ap-panel{display:none}#page-app .ap-panel.active{display:block}
+#page-app .ap-psub{text-align:center;font-size:13px;color:#8A98AE;margin:6px 0 4px}
+#page-app .ap-band{display:flex;align-items:center;gap:14px;margin:34px 0 4px}
+#page-app .ap-band .ln{flex:1;height:1px;background:rgba(255,255,255,.12)}
+#page-app .ap-band .lbl{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:var(--apg);display:inline-flex;align-items:center;gap:8px}
+#page-app .ap-band.alt .lbl{color:#8A98AE}
+#page-app .ap-rec{background:var(--apg);color:#0A0D14;font-size:9px;font-weight:800;padding:3px 7px;border-radius:6px}
+#page-app .ap-step{display:grid;grid-template-columns:258px 1fr;gap:30px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(255,255,255,.10)}
+#page-app .ap-step:last-child{border-bottom:0}
+@media(max-width:720px){#page-app .ap-step{grid-template-columns:1fr;gap:18px;justify-items:center;text-align:center}}
+#page-app .ap-st .num{display:inline-flex;align-items:center;gap:10px;margin-bottom:10px}
+#page-app .ap-st .num b{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--apg),var(--apg2));color:#0A0D14;font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center}
+#page-app .ap-st .num span{font-size:10.5px;text-transform:uppercase;letter-spacing:1.5px;color:#8A98AE;font-weight:700}
+#page-app .ap-st h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-bottom:7px;color:#EDF2F7}
+#page-app .ap-st p{font-size:13.5px;color:#B8C5D6;line-height:1.6;max-width:420px}
+#page-app .ap-st .hint{margin-top:8px;font-size:12px;color:#8A98AE}
+#page-app .ap-st .hint b,#page-app .ap-st p b.g{color:var(--apg)}
+#page-app .ap-callout{display:inline-flex;align-items:center;gap:12px;margin-top:12px;background:rgba(255,255,255,.05);border:1px solid rgba(240,180,41,.30);border-radius:12px;padding:10px 14px;text-align:left}
+#page-app .ap-callout .bic{width:46px;height:46px;border-radius:12px;background:#141418;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#page-app .ap-callout .cap{font-size:12px;color:#B8C5D6;line-height:1.4}#page-app .ap-callout .cap b{color:#fff}
+#page-app .ap-callout svg.dl{color:var(--apg);flex-shrink:0}
+@keyframes apPulse{0%{box-shadow:0 0 0 0 rgba(240,180,41,.55)}70%{box-shadow:0 0 0 13px rgba(240,180,41,0)}100%{box-shadow:0 0 0 0 rgba(240,180,41,0)}}
+#page-app .ph{width:258px;height:540px;border-radius:38px;background:#0a0a0c;padding:10px;box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 0 2px #2a2a2e inset;position:relative;flex-shrink:0}
+#page-app .ph.and{border-radius:32px}
+#page-app .ph .scr{width:100%;height:100%;border-radius:30px;overflow:hidden;position:relative;background:#000}
+#page-app .ph.and .scr{border-radius:24px}
+#page-app .isl{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:80px;height:22px;background:#000;border-radius:13px;z-index:30}
+#page-app .pun{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:8px;height:8px;background:#000;border-radius:50%;z-index:30;box-shadow:0 0 0 2px #161618}
+#page-app .stb{position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:13px 19px 0;font-size:10.5px;font-weight:700;color:#fff;z-index:22}
+#page-app .ph.and .stb{height:28px;padding:7px 14px 0;font-size:10px}
+#page-app .anc{position:relative;z-index:20}
+#page-app .ring{position:absolute;inset:-3px;border:2.6px solid var(--apg);border-radius:11px;animation:apPulse 1.8s infinite;pointer-events:none;z-index:28}
+#page-app .tg{position:absolute;left:50%;transform:translateX(-50%);background:var(--apg);color:#0A0D14;font-size:10px;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;z-index:29;box-shadow:0 5px 14px rgba(0,0,0,.5)}
+#page-app .tg.bl{top:calc(100% + 8px)}#page-app .tg.ab{bottom:calc(100% + 8px)}
+#page-app .siteimg{position:absolute;left:0;right:0;width:100%;object-fit:cover;object-position:top center}
+#page-app .sweb{position:absolute;inset:0;background:#07090D}
+#page-app .sweb .siteimg{top:44px;height:calc(100% - 44px - 82px)}
+#page-app .urlb{position:absolute;left:13px;right:13px;bottom:48px;height:30px;background:#1c1c1e;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#9b9ba1;font-size:10px}
+#page-app .tbar{position:absolute;left:0;right:0;bottom:0;height:44px;background:#161618;display:flex;align-items:center;justify-content:space-around;color:#0A84FF}
+#page-app .dots{font-size:17px;line-height:1;width:18px;text-align:center}
+#page-app .ssheet{position:absolute;inset:0;background:#05070b;overflow:hidden}
+#page-app .ssheet .siteimg{top:44px;height:calc(100% - 44px)}
+#page-app .sdim{position:absolute;top:44px;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1}
+#page-app .sheet{position:absolute;left:6px;right:6px;bottom:6px;background:#1c1c1e;border-radius:14px;padding:9px;z-index:5}
+#page-app .sheet .grab{width:34px;height:5px;background:#48484a;border-radius:3px;margin:2px auto 10px}
+#page-app .sheet .list{background:#2c2c2e;border-radius:11px;overflow:hidden}
+#page-app .sheet .li{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;color:#fff;font-size:12.5px;border-bottom:.5px solid #3a3a3c}
+#page-app .sheet .li:last-child{border-bottom:0}
+#page-app .sheet .li .ic{width:24px;height:24px;border-radius:6px;background:#48484a;display:flex;align-items:center;justify-content:center}
+#page-app .sheet .li.hl{background:rgba(240,180,41,.14)}
+#page-app .shome{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%,#1d2942,#0a0d18 70%)}
+#page-app .shome.and{background:radial-gradient(120% 80% at 50% 0%,#241b3e,#0a0d18 70%)}
+#page-app .shome .grid{position:absolute;top:68px;left:0;right:0;padding:0 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px 6px}
+#page-app .shome .ap{text-align:center;color:#fff;font-size:8.5px}
+#page-app .shome .ap .ic{width:42px;height:42px;border-radius:11px;margin:0 auto 5px;background:rgba(255,255,255,.12)}
+#page-app .shome .ap.mc .ic{background:#141418;display:flex;align-items:center;justify-content:center}
+#page-app .sapp{position:absolute;inset:0;background:#07090D;overflow:hidden}
+#page-app .sapp .siteimg{top:44px;height:calc(100% - 44px)}
+#page-app .sapp .alert{position:absolute;top:186px;left:32px;right:32px;background:#2c2c2e;border-radius:14px;overflow:hidden;color:#fff;text-align:center;box-shadow:0 22px 56px rgba(0,0,0,.7);z-index:10}
+#page-app .sapp .alert .bd{padding:15px 14px 11px}#page-app .sapp .alert .bd b{font-size:13px;display:block;margin-bottom:5px}#page-app .sapp .alert .bd span{font-size:11px;color:#c7c7cc}
+#page-app .sapp .alert .bt{display:flex;border-top:.5px solid #48484a}
+#page-app .sapp .alert .bt div{flex:1;padding:11px;font-size:13px;color:#0A84FF}#page-app .sapp .alert .bt div.bold{font-weight:800}
+#page-app .ctop{position:absolute;top:28px;left:0;right:0;height:34px;background:#202124;display:flex;align-items:center;gap:8px;padding:0 10px;z-index:8}
+#page-app .ctop .url{flex:1;background:#3c4043;border-radius:99px;height:22px;display:flex;align-items:center;justify-content:center;color:#cfd2d6;font-size:9.5px}
+#page-app .asite{position:absolute;top:62px;left:0;right:0;height:calc(100% - 62px);width:100%;object-fit:cover;object-position:top center}
+#page-app .adim{position:absolute;top:28px;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:6}
+#page-app .cmenu{position:absolute;top:60px;right:8px;width:170px;background:#2c2d30;border-radius:10px;padding:6px 0;z-index:12;box-shadow:0 16px 44px rgba(0,0,0,.6)}
+#page-app .cmenu .ci{display:flex;align-items:center;gap:11px;padding:8px 13px;color:#e8eaed;font-size:11.5px}
+#page-app .cmenu .ci svg{color:#9aa0a6;flex-shrink:0}#page-app .cmenu .ci.hl{background:rgba(240,180,41,.16)}
+#page-app .idlg{position:absolute;top:150px;left:18px;right:18px;background:#2d2e30;border-radius:16px;overflow:hidden;color:#e8eaed;box-shadow:0 22px 56px rgba(0,0,0,.65);z-index:12}
+#page-app .idlg .it{font-size:12px;font-weight:600;padding:14px 16px 5px}
+#page-app .idlg .ib{display:flex;align-items:center;gap:10px;padding:4px 16px 12px}
+#page-app .idlg .ib .fav{width:36px;height:36px;border-radius:9px;background:#141418;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#page-app .idlg .ib .mt b{font-size:11.5px;display:block;color:#fff}#page-app .idlg .ib .mt span{font-size:10px;color:#9aa0a6}
+#page-app .idlg .bt{display:flex;justify-content:flex-end;gap:6px;padding:4px 12px 12px}
+#page-app .idlg .bt div{padding:8px 15px;font-size:12px;font-weight:700;color:#8ab4f8;border-radius:8px}
+#page-app .smenu{position:absolute;inset:0;background:#0b0e14}
+#page-app .smenu .mimg{position:absolute;top:28px;left:0;right:0;height:calc(100% - 28px);width:100%;object-fit:cover;object-position:top left}
+#page-app .smenu .tgt{position:absolute;border:2.6px solid var(--apg);border-radius:9px;animation:apPulse 1.8s infinite;z-index:25}
+#page-app .smenu .tln{position:absolute;z-index:27;background:var(--apg);color:#0A0D14;font-size:10px;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;box-shadow:0 5px 14px rgba(0,0,0,.5)}
+</style>
+<div class="page" id="page-app">
+ <div class="ap-wrap">
+  <section class="ap-hero">
+   <div class="ap-eyebrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> <span data-i18n="app_eyebrow">App &amp; coupon alerts</span></div>
+   <h1 class="ap-h1"><span data-i18n="app_h1_a">Get the best coupons</span> <em data-i18n="app_h1_em">before everyone else</em></h1>
+   <p class="ap-sub" data-i18n="app_sub">New coupon or a bigger discount? You get notified the moment it happens. It's free, and you can leave anytime.</p>
+   <button class="ap-cta" onclick="(window.MC_PWA&&MC_PWA.subscribePush)?MC_PWA.subscribePush().then(r=>{if(r&&r.ok)alert(t('app_done')||'Done! You will receive notifications.');else if(r&&/denied/.test(r.reason||''))alert(t('app_denied')||'Permission denied. Enable in your browser settings.')}):document.querySelector('#page-app .ap-tabs').scrollIntoView({behavior:'smooth'})"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> <span data-i18n="app_cta">Enable notifications</span></button>
+   <p class="ap-note" data-i18n="app_note">Works on iPhone, iPad and Android. See the steps for your device below.</p>
+  </section>
+  <div class="ap-benes">
+   <div class="ap-bene"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z"/></svg><h3 data-i18n="app_b1_t">New coupons first</h3><p data-i18n="app_b1_d">Know before everyone when a fresh code drops.</p></div>
+   <div class="ap-bene"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg><h3 data-i18n="app_b2_t">Bigger discounts</h3><p data-i18n="app_b2_d">We ping you when a firm's discount goes up.</p></div>
+   <div class="ap-bene"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><h3 data-i18n="app_b3_t">Last-hours deals</h3><p data-i18n="app_b3_d">Catch limited offers before they expire.</p></div>
+  </div>
+  <div class="ap-tabs">
+   <button class="ap-tab active" data-ap="ios" onclick="apPick('ios')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2 1.6-3 1.7-3.1-.9-1.3-2.3-1.5-2.8-1.5-1.2-.1-2.3.7-2.9.7s-1.5-.7-2.5-.7c-1.3 0-2.5.7-3.2 1.9-1.3 2.4-.3 5.9 1 7.8.6 1 1.3 2 2.3 2 .9 0 1.3-.6 2.4-.6s1.5.6 2.4.6 1.6-.9 2.3-1.9c.5-.7.7-1.1.7-1.1s-1.4-.5-1.4-2.3zM14.6 6.1c.5-.6.9-1.5.8-2.4-.8 0-1.7.5-2.2 1.1-.5.6-.9 1.5-.8 2.3.9.1 1.7-.4 2.2-1z"/></svg> iPhone &amp; iPad</button>
+   <button class="ap-tab" data-ap="and" onclick="apPick('and')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg> Android</button>
+  </div>
+  <!-- iOS -->
+  <div class="ap-panel active" id="ap-ios">
+   <p class="ap-psub" data-i18n="app_ios_sub">On iPhone/iPad, Apple only allows notifications after you add the app to your home screen. 4 steps, under a minute.</p>
+   <div class="ap-step"><div class="ph"><div class="scr"><div class="isl"></div><div class="sweb"><div class="stb"><span>9:41</span><span>5G</span></div><img class="siteimg" src="/img/app/site-mobile.jpeg" alt=""><div class="urlb">marketscoupons.com</div><div class="tbar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3a3a3c" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg><span class="anc"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg><span class="ring" style="inset:-8px;border-radius:9px"></span><span class="tg ab" data-i18n="app_tap_here">tap here</span></span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg></div></div></div></div><div class="ap-st"><div class="num"><b>1</b><span data-i18n="app_step1of4">Step 1 of 4</span></div><h3 data-i18n="app_ios_s1_t">Tap the Share icon</h3><p data-i18n="app_ios_s1_d" data-i18n-html="1">In the bottom bar of Safari, it's the square with an <b class="g">up arrow</b>. <span style="opacity:.8">(on iPad it's in the top-right corner)</span></p></div></div>
+   <div class="ap-step"><div class="ph"><div class="scr"><div class="isl"></div><div class="ssheet"><img class="siteimg" src="/img/app/site-mobile.jpeg" alt=""><div class="sdim"></div><div class="stb"><span style="color:#fff">9:41</span><span style="color:#fff">5G</span></div><div class="sheet"><div class="grab"></div><div class="list"><div class="li"><span data-i18n="app_ios_copy">Copy</span><div class="ic"></div></div><div class="li"><span data-i18n="app_ios_fav">Add to Favorites</span><div class="ic"></div></div><div class="li hl anc"><span style="font-weight:700;color:var(--apg)" data-i18n="app_ios_a2hs">Add to Home Screen</span><div class="ic" style="background:rgba(240,180,41,.25)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F0B429" stroke-width="2.3"><rect x="3" y="3" width="18" height="18" rx="4"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><span class="ring" style="inset:-2px;border-radius:9px"></span><span class="tg ab" data-i18n="app_tap_this">tap this option</span></div><div class="li"><span data-i18n="app_ios_mark">Markup</span><div class="ic"></div></div></div></div></div></div></div><div class="ap-st"><div class="num"><b>2</b><span data-i18n="app_step2of4">Step 2 of 4</span></div><h3 data-i18n="app_ios_s2_t">Tap "Add to Home Screen"</h3><p data-i18n="app_ios_s2_d" data-i18n-html="1">Scroll the list until you find it (icon with a <b class="g">+</b>) and tap <b style="color:#fff">"Add"</b>.</p></div></div>
+   <div class="ap-step"><div class="ph"><div class="scr"><div class="isl"></div><div class="shome"><div class="stb"><span style="color:#fff">9:41</span><span style="color:#fff">5G</span></div><div class="grid"><div class="ap"><div class="ic"></div>Photos</div><div class="ap"><div class="ic"></div>Notes</div><div class="ap mc anc"><div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Markets<span class="ring" style="inset:-3px;border-radius:13px"></span><span class="tg bl" data-i18n="app_open_here">open here</span></div><div class="ap"><div class="ic"></div>Weather</div><div class="ap"><div class="ic"></div>Settings</div><div class="ap"><div class="ic"></div>Store</div><div class="ap"><div class="ic"></div>Maps</div><div class="ap"><div class="ic"></div>Health</div></div></div></div></div><div class="ap-st"><div class="num"><b>3</b><span data-i18n="app_step3of4">Step 3 of 4</span></div><h3 data-i18n="app_ios_s3_t">Open the app from the new icon</h3><p data-i18n="app_ios_s3_d" data-i18n-html="1">Tap the <b class="g">MarketsCoupons</b> icon that appeared on your screen. Notifications work through it.</p><div class="ap-callout"><div class="bic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="cap" data-i18n="app_ios_callout" data-i18n-html="1">Look for <b>this icon</b>, named <b>MarketsCoupons</b>.</div></div></div></div>
+   <div class="ap-step"><div class="ph"><div class="scr"><div class="isl"></div><div class="sapp"><div class="stb"><span style="color:#fff">9:41</span><span style="color:#fff">5G</span></div><img class="siteimg" src="/img/app/site-mobile.jpeg" alt=""><div class="sdim" style="top:44px"></div><div class="alert"><div class="bd"><b data-i18n="app_ios_perm_t">"Markets Coupons" Would Like to Send You Notifications</b><span data-i18n="app_ios_perm_d">Notifications may include alerts, sounds and badges.</span></div><div class="bt"><div data-i18n="app_dont_allow">Don't Allow</div><div class="bold anc" data-i18n="app_allow">Allow<span class="ring" style="inset:0;border-radius:0 0 14px 0"></span><span class="tg bl" data-i18n="app_tap_allow">tap "Allow"</span></div></div></div></div></div></div><div class="ap-st"><div class="num"><b>4</b><span data-i18n="app_step4of4">Step 4 of 4</span></div><h3 data-i18n="app_ios_s4_t">Tap "Enable" then "Allow"</h3><p data-i18n="app_ios_s4_d" data-i18n-html="1">Inside the app, tap <b>Enable notifications</b> and choose <b class="g">Allow</b>. Done.</p></div></div>
+  </div>
+  <!-- Android -->
+  <div class="ap-panel" id="ap-and">
+   <p class="ap-psub" data-i18n="app_and_sub">On Android you can install it to your home screen (like iPhone) or just enable it in the browser. Use Chrome.</p>
+   <div class="ap-band"><div class="ln"></div><div class="lbl"><span class="ap-rec" data-i18n="app_recommended">Recommended</span> <span data-i18n="app_and_install">Install on home screen</span></div><div class="ln"></div></div>
+   <div class="ap-step"><div class="ph and"><div class="scr"><div class="pun"></div><div style="position:absolute;inset:0;background:#07090D"><div class="stb"><span>20:49</span><span>5G</span></div><div class="ctop"><div class="url">marketscoupons.com</div><span class="anc" style="display:inline-flex"><span class="dots" style="color:#e8eaed">⋮</span><span class="ring" style="inset:-6px;border-radius:50%"></span><span class="tg bl" style="left:auto;right:-4px;transform:none" data-i18n="app_tap_here">tap here</span></span></div><img class="asite" src="/img/app/site-mobile.jpeg" alt=""></div></div></div><div class="ap-st"><div class="num"><b>1</b><span data-i18n="app_step1of4">Step 1 of 4</span></div><h3 data-i18n="app_and_s1_t">Tap the Chrome menu</h3><p data-i18n="app_and_s1_d" data-i18n-html="1">The <b class="g">three dots (⋮)</b> in the top-right corner.</p></div></div>
+   <div class="ap-step"><div class="ph and"><div class="scr"><div class="pun"></div><div style="position:absolute;inset:0;background:#07090D"><div class="stb"><span>20:49</span><span>5G</span></div><div class="ctop"><div class="url">marketscoupons.com</div><span class="dots" style="color:#e8eaed">⋮</span></div><img class="asite" src="/img/app/site-mobile.jpeg" alt=""><div class="adim"></div><div class="cmenu"><div class="ci" data-i18n="app_and_m_share">Share…</div><div class="ci" data-i18n="app_and_m_find">Find in page</div><div class="ci" data-i18n="app_and_m_translate">Translate…</div><div class="ci hl anc"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F0B429" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> <span style="color:var(--apg);font-weight:700" data-i18n="app_and_a2hs">Add to Home screen</span><span class="ring" style="inset:0;border-radius:6px"></span><span class="tg ab" data-i18n="app_tap_here">tap here</span></div><div class="ci" data-i18n="app_and_m_desktop">Desktop site</div><div class="ci" data-i18n="app_and_m_settings">Settings</div></div></div></div></div><div class="ap-st"><div class="num"><b>2</b><span data-i18n="app_step2of4">Step 2 of 4</span></div><h3 data-i18n="app_and_s2_t">Tap "Add to Home screen"</h3><p data-i18n="app_and_s2_d" data-i18n-html="1">In the menu that opened, tap <b class="g">Add to Home screen</b>.</p></div></div>
+   <div class="ap-step"><div class="ph and"><div class="scr"><div class="pun"></div><div style="position:absolute;inset:0;background:#07090D"><div class="stb"><span>20:49</span><span>5G</span></div><img class="asite" src="/img/app/site-mobile.jpeg" alt="" style="top:28px;height:calc(100% - 28px)"><div class="adim"></div><div class="idlg"><div class="it" data-i18n="app_and_install_title">Install app</div><div class="ib"><div class="fav"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt"><b>Markets Coupons, Prop Firm Deals</b><span>www.marketscoupons.com</span></div></div><div class="bt"><div data-i18n="app_cancel">Cancel</div><div class="anc" style="color:#8ab4f8" data-i18n="app_install">Install<span class="ring" style="inset:-3px;border-radius:8px"></span><span class="tg bl" data-i18n="app_tap_install">tap "Install"</span></div></div></div></div></div></div><div class="ap-st"><div class="num"><b>3</b><span data-i18n="app_step3of4">Step 3 of 4</span></div><h3 data-i18n="app_and_s3_t">Tap "Install"</h3><p data-i18n="app_and_s3_d" data-i18n-html="1">The prompt <b>"Markets Coupons, Prop Firm Deals"</b> appears. Tap <b class="g">Install</b> , an icon goes to your home screen.</p><p class="hint" data-i18n="app_and_s3_h" data-i18n-html="1">Sometimes Chrome shows this prompt <b>by itself</b>.</p></div></div>
+   <div class="ap-step"><div class="ph and"><div class="scr"><div class="pun"></div><div class="shome and"><div class="stb"><span style="color:#fff">20:49</span><span style="color:#fff">5G</span></div><div class="grid"><div class="ap"><div class="ic"></div>Photos</div><div class="ap"><div class="ic"></div>Play</div><div class="ap mc anc"><div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Markets<span class="ring" style="inset:-3px;border-radius:13px"></span><span class="tg bl" data-i18n="app_open_here">open here</span></div><div class="ap"><div class="ic"></div>Camera</div><div class="ap"><div class="ic"></div>Settings</div><div class="ap"><div class="ic"></div>Chrome</div><div class="ap"><div class="ic"></div>Msg</div><div class="ap"><div class="ic"></div>Clock</div></div></div></div></div><div class="ap-st"><div class="num"><b>4</b><span data-i18n="app_step4of4">Step 4 of 4</span></div><h3 data-i18n="app_and_s4_t">Open it and enable</h3><p data-i18n="app_and_s4_d" data-i18n-html="1">Tap the <b class="g">MarketsCoupons</b> icon, then <b>Enable notifications</b> and <b>Allow</b>.</p></div></div>
+   <div class="ap-band alt"><div class="ln"></div><div class="lbl" data-i18n="app_and_alt">Or just enable notifications (no install)</div><div class="ln"></div></div>
+   <div class="ap-step"><div class="ph and"><div class="scr"><div class="pun"></div><div class="smenu"><div class="stb"><span>9:41</span><span>5G</span></div><img class="mimg" src="/img/app/site-menu.jpeg" alt=""><div class="tgt" id="ap-t1"></div><div class="tln" id="ap-g1" data-i18n="app_tap_here">tap here</div></div></div></div><div class="ap-st"><div class="num"><b></b><span data-i18n="app_alt_label">Alternative</span></div><h3 data-i18n="app_and_alt_t">Site menu → "Enable notifications"</h3><p data-i18n="app_and_alt_d" data-i18n-html="1">In the site menu (☰), tap <b class="g">Enable notifications</b> then <b>Allow</b> in the browser.</p></div></div>
+  </div>
+ </div>
+</div>
+
 <footer>
  <div class="ft-grid">
  <div>

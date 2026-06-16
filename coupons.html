@@ -434,6 +434,39 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 </section>
 
 </main>
+<!-- ===== APP BANNER (fim da LP) ===== -->
+<style>
+.lpb-shell{max-width:1040px;margin:34px auto 0;padding:0 18px}
+.lpb-ban{position:relative;overflow:hidden;border-radius:20px;border:1px solid color-mix(in srgb,#F0B429 26%,#1C2535);background:radial-gradient(120% 140% at 10% 0%,color-mix(in srgb,#F0B429 12%,transparent),transparent 55%),linear-gradient(180deg,#0e1320,#0a0e16);padding:24px 28px;display:flex;align-items:center;gap:24px}
+.lpb-ban::after{content:"";position:absolute;inset:0;background:radial-gradient(55% 120% at 100% 100%,color-mix(in srgb,#F0B429 9%,transparent),transparent 60%);pointer-events:none}
+@media(max-width:680px){.lpb-ban{flex-direction:column;text-align:center;gap:16px;padding:26px 20px}}
+.lpb-ic{position:relative;flex-shrink:0;width:62px;height:62px;border-radius:15px;background:#0a0d14;border:1px solid color-mix(in srgb,#F0B429 26%,transparent);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.45),0 0 26px rgba(240,180,41,.14)}
+.lpb-ic .bdg{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;border-radius:9px;background:#ef4444;border:2px solid #0a0e16;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;padding:0 4px}
+.lpb-mid{flex:1;position:relative;z-index:1}
+.lpb-eye{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;color:#F0B429;font-weight:800;margin-bottom:9px}
+.lpb-h{font-size:clamp(20px,3.1vw,25px);font-weight:900;letter-spacing:-.02em;line-height:1.12;margin-bottom:7px;color:#EDF2F7}
+.lpb-h em{font-style:normal;background:linear-gradient(120deg,#F0B429,#f6d873);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lpb-sub{font-size:13.5px;color:#B8C5D6;max-width:440px;line-height:1.55}
+@media(max-width:680px){.lpb-sub{margin:0 auto}}
+.lpb-cta{position:relative;z-index:1;flex-shrink:0;text-align:center}
+.lpb-btn{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:12px;background:linear-gradient(90deg,#c8941a,#F0B429,#f6d066,#F0B429,#c8941a);background-size:200% 100%;color:#0A0D14;font-weight:800;font-size:14.5px;border:0;cursor:pointer;box-shadow:0 10px 28px rgba(240,180,41,.26);text-decoration:none;white-space:nowrap}
+.lpb-ft{font-size:11px;color:#8A98AE;margin-top:9px}
+</style>
+<div class="lpb-shell">
+ <section class="lpb-ban">
+  <div class="lpb-ic"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z" stroke="#F0B429" stroke-width="1.3" fill="rgba(240,180,41,.06)"/><circle cx="12" cy="7" r="1" fill="#F0B429"/><path d="M8 16.5V9.5l4 4 4-4v7" stroke="#F0B429" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="bdg">1</span></div>
+  <div class="lpb-mid">
+   <div class="lpb-eye"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> <span data-i18n="lpb_eyebrow">Coupon alerts in the app</span></div>
+   <h2 class="lpb-h" data-i18n-html="lpb_h">The best coupon hits the app <em>first</em></h2>
+   <p class="lpb-sub" data-i18n="lpb_sub">We ping you the moment a new coupon drops or a discount goes up. Free, and you can leave anytime.</p>
+  </div>
+  <div class="lpb-cta">
+   <a class="lpb-btn" href="/app" onclick="try{trackEvent('lp_app_banner_click',{location:'lp_coupons_footer'})}catch(e){}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> <span data-i18n="lpb_cta">Enable alerts</span></a>
+   <div class="lpb-ft" data-i18n="lpb_foot">iPhone and Android · 1 minute</div>
+  </div>
+ </section>
+</div>
+
 <footer class="foot">
   <div class="foot-warn">
     <strong data-i18n="risk_warning"></strong>
@@ -779,6 +812,8 @@ function detectLang() {
   return I18N[nav] ? nav : 'en';
 }
 const LANG = detectLang();
+Object.assign(I18N.en, { lpb_eyebrow:"Coupon alerts in the app", lpb_h:"The best coupon hits the app <em>first</em>", lpb_sub:"We ping you the moment a new coupon drops or a discount goes up. Free, and you can leave anytime.", lpb_cta:"Enable alerts", lpb_foot:"iPhone and Android · 1 minute" });
+Object.assign(I18N.pt, { lpb_eyebrow:"Alertas de cupom no app", lpb_h:"O melhor cupom chega <em>primeiro</em> no app", lpb_sub:"Te avisamos na hora que sair cupom novo ou o desconto aumentar. Grátis, e você sai quando quiser.", lpb_cta:"Ativar alertas", lpb_foot:"iPhone e Android · leva 1 minuto" });
 const T = I18N[LANG] || I18N.en;
 
 function switchLang(lang) {

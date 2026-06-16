@@ -1156,7 +1156,7 @@ function mcRatingBadge(f){
 
 /* NAV */
 // Page ID → clean URL slug mapping
-const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel','pro-success':'pro-success',calc:'calculator',privacy:'privacy',terms:'terms'};
+const PAGE_SLUGS={home:'',firms:'firms',plataformas:'platforms',indicators:'indicators',compare:'compare',calendar:'calendar',heatmap:'heatmap',analise:'analysis',gamma:'gamma',guides:'guides',blog:'blog',live:'live',quiz:'quiz',awards:'awards',painel:'panel','pro-success':'pro-success',calc:'calculator',privacy:'privacy',terms:'terms',app:'app'};
 const SLUG_PAGES=Object.fromEntries(Object.entries(PAGE_SLUGS).map(([k,v])=>[v,k]));
 function _pageUrl(page){const s=PAGE_SLUGS[page];return s?'/'+s:'/';}
 function _pageFromPath(){const p=location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//,'/').replace(/^\//,'').replace(/\/$/,'');return SLUG_PAGES[p]||'';}
