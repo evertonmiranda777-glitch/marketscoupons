@@ -6727,10 +6727,7 @@ async function doAuthSignup() {
     _gwPendingSlug = sessionStorage.getItem('mc_gw_pending_signup');
     _gwPendingIg   = sessionStorage.getItem('mc_gw_pending_ig');
     if(_gwPendingSlug){
-      db.from('email_subscribers').upsert(
-        { email, name: fullName, lang:(window._currentLang||'en'), source:'giveaway', tags:['received-giveaway-'+_gwPendingSlug,'giveaway-entered'] },
-        { onConflict:'email' }
-      ).then(()=>{}).catch(()=>{});
+      fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source:'giveaway',tags:['received-giveaway-'+_gwPendingSlug,'giveaway-entered'],lang:(window._currentLang||'en')})}).catch(()=>{});
       try{ track('giveaway_popup_signup_submit', {slug:_gwPendingSlug, email_domain: email.split('@')[1]||''}); }catch(e){}
     }
   }catch(e){}
@@ -6759,17 +6756,13 @@ async function doAuthSignup() {
 
   if (error) return showAuthError('signup-error', error.message);
 
-  // Auto-cadastra na lista de email_subscribers (pra aparecer no admin/email)
+  // Auto-cadastra na lista (via endpoint server-side, RLS bloqueia insert anon/unauth direto)
   try {
     const lang = (window.currentLang || 'pt');
-    db.from('email_subscribers').upsert({
-      email,
-      name: fullName || '',
-      source: 'signup',
-      lang,
-      tags: ['site','signup'],
-      status: 'active'
-    }, { onConflict: 'email', ignoreDuplicates: false }).then(()=>{}).catch(()=>{});
+    fetch('/api/leads/volumefilter?action=subscribe', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, source:'signup', tags:['site','signup'], lang })
+    }).catch(()=>{});
   } catch(e){}
 
   // Giveaway: signup OK, abre Instagram em nova aba (não espera email confirmation)
@@ -8009,7 +8002,7 @@ async function giveawayCtaClick(){
   if(currentUser && currentProfile){
     // Já logado, só marca tag e abre Instagram
     try{
-      await db.from('email_subscribers').upsert({email: currentUser.email, tags:['received-giveaway-'+slug, 'giveaway-entered']}, {onConflict:'email'});
+      await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:currentUser.email,source:'giveaway',tags:['received-giveaway-'+slug,'giveaway-entered']})});
     }catch(e){}
     try{ localStorage.setItem('mc_gw_entered_'+slug,'1'); }catch(e){}
     try{ track('giveaway_popup_instagram_open', {slug}); }catch(e){}
@@ -8038,7 +8031,7 @@ window.addEventListener('mc:user-loaded', async function(){
   try{ pendingSlug = sessionStorage.getItem('mc_gw_pending_signup'); pendingIg = sessionStorage.getItem('mc_gw_pending_ig'); }catch(e){}
   if(!pendingSlug || !currentUser) return;
   try{
-    await db.from('email_subscribers').upsert({email: currentUser.email, tags:['received-giveaway-'+pendingSlug, 'giveaway-entered']}, {onConflict:'email'});
+    await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:currentUser.email,source:'giveaway',tags:['received-giveaway-'+pendingSlug,'giveaway-entered']})});
   }catch(e){}
   try{ localStorage.setItem('mc_gw_entered_'+pendingSlug,'1'); }catch(e){}
   try{ sessionStorage.removeItem('mc_gw_pending_signup'); sessionStorage.removeItem('mc_gw_pending_ig'); }catch(e){}
