@@ -1330,6 +1330,25 @@ function applyTranslations() {
   const _fc = ((window.FIRMS && FIRMS.length) || 18) + '+';
   document.querySelectorAll('.js-firmcount').forEach(el => { el.textContent = _fc; });
 }
+// Stat bar do home: firmas + desconto + cupons copiados (30d), tudo do banco via RPC segura.
+// Views (GA4) fica estático ('74K+') até plugar a GA4 Data API.
+let _homeStatsLoaded = false;
+function loadHomeStats(){
+  if (_homeStatsLoaded) return; _homeStatsLoaded = true;
+  try {
+    db.rpc('home_stats').then(({ data, error }) => {
+      if (error || !data) return;
+      const setAll = (cls, val) => document.querySelectorAll(cls).forEach(e => { e.textContent = val; });
+      if (data.firms_active) setAll('.js-firmcount', data.firms_active + '+');
+      if (data.max_discount) setAll('.js-discmax', data.max_discount + '%');
+      if (data.coupons_copied_30d != null) {
+        const n = data.coupons_copied_30d;
+        const fmt = n >= 1000 ? (Math.floor(n / 100) / 10) + 'K+' : n + '+';
+        setAll('.js-couponscopied', fmt);
+      }
+    }).catch(() => {});
+  } catch(e) {}
+}
 function updateTVWidgets(lang) {
   const hmF = document.getElementById('heatmap-frame');
   if(hmF) loadHeatmap(hmF.dataset.source||'SPX500');
@@ -7012,6 +7031,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initLang();
   // Load CMS overrides (texts, FAQ), single Promise.all, one renderFaq call
   Promise.all([loadCmsTexts(), loadCmsFaq(), loadI18nFromSupabase(), loadFirmTFromSupabase()]).then(() => { applyTranslations(); renderFaq(); });
+  // Stat bar do home, números reais do banco (firmas/desconto/cupons copiados)
+  loadHomeStats();
   // Ativar página correta ANTES de renderizar (evita flash da home)
   // Detect dedicated firm page BEFORE revealing body (avoid flash)
   const _pathParts=location.pathname.split('/').filter(Boolean);
