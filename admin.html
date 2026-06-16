@@ -1190,6 +1190,11 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
            <option value="analysis">Análise diária no ar</option>
            <option value="calendar">Calendário, alto impacto hoje</option>
            <option value="gex">GEX, níveis do dia</option>
+           <option value="price_drop">Queda de preço numa firma</option>
+           <option value="coupon_expiring">Desconto pode acabar</option>
+           <option value="welcome">Boas-vindas (1º push)</option>
+           <option value="winback">Reativação (faz tempo)</option>
+           <option value="funded_payout">Conta aprovada custa menos</option>
          </select>
        </div>
        <div style="width:80px;">
@@ -6990,34 +6995,56 @@ async function pushSendTest(){
 }
 window.pushSendTest = pushSendTest;
 // Assuntos prontos de push (EN + PT). Preenchem título/corpo/url/categoria/firma.
+// Copy premium (skill Everton, LP Design). Headline curta com gancho, corpo com 1 benefício
+// + motivo pra tocar agora. Urgência ÉTICA (sem deadline inventado, compliance CDC/Lei #0). Zero emoji.
 const PUSH_PRESETS = {
   apex_nofee: {
-    en: { title:'Apex: get funded, zero activation fee', body:'New Apex deal, no activation fee on your funded account. Code MARKET locks the discount. See the plans.', url:'/coupons', category:'promo', firm:'apex' },
-    pt: { title:'Apex: seja aprovado, zero taxa de ativação', body:'Nova condição Apex: conta aprovada sem taxa de ativação. Cupom MARKET garante o desconto. Veja os planos.', url:'/coupons', category:'promo', firm:'apex' }
+    en: { title:'Apex with zero activation fee', body:'Get a funded Apex account without paying activation, code MARKET locks the discount. Tap to see the plans.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Apex sem taxa de ativação agora', body:'Conta Apex aprovada sem pagar a ativação, o cupom MARKET garante o desconto. Toque e veja os planos.', url:'/coupons', category:'promo', firm:'apex' }
   },
   apex_lasthours: {
-    en: { title:'Last hours: Apex up to 90% off', body:'The 90% off on Apex evaluations ends soon. Code MARKET at checkout, full price returns tomorrow.', url:'/coupons', category:'promo', firm:'apex' },
-    pt: { title:'Últimas horas: Apex até 90% off', body:'O 90% off nas avaliações Apex acaba logo. Cupom MARKET no checkout, amanhã volta o preço cheio.', url:'/coupons', category:'promo', firm:'apex' }
+    en: { title:'Apex: 90% off while it lasts', body:'The biggest discount we have on Apex is live right now. Code MARKET at checkout, before the price changes.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Apex: 90% off enquanto está no ar', body:'O maior desconto que temos na Apex está ativo agora. Cupom MARKET no checkout, antes que o preço mude.', url:'/coupons', category:'promo', firm:'apex' }
   },
   top3: {
-    en: { title:'The 3 best prop firm deals right now', body:'Verified and active this week, our top 3 coupons with the biggest savings first. Tap to see them.', url:'/coupons', category:'promo', firm:'' },
-    pt: { title:'Os 3 melhores cupons de prop firm agora', body:'Verificados e ativos esta semana, nosso top 3 com a maior economia primeiro. Toque para ver.', url:'/coupons', category:'promo', firm:'' }
+    en: { title:'The 3 deals that save you most', body:'The 3 prop firms with the biggest live discount this week, most savings first. Tap to see them.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Os 3 cupons que mais economizam', body:'As 3 prop firms com o maior desconto ativo da semana, a maior economia primeiro. Toque pra ver.', url:'/coupons', category:'promo', firm:'' }
   },
   newfirm: {
-    en: { title:'New prop firm just dropped', body:'A new firm landed with an exclusive coupon you won\'t find anywhere else. Be one of the first to grab it.', url:'/coupons', category:'promo', firm:'' },
-    pt: { title:'Entrou prop firm nova', body:'Uma firma nova chegou com cupom exclusivo que você não acha em outro lugar. Seja um dos primeiros.', url:'/coupons', category:'promo', firm:'' }
+    en: { title:'A new prop firm just landed', body:'A new firm just dropped with an exclusive coupon you won\'t find anywhere else. Be one of the first to grab it.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Entrou prop firm nova no site', body:'Uma firma nova acabou de chegar, com um cupom exclusivo que não existe em outro lugar. Seja um dos primeiros.', url:'/coupons', category:'promo', firm:'' }
   },
   analysis: {
     en: { title:'SPX & NDX: today\'s levels are live', body:'Key zones, gamma walls and what\'s in play before the open. A 2-minute read to start your day sharp.', url:'/analysis', category:'analysis', firm:'' },
     pt: { title:'SPX e NDX: os níveis de hoje no ar', body:'Zonas-chave, paredes de gamma e o que está em jogo antes da abertura. 2 minutos pra começar o dia afiado.', url:'/analysis', category:'analysis', firm:'' }
   },
   calendar: {
-    en: { title:'High-impact events hit today', body:'The economic releases that move markets today, with times and forecasts. Know them before the open.', url:'/calendar', category:'calendar', firm:'' },
-    pt: { title:'Eventos de alto impacto hoje', body:'Os dados econômicos que movem o mercado hoje, com horários e previsões. Saiba antes da abertura.', url:'/calendar', category:'calendar', firm:'' }
+    en: { title:'High-impact events hit today', body:'The releases that move markets today, with times and forecasts. Know them before the open.', url:'/calendar', category:'calendar', firm:'' },
+    pt: { title:'Eventos de alto impacto hoje', body:'Os dados que mexem com o mercado hoje, com horário e previsão. Saiba o que vem antes da abertura.', url:'/calendar', category:'calendar', firm:'' }
   },
   gex: {
-    en: { title:'Today\'s gamma levels are out', body:'Fresh GEX for SPX, gamma flip, call wall and put wall. See where the magnets sit today. Tap to view.', url:'/gamma', category:'gex', firm:'' },
-    pt: { title:'Os níveis de gamma de hoje saíram', body:'GEX novo do SPX, gamma flip, call wall e put wall. Veja onde estão os ímãs hoje. Toque para ver.', url:'/gamma', category:'gex', firm:'' }
+    en: { title:'Today\'s gamma levels are out', body:'Fresh SPX GEX: gamma flip, call wall and put wall. See where today\'s magnets sit. Tap to view.', url:'/gamma', category:'gex', firm:'' },
+    pt: { title:'Os níveis de gamma de hoje saíram', body:'GEX novo do SPX: gamma flip, call wall e put wall. Veja onde estão os ímãs do dia. Toque pra ver.', url:'/gamma', category:'gex', firm:'' }
+  },
+  price_drop: {
+    en: { title:'A firm just dropped its price', body:'One of the prop firms cut its evaluation price. Less to clear the challenge, same coupon. Tap to see which.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Uma firma acabou de baixar o preço', body:'Uma das prop firms cortou o preço da avaliação. Menos pra passar no desafio, mesmo cupom. Toque pra ver qual.', url:'/coupons', category:'promo', firm:'' }
+  },
+  coupon_expiring: {
+    en: { title:'This discount can end anytime', body:'Prop firm coupons change whenever the firm decides. If you\'re considering it, grab it while the discount stands.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'O desconto pode acabar sem aviso', body:'Os cupons de prop firm mudam quando a firma quer. Se está pensando, pega agora enquanto o desconto está de pé.', url:'/coupons', category:'promo', firm:'' }
+  },
+  welcome: {
+    en: { title:'Done, you\'ll be the first to know', body:'From now on, new coupons and bigger discounts reach you before everyone else. Check out today\'s deals.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Pronto, você vai ser avisado primeiro', body:'A partir de agora, cupom novo ou desconto maior chega aqui antes de todo mundo. Veja as ofertas de hoje.', url:'/coupons', category:'promo', firm:'' }
+  },
+  winback: {
+    en: { title:'It\'s been a while since you checked', body:'Prop firm discounts have changed since your last visit. New deals might be worth more to you now. Take a look.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Faz tempo que você não vê os cupons', body:'Os descontos das prop firms mudaram desde a última vez. Tem condição nova que pode valer mais pra você. Dá uma olhada.', url:'/coupons', category:'promo', firm:'' }
+  },
+  funded_payout: {
+    en: { title:'A funded account costs less today', body:'You can go for a prop firm account paying a lot less with the site\'s coupons. See which one fits your plan.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Conta aprovada custa menos hoje', body:'Dá pra buscar uma conta de prop firm pagando bem menos com os cupons do site. Veja qual cabe no seu plano.', url:'/coupons', category:'promo', firm:'' }
   }
 };
 function applyPushPreset(){
