@@ -1324,6 +1324,27 @@ renderFirms();
 loadPromoBar();
 trackEvent('page_view', { page_name: 'lp_coupons', lang: LANG });
 
+// Scroll depth na LP (25/50/75/100) , mede até onde a galera rola. Só Supabase (interno).
+(function lpScrollDepth(){
+  const fired = {};
+  let tick = false;
+  window.addEventListener('scroll', function(){
+    if (tick) return; tick = true;
+    requestAnimationFrame(function(){
+      tick = false;
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      if (h <= 0) return;
+      const pct = Math.round(window.scrollY / h * 100);
+      [25,50,75,100].forEach(function(m){
+        if (pct >= m && !fired[m]) {
+          fired[m] = true;
+          trackEvent('scroll_depth', { depth: m, page: 'lp_coupons' });
+        }
+      });
+    });
+  }, { passive: true });
+})();
+
 // "Ver todas as firmas", preserva UTMs originais do visitante (não hardcoda instagram)
 (function fixSeeAllLink(){
   const link = document.querySelector('.see-all-btn');
