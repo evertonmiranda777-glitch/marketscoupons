@@ -609,16 +609,25 @@ async function handleXReplyJack(req, res) {
   if (isPreview) {
     return res.status(200).json({ preview: true, target: { handle: '@' + target.screen, id: target.id, score: target.score, tweet: target.text.slice(0, 200) }, reply, chars: reply.length, candidates_considered: candidates.length, errors });
   }
-  // 5) posta como RESPOSTA ao tweet do grande
+  // 5) QUOTE-TWEET do post do grande (reply é bloqueado por contas que restringem
+  // respostas; quote não tem restrição + aparece na NOSSA timeline = melhor alcance)
   const xKeys = { apiKey: process.env.X_API_KEY, apiSecret: process.env.X_API_SECRET, accessToken: process.env.X_ACCESS_TOKEN, accessSecret: process.env.X_ACCESS_SECRET };
   if (!xKeys.apiKey || !xKeys.accessToken) return res.status(503).json({ error: 'no_x_token' });
   const purl = 'https://api.twitter.com/2/tweets';
-  const body = { text: reply, reply: { in_reply_to_tweet_id: String(target.id) } };
-  const tr = await fetch(purl, { method: 'POST', headers: { Authorization: oauth1Header('POST', purl, xKeys), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  const jr = await tr.json().catch(() => ({}));
-  if (!tr.ok || !jr?.data?.id) return res.status(502).json({ error: 'reply_failed', response: jr });
-  await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, { method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ post_type: 'replyjack', thread_root_id: jr.data.id, status: 'sent', posted_content: { reply, in_reply_to: target.id, target: '@' + target.screen } }) }).catch(() => {});
-  return res.status(200).json({ posted: jr.data.id, replied_to: '@' + target.screen, reply });
+  const postTweet = async (b) => {
+    const tr = await fetch(purl, { method: 'POST', headers: { Authorization: oauth1Header('POST', purl, xKeys), 'Content-Type': 'application/json' }, body: JSON.stringify(b) });
+    return { ok: tr.ok, jr: await tr.json().catch(() => ({})) };
+  };
+  // tenta QUOTE; se o alvo restringe quote (403), cai pra post STANDALONE (take do hype)
+  let mode = 'quote';
+  let { ok, jr } = await postTweet({ text: reply, quote_tweet_id: String(target.id) });
+  if (!ok || !jr?.data?.id) {
+    mode = 'standalone';
+    ({ ok, jr } = await postTweet({ text: reply }));
+  }
+  if (!ok || !jr?.data?.id) return res.status(502).json({ error: 'post_failed', response: jr });
+  await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, { method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ post_type: 'jack_' + mode, thread_root_id: jr.data.id, status: 'sent', posted_content: { reply, target: '@' + target.screen, mode } }) }).catch(() => {});
+  return res.status(200).json({ posted: jr.data.id, mode, inspired_by: '@' + target.screen, reply });
 }
 
 // GET ?action=x_daily&asset=ES&dry=1 — preview (não posta)
