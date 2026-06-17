@@ -1,0 +1,26 @@
+name: Max X Coupon Post
+
+on:
+  schedule:
+    # 16:00 UTC = 12:00 ET (EDT) — meio do dia US, post de oferta (conversão).
+    # ATENÇÃO horário de verão US: no inverno (EST) isso vira 11:00 ET; revisar 2x/ano.
+    - cron: '0 16 * * 1-5'
+  workflow_dispatch:
+
+concurrency:
+  group: x-coupon
+  cancel-in-progress: false
+permissions:
+  contents: read
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Post Max coupon/offer to X
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          echo "Posting Max coupon offer (EN) to X..."
+          curl -sS -X POST "https://www.marketscoupons.com/api/bot?action=x_daily&lang=en&segment=coupon&secret=$CRON_SECRET" -w "\nHTTP %{http_code}\n"
