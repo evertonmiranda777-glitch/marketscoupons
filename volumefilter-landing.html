@@ -1502,6 +1502,32 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
 
 <!-- ===== JS (capture de form) ===== -->
 <script>
+// Login-aware: se o user já está logado no site (mesma origem), pré-preenche o email
+// pra não digitar de novo (ele só clica). Sessão fica em localStorage 'mc-user-auth'.
+(function(){
+  try {
+    let email = '';
+    for (const k of ['mc-user-auth','sb-qfwhduvutfumsaxnuofa-auth-token']) {
+      const raw = localStorage.getItem(k); if(!raw) continue;
+      try { const o = JSON.parse(raw); email = (o && (o.user?.email || o.currentSession?.user?.email)) || (Array.isArray(o) && o[0]?.user?.email) || ''; } catch(_){}
+      if(!email){ const m = raw.match(/"email":"([^"]+@[^"]+)"/); if(m) email = m[1]; }
+      if(email) break;
+    }
+    if(email){
+      const T = (window.VF_I18N && window.VF_I18N[window.VF_LANG || 'pt']) || {};
+      document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(f=>{
+        const inp = f.querySelector('input[name="email"]'); if(inp) inp.value = email;
+        if(!f.querySelector('.vf-logged')){
+          const hint = document.createElement('div'); hint.className='vf-logged';
+          hint.style.cssText='font-size:11.5px;color:var(--text-dim,#9aa);margin-top:7px;';
+          hint.textContent = (T.logged_as || ((window.VF_LANG==='pt')?'Logado como ':'Logged in as ')) + email;
+          f.appendChild(hint);
+        }
+      });
+    }
+  } catch(_){}
+})();
+
 document.querySelectorAll('form[data-form="volumefilter-lead"]').forEach(form => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
