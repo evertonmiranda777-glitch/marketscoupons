@@ -37,3 +37,6 @@ Thumbs.db
 .env.local
 .playwright-mcp/
 .firecrawl/
+
+sbq.sh
+_b.json
