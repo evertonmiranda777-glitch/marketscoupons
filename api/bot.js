@@ -558,6 +558,7 @@ async function genReplyJack(tweet, marketBlock) {
     if (!out) continue;
     let reply = out.trim().replace(/^["'`]+|["'`]+$/g, '').split(/\n={3,}\n?/)[0].trim().slice(0, 270);
     if (maxComplianceBlocked(reply)) continue;
+    if (maxJargonBlocked(reply) && attempt === 0) continue;  // 1ª tentativa exige zero jargão
     if (/https?:\/\//i.test(reply)) reply = reply.replace(/https?:\/\/\S+/gi, '').trim(); // nunca link
     if (reply.length >= 15) return { reply, raw: out.slice(0, 300) };
   }
@@ -1344,6 +1345,19 @@ function maxComplianceBlocked(text) {
   return null;
 }
 
+// Trava de JARGÃO: rejeita post com termo técnico cru que afasta audiência fria.
+// Retorna o termo achado, ou null se limpo. (X é audiência geral, não terminal.)
+function maxJargonBlocked(text) {
+  const t = ' ' + String(text || '').toLowerCase() + ' ';
+  const JARGON = [
+    'redistribution', 'accumulation phase', 'wyckoff', 'call wall', 'put wall',
+    'zero gamma', 'positive gamma', 'negative gamma', 'gamma positive', 'gamma negative',
+    'macd', 'rsi ', 'hvl', 'smart money', 'order flow', 'delta hedging',
+  ];
+  for (const j of JARGON) { if (t.includes(j)) return j.trim(); }
+  return null;
+}
+
 async function genMaxSinglePost(rows, gex, date, lang, segment) {
   const pt = lang === 'pt';
   const { block } = buildMaxData(rows, gex, date, lang);
@@ -1366,6 +1380,8 @@ async function genMaxSinglePost(rows, gex, date, lang, segment) {
     let post = out.trim().replace(/^["'`]+|["'`]+$/g, '').split(/\n={3,}\n?/)[0].trim().slice(0, 280);
     const banned = maxComplianceBlocked(post);
     if (banned) { lastRaw = 'compliance_block:' + banned; continue; }
+    const jarg = maxJargonBlocked(post);
+    if (jarg && attempt === 0) { lastRaw = 'jargon_block:' + jarg; continue; }  // 2ª tentativa aceita pra não falhar o post
     if (post.length >= 20) return { post, reason: 'ok', raw: out.slice(0, 320) };
     lastRaw = out.slice(0, 320);
   }
