@@ -430,10 +430,19 @@ async function handleSubscribe(req, res) {
   if (!tags.length) tags = ['lead'];
   tags.push(`lang-${lang}`);
   try {
+    const head = { 'Content-Type': 'application/json', 'apikey': SK || SUPABASE_KEY, 'Authorization': `Bearer ${SK || SUPABASE_KEY}` };
+    // MERGE com as tags já existentes (NÃO sobrescrever): o upsert merge-duplicates troca a
+    // coluna tags inteira, o que apagava 'received-welcome' e fazia o welcome reenviar.
+    let existing = [];
+    try {
+      const g = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?select=tags&email=eq.${encodeURIComponent(email)}&limit=1`, { headers: head });
+      if (g.ok) { const rows = await g.json(); if (rows[0] && Array.isArray(rows[0].tags)) existing = rows[0].tags; }
+    } catch {}
+    const merged = Array.from(new Set([...existing, ...tags])).slice(0, 25);
     const r = await fetch(`${SUPABASE_URL}/rest/v1/email_subscribers?on_conflict=email`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SK || SUPABASE_KEY, 'Authorization': `Bearer ${SK || SUPABASE_KEY}`, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-      body: JSON.stringify({ email, lang, source, tags }),
+      headers: { ...head, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify({ email, lang, source, tags: merged }),
     });
     if (!r.ok && r.status !== 409) {
       console.error('[subscribe] upsert failed', r.status, await r.text().catch(() => ''));
