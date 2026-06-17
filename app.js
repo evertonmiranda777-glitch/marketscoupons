@@ -5667,7 +5667,7 @@ function buildProGateAnon(ctx){
     `<div class="pg-stack">`+
       `<div class="pg-card pg-card-primary">`+
         `<div class="pg-card-head"><span class="pg-card-ico">${PG_ICO_USER}</span><span class="pg-card-title">${t('da_gate_btn_login')||'Criar conta grátis'}</span></div>`+
-        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'Sem cartão. Acesso imediato a Análise Diária, GEX, Live Room e tudo no site.'}</p>`+
+        `<p class="pg-card-sub">${t('pro_gate_signup_sub')||'Cadastre-se para ter acesso.'}</p>`+
         `<button class="pg-btn pg-btn-gold" onclick="track('gate_signup_click',{src:'pro_gate_anon'});openAuthModal('signup')">${t('pro_gate_signup_cta')||'Criar conta grátis →'}</button>`+
       `</div>`+
     `</div>`;
