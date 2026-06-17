@@ -445,6 +445,182 @@ async function handleXCleanup(req, res) {
   return res.status(200).json({ uid, found: ids.length, deleted });
 }
 
+// OAuth1 header que TAMBÉM assina query params (necessário p/ tweet.fields).
+// Não mexe no oauth1Header simples (usado nos POSTs sem query).
+function oauth1HeaderQ(method, baseUrl, queryParams, keys) {
+  const pe = (s) => encodeURIComponent(s).replace(/[!*'()]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase());
+  const oauth = {
+    oauth_consumer_key: keys.apiKey,
+    oauth_nonce: _crypto.randomBytes(16).toString('hex'),
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+    oauth_token: keys.accessToken,
+    oauth_version: '1.0',
+  };
+  const all = { ...oauth, ...queryParams };
+  const paramStr = Object.keys(all).sort().map(k => `${pe(k)}=${pe(all[k])}`).join('&');
+  const baseStr = [method.toUpperCase(), pe(baseUrl), pe(paramStr)].join('&');
+  const signingKey = `${pe(keys.apiSecret)}&${pe(keys.accessSecret)}`;
+  const signature = _crypto.createHmac('sha1', signingKey).update(baseStr).digest('base64');
+  const hp = { ...oauth, oauth_signature: signature };
+  return 'OAuth ' + Object.keys(hp).sort().map(k => `${pe(k)}="${pe(hp[k])}"`).join(', ');
+}
+
+// GET ?action=x_stats&secret=... — lê NOSSOS tweets recentes + public_metrics
+// (impressions/likes/reposts/replies). Read-only, protegido por CRON_SECRET.
+async function handleXStats(req, res) {
+  const secret = req.query?.secret || req.headers['x-cron-secret'];
+  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) return res.status(403).json({ error: 'forbidden' });
+  const keys = { apiKey: process.env.X_API_KEY, apiSecret: process.env.X_API_SECRET, accessToken: process.env.X_ACCESS_TOKEN, accessSecret: process.env.X_ACCESS_SECRET };
+  if (!keys.apiKey || !keys.accessToken) return res.status(503).json({ error: 'no_x_token' });
+  // 1) user id
+  const meUrl = 'https://api.twitter.com/2/users/me';
+  const meR = await fetch(meUrl, { headers: { Authorization: oauth1Header('GET', meUrl, keys) } });
+  const me = await meR.json().catch(() => ({}));
+  const uid = me?.data?.id;
+  if (!uid) return res.status(502).json({ error: 'no_user', resp: me });
+  // 2) tweets recentes com métricas (query params assinados)
+  const base = `https://api.twitter.com/2/users/${uid}/tweets`;
+  const max = Math.min(parseInt(req.query?.max || '20', 10), 100);
+  const qp = { 'max_results': String(Math.max(5, max)), 'tweet.fields': 'public_metrics,created_at', 'exclude': 'retweets,replies' };
+  const qs = Object.keys(qp).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(qp[k])}`).join('&');
+  const tlR = await fetch(`${base}?${qs}`, { headers: { Authorization: oauth1HeaderQ('GET', base, qp, keys) } });
+  const tl = await tlR.json().catch(() => ({}));
+  if (!tlR.ok) return res.status(tlR.status).json({ error: 'tl_fail', resp: tl });
+  const tweets = (tl?.data || []).map(t => ({
+    id: t.id, created_at: t.created_at, text: t.text,
+    impressions: t.public_metrics?.impression_count ?? null,
+    likes: t.public_metrics?.like_count ?? 0,
+    reposts: t.public_metrics?.retweet_count ?? 0,
+    replies: t.public_metrics?.reply_count ?? 0,
+    quotes: t.public_metrics?.quote_count ?? 0,
+    bookmarks: t.public_metrics?.bookmark_count ?? 0,
+  }));
+  const n = tweets.length || 1;
+  const avg = (f) => Math.round(tweets.reduce((s, t) => s + (t[f] || 0), 0) / n);
+  return res.status(200).json({
+    account: me?.data?.username, uid, count: tweets.length,
+    averages: { impressions: avg('impressions'), likes: avg('likes'), reposts: avg('reposts'), replies: avg('replies') },
+    tweets,
+  });
+}
+
+// ===== REPLY-JACK: cresce a conta entrando na conversa dos grandes =====
+// Lê a timeline de uma conta grande via endpoint público de sindicância do X
+// (keyless), pega o melhor tweet recente e gera uma resposta com valor (sem
+// link/cupom/jargão) — o jeito que conta pequena pega audiência emprestada.
+const RJ_TARGETS = ['KobeissiLetter', 'unusual_whales', 'DeItaone', 'Mr_Derivatives'];
+const RJ_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36';
+
+async function fetchXTimelineFree(handle) {
+  const url = `https://syndication.twitter.com/srv/timeline-profile/screen-name/${encodeURIComponent(handle)}?showReplies=false`;
+  let r, delay = 4000;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    r = await fetch(url, { headers: { 'User-Agent': RJ_UA, 'Accept-Language': 'en-US,en;q=0.9' } });
+    if (r.ok) break;
+    if (r.status === 429 && attempt < 3) { await new Promise(x => setTimeout(x, delay)); delay = Math.min(delay * 2, 20000); continue; }
+    throw new Error('synd_' + r.status);
+  }
+  const html = await r.text();
+  const m = html.match(/<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/s);
+  if (!m) throw new Error('no_next_data');
+  const data = JSON.parse(m[1]);
+  const out = [];
+  const walk = (o) => {
+    if (o && typeof o === 'object') {
+      if (o.full_text && o.favorite_count != null) {
+        const u = o.user || {};
+        out.push({
+          id: o.id_str || o.id, text: o.full_text, screen: u.screen_name || handle,
+          likes: o.favorite_count || 0, reposts: o.retweet_count || 0, replies: o.reply_count || 0,
+          created_at: o.created_at, isRT: /^RT @/.test(o.full_text || ''),
+        });
+      }
+      for (const k in o) walk(o[k]);
+    } else if (Array.isArray(o)) { o.forEach(walk); }
+  };
+  walk(data);
+  return out;
+}
+
+function rjReplySystem() {
+  return `You are Max, a sharp market analyst for Markets Coupons, REPLYING on X to a large account to grow by adding value.
+Read the TWEET and write ONE short reply (under 240 chars) with a genuinely sharp, useful take — your read on what it means for traders.
+RULES: plain English, no jargon dump, no greeting, NO link, NO coupon, NO self-promo, no hashtags, no emoji. Sound like a smart human trader jumping into the conversation, not a brand. If you cite a number, use ONLY the market data provided (if any). Never buy/sell/signal/guarantee. Commentary, not advice.
+OUTPUT: only the reply text.`;
+}
+
+async function genReplyJack(tweet, marketBlock) {
+  const sys = rjReplySystem();
+  const user = `TWEET by @${tweet.screen}:\n"${tweet.text.slice(0, 400)}"\n\n${marketBlock ? 'Market data you MAY reference (only these numbers):\n' + marketBlock + '\n\n' : ''}Write the reply.`;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const out = await callGemini(sys, user, { maxTokens: 1024, temp: attempt === 0 ? 0.8 : 0.6 });
+    if (!out) continue;
+    let reply = out.trim().replace(/^["'`]+|["'`]+$/g, '').split(/\n={3,}\n?/)[0].trim().slice(0, 270);
+    if (maxComplianceBlocked(reply)) continue;
+    if (/https?:\/\//i.test(reply)) reply = reply.replace(/https?:\/\/\S+/gi, '').trim(); // nunca link
+    if (reply.length >= 15) return { reply, raw: out.slice(0, 300) };
+  }
+  return { reply: null };
+}
+
+// GET ?action=x_replyjack&dry=1 — preview · POST ?action=x_replyjack&secret=... — responde de verdade
+async function handleXReplyJack(req, res) {
+  const isPreview = req.method === 'GET' || req.query?.dry === '1';
+  if (!isPreview) {
+    const secret = req.query?.secret || req.headers['x-cron-secret'];
+    if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) return res.status(403).json({ error: 'forbidden' });
+  }
+  // 1) coleta tweets recentes (últimos 2 dias) das contas-alvo, com espaçamento p/ rate limit
+  const cutoff = Date.now() - 2 * 864e5;
+  const targets = req.query?.target ? [req.query.target] : RJ_TARGETS;
+  let candidates = [], errors = [];
+  for (let i = 0; i < targets.length; i++) {
+    if (i) await new Promise(r => setTimeout(r, 1500));
+    try {
+      const tw = await fetchXTimelineFree(targets[i]);
+      for (const t of tw) {
+        const ts = t.created_at ? Date.parse(t.created_at) : Date.now();
+        if (t.isRT || (ts && ts < cutoff)) continue;
+        t.score = t.likes + 2 * t.reposts + 3 * t.replies;
+        candidates.push(t);
+      }
+    } catch (e) { errors.push(`${targets[i]}: ${e.message}`); }
+  }
+  if (!candidates.length) return res.status(502).json({ error: 'no_candidates', errors });
+  // 2) melhor tweet (maior engajamento recente)
+  candidates.sort((a, b) => b.score - a.score);
+  const target = candidates[0];
+  // 3) contexto de mercado opcional (níveis reais do dia, se houver)
+  let marketBlock = '';
+  try {
+    const lr = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?select=date&order=date.desc&limit=1`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+    const ld = await lr.json();
+    if (Array.isArray(ld) && ld.length) {
+      const ar = await fetch(`${SUPABASE_URL}/rest/v1/daily_analysis?date=eq.${ld[0].date}&select=*`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+      const rows = await ar.json();
+      if (Array.isArray(rows) && rows.length) { const g = null; marketBlock = buildMaxData(rows, g, ld[0].date, 'en').block; }
+    }
+  } catch (e) { marketBlock = ''; }
+  // 4) gera a resposta
+  const { reply, raw } = await genReplyJack(target, marketBlock);
+  if (!reply) return res.status(502).json({ error: 'no_reply', target });
+
+  if (isPreview) {
+    return res.status(200).json({ preview: true, target: { handle: '@' + target.screen, id: target.id, score: target.score, tweet: target.text.slice(0, 200) }, reply, chars: reply.length, candidates_considered: candidates.length, errors });
+  }
+  // 5) posta como RESPOSTA ao tweet do grande
+  const xKeys = { apiKey: process.env.X_API_KEY, apiSecret: process.env.X_API_SECRET, accessToken: process.env.X_ACCESS_TOKEN, accessSecret: process.env.X_ACCESS_SECRET };
+  if (!xKeys.apiKey || !xKeys.accessToken) return res.status(503).json({ error: 'no_x_token' });
+  const purl = 'https://api.twitter.com/2/tweets';
+  const body = { text: reply, reply: { in_reply_to_tweet_id: String(target.id) } };
+  const tr = await fetch(purl, { method: 'POST', headers: { Authorization: oauth1Header('POST', purl, xKeys), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const jr = await tr.json().catch(() => ({}));
+  if (!tr.ok || !jr?.data?.id) return res.status(502).json({ error: 'reply_failed', response: jr });
+  await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, { method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ post_type: 'replyjack', thread_root_id: jr.data.id, status: 'sent', posted_content: { reply, in_reply_to: target.id, target: '@' + target.screen } }) }).catch(() => {});
+  return res.status(200).json({ posted: jr.data.id, replied_to: '@' + target.screen, reply });
+}
+
 // GET ?action=x_daily&asset=ES&dry=1 — preview (não posta)
 // POST ?action=x_daily&secret=... — posta de verdade (cron protected)
 async function handleXDaily(req, res) {
@@ -1109,33 +1285,65 @@ async function genMaxThreadAI(rows, gex, date, lang) {
 // ===== POST ÚNICO do Max (análise de MOMENTO — não thread) =====
 // Cada momento do dia = 1 post curto (<=280). Espaçados ao longo do dia, sem burst.
 function maxSinglePostSystem(lang) {
-  if (lang === 'pt') return `Você é o Max 🦊, analista de mercado da Markets Coupons, postando no X.
-Escreva UM ÚNICO post (NO MÁXIMO 280 caracteres, conte) sobre o momento de mercado pedido. NÃO é thread, é 1 post só.
+  if (lang === 'pt') return `Você é o Max, analista de mercado da Markets Coupons, postando no X.
+Escreva UM post (160-260 caracteres, NUNCA encoste em 280). NÃO é thread.
 
-VOZ: descontraído, esperto, honesto. Pode abrir com "Fala, traders" quando fizer sentido. Gíria real: gamma negativo = "gasolina no fogo", gamma positivo = "amortecedor", VIX = "termômetro do medo". "é leitura, não é dica".
-REGRA DE OURO: use SÓ os números do bloco DADOS. NUNCA invente preço/nível/%/valor. Respeite o VIÉS fornecido (não confunda com a variação do dia).
-COMPLIANCE: nunca "compre/venda/entre/stop/alvo". Nunca fale mal de prop firm. Educativo.
-NUNCA use emoji (zero, em hipótese alguma). No máximo 1 hashtag, ou nenhuma. Texto LIMPO e SÉRIO, estilo análise de verdade (igual os grandes analistas do X).
-SAÍDA: só o texto do post, nada mais (sem aspas, sem rótulo).`;
-  return `You are Max 🦊, market analyst for Markets Coupons, posting on X.
-Write ONE SINGLE post (MAX 280 characters, count) about the requested market moment. NOT a thread, just 1 post.
+FORMATO QUE VIRALIZA NO X:
+- LINHA 1 = HOOK: o fato mais surpreendente ou de maior aposta, com o número. Tem que parar o scroll. SEM "Fala traders", SEM "🧵", SEM saudação genérica.
+- Depois 1-2 linhas curtas que pagam o hook. UMA ideia por post. Deixa respirar com quebras de linha.
+- PORTUGUÊS/INGLÊS DE GENTE: TRADUZA o jargão. Em vez de "Call Wall 7500" diga "os bancos estão segurando o S&P em 7500"; em vez de "gamma positivo" diga "o mercado tá amortecendo os movimentos"; VIX = "o termômetro do medo". Trader normal tem que entender na hora.
+- VARIE a abertura todo dia. NUNCA repita o mesmo começo.
 
-VOICE: relaxed, sharp, honest. You may open with "What's up, traders" when it fits. Real slang: negative gamma = "fuel on the fire", positive gamma = "shock absorber", VIX = "the fear gauge". "it's a read, not a tip".
-GOLDEN RULE: use ONLY the numbers in the DATA block. NEVER invent a price/level/%/value. Respect the BIAS given (don't confuse it with the day's change).
-COMPLIANCE: never "buy/sell/enter/stop/target". Never bash a prop firm. Educational.
-NEVER use emoji (zero, ever). At most 1 hashtag, or none. CLEAN, SERIOUS text, like real analysis (just like the big X analysts).
-OUTPUT: only the post text, nothing else (no quotes, no label).`;
+REGRA DE OURO: use SÓ os números do bloco DADOS. NUNCA invente preço/nível/%/valor. Respeite o VIÉS dado (não confunda com a variação do dia).
+COMPLIANCE (duro): nunca "compre/venda/entre/stop/alvo/sinal/lucro garantido/trader profissional". Nunca fale mal de prop firm. É leitura, não é dica.
+SEM emoji. No máximo 1 hashtag (de preferência nenhuma).
+SAÍDA: só o texto do post. Sem aspas, sem rótulo.`;
+  return `You are Max, market analyst for Markets Coupons, posting on X.
+Write ONE post (160-260 chars, NEVER max out 280). NOT a thread.
+
+FORMAT THAT WINS ON X:
+- LINE 1 = a HOOK: the single most surprising or highest-stakes fact, with the number. Make people stop scrolling. No "What's up traders", no "🧵", no greeting.
+- Then 1-2 short lines that pay off the hook. ONE idea per post. Let it breathe with line breaks.
+- PLAIN ENGLISH: TRANSLATE the jargon. Instead of "Call Wall 7500" say "the big banks are capping the S&P at 7500"; instead of "positive gamma" say "the market's acting like a shock absorber"; VIX = "the fear gauge". A normal trader must get it instantly.
+- VARY your opening every time. Never reuse the same opener.
+
+TONE REFERENCE (how the big accounts that win this niche actually write — Kobeissi & co.): they open with the striking fact AND the number, stated flat and confident, no hedging, no jargon, no greeting, and they frame the stake (e.g. "now worth more than all but 12 public companies"). Mirror that cadence: a confident one-line fact with a number, then the "so what" for a trader. Write fresh, never copy. Examples of the cadence:
+- "The fear gauge just dropped 4.6%. The market smells a deal."
+- "The S&P is holding above 7500 and the big banks are defending it. Patience pays today."
+Sound like a sharp human trader, not a bot. Natural, never templated.
+
+GOLDEN RULE: use ONLY the numbers in the DATA block. NEVER invent a price/level/%/value. Respect the BIAS given (not the day's change).
+COMPLIANCE (hard): never "buy/sell/enter/stop/target/signal/guaranteed/profit/professional trader/we trade for you/get rich". Never bash a prop firm. It's a read, not advice.
+NO emoji. At most 1 hashtag (prefer none).
+OUTPUT: only the post text. No quotes, no label.`;
+}
+
+// Trava de compliance no CÓDIGO (não confia só no prompt): bloqueia termos
+// proibidos antes de qualquer post auto. Retorna o termo achado, ou null se limpo.
+function maxComplianceBlocked(text) {
+  const t = ' ' + String(text || '').toLowerCase().replace(/[^\w\s$%./-]/g, ' ').replace(/\s+/g, ' ') + ' ';
+  const BANNED = [
+    'guaranteed profit', 'guaranteed return', 'guaranteed money', 'risk-free', 'risk free',
+    'you will profit', "you'll profit", 'get rich', 'sure thing', 'cant lose', "can't lose",
+    'we trade for you', 'copy my trades', 'professional trader',
+    'buy now', 'sell now', 'go long here', 'go short here', 'entry at', 'stop loss at', 'take profit at',
+    // PT
+    'lucro garantido', 'renda garantida', 'sem risco', 'fique rico', 'dinheiro garantido',
+    'a gente opera por voce', 'opero por voce', 'trader profissional', 'sinal de entrada', 'sinais de',
+  ];
+  for (const b of BANNED) { if (t.includes(' ' + b + ' ') || t.includes(' ' + b)) return b; }
+  return null;
 }
 
 async function genMaxSinglePost(rows, gex, date, lang, segment) {
   const pt = lang === 'pt';
   const { block } = buildMaxData(rows, gex, date, lang);
   const SEG = {
-    premarket: pt ? 'BRIEFING ANTES DO SINO (o aviso matinal que vicia o trader): em 1 post curto, diga o CLIMA de hoje (VIX + o que move o mercado) e o que ESPERAR por tipo de conta, prático: 1 toque pra quem opera intraday e 1 pra quem opera EOD (com base no gamma/níveis). Fecha com "níveis completos no site, link na bio".' : 'PRE-BELL BRIEFING (the morning heads-up that hooks traders): in 1 short post, give today\'s MOOD (VIX + what moves the market) and what to EXPECT by account type, practical: 1 note for intraday traders and 1 for EOD traders (based on gamma/levels). End with "full levels on the site, link in bio".',
-    open: pt ? 'Os NÍVEIS-CHAVE de hoje: ES e NQ (preço, viés, regime de gamma, zero gamma, paredes). Direto.' : 'Today\'s KEY LEVELS: ES and NQ (price, bias, gamma regime, zero gamma, walls). Straight.',
-    pulse: pt ? 'O PULSO do mercado agora: o que os dados dizem do momento (gamma, VIX, smart money), na leitura do Max.' : 'The market PULSE right now: what the data says about this moment (gamma, VIX, smart money), in Max\'s read.',
-    coupon: pt ? 'Post de OFERTA no estilo do Max: conta da Apex por $19.90 com o cupom MARKET, 90% off, com humor ("dólar não cai do céu"). Cupons na bio.' : 'OFFER post in Max\'s style: Apex account for $19.90 with code MARKET, 90% off, with humor. Coupons in bio.',
-    recap: pt ? 'RECAP do fim do dia: o nível-chave (zero gamma) segurou? Como o mercado se comportou vs o viés. Honesto.' : 'End-of-day RECAP: did the key level (zero gamma) hold? How did the market behave vs the bias. Honest.',
+    premarket: pt ? 'AVISO ANTES DO SINO: o clima de hoje em PORTUGUÊS DE GENTE (o termômetro do medo + a 1 coisa que move o mercado) e o que isso significa na prática pra quem opera intraday vs EOD. NADA de rótulo de jargão (não escreva "call wall"/"zero gamma" crus; traduza). Fecha com "níveis completos no site, link na bio".' : 'PRE-BELL heads-up: today\'s mood in PLAIN ENGLISH (the fear gauge + the one thing moving markets) and what it means for an intraday vs an EOD trader. NO jargon labels (don\'t write raw "call wall"/"zero gamma"; translate them). End with "full levels on the site, link in bio".',
+    open: pt ? 'O SETUP de hoje em português de gente: onde o S&P e o Nasdaq estão em relação ao nível que os bancos estão defendendo, e o que isso significa pra sessão. Traduza TODO termo técnico. Curto e direto.' : 'Today\'s setup in plain English: where the S&P and Nasdaq sit vs the level the big banks are defending, and what that means for the session. Translate EVERY technical term. Short and straight.',
+    pulse: pt ? 'O PULSO do mercado agora em UMA frase afiada e humana: o que os dados realmente dizem do momento (calmo ou tenso, preso ou em tendência). Sem jargão.' : 'The market PULSE right now in one sharp, human line: what the data really says about this moment (calm or tense, pinned or trending). No jargon.',
+    coupon: pt ? 'Post de OFERTA na voz do Max: conta da Apex por $19.90 com o cupom MARKET, 90% off, com humor. Hook primeiro. Cupons na bio.' : 'OFFER post in Max\'s voice: an Apex account for $19.90 with code MARKET, 90% off, with humor. Hook first. Coupons in bio.',
+    recap: pt ? 'RECAP honesto do fim do dia: o nível-chave segurou? Como se comportou vs o viés. Português de gente, 1 conclusão clara.' : 'End-of-day recap, honest: did the key level hold? How did it behave vs the bias. Plain English, one clear takeaway.',
   };
   const task = SEG[segment] || (pt ? 'Um post curto com a leitura do mercado hoje.' : 'A short post with today\'s market read.');
   let lastRaw = null;
@@ -1147,6 +1355,8 @@ async function genMaxSinglePost(rows, gex, date, lang, segment) {
     const allowed = maxAllowedNums(block);
     if (maxHasInvention(out, allowed)) continue;
     let post = out.trim().replace(/^["'`]+|["'`]+$/g, '').split(/\n={3,}\n?/)[0].trim().slice(0, 280);
+    const banned = maxComplianceBlocked(post);
+    if (banned) { lastRaw = 'compliance_block:' + banned; continue; }
     if (post.length >= 20) return { post, reason: 'ok', raw: out.slice(0, 320) };
     lastRaw = out.slice(0, 320);
   }
@@ -1655,6 +1865,8 @@ module.exports = async (req, res) => {
   if (action === 'x_daily') return handleXDaily(req, res);
   if (action === 'candles') return handleCandles(req, res);
   if (action === 'x_cleanup') return handleXCleanup(req, res);
+  if (action === 'x_stats') return handleXStats(req, res);
+  if (action === 'x_replyjack') return handleXReplyJack(req, res);
   if (action === 'x_recap') return handleXRecap(req, res);
 
   const corsOrigin = getCorsOrigin(req);

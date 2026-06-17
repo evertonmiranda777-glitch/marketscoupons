@@ -40,3 +40,5 @@ Thumbs.db
 
 sbq.sh
 _b.json
+.env.vercel.tmp
+.cron.tmp

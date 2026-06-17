@@ -1,0 +1,33 @@
+name: Max X Reply-Jack
+
+on:
+  schedule:
+    # 14:30 UTC = 10:30 ET (EDT) — depois da abertura US, quando as contas grandes
+    # postam e os tweets estão pegando tração. Reply-jack 1x/dia, Seg-Sex.
+    # ATENÇÃO horário de verão US: no inverno (EST) isso vira 9:30 ET; revisar 2x/ano.
+    - cron: '30 14 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Forçar 1 alvo (handle sem @), ou vazio = melhor da lista'
+        default: ''
+        required: false
+
+concurrency:
+  group: x-replyjack
+  cancel-in-progress: false
+permissions:
+  contents: read
+
+jobs:
+  reply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Reply-jack a big account on X
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          TARGET: ${{ github.event.inputs.target || '' }}
+        run: |
+          echo "Reply-jack run (target='${TARGET:-auto}')..."
+          curl -sS -X POST "https://www.marketscoupons.com/api/bot?action=x_replyjack&secret=$CRON_SECRET${TARGET:+&target=$TARGET}" -w "\nHTTP %{http_code}\n"
