@@ -21,9 +21,10 @@ a{color:inherit}
 .nav-logo em{font-style:normal;color:var(--gold)}
 /* hero */
 .hero{text-align:center;padding:56px 0 34px}
-.ey{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);background:rgba(240,180,41,.1);border:1px solid var(--b2);padding:6px 13px;border-radius:30px;margin-bottom:24px}
-h1{font-size:clamp(26px,5.4vw,38px);font-weight:900;letter-spacing:-.02em;line-height:1.22;margin-bottom:22px;text-wrap:balance}
-h1 .g{background:linear-gradient(120deg,#F0B429,#f6d873);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ey{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.72);background:linear-gradient(180deg,#0B1318,#07090D);border:1px solid rgba(107,182,201,.22);box-shadow:0 0 0 1px rgba(74,144,164,.08) inset,0 8px 20px -10px rgba(0,0,0,.6);padding:7px 20px;border-radius:24px;margin-bottom:24px}
+.ey::before{content:'';width:6px;height:6px;border-radius:50%;background:#F0B429;box-shadow:0 0 8px #F0B429}
+h1{font-size:clamp(28px,5vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:18px;text-wrap:balance;text-shadow:0 4px 24px rgba(0,0,0,.5)}
+h1 .g{background:linear-gradient(135deg,#F0B429,#f6d873,#F0B429);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 24px rgba(240,180,41,.4))}
 .hero p.sub{font-size:16px;color:var(--t2);max-width:520px;margin:0 auto 20px;line-height:1.62;text-wrap:pretty}
 .hero p.sub.company{font-size:14px;color:var(--t3);max-width:540px;margin:0 auto 24px}
 /* PADRÃO único de imagem de gráfico: largura cheia, quadrada, mesma borda+sombra */
@@ -110,8 +111,8 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
 
 <!-- HERO -->
 <header class="hero">
-  <div class="ey"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Operacional Grátis · Nasdaq</div>
-  <h1>O <span class="g">operacional mais simples</span> da nossa equipe no Nasdaq: preço, duas médias, RSI e a confirmação do volume.</h1>
+  <div class="ey">Operacional Grátis · Nasdaq</div>
+  <h1>O <span class="g">operacional simples</span>: preço, duas médias, RSI e volume.</h1>
   <p class="sub">Sem mágica. Uma rotina com regras e disciplina, fácil de seguir. Veja o passo a passo completo, junto com as ferramentas grátis que usamos em toda sessão.</p>
   <figure class="result-card">
     <img src="/img/operational/resultado.png" alt="Curva de capital de um membro da equipe, lucro acumulado de $7.200 usando o operacional" onerror="this.closest('figure').style.display='none'">
@@ -225,7 +226,7 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
 </div>
 
 <div id="mc-site-footer"></div>
-<script src="/js/site-footer.js?v=3" defer></script>
+<script src="/js/site-footer.js?v=4" defer></script>
 
 <script>
 function unlock(e){
