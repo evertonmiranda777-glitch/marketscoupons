@@ -89,7 +89,7 @@
   // CSS COPIADO VERBATIM do index.html, scoped sob #mc-site-ft (vars -> literais)
   var css='#mc-site-ft{background:rgba(3,5,7,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(107,182,201,.18);padding:48px 24px 28px;position:relative;color:#B8C5D6;font-family:Inter,system-ui,sans-serif;'+(RTL?'direction:rtl;':'')+'}'+
     '#mc-site-ft *{box-sizing:border-box}'+
-    '#mc-site-ft .ft-in{max-width:1200px;margin:0 auto}'+
+    '#mc-site-ft .ft-in{margin:0}'+
     '#mc-site-ft .ft-grid{display:grid;grid-template-columns:1.6fr repeat(5,1fr);gap:28px;margin-bottom:32px}'+
     '#mc-site-ft .ft-logo{font-size:18px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px;display:flex;align-items:center;gap:10px;color:#fff}'+
     '#mc-site-ft .ft-logo em{color:#F0B429;font-style:normal}'+
