@@ -1461,7 +1461,7 @@ const FIRM_SEO_META={
 function setFirmSEO(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   const lang=_currentLang||'en';
-  const seo=FIRM_SEO_META[lang]||FIRM_SEO_META.pt;
+  const seo=FIRM_SEO_META[lang]||FIRM_SEO_META.en||FIRM_SEO_META.pt;
   const hasCoupon=f.coupon&&f.discount>0;
   const minPrice=f.prices&&f.prices[0]?f.prices[0].n:'';
   const vars={'{name}':f.name,'{discount}':f.discount,'{coupon}':f.coupon||'','{minPrice}':minPrice,'{rating}':f.rating,'{reviews}':f.reviews,'{split}':f.split};
@@ -4258,7 +4258,7 @@ const FAQ_LANGS = {
     {q:'كيف أقارن بين شركات Prop؟', a:'استخدم أداة المقارنة في تبويب "مقارنة" أو انتقل إلى "شركات" لرؤية جميع الخيارات جنباً إلى جنب.'},
   ],
 };
-function getFaqData() { return (_cmsFaq&&_cmsFaq[_currentLang]&&_cmsFaq[_currentLang].length ? _cmsFaq[_currentLang] : null) || FAQ_LANGS[_currentLang] || FAQ_LANGS.pt; }
+function getFaqData() { return (_cmsFaq&&_cmsFaq[_currentLang]&&_cmsFaq[_currentLang].length ? _cmsFaq[_currentLang] : null) || FAQ_LANGS[_currentLang] || FAQ_LANGS.en || FAQ_LANGS.pt; }
 function renderFaq() {
   const el = document.getElementById('faq-list');
   if(!el) return;
@@ -4827,7 +4827,7 @@ function qfinish(){
     let rec=FIRMS.find(f=>f.id===sorted[0][0]);
     if(!rec)rec=FIRMS[0];
     if(!rec)return;
-    document.getElementById('q-res-content').innerHTML=`<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec,'28px','11px')} ${rec.name}</span></div><div class="qr-desc">${(I18N[_currentLang]?.['firm_desc_'+rec.id]||I18N.pt['firm_desc_'+rec.id]||rec.desc||'')}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
+    document.getElementById('q-res-content').innerHTML=`<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec,'28px','11px')} ${rec.name}</span></div><div class="qr-desc">${(I18N[_currentLang]?.['firm_desc_'+rec.id]||I18N.en?.['firm_desc_'+rec.id]||I18N.pt['firm_desc_'+rec.id]||rec.desc||'')}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
     track('quiz_complete',{recommended_firm:rec.id,market_pref:market,priority});
     // Removido fbq Lead, quiz não indica intenção de compra. Inflava denominador.
   },300);
@@ -5194,7 +5194,7 @@ const PLATFORMS_LANGS = {
     },
   ],
 };
-function getPlatforms() { return PLATFORMS_LANGS[_currentLang] || PLATFORMS_LANGS.pt; }
+function getPlatforms() { return PLATFORMS_LANGS[_currentLang] || PLATFORMS_LANGS.en || PLATFORMS_LANGS.pt; }
 
 function renderPlatforms() {
   const g = document.getElementById('plat-grid');
@@ -5866,7 +5866,7 @@ async function checkAnalysisGate(){
   gate.innerHTML='';
 }
 
-function daT(v){if(!v)return'';if(typeof v==='string')return v;return v[_currentLang]||v.pt||v.en||Object.values(v)[0]||'';}
+function daT(v){if(!v)return'';if(typeof v==='string')return v;return v[_currentLang]||v.en||v.pt||Object.values(v)[0]||'';}
 
 // Build events section: use DB events field + inject live high-impact calendar events
 function _renderDaEvents(a){
