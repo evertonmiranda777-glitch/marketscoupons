@@ -1098,10 +1098,12 @@ async function callGemini(systemText, userText, opts = {}) {
     contents: [{ role: 'user', parts: [{ text: userText }] }],
     generationConfig: { maxOutputTokens: opts.maxTokens || 2200, temperature: opts.temp ?? 0.85 },
   });
+  const _start = Date.now();
   for (let i = 0; i < KEYS.length; i++) {
+    if (Date.now() - _start > 22000) break;  // cap total: nunca varre N chaves até estourar a função
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEYS[i]}`;
     const ac = new AbortController();
-    const to = setTimeout(() => ac.abort(), 18000);  // 18s: nunca pendura o cron; cai no fallback
+    const to = setTimeout(() => ac.abort(), 8000);  // 8s por chave: cai no fallback rápido
     try {
       const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, signal: ac.signal });
       const d = await r.json();
@@ -1405,7 +1407,7 @@ async function genMaxSinglePost(rows, gex, date, lang, segment) {
   const user = `${pt ? 'DADOS (use só estes números, não invente):' : 'DATA (use only these numbers, do not invent):'}\n${block}\n\n${pt ? 'Tarefa' : 'Task'}: ${task}\n${pt ? 'Escreva 1 post (máx 280 caracteres).' : 'Write 1 post (max 280 chars).'}`;
   for (let attempt = 0; attempt < 2; attempt++) {
     const out = await callGemini(sys, user, { maxTokens: 2048, temp: attempt === 0 ? 0.85 : 0.6 });
-    if (!out) continue;
+    if (!out) break;  // Gemini fora/cota: re-tentar não ajuda, vai direto pro fallback
     const allowed = maxAllowedNums(block);
     if (maxHasInvention(out, allowed)) continue;
     let post = out.trim().replace(/^["'`]+|["'`]+$/g, '').split(/\n={3,}\n?/)[0].trim().slice(0, 280);
