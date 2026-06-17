@@ -323,6 +323,24 @@ const GA4_FUNNEL = {
   purchase:                'purchase',
 };
 
+// CAPI/Pixel = SÓ eventos comerciais (Meta deve receber ~17 tipos, não 60+).
+// Resto (telemetria UX, navegação, PWA, quiz, push, A/B) continua no Supabase, NÃO no CAPI.
+// Mapeia p/ nomes Meta na edge function (EVENT_MAP). Custom comerciais ficam p/ Custom Conversion.
+const CAPI_ALLOW = new Set([
+  'page_view',                                                   // PageView
+  'firm_detail_open','platform_detail_open',                     // ViewContent
+  'coupon_copy','copy_coupon',                                   // CopyCode
+  'checkout_click','loyalty_checkout_click','platform_checkout_click','pro_checkout_click', // InitiateCheckout/Lead
+  'tool_lead_capture',                                           // Lead
+  'purchase','pro_purchase',                                     // Purchase
+  'newsletter_subscribe',                                        // Subscribe
+  'user_signup','loyalty_register',                              // CompleteRegistration
+  'user_login',                                                  // Login
+  'search',                                                      // Search
+  // custom comerciais (p/ Custom Conversion)
+  'firm_redirect','offer_card_click','lp_explore_site','user_reactivated','platform_select','platform_click',
+]);
+
 // Central tracking, Supabase + GTM + GA4 + Facebook Pixel + CAPI + localStorage cache
 // Event priority: CAPI (server-side, ad-blocker-proof) > Supabase (first-party) > browser pixels
 function track(event, params={}) {
@@ -476,7 +494,8 @@ function track(event, params={}) {
 
   // 4. Facebook Conversions API server-side (bypassa ad blockers), MESMO event_id do dataLayer
   // Dedup Pixel browser × CAPI: GTM dispara Pixel com event_id=eid, CAPI envia event_id=eid → Meta soma 1.
-  _sendCAPI(event, params, eid, ts);
+  // SÓ eventos comerciais (CAPI_ALLOW). Telemetria/UX/PWA/quiz NÃO vão pro CAPI (ruído + EMQ baixo).
+  if (CAPI_ALLOW.has(event)) _sendCAPI(event, params, eid, ts);
 }
 
 // ─── RETRY QUEUE: events that failed to reach Supabase (network error, offline) ───
