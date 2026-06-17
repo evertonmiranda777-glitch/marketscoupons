@@ -109,8 +109,9 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
 <!-- HERO -->
 <header class="hero">
   <div class="ey"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Operacional Grátis · Nasdaq</div>
-  <h1>O <span class="g">operacional simples</span> que eu uso no Nasdaq: preço, duas médias, RSI e a confirmação do volume.</h1>
-  <p class="sub">Sem mágica. Uma rotina com regras e a disciplina de seguir. Veja o passo a passo completo, junto com as ferramentas grátis que eu uso toda sessão.</p>
+  <h1>O <span class="g">operacional mais simples</span> da nossa equipe no Nasdaq: preço, duas médias, RSI e a confirmação do volume.</h1>
+  <p class="sub">Sem mágica. Uma rotina com regras e disciplina, fácil de seguir. Veja o passo a passo completo, junto com as ferramentas grátis que usamos em toda sessão.</p>
+  <p class="sub" style="font-size:14px;color:var(--t3);margin-top:8px">Somos uma empresa global de comparação de prop firms. Aqui compartilhamos o operacional mais simples de um dos membros da nossa equipe, que fez <b style="color:var(--gold)">$7.200</b> com ele. É o resultado dele, não é o típico, e serve apenas como conteúdo educacional.</p>
 
   <div class="gate">
     <h3>Libere o operacional completo</h3>
@@ -129,8 +130,8 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
   <div class="kick">O que você libera</div>
   <h2>O setup completo, passo a passo</h2>
   <ul class="inside">
-    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Os <b>timeframes</b> exatos que eu observo e as <b>médias / RSI</b> em cada um</span></li>
-    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Minhas condições de <b>compra</b> e <b>venda</b>, e a <b>confirmação do volume</b> que valida a operação</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Os <b>timeframes</b> exatos que observamos e as <b>médias / RSI</b> em cada um</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>As condições de <b>compra</b> e <b>venda</b>, e a <b>confirmação do volume</b> que valida a operação</span></li>
     <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>As <b>3 ferramentas grátis</b> por trás disso, Análise Diária, regiões de Gamma e o VolumeFilter</span></li>
     <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>A <b>armadilha do mercado lateral</b> que engana, e como esperar o mercado tomar direção</span></li>
   </ul>
@@ -140,12 +141,12 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
 <section class="blk" id="method">
   <div class="kick">O operacional, passo a passo completo</div>
   <h2>Timeframes & indicadores</h2>
-  <p class="lead">Abaixo estão os timeframes e indicadores que eu uso, e sugiro que você utilize as mesmas configurações. Meu operacional acontece no <b>5 minutos</b>, mas eu leio o contexto de cima para baixo primeiro. A diferença não está em ter mais indicadores, e sim na disciplina.</p>
+  <p class="lead">Abaixo estão os timeframes e indicadores que usamos, e sugerimos que você utilize as mesmas configurações. O operacional acontece no <b>5 minutos</b>, mas o contexto é lido de cima para baixo primeiro. A diferença não está em ter mais indicadores, e sim na disciplina.</p>
 
   <div class="tf"><div class="h"><b>Diário</b><span class="pill">Contexto / tendência</span></div><div class="d"><code>EMA 50</code> + <code>EMA 200</code>, o quadro maior.</div></div>
   <div class="tf"><div class="h"><b>60 min</b><span class="pill">Viés</span></div><div class="d"><code>EMA 21</code>.</div></div>
-  <div class="tf"><div class="h"><b>15 min</b><span class="pill">Monitoro</span></div><div class="d"><code>RSI</code> (marco os 50 pontos, uso o F6) + <code>EMA 9</code> e <code>EMA 21</code>.</div></div>
-  <div class="tf"><div class="h"><b>5 min</b><span class="pill">Execução</span></div><div class="d"><code>SMA 20</code> + <code>EMA 9</code> · <code>RSI 14</code> (smooth 3, marco a linha dos 50, mais 30 / 70) · <b>VolumeFilter</b> · <b>T&amp;S (Time and Sales)</b>, eu uso dois, um com <code>size filter 4</code> e outro com <code>size filter 2</code>, para ler o <b>fluxo de ordens</b>: o tamanho que está passando e de que lado vem a agressão (comprador no ask ou vendedor no bid). É onde eu confirmo a <b>absorção nos níveis de preço</b>.</div></div>
+  <div class="tf"><div class="h"><b>15 min</b><span class="pill">Monitoro</span></div><div class="d"><code>RSI</code> (marcamos os 50 pontos, com o F6) + <code>EMA 9</code> e <code>EMA 21</code>.</div></div>
+  <div class="tf"><div class="h"><b>5 min</b><span class="pill">Execução</span></div><div class="d"><code>SMA 20</code> + <code>EMA 9</code> · <code>RSI 14</code> (smooth 3, marco a linha dos 50, mais 30 / 70) · <b>VolumeFilter</b> · <b>T&amp;S (Time and Sales)</b>, usamos dois, um com <code>size filter 4</code> e outro com <code>size filter 2</code>, para ler o <b>fluxo de ordens</b>: o tamanho que está passando e de que lado vem a agressão (comprador no ask ou vendedor no bid). É onde confirmamos a <b>absorção nos níveis de preço</b>.</div></div>
 
   <p class="lead" style="font-size:14.5px;margin-top:14px"><b style="color:var(--gold)">A linha dos 50 no RSI (15 e 5 min) é o que valida o trade:</b> com o RSI acima de 50, valida a compra; abaixo de 50, valida a venda.</p>
 
@@ -153,7 +154,7 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
   <div class="examples" id="ex-tela"></div>
 
   <h2 style="margin-top:24px">Um setup, dois contextos</h2>
-  <p class="lead">É o mesmo setup nas duas direções, compra e venda. Leia com atenção como eu alinho tudo e deixo o <b>volume</b> dar a confirmação, e você vai ver como é simples. Os exemplos reais abaixo são gráficos que realmente aconteceram. Se você voltar no histórico do seu gráfico, já com as configurações que sugeri, vai perceber como esse movimento é comum. Só precisa treinar o olhar e esperar o momento certo.</p>
+  <p class="lead">É o mesmo setup nas duas direções, compra e venda. Leia com atenção como alinhamos tudo e deixamos o <b>volume</b> dar a confirmação, e você vai ver como é simples. Os exemplos reais abaixo são gráficos que realmente aconteceram. Se você voltar no histórico do seu gráfico, já com as configurações que sugeri, vai perceber como esse movimento é comum. Só precisa treinar o olhar e esperar o momento certo.</p>
 
   <div class="setup buy">
     <div class="st">▲ Procure compra quando</div>
@@ -186,12 +187,12 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
   <!-- DICA EXTRA: VIX -->
   <div class="tf" style="margin-top:22px;border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.06)">
     <div class="h"><b style="color:var(--gold)">Dica extra</b><span class="pill">essa ninguém quer ensinar</span></div>
-    <div class="d" style="color:var(--t2)">Use o <b>VIX</b> no <b>5 min</b>, como no print abaixo. Ele tem correlação inversa com o Nasdaq: a regra é <b>Nasdaq subindo, VIX caindo, e vice-versa</b>. Não é uma regra absoluta, então olhe sempre o contexto inteiro. Usando as ferramentas que estou disponibilizando, você opera com mais clareza e para de entrar no impulso do FOMO.</div>
+    <div class="d" style="color:var(--t2)">Use o <b>VIX</b> no <b>5 min</b>, como no print abaixo. Ele tem correlação inversa com o Nasdaq: a regra é <b>Nasdaq subindo, VIX caindo, e vice-versa</b>. Não é uma regra absoluta, então olhe sempre o contexto inteiro. Usando as ferramentas que estamos disponibilizando, você opera com mais clareza e para de entrar no impulso do FOMO.</div>
   </div>
   <div class="examples"><figure><img loading="lazy" src="/img/operational/vix.png" alt="Correlação entre o VIX e o Nasdaq no gráfico de 5 minutos"><figcaption>VIX × Nasdaq no 5 min, correlação inversa: quando um sobe, o outro tende a cair.</figcaption></figure></div>
 
   <h2 style="margin-top:26px">Agora é a sua vez</h2>
-  <p class="lead">Espero que você tenha entendido como funciona o meu operacional. A partir daqui, configure no seu gráfico os mesmos parâmetros que eu uso no 5 minutos e comece a acompanhar o mercado em busca de oportunidades, com base no que você aprendeu aqui.</p>
+  <p class="lead">Esperamos que você tenha entendido como funciona o operacional. A partir daqui, configure no seu gráfico os mesmos parâmetros que usamos no 5 minutos e comece a acompanhar o mercado em busca de oportunidades, com base no que você aprendeu aqui.</p>
 
   <p style="color:var(--t2);font-size:15px;margin-bottom:13px">No site, temos a <b>Análise Diária</b>, que mostra a possível projeção do dia, como no exemplo abaixo:</p>
   <div class="tf" style="border-color:rgba(240,180,41,.25)">
@@ -205,15 +206,15 @@ section p.lead{color:var(--t2);font-size:15px;margin-bottom:18px}
   <h2 style="margin-top:26px">As ferramentas grátis por trás disso</h2>
   <div class="tools">
     <a class="tool" href="/analysis"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="tx"><b>Análise Diária</b><span>A direção do dia e os níveis-chave, toda manhã</span></div><span class="arr">→</span></a>
-    <a class="tool" href="/gamma"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="tx"><b>Regiões de Gamma</b><span>Onde o preço tende a reagir, eu observo essas áreas</span></div><span class="arr">→</span></a>
-    <a class="tool" href="/volumefilter"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div><div class="tx"><b>VolumeFilter</b><span>Minha confirmação de volume, grátis pra baixar no site</span></div><span class="arr">→</span></a>
+    <a class="tool" href="/gamma"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="tx"><b>Regiões de Gamma</b><span>Onde o preço tende a reagir, observamos essas áreas</span></div><span class="arr">→</span></a>
+    <a class="tool" href="/volumefilter"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div><div class="tx"><b>VolumeFilter</b><span>Nossa confirmação de volume, grátis pra baixar no site</span></div><span class="arr">→</span></a>
   </div>
 
   <div class="coupon-cta">E não se esqueça de nos fortalecer utilizando os nossos cupons. São eles que mantêm este site vivo e nos permitem criar indicadores e outras ferramentas para ajudar vocês no dia a dia. <a href="/coupons">Ver os cupons →</a></div>
 
-  <div class="disc" style="margin-top:22px"><b>Antes de operar isso</b>Mapeie no seu gráfico e <b>teste no seu simulador por alguns dias antes de arriscar qualquer coisa</b>. Eu uso mais indicadores e vou liberando aos poucos, mas a diferença não é ter mais ferramenta, é a disciplina de esperar tudo se alinhar e o volume confirmar.</div>
+  <div class="disc" style="margin-top:22px"><b>Antes de operar isso</b>Mapeie no seu gráfico e <b>teste no seu simulador por alguns dias antes de arriscar qualquer coisa</b>. Usamos mais indicadores e vamos liberando aos poucos, mas a diferença não é ter mais ferramenta, é a disciplina de esperar tudo se alinhar e o volume confirmar.</div>
 
-  <div class="disc" style="margin-top:14px"><b>Aviso de risco</b>Meus resultados pessoais, não são o típico. Operar futuros envolve risco substancial de perda e não é adequado para todos. Resultados passados não garantem resultados futuros. Conteúdo apenas educacional, não é recomendação financeira. Sempre teste em simulador antes de arriscar capital real.</div>
+  <div class="disc" style="margin-top:14px"><b>Aviso de risco</b>Resultado de um membro da equipe, não é o típico. Operar futuros envolve risco substancial de perda e não é adequado para todos. Resultados passados não garantem resultados futuros. Conteúdo apenas educacional, não é recomendação financeira. Sempre teste em simulador antes de arriscar capital real.</div>
 </section>
 
 </div>
@@ -244,10 +245,10 @@ try{ const _rev=new URLSearchParams(location.search).get('ver')==='oryk'; if(_re
 // Pra ADICIONAR MAIS depois: dropa o .png em img/operational/ e adiciona 1 linha no grupo certo.
 // g:'tela' (junto dos timeframes) · g:'buy' (abaixo da COMPRA) · g:'sell' (abaixo da VENDA)
 const EXAMPLES = [
-  { g:'tela', f:'chart-setup.png',               c:'Minha tela completa, todos os timeframes que eu observo (Diário, 60min, 15min e 5min) com cada indicador no lugar.' },
+  { g:'tela', f:'chart-setup.png',               c:'A tela completa que usamos, todos os timeframes que observamos (Diário, 60min, 15min e 5min) com cada indicador no lugar.' },
   { g:'buy',  f:'contexto-compra.png',           c:'Contexto de compra, tudo alinhado para cima.' },
-  { g:'buy',  f:'contexto-compra-observcao.png', c:'Contexto de compra, o que eu observo antes de entrar.' },
-  { g:'buy',  f:'contexto-compra-aovivo.png',    c:'Para você ver que o setup funciona em diferentes horários: esse movimento aconteceu na madrugada em que decidi dividir esse operacional com vocês. Você consegue enxergar o que houve? Se sim, seus olhos já entenderam o que precisa ser feito.' },
+  { g:'buy',  f:'contexto-compra-observcao.png', c:'Contexto de compra, o que observamos antes de entrar.' },
+  { g:'buy',  f:'contexto-compra-aovivo.png',    c:'Para você ver que o setup funciona em diferentes horários: esse movimento aconteceu na madrugada em que decidimos dividir esse operacional com vocês. Você consegue enxergar o que houve? Se sim, seus olhos já entenderam o que precisa ser feito.' },
   { g:'sell', f:'contexto-venda.png',            c:'Contexto de venda, alinhamento para baixo.' }
   // { g:'buy', f:'novo-exemplo.png', c:'sua legenda aqui' },
 ];
