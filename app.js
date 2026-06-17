@@ -5346,8 +5346,10 @@ function calConvertTime(hhmm){
     const localOffset = -now.getTimezoneOffset() / 60; // offset local em horas vs UTC
     let lh = hh + localOffset;
     if(lh < 0) lh += 24; if(lh >= 24) lh -= 24;
-    let tzName = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace(/_/g,' ');
-    if(tzName==='Sao Paulo') tzName='São Paulo';
+    // Label = offset GMT (neutro de idioma, igual investing.com), NÃO nome de cidade.
+    // "São Paulo" num site em inglês destoava; "GMT-3:00" funciona em qualquer idioma.
+    const _abs = Math.abs(localOffset), _oh = Math.floor(_abs), _om = Math.round((_abs-_oh)*60);
+    const tzName = 'GMT' + (localOffset>=0?'+':'-') + _oh + ':' + String(_om).padStart(2,'0');
     return {display:String(Math.floor(lh)).padStart(2,'0')+':'+String(mm).padStart(2,'0'), label:tzName};
   }
   const offset = CAL_TZ_OFFSETS[_calTz];
