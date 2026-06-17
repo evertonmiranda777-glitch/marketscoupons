@@ -604,6 +604,18 @@ function _getAnonId() {
   try { return localStorage.getItem('mc_anon') || null; } catch(_) { return null; }
 }
 
+// EMQ: persiste email/telefone quando o user fornece (form, signup, lead, newsletter).
+// Vai em TODO evento CAPI depois disso → match quality sobe mesmo p/ anônimo.
+// O backend (edge fn facebook-capi) hasheia em SHA-256, NÃO hashear aqui (vira hash de hash).
+function _saveIdentity(em, ph) {
+  try {
+    if (em && typeof em==='string' && em.indexOf('@')>0) localStorage.setItem('mc_em', em.trim().toLowerCase());
+    if (ph) { const d=(''+ph).replace(/\D/g,''); if (d.length>=8) localStorage.setItem('mc_ph', d); }
+  } catch(_) {}
+}
+function _savedEm() { try { return localStorage.getItem('mc_em') || ''; } catch(_) { return ''; } }
+function _savedPh() { try { return localStorage.getItem('mc_ph') || ''; } catch(_) { return ''; } }
+
 // Facebook CAPI, fire-and-forget server-side event
 function _sendCAPI(event, params, eid, ts) {
   // GDPR/LGPD: block server-side tracking without consent
@@ -626,8 +638,8 @@ function _sendCAPI(event, params, eid, ts) {
           url: location.href,
           fbp: fbp || '',
           fbc: fbc || '',
-          em: params.em || user?.email || '',
-          ph: params.ph || user?.user_metadata?.phone || '',
+          em: params.em || user?.email || _savedEm() || '',
+          ph: params.ph || user?.user_metadata?.phone || _savedPh() || '',
           external_id,
           anon_id: anon_id || '',
           fn: params.fn || user?.user_metadata?.full_name || '',
@@ -6644,6 +6656,7 @@ async function doAuthLogin() {
   const email = document.getElementById('auth-login-email').value.trim();
   const pass  = document.getElementById('auth-login-pass').value;
   if (!email || !pass) return showAuthError('login-error', t('auth_preencha_email_senha'));
+  _saveIdentity(email);
 
   const btn = document.getElementById('login-btn');
   btn.disabled = true; btn.textContent = t('auth_entrando');
@@ -6682,6 +6695,7 @@ async function doAuthSignup() {
   const email    = document.getElementById('auth-signup-email').value.trim();
   const pass     = document.getElementById('auth-signup-pass').value;
   const phone    = document.getElementById('auth-signup-phone')?.value.trim() || '';
+  _saveIdentity(email, phone);
   const birthday = document.getElementById('auth-signup-birthday')?.value || '';
   const country  = document.getElementById('auth-signup-country')?.value || '';
   const zip      = document.getElementById('auth-signup-zip')?.value.trim() || '';
@@ -7742,6 +7756,7 @@ async function subscribeNewsletter(e){
   const msg = document.getElementById('ft-nl-msg');
   const email = (input?.value||'').trim().toLowerCase();
   if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+  _saveIdentity(email);
 
   btn.disabled = true;
   btn.textContent = '...';
