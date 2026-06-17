@@ -5321,17 +5321,45 @@ let _calTz = 'local'; // current timezone, auto-detect via browser (igual invest
 let _calCdTimer = null; // countdown interval
 
 // ── Timezone ──
+const _CAL_TZ_NAME = {ET:'ET',local:'Local',UTC:'UTC',CT:'CT',PT:'PT',GMT:'GMT',CET:'CET',JST:'JST',BRT:'BRT'};
+function _calTzOffset(){
+  if(_calTz==='local') return -new Date().getTimezoneOffset()/60;
+  return CAL_TZ_OFFSETS[_calTz] !== undefined ? CAL_TZ_OFFSETS[_calTz] : 0;
+}
+function _calGmtLabel(off){
+  const a=Math.abs(off), h=Math.floor(a), m=Math.round((a-h)*60);
+  return 'GMT'+(off>=0?'+':'-')+h+':'+String(m).padStart(2,'0');
+}
+// Header "Horário atual: HH:MM (GMT-3:00)" , igual investing.com, ao vivo
+function calUpdateNowLabel(){
+  const el=document.getElementById('cal-now'); if(!el) return;
+  const off=_calTzOffset(), now=new Date();
+  let mins=(now.getUTCHours()*60+now.getUTCMinutes()) + Math.round(off*60);
+  mins=((mins%1440)+1440)%1440;
+  const hh=String(Math.floor(mins/60)).padStart(2,'0'), mm=String(mins%60).padStart(2,'0');
+  el.innerHTML=(t('cal_horario_atual')||'Horário atual')+': <b>'+hh+':'+mm+' ('+_calGmtLabel(off)+')</b>';
+}
 function calSetTz(tz){
   _calTz = tz;
   try { localStorage.setItem('mc_cal_tz', tz); } catch(e){}
   renderCal();
   calUpdateCountdown();
+  calUpdateNowLabel();
 }
 
 function calInitTz(){
   try { const saved = localStorage.getItem('mc_cal_tz'); if(saved) _calTz = saved; } catch(e){}
   const sel = document.getElementById('cal-tz');
-  if(sel) sel.value = _calTz;
+  if(sel){
+    // offset em cada opção (igual investing): "ET (GMT-4:00)", "Local (GMT-3:00)"...
+    [...sel.options].forEach(o=>{
+      const off = o.value==='local' ? -new Date().getTimezoneOffset()/60 : CAL_TZ_OFFSETS[o.value];
+      if(off!==undefined) o.textContent = (_CAL_TZ_NAME[o.value]||o.value)+' ('+_calGmtLabel(off)+')';
+    });
+    sel.value = _calTz;
+  }
+  calUpdateNowLabel();
+  try { if(!window._calNowTimer) window._calNowTimer = setInterval(calUpdateNowLabel, 30000); } catch(e){}
 }
 
 // Convert HH:MM in UTC (API returns UTC) to the selected timezone.

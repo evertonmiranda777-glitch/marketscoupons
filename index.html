@@ -1924,6 +1924,8 @@ body.has-promo-topbar .page{padding-top:calc(var(--nav-h) + var(--promo-h,42px))
 .cal-cd-name{font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cal-cd-timer{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:#ef4444;letter-spacing:1px;text-shadow:0 0 12px rgba(239,68,68,.3);}
 /* Timezone selector */
+.cal-now{font-size:11.5px;font-weight:600;color:var(--t2);display:inline-flex;align-items:center;margin-right:auto;}
+.cal-now b{color:var(--gold);font-weight:700;margin-left:4px;}
 .cal-tz-wrap{display:inline-flex;align-items:center;gap:4px;}
 .cal-tz-sel{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:rgba(107,182,201,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.5)'/%3E%3C/svg%3E") no-repeat right 8px center;border:1px solid rgba(107,182,201,.18);border-radius:6px;color:var(--t1);font-size:11px;font-weight:600;font-family:var(--f);padding:5px 24px 5px 8px;outline:none;cursor:pointer;transition:.2s;}
 .cal-tz-sel:hover,.cal-tz-sel:focus{border-color:rgba(240,180,41,.4);background-color:rgba(107,182,201,.18);}
@@ -3720,6 +3722,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     </div>
     <div class="cal-toolbar">
       <div class="cal-search-wrap"><input type="text" id="cal-search" placeholder="Search events..." data-i18n-placeholder="cal_buscar" oninput="renderCal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="cal-now" id="cal-now"></div>
       <div class="cal-tz-wrap">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <select id="cal-tz" class="cal-tz-sel" onchange="calSetTz(this.value)">
