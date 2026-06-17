@@ -1100,13 +1100,16 @@ async function callGemini(systemText, userText, opts = {}) {
   });
   for (let i = 0; i < KEYS.length; i++) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${KEYS[i]}`;
+    const ac = new AbortController();
+    const to = setTimeout(() => ac.abort(), 18000);  // 18s: nunca pendura o cron; cai no fallback
     try {
-      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, signal: ac.signal });
       const d = await r.json();
       if (!r.ok) { console.error('[max] gemini', r.status, JSON.stringify(d).slice(0, 200)); continue; }
       const t = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
       if (t) return t;
     } catch (e) { console.error('[max] gemini fetch', e.message); continue; }
+    finally { clearTimeout(to); }
   }
   return null;
 }
@@ -1367,6 +1370,25 @@ function maxJargonBlocked(text) {
   return null;
 }
 
+// Fallback determinístico (SEM Gemini): se o motor de IA falha/cota estoura,
+// o cron ainda posta um take limpo, compliant e sem jargão, dos dados reais.
+function buildMaxSingleFallback(rows, gex, segment) {
+  const es = (rows || []).find(r => r.asset === 'ES') || {};
+  const price = es.last_price ? Number(es.last_price).toFixed(0) : null;
+  const chg = es.change_pct != null ? `${es.change_pct > 0 ? '+' : ''}${Number(es.change_pct).toFixed(1)}%` : '';
+  const g = (gex && gex.ES) ? gex.ES : {};
+  const cap = g.call_wall ? Number(g.call_wall).toFixed(0) : null;
+  const flip = g.zero_gamma ? Number(g.zero_gamma).toFixed(0) : null;
+  if (segment === 'coupon') {
+    return "Funded futures account for less: an Apex 25K eval is $19.90 right now with code MARKET, 90% off. Tomorrow's price isn't promised. Coupons in bio.";
+  }
+  if (price && cap && flip) {
+    if (segment === 'recap') return `S&P 500 closed near ${price} (${chg}). ${flip} is the line that flips the day, ${cap} the ceiling the big banks defend. That's the map for tomorrow. Full read on the site, link in bio.`;
+    return `S&P 500 at ${price} (${chg}). The big banks are capping it near ${cap}; ${flip} is the level that flips the day. Patience beats chasing here. Full levels on the site, link in bio.`;
+  }
+  return "Range-bound tape today, the kind that punishes chasing and rewards patience. Full market read and levels on the site, link in bio.";
+}
+
 async function genMaxSinglePost(rows, gex, date, lang, segment) {
   const pt = lang === 'pt';
   const { block } = buildMaxData(rows, gex, date, lang);
@@ -1394,7 +1416,7 @@ async function genMaxSinglePost(rows, gex, date, lang, segment) {
     if (post.length >= 20) return { post, reason: 'ok', raw: out.slice(0, 320) };
     lastRaw = out.slice(0, 320);
   }
-  return { post: null, reason: 'fail', raw: lastRaw };
+  return { post: buildMaxSingleFallback(rows, gex, segment), reason: 'fallback', raw: lastRaw };
 }
 
 // Monta a URL da página do chart (criativos/max-chart.html) com os níveis reais do banco
