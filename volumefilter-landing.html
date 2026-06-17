@@ -41,6 +41,7 @@
   --text-dim: #8A93A8;
   --text-faded: #5A6378;
   --green: #F0B429;
+  --vgreen: #22D67C;
   --green-dim: #C8941A;
   --gray-bar: #4A5468;
   --red: #E14B4B;
@@ -318,7 +319,7 @@ body {
   transition: transform 0.2s;
 }
 .vbar.gray { background: var(--gray-bar); }
-.vbar.green { background: var(--green); box-shadow: 0 0 8px rgba(240, 180, 41, 0.4); }
+.vbar.green { background: var(--vgreen); box-shadow: 0 0 8px rgba(34, 214, 124, 0.4); }
 .vbar.red { background: var(--red); opacity: 0.7; }
 .vol-label {
   font-family: 'JetBrains Mono', monospace;
@@ -447,8 +448,8 @@ section { padding: 100px 0; }
   margin-bottom: 24px;
 }
 .how-card .bar-demo .vbar { width: 14px; border-radius: 2px 2px 0 0; height: 60%; }
-.how-card.green { border-color: rgba(240, 180, 41, 0.3); }
-.how-card.green .bar-demo .featured { background: var(--green); height: 100%; box-shadow: 0 0 12px rgba(240, 180, 41, 0.5); }
+.how-card.green { border-color: rgba(34, 214, 124, 0.3); }
+.how-card.green .bar-demo .featured { background: var(--vgreen); height: 100%; box-shadow: 0 0 12px rgba(34, 214, 124, 0.5); }
 .how-card.gray .bar-demo .featured { background: var(--gray-bar); height: 100%; }
 .how-card.red .bar-demo .featured { background: var(--red); height: 100%; opacity: 0.7; }
 .how-card .bar-demo .vbar:not(.featured) { background: var(--border); }
@@ -458,7 +459,7 @@ section { padding: 100px 0; }
   margin-bottom: 8px;
   letter-spacing: -0.01em;
 }
-.how-card.green h3 { color: var(--green); }
+.how-card.green h3 { color: var(--vgreen); }
 .how-card.red h3 { color: var(--red); }
 .how-card .label {
   font-family: 'JetBrains Mono', monospace;
@@ -915,7 +916,7 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
         <div class="pattern-body">
           <div class="pattern-label mono" data-i18n="pattern_1_label">BREAKOUT</div>
           <h3 data-i18n="pattern_1_h">Confirmação de breakout</h3>
-          <p data-i18n="pattern_1_p" data-i18n-html="1">Todo rompimento de nível (resistência, suporte, IBH, IBL, PDH, PDL, range) precisa vir com pelo menos uma barra <strong style="color:var(--green)">verde</strong> no candle de quebra. Sem isso, é falso até prova em contrário. Candle que quebra cinza ou vermelho = stops sendo executados, não convicção institucional.</p>
+          <p data-i18n="pattern_1_p" data-i18n-html="1">Todo rompimento de nível (resistência, suporte, IBH, IBL, PDH, PDL, range) precisa vir com pelo menos uma barra <strong style="color:var(--vgreen)">verde</strong> no candle de quebra. Sem isso, é falso até prova em contrário. Candle que quebra cinza ou vermelho = stops sendo executados, não convicção institucional.</p>
           <div class="pattern-meta">
             <div class="pattern-when"><span class="mono"><span data-i18n="pattern_when_label">Quando usar</span></span><span data-i18n="pattern_1_when">Em todo rompimento de nível importante. Não opere quebra sem confirmação verde.</span></div>
             <div class="pattern-warn"><span class="mono"><span data-i18n="pattern_warn_label">Cuidado</span></span><span data-i18n="pattern_1_warn">Não entre com barra cinza esperando "a próxima confirmar". O sinal pede volume NO candle de quebra.</span></div>
@@ -941,7 +942,7 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
         <div class="pattern-body">
           <div class="pattern-label mono" data-i18n="pattern_3_label">CLIMAX</div>
           <h3 data-i18n="pattern_3_h">Climax volume</h3>
-          <p data-i18n="pattern_3_p" data-i18n-html="1">Barra <strong style="color:var(--green)">verde</strong> absurdamente acima da média (3x, 4x+) depois de sequência longa direcional <strong>frequentemente marca o ponto de virada, não o início</strong>.</p>
+          <p data-i18n="pattern_3_p" data-i18n-html="1">Barra <strong style="color:var(--vgreen)">verde</strong> absurdamente acima da média (3x, 4x+) depois de sequência longa direcional <strong>frequentemente marca o ponto de virada, não o início</strong>.</p>
           <div class="pattern-meta">
             <div class="pattern-when"><span class="mono"><span data-i18n="pattern_when_label">Quando usar</span></span><span data-i18n="pattern_3_when">Em movimentos esticados (5+ candles direcionais) e testes de PDH/PDL. Realize parcial antes da reversão.</span></div>
             <div class="pattern-warn"><span class="mono"><span data-i18n="pattern_warn_label">Cuidado</span></span><span data-i18n="pattern_3_warn">Climax não é entrada contra-tendência por si só. O trade reverso precisa de mais confirmação.</span></div>
@@ -954,7 +955,7 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
         <div class="pattern-body">
           <div class="pattern-label mono" data-i18n="pattern_4_label">ABSORÇÃO</div>
           <h3 data-i18n="pattern_4_h">Absorção institucional</h3>
-          <p data-i18n="pattern_4_p" data-i18n-html="1">Barra <strong style="color:var(--green)">verde</strong> no VolumeFilter mas candle pequeno em range (doji, pin bar). Muito volume, preço parado = alguém grande absorvendo a liquidez do outro lado.</p>
+          <p data-i18n="pattern_4_p" data-i18n-html="1">Barra <strong style="color:var(--vgreen)">verde</strong> no VolumeFilter mas candle pequeno em range (doji, pin bar). Muito volume, preço parado = alguém grande absorvendo a liquidez do outro lado.</p>
           <div class="pattern-meta">
             <div class="pattern-when"><span class="mono"><span data-i18n="pattern_when_label">Quando usar</span></span><span data-i18n="pattern_4_when">Em testes de níveis importantes quando o preço fica preso com pavios longos e corpos pequenos. R/R costuma ser 3:1 ou melhor.</span></div>
             <div class="pattern-warn"><span class="mono"><span data-i18n="pattern_warn_label">Cuidado</span></span><span data-i18n="pattern_4_warn">Não confunda com baixa liquidez (cinza/vermelha + candle pequeno = mercado dormindo). Absorção exige barra VERDE.</span></div>
@@ -1100,8 +1101,8 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
 <!-- OFFER -->
 <section>
   <div class="container">
-    <div class="section-tag" style="text-align: center;" data-i18n="offer_tag">// A oferta</div>
-    <h2 class="section-title" style="text-align: center; margin-left: auto; margin-right: auto;" data-i18n="offer_title">O que você recebe agora, de graça.</h2>
+    <div class="section-tag" data-i18n="offer_tag">// A oferta</div>
+    <h2 class="section-title" data-i18n="offer_title">O que você recebe agora, de graça.</h2>
 
     <div class="offer-card">
       <ul class="offer-list">
@@ -1307,11 +1308,6 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
       <button type="submit" class="btn-cta" data-i18n="hero_btn">⬇ Quero o VolumeFilter</button>
     </form>
     <p class="hero-micro" data-i18n="cta_micro">Sem cartão · Sem pegadinha · Descadastro em 1 clique</p>
-
-    <div class="ps" data-i18n="cta_ps" data-i18n-html="1">
-      <strong>PS</strong><br>
-      Esse indicador faz parte de uma nova linha de ferramentas em desenvolvimento pro <strong style="color: var(--text);">programa VIP do Markets Coupons</strong>. Os próximos vão ser pagos. Esse aqui é a sua chance de testar a qualidade do que vem por aí, sem custo, sem compromisso.
-    </div>
   </div>
 </section>
 
