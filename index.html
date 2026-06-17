@@ -1591,13 +1591,15 @@ html:has(.drw.open){overflow:hidden!important;}
 .plat-hero{text-align:center;padding:24px 0 36px;}
 .plat-hero h2{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px;color:#fff;}
 .plat-hero p{font-size:13px;color:var(--t2);max-width:500px;margin:0 auto;line-height:1.6;}
-.plat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;grid-auto-rows:1fr;}
+.plat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;grid-auto-rows:1fr;max-width:760px;margin:0 auto;}
 .plat-card{background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:14px;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;position:relative}
 .plat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(107,182,201,.08),transparent);pointer-events:none;z-index:1;}
 .plat-card:hover{border-color:rgba(107,182,201,.08);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
 .plat-card-featured{border-color:rgba(240,180,41,.25)!important;box-shadow:0 8px 32px rgba(240,180,41,.08);}
-.plat-banner{background:rgba(240,180,41,.04);border-bottom:1px solid rgba(240,180,41,.1);padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.plat-banner{background:rgba(240,180,41,.06);border-bottom:1px solid rgba(240,180,41,.14);padding:9px 16px;display:flex;align-items:center;justify-content:center;gap:6px;}
 .plat-banner-text{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);}
+.plat-banner.plat-banner-alt{background:rgba(107,182,201,.06);border-bottom:1px solid rgba(107,182,201,.14);}
+.plat-banner.plat-banner-alt .plat-banner-text{color:#9ecfff;}
 .plat-card-top{padding:16px 20px;display:flex;align-items:center;gap:12px;}
 .plat-logo{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0;border:1px solid rgba(107,182,201,.18);}
 .plat-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:1px;}
