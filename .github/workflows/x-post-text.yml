@@ -1,0 +1,33 @@
+name: Max X Post Text (Claude-written)
+
+# Publica um texto PRONTO escrito pelo Claude (sem Gemini). CRON_SECRET fica
+# no GitHub. Disparo manual ou por rotina (Claude chama via `gh workflow run`).
+on:
+  workflow_dispatch:
+    inputs:
+      text:
+        description: 'Texto do post (até 280 chars)'
+        required: true
+      quote_id:
+        description: 'ID de tweet pra citar (opcional)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Post Claude-written text to X
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          TEXT: ${{ github.event.inputs.text }}
+          QUOTE_ID: ${{ github.event.inputs.quote_id }}
+        run: |
+          curl -sS -X POST "https://www.marketscoupons.com/api/bot?action=x_post_text&secret=$CRON_SECRET" \
+            --data-urlencode "text=$TEXT" \
+            --data-urlencode "quote_id=$QUOTE_ID" \
+            -w "\nHTTP %{http_code}\n"

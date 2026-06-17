@@ -632,6 +632,35 @@ async function handleXReplyJack(req, res) {
   return res.status(200).json({ posted: jr.data.id, mode, inspired_by: '@' + target.screen, reply });
 }
 
+// POST ?action=x_post_text&secret=... { text } — posta um texto PRONTO (escrito
+// pelo Claude, SEM Gemini). Passa pelas travas de compliance/jargão/tamanho.
+// Opcional: quote_id (cita um tweet). É o caminho "eu escrevo, a rotina publica".
+async function handleXPostText(req, res) {
+  const isPreview = req.method === 'GET' || req.query?.dry === '1';
+  if (!isPreview) {
+    const secret = req.query?.secret || req.headers['x-cron-secret'];
+    if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) return res.status(403).json({ error: 'forbidden' });
+  }
+  let text = (req.query?.text || req.body?.text || '').toString().replace(/\\n/g, '\n').trim();
+  const quoteId = (req.query?.quote_id || req.body?.quote_id || '').toString().trim();
+  if (!text) return res.status(400).json({ error: 'no_text' });
+  if (text.length > 280) return res.status(400).json({ error: 'too_long', chars: text.length });
+  const banned = maxComplianceBlocked(text);
+  if (banned) return res.status(422).json({ error: 'compliance_block', term: banned });
+  if (isPreview) return res.status(200).json({ preview: true, text, chars: text.length, jargon: maxJargonBlocked(text) || null });
+
+  const xKeys = { apiKey: process.env.X_API_KEY, apiSecret: process.env.X_API_SECRET, accessToken: process.env.X_ACCESS_TOKEN, accessSecret: process.env.X_ACCESS_SECRET };
+  if (!xKeys.apiKey || !xKeys.accessToken) return res.status(503).json({ error: 'no_x_token' });
+  const purl = 'https://api.twitter.com/2/tweets';
+  const body = { text };
+  if (quoteId) body.quote_tweet_id = quoteId;
+  const tr = await fetch(purl, { method: 'POST', headers: { Authorization: oauth1Header('POST', purl, xKeys), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const jr = await tr.json().catch(() => ({}));
+  if (!tr.ok || !jr?.data?.id) return res.status(502).json({ error: 'post_failed', response: jr });
+  await fetch(`${SUPABASE_URL}/rest/v1/x_post_log`, { method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ post_type: 'claude_text', thread_root_id: jr.data.id, status: 'sent', posted_content: { text } }) }).catch(() => {});
+  return res.status(200).json({ posted: jr.data.id, text });
+}
+
 // GET ?action=x_daily&asset=ES&dry=1 — preview (não posta)
 // POST ?action=x_daily&secret=... — posta de verdade (cron protected)
 async function handleXDaily(req, res) {
@@ -1925,6 +1954,7 @@ module.exports = async (req, res) => {
   if (action === 'x_cleanup') return handleXCleanup(req, res);
   if (action === 'x_stats') return handleXStats(req, res);
   if (action === 'x_replyjack') return handleXReplyJack(req, res);
+  if (action === 'x_post_text') return handleXPostText(req, res);
   if (action === 'x_recap') return handleXRecap(req, res);
 
   const corsOrigin = getCorsOrigin(req);
