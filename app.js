@@ -6788,9 +6788,11 @@ async function doAuthSignup() {
       }
     }
   });
-  btn.disabled = false; btn.textContent = t('auth_btn_criar');
-
-  if (error) return showAuthError('signup-error', error.message);
+  // Em ERRO: re-habilita pra corrigir e tentar de novo.
+  // Em SUCESSO: NÃO re-habilita (mantém travado) — re-submit fazia a Supabase reenviar a
+  // confirmação 2x/3x. Botão fica disabled; o fluxo abaixo fecha o modal ou mostra "confira seu email".
+  if (error) { btn.disabled = false; btn.textContent = t('auth_btn_criar'); return showAuthError('signup-error', error.message); }
+  btn.textContent = t('auth_conta_criada') || 'Conta criada ✓';
 
   // Auto-cadastra na lista (via endpoint server-side, RLS bloqueia insert anon/unauth direto)
   try {
