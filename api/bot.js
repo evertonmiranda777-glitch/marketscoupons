@@ -560,6 +560,7 @@ async function genReplyJack(tweet, marketBlock) {
     if (maxComplianceBlocked(reply)) continue;
     if (maxJargonBlocked(reply) && attempt === 0) continue;  // 1ª tentativa exige zero jargão
     if (/https?:\/\//i.test(reply)) reply = reply.replace(/https?:\/\/\S+/gi, '').trim(); // nunca link
+    reply = trimToSentence(reply);  // nunca termina no meio da frase
     if (reply.length >= 15) return { reply, raw: out.slice(0, 300) };
   }
   return { reply: null };
@@ -1347,6 +1348,14 @@ function maxComplianceBlocked(text) {
 
 // Trava de JARGÃO: rejeita post com termo técnico cru que afasta audiência fria.
 // Retorna o termo achado, ou null se limpo. (X é audiência geral, não terminal.)
+// Garante que o texto termina em frase completa (nunca corta no meio).
+function trimToSentence(text) {
+  const t = String(text || '').trim();
+  if (/[.!?)"']$/.test(t)) return t;
+  const cut = Math.max(t.lastIndexOf('.'), t.lastIndexOf('!'), t.lastIndexOf('?'));
+  return cut > 40 ? t.slice(0, cut + 1).trim() : t;
+}
+
 function maxJargonBlocked(text) {
   const t = ' ' + String(text || '').toLowerCase() + ' ';
   const JARGON = [
