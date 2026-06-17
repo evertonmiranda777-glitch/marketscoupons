@@ -868,7 +868,10 @@ img{max-width:100%;}
 .hero-trust .ht-sep{display:none;}
 @media(max-width:520px){.hero-trust{grid-template-columns:1fr 1fr;font-size:11px;gap:8px;}.hero-trust .ht-item strong{font-size:15px;}}
 .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px;max-width:680px;width:100%;}
-.hst{background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,.03) 38%,rgba(12,20,27,.28));backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:18px 16px;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;position:relative;overflow:hidden;text-align:center;cursor:pointer;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 1px 0 rgba(255,255,255,.30) inset,0 -1px 0 rgba(0,0,0,.18) inset,0 16px 40px -14px rgba(0,0,0,.5),0 0 60px -22px rgba(190,235,255,.55);}
+.hst{background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,.03) 38%,rgba(12,20,27,.28));backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:18px 16px;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;position:relative;overflow:hidden;text-align:center;cursor:pointer;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;box-shadow:0 1px 0 rgba(255,255,255,.30) inset,0 -1px 0 rgba(0,0,0,.18) inset,0 16px 40px -14px rgba(0,0,0,.5),0 0 60px -22px rgba(190,235,255,.55);}
+.hst .hst-stat{font-size:13.5px;color:#fff;font-weight:600;line-height:1.3;margin-bottom:12px;}
+.hst .hst-stat strong{color:var(--gold);font-weight:800;font-size:16px;letter-spacing:-.3px;margin-right:4px;}
+.hst .hst-div{width:100%;height:1px;background:rgba(255,255,255,.16);margin-bottom:12px;}
 .hst:hover{border-color:rgba(107,182,201,.38);transform:translateY(-2px);}
 .hero-tg-cta{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;max-width:680px;width:100%;padding:16px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:14px;color:#fff;font-size:14px;font-weight:700;font-family:var(--f);text-decoration:none;transition:all .3s;position:relative;overflow:hidden}
 .hero-tg-cta::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(107,182,201,.08),transparent);pointer-events:none;}
@@ -3475,20 +3478,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <div class="hero-badge" data-i18n="hero_badge">Cupons Verificados, Atualizados Diariamente</div>
  <h1 id="hero-h1">Save up to <em>90% OFF</em> <br>at the best Prop Firms</h1>
  <p data-i18n="hero_sub">Compare firmas, use cupons exclusivos e acesse ferramentas profissionais, tudo em um só lugar.</p>
- <div class="hero-trust">
-   <div class="ht-item"><strong class="js-firmcount">18+</strong><span data-i18n="hero_trust_firms">Prop Firms</span></div>
-   <div class="ht-sep">·</div>
-   <div class="ht-item"><strong class="js-views">74K+</strong><span data-i18n="hero_trust_views">Acessos/mês</span></div>
-   <div class="ht-sep">·</div>
-   <div class="ht-item"><strong class="js-couponscopied">2.7K+</strong><span data-i18n="hero_trust_copied">Cupons copiados/mês</span></div>
-   <div class="ht-sep">·</div>
-   <div class="ht-item"><strong class="js-discmax">90%</strong><span data-i18n="hero_trust_off">Off Máx</span></div>
- </div>
  <div class="hero-stats">
- <div class="hst" onclick="go('firms')"><div class="v" style="color:var(--gold)" data-i18n="hst_box_firms">Top Prop Firms</div><div class="l" data-i18n="hst_box_firms_l">As Melhores de 2026</div></div>
- <div class="hst" onclick="go('quiz')"><div class="v" style="color:var(--gold)" data-i18n="hst_box_quiz">Firma Ideal?</div><div class="l" data-i18n="hst_box_quiz_l">Faça o Quiz de Seleção</div></div>
- <div class="hst" onclick="go('calc')"><div class="v" style="color:var(--gold)" data-i18n="hst_box_calc">Calculadora</div><div class="l" data-i18n="hst_box_calc_l">Calcule seu Risco</div></div>
- <div class="hst" onclick="go('analise')"><div class="v" style="color:var(--gold)" data-i18n="hst_box_analise">Análise Diária</div><div class="l" data-i18n="hst_box_analise_l">Insights de Mercado</div></div>
+ <div class="hst" onclick="go('firms')"><div class="hst-stat"><strong class="js-firmcount">18+</strong><span data-i18n="hero_trust_firms">Prop Firms</span></div><div class="hst-div"></div><div class="v" style="color:var(--gold)" data-i18n="hst_box_firms">Top Prop Firms</div><div class="l" data-i18n="hst_box_firms_l">As Melhores de 2026</div></div>
+ <div class="hst" onclick="go('quiz')"><div class="hst-stat"><strong class="js-views">74K+</strong><span data-i18n="hero_trust_views">Acessos/mês</span></div><div class="hst-div"></div><div class="v" style="color:var(--gold)" data-i18n="hst_box_quiz">Firma Ideal?</div><div class="l" data-i18n="hst_box_quiz_l">Faça o Quiz de Seleção</div></div>
+ <div class="hst" onclick="go('calc')"><div class="hst-stat"><strong class="js-couponscopied">2.7K+</strong><span data-i18n="hero_trust_copied">Cupons copiados/mês</span></div><div class="hst-div"></div><div class="v" style="color:var(--gold)" data-i18n="hst_box_calc">Calculadora</div><div class="l" data-i18n="hst_box_calc_l">Calcule seu Risco</div></div>
+ <div class="hst" onclick="go('analise')"><div class="hst-stat"><strong class="js-discmax">90%</strong><span data-i18n="hero_trust_off">Off Máx</span></div><div class="hst-div"></div><div class="v" style="color:var(--gold)" data-i18n="hst_box_analise">Análise Diária</div><div class="l" data-i18n="hst_box_analise_l">Insights de Mercado</div></div>
  </div>
  <a href="https://t.me/marketcouponss" target="_blank" rel="noopener noreferrer" class="hero-tg-cta" onclick="track('telegram_click',{location:'hero'})">
    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
