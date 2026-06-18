@@ -527,13 +527,12 @@
   window.OP_RTL = RTL;
 
   function detectLang() {
+    // EN-default: a raiz /operational é SEMPRE inglês. Idioma só vem do path /<lang>/.
     var m = location.pathname.match(/^\/(en|pt|es|it|fr|de|ar|id)(\/|$)/);
     if (m) return m[1];
-    var qs = new URLSearchParams(location.search).get('lang');
+    var qs = new URLSearchParams(location.search).get('lang'); // ?lang= só p/ teste/override explícito
     if (qs && T[qs]) return qs;
-    try { var s = localStorage.getItem('mc_lang'); if (s && T[s]) return s; } catch (e) {}
-    var nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
-    return T[nav] ? nav : 'en';
+    return 'en'; // NUNCA navigator.language: navegador PT não pode mudar a raiz inglesa
   }
 
   function applyI18n(lang) {
