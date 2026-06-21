@@ -1315,16 +1315,9 @@ function detectLang() {
   // Priority 4: Saved preference
   const saved = localStorage.getItem('mc_lang');
   if (saved && _SUPPORTED.has(saved)) return saved;
-  // Priority 5: Browser language
-  const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-  if (nav.startsWith('en')) return 'en';
-  if (nav.startsWith('pt')) return 'pt';
-  if (nav.startsWith('es')) return 'es';
-  if (nav.startsWith('it')) return 'it';
-  if (nav.startsWith('fr')) return 'fr';
-  if (nav.startsWith('de')) return 'de';
-  if (nav.startsWith('ar')) return 'ar';
-  if (nav.startsWith('id')) return 'id';
+  // Priority 5: EN-DEFAULT. O site é americano, a raiz é SEMPRE inglês.
+  // NUNCA navigator.language (navegador FR/PT não pode mudar a raiz inglesa).
+  // Idioma só vem do path /<lang>/, ?lang=, ou escolha explícita salva (localStorage).
   return 'en';
 }
 function applyTranslations() {
