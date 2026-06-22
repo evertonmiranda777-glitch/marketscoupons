@@ -192,6 +192,7 @@
     white-space: nowrap; max-width: 240px;
   }
   .row-coupon.long { font-size: 10px; letter-spacing: 0; padding: 6px 10px; }
+  .pod-auto, .row-auto { text-transform: uppercase; font-size: 13px; letter-spacing: .09em; }
 
   /* ===== FOOTER (Max + headline + CTA) ===== */
   .footer {
@@ -520,7 +521,7 @@ function renderPodium(top3) {
         <div class="pod-name">${firm.name || firm.short_name}</div>
         <div class="pod-discount">${firm.discount}% OFF</div>
         <div class="pod-ctx">${ctxLabel(firm)}</div>
-        ${firm.coupon ? `<div class="pod-coupon${firm.coupon.length > 12 ? ' long' : ''}">${T.code} ${firm.coupon}</div>` : ''}
+        ${firm.coupon ? (firm.coupon.length > 16 ? `<div class="pod-coupon pod-auto">${T.ctx_link}</div>` : `<div class="pod-coupon${firm.coupon.length > 12 ? ' long' : ''}">${T.code} ${firm.coupon}</div>`) : ''}
       </div>
     `;
   }).join('');
@@ -536,7 +537,7 @@ function renderList(rows) {
         <div class="row-icon">${buildLogoHTML(firm)}</div>
         <div class="row-name"><b>${firm.name || firm.short_name}</b><span>${ctxLabel(firm)}</span></div>
         <div class="row-discount">${firm.discount}% OFF</div>
-        ${firm.coupon ? `<div class="row-coupon${firm.coupon.length > 12 ? ' long' : ''}">${firm.coupon}</div>` : '<div></div>'}
+        ${firm.coupon ? (firm.coupon.length > 16 ? `<div class="row-coupon row-auto">${T.ctx_link}</div>` : `<div class="row-coupon${firm.coupon.length > 12 ? ' long' : ''}">${firm.coupon}</div>`) : '<div></div>'}
       </div>
     `;
   }).join('');
