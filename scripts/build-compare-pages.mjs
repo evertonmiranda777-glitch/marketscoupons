@@ -33,8 +33,8 @@ const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 if (!SR) { console.error('SUPABASE_SERVICE_ROLE(_KEY) missing in env/.env.local'); process.exit(1); }
 
 const LANG = (process.argv[2] || 'pt').toLowerCase();
-const LOCALES = { pt: { html: 'pt-BR', og: 'pt_BR', num: 'pt-BR' }, id: { html: 'id-ID', og: 'id_ID', num: 'id-ID' } };
-if (!LOCALES[LANG]) { console.error('Lang não suportado:', LANG, '(use pt|id)'); process.exit(1); }
+const LOCALES = { pt: { html: 'pt-BR', og: 'pt_BR', num: 'pt-BR' }, id: { html: 'id-ID', og: 'id_ID', num: 'id-ID' }, en: { html: 'en', og: 'en_US', num: 'en-US' } };
+if (!LOCALES[LANG]) { console.error('Lang não suportado:', LANG, '(use pt|id|en)'); process.exit(1); }
 const LOC = LOCALES[LANG];
 const PFX = LANG === 'pt' ? '' : `/${LANG}`; // prefixo de URL
 
@@ -81,6 +81,45 @@ const STR = {
       { q: `Posso ter conta nas duas firmas ao mesmo tempo?`, a: `Sim, é permitido ter conta em prop firms diferentes ao mesmo tempo (multi-prop). Algumas firmas restringem múltiplas contas DENTRO da mesma firma, confirme as regras de cada uma antes de comprar.` },
     ],
   },
+  en: {
+    navBack: '← Back to home',
+    title: (sA, sB) => `${sA} vs ${sB} 2026: Comparison | Markets Coupons`,
+    desc: (a, b) => `Compare ${a.name} and ${b.name}: prices, drawdown, profit split, payout. Exclusive coupon${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' and ' + b.coupon : ''}.`,
+    heroEyebrow: 'Prop Firm Comparison 2026',
+    heroSubBase: 'Side-by-side analysis of both prop firms.',
+    heroSubEntry: (v) => ` Entry account starting from $${v}.`,
+    catLabel: { discount: 'Discount', price: 'Smallest Account', split: 'Profit Split', drawdown: 'Drawdown', dd_pct: 'DD Limit', target: 'Profit Target', min_days: 'Min. Days', news: 'News Trading', day1: 'Day-1 Payout', scaling: 'Scaling', plat: 'Platforms', rating: 'Trustpilot' },
+    catHint: { discount: 'How much OFF the original price', price: 'Final price w/ coupon (cheapest entry)', split: 'How much of the profit stays with the trader', drawdown: 'Type of loss limit', rating: 'Real reputation' },
+    allowed: '✓ Allowed', blocked: '✗ Blocked', yes: '✓ Yes', no: '✗ No',
+    winBadge: '✓ Wins',
+    rDay1: 'need a Day-1 payout',
+    rNews: 'trade during economic news',
+    rLowCap: (v) => `want to start with low capital (from $${v})`,
+    rDisc: (d) => `prioritize a higher discount (${d}% OFF)`,
+    rRep: (s) => `value Trustpilot reputation (${s} ★)`,
+    rFallback: (type, plats) => `prefer ${type || 'this model'} and platforms like ${plats}`,
+    bcHome: 'Home', bcComp: 'Comparisons',
+    secEyebrow1: 'Side-by-Side', secH2_1: (sA, sB) => `${sA} vs ${sB}, Comparison`, secSub1: 'Each category shows the winner between the two firms.',
+    secEyebrow2: 'Who should choose', secH2_2: 'Which firm is better for whom',
+    personaHead: (name) => `Choose <span>${name}</span> if you...`,
+    secEyebrow3: 'Frequently Asked Questions', secH2_3: (sA, sB) => `${sA} vs ${sB}, FAQ`,
+    secEyebrow4: 'Other Comparisons', secH2_4: 'Also Compare',
+    firmCta: (s) => `Access ${s} →`,
+    couponLabel: 'Coupon:',
+    tpReviews: (n) => `${n} reviews · Trustpilot`,
+    finalLabel: 'Ready to start?',
+    finalDisc: (d, c) => `${d}% OFF${c ? ` · coupon ${esc(c)}` : ''}`,
+    footUpdated: (date) => `Comparison generated from official data and updated on ${date}`,
+    footDisc: "Coupons and conditions may change. Confirm at the firm's checkout. Exclusive coupons, 100% free, that never change your checkout price. We are official partners of the firms, and that is how the portal stays free for you.",
+    redirecting: 'Redirecting to',
+    faqs: (a, b, sA, sB, minA, minB) => [
+      { q: `Which is better: ${a.name} or ${b.name}?`, a: `It depends on your profile. ${a.name} offers ${a.discount}% off${a.discount_type ? ' ' + a.discount_type : ''} and ${a.drawdown} drawdown. ${b.name} offers ${b.discount}% off${b.discount_type ? ' ' + b.discount_type : ''} and ${b.drawdown} drawdown. ${minA && minB ? `Cheapest account: ${minA < minB ? a.name : b.name} (starting from $${(Math.min(minA, minB)).toFixed(2)}).` : ''}` },
+      { q: `How much does an ${sA} vs ${sB} account cost?`, a: `${a.name} starts at ${minA ? '$' + minA.toFixed(2) : '—'}${a.coupon ? ` with coupon ${a.coupon}` : ''}. ${b.name} starts at ${minB ? '$' + minB.toFixed(2) : '—'}${b.coupon ? ` with coupon ${b.coupon}` : ''}.` },
+      { q: `Does ${sA} or ${sB} allow news trading?`, a: `${a.name} ${a.news_trading ? 'ALLOWS' : 'does NOT allow'} trading during economic news. ${b.name} ${b.news_trading ? 'ALLOWS it' : 'does NOT'}. ${a.news_trading !== b.news_trading ? `If you need to trade news, choose ${a.news_trading ? a.name : b.name}.` : ''}` },
+      { q: `How long until payout with ${sA} and ${sB}?`, a: `${a.name} ${a.day1_payout ? 'releases payout from Day-1' : 'does not offer Day-1 payout'}. ${b.name} ${b.day1_payout ? 'releases payout from Day-1' : 'does not offer Day-1 payout'}.` },
+      { q: `Can I have accounts with both firms simultaneously?`, a: `Yes, it is allowed to have accounts with different prop firms at the same time (multi-prop). Some firms restrict multiple accounts WITHIN the same firm, confirm each firm's rules before purchasing.` },
+    ],
+  },
   id: {
     navBack: '← Kembali ke beranda',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Perbandingan | Markets Coupons`,
@@ -123,11 +162,20 @@ const STR = {
 };
 const S = STR[LANG];
 
+// discount_type vem EN-canonical do DB; traduz por idioma (so os "1 X" precisam, resto e neutro)
+const DTYPE = {
+  '1 challenge': { pt: '1 desafio', en: '1 challenge', es: '1 desafío', fr: '1 défi', de: '1 Challenge', it: '1 sfida', ar: 'تحدي واحد', id: '1 tantangan' },
+  '1 purchase': { pt: '1 compra', en: '1 purchase', es: '1 compra', fr: '1 achat', de: '1 Kauf', it: '1 acquisto', ar: 'عملية شراء واحدة', id: '1 pembelian' },
+};
 async function loadFirms() {
   const r = await fetch(`${SB_URL}/rest/v1/cms_firms?active=eq.true&select=*&order=sort_order`, {
     headers: { apikey: SR, Authorization: `Bearer ${SR}` },
   });
-  return r.json();
+  const firms = await r.json();
+  for (const f of firms) {
+    if (f.discount_type && DTYPE[f.discount_type]) f.discount_type = DTYPE[f.discount_type][LANG] || f.discount_type;
+  }
+  return firms;
 }
 
 function priceMin(prices) {
