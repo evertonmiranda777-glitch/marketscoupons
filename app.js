@@ -4348,7 +4348,7 @@ const CHECKOUT_FIRMS=[
      '2-Step Challenge':[{size:'10K',capital:'€10,000',goal:'€1,000',maxDD:'-10%',orig:'—',disc:'€79',featured:false},{size:'25K',capital:'€25,000',goal:'€2,500',maxDD:'-10%',orig:'—',disc:'€199',featured:false},{size:'50K',capital:'€50,000',goal:'€5,000',maxDD:'-10%',orig:'—',disc:'€319',featured:false},{size:'100K',capital:'€100,000',goal:'€10,000',maxDD:'-10%',orig:'—',disc:'€499',featured:true},{size:'200K',capital:'€200,000',goal:'€20,000',maxDD:'-10%',orig:'—',disc:'€999',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP'},
-  {id:'fn',name:'FundedNext',short:'FundedNext',coupon:'',discount:'25%',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',
+  {id:'fn',name:'FundedNext',short:'FundedNext',coupon:'FLEXJU',discount:'40%',color:'#06B6D4',bg:'rgba(6,182,212,0.12)',
    includes:['Up to 95% profit split','15% reward in challenge phase','Guaranteed 24h payout','No time limit','News trading allowed','$288M+ total rewarded'],
    types:['Stellar 2-Step','Stellar 1-Step','Stellar Instant','Bolt (Futures)','Rapid (Futures)','Legacy (Futures)'],platforms:['MT4','MT5','cTrader','Match-Trader','Rithmic'],
    plansByType:{
@@ -4360,7 +4360,7 @@ const CHECKOUT_FIRMS=[
      'Legacy (Futures)':[{size:'25K',capital:'$25,000',goal:'$2,000',maxDD:'-4%',orig:'$79.99',disc:'$59.99',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'-4%',orig:'$149.99',disc:'$112.49',featured:true},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'-4%',orig:'$249.99',disc:'$187.49',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://fundednext.com/futures?fpr=everton33'},
-  {id:'e2t',name:'Earn2Trade',short:'E2T',coupon:'MARKETSCOUPONS',discount:'60%',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',
+  {id:'e2t',name:'Earn2Trade',short:'E2T',coupon:'MARKETSCOUPONS',discount:'50%',color:'#F59E0B',bg:'rgba(245,158,11,0.12)',
    includes:['Free NinjaTrader/Finamark license','Free Journalytix license','Free reset when rebilled','Scaling up to $400K','Education catalog included'],
    types:['Trader Career Path','Gauntlet Mini'],platforms:['Rithmic','NinjaTrader','Finamark','Tradovate','TradingView'],
    plansByType:{
@@ -4368,7 +4368,7 @@ const CHECKOUT_FIRMS=[
      'Gauntlet Mini':[{size:'GAU 50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,000',orig:'$170',disc:'$68',featured:false},{size:'GAU 100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,500',orig:'$315',disc:'$126',featured:true},{size:'GAU 150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$375',disc:'$150',featured:false},{size:'GAU 200K',capital:'$200,000',goal:'$12,000',maxDD:'$5,000',orig:'$550',disc:'$220',featured:false}]
    },
    buildUrl:(size,type,plat)=>{const m={'TCP 25K':'TCP25','TCP 50K':'TCP50','TCP 100K':'TCP100','GAU 50K':'GML50','GAU 100K':'GML100','GAU 150K':'GML150','GAU 200K':'GML200'};const plan=m[size]||'TCP25';const aBid=plan.startsWith('GML')?'fcc26bfd':'2e8e8a14';return`https://www.earn2trade.com/purchase?plan=${plan}&a_pid=marketscoupons&a_bid=${aBid}&discount=MARKETSCOUPONS`;}},
-  {id:'the5ers',name:'The5ers',short:'The5ers',coupon:null,discount:'0%',color:'#10B981',bg:'rgba(16,185,129,0.12)',
+  {id:'the5ers',name:'The5ers',short:'The5ers',coupon:'MARKET',discount:'5%',color:'#10B981',bg:'rgba(16,185,129,0.12)',
    includes:['Scale up to $4M','Up to 100% profit split','No time limit','Since 2016','24/7 support','Multi-currency: USD/EUR/GBP'],
    types:['Hyper Growth','Pro Growth','High Stakes','Bootcamp','Futures Basecamp','Futures Rebate'],platforms:['MT5','TradingView','Rithmic'],
    plansByType:{
@@ -4390,14 +4390,14 @@ const CHECKOUT_FIRMS=[
      'Pro':[{size:'$5K',capital:'$5,000',goal:'$500',maxDD:'-3%',orig:'$29',disc:'$23.20',featured:false},{size:'$10K',capital:'$10,000',goal:'$1,000',maxDD:'-3%',orig:'$55',disc:'$44',featured:false},{size:'$25K',capital:'$25,000',goal:'$2,500',maxDD:'-3%',orig:'$109',disc:'$87.20',featured:false},{size:'$50K',capital:'$50,000',goal:'$5,000',maxDD:'-3%',orig:'$219',disc:'$175.20',featured:true},{size:'$100K',capital:'$100,000',goal:'$10,000',maxDD:'-3%',orig:'$399',disc:'$319.20',featured:false},{size:'$200K',capital:'$200,000',goal:'$20,000',maxDD:'-3%',orig:'$798',disc:'$638.40',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://app.fundingpips.com/register?ref=31985EAA'},
-  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'CLNLTPxtT4Sok0PzHaRIIQ',discount:'25%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
+  {id:'brightfunded',name:'BrightFunded',short:'BrightFunded',coupon:'CLNLTPxtT4Sok0PzHaRIIQ',discount:'30%',color:'#00C9A7',bg:'rgba(0,201,167,0.12)',
    includes:['Up to 100% profit split','Static drawdown','Guaranteed 24h payout (7-day cycle)','15% profit in challenge phase','Trade2Earn loyalty program','Leverage 1:100','24/7 support'],
    types:['2-Step'],platforms:['MT5','DXtrade','cTrader'],
    plansByType:{
      '2-Step':[{size:'5K',capital:'€5,000',goal:'€400',maxDD:'-10%',orig:'€55',disc:'€41.25',featured:false},{size:'10K',capital:'€10,000',goal:'€800',maxDD:'-10%',orig:'€95',disc:'€71.25',featured:false},{size:'25K',capital:'€25,000',goal:'€2,000',maxDD:'-10%',orig:'€195',disc:'€146.25',featured:false},{size:'50K',capital:'€50,000',goal:'€4,000',maxDD:'-10%',orig:'€295',disc:'€221.25',featured:true},{size:'100K',capital:'€100,000',goal:'€8,000',maxDD:'-10%',orig:'€495',disc:'€371.25',featured:false},{size:'200K',capital:'€200,000',goal:'€16,000',maxDD:'-10%',orig:'€975',disc:'€731.25',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ'},
-  {id:'e8',name:'E8 Markets',short:'E8',coupon:'MARKET',discount:'10%',color:'#FF4400',bg:'rgba(255,68,0,0.12)',
+  {id:'e8',name:'E8 Markets',short:'E8',coupon:'MARKET',discount:'40%',color:'#FF4400',bg:'rgba(255,68,0,0.12)',
    includes:['No activation fee','Pass in 1 day','Forex, Futures and Crypto','Configurable drawdown 4-14%','Split up to 100%','$70M+ paid since 2021'],
    types:['Signature','E8 One'],platforms:['MT5','Match-Trader'],
    plansByType:{
