@@ -123,6 +123,7 @@
     display: inline-block; padding: 7px 16px;
     border-radius: 999px;
     font-size: 15px; font-weight: 800; letter-spacing: .05em;
+    white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis;
   }
 
   /* Pódio: gold / silver / bronze */
@@ -187,6 +188,7 @@
     font-size: 15px; font-weight: 700; letter-spacing: .05em;
     padding: 7px 14px; border-radius: 999px;
     text-align: center; justify-self: center;
+    white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis;
   }
 
   /* ===== FOOTER (Max + headline + CTA) ===== */
@@ -516,7 +518,7 @@ function renderPodium(top3) {
         <div class="pod-name">${firm.name || firm.short_name}</div>
         <div class="pod-discount">${firm.discount}% OFF</div>
         <div class="pod-ctx">${ctxLabel(firm)}</div>
-        ${firm.coupon ? `<div class="pod-coupon">${T.code} ${firm.coupon}</div>` : ''}
+        ${(firm.coupon && firm.coupon.length <= 16) ? `<div class="pod-coupon">${T.code} ${firm.coupon}</div>` : ''}
       </div>
     `;
   }).join('');
@@ -532,7 +534,7 @@ function renderList(rows) {
         <div class="row-icon">${buildLogoHTML(firm)}</div>
         <div class="row-name"><b>${firm.name || firm.short_name}</b><span>${ctxLabel(firm)}</span></div>
         <div class="row-discount">${firm.discount}% OFF</div>
-        ${firm.coupon ? `<div class="row-coupon">${firm.coupon}</div>` : '<div></div>'}
+        ${(firm.coupon && firm.coupon.length <= 16) ? `<div class="row-coupon">${firm.coupon}</div>` : '<div></div>'}
       </div>
     `;
   }).join('');
