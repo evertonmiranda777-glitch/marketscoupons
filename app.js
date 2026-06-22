@@ -388,9 +388,15 @@ function track(event, params={}) {
     utm_campaign: _cmp,
     params:       { ..._enrich, ...params, event_id: eid },
   };
-  try {
-    db.from('events').insert(row).then(r=>{ if(r.error){ console.warn('track insert error:', r.error.message); _trackEnqueue(row); } });
-  } catch(e) { console.warn('track error:', e); _trackEnqueue(row); }
+  // Orçamento de I/O de disco: ruído de tempo/visibilidade não vai pro Supabase (nenhuma feature do admin depende, só cor no feed de eventos);
+  // scroll/heatmap são amostrados a 20% (preserva o heatmap a 1/5 do custo de escrita). Funil/atribuição sempre gravam.
+  const _DROP_EV = (event==='tab_hidden'||event==='tab_visible'||event==='user_idle'||event==='engagement_time'||event==='session_end');
+  const _SAMPLE = (event==='scroll_depth'||event==='heatmap_load') ? 0.2 : 1;
+  if (!_DROP_EV && (_SAMPLE===1 || Math.random() < _SAMPLE)) {
+    try {
+      db.from('events').insert(row).then(r=>{ if(r.error){ console.warn('track insert error:', r.error.message); _trackEnqueue(row); } });
+    } catch(e) { console.warn('track error:', e); _trackEnqueue(row); }
+  }
 
   // 1b. coupon_clicks, atribuicao campanha→cupom pra fechar loop com venda real da firma
   if (event === 'copy_coupon' || event === 'coupon_copy') {
