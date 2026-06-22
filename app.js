@@ -793,7 +793,7 @@ const FIRM_BG={
 const FIRM_ABOUT={
   apex:{about:'Founded in <b>2021</b> by Darrell Martin in Austin, Texas. Apex is the <b>6th most searched prop firm worldwide</b> with 4.2M monthly visits. Approval rate of <b>15-20%</b>, 2x the industry average.',highlights:[{val:'$821M+',label:'Paid to traders'},{val:'$97M+',label:'Last 90 days'},{val:'100%',label:'Of profit (2026)'}],
     types:['Intraday Trail','EOD Trail'],plans:{'Intraday Trail':[{s:'25K',d:'$19.90',o:'$199'},{s:'50K',d:'$24.90',o:'$249'},{s:'100K',d:'$39.90',o:'$399',pop:1},{s:'150K',d:'$59.90',o:'$599'}],'EOD Trail':[{s:'25K',d:'$29.90',o:'$299'},{s:'50K',d:'$34.90',o:'$349'},{s:'100K',d:'$59.90',o:'$599',pop:1},{s:'150K',d:'$79.90',o:'$799'}]},
-    includes:['No daily loss limit','No scaling rule','NinjaTrader license','Real-time data','Copy Trader (WealthCharts)','24/7 support']},
+    includes:['No daily loss limit','No scaling rule','NinjaTrader license','Real-time data','WealthCharts platform','24/7 support']},
   bulenox:{about:'Founded in <b>2022</b>. <b>500%</b> year-over-year traffic growth. Simplified rules, possible to pass in <b>1 day</b>, no consistency rule.',highlights:[{val:'90%',label:'Profit Split'},{val:'1 day',label:'To pass'},{val:'$0',label:'Monthly fee'}],
     types:['Trailing DD','EOD DD'],plans:{'Trailing DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$58.85',o:'$535'}],'EOD DD':[{s:'25K',d:'$15.95',o:'$145'},{s:'50K',d:'$19.25',o:'$175'},{s:'100K',d:'$23.65',o:'$215',pop:1},{s:'150K',d:'$35.75',o:'$325'},{s:'250K',d:'$58.85',o:'$535'}]},
     includes:['Pass in 1 day','No consistency rule','News trading allowed','Weekly payouts','14-day free trial']},
@@ -1011,7 +1011,7 @@ const FIRM_T={
 'Sem limite de perda diária':['No daily loss limit','Sin límite de pérdida diaria','Sans limite de perte journalière','Senza limite di perdita giornaliera','Kein tägliches Verlustlimit','بدون حد خسارة يومي'],
 'Licença NinjaTrader':['NinjaTrader license','Licencia NinjaTrader','Licence NinjaTrader','Licenza NinjaTrader','NinjaTrader-Lizenz','ترخيص NinjaTrader'],
 'Dados em tempo real':['Real-time data','Datos en tiempo real','Données en temps réel','Dati in tempo reale','Echtzeit-Daten','بيانات في الوقت الحقيقي'],
-'Copy Trader (WealthCharts)':['Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)','Copy Trader (WealthCharts)'],
+'WealthCharts platform':['WealthCharts platform','WealthCharts platform','WealthCharts platform','WealthCharts platform','WealthCharts platform','WealthCharts platform'],
 'Trial 14 dias grátis':['14-day free trial','Prueba 14 días gratis','Essai gratuit 14 jours','Prova gratuita 14 giorni','14 Tage kostenloser Test','تجربة مجانية 14 يوم'],
 'Trade durante notícias':['Trade during news','Trading durante noticias','Trading pendant les nouvelles','Trading durante le notizie','Handel während Nachrichten','التداول أثناء الأخبار'],
 'NT/Finamark grátis':['Free NT/Finamark','NT/Finamark gratis','NT/Finamark gratuit','NT/Finamark gratuito','Kostenloses NT/Finamark','NT/Finamark مجاني'],
@@ -4325,7 +4325,7 @@ function cpCoupon(code,firmId,loc){
 /* MULTI-FIRM CHECKOUT */
 const CHECKOUT_FIRMS=[
   {id:'apex',name:'Apex Trader Funding',short:'Apex',coupon:'MARKET',discount:'90%',color:'#F97316',bg:'rgba(249,115,22,0.12)',
-   includes:['No daily loss limit','No scaling rules','NinjaTrader License (Rithmic)','Real-time data','Copy Trader (WealthCharts)','24/7 Support'],
+   includes:['No daily loss limit','No scaling rules','NinjaTrader License (Rithmic)','Real-time data','WealthCharts platform','24/7 Support'],
    types:['Intraday Trail','EOD Trail'],platforms:['Rithmic','Tradovate','WealthCharts'],
    plansByType:{
      'Intraday Trail':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$199',disc:'$19.90',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$249',disc:'$24.90',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$399',disc:'$39.90',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$599',disc:'$59.90',featured:false}],
