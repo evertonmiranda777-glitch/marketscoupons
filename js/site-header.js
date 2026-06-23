@@ -91,7 +91,8 @@
     '#mc-site-hd .nt svg{width:13px;height:13px;flex-shrink:0;opacity:.55;transition:opacity .2s}'+
     '#mc-site-hd .nt:hover svg,#mc-site-hd .nt.active svg{opacity:1}#mc-site-hd .nt:hover{color:#fff}#mc-site-hd .nt.active{color:#fff;border-bottom-color:#fff}'+
     '#mc-site-hd .nt-live{color:#EF4444;margin-left:4px}#mc-site-hd .nt-live:hover{color:#ff6b6b}#mc-site-hd .nt-live.active{color:#EF4444;border-bottom-color:#EF4444}'+
-    '@media(max-width:820px){#mc-site-hd .nav-bot{display:none}#mc-site-hd .nav-search{display:none}}';
+    '@media(max-width:820px){#mc-site-hd .nav-bot{display:none}#mc-site-hd .nav-search{display:none}}'+
+    '@media(max-width:480px){#mc-site-hd .nav-logo span{display:none}#mc-site-hd .nav-r{gap:6px}#mc-site-hd .enter-btn,#mc-site-hd .signup-btn{padding:6px 11px;font-size:11px}}';
 
   var html='<header id="mc-site-hd"><div class="nav-top">'+
     '<a class="nav-logo" href="/">'+logoSvg+'<span><em>Markets</em> Coupons</span></a>'+
