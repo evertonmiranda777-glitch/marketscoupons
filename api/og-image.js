@@ -60,14 +60,14 @@ export default async function handler() {
                   },
                 },
                 // Tagline
-                { type: 'div', props: { style: { fontSize: '10px', fontWeight: 700, letterSpacing: '3px', color: '#3D4F63', marginBottom: '28px' }, children: 'EXCLUSIVE PROP FIRM COUPONS & DISCOUNTS' } },
+                { type: 'div', props: { style: { fontSize: '10px', fontWeight: 700, letterSpacing: '3px', color: '#3D4F63', marginBottom: '28px' }, children: 'EXCLUSIVE COUPONS & DISCOUNTS' } },
                 // Stats grid
                 {
                   type: 'div', props: {
                     style: { display: 'flex', gap: '10px', marginBottom: '20px' },
                     children: [
                       cell('MAX DISCOUNT', '90%', '#F0B429'),
-                      cell('PROP FIRMS', firmCount + '+', '#22C55E'),
+                      cell('TOP FIRMS', firmCount + '+', '#22C55E'),
                       cell('DAILY ANALYSIS', 'FREE', '#EDF2F7'),
                     ],
                   },
