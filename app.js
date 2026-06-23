@@ -1154,6 +1154,15 @@ function pdVerb(planName){const s=(planName||'').toLowerCase();if(/lifetime|vita
 /* Cupom digitavel? UUID/codigo de afiliado (>16 chars, ex BrightFunded) aplica via link, NAO se digita.
    Tratado como "sem cupom" no display (cai no branch via-link/skip de cada render). O link de afiliado continua aplicando o desconto. */
 function couponTypeable(f){ return !!(f && f.coupon && f.coupon.length <= 16); }
+/* Página /app: troca aba iPhone/Android (a função era chamada no onclick mas nunca foi definida -> Android nao abria) */
+function apPick(os){
+  try{
+    document.querySelectorAll('.ap-tab').forEach(function(b){ b.classList.toggle('active', b.dataset.ap===os); });
+    document.querySelectorAll('.ap-panel').forEach(function(p){ p.classList.remove('active'); });
+    var panel=document.getElementById(os==='and'?'ap-and':'ap-ios');
+    if(panel) panel.classList.add('active');
+  }catch(e){}
+}
 /* MC Rating badge, exibido logo abaixo do Trustpilot. Mostra apenas se houver reviews; senão CTA "Avalie primeiro". */
 function dualRatingPill(f){
   if(!f) return '';
