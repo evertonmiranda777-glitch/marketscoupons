@@ -1499,7 +1499,8 @@ function setFirmSEO(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   const lang=_currentLang||'en';
   const seo=FIRM_SEO_META[lang]||FIRM_SEO_META.en||FIRM_SEO_META.pt;
-  const hasCoupon=f.coupon&&f.discount>0;
+  // Cupom UUID/afiliado (>16 chars, ex BrightFunded CLNLT...) NAO e digitavel: aplica via link. Trata como "sem cupom" no titulo/meta pra nao poluir SEO/Meta com o hash.
+  const hasCoupon=f.coupon&&f.coupon.length<=16&&f.discount>0;
   const minPrice=f.prices&&f.prices[0]?f.prices[0].n:'';
   const vars={'{name}':f.name,'{discount}':f.discount,'{coupon}':f.coupon||'','{minPrice}':minPrice,'{rating}':f.rating,'{reviews}':f.reviews,'{split}':f.split};
   function fill(tpl){let s=tpl;for(const[k,v]of Object.entries(vars))s=s.replaceAll(k,v);return s;}
@@ -1556,7 +1557,7 @@ function setFirmSEO(id){
     '@context':'https://schema.org','@type':'BreadcrumbList',
     itemListElement:[
       {'@type':'ListItem',position:1,name:'MarketsCoupons',item:'https://www.marketscoupons.com/'},
-      {'@type':'ListItem',position:2,name:t('nav_firms')||'Firmas',item:'https://www.marketscoupons.com/firms'},
+      {'@type':'ListItem',position:2,name:t('nav_firms')||'Firms',item:'https://www.marketscoupons.com/firms'},
       {'@type':'ListItem',position:3,name:f.name,item:'https://www.marketscoupons.com/'+id}
     ]
   });
@@ -3075,14 +3076,16 @@ function renderFirms(list){
         </div>
       </div>
       <div class="fr-right" onclick="event.stopPropagation()">
-        ${f.coupon?`<div class="drw-coupon-bar">
+        ${f.coupon?(f.coupon.length>16?`<div class="drw-coupon-bar drw-coupon-link">
+          <div class="offer-coupon-left"><span class="drw-coupon-code" style="font-size:13px;color:var(--gold);font-weight:600;white-space:normal">✓ ${t('firms_via_link')}</span></div>
+        </div>`:`<div class="drw-coupon-bar">
           <div class="offer-coupon-left">
             <div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div>
             <span class="drw-coupon-code">${f.coupon}</span>
           </div>
           <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button>
         </div>
-        <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`:''}
+        <div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`):''}
         <div class="fr-btns">
           <button class="fr-fav ${_favs.has(f.id)?'active':''}" id="fav-btn-m-${f.id}" onclick="toggleFav('${f.id}')" title="${_favs.has(f.id)?t('firms_fav_remove'):t('firms_fav_add')}">${favHeart(_favs.has(f.id))}<span class="fr-fav-count" id="fav-cnt-m-${f.id}">${_favCounts[f.id]||0}</span></button>
           <button class="det-btn primary" onclick="openD('${f.id}')">${t('firms_ver_planos')}</button>
@@ -4059,10 +4062,14 @@ function openDrw(id, f, cf) {
   html+=`<div class="drw-checkout">`;
   html+= promoTimerPill(f);
   if (f.coupon) {
-    html+=`<div class="drw-coupon-bar">
+    if (f.coupon.length>16) {
+      html+=`<div class="drw-coupon-bar drw-coupon-link"><div class="offer-coupon-left"><span class="drw-coupon-code" style="font-size:13px;color:var(--gold);font-weight:600;white-space:normal">✓ ${t('firms_via_link')}</span></div></div>`;
+    } else {
+      html+=`<div class="drw-coupon-bar">
       <div class="offer-coupon-left"><div class="drw-coupon-label">${t('firms_cupom_exclusivo')}</div><span class="drw-coupon-code${f.coupon.length>12?' long':''}">${f.coupon}</span></div>
       <button class="drw-coupon-copy" onclick="cpCoupon('${f.coupon}','${f.id}','drw_direct')">${t('firms_copiar')}</button>
     </div><div class="drw-coupon-hint">${t('firms_hint_cupom')}</div>`;
+    }
   }
   html+=`<button class="go-btn" onclick="mcOpenFirm('${id}','${f.link}','${f.coupon||''}','${f.name.replace(/'/g,"\\'")}');var _s=window._dedicatedFirmSlug?'dedicated':'homepage';var _v=_fbVal(FIRMS.find(function(x){return x.id==='${id}'}));track('checkout_click',{firm_id:'${id}',firm_name:'${f.name.replace(/'/g,"\\'")}',coupon_code:'${f.coupon||'parceiro'}',value:_v,source:_s});registerLoyaltyClick('','','','${f.name.replace(/'/g,"\\'")}')">${t('firms_comecar')}</button></div>`;
 
