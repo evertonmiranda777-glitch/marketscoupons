@@ -1151,6 +1151,9 @@ function tf(s){if(!s||typeof _currentLang==='undefined'||_currentLang==='en')ret
 // Verbo do CTA por tipo de plano: Lifetime = compra única (Comprar), Free = Obter, resto = Assinar
 function pdVerb(planName){const s=(planName||'').toLowerCase();if(/lifetime|vital/.test(s))return tf('Comprar');if(/^free$|gr[áa]t/.test(s))return tf('Obter');return t('pd_assinar');}
 
+/* Cupom digitavel? UUID/codigo de afiliado (>16 chars, ex BrightFunded) aplica via link, NAO se digita.
+   Tratado como "sem cupom" no display (cai no branch via-link/skip de cada render). O link de afiliado continua aplicando o desconto. */
+function couponTypeable(f){ return !!(f && f.coupon && f.coupon.length <= 16); }
 /* MC Rating badge, exibido logo abaixo do Trustpilot. Mostra apenas se houver reviews; senão CTA "Avalie primeiro". */
 function dualRatingPill(f){
   if(!f) return '';
@@ -1274,7 +1277,7 @@ function globalSearch(q){
   if(typeof FIRMS!=='undefined'){
     FIRMS.filter(f=>f.name.toLowerCase().includes(q)||f.id.includes(q)||(f.coupon||'').toLowerCase().includes(q))
       .slice(0,5).forEach(f=>{
-        results.push({type:'firm',id:f.id,label:f.name,sub:f.type+(f.coupon?' · '+f.coupon:''),color:f.color,icon_url:f.icon_url,icon:f.icon});
+        results.push({type:'firm',id:f.id,label:f.name,sub:f.type+(couponTypeable(f)?' · '+f.coupon:''),color:f.color,icon_url:f.icon_url,icon:f.icon});
       });
   }
   if(!results.length){box.classList.remove('open');box.innerHTML='';return;}
@@ -3003,7 +3006,7 @@ function renderHome(){
         <div><div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div></div>
       </div>
       ${dualRatingPill(f)}
-      ${f.coupon?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
+      ${couponTypeable(f)?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
       <div class="oc-hint">${t('firms_hint_cupom')}</div>`:`<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">${t('offers_desconto_exclusivo')}</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
       <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
       <button class="offer-cta" onclick="openD('${f.id}');track('offer_card_click',{firm_id:'${f.id}',location:'home_card'})">${t('home_ver_planos')}</button>
@@ -3054,7 +3057,7 @@ function renderFirms(list){
       <div class="fr-tp-col" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">${f.trustpilot?`<a class="fr-tp-mini" href="${f.trustpilot.url}" rel="nofollow noopener" target="_blank" onclick="event.preventDefault();openTpPopup('${f.trustpilot.url}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="#00b67a" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span class="fr-tp-score">${f.trustpilot.score}</span><span class="fr-tp-count">${tpCount}</span></a>`:''}${mcRatingBadge(f)}</div>
       <!-- Col 7: Coupon -->
       <div class="fr-coupon-col" onclick="event.stopPropagation()">
-        ${f.coupon?`<div class="fr-coupon-box"><div class="fr-coupon-box-row"><span class="fr-coupon-box-code">${shortCode(f.coupon)}</span><button class="fr-coupon-box-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button></div></div>`:''}
+        ${couponTypeable(f)?`<div class="fr-coupon-box"><div class="fr-coupon-box-row"><span class="fr-coupon-box-code">${shortCode(f.coupon)}</span><button class="fr-coupon-box-copy" onclick="cpCoupon('${f.coupon}','${f.id}','firms')">${t('firms_copiar')}</button></div></div>`:''}
       </div>
       <!-- Col 7: Actions -->
       <div class="fr-actions" onclick="event.stopPropagation()">
@@ -3203,7 +3206,7 @@ function renderOffers(){
       </div>
       <div class="offer-card-body">
         <p class="offer-desc">${tf(f.desc)||''}</p>
-        ${f.coupon?`
+        ${couponTypeable(f)?`
         <div class="offer-coupon-box">
           <div class="offer-coupon-left">
             <div class="offer-coupon-label">${t('offers_cupom_label')}</div>
@@ -3481,7 +3484,7 @@ function fdRenderRight(id, f) {
 
   let h = `<div class="fd-ck-header">
     <div class="fd-ck-title">${t('fd_configure_conta')}</div>
-    <div class="fd-ck-sub">${f.coupon?t('fd_aplique_cupom'):''}</div>
+    <div class="fd-ck-sub">${couponTypeable(f)?t('fd_aplique_cupom'):''}</div>
   </div>`;
 
   // Type pills
@@ -3564,7 +3567,7 @@ function fdRenderRight(id, f) {
   h += promoTimerPill(f);
 
   // Coupon + CTA card
-  if (f.coupon) {
+  if (couponTypeable(f)) {
     const isLong = f.coupon.length > 12;
     h += `<div class="fd-steps-card">`;
     h += `<div class="fd-step-instruction"><span class="fd-step-num active">1</span><span class="fd-step-text active">${t('fd_step1_cupom_text')}</span></div>`;
@@ -4087,7 +4090,7 @@ function drwRenderCk(id, f) {
   const plans=fa.plans[st.type];
 
   let h=`<div class="fd-ck-header" style="padding:0;"><div class="fd-ck-title" style="font-size:18px;">${t('fd_configure_conta')}</div>
-    <div class="fd-ck-sub">${f.coupon?t('fd_aplique_cupom'):''}</div></div>`;
+    <div class="fd-ck-sub">${couponTypeable(f)?t('fd_aplique_cupom'):''}</div></div>`;
 
   // Type pills
   if(fa.types.length>1){
@@ -4128,7 +4131,7 @@ function drwRenderCk(id, f) {
   h += promoTimerPill(f);
 
   // Coupon + CTA card
-  if(f.coupon){
+  if(couponTypeable(f)){
     const isLong=f.coupon.length>12;
     h+=`<div class="fd-steps-card">`;
     h+=`<div class="fd-step-instruction"><span class="fd-step-num active">1</span><span class="fd-step-text active">${t('fd_step1_cupom_text')}</span></div>`;
