@@ -1162,12 +1162,17 @@ function dualRatingPill(f){
   const star = (color) => `<svg width="11" height="11" viewBox="0 0 24 24" fill="${color}" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
   const mcClick = `event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)`;
   const tpClick = tp ? `event.stopPropagation();event.preventDefault();openTpPopup('${tpUrl}')` : '';
+  const _Tbf = (k, fb) => { try{ const v = t(k); return (!v || v === k) ? fb : v; }catch(e){ return fb; } };
+  const beFirst = _Tbf('mc_be_first', (_currentLang === 'pt') ? 'Seja o primeiro a avaliar' : 'Be the first to review');
+  const mcInner = mcCount === 0
+    ? `${star('#F0B429')}<span style="color:#F0B429;font-weight:600;">${beFirst}</span>`
+    : `${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span>`;
   return `
     <div style="display:block;margin:8px 0 4px;">
       <div style="display:flex;align-items:stretch;justify-content:center;width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:9px;overflow:hidden;font-size:11px;color:#fff;white-space:nowrap;">
         ${tp?`<a href="${tpUrl}" rel="nofollow noopener" target="_blank" onclick="${tpClick}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#00b67a')}<b style="color:#00b67a;">${tpScore}</b><span style="color:rgba(255,255,255,.65);">Trustpilot</span></a>`:`<span style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;color:rgba(255,255,255,.4);flex-shrink:0;">${star('#00b67a')}<span>Trustpilot —</span></span>`}
         <span style="width:1px;background:rgba(255,255,255,.12);flex-shrink:0;"></span>
-        <a href="#" onclick="${mcClick}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;text-decoration:none;color:#fff;flex-shrink:0;">${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span></a>
+        <a href="#" onclick="${mcClick}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;text-decoration:none;color:#fff;flex-shrink:0;">${mcInner}</a>
       </div>
     </div>`;
 }
@@ -1186,7 +1191,7 @@ function mcRatingBadge(f){
   const _style = `style="display:inline-flex;align-items:center;gap:5px;background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.3);border-radius:8px;padding:4px 8px;text-decoration:none;font-size:11px;color:#fff;flex-shrink:0;white-space:nowrap;"`;
   const _svg = `<svg width="11" height="11" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
   if (count === 0) {
-    return `<a class="mc-badge mc-badge-empty" href="#" ${_href} ${_style}>${_svg}<b style="color:#F0B429;">0</b><span style="color:rgba(255,255,255,.6);">MarketsCoupons Reviews</span></a>`;
+    return `<a class="mc-badge mc-badge-empty" href="#" ${_href} ${_style}>${_svg}<span style="color:#F0B429;font-weight:600;">${beFirst}</span></a>`;
   }
   return `<a class="mc-badge" href="#" ${_href} ${_style}>${_svg}<b style="color:#F0B429;">${rating.toFixed(1)}</b><span style="color:rgba(255,255,255,.6);">MarketsCoupons Reviews</span></a>`;
 }
