@@ -242,12 +242,14 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
       const fb = document.getElementById('mc-redirect-fallback');
       const sub = document.getElementById('mc-redirect-sub');
       if (fb) fb.style.display = '';
-      if (sub) sub.textContent = 'Demorou mais que o normal, toque no botão pra abrir manualmente';
+      const _ptR = (document.documentElement.lang||'').toLowerCase().startsWith('pt');
+      if (sub) sub.textContent = _ptR ? 'Demorou mais que o normal, toque no botão pra abrir manualmente' : 'Taking longer than usual, tap the button to open it manually';
     }, 5000);
     // Após 12s mostra "algo deu errado", page provavelmente bloqueada (in-app browsers, etc)
     panicTimer = setTimeout(() => {
       const sub = document.getElementById('mc-redirect-sub');
-      if (sub) { sub.textContent = '⚠ Não carregou, tente abrir manualmente ou fora do app do Instagram/TikTok'; sub.style.color = '#EF4444'; }
+      const _ptR = (document.documentElement.lang||'').toLowerCase().startsWith('pt');
+      if (sub) { sub.textContent = _ptR ? '⚠ Não carregou, tente abrir manualmente ou fora do app do Instagram/TikTok' : '⚠ Did not load, try opening manually or outside the Instagram/TikTok app'; sub.style.color = '#EF4444'; }
     }, 12000);
   } catch(e){}
 
